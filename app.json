@@ -95,6 +95,7 @@
     "plugins": [
       "expo-router",
       "@bacons/apple-targets",
+      "./plugins/icloud-tlo",
       "expo-iap",
       [
         "expo-image-picker",
