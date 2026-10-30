@@ -86,7 +86,7 @@
   "aktywnosc.blad_zapisu": "Coba lagi.",
   "aktywnosc.nie_usunieto": "Baris {{n}} tidak dihapus",
   "aktywnosc.blad_zapisu_zegarek": "Coba lagi atau hitung di iPhone.",
-  "aktywnosc.bez_telefonu_other": "iPhone tidak di dekat. {{count}} perubahan tersimpan di jam tangan ini.",
+  "aktywnosc.bez_telefonu_other": "iPhone tidak berada di dekat Anda. {{count}} perubahan tersimpan di jam tangan ini.",
   "aktywnosc.otworz_iphone": "Buka Oczko di iPhone Anda untuk mulai menghitung.",
   "aktywnosc.zablokowany": "Penghitung terkunci",
   "aktywnosc.zablokowany_jak": "Buka kuncinya di Oczko.",
