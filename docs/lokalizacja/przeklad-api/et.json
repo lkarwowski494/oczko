@@ -723,7 +723,7 @@
   "icloud.wylacz_tytul": "Kas lülitada iCloudi sünkroonimine välja?",
   "icloud.wylacz_opis": "Kõik jääb sellesse iPhone’i. Siinsed muudatused ei lähe enam iCloudi ja sinu teised seadmed säilitavad oma andmed.",
   "icloud.wylacz_potwierdz": "Lülita välja",
-  "icloud.synchronizuje": "Sünkroonin…",
+  "icloud.synchronizuje": "Sünkroonimine…",
   "icloud.brak_konta": "iCloud pole Oczkole saadaval",
   "icloud.brak_konta_opis": "Kontrolli, et oled iCloudi sisse logitud ja et iCloud on Oczko jaoks seadetes sees. Kõik jääb salvestatuks sellesse iPhone’i.",
   "icloud.ustawienia": "Ava seaded",

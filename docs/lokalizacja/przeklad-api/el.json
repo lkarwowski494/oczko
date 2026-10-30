@@ -565,7 +565,7 @@
   "zapas.brak_wynikow": "Δεν υπάρχει νήμα με όνομα “{{zapytanie}}”.",
   "zapas.pole_nazwa": "Όνομα",
   "zapas.pole_producent": "Μάρκα",
-  "zapas.pole_sklad": "Ίνα",
+  "zapas.pole_sklad": "Σύνθεση ινών",
   "zapas.pole_kolor": "Χρώμα",
   "zapas.pole_kategoria": "Κατηγορία πάχους",
   "zapas.pole_motki": "Κουβάρια",
