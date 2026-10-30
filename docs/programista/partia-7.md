@@ -143,3 +143,15 @@ Sprawdzenie: każde API użyte w `modules/oczko-icloud/ios/*.swift` zgodne z dek
 - **1.7 N12-12:** zrobione wcześniej — `kopiaZdrowa` (`integrity_check` = ok i pusty `foreign_key_check`, osobne połączenie tylko do odczytu) wywołana w `src/dane/archiwum.ts:88` przed spakowaniem; zła kopia → `uszkodzony`, w katalogu docelowym nie zostaje plik. Testy `tests/dane/archiwum-integralnosc.test.ts` (06c9ff8), zielone w verify (2645/2645 na eda6dcc). Nic do zmiany.
 - **1.2 reszta listy:** XCTest `oczko-icloud` (339a85b) — kod gotowy, wynik tylko z CI (swift-test w iOS #131, w toku). Stany 04 „Data and sync” (`icloud.niepelna_nowsza`, „Syncing…”) — w kodzie i testach. ZM-06 — procedura zapisana, decyzja P-290 = opcja A (build TestFlight z `ICLOUD_W_1_0 = true` zmienia koordynator). Ryzyko selektora scenariusza 49 (etykieta `dane.konflikt_a11y`) — scenariusz już stuka po id z alternatywą i dopasowaniem etykiety (P-250). U12 jest na liście U w `partia-6-natywne.md:59`.
 - **Zostaje (nie do zrobienia bez macOS lub poza zakresem 08):** wynik #131 (build, swift-test, e2e); założenie P-264 (CKSyncEngine wysyła tylko ustawione pola) do sprawdzenia w przebiegu iCloud; teksty robocze `zapas.motek_*` i limity ×1,8/×1,4 jako tokeny — po audycie 04; ZM-06 na urządzeniach (właściciel).
+
+### Kolejka na kopii `claude/kopia-partia-7-2026-10-30` · 2026-10-30 15:15 UTC (P-299–P-304; nic niewypchnięte poza P-299)
+Wypchnięte na roboczą: 0f1dec0 (P-299 `workflow_dispatch`). Przebieg iOS #132 (run 41073895018): attempt 1 anulowany po 15 min w kolejce (brak maszyn), attempt 2 (jedno ponowienie wg CLAUDE.md) w kolejce od 15:03:50.
+Na kopii (verify kod 0, 241 zestawów / 2674 testy; każdy commit zielony oprócz c63016b, które potrzebuje następnego — tabela-08):
+- 8162eee P-300 (b): `plugins/icloud-tlo.js` — bez `ICLOUD_W_1_0` brak `remote-notification` i `aps-environment`; dowód: `expo config --type prebuild` (bg i aps puste).
+- c63016b + d2b26bc P-304 (e): próbka w projekcie szydełkowym bez kategorii grubości (`WejscieProbki.narzedzie`, trasa `app/probka.tsx` bez testu ekranu).
+- 1e92c8d P-302/P-304 (f): en „crafting days” itd. (28 linii), literały w testach/scenariuszach 01, 03, 05, 06, 18 (07 do przeglądu), Teksty.swift regenerowane.
+- 7fd14ea P-303: kontekst kategorii CYC (es, es-419, fr lokalnie; reszta numer + nazwa en) + test zgodności.
+- c0c1048 P-301: 003 wersaliki, 004 ✕ ofert w nagłówku, 005 „Part N”, 006 przycisk ••• + potwierdzenie usunięcia filmu, `skrzynka.film_zastapi`.
+- b3c1964 P-301 P1-001: Libre Franklin natywnie (expo-font) — **niesprawdzone na urządzeniu** (plik zmienny; waga 700 ma wybrać instancję Bold).
+Odłożone: (a) wersja 1.0.0 — strażnik R-074 wymaga `tests/bazy/v1.db` od 1.0 (decyzja koordynatora: A teraz / B przy wydaniu); patch w scratchpadzie sesji.
+Do ról: 07 — scenariusze/README zmienione tekstowo; 09/07 — wykrywacz `robotka` w `slownik-terminow.json`; 04 — nowe teksty robocze (`wzor.film_menu`, `film_usun_tytul/opis`, `formularz.nazwa_czesc_n`), design-spec/makiety „knitting days”, motyw ••• w wierszu Video; 10 — `promoText`; 02 — `docs/monetyzacja.md`.
