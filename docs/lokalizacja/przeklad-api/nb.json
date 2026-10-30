@@ -211,7 +211,7 @@
   "formularz.notatka_opis": "Vises ved siden av telleren.",
   "formularz.znaczenie_tytul": "Det store tallet viser",
   "formularz.znaczenie_skonczone": "Ferdige rader",
-  "formularz.znaczenie_skonczone_opis": "{{n}} betyr at ferdige rader er {{n}}.",
+  "formularz.znaczenie_skonczone_opis": "{{n}} betyr at {{n}} rader er ferdige.",
   "formularz.znaczenie_w_trakcie": "Raden jeg er på",
   "formularz.znaczenie_w_trakcie_opis": "{{nastepny}} betyr at du jobber med rad {{nastepny}}.",
   "formularz.znaczenie_info": "Bare tallet på skjermen endres. Radene og historikken dine forblir de samme.",
