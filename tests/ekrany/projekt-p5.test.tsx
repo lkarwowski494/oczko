@@ -28,6 +28,14 @@ function pokaz(s = stan(), edycja = false) {
 }
 
 describe('Projekt (partia 5)', () => {
+  test('P-307: opis części z celem — forma liczby mnogiej wg celu: „60 of 96 rows”, „0 of 1 row”', () => {
+    pokaz(stan({ czesci: [
+      { id: 'c1', nazwa: 'Back', rzedy: 60, cel: 96, paraZ: null, liczniki: [{ id: 'l1', nazwa: 'Rows', opis: '60 rows' }], calosc: null },
+      { id: 'c9', nazwa: 'Tag', rzedy: 0, cel: 1, paraZ: null, liczniki: [{ id: 'l9', nazwa: 'Rows', opis: '0 rows' }], calosc: null },
+    ] }));
+    expect(screen.getByText('60 of 96 rows')).toBeTruthy();
+    expect(screen.getByText('0 of 1 row')).toBeTruthy();
+  });
   test('RD-14: postęp z opisem przybliżenia; linia terminu; grupy Parts, Note, Details; ostatnia zmiana (BR-PRJ-005)', () => {
     pokaz();
     expect(screen.getByText('51% done')).toBeTruthy();

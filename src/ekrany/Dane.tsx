@@ -68,8 +68,8 @@ export function Konflikt({ stan, t, naWybierz }: PropsKonfliktu): React.ReactEle
   return (
     <Arkusz tytul={t('dane.konflikt_tytul', { licznik: stan.licznik })} przyciski={null}>
       {stan.kandydaci.map((k) => (
-        <Przycisk key={k.id} tekst={t('dane.konflikt_wybor', { wartosc: k.wartosc, urzadzenie: k.urzadzenie, godzina: k.godzina })}
-          etykieta={t('dane.konflikt_a11y', { wartosc: k.wartosc, urzadzenie: k.urzadzenie, godzina: k.godzina })} onPress={() => naWybierz(k.id)} />
+        <Przycisk key={k.id} tekst={t('dane.konflikt_wybor', { count: k.wartosc, urzadzenie: k.urzadzenie, godzina: k.godzina })}
+          etykieta={t('dane.konflikt_a11y', { count: k.wartosc, urzadzenie: k.urzadzenie, godzina: k.godzina })} onPress={() => naWybierz(k.id)} />
       ))}
     </Arkusz>
   );

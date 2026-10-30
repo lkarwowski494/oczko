@@ -14,13 +14,13 @@ test('tytuł z nazwą licznika, opis, dwa wybory (etykiety VoiceOver), „Not no
   const naZamknij = jest.fn();
   render(<IcloudKonflikt t={t} licznik="Left sleeve" wybory={[
     { glowa: 'g6', wartosc: 6, tekst: '6 rows · iPad (test) · 19:39', etykieta: 'Keep 6 rows from iPad (test), 19:39' },
-    { glowa: 'g1', wartosc: 1, tekst: '1 rows · iPhone · 19:30', etykieta: 'Keep 1 rows from iPhone, 19:30' },
+    { glowa: 'g1', wartosc: 1, tekst: '1 row · iPhone · 19:30', etykieta: 'Keep 1 row from iPhone, 19:30' },
   ]} naWybor={naWybor} naZamknij={naZamknij} />);
   expect(screen.getByText('Two versions of Left sleeve')).toBeTruthy();
   expect(screen.getByText('Pick the one that matches your work. The other stays in the history.')).toBeTruthy();
   fireEvent.press(screen.getByLabelText('Keep 6 rows from iPad (test), 19:39'));
   expect(naWybor).toHaveBeenCalledWith('g6');
-  expect(screen.getByText('1 rows · iPhone · 19:30')).toBeTruthy();
+  expect(screen.getByText('1 row · iPhone · 19:30')).toBeTruthy();
   fireEvent.press(screen.getByText('Not now'));
   expect(naZamknij).toHaveBeenCalled();
 });

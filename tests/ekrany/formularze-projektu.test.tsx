@@ -71,6 +71,11 @@ test('notatka: pole wielowierszowe z etykietą „Note for {projekt}”, zapis t
   await waitFor(() => expect(naZapisz).toHaveBeenCalledWith('x'.repeat(2000)));
 });
 
+test('P-307: „{{n}} means {{n}} rows are done.” — liczba mnoga z count: 1 → „1 means 1 row is done.”', () => {
+  render(<FormularzZnaczenia t={t} wartosc={1} znaczenie="skonczone" naZapisz={ok()} naAnuluj={jest.fn()} />);
+  expect(screen.getByText('1 means 1 row is done.')).toBeTruthy();
+});
+
 test('znaczenie: dwa wybory radio z przykładami na bieżącej wartości; zapis wybranego', async () => {
   const naZapisz = ok();
   render(<FormularzZnaczenia t={t} wartosc={47} znaczenie="skonczone" naZapisz={naZapisz} naAnuluj={jest.fn()} />);

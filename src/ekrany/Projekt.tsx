@@ -66,7 +66,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
       <Text style={[st.tekst, { color: k.blad }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">⊖</Text>
     </Pressable>
   );
-  const opisCzesci = (c: CzescProjektu) => (c.cel !== null ? t('projekt.czesc_cel', { rzedy: c.rzedy, cel: c.cel }) : t('projekt.czesc_rzedy', { count: c.rzedy }));
+  const opisCzesci = (c: CzescProjektu) => (c.cel !== null ? t('projekt.czesc_cel', { rzedy: c.rzedy, count: c.cel }) : t('projekt.czesc_rzedy', { count: c.rzedy }));
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
       {(p.naWstecz || p.naEdytuj || p.edycja) && (

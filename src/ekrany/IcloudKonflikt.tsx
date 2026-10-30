@@ -10,7 +10,7 @@ import type { Tlumacz } from './wspolne';
 type Konflikt = { lokalna: number; zdalna: number; urzadzenie: string };
 export type KonfliktNaLiczniku = Konflikt | null; // pole stanu ekranu licznika (null = brak konfliktu)
 export const opisKonfliktu = (k: Konflikt, t: Tlumacz): string =>
-  `${t('icloud.konflikt_licznik')}. ${t('icloud.konflikt_opis', { lokalna: k.lokalna, zdalna: k.zdalna, urzadzenie: k.urzadzenie })}`;
+  `${t('icloud.konflikt_licznik')}. ${t('icloud.konflikt_opis', { lokalna: t('icloud.konflikt_wiersze', { count: k.lokalna }), zdalna: t('icloud.konflikt_wiersze', { count: k.zdalna }), urzadzenie: k.urzadzenie })}`;
 
 /** Linia pod liczbą licznika (nazwany wyjątek od P-046, P-220 I1a): nagłówek, opis i „Choose”; liczba nad nią = wersja tego urządzenia. */
 export function LiniaKonfliktu({ k, t, oglos, na: naWybierz }: { k: Konflikt; t: Tlumacz; oglos(tekst: string): void; na?(): void }): React.ReactElement {
@@ -24,7 +24,7 @@ export function LiniaKonfliktu({ k, t, oglos, na: naWybierz }: { k: Konflikt; t:
   return (
     <View style={st.linia} testID="licznik-konflikt">
       <Text style={[st.tresc, { fontWeight: '700' }]}>{t('icloud.konflikt_licznik')}</Text>
-      <Text style={st.tresc}>{t('icloud.konflikt_opis', { lokalna: k.lokalna, zdalna: k.zdalna, urzadzenie: k.urzadzenie })}</Text>
+      <Text style={st.tresc}>{t('icloud.konflikt_opis', { lokalna: t('icloud.konflikt_wiersze', { count: k.lokalna }), zdalna: t('icloud.konflikt_wiersze', { count: k.zdalna }), urzadzenie: k.urzadzenie })}</Text>
       {naWybierz && (
         <Pressable accessibilityRole="button" accessibilityLabel={t('icloud.konflikt_wybierz')} onPress={naWybierz} style={st.przycisk} testID="licznik-konflikt-wybierz">
           <Text style={[st.tresc, { fontWeight: '700' }]}>{t('icloud.konflikt_wybierz')}</Text>

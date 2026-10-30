@@ -110,3 +110,9 @@ test('P-209: kosz — włóczka z nazwą i podpisem „Yarn · until …”, nar
     ['narzedzie', 'cable needle', 'Needles or hook · until Nov 25'],
   ]);
 });
+
+test('P-307: wiersz „Swatch” z liczbą 1 — „1 stitch / 10 cm” (forma liczby mnogiej wg liczby oczek)', () => {
+  const opcje = { j, terazMs: Date.UTC(2026, 9, 22, 12), strefa: 'UTC' };
+  expect(stanProjektu({ ...W, probka: { oczka: 1, naCm: 10 } }, opcje).szczegoly?.probka).toBe('1 stitch / 10 cm');
+});
+

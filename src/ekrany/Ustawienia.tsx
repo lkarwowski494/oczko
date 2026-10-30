@@ -46,7 +46,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       <View style={st.grupa}>
         <Przycisk tekst={t('ustawienia.oczko_pro')} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />
         {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
-        {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
+        {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.zostalo, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>
       <View style={st.grupa}>
         <View style={st.wiersz}>

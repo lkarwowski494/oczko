@@ -68,7 +68,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
           })}
         </View>
       )}
-      <Tresc podpis>{[t('oferty.bez_pro', { limit: LIMIT_DNI_W_MIESIACU }), s.familySharing ? t('oferty.rodzina') : null].filter(Boolean).join(' ')}</Tresc>
+      <Tresc podpis>{[t('oferty.bez_pro', { count: LIMIT_DNI_W_MIESIACU, limit: LIMIT_DNI_W_MIESIACU }), s.familySharing ? t('oferty.rodzina') : null].filter(Boolean).join(' ')}</Tresc>
       <View style={{ flexDirection: 'row', gap: odstep.l, flexWrap: 'wrap' }}>
         <Przycisk tekst={t('oferty.polityka')} onPress={() => naOtworzAdres(adresy.polityka)} rodzaj="tekstowy" rola="link" />
         <Przycisk tekst={t('oferty.warunki')} onPress={() => naOtworzAdres(adresy.warunki)} rodzaj="tekstowy" rola="link" />

@@ -11,7 +11,7 @@ export function ArkuszLimitu(p: { n: number; s: StanEkranuLicznika; t: Tlumacz; 
   return (
     <View style={st.arkusz} accessibilityViewIsModal>
       <Text style={st.tytul} accessibilityRole="header" accessibilityLabel={t('limit.nie_dodano', { n: p.n })}>{t('limit.nie_dodano', { n: p.n })}</Text>
-      <Text style={st.tresc}>{t('limit.arkusz_dni', { limit: LIMIT_DNI_W_MIESIACU, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>
+      <Text style={st.tresc}>{t('limit.arkusz_dni', { count: LIMIT_DNI_W_MIESIACU, limit: LIMIT_DNI_W_MIESIACU, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>
       <Text style={st.tresc}>{t('limit.arkusz_zachowane', { count: s.miesiac.rzedyDanych })}</Text>
       <Text style={st.podpis}>{t('limit.arkusz_pro')}</Text>
       <Pressable accessibilityRole="button" accessibilityLabel={t('limit.zobacz_pro')} onPress={p.naOferty} style={st.plus}>

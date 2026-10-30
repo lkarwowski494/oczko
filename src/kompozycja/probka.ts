@@ -20,6 +20,7 @@ export type StanProbki = {
 
 const NAZWY = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 const MIEJSCA = 3;
+const GORA_TABELI = Math.max(...GRUBOSC.map((g) => g.max ?? 0)); // 40 o./4 in (kategoria 0)
 const zaokr = (x: number) => Math.round(x * 10 ** MIEJSCA) / 10 ** MIEJSCA;
 
 type Pole = { rodzaj: 'puste' } | { rodzaj: 'liczba'; wartosc: number } | { rodzaj: 'blad'; tekst: string };
@@ -41,7 +42,7 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
 
   const p = o.wartosc;
   const naCm = w.na === '10cm' ? p / 10 : p / CZTERY_CALE_W_CM; // oczka na 1 cm
-  if (w.na === '4in') { stan.przeliczona = t('probka.przeliczona', { p: f(naCm * 10) }); stan.uwaga4in = t('probka.uwaga_4in'); }
+  if (w.na === '4in') { stan.przeliczona = t('probka.przeliczona', { count: zaokr(naCm * 10), p: f(naCm * 10) }); stan.uwaga4in = t('probka.uwaga_4in'); }
 
   if (s.rodzaj === 'liczba') {
     const szer = s.wartosc;
@@ -50,7 +51,7 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
     stan.wynik = {
       // {{count}} wybiera formę liczby mnogiej; w tekście liczba w zapisie regionu (t wstawia surową wartość count).
       liczba: t('probka.oczka_wynik', { count: n }).replace(String(n), f(n)),
-      zDanych: t(w.jednostka === 'cm' ? 'probka.z_danych_cm' : 'probka.z_danych_in', { p: f(pWJednostce), w: f(szer) }),
+      zDanych: t(w.jednostka === 'cm' ? 'probka.z_danych_cm' : 'probka.z_danych_in', { count: zaokr(pWJednostce), p: f(pWJednostce), w: f(szer) }),
       uwaga: t('probka.uwaga_oczka'),
     };
   }
@@ -61,8 +62,8 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
     const g = GRUBOSC.find((x) => x.kategoria === n);
     const nazwa = t(NAZWY[n] ?? 'kategoria.nazwa_0');
     return g?.min === null || g?.min === undefined
-      ? t('probka.kategoria_otwarta', { n, nazwa, max: g?.max ?? '' })
-      : t('probka.kategoria', { n, nazwa, min: g.min, max: g.max ?? '' });
+      ? t('probka.kategoria_otwarta', { count: g?.max ?? 0, n, nazwa, max: g?.max ?? '' })
+      : t('probka.kategoria', { count: g.max ?? g.min, n, nazwa, min: g.min, max: g.max ?? '' });
   };
   const linie: string[] = [];
   const uwagi: string[] = [];
@@ -73,13 +74,13 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
   } else if (k.wynik === 'miedzy') {
     linie.push(t('probka.kategoria_miedzy', { a: k.kategorie[0], b: k.kategorie[1] }));
   } else if (k.wynik === 'powyzej_tabeli') {
-    linie.push(t('probka.kategoria_powyzej', { max: Math.max(...GRUBOSC.map((g) => g.max ?? 0)) }));
+    linie.push(t('probka.kategoria_powyzej', { count: GORA_TABELI, max: GORA_TABELI }));
     uwagi.push(t('probka.uwaga_koronka'));
   }
   const p4 = w.na === '4in' ? p : (p * CZTERY_CALE_W_CM) / 10;
   const calaAlboPolowka = Number.isInteger(p4 * 2);
   if (!calaAlboPolowka) uwagi.unshift(t('probka.uwaga_zaokraglenie'));
   uwagi.push(t('probka.uwaga_kategoria'));
-  stan.grubosc = { linie, dokladnie: w.na === '10cm' ? t('probka.na_4in_dokladnie', { p: f(p4) }) : null, uwagi };
+  stan.grubosc = { linie, dokladnie: w.na === '10cm' ? t('probka.na_4in_dokladnie', { count: zaokr(p4), p: f(p4) }) : null, uwagi };
   return stan;
 }

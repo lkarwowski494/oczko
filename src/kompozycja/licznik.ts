@@ -213,8 +213,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
           const u = x.rodzaj ? NAZWA_URZADZENIA[x.rodzaj] : x.urzadzenie; // P-247 U6a: rodzaj zamiast UUID; bez rodzaju (zegarek, atrapa) pole
           return {
             glowa: x.glowa, wartosc: x.wartosc,
-            tekst: j.t('dane.konflikt_wybor', { wartosc: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),
-            etykieta: j.t('dane.konflikt_a11y', { wartosc: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),
+            tekst: j.t('dane.konflikt_wybor', { count: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),
+            etykieta: j.t('dane.konflikt_a11y', { count: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),
           };
         });
       },
