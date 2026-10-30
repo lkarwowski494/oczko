@@ -69,7 +69,8 @@ test('04-studio-projektowe-006: „Remove link” pyta o potwierdzenie (menu i a
   expect(naUsun).not.toHaveBeenCalled();
   expect(alert).toHaveBeenCalledTimes(1);
   const [tytul, opis, przyciski] = alert.mock.calls[0] as [string, string, { text: string; style?: string; onPress?: () => void }[]];
-  expect([tytul, opis]).toEqual(['Remove video link?', 'The link is removed from this project. You can add it again any time.']);
+  expect([tytul, opis]).toEqual(['Remove video link?', 'The link and its name are removed from this project. The video itself isn’t affected.']);
+  expect(opis).not.toContain('You can add it again'); // 04: adres trzeba wpisać ponownie, tekst nie obiecuje przywrócenia
   expect(przyciski.map((b) => [b.text, b.style])).toEqual([['Cancel', 'cancel'], ['Remove link', 'destructive']]);
   przyciski[0]?.onPress?.();
   expect(naUsun).not.toHaveBeenCalled();
