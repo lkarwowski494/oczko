@@ -12,10 +12,11 @@ export const systemCzarny = tokeny.kolor.systemCzarny;
 /** Kolory motywu jasnego niezależnie od ustawienia telefonu (obraz karty ukończenia trafia poza aplikację, design-spec P10a). */
 export const kolorJasny = tokeny.kolor.jasny;
 /**
- * Krój tytułowy (P-064). Pliku `docs/design/fonty/LibreFranklin.ttf` (design-spec.md:13) jeszcze nie ma w repo — zgłoszenie do 04 (08 partia 4, 3A);
- * do tego czasu krój systemowy w tej samej wadze (nazwa niezarejestrowanego kroju dałaby błąd RCTFont). Po dostarczeniu pliku: nazwa 'LibreFranklin'.
+ * Krój tytułowy (P-064, design-spec.md:13): Libre Franklin, plik `assets/fonts/LibreFranklin.ttf` (kopia z docs/design/fonty, licencja OFL obok) ładowany natywnie
+ * pluginem expo-font (app.json; na iOS nazwa rodziny pochodzi z pliku). Plik ma łacinę, cyrylicę i wietnamski; brakujące znaki (greka, CJK) iOS dopełnia
+ * krojem systemowym znak po znaku. Waga 700 wybiera nazwaną instancję z pliku zmiennego [DO SPRAWDZENIA na urządzeniu: zrzut licznika, 04-studio-projektowe-001].
  */
-export const KROJ_TYTULOWY: string | undefined = undefined;
+export const KROJ_TYTULOWY = 'Libre Franklin';
 const ty = tokeny.typografia;
 const tytulowy = (t: { rozmiar: number; interlinia: number }): TextStyle => ({ fontFamily: KROJ_TYTULOWY, fontWeight: '700', fontSize: t.rozmiar, lineHeight: Math.round(t.rozmiar * t.interlinia) });
 const systemowy = (t: { rozmiar: number; interlinia: number }): TextStyle => ({ fontSize: t.rozmiar, lineHeight: Math.round(t.rozmiar * t.interlinia) });

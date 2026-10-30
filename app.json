@@ -96,6 +96,7 @@
       "expo-router",
       "@bacons/apple-targets",
       "./plugins/icloud-tlo",
+      ["expo-font", { "ios": { "fonts": ["./assets/fonts/LibreFranklin.ttf"] } }],
       "expo-iap",
       [
         "expo-image-picker",
