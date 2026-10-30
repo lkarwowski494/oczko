@@ -173,7 +173,7 @@
   "historia.opis_zerowanie": "atiestatīts",
   "historia.opis_wpisanie": "ievadīts",
   "historia.opis_cofniecie": "atsaukts",
-  "menu.nazwa": "Nosauciet projektu un detaļu",
+  "menu.nazwa": "Nosaukt projektu un detaļu",
   "menu.cel": "Iestatīt šīs detaļas mērķi",
   "menu.przypomnienie": "Pievienot atgādinājumu („ik pēc N rindām“)",
   "menu.wpisz": "Ievadiet rindas numuru",
@@ -530,7 +530,7 @@
   "zrodla.zdanie": "Oczko tabulas un padomi ir rakstīti mūsu pašu vārdiem, balstoties uz nozares standartiem un rokdarbu organizāciju norādījumiem.",
   "zrodla.linia_standardow": "Avots: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Sākt sesijas taimeri",
-  "stoper.trwa_a11y": "Sesijas taimeris, {{czas}}, darbojas. Pauze vai beigt",
+  "stoper.trwa_a11y": "Sesijas taimeris, {{czas}}, darbojas. Pauzēt vai beigt",
   "stoper.wstrzymana_a11y": "Sesijas taimeris, {{czas}}, pauzē. Turpināt vai beigt",
   "stoper.menu_naglowek": "Sesija sākta {{godzina}}",
   "stoper.wstrzymaj": "Pauzēt taimeri",
@@ -663,7 +663,7 @@
   "zdjecia.otworz_ustawienia": "Atvērt iestatījumus",
   "karta.stopka": "Skaitīts lietotnē Oczko",
   "karta.czas": "rokdarbu laiks",
-  "karta.obraz_a11y": "Karte: {{nazwa}}: {{szczegoly}}",
+  "karta.obraz_a11y": "Karte {{nazwa}}: {{szczegoly}}",
   "wzor.zaznacz_rzad": "Atzīmēt rindu",
   "wzor.kierunek_pytanie": "Kurp iet rindas šajā lapā?",
   "wzor.kierunek_gora": "Uz augšu",
@@ -822,6 +822,6 @@
   "icloud.do_ustawien": "Doties uz Dati un sinhronizācija",
   "icloud.usun_z_icloud": "Dzēst arī no iCloud",
   "icloud.usun_z_icloud_opis": "Jūsu citas ierīces zaudē šos projektus nākamajā sinhronizācijā.",
-  "icloud.usun_zostaje": "Dati iCloud un jūsu citās ierīcēs paliek."
+  "icloud.usun_zostaje": "Dati pakalpojumā iCloud un jūsu citās ierīcēs paliek."
  }
 }
