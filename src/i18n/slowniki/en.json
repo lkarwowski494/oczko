@@ -202,6 +202,7 @@
     "nazwa_tytul": "Name",
     "nazwa_projekt": "Project",
     "nazwa_czesc": "Part",
+    "nazwa_czesc_n": "Part {{n}}",
     "nazwa_opis": "A part is a piece you count separately: a sleeve, the back, a sock.",
     "cel_tytul": "Goal for this part",
     "cel_pole": "Rows in this part",
@@ -686,6 +687,9 @@
     "film_wiersz": "Video",
     "film_otworz_a11y": "Open video link in browser",
     "film_usun": "Remove link",
+    "film_menu": "Video link options",
+    "film_usun_tytul": "Remove video link?",
+    "film_usun_opis": "The link is removed from this project. You can add it again any time.",
     "film_zmien": "Change link",
     "film_bez_sieci_tytul": "No internet connection",
     "rodzaj_pdf": "PDF",
@@ -757,7 +761,7 @@
     "dodaj_do": "Add to",
     "nie_dodano": "“{{plik}}” wasn’t added",
     "uszkodzony": "It may be damaged. Download or save it again, then add it.",
-    "film_zastapi": "Has a video link. This one replaces it."
+    "film_zastapi": "Already has a video link. This one replaces it."
   },
   "icloud": {
     "przelacznik": "Sync with iCloud",

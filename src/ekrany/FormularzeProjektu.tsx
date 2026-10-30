@@ -28,7 +28,7 @@ export function FormularzNowegoProjektu(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa
       <Pole etykieta={t('formularz.nazwa_projekt')} wartosc={nazwa} naZmiane={ustawNazwe} testID="formularz-nazwa-projektu" />
       <Tresc podpis>{t('formularz.nowy_czesci')}</Tresc>
       {czesci.map((c, i) => (
-        <Pole key={i} etykieta={t('formularz.nazwa_czesc')} wartosc={c} naZmiane={(x) => ustawCzesci((l) => l.map((y, k) => (k === i ? x : y)))} testID="formularz-nazwa-czesci" />
+        <Pole key={i} etykieta={t('formularz.nazwa_czesc_n', { n: i + 1 })} wartosc={c} naZmiane={(x) => ustawCzesci((l) => l.map((y, k) => (k === i ? x : y)))} testID="formularz-nazwa-czesci" />
       ))}
       <Przycisk tekst={t('projekt.dodaj_czesc')} onPress={() => ustawCzesci((l) => [...l, ''])} rodzaj="tekstowy" testID="formularz-dodaj-czesc" />
       <Tresc podpis>{t('formularz.nowy_czesci_opis')}</Tresc>

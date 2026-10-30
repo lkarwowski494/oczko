@@ -224,6 +224,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-link-pole` | arkusz „Web page” | pole adresu strony wzoru | „Link to the pattern page” | tekstowa |
 | `wzor-miniatura` | ekran projektu, wiersz wzoru (`projekt-wzor`) | miniatura pierwszej strony; ukryta dla VoiceOver (partia 6 e779602) | — | |
 | `wzor-film-wiersz` | ekran projektu | wiersz „Video” | „Video, {nazwa}” | |
+| `wzor-film-menu` | ekran projektu | widoczny przycisk „•••” w wierszu „Video”: menu „Change link” / „Remove link” (porządek 04-studio-projektowe-006; „Remove link” pyta o potwierdzenie) | „Video link options” | |
 | `wzor-film-pole` | arkusz „Video link” | pole adresu filmu (przy zmianie wypełnione; zły adres → `wzor.link_blad`; partia 6 92df7ea, P-283) | „Link” | tekstowa |
 | `wzor-czeka-siec` | ekran projektu | wiersz strony czekającej na sieć | „Waiting for the internet to save the web page.” | |
 | `udostepnij-projekt` | arkusz rozszerzenia „Udostępnij do Oczka” | wiersz projektu (powtarzalny, `index`, rola radio; 04 fix-7, grupa R) | „{nazwa}, last worked {…}” | |

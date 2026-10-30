@@ -70,3 +70,7 @@ test('P-283: film do projektu z filmem → linia „zastąpi”; plik → bez li
   await waitFor(() => expect(screen.getAllByTestId('skrzynka-projekt')).toHaveLength(2));
   expect(screen.queryByText(t('skrzynka.film_zastapi'))).toBeNull();
 });
+
+test('P-301 (04 audyt 2.1): linia „skrzynka.film_zastapi” mówi, że projekt już ma film, a ten link go zastąpi (bez „Has a video link”)', () => {
+  expect(t('skrzynka.film_zastapi')).toBe('Already has a video link. This one replaces it.');
+});

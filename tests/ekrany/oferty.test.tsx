@@ -1,7 +1,7 @@
 // Ekran ofert (F-35; KP-03, KP-04, KP-08, KP-09, KP-14; P-089 (1), (2); P-065 (3a); design-spec.md:56, :68, :74, :77–80; ekrany.html `oferty`).
 // Ceny w danych testu: ceny PL z P-089 (1) jako `cenaWyswietlana` atrapy sklepu. Ceny USD z makiety nie mogą się pojawić (KP-09, R-118).
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, within } from '@testing-library/react-native';
 import { Oferty, type PropsOfert } from '../../src/ekrany/Oferty';
 import type { Produkt } from '../../src/domena/porty';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
@@ -22,6 +22,16 @@ function pokaz(stan: Partial<PropsOfert['stan']> = {}) {
 }
 
 describe('Oferty', () => {
+  test('04-studio-projektowe-004: ✕ stoi w nagłówku arkusza (z tytułem „Oczko Pro”), po tytule w kolejności VoiceOver; zamyka i ma etykietę „Close”', () => {
+    const w = pokaz();
+    const naglowek = screen.getByTestId('arkusz-naglowek-decyzji');
+    expect(within(naglowek).getByText('Oczko Pro')).toBeTruthy();
+    const zamknij = within(naglowek).getByTestId('oferty-zamknij');
+    expect(zamknij.props.accessibilityLabel).toBe('Close');
+    fireEvent.press(zamknij);
+    expect(w.naZamknij).toHaveBeenCalledTimes(1);
+    expect(screen.getAllByTestId('oferty-zamknij')).toHaveLength(1);
+  });
   test('KP-09 / P-089 (1) / R-118: ceny tylko z produktu sklepu, żadnej kwoty z kodu', () => {
     pokaz();
     // design-spec.md:68 plany jako accessibilityRole="radio"; ekrany.html:163 radiogroup „Plans”

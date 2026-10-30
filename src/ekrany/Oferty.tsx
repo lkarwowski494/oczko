@@ -40,7 +40,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
   const [wybrany, wybierz] = useState<string | null>(null);
   const plan = plany.find((p) => p.id === wybrany) ?? domyslny;
   return (
-    <Arkusz tytul={t('oferty.tytul')} testID="oferty-ekran" przyciski={
+    <Arkusz tytul={t('oferty.tytul')} testID="oferty-ekran" zamknij={{ etykieta: t('wspolne.zamknij'), naZamknij, testID: 'oferty-zamknij' }} przyciski={
       <>
         {plan && <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />}
         {s.aktywne?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
@@ -48,9 +48,6 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
         <Przycisk tekst={t('wspolne.nie_teraz')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-nie-teraz" />
       </>
     }>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Przycisk tekst="✕" etykieta={t('wspolne.zamknij')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-zamknij" />
-      </View>
       <Tresc>{t('oferty.opis')}</Tresc>
       {s.aktywne && <Tresc testID="oferty-stan-pro">{t('oferty.masz_pro')}</Tresc>}
       {s.produkty.rodzaj === 'ladowanie' && <Tresc podpis>{t('oferty.ladowanie')}</Tresc>}

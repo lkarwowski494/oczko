@@ -15,7 +15,7 @@ test('nowy projekt: nazwa i części (dodawane odnośnikiem); pusta nazwa nic ni
   expect(screen.getByText('Add parts now or later. Without parts, the project has one counter.')).toBeTruthy();
   fireEvent.changeText(screen.getByLabelText('Project'), ' Harbor ');
   fireEvent.press(przycisk('Add part', 'button'));
-  fireEvent.changeText(screen.getAllByLabelText('Part')[0], 'Back');
+  fireEvent.changeText(screen.getByLabelText('Part 1'), 'Back'); // 04-studio-projektowe-005: etykieta z numerem
   fireEvent.press(przycisk('Add part', 'button'));
   fireEvent.press(screen.getByTestId('formularz-zapisz'));
   await waitFor(() => expect(naZapisz).toHaveBeenCalledWith({ nazwa: 'Harbor', czesci: ['Back'] }));
@@ -23,6 +23,15 @@ test('nowy projekt: nazwa i części (dodawane odnośnikiem); pusta nazwa nic ni
   render(<FormularzNowegoProjektu t={t} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
   fireEvent.press(screen.getByTestId('formularz-zapisz'));
   await waitFor(() => expect(naZapisz).toHaveBeenCalledWith({ nazwa: '', czesci: [] }));
+});
+
+test('04-studio-projektowe-005: kilka pól części w nowym projekcie ma różne etykiety („Part 1”, „Part 2”), VoiceOver je rozróżnia', () => {
+  render(<FormularzNowegoProjektu t={t} naZapisz={ok()} naAnuluj={jest.fn()} />);
+  fireEvent.press(przycisk('Add part', 'button'));
+  fireEvent.press(przycisk('Add part', 'button'));
+  fireEvent.press(przycisk('Add part', 'button'));
+  expect(screen.getAllByTestId('formularz-nazwa-czesci').map((x) => x.props.accessibilityLabel ?? x.props['aria-label'])).toEqual(['Part 1', 'Part 2', 'Part 3']);
+  expect(screen.queryByLabelText('Part')).toBeNull();
 });
 
 test('część: pusta nazwa — „Add” nieaktywny; cel opcjonalny ≥ 1; 0 → komunikat bez zapisu', async () => {

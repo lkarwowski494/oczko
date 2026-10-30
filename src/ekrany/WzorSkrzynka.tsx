@@ -46,7 +46,7 @@ export function ArkuszSkrzynki(p: PropsArkuszaSkrzynki): React.ReactElement {
 function style(k: Kolory) {
   return StyleSheet.create({
     tlo: { ...StyleSheet.absoluteFill, backgroundColor: k.arkusz },
-    naglowek: { ...typografia.podpis, color: k.olowek, textTransform: 'uppercase', marginTop: odstep.m },
+    naglowek: { ...typografia.podpis, color: k.olowek, marginTop: odstep.m },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     tekst: { ...typografia.tresc, color: k.grafit },

@@ -20,7 +20,10 @@ type Pomiar = (f: (x: number, y: number, szer: number, wys: number) => void) => 
 /** Przyciski arkusza formularza w nagłówku: Cancel (lewy) i Save albo Add (prawy, `zapisz`); testID jak dawniej w pasku (`arkusz-zamknij`, `formularz-zapisz`). */
 export type FormularzArkusza = { t: Tlumacz; naZapisz(): void; naAnuluj(): void; zapisz?: string; zapiszA11y?: string; testZapisz?: string; wylaczony?: boolean };
 
-export function Arkusz(p: { tytul: string; children: React.ReactNode; przyciski?: React.ReactNode; formularz?: FormularzArkusza; testID?: string; zmierz?: Pomiar }): React.ReactElement {
+/** Arkusz decyzji: ✕ w prawym górnym rogu nagłówka (design-spec :111, słownik interakcji „Zamknij”; 04-studio-projektowe-004); tytuł przed ✕ w kolejności VoiceOver. */
+export type ZamknijArkusza = { etykieta: string; naZamknij(): void; testID?: string };
+
+export function Arkusz(p: { tytul: string; children: React.ReactNode; przyciski?: React.ReactNode; formularz?: FormularzArkusza; zamknij?: ZamknijArkusza; testID?: string; zmierz?: Pomiar }): React.ReactElement {
   return p.formularz ? <ArkuszFormularza {...p} f={p.formularz} /> : <ArkuszDecyzji {...p} />;
 }
 
@@ -46,7 +49,7 @@ function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: Form
   );
 }
 
-function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?: React.ReactNode; testID?: string; zmierz?: Pomiar }): React.ReactElement {
+function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?: React.ReactNode; zamknij?: ZamknijArkusza; testID?: string; zmierz?: Pomiar }): React.ReactElement {
   const st = style(useKolory());
   const pasek = useRef<View>(null);
   const [nadKlawiatura, ustawNadKlawiatura] = useState(0);
@@ -66,7 +69,14 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
   return (
     <View style={st.arkusz} testID={p.testID}>
       <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
-        <Text style={st.tytul} accessibilityRole="header">{p.tytul}</Text>
+        {p.zamknij ? (
+          <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
+            <Text style={[st.tytul, st.rosnie]} accessibilityRole="header">{p.tytul}</Text>
+            <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
+              <Text style={st.zamknijZnak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+            </Pressable>
+          </View>
+        ) : <Text style={st.tytul} accessibilityRole="header">{p.tytul}</Text>}
         {p.children}
       </ScrollView>
       <View ref={pasek} style={[st.przyciski, { paddingBottom: odstep.l + nadKlawiatura }]} testID="arkusz-przyciski">{p.przyciski}</View>
@@ -135,6 +145,10 @@ export function style(k: Kolory) {
     arkusz: { flex: 1, backgroundColor: k.arkusz },
     tresc: { padding: odstep.xl, gap: odstep.m },
     tytul: { ...typografia.tytul, color: k.grafit },
+    naglowekDecyzji: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: odstep.s },
+    rosnie: { flexShrink: 1, flexGrow: 1 },
+    zamknij: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
+    zamknijZnak: { ...typografia.tresc, color: k.grafit },
     naglowek: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: odstep.s, minHeight: cel.minimum, paddingHorizontal: odstep.l, paddingTop: odstep.s },
     naglowekTytul: { ...typografia.tresc, color: k.grafit, fontWeight: '700', flexGrow: 1, flexShrink: 1, flexBasis: 'auto', textAlign: 'center' },
     akcja: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },

@@ -1,6 +1,6 @@
 // Film projektu na ekranie projektu (design-spec W8 „Video”, W7a „Add video link”, stan „Film bez sieci”; 04 fix-8 film.html; P-276 (A)).
 // Film to odnośnik poza wzorem, jeden na projekt (P-218 (4), P-246 S4a): Oczko trzyma tylko link. Menu wiersza: „Change link” (arkusz wypełniony,
-// Save zastępuje — zamiana jawna) i „Remove link”; przytrzymanie wiersza albo akcje VoiceOver (ta sama kolejność).
+// Save zastępuje — zamiana jawna) i „Remove link” (z potwierdzeniem); widoczny przycisk •••, przytrzymanie wiersza albo akcje VoiceOver (ta sama kolejność).
 import React, { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { adresStrony } from '../domena/adres';
@@ -20,7 +20,12 @@ export function WierszFilmu(p: { film: FilmProjektu; siec: 'jest' | 'brak'; t: T
     else p.system.otworzAdres(p.film.adres);
   };
   // VoiceOver: wiersz to jeden element (↗ w środku niedostępny osobno) — podwójne stuknięcie otwiera link, menu jako akcje.
-  const wykonaj = (a: string) => { ustawMenu(false); if (a === 'activate') otworz(); else if (a === 'zmien') p.naZmien(); else if (a === 'usun') p.naUsun(); };
+  // „Remove link” pyta (04-studio-projektowe-006): link jest łatwy do wpisania, ale usunięcie nie ma Cofnij; ta sama ścieżka dla menu i akcji VoiceOver.
+  const potwierdzUsuniecie = () => Alert.alert(t('wzor.film_usun_tytul'), t('wzor.film_usun_opis'), [
+    { text: t('wspolne.anuluj'), style: 'cancel' },
+    { text: t('wzor.film_usun'), style: 'destructive', onPress: p.naUsun },
+  ]);
+  const wykonaj = (a: string) => { ustawMenu(false); if (a === 'activate') otworz(); else if (a === 'zmien') p.naZmien(); else if (a === 'usun') potwierdzUsuniecie(); };
   return (
     <View>
       <Pressable onLongPress={() => ustawMenu(!menu)} accessibilityActions={[{ name: 'activate' }, ...akcje]} onAccessibilityAction={(e) => wykonaj(e.nativeEvent.actionName)}
@@ -31,6 +36,9 @@ export function WierszFilmu(p: { film: FilmProjektu; siec: 'jest' | 'brak'; t: T
         </View>
         <Pressable accessibilityRole="link" accessibilityLabel={t('wzor.film_otworz_a11y')} onPress={otworz} style={st.ikona}>
           <Text style={[st.tekst, st.akcja]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>↗</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.film_menu')} onPress={() => ustawMenu(!menu)} style={st.ikona} testID="wzor-film-menu">
+          <Text style={[st.tekst, st.akcja]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>•••</Text>
         </Pressable>
       </Pressable>
       {menu && (

@@ -220,7 +220,8 @@
     "sesja_projekt": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): druga część podglądu (BR-PRJ-013 S1: 20 h → 13 h).",
     "sesja_sprawdz": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): linia informacji na górze arkusza dla sesji do_korekty; Save zawsze zdejmuje znacznik.",
     "sesja_przerwy": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): gdy sesja miała przerwy; mówi przed zapisem, że korekta zeruje przerwy (BR-PRJ-013, ER-54, P-195 Q2a).",
-    "termin_osiagniety": "Przegląd 04 z P-188 (P-191), R7: podgląd w arkuszu „Done by”, gdy wszystkie cele części osiągnięte (0 rzędów do zrobienia)."
+    "termin_osiagniety": "Przegląd 04 z P-188 (P-191), R7: podgląd w arkuszu „Done by”, gdy wszystkie cele części osiągnięte (0 rzędów do zrobienia).",
+    "nazwa_czesc_n": "Etykieta pola nazwy części na liście części w formularzu nowego projektu (04-studio-projektowe-005): {{n}} = numer pola od 1, żeby VoiceOver i wzrok rozróżniały pola. Pojedyncze pole części (nowa część w istniejącym projekcie) zostaje przy `formularz.nazwa_czesc`. Krótko, ok. 10 znaków. Tekst roboczy 08, do akceptacji 04."
   },
   "ukonczenie": {
     "udostepnij": "Tekst z ekrany.html roli 04.",
@@ -678,7 +679,10 @@
     "blad_strona": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek alertu: strona wymaga logowania albo nie ma treści (BR-WZR-007 S3).",
     "blad_strona_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu: co się stało i co zrobić.",
     "brak_aparatu_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu braku dostępu do aparatu przy skanowaniu; nagłówek zdjecia.brak_aparatu_tytul, przycisk zdjecia.otworz_ustawienia.",
-    "word_podglad": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): linia informacji nad plikiem Word w podglądzie zastępczym (bez znacznika i rysowania, ADR-0011)."
+    "word_podglad": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): linia informacji nad plikiem Word w podglądzie zastępczym (bez znacznika i rysowania, ADR-0011).",
+    "film_menu": "Etykieta dostępności widocznego przycisku „•••” w wierszu „Video” na ekranie projektu (04-studio-projektowe-006): otwiera menu „Change link” / „Remove link”; do tej pory menu tylko przez przytrzymanie. Krótko (czyta VoiceOver). Tekst roboczy 08, do akceptacji 04.",
+    "film_usun_tytul": "Tytuł potwierdzenia usunięcia linku do filmu projektu (04-studio-projektowe-006); pytanie, nie zdanie oznajmujące. Tekst roboczy 08, do akceptacji 04.",
+    "film_usun_opis": "Opis potwierdzenia usunięcia linku do filmu: usuwa się tylko odnośnik (Oczko trzyma wyłącznie link, P-218 (4)), plik ani strona nie istnieją u nas; można dodać ponownie. Przyciski: Cancel i „Remove link” (niszczący). Tekst roboczy 08, do akceptacji 04."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",
