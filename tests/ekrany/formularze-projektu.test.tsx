@@ -66,7 +66,7 @@ test('znaczenie: dwa wybory radio z przykładami na bieżącej wartości; zapis 
   const naZapisz = ok();
   render(<FormularzZnaczenia t={t} wartosc={47} znaczenie="skonczone" naZapisz={naZapisz} naAnuluj={jest.fn()} />);
   expect(screen.getByText('47 means 47 rows are done.')).toBeTruthy();
-  expect(screen.getByText('48 means you’re knitting row 48.')).toBeTruthy();
+  expect(screen.getByText('48 means you’re working on row 48.')).toBeTruthy();
   expect(screen.getByRole('radio', { name: 'Rows finished' }).props.accessibilityState).toMatchObject({ selected: true });
   fireEvent.press(screen.getByRole('radio', { name: 'The row I’m on' }));
   fireEvent.press(screen.getByTestId('formularz-zapisz'));

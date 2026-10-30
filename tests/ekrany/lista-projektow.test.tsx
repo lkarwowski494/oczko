@@ -39,13 +39,13 @@ describe('ListaProjektow', () => {
 
   test('BR-ZAK-006/S5: lista pokazuje, ile darmowych dni zostało (design-spec.md:18)', () => {
     pokaz(stan());
-    // design-spec.md:18 „3 of 5 free knitting days left in November”
-    expect(screen.getByText('3 of 5 free knitting days left in November')).toBeTruthy();
+    // design-spec.md:18 „3 of 5 free crafting days left in November”
+    expect(screen.getByText('3 of 5 free crafting days left in November')).toBeTruthy();
   });
 
   test('BR-ZAK-006/S7 [Pro]: przy Pro żadnej linii o dniach (design-spec.md:19)', () => {
     pokaz(stan({ dni: null }));
-    expect(screen.queryByText(/free knitting days? left/)).toBeNull();
+    expect(screen.queryByText(/free crafting days? left/)).toBeNull();
   });
 
   test('BR-PRJ-012: wiersz projektu otwiera projekt; „New project” (ekrany.html:178 aria-label)', () => {

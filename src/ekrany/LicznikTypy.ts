@@ -7,7 +7,7 @@ import type { Oglos, Tlumacz, WynikEkranu } from './wspolne';
 /** Stan limitu dni na liczniku (P-065, design-spec.md:15–19). Decyzję liczy domena (`mozeZaczacDzien`), ekran tylko pokazuje. */
 export type LimitNaLiczniku =
   | { rodzaj: 'brak' }                 // Pro albo zostały ≥ 2 dni: na liczniku nic o dniach (BR-ZAK-006/S5, P-046)
-  | { rodzaj: 'ostatni-darmowy' }      // cicha linia „1 free knitting day left in {month}” (design-spec.md:18)
+  | { rodzaj: 'ostatni-darmowy' }      // cicha linia „1 free crafting day left in {month}” (design-spec.md:18)
   | { rodzaj: 'zawczasu' };            // komunikat zamiast +1 i −1 (design-spec.md:16)
 
 /** Baner pod tytułem (design-spec.md:35); `null` = nic (BR-LIC-019/S4). */
@@ -20,7 +20,7 @@ export type StanEkranuLicznika = {
   projekt: string | null;              // null: pierwszy licznik bez nazwy (BR-LIC-001, NFR-PIE-001)
   czesc: string | null;
   skonczone: number;                   // duża liczba = rzędy skończone (design-spec.md:30)
-  dziergany: number;                   // „Now knitting row N”
+  dziergany: number;                   // „Now working row N”
   znaczenie: 'skonczone' | 'w_trakcie'; // F-09; zgłoszenie Z07-04 (czy tryb zostaje)
   cel: number | null;                  // „Goal 96 rows · 49 to go” (design-spec.md:24)
   celDnia: { rzedy: number } | null;   // tylko przy terminie (BR-DNI-005/S5)

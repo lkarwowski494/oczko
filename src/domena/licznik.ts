@@ -16,7 +16,7 @@ export function powtorzenieLicznika(skonczone: number, znaczenie: ZnaczenieLiczn
   if (!Number.isInteger(skonczone) || skonczone < 0) return { ok: false, powod: 'bledne_dane' };
   return powtorzenie(znaczenie === 'w_trakcie' ? wartoscWyswietlana(skonczone, znaczenie).dziergany : skonczone, n);
 }
-/** BR-LIC-012: liczba skończonych rzędów i rząd, który się dzierga („Now knitting row N”). */
+/** BR-LIC-012: liczba skończonych rzędów i rząd, który się dzierga („Now working row N”). */
 // Licznik zapisuje liczbę skończonych rzędów w obu trybach; tryb zmienia tylko to, co pokazuje duża liczba (BR-LIC-012, design-spec).
 export function wartoscWyswietlana(wartosc: number, _znaczenie: ZnaczenieLicznika): { skonczone: number; dziergany: number } {
   return { skonczone: wartosc, dziergany: wartosc + 1 };

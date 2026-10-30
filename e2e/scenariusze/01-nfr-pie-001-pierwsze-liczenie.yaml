@@ -22,7 +22,7 @@ tags:
 - takeScreenshot: 01-start-1-dnia
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now knitting row 2" }
+- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 2" }
 - takeScreenshot: 01-po-pierwszym-plus-1-dnia
 # --- ostatni dzień miesiąca, tuż przed północą, czysta instalacja ---
 - runFlow:

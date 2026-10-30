@@ -1,6 +1,6 @@
 # Limit dni pokazany zawczasu (pakiet podstawowy): BR-ZAK-006/S1 (Z-02, KP-13), BR-ZAK-005/S4 (L-03), P-065 (1a), design-spec „Limit dni na ekranach”.
 # Pięć darmowych dni (LIMIT_DNI_W_MIESIACU = 5, P-057 D2) zużywa pięć restartów z zegarem w kolejnych dniach o 20:00; szósty dzień: zamiast +1 i −1
-# komunikat „No free knitting days left in November…”, odnośnik „Oczko Pro removes the limit” (poza strefą +1); historia i menu działają.
+# komunikat „No free crafting days left in November…”, odnośnik „Oczko Pro removes the limit” (poza strefą +1); historia i menu działają.
 # Scenorys 04: z4-k4.png (wariant „zawczasu”, decyzja STOP E3). Zakup z tego miejsca: 06-br-zak-001-s1-zakup-przywrocenie.yaml.
 appId: com.apps4brew.knitting
 name: "BR-ZAK-006/S1 · Limit dni zawczasu: szósty dzień listopada bez +1, dane i historia dostępne"
@@ -25,7 +25,7 @@ tags:
     file: subflows/restart.yaml
     env:
       TERAZ: "2026-11-07T20:00:00"
-- assertVisible: { id: "limit-zawczasu", text: "No free knitting days left in November\\. Counting is paused until .*Your 5 rows and everything else are kept\\." }
+- assertVisible: { id: "limit-zawczasu", text: "No free crafting days left in November\\. Counting is paused until .*Your 5 rows and everything else are kept\\." }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
 - assertNotVisible: { id: "licznik-plus" }
 - assertNotVisible: { id: "licznik-minus" }
@@ -46,7 +46,7 @@ tags:
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "limit-zawczasu" }
 - tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-dni-darmowe", text: "0 of 5 free knitting days left in November" }
+- assertVisible: { id: "projekty-dni-darmowe", text: "0 of 5 free crafting days left in November" }
 - takeScreenshot: 05-lista-projektow-na-limicie
 - tapOn: { id: "projekty-wiersz", index: 0 }
 - assertVisible: { id: "limit-zawczasu" }

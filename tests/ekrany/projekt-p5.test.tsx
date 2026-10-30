@@ -61,7 +61,7 @@ describe('Projekt (partia 5)', () => {
     fireEvent.press(screen.getByText('Add counter'));
     expect(w.naDodajLicznik).toHaveBeenCalledTimes(1);
     fireEvent.press(przycisk('Project options', 'button'));
-    expect(screen.queryByText('Resume knitting')).toBeNull();
+    expect(screen.queryByText('Resume project')).toBeNull();
     fireEvent.press(screen.getByTestId('projekt-usun'));
     expect(w.naUsunProjekt).toHaveBeenCalledTimes(1);
     fireEvent.press(przycisk('Project options', 'button'));
@@ -69,7 +69,7 @@ describe('Projekt (partia 5)', () => {
     expect(w.naZrobTakaSama).toHaveBeenCalledTimes(1);
   });
 
-  test('ukończony: bez „+”, w ••• pierwsze „Resume knitting”', () => {
+  test('ukończony: bez „+”, w ••• pierwsze „Resume project”', () => {
     const w = pokaz(stan({ ukonczony: true }));
     expect(screen.queryByTestId('projekt-dodaj')).toBeNull();
     fireEvent.press(przycisk('Project options', 'button'));

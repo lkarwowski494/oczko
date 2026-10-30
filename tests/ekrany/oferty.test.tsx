@@ -45,8 +45,8 @@ describe('Oferty', () => {
   test('P-065 (3a) / P-054: teksty ofert wariantu 1, bez procentów i słów zakazanych (design-spec.md:74, :78)', () => {
     pokaz();
     expect(przycisk('Oczko Pro', 'header')).toBeTruthy();
-    expect(screen.getByText('Knit on as many days as you like. Everything else stays the same.')).toBeTruthy();
-    expect(screen.getByText(/Without Pro: 5 knitting days every month, and all your projects and data, always\./)).toBeTruthy();
+    expect(screen.getByText('Count rows on as many days as you like. Everything else stays the same.')).toBeTruthy();
+    expect(screen.getByText(/Without Pro: 5 crafting days every month, and all your projects and data, always\./)).toBeTruthy();
     expect(screen.queryByText(/%|free trial|Upgrade now|Unlock|Oops/i)).toBeNull();
   });
 

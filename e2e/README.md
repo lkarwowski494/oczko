@@ -58,7 +58,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `licznik-plus` | licznik | przycisk +1 (strefa ≥ 168 pt) | „+1 row…”, z instrukcją: „+1 row, when row 12 is done. Row 12: decrease at both ends” | |
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
 | `licznik-wartosc` | licznik | duża liczba rzędów skończonych (sam numer, z separatorem tysięcy regionu) | „47” | |
-| `licznik-teraz-rzad` | licznik | podpis pod tytułem | „Now knitting row 48” | |
+| `licznik-teraz-rzad` | licznik | podpis pod tytułem | „Now working row 48” | |
 | `licznik-projekt` | licznik | nazwa projektu nad tytułem części | nazwa użytkownika | |
 | `licznik-menu` | licznik | menu ••• | „Project options: name, goal, reminder, lock, finish” | |
 | `licznik-historia` | licznik | przycisk historii | „History” | |
@@ -68,7 +68,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `pasek-blokady-odblokuj` | licznik | „Unlock” w pasku „Counter locked · Unlock” | „Unlock” | |
 | `blad-zapisu` | licznik | komunikat błędu zapisu | „Couldn’t save that row. It’s still on screen; try again.” | |
 | `blad-sieci` | dowolny | jakikolwiek komunikat o braku sieci (nie powinien istnieć) | — | |
-| `limit-zawczasu` | licznik | komunikat zamiast +1/−1 | „No free knitting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
+| `limit-zawczasu` | licznik | komunikat zamiast +1/−1 | „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
 | `limit-oferta-link` | licznik | odnośnik pod liczbą | „Oczko Pro removes the limit” | |
 | `arkusz-zamknij` | arkusze (historia, menu) | przycisk zamknięcia arkusza | „Close” | |
 | `historia-lista` | historia | lista zmian z godziną | — | |
@@ -127,7 +127,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekty-lista` | lista projektów | lista | „Projects” | |
 | `projekty-wiersz` | lista projektów | wiersz projektu (powtarzalny, `index`) | nazwa · część · rząd | |
 | `projekty-nowy` | lista projektów | nowy projekt | „New project” | |
-| `projekty-dni-darmowe` | lista projektów | licznik dni (tylko bez Pro) | „3 of 5 free knitting days left in November” | |
+| `projekty-dni-darmowe` | lista projektów | licznik dni (tylko bez Pro) | „3 of 5 free crafting days left in November” | |
 | `projekty-ostatnia-praca` | lista projektów | etykieta ostatniej pracy w wierszu projektu w toku (powtarzalna; bez progu, P-182, P-183 (1a) — zastępuje `projekty-uspione`) | „last worked 41 days ago” | |
 | `projekty-kosz` | lista projektów | wejście do „Recently deleted” (tylko gdy kosz niepusty, P-183 (2a)) | „Recently deleted” | |
 | `projekty-ukonczone` | lista projektów | sekcja ukończonych | „Finished” | |
@@ -141,7 +141,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-usun-licznik` | ekran projektu (tryb Edit) | ⊖ przy liczniku (powtarzalny) | — | |
 | `projekt-zrob-taka-sama` | ekran projektu (menu •••) | Make another like this | „Make another like this” | |
 | `projekt-usun` | ekran projektu (menu •••) | Delete project… | „Delete project…” | |
-| `projekt-wznow` | ekran projektu (menu •••, ukończony) | Resume knitting | „Resume knitting” | |
+| `projekt-wznow` | ekran projektu (menu •••, ukończony) | Resume project | „Resume project” | |
 | `projekt-linia-terminu` | ekran projektu | linia terminu (tylko z terminem) | „Done by Oct 31 · today 3 of 10 rows” | |
 | `projekt-notatka` | ekran projektu | notatka (otwiera arkusz) | tekst notatki albo „Add a note” | |
 | `projekt-narzedzie` | ekran projektu | druty albo szydełko (otwiera arkusz) | „4 mm (US 6)” | |
@@ -165,7 +165,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `jezyk-auto` | Language | „Same as phone” (radio; etykieta z „, selected” przy wyborze) | „Same as phone” / „Same as phone, selected” | |
 | `jezyk-pl` | Language | wiersz języka (wzorzec `jezyk-<kod>`, nazwa własna języka; tu polski) | „Polski” / „Polski, selected” | |
 | `ustawienia` | Ustawienia | kontener ekranu (ScrollView) | — | |
-| `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free knitting days left in November” | |
+| `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |

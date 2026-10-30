@@ -49,8 +49,8 @@ describe('BR-LIC-012 znaczenie liczby na liczniku (F-09)', () => {
   test('BR-LIC-012/S1 tryb „rząd w trakcie”: 12 skończonych rzędów → licznik pokazuje „rząd 13”', () => {
     expect(wartoscWyswietlana(12, 'w_trakcie')).toEqual({ skonczone: 12, dziergany: 13 });
   });
-  test('BR-LIC-012 design-spec:30 „Now knitting row N”: duża liczba to rzędy skończone, dziergany = skończone + 1 (granica 0)', () => {
-    // Z07-04 (czy ustawienie F-09 zostaje) otwarte; tu tylko wspólna część obu odczytów: wartość 0 → „Now knitting row 1”.
+  test('BR-LIC-012 design-spec:30 „Now working row N”: duża liczba to rzędy skończone, dziergany = skończone + 1 (granica 0)', () => {
+    // Z07-04 (czy ustawienie F-09 zostaje) otwarte; tu tylko wspólna część obu odczytów: wartość 0 → „Now working row 1”.
     expect(wartoscWyswietlana(0, 'w_trakcie')).toEqual({ skonczone: 0, dziergany: 1 });
   });
 });

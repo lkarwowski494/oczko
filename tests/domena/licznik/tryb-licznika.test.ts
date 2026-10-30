@@ -22,7 +22,7 @@ describe('RD-12 BR-LIC-012 tryb licznika: wektory BRD W7–W9', () => {
 });
 
 describe('BR-LIC-012 wartoscWyswietlana w trybie „skończone rzędy”', () => {
-  test('BR-LIC-012 tryb „skończone”: licznik 12 → skończone 12, dziergany 13 (duża liczba = skończone, design-spec „Now knitting row N”)', () => {
+  test('BR-LIC-012 tryb „skończone”: licznik 12 → skończone 12, dziergany 13 (duża liczba = skończone, design-spec „Now working row N”)', () => {
     expect(wartoscWyswietlana(12, 'skonczone')).toEqual({ skonczone: 12, dziergany: 13 });
   });
 });

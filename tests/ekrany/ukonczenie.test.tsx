@@ -24,7 +24,7 @@ describe('Ukonczenie', () => {
     const { w } = pokaz();
     expect(screen.getByText('640')).toBeTruthy();
     expect(screen.getByText(/18 h/)).toBeTruthy();
-    expect(screen.getByText(/21 knitting days/)).toBeTruthy(); // ekrany.html:201 „… · 23 knitting days”
+    expect(screen.getByText(/21 crafting days/)).toBeTruthy(); // ekrany.html:201 „… · 23 crafting days”
     expect(screen.getByText(/Fjord Wool, Slate/)).toBeTruthy();
     expect(screen.getAllByRole('image').length).toBeGreaterThan(0);
     fireEvent.press(przycisk('Share', 'button')); // ekrany.html:197 aria-label="Share"

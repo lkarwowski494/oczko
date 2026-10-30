@@ -52,7 +52,7 @@ describe('R-098 / Z07-07 różnica czasu 0 (P-057 D3, wektor L-15)', () => {
   });
 });
 
-// P-065 (2a): linia „1 free knitting day left in {month}” tylko w wersji darmowej (Pro = bez limitu, P-057 D1); KP-13.
+// P-065 (2a): linia „1 free crafting day left in {month}” tylko w wersji darmowej (Pro = bez limitu, P-057 D1); KP-13.
 // `zostalo` u Pro: decyzja mówi tylko, że Pro nie widzi licznika dni (Z-04) — wartość pola [DO USTALENIA].
 describe('Z07-07 / R-099 ostatniDarmowy u Pro (P-065 (2a))', () => {
   test('Z07-07 R-099 KP-13 Pro, 4 z 5 dni bez Pro, nowy dzień → bez linii o ostatnim darmowym dniu i bez limitu', () => {

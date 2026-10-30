@@ -14,7 +14,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now knitting row 2" }
+- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 2" }
 # P-176 (a): tekst z design-spec „Element firmowy” (klucz licznik.znaczniki_sesji), godzina w formacie regionu symulatora — zmiana 08 jako nazwany wyjątek od kontraktu 07 (audyt 07).
 - assertVisible: { id: "kreski-podpis", text: "Marks this session: 1 row since .*" }
 - takeScreenshot: 03-pierwszy-rzad

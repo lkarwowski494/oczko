@@ -43,5 +43,5 @@ tags:
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T22:00:00" } }
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now knitting row 3" }
+- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 3" }
 - takeScreenshot: 18-po-starcie

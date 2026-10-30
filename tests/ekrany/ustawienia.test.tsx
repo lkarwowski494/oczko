@@ -31,15 +31,15 @@ describe('Ustawienia', () => {
     expect(system.prosbaOOcene).not.toHaveBeenCalled();
   });
 
-  test('BR-ZAK-006/S5: Ustawienia pokazują „3 of 5 free knitting days left in November” (design-spec.md:18)', () => {
+  test('BR-ZAK-006/S5: Ustawienia pokazują „3 of 5 free crafting days left in November” (design-spec.md:18)', () => {
     pokaz();
-    expect(screen.getByText('3 of 5 free knitting days left in November')).toBeTruthy();
+    expect(screen.getByText('3 of 5 free crafting days left in November')).toBeTruthy();
   });
 
   test('BR-ZAK-006/S7: aktywna subskrypcja — stan Pro i „Manage subscription” (design-spec.md:19, :56)', () => {
     const { system, w } = pokaz({ pro: { rodzaj: 'subskrypcja', produkt: 'oczko.pro.rok' }, dni: null });
     expect(screen.getByText(/Oczko Pro/)).toBeTruthy();
-    expect(screen.queryByText(/free knitting days? left/)).toBeNull();
+    expect(screen.queryByText(/free crafting days? left/)).toBeNull();
     fireEvent.press(przycisk('Manage subscription', 'button'));
     expect(system.zarzadzajSubskrypcja).toHaveBeenCalledTimes(1);
     expect(w.naOferty).not.toHaveBeenCalled();

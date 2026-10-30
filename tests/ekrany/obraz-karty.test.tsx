@@ -19,7 +19,7 @@ test('rozmiar zrzutu w punktach tak, żeby plik miał 1080 × 1350 px przy skali
 
 test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, stopka; tło papier motywu jasnego', () => {
   render(<ObrazKarty stan={STAN} t={t} />);
-  for (const x of ['Finished · Oct 1 – Oct 21, 2026', 'Harbor Sweater', '640', 'rows', '21', 'knitting days', '18 h', 'knitting time', 'Harbor merino, navy · 4 parts', 'Counted in Oczko']) {
+  for (const x of ['Finished · Oct 1 – Oct 21, 2026', 'Harbor Sweater', '640', 'rows', '21', 'crafting days', '18 h', 'crafting time', 'Harbor merino, navy · 4 parts', 'Counted in Oczko']) {
     expect(screen.getByText(x)).toBeTruthy();
   }
   expect(StyleSheet.flatten(screen.getByTestId('karta-obraz').props.style)).toMatchObject({ backgroundColor: tokeny.kolor.jasny.papier, width: 360, height: 450 });
@@ -27,7 +27,7 @@ test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, 
 
 test('karta-obraz-bez-stopera: bez kolumny czasu (BR-PRJ-015 S3)', () => {
   render(<ObrazKarty stan={{ ...STAN, czas: null, wloczka: [] }} t={t} />);
-  expect(screen.queryByText('knitting time')).toBeNull();
+  expect(screen.queryByText('crafting time')).toBeNull();
   expect(screen.getByText('4 parts')).toBeTruthy();
 });
 

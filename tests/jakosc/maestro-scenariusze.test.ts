@@ -138,7 +138,7 @@ class AtrapaLicznika implements EkranTestowy {
   elementy(): Element[] {
     return [
       { id: 'licznik-wartosc', teksty: [String(this.wartosc)] },
-      { id: 'licznik-teraz-rzad', teksty: [`Now knitting row ${this.wartosc + 1}`] },
+      { id: 'licznik-teraz-rzad', teksty: [`Now working row ${this.wartosc + 1}`] },
       { id: 'licznik-plus', teksty: [`+1 row, when row ${this.wartosc + 1} is done`] },
       { id: 'wpisz-wartosc-pole', teksty: this.tekstPola ? [this.tekstPola] : ['Rows already finished'], pole: true, klawiatura: 'number-pad' },
     ];
@@ -163,7 +163,7 @@ describe('interpreter (Runner) na atrapie ekranu', () => {
   test('dopasowanie jak Maestro: wyrażenie do CAŁEGO tekstu, bez wielkości liter, z \\n jako spacją; zły wzorzec dosłownie', () => {
     expect(pasuje('\\+1 row.*')('+1 row, when row 2 is done')).toBe(true);
     expect(pasuje('row')('+1 row')).toBe(false);
-    expect(pasuje('now knitting row 2')('Now knitting row 2')).toBe(true);
+    expect(pasuje('now working row 2')('Now working row 2')).toBe(true);
     expect(pasuje('a b')('a\nb')).toBe(true);
     expect(pasuje('(x')('(x')).toBe(true);
   });
@@ -177,7 +177,7 @@ describe('interpreter (Runner) na atrapie ekranu', () => {
       '- tapOn: { id: "licznik-plus" }', '- assertVisible: { id: "licznik-wartosc", text: "1" }',
       '- runFlow: { file: sub/plus.yaml, env: { OD: "1" } }',
       '- tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }', '- assertVisible: { id: "licznik-wartosc", text: "5" }',
-      '- assertVisible: { id: "licznik-teraz-rzad", text: "Now knitting row 6" }',
+      '- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 6" }',
       '- retry:', '    maxRetries: 1', '    commands:', '      - tapOn: { id: "wpisz-wartosc-pole" }', '      - eraseText: 5', '      - inputText: "4"', '      - inputText: "6"', '      - assertVisible: { id: "wpisz-wartosc-pole", text: "46" }',
       '- tapOn: { id: "nie-ma", optional: true }', '- assertNotVisible: { id: "nie-ma" }',
       '- copyTextFrom: { id: "licznik-wartosc" }', '- evalScript: ${output.w = maestro.copiedText}', '- assertTrue: ${output.w == "5"}',

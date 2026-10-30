@@ -101,7 +101,7 @@ describe('Ekran „Źródła wiedzy” (BR-KAL-008)', () => {
   test('jedno ogólne zdanie i linia źródła dosłownie z BR-KAL-008; bez odnośników', () => {
     render(<ZrodlaWiedzy t={t} />);
     expect(screen.getByRole('header', { name: 'About our information' })).toBeTruthy();
-    expect(screen.getByText('The tables and tips in Oczko are written in our own words, based on industry standards and knitting handbooks.')).toBeTruthy();
+    expect(screen.getByText('The tables and tips in Oczko are written in our own words, based on industry standards and guidance from craft organizations.')).toBeTruthy();
     expect(screen.getByText("Source: Craft Yarn Council's www.YarnStandards.com")).toBeTruthy();
     expect(screen.queryAllByRole('link')).toHaveLength(0);
   });

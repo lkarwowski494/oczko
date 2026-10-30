@@ -21,14 +21,14 @@ tags:
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia-dni-darmowe", text: "4 of 5 free knitting days left in November" }
+- assertVisible: { id: "ustawienia-dni-darmowe", text: "4 of 5 free crafting days left in November" }
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
-- assertVisible: "Knit on as many days as you like\\. Everything else stays the same\\."
+- assertVisible: "Count rows on as many days as you like\\. Everything else stays the same\\."
 - assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month" }
 - assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year" }
 - assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once" }
-- assertVisible: "Without Pro: 5 knitting days every month, and all your projects and data, always\\."
+- assertVisible: "Without Pro: 5 crafting days every month, and all your projects and data, always\\."
 - assertVisible: { id: "oferty-przywroc", text: "Restore purchases" }
 - takeScreenshot: 06-oferty
 # --- zakup dożywotni (sztuczny sklep) ---

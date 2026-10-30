@@ -17,7 +17,7 @@ test('tytuł z nazwą licznika, opis, dwa wybory (etykiety VoiceOver), „Not no
     { glowa: 'g1', wartosc: 1, tekst: '1 rows · iPhone · 19:30', etykieta: 'Keep 1 rows from iPhone, 19:30' },
   ]} naWybor={naWybor} naZamknij={naZamknij} />);
   expect(screen.getByText('Two versions of Left sleeve')).toBeTruthy();
-  expect(screen.getByText('Pick the one that matches your knitting. The other stays in the history.')).toBeTruthy();
+  expect(screen.getByText('Pick the one that matches your work. The other stays in the history.')).toBeTruthy();
   fireEvent.press(screen.getByLabelText('Keep 6 rows from iPad (test), 19:39'));
   expect(naWybor).toHaveBeenCalledWith('g6');
   expect(screen.getByText('1 rows · iPhone · 19:30')).toBeTruthy();

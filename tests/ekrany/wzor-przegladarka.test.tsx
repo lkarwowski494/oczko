@@ -34,7 +34,7 @@ test('iPhone pionowo (W1a): wzór, plakietka strony, opis źródła i pasek licz
   expect(screen.getByTestId('wzor-strona').props.children).toBe('Page 2 of 6');
   expect(screen.getByTestId('wzor-zrodlo').props.children).toBe('PDF · 6 pages');
   expect(screen.getByTestId('licznik-wartosc').props.children).toBe('47');
-  expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now knitting row 48');
+  expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 48');
   fireEvent.press(screen.getByTestId('licznik-plus'));
   fireEvent.press(screen.getByTestId('licznik-minus'));
   expect([w.naPlus.mock.calls.length, w.naMinus.mock.calls.length]).toEqual([1, 1]);

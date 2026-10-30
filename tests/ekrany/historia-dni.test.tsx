@@ -49,15 +49,15 @@ test('dzień: projekty z rzędami albo samym czasem (ER-55); stuknięcie otwiera
   expect(screen.getByText('Previous week: 12 rows')).toBeTruthy();
   expect(screen.getByText('October')).toBeTruthy();
   expect(screen.getByText('1 project finished')).toBeTruthy();
-  expect(screen.getByText('2 knitting days')).toBeTruthy();
+  expect(screen.getByText('2 crafting days')).toBeTruthy();
   expect(screen.getAllByText('Time shows here when you use the stopwatch.')).toHaveLength(1); // miesiąc bez sesji (BR-DNI-003 S3)
 });
 
-test('dzień bez robótki: „No knitting on this day.”; bieżący tydzień: „This week”; pierwsze użycie: zachęta bez ponagleń', () => {
+test('dzień bez robótki: „Nothing counted on this day.”; bieżący tydzień: „This week”; pierwsze użycie: zachęta bez ponagleń', () => {
   pokaz({ ...W, dzien: [], tydzien: { ...W.tydzien, od: '2026-10-26', do: '2026-11-01' }, pierwsze: true, dniRobotki: [] }, '2026-10-26');
-  expect(screen.getByText('No knitting on this day.')).toBeTruthy();
+  expect(screen.getByText('Nothing counted on this day.')).toBeTruthy();
   expect(screen.getByText('This week')).toBeTruthy();
-  expect(screen.getByText('Days you knit get a pencil mark here. Count a row to start.')).toBeTruthy();
+  expect(screen.getByText('Each day you count a row gets a pencil mark here. Count a row to start.')).toBeTruthy();
 });
 
 test('wejście z listy projektów: „History” (nav-historia) i „Tools” (nav-narzedzia) w pasku', () => {

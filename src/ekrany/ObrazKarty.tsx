@@ -16,7 +16,7 @@ export function rozmiarZrzutu(skala: number): { width: number; height: number } 
   return { width: PIKSELE.width / skala, height: PIKSELE.height / skala };
 }
 
-const bezLiczby = (tekst: string, n: number) => tekst.replace(String(n), '').trim(); // podpis pod dużą liczbą („knitting days”)
+const bezLiczby = (tekst: string, n: number) => tekst.replace(String(n), '').trim(); // podpis pod dużą liczbą („crafting days”)
 export const ObrazKarty = React.forwardRef<View, { stan: StanObrazuKarty; t: Tlumacz }>(function ObrazKarty({ stan: s, t }, ref) {
   const kolumny: [string, string][] = [
     [String(s.rzedy), t('ukonczenie.jednostka')],

@@ -32,7 +32,7 @@ describe('Licznik', () => {
     expect(przycisk('−1 row', 'button')).toBeTruthy();
     // ekrany.html:99 podpowiedź pierwszego liczenia; nic o projekcie, zakupie ani dniach (NFR-PIE-001, P-046)
     expect(screen.getByText('Tap the big button each time you finish a row. Each row gets a pencil mark here.')).toBeTruthy();
-    expect(screen.queryByText(/Oczko Pro|free knitting day|Welcome|Sign in/)).toBeNull();
+    expect(screen.queryByText(/Oczko Pro|free crafting day|Welcome|Sign in/)).toBeNull();
     fireEvent.press(plus);
     expect(w.naPlus).toHaveBeenCalledTimes(1);
     // design-spec.md:62 „47 done. Now row 48.” — wzór ogłoszenia po +1
@@ -63,8 +63,8 @@ describe('Licznik', () => {
   test('BR-LIC-004/S1: stuknięcie w +1 zablokowanego licznika nie dodaje rzędu (wartość 15 zostaje)', async () => {
     const { oglos, haptyka } = pokaz(stanLicznika({ skonczone: 15, dziergany: 16, zablokowany: true }), async () => ({ ok: false, powod: 'zablokowany' }));
     fireEvent.press(screen.getByRole('button', { name: PLUS }));
-    // design-spec.md:30 „Now knitting row 48” → przy 15 skończonych: rząd 16
-    await waitFor(() => expect(screen.getByText('Now knitting row 16')).toBeTruthy());
+    // design-spec.md:30 „Now working row 48” → przy 15 skończonych: rząd 16
+    await waitFor(() => expect(screen.getByText('Now working row 16')).toBeTruthy());
     expect(oglos).not.toHaveBeenCalledWith(expect.stringMatching(/^16 done/));
     expect(zagrane(haptyka, 'plus')).toBe(0);
   });
