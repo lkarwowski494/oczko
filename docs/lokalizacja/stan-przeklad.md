@@ -21,3 +21,12 @@ Wykonawca: sesja 09 (kopia `claude/kopia-09-2026-10-30`). Bez API (P-309 zastęp
 3. Terminy poza słownikiem wybrane przez tłumaczy („crafting day” → oddane szeroko, bez wspólnego słowa w 17 językach; stopwatch, highlighter, Family Sharing z pamięci modelu) — lista w `uwagi-*.md` i raporcie w warsztacie; zgłoszone do 06.
 4. Teksty z limitem długości wymagają decyzji 04 przy zrzutach (np. `licznik.po_dodaniu` 47–48 znaków przy limicie ok. 30 w pl/vi/es-419).
 5. Wątpliwości formy „many” w es/es-419/pt/fr/it (CLDR: miliony — „de”): tłumacze dali formę „other” albo z „de”; test wektorów w aplikacji po podpięciu.
+
+## WSTRZYMANIE 2026-10-30 (16:40 UTC, polecenie koordynatora/właściciela; pracę przejmuje inne konto)
+- **HEAD kopii** `claude/kopia-09-2026-10-30`: patrz commit z tą sekcją (poprzedni: 714e46f „podpięcie 35 języków”). Nic nie wypchnięto na roboczą poza tym plikiem (same docs); nocny push odwołany.
+- **verify:** kod 0 na 714e46f (245 zestawów, 2702 testy); `sprawdz-i18n` błędy 0, `slownik.mjs --slowniki` błędy 0 na 35 językach.
+- **Sumy en** (zamrożenie P-307): `en.json` sha256 `74ae9284148122e7e215770b41c5ada4a94bf08a259ddb6119866ea380f2f4a4`, `en.kontekst.json` `1cc9f57f6a6bd17cd17e43b46d54e1b20fdc222789fb9d68a52d64c68e9ca4c2`. Zmiana en po tych sumach = nowa fala dla zmienionych baz kluczy (`DELTA` w `scripts/i18n/przeklad-agenci.mjs`).
+- **Stan:** przekład 34 języków i podpięcie 35 języków (słowniki, `index.ts`, `app.json`, `locales/systemowe`, tabele Swift) są zrobione na kopii. Wszystko maszynowe, bez przeglądu człowieka.
+- **Następny krok:** (1) `git pull --rebase` kopii 09 na roboczą po pushu 08; (2) push 09 na roboczą (zmiany `src/**` i `targets/**` uruchamiają CI iOS — kompilacja Swift z 35 językami i `Intl.PluralRules` na Hermes jeszcze niesprawdzone); (3) zrzuty 320 pt/pseudo i zgłoszenia długości do 04; (4) przeglądy rodzime wg `jezyki.md`; (5) „crafting day” do słownika 06 przy reaudycie.
+- **Kolejność pushy na roboczą:** 08 → 09 → 07 (07 z `[e2e-pelny] [e2e-ciemny]` jako jeden przebieg).
+- Uwaga: pierwszy commit kopii (56062f3) ma identyfikator modelu w stopce — nazwany wyjątek P-309, bez przepisywania historii.
