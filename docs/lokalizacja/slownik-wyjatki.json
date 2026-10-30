@@ -1,0 +1,51 @@
+{
+ "_opis": "Wyjątki nazwane od strażnika przekładu (slownik.mjs --slowniki): klucz bazowy en, pojęcie, języki, powód. Rola 09, plan-prac 2.3, 2026-10-30. Każdy wpis to fałszywy alarm wzorca zakazanego, sprawdzony na tekście.",
+ "wyjatki": [
+  {
+   "klucz": "probka.kategoria",
+   "pojecie": "oczko",
+   "jezyki": [
+    "pl",
+    "ro",
+    "pt",
+    "ms"
+   ],
+   "powod": "„stockinette stitch” oddane nazwą ściegu (pl ścieg dżersejowy, ro jerseu/punct, pt ponto, ms jahit stokin) — rodzaj ściegu, nie jednostka liczona; źródło en świadomie zawiera ten zwrot (P-304)"
+  },
+  {
+   "klucz": "probka.kategoria_otwarta",
+   "pojecie": "oczko",
+   "jezyki": [
+    "pl",
+    "ro",
+    "pt",
+    "ms"
+   ],
+   "powod": "jak wyżej: rodzaj ściegu, nie jednostka liczona"
+  },
+  {
+   "klucz": "zrodla.linia_standardow",
+   "pojecie": "wloczka",
+   "jezyki": [
+    "ms"
+   ],
+   "powod": "nazwa własna „Craft Yarn Council's” zostaje bez zmian (kontekst klucza)"
+  },
+  {
+   "klucz": "usun.wloczka",
+   "pojecie": "wloczka",
+   "jezyki": [
+    "sk"
+   ],
+   "powod": "„Odstrániť priadzu” — poprawne („priadza” = włóczka); wzorzec \\bniť trafia w „Odstrániť” przez granicę słowa po „á” (artefakt \\b przy znakach nie-ASCII)"
+  },
+  {
+   "klucz": "formularz.przyp_opis",
+   "pojecie": "rzad",
+   "jezyki": [
+    "ko"
+   ],
+   "powod": "„코줄임” (zmniejszanie oczek) zawiera 줄 jako część słowa złożonego; zakaz dotyczy 줄 jako „rząd”"
+  }
+ ]
+}

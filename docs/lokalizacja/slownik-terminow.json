@@ -3049,7 +3049,7 @@
      ],
      "zakazane": [
       {
-       "wzorzec": "행(?!사|동)",
+       "wzorzec": "(?<![진실])행(?!사|동)",
        "powod": "행 = wiersz tabeli/tekstu; rząd robótki to 단 [DO SPRAWDZENIA]"
       },
       {
