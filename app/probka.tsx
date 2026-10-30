@@ -14,7 +14,7 @@ import { formatujLiczbe, parsujLiczbe } from '../src/i18n/format';
 import { ustawProbke } from '../src/przypadki-uzycia/projekt';
 import { widokProjektu } from '../src/przypadki-uzycia/widok-projektu';
 
-type Start = { oczka: string; na: WejscieProbki['na']; zProjektu?: string };
+type Start = { oczka: string; na: WejscieProbki['na']; zProjektu?: string; narzedzie?: WejscieProbki['narzedzie'] };
 
 export default function EkranProbki(): React.ReactElement {
   const { kontener } = useAplikacja();
@@ -31,6 +31,7 @@ export default function EkranProbki(): React.ReactElement {
         oczka: p ? formatujLiczbe(p.oczka, j.jezyk(), { maks: 3 }) : '',
         na: p ? (p.naCm === 10 ? '10cm' : '4in') : cm ? '10cm' : '4in',
         zProjektu: w.ok ? j.t('probka.z_projektu', { projekt: w.wartosc.nazwa }) : undefined,
+        narzedzie: w.ok ? w.wartosc.narzedzie : undefined,
       });
     });
   }, [kontener, projekt, j, cm]);
@@ -44,7 +45,7 @@ export default function EkranProbki(): React.ReactElement {
   return (
     <Bezpieczny>
       <Probka t={j.t} jednostka={cm ? 'cm' : 'in'} poczatek={{ oczka: start.oczka, na: start.na }} zProjektu={start.zProjektu}
-        licz={(w) => stanProbki(w, j)} naZmianeProbki={zapisz} />
+        licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie }, j)} naZmianeProbki={zapisz} />
     </Bezpieczny>
   );
 }

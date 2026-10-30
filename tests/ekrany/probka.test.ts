@@ -85,3 +85,19 @@ describe('BR-KAL-003 (RD-04) i grubość (RD-10)', () => {
     expect(s.grubosc).toBeNull();
   });
 });
+
+describe('P-304 (e): kategoria grubości tylko dla drutów (CYC ma osobne zakresy dla szydełka: kat. 4 = 16–20 vs 11–14 o./4 in)', () => {
+  test('projekt szydełkowy: próbka 18 o./4 in → bez kategorii, wynik szerokości nadal się liczy', () => {
+    const s = licz({ oczka: '18', na: '4in', szerokosc: '50', narzedzie: 'szydelko' });
+    expect(s.grubosc).toBeNull();
+    expect(s.wynik).not.toBeNull();
+  });
+  test('projekt z drutami: ta sama próbka → kategoria 4 (16–20)', () => {
+    const s = licz({ oczka: '18', na: '4in', narzedzie: 'druty' });
+    expect(s.grubosc?.linie.join(' ')).toContain('4');
+  });
+  test('bez projektu (kalkulator samodzielny): kategoria jak dotąd', () => {
+    expect(licz({ oczka: '18', na: '4in' }).grubosc).not.toBeNull();
+  });
+});
+

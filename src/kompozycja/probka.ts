@@ -6,7 +6,9 @@ import { klasyfikujGrubosc } from '../domena/obliczenia/grubosc';
 import { CAL_W_CM, CZTERY_CALE_W_CM, GRUBOSC } from '../domena/obliczenia/parametry';
 import { formatujLiczbe, parsujLiczbe } from '../i18n/format';
 
-export type WejscieProbki = { oczka: string; na: '10cm' | '4in'; szerokosc: string; jednostka: 'cm' | 'in' };
+// narzedzie: z projektu (/probka?projekt=…); brak = kalkulator samodzielny. Zakresy kategorii grubości (GRUBOSC, CYC „Knit Gauge Range”) dotyczą
+// próbki z drutów: CYC podaje dla szydełka inne zakresy (kat. 4 = 11–14 zamiast 16–20 o./4 in), więc w projekcie szydełkowym kategorii nie ma (P-304 (3)).
+export type WejscieProbki = { oczka: string; na: '10cm' | '4in'; szerokosc: string; jednostka: 'cm' | 'in'; narzedzie?: 'druty' | 'szydelko' };
 export type StanProbki = {
   bladOczka: string | null;
   przeliczona: string | null;          // „= {p} stitches per 10 cm” (próbka na 4 in)
@@ -53,6 +55,7 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
     };
   }
 
+  if (w.narzedzie === 'szydelko') return stan; // bez kategorii; wynik szerokości i przeliczenie zostają
   const k = klasyfikujGrubosc({ oczka: p, na: w.na });
   const linia = (n: number): string => {
     const g = GRUBOSC.find((x) => x.kategoria === n);
