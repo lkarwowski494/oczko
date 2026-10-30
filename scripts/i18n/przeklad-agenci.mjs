@@ -10,13 +10,15 @@ import { zbierz, budujZadanie, parsuj, doSlownika, wycinekSlownika, nazwaJezyka,
 
 const [, , tryb, katalog, ...kody] = process.argv;
 if (!['przygotuj', 'przyjmij', 'przeglad'].includes(tryb) || !katalog || !kody.length) { console.log('Użycie: przeklad-agenci.mjs przygotuj|przyjmij|przeglad <katalog> <kod…>'); process.exit(2); }
-const poz = zbierz(), slownik = JSON.parse(readFileSync('docs/lokalizacja/slownik-terminow.json', 'utf8'));
+// KORZEN_EN: katalog z src/i18n/slowniki starej wersji en (odczyt wyników z identyfikatorami sprzed zmiany źródła); DELTA: plik JSON z listą baz kluczy do przekładu cząstkowego (po zmianie źródła)
+const delta = process.env.DELTA ? new Set(JSON.parse(readFileSync(process.env.DELTA, 'utf8'))) : null;
+const poz = zbierz(process.env.KORZEN_EN || undefined).filter((p) => !delta || delta.has(p.klucz)), slownik = JSON.parse(readFileSync('docs/lokalizacja/slownik-terminow.json', 'utf8'));
 let kodWyjscia = 0;
 for (const k of kody) {
   if (tryb === 'przygotuj') {
     const z = budujZadanie(k, poz, slownik);
     mkdirSync(katalog, { recursive: true });
-    const DOP = 'DODATKOWA ZASADA: gdy parametr liczbowy stoi poza kluczem liczby mnogiej (np. „{{wartosc}} rows”, „{{rzedy}} of {{cel}} rows”) i język wymaga odmiany liczebnika, użyj formy niezależnej od liczby, np. „Rzędy: {{wartosc}}” (obejście do czasu zmiany kluczy przez 08).';
+    const DOP = 'Liczba przy rzeczowniku jest w kluczach liczby mnogiej (pole „kategorie”); w pozostałych kluczach nie ma liczebnika przy rzeczowniku.';
     writeFileSync(join(katalog, `zadanie-${k}.md`), `${z.system}\n\n${DOP}\n\n${z.messages[0].content}\n`);
     console.log(`${k}: zadanie-${k}.md`);
   } else if (tryb === 'przeglad') {
@@ -30,8 +32,16 @@ for (const k of kody) {
     const czesci = readdirSync(katalog).filter((f) => new RegExp(`^wynik-${k}-\\d+\\.json$`).test(f)).sort((a, b) => parseInt(a.match(/-(\d+)\.json$/)[1]) - parseInt(b.match(/-(\d+)\.json$/)[1]));
     const tekst = existsSync(jedyny) ? readFileSync(jedyny, 'utf8') : JSON.stringify(Object.assign({}, ...czesci.map((f) => JSON.parse(readFileSync(join(katalog, f), 'utf8')))));
     const p = parsuj(tekst, poz, k);
-    mkdirSync('raport-przekladu', { recursive: true });
-    writeFileSync(join('raport-przekladu', `${k}.json`), JSON.stringify({ jezyk: k, pozycji: poz.length, przyjete: Object.keys(p.tlumaczenia).length, odrzucone: p.odrzucone, blad: p.blad, slownik: doSlownika(poz, p.tlumaczenia) }, null, 1) + '\n');
+    const nowe = doSlownika(poz, p.tlumaczenia);
+    if (delta) { // scalenie z istniejącą propozycją: stare formy zmienionych baz usunięte, nowe dopisane
+      const cel = join('docs/lokalizacja/przeklad-api', `${k}.json`), r = JSON.parse(readFileSync(cel, 'utf8'));
+      for (const x of Object.keys(r.slownik)) if (delta.has(x.replace(/_(zero|one|two|few|many|other)$/, ''))) delete r.slownik[x];
+      Object.assign(r.slownik, nowe); r.odrzucone = p.odrzucone;
+      writeFileSync(cel, JSON.stringify(r, null, 1) + '\n');
+    } else {
+      mkdirSync('raport-przekladu', { recursive: true });
+      writeFileSync(join('raport-przekladu', `${k}.json`), JSON.stringify({ jezyk: k, pozycji: poz.length, przyjete: Object.keys(p.tlumaczenia).length, odrzucone: p.odrzucone, blad: p.blad, slownik: nowe }, null, 1) + '\n');
+    }
     console.log(`${k}: przyjęte ${Object.keys(p.tlumaczenia).length}/${poz.length}, odrzucone ${p.odrzucone.length}${p.blad ? `, błąd: ${p.blad}` : ''}`);
     p.odrzucone.slice(0, 15).forEach((o) => console.log(`  - ${o.klucz}: ${o.powod}`));
     if (p.blad || p.odrzucone.length) kodWyjscia = 1;
