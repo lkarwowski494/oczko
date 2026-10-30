@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko izmanto kameru tikai tad, kad fotografējat rakstu, projektu vai dzijas etiķeti. Fotoattēli paliek jūsu ierīcē."
+  }
+}

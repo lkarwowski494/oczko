@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko hanya menggunakan kamera apabila anda mengambil gambar corak, projek atau label benang. Gambar kekal pada peranti anda."
+  }
+}

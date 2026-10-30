@@ -10,7 +10,7 @@ const en = splaszcz(JSON.parse(readFileSync('src/i18n/slowniki/en.json', 'utf8')
 const lim = {}; for (const [k, v] of Object.entries(kx)) { const m = v.match(/ok\.\s*(\d+)\s*znak/i); if (m) lim[k] = Number(m[1]); }
 const sz = (s) => [...s.replace(/\{\{[^}]*\}\}/g, 'x')].reduce((n, c) => n + (/[぀-ヿ㐀-鿿가-힯＀-￯]/.test(c) ? 2 : 1), 0);
 const dir = 'docs/lokalizacja/przeklad-api', wyn = [];
-for (const f of readdirSync(dir).filter((f) => /^[A-Za-z-]+\.json$/.test(f)).sort()) {
+for (const f of readdirSync(dir).filter((f) => /^[A-Za-z0-9-]+\.json$/.test(f)).sort()) {
   const j = f.slice(0, -5), t = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')).slownik; let n = 0; const zle = [];
   for (const [k, v] of Object.entries(t)) { const b = k.replace(/_(zero|one|two|few|many|other)$/, ''), l = lim[b]; if (!l) continue; n++; const d = sz(v); if (d > l * prog) zle.push(`${k} ${d}/${l}`); }
   wyn.push({ j, n, zle });

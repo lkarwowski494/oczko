@@ -9,6 +9,7 @@ Próg: > 1.3 × „ok. N znaków”; CJK liczone jako 2. Kluczy z limitem: 35. O
 | da | 45 | 1 | ustawienia.tytul 13/8 |
 | de | 45 | 1 | ustawienia.tytul 13/8 |
 | el | 45 | 2 | stoper.start_a11y 28/20; wzor.zaznacz_rzad 14/10 |
+| es-419 | 55 | 1 | stoper.start_a11y 28/20 |
 | es | 55 | 1 | stoper.start_a11y 28/20 |
 | et | 45 | 0 |  |
 | fi | 45 | 0 |  |

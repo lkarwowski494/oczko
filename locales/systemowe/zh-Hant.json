@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko 僅會在你拍攝織圖、專案或毛線標籤的照片時使用相機。照片會保留在你的裝置上。"
+  }
+}
