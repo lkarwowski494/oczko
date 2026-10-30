@@ -117,7 +117,7 @@ export function parsuj(tekst, poz, kod) {
   const a = s.indexOf('{'), b = s.lastIndexOf('}');
   if (a < 0 || b <= a) return { blad: 'brak obiektu JSON w odpowiedzi', tlumaczenia: {}, odrzucone: poz.map((p) => ({ klucz: p.klucz, powod: 'brak odpowiedzi' })) };
   let obj; try { obj = JSON.parse(s.slice(a, b + 1)); } catch (e) { return { blad: `niepoprawny JSON: ${e.message}`, tlumaczenia: {}, odrzucone: poz.map((p) => ({ klucz: p.klucz, powod: 'brak odpowiedzi' })) }; }
-  const param = (t) => (String(t).match(PARAM) ?? []).sort().join('');
+  const param = (t) => [...new Set(String(t).match(PARAM) ?? [])].sort().join(''); // zbiór: powtórzenie parametru w źródle nie musi się powtórzyć w przekładzie
   const tlumaczenia = {}, odrzucone = [], wym = kategorie(kod).slice().sort().join(',');
   for (const p of poz) {
     const v = obj[p.id], odrzuc = (powod) => odrzucone.push({ klucz: p.klucz, powod });

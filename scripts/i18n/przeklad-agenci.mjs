@@ -4,7 +4,7 @@
 //   node scripts/i18n/przeklad-agenci.mjs przeglad <katalog> <kod…>    — zapisuje <katalog>/przeglad-<kod>.md z propozycji raport-przekladu/docs (do drugiego przeglądu innym agentem)
 //   node scripts/i18n/przeklad-agenci.mjs przyjmij <katalog> <kod…>    — czyta <katalog>/wynik-<kod>.json, kontroluje (parametry, kategorie), zapisuje raport-przekladu/<kod>.json
 // Dalej: node scripts/i18n/przeklad-api.mjs --zastosuj (po przeglądzie) → src/i18n/slowniki/<kod>.json
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { zbierz, budujZadanie, parsuj, doSlownika, wycinekSlownika, nazwaJezyka, REJESTR, kategorie } from './przeklad-api.mjs';
 
@@ -26,7 +26,10 @@ for (const k of kody) {
     writeFileSync(join(katalog, `przeglad-${k}.md`), `${P}\n\nJęzyk docelowy: ${nazwaJezyka(k)} (${k}). Rejestr: ${REJESTR[k] ?? ''}\n\nSłownik terminów:\n${wycinekSlownika(k, poz, slownik)}\n\nPozycje (JSON, jedna na linię; pole tlumaczenie dla liczby mnogiej to obiekt kategoria→tekst):\n${wiersze.map((r) => JSON.stringify(r)).join('\n')}\n`);
     console.log(`${k}: przeglad-${k}.md`);
   } else {
-    const p = parsuj(readFileSync(join(katalog, `wynik-${k}.json`), 'utf8'), poz, k);
+    const jedyny = join(katalog, `wynik-${k}.json`);
+    const czesci = readdirSync(katalog).filter((f) => new RegExp(`^wynik-${k}-\\d+\\.json$`).test(f)).sort((a, b) => parseInt(a.match(/-(\d+)\.json$/)[1]) - parseInt(b.match(/-(\d+)\.json$/)[1]));
+    const tekst = existsSync(jedyny) ? readFileSync(jedyny, 'utf8') : JSON.stringify(Object.assign({}, ...czesci.map((f) => JSON.parse(readFileSync(join(katalog, f), 'utf8')))));
+    const p = parsuj(tekst, poz, k);
     mkdirSync('raport-przekladu', { recursive: true });
     writeFileSync(join('raport-przekladu', `${k}.json`), JSON.stringify({ jezyk: k, pozycji: poz.length, przyjete: Object.keys(p.tlumaczenia).length, odrzucone: p.odrzucone, blad: p.blad, slownik: doSlownika(poz, p.tlumaczenia) }, null, 1) + '\n');
     console.log(`${k}: przyjęte ${Object.keys(p.tlumaczenia).length}/${poz.length}, odrzucone ${p.odrzucone.length}${p.blad ? `, błąd: ${p.blad}` : ''}`);
