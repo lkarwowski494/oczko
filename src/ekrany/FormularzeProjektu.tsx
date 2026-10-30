@@ -106,7 +106,7 @@ export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 
   return (
     <Arkusz tytul={t('formularz.znaczenie_tytul')} formularz={{ t, naZapisz: () => zapisz(p.naZapisz, z), naAnuluj: p.naAnuluj }}>
       <Wybor<'skonczone' | 'w_trakcie'> wybrana={z} naWybor={ustaw} opcje={[
-        { wartosc: 'skonczone', tekst: t('formularz.znaczenie_skonczone'), opis: t('formularz.znaczenie_skonczone_opis', { n: p.wartosc }) },
+        { wartosc: 'skonczone', tekst: t('formularz.znaczenie_skonczone'), opis: t('formularz.znaczenie_skonczone_opis', { count: p.wartosc }) },
         { wartosc: 'w_trakcie', tekst: t('formularz.znaczenie_w_trakcie'), opis: t('formularz.znaczenie_w_trakcie_opis', { nastepny: p.wartosc + 1 }) },
       ]} />
       <Tresc podpis>{t('formularz.znaczenie_info')}</Tresc>

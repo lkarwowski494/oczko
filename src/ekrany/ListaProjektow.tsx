@@ -80,7 +80,7 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
           </Pressable>
         </View>
       )}
-      {s.dni && <Text style={st.info} testID="projekty-dni-darmowe">{t('projekty.dni', { zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
+      {s.dni && <Text style={st.info} testID="projekty-dni-darmowe">{t('projekty.dni', { count: s.dni.zostalo, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
     </ScrollView>
   );
 }

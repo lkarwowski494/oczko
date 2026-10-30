@@ -60,7 +60,7 @@ describe('kompozycja licznika z iCloud', () => {
     expect(start.licznik.skonczone).toBe(1);
     expect(start.licznik.konflikt).toEqual({ lokalna: 1, zdalna: 6, urzadzenie: 'iPad (test)' });
     const wybory = await k2.konflikt.kandydaci();
-    expect(wybory.map((w) => w.tekst)).toEqual(['6 rows · iPad (test) · 12:09', '1 rows · iPhone · 12:00']); // P-247 U6a: rodzaj zamiast UUID; atrapa bez rodzaju → nazwa z pola
+    expect(wybory.map((w) => w.tekst)).toEqual(['6 rows · iPad (test) · 12:09', '1 row · iPhone · 12:00']); // P-247 U6a: rodzaj zamiast UUID; atrapa bez rodzaju → nazwa z pola
     expect(wybory[0].etykieta).toBe('Keep 6 rows from iPad (test), 12:09');
     expect((await k2.konflikt.wybierz(wybory[0].glowa)).ok).toBe(true);
     const po = await k2.dzialania.odswiez!();

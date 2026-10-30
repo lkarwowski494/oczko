@@ -101,3 +101,17 @@ describe('P-304 (e): kategoria grubości tylko dla drutów (CYC ma osobne zakres
   });
 });
 
+describe('P-307: liczba przy „stitches” w kluczach liczby mnogiej (forma wybierana przez count, nie sklejana)', () => {
+  test('1 oczko na 10 cm → „From 1 stitch per 10 cm and 50 cm.”; 4 in z wynikiem dokładnie 1 → „= 1 stitch per 10 cm”', () => {
+    expect(licz({ oczka: '1', szerokosc: '50' }).wynik?.zDanych).toBe('From 1 stitch per 10 cm and 50 cm.');
+    expect(licz({ oczka: '1.016', na: '4in' }).przeliczona).toBe('= 1 stitch per 10 cm');
+    expect(licz({ oczka: '22', szerokosc: '50' }).wynik?.zDanych).toBe('From 22 stitches per 10 cm and 50 cm.');
+  });
+  test('ułamek (21,5) i zero używają formy _other: „21.5 stitches”', () => {
+    expect(licz({ oczka: '21.5', szerokosc: '50' }).wynik?.zDanych).toBe('From 21.5 stitches per 10 cm and 50 cm.');
+  });
+  test('4 in = dokładnie 1 o./4 in → „1 stitch per 4 in.” (linia dokładnie); kategoria powyżej tabeli bez zmian', () => {
+    expect(licz({ oczka: '0.984', na: '10cm' }).grubosc?.dokladnie).toBe('1 stitch per 4 in.');
+  });
+});
+

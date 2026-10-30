@@ -21,7 +21,7 @@ describe('licznik w konflikcie iCloud (P-220 I1a)', () => {
     const { rerender } = render(<Licznik stan={stan} t={t} oglos={oglos} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naKonflikt={naKonflikt} />);
     expect(screen.getByTestId('licznik-konflikt')).toBeTruthy();
     expect(screen.getByText('Two versions of this counter')).toBeTruthy();
-    expect(screen.getByText('1 rows here, 6 from iPad (test). Choose the one that matches your work.')).toBeTruthy();
+    expect(screen.getByText('1 row here, 6 rows from iPad (test). Choose the one that matches your work.')).toBeTruthy();
     fireEvent.press(screen.getByText('Choose'));
     expect(naKonflikt).toHaveBeenCalled();
     rerender(<Licznik stan={{ ...stan }} t={t} oglos={oglos} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naKonflikt={naKonflikt} />);
