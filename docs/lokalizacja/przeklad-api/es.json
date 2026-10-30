@@ -167,7 +167,7 @@
   "historia.wpis": "{{czas}} · {{z}} → {{na}}",
   "historia.wpis_opis": "{{czas}} · {{z}} → {{na}} ({{opis}})",
   "historia.opis_zerowanie": "a cero",
-  "historia.opis_wpisanie": "escrita",
+  "historia.opis_wpisanie": "introducido",
   "historia.opis_cofniecie": "deshecho",
   "menu.nazwa": "Pon nombre al proyecto y a la pieza",
   "menu.cel": "Fija un objetivo para esta pieza",
