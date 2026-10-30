@@ -161,3 +161,31 @@ Do ról: 07 — scenariusze/README zmienione tekstowo; 09/07 — wykrywacz `robo
 - P1-001 plan B: statyczna instancja Libre Franklin Bold (`assets/fonts/LibreFranklin-Bold.ttf`, generator `scripts/design/instancja-kroju.py`, fontTools 4.68.0); plik zmienny usunięty z aplikacji.
 - Kontrola `.ipa` (P-306): na Linuksie nie do uruchomienia → pozycja 6 w `docs/wydanie/testflight-lista.md` sekcja C.
 - Kopia: gałąź `claude/kopia-partia-7-2026-10-30-b` (zwykły push; stara nazwa bez `-b` do usunięcia). Na roboczą nocą ok. 23:05 UTC na sygnał koordynatora; pierwszy push 08, potem 07 z `[e2e-pelny] [e2e-ciemny]`. 07 przegląda zmiany 5 scenariuszy Maestro i `e2e/README.md` przed pushem.
+
+## WSTRZYMANIE 2026-10-30 (polecenie właściciela przez koordynatora; ok. 16:40 UTC; pracę przejmuje inne konto)
+**Stan kopii:** `origin/claude/kopia-partia-7-2026-10-30-b`, HEAD **b8d537f** (zwykły push, bez force) nad roboczą **0f1dec0**. Robocza poszła dalej (b98dc61 i nowsze, tylko docs/04/06/07/10) — przy pushu `git pull --rebase`; hashe commitów kopii wtedy się zmienią, **sumy en przeżywają rebase**.
+**Verify na b8d537f:** `env -u NODE_PATH npm run verify` kod 0, 243 zestawy / 2686 testów (hook pre-push puszcza verify przy każdym pushu). Typecheck, lint, i18n, `jakosc:slady-wydania` w ramach verify.
+**Sumy en (sha256):** `src/i18n/slowniki/en.json` = `74ae9284148122e7e215770b41c5ada4a94bf08a259ddb6119866ea380f2f4a4`; `en.kontekst.json` = `1cc9f57f6a6bd17cd17e43b46d54e1b20fdc222789fb9d68a52d64c68e9ca4c2`; 674 klucze. Poprzednie sumy (d24f63e8…, af92bee4…) nieaktualne.
+**Na roboczej jest tylko P-299** (0f1dec0, `workflow_dispatch`). Nocny push odwołany.
+**Co czeka na push (kolejno, 12 commitów nad 0f1dec0; commit c63016b ma samo czerwone verify — tabela-08, zielone od d2b26bc: wciągać parą):**
+| Commit | Treść |
+|---|---|
+| 8162eee | P-300 (b): `plugins/icloud-tlo.js` — bez `ICLOUD_W_1_0` brak `remote-notification` i `aps-environment` (dowód: `expo config --type prebuild`) |
+| c63016b + d2b26bc | P-304 (e): próbka w projekcie szydełkowym bez kategorii grubości |
+| 1e92c8d | P-302/P-304 (f): en „crafting days”/neutralne (28 linii), literały w testach i scenariuszach 01, 03, 05, 06, 18 + `e2e/README.md` (07: zgodne) |
+| 7fd14ea | P-303: kontekst kategorii CYC (nazwa lokalna tylko es, es-419, fr) + test |
+| c0c1048 | P-301: wersaliki (003), ✕ ofert w nagłówku (004), „Part N” (005), przycisk ••• i potwierdzenie usunięcia filmu (006), `skrzynka.film_zastapi` |
+| b3c1964 + 089b0d3 | P1-001: Libre Franklin Bold jako plik statyczny (`scripts/design/instancja-kroju.py`, expo-font) — **niesprawdzone na urządzeniu** |
+| 3f56a14 | stan kolejki |
+| 148d0fb | korekta 04 `wzor.film_usun_opis`, tytuł testu AX5 |
+| 597a2e7 | testy pluginu iCloud zależne od flagi (uwaga 07) |
+| b8d537f | P-307 (09): 17 baz kluczy en w formach `_one`/`_other` wg `count` + `icloud.konflikt_wiersze` |
+**Kolejność pushy (decyzja koordynatora): 08 → 09 → 07.** 08: rebase kopii na roboczą, `npm run verify`, push zwykły (bez `[e2e-pelny]`, chyba że koordynator zdecyduje inaczej). 09: przekład 35 języków z sum en powyżej. 07: `[e2e-pelny] [e2e-ciemny]` z `claude/kopia-07-2026-10-30` (b669e08), przebieg dowodowy dla ciemnego motywu, AX5, iPada i zrzutu Libre Franklin.
+**Otwarte:**
+- iOS #132 (run 41073895018, 0f1dec0): attempt 1 i 2 anulowane po 15 min w kolejce (brak maszyn macos-26, okno P-187; jedyne ponowienie wykorzystane); e2e nie ruszyło. Wynik pełnego pakietu nieznany.
+- (a) wersja 1.0.0: wariant B (P-306), patch w `oczko-warsztat` `08-programista/2026-10-30/wersja-1.0.0.patch`; razem z `tests/bazy/v1.db` w commicie wydania (strażnik R-074).
+- Krój Libre Franklin Bold i położenie ✕ ofert: do oceny na zrzucie z pełnego przebiegu. Kontrola `.ipa` (tryby tła, `aps-environment`, `UIAppFonts`): lista TF, sekcja C.6, nie do uruchomienia na Linuksie.
+- Teksty robocze 08 zaakceptowane przez 04 (`wzor.film_menu`, `film_usun_tytul`, `formularz.nazwa_czesc_n`; `film_usun_opis` w wersji 04).
+- Poza zakresem 08: wykrywacz `robotka` (`docs/lokalizacja/slownik-terminow.json`, 09/07), makiety i design-spec „knitting days” (04), `promoText` (10), `docs/monetyzacja.md` (02).
+- Stara zdalna gałąź `claude/kopia-partia-7-2026-10-30` (b598299) do usunięcia (force-with-lease zablokowany przez klasyfikator); stop-hook liczy względem niej „niewypchnięte commity”.
+**Tożsamość git:** `Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>`, bez zmian (także na prośbę stop-hooka o `noreply@anthropic.com`).
