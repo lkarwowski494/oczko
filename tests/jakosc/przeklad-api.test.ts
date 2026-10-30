@@ -7,7 +7,7 @@ import { join } from 'node:path';
 const ROOT = join(__dirname, '../..');
 const SCRIPT = join(ROOT, 'scripts/i18n/przeklad-api.mjs');
 const uruchom = (kod: string, env: Record<string, string> = {}) =>
-  spawnSync(process.execPath, ['--input-type=module', '-e', `import * as m from ${JSON.stringify(SCRIPT)}; ${kod}`], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '', ...env } });
+  spawnSync(process.execPath, ['--input-type=module', '-e', `import * as m from ${JSON.stringify(SCRIPT)}; ${kod}`], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '', ...env } as NodeJS.ProcessEnv });
 const json = (kod: string) => JSON.parse(execFileSync(process.execPath, ['--input-type=module', '-e', `import * as m from ${JSON.stringify(SCRIPT)}; ${kod}`], { encoding: 'utf8' }));
 
 describe('przeklad-api: dane wejściowe', () => {
@@ -57,12 +57,12 @@ describe('przeklad-api: przebieg (main) z atrapą fetch', () => {
   const wyj = () => mkdtempSync(join(tmpdir(), 'przeklad-'));
   test('bez klucza: zwykły przebieg to kod 2, --szacuj działa (kod 0) i nie pisze nic poza raportem', () => {
     const w = wyj();
-    expect(spawnSync(process.execPath, [SCRIPT, '--wyjscie', w], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } }).status).toBe(2);
-    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--wyjscie', w], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } });
+    expect(spawnSync(process.execPath, [SCRIPT, '--wyjscie', w], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } as NodeJS.ProcessEnv }).status).toBe(2);
+    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--wyjscie', w], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } as NodeJS.ProcessEnv });
     expect(s.status).toBe(0); expect(s.stdout).toMatch(/34 języków/); expect(existsSync(join(w, 'szacunek.json'))).toBe(true);
   });
   test('limit kosztu: Opus ponad 6 USD → kod 3 bez zgody (przed jakimkolwiek wysłaniem)', () => {
-    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'opus', '--wyjscie', wyj()], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } });
+    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'opus', '--wyjscie', wyj()], { encoding: 'utf8', env: { PATH: process.env.PATH ?? '' } as NodeJS.ProcessEnv });
     expect(s.status).toBe(3); expect(s.stdout).toMatch(/STOP/);
   });
   test('Sonnet na wszystkie 34 języki mieści się w 6 USD wg szacunku (wariant A, P-144)', () => {
