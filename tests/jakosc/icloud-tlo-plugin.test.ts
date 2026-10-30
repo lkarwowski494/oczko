@@ -46,11 +46,12 @@ test('P-300 R1: inne tryby tła zostają, usuwany tylko remote-notification', ()
 
 test('P-300 R1: flaga z src/konfiguracja.ts czytana przez plugin = stała w kodzie', () => {
   expect(plugin.flagaZKodu(KORZEN)).toBe(ICLOUD_W_1_0);
-  expect(plugin.flagaZKodu(KORZEN)).toBe(false); // stan wydania do zaliczenia ZM-06 (P-290)
 });
 
 test('P-300 R1: plugin podłączony w app.json, a funkcja wejściowa używa flagi z kodu', () => {
   const app = JSON.parse(fs.readFileSync(path.join(KORZEN, 'app.json'), 'utf8')) as { expo: { plugins: unknown[] } };
   expect(app.expo.plugins).toContain('./plugins/icloud-tlo');
-  expect(plugin(baza()).ios?.entitlements).not.toHaveProperty('aps-environment'); // ICLOUD_W_1_0 = false
+  // wynik pluginu zależy od flagi z kodu (build TestFlight ma ją na true, P-290; App Store na false do zaliczenia ZM-06) — asercja bez przypięcia wartości
+  expect(plugin(baza())).toEqual(plugin.przytnij(baza(), ICLOUD_W_1_0));
+  expect(plugin(baza()).ios?.entitlements?.['aps-environment'] !== undefined).toBe(ICLOUD_W_1_0);
 });

@@ -12,9 +12,10 @@ export const systemCzarny = tokeny.kolor.systemCzarny;
 /** Kolory motywu jasnego niezależnie od ustawienia telefonu (obraz karty ukończenia trafia poza aplikację, design-spec P10a). */
 export const kolorJasny = tokeny.kolor.jasny;
 /**
- * Krój tytułowy (P-064, design-spec.md:13): Libre Franklin, plik `assets/fonts/LibreFranklin.ttf` (kopia z docs/design/fonty, licencja OFL obok) ładowany natywnie
- * pluginem expo-font (app.json; na iOS nazwa rodziny pochodzi z pliku). Plik ma łacinę, cyrylicę i wietnamski; brakujące znaki (greka, CJK) iOS dopełnia
- * krojem systemowym znak po znaku. Waga 700 wybiera nazwaną instancję z pliku zmiennego [DO SPRAWDZENIA na urządzeniu: zrzut licznika, 04-studio-projektowe-001].
+ * Krój tytułowy (P-064, design-spec.md:13): Libre Franklin Bold, plik STATYCZNY `assets/fonts/LibreFranklin-Bold.ttf` (instancja wght 700 pliku zmiennego z docs/design/fonty,
+ * generator scripts/design/instancja-kroju.py; licencja OFL obok) ładowany natywnie pluginem expo-font (app.json; na iOS nazwa rodziny z pliku). Plik zmienny odpadł:
+ * iOS potrafi z niego wziąć domyślną instancję Thin mimo fontWeight (P-306). Plik ma łacinę, cyrylicę i wietnamski; brakujące znaki (greka, CJK) iOS dopełnia krojem
+ * systemowym znak po znaku [DO SPRAWDZENIA na urządzeniu: zrzut licznika i ekranu z grecką nazwą, 04-studio-projektowe-001].
  */
 export const KROJ_TYTULOWY = 'Libre Franklin';
 const ty = tokeny.typografia;

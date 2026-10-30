@@ -689,7 +689,7 @@
     "film_usun": "Remove link",
     "film_menu": "Video link options",
     "film_usun_tytul": "Remove video link?",
-    "film_usun_opis": "The link is removed from this project. You can add it again any time.",
+    "film_usun_opis": "The link and its name are removed from this project. The video itself isn’t affected.",
     "film_zmien": "Change link",
     "film_bez_sieci_tytul": "No internet connection",
     "rodzaj_pdf": "PDF",

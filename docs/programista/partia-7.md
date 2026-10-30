@@ -155,3 +155,9 @@ Na kopii (verify kod 0, 241 zestawów / 2674 testy; każdy commit zielony opróc
 - b3c1964 P-301 P1-001: Libre Franklin natywnie (expo-font) — **niesprawdzone na urządzeniu** (plik zmienny; waga 700 ma wybrać instancję Bold).
 Odłożone: (a) wersja 1.0.0 — strażnik R-074 wymaga `tests/bazy/v1.db` od 1.0 (decyzja koordynatora: A teraz / B przy wydaniu); patch w scratchpadzie sesji.
 Do ról: 07 — scenariusze/README zmienione tekstowo; 09/07 — wykrywacz `robotka` w `slownik-terminow.json`; 04 — nowe teksty robocze (`wzor.film_menu`, `film_usun_tytul/opis`, `formularz.nazwa_czesc_n`), design-spec/makiety „knitting days”, motyw ••• w wierszu Video; 10 — `promoText`; 02 — `docs/monetyzacja.md`.
+
+### Aktualizacja 2026-10-30 ~15:35 UTC (P-306, P-307)
+- (a) wersja 1.0.0: wariant B (P-306). Patch i procedura w `oczko-warsztat` `08-programista/2026-10-30/wersja-1.0.0.patch` + `.md` (3d0e5b4). Wersja i `tests/bazy/v1.db` pójdą razem w commicie wydania; strażnik R-074 wymusi to czerwonym verify.
+- P1-001 plan B: statyczna instancja Libre Franklin Bold (`assets/fonts/LibreFranklin-Bold.ttf`, generator `scripts/design/instancja-kroju.py`, fontTools 4.68.0); plik zmienny usunięty z aplikacji.
+- Kontrola `.ipa` (P-306): na Linuksie nie do uruchomienia → pozycja 6 w `docs/wydanie/testflight-lista.md` sekcja C.
+- Kopia: gałąź `claude/kopia-partia-7-2026-10-30-b` (zwykły push; stara nazwa bez `-b` do usunięcia). Na roboczą nocą ok. 23:05 UTC na sygnał koordynatora; pierwszy push 08, potem 07 z `[e2e-pelny] [e2e-ciemny]`. 07 przegląda zmiany 5 scenariuszy Maestro i `e2e/README.md` przed pushem.
