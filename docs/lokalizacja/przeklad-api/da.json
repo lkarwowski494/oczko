@@ -420,7 +420,7 @@
   "narzedzia.probka_opis": "Masker til en bredde, strikkefasthed pr. 10 cm og garntykkelse ud fra én prøve.",
   "czesc.co_dalej_tytul": "Hvad nu?",
   "czesc.co_dalej_opis": "{{czesc}} er færdig. Det er den sidste del i {{projekt}}.",
-  "czesc.druga_taka_sama": "En anden {{czesc}}",
+  "czesc.druga_taka_sama": "Endnu en {{czesc}}",
   "czesc.druga_opis_one": "Samme mål, {{count}} række. Viser, hvad du noterede på hver række i den første.",
   "czesc.druga_opis_other": "Samme mål, {{count}} rækker. Viser, hvad du noterede på hver række i den første.",
   "czesc.druga_bez_celu": "Målet kommer, når den første har rækker.",
