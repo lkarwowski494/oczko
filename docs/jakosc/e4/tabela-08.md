@@ -157,6 +157,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/sesje.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-013, BR-PRJ-013/S4, P-191, P-195 | `src/ekrany/Formularze`<br>`src/ekrany/Sesje`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/skrzynka-na-ekranie.test.tsx` | zielony (główny zestaw) | 4 | P-218, P-283 | `src/domena/porty`<br>`src/ekrany/wspolne`<br>`src/kompozycja/SkrzynkaNaEkranie`<br>`src/kompozycja/wzor` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-danych-trasa.test.tsx` | zielony (główny zestaw) | 1 | BR-DAN-002, P-220 | `src/dane/repozytoria/icloud` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-kompozycja.test.tsx` | zielony (główny zestaw) | 2 | P-191, P-199 | `src/ekrany/wspolne`<br>`src/kompozycja/StoperLicznika`<br>`src/przypadki-uzycia/sesja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-po-pierwszym-plusie.test.tsx` | zielony (główny zestaw) | 1 | P-191, P-262 | `src/kompozycja/Kontekst` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-sprawdz.test.tsx` | zielony (główny zestaw) | 1 | P-191 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -205,4 +206,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 201; zależnych od poprawek: 135.
+Razem plików testów: 202; zależnych od poprawek: 135.

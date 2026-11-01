@@ -9,14 +9,14 @@ import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { otworzUstawieniaSystemu } from '../src/kompozycja/system';
 import { paneleE2e } from '../src/platforma/tryb-e2e';
 import { zegarekOstatniaPartiaMs } from '../src/dane/repozytoria/ustawienia';
-import { licznikiWKonflikcie, najstarszyWPoczekalni, nowszaWersjaWPoczekalni, stanBazy } from '../src/dane/repozytoria/icloud';
+import { licznikiWKonflikcie, najstarszyWPoczekalni, nowszaWersjaWPoczekalni, pierwszyLicznikWKonflikcie, stanBazy } from '../src/dane/repozytoria/icloud';
 import { POCZEKALNIA_DNI } from '../src/konfiguracja';
 import type { WidokSynchronizacji } from '../src/przypadki-uzycia/synchronizacja';
 
 type DaneIcloud = { wlaczona: boolean; konflikty: number; niepelna: boolean; niepelnaNowsza: boolean };
 
 export default function EkranStanuDanych(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const { kontener, licznik } = useAplikacja();
   const router = useRouter();
   const j = kontener.j;
   const t = j.t;
@@ -65,10 +65,16 @@ export default function EkranStanuDanych(): React.ReactElement {
     ]);
   }, [ic, widok?.stan, t, odswiez]);
 
+  // 019 (P-220 I1a): ekran wyboru działa na bieżącym liczniku, więc najpierw otwieramy licznik w konflikcie.
+  const naKonflikty = () => void pierwszyLicznikWKonflikcie(kontener.z.baza).then(async (id) => {
+    if (!id) return; // konflikt rozstrzygnięty w międzyczasie
+    await licznik.otworz(id);
+    router.push('/konflikt');
+  });
   const synchronizacja = widok?.stan ?? 'wylaczona';
   const icloud: IcloudStanuDanych | undefined = ic && ic.widoczny && dane ? {
     wlaczona: dane.wlaczona, stan: synchronizacja, przyczyna: widok?.przyczyna ?? null, konflikty: dane.konflikty, niepelna: dane.niepelna, niepelnaNowsza: dane.niepelnaNowsza, synchronizuje: widok?.synchronizuje === true,
-    naPrzelacz, naUstawienia: otworzUstawieniaSystemu, naZarzadzaj: otworzUstawieniaSystemu, // „Manage storage”: bez publicznego adresu strony iCloud — Ustawienia
+    naPrzelacz, naKonflikty, naUstawienia: otworzUstawieniaSystemu, naZarzadzaj: otworzUstawieniaSystemu, // „Manage storage”: bez publicznego adresu strony iCloud — Ustawienia
   } : undefined;
   const panelE2e = paneleE2e && e2e ? <paneleE2e.PanelIcloud wyslane={e2e.wyslane} usuniete={e2e.usuniete} /> : null;
   return <StanDanych stan={{ synchronizacja, ostatniaUdana: null, czekaNaSiec: false, zegarek }} t={t} naZamknij={() => router.back()} icloud={icloud} panelE2e={panelE2e} />;
