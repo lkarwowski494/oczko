@@ -189,3 +189,13 @@ Do ról: 07 — scenariusze/README zmienione tekstowo; 09/07 — wykrywacz `robo
 - Poza zakresem 08: wykrywacz `robotka` (`docs/lokalizacja/slownik-terminow.json`, 09/07), makiety i design-spec „knitting days” (04), `promoText` (10), `docs/monetyzacja.md` (02).
 - Stara zdalna gałąź `claude/kopia-partia-7-2026-10-30` (b598299) do usunięcia (force-with-lease zablokowany przez klasyfikator); stop-hook liczy względem niej „niewypchnięte commity”.
 **Tożsamość git:** `Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>`, bez zmian (także na prośbę stop-hooka o `noreply@anthropic.com`).
+
+## Stan · 2026-11-01 integracja (sesja integracyjna roli 08, P-312)
+**Faza A (lokalnie, bez macOS) — stos trzech kopii nad roboczą e96f4d3** na gałęzi `claude/kopia-integracja-2026-11-01` (merge roboczej do kopii 08, potem kopie 09 i 07; zero konfliktów; hashe commitów kopii zachowane, bez rebase):
+| Warstwa | Hash | Treść | Dowód |
+|---|---|---|---|
+| koniec 08 | `60ee825` | merge roboczej do kopii 08 (4982ef2) | `npm ci`; `env -u NODE_PATH npm run verify` kod 0 (245 zestawów, 2693 testy); `npm run jakosc:slady-wydania` kod 0; sumy en zgodne (74ae9284…f2f4a4, 1cc9f57f…e9ca4c2) |
+| koniec 09 | `2d72af1` | merge kopii 09 (4316d41) | verify kod 0 (247 zestawów, 2709 testów); `sprawdz-i18n` błędy 0 (978 uwag), `slownik.mjs` błędy 0 (1 uwaga: `robotka`); sumy en bez zmian |
+| merge 07 | `ef414e0` | merge kopii 07 (b669e08: `[e2e-ciemny]` w `jakosc-ios.yml` + `tests/jakosc/e2e-ciemny.test.ts`) | patrz HEAD |
+| HEAD (07) | commit z tym wpisem | znaczniki `[e2e-pelny] [e2e-ciemny]` w treści (b669e08 ich nie miał) | verify na HEAD: wynik w następnej sekcji |
+Pushe na roboczą (faza B) na sygnał koordynatora; wynik i numer przebiegu `Jakość · iOS` zostaną dopisane po pushach.
