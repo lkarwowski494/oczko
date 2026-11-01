@@ -49,9 +49,11 @@ export async function potwierdzZuzycie(baza: PortBazy, w: { projektId: string; z
         const roznica = z.motki - ((byl ? liczbaLubNull(byl, 'zuzyto_motki') : null) ?? 0);
         const [zap] = await wiersze(tx.all('SELECT motki FROM wloczka WHERE id = ?', [z.wloczkaId]), 'potwierdzZuzycie');
         const przed = zap ? liczba(zap, 'motki') : 0;
-        const po = Math.max(0, przed - roznica); // zapas nie schodzi poniżej 0
-        // P-334: pamiętamy, ile faktycznie odjęto (po obcięciu do 0), żeby odznaczenie włóczki zwróciło tyle samo, nie całe zużycie.
-        const odjeto = Math.max(0, ((byl ? liczbaLubNull(byl, 'odjeto_motki') : null) ?? 0) + (przed - po));
+        const odjetoStare = (byl ? liczbaLubNull(byl, 'odjeto_motki') : null) ?? 0;
+        // P-334: zużycie rośnie → zapas nie schodzi poniżej 0, a `odjeto_motki` rośnie o faktyczne odjęcie; zużycie maleje → zwrot nie większy niż kiedykolwiek odjęto.
+        const zwrot = roznica < 0 ? Math.min(-roznica, odjetoStare) : 0;
+        const po = roznica < 0 ? przed + zwrot : Math.max(0, przed - roznica);
+        const odjeto = roznica < 0 ? odjetoStare - zwrot : odjetoStare + (przed - po);
         await tx.run(
           `INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, odjeto_motki, zmieniono_ms) VALUES (?, ?, ?, ?, ?)
            ON CONFLICT (projekt_id, wloczka_id) DO UPDATE SET zuzyto_motki = excluded.zuzyto_motki, odjeto_motki = excluded.odjeto_motki, zmieniono_ms = excluded.zmieniono_ms`,

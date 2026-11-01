@@ -113,4 +113,14 @@ describe('przypiszWloczki: zbiór wierszy projekt_wloczka', () => {
     expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
     expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y1']))[0]?.motki).toBe(3);
   });
+
+  test('P-334 (przegląd 2): zmniejszenie zużycia zwraca najwyżej tyle, ile odjęto (zapas 1, zużycie 3, potem 0 → zapas 1, nie 3); wariant ułamkowy', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [wloczka('y8', 'Mała', 1), wloczka('y7', 'Ułamek', 0.5), projektWloczka('p1', 'y8'), projektWloczka('p1', 'y7')]);
+    const stan = async (id: string) => (await s.baza.all<{ motki: number; odjeto_motki: number }>('SELECT w.motki, pw.odjeto_motki FROM wloczka w JOIN projekt_wloczka pw ON pw.wloczka_id = w.id WHERE w.id = ?', [id]))[0];
+    expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y8', motki: 3 }, { wloczkaId: 'y7', motki: 2 }] })).ok).toBe(true);
+    expect([await stan('y8'), await stan('y7')]).toEqual([{ motki: 0, odjeto_motki: 1 }, { motki: 0, odjeto_motki: 0.5 }]);
+    expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y8', motki: 0 }, { wloczkaId: 'y7', motki: 0 }] })).ok).toBe(true);
+    expect([await stan('y8'), await stan('y7')]).toEqual([{ motki: 1, odjeto_motki: 0 }, { motki: 0.5, odjeto_motki: 0 }]);
+  });
 });
