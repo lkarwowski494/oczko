@@ -1,15 +1,15 @@
 # Testy na urządzeniu przy TestFlight — plan dla właściciela
-Wersja 2026-10-27 (rola 07, P-289). Scala: lista „tylko urządzenie” partii 6 U1–U12 (`docs/programista/partia-6-natywne.md`, kopia partii 6 a107a49), listę „tylko telefon” TT-01–TT-11 (`docs/jakosc/strategia.md` §8) i listę iCloud partii 7 (`docs/jakosc/plan-partia-7-icloud.md`, „Lista »tylko urządzenie«”).
-Czego nie sprawdzi CI: symulator nie ma kamery, prawdziwych okien iPadOS, ekranu blokady z Live Activity, zakupów w piaskownicy, drugiego urządzenia z tym samym kontem ani instalacji nad poprzednią wersją.
+Wersja 2026-11-01 (rola 07, P-289; zegarek wraca do testu — P-316). Scala: lista „tylko urządzenie” partii 6 U1–U12 (`docs/programista/partia-6-natywne.md`, kopia partii 6 a107a49), listę „tylko telefon” TT-01–TT-11 (`docs/jakosc/strategia.md` §8) i listę iCloud partii 7 (`docs/jakosc/plan-partia-7-icloud.md`, „Lista »tylko urządzenie«”).
+Lista jest zawężona do tego, czego CI nie sprawdzi (jak w Treningu: „telefon zaraz po buildzie” — pierwsza część ok. 5 min, reszta w kolejności bloków). Czego nie sprawdzi CI: symulator nie ma kamery, zegarka sparowanego z telefonem (`transferUserInfo` nie działa w symulatorze, ADR-0009), wibracji, prawdziwych okien iPadOS, ekranu blokady z Live Activity, zakupów w piaskownicy, drugiego urządzenia z tym samym kontem ani instalacji nad poprzednią wersją.
 
 ## Jak to robić
-- **Czas:** część obowiązkowa ok. 70 min, z częściami warunkowymi i dodatkowymi do ok. 100 min (szacunek agenta, nie pomiar). Można przerwać po dowolnym bloku i wrócić; kolejność bloków A i G jest ważna (niżej).
+- **Czas:** część obowiązkowa ok. 85 min, z częściami warunkowymi i dodatkowymi do ok. 115 min (szacunek agenta, nie pomiar; blok A z zegarkiem ok. 6 min, blok H ok. 12 min). Można przerwać po dowolnym bloku i wrócić; kolejność bloków A i G jest ważna (niżej).
 - **Jedno zadanie naraz.** Przy każdym punkcie: wynik **tak / nie**, a przy „nie” zrzut ekranu (albo nagranie ekranu) i jedno zdanie, co się stało.
 - **Gdzie zgłosić:** wypełnij kolumnę „Wynik” w tabeli na końcu (wystarczy zdjęcie albo wklejenie listy „U5: tak, U10: nie — …”) i wyślij koordynatorowi. Zrzuty tylko do prywatnego `oczko-warsztat` (mogą pokazywać Twoje dane), nie do tego repo.
 - Teksty w aplikacji są po angielsku — w krokach podaję je dosłownie w cudzysłowie.
 
 ## Przygotowanie (5 min)
-1. **iPhone z obecną wersją 0.1.0** (TestFlight, build 1004) — **nie usuwaj jej przed blokiem A**. iPad bez Apple Pencil.
+1. **iPhone z obecną wersją 0.1.0** (TestFlight, build 1004) — **nie usuwaj jej przed blokiem A**. **Apple Watch sparowany z tym iPhonem** (do bloków A i H; masz go — Trening `docs/fakty-wlasciciela.md`, build 1030/1033). iPad bez Apple Pencil.
 2. Numer nowego buildu TestFlight: [DO USTALENIA — poda rola 10 / koordynator]. Zapisz go w tabeli wyników.
 3. Pliki na iPhonie w aplikacji Pliki:
    - dowolny PDF wzoru (kilka stron);
@@ -18,11 +18,13 @@ Czego nie sprawdzi CI: symulator nie ma kamery, prawdziwych okien iPadOS, ekranu
 4. Na iPhonie: Ustawienia → Ekran i jasność → Automatyczna blokada = **1 minuta** (do U11; po testach przywróć swoje).
 5. Te same konta Apple ID i iCloud na iPhonie i iPadzie (do bloków E i F).
 
-## A. Instalacja nad 0.1.0 — iPhone, ok. 5 min (koniecznie pierwsze)
+## A. Instalacja nad 0.1.0 — iPhone i zegarek, ok. 6 min (koniecznie pierwsze)
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
 |---|---|---|---|
 | TT-07 | W TestFlight zainstaluj nowy build **na istniejącą 0.1.0** (bez usuwania). Otwórz aplikację. | Aplikacja startuje bez awarii; jest pusta (licznik 0 albo „No projects yet…”) — to zamierzone, dane 0.1.0 nie są przenoszone (P-070). Stary plik zostaje nietknięty. | awaria, ekran trybu awaryjnego albo jakiekolwiek dane z 0.1.0 |
+| TT-12 | Zaraz po instalacji buildu, bez czekania na resztę listy: na zegarku wciśnij koronę (siatka aplikacji); na iPhonie otwórz aplikację Watch i znajdź „Oczko” na liście aplikacji. Jeśli aplikacji na zegarku nie ma, włącz jej instalację w aplikacji Watch (przełącznik przy „Oczko”) i poczekaj kilka minut. | Ikona Oczka na siatce zegarka jest prawdziwą ikoną (nie pustym krążkiem); nazwa „Oczko” widoczna w aplikacji Watch. Aplikacja zegarka się otwiera. | pusty krążek zamiast ikony (taki błąd miał Trening, R-013), brak aplikacji na zegarku, awaria przy otwarciu |
 TT-06 (aktualizacja z danymi z poprzedniego buildu nowej wersji) dotyczy dopiero kolejnych buildów — teraz „nie dotyczy”.
+Blok A to pierwsza część „zaraz po buildzie” (ok. 6 min); reszta w kolejności bloków. Dlaczego zegarek tu: ikony i instalacji zegarka symulator w CI nie sprawdza, a błąd widać od razu.
 
 ## B. Licznik i ekran — iPhone, ok. 12 min
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
@@ -68,6 +70,15 @@ TT-04 (Family Sharing — potrzebny członek rodziny) i TT-05 (zwrot w piaskowni
 | BR-DAN-002/S2 (dodatkowo, +5 min) | Tryb samolotowy na obu; +1 na iPhonie i +1 na iPadzie w tym samym projekcie; wyłącz tryb na obu. | Komunikat o dwóch wersjach („Two versions…”) z wyborem; nic nie znika po cichu. | jedna wersja zniknęła bez pytania |
 BR-DAN-004/S1 (nowy telefon z kopii urządzenia) i stany „brak miejsca / wylogowane konto” — „nie sprawdzono” (wymagają innego telefonu albo zmiany konta).
 
+## H. Zegarek (Apple Watch sparowany z iPhonem), ok. 12 min
+Wykonaj po bloku B (wymaga zainstalowanego buildu i projektu na iPhonie); przed blokiem G (G usuwa dane). Zegarek liczy rzędy bez iPhone'a: kolejka zmian jest po stronie zegarka (ADR-0009). **Zasada kroku „telefon poza zasięgiem”:** włącz na iPhonie tryb samolotowy i wyłącz Bluetooth albo zostaw iPhone'a w innym pokoju (ponad ok. 10 m); sam tryb samolotowy zegarka z siecią Wi‑Fi może nadal łączyć go z telefonem. **Między stuknięciami +1 zostaw ok. 3 s** (3 dodania w 2 s to seria, którą strażnik RD‑17 liczy inaczej).
+| ID | Kroki | Oczekiwany wynik | Zgłoś |
+|---|---|---|---|
+| TT-13 / BR-LIC-015/S1 + BR-DAN-011/S2 | Na iPhonie projekt z licznikiem **10** (menu licznika → „Enter the row number”, pole „Rows already finished”). Telefon poza zasięgiem (zasada wyżej). Na zegarku otwórz Oczko i stuknij „+1 row” **3 razy** (przerwa ok. 3 s). Przyjrzyj się linii pod liczbą. Potem przywróć telefon (wyłącz tryb samolotowy, włącz Bluetooth), odblokuj iPhone'a i poczekaj do minuty. Otwórz projekt na iPhonie. | Zegarek: 13, a pod liczbą cicha linia „iPhone not nearby. 3 changes are saved on this watch.” (bez koloru ostrzegawczego). Po powrocie telefonu linia znika, a **iPhone pokazuje 13** (NFR-ZEG-001). | inna liczba na zegarku lub iPhonie, brak linii, linia nie znika po minucie, **czas do zniknięcia linii w sekundach** |
+| TT-14 / BR-LIC-015/S2 | Na iPhonie w tym samym projekcie (licznik 10) dodaj przypomnienie: menu licznika → „Add a reminder (“every N rows”)”: od rzędu **12**, co **6**, **8** razy, tekst „decrease at both ends” (jak scenariusz E2E 15). Telefon w zasięgu. Odczekaj chwilę na zegarku (stan z telefonu dochodzi jako kontekst), stuknij na zegarku „+1 row” (10 → 11). | Zegarek **wibruje** przy wejściu w rząd z przypomnieniem; w miejscu podpisu „Now row 12” pas „Row 12: decrease at both ends · 1 of 8”. Wibracja jest odczuwalna na nadgarstku. | brak wibracji, brak pasa, inny numer rzędu lub „k z N”, zegarek nie widzi przypomnienia po minucie |
+| TT-15 / BR-ZAK-001/S4 (**warunkowe, rozłożone w czasie**) | Warunek: Pro kupione w piaskownicy (blok E) **i** darmowe dni miesiąca wyczerpane przed zakupem (liczenie w 5 różnych dniach bez Pro). Telefon poza zasięgiem; w nowym dniu pierwszy „+1 row” na zegarku. | Rząd dodany, bez komunikatu o skończonych darmowych dniach (zegarek odczytuje Pro bez telefonu; sposób: OP-22). | komunikat o limicie przy aktywnym Pro |
+TT-15 bez spełnionego warunku (pięć dni) — „nie sprawdzono”; ryzyko szczątkowe: wektory Pro na zegarku i złote pliki stanu (`tests/wspolne`, Z07-12), sposób odczytu Pro na zegarku [DO USTALENIA] w OP-22 (rola 02). Nie ma sposobu na skrócenie warunku na jednym urządzeniu: dni limitu liczą dni kalendarzowe, a zegar urządzenia testowego nie jest cofany.
+
 ## G. Instalacja od zera — iPhone, ok. 12 min (koniecznie na końcu: usuwa dane testów)
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
 |---|---|---|---|
@@ -76,15 +87,16 @@ BR-DAN-004/S1 (nowy telefon z kopii urządzenia) i stany „brak miejsca / wylog
 | TT-02 (warunkowe, jak blok E) | Po ostatniej instalacji otwórz aplikację **bez** „Restore purchases”. | Pro działa (uprawnienia bieżące). | brak Pro |
 
 ## Nie sprawdzamy na tym etapie (z powodem)
-- Apple Watch (BR-ZAK-001/S4, wibracja przypomnień) — brak zegarka, „nie sprawdzono” (P-290); zastępczo testy w Node (strategia §8).
+- Zegarek: **nie sprawdzamy** nieudanego zapisu stuknięcia na zegarku (komunikat „Row N wasn’t added”, P-142 (1b); wymaga pełnej pamięci zegarka), pracy zegarka przez wiele godzin bez iPhone'a ani baterii. TT-15 — tylko po spełnieniu warunku. Poprzednie „brak zegarka” (P-290) zostało skorygowane przez P-316: masz Apple Watch.
 - TT-06 — od kolejnego buildu nowej wersji.
 - TT-04, TT-05, BR-DAN-004/S1, stany iCloud bez miejsca/konta — wyżej.
 
 ## Wyniki (do wypełnienia)
-Build: ____ · data: ____ · iPhone (model, iOS): ____ · iPad (model, iPadOS): ____
+Build: ____ · data: ____ · iPhone (model, iOS): ____ · iPad (model, iPadOS): ____ · Apple Watch (model, watchOS): ____
 | ID | Wynik (tak / nie / nie sprawdzono) | Uwagi / zrzut |
 |---|---|---|
 | TT-07 | | |
+| TT-12 (ikona i instalacja na zegarku) | | |
 | U7 | | |
 | TT-09 | | |
 | U11 | | |
@@ -103,6 +115,9 @@ Build: ____ · data: ____ · iPhone (model, iOS): ____ · iPad (model, iPadOS): 
 | TT-11 | | |
 | TT-08 / BR-DAN-002/S1 | | |
 | BR-DAN-002/S2 | | |
+| TT-13 (zegarek bez telefonu; czas zniknięcia linii: ___ s) | | |
+| TT-14 (przypomnienie i wibracja) | | |
+| TT-15 (Pro na zegarku, warunkowe) | | |
 | U12 | | |
 | U9 | | |
 | TT-02 | | |
