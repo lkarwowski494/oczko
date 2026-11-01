@@ -1,6 +1,7 @@
 # Przekazanie koordynatora Oczka
 
 **Wznowienie 2026-11-01 16:05 UTC (nowe konto):** koordynator session_01T66VBwakbtXXLmB3joKZcd (opus/medium). Ustalenia właściciela: P-310 (role sonnet/high, `.claude/settings.json` `effortLevel`), P-311 (łańcuch `send_later`), P-312 (pushe 08 → 09 → 07 jedną sesją integracyjną 08), P-313 (commity DEC-35 z `main` nie przenoszone), P-314 (prompts eb3b4e7). Plan do 1.0: `docs/plan-prac.md`. Polecenia ról: `oczko-warsztat` `koordynacja/role-2026-11-01/`.
+**W toku (16:18 UTC):** sesja 08 integracja session_01T66VBvpx771bQWRg4QvnFw (sonnet) — faza A: stos kopii 08 → 09 → 07 nad roboczą na `claude/kopia-integracja-2026-11-01`, verify po każdym etapie; faza B (pushe na roboczą) na sygnał koordynatora od 23:00 UTC. Zaplanowane: trig_01SoAAsgmsQmHmXqL7NWuPCk (17:04, sprawdzenie), trig_01MTsaUZASrY2MKDYkr2QFH4 (23:00, sygnał pushy). Dalej: `docs/plan-prac.md` kroki 2–3.
 
 **Wszystkie sesje ról zapisały stan i są zarchiwizowane (16:44 UTC); pliki stanu: `docs/programista/partia-7.md`, `docs/lokalizacja/stan-przeklad.md`, `docs/jakosc/stan.md`, `docs/design/stan-audytu-2-1.md`.**
 
