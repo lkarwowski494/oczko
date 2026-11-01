@@ -1,7 +1,7 @@
 # Przekazanie koordynatora Oczka
 
 **Wznowienie 2026-11-01 16:05 UTC (nowe konto):** koordynator session_01T66VBwakbtXXLmB3joKZcd (opus/medium). Ustalenia właściciela: P-310 (role sonnet/high, `.claude/settings.json` `effortLevel`), P-311 (łańcuch `send_later`), P-312 (pushe 08 → 09 → 07 jedną sesją integracyjną 08), P-313 (commity DEC-35 z `main` nie przenoszone), P-314 (prompts eb3b4e7). Plan do 1.0: `docs/plan-prac.md`. Polecenia ról: `oczko-warsztat` `koordynacja/role-2026-11-01/`.
-**W toku (16:18 UTC):** sesja 08 integracja session_01T66VBvpx771bQWRg4QvnFw (sonnet) — faza A: stos kopii 08 → 09 → 07 nad roboczą na `claude/kopia-integracja-2026-11-01`, verify po każdym etapie; faza B (pushe na roboczą) na sygnał koordynatora od 23:00 UTC. Zaplanowane: trig_01SoAAsgmsQmHmXqL7NWuPCk (17:04, sprawdzenie), trig_01MTsaUZASrY2MKDYkr2QFH4 (23:00, sygnał pushy). Dalej: `docs/plan-prac.md` kroki 2–3.
+**W toku (17:07 UTC, harmonogram P-319 w `docs/plan-prac.md`):** 08 integracja session_01T66VBvpx771bQWRg4QvnFw — faza A gotowa (`claude/kopia-integracja-2026-11-01-c`: 08 4ad540f, 09 ea135c4, HEAD 07 c6d563e), faza B (pushe) na sygnał 23:00 UTC; 07 session_01T66VBzXj7wqwVye2H62bGK i 10 session_01T66VBzJXNp7k3DmTkzqA2n — faza A bez macOS. Zaplanowane: sygnał 23:00 trig_01MTsaUZASrY2MKDYkr2QFH4 + dyżur `send_later` co ≤ 60 min (P-311).
 
 **Wszystkie sesje ról zapisały stan i są zarchiwizowane (16:44 UTC); pliki stanu: `docs/programista/partia-7.md`, `docs/lokalizacja/stan-przeklad.md`, `docs/jakosc/stan.md`, `docs/design/stan-audytu-2-1.md`.**
 
