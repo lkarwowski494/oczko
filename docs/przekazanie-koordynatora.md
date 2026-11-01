@@ -1,7 +1,15 @@
 # Przekazanie koordynatora Oczka
 
 **Wznowienie 2026-11-01 16:05 UTC (nowe konto):** koordynator session_01T66VBwakbtXXLmB3joKZcd (opus/medium). Ustalenia właściciela: P-310 (role sonnet/high, `.claude/settings.json` `effortLevel`), P-311 (łańcuch `send_later`), P-312 (pushe 08 → 09 → 07 jedną sesją integracyjną 08), P-313 (commity DEC-35 z `main` nie przenoszone), P-314 (prompts eb3b4e7). Plan do 1.0: `docs/plan-prac.md`. Polecenia ról: `oczko-warsztat` `koordynacja/role-2026-11-01/`.
-**W toku (17:07 UTC, harmonogram P-319 w `docs/plan-prac.md`):** 08 integracja session_01T66VBvpx771bQWRg4QvnFw — faza A gotowa (`claude/kopia-integracja-2026-11-01-c`: 08 4ad540f, 09 ea135c4, HEAD 07 c6d563e), faza B (pushe) na sygnał 23:00 UTC; 07 session_01T66VBzXj7wqwVye2H62bGK i 10 session_01T66VBzJXNp7k3DmTkzqA2n — faza A bez macOS. Zaplanowane: sygnał 23:00 trig_01MTsaUZASrY2MKDYkr2QFH4 + dyżur `send_later` co ≤ 60 min (P-311).
+**W toku (2026-11-01 17:45 UTC; decyzje do P-323; plan i harmonogram: `docs/plan-prac.md`, kolejność P-320/P-321):**
+- **08 integracja** session_01T66VBvpx771bQWRg4QvnFw — faza A gotowa: `claude/kopia-integracja-2026-11-01-c` (08 4ad540f, 09 ea135c4, HEAD 07 c6d563e `[e2e-pelny] [e2e-ciemny]`). **23:00 UTC: wyślij jej sygnał fazy B** (merge najnowszej roboczej, verify, pushe fast-forward 08 → 09 → HEAD). Potem ta sama sesja robi poprawki 2.11.
+- **07 audit zgodność 1.0 (opus)** session_01T66VBznXMhvzdiLWuxAQqi — 51 funkcji MVP vs kod (P-321); raport `oczko-warsztat` `07-jakosc/2026-11-01-zgodnosc-1-0/raport.md` do ok. 01:30 UTC. **Właściciel czeka na wiadomość po tym raporcie** (krótko: ile luk BRAK/ATRAPA/CZĘŚCIOWE, czas partii 8, wpływ na termin audytu).
+- **07 (sonnet)** session_01T66VBzXj7wqwVye2H62bGK — faza A przyjęta (P-323, `claude/kopia-07-2026-11-01`); czeka na sygnał fazy B = raport E2 po końcu nocnego przebiegu (podaj numer przebiegu).
+- **10** — faza A przyjęta (P-322, `claude/kopia-10-2026-11-01` 1bbf5ab), sesja zarchiwizowana.
+- Po przebiegu: nowa sesja **04** (aneks audytu 2.1: AX5, iPad, poziomo, ciemny, długości etykiet; bez kadrów zrzutów). Po raporcie zgodności i E2: **08 partia 8 + poprawki** (kopie 07 i 10 jadą razem), potem **audyt M1 opus/high**.
+- **Właściciel:** kroki A1–A5, B2 (`docs/wydanie/kroki-wlasciciela-testflight.md`) 2.11 wieczorem (P-323); A6 po audycie.
+- Zaplanowane do tej sesji: `send_later` 18:03 (dyżur), 23:00 trig_01MTsaUZASrY2MKDYkr2QFH4 (sygnał pushy). Łańcuch dyżurów ≤ 60 min (P-311).
+- Pomiar kosztu: sesja sonnet 22 min ≈ 39 M odczytów cache, 6,82 USD — oszczędnie z sesjami (P-312).
 
 **Wszystkie sesje ról zapisały stan i są zarchiwizowane (16:44 UTC); pliki stanu: `docs/programista/partia-7.md`, `docs/lokalizacja/stan-przeklad.md`, `docs/jakosc/stan.md`, `docs/design/stan-audytu-2-1.md`.**
 
