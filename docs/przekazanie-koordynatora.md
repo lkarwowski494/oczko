@@ -15,7 +15,7 @@
 | `claude/kopia-09-2026-10-30` (09) | 4316d41 (słowniki 35 języków podpięte w `src/`, app.json, `targets/*/Teksty.swift` — 714e46f; kompilacja Swift z 35 językami i Intl.PluralRules na Hermes niesprawdzone na macOS) | przekład 34 języków (propozycje `docs/lokalizacja/przeklad-api/*.json`), skrypt/workflow API (nieużywane, P-309); podpięcie słowników do `src/` — zob. `docs/lokalizacja/stan-przeklad.md` | verify zielone; **push 2** |
 | `claude/kopia-07-2026-10-30` (07) | b669e08 | ciemny motyw w e2e (`[e2e-ciemny]`, `simctl ui appearance dark`) | **push 3, ostatni, HEAD z `[e2e-pelny] [e2e-ciemny]`** |
 | `main` | ad8d6b0 | bez zmian | scalenie tylko za zgodą właściciela |
-| do pominięcia | — | `claude/kopia-partia-7-2026-10-30` (b598299, stara), `claude/kopia-07` (c9a6325), `claude/kopia-partia-6` | nieaktualne; usunięcie — właściciel |
+| do pominięcia | — | `claude/kopia-partia-7-2026-10-30` (b598299, stara), `claude/kopia-07` (c9a6325), `claude/kopia-partia-6`, `claude/kopia-integracja-2026-11-01`, `claude/kopia-integracja-2026-11-01-b` | nieaktualne; usunięcie — właściciel |
 
 ## Pierwszy krok następcy (w oknie maszyn macOS: ok. 23:00–14:00 UTC, P-187/P-307)
 1. Pushe kolejno, każdy po `git pull --rebase origin claude/jolly-thompson-paz6d8` (przy lawinie konfliktów add/add — merge, push ma być fast-forward), `npm ci`, `env -u NODE_PATH npm run verify` kod 0: **08 → 09 → 07** (07 ostatnie, w treści HEAD `[e2e-pelny] [e2e-ciemny]`); pushe w ciągu kilku minut → jeden pełny przebieg (cancel-in-progress). W 08: c63016b + d2b26bc tylko parą (pierwszy sam ma czerwone verify). `workflow_dispatch` nie zadziała, dopóki workflow nie jest na `main`.
