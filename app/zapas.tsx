@@ -9,13 +9,13 @@ import { stanZapasu, type FiltrZapasu } from '../src/kompozycja/zapas';
 import { zapasZDetalami, type WierszZapasu } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranZapasu(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const { kontener, preferencje } = useAplikacja();
   const router = useRouter();
   const [lista, ustawListe] = useState<WierszZapasu[]>([]);
   const [zapytanie, ustawZapytanie] = useState('');
   const [filtr, ustawFiltr] = useState<FiltrZapasu>('wszystkie');
   useFocusEffect(useCallback(() => { void zapasZDetalami(kontener.z).then((w) => { if (w.ok) ustawListe(w.wartosc); }); }, [kontener]));
-  const stan = stanZapasu(lista, { zapytanie, filtr, imperialny: imperialny(), j: kontener.j });
+  const stan = stanZapasu(lista, { zapytanie, filtr, imperialny: imperialny(preferencje.stan().ukladMiar), j: kontener.j });
   return (
     <Bezpieczny>
       <Zapas t={kontener.j.t} stan={stan} zapytanie={zapytanie} filtr={filtr} naSzukaj={ustawZapytanie} naFiltr={ustawFiltr}

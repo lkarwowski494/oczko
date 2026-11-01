@@ -10,7 +10,7 @@ import { usunWszystkieDane } from '../src/przypadki-uzycia/projekt';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
 
 export default function EkranUsunWszystko(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const { kontener, licznik, preferencje } = useAplikacja();
   const router = useRouter();
   const z = kontener.z;
   const [icloudWlaczona, ustawIcloud] = useState(false);
@@ -27,6 +27,7 @@ export default function EkranUsunWszystko(): React.ReactElement {
       await kontener.icloud.sterownik.wylacz();
       if (takzeZIcloud) await kontener.icloud.sterownik.usunZIcloud();
     }
+    await preferencje.wczytaj(z); // ADR-0029 pkt 4: reset = ustawienia domyślne (wiersze preferencji usunięte razem z resztą)
     licznik.zresetuj();
     router.dismissTo('/projekty');
   }

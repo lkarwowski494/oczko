@@ -22,6 +22,8 @@ export type PropsUstawien = {
   /** Dane (BR-DAN-006, BR-DAN-009): kompozycja; bez nich pozycji nie ma. */
   /** naUsunWszystko: otwiera arkusz potwierdzenia `/usun-wszystko` (BR-DAN-009; usunięcie dopiero po potwierdzeniu, P-266 (3)). */
   dane?: { naEksport(): void; naImport(): void; naUsunWszystko(): void };
+  /** Preferencje urządzenia (ADR-0029): „Keep screen on” (przełącznik) i „Units” (wiersz → /miary); bez nich wierszy nie ma. */
+  preferencje?: { ekranNieGasnie: boolean; ukladMiar: 'auto' | 'metric' | 'imperial'; naEkranNieGasnie(wlaczone: boolean): void; naMiary(): void };
   /** Wynik eksportu albo import w toku (kompozycja), pod grupą danych. */
   wynikDanych?: React.ReactNode;
   /** Panele buildu E2E (e2e/README.md, bez t()); w buildzie wydania null. */
@@ -31,7 +33,7 @@ export type PropsUstawien = {
   jezyk?: { stan: { wartosc: PreferencjaJezyka; jezyk: string }; naJezyk(): void; naZglosTlumaczenie(): void };
   naZrodla?(): void;
 };
-export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla }: PropsUstawien): React.ReactElement {
+export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, preferencje }: PropsUstawien): React.ReactElement {
   const k = useKolory();
   const st = StyleSheet.create({
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },
@@ -53,6 +55,19 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
           <Text style={{ ...typografia.tresc, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>{t('ustawienia.wibracje')}</Text>
           <Switch accessibilityRole="switch" accessibilityLabel={t('ustawienia.wibracje')} value={s.wibracje} onValueChange={naWibracje} />
         </View>
+        {preferencje && (
+          <>
+            <View style={st.wiersz}>
+              <Text style={{ ...typografia.tresc, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>{t('ustawienia.ekran_nie_gasnie')}</Text>
+              <Switch accessibilityRole="switch" accessibilityLabel={t('ustawienia.ekran_nie_gasnie')} value={preferencje.ekranNieGasnie} onValueChange={preferencje.naEkranNieGasnie} testID="ustawienia-ekran-nie-gasnie" />
+            </View>
+            <Pressable accessibilityRole="button" accessibilityLabel={t('ustawienia.uklad_miar')} accessibilityValue={{ text: t(`ustawienia.miary_${preferencje.ukladMiar}`) }} onPress={preferencje.naMiary} style={st.wiersz} testID="ustawienia-miary">
+              <Text style={{ ...typografia.tresc, color: k.grafit }}>{t('ustawienia.uklad_miar')}</Text>
+              <Text style={{ ...typografia.tresc, color: k.olowek }}>{t(`ustawienia.miary_${preferencje.ukladMiar}`)}</Text>
+            </Pressable>
+            <Text style={st.podpis}>{t('ustawienia.ekran_nie_gasnie_opis')}</Text>
+          </>
+        )}
       </View>
       {dane && (
         <View style={st.grupa}>

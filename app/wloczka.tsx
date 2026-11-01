@@ -18,7 +18,7 @@ import { formatujLiczbe } from '../src/i18n/format';
 import { usunWloczke, wloczka, zapiszWloczke, type FormularzWloczki as Dane } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranWloczki(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const { kontener, preferencje } = useAplikacja();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
   const k = useKolory();
@@ -56,7 +56,7 @@ export default function EkranWloczki(): React.ReactElement {
   };
   if (poczatek === undefined) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
   return (
-    <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny() ? 'imperialne' : 'metryczne'}
+    <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny(preferencje.stan().ukladMiar) ? 'imperialne' : 'metryczne'}
       przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
       naAnuluj={() => router.back()}
       naUsun={id && poczatek ? () => potwierdzUsuniecie(kontener, { nazwa: poczatek.nazwa, przycisk: j.t('usun.wloczka'), alert: Alert.alert,

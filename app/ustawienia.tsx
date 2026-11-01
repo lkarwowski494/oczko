@@ -36,7 +36,7 @@ export default function EkranUstawien(): React.ReactElement {
   const t = kontener.j.t;
   const z = kontener.z;
   const [dni, ustawDni] = useState<DniNaLiscie>(null);
-  const [wibracje, ustawWibracje] = useState(preferencje.stan().wibracje);
+  const [pref, ustawPref] = useState(preferencje.stan()); // migawka preferencji urządzenia (ADR-0029); zapis w bazie, przełącznik wraca przy błędzie
   const [dostep, ustawDostep] = useState(kontener.dostep.stan());
   const [dane, ustawDane] = useState<Dane>(null);
   const [ostatniEksport, ustawOstatni] = useState<string | null>(null);
@@ -54,6 +54,12 @@ export default function EkranUstawien(): React.ReactElement {
     return koniec;
   }, [kontener, z]));
 
+  /** ADR-0029: zapis w bazie przez kolejkę; migawka zmienia się po COMMIT, błąd = przełącznik wraca i komunikat `licznik.blad_zapisu`. */
+  async function zapiszPreferencje(zmiana: Parameters<typeof preferencje.zapisz>[1]): Promise<void> {
+    const w = await preferencje.zapisz(z, zmiana);
+    if (!w.ok) Alert.alert(t('ustawienia.tytul'), t('licznik.blad_zapisu'));
+    ustawPref({ ...preferencje.stan() });
+  }
   async function eksport(): Promise<string | null> {
     const w = await eksportuj(z, { katalogDocelowy: z.katalogi.tymczasowy });
     if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return null; }
@@ -108,13 +114,14 @@ export default function EkranUstawien(): React.ReactElement {
   return (
     <Bezpieczny>
       <Ustawienia
-        stan={{ pro: dostep.aktywne, dni: dostep.pro ? null : dni, wibracje }}
+        stan={{ pro: dostep.aktywne, dni: dostep.pro ? null : dni, wibracje: pref.wibracje }}
         t={t}
         system={systemAplikacji}
         adresy={{ polityka: ADRESY.polityka, recenzja: ADRESY.recenzja }}
         naOferty={() => router.push('/oferty')}
         naWstecz={() => router.back()}
-        naWibracje={(w) => { preferencje.ustaw({ wibracje: w }); ustawWibracje(w); }}
+        naWibracje={(w) => void zapiszPreferencje({ wibracje: w })}
+        preferencje={{ ekranNieGasnie: pref.ekranNieGasnie, ukladMiar: pref.ukladMiar, naEkranNieGasnie: (w) => void zapiszPreferencje({ ekranNieGasnie: w }), naMiary: () => router.push('/miary') }}
         naZglosProblem={() => router.push('/zglos')}
         jezyk={{ stan: { wartosc: kontener.j.preferencja(), jezyk: kontener.j.jezyk() }, naJezyk: () => router.push('/jezyk'), naZglosTlumaczenie: () => router.push('/zglos') }}
         naZrodla={() => router.push('/zrodla')}

@@ -101,7 +101,7 @@ export type KompozycjaLicznika = {
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
 /** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`. */
-export type OpcjeKompozycji = { wibracje(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
+export type OpcjeKompozycji = { wibracje(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
@@ -237,7 +237,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       async start(): Promise<StanStartu> {
         const { s, w } = await stanPoZapisie();
         void poZapisie(w); // stan ekranu blokady po starcie (po scaleniu dziennika i potwierdzeniach zegarka)
-        return { licznik: s, ekranWlaczony: true }; // F-10: opcja z Ustawień (3C); domyślnie włączona
+        return { licznik: s, ekranWlaczony: o.ekranWlaczony?.() ?? true }; // F-10, BR-LIC-013/S2: preferencja „Keep screen on” (ADR-0029); domyślnie włączona
       },
       dodajRzad(): Promise<WynikPlus> {
         const p = plusZEkranu();

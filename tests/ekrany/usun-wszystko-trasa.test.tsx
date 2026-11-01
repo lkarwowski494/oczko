@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { preferencje } from '../../src/kompozycja/preferencje';
 import { projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { licznosci, przygotuj, wykonaj, zArchiwum } from '../dane/pomocnicze/srodowisko';
 import { przycisk, tEn } from './pomoc';
@@ -23,8 +24,10 @@ async function aplikacja(zablokowanaKopia = false) {
   await wykonaj(s.baza, [projekt('stary', 'Stary sweter')]);
   if (zablokowanaKopia) { const plik = join(s.katalog, 'plik-zamiast-katalogu'); writeFileSync(plik, 'x'); s.z.katalogi.kopiePrzed = join(plik, 'Backup'); }
   const licznik = { zresetuj: jest.fn() };
-  mockAplikacja = { kontener: { z: zArchiwum(s.z), j: { t }, icloud: null }, licznik, preferencje: {} };
-  return { s, licznik };
+  const z = zArchiwum(s.z);
+  const pref = preferencje();
+  mockAplikacja = { kontener: { z, j: { t }, icloud: null }, licznik, preferencje: { ...pref, wczytaj: () => pref.wczytaj(z) } };
+  return { s, licznik, pref, z };
 }
 
 beforeEach(() => { jest.clearAllMocks(); });
@@ -58,4 +61,14 @@ test('N-05-1: nie da się zapisać kopii → alert „couldn’t save a copy”,
   expect(await licznosci(s.baza)).toEqual(przed);
   expect(mockRouter.dismissTo).not.toHaveBeenCalled();
   expect(licznik.zresetuj).not.toHaveBeenCalled();
+});
+
+test('07-jakosc-004 (ADR-0029 pkt 4, K-04g): po „Delete all data” migawka preferencji wraca do wartości domyślnych, a wiersze usunięte z bazy', async () => {
+  const { pref, z } = await aplikacja();
+  await pref.zapisz(z, { wibracje: false, ekranNieGasnie: false, ukladMiar: 'imperial' });
+  render(<EkranUsunWszystko />);
+  await userEvent.press(przycisk('Delete all data'));
+  await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledWith('/projekty'));
+  expect(pref.stan()).toEqual({ wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' });
+  expect(await z.baza.all('SELECT klucz FROM ustawienie WHERE klucz IN (\'wibracje\', \'ekran_nie_gasnie\', \'uklad_miar\')')).toEqual([]);
 });

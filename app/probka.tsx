@@ -17,11 +17,11 @@ import { widokProjektu } from '../src/przypadki-uzycia/widok-projektu';
 type Start = { oczka: string; na: WejscieProbki['na']; zProjektu?: string };
 
 export default function EkranProbki(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const { kontener, preferencje } = useAplikacja();
   const { projekt } = useLocalSearchParams<{ projekt?: string }>();
   const k = useKolory();
   const j = kontener.j;
-  const cm = !imperialny();
+  const cm = !imperialny(preferencje.stan().ukladMiar);
   const [start, ustawStart] = useState<Start | null>(projekt ? null : { oczka: '', na: cm ? '10cm' : '4in' });
   useEffect(() => {
     if (!projekt) return;

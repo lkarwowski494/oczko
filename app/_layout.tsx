@@ -48,8 +48,10 @@ export default function Korzen(): React.ReactElement {
       await w.wartosc.dostep.odswiez(); // limit dni liczony z bieżącym dostępem już przy pierwszym ekranie
       if (!zywy) return;
       const z = w.wartosc.z;
+      await p.wczytaj(z); // ADR-0029: preferencje urządzenia z bazy przed pierwszym ekranem licznika i narzędzi
+      if (!zywy) return;
       obslugaBledow?.ustawZapis(async (b) => { await wKolejce(z.baza, () => zapiszBlad(z.baza, { czasMs: z.zegar.teraz().ms, kod: b.kod, szczegoly: { ramki: b.szczegoly.ramki, fatal: b.szczegoly.fatal ? 1 : 0 } })); });
-      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik: kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } }), preferencje: p } });
+      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik: kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } }), preferencje: p } });
     }
     async function start(): Promise<void> {
       if (proba > 0) { await normalny(); return; }
