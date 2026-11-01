@@ -1,5 +1,5 @@
 // Trasa „/projekty”: lista projektów (F-50, F-54). Otwarcie projektu zapamiętuje jego pierwszy licznik (F-49) i wraca do licznika.
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect, useIsFocused, useRouter } from 'expo-router';
 import { ListaProjektow, type StanListyProjektow } from '../src/ekrany/ListaProjektow';
@@ -7,6 +7,7 @@ import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { projektyDoSkrzynki, stanListy } from '../src/kompozycja/projekty';
+import { pokazacOknoUczciweZasady } from '../src/przypadki-uzycia/informacje-pro';
 import { widokProjektow, type WidokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { SkrzynkaNaEkranie } from '../src/kompozycja/SkrzynkaNaEkranie';
 
@@ -22,6 +23,14 @@ export default function EkranProjektow(): React.ReactElement {
     void widokProjektow(kontener.z).then((w) => { if (zywy && w.ok) ustawWidok(w.wartosc); });
     return () => { zywy = false; };
   }, [kontener]));
+  // P-089 (3a), BR-ZAK-006/S9 (ER-46): okno „Uczciwe zasady” raz, po minionym dniu z robótką, w pewnym stanie darmowym — tu, nigdy na liczniku (07-jakosc-022).
+  useEffect(() => {
+    let zywy = true;
+    void pokazacOknoUczciweZasady(kontener.z, { poziom: kontener.dostep.stan().poziom, ekran: 'projekty' }).then((o) => {
+      if (zywy && o.ok && o.wartosc) router.push('/uczciwe-zasady');
+    });
+    return () => { zywy = false; };
+  }, [kontener, router]);
   if (!widok) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   const ch = kontener.z.zegar.teraz();
   const stan: StanListyProjektow = stanListy(widok, { zapytanie, j: kontener.j, terazMs: ch.ms, strefa: ch.strefa });
