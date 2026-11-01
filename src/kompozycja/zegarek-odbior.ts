@@ -31,7 +31,7 @@ export function odbiorZegarka(o: ZaleznosciOdbioru): { naZdarzenie(): void; zamk
         } catch {
           await o.zglosBlad('wyjatek');
         }
-      } while (ponow && !zamkniety);
+      } while (ponow && !zamkniety && o.aktywna()); // domknięcie tylko na pierwszym planie (ARCH-13): schowana aplikacja nie zaczyna transakcji
     } finally {
       trwa = false;
     }

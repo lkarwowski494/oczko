@@ -212,6 +212,25 @@ describe('odbiorZegarka: jedno scalenie naraz + jedno domknięcie (ADR-0030 pkt 
     expect(bledy).toEqual(['zapis', 'wyjatek']);
   });
 
+  test('przegląd P1 (ARCH-13): aplikacja schowana w trakcie scalenia → domknięcie NIE startuje (żadnej transakcji w tle); następne zdarzenie na pierwszym planie scala', async () => {
+    const b = brama();
+    let przebiegi = 0; let aktywna = true;
+    const o = odbiorZegarka({
+      aktywna: () => aktywna,
+      scal: async () => { przebiegi += 1; if (przebiegi === 1) await b.czeka; return ok; },
+      zglosBlad: async () => undefined,
+    });
+    o.naZdarzenie();
+    o.naZdarzenie(); // ustawia domknięcie
+    aktywna = false; // AppState → background w trakcie trwającego przebiegu
+    b.otworz();
+    await chwila();
+    expect(przebiegi).toBe(1);
+    aktywna = true; // powrót na pierwszy plan: linie scala naPierwszyPlan (Aplikacja.tsx); nowe zdarzenie też działa
+    o.naZdarzenie();
+    await poczekaj(() => przebiegi === 2);
+  });
+
   test('zamknięty odbiór i aplikacja poza pierwszym planem ignorują zdarzenia', async () => {
     let przebiegi = 0; let aktywna = false;
     const o = odbiorZegarka({ aktywna: () => aktywna, scal: async () => { przebiegi += 1; return ok; }, zglosBlad: async () => undefined });
