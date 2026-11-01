@@ -1,6 +1,6 @@
 // Przypadki użycia projektu, części i kosza (moduly.md „Projekt”, ADR-0013, P-026, P-047 (7), P-072 (8a)).
 // sygnatura: propozycja 07, zatwierdzona w fix 05 2026-10-25 (Z07-22).
-import type { Wynik } from '../domena/bledy';
+import type { Powod, Wynik } from '../domena/bledy';
 import { przejdzProjekt, type ZdarzenieProjektu } from '../domena/maszyny/projekt';
 import { STANY, type NarzedzieProjektu } from '../domena/stany';
 import { chwilaOPorze } from '../domena/postep';
@@ -9,7 +9,9 @@ import { stanProjektu, ustawUsuniecie, usunietoMs, zapiszStanProjektu, type Tabe
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { jestDniem } from './daty';
 import { OK, blad, operacjaZapisu } from './zapis';
-import type { Zaleznosci, ZaleznosciPlikow } from './zaleznosci';
+import { scalDziennikWKolejce } from './dziennik';
+import { wKolejce } from './kolejka';
+import type { Zaleznosci, ZaleznosciArchiwum } from './zaleznosci';
 
 export type NowyProjekt = { projektId: string; czesci: { czescId: string; nazwa: string; licznikId: string }[] };
 const niepusta = (t: string): boolean => typeof t === 'string' && t.trim().length > 0;
@@ -158,8 +160,20 @@ export function dodajCzescPara(z: Zaleznosci, w: { czescId: string; nazwa: strin
 const KOLEJNOSC_USUWANIA = ['zdjecie', 'rysunek', 'wzor', 'projekt_wloczka', 'obliczenie', 'sesja', 'przypomnienie', 'notatka_rzedu', 'zdarzenie', 'licznik', 'czesc', 'projekt', 'wloczka', 'narzedzie', 'plik', 'dzien_limitu', 'poczekalnia', 'ustawienie', 'blad', 'zmiana_icloud'];
 /** Stan iCloud urządzenia: wiersz zostaje, synchronizacja wyłączona przed usuwaniem, żeby wyzwalacze nie wysłały usunięć do iCloud (ADR-0005, fix-7). */
 const STAN_SYNCHRONIZACJI = 'synchronizacja';
-/** „Usuń wszystkie dane” (F-34, P-110 Q3a): wszystkie tabele lokalnie (także dni limitu, dane.md) i pliki z magazynu po COMMIT; synchronizacja wyłączona. */
-export async function usunWszystkieDane(z: ZaleznosciPlikow): Promise<Wynik<void>> {
+/** Niepowodzenie przed jakąkolwiek zmianą: kopia bezpieczeństwa się nie zapisała (ADR-0028, P-328); ekran mówi to innym tekstem niż błąd usuwania. */
+export type BladKopiiPrzedUsunieciem = { ok: false; powod: Powod; etap: 'kopia' };
+/**
+ * „Usuń wszystkie dane” (F-34, P-110 Q3a, P-328): najpierw pełna kopia (archiwum `.oczko` w Documents/Backup, ADR-0028; dziennik +1 scalony do bazy,
+ * jak przy eksporcie), potem wszystkie tabele lokalnie (także dni limitu, dane.md) i pliki z magazynu po COMMIT; synchronizacja wyłączona.
+ * Nieudana kopia przerywa usunięcie bez zmiany. Stuknięcie +1 między kopią a usunięciem nie wchodzi do kopii (okno rzędu ms po potwierdzeniu: teoretyczne).
+ */
+export async function usunWszystkieDane(z: ZaleznosciArchiwum): Promise<Wynik<void> | BladKopiiPrzedUsunieciem> {
+  const kopia = await z.czasWTle.chron('usuniecie', () => wKolejce(z.baza, async () => {
+    const d = await scalDziennikWKolejce(z);
+    if (!d.ok) return d;
+    return z.archiwum.kopiaPrzed('usunieciem');
+  }));
+  if (!kopia.ok) return { ok: false, powod: kopia.powod, etap: 'kopia' };
   const pliki: string[] = [];
   const w = await operacjaZapisu(z, 'usunWszystkieDane', async (tx) => {
     const tabele = (await wiersze(tx.all("SELECT name FROM sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"), 'usunWszystkieDane')).map((r) => tekst(r, 'name'));

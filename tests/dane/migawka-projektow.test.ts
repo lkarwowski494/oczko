@@ -9,7 +9,7 @@ import { migawkaWKatalogu } from '../../src/platforma/migawka';
 import { odswiezMigawke } from '../../src/przypadki-uzycia/migawka';
 import { usunProjekt, usunWszystkieDane } from '../../src/przypadki-uzycia/projekt';
 import { plik, projekt, wzor } from './pomocnicze/dane-wejsciowe';
-import { DOBA, T0, jeden, katalogTymczasowy, przygotuj, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { DOBA, T0, jeden, katalogTymczasowy, przygotuj, wlozPlik, wykonaj, zArchiwum } from './pomocnicze/srodowisko';
 
 const PDF = Buffer.from('%PDF-1.4\n%%EOF\n');
 const czytaj = (k: string) => JSON.parse(readFileSync(join(k, 'projekty-migawka.json'), 'utf8'));
@@ -66,7 +66,7 @@ describe('odswiezMigawke', () => {
     await usunProjekt(s.z, { projektId: 'p2' });
     await odswiezMigawke(z);
     expect(czytaj(k).projekty.map((p: ProjektMigawki) => p.id)).toEqual(['p1']);
-    await usunWszystkieDane(s.z);
+    await usunWszystkieDane(zArchiwum(s.z));
     await odswiezMigawke(z);
     expect(czytaj(k).projekty).toEqual([]);
   });

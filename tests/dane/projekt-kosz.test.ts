@@ -14,7 +14,7 @@ import { uruchomDane } from '../../src/przypadki-uzycia/start';
 import { utworzPortNode } from '../../src/dane/baza/adapter-node';
 import { join } from 'node:path';
 import { czesc, dzienLimitu, licznik, plik, projekt, przypomnienie, sesja, wzor, zycie, type Instr } from './pomocnicze/dane-wejsciowe';
-import { DOBA, GODZ, MIN, T0, dzienLokalny, ile, jeden, licznosci, migawka, przygotuj, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { DOBA, GODZ, MIN, T0, dzienLokalny, ile, jeden, licznosci, migawka, przygotuj, wlozPlik, wykonaj, zArchiwum } from './pomocnicze/srodowisko';
 
 const OK = { ok: true, wartosc: undefined };
 /** Warunek wstępny W2 (P-118, P-120 Q3a): poprzedni start aplikacji teraz — sprzątanie wymaga dwóch startów po terminie (moduly.md). */
@@ -164,7 +164,7 @@ describe('„Usuń wszystkie dane” (F-34)', () => {
     const s = await przygotuj();
     const pliki = { pdf: wlozPlik(s.magazyn, 'pdf', 'pdf'), rys: wlozPlik(s.magazyn, 'rys', 'pkdrawing'), jpg: wlozPlik(s.magazyn, 'jpg', 'jpg') };
     await wykonaj(s.baza, zycie(pliki));
-    expect(await usunWszystkieDane(s.z)).toEqual(OK);
+    expect(await usunWszystkieDane(zArchiwum(s.z))).toEqual(OK);
     const po = await licznosci(s.baza);
     for (const t of ['projekt', 'czesc', 'licznik', 'zdarzenie', 'wzor', 'rysunek', 'zdjecie', 'plik', 'wloczka', 'projekt_wloczka', 'notatka_rzedu', 'przypomnienie', 'dzien_limitu', 'sesja', 'obliczenie', 'narzedzie'])
       expect({ t, n: po[t] }).toEqual({ t, n: 0 });

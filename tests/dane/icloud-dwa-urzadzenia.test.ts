@@ -9,7 +9,7 @@ import { nowszaWersjaWPoczekalni } from '../../src/dane/repozytoria/icloud';
 import { dodajRzad, utworzSzybkiLicznik } from '../../src/przypadki-uzycia/licznik';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt, sterownikSynchronizacji, type Sterownik } from '../../src/przypadki-uzycia/synchronizacja';
 import { usunWszystkieDane } from '../../src/przypadki-uzycia/projekt';
-import { przygotuj, sha256, MIN, type Srodowisko } from './pomocnicze/srodowisko';
+import { przygotuj, sha256, MIN, type Srodowisko, zArchiwum } from './pomocnicze/srodowisko';
 import { serwerIcloud, type SerwerTestowy, type UrzadzenieTestowe } from './pomocnicze/serwer-icloud';
 
 type Urz = { s: Srodowisko; u: UrzadzenieTestowe; st: Sterownik };
@@ -315,7 +315,7 @@ describe('konto (dane/icloud-konto): zmiana konta, polacz, nie_synchronizuj', ()
     await szybki(a.s.z);
     await a.st.wlacz();
     const wyslan = a.u.wyslano.length;
-    expect((await usunWszystkieDane({ ...a.s.z, synchronizacja: a.u })).ok).toBe(true);
+    expect((await usunWszystkieDane(zArchiwum({ ...a.s.z, synchronizacja: a.u }))).ok).toBe(true);
     expect((await a.st.usunZIcloud()).ok).toBe(true);
     expect(a.u.usunietoStrefe).toBe(1);
     expect(a.u.wyslano.length).toBe(wyslan);
