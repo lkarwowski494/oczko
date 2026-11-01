@@ -31,6 +31,8 @@ export type WidokProjektu = {
   probka: ProbkaProjektu | null;  // U-10: `projekt.probka` {oczka, na_cm}; brak albo zły zapis = null
   /** Miejsce we wzorze (F-18, BR-PRJ-005/S1): strona (od 1) i rząd znacznika ostatnio oglądanego wzoru, a bez niego pierwszego ze znacznikiem; brak znacznika albo rząd przed schematem = null. */
   miejsceWzoru: { strona: number; rzad: number } | null;
+  /** Włóczki przypisane do projektu (wiersz „Yarn” w Details, 07-jakosc-001), po nazwie; także usunięte do kosza (historia zużycia zostaje). */
+  wloczki: { id: string; nazwa: string }[];
 };
 export type ProbkaProjektu = { oczka: number; naCm: 10 | 10.16 };
 
@@ -80,6 +82,8 @@ export function widokProjektu(z: Zaleznosci, w: { projektId: string }): Promise<
     const termin = tekstLubNull(p, 'termin_dzien');
     const dzien = termin ? await dzienProjektu(tx, w.projektId, termin, chwila.dzien) : { cel: null, zrobioneDzis: 0 };
     const miejsceWzoru = await miejsceWzoruProjektu(tx, w.projektId);
+    const wloczki = (await wiersze(tx.all('SELECT w.id, w.nazwa FROM projekt_wloczka pw JOIN wloczka w ON w.id = pw.wloczka_id WHERE pw.projekt_id = ? ORDER BY w.nazwa COLLATE NOCASE, w.id', [w.projektId]), 'widokProjektu'))
+      .map((x) => ({ id: tekst(x, 'id'), nazwa: tekst(x, 'nazwa') }));
     return {
       ok: true,
       wartosc: {
@@ -88,7 +92,7 @@ export function widokProjektu(z: Zaleznosci, w: { projektId: string }): Promise<
         notatka: tekst(p, 'notatka'), narzedzie, drutMm, drutUS: drutMm === null ? null : rozmiarUS(drutMm, narzedzie),
         terminDzien: termin, celDnia: dzien.cel, zrobioneDzis: dzien.zrobioneDzis,
         postep: proc.ok ? { rodzaj: 'procent', wartosc: proc.wartosc } : { rodzaj: 'brak-celow' }, czesci: wynik, ukonczonoDzien: tekstLubNull(p, 'ukonczono_dzien'),
-        probka: parsujProbke(tekst(p, 'probka')), miejsceWzoru,
+        probka: parsujProbke(tekst(p, 'probka')), miejsceWzoru, wloczki,
       },
     };
   });

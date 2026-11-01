@@ -137,7 +137,7 @@ export default function EkranProjektu(): React.ReactElement {
         naOtworzCzesc={(cid) => { const l = czesc(cid)?.liczniki[0]; if (l) otworzLicznik(l.id); }}
         naOtworzLicznik={otworzLicznik}
         naDodajCzesc={() => formularz('czesc')} naDodajLicznik={() => formularz('licznik')}
-        naNotatka={() => formularz('notatka')} naNarzedzie={() => formularz('narzedzie')} naTermin={() => formularz('termin')}
+        naNotatka={() => formularz('notatka')} naNarzedzie={() => formularz('narzedzie')} naTermin={() => formularz('termin')} naWloczka={() => formularz('wloczki')}
         naEdytuj={() => ustawEdycje(true)} naKoniecEdycji={() => ustawEdycje(false)}
         naDataUkonczenia={(dzien) => void zmienDateUkonczenia(z, { projektId: w.id, ukonczonoDzien: dzien }).then(async (r) => { if (r.ok) await wczytaj(); })}
         naWznow={() => void wznowProjekt(z, { projektId: w.id }).then(async (r) => {

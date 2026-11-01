@@ -244,7 +244,12 @@
     "sesja_sprawdz_one": "Oczko stopped this timer after {{count}} hour. Set when you really stopped.",
     "sesja_sprawdz_other": "Oczko stopped this timer after {{count}} hours. Set when you really stopped.",
     "sesja_przerwy": "This session had {{czas}} of pauses. After you change the times, it counts from start to end.",
-    "termin_osiagniety": "The goal is reached, so there’s no daily goal."
+    "termin_osiagniety": "The goal is reached, so there’s no daily goal.",
+    "wloczka_tytul": "Yarn for this project",
+    "wloczka_opis": "Choose what you’re using. When you finish, Oczko asks how many skeins you used and takes them from your stash.",
+    "wloczka_pusto": "No yarn in your stash yet. Add the yarn you’re using first, then choose it here.",
+    "wloczka_wiersz_a11y_one": "{{nazwa}}, {{count}} skein in your stash",
+    "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} skeins in your stash"
   },
   "ukonczenie": {
     "udostepnij": "Share",
@@ -269,7 +274,10 @@
     "zuzycie_ponad_zapas_one": "That’s more than the {{count}} skein in your stash. Your stash will show 0.",
     "zuzycie_ponad_zapas_other": "That’s more than the {{count}} skeins in your stash. Your stash will show 0.",
     "zapas_juz_pusty": "Your stash already shows 0 for this yarn.",
-    "edytuj_zapas": "Edit stash"
+    "edytuj_zapas": "Edit stash",
+    "bez_wloczki": "No yarn is chosen for this project, so your stash stays as it is.",
+    "wybierz_wloczke": "Choose yarn",
+    "edytuj_zapas_opis": "After you save, you come back to this card with the new number."
   },
   "projekt": {
     "czesc_cel": "{{rzedy}} of {{cel}} rows",
@@ -333,7 +341,11 @@
     "probka_wartosc_in": "{{p}} stitches / 4 in",
     "wzor": "Pattern",
     "wzory": "Patterns",
-    "miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}"
+    "miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}",
+    "wloczka": "Yarn",
+    "wloczka_brak": "None",
+    "wloczki_one": "{{count}} yarn",
+    "wloczki_other": "{{count}} yarns"
   },
   "dni": {
     "dzien_one": "{{etykieta}} · {{count}} row",

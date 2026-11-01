@@ -224,7 +224,12 @@
     "sesja_projekt": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): druga część podglądu (BR-PRJ-013 S1: 20 h → 13 h).",
     "sesja_sprawdz": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): linia informacji na górze arkusza dla sesji do_korekty; Save zawsze zdejmuje znacznik.",
     "sesja_przerwy": "Arkusz korekty sesji (BR-PRJ-013, istniejące formularz.sesja_tytul/_start/_koniec/_blad): gdy sesja miała przerwy; mówi przed zapisem, że korekta zeruje przerwy (BR-PRJ-013, ER-54, P-195 Q2a).",
-    "termin_osiagniety": "Przegląd 04 z P-188 (P-191), R7: podgląd w arkuszu „Done by”, gdy wszystkie cele części osiągnięte (0 rzędów do zrobienia)."
+    "termin_osiagniety": "Przegląd 04 z P-188 (P-191), R7: podgląd w arkuszu „Done by”, gdy wszystkie cele części osiągnięte (0 rzędów do zrobienia).",
+    "wloczka_tytul": "Tytuł arkusza wyboru włóczek projektu (Cancel / tytuł / Save). Do ok. 24 znaków; przy dużym tekście łamie się w nagłówku.",
+    "wloczka_opis": "Zdanie pod nagłówkiem arkusza wyboru włóczek. „Stash” = zapas włóczek użytkowniczki (jak w Narzędziach); „skeins” = motki. Wyjaśnia, po co wybierać: przy ukończeniu aplikacja zapyta o zużycie i odejmie je od zapasu.",
+    "wloczka_pusto": "Arkusz wyboru włóczek, gdy zapas jest pusty; pod tekstem przycisk „Add yarn” (istniejący klucz `zapas.dodaj`). Jedno zaproszenie do działania.",
+    "wloczka_wiersz_a11y_one": "Etykieta VoiceOver wiersza włóczki w arkuszu wyboru; stan wybrany/niewybrany czyta system (checkbox). {{nazwa}} = nazwa włóczki wpisana przez użytkowniczkę.",
+    "wloczka_wiersz_a11y_other": "Etykieta VoiceOver wiersza włóczki w arkuszu wyboru (liczba mnoga, także 0). {{nazwa}} = nazwa włóczki wpisana przez użytkowniczkę."
   },
   "ukonczenie": {
     "udostepnij": "Tekst z ekrany.html roli 04.",
@@ -245,7 +250,10 @@
     "zuzycie_wiecej": "Etykieta przycisku + krokowca (krok 0,5 motka). Tekst z design-spec roli 04 („Zużycie włóczki przy ukończeniu”, P-126 (2a)).",
     "zuzycie_ponad_zapas": "Linia informacji, gdy zużycie przekracza zapas; nie komunikat błędu. Tekst z design-spec roli 04 („Zużycie włóczki przy ukończeniu”, P-126 (2a)).",
     "zapas_juz_pusty": "Linia informacji, gdy zapas tej włóczki już wynosi 0. Tekst z design-spec roli 04 („Zużycie włóczki przy ukończeniu”, P-126 (2a)).",
-    "edytuj_zapas": "Odnośnik: otwiera tę włóczkę w zapasie; karta zostaje. Tekst z design-spec roli 04 („Zużycie włóczki przy ukończeniu”, P-126 (2a))."
+    "edytuj_zapas": "Odnośnik: otwiera tę włóczkę w zapasie; karta zostaje. Tekst z design-spec roli 04 („Zużycie włóczki przy ukończeniu”, P-126 (2a)).",
+    "bez_wloczki": "Linia informacji na karcie ukończenia, gdy projekt nie ma włóczki, a zapas nie jest pusty (opcja B, 07-jakosc-001). Nie błąd: „i”, nie kolor. Za zdaniem odnośnik `ukonczenie.wybierz_wloczke`.",
+    "wybierz_wloczke": "Odnośnik w linii informacji na karcie ukończenia; otwiera arkusz wyboru włóczek projektu (`formularz.wloczka_tytul`). Czasownik w trybie rozkazującym, 2 słowa.",
+    "edytuj_zapas_opis": "Podpis w arkuszu „Edit yarn” otwartym z odnośnika „Edit stash” na karcie ukończenia: po zapisie wraca się na kartę, liczby są odświeżone. Jedno zdanie."
   },
   "projekt": {
     "czesc_cel": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04. Podpis wiersza części z celem.",
@@ -302,7 +310,11 @@
     "probka_wartosc_in": "Jak projekt.probka_wartosc dla próbki zapisanej na 4 in.",
     "wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy zerze albo jednym wzorze.",
     "wzory": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy dwóch i więcej wzorach (jeden widoczny naraz, P-218).",
-    "miejsce_wzoru_wartosc": "Wartość wiersza „Pattern” w grupie „Details” na ekranie projektu (07-jakosc-010): gdzie stoi znacznik rzędu na wzorze. {{strona}} = numer strony PDF (od 1), {{rzad}} = rząd schematu. Krótkie, jak „Page 3, row 48”; tekst roboczy 08 do akceptacji 04."
+    "miejsce_wzoru_wartosc": "Wartość wiersza „Pattern” w grupie „Details” na ekranie projektu (07-jakosc-010): gdzie stoi znacznik rzędu na wzorze. {{strona}} = numer strony PDF (od 1), {{rzad}} = rząd schematu. Krótkie, jak „Page 3, row 48”; tekst roboczy 08 do akceptacji 04.",
+    "wloczka": "Wiersz w grupie „Details” na ekranie projektu (partia 8, 07-jakosc-001): włóczka użyta w projekcie. Rzeczownik, krótka etykieta (ok. 12 znaków); wartość po prawej to nazwa włóczki albo liczba włóczek.",
+    "wloczka_brak": "Wartość wiersza „Yarn” na ekranie projektu, gdy żadna włóczka nie jest wybrana. Jedno słowo; to nie jest przycisk.",
+    "wloczki_one": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (w praktyce ≥ 2; forma pojedyncza dla reguł języka). Przy jednej włóczce wiersz pokazuje jej nazwę.",
+    "wloczki_other": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (≥ 2). Krótko, mieści się obok etykiety przy 320 pt."
   },
   "dni": {
     "dzien": "VoiceOver dnia z robótką w kalendarzu: {{etykieta}} = data dnia (np. „Wednesday, October 21”), {{count}} = rzędy dnia. Formy _one/_other. Zatwierdzone przez 04 fix-6 (P-191), ekran Historia.",

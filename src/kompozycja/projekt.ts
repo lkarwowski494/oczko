@@ -91,6 +91,7 @@ export function stanProjektu(w: WidokProjektu, o: { j: Jezyk; terazMs: number; s
       narzedzie: mm === null ? null : t(w.narzedzie === 'szydelko' ? 'projekt.szydelko' : 'projekt.druty'),
       rozmiar: mm === null ? null : w.drutUS ? t('projekt.rozmiar_us', { mm, us: w.drutUS }) : t('projekt.rozmiar_mm', { mm }),
       termin,
+      wloczka: w.wloczki.length === 0 ? t('projekt.wloczka_brak') : w.wloczki.length === 1 ? w.wloczki[0]?.nazwa ?? t('projekt.wloczka_brak') : t('projekt.wloczki', { count: w.wloczki.length }), // 07-jakosc-001
       probka: w.probka ? t(w.probka.naCm === 10 ? 'projekt.probka_wartosc' : 'projekt.probka_wartosc_in', { p: formatujLiczbe(w.probka.oczka, jezyk, { maks: 3 }) }) : null, // U-10
     },
     czesci: w.czesci.map((c) => {

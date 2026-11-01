@@ -3,17 +3,18 @@
 // i „What’s next?” (`co-dalej`, parametr `czesc`) — FormularzeProjektu.tsx, design-spec „Arkusze” (04 fix-5).
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { FormularzCelu, FormularzNazwy, FormularzPowtorzenia, FormularzPrzypomnienia, FormularzWartosci } from '../../src/ekrany/Formularze';
 import { useKolory } from '../../src/ekrany/motyw';
 import type { WynikEkranu } from '../../src/ekrany/wspolne';
 import { planPrzypomnien } from '../../src/domena/przypomnienia';
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
-import { CoDalej, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
+import { CoDalej, FormularzWloczekProjektu, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
 import { podgladRozmiaru } from '../../src/kompozycja/projekt';
 import { dodajPrzypomnienie, nastepnaCzesc, nazwijCzesc, ustawCel, ustawPowtorzenie, ustawZnaczenie, type NastepnaCzesc } from '../../src/przypadki-uzycia/czesc';
 import { dodajLicznik, wpiszWartosc } from '../../src/przypadki-uzycia/licznik';
 import { dodajCzescPara, dodajCzescProjektu, nazwijProjekt, ustawDrut, ustawTermin, utworzProjekt, zapiszNotatke } from '../../src/przypadki-uzycia/projekt';
+import { przypiszWloczki, wyborWloczek, type WyborWloczek } from '../../src/przypadki-uzycia/zapas';
 import { podgladTerminu, widokProjektu, type WidokProjektu } from '../../src/przypadki-uzycia/widok-projektu';
 import type { WidokLicznika } from '../../src/przypadki-uzycia/widok-licznika';
 
@@ -26,7 +27,11 @@ export default function EkranFormularza(): React.ReactElement {
   const [w, ustaw] = useState<WidokLicznika | null>(null);
   const [wp, ustawWp] = useState<WidokProjektu | null>(null);
   const [koniec, ustawKoniec] = useState<Extract<NastepnaCzesc, { rodzaj: 'koniec' }> | null>(null);
+  const [wybor, ustawWybor] = useState<WyborWloczek | null>(null);
   useEffect(() => { void licznik.widok().then(ustaw); }, [licznik]);
+  useFocusEffect(useCallback(() => { // zapas odświeżany po powrocie z „Add yarn” (07-jakosc-001)
+    if (rodzaj === 'wloczki' && projektId) void wyborWloczek(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWybor(r.wartosc); });
+  }, [kontener, rodzaj, projektId]));
   useEffect(() => { if (projektId) void widokProjektu(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWp(r.wartosc); }); }, [kontener, projektId]);
   useEffect(() => {
     const id = licznik.biezacy();
@@ -51,6 +56,10 @@ export default function EkranFormularza(): React.ReactElement {
   }
   const idLicznika = (x: unknown): string | undefined => (typeof x === 'object' && x !== null && 'licznikId' in x && typeof x.licznikId === 'string' ? x.licznikId : undefined);
   switch (rodzaj) {
+    case 'wloczki':
+      if (!wybor || !projektId) return pusty;
+      return <FormularzWloczekProjektu t={t} zapas={wybor.zapas} poczatkowe={wybor.wybrane} naAnuluj={anuluj} naDodajWloczke={() => router.push('/wloczka')}
+        naZapisz={async (ids) => { const r = await przypiszWloczki(z, { projektId, wloczkaIds: ids }); if (!r.ok) return { ok: false, powod: 'zapis' }; router.back(); return { ok: true, wartosc: undefined }; }} />;
     case 'nowy-projekt':
       return <FormularzNowegoProjektu t={t} naAnuluj={anuluj} naZapisz={(n) => wProjekcie(() => utworzProjekt(z, n), (x) => {
         const c = typeof x === 'object' && x !== null && 'czesci' in x && Array.isArray(x.czesci) ? x.czesci[0] : undefined;
