@@ -57,7 +57,11 @@
     "po_dodaniu_oczka_one": "{{count}} stitch.",
     "po_dodaniu_oczka_other": "{{count}} stitches.",
     "znaczniki_sesji_oczka_one": "Marks this session: {{count}} stitch since {{godzina}}",
-    "znaczniki_sesji_oczka_other": "Marks this session: {{count}} stitches since {{godzina}}"
+    "znaczniki_sesji_oczka_other": "Marks this session: {{count}} stitches since {{godzina}}",
+    "seria_blokada_one": "Added {{count}} row from the lock screen at {{godzina}}. Undo?",
+    "seria_blokada_other": "Added {{count}} rows from the lock screen at {{godzina}}. Undo?",
+    "seria_zegarek_one": "Added {{count}} row on your watch at {{godzina}}. Undo?",
+    "seria_zegarek_other": "Added {{count}} rows on your watch at {{godzina}}. Undo?"
   },
   "limit": {
     "zawczasu_one": "No free knitting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",

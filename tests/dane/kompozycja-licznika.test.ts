@@ -65,7 +65,7 @@ describe('kompozycjaLicznika', () => {
     await k.otworz('l1');
     s.zegar.ustaw(T0 + 3_600_000);
     for (let i = 0; i < 3; i++) { await k.uslugi.dodajRzad(); s.zegar.przesun(300); }
-    expect((await k.dzialania.odswiez!()).baner).toEqual({ rodzaj: 'seria', n: 3, sekundy: 1 });
+    expect((await k.dzialania.odswiez!()).baner).toEqual({ rodzaj: 'seria', n: 3, sekundy: 1, zrodlo: 'aplikacja', godzina: '13:00' }); // 07-jakosc-014: źródło i godzina serii (T0 + 1 h = 13:00 Europe/Warsaw)
     await k.dzialania.naCofnijSerie!();
     const po = await k.dzialania.odswiez!();
     expect([po.skonczone, po.baner]).toEqual([30, { rodzaj: 'cofnieto', n: 3, wartosc: 30 }]);

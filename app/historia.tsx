@@ -33,7 +33,7 @@ export default function EkranHistorii(): React.ReactElement {
   return (
     <Historia stan={{ wpisy }} t={t} naZamknij={() => router.back()}
       naCofnij={async () => { if (licznikId) await poCofnieciu(await cofnijOstatnie(kontener.z, { licznikId })); }}
-      naCofnijSerie={async (odZdarzeniaId) => { if (licznikId) await poCofnieciu(await cofnijSerie(kontener.z, { licznikId, odZdarzeniaId })); }}
+      naCofnijSerie={async (odZdarzeniaId) => { if (licznikId) await poCofnieciu(await cofnijSerie(kontener.z, { licznikId, odZdarzeniaId, zrodlo: 'historia' })); }}
       naWpisz={() => router.replace({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'wpisz' } })} />
   );
 }

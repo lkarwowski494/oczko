@@ -6,7 +6,7 @@ import { powtorzenieLicznika } from '../domena/licznik';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
 import { posiedzenie } from '../domena/posiedzenie';
-import { serieDoSprawdzenia } from '../domena/straznik-tempa';
+import { serieLicznika } from '../domena/straznik-rodzaj';
 import type { PortBazy } from '../domena/porty';
 import type { ZrodloZdarzenia } from '../domena/stany';
 import { STRAZNIK_OKNO_S, STRAZNIK_SERIA_ZDARZEN } from '../konfiguracja';
@@ -16,6 +16,7 @@ import { odczytajUstawienie, zapiszUstawienie } from '../dane/repozytoria/ustawi
 import { liczba, liczbaLubNull, listaTekstow, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { dodajDni } from './daty';
 import { blad, operacjaZapisu, OK } from './zapis';
+import type { RodzajLicznika } from './licznik';
 import type { Zaleznosci } from './zaleznosci';
 
 export type WidokLicznika = {
@@ -42,7 +43,7 @@ export type WidokLicznika = {
   dzis: string;
   wznowienie: string;
   /** Seria RD-17 na końcu historii (pytanie „Undo n rows”): od pierwszego zdarzenia serii, `ile` dodań w `sekundy` s. */
-  seria: { ile: number; sekundy: number; odZdarzeniaId: string } | null;
+  seria: { ile: number; sekundy: number; odZdarzeniaId: string; zrodlo: ZrodloZdarzenia; odMs: number } | null;
   blizniak: { rzad: number; notatka: string | null; przypomnienie: string | null } | null;
   celDnia: number | null;
   /** Rzędy zrobione dziś na częściach z celem (Z_teraz − Z_przed, RD-15); null bez terminu projektu. Punkt odniesienia sygnału „cel dnia osiągnięty” (F-48). */
@@ -67,12 +68,12 @@ async function ostatniStoper(tx: PortBazy, projektId: string): Promise<{ startMs
   return r ? { startMs: liczba(r, 'start_ms'), koniecMs: liczbaLubNull(r, 'koniec_ms') } : null;
 }
 /** Pytanie o serię tylko, gdy seria kończy się ostatnim dodaniem i nic po nim nie zmieniło licznika (cofnięcie serii na końcu historii, F-47). */
-function seria(dodania: readonly Plus[], glowa: string | null): WidokLicznika['seria'] {
+function seria(dodania: readonly Plus[], glowa: string | null, rodzajLicznika: RodzajLicznika): WidokLicznika['seria'] {
   if (dodania.length === 0 || dodania[0].id !== glowa) return null;
-  const s = serieDoSprawdzenia([...dodania].reverse(), { seria: STRAZNIK_SERIA_ZDARZEN, oknoS: STRAZNIK_OKNO_S });
+  const s = serieLicznika({ rodzajLicznika, dodania: [...dodania].reverse(), konf: { seria: STRAZNIK_SERIA_ZDARZEN, oknoS: STRAZNIK_OKNO_S } }); // oczka bez serii (RD-17, ER-24, BR-LIC-019/S3)
   if (!s.ok) return null;
   const ostatnia = s.wartosc.find((x) => x.ids[x.ids.length - 1] === glowa);
-  return ostatnia ? { ile: ostatnia.ids.length, sekundy: Math.max(1, Math.round((ostatnia.doMs - ostatnia.odMs) / 1000)), odZdarzeniaId: ostatnia.ids[0] } : null;
+  return ostatnia ? { ile: ostatnia.ids.length, sekundy: Math.max(1, Math.round((ostatnia.doMs - ostatnia.odMs) / 1000)), odZdarzeniaId: ostatnia.ids[0], zrodlo: ostatnia.zrodlo, odMs: ostatnia.odMs } : null;
 }
 async function plany(tx: PortBazy, licznikId: string): Promise<WidokLicznika['plany']> {
   return (await wiersze(tx.all('SELECT id, od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ? ORDER BY od_rzedu, id', [licznikId]), 'widokLicznika'))
@@ -138,7 +139,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         sesja: posiedzenie({ dodaniaMs: dodania.map((d) => d.czasMs), stoper: await ostatniStoper(tx, tekst(r, 'projekt_id')) }),
         limit: zaw.limitZawczasu ? 'zawczasu' : zaw.ostatniDarmowy ? 'ostatni-darmowy' : 'brak',
         dzis, wznowienie: wznowienieLimitu({ dzis }),
-        seria: seria(dodania, glowa),
+        seria: seria(dodania, glowa, tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy'),
         blizniak: await blizniak(tx, tekstLubNull(r, 'para_z'), wartosc + 1),
         celDnia: cel && cel.rodzaj === 'cel' ? cel.rzedy : null,
         zrobioneDzis: dzien ? dzien.zrobioneDzis : null,
@@ -196,8 +197,8 @@ export function historiaLicznika(z: Zaleznosci, w: { licznikId: string; limit?: 
       cofniety: cofniete.has(tekst(x, 'id')), mozeCofnac: i === cel, seria: null,
     }));
     // Seria na końcu historii (nic po niej nie zmieniło licznika) to jeden wpis z „Undo n rows” (BR-LIC-003/S2, design-spec 021).
-    const [l] = cel === 0 ? await wiersze(tx.all('SELECT glowa FROM licznik WHERE id = ?', [w.licznikId]), 'historiaLicznika') : [];
-    const ser = l ? seria(await ostatnieDodania(tx, w.licznikId), tekstLubNull(l, 'glowa')) : null;
+    const [l] = cel === 0 ? await wiersze(tx.all('SELECT glowa, rodzaj FROM licznik WHERE id = ?', [w.licznikId]), 'historiaLicznika') : [];
+    const ser = l ? seria(await ostatnieDodania(tx, w.licznikId), tekstLubNull(l, 'glowa'), tekst(l, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy') : null;
     const k = ser ? wpisy.findIndex((x) => x.id === ser.odZdarzeniaId) : -1;
     const wynik = ser && k > 0 ? [{ ...wpisy[0], z: wpisy[k].z, seria: ser }, ...wpisy.slice(k + 1)] : wpisy;
     return { ok: true, wartosc: wynik.slice(0, limit) };

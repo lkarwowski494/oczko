@@ -12,7 +12,7 @@ export type LimitNaLiczniku =
 
 /** Baner pod tytułem (design-spec.md:35); `null` = nic (BR-LIC-019/S4). */
 export type BanerLicznika =
-  | { rodzaj: 'seria'; n: number; sekundy: number }   // „Added 3 rows in 1 s. Undo?”
+  | { rodzaj: 'seria'; n: number; sekundy: number; zrodlo: 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne'; godzina: string } // „Added 3 rows in 1 s. Undo?”; z ekranu blokady i zegarka: źródło i godzina serii (BR-LIC-019 S5)
   | { rodzaj: 'cofnieto'; n: number; wartosc: number } // „Removed 3 rows. Back to 30.”
   | null;
 

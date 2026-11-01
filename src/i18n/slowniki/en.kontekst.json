@@ -45,7 +45,9 @@
     "plus_a11y_oczka": "Etykieta VoiceOver przycisku +1 na liczniku oczek.",
     "minus_a11y_oczka": "Etykieta VoiceOver przycisku −1 na liczniku oczek.",
     "po_dodaniu_oczka": "Ogłoszenie VoiceOver po +1 na liczniku oczek (zamiast „{{zrobione}} done. Now row {{nastepny}}.”). Krótko.",
-    "znaczniki_sesji_oczka": "Podpis nad kreskami sesji na liczniku oczek (zamiast „rows”)."
+    "znaczniki_sesji_oczka": "Podpis nad kreskami sesji na liczniku oczek (zamiast „rows”).",
+    "seria_blokada": "Baner strażnika tempa, gdy serię stuknięć z ekranu blokady scalono po otwarciu aplikacji (BR-LIC-019 S5). {{godzina}} = godzina serii, nie scalenia (format godziny regionu). Forma pojedyncza dla reguł języka; w praktyce ≥ 2.",
+    "seria_zegarek": "Baner strażnika tempa dla serii z zegarka scalonej po otwarciu aplikacji. {{godzina}} = godzina serii."
   },
   "limit": {
     "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków.",

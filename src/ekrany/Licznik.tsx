@@ -11,7 +11,8 @@ import { Kreski } from './Kreski';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
 import { LinijkaCelu } from './LicznikCel';
 import { style } from './LicznikStyl';
-import type { PropsLicznika, ZdarzeniePlus } from './LicznikTypy';
+import type { PropsLicznika, StanEkranuLicznika, ZdarzeniePlus } from './LicznikTypy';
+import type { Tlumacz } from './wspolne';
 
 export type { BanerLicznika, LimitNaLiczniku, PropsLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from './LicznikTypy';
 export type { Style } from './LicznikStyl';
@@ -19,6 +20,13 @@ export type { Style } from './LicznikStyl';
 /** F-48: rozpoznawalne są tylko dwa wzorce — rząd i rząd „ze znaczeniem” (instrukcja, koniec powtórzenia, cel dnia lub części). */
 function wzorzecPoPlus(z: readonly ZdarzeniePlus[]): WzorzecHaptyki {
   return z.some((x) => x !== 'rzad') ? 'rzadZInstrukcja' : 'plus';
+}
+
+/** Seria z ekranu blokady albo zegarka scalona po otwarciu: źródło i godzina serii, nie scalenia (BR-LIC-019 S5, RD-17-W8); inne źródła → null (zdanie z czasem trwania). */
+function tekstSerii(t: Tlumacz, b: Extract<NonNullable<StanEkranuLicznika['baner']>, { rodzaj: 'seria' }>): string | null {
+  if (b.zrodlo === 'ekran_blokady') return t('licznik.seria_blokada', { count: b.n, godzina: b.godzina });
+  if (b.zrodlo === 'zegarek') return t('licznik.seria_zegarek', { count: b.n, godzina: b.godzina });
+  return null;
 }
 
 type Komunikat = 'blad_zapisu' | 'zablokowany' | null;
@@ -34,7 +42,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
 
   const baner = s.baner;
   useEffect(() => {
-    if (baner?.rodzaj === 'seria') p.oglos(t('licznik.seria', { count: baner.n }));
+    if (baner?.rodzaj === 'seria') p.oglos(tekstSerii(t, baner) ?? t('licznik.seria', { count: baner.n }));
     // ogłoszenie raz na pojawienie się banera (design-spec „VoiceOver”: seria stuknięć)
   }, [baner?.rodzaj, baner?.n]);
 
@@ -138,7 +146,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         {baner?.rodzaj === 'seria' && (
           <View style={st.baner}>
             {/* testID na tekście: Maestro porównuje tekst elementu o tym id (E2E 40290477970, scenariusz 04) */}
-            <Text style={st.tresc} testID="baner-serii">{t('licznik.baner_seria', { count: baner.n, sekundy: baner.sekundy })}</Text>
+            <Text style={st.tresc} testID="baner-serii">{tekstSerii(t, baner) ?? t('licznik.baner_seria', { count: baner.n, sekundy: baner.sekundy })}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.cofnij', { count: baner.n })} onPress={p.naCofnijSerie} style={st.drugiPrzycisk} testID="baner-serii-cofnij">
               <Text style={[st.tresc, st.pogrubiony]}>{t('licznik.cofnij', { count: baner.n })}</Text>
             </Pressable>

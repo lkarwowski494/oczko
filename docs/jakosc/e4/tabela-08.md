@@ -96,6 +96,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-importu.test.ts` | zielony (główny zestaw) | 14 | P-220, P-230, P-248 | `src/domena/porty`<br>`src/kompozycja/e2e/skrzynka`<br>`src/konfiguracja`<br>`src/platforma/skrzynka`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/stan-blokada.test.ts` | zielony (główny zestaw) | 3 | BR-LIC-004, P-133, P-135 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/ekran-blokady` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/start-kopie.test.ts` | zielony (główny zestaw) | 8 | BR-DAN-004/S1, BR-DAN-010/S3, NFR-PRY-001, P-047, P-070, P-080, R-082, R-088, R-089 | `src/dane/baza/kopia`<br>`src/dane/baza/polaczenie`<br>`src/dane/baza/sciezki`<br>`src/dane/kopia-ratunkowa`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/start`<br>`src/przypadki-uzycia/zgloszenie` | Z07-21, Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-serii-8b.test.ts` | zielony (główny zestaw) | 7 | BR-LIC-019, RD-17 | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-licznika` | ER-24, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/ukonczenie-pora.test.ts` | zielony (główny zestaw) | 0 | P-137, RD-16 | `src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/usun-wszystko-kopia.test.ts` | zielony (główny zestaw) | 3 | P-328 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/porty-propozycja`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-historii.test.ts` | zielony (główny zestaw) | 2 | BR-DNI-001, P-191, P-195 | `src/przypadki-uzycia/historia` | — |
@@ -118,6 +119,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/aplikacja.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-012/S2, BR-LIC-001, BR-LIC-001/S1, KP-07, KP-08, KP-13, NFR-DAN-002, NFR-PIE-001, R-020, R-091 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne` | Z07-11, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza.test.tsx` | zielony (główny zestaw) | 4 | P-262, P-271, P-275 | `src/ekrany/Arkusz`<br>`src/ekrany/Formularze`<br>`src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-klawiatura.test.tsx` | zielony (główny zestaw) | 3 | P-255, P-262 | `src/ekrany/Arkusz`<br>`src/ekrany/motyw` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/baner-serii-zrodlo.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-019, RD-17 | `src/ekrany/Licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bezpieczny-ipad.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/kompozycja/Bezpieczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bledy-js.test.ts` | zielony (główny zestaw) | 3 | P-194 | `src/kompozycja/bledy-js` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-panel-wzoru-word.test.tsx` | zielony (główny zestaw) | 1 | P-282 | `src/kompozycja/e2e/panele` | — |
@@ -216,4 +218,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 212; zależnych od poprawek: 142.
+Razem plików testów: 214; zależnych od poprawek: 144.

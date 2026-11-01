@@ -8,7 +8,7 @@ const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 
 const LATKA = czytaj('docs/design/fix10-2026-11-01/klucze.json') as { en: Record<string, string>; kontekst: Record<string, string> };
 const EN = czytaj('src/i18n/slowniki/en.json') as Record<string, Record<string, string>>;
 const KONTEKST = czytaj('src/i18n/slowniki/en.kontekst.json') as Record<string, Record<string, string>>;
-const MOJE = (k: string) => k.startsWith('historia.') || k.startsWith('przyp.') || /^licznik\.(jednostka_oczka|plus_oczka|podpis_plus_oczka|plus_a11y_oczka|minus_a11y_oczka|po_dodaniu_oczka|znaczniki_sesji_oczka)/.test(k);
+const MOJE = (k: string) => k.startsWith('historia.') || k.startsWith('przyp.') || /^licznik\.seria_(blokada|zegarek)/.test(k) || /^licznik\.(jednostka_oczka|plus_oczka|podpis_plus_oczka|plus_a11y_oczka|minus_a11y_oczka|po_dodaniu_oczka|znaczniki_sesji_oczka)/.test(k);
 const baza = (nazwa: string) => nazwa.replace(/_(zero|one|two|few|many|other)$/, '');
 const wartosc = (s: Record<string, Record<string, string>>, klucz: string) => { const [sekcja, ...n] = klucz.split('.'); return s[sekcja]?.[n.join('.')]; };
 

@@ -4,7 +4,7 @@
 // haptyka, ekran, Live Activity i zegarek dopiero po wyniku (wołający). Błąd zapisu → ROLLBACK, `powod: 'zapis'`, wpis w `blad`.
 import type { Powod, Wynik } from '../domena/bledy';
 import { celCofnieciaIndeks, type ZdarzenieCofniecia } from '../domena/cofniecie';
-import { rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu } from '../domena/limit';
+import { cofniecieSerii, rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu, type ZrodloCofniecia } from '../domena/limit';
 import type { PortBazy } from '../domena/porty';
 import type { RodzajZdarzenia, STANY } from '../domena/stany';
 import { kodBledu } from '../dane/baza/bledy-sqlite';
@@ -12,7 +12,7 @@ import { zapiszBlad } from '../dane/repozytoria/bledy';
 import {
   dniLimituMiesiaca, dopiszZdarzenie, ostatniPlus, seriaOdKonca, stanLicznika, ustawStan, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie, type StanLicznika,
 } from '../dane/repozytoria/liczniki';
-import { liczbaLubNull, wiersze } from '../dane/repozytoria/wiersze';
+import { liczba, liczbaLubNull, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { dodajDni } from './daty';
 import { wKolejce } from './kolejka';
 import type { Zaleznosci } from './zaleznosci';
@@ -101,15 +101,36 @@ export function cofnijOstatnie(z: Zaleznosci, w: { licznikId: string }): Promise
     return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [cel.id] });
   });
 }
-/** Cofnięcie serii na końcu historii, od zdarzenia `odZdarzeniaId` do głowy (F-02, F-47, P-091 (3a)); dzień limitu zostaje (źródło „historia”, L-19). */
-export function cofnijSerie(z: Zaleznosci, w: { licznikId: string; odZdarzeniaId: string }): Promise<Wynik<WynikZmiany>> {
+/**
+ * Cofnięcie serii na końcu historii, od zdarzenia `odZdarzeniaId` do głowy (F-02, F-47, P-091 (3a)).
+ * `zrodlo`: „pytanie-serii” (baner strażnika) zwraca dzień limitu, gdy seria zaczęła dzień i nie było w nim innych dodań ani wpisań (L-19, BR-LIC-019 S7);
+ * „historia” dnia nie zwraca (L-06). Zwrot w tej samej transakcji co cofnięcie.
+ */
+export function cofnijSerie(z: Zaleznosci, w: { licznikId: string; odZdarzeniaId: string; zrodlo: ZrodloCofniecia }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'cofnijSerie', async (s, tx) => {
     if (!s.glowa) return blad('niedozwolone_przejscie');
     const seria = await seriaOdKonca(tx, s.glowa, w.odZdarzeniaId);
     if (!seria) return blad('niedozwolone_przejscie'); // pomyłkę ze środka historii poprawia wpisanie wartości (M-08b)
     const v = await wartoscPrzed(tx, seria.rodzicPoczatku ?? undefined);
+    if (w.zrodlo === 'pytanie-serii') await zwrocDzienLimitu(tx, seria.ids);
     return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: seria.ids });
   });
+}
+/** Dzień limitu wraca z pytania o serię (L-19): reguła w domenie (`cofniecieSerii`), dane dnia z bazy; „inne dodania” = +1 i wpisania dnia poza serią (także cofnięte, L-19b). */
+async function zwrocDzienLimitu(tx: PortBazy, idSerii: readonly string[]): Promise<void> {
+  const pierwszy = idSerii[idSerii.length - 1]; // seriaOdKonca: od głowy wstecz, więc ostatni = pierwsze zdarzenie serii
+  if (pierwszy === undefined) return;
+  const [d] = await wiersze(tx.all('SELECT dzien FROM zdarzenie WHERE id = ?', [pierwszy]), 'zwrocDzienLimitu');
+  if (!d) return;
+  const dzien = tekst(d, 'dzien');
+  const [start] = await wiersze(tx.all('SELECT zdarzenie_id FROM dzien_limitu WHERE dzien = ?', [dzien]), 'zwrocDzienLimitu');
+  const ph = idSerii.map(() => '?').join(', ');
+  const [inne] = await wiersze(tx.all(`SELECT count(*) AS n FROM zdarzenie WHERE dzien = ? AND rodzaj IN ('plus', 'wpisanie') AND id NOT IN (${ph})`, [dzien, ...idSerii]), 'zwrocDzienLimitu');
+  const r = cofniecieSerii({
+    dni: await dniLimituMiesiaca(tx, dzien.slice(0, 7)), dzienSerii: dzien, seriaZaczelaDzien: !!start && idSerii.includes(tekst(start, 'zdarzenie_id')),
+    inneDodaniaDnia: inne ? liczba(inne, 'n') : 0, zrodlo: 'pytanie-serii',
+  });
+  if (r.zwrocono) await tx.run('DELETE FROM dzien_limitu WHERE dzien = ?', [dzien]);
 }
 export function wpiszWartosc(z: Zaleznosci, w: { licznikId: string; wartosc: number }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'wpiszWartosc', async (s) => {

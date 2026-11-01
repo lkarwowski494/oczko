@@ -132,7 +132,7 @@ describe('Licznik', () => {
   });
 
   test('BR-LIC-019 [macierz 04: seria stuknięć z banerem]: baner, „Undo 3 rows”, ogłoszenie (design-spec.md:35, :64)', () => {
-    const { w, oglos, ponow } = pokaz(stanLicznika({ skonczone: 33, dziergany: 34, baner: { rodzaj: 'seria', n: 3, sekundy: 1 } }));
+    const { w, oglos, ponow } = pokaz(stanLicznika({ skonczone: 33, dziergany: 34, baner: { rodzaj: 'seria', n: 3, sekundy: 1, zrodlo: 'aplikacja', godzina: '12:00' } }));
     // design-spec.md:35 „Added 3 rows in 1 s. Undo?”
     expect(screen.getByText('Added 3 rows in 1 s. Undo?')).toBeTruthy();
     // design-spec.md:64 ogłoszenie „Added 3 rows in 1 second. Undo is available.” i przycisk „Undo 3 rows”

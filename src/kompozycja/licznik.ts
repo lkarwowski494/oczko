@@ -32,6 +32,9 @@ export function etykietaRobocza(utworzonoMs: number, terazMs: number, j: Jezyk, 
   return j.t('projekty.nazwa_robocza', { data });
 }
 
+/** Źródło serii w banerze: ekran blokady i zegarek mają własne zdania (S5); pozostałe źródła (aplikacja, synchronizacja, import) — zdanie z czasem trwania. */
+const zrodloBanera = (z: string): 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne' => (z === 'ekran_blokady' || z === 'zegarek' ? z : z === 'aplikacja' ? 'aplikacja' : 'inne');
+
 /** Stan ekranu z modelu odczytu; `null` = przed pierwszym +1 (licznik bez projektu z 0, NFR-PIE-001). */
 export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string; terazMs: number; strefa: string; baner: BanerLicznika; wibracje: boolean }): StanEkranuLicznika {
   const { j } = o;
@@ -55,7 +58,7 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
     notatka: w.projekt.notatka || null,
     sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
     zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
-    baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy } : null),
+    baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy, zrodlo: zrodloBanera(w.seria.zrodlo), godzina: formatujGodzine(new Date(w.seria.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) } : null),
     blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
   };
 }
@@ -293,7 +296,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         if (!licznikId) return;
         const { w } = await stan();
         if (!w?.seria) return;
-        const r = await cofnijSerie(z, { licznikId, odZdarzeniaId: w.seria.odZdarzeniaId });
+        const r = await cofnijSerie(z, { licznikId, odZdarzeniaId: w.seria.odZdarzeniaId, zrodlo: 'pytanie-serii' });
         if (r.ok) baner = { rodzaj: 'cofnieto', n: w.seria.ile, wartosc: r.wartosc.wartosc };
       },
       async naOdblokuj() {
