@@ -174,6 +174,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia.test.tsx` | zielony (główny zestaw) | 7 | BR-DAN-010, BR-DAN-012/S3, BR-LIC-020/S3, BR-ZAK-004, BR-ZAK-004/S1, BR-ZAK-006/S5, BR-ZAK-006/S7, KP-13 | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | KP-05, P-328 | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 4 | — | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 7 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -212,4 +213,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 208; zależnych od poprawek: 140.
+Razem plików testów: 209; zależnych od poprawek: 141.

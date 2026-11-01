@@ -13,7 +13,7 @@ const ok = async (): Promise<WynikEkranu<void>> => ({ ok: true, wartosc: undefin
 describe('Formularze', () => {
   test('BR-LIC-017/S7: wartość ujemna albo tekst — licznik bez zmian, komunikat (prototyp.html:132)', async () => {
     const naZapisz = jest.fn(ok);
-    render(<FormularzWartosci stan={{ obecna: 42 }} t={t} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+    render(<FormularzWartosci stan={{ obecna: 42 }} t={t} jezyk="en" tekstLimitu="" naZapisz={naZapisz} naAnuluj={jest.fn()} />);
     // prototyp.html:132 pole „Rows already finished”, podgląd „You’ll continue on row 43.”
     expect(screen.getByText('You’ll continue on row 43.')).toBeTruthy();
     for (const zle of ['-3', 'abc']) {

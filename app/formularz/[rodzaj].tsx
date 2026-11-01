@@ -8,7 +8,9 @@ import { FormularzCelu, FormularzNazwy, FormularzPowtorzenia, FormularzPrzypomni
 import { useKolory } from '../../src/ekrany/motyw';
 import type { WynikEkranu } from '../../src/ekrany/wspolne';
 import { planPrzypomnien } from '../../src/domena/przypomnienia';
+import { LIMIT_DNI_W_MIESIACU } from '../../src/konfiguracja';
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
+import { miesiac } from '../../src/kompozycja/licznik';
 import { CoDalej, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
 import { podgladRozmiaru } from '../../src/kompozycja/projekt';
 import { dodajPrzypomnienie, nastepnaCzesc, nazwijCzesc, ustawCel, ustawPowtorzenie, ustawZnaczenie, type NastepnaCzesc } from '../../src/przypadki-uzycia/czesc';
@@ -87,7 +89,7 @@ export default function EkranFormularza(): React.ReactElement {
   if (!w) return pusty;
   async function zapisz(f: () => Promise<Zapis>): Promise<WynikEkranu<void>> {
     const r = await f();
-    if (!r.ok) return { ok: false, powod: 'zapis' };
+    if (!r.ok) return { ok: false, powod: r.powod === 'limit' ? 'limit' : 'zapis' }; // limit dni: formularz wartości pokazuje komunikat limitu (07-jakosc-024)
     await licznik.poZmianie();
     router.back();
     return { ok: true, wartosc: undefined };
@@ -104,7 +106,8 @@ export default function EkranFormularza(): React.ReactElement {
     case 'cel':
       return <FormularzCelu t={t} naAnuluj={anuluj} stan={{ cel: w.czesc.cel }} naZapisz={(cel) => zapisz(() => ustawCel(z, { czescId: w.czescId, cel }))} />;
     case 'wpisz':
-      return <FormularzWartosci t={t} naAnuluj={anuluj} stan={{ obecna: w.wartosc }} naZapisz={(v) => zapisz(() => wpiszWartosc(z, { licznikId: w.licznikId, wartosc: v }))} />;
+      return <FormularzWartosci t={t} naAnuluj={anuluj} stan={{ obecna: w.wartosc }} jezyk={kontener.j.jezyk()}
+        tekstLimitu={t('limit.arkusz_dni', { limit: LIMIT_DNI_W_MIESIACU, miesiac: miesiac(w.dzis, kontener.j.jezyk()), data: miesiac(w.wznowienie, kontener.j.jezyk(), true) })} naZapisz={(v) => zapisz(() => wpiszWartosc(z, { licznikId: w.licznikId, wartosc: v }))} />;
     case 'powtorzenie':
       return <FormularzPowtorzenia t={t} naAnuluj={anuluj} stan={{ nazwa: w.nazwa || w.czesc.nazwa, dlugosc: w.powtorzenie?.dlugosc ?? null }}
         naZapisz={(p) => zapisz(() => ustawPowtorzenie(z, { licznikId: w.licznikId, dlugosc: p.dlugosc }))} />;

@@ -51,7 +51,7 @@ test('arkusz decyzji (przyciski, bez formularza): przyciski na dole jak dotąd, 
 });
 
 test('formularze aplikacji: wpisanie wartości i nowa część mają Save w nagłówku (nie na dole)', () => {
-  render(<FormularzWartosci stan={{ obecna: 3 }} t={t} naZapisz={async () => ({ ok: true, wartosc: undefined })} naAnuluj={() => undefined} />);
+  render(<FormularzWartosci stan={{ obecna: 3 }} t={t} jezyk="en" tekstLimitu="" naZapisz={async () => ({ ok: true, wartosc: undefined })} naAnuluj={() => undefined} />);
   expect(within(screen.getByTestId('arkusz-naglowek')).getByTestId('formularz-zapisz')).toBeTruthy();
   screen.unmount();
   render(<FormularzCzesci t={t} naZapisz={async () => ({ ok: true, wartosc: undefined })} naAnuluj={() => undefined} />);

@@ -6,31 +6,40 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Arkusz, Komunikat, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
+import { parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 /** Wynik zapisu z przypadku użycia; nieudany → komunikat formularza (bez makiety, Z07-05), wpisane dane zostają w polach. */
-async function zapiszZ<T>(f: () => Promise<WynikEkranu<T>>, naBlad: () => void): Promise<void> {
+async function zapiszZ<T>(f: () => Promise<WynikEkranu<T>>, naBlad: (powod: string) => void): Promise<void> {
   const w = await f();
-  if (!w.ok) naBlad();
+  if (!w.ok) naBlad(w.powod);
 }
 
 export type PropsFormularzaWartosci = {
   stan: { obecna: number };
   t: Tlumacz;
+  /** Język wpisu: separator tysięcy i cyfry regionu (BR-LIC-017, ER-43). */
+  jezyk: string;
+  /** Komunikat limitu dni (BR-ZAK-006) pokazywany, gdy wpisanie zaczynałoby dzień ponad limit (BR-LIC-017/S5). */
+  tekstLimitu: string;
   naZapisz(wartosc: number): Promise<WynikEkranu<void>>;  // wpiszWartosc
   naAnuluj(): void;
 };
-export function FormularzWartosci({ stan, t, naZapisz, naAnuluj }: PropsFormularzaWartosci): React.ReactElement {
+export function FormularzWartosci({ stan, t, jezyk, tekstLimitu, naZapisz, naAnuluj }: PropsFormularzaWartosci): React.ReactElement {
   const [tekst, ustaw] = useState(String(stan.obecna));
-  const [blad, ustawBlad] = useState(false);
-  const n = liczbaZPola(tekst);
-  const zapisz = () => { if (n === null) { ustawBlad(true); return; } ustawBlad(false); void zapiszZ(() => naZapisz(n), () => ustawBlad(true)); };
+  const [blad, ustawBlad] = useState<'wartosc' | 'limit' | null>(null);
+  const n = parsujCalkowita(tekst, jezyk);
+  const zapisz = () => {
+    if (n === null) { ustawBlad('wartosc'); return; }
+    ustawBlad(null);
+    void zapiszZ(() => naZapisz(n), (powod) => ustawBlad(powod === 'limit' ? 'limit' : 'wartosc'));
+  };
   return (
     <Arkusz tytul={t('formularz.wpisz_tytul')} formularz={{ t, naZapisz: zapisz, naAnuluj }}>
       <Tresc>{t('formularz.wpisz_opis')}</Tresc>
       <Pole etykieta={t('formularz.wpisz_pole')} wartosc={tekst} naZmiane={ustaw} liczbowe testID="wpisz-wartosc-pole" />
       {n !== null && <Tresc podpis>{t('formularz.wpisz_podglad', { n: n + 1 })}</Tresc>}
-      {blad && <Komunikat tekst={t('formularz.wpisz_blad')} />}
+      {blad && <Komunikat tekst={blad === 'limit' ? tekstLimitu : t('formularz.wpisz_blad')} />}
     </Arkusz>
   );
 }

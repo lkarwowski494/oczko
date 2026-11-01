@@ -18,7 +18,7 @@ import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/sy
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
 
-const miesiac = (dzien: string, j: string, dzienMiesiaca = false) =>
+export const miesiac = (dzien: string, j: string, dzienMiesiaca = false) =>
   new Intl.DateTimeFormat(j, { month: 'long', ...(dzienMiesiaca ? { day: 'numeric' } : {}), timeZone: 'UTC' })
     .format(new Date(Date.UTC(Number(dzien.slice(0, 4)), Number(dzien.slice(5, 7)) - 1, Number(dzien.slice(8, 10)) || 1)));
 
