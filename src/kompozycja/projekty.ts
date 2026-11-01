@@ -16,8 +16,9 @@ export function stanListy(w: WidokProjektow, o: { zapytanie: string; j: Jezyk; t
   const szukaj = o.zapytanie.trim().toLocaleLowerCase();
   const wiersz = (p: ProjektNaEkranie, wToku: boolean): WierszProjektu => {
     const nazwa = p.nienazwany ? etykietaRobocza(p.utworzonoMs, o.terazMs, j, o.strefa) : p.nazwa;
-    const rzad = p.licznik ? j.t('licznik.teraz', { n: p.licznik.wartosc + 1 }) : '';
-    const opis = p.licznik && !p.nienazwany ? `${p.licznik.czesc} · ${rzad}` : rzad;
+    // Wiersz w toku: „{część} · row {n} of {cel}” (design-spec „Lista projektów”; n = liczba widoczna na liczniku); projekt roboczy bez nazwy części: „Now knitting row n”.
+    const opis = !p.licznik ? '' : p.nienazwany ? j.t('licznik.teraz', { n: p.licznik.wartosc + 1 })
+      : p.licznik.cel === null ? j.t('projekty.wiersz', { czesc: p.licznik.czesc, n: p.licznik.wartosc }) : j.t('projekty.wiersz_cel', { czesc: p.licznik.czesc, n: p.licznik.wartosc, cel: p.licznik.cel });
     return { id: p.id, nazwa, opis, kolorWloczki: null, ...(wToku ? { termin: liniaDzis(p.dzis, j.t), ostatniaPraca: ostatniaPraca(p.dniOdPracy, j.t) } : {}) };
   };
   const filtr = (l: ProjektNaEkranie[], wToku = false) => l.map((p) => wiersz(p, wToku)).filter((x) => !szukaj || x.nazwa.toLocaleLowerCase().includes(szukaj));

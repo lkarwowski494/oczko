@@ -51,3 +51,15 @@ describe('07-jakosc-028 · stuknięcie w projekt otwiera ostatnio używaną czę
     await waitFor(() => expect(otworzLicznik).toHaveBeenCalledWith('l0'));
   });
 });
+
+describe('07-jakosc-031 F-50 · wiersz w toku: „{część} · row {n} of {cel}”', () => {
+  test('z celem: „Left sleeve · row 3 of 96”; bez celu: „Left sleeve · row 3”', async () => {
+    await otworz([
+      projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Left sleeve', 1, { cel: 96 }), ...licznik('l1', 'c1', 3),
+      projekt('p2', 'Szal', T0 - DOBA), czesc('c2', 'p2', 'Body', 1), ...licznik('l2', 'c2', 3, { t: T0 - DOBA }),
+    ]);
+    expect(screen.getByText('Left sleeve · row 3 of 96')).toBeTruthy();
+    expect(screen.getByText('Body · row 3')).toBeTruthy();
+    expect(screen.queryByText(/Now knitting row/)).toBeNull();
+  });
+});
