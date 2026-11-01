@@ -73,6 +73,12 @@ public class OczkoWzorModule: Module {
       }
     }
 
+    // ADR-0031 (07-jakosc-017): stan ścieżki sieciowej (NWPathMonitor) — odczyt i zdarzenie zmiany; podpowiedź, nie gwarancja osiągalności serwera.
+    Function("siecStan") { () -> String in SiecMonitor.shared.stan }
+    Events("siecZmiana")
+    OnStartObserving { SiecMonitor.shared.ustawOdbiorce { [weak self] stan in self?.sendEvent("siecZmiana", ["stan": stan]) } }
+    OnStopObserving { SiecMonitor.shared.ustawOdbiorce(nil) }
+
     View(WidokWzoru.self) {
       Events("onRysunek", "onStukniecie", "onStrona", "onPowiekszenie", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona")
       Prop("dokument") { (v: WidokWzoru, d: DokumentProp) in

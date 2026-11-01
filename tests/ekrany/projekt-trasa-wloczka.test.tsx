@@ -25,7 +25,7 @@ test('wiersz „Yarn” pokazuje nazwę włóczki projektu; stuknięcie → /for
   const s = await przygotuj();
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Back', 1), ...licznik('l1', 'c1', 5), wloczka('y1', 'Merino', 3), projektWloczka('p1', 'y1')]);
   s.zegar.ustaw(T0);
-  mock.kontener = { z: s.z, j: { t: await tEn(), jezyk: () => 'en-US', zegar24h: () => false } satisfies Jezyk, wzor: { k: { stan: () => ({ czekaSiec: [] }) }, platforma: { skanerDostepny: () => false, miniatura: async () => null } } };
+  mock.kontener = { z: s.z, j: { t: await tEn(), jezyk: () => 'en-US', zegar24h: () => false } satisfies Jezyk, porty: { siec: { stan: () => 'jest', obserwuj: () => () => undefined } }, wzor: { k: { stan: () => ({ czekaSiec: [] }) }, platforma: { skanerDostepny: () => false, miniatura: async () => null } } };
   render(<EkranProjektu />);
   const wiersz = await waitFor(() => screen.getByTestId('projekt-wloczka'));
   expect(within(wiersz).getByText('Merino')).toBeTruthy();

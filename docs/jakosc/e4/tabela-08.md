@@ -170,6 +170,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-drobne-8c.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik`<br>`src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-miejsce-wzoru.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-005/S1 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-p5.test.tsx` | zielony (główny zestaw) | 12 | BR-DNI-005, BR-LIC-018, BR-PRJ-002, BR-PRJ-005, P-183, P-191, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-film-siec.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-007 | `src/domena/porty`<br>`src/kompozycja/licznik`<br>`src/przypadki-uzycia/film` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-wloczka.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275 | `src/ekrany/Arkusz` | — |
@@ -219,6 +220,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/live-activity.test.ts` | zielony (główny zestaw) | 7 | P-115, P-139 | `src/domena/porty`<br>`src/platforma/dziennik-plus`<br>`src/platforma/live-activity`<br>`src/platforma/zegarek` | Z07-22 |
 | 9 ? | `tests/adaptery/magazyn.test.ts` | zielony (główny zestaw) | 2 | P-130 | `src/dane/pliki/magazyn` | — |
 | 9 ? | `tests/adaptery/platforma-proste.test.ts` | zielony (główny zestaw) | 3 | P-135, RD-16 | `src/platforma/ekran-aktywny`<br>`src/platforma/haptyka`<br>`src/platforma/zegar` | — |
+| 9 ? | `tests/adaptery/siec-kontrakt.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/porty` | Z07-22 |
+| 9 ? | `tests/adaptery/siec.test.ts` | zielony (główny zestaw) | 7 | NFR-OFF-001 | `src/domena/porty`<br>`src/platforma/siec` | Z07-22 |
 | 9 ? | `tests/adaptery/sklep-status.test.ts` | zielony (główny zestaw) | 1 | KP-13, P-135 | `src/domena/dostep`<br>`src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 7 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 8 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
@@ -240,4 +243,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 236; zależnych od poprawek: 152.
+Razem plików testów: 239; zależnych od poprawek: 155.

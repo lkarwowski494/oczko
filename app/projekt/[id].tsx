@@ -13,8 +13,9 @@ import { GrupaWzorow } from '../../src/ekrany/WzorGrupa';
 import { ArkuszFilmu, DodajFilm, WierszFilmu, type FilmProjektu } from '../../src/ekrany/WzorFilm';
 import { filmProjektu } from '../../src/przypadki-uzycia/film';
 import { miniaturyWzorow } from '../../src/kompozycja/miniatury';
+import { useStanSieci } from '../../src/kompozycja/stan-sieci';
 import { listaWzorow, type WzorNaLiscie } from '../../src/przypadki-uzycia/wzor';
-import { paneleE2e, siecWylaczona } from '../../src/platforma/tryb-e2e';
+import { paneleE2e } from '../../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../../src/platforma/zdjecia';
 import { dodajZdjecie, zdjecia } from '../../src/przypadki-uzycia/zdjecia';
 import { useKolory } from '../../src/ekrany/motyw';
@@ -34,6 +35,7 @@ import { sesjeProjektu, type SesjaNaEkranie } from '../../src/przypadki-uzycia/s
 import { stanCzasu } from '../../src/kompozycja/sesje';
 export default function EkranProjektu(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();
+  const siec = useStanSieci(kontener.porty.siec); // ADR-0031: film otwiera się według stanu sieci z portu (BR-WZR-007 S4)
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const naWierzchu = useIsFocused(); // arkusz skrzynki tylko na ekranie na wierzchu stosu
@@ -122,7 +124,7 @@ export default function EkranProjektu(): React.ReactElement {
       skaner={kontener.wzor.platforma.skanerDostepny()} naOtworz={(wid) => void doWzoru({ id: wid })} naDodaj={(zr) => void doWzoru({ dodaj: zr })}
       naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid).then(wczytaj)}
       film={film
-        ? <WierszFilmu film={film} siec={siecWylaczona() ? 'brak' : 'jest'} t={t} system={systemAplikacji}
+        ? <WierszFilmu film={film} siec={siec} t={t} system={systemAplikacji}
             naZmien={() => ustawArkuszFilmu(true)} naUsun={() => void kontener.wzor.k.usunFilm(w.id).then(wczytaj)} />
         : <DodajFilm t={t} naDodaj={() => ustawArkuszFilmu(true)} />} />
   );

@@ -30,6 +30,9 @@ export interface Haptyka { zagraj(w: WzorzecHaptyki): void } // F-48: rozpoznawa
 export interface EkranAktywny { wlacz(tag: string): void; wylacz(tag: string): void } // F-10, każdy tag wyłączany (rejestr Expo 7)
 export interface CzasWTle { chron<T>(nazwa: string, fn: (s: SygnalCzasu) => Promise<T>): Promise<T> } // beginBackgroundTask (rejestr Apple 17); wygaśnięcie → sygnał (ADR-0002 (7))
 export type SygnalCzasu = { wygaslo(): boolean };  // sprawdzany między instrukcjami długiej transakcji; true → wyjątek → ROLLBACK
+// Siec (ADR-0031): podpowiedź o ścieżce sieciowej, nie gwarancja osiągalności serwera
+export type StanSieci = 'jest' | 'brak' | 'nieznany';
+export interface Siec { stan(): StanSieci; obserwuj(fn: (s: StanSieci) => void): () => void }
 export interface SkrzynkaImportu { pobierz(): Promise<ZlecenieImportu[]>; usun(id: string): Promise<void> } // ADR-0011 (fix-7): App Group, rozszerzenie tylko kopiuje
 export interface MigawkaProjektow { zapisz(projekty: readonly ProjektMigawki[], jezyk: string): Promise<void> } // P-220 R1a/N2: plik w App Group dla rozszerzenia; zapis atomowy, koperta z wersją i językiem aplikacji (P-248 D2a)
 export interface KonwersjaWzoru { naPdf(z: ZrodloWzoru, sygnal?: SygnalCzasu): Promise<Wynik<{ sciezka: string; strony: number }>> } // ADR-0011 (fix-7, P-221 Q2a): WWW, Word, obrazy, skan → PDF; plik tymczasowy

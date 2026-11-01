@@ -12,6 +12,9 @@ export interface OczkoWzorNatywny {
   skanuj(): Promise<string>;                         // {ok, sciezki: JPEG stron} | anulowano | odmowa (aparat)
   wklej(): Promise<string | null>;                   // P-285 (1) B: UIPasteboard (adres albo tekst); pusty schowek = null
   miniatura(pdf: string, cel: string, szerokoscPt: number): Promise<string>; // plan 1.1 pkt 7: PNG pierwszej strony → {ok} | uszkodzony | zapis
+  /** Stan ścieżki sieciowej (NWPathMonitor, ADR-0031): 'jest' | 'brak' | 'nieznany' (monitor jeszcze nie odpowiedział). Podpowiedź, nie gwarancja osiągalności serwera. */
+  siecStan(): string;
+  addListener(nazwa: 'siecZmiana', fn: (e: { stan: string }) => void): { remove(): void }; // zmiana stanu ścieżki (monitor startuje przy pierwszej subskrypcji i przy `siecStan`)
 }
 
 export type ZnacznikNatywny = { strona: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1; etykieta: string;

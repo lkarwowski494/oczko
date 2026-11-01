@@ -194,3 +194,13 @@ final class PodpisListyTests: XCTestCase {
     XCTAssertEqual(kluczPodpisuListy(wybrany: nil, jakoFilm: true), "udostepnij.gotowe_nowy")
   }
 }
+
+// 07-jakosc-017 (K-17f, ADR-0031 pkt 1): status ścieżki sieciowej → napis portu `Siec` w TS.
+final class SiecTests: XCTestCase {
+  func testStatusSciezkiNaStanSieci() {
+    XCTAssertEqual(stanSieci(.satisfied), "jest")
+    XCTAssertEqual(stanSieci(.unsatisfied), "brak")
+    XCTAssertEqual(stanSieci(.requiresConnection), "brak")
+    XCTAssertEqual(stanSieci(nil), "nieznany") // monitor jeszcze nie odpowiedział
+  }
+}
