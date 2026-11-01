@@ -9,7 +9,7 @@
 - Po przebiegu: nowa sesja **04** (aneks audytu 2.1: AX5, iPad, poziomo, ciemny, długości etykiet; bez kadrów zrzutów). Po raporcie zgodności i E2: **08 partia 8 + poprawki** (kopie 07 i 10 jadą razem), potem **audyt M1 opus/high**.
 - **Właściciel:** kroki A1–A5, B2 (`docs/wydanie/kroki-wlasciciela-testflight.md`) 2.11 wieczorem (P-323); A6 po audycie.
 - Zaplanowane do tej sesji: `send_later` 18:03 (dyżur), 23:00 trig_01MTsaUZASrY2MKDYkr2QFH4 (sygnał pushy). Łańcuch dyżurów ≤ 60 min (P-311).
-- **Limit kontekstu ról 30–35% (P-324):** przy każdym dyżurze `get_session` każdej sesji roli (`context_usage`); ≥ 30% → zapis stanu, archiwum, nowa sesja od stanu.
+- **Kontekst ról (P-324, miękki limit):** przy każdym dyżurze `get_session` każdej sesji roli (`context_usage`); od 30% — domknięcie kroku, bez nowych; koniec przed 35%; do ok. 38%, gdy przerwanie nie ma sensu; potem archiwum i nowa sesja od stanu.
 - Pomiar kosztu: sesja sonnet 22 min ≈ 39 M odczytów cache, 6,82 USD — oszczędnie z sesjami (P-312).
 
 **Wszystkie sesje ról zapisały stan i są zarchiwizowane (16:44 UTC); pliki stanu: `docs/programista/partia-7.md`, `docs/lokalizacja/stan-przeklad.md`, `docs/jakosc/stan.md`, `docs/design/stan-audytu-2-1.md`.**
