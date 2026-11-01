@@ -93,7 +93,9 @@ Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`.
   - Scenariusz: Zapomniany stoper
     - Zakładając, że stoper działa, a telefon jest zablokowany
     - Gdy użytkownik patrzy na ekran blokady
-    - Wtedy widzi działający stoper i może go zatrzymać bez odblokowania
+    - Wtedy widzi działający czas sesji razem z rzędem, tylko do odczytu, bez elementu zatrzymującego stoper (jedynym elementem sterującym na ekranie blokady jest +1, BR-LIC-014; P-133 1.1a)
+    - Gdy po odblokowaniu telefonu otwiera aplikację
+    - Wtedy zatrzymuje stoper w aplikacji (ZM-10, ER-60)
 
 ### BR-PRJ-009: Postęp i szacowany czas
 - Przepływ: PR-14
