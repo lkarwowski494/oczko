@@ -32,7 +32,7 @@ async function start(plik: { nazwa: string; typ: string }) {
   await k.otworz('l1');
   const naPdf = jest.fn(async () => ({ ok: false as const, powod: 'bledne_dane' as const }));
   const zw = { ...s.z, konwersja: { naPdf, sprawdzPdf: jest.fn() }, czasWTle };
-  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
+  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
   render(<EkranWzoru />);
   return { naPdf };
 }

@@ -38,7 +38,7 @@ async function start(wartosc: number, zn = '{}') {
   await k.otworz('l1');
   mockZ = s.z;
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
-  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
+  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
   render(<EkranWzoru />);
   await waitFor(() => expect(mockWidok.strona).toBeDefined());
   return s;

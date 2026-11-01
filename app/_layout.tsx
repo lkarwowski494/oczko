@@ -44,7 +44,9 @@ export default function Korzen(): React.ReactElement {
       if (!w || !w.ok) { ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny(w && !w.ok ? w.powod : 'zapis') }); return; } // bez zastępczej bazy (ADR-0019)
       zapiszEtap('kontener'); // P-271: diagnostyka etapu dla „Zgłoś problem”
       const p = preferencje();
-      koniecNasluchu = w.wartosc.dostep.nasluchuj(); // KP-07: nasłuch transakcji od startu
+      const koniecDostepu = w.wartosc.dostep.nasluchuj(); // KP-07: nasłuch transakcji od startu
+      const koniecSieci = w.wartosc.wzor.k.obserwujSiec(w.wartosc.porty.siec); // ADR-0031 pkt 4: sieć wróciła → strony czekające w skrzynce zapisują się same
+      koniecNasluchu = () => { koniecDostepu(); koniecSieci(); };
       await w.wartosc.dostep.odswiez(); // limit dni liczony z bieżącym dostępem już przy pierwszym ekranie
       if (!zywy) return;
       const z = w.wartosc.z;

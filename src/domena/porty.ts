@@ -33,7 +33,9 @@ export type SygnalCzasu = { wygaslo(): boolean };  // sprawdzany między instruk
 // Siec (ADR-0031): podpowiedź o ścieżce sieciowej, nie gwarancja osiągalności serwera
 export type StanSieci = 'jest' | 'brak' | 'nieznany';
 export interface Siec { stan(): StanSieci; obserwuj(fn: (s: StanSieci) => void): () => void }
-export interface SkrzynkaImportu { pobierz(): Promise<ZlecenieImportu[]>; usun(id: string): Promise<void> } // ADR-0011 (fix-7): App Group, rozszerzenie tylko kopiuje
+// SkrzynkaImportu: dopisanie zlecenia z aplikacji (strona WWW bez sieci); zapis atomowy tmp → rename, ten sam zlecenie.json co rozszerzenie
+export type NoweZlecenie = { rodzaj: 'adres'; adres: string; nazwa: string; projektId: string | null };
+export interface SkrzynkaImportu { pobierz(): Promise<ZlecenieImportu[]>; usun(id: string): Promise<void>; dodaj(z: NoweZlecenie): Promise<Wynik<{ id: string }>> } // ADR-0011 (fix-7): App Group, rozszerzenie tylko kopiuje; dodaj: ADR-0031
 export interface MigawkaProjektow { zapisz(projekty: readonly ProjektMigawki[], jezyk: string): Promise<void> } // P-220 R1a/N2: plik w App Group dla rozszerzenia; zapis atomowy, koperta z wersją i językiem aplikacji (P-248 D2a)
 export interface KonwersjaWzoru { naPdf(z: ZrodloWzoru, sygnal?: SygnalCzasu): Promise<Wynik<{ sciezka: string; strony: number }>> } // ADR-0011 (fix-7, P-221 Q2a): WWW, Word, obrazy, skan → PDF; plik tymczasowy
 export interface SkanerStron { skanuj(): Promise<Wynik<{ sciezki: string[] }>> } // P-220 W7a: skaner dokumentów systemu (VisionKit); jeden skan = jeden wzór (P-218 (1))

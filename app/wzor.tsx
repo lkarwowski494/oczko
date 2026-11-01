@@ -50,6 +50,9 @@ export default function EkranWzoru(): React.ReactElement {
   const [przytrzymanie, ustawPrzytrzymanie] = useState<{ strona: number; y: number } | null>(null); // przytrzymanie bez znacznika czeka na kierunek (3a)
   const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
   const [importWToku, ustawImport] = useState<string | null>(null); // W11: wiersz „import w toku” w czasie konwersji
+  const [linkAdres, ustawLinkAdres] = useState(''); // adres wpisany w arkuszu linku; wraca do pola, gdy zlecenia „czeka na sieć” nie da się zapisać (ADR-0031 pkt 3)
+  const [czekaSiec, ustawCzekaSiec] = useState(() => kontener.wzor.k.stan().czekaSiec); // strony WWW czekające na sieć (design-spec :660)
+  useEffect(() => { const odswiez = () => ustawCzekaSiec(kontener.wzor.k.stan().czekaSiec); odswiez(); return kontener.wzor.k.naZmiane(odswiez); }, [kontener]);
 
   const wczytaj = useCallback(async (wybrany?: string) => {
     const w = await licznik.widok();
@@ -114,7 +117,19 @@ export default function EkranWzoru(): React.ReactElement {
     ustawImport(nazwa);
     const r = await dodajWzor(zw, { projektId: lw.projektId, nazwa, zrodlo: z }).finally(() => ustawImport(null));
     if (r.ok) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(r.wartosc.wzorId); }
+    else if (r.powod === 'brak_sieci' && z.rodzaj === 'adres') await zapiszCzekanieNaSiec(z.adres, nazwa, lw.projektId);
     else pokaz(alertImportu(r.powod, plik, t));
+  }
+  /**
+   * Strona WWW bez sieci (BR-WZR-007 S3, ADR-0031 pkt 3): zlecenie do skrzynki (zapis sam po powrocie sieci), wiersz „czeka na sieć”, bez pustego wzoru. Z ekranu projektu
+   * („Add pattern”, parametr `dodaj`) wracamy tam, gdzie wiersz widać; przy błędzie zapisu alert i arkusz linku z wpisanym adresem.
+   */
+  async function zapiszCzekanieNaSiec(adres: string, nazwa: string, projektId: string): Promise<void> {
+    const w = await kontener.wzor.k.czekajNaSiec({ projektId, adres, nazwa });
+    if (w.ok) { if (dodajParam) router.back(); return; }
+    pokaz(alertImportu(w.powod, '', t));
+    ustawLinkAdres(adres);
+    ustawLink(true);
   }
   function pokaz(a: { tytul: string; opis: string } | null): void {
     if (a) Alert.alert(a.tytul, a.opis || undefined, [{ text: t('wspolne.ok') }]);
@@ -127,7 +142,7 @@ export default function EkranWzoru(): React.ReactElement {
     obroty: Object.entries(widok.obroty).map(([k, v]) => ({ strona: Number(k), kat: v })),
     startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
-  if (link) return <Bezpieczny><ArkuszLinku t={t} naAnuluj={() => ustawLink(false)} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
+  if (link) return <Bezpieczny><ArkuszLinku t={t} poczatek={linkAdres} naAnuluj={() => { ustawLink(false); ustawLinkAdres(''); }} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); ustawLinkAdres(''); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
   if (!lw || !wzory) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
@@ -139,7 +154,7 @@ export default function EkranWzoru(): React.ReactElement {
     return (
       <Bezpieczny>
         <View style={{ flex: 1, padding: 16, backgroundColor: k.papier }}>
-          <GrupaWzorow wzory={[]} oczekujace={importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' }] : []} skaner={kontener.wzor.platforma.skanerDostepny()} t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={() => undefined}
+          <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
             panelE2e={paneleE2e ? <paneleE2e.PanelWzoru katalogTymczasowy={kontener.z.katalogi.tymczasowy} naDodaj={(w) => void dodaj({ rodzaj: 'gotowe', ...w })} /> : null} />
         </View>
       </Bezpieczny>
