@@ -49,6 +49,18 @@ export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number,
   }
   return usun;
 }
+/** P-339 (N-05-2): czy wśród nazw jest kopia Oczka z ADR-0028; obce pliki nie liczą się (podpis o kopiach pokazujemy tylko, gdy kopie są). */
+export function czySaKopiePrzed(nazwy: readonly string[]): boolean {
+  return nazwy.some((n) => PLIK_PRZED.test(n));
+}
+/** Adapter: czy Documents/Backup zawiera kopie Oczka. Brak katalogu albo błąd odczytu = false (podpisu nie pokazujemy na zgadnięcie). */
+export function saKopiePrzed(katalog: string): boolean {
+  try {
+    return czySaKopiePrzed(lista(katalog));
+  } catch {
+    return false; // nieczytelny katalog: brak podpisu jest bezpieczniejszy niż podpis o kopiach, których nie widzimy (celowe, jak sprzatnijKopiePrzed)
+  }
+}
 /** Adapter: lista katalogu kopii przed → usunięcie wybranych; brak katalogu = nic do zrobienia, błąd nie blokuje startu (jak `sprzatnijKopie`). */
 export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<string[]> {
   try {

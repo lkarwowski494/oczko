@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { KOPIE_RATUNKOWE_DNI } from '../../src/konfiguracja';
-import { kopieDoUsuniecia, kopiePrzedDoUsuniecia, sprzatnijKopie, zipSurowejKopii, type ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
+import { czySaKopiePrzed, kopieDoUsuniecia, kopiePrzedDoUsuniecia, saKopiePrzed, sprzatnijKopie, zipSurowejKopii, type ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
 import { czytajZip } from '../dane/pomocnicze/dane-wejsciowe';
 import { DOBA, T0, katalogTymczasowy, sha256, sha256Pliku } from '../dane/pomocnicze/srodowisko';
 import { procesZabityZOtwartaBaza, uszkodzStrone } from './pomocnicze';
@@ -126,5 +126,28 @@ describe('07-jakosc-003 K-03f ADR-0028 pkt 4: pula kopii z Documents/Backup (czy
   });
   test('obca nazwa, stara kopia .db i data z przyszłości zostają', () => {
     expect(kopiePrzedDoUsuniecia(['notatki.txt', 'przed-importem-1.db', `oczko-przed-importem-${dzien(-5)}.oczko`, imp(1), imp(2), imp(3)], T0)).toEqual([imp(3)]);
+  });
+});
+
+describe('P-339 N-05-2: czy w Documents/Backup są kopie Oczka (podpis w „Data and sync” tylko wtedy)', () => {
+  test('nazwy z ADR-0028 (przed importem i przed usunięciem, także z przyrostkiem) → są kopie', () => {
+    expect(czySaKopiePrzed(['oczko-przed-importem-2026-10-30.oczko'])).toBe(true);
+    expect(czySaKopiePrzed(['oczko-przed-usunieciem-2026-10-30-2.oczko'])).toBe(true);
+    expect(czySaKopiePrzed(['notatki.txt', 'oczko-przed-importem-2026-10-30.oczko'])).toBe(true);
+  });
+  test('pusty katalog i obce pliki (także .db ze starych buildów i nazwa bez daty) → nie ma kopii', () => {
+    expect(czySaKopiePrzed([])).toBe(false);
+    expect(czySaKopiePrzed(['notatki.txt', 'przed-importem-1767225600000.db', 'oczko-przed-importem-bez-daty.oczko', 'oczko-przed-importem-2026-10-30.oczko.tmp'])).toBe(false);
+  });
+  test('adapter na prawdziwym katalogu: brak katalogu → false; pusty → false; z kopią → true; obcy plik → false', () => {
+    const korzen = katalogTymczasowy();
+    const backup = join(korzen, 'Documents', 'Backup');
+    expect(saKopiePrzed(backup)).toBe(false); // katalog nie istnieje
+    mkdirSync(backup, { recursive: true });
+    expect(saKopiePrzed(backup)).toBe(false);
+    writeFileSync(join(backup, 'obcy.txt'), 'x');
+    expect(saKopiePrzed(backup)).toBe(false);
+    writeFileSync(join(backup, 'oczko-przed-usunieciem-2026-10-30.oczko'), 'x');
+    expect(saKopiePrzed(backup)).toBe(true);
   });
 });

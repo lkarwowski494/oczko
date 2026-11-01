@@ -1,5 +1,7 @@
 // Trasa „/stan-danych” (app/stan-danych.tsx) przez ekran (07-jakosc-032). 07-jakosc-019 (BR-DAN-002, P-220 I1a): wiersz „N counters have two versions”
 // prowadzi do wyboru wersji — otwiera licznik w konflikcie i przechodzi na /konflikt (ekran wyboru działa na bieżącym liczniku).
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import React from 'react';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { licznikiWKonflikcie } from '../../src/dane/repozytoria/icloud';
@@ -54,4 +56,39 @@ test('015: „Last synced …” pokazuje zapisany czas ostatniej udanej synchro
   await s.baza.run("INSERT INTO ustawienie (klucz, wartosc, zmieniono_ms) VALUES ('icloud_ostatnia_udana_ms', ?, 1)", [String(Date.UTC(2026, 9, 22, 8, 5))]);
   render(<EkranStanuDanych />);
   expect(await screen.findByText('Last synced Oct 22, 10:05')).toBeTruthy(); // Europe/Warsaw, zegar 24 h
+});
+
+// P-339 (N-05-2, ADR-0028; design-spec „Kopia w Data and sync”, makieta fix10 `stan-danych-kopie`): cichy podpis `stan_danych.kopie_opis` tylko gdy w Documents/Backup są kopie Oczka.
+describe('P-339: podpis o kopiach w „Data and sync”', () => {
+  const tekstKopii = async () => (await tEn())('stan_danych.kopie_opis');
+  const kopia = (s: Awaited<ReturnType<typeof aplikacja>>['s'], nazwa: string) => writeFileSync(join(s.z.katalogi.kopiePrzed, nazwa), 'x');
+
+  test('bez kopii w Documents/Backup — bez podpisu (zasada 18: żadnego pustego pouczenia)', async () => {
+    await aplikacja();
+    render(<EkranStanuDanych />);
+    await screen.findByRole('button', { name: /two versions/ });
+    expect(screen.queryByTestId('stan-danych-kopie')).toBeNull();
+    expect(screen.queryByText(await tekstKopii())).toBeNull();
+  });
+  test('obcy plik w Documents/Backup nie jest kopią Oczka — bez podpisu', async () => {
+    const { s } = await aplikacja();
+    kopia(s, 'notatki.txt');
+    render(<EkranStanuDanych />);
+    await screen.findByRole('button', { name: /two versions/ });
+    expect(screen.queryByTestId('stan-danych-kopie')).toBeNull();
+  });
+  test('kopia przed importem w Documents/Backup — podpis z klucza stan_danych.kopie_opis', async () => {
+    const { s } = await aplikacja();
+    kopia(s, 'oczko-przed-importem-2026-10-30.oczko');
+    render(<EkranStanuDanych />);
+    expect(await screen.findByText(await tekstKopii())).toBeTruthy();
+    expect(screen.getByTestId('stan-danych-kopie')).toBeTruthy();
+  });
+  test('kopia przed usunięciem, iCloud ukryty (ZM-06) — podpis też jest (kopie są na urządzeniu niezależnie od iCloud)', async () => {
+    const { s } = await aplikacja();
+    (mockAplikacja as { kontener: { icloud?: unknown } }).kontener.icloud = undefined;
+    kopia(s, 'oczko-przed-usunieciem-2026-10-30.oczko');
+    render(<EkranStanuDanych />);
+    expect(await screen.findByText(await tekstKopii())).toBeTruthy();
+  });
 });

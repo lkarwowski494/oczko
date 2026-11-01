@@ -33,6 +33,7 @@ export type PropsStanuDanych = {
   t: Tlumacz;
   naZamknij?(): void;
   icloud?: IcloudStanuDanych;
+  kopie?: boolean;                      // P-339 (N-05-2): w Documents/Backup są kopie Oczka → cichy podpis stan_danych.kopie_opis; bez kopii nic nie jest pokazane
   panelE2e?: React.ReactNode;
 };
 
@@ -50,7 +51,7 @@ function Problem({ ikona, naglowek, opis, przycisk }: { ikona: '!' | 'i'; naglow
   );
 }
 
-export function StanDanych({ stan: s, t, naZamknij, icloud: i, panelE2e }: PropsStanuDanych): React.ReactElement {
+export function StanDanych({ stan: s, t, naZamknij, icloud: i, kopie, panelE2e }: PropsStanuDanych): React.ReactElement {
   const k = useKolory();
   const st = StyleSheet.create({ wiersz: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.s, minHeight: cel.minimum } });
   if (!i) {
@@ -61,6 +62,7 @@ export function StanDanych({ stan: s, t, naZamknij, icloud: i, panelE2e }: Props
         {s.czekaNaSiec && <Tresc>{t('stan_danych.czeka')}</Tresc>}
         <Tresc>{t('stan_danych.zapisane')}</Tresc>
         {s.zegarek && <Tresc podpis>{t('stan_danych.zegarek_kontakt', { data: s.zegarek.ostatniKontakt })}</Tresc>}
+        {kopie && <Tresc podpis testID="stan-danych-kopie">{t('stan_danych.kopie_opis')}</Tresc>}
         {panelE2e}
       </Arkusz>
     );
@@ -91,6 +93,7 @@ export function StanDanych({ stan: s, t, naZamknij, icloud: i, panelE2e }: Props
           {i.naKonflikty ? <Przycisk tekst={t('icloud.konflikty', { count: i.konflikty })} onPress={i.naKonflikty} rodzaj="tekstowy" /> : <Tresc>{t('icloud.konflikty', { count: i.konflikty })}</Tresc>}
         </View>
       )}
+      {kopie && <Tresc podpis testID="stan-danych-kopie">{t('stan_danych.kopie_opis')}</Tresc>}
       {panelE2e}
     </Arkusz>
   );
