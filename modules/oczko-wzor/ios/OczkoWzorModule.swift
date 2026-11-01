@@ -31,6 +31,16 @@ struct ZnacznikProp: Record {
   @Field var etykieta: String = ""
 }
 
+/// Chip notatki na stronie wzoru (F-56, P-330 2A; `NotatkaNatywna` w index.ts): ✎ + etykieta przy lewej krawędzi, na wysokości rzędu.
+struct NotatkaProp: Record {
+  @Field var id: String = ""
+  @Field var strona: Int = 0
+  @Field var y: Double = 0
+  @Field var wysokosc: Double = 0
+  @Field var etykieta: String = ""
+  @Field var a11y: String = ""
+}
+
 public class OczkoWzorModule: Module {
   public func definition() -> ModuleDefinition {
     Name("OczkoWzor")
@@ -59,7 +69,7 @@ public class OczkoWzorModule: Module {
     }
 
     View(WidokWzoru.self) {
-      Events("onRysunek", "onStukniecie", "onStrona", "onPierwszyRysik", "onZakreslenia")
+      Events("onRysunek", "onStukniecie", "onStrona", "onPierwszyRysik", "onZakreslenia", "onNotatka")
       Prop("dokument") { (v: WidokWzoru, d: DokumentProp) in
         v.ustawDokument(wzorId: d.wzorId, plikPdf: d.plikPdf, rysunki: d.rysunki.map { ($0.strona, $0.plik) },
                         obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }))
@@ -68,6 +78,9 @@ public class OczkoWzorModule: Module {
       Prop("strona") { (v: WidokWzoru, s: Int) in v.przejdzDoStrony(s) }
       Prop("znacznik") { (v: WidokWzoru, z: ZnacznikProp?) in
         v.ustawZnacznik(z.map { Znacznik(strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, pozaStrona: $0.pozaStrona, kierunek: $0.kierunek, etykieta: $0.etykieta) })
+      }
+      Prop("notatki") { (v: WidokWzoru, n: [NotatkaProp]) in
+        v.ustawNotatki(n.map { ChipNotatkiNatywny(id: $0.id, strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, etykieta: $0.etykieta, a11y: $0.a11y) })
       }
       Prop("narzedzie") { (v: WidokWzoru, n: String) in v.ustawNarzedzie(NarzedzieWzoru(rawValue: n) ?? .brak) }
       Prop("polityka") { (v: WidokWzoru, p: String) in v.ustawPolityke(PolitykaPlotna(rawValue: p) ?? .wylaczone) }

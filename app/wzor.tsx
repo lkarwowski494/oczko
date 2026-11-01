@@ -17,7 +17,7 @@ import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
 import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
-import { dodajNotatkeWzoru, dodajWzor, listaWzorow, usunWzor, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru, dodajWzor, listaWzorow, usunNotatkeWzoru, usunWzor, zmienNotatkeWzoru, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
 import { odzyskajRysunki, ustawObrot, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import type { WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
 import { KOSZ_DNI } from '../src/konfiguracja';
@@ -42,6 +42,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [cofnij, ustawCofnij] = useState(0);
   const [link, ustawLink] = useState(false);
   const [arkuszNazwy, ustawArkuszNazwy] = useState(false); // ••• → „Rename” (W1a)
+  const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
   const [importWToku, ustawImport] = useState<string | null>(null); // W11: wiersz „import w toku” w czasie konwersji
 
   const wczytaj = useCallback(async (wybrany?: string) => {
@@ -135,8 +136,14 @@ export default function EkranWzoru(): React.ReactElement {
   const polityka = politykaPlotna({ narzedzie, tylkoRysik: rysik.tylkoRysik });
   const zn = widok.znacznik;
   const plikPdf = widok.plikPdf;
+  const chipy = widok.notatki;
+  const notatkiNatywne = chipy.map((c) => {
+    const etykieta = c.notatki.length > 1 ? t('wzor.notatki_wiele', { count: c.notatki.length }) : t('wzor.notatka_chip', { n: c.rzadWzoru, tekst: c.notatki[0]?.tekst ?? '' });
+    return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
+  });
   const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : 0} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij}
+    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : 0} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
+      onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
       znacznik={zn ? { strona: zn.strona, y: zn.y, wysokosc: zn.wysokosc, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem, kierunek: zn.kierunek,
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: zn.rzad }) } : null}
       onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
@@ -159,6 +166,9 @@ export default function EkranWzoru(): React.ReactElement {
         naPrzelacz={(w) => void wczytaj(w)}
         naNarzedzie={ustawNarzedzie}
         naCofnij={() => ustawCofnij((n) => n + 1)}
+        chipy={chipy} otwartyChip={otwartyChip} naChip={ustawOtwartyChip}
+        naZmienNotatke={async (id, nowa) => { const r = await zmienNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id, tekst: nowa }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
+        naUsunNotatke={async (id) => { const r = await usunNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
         naZaznaczRzad={(kierunek) => void ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, strona: strona ? strona.n - 1 : 0, y: 0.5, wysokoscRzedu: zn?.wysokosc ?? 0.02, rzadBazowy: lw.wartosc + 1, kierunek }).then(() => wczytaj(widok.wzorId))}
         naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst })}
         naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(() => wczytaj(widok.wzorId))}

@@ -17,6 +17,22 @@ struct Znacznik: Equatable {
   let etykieta: String // etykieta VoiceOver z `wzor.znacznik_a11y_*` (P-237 (2))
 }
 
+struct ChipNotatkiNatywny: Equatable {
+  let id: String
+  let strona: Int
+  let y: Double        // góra rzędu, ułamek wysokości strony (jak znacznik)
+  let wysokosc: Double
+  let etykieta: String // „Row 6: ujmowanie…” albo „2 notes” (teksty z JS)
+  let a11y: String
+}
+
+/// Chip o wyglądzie 28 pt z obszarem dotyku ≥ 44 pt (obszar dotyku rozszerzony o 8 pt z każdej strony).
+final class ChipPrzycisk: UIButton {
+  override func point(inside punkt: CGPoint, with zdarzenie: UIEvent?) -> Bool {
+    bounds.insetBy(dx: -8, dy: -8).contains(punkt)
+  }
+}
+
 private func kolor(_ hex: UInt32) -> UIColor {
   UIColor(red: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255, blue: CGFloat(hex & 0xFF) / 255, alpha: 1)
 }
@@ -38,9 +54,12 @@ final class DetektorRysika: UIGestureRecognizer {
   }
 }
 
-/// Nakładka strony: płótno PencilKit i znacznik rzędu (pas z dwiema grafitowymi krawędziami i zakładką z etykietą).
+/// Nakładka strony: płótno PencilKit, znacznik rzędu (pas z dwiema grafitowymi krawędziami i zakładką z etykietą) i chipy notatek.
 final class NakladkaStrony: UIView {
   let plotno = PKCanvasView()
+  var naNotatke: ((String) -> Void)?
+  private var chipy: [(dane: ChipNotatkiNatywny, widok: ChipPrzycisk)] = []
+  var notatki: [ChipNotatkiNatywny] = [] { didSet { przebudujChipy() } }
   let pas = UIView()
   private let gora = UIView(), dol = UIView(), zakladka = UILabel()
   var znacznik: Znacznik? { didSet { setNeedsLayout() } }
@@ -64,9 +83,38 @@ final class NakladkaStrony: UIView {
   }
   required init?(coder: NSCoder) { fatalError("init(coder:)") }
 
+  /// Chip notatki (P-330 2A): obrys i tekst grafit `#26282C` na białym środku (stałe kolory strony, 14,76:1), wizualnie 28 pt, obszar dotyku ≥ 44 pt.
+  private func przebudujChipy() {
+    for c in chipy { c.widok.removeFromSuperview() }
+    chipy = notatki.map { n in
+      let b = ChipPrzycisk(type: .custom)
+      b.setTitle("✎ \(n.etykieta)", for: .normal)
+      b.setTitleColor(KOLOR_GRAFIT, for: .normal)
+      b.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
+      b.titleLabel?.lineBreakMode = .byTruncatingTail
+      b.backgroundColor = .white
+      b.layer.borderColor = KOLOR_GRAFIT.cgColor
+      b.layer.borderWidth = 1.5
+      b.layer.cornerRadius = 14
+      b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+      b.accessibilityLabel = n.a11y
+      b.accessibilityTraits = .button
+      b.accessibilityIdentifier = "wzor-notatka-chip"
+      b.addAction(UIAction { [weak self] _ in self?.naNotatke?(n.id) }, for: .touchUpInside)
+      addSubview(b)
+      return (n, b)
+    }
+    setNeedsLayout()
+  }
+
   override func layoutSubviews() {
     super.layoutSubviews()
     plotno.frame = bounds
+    for c in chipy {
+      let w = min(max(c.widok.intrinsicContentSize.width, 28), bounds.width * 0.5)
+      let srodek = (CGFloat(c.dane.y) + CGFloat(c.dane.wysokosc) / 2) * bounds.height
+      c.widok.frame = CGRect(x: 4, y: srodek - 14, width: w, height: 28)
+    }
     guard let z = znacznik else { pas.isHidden = true; return }
     pas.isHidden = false
     let h = bounds.height
@@ -88,6 +136,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   let onStrona = EventDispatcher()
   let onPierwszyRysik = EventDispatcher()
   let onZakreslenia = EventDispatcher()
+  let onNotatka = EventDispatcher()
 
   private let pdf = PDFView()
   private var plik = ""
@@ -101,6 +150,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var narzedzie: NarzedzieWzoru = .brak
   private var polityka: PolitykaPlotna = .wylaczone
   private var znacznik: Znacznik?
+  private var notatki: [ChipNotatkiNatywny] = []
   private var cofnij: Int?
   private var rysikZgloszony = false
   private var zKodu = false
@@ -176,6 +226,10 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     znacznik = z
     for (s, n) in nakladki { n.znacznik = z?.strona == s ? z : nil }
   }
+  func ustawNotatki(_ n: [ChipNotatkiNatywny]) {
+    notatki = n
+    for (s, nak) in nakladki { nak.notatki = n.filter { $0.strona == s } }
+  }
   func ustawNarzedzie(_ n: NarzedzieWzoru) {
     narzedzie = n
     for k in nakladki.values { zastosujNarzedzie(k.plotno) }
@@ -210,6 +264,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     zastosujNarzedzie(n.plotno)
     zastosujPolityke(n.plotno)
     n.znacznik = znacznik?.strona == s ? znacznik : nil
+    n.naNotatke = { [weak self] id in self?.onNotatka(["id": id]) }
+    n.notatki = notatki.filter { $0.strona == s }
     nakladki[s] = n
     return n
   }

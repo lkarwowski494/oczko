@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { RYSIK_PODPOWIEDZ_MS } from '../konfiguracja';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { Narzedzie } from '../domena/rysik';
+import type { ChipNotatki } from '../domena/znacznik-wzoru';
+import { ArkuszNotatekWzoru } from './WzorNotatki';
 import type { Uklad } from '../domena/uklad';
 import { cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
@@ -34,6 +36,11 @@ export type PropsPrzegladarki = {
   naCofnij(): void;
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
+  chipy?: ChipNotatki[];                          // chipy notatek strony (F-56): arkusz notatki albo lista, gdy chip jest otwarty
+  otwartyChip?: number | null;                    // rząd licznika chipu otwartego stuknięciem w widoku natywnym
+  naChip?(rzad: number | null): void;
+  naZmienNotatke?(id: string, tekst: string): Promise<boolean>;
+  naUsunNotatke?(id: string): Promise<boolean>;
   naObroc(): void;
   naZmienNazwe(): void;
   tylkoRysik?: boolean;                    // po pierwszym rysiku (P-218 Q2a): podpowiedź raz na otwarcie (P-284 (1) A)                    // ••• → „Rename” (design-spec W1a)
@@ -156,6 +163,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           </Pressable>
         </View>
       )}
+      <ArkuszNotatekWzoru t={t} chipy={p.chipy} otwartyChip={p.otwartyChip} naChip={p.naChip} naZmienNotatke={p.naZmienNotatke} naUsunNotatke={p.naUsunNotatke} potwierdz={p.potwierdz} naBlad={() => ustawBlad(true)} />
       {pytanie && (
         <View style={st.informacja} accessibilityRole="summary" testID="wzor-kierunek">
           <Text style={st.tresc}>{t('wzor.kierunek_pytanie')}</Text>

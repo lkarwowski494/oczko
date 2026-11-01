@@ -790,7 +790,17 @@
     "blad_strona": "Oczko can’t save this page",
     "blad_strona_opis": "The page asks you to sign in, or it has no text or pictures. Nothing was added. Open it in your browser, save it as a PDF and add the PDF.",
     "brak_aparatu_opis": "To scan pattern pages, allow camera access in Settings. You can still choose photos or a file.",
-    "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF."
+    "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF.",
+    "notatka_chip": "Row {{n}}: {{tekst}}",
+    "notatka_chip_a11y": "Note on row {{n}}: {{tekst}}. Open",
+    "notatki_wiele_one": "{{count}} note",
+    "notatki_wiele_other": "{{count}} notes",
+    "notatki_tytul": "Notes on page {{strona}}",
+    "notatka_tytul": "Note for row {{n}}",
+    "notatka_usun": "Delete note",
+    "notatka_usun_tytul": "Delete this note?",
+    "notatka_usun_opis": "It’s removed from the pattern and from row {{n}}.",
+    "notatka_edytuj": "Edit"
   },
   "udostepnij": {
     "tytul": "Add to Oczko",

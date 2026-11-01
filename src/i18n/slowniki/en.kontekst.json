@@ -729,7 +729,16 @@
     "blad_strona": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek alertu: strona wymaga logowania albo nie ma treści (BR-WZR-007 S3).",
     "blad_strona_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu: co się stało i co zrobić.",
     "brak_aparatu_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu braku dostępu do aparatu przy skanowaniu; nagłówek zdjecia.brak_aparatu_tytul, przycisk zdjecia.otworz_ustawienia.",
-    "word_podglad": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): linia informacji nad plikiem Word w podglądzie zastępczym (bez znacznika i rysowania, ADR-0011)."
+    "word_podglad": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): linia informacji nad plikiem Word w podglądzie zastępczym (bez znacznika i rysowania, ADR-0011).",
+    "notatka_chip": "Widoczny tekst chipu notatki na stronie wzoru (partia 8, 07-jakosc-007); {{n}} = rząd notatki, {{tekst}} = treść notatki użytkowniczki, obcinana z wielokropkiem przy ok. 24 znakach. Ikona ✎ jest symbolem, nie tekstem.",
+    "notatka_chip_a11y": "Etykieta VoiceOver chipu notatki na wzorze; „Open” = akcja otwarcia notatki. {{tekst}} = pełna treść.",
+    "notatki_tytul": "Tytuł arkusza z listą notatek strony (po stuknięciu chipu zbiorczego); {{strona}} = numer strony wzoru.",
+    "notatka_tytul": "Tytuł arkusza podglądu notatki wzoru (Close / tytuł / Edit); {{n}} = numer rzędu.",
+    "notatka_usun": "Wiersz destrukcyjny w arkuszu notatki wzoru (słownik: Delete {object}); otwiera alert `wzor.notatka_usun_tytul`.",
+    "notatka_usun_tytul": "Tytuł alertu usunięcia notatki wzoru.",
+    "notatka_usun_opis": "Opis alertu usunięcia notatki wzoru; {{n}} = rząd notatki. Notatki nie trafiają do kosza.",
+    "notatki_wiele": "Chip zbiorczy, gdy kilka notatek leży w obrębie jednego rzędu na stronie (≥ 2 w praktyce). Stuknięcie otwiera listę `wzor.notatki_tytul`.",
+    "notatka_edytuj": "Przycisk w nagłówku arkusza notatki wzoru (Close / tytuł / Edit; 07-jakosc-007, P-330 2A): przechodzi w tryb zmiany treści (Cancel / Save). Tekst roboczy 08 — brak klucza w klucze.json, do akceptacji 04."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",

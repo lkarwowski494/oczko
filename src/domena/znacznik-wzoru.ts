@@ -28,3 +28,24 @@ export function polozenieZnacznika(z: ZnacznikWzoru, wartoscLicznika: number): W
 
 /** RD-21 (P-134 Q2a): rząd schematu przy ustawieniu znacznika domyślnie = rząd w robocie = s_ust + 1, niezależnie od trybu licznika (BR-LIC-012). */
 export function domyslnyRzadBazowy(sUst: number): number { return sUst + 1; }
+
+/** Notatka wzoru: `rzad` to rząd licznika (rząd w robocie w chwili dodania, `rzadNotatki`), `tekst` bez zmian (BR-WZR-008). */
+export type NotatkaWzoru = { id: string; rzad: number; tekst: string };
+/**
+ * Chip notatki na stronie wzoru (F-56, P-330 2A): notatki jednego rzędu to jeden chip. `rzadWzoru` = rząd schematu (numer w chipie, jak etykieta znacznika);
+ * `y` = góra rzędu jako ułamek wysokości strony. Notatka poza stroną znacznika albo przed schematem nie ma tu miejsca (stronę obok zna tylko widok natywny).
+ */
+export type ChipNotatki = { rzad: number; rzadWzoru: number; strona: number; y: number; wysokosc: number; notatki: NotatkaWzoru[] };
+export function chipyNotatek(z: ZnacznikWzoru, notatki: readonly NotatkaWzoru[]): ChipNotatki[] {
+  const wg = new Map<number, ChipNotatki>();
+  for (const n of notatki) {
+    const krok = n.rzad - 1 - z.wartoscPrzyUstawieniu;
+    const rzadWzoru = z.rzadBazowy + krok;
+    const y = z.y + z.kierunek * krok * z.wysokoscRzedu;
+    if (rzadWzoru < 1 || y < -EPS || y + z.wysokoscRzedu > 1 + EPS) continue;
+    const jest = wg.get(n.rzad);
+    if (jest) jest.notatki.push(n);
+    else wg.set(n.rzad, { rzad: n.rzad, rzadWzoru, strona: z.strona, y, wysokosc: z.wysokoscRzedu, notatki: [n] });
+  }
+  return [...wg.values()].sort((a, b) => a.rzad - b.rzad);
+}
