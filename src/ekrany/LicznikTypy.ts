@@ -17,6 +17,7 @@ export type BanerLicznika =
   | null;
 
 export type StanEkranuLicznika = {
+  rodzaj: 'rzedy' | 'oczka';           // licznik oczek: „stitch” zamiast „row”, bez celu, przypomnień, powtórzeń i banera strażnika (BR-LIC-006, 07-jakosc-025)
   projekt: string | null;              // null: pierwszy licznik bez nazwy (BR-LIC-001, NFR-PIE-001)
   czesc: string | null;
   skonczone: number;                   // duża liczba = rzędy skończone (design-spec.md:30)

@@ -47,7 +47,17 @@
     "cel_dnia_other": "Today’s goal: {{count}} rows",
     "calosc_one": "{{czesc}} in total: {{count}} row",
     "calosc_other": "{{czesc}} in total: {{count}} rows",
-    "wzor_a11y": "Pattern"
+    "wzor_a11y": "Pattern",
+    "jednostka_oczka_one": "stitch",
+    "jednostka_oczka_other": "stitches",
+    "plus_oczka": "+1 stitch",
+    "podpis_plus_oczka": "tap for each stitch",
+    "plus_a11y_oczka": "Add stitch",
+    "minus_a11y_oczka": "Remove stitch",
+    "po_dodaniu_oczka_one": "{{count}} stitch.",
+    "po_dodaniu_oczka_other": "{{count}} stitches.",
+    "znaczniki_sesji_oczka_one": "Marks this session: {{count}} stitch since {{godzina}}",
+    "znaczniki_sesji_oczka_other": "Marks this session: {{count}} stitches since {{godzina}}"
   },
   "limit": {
     "zawczasu_one": "No free knitting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",

@@ -31,7 +31,7 @@ export function odroczona<T>() {
 /** Stan licznika „Harbor Sweater / Left sleeve, rząd 48” z ekrany.html `licznik-w-toku` (wzorzec 04). */
 export function stanLicznika(z: Partial<StanEkranuLicznika> = {}): StanEkranuLicznika {
   return {
-    projekt: 'Harbor Sweater', czesc: 'Left sleeve', skonczone: 47, dziergany: 48, znaczenie: 'skonczone',
+    rodzaj: 'rzedy', projekt: 'Harbor Sweater', czesc: 'Left sleeve', skonczone: 47, dziergany: 48, znaczenie: 'skonczone',
     cel: null, celDnia: null, przypomnienie: null, powtorzenie: null, notatka: null, sesja: null,
     zablokowany: false, limit: { rodzaj: 'brak' }, miesiac: { nazwa: 'November', wznowienie: 'December 1', rzedyDanych: 47 },
     baner: null, blizniak: null, wibracje: true, ...z,

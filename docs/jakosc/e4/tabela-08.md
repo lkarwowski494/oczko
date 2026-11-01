@@ -140,6 +140,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/kontekst-jezyk.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/Kontekst` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-ax5.test.tsx` | zielony (główny zestaw) | 4 | NFR-DOS-002, P-266, P-275, P-277, P-287 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-limit.test.tsx` | zielony (główny zestaw) | 7 | BR-ZAK-006, BR-ZAK-006/S1, BR-ZAK-006/S2, BR-ZAK-006/S3, BR-ZAK-006/S5, BR-ZAK-006/S6, KP-13, P-046, P-065 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-oczek.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-006 | `src/dane/repozytoria/dni`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-p5.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-011/S1, BR-LIC-018/S1, P-182, P-191 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-wzor.test.tsx` | zielony (główny zestaw) | 2 | P-046, P-220 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik.test.tsx` | zielony (główny zestaw) | 23 | BR-DNI-005/S5, BR-LIC-001, BR-LIC-004, BR-LIC-004/S1, BR-LIC-004/S2, BR-LIC-004/S3, BR-LIC-005/S2, BR-LIC-011/S1, BR-LIC-011/S2, BR-LIC-012/S1, BR-LIC-019, BR-LIC-019/S4, BR-LIC-020/S1, BR-LIC-020/S2, BR-LIC-020/S3, BR-PRJ-002/S1, BR-PRJ-014/S2, KP-13, NFR-DAN-002, NFR-DOS-001, NFR-PIE-001, P-046, P-090, P-275, P-284, R-004, R-148 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | ER-36, Z07-04, Z07-05, Z07-22 |
@@ -211,4 +212,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 207; zależnych od poprawek: 139.
+Razem plików testów: 208; zależnych od poprawek: 140.

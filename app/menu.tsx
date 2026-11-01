@@ -23,7 +23,7 @@ export default function EkranMenu(): React.ReactElement {
   const formularz = (rodzaj: string) => router.replace({ pathname: '/formularz/[rodzaj]', params: { rodzaj } });
   return (
     <MenuProjektu
-      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, maWzor }}
+      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, maWzor, oczka: w.rodzaj === 'oczka' }}
       naWzor={() => router.replace('/wzor')}
       t={kontener.j.t}
       naNazwa={() => formularz('nazwa')} naCel={() => formularz('cel')} naPrzypomnienie={() => formularz('przypomnienie')}

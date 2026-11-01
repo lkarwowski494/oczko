@@ -25,6 +25,8 @@ export type WidokLicznika = {
   projekt: { nazwa: string; nienazwany: boolean; utworzonoMs: number; notatka: string };
   czesc: { nazwa: string; cel: number | null };
   nazwa: string;                        // nazwa licznika (powtórzenie, RD-12)
+  /** Rodzaj licznika (BR-LIC-006): licznik oczek ma inny ekran niż licznik rzędów (07-jakosc-025). */
+  rodzaj: 'rzedy' | 'oczka';
   wartosc: number;
   glowa: string | null;
   znaczenie: 'skonczone' | 'w_trakcie';
@@ -107,7 +109,7 @@ function powtorzenieWidoku(skonczone: number, znaczenie: 'skonczone' | 'w_trakci
 export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WidokLicznika>> {
   return operacjaZapisu(z, 'widokLicznika', async (tx, teraz, chwila) => {
     const [r] = await wiersze(tx.all(
-      `SELECT l.id, l.nazwa, l.wartosc, l.glowa, l.znaczenie, l.zablokowany, l.dlugosc_powtorzenia, c.id AS czesc_id, c.nazwa AS czesc, c.cel_rzedow, c.para_z,
+      `SELECT l.id, l.nazwa, l.rodzaj, l.wartosc, l.glowa, l.znaczenie, l.zablokowany, l.dlugosc_powtorzenia, c.id AS czesc_id, c.nazwa AS czesc, c.cel_rzedow, c.para_z,
               p.id AS projekt_id, p.nazwa AS projekt, p.nienazwany, p.utworzono_ms, p.notatka, p.termin_dzien
          FROM licznik l JOIN czesc c ON c.id = l.czesc_id JOIN projekt p ON p.id = c.projekt_id
         WHERE l.id = ? AND l.usunieto_ms IS NULL AND c.usunieto_ms IS NULL AND p.usunieto_ms IS NULL`, [w.licznikId]), 'widokLicznika');
@@ -127,7 +129,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         licznikId: w.licznikId, projektId: tekst(r, 'projekt_id'), czescId: tekst(r, 'czesc_id'),
         projekt: { nazwa: tekst(r, 'projekt'), nienazwany: liczba(r, 'nienazwany') === 1, utworzonoMs: liczba(r, 'utworzono_ms'), notatka: tekst(r, 'notatka') },
         czesc: { nazwa: tekst(r, 'czesc'), cel: await celCzesci(tx, { cel: liczbaLubNull(r, 'cel_rzedow'), paraZ: tekstLubNull(r, 'para_z') }) }, // BR-PRJ-014 S1, S3
-        nazwa: tekst(r, 'nazwa'), wartosc, glowa,
+        nazwa: tekst(r, 'nazwa'), rodzaj: tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', wartosc, glowa,
         znaczenie,
         zablokowany: liczba(r, 'zablokowany') === 1,
         przypomnienie: pas(lista, wartosc, znaczenie),

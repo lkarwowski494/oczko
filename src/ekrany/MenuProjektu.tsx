@@ -7,7 +7,7 @@ import { odstep } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type PropsMenuProjektu = {
-  stan: { projekt: string; zablokowany: boolean; wartosc: number; maWzor?: boolean };
+  stan: { projekt: string; zablokowany: boolean; wartosc: number; maWzor?: boolean; oczka?: boolean }; // oczka: bez pozycji dla rzędów (07-jakosc-025)
   t: Tlumacz;
   naNazwa(): void; naCel(): void; naPrzypomnienie(): void; naPowtorzenie(): void; naWpisz(): void;
   naZablokuj(): void; naOdblokuj(): void;
@@ -25,12 +25,12 @@ export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
     <Arkusz tytul={s.projekt} przyciski={<Przycisk tekst={t('wspolne.anuluj')} onPress={p.naZamknij} rodzaj="tekstowy" testID="arkusz-zamknij" />}>
       <View style={{ gap: odstep.s }}>
         <Przycisk tekst={t('menu.nazwa')} onPress={p.naNazwa} testID="menu-nazwa" />
-        <Przycisk tekst={t('menu.cel')} onPress={p.naCel} testID="menu-cel" />
+        {!s.oczka && <Przycisk tekst={t('menu.cel')} onPress={p.naCel} testID="menu-cel" />}
         {p.naWzor && <Przycisk tekst={t(s.maWzor ? 'menu.wzor' : 'menu.dodaj_wzor')} onPress={p.naWzor} testID="menu-wzor" />}
-        <Przycisk tekst={t('menu.przypomnienie')} onPress={p.naPrzypomnienie} testID="menu-przypomnienie" />
-        <Przycisk tekst={t('menu.powtorzenie')} onPress={p.naPowtorzenie} />
+        {!s.oczka && <Przycisk tekst={t('menu.przypomnienie')} onPress={p.naPrzypomnienie} testID="menu-przypomnienie" />}
+        {!s.oczka && <Przycisk tekst={t('menu.powtorzenie')} onPress={p.naPowtorzenie} testID="menu-powtorzenie" />}
         <Przycisk tekst={t('menu.wpisz')} onPress={p.naWpisz} testID="menu-wpisz-wartosc" />
-        {p.naZnaczenie && <Przycisk tekst={t('menu.znaczenie')} onPress={p.naZnaczenie} testID="menu-znaczenie" />}
+        {p.naZnaczenie && !s.oczka && <Przycisk tekst={t('menu.znaczenie')} onPress={p.naZnaczenie} testID="menu-znaczenie" />}
         {s.zablokowany
           ? <Przycisk tekst={t('menu.odblokuj')} onPress={p.naOdblokuj} />
           : <Przycisk tekst={t('menu.zablokuj')} onPress={p.naZablokuj} />}

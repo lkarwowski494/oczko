@@ -38,7 +38,14 @@
     "ostatni_darmowy": "Cicha linia pod liczbą w ostatnim darmowym dniu (design-spec „Limit dni”, P-065 (2a)).",
     "cel_dnia": "Cel dzienny tylko przy terminie (BR-DNI-005/S5; tekst 08 do akceptacji 04).",
     "calosc": "Ekran licznika sekcji, cicha linia pod liczbą: suma sekcji kawałka (BR-LIC-018/S1); {{czesc}} = nazwa części (kawałka), {{count}} = suma. Ok. 30 znaków.",
-    "wzor_a11y": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): etykieta VoiceOver ikony dokumentu w pasku licznika; ikona jest tylko, gdy projekt ma wzór (W2a). Jedno słowo."
+    "wzor_a11y": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): etykieta VoiceOver ikony dokumentu w pasku licznika; ikona jest tylko, gdy projekt ma wzór (W2a). Jedno słowo.",
+    "jednostka_oczka": "Podpis przy dużej liczbie na liczniku oczek (zamiast „rows”). Jedno słowo, pojedyncza.",
+    "plus_oczka": "Widoczny tekst przycisku +1 na liczniku oczek (zamiast „+1 row”; WCAG 2.5.3 — etykieta VoiceOver zawiera ten tekst).",
+    "podpis_plus_oczka": "Mały tekst w przycisku +1 na liczniku oczek (zamiast „tap when row 48 is done”).",
+    "plus_a11y_oczka": "Etykieta VoiceOver przycisku +1 na liczniku oczek.",
+    "minus_a11y_oczka": "Etykieta VoiceOver przycisku −1 na liczniku oczek.",
+    "po_dodaniu_oczka": "Ogłoszenie VoiceOver po +1 na liczniku oczek (zamiast „{{zrobione}} done. Now row {{nastepny}}.”). Krótko.",
+    "znaczniki_sesji_oczka": "Podpis nad kreskami sesji na liczniku oczek (zamiast „rows”)."
   },
   "limit": {
     "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków.",

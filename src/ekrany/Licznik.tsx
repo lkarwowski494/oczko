@@ -41,6 +41,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const zagraj = (w: WzorzecHaptyki) => { if (s.wibracje) p.haptyka.zagraj(w); };
   const start = s.projekt === null && s.skonczone === 0;
   const nrRobocza = s.dziergany;
+  const oczka = s.rodzaj === 'oczka'; // BR-LIC-006: „stitch” zamiast „row”, bez rzędu w robocie (07-jakosc-025)
 
   async function plus() {
     if (s.zablokowany) { // stan znany z góry: bez zapisu, komunikat jak odblokować (BR-LIC-004/S3)
@@ -61,6 +62,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     zagraj(wzorzecPoPlus(w.wartosc.zdarzenia));
     const wej = w.wartosc.wejscieWPrzypomnienie;
     if (wej) p.oglos(t('licznik.wejscie_w_przypomnienie', { n: wej.rzad, tekst: wej.tekst, ktory: wej.ktory, razy: wej.razy }));
+    else if (oczka) p.oglos(t('licznik.po_dodaniu_oczka', { count: w.wartosc.skonczone }));
     else p.oglos(t('licznik.po_dodaniu', { zrobione: w.wartosc.skonczone, nastepny: w.wartosc.dziergany }));
   }
   async function minus() {
@@ -76,7 +78,9 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   // Kategorie dostępności (04 fix-8 wariant (d), P-275 (3)): liczba nad nazwami, podpis +1 tylko w etykiecie VoiceOver (scen. 30).
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const zawczasu = s.limit.rodzaj === 'zawczasu';
-  const etykietaPlus = start
+  const etykietaPlus = oczka
+    ? t('licznik.plus_a11y_oczka')
+    : start
     ? t('licznik.plus')
     : s.przypomnienie
       ? t('licznik.plus_a11y_instrukcja', { n: nrRobocza, tekst: s.przypomnienie.tekst })
@@ -85,7 +89,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const wierszLiczby = (
     <View style={st.liczbaWiersz} testID="licznik-wartosc-wiersz">
       <Text style={st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(liczba)}</Text>
-      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : t('licznik.jednostka')}</Text>
+      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : t('licznik.jednostka')}</Text>
     </View>
   );
 
@@ -130,7 +134,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </Pressable>
         ) : <Text style={st.podpis} testID="licznik-projekt">{s.projekt}</Text>)}
         <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.czesc ?? t('licznik.tytul_roboczy')}</Text>
-        {!start && <Text style={st.instrukcja} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: nrRobocza })}</Text>}
+        {!start && !oczka && <Text style={st.instrukcja} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: nrRobocza })}</Text>}
         {baner?.rodzaj === 'seria' && (
           <View style={st.baner}>
             {/* testID na tekście: Maestro porównuje tekst elementu o tym id (E2E 40290477970, scenariusz 04) */}
@@ -155,7 +159,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         )}
         {s.sesja && s.sesja.rzedy > 0 && (
           <View>
-            <Text style={st.podpis} testID="kreski-podpis">{t('licznik.znaczniki_sesji', { count: s.sesja.rzedy, godzina: s.sesja.od })}</Text>
+            <Text style={st.podpis} testID="kreski-podpis">{t(oczka ? 'licznik.znaczniki_sesji_oczka' : 'licznik.znaczniki_sesji', { count: s.sesja.rzedy, godzina: s.sesja.od })}</Text>
             <Kreski n={s.sesja.rzedy} kolor={k.kreska} />
           </View>
         )}
@@ -194,12 +198,12 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         </View>
       ) : (
         <View style={st.przyciski}>
-          <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={minus} style={st.minus} testID="licznik-minus">
+          <Pressable accessibilityRole="button" accessibilityLabel={t(oczka ? 'licznik.minus_a11y_oczka' : 'licznik.minus_a11y')} onPress={minus} style={st.minus} testID="licznik-minus">
             <Text style={st.minusTekst} maxFontSizeMultiplier={MAX_SKALA_MINUSA}>{t('licznik.minus')}</Text>
           </Pressable>
           <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={plus} style={st.plus} testID="licznik-plus">
-            <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('licznik.plus')}</Text>
-            {!start && !duzyTekst && <Text style={st.plusPodpis}>{t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
+            <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>
+            {!start && !duzyTekst && <Text style={st.plusPodpis}>{oczka ? t('licznik.podpis_plus_oczka') : t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
           </Pressable>
         </View>
       )}

@@ -38,23 +38,25 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
   const mies = { nazwa: miesiac(o.dzis, j.jezyk()), wznowienie: miesiac(w ? w.wznowienie : o.dzis, j.jezyk(), true), rzedyDanych: w ? w.wartosc : 0 };
   if (!w) {
     return {
-      projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
+      rodzaj: 'rzedy', projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
       notatka: null, sesja: null, zablokowany: false, limit: { rodzaj: 'brak' }, miesiac: mies, baner: null, blizniak: null, wibracje: o.wibracje,
     };
   }
+  const oczka = w.rodzaj === 'oczka'; // licznik oczek nie ma celu (cel części jest w rzędach), celu dnia, przypomnień, powtórzeń, banera strażnika ani rzędu w robocie
   return {
+    rodzaj: w.rodzaj,
     projekt: w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa,
     czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
-    skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: w.znaczenie, cel: w.czesc.cel,
-    celDnia: w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: w.calosc === null ? null : { czesc: w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1
-    przypomnienie: w.przypomnienie,
-    powtorzenie: w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
+    skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,
+    celDnia: oczka || w.celDnia === null ? null : { rzedy: w.celDnia },
+    calosc: oczka || w.calosc === null ? null : { czesc: w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1
+    przypomnienie: oczka ? null : w.przypomnienie,
+    powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
     notatka: w.projekt.notatka || null,
     sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
     zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
-    baner: o.baner ?? (w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy } : null),
-    blizniak: w.blizniak, wibracje: o.wibracje,
+    baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy } : null),
+    blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
   };
 }
 
