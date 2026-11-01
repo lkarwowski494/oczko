@@ -127,3 +127,43 @@ test('K-17c: korzeń aplikacji podpina nasłuch sieci kontenera (porty.siec) i z
   expect(layout).toMatch(/const koniecSieci = w\.wartosc\.wzor\.k\.obserwujSiec\(w\.wartosc\.porty\.siec\)/);
   expect(layout).toMatch(/koniecNasluchu = \(\) => \{ koniecDostepu\(\); koniecSieci\(\); \}/);
 });
+
+// Przegląd subagenta (ścieżka wrażliwa: skrzynka importu), poprawki 07-jakosc-017.
+test('przegląd P1: ponowienie po sieci nie gubi z „czeka na sieć” zlecenia bez projektu, wybranego w arkuszu (zostaje w skrzynce, nie jest importowane)', async () => {
+  const { s, k, z } = await srodowisko();
+  await z.skrzynka.dodaj({ rodzaj: 'adres', adres: ADRES, nazwa: 'bez-projektu', projektId: null });
+  await k.czekajNaSiec({ projektId: 'p1', adres: `${ADRES}2`, nazwa: 'z-projektem' }); // coś czeka, więc ponowienie ma sens
+  await k.poStarcie(); // bez-projektu → arkusz wyboru
+  expect(k.stan().doWyboru.map((x) => x.nazwa)).toEqual(['bez-projektu']);
+  await k.wybierzProjekt('p1'); // konwersja: brak sieci → zlecenie czeka
+  expect(k.stan().czekaSiec.map((x) => x.nazwa).sort()).toEqual(['bez-projektu', 'z-projektem']);
+  await k.ponowPoSieci();
+  expect(k.stan().czekaSiec.map((x) => x.nazwa).sort()).toEqual(['bez-projektu', 'z-projektem']);
+  expect(await z.skrzynka.pobierz()).toHaveLength(2);
+  expect(await ile(s.baza, 'wzor')).toBe(0);
+});
+test('przegląd P1: ponowienie po sieci nie zastępuje świeżą listą nieodebranego błędu zlecenia bez projektu', async () => {
+  const { k, z, naPdf } = await srodowisko();
+  await z.skrzynka.dodaj({ rodzaj: 'adres', adres: ADRES, nazwa: 'bez-projektu', projektId: null });
+  await k.czekajNaSiec({ projektId: 'p1', adres: `${ADRES}2`, nazwa: 'z-projektem' });
+  await k.poStarcie();
+  naPdf.mockResolvedValueOnce({ ok: false as never, powod: 'bledne_dane' as never }); // pierwsza konwersja (wybór projektu) kończy błędem trwałym
+  await k.wybierzProjekt('p1');
+  expect(k.stan().bledy.map((b) => b.zlecenie.nazwa)).toEqual(['bez-projektu']);
+  await k.ponowPoSieci();
+  expect(k.stan().bledy.map((b) => b.zlecenie.nazwa)).toEqual(['bez-projektu']);
+});
+test('przegląd P1: czekajNaSiec w trakcie przetwarzania skrzynki nie ginie (wiersz zostaje, jedno zlecenie, brak błędu zapisu)', async () => {
+  const { k, z, naPdf } = await srodowisko();
+  await k.czekajNaSiec({ projektId: 'p1', adres: `${ADRES}1`, nazwa: 'stare' });
+  let zwolnij: () => void = () => undefined;
+  const brama = new Promise<void>((r) => { zwolnij = r; });
+  naPdf.mockImplementationOnce(async () => { await brama; return { ok: false as const, powod: 'brak_sieci' as const }; });
+  const przetwarzanie = k.poStarcie(); // konwersja „starego” zawisła na bramie
+  const nowe = k.czekajNaSiec({ projektId: 'p1', adres: `${ADRES}2`, nazwa: 'nowe' });
+  zwolnij();
+  expect(await nowe).toEqual({ ok: true, wartosc: undefined });
+  await przetwarzanie;
+  expect(k.stan().czekaSiec.map((x) => x.nazwa).sort()).toEqual(['nowe', 'stare']);
+  expect(await z.skrzynka.pobierz()).toHaveLength(2);
+});

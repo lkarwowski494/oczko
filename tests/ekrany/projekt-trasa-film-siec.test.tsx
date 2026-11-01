@@ -40,7 +40,7 @@ async function start(siec: Siec) {
   s.zegar.ustaw(T0);
   await ustawFilm(s.z, { projektId: 'p1', adres: ADRES, nazwa: 'Sleeve cap seaming' });
   mock.kontener = { z: s.z, j: { t: await tEn(), jezyk: () => 'en-US', zegar24h: () => false } satisfies Jezyk, porty: { siec },
-    wzor: { k: { stan: () => ({ czekaSiec: [] }) }, platforma: { skanerDostepny: () => false, miniatura: async () => null } } };
+    wzor: { k: { stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, miniatura: async () => null } } };
   render(<EkranProjektu />);
   await waitFor(() => screen.getByTestId('wzor-film-wiersz'));
   return s;
@@ -79,4 +79,22 @@ test('K-17a: zdarzenie portu w trakcie ekranu (jest → brak) zmienia zachowanie
   screen.unmount();
   expect(f.sluchacze.size).toBe(0);
   alert.mockRestore();
+});
+
+// Przegląd subagenta (07-jakosc-017): ekran projektu nasłuchuje zmian skrzynki — po zapisie strony w tle wiersz „czeka na sieć” znika bez ponownego wejścia.
+test('przegląd P1: zmiana stanu skrzynki (ponowienie po sieci) odświeża ekran projektu; nasłuch zwolniony przy odmontowaniu', async () => {
+  const s = await przygotuj();
+  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Back', 1), ...licznik('l1', 'c1', 5)]);
+  s.zegar.ustaw(T0);
+  let czeka = [{ id: 'z1', nazwa: 'example.org', projektId: 'p1' }];
+  const sluchacze = new Set<() => void>();
+  mock.kontener = { z: s.z, j: { t: await tEn(), jezyk: () => 'en-US', zegar24h: () => false } satisfies Jezyk, porty: { siec: fakeSiec('jest').siec },
+    wzor: { k: { stan: () => ({ czekaSiec: czeka }), naZmiane: (f: () => void) => { sluchacze.add(f); return () => { sluchacze.delete(f); }; } }, platforma: { skanerDostepny: () => false, miniatura: async () => null } } };
+  render(<EkranProjektu />);
+  await waitFor(() => screen.getByTestId('wzor-czeka-siec'));
+  czeka = [];
+  act(() => { for (const f of sluchacze) f(); });
+  await waitFor(() => expect(screen.queryByTestId('wzor-czeka-siec')).toBeNull());
+  screen.unmount();
+  expect(sluchacze.size).toBe(0);
 });

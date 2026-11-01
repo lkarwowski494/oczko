@@ -1,7 +1,7 @@
 // Trasa „/projekt/[id]”: ekran projektu (A5 partii 5; design-spec „Ekran projektu”, P-183 3a). Wejście: nazwa projektu na liczniku, lista projektów.
 // Potwierdzenia „Make another” i „Delete …” to alerty systemowe (design-spec „Usuwanie”, słownik „Delete {object}”); termin w treści = dzień
 // usunięcia + KOSZ_DNI. Po zapisie: ekran blokady i licznik (`poZmianie` / `poUsunieciu`, C2), ogłoszenie VoiceOver, model od nowa.
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { useFocusEffect, useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
 import { Projekt } from '../../src/ekrany/Projekt';
@@ -64,6 +64,7 @@ export default function EkranProjektu(): React.ReactElement {
     if (fp.ok) ustawFilm(fp.wartosc);
   }, [z, id, router, kontener]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
+  useEffect(() => kontener.wzor.k.naZmiane(() => { void wczytaj(); }), [kontener, wczytaj]); // skrzynka zmieniła stan (ponowienie po sieci, usunięcie wiersza) → wiersze wzorów od razu (ADR-0031 pkt 4)
   if (!w) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   if (arkuszFilmu) { // P-276: „Change link” = arkusz wypełniony, Save zastępuje (jeden film na projekt, P-218 (4))
     return (

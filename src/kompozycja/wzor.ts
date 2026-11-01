@@ -26,7 +26,12 @@ export function kompozycjaWzoru(z: ZaleznosciKompozycjiWzoru, o: { grupa: string
   async function przetworz(zachowajDoWyboru = false): Promise<void> {
     if (o.zlecenieE2e && o.grupa && !e2eWlozone) { e2eWlozone = true; o.zlecenieE2e(o.grupa, z.zegar.teraz().ms); } // build E2E: tryb-e2e.ts (P-238)
     const w = await przetworzSkrzynke(z);
-    if (w.ok) zmien({ doWyboru: zachowajDoWyboru ? stan.doWyboru : w.wartosc.doWyboru, czekaSiec: w.wartosc.czekaSiec, bledy: w.wartosc.bledy });
+    if (w.ok && !zachowajDoWyboru) zmien({ doWyboru: w.wartosc.doWyboru, czekaSiec: w.wartosc.czekaSiec, bledy: w.wartosc.bledy });
+    else if (w.ok) { // ponowienie po sieci: zlecenia bez projektu, wybrane w arkuszu i czekające na sieć albo z błędem, nie mają `projektId` w manifeście — zostają w stanie, dopóki są w skrzynce
+      const bezProjektu = new Set(w.wartosc.doWyboru.map((x) => x.id));
+      const zostaja = (l: ZlecenieImportu[]) => l.filter((x) => bezProjektu.has(x.id));
+      zmien({ doWyboru: stan.doWyboru, czekaSiec: [...w.wartosc.czekaSiec, ...zostaja(stan.czekaSiec)], bledy: [...w.wartosc.bledy, ...stan.bledy.filter((b) => bezProjektu.has(b.zlecenie.id))] });
+    }
     await odswiezMigawke(z);
   }
   return {
@@ -85,12 +90,19 @@ export function kompozycjaWzoru(z: ZaleznosciKompozycjiWzoru, o: { grupa: string
      * (zostaje po restarcie, ponowienie jak dla strony z Safari) i do stanu „czeka na sieć”. Błąd zapisu (np. brak App Group) → `zapis`, stan bez zmian.
      */
     async czekajNaSiec(w: { projektId: string; adres: string; nazwa: string }): Promise<Wynik<void>> {
-      const d = await z.skrzynka.dodaj({ rodzaj: 'adres', adres: w.adres, nazwa: w.nazwa, projektId: w.projektId });
-      if (!d.ok) return d;
-      const dodane = (await z.skrzynka.pobierz()).find((x) => x.id === d.wartosc.id);
-      if (!dodane) return { ok: false, powod: 'zapis' };
-      zmien({ ...stan, czekaSiec: [...stan.czekaSiec.filter((x) => x.id !== dodane.id), dodane] });
-      return { ok: true, wartosc: undefined };
+      // Serializacja z przetwarzaniem skrzynki (`wToku`): przetwarzanie w toku mogłoby nadpisać stan listą sprzed dopisania albo zaimportować zlecenie przed odczytem.
+      while (wToku) await wToku;
+      let wynik: Wynik<void> = { ok: false, powod: 'zapis' };
+      wToku = (async () => {
+        const d = await z.skrzynka.dodaj({ rodzaj: 'adres', adres: w.adres, nazwa: w.nazwa, projektId: w.projektId });
+        if (!d.ok) { wynik = d; return; }
+        const dodane = (await z.skrzynka.pobierz()).find((x) => x.id === d.wartosc.id);
+        if (!dodane) return;
+        zmien({ ...stan, czekaSiec: [...stan.czekaSiec.filter((x) => x.id !== dodane.id), dodane] });
+        wynik = { ok: true, wartosc: undefined };
+      })().finally(() => { wToku = null; });
+      await wToku;
+      return wynik;
     },
     /**
      * Zdarzenie portu Siec → „jest” (ADR-0031 pkt 4): po `SIEC_PONOWIENIE_MS` ponowne przetworzenie skrzynki, gdy coś czeka na sieć; kolejne zdarzenie przed upływem
