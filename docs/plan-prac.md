@@ -20,8 +20,10 @@ Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) prz
 | 2.11 ~01:30– | **07** (faza B) | raport E2 + aneks werdyktu; lista błędów aplikacji dla 08 | raport `07-jakosc/2026-11-02-e2/` | przebieg |
 | 2.11 ~01:30– | **04** (nowa) | aneks audytu 2.1: AX5, iPad, poziomo, ciemny, długości etykiet 35 języków, krój 700 (bez kadrów zrzutów) | raport aneksu, lista zmian | przebieg |
 | 2.11 ~03:30–12:00 | **08** (sesja integracji) | poprawki z 07 i 04, W1-A, push kopii 07 i 10 z fazy A; HEAD z `[e2e-pelny]` | przebieg 2 zielony do ~13:30 | raporty 07, 04 |
-| 2.11 | **08** (partia 8, jeśli luki z P-321) | brakujące i częściowe funkcje MVP (test przed kodem), push w oknie | przebieg zielony | raport zgodności |
-| po partii 8 | **M1 audyt** (opus/high) | pełny audyt kodu kandydata (12, 07, 04, 05), OG-07; zamrożenie zakresu | raport z werdyktem i listą blokerów | przebieg 2 |
+| 1.11 18:10– | **03**, **05**, **04** (nowe, równolegle) | przygotowanie partii 8 (P-326): kontrakt wg D2; klucze `ustawienie`, kopia przed „Replace”, porty skrzynki i zegarka; projekty i teksty en | dokumenty na roboczej | — |
+| 2.11–5.11 | **08** partie 8a–8e (P-326) | 33 luki z raportu zgodności (test przed kodem); 8d, 8e w oknie macOS | przebiegi zielone | 03, 05, 04 |
+| po 8a–8e | **07** | 032 (testy tras), 033 (E2E brakujących funkcji) | przebieg pełny zielony | partia 8 |
+| ok. 6–7.11 | **M1 audyt** (opus/high) | pełny audyt kodu kandydata (12, 07, 04, 05), OG-07; zamrożenie zakresu | raport z werdyktem i listą blokerów | przebieg 2 |
 | 2.11/3.11 noc | **08** (nowa) | naprawy blokerów z audytu (test przed kodem), przebieg | przebieg zielony | raport M1 |
 | 3.11 dzień | **09** (nowa) | jedna fala przekładu zmienionych kluczy; metadane sklepu 35 języków z zamrożonych en | kontrole błędy 0 | naprawy |
 | 3.11 dzień | **10** (nowa) + **04** | metadane en ostateczne; kadry i podpisy; scenariusz i workflow zrzutów jak Trening (`store-screenshots`) | — | naprawy |
