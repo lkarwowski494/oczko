@@ -67,8 +67,20 @@
     "eksport": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
     "import": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
     "usun_wszystko": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-009.",
-    "usun_pytanie": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-009: potwierdzenie z czasownikiem.",
-    "usun_potwierdz": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04."
+    "usun_pytanie": "Pierwszy akapit arkusza „Delete all data”; „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie. Bez zdania „It can’t be undone.”: od P-328 przed usunięciem powstaje kopia. Tłumaczenie: słowo „urządzenie” neutralne wobec modelu.",
+    "usun_potwierdz": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
+    "usun_pro": "Drugi akapit w arkuszu „Delete all data” (KP-05): usunięcie danych nie usuwa zakupu; Pro wraca przez „Restore purchases” na ekranie Oczko Pro. Jedno zdanie spokojnym głosem; nie straszy.",
+    "usun_kopia": "Drugi akapit arkusza „Delete all data” (P-328: kopia przed usunięciem, jak w Treningu; ADR-0028). „Files” = aplikacja Pliki w iOS; „Oczko › Backup” = folder w Plikach (nazwy aplikacji i folderu zgodnie z systemem). „Importing that file” = zwykły import eksportu Oczka.",
+    "usun_kopia_blad": "Komunikat po nieudanej kopii przed „Delete all data” (dysk pełny albo błąd zapisu): usunięcie jest przerwane, dane nietknięte (zasada „zero utraty danych”). Jedno-dwa zdania: co się stało i co zrobić.",
+    "ekran_nie_gasnie": "Wiersz z przełącznikiem w Ustawieniach, grupa „Counting” (ADR-0029, BR-LIC-013 S2). Etykieta do ok. 32 znaków; przy dużym tekście zawija się.",
+    "ekran_nie_gasnie_opis": "Podpis pod grupą „Counting” w Ustawieniach, wyjaśnia przełącznik „Keep screen on while counting”.",
+    "miary_auto": "Wartość preferencji „Units” (istniejący klucz `ustawienia.uklad_miar`) = układ miar z ustawień regionalnych urządzenia. Jedno słowo.",
+    "miary_metric": "Wartość preferencji „Units”: układ metryczny (mm, cm, g). Druga linia: `ustawienia.miary_metric_opis`.",
+    "miary_metric_opis": "Skróty jednostek pod wyborem „Metric”: milimetry, centymetry, gramy (skróty wg regionu).",
+    "miary_imperial": "Wartość preferencji „Units”: układ calowo-uncjowy (cale, uncje). Druga linia: `ustawienia.miary_imperial_opis`.",
+    "miary_imperial_opis": "Skróty jednostek pod wyborem „Imperial”: cale, uncje.",
+    "miary_opis": "Podpis pod listą wyboru „Units”: zmienia tylko wyświetlanie i wpisywanie; dane zostają (mm, g).",
+    "pro_wlaczone": "Wartość wiersza „Oczko Pro” w Ustawieniach, gdy Pro jest aktywne (07-jakosc-031, F-63). Jedno słowo; VoiceOver czyta „Oczko Pro, On”."
   },
   "aktywnosc": {
     "plus": "Przycisk +1 na ekranie blokady, w rozwiniętej Dynamic Island i na zegarku (P-133 (1.1a): jedyny przycisk Live Activity). Ok. 8 znaków.",
@@ -342,7 +354,12 @@
     "zarzadzaj": "Tekst z design-spec roli 04. design-spec.md:56.",
     "masz_pro": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Stan Pro (KP-03).",
     "brak_sieci": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Macierz 04: brak sieci.",
-    "ladowanie": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04."
+    "ladowanie": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
+    "czeka": "Linia informacji na ekranie ofert po zakupie odroczonym (Ask to Buy; KP-07). To nie błąd i nie sukces: czekamy na zatwierdzenie przez osobę zatwierdzającą zakupy. role=status. Nie obiecuje terminu.",
+    "czeka_przycisk": "Etykieta nieaktywnego przycisku zakupu, gdy zakup czeka na zatwierdzenie (ten sam stan co `oferty.czeka`). Do ok. 24 znaków.",
+    "blad_zakupu": "Linia błędu na ekranie ofert, gdy zakup się nie powiódł (błąd sklepu lub sieci). Anulowanie przez użytkowniczkę nie daje żadnego komunikatu. Znak „!” + tekst, role=alert. Bez kodów technicznych i bez przeprosin.",
+    "przywracanie_nic": "Linia informacji po „Restore purchases”, gdy sklep nie zwrócił zakupu Oczko Pro dla bieżącego Apple ID. Nie błąd. „Settings” = ustawienia systemu iOS (konto Apple ID).",
+    "przywracanie_blad": "Linia błędu po „Restore purchases”, gdy samo przywracanie się nie powiodło (sieć, sklep). Znak „!” + tekst, role=alert."
   },
   "uczciwe": {
     "tytul": "Tekst z design-spec roli 04.",
@@ -367,7 +384,7 @@
     "import_plik": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "scal": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Import „scal” (P-091 6a).",
     "zastap": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Import „zastąp”.",
-    "zastapiono": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. R-068, dane.md:69.",
+    "zastapiono": "Opis po „Replace” (ADR-0028: kopia to pełne archiwum .oczko w Documents/Backup, widoczne w Plikach). {{kopia}} = nazwa pliku kopii (nie tłumaczyć, np. „oczko-przed-importem-2026-11-01.oczko”). „Files” = aplikacja Pliki w iOS; „Oczko › Backup” = folder w Plikach, tłumaczyć nazwę aplikacji Pliki zgodnie z systemem, „Backup” = nazwa folderu (nie tłumaczyć). Bez nazwy modelu urządzenia (iPhone/iPad).",
     "konflikt_tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. NFR-DAN-003, R-050.",
     "konflikt_wybor": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "konflikt_a11y": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
@@ -377,7 +394,9 @@
     "nowe": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Wynik importu „scal”: ile nowych projektów. Formy _one/_other.",
     "zaimportowano": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Wynik importu „scal” (P-091 6a).",
     "blad": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Błąd eksportu albo importu.",
-    "eksport_gotowy_tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nagłówek nad licznościami eksportu (BR-DAN-006)."
+    "eksport_gotowy_tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nagłówek nad licznościami eksportu (BR-DAN-006).",
+    "zastapiono_tytul": "Tytuł arkusza po imporcie z opcją „Replace” (zastąp dane): dane zostały zastąpione zawartością pliku. Zamiast „Merged”, które dotyczy tylko scalania.",
+    "zastapiono_wroc": "Druga linia po „Replace”: jak wrócić do poprzednich danych (otworzyć plik kopii w Oczku i zaimportować z „Replace”). Jedno zdanie, tryb rozkazujący."
   },
   "stan_danych": {
     "tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
@@ -386,7 +405,8 @@
     "zapisane": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-011/S1.",
     "wylaczona": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "aktywna": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
-    "zegarek_kontakt": "Tekst roboczy 08 (partia 5) — do zatwierdzenia przez 04. BR-DAN-011/S3 (P-193, P-195 Q1): czas ostatniej partii odebranej z zegarka, bez liczby zmian (liczbę zna tylko zegarek). {{data}} = data i godzina."
+    "zegarek_kontakt": "Tekst roboczy 08 (partia 5) — do zatwierdzenia przez 04. BR-DAN-011/S3 (P-193, P-195 Q1): czas ostatniej partii odebranej z zegarka, bez liczby zmian (liczbę zna tylko zegarek). {{data}} = data i godzina.",
+    "kopie_opis": "Podpis na ekranie „Data and sync”, pokazywany tylko gdy w Documents/Backup są kopie Oczka (N-05-2, ADR-0028): gdzie są i że wliczają się do kopii iCloud urządzenia. Jedno zdanie informacyjne, bez straszenia."
   },
   "zglos": {
     "tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
@@ -739,5 +759,9 @@
     "usun_z_icloud": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): przełącznik w arkuszu „Delete all data”, domyślnie wyłączony.",
     "usun_z_icloud_opis": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): podpis przełącznika: skutek dla innych urządzeń.",
     "usun_zostaje": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): zdanie pod przełącznikiem, gdy jest wyłączony."
+  },
+  "import": {
+    "nie_rozpoznano_tytul": "Tytuł alertu po wybraniu pliku, który nie jest eksportem Oczka (BR-DAN-006 S2; 07-jakosc-031, F-32). Zamiast ogólnego błędu.",
+    "nie_rozpoznano_opis": "Opis alertu „nie rozpoznano pliku”: co zrobić i że dane są nietknięte."
   }
 }
