@@ -104,6 +104,7 @@ final class ZlecenieTests: XCTestCase {
     XCTAssertEqual(rodzajZalacznika(["com.adobe.pdf"]), .pdf)
     XCTAssertEqual(rodzajZalacznika(["public.jpeg", "public.image"]), .obraz)
     XCTAssertEqual(rodzajZalacznika(["org.openxmlformats.wordprocessingml.document"]), .word)
+    XCTAssertNil(rodzajZalacznika(["com.microsoft.word.doc"])) // 07-jakosc-017 (K-17h, ADR-0031 pkt 5): Word tylko .docx
     XCTAssertEqual(rodzajZalacznika(["public.url"]), .adres)
     XCTAssertEqual(rodzajZalacznika(["public.file-url", "com.adobe.pdf"]), .pdf) // plik z Plików: PDF ma pierwszeństwo przed URL
     XCTAssertNil(rodzajZalacznika(["public.zip-archive"]))

@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Linking, View, useWindowDimensions } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { WidokWzoruNatywny } from '../modules/oczko-wzor';
+import { rodzajPliku } from '../src/domena/rodzaj-pliku';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
@@ -91,10 +92,9 @@ export default function EkranWzoru(): React.ReactElement {
     else if (zrodlo === 'plik') {
       const p = await wybierzPlikWzoru();
       if (!p) return;
-      const word = /wordprocessingml|msword/i.test(p.typ) || /\.docx?$/i.test(p.nazwa);
-      const pdf = /pdf/i.test(p.typ) || /\.pdf$/i.test(p.nazwa);
-      if (!word && !pdf) { pokaz(alertImportu('bledne_dane', p.nazwa, t)); return; }
-      z = { rodzaj: word ? 'word' : 'pdf', plik: { id: p.nazwa, nazwa: p.nazwa, sciezka: p.sciezka, typ: p.typ } };
+      const rodzaj = rodzajPliku(p.nazwa, p.typ); // jedna reguła rozszerzeń (ADR-0031 pkt 5): Word = .docx, .doc → „can’t add this type”
+      if (rodzaj !== 'pdf' && rodzaj !== 'word') { pokaz(alertImportu('bledne_dane', p.nazwa, t)); return; }
+      z = { rodzaj, plik: { id: p.nazwa, nazwa: p.nazwa, sciezka: p.sciezka, typ: p.typ } };
       nazwa = nazwaDomyslna({ rodzaj: 'plik', nazwa: p.nazwa }, t, data); plik = p.nazwa;
     } else if (zrodlo === 'skan') {
       const s = await kontener.wzor.platforma.skanuj();
