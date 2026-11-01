@@ -37,3 +37,13 @@ test('kontrakt widoku wzoru: wartości narzędzi i polityki z TS = przypadki enu
   expect(przypadki('NarzedzieWzoru')).toEqual([...NARZEDZIA].sort());
   expect(przypadki('PolitykaPlotna')).toEqual([...POLITYKI].sort());
 });
+
+// 07-jakosc-006: pozycja startowa jedzie w `dokument` (kolejność propsów jest nieokreślona) — pola rekordu Swift `DokumentProp` = pola `dokument` w TS.
+test('kontrakt widoku wzoru: pozycja startowa (startStrona, startPowiekszenie) w dokumencie TS i w rekordzie DokumentProp w Swift', () => {
+  const dokumentTs = /dokument: \{([\s\S]*?)\};\n {2}katalogRysunkow/.exec(ts)?.[1] ?? '';
+  const rekordSwift = /struct DokumentProp: Record \{([\s\S]*?)\n\}/.exec(swift)?.[1] ?? '';
+  for (const pole of ['startStrona', 'startPowiekszenie']) {
+    expect(dokumentTs).toContain(`${pole}: number`);
+    expect(rekordSwift).toMatch(new RegExp(`@Field var ${pole}: (Int|Double) = 0`));
+  }
+});

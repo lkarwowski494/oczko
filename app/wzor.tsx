@@ -20,7 +20,8 @@ import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
 import { dodajNotatkeWzoru, dodajWzor, listaWzorow, usunNotatkeWzoru, usunWzor, zmienNotatkeWzoru, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
 import { odzyskajRysunki, ustawObrot, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
-import type { WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
+import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
+import { zapamietajPozycjeWzoru } from '../src/przypadki-uzycia/wzor-miejsce';
 import { KOSZ_DNI } from '../src/konfiguracja';
 
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
@@ -43,6 +44,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [cofnij, ustawCofnij] = useState(0);
   const [link, ustawLink] = useState(false);
   const [arkuszNazwy, ustawArkuszNazwy] = useState(false); // ••• → „Rename” (W1a)
+  const poczatek = useRef<{ wzorId: string; strona: number; powiekszenie: number } | null>(null); // pozycja zapisana w chwili otwarcia wzoru (BR-PRJ-011 S1); powiększenie 0 = dopasowany
   const kolejkaKrokow = useRef<Promise<void>>(Promise.resolve()); // kroki rzędu znacznika jeden po drugim (każdy czyta świeży stan)
   const [przytrzymanie, ustawPrzytrzymanie] = useState<{ strona: number; y: number } | null>(null); // przytrzymanie bez znacznika czeka na kierunek (3a)
   const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
@@ -58,6 +60,10 @@ export default function EkranWzoru(): React.ReactElement {
     const wzorId = typeof cel === 'string' ? cel : cel.ok ? cel.wartosc : null;
     if (!wzorId) { ustawWidok(null); return; }
     const v = await widokWzoru(zw, { wzorId });
+    if (v.ok && poczatek.current?.wzorId !== wzorId) { // wzór otwarty albo przełączony: zapisana pozycja tego wzoru, strona z poprzedniego wzoru nie przechodzi
+      poczatek.current = { wzorId, strona: v.wartosc.miejsce?.strona ?? 0, powiekszenie: v.wartosc.miejsce?.powiekszenie ?? 0 };
+      ustawStrone(null);
+    }
     ustawWidok(v.ok ? v.wartosc : null);
     if (v.ok) await zapamietajWzor(zw, { licznikId: w.licznikId, wzorId });
   }, [licznik, zw]);
@@ -70,6 +76,8 @@ export default function EkranWzoru(): React.ReactElement {
     ustawDodano(true);
     void dodaj(dodajParam as ZrodloDodaniaEkranu);
   }, [lw, dodano, dodajParam]);
+  // Wyjście z ekranu wzoru: miejsce pracy wraca na licznik (pozycja wzoru zostaje); zamknięcie aplikacji na wzorze zostawia ekran wzoru, więc start otworzy wzór (07-jakosc-006).
+  useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
   async function dodaj(zrodlo: ZrodloDodaniaEkranu | { rodzaj: 'adres'; adres: string } | { rodzaj: 'gotowe'; nazwa: string; zrodlo: ZrodloDodania }): Promise<void> {
@@ -117,6 +125,7 @@ export default function EkranWzoru(): React.ReactElement {
   const dokument = useMemo(() => (widok && widok.plikPdf ? {
     wzorId: widok.wzorId, plikPdf: widok.plikPdf, rysunki: widok.rysunki,
     obroty: Object.entries(widok.obroty).map(([k, v]) => ({ strona: Number(k), kat: v })),
+    startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
   if (link) return <Bezpieczny><ArkuszLinku t={t} naAnuluj={() => ustawLink(false)} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
   if (!lw || !wzory) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
@@ -150,7 +159,7 @@ export default function EkranWzoru(): React.ReactElement {
     return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
   });
   const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : 0} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
+    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
       onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
       onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
@@ -160,7 +169,8 @@ export default function EkranWzoru(): React.ReactElement {
         akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
       onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
-      onStrona={(e) => ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron })}
+      onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
+      onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => ustawRysik((s) => poDotyku(s, 'rysik'))}
       onZakreslenia={(e) => ustawZakreslenia(e.nativeEvent.liczba)}
       onStukniecie={(e) => { // przytrzymanie: pas staje w tym miejscu, rząd zostaje (S3); pierwszy znacznik pyta o kierunek (3a) i bierze rząd w robocie (S2)

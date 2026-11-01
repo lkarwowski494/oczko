@@ -20,6 +20,9 @@ struct DokumentProp: Record {
   @Field var plikPdf: String = ""
   @Field var rysunki: [RysunekStrony] = []
   @Field var obroty: [ObrotStrony] = []
+  /// Pozycja przy otwarciu nowego dokumentu (07-jakosc-006, BR-PRJ-011 S1): strona od 0, powiększenie jako krotność dopasowania do szerokości (0 = dopasowany).
+  @Field var startStrona: Int = 0
+  @Field var startPowiekszenie: Double = 0
 }
 struct ZnacznikProp: Record {
   @Field var strona: Int = 0
@@ -71,10 +74,11 @@ public class OczkoWzorModule: Module {
     }
 
     View(WidokWzoru.self) {
-      Events("onRysunek", "onStukniecie", "onStrona", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona")
+      Events("onRysunek", "onStukniecie", "onStrona", "onPowiekszenie", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona")
       Prop("dokument") { (v: WidokWzoru, d: DokumentProp) in
         v.ustawDokument(wzorId: d.wzorId, plikPdf: d.plikPdf, rysunki: d.rysunki.map { ($0.strona, $0.plik) },
-                        obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }))
+                        obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }),
+                        startStrona: d.startStrona, startPowiekszenie: d.startPowiekszenie)
       }
       Prop("katalogRysunkow") { (v: WidokWzoru, k: String) in v.ustawKatalogRysunkow(k) }
       Prop("strona") { (v: WidokWzoru, s: Int) in v.przejdzDoStrony(s) }

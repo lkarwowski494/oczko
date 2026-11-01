@@ -5,6 +5,7 @@ import type { Wynik } from '../domena/bledy';
 import type { CzasWTle, KonwersjaWzoru, PlikWejsciowy, PortBazy } from '../domena/porty';
 import { WZOR_MAKS_MB } from '../konfiguracja';
 import { adresStrony } from '../domena/adres';
+import { czytajMiejsce } from '../domena/miejsce';
 import { licznikZnacznika, znacznikJson } from '../dane/repozytoria/wzory';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { odczytajUstawienie, zapiszUstawienie } from '../dane/repozytoria/ustawienia';
@@ -200,7 +201,9 @@ async function wzoryProjektu(tx: PortBazy, projektId: string): Promise<WzorNaLis
  */
 export function zapamietajWzor(z: ZaleznosciPlikow, w: { licznikId: string; wzorId: string }): Promise<Wynik<void>> {
   return operacjaZapisu(z, 'ostatnieMiejsce', async (tx, teraz) => {
-    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: 'licznik', id: w.licznikId, wzor: w.wzorId }, teraz);
+    const m = czytajMiejsce(await odczytajUstawienie(tx, 'ostatnie_miejsce'));
+    const ten = m?.wzor === w.wzorId; // ten sam wzór: ekran i pozycja zostają (odświeżenie ekranu po +1 nie zeruje strony ani powiększenia, 07-jakosc-006)
+    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: ten ? m.ekran : 'licznik', id: w.licznikId, wzor: w.wzorId, ...(ten && m.strona !== undefined ? { strona: m.strona } : {}), ...(ten && m.powiekszenie !== undefined ? { powiekszenie: m.powiekszenie } : {}) }, teraz);
     return OK;
   });
 }

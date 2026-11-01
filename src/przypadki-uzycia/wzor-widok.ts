@@ -6,6 +6,7 @@ import { notatkiWzoruZId, znacznikWzoru } from '../dane/repozytoria/wzory';
 import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { wzorDoZapisu, zapiszRysunek } from './wzor';
+import { pozycjaWzoru, type PozycjaWzoru } from './wzor-miejsce';
 import { lista, polacz } from '../dane/pliki/system';
 import type { ZaleznosciPlikow } from './zaleznosci';
 
@@ -41,6 +42,7 @@ export type WidokWzoru = {
   rysunki: { strona: number; plik: string }[];
   obroty: Record<number, KatObrotu>;
   notatki: ChipNotatki[];                         // chipy notatek na stronie znacznika (F-56, P-330 2A)
+  miejsce: PozycjaWzoru | null;                   // 07-jakosc-006: pozycja z `ostatnie_miejsce`, tylko dla ostatnio oglądanego wzoru
   znacznik: { licznikId: string; strona: number; rzad: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1 } | null;
 };
 /** Model odczytu przeglądarki (moduly.md „Kontrakt partii 6”: widok natywny tylko rysuje wynik `polozenieZnacznika`). */
@@ -65,7 +67,7 @@ export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string }): Promise<
     return { ok: true, wartosc: {
       wzorId: w.wzorId, projektId: tekst(r, 'projekt_id'), nazwa: tekst(r, 'nazwa'), zrodlo: tekst(r, 'zrodlo'),
       plikPdf: pdf ? z.magazyn.sciezka(pdf) : null, oryginal: oryg ? z.magazyn.sciezka(oryg) : null,
-      rysunki: rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), obroty, znacznik, notatki,
+      rysunki: rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), obroty, znacznik, notatki, miejsce: await pozycjaWzoru(tx, w.wzorId),
     } };
   });
 }

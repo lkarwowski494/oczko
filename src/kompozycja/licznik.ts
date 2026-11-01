@@ -12,6 +12,7 @@ import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade,
 import { naPierwszyPlan, przyTle, uruchomDane, type WynikStartuDanych } from '../przypadki-uzycia/start';
 import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
+import { startNaWzorze } from '../przypadki-uzycia/wzor-miejsce';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 
@@ -88,7 +89,7 @@ function celDniaOsiagniety(przed: { projektId: string; dzien: string; rzedy: num
 }
 
 export type KompozycjaLicznika = {
-  przygotuj(): Promise<Wynik<{ cel: 'licznik' | 'lista' }>>;
+  przygotuj(): Promise<Wynik<{ cel: 'licznik' | 'lista' | 'wzor' }>>; // 'wzor': praca skończyła się na ekranie wzoru (07-jakosc-006, BR-PRJ-011 S1)
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
   otworz(licznikId: string): Promise<void>;
@@ -203,6 +204,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         const [p] = await z.baza.all<{ n: number }>('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL');
         if (p && p.n > 0) return { ok: true, wartosc: { cel: 'lista' } }; // moduly.md:238: miejsce w koszu → lista projektów
       }
+      if (licznikId) { const n = await startNaWzorze(z); if (n.ok && n.wartosc) return { ok: true, wartosc: { cel: 'wzor' } }; }
       return { ok: true, wartosc: { cel: 'licznik' } };
     },
     wersja: () => wersja,

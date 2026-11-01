@@ -204,6 +204,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   let onRysunek = EventDispatcher()
   let onStukniecie = EventDispatcher()
   let onStrona = EventDispatcher()
+  let onPowiekszenie = EventDispatcher()
   let onPierwszyRysik = EventDispatcher()
   let onZakreslenia = EventDispatcher()
   let onNotatka = EventDispatcher()
@@ -228,6 +229,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var rysikZgloszony = false
   private var zKodu = false
   private var stronaDocelowa = 0
+  private var oczekujacePowiekszenie: CGFloat?        // zapisane powiększenie czeka na układ widoku (dopasowanie do szerokości znane dopiero po layoucie)
+  private var zegarPowiekszenia: Timer?
+  private var ostatniePowiekszenie: Double = 1
   private let przytrzymanie = UILongPressGestureRecognizer()
 
   required init(appContext: AppContext? = nil) {
@@ -247,6 +251,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     rysik.naRysik = { [weak self] in self?.pierwszyRysik() }
     addGestureRecognizer(rysik)
     NotificationCenter.default.addObserver(self, selector: #selector(zmianaStrony), name: .PDFViewPageChanged, object: pdf)
+    NotificationCenter.default.addObserver(self, selector: #selector(zmianaPowiekszenia), name: .PDFViewScaleChanged, object: pdf)
     NotificationCenter.default.addObserver(self, selector: #selector(zapiszTeraz), name: UIApplication.willResignActiveNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(zapiszTeraz), name: UIApplication.didEnterBackgroundNotification, object: nil)
   }
@@ -255,6 +260,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   override func layoutSubviews() {
     super.layoutSubviews()
     pdf.frame = bounds
+    zastosujPowiekszenie()
   }
   override func willMove(toWindow w: UIWindow?) {
     super.willMove(toWindow: w)
@@ -266,7 +272,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
 
   /// Jeden prop zamiast plikPdf + rysunki (przegląd 2026-10-26): kolejność propsów w Expo nie jest określona, a zmiana wzoru musi
   /// najpierw zapisać kreski starego wzoru pod JEGO identyfikatorem, potem wczytać nowy plik, rysunki i obroty.
-  func ustawDokument(wzorId nowy: String, plikPdf: String, rysunki r: [(Int, String)], obroty: [Int: Int]) {
+  func ustawDokument(wzorId nowy: String, plikPdf: String, rysunki r: [(Int, String)], obroty: [Int: Int], startStrona: Int, startPowiekszenie: Double) {
     if nowy != wzorId || plikPdf != plik {
       zapiszTeraz() // zdarzenia z dotychczasowym wzorId
       wzorId = nowy
@@ -278,7 +284,12 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
         guard let d = try? Data(contentsOf: URL(fileURLWithPath: sciezka)), let rys = try? PKDrawing(data: d) else { continue }
         rysunki[s] = rys
       }
+      stronaDocelowa = startStrona // zapisana pozycja (07-jakosc-006): strona przed pierwszym zdarzeniem onStrona, powiększenie po układzie
+      oczekujacePowiekszenie = startPowiekszenie > 0 ? CGFloat(startPowiekszenie) : nil
+      ostatniePowiekszenie = startPowiekszenie > 0 ? startPowiekszenie : 1
+      pdf.autoScales = true
       przejdzDoStrony(stronaDocelowa)
+      zastosujPowiekszenie()
       zmianaStrony()
       zglosZakreslenia()
     }
@@ -383,6 +394,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   /// Rysunki zmienionych stron do plików w katalogu oczekujących → `onRysunek` (JS: zapiszRysunek, ADR-0012). Nazwa pliku niesie wzorId
   /// i stronę, więc plik zapisany przy zamykaniu ekranu (zdarzenie bez odbiorcy) JS odzyska przy następnym otwarciu (przegląd 2026-10-26).
   @objc func zapiszTeraz() {
+    if zegarPowiekszenia != nil { zegarPowiekszenia?.invalidate(); zglosPowiekszenie() } // tło albo zamknięcie: nie gub powiększenia czekającego na opóźnienie
     zegar?.invalidate()
     zegar = nil
     guard !wzorId.isEmpty else { return }
@@ -416,6 +428,33 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     guard ramka.height > 0 else { return }
     let y = min(max((ramka.maxY - wStronie.y) / ramka.height, 0), 1) // PDF: początek układu na dole strony
     onStukniecie(["wzorId": wzorId, "strona": d.index(for: strona), "y": y])
+  }
+  /// Zapisane powiększenie (krotność dopasowania do szerokości): ≈1 zostaje autoScales, większe ustawia scaleFactor w granicach PDFKit. Czeka na układ widoku (dopasowanie = 0 przed layoutem).
+  private func zastosujPowiekszenie() {
+    guard let p = oczekujacePowiekszenie, pdf.document != nil else { return }
+    let dopasowanie = pdf.scaleFactorForSizeToFit
+    guard bounds.width > 0, dopasowanie > 0 else { return }
+    oczekujacePowiekszenie = nil
+    if p > 1.01 {
+      pdf.autoScales = false
+      pdf.scaleFactor = min(max(dopasowanie * p, pdf.minScaleFactor), pdf.maxScaleFactor)
+      przejdzDoStrony(stronaDocelowa) // zmiana skali przesuwa widok: wróć na zapisaną stronę
+    }
+  }
+  /// Zmiana powiększenia (szczypanie albo układ) zgłaszana do JS z opóźnieniem; krotność dopasowania, więc obrót i inny rozmiar okna nie psują zapisu.
+  @objc private func zmianaPowiekszenia() {
+    guard pdf.document != nil, oczekujacePowiekszenie == nil else { return }
+    zegarPowiekszenia?.invalidate()
+    zegarPowiekszenia = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: false) { [weak self] _ in self?.zglosPowiekszenie() }
+  }
+  private func zglosPowiekszenie() {
+    zegarPowiekszenia = nil
+    let dopasowanie = pdf.scaleFactorForSizeToFit
+    guard !wzorId.isEmpty, dopasowanie > 0 else { return }
+    let krotnosc = pdf.autoScales ? 1.0 : Double(pdf.scaleFactor / dopasowanie)
+    guard krotnosc > 0, abs(krotnosc - ostatniePowiekszenie) > 0.005 else { return }
+    ostatniePowiekszenie = krotnosc
+    onPowiekszenie(["wzorId": wzorId, "powiekszenie": krotnosc])
   }
   @objc private func zmianaStrony() {
     guard let d = pdf.document, let s = biezacaStrona() else { return }

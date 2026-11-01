@@ -3,6 +3,7 @@
 import type { Wynik } from '../domena/bledy';
 import { celCofnieciaIndeks, cofnieteId } from '../domena/cofniecie';
 import { powtorzenieLicznika } from '../domena/licznik';
+import { czytajMiejsce, type MiejsceZapisane } from '../domena/miejsce';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
 import { posiedzenie } from '../domena/posiedzenie';
@@ -149,12 +150,12 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
   });
 }
 
-export type MiejsceLicznika = { ekran: 'licznik'; id: string; wzor?: string }; // wzor: ostatni wzór (partia 6, P-246)
+export type MiejsceLicznika = MiejsceZapisane; // wzor: ostatni wzór (partia 6, P-246); ekran 'wzor' + strona/powiekszenie: 07-jakosc-006
 /** F-49: ostatni licznik z `ostatnie_miejsce`; brak klucza → null; wskazanie na licznik w koszu → klucz usunięty, null (moduly.md:238). */
 export function biezacyLicznik(z: Zaleznosci): Promise<Wynik<string | null>> {
   return operacjaZapisu(z, 'biezacyLicznik', async (tx) => {
-    const m = await odczytajUstawienie(tx, 'ostatnie_miejsce');
-    if (!m || typeof m !== 'object' || !('ekran' in m) || m.ekran !== 'licznik' || !('id' in m) || typeof m.id !== 'string') return { ok: true, wartosc: null };
+    const m = czytajMiejsce(await odczytajUstawienie(tx, 'ostatnie_miejsce')); // ekran 'licznik' albo 'wzor' (07-jakosc-006): licznik ten sam
+    if (!m) return { ok: true, wartosc: null };
     const [l] = await wiersze(tx.all(
       `SELECT l.id FROM licznik l JOIN czesc c ON c.id = l.czesc_id JOIN projekt p ON p.id = c.projekt_id
         WHERE l.id = ? AND l.usunieto_ms IS NULL AND c.usunieto_ms IS NULL AND p.usunieto_ms IS NULL`, [m.id]), 'biezacyLicznik');
@@ -167,9 +168,9 @@ export function biezacyLicznik(z: Zaleznosci): Promise<Wynik<string | null>> {
 }
 export function zapamietajLicznik(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<void>> {
   return operacjaZapisu(z, 'ostatnieMiejsce', async (tx, teraz) => {
-    const m = await odczytajUstawienie(tx, 'ostatnie_miejsce'); // partia 6: ostatni wzór zostaje (wzorDoOtwarcia sprawdza projekt)
-    const wzor = m && typeof m === 'object' && 'wzor' in m && typeof m.wzor === 'string' ? m.wzor : undefined;
-    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: 'licznik', id: w.licznikId, ...(wzor ? { wzor } : {}) }, teraz);
+    const m = czytajMiejsce(await odczytajUstawienie(tx, 'ostatnie_miejsce')); // partia 6: ostatni wzór zostaje (wzorDoOtwarcia sprawdza projekt); 006: razem z pozycją
+    const { wzor, strona, powiekszenie } = m ?? {};
+    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: 'licznik', id: w.licznikId, ...(wzor ? { wzor } : {}), ...(strona !== undefined ? { strona } : {}), ...(powiekszenie !== undefined ? { powiekszenie } : {}) }, teraz);
     return OK;
   });
 }

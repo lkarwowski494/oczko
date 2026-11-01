@@ -23,7 +23,9 @@ export type NotatkaNatywna = { id: string; strona: number; y: number; wysokosc: 
 export type PropsWidokuNatywnego = {
   /** Dokument jednym propsem (kolejność propsów nieokreślona): zmiana wzorId najpierw zapisuje kreski starego wzoru (przegląd 2026-10-26).
    *  rysunki: pliki PKDrawing z magazynu (osobna warstwa, P-218 (2)) — wczytywane tylko przy zmianie wzoru; obroty: P-246 S3a. */
-  dokument: { wzorId: string; plikPdf: string; rysunki: { strona: number; plik: string }[]; obroty: { strona: number; kat: number }[] };
+  dokument: { wzorId: string; plikPdf: string; rysunki: { strona: number; plik: string }[]; obroty: { strona: number; kat: number }[];
+    /** Pozycja przy otwarciu nowego dokumentu (07-jakosc-006, BR-PRJ-011 S1): strona od 0 i powiększenie jako krotność dopasowania do szerokości (0 = dopasowany); w dokumencie, bo kolejność propsów jest nieokreślona. */
+    startStrona: number; startPowiekszenie: number };
   katalogRysunkow: string;                           // katalog plików rysunków czekających na zapis (odzyskiwane przy następnym otwarciu)
   strona: number;                                    // 0 = pierwsza; zmiana z JS przewija do strony
   notatki?: NotatkaNatywna[];                        // chipy notatek tej strony wzoru (testID `wzor-notatka-chip`)
@@ -40,6 +42,7 @@ export type PropsWidokuNatywnego = {
   onZnacznikKrok?: (e: NativeSyntheticEvent<{ wzorId: string; delta: 1 | -1 }>) => void;                       // VoiceOver: zwiększ/zmniejsz o rząd
   onNastepnaStrona?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                                  // VoiceOver: „Move to next page”
   onStrona?: (e: NativeSyntheticEvent<{ strona: number; stron: number }>) => void;
+  onPowiekszenie?: (e: NativeSyntheticEvent<{ wzorId: string; powiekszenie: number }>) => void; // po zmianie powiększenia (z opóźnieniem); powiekszenie = scaleFactor / dopasowanie do szerokości, 1 = dopasowany
   onPierwszyRysik?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                  // P-218 Q2a
   onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number }>) => void;                       // kreski zakreślacza na wszystkich stronach
 };

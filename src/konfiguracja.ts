@@ -35,6 +35,7 @@ export const KOPIE_RATUNKOWE_DNI = 30; // P-080, ADR-0020
 export const WZOR_MAKS_MB = 200; // MB; [OCENA] roli 05 (Z07-17): największy plik wzoru (rozszerzenie i import); do korekty po pomiarze
 export const MINIATURA_PT = 96; // pt; [OCENA 08], plan 1.1 pkt 7: szerokość miniatury pierwszej strony w wierszu wzoru (W8)
 export const RYSIK_PODPOWIEDZ_MS = 4000; // ms; [OCENA 08], P-284 (1) A: jak długo widać podpowiedź rysika (raz na otwarcie wzoru)
+export const POWIEKSZENIE_WZORU_MAKS = 16; // krotność dopasowania do szerokości; [OCENA 08], 07-jakosc-006: granica poprawności zapisanego powiększenia (widok natywny dodatkowo ogranicza maxScaleFactor PDFKit)
 export const RYSUNEK_ZAPIS_MS = 1000; // ms; ADR-0012 (uzupełnienie, Z07-17): najdłuższe opóźnienie zapisu rysunku
 export const SKRZYNKA_PORZUCONE_H = 1; // h; [OCENA] roli 05 (fix-7): katalog zlecenia bez manifestu usuwany po tym czasie
 export const MIGAWKA_WERSJA = 1; // wersja koperty migawki projektów w App Group (P-220 N2)
