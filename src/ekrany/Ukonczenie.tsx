@@ -17,6 +17,8 @@ export type StanUkonczenia = {
   czesci: number;
   /** Włóczka projektu (F-37): motki = zapas przed zapisem, zuzyto = poprzednie potwierdzenie (null = brak); pusta = grupy nie ma. */
   wloczka: { id: string; nazwa: string; motki: number; zuzyto: number | null }[];
+  /** Opcja B (P-330 1B): projekt bez włóczki, a zapas niepusty → cicha linia „Choose yarn”; w innych przypadkach grupy ani linii nie ma. */
+  wybierzWloczke?: boolean;
   zdjecie: string | null;      // URI
   bladZapisu?: boolean;        // nieudany zapis zużycia: komunikat, karta zostaje
 };
@@ -32,10 +34,12 @@ export type PropsUkonczenia = {
   /** „Done”: zużycie tylko włóczek, przy których coś wpisano (brak wpisu zostaje brakiem). */
   naGotowe(zuzycie: ZuzycieWloczki[]): void;
   naEdytujZapas?(wloczkaId: string): void;
+  /** Odnośnik „Choose yarn” w cichej linii: arkusz wyboru włóczek projektu. */
+  naWybierzWloczke?(): void;
   /** Obraz karty do udostępnienia (P-191 P10a, P-219 2A): rysowany poza ekranem, niewidoczny dla VoiceOver; zrzut robi kompozycja. */
   obrazKarty?: React.ReactNode;
 };
-export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, naEdytujZapas, obrazKarty }: PropsUkonczenia): React.ReactElement {
+export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, naEdytujZapas, naWybierzWloczke, obrazKarty }: PropsUkonczenia): React.ReactElement {
   const k = useKolory();
   const [zuzycie, ustawZuzycie] = useState<Record<string, number>>({}); // tylko wiersze zmienione na karcie
   const wartosc = (w: StanUkonczenia['wloczka'][number]): number | null => zuzycie[w.id] ?? w.zuzyto;
@@ -63,6 +67,15 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
           {s.wloczka.map((w) => (
             <WierszZuzycia key={w.id} w={w} wartosc={wartosc(w)} t={t} liczby={liczby} naZmiane={(m) => ustawZuzycie((z) => ({ ...z, [w.id]: m }))} naEdytujZapas={naEdytujZapas} />
           ))}
+        </View>
+      )}
+      {s.wybierzWloczke && s.wloczka.length === 0 && naWybierzWloczke && (
+        <View style={{ gap: odstep.xs }} testID="ukonczenie-bez-wloczki">
+          <View accessible role="status" style={{ flexDirection: 'row', gap: odstep.xs }}>
+            <Text style={{ ...typografia.podpis, color: k.olowek }} importantForAccessibility="no" accessibilityElementsHidden>ⓘ</Text>
+            <Text style={{ ...typografia.podpis, color: k.olowek, flex: 1 }}>{t('ukonczenie.bez_wloczki')}</Text>
+          </View>
+          <Przycisk tekst={t('ukonczenie.wybierz_wloczke')} onPress={naWybierzWloczke} rodzaj="tekstowy" rola="link" testID="ukonczenie-wybierz-wloczke" />
         </View>
       )}
       {s.bladZapisu && <Tresc>{t('dane.blad')}</Tresc>}
@@ -111,7 +124,7 @@ function WierszZuzycia(p: {
             <Text style={s2.podpis} importantForAccessibility="no" accessibilityElementsHidden>ⓘ</Text>
             <Text style={[s2.podpis, { flex: 1 }]}>{linia.rodzaj === 'ponad' ? t('ukonczenie.zuzycie_ponad_zapas', { count: linia.zapas }) : t('ukonczenie.zapas_juz_pusty')}</Text>
           </View>
-          {p.naEdytujZapas && <Przycisk tekst={t('ukonczenie.edytuj_zapas')} onPress={() => p.naEdytujZapas?.(w.id)} rodzaj="tekstowy" rola="link" />}
+          {p.naEdytujZapas && <Przycisk tekst={t('ukonczenie.edytuj_zapas')} podpowiedz={t('ukonczenie.edytuj_zapas_opis')} onPress={() => p.naEdytujZapas?.(w.id)} rodzaj="tekstowy" rola="link" testID={`ukonczenie-edytuj-zapas-${w.id}`} />}
         </>
       )}
     </View>

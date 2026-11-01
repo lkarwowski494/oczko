@@ -11,7 +11,7 @@ export type KomorkaDnia = { dzien: string; numer: number; robotka: boolean; dzis
 export type BlokHistorii = { naglowek: string; linie: string[]; bezStopera: boolean };
 export type StanHistorii = {
   miesiac: string; skroty: string[]; puste: number; komorki: KomorkaDnia[]; wybrany: string; naglowekDnia: string;
-  projekty: { id: string; nazwa: string; linia: string }[]; tydzien: BlokHistorii; miesiacBlok: BlokHistorii; pierwsze: boolean;
+  projekty: { id: string; nazwa: string; linia: string }[]; ukonczoneDnia?: string[]; tydzien: BlokHistorii; miesiacBlok: BlokHistorii; pierwsze: boolean;
 };
 export type PropsHistorii = { stan: StanHistorii; t: Tlumacz; naWybierz(dzien: string): void; naPoprzedni(): void; naNastepny(): void; naProjekt(id: string): void; naWstecz?(): void };
 
@@ -61,12 +61,13 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
       <View style={{ gap: odstep.xs }} testID="historia-dzien">
         <Text style={st.naglowekBloku} accessibilityRole="header">{s.naglowekDnia}</Text>
         <View style={st.grupa}>
-          {s.projekty.length === 0 ? <Text style={st.podpis}>{t('dni.pusto_dzien')}</Text> : s.projekty.map((p) => (
+          {s.projekty.length === 0 && !s.ukonczoneDnia?.length ? <Text style={st.podpis}>{t('dni.pusto_dzien')}</Text> : s.projekty.map((p) => (
             <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={`${p.nazwa}, ${p.linia}`} onPress={() => naProjekt(p.id)} style={st.wiersz}>
               <Text style={st.tekst}>{p.nazwa}</Text>
               <Text style={st.podpis}>{p.linia}</Text>
             </Pressable>
           ))}
+          {!!s.ukonczoneDnia?.length && <Text style={st.podpis} testID="historia-ukonczono">{t('dni.ukonczone', { lista: s.ukonczoneDnia.join(', ') })}</Text>}
         </View>
       </View>
       {blok(s.tydzien, 'historia-tydzien')}

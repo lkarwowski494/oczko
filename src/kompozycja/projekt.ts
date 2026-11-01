@@ -85,12 +85,13 @@ export function stanProjektu(w: WidokProjektu, o: { j: Jezyk; terazMs: number; s
     nazwa: w.nienazwany ? etykietaRobocza(w.utworzonoMs, o.terazMs, j, o.strefa) : w.nazwa,
     postep: w.postep, termin: linia(), ukonczony: w.stan === 'ukonczony',
     daty: w.stan === 'ukonczony' && w.ukonczonoDzien ? daty(w.utworzonoMs, w.ukonczonoDzien, o) : null,
-    notatka: w.notatka.trim() ? w.notatka : null, miejsceWzoru: null, // miejsce we wzorze: partia wzorów (F-26)
+    notatka: w.notatka.trim() ? w.notatka : null, miejsceWzoru: w.miejsceWzoru && t('projekt.miejsce_wzoru_wartosc', { strona: w.miejsceWzoru.strona, rzad: w.miejsceWzoru.rzad }), // F-18, 07-jakosc-010
     ostatniaZmiana: zmiana.ok ? krotkaData(zmiana.wartosc, jezyk) : '',
     szczegoly: {
       narzedzie: mm === null ? null : t(w.narzedzie === 'szydelko' ? 'projekt.szydelko' : 'projekt.druty'),
       rozmiar: mm === null ? null : w.drutUS ? t('projekt.rozmiar_us', { mm, us: w.drutUS }) : t('projekt.rozmiar_mm', { mm }),
       termin,
+      wloczka: w.wloczki.length === 0 ? t('projekt.wloczka_brak') : w.wloczki.length === 1 ? w.wloczki[0]?.nazwa ?? t('projekt.wloczka_brak') : t('projekt.wloczki', { count: w.wloczki.length }), // 07-jakosc-001
       probka: w.probka ? t(w.probka.naCm === 10 ? 'projekt.probka_wartosc' : 'projekt.probka_wartosc_in', { p: formatujLiczbe(w.probka.oczka, jezyk, { maks: 3 }) }) : null, // U-10
     },
     czesci: w.czesci.map((c) => {

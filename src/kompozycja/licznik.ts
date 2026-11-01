@@ -52,7 +52,7 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
     czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
     skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,
     celDnia: oczka || w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: oczka || w.calosc === null ? null : { czesc: w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1
+    calosc: oczka || w.calosc === null ? null : { czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1; projekt roboczy: nazwa części to data, więc jej nie pokazujemy (F-46)
     przypomnienie: oczka ? null : w.przypomnienie,
     powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
     notatka: w.projekt.notatka || null,

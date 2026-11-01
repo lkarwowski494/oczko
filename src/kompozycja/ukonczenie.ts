@@ -13,6 +13,6 @@ export function stanUkonczenia(k: KartaUkonczenia, o: { j: Jezyk; terazMs: numbe
     nazwa: k.nienazwany ? etykietaRobocza(k.utworzonoMs, o.terazMs, o.j, o.strefa) : k.nazwa,
     okres: `${data.format(new Date(k.startMs))} – ${data.format(new Date(k.ukonczonoMs ?? o.terazMs))}`,
     dni: k.dni, rzedy: k.rzedy, czas: k.czasMs === null ? null : czasPracy(k.czasMs, o.j), czesci: k.czesci,
-    wloczka: k.wloczka, zdjecie: k.zdjecieSha ? `file://${o.zdjecie(k.zdjecieSha)}` : null,
+    wloczka: k.wloczka, wybierzWloczke: k.wloczka.length === 0 && k.maZapas, zdjecie: k.zdjecieSha ? `file://${o.zdjecie(k.zdjecieSha)}` : null,
   };
 }

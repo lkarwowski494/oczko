@@ -50,7 +50,7 @@ test('kosz: projekt roboczy (sam i jako rodzic części) → etykieta „Counter
   ]);
 });
 test('stanListy: linie terminu i ostatniej pracy tylko w toku; liczba kosza', () => {
-  const p = { id: 'p1', nazwa: 'Harbor', nienazwany: false, utworzonoMs: 0, ostatniaPracaMs: 0, licznik: null, dniOdPracy: 41, dzis: { cel: { rodzaj: 'cel' as const, rzedy: 10 }, zrobione: 3 } };
+  const p = { id: 'p1', nazwa: 'Harbor', nienazwany: false, utworzonoMs: 0, ostatniaPracaMs: 0, licznik: null, ukonczonoDzien: null, czasPracyMs: null, dniOdPracy: 41, dzis: { cel: { rodzaj: 'cel' as const, rzedy: 10 }, zrobione: 3 } };
   const s = stanListy({ wToku: [p], ukonczone: [{ ...p, id: 'p2' }], dni: null, kosz: 2 }, { zapytanie: '', j, terazMs: 0, strefa: 'UTC' });
   expect([s.wToku[0].termin, s.wToku[0].ostatniaPraca, s.ukonczone[0].ostatniaPraca ?? null, s.kosz]).toEqual(['Today: 3 of 10 rows', 'last worked 41 days ago', null, 2]);
 });
@@ -60,7 +60,7 @@ import { stanProjektu } from '../../src/kompozycja/projekt';
 const W: WidokProjektu = {
   id: 'p1', nazwa: 'Harbor', nienazwany: false, stan: 'w_toku', utworzonoMs: Date.UTC(2026, 9, 1), zmienionoMs: Date.UTC(2026, 9, 20, 10), ostatniaPracaMs: Date.UTC(2026, 9, 22, 10),
   notatka: '', narzedzie: 'druty', drutMm: 4, drutUS: '6', terminDzien: '2026-10-31', celDnia: { rodzaj: 'cel', rzedy: 10 }, zrobioneDzis: 3,
-  postep: { rodzaj: 'procent', wartosc: 51 }, ukonczonoDzien: null, probka: null, // probka: mechanicznie po D5 (U-10)
+  postep: { rodzaj: 'procent', wartosc: 51 }, ukonczonoDzien: null, probka: null, miejsceWzoru: null, wloczki: [], // probka: mechanicznie po D5 (U-10)
   czesci: [
     { id: 'c1', nazwa: 'Back', rzedy: 60, cel: 96, celZPary: false, paraZ: null, calosc: null, liczniki: [{ id: 'l1', nazwa: '', rodzaj: 'rzedy', wartosc: 60, znaczenie: 'skonczone' }] },
     { id: 'c2', nazwa: 'Blanket', rzedy: 20, cel: null, celZPary: false, paraZ: null, calosc: 20, liczniki: [
@@ -70,7 +70,7 @@ const W: WidokProjektu = {
 test('stanProjektu: termin, szczegóły z US, pusta notatka = null, liczniki z nazwą rodzaju, całość z modelu (`licznikCalosci`, P-199 Q1a)', () => {
   const s = stanProjektu(W, { j, terazMs: Date.UTC(2026, 9, 22, 12), strefa: 'UTC' });
   expect(s.termin).toBe('Done by Oct 31 · today 3 of 10 rows');
-  expect(s.szczegoly).toEqual({ narzedzie: 'Needles', rozmiar: '4 mm (US 6)', termin: 'Oct 31', probka: null }); // probka: pole U-10 (D5), mechanicznie
+  expect(s.szczegoly).toEqual({ narzedzie: 'Needles', rozmiar: '4 mm (US 6)', termin: 'Oct 31', probka: null, wloczka: 'None' }); // probka: pole U-10 (D5), mechanicznie
   expect(s.notatka).toBeNull();
   expect(s.ostatniaZmiana).toBe('Oct 22');
   expect(s.czesci[0].liczniki).toEqual([{ id: 'l1', nazwa: 'Rows', opis: '60 rows' }]);
@@ -82,7 +82,7 @@ test('stanProjektu: gałęzie terminu RD-15 i brak terminu', () => {
   expect(linia({ celDnia: { rodzaj: 'osiagniety' } })).toBe('Done by Oct 31 · goal reached');
   expect(linia({ celDnia: null })).toBe('Done by Oct 31 · set a goal for a part to get a daily goal');
   expect(linia({ terminDzien: null, celDnia: null })).toBeNull();
-  expect(stanProjektu({ ...W, drutMm: 6.5, drutUS: null, narzedzie: 'szydelko' }, { j, terazMs: 0, strefa: 'UTC' }).szczegoly).toEqual({ narzedzie: 'Hook', rozmiar: '6.5 mm', termin: 'Oct 31', probka: null });
+  expect(stanProjektu({ ...W, drutMm: 6.5, drutUS: null, narzedzie: 'szydelko' }, { j, terazMs: 0, strefa: 'UTC' }).szczegoly).toEqual({ narzedzie: 'Hook', rozmiar: '6.5 mm', termin: 'Oct 31', probka: null, wloczka: 'None' });
 });
 test('stanProjektu: daty ukończonego projektu z rokiem (daty historii), zakres wyboru od dnia startu do dziś; w toku brak', () => {
   const s = stanProjektu({ ...W, stan: 'ukonczony', ukonczonoDzien: '2026-10-20' }, { j, terazMs: Date.UTC(2026, 9, 22, 12), strefa: 'UTC' });

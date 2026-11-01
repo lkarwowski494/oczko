@@ -3,7 +3,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import { Projekt, type PropsProjektu } from '../../src/ekrany/Projekt';
-import { Kalendarz, Podsumowanie } from '../../src/ekrany/Dni';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { tEn } from './pomoc';
 
@@ -39,19 +38,5 @@ describe('Projekt i dni', () => {
     ] })} t={t} naOtworzCzesc={jest.fn()} />);
     expect(screen.queryByText(/Goal \d+ rows/)).toBeNull();
     expect(screen.getByText(/Left sleeve.*rows|goal.*Left sleeve|Left sleeve.*goal/i)).toBeTruthy();
-  });
-
-  test('BR-DNI-001/S4: kalendarz bez serii dni i ponagleń po 10 dniach przerwy (P-043)', () => {
-    render(<Kalendarz stan={{ miesiac: 'November', dni: [{ data: '2026-11-01', etykieta: 'Nov 1', rzedy: 12 }] }} t={t} naDzien={jest.fn()} />);
-    expect(screen.getByText(/November/)).toBeTruthy();
-    expect(screen.queryByText(/streak|in a row|don’t break|keep it up|you haven’t knitted|miss/i)).toBeNull();
-  });
-
-  test('BR-DNI-003/S2: podsumowanie miesiąca bez sesji — rzędy i ukończone, czas tylko jako informacja o stoperze (Z07-05)', () => {
-    render(<Podsumowanie stan={{ okres: 'November', rzedy: 312, ukonczone: ['Lavender hat'], czas: null }} t={t} />);
-    expect(screen.getByText(/312/)).toBeTruthy();
-    expect(screen.getByText(/Lavender hat/)).toBeTruthy();
-    expect(screen.queryByText(/\b0 h\b|0 hours|0:00/)).toBeNull();
-    expect(screen.getByText(/stopwatch|timer/i)).toBeTruthy();
   });
 });

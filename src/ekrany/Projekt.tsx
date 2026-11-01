@@ -24,7 +24,7 @@ export type PropsProjektu = {
     postep: { rodzaj: 'procent'; wartosc: number } | { rodzaj: 'brak-celow' };  // RD-14 (RD-14-W6)
     termin?: string | null;          // linia terminu (RD-15) sformatowana; null = bez terminu (BR-DNI-005 „Bez terminu nic”)
     ukonczony?: boolean;
-    szczegoly?: { narzedzie: string | null; rozmiar: string | null; termin: string | null; probka?: string | null }; // „Needles” / „4 mm (US 6)” / krótka data / „22 stitches / 10 cm”
+    szczegoly?: { narzedzie: string | null; rozmiar: string | null; termin: string | null; probka?: string | null; wloczka?: string }; // „Needles” / „4 mm (US 6)” / krótka data / „22 stitches / 10 cm”
     /** Daty ukończonego projektu (F-51, design-spec „Data ukończenia”): sformatowane z rokiem i dni RRRR-MM-DD dla zakresu wyboru. */
     daty?: { start: string; koniec: string; startDzien: string; koniecDzien: string; dzis: string } | null;
     /** Czas projektu (P-191 P4a): suma sformatowana albo null bez sesji; liczba sesji i do sprawdzenia (`do_korekty`). */
@@ -36,6 +36,7 @@ export type PropsProjektu = {
   naOtworzLicznik?(id: string): void;
   naDodajCzesc?(): void; naDodajLicznik?(): void;
   naNotatka?(): void; naNarzedzie?(): void; naTermin?(): void;
+  naWloczka?(): void; // wiersz „Yarn” w Details: arkusz wyboru włóczek z zapasu (07-jakosc-001)
   naEdytuj?(): void; naKoniecEdycji?(): void; naZrobTakaSama?(): void; naUsunProjekt?(): void; naWznow?(): void;
   naUsunCzesc?(id: string): void; naUsunLicznik?(id: string): void;
   naWstecz?(): void;
@@ -134,6 +135,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
                   {para && <Text style={st.podpis}>{t('projekt.para', { nazwa: para })}</Text>}
                   {jeden ? <Text style={st.podpis}>{opisCzesci(c)}</Text>
                     : c.calosc != null && <Text style={st.podpis}>{t('projekt.calosc', { count: c.calosc })}</Text>}
+                  {c.cel !== null && c.rzedy >= c.cel && <Text style={st.podpis}>{t('licznik.cel_osiagniety')}</Text>}{/* F-08, design-spec: dopisek przy celu osiągniętym */}
                   {para && c.cel === null && <Text style={st.podpis}>{t('projekt.cel_z_pary', { nazwa: para })}</Text>}
                 </Pressable>
               </View>
@@ -198,6 +200,12 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
               <Text style={st.tekst}>{s.szczegoly.narzedzie ?? t('projekt.narzedzie_wiersz')}</Text>
               <Text style={st.podpis}>{s.szczegoly.rozmiar ?? t('projekt.dodaj_wartosc')}</Text>
             </Pressable>
+            {s.szczegoly.wloczka !== undefined && (
+              <Pressable accessibilityRole="button" onPress={p.naWloczka} disabled={!p.naWloczka} style={st.wierszGrupy} testID="projekt-wloczka">
+                <Text style={st.tekst}>{t('projekt.wloczka')}</Text>
+                <Text style={st.podpis}>{s.szczegoly.wloczka}</Text>
+              </Pressable>
+            )}
             {p.naProbka && (
               <Pressable accessibilityRole="button" onPress={p.naProbka} style={st.wierszGrupy} testID="projekt-probka">
                 <Text style={st.tekst}>{t('projekt.probka')}</Text>

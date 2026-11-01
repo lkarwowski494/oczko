@@ -23,7 +23,7 @@ export default function EkranHistoriiDni(): React.ReactElement {
   const [wybor, ustawWybor] = useState({ miesiac: dzis.slice(0, 7), dzien: dzis });
   const [stan, ustaw] = useState<StanHistorii | null>(null);
   useFocusEffect(useCallback(() => {
-    void widokHistorii(kontener.z, wybor).then((w) => { if (w.ok) ustaw(stanHistorii(w.wartosc, { j: kontener.j, miesiac: wybor.miesiac, wybrany: wybor.dzien, dzis })); });
+    void widokHistorii(kontener.z, wybor).then((w) => { if (w.ok) { const ch = kontener.z.zegar.teraz(); ustaw(stanHistorii(w.wartosc, { j: kontener.j, miesiac: wybor.miesiac, wybrany: wybor.dzien, dzis, terazMs: ch.ms, strefa: ch.strefa })); } });
   }, [kontener, wybor, dzis]));
   if (!stan) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   const miesiac = (o: number) => { const m = przesun(wybor.miesiac, o); ustawWybor({ miesiac: m, dzien: m === dzis.slice(0, 7) ? dzis : `${m}-01` }); };

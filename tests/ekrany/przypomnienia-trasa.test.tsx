@@ -9,7 +9,8 @@ import { widokLicznika } from '../../src/przypadki-uzycia/widok-licznika';
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn(), dismissTo: jest.fn() };
 let mockParams: Record<string, string> = {};
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => mockParams }));
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => mockParams, useFocusEffect: (f: () => void) => { const R = require('react') as typeof import('react'); R.useEffect(f, [f]); } })); // useFocusEffect: odświeżenie zapasu w app/formularz/[rodzaj].tsx (07-jakosc-001, partia 8c)
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 /* eslint-disable @typescript-eslint/no-require-imports */
