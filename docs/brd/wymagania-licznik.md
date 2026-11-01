@@ -138,7 +138,7 @@ Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`; dowody
   - Scenariusz: Przypomnienie w trakcie serii
     - Zakładając, że instrukcja to: od rzędu 6, co 6 rzędów, 5 razy, a licznik jest w trybie „skończone rzędy”
     - Gdy użytkownik kończy rząd 11 i licznik pokazuje 11
-    - Wtedy aplikacja pokazuje przypomnienie dla rzędu 12 z numerem 2 z 5, zmienia wygląd całego ekranu licznika i potwierdza je wibracją (RD-13-W1)
+    - Wtedy aplikacja pokazuje przypomnienie dla rzędu 12 z numerem 2 z 5 jako pas zakreślacza pod liczbą, z instrukcją w podpisie przycisku +1 (reszta ekranu licznika bez zmian), i potwierdza je wibracją (RD-13-W1; ZM-09, ER-59)
   - Scenariusz: Ostatnie przypomnienie
     - Zakładając tę samą instrukcję
     - Gdy użytkownik kończy rząd 29

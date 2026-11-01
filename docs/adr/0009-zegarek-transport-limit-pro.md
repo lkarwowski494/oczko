@@ -49,6 +49,9 @@ A + D. Zegarek trzyma mały plik stanu i kolejkę wysłanych zdarzeń; telefon s
 - **Telefon — „ostatni kontakt z zegarkiem”** (BR-DAN-011 S3): klucz `ustawienie` `zegarek_ostatnia_partia_ms` (dane.md: stan urządzenia, bez iCloud, pomijany przy imporcie), zapisywany w transakcji scalenia partii od zegarka (także partii samych powtórzeń); Stan danych pokazuje czas odbioru, nie stuknięcia.
 - **Potwierdzenie:** Swift — test reguły linii na kolejce z wiekiem najstarszej linii 14:59 i 15:00 min (`OczkoReguly`, wektory w JSON jak X-ZG); TS — scalenie partii zegarka zapisuje klucz w tej samej transakcji, a wycofana transakcja go nie zmienia.
 
+## Uzupełnienie 2026-11-01 (partia 8, 05: 07-jakosc-005; decyzje bez zmian)
+- `Zegarek.odbieraj` ma subskrybenta: zdarzenie to sygnał, scalenie dziennika jedną pozycją kolejki (jedno naraz + domknięcie), tylko przy `AppState` aktywnym; wzorzec haptyki przypomnienia na zegarku to czysta funkcja w pakiecie reguł + token roli 04. Szczegóły: ADR-0030.
+
 ## Opcje: zalety i wady
 ### A — zalety: kolejka bez utraty, idempotencja · wady: brak w symulatorze.
 ### B — zalety: brak WatchConnectivity · wady: zegarek bez sieci i bez telefonu nie synchronizuje; CloudKit na zegarku opóźniony.

@@ -1985,7 +1985,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "terminate + relaunch",
-  "plik": "docs/brd/wymagania-projekt.md:120",
+  "plik": "docs/brd/wymagania-projekt.md:122",
   "rodzaj": "BR"
  },
  {
@@ -1998,7 +1998,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "tło/pierwszy plan",
-  "plik": "docs/brd/wymagania-projekt.md:124",
+  "plik": "docs/brd/wymagania-projekt.md:126",
   "rodzaj": "BR"
  },
  {
@@ -2011,7 +2011,7 @@
   "wyrocznia": "NFR-DAN-003",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "dwa magazyny z symulowanym transportem; prawdziwe dwa urządzenia: ryzyko szczątkowe",
-  "plik": "docs/brd/wymagania-projekt.md:128",
+  "plik": "docs/brd/wymagania-projekt.md:130",
   "rodzaj": "BR"
  },
  {
@@ -2024,7 +2024,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:137",
+  "plik": "docs/brd/wymagania-projekt.md:139",
   "rodzaj": "BR"
  },
  {
@@ -2037,7 +2037,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:141",
+  "plik": "docs/brd/wymagania-projekt.md:143",
   "rodzaj": "BR"
  },
  {
@@ -2050,7 +2050,7 @@
   "wyrocznia": "tekst „No project called …” (docs/design/design-spec.md:55)",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:145",
+  "plik": "docs/brd/wymagania-projekt.md:147",
   "rodzaj": "BR"
  },
  {
@@ -2063,7 +2063,7 @@
   "wyrocznia": "brak (wartości w scenariuszu)",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:155",
+  "plik": "docs/brd/wymagania-projekt.md:157",
   "rodzaj": "BR"
  },
  {
@@ -2076,7 +2076,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:159",
+  "plik": "docs/brd/wymagania-projekt.md:161",
   "rodzaj": "BR"
  },
  {
@@ -2089,7 +2089,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:163",
+  "plik": "docs/brd/wymagania-projekt.md:165",
   "rodzaj": "BR"
  },
  {
@@ -2102,7 +2102,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:177",
+  "plik": "docs/brd/wymagania-projekt.md:179",
   "rodzaj": "BR"
  },
  {
@@ -2115,7 +2115,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:181",
+  "plik": "docs/brd/wymagania-projekt.md:183",
   "rodzaj": "BR"
  },
  {
@@ -2128,7 +2128,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:185",
+  "plik": "docs/brd/wymagania-projekt.md:187",
   "rodzaj": "BR"
  },
  {
@@ -2141,7 +2141,7 @@
   "wyrocznia": "brak (wartości w scenariuszu)",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:194",
+  "plik": "docs/brd/wymagania-projekt.md:196",
   "rodzaj": "BR"
  },
  {
@@ -2154,7 +2154,7 @@
   "wyrocznia": "NFR-PRY-001; ZP-03",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "test pliku karty: brak EXIF GPS; arkusz udostępniania mock",
-  "plik": "docs/brd/wymagania-projekt.md:198",
+  "plik": "docs/brd/wymagania-projekt.md:200",
   "rodzaj": "BR"
  },
  {
@@ -2167,7 +2167,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:202",
+  "plik": "docs/brd/wymagania-projekt.md:204",
   "rodzaj": "BR"
  },
  {
@@ -2180,7 +2180,7 @@
   "wyrocznia": "brak (wartości w scenariuszu)",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:212",
+  "plik": "docs/brd/wymagania-projekt.md:214",
   "rodzaj": "BR"
  },
  {
@@ -2193,7 +2193,7 @@
   "wyrocznia": "BR-PRJ-011",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:216",
+  "plik": "docs/brd/wymagania-projekt.md:218",
   "rodzaj": "BR"
  },
  {
@@ -2206,7 +2206,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "rozszerzenie udostępniania (ADR-0011) w XCUITest trudne; zapis i odczyt offline w dane-node",
-  "plik": "docs/brd/wymagania-projekt.md:232",
+  "plik": "docs/brd/wymagania-projekt.md:234",
   "rodzaj": "BR"
  },
  {
@@ -2219,7 +2219,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "plik uszkodzony jako wejście testu",
-  "plik": "docs/brd/wymagania-projekt.md:236",
+  "plik": "docs/brd/wymagania-projekt.md:238",
   "rodzaj": "BR"
  },
  {
@@ -2232,7 +2232,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "aparat: mock; „można powiększać” → RNTL (gest pinch) częściowo",
-  "plik": "docs/brd/wymagania-projekt.md:245",
+  "plik": "docs/brd/wymagania-projekt.md:247",
   "rodzaj": "BR"
  },
  {
@@ -2245,7 +2245,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:254",
+  "plik": "docs/brd/wymagania-projekt.md:256",
   "rodzaj": "BR"
  },
  {
@@ -2258,7 +2258,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:258",
+  "plik": "docs/brd/wymagania-projekt.md:260",
   "rodzaj": "BR"
  },
  {
@@ -2271,7 +2271,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "odrzucenie dłoni tylko na iPadzie z Pencil; automat: konfiguracja PencilKit drawingPolicy = pencilOnly (P-042). Ryzyko szczątkowe (docs/scope-contract.md:219)",
-  "plik": "docs/brd/wymagania-projekt.md:285",
+  "plik": "docs/brd/wymagania-projekt.md:287",
   "rodzaj": "BR"
  },
  {
@@ -2284,7 +2284,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "orientacja pozioma w symulatorze; makiety brak (docs/design/design-spec.md:95)",
-  "plik": "docs/brd/wymagania-projekt.md:300",
+  "plik": "docs/brd/wymagania-projekt.md:304",
   "rodzaj": "BR"
  },
  {
@@ -2297,7 +2297,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "udostępnienie z Safari tylko E2E/urządzenie; zapis offline strony w dane-node",
-  "plik": "docs/brd/wymagania-projekt.md:330",
+  "plik": "docs/brd/wymagania-projekt.md:334",
   "rodzaj": "BR"
  },
  {
@@ -2310,7 +2310,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "jak WZR-001/S1",
-  "plik": "docs/brd/wymagania-projekt.md:334",
+  "plik": "docs/brd/wymagania-projekt.md:338",
   "rodzaj": "BR"
  },
  {
@@ -2323,7 +2323,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "„nie ma treści wzoru” niemierzalne. Brzmienie: „strona zwraca 401/403 albo po zapisie nie ma tekstu ani obrazu”",
-  "plik": "docs/brd/wymagania-projekt.md:338",
+  "plik": "docs/brd/wymagania-projekt.md:342",
   "rodzaj": "BR"
  },
  {
@@ -2336,7 +2336,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "adapter sieci „brak połączenia”",
-  "plik": "docs/brd/wymagania-projekt.md:342",
+  "plik": "docs/brd/wymagania-projekt.md:346",
   "rodzaj": "BR"
  },
  {
@@ -2349,7 +2349,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "gest palcem po PDF w E2E; trwałość adnotacji w dane-node",
-  "plik": "docs/brd/wymagania-projekt.md:351",
+  "plik": "docs/brd/wymagania-projekt.md:355",
   "rodzaj": "BR"
  },
  {
@@ -2362,7 +2362,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "plik wzoru niezmieniony: skrót pliku przed i po",
-  "plik": "docs/brd/wymagania-projekt.md:355",
+  "plik": "docs/brd/wymagania-projekt.md:359",
   "rodzaj": "BR"
  },
  {
@@ -2375,7 +2375,7 @@
   "wyrocznia": "BR-WZR-004",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "",
-  "plik": "docs/brd/wymagania-projekt.md:359",
+  "plik": "docs/brd/wymagania-projekt.md:363",
   "rodzaj": "BR"
  },
  {

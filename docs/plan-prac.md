@@ -5,6 +5,35 @@ Historia planu z 2026-10-27: `docs/plan-prac-historia-2026-10-27.md`. Decyzje do
 ## Stan wyjściowy
 Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) przyjęte; przekład 34 języków maszynowy (P-309). Czekają trzy kopie: 08 (`claude/kopia-partia-7-2026-10-30-b`), 09 (`claude/kopia-09-2026-10-30`), 07 (`claude/kopia-07-2026-10-30`) — szczegóły w `docs/przekazanie-koordynatora.md`.
 
+## Kolejność do wydania (P-320, właściciel 2026-11-01: „zrzutów nie ma sensu robić przed audytem”)
+**Przed audytem — tylko to, co szuka i naprawia błędy albo buduje narzędzia:** integracja kopii i pełny przebieg, raport E2 (07), aneks audytu 04 (warianty AX5, iPad, poziomo, ciemny — domknięcie P-301), poprawki 08 (z E2, aneksu, W1-A), kontrakt `select-xcode` (P-313), plan testu na urządzeniu z zegarkiem (P-316, sam plan), środowisko `release` i workflowy ASC z Treningu (10, infrastruktura), instrukcja kroków właściciela (bez A6).
+**Pełny audyt (M1, opus/high, P-293) na kodzie po poprawkach; od jego startu zamrożenie zakresu — tylko naprawy blokerów (jak Trening, „Audyty i wydania” pkt 3).**
+**Dopiero z buildu kandydata (po naprawach audytu):** zrzuty sklepu (scenariusz, dane pokazowe, ramki, podpisy, kadry 04), metadane en ostateczne i ich przekład na 35 języków (09), fala przekładu zmienionych kluczy UI (jedna, po audycie), przeglądy rodzime i przekład zwrotny, commit wydania 1.0.0 + `tests/bazy/v1.db` (P-306: zamraża schemat), wdrożenie schematu CloudKit do Production (A6 — nieodwracalne), build TestFlight i test właściciela na urządzeniach (inaczej test do powtórki), App Privacy, notatka do recenzji, metadane i zrzuty w App Store Connect, wysyłka.
+
+## Harmonogram 1–4.11 (UTC; czas polski = UTC+1) — P-319, P-320
+| Kiedy | Sesja (sonnet/high) | Co | Wynik / dowód | Czeka na |
+|---|---|---|---|---|
+| 1.11 17:10– | **07** (faza A) | **zgodność kodu z zakresem 1.0 — 51 funkcji MVP (P-321)**; kontrakt `select-xcode.sh` (P-313); zegarek w planie testu na urządzeniu (P-316) | hashe kopii, verify 0 | — |
+| 1.11 17:10– | **10** (tylko faza A, potem koniec) | środowisko `release`; workflowy ASC z Treningu; szkic metadanych en (bez zamrożenia); instrukcja właściciela (A6 po audycie) | `docs/wydanie/kroki-wlasciciela-testflight.md` | — |
+| 1.11 23:00 | **08 integracja** (faza B) | merge roboczej, verify, pushe 08 → 09 → 07 (`[e2e-pelny] [e2e-ciemny]`) | numer przebiegu, build ze Swift 35 języków | okno macOS |
+| 1.11 23:10–2.11 ~01:30 | CI | pełny przebieg (ok. 2–2,5 h) | artefakty | maszyny |
+| 2.11 ~01:30– | **07** (faza B) | raport E2 + aneks werdyktu; lista błędów aplikacji dla 08 | raport `07-jakosc/2026-11-02-e2/` | przebieg |
+| 2.11 ~01:30– | **04** (nowa) | aneks audytu 2.1: AX5, iPad, poziomo, ciemny, długości etykiet 35 języków, krój 700 (bez kadrów zrzutów) | raport aneksu, lista zmian | przebieg |
+| 2.11 ~03:30–12:00 | **08** (sesja integracji) | poprawki z 07 i 04, W1-A, push kopii 07 i 10 z fazy A; HEAD z `[e2e-pelny]` | przebieg 2 zielony do ~13:30 | raporty 07, 04 |
+| 1.11 18:10– | **03**, **05**, **04** (nowe, równolegle) | przygotowanie partii 8 (P-326): kontrakt wg D2; klucze `ustawienie`, kopia przed „Replace”, porty skrzynki i zegarka; projekty i teksty en | dokumenty na roboczej | — |
+| 2.11–5.11 | **08** partie 8a–8e (P-326) | 33 luki z raportu zgodności (test przed kodem); 8d, 8e w oknie macOS | przebiegi zielone | 03, 05, 04 |
+| po 8a–8e | **07** | 032 (testy tras), 033 (E2E brakujących funkcji) | przebieg pełny zielony | partia 8 |
+| ok. 6–7.11 | **M1 audyt** (opus/high) | pełny audyt kodu kandydata (12, 07, 04, 05), OG-07; zamrożenie zakresu | raport z werdyktem i listą blokerów | przebieg 2 |
+| 2.11/3.11 noc | **08** (nowa) | naprawy blokerów z audytu (test przed kodem), przebieg | przebieg zielony | raport M1 |
+| 3.11 dzień | **09** (nowa) | jedna fala przekładu zmienionych kluczy; metadane sklepu 35 języków z zamrożonych en | kontrole błędy 0 | naprawy |
+| 3.11 dzień | **10** (nowa) + **04** | metadane en ostateczne; kadry i podpisy; scenariusz i workflow zrzutów jak Trening (`store-screenshots`) | — | naprawy |
+| 3.11/4.11 noc | **08** + **10** | commit wydania 1.0.0 + `v1.db`; przebieg; zrzuty z buildu kandydata; `testflight.yml` (zatwierdza właściciel) | build kandydata w TestFlight, zrzuty | kroki właściciela A1–A5, B2 |
+| 4.11 | **właściciel** | A6 CloudKit → Production (po audycie); test na telefonie, iPadzie i zegarku (pierwsza część ok. 5 min) | wypełniona lista | build |
+
+Właściciel po audycie (P-320, P-322): A1–A5 i B2 z `docs/wydanie/kroki-wlasciciela-testflight.md` (ok. 65–75 min).
+
+**Pomiar tokenów (zastępuje wcześniejsze szacunki, które były ok. 10× za niskie):** sesja 10 faza A (sonnet, 22 min) — 39,2 M odczytów cache, 0,40 M zapisu cache, 0,13 M wyjścia, 6,82 USD wg `get_session` (`usage`), 2026-11-01. Przelicznik [OCENA]: sesja sonnet ok. 15–20 M odczytów cache na 10 min pracy; opus ok. 1,7× droższy za token. Szacunek do 4.11 [OCENA]: 8–10 sesji ról, ok. 300–600 M odczytów cache, ok. 50–120 USD równowartości limitu; największe: audyt M1 (opus) i zgodność 1.0 (opus). Kolumny „Tokeny” w tabeli kroków niżej są nieaktualne.
+
 ## Kroki do wydania
 | # | Krok | Rola / sesja | Okno | Zależy od | Dowód ukończenia | Czas agenta | Tokeny |
 |---|---|---|---|---|---|---|---|

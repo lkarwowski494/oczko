@@ -33,6 +33,9 @@ Opcja A, z wariantem zastępczym dla Worda: jeśli eksperyment pokaże, że rend
 - **Rząd znacznika = rząd w robocie (RD-21):** domyślnie przy ustawieniu `rzad_bazowy = s_ust + 1` (s = skończone rzędy licznika), niezależnie od trybu licznika; notatka na znaczniku dotyczy rzędu licznika `s + 1`.
 - **Stan „przed schematem”:** `rzad < 1` (prucie poniżej początku schematu) → `polozenieZnacznika` zwraca `przedSchematem: true`, znacznik na rzędzie 1 schematu, `rzadNotatki: null` — dodanie notatki na znaczniku w tym stanie: `{ ok: false, powod: 'niedozwolone_przejscie' }`, jak wzór bez znacznika (uzupełnienie fix-3); stan wraca sam, gdy `rzad ≥ 1`. To zastępuje dotychczasowe `pozaStrona: true` dla `rzad < 1` (uzupełnienie fix-2: warunek `rzad ≥ 1`): „poza stroną” zostaje tylko dla wyjścia za krawędź strony. Sygnatura z `Wynik` (s < 0 → `bledne_dane`, RD-21-W7): `moduly.md`, „Kontrakt partii 4”. Wygląd stanu: 04.
 
+## Uzupełnienie 2026-11-01 (partia 8, 05: 07-jakosc-017; opcja A bez zmian)
+- Stan sieci dla filmu i strony WWW przez port `Siec` (podpowiedź `NWPathMonitor`), strona dodana z aplikacji bez sieci czeka w skrzynce, Word = wyłącznie `.docx` (jedna reguła w kodzie i w `Info.plist`). Szczegóły: ADR-0031.
+
 ## Opcje: zalety i wady
 ### A — zalety: jeden format dla funkcji wzoru · wady: konwersja na urządzeniu, Word niepewny.
 ### B — zalety: wierność źródła · wady: trzy widoki, znacznik i rysik tylko na części formatów.
