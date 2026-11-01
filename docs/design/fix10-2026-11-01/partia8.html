@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · partia 8 (2026-11-01)</title>
+<!-- Rola 04, partia 8 (P-326): luki 07-jakosc-001, 002, 003, 007, 011, 012, 014 S5, 021, 025, 027, 031. CSS bazowy: fix8-2026-10-27/fix8.html. Dane: [PRZYKŁAD]. -->
+<!-- Rola 04, fix-8: kosz wzoru (P-243 S2a), przycisk niszczący i licznik przy AX5 (P-268), arkusz przy klawiaturze (P-271 (2)). CSS bazowy: fix5-2026-10-26/projekt-kosz.html (+ .przel z fix-7). Dane: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --papier: #FCFCFA; --grupa: #F2F3F0; --grafit: #26282C; --olowek: #5E626A; --linia: #D9DBDF;
+  --zakreslacz: #F6E04A; --na-zakreslaczu: #1B1C1F; --zakr-krawedz: #8C7A00;
+  --p-tlo: #26282C; --p-tekst: #FCFCFA; --p-obrys: #26282C; --m-obrys: #26282C; --blad: #B3261E; --kreska: #26282C;
+  --wloczka: #4F6F94; --arkusz: #FCFCFA;
+  --dt-tytul: 1; --dt-tresc: 1;
+  --tytul: "Libre Franklin"; --tresc: "Source Sans 3";
+}
+[data-theme="dark"] {
+  --papier: #1B1C1F; --grupa: #24262A; --grafit: #ECECE8; --olowek: #A9ACB2; --linia: #34363B;
+  --zakreslacz: #38351F; --na-zakreslaczu: #F4ECB4; --zakr-krawedz: #E2CB3A;
+  --p-tlo: #2E3136; --p-tekst: #ECECE8; --p-obrys: #8C9098; --m-obrys: #8C9098; --blad: #F2B8B5; --kreska: #ECECE8;
+  --wloczka: #7D9DC2; --arkusz: #2A2C31;
+}
+* { box-sizing: border-box; }
+main *, .uwagi * { font-feature-settings: "tnum" 1; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: var(--tresc), sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+main[data-ekran] { width: var(--w, 390px); min-height: 844px; background: var(--papier); color: var(--grafit); display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+.status { height: 48px; display: flex; justify-content: space-between; align-items: center; padding: 0 28px; font: 600 calc(15px * var(--dt-tresc)) var(--tresc); }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px 0; min-height: 44px; gap: 8px; }
+.nav a { color: var(--grafit); text-decoration: none; font-size: calc(17px * var(--dt-tresc)); min-height: 44px; display: flex; align-items: center; }
+.nav .ikony { display: flex; gap: 4px; flex-shrink: 0; } .nav .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.nav svg { width: calc(24px * min(var(--dt-tresc), 1.8)); height: auto; }
+.tytul { padding: 4px 20px 0; }
+h1 { font: 700 calc(30px * var(--dt-tytul)) / 1.15 var(--tytul); margin: 0; }
+.pod { margin: 4px 0 0; align-items: baseline; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kropka { width: 12px; height: 12px; align-self: center; border-radius: 50%; background: var(--wloczka); box-shadow: 0 0 0 1.5px var(--papier), 0 0 0 2.5px var(--linia); flex-shrink: 0; }
+.teraz { margin: 4px 0 0; font: 600 calc(20px * var(--dt-tresc)) / 1.2 var(--tresc); }
+.kartka { margin: 16px 20px 0; border-top: 1px solid var(--linia); padding-top: 12px; }
+.liczba { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.liczba .n { font: 700 calc(96px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); letter-spacing: -0.02em; }
+.liczba .z { font-size: calc(20px * var(--dt-tresc)); color: var(--olowek); }
+.cel { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin-top: 4px; }
+.podpis { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin: 12px 0 0; }
+.kreski svg { display: block; width: 100%; height: auto; margin-top: 4px; }
+.instr { margin-top: 16px; position: relative; padding: 12px 16px 12px 20px; }
+.instr::before { content: ""; position: absolute; inset: 0; background: var(--zakreslacz); transform: skewX(-4deg); border-radius: 2px; border-left: 4px solid var(--zakr-krawedz); }
+.instr > * { position: relative; color: var(--na-zakreslaczu); }
+.instr b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); display: block; }
+.instr span { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.wiersz { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--linia); padding: 8px 0; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; flex-wrap: wrap; }
+.wiersz .w { color: var(--olowek); }
+.spacer { flex: 1; min-height: 16px; }
+.dol { padding: 12px 16px 32px; display: flex; gap: 28px; align-items: flex-end; }
+.minus { width: 72px; height: 72px; flex-shrink: 0; border: 2px solid var(--m-obrys); background: transparent; color: var(--grafit); font: 700 calc(28px * min(var(--dt-tytul), 1.4)) var(--tytul); border-radius: 14px; }
+.plus { flex: 1; min-height: 168px; background: var(--p-tlo); color: var(--p-tekst); border: 2px solid var(--p-obrys); border-radius: 20px; font: 700 calc(28px * var(--dt-tytul)) / 1.2 var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; }
+.plus small { font: 400 calc(15px * var(--dt-tresc)) / 1.3 var(--tresc); opacity: .85; }
+.pusto { margin: 16px 0 0; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu { margin: 0 16px 32px; padding: 16px; border-radius: 20px; border: 2px solid var(--p-obrys); display: flex; flex-direction: column; gap: 6px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+/* arkusze i listy (komponenty systemowe iOS) */
+.przyciemnienie { position: absolute; inset: 0; background: rgba(0,0,0,.32); }
+/* Arkusz: przy dużym tekście sięga najwyżej pod pasek stanu, treść się przewija, przyciski zostają na dole. */
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 56px); display: flex; flex-direction: column; background: var(--arkusz); border-radius: 12px 12px 0 0; padding: 8px 20px 32px; box-shadow: 0 -1px 0 var(--linia); }
+.uchwyt { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); margin: 0 auto 12px; }
+.arkusz .tresc-arkusza { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
+.arkusz .przyciski { flex-shrink: 0; padding-top: 4px; }
+.arkusz h2 { font: 700 calc(24px * var(--dt-tytul)) / 1.2 var(--tytul); margin: 4px 0 8px; }
+.arkusz p { font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; margin: 0 0 12px; }
+.przycisk-pelny { width: 100%; min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); margin-top: 8px; padding: 12px; }
+.przycisk-tekst { width: 100%; min-height: 44px; border: 0; background: transparent; color: var(--grafit); font: 600 calc(17px * var(--dt-tresc)) var(--tresc); margin-top: 4px; }
+.grupa { background: var(--grupa); border-radius: 12px; margin: 12px 16px 0; }
+.grupa .el { display: flex; gap: 12px; align-items: center; padding: 12px 16px; min-height: 44px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.grupa .el + .el { border-top: 1px solid var(--linia); }
+.grupa .el .tx { flex: 1; min-width: 0; } .grupa .el .tx small { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.naglowek-grupy { margin: 20px 32px 0; color: var(--olowek); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.szukaj { margin: 12px 16px 0; background: var(--grupa); border-radius: 10px; min-height: 40px; display: flex; align-items: center; padding: 0 12px; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); }
+.pasek-narzedzi { display: flex; justify-content: space-around; border-top: 1px solid var(--linia); padding: 8px 0 28px; margin-top: 16px; }
+.pasek-narzedzi span { min-width: 64px; min-height: 44px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: calc(11px * min(var(--dt-tresc), 1.6)); color: var(--olowek); }
+.oferta { border: 2px solid var(--linia); border-radius: 14px; padding: 14px 16px; margin-top: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.oferta.wybrana { border-color: var(--grafit); }
+.oferta .nazwa { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .cena { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .op { width: 100%; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.linki { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 12px; font-size: calc(13px * var(--dt-tresc)); color: var(--olowek); }
+.linki span { min-height: 44px; display: flex; align-items: center; text-decoration: underline; }
+.uwagi { width: 390px; background: #fff; color: #222; padding: 20px; font: 15px/1.4 "Source Sans 3"; }
+.uwagi h2 { font: 700 20px "Libre Franklin"; margin: 0 0 8px; }
+/* fix NZ-08-P2-04 (P-126): linia informacji, krokowiec, znacznik wzoru, przełącznik, nagłówek arkusza z Zamknij */
+.uwaga { margin: 8px 32px 0; display: flex; gap: 8px; align-items: flex-start; color: var(--grafit); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; }
+.uwaga a { color: var(--grafit); }
+.uwaga .znak { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font: 700 12px var(--tytul); margin-top: 1px; }
+.pole { min-width: 56px; min-height: 44px; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 calc(20px * var(--dt-tytul)) var(--tytul); }
+.krok { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 20px var(--tytul); }
+.wzor-strona { margin: 8px 16px 0; height: 470px; background: #FFFFFF; border: 1px solid var(--linia); position: relative; overflow: hidden; }
+.tekst-wzoru { position: absolute; inset: 16px; background: repeating-linear-gradient(to bottom, #C9CBD0 0 3px, transparent 3px 22px); }
+.znacznik { position: absolute; left: 0; right: 0; height: 22px; border-top: 2.5px solid #26282C; border-bottom: 2.5px solid #26282C; background: #26282C14; }
+.znacznik.krawedz { border-top-style: dashed; }
+.znacznik .tab { position: absolute; right: 8px; top: -2px; transform: translateY(-100%); background: #26282C; color: #FCFCFA; font: 700 13px/1 var(--tytul); padding: 5px 8px; border-radius: 6px 6px 0 0; }
+.znacznik.krawedz .tab { transform: none; top: 22px; border-radius: 0 0 6px 6px; }
+.znacznik .uchwyt-dol { position: absolute; left: 50%; bottom: -9px; width: 36px; height: 14px; margin-left: -18px; border-radius: 7px; background: #26282C; }
+.pasek-znacznika { margin-top: auto; background: var(--arkusz); border-top: 1px solid var(--linia); padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 8px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.pasek-znacznika b { font: 700 calc(17px * var(--dt-tytul)) / 1.25 var(--tytul); }
+.wybor { display: flex; gap: 12px; flex-wrap: wrap; }
+.wybor button { flex: 1 1 140px; min-height: 64px; border: 2px solid var(--p-obrys); border-radius: 14px; background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tytul)) var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; }
+.wybor small { font: 400 calc(13px * var(--dt-tresc)) var(--tresc); color: var(--olowek); }
+.rzad { display: flex; align-items: center; gap: 12px; min-height: 44px; flex-wrap: wrap; }
+.rzad > span:first-child { flex: 1; color: var(--olowek); }
+.rzad a { color: var(--grafit); min-height: 44px; display: flex; align-items: center; }
+.naglowek-arkusza { display: flex; justify-content: space-between; align-items: center; min-height: 44px; }
+.naglowek-arkusza .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.grupa .el .wybrany { font-weight: 700; }
+.krokowiec { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+/* fix NZ-08-P3-04: systemowy wybór daty (atrapa UIDatePicker w stylu kalendarza) */
+.kalendarz { flex-direction: column; align-items: stretch !important; }
+.kalendarz .mies { display: flex; justify-content: space-between; font-size: calc(17px * var(--dt-tresc)); }
+.kalendarz .siatka { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: calc(17px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka i { font-style: normal; color: var(--olowek); font-size: calc(13px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka span { min-height: 40px; display: grid; place-items: center; border-radius: 50%; }
+.kalendarz .wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; box-shadow: inset 0 0 0 2px var(--p-obrys); }
+.daty .el { flex-wrap: wrap; } .daty .el .tx { flex: 1 0 auto; }
+.kalendarz .dzis { font-weight: 700; text-decoration: underline; }
+.kalendarz .poza { color: var(--olowek); opacity: .45; }
+/* fix NZ-08-P5-Q1: druga linia wiersza, przycisk tekstowy w wierszu, menu systemowe, alert, przełącznik segmentowy, pole tekstowe, wcięcie sekcji */
+.grupa .el .tx small + small { margin-top: 2px; }
+.akcja { color: var(--grafit); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; font-size: calc(17px * var(--dt-tresc)); }
+.wartosc { color: var(--olowek); text-align: right; }
+/* duży tekst: wiersz przechodzi w stos (etykieta, potem wartość albo przycisk), nagłówek arkusza łamie tytuł do osobnego wiersza */
+.grupa .el { flex-wrap: wrap; }
+.grupa .el .tx { flex: 1 1 140px; overflow-wrap: anywhere; }
+.naglowek-arkusza { flex-wrap: wrap; gap: 0 8px; flex-shrink: 0; }
+.naglowek-arkusza b { flex: 1 1 auto; text-align: center; min-width: 0; overflow-wrap: anywhere; }
+.sekcja { padding-left: 32px !important; }
+.menu-ios { position: absolute; right: 12px; top: 96px; width: min(280px, calc(100% - 24px)); background: var(--arkusz); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,.28); overflow: hidden; }
+.menu-ios div { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; border-top: 1px solid var(--linia); }
+.menu-ios div:first-child { border-top: 0; }
+.menu-ios .usun, .usun-tekst { color: var(--blad); }
+.alert { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(300px, calc(100% - 32px)); max-height: calc(100% - 112px); overflow-y: auto; background: var(--arkusz); border-radius: 14px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.28); }
+.alert .tresc-alertu { padding: 20px 16px 16px; }
+.alert h2 { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); margin: 0 0 4px; }
+.alert p { font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; margin: 0; }
+.alert button { display: block; width: 100%; min-height: 44px; border: 0; border-top: 1px solid var(--linia); background: transparent; color: var(--grafit); font: 400 calc(17px * var(--dt-tresc)) var(--tresc); padding: 10px 16px; }
+.alert button.usun-tekst { font-weight: 600; color: var(--blad); }
+.segment { display: flex; background: var(--grupa); border-radius: 10px; padding: 2px; gap: 2px; }
+.segment span { flex: 1; min-height: 40px; display: grid; place-items: center; border-radius: 8px; font-size: calc(15px * var(--dt-tresc)); }
+.segment .wyb { background: var(--arkusz); font-weight: 700; box-shadow: 0 0 0 1.5px var(--m-obrys); }
+.pole-tekst { min-height: 44px; border: 1.5px solid var(--m-obrys); border-radius: 10px; padding: 10px 12px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; background: var(--papier); }
+.pole-tekst.duze { min-height: 220px; }
+.etyk { display: block; margin: 16px 0 4px; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.radio { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--linia); }
+.radio .kolo { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--m-obrys); margin-top: 2px; display: grid; place-items: center; }
+.radio .kolo.wyb::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--grafit); }
+.radio b { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); display: block; }
+.radio small { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; display: block; }
+.usun-kolo { flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; color: var(--blad); font: 700 22px var(--tytul); }
+.stan-celu { margin: 8px 0 0; font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.przycisk-obrys { min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); padding: 12px 16px; margin-top: 12px; width: 100%; }
+.przel { width: 51px; height: 31px; border-radius: 16px; background: var(--linia); position: relative; flex-shrink: 0; }
+.przel::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.przel.wl { background: var(--grafit); } .przel.wl::after { left: 22px; }
+
+/* pasek stanu jest systemowy: nie rośnie z tekstem */
+.tel > * { flex-shrink: 0; }
+.tel .status { height: 48px; font: 600 15px var(--tresc); }
+/* opcja d = c + przy dużym tekście podpis +1 („tap when row n is done”) tylko w etykiecie VoiceOver; strefa +1 wraca do 168 pt */
+:root[data-duzy] .licznik[data-opcja="d"] .blok-liczby { order: -1; border-top: 0; margin-top: 4px; padding-top: 4px; }
+:root[data-duzy] .licznik[data-opcja="d"] .nazwy { border-top: 1px solid var(--linia); margin: 8px 20px 0; padding: 8px 0 0; }
+:root[data-duzy] .licznik[data-opcja="d"] .plus small { display: none; }
+
+/* opcja b: przy dużym tekście nazwa projektu i części w jednym wierszu z wielokropkiem (pełne w VoiceOver i na ekranie projektu) */
+:root[data-duzy] .licznik[data-opcja="b"] .obetnij { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+/* opcja c: przy dużym tekście liczba nad nazwami (kolejność VoiceOver idzie za wyglądem) */
+:root[data-duzy] .licznik[data-opcja="c"] .blok-liczby { order: -1; border-top: 0; margin-top: 4px; padding-top: 4px; }
+:root[data-duzy] .licznik[data-opcja="c"] .nazwy { border-top: 1px solid var(--linia); margin: 8px 20px 0; padding: 8px 0 0; }
+
+/* ===== fix-8 (2026-10-27): ekran o wysokości urządzenia, przycisk niszczący, klawiatura ===== */
+:root { --p-nisz-tlo: #B3261E; --p-nisz-tekst: #FCFCFA; }
+[data-theme="dark"] { --p-nisz-tlo: #F2B8B5; --p-nisz-tekst: #1B1C1F; }
+main[data-ekran].tel { height: var(--h, 844px); min-height: 0; overflow: hidden; }
+.tel > .srodek { flex: 1 1 auto; } .tel .srodek { flex: 1 1 auto; min-height: 0; overflow: hidden; position: relative; }
+.tel .przewijane { display: flex; flex-direction: column; padding-bottom: 16px; }
+.tel .dol { flex-shrink: 0; padding-bottom: 28px; }
+.tel .wskaznik { position: absolute; right: 3px; width: 3px; border-radius: 2px; background: var(--olowek); opacity: .6; }
+.jedna-linia { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.tel .pod.jedna-linia { display: block; }
+.kreski-st svg { display: block; width: 100%; max-width: 360px; height: auto; margin-top: 4px; }
+.przycisk-niszczacy { width: 100%; min-height: 52px; border-radius: 14px; border: 2px solid var(--p-nisz-tlo); background: var(--p-nisz-tlo); color: var(--p-nisz-tekst); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); margin-top: 8px; padding: 12px; }
+.klawiatura { flex-shrink: 0; height: var(--kl, 291px); background: #D1D3D9; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 6px 40px; }
+[data-theme="dark"] .klawiatura { background: #2B2B2F; }
+.klawiatura span { background: #FFFFFF; border-radius: 6px; display: grid; place-items: center; font: 400 24px var(--tresc); color: #000; box-shadow: 0 1px 0 rgba(0,0,0,.3); }
+[data-theme="dark"] .klawiatura span { background: #6B6B70; color: #FFF; }
+.akcesorium { flex-shrink: 0; min-height: 44px; display: flex; justify-content: flex-end; align-items: center; padding: 0 16px; background: #F0F1F3; border-top: 1px solid #C4C6CC; font: 600 calc(17px * var(--dt-tresc)) var(--tresc); color: #1F5FBF; }
+[data-theme="dark"] .akcesorium { background: #2B2B2F; border-color: #3A3A3F; color: #6FA8FF; }
+.arkusz-pelny { position: absolute; left: 0; right: 0; top: 56px; bottom: 0; display: flex; flex-direction: column; background: var(--arkusz); border-radius: 12px 12px 0 0; }
+.arkusz-pelny .wnetrze { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: 8px 20px 0; position: relative; }
+.arkusz-pelny .pasek-dolny { flex-shrink: 0; padding: 8px 20px 12px; border-top: 1px solid var(--linia); display: flex; gap: 12px; }
+.arkusz-pelny .pasek-dolny button { flex: 1; }
+.oznaczenie { position: absolute; left: 8px; top: 8px; z-index: 5; background: #26282C; color: #FCFCFA; font: 700 13px/1 "Libre Franklin"; padding: 4px 6px; border-radius: 4px; }
+/* ===== partia 8 (2026-11-01): bez nowych tokenów; nowe tylko układy z istniejących ===== */
+:root { --nieakt-tlo: #D9DBDF; --nieakt-tekst: #5E626A; }
+[data-theme="dark"] { --nieakt-tlo: #34363B; --nieakt-tekst: #A9ACB2; }
+.uwaga.blad .znak { color: var(--blad); }
+.przycisk-pelny.nieakt { background: var(--nieakt-tlo); color: var(--nieakt-tekst); border-color: var(--nieakt-tlo); }
+.akcja.nieakt { color: var(--olowek); font-weight: 400; }
+.lista-wyboru .wybor-wiersz { display: flex; gap: 12px; align-items: center; min-height: 56px; border-bottom: 1px solid var(--linia); padding: 8px 0; }
+.lista-wyboru .tx { flex: 1; min-width: 0; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.lista-wyboru .tx small { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.pole-wyboru { flex-shrink: 0; width: 28px; height: 28px; border: 2px solid var(--m-obrys); border-radius: 8px; display: grid; place-items: center; font: 700 18px var(--tytul); }
+.pole-wyboru.wyb { background: var(--p-tlo); color: var(--p-tekst); }
+.chip-notatki { position: absolute; left: 6px; z-index: 3; max-width: 78%; height: 28px; display: flex; align-items: center; gap: 6px; padding: 0 10px; background: #FFFFFF; color: #26282C; border: 2px solid #26282C; border-radius: 14px; font: 600 calc(13px * min(var(--dt-tresc), 1.6)) var(--tresc); white-space: nowrap; }
+.chip-notatki .ct { overflow: hidden; text-overflow: ellipsis; }
+.baner { margin: 12px 20px 0; padding: 12px 16px; border: 2px solid var(--p-obrys); border-radius: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.baner span { flex: 1 1 180px; }
+.baner button { min-height: 44px; padding: 0 14px; border: 2px solid var(--p-obrys); border-radius: 10px; background: transparent; color: var(--grafit); font: 700 calc(15px * var(--dt-tresc)) var(--tytul); }
+.historia-lista .hw { display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 56px; border-bottom: 1px solid var(--linia); padding: 8px 0; flex-wrap: wrap; }
+.hw .hl { display: flex; flex-direction: column; gap: 2px; flex: 1 1 140px; }
+.hczas { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); } .hopis { font-size: calc(17px * var(--dt-tresc)); }
+.hw.cofniete .hopis { text-decoration: line-through; }
+.znak-c { font: 700 calc(13px * var(--dt-tresc)) var(--tytul); border: 1.5px solid var(--olowek); border-radius: 6px; padding: 1px 6px; align-self: flex-start; color: var(--olowek); }
+.hw .przycisk-obrys.maly, .baner button { white-space: normal; min-width: 0; max-width: 100%; text-align: center; }
+.przycisk-obrys.maly { width: auto; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px; font-size: calc(15px * var(--dt-tresc)); }
+</style>
+</head>
+<body>
+
+<!-- projekt-wloczka -->
+<main data-ekran="projekt-wloczka">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona" role="button" aria-label="Add part or counter">＋</span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><h1>Harbor Sweater</h1></div><div class="naglowek-grupy">Parts</div><div class="grupa"><div class="el"><div class="tx">Left sleeve<small>47 of 96 rows</small></div><span aria-hidden="true">›</span></div></div><div class="naglowek-grupy">Details</div><div class="grupa"><div class="el"><div class="tx">Needles</div><span class="wartosc">4 mm (US 6)</span><span aria-hidden="true">›</span></div><div class="el" style="outline:2px dashed var(--olowek);outline-offset:-3px"><div class="tx">Yarn</div><span class="wartosc">2 yarns</span><span aria-hidden="true">›</span></div><div class="el"><div class="tx">Done by</div><span class="wartosc">None</span><span aria-hidden="true">›</span></div></div><p class="podpis" style="margin:8px 32px 0">Last change today, 19:02</p><span class="oznaczenie">nowy wiersz „Yarn”</span>
+</main>
+
+<!-- wloczka-wybor -->
+<main data-ekran="wloczka-wybor">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona" role="button" aria-label="Add part or counter">＋</span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><h1>Harbor Sweater</h1></div><div class="naglowek-grupy">Parts</div><div class="grupa"><div class="el"><div class="tx">Left sleeve<small>47 of 96 rows</small></div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Cancel</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Yarn for this project</b><a href="#" class="akcja" style="text-decoration:none">Save</a></div><div class="tresc-arkusza"><p>Choose what you’re using. When you finish, Oczko asks how many skeins you used and takes them from your stash.</p><div role="group" aria-label="Yarn" class="lista-wyboru"><div class="wybor-wiersz" role="checkbox" aria-checked="true"><span class="pole-wyboru wyb" aria-hidden="true">✓</span><div class="tx">Merino DK, dusty blue<small>4 skeins in your stash</small></div></div><div class="wybor-wiersz" role="checkbox" aria-checked="true"><span class="pole-wyboru wyb" aria-hidden="true">✓</span><div class="tx">Sock 4-ply, natural<small>2 skeins in your stash</small></div></div><div class="wybor-wiersz" role="checkbox" aria-checked="false"><span class="pole-wyboru" aria-hidden="true"></span><div class="tx">Alpaca lace, grey<small>0 skeins in your stash</small></div></div></div><div class="rzad"><a href="#" class="akcja">Add yarn</a></div></div></div>
+</main>
+
+<!-- wloczka-pusto -->
+<main data-ekran="wloczka-pusto">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona" role="button" aria-label="Add part or counter">＋</span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><h1>Harbor Sweater</h1></div><div class="naglowek-grupy">Parts</div><div class="grupa"><div class="el"><div class="tx">Left sleeve<small>47 of 96 rows</small></div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Cancel</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Yarn for this project</b><a href="#" class="akcja nieakt" style="text-decoration:none">Save</a></div><div class="tresc-arkusza"><p>Choose what you’re using. When you finish, Oczko asks how many skeins you used and takes them from your stash.</p><p class="pusto">No yarn in your stash yet. Add the yarn you’re using first, then choose it here.</p><button class="przycisk-obrys" style="width:100%">Add yarn</button></div></div>
+</main>
+
+<!-- ukonczenie-bez-wloczki -->
+<main data-ekran="ukonczenie-bez-wloczki">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona" role="button" aria-label="Share">⇪</span></div></div><div class="tytul"><h1>Harbor Sweater</h1><p class="pod"><span class="kropka"></span>Finished · Oct 1 – Nov 21</p></div><div class="kartka"><div class="liczba"><span class="n">640</span><span class="z">rows</span></div><p class="podpis">18 h 10 min · 4 parts · 23 crafting days</p></div><div class="uwaga" role="status" style="margin-top:16px"><span class="znak" aria-hidden="true">i</span><span>No yarn is chosen for this project, so your stash stays as it is. <a href="#" class="akcja" style="display:inline;min-height:0">Choose yarn</a></span></div><div class="spacer"></div><div style="padding: 0 16px 32px"><button class="przycisk-pelny">Done</button></div>
+</main>
+
+<!-- ukonczenie-edytuj-zapas -->
+<main data-ekran="ukonczenie-edytuj-zapas">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona" role="button" aria-label="Share">⇪</span></div></div><div class="tytul"><h1>Harbor Sweater</h1><p class="pod"><span class="kropka"></span>Finished · Oct 1 – Nov 21</p></div><div class="kartka"><div class="liczba"><span class="n">640</span><span class="z">rows</span></div><p class="podpis">18 h 10 min · 4 parts · 23 crafting days</p></div><div class="naglowek-grupy">Yarn used</div><div class="grupa"><div class="el"><div class="tx">Grey wool<small>2 skeins in your stash</small></div><span class="krok" role="button" aria-label="One skein less">−</span><span class="pole" role="spinbutton" aria-label="Skeins of Grey wool used" aria-valuenow="3">3</span><span class="krok" role="button" aria-label="One skein more">+</span></div></div><div class="uwaga" role="status"><span class="znak" aria-hidden="true">i</span><span>That’s more than the 2 skeins in your stash. Your stash will show 0. <a href="#" class="akcja" style="display:inline;min-height:0">Edit stash</a></span></div><div class="spacer"></div><div style="padding: 0 16px 32px"><button class="przycisk-pelny">Done</button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Cancel</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Edit yarn</b><a href="#" class="akcja" style="text-decoration:none">Save</a></div><div class="tresc-arkusza"><label class="etyk">Name</label><div class="pole-tekst">Grey wool</div><label class="etyk">Skeins in your stash</label><div class="krokowiec"><span class="krok">−</span><span class="pole">4</span><span class="krok">+</span></div><p class="podpis">After you save, you come back to this card with the new number.</p></div></div>
+</main>
+
+<!-- oferty-czeka -->
+<main data-ekran="oferty-czeka">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><span></span><div class="ikony"><span class="ikona" role="button" aria-label="Close">✕</span></div></div><div class="tytul"><h1>Oczko Pro</h1><p class="pod">Count rows on as many days as you like. Everything else stays the same.</p></div><div style="padding: 0 20px"><div role="radiogroup" aria-label="Plans"><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Monthly</span><span class="cena">$0.99 / month</span><span class="op">Renews every month until you cancel in your Apple ID settings.</span></div><div class="oferta wybrana" role="radio" aria-checked="true"><span class="nazwa">Yearly</span><span class="cena">$6.99 / year</span><span class="op">Renews every year until you cancel in your Apple ID settings.</span></div><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Lifetime</span><span class="cena">$14.99 once</span><span class="op">Pay once. Nothing renews.</span></div></div><p class="podpis">Without Pro: 5 crafting days every month, and all your projects and data, always. Shared with your family through Family Sharing.</p><div class="uwaga" role="status"><span class="znak" aria-hidden="true">i</span><span>Waiting for approval. Oczko Pro turns on as soon as it’s approved.</span></div><button class="przycisk-pelny nieakt" aria-disabled=true>Waiting for approval</button><button class="przycisk-tekst">Restore purchases</button><div class="linki"><span role="link">Privacy Policy</span><span role="link">Terms of Use</span></div></div>
+</main>
+
+<!-- oferty-blad -->
+<main data-ekran="oferty-blad">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><span></span><div class="ikony"><span class="ikona" role="button" aria-label="Close">✕</span></div></div><div class="tytul"><h1>Oczko Pro</h1><p class="pod">Count rows on as many days as you like. Everything else stays the same.</p></div><div style="padding: 0 20px"><div role="radiogroup" aria-label="Plans"><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Monthly</span><span class="cena">$0.99 / month</span><span class="op">Renews every month until you cancel in your Apple ID settings.</span></div><div class="oferta wybrana" role="radio" aria-checked="true"><span class="nazwa">Yearly</span><span class="cena">$6.99 / year</span><span class="op">Renews every year until you cancel in your Apple ID settings.</span></div><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Lifetime</span><span class="cena">$14.99 once</span><span class="op">Pay once. Nothing renews.</span></div></div><p class="podpis">Without Pro: 5 crafting days every month, and all your projects and data, always. Shared with your family through Family Sharing.</p><div class="uwaga blad" role="alert"><span class="znak" aria-hidden="true">!</span><span>The purchase didn’t go through. Check your connection and try again.</span></div><button class="przycisk-pelny">Continue with Yearly</button><button class="przycisk-tekst">Restore purchases</button><div class="linki"><span role="link">Privacy Policy</span><span role="link">Terms of Use</span></div></div>
+</main>
+
+<!-- oferty-przywroc-nic -->
+<main data-ekran="oferty-przywroc-nic">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><span></span><div class="ikony"><span class="ikona" role="button" aria-label="Close">✕</span></div></div><div class="tytul"><h1>Oczko Pro</h1><p class="pod">Count rows on as many days as you like. Everything else stays the same.</p></div><div style="padding: 0 20px"><div role="radiogroup" aria-label="Plans"><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Monthly</span><span class="cena">$0.99 / month</span><span class="op">Renews every month until you cancel in your Apple ID settings.</span></div><div class="oferta wybrana" role="radio" aria-checked="true"><span class="nazwa">Yearly</span><span class="cena">$6.99 / year</span><span class="op">Renews every year until you cancel in your Apple ID settings.</span></div><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Lifetime</span><span class="cena">$14.99 once</span><span class="op">Pay once. Nothing renews.</span></div></div><p class="podpis">Without Pro: 5 crafting days every month, and all your projects and data, always. Shared with your family through Family Sharing.</p><div class="uwaga" role="status"><span class="znak" aria-hidden="true">i</span><span>No Oczko Pro purchase found for this Apple ID. If you bought it with another Apple ID, sign in with that one in Settings and try again.</span></div><button class="przycisk-pelny">Continue with Yearly</button><button class="przycisk-tekst">Restore purchases</button><div class="linki"><span role="link">Privacy Policy</span><span role="link">Terms of Use</span></div></div>
+</main>
+
+<!-- oferty-przywroc-blad -->
+<main data-ekran="oferty-przywroc-blad">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><span></span><div class="ikony"><span class="ikona" role="button" aria-label="Close">✕</span></div></div><div class="tytul"><h1>Oczko Pro</h1><p class="pod">Count rows on as many days as you like. Everything else stays the same.</p></div><div style="padding: 0 20px"><div role="radiogroup" aria-label="Plans"><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Monthly</span><span class="cena">$0.99 / month</span><span class="op">Renews every month until you cancel in your Apple ID settings.</span></div><div class="oferta wybrana" role="radio" aria-checked="true"><span class="nazwa">Yearly</span><span class="cena">$6.99 / year</span><span class="op">Renews every year until you cancel in your Apple ID settings.</span></div><div class="oferta" role="radio" aria-checked="false"><span class="nazwa">Lifetime</span><span class="cena">$14.99 once</span><span class="op">Pay once. Nothing renews.</span></div></div><p class="podpis">Without Pro: 5 crafting days every month, and all your projects and data, always. Shared with your family through Family Sharing.</p><div class="uwaga blad" role="alert"><span class="znak" aria-hidden="true">!</span><span>Couldn’t restore purchases. Check your connection and try again.</span></div><button class="przycisk-pelny">Continue with Yearly</button><button class="przycisk-tekst">Restore purchases</button><div class="linki"><span role="link">Privacy Policy</span><span role="link">Terms of Use</span></div></div>
+</main>
+
+<!-- import-zastapiono -->
+<main data-ekran="import-zastapiono">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Settings</a><div class="ikony"></div></div><div class="tytul"><h1>Export and import</h1></div><div class="naglowek-grupy">Import</div><div class="grupa"><div class="el"><div class="tx">Import from a file</div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="tresc-arkusza"><h2>Data replaced</h2><p>Oczko saved your previous data first as “oczko-przed-importem-2026-11-01.oczko”. Find it in the Files app, in Oczko › Backup.</p><p>To go back, open that file in Oczko and choose Replace.</p></div><div class="przyciski"><button class="przycisk-pelny">Done</button></div></div>
+</main>
+
+<!-- import-nie-rozpoznano -->
+<main data-ekran="import-nie-rozpoznano">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Settings</a><div class="ikony"></div></div><div class="tytul"><h1>Export and import</h1></div><div class="naglowek-grupy">Import</div><div class="grupa"><div class="el"><div class="tx">Import from a file</div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="alert" role="alertdialog"><div class="tresc-alertu"><h2>Oczko doesn’t recognize this file</h2><p>Choose a file exported from Oczko. Nothing was changed.</p></div><button>OK</button></div>
+</main>
+
+<!-- wzor-notatka-widoczna -->
+<main data-ekran="wzor-notatka-widoczna">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="Add note">✎</span><span class="ikona" role="button" aria-label="Pattern options">•••</span></div></div><div class="tytul"><h1 style="font-size:calc(24px * var(--dt-tytul))">Sleeve pattern</h1></div><div class="wzor-strona" style="height:420px"><div class="tekst-wzoru"></div><div class="znacznik" style="top:150px"><span class="tab">Row 48 ↑</span><span class="uchwyt-dol"></span></div><div class="chip-notatki" role="button" style="top:268px" aria-label="Row 30: decrease every 4 rows"><span aria-hidden="true">✎</span><span class="ct">Row 30: decrease every 4 rows</span></div><div class="chip-notatki" role="button" style="top:330px" aria-label="2 notes"><span aria-hidden="true">✎</span><span class="ct">2 notes</span></div></div><p class="podpis" style="margin:8px 20px 0">Page 2 of 5 · counter row 47</p><span class="oznaczenie">chip przy rzędzie notatki</span>
+</main>
+
+<!-- wzor-notatka-arkusz -->
+<main data-ekran="wzor-notatka-arkusz">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="Add note">✎</span><span class="ikona" role="button" aria-label="Pattern options">•••</span></div></div><div class="tytul"><h1 style="font-size:calc(24px * var(--dt-tytul))">Sleeve pattern</h1></div><div class="wzor-strona" style="height:420px"><div class="tekst-wzoru"></div><div class="znacznik" style="top:150px"><span class="tab">Row 48 ↑</span><span class="uchwyt-dol"></span></div><div class="chip-notatki" role="button" style="top:268px" aria-label="Row 30: decrease every 4 rows"><span aria-hidden="true">✎</span><span class="ct">Row 30: decrease every 4 rows</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Close</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Note for row 30</b><a href="#" class="akcja" style="text-decoration:none">Edit</a></div><div class="tresc-arkusza"><div class="pole-tekst" style="min-height:96px">Decrease every 4 rows, 8 times. Check the sleeve length at row 60.</div><div class="grupa" style="margin:16px 0 0"><div class="el"><div class="tx usun-tekst" style="font-weight:600">Delete note</div></div></div></div></div>
+</main>
+
+<!-- przyp-menu -->
+<main data-ekran="przyp-menu">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="status"><b>Row 18: decrease at both ends</b><span>Decrease 3 of 8 · next on row 24</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="menu-ios"><div>Name project and part</div><div>Set a goal for this part</div><div style="outline:2px dashed var(--olowek);outline-offset:-3px"><span>Reminders</span><span class="wartosc">1</span></div><div>Enter the row number</div><div>Lock counter (ignore taps)</div><div>Mark as finished</div></div><span class="oznaczenie">Reminders zamiast Add a reminder, gdy jest ≥ 1</span>
+</main>
+
+<!-- przyp-lista -->
+<main data-ekran="przyp-lista">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="status"><b>Row 18: decrease at both ends</b><span>Decrease 3 of 8 · next on row 24</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Close</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Reminders</b><a href="#" class="akcja" style="text-decoration:none">Add</a></div><div class="tresc-arkusza"><div class="grupa" style="margin:8px 0 0"><div class="el"><div class="tx">Decrease at both ends<small>From row 12, every 6 rows, 8×</small></div><span aria-hidden="true">›</span></div><div class="el"><div class="tx">Check the length<small>From row 40, every 20 rows, 3×</small></div><span aria-hidden="true">›</span></div></div><p class="podpis" style="margin:8px 0 0">Tap a reminder to change or delete it.</p></div></div>
+</main>
+
+<!-- przyp-edycja -->
+<main data-ekran="przyp-edycja">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="status"><b>Row 18: decrease at both ends</b><span>Decrease 3 of 8 · next on row 24</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400">Cancel</a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">Edit reminder</b><a href="#" class="akcja" style="text-decoration:none">Save</a></div><div class="tresc-arkusza"><div class="grupa" style="margin:8px 0 0"><div class="el"><div class="tx">What to do</div><span class="wartosc">decrease at both ends</span></div><div class="el"><div class="tx">Starting on row</div><span class="wartosc">12</span></div><div class="el"><div class="tx">Every … rows</div><span class="wartosc">6</span></div><div class="el"><div class="tx">How many times</div><span class="wartosc">8</span></div></div><p class="podpis" style="margin:8px 0 0">You’ll be reminded on rows: 12, 18, 24, 30, 36, 42, 48, 54</p><div class="grupa" style="margin:16px 0 0"><div class="el"><div class="tx usun-tekst" style="font-weight:600">Delete reminder</div></div></div></div></div>
+</main>
+
+<!-- przyp-usun -->
+<main data-ekran="przyp-usun">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="status"><b>Row 18: decrease at both ends</b><span>Decrease 3 of 8 · next on row 24</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="alert" role="alertdialog"><div class="tresc-alertu"><h2>Delete this reminder?</h2><p>Oczko stops reminding you about “decrease at both ends”. Your count and history stay as they are.</p></div><button class="usun-tekst">Delete reminder</button><button>Cancel</button></div>
+</main>
+
+<!-- licznik-po-wpisaniu -->
+<main data-ekran="licznik-po-wpisaniu">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="status"><b>Row 18: decrease at both ends</b><span>Decrease 2 of 8 · next on row 24</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><span class="oznaczenie">po wpisaniu 17: pasek + jedna wibracja + ogłoszenie</span>
+</main>
+
+<!-- usun-wszystko -->
+<main data-ekran="usun-wszystko">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Counter</a><div class="ikony"></div></div><div class="tytul"><h1>Settings</h1></div><div class="naglowek-grupy">Your data</div><div class="grupa"><div class="el"><div class="tx">Export and import</div><span aria-hidden="true">›</span></div><div class="el"><div class="tx usun-tekst">Delete all data</div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="tresc-arkusza"><h2>Delete all data?</h2><p>This removes all projects, counters, history, patterns and photos from this device. It can’t be undone.</p><p>Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.</p></div><div class="przyciski"><button class="przycisk-niszczacy">Delete all data</button><button class="przycisk-tekst">Cancel</button></div></div>
+</main>
+
+<!-- licznik-seria-blokada -->
+<main data-ekran="licznik-seria-blokada">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 53</p></div><div class="kartka"><div class="liczba"><span class="n">52</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>44 to go</span></div><p class="podpis">Marks this session: 22 rows since 19:52</p><div class="kreski" aria-hidden="true"><svg class="tally" data-n="22" viewBox="0 0 350 64"></svg></div></div><div class="baner" role="alert"><span>Added 5 rows from the lock screen at 21:14. Undo?</span><button aria-label="Undo 5 rows">Undo 5 rows</button></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div>
+</main>
+
+<!-- historia-seria -->
+<main data-ekran="historia-seria">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400"></a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">History</b><a href="#" class="akcja" style="text-decoration:none">Close</a></div><div class="tresc-arkusza"><div class="historia-lista"><div class="hw"><div class="hl"><span class="hczas">21:31</span><span class="hopis">30 → 130 · 100 rows in 4 s</span></div><button class="przycisk-obrys maly">Undo 100 rows</button></div><div class="hw"><div class="hl"><span class="hczas">20:31</span><span class="hopis">29 → 30</span></div></div><div class="hw"><div class="hl"><span class="hczas">20:14</span><span class="hopis">28 → 29</span></div></div></div></div></div>
+</main>
+
+<!-- historia-starszy -->
+<main data-ekran="historia-starszy">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400"></a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">History</b><a href="#" class="akcja" style="text-decoration:none">Close</a></div><div class="tresc-arkusza"><div class="historia-lista"><div class="hw"><div class="hl"><span class="hczas">21:02</span><span class="hopis">40 → 41</span></div><button class="przycisk-obrys maly">Undo</button></div><div class="hw"><div class="hl"><span class="hczas">20:14</span><span class="hopis">30 → 31</span></div></div><div class="uwaga" role="status"><span class="znak" aria-hidden="true">i</span><span>Only the latest change can be undone. To fix this one, enter the right number.</span></div><button class="przycisk-obrys maly" style="margin:8px 0 8px 32px">Enter the right number</button></div></div></div>
+</main>
+
+<!-- historia-po-cofnieciu -->
+<main data-ekran="historia-po-cofnieciu">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="naglowek-arkusza"><a href="#" class="akcja" style="text-decoration:none;font-weight:400"></a><b style="font: 700 calc(17px * var(--dt-tytul)) var(--tytul);text-align:center">History</b><a href="#" class="akcja" style="text-decoration:none">Close</a></div><div class="tresc-arkusza"><div class="historia-lista"><div class="hw cofniete"><div class="hl"><span class="hczas">21:31</span><span class="hopis">30 → 130 · 100 rows in 4 s</span><span class="znak-c">Undone</span></div></div><div class="hw"><div class="hl"><span class="hczas">20:31</span><span class="hopis">29 → 30</span></div><button class="przycisk-obrys maly">Undo</button></div><div class="hw"><div class="hl"><span class="hczas">20:14</span><span class="hopis">28 → 29</span></div></div></div></div></div>
+</main>
+
+<!-- licznik-oczka -->
+<main data-ekran="licznik-oczka">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Stitches in this row</h1></div><div class="kartka"><div class="liczba"><span class="n">23</span><span class="z">stitches</span></div><p class="podpis">Marks this session: 23 stitches since 19:52</p><div class="kreski" aria-hidden="true"><svg class="tally" data-n="23" viewBox="0 0 350 64"></svg></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 stitch">−1</button><button class="plus" aria-label="Add stitch">+1 stitch<small>tap for each stitch</small></button></div>
+</main>
+
+<!-- projekty-ukonczone -->
+<main data-ekran="projekty-ukonczone">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><span></span><div class="ikony"><span class="ikona" role="button" aria-label="New project">＋</span></div></div><div class="tytul"><h1>Projects</h1></div><div class="naglowek-grupy">In progress</div><div class="grupa"><div class="el"><span class="kropka" style="--wloczka:#4F6F94"></span><div class="tx">Harbor Sweater<small>Left sleeve · row 47 of 96</small><small>last worked today</small></div><span aria-hidden="true">›</span></div></div><div class="naglowek-grupy">Finished</div><div class="grupa"><div class="el"><span class="kropka" style="--wloczka:#8A7FA8"></span><div class="tx">Lavender hat<small>Finished Nov 21 · 4 h 20 min</small></div><span aria-hidden="true">›</span></div><div class="el"><span class="kropka" style="--wloczka:#4F6F94"></span><div class="tx">Grey socks<small>Finished Oct 3 · 52 min</small></div><span aria-hidden="true">›</span></div><div class="el"><span class="kropka" style="--wloczka:#A98B6B"></span><div class="tx">Baby blanket<small>Finished Mar 9, 2026</small></div><span aria-hidden="true">›</span></div></div>
+</main>
+
+<!-- licznik-w-trakcie -->
+<main data-ekran="licznik-w-trakcie">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1></div><div class="kartka"><div class="liczba"><span class="n">13</span><span class="z">current row</span></div><div class="cel"><span>Goal 96 rows</span><span>84 to go</span></div><p class="podpis">Marks this session: 12 rows since 19:52</p><div class="kreski" aria-hidden="true"><svg class="tally" data-n="12" viewBox="0 0 350 64"></svg></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 13 is done">+1 row<small>tap when row 13 is done</small></button></div><span class="oznaczenie">tryb „rząd w trakcie” (F-09)</span>
+</main>
+
+<!-- ustawienia-pro -->
+<main data-ekran="ustawienia-pro">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Counter</a><div class="ikony"></div></div><div class="tytul"><h1>Settings</h1></div><div class="naglowek-grupy">Oczko Pro</div><div class="grupa"><div class="el"><div class="tx">Oczko Pro</div><span class="wartosc">On</span><span aria-hidden="true">›</span></div><div class="el"><div class="tx">Manage subscription</div><span aria-hidden="true">›</span></div></div><div class="naglowek-grupy">Your data</div><div class="grupa"><div class="el"><div class="tx">Export and import</div><span aria-hidden="true">›</span></div><div class="el"><div class="tx">Recently deleted</div><span aria-hidden="true">›</span></div></div>
+</main>
+
+<!-- przyp-opcja-c -->
+<main data-ekran="przyp-opcja-c">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" role="button" aria-label="Project options">•••</span></div></div><div class="tytul"><p class="pod" style="margin:0"><span class="kropka" aria-hidden="true"></span>Harbor Sweater</p><h1>Left sleeve</h1><p class="teraz">Now working row 18</p></div><div class="kartka"><div class="liczba"><span class="n">17</span><span class="z">of 96</span></div><div class="cel"><span>Goal 96 rows</span><span>79 to go</span></div><div class="instr" role="button"><b>Row 18: decrease at both ends</b><span>Decrease 3 of 8 · next on row 24 · <u>Edit</u> ›</span></div></div><div class="spacer"></div><div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row, when row 48 is done">+1 row<small>tap when row 48 is done</small></button></div><span class="oznaczenie">opcja C: edycja ze stuknięcia w pasek</span>
+</main>
+
+<!-- wzor-opcja-kropka -->
+<main data-ekran="wzor-opcja-kropka">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="Add note">✎</span><span class="ikona" role="button" aria-label="Pattern options">•••</span></div></div><div class="tytul"><h1 style="font-size:calc(24px * var(--dt-tytul))">Sleeve pattern</h1></div><div class="wzor-strona" style="height:420px"><div class="tekst-wzoru"></div><div class="znacznik" style="top:150px"><span class="tab">Row 48 ↑</span><span class="uchwyt-dol"></span></div><div class="chip-notatki" role="button" aria-label="Note on row 30" style="top:268px;max-width:none;width:28px;padding:0;justify-content:center"><span aria-hidden="true">✎</span></div></div><p class="podpis" style="margin:8px 20px 0">Page 2 of 5 · counter row 47</p><span class="oznaczenie">opcja B: sama ikona, tekst po stuknięciu</span>
+</main>
+
+<script>
+function kreski(svg, n) {
+  const ns = 'http://www.w3.org/2000/svg'; let x = 6; const h = 44, y = 8;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElementNS(ns, 'path');
+    if (i % 5 < 4) { const j = ((i * 37) % 7 - 3) * 0.6; p.setAttribute('d', `M${x + j} ${y + 2} q 2 ${h / 2} ${-1 + j / 2} ${h}`); x += 12; }
+    else { p.setAttribute('d', `M${x - 54} ${y + h - 6} L ${x - 2} ${y + 8}`); x += 20; }
+    p.setAttribute('stroke', 'var(--kreska)'); p.setAttribute('stroke-width', '3.2'); p.setAttribute('fill', 'none'); p.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(p);
+  }
+}
+document.querySelectorAll('svg.tally').forEach((s) => kreski(s, Math.min(+s.dataset.n, 25)));
+</script>
+</body>
+</html>
