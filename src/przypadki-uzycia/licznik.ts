@@ -18,23 +18,28 @@ import type { Zaleznosci } from './zaleznosci';
 
 export type RodzajLicznika = (typeof STANY)['licznik.rodzaj'][number];
 export type WynikZmiany = { wartosc: number; zdarzenieId: string };
+/** −1 przy 0 (BR-LIC-002 „Granica zera”): wartość bez zmiany i bez zdarzenia, więc `zdarzenieId` = null. */
+export type WynikOdjecia = { wartosc: number; zdarzenieId: string | null };
 
 type Zmiana = { rodzaj: RodzajZdarzenia; wartosc: number | null; wartoscPo: number; rodzice: string[]; cofa: string[] };
 const blad = (powod: Powod): { ok: false; powod: Powod } => ({ ok: false, powod });
 const czyBladDanych = (e: unknown): boolean => typeof e === 'object' && e !== null && 'kod' in e && e.kod === 'BLAD_DANYCH';
 
 /** Wspólna ścieżka każdej zmiany licznika; `okresl` liczy zmianę ze stanu odczytanego w tej samej transakcji. */
-function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana>>): Promise<Wynik<WynikZmiany>> {
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana>>): Promise<Wynik<WynikZmiany>>;
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana | null>>): Promise<Wynik<WynikOdjecia>>;
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana | null>>): Promise<Wynik<WynikOdjecia>> {
   return wKolejce(z.baza, async () => {
     const teraz = z.zegar.teraz();
     try {
-      return await z.baza.transakcja(async (tx): Promise<Wynik<WynikZmiany>> => {
+      return await z.baza.transakcja(async (tx): Promise<Wynik<WynikOdjecia>> => {
         const s = await stanLicznika(tx, licznikId);
         if (!s) return blad('bledne_dane');
         if (s.usuniety) return blad('niedozwolone_przejscie'); // zmiana licznika w koszu (moduly.md, maszyna projektu)
         if (s.zablokowany) return blad('zablokowany'); // F-03
         const zm = await okresl(s, tx);
         if (!zm.ok) return zm;
+        if (zm.wartosc === null) return { ok: true, wartosc: { wartosc: s.wartosc, zdarzenieId: null } }; // bez zmiany: nic nie zapisujemy
         let dzien: DzienLimitu | null = null;
         if (wolaStraznika({ rodzaj: rodzajStraznika(zm.wartosc.rodzaj) })) {
           const start = startDnia({
@@ -65,8 +70,8 @@ const wynik = (w: Zmiana): Wynik<Zmiana> => ({ ok: true, wartosc: w });
 export function dodajRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'dodajRzad', async (s) => wynik({ rodzaj: 'plus', wartosc: null, wartoscPo: s.wartosc + 1, rodzice: rodzic(s), cofa: [] }));
 }
-export function odejmijRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
-  return zmien(z, w.licznikId, 'odejmijRzad', async (s) => wynik({ rodzaj: 'minus', wartosc: null, wartoscPo: Math.max(0, s.wartosc - 1), rodzice: rodzic(s), cofa: [] }));
+export function odejmijRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikOdjecia>> {
+  return zmien(z, w.licznikId, 'odejmijRzad', async (s): Promise<Wynik<Zmiana | null>> => s.wartosc === 0 ? { ok: true, wartosc: null } : wynik({ rodzaj: 'minus', wartosc: null, wartoscPo: s.wartosc - 1, rodzice: rodzic(s), cofa: [] }));
 }
 /** Wartość sprzed zdarzenia = wartość po jego rodzicu (historia liniowa w aplikacji; brak rodzica = 0). */
 async function wartoscPrzed(tx: PortBazy, rodzicId: string | undefined): Promise<number> {
