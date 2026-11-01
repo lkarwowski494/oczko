@@ -5,6 +5,26 @@ Historia planu z 2026-10-27: `docs/plan-prac-historia-2026-10-27.md`. Decyzje do
 ## Stan wyjściowy
 Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) przyjęte; przekład 34 języków maszynowy (P-309). Czekają trzy kopie: 08 (`claude/kopia-partia-7-2026-10-30-b`), 09 (`claude/kopia-09-2026-10-30`), 07 (`claude/kopia-07-2026-10-30`) — szczegóły w `docs/przekazanie-koordynatora.md`.
 
+## Harmonogram 1–3.11 (UTC; czas polski = UTC+1) — P-319
+| Kiedy | Sesja (sonnet/high) | Co | Wynik / dowód | Czeka na |
+|---|---|---|---|---|
+| 1.11 17:30– | **07** (nowa, faza A) | kontrakt `select-xcode.sh` (P-313); zegarek w teście na urządzeniu (P-316); zrzuty sklepu jak Trening (`store-screenshots`, dane pokazowe, iPhone + iPad, znacznik `[zrzuty-sklepu]`) na kopii | hashe kopii, verify 0, lista dla 08 | — |
+| 1.11 17:30– | **10** (nowa, faza A) | środowisko `release`; workflowy ASC z Treningu; metadane en ostateczne (sumy dla 09); instrukcja właściciela krok po kroku (strony Apple czytane dziś) | `docs/wydanie/kroki-wlasciciela-testflight.md` | — |
+| 1.11 23:00 | **08 integracja** (faza B) | merge roboczej, verify, pushe 08 → 09 → 07 (`[e2e-pelny] [e2e-ciemny]`) | numer przebiegu, build ze Swift 35 języków | okno macOS |
+| 1.11 23:10–2.11 ~01:30 | CI | pełny przebieg (ok. 2–2,5 h) | artefakty, zrzuty | maszyny |
+| 2.11 ~01:30– | **07** (faza B) | raport E2 + aneks werdyktu; lista błędów aplikacji dla 08 | raport `oczko-warsztat` `07-jakosc/2026-11-02-e2/` | koniec przebiegu |
+| 2.11 ~01:30– | **04** (nowa) | aneks audytu: AX5, iPad, poziomo, ciemny, długości etykiet 35 języków, krój 700; kadry i podpisy zrzutów sklepu | raport aneksu, lista zmian | koniec przebiegu |
+| 2.11 ~03:30–11:00 | **08** (ta sama sesja co integracja) | poprawki z 07 i 04, W1-A, dane pokazowe dla zrzutów (jeśli potrzebne), patch wersji 1.0.0 + `tests/bazy/v1.db` przygotowany (P-306, nie pushowany); push kopii 07 i 10 z fazy A razem z poprawkami, HEAD z `[zrzuty-sklepu]` | przebieg 2 zielony (podstawowy + zrzuty) do ~13:30 | raporty 07, 04 |
+| 2.11 ~12:00– | **09** (nowa) | fala przekładu zmienionych kluczy en (jeśli są) + metadane sklepu w 35 językach z zamrożonych en | słowniki, pliki metadanych, kontrole błędy 0 | metadane en (10), poprawki 08 |
+| 2.11 ~14:00– | **10** (faza B) | zrzuty z artefaktów, ramki i podpisy, `sklep.md` §5; lista przed buildem | zrzuty iPhone + iPad | przebieg 2 |
+| 2.11 (dowolnie) | **właściciel** | kroki z `docs/wydanie/kroki-wlasciciela-testflight.md`: A1–A4, A5 (3 sekrety z Treningu), A6, B2 — ok. 20–40 min | „zrobione” | instrukcja 10 |
+| 2.11 23:00– | **08** (nowa albo ta sama) | commit wydania 1.0.0 + `v1.db`, push → przebieg podstawowy | zielona bramka na commicie wydania | kroki właściciela |
+| 3.11 ~00:30– | **10** + właściciel | `testflight.yml` z gałęzi roboczej (P-319), zatwierdzenie w środowisku `release` przez właściciela | build w TestFlight | bramka |
+| 3.11 rano PL | **właściciel** | test na telefonie, iPadzie i zegarku (pierwsza część ok. 5 min zaraz po buildzie, jak Trening) | wypełniona lista | build |
+| 3.11 od buildu | **M1 audyt** (opus/high, warunek P-293) | pełny audyt kodu kandydata, OG-07; zamrożenie zakresu do wydania (jak Trening) | raport z werdyktem | build |
+
+Koordynator: sygnały faz, odpowiedzi na STOP-y, łańcuch `send_later` (P-311). Sesje kończą się plikiem stanu i archiwum. Tokeny [OCENA]: 07 ok. 4–7 M, 10 ok. 3–6 M, 04 ok. 3–5 M, 08 (integracja + poprawki) ok. 5–9 M, 09 ok. 3–5 M; razem do 3.11 ok. 20–35 M.
+
 ## Kroki do wydania
 | # | Krok | Rola / sesja | Okno | Zależy od | Dowód ukończenia | Czas agenta | Tokeny |
 |---|---|---|---|---|---|---|---|
