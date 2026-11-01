@@ -28,6 +28,8 @@ if [ -d targets/watch ]; then
     PAKIETY+=("$ZEGAREK")
     [ "$(pb WKCompanionAppBundleIdentifier "$ZEGAREK/Info.plist")" = "$ID" ] || blad "zegarek wskazuje inną aplikację towarzyszącą niż $ID"
     [ "$(pb MinimumOSVersion "$ZEGAREK/Info.plist")" = "$MIN_WATCH" ] || blad "zegarek: MinimumOSVersion ≠ $MIN_WATCH"
+    # L-021 (Trening, P-349): bez ikony zegarka App Store Connect odrzuca wysyłkę („Missing Icons… CFBundleIconFiles”); actool wpisuje CFBundleIconName tylko z AppIcon.
+    [ -n "$(pb CFBundleIconName "$ZEGAREK/Info.plist")" ] || blad "zegarek: brak CFBundleIconName w Info.plist (ikona zegarka; Trening L-021)"
   fi
 fi
 
