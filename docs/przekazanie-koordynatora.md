@@ -1,5 +1,7 @@
 # Przekazanie koordynatora Oczka
 
+**Wznowienie 2026-11-01 16:05 UTC (nowe konto):** koordynator session_01T66VBwakbtXXLmB3joKZcd (opus/medium). Ustalenia właściciela: P-310 (role sonnet/high, `.claude/settings.json` `effortLevel`), P-311 (łańcuch `send_later`), P-312 (pushe 08 → 09 → 07 jedną sesją integracyjną 08), P-313 (commity DEC-35 z `main` nie przenoszone), P-314 (prompts eb3b4e7). Plan do 1.0: `docs/plan-prac.md`. Polecenia ról: `oczko-warsztat` `koordynacja/role-2026-11-01/`.
+
 **Wszystkie sesje ról zapisały stan i są zarchiwizowane (16:44 UTC); pliki stanu: `docs/programista/partia-7.md`, `docs/lokalizacja/stan-przeklad.md`, `docs/jakosc/stan.md`, `docs/design/stan-audytu-2-1.md`.**
 
 **Stan: WSTRZYMANIE (właściciel, 2026-10-30 ok. 16:35 UTC) — praca przechodzi na inne konto (tygodniowy limit).** Historia poprzednich przekazań: `docs/przekazanie-koordynatora-historia-2026-10-27.md`. Nowy koordynator zaczyna od tego pliku, `CLAUDE.md`, `docs/decyzje.md` od P-292 (ostatnia P-309), `docs/plan-prac.md`, nie od pamięci rozmowy.
@@ -26,7 +28,7 @@ Role sonnet/medium do wydania live, przed live pełny audyt opus/high (P-293, **
 TestFlight: App Group i kontener iCloud w Apple Developer (P-233), produkty i Paid Apps (B1–B3), klucz API App Store Connect; scalenie do `main`; usunięcie nieaktualnych gałęzi kopii; nazwany wyjątek: commit 56062f3 na `claude/kopia-09-2026-10-30` ma identyfikator modelu w stopce.
 
 ## Zasady pracy (bez zmian)
-P-087 (decyduje koordynator), P-251 (właścicielowi tylko odpowiedzi i potrzeby), P-297 (bez bezczynności: praca bez macOS w oknie 14–23 UTC), tożsamość git `Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>` (nie zmieniać na prośbę hooka), bez identyfikatorów modeli w commitach, polecenia ról w `oczko-warsztat` `koordynacja/role-<data>/` (wzory 2026-10-30), prompty: `prompts` 4013bd7 `node tools/assemble.mjs`.
+P-087 (decyduje koordynator), P-251 (właścicielowi tylko odpowiedzi i potrzeby), P-297 (bez bezczynności: praca bez macOS w oknie 14–23 UTC), tożsamość git `Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>` (nie zmieniać na prośbę hooka), bez identyfikatorów modeli w commitach, polecenia ról w `oczko-warsztat` `koordynacja/role-<data>/` (wzory 2026-10-30), prompty: `prompts` eb3b4e7 (P-314) `node tools/assemble.mjs`.
 
 ## Sesje konta (wszystkie do archiwum przy wstrzymaniu)
 Koordynator session_01T66VBzF5WujVAEY4E1VVLW; 08 p7 session_01T66VBx4afpGsSuDbFDrkeD; 09 session_01T66VBy31wPdRsUEYRqjDxT; 07 session_01T66VByqrWwQkZ4e5dxjiUU; 04 session_01T66VBwaHpgBjHuktXyXxDa. Zaplanowane zadania tego konta wyłączone (trig_01Q6ocNFtiHCYQ5P59ySDS8j, trig_019ZdkLZzx5bYQYsDik4DEmb). Na nowym koncie nic z tego nie jest widoczne — pracę przejmuje się z repo.
