@@ -11,6 +11,7 @@ import { scal } from '../domena/scal';
 import { STANY, type RodzajUrzadzenia } from '../domena/stany';
 import { dopiszZdarzenie, zdarzeniaDoScalenia } from '../dane/repozytoria/liczniki';
 import { przeliczLicznik } from '../dane/repozytoria/przelicz';
+import { zapiszUstawienie } from '../dane/repozytoria/ustawienia';
 import { liczba, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { wKolejce } from './kolejka';
 import { operacjaZapisu } from './zapis';
@@ -49,6 +50,8 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
   const ustaw = (w: Partial<WidokSynchronizacji>) => { widok = { ...widok, ...w }; for (const f of sluchacze) f(widok); };
   const odpiecia: (() => void)[] = [];
   const teraz = () => z.zegar.teraz().ms;
+  /** `icloud_ostatnia_udana_ms` (P-335, 07-jakosc-015): znacznik do „Last synced…” w Data and sync. Nieudany zapis znacznika nie psuje synchronizacji (tylko wyświetlana godzina). */
+  const zapiszUdana = (): Promise<void> => wKolejce(z.baza, () => z.baza.transakcja((tx) => zapiszUstawienie(tx, 'icloud_ostatnia_udana_ms', teraz(), teraz()))).catch(() => undefined);
 
   /** `zawsze`: wysyłka także przy pustej skrzynce (po włączeniu: silnik zapisuje strefę, a to też zapis — brak miejsca widać od razu). */
   async function wyslijZaleglosci(o: { zawsze?: boolean } = {}): Promise<void> {
@@ -59,6 +62,7 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
     ustaw({ synchronizuje: true });
     try {
       await z.synchronizacja.wyslij(zmiany);
+      await zapiszUdana();
       ustaw(widok.stan === 'blad' ? { stan: 'aktywna', przyczyna: null, synchronizuje: false } : { synchronizuje: false }); // ustąpienie przyczyny
     } catch (e) {
       ustaw({ stan: 'blad', przyczyna: przyczynaZ(e), synchronizuje: false }); // zmiany zostają w skrzynce do następnej próby
@@ -97,6 +101,7 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
       for (const k of zle) { pliki.delete(k); await zapiszBladW(tx, { czasMs: teraz(), kod: 'icloud_zly_zasob', szczegoly: {} }); }
       return zastosujPartie(tx, p, teraz(), pliki);
     }));
+    await zapiszUdana(); // odebrana partia to też udana synchronizacja
     poPartii(wynik);
     return wynik;
   }

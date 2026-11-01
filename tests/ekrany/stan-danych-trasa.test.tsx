@@ -44,3 +44,14 @@ test('019: „1 counter has two versions” prowadzi do wyboru — otwiera liczn
   await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith('/konflikt'));
   expect(otworz).toHaveBeenCalledWith('l-konflikt');
 });
+
+test('015: „Last synced …” pokazuje zapisany czas ostatniej udanej synchronizacji (nie stałą wartość); bez zapisu — bez wiersza', async () => {
+  const { s } = await aplikacja();
+  const w = render(<EkranStanuDanych />);
+  await screen.findByRole('button', { name: /two versions/ });
+  expect(screen.queryByText(/Last synced/)).toBeNull();
+  w.unmount();
+  await s.baza.run("INSERT INTO ustawienie (klucz, wartosc, zmieniono_ms) VALUES ('icloud_ostatnia_udana_ms', ?, 1)", [String(Date.UTC(2026, 9, 22, 8, 5))]);
+  render(<EkranStanuDanych />);
+  expect(await screen.findByText('Last synced Oct 22, 10:05')).toBeTruthy(); // Europe/Warsaw, zegar 24 h
+});
