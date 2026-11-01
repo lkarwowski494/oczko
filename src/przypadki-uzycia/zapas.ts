@@ -131,7 +131,7 @@ export async function wyborWloczek(z: Pick<Zaleznosci, 'baza'>, w: { projektId: 
 }
 /**
  * Zbiór włóczek projektu = dokładnie `wloczkaIds`: brakujące wiersze dochodzą (zużycie NULL), odznaczone znikają, pozostałe zachowują zapisane zużycie.
- * Zapas (`wloczka.motki`) nie zmienia się — zużycie zapisuje dopiero karta ukończenia. Nieznana albo usunięta włóczka, projekt w koszu: `bledne_dane`, nic się nie zapisuje.
+ * Zapas (`wloczka.motki`) zmienia się tylko przy odznaczeniu włóczki z potwierdzonym zużyciem (motki wracają, P-333) — poza tym zużycie zapisuje dopiero karta ukończenia. Nieznana albo usunięta włóczka, projekt w koszu: `bledne_dane`, nic się nie zapisuje.
  */
 export function przypiszWloczki(z: Zaleznosci, w: { projektId: string; wloczkaIds: readonly string[] }): Promise<Wynik<void>> {
   const ids = [...new Set(w.wloczkaIds)];
@@ -141,7 +141,14 @@ export function przypiszWloczki(z: Zaleznosci, w: { projektId: string; wloczkaId
     const istnieja = new Set((await wiersze(tx.all('SELECT id FROM wloczka WHERE usunieto_ms IS NULL'), 'przypiszWloczki')).map((x) => tekst(x, 'id')));
     const byly = new Set((await wiersze(tx.all('SELECT wloczka_id FROM projekt_wloczka WHERE projekt_id = ?', [w.projektId]), 'przypiszWloczki')).map((x) => tekst(x, 'wloczka_id')));
     if (ids.some((id) => !istnieja.has(id) && !byly.has(id))) return blad('bledne_dane'); // włóczka już przypisana (np. potem wrzucona do kosza) może zostać
-    for (const id of byly) if (!ids.includes(id)) await tx.run('DELETE FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]);
+    for (const id of byly) {
+      if (ids.includes(id)) continue;
+      // P-333, zasada 10: zużycie potwierdzone na karcie pomniejszyło zapas, więc usunięcie powiązania zwraca motki w tej samej transakcji (inaczej zużycie znika z historii, a motki nie wracają).
+      const [byl] = await wiersze(tx.all('SELECT zuzyto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]), 'przypiszWloczki');
+      const zuzyto = byl ? liczbaLubNull(byl, 'zuzyto_motki') : null;
+      await tx.run('DELETE FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]);
+      if (zuzyto !== null && zuzyto > 0) await tx.run('UPDATE wloczka SET motki = motki + ?, zmieniono_ms = ? WHERE id = ?', [zuzyto, teraz, id]);
+    }
     for (const id of ids) {
       if (!byly.has(id)) await tx.run('INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, zmieniono_ms) VALUES (?, ?, NULL, ?)', [w.projektId, id, teraz]);
     }

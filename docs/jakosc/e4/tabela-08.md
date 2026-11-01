@@ -94,7 +94,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-licznika-p5.test.ts` | zielony (główny zestaw) | 1 | BR-LIC-018/S1, P-199 | `src/przypadki-uzycia/widok-licznika` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-licznika.test.ts` | zielony (główny zestaw) | 13 | BR-LIC-001, BR-LIC-003, BR-PRJ-014, P-065, P-126, RD-13, RD-17 | `src/konfiguracja`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/sesja`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektow` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-projektu.test.ts` | zielony (główny zestaw) | 10 | BR-LIC-018, BR-PRJ-004/S3, BR-PRJ-005, BR-PRJ-014, P-184, P-199, RD-11, RD-14, RD-15, RD-19 | `src/przypadki-uzycia/widok-projektu` | — |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wloczki-projektu.test.ts` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-330 | `src/przypadki-uzycia/widok-ukonczenia`<br>`src/przypadki-uzycia/zapas` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wloczki-projektu.test.ts` | zielony (główny zestaw) | 8 | BR-ZAP-002, P-330, P-333 | `src/przypadki-uzycia/widok-ukonczenia`<br>`src/przypadki-uzycia/zapas` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-dodaj.test.ts` | zielony (główny zestaw) | 10 | BR-WZR-001, BR-WZR-002, BR-WZR-007, P-218, P-221, P-252 | `src/domena/bledy`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miniatury.test.ts` | zielony (główny zestaw) | 2 | — | `src/kompozycja/miniatury`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-obroty-film.test.ts` | zielony (główny zestaw) | 7 | P-218, P-246, P-276, P-283 | `src/platforma/skrzynka`<br>`src/przypadki-uzycia/film`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
@@ -151,6 +151,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-drobne-8c.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik`<br>`src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-miejsce-wzoru.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-005/S1 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-p5.test.tsx` | zielony (główny zestaw) | 12 | BR-DNI-005, BR-LIC-018, BR-PRJ-002, BR-PRJ-005, P-183, P-191, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-wloczka.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/sesje.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-013, BR-PRJ-013/S4, P-191, P-195 | `src/ekrany/Formularze`<br>`src/ekrany/Sesje`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -202,4 +203,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 198; zależnych od poprawek: 132.
+Razem plików testów: 199; zależnych od poprawek: 132.

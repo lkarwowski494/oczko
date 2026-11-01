@@ -62,4 +62,28 @@ describe('przypiszWloczki: zbiór wierszy projekt_wloczka', () => {
     expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y1', motki: 2 }] })).ok).toBe(true);
     expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y1']))[0]?.motki).toBe(1);
   });
+
+  test('P-333: odznaczenie włóczki z zapisanym zużyciem zwraca motki do zapasu (zużycie 2 z 3 → zapas 3), zmieniono_ms zapasu rośnie; bez zużycia zapas nietknięty', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [projektWloczka('p1', 'y1'), projektWloczka('p1', 'y2')]);
+    expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y1', motki: 2 }] })).ok).toBe(true);
+    const przed = await s.baza.all<{ motki: number; zmieniono_ms: number }>('SELECT motki, zmieniono_ms FROM wloczka WHERE id IN (?, ?) ORDER BY id', ['y1', 'y2']);
+    expect(przed.map((x) => x.motki)).toEqual([1, 2]);
+    s.zegar.ustaw(s.zegar.teraz().ms + 60_000);
+    expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
+    const po = await s.baza.all<{ motki: number; zmieniono_ms: number }>('SELECT motki, zmieniono_ms FROM wloczka WHERE id IN (?, ?) ORDER BY id', ['y1', 'y2']);
+    expect(po.map((x) => x.motki)).toEqual([3, 2]);
+    expect(po[0]!.zmieniono_ms).toBeGreaterThan(przed[0]!.zmieniono_ms);
+    expect(po[1]!.zmieniono_ms).toBe(przed[1]!.zmieniono_ms); // y2 bez zużycia: zapas i znacznik czasu bez zmian
+  });
+
+  test('P-333 (iCloud): odznaczenie trafia do skrzynki zmian jako usunięcie powiązania, a zwrot motków jako zmiana włóczki', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [projektWloczka('p1', 'y1')]);
+    expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y1', motki: 2 }] })).ok).toBe(true);
+    await wykonaj(s.baza, [['UPDATE synchronizacja SET wlaczona = 1, wejscie = 0 WHERE id = 1', []], ['DELETE FROM zmiana_icloud', []]]);
+    expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
+    const zm = await s.baza.all<{ encja: string; usuniete: number }>('SELECT encja, usuniete FROM zmiana_icloud ORDER BY encja');
+    expect(zm).toEqual(expect.arrayContaining([{ encja: 'projekt_wloczka', usuniete: 1 }, { encja: 'wloczka', usuniete: 0 }]));
+  });
 });
