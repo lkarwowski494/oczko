@@ -30,10 +30,10 @@ describe('Tryb awaryjny i dane', () => {
     expect([w.naZapiszKopie, w.naSprobujNormalnie, w.naZglosProblem].map((f) => f.mock.calls.length)).toEqual([1, 1, 1]);
   });
 
-  test('R-068: po „Zastąp” ekran mówi, gdzie leży kopia sprzed importu (P-047, dane.md:69)', () => {
-    render(<Import stan={{ rodzaj: 'zastapiono', kopia: { nazwa: 'Oczko before import 2026-11-08.oczko', miejsce: 'Files › On My iPhone › Oczko' } }} t={t} naZastap={jest.fn()} naScal={jest.fn()} naAnuluj={jest.fn()} />);
-    expect(screen.getByText(/Oczko before import 2026-11-08\.oczko/)).toBeTruthy();
-    expect(screen.getByText(/Files › On My iPhone › Oczko/)).toBeTruthy();
+  test('R-068 (ADR-0028): po „Replace” ekran podaje nazwę kopii sprzed importu i jak do niej wrócić', () => {
+    render(<Import stan={{ rodzaj: 'zastapiono', kopia: 'oczko-przed-importem-2026-11-08.oczko' }} t={t} naZastap={jest.fn()} naScal={jest.fn()} naAnuluj={jest.fn()} />);
+    expect(screen.getByText(/oczko-przed-importem-2026-11-08\.oczko/)).toBeTruthy();
+    expect(screen.getByText(/Find it in the Files app, in Oczko › Backup/)).toBeTruthy();
   });
 
   test('R-050 / NFR-DAN-003: konflikt pokazuje urządzenie i godzinę każdej wersji; wybór tylko po stuknięciu', () => {

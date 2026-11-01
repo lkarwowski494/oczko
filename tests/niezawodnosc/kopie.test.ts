@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { KOPIE_RATUNKOWE_DNI } from '../../src/konfiguracja';
-import { kopieDoUsuniecia, sprzatnijKopie, zipSurowejKopii, type ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
+import { kopieDoUsuniecia, kopiePrzedDoUsuniecia, sprzatnijKopie, zipSurowejKopii, type ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
 import { czytajZip } from '../dane/pomocnicze/dane-wejsciowe';
 import { DOBA, T0, katalogTymczasowy, sha256, sha256Pliku } from '../dane/pomocnicze/srodowisko';
 import { procesZabityZOtwartaBaza, uszkodzStrone } from './pomocnicze';
@@ -105,5 +105,26 @@ describe('P-080 (3b) ADR-0020 (3) ZIP surowej kopii (baza się nie otwiera)', ()
     writeFileSync(cel, 'stary');
     expect(await zipSurowejKopii(dane, SUROWE, cel, { aplikacja: '1.0.0', build: '17', terazMs: T0 })).toEqual({ ok: false, powod: 'zapis' });
     expect(sha256Pliku(cel)).toBe(sha256('stary'));
+  });
+});
+
+describe('07-jakosc-003 K-03f ADR-0028 pkt 4: pula kopii z Documents/Backup (czysta funkcja)', () => {
+  const dzien = (n: number) => new Date(T0 - n * DOBA).toISOString().slice(0, 10);
+  const imp = (n: number, k = '') => `oczko-przed-importem-${dzien(n)}${k}.oczko`;
+  const usu = (n: number) => `oczko-przed-usunieciem-${dzien(n)}.oczko`;
+  test('przy 3 kopiach zostają 2 najnowsze (starsza usunięta)', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1), imp(2), imp(3)], T0)).toEqual([imp(3)]);
+  });
+  test('dwie kopie z tego samego dnia: -2 jest nowsza niż bez sufiksu', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1), imp(1, '-2'), imp(1, '-3')], T0)).toEqual([imp(1)]);
+  });
+  test('starsza niż 30 dni jest usuwana nawet przy limicie; 29 dni zostaje', () => {
+    expect(kopiePrzedDoUsuniecia([imp(29), imp(40)], T0)).toEqual([imp(40)]);
+  });
+  test('limit liczy się osobno dla importu i usunięcia', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1), imp(2), usu(1), usu(2)], T0)).toEqual([]);
+  });
+  test('obca nazwa, stara kopia .db i data z przyszłości zostają', () => {
+    expect(kopiePrzedDoUsuniecia(['notatki.txt', 'przed-importem-1.db', `oczko-przed-importem-${dzien(-5)}.oczko`, imp(1), imp(2), imp(3)], T0)).toEqual([imp(3)]);
   });
 });

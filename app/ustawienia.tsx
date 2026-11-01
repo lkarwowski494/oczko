@@ -20,11 +20,13 @@ import { udostepnijPlik, wybierzArchiwum } from '../src/platforma/system-plikow-
 import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
+import { nazwaPliku } from '../src/dane/pliki/system';
 
 type Dane =
   | { rodzaj: 'eksport'; licznosci: string }
   | { rodzaj: 'wybor'; plik: string; licznosci: string }
   | { rodzaj: 'wynik'; tekst: string }
+  | { rodzaj: 'zastapiono'; kopia: string }
   | { rodzaj: 'blad' }
   | null;
 
@@ -76,6 +78,7 @@ export default function EkranUstawien(): React.ReactElement {
     if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return; }
     if (w.wartosc.tryb === 'anulowano') { ustawDane(null); return; }
     if (w.wartosc.tryb === 'zastap') licznik.zresetuj(); else await licznik.poZmianie();
+    if (w.wartosc.tryb === 'zastap' && w.wartosc.kopiaPrzed) { ustawDane({ rodzaj: 'zastapiono', kopia: nazwaPliku(w.wartosc.kopiaPrzed) }); return; } // ADR-0028: nazwa kopii z Plików, nie „Merged”
     ustawDane({ rodzaj: 'wynik', tekst: wynikScalenia(przed, w.wartosc.licznosci, t) });
   }
   useEffect(() => { if (plikImportu) void importZ(plikImportu); }, [plikImportu]); // eslint-disable-line react-hooks/exhaustive-deps -- raz na otwarty plik
@@ -92,6 +95,7 @@ export default function EkranUstawien(): React.ReactElement {
   const wynikDanych = dane === null ? null
     : dane.rodzaj === 'eksport' ? <View testID="eksport-wynik"><Tresc>{t('dane.eksport_gotowy_tytul')}</Tresc><Tresc testID="eksport-licznosci">{dane.licznosci}</Tresc></View>
     : dane.rodzaj === 'blad' ? <Tresc>{t('dane.blad')}</Tresc>
+    : dane.rodzaj === 'zastapiono' ? <Import wbudowany t={t} stan={{ rodzaj: 'zastapiono', kopia: dane.kopia }} naZastap={naZastap} naScal={() => undefined} naAnuluj={zamknijDane} />
     : <Import wbudowany t={t} stan={dane.rodzaj === 'wybor' ? { rodzaj: 'wybor', plik: dane.plik, licznosci: dane.licznosci } : { rodzaj: 'wybor', plik: '' }}
         wynik={dane.rodzaj === 'wynik' ? dane.tekst : undefined}
         naScal={() => wybor.current?.('scal')} naZastap={naZastap} naAnuluj={zamknijDane} />;

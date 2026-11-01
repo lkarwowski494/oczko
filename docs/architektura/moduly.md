@@ -104,17 +104,19 @@ export interface PotwierdzenieIcloud { wyslane: readonly { encja: string; klucz:
 
 // Archiwum, migracje i katalogi (ADR-0004, dane.md; przeniesione z src/przypadki-uzycia/porty-propozycja.ts, Z07-22).
 export interface Licznosci { [tabela: string]: number }    // tabela → liczba wierszy
-export interface Katalogi { kopie: string; tymczasowy: string } // Application Support/kopie (dane.md), katalog tymczasowy importu
+export interface Katalogi { kopie: string; kopiePrzed: string; tymczasowy: string } // Application Support/kopie (dane.md), Documents/Backup — kopie przed importem i przed usunięciem (ADR-0028), katalog tymczasowy importu
 export interface Manifest { format: 'oczko'; wersja_formatu: number; wersja_schematu: number; aplikacja: string; utworzono: number; licznosci: Licznosci; pliki: { sha256: string; bajty: number }[] } // manifest.json archiwum `.oczko`
 export type TrybImportu = 'scal' | 'zastap';
+/** Kopia bezpieczeństwa w Documents/Backup: przed „Replace” (import) albo przed „Delete all data” (usunięcie), ADR-0028, P-328. */
+export type RodzajKopiiPrzed = 'importem' | 'usunieciem';
 export interface ArchiwumSprawdzone { manifest: Manifest; katalog: string } // rozpakowane i sprawdzone w katalogu tymczasowym
 export interface WynikImportu { tryb: TrybImportu | 'anulowano'; kopiaPrzed: string | null; licznosci: Licznosci }
 export type Migracja = { wersja: number; sql: string; przebudowa?: boolean };
 export interface Migruj { (baza: PortBazy): Promise<Wynik<{ z: number; do: number }>> }
 export interface PortArchiwum {                                                   // implementacja: src/dane/archiwum.ts
-  zapisz(katalogDocelowy: string): Promise<Wynik<{ sciezka: string; manifest: Manifest }>>; // VACUUM INTO + pliki + manifest
+  zapisz(katalogDocelowy: string, opcje?: { przedrostek?: string }): Promise<Wynik<{ sciezka: string; manifest: Manifest }>>; // VACUUM INTO + pliki + manifest; przedrostek nazwy domyślnie 'oczko'
   sprawdz(sciezka: string): Promise<Wynik<ArchiwumSprawdzone>>;                              // manifest, wersje, SHA-256, miejsce; baza bez zmian
-  kopiaPrzed(): Promise<Wynik<{ sciezka: string }>>;                                         // „kopia przed importem” (KOPIA_PRZED_IMPORTEM_DNI)
+  kopiaPrzed(rodzaj?: RodzajKopiiPrzed): Promise<Wynik<{ sciezka: string }>>;                // pełne archiwum `.oczko` w Katalogi.kopiePrzed (ADR-0028); domyślnie przed importem
   wczytaj(a: ArchiwumSprawdzone, tryb: TrybImportu, sygnal?: SygnalCzasu): Promise<Wynik<{ licznosci: Licznosci }>>;
 }
 ```

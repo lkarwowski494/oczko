@@ -90,7 +90,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
-    magazyn: utworzMagazyn(s.pliki), katalogi: { kopie: s.kopie, tymczasowy },
+    magazyn: utworzMagazyn(s.pliki), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),

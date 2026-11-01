@@ -8,6 +8,7 @@ export const STRAZNIK_OKNO_S = 2; // s; RD-17, P-047
 export const KOSZ_DNI = 30; // dni; P-026
 export const KROK_MOTKA = 0.5; // motki; krok krokowca zużycia na karcie ukończenia (design-spec „Zużycie włóczki przy ukończeniu”, P-126 (2a))
 export const KOPIA_PRZED_IMPORTEM_DNI = 30; // dni; ADR-0004
+export const KOPIA_PRZED_IMPORTEM_MAKS = 2; // najnowsze kopie `oczko-przed-importem-*` / `oczko-przed-usunieciem-*` w Documents/Backup (każdego rodzaju osobno); ADR-0028, [OCENA 05]: ok. 830 MB przy 415 MB na kopię
 export const SESJA_MAKS_H = 8; // h; P-072 (7a)
 export const SESJA_DNIA_MIN_MS = 60_000; // ms; P-195 Q3b: sesja stopera ≥ 1 min po korekcie czyni dzień dniem z robótką (czas w pełnych minutach)
 export const WERSJA_SCHEMATU = 1; // schemat.sql

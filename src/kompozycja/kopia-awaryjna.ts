@@ -4,12 +4,12 @@
 // Odstępstwo nazwane od P-203 „tylko do odczytu”: expo-sqlite 57 otwiera bazę `sqlite3_open` bez flag (ios/SQLiteModule.swift:114), a
 // `PRAGMA query_only` blokuje VACUUM INTO („attempt to write a readonly database”, eksperyment 08). Tańsza kontrola: połączenie nie wykonuje
 // zapisów (archiwum: odczyty i VACUUM INTO do nowego pliku) i nie jest zamykane.
-import type { Licznosci, Zegar } from '../domena/porty';
+import type { Katalogi, Licznosci, Zegar } from '../domena/porty';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import { utworzArchiwum } from '../dane/archiwum';
 import { utworzMagazyn } from '../dane/pliki/magazyn';
 
-export function kopiaAwaryjna(o: { sciezkaBazy: string; pliki: string; zegar: Zegar; katalogi: { kopie: string; tymczasowy: string } }) {
+export function kopiaAwaryjna(o: { sciezkaBazy: string; pliki: string; zegar: Zegar; katalogi: Katalogi }) {
   let baza: ReturnType<typeof otworzPortExpo> | null = null;
   return {
     async zapisz(): Promise<{ sciezka: string; licznosci: Licznosci } | null> {

@@ -4,7 +4,6 @@
 import { mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { utworzArchiwum } from '../../src/dane/archiwum';
-import { przywrocZKopii } from '../../src/dane/kopia-ratunkowa';
 import { migruj } from '../../src/dane/migracje/migruj';
 import { ROZSZERZENIE_ARCHIWUM, WERSJA_FORMATU_ARCHIWUM, WERSJA_SCHEMATU } from '../../src/konfiguracja';
 import { eksportuj, importuj } from '../../src/przypadki-uzycia/archiwum';
@@ -160,22 +159,20 @@ describe('import (BR-DAN-006, ADR-0004, maszyna importu)', () => {
     expect(await migawka(s.baza, POMIN)).toBe(przed);
   });
 
-  test('ŚU-11 BR-DAN-006/S3 P-047 R-068: „zastąp” → najpierw kopia przed importem (ścieżka zwrócona), potem dane z pliku; przywrócenie kopii → liczności jak przed', async () => {
+  test('ŚU-11 BR-DAN-006/S3 P-047 R-068 (ADR-0028): „zastąp” → najpierw kopia przed importem jako archiwum .oczko (ścieżka zwrócona), potem dane z pliku; liczności kopii jak przed', async () => {
     const s = await zZyciem();
     const przed = await licznosci(s.baza);
-    const migPrzed = await migawka(s.baza, POMIN);
     const ino = statSync(join(s.katalog, 'oczko.db')).ino;
     const sciezka = archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka'), czesc('cc', 'cz', 'Główka'), ...licznik('lc', 'cc', 4)]);
     const w = await importuj(s.za, { sciezka, wybierz: szpieg('zastap').wybierz });
     if (!w.ok) throw new Error(w.powod);
     expect(w.wartosc.tryb).toBe('zastap');
-    expect(w.wartosc.kopiaPrzed).toEqual(expect.stringContaining(s.z.katalogi.kopie));
-    expect(licznosciPliku(w.wartosc.kopiaPrzed!)).toEqual(przed); // kopia zrobiona przed zastąpieniem
+    expect(w.wartosc.kopiaPrzed).toEqual(expect.stringContaining(s.z.katalogi.kopiePrzed));
+    const kopia = await s.za.archiwum.sprawdz(w.wartosc.kopiaPrzed!);
+    if (!kopia.ok) throw new Error(kopia.powod);
+    expect(kopia.wartosc.manifest.licznosci).toEqual(przed); // kopia zrobiona przed zastąpieniem
     expect(await s.baza.all('SELECT nazwa FROM projekt')).toEqual([{ nazwa: 'Czapka' }]);
     expect(statSync(join(s.katalog, 'oczko.db')).ino).toBe(ino); // ADR-0020 (5), R-088: bez podmiany pliku bazy
-    expect(await przywrocZKopii({ baza: s.baza, zegar: s.zegar, katalogi: s.z.katalogi }, w.wartosc.kopiaPrzed!)).toMatchObject({ ok: true });
-    expect(await licznosci(s.baza)).toEqual(przed);
-    expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
   });
 
   test('BR-DAN-006/S5: rezygnacja przy wyborze „zastąp”/„scal” → dane bez zmian, bez kopii przed importem', async () => {
@@ -187,6 +184,7 @@ describe('import (BR-DAN-006, ADR-0004, maszyna importu)', () => {
     expect(sz.wywolania).toHaveLength(1);
     expect(await migawka(s.baza, POMIN)).toBe(przed);
     expect(readdirSync(s.z.katalogi.kopie)).toEqual([]);
+    expect(readdirSync(s.z.katalogi.kopiePrzed)).toEqual([]);
   });
 
   // P-091 (6a): „scal” po UUID, idempotentnie (BR-DAN-006/S4 do przepisania, ER-42); wyrocznia: ADR-0004, dane.md „Import”.
@@ -222,5 +220,55 @@ describe('import (BR-DAN-006, ADR-0004, maszyna importu)', () => {
       { id: 'iphone-w', wartosc: 20, urzadzenie: 'iphone', czas_ms: T0 + GODZ },
       { id: 'ipad-w', wartosc: 18, urzadzenie: 'ipad', czas_ms: T0 + 2 * GODZ },
     ]);
+  });
+});
+
+// 07-jakosc-003 (ADR-0028, BR-DAN-006/S3, K-03a–e): kopia przed „Replace” to pełne archiwum `.oczko` w Documents/Backup (widoczne w Plikach).
+describe('07-jakosc-003 kopia przed „Replace” (ADR-0028)', () => {
+  test('K-03a: „Replace” zostawia dokładnie jedno oczko-przed-importem-<dzień>.oczko w katalogu kopii przed importem, które przyjmuje sprawdz()', async () => {
+    const s = await zZyciem();
+    const sciezka = archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka')]);
+    const w = await importuj(s.za, { sciezka, wybierz: szpieg('zastap').wybierz });
+    if (!w.ok) throw new Error(w.powod);
+    expect(readdirSync(s.z.katalogi.kopiePrzed)).toEqual([`oczko-przed-importem-2026-10-22${ROZSZERZENIE_ARCHIWUM}`]);
+    expect(w.wartosc.kopiaPrzed).toBe(join(s.z.katalogi.kopiePrzed, `oczko-przed-importem-2026-10-22${ROZSZERZENIE_ARCHIWUM}`));
+    expect(readdirSync(s.z.katalogi.kopie).filter((n) => n.startsWith('przed-importem'))).toEqual([]); // stare .db nie powstaje (ADR-0028 pkt 5)
+    const k = await s.za.archiwum.sprawdz(w.wartosc.kopiaPrzed!);
+    expect(k.ok).toBe(true);
+  });
+  test('K-03b: import kopii z „Replace” (też w trybie „Replace”) przywraca liczności tabel i pliki sprzed pierwszego „Replace”', async () => {
+    const s = await zZyciem();
+    const przed = await licznosci(s.baza);
+    const migPrzed = await migawka(s.baza, POMIN);
+    const plikiPrzed = readdirSync(s.magazyn.katalog).sort();
+    const w = await importuj(s.za, { sciezka: archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka')]), wybierz: szpieg('zastap').wybierz });
+    if (!w.ok) throw new Error(w.powod);
+    expect(await licznosci(s.baza)).not.toEqual(przed);
+    const wroc = await importuj(s.za, { sciezka: w.wartosc.kopiaPrzed!, wybierz: szpieg('zastap').wybierz });
+    expect(wroc).toMatchObject({ ok: true, wartosc: { tryb: 'zastap' } });
+    expect(await licznosci(s.baza)).toEqual(przed);
+    expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
+    expect(readdirSync(s.magazyn.katalog).sort()).toEqual(plikiPrzed);
+  });
+  test('K-03d: nie da się zapisać kopii → „Replace” kończy się błędem przed pierwszym zapisem do bazy (liczności i migawka bez zmian)', async () => {
+    const s = await zZyciem();
+    const przed = await licznosci(s.baza);
+    const migPrzed = await migawka(s.baza, POMIN);
+    const zablokowany = join(s.katalog, 'plik-zamiast-katalogu');
+    writeFileSync(zablokowany, 'x'); // katalog kopii pod zwykłym plikiem: nie da się go utworzyć ani zapisać do niego
+    const za = { ...s.za, archiwum: utworzArchiwum({ baza: s.baza, magazyn: s.magazyn, zegar: s.zegar, katalogi: { ...s.z.katalogi, kopiePrzed: join(zablokowany, 'Backup') }, migruj: (b) => migruj(b), aplikacja: '1.0.0 (test)' }) };
+    const w = await importuj(za, { sciezka: archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka')]), wybierz: szpieg('zastap').wybierz });
+    expect(w.ok).toBe(false);
+    expect(await licznosci(s.baza)).toEqual(przed);
+    expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
+  });
+  test('K-03e: druga kopia tego samego dnia dostaje -2 i nie nadpisuje pierwszej', async () => {
+    const s = await zZyciem();
+    const pierwsza = await s.za.archiwum.kopiaPrzed();
+    const druga = await s.za.archiwum.kopiaPrzed();
+    if (!pierwsza.ok || !druga.ok) throw new Error('kopia przed');
+    expect(pierwsza.wartosc.sciezka.endsWith(`oczko-przed-importem-2026-10-22${ROZSZERZENIE_ARCHIWUM}`)).toBe(true);
+    expect(druga.wartosc.sciezka.endsWith(`oczko-przed-importem-2026-10-22-2${ROZSZERZENIE_ARCHIWUM}`)).toBe(true);
+    expect(readdirSync(s.z.katalogi.kopiePrzed)).toHaveLength(2);
   });
 });

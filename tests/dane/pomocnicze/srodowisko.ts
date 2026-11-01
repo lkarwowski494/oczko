@@ -109,8 +109,9 @@ export async function przygotuj(o: { katalog?: string; zegar?: ZegarTestowy; urz
   const magazyn = magazynTestowy(join(katalog, 'pliki'));
   const dziennik = dziennikTestowy();
   const pro = { wartosc: false };
-  const katalogi = { kopie: join(katalog, 'kopie'), tymczasowy: join(katalog, 'tmp') };
+  const katalogi = { kopie: join(katalog, 'kopie'), kopiePrzed: join(katalog, 'Documents', 'Backup'), tymczasowy: join(katalog, 'tmp') };
   mkdirSync(katalogi.kopie, { recursive: true });
+  mkdirSync(katalogi.kopiePrzed, { recursive: true });
   mkdirSync(katalogi.tymczasowy, { recursive: true });
   const z = { baza, zegar, id: identyfikatory(o.prefiksId), urzadzenie: o.urzadzenie ?? 'iphone-test', pro: () => pro.wartosc, magazyn, katalogi, dziennik };
   return { katalog, baza, zegar, magazyn, dziennik, pro, z };

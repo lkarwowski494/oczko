@@ -1,7 +1,7 @@
 // Kopie ratunkowe roli 12 (ADR-0020 (3), (6), P-080 (3b)): sprzątanie katalogu kopii po KOPIE_RATUNKOWE_DNI i ZIP surowej kopii, gdy baza się nie
 // otwiera. Logika wyboru czysta; adaptery tylko przez system plików warstwy danych. Nic tu nie otwiera bazy (działa przy uszkodzonym pliku).
 import type { Wynik } from '../domena/bledy';
-import { KOPIE_RATUNKOWE_DNI } from '../konfiguracja';
+import { KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DNI } from '../konfiguracja';
 import { zapiszZip, type WpisZip } from '../dane/archiwum/zip';
 import { powodBledu } from '../dane/baza/bledy-sqlite';
 import { sha256PlikuTs } from '../dane/pliki/magazyn';
@@ -27,6 +27,37 @@ export function kopieDoUsuniecia(wpisy: readonly WpisKopii[], terazMs: number, d
       return ms <= terazMs && terazMs - ms > dni * DOBA_MS;
     })
     .map((w) => w.nazwa);
+}
+
+/** Kopie z ADR-0028 w Documents/Backup: `oczko-przed-importem-RRRR-MM-DD[-n].oczko` i `oczko-przed-usunieciem-…`; nic innego w tym katalogu nie jest tykane. */
+const PLIK_PRZED = /^oczko-przed-(importem|usunieciem)-(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?\.oczko$/;
+/**
+ * Pula kopii bezpieczeństwa (ADR-0028 pkt 4, K-03f): każdego rodzaju zostaje `maks` najnowszych, a starsze niż `dni` (ściśle, liczone od północy dnia
+ * z nazwy UTC) są usuwane. Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu.
+ */
+export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number, maks = KOPIA_PRZED_IMPORTEM_MAKS, dni = KOPIA_PRZED_IMPORTEM_DNI): string[] {
+  const usun: string[] = [];
+  for (const rodzaj of ['importem', 'usunieciem']) {
+    const wpisy = nazwy.flatMap((nazwa) => {
+      const m = PLIK_PRZED.exec(nazwa);
+      if (!m || m[1] !== rodzaj) return [];
+      const dzienMs = Date.UTC(Number(m[2]), Number(m[3]) - 1, Number(m[4]));
+      return dzienMs - terazMs > DOBA_MS ? [] : [{ nazwa, dzienMs, n: m[5] === undefined ? 1 : Number(m[5]) }];
+    });
+    wpisy.sort((a, b) => b.dzienMs - a.dzienMs || b.n - a.n);
+    wpisy.forEach((w, i) => { if (i >= maks || terazMs - w.dzienMs > dni * DOBA_MS) usun.push(w.nazwa); });
+  }
+  return usun;
+}
+/** Adapter: lista katalogu kopii przed → usunięcie wybranych; brak katalogu = nic do zrobienia, błąd nie blokuje startu (jak `sprzatnijKopie`). */
+export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<string[]> {
+  try {
+    const usun = kopiePrzedDoUsuniecia(lista(katalog), terazMs).sort();
+    for (const n of usun) usunPlik(polacz(katalog, n));
+    return { ok: true, wartosc: usun };
+  } catch (e) {
+    return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };
+  }
 }
 
 /** Adapter sprzątania: lista katalogu kopii → usunięcie wybranych. Brak katalogu = nic do zrobienia. */
