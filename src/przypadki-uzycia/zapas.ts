@@ -143,9 +143,9 @@ export function przypiszWloczki(z: Zaleznosci, w: { projektId: string; wloczkaId
     if (ids.some((id) => !istnieja.has(id) && !byly.has(id))) return blad('bledne_dane'); // włóczka już przypisana (np. potem wrzucona do kosza) może zostać
     for (const id of byly) {
       if (ids.includes(id)) continue;
-      // P-333, zasada 10: zużycie potwierdzone na karcie pomniejszyło zapas, więc usunięcie powiązania zwraca motki w tej samej transakcji (inaczej zużycie znika z historii, a motki nie wracają).
-      const [byl] = await wiersze(tx.all('SELECT zuzyto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]), 'przypiszWloczki');
-      const zuzyto = byl ? liczbaLubNull(byl, 'zuzyto_motki') : null;
+      // P-333/P-334, zasada 10: potwierdzone zużycie pomniejszyło zapas o `odjeto_motki`, więc usunięcie powiązania zwraca dokładnie tyle w tej samej transakcji.
+      const [byl] = await wiersze(tx.all('SELECT odjeto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]), 'przypiszWloczki');
+      const zuzyto = byl ? liczbaLubNull(byl, 'odjeto_motki') : null; // zwrot = faktycznie odjęte (P-334), nie wpisane zużycie; NULL (np. stare archiwum) = nic do zwrotu
       await tx.run('DELETE FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]);
       if (zuzyto !== null && zuzyto > 0) await tx.run('UPDATE wloczka SET motki = motki + ?, zmieniono_ms = ? WHERE id = ?', [zuzyto, teraz, id]);
     }

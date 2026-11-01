@@ -267,6 +267,7 @@ DEFINE SCHEMA
         projekt_id      STRING,
         wloczka_id      STRING,
         zuzyto_motki    DOUBLE,
+        odjeto_motki    DOUBLE,
         zmieniono_ms    INT64,
         GRANT WRITE TO "_creator",
         GRANT CREATE TO "_icloud",

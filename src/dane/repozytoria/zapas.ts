@@ -45,14 +45,19 @@ export async function potwierdzZuzycie(baza: PortBazy, w: { projektId: string; z
   try {
     return await baza.transakcja(async (tx): Promise<Wynik<void>> => {
       for (const z of w.zuzycie) {
-        const [byl] = await wiersze(tx.all('SELECT zuzyto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, z.wloczkaId]), 'potwierdzZuzycie');
+        const [byl] = await wiersze(tx.all('SELECT zuzyto_motki, odjeto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, z.wloczkaId]), 'potwierdzZuzycie');
         const roznica = z.motki - ((byl ? liczbaLubNull(byl, 'zuzyto_motki') : null) ?? 0);
+        const [zap] = await wiersze(tx.all('SELECT motki FROM wloczka WHERE id = ?', [z.wloczkaId]), 'potwierdzZuzycie');
+        const przed = zap ? liczba(zap, 'motki') : 0;
+        const po = Math.max(0, przed - roznica); // zapas nie schodzi poniżej 0
+        // P-334: pamiętamy, ile faktycznie odjęto (po obcięciu do 0), żeby odznaczenie włóczki zwróciło tyle samo, nie całe zużycie.
+        const odjeto = Math.max(0, ((byl ? liczbaLubNull(byl, 'odjeto_motki') : null) ?? 0) + (przed - po));
         await tx.run(
-          `INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, zmieniono_ms) VALUES (?, ?, ?, ?)
-           ON CONFLICT (projekt_id, wloczka_id) DO UPDATE SET zuzyto_motki = excluded.zuzyto_motki, zmieniono_ms = excluded.zmieniono_ms`,
-          [w.projektId, z.wloczkaId, z.motki, w.terazMs],
+          `INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, odjeto_motki, zmieniono_ms) VALUES (?, ?, ?, ?, ?)
+           ON CONFLICT (projekt_id, wloczka_id) DO UPDATE SET zuzyto_motki = excluded.zuzyto_motki, odjeto_motki = excluded.odjeto_motki, zmieniono_ms = excluded.zmieniono_ms`,
+          [w.projektId, z.wloczkaId, z.motki, odjeto, w.terazMs],
         );
-        await tx.run('UPDATE wloczka SET motki = max(0, motki - ?), zmieniono_ms = ? WHERE id = ?', [roznica, w.terazMs, z.wloczkaId]);
+        await tx.run('UPDATE wloczka SET motki = ?, zmieniono_ms = ? WHERE id = ?', [po, w.terazMs, z.wloczkaId]);
       }
       return { ok: true, wartosc: undefined };
     });

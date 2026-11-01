@@ -15,6 +15,11 @@ const KLUCZE_URZADZENIA = "('ostatnie_miejsce', 'ostatni_start_ms', 'icloud_uzyt
 async function kolumny(tx: PortBazy, tabela: string): Promise<string[]> {
   return (await wiersze(tx.all(`SELECT name FROM pragma_table_info('${tabela}')`), 'kolumny')).map((r) => tekst(r, 'name'));
 }
+/** Kolumny bieżącej tabeli, które ma też tabela w kopii: starszy plik bez nowszej kolumny (P-334 `odjeto_motki`) daje w niej NULL/domyślną, nie błąd importu. */
+async function kolumnyKopii(tx: PortBazy, tabela: string): Promise<string[]> {
+  const sa = new Set((await wiersze(tx.all(`SELECT name FROM pragma_table_info('${tabela}', 'kopia')`), 'kolumny')).map((r) => tekst(r, 'name')));
+  return (await kolumny(tx, tabela)).filter((c) => sa.has(c));
+}
 async function sprawdzTabele(tx: PortBazy): Promise<void> {
   const glowne = (await wiersze(tx.all("SELECT name FROM main.sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"), 'tabele')).map((r) => tekst(r, 'name'));
   const znane: readonly string[] = [...TABELE, 'blad', 'synchronizacja', 'zmiana_icloud']; // stan urządzenia: nie przenoszony (fix-7, ADR-0005)
@@ -52,7 +57,7 @@ export function zastapZKopii(baza: PortBazy, sciezkaKopii: string, sygnal?: Sygn
   return zKopia(baza, sciezkaKopii, async (tx) => {
     for (const t of [...TABELE].reverse()) await tx.run(t === 'ustawienie' ? `DELETE FROM main.ustawienie WHERE klucz NOT IN ${KLUCZE_URZADZENIA}` : `DELETE FROM main.${t}`);
     for (const t of TABELE) {
-      const k = (await kolumny(tx, t)).join(', ');
+      const k = (await kolumnyKopii(tx, t)).join(', ');
       await tx.run(`INSERT INTO main.${t} (${k}) SELECT ${k} FROM kopia.${t}${t === 'ustawienie' ? ` WHERE klucz NOT IN ${KLUCZE_URZADZENIA}` : ''}`);
     }
   }, sygnal);
@@ -83,7 +88,7 @@ export function scalZKopia(baza: PortBazy, sciezkaKopii: string, terazMs: number
     for (const t of TABELE) {
       const e = ENCJE[t];
       if (!e) continue;
-      const wszystkie = await kolumny(tx, t);
+      const wszystkie = await kolumnyKopii(tx, t); // tylko kolumny obecne w kopii: brakująca nie nadpisuje lokalnej wartości NULL-em
       const k = wszystkie.join(', ');
       const klucz = e.klucz.split(', ');
       const zmiany = wszystkie.filter((c) => !klucz.includes(c) && !(e.pomin ?? []).includes(c)).map((c) => `${c} = excluded.${c}`).join(', ');

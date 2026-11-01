@@ -86,4 +86,31 @@ describe('przypiszWloczki: zbiór wierszy projekt_wloczka', () => {
     const zm = await s.baza.all<{ encja: string; usuniete: number }>('SELECT encja, usuniete FROM zmiana_icloud ORDER BY encja');
     expect(zm).toEqual(expect.arrayContaining([{ encja: 'projekt_wloczka', usuniete: 1 }, { encja: 'wloczka', usuniete: 0 }]));
   });
+
+  test('P-334 (przegląd P1): zużycie ponad zapas (zapas 1, zużycie 3 → zapas 0) i odznaczenie zwraca tyle, ile faktycznie odjęto (1), nie 3', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [wloczka('y9', 'Mała', 1), projektWloczka('p1', 'y9')]);
+    expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y9', motki: 3 }] })).ok).toBe(true);
+    expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y9']))[0]?.motki).toBe(0);
+    expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
+    expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y9']))[0]?.motki).toBe(1);
+  });
+
+  test('P-334: ponowne potwierdzenie z inną liczbą liczy odjęcie łącznie (2, potem 3 z zapasu 3 → odjęto 3; potem 1 → odjęto 1); zwrot = odjeto_motki', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [projektWloczka('p1', 'y1')]); // zapas 3
+    for (const [zuzycie, zapas, odjeto] of [[2, 1, 2], [3, 0, 3], [1, 2, 1]] as const) {
+      expect((await zapiszZuzycie(s.z, { projektId: 'p1', zuzycie: [{ wloczkaId: 'y1', motki: zuzycie }] })).ok).toBe(true);
+      expect(await s.baza.all('SELECT w.motki, pw.odjeto_motki FROM wloczka w JOIN projekt_wloczka pw ON pw.wloczka_id = w.id WHERE w.id = ?', ['y1'])).toEqual([{ motki: zapas, odjeto_motki: odjeto }]);
+    }
+    expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
+    expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y1']))[0]?.motki).toBe(3);
+  });
+
+  test('P-334: wiersz bez odjeto_motki (NULL, np. ze starego archiwum) przy odznaczeniu nie zmienia zapasu', async () => {
+    const s = await start();
+    await wykonaj(s.baza, [projektWloczka('p1', 'y1'), ["UPDATE projekt_wloczka SET zuzyto_motki = 2 WHERE wloczka_id = 'y1'", []]]);
+    expect((await przypiszWloczki(s.z, { projektId: 'p1', wloczkaIds: [] })).ok).toBe(true);
+    expect((await s.baza.all<{ motki: number }>('SELECT motki FROM wloczka WHERE id = ?', ['y1']))[0]?.motki).toBe(3);
+  });
 });
