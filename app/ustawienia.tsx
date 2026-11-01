@@ -81,6 +81,11 @@ export default function EkranUstawien(): React.ReactElement {
       }),
     });
     wybor.current = null;
+    if (!w.ok && w.powod === 'bledne_dane') { // F-32 (07-jakosc-031): obcy plik albo plik bez manifestu Oczka — mówimy wprost, bez „That didn't work”
+      ustawDane(null);
+      Alert.alert(t('import.nie_rozpoznano_tytul'), t('import.nie_rozpoznano_opis'));
+      return;
+    }
     if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return; }
     if (w.wartosc.tryb === 'anulowano') { ustawDane(null); return; }
     if (w.wartosc.tryb === 'zastap') licznik.zresetuj(); else await licznik.poZmianie();

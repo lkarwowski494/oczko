@@ -46,7 +46,11 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {panelE2e /* build E2E: na górze, widoczny bez przewijania (scenariusze 08, 09) */}
       <Text style={{ ...typografia.tytul, color: k.grafit }} accessibilityRole="header">{t('ustawienia.tytul')}</Text>
       <View style={st.grupa}>
-        <Przycisk tekst={t('ustawienia.oczko_pro')} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />
+        <View style={st.wiersz}>
+          <Przycisk tekst={t('ustawienia.oczko_pro')} etykieta={s.pro ? `${t('ustawienia.oczko_pro')}, ${t('ustawienia.pro_wlaczone')}` : undefined} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />
+          {/* F-63 (07-jakosc-031): stan Pro jako wartość wiersza; VoiceOver czyta „Oczko Pro, On” */}
+          {s.pro && <Text style={{ ...typografia.tresc, color: k.olowek }} testID="ustawienia-pro">{t('ustawienia.pro_wlaczone')}</Text>}
+        </View>
         {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
         {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>

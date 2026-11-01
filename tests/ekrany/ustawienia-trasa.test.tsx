@@ -2,6 +2,7 @@
 // 07-jakosc-003 (ADR-0028, BR-DAN-006/S3, K-03c, K-03d): po „Replace” ekran mówi, że dane zastąpiono, i podaje nazwę kopii; po „Merge” nadal „Merged”.
 import React from 'react';
 import { readdirSync, writeFileSync } from 'node:fs';
+import { Alert } from 'react-native';
 import { join } from 'node:path';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { utworzArchiwum } from '../../src/dane/archiwum';
@@ -27,7 +28,7 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApli
 const EkranUstawien = (require('../../app/ustawienia') as { default: React.ComponentType }).default;
 
 /** Aplikacja z prawdziwą bazą i archiwum (Node SQLite, dysk); `kopiePrzed` pozwala podać katalog kopii, którego nie da się zapisać. */
-async function aplikacja(kopiePrzed?: (katalog: string) => string) {
+async function aplikacja(kopiePrzed?: (katalog: string) => string, aktywne: unknown = null) {
   const t = await tEn();
   const s = await przygotuj();
   await wykonaj(s.baza, [projekt('stary', 'Stary sweter')]);
@@ -36,7 +37,7 @@ async function aplikacja(kopiePrzed?: (katalog: string) => string) {
   const licznik = { zresetuj: jest.fn(), poZmianie: jest.fn(async () => undefined) };
   const kontener = {
     z: { ...s.z, katalogi, archiwum, czasWTle }, j: { t, preferencja: () => 'auto', jezyk: () => 'en' }, icloud: null, katalogDanych: s.katalog,
-    dostep: { stan: () => ({ aktywne: null, pro: false }), naZmiane: () => () => undefined },
+    dostep: { stan: () => ({ aktywne, pro: aktywne !== null }), naZmiane: () => () => undefined },
   };
   mockAplikacja = { kontener, licznik, preferencje: { stan: () => ({ wibracje: true }), ustaw: jest.fn() } };
   mockParametry.import = archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka')]);
@@ -79,4 +80,33 @@ test('K-03d: nie da się zapisać kopii → „Replace” przez trasę pokazuje 
   expect(screen.queryByText(/^Merged/)).toBeNull();
   expect(await licznosci(s.baza)).toEqual(przed);
   expect(await nazwyProjektow(s)).toEqual(['Stary sweter']);
+});
+
+test('07-jakosc-031 F-63: wiersz „Oczko Pro” pokazuje stan „On” przy aktywnym Pro; bez Pro — bez zmian (licznik darmowych dni, bez „On”)', async () => {
+  await aplikacja(undefined, { rodzaj: 'dozywotni' });
+  mockParametry.import = undefined;
+  const w = render(<EkranUstawien />);
+  expect(await screen.findByTestId('ustawienia-pro')).toHaveTextContent('On');
+  expect(screen.getByRole('button', { name: 'Oczko Pro, On' })).toBeTruthy(); // VoiceOver czyta etykietę i wartość
+  w.unmount();
+  await aplikacja();
+  mockParametry.import = undefined;
+  render(<EkranUstawien />);
+  expect(await screen.findByTestId('ustawienia-dni-darmowe')).toBeTruthy();
+  expect(screen.queryByTestId('ustawienia-pro')).toBeNull();
+});
+
+test('07-jakosc-031 F-32: obcy plik zamiast archiwum → alert „not recognized” (nie ogólny błąd), dane nietknięte, bez pytania o tryb', async () => {
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  const { s } = await aplikacja();
+  const obcy = join(s.katalog, 'zdjecie.oczko');
+  writeFileSync(obcy, 'to nie jest archiwum Oczka');
+  mockParametry.import = obcy;
+  const przed = await licznosci(s.baza);
+  render(<EkranUstawien />);
+  await waitFor(() => expect(alert).toHaveBeenCalled());
+  expect(alert.mock.calls[0].slice(0, 2)).toEqual(['Oczko doesn’t recognize this file', 'Choose a file exported from Oczko. Nothing was changed.']);
+  expect(screen.queryByText('That didn’t work. Your data is unchanged.')).toBeNull();
+  expect(screen.queryByTestId('import-gotowy')).toBeNull();
+  expect(await licznosci(s.baza)).toEqual(przed);
 });
