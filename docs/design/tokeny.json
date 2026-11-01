@@ -190,7 +190,8 @@
  "haptykaZegarek": {
   "_zasada": "Zegarek (NZ-05-F4-04, P-142): watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, odczyt 2026-10-26). Klucze jak w „haptyka”; wzorce spoza tej listy zegarek gra jak dotąd (decyzja 08 przy celu watch).",
   "bladZapisu": "WKHapticType.retry — „Tells the person that an action failed but they can retry it” (HIG); zamiast „plus” po nieudanym zapisie skrzynki",
-  "blokadaStukniecie": "WKHapticType.failure — „Tells the person that an action failed” (HIG); stuknięcie w ekran zegarka przy zablokowanym liczniku (P-142 2a)"
+  "blokadaStukniecie": "WKHapticType.failure — „Tells the person that an action failed” (HIG); stuknięcie w ekran zegarka przy zablokowanym liczniku (P-142 2a)",
+  "przypomnienie": "WKHapticType.notification — „Tells the person that something significant or out of the ordinary has happened and requires their attention” (HIG, Playing haptics, watchOS; surowy JSON odczytany 2026-11-01); wejście na rząd z przypomnieniem (BR-LIC-015 S2, ADR-0030, K-05g); jedno uderzenie systemowe, inne niż „plus” (zwykły rząd) i „bladZapisu”"
   },
  "znakKresek": {
   "_opis": "Znak kresek (NZ-08-P4-04, P-158 2a): cztery kreski i przekreślenie z ikony, bez zakreślacza i tła (HIG Live Activities: „display it without a container … Don’t use the entire app icon”). Plik ikona/znak-kresek.svg jako obraz szablonowy w katalogu zasobów (wektor zachowany, Render As: Template); kolor nadaje kod. Ukryty dla VoiceOver (accessibilityHidden): dane niesie liczba obok.",

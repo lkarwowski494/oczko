@@ -315,7 +315,7 @@ main[data-ekran].tel { height: var(--h, 844px); min-height: 0; overflow: hidden;
 
 <!-- usun-wszystko -->
 <main data-ekran="usun-wszystko">
-<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Counter</a><div class="ikony"></div></div><div class="tytul"><h1>Settings</h1></div><div class="naglowek-grupy">Your data</div><div class="grupa"><div class="el"><div class="tx">Export and import</div><span aria-hidden="true">›</span></div><div class="el"><div class="tx usun-tekst">Delete all data</div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="tresc-arkusza"><h2>Delete all data?</h2><p>This removes all projects, counters, history, patterns and photos from this device. It can’t be undone.</p><p>Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.</p></div><div class="przyciski"><button class="przycisk-niszczacy">Delete all data</button><button class="przycisk-tekst">Cancel</button></div></div>
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Counter</a><div class="ikony"></div></div><div class="tytul"><h1>Settings</h1></div><div class="naglowek-grupy">Your data</div><div class="grupa"><div class="el"><div class="tx">Export and import</div><span aria-hidden="true">›</span></div><div class="el"><div class="tx usun-tekst">Delete all data</div><span aria-hidden="true">›</span></div></div><div class="przyciemnienie"></div><div class="arkusz"><div class="uchwyt"></div><div class="tresc-arkusza"><h2>Delete all data?</h2><p>This removes all projects, counters, history, patterns and photos from this device.</p><p>Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.</p><p>Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.</p></div><div class="przyciski"><button class="przycisk-niszczacy">Delete all data</button><button class="przycisk-tekst">Cancel</button></div></div>
 </main>
 
 <!-- licznik-seria-blokada -->
@@ -366,6 +366,21 @@ main[data-ekran].tel { height: var(--h, 844px); min-height: 0; overflow: hidden;
 <!-- wzor-opcja-kropka -->
 <main data-ekran="wzor-opcja-kropka">
 <div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" role="button" aria-label="Add note">✎</span><span class="ikona" role="button" aria-label="Pattern options">•••</span></div></div><div class="tytul"><h1 style="font-size:calc(24px * var(--dt-tytul))">Sleeve pattern</h1></div><div class="wzor-strona" style="height:420px"><div class="tekst-wzoru"></div><div class="znacznik" style="top:150px"><span class="tab">Row 48 ↑</span><span class="uchwyt-dol"></span></div><div class="chip-notatki" role="button" aria-label="Note on row 30" style="top:268px;max-width:none;width:28px;padding:0;justify-content:center"><span aria-hidden="true">✎</span></div></div><p class="podpis" style="margin:8px 20px 0">Page 2 of 5 · counter row 47</p><span class="oznaczenie">opcja B: sama ikona, tekst po stuknięciu</span>
+</main>
+
+<!-- ustawienia-preferencje -->
+<main data-ekran="ustawienia-preferencje">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Counter</a><div class="ikony"></div></div><div class="tytul"><h1>Settings</h1></div><div class="naglowek-grupy">Counting</div><div class="grupa"><div class="el"><div class="tx">Vibration</div><span class="przel wl" role="switch" aria-checked="true"></span></div><div class="el"><div class="tx">Keep screen on while counting</div><span class="przel wl" role="switch" aria-checked="true"></span></div><div class="el"><div class="tx">Units</div><span class="wartosc">Automatic</span><span aria-hidden="true">›</span></div></div><p class="podpis" style="margin:8px 32px 0">The screen stays on while the counter is open. Turning it off can save battery.</p><span class="oznaczenie">3 wiersze: wibracje, ekran, miary</span>
+</main>
+
+<!-- ustawienia-miary -->
+<main data-ekran="ustawienia-miary">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Settings</a><div class="ikony"></div></div><div class="tytul"><h1>Units</h1></div><div class="grupa"><div class="el"><div class="tx">Automatic</div><span aria-hidden="true">✓</span></div><div class="el"><div class="tx">Metric<small>mm, cm, g</small></div></div><div class="el"><div class="tx">Imperial<small>in, oz</small></div></div></div><p class="podpis" style="margin:8px 32px 0">Changes how sizes and lengths are shown and entered. Your saved data doesn’t change.</p>
+</main>
+
+<!-- stan-danych-kopie -->
+<main data-ekran="stan-danych-kopie">
+<div class="status"><span>19:02</span><span>▂▄▆ ▭</span></div><div class="nav"><a href="#">‹ Settings</a><div class="ikony"></div></div><div class="tytul"><h1>Data and sync</h1></div><div class="naglowek-grupy">iCloud</div><div class="grupa"><div class="el"><div class="tx">iCloud sync</div><span class="przel" role="switch" aria-checked="false"></span></div></div><p class="podpis" style="margin:16px 32px 0">Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. They count toward your device’s iCloud backup, so delete the ones you no longer need.</p><span class="oznaczenie">tylko gdy są kopie</span>
 </main>
 
 <script>

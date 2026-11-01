@@ -43,7 +43,9 @@
   "przyp.usun_opis": "Oczko stops reminding you about “{{tekst}}”. Your count and history stay as they are.",
   "przyp.wiersz_a11y": "{{tekst}}, {{opis}}. Edit",
   "ustawienia.usun_pro": "Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.",
-  "ustawienia.usun_pytanie": "This removes all projects, counters, history, patterns and photos from this device. It can’t be undone.",
+  "ustawienia.usun_pytanie": "This removes all projects, counters, history, patterns and photos from this device.",
+  "ustawienia.usun_kopia": "Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.",
+  "ustawienia.usun_kopia_blad": "Oczko couldn’t save a copy, so nothing was deleted. Free some space and try again.",
   "licznik.seria_blokada_one": "Added {{count}} row from the lock screen at {{godzina}}. Undo?",
   "licznik.seria_blokada_other": "Added {{count}} rows from the lock screen at {{godzina}}. Undo?",
   "licznik.seria_zegarek_one": "Added {{count}} row on your watch at {{godzina}}. Undo?",
@@ -70,6 +72,15 @@
   "projekty.ukonczono_a11y": "{{nazwa}}, finished {{data}}, {{czas}}",
   "projekty.ukonczono_bez_czasu_a11y": "{{nazwa}}, finished {{data}}",
   "licznik.jednostka_w_trakcie": "current row",
+  "ustawienia.ekran_nie_gasnie": "Keep screen on while counting",
+  "ustawienia.ekran_nie_gasnie_opis": "The screen stays on while the counter is open. Turning it off can save battery.",
+  "ustawienia.miary_auto": "Automatic",
+  "ustawienia.miary_metric": "Metric",
+  "ustawienia.miary_metric_opis": "mm, cm, g",
+  "ustawienia.miary_imperial": "Imperial",
+  "ustawienia.miary_imperial_opis": "in, oz",
+  "ustawienia.miary_opis": "Changes how sizes and lengths are shown and entered. Your saved data doesn’t change.",
+  "stan_danych.kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. They count toward your device’s iCloud backup, so delete the ones you no longer need.",
   "ustawienia.pro_wlaczone": "On"
  },
  "kontekst": {
@@ -115,7 +126,9 @@
   "przyp.usun_opis": "Opis alertu usunięcia przypomnienia; {{tekst}} = treść instrukcji użytkowniczki. Uspokaja: licznik i historia bez zmian.",
   "przyp.wiersz_a11y": "Etykieta VoiceOver wiersza listy przypomnień; {{opis}} = druga linia wiersza (`przyp.wiersz_*`); „Edit” = akcja otwarcia edycji.",
   "ustawienia.usun_pro": "Drugi akapit w arkuszu „Delete all data” (KP-05): usunięcie danych nie usuwa zakupu; Pro wraca przez „Restore purchases” na ekranie Oczko Pro. Jedno zdanie spokojnym głosem; nie straszy.",
-  "ustawienia.usun_pytanie": "Pierwszy akapit arkusza „Delete all data”; „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie. Tłumaczenie: słowo „urządzenie” neutralne wobec modelu.",
+  "ustawienia.usun_pytanie": "Pierwszy akapit arkusza „Delete all data”; „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie. Bez zdania „It can’t be undone.”: od P-328 przed usunięciem powstaje kopia. Tłumaczenie: słowo „urządzenie” neutralne wobec modelu.",
+  "ustawienia.usun_kopia": "Drugi akapit arkusza „Delete all data” (P-328: kopia przed usunięciem, jak w Treningu; ADR-0028). „Files” = aplikacja Pliki w iOS; „Oczko › Backup” = folder w Plikach (nazwy aplikacji i folderu zgodnie z systemem). „Importing that file” = zwykły import eksportu Oczka.",
+  "ustawienia.usun_kopia_blad": "Komunikat po nieudanej kopii przed „Delete all data” (dysk pełny albo błąd zapisu): usunięcie jest przerwane, dane nietknięte (zasada „zero utraty danych”). Jedno-dwa zdania: co się stało i co zrobić.",
   "licznik.seria_blokada_one": "Baner strażnika tempa, gdy serię stuknięć z ekranu blokady scalono po otwarciu aplikacji (BR-LIC-019 S5). {{godzina}} = godzina serii, nie scalenia (format godziny regionu). Forma pojedyncza dla reguł języka; w praktyce ≥ 2.",
   "licznik.seria_blokada_other": "Baner strażnika tempa dla serii z ekranu blokady; ten sam tekst jest ogłaszany przez VoiceOver razem ze zdaniem „Undo is available.”",
   "licznik.seria_zegarek_one": "Baner strażnika tempa dla serii z zegarka scalonej po otwarciu aplikacji. {{godzina}} = godzina serii.",
@@ -142,6 +155,15 @@
   "projekty.ukonczono_a11y": "Etykieta VoiceOver wiersza ukończonego projektu z czasem; {{czas}} słownie („4 hours 20 minutes”).",
   "projekty.ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu.",
   "licznik.jednostka_w_trakcie": "Podpis przy dużej liczbie w trybie „rząd w trakcie” (BR-LIC-012): liczba to rząd, który się dzierga, a nie liczba skończonych (zamiast „rows”).",
+  "ustawienia.ekran_nie_gasnie": "Wiersz z przełącznikiem w Ustawieniach, grupa „Counting” (ADR-0029, BR-LIC-013 S2). Etykieta do ok. 32 znaków; przy dużym tekście zawija się.",
+  "ustawienia.ekran_nie_gasnie_opis": "Podpis pod grupą „Counting” w Ustawieniach, wyjaśnia przełącznik „Keep screen on while counting”.",
+  "ustawienia.miary_auto": "Wartość preferencji „Units” (istniejący klucz `ustawienia.uklad_miar`) = układ miar z ustawień regionalnych urządzenia. Jedno słowo.",
+  "ustawienia.miary_metric": "Wartość preferencji „Units”: układ metryczny (mm, cm, g). Druga linia: `ustawienia.miary_metric_opis`.",
+  "ustawienia.miary_metric_opis": "Skróty jednostek pod wyborem „Metric”: milimetry, centymetry, gramy (skróty wg regionu).",
+  "ustawienia.miary_imperial": "Wartość preferencji „Units”: układ calowo-uncjowy (cale, uncje). Druga linia: `ustawienia.miary_imperial_opis`.",
+  "ustawienia.miary_imperial_opis": "Skróty jednostek pod wyborem „Imperial”: cale, uncje.",
+  "ustawienia.miary_opis": "Podpis pod listą wyboru „Units”: zmienia tylko wyświetlanie i wpisywanie; dane zostają (mm, g).",
+  "stan_danych.kopie_opis": "Podpis na ekranie „Data and sync”, pokazywany tylko gdy w Documents/Backup są kopie Oczka (N-05-2, ADR-0028): gdzie są i że wliczają się do kopii iCloud urządzenia. Jedno zdanie informacyjne, bez straszenia.",
   "ustawienia.pro_wlaczone": "Wartość wiersza „Oczko Pro” w Ustawieniach, gdy Pro jest aktywne (07-jakosc-031, F-63). Jedno słowo; VoiceOver czyta „Oczko Pro, On”."
  },
  "zastapEn": {
@@ -171,7 +193,7 @@
   },
   "ustawienia.usun_pytanie": {
    "z": "[nieznany — kwarantanna 04; 08: zachowaj obecne zdanie i zamień tylko „this iPhone” na „this device”, jeśli zdanie różni się od propozycji]",
-   "na": "This removes all projects, counters, history, patterns and photos from this device. It can’t be undone."
+   "na": "This removes all projects, counters, history, patterns and photos from this device."
   }
  }
 }
