@@ -120,6 +120,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-007/S3, BR-LIC-010/S1, BR-LIC-010/S2, BR-LIC-017/S7, BR-PRJ-013/S3, P-191, RD-12, RD-13 | `src/ekrany/Formularze`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-dni.test.tsx` | zielony (główny zestaw) | 4 | BR-DNI-001, BR-DNI-003, P-191 | `src/ekrany/HistoriaDni`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | ER-55, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-menu.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-003, BR-LIC-003/S1, BR-LIC-004, BR-LIC-017/S6, BR-PRJ-006, R-007 | `src/ekrany/Historia`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-ukonczenia.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-013 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-konflikt.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/IcloudKonflikt`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-licznik.test.tsx` | zielony (główny zestaw) | 2 | P-046, P-220 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-stan-danych.test.tsx` | zielony (główny zestaw) | 14 | BR-DAN-002/S3, BR-DAN-009, P-220, P-229, P-242, P-266 | `src/ekrany/StanDanych`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -145,7 +146,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty.test.tsx` | zielony (główny zestaw) | 10 | KP-03, KP-04, KP-08, KP-09, KP-14, P-054, P-065, P-089, R-118, R-124 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/p202-stan-danych-korekta.test.tsx` | zielony (główny zestaw) | 1 | BR-DAN-011/S3, BR-PRJ-013/S4, P-193, P-195, P-202 | `src/ekrany/StanDanych`<br>`src/ekrany/wspolne` | ER-52, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/probka.test.ts` | zielony (główny zestaw) | 14 | BR-KAL-001, BR-KAL-003, RD-01, RD-04, RD-10 | `src/ekrany/wspolne`<br>`src/kompozycja/probka` | ER-43, Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-dni.test.tsx` | zielony (główny zestaw) | 5 | BR-DNI-001/S4, BR-DNI-003/S2, BR-DNI-004/S3, BR-PRJ-005, BR-PRJ-005/S1, BR-PRJ-014/S3, P-043, RD-14 | `src/ekrany/Dni`<br>`src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-dni.test.tsx` | zielony (główny zestaw) | 3 | BR-DNI-001/S4, BR-DNI-003/S2, BR-DNI-004/S3, BR-PRJ-005, BR-PRJ-005/S1, BR-PRJ-014/S3, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-drobne-8c.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik`<br>`src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-miejsce-wzoru.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-005/S1 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-p5.test.tsx` | zielony (główny zestaw) | 12 | BR-DNI-005, BR-LIC-018, BR-PRJ-002, BR-PRJ-005, P-183, P-191, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -198,4 +199,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 194; zależnych od poprawek: 131.
+Razem plików testów: 195; zależnych od poprawek: 131.
