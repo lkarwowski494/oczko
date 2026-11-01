@@ -1,3 +1,27 @@
 {
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$CLAUDE_PROJECT_DIR/CLAUDE.md\"; [ -f \"$f\" ] && { echo 'Aktualne zasady projektu (CLAUDE.md z dysku, po streszczeniu kontekstu — mają pierwszeństwo przed wcześniejszą kopią):'; cat \"$f\"; } || true",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "startup|resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "g=\"$CLAUDE_PROJECT_DIR/docs/fakty-wlasciciela.md\"; [ -f \"$g\" ] && { echo 'Fakty o właścicielu (docs/fakty-wlasciciela.md) — sprawdź przed pytaniem o fakt; potem repo trening (P-315):'; cat \"$g\"; } || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

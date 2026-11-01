@@ -36,6 +36,7 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite (stan poprzedniej wersji); de
 
 ## Zasady
 - **Decyzje (P-087, do odwołania):** decyduje koordynator — najpierw tak, jak w repo `trening`; bez analogii według własnej rekomendacji; zapis w `docs/decyzje.md`. Na STOP-y ról odpowiada koordynator. U właściciela zostają: koszty, jego konta, scalenie do `main`, wysłanie do Apple.
+- **Najpierw Trening (P-315):** zanim zapytasz właściciela o fakt, krok albo potwierdzenie — sprawdź `docs/fakty-wlasciciela.md` i repo `lkarwowski494/trening`; jeśli tam to zrobiono albo jest analogiczne rozwiązanie, rób jak w Treningu bez pytania. W pytaniu podaj, gdzie szukałeś.
 - Repo publiczne: żadnych sekretów, kluczy, `.env`, danych osobowych; przed commitem `git diff --cached`.
 - Koszt stały 0 zł poza opłatą Apple Developer; CI na GitHub Actions (repo publiczne).
 - Zero utraty danych: migracja w transakcji, test na kopii bazy poprzedniej wersji (wyjątek nazwany P-070: dane 0.1.0 bez migracji, stary plik nietknięty).
