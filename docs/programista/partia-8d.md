@@ -13,7 +13,7 @@ Polecenie: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8d.md` (ebe87
 ## Zrobione
 | ID | Commit | Test czerwony → zielony | Uwagi |
 |---|---|---|---|
-| 07-jakosc-023 | (ten commit — sprawdź `git log`) | `znacznik-ustawianie.test.ts` (3+1 czerwone na zaślepkach), `wzor-trasa-znacznik.test.tsx` (6, potem +5 czerwone na braku UI i propsów natywnych) → zielone | verify: 285 zestawów / 2885 testów, kod 0. Nowe teksty robocze 08 do akceptacji 04: `wzor.przed_schematem`, `wzor.znacznik_napis`, `wzor.notatka_edytuj`. |
+| 07-jakosc-023 | ed1d48f | `znacznik-ustawianie.test.ts` (3+1 czerwone na zaślepkach), `wzor-trasa-znacznik.test.tsx` (6, potem +5 czerwone na braku UI i propsów natywnych) → zielone | verify: 285 zestawów / 2885 testów, kod 0. Nowe teksty robocze 08 do akceptacji 04: `wzor.przed_schematem`, `wzor.znacznik_napis`, `wzor.notatka_edytuj`. |
 | 07-jakosc-007 | cc36468 | `tests/domena/wzor/notatki-chipy.test.ts` (3 asercje czerwone na zaślepce), `tests/dane/wzor-notatki-widok.test.ts` (4), `tests/ekrany/wzor-trasa-notatki.test.tsx` (5; trasa `/wzor` z atrapą widoku natywnego tylko na granicy platformy) → zielone | Chip rysuje widok natywny Swift (`WidokWzoru.swift`, `ChipPrzycisk`), arkusz notatki w RN (`src/ekrany/WzorNotatki.tsx`). Test statyczny kontraktu Prop/Events Swift = TS: `tests/adaptery/widok-wzoru-kontrakt.test.ts` (czerwony na starym Swift). verify: 282 zestawy / 2870 testów, kod 0. Nie sprawdzone: wygląd i dotyk chipu na urządzeniu. |
 
 ## W toku / do zrobienia
