@@ -80,3 +80,12 @@ describe('wiersz „Yarn” w Details ekranu projektu', () => {
     expect(within(screen.getByTestId('projekt-wloczka')).getByText('2 yarns')).toBeTruthy();
   });
 });
+
+test('po powrocie z „Add yarn” nowa włóczka jest od razu zaznaczona, a wcześniejszy wybór zostaje', () => {
+  const { FormularzWloczekProjektu } = jest.requireActual('../../src/ekrany/FormularzeProjektu') as typeof import('../../src/ekrany/FormularzeProjektu');
+  const wspolne = { t: j.t, poczatkowe: ['y1'], naZapisz: jest.fn(), naAnuluj: jest.fn(), naDodajWloczke: jest.fn() };
+  const r = render(<FormularzWloczekProjektu {...wspolne} zapas={[{ id: 'y1', nazwa: 'Merino', motki: 3 }]} />);
+  r.rerender(<FormularzWloczekProjektu {...wspolne} zapas={[{ id: 'y1', nazwa: 'Merino', motki: 3 }, { id: 'y2', nazwa: 'Nowa', motki: 0 }]} />);
+  expect(screen.getByLabelText('Nowa, 0 skeins in your stash').props.accessibilityState).toMatchObject({ checked: true });
+  expect(screen.getByLabelText('Merino, 3 skeins in your stash').props.accessibilityState).toMatchObject({ checked: true });
+});
