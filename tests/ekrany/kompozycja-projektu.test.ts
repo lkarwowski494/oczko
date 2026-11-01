@@ -50,7 +50,7 @@ test('kosz: projekt roboczy (sam i jako rodzic części) → etykieta „Counter
   ]);
 });
 test('stanListy: linie terminu i ostatniej pracy tylko w toku; liczba kosza', () => {
-  const p = { id: 'p1', nazwa: 'Harbor', nienazwany: false, utworzonoMs: 0, ostatniaPracaMs: 0, licznik: null, dniOdPracy: 41, dzis: { cel: { rodzaj: 'cel' as const, rzedy: 10 }, zrobione: 3 } };
+  const p = { id: 'p1', nazwa: 'Harbor', nienazwany: false, utworzonoMs: 0, ostatniaPracaMs: 0, licznik: null, ukonczonoDzien: null, czasPracyMs: null, dniOdPracy: 41, dzis: { cel: { rodzaj: 'cel' as const, rzedy: 10 }, zrobione: 3 } };
   const s = stanListy({ wToku: [p], ukonczone: [{ ...p, id: 'p2' }], dni: null, kosz: 2 }, { zapytanie: '', j, terazMs: 0, strefa: 'UTC' });
   expect([s.wToku[0].termin, s.wToku[0].ostatniaPraca, s.ukonczone[0].ostatniaPraca ?? null, s.kosz]).toEqual(['Today: 3 of 10 rows', 'last worked 41 days ago', null, 2]);
 });

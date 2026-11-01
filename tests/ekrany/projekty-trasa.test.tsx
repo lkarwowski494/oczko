@@ -63,3 +63,26 @@ describe('07-jakosc-031 F-50 · wiersz w toku: „{część} · row {n} of {cel}
     expect(screen.queryByText(/Now knitting row/)).toBeNull();
   });
 });
+
+describe('07-jakosc-027 · ukończone z datą i czasem pracy (BR-PRJ-006/S1)', () => {
+  const UKONCZONO = T0 + 20 * DOBA; // 2026-11-11, ten sam rok co „teraz”
+  test('ukończony z sesjami stopera → „Finished Nov 11 · 1 h 30 min”; etykieta VoiceOver z nazwą', async () => {
+    const zamknij = (id: string, ms: number): [string, unknown[]] => ["UPDATE sesja SET stan = 'zakonczona', koniec_ms = start_ms + ? WHERE id = ?", [ms, id]];
+    await otworz([
+      projekt('p1', 'Sweter', T0, { stan: 'ukonczony', ukonczono: UKONCZONO }), czesc('c1', 'p1', 'Przód', 1), ...licznik('l1', 'c1', 5),
+      sesja('s1', 'p1', T0 + GODZ), zamknij('s1', GODZ), sesja('s2', 'p1', T0 + 3 * GODZ), zamknij('s2', 30 * MIN),
+    ]);
+    expect(screen.getByText('Finished Nov 11 · 1 h 30 min')).toBeTruthy();
+    expect(screen.getByLabelText('Sweter, finished Nov 11, 1 h 30 min')).toBeTruthy();
+  });
+  test('bez stopera → „Finished Nov 11”, nigdy „0 min”; inny rok → z rokiem', async () => {
+    await otworz([
+      projekt('p1', 'Sweter', T0, { stan: 'ukonczony', ukonczono: UKONCZONO }), czesc('c1', 'p1', 'Przód', 1), ...licznik('l1', 'c1', 5),
+      projekt('p2', 'Szal', T0 - 400 * DOBA, { stan: 'ukonczony', ukonczono: T0 - 300 * DOBA }), czesc('c2', 'p2', 'Body', 1), ...licznik('l2', 'c2', 2, { t: T0 - 400 * DOBA }),
+    ]);
+    expect(screen.getByText('Finished Nov 11')).toBeTruthy();
+    expect(screen.getByText('Finished Dec 26, 2025')).toBeTruthy();
+    expect(screen.queryByText(/0 min/)).toBeNull();
+    expect(screen.getByLabelText('Szal, finished Dec 26, 2025')).toBeTruthy();
+  });
+});

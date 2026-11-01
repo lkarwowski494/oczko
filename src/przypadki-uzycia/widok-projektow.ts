@@ -15,6 +15,8 @@ import type { Zaleznosci } from './zaleznosci';
 
 export type ProjektNaEkranie = {
   id: string; nazwa: string; nienazwany: boolean; utworzonoMs: number; ostatniaPracaMs: number;
+  /** Ukończony: dzień lokalny ukończenia (RD-16) i suma zakończonych sesji stopera; `null` = nie ukończony / nie używano stopera (BR-PRJ-006/S1, BR-PRJ-015/S3). */
+  ukonczonoDzien: string | null; czasPracyMs: number | null;
   /** Licznik z najnowszą zmianą w projekcie (BR-PRJ-016/S2, 07-jakosc-028); bez żadnej zmiany: pierwszy licznik pierwszej części. `null` = projekt bez licznika. */
   licznik: { id: string; czesc: string; wartosc: number; cel: number | null } | null;
   /** Dni kalendarzowe (RD-16) od ostatniej pracy do dziś — „last worked …” bez progu (BR-PRJ-016, P-182, P-183 1a). */
@@ -27,9 +29,11 @@ export type WidokProjektow = { wToku: ProjektNaEkranie[]; ukonczone: ProjektNaEk
 export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
   return operacjaZapisu(z, 'widokProjektow', async (tx, teraz, chwila) => {
     const l = await listaProjektow(tx);
-    const dodatki = new Map<string, { nienazwany: boolean; utworzonoMs: number; licznik: ProjektNaEkranie['licznik'] }>();
+    const dodatki = new Map<string, { nienazwany: boolean; utworzonoMs: number; licznik: ProjektNaEkranie['licznik']; ukonczonoDzien: string | null; czasPracyMs: number | null }>();
     for (const r of await wiersze(tx.all(
-      `SELECT p.id, p.nienazwany, p.utworzono_ms,
+      `SELECT p.id, p.nienazwany, p.utworzono_ms, p.ukonczono_dzien,
+              (SELECT count(*) FROM sesja s WHERE s.projekt_id = p.id AND s.stan = 'zakonczona') AS sesji,
+              (SELECT coalesce(sum(max(0, s.koniec_ms - s.start_ms - s.przerwy_ms)), 0) FROM sesja s WHERE s.projekt_id = p.id AND s.stan = 'zakonczona') AS czas_ms,
               (SELECT l.id FROM czesc c JOIN licznik l ON l.czesc_id = c.id WHERE c.projekt_id = p.id AND c.usunieto_ms IS NULL AND l.usunieto_ms IS NULL
                 ORDER BY coalesce((SELECT max(z.czas_ms) FROM zdarzenie z WHERE z.licznik_id = l.id), -1) DESC, c.kolejnosc, l.kolejnosc LIMIT 1) AS licznik_id
          FROM projekt p WHERE p.usunieto_ms IS NULL`), 'widokProjektow')) {
@@ -39,7 +43,8 @@ export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
         const [x] = await wiersze(tx.all('SELECT l.wartosc, c.nazwa, c.cel_rzedow FROM licznik l JOIN czesc c ON c.id = l.czesc_id WHERE l.id = ?', [lid]), 'widokProjektow');
         if (x) licznik = { id: lid, czesc: tekst(x, 'nazwa'), wartosc: liczba(x, 'wartosc'), cel: liczbaLubNull(x, 'cel_rzedow') };
       }
-      dodatki.set(tekst(r, 'id'), { nienazwany: liczba(r, 'nienazwany') === 1, utworzonoMs: liczba(r, 'utworzono_ms'), licznik });
+      dodatki.set(tekst(r, 'id'), { nienazwany: liczba(r, 'nienazwany') === 1, utworzonoMs: liczba(r, 'utworzono_ms'), licznik, ukonczonoDzien: tekstLubNull(r, 'ukonczono_dzien'),
+        czasPracyMs: liczba(r, 'sesji') > 0 ? liczba(r, 'czas_ms') : null });
     }
     const dzis = chwila.dzien;
     const dniOd = (ms: number): number => {
@@ -50,7 +55,7 @@ export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
     const terminy = new Map<string, string>();
     for (const r of await wiersze(tx.all("SELECT id, termin_dzien FROM projekt WHERE termin_dzien IS NOT NULL AND usunieto_ms IS NULL AND stan = 'w_toku'"), 'widokProjektow')) terminy.set(tekst(r, 'id'), tekst(r, 'termin_dzien'));
     const naEkranie = async (p: (typeof l.wToku)[number]): Promise<ProjektNaEkranie> => {
-      const d = dodatki.get(p.id) ?? { nienazwany: false, utworzonoMs: p.ostatniaPracaMs, licznik: null };
+      const d = dodatki.get(p.id) ?? { nienazwany: false, utworzonoMs: p.ostatniaPracaMs, licznik: null, ukonczonoDzien: null, czasPracyMs: null };
       const termin = terminy.get(p.id);
       const dp = termin ? await dzienProjektu(tx, p.id, termin, dzis) : null;
       return { id: p.id, nazwa: p.nazwa, ostatniaPracaMs: p.ostatniaPracaMs, ...d, dniOdPracy: dniOd(p.ostatniaPracaMs), dzis: dp?.cel ? { cel: dp.cel, zrobione: dp.zrobioneDzis } : null };

@@ -131,7 +131,11 @@
     "kosz": "Ostatni wiersz listy projektów, tylko gdy coś jest w koszu (P-183 2a); otwiera ekran „Recently deleted”. Ta sama nazwa co tytuł ekranu i co w potwierdzeniach usunięcia (kosz.tytul, usun.*). Ok. 20 znaków.",
     "kosz_a11y": "Etykieta VoiceOver wiersza kosza na liście; {{count}} = liczba elementów w koszu (projekty, części, liczniki).",
     "wiersz": "Przegląd 04 z P-188 (P-191), R4: pierwsza linia wiersza projektu w toku, część bez celu. {{n}} = bieżący rząd.",
-    "wiersz_cel": "Przegląd 04 z P-188 (P-191), R4: jak projekty.wiersz, część z celem."
+    "wiersz_cel": "Przegląd 04 z P-188 (P-191), R4: jak projekty.wiersz, część z celem.",
+    "ukonczono_wiersz": "Druga linia wiersza ukończonego projektu na liście (BR-PRJ-006 S1). {{data}} = data ukończenia (krótka, rok tylko gdy inny niż bieżący), {{czas}} = czas pracy ze stopera (format czasu trwania, np. „4 h 20 min”).",
+    "ukonczono_bez_czasu": "Druga linia wiersza ukończonego projektu, gdy nie używano stopera (nie pokazujemy „0 min”).",
+    "ukonczono_a11y": "Etykieta VoiceOver wiersza ukończonego projektu z czasem; {{czas}} słownie („4 hours 20 minutes”).",
+    "ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu."
   },
   "historia": {
     "pusto": "Tekst z prototyp.html roli 04.",

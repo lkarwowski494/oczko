@@ -149,7 +149,11 @@
     "kosz_a11y_one": "Recently deleted, {{count}} item",
     "kosz_a11y_other": "Recently deleted, {{count}} items",
     "wiersz": "{{czesc}} · row {{n}}",
-    "wiersz_cel": "{{czesc}} · row {{n}} of {{cel}}"
+    "wiersz_cel": "{{czesc}} · row {{n}} of {{cel}}",
+    "ukonczono_wiersz": "Finished {{data}} · {{czas}}",
+    "ukonczono_bez_czasu": "Finished {{data}}",
+    "ukonczono_a11y": "{{nazwa}}, finished {{data}}, {{czas}}",
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, finished {{data}}"
   },
   "historia": {
     "pusto": "No changes yet.",
