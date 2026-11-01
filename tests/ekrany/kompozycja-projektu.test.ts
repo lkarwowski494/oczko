@@ -60,7 +60,7 @@ import { stanProjektu } from '../../src/kompozycja/projekt';
 const W: WidokProjektu = {
   id: 'p1', nazwa: 'Harbor', nienazwany: false, stan: 'w_toku', utworzonoMs: Date.UTC(2026, 9, 1), zmienionoMs: Date.UTC(2026, 9, 20, 10), ostatniaPracaMs: Date.UTC(2026, 9, 22, 10),
   notatka: '', narzedzie: 'druty', drutMm: 4, drutUS: '6', terminDzien: '2026-10-31', celDnia: { rodzaj: 'cel', rzedy: 10 }, zrobioneDzis: 3,
-  postep: { rodzaj: 'procent', wartosc: 51 }, ukonczonoDzien: null, probka: null, // probka: mechanicznie po D5 (U-10)
+  postep: { rodzaj: 'procent', wartosc: 51 }, ukonczonoDzien: null, probka: null, miejsceWzoru: null, // probka: mechanicznie po D5 (U-10)
   czesci: [
     { id: 'c1', nazwa: 'Back', rzedy: 60, cel: 96, celZPary: false, paraZ: null, calosc: null, liczniki: [{ id: 'l1', nazwa: '', rodzaj: 'rzedy', wartosc: 60, znaczenie: 'skonczone' }] },
     { id: 'c2', nazwa: 'Blanket', rzedy: 20, cel: null, celZPary: false, paraZ: null, calosc: 20, liczniki: [

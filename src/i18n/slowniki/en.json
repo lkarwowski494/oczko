@@ -332,7 +332,8 @@
     "probka_wartosc": "{{p}} stitches / 10 cm",
     "probka_wartosc_in": "{{p}} stitches / 4 in",
     "wzor": "Pattern",
-    "wzory": "Patterns"
+    "wzory": "Patterns",
+    "miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}"
   },
   "dni": {
     "dzien_one": "{{etykieta}} · {{count}} row",

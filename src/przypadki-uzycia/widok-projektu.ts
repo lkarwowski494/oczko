@@ -2,6 +2,7 @@
 // licznik całości sekcji (F-46, BR-LIC-018), cel części z pary (F-52, BR-PRJ-014 S1/S3), postęp (F-60, RD-14), termin i cel na dziś (F-61, RD-15),
 // notatka (F-15), drut z numerem US (F-17, RD-11), powrót po przerwie (F-18, BR-PRJ-005). Same dane; teksty i daty formatuje kompozycja.
 import type { Wynik } from '../domena/bledy';
+import type { PortBazy } from '../domena/porty';
 import { celZPary } from '../domena/cel-pary';
 import { licznikCalosci } from '../domena/licznik-calosci';
 import { rozmiarUS } from '../domena/obliczenia/druty';
@@ -9,6 +10,9 @@ import { postepProcent, type CelDnia } from '../domena/postep';
 import type { NarzedzieProjektu } from '../domena/stany';
 import { dzienProjektu } from '../dane/repozytoria/kalendarz';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
+import { polozenieZnacznika } from '../domena/znacznik-wzoru';
+import { znacznikWzoru } from '../dane/repozytoria/wzory';
+import { odczytajUstawienie } from '../dane/repozytoria/ustawienia';
 import { jestDniem } from './daty';
 import { blad, operacjaZapisu } from './zapis';
 import type { Zaleznosci } from './zaleznosci';
@@ -25,6 +29,8 @@ export type WidokProjektu = {
   postep: { rodzaj: 'procent'; wartosc: number } | { rodzaj: 'brak-celow' }; czesci: CzescWidoku[];
   ukonczonoDzien: string | null; // dzień lokalny ukończenia (F-51, `ukonczono_dzien`); w toku null
   probka: ProbkaProjektu | null;  // U-10: `projekt.probka` {oczka, na_cm}; brak albo zły zapis = null
+  /** Miejsce we wzorze (F-18, BR-PRJ-005/S1): strona (od 1) i rząd znacznika ostatnio oglądanego wzoru, a bez niego pierwszego ze znacznikiem; brak znacznika albo rząd przed schematem = null. */
+  miejsceWzoru: { strona: number; rzad: number } | null;
 };
 export type ProbkaProjektu = { oczka: number; naCm: 10 | 10.16 };
 
@@ -73,6 +79,7 @@ export function widokProjektu(z: Zaleznosci, w: { projektId: string }): Promise<
     const narzedzie: NarzedzieProjektu = tekst(p, 'narzedzie') === 'szydelko' ? 'szydelko' : 'druty'; // CHECK schematu: tylko te dwie
     const termin = tekstLubNull(p, 'termin_dzien');
     const dzien = termin ? await dzienProjektu(tx, w.projektId, termin, chwila.dzien) : { cel: null, zrobioneDzis: 0 };
+    const miejsceWzoru = await miejsceWzoruProjektu(tx, w.projektId);
     return {
       ok: true,
       wartosc: {
@@ -81,10 +88,25 @@ export function widokProjektu(z: Zaleznosci, w: { projektId: string }): Promise<
         notatka: tekst(p, 'notatka'), narzedzie, drutMm, drutUS: drutMm === null ? null : rozmiarUS(drutMm, narzedzie),
         terminDzien: termin, celDnia: dzien.cel, zrobioneDzis: dzien.zrobioneDzis,
         postep: proc.ok ? { rodzaj: 'procent', wartosc: proc.wartosc } : { rodzaj: 'brak-celow' }, czesci: wynik, ukonczonoDzien: tekstLubNull(p, 'ukonczono_dzien'),
-        probka: parsujProbke(tekst(p, 'probka')),
+        probka: parsujProbke(tekst(p, 'probka')), miejsceWzoru,
       },
     };
   });
+}
+/** Znacznik ostatnio oglądanego wzoru projektu (`ostatnie_miejsce.wzor`), inaczej pierwszego wzoru ze znacznikiem; położenie liczy `polozenieZnacznika` (jak widok wzoru). */
+async function miejsceWzoruProjektu(tx: PortBazy, projektId: string): Promise<WidokProjektu['miejsceWzoru']> {
+  const ids = (await wiersze(tx.all('SELECT id FROM wzor WHERE projekt_id = ? AND usunieto_ms IS NULL ORDER BY zmieniono_ms DESC, id', [projektId]), 'widokProjektu')).map((x) => tekst(x, 'id'));
+  const m = await odczytajUstawienie(tx, 'ostatnie_miejsce');
+  const ostatni = m && typeof m === 'object' && 'wzor' in m && typeof m.wzor === 'string' ? m.wzor : null;
+  const kolejnosc = ostatni && ids.includes(ostatni) ? [ostatni, ...ids.filter((x) => x !== ostatni)] : ids;
+  for (const id of kolejnosc) {
+    const zn = await znacznikWzoru(tx, id);
+    if (!zn) continue;
+    const [l] = await wiersze(tx.all('SELECT wartosc FROM licznik WHERE id = ? AND usunieto_ms IS NULL', [zn.licznikId]), 'widokProjektu');
+    const p = l ? polozenieZnacznika(zn, liczba(l, 'wartosc')) : null;
+    if (p?.ok && !p.wartosc.przedSchematem) return { strona: p.wartosc.strona + 1, rzad: p.wartosc.rzad };
+  }
+  return null;
 }
 /** Podgląd celu na dziś dla wybranej daty w arkuszu „Done by” (RD-15, design-spec) — odczyt bez zapisu; bez celów części → null. */
 export function podgladTerminu(z: Zaleznosci, w: { projektId: string; terminDzien: string }): Promise<Wynik<CelDnia | null>> {

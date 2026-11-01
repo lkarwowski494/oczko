@@ -312,6 +312,7 @@
   "projekt.probka_wartosc_in": "⟦{{p}} štîtçhéš / 4 îñ~~~~~~~~~~⟧",
   "projekt.wzor": "⟦Pàttéŕñ~~~~~~~⟧",
   "projekt.wzory": "⟦Pàttéŕñš~~~~~~~~⟧",
+  "projekt.miejsce_wzoru_wartosc": "⟦Pàgé {{strona}}, ŕöw {{rzad}}~~~~~~~⟧",
   "dni.dzien_one": "⟦{{etykieta}} · {{count}} ŕöw~~~⟧",
   "dni.dzien_other": "⟦{{etykieta}} · {{count}} ŕöwš~~~~⟧",
   "dni.rzedy_one": "⟦{{count}} ŕöw~~~⟧",

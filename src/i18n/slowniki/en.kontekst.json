@@ -301,7 +301,8 @@
     "probka_wartosc": "Wartość wiersza projekt.probka (albo „/ 4 in” wg zapisanej podstawy: projekt.probka_wartosc_in); bez próbki — projekt.dodaj_wartosc.",
     "probka_wartosc_in": "Jak projekt.probka_wartosc dla próbki zapisanej na 4 in.",
     "wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy zerze albo jednym wzorze.",
-    "wzory": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy dwóch i więcej wzorach (jeden widoczny naraz, P-218)."
+    "wzory": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy dwóch i więcej wzorach (jeden widoczny naraz, P-218).",
+    "miejsce_wzoru_wartosc": "Wartość wiersza „Pattern” w grupie „Details” na ekranie projektu (07-jakosc-010): gdzie stoi znacznik rzędu na wzorze. {{strona}} = numer strony PDF (od 1), {{rzad}} = rząd schematu. Krótkie, jak „Page 3, row 48”; tekst roboczy 08 do akceptacji 04."
   },
   "dni": {
     "dzien": "VoiceOver dnia z robótką w kalendarzu: {{etykieta}} = data dnia (np. „Wednesday, October 21”), {{count}} = rzędy dnia. Formy _one/_other. Zatwierdzone przez 04 fix-6 (P-191), ekran Historia.",
