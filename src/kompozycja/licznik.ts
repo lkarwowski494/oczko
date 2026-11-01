@@ -47,7 +47,7 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
     czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
     skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: w.znaczenie, cel: w.czesc.cel,
     celDnia: w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: w.calosc === null ? null : { czesc: w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1
+    calosc: w.calosc === null ? null : { czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1; projekt roboczy: nazwa części to data, więc jej nie pokazujemy (F-46)
     przypomnienie: w.przypomnienie,
     powtorzenie: w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
     notatka: w.projekt.notatka || null,

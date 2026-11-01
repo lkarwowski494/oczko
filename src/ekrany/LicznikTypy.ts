@@ -34,7 +34,7 @@ export type StanEkranuLicznika = {
   baner: BanerLicznika;
   blizniak: { rzad: number; notatka: string | null; przypomnienie: string | null } | null; // BR-PRJ-014/S2
   wibracje: boolean;                   // ustawienie (BR-LIC-020/S3)
-  calosc?: { czesc: string; rzedy: number } | null; // licznik sekcji: „{część} in total: N rows” (BR-LIC-018/S1, partia 5)
+  calosc?: { czesc: string | null; rzedy: number } | null; // licznik sekcji: „{część} in total: N rows” (BR-LIC-018/S1, partia 5); czesc null (projekt roboczy) = „Whole piece: N rows”
   konflikt?: KonfliktNaLiczniku;
 };
 

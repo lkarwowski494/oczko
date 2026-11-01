@@ -134,6 +134,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
                   {para && <Text style={st.podpis}>{t('projekt.para', { nazwa: para })}</Text>}
                   {jeden ? <Text style={st.podpis}>{opisCzesci(c)}</Text>
                     : c.calosc != null && <Text style={st.podpis}>{t('projekt.calosc', { count: c.calosc })}</Text>}
+                  {c.cel !== null && c.rzedy >= c.cel && <Text style={st.podpis}>{t('licznik.cel_osiagniety')}</Text>}{/* F-08, design-spec: dopisek przy celu osiągniętym */}
                   {para && c.cel === null && <Text style={st.podpis}>{t('projekt.cel_z_pary', { nazwa: para })}</Text>}
                 </Pressable>
               </View>
