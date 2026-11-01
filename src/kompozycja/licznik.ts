@@ -70,7 +70,7 @@ function wejscie(w: WidokLicznika, przed: number): { rzad: number; tekst: string
 function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean): ZdarzeniePlus[] {
   const z: ZdarzeniePlus[] = ['rzad'];
   if (sygnal) z.push('przypomnienie');
-  if (w.powtorzenie && w.powtorzenie.rzadW === 1 && w.wartosc > 0) z.push('koniec-powtorzenia');
+  if (w.powtorzenie && w.wartosc > 0 && w.wartosc % w.powtorzenie.dlugosc === 0) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
   if (w.czesc.cel !== null && w.wartosc === w.czesc.cel) z.push('cel-czesci');
   return z;
 }

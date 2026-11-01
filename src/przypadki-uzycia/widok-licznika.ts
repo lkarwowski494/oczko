@@ -1,6 +1,7 @@
 // Model odczytu ekranu licznika (design-spec „Licznik”, F-49, BR-LIC-001, P-065, RD-13, RD-15, RD-17, BR-PRJ-014): same dane, bez tekstów.
 // Formatowanie (miesiąc, godzina, etykieta projektu roboczego przez t(), P-126 (1b)) robi kompozycja ekranu. Odczyt w kolejce: widzi zapisy zlecone wcześniej.
 import type { Wynik } from '../domena/bledy';
+import { powtorzenieLicznika } from '../domena/licznik';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
 import { posiedzenie } from '../domena/posiedzenie';
@@ -92,6 +93,13 @@ async function blizniak(tx: PortBazy, paraZ: string | null, rzad: number): Promi
   return n || p ? { rzad, notatka: n ? tekst(n, 'tekst') : null, przypomnienie: p ? p.tekst : null } : null;
 }
 
+/** RD-12 przez funkcję domeny (r = liczba pokazana na liczniku, BR-LIC-012); brak długości albo błąd danych → bez powtórzenia. */
+function powtorzenieWidoku(skonczone: number, znaczenie: 'skonczone' | 'w_trakcie', dlugosc: number | null): WidokLicznika['powtorzenie'] {
+  if (dlugosc === null) return null;
+  const p = powtorzenieLicznika(skonczone, znaczenie, dlugosc);
+  return p.ok ? { numer: p.wartosc.powtorzenie, rzadW: p.wartosc.rzadW, dlugosc } : null;
+}
+
 /** Stan ekranu licznika `licznikId`; licznik w koszu albo nieistniejący → `bledne_dane` (kompozycja otwiera wtedy listę projektów, F-49). */
 export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WidokLicznika>> {
   return operacjaZapisu(z, 'widokLicznika', async (tx, teraz, chwila) => {
@@ -120,7 +128,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         zablokowany: liczba(r, 'zablokowany') === 1,
         przypomnienie: pas(lista, wartosc, znaczenie),
         plany: lista,
-        powtorzenie: dl ? { numer: Math.floor(wartosc / dl) + 1, rzadW: (wartosc % dl) + 1, dlugosc: dl } : null, // RD-12-W5
+        powtorzenie: powtorzenieWidoku(wartosc, znaczenie, dl), // RD-12 z wyborem r w domenie (07-jakosc-020)
         sesja: posiedzenie({ dodaniaMs: dodania.map((d) => d.czasMs), stoper: await ostatniStoper(tx, tekst(r, 'projekt_id')) }),
         limit: zaw.limitZawczasu ? 'zawczasu' : zaw.ostatniDarmowy ? 'ostatni-darmowy' : 'brak',
         dzis, wznowienie: wznowienieLimitu({ dzis }),
