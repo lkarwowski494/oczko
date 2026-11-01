@@ -1,7 +1,7 @@
 # Przekazanie koordynatora Oczka
 
 ## STAN NA NOC 1/2.11 (zapis 2026-11-01 21:20 UTC) — czytaj najpierw
-Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-345** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
+Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-346** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
 
 **Właściciel śpi; cisza w czacie do ok. 05:00 czasu polskiego (04:00 UTC)** — w nocy nie piszesz mu raportów (P-346). Decydujesz sam: najpierw jak w `lkarwowski494/trening`, bez analogii wg rekomendacji roli; każda nocna decyzja z dopiskiem „noc, do weta” (P-345). Bez zgody: nic na `main`, nic do Apple/ASC, żadnych kosztów. Rano (pierwszy dyżur po 04:00 UTC): krótki raport stanu w czacie.
 
