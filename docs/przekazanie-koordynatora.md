@@ -1,7 +1,7 @@
 # Przekazanie koordynatora Oczka
 
 ## STAN NA NOC 1/2.11 (zapis 2026-11-01 21:20 UTC) — czytaj najpierw
-Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-346** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
+Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-347** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
 
 **Właściciel śpi; cisza w czacie do ok. 05:00 czasu polskiego (04:00 UTC)** — w nocy nie piszesz mu raportów (P-346). Decydujesz sam: najpierw jak w `lkarwowski494/trening`, bez analogii wg rekomendacji roli; każda nocna decyzja z dopiskiem „noc, do weta” (P-345). Bez zgody: nic na `main`, nic do Apple/ASC, żadnych kosztów. Rano (pierwszy dyżur po 04:00 UTC): krótki raport stanu w czacie.
 
@@ -18,7 +18,7 @@ Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej s
 
 **Sesje ról:** aktywna tylko **08 integracja** session_01T66VBvpx771bQWRg4QvnFw (czeka na sygnał fazy B; 19% kontekstu). Wszystkie inne zarchiwizowane.
 
-**Zaplanowane (wchodzą do tej sesji):** 22:10 UTC trig_01LkUwmsMR86SXyc9HGB3Xmv — przygotowanie poleceń 8d i 8e; 23:00 UTC trig_01MTsaUZASrY2MKDYkr2QFH4 — sygnał fazy B + start 8d/8e + plan po przebiegu. Każdy dyżur planuje następny (`send_later`, ≤ 60 min) — łańcuch nie może się urwać.
+**Zaplanowane (wchodzą do tej sesji):** 22:10 UTC trig_01LkUwmsMR86SXyc9HGB3Xmv — przygotowanie poleceń 8d i 8e; 23:00 UTC trig_01MTsaUZASrY2MKDYkr2QFH4 — sygnał fazy B + start 8d/8e + plan po przebiegu. Każdy dyżur planuje następny (`send_later`, **co 30 min, P-347**) — łańcuch nie może się urwać.
 
 **Kolejność nocy (P-345; czas UTC):**
 1. 22:10 — polecenia 08 w `oczko-warsztat/koordynacja/role-2026-11-01/`: **8d** (wzór i Swift: 07-jakosc-006, 007, 017, 023 pełne, 026; P-327 rysik Pen po pierwszym dotknięciu, P-330 2A chip ✎ notatki, „Delete note” zostaje; ADR-0031 port Siec, Word tylko .docx) i **8e** (zegarek: 005; ADR-0030, token `haptykaZegarek.przypomnienie` = `WKHapticType.notification`, K-05g; K-05h na urządzeniu u właściciela). Kopie `claude/kopia-partia-8d-2026-11-01` i `-8e-` od kopii scalonej 82d4ed6. 8d ma 5 ID — jedna sesja; 8e — jedna.
