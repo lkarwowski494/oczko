@@ -288,12 +288,14 @@ Każda funkcja wzoru przechodzi porównanie z zastrzeżeniami patentów przed pr
     - Zakładając, że użytkownik pisze Apple Pencil po wzorze na iPadzie
     - Gdy dłoń opiera się o ekran
     - Wtedy na wzorze pojawia się tylko linia z rysika
-  - Scenariusz: Rysik pisze, palec przewija (P-042, ADR-0012; P-217)
-    - Zakładając, że użytkownik pisał już rysikiem po wzorze na iPadzie
-    - Gdy przesuwa palcem po wzorze
-    - Wtedy wzór się przewija, a na wzorze nie pojawia się nowa kreska
+  - Scenariusz: Rysik pisze, palec przewija (P-042, ADR-0012; P-217; P-327, ER-61)
+    - Zakładając, że wzór jest otwarty na iPadzie, żadne narzędzie nie jest wybrane, a rysik nie dotknął jeszcze wzoru
+    - Gdy użytkownik po raz pierwszy dotyka wzoru rysikiem i prowadzi linię
+    - Wtedy aplikacja wybiera Pen, a na wzorze od razu pojawia się linia z rysika
+    - Gdy użytkownik przesuwa palcem po wzorze
+    - Wtedy wzór się przewija, a na wzorze nie pojawia się nowa kreska (od pierwszego dotknięcia rysikiem obowiązuje pencilOnly)
     - Gdy dotyka wzoru rysikiem i prowadzi linię
-    - Wtedy na wzorze pojawia się linia bez wcześniejszego wyboru narzędzia
+    - Wtedy na wzorze pojawia się linia wybranym narzędziem (po pierwszym dotknięciu: Pen, chyba że użytkownik wybrał w pasku inne)
 
 ### BR-WZR-005: Wzór i licznik razem
 - Przepływ: PR-06
