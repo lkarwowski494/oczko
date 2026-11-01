@@ -228,8 +228,7 @@
     "wloczka_tytul": "Tytuł arkusza wyboru włóczek projektu (Cancel / tytuł / Save). Do ok. 24 znaków; przy dużym tekście łamie się w nagłówku.",
     "wloczka_opis": "Zdanie pod nagłówkiem arkusza wyboru włóczek. „Stash” = zapas włóczek użytkowniczki (jak w Narzędziach); „skeins” = motki. Wyjaśnia, po co wybierać: przy ukończeniu aplikacja zapyta o zużycie i odejmie je od zapasu.",
     "wloczka_pusto": "Arkusz wyboru włóczek, gdy zapas jest pusty; pod tekstem przycisk „Add yarn” (istniejący klucz `zapas.dodaj`). Jedno zaproszenie do działania.",
-    "wloczka_wiersz_a11y_one": "Etykieta VoiceOver wiersza włóczki w arkuszu wyboru; stan wybrany/niewybrany czyta system (checkbox). {{nazwa}} = nazwa włóczki wpisana przez użytkowniczkę.",
-    "wloczka_wiersz_a11y_other": "Etykieta VoiceOver wiersza włóczki w arkuszu wyboru (liczba mnoga, także 0). {{nazwa}} = nazwa włóczki wpisana przez użytkowniczkę."
+    "wloczka_wiersz_a11y": "Etykieta VoiceOver wiersza włóczki w arkuszu wyboru (liczba mnoga motków, także 0); stan wybrany/niewybrany czyta system (checkbox). {{nazwa}} = nazwa włóczki wpisana przez użytkowniczkę, {{count}} = motki w zapasie."
   },
   "ukonczenie": {
     "udostepnij": "Tekst z ekrany.html roli 04.",
@@ -313,8 +312,7 @@
     "miejsce_wzoru_wartosc": "Wartość wiersza „Pattern” w grupie „Details” na ekranie projektu (07-jakosc-010): gdzie stoi znacznik rzędu na wzorze. {{strona}} = numer strony PDF (od 1), {{rzad}} = rząd schematu. Krótkie, jak „Page 3, row 48”; tekst roboczy 08 do akceptacji 04.",
     "wloczka": "Wiersz w grupie „Details” na ekranie projektu (partia 8, 07-jakosc-001): włóczka użyta w projekcie. Rzeczownik, krótka etykieta (ok. 12 znaków); wartość po prawej to nazwa włóczki albo liczba włóczek.",
     "wloczka_brak": "Wartość wiersza „Yarn” na ekranie projektu, gdy żadna włóczka nie jest wybrana. Jedno słowo; to nie jest przycisk.",
-    "wloczki_one": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (w praktyce ≥ 2; forma pojedyncza dla reguł języka). Przy jednej włóczce wiersz pokazuje jej nazwę.",
-    "wloczki_other": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (≥ 2). Krótko, mieści się obok etykiety przy 320 pt."
+    "wloczki": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (≥ 2; liczba mnoga wg reguł języka). Przy jednej włóczce wiersz pokazuje jej nazwę. Krótko, mieści się obok etykiety przy 320 pt."
   },
   "dni": {
     "dzien": "VoiceOver dnia z robótką w kalendarzu: {{etykieta}} = data dnia (np. „Wednesday, October 21”), {{count}} = rzędy dnia. Formy _one/_other. Zatwierdzone przez 04 fix-6 (P-191), ekran Historia.",
