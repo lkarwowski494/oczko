@@ -10,22 +10,22 @@ Pojęć: 44 · języków: 35 · wpisów: 1540 (wysoka 704, średnia 392, niska 4
 
 | id | en | pl | znaczenie | kluczy en |
 |---|---|---|---|---|
-| `robotka` | knitting (as the app's general word for the craft: "knitting day", "Keep knitting", "knitting time") | robótka / dzierganie | ogólne słowo na pracę ręczną, której użytkownik się oddaje w aplikacji: obejmuje i druty, i szydełko (aplikacja jest dla obu). W en źródło używa „knitting” także dla osób szydełkujących. NIE: tylko robienie na drutach, jeśli język ma słowo wspólne; NIE: dzianina maszynowa. | 28 |
-| `dziergac_na_drutach` | knit (on needles) | robić na drutach | tworzyć dzianinę drutami; czynność (czasownik). NIE: szydełkować. | 6 |
+| `robotka` | knitting (as the app's general word for the craft: "knitting day", "Keep knitting", "knitting time") | robótka / dzierganie | ogólne słowo na pracę ręczną, której użytkownik się oddaje w aplikacji: obejmuje i druty, i szydełko (aplikacja jest dla obu). W en źródło używa „knitting” także dla osób szydełkujących. NIE: tylko robienie na drutach, jeśli język ma słowo wspólne; NIE: dzianina maszynowa. | 0 |
+| `dziergac_na_drutach` | knit (on needles) | robić na drutach | tworzyć dzianinę drutami; czynność (czasownik). NIE: szydełkować. | 4 |
 | `szydelkowac` | crochet | szydełkować | tworzyć robótkę szydełkiem (czynność i rzemiosło). | 0 |
-| `rzad` | row | rząd | jedna warstwa oczek przerobiona od brzegu do brzegu (albo jedno okrążenie przy robótce na okrągło) — jednostka licznika. NIE: wiersz tabeli, kolejka, szereg. | 130 |
+| `rzad` | row | rząd | jedna warstwa oczek przerobiona od brzegu do brzegu (albo jedno okrążenie przy robótce na okrągło) — jednostka licznika. NIE: wiersz tabeli, kolejka, szereg. | 139 |
 | `okrazenie` | round | okrążenie | rząd przerabiany na okrągło (druty z żyłką, szydełko w kółko). W interfejsie en nie występuje (licznik mówi „row”), ale tłumacz musi go znać, żeby nie użyć go zamiast „rzędu”. | 0 |
-| `oczko` | stitch (single loop on the needle) | oczko | pojedyncza pętla dzianiny/robótki — jednostka liczona (licznik „Stitches”, próbka „stitches per 10 cm”). NIE: ścieg (wzór splotu), NIE: ścieg szwalniczy/hafciarski. | 21 |
-| `scieg` | stitch pattern (e.g. "stockinette stitch") | ścieg / splot | sposób przerabiania oczek dający określoną fakturę (np. dżersej, ścieg francuski). NIE: pojedyncze oczko. | 2 |
-| `scieg_dzersejowy` | stockinette stitch (US) / stocking stitch (UK) | ścieg dżersejowy (pończoszniczy) | ścieg: na prawej stronie same oczka prawe, na lewej same lewe (w rzędach). Używany w opisie kategorii grubości („knitted in stockinette stitch”). | 2 |
+| `oczko` | stitch (single loop on the needle) | oczko | pojedyncza pętla dzianiny/robótki — jednostka liczona (licznik „Stitches”, próbka „stitches per 10 cm”). NIE: ścieg (wzór splotu), NIE: ścieg szwalniczy/hafciarski. | 30 |
+| `scieg` | stitch pattern (e.g. "stockinette stitch") | ścieg / splot | sposób przerabiania oczek dający określoną fakturę (np. dżersej, ścieg francuski). NIE: pojedyncze oczko. | 4 |
+| `scieg_dzersejowy` | stockinette stitch (US) / stocking stitch (UK) | ścieg dżersejowy (pończoszniczy) | ścieg: na prawej stronie same oczka prawe, na lewej same lewe (w rzędach). Używany w opisie kategorii grubości („knitted in stockinette stitch”). | 4 |
 | `licznik` | counter (row counter) | licznik (rzędów) | narzędzie w aplikacji liczące rzędy albo oczka danej części. | 37 |
-| `czesc` | part (a piece counted separately: a sleeve, the back, a sock) | część (element robótki) | element projektu liczony osobno, np. rękaw, tył, skarpeta. NIE: część zamienna, rozdział. | 37 |
+| `czesc` | part (a piece counted separately: a sleeve, the back, a sock) | część (element robótki) | element projektu liczony osobno, np. rękaw, tył, skarpeta. NIE: część zamienna, rozdział. | 38 |
 | `powtorzenie` | repeat (pattern repeat) | powtórzenie (raport wzoru) | zestaw rzędów (albo oczek) wzoru powtarzany wielokrotnie; „Rows in one repeat”. NIE: „powtórz” w sensie ponów operację, NIE: ponowne odtwarzanie. | 5 |
 | `wzor` | pattern (written instructions for a project) | wzór (opis / instrukcja wykonania) | dokument z instrukcją wykonania robótki (PDF, zdjęcie, strona). NIE: wzór splotu/ornament (ścieg), NIE: szablon/form krawiecki. | 40 |
 | `schemat` | chart (knitting/crochet chart) | schemat | graficzny zapis wzoru w kratkach/symbolach, czytany zwykle od dołu. NIE: wykres statystyczny. | 2 |
 | `znacznik_rzedu` | marker / row marker (on the pattern page in the app) | znacznik (rzędu na stronie wzoru) | pozioma linia w aplikacji pokazująca bieżący rząd na stronie wzoru. NIE: znacznik oczek (fizyczny kółeczko na drucie) — choć słowo bywa to samo, w aplikacji chodzi o zakładkę/linijkę. | 5 |
 | `probka` | swatch | próbka | mały kawałek dzianiny wykonany przed projektem do zmierzenia gęstości. | 11 |
-| `gestosc` | gauge (US) / tension (UK) | gęstość dzianiny (oczka i rzędy na 10 cm) | liczba oczek i rzędów na 10 cm / 4 in, zmierzona na próbce. NIE: kaliber, NIE: przyrząd pomiarowy (miarka do drutów). | 9 |
+| `gestosc` | gauge (US) / tension (UK) | gęstość dzianiny (oczka i rzędy na 10 cm) | liczba oczek i rzędów na 10 cm / 4 in, zmierzona na próbce. NIE: kaliber, NIE: przyrząd pomiarowy (miarka do drutów). | 10 |
 | `blokowanie` | block / blocking | blokowanie (wykończenie: namoczenie/naparowanie i rozpięcie) | nadanie gotowej dzianinie (lub próbce) kształtu i wymiaru przez zwilżenie/parowanie i suszenie rozpiętej. NIE: blokowanie ekranu/dostępu. | 1 |
 | `wloczka` | yarn | włóczka | nić do robótek ręcznych. NIE: przędza przemysłowa w sensie technicznym, NIE: nić do szycia. | 20 |
 | `motek` | skein (unit of yarn as sold; ball/hank) | motek | jednostka sprzedaży włóczki (motek/kłębek), liczona w zapasie i zużyciu. | 15 |
@@ -280,7 +280,7 @@ Pojęć: 44 · języków: 35 · wpisów: 1540 (wysoka 704, średnia 392, niska 4
 | `rzad` | it | `\bfil[ae]\b` | „fila” w LG to rząd kratek schematu, nie jednostka licznika [DO SPRAWDZENIA] |
 | `rzad` | ja | `行(?!う\|き\|っ)` | 行 = wiersz tekstu/tabeli; rząd robótki to 段 [DO SPRAWDZENIA] |
 | `rzad` | ja | `列` | 列 = kolumna/szereg, nie rząd robótki [DO SPRAWDZENIA] |
-| `rzad` | ko | `행(?!사\|동)` | 행 = wiersz tabeli/tekstu; rząd robótki to 단 [DO SPRAWDZENIA] |
+| `rzad` | ko | `(?<![진실])행(?!사\|동)` | 행 = wiersz tabeli/tekstu; rząd robótki to 단 [DO SPRAWDZENIA] |
 | `rzad` | ko | `줄(?!바늘)` | 줄 = linia/sznurek; rząd to 단 [DO SPRAWDZENIA] |
 | `rzad` | ms | `\bderet` | „deret” = szereg/kolejka (ogólne znaczenie „row”) [DO SPRAWDZENIA] |
 | `rzad` | nb | `\blinje\b` | linia/wiersz (kalka „row”) [DO SPRAWDZENIA] |

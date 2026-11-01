@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko verwendet die Kamera nur, wenn du ein Foto von einer Anleitung, einem Projekt oder einer Garnbanderole aufnimmst. Die Fotos bleiben auf deinem Gerät."
+  }
+}

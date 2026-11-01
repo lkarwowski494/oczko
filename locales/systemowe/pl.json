@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko używa aparatu tylko wtedy, gdy robisz zdjęcie wzoru, projektu lub metki włóczki. Zdjęcia zostają na urządzeniu."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko koristi kameru samo kada fotografirate uzorak, projekt ili etiketu pređe. Fotografije ostaju na vašem uređaju."
+  }
+}
