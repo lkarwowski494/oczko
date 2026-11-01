@@ -20,9 +20,9 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | Historia kierunków | `01-swiat.md`, `kierunki/`, `porownanie.html`, `kroje.html` |
 
 ## Limit dni na ekranach (P-065, warunkowo do potwierdzenia przez 02)
-- **Nowy dzień ponad limit (`limit-zawczasu`):** zamiast przycisków +1 i −1 komunikat „No free knitting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.”; pod liczbą odnośnik „Oczko Pro removes the limit” (poza strefą +1). Historia, menu, wzór, eksport działają.
+- **Nowy dzień ponad limit (`limit-zawczasu`):** zamiast przycisków +1 i −1 komunikat „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.”; pod liczbą odnośnik „Oczko Pro removes the limit” (poza strefą +1). Historia, menu, wzór, eksport działają.
 - **Przypadek brzegowy (`limit`):** nowy dzień zaczął się przy otwartej aplikacji (po przerwie ≥ 60 min, D3): stuknięcie zatrzymane, arkusz „Row {n} wasn’t added” z definicją dnia; potem ekran przechodzi w stan zawczasu.
-- **Licznik darmowych dni:** lista projektów („3 of 5 free knitting days left in November”) i Ustawienia; na ekranie licznika tylko w ostatnim darmowym dniu cicha linia „1 free knitting day left in November” pod liczbą (wyjątek nazwany od P-046).
+- **Licznik darmowych dni:** lista projektów („3 of 5 free crafting days left in November”) i Ustawienia; na ekranie licznika tylko w ostatnim darmowym dniu cicha linia „1 free crafting day left in November” pod liczbą (wyjątek nazwany od P-046).
 - Ekran ofert tylko z odnośnika na limicie i z Ustawień (KP-13); przy Pro żadnej z tych linii.
 
 ## Element firmowy
@@ -34,9 +34,9 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 ## Komponenty
 | Komponent | Systemowy czy własny | Uwagi |
 |---|---|---|
-| Pasek nawigacji, wstecz, duży tytuł | systemowy | nad tytułem części nazwa projektu; pod tytułem „Now knitting row 48” (20 pt): duża liczba to rzędy skończone; stuknięcie w tytuł otwiera menu projektu |
+| Pasek nawigacji, wstecz, duży tytuł | systemowy | nad tytułem części nazwa projektu; pod tytułem „Now working row 48” (20 pt): duża liczba to rzędy skończone; stuknięcie w tytuł otwiera menu projektu |
 | Przycisk +1: podpis | własny | „tap when row 48 is done” (soczewki: niejasne, czy +1 zaczyna, czy kończy rząd). **Przy kategoriach dostępności tekstu** (`isAccessibilityCategory`, AX1–AX5; fix-8, P-275 (3)): podpis tylko w etykiecie VoiceOver, strefa +1 wraca do 168 pt |
-| Licznik przy dużym tekście (fix-8, P-275 (3)) | układ | przy kategoriach dostępności liczba („47 of 96” i linijka celu) stoi **nad** nazwą projektu, nazwą części i „Now knitting row n”; reszta środka bez zmian i przewija się; kolejność VoiceOver idzie za wyglądem (liczba → nazwy); bez automatycznego przewijania do liczby. Pomiar: liczba widoczna bez przewijania przy 320×568, 390×844 i 430×932 (`fix8-2026-10-27/pomiar.json`, `licznik-d`); makieta `fix8-2026-10-27/fix8.html`, wzorce `wzorce-zrzuty/fix8-licznik-d-*` |
+| Licznik przy dużym tekście (fix-8, P-275 (3)) | układ | przy kategoriach dostępności liczba („47 of 96” i linijka celu) stoi **nad** nazwą projektu, nazwą części i „Now working row n”; reszta środka bez zmian i przewija się; kolejność VoiceOver idzie za wyglądem (liczba → nazwy); bez automatycznego przewijania do liczby. Pomiar: liczba widoczna bez przewijania przy 320×568, 390×844 i 430×932 (`fix8-2026-10-27/pomiar.json`, `licznik-d`); makieta `fix8-2026-10-27/fix8.html`, wzorce `wzorce-zrzuty/fix8-licznik-d-*` |
 | Przycisk +1 (strefa na dole, ≥ 168 pt wysokości) i −1 (72 × 72 pt, 28 pt odstępu) | własny kształt, zachowanie przycisku systemowego | etykieta zawiera widoczny tekst („+1 row …”, WCAG 2.5.3) |
 | Kreski sesji, zakreślenie instrukcji | własne (SVG → `react-native-svg`) | opis tekstowy w podpisie |
 | Blokada licznika | pozycja w menu ••• („Lock counter (ignore taps)”); w stanie zablokowanym pasek „Counter locked · Unlock” pod paskiem nawigacji | przeniesiona z paska: kłódka czytała się jak znak płatnej funkcji (przejście poznawcze, nowa osoba); stuknięcie w zablokowany licznik: „Counter is locked. Unlock it at the top.” (BR-LIC-004) |
@@ -88,7 +88,7 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 | +1 | „47 done. Now row 48.” | fokus zostaje na +1; Magic Tap (`onMagicTap`) = +1 |
 | wejście w rząd z instrukcją | „Row 48: decrease at both ends, 7 of 8.” (raz, po +1, które w niego wprowadza) | etykieta +1 zawiera instrukcję |
 | seria stuknięć (F-47) | „Added 3 rows in 1 second. Undo is available.” | przycisk „Undo 3 rows”; baner bez limitu czasu |
-| limit (BR-ZAK-006) | „Row 48 wasn’t added. Free knitting days for November are used. Nothing is lost.” | arkusz jako modal (`accessibilityViewIsModal`), fokus na nagłówku |
+| limit (BR-ZAK-006) | „Row 48 wasn’t added. Free crafting days for November are used. Nothing is lost.” | arkusz jako modal (`accessibilityViewIsModal`), fokus na nagłówku |
 | ukończenie | „Harbor Sweater moved to Finished.” | — |
 | arkusze i formularze | — | fokus na nagłówku; każde pole z `accessibilityLabel` (nie sam tekst obok); podgląd planu rzędów dołączony do etykiety „Save reminder” |
 | oferty | — | plany: `accessibilityRole="radio"` + `accessibilityState.selected`; Privacy Policy i Terms of Use: rola link |
@@ -102,7 +102,7 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 - Teksty dziedzinowe (instrukcje, nazwy ściegów) pisze użytkownik; aplikacja ich nie uczy.
 
 ## Teksty ofert (P-065 (3a): wariant 1)
-- Wariant 1 (w makiecie): nazwy planów „Monthly · $0.99 / month”, „Yearly · $6.99 / year”, „Lifetime · $14.99 once”; nagłówek „Oczko Pro”, „Knit on as many days as you like. Everything else stays the same.”; pod planami: „Without Pro: 5 knitting days every month, and all your projects and data, always.”
+- Wariant 1 (w makiecie): nazwy planów „Monthly · $0.99 / month”, „Yearly · $6.99 / year”, „Lifetime · $14.99 once”; nagłówek „Oczko Pro”, „Count rows on as many days as you like. Everything else stays the same.”; pod planami: „Without Pro: 5 crafting days every month, and all your projects and data, always.”
 - Odrzucony wariant 2: podpisy właściciela przy planach (P-065).
 - Ujawnienia (1)–(7) z `docs/monetyzacja.md` „Sesja 3, E3”: nazwa, okres, cena ze sklepu (KP-09); odnawianie i anulowanie w ustawieniach Apple ID; „Restore purchases”; Privacy Policy, Terms of Use; co daje Pro i co zostaje; zamknięcie i „Not now”; Family Sharing tylko, gdy włączone.
 
@@ -114,11 +114,11 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 
 | Klucz | en (źródło, ADR-0017) |
 |---|---|
-| `uczciwe.tytul` | Your first knitting day is done |
+| `uczciwe.tytul` | Your first crafting day is done |
 | `uczciwe.wszystko` | Everything in Oczko works from the first day, with no account and no ads. |
-| `uczciwe.darmowe_one` / `_other` | Knit {{count}} day every month for free, for as long as you like. Your projects and data always stay yours. / Knit {{count}} days every month for free, … |
+| `uczciwe.darmowe_one` / `_other` | Count rows for free on {{count}} day every month, for as long as you like. Your projects and data always stay yours. / Count rows for free on {{count}} days every month, … |
 | `uczciwe.pro` | Want more days? Oczko Pro removes the limit, as a subscription or a one-time purchase. |
-| `uczciwe.dalej` | Keep knitting |
+| `uczciwe.dalej` | Keep counting |
 | `uczciwe.plany` | See Oczko Pro |
 | `wspolne.zamknij` | Close |
 `{{count}}` = `LIMIT_DNI_W_MIESIACU` z konfiguracji (dziś 5), nie wpisane na stałe.
@@ -132,7 +132,7 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 | Klucz | en |
 |---|---|
 | `ustawienia.zrodla_wiedzy` | About our information |
-| `zrodla.zdanie` | The tables and tips in Oczko are written in our own words, based on industry standards and knitting handbooks. |
+| `zrodla.zdanie` | The tables and tips in Oczko are written in our own words, based on industry standards and guidance from craft organizations. |
 | `zrodla.linia_standardow` | dosłownie linia z BR-KAL-008, scenariusz „Ekran «Źródła wiedzy»” (S-24); w `docs/design/` tylko odsyłacz, bo każde nowe wystąpienie nazwy organizacji zatrzymuje `verify` (P-121 (5)). W przekładzie (09) zmienia się tylko słowo „Source:”, nazwa i adres zostają. |
 
 ## Projekt roboczy: etykieta zamiast nazwy (BR-LIC-001, P-126 (1b), jak Trening)
@@ -176,7 +176,7 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 
 ## Znacznik rzędu na wzorze (BR-WZR-003, ADR-0011 uzupełnienie, P-118 Q2a, P-126 (3a))
 Znacznik to „linijka” na jednym dokumencie wzoru (reguła OG-07 bez zmian): pas o wysokości rzędu z dwiema grafitowymi krawędziami (`kolor.wzor.znacznik`, 14,76:1 do strony) i etykietą „Row 48 ↑” (biały tekst na grafitowej zakładce, 14,37:1). Stałe kolory w obu motywach, bo strona to dokument użytkownika. Nie zakreślacz: żółty zostaje dla rzędu z instrukcją na liczniku (jeden kolor, jedno znaczenie).
-- **Ustawienie (gest i przycisk):** przytrzymanie na stronie stawia pas w tym miejscu; przycisk „Mark row” w pasku nawigacji stawia go na środku widocznej strony (alternatywa gestu, SP-15). Pas przeciąga się w pionie; uchwyt dolnej krawędzi ustala wysokość rzędu (`wysokosc_rzedu`). Rząd znacznika: krokowiec w pasku, domyślnie rząd z „Now knitting row n” (= licznik + 1; potwierdzenie w BR-WZR-003: N3 → 01).
+- **Ustawienie (gest i przycisk):** przytrzymanie na stronie stawia pas w tym miejscu; przycisk „Mark row” w pasku nawigacji stawia go na środku widocznej strony (alternatywa gestu, SP-15). Pas przeciąga się w pionie; uchwyt dolnej krawędzi ustala wysokość rzędu (`wysokosc_rzedu`). Rząd znacznika: krokowiec w pasku, domyślnie rząd z „Now working row n” (= licznik + 1; potwierdzenie w BR-WZR-003: N3 → 01).
 - **Kierunek (3a): bez wartości domyślnej.** Przy pierwszym ustawieniu w danym wzorze pasek pyta „Which way do rows go on this page?” dwoma przyciskami „↑ Up, like a chart” (`kierunek = −1`) i „↓ Down, like written steps” (`1`); „Done” pojawia się po wyborze. Wybór zapisany w znaczniku i proponowany przy każdym następnym ustawieniu w tym wzorze; zmiana: „Change” w pasku. Strzałka w etykiecie pokazuje kierunek.
 - **Przy liczeniu:** pasek ustawień chowa się po „Done”; +1 przesuwa pas o rząd w wybranym kierunku (`polozenieZnacznika`), ruch tylko gdy nie ma „Ogranicz ruch” (inaczej skok).
 - **Koniec strony (`pozaStrona: true`):** pas stoi na krawędzi, krawędź od strony wyjścia przerywana, etykieta „Row 61 · page end”; pasek: „Row 61 is past the top of page 2” (albo „bottom”), „Move the marker to row 61 on the next page.”, przycisk „Place on page 3” przewija do następnej strony i stawia pas przy krawędzi, od której zaczyna się kierunek (dół dla ↑, góra dla ↓), w trybie przeciągania; użytkownik dosuwa go do rzędu. Ostatnia strona: „Row 61 is past the end of the pattern.” i przycisk „Move marker”. Żadnego automatycznego przejścia (P-118 Q2c).
@@ -286,7 +286,7 @@ Makiety: `aktywnosc.html`. Wymiary z Apple HIG „Live Activities”, Specificat
 - **Kreski sesji nie są pokazywane** na ekranie blokady ani zegarku: stan (`moduly.md:67`) nie niesie liczby rzędów posiedzenia, a kreski bez danych byłyby ozdobą (zasada studia 2). W Dynamic Island znak kresek z ikony (cztery kreski z przekreśleniem) rozpoznaje aplikację obok liczby.
 - **Znak kresek — zasób (NZ-08-P4-04, P-158 (2a)):** `ikona/znak-kresek.svg` = kreski z ikony (cztery ręczne kreski i przekreślenie, ta sama geometria co `ikona/pierwszy-plan.svg`), **bez zakreślacza i bez tła** (HIG „Live Activities”: „If you include a logo mark, display it without a container … Don’t use the entire app icon.”, odczyt 2026-10-26). W katalogu zasobów celu widżetu jako obraz szablonowy (Preserve Vector Data, Render As: Template Image); kolor nadaje kod (`foregroundStyle`), więc system może go przyciemnić w Always-On. Rozmiary (`tokeny.json` → `znakKresek`): Dynamic Island compact i rozwinięta 19,5 × 18 pt (kreska ≈ 2 pt — waga pogrubionej liczby 17 pt obok, HIG: waga symbolu jak sąsiedni tekst), skala z tekstem najwyżej ×1,2; Smart Stack i CarPlay 14 × 13 pt (kreska ≈ 1,5 pt, jak nazwa 13 pt), najwyżej ×1,15. Kolor `znakKresek.kolorSystemCzarny` (= `systemCzarny.grafit`; kontrast 17,7:1 do czarnego tła i 13,8:1 do karty Smart Stack, próg grafiki 3:1). Na karcie ekranu blokady znaku nie ma (tam kropka koloru włóczki). VoiceOver: `accessibilityHidden(true)` — znak niczego nie liczy, dane niesie liczba obok. Minimal: bez znaku (sama liczba, HIG: zamiast logo dane).
 - **Dynamic Island:** compact = znak kresek (z lewej) + liczba (z prawej), oba otwierają licznik; minimal = sama liczba (mieści się w 28 pt; HIG: zamiast logo dane); expanded = układ karty bez podpisu „tap when …” (mniej miejsca), z „+1 row”. Tło systemowe czarne, kolory `kolor.systemCzarny`.
-- **Limit wyczerpany (BR-ZAK-006, KP-13):** bez przycisku; „Counting paused” / „Your rows are kept.” i linia informacji (ikona „i” + tekst, nie kolor błędu) „**No free knitting days left in {{miesiac}}.** Counting resumes {{data}}.” (`{{data}}` = `wznowienieLimitu`). Bez odnośnika do Pro poza aplikacją (oferty tylko z limitu w aplikacji i z Ustawień, KP-13). Na zegarku to samo, bez przycisków.
+- **Limit wyczerpany (BR-ZAK-006, KP-13):** bez przycisku; „Counting paused” / „Your rows are kept.” i linia informacji (ikona „i” + tekst, nie kolor błędu) „**No free crafting days left in {{miesiac}}.** Counting resumes {{data}}.” (`{{data}}` = `wznowienieLimitu`). Bez odnośnika do Pro poza aplikacją (oferty tylko z limitu w aplikacji i z Ustawień, KP-13). Na zegarku to samo, bez przycisków.
 - **Telefon po restarcie, przed pierwszym odblokowaniem (ADR-0008, plik niedostępny):** po stuknięciu „Row {{n}} wasn’t added” / „Unlock iPhone to count.”; liczba bez zmian; przycisk zostaje (po odblokowaniu telefonu +1 z ekranu blokady działa). Wyjątek w „Głosie” (P-133 (1.2a)).
 - **Błąd zapisu linii (ADR-0008 (8A)):** „Row {{n}} wasn’t added” / „Try again.”; liczba bez zmian (stuknięcie nie jest pokazane jako zapisane).
 - **Pole `uwaga` stanu Live Activity → makieta (ADR-0008 „Stan Live Activity…”, P-135 Q5a; P-142 (4a)):** `uwaga: 'odblokuj'` → `blokada-odblokuj` (`aktywnosc.nie_dodano` + `aktywnosc.odblokuj`); `uwaga: 'blad_zapisu'` → `blokada-blad-zapisu` (`aktywnosc.nie_dodano` + `aktywnosc.blad_zapisu`); `null` albo brak klucza → stan według pierwszeństwa (typowy, przypomnienie). `{{n}}` = ten sam numer co „Now row {{n}}” w stanie typowym (`wartosc + 1` przy `znaczenie: 'skonczone'`, `wartosc` przy `'w_trakcie'`; rząd, który miał zostać dodany; `wartosc` bez zmian, 8A). Komunikat zastępuje opis („Now row” i podpis), **przycisk „+1 row” zostaje**: „Try again.” i ponowienie po odblokowaniu telefonu mają sens tylko z przyciskiem, a udane stuknięcie czyści `uwaga` (ADR-0008). Zdanie ADR-0008 „zamiast przycisku komunikat” przeczy temu → do poprawy przez 05 (P-142, N2). W rozwiniętej Dynamic Island ten sam opis z przyciskiem; compact i minimal bez zmian.
@@ -325,7 +325,7 @@ Makiety: `aktywnosc.html`. Wymiary z Apple HIG „Live Activities”, Specificat
 | `aktywnosc.zrobione_one` / `_other` | {{count}} row done / {{count}} rows done | VoiceOver karty; podpis na zegarku przy limicie („rows done”) |
 | `aktywnosc.wstrzymane` | Counting paused | karta przy limicie |
 | `aktywnosc.zachowane` | Your rows are kept. | karta przy limicie |
-| `aktywnosc.limit` | No free knitting days left in {{miesiac}}. | zamiast tekstu 08 z „this month” (bez nazwy miesiąca i daty wznowienia, inaczej niż limit w aplikacji); `{{miesiac}}` = nazwa miesiąca w bieżącym języku |
+| `aktywnosc.limit` | No free crafting days left in {{miesiac}}. | zamiast tekstu 08 z „this month” (bez nazwy miesiąca i daty wznowienia, inaczej niż limit w aplikacji); `{{miesiac}}` = nazwa miesiąca w bieżącym języku |
 | `aktywnosc.limit_wznowienie` | Counting resumes {{data}}. | `{{data}}` = `wznowienieLimitu`, krótki format regionu |
 | `aktywnosc.nie_dodano` | Row {{n}} wasn’t added | nagłówek stanu odblokowania i błędu zapisu |
 | `aktywnosc.odblokuj` | Unlock iPhone to count. | zamiast „Unlock to count” (P-133 (1.2a)) |
@@ -439,7 +439,7 @@ Makiety: `fix5-2026-10-26/projekt-kosz.html` (22 stany), wzorce `wzorce-zrzuty/p
 | `projekt.edytuj` | Edit parts and counters |
 | `projekt.zrob_taka_sama` | Make another like this |
 | `projekt.usun` | Delete project… |
-| `projekt.wznow` | Resume knitting |
+| `projekt.wznow` | Resume project |
 | `projekt.wznowiono` | {{nazwa}} moved to In progress. |
 | `projekt.kopia_tytul` | Make another {{nazwa}}? |
 | `projekt.kopia_opis` | Same parts, goals, reminders, and needles or hook with their size. All counters start at 0, and this project stays as it is. (P-195 Q4a; łatka fix-6 `zastapEn`) |
@@ -466,7 +466,7 @@ Makiety: `fix5-2026-10-26/projekt-kosz.html` (22 stany), wzorce `wzorce-zrzuty/p
 | `formularz.znaczenie_skonczone` | Rows finished |
 | `formularz.znaczenie_skonczone_opis` | {{n}} means {{n}} rows are done. |
 | `formularz.znaczenie_w_trakcie` | The row I’m on |
-| `formularz.znaczenie_w_trakcie_opis` | {{nastepny}} means you’re knitting row {{nastepny}}. |
+| `formularz.znaczenie_w_trakcie_opis` | {{nastepny}} means you’re working on row {{nastepny}}. |
 | `formularz.znaczenie_info` | Only the number on screen changes. Your rows and history stay the same. |
 | `formularz.narzedzie_tytul` | Needles or hook |
 | `formularz.narzedzie_mm` | Size in mm |
@@ -559,7 +559,7 @@ Makiety: `fix6-2026-10-26/sesje-historia.html` (17 stanów), wzorce `wzorce-zrzu
 | `stoper.inny_potwierdz` | Stop and start here |
 | `stoper.sprawdz_one` / `_other` | The timer ran for {{count}} hour(s), so Oczko stopped it. |
 | `stoper.sprawdz_link` | Check the end time |
-| `projekt.czas` / `projekt.czas_wiersz` / `projekt.czas_brak` | Time / Knitting time / Time shows here when you use the stopwatch. |
+| `projekt.czas` / `projekt.czas_wiersz` / `projekt.czas_brak` | Time / Crafting time / Time shows here when you use the stopwatch. |
 | `projekt.sesje` / `projekt.sesje_sprawdz_one` / `_other` | Sessions / {{count}} session(s) to check |
 | `sesje.tytul` / `sesje.podsumowanie_one` / `_other` | Sessions / {{czas}} in {{count}} session(s) |
 | `sesje.wiersz` / `sesje.wiersz_nastepny_dzien` | {{start}}–{{koniec}} / {{start}}–{{koniec}} the next day |
@@ -574,10 +574,10 @@ Makiety: `fix6-2026-10-26/sesje-historia.html` (17 stanów), wzorce `wzorce-zrzu
 | `dni.tydzien` / `dni.tydzien_biezacy` | Week of {{data}} / This week |
 | `dni.tydzien_poprzedni_one` / `_other` | Previous week: {{count}} row(s) |
 | `dni.ukonczono_one` / `_other` | {{count}} project(s) finished |
-| `dni.dni_robotki_one` / `_other` | {{count}} knitting day(s) |
+| `dni.dni_robotki_one` / `_other` | {{count}} crafting day(s) |
 | `dni.rzedy_czas` / `dni.suma_czas` | {{rzedy}} · {{czas}} |
-| `dni.pusto_dzien` | No knitting on this day. |
-| `dni.pierwsze` | Days you knit get a pencil mark here. Count a row to start. |
+| `dni.pusto_dzien` | Nothing counted on this day. |
+| `dni.pierwsze` | Each day you count a row gets a pencil mark here. Count a row to start. |
 | `dni.dzien_bez_a11y` | {{etykieta}} |
 Pełne formy liczby mnogiej i kontekst dla tłumaczy: `fix6-2026-10-26/klucze.json`.
 
@@ -665,11 +665,11 @@ Makiety: `fix7-2026-10-26/wzor.html` (27 stanów: 20 telefonu w pionie, telefon 
 | Word w podglądzie zastępczym | linia informacji `wzor.word_podglad` nad dokumentem; bez „Mark row”, zakreślacza i rysowania |
 | Film bez sieci (BR-WZR-007 S4) | alert `wzor.film_bez_sieci_tytul` + `narzedzia.film_bez_sieci` |
 
-**Przeglądarka wzoru, telefon w pionie (W1a).** Pasek nawigacji: ‹ (`wzor.wstecz_a11y`), tytuł = nazwa wzoru (przy ≥ 2 wzorach z ▾ i menu `wzor.przelacz_naglowek` z listą wzorów projektu i ✓ przy bieżącym — `wzor.przelacz_a11y`; W9b), „Mark row” (▭), zakreślacz, ••• (`wzor.menu_a11y`: `wzor.dodaj_notatke`, `wzor.obroc`, `wzor.zmien_nazwe`, `wzor.usun` czerwone). Strona na tle `grupa`, strony jedna pod drugą, plakietka `wzor.strona_z` na dole widoku. **Pasek licznika** na dole: liczba (Libre Franklin 40 pt), „Now knitting row n” (`licznik.teraz`), −1 (56 × 56 pt), +1 (≥ 72 pt wysokości, ≥ 132 pt szerokości; przy 320 pt i AX5 przechodzi pod liczbę na całą szerokość). +1 przesuwa znacznik (ruch tylko bez „Ogranicz ruch”). Ekran nie gaśnie, jak licznik. Kolejność VoiceOver: tytuł → narzędzia → strona → liczba → −1 → +1; Magic Tap = +1.
+**Przeglądarka wzoru, telefon w pionie (W1a).** Pasek nawigacji: ‹ (`wzor.wstecz_a11y`), tytuł = nazwa wzoru (przy ≥ 2 wzorach z ▾ i menu `wzor.przelacz_naglowek` z listą wzorów projektu i ✓ przy bieżącym — `wzor.przelacz_a11y`; W9b), „Mark row” (▭), zakreślacz, ••• (`wzor.menu_a11y`: `wzor.dodaj_notatke`, `wzor.obroc`, `wzor.zmien_nazwe`, `wzor.usun` czerwone). Strona na tle `grupa`, strony jedna pod drugą, plakietka `wzor.strona_z` na dole widoku. **Pasek licznika** na dole: liczba (Libre Franklin 40 pt), „Now working row n” (`licznik.teraz`), −1 (56 × 56 pt), +1 (≥ 72 pt wysokości, ≥ 132 pt szerokości; przy 320 pt i AX5 przechodzi pod liczbę na całą szerokość). +1 przesuwa znacznik (ruch tylko bez „Ogranicz ruch”). Ekran nie gaśnie, jak licznik. Kolejność VoiceOver: tytuł → narzędzia → strona → liczba → −1 → +1; Magic Tap = +1.
 - **Usunięcie wzoru:** alert `wzor.usun_tytul` / `wzor.usun_opis` / `wzor.usun_potwierdz` (destrukcyjny) / `wspolne.anuluj`; wzór idzie do „Recently deleted” na 30 dni z zakreśleniami i rysunkami (P-229, P-243 S2a; wiersz `kosz.wzor`, makieta `fix8-2026-10-27/fix8.html` `usun-wzor`, `kosz-z-wzorem`). Notatki rzędów należą do licznika i zostają.
 - **Obrót strony:** obraca widok strony o 90° i zapamiętuje to dla strony; znacznik i rysunki liczą się w układzie strony przed obrotem (ADR-0011), więc zostają na miejscu.
 
-**Telefon poziomo (W3).** Bez ustawienia: po lewej wzór (pasek nawigacji jak w pionie), po stronie końcowej kolumna licznika (34 % szerokości, 220–360 pt): liczba 64 pt, „Now knitting row n”, +1 na całą resztę wysokości, −1 pod nim (56 pt). RTL: kolumna po lewej.
+**Telefon poziomo (W3).** Bez ustawienia: po lewej wzór (pasek nawigacji jak w pionie), po stronie końcowej kolumna licznika (34 % szerokości, 220–360 pt): liczba 64 pt, „Now working row n”, +1 na całą resztę wysokości, −1 pod nim (56 pt). RTL: kolumna po lewej.
 
 **Rysowanie (W5a, W6a; BR-WZR-004, BR-WZR-008; ADR-0012).**
 - **iPhone i iPad bez rysika:** zakreślacz (`wzor.zakreslacz`, testID `wzor-zakreslacz`, wartość VoiceOver `wzor.zakreslenia_*`) włącza tryb rysowania; pasek nawigacji zamienia się w pasek narzędzi: Highlighter (wybrany), `wzor.gumka`, ↶ (`wzor.cofnij_rysunek`), `wspolne.gotowe`. W trybie jeden palec zakreśla, dwa przewijają (podpowiedź `wzor.zakreslacz_podpowiedz` raz). Poza trybem palec tylko przewija (BR-WZR-008 S3).
@@ -677,7 +677,7 @@ Makiety: `fix7-2026-10-26/wzor.html` (27 stanów: 20 telefonu w pionie, telefon 
 - **Kolory:** zakreślacz = `kolor.zakreslacz` (`#F6E04A`) z mnożeniem na białej stronie, w obu motywach (strona to dokument); pióro = `kolor.wzor.znacznik` (`#26282C`), stała grubość. Bez wyboru kolorów i bez systemowej palety narzędzi (P-220 W5a, zasada 18). Rysunki to osobna warstwa, plik wzoru bez zmian (P-218 (2)).
 
 **iPad (W4b, G1; NFR-UKL-001 z P-218 Q3a).**
-- **Wzór:** w pionie wzór na pełną szerokość (strona maks. 640 pt na środku) i pasek licznika na dole (marginesy 32 pt, +1 maks. 360 pt); w poziomie zawsze obok siebie: wzór + kolumna licznika 340 pt (liczba, „Now knitting row n”, cel, +1, −1). Obok wzoru stoi licznik, nigdy drugi wzór (P-218 (3)).
+- **Wzór:** w pionie wzór na pełną szerokość (strona maks. 640 pt na środku) i pasek licznika na dole (marginesy 32 pt, +1 maks. 360 pt); w poziomie zawsze obok siebie: wzór + kolumna licznika 340 pt (liczba, „Now working row n”, cel, +1, −1). Obok wzoru stoi licznik, nigdy drugi wzór (P-218 (3)).
 - **Pozostałe ekrany bez osobnych makiet:** szerokość regular → treść w kolumnie maks. 640 pt na środku (listy grupowane, formularze, licznik; makiety kontrolne `ipad-licznik`, `ipad-projekty`), strefa +1 na szerokość kolumny i ≥ 168 pt; arkusze jako arkusze formularza (form sheet); marginesy systemowe (readable content guide).
 - **Wąskie okno** (Split View, Slide Over, Stage Manager; szerokość compact): układ telefonu w pionie (`ipad-waskie`). Przejście między układami przy zmianie szerokości bez utraty stanu (strona, znacznik, tryb rysowania). Zero obciętych i nakładających się elementów na PR-01–PR-06 w obu orientacjach (NFR-UKL-001; sprawdza 07).
 
@@ -824,9 +824,9 @@ Makiety: `fix7-2026-10-26/udostepnij-icloud.html` (19 stanów), wzorce `wzorce-z
 | `icloud.polacz` | Sync with this account |
 | `icloud.nie_synchronizuj` | Don’t sync |
 | `icloud.konflikt_licznik` | Two versions of this counter |
-| `icloud.konflikt_opis` | {{lokalna}} rows here, {{zdalna}} from {{urzadzenie}}. Choose the one that matches your knitting. |
+| `icloud.konflikt_opis` | {{lokalna}} rows here, {{zdalna}} from {{urzadzenie}}. Choose the one that matches your work. |
 | `icloud.konflikt_wybierz` | Choose |
-| `icloud.konflikt_wybor_opis` | Pick the one that matches your knitting. The other stays in the history. |
+| `icloud.konflikt_wybor_opis` | Pick the one that matches your work. The other stays in the history. |
 | `icloud.konflikty_one` / `icloud.konflikty_other` | {{count}} counter has two versions / {{count}} counters have two versions |
 | `icloud.niepelna` | Some changes from your other devices aren’t shown yet |
 | `icloud.niepelna_nowsza` | They come from a newer version of Oczko. Update Oczko on this iPhone to see them. Your counters here are unchanged. |
@@ -867,7 +867,7 @@ Raport: `oczko-warsztat` `04-studio/2026-10-30-audyt/`. Rozstrzygnięcia poniże
 - **Wiersz „Video” (pkt 7):** „Remove link” ze zwykłym potwierdzeniem (jak każde usunięcie, słownik studia), menu „Change link” / „Remove link” także z widocznego przycisku •••; przytrzymanie zostaje skrótem.
 - **Magic Tap (pkt 8):** zrobiony w kodzie; sprawdzenie na urządzeniu w liście testów 07.
 - **Kosz wzoru (P-243 S2a):** teksty z `fix8-2026-10-27/klucze.json` potwierdzone, są w `en.json`.
-- **Termin jednostki limitu (prośba 10, P-148 E1-4a), czeka na decyzję koordynatora:** rekomendacja 04: „crafting days” zamiast „knitting days” (raport, 04-studio-projektowe-007); do decyzji teksty en zostają bez zmian.
+- **Termin jednostki limitu (P-302, P-304):** „crafting day(s)” zamiast „knitting day(s)” w 15 kluczach o dniach; teksty bez faktu neutralne („Now working row”, „Keep counting”, „Resume project”, „Crafting time”, „your work”); `zrodla.zdanie` bez „handbooks” (P-304 (2)). Makiety i design-spec zaktualizowane 2026-10-30; zrzuty wzorcowe (`wzorce-zrzuty/`) pokazują stare brzmienie w części ekranów i nie są odświeżane: SP-13 porównuje system, nie napisy. Łatka kluczy dla 08: `fix9-2026-10-30/klucze.json`.
 - **D1a (P-281), brzmienie dla 35 języków:** w nazwach i opisach para „druty i szydełko”; w etykietach do 12 znaków słowo szersze (rękodzieło), a nie samo słowo drutowe; języki bez takiego słowa w słowniku: `[DO USTALENIA]` (rola 09).
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)

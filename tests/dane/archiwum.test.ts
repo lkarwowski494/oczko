@@ -32,6 +32,19 @@ const szpieg = (odp: 'scal' | 'zastap' | 'anuluj') => { const wywolania: Manifes
 const doKatalogu = (k: string) => { mkdirSync(k, { recursive: true }); return k; };
 
 describe('eksport (BR-DAN-005, ADR-0004)', () => {
+  test('07-jakosc-002 (BR-DAN-005, ADR-0004): drugi eksport tego samego dnia do tego samego katalogu dostaje nazwę z sufiksem -2, a pierwszy plik zostaje bez zmian', async () => {
+    const s = await zZyciem();
+    const cel = doKatalogu(join(s.katalog, 'eksport-dwa-razy'));
+    const pierwszy = await eksportuj(s.za, { katalogDocelowy: cel });
+    if (!pierwszy.ok) throw new Error(pierwszy.powod);
+    const sha = sha256Pliku(pierwszy.wartosc.sciezka);
+    const drugi = await eksportuj(s.za, { katalogDocelowy: cel });
+    if (!drugi.ok) throw new Error(drugi.powod);
+    expect(drugi.wartosc.sciezka).not.toBe(pierwszy.wartosc.sciezka);
+    expect(drugi.wartosc.sciezka.endsWith(`-2${ROZSZERZENIE_ARCHIWUM}`)).toBe(true);
+    expect(sha256Pliku(pierwszy.wartosc.sciezka)).toBe(sha);
+    expect(readdirSync(cel)).toHaveLength(2);
+  });
   test('BR-DAN-005/S1: pełny eksport — manifest (format, wersje, liczności, pliki), oczko.db z tymi samymi licznościami, pliki/<sha256> zgodne z bajtami', async () => {
     const s = await zZyciem();
     const cel = doKatalogu(join(s.katalog, 'eksport'));

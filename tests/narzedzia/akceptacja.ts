@@ -64,22 +64,21 @@ export function wywolaj<T>(fn: () => T): { rzucil: false; wynik: T } | { rzucil:
 
 /** Licznik zgodnych wektorów (DoD §6: „wykonano N z N”); test liczności pada na znaczniku, dopóki choć jeden wektor pada. */
 export function licznikWektorow() {
-  let zgodne = 0;
   let pierwszyBlad: unknown = null;
   return {
     sprawdz(fn: () => void): void {
       try {
         fn();
-        zgodne += 1;
       } catch (e) {
         if (pierwszyBlad === null) pierwszyBlad = e;
         throw e;
       }
     },
     wynik(oczekiwanych: number): void {
-      expect(oczekiwanych).toBeGreaterThan(0); // pusty zbiór wektorów = porażka (§3.3)
+      expect(oczekiwanych).toBeGreaterThan(0); // pusty zbiór wektorów = porażka (§3.3); pusty `test.each` Jest odrzuca sam
       if (czyZnacznik(pierwszyBlad)) throw pierwszyBlad;
-      expect(zgodne).toBe(oczekiwanych);
+      // Bez porównania `zgodne` z `oczekiwanych`: ten test może biec przed wektorami (jest --randomize, -t, --shard; 07-jakosc-001).
+      // Porażka wektora jest porażką jego własnego testu, a lista ID wektorów jest sprawdzana w teście liczności osobno.
     },
   };
 }
