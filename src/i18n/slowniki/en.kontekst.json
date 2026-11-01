@@ -80,7 +80,8 @@
     "miary_imperial": "Wartość preferencji „Units”: układ calowo-uncjowy (cale, uncje). Druga linia: `ustawienia.miary_imperial_opis`.",
     "miary_imperial_opis": "Skróty jednostek pod wyborem „Imperial”: cale, uncje.",
     "miary_opis": "Podpis pod listą wyboru „Units”: zmienia tylko wyświetlanie i wpisywanie; dane zostają (mm, g).",
-    "pro_wlaczone": "Wartość wiersza „Oczko Pro” w Ustawieniach, gdy Pro jest aktywne (07-jakosc-031, F-63). Jedno słowo; VoiceOver czyta „Oczko Pro, On”."
+    "pro_wlaczone": "Wartość wiersza „Oczko Pro” w Ustawieniach, gdy Pro jest aktywne (07-jakosc-031, F-63). Jedno słowo; VoiceOver czyta „Oczko Pro, On”.",
+    "grupa_liczenie": "Nagłówek grupy ustawień licznika w Ustawieniach (wiersze Vibration, Keep screen on while counting, Units; design-spec 004, ADR-0029): zwykła wielka litera jak inne nagłówki grup, jedno słowo. Tekst roboczy 08 wg P-335 (`ustawienia.grupa_liczenie`) — do akceptacji 04."
   },
   "aktywnosc": {
     "plus": "Przycisk +1 na ekranie blokady, w rozwiniętej Dynamic Island i na zegarku (P-133 (1.1a): jedyny przycisk Live Activity). Ok. 8 znaków.",

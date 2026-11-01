@@ -38,6 +38,11 @@ const poRestarcie = async (z: Awaited<ReturnType<typeof aplikacja>>['z']) => { c
 
 beforeEach(() => { jest.clearAllMocks(); });
 
+test('004 (design-spec): wiersze preferencji są pod nagłówkiem grupy „Counting”', async () => {
+  await aplikacja();
+  render(<EkranUstawien />);
+  expect(screen.getByRole('header', { name: 'Counting' })).toBeTruthy();
+});
 test('K-04b: przełącznik Vibration zapisuje się w bazie i przetrwa restart', async () => {
   const { z } = await aplikacja();
   render(<EkranUstawien />);
