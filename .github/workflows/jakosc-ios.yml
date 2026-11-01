@@ -245,6 +245,7 @@ jobs:
         if: steps.plan.outputs.any == 'true'
         env:
           URZADZENIE: ${{ matrix.urzadzenie }}
+          COMMIT_MSG: ${{ github.event.head_commit.message || inputs.znacznik }} # „[e2e-ciemny]”: cały przebieg w ciemnym motywie (07-jakosc, ustalenie 04-002)
         run: |
           mkdir -p app-sim && unzip -q oczko-sim.zip -d app-sim
           SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
@@ -261,6 +262,12 @@ jobs:
           echo "SIM=$DEV" >> "$GITHUB_ENV"
           xcrun simctl boot "$DEV" || true
           xcrun simctl bootstatus "$DEV" -b
+          # MOTYW-POCZĄTEK
+          case "$COMMIT_MSG" in
+            *'[e2e-ciemny]'*) xcrun simctl ui "$DEV" appearance dark; echo "Wygląd symulatora: dark" | tee -a "$GITHUB_STEP_SUMMARY" ;;
+            *) xcrun simctl ui "$DEV" appearance light || true ;;
+          esac
+          # MOTYW-KONIEC
           xcrun simctl install "$DEV" app-sim/*.app
       - name: Maestro
         if: steps.plan.outputs.any == 'true'
