@@ -66,13 +66,20 @@ function wejscie(w: WidokLicznika, przed: number): { rzad: number; tekst: string
   }
   return null;
 }
-/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel części. */
-function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean): ZdarzeniePlus[] {
+/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel dnia, cel części. */
+function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean, celDnia: boolean): ZdarzeniePlus[] {
   const z: ZdarzeniePlus[] = ['rzad'];
   if (sygnal) z.push('przypomnienie');
   if (w.powtorzenie && w.wartosc > 0 && w.wartosc % w.powtorzenie.dlugosc === 0) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
+  if (celDnia) z.push('cel-dnia'); // 07-jakosc-009: osiągnięcie celu dnia (RD-15), ten sam wzór co przypomnienie (BR-LIC-021)
   if (w.czesc.cel !== null && w.wartosc === w.czesc.cel) z.push('cel-czesci');
   return z;
+}
+
+/** Cel dnia (RD-15) osiągnięty właśnie tym +1: przed był poniżej, po jest na poziomie celu albo wyżej; bez punktu odniesienia (nowy dzień, inny projekt) bez sygnału. */
+function celDniaOsiagniety(przed: { projektId: string; dzien: string; rzedy: number } | null, w: WidokLicznika): boolean {
+  if (!przed || w.celDnia === null || w.zrobioneDzis === null) return false;
+  return przed.projektId === w.projektId && przed.dzien === w.dzis && przed.rzedy < w.celDnia && w.zrobioneDzis >= w.celDnia;
 }
 
 export type KompozycjaLicznika = {
@@ -109,6 +116,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
   let aktywnosc = false;
+  /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
+  let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
   // P-287: +1 w toku (pierwsze tworzy projekt roboczy i ustawia licznikId). Odczyt ekranu rozpoczęty w tym czasie (przemontowanie po naPartie,
   // poZmianie, odswiez) czeka na zapis — inaczej nowy ekran pokazałby stan sprzed stuknięcia, a wynik +1 trafiłby do odmontowanego komponentu.
@@ -125,6 +134,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const r = await widokLicznika(z, { licznikId });
       if (r.ok) w = r.wartosc;
     }
+    zrobioneDzis = w && w.zrobioneDzis !== null ? { projektId: w.projektId, dzien: w.dzis, rzedy: w.zrobioneDzis } : null;
     const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje() });
     return { s: { ...s, konflikt: licznikId ? await liniaKonfliktu(licznikId) : null }, w };
   }
@@ -156,6 +166,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       licznikId = n.wartosc.licznikId;
       await zapamietajLicznik(z, { licznikId });
     }
+    const przed = zrobioneDzis; // stan sprzed tego +1 (ekran czyta go przy starcie i po każdym +1)
     const r = await dodajRzad(z, { licznikId });
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
@@ -163,7 +174,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     void poZapisie(w);
     if (!w) return { ok: false, powod: 'bledne_dane' };
     const sygnal = wejscie(w, r.wartosc.wartosc - 1);
-    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null), wejscieWPrzypomnienie: sygnal } };
+    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal } };
   }
 
   const k: KompozycjaLicznika = {
