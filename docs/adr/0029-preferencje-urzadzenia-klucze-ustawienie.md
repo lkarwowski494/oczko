@@ -1,5 +1,5 @@
 # 0029. Preferencje urządzenia (wibracje, ekran nie gaśnie, układ miar) w tabeli `ustawienie`, jako stan urządzenia, wczytywane do migawki przy starcie
-Data: 2026-11-01 · Status: **przyjęta warunkowo** (rekomendacja 05; potwierdza koordynator wg P-087) · Rola: 05 (fix, partia 8, 07-jakosc-004) · Zależy od: ADR-0001, ADR-0005, ADR-0017, dane.md „Klucze tabeli `ustawienie`”, BR-LIC-020 S3, BR-LIC-013 S2, BR-KAL-003 S6, ZM-02
+Data: 2026-11-01 · Status: **przyjęta** (P-328, koordynator wg P-087, 2026-11-01) · Rola: 05 (fix, partia 8, 07-jakosc-004) · Zależy od: ADR-0001, ADR-0005, ADR-0017, dane.md „Klucze tabeli `ustawienie`”, BR-LIC-020 S3, BR-LIC-013 S2, BR-KAL-003 S6, ZM-02
 
 ## Kontekst i problem
 Trzy preferencje z Ustawień nie przetrwają restartu albo nie istnieją: wibracje są w pamięci procesu (`src/kompozycja/preferencje.ts:1-7`, komentarz czeka na klucze od 05), „ekran nie gaśnie” jest zaszyty na stałe (`src/kompozycja/licznik.ts:240`: `ekranWlaczony: true`), a wiersza „Units” nie ma (`src/kompozycja/miary.ts:1`: preferencja zawsze `'auto'`). Port `MagazynPreferencji` w `src/i18n/i18n.ts:8` już zakłada klucze `jezyk` i `uklad_miar` w tabeli `ustawienie`.

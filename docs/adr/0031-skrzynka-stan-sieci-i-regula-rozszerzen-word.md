@@ -1,5 +1,5 @@
 # 0031. Skrzynka importu: port stanu sieci (podpowiedź z `NWPathMonitor`) dla filmu i strony WWW, strona bez sieci czeka w skrzynce także z aplikacji; jedna reguła rozszerzeń Word (`.docx`)
-Data: 2026-11-01 · Status: **przyjęta warunkowo** (rekomendacja 05; potwierdza koordynator wg P-087) · Rola: 05 (fix, partia 8, 07-jakosc-017) · Zależy od: ADR-0011 (fix-7), ADR-0016, NFR-OFF-001, BR-WZR-007 (S2–S4), F-24, F-55, `prywatnosc.md`
+Data: 2026-11-01 · Status: **przyjęta** (P-328, koordynator wg P-087, 2026-11-01) · Rola: 05 (fix, partia 8, 07-jakosc-017) · Zależy od: ADR-0011 (fix-7), ADR-0016, NFR-OFF-001, BR-WZR-007 (S2–S4), F-24, F-55, `prywatnosc.md`
 
 ## Kontekst i problem
 Trzy rozjazdy w imporcie wzoru z sieci (raport 07-jakosc-017):

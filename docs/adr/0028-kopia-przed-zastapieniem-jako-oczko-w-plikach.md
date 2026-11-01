@@ -1,5 +1,5 @@
 # 0028. Kopia sprzed „Replace” to pełne archiwum `.oczko` w `Documents/Backup` (widoczne w Plikach); przywracanie zwykłym importem
-Data: 2026-11-01 · Status: **przyjęta warunkowo** (rekomendacja 05; potwierdza koordynator wg P-087, zapis P-nr w `docs/decyzje.md`) · Rola: 05 (fix, partia 8, 07-jakosc-003) · Zależy od: ADR-0001, ADR-0004, ADR-0005, ADR-0019, ADR-0020, BR-DAN-006 S3, F-32
+Data: 2026-11-01 · Status: **przyjęta** (P-328, koordynator wg P-087, 2026-11-01) · Rola: 05 (fix, partia 8, 07-jakosc-003) · Zależy od: ADR-0001, ADR-0004, ADR-0005, ADR-0019, ADR-0020, BR-DAN-006 S3, F-32
 
 ## Kontekst i problem
 Po „Replace” aplikacja mówi „Merged”, a kopia sprzed importu leży jako surowy `przed-importem-<ms>.db` w `Application Support/kopie` (`src/dane/archiwum.ts:152-157`): niewidoczna w Plikach, bez przywracania z interfejsu (raport zgodności 07-jakosc-003). Gorzej: plik `.db` nie zawiera PDF-ów, zdjęć ani rysunków. „Replace” kasuje wiersze, a pliki bez odwołań sprząta `sprzatnijKosz` (`src/przypadki-uzycia/kosz.ts:59-70`), więc samo `.db` po kilku dniach wskazywałoby na pliki, których nie ma. Kopia, której nie da się odtworzyć, nie jest kopią (zasada wspólna 10).
