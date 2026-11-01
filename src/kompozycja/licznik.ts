@@ -2,9 +2,8 @@
 // Bieżący licznik z `ostatnie_miejsce` (F-49); pierwszy +1 świeżej instalacji tworzy projekt roboczy (BR-LIC-001, NFR-PIE-001). Po każdym
 // zapisie: potwierdzenia zegarka, potem ekran blokady i zegarek (ADR-0008 (7), ADR-0009 pkt 3); Live Activity startuje po pierwszym +1 procesu.
 import type { Wynik } from '../domena/bledy';
-import { sygnalZmiany } from '../domena/przypomnienia';
 import { formatujGodzine } from '../i18n/format';
-import type { BanerLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from '../ekrany/Licznik';
+import type { BanerLicznika, StanEkranuLicznika, WynikPlus } from '../ekrany/Licznik';
 import type { DzialaniaLicznika, StanStartu, UslugiAplikacji } from '../ekrany/Aplikacja';
 import type { Tlumacz, WynikEkranu } from '../ekrany/wspolne';
 import { odswiezEkranBlokady, type ZaleznosciEkranuBlokady } from '../przypadki-uzycia/ekran-blokady';
@@ -14,6 +13,7 @@ import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
+import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
@@ -61,30 +61,6 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
     baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy, zrodlo: zrodloBanera(w.seria.zrodlo), godzina: formatujGodzine(new Date(w.seria.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) } : null),
     blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
   };
-}
-
-/** Sygnał wejścia w rząd z instrukcją przy zmianie skończonych (RD-13-W20–W25, P-161): tylko z `sygnalZmiany`, nigdy ze stanu pasa. */
-function wejscie(w: WidokLicznika, przed: number): { rzad: number; tekst: string; ktory: number; razy: number } | null {
-  for (const p of w.plany) {
-    const s = sygnalZmiany(przed, w.wartosc, p);
-    if (s.ok && s.wartosc.rzadSygnalu !== null) return { rzad: s.wartosc.rzadSygnalu, tekst: p.tekst, ktory: (s.wartosc.rzadSygnalu - p.od) / p.co + 1, razy: p.razy };
-  }
-  return null;
-}
-/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel dnia, cel części. */
-function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean, celDnia: boolean): ZdarzeniePlus[] {
-  const z: ZdarzeniePlus[] = ['rzad'];
-  if (sygnal) z.push('przypomnienie');
-  if (w.powtorzenie && w.wartosc > 0 && w.wartosc % w.powtorzenie.dlugosc === 0) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
-  if (celDnia) z.push('cel-dnia'); // 07-jakosc-009: osiągnięcie celu dnia (RD-15), ten sam wzór co przypomnienie (BR-LIC-021)
-  if (w.czesc.cel !== null && w.wartosc === w.czesc.cel) z.push('cel-czesci');
-  return z;
-}
-
-/** Cel dnia (RD-15) osiągnięty właśnie tym +1: przed był poniżej, po jest na poziomie celu albo wyżej; bez punktu odniesienia (nowy dzień, inny projekt) bez sygnału. */
-function celDniaOsiagniety(przed: { projektId: string; dzien: string; rzedy: number } | null, w: WidokLicznika): boolean {
-  if (!przed || w.celDnia === null || w.zrobioneDzis === null) return false;
-  return przed.projektId === w.projektId && przed.dzien === w.dzis && przed.rzedy < w.celDnia && w.zrobioneDzis >= w.celDnia;
 }
 
 export type KompozycjaLicznika = {
