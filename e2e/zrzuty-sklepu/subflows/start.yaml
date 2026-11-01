@@ -1,0 +1,15 @@
+# Podprzepływ: start aplikacji na danych pokazowych (baza wgrana przez skrypt), zegar TERAZ, bez sieci, okno „Uczciwe zasady” już widziane (dane).
+# Parametr (env runFlow): TERAZ — czas lokalny ISO bez strefy, np. "2026-11-12T09:41:00".
+appId: com.apps4brew.knitting
+name: "podprzepływ zrzutów: start na danych pokazowych"
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+    arguments:
+      oczkoE2eTeraz: ${TERAZ}
+      oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- setOrientation: PORTRAIT
+- assertVisible: { id: "licznik-plus" }

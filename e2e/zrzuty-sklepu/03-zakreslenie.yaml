@@ -1,0 +1,13 @@
+# Kadr 3: zakreślanie na wzorze (jeden gest palcem, jak scenariusz 26). Położenie linii: [DO USTALENIA] pierwszym przebiegiem — wzór ma nagłówek
+# „Row 12: decrease at both ends…” w górnej części strony 1; gest przechodzi przez środek ekranu w poziomie.
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 3 · zakreślanie na wzorze"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- runFlow: { file: subflows/otworz-wzor.yaml, env: { KLASA: "${KLASA}" } }
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "15%, 34%", end: "85%, 34%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- waitForAnimationToEnd

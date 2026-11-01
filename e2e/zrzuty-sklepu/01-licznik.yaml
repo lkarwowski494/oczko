@@ -1,0 +1,8 @@
+# Kadr 1 (zrzuty-plan.md): licznik w trakcie — duży numer rzędu 47, +1/−1, przypomnienie na rzędzie 48.
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 1 · licznik w trakcie"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- assertVisible: { id: "licznik-wartosc", text: "47" }
+- assertVisible: { id: "licznik-plus", text: "\\+1 row, when row 48 is done\\. Row 48: decrease at both ends.*" }
+- waitForAnimationToEnd

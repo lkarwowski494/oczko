@@ -122,6 +122,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `karta-udostepnij` | karta ukończenia | Share: obraz 1080 × 1350 bez EXIF/GPS (P-191 P10a) | „Share” | |
 | `nav-projekty` | licznik | powrót do listy projektów | „Projects” | |
 | `nav-ustawienia` | lista projektów | wejście do Ustawień | — | |
+| `nav-historia` | lista projektów | wejście do kalendarza dni (ekran „History”; używa go przepływ zrzutów `e2e/zrzuty-sklepu/06-kalendarz.yaml`, P-319; w kodzie `src/ekrany/ListaProjektow.tsx`) | „History” | |
 | `nav-narzedzia` | lista projektów | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26 (design-spec nie podaje id wejścia) | „Tools” | |
 | `nav-wstecz` | ekrany wtórne | systemowy „Back” | „Back” | |
 | `projekty-lista` | lista projektów | lista | „Projects” | |

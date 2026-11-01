@@ -3,6 +3,8 @@
 # w częściach (scripts/ci/e2e-czesci.mjs, LPT z wagami). Pakiet: podstawowy (tag `podstawowy`, bramka TestFlight) albo pełny, gdy treść commitu
 # zawiera „[e2e-pelny]” (DS-11a, P-092; po scaleniu do main pełny katalog nocą jak Trening). Ponowienie jednego nieudanego scenariusza tylko
 # poza tagiem `stan-licznika` i wykazane osobno jako „w ponowieniu” (P-091 9a). Maszyna nieprzydzielona = ponowienie ręczne (P-091 10a, CLAUDE.md).
+# Zrzuty do sklepu (P-319): treść commitu z „[zrzuty-sklepu]” dodaje zadanie zrzuty-sklepu (workflow store-screenshots.yml, aplikacja E2E z tego przebiegu); workflow_dispatch
+# działa dopiero z plikiem na main, więc do scalenia sterujemy znacznikiem (jak [e2e-ciemny]).
 # PIERWSZY PRZEBIEG INFORMACYJNY (zasada roli 07 nr 8): build sprawdza potok; scenariusze nowej wersji padają, dopóki 08 nie zbuduje ekranów z testID z e2e/README.md.
 name: Jakość · iOS
 on:
@@ -19,6 +21,8 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'scripts/ci/**'
+      - 'tests/narzedzia/zrzuty-sklepu-ziarno.ts'
+      - '.github/workflows/store-screenshots.yml'
       - 'scripts/natywne/czlonkostwo-celu.mjs'
       - '.github/scripts/jakosc/**'
       - '.github/workflows/jakosc-ios.yml'
@@ -28,7 +32,7 @@ on:
   workflow_dispatch: # ręczny pełny przebieg bez commita (P-299); działa z gałęzi, na której workflow już jest
     inputs:
       znacznik:
-        description: 'Znacznik pakietu w miejsce treści commitu (np. [e2e-pelny] albo [e2e-ipad])'
+        description: 'Znacznik pakietu w miejsce treści commitu (np. [e2e-pelny], [e2e-ipad] albo [zrzuty-sklepu])'
         type: string
         default: '[e2e-pelny]'
 permissions:
@@ -319,3 +323,13 @@ jobs:
           name: e2e-czesc-${{ matrix.czesc }}-${{ matrix.urzadzenie }}
           path: e2e-out.zip
           retention-days: 3
+  zrzuty-sklepu:
+    # Zrzuty do App Store (P-319): tylko gdy treść commitu (push) albo wejście `znacznik` (ręcznie) zawiera „[zrzuty-sklepu]”. Zadanie wywołuje store-screenshots.yml
+    # na aplikacji E2E z zadania build tego samego przebiegu (artefakt oczko-sim-app); wynik: artefakty sklep-zrzuty-iphone i sklep-zrzuty-ipad (3 dni).
+    # Wywołanie workflowu wielokrotnego użytku nie ma własnego timeout-minutes — limity czasu są w zadaniach store-screenshots.yml.
+    needs: build
+    if: ${{ contains(github.event.head_commit.message || inputs.znacznik, '[zrzuty-sklepu]') }}
+    uses: ./.github/workflows/store-screenshots.yml
+    permissions:
+      contents: read
+      actions: read

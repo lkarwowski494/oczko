@@ -1,0 +1,9 @@
+# Kadr 5: historia zmian licznika z „Undo” przy ostatniej zmianie (dzisiejsze +1 co kilka sekund).
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 5 · historia zmian z cofnięciem"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- tapOn: { id: "licznik-historia" }
+- extendedWaitUntil: { visible: { id: "historia-lista" }, timeout: 30000 }
+- assertVisible: { id: "historia-cofnij-ostatnia" }
+- waitForAnimationToEnd

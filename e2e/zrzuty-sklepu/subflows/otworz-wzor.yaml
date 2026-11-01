@@ -1,0 +1,15 @@
+# Podprzepływ: z licznika do widoku wzoru projektu (ikona „Pattern” jest w pasku tylko dla projektu z wzorem). iPad: najpierw poziom (wzór obok licznika).
+# Parametr (env runFlow): KLASA — iphone | ipad.
+appId: com.apps4brew.knitting
+name: "podprzepływ zrzutów: otwarcie wzoru"
+---
+- runFlow:
+    when:
+      true: ${KLASA == 'ipad'}
+    commands:
+      - setOrientation: LANDSCAPE_LEFT
+      - assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "wzor-strona", text: ".*[Pp]age 1 of 3.*" }, timeout: 30000 }
+- waitForAnimationToEnd

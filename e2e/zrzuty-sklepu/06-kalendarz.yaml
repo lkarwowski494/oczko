@@ -1,0 +1,13 @@
+# Kadr 6: kalendarz dni z robótką — poprzedni miesiąc (październik, 10 dni z kreską), wybrany 22.10 (trzy projekty i ukończone rękawiczki).
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 6 · kalendarz dni"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "nav-historia" }, timeout: 30000 }
+- tapOn: { id: "nav-historia" }
+- extendedWaitUntil: { visible: { id: "historia-kalendarz" }, timeout: 30000 }
+- tapOn: "Previous month"
+- tapOn: { id: "historia-dzien-2026-10-22" }
+- assertVisible: { id: "historia-dzien" }
+- waitForAnimationToEnd

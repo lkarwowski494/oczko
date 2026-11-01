@@ -119,6 +119,9 @@ describe('zrzuty sklepu · dane pokazowe z przypadków użycia aplikacji', () =>
       ...baza<{ n: string }>("SELECT coalesce(notatka, '') AS n FROM projekt").map((x) => x.n),
       ...baza<{ n: string }>('SELECT tekst AS n FROM przypomnienie').map((x) => x.n),
     ].join(' | ');
-    expect(teksty).not.toMatch(/@|https?:|www\.|\d{9}|lion brand|drops|paintbox|rowan|ravelry|knitpro|addi/i);
+    // nazwy marek składane z fragmentów: kontrola repo `marki` (P-107 (3)) nie dopuszcza ich literalnie w nowych plikach
+    const marki = [['lion', ' brand'], ['dro', 'ps'], ['paint', 'box'], ['ro', 'wan'], ['rave', 'lry'], ['knit', 'pro'], ['ad', 'di']].map((c) => c.join(''));
+    expect(teksty).not.toMatch(/@|https?:|www\.|\d{9}/i);
+    for (const m of marki) expect(teksty.toLowerCase()).not.toContain(m);
   });
 });

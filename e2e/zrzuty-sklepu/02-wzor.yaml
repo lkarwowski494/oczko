@@ -1,0 +1,7 @@
+# Kadr 2: wzór PDF obok licznika, znacznik bieżącego rzędu (iPhone pion; iPad poziom). Warunek OG-07 (plan zrzutów).
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 2 · wzór obok licznika"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- runFlow: { file: subflows/otworz-wzor.yaml, env: { KLASA: "${KLASA}" } }
+- assertVisible: { id: "wzor-widok" }

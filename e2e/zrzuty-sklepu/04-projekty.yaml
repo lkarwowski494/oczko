@@ -1,0 +1,10 @@
+# Kadr 4: lista projektów — 4 w toku z etykietami „last worked …”, sekcja „Finished”, „3 of 5 free knitting days left in November”.
+appId: com.apps4brew.knitting
+name: "Zrzut sklepu 4 · lista projektów"
+---
+- runFlow: { file: subflows/start.yaml, env: { TERAZ: "${TERAZ}" } }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 30000 }
+- assertVisible: { id: "projekty-dni-darmowe", text: "3 of 5 free knitting days left in November.*" }
+- assertVisible: { id: "projekty-ukonczone" }
+- waitForAnimationToEnd

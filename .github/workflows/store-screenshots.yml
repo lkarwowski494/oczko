@@ -1,0 +1,144 @@
+# Zrzuty ekranu do App Store (rola 07, P-319; wzór: Trening store-screenshots.yml). Sześć kadrów z planu docs/wydanie/metadane/zrzuty-plan.md na dwóch
+# klasach: iPhone 17 Pro Max (1320×2868) i iPad Pro 13″ (2064×2752 lub poziomo 2752×2064; Oczko ma ios.supportsTablet). Dane pokazowe z przypadków użycia
+# aplikacji (tests/narzedzia/zrzuty-sklepu-ziarno.ts), bez zmian w kodzie aplikacji; przepływy Maestro w e2e/zrzuty-sklepu/, skrypt scripts/ci/zrzuty-sklepu.sh.
+# Uruchomienia: (1) automatycznie z „Jakość · iOS” (zadanie zrzuty-sklepu), gdy treść commitu zawiera „[zrzuty-sklepu]” — aplikacja E2E z tego samego przebiegu,
+# bo workflow_dispatch działa dopiero z plikiem na main (P-319); (2) ręcznie po scaleniu do main: Actions → „Zrzuty do App Store” z numerem przebiegu „Jakość · iOS”.
+# Aplikacja to build E2E (jak w scenariuszach): panele testowe są tylko w Ustawieniach i przy dodawaniu wzoru, poza sześcioma kadrami [DO USTALENIA: potwierdzi przegląd
+# pierwszych zrzutów — jeśli 04 zobaczy element testowy, wariant z buildem Release bez przełączników = zadanie dla 10/08]. Zrzuty wychodzą w jasnym wyglądzie (plan),
+# bez kanału alfa dopiero po kroku ramek (rola 10). Repo publiczne: minuty macOS bez opłat; artefakty 3 dni, bez sekretów, bez danych osobowych.
+name: Zrzuty do App Store
+on:
+  workflow_dispatch:
+    inputs:
+      aplikacja_z_przebiegu:
+        description: 'Numer przebiegu „Jakość · iOS” z gotową aplikacją (artefakt oczko-sim-app żyje 1 dzień)'
+        required: true
+        type: string
+      kadry:
+        description: 'Tylko te kadry (po przecinku, np. 01-licznik,04-projekty); pusty = wszystkie sześć'
+        required: false
+        type: string
+        default: ''
+  workflow_call:
+    inputs:
+      aplikacja_z_przebiegu:
+        description: 'Pusty = aplikacja z tego samego przebiegu (zadanie build wywołującego workflow)'
+        required: false
+        type: string
+        default: ''
+      kadry:
+        required: false
+        type: string
+        default: ''
+permissions:
+  contents: read
+  actions: read
+jobs:
+  dane:
+    # Generator na Linuksie: ten sam test, który bramkuje dane (tests/jakosc/zrzuty-sklepu-dane.test.ts), zapisuje wynik w ZRZUTY_DANE_OUT.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Dane pokazowe (zmyślone, z przypadków użycia aplikacji)
+        env:
+          ZRZUTY_DANE_OUT: ${{ github.workspace }}/sklep-dane
+        run: npx jest tests/jakosc/zrzuty-sklepu-dane.test.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sklep-dane
+          path: sklep-dane
+          retention-days: 3
+  zrzuty:
+    name: zrzuty (${{ matrix.klasa }})
+    needs: dane
+    runs-on: macos-26
+    timeout-minutes: 90 # 6 kadrów × (start aplikacji + przepływ Maestro + powtórka) + rozruch symulatora i sterownika; zmierzyć w pierwszym przebiegu i dopisać tu pomiar
+    strategy:
+      fail-fast: false
+      matrix:
+        klasa: [iphone, ipad]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x
+        run: bash .github/scripts/jakosc/select-xcode.sh 26
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/download-artifact@v4
+        with:
+          name: sklep-dane
+          path: sklep-dane
+      - uses: actions/download-artifact@v4
+        if: inputs.aplikacja_z_przebiegu == ''
+        with:
+          name: oczko-sim-app
+      - uses: actions/download-artifact@v4
+        if: inputs.aplikacja_z_przebiegu != ''
+        with:
+          name: oczko-sim-app
+          run-id: ${{ inputs.aplikacja_z_przebiegu }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Symulator (iPhone 17 Pro Max albo iPad Pro 13″) i aplikacja
+        env:
+          KLASA: ${{ matrix.klasa }}
+        run: |
+          mkdir -p app-sim && unzip -q oczko-sim.zip -d app-sim
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
+          LIST=$(xcrun simctl list devices available | awk -v h="-- iOS $SDK --" '$0 == h { f = 1; next } /^-- / { f = 0 } f')
+          [ -n "$LIST" ] || LIST=$(xcrun simctl list devices available)
+          if [ "$KLASA" = ipad ]; then WZORY=("iPad Pro 13-inch"); else WZORY=("iPhone 17 Pro Max \(" "iPhone 16 Pro Max \("); fi
+          DEV=""
+          for pat in "${WZORY[@]}"; do
+            DEV=$(printf '%s\n' "$LIST" | grep -m1 -E "$pat" | sed -E 's/.*\(([0-9A-F-]{36})\).*/\1/' || true)
+            [ -n "$DEV" ] && break
+          done
+          [ -n "$DEV" ] || { echo "::error::Brak symulatora ($KLASA) o rozmiarze ekranu z planu zrzutów"; printf '%s\n' "$LIST" | sed -E 's/\([0-9A-F-]{36}\)//'; exit 1; }
+          echo "Symulator ($KLASA): $(printf '%s\n' "$LIST" | grep -m1 "$DEV" | sed -E 's/ *\([0-9A-F-]{36}\).*//; s/^ +//') (iOS $SDK)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "SIM=$DEV" >> "$GITHUB_ENV"
+          xcrun simctl boot "$DEV" || true
+          xcrun simctl bootstatus "$DEV" -b
+          xcrun simctl install "$DEV" app-sim/*.app
+      - name: Maestro
+        env:
+          MAESTRO_VERSION: ${{ vars.MAESTRO_VERSION }} # przypięcie zmienną repozytorium (jak jakosc-ios.yml); pusta = najnowsza, wersja w logu
+        run: |
+          [ -n "$MAESTRO_VERSION" ] || unset MAESTRO_VERSION
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          "$HOME/.maestro/bin/maestro" --version | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Zrzuty ekranu
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '480000' # jak jakosc-ios.yml: świeży symulator potrzebuje więcej czasu na sterownik XCTest
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+          KLASA: ${{ matrix.klasa }}
+          KADRY: ${{ inputs.kadry }}
+        run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$KLASA" sklep-dane sklep-zrzuty "$KADRY"
+      - name: Rozmiary i kanał alfa (podgląd; alfę zdejmuje krok ramek roli 10)
+        if: always()
+        env:
+          KLASA: ${{ matrix.klasa }}
+        run: |
+          { echo "### Zrzuty $KLASA"; echo '| plik | szerokość | wysokość | alfa |'; echo '|---|---|---|---|'; } >> "$GITHUB_STEP_SUMMARY"
+          for f in sklep-zrzuty/"$KLASA"/*.png; do
+            [ -f "$f" ] || continue
+            echo "| $(basename "$f") | $(sips -g pixelWidth "$f" | awk '/pixelWidth/ {print $2}') | $(sips -g pixelHeight "$f" | awk '/pixelHeight/ {print $2}') | $(sips -g hasAlpha "$f" | awk '/hasAlpha/ {print $2}') |" >> "$GITHUB_STEP_SUMMARY"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sklep-zrzuty-${{ matrix.klasa }}
+          path: sklep-zrzuty
+          include-hidden-files: true # dzienniki Maestro w .maestro i kadry po dwóch próbach w .nieudane
+          if-no-files-found: ignore
+          retention-days: 3
