@@ -395,7 +395,8 @@
     "czeka_przycisk": "Waiting for approval",
     "blad_zakupu": "The purchase didn’t go through. Check your connection and try again.",
     "przywracanie_nic": "No Oczko Pro purchase found for this Apple ID. If you bought it with another Apple ID, sign in with that one in Settings and try again.",
-    "przywracanie_blad": "Couldn’t restore purchases. Check your connection and try again."
+    "przywracanie_blad": "Couldn’t restore purchases. Check your connection and try again.",
+    "pro_wlaczone": "Oczko Pro is on."
   },
   "uczciwe": {
     "tytul": "Your first knitting day is done",

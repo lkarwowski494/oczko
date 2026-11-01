@@ -359,7 +359,8 @@
     "czeka_przycisk": "Etykieta nieaktywnego przycisku zakupu, gdy zakup czeka na zatwierdzenie (ten sam stan co `oferty.czeka`). Do ok. 24 znaków.",
     "blad_zakupu": "Linia błędu na ekranie ofert, gdy zakup się nie powiódł (błąd sklepu lub sieci). Anulowanie przez użytkowniczkę nie daje żadnego komunikatu. Znak „!” + tekst, role=alert. Bez kodów technicznych i bez przeprosin.",
     "przywracanie_nic": "Linia informacji po „Restore purchases”, gdy sklep nie zwrócił zakupu Oczko Pro dla bieżącego Apple ID. Nie błąd. „Settings” = ustawienia systemu iOS (konto Apple ID).",
-    "przywracanie_blad": "Linia błędu po „Restore purchases”, gdy samo przywracanie się nie powiodło (sieć, sklep). Znak „!” + tekst, role=alert."
+    "przywracanie_blad": "Linia błędu po „Restore purchases”, gdy samo przywracanie się nie powiodło (sieć, sklep). Znak „!” + tekst, role=alert.",
+    "pro_wlaczone": "Jednorazowa linia na ekranie ofert po zatwierdzeniu zakupu poza aplikacją (Ask to Buy / rodzinna zgoda): Pro jest już włączone. Krótkie zdanie oznajmujące, jak „Oczko Pro is on.”; ok. 20 znaków. Tekst roboczy 08 wg P-330 (klucz `ustawienia.pro_wlaczone` to tylko „On” wiersza Ustawień) — do akceptacji 04."
   },
   "uczciwe": {
     "tytul": "Tekst z design-spec roli 04.",
