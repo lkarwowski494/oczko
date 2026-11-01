@@ -800,7 +800,9 @@
     "notatka_usun": "Delete note",
     "notatka_usun_tytul": "Delete this note?",
     "notatka_usun_opis": "It’s removed from the pattern and from row {{n}}.",
-    "notatka_edytuj": "Edit"
+    "notatka_edytuj": "Edit",
+    "przed_schematem": "Before the pattern",
+    "znacznik_napis": "Row {{n}}"
   },
   "udostepnij": {
     "tytul": "Add to Oczko",

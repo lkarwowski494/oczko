@@ -15,6 +15,9 @@ struct Znacznik: Equatable {
   let pozaStrona: Bool
   let kierunek: Int    // 1 w dół, -1 w górę
   let etykieta: String // etykieta VoiceOver z `wzor.znacznik_a11y_*` (P-237 (2))
+  let napis: String    // widoczny napis zakładki z JS: „Row 48 ↑” albo „Row 61 · page end” (design-spec, F-26)
+  let przedSchematem: Bool
+  let akcjaNastepnaStrona: String // nazwa akcji VoiceOver „Move to next page”; pusty = brak (nie ma następnej strony albo pas jest na stronie)
 }
 
 struct ChipNotatkiNatywny: Equatable {
@@ -54,14 +57,32 @@ final class DetektorRysika: UIGestureRecognizer {
   }
 }
 
+/// Pas znacznika: dotyk tylko na zakładce i uchwycie wysokości (reszta pasa przepuszcza dotyk do strony, więc przewijanie i rysowanie działają); element „adjustable” dla VoiceOver.
+final class PasZnacznika: UIView {
+  var obszaryDotyku: [CGRect] = []
+  var naKrok: ((Int) -> Void)?
+  override func point(inside punkt: CGPoint, with zdarzenie: UIEvent?) -> Bool {
+    obszaryDotyku.contains { $0.insetBy(dx: -8, dy: -8).contains(punkt) }
+  }
+  override func accessibilityIncrement() { naKrok?(1) }
+  override func accessibilityDecrement() { naKrok?(-1) }
+}
+
 /// Nakładka strony: płótno PencilKit, znacznik rzędu (pas z dwiema grafitowymi krawędziami i zakładką z etykietą) i chipy notatek.
 final class NakladkaStrony: UIView {
   let plotno = PKCanvasView()
+  var strona = 0
   var naNotatke: ((String) -> Void)?
+  var naZnacznik: ((Int, Double, Double) -> Void)?   // strona, góra, wysokość po przeciągnięciu pasa albo uchwytu
+  var naKrokZnacznika: ((Int) -> Void)?              // VoiceOver: zwiększ/zmniejsz = o rząd
+  var naNastepnaStrona: (() -> Void)?                // VoiceOver: „Move to next page”
   private var chipy: [(dane: ChipNotatkiNatywny, widok: ChipPrzycisk)] = []
   var notatki: [ChipNotatkiNatywny] = [] { didSet { przebudujChipy() } }
-  let pas = UIView()
-  private let gora = UIView(), dol = UIView(), zakladka = UILabel()
+  let pas = PasZnacznika()
+  private let gora = UIView(), dol = UIView(), zakladka = UILabel(), uchwyt = UIView()
+  private let krawedzPrzerywana = CAShapeLayer()
+  private var przeciaganie: (y: Double, wysokosc: Double)?    // wartości na żywo w trakcie gestu (ułamki strony)
+  private var poczatekGestu: (y: Double, wysokosc: Double) = (0, 0)
   var znacznik: Znacznik? { didSet { setNeedsLayout() } }
 
   override init(frame: CGRect) {
@@ -75,11 +96,47 @@ final class NakladkaStrony: UIView {
     zakladka.textColor = .white
     zakladka.font = .systemFont(ofSize: 13, weight: .semibold)
     pas.addSubview(zakladka)
-    pas.isUserInteractionEnabled = false
+    zakladka.isUserInteractionEnabled = true
+    zakladka.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(przesunPas(_:))))
+    uchwyt.backgroundColor = .white
+    uchwyt.layer.borderColor = KOLOR_GRAFIT.cgColor
+    uchwyt.layer.borderWidth = 2
+    uchwyt.layer.cornerRadius = 10
+    uchwyt.isUserInteractionEnabled = true
+    uchwyt.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(zmienWysokosc(_:))))
+    pas.addSubview(uchwyt)
+    krawedzPrzerywana.strokeColor = KOLOR_GRAFIT.cgColor
+    krawedzPrzerywana.lineWidth = 2
+    krawedzPrzerywana.lineDashPattern = [6, 4]
+    krawedzPrzerywana.fillColor = nil
+    pas.layer.addSublayer(krawedzPrzerywana)
+    pas.isUserInteractionEnabled = true
     pas.isAccessibilityElement = true
     pas.accessibilityIdentifier = "wzor-znacznik"
     pas.accessibilityTraits = .adjustable
+    pas.naKrok = { [weak self] k in self?.naKrokZnacznika?(k) }
     addSubview(pas)
+  }
+
+  /// Przeciągnięcie zakładki przesuwa pas w pionie (w obrębie strony); po puszczeniu JS zapisuje miejsce, rząd zostaje.
+  @objc private func przesunPas(_ g: UIPanGestureRecognizer) {
+    guard let z = znacznik, bounds.height > 0 else { return }
+    if g.state == .began { poczatekGestu = (z.y, z.wysokosc) }
+    let y = min(max(poczatekGestu.y + Double(g.translation(in: self).y / bounds.height), 0), 1 - z.wysokosc)
+    przeciaganie = (y, z.wysokosc)
+    setNeedsLayout()
+    if g.state == .ended { przeciaganie = nil; naZnacznik?(strona, y, z.wysokosc) }
+    if g.state == .cancelled || g.state == .failed { przeciaganie = nil; setNeedsLayout() }
+  }
+  /// Przeciągnięcie uchwytu na dolnej krawędzi ustala wysokość rzędu (`wysokosc_rzedu`).
+  @objc private func zmienWysokosc(_ g: UIPanGestureRecognizer) {
+    guard let z = znacznik, bounds.height > 0 else { return }
+    if g.state == .began { poczatekGestu = (z.y, z.wysokosc) }
+    let w = min(max(poczatekGestu.wysokosc + Double(g.translation(in: self).y / bounds.height), 0.005), min(0.2, 1 - z.y))
+    przeciaganie = (z.y, w)
+    setNeedsLayout()
+    if g.state == .ended { przeciaganie = nil; naZnacznik?(strona, z.y, w) }
+    if g.state == .cancelled || g.state == .failed { przeciaganie = nil; setNeedsLayout() }
   }
   required init?(coder: NSCoder) { fatalError("init(coder:)") }
 
@@ -118,15 +175,28 @@ final class NakladkaStrony: UIView {
     guard let z = znacznik else { pas.isHidden = true; return }
     pas.isHidden = false
     let h = bounds.height
-    let gorny = CGFloat(min(max(z.y, 0), 1)) * h
-    let wys = max(CGFloat(z.wysokosc) * h, 4)
+    let gorny = CGFloat(min(max(przeciaganie?.y ?? z.y, 0), 1)) * h
+    let wys = max(CGFloat(przeciaganie?.wysokosc ?? z.wysokosc) * h, 4)
     pas.frame = CGRect(x: 0, y: gorny, width: bounds.width, height: wys)
     gora.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 2)
     dol.frame = CGRect(x: 0, y: wys - 2, width: bounds.width, height: 2)
-    zakladka.text = " \(z.kierunek < 0 ? "↑" : "↓") "
+    zakladka.text = " \(z.napis) "
     zakladka.sizeToFit()
     zakladka.frame.origin = CGPoint(x: 0, y: z.kierunek < 0 ? -zakladka.frame.height : wys)
+    uchwyt.frame = CGRect(x: bounds.width - 36, y: wys - 10, width: 20, height: 20)
+    pas.obszaryDotyku = [zakladka.frame, uchwyt.frame]
+    // Koniec strony: krawędź od strony wyjścia (↑ góra, ↓ dół) przerywana (design-spec, `pozaStrona`).
+    let y0: CGFloat = z.kierunek < 0 ? 1 : wys - 1
+    let sciezka = UIBezierPath()
+    sciezka.move(to: CGPoint(x: 0, y: y0))
+    sciezka.addLine(to: CGPoint(x: bounds.width, y: y0))
+    krawedzPrzerywana.path = sciezka.cgPath
+    krawedzPrzerywana.isHidden = !z.pozaStrona
+    gora.isHidden = z.pozaStrona && z.kierunek < 0
+    dol.isHidden = z.pozaStrona && z.kierunek >= 0
     pas.accessibilityLabel = z.etykieta
+    pas.accessibilityValue = z.napis
+    pas.accessibilityCustomActions = z.akcjaNastepnaStrona.isEmpty ? [] : [UIAccessibilityCustomAction(name: z.akcjaNastepnaStrona) { [weak self] _ in self?.naNastepnaStrona?(); return true }]
   }
 }
 
@@ -137,6 +207,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   let onPierwszyRysik = EventDispatcher()
   let onZakreslenia = EventDispatcher()
   let onNotatka = EventDispatcher()
+  let onZnacznik = EventDispatcher()
+  let onZnacznikKrok = EventDispatcher()
+  let onNastepnaStrona = EventDispatcher()
 
   private let pdf = PDFView()
   private var plik = ""
@@ -264,7 +337,11 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     zastosujNarzedzie(n.plotno)
     zastosujPolityke(n.plotno)
     n.znacznik = znacznik?.strona == s ? znacznik : nil
+    n.strona = s
     n.naNotatke = { [weak self] id in self?.onNotatka(["id": id]) }
+    n.naZnacznik = { [weak self] strona, y, wysokosc in self?.onZnacznik(["wzorId": self?.wzorId ?? "", "strona": strona, "y": y, "wysokosc": wysokosc]) }
+    n.naKrokZnacznika = { [weak self] delta in self?.onZnacznikKrok(["wzorId": self?.wzorId ?? "", "delta": delta]) }
+    n.naNastepnaStrona = { [weak self] in self?.onNastepnaStrona([:]) }
     n.notatki = notatki.filter { $0.strona == s }
     nakladki[s] = n
     return n

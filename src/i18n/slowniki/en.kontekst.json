@@ -738,7 +738,9 @@
     "notatka_usun_tytul": "Tytuł alertu usunięcia notatki wzoru.",
     "notatka_usun_opis": "Opis alertu usunięcia notatki wzoru; {{n}} = rząd notatki. Notatki nie trafiają do kosza.",
     "notatki_wiele": "Chip zbiorczy, gdy kilka notatek leży w obrębie jednego rzędu na stronie (≥ 2 w praktyce). Stuknięcie otwiera listę `wzor.notatki_tytul`.",
-    "notatka_edytuj": "Przycisk w nagłówku arkusza notatki wzoru (Close / tytuł / Edit; 07-jakosc-007, P-330 2A): przechodzi w tryb zmiany treści (Cancel / Save). Tekst roboczy 08 — brak klucza w klucze.json, do akceptacji 04."
+    "notatka_edytuj": "Przycisk w nagłówku arkusza notatki wzoru (Close / tytuł / Edit; 07-jakosc-007, P-330 2A): przechodzi w tryb zmiany treści (Cancel / Save). Tekst roboczy 08 — brak klucza w klucze.json, do akceptacji 04.",
+    "przed_schematem": "Linia pod paskiem wzoru (07-jakosc-023, BR-WZR-003 S4, RD-21-W6): praca jest przed pierwszym rzędem schematu (prucie poza początek); znacznik stoi na rzędzie 1. Tekst roboczy 08 — design-spec wymaga „oznaczenia”, ale nie podaje brzmienia; do akceptacji 04.",
+    "znacznik_napis": "Widoczny napis zakładki znacznika rzędu na stronie wzoru (07-jakosc-023, F-26): do napisu dochodzi strzałka kierunku rzędów (↑/↓, symbol); {{n}} = rząd schematu. Przy końcu strony napis to wzor.etykieta_koniec. Tekst roboczy 08 — design-spec podaje „Row 48 ↑” bez klucza; do akceptacji 04."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",

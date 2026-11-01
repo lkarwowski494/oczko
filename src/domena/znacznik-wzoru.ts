@@ -49,3 +49,28 @@ export function chipyNotatek(z: ZnacznikWzoru, notatki: readonly NotatkaWzoru[])
   }
   return [...wg.values()].sort((a, b) => a.rzad - b.rzad);
 }
+
+// --- Ustawianie znacznika na stronie (F-26, 07-jakosc-023; design-spec „Znacznik rzędu na wzorze”) ---
+/** Góra pasa rzędu przy przytrzymaniu w `yDotyku` (ułamek wysokości strony): pas wyśrodkowany na palcu, w obrębie strony. */
+export function gornaKrawedzRzedu(yDotyku: number, wysokoscRzedu: number): number {
+  return Math.min(Math.max(yDotyku - wysokoscRzedu / 2, 0), 1 - wysokoscRzedu);
+}
+/** Rząd schematu po przestawieniu pasa: przeniesienie zachowuje rząd znacznika (BR-WZR-003 S3), pierwsze ustawienie bierze rząd w robocie. Rząd przed schematem wraca na 1. */
+export function rzadPoPrzeniesieniu(obecny: { rzad: number } | null, rzadWRobocie: number): number {
+  return obecny ? Math.max(1, obecny.rzad) : rzadWRobocie;
+}
+/** Góra pasa po przejściu na następną stronę: pas staje przy krawędzi, od której zaczyna się kierunek rzędów (↑ od dołu, ↓ od góry). */
+export function gornaKrawedzNaNastepnejStronie(kierunek: 1 | -1, wysokoscRzedu: number): number {
+  return kierunek === -1 ? 1 - wysokoscRzedu : 0;
+}
+/**
+ * Krok VoiceOver (zwiększ/zmniejsz) lub strzałek: pas o jeden rząd dalej w kierunku rzędów (rząd +1) albo bliżej (rząd −1). Gdy pas dotknąłby krawędzi strony,
+ * zwraca null (pas zostaje; przejście na następną stronę to osobna akcja). Rząd schematu nie spada poniżej 1.
+ */
+export function krokZnacznika(z: { y: number; wysokosc: number; kierunek: 1 | -1; rzad: number }, delta: 1 | -1): { y: number; rzadBazowy: number } | null {
+  const rzadBazowy = Math.max(1, z.rzad) + delta;
+  if (rzadBazowy < 1) return null;
+  const y = z.y + z.kierunek * delta * z.wysokosc;
+  if (y < -EPS || y + z.wysokosc > 1 + EPS) return null;
+  return { y: Math.min(Math.max(y, 0), 1 - z.wysokosc), rzadBazowy };
+}

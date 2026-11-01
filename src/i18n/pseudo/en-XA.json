@@ -736,6 +736,8 @@
   "wzor.notatka_usun_tytul": "⟦Délété thîš ñöté?~~~~~~~~~~~~⟧",
   "wzor.notatka_usun_opis": "⟦Ît’š ŕémövéd fŕöm thé pàttéŕñ àñd fŕöm ŕöw {{n}}.~~~~~~~~~~~~~~⟧",
   "wzor.notatka_edytuj": "⟦Édît~~~~⟧",
+  "wzor.przed_schematem": "⟦Béföŕé thé pàttéŕñ~~~~~~~~~~~~~⟧",
+  "wzor.znacznik_napis": "⟦Ŕöw {{n}}~~~⟧",
   "udostepnij.tytul": "⟦Àdd tö Öçžkö~~~~~~~~~~⟧",
   "udostepnij.do_projektu": "⟦Àdd àš à pàttéŕñ tö~~~~~~~~~~~~⟧",
   "udostepnij.do_projektu_film": "⟦Àdd thé vîdéö lîñk tö~~~~~~~~~~~~~~⟧",

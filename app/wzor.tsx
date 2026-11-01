@@ -1,11 +1,12 @@
 // Trasa „/wzor”: przeglądarka wzoru bieżącego projektu (design-spec „Wzór, rysik i iPad”; P-220 W1a–W9b; moduly.md „Kontrakt partii 6”).
 // Bez wzoru: grupa „Add pattern” (W7a, subflow otworz-wzor-pdf). Widok strony = moduł natywny `oczko-wzor` (WidokWzoru); build bez modułu: pusta strona.
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Linking, View, useWindowDimensions } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { WidokWzoruNatywny } from '../modules/oczko-wzor';
 import { ukladOkna } from '../src/domena/uklad';
+import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
@@ -42,6 +43,8 @@ export default function EkranWzoru(): React.ReactElement {
   const [cofnij, ustawCofnij] = useState(0);
   const [link, ustawLink] = useState(false);
   const [arkuszNazwy, ustawArkuszNazwy] = useState(false); // ••• → „Rename” (W1a)
+  const kolejkaKrokow = useRef<Promise<void>>(Promise.resolve()); // kroki rzędu znacznika jeden po drugim (każdy czyta świeży stan)
+  const [przytrzymanie, ustawPrzytrzymanie] = useState<{ strona: number; y: number } | null>(null); // przytrzymanie bez znacznika czeka na kierunek (3a)
   const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
   const [importWToku, ustawImport] = useState<string | null>(null); // W11: wiersz „import w toku” w czasie konwersji
 
@@ -136,6 +139,11 @@ export default function EkranWzoru(): React.ReactElement {
   const polityka = politykaPlotna({ narzedzie, tylkoRysik: rysik.tylkoRysik });
   const zn = widok.znacznik;
   const plikPdf = widok.plikPdf;
+  const WYSOKOSC_RZEDU_DOMYSLNA = 0.02;
+  const postaw = (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, ...w, wysokoscRzedu: w.wysokoscRzedu ?? zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA }).then(() => wczytaj(widok.wzorId));
+  const nastepnaStrona = zn ? (strona?.razem ?? 0) > zn.strona + 1 : false;
+  const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
+  const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };
   const chipy = widok.notatki;
   const notatkiNatywne = chipy.map((c) => {
     const etykieta = c.notatki.length > 1 ? t('wzor.notatki_wiele', { count: c.notatki.length }) : t('wzor.notatka_chip', { n: c.rzadWzoru, tekst: c.notatki[0]?.tekst ?? '' });
@@ -144,14 +152,23 @@ export default function EkranWzoru(): React.ReactElement {
   const natywny = WidokWzoruNatywny && dokument ? (
     <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : 0} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
+      onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
+      onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
+      onNastepnaStrona={przejdzNaNastepna}
       znacznik={zn ? { strona: zn.strona, y: zn.y, wysokosc: zn.wysokosc, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem, kierunek: zn.kierunek,
-        etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: zn.rzad }) } : null}
+        napis: zn.pozaStrona ? t('wzor.etykieta_koniec', { n: zn.rzad }) : `${t('wzor.znacznik_napis', { n: Math.max(1, zn.rzad) })} ${zn.kierunek === -1 ? '↑' : '↓'}`,
+        akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
+        etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
       onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
       onStrona={(e) => ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron })}
       onPierwszyRysik={() => ustawRysik((s) => poDotyku(s, 'rysik'))}
       onZakreslenia={(e) => ustawZakreslenia(e.nativeEvent.liczba)}
-      onStukniecie={(e) => zn && e.nativeEvent.wzorId === widok.wzorId && void ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, strona: e.nativeEvent.strona, y: Math.min(e.nativeEvent.y, 0.98), wysokoscRzedu: zn?.wysokosc ?? 0.02,
-        rzadBazowy: lw.wartosc + 1, kierunek: zn.kierunek }).then(() => wczytaj(widok.wzorId))} /> // przytrzymanie przestawia znacznik o znanym kierunku; pierwszy: „Mark row” z pytaniem (3a)
+      onStukniecie={(e) => { // przytrzymanie: pas staje w tym miejscu, rząd zostaje (S3); pierwszy znacznik pyta o kierunek (3a) i bierze rząd w robocie (S2)
+        const n = e.nativeEvent;
+        if (n.wzorId !== widok.wzorId) return;
+        if (zn) void postaw({ strona: n.strona, y: gornaKrawedzRzedu(n.y, zn.wysokosc), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek: zn.kierunek });
+        else ustawPrzytrzymanie({ strona: n.strona, y: n.y });
+      }} />
   ) : <View style={{ flex: 1 }} />;
   const liczba = lw.znaczenie === 'w_trakcie' ? lw.wartosc + 1 : lw.wartosc;
   const strony = strona?.razem ?? 0;
@@ -169,7 +186,19 @@ export default function EkranWzoru(): React.ReactElement {
         chipy={chipy} otwartyChip={otwartyChip} naChip={ustawOtwartyChip}
         naZmienNotatke={async (id, nowa) => { const r = await zmienNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id, tekst: nowa }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
         naUsunNotatke={async (id) => { const r = await usunNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
-        naZaznaczRzad={(kierunek) => void ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, strona: strona ? strona.n - 1 : 0, y: 0.5, wysokoscRzedu: zn?.wysokosc ?? 0.02, rzadBazowy: lw.wartosc + 1, kierunek }).then(() => wczytaj(widok.wzorId))}
+        naZaznaczRzad={(kierunek) => void postaw({ strona: strona ? strona.n - 1 : 0, y: gornaKrawedzRzedu(0.5, zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek })}
+        znacznik={zn ? { strona: zn.strona, rzad: zn.rzad, kierunek: zn.kierunek, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem } : null} razemStron={strona?.razem}
+        oczekujacePrzytrzymanie={przytrzymanie !== null}
+        naKierunekPrzytrzymania={(kierunek) => { const g = przytrzymanie; ustawPrzytrzymanie(null); if (g) void postaw({ strona: g.strona, y: gornaKrawedzRzedu(g.y, WYSOKOSC_RZEDU_DOMYSLNA), rzadBazowy: rzadPoPrzeniesieniu(null, domyslnyRzadBazowy(lw.wartosc)), kierunek }); }}
+        naZmienKierunek={(kierunek) => { if (gdzieZnacznik) void postaw({ ...gdzieZnacznik, kierunek }); }}
+        naKrokRzaduZnacznika={(delta) => {
+          kolejkaKrokow.current = kolejkaKrokow.current.then(async () => {
+            const v = await widokWzoru(zw, { wzorId: widok.wzorId });
+            const z = v.ok ? v.wartosc.znacznik : null;
+            if (z) await postaw({ strona: z.strona, y: z.y, kierunek: z.kierunek, rzadBazowy: Math.max(1, Math.max(1, z.rzad) + delta) });
+          });
+        }}
+        naNastepnaStrona={przejdzNaNastepna}
         naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst })}
         naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(() => wczytaj(widok.wzorId))}
         naZmienNazwe={() => ustawArkuszNazwy(true)}

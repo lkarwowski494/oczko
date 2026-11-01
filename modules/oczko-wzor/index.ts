@@ -14,7 +14,9 @@ export interface OczkoWzorNatywny {
   miniatura(pdf: string, cel: string, szerokoscPt: number): Promise<string>; // plan 1.1 pkt 7: PNG pierwszej strony → {ok} | uszkodzony | zapis
 }
 
-export type ZnacznikNatywny = { strona: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1; etykieta: string };
+export type ZnacznikNatywny = { strona: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1; etykieta: string;
+  /** Widoczny napis zakładki („Row 48 ↑”, „Row 61 · page end”) i nazwa akcji VoiceOver „Move to next page” (pusta = brak): teksty z `t()`. */
+  napis: string; akcjaNastepnaStrona: string };
 /** Chip notatki na stronie wzoru (F-56, P-330 2A): widok rysuje ✎ + `etykieta` przy lewej krawędzi strony na wysokości rzędu (`y`, `wysokosc` — ułamki wysokości strony);
  *  `id` wraca w `onNotatka`; `a11y` = etykieta VoiceOver przycisku. Treść, numery rzędów i arkusz notatki składa JS (teksty z `t()`). */
 export type NotatkaNatywna = { id: string; strona: number; y: number; wysokosc: number; etykieta: string; a11y: string };
@@ -34,6 +36,9 @@ export type PropsWidokuNatywnego = {
   onRysunek?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; plikTymczasowy: string }>) => void; // po RYSUNEK_ZAPIS_MS, zmianie strony, zamknięciu, tle
   onStukniecie?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number }>) => void;            // przytrzymanie; y = ułamek wysokości strony bez /Rotate
   onNotatka?: (e: NativeSyntheticEvent<{ id: string }>) => void;                               // stuknięcie chipu notatki
+  onZnacznik?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; wysokosc: number }>) => void; // pas przeciągnięty albo wysokość zmieniona uchwytem
+  onZnacznikKrok?: (e: NativeSyntheticEvent<{ wzorId: string; delta: 1 | -1 }>) => void;                       // VoiceOver: zwiększ/zmniejsz o rząd
+  onNastepnaStrona?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                                  // VoiceOver: „Move to next page”
   onStrona?: (e: NativeSyntheticEvent<{ strona: number; stron: number }>) => void;
   onPierwszyRysik?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                  // P-218 Q2a
   onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number }>) => void;                       // kreski zakreślacza na wszystkich stronach
