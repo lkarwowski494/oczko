@@ -199,3 +199,12 @@ Do ról: 07 — scenariusze/README zmienione tekstowo; 09/07 — wykrywacz `robo
 | koniec 07 | merge kopii 07 (b669e08: `[e2e-ciemny]` w `jakosc-ios.yml` + `tests/jakosc/e2e-ciemny.test.ts`) | patrz HEAD |
 | HEAD (07) | commit z tym wpisem, znaczniki `[e2e-pelny] [e2e-ciemny]` w treści (b669e08 ich nie miał) | verify kod 0 (247 zestawów, 2706 testów) |
 Pushe na roboczą (faza B) na sygnał koordynatora; wynik i numer przebiegu `Jakość · iOS` zostaną dopisane po pushach.
+
+## Stan · 2026-11-01 integracja — pushe fazy B (23:14–23:18 UTC)
+Roboczą przesunęły w międzyczasie commity koordynacji (docs, 017d9c2), więc każda warstwa dostała merge roboczej; wszystkie pushe fast-forward, po każdym `origin` = wypchnięty hash.
+| Push | Hash na roboczej | verify | iOS / Linux |
+|---|---|---|---|
+| 1 · koniec 08 | `0bf78a2` | kod 0 (245 zestawów, 2693 testy); slady-wydania 0 | iOS #133 i Linux #639 anulowane przez kolejne pushe (cancel-in-progress) |
+| 2 · koniec 09 | `375dd91` | kod 0 (246 / 2703); sprawdz-i18n i slownik.mjs błędy 0 | iOS #134 anulowany |
+| 3 · HEAD 07 | `53693f3` (`[e2e-pelny] [e2e-ciemny]`) | kod 0 (247 / 2706); slady-wydania 0 | **iOS #135** (run 41361451580), Linux #641 — wynik w raportach 07 |
+Stopki z nazwą modelu usunięte z commitów stosu (P-317 A); workflow API przekładu wycofany, `przeklad-api.mjs` z testem zostaje (P-317 a).
