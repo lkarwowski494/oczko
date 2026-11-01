@@ -13,14 +13,15 @@ Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) prz
 ## Harmonogram 1–4.11 (UTC; czas polski = UTC+1) — P-319, P-320
 | Kiedy | Sesja (sonnet/high) | Co | Wynik / dowód | Czeka na |
 |---|---|---|---|---|
-| 1.11 17:10– | **07** (faza A) | kontrakt `select-xcode.sh` (P-313); zegarek w planie testu na urządzeniu (P-316) | hashe kopii, verify 0 | — |
+| 1.11 17:10– | **07** (faza A) | **zgodność kodu z zakresem 1.0 — 51 funkcji MVP (P-321)**; kontrakt `select-xcode.sh` (P-313); zegarek w planie testu na urządzeniu (P-316) | hashe kopii, verify 0 | — |
 | 1.11 17:10– | **10** (tylko faza A, potem koniec) | środowisko `release`; workflowy ASC z Treningu; szkic metadanych en (bez zamrożenia); instrukcja właściciela (A6 po audycie) | `docs/wydanie/kroki-wlasciciela-testflight.md` | — |
 | 1.11 23:00 | **08 integracja** (faza B) | merge roboczej, verify, pushe 08 → 09 → 07 (`[e2e-pelny] [e2e-ciemny]`) | numer przebiegu, build ze Swift 35 języków | okno macOS |
 | 1.11 23:10–2.11 ~01:30 | CI | pełny przebieg (ok. 2–2,5 h) | artefakty | maszyny |
 | 2.11 ~01:30– | **07** (faza B) | raport E2 + aneks werdyktu; lista błędów aplikacji dla 08 | raport `07-jakosc/2026-11-02-e2/` | przebieg |
 | 2.11 ~01:30– | **04** (nowa) | aneks audytu 2.1: AX5, iPad, poziomo, ciemny, długości etykiet 35 języków, krój 700 (bez kadrów zrzutów) | raport aneksu, lista zmian | przebieg |
 | 2.11 ~03:30–12:00 | **08** (sesja integracji) | poprawki z 07 i 04, W1-A, push kopii 07 i 10 z fazy A; HEAD z `[e2e-pelny]` | przebieg 2 zielony do ~13:30 | raporty 07, 04 |
-| 2.11 ~13:30– | **M1 audyt** (opus/high) | pełny audyt kodu kandydata (12, 07, 04, 05), OG-07; zamrożenie zakresu | raport z werdyktem i listą blokerów | przebieg 2 |
+| 2.11 | **08** (partia 8, jeśli luki z P-321) | brakujące i częściowe funkcje MVP (test przed kodem), push w oknie | przebieg zielony | raport zgodności |
+| po partii 8 | **M1 audyt** (opus/high) | pełny audyt kodu kandydata (12, 07, 04, 05), OG-07; zamrożenie zakresu | raport z werdyktem i listą blokerów | przebieg 2 |
 | 2.11/3.11 noc | **08** (nowa) | naprawy blokerów z audytu (test przed kodem), przebieg | przebieg zielony | raport M1 |
 | 3.11 dzień | **09** (nowa) | jedna fala przekładu zmienionych kluczy; metadane sklepu 35 języków z zamrożonych en | kontrole błędy 0 | naprawy |
 | 3.11 dzień | **10** (nowa) + **04** | metadane en ostateczne; kadry i podpisy; scenariusz i workflow zrzutów jak Trening (`store-screenshots`) | — | naprawy |
