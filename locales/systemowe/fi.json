@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko käyttää kameraa vain, kun otat kuvan ohjeesta, työstä tai langan etiketistä. Kuvat pysyvät laitteellasi."
+  }
+}

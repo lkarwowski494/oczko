@@ -1,0 +1,104 @@
+# Przekład słownika en na 34 języki przez API Anthropic (P-144: jak Trening, pułap 6 USD; wariant A: Sonnet, Message Batches −50%). Rola 09, plan-prac 2.3.
+# Tylko ręcznie (workflow_dispatch). Klucz: sekret repozytorium ANTHROPIC_API_KEY, użyty w JEDNYM kroku zadania `przeklad` (odczyt repo), skrypt go nie wypisuje.
+# Zadanie `zapis` (bez sekretu, contents: write) dopisuje propozycje do gałęzi uruchomienia w docs/lokalizacja/przeklad-api/. Słowniki src/i18n NIE są zmieniane.
+# Uwaga: GitHub pokazuje przycisk uruchomienia i przyjmuje wywołanie po nazwie dopiero, gdy plik jest na gałęzi domyślnej (zgoda właściciela na scalenie, P-087).
+name: Przekład tłumaczeń (API, ręcznie)
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'Model przekładu (P-144 wariant A: sonnet)'
+        type: choice
+        default: sonnet
+        options: [sonnet, opus]
+      limit:
+        description: 'Tylko N pierwszych języków (puste = wszystkie 34); przebieg dowodowy: 2'
+        type: string
+        default: ''
+      tylko_szacuj:
+        description: 'Tylko szacunek kosztu (count_tokens, bez płatnego batcha)'
+        type: boolean
+        default: true
+      zgoda_koszt:
+        description: 'Zgoda właściciela na koszt powyżej 6 USD'
+        type: choice
+        default: 'nie'
+        options: ['nie', 'tak']
+      wznow:
+        description: 'Odbiór wyników wysłanego wcześniej batcha (msgbatch_… z logu); puste = nowy przekład'
+        type: string
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: przeklad-tlumaczen
+  cancel-in-progress: false
+jobs:
+  przeklad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Przekład (szacunek albo batch)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          WEJ_MODEL: ${{ inputs.model }}
+          WEJ_LIMIT: ${{ inputs.limit }}
+          WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
+          WEJ_SZACUJ: ${{ inputs.tylko_szacuj }}
+          WEJ_WZNOW: ${{ inputs.wznow }}
+        run: |
+          set -eu
+          ARGS=(--model "$WEJ_MODEL" --wyjscie raport-przekladu)
+          if [ -n "$WEJ_LIMIT" ]; then
+            [[ "$WEJ_LIMIT" =~ ^[0-9]+$ ]] || { echo "::error::limit: oczekiwana liczba"; exit 1; }
+            ARGS+=(--limit "$WEJ_LIMIT")
+          fi
+          if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
+          if [ "$WEJ_SZACUJ" = "true" ]; then ARGS+=(--szacuj); fi
+          if [ -n "$WEJ_WZNOW" ]; then
+            [[ "$WEJ_WZNOW" =~ ^msgbatch_[A-Za-z0-9]+$ ]] || { echo "::error::wznow: oczekiwany identyfikator msgbatch_…"; exit 1; }
+            ARGS+=(--wznow "$WEJ_WZNOW")
+          fi
+          node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
+      - name: Podsumowanie w logu przebiegu
+        if: always()
+        run: |
+          if [ -f raport-przekladu/podsumowanie.md ]; then cat raport-przekladu/podsumowanie.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Artefakt (tylko raporty, 7 dni)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-przekladu
+          path: raport-przekladu/
+          if-no-files-found: ignore
+          retention-days: 7
+  zapis:
+    needs: przeklad
+    if: ${{ !inputs.tylko_szacuj }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: raport-przekladu
+          path: docs/lokalizacja/przeklad-api
+      - name: Commit propozycji na gałąź uruchomienia
+        env:
+          GALAZ: ${{ github.ref_name }}
+        run: |
+          set -eu
+          git config user.name "Łukasz Karwowski"
+          git config user.email "336954459+lkarwowski494@users.noreply.github.com"
+          git add docs/lokalizacja/przeklad-api
+          git diff --cached --quiet && { echo "brak zmian"; exit 0; }
+          git commit -m "09 2.3: propozycje przekładu z API (workflow przeklad-tlumaczen)"
+          git push origin "HEAD:refs/heads/$GALAZ"

@@ -59,7 +59,7 @@
         "UIFileSharingEnabled": true,
         "LSSupportsOpeningDocumentsInPlace": true,
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleLocalizations": ["en"],
+        "CFBundleLocalizations": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"],
         "CFBundleAllowMixedLocalizations": true,
         "CFBundleDisplayName": "Oczko",
         "NSSupportsLiveActivities": true,
@@ -115,13 +115,47 @@
       [
         "expo-localization",
         {
-          "supportedLocales": { "ios": ["en"], "android": ["en"] },
+          "supportedLocales": { "ios": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"], "android": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"] },
           "supportsRTL": false
         }
       ]
     ],
     "locales": {
-      "en": "./locales/systemowe/en.json"
+      "en": "./locales/systemowe/en.json",
+      "bg": "./locales/systemowe/bg.json",
+      "cs": "./locales/systemowe/cs.json",
+      "da": "./locales/systemowe/da.json",
+      "de": "./locales/systemowe/de.json",
+      "el": "./locales/systemowe/el.json",
+      "es": "./locales/systemowe/es.json",
+      "es-419": "./locales/systemowe/es-419.json",
+      "et": "./locales/systemowe/et.json",
+      "fi": "./locales/systemowe/fi.json",
+      "fr": "./locales/systemowe/fr.json",
+      "hr": "./locales/systemowe/hr.json",
+      "hu": "./locales/systemowe/hu.json",
+      "id": "./locales/systemowe/id.json",
+      "it": "./locales/systemowe/it.json",
+      "ja": "./locales/systemowe/ja.json",
+      "ko": "./locales/systemowe/ko.json",
+      "lt": "./locales/systemowe/lt.json",
+      "lv": "./locales/systemowe/lv.json",
+      "ms": "./locales/systemowe/ms.json",
+      "nb": "./locales/systemowe/nb.json",
+      "nl": "./locales/systemowe/nl.json",
+      "pl": "./locales/systemowe/pl.json",
+      "pt": "./locales/systemowe/pt.json",
+      "pt-BR": "./locales/systemowe/pt-BR.json",
+      "ro": "./locales/systemowe/ro.json",
+      "ru": "./locales/systemowe/ru.json",
+      "sk": "./locales/systemowe/sk.json",
+      "sl": "./locales/systemowe/sl.json",
+      "sr": "./locales/systemowe/sr.json",
+      "sv": "./locales/systemowe/sv.json",
+      "tr": "./locales/systemowe/tr.json",
+      "uk": "./locales/systemowe/uk.json",
+      "vi": "./locales/systemowe/vi.json",
+      "zh-Hant": "./locales/systemowe/zh-Hant.json"
     }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko använder kameran bara när du tar ett foto av ett mönster, ett projekt eller en garnetikett. Foton stannar på din enhet."
+  }
+}

@@ -10,5 +10,14 @@
       "kontrola_zastepcza": "test akceptacyjny kopii ratunkowej sprawdza komplet trzech plików i liczności po przywróceniu (tests/akceptacja/dane)"
     }
   ],
-  "workflowy": []
+  "workflowy": [
+    {
+      "regula": "SEKRET-BEZ-SRODOWISKA",
+      "plik": ".github/workflows/przeklad-tlumaczen.yml",
+      "powod": "P-144: przekład przez API na koncie właściciela; sekret ANTHROPIC_API_KEY jednego zadania (odczyt repo), wyzwalacz tylko workflow_dispatch, brak pull_request; środowisko testflight jest zarezerwowane dla wydania",
+      "wlasciciel": "09 (zatwierdza koordynator wg P-087)",
+      "termin": "do końca przekładu 2.3",
+      "kontrola_zastepcza": "tests/jakosc/przeklad-workflow.test.ts: sekret tylko w zadaniu przeklad i tylko w jednym kroku, brak pull_request, szacunek przed wysłaniem"
+    }
+  ]
 }

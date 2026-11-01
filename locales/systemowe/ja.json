@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczkoは、編み図、作品、毛糸のラベルを撮影するときにのみカメラを使用します。写真はお使いのデバイスに保存されたままになります。"
+  }
+}

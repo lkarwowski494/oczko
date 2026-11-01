@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko gebruikt de camera alleen wanneer je een foto maakt van een patroon, een project of een garenlabel. Foto’s blijven op je apparaat."
+  }
+}
