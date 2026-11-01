@@ -91,6 +91,15 @@ test('iPad (regular): stały pasek z piórem; zaznaczenie pióra', () => {
   expect(screen.getByTestId('wzor-gumka')).toBeTruthy();
 });
 
+test('07-jakosc-026 (F-28): iPad — stuknięcie wybranego narzędzia je odznacza (palec znów tylko przewija), inne narzędzie przełącza', () => {
+  const w = wywolania();
+  render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 820, wysokosc: 1180 }), narzedzie: 'pioro' })} t={t} widok={widok} {...w} />);
+  fireEvent.press(screen.getByTestId('wzor-pioro'));
+  expect(w.naNarzedzie).toHaveBeenLastCalledWith('brak');
+  fireEvent.press(screen.getByTestId('wzor-gumka'));
+  expect(w.naNarzedzie).toHaveBeenLastCalledWith('gumka');
+});
+
 test('W9b, P-218 (3): przy ≥ 2 wzorach tytuł przełącza (menu z ✓ przy bieżącym); jeden wzór → bez przełącznika', () => {
   const w = wywolania();
   const r = render(<PrzegladarkaWzoru stan={stan()} t={t} widok={widok} {...w} />);

@@ -3,7 +3,7 @@
 // 320/390 × wysokość, poziomo 844 × 390, iPad 820 × 1180, 1180 × 820, wąskie okno 375 × 1180; kolumna treści iPada maks. 640 pt; kolumna licznika
 // poziomo 34 % w granicach 220–360 pt, na iPadzie 340 pt), moduly.md „iPad i orientacja” (układ według szerokości okna, nie orientacji).
 import { KOLUMNA_TRESCI_MAKS, ukladOkna } from '../../../src/domena/uklad';
-import { politykaPlotna, poDotyku } from '../../../src/domena/rysik';
+import { politykaPlotna, poDotyku, poPierwszymRysiku } from '../../../src/domena/rysik';
 
 describe('ukladOkna', () => {
   test.each([
@@ -44,5 +44,21 @@ describe('rysik: pencilOnly po pierwszym dotknięciu (P-218 Q2a)', () => {
     expect(s).toEqual({ tylkoRysik: true });
     expect(poDotyku(s, 'palec')).toEqual({ tylkoRysik: true });
     expect(poDotyku(s, 'otwarcie')).toEqual({ tylkoRysik: false });
+  });
+});
+
+describe('07-jakosc-026 (F-28, P-327 (a), BR-WZR-004 S2): pierwsze dotknięcie rysikiem bez wybranego narzędzia wybiera Pen', () => {
+  test('bez narzędzia: Pen i od razu pencilOnly — rysik pisze (płótno nie jest wyłączone), palec przewija', () => {
+    const po = poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false });
+    expect(po).toEqual({ narzedzie: 'pioro', tylkoRysik: true });
+    expect(politykaPlotna(po)).toBe('tylkoRysik');
+  });
+  test('z wybranym narzędziem zostaje ono (zakreślacz, gumka, pióro); tylkoRysik włącza się', () => {
+    for (const n of ['zakreslacz', 'pioro', 'gumka'] as const) expect(poPierwszymRysiku({ narzedzie: n, tylkoRysik: false })).toEqual({ narzedzie: n, tylkoRysik: true });
+  });
+  test('tylko pierwszy raz: po odznaczeniu narzędzia przez użytkownika kolejne zgłoszenie rysika go nie wybiera na nowo', () => {
+    const odznaczone = { narzedzie: 'brak' as const, tylkoRysik: true };
+    expect(poPierwszymRysiku(odznaczone)).toEqual(odznaczone);
+    expect(politykaPlotna(odznaczone)).toBe('wylaczone'); // rysik też nic nie rysuje, dopóki nie wybierze narzędzia (BR-WZR-008 S3)
   });
 });

@@ -417,6 +417,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private func pierwszyRysik() {
     guard !rysikZgloszony else { return }
     rysikZgloszony = true
+    // P-327 (a), 07-jakosc-026: bez wybranego narzędzia pierwsze dotknięcie rysikiem wybiera Pen, a płótno przechodzi na pencilOnly od razu (nie czeka na JS), więc pierwsze pociągnięcie pisze.
+    if narzedzie == .brak { ustawNarzedzie(.pioro) }
+    ustawPolityke(.tylkoRysik)
     onPierwszyRysik([:])
   }
   @objc private func przytrzymano(_ g: UILongPressGestureRecognizer) {
