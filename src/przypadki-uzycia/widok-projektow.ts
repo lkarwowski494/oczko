@@ -15,7 +15,7 @@ import type { Zaleznosci } from './zaleznosci';
 
 export type ProjektNaEkranie = {
   id: string; nazwa: string; nienazwany: boolean; utworzonoMs: number; ostatniaPracaMs: number;
-  /** Pierwszy licznik rzędów pierwszej części (otwierany z listy, F-49); `null` = projekt bez licznika. */
+  /** Licznik z najnowszą zmianą w projekcie (BR-PRJ-016/S2, 07-jakosc-028); bez żadnej zmiany: pierwszy licznik pierwszej części. `null` = projekt bez licznika. */
   licznik: { id: string; czesc: string; wartosc: number; cel: number | null } | null;
   /** Dni kalendarzowe (RD-16) od ostatniej pracy do dziś — „last worked …” bez progu (BR-PRJ-016, P-182, P-183 1a). */
   dniOdPracy: number;
@@ -31,7 +31,7 @@ export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
     for (const r of await wiersze(tx.all(
       `SELECT p.id, p.nienazwany, p.utworzono_ms,
               (SELECT l.id FROM czesc c JOIN licznik l ON l.czesc_id = c.id WHERE c.projekt_id = p.id AND c.usunieto_ms IS NULL AND l.usunieto_ms IS NULL
-                ORDER BY c.kolejnosc, l.kolejnosc LIMIT 1) AS licznik_id
+                ORDER BY coalesce((SELECT max(z.czas_ms) FROM zdarzenie z WHERE z.licznik_id = l.id), -1) DESC, c.kolejnosc, l.kolejnosc LIMIT 1) AS licznik_id
          FROM projekt p WHERE p.usunieto_ms IS NULL`), 'widokProjektow')) {
       const lid = tekstLubNull(r, 'licznik_id');
       let licznik: ProjektNaEkranie['licznik'] = null;
