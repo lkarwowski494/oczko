@@ -2,6 +2,7 @@
 Rola 07-jakość, E0 (pomocnik) · 2026-10-25 · Źródła: `docs/scope-contract.md`, `docs/brd/`, `tests/wektory/brd.json`, `docs/design/`, `docs/monetyzacja.md` z wektorami, `docs/tresci/`. Kwarantanna: nie czytano `archiwum/`, `app/`, `src/`, `lib/`, `tests/` (poza `tests/wektory/brd.json`), `scripts/`, `site/`, `.maestro/`. Ocena „sprawdzalne” i „poziom” to [OCENA] roli 07.
 
 ## Podsumowanie liczb
+- **Uzupełnienie 2026-10-30 (07-jakosc-003):** BRD ma 269 scenariuszy (183 w tym inwentarzu + 86 dopisanych po 2026-10-25). Brakujące 86 są w `kryteria-uzupelnienie.json` z polem `pokrycie`: ID w teście (7), poziom reguły BR bez ID scenariusza w nazwie testu (57, do dopisania w 1.0.1) albo poza zakresem 1.0 (22). Kompletność pilnuje `docs/jakosc/narzedzia/kompletnosc-kryteriow.mjs`, uruchamiany testem `tests/jakosc/kompletnosc-kryteriow.test.ts`. Liczby poniżej dotyczą inwentarza E0 (220).
 - Funkcje MVP w kontrakcie zakresu: **49** (docs/scope-contract.md:204 „MVP 49”).
 - BR w zakresie: **71** = 67 z kolumny „Wymagania” funkcji MVP + 4 spoza tabeli (BR-ZAK-005, BR-ZAK-006, BR-ZAK-007 — blokery wydania, docs/brd/README.md:43; BR-DAN-012 — pętla opinii, docs/scope-contract.md:11).
 - Kryteria razem: **220** = 183 scenariuszy BR + 13 NFR + 15 KP + 9 scenariuszy „tylko telefon”.

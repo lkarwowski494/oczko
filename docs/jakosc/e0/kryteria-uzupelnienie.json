@@ -1,0 +1,1451 @@
+[
+ {
+  "id": "BR-DAN-006/S6",
+  "br": "BR-DAN-006",
+  "f": "F-32",
+  "tytul": "Import własnego eksportu: Ten sam plik drugi raz (ER-42)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/archiwum.test.ts",
+    "tests/domena/maszyny/import-synchronizacja.test.ts",
+    "tests/jakosc/e2e-czesci.test.ts",
+    "tests/niezawodnosc/kopia-przywracanie.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-006/S7",
+  "br": "BR-DAN-006",
+  "f": "F-32",
+  "tytul": "Import własnego eksportu: Rezygnacja z importu (ER-22)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/archiwum.test.ts",
+    "tests/domena/maszyny/import-synchronizacja.test.ts",
+    "tests/jakosc/e2e-czesci.test.ts",
+    "tests/niezawodnosc/kopia-przywracanie.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-006/S8",
+  "br": "BR-DAN-006",
+  "f": "F-32",
+  "tytul": "Import własnego eksportu: Bez oferty po przywróceniu własnej kopii (ER-46)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/archiwum.test.ts",
+    "tests/domena/maszyny/import-synchronizacja.test.ts",
+    "tests/jakosc/e2e-czesci.test.ts",
+    "tests/niezawodnosc/kopia-przywracanie.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-007/S1",
+  "br": "BR-DAN-007",
+  "f": "F-29",
+  "tytul": "Import od konkurencji: Zapas z zewnętrznego serwisu wzorów",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-DAN-007/S2",
+  "br": "BR-DAN-007",
+  "f": "F-29",
+  "tytul": "Import od konkurencji: Karta planów Pro po imporcie z innej aplikacji (ER-46)",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-DAN-010/S4",
+  "br": "BR-DAN-010",
+  "f": "F-57",
+  "tytul": "Zgłoś problem z diagnostyką lokalną: Wiersz „Translation quality” przy przekładzie maszynowym (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/start-kopie.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/ekrany/zglos-stan-danych.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-010/S5",
+  "br": "BR-DAN-010",
+  "f": "F-57",
+  "tytul": "Zgłoś problem z diagnostyką lokalną: Zgłoszenie problemu z tłumaczeniem (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/start-kopie.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/ekrany/zglos-stan-danych.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-010/S6",
+  "br": "BR-DAN-010",
+  "f": "F-57",
+  "tytul": "Zgłoś problem z diagnostyką lokalną: Angielski bez wiersza o przekładzie (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/start-kopie.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/ekrany/zglos-stan-danych.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DAN-011/S3",
+  "br": "BR-DAN-011",
+  "f": "F-58",
+  "tytul": "Widoczny stan synchronizacji i zegarka: Ostatni kontakt z zegarkiem na telefonie (ER-52)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "tests/ekrany/p202-stan-danych-korekta.test.tsx"
+   ]
+  }
+ },
+ {
+  "id": "BR-ZAK-004/S2",
+  "br": "BR-ZAK-004",
+  "f": "F-36",
+  "tytul": "Polityka prywatności i język aplikacji w Ustawieniach: Język domyślnie z systemu (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/jezyk-preferencja.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/i18n/preferencja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-004/S3",
+  "br": "BR-ZAK-004",
+  "f": "F-36",
+  "tytul": "Polityka prywatności i język aplikacji w Ustawieniach: Wybór języka w aplikacji wygrywa z systemem (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/jezyk-preferencja.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/i18n/preferencja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-004/S4",
+  "br": "BR-ZAK-004",
+  "f": "F-36",
+  "tytul": "Polityka prywatności i język aplikacji w Ustawieniach: Powrót do języka systemu (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/jezyk-preferencja.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/i18n/preferencja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-004/S5",
+  "br": "BR-ZAK-004",
+  "f": "F-36",
+  "tytul": "Polityka prywatności i język aplikacji w Ustawieniach: Uszkodzony zapis ustawienia języka (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/jezyk-preferencja.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx",
+    "tests/ekrany/ustawienia.test.tsx",
+    "tests/i18n/preferencja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-006/S8",
+  "br": "BR-ZAK-006",
+  "f": "F-63",
+  "tytul": "Komunikat na limicie i miejsca ekranu zakupu: Okno „Uczciwe zasady” po pierwszym ukończonym dniu (ER-46)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/zakup/pomocnicze.ts",
+    "tests/domena/zakup/wektory-limitu.test.ts",
+    "tests/ekrany/licznik-limit.test.tsx",
+    "tests/ekrany/lista-projektow.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-006/S9",
+  "br": "BR-ZAK-006",
+  "f": "F-63",
+  "tytul": "Komunikat na limicie i miejsca ekranu zakupu: Okno nie na ekranie licznika (ER-46)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/zakup/pomocnicze.ts",
+    "tests/domena/zakup/wektory-limitu.test.ts",
+    "tests/ekrany/licznik-limit.test.tsx",
+    "tests/ekrany/lista-projektow.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAK-006/S10",
+  "br": "BR-ZAK-006",
+  "f": "F-63",
+  "tytul": "Komunikat na limicie i miejsca ekranu zakupu: Okno tylko raz (ER-46)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/zakup/pomocnicze.ts",
+    "tests/domena/zakup/wektory-limitu.test.ts",
+    "tests/ekrany/licznik-limit.test.tsx",
+    "tests/ekrany/lista-projektow.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-001/S5",
+  "br": "BR-DNI-001",
+  "f": "F-59",
+  "tytul": "Kalendarz dni z robótką: Dzień z robótką a dzień limitu (ER-27, P-059)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/dane/luki/sesja-dzien-granica.test.ts",
+    "tests/dane/p195-stoper-kopia.test.ts",
+    "tests/dane/widok-historii.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-001/S6",
+  "br": "BR-DNI-001",
+  "f": "F-59",
+  "tytul": "Kalendarz dni z robótką: Kolumny kalendarza od poniedziałku (NZ-05-03)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/dane/luki/sesja-dzien-granica.test.ts",
+    "tests/dane/p195-stoper-kopia.test.ts",
+    "tests/dane/widok-historii.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-001/S7",
+  "br": "BR-DNI-001",
+  "f": "F-59",
+  "tytul": "Kalendarz dni z robótką: Bez serii i ponagleń",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/dane/luki/sesja-dzien-granica.test.ts",
+    "tests/dane/p195-stoper-kopia.test.ts",
+    "tests/dane/widok-historii.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-002/S3",
+  "br": "BR-DNI-002",
+  "f": "F-59",
+  "tytul": "Dzień: projekty, rzędy i czas: Godzina zmiany w strefie zapisu (ER-44)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/domena/dni/dzien-lokalny.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-002/S4",
+  "br": "BR-DNI-002",
+  "f": "F-59",
+  "tytul": "Dzień: projekty, rzędy i czas: Sesja stopera przez północ (ER-44)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/domena/dni/dzien-lokalny.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-003/S3",
+  "br": "BR-DNI-003",
+  "f": "F-59",
+  "tytul": "Podsumowanie tygodnia i miesiąca: Czas bez stopera",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/luki/kalendarz.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/ekrany/historia-dni.test.tsx",
+    "tests/ekrany/projekt-dni.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-005/S6",
+  "br": "BR-DNI-005",
+  "f": "F-61",
+  "tytul": "Termin projektu i cel dzienny: Po terminie",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/domena/dni/postep.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-005/S7",
+  "br": "BR-DNI-005",
+  "f": "F-61",
+  "tytul": "Termin projektu i cel dzienny: Po terminie, nic nie zostało (NZ-RD15)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/domena/dni/postep.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-005/S8",
+  "br": "BR-DNI-005",
+  "f": "F-61",
+  "tytul": "Termin projektu i cel dzienny: Dokończenie po terminie (NZ-RD15)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/domena/dni/postep.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-005/S9",
+  "br": "BR-DNI-005",
+  "f": "F-61",
+  "tytul": "Termin projektu i cel dzienny: Prucie po terminie (NZ-RD15)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/domena/dni/postep.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-005/S10",
+  "br": "BR-DNI-005",
+  "f": "F-61",
+  "tytul": "Termin projektu i cel dzienny: Bez terminu nic na ekranie licznika",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/dni/dni-tygodnie.test.ts",
+    "tests/domena/dni/postep.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-006/S4",
+  "br": "BR-DNI-006",
+  "f": "F-61",
+  "tytul": "Który projekt dziś: kolejność według terminu: Bez terminów",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/kalendarz-rd15.test.ts",
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/luki/kalendarz.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-DNI-007/S1",
+  "br": "BR-DNI-007",
+  "f": "F-62",
+  "tytul": "Zdążę? przed startem projektu: Szacunek z historii",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-DNI-007/S2",
+  "br": "BR-DNI-007",
+  "f": "F-62",
+  "tytul": "Zdążę? przed startem projektu: Pierwszy projekt",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-LIC-003/S3",
+  "br": "BR-LIC-003",
+  "f": "F-02",
+  "tytul": "Historia zmian z godziną i cofnięciem: Cofnięcie ostatniej zmiany (ER-41)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/widok-licznika.test.ts",
+    "tests/dane/zapis-licznika.test.ts",
+    "tests/ekrany/historia-menu.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-003/S4",
+  "br": "BR-LIC-003",
+  "f": "F-02",
+  "tytul": "Historia zmian z godziną i cofnięciem: Pomyłka ze środka historii (ER-41)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/widok-licznika.test.ts",
+    "tests/dane/zapis-licznika.test.ts",
+    "tests/ekrany/historia-menu.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-007/S4",
+  "br": "BR-LIC-007",
+  "f": "F-05",
+  "tytul": "Licznik powtórzeń powiązany z rzędami: Przed pierwszym rzędem (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/licznik.test.ts",
+    "tests/ekrany/formularze.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S4",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Wpisanie wartości przez kilka przypomnień (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S5",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Wpisanie mniejszej wartości (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S6",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Tryb „rząd w trakcie” (ER-51)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S7",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Rząd z przypomnieniem skończony (ER-51)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S8",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Cofnięcie na rząd z przypomnieniem (ER-51)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-009/S9",
+  "br": "BR-LIC-009",
+  "f": "F-06",
+  "tytul": "Przypomnienie „co N rzędów, M razy”: Przypomnienie dla pierwszego rzędu (ER-51)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/przypomnienia.test.ts",
+    "tests/domena/licznik/przypomnienie-chwili.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-012/S2",
+  "br": "BR-LIC-012",
+  "f": "F-09",
+  "tytul": "Znaczenie liczby na liczniku: Powtórzenie w trybie „rząd w trakcie” (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/domena/licznik/licznik.test.ts",
+    "tests/domena/licznik/tryb-licznika.test.ts",
+    "tests/ekrany/licznik.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-016/S1",
+  "br": "BR-LIC-016",
+  "f": "F-13",
+  "tytul": "Dodanie rzędu głosem: Polecenie głosowe",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-LIC-017/S8",
+  "br": "BR-LIC-017",
+  "f": "F-45",
+  "tytul": "Wpisanie wartości licznika i wyzerowanie: Zapis niezgodny z regionem (ER-43)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/zapis-licznika.test.ts",
+    "tests/domena/licznik/przypomnienie-wpisania.test.ts",
+    "tests/domena/licznik/scal.test.ts",
+    "tests/domena/luki/licznik.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-018/S4",
+  "br": "BR-LIC-018",
+  "f": "F-46",
+  "tytul": "Licznik całości zasilany przez sekcje jednego kawałka: Sekcja w koszu (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/widok-licznika-p5.test.ts",
+    "tests/dane/widok-projektu.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/ekrany/licznik-p5.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-018/S5",
+  "br": "BR-LIC-018",
+  "f": "F-46",
+  "tytul": "Licznik całości zasilany przez sekcje jednego kawałka: Sekcja w konflikcie synchronizacji (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/widok-licznika-p5.test.ts",
+    "tests/dane/widok-projektu.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/ekrany/licznik-p5.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-019/S5",
+  "br": "BR-LIC-019",
+  "f": "F-47",
+  "tytul": "Strażnik stuknięć z tempa: Seria z ekranu blokady po scaleniu (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/straznik-tempa-granice.test.ts",
+    "tests/domena/licznik/straznik-tempa.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/ekrany/licznik.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-019/S6",
+  "br": "BR-LIC-019",
+  "f": "F-47",
+  "tytul": "Strażnik stuknięć z tempa: Wieczór z ekranu blokady bez pytania (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/straznik-tempa-granice.test.ts",
+    "tests/domena/licznik/straznik-tempa.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/ekrany/licznik.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-LIC-019/S7",
+  "br": "BR-LIC-019",
+  "f": "F-47",
+  "tytul": "Strażnik stuknięć z tempa: Cofnięcie serii zwraca dzień limitu (ER-40)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/licznik/straznik-tempa-granice.test.ts",
+    "tests/domena/licznik/straznik-tempa.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/ekrany/licznik.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAP-003/S2",
+  "br": "BR-ZAP-003",
+  "f": "F-37",
+  "tytul": "Narzędzia w milimetrach: Szydełko 5 mm (ER-32)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/zapas-narzedzia.test.ts",
+    "tests/domena/luki/obliczenia-sesja.test.ts",
+    "tests/ekrany/zapas-kompozycja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-ZAP-003/S3",
+  "br": "BR-ZAP-003",
+  "f": "F-37",
+  "tytul": "Narzędzia w milimetrach: Szydełko bez oznaczenia US (ER-32)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/zapas-narzedzia.test.ts",
+    "tests/domena/luki/obliczenia-sesja.test.ts",
+    "tests/ekrany/zapas-kompozycja.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-001/S4",
+  "br": "BR-KAL-001",
+  "f": "F-38",
+  "tytul": "Liczba oczek z próbki: Separator dziesiętny innego regionu (ER-43)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/oczka-jednostki.test.ts",
+    "tests/ekrany/narzedzia-probka.test.tsx",
+    "tests/ekrany/probka.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-002/S1",
+  "br": "BR-KAL-002",
+  "f": "F-39",
+  "tytul": "Przeliczenie wzoru na własną próbkę: Gęstsza próbka",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-002/S2",
+  "br": "BR-KAL-002",
+  "f": "F-39",
+  "tytul": "Przeliczenie wzoru na własną próbkę: Próbka wzoru zero",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-003/S3",
+  "br": "BR-KAL-003",
+  "f": "F-38",
+  "tytul": "Jednostki i próbka w calach: Próbka w calach z przecinkiem (ER-43)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/domena/obliczenia/oczka-jednostki.test.ts",
+    "tests/ekrany/narzedzia-probka.test.tsx",
+    "tests/ekrany/narzedzia-wzor.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-003/S4",
+  "br": "BR-KAL-003",
+  "f": "F-38",
+  "tytul": "Jednostki i próbka w calach: Jednostki domyślnie z systemu (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/domena/obliczenia/oczka-jednostki.test.ts",
+    "tests/ekrany/narzedzia-probka.test.tsx",
+    "tests/ekrany/narzedzia-wzor.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-003/S5",
+  "br": "BR-KAL-003",
+  "f": "F-38",
+  "tytul": "Jednostki i próbka w calach: Region brytyjski (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/domena/obliczenia/oczka-jednostki.test.ts",
+    "tests/ekrany/narzedzia-probka.test.tsx",
+    "tests/ekrany/narzedzia-wzor.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-003/S6",
+  "br": "BR-KAL-003",
+  "f": "F-38",
+  "tytul": "Jednostki i próbka w calach: Przełącznik jednostek nie zmienia danych (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/domena/obliczenia/oczka-jednostki.test.ts",
+    "tests/ekrany/narzedzia-probka.test.tsx",
+    "tests/ekrany/narzedzia-wzor.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-004/S1",
+  "br": "BR-KAL-004",
+  "f": "F-40",
+  "tytul": "Równomierne dodawanie i ujmowanie: Dodanie 8 oczek na 100",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-004/S2",
+  "br": "BR-KAL-004",
+  "f": "F-40",
+  "tytul": "Równomierne dodawanie i ujmowanie: Za dużo ujmowania",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-004/S3",
+  "br": "BR-KAL-004",
+  "f": "F-40",
+  "tytul": "Równomierne dodawanie i ujmowanie: Rząd płaski",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-005/S1",
+  "br": "BR-KAL-005",
+  "f": "F-42",
+  "tytul": "Zużycie włóczki z wagi próbki: Typowy projekt",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-005/S2",
+  "br": "BR-KAL-005",
+  "f": "F-42",
+  "tytul": "Zużycie włóczki z wagi próbki: Próg motka",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-005/S3",
+  "br": "BR-KAL-005",
+  "f": "F-42",
+  "tytul": "Zużycie włóczki z wagi próbki: Zapas niewybrany",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-KAL-006/S1",
+  "br": "BR-KAL-006",
+  "f": "F-41",
+  "tytul": "Długość po blokowaniu: Próbka skraca się po blokowaniu",
+  "zakres": "NIE",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "NIE"
+  }
+ },
+ {
+  "id": "BR-KAL-007/S1",
+  "br": "BR-KAL-007",
+  "f": "F-43",
+  "tytul": "Luz w obwodzie: Luz klasyczny",
+  "zakres": "NIE",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "NIE"
+  }
+ },
+ {
+  "id": "BR-KAL-007/S2",
+  "br": "BR-KAL-007",
+  "f": "F-43",
+  "tytul": "Luz w obwodzie: Styk kategorii",
+  "zakres": "NIE",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "NIE"
+  }
+ },
+ {
+  "id": "BR-KAL-008/S2",
+  "br": "BR-KAL-008",
+  "f": "F-38",
+  "tytul": "Grubość włóczki z próbki: Ekran „Źródła wiedzy” (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-KAL-008/S3",
+  "br": "BR-KAL-008",
+  "f": "F-38",
+  "tytul": "Grubość włóczki z próbki: Linia źródła przy tabeli CYC (ER-45)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/obliczenia/grubosc-druty.test.ts",
+    "tests/ekrany/jezyk-zrodla.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-SLO-001/S1",
+  "br": "BR-SLO-001",
+  "f": "F-44",
+  "tytul": "Skróty z jawnym systemem terminologii: Wzór brytyjski",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-SLO-001/S2",
+  "br": "BR-SLO-001",
+  "f": "F-44",
+  "tytul": "Skróty z jawnym systemem terminologii: System niewybrany",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-SLO-002/S1",
+  "br": "BR-SLO-002",
+  "f": "F-44",
+  "tytul": "Słownik bez sieci w języku użytkownika: Bez sieci",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-PRJ-004/S3",
+  "br": "BR-PRJ-004",
+  "f": "F-17",
+  "tytul": "Dane techniczne projektu: Szydełko w milimetrach (ER-32)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "tests/dane/projekt-grupa-a.test.ts",
+    "tests/dane/widok-projektu.test.ts"
+   ]
+  }
+ },
+ {
+  "id": "BR-PRJ-007/S2",
+  "br": "BR-PRJ-007",
+  "f": "F-20",
+  "tytul": "Zrób ponownie: Projekt na szydełku (ER-53)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/p195-stoper-kopia.test.ts",
+    "tests/dane/projekt-kosz.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-PRJ-009/S1",
+  "br": "BR-PRJ-009",
+  "f": "F-22",
+  "tytul": "Postęp i szacowany czas: Szacunek z tempa",
+  "zakres": "PÓŹNIEJ",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "PÓŹNIEJ"
+  }
+ },
+ {
+  "id": "BR-PRJ-010/S1",
+  "br": "BR-PRJ-010",
+  "f": "F-23",
+  "tytul": "Przypomnienie o przerwie: Przerwa po ustawionym czasie",
+  "zakres": "NIE",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "NIE"
+  }
+ },
+ {
+  "id": "BR-PRJ-013/S4",
+  "br": "BR-PRJ-013",
+  "f": "F-51",
+  "tytul": "Korekta czasu sesji i dat projektu: Korekta sesji z przerwą (ER-54)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "tests/ekrany/p202-stan-danych-korekta.test.tsx",
+    "tests/ekrany/sesje.test.tsx"
+   ]
+  }
+ },
+ {
+  "id": "BR-PRJ-016/S3",
+  "br": "BR-PRJ-016",
+  "f": "F-54",
+  "tytul": "Projekty dawno nieruszane: Ostatnia praca ze stoperem (ER-55)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/lista-kosz-nastepna.test.ts",
+    "tests/dane/p195-stoper-kopia.test.ts",
+    "tests/dane/projekt-kosz.test.ts",
+    "tests/ekrany/lista-kosz.test.tsx"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-003/S3",
+  "br": "BR-WZR-003",
+  "f": "F-26",
+  "tytul": "Znacznik bieżącego rzędu we wzorze: Schemat od innego rzędu niż licznik (NZ-WZR003)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/wzory.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/domena/luki/znacznik-kierunek.test.ts",
+    "tests/domena/wzor/rd21.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-003/S4",
+  "br": "BR-WZR-003",
+  "f": "F-26",
+  "tytul": "Znacznik bieżącego rzędu we wzorze: Prucie przed początek schematu (NZ-WZR003, P-134 Q3a)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/wzory.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/domena/luki/znacznik-kierunek.test.ts",
+    "tests/domena/wzor/rd21.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-003/S5",
+  "br": "BR-WZR-003",
+  "f": "F-26",
+  "tytul": "Znacznik bieżącego rzędu we wzorze: Notatka na znaczniku (NZ-WZR003, P-124 Q6a)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/wzory.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/domena/luki/znacznik-kierunek.test.ts",
+    "tests/domena/wzor/rd21.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-003/S6",
+  "br": "BR-WZR-003",
+  "f": "F-26",
+  "tytul": "Znacznik bieżącego rzędu we wzorze: Powrót do wzoru",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/dane/wzory.test.ts",
+    "tests/domena/luki/licznik.test.ts",
+    "tests/domena/luki/znacznik-kierunek.test.ts",
+    "tests/domena/wzor/rd21.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-004/S2",
+  "br": "BR-WZR-004",
+  "f": "F-28",
+  "tytul": "Pisanie po wzorze: Rysik pisze, palec przewija (P-042, ADR-0012; P-217)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poziom-br",
+   "pliki": [
+    "tests/domena/wzor/uklad-rysik.test.ts"
+   ],
+   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
+  }
+ },
+ {
+  "id": "BR-WZR-005/S2",
+  "br": "BR-WZR-005",
+  "f": "F-25",
+  "tytul": "Wzór i licznik razem: iPad poziomo i pionowo (P-217)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "e2e/scenariusze/44-br-wzr-005-s2-ipad-poziomo-pionowo.yaml"
+   ]
+  }
+ },
+ {
+  "id": "BR-WZR-005/S3",
+  "br": "BR-WZR-005",
+  "f": "F-25",
+  "tytul": "Wzór i licznik razem: Obrót z ustawionym znacznikiem (ADR-0011)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "e2e/scenariusze/45-br-wzr-005-s3-obrot-strona-licznik.yaml"
+   ]
+  }
+ },
+ {
+  "id": "BR-WZR-005/S4",
+  "br": "BR-WZR-005",
+  "f": "F-25",
+  "tytul": "Wzór i licznik razem: Wąskie okno na iPadzie (OG-16, P-218 Q3a)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "e2e/scenariusze/46-br-wzr-005-s4-waskie-okno.yaml"
+   ]
+  }
+ },
+ {
+  "id": "BR-WZR-006/S1",
+  "br": "BR-WZR-006",
+  "f": "F-30",
+  "tytul": "Siatka co 10 oczek na schemacie: Włączenie siatki",
+  "zakres": "NIE",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "poza-zakresem",
+   "status": "NIE"
+  }
+ },
+ {
+  "id": "BR-WZR-008/S4",
+  "br": "BR-WZR-008",
+  "f": "F-56",
+  "tytul": "Zakreślanie i notatki na wzorze palcem: iPad bez rysika (P-218 Q2a)",
+  "zakres": "MVP",
+  "rodzaj": "BR",
+  "plik": null,
+  "pokrycie": {
+   "typ": "id-w-tescie",
+   "pliki": [
+    "e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml"
+   ]
+  }
+ }
+]

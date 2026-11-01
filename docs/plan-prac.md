@@ -1,50 +1,37 @@
-# Plan prac Oczka od 2026-10-27 do 1.1 (dla koordynatora na koncie 2)
+# Plan prac Oczka do wydania 1.0 (stan bieżący, koordynator, 2026-11-01)
 
-Stan wyjściowy: `docs/przekazanie-koordynatora.md` (kolejka okna maszyn, kopie ról), decyzje do P-268. Zakres 1.0 = pełne MVP z wzorami (F) i iCloud (G) według P-217. Ten plik zastępuje harmonogram z `docs/plan-app-store.md`, który był pisany dla kierunku C (P-181). Plan 1.1 w tamtym pliku obowiązuje, ale bez pozycji przeniesionych do 1.0. Daty to szacunki [OCENA], nie zobowiązania. Okno maszyn macOS to codziennie ok. 00:00–14:00 UTC (P-187). Każda poprawka natywna to jeden dzień kalendarza.
+Historia planu z 2026-10-27: `docs/plan-prac-historia-2026-10-27.md`. Decyzje do P-314. Daty, czas i tokeny to szacunki **[OCENA]**, nie zobowiązania. Okno maszyn macOS: ok. 23:00–14:00 UTC (P-187, P-307); poza nim praca bez macOS (P-297, P-311). Sesje ról: sonnet/high (P-310), jedna sesja = jedno zwarte zadanie (P-312). Tokeny = cała sesja z odczytami cache; koszt stały promptu roli ok. 15–20 tys. tokenów na turę.
 
-## Etap 0: dziś, okno do ok. 14:00 UTC (kolejka P-268)
-| # | Zadanie | Kto | Warunek startu | Dowód ukończenia |
-|---|---|---|---|---|
-| 0.1 | Wynik przebiegu 123 (40468002239: P-262 ×3 + F07-30) | koordynator, 07 | koniec przebiegu (ok. 09:10) | raport 07 `E2-przebieg-123.md`, bramka 01–09 + 33; P-262 (a): odstęp paska > 0, inaczej STOP partii 7 z opcjami (1) InputAccessoryView, (2) ScrollView |
-| 0.2 | Krok 2: partia 6 (`claude/kopia-partia-6`: 7af7ef2 + scen. 52) → 07 (patch 185219e z `oczko-warsztat` 4ae8f46, `git am`) → partia 7 (`claude/kopia-partia-7-krok2` 49d32c6) z `[e2e-pelny]` | 08 p6, 07, 08 p7 | 0.1 zakończone | przebieg zielony, scen. 30, 36, 51, 52 |
-| 0.3 | Krok 3: partia 7 iCloud e996bae + 339a85b (pola NULL, XCTest wektorów) + hook P-260 (`claude/kopia-koordynator-p260`) z `[e2e-pelny]` | 08 p7, koordynator | 0.2 zakończone, okno trwa | build zielony, `swift test` iCloud N z N, `npm ci` instaluje hook |
-| 0.4 | Jeśli okno się skończy przed 0.3 → przenieść 0.3 na następną noc. Wieczorem na gałąź roboczą idą tylko zmiany sprawdzane bramką Linux | koordynator | — | wpis w przekazaniu |
+## Stan wyjściowy
+Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) przyjęte; przekład 34 języków maszynowy (P-309). Czekają trzy kopie: 08 (`claude/kopia-partia-7-2026-10-30-b`), 09 (`claude/kopia-09-2026-10-30`), 07 (`claude/kopia-07-2026-10-30`) — szczegóły w `docs/przekazanie-koordynatora.md`.
 
-## Etap 1: domknięcie kodu 1.0 (ok. 27–30.10)
-| # | Zadanie | Kto | Zależy od | Można zacząć teraz? |
-|---|---|---|---|---|
-| 1.1 | Pozostałe funkcje partii 6 (wzory: PDF, zdjęcie → PDF, WWW/Word/film, zakreślanie, rysik, iPad, rozszerzenie) według `docs/programista/partia-6.md` | 08 p6 | 0.2 | **tak** — praca w TS na kopii, Swift w oknie |
-| 1.2 | Partia 7 iCloud: reszta listy z `partia-7.md` (XCTest, stany 04, ZM-06) | 08 p7 | 0.3 | **tak** — TS na kopii |
-| 1.3 | Przeglądy 05: U1 i U3 partii 7 (P-245), porty `ProjektMigawki` (P-243 S1a), `ZlecenieImportu` rodzaj `film` (P-246); reguła wersji pól iCloud przy migracji schematu (P-264) | 05 | nic | **tak** — tylko dokumenty i kod jako materiał |
-| 1.4 | 04: teksty kosza wzoru (P-243 S2a), rodzaj przycisku `niszczacy` i alternatywy dla scen. 30 (P-268) | 04 | nic | **tak** |
-| 1.5 | 07: kolejne F07 z raportów, pakiet podstawowy (36 po zielonym), plan testów na urządzeniu U1–U8 (P-261, P-267 U5) | 07 | przebiegi | po 0.1 |
-| 1.6 | 08: podział `Licznik.tsx` (20 090 / 20 480 B) przed kolejną zmianą licznika | 08 p7 | 0.2 | tak, na kopii |
-| 1.7 | ~~05 + 08: N12-12 `integrity_check`~~ **zrobione** (`src/dane/archiwum.ts:88`, test 06c9ff8; P-299) | 08 | nic | **tak** — sprawdzenie |
+## Kroki do wydania
+| # | Krok | Rola / sesja | Okno | Zależy od | Dowód ukończenia | Czas agenta | Tokeny |
+|---|---|---|---|---|---|---|---|
+| 1 | Pushe kopii 08 → 09 → 07 na roboczą, HEAD z `[e2e-pelny] [e2e-ciemny]`, jeden pełny przebieg | 08 integracja (1 sesja, P-312) | macOS, start 23:00 UTC 1.11 | — | 3 pushe fast-forward, verify kod 0 przed każdym; numer przebiegu | 1–1,5 h | 2–4 M |
+| 2 | Wynik przebiegu: raport E2 (bramka, scen. 15, 30, 35, 53, 44–52, ciemny), klasyfikacja porażek, aneks werdyktu; test kontraktu `select-xcode.sh` (P-313) | 07 (1 sesja) | po końcu 1 (ok. 01:30–02:30 UTC) | 1 | raport w `oczko-warsztat`, `sprawdz-raport` OK | 1–2 h | 3–5 M |
+| 3 | Aneks audytu 04: AX5, iPad, poziomo, ciemny, długości etykiet 35 języków (pl/vi/es-419 `licznik.po_dodaniu`, nb `ukonczenie.dni_*`), krój 700 na zrzucie licznika; kadry i podpisy zrzutów sklepu | 04 (1 sesja, równolegle z 2) | bez macOS (zrzuty z artefaktów) | 1 | raport aneksu, lista zmian z kluczami | 1–2 h | 3–5 M |
+| 4 | Poprawki z 2–3 (kod i teksty), W1-A pusta strona 2 (scen. 53), scenariusz „zrzuty-sklepu” z fikcyjnymi danymi (plan `docs/wydanie/metadane/zrzuty-plan.md`, opcja A); przy zmianie en — fala przekładu tylko zmienionych kluczy (09, `DELTA`) | 08 (1 sesja) + 09 (krótka, tylko gdy en się zmieni) | kod bez macOS, push w oknie do ok. 12:00 UTC 2.11 | 2, 3 | verify kod 0, przebieg zielony, artefakty zrzutów | 2–4 h | 4–8 M |
+| 5 | Zrzuty sklepu (iPhone 1320×2868, iPad 2064×2752) z artefaktów, kontrola `file`, metadane en z „crafting days” (P-302), metadane sklepu w 35 językach | 10 + 09 (2 sesje, równolegle) | bez macOS | 4 | `sklep.md` §5, `en.store.json`, pliki metadanych języków | 1–2 h + 1–2 h | 2–4 M + 3–5 M |
+| 6 | **Właściciel:** A1–A6 (App Group, kontener iCloud, możliwości App ID, cele, klucz API ASC + środowisko `testflight`, schemat CloudKit do Production), B1–B3 (Paid Apps, produkty) — `docs/wydanie/testflight-lista.md` | właściciel | dowolnie, najlepiej do 2.11 | — | odpowiedź „zrobione” + zrzut ekranu bez sekretów | — | — |
+| 7 | Commit wydania: wersja 1.0.0 + `tests/bazy/v1.db` razem (P-306, patch `oczko-warsztat` `08-programista/2026-10-30/`) i build podpisany, `testflight.yml`, wysyłka do TestFlight | 08 (commit) + 10 (build) — 1 sesja 10 z commitem 08 przygotowanym w kroku 4 | macOS | 4, 5, 6 | build w TestFlight, numer buildu | 1–2 h | 2–4 M |
+| 8 | **Właściciel:** test na iPhonie i iPadzie wg `docs/jakosc/testflight-na-urzadzeniu.md` (U1–U12, TT-01–TT-11, ZM-06 iCloud; zegarek „nie sprawdzono”, P-290) | właściciel | po 7 | 7 | wypełniona lista | — | — |
+| 9 | Pełny audyt przed live na opus/high (warunek P-293): `M1-audytor-generalny --tryb audit` (12, 07, 04, 05 w jednym), weryfikacja patentowa funkcji wzoru OG-07 (P-218) | M1 (1 sesja, opus/high — wyjątek od P-310 z P-293) | bez macOS | 7 (kod kandydata) | raport z werdyktem | 3–5 h | 10–20 M |
+| 10 | Poprawki blokerów z 8–9, przebieg, build 2 do TestFlight | 08 + 10 (1–2 sesje) | macOS | 8, 9 | przebieg zielony, build | 2–4 h | 4–8 M |
+| 11 | **Właściciel:** scalenie do `main` (P-313: konflikt z DEC-35 — wygrywa robocza), App Store Connect (metadane, zrzuty, App Privacy „Data Not Collected” wg P-300), „Submit for Review”; wydanie ręczne po recenzji | właściciel (z gotową listą od 10) | — | 10 | status „Waiting for Review” | — | — |
 
-## Etap 2: audyty i treści (ok. 29.10–1.11)
-| # | Zadanie | Kto | Zależy od |
-|---|---|---|---|
-| 2.1 | Audyt 04 (wygląd zgodny z `docs/design/`, iPad, poziomo, AX5, ciemny) | 04 | koniec etapu 1 |
-| 2.2 | ~~55 kluczy bez wpisu w `en.kontekst.json`~~ **zrobione** (2026-10-30, 08 p7: `npm run i18n` 669/669 z kontekstem, eda6dcc); zostaje zamrożenie tekstów en po 2.1 | 08 + 09 | 2.1 (teksty po audycie) |
-| 2.3 | Przekład 35 języków przez API z kontekstem (≤ 6 USD bez pytania, P-144), drugi przegląd AI, przegląd zastępczy (D-027) | 09 | 2.2 |
-| 2.4 | Audyt 07 (strategia, definicja ukończenia, pokrycie BR) | 07 | etap 1 |
-| 2.5 | Metadane, zrzuty (iPhone, iPad), notatka do recenzji, strona prywatności | 10 | 2.1, 2.3 dla lokalizacji |
+## Kolejność i kalendarz [OCENA]
+- **1.11 16–23 UTC (bez macOS):** decyzje P-310–P-314, ten plan, polecenie startowe sesji integracyjnej 08. Nic innego nie jest gotowe do pracy bez wyniku przebiegu (krok 3 potrzebuje zrzutów).
+- **Noc 1/2.11:** krok 1 (23:00) → pełny przebieg ok. 2–2,5 h → kroki 2 i 3 równolegle (ok. 02:00–04:00) → krok 4 (push do ok. 12:00).
+- **2.11 po południu:** krok 5 (bez macOS); krok 6 u właściciela.
+- **Noc 2/3.11:** krok 7 (gdy 6 zrobione). **3–4.11:** kroki 8 i 9 równolegle. **4–6.11:** krok 10. **Najwcześniej 6–7.11:** krok 11; recenzja Apple zwykle 1–3 dni [DO SPRAWDZENIA u źródła w dniu wysyłki].
+- Suma pracy agentów: ok. 16–30 h, ok. 40–80 M tokenów [OCENA]; najdroższy jest krok 9.
 
-## Etap 3: TestFlight (ok. 1–3.11)
-| # | Zadanie | Kto |
-|---|---|---|
-| 3.1 | **Właściciel:** identyfikatory `group.com.apps4brew.knitting` i `iCloud.com.apps4brew.knitting` w Apple Developer (P-233), sekrety podpisu, token CloudKit | właściciel (~30 min) |
-| 3.2 | Build podpisany, `testflight.yml`, wysłanie | 10 |
-| 3.3 | **Właściciel:** test na iPhonie i iPadzie (zegarek: brak urządzenia — „nie sprawdzono”, P-290); plan: `docs/jakosc/testflight-na-urzadzeniu.md` (lista U1–U8, ZM-06 iCloud telefon ↔ iPad — niezaliczony = przełącznik ukryty, P-218 Q5a; iPad bez rysika, P-226) | właściciel (45–90 min) |
-
-## Etap 4: pełny audyt i wysyłka (ok. 4–10.11)
-Pełny audyt przed App Store (12, 07, 04), poprawki blokerów, weryfikacja patentowa funkcji wzoru w gotowym kodzie (P-218 OG-07). **Właściciel:** scalenie do `main`, App Store Connect, „Submit for Review”. Wydanie ręczne po przeglądzie Apple.
-
-## 1.1 (ok. 4–6 tygodni po premierze)
-Atlas technik z rysunkami SVG bez tekstu (P-093, P-095, P-179, P-192), Live Activity z polem pauzy (P-199 Q3c), MetricKit (ADR-0018), funkcje do wyboru według danych z App Store (F-13, F-22, F-39, F-42, F-62). Nominacja „App Enhancements” co najmniej 3 tygodnie przed (P-147). **Właściciel:** domena strony atlasu (koszt).
-
-## Do zrobienia od razu, bez ryzyka straty (nic, od czego zależą, się nie zmieni)
-1.3 (przeglądy 05), 1.4 (04: teksty i przycisk), 1.7 (sprawdzenie N12-12), praca TS partii 6 i 7 na kopiach (1.1, 1.2). **Nie zaczynać przed audytem 04:** przekładu (2.3) ani zrzutów (2.5).
+## Od właściciela
+Krok 6 (ok. 30–60 min, najlepiej do 2.11), krok 8 (ok. 70–90 min), krok 11 (ok. 30 min + zgody). Plus: usunięcie nieaktualnych gałęzi kopii (lista w przekazaniu), potwierdzenie, czy sesje ról faktycznie mają wysiłek high (P-310, wyjątek).
 
 ## Ryzyka
-Okno maszyn (dzień na każdą poprawkę natywną), tygodniowy limit konta (sesje lekkie, raporty tylko na końcu etapu, P-251), pytania Apple, nieskompilowany Swift na kopiach.
+Okno maszyn (każda poprawka natywna = jedna noc); Swift z 35 językami i `Intl.PluralRules` na Hermes jeszcze nie kompilowane na macOS (krok 1 to pierwszy dowód); przekład bez przeglądu człowieka (D-027); pytania Apple przy recenzji; OG-07 może wyciąć zrzuty 2 i 4.
+
+## 1.1 (bez zmian)
+Atlas technik z rysunkami SVG, Live Activity z pauzą, MetricKit, funkcje wg danych z App Store, zakresy szydełkowe CYC (P-304 (b)) — szczegóły w historii planu.

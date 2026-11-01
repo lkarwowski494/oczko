@@ -54,7 +54,7 @@ Typu M brak (żadna stawka ani reguła sklepu się nie zmienia; limit liczony w 
 1. **Zerowanie licznika w nowym dniu ponad limit.** (a) dozwolone, nie zaczyna dnia: zerowanie nie dodaje pracy, a następne +1 i tak zatrzyma strażnik, więc nie otwiera obejścia; (b) blokowane jak wpisanie (D4). **Rekomendacja: (a)**: dane i korekty zawsze wolne (KP-02, L-07).
 2. **−1 w nowym dniu ponad limit.** (a) dozwolone, nie zaczyna dnia (korekta, zmniejsza liczbę; w stanie zawczasu ukryte razem z +1, ale dostępne z historii); (b) blokowane. **Rekomendacja: (a)**.
 3. **Liczniki inne niż rzędy (oczka; powtórzenia, jeśli liczone osobno).** (a) każde +1 na dowolnym liczniku zaczyna dzień (to też praca przy robótce); (b) tylko liczniki rzędów (słowa P-058: „liczenie rzędów”), ale typ licznika wybiera użytkownik (BR-LIC-006), więc licznik „oczka” byłby darmowym licznikiem rzędów. **Rekomendacja: (a)**: bez obejścia; interpretuje P-058 („praca przy robótce”) szerzej, do weta.
-4. **+1 z zegarka i z ekranu blokady (Live Activity).** (a) ta sama reguła na każdym urządzeniu, liczona z ostatnio zsynchronizowanej listy dni (P-039 dla Pro bez telefonu); na limicie zegarek pokazuje stan zawczasu bez +1 („No free knitting days left. See your iPhone.”), ekran blokady nie pokazuje +1; (b) zegarek i ekran blokady zawsze dozwolone (obejście limitu). **Rekomendacja: (a)**.
+4. **+1 z zegarka i z ekranu blokady (Live Activity).** (a) ta sama reguła na każdym urządzeniu, liczona z ostatnio zsynchronizowanej listy dni (P-039 dla Pro bez telefonu); na limicie zegarek pokazuje stan zawczasu bez +1 („No free crafting days left. See your iPhone.”), ekran blokady nie pokazuje +1; (b) zegarek i ekran blokady zawsze dozwolone (obejście limitu). **Rekomendacja: (a)**.
 5. **NZ-02: nowe urządzenie przed synchronizacją.** (a) akceptujemy brzegowo jak L-14: lokalnie liczy się według tego, co urządzenie wie; po scaleniu lista może mieć 6 dni w miesiącu, wszystkie zostają (rozpoczęty dzień nigdy nie jest odbierany), następny nowy dzień jest blokowany; (b) na nowym urządzeniu pierwsze +1 czeka na synchronizację iCloud: przeczy NFR-PIE-001 (bez sieci) i blokuje liczenie offline. **Rekomendacja: (a)**.
 
 ### Czas (zasada 9)
@@ -100,7 +100,7 @@ Model: **V4 „wzorzec Treningu” bez próby** (P-057): cała aplikacja darmowa
 ### Ujawnienia dla roli 04 (ekran ofert)
 (1) nazwa planu, długość okresu i cena ze sklepu jako najwyraźniejszy element ceny (MS-02, KP-09); bez procentów i porównań (P-054); opisy bez liczb; (2) przy subskrypcji: „odnawia się automatycznie, anulujesz w ustawieniach Apple ID” i przycisk „Zarządzaj subskrypcją” (MS-02a, KP-14); **hasło z P-054 „No subscriptions. Nothing renews by itself…” odpada** (w V4 są subskrypcje odnawiane); (3) „Przywróć zakupy”; (4) linki do polityki prywatności i warunków (KP-04); (5) co daje Pro: brak limitu dni; co zostaje bez Pro: limit 5 dni i wszystkie dane; (6) widoczne zamknięcie, neutralna odmowa, bez fałszywej pilności i zawstydzania (wzorce, „Etyka”); (7) Family Sharing na ekranie tylko, gdy włączone w App Store Connect.
 
-**Opis w sklepie (dla 11 i 09):** „Free for 5 knitting days every month. Pro removes the limit.”; bez „free app” bez zastrzeżenia i bez „free trial” (MS-47, 2.3.2).
+**Opis w sklepie (dla 11 i 09):** „Free for 5 crafting days every month. Pro removes the limit.”; bez „free app” bez zastrzeżenia i bez „free trial” (MS-47, 2.3.2).
 
 ### Test modelu (zastępuje test P-029)
 | Element | Ustalenie |
@@ -177,7 +177,7 @@ Próg opłacalności: 1944 zł/rok (P-013). Wszystkie warianty normalnie ok. 13�
 4. Największa niewiadoma dla V3/V4: konwersja limitu dni w tej kategorii (brak danych, AK-03, V3-3). Pomiar po wydaniu: App Analytics i Sales and Trends (jak test P-029).
 
 ### Reguła liczenia dla V4 (propozycja; wektory do `docs/monetyzacja/wektory-limitu.json` w E3)
-Jednostka: **dzień z robótką** = data (strefa urządzenia w chwili zdarzenia, RD-16), w której użytkownik zaczął pracę pierwszym +1. Miesiąc kalendarzowy według telefonu; licznik od zera 1. dnia o północy. Strażnik sprawdza limit **tylko przy pierwszym +1 nowego dnia** (NFR-PIE-001: bez ekranu przed licznikiem; doprecyzowanie właściciela z P-053). Pro (subskrypcja aktywna albo dożywotni) zdejmuje limit.
+Jednostka: **dzień z robótką** = data (strefa urządzenia w chwili zdarzenia, RD-16), w której użytkownik zaczął pracę pierwszym +1. Miesiąc kalendarzowy według telefonu; licznik od zera 1. dnia o północy. Strażnik sprawdza limit **tylko przy pierwszym +1 nowego dnia** (NFR-PIE-001: bez ekranu przed licznikiem; doprecyzowanie właściciela z P-053). Pro (subskrypcja aktywna albo dożywotni) zdejmuje limit. Zmiana tekstu 2026-10-30 (P-302, rola 04; zasady limitu bez zmian): angielska nazwa jednostki to „crafting day” (była „knitting day”, bo pomijała szydełko; P-101); dotyczy interfejsu, opisu sklepu i zegarka. Wartości limitu, definicja dnia i reguły (P-039, P-065, RD-16) bez zmian; rola 02 może je przejrzeć przy kolejnym odświeżeniu.
 
 | Wektor | Sytuacja | Oczekiwane |
 |---|---|---|
@@ -206,7 +206,7 @@ Jednostka: **dzień z robótką** = data (strefa urządzenia w chwili zdarzenia,
 | Projekt (04) | licznik dni na ekranie startu („Zostały 3 z 5 dni w tym miesiącu”), ekran ofert tylko na limicie i w Ustawieniach, teksty bez procentów (P-054) | 04 | w ramach roli 04 |
 | ADR (05) | `expo-iap` z subskrypcjami (jak Trening), bez oferty wprowadzającej | 05 | w ramach roli 05 |
 | App Store Connect (właściciel) | grupa subskrypcji z 2 produktami (0,99 / 6,99 USD), dożywotni 14,99 USD (P-038, OP-24), bez ofert wprowadzających, Family Sharing (D6) | właściciel | ok. 30–45 min, po ADR 05 |
-| Opis w sklepie (11) | „Free for N knitting days a month. Pro: no limit.”; bez „free app” bez zastrzeżenia (MS-47) | 11, 09 | później |
+| Opis w sklepie (11) | „Free for N crafting days a month. Pro: no limit.”; bez „free app” bez zastrzeżenia (MS-47) | 11, 09 | później |
 
 Kod Oczka nie istnieje jeszcze w nowej wersji (przebudowa, P-001), więc zmiana modelu teraz nie kosztuje przepisywania kodu. Oczekiwanie: brak (bez pytania do App Review: V4 nie używa 3.1.1 ani nieodnawialnych).
 
