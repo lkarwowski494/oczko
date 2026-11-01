@@ -105,7 +105,8 @@
     "miary_imperial": "Imperial",
     "miary_imperial_opis": "in, oz",
     "miary_opis": "Changes how sizes and lengths are shown and entered. Your saved data doesn’t change.",
-    "pro_wlaczone": "On"
+    "pro_wlaczone": "On",
+    "grupa_liczenie": "Counting"
   },
   "aktywnosc": {
     "plus": "+1 row",

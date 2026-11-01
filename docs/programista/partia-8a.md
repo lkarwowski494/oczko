@@ -4,7 +4,7 @@ Stan: 2026-11-01 · gałąź `claude/kopia-partia-8a-2026-11-01` (z `claude/joll
 
 ## Stan wyjściowy i końcowy
 - Przed pracą (8063d98): `npm test` 239 zestawów, 2655 testów, kod 0.
-- Po pracy: `env -u NODE_PATH npm run verify` (typecheck, typecheck:testy, lint, jakosc:kontrole, test) — kod 0, 252 zestawy, 2722 testy (2026-11-01).
+- Po pracy: `env -u NODE_PATH npm run verify` (typecheck, typecheck:testy, lint, jakosc:kontrole, test) — kod 0, 253 zestawy, 2729 testy (2026-11-01, po P-335).
 
 ## Klasyfikacja (E0)
 Wszystkie D (defekt). Wybory P z 04 (P-330) już rozstrzygnięte. Nie ma wyboru właściciela: koszt, konta, scalenie i wysyłka nie są dotknięte.
@@ -22,20 +22,29 @@ Wszystkie D (defekt). Wybory P z 04 (P-330) już rozstrzygnięte. Nie ma wyboru 
 | 013 | b52f564 | `tests/ekrany/zglos-trasa.test.tsx` |
 | 029 | c060e5f | `tests/dane/licznik-minus-zero.test.ts` |
 | 031-dane (F-32, F-63) | aab7e60 | `ustawienia-trasa` (alert „nie rozpoznano”, stan Pro w wierszu) |
+| 002 (przegląd) | 21a0fc1 | `oferty-trasa` P1-1, P1-2 |
+| 015 | b09847f | `icloud-ostatnia-udana.test.ts`, `stan-danych-trasa` |
+| 004 (Counting) | 7a12f40 | `preferencje-trasa` |
 | 019 | e066618 | `tests/ekrany/stan-danych-trasa.test.tsx` |
 
 Przegląd ścieżek wrażliwych (zasada trybu fix; subagent bez mojego rozumowania, diff `8063d98..HEAD -- src app` do 8511e0b: 003, N-05-1, 012, 004): **„brak uwag”**. Późniejsze commity (002, 008, 013, 029, 031, 019) nie dotykają kopii, importu ani czyszczenia danych; 002 dotyka zakupów — przegląd nieodbyty (patrz „Otwarte”).
 
-## Nie zrobione / otwarte
-- **015** (ostatnia udana synchronizacja na sztywno `ostatniaUdana: null`): brak źródła danych. Wymaga nowego klucza stanu urządzenia (np. `icloud_ostatnia_udana_ms`, wzór `zegarek_ostatnia_partia_ms`, P-199 Q5a) i wiersza w `dane.md` — decyzja roli 05 / koordynatora. Opcje: A) klucz zapisywany przez sterownik po udanej partii (rekomendacja; mały, bez migracji); B) wyprowadzenie z `synchronizacja.zmieniono_ms` — tej kolumny nie aktualizuje się po każdej partii, więc fałszywe. Realność: brzegowa (iCloud ukryty w 1.0, ZM-06).
-- **008**: wartość Apple ID zostaje `id0000000000` do czasu odczytu z API App Store Connect przez rolę 10 (D4). Do tego czasu `kontrola-ipa.sh` odrzuca build (zamierzone). Opcja do decyzji 04/koordynatora: ukryć wiersz „Rate Oczko” do czasu wpisania id (dziś stuknięcie otwiera zły adres).
-- **031**: F-35 bez kodu (ZM-12: przywracanie tylko na ekranie zakupu). F-08, F-09, F-46, F-50 należą do 8b/8c.
-- Brak przeglądu subagenta dla zmian 002 (zakupy, ścieżka wrażliwa).
+## Decyzje koordynatora P-335 (wykonane)
+- **015** wariant A: commit b09847f (klucz `icloud_ostatnia_udana_ms`, zapis po udanym `wyslij` i po odebranej partii, odczyt w `/stan-danych`; wiersz w `dane.md` jako aneks do przeglądu 05). Testy: `tests/dane/icloud-ostatnia-udana.test.ts`, `tests/ekrany/stan-danych-trasa.test.tsx`.
+- **008**: wiersz „Rate Oczko” zostaje; build z zaślepką odrzuca `kontrola-ipa.sh`; Apple ID wpisze rola 10 (D4).
+- **Counting**: `ustawienia.grupa_liczenie` (en + kontekst) i nagłówek grupy — commit 7a12f40; razem z `oferty.pro_wlaczone` do akceptacji 04 w aneksie.
+- **Pula kopii** osobno po 2 dla `przed-importem` i `przed-usunieciem` — przyjęte (05 przy przeglądzie M1).
+- **Przegląd 002** (zakupy): subagent, tylko diff 6722e8d — 2 × P1, oba naprawione testem czerwonym przed (commit 21a0fc1): (P1-1) „Restore” w trakcie Ask to Buy odblokowywał „kup”, gubił oczekiwanie i mówił „No purchase found”; (P1-2) brak strażnika podwójnego „kup”, druga odpowiedź nadpisywała flagę. Pozostałe pytania przeglądu bez znalezisk.
 
-## Prośby do 04 / 05 / 01
-- 04: tekst „Oczko Pro is on.” (P-330) nie miał klucza — `ustawienia.pro_wlaczone` to „On”; dopisałem roboczo `oferty.pro_wlaczone` (en + kontekst), do akceptacji. Brak klucza nagłówka grupy „Counting” w Ustawieniach (design-spec 004) — grupa bez nagłówka.
-- 04: kolizja `dane.zastapiono` (stare parametry `{nazwa, miejsce}`) — zastąpione kształtem 04/ADR-0028 `{kopia}`.
-- 05/10: nowe katalogi i kopie w `Documents/Backup` (N-05-2 dla 04: tekst w „Data and sync” `stan_danych.kopie_opis` jest w kluczach, ale sam wiersz w `StanDanych` nie jest narysowany — poza ID 8a).
+## Otwarte
+- **008**: wartość Apple ID (rola 10, D4).
+- **Zakupy 002**: przegląd po poprawce nie powtarzany (jeden przegląd na ID, zasada trybu fix).
+- Nieodbyty przegląd 015 (sterownik synchronizacji nie jest ścieżką z listy wrażliwych: zapis znacznika czasu, bez zmian w danych użytkownika).
+
+## Prośby do 04 / 05
+- 04: akceptacja roboczych kluczy `oferty.pro_wlaczone` („Oczko Pro is on.”) i `ustawienia.grupa_liczenie` („Counting”); kolizja `dane.zastapiono` rozwiązana kształtem 04/ADR-0028 (`{kopia}`).
+- 05: wiersz `icloud_ostatnia_udana_ms` w `dane.md` (aneks 08); pula kopii osobno dla importu i usunięcia (ADR-0028 mówi o imporcie).
+- Wiersz o kopiach w „Data and sync” (`stan_danych.kopie_opis`, N-05-2): klucz jest w słownikach, ale wiersza nie narysowałem w `StanDanych` — poza ID 8a, do decyzji 04/koordynatora.
 
 ## Wyjątki nazwane (zasada 7)
 - K-04e: `tests/bazy/` nie istnieje (brak wydanych wersji przed 1.0), więc test „bez migracji” idzie na świeżo zmigrowanej bazie bieżącego schematu.

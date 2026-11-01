@@ -16,36 +16,42 @@ export default function EkranOfert(): React.ReactElement {
   const [produkty, ustawProdukty] = useState<ProduktyOfert>({ rodzaj: 'ladowanie' });
   const [dostep, ustawDostep] = useState(kontener.dostep.stan());
   const [komunikat, ustawKomunikat] = useState<KomunikatOfert>(null);
+  const [oczekujacy, ustawOczekujacy] = useState(false); // zakup czeka na zatwierdzenie (Ask to Buy): blokuje „kup”, dopóki Pro się nie włączy
+  const zakupWToku = useRef(false); // strażnik: drugie stuknięcie „kup” przed odpowiedzią sklepu jest ignorowane
   const czekaNaZatwierdzenie = useRef(false); // zakup oczekujący (Ask to Buy) w tej sesji ekranu; po restarcie nie jest pamiętany (design-spec 002)
   useEffect(() => kontener.dostep.naZmiane((s) => {
     ustawDostep(s);
-    if (s.aktywne && czekaNaZatwierdzenie.current) { czekaNaZatwierdzenie.current = false; ustawKomunikat('pro_wlaczone'); } // P-330: zatwierdzone poza aplikacją, jednorazowo
+    if (s.aktywne && czekaNaZatwierdzenie.current) { czekaNaZatwierdzenie.current = false; ustawOczekujacy(false); ustawKomunikat('pro_wlaczone'); } // P-330: zatwierdzone poza aplikacją, jednorazowo
   }), [kontener]);
   useEffect(() => {
     void sklep.produkty().then((p) => ustawProdukty(p.length ? { rodzaj: 'gotowe', produkty: p } : { rodzaj: 'brak-sieci' }), () => ustawProdukty({ rodzaj: 'brak-sieci' }));
   }, [sklep]);
   const poZmianie = async () => { await kontener.dostep.odswiez(); await licznik.poZmianie(); };
   async function kup(id: string): Promise<void> {
+    if (zakupWToku.current || czekaNaZatwierdzenie.current) return; // przegląd P1-2: jedno żądanie zakupu naraz, bez drugiego Ask to Buy
+    zakupWToku.current = true;
     ustawKomunikat(null); // linia znika przy następnej akcji
-    const status = await sklep.kup(id).catch(() => 'blad' as const); // wyjątek adaptera = błąd sklepu lub sieci
-    const k = komunikatZakupu(status); // sukces → bez linii (stan Pro), anulowany → null (bez komunikatu i bez sukcesu)
-    czekaNaZatwierdzenie.current = k === 'czeka';
-    if (k === 'czeka' || k === 'blad') ustawKomunikat(k);
-    await poZmianie();
+    try {
+      const status = await sklep.kup(id).catch(() => 'blad' as const); // wyjątek adaptera = błąd sklepu lub sieci
+      const k = komunikatZakupu(status); // sukces → bez linii (stan Pro), anulowany → null (bez komunikatu i bez sukcesu)
+      czekaNaZatwierdzenie.current = k === 'czeka';
+      ustawOczekujacy(k === 'czeka');
+      if (k === 'blad') ustawKomunikat(k);
+      await poZmianie();
+    } finally { zakupWToku.current = false; }
   }
   async function przywroc(): Promise<void> {
-    ustawKomunikat(null);
-    czekaNaZatwierdzenie.current = false;
+    ustawKomunikat(null); // oczekujący zakup (flaga i blokada „kup”) zostaje: przywrócenie go nie unieważnia (przegląd P1-1)
     const w = await sklep.przywroc().catch(() => ({ ok: false as const }));
     if (!w.ok) { ustawKomunikat('przywroc_blad'); return; }
     await poZmianie();
-    if (!kontener.dostep.stan().aktywne) ustawKomunikat('przywroc_nic'); // przywrócenie udane, ale Apple ID nie ma zakupu Pro
+    if (!kontener.dostep.stan().aktywne && !czekaNaZatwierdzenie.current) ustawKomunikat('przywroc_nic'); // przywrócenie udane, ale Apple ID nie ma zakupu Pro
   }
   const wygas = 'wygas' in sklep && typeof sklep.wygas === 'function' ? (sklep.wygas as () => void) : null;
   return (
     <>
       <Oferty
-        stan={{ produkty, aktywne: dostep.aktywne, familySharing: FAMILY_SHARING, komunikat }}
+        stan={{ produkty, aktywne: dostep.aktywne, familySharing: FAMILY_SHARING, komunikat: komunikat ?? (oczekujacy ? 'czeka' : null), oczekujacy }}
         t={kontener.j.t}
         adresy={{ polityka: ADRESY.polityka, warunki: ADRESY.warunki }}
         naKup={(id) => void kup(id)}

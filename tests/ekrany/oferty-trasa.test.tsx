@@ -14,6 +14,7 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApli
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranOfert = (require('../../app/oferty') as { default: React.ComponentType }).default;
 
+const odroczona = <T,>() => { let r!: (v: T) => void; const p = new Promise<T>((x) => (r = x)); return { p, r }; };
 const PRODUKTY: Produkt[] = [{ id: 'oczko.pro.rok', okres: 'rok', cenaWyswietlana: '$19.99' }, { id: 'oczko.pro.miesiac', okres: 'miesiac', cenaWyswietlana: '$2.99' }] as unknown as Produkt[];
 async function aplikacja(o: { kup?: StatusZakupu; przywroc?: { ok: boolean }; proPoPrzywroceniu?: boolean } = {}) {
   const t = await tEn();
@@ -101,4 +102,29 @@ test('P-330: Pro włączone bez oczekującego zakupu w tej sesji ekranu → bez 
   await waitFor(() => expect(screen.getByTestId('oferty-kup')).toBeTruthy());
   await wlacz();
   expect(linie()).toEqual([]);
+});
+
+// Przegląd subagenta (ścieżka wrażliwa, zakupy): P1-1 przywrócenie w trakcie oczekującego zakupu; P1-2 podwójne stuknięcie „kup” przed odpowiedzią sklepu.
+test('przegląd P1-1: przywrócenie w trakcie oczekującego zakupu nie odblokowuje „kup”, nie gubi oczekiwania i nie mówi „No purchase found”', async () => {
+  const { sklep, wlacz } = await aplikacja({ kup: 'oczekujacy' });
+  render(<EkranOfert />);
+  await kup();
+  await screen.findByText(/Waiting for approval\. Oczko Pro/);
+  await userEvent.press(screen.getByTestId('oferty-przywroc'));
+  await waitFor(() => expect(sklep.przywroc).toHaveBeenCalledTimes(1));
+  expect(screen.getByRole('button', { name: 'Waiting for approval' }).props.accessibilityState).toMatchObject({ disabled: true });
+  expect(screen.queryByTestId('oferty-przywroc-nic')).toBeNull();
+  await wlacz();
+  expect(await screen.findByText('Oczko Pro is on.')).toBeTruthy();
+});
+test('przegląd P1-2: dwa szybkie stuknięcia „kup” przed odpowiedzią sklepu → jedno wywołanie sklep.kup', async () => {
+  const { sklep } = await aplikacja({});
+  const d = odroczona<StatusZakupu>();
+  sklep.kup.mockImplementation(() => d.p);
+  render(<EkranOfert />);
+  await waitFor(() => expect(screen.getByTestId('oferty-kup')).toBeTruthy());
+  await userEvent.press(screen.getByTestId('oferty-kup'));
+  await userEvent.press(screen.getByTestId('oferty-kup'));
+  expect(sklep.kup).toHaveBeenCalledTimes(1);
+  await act(async () => { d.r('anulowany'); });
 });

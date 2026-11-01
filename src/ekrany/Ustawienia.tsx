@@ -54,6 +54,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
         {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
         {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>
+      {preferencje && <Text style={{ ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m }} accessibilityRole="header">{t('ustawienia.grupa_liczenie')}</Text>}
       <View style={st.grupa}>
         <View style={st.wiersz}>
           <Text style={{ ...typografia.tresc, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>{t('ustawienia.wibracje')}</Text>
