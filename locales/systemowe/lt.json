@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "„Oczko“ naudoja kamerą tik tada, kai fotografuojate mezginio aprašą, projektą ar siūlų etiketę. Nuotraukos lieka jūsų įrenginyje."
+  }
+}

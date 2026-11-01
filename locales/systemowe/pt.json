@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "O Oczko usa a câmara apenas quando tira uma fotografia de um padrão, de um projeto ou de uma etiqueta de fio. As fotografias ficam no seu dispositivo."
+  }
+}

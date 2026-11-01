@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko folosește camera doar atunci când faceți o fotografie a unui model, a unui proiect sau a unei etichete de fir. Fotografiile rămân pe dispozitivul dvs."
+  }
+}
