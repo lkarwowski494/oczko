@@ -1,5 +1,5 @@
 # Kontrakt zakresu: Oczko
-Stan: **E3 zakończony, przyjęty przez właściciela (P-052, 2026-10-22)** · Aktualizacja: 2026-10-25 (fix 03-zakres-001, -005, -006; P-102) · Rola 03-zakres, tryb build (prompt `prompts` @97ec212) · Wejście: BRD `docs/brd/` (80 BR po poprawce roli 01: P-047, P-048), `docs/monetyzacja.md` (sesja 2), ZAL-001–027 · Decyzje zakresu: P-040–P-046, P-049, P-052; model: V4 (P-057, P-058) · Historia E0–E2 (rama, soczewki, pominięcia, warianty): `docs/scope-contract-historia.md`
+Stan: **E3 zakończony, przyjęty przez właściciela (P-052, 2026-10-22)** · Aktualizacja: 2026-11-01 (D2 z P-325: F-06, F-21, F-28, F-35, F-45, F-52, ZM-08–ZM-13; wcześniej 2026-10-25: fix 03-zakres-001, -005, -006; P-102) · Rola 03-zakres, tryb build (prompt `prompts` @97ec212) · Wejście: BRD `docs/brd/` (80 BR po poprawce roli 01: P-047, P-048), `docs/monetyzacja.md` (sesja 2), ZAL-001–027 · Decyzje zakresu: P-040–P-046, P-049, P-052; model: V4 (P-057, P-058) · Historia E0–E2 (rama, soczewki, pominięcia, warianty): `docs/scope-contract-historia.md`
 
 ## Główna praca i pętla
 - Główna praca: J-01 „Wiedzieć, w którym rzędzie jestem, i ufać tej liczbie” z J-05 (powrót) i J-04 (miejsce we własnym wzorze); ZAL-019 podważone w części (J-04 w rdzeniu, E1).
@@ -232,6 +232,10 @@ kod wyjścia: 0
 - **04 Studio projektowe:** projekt okna „Uczciwe zasady” i karty po imporcie (ZM-05), ekranu trybu awaryjnego (ZM-03), ekranu „Źródła wiedzy” (ZM-04) i wierszy Ustawień z ZM-02.
 - **Koszt zmian ZM-02, ZM-04, ZM-05:** [OCENA] 1,25 h ponad ranking (46 h, P-102); nie doliczone do kosztów F — do decyzji koordynatora przy STOP E2 fixu 03, kontrola: 07 audit po partiach 08.
 - **07 Jakość (fix 03-zakres-001):** testy BR-ZAK-005–007 i BR-DAN-012 dostają w nazwie F-63 i F-64 zamiast „F-—” (Z07-03).
+- **D2 z P-325 (2026-11-01, fix 03-zakres, ZM-08–ZM-13):** kontrakt dostosowany do stanu projektu 04 dla F-45, F-06, F-21 (S2), F-28, F-35, F-52; kodu 08 to nie zmienia (0 h), a luki kodu zostają w 07-jakosc-011, -016, -024, -026, -002, -031.
+  - **01 Odkrywanie (ER, numery nada 01):** BR-LIC-009 scenariusz „Przypomnienie w trakcie serii” („zmienia wygląd całego ekranu licznika”, RD-13-W1) → pas zakreślacza pod liczbą; BR-PRJ-008 scenariusz „Zapomniany stoper” („może go zatrzymać bez odblokowania”) → ekran blokady tylko do odczytu (P-133 1.1a); BR-WZR-004 scenariusz „Rysik pisze, palec przewija” („linia bez wcześniejszego wyboru narzędzia”) → po wyjaśnieniu przez 04, co rysuje rysik bez wybranego narzędzia.
+  - **02 Monetyzacja:** `docs/monetyzacja.md:500, :570, :592` mówią o przywracaniu zakupów „na ekranie zakupu i w ustawieniach”; kontrakt zakresu (F-35) ma przycisk na ekranie zakupu, do którego prowadzi wiersz „Oczko Pro” w Ustawieniach.
+  - **04 Studio projektowe:** [DO USTALENIA] narzędzie domyślne rysika na iPadzie po otwarciu wzoru (F-28); luka projektu 07-jakosc-011 (edycja i usuwanie przypomnień) nie należy do tej zmiany.
 
 ## Zmiany zakresu
 | ID | Data | Prośba (kto, skąd) | Bramka: praca i dowód · intuicyjność · koszt · co wypada | Decyzja (ID, słowa właściciela) |
