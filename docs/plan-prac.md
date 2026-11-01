@@ -28,7 +28,9 @@ Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) prz
 | 3.11/4.11 noc | **08** + **10** | commit wydania 1.0.0 + `v1.db`; przebieg; zrzuty z buildu kandydata; `testflight.yml` (zatwierdza właściciel) | build kandydata w TestFlight, zrzuty | kroki właściciela A1–A5, B2 |
 | 4.11 | **właściciel** | A6 CloudKit → Production (po audycie); test na telefonie, iPadzie i zegarku (pierwsza część ok. 5 min) | wypełniona lista | build |
 
-Właściciel do 3.11, w dowolnym momencie: A1–A5 i B2 z instrukcji 10 (ok. 20–30 min). Tokeny do 4.11 [OCENA]: ok. 30–50 M, z czego audyt M1 ok. 10–20 M.
+Właściciel po audycie (P-320, P-322): A1–A5 i B2 z `docs/wydanie/kroki-wlasciciela-testflight.md` (ok. 65–75 min).
+
+**Pomiar tokenów (zastępuje wcześniejsze szacunki, które były ok. 10× za niskie):** sesja 10 faza A (sonnet, 22 min) — 39,2 M odczytów cache, 0,40 M zapisu cache, 0,13 M wyjścia, 6,82 USD wg `get_session` (`usage`), 2026-11-01. Przelicznik [OCENA]: sesja sonnet ok. 15–20 M odczytów cache na 10 min pracy; opus ok. 1,7× droższy za token. Szacunek do 4.11 [OCENA]: 8–10 sesji ról, ok. 300–600 M odczytów cache, ok. 50–120 USD równowartości limitu; największe: audyt M1 (opus) i zgodność 1.0 (opus). Kolumny „Tokeny” w tabeli kroków niżej są nieaktualne.
 
 ## Kroki do wydania
 | # | Krok | Rola / sesja | Okno | Zależy od | Dowód ukończenia | Czas agenta | Tokeny |
