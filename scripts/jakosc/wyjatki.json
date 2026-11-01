@@ -10,5 +10,14 @@
       "kontrola_zastepcza": "test akceptacyjny kopii ratunkowej sprawdza komplet trzech plików i liczności po przywróceniu (tests/akceptacja/dane)"
     }
   ],
-  "workflowy": []
+  "workflowy": [
+    {
+      "regula": "SEKRET-BEZ-SRODOWISKA",
+      "plik": ".github/workflows/asc-kontrola.yml",
+      "powod": "zadanie wywołujące workflow wielokrotnego użytku (apps4brew-narzedzia, SHA przypięty) nie może mieć `environment`, więc sekrety ASC_* muszą być sekretami repozytorium; jak Trening (P-315). Workflow tylko do odczytu, tylko ręczny; decyzja koordynatora w docs/wydanie/sklep.md §3b: sekrety repo albo workflow nieużywany",
+      "wlasciciel": "10",
+      "termin": "do decyzji koordynatora (sklep.md §3b); przed scaleniem do main",
+      "kontrola_zastepcza": "tylko GET; wywołanie przypięte do pełnego SHA (AKCJA-NIEPRZYPIETA); wyzwalacz wyłącznie workflow_dispatch; permissions contents: read"
+    }
+  ]
 }

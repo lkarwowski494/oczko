@@ -1,0 +1,27 @@
+{
+  "_opis": "Lokalizacje produktów zakupu (nazwa, opis) — JEDNO źródło prawdy dla scripts/asc/iap-localizations.mjs (workflow asc-iap-localizations.yml). Szkic rola 10, 2026-11-01: brzmienie en do przeglądu 04 (głos marki), przekład 09 dopisuje `tlumaczenia` po zamrożeniu. Wzór: Trening store/iap-localizations.json (P-315). Produkty: docs/monetyzacja.md „Produkty” (bez ofert wprowadzających, P-057). `wpisaneRecznie`: wpisuje właściciel przy zakładaniu produktów (krok B2); skrypt tylko porównuje. `tlumaczenia[język].ascLocale` = kod lokalizacji ASC albo null (sl, bg, et, lt, lv, sr: bez lokalizacji w ASC; sl — Trening L-003).",
+  "limity": {
+    "nazwa": 30,
+    "opis": 45
+  },
+  "wpisaneRecznie": {
+    "en-US": {
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, monthly",
+        "description": "No limit on crafting days, billed monthly"
+      },
+      "yearly": {
+        "name": "Oczko Pro, yearly",
+        "description": "No limit on crafting days, billed yearly"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, lifetime",
+        "description": "No limit on crafting days, one purchase"
+      }
+    }
+  },
+  "tlumaczenia": {}
+}

@@ -1,0 +1,30 @@
+# Kontrola ustawień App Store Connect — TYLKO ODCZYT. Przeniesione z Treningu (P-315, P-316 (4); wzór: asc-kontrola.yml, 2e4b0f8; tam decyzja właściciela 21.10.2026).
+# Cienka warstwa tej aplikacji: wywołuje workflow wspólny z repozytorium narzędzi studia (lkarwowski494/apps4brew-narzedzia), PRZYPIĘTY do pełnego SHA
+# (ten sam SHA co w Treningu; nie do gałęzi — wersję narzędzia podnosimy świadomie). Narzędzie i jego testy: tamto repozytorium (poza zakresem tej sesji; nieczytane).
+# Konfiguracja aplikacji: docs/wydanie/asc-kontrola.json. Tylko ręcznie. Zmian w App Store Connect nie robi (żądania GET). Działa dopiero po scaleniu do `main` (P-319).
+# WYJĄTEK NAZWANY (scripts/jakosc/wyjatki.json, SEKRET-BEZ-SRODOWISKA): zadanie wywołujące workflow wielokrotnego użytku nie może mieć `environment`, więc
+# sekrety muszą być dostępne na poziomie REPOZYTORIUM (tak ma Trening: kontrola 41026478207 zielona bez środowiska). Decyzja koordynatora w sklep.md §3b:
+# albo właściciel dodaje te 3 sekrety także do „Repository secrets” Oczka, albo ten workflow zostaje nieużywany (kontrola jest tylko do odczytu).
+name: ASC kontrola ustawień
+on:
+  workflow_dispatch:
+    inputs:
+      szczegoly:
+        description: 'Dołącz szczegóły (listy terytoriów, odpowiedzi wiekowe, lokalizacje)'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: asc-kontrola
+  cancel-in-progress: false
+jobs:
+  kontrola:
+    uses: lkarwowski494/apps4brew-narzedzia/.github/workflows/asc-kontrola.yml@43afe81aa37a117dd32259f6452196a1efccd0ec
+    with:
+      config: docs/wydanie/asc-kontrola.json
+      szczegoly: ${{ inputs.szczegoly }}
+    secrets:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}

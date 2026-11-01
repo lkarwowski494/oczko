@@ -1,0 +1,64 @@
+# Lokalizacje produktów zakupu w App Store Connect przez API (grupa „Oczko Pro”, oczko.pro.monthly/yearly/lifetime). Przeniesione z Treningu (P-315, P-316 (4);
+# wzór: asc-iap-localizations.yml, 2e4b0f8; skrypt scripts/asc/iap-localizations.mjs, teksty docs/wydanie/metadane/produkty.store.json). Tylko ręcznie.
+# dry-run (domyślny): plan bez zmian; apply: utwórz brakujące i zaktualizuj różniące się (nigdy nie usuwa; nie zmienia lokalizacji wpisanej przez właściciela: en-US).
+# Wymaga, żeby właściciel założył produkty (krok B2). Sekrety środowiska `release`: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8.
+# Różnice względem Treningu (nazwane): (1) jedno zadanie w środowisku `release` zamiast pary „podgląd bez środowiska” + „zapis w release” — sekrety
+# Oczka są sekretami ŚRODOWISKA (strażnik scripts/jakosc/sprawdz-workflowy.mjs: SEKRET-BEZ-SRODOWISKA, ADR-0014), więc zadanie bez środowiska ich nie widzi;
+# zatwierdzenie właściciela jest jedno na przebieg i obejmuje podgląd oraz zapis. (2) Działa dopiero po scaleniu do `main`: workflow_dispatch
+# działa tylko z plikiem na gałęzi domyślnej (GitHub, „Events that trigger workflows”, odczyt 2026-11-01; P-319) — `main` nie ma tego pliku do czasu scalenia.
+name: ASC lokalizacje produktów zakupu
+on:
+  workflow_dispatch:
+    inputs:
+      tryb:
+        description: 'dry-run = tylko plan; apply = utwórz brakujące i zaktualizuj różniące się (nigdy nie usuwa)'
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+permissions:
+  contents: read
+concurrency:
+  group: asc-iap-localizations
+  cancel-in-progress: false
+jobs:
+  lokalizacje:
+    runs-on: ubuntu-latest
+    environment: release
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Klucz API do pliku tymczasowego (maskowany)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w środowisku release (docs/wydanie/kroki-wlasciciela-testflight.md, A5)"; exit 1; }; done
+          echo "::add-mask::$ASC_KEY_ID"; echo "::add-mask::$ASC_ISSUER_ID"
+          printf '%s\n' "$ASC_KEY_P8" | while IFS= read -r line; do case "$line" in -----*) ;; *) [ ${#line} -ge 20 ] && echo "::add-mask::$line" ;; esac; done; true
+          umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+      - name: Lokalizacje (plan, tylko odczyt)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          node scripts/asc/iap-localizations.mjs --dry-run | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Lokalizacje (zapis; nigdy nie usuwa)
+        if: ${{ inputs.tryb == 'apply' }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          node scripts/asc/iap-localizations.mjs --apply | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Usunięcie klucza z maszyny
+        if: always()
+        run: rm -f "$RUNNER_TEMP/AuthKey.p8"

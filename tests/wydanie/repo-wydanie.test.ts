@@ -59,8 +59,8 @@ describe('testflight.yml według ADR-0014 i P-196', () => {
     expect(Object.keys(on)).toEqual(['workflow_dispatch']);
   });
 
-  test('sekrety tylko w zadaniu ze środowiskiem testflight, na macos-26', () => {
-    expect(build.environment).toBe('testflight');
+  test('sekrety tylko w zadaniu ze środowiskiem release (P-316), na macos-26', () => {
+    expect(build.environment).toBe('release');
     expect(build['runs-on']).toBe('macos-26');
     for (const [id, job] of Object.entries(wf.jobs)) {
       if (id !== 'build') expect(JSON.stringify(job)).not.toMatch(/secrets\.ASC_/);

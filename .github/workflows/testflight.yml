@@ -2,12 +2,15 @@
 # Build i podpis wyłącznie narzędziami Apple (bez EAS): `xcodebuild archive` bez podpisu, uprawnienia osadzane podpisem ad hoc, eksport z podpisem
 # automatycznym (klucz App Store Connect API), wysyłka do App Store Connect. Tester wewnętrzny dostaje build w TestFlight bez recenzji Apple.
 # Uruchamianie: TYLKO ręcznie (Actions → „TestFlight (testy wewnętrzne)” → Run workflow), za zgodą właściciela na ten build (zasada roli 10 nr 2).
-# Runner macOS jest od północy do ok. 15:00 czasu polskiego (P-187). Każde zadanie z sekretami jest w środowisku `testflight` z wymaganym
+# Runner macOS jest od północy do ok. 15:00 czasu polskiego (P-187). Każde zadanie z sekretami jest w środowisku `release` z wymaganym
 # zatwierdzeniem właściciela (ADR-0014); zatwierdzenie dotyczy zadania build, więc bramka E2E jest sprawdzana PRZED prośbą o zatwierdzenie.
+# Uruchamianie z gałęzi roboczej (P-319): `main` (0.1.0) ma plik o tej samej ścieżce z `workflow_dispatch`, więc przycisk „Run workflow” istnieje;
+# treść pliku bierze się z wybranej gałęzi (dowód: docs/wydanie/sklep.md §2, przebieg Pages 40366704274). Gałąź robocza musi być dopuszczona w regułach
+# gałęzi środowiska `release` (sklep.md §1). Pewniejsza droga niż formularz: REST „Create a workflow dispatch event” z `ref` i `inputs`.
 # Bramka: zielony „Jakość · iOS” (pakiet podstawowy, każde zadanie success/skipped) na TYM SAMYM commicie; sam commit dokumentacji go nie
 # uruchamia. Ścieżka awaryjna (awaria maszyny, nie kodu): pomin_bramke_e2e + powod. Przebieg dowodowy bez wysyłki i bez tagu: bez_wysylki.
 #
-# Sekrety środowiska `testflight` (Settings → Environments → testflight → Environment secrets) — nigdy w repo; instrukcja: docs/wydanie/sklep.md §1:
+# Sekrety środowiska `release` (Settings → Environments → release → Environment secrets) — nigdy w repo; instrukcja: docs/wydanie/sklep.md §1:
 #   ASC_KEY_ID     — identyfikator klucza API
 #   ASC_ISSUER_ID  — Issuer ID (App Store Connect → Users and Access → Integrations)
 #   ASC_KEY_P8     — pełna treść pliku AuthKey_….p8 (razem z liniami BEGIN/END)
@@ -69,7 +72,7 @@ jobs:
 
   build:
     needs: bramka
-    environment: testflight
+    environment: release
     runs-on: macos-26
     timeout-minutes: 120
     outputs:
@@ -90,7 +93,7 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
         run: |
-          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w środowisku testflight (docs/wydanie/sklep.md §1)"; exit 1; }; done
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w środowisku release (docs/wydanie/sklep.md §1)"; exit 1; }; done
       - run: npm ci
       - name: Testy (pełne npm run verify, jak przed każdym pushem)
         env:

@@ -1,4 +1,5 @@
-# Metadane en — twierdzenia, warunki, otwarte (rola 10, E2, 2026-10-30)
+# Metadane en — twierdzenia, warunki, otwarte (rola 10, E2, 2026-10-30; szkic poprawiony 2026-11-01)
+**Stan 2026-11-01 (P-320): szkic, NIE zamrożone** — koordynator: metadane z gotowej aplikacji dopiero po audycie buildu kandydata; sum dla 09 nie ma (`sklep.md` §3a). Zmiany względem szkicu: (1) „a calendar of the days you knit” → „a calendar of **your crafting days**” (P-302 „crafting days”; P-304: „knit” tylko tam, gdzie mowa o drutach); (2) dopisane en-AU (= en-GB) i en-CA (= en-US) jak w Treningu (decyzja tamtego repo 21.10.2026, P-315); (3) bez zdań o zegarku i iCloud (P-300; P-316: właściciel ma zegarek, test będzie — zdanie dopiero po wyniku testu, po wyniku testu). Liczby po zmianie: opis 1731 zn., słowa kluczowe en-US 97 B. Zgodność z P-304: tytuł i opis „knitting and crochet” (B), podtytuł „Knit & crochet” (B), słowa kluczowe `knitting` i `crochet`; brak zdań o kategorii grubości z próbki. Poniższe tabele z 2026-10-30 zostają jako dowody twierdzeń.
 Pola: `en.store.json` (en-US, en-GB; format EAS Metadata, niczego nie wysyła). `sprawdz-wydanie.mjs metadane en.store.json` → OK, kod 0 (2026-10-30; kopia skryptu z promptu roli, scratchpad). Liczby: nazwa 18 zn., podtytuł 26 zn., tekst promocyjny 160 zn., opis 1730 zn., słowa kluczowe en-US 94 B (en-GB 99 B). Limity: nazwa 30, podtytuł 30, promo 170, opis 4000, słowa 100 B (App Store Connect Help, odczyt 18.10.2026; sprawdź w dniu wysyłki). Brzmienie en nie jest zamrożone: wymaga audytu 04 i kroku 2.2 planu prac (P-297: ryzyko przeróbek nazwane). Przekład 35 języków dopiero po zamrożeniu.
 
 ## Twierdzenie → dowód w kontrakcie zakresu / kodzie
@@ -18,7 +19,7 @@ Wszystkie F-ID z `docs/scope-contract.md` (decyzja MVP). „Kod” oznacza ciąg
 | części, kilka liczników, powtórzenia, cele | F-14, F-04, F-05, F-08; kod `formularz.powt_tytul`, `formularz.cel_tytul` | — |
 | przypomnienia „every 6th row, 8 times” | F-06; kod `formularz.przyp_opis` | przypomnienie na ekranie licznika, nie powiadomienie |
 | rozmiar drutu/szydełka, próbka, zdjęcia, notatki | F-17, F-16, F-15; kod `formularz.narzedzie_tytul`, `projekt.probka` | — |
-| stoper sesji, kalendarz dni | F-21, F-59 | — |
+| stoper sesji, kalendarz dni z robótką („your crafting days”) | F-21, F-59 | po P-302 bez „days you knit” |
 | zapas włóczki i narzędzi, kalkulator próbki | F-37, F-38; kod `narzedzia.probka` | — |
 | „Recently deleted” 30 dni | F-33; kod `projekty.kosz` | — |
 | bez konta, reklam i śledzenia; offline | F-36, NFR-PRY-001; `docs/architektura/prywatnosc.md` | — |
