@@ -1,4 +1,4 @@
-// Arkusz „Delete all data” (BR-DAN-009, design-spec:776, :890, P-229, P-328): pytanie, kopia w Plikach, przełącznik „Also delete from iCloud” (tylko przy włączonej
+// Arkusz „Delete all data” (BR-DAN-009, design-spec:776, :890, P-229, P-328): pytanie, kopia w Plikach, zdanie o Pro (zakup zostaje, KP-05), przełącznik „Also delete from iCloud” (tylko przy włączonej
 // synchronizacji, domyślnie wyłączony), przycisk potwierdzenia na tle `blad`. Trasa `/usun-wszystko` (arkusz jak formularze) z paskiem
 // przycisków `Arkusz` — przyciski zawsze widoczne (P-266 (3), scen. 51: blok w treści Ustawień wypadał poza obszar treści).
 import React, { useState } from 'react';
@@ -20,6 +20,7 @@ export function ArkuszUsunWszystko(p: PropsUsunWszystko): React.ReactElement {
     </>}>
       <Tresc>{t('ustawienia.usun_pytanie')}</Tresc>
       <Tresc>{t('ustawienia.usun_kopia')}</Tresc>
+      <Tresc>{t('ustawienia.usun_pro')}</Tresc>
       {p.icloudWlaczona && (
         <>
           <View style={st.wiersz}>

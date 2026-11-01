@@ -1,5 +1,5 @@
 // Trasa „/usun-wszystko” (app/usun-wszystko.tsx) przez ekran, nie sam komponent (07-jakosc-032).
-// N-05-1 (P-328, ADR-0028): usunięcie zawsze po kopii w Plikach; nieudana kopia = alert i dane nietknięte. 
+// 07-jakosc-012 (KP-05) i N-05-1 (P-328, ADR-0028): usunięcie zawsze po kopii w Plikach; nieudana kopia = alert i dane nietknięte. 
 import React from 'react';
 import { Alert } from 'react-native';
 import { readdirSync, writeFileSync } from 'node:fs';
@@ -28,6 +28,12 @@ async function aplikacja(zablokowanaKopia = false) {
 }
 
 beforeEach(() => { jest.clearAllMocks(); });
+
+test('07-jakosc-012 (KP-05): potwierdzenie usunięcia mówi, że zakup Oczko Pro nie jest usuwany i jak go przywrócić', async () => {
+  await aplikacja();
+  render(<EkranUsunWszystko />);
+  expect(screen.getByText('Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.')).toBeTruthy();
+});
 
 test('N-05-1: arkusz mówi o kopii w Plikach; potwierdzenie → kopia w Documents/Backup, dane usunięte, powrót do listy', async () => {
   const { s, licznik } = await aplikacja();
