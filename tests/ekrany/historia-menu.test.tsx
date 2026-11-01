@@ -13,12 +13,15 @@ const menu = () => ({
   naZablokuj: jest.fn(), naOdblokuj: jest.fn(), naZeruj: jest.fn(), naUkoncz: jest.fn(), naZamknij: jest.fn(),
 });
 
+const wpis = (o: { id: string; godzina: string; z: number; na: number; opis: string | null; mozeCofnac?: boolean }) => ({ cofniety: false, mozeCofnac: false, seria: null, ...o });
+const bezAkcji = { naCofnijSerie: jest.fn(), naWpisz: jest.fn() };
+
 describe('Historia i menu projektu', () => {
   test('BR-LIC-003/S1: obie zmiany z godziną i wartością po zmianie (prototyp.html:128)', () => {
     render(<Historia stan={{ wpisy: [
-      { id: 'z2', godzina: '20:31', z: 1, na: 2, opis: null },
-      { id: 'z1', godzina: '20:14', z: 0, na: 1, opis: null },
-    ] }} t={t} naCofnij={jest.fn()} naZamknij={jest.fn()} />);
+      wpis({ id: 'z2', godzina: '20:31', z: 1, na: 2, opis: null, mozeCofnac: true }),
+      wpis({ id: 'z1', godzina: '20:14', z: 0, na: 1, opis: null }),
+    ] }} t={t} naCofnij={jest.fn()} {...bezAkcji} naZamknij={jest.fn()} />);
     // prototyp.html:128 wiersz „${czas} · ${z} → ${na}”
     expect(screen.getByText(/20:14.*→ 1\b/)).toBeTruthy();
     expect(screen.getByText(/20:31.*→ 2\b/)).toBeTruthy();
@@ -35,7 +38,7 @@ describe('Historia i menu projektu', () => {
     expect(w.naZeruj).toHaveBeenCalledTimes(1);
 
     const naCofnij = jest.fn();
-    render(<Historia stan={{ wpisy: [{ id: 'z9', godzina: '21:02', z: 42, na: 0, opis: 'reset' }] }} t={t} naCofnij={naCofnij} naZamknij={jest.fn()} />);
+    render(<Historia stan={{ wpisy: [wpis({ id: 'z9', godzina: '21:02', z: 42, na: 0, opis: 'reset', mozeCofnac: true })] }} t={t} naCofnij={naCofnij} {...bezAkcji} naZamknij={jest.fn()} />);
     expect(screen.getByText(/42 → 0/)).toBeTruthy();
     // design-spec.md:44 „Undo: … ostatnia zmiana w historii (BR-LIC-003)”
     fireEvent.press(przycisk('Undo', 'button'));
@@ -44,7 +47,7 @@ describe('Historia i menu projektu', () => {
 
   test('BR-LIC-003 [macierz 04: pusta historia]: „No changes yet.” i „Close” (prototyp.html:128)', () => {
     const naZamknij = jest.fn();
-    render(<Historia stan={{ wpisy: [] }} t={t} naCofnij={jest.fn()} naZamknij={naZamknij} />);
+    render(<Historia stan={{ wpisy: [] }} t={t} naCofnij={jest.fn()} {...bezAkcji} naZamknij={naZamknij} />);
     expect(screen.getByText('No changes yet.')).toBeTruthy();
     fireEvent.press(przycisk('Close', 'button'));
     expect(naZamknij).toHaveBeenCalledTimes(1);

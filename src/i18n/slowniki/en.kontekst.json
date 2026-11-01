@@ -151,7 +151,12 @@
     "wpis_opis": "Tekst z prototyp.html roli 04. Wiersz z rodzajem zmiany w nawiasie.",
     "opis_zerowanie": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04. Rodzaj zmiany w wierszu historii: zerowanie.",
     "opis_wpisanie": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04. Rodzaj zmiany: wpisanie numeru rzędu.",
-    "opis_cofniecie": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04. Rodzaj zmiany: cofnięcie."
+    "opis_cofniecie": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04. Rodzaj zmiany: cofnięcie.",
+    "cofnieto": "Znacznik przy wpisie historii, który cofnięto (tekst + przekreślenie; nie sam kolor). BR-LIC-003 S3.",
+    "starszy_info": "Linia informacji pod starszym wpisem historii po stuknięciu w niego (BR-LIC-003 S4); nie błąd. „Change” = zmiana wartości licznika.",
+    "wpisz": "Przycisk pod starszym wpisem historii; otwiera arkusz wpisania wartości licznika (BR-LIC-017).",
+    "seria": "Opis zgrupowanej serii w historii licznika (≥ 2 w praktyce); {{czas}} = czas trwania serii z formatu czasu trwania (np. „4 s”).",
+    "cofnij_serie": "Przycisk przy ostatniej serii w historii; cofa całą serię (BR-LIC-003 S2). Przy dużym tekście zawija się do dwóch wierszy."
   },
   "menu": {
     "nazwa": "Tekst z prototyp.html roli 04.",

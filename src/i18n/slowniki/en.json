@@ -169,7 +169,14 @@
     "wpis_opis": "{{czas}} · {{z}} → {{na}} ({{opis}})",
     "opis_zerowanie": "reset",
     "opis_wpisanie": "entered",
-    "opis_cofniecie": "undone"
+    "opis_cofniecie": "undone",
+    "seria_one": "{{count}} row in {{czas}}",
+    "seria_other": "{{count}} rows in {{czas}}",
+    "cofnij_serie_one": "Undo {{count}} row",
+    "cofnij_serie_other": "Undo {{count}} rows",
+    "cofnieto": "Undone",
+    "starszy_info": "Only the latest change can be undone. To fix this one, enter the right number.",
+    "wpisz": "Enter the right number"
   },
   "menu": {
     "nazwa": "Name project and part",

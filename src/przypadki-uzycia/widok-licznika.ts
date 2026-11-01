@@ -1,6 +1,7 @@
 // Model odczytu ekranu licznika (design-spec „Licznik”, F-49, BR-LIC-001, P-065, RD-13, RD-15, RD-17, BR-PRJ-014): same dane, bez tekstów.
 // Formatowanie (miesiąc, godzina, etykieta projektu roboczego przez t(), P-126 (1b)) robi kompozycja ekranu. Odczyt w kolejce: widzi zapisy zlecone wcześniej.
 import type { Wynik } from '../domena/bledy';
+import { celCofnieciaIndeks, cofnieteId } from '../domena/cofniecie';
 import { powtorzenieLicznika } from '../domena/licznik';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
@@ -166,16 +167,33 @@ export function zapamietajLicznik(z: Zaleznosci, w: { licznikId: string }): Prom
   });
 }
 
-export type WpisHistoriiLicznika = { id: string; czasMs: number; z: number; na: number; rodzaj: 'plus' | 'minus' | 'wpisanie' | 'zerowanie' | 'cofniecie' | 'rozstrzygniecie' };
+export type WpisHistoriiLicznika = {
+  id: string; czasMs: number; z: number; na: number; rodzaj: 'plus' | 'minus' | 'wpisanie' | 'zerowanie' | 'cofniecie' | 'rozstrzygniecie';
+  /** Zmiana cofnięta późniejszym cofnięciem (znacznik „Undone”, BR-LIC-003/S3). */
+  cofniety: boolean;
+  /** Dokładnie jeden wpis ma „Undo”: ostatnia zmiana, która nie jest cofnięta (07-jakosc-021). */
+  mozeCofnac: boolean;
+  /** Seria RD-17 na końcu historii jako jeden wpis (BR-LIC-003/S2): `z` = wartość przed serią, `na` = po niej; cofa ją `cofnijSerie`. */
+  seria: { ile: number; sekundy: number; odZdarzeniaId: string } | null;
+};
 /** Historia licznika (F-02, BR-LIC-003): od najnowszej zmiany; `z` = wartość po zdarzeniu-rodzicu (brak rodzica = 0, historia liniowa w aplikacji). */
 export function historiaLicznika(z: Zaleznosci, w: { licznikId: string; limit?: number }): Promise<Wynik<WpisHistoriiLicznika[]>> {
+  const limit = w.limit ?? 50;
   return operacjaZapisu(z, 'historiaLicznika', async (tx) => {
     const r = await wiersze(tx.all(
-      `SELECT z.id, z.rodzaj, z.wartosc_po, z.czas_ms, (SELECT p.wartosc_po FROM zdarzenie p WHERE p.id = json_extract(z.rodzice, '$[0]')) AS przed
-         FROM zdarzenie z WHERE z.licznik_id = ? ORDER BY z.czas_ms DESC, z.rowid DESC LIMIT ?`, [w.licznikId, w.limit ?? 50]), 'historiaLicznika');
-    return {
-      ok: true,
-      wartosc: r.map((x) => ({ id: tekst(x, 'id'), czasMs: liczba(x, 'czas_ms'), z: liczbaLubNull(x, 'przed') ?? 0, na: liczba(x, 'wartosc_po'), rodzaj: tekst(x, 'rodzaj') as WpisHistoriiLicznika['rodzaj'] })),
-    };
+      `SELECT z.id, z.rodzaj, z.wartosc_po, z.czas_ms, z.cofa, (SELECT p.wartosc_po FROM zdarzenie p WHERE p.id = json_extract(z.rodzice, '$[0]')) AS przed
+         FROM zdarzenie z WHERE z.licznik_id = ? ORDER BY z.czas_ms DESC, z.rowid DESC LIMIT ?`, [w.licznikId, Math.max(limit, OKNO_SESJI)]), 'historiaLicznika');
+    const zdarzenia = r.map((x) => ({ id: tekst(x, 'id'), rodzaj: tekst(x, 'rodzaj'), cofa: listaTekstow(x, 'cofa') }));
+    const cofniete = cofnieteId(zdarzenia), cel = celCofnieciaIndeks(zdarzenia);
+    const wpisy: WpisHistoriiLicznika[] = r.map((x, i) => ({
+      id: tekst(x, 'id'), czasMs: liczba(x, 'czas_ms'), z: liczbaLubNull(x, 'przed') ?? 0, na: liczba(x, 'wartosc_po'), rodzaj: tekst(x, 'rodzaj') as WpisHistoriiLicznika['rodzaj'],
+      cofniety: cofniete.has(tekst(x, 'id')), mozeCofnac: i === cel, seria: null,
+    }));
+    // Seria na końcu historii (nic po niej nie zmieniło licznika) to jeden wpis z „Undo n rows” (BR-LIC-003/S2, design-spec 021).
+    const [l] = cel === 0 ? await wiersze(tx.all('SELECT glowa FROM licznik WHERE id = ?', [w.licznikId]), 'historiaLicznika') : [];
+    const ser = l ? seria(await ostatnieDodania(tx, w.licznikId), tekstLubNull(l, 'glowa')) : null;
+    const k = ser ? wpisy.findIndex((x) => x.id === ser.odZdarzeniaId) : -1;
+    const wynik = ser && k > 0 ? [{ ...wpisy[0], z: wpisy[k].z, seria: ser }, ...wpisy.slice(k + 1)] : wpisy;
+    return { ok: true, wartosc: wynik.slice(0, limit) };
   });
 }

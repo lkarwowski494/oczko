@@ -3,6 +3,7 @@
 // Jedna transakcja w kolejce, bez czekania na nic poza bazą: odczyt → strażnik limitu → zdarzenie + wartość + dzień limitu + ostatnia praca → COMMIT;
 // haptyka, ekran, Live Activity i zegarek dopiero po wyniku (wołający). Błąd zapisu → ROLLBACK, `powod: 'zapis'`, wpis w `blad`.
 import type { Powod, Wynik } from '../domena/bledy';
+import { celCofnieciaIndeks, type ZdarzenieCofniecia } from '../domena/cofniecie';
 import { rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu } from '../domena/limit';
 import type { PortBazy } from '../domena/porty';
 import type { RodzajZdarzenia, STANY } from '../domena/stany';
@@ -79,14 +80,25 @@ async function wartoscPrzed(tx: PortBazy, rodzicId: string | undefined): Promise
   const r = await zdarzenie(tx, rodzicId);
   return r ? r.wartoscPo : 0;
 }
-/** Cofnięcie tylko ostatniej zmiany (P-091 (3a)): `cofa = [głowa]`, wartość sprzed niej. */
+/**
+ * Cofnięcie ostatniej zmiany, która nie jest już cofnięta (P-091 (3a), BR-LIC-003, 07-jakosc-021): `cofa = [cel]`, wartość sprzed celu.
+ * Głowa-cofnięcie i zmiany przez nie cofnięte są pomijane, więc drugie „Undo” cofa poprzednią zmianę, a nie ponawia cofniętej.
+ */
 export function cofnijOstatnie(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'cofnijOstatnie', async (s, tx) => {
     if (!s.glowa) return blad('niedozwolone_przejscie'); // nic do cofnięcia
-    const g = await zdarzenie(tx, s.glowa);
-    if (!g) return blad('bledne_dane');
-    const v = await wartoscPrzed(tx, g.rodzice[0]);
-    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [s.glowa] });
+    const lancuch: (ZdarzenieCofniecia & { rodzic: string | undefined })[] = [];
+    let cel: (typeof lancuch)[number] | undefined;
+    for (let id: string | undefined = s.glowa; id; id = lancuch[lancuch.length - 1]?.rodzic) {
+      const e = await zdarzenie(tx, id);
+      if (!e) return blad('bledne_dane');
+      lancuch.push({ id: e.id, rodzaj: e.rodzaj, cofa: e.cofa, rodzic: e.rodzice[0] });
+      const i = celCofnieciaIndeks(lancuch);
+      if (i !== null) { cel = lancuch[i]; break; }
+    }
+    if (!cel) return blad('niedozwolone_przejscie'); // wszystkie zmiany już cofnięte
+    const v = await wartoscPrzed(tx, cel.rodzic);
+    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [cel.id] });
   });
 }
 /** Cofnięcie serii na końcu historii, od zdarzenia `odZdarzeniaId` do głowy (F-02, F-47, P-091 (3a)); dzień limitu zostaje (źródło „historia”, L-19). */
