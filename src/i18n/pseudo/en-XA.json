@@ -762,5 +762,15 @@
   "icloud.usun_z_icloud_opis": "⟦Ýöûŕ öthéŕ dévîçéš löšé théšé pŕöjéçtš thé ñéxt tîmé théý šýñç.~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
   "icloud.usun_zostaje": "⟦Dàtà îñ îÇlöûd àñd öñ ýöûŕ öthéŕ dévîçéš štàýš.~~~~~~~~~~~~~~~~⟧",
   "import.nie_rozpoznano_tytul": "⟦Öçžkö döéšñ’t ŕéçögñîžé thîš fîlé~~~~~~~~~~~~~~~~~⟧",
-  "import.nie_rozpoznano_opis": "⟦Çhööšé à fîlé éxpöŕtéd fŕöm Öçžkö. Ñöthîñg wàš çhàñgéd.~~~~~~~~~~~~~~~~~~⟧"
+  "import.nie_rozpoznano_opis": "⟦Çhööšé à fîlé éxpöŕtéd fŕöm Öçžkö. Ñöthîñg wàš çhàñgéd.~~~~~~~~~~~~~~~~~~⟧",
+  "przyp.menu": "⟦Ŕémîñdéŕš~~~~~~~~~⟧",
+  "przyp.tytul": "⟦Ŕémîñdéŕš~~~~~~~~~⟧",
+  "przyp.lista_opis": "⟦Tàp à ŕémîñdéŕ tö çhàñgé öŕ délété ît.~~~~~~~~~~~~~~~~~~~⟧",
+  "przyp.wiersz_one": "⟦Fŕöm ŕöw {{od}}, évéŕý ŕöw, {{razy}}×~~~~~~~~~~~~⟧",
+  "przyp.wiersz_other": "⟦Fŕöm ŕöw {{od}}, évéŕý {{count}} ŕöwš, {{razy}}×~~~~~~~~~~~~~⟧",
+  "przyp.edytuj_tytul": "⟦Édît ŕémîñdéŕ~~~~~~~~~~⟧",
+  "przyp.usun": "⟦Délété ŕémîñdéŕ~~~~~~~~~~~~⟧",
+  "przyp.usun_tytul": "⟦Délété thîš ŕémîñdéŕ?~~~~~~~~~~~~~~~⟧",
+  "przyp.usun_opis": "⟦Öçžkö štöpš ŕémîñdîñg ýöû àböût “{{tekst}}”. Ýöûŕ çöûñt àñd hîštöŕý štàý àš théý àŕé.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
+  "przyp.wiersz_a11y": "⟦{{tekst}}, {{opis}}. Édît~~~~⟧"
 }

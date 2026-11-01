@@ -18,7 +18,7 @@ type Pomiar = (f: (x: number, y: number, szer: number, wys: number) => void) => 
  * 119: pasek bez odstępu). iPad: arkusz na środku, system go przesuwa → pomiar w oknie (measureInWindow). `zmierz`: testy.
  */
 /** Przyciski arkusza formularza w nagłówku: Cancel (lewy) i Save albo Add (prawy, `zapisz`); testID jak dawniej w pasku (`arkusz-zamknij`, `formularz-zapisz`). */
-export type FormularzArkusza = { t: Tlumacz; naZapisz(): void; naAnuluj(): void; zapisz?: string; zapiszA11y?: string; testZapisz?: string; wylaczony?: boolean };
+export type FormularzArkusza = { t: Tlumacz; naZapisz(): void; naAnuluj(): void; anuluj?: string; zapisz?: string; zapiszA11y?: string; testZapisz?: string; wylaczony?: boolean };
 
 export function Arkusz(p: { tytul: string; children: React.ReactNode; przyciski?: React.ReactNode; formularz?: FormularzArkusza; testID?: string; zmierz?: Pomiar }): React.ReactElement {
   return p.formularz ? <ArkuszFormularza {...p} f={p.formularz} /> : <ArkuszDecyzji {...p} />;
@@ -32,8 +32,8 @@ function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: Form
   return (
     <View style={st.arkusz} testID={p.testID}>
       <View style={st.naglowek} testID="arkusz-naglowek">
-        <Pressable accessibilityRole="button" accessibilityLabel={f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
-          <Text style={st.anuluj}>{f.t('wspolne.anuluj')}</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel={f.anuluj ?? f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
+          <Text style={st.anuluj}>{f.anuluj ?? f.t('wspolne.anuluj')}</Text>
         </Pressable>
         <Text style={st.naglowekTytul} accessibilityRole="header">{p.tytul}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}

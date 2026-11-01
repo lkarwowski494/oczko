@@ -776,5 +776,16 @@
   "import": {
     "nie_rozpoznano_tytul": "Tytuł alertu po wybraniu pliku, który nie jest eksportem Oczka (BR-DAN-006 S2; 07-jakosc-031, F-32). Zamiast ogólnego błędu.",
     "nie_rozpoznano_opis": "Opis alertu „nie rozpoznano pliku”: co zrobić i że dane są nietknięte."
+  },
+  "przyp": {
+    "menu": "Pozycja menu ••• licznika, gdy licznik ma co najmniej jedno przypomnienie (zastępuje „Add a reminder”); otwiera listę przypomnień. Wartość po prawej: liczba przypomnień.",
+    "tytul": "Tytuł arkusza z listą przypomnień licznika (Close / tytuł / Add).",
+    "lista_opis": "Podpis pod listą przypomnień; wyjaśnia, że wiersz da się otworzyć.",
+    "wiersz": "Druga linia wiersza listy przypomnień dla „co 1 rząd”. {{od}} = rząd startu, {{razy}} = ile razy. „×” znaczy „razy”. Liczba mnoga wg {{count}} = „co ile rzędów”.",
+    "edytuj_tytul": "Tytuł arkusza edycji przypomnienia (Cancel / tytuł / Save); te same pola co przy dodawaniu.",
+    "usun": "Wiersz destrukcyjny na końcu arkusza edycji przypomnienia i przycisk alertu; nazwa akcji, nie kolor.",
+    "usun_tytul": "Tytuł alertu usunięcia przypomnienia.",
+    "usun_opis": "Opis alertu usunięcia przypomnienia; {{tekst}} = treść instrukcji użytkowniczki. Uspokaja: licznik i historia bez zmian.",
+    "wiersz_a11y": "Etykieta VoiceOver wiersza listy przypomnień; {{opis}} = druga linia wiersza (`przyp.wiersz_*`); „Edit” = akcja otwarcia edycji."
   }
 }

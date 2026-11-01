@@ -23,10 +23,10 @@ export default function EkranMenu(): React.ReactElement {
   const formularz = (rodzaj: string) => router.replace({ pathname: '/formularz/[rodzaj]', params: { rodzaj } });
   return (
     <MenuProjektu
-      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, maWzor, oczka: w.rodzaj === 'oczka' }}
+      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, maWzor, oczka: w.rodzaj === 'oczka', przypomnienia: w.plany.length }}
       naWzor={() => router.replace('/wzor')}
       t={kontener.j.t}
-      naNazwa={() => formularz('nazwa')} naCel={() => formularz('cel')} naPrzypomnienie={() => formularz('przypomnienie')}
+      naNazwa={() => formularz('nazwa')} naCel={() => formularz('cel')} naPrzypomnienie={() => formularz('przypomnienie')} naPrzypomnienia={() => formularz('przypomnienia')}
       naPowtorzenie={() => formularz('powtorzenie')} naWpisz={() => formularz('wpisz')} naZnaczenie={() => formularz('znaczenie')}
       naZablokuj={() => void ustawBlokade(z, { licznikId: w.licznikId, zablokowany: true }).then(poZapisie)}
       naOdblokuj={() => void ustawBlokade(z, { licznikId: w.licznikId, zablokowany: false }).then(poZapisie)}

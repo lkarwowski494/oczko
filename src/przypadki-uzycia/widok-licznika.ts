@@ -34,7 +34,7 @@ export type WidokLicznika = {
   /** Pas rzędu w robocie (RD-13, P-161: skończone + 1 w obu trybach) z `przypomnienieChwili`; `nastepny` = kolejny rząd tego planu. */
   przypomnienie: { tekst: string; ktory: number; razy: number; nastepny: number | null } | null;
   /** Plany przypomnień licznika — do sygnału przy zmianie (`sygnalZmiany`, RD-13-W20–W25) w kompozycji. */
-  plany: (PlanPrzypomnienia & { tekst: string })[];
+  plany: (PlanPrzypomnienia & { id: string; tekst: string })[];
   powtorzenie: { numer: number; rzadW: number; dlugosc: number } | null;
   /** Kreski posiedzenia (domena/posiedzenie.ts): od startu stopera albo +1 bez przerwy ≥ PRZERWA_NOWEGO_DNIA_MS; zostają do następnego +1. */
   sesja: { rzedy: number; odMs: number } | null;
@@ -75,8 +75,8 @@ function seria(dodania: readonly Plus[], glowa: string | null): WidokLicznika['s
   return ostatnia ? { ile: ostatnia.ids.length, sekundy: Math.max(1, Math.round((ostatnia.doMs - ostatnia.odMs) / 1000)), odZdarzeniaId: ostatnia.ids[0] } : null;
 }
 async function plany(tx: PortBazy, licznikId: string): Promise<WidokLicznika['plany']> {
-  return (await wiersze(tx.all('SELECT od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ? ORDER BY od_rzedu, id', [licznikId]), 'widokLicznika'))
-    .map((p) => ({ od: liczba(p, 'od_rzedu'), co: liczba(p, 'co_n'), razy: liczba(p, 'razy'), tekst: tekst(p, 'tekst') }));
+  return (await wiersze(tx.all('SELECT id, od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ? ORDER BY od_rzedu, id', [licznikId]), 'widokLicznika'))
+    .map((p) => ({ id: tekst(p, 'id'), od: liczba(p, 'od_rzedu'), co: liczba(p, 'co_n'), razy: liczba(p, 'razy'), tekst: tekst(p, 'tekst') }));
 }
 /** Pierwszy plan z pasem na rzędzie w robocie (skończone + 1); stan bez sygnału (P-161 Q2a, Q3). */
 function pas(lista: WidokLicznika['plany'], skonczone: number, tryb: 'skonczone' | 'w_trakcie'): WidokLicznika['przypomnienie'] {

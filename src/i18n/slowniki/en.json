@@ -836,5 +836,17 @@
   "import": {
     "nie_rozpoznano_tytul": "Oczko doesn’t recognize this file",
     "nie_rozpoznano_opis": "Choose a file exported from Oczko. Nothing was changed."
+  },
+  "przyp": {
+    "menu": "Reminders",
+    "tytul": "Reminders",
+    "lista_opis": "Tap a reminder to change or delete it.",
+    "wiersz_one": "From row {{od}}, every row, {{razy}}×",
+    "wiersz_other": "From row {{od}}, every {{count}} rows, {{razy}}×",
+    "edytuj_tytul": "Edit reminder",
+    "usun": "Delete reminder",
+    "usun_tytul": "Delete this reminder?",
+    "usun_opis": "Oczko stops reminding you about “{{tekst}}”. Your count and history stay as they are.",
+    "wiersz_a11y": "{{tekst}}, {{opis}}. Edit"
   }
 }

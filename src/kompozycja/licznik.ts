@@ -8,7 +8,7 @@ import type { BanerLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from
 import type { DzialaniaLicznika, StanStartu, UslugiAplikacji } from '../ekrany/Aplikacja';
 import type { Tlumacz, WynikEkranu } from '../ekrany/wspolne';
 import { odswiezEkranBlokady, type ZaleznosciEkranuBlokady } from '../przypadki-uzycia/ekran-blokady';
-import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade } from '../przypadki-uzycia/licznik';
+import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade, wpiszWartosc } from '../przypadki-uzycia/licznik';
 import { naPierwszyPlan, przyTle, uruchomDane, type WynikStartuDanych } from '../przypadki-uzycia/start';
 import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
@@ -99,6 +99,11 @@ export type KompozycjaLicznika = {
   widok(): Promise<WidokLicznika | null>;
   /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. */
   poZmianie(): Promise<void>;
+  /**
+   * Wpisanie wartości z arkusza (F-45; 07-jakosc-011 S4, RD-13-W23): zapis, odświeżenie i — gdy nowy rząd w robocie ma przypomnienie — jedno wejście w rząd
+   * (najnowsze, nie każde pominięte). Mniejsza wartość nie daje sygnału (RD-13-W8). `wibracje` = preferencja haptyki.
+   */
+  wpisz(wartosc: number): Promise<WynikEkranu<{ wejscieWPrzypomnienie: ReturnType<typeof wejscie>; wibracje: boolean }>>;
   /** Po „Usuń wszystkie dane” albo imporcie „zastąp”: zapomniany licznik, ekran od zera (NFR-PIE-001). */
   zresetuj(): void;
   /** Etykieta projektu jak na ekranie (projekt roboczy przez t(), P-126 (1b)). */
@@ -238,6 +243,15 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         await k.poZmianie();
         return { ok: true, wartosc: undefined };
       },
+    },
+    async wpisz(wartosc) {
+      if (!licznikId) return { ok: false, powod: 'bledne_dane' };
+      const przed = (await stan()).w?.wartosc;
+      const r = await wpiszWartosc(z, { licznikId, wartosc });
+      if (!r.ok) return ekranu(r);
+      await k.poZmianie();
+      const { w } = await stan();
+      return { ok: true, wartosc: { wejscieWPrzypomnienie: w && przed !== undefined ? wejscie(w, przed) : null, wibracje: o.wibracje() } };
     },
     nazwaProjektu: (w) => (w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa),
     async otworz(id) {
