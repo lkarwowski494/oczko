@@ -14,6 +14,7 @@ import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } 
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
+import { odbiorZZegarka } from './zegarek-odbior';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
@@ -74,6 +75,10 @@ export type KompozycjaLicznika = {
   poUsunieciu(projektId: string): Promise<void>;
   /** Rośnie przy każdym `otworz` i `poZmianie` — ekran licznika przeładowuje stan po powrocie z listy albo arkusza. */
   wersja(): number;
+  /** 07-jakosc-005 (ADR-0030): +1 z zegarka scalone przy otwartej aplikacji (`wersja` już wzrosła) → ekran czyta stan od nowa; telefon nie wibruje (pkt 5). Zwraca odpięcie. */
+  poZegarku(f: () => void): () => void;
+  /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1). */
+  zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
   widok(): Promise<WidokLicznika | null>;
   /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. */
@@ -93,8 +98,8 @@ export type KompozycjaLicznika = {
 /** Nazwy własne urządzeń Apple (bez tłumaczenia, jak w tekstach 04: „this iPhone”). */
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
-/** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`. */
-export type OpcjeKompozycji = { wibracje(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
+/** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`; `aplikacjaAktywna` = `AppState === 'active'` — bez niej nie ma odbioru z zegarka (ADR-0030, ARCH-13). */
+export type OpcjeKompozycji = { wibracje(): boolean; aplikacjaAktywna?(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
@@ -142,6 +147,18 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     }
   }
   const potwierdz = (ids: readonly string[]) => { if (ids.length > 0) z.zegarek.potwierdz(ids); };
+  /** Przebieg odbioru +1 z zegarka (ADR-0030 pkt 2): scalenie → potwierdzenia → stan → ekran od nowa → ekran blokady i zegarek (z potwierdzonymi id). */
+  async function scalenieZZegarka(): Promise<Wynik<unknown>> {
+    const r = await naPierwszyPlan(z);
+    if (!r.ok) return r;
+    potwierdz(r.wartosc.potwierdzone);
+    const { w } = await stanPoZapisie();
+    wersja += 1;
+    odbior?.poScaleniu();
+    await poZapisie(w);
+    return r;
+  }
+  const odbior = o.aplikacjaAktywna ? odbiorZZegarka(z, { aktywna: o.aplikacjaAktywna, scal: scalenieZZegarka }) : null;
   const ekranu = <T>(w: Wynik<T>): WynikEkranu<T> => (w.ok ? w : { ok: false, powod: w.powod === 'limit' || w.powod === 'zablokowany' || w.powod === 'bledne_dane' || w.powod === 'niedozwolone_przejscie' ? w.powod : 'zapis' });
 
   /** +1 z ekranu (BR-LIC-001/S2: pierwsze tworzy projekt roboczy); przez `uslugi.dodajRzad`, które zapamiętuje zapis w toku (P-287). */
@@ -168,6 +185,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const d = await (start ??= uruchomDane(z).then(async (r) => {
         if (r.ok && o.skrzynka) void o.skrzynka.start().catch(() => undefined); // partia 6: skrzynka importu i migawka w tle (konwersja może czekać na sieć; NFR-PIE-001)
         if (r.ok && o.icloud) void o.icloud.start().catch(() => undefined); // w tle jak skrzynka (P-274 Q2a): sendChanges przez sieć nie blokuje pierwszego ekranu; odebrane partie odświeżają licznik (naPartie), błąd silnika = stan w Data and sync
+        if (r.ok) odbior?.podlacz(); // 07-jakosc-005 (ADR-0030 pkt 1): po danych startu, raz na proces
         return r;
       }));
       if (!d.ok) return d;
@@ -182,6 +200,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       return { ok: true, wartosc: { cel: 'licznik' } };
     },
     wersja: () => wersja,
+    poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
+    zamknij: () => odbior?.zamknij(),
     biezacy: () => licznikId,
     async poUsunieciu(projektId) {
       if (licznikId && !(await widokLicznika(z, { licznikId })).ok) {

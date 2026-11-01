@@ -15,7 +15,7 @@ jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest
 jest.mock('../../src/przypadki-uzycia/informacje-pro', () => ({ pokazacOknoUczciweZasady: () => Promise.resolve({ ok: true, wartosc: false }) }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 // widok: atrapa dodana przez 08 (partia 5, stoper P-191 P1a — trasa „/” czyta projekt bieżącego licznika); sens testu bez zmian.
-const mockLicznik = { przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'mockLicznik' } }), wersja: () => 0, biezacy: () => null, widok: () => Promise.resolve(null) };
+const mockLicznik = { przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'mockLicznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, widok: () => Promise.resolve(null) }; // poZegarku: 07-jakosc-005
 jest.mock('../../src/kompozycja/Kontekst', () => ({
   useAplikacja: () => ({ kontener: { z: {}, dostep: { stan: () => ({ poziom: 'darmowy' }) }, j: { t: (k: string) => k } }, licznik: mockLicznik, preferencje: {} }),
 }));

@@ -60,6 +60,9 @@
     ],
     "modules/oczko-wzor/Pakiet/Sources/OczkoWzorLogika/StaleWzoru.swift": [
       "targets/share/Wspolne/StaleWzoru.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Haptyka.swift": [
+      "targets/watch/Wspolne/Haptyka.swift"
     ]
   }
 }

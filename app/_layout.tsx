@@ -34,6 +34,7 @@ export default function Korzen(): React.ReactElement {
   useEffect(() => {
     let koniecNasluchu: (() => void) | null = null;
     let koniecTla: (() => void) | null = null;
+    let zamknijLicznik: (() => void) | null = null;
     let zywy = true;
     async function normalny(): Promise<void> {
       // P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest awarią (start awaryjny i wymuszona awaria E2E nie słuchają — scen. 09).
@@ -51,7 +52,9 @@ export default function Korzen(): React.ReactElement {
       await p.wczytaj(z); // ADR-0029: preferencje urządzenia z bazy przed pierwszym ekranem licznika i narzędzi
       if (!zywy) return;
       obslugaBledow?.ustawZapis(async (b) => { await wKolejce(z.baza, () => zapiszBlad(z.baza, { czasMs: z.zegar.teraz().ms, kod: b.kod, szczegoly: { ramki: b.szczegoly.ramki, fatal: b.szczegoly.fatal ? 1 : 0 } })); });
-      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik: kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } }), preferencje: p } });
+      const licznik = kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, aplikacjaAktywna: () => AppState.currentState === 'active', ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } });
+      zamknijLicznik = () => licznik.zamknij(); // odpięcie `Zegarek.odbieraj` przy zniszczeniu kontenera (ADR-0030 pkt 1)
+      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik, preferencje: p } });
     }
     async function start(): Promise<void> {
       if (proba > 0) { await normalny(); return; }
@@ -65,9 +68,9 @@ export default function Korzen(): React.ReactElement {
     if (AppState.currentState === 'active') void start();
     else {
       const sub = AppState.addEventListener('change', (st) => { if (st === 'active') { sub.remove(); void start(); } });
-      return () => { zywy = false; sub.remove(); koniecNasluchu?.(); koniecTla?.(); };
+      return () => { zywy = false; sub.remove(); koniecNasluchu?.(); koniecTla?.(); zamknijLicznik?.(); };
     }
-    return () => { zywy = false; koniecNasluchu?.(); koniecTla?.(); };
+    return () => { zywy = false; koniecNasluchu?.(); koniecTla?.(); zamknijLicznik?.(); };
   }, [proba]);
   if (faza.rodzaj === 'awaryjny') return <EkranAwaryjnyZJezykiem powod={faza.powod} naNormalnie={() => { ustaw({ rodzaj: 'czeka' }); ustawProbe((n) => n + 1); }} />;
   // Build E2E: znacznik po zapisie „start w toku” (scenariusz 09 czeka na niego, zanim zabije proces; E2E 40306542928).
