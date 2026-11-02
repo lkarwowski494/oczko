@@ -21,6 +21,8 @@ tags:
 # licznik 11: wpisanie wartości z menu ••• (wzór scenariusza 35: pole liczbowe, wpis znak po znaku, zapis przyciskiem arkusza)
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-wpisz-wartosc" }
+# NOC-2 (04): menu ••• otwarte (to samo, z którego podprzepływ otworz-wzor-pdf stuka „Pattern”)
+- takeScreenshot: 62-menu-przed-wzorem
 - tapOn: { id: "menu-wpisz-wartosc" }
 - assertVisible: { id: "wpisz-wartosc-pole" }
 - retry:
@@ -36,6 +38,8 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "11" }
 - runFlow: subflows/otworz-wzor-pdf.yaml
 - assertVisible: { id: "licznik-wartosc", text: "11" }
+# NOC-2 (04): widok wzoru przed pierwszym znacznikiem
+- takeScreenshot: 62-wzor-przed-znacznikiem
 # --- „Mark row”: pierwszy znacznik pyta o kierunek rzędów (P-126 3a), potem proponuje rząd w robocie 12 ---
 - tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-kierunek" }
@@ -48,6 +52,8 @@ tags:
 # --- użytkownik kończy rząd: licznik 12, znacznik przesuwa się na rząd 13 ---
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "12" }
+# NOC-2 (04): widok wzoru po +1, panel znacznika zamknięty
+- takeScreenshot: 62-wzor-po-plus-1-panel-zamkniety
 - tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-znacznik-rzad", text: "13" }
 - takeScreenshot: 62-znacznik-13

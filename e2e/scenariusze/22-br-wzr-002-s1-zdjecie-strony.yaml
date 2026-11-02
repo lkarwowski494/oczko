@@ -15,6 +15,8 @@ tags:
 - runFlow: subflows/projekt-roboczy.yaml
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-wzor" }
+# NOC-2 (przejście poznawcze 04): menu ••• otwarte, zanim scenariusz stuknie „Pattern”
+- takeScreenshot: 22-menu-przed-wzorem
 - tapOn: { id: "menu-wzor" }
 - assertVisible: { id: "wzor-dodaj" }
 - tapOn: { id: "wzor-dodaj" }

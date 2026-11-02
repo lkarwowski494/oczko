@@ -32,3 +32,54 @@ describe('NOC-1 · 66 i 08: „Back” po imporcie wymaga przewinięcia w górę
     expect(przed.arg.timeout).toBeGreaterThanOrEqual(30000);
   });
 });
+
+/* NOC-2 · luki zrzutów dla przejścia poznawczego 04 (raport 04, M1): zrzuty w punktach, w których 04 nie widział ekranu, a scenariusz go przechodził.
+ *       Tylko `takeScreenshot` (bez zmiany asercji), nazwa opisowa z numerem scenariusza. Tabela: scenariusz → zrzut → po jakim kroku, przed jakim krokiem. */
+type Cel = { nazwa: string; id?: string; tekst?: string };
+const trafia = (k: Krok, c: Cel) => k.nazwa === c.nazwa && (!c.id || idy(k).includes(c.id)) && (!c.tekst || JSON.stringify(k.arg).includes(c.tekst));
+const zrzut = (nazwa: string): Cel => ({ nazwa: 'takeScreenshot', tekst: nazwa });
+const ZMIENIAJACE = new Set(['tapOn', 'inputText', 'eraseText', 'setOrientation', 'launchApp', 'back', 'swipe', 'longPressOn']);
+const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[] = [
+  // (a) menu „•••” otwarte, zanim scenariusz stuknie „Pattern”
+  { scen: '21', zrzut: '21-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
+  { scen: '22', zrzut: '22-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
+  { scen: '23', zrzut: '23-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
+  { scen: '62', zrzut: '62-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wpisz-wartosc' }, opis: '(a) menu ••• (to samo, z którego podprzepływ otworz-wzor-pdf stuka menu-wzor)' },
+  { scen: '57', zrzut: '57-licznik-menu-przed-notatka', po: { nazwa: 'assertNotVisible' }, przed: { nazwa: 'tapOn', id: 'licznik-projekt' }, opis: '(a) licznik z „•••” przed wejściem do projektu i notatki' },
+  // (b) ekran projektu z wierszem „Note” przed i po zapisie
+  { scen: '57', zrzut: '57-projekt-wiersz-note-przed-zapisem', po: { nazwa: 'scrollUntilVisible', id: 'projekt-notatka' }, przed: { nazwa: 'tapOn', id: 'projekt-notatka' }, opis: '(b) wiersz Note przed zapisem' },
+  { scen: '57', zrzut: '57-projekt-wiersz-note-po-zapisie', po: { nazwa: 'assertVisible', id: 'projekt-notatka' }, przed: { nazwa: 'tapOn', id: 'nav-wstecz' }, opis: '(b) wiersz Note po zapisie' },
+  // (c) widok wzoru przed pierwszym znacznikiem i po +1 przy zamkniętym panelu
+  { scen: '62', zrzut: '62-wzor-przed-znacznikiem', po: { nazwa: 'assertVisible', id: 'licznik-wartosc' }, przed: { nazwa: 'tapOn', id: 'wzor-zaznacz' }, opis: '(c) wzór przed pierwszym znacznikiem' },
+  { scen: '62', zrzut: '62-wzor-po-plus-1-panel-zamkniety', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'tapOn', id: 'wzor-zaznacz' }, opis: '(c) wzór po +1, panel znacznika zamknięty' },
+  // (d) +1 w poziomie na telefonie
+  { scen: '23', zrzut: '23-poziomo-po-plus-1', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'setOrientation' }, opis: '(d) +1 w poziomie' },
+  // (e) wąskie okno iPada: licznik > 0 i „•••”
+  { scen: '46', zrzut: '46-waskie-licznik-wartosc-menu', po: { nazwa: 'tapOn', id: 'nav-wstecz' }, przed: { nazwa: 'tapOn', id: 'nav-projekty' }, opis: '(e) wąskie okno: licznik 1 i „•••”' },
+];
+describe('NOC-2 · luki zrzutów dla przejścia 04', () => {
+  test.each(LUKI.map((x) => [x.scen, x.opis, x] as const))('%s %s', (_s, _o, x) => {
+    const l = lista(x.scen);
+    const z = l.findIndex((k) => trafia(k, zrzut(x.zrzut)));
+    expect(z).toBeGreaterThan(-1);
+    const wczesniej = l.slice(0, z);
+    expect(wczesniej.some((k) => trafia(k, x.po))).toBe(true);
+    if (x.przed) {
+      const ostatniePo = wczesniej.map((k, i) => (trafia(k, x.po) ? i : -1)).filter((i) => i >= 0).pop() as number;
+      const nastepny = l.findIndex((k, i) => i > z && trafia(k, x.przed!));
+      expect(nastepny).toBeGreaterThan(z);
+      // zrzut leży zaraz po kroku „po”: między nim a zrzutem nie ma kroku zmieniającego ekran (stuknięcie, wpis, obrót, start)
+      const miedzy = l.slice(ostatniePo + 1, z);
+      expect(miedzy.filter((k) => ZMIENIAJACE.has(k.nazwa)).map((k) => k.nazwa)).toEqual([]);
+      // i tuż przed krokiem „przed”: pierwszy krok zmieniający ekran po zrzucie to właśnie on
+      const pierwszyZmieniajacy = l.findIndex((k, i) => i > z && ZMIENIAJACE.has(k.nazwa));
+      expect(pierwszyZmieniajacy).toBe(nastepny);
+    }
+  });
+  test('każda nazwa zrzutu jest unikalna w swoim scenariuszu', () => {
+    for (const s of new Set(LUKI.map((x) => x.scen))) {
+      const nazwy = lista(s).filter((k) => k.nazwa === 'takeScreenshot').map((k) => JSON.stringify(k.arg));
+      expect({ s, powt: nazwy.filter((n, i) => nazwy.indexOf(n) !== i) }).toEqual({ s, powt: [] });
+    }
+  });
+});
