@@ -17,7 +17,7 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | Partia 8: włóczka w projekcie, komunikaty zakupu, „Replace”, notatka na wzorze, przypomnienia, cofanie z historii, licznik oczek, ukończone (P-326) | `fix10-2026-11-01/partia8.html` (32 stany), wzorce `wzorce-zrzuty/partia8-*` (256, `narzedzia/zrzuty-partia8.mjs`), klucze `fix10-2026-11-01/klucze.json`; plan `fix10-2026-11-01.md` |
 | Aneks partii 8 (P-342, P-351, P-352, P-353): 12 decyzji wyglądu i tekstów en | `fix11-2026-11-02/aneks8.html` (15 stanów), wzorce `wzorce-zrzuty/aneks8-*` (75, `narzedzia/zrzuty-aneks8.mjs`), klucze `fix11-2026-11-02/klucze.json`; sekcja „Aneks partii 8” niżej |
 | Klikalny prototyp i przejście poznawcze | `prototyp.html`, scenorys `przejscie/` (`narzedzia/scenorys.mjs`) |
-| Ikona | `ikona/` (warstwy SVG, `icon.png`, `ios-dark.png`, `watch.png`, `android-foreground.png`, `android-monochrome.png`, `splash-icon.png`, `arkusz.png`) |
+| Ikona | `ikona/` (warstwy SVG, `icon.png`, `ios-dark.png`, `watch.png`, `android-foreground.png`, `android-monochrome.png`, `splash-icon.png` ze `start.svg`, `splash-icon-dark.png` ze `start-ciemny.svg`, `arkusz.png`) |
 | Kroje (OFL) | `fonty/LibreFranklin.ttf` + licencja; treść: krój systemowy |
 | Historia kierunków | `01-swiat.md`, `kierunki/`, `porownanie.html`, `kroje.html` |
 
@@ -854,8 +854,9 @@ Istniejące klucze użyte bez zmian: `stan_danych.*` (7), `dane.konflikt_tytul`,
 { "icon": "./assets/icon.png",
   "ios": { "icon": { "light": "./assets/icon.png", "dark": "./assets/ios-dark.png" } },
   "android": { "adaptiveIcon": { "foregroundImage": "./assets/android-foreground.png", "monochromeImage": "./assets/android-monochrome.png", "backgroundColor": "#FCFCFA" } },
-  "plugins": [["expo-splash-screen", { "image": "./assets/splash-icon.png", "backgroundColor": "#FCFCFA", "dark": { "backgroundColor": "#1B1C1F" } }]] }
+  "plugins": [["expo-splash-screen", { "image": "./assets/splash-icon.png", "backgroundColor": "#FCFCFA", "dark": { "image": "./assets/splash-icon-dark.png", "backgroundColor": "#1B1C1F" } }]] }
 ```
+**Ekran startowy w motywie ciemnym (M1-audytor-generalny-088, 04-studio-projektowe-507; DEC-23 a, 2026-11-02).** Ciemny motyw to pełny wariant, nie ten sam obraz (SP-16): `dark.image` = `ikona/splash-icon-dark.png` (1024 × 1024 RGBA, przezroczyste tło), wyrenderowany `narzedzia/ikona.mjs ikona/start-ciemny.svg … 1024 --alfa`. `start-ciemny.svg` = geometria `start.svg` (znak 80 % kadru, jak jasny) w kolorach `pierwszy-plan-ciemny.svg` (kreski `#ECECE8`, pas `#B8A637`, jak ikona ciemna iOS). SHA-256 `splash-icon-dark.png`: `2188c1ac8057ece4cbe274ae9892807a22e71c328fc431f0fe10fa17743aad95` (jasny `splash-icon.png`: `ce9862f5…eb84`, render ze `start.svg` bajt w bajt). Kontrast na `#1B1C1F` (próg grafiki 3:1, WCAG 2.2 1.4.11): kreski 14,39:1 (przed: ten sam obraz, kreski `#26282C` 1,15:1), pas 6,94:1. `imageWidth` zostaje domyślne 100 pt (znak ma 80 % kadru; 200 pt na iPhonie SE zajęłoby ponad połowę szerokości). **Dla 08:** skopiować plik do `assets/splash-icon-dark.png`, wpis `dark.image` jak wyżej; trwała kontrola w `tests/jakosc/ikona-konfiguracja.test.ts`: plik z `dark.image` ma sumę SHA-256 równą `docs/design/ikona/splash-icon-dark.png` (jak jasny obraz).
 Zegarek: `ikona/watch.png` (1088 × 1088). Ikona warstwowa `.icon` (Liquid Glass) wymaga Icon Composer na macOS: warstwy `ikona/tlo.svg` i `ikona/pierwszy-plan*.svg` to paczka dla kroku właściciela; PNG działają bez `.icon`.
 
 ## Audyt 04 2.1 (2026-10-30): rozstrzygnięcia „Do audytu 04” partii 6, D1a, kosz wzoru
