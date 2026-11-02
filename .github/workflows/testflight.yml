@@ -110,6 +110,11 @@ jobs:
         run: |
           set -o pipefail
           node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350; Trening L-021, jak jakosc-ios.yml)
+        # Cel zegarka bez ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon: brak CFBundleIconName, App Store Connect odrzuca wysyłkę (build 1026 w Treningu). Test: tests/jakosc/ikona-zegarka-prebuild.test.ts.
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Numer buildu (aplikacja, widżet i zegarek ten sam CFBundleVersion; ADR-0014, D3a)
         id: nr
         env:
