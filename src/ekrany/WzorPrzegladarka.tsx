@@ -279,7 +279,7 @@ function style(k: Kolory) {
     przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
     minus: { width: 56, height: 56, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.grafit },
-    plus: { minHeight: 72, minWidth: 132, flexGrow: 1, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
+    plus: { minHeight: 72, minWidth: 132, flexGrow: 1, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0 },
     plusTekst: { ...typografia.przycisk, color: k.przyciskTekst },
     menuTlo: { ...StyleSheet.absoluteFill, justifyContent: 'flex-end' },

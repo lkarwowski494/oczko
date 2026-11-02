@@ -176,12 +176,14 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-dni.test.tsx` | zielony (główny zestaw) | 3 | BR-DNI-001/S4, BR-DNI-003/S2, BR-DNI-004/S3, BR-PRJ-005, BR-PRJ-005/S1, BR-PRJ-014/S3, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-drobne-8c.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik`<br>`src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-miejsce-wzoru.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-005/S1 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-naglowek-zdjec.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/Projekt`<br>`src/ekrany/Zdjecia`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-p5.test.tsx` | zielony (główny zestaw) | 13 | BR-DNI-005, BR-LIC-018, BR-PRJ-002, BR-PRJ-005, P-183, P-191, P-307, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-po-drugiej-czesci-ekran.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/czesc`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-po-drugiej-czesci-trasa.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-film-siec.test.tsx` | zielony (główny zestaw) | 3 | BR-WZR-007 | `src/domena/porty`<br>`src/kompozycja/licznik`<br>`src/przypadki-uzycia/film` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-wloczka.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-glowny-obrys.test.tsx` | zielony (główny zestaw) | 7 | — | `src/domena/uklad`<br>`src/ekrany/Arkusz`<br>`src/ekrany/HistoriaDni`<br>`src/ekrany/Licznik`<br>`src/ekrany/Stoper`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przypomnienia-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-009, P-330 | `src/przypadki-uzycia/widok-licznika` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/sesje.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-013, BR-PRJ-013/S4, P-191, P-195 | `src/ekrany/Formularze`<br>`src/ekrany/Sesje`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -255,4 +257,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 251; zależnych od poprawek: 161.
+Razem plików testów: 253; zależnych od poprawek: 163.

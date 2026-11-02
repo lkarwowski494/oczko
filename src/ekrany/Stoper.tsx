@@ -84,7 +84,7 @@ function style(k: Kolory) {
   return StyleSheet.create({
     ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
-    kapsula: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, justifyContent: 'center', paddingHorizontal: odstep.m },
+    kapsula: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, justifyContent: 'center', paddingHorizontal: odstep.m },
     kapsulaPauza: { backgroundColor: k.papier, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
     kapsulaTekst: { ...typografia.przycisk, color: k.przyciskTekst, fontVariant: ['tabular-nums'] },
     kapsulaTekstPauza: { color: k.grafit },
