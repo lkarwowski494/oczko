@@ -316,6 +316,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   func ustawKatalogRysunkow(_ k: String) {
     katalogRysunkow = k.isEmpty ? nil : URL(fileURLWithPath: k, isDirectory: true)
+    oproznijKolejke() // M1-084: rysunki czekające na katalog (dokument ustawiony przed tym propem) — teraz zapis
   }
   func przejdzDoStrony(_ s: Int) {
     stronaDocelowa = s
@@ -428,9 +429,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     doZapisu = []
   }
   private func oproznijKolejke() {
-    guard Self.kolejka.liczba > 0 else { return }
-    let k = katalogRysunkow ?? FileManager.default.temporaryDirectory
-    let w = Self.kolejka.zapisz { klucz, dane in
+    guard Self.kolejka.liczba > 0, katalogRysunkow != nil else { return } // bez katalogu oczekujących dane czekają w kolejce (KolejkaRysunkow.zapisz(do:))
+    let w = Self.kolejka.zapisz(do: katalogRysunkow) { k, klucz, dane in
       try FileManager.default.createDirectory(at: k, withIntermediateDirectories: true)
       let u = k.appendingPathComponent("\(klucz.wzorId)__\(klucz.strona)__\(UUID().uuidString).pkdrawing")
       try dane.write(to: u, options: .atomic)

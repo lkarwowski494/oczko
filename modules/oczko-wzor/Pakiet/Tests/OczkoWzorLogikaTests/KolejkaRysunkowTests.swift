@@ -79,6 +79,24 @@ final class KolejkaRysunkowTests: XCTestCase {
     XCTAssertEqual(k.dane(wzorId: "w1"), [0: a])
   }
 
+  // Przegląd ścieżki wrażliwej (P1): nowy widok dostaje `dokument` przed `katalogRysunkow` (kolejność propsów nieokreślona). Bez katalogu
+  // oczekujących kolejka nie zapisuje nigdzie indziej (plik poza katalogiem nie wraca w odzysku JS) — dane czekają na ustawienie katalogu.
+  func testBezKataloguNieZapisujeIDaneCzekaja() {
+    let k = KolejkaRysunkow()
+    k.dodaj(wzorId: "w1", strona: 0, dane: a)
+    var wywolania = 0
+    let w = k.zapisz(do: nil) { _, _, _ in wywolania += 1; return "/tmp/gdziekolwiek" }
+    XCTAssertEqual(wywolania, 0)
+    XCTAssertEqual(w.zapisane, [])
+    XCTAssertEqual(w.nieudane, [])
+    XCTAssertEqual(w.oczekujace, 1)
+    XCTAssertEqual(k.dane(wzorId: "w1"), [0: a])
+    var katalogi: [URL] = []
+    let w2 = k.zapisz(do: URL(fileURLWithPath: "/dane/tmp/rysunki-wzoru", isDirectory: true)) { katalog, _, _ in katalogi.append(katalog); return "/dane/tmp/rysunki-wzoru/w1__0__x.pkdrawing" }
+    XCTAssertEqual(katalogi.map(\.path), ["/dane/tmp/rysunki-wzoru"])
+    XCTAssertEqual(w2.oczekujace, 0)
+  }
+
   func testPustaKolejkaNicNieZapisuje() {
     let k = KolejkaRysunkow()
     var wywolania = 0

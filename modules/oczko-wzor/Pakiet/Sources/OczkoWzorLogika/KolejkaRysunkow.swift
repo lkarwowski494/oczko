@@ -42,6 +42,13 @@ public final class KolejkaRysunkow {
     Dictionary(uniqueKeysWithValues: dane.filter { $0.key.wzorId == wzorId }.map { ($0.key.strona, $0.value) })
   }
 
+  /// Zapis do katalogu plików oczekujących (JS: `rysunki-wzoru`, odzysk przy otwarciu wzoru). Brak katalogu (prop jeszcze nie ustawiony —
+  /// kolejność propsów Expo nieokreślona) → bez próby: plik poza tym katalogiem nie wróciłby w odzysku; dane czekają (przegląd ścieżki wrażliwej, P1).
+  public func zapisz(do katalog: URL?, _ zapis: (URL, KluczRysunku, Data) throws -> String) -> WynikZapisuRysunkow {
+    guard let k = katalog else { var w = WynikZapisuRysunkow(); w.oczekujace = dane.count; return w }
+    return zapisz { klucz, d in try zapis(k, klucz, d) }
+  }
+
   /// Próba zapisu każdej pozycji (kolejność: wzorId, strona). `zapis` zwraca ścieżkę pliku albo rzuca błąd.
   public func zapisz(_ zapis: (KluczRysunku, Data) throws -> String) -> WynikZapisuRysunkow {
     var w = WynikZapisuRysunkow()
