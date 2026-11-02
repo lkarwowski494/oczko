@@ -77,7 +77,10 @@
     "ustawienia.usun_kopia_blad",
     "ustawienia.usun_pro",
     "ustawienia.usun_pytanie",
+    "wspolne.blad_wczytania",
     "wspolne.blad_zapisu_opis",
+    "wspolne.ladowanie",
+    "wspolne.ponow",
     "wzor.blad_czas",
     "wzor.blad_czas_opis",
     "wzor.blad_zapis",
@@ -93,9 +96,6 @@
     "wzor.notatki_tytul",
     "wzor.notatki_wiele",
     "wzor.przed_schematem",
-    "wzor.znacznik_napis",
-    "wspolne.blad_wczytania",
-    "wspolne.ladowanie",
-    "wspolne.ponow"
+    "wzor.znacznik_napis"
   ]
 }
