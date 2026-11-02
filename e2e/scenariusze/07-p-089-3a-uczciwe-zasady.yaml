@@ -80,6 +80,8 @@ tags:
     when: { notVisible: { id: "projekty-lista" } }
     commands:
       - takeScreenshot: opoznienie-lista-po-ofertach
+      - assertVisible: { id: "projekty-ladowanie", optional: true } # P-374: lista w stanie ładowania (P) = aplikacja czeka na dane; brak obu = prezentacja okna (A2)
+      - assertVisible: { id: "projekty-blad", optional: true }
       - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 60000 }
 - assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }

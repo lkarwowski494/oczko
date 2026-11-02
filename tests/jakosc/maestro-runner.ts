@@ -270,11 +270,12 @@ export class Runner {
       case 'scrollUntilVisible': {
         const ms = Number(arg.timeout ?? 20000);
         for (let t = 0; t <= ms; t += 500) { if (this.znajdz(sel(arg)).length) return; await this.ekran.przewin(String(arg.direction ?? 'DOWN')); await this.ekran.odczekaj(500); }
-        this.blad(krok, 'Element nie pojawił się po przewinięciu.');
+        if (!opcjonalny) this.blad(krok, 'Element nie pojawił się po przewinięciu.'); /* P-374: `optional: true` (Maestro: YamlScrollUntilVisible.optional) */
+        break;
       }
       case 'setOrientation': await this.ekran.orientacja(String(arg)); break;
-      case 'assertVisible': if (!(await this.czekaj(sel(arg), true, 1500))) this.blad(krok, 'Element niewidoczny.'); break;
-      case 'assertNotVisible': if (!(await this.czekaj(sel(arg), false, 1500))) this.blad(krok, 'Element widoczny.'); break;
+      case 'assertVisible': if (!(await this.czekaj(sel(arg), true, 1500)) && !opcjonalny) this.blad(krok, 'Element niewidoczny.'); break;
+      case 'assertNotVisible': if (!(await this.czekaj(sel(arg), false, 1500)) && !opcjonalny) this.blad(krok, 'Element widoczny.'); break;
       case 'extendedWaitUntil': {
         const ok = arg.visible != null ? await this.czekaj(arg.visible, true, Number(arg.timeout ?? 10000)) : await this.czekaj(arg.notVisible, false, Number(arg.timeout ?? 10000));
         if (!ok && !opcjonalny) this.blad(krok, 'Warunek nie spełniony w limicie czasu.'); break;

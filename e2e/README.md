@@ -16,6 +16,8 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 6. Klawiatura symulatora (Trening `.maestro/04-plank-stoper.yaml:13-29`, `32:79-96`, docs/38:112, L-013): wpis w `retry` (`tapOn` pola → `waitForAnimationToEnd` → `eraseText` → `inputText` po jednym znaku → `assertVisible` wartości pola); pole tekstowe chowa klawiaturę `pressKey: Enter`; **`hideKeyboard` zakazany** na polach z kolumną „liczbowa” — zapis przyciskiem arkusza (`formularz-zapisz`), pole tekstowe ostatnie w formularzu.
 7. Zwykłe kolejne +1 rozdziela `runFlow: subflows/odstep.yaml` (> 2 s): okno strażnika serii RD-17 to 3 dodania w 2 s; seria celowo: `tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }`.
 8. `takeScreenshot` w punktach kontrolnych (nazwa `NN-opis`); zrzuty idą do artefaktu części i do logu (Trening: base64 przy porażce).
+9. **Pomiar (P-374, po P-372):** po kroku krytycznym, który w #137 nie dał wyniku (07 lista po ofertach, 08 `import-gotowy`, 17 miniatura, 34 ekran projektu), scenariusz robi zrzut `pomiar-*` i **opcjonalny** odczyt panelu (`assertVisible … optional: true` z regexem na liczbę, np. `.*import [0-9]+ ms.*`). W ścieżce `opoznienie-*` czyta też opcjonalnie stany `*-ladowanie` / `*-blad`. Panel pomiaru nie jest nigdy twardą asercją ani celem `tapOn` (pilnuje `tests/jakosc/e2e-pomiar-374.test.ts`). Klasyfikacja po przebiegu: liczba na zrzucie i status WARNED/COMPLETED w logu Maestro, nie hipoteza.
+10. **Wynik poza ekranem:** wynik operacji, który leży poniżej widocznej części (Ustawienia po ADR-0029: `eksport-licznosci`, `import-gotowy`, `import-wynik`), poprzedza `scrollUntilVisible`, nie samo `extendedWaitUntil`.
 
 ## Tagi
 | Tag | Znaczenie |
@@ -256,6 +258,14 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `e2e-pliki-importuj-ostatni` | Ustawienia (build E2E) | import ostatniego eksportu bez okna Pliki | bez `t()` | |
 | `e2e-zegarek-stan` | licznik (build E2E, `EXPO_PUBLIC_WATCH_FAKE`) | ostatni `StanZegarka` jako tekst | bez `t()` | |
 | `e2e-pomiar-plus` | licznik (build E2E) | „p95 … ms, n = 20” (NFR-WYD-001) | bez `t()` | |
+| `e2e-pomiar-operacji` | Ustawienia (pod `e2e-pliki-importuj-ostatni`) i menu „Add photo” (build E2E; 08 R, E2-137-A3/A4) | ms ostatnich operacji: „import N ms”; „recode N ms · photo N ms · project N ms”; „… running”, gdy trwa; „… (error)” po błędzie. Scen. 08 i 17 robią zrzut `pomiar-*` i odczyt **opcjonalny** (P-374, bez nowego źródła czerwieni, P-367) | bez `t()` | |
+| `e2e-pomiar-ladowania` | ekran projektu (build E2E; 08 P, E2-137-A1) | „first data N ms” — od zamontowania ekranu do pierwszych danych; podprzepływ `dodaj-czesc-cel` (34, 35): zrzut `pomiar-ekran-projektu` + odczyt opcjonalny | bez `t()` | |
+| `projekty-ladowanie` | lista projektów (08 P, E2-137-A1) | stan do końca pierwszego odczytu („Loading…”); scen. 07 czyta go opcjonalnie w ścieżce `opoznienie-lista-po-ofertach` | „Loading…” | |
+| `projekty-blad` | lista projektów | stan błędu odczytu | „Couldn’t load this.” | |
+| `projekty-ponow` | lista projektów (stan błędu) | „Try again” | „Try again” | |
+| `projekt-ladowanie` | ekran projektu (08 P, E2-137-A1) | stan do końca pierwszego odczytu; podprzepływ `dodaj-czesc-cel` czyta go opcjonalnie w ścieżce `opoznienie-ekran-projektu` | „Loading…” | |
+| `projekt-blad` | ekran projektu | stan błędu odczytu | „Couldn’t load this.” | |
+| `projekt-ponow` | ekran projektu (stan błędu) | „Try again” | „Try again” | |
 | `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy (strategia §4) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |
 | `e2e-wzor-www` | dodanie wzoru (build E2E) | zapisana strona testowa | bez `t()` | |

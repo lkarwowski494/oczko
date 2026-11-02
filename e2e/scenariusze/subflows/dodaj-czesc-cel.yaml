@@ -10,8 +10,13 @@ name: "podprzepływ: część Back z celem"
     when: { notVisible: { id: "projekt-dodaj" } }
     commands:
       - takeScreenshot: opoznienie-ekran-projektu
+      - assertVisible: { id: "projekt-ladowanie", optional: true } # P-374: stan ładowania ekranu projektu (P) = aplikacja czeka na dane; brak obu = prezentacja/natywne
+      - assertVisible: { id: "projekt-blad", optional: true }
       - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: { id: "projekt-dodaj" }
+# P-374: czas do pierwszych danych ekranu projektu (P, `e2e-pomiar-ladowania` „first data N ms”) — zrzut + odczyt opcjonalny
+- takeScreenshot: pomiar-ekran-projektu
+- assertVisible: { id: "e2e-pomiar-ladowania", text: "first data [0-9]+ ms", optional: true }
 - tapOn: { id: "projekt-dodaj" }
 - assertVisible: { id: "projekt-dodaj-czesc" }
 - tapOn: { id: "projekt-dodaj-czesc" }
