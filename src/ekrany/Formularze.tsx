@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Arkusz, Komunikat, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
-import { parsujCalkowita } from '../i18n/format';
+import { formatujLiczbe, parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 /** Wynik zapisu z przypadku użycia; nieudany → komunikat formularza (bez makiety, Z07-05), wpisane dane zostają w polach. */
@@ -39,7 +39,7 @@ export function FormularzWartosci({ stan, t, jezyk, tekstLimitu, naZapisz, naAnu
       <Tresc>{t('formularz.wpisz_opis')}</Tresc>
       <Pole etykieta={t('formularz.wpisz_pole')} wartosc={tekst} naZmiane={ustaw} liczbowe testID="wpisz-wartosc-pole" />
       {n !== null && <Tresc podpis>{t('formularz.wpisz_podglad', { n: n + 1 })}</Tresc>}
-      {blad && <Komunikat tekst={blad === 'limit' ? tekstLimitu : t('formularz.wpisz_blad')} />}
+      {blad && <Komunikat tekst={blad === 'limit' ? tekstLimitu : t('licznik.wpisz_blad_format', { przyklad: formatujLiczbe(1000, jezyk) })} />}
     </Arkusz>
   );
 }

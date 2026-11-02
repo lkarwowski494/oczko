@@ -36,7 +36,7 @@ test('024/S5: wpisanie w nowym dniu ponad limit mówi o limicie, nie zapisuje i 
   await wpisz('10');
   const komunikat = screen.getByRole('alert');
   expect(JSON.stringify(komunikat.props.children)).toContain(`Your ${LIMIT_DNI_W_MIESIACU} free crafting days for October are used`);
-  expect(screen.queryByText('Enter a whole number, 0 or more.')).toBeNull();
+  expect(screen.queryByText('Enter a whole number, 0 or more, for example 1,000.')).toBeNull();
   expect(mockRouter.back).not.toHaveBeenCalled();
   expect((await k.widok())?.wartosc).toBe(3);
 });
@@ -56,7 +56,7 @@ test('024/ER-43: zapis niezgodny z regionem („1.5”) nie zmienia licznika i p
   const { k } = await start(2);
   await wpisz('1.5');
   expect(screen.getByRole('alert')).toBeTruthy();
-  expect(screen.getByText('Enter a whole number, 0 or more.')).toBeTruthy();
+  expect(screen.getByText('Enter a whole number, 0 or more, for example 1,000.')).toBeTruthy();
   expect(mockRouter.back).not.toHaveBeenCalled();
   expect((await k.widok())?.wartosc).toBe(3);
 });
