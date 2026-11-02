@@ -528,14 +528,12 @@
     "tytul": "Podatki in sinhronizacija",
     "ostatnia": "Zadnja sinhronizacija {{data}}",
     "czeka": "Sinhronizacija čaka na omrežno povezavo.",
-    "zapisane": "Vse je shranjeno v tem iPhonu.",
     "wylaczona": "Sinhronizacija z iCloudom je izklopljena.",
     "aktywna": "Sinhronizacija z iCloudom je vklopljena.",
     "zegarek_kontakt": "Zadnji stik z vašo uro: {{data}}."
   },
   "zglos": {
     "tytul": "Prijavi težavo",
-    "opis": "To je vse, kar poročilo vsebuje. Nič ne zapusti vašega iPhona, dokler tega ne delite.",
     "udostepnij": "Deli",
     "pole_wersja": "Različica aplikacije",
     "pole_system": "iOS",

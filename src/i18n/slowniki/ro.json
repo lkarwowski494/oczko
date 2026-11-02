@@ -479,14 +479,12 @@
     "tytul": "Date și sincronizare",
     "ostatnia": "Ultima sincronizare {{data}}",
     "czeka": "Sincronizarea așteaptă o conexiune la rețea.",
-    "zapisane": "Totul este salvat pe acest iPhone.",
     "wylaczona": "Sincronizarea iCloud este dezactivată.",
     "aktywna": "Sincronizarea iCloud este activată.",
     "zegarek_kontakt": "Ultimul contact cu ceasul tău: {{data}}."
   },
   "zglos": {
     "tytul": "Raportează o problemă",
-    "opis": "Aceasta este tot ce conține raportul. Nimic nu părăsește iPhone-ul tău până nu îl distribui.",
     "udostepnij": "Distribuie",
     "pole_wersja": "Versiunea aplicației",
     "pole_system": "iOS",

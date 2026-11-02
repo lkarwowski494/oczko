@@ -538,14 +538,12 @@
     "tytul": "Dane i synchronizacja",
     "ostatnia": "Ostatnia synchronizacja: {{data}}",
     "czeka": "Synchronizacja czeka na połączenie z siecią.",
-    "zapisane": "Wszystko jest zapisane na tym iPhonie.",
     "wylaczona": "Synchronizacja iCloud jest wyłączona.",
     "aktywna": "Synchronizacja iCloud jest włączona.",
     "zegarek_kontakt": "Ostatni kontakt z zegarkiem: {{data}}."
   },
   "zglos": {
     "tytul": "Zgłoś problem",
-    "opis": "To wszystko, co zawiera zgłoszenie. Nic nie opuści iPhone’a, dopóki go nie udostępnisz.",
     "udostepnij": "Udostępnij",
     "pole_wersja": "Wersja aplikacji",
     "pole_system": "iOS",

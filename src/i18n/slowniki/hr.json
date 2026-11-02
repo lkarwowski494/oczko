@@ -479,14 +479,12 @@
     "tytul": "Podaci i sinkronizacija",
     "ostatnia": "Zadnja sinkronizacija {{data}}",
     "czeka": "Sinkronizacija čeka mrežnu vezu.",
-    "zapisane": "Sve je spremljeno na ovom iPhoneu.",
     "wylaczona": "iCloud sinkronizacija je isključena.",
     "aktywna": "iCloud sinkronizacija je uključena.",
     "zegarek_kontakt": "Zadnji kontakt sa satom: {{data}}."
   },
   "zglos": {
     "tytul": "Prijavi problem",
-    "opis": "Ovo je sve što izvješće sadrži. Ništa ne napušta tvoj iPhone dok ga ne podijeliš.",
     "udostepnij": "Podijeli",
     "pole_wersja": "Verzija aplikacije",
     "pole_system": "iOS",

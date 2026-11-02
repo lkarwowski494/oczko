@@ -430,14 +430,12 @@
     "tytul": "Tiedot ja synkronointi",
     "ostatnia": "Viimeksi synkronoitu {{data}}",
     "czeka": "Synkronointi odottaa verkkoyhteyttä.",
-    "zapisane": "Kaikki on tallennettu tähän iPhoneen.",
     "wylaczona": "iCloud-synkronointi on pois päältä.",
     "aktywna": "iCloud-synkronointi on päällä.",
     "zegarek_kontakt": "Viimeisin yhteys kelloosi: {{data}}."
   },
   "zglos": {
     "tytul": "Ilmoita ongelmasta",
-    "opis": "Tämä on kaikki, mitä raportti sisältää. Mikään ei poistu iPhonestasi, ennen kuin jaat sen.",
     "udostepnij": "Jaa",
     "pole_wersja": "Sovelluksen versio",
     "pole_system": "iOS",

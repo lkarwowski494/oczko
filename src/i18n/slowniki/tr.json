@@ -430,14 +430,12 @@
     "tytul": "Veri ve eşitleme",
     "ostatnia": "Son eşitleme: {{data}}",
     "czeka": "Eşitleme ağ bağlantısı bekliyor.",
-    "zapisane": "Her şey bu iPhone’da kayıtlı.",
     "wylaczona": "iCloud eşitlemesi kapalı.",
     "aktywna": "iCloud eşitlemesi açık.",
     "zegarek_kontakt": "Saatinizle son iletişim: {{data}}."
   },
   "zglos": {
     "tytul": "Sorun bildir",
-    "opis": "Rapor yalnızca bunları içerir. Siz paylaşmadıkça hiçbir şey iPhone’unuzdan çıkmaz.",
     "udostepnij": "Paylaş",
     "pole_wersja": "Uygulama sürümü",
     "pole_system": "iOS",

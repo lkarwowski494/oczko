@@ -430,14 +430,12 @@
     "tytul": "Adatok és szinkronizálás",
     "ostatnia": "Utolsó szinkronizálás: {{data}}",
     "czeka": "A szinkronizálás hálózati kapcsolatra vár.",
-    "zapisane": "Minden el van mentve ezen az iPhone-on.",
     "wylaczona": "Az iCloud-szinkronizálás ki van kapcsolva.",
     "aktywna": "Az iCloud-szinkronizálás be van kapcsolva.",
     "zegarek_kontakt": "Utolsó kapcsolat az órával: {{data}}."
   },
   "zglos": {
     "tytul": "Hiba jelentése",
-    "opis": "A jelentés pontosan ezt tartalmazza. Semmi sem hagyja el az iPhone-t, amíg meg nem osztod.",
     "udostepnij": "Megosztás",
     "pole_wersja": "Az app verziója",
     "pole_system": "iOS",

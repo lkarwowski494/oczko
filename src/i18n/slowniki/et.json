@@ -430,14 +430,12 @@
     "tytul": "Andmed ja sünkroonimine",
     "ostatnia": "Viimati sünkroonitud {{data}}",
     "czeka": "Sünkroonimine ootab võrguühendust.",
-    "zapisane": "Kõik on salvestatud sellesse iPhone’i.",
     "wylaczona": "iCloudi sünkroonimine on väljas.",
     "aktywna": "iCloudi sünkroonimine on sees.",
     "zegarek_kontakt": "Viimane kontakt kellaga: {{data}}."
   },
   "zglos": {
     "tytul": "Teata probleemist",
-    "opis": "See on kõik, mida aruanne sisaldab. Miski ei lahku su iPhone’ist enne, kui selle jagad.",
     "udostepnij": "Jaga",
     "pole_wersja": "Rakenduse versioon",
     "pole_system": "iOS",

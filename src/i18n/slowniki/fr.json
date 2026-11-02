@@ -479,14 +479,12 @@
     "tytul": "Données et synchronisation",
     "ostatnia": "Dernière synchronisation : {{data}}",
     "czeka": "La synchronisation attend une connexion réseau.",
-    "zapisane": "Tout est enregistré sur cet iPhone.",
     "wylaczona": "La synchronisation iCloud est désactivée.",
     "aktywna": "La synchronisation iCloud est activée.",
     "zegarek_kontakt": "Dernier échange avec votre montre : {{data}}."
   },
   "zglos": {
     "tytul": "Signaler un problème",
-    "opis": "Voici tout ce que contient le rapport. Rien ne quitte votre iPhone tant que vous ne le partagez pas.",
     "udostepnij": "Partager",
     "pole_wersja": "Version de l’app",
     "pole_system": "iOS",

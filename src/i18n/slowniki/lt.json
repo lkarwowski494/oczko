@@ -532,14 +532,12 @@
     "tytul": "Duomenys ir sinchronizavimas",
     "ostatnia": "Paskutinis sinchronizavimas: {{data}}",
     "czeka": "Sinchronizavimas laukia tinklo ryšio.",
-    "zapisane": "Viskas išsaugota šiame iPhone.",
     "wylaczona": "iCloud sinchronizavimas išjungtas.",
     "aktywna": "iCloud sinchronizavimas įjungtas.",
     "zegarek_kontakt": "Paskutinis ryšys su laikrodžiu: {{data}}."
   },
   "zglos": {
     "tytul": "Pranešti apie problemą",
-    "opis": "Tai viskas, ką apima ataskaita. Nieko neišeina iš jūsų iPhone, kol ja nepasidalinsite.",
     "udostepnij": "Dalintis",
     "pole_wersja": "Programos versija",
     "pole_system": "iOS",

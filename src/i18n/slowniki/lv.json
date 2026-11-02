@@ -479,14 +479,12 @@
     "tytul": "Dati un sinhronizācija",
     "ostatnia": "Pēdējā sinhronizācija: {{data}}",
     "czeka": "Sinhronizācija gaida tīkla savienojumu.",
-    "zapisane": "Viss ir saglabāts šajā iPhone.",
     "wylaczona": "iCloud sinhronizācija ir izslēgta.",
     "aktywna": "iCloud sinhronizācija ir ieslēgta.",
     "zegarek_kontakt": "Pēdējais kontakts ar jūsu pulksteni: {{data}}."
   },
   "zglos": {
     "tytul": "Ziņot par problēmu",
-    "opis": "Šis ir viss, ko ziņojums satur. Nekas neatstāj jūsu iPhone, kamēr to nekopīgojat.",
     "udostepnij": "Kopīgot",
     "pole_wersja": "Lietotnes versija",
     "pole_system": "iOS",

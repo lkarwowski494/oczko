@@ -381,14 +381,12 @@
     "tytul": "資料與同步",
     "ostatnia": "上次同步 {{data}}",
     "czeka": "同步正在等待網路連線。",
-    "zapisane": "所有內容都已儲存在這部 iPhone 上。",
     "wylaczona": "iCloud 同步已關閉。",
     "aktywna": "iCloud 同步已開啟。",
     "zegarek_kontakt": "上次與手錶連線：{{data}}。"
   },
   "zglos": {
     "tytul": "回報問題",
-    "opis": "這就是報告包含的全部內容。在你分享之前，不會有任何內容離開你的 iPhone。",
     "udostepnij": "分享",
     "pole_wersja": "App 版本",
     "pole_system": "iOS",

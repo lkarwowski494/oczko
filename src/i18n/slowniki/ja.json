@@ -381,14 +381,12 @@
     "tytul": "データと同期",
     "ostatnia": "最終同期 {{data}}",
     "czeka": "同期はネットワーク接続を待っています。",
-    "zapisane": "すべてこのiPhoneに保存されています。",
     "wylaczona": "iCloud同期はオフです。",
     "aktywna": "iCloud同期はオンです。",
     "zegarek_kontakt": "Apple Watchとの最終通信：{{data}}。"
   },
   "zglos": {
     "tytul": "問題を報告",
-    "opis": "レポートに含まれる内容はこれがすべてです。共有するまで、iPhoneから外に出ることはありません。",
     "udostepnij": "共有",
     "pole_wersja": "アプリのバージョン",
     "pole_system": "iOS",

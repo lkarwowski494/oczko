@@ -381,14 +381,12 @@
     "tytul": "Dữ liệu và đồng bộ",
     "ostatnia": "Đồng bộ lần cuối {{data}}",
     "czeka": "Đồng bộ đang chờ kết nối mạng.",
-    "zapisane": "Mọi thứ được lưu trên iPhone này.",
     "wylaczona": "Đồng bộ iCloud đang tắt.",
     "aktywna": "Đồng bộ iCloud đang bật.",
     "zegarek_kontakt": "Lần liên lạc cuối với đồng hồ của bạn: {{data}}."
   },
   "zglos": {
     "tytul": "Báo sự cố",
-    "opis": "Đây là toàn bộ nội dung của báo cáo. Không có gì rời khỏi iPhone của bạn cho đến khi bạn chia sẻ.",
     "udostepnij": "Chia sẻ",
     "pole_wersja": "Phiên bản ứng dụng",
     "pole_system": "iOS",

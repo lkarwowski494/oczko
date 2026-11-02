@@ -430,14 +430,12 @@
     "tytul": "Gegevens en synchronisatie",
     "ostatnia": "Laatst gesynchroniseerd {{data}}",
     "czeka": "Synchronisatie wacht op een netwerkverbinding.",
-    "zapisane": "Alles is bewaard op deze iPhone.",
     "wylaczona": "iCloud-synchronisatie staat uit.",
     "aktywna": "iCloud-synchronisatie staat aan.",
     "zegarek_kontakt": "Laatste contact met je horloge: {{data}}."
   },
   "zglos": {
     "tytul": "Meld een probleem",
-    "opis": "Dit is alles wat het rapport bevat. Er verlaat niets je iPhone tot je het deelt.",
     "udostepnij": "Deel",
     "pole_wersja": "App-versie",
     "pole_system": "iOS",

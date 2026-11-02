@@ -532,14 +532,12 @@
     "tytul": "Data a synchronizace",
     "ostatnia": "Naposledy synchronizováno {{data}}",
     "czeka": "Synchronizace čeká na připojení k síti.",
-    "zapisane": "Vše je uloženo v tomto iPhonu.",
     "wylaczona": "Synchronizace přes iCloud je vypnutá.",
     "aktywna": "Synchronizace přes iCloud je zapnutá.",
     "zegarek_kontakt": "Poslední kontakt s hodinkami: {{data}}."
   },
   "zglos": {
     "tytul": "Nahlásit problém",
-    "opis": "To je vše, co hlášení obsahuje. Nic neopustí váš iPhone, dokud hlášení nesdílíte.",
     "udostepnij": "Sdílet",
     "pole_wersja": "Verze aplikace",
     "pole_system": "iOS",

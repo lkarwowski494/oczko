@@ -430,14 +430,12 @@
     "tytul": "Daten und Sync",
     "ostatnia": "Zuletzt synchronisiert {{data}}",
     "czeka": "Die Synchronisierung wartet auf eine Netzwerkverbindung.",
-    "zapisane": "Alles ist auf diesem iPhone gespeichert.",
     "wylaczona": "iCloud-Sync ist aus.",
     "aktywna": "iCloud-Sync ist an.",
     "zegarek_kontakt": "Letzter Kontakt mit deiner Uhr: {{data}}."
   },
   "zglos": {
     "tytul": "Problem melden",
-    "opis": "Das ist alles, was der Bericht enthält. Nichts verlässt dein iPhone, bis du es teilst.",
     "udostepnij": "Teilen",
     "pole_wersja": "App-Version",
     "pole_system": "iOS",

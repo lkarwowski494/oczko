@@ -513,7 +513,7 @@
     "tytul": "Data and sync",
     "ostatnia": "Last synced {{data}}",
     "czeka": "Sync is waiting for a network connection.",
-    "zapisane": "Everything is saved on this iPhone.",
+    "zapisane": "Everything is saved on this device.",
     "wylaczona": "iCloud sync is off.",
     "aktywna": "iCloud sync is on.",
     "zegarek_kontakt": "Last contact with your watch: {{data}}.",
@@ -521,7 +521,7 @@
   },
   "zglos": {
     "tytul": "Report a problem",
-    "opis": "This is everything the report contains. Nothing leaves your iPhone until you share it.",
+    "opis": "This is everything the report contains. Nothing leaves your device until you share it.",
     "udostepnij": "Share",
     "pole_wersja": "App version",
     "pole_system": "iOS",

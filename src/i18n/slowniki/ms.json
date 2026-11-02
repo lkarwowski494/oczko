@@ -381,14 +381,12 @@
     "tytul": "Data dan segerak",
     "ostatnia": "Segerak terakhir {{data}}",
     "czeka": "Segerak menunggu sambungan rangkaian.",
-    "zapisane": "Semua disimpan pada iPhone ini.",
     "wylaczona": "Segerak iCloud dimatikan.",
     "aktywna": "Segerak iCloud dihidupkan.",
     "zegarek_kontakt": "Hubungan terakhir dengan jam tangan anda: {{data}}."
   },
   "zglos": {
     "tytul": "Laporkan masalah",
-    "opis": "Ini ialah semua yang terkandung dalam laporan. Tiada apa yang keluar dari iPhone anda sehingga anda berkongsinya.",
     "udostepnij": "Kongsi",
     "pole_wersja": "Versi aplikasi",
     "pole_system": "iOS",

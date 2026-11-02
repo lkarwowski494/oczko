@@ -430,14 +430,12 @@
     "tytul": "Data og synkronisering",
     "ostatnia": "Sist synkronisert {{data}}",
     "czeka": "Synkroniseringen venter på nettverkstilkobling.",
-    "zapisane": "Alt er lagret på denne iPhone.",
     "wylaczona": "iCloud-synkronisering er av.",
     "aktywna": "iCloud-synkronisering er på.",
     "zegarek_kontakt": "Siste kontakt med klokken din: {{data}}."
   },
   "zglos": {
     "tytul": "Rapporter et problem",
-    "opis": "Dette er alt rapporten inneholder. Ingenting forlater iPhone før du deler det.",
     "udostepnij": "Del",
     "pole_wersja": "Appversjon",
     "pole_system": "iOS",

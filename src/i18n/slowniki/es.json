@@ -479,14 +479,12 @@
     "tytul": "Datos y sincronización",
     "ostatnia": "Última sincronización: {{data}}",
     "czeka": "La sincronización espera una conexión de red.",
-    "zapisane": "Todo está guardado en este iPhone.",
     "wylaczona": "La sincronización con iCloud está desactivada.",
     "aktywna": "La sincronización con iCloud está activada.",
     "zegarek_kontakt": "Último contacto con tu reloj: {{data}}."
   },
   "zglos": {
     "tytul": "Informar de un problema",
-    "opis": "Esto es todo lo que contiene el informe. Nada sale de tu iPhone hasta que lo compartas.",
     "udostepnij": "Compartir",
     "pole_wersja": "Versión de la app",
     "pole_system": "iOS",

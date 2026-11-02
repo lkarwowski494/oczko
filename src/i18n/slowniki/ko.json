@@ -381,14 +381,12 @@
     "tytul": "데이터 및 동기화",
     "ostatnia": "마지막 동기화 {{data}}",
     "czeka": "동기화가 네트워크 연결을 기다리고 있습니다.",
-    "zapisane": "모든 것이 이 iPhone에 저장되어 있습니다.",
     "wylaczona": "iCloud 동기화가 꺼져 있습니다.",
     "aktywna": "iCloud 동기화가 켜져 있습니다.",
     "zegarek_kontakt": "Apple Watch와 마지막 연결: {{data}}."
   },
   "zglos": {
     "tytul": "문제 신고",
-    "opis": "보고서에 담기는 내용은 이것이 전부입니다. 공유하기 전에는 아무것도 iPhone 밖으로 나가지 않습니다.",
     "udostepnij": "공유",
     "pole_wersja": "앱 버전",
     "pole_system": "iOS",

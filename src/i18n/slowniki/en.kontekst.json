@@ -452,7 +452,7 @@
     "tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "ostatnia": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "czeka": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-011/S1.",
-    "zapisane": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-011/S1.",
+    "zapisane": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-011/S1. „this device”, nie „this iPhone”: aplikacja działa też na iPadzie (M1-audytor-generalny-060, design-spec 012 opcja a); słowo „urządzenie” neutralne wobec modelu.",
     "wylaczona": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "aktywna": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "zegarek_kontakt": "Tekst roboczy 08 (partia 5) — do zatwierdzenia przez 04. BR-DAN-011/S3 (P-193, P-195 Q1): czas ostatniej partii odebranej z zegarka, bez liczby zmian (liczbę zna tylko zegarek). {{data}} = data i godzina.",
@@ -460,7 +460,7 @@
   },
   "zglos": {
     "tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
-    "opis": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. R-162.",
+    "opis": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. R-162. „your device”, nie „your iPhone”: aplikacja działa też na iPadzie (M1-audytor-generalny-060, design-spec 012 opcja a); słowo „urządzenie” neutralne wobec modelu.",
     "udostepnij": "Tekst z ekrany.html roli 04 (ekran ukończenia).",
     "pole_wersja": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "pole_system": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",

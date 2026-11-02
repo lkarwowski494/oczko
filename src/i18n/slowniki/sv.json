@@ -430,14 +430,12 @@
     "tytul": "Data och synk",
     "ostatnia": "Senast synkad {{data}}",
     "czeka": "Synkningen väntar på nätverksanslutning.",
-    "zapisane": "Allt är sparat på den här iPhone.",
     "wylaczona": "iCloud-synk är av.",
     "aktywna": "iCloud-synk är på.",
     "zegarek_kontakt": "Senaste kontakt med din klocka: {{data}}."
   },
   "zglos": {
     "tytul": "Rapportera ett problem",
-    "opis": "Det här är allt rapporten innehåller. Inget lämnar din iPhone förrän du delar det.",
     "udostepnij": "Dela",
     "pole_wersja": "Appversion",
     "pole_system": "iOS",

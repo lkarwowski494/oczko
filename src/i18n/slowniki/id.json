@@ -381,14 +381,12 @@
     "tytul": "Data dan sinkronisasi",
     "ostatnia": "Terakhir disinkronkan {{data}}",
     "czeka": "Sinkronisasi menunggu koneksi jaringan.",
-    "zapisane": "Semuanya tersimpan di iPhone ini.",
     "wylaczona": "Sinkronisasi iCloud nonaktif.",
     "aktywna": "Sinkronisasi iCloud aktif.",
     "zegarek_kontakt": "Kontak terakhir dengan jam tangan Anda: {{data}}."
   },
   "zglos": {
     "tytul": "Laporkan masalah",
-    "opis": "Ini semua isi laporan. Tidak ada yang keluar dari iPhone Anda sampai Anda membagikannya.",
     "udostepnij": "Bagikan",
     "pole_wersja": "Versi aplikasi",
     "pole_system": "iOS",
