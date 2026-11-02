@@ -84,4 +84,5 @@ tags:
       - assertVisible: { id: "projekty-blad", optional: true }
       - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 60000 }
 - assertVisible: { id: "projekty-lista" }
+- takeScreenshot: 07-lista-po-ofertach # E2-138-S5: potwierdzenie A2 (dismissTo z ofert otwartych z okna, app/oferty.tsx:63) zrzutem, nie tylko asercją
 - assertNotVisible: { id: "okno-uczciwe-zasady" }

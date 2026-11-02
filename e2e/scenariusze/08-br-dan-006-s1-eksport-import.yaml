@@ -90,6 +90,8 @@ tags:
 - scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-wynik", text: ".*0 new.*" }
 - assertNotVisible: { id: "karta-pro-po-imporcie" }
+# E2-138-S1: po imporcie ekran Ustawień jest przewinięty w dół (zrzut kroku 89 przebiegu 138) — „Back” leży nad ekranem i nie ma go w hierarchii
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "nav-wstecz" }
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: "Harbor"

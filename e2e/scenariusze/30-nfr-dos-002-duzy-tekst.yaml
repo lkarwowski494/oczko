@@ -23,6 +23,10 @@ tags:
 - assertVisible: { id: "menu-wpisz-wartosc" }
 - takeScreenshot: 30-ax5-menu
 - tapOn: { id: "menu-wpisz-wartosc" }
+# E2-138-S4: przy AX5 tytuł arkusza jest ściśnięty w kolumnę między „Cancel” a „Save”, a pole liczby leży pod pierwszym ekranem (zrzut kroku 28, przebieg 138; usterka aplikacji E2-138-A1) —
+# zrzut arkusza zostaje dowodem, przewinięcie pozwala sprawdzić dalszą część (liczba 5-cyfrowa niepocięta)
+- takeScreenshot: 30-ax5-arkusz-wpisz-wartosc
+- scrollUntilVisible: { element: { id: "wpisz-wartosc-pole" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "wpisz-wartosc-pole" }
 - retry:
     maxRetries: 1

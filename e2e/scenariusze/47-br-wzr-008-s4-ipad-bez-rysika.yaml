@@ -21,6 +21,6 @@ tags:
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - takeScreenshot: 47-ipad-zakreslenie
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
-- tapOn: { id: "licznik-wzor" }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1 w 26; E2-138-S3: ten sam błąd był w 47)
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
