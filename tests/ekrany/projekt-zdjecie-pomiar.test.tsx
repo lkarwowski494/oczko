@@ -9,6 +9,7 @@ import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { T0, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
 import type { Jezyk } from '../../src/kompozycja/licznik';
 import { tEn } from './pomoc';
+import { alertBleduZapisu } from '../../src/ekrany/blad-zapisu';
 
 const mock: { kontener?: unknown; dodajZdjecie: jest.Mock; bezMetadanych: jest.Mock; router: Record<string, jest.Mock> } = {
   dodajZdjecie: jest.fn(), bezMetadanych: jest.fn(),
@@ -60,7 +61,7 @@ test('A4: wyjątek przy zapisie zdjęcia (kolejka bazy rzuca) → widoczny komun
   mock.dodajZdjecie.mockRejectedValue(new Error('baza zajęta'));
   await start();
   dodajZPanelu();
-  await waitFor(() => expect(alert).toHaveBeenCalledWith(t('licznik.blad_zapisu')));
+  await waitFor(() => expect(alert).toHaveBeenCalledWith(...alertBleduZapisu(t, 'formularz')));
   expect(panel()).toMatch(/^recode \d+ ms · photo \d+ ms \(error\)$/);
   alert.mockRestore();
 });
