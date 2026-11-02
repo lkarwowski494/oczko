@@ -1,5 +1,7 @@
 # Plan prac Oczka do wydania 1.0 (stan bieżący, koordynator, 2026-11-01)
 
+**Aktualne (2026-11-02, P-418/P-419):** kolejność i pełna lista zadań do 1.0 — `oczko-warsztat` `koordynacja/zadania-do-1.0.md`; harmonogram niżej jest nieaktualny (audyt M1 zrobiony 2.11, przed 1.0 cały plan napraw).
+
 Historia planu z 2026-10-27: `docs/plan-prac-historia-2026-10-27.md`. Decyzje do P-314. Daty, czas i tokeny to szacunki **[OCENA]**, nie zobowiązania. Okno maszyn macOS: ok. 23:00–14:00 UTC (P-187, P-307); poza nim praca bez macOS (P-297, P-311). Sesje ról: sonnet/high (P-310), jedna sesja = jedno zwarte zadanie (P-312). Tokeny = cała sesja z odczytami cache; koszt stały promptu roli ok. 15–20 tys. tokenów na turę.
 
 ## Stan wyjściowy
