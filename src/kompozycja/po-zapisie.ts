@@ -4,7 +4,7 @@
 import { Alert } from 'react-native';
 import type { Powod, Wynik } from '../domena/bledy';
 import type { Haptyka } from '../domena/porty';
-import { alertBleduZapisu } from '../ekrany/blad-zapisu';
+import { alertBleduZapisu, type MiejsceBleduZapisu } from '../ekrany/blad-zapisu';
 import type { Tlumacz } from '../ekrany/wspolne';
 
 /** To, co trasa ma z `useAplikacja()`: tłumacz, port haptyki i migawka preferencji. */
@@ -13,10 +13,10 @@ export type ZrodloBleduZapisu = { kontener: { j: { t: Tlumacz }; porty: { haptyk
 const POWODY_ZAPISU: readonly Powod[] = ['zapis', 'brak_miejsca'];
 
 /** M1-006: przy błędzie zapisu alert i haptyka; `true`, gdy komunikat został pokazany (inny powód: nic, `false`). */
-export function zglosBladZapisu(a: ZrodloBleduZapisu, powod: Powod): boolean {
+export function zglosBladZapisu(a: ZrodloBleduZapisu, powod: Powod, miejsce: MiejsceBleduZapisu = 'formularz'): boolean { // M1-102: teksty rysunku
   if (!POWODY_ZAPISU.includes(powod)) return false;
   if (a.preferencje.stan().wibracje) a.kontener.porty.haptyka.zagraj('bladZapisu');
-  Alert.alert(...alertBleduZapisu(a.kontener.j.t, 'formularz'));
+  Alert.alert(...alertBleduZapisu(a.kontener.j.t, miejsce));
   return true;
 }
 

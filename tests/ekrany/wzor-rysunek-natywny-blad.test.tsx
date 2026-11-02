@@ -80,8 +80,8 @@ describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
     await start();
     await bladNatywny();
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save your changes');
-    expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save highlights and drawings'); // M1-102 (DEC-28 a): kreski tylko w pamięci widoku
+    expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.');
     expect(haptyka.zagraj).toHaveBeenCalledWith('bladZapisu');
     await bladNatywny();
     expect(alert).toHaveBeenCalledTimes(1);
@@ -99,9 +99,9 @@ describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
     expect(mockRouter.back).not.toHaveBeenCalled();
     expect(alert).toHaveBeenCalledTimes(1);
     const [tytul, opis, przyciski] = alert.mock.calls[0] as [string, string, { text: string; style?: string; onPress?: () => void }[]];
-    expect(tytul).toBe('Couldn’t save your changes');
-    expect(opis).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
-    expect(przyciski.map((p) => [p.text, p.style])).toEqual([['Cancel', 'cancel'], ['Back', 'destructive']]);
+    expect(tytul).toBe('Leave this pattern?'); // M1-102 (04-studio-projektowe-514, DEC-28 a): pytanie o decyzję, przycisk nazywa skutek
+    expect(opis).toBe('Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.');
+    expect(przyciski.map((p) => [p.text, p.style])).toEqual([['Stay', 'cancel'], ['Leave unsaved', 'destructive']]);
     expect(przyciski[0]?.onPress).toBeUndefined(); // zostaje na ekranie
     act(() => przyciski[1]?.onPress?.());
     expect(mockRouter.back).toHaveBeenCalledTimes(1);
