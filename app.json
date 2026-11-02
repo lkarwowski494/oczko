@@ -8,19 +8,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "description": "Oczko: Row Counter — knit & crochet, no account.",
-    "primaryColor": "#C85A32",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FAF8F5",
-      "dark": {
-        "image": "./assets/splash.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#1A1A1A"
-      }
-    },
     "ios": {
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/ios-dark.png"
+      },
       "supportsTablet": true,
       "bundleIdentifier": "com.apps4brew.knitting",
       "deploymentTarget": "18.0",
@@ -85,8 +78,9 @@
       "package": "com.apps4brew.knitting",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FAF8F5"
+        "foregroundImage": "./assets/android-foreground.png",
+        "monochromeImage": "./assets/android-monochrome.png",
+        "backgroundColor": "#FCFCFA"
       }
     },
     "web": {
@@ -98,6 +92,16 @@
       "./plugins/icloud-tlo",
       ["expo-font", { "ios": { "fonts": ["./assets/fonts/LibreFranklin-Bold.ttf"] } }],
       "expo-iap",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "backgroundColor": "#FCFCFA",
+          "dark": {
+            "backgroundColor": "#1B1C1F"
+          }
+        }
+      ],
       [
         "expo-image-picker",
         {
