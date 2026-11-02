@@ -25,6 +25,7 @@ Reguła (czysta funkcja `kopiePrzedDoUsuniecia`, `src/niezawodnosc/kopie.ts`; wo
 3. Najnowsza kopia zostaje zawsze.
 4. Pozostałe zostają od najnowszej, dopóki zostawionych jest mniej niż `KOPIA_PRZED_IMPORTEM_MAKS` (2); reszta jest usuwana.
 5. Bez zmian z ADR-0028 pkt 4: tylko nazwy z reguły `^oczko-przed-(importem|usunieciem)-\d{4}-\d{2}-\d{2}(-\d+)?\.oczko$`; obca nazwa i dzień z przyszłości (cofnięty zegar) zostają i nie liczą się ani do limitu, ani do pierwszej kopii dnia.
+6. Nazwa nowej kopii (zmiana ADR-0028 pkt 1, „przyrostek `-2`, `-3`, …”): przyrostek o jeden większy od największego istniejącego tego dnia (`nazwaArchiwum`, `src/dane/archiwum.ts`), nie pierwszy wolny; nadal nigdy nie nadpisuje. *Dlaczego:* reguła 4 usuwa środkową kopię, a pierwsza wolna nazwa wypełniała tę lukę, więc najnowsza kopia wyglądała na starszą i znikała przy następnym sprzątaniu (przegląd ścieżki wrażliwej, 2026-11-02).
 
 ### Konsekwencje
 - Dobre: seria „Replace” jednego dnia zachowuje kopię z danymi sprzed serii (test akceptacyjny M1-013) i najnowszą; typowa seria zajmuje jak dotąd 2 kopie; kod w jednej czystej funkcji, adapter bez zmian.
@@ -33,7 +34,7 @@ Reguła (czysta funkcja `kopiePrzedDoUsuniecia`, `src/niezawodnosc/kopie.ts`; wo
 
 ### Potwierdzenie
 - Czysta funkcja: `tests/niezawodnosc/kopie.test.ts`, blok K-03f ADR-0032 (trzy kopie jednego dnia → usunięta środkowa; pierwsze kopie trzech dni zostają ponad limit; najnowsza zawsze; brak kopii bez przyrostka; > 30 dni; oba rodzaje; obce nazwy i przyszłe daty).
-- Na prawdziwych archiwach: `tests/dane/archiwum.test.ts`, K-03h (trzy „Replace” → `sprzatnijKopiePrzed` → zostają pierwsza i najnowsza, SHA-256 pierwszej bez zmian, jej import przywraca liczności, migawkę i pliki).
+- Na prawdziwych archiwach: `tests/dane/archiwum.test.ts`, K-03h (trzy „Replace” → `sprzatnijKopiePrzed` → zostają pierwsza i najnowsza, SHA-256 pierwszej bez zmian, jej import przywraca liczności, migawkę i pliki); K-03i (po sprzątaniu czwarte „Replace” tego dnia dostaje `-4` i przetrwa kolejne sprzątanie; `nazwaArchiwum` na nazwach).
 - Lista kontrolna: NIE-03 (rola 12) / ARCH-11 (rola 05).
 
 ## Opcje: zalety i wady

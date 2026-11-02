@@ -3,7 +3,7 @@
 // Archiwa wejściowe budowane bez kodu aplikacji (node:sqlite + schemat.sql v1 + własny zapis ZIP); wyjściowe czytane własnym czytnikiem ZIP.
 import { mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import { utworzArchiwum } from '../../src/dane/archiwum';
+import { nazwaArchiwum, utworzArchiwum } from '../../src/dane/archiwum';
 import { migruj } from '../../src/dane/migracje/migruj';
 import { sprzatnijKopiePrzed } from '../../src/niezawodnosc/kopie';
 import { ROZSZERZENIE_ARCHIWUM, WERSJA_FORMATU_ARCHIWUM, WERSJA_SCHEMATU } from '../../src/konfiguracja';
@@ -293,5 +293,32 @@ describe('07-jakosc-003 kopia przed „Replace” (ADR-0028)', () => {
     expect(await licznosci(s.baza)).toEqual(przed);
     expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
     expect(readdirSync(s.magazyn.katalog).sort()).toEqual(plikiPrzed);
+  });
+  test('K-03i M1-013: nazwaArchiwum — największy przyrostek dnia + 1 (liczbowo), inny dzień, inny przedrostek i obce nazwy nie liczą się', () => {
+    const p = 'oczko-przed-importem';
+    expect(nazwaArchiwum([], p, '2026-10-22')).toBe('oczko-przed-importem-2026-10-22.oczko');
+    expect(nazwaArchiwum(['oczko-przed-importem-2026-10-22.oczko'], p, '2026-10-22')).toBe('oczko-przed-importem-2026-10-22-2.oczko');
+    expect(nazwaArchiwum(['oczko-przed-importem-2026-10-22.oczko', 'oczko-przed-importem-2026-10-22-10.oczko', 'oczko-przed-importem-2026-10-22-9.oczko'], p, '2026-10-22')).toBe('oczko-przed-importem-2026-10-22-11.oczko');
+    expect(nazwaArchiwum(['oczko-przed-importem-2026-10-21-5.oczko', 'oczko-przed-usunieciem-2026-10-22-7.oczko', 'oczko-przed-importem-2026-10-22-x.oczko', 'notatki.txt'], p, '2026-10-22')).toBe('oczko-przed-importem-2026-10-22.oczko');
+    expect(nazwaArchiwum(['oczko-przed-importem-2026-10-22-3.oczko'], p, '2026-10-22')).toBe('oczko-przed-importem-2026-10-22-4.oczko');
+  });
+  // Przegląd ścieżki wrażliwej (M1-013): pierwsza wolna nazwa wypełniała lukę po usuniętej `-2`, więc najnowsza kopia wyglądała na starszą i znikała.
+  test('K-03i M1-013: po sprzątaniu czwarte „Zastąp” tego dnia dostaje przyrostek większy od każdego istniejącego i przetrwa kolejne sprzątanie', async () => {
+    const s = await zZyciem();
+    const zastap = async (nazwa: string) => {
+      const w = await importuj(s.za, { sciezka: archiwumWzorcowe(s.katalog, nazwa, [projekt(nazwa, nazwa)]), wybierz: szpieg('zastap').wybierz });
+      if (!w.ok || w.wartosc.kopiaPrzed === null) throw new Error('zastap');
+      return w.wartosc.kopiaPrzed;
+    };
+    const pierwsza = await zastap('plik-a');
+    await zastap('plik-b');
+    await zastap('plik-c');
+    sprzatnijKopiePrzed(s.z.katalogi.kopiePrzed, s.zegar.teraz().ms); // usuwa -2
+    const czwarta = await zastap('plik-d');
+    expect(basename(czwarta)).toBe(`oczko-przed-importem-2026-10-22-4${ROZSZERZENIE_ARCHIWUM}`);
+    const shaCzwartej = sha256Pliku(czwarta);
+    expect(sprzatnijKopiePrzed(s.z.katalogi.kopiePrzed, s.zegar.teraz().ms)).toEqual({ ok: true, wartosc: [`oczko-przed-importem-2026-10-22-3${ROZSZERZENIE_ARCHIWUM}`] });
+    expect(readdirSync(s.z.katalogi.kopiePrzed).sort()).toEqual([basename(pierwsza), basename(czwarta)].sort());
+    expect(sha256Pliku(czwarta)).toBe(shaCzwartej);
   });
 });
