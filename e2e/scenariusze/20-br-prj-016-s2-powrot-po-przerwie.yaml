@@ -19,8 +19,10 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-11T19:30:00" } }
 - tapOn: { id: "nav-projekty", optional: true }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)
 - extendedWaitUntil: { visible: { id: "projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
-- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” otwiera się dopiero na liście projektów (BR-ZAK-006/S9, 07-jakosc-022; E2-136-S2)
 - assertVisible: { id: "projekty-ostatnia-praca", text: "last worked 41 days ago" }
 - assertVisible: "Harbor.*last worked 41 days ago.*"
 - takeScreenshot: 20-uspione
