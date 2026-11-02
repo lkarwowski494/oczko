@@ -4,8 +4,10 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import type { Kontener } from './kontener';
 import type { KompozycjaLicznika } from './licznik';
 import type { preferencje } from './preferencje';
+import type { PowodTrybuAwaryjnego } from '../ekrany/TrybAwaryjny';
 
-export type Aplikacja = { kontener: Kontener; licznik: KompozycjaLicznika; preferencje: ReturnType<typeof preferencje> };
+/** `naAwarie`: błąd startu danych na trasie (np. migracja) → ekran awaryjny korzenia, ten sam co przy błędzie kontenera (ADR-0019, M1-074). */
+export type Aplikacja = { kontener: Kontener; licznik: KompozycjaLicznika; preferencje: ReturnType<typeof preferencje>; naAwarie(powod: PowodTrybuAwaryjnego): void };
 const K = createContext<(Aplikacja & { jezyk: string }) | null>(null);
 
 export function DostawcaAplikacji({ wartosc, children }: { wartosc: Aplikacja; children: React.ReactNode }): React.ReactElement {

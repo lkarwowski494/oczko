@@ -8,18 +8,16 @@ import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { cyklAplikacji, oglos, systemAplikacji } from '../src/kompozycja/system';
 import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
-import { EkranAwaryjny } from '../src/kompozycja/EkranAwaryjny';
 import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
 import { powodAwaryjny, zapiszKamien } from '../src/kompozycja/start-aplikacji';
 import { listaWzorow } from '../src/przypadki-uzycia/wzor';
 import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
 export default function EkranLicznika(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const { kontener, licznik, naAwarie } = useAplikacja();
   const router = useRouter();
   const k = useKolory();
   const [gotowe, ustawGotowe] = useState(false);
-  const [awaria, ustawAwarie] = useState<ReturnType<typeof powodAwaryjny> | null>(null);
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [plusy, ustawPlusy] = useState(0); // P-191 P5a: linia „zapomniany stoper” liczona od nowa po każdym udanym +1
   // Build E2E (P-255 (c), NFR-WYD-001): czas od stuknięcia +1 do drugiej klatki po zapisie (nowa wartość na ekranie); w wydaniu bez pomiaru.
@@ -49,14 +47,14 @@ export default function EkranLicznika(): React.ReactElement {
     let zywy = true;
     void licznik.przygotuj().then((w) => {
       if (!zywy) return;
-      if (!w.ok) { ustawAwarie(powodAwaryjny(w.powod)); return; } // migracja albo baza: ekran awaryjny, nic po cichu (ADR-0019)
+      if (!w.ok) { naAwarie(powodAwaryjny(w.powod)); return; } // migracja albo baza: ekran awaryjny korzenia, nic po cichu (ADR-0019, M1-074)
       ustawGotowe(true);
       if (w.ok && w.wartosc.cel === 'lista') router.push('/projekty');
       if (w.ok && w.wartosc.cel === 'wzor') router.push('/wzor'); // praca skończyła się na wzorze: licznik zostaje pod spodem, „wstecz” wraca na licznik (07-jakosc-006)
       // Okno „Uczciwe zasady” nie otwiera się na liczniku (BR-ZAK-006, ER-46, O-05, 07-jakosc-022): pierwsze miejsce to lista projektów (app/projekty.tsx).
-    }, () => { if (zywy) ustawAwarie(powodAwaryjny('zapis')); }); // M1-007: wyjątek startu danych jak `{ ok: false }` — ekran awaryjny (ADR-0019), nie pusta plansza
+    }, () => { if (zywy) naAwarie(powodAwaryjny('zapis')); }); // M1-007: wyjątek startu danych jak `{ ok: false }` — ekran awaryjny (ADR-0019), nie pusta plansza
     return () => { zywy = false; };
-  }, [licznik, router, kontener]);
+  }, [licznik, router, kontener, naAwarie]);
   // ADR-0019: kamień milowy po zatwierdzeniu renderu licznika (efekt po narysowaniu); wyjątek w renderze pierwszego ekranu → bez kamienia (rola 12 E2).
   useEffect(() => { if (gotowe) void zapiszKamien(); }, [gotowe]);
   useFocusEffect(useCallback(() => { ustawWersje(licznik.wersja()); }, [licznik]));
@@ -69,7 +67,6 @@ export default function EkranLicznika(): React.ReactElement {
     if (r.wartosc.rodzaj === 'licznik') { await licznik.otworz(r.wartosc.licznikId); ustawWersje(licznik.wersja()); return; }
     router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'co-dalej', czesc: r.wartosc.czescId } });
   }
-  if (awaria) return <Bezpieczny><EkranAwaryjny powod={awaria} t={kontener.j.t} naNormalnie={() => router.replace('/')} /></Bezpieczny>;
   if (!gotowe) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   return (
     <Bezpieczny>
