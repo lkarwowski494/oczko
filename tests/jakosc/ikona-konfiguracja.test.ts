@@ -57,3 +57,12 @@ test('brak martwego klucza expo.splash (SDK 57 go nie czyta) i plugin expo-splas
 test('primaryColor nie wprowadza koloru spoza tokenów (brak albo token grafit jasny)', () => {
   expect([undefined, tokeny.jasny.grafit]).toContain(expo.primaryColor);
 });
+
+test('ikona zegarka (P-407, design-spec „Ikona: wpisy konfiguracji”): cel watch wskazuje plik o sumie SHA-256 docs/design/ikona/watch.png', () => {
+  const cfg = readFileSync(join(K, 'targets/watch/expo-target.config.js'), 'utf8');
+  const sciezka = /^\s*icon:\s*'([^']+)'/m.exec(cfg)?.[1];
+  if (!sciezka) throw new Error('targets/watch/expo-target.config.js: brak pola icon:');
+  const plik = join('targets/watch', sciezka);
+  expect(existsSync(join(K, plik))).toBe(true);
+  expect(sha(plik)).toBe(projekt('watch.png'));
+});

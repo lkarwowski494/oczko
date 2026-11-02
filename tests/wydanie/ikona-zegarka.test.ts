@@ -8,12 +8,13 @@ import { join } from 'node:path';
 const K = join(__dirname, '../..');
 const czytaj = (p: string) => readFileSync(join(K, p), 'utf8');
 
-test('cel zegarka ma pole icon: wskazujące istniejący PNG 1024×1024 RGB bez kanału alfa', () => {
+// P-407 (M1-audytor-generalny-015): ikona zegarka z projektu 04 — `watch.png` 1088×1088 (design-spec „Ikona: wpisy konfiguracji”); sedno L-021 bez zmian.
+test('cel zegarka ma pole icon: wskazujące istniejący PNG 1088×1088 RGB bez kanału alfa', () => {
   const cfg = czytaj('targets/watch/expo-target.config.js');
   const sciezka = /^\s*icon:\s*'([^']+)'/m.exec(cfg)?.[1];
-  expect(sciezka).toBe('../../assets/icon.png');
+  expect(sciezka).toBe('../../assets/watch.png');
   const png = readFileSync(join(K, 'targets/watch', sciezka!));
-  expect([png.readUInt32BE(16), png.readUInt32BE(20), png[25]]).toEqual([1024, 1024, 2]);
+  expect([png.readUInt32BE(16), png.readUInt32BE(20), png[25]]).toEqual([1088, 1088, 2]);
 });
 
 test('wtyczka @bacons/apple-targets 5.0.0 ustawia AppIcon dla celu zegarka tylko przy polu icon (zmiana wersji wymaga ponownej kontroli)', () => {
