@@ -28,7 +28,7 @@ export default function EkranDrutu(): React.ReactElement {
     if (n) ustaw(n); else router.back(); // narzędzia już nie ma (np. usunięte gdzie indziej)
   }, [kontener, id, router]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (poczatek === undefined) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzDrutu t={j.t} poczatek={poczatek} podglad={(x, r) => podgladRozmiaru(x, r, j)} parsuj={(x) => bazowa(x, 'm', j.jezyk())}
       formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA })} naAnuluj={() => router.back()}

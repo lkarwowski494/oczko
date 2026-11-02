@@ -33,6 +33,6 @@ export default function EkranZgloszenia(): React.ReactElement {
     ]);
   }, [kontener]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (!diag) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="zglos" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!diag) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="zglos" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return <ZglosProblem stan={{ diagnostyka: diag }} t={kontener.j.t} system={systemAplikacji} naAnuluj={() => router.back()} />;
 }

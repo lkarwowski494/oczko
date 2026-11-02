@@ -46,7 +46,7 @@ export default function EkranFormularza(): React.ReactElement {
   const z = kontener.z, t = kontener.j.t;
   const anuluj = () => router.back();
   const pusty = (bladOdczytu: boolean) => (
-    <StanWczytywania stan={bladOdczytu ? 'blad' : 'ladowanie'} t={t} przedrostek="formularz" naPonow={() => { ustawBlad(false); ustaw(undefined); ustawProbe((n) => n + 1); }} />
+    <StanWczytywania tlo="arkusz" stan={bladOdczytu ? 'blad' : 'ladowanie'} t={t} przedrostek="formularz" naPonow={() => { ustawBlad(false); ustaw(undefined); ustawProbe((n) => n + 1); }} />
   );
   // Podgląd celu w arkuszu terminu (RD-15): liczba rzędów na dziś; „osiągnięty” = 0; bez celów części = null.
   const podgladCelu = useCallback(async (d: string): Promise<number | null> => {

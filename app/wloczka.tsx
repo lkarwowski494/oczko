@@ -64,7 +64,7 @@ export default function EkranWloczki(): React.ReactElement {
       ]);
     }
   };
-  if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="wloczka" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (poczatek === undefined) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="wloczka" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny(preferencje.stan().ukladMiar) ? 'imperialne' : 'metryczne'}
       przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
