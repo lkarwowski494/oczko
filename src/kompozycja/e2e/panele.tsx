@@ -59,9 +59,12 @@ export function PanelUstawien(p: { katalogDanych: string; ostatniEksport: string
 /** Ekran projektu, wybór źródła zdjęcia: zdjęcie testowe z EXIF GPS (scenariusze 17, 42). */
 export function PanelZdjecia({ katalogTymczasowy, naPlik }: { katalogTymczasowy: string; naPlik(sciezka: string): void }): React.ReactElement {
   return (
-    <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => naPlik(zdjecieTestowe(katalogTymczasowy))}>
-      <Text>Test photo (EXIF GPS)</Text>
-    </Pressable>
+    <View>
+      <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => naPlik(zdjecieTestowe(katalogTymczasowy))}>
+        <Text>Test photo (EXIF GPS)</Text>
+      </Pressable>
+      <PanelPomiaruOperacji />
+    </View>
   );
 }
 
