@@ -13,6 +13,10 @@ import { pdfTestowy } from './skrzynka';
 import type { ZrodloDodania } from '../../przypadki-uzycia/wzor';
 import type { StanZegarka, Zegarek } from '../../domena/porty';
 import { ADRES_STRONY_TESTOWEJ, wordTestowy } from './pliki-wzoru';
+import { PanelPomiaruOperacji } from './pomiar-operacji';
+
+// Pomiar czasu operacji (E2-137-A3/A4): aplikacja woła je przez `paneleE2e`, więc poza buildem E2E nie trafiają do bundla (P-238).
+export { koniecOperacji, poczatekOperacji, zmierzOperacje } from './pomiar-operacji';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {
@@ -47,6 +51,7 @@ export function PanelUstawien(p: { katalogDanych: string; ostatniEksport: string
       <Pressable accessibilityRole="button" testID="e2e-pliki-importuj-ostatni" onPress={() => { const s = pliki.ostatni(); if (s) p.naImportuj(s); }}>
         <Text>Test files: import last kept</Text>
       </Pressable>
+      <PanelPomiaruOperacji />
     </View>
   );
 }
@@ -54,9 +59,12 @@ export function PanelUstawien(p: { katalogDanych: string; ostatniEksport: string
 /** Ekran projektu, wybór źródła zdjęcia: zdjęcie testowe z EXIF GPS (scenariusze 17, 42). */
 export function PanelZdjecia({ katalogTymczasowy, naPlik }: { katalogTymczasowy: string; naPlik(sciezka: string): void }): React.ReactElement {
   return (
-    <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => naPlik(zdjecieTestowe(katalogTymczasowy))}>
-      <Text>Test photo (EXIF GPS)</Text>
-    </Pressable>
+    <View>
+      <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => naPlik(zdjecieTestowe(katalogTymczasowy))}>
+        <Text>Test photo (EXIF GPS)</Text>
+      </Pressable>
+      <PanelPomiaruOperacji />
+    </View>
   );
 }
 

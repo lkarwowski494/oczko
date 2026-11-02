@@ -85,12 +85,27 @@ export default function EkranProjektu(): React.ReactElement {
   const poUsunieciu = async (nazwa: string) => { await licznik.poUsunieciu(w.id); oglos(t('usun.ogloszenie', { nazwa })); await wczytaj(); };
   const czesc = (cid: string) => w.czesci.find((c) => c.id === cid);
   // P-219 (2A): każde zdjęcie przekodowane bez metadanych i GPS, zanim trafi do magazynu.
+  // E2-137-A4: wyjątek zapisu (np. kolejka bazy) kończy się komunikatem, nie odrzuconą obietnicą; czasy etapów w panelu `e2e-pomiar-operacji` (tylko build E2E).
   const dodajPlik = async (sciezka: string) => {
-    const czysty = await zdjecieBezMetadanych(sciezka, zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy)).catch(() => null);
-    if (!czysty) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
-    const r = await dodajZdjecie(z, { cel: { projektId: w.id }, plik: czysty });
-    usunPlik(czysty.sciezka);
-    if (r.ok) await wczytaj(); else Alert.alert(...alertBleduZapisu(t, 'formularz'));
+    const pomiar = paneleE2e;
+    pomiar?.poczatekOperacji('zdjecie');
+    let czysty: Awaited<ReturnType<typeof zdjecieBezMetadanych>> = null;
+    let zapisano = false;
+    try {
+      const zmierz = <T,>(f: () => Promise<T>): Promise<T> => (pomiar ? pomiar.zmierzOperacje('przekodowanie', f) : f());
+      czysty = await zmierz(() => zdjecieBezMetadanych(sciezka, zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy))).catch(() => null);
+      if (!czysty) { pomiar?.koniecOperacji('zdjecie', false); Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
+      const r = await dodajZdjecie(z, { cel: { projektId: w.id }, plik: czysty });
+      pomiar?.koniecOperacji('zdjecie', r.ok);
+      if (!r.ok) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
+      zapisano = true;
+    } catch {
+      pomiar?.koniecOperacji('zdjecie', false);
+      Alert.alert(...alertBleduZapisu(t, 'formularz')); // wyjątek spoza `Wynik` (kolejka, magazyn): zapis nieudany nie wygląda na udany (DEV-10)
+    } finally {
+      if (czysty) usunPlik(czysty.sciezka);
+    }
+    if (zapisano) await (pomiar ? pomiar.zmierzOperacje('projekt', wczytaj) : wczytaj()); // zdjęcie jest zapisane: błąd odczytu to nie „nie zapisano”
   };
   const wybierzZdjecie = async (zrodlo: 'aparat' | 'biblioteka') => {
     const r = await wybieraczZdjec().wybierz(zrodlo);

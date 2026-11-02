@@ -73,15 +73,29 @@ export default function EkranUstawien(): React.ReactElement {
     return { projekt: r?.p ?? 0 };
   }
   async function importZ(sciezka: string) {
-    const przed = await licznosciBazy();
-    const w = await importuj(z, {
-      sciezka,
-      wybierz: (m: Manifest) => new Promise((r) => {
-        wybor.current = r;
-        ustawDane({ rodzaj: 'wybor', plik: sciezka.slice(sciezka.lastIndexOf('/') + 1), licznosci: licznosciTekst(m.licznosci, t) });
-      }),
-    });
+    const pomiar = paneleE2e; // E2-137-A3: czas do „import-gotowy” w panelu `e2e-pomiar-operacji` (tylko build E2E)
+    pomiar?.poczatekOperacji('import');
+    let w: Awaited<ReturnType<typeof importuj>>;
+    let przed: Licznosci;
+    try {
+      przed = await licznosciBazy();
+      w = await importuj(z, {
+        sciezka,
+        wybierz: (m: Manifest) => new Promise((r) => {
+          wybor.current = r;
+          pomiar?.koniecOperacji('import', true);
+          ustawDane({ rodzaj: 'wybor', plik: sciezka.slice(sciezka.lastIndexOf('/') + 1), licznosci: licznosciTekst(m.licznosci, t) });
+        }),
+      });
+    } catch {
+      // Wyjątek spoza `Wynik` (baza, system plików, czas w tle): bez tego import kończył się odrzuconą obietnicą i ekranem bez żadnego stanu (E2-137-A3, DEV-10).
+      wybor.current = null;
+      pomiar?.koniecOperacji('import', false);
+      ustawDane({ rodzaj: 'blad' });
+      return;
+    }
     wybor.current = null;
+    pomiar?.koniecOperacji('import', w.ok); // przed wyborem: błąd sprawdzenia; po wyborze pierwszy koniec („gotowy”) zostaje
     if (!w.ok && w.powod === 'bledne_dane') { // F-32 (07-jakosc-031): obcy plik albo plik bez manifestu Oczka — mówimy wprost, bez „That didn't work”
       ustawDane(null);
       Alert.alert(t('import.nie_rozpoznano_tytul'), t('import.nie_rozpoznano_opis'));
