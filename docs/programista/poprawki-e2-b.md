@@ -24,4 +24,7 @@ Kroki scenariusza 34 odtworzone testami na prawdziwym SQLite (node:sqlite) i tra
 - **Propozycje (dla koordynatora, wybór po jego stronie):** (a) ponowić scenariusz 34 w przebiegu macOS po scaleniu — jeśli zielony, A2 był incydentem maszyny/czasu (scenariusze z asercją licznika nie są ponawiane wg P-091, ale to inny scenariusz-informacyjny; decyzja koordynatora); (b) dodać do scenariusza 34 zrzut i `extendedWaitUntil` na `projekt-dodaj` z dłuższym limitem oraz zapis hierarchii, żeby następna porażka dała dowód (zmiana scenariusza = rola 07).
 
 ## Weryfikacja
-Wynik `env -u NODE_PATH npm run verify`: uzupełnić po przebiegu (zob. koniec pliku).
+`env -u NODE_PATH npm run verify` (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test) kod 0: **314 zestawów, 3130 testów** (baza 311/3125 + 3 nowe zestawy, 5 nowych testów). `docs/jakosc/e4/tabela-08.md` zregenerowana.
+
+## Uwaga: tożsamość git
+Hak końcowy sesji prosi o autora `noreply@anthropic.com`; zgodnie z poleceniem koordynatora commity zostają z `Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>` (bez Co-Authored-By i nazw modeli).
