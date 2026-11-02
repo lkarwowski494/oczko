@@ -216,6 +216,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   let onZnacznik = EventDispatcher()
   let onZnacznikKrok = EventDispatcher()
   let onNastepnaStrona = EventDispatcher()
+  let onBladZapisu = EventDispatcher() // M1-084: zapis pliku rysunku się nie udał; dane czekają w kolejce (`oczekujace` = liczba stron)
 
   private let pdf = PDFView()
   private var plik = ""
@@ -225,6 +226,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var rysunki: [Int: PKDrawing] = [:]         // bieżący rysunek każdej strony (wczytany albo narysowany)
   private var historia: [Int: [PKDrawing]] = [:]      // cofanie ostatniej kreski na stronie
   private var doZapisu = Set<Int>()
+  /// M1-084 (DEC-31 a): rysunki czekające na zapis do pliku — wspólne dla widoków, więc nieudany zapis przy zamknięciu ekranu albo zmianie wzoru
+  /// nie ginie z widokiem; następna próba (kreska, zmiana strony, tło, otwarcie wzoru) zapisuje je pod ich wzorId. Tylko wątek główny (UIView).
+  private static let kolejka = KolejkaRysunkow()
   private var zegar: Timer?
   private var narzedzie: NarzedzieWzoru = .brak
   private var narzedzieRysika: NarzedzieWzoru = .pioro // wybierane przy pierwszym rysiku bez narzędzia: Pen, w oknie compact Highlighter (P-360)
@@ -270,7 +274,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   override func willMove(toWindow w: UIWindow?) {
     super.willMove(toWindow: w)
-    if w == nil { zapiszTeraz() } // zamknięcie ekranu wzoru
+    if w == nil { zapiszTeraz() } // zamknięcie ekranu wzoru; M1-084: porażka → onBladZapisu, rysunek zostaje w kolejce (wspólnej) do następnej próby
   }
   func gestureRecognizer(_ g: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith o: UIGestureRecognizer) -> Bool { true }
 
@@ -280,7 +284,12 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   /// najpierw zapisać kreski starego wzoru pod JEGO identyfikatorem, potem wczytać nowy plik, rysunki i obroty.
   func ustawDokument(wzorId nowy: String, plikPdf: String, rysunki r: [(Int, String)], obroty: [Int: Int], startStrona: Int, startPowiekszenie: Double) {
     if nowy != wzorId || plikPdf != plik {
-      zapiszTeraz() // zdarzenia z dotychczasowym wzorId
+      // M1-084: strony starego wzoru idą do kolejki pod jego wzorId (zdarzenia z dotychczasowym wzorId) i nie znikają przy nieudanym zapisie;
+      // rysunki nowego wzoru, które czekają w kolejce, są nowsze niż pliki z JS, więc nakładane po wczytaniu.
+      zatrzymajZegary()
+      doKolejki()
+      let zKolejki = Self.kolejka.dane(wzorId: nowy)
+      oproznijKolejke()
       wzorId = nowy
       plik = plikPdf
       nakladki = [:]; rysunki = [:]; historia = [:]; doZapisu = []
@@ -290,6 +299,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
         guard let d = try? Data(contentsOf: URL(fileURLWithPath: sciezka)), let rys = try? PKDrawing(data: d) else { continue }
         rysunki[s] = rys
       }
+      for (s, d) in zKolejki { if let rys = try? PKDrawing(data: d) { rysunki[s] = rys } }
       stronaDocelowa = startStrona // zapisana pozycja (07-jakosc-006): strona przed pierwszym zdarzeniem onStrona, powiększenie po układzie
       oczekujacePowiekszenie = startPowiekszenie > 0 ? CGFloat(startPowiekszenie) : nil
       ostatniePowiekszenie = startPowiekszenie > 0 ? startPowiekszenie : 1
@@ -400,19 +410,34 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   /// Rysunki zmienionych stron do plików w katalogu oczekujących → `onRysunek` (JS: zapiszRysunek, ADR-0012). Nazwa pliku niesie wzorId
   /// i stronę, więc plik zapisany przy zamykaniu ekranu (zdarzenie bez odbiorcy) JS odzyska przy następnym otwarciu (przegląd 2026-10-26).
+  /// M1-084: nieudany zapis zostawia rysunek w kolejce i wysyła `onBladZapisu` (JS: alert, ostrzeżenie przed wyjściem z ekranu).
   @objc func zapiszTeraz() {
+    zatrzymajZegary()
+    doKolejki()
+    oproznijKolejke()
+  }
+  private func zatrzymajZegary() {
     if zegarPowiekszenia != nil { zegarPowiekszenia?.invalidate(); zglosPowiekszenie() } // tło albo zamknięcie: nie gub powiększenia czekającego na opóźnienie
     zegar?.invalidate()
     zegar = nil
+  }
+  /// Strony zmienione od ostatniej próby → kolejka (cały rysunek strony; nowszy zastępuje starszy).
+  private func doKolejki() {
     guard !wzorId.isEmpty else { return }
+    for s in doZapisu.sorted() { Self.kolejka.dodaj(wzorId: wzorId, strona: s, dane: (rysunki[s] ?? PKDrawing()).dataRepresentation()) }
+    doZapisu = []
+  }
+  private func oproznijKolejke() {
+    guard Self.kolejka.liczba > 0 else { return }
     let k = katalogRysunkow ?? FileManager.default.temporaryDirectory
-    try? FileManager.default.createDirectory(at: k, withIntermediateDirectories: true)
-    for s in doZapisu.sorted() {
-      let u = k.appendingPathComponent("\(wzorId)__\(s)__\(UUID().uuidString).pkdrawing")
-      guard (try? (rysunki[s] ?? PKDrawing()).dataRepresentation().write(to: u, options: .atomic)) != nil else { continue } // zostaje w doZapisu: następna próba
-      doZapisu.remove(s)
-      onRysunek(["wzorId": wzorId, "strona": s, "plikTymczasowy": u.path])
+    let w = Self.kolejka.zapisz { klucz, dane in
+      try FileManager.default.createDirectory(at: k, withIntermediateDirectories: true)
+      let u = k.appendingPathComponent("\(klucz.wzorId)__\(klucz.strona)__\(UUID().uuidString).pkdrawing")
+      try dane.write(to: u, options: .atomic)
+      return u.path
     }
+    for z in w.zapisane { onRysunek(["wzorId": z.wzorId, "strona": z.strona, "plikTymczasowy": z.sciezka, "oczekujace": w.oczekujace]) }
+    if !w.nieudane.isEmpty { onBladZapisu(["wzorId": wzorId, "oczekujace": w.oczekujace]) }
   }
   private func zglosZakreslenia() {
     let n = rysunki.values.reduce(0) { $0 + $1.strokes.filter { $0.ink.inkType == .marker }.count }
@@ -469,7 +494,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   @objc private func zmianaStrony() {
     guard let d = pdf.document, let s = biezacaStrona() else { return }
-    if !doZapisu.isEmpty { zapiszTeraz() } // zmiana strony = zapis (kontrakt)
+    if !doZapisu.isEmpty || Self.kolejka.liczba > 0 { zapiszTeraz() } // zmiana strony = zapis (kontrakt); M1-084: także ponowienie nieudanego
     onStrona(["strona": s, "stron": d.pageCount])
   }
   private func biezacaStrona() -> Int? {
