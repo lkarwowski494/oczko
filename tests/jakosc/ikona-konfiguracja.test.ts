@@ -22,6 +22,7 @@ const wpisy: Record<string, unknown> = {
   'android.adaptiveIcon.foregroundImage': expo.android?.adaptiveIcon?.foregroundImage,
   'android.adaptiveIcon.monochromeImage': expo.android?.adaptiveIcon?.monochromeImage,
   'plugin expo-splash-screen image': splash?.[1].image,
+  'plugin expo-splash-screen dark.image': splash?.[1].dark?.image, // M1-088 (04-studio-projektowe-507, DEC-23 a): ciemny ekran startowy ≥ 3:1
 };
 
 test.each([
@@ -31,6 +32,7 @@ test.each([
   ['android.adaptiveIcon.foregroundImage', 'android-foreground.png'],
   ['android.adaptiveIcon.monochromeImage', 'android-monochrome.png'],
   ['plugin expo-splash-screen image', 'splash-icon.png'],
+  ['plugin expo-splash-screen dark.image', 'splash-icon-dark.png'],
 ])('app.json %s wskazuje plik o sumie SHA-256 docs/design/ikona/%s', (wpis, plik) => {
   const sciezka = wpisy[wpis];
   if (typeof sciezka !== 'string') throw new Error(`app.json: brak wpisu ${wpis} (oczekiwany plik o sumie docs/design/ikona/${plik})`);

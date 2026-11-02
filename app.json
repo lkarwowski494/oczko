@@ -98,6 +98,7 @@
           "image": "./assets/splash-icon.png",
           "backgroundColor": "#FCFCFA",
           "dark": {
+            "image": "./assets/splash-icon-dark.png",
             "backgroundColor": "#1B1C1F"
           }
         }
