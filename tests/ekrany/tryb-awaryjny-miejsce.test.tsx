@@ -1,0 +1,76 @@
+// M1-audytor-generalny-011 (12-niezawodnosc-001, ADR-0020 (4) „Brak miejsca: komunikat z systemu roli 04; niczego nie usuwamy”): przy pełnym dysku
+// ekran awaryjny mówił „Oczko can’t read your data”, a „Save a copy of my data” kończyło się bez komunikatu. Teksty tylko z systemu (zasada 15):
+// nagłówek `awaryjny.tytul_petla`, opis `wspolne.blad_zapisu_opis`, alert `alertBleduZapisu`.
+import React from 'react';
+import { join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { Alert } from 'react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { Paths } from 'expo-file-system';
+import { TrybAwaryjny } from '../../src/ekrany/TrybAwaryjny';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { kopiaAwaryjna } from '../../src/kompozycja/kopia-awaryjna';
+import { licznosci, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
+import { projekt } from '../dane/pomocnicze/dane-wejsciowe';
+import { tEn, tekst } from './pomoc';
+
+const mockA = { zapiszKopie: jest.fn(), zipSurowej: jest.fn(), kopia: Promise.resolve(), sha: jest.fn(), nieudaneStarty: 0, etapPoprzedniegoStartu: null, bledyZKopii: [] };
+jest.mock('../../src/kompozycja/start-aplikacji', () => ({
+  ...jest.requireActual('../../src/kompozycja/start-aplikacji'),
+  trybAwaryjny: () => mockA,
+  sprobujNormalnieTeraz: jest.fn(async () => undefined),
+}));
+jest.mock('../../src/platforma/system-plikow-uzytkownika', () => ({ udostepnijPlik: jest.fn(async () => undefined) }));
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { EkranAwaryjny } = require('../../src/kompozycja/EkranAwaryjny') as typeof import('../../src/kompozycja/EkranAwaryjny');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { powodAwaryjny } = jest.requireActual('../../src/kompozycja/start-aplikacji') as typeof import('../../src/kompozycja/start-aplikacji');
+
+let t: Tlumacz;
+beforeAll(async () => { t = await tEn(); });
+afterEach(() => jest.restoreAllMocks());
+const dzialania = () => ({ naZapiszKopie: jest.fn(), naSprobujNormalnie: jest.fn(), naZglosProblem: jest.fn() });
+
+test('M1-011: migracja z „brak_miejsca” → ekran z powodem brak miejsca, nie „Oczko can’t read your data”', () => {
+  const powod = powodAwaryjny('brak_miejsca');
+  expect(powod).toBe('brak_miejsca');
+  render(<TrybAwaryjny stan={{ powod }} t={t} {...dzialania()} />);
+  expect(tekst(screen.getByRole('header'))).not.toBe('Oczko can’t read your data');
+  expect(screen.getByText('Your device may be out of space. Nothing was changed. Free some space and try again.')).toBeTruthy();
+  expect(powodAwaryjny('zapis')).toBe('uszkodzony'); // inne powody bez zmian
+});
+
+test('M1-011: „Save a copy” przy braku miejsca w archiwum → alert błędu zapisu (bez ZIP, który też wymaga miejsca)', async () => {
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  mockA.zapiszKopie.mockResolvedValue('brak_miejsca');
+  mockA.zipSurowej.mockResolvedValue(null);
+  render(<EkranAwaryjny powod="brak_miejsca" t={t} naNormalnie={jest.fn()} />);
+  fireEvent.press(screen.getByRole('button', { name: /copy/i }));
+  await waitFor(() => expect(alert).toHaveBeenCalled());
+  expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+  expect(mockA.zipSurowej).not.toHaveBeenCalled();
+});
+
+test('M1-011: „Save a copy” — baza się nie otwiera i ZIP surowej kopii się nie zapisał → alert, nie cisza', async () => {
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  mockA.zapiszKopie.mockResolvedValue(null);
+  mockA.zipSurowej.mockResolvedValue(null);
+  render(<EkranAwaryjny powod="uszkodzony" t={t} naNormalnie={jest.fn()} />);
+  fireEvent.press(screen.getByRole('button', { name: /copy/i }));
+  await waitFor(() => expect(alert).toHaveBeenCalled());
+  expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+});
+
+test('M1-011: kopia awaryjna przy pełnym dysku zwraca „brak_miejsca”, a baza zostaje bez zmian (liczności, SHA)', async () => {
+  const s = await przygotuj();
+  await wykonaj(s.baza, [projekt('p1', 'Sweter')]);
+  const przed = await licznosci(s.baza);
+  const sha = () => createHash('sha256').update(readFileSync(join(s.katalog, 'oczko.db'))).digest('hex');
+  const shaPrzed = sha();
+  jest.spyOn(Paths, 'availableDiskSpace', 'get').mockReturnValue(0);
+  const k = kopiaAwaryjna({ sciezkaBazy: join(s.katalog, 'oczko.db'), pliki: s.magazyn.katalog, zegar: s.zegar, katalogi: s.z.katalogi });
+  expect(await k.zapisz()).toBe('brak_miejsca');
+  expect(await licznosci(s.baza)).toEqual(przed);
+  expect(sha()).toBe(shaPrzed);
+});

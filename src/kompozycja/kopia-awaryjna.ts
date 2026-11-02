@@ -8,17 +8,21 @@ import type { Katalogi, Licznosci, Zegar } from '../domena/porty';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import { utworzArchiwum } from '../dane/archiwum';
 import { utworzMagazyn } from '../dane/pliki/magazyn';
+import { powodBledu } from '../dane/baza/bledy-sqlite';
 
 export function kopiaAwaryjna(o: { sciezkaBazy: string; pliki: string; zegar: Zegar; katalogi: Katalogi }) {
   let baza: ReturnType<typeof otworzPortExpo> | null = null;
   return {
-    async zapisz(): Promise<{ sciezka: string; licznosci: Licznosci } | null> {
+    /** `brak_miejsca` (M1-011, ADR-0020 (4)): ekran mówi o miejscu i nie próbuje ZIP-a, który też wymaga miejsca; `null`: baza się nie otwiera. */
+    async zapisz(): Promise<{ sciezka: string; licznosci: Licznosci } | 'brak_miejsca' | null> {
       try {
         baza ??= otworzPortExpo(o.sciezkaBazy);
         const a = utworzArchiwum({ baza, magazyn: utworzMagazyn(o.pliki), zegar: o.zegar, katalogi: o.katalogi, migruj: () => Promise.resolve({ ok: true, wartosc: { z: 0, do: 0 } }), aplikacja: 'oczko' });
         const w = await a.zapisz(o.katalogi.tymczasowy);
-        return w.ok ? { sciezka: w.wartosc.sciezka, licznosci: w.wartosc.manifest.licznosci } : null;
-      } catch {
+        if (!w.ok) return w.powod === 'brak_miejsca' ? 'brak_miejsca' : null;
+        return { sciezka: w.wartosc.sciezka, licznosci: w.wartosc.manifest.licznosci };
+      } catch (e) {
+        if (powodBledu(e) === 'brak_miejsca') return 'brak_miejsca';
         return null; // baza się nie otwiera → ZIP surowej kopii (zipSurowej)
       }
     },

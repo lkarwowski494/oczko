@@ -25,6 +25,7 @@ test('niepusty WAL: kopia powstaje z wierszem z WAL, `.db` bez zmian (SHA), `-wa
   const katalogi = { kopie: join(k, 'kopie'), kopiePrzed: join(k, 'Documents', 'Backup'), tymczasowy: join(k, 'tmp') };
   for (const d of [katalogi.kopie, katalogi.tymczasowy, join(k, 'pliki')]) mkdirSync(d, { recursive: true });
   const w = await kopiaAwaryjna({ sciezkaBazy: baza, pliki: join(k, 'pliki'), zegar: zegarTestowy(), katalogi }).zapisz();
+  if (w === 'brak_miejsca') throw new Error(w); // M1-011: typ wyniku z powodem braku miejsca
   expect(w?.licznosci.projekt).toBe(1);
   expect(sha256Pliku(baza)).toBe(przed);
   expect(existsSync(`${baza}-wal`) && statSync(`${baza}-wal`).size > 0).toBe(true);

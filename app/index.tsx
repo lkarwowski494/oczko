@@ -19,7 +19,7 @@ export default function EkranLicznika(): React.ReactElement {
   const router = useRouter();
   const k = useKolory();
   const [gotowe, ustawGotowe] = useState(false);
-  const [awaria, ustawAwarie] = useState<'wersja_nowsza' | 'uszkodzony' | null>(null);
+  const [awaria, ustawAwarie] = useState<ReturnType<typeof powodAwaryjny> | null>(null);
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [plusy, ustawPlusy] = useState(0); // P-191 P5a: linia „zapomniany stoper” liczona od nowa po każdym udanym +1
   // Build E2E (P-255 (c), NFR-WYD-001): czas od stuknięcia +1 do drugiej klatki po zapisie (nowa wartość na ekranie); w wydaniu bez pomiaru.

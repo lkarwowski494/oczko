@@ -69,7 +69,7 @@ export async function sprobujNormalnieTeraz(): Promise<void> {
   zapisz(s.stanStartu, sprobujNormalnie(await czytajStan(s.stanStartu)));
 }
 /** Powód błędu startu normalnego → nagłówek ekranu awaryjnego (ten sam ekran, ADR-0019). */
-export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' => (p === 'wersja_nowsza' ? 'wersja_nowsza' : 'uszkodzony');
+export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' | 'brak_miejsca' => (p === 'wersja_nowsza' || p === 'brak_miejsca' ? p : 'uszkodzony'); // M1-011: brak miejsca osobno (ADR-0020 (4))
 
 /** Tryb awaryjny: surowa kopia przed czymkolwiek, potem archiwum `.oczko` z bazy w jej obecnej wersji (bez migracji i bez zapisów do bazy). */
 export function trybAwaryjny() {
@@ -83,7 +83,7 @@ export function trybAwaryjny() {
   return {
     kopia,
     sha: () => stanPlikuBazy(s.baza), // P-203 (kontrakt 07): para .db + -wal bez checkpointu i rozmiar -wal
-    async zapiszKopie(): Promise<{ sciezka: string; licznosci: Licznosci } | null> {
+    async zapiszKopie(): Promise<{ sciezka: string; licznosci: Licznosci } | 'brak_miejsca' | null> {
       await kopia;
       return archiwum.zapisz();
     },
