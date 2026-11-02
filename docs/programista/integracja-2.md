@@ -19,8 +19,12 @@ Konflikt semantyczny bez konfliktu tekstowego: 09 przerobił `limit.arkusz_dni` 
 - `npm run i18n` (ostatni krok `jakosc:kontrole`): **kod 1, 2370 błędów** = partia 8 dodała do `en.json` klucze, których nie ma w 34 przetłumaczonych słownikach: 73 bazy kluczy „brak tłumaczenia” × 34 języki + `dane.zastapiono` (en: `{{kopia}}`, tłumaczenia: `{{nazwa}}`,`{{miejsce}}` → w tych językach ekran „Data replaced” pokazałby niewypełnione `{{…}}`). Kopie 8a–8e przechodziły, bo ich baza nie miała jeszcze słowników 09. Rozkład: ustawienia 13, wzor 11, przyp 9, licznik 9, oferty 6, historia 5, projekty 4, projekt 4, formularz 4, ukonczenie 3, dane 3, import 2, stan_danych 1. Lista kluczy: `npm run -s i18n | grep '^BŁĄD pl '`.
 - Awaria w runtime: brak klucza → tekst z en (`src/i18n/i18n.ts:56-58`, łańcuch język → źródło); wyjątek `dane.zastapiono` (stare parametry).
 
-## STOP do koordynatora (verify nie jest kodem 0, push wstrzymany)
-Plan zakłada falę przekładu dopiero po audycie (P-320, `plan-prac.md` 3.11), a bramka i18n tego nie przewiduje. Opcje w wiadomości do koordynatora. Do czasu decyzji: kroki 4a–c nie rozpoczęte.
+## Decyzja P-357: wariant A (294b0ce)
+- `scripts/sprawdz-i18n.mjs --oczekujace` (brak przekładu klucza z listy = uwaga; klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd) i `--wydanie` (niepusta lista = błąd); `docs/lokalizacja/oczekujace.json` (74 klucze, powód, P-320/P-357); `kontrola-ipa.sh` woła bramkę z `--wydanie`; skrypty npm `i18n*` z `--oczekujace`.
+- `dane.zastapiono`: stare przekłady usunięte z 34 słowników (tekst z en). Reguła „zmienne {{…}} = zmienne w en” była już błędem w `sprawdzSlowniki` (`parametry [...] ≠ źródło`); dodany test strażnik.
+- Test przed zmianą: `tests/i18n/oczekujace.test.ts` 9 z 12 czerwonych (3 zielone = strażnicy istniejącego zachowania).
+- **verify kod 0: 311 zestawów, 3125 testów** (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test).
+- Do fali przekładu (09, po audycie, P-320): przetłumaczyć 74 klucze z listy, opróżnić `oczekujace.json`; bez tego `kontrola-ipa.sh` zablokuje wydanie.
 
-## Następny krok
-Po decyzji: (1) wdrożyć wybraną opcję, (2) `env -u NODE_PATH npm run verify` kod 0, (3) push kopii, (4) poprawki 4a (P-353 a+b), 4b (P-350), 4c (P-351) — każda test czerwony → zielony, osobny commit.
+## Następny krok (nowa sesja 08)
+Po wypchnięciu kopii: 4a (P-353 a+b: zdjąć `application/msword` w `system-plikow-uzytkownika.ts` i usunąć gałąź `.doc` w `przypadki-uzycia/wzor.ts` z testem; ADR-0031), 4b (P-350: strażnik `ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon` po prebuild jak `verify:native` w Treningu, krok w `jakosc-ios.yml`), 4c (P-351: `licznik.jednostka_w_trakcie` jest w `klucze.json`, brak w `en.json` — sprawdzić użycie w kodzie). Każda: test czerwony → zielony, osobny commit.
