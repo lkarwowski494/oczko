@@ -125,6 +125,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-widok.test.ts` | zielony (główny zestaw) | 2 | P-246 | `src/przypadki-uzycia/wzor-widok` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzory.test.ts` | zielony (główny zestaw) | 3 | BR-WZR-001/S2, BR-WZR-003/S2, BR-WZR-008/S2, P-120 | `src/dane/baza/adapter-node`<br>`src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zapas-narzedzia.test.ts` | zielony (główny zestaw) | 6 | BR-ZAP-001, BR-ZAP-003, BR-ZAP-004, P-191 | `src/przypadki-uzycia/zapas` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zapis-atomowy.test.ts` | zielony (główny zestaw) | 4 | KP-06 | `src/dane/pliki/system` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zapis-licznika.test.ts` | zielony (główny zestaw) | 18 | BR-DAN-001/S1, BR-LIC-001/S3, BR-LIC-003, BR-LIC-003/S2, BR-LIC-006/S1, BR-LIC-017, BR-LIC-017/S2, BR-LIC-017/S3, KP-12, NFR-DAN-002, P-026, P-041, P-091, R-003, R-004, R-101, R-185, RD-15, RD-16 | `src/dane/repozytoria/dni`<br>`src/domena/porty`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zdjecia.test.ts` | zielony (główny zestaw) | 4 | BR-PRJ-003, P-191 | `src/przypadki-uzycia/zdjecia` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zdjecie-bez-metadanych.test.ts` | zielony (główny zestaw) | 1 | P-219 | `src/dane/pliki/jpeg`<br>`src/kompozycja/e2e-zdjecie`<br>`src/kompozycja/zdjecie-bez-metadanych`<br>`src/przypadki-uzycia/zdjecia` | — |
@@ -300,4 +301,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 296; zależnych od poprawek: 188.
+Razem plików testów: 297; zależnych od poprawek: 188.

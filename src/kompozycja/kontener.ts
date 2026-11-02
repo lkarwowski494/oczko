@@ -11,7 +11,7 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszAtomowo, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { utworzI18n } from '../i18n/i18n';
 import { ZASOBY } from '../i18n/slowniki';
@@ -62,7 +62,7 @@ async function urzadzenie(katalog: string): Promise<string> {
     if (/^[0-9a-f-]{36}$/i.test(t)) return t;
   }
   const nowy = identyfikatory.nowy();
-  zapiszTekst(plik, nowy);
+  zapiszAtomowo(plik, nowy); // M1-026: przerwany zapis nie zostawia uciętego identyfikatora
   return nowy;
 }
 
@@ -87,7 +87,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms);
   // Pamięć uprawnień Pro (KP-06): plik obok bazy, poza bazą i archiwum.
   const plikPro = polacz(katalogDanych, 'pamiec-pro.json');
-  const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszTekst(plikPro, t) }, () => zegar.teraz().ms);
+  const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszAtomowo(plikPro, t) }, () => zegar.teraz().ms);
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
     straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
