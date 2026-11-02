@@ -15,7 +15,7 @@ beforeAll(async () => { t = await tEn(); });
 const stan = (z: Partial<StanPrzegladarki> = {}): StanPrzegladarki => ({
   nazwa: 'Harbor chart', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
   strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
-  licznik: { liczba: 47, dziergany: 48 }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }), ...z,
+  licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }), ...z,
 });
 function wywolania() {
   return {
@@ -41,6 +41,28 @@ test('iPhone pionowo (W1a): wzór, plakietka strony, opis źródła i pasek licz
   fireEvent.press(screen.getByTestId('nav-wstecz'));
   expect(w.naWstecz).toHaveBeenCalled();
   expect(screen.getByRole('button', { name: 'Back to Back' })).toBeTruthy();
+});
+
+// P2-5 (Aneks P2 poz. 8, F-09 design-spec.md:905): tryb „rząd w trakcie” — liczba jest rzędem, więc pasek pod wzorem i kolumna obok (iPad/poziomo)
+// nie pokazują linii „Now working row n”; tryb „skończone” ją zachowuje.
+describe('P2-5 / F-09 / BR-LIC-012: linia „Now working row n” w liczniku przeglądarki wzoru', () => {
+  const wTrakcie = { liczba: 48, dziergany: 48, znaczenie: 'w_trakcie' as const };
+  test.each([
+    ['pasek pod wzorem (iPhone pionowo)', ukladOkna({ szerokosc: 390, wysokosc: 844 }), 'wzor-pasek-licznika'],
+    ['kolumna obok (iPad poziomo)', ukladOkna({ szerokosc: 1180, wysokosc: 820 }), 'wzor-kolumna-licznika'],
+  ])('%s: „rząd w trakcie” bez linii, liczba i przyciski zostają', (_nazwa, uklad, kontener) => {
+    render(<PrzegladarkaWzoru stan={stan({ licznik: wTrakcie, uklad })} t={t} widok={widok} {...wywolania()} />);
+    expect(screen.getByTestId(kontener)).toBeTruthy();
+    expect(screen.queryByTestId('licznik-teraz-rzad')).toBeNull();
+    expect(screen.queryByText(/Now working row/)).toBeNull();
+    expect(screen.getByTestId('licznik-wartosc').props.children).toBe('48');
+    expect(screen.getByTestId('licznik-plus')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^\+1 row/ })).toBeTruthy();
+  });
+  test('tryb „skończone” zachowuje linię „Now working row n”', () => {
+    render(<PrzegladarkaWzoru stan={stan({ licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' } })} t={t} widok={widok} {...wywolania()} />);
+    expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 48');
+  });
 });
 
 test('układ „obok” (telefon poziomo W3, iPad poziomo W4b): kolumna licznika o szerokości z ukladOkna, wzór nadal widoczny', () => {

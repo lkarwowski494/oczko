@@ -26,7 +26,7 @@ export type StanPrzegladarki = {
   narzedzie: Narzedzie;
   word: boolean;                                  // podgląd zastępczy Worda: bez znacznika i rysowania (W11)
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
-  licznik: { liczba: number; dziergany: number };
+  licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
 };
 export type PropsPrzegladarki = {
