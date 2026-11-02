@@ -17,7 +17,7 @@ import { utworzI18n } from '../i18n/i18n';
 import { ZASOBY, ZASOBY_PSEUDO } from '../i18n/slowniki';
 import type { PreferencjaJezyka } from '../i18n/jezyki';
 import { magazynJezyka } from '../przypadki-uzycia/jezyk';
-import { dziennikUrzadzenia } from '../platforma/dziennik-plus';
+import { dziennikUrzadzenia, skrotPliku } from '../platforma/dziennik-plus';
 import { ekranAktywny } from '../platforma/ekran-aktywny';
 import { haptyka } from '../platforma/haptyka';
 import { identyfikatory } from '../platforma/identyfikatory';
@@ -92,7 +92,8 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
     straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
-    magazyn: utworzMagazyn(s.pliki), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
+    // magazyn: SHA-256 natywnie (P-130, M1-017), nie TS na wątku JS
+    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),
@@ -110,7 +111,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   } : null;
   const z: ZaleznosciAplikacji = {
     ...z0, czasWTle: czasWTle(), ...(silnik ? { synchronizacja: silnik } : {}),
-    archiwum: utworzArchiwum({ baza, magazyn: z0.magazyn, zegar, katalogi: z0.katalogi, migruj: z0.migruj, aplikacja: 'oczko' }),
+    archiwum: utworzArchiwum({ baza, magazyn: z0.magazyn, zegar, katalogi: z0.katalogi, migruj: z0.migruj, aplikacja: 'oczko', skrot: skrotPliku }),
   };
   // Partia 6: App Group (ADR-0011 fix-7) — skrzynka rozszerzenia i migawka projektów; bez grupy w podpisie (build symulatora) obie są puste,
   // poza E2E ze zleceniem testowym: katalog zastępczy w danych aplikacji (P-266, tryb-e2e.ts).

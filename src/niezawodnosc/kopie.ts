@@ -145,7 +145,8 @@ function naglowekBazy(sciezka: string): { user_version: number | null; applicati
  * i `manifest.json` (wersja aplikacji, build, user_version i application_id z nagłówka, SHA-256 plików). Bazy nie otwiera. Nazwy plików bierze
  * od wołającego (jedno źródło nazwy bazy: sciezki.ts, P-180). Cel nie może istnieć; niepełny plik po błędzie jest usuwany.
  */
-export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number }): Promise<Wynik<ManifestSurowejKopii>> {
+export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number; skrot?: (sciezka: string) => Promise<string> }): Promise<Wynik<ManifestSurowejKopii>> {
+  const skrot = o.skrot ?? sha256PlikuTs; // P-130 (M1-017): na urządzeniu natywny; TS w Node i jako wzorzec
   const nazwy = pliki.filter((n) => istniejePlik(polacz(katalogSurowej, n)));
   const glowny = nazwy.find((n) => !/-(wal|shm)$/.test(n));
   if (!glowny) return { ok: false, powod: 'bledne_dane' };
@@ -155,7 +156,7 @@ export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly st
     const pliki: ManifestSurowejKopii['pliki'] = [];
     for (const n of nazwy) {
       const p = polacz(katalogSurowej, n);
-      pliki.push({ nazwa: n, bajty: rozmiar(p), sha256: await sha256PlikuTs(p) });
+      pliki.push({ nazwa: n, bajty: rozmiar(p), sha256: await skrot(p) });
     }
     const manifest: ManifestSurowejKopii = { format: 'oczko-ratunkowa', wersja: 1, aplikacja: o.aplikacja, build: o.build, utworzono: o.terazMs, ...naglowekBazy(baza), pliki };
     const wpisy: WpisZip[] = [{ nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest, null, 2)) }, ...nazwy.map((n) => ({ nazwa: n, plik: polacz(katalogSurowej, n) }))];

@@ -100,6 +100,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/sesja-zmieniono.test.ts` | zielony (główny zestaw) | 3 | BR-PRJ-013, P-221 | `src/dane/baza/przeniesienie`<br>`src/dane/migracje/migruj`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/sesja`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/sesja.test.ts` | zielony (główny zestaw) | 5 | BR-PRJ-008, BR-PRJ-008/S1, BR-PRJ-013, P-072 | `src/domena/maszyny/sesja`<br>`src/przypadki-uzycia/sesja` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/sha-pary-bazy.test.ts` | zielony (główny zestaw) | 1 | P-203 | `src/dane/pliki/magazyn` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrot-natywny.test.ts` | zielony (główny zestaw) | 4 | P-130 | `src/dane/pliki/magazyn`<br>`src/niezawodnosc/kopie` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-dodaj.test.ts` | zielony (główny zestaw) | 6 | — | `src/platforma/skrzynka` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-importu.test.ts` | zielony (główny zestaw) | 17 | P-220, P-230, P-248 | `src/domena/porty`<br>`src/kompozycja/e2e/skrzynka`<br>`src/konfiguracja`<br>`src/platforma/skrzynka`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/stan-blokada.test.ts` | zielony (główny zestaw) | 3 | BR-LIC-004, P-133, P-135 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/ekran-blokady` | Z07-22 |
@@ -301,4 +302,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 297; zależnych od poprawek: 188.
+Razem plików testów: 298; zależnych od poprawek: 188.

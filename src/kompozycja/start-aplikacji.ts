@@ -10,6 +10,7 @@ import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polac
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
 import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
+import { skrotPliku } from '../platforma/dziennik-plus';
 import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
@@ -121,7 +122,7 @@ export function trybAwaryjny() {
       const k = await kopia;
       if (!k.ok) return null;
       const cel = polacz(katalogi.tymczasowy, `oczko-ratunkowa-${zegar.teraz().ms}.zip`);
-      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms });
+      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku });
       return w.ok ? cel : null;
     },
   };
