@@ -93,6 +93,9 @@
     "wzor.notatki_tytul",
     "wzor.notatki_wiele",
     "wzor.przed_schematem",
-    "wzor.znacznik_napis"
+    "wzor.znacznik_napis",
+    "wspolne.blad_wczytania",
+    "wspolne.ladowanie",
+    "wspolne.ponow"
   ]
 }

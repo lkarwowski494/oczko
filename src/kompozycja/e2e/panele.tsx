@@ -139,6 +139,10 @@ export function PanelPomiaru({ probkiMs }: { probkiMs: readonly number[] }): Rea
   const p = p95(probkiMs);
   return p === null ? null : <Text testID="e2e-pomiar-plus">{`p95 ${Math.round(p)} ms, n = ${probkiMs.length}`}</Text>;
 }
+/** Ekran projektu (E2-137-A1, scenariusz 34): czas od zamontowania ekranu do pierwszych danych, „first data 812 ms”, bez `t()`. Liczba rozstrzyga, czy aplikacja, czy maszyna. */
+export function PanelPomiaruLadowania({ ms }: { ms: number }): React.ReactElement {
+  return <Text testID="e2e-pomiar-ladowania">{`first data ${Math.round(ms)} ms`}</Text>;
+}
 
 /**
  * Udawany zegarek (EXPO_PUBLIC_WATCH_FAKE=1, e2e/README.md:37; transferUserInfo nie działa w symulatorze, ADR-0009): `wyslijStan` zapamiętuje

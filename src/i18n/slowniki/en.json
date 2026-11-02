@@ -157,7 +157,10 @@
     "dodaj": "Add",
     "gotowe": "Done",
     "ok": "OK",
-    "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again."
+    "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again.",
+    "ladowanie": "Loading…",
+    "blad_wczytania": "Couldn’t load this.",
+    "ponow": "Try again"
   },
   "projekty": {
     "szukaj": "Search",

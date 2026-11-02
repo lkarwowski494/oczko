@@ -2,7 +2,7 @@
 // Potwierdzenia „Make another” i „Delete …” to alerty systemowe (design-spec „Usuwanie”, słownik „Delete {object}”); termin w treści = dzień
 // usunięcia + KOSZ_DNI. Po zapisie: ekran blokady i licznik (`poZmianie` / `poUsunieciu`, C2), ogłoszenie VoiceOver, model od nowa.
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useFocusEffect, useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
 import { Projekt } from '../../src/ekrany/Projekt';
 import { alertBleduZapisu } from '../../src/ekrany/blad-zapisu';
@@ -19,7 +19,7 @@ import { listaWzorow, type WzorNaLiscie } from '../../src/przypadki-uzycia/wzor'
 import { paneleE2e } from '../../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../../src/platforma/zdjecia';
 import { dodajZdjecie, zdjecia } from '../../src/przypadki-uzycia/zdjecia';
-import { useKolory } from '../../src/ekrany/motyw';
+import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
 import { dzienLokalny } from '../../src/domena/postep';
 import { KOSZ_DNI } from '../../src/konfiguracja';
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
@@ -40,8 +40,10 @@ export default function EkranProjektu(): React.ReactElement {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const naWierzchu = useIsFocused(); // arkusz skrzynki tylko na ekranie na wierzchu stosu
-  const k = useKolory();
   const [w, ustaw] = useState<WidokProjektu | null>(null);
+  const [blad, ustawBlad] = useState(false); // E2-137-A1: pierwszy odczyt się nie udał (wyjątek albo wynik inny niż „brak projektu”) — błąd z ponowieniem zamiast pustej planszy
+  const [start] = useState(() => performance.now()); // E2-137-A1, build E2E: czas od zamontowania ekranu do pierwszych danych (panel `e2e-pomiar-ladowania`)
+  const [ladowanieMs, ustawLadowanieMs] = useState<number | null>(null);
   const [edycja, ustawEdycje] = useState(false);
   const [sesje, ustawSesje] = useState<SesjaNaEkranie[]>([]); // grupa „Time” (P-191 P4a)
   const [miniatury, ustawMiniatury] = useState<Miniatura[]>([]); // grupa „Photos” (P-191 P9a)
@@ -51,9 +53,13 @@ export default function EkranProjektu(): React.ReactElement {
   const [arkuszFilmu, ustawArkuszFilmu] = useState(false); // „Add video link” / „Change link”
   const z = kontener.z, j = kontener.j, t = j.t;
   const wczytaj = useCallback(async () => {
-    const r = await widokProjektu(z, { projektId: id });
-    if (r.ok) ustaw(r.wartosc);
-    else router.replace('/projekty'); // projekt w koszu albo nieistniejący
+    const r = await widokProjektu(z, { projektId: id }).catch(() => null);
+    if (r?.ok) {
+      ustaw(r.wartosc);
+      ustawBlad(false);
+      ustawLadowanieMs((ms) => ms ?? Math.round(performance.now() - start));
+    } else if (r?.powod === 'bledne_dane') router.replace('/projekty'); // projekt w koszu albo nieistniejący
+    else { ustawBlad(true); return; } // wyjątek odczytu albo inny błąd: ekran błędu z ponowieniem (jeśli są już dane, zostają na ekranie)
     const s = await sesjeProjektu(z, { projektId: id });
     if (s.ok) ustawSesje(s.wartosc);
     const f = await zdjecia(z, { projektId: id });
@@ -63,10 +69,16 @@ export default function EkranProjektu(): React.ReactElement {
     void miniaturyWzorow(z, (pdf, cel) => kontener.wzor.platforma.miniatura(pdf, cel), { projektId: id }).then(ustawObrazyWzorow); // bez czekania: wiersze od razu, obraz po wygenerowaniu
     const fp = await filmProjektu(z, { projektId: id });
     if (fp.ok) ustawFilm(fp.wartosc);
-  }, [z, id, router, kontener]);
+  }, [z, id, router, kontener, start]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
   useEffect(() => kontener.wzor.k.naZmiane(() => { void wczytaj(); }), [kontener, wczytaj]); // skrzynka zmieniła stan (ponowienie po sieci, usunięcie wiersza) → wiersze wzorów od razu (ADR-0031 pkt 4)
-  if (!w) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  if (!w) {
+    return (
+      <Bezpieczny>
+        <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="projekt" naPonow={() => { ustawBlad(false); void wczytaj(); }} />
+      </Bezpieczny>
+    );
+  }
   if (arkuszFilmu) { // P-276: „Change link” = arkusz wypełniony, Save zastępuje (jeden film na projekt, P-218 (4))
     return (
       <Bezpieczny>
@@ -192,6 +204,7 @@ export default function EkranProjektu(): React.ReactElement {
       />
       {/* R2 (design-spec :775): arkusz skrzynki także na ekranie projektu (nie nad licznikiem, P-046) */}
       <SkrzynkaNaEkranie wz={kontener.wzor.k} t={t} aktywny={naWierzchu} projekty={() => projektyDoSkrzynki(z, j)} naPoWyborze={() => void wczytaj()} />
+      {paneleE2e && ladowanieMs !== null ? <paneleE2e.PanelPomiaruLadowania ms={ladowanieMs} /> : null /* build E2E (E2-137-A1): ms do pierwszych danych */}
     </Bezpieczny>
   );
 }

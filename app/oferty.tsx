@@ -1,7 +1,7 @@
 // Trasa „/oferty”: ekran ofert (F-35; KP-13: tylko z komunikatu limitu, z Ustawień i z okna „Uczciwe zasady”). Ceny ze sklepu (KP-09).
 // Po zakupie albo przywróceniu: ponowna decyzja dostępu i przeładowanie licznika (limit znika przy Pro). Panel `e2e-sklep-wygas` tylko w buildzie E2E.
 import React, { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Oferty, type KomunikatOfert, type ProduktyOfert } from '../src/ekrany/Oferty';
 import { komunikatZakupu } from '../src/domena/dostep';
 import { ADRESY, FAMILY_SHARING } from '../src/kompozycja/adresy';
@@ -12,6 +12,7 @@ import { paneleE2e } from '../src/platforma/tryb-e2e';
 export default function EkranOfert(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();
   const router = useRouter();
+  const { skad } = useLocalSearchParams<{ skad?: string }>();
   const { sklep } = kontener.porty;
   const [produkty, ustawProdukty] = useState<ProduktyOfert>({ rodzaj: 'ladowanie' });
   const [dostep, ustawDostep] = useState(kontener.dostep.stan());
@@ -58,7 +59,8 @@ export default function EkranOfert(): React.ReactElement {
         naPrzywroc={() => void przywroc()}
         naZarzadzaj={() => systemAplikacji.zarzadzajSubskrypcja()}
         naOtworzAdres={(u) => systemAplikacji.otworzAdres(u)}
-        naZamknij={() => router.back()}
+        // E2-137-A2 (scen. 07): oferty otwarte z okna „Uczciwe zasady” (`replace`, modal na modal) kończą jawnie na liście projektów, nie przez `back()` po zamianie modalu.
+        naZamknij={() => (skad === 'uczciwe-zasady' ? router.dismissTo('/projekty') : router.back())}
       />
       {paneleE2e && wygas && <paneleE2e.PanelSklepu naWygas={() => { wygas(); void poZmianie(); }} /> /* build E2E (P-238) */}
     </>

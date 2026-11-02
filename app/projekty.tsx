@@ -1,9 +1,8 @@
 // Trasa „/projekty”: lista projektów (F-50, F-54). Otwarcie projektu zapamiętuje jego pierwszy licznik (F-49) i wraca do licznika.
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
 import { useFocusEffect, useIsFocused, useRouter } from 'expo-router';
 import { ListaProjektow, type StanListyProjektow } from '../src/ekrany/ListaProjektow';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { projektyDoSkrzynki, stanListy } from '../src/kompozycja/projekty';
@@ -15,14 +14,19 @@ export default function EkranProjektow(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();
   const router = useRouter();
   const naWierzchu = useIsFocused(); // arkusz skrzynki tylko na ekranie na wierzchu stosu
-  const k = useKolory();
   const [widok, ustawWidok] = useState<WidokProjektow | null>(null);
+  const [blad, ustawBlad] = useState(false); // E2-137-A1: odczyt się nie udał (wyjątek albo wynik „nie ok”) — do pierwszych danych ekran pokazuje błąd z ponowieniem, nie pustą planszę
   const [zapytanie, ustawZapytanie] = useState('');
+  const wczytaj = useCallback(async (zywy: () => boolean): Promise<void> => {
+    const w = await widokProjektow(kontener.z).catch(() => null);
+    if (!zywy()) return;
+    if (w?.ok) ustawWidok(w.wartosc); else ustawBlad(true);
+  }, [kontener]);
   useFocusEffect(useCallback(() => {
     let zywy = true;
-    void widokProjektow(kontener.z).then((w) => { if (zywy && w.ok) ustawWidok(w.wartosc); });
+    void wczytaj(() => zywy);
     return () => { zywy = false; };
-  }, [kontener]));
+  }, [wczytaj]));
   // P-089 (3a), BR-ZAK-006/S9 (ER-46): okno „Uczciwe zasady” raz, po minionym dniu z robótką, w pewnym stanie darmowym — tu, nigdy na liczniku (07-jakosc-022).
   useEffect(() => {
     let zywy = true;
@@ -31,7 +35,13 @@ export default function EkranProjektow(): React.ReactElement {
     });
     return () => { zywy = false; };
   }, [kontener, router]);
-  if (!widok) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  if (!widok) {
+    return (
+      <Bezpieczny>
+        <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="projekty" naPonow={() => { ustawBlad(false); void wczytaj(() => true); }} />
+      </Bezpieczny>
+    );
+  }
   const ch = kontener.z.zegar.teraz();
   const stan: StanListyProjektow = stanListy(widok, { zapytanie, j: kontener.j, terazMs: ch.ms, strefa: ch.strefa });
   const wroc = () => (router.canGoBack() ? router.back() : router.replace('/'));

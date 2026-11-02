@@ -137,7 +137,10 @@
     "dodaj": "Przycisk zatwierdzenia w prawym górnym rogu arkusza tworzącego nowy obiekt (słownik studia: Zapisz/Dodaj).",
     "gotowe": "Przycisk końca trybu Edit w pasku nawigacji (systemowe „Done”).",
     "ok": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): jedyny przycisk alertu informacyjnego (błędy importu).",
-    "blad_zapisu_opis": "Druga linia alertu błędu zapisu poza licznikiem i wzorem: Ustawienia (przełącznik wraca do poprzedniego stanu), miary, formularze projektu, sesji i włóczki. Pierwsza linia to `ustawienia.blad_zapisu` albo `formularz.blad_zapisu` (tytuł mówi, co się nie udało). Przyczyna (brak miejsca na urządzeniu) i działanie (zwolnić miejsce, spróbować ponownie); „Nothing was changed” = poprzedni stan został. Przycisk: `wspolne.ok`."
+    "blad_zapisu_opis": "Druga linia alertu błędu zapisu poza licznikiem i wzorem: Ustawienia (przełącznik wraca do poprzedniego stanu), miary, formularze projektu, sesji i włóczki. Pierwsza linia to `ustawienia.blad_zapisu` albo `formularz.blad_zapisu` (tytuł mówi, co się nie udało). Przyczyna (brak miejsca na urządzeniu) i działanie (zwolnić miejsce, spróbować ponownie); „Nothing was changed” = poprzedni stan został. Przycisk: `wspolne.ok`.",
+    "ladowanie": "Podpis na środku ekranu do czasu pierwszego odczytu danych (lista projektów, ekran projektu; E2-137-A1). Jedno słowo z wielokropkiem.",
+    "blad_wczytania": "Podpis nad przyciskiem „Try again”, gdy odczyt danych ekranu się nie udał (E2-137-A1). Zdanie krótkie, bez winy użytkownika.",
+    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa."
   },
   "projekty": {
     "szukaj": "Pole wyszukiwania na liście projektów (ekrany.html projekty).",

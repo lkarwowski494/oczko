@@ -6,7 +6,7 @@ import type { Produkt, StatusZakupu } from '../../src/domena/porty';
 import { tEn } from './pomoc';
 
 const mockRouter = { back: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter }));
+jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => ({}) })); // E2-137-A2: oferty czytają parametr „skad”; tu otwarte bez niego
 jest.mock('../../src/kompozycja/system', () => ({ systemAplikacji: { zarzadzajSubskrypcja: jest.fn(), otworzAdres: jest.fn() } }));
 jest.mock('../../src/platforma/tryb-e2e', () => ({ E2E: false, paneleE2e: null }));
 let mockAplikacja: unknown;

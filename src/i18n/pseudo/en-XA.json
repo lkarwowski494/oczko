@@ -842,5 +842,8 @@
   "przyp.usun": "⟦Délété ŕémîñdéŕ~~~~~~~~~~~~⟧",
   "przyp.usun_tytul": "⟦Délété thîš ŕémîñdéŕ?~~~~~~~~~~~~~~~⟧",
   "przyp.usun_opis": "⟦Öçžkö štöpš ŕémîñdîñg ýöû àböût “{{tekst}}”. Ýöûŕ çöûñt àñd hîštöŕý štàý àš théý àŕé.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
-  "przyp.wiersz_a11y": "⟦{{tekst}}, {{opis}}. Édît~~~~⟧"
+  "przyp.wiersz_a11y": "⟦{{tekst}}, {{opis}}. Édît~~~~⟧",
+  "wspolne.ladowanie": "⟦Löàdîñg…~~~~~~~⟧",
+  "wspolne.blad_wczytania": "⟦Çöûldñ’t löàd thîš.~~~~~~~~~~~~⟧",
+  "wspolne.ponow": "⟦Tŕý àgàîñ~~~~~~~~⟧"
 }
