@@ -36,6 +36,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wektory-dostepu.test.ts` | zielony (główny zestaw) | 3 | BR-ZAK-001, BR-ZAK-003, BR-ZAK-007, KP-02, KP-05, KP-06, KP-08, P-038, P-057, P-089, R-109 | `src/domena/dostep`<br>`src/konfiguracja` | — |
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wektory-limitu.test.ts` | zielony (główny zestaw) | 4 | BR-ZAK-005, BR-ZAK-006, KP-12, KP-13, NFR-PIE-001, P-057, P-065, P-067, P-068, R-097, R-103, R-178 | `src/domena/limit`<br>`src/konfiguracja` | Z07-07 |
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wlasnosci.test.ts` | zielony (główny zestaw) | 14 | KP-02, KP-06, KP-12, KP-13, KP-15, P-057, P-065, R-099, R-102, R-113 | `src/domena/dostep`<br>`src/domena/limit`<br>`src/konfiguracja` | Z07-07 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/adapter-expo-rollback.test.ts` | zielony (główny zestaw) | 3 | — | `src/dane/baza/adapter-expo`<br>`src/dane/baza/bledy-sqlite` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/adapter-expo-sciezka.test.ts` | zielony (główny zestaw) | 2 | — | `src/dane/baza/adapter-expo` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/archiwum-format.test.ts` | zielony (główny zestaw) | 6 | P-120 | `src/dane/archiwum/sha256`<br>`src/dane/archiwum/zip` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/archiwum-integralnosc.test.ts` | zielony (główny zestaw) | 2 | P-197 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/przypadki-uzycia/archiwum` | Z07-22 |
@@ -293,4 +294,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 289; zależnych od poprawek: 186.
+Razem plików testów: 290; zależnych od poprawek: 186.

@@ -44,7 +44,9 @@ export function portNaPolaczeniu(db: SQLiteDatabase): PortExpo {
       await db.execAsync('COMMIT');
       return wynik;
     } catch (e) {
-      await db.execAsync('ROLLBACK');
+      // M1-025: przy SQLITE_FULL/IOERR/NOMEM SQLite może sam wycofać transakcję (sqlite.org/lang_transaction.html §3); jawny ROLLBACK rzuciłby
+      // „no transaction is active” i podmienił pierwotny błąd — jak adapter Node (`isTransaction`), tylko przy trwającej transakcji.
+      if (await db.isInTransactionAsync()) await db.execAsync('ROLLBACK');
       throw e;
     }
   }
