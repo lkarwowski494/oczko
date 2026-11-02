@@ -3,7 +3,7 @@
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View, type KeyboardEvent } from 'react-native';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
@@ -38,7 +38,7 @@ function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: Form
         <Pressable accessibilityRole="button" accessibilityLabel={f.anuluj ?? f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
           <Text style={st.anuluj}>{f.anuluj ?? f.t('wspolne.anuluj')}</Text>
         </Pressable>
-        <Text style={st.naglowekTytul} accessibilityRole="header">{p.tytul}</Text>
+        <Text style={st.naglowekTytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}
           disabled={f.wylaczony} accessibilityState={f.wylaczony ? { disabled: true } : undefined}>
           <Text style={[st.zapisz, f.wylaczony && st.wylaczonyTekst]}>{zapisz}</Text>
@@ -71,12 +71,12 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
       <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
         {p.zamknij ? (
           <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
-            <Text style={[st.tytul, st.rosnie]} accessibilityRole="header">{p.tytul}</Text>
+            <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
               <Text style={st.zamknijZnak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
             </Pressable>
           </View>
-        ) : <Text style={st.tytul} accessibilityRole="header">{p.tytul}</Text>}
+        ) : <Text style={st.tytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>}
         {p.children}
       </ScrollView>
       <View ref={pasek} style={[st.przyciski, { paddingBottom: odstep.l + nadKlawiatura }]} testID="arkusz-przyciski">{p.przyciski}</View>
