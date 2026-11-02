@@ -44,13 +44,19 @@ tags:
 - tapOn: { id: "nav-ustawienia", optional: true }
 - assertVisible: { id: "ustawienia-import" }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
-- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+# P-374: wynik importu leży pod „Delete all data” (ADR-0029, jak eksport w E2-136-S3) — najpierw przewinięcie, nie samo czekanie na element poza ekranem
+- scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe przewijanie; asercja końcowa twarda
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 1000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8); decyzja o opóźnieniu niżej
 - runFlow:
     when: { notVisible: { id: "import-gotowy" } }
     commands:
       - takeScreenshot: opoznienie-import-gotowy
-      - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 60000 }
+      - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
 - assertVisible: { id: "import-gotowy" }
+# P-374: pomiar operacji (R, `e2e-pomiar-operacji` pod przyciskiem importu) — zrzut i odczyt opcjonalny, bez nowego źródła czerwieni (P-367)
+- scrollUntilVisible: { element: { id: "e2e-pomiar-operacji" }, direction: UP, timeout: 5000, optional: true }
+- takeScreenshot: pomiar-import
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*import [0-9]+ ms.*", optional: true }
 - scrollUntilVisible: { element: { id: "import-licznosci" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-licznosci", text: "1 project.*1 counter.*2 changes.*" }
 - takeScreenshot: 08-import-gotowy
@@ -65,13 +71,19 @@ tags:
 # --- drugi import tego samego pliku: scalenie idempotentne (P-091 6a, M-02) — bez duplikatów ---
 - scrollUntilVisible: { element: { id: "e2e-pliki-importuj-ostatni" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
-- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+# P-374: wynik importu leży pod „Delete all data” (ADR-0029, jak eksport w E2-136-S3) — najpierw przewinięcie, nie samo czekanie na element poza ekranem
+- scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe przewijanie; asercja końcowa twarda
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 1000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8); decyzja o opóźnieniu niżej
 - runFlow:
     when: { notVisible: { id: "import-gotowy" } }
     commands:
-      - takeScreenshot: opoznienie-import-gotowy
-      - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 60000 }
+      - takeScreenshot: opoznienie-import-gotowy-powtorny
+      - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
 - assertVisible: { id: "import-gotowy" }
+# P-374: pomiar operacji (R, `e2e-pomiar-operacji` pod przyciskiem importu) — zrzut i odczyt opcjonalny, bez nowego źródła czerwieni (P-367)
+- scrollUntilVisible: { element: { id: "e2e-pomiar-operacji" }, direction: UP, timeout: 5000, optional: true }
+- takeScreenshot: pomiar-import-powtorny
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*import [0-9]+ ms.*", optional: true }
 - scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "import-scal" }
 - extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }

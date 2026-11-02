@@ -26,8 +26,12 @@ tags:
     when: { notVisible: { id: "zdjecia-miniatura" } }
     commands:
       - takeScreenshot: opoznienie-miniatura-zdjecia
+      - assertVisible: { id: "e2e-pomiar-operacji", optional: true } # P-374: „photo running” / „recode N ms · photo running” = aplikacja jeszcze zapisuje; brak panelu = menu zamknięte
       - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
 - assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }
+# P-374: pomiar operacji (R) — menu „Add photo” zostaje otwarte po wyborze zdjęcia testowego, panel pod pozycją testową; zrzut + odczyt opcjonalny (P-367: bez nowego źródła czerwieni)
+- takeScreenshot: pomiar-zdjecie
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*photo [0-9]+ ms.*", optional: true }
 - takeScreenshot: 17-zdjecie-etykiety
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
 - tapOn: { id: "licznik-projekt" }

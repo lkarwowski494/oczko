@@ -20,7 +20,7 @@ describe('E2-137-S3 · dowód opóźnienia zamiast niemego timeoutu (07, 08, 17,
     const w = l[o + 1];
     const wn = l.slice(o + 1, o + 6);
     const zrzut = wn.find((k) => k.nazwa === 'takeScreenshot' && /^opoznienie-/.test(String(k.arg)));
-    const dlugie = wn.find((k) => k.nazwa === 'extendedWaitUntil' && !k.arg?.optional && Number(k.arg?.timeout) >= 60000 && idy(k).join('|') === id);
+    const dlugie = wn.find((k) => (k.nazwa === 'extendedWaitUntil' || k.nazwa === 'scrollUntilVisible') /* P-374: import-gotowy poza ekranem — długie czekanie to przewijanie */ && !k.arg?.optional && Number(k.arg?.timeout) >= 60000 && idy(k).join('|') === id);
     const twarda = l.slice(o + 1, o + 8).find((k) => k.nazwa === 'assertVisible' && idy(k).join('|') === id);
     return w?.nazwa === 'runFlow' && Boolean(zrzut && dlugie && twarda);
   };
