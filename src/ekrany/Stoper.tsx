@@ -86,7 +86,7 @@ function style(k: Kolory) {
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     kapsula: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, justifyContent: 'center', paddingHorizontal: odstep.m },
     kapsulaPauza: { backgroundColor: k.papier, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
-    kapsulaTekst: { ...typografia.przycisk, color: k.przyciskTekst, fontVariant: ['tabular-nums'] },
+    kapsulaTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst, fontVariant: ['tabular-nums'] },
     kapsulaTekstPauza: { color: k.grafit },
     menu: { position: 'absolute', top: cel.minimum + odstep.xs, right: 0, minWidth: 240, zIndex: 10, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },
     naglowek: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m },
