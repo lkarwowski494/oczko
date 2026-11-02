@@ -97,7 +97,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const wierszLiczby = (
     <View style={st.liczbaWiersz} testID="licznik-wartosc-wiersz">
       <Text style={st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(liczba)}</Text>
-      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : t('licznik.jednostka')}</Text>
+      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : s.znaczenie === 'w_trakcie' ? t('licznik.jednostka_w_trakcie') : t('licznik.jednostka')}</Text>
     </View>
   );
 
