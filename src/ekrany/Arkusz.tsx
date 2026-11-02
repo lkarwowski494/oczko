@@ -2,8 +2,8 @@
 // arkusz formularza — Cancel / tytuł / Save w nagłówku u góry (`naglowek-arkusza` makiet, Trening design-spec:66), arkusz decyzji — przyciski na dole.
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
-import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View, type KeyboardEvent } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
@@ -27,23 +27,41 @@ export function Arkusz(p: { tytul: string; children: React.ReactNode; przyciski?
   return p.formularz ? <ArkuszFormularza {...p} f={p.formularz} /> : <ArkuszDecyzji {...p} />;
 }
 
-/** Formularz: nagłówek nad przewijaną treścią — klawiatura go nie zasłania (bez nasłuchu klawiatury); przy dużym tekście tytuł łamie się pod przyciskami. */
+/**
+ * Formularz: nagłówek nad przewijaną treścią — klawiatura go nie zasłania (bez nasłuchu klawiatury). Design-spec „Arkusze”: przy dużym tekście nagłówek łamie
+ * tytuł. E2-138-A1: RN (Yoga) nie zawija elementu z `flexBasis: 'auto'` do nowego wiersza, więc od AX1 układ jest jawny: Cancel i Save w jednym wierszu,
+ * tytuł pod nimi na pełną szerokość (te same tokeny typografii); poniżej AX1 bez zmian. „bez spec — do potwierdzenia przez 04 w M1”: szczegół układu.
+ */
 function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: FormularzArkusza; testID?: string }): React.ReactElement {
   const st = style(useKolory());
+  const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const { f } = p;
   const zapisz = f.zapisz ?? f.t('wspolne.zapisz');
+  const anuluj = (
+    <Pressable accessibilityRole="button" accessibilityLabel={f.anuluj ?? f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
+      <Text style={st.anuluj}>{f.anuluj ?? f.t('wspolne.anuluj')}</Text>
+    </Pressable>
+  );
+  const zapisanie = (
+    <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}
+      disabled={f.wylaczony} accessibilityState={f.wylaczony ? { disabled: true } : undefined}>
+      <Text style={[st.zapisz, f.wylaczony && st.wylaczonyTekst]}>{zapisz}</Text>
+    </Pressable>
+  );
   return (
     <View style={st.arkusz} testID={p.testID}>
-      <View style={st.naglowek} testID="arkusz-naglowek">
-        <Pressable accessibilityRole="button" accessibilityLabel={f.anuluj ?? f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
-          <Text style={st.anuluj}>{f.anuluj ?? f.t('wspolne.anuluj')}</Text>
-        </Pressable>
-        <Text style={st.naglowekTytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
-        <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}
-          disabled={f.wylaczony} accessibilityState={f.wylaczony ? { disabled: true } : undefined}>
-          <Text style={[st.zapisz, f.wylaczony && st.wylaczonyTekst]}>{zapisz}</Text>
-        </Pressable>
-      </View>
+      {duzyTekst ? (
+        <View style={st.naglowekDuzy} testID="arkusz-naglowek">
+          <View style={st.akcjeDuzy} testID="arkusz-akcje">{anuluj}{zapisanie}</View>
+          <Text style={st.naglowekTytulOsobny} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
+        </View>
+      ) : (
+        <View style={st.naglowek} testID="arkusz-naglowek">
+          {anuluj}
+          <Text style={st.naglowekTytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
+          {zapisanie}
+        </View>
+      )}
       <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets>{p.children}</ScrollView>
     </View>
   );
@@ -164,6 +182,9 @@ export function style(k: Kolory) {
     zamknijZnak: { ...typografia.tresc, color: k.grafit },
     naglowek: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: odstep.s, minHeight: cel.minimum, paddingHorizontal: odstep.l, paddingTop: odstep.s },
     naglowekTytul: { ...typografia.tresc, color: k.grafit, fontWeight: '700', flexGrow: 1, flexShrink: 1, flexBasis: 'auto', textAlign: 'center' },
+    naglowekDuzy: { paddingHorizontal: odstep.l, paddingTop: odstep.s, rowGap: odstep.xs },
+    akcjeDuzy: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum },
+    naglowekTytulOsobny: { ...typografia.tresc, color: k.grafit, fontWeight: '700', alignSelf: 'stretch', textAlign: 'center' },
     akcja: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },
     anuluj: { ...typografia.tresc, color: k.grafit },
     zapisz: { ...typografia.tresc, color: k.grafit, fontWeight: '600' },
