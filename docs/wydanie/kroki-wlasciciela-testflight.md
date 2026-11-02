@@ -17,6 +17,7 @@ Instrukcja dla właściciela konta Apple i GitHub. Format jak Trening `docs/48-z
 | B2 | Produkty: grupa „Oczko Pro”, `monthly`, `yearly`, `lifetime` | 25–30 min | — | do zrobienia |
 | B3 | Zakup w TestFlight | 0 min | B2 | rozstrzygnięte (bez działania) |
 | C1 | Content Rights w App Information (Yes + potwierdzenie praw) | 2 min [OCENA] | B2 (rekord aplikacji istnieje) | **po audycie (P-320); nie teraz** — blokuje „Add for Review”, jeśli puste |
+| C2 | Age Rating: zaznacz „Unrestricted Web Access” → 16+ (P-393, DEC-20 a) | 5 min [OCENA] | B2 (rekord aplikacji istnieje) | **do zrobienia przed wysyłką 1.0** (sesja roli 10 niczego w App Store Connect nie zmieniła) |
 
 Razem A1–A5 i B2 ok. 65–75 min [OCENA]; plan-prac zakłada 20–40 min (dla A5 przy kopiowaniu istniejących wartości) — różnica to A1–A4 (nie ma analogii w Treningu) i B2. B1 (Paid Apps) zrobione (P-316) — nie wymieniam.
 
@@ -105,6 +106,18 @@ Potem **Continue** → **Register**.
 **Czas:** 2 min [OCENA]. **Kategoria podatkowa:** nic nie zmieniasz — bez zmiany Apple przypisuje „App Store software” (`sklep.md` §3 krok 12); zmiana tylko, jeśli doradca podatkowy tak zaleci.
 **Źródła (odczyt 2026-11-02):** https://developer.apple.com/help/app-store-connect/reference/app-information/ — „Apps that contain, show, or access third-party content must have all the necessary rights to that content or be otherwise permitted to use it under the laws of each App Store country or region in which they’re available.” · https://developer.apple.com/help/app-store-connect/manage-app-information/set-a-tax-category/ — „If you choose not to make any changes, your apps and In-App Purchases will be assigned the App Store software category.”
 **Sprawdzenie:** zrzut pola z zapisaną odpowiedzią; przy późniejszym „Add for Review” brak komunikatu o Content Rights.
+
+## C2. Age Rating: „Unrestricted Web Access” → 16+ (10-wydanie-003, P-393 / DEC-20 a)
+**Po co:** import strony WWW (Projekt → „Add pattern…” → adres strony) jest w 1.0 i ładuje dowolny adres wskazany przez użytkownika. Wcześniejsza odpowiedź „bez nieograniczonego dostępu do sieci” stała na fałszywej przesłance „import jest w 1.1”. Odpowiedź musi być zgodna z prawdą (wytyczna 2.3.6). Uzasadnienie, cytat definicji i odrzucone opcje: `sklep.md` §4, wiersz „Wiek”.
+**Gdzie:** https://appstoreconnect.apple.com/apps → Oczko → pasek boczny **General → App Information** → sekcja **Age Ratings** → przycisk **Set Up Age Ratings** (przy zmianie istniejących odpowiedzi: **Edit** na górze strony App Information).
+**Kroki:**
+1. W oknie, które się otworzy, w liście **in-app controls and capabilities** zaznacz **Unrestricted Web Access** (nie zaznaczaj Parental Controls, Age Assurance, User-Generated Content, Social Media ani Messaging and Chat — aplikacja ich nie ma; wyjątek: jeśli kwestionariusz pokaże zdolność, która według Ciebie jednak występuje, wybierz ją i napisz mi o tym), kliknij **Next**.
+2. W sekcjach treści (Mature Themes, Medical or Wellness, Sexuality or Nudity, Violence, Chance-Based Activities) wybierz najniższy poziom częstotliwości (brak treści; etykieta w interfejsie, np. „None”, [DO USTALENIA] — strony Apple jej nie podają, liczy się znaczenie: brak) przy każdym opisie treści — aplikacja pokazuje liczniki i dane użytkownika, bez treści od innych osób. Kliknij **Next**.
+3. W **Age Categories and Override** wybierz **Not Applicable** (bez „Made for Kids”, bez „Override to Higher Age Rating”). Sprawdź w sekcji Additional Information, że wyliczona kategoria to **16+**.
+4. **Save**. Na stronie App Information otwórz panele ocen (globalna i regionalne) i zapisz, jakie wartości widzisz.
+**Czas:** 5 min [OCENA]. Rola: Account Holder, Admin, App Manager lub Marketing; masz Account Holder.
+**Sprawdzenie:** zrzut panelu Age Ratings z kategorią 16+ i listą zaznaczonych zdolności (tylko Unrestricted Web Access), **bez danych konta**. Jeśli wyliczona kategoria jest inna niż 16+ (np. z powodu innej zdolności albo regionalnej tabeli Apple), nic nie zmieniaj ręcznie — przekaż zrzut; wynik i wartości regionalne wpisze rola 10 w `sklep.md` §4 (odpowiedź „Override to Higher Age Rating” jest dozwolona tylko w górę).
+**Źródła (odczyt 2026-11-02, surowy tekst `curl`):** https://developer.apple.com/help/app-store-connect/reference/app-information/age-ratings-values-and-definitions/ — „Unrestricted Web Access: Users can navigate to any webpage within the app or freely browse the web. May include: embedded browser functionality or browser app.”; kategoria 16+: „Capabilities: Unrestricted web access” · https://developer.apple.com/help/app-store-connect/manage-app-information/set-an-app-age-rating/ — „In the sidebar, under General, click App Information.”, „Below Age Ratings, click the Set Up Age Ratings button.”, „To edit your age rating, click App Information in the sidebar, then click Edit at the top of the page.”
 
 ## Po tych zadaniach (nie teraz)
 Krok 7 planu: `testflight.yml` z gałęzi roboczej, zatwierdzenie w środowisku `release` (jeden build, jedna zgoda). Krok 11: scalenie do `main` (za zgodą), workflowy `asc-*` (`sklep.md` §3b — działają dopiero po scaleniu), formularze i „Submit for Review”.
