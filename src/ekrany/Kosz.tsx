@@ -2,7 +2,7 @@
 // Pozycje przychodzą sformatowane z kompozycji (podpis „… · until {date}”); przywrócenie przez wywołanie, ekran nie importuje danych.
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { Przycisk } from './Arkusz';
 import type { Tlumacz } from './wspolne';
 
@@ -16,7 +16,7 @@ export function Kosz({ stan: s, t, naPrzywroc, naWstecz }: PropsKosza): React.Re
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
       {/* Powrót jak w Ustawieniach i Sesjach (trasa bez nagłówka stosu); także w pustym koszu (P-266 (2), scen. 36). */}
       {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
-      <Text style={st.tytul} accessibilityRole="header">{t('kosz.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('kosz.tytul')}</Text>
       {s.pozycje.length === 0 ? (
         <Text style={st.opis}>{t('kosz.pusto', { count: s.dni })}</Text>
       ) : (

@@ -2,7 +2,7 @@
 // Wyszukiwanie liczy przypadek użycia (stan przychodzi przefiltrowany); licznik darmowych dni tylko bez Pro (design-spec „Limit dni”).
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type WierszProjektu = { id: string; nazwa: string; opis: string; kolorWloczki: string | null; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
@@ -65,7 +65,7 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
           <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">＋</Text>
         </Pressable>
       </View>
-      <Text style={st.tytul} accessibilityRole="header">{t('projekty.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('projekty.tytul')}</Text>
       <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.olowek} value={s.zapytanie}
         onChangeText={naSzukaj} style={st.szukaj} autoCorrect={false} testID="projekty-szukaj" />
       {pusto && <Text style={st.info}>{s.zapytanie ? t('projekty.brak_wynikow', { zapytanie: s.zapytanie }) : t('projekty.pusto')}</Text>}

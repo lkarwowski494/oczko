@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { Arkusz, Komunikat, Pole, Przycisk, Tresc, Wybor } from './Arkusz';
 import { useZapis, type Zapis } from './FormularzeProjektu';
 import { WierszGrupy, style as styleNarzedzi } from './Narzedzia';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { krokMotkow } from '../domena/zapas';
 import type { FiltrZapasu, StanDrutow, StanZapasu } from '../kompozycja/zapas';
@@ -19,7 +19,7 @@ function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: st
   const st = style(useKolory());
   return (
     <View style={st.naglowek}>
-      <Text style={st.tytul} accessibilityRole="header">{p.tytul}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tytul}</Text>
       <Pressable accessibilityRole="button" accessibilityLabel={p.dodaj} onPress={p.naDodaj} style={st.plus} testID={p.testID}>
         <Text style={st.plusZnak}>＋</Text>
       </Pressable>

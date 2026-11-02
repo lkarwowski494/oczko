@@ -4,7 +4,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Przycisk } from './Arkusz';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { JEZYKI, NAZWY_JEZYKOW, type PreferencjaJezyka } from '../i18n/jezyki';
 import type { Tlumacz } from './wspolne';
 
@@ -19,7 +19,7 @@ export function WyborJezyka({ t, wybrany, naWybierz, naUstawieniaIos, naWstecz }
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="jezyk">
       {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
-      <Text style={st.tytul} accessibilityRole="header">{t('ustawienia.jezyk')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.jezyk')}</Text>
       <View style={st.grupa} accessibilityRole="radiogroup">
         {opcje.map((o) => {
           const w = o.p === wybrany;

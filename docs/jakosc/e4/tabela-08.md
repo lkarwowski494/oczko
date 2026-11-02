@@ -200,6 +200,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-sprawdz.test.tsx` | zielony (główny zestaw) | 1 | P-191 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper.test.tsx` | zielony (główny zestaw) | 6 | P-191, P-287 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/tryb-awaryjny-dane.test.tsx` | zielony (główny zestaw) | 4 | NFR-DAN-001, NFR-DAN-003, R-050, R-068, R-079 | `src/ekrany/Dane`<br>`src/ekrany/TrybAwaryjny`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/tytuly-limit-skali.test.tsx` | zielony (główny zestaw) | 9 | P-277, P-287, P-361 | `src/ekrany/Kosz`<br>`src/ekrany/LicznikArkuszLimitu`<br>`src/ekrany/LicznikStyl`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/Projekt`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/uczciwe-zasady-trasa.test.tsx` | zielony (główny zestaw) | 3 | BR-ZAK-006 | `src/przypadki-uzycia/informacje-pro` | ER-46 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ukonczenie-wloczka-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-ZAP-002, P-330 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ukonczenie-zapas.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-126 | `src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne`<br>`src/i18n/format` | Z07-22 |
@@ -265,4 +266,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 261; zależnych od poprawek: 168.
+Razem plików testów: 262; zależnych od poprawek: 169.

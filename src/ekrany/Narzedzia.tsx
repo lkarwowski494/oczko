@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Arkusz, Komunikat, Pole, Tresc, Wybor } from './Arkusz';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
 
@@ -45,7 +45,7 @@ export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke }: PropsNar
   const st = style(useKolory());
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
-      <Text style={st.tytul} accessibilityRole="header">{t('narzedzia.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('narzedzia.tytul')}</Text>
       <Text style={st.naglowek} accessibilityRole="header">{t('narzedzia.zapas')}</Text>
       <View style={st.grupa}>
         <WierszGrupy tekst={t('narzedzia.wloczki')} wartosc={String(s.wloczki)} onPress={naWloczki} testID="narzedzia-wloczki" />
@@ -76,7 +76,7 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
   const zmienProbke = (o: string, n: WejscieProbki['na']) => { ustawOczka(o); ustawNa(n); naZmianeProbki?.({ oczka: o, na: n }); };
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
-      <Text style={st.tytul} accessibilityRole="header">{t('probka.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('probka.tytul')}</Text>
       {zProjektu ? <Text style={st.opis}>{zProjektu}</Text> : null}
       <Pole etykieta={t('probka.oczka')} wartosc={oczka} naZmiane={(o) => zmienProbke(o, na)} dziesietne testID="probka-oczka" />
       <Wybor opcje={[{ wartosc: '10cm', tekst: t('probka.na_10cm') }, { wartosc: '4in', tekst: t('probka.na_4in') }]} wybrana={na} naWybor={(n) => zmienProbke(oczka, n)} />

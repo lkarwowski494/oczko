@@ -4,7 +4,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Przycisk } from './Arkusz';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type KomorkaDnia = { dzien: string; numer: number; robotka: boolean; dzis: boolean; a11y: string };
@@ -28,7 +28,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="historia">
       {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
-      <Text style={st.tytul} accessibilityRole="header">{t('dni.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dni.tytul')}</Text>
       <View style={st.grupa}>
         <View style={st.wierszMiesiaca}>
           <Text style={[st.tekst, st.pogrubiony]}>{s.miesiac}</Text>
