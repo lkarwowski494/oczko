@@ -1,0 +1,25 @@
+{
+  "_opis": "PLIK GENEROWANY przez scripts/asc/kontrola-oczekiwane.mjs z docs/wydanie/metadane/*.store.json — tylko lokalizacje obsługiwane przez App Store Connect (bez sl) i z kompletem pól. Nie edytować ręcznie.",
+  "lokalizacje": {
+    "en-US": {
+      "name": "Oczko: Row Counter",
+      "subtitle": "Knit & crochet, no account",
+      "keywords": "knitting,stitch,tracker,pattern,pdf,yarn,stash,needles,project,tally,gauge,notes,crochet,reminder"
+    },
+    "en-GB": {
+      "name": "Oczko: Row Counter",
+      "subtitle": "Knit & crochet, no account",
+      "keywords": "knitting,stitch,tracker,pattern,pdf,yarn,wool,stash,needles,project,tally,gauge,crochet,reminder"
+    },
+    "en-AU": {
+      "name": "Oczko: Row Counter",
+      "subtitle": "Knit & crochet, no account",
+      "keywords": "knitting,stitch,tracker,pattern,pdf,yarn,wool,stash,needles,project,tally,gauge,crochet,reminder"
+    },
+    "en-CA": {
+      "name": "Oczko: Row Counter",
+      "subtitle": "Knit & crochet, no account",
+      "keywords": "knitting,stitch,tracker,pattern,pdf,yarn,stash,needles,project,tally,gauge,notes,crochet,reminder"
+    }
+  }
+}

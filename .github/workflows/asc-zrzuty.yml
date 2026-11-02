@@ -1,0 +1,115 @@
+# Wgranie zrzutów ekranu sklepu (iPhone, iPad 13″, opcjonalnie Apple Watch; wszystkie lokalizacje) z artefaktu workflowu zrzutów do edytowalnej wersji aplikacji
+# w App Store Connect przez API (skrypt scripts/asc/zrzuty.mjs, interfejs App Asset Library). Przeniesione z Treningu (P-315, P-316 (4); wzór: asc-zrzuty.yml, 2e4b0f8).
+# Układ artefaktu (kontrakt z rolą 07): `<rozmiar iPhone>/<język>/NN-<ekran>.png` (np. `6.9/en/01-licznik.png`) i `ipad-13/<język>/NN-<ekran>.png`. Zrzuty bez alfy (`file`, sklep.md §5).
+# Tylko ręcznie. dry-run (domyślny): lista, co zostałoby wgrane; apply: wgraj i ułóż (NIGDY nie usuwa, pomija grupy, które mają już zrzuty).
+# Sekrety środowiska `release`: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8. Repozytorium publiczne: logi bez identyfikatorów klucza, adresy wgrywania Apple nie trafiają do logu.
+# Różnice względem Treningu (nazwane): (1) jedno zadanie w środowisku `release` zamiast pary „podgląd bez środowiska” + „zapis w release” — sekrety
+# Oczka są sekretami ŚRODOWISKA (strażnik scripts/jakosc/sprawdz-workflowy.mjs: SEKRET-BEZ-SRODOWISKA, ADR-0014), więc zadanie bez środowiska ich nie widzi;
+# zatwierdzenie właściciela jest jedno na przebieg i obejmuje podgląd oraz zapis. (2) Działa dopiero po scaleniu do `main`: workflow_dispatch
+# działa tylko z plikiem na gałęzi domyślnej (GitHub, „Events that trigger workflows”, odczyt 2026-11-01; P-319) — `main` nie ma tego pliku do czasu scalenia.
+name: ASC zrzuty ekranu
+on:
+  workflow_dispatch:
+    inputs:
+      tryb:
+        description: 'dry-run = tylko lista, co zostałoby wgrane; apply = wgraj i ułóż (nigdy nie usuwa)'
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+      zrzuty_z_przebiegu:
+        description: 'Numer przebiegu workflowu zrzutów sklepu z artefaktem zrzutów (artefakty wygasają; sprawdź retencję w przebiegu)'
+        required: true
+        type: string
+      artefakt:
+        description: 'Nazwa artefaktu zrzutów'
+        required: false
+        type: string
+        default: sklep-zrzuty-ramki
+      rozmiar:
+        description: 'Który rozmiar iPhone wgrać: 6.9 (1320 × 2868) albo 6.3 (1206 × 2622)'
+        type: choice
+        options: ['6.9', '6.3']
+        default: '6.9'
+      zegarek_z_przebiegu:
+        description: 'Numer przebiegu z artefaktem zegarek-zrzuty (opcjonalnie; pusty = bez zegarka)'
+        required: false
+        type: string
+        default: ''
+      jezyki:
+        description: 'Tylko te języki aplikacji, np. en albo en,pl (kody katalogów artefaktu; pusty = wszystkie) — do przebiegu dowodowego'
+        required: false
+        type: string
+        default: ''
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: asc-zrzuty
+  cancel-in-progress: false
+jobs:
+  zrzuty:
+    runs-on: ubuntu-latest
+    environment: release
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artefakt }}
+          path: sklep-ramki
+          run-id: ${{ inputs.zrzuty_z_przebiegu }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.zegarek_z_przebiegu != '' }}
+        with:
+          name: zegarek-zrzuty
+          path: zegarek-zrzuty
+          run-id: ${{ inputs.zegarek_z_przebiegu }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Klucz API do pliku tymczasowego (maskowany)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w środowisku release (docs/wydanie/kroki-wlasciciela-testflight.md, A5)"; exit 1; }; done
+          echo "::add-mask::$ASC_KEY_ID"; echo "::add-mask::$ASC_ISSUER_ID"
+          printf '%s\n' "$ASC_KEY_P8" | while IFS= read -r line; do case "$line" in -----*) ;; *) [ ${#line} -ge 20 ] && echo "::add-mask::$line" ;; esac; done; true
+          umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+      - name: Plan (tylko odczyt)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ROZMIAR: ${{ inputs.rozmiar }}
+          JEZYKI: ${{ inputs.jezyki }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          ARGS=(--iphone "sklep-ramki/$ROZMIAR" --dry-run)
+          [ -d sklep-ramki/ipad-13 ] && ARGS+=(--ipad sklep-ramki/ipad-13)
+          [ -d zegarek-zrzuty ] && ARGS+=(--zegarek zegarek-zrzuty)
+          [ -n "$JEZYKI" ] && ARGS+=(--jezyki "$JEZYKI")
+          node scripts/asc/zrzuty.mjs "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Wgranie zrzutów (nigdy nie usuwa)
+        if: ${{ inputs.tryb == 'apply' }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ROZMIAR: ${{ inputs.rozmiar }}
+          JEZYKI: ${{ inputs.jezyki }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          ARGS=(--iphone "sklep-ramki/$ROZMIAR" --apply)
+          [ -d sklep-ramki/ipad-13 ] && ARGS+=(--ipad sklep-ramki/ipad-13)
+          [ -d zegarek-zrzuty ] && ARGS+=(--zegarek zegarek-zrzuty)
+          [ -n "$JEZYKI" ] && ARGS+=(--jezyki "$JEZYKI")
+          node scripts/asc/zrzuty.mjs "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Usunięcie klucza z maszyny
+        if: always()
+        run: rm -f "$RUNNER_TEMP/AuthKey.p8"

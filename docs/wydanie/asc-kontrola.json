@@ -1,0 +1,84 @@
+{
+  "_opis": "Konfiguracja kontroli App Store Connect (tylko odczyt; narzędzie studia: repozytorium lkarwowski494/apps4brew-narzedzia, workflow wielokrotnego użytku asc-kontrola.yml przypięty do SHA jak w Treningu; format jak Trening store/asc-kontrola.json, 2e4b0f8, P-315). Kwoty: jedno miejsce to docs/monetyzacja.md („Produkty”), ten plik je powiela — zgodność pilnuje tests/wydanie/asc-metadane.test.ts. null = wartość nie ustalona (kontrola tylko wypisuje). Ceny w innych storefrontach liczy Apple z ceny bazowej USA (MS-19), więc tu tylko USA. Oferty wprowadzające: model V4 ich NIE ma (P-057) — „oferta.brak = true” oznacza, że kontrola ma zgłosić każdą ofertę wprowadzającą.",
+  "aplikacja": {
+    "bundleId": "com.apps4brew.knitting"
+  },
+  "produkty": [
+    {
+      "klucz": "monthly",
+      "productId": "oczko.pro.monthly",
+      "rodzaj": "subskrypcja"
+    },
+    {
+      "klucz": "yearly",
+      "productId": "oczko.pro.yearly",
+      "rodzaj": "subskrypcja"
+    },
+    {
+      "klucz": "lifetime",
+      "productId": "oczko.pro.lifetime",
+      "rodzaj": "jednorazowy"
+    }
+  ],
+  "terytoria": {
+    "wybrane": [
+      "USA"
+    ],
+    "grupy": {}
+  },
+  "ceny": {
+    "monthly": {
+      "USA": 0.99
+    },
+    "yearly": {
+      "USA": 6.99
+    },
+    "lifetime": {
+      "USA": 14.99
+    }
+  },
+  "oferta": {
+    "produkty": [
+      "monthly",
+      "yearly"
+    ],
+    "brak": true
+  },
+  "rodzina": {
+    "monthly": true,
+    "yearly": true,
+    "lifetime": true
+  },
+  "adresy": {
+    "plik": "docs/wydanie/metadane/adresy.json"
+  },
+  "kategoria": {
+    "glowna": null,
+    "dodatkowa": null,
+    "_uwaga": "[DO USTALENIA] Lifestyle vs Productivity (docs/wzrost.md: rekomendacja badania Lifestyle); po wyborze wpisz kod kategorii ASC"
+  },
+  "wiek": {},
+  "dostepnosc": {
+    "terytoria": null
+  },
+  "metadane": {
+    "_opis": "Plik generowany przez scripts/asc/kontrola-oczekiwane.mjs z docs/wydanie/metadane/*.store.json: tylko lokalizacje obsługiwane przez ASC z kompletem name, subtitle, keywords.",
+    "zrodla": [
+      {
+        "plik": "docs/wydanie/asc-kontrola-oczekiwane.json",
+        "korzen": "lokalizacje",
+        "pola": {
+          "name": "name",
+          "subtitle": "subtitle",
+          "keywords": "keywords"
+        }
+      }
+    ],
+    "komunikatBraku": "oczekiwane z szkicu metadanych (docs/wydanie/metadane; po audycie kandydata wersja ostateczna, P-320)"
+  },
+  "uwagiRecenzenta": {
+    "_opis": "Tekst pola Notes (po angielsku, ≤ 4000 B) — docs/wydanie/metadane/notatka-recenzja.txt.",
+    "plik": "docs/wydanie/metadane/notatka-recenzja.txt",
+    "komunikatBraku": "brak notatki dla recenzenta"
+  }
+}

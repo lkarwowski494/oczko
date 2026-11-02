@@ -1,7 +1,7 @@
 // Strażnik workflowów (ADR-0014, kontrola 05-9; P-089; strategia §5). Reguły:
-//  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: testflight`;
+//  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: release`;
 //  WYZWALACZ-Z-SEKRETAMI: workflow z takim zadaniem nie ma `pull_request`, `pull_request_target` ani `workflow_run`;
-//  SZTUCZNY-SKLEP-W-WYDANIU: przełączniki testowe (`EXPO_PUBLIC_STORE_FAKE`, `_WATCH_FAKE`, `_ICLOUD_FAKE`, `_E2E`, `_WYMUS_AWARIE`, `_PSEUDO`) nie występują w workflowie z `environment: testflight`;
+//  SZTUCZNY-SKLEP-W-WYDANIU: przełączniki testowe (`EXPO_PUBLIC_STORE_FAKE`, `_WATCH_FAKE`, `_ICLOUD_FAKE`, `_E2E`, `_WYMUS_AWARIE`, `_PSEUDO`) nie występują w workflowie z `environment: release`;
 //  BRAK-WORKFLOWOW: katalog bez plików .yml to błąd (pusty zbiór to nie zaliczenie).
 // Reguły JAK-10 przeniesione z tests/public-repo.test.ts 0.1.0 (F07-09, P-117 Q6a):
 //  PULL-REQUEST-TARGET: wyzwalacz pull_request_target w żadnym workflowie (kod z PR z prawem zapisu i sekretami);
@@ -47,10 +47,10 @@ export function sprawdzWorkflowy(korzen) {
       const env = typeof job?.environment === 'string' ? job.environment : job?.environment?.name;
       const tekstJob = JSON.stringify(job);
       const sekrety = [...tekstJob.matchAll(/secrets\.([A-Za-z0-9_]+)/g)].map((m) => m[1]).filter((s) => s !== 'GITHUB_TOKEN');
-      if (env === 'testflight') wydanie = true;
+      if (env === 'release') wydanie = true;
       if (sekrety.length) {
         zSekretami = true;
-        if (env !== 'testflight') zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: testflight`);
+        if (env !== 'release') zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: release`);
       }
     }
     if (/secrets\.(?!GITHUB_TOKEN)/.test(JSON.stringify(wf?.env ?? {}))) { zSekretami = true; zgl('SEKRET-BEZ-SRODOWISKA', 'sekret w env na poziomie workflowu'); }

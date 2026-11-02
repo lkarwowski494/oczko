@@ -116,7 +116,7 @@ describe('kontrole-repo.mjs (strategia §10, kontrola 05-8, P-089)', () => {
     expect(w.stdout).toContain(`PLIK-SEKRETU ${plik}`);
   });
   test('R-171 F07-09 dokument, który tylko wspomina o kluczu (bez bloku), przechodzi', () => {
-    expect(uruchom(KONTROLE, repo({ 'docs/podpis.md': 'Klucz .p8 trzyma tylko sekret środowiska testflight.' })).status).toBe(0);
+    expect(uruchom(KONTROLE, repo({ 'docs/podpis.md': 'Klucz .p8 trzyma tylko sekret środowiska release.' })).status).toBe(0);
   });
   test('R-171 zły korzeń (bez package.json) to błąd, nie zaliczenie', () => {
     const k = mkdtempSync(join(tmpdir(), 'pusty-'));
@@ -126,7 +126,7 @@ describe('kontrole-repo.mjs (strategia §10, kontrola 05-8, P-089)', () => {
 
 describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
   const wf = (nazwa: string, tekst: string) => repo({ [`.github/workflows/${nazwa}`]: tekst });
-  test('R-173 sekret poza środowiskiem testflight pada', () => {
+  test('R-173 sekret poza środowiskiem release pada', () => {
     const w = uruchom(WORKFLOWY, wf('a.yml', 'on: push\njobs:\n  b:\n    runs-on: macos-26\n    steps:\n      - run: echo ${{ secrets.ASC_KEY_ID }}\n'));
     expect(w.status).toBe(1);
     expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA');
@@ -136,23 +136,23 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
     expect(w.stdout).toContain('KLUCZ_PODPISU');
   });
   test.each(['pull_request', 'pull_request_target', 'workflow_run'])('R-173 wyzwalacz %s w workflowie z sekretami pada', (wyz) => {
-    const w = uruchom(WORKFLOWY, wf('t.yml', `on:\n  ${wyz}:\n  push:\n    tags: ['v*']\njobs:\n  b:\n    runs-on: macos-26\n    environment: testflight\n    steps:\n      - run: echo \${{ secrets.ASC_KEY_ID }}\n`));
+    const w = uruchom(WORKFLOWY, wf('t.yml', `on:\n  ${wyz}:\n  push:\n    tags: ['v*']\njobs:\n  b:\n    runs-on: macos-26\n    environment: release\n    steps:\n      - run: echo \${{ secrets.ASC_KEY_ID }}\n`));
     expect(w.stdout).toContain('WYZWALACZ-Z-SEKRETAMI');
   });
-  test('R-173 sekret w zadaniu z environment: testflight i wyzwalaczem tag przechodzi', () => {
+  test('R-173 sekret w zadaniu z environment: release i wyzwalaczem tag przechodzi', () => {
     // F07-09: przypadek dobry spełnia też reguły JAK-10 (permissions, timeout-minutes).
-    const w = uruchom(WORKFLOWY, wf('t.yml', "on:\n  push:\n    tags: ['v*']\n  workflow_dispatch:\npermissions:\n  contents: read\njobs:\n  b:\n    runs-on: macos-26\n    timeout-minutes: 30\n    environment: testflight\n    steps:\n      - run: echo ${{ secrets.ASC_KEY_ID }} ${{ secrets.GITHUB_TOKEN }}\n"));
+    const w = uruchom(WORKFLOWY, wf('t.yml', "on:\n  push:\n    tags: ['v*']\n  workflow_dispatch:\npermissions:\n  contents: read\njobs:\n  b:\n    runs-on: macos-26\n    timeout-minutes: 30\n    environment: release\n    steps:\n      - run: echo ${{ secrets.ASC_KEY_ID }} ${{ secrets.GITHUB_TOKEN }}\n"));
     expect(w.status).toBe(0);
   });
   test.each(['WATCH_FAKE', 'E2E', 'PSEUDO'])('P-089 przełącznik EXPO_PUBLIC_%s w workflowie wydania pada', (p) => {
-    const w = uruchom(WORKFLOWY, wf('t.yml', `on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: testflight\n    env:\n      EXPO_PUBLIC_${p}: '1'\n    steps:\n      - run: true\n`));
+    const w = uruchom(WORKFLOWY, wf('t.yml', `on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: release\n    env:\n      EXPO_PUBLIC_${p}: '1'\n    steps:\n      - run: true\n`));
     expect(w.stdout).toContain(`EXPO_PUBLIC_${p}`);
   });
   test('P-089 sztuczny sklep w workflowie wydania pada', () => {
-    const w = uruchom(WORKFLOWY, wf('t.yml', "on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: testflight\n    env:\n      EXPO_PUBLIC_STORE_FAKE: '1'\n    steps:\n      - run: true\n"));
+    const w = uruchom(WORKFLOWY, wf('t.yml', "on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: release\n    env:\n      EXPO_PUBLIC_STORE_FAKE: '1'\n    steps:\n      - run: true\n"));
     expect(w.stdout).toContain('SZTUCZNY-SKLEP-W-WYDANIU');
     // F07-23 (P-230): atrapa iCloud w workflowie wydania — ta sama reguła
-    const i = uruchom(WORKFLOWY, wf('t.yml', "on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: testflight\n    env:\n      EXPO_PUBLIC_ICLOUD_FAKE: '1'\n    steps:\n      - run: true\n"));
+    const i = uruchom(WORKFLOWY, wf('t.yml', "on: workflow_dispatch\njobs:\n  b:\n    runs-on: macos-26\n    environment: release\n    env:\n      EXPO_PUBLIC_ICLOUD_FAKE: '1'\n    steps:\n      - run: true\n"));
     expect(i.stdout).toContain('SZTUCZNY-SKLEP-W-WYDANIU');
     expect(i.stdout).toContain('EXPO_PUBLIC_ICLOUD_FAKE');
   });
