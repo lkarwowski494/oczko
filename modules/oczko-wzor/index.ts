@@ -39,7 +39,10 @@ export type PropsWidokuNatywnego = {
   cofnij: number;                                    // licznik: każda zmiana = cofnięcie ostatniej kreski na bieżącej stronie
   style?: StyleProp<ViewStyle>;
   testID?: string;
-  onRysunek?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; plikTymczasowy: string }>) => void; // po RYSUNEK_ZAPIS_MS, zmianie strony, zamknięciu, tle
+  /** Po RYSUNEK_ZAPIS_MS, zmianie strony, zamknięciu, tle; `oczekujace` (M1-084): strony wciąż w kolejce zapisu widoku po tej próbie (0 = wszystko zapisane; brak = build sprzed 084, bez kolejki). */
+  onRysunek?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; plikTymczasowy: string; oczekujace?: number }>) => void;
+  /** M1-084 (DEC-31 a): zapis pliku rysunku się nie udał (np. pełny dysk); `oczekujace` stron czeka w pamięci widoku na następną próbę. */
+  onBladZapisu?: (e: NativeSyntheticEvent<{ wzorId: string; oczekujace: number }>) => void;
   onStukniecie?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number }>) => void;            // przytrzymanie; y = ułamek wysokości strony bez /Rotate
   onNotatka?: (e: NativeSyntheticEvent<{ id: string }>) => void;                               // stuknięcie chipu notatki
   onZnacznik?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; wysokosc: number }>) => void; // pas przeciągnięty albo wysokość zmieniona uchwytem

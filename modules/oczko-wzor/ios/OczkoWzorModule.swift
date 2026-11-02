@@ -80,7 +80,7 @@ public class OczkoWzorModule: Module {
     OnStopObserving { SiecMonitor.shared.ustawOdbiorce(nil) }
 
     View(WidokWzoru.self) {
-      Events("onRysunek", "onStukniecie", "onStrona", "onPowiekszenie", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona")
+      Events("onRysunek", "onStukniecie", "onStrona", "onPowiekszenie", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona", "onBladZapisu")
       Prop("dokument") { (v: WidokWzoru, d: DokumentProp) in
         v.ustawDokument(wzorId: d.wzorId, plikPdf: d.plikPdf, rysunki: d.rysunki.map { ($0.strona, $0.plik) },
                         obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }),
