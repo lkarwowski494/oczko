@@ -13,3 +13,12 @@ export function poDotyku(s: { tylkoRysik: boolean }, z: 'palec' | 'rysik' | 'otw
   if (z === 'otwarcie') return { tylkoRysik: false };
   return { tylkoRysik: s.tylkoRysik || z === 'rysik' };
 }
+/**
+ * Pierwsze dotknięcie rysikiem (`onPierwszyRysik`; P-327 (a), BR-WZR-004 S2, 07-jakosc-026): bez wybranego narzędzia rysik wybiera Pen i od razu pisze (pencilOnly);
+ * z wybranym narzędziem zostaje ono. Działa raz — gdy `tylkoRysik` już włączony, a użytkownik odznaczył narzędzie, rysik go nie wybiera na nowo (BR-WZR-008 S3).
+ * Widok natywny robi to samo synchronicznie w chwili dotyku (pierwsze pociągnięcie nie czeka na JS), a JS dostaje zdarzenie i zgadza swój stan.
+ */
+export function poPierwszymRysiku(s: { narzedzie: Narzedzie; tylkoRysik: boolean }): { narzedzie: Narzedzie; tylkoRysik: boolean } {
+  if (s.tylkoRysik) return s;
+  return { narzedzie: s.narzedzie === 'brak' ? 'pioro' : s.narzedzie, tylkoRysik: true };
+}

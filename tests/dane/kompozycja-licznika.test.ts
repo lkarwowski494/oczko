@@ -65,7 +65,7 @@ describe('kompozycjaLicznika', () => {
     await k.otworz('l1');
     s.zegar.ustaw(T0 + 3_600_000);
     for (let i = 0; i < 3; i++) { await k.uslugi.dodajRzad(); s.zegar.przesun(300); }
-    expect((await k.dzialania.odswiez!()).baner).toEqual({ rodzaj: 'seria', n: 3, sekundy: 1 });
+    expect((await k.dzialania.odswiez!()).baner).toEqual({ rodzaj: 'seria', n: 3, sekundy: 1, zrodlo: 'aplikacja', godzina: '13:00' }); // 07-jakosc-014: źródło i godzina serii (T0 + 1 h = 13:00 Europe/Warsaw)
     await k.dzialania.naCofnijSerie!();
     const po = await k.dzialania.odswiez!();
     expect([po.skonczone, po.baner]).toEqual([30, { rodzaj: 'cofnieto', n: 3, wartosc: 30 }]);
@@ -110,7 +110,7 @@ describe('stanUkonczenia (ekrany.html `ukonczenie`)', () => {
     const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
     const j: Jezyk = { t: i.t, jezyk: i.jezyk, zegar24h: () => true };
     const k = { nazwa: '2026-10-01', nienazwany: true, utworzonoMs: Date.UTC(2026, 9, 1, 16, 40), startMs: Date.UTC(2026, 9, 1, 17), ukonczonoMs: Date.UTC(2026, 9, 21, 18),
-      dni: 21, rzedy: 640, czasMs: (18 * 60 + 10) * 60_000, czesci: 4, wloczka: [], zdjecieSha: null };
+      dni: 21, rzedy: 640, czasMs: (18 * 60 + 10) * 60_000, czesci: 4, wloczka: [], zdjecieSha: null, maZapas: false };
     const s = stanUkonczenia(k, { j, terazMs: Date.UTC(2026, 9, 21, 18), strefa: 'Europe/Warsaw', zdjecie: (x) => `/p/${x}` });
     expect([s.nazwa, s.okres, s.czas]).toEqual(['Counter from Oct 1, 18:40', 'Oct 1 – Oct 21', '18 h 10 min']);
     expect([czasPracy(45 * 60_000, j), czasPracy(2 * 3_600_000, j)]).toEqual(['45 min', '2 h']);

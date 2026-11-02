@@ -1,7 +1,7 @@
 // Trasa „/projekt/[id]”: ekran projektu (A5 partii 5; design-spec „Ekran projektu”, P-183 3a). Wejście: nazwa projektu na liczniku, lista projektów.
 // Potwierdzenia „Make another” i „Delete …” to alerty systemowe (design-spec „Usuwanie”, słownik „Delete {object}”); termin w treści = dzień
 // usunięcia + KOSZ_DNI. Po zapisie: ekran blokady i licznik (`poZmianie` / `poUsunieciu`, C2), ogłoszenie VoiceOver, model od nowa.
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { useFocusEffect, useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
 import { Projekt } from '../../src/ekrany/Projekt';
@@ -13,8 +13,9 @@ import { GrupaWzorow } from '../../src/ekrany/WzorGrupa';
 import { ArkuszFilmu, DodajFilm, WierszFilmu, type FilmProjektu } from '../../src/ekrany/WzorFilm';
 import { filmProjektu } from '../../src/przypadki-uzycia/film';
 import { miniaturyWzorow } from '../../src/kompozycja/miniatury';
+import { useStanSieci } from '../../src/kompozycja/stan-sieci';
 import { listaWzorow, type WzorNaLiscie } from '../../src/przypadki-uzycia/wzor';
-import { paneleE2e, siecWylaczona } from '../../src/platforma/tryb-e2e';
+import { paneleE2e } from '../../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../../src/platforma/zdjecia';
 import { dodajZdjecie, zdjecia } from '../../src/przypadki-uzycia/zdjecia';
 import { useKolory } from '../../src/ekrany/motyw';
@@ -34,6 +35,7 @@ import { sesjeProjektu, type SesjaNaEkranie } from '../../src/przypadki-uzycia/s
 import { stanCzasu } from '../../src/kompozycja/sesje';
 export default function EkranProjektu(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();
+  const siec = useStanSieci(kontener.porty.siec); // ADR-0031: film otwiera się według stanu sieci z portu (BR-WZR-007 S4)
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const naWierzchu = useIsFocused(); // arkusz skrzynki tylko na ekranie na wierzchu stosu
@@ -62,6 +64,7 @@ export default function EkranProjektu(): React.ReactElement {
     if (fp.ok) ustawFilm(fp.wartosc);
   }, [z, id, router, kontener]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
+  useEffect(() => kontener.wzor.k.naZmiane(() => { void wczytaj(); }), [kontener, wczytaj]); // skrzynka zmieniła stan (ponowienie po sieci, usunięcie wiersza) → wiersze wzorów od razu (ADR-0031 pkt 4)
   if (!w) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   if (arkuszFilmu) { // P-276: „Change link” = arkusz wypełniony, Save zastępuje (jeden film na projekt, P-218 (4))
     return (
@@ -122,7 +125,7 @@ export default function EkranProjektu(): React.ReactElement {
       skaner={kontener.wzor.platforma.skanerDostepny()} naOtworz={(wid) => void doWzoru({ id: wid })} naDodaj={(zr) => void doWzoru({ dodaj: zr })}
       naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid).then(wczytaj)}
       film={film
-        ? <WierszFilmu film={film} siec={siecWylaczona() ? 'brak' : 'jest'} t={t} system={systemAplikacji}
+        ? <WierszFilmu film={film} siec={siec} t={t} system={systemAplikacji}
             naZmien={() => ustawArkuszFilmu(true)} naUsun={() => void kontener.wzor.k.usunFilm(w.id).then(wczytaj)} />
         : <DodajFilm t={t} naDodaj={() => ustawArkuszFilmu(true)} />} />
   );
@@ -137,7 +140,7 @@ export default function EkranProjektu(): React.ReactElement {
         naOtworzCzesc={(cid) => { const l = czesc(cid)?.liczniki[0]; if (l) otworzLicznik(l.id); }}
         naOtworzLicznik={otworzLicznik}
         naDodajCzesc={() => formularz('czesc')} naDodajLicznik={() => formularz('licznik')}
-        naNotatka={() => formularz('notatka')} naNarzedzie={() => formularz('narzedzie')} naTermin={() => formularz('termin')}
+        naNotatka={() => formularz('notatka')} naNarzedzie={() => formularz('narzedzie')} naTermin={() => formularz('termin')} naWloczka={() => formularz('wloczki')}
         naEdytuj={() => ustawEdycje(true)} naKoniecEdycji={() => ustawEdycje(false)}
         naDataUkonczenia={(dzien) => void zmienDateUkonczenia(z, { projektId: w.id, ukonczonoDzien: dzien }).then(async (r) => { if (r.ok) await wczytaj(); })}
         naWznow={() => void wznowProjekt(z, { projektId: w.id }).then(async (r) => {

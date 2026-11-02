@@ -9,6 +9,7 @@ import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { systemAplikacji } from '../src/kompozycja/system';
 import { przygotujZgloszenie } from '../src/przypadki-uzycia/zgloszenie';
+import { zegarekOstatniaPartiaMs } from '../src/dane/repozytoria/ustawienia';
 
 export default function EkranZgloszenia(): React.ReactElement {
   const { kontener } = useAplikacja();
@@ -16,7 +17,7 @@ export default function EkranZgloszenia(): React.ReactElement {
   const k = useKolory();
   const [diag, ustaw] = useState<PoleDiagnostyki[] | null>(null);
   useEffect(() => {
-    void przygotujZgloszenie(kontener.z).then((w) => {
+    void Promise.all([przygotujZgloszenie(kontener.z), zegarekOstatniaPartiaMs(kontener.z.baza)]).then(([w, zegarekMs]) => {
       const c = Constants.platform?.ios;
       ustaw([
         { pole: 'wersja', wartosc: `${Constants.expoConfig?.version ?? '?'} (${Constants.expoConfig?.ios?.buildNumber ?? '?'})` },
@@ -24,7 +25,7 @@ export default function EkranZgloszenia(): React.ReactElement {
         { pole: 'model', wartosc: c?.model ?? Constants.deviceName ?? '?' },
         { pole: 'jezyk', wartosc: kontener.j.jezyk() }, // BR-DAN-010 (ER-45): język aplikacji w diagnostyce, też przy „Report a translation problem”
         { pole: 'synchronizacja', wartosc: kontener.z.synchronizacja ? kontener.z.synchronizacja.stan() : 'wylaczona' },
-        { pole: 'zegarek', wartosc: '—' },
+        { pole: 'zegarek', wartosc: zegarekMs === null ? 'brak' : `ostatni kontakt ${new Date(zegarekMs).toISOString().replace('.000Z', 'Z')}` }, // BR-DAN-011: czas ostatniej partii (UTC) albo brak kontaktu
         { pole: 'bledy', wartosc: w.ok ? w.wartosc.tresc : '—' },
       ]);
     });

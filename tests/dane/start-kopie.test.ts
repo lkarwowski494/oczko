@@ -20,7 +20,8 @@ describe('ścieżki danych i start nad 0.1.0', () => {
     const lib = '/kontener/Library';
     const sc = sciezkiDanych(lib);
     expect(sc.baza).toBe(join(lib, 'Application Support', 'oczko.db'));
-    for (const [nazwa, p] of Object.entries(sc)) {
+    expect(sc.kopiePrzed).toBe('/kontener/Documents/Backup'); // ADR-0028: jedyny wyjątek od ADR-0001 — kopie przed importem i usunięciem mają być widoczne w Plikach
+    for (const [nazwa, p] of Object.entries(sc).filter(([n]) => n !== 'kopiePrzed')) {
       expect({ nazwa, wApplicationSupport: p.startsWith(join(lib, 'Application Support') + '/') }).toEqual({ nazwa, wApplicationSupport: true });
       expect(p).not.toMatch(/\/(Caches|Documents|tmp)\//);
     }

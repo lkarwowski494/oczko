@@ -67,7 +67,7 @@ describe('Data and sync: przełącznik iCloud', () => {
   });
   test('niepełna historia z nowszej wersji: „Update Oczko…” (icloud.niepelna_nowsza) zamiast „Oczko keeps trying”', () => {
     const { rerender } = render(<StanDanych stan={stan()} t={t} icloud={icloud({ wlaczona: true, stan: 'aktywna', niepelna: true, niepelnaNowsza: true })} />);
-    expect(screen.getByText(/Update Oczko on this iPhone to see them/)).toBeTruthy();
+    expect(screen.getByText(/Update Oczko on this device to see them/)).toBeTruthy();
     expect(screen.queryByText(/Oczko keeps trying/)).toBeNull();
     rerender(<StanDanych stan={stan()} t={t} icloud={icloud({ wlaczona: true, stan: 'aktywna', niepelna: true })} />);
     expect(screen.getByText(/Oczko keeps trying/)).toBeTruthy();

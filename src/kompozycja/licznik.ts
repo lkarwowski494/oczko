@@ -8,17 +8,18 @@ import type { BanerLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from
 import type { DzialaniaLicznika, StanStartu, UslugiAplikacji } from '../ekrany/Aplikacja';
 import type { Tlumacz, WynikEkranu } from '../ekrany/wspolne';
 import { odswiezEkranBlokady, type ZaleznosciEkranuBlokady } from '../przypadki-uzycia/ekran-blokady';
-import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade } from '../przypadki-uzycia/licznik';
+import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade, wpiszWartosc } from '../przypadki-uzycia/licznik';
 import { naPierwszyPlan, przyTle, uruchomDane, type WynikStartuDanych } from '../przypadki-uzycia/start';
 import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
+import { startNaWzorze } from '../przypadki-uzycia/wzor-miejsce';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
 
-const miesiac = (dzien: string, j: string, dzienMiesiaca = false) =>
+export const miesiac = (dzien: string, j: string, dzienMiesiaca = false) =>
   new Intl.DateTimeFormat(j, { month: 'long', ...(dzienMiesiaca ? { day: 'numeric' } : {}), timeZone: 'UTC' })
     .format(new Date(Date.UTC(Number(dzien.slice(0, 4)), Number(dzien.slice(5, 7)) - 1, Number(dzien.slice(8, 10)) || 1)));
 
@@ -32,29 +33,34 @@ export function etykietaRobocza(utworzonoMs: number, terazMs: number, j: Jezyk, 
   return j.t('projekty.nazwa_robocza', { data });
 }
 
+/** Źródło serii w banerze: ekran blokady i zegarek mają własne zdania (S5); pozostałe źródła (aplikacja, synchronizacja, import) — zdanie z czasem trwania. */
+const zrodloBanera = (z: string): 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne' => (z === 'ekran_blokady' || z === 'zegarek' ? z : z === 'aplikacja' ? 'aplikacja' : 'inne');
+
 /** Stan ekranu z modelu odczytu; `null` = przed pierwszym +1 (licznik bez projektu z 0, NFR-PIE-001). */
 export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string; terazMs: number; strefa: string; baner: BanerLicznika; wibracje: boolean }): StanEkranuLicznika {
   const { j } = o;
   const mies = { nazwa: miesiac(o.dzis, j.jezyk()), wznowienie: miesiac(w ? w.wznowienie : o.dzis, j.jezyk(), true), rzedyDanych: w ? w.wartosc : 0 };
   if (!w) {
     return {
-      projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
+      rodzaj: 'rzedy', projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
       notatka: null, sesja: null, zablokowany: false, limit: { rodzaj: 'brak' }, miesiac: mies, baner: null, blizniak: null, wibracje: o.wibracje,
     };
   }
+  const oczka = w.rodzaj === 'oczka'; // licznik oczek nie ma celu (cel części jest w rzędach), celu dnia, przypomnień, powtórzeń, banera strażnika ani rzędu w robocie
   return {
+    rodzaj: w.rodzaj,
     projekt: w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa,
     czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
-    skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: w.znaczenie, cel: w.czesc.cel,
-    celDnia: w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: w.calosc === null ? null : { czesc: w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1
-    przypomnienie: w.przypomnienie,
-    powtorzenie: w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
+    skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,
+    celDnia: oczka || w.celDnia === null ? null : { rzedy: w.celDnia },
+    calosc: oczka || w.calosc === null ? null : { czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1; projekt roboczy: nazwa części to data, więc jej nie pokazujemy (F-46)
+    przypomnienie: oczka ? null : w.przypomnienie,
+    powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
     notatka: w.projekt.notatka || null,
     sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
     zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
-    baner: o.baner ?? (w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy } : null),
-    blizniak: w.blizniak, wibracje: o.wibracje,
+    baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy, zrodlo: zrodloBanera(w.seria.zrodlo), godzina: formatujGodzine(new Date(w.seria.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) } : null),
+    blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
   };
 }
 
@@ -66,17 +72,24 @@ function wejscie(w: WidokLicznika, przed: number): { rzad: number; tekst: string
   }
   return null;
 }
-/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel części. */
-function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean): ZdarzeniePlus[] {
+/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel dnia, cel części. */
+function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean, celDnia: boolean): ZdarzeniePlus[] {
   const z: ZdarzeniePlus[] = ['rzad'];
   if (sygnal) z.push('przypomnienie');
-  if (w.powtorzenie && w.powtorzenie.rzadW === 1 && w.wartosc > 0) z.push('koniec-powtorzenia');
+  if (w.powtorzenie && w.wartosc > 0 && w.wartosc % w.powtorzenie.dlugosc === 0) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
+  if (celDnia) z.push('cel-dnia'); // 07-jakosc-009: osiągnięcie celu dnia (RD-15), ten sam wzór co przypomnienie (BR-LIC-021)
   if (w.czesc.cel !== null && w.wartosc === w.czesc.cel) z.push('cel-czesci');
   return z;
 }
 
+/** Cel dnia (RD-15) osiągnięty właśnie tym +1: przed był poniżej, po jest na poziomie celu albo wyżej; bez punktu odniesienia (nowy dzień, inny projekt) bez sygnału. */
+function celDniaOsiagniety(przed: { projektId: string; dzien: string; rzedy: number } | null, w: WidokLicznika): boolean {
+  if (!przed || w.celDnia === null || w.zrobioneDzis === null) return false;
+  return przed.projektId === w.projektId && przed.dzien === w.dzis && przed.rzedy < w.celDnia && w.zrobioneDzis >= w.celDnia;
+}
+
 export type KompozycjaLicznika = {
-  przygotuj(): Promise<Wynik<{ cel: 'licznik' | 'lista' }>>;
+  przygotuj(): Promise<Wynik<{ cel: 'licznik' | 'lista' | 'wzor' }>>; // 'wzor': praca skończyła się na ekranie wzoru (07-jakosc-006, BR-PRJ-011 S1)
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
   otworz(licznikId: string): Promise<void>;
@@ -90,6 +103,11 @@ export type KompozycjaLicznika = {
   widok(): Promise<WidokLicznika | null>;
   /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. */
   poZmianie(): Promise<void>;
+  /**
+   * Wpisanie wartości z arkusza (F-45; 07-jakosc-011 S4, RD-13-W23): zapis, odświeżenie i — gdy nowy rząd w robocie ma przypomnienie — jedno wejście w rząd
+   * (najnowsze, nie każde pominięte). Mniejsza wartość nie daje sygnału (RD-13-W8). `wibracje` = preferencja haptyki.
+   */
+  wpisz(wartosc: number): Promise<WynikEkranu<{ wejscieWPrzypomnienie: ReturnType<typeof wejscie>; wibracje: boolean }>>;
   /** Po „Usuń wszystkie dane” albo imporcie „zastąp”: zapomniany licznik, ekran od zera (NFR-PIE-001). */
   zresetuj(): void;
   /** Etykieta projektu jak na ekranie (projekt roboczy przez t(), P-126 (1b)). */
@@ -101,7 +119,7 @@ export type KompozycjaLicznika = {
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
 /** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`. */
-export type OpcjeKompozycji = { wibracje(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
+export type OpcjeKompozycji = { wibracje(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
@@ -109,6 +127,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
   let aktywnosc = false;
+  /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
+  let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
   // P-287: +1 w toku (pierwsze tworzy projekt roboczy i ustawia licznikId). Odczyt ekranu rozpoczęty w tym czasie (przemontowanie po naPartie,
   // poZmianie, odswiez) czeka na zapis — inaczej nowy ekran pokazałby stan sprzed stuknięcia, a wynik +1 trafiłby do odmontowanego komponentu.
@@ -125,6 +145,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const r = await widokLicznika(z, { licznikId });
       if (r.ok) w = r.wartosc;
     }
+    zrobioneDzis = w && w.zrobioneDzis !== null ? { projektId: w.projektId, dzien: w.dzis, rzedy: w.zrobioneDzis } : null;
     const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje() });
     return { s: { ...s, konflikt: licznikId ? await liniaKonfliktu(licznikId) : null }, w };
   }
@@ -156,6 +177,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       licznikId = n.wartosc.licznikId;
       await zapamietajLicznik(z, { licznikId });
     }
+    const przed = zrobioneDzis; // stan sprzed tego +1 (ekran czyta go przy starcie i po każdym +1)
     const r = await dodajRzad(z, { licznikId });
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
@@ -163,7 +185,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     void poZapisie(w);
     if (!w) return { ok: false, powod: 'bledne_dane' };
     const sygnal = wejscie(w, r.wartosc.wartosc - 1);
-    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null), wejscieWPrzypomnienie: sygnal } };
+    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal } };
   }
 
   const k: KompozycjaLicznika = {
@@ -182,6 +204,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         const [p] = await z.baza.all<{ n: number }>('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL');
         if (p && p.n > 0) return { ok: true, wartosc: { cel: 'lista' } }; // moduly.md:238: miejsce w koszu → lista projektów
       }
+      if (licznikId) { const n = await startNaWzorze(z); if (n.ok && n.wartosc) return { ok: true, wartosc: { cel: 'wzor' } }; }
       return { ok: true, wartosc: { cel: 'licznik' } };
     },
     wersja: () => wersja,
@@ -226,6 +249,15 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         return { ok: true, wartosc: undefined };
       },
     },
+    async wpisz(wartosc) {
+      if (!licznikId) return { ok: false, powod: 'bledne_dane' };
+      const przed = (await stan()).w?.wartosc;
+      const r = await wpiszWartosc(z, { licznikId, wartosc });
+      if (!r.ok) return ekranu(r);
+      await k.poZmianie();
+      const { w } = await stan();
+      return { ok: true, wartosc: { wejscieWPrzypomnienie: w && przed !== undefined ? wejscie(w, przed) : null, wibracje: o.wibracje() } };
+    },
     nazwaProjektu: (w) => (w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa),
     async otworz(id) {
       licznikId = id;
@@ -237,7 +269,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       async start(): Promise<StanStartu> {
         const { s, w } = await stanPoZapisie();
         void poZapisie(w); // stan ekranu blokady po starcie (po scaleniu dziennika i potwierdzeniach zegarka)
-        return { licznik: s, ekranWlaczony: true }; // F-10: opcja z Ustawień (3C); domyślnie włączona
+        return { licznik: s, ekranWlaczony: o.ekranWlaczony?.() ?? true }; // F-10, BR-LIC-013/S2: preferencja „Keep screen on” (ADR-0029); domyślnie włączona
       },
       dodajRzad(): Promise<WynikPlus> {
         const p = plusZEkranu();
@@ -266,7 +298,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         if (!licznikId) return;
         const { w } = await stan();
         if (!w?.seria) return;
-        const r = await cofnijSerie(z, { licznikId, odZdarzeniaId: w.seria.odZdarzeniaId });
+        const r = await cofnijSerie(z, { licznikId, odZdarzeniaId: w.seria.odZdarzeniaId, zrodlo: 'pytanie-serii' });
         if (r.ok) baner = { rodzaj: 'cofnieto', n: w.seria.ile, wartosc: r.wartosc.wartosc };
       },
       async naOdblokuj() {

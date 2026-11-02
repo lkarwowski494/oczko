@@ -34,3 +34,23 @@ export function parsujLiczbe(tekst: string, jezyk: string): number | null {
   if (reszta.length > 0 || !/^\d*$/.test(cale ?? '') || (ulamek !== undefined && !/^\d*$/.test(ulamek)) || (cale ?? '') + (ulamek ?? '') === '') return null;
   return Number(`${cale || '0'}.${ulamek ?? ''}`.replace(/\.$/, ''));
 }
+
+/**
+ * Wpis liczby całkowitej ≥ 0 w zapisie regionu (BR-LIC-017, ER-43, S-40): cyfry ASCII albo cyfry regionu (np. ar-EG), opcjonalnie z separatorem tysięcy języka
+ * (pl: spacja zwykła, nierozdzielająca albo wąska; de: kropka; en: przecinek). Separator dziesiętny, znak, pusty zapis i grupy w złych miejscach = null
+ * (aplikacja nie zgaduje „1000” z „1,000” w pl). Wynik poza zakresem liczb całkowitych bezpiecznych w JS = null.
+ */
+export function parsujCalkowita(tekst: string, jezyk: string): number | null {
+  const cyfry = new Map<string, string>();
+  const f = new Intl.NumberFormat(jezyk, { useGrouping: false });
+  for (let d = 0; d <= 9; d++) cyfry.set(f.format(d), String(d));
+  const doAscii = (x: string) => Array.from(x, (c) => cyfry.get(c) ?? c).join('');
+  const t = doAscii(tekst.trim());
+  if (/^\d+$/.test(t)) return Number.isSafeInteger(Number(t)) ? Number(t) : null;
+  const sep = /^1(\D+)234/.exec(doAscii(new Intl.NumberFormat(jezyk).format(1234567)))?.[1];
+  if (sep === undefined) return null;
+  const grupa = /^\s$/.test(sep) ? '\\s' : sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (!new RegExp(`^\\d{1,3}(?:${grupa}\\d{2,3})+$`).test(t)) return null;
+  const n = Number(t.replace(new RegExp(grupa, 'g'), ''));
+  return Number.isSafeInteger(n) ? n : null;
+}

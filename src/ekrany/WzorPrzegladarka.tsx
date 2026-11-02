@@ -5,6 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { RYSIK_PODPOWIEDZ_MS } from '../konfiguracja';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { Narzedzie } from '../domena/rysik';
+import type { ChipNotatki } from '../domena/znacznik-wzoru';
+import { ArkuszNotatekWzoru } from './WzorNotatki';
+import { Menu, Pozycja } from './WzorMenu';
+import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
 import { cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
@@ -34,6 +38,18 @@ export type PropsPrzegladarki = {
   naCofnij(): void;
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
+  znacznik?: StanZnacznika | null;                // pas na stronie: pasek ustawiania (krokowiec rzędu), koniec strony, „przed schematem” (F-26)
+  razemStron?: number;
+  oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
+  naKierunekPrzytrzymania?(kierunek: 1 | -1): void;
+  naZmienKierunek?(kierunek: 1 | -1): void;       // „Change” w pasku znacznika
+  naKrokRzaduZnacznika?(delta: 1 | -1): void;     // krokowiec rzędu schematu (BR-WZR-003 S3)
+  naNastepnaStrona?(): void;                      // „Place on page n”
+  chipy?: ChipNotatki[];                          // chipy notatek strony (F-56): arkusz notatki albo lista, gdy chip jest otwarty
+  otwartyChip?: number | null;                    // rząd licznika chipu otwartego stuknięciem w widoku natywnym
+  naChip?(rzad: number | null): void;
+  naZmienNotatke?(id: string, tekst: string): Promise<boolean>;
+  naUsunNotatke?(id: string): Promise<boolean>;
   naObroc(): void;
   naZmienNazwe(): void;
   tylkoRysik?: boolean;                    // po pierwszym rysiku (P-218 Q2a): podpowiedź raz na otwarcie (P-284 (1) A)                    // ••• → „Rename” (design-spec W1a)
@@ -49,7 +65,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const st = style(k);
   const [menu, ustawMenu] = useState<'brak' | 'opcje' | 'wzory'>('brak');
   const [blad, ustawBlad] = useState(false);
-  const [pytanie, ustawPytanie] = useState(false); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
+  const [pytanie, ustawPytanie] = useState<'brak' | 'zaznacz' | 'zmien'>('brak'); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
+  const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
   const [notatka, ustawNotatke] = useState<'brak' | 'pasek' | 'arkusz'>('brak');
   const [tekst, ustawTekst] = useState('');
   const [podpowiedz, ustawPodpowiedz] = useState<'nie' | 'widac' | 'byla'>('nie'); // `wzor.rysik_podpowiedz` raz na otwarcie (P-284 (1) A)
@@ -60,8 +77,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     return () => clearTimeout(z);
   }, [p.tylkoRysik]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko przejście na rysik
   const [notatkaPo, ustawNotatkaPo] = useState(false); // po ustawieniu znacznika arkusz notatki otwiera się sam (design-spec)
-  const znacznikUstawiony = (kier: 1 | -1) => { p.naZaznaczRzad(kier); if (notatkaPo) { ustawNotatkaPo(false); ustawNotatke('arkusz'); } };
-  const zaznacz = () => { if (s.kierunek === 1 || s.kierunek === -1) znacznikUstawiony(s.kierunek); else ustawPytanie(true); };
+  const znacznikUstawiony = (kier: 1 | -1) => { p.naZaznaczRzad(kier); ustawUstawianie(true); if (notatkaPo) { ustawNotatkaPo(false); ustawNotatke('arkusz'); } };
+  const zaznacz = () => { if (s.kierunek === 1 || s.kierunek === -1) znacznikUstawiony(s.kierunek); else ustawPytanie('zaznacz'); };
   const ipad = s.uklad.klasa === 'regular';
   const tryb = s.narzedzie !== 'brak';
   const obok = s.uklad.wzor === 'obok';
@@ -70,7 +87,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const narzedzie = (n: Narzedzie, klucz: 'wzor.zakreslacz' | 'wzor.pioro' | 'wzor.gumka', id: string, znak: string) => (
     <Pressable key={id} accessibilityRole="button" accessibilityLabel={t(klucz)} accessibilityState={{ selected: s.narzedzie === n }}
       accessibilityValue={n === 'zakreslacz' ? { text: t('wzor.zakreslenia', { count: s.zakreslenia }) } : undefined}
-      onPress={() => p.naNarzedzie(s.narzedzie === n && !ipad ? 'brak' : n)} style={[st.ikona, s.narzedzie === n && st.wybrane]} testID={id}>
+      onPress={() => p.naNarzedzie(s.narzedzie === n ? 'brak' : n)} style={[st.ikona, s.narzedzie === n && st.wybrane]} testID={id}>
       <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>{znak}</Text>
     </Pressable>
   );
@@ -156,16 +173,18 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           </Pressable>
         </View>
       )}
-      {pytanie && (
-        <View style={st.informacja} accessibilityRole="summary" testID="wzor-kierunek">
-          <Text style={st.tresc}>{t('wzor.kierunek_pytanie')}</Text>
-          {([[-1, 'wzor.kierunek_gora', 'wzor.kierunek_gora_opis', '↑'], [1, 'wzor.kierunek_dol', 'wzor.kierunek_dol_opis', '↓']] as const).map(([kier, k1, k2, znak]) => (
-            <Pressable key={kier} accessibilityRole="button" accessibilityLabel={`${t(k1)}, ${t(k2)}`} onPress={() => { ustawPytanie(false); znacznikUstawiony(kier); }} style={st.pozycja}>
-              <Text style={st.tresc}>{`${znak} ${t(k1)}, ${t(k2)}`}</Text>
-            </Pressable>
-          ))}
-        </View>
+      <ArkuszNotatekWzoru t={t} chipy={p.chipy} otwartyChip={p.otwartyChip} naChip={p.naChip} naZmienNotatke={p.naZmienNotatke} naUsunNotatke={p.naUsunNotatke} potwierdz={p.potwierdz} naBlad={() => ustawBlad(true)} />
+      {(pytanie !== 'brak' || p.oczekujacePrzytrzymanie) && (
+        <PytanieKierunku t={t} naWybor={(kier) => {
+          const rodzaj = pytanie;
+          ustawPytanie('brak');
+          if (rodzaj === 'zaznacz') znacznikUstawiony(kier);
+          else if (rodzaj === 'zmien') p.naZmienKierunek?.(kier);
+          else { ustawUstawianie(true); p.naKierunekPrzytrzymania?.(kier); }
+        }} />
       )}
+      <PasekZnacznika t={t} znacznik={p.znacznik ?? null} ustawianie={ustawianie} razemStron={p.razemStron ?? 0} naGotowe={() => ustawUstawianie(false)} naKrok={(d) => p.naKrokRzaduZnacznika?.(d)}
+        naZmienKierunek={() => ustawPytanie('zmien')} naNastepnaStrona={() => { ustawUstawianie(true); p.naNastepnaStrona?.(); }} naPrzestaw={() => ustawUstawianie(true)} />
       {!s.word && <Text style={st.podpis} testID="wzor-zakreslenia">{t('wzor.zakreslenia', { count: s.zakreslenia })}</Text>}
       {tryb && !ipad && <Text style={st.podpis}>{t('wzor.zakreslacz_podpowiedz')}</Text>}
       <View style={[st.strona, ipad && !obok && st.stronaIpad]} testID="wzor-widok">
@@ -223,22 +242,6 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         </Menu>
       )}
     </View>
-  );
-}
-
-function Menu(p: { st: Style; zamknij(): void; children: React.ReactNode }) {
-  return (
-    <View style={p.st.menuTlo} accessibilityViewIsModal>
-      <Pressable style={StyleSheet.absoluteFill} onPress={p.zamknij} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
-      <ScrollView style={p.st.menu} accessibilityRole="menu">{p.children}</ScrollView>
-    </View>
-  );
-}
-function Pozycja(p: { st: Style; tekst: string; id: string; niszczaca?: boolean; onPress(): void }) {
-  return (
-    <Pressable accessibilityRole="menuitem" accessibilityLabel={p.tekst} onPress={p.onPress} style={p.st.pozycja} testID={p.id}>
-      <Text style={[p.st.tresc, p.niszczaca && p.st.niszczaca]}>{p.tekst}</Text>
-    </Pressable>
   );
 }
 

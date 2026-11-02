@@ -22,7 +22,7 @@ test('niepusty WAL: kopia powstaje z wierszem z WAL, `.db` bez zmian (SHA), `-wa
   spawnSync(process.execPath, ['-e', PISARZ, baza, join(__dirname, '../../src/dane/migracje/0001.sql')]);
   expect(statSync(`${baza}-wal`).size).toBeGreaterThan(0);
   const przed = sha256Pliku(baza);
-  const katalogi = { kopie: join(k, 'kopie'), tymczasowy: join(k, 'tmp') };
+  const katalogi = { kopie: join(k, 'kopie'), kopiePrzed: join(k, 'Documents', 'Backup'), tymczasowy: join(k, 'tmp') };
   for (const d of [katalogi.kopie, katalogi.tymczasowy, join(k, 'pliki')]) mkdirSync(d, { recursive: true });
   const w = await kopiaAwaryjna({ sciezkaBazy: baza, pliki: join(k, 'pliki'), zegar: zegarTestowy(), katalogi }).zapisz();
   expect(w?.licznosci.projekt).toBe(1);

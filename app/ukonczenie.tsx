@@ -1,7 +1,7 @@
 // Trasa „/ukonczenie?projekt=…”: karta ukończenia (U-9, BR-PRJ-015). „Done” → prośba o ocenę przez bramkę (P-160), potem lista projektów.
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Ukonczenie, type StanUkonczenia } from '../src/ekrany/Ukonczenie';
 import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
@@ -25,16 +25,19 @@ export default function EkranUkonczenia(): React.ReactElement {
   const [blad, ustawBlad] = useState(false);
   const obraz = useRef<View>(null); // obraz karty 1080 × 1350 (P-191 P10a, P-219 2A)
   const jezyk = kontener.j.jezyk();
-  useEffect(() => {
+  // Odświeżana po powrocie z arkusza wyboru włóczek i z „Edit stash” (07-jakosc-001): zapas i grupa włóczek na karcie od razu aktualne.
+  useFocusEffect(useCallback(() => {
     void kartaUkonczenia(kontener.z, { projektId: projekt }).then((w) => {
       const ch = kontener.z.zegar.teraz();
       if (w.ok) ustaw(stanUkonczenia(w.wartosc, { j: kontener.j, terazMs: ch.ms, strefa: ch.strefa, zdjecie: (sha) => kontener.z.magazyn.sciezka(sha) }));
     });
-  }, [kontener, projekt]);
+  }, [kontener, projekt]));
   if (!stan) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
   return (
     <Ukonczenie stan={{ ...stan, bladZapisu: blad }} t={kontener.j.t} oglos={oglos} system={systemAplikacji}
       liczby={{ formatuj: (n) => formatujLiczbe(n, jezyk, { maks: 2 }), parsuj: (x) => parsujLiczbe(x, jezyk) }}
+      naEdytujZapas={(id) => router.push({ pathname: '/wloczka', params: { id } })}
+      naWybierzWloczke={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'wloczki', projekt } })}
       naUdostepnij={() => void (async () => {
         const plik = await zrzutKarty(obraz).catch(() => null);
         if (!plik) { Alert.alert(kontener.j.t('licznik.blad_zapisu')); return; }

@@ -20,11 +20,13 @@ import { udostepnijPlik, wybierzArchiwum } from '../src/platforma/system-plikow-
 import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
+import { nazwaPliku } from '../src/dane/pliki/system';
 
 type Dane =
   | { rodzaj: 'eksport'; licznosci: string }
   | { rodzaj: 'wybor'; plik: string; licznosci: string }
   | { rodzaj: 'wynik'; tekst: string }
+  | { rodzaj: 'zastapiono'; kopia: string }
   | { rodzaj: 'blad' }
   | null;
 
@@ -34,7 +36,7 @@ export default function EkranUstawien(): React.ReactElement {
   const t = kontener.j.t;
   const z = kontener.z;
   const [dni, ustawDni] = useState<DniNaLiscie>(null);
-  const [wibracje, ustawWibracje] = useState(preferencje.stan().wibracje);
+  const [pref, ustawPref] = useState(preferencje.stan()); // migawka preferencji urządzenia (ADR-0029); zapis w bazie, przełącznik wraca przy błędzie
   const [dostep, ustawDostep] = useState(kontener.dostep.stan());
   const [dane, ustawDane] = useState<Dane>(null);
   const [ostatniEksport, ustawOstatni] = useState<string | null>(null);
@@ -52,6 +54,12 @@ export default function EkranUstawien(): React.ReactElement {
     return koniec;
   }, [kontener, z]));
 
+  /** ADR-0029: zapis w bazie przez kolejkę; migawka zmienia się po COMMIT, błąd = przełącznik wraca i komunikat `licznik.blad_zapisu`. */
+  async function zapiszPreferencje(zmiana: Parameters<typeof preferencje.zapisz>[1]): Promise<void> {
+    const w = await preferencje.zapisz(z, zmiana);
+    if (!w.ok) Alert.alert(t('ustawienia.tytul'), t('licznik.blad_zapisu'));
+    ustawPref({ ...preferencje.stan() });
+  }
   async function eksport(): Promise<string | null> {
     const w = await eksportuj(z, { katalogDocelowy: z.katalogi.tymczasowy });
     if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return null; }
@@ -73,9 +81,15 @@ export default function EkranUstawien(): React.ReactElement {
       }),
     });
     wybor.current = null;
+    if (!w.ok && w.powod === 'bledne_dane') { // F-32 (07-jakosc-031): obcy plik albo plik bez manifestu Oczka — mówimy wprost, bez „That didn't work”
+      ustawDane(null);
+      Alert.alert(t('import.nie_rozpoznano_tytul'), t('import.nie_rozpoznano_opis'));
+      return;
+    }
     if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return; }
     if (w.wartosc.tryb === 'anulowano') { ustawDane(null); return; }
     if (w.wartosc.tryb === 'zastap') licznik.zresetuj(); else await licznik.poZmianie();
+    if (w.wartosc.tryb === 'zastap' && w.wartosc.kopiaPrzed) { ustawDane({ rodzaj: 'zastapiono', kopia: nazwaPliku(w.wartosc.kopiaPrzed) }); return; } // ADR-0028: nazwa kopii z Plików, nie „Merged”
     ustawDane({ rodzaj: 'wynik', tekst: wynikScalenia(przed, w.wartosc.licznosci, t) });
   }
   useEffect(() => { if (plikImportu) void importZ(plikImportu); }, [plikImportu]); // eslint-disable-line react-hooks/exhaustive-deps -- raz na otwarty plik
@@ -92,6 +106,7 @@ export default function EkranUstawien(): React.ReactElement {
   const wynikDanych = dane === null ? null
     : dane.rodzaj === 'eksport' ? <View testID="eksport-wynik"><Tresc>{t('dane.eksport_gotowy_tytul')}</Tresc><Tresc testID="eksport-licznosci">{dane.licznosci}</Tresc></View>
     : dane.rodzaj === 'blad' ? <Tresc>{t('dane.blad')}</Tresc>
+    : dane.rodzaj === 'zastapiono' ? <Import wbudowany t={t} stan={{ rodzaj: 'zastapiono', kopia: dane.kopia }} naZastap={naZastap} naScal={() => undefined} naAnuluj={zamknijDane} />
     : <Import wbudowany t={t} stan={dane.rodzaj === 'wybor' ? { rodzaj: 'wybor', plik: dane.plik, licznosci: dane.licznosci } : { rodzaj: 'wybor', plik: '' }}
         wynik={dane.rodzaj === 'wynik' ? dane.tekst : undefined}
         naScal={() => wybor.current?.('scal')} naZastap={naZastap} naAnuluj={zamknijDane} />;
@@ -104,13 +119,14 @@ export default function EkranUstawien(): React.ReactElement {
   return (
     <Bezpieczny>
       <Ustawienia
-        stan={{ pro: dostep.aktywne, dni: dostep.pro ? null : dni, wibracje }}
+        stan={{ pro: dostep.aktywne, dni: dostep.pro ? null : dni, wibracje: pref.wibracje }}
         t={t}
         system={systemAplikacji}
         adresy={{ polityka: ADRESY.polityka, recenzja: ADRESY.recenzja }}
         naOferty={() => router.push('/oferty')}
         naWstecz={() => router.back()}
-        naWibracje={(w) => { preferencje.ustaw({ wibracje: w }); ustawWibracje(w); }}
+        naWibracje={(w) => void zapiszPreferencje({ wibracje: w })}
+        preferencje={{ ekranNieGasnie: pref.ekranNieGasnie, ukladMiar: pref.ukladMiar, naEkranNieGasnie: (w) => void zapiszPreferencje({ ekranNieGasnie: w }), naMiary: () => router.push('/miary') }}
         naZglosProblem={() => router.push('/zglos')}
         jezyk={{ stan: { wartosc: kontener.j.preferencja(), jezyk: kontener.j.jezyk() }, naJezyk: () => router.push('/jezyk'), naZglosTlumaczenie: () => router.push('/zglos') }}
         naZrodla={() => router.push('/zrodla')}

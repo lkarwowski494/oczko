@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.source         = { git: '' }
   s.static_framework = true
   s.swift_version  = '5.9'
-  s.frameworks     = 'PDFKit', 'PencilKit', 'WebKit', 'VisionKit', 'AVFoundation'
+  s.frameworks     = 'PDFKit', 'PencilKit', 'WebKit', 'VisionKit', 'AVFoundation', 'Network'
   s.dependency 'ExpoModulesCore'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'SWIFT_COMPILATION_MODE' => 'wholemodule' }
   s.source_files = ['ios/**/*.swift', 'Pakiet/Sources/OczkoWzorLogika/*.swift']

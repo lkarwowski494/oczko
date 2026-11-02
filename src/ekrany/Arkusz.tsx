@@ -18,7 +18,7 @@ type Pomiar = (f: (x: number, y: number, szer: number, wys: number) => void) => 
  * 119: pasek bez odstępu). iPad: arkusz na środku, system go przesuwa → pomiar w oknie (measureInWindow). `zmierz`: testy.
  */
 /** Przyciski arkusza formularza w nagłówku: Cancel (lewy) i Save albo Add (prawy, `zapisz`); testID jak dawniej w pasku (`arkusz-zamknij`, `formularz-zapisz`). */
-export type FormularzArkusza = { t: Tlumacz; naZapisz(): void; naAnuluj(): void; zapisz?: string; zapiszA11y?: string; testZapisz?: string; wylaczony?: boolean };
+export type FormularzArkusza = { t: Tlumacz; naZapisz(): void; naAnuluj(): void; anuluj?: string; zapisz?: string; zapiszA11y?: string; testZapisz?: string; wylaczony?: boolean };
 
 /** Arkusz decyzji: ✕ w prawym górnym rogu nagłówka (design-spec :111, słownik interakcji „Zamknij”; 04-studio-projektowe-004); tytuł przed ✕ w kolejności VoiceOver. */
 export type ZamknijArkusza = { etykieta: string; naZamknij(): void; testID?: string };
@@ -35,8 +35,8 @@ function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: Form
   return (
     <View style={st.arkusz} testID={p.testID}>
       <View style={st.naglowek} testID="arkusz-naglowek">
-        <Pressable accessibilityRole="button" accessibilityLabel={f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
-          <Text style={st.anuluj}>{f.t('wspolne.anuluj')}</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel={f.anuluj ?? f.t('wspolne.anuluj')} onPress={f.naAnuluj} style={st.akcja} testID="arkusz-zamknij">
+          <Text style={st.anuluj}>{f.anuluj ?? f.t('wspolne.anuluj')}</Text>
         </Pressable>
         <Text style={st.naglowekTytul} accessibilityRole="header">{p.tytul}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}
@@ -85,11 +85,11 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
 }
 
 type RodzajPrzycisku = 'glowny' | 'niszczacy' | 'drugi' | 'tekstowy'; // niszczacy: tylko arkusz decyzji o nieodwracalnym usunięciu, jeden na ekran (04 fix-8, P-275 (2))
-export function Przycisk(p: { tekst: string; etykieta?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean }): React.ReactElement {
+export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean }): React.ReactElement {
   const st = style(useKolory());
   const r = p.rodzaj ?? 'drugi';
   return (
-    <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} testID={p.testID}
+    <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony ? { disabled: true } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, p.wylaczony && st.wylaczony]}>
       <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>

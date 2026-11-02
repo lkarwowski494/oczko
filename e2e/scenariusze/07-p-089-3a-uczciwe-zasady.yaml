@@ -1,5 +1,6 @@
 # Okno „Uczciwe zasady” (pakiet podstawowy): P-089 (3a) — jednorazowe, po pierwszym ukończonym dniu z robótką, tylko wersja darmowa;
-# główny przycisk zamyka okno, link prowadzi do planów Pro; nigdy na ekranie licznika w trakcie liczenia (KP-10).
+# główny przycisk zamyka okno, link prowadzi do planów Pro; nigdy na ekranie licznika (BR-ZAK-006/S9, ER-46, O-05, 07-jakosc-022):
+# aplikacja otwiera się na liczniku bez okna, okno pojawia się dopiero na liście projektów.
 # Definicja „ukończonego dnia” [DO USTALENIA] Z07-09 (02): scenariusz przyjmuje propozycję 07 — otwarcie aplikacji następnego dnia po dniu z ≥ 1 +1.
 # Teksty okna: rola 04 (Z07-05, okno nienarysowane) — scenariusz używa tylko testID.
 appId: com.apps4brew.knitting
@@ -29,13 +30,16 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-11T20:00:00"
       oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- assertNotVisible: { id: "okno-uczciwe-zasady" } # licznik zostaje wolny od okna (S9)
+- tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 60000 }
 - assertVisible: { id: "uczciwe-zasady-zamknij" }
 - assertVisible: { id: "uczciwe-zasady-plany-pro" }
 - takeScreenshot: 07-okno-uczciwe-zasady
 - tapOn: { id: "uczciwe-zasady-zamknij" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
-- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "oferty-ekran" }
 # --- dzień 3: okno się nie powtarza ---
 - stopApp
@@ -45,6 +49,9 @@ tags:
       oczkoE2eTeraz: "2026-11-12T20:00:00"
       oczkoE2eSiec: "brak"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- assertNotVisible: { id: "okno-uczciwe-zasady" }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 # --- druga instalacja: link z okna prowadzi do planów Pro, „Not now” wraca do licznika ---
 - runFlow:
@@ -59,11 +66,14 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-21T20:00:00"
       oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- assertNotVisible: { id: "okno-uczciwe-zasady" }
+- tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 60000 }
 - tapOn: { id: "uczciwe-zasady-plany-pro" }
 - assertVisible: { id: "oferty-ekran" }
 - assertVisible: { id: "oferty-plan-dozywotni" }
 - takeScreenshot: 07-plany-z-okna
 - tapOn: { id: "oferty-nie-teraz" }
-- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }

@@ -12,11 +12,12 @@ export type LimitNaLiczniku =
 
 /** Baner pod tytułem (design-spec.md:35); `null` = nic (BR-LIC-019/S4). */
 export type BanerLicznika =
-  | { rodzaj: 'seria'; n: number; sekundy: number }   // „Added 3 rows in 1 s. Undo?”
+  | { rodzaj: 'seria'; n: number; sekundy: number; zrodlo: 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne'; godzina: string } // „Added 3 rows in 1 s. Undo?”; z ekranu blokady i zegarka: źródło i godzina serii (BR-LIC-019 S5)
   | { rodzaj: 'cofnieto'; n: number; wartosc: number } // „Removed 3 rows. Back to 30.”
   | null;
 
 export type StanEkranuLicznika = {
+  rodzaj: 'rzedy' | 'oczka';           // licznik oczek: „stitch” zamiast „row”, bez celu, przypomnień, powtórzeń i banera strażnika (BR-LIC-006, 07-jakosc-025)
   projekt: string | null;              // null: pierwszy licznik bez nazwy (BR-LIC-001, NFR-PIE-001)
   czesc: string | null;
   skonczone: number;                   // duża liczba = rzędy skończone (design-spec.md:30)
@@ -34,7 +35,7 @@ export type StanEkranuLicznika = {
   baner: BanerLicznika;
   blizniak: { rzad: number; notatka: string | null; przypomnienie: string | null } | null; // BR-PRJ-014/S2
   wibracje: boolean;                   // ustawienie (BR-LIC-020/S3)
-  calosc?: { czesc: string; rzedy: number } | null; // licznik sekcji: „{część} in total: N rows” (BR-LIC-018/S1, partia 5)
+  calosc?: { czesc: string | null; rzedy: number } | null; // licznik sekcji: „{część} in total: N rows” (BR-LIC-018/S1, partia 5); czesc null (projekt roboczy) = „Whole piece: N rows”
   konflikt?: KonfliktNaLiczniku;
 };
 

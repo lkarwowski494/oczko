@@ -37,6 +37,22 @@ export function dodajPrzypomnienie(z: Zaleznosci, w: { licznikId: string; od: nu
     return { ok: true, wartosc: { id } };
   });
 }
+/** Zmiana przypomnienia (F-06, 07-jakosc-011): ten sam wiersz i identyfikator; walidacja jak przy dodawaniu. Licznik i historia nietknięte. */
+export function zmienPrzypomnienie(z: Zaleznosci, w: { id: string; od: number; co: number; razy: number; tekst: string }): Promise<Wynik<void>> {
+  const plan = planPrzypomnien({ od: w.od, co: w.co, razy: w.razy });
+  if (!plan.ok || !calkowita(w.od, 1) || !calkowita(w.razy, 1) || typeof w.tekst !== 'string') return Promise.resolve(blad('bledne_dane'));
+  return operacjaZapisu(z, 'zmienPrzypomnienie', async (tx, teraz) => {
+    const r = await tx.run('UPDATE przypomnienie SET od_rzedu = ?, co_n = ?, razy = ?, tekst = ?, zmieniono_ms = ? WHERE id = ?', [w.od, w.co, w.razy, w.tekst.trim(), teraz, w.id]);
+    return r.zmiany === 1 ? OK : blad('bledne_dane');
+  });
+}
+/** Usunięcie przypomnienia (F-06, 07-jakosc-011): tylko ten wiersz; licznik, historia i inne przypomnienia zostają (znacznik usunięcia dla iCloud ustawia wyzwalacz schematu). */
+export function usunPrzypomnienie(z: Zaleznosci, w: { id: string }): Promise<Wynik<void>> {
+  return operacjaZapisu(z, 'usunPrzypomnienie', async (tx) => {
+    const r = await tx.run('DELETE FROM przypomnienie WHERE id = ?', [w.id]);
+    return r.zmiany === 1 ? OK : blad('bledne_dane');
+  });
+}
 /** Długość powtórzenia licznika (F-05, RD-12-W5: ≥ 1) i jego nazwa; `null` wyłącza powtórzenie. */
 export function ustawPowtorzenie(z: Zaleznosci, w: { licznikId: string; dlugosc: number | null; nazwa?: string }): Promise<Wynik<void>> {
   if (w.dlugosc !== null && !calkowita(w.dlugosc, 1)) return Promise.resolve(blad('bledne_dane'));

@@ -25,7 +25,7 @@ enum Pola {
     "projekt": ["drut_mm"],
     "wloczka": ["waga_motka_g", "dlugosc_motka_m", "motki"],
     "narzedzie": ["rozmiar_mm"],
-    "projekt_wloczka": ["zuzyto_motki"],
+    "projekt_wloczka": ["zuzyto_motki", "odjeto_motki"],
   ]
   static let zasob = "dane"
 }

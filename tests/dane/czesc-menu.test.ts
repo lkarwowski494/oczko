@@ -31,12 +31,12 @@ describe('menu •••: zapisy części i licznika', () => {
     expect((await widok(s)).przypomnienie).toEqual({ tekst: 'decrease at both ends', ktory: 1, razy: 5, nastepny: 12 });
   });
 
-  test('RD-12-W5: powtórzenie 0 → bledne_dane; 4 → „powtórzenie 2, rząd 2 z 4” przy 5 skończonych', async () => {
+  test('RD-12-W5: powtórzenie 0 → bledne_dane; 4 → „powtórzenie 2, rząd 1 z 4” przy 5 skończonych (RD-12: ⌊(5−1)/4⌋+1, ((5−1) mod 4)+1)', async () => {
     const s = await s0();
     expect(await ustawPowtorzenie(s.z, { licznikId: 'l1', dlugosc: 0 })).toEqual({ ok: false, powod: 'bledne_dane' });
     expect((await ustawPowtorzenie(s.z, { licznikId: 'l1', dlugosc: 4, nazwa: 'Warkocz' })).ok).toBe(true);
     const w = await widok(s);
-    expect([w.nazwa, w.powtorzenie]).toEqual(['Warkocz', { numer: 2, rzadW: 2, dlugosc: 4 }]);
+    expect([w.nazwa, w.powtorzenie]).toEqual(['Warkocz', { numer: 2, rzadW: 1, dlugosc: 4 }]);
   });
 });
 

@@ -8,6 +8,7 @@ export const STRAZNIK_OKNO_S = 2; // s; RD-17, P-047
 export const KOSZ_DNI = 30; // dni; P-026
 export const KROK_MOTKA = 0.5; // motki; krok krokowca zużycia na karcie ukończenia (design-spec „Zużycie włóczki przy ukończeniu”, P-126 (2a))
 export const KOPIA_PRZED_IMPORTEM_DNI = 30; // dni; ADR-0004
+export const KOPIA_PRZED_IMPORTEM_MAKS = 2; // najnowsze kopie `oczko-przed-importem-*` / `oczko-przed-usunieciem-*` w Documents/Backup (każdego rodzaju osobno); ADR-0028, [OCENA 05]: ok. 830 MB przy 415 MB na kopię
 export const SESJA_MAKS_H = 8; // h; P-072 (7a)
 export const SESJA_DNIA_MIN_MS = 60_000; // ms; P-195 Q3b: sesja stopera ≥ 1 min po korekcie czyni dzień dniem z robótką (czas w pełnych minutach)
 export const WERSJA_SCHEMATU = 1; // schemat.sql
@@ -34,9 +35,14 @@ export const KOPIE_RATUNKOWE_DNI = 30; // P-080, ADR-0020
 export const WZOR_MAKS_MB = 200; // MB; [OCENA] roli 05 (Z07-17): największy plik wzoru (rozszerzenie i import); do korekty po pomiarze
 export const MINIATURA_PT = 96; // pt; [OCENA 08], plan 1.1 pkt 7: szerokość miniatury pierwszej strony w wierszu wzoru (W8)
 export const RYSIK_PODPOWIEDZ_MS = 4000; // ms; [OCENA 08], P-284 (1) A: jak długo widać podpowiedź rysika (raz na otwarcie wzoru)
+export const POWIEKSZENIE_WZORU_MAKS = 16; // krotność dopasowania do szerokości; [OCENA 08], 07-jakosc-006: granica poprawności zapisanego powiększenia (widok natywny dodatkowo ogranicza maxScaleFactor PDFKit)
 export const RYSUNEK_ZAPIS_MS = 1000; // ms; ADR-0012 (uzupełnienie, Z07-17): najdłuższe opóźnienie zapisu rysunku
 export const SKRZYNKA_PORZUCONE_H = 1; // h; [OCENA] roli 05 (fix-7): katalog zlecenia bez manifestu usuwany po tym czasie
+export const SIEC_PONOWIENIE_MS = 5000; // ms; [OCENA] roli 05 (ADR-0031 pkt 4): odstęp przed ponownym przetworzeniem skrzynki po zdarzeniu sieci „jest”
 export const MIGAWKA_WERSJA = 1; // wersja koperty migawki projektów w App Group (P-220 N2)
 export const PLIKI_OCHRONA_MIN = 10; // min; [OCENA] roli 05 (Z07-15): plik młodszy nie jest sprzątany przy starcie (zapis pliku przed wierszem odwołania)
 /** ID produktów Pro: [DO USTALENIA] przy konfiguracji App Store Connect (P-038, P-089); tymczasowe jak w docs/monetyzacja/dostep.mjs. */
 export const PRODUKTY_PRO: readonly string[] = Object.freeze(['oczko.pro.lifetime', 'oczko.pro.monthly', 'oczko.pro.yearly']);
+
+/** Preferencje urządzenia (ADR-0029): wartości domyślne, gdy klucza w `ustawienie` brak albo zapis jest uszkodzony. Tylko preferencje interfejsu. */
+export const PREFERENCJE_DOMYSLNE: { readonly wibracje: boolean; readonly ekranNieGasnie: boolean; readonly ukladMiar: 'auto' | 'metric' | 'imperial' } = { wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' };

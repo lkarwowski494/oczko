@@ -3,7 +3,8 @@
 // Jedna transakcja w kolejce, bez czekania na nic poza bazą: odczyt → strażnik limitu → zdarzenie + wartość + dzień limitu + ostatnia praca → COMMIT;
 // haptyka, ekran, Live Activity i zegarek dopiero po wyniku (wołający). Błąd zapisu → ROLLBACK, `powod: 'zapis'`, wpis w `blad`.
 import type { Powod, Wynik } from '../domena/bledy';
-import { rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu } from '../domena/limit';
+import { celCofnieciaIndeks, type ZdarzenieCofniecia } from '../domena/cofniecie';
+import { cofniecieSerii, rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu, type ZrodloCofniecia } from '../domena/limit';
 import type { PortBazy } from '../domena/porty';
 import type { RodzajZdarzenia, STANY } from '../domena/stany';
 import { kodBledu } from '../dane/baza/bledy-sqlite';
@@ -11,30 +12,35 @@ import { zapiszBlad } from '../dane/repozytoria/bledy';
 import {
   dniLimituMiesiaca, dopiszZdarzenie, ostatniPlus, seriaOdKonca, stanLicznika, ustawStan, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie, type StanLicznika,
 } from '../dane/repozytoria/liczniki';
-import { liczbaLubNull, wiersze } from '../dane/repozytoria/wiersze';
+import { liczba, liczbaLubNull, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { dodajDni } from './daty';
 import { wKolejce } from './kolejka';
 import type { Zaleznosci } from './zaleznosci';
 
 export type RodzajLicznika = (typeof STANY)['licznik.rodzaj'][number];
 export type WynikZmiany = { wartosc: number; zdarzenieId: string };
+/** −1 przy 0 (BR-LIC-002 „Granica zera”): wartość bez zmiany i bez zdarzenia, więc `zdarzenieId` = null. */
+export type WynikOdjecia = { wartosc: number; zdarzenieId: string | null };
 
 type Zmiana = { rodzaj: RodzajZdarzenia; wartosc: number | null; wartoscPo: number; rodzice: string[]; cofa: string[] };
 const blad = (powod: Powod): { ok: false; powod: Powod } => ({ ok: false, powod });
 const czyBladDanych = (e: unknown): boolean => typeof e === 'object' && e !== null && 'kod' in e && e.kod === 'BLAD_DANYCH';
 
 /** Wspólna ścieżka każdej zmiany licznika; `okresl` liczy zmianę ze stanu odczytanego w tej samej transakcji. */
-function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana>>): Promise<Wynik<WynikZmiany>> {
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana>>): Promise<Wynik<WynikZmiany>>;
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana | null>>): Promise<Wynik<WynikOdjecia>>;
+function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: StanLicznika, tx: PortBazy) => Promise<Wynik<Zmiana | null>>): Promise<Wynik<WynikOdjecia>> {
   return wKolejce(z.baza, async () => {
     const teraz = z.zegar.teraz();
     try {
-      return await z.baza.transakcja(async (tx): Promise<Wynik<WynikZmiany>> => {
+      return await z.baza.transakcja(async (tx): Promise<Wynik<WynikOdjecia>> => {
         const s = await stanLicznika(tx, licznikId);
         if (!s) return blad('bledne_dane');
         if (s.usuniety) return blad('niedozwolone_przejscie'); // zmiana licznika w koszu (moduly.md, maszyna projektu)
         if (s.zablokowany) return blad('zablokowany'); // F-03
         const zm = await okresl(s, tx);
         if (!zm.ok) return zm;
+        if (zm.wartosc === null) return { ok: true, wartosc: { wartosc: s.wartosc, zdarzenieId: null } }; // bez zmiany: nic nie zapisujemy
         let dzien: DzienLimitu | null = null;
         if (wolaStraznika({ rodzaj: rodzajStraznika(zm.wartosc.rodzaj) })) {
           const start = startDnia({
@@ -65,8 +71,8 @@ const wynik = (w: Zmiana): Wynik<Zmiana> => ({ ok: true, wartosc: w });
 export function dodajRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'dodajRzad', async (s) => wynik({ rodzaj: 'plus', wartosc: null, wartoscPo: s.wartosc + 1, rodzice: rodzic(s), cofa: [] }));
 }
-export function odejmijRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
-  return zmien(z, w.licznikId, 'odejmijRzad', async (s) => wynik({ rodzaj: 'minus', wartosc: null, wartoscPo: Math.max(0, s.wartosc - 1), rodzice: rodzic(s), cofa: [] }));
+export function odejmijRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikOdjecia>> {
+  return zmien(z, w.licznikId, 'odejmijRzad', async (s): Promise<Wynik<Zmiana | null>> => s.wartosc === 0 ? { ok: true, wartosc: null } : wynik({ rodzaj: 'minus', wartosc: null, wartoscPo: s.wartosc - 1, rodzice: rodzic(s), cofa: [] }));
 }
 /** Wartość sprzed zdarzenia = wartość po jego rodzicu (historia liniowa w aplikacji; brak rodzica = 0). */
 async function wartoscPrzed(tx: PortBazy, rodzicId: string | undefined): Promise<number> {
@@ -74,25 +80,57 @@ async function wartoscPrzed(tx: PortBazy, rodzicId: string | undefined): Promise
   const r = await zdarzenie(tx, rodzicId);
   return r ? r.wartoscPo : 0;
 }
-/** Cofnięcie tylko ostatniej zmiany (P-091 (3a)): `cofa = [głowa]`, wartość sprzed niej. */
+/**
+ * Cofnięcie ostatniej zmiany, która nie jest już cofnięta (P-091 (3a), BR-LIC-003, 07-jakosc-021): `cofa = [cel]`, wartość sprzed celu.
+ * Głowa-cofnięcie i zmiany przez nie cofnięte są pomijane, więc drugie „Undo” cofa poprzednią zmianę, a nie ponawia cofniętej.
+ */
 export function cofnijOstatnie(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'cofnijOstatnie', async (s, tx) => {
     if (!s.glowa) return blad('niedozwolone_przejscie'); // nic do cofnięcia
-    const g = await zdarzenie(tx, s.glowa);
-    if (!g) return blad('bledne_dane');
-    const v = await wartoscPrzed(tx, g.rodzice[0]);
-    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [s.glowa] });
+    const lancuch: (ZdarzenieCofniecia & { rodzic: string | undefined })[] = [];
+    let cel: (typeof lancuch)[number] | undefined;
+    for (let id: string | undefined = s.glowa; id; id = lancuch[lancuch.length - 1]?.rodzic) {
+      const e = await zdarzenie(tx, id);
+      if (!e) return blad('bledne_dane');
+      lancuch.push({ id: e.id, rodzaj: e.rodzaj, cofa: e.cofa, rodzic: e.rodzice[0] });
+      const i = celCofnieciaIndeks(lancuch);
+      if (i !== null) { cel = lancuch[i]; break; }
+    }
+    if (!cel) return blad('niedozwolone_przejscie'); // wszystkie zmiany już cofnięte
+    const v = await wartoscPrzed(tx, cel.rodzic);
+    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [cel.id] });
   });
 }
-/** Cofnięcie serii na końcu historii, od zdarzenia `odZdarzeniaId` do głowy (F-02, F-47, P-091 (3a)); dzień limitu zostaje (źródło „historia”, L-19). */
-export function cofnijSerie(z: Zaleznosci, w: { licznikId: string; odZdarzeniaId: string }): Promise<Wynik<WynikZmiany>> {
+/**
+ * Cofnięcie serii na końcu historii, od zdarzenia `odZdarzeniaId` do głowy (F-02, F-47, P-091 (3a)).
+ * `zrodlo`: „pytanie-serii” (baner strażnika) zwraca dzień limitu, gdy seria zaczęła dzień i nie było w nim innych dodań ani wpisań (L-19, BR-LIC-019 S7);
+ * „historia” dnia nie zwraca (L-06). Zwrot w tej samej transakcji co cofnięcie.
+ */
+export function cofnijSerie(z: Zaleznosci, w: { licznikId: string; odZdarzeniaId: string; zrodlo: ZrodloCofniecia }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'cofnijSerie', async (s, tx) => {
     if (!s.glowa) return blad('niedozwolone_przejscie');
     const seria = await seriaOdKonca(tx, s.glowa, w.odZdarzeniaId);
     if (!seria) return blad('niedozwolone_przejscie'); // pomyłkę ze środka historii poprawia wpisanie wartości (M-08b)
     const v = await wartoscPrzed(tx, seria.rodzicPoczatku ?? undefined);
+    if (w.zrodlo === 'pytanie-serii') await zwrocDzienLimitu(tx, seria.ids);
     return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: seria.ids });
   });
+}
+/** Dzień limitu wraca z pytania o serię (L-19): reguła w domenie (`cofniecieSerii`), dane dnia z bazy; „inne dodania” = +1 i wpisania dnia poza serią (także cofnięte, L-19b). */
+async function zwrocDzienLimitu(tx: PortBazy, idSerii: readonly string[]): Promise<void> {
+  const pierwszy = idSerii[idSerii.length - 1]; // seriaOdKonca: od głowy wstecz, więc ostatni = pierwsze zdarzenie serii
+  if (pierwszy === undefined) return;
+  const [d] = await wiersze(tx.all('SELECT dzien FROM zdarzenie WHERE id = ?', [pierwszy]), 'zwrocDzienLimitu');
+  if (!d) return;
+  const dzien = tekst(d, 'dzien');
+  const [start] = await wiersze(tx.all('SELECT zdarzenie_id FROM dzien_limitu WHERE dzien = ?', [dzien]), 'zwrocDzienLimitu');
+  const ph = idSerii.map(() => '?').join(', ');
+  const [inne] = await wiersze(tx.all(`SELECT count(*) AS n FROM zdarzenie WHERE dzien = ? AND rodzaj IN ('plus', 'wpisanie') AND id NOT IN (${ph})`, [dzien, ...idSerii]), 'zwrocDzienLimitu');
+  const r = cofniecieSerii({
+    dni: await dniLimituMiesiaca(tx, dzien.slice(0, 7)), dzienSerii: dzien, seriaZaczelaDzien: !!start && idSerii.includes(tekst(start, 'zdarzenie_id')),
+    inneDodaniaDnia: inne ? liczba(inne, 'n') : 0, zrodlo: 'pytanie-serii',
+  });
+  if (r.zwrocono) await tx.run('DELETE FROM dzien_limitu WHERE dzien = ?', [dzien]);
 }
 export function wpiszWartosc(z: Zaleznosci, w: { licznikId: string; wartosc: number }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'wpiszWartosc', async (s) => {

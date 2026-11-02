@@ -3,12 +3,12 @@
 import type { StanHistorii } from '../ekrany/HistoriaDni';
 import type { WidokHistorii } from '../przypadki-uzycia/historia';
 import { czasPracy } from './ukonczenie';
-import type { Jezyk } from './licznik';
+import { etykietaRobocza, type Jezyk } from './licznik';
 
 const utc = (dzien: string) => new Date(Date.UTC(Number(dzien.slice(0, 4)), Number(dzien.slice(5, 7)) - 1, Number(dzien.slice(8, 10))));
 const fmt = (j: string, o: Intl.DateTimeFormatOptions, dzien: string) => new Intl.DateTimeFormat(j, { ...o, timeZone: 'UTC' }).format(utc(dzien));
 
-export function stanHistorii(w: WidokHistorii, o: { j: Jezyk; miesiac: string; wybrany: string; dzis: string }): StanHistorii {
+export function stanHistorii(w: WidokHistorii, o: { j: Jezyk; miesiac: string; wybrany: string; dzis: string; terazMs?: number; strefa?: string }): StanHistorii {
   const { t } = o.j, jz = o.j.jezyk();
   const pierwszy = `${o.miesiac}-01`;
   const dniMiesiaca = new Date(Date.UTC(Number(o.miesiac.slice(0, 4)), Number(o.miesiac.slice(5, 7)), 0)).getUTCDate();
@@ -32,6 +32,7 @@ export function stanHistorii(w: WidokHistorii, o: { j: Jezyk; miesiac: string; w
       id: p.projektId, nazwa: p.nazwa,
       linia: p.rzedy === 0 && p.czasMs !== null ? czasPracy(p.czasMs, o.j) : p.czasMs !== null ? t('dni.rzedy_czas', { rzedy: t('dni.rzedy', { count: p.rzedy }), czas: czasPracy(p.czasMs, o.j) }) : t('dni.rzedy', { count: p.rzedy }),
     })),
+    ukonczoneDnia: w.ukonczoneDnia.map((p) => (p.nienazwany && o.terazMs !== undefined && o.strefa !== undefined ? etykietaRobocza(p.utworzonoMs, o.terazMs, o.j, o.strefa) : p.nazwa)),
     tydzien: {
       naglowek: tydzienBiezacy ? t('dni.tydzien_biezacy') : t('dni.tydzien', { data: fmt(jz, { month: 'short', day: 'numeric' }, w.tydzien.od) }),
       linie: [czasLinia(w.tydzien.rzedy, w.tydzien.czasMs), ...(w.tydzien.ukonczone > 0 ? [t('dni.ukonczono', { count: w.tydzien.ukonczone })] : []), t('dni.tydzien_poprzedni', { count: w.tydzien.poprzednie.rzedy })],

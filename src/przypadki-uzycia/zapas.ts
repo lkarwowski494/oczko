@@ -120,3 +120,38 @@ export const usunWloczke = (z: Zaleznosci, w: { wloczkaId: string }) => koszZapa
 export const przywrocWloczke = (z: Zaleznosci, w: { wloczkaId: string }) => koszZapasu(z, 'wloczka', w.wloczkaId, false);
 export const usunNarzedzie = (z: Zaleznosci, w: { narzedzieId: string }) => koszZapasu(z, 'narzedzie', w.narzedzieId, true);
 export const przywrocNarzedzie = (z: Zaleznosci, w: { narzedzieId: string }) => koszZapasu(z, 'narzedzie', w.narzedzieId, false);
+
+// ── 07-jakosc-001 (F-37, BR-ZAP-002, design-spec „Partia 8” 001): przypisanie włóczek do projektu — jedyne miejsce zapisu `projekt_wloczka` poza potwierdzeniem zużycia.
+export type WyborWloczek = { zapas: { id: string; nazwa: string; motki: number }[]; wybrane: string[] };
+/** Zapas do wyboru (bez usuniętych, po nazwie) i włóczki już przypisane do projektu; włóczka z zapasem 0 też jest do wyboru (zużycie ponad zapas obsługuje karta). */
+export async function wyborWloczek(z: Pick<Zaleznosci, 'baza'>, w: { projektId: string }): Promise<Wynik<WyborWloczek>> {
+  const zapas = await wiersze(z.baza.all('SELECT id, nazwa, motki FROM wloczka WHERE usunieto_ms IS NULL ORDER BY nazwa COLLATE NOCASE, id'), 'wyborWloczek');
+  const wybrane = await wiersze(z.baza.all('SELECT wloczka_id FROM projekt_wloczka WHERE projekt_id = ? ORDER BY wloczka_id', [w.projektId]), 'wyborWloczek');
+  return { ok: true, wartosc: { zapas: zapas.map((x) => ({ id: tekst(x, 'id'), nazwa: tekst(x, 'nazwa'), motki: liczba(x, 'motki') })), wybrane: wybrane.map((x) => tekst(x, 'wloczka_id')) } };
+}
+/**
+ * Zbiór włóczek projektu = dokładnie `wloczkaIds`: brakujące wiersze dochodzą (zużycie NULL), odznaczone znikają, pozostałe zachowują zapisane zużycie.
+ * Zapas (`wloczka.motki`) zmienia się tylko przy odznaczeniu włóczki z potwierdzonym zużyciem (motki wracają, P-333) — poza tym zużycie zapisuje dopiero karta ukończenia. Nieznana albo usunięta włóczka, projekt w koszu: `bledne_dane`, nic się nie zapisuje.
+ */
+export function przypiszWloczki(z: Zaleznosci, w: { projektId: string; wloczkaIds: readonly string[] }): Promise<Wynik<void>> {
+  const ids = [...new Set(w.wloczkaIds)];
+  return operacjaZapisu(z, 'przypiszWloczki', async (tx, teraz) => {
+    const [p] = await wiersze(tx.all('SELECT 1 AS ok FROM projekt WHERE id = ? AND usunieto_ms IS NULL', [w.projektId]), 'przypiszWloczki');
+    if (!p) return blad('bledne_dane');
+    const istnieja = new Set((await wiersze(tx.all('SELECT id FROM wloczka WHERE usunieto_ms IS NULL'), 'przypiszWloczki')).map((x) => tekst(x, 'id')));
+    const byly = new Set((await wiersze(tx.all('SELECT wloczka_id FROM projekt_wloczka WHERE projekt_id = ?', [w.projektId]), 'przypiszWloczki')).map((x) => tekst(x, 'wloczka_id')));
+    if (ids.some((id) => !istnieja.has(id) && !byly.has(id))) return blad('bledne_dane'); // włóczka już przypisana (np. potem wrzucona do kosza) może zostać
+    for (const id of byly) {
+      if (ids.includes(id)) continue;
+      // P-333/P-334, zasada 10: potwierdzone zużycie pomniejszyło zapas o `odjeto_motki`, więc usunięcie powiązania zwraca dokładnie tyle w tej samej transakcji.
+      const [byl] = await wiersze(tx.all('SELECT odjeto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]), 'przypiszWloczki');
+      const zuzyto = byl ? liczbaLubNull(byl, 'odjeto_motki') : null; // zwrot = faktycznie odjęte (P-334), nie wpisane zużycie; NULL (np. stare archiwum) = nic do zwrotu
+      await tx.run('DELETE FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, id]);
+      if (zuzyto !== null && zuzyto > 0) await tx.run('UPDATE wloczka SET motki = motki + ?, zmieniono_ms = ? WHERE id = ?', [zuzyto, teraz, id]);
+    }
+    for (const id of ids) {
+      if (!byly.has(id)) await tx.run('INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, zmieniono_ms) VALUES (?, ?, NULL, ?)', [w.projektId, id, teraz]);
+    }
+    return { ok: true, wartosc: undefined };
+  });
+}

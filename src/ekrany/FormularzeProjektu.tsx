@@ -190,3 +190,40 @@ export function FormularzTerminu(p: {
     </Arkusz>
   );
 }
+
+/**
+ * Włóczki projektu (F-37, BR-ZAP-002; design-spec „Partia 8” 001): zapas jako wiersze z polem wyboru (kwadrat ze znakiem ✓, `checkbox`; stan niesie znak, nie kolor),
+ * druga linia „{n} skeins in your stash”; włóczka z zapasem 0 też jest do wyboru. Nowo dodana włóczka (po powrocie z „Add yarn”) jest od razu zaznaczona.
+ */
+export function FormularzWloczekProjektu(p: {
+  t: Tlumacz; zapas: { id: string; nazwa: string; motki: number }[]; poczatkowe: string[]; naZapisz: Zapis<string[]>; naAnuluj(): void; naDodajWloczke(): void;
+}): React.ReactElement {
+  const { t } = p;
+  const k = useKolory();
+  const [wybrane, ustaw] = useState<string[]>(p.poczatkowe);
+  const [znane, ustawZnane] = useState<string[]>(p.zapas.map((x) => x.id));
+  const [blad, zapisz] = useZapis();
+  useEffect(() => { // włóczka dodana w międzyczasie: zaznaczona, o ile nie było jej na liście przy otwarciu
+    const nowe = p.zapas.map((x) => x.id).filter((id) => !znane.includes(id));
+    if (nowe.length > 0) { ustawZnane((z) => [...z, ...nowe]); ustaw((w) => [...w, ...nowe]); }
+  }, [p.zapas, znane]);
+  const przelacz = (id: string) => ustaw((w) => (w.includes(id) ? w.filter((x) => x !== id) : [...w, id]));
+  return (
+    <Arkusz tytul={t('formularz.wloczka_tytul')} testID="wloczka-wybor"
+      formularz={{ t, naAnuluj: p.naAnuluj, naZapisz: () => zapisz(p.naZapisz, wybrane), wylaczony: p.zapas.length === 0 }}>
+      <Tresc podpis>{t('formularz.wloczka_opis')}</Tresc>
+      {p.zapas.length === 0 ? <Tresc testID="wloczka-pusto">{t('formularz.wloczka_pusto')}</Tresc> : p.zapas.map((x) => {
+        const zazn = wybrane.includes(x.id);
+        return (
+          <Pressable key={x.id} accessibilityRole="checkbox" accessibilityState={{ checked: zazn }} accessibilityLabel={t('formularz.wloczka_wiersz_a11y', { nazwa: x.nazwa, count: x.motki })}
+            onPress={() => przelacz(x.id)} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44 }} testID={`wloczka-wybor-${x.id}`}>
+            <Text style={{ color: k.grafit, fontSize: 20, width: 28, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: 4 }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{zazn ? '✓' : ' '}</Text>
+            <Text style={{ flex: 1, color: k.grafit }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{x.nazwa}{'\n'}{t('ukonczenie.w_zapasie', { count: x.motki })}</Text>
+          </Pressable>
+        );
+      })}
+      <Przycisk tekst={t('zapas.dodaj')} onPress={p.naDodajWloczke} rodzaj="tekstowy" testID="wloczka-dodaj" />
+      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+    </Arkusz>
+  );
+}

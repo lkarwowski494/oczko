@@ -47,7 +47,21 @@
     "cel_dnia_other": "Today’s goal: {{count}} rows",
     "calosc_one": "{{czesc}} in total: {{count}} row",
     "calosc_other": "{{czesc}} in total: {{count}} rows",
-    "wzor_a11y": "Pattern"
+    "wzor_a11y": "Pattern",
+    "jednostka_oczka_one": "stitch",
+    "jednostka_oczka_other": "stitches",
+    "plus_oczka": "+1 stitch",
+    "podpis_plus_oczka": "tap for each stitch",
+    "plus_a11y_oczka": "Add stitch",
+    "minus_a11y_oczka": "Remove stitch",
+    "po_dodaniu_oczka_one": "{{count}} stitch.",
+    "po_dodaniu_oczka_other": "{{count}} stitches.",
+    "znaczniki_sesji_oczka_one": "Marks this session: {{count}} stitch since {{godzina}}",
+    "znaczniki_sesji_oczka_other": "Marks this session: {{count}} stitches since {{godzina}}",
+    "seria_blokada_one": "Added {{count}} row from the lock screen at {{godzina}}. Undo?",
+    "seria_blokada_other": "Added {{count}} rows from the lock screen at {{godzina}}. Undo?",
+    "seria_zegarek_one": "Added {{count}} row on your watch at {{godzina}}. Undo?",
+    "seria_zegarek_other": "Added {{count}} rows on your watch at {{godzina}}. Undo?"
   },
   "limit": {
     "zawczasu_one": "No free crafting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",
@@ -79,8 +93,21 @@
     "eksport": "Export all data",
     "import": "Import a backup",
     "usun_wszystko": "Delete all data",
-    "usun_pytanie": "Delete all projects, history and settings on this iPhone? This can’t be undone.",
-    "usun_potwierdz": "Delete all data"
+    "usun_pytanie": "This removes all projects, counters, history, patterns and photos from this device.",
+    "usun_potwierdz": "Delete all data",
+    "usun_pro": "Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.",
+    "usun_kopia": "Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.",
+    "usun_kopia_blad": "Oczko couldn’t save a copy, so nothing was deleted. Free some space and try again.",
+    "ekran_nie_gasnie": "Keep screen on while counting",
+    "ekran_nie_gasnie_opis": "The screen stays on while the counter is open. Turning it off can save battery.",
+    "miary_auto": "Automatic",
+    "miary_metric": "Metric",
+    "miary_metric_opis": "mm, cm, g",
+    "miary_imperial": "Imperial",
+    "miary_imperial_opis": "in, oz",
+    "miary_opis": "Changes how sizes and lengths are shown and entered. Your saved data doesn’t change.",
+    "pro_wlaczone": "On",
+    "grupa_liczenie": "Counting"
   },
   "aktywnosc": {
     "plus": "+1 row",
@@ -151,7 +178,11 @@
     "kosz_a11y_one": "Recently deleted, {{count}} item",
     "kosz_a11y_other": "Recently deleted, {{count}} items",
     "wiersz": "{{czesc}} · row {{n}}",
-    "wiersz_cel": "{{czesc}} · row {{n}} of {{cel}}"
+    "wiersz_cel": "{{czesc}} · row {{n}} of {{cel}}",
+    "ukonczono_wiersz": "Finished {{data}} · {{czas}}",
+    "ukonczono_bez_czasu": "Finished {{data}}",
+    "ukonczono_a11y": "{{nazwa}}, finished {{data}}, {{czas}}",
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, finished {{data}}"
   },
   "historia": {
     "pusto": "No changes yet.",
@@ -159,7 +190,14 @@
     "wpis_opis": "{{czas}} · {{z}} → {{na}} ({{opis}})",
     "opis_zerowanie": "reset",
     "opis_wpisanie": "entered",
-    "opis_cofniecie": "undone"
+    "opis_cofniecie": "undone",
+    "seria_one": "{{count}} row in {{czas}}",
+    "seria_other": "{{count}} rows in {{czas}}",
+    "cofnij_serie_one": "Undo {{count}} row",
+    "cofnij_serie_other": "Undo {{count}} rows",
+    "cofnieto": "Undone",
+    "starszy_info": "Only the latest change can be undone. To fix this one, enter the right number.",
+    "wpisz": "Enter the right number"
   },
   "menu": {
     "nazwa": "Name project and part",
@@ -244,7 +282,12 @@
     "sesja_sprawdz_one": "Oczko stopped this timer after {{count}} hour. Set when you really stopped.",
     "sesja_sprawdz_other": "Oczko stopped this timer after {{count}} hours. Set when you really stopped.",
     "sesja_przerwy": "This session had {{czas}} of pauses. After you change the times, it counts from start to end.",
-    "termin_osiagniety": "The goal is reached, so there’s no daily goal."
+    "termin_osiagniety": "The goal is reached, so there’s no daily goal.",
+    "wloczka_tytul": "Yarn for this project",
+    "wloczka_opis": "Choose what you’re using. When you finish, Oczko asks how many skeins you used and takes them from your stash.",
+    "wloczka_pusto": "No yarn in your stash yet. Add the yarn you’re using first, then choose it here.",
+    "wloczka_wiersz_a11y_one": "{{nazwa}}, {{count}} skein in your stash",
+    "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} skeins in your stash"
   },
   "ukonczenie": {
     "udostepnij": "Share",
@@ -269,7 +312,10 @@
     "zuzycie_ponad_zapas_one": "That’s more than the {{count}} skein in your stash. Your stash will show 0.",
     "zuzycie_ponad_zapas_other": "That’s more than the {{count}} skeins in your stash. Your stash will show 0.",
     "zapas_juz_pusty": "Your stash already shows 0 for this yarn.",
-    "edytuj_zapas": "Edit stash"
+    "edytuj_zapas": "Edit stash",
+    "bez_wloczki": "No yarn is chosen for this project, so your stash stays as it is.",
+    "wybierz_wloczke": "Choose yarn",
+    "edytuj_zapas_opis": "After you save, you come back to this card with the new number."
   },
   "projekt": {
     "czesc_cel_one": "{{rzedy}} of {{count}} row",
@@ -335,7 +381,12 @@
     "probka_wartosc_in_one": "{{p}} stitch / 4 in",
     "probka_wartosc_in_other": "{{p}} stitches / 4 in",
     "wzor": "Pattern",
-    "wzory": "Patterns"
+    "wzory": "Patterns",
+    "miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}",
+    "wloczka": "Yarn",
+    "wloczka_brak": "None",
+    "wloczki_one": "{{count}} yarn",
+    "wloczki_other": "{{count}} yarns"
   },
   "dni": {
     "dzien_one": "{{etykieta}} · {{count}} row",
@@ -386,7 +437,13 @@
     "zarzadzaj": "Manage subscription",
     "masz_pro": "You have Oczko Pro.",
     "brak_sieci": "Prices aren’t available right now. Check your connection.",
-    "ladowanie": "Loading plans…"
+    "ladowanie": "Loading plans…",
+    "czeka": "Waiting for approval. Oczko Pro turns on as soon as it’s approved.",
+    "czeka_przycisk": "Waiting for approval",
+    "blad_zakupu": "The purchase didn’t go through. Check your connection and try again.",
+    "przywracanie_nic": "No Oczko Pro purchase found for this Apple ID. If you bought it with another Apple ID, sign in with that one in Settings and try again.",
+    "przywracanie_blad": "Couldn’t restore purchases. Check your connection and try again.",
+    "pro_wlaczone": "Oczko Pro is on."
   },
   "uczciwe": {
     "tytul": "Your first crafting day is done",
@@ -412,7 +469,7 @@
     "import_plik": "File: {{plik}}",
     "scal": "Merge with what’s here",
     "zastap": "Replace what’s here",
-    "zastapiono": "Done. A copy of your data from before the import is saved as {{nazwa}} in {{miejsce}}.",
+    "zastapiono": "Oczko saved your previous data first as “{{kopia}}”. Find it in the Files app, in Oczko › Backup.",
     "konflikt_tytul": "Two versions of {{licznik}}",
     "konflikt_wybor_one": "{{count}} row · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} rows · {{urzadzenie}} · {{godzina}}",
@@ -428,7 +485,9 @@
     "nowe_other": "{{count}} new projects",
     "zaimportowano": "Merged. {{nowe}}. Now: {{licznosci}}.",
     "blad": "That didn’t work. Your data is unchanged.",
-    "eksport_gotowy_tytul": "Export ready"
+    "eksport_gotowy_tytul": "Export ready",
+    "zastapiono_tytul": "Data replaced",
+    "zastapiono_wroc": "To go back, open that file in Oczko and choose Replace."
   },
   "stan_danych": {
     "tytul": "Data and sync",
@@ -437,7 +496,8 @@
     "zapisane": "Everything is saved on this iPhone.",
     "wylaczona": "iCloud sync is off.",
     "aktywna": "iCloud sync is on.",
-    "zegarek_kontakt": "Last contact with your watch: {{data}}."
+    "zegarek_kontakt": "Last contact with your watch: {{data}}.",
+    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. They count toward your device’s iCloud backup, so delete the ones you no longer need."
   },
   "zglos": {
     "tytul": "Report a problem",
@@ -750,7 +810,19 @@
     "blad_strona": "Oczko can’t save this page",
     "blad_strona_opis": "The page asks you to sign in, or it has no text or pictures. Nothing was added. Open it in your browser, save it as a PDF and add the PDF.",
     "brak_aparatu_opis": "To scan pattern pages, allow camera access in Settings. You can still choose photos or a file.",
-    "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF."
+    "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF.",
+    "notatka_chip": "Row {{n}}: {{tekst}}",
+    "notatka_chip_a11y": "Note on row {{n}}: {{tekst}}. Open",
+    "notatki_wiele_one": "{{count}} note",
+    "notatki_wiele_other": "{{count}} notes",
+    "notatki_tytul": "Notes on page {{strona}}",
+    "notatka_tytul": "Note for row {{n}}",
+    "notatka_usun": "Delete note",
+    "notatka_usun_tytul": "Delete this note?",
+    "notatka_usun_opis": "It’s removed from the pattern and from row {{n}}.",
+    "notatka_edytuj": "Edit",
+    "przed_schematem": "Before the pattern",
+    "znacznik_napis": "Row {{n}}"
   },
   "udostepnij": {
     "tytul": "Add to Oczko",
@@ -783,20 +855,20 @@
     "przelacznik": "Sync with iCloud",
     "opis": "Keeps projects, patterns and history the same on your devices. Your data goes only to your own iCloud; Oczko has no server.",
     "wlacz_tytul": "Turn on iCloud sync?",
-    "wlacz_opis": "Projects on this iPhone and those already in your iCloud are combined. Nothing is deleted. If a counter has different values, Oczko shows both and you choose.",
+    "wlacz_opis": "Projects on this device and those already in your iCloud are combined. Nothing is deleted. If a counter has different values, Oczko shows both and you choose.",
     "wlacz_potwierdz": "Turn on",
     "wylacz_tytul": "Turn off iCloud sync?",
-    "wylacz_opis": "Everything stays on this iPhone. Changes here stop going to iCloud, and your other devices keep what they have.",
+    "wylacz_opis": "Everything stays on this device. Changes here stop going to iCloud, and your other devices keep what they have.",
     "wylacz_potwierdz": "Turn off",
     "synchronizuje": "Syncing…",
     "brak_konta": "iCloud isn’t available to Oczko",
-    "brak_konta_opis": "Check that you’re signed in to iCloud and that iCloud is on for Oczko in Settings. Everything stays saved on this iPhone.",
+    "brak_konta_opis": "Check that you’re signed in to iCloud and that iCloud is on for Oczko in Settings. Everything stays saved on this device.",
     "ustawienia": "Open Settings",
     "brak_miejsca": "Your iCloud storage is full",
-    "brak_miejsca_opis": "Changes aren’t syncing. They’re saved on this iPhone and will sync when there’s space.",
+    "brak_miejsca_opis": "Changes aren’t syncing. They’re saved on this device and will sync when there’s space.",
     "zarzadzaj": "Manage storage",
     "konto_zmienione_tytul": "A different iCloud account",
-    "konto_zmienione_opis": "This iPhone is now signed in to another iCloud account. Sync is paused and your data here is unchanged. Sync with this account? Your projects here and in that account are combined.",
+    "konto_zmienione_opis": "This device is now signed in to another iCloud account. Sync is paused and your data here is unchanged. Sync with this account? Your projects here and in that account are combined.",
     "polacz": "Sync with this account",
     "nie_synchronizuj": "Don’t sync",
     "konflikt_licznik": "Two versions of this counter",
@@ -808,7 +880,7 @@
     "konflikty_one": "{{count}} counter has two versions",
     "konflikty_other": "{{count}} counters have two versions",
     "niepelna": "Some changes from your other devices aren’t shown yet",
-    "niepelna_nowsza": "They come from a newer version of Oczko. Update Oczko on this iPhone to see them. Your counters here are unchanged.",
+    "niepelna_nowsza": "They come from a newer version of Oczko. Update Oczko on this device to see them. Your counters here are unchanged.",
     "niepelna_opis": "Oczko keeps trying. Your counters here are unchanged.",
     "zastap_wylacz": "Turn off iCloud sync first",
     "zastap_wylacz_opis": "To replace what’s here, iCloud sync needs to be off. Otherwise iCloud would bring the old data back. You can turn it on again afterwards.",
@@ -816,5 +888,21 @@
     "usun_z_icloud": "Also delete from iCloud",
     "usun_z_icloud_opis": "Your other devices lose these projects the next time they sync.",
     "usun_zostaje": "Data in iCloud and on your other devices stays."
+  },
+  "import": {
+    "nie_rozpoznano_tytul": "Oczko doesn’t recognize this file",
+    "nie_rozpoznano_opis": "Choose a file exported from Oczko. Nothing was changed."
+  },
+  "przyp": {
+    "menu": "Reminders",
+    "tytul": "Reminders",
+    "lista_opis": "Tap a reminder to change or delete it.",
+    "wiersz_one": "From row {{od}}, every row, {{razy}}×",
+    "wiersz_other": "From row {{od}}, every {{count}} rows, {{razy}}×",
+    "edytuj_tytul": "Edit reminder",
+    "usun": "Delete reminder",
+    "usun_tytul": "Delete this reminder?",
+    "usun_opis": "Oczko stops reminding you about “{{tekst}}”. Your count and history stay as they are.",
+    "wiersz_a11y": "{{tekst}}, {{opis}}. Edit"
   }
 }

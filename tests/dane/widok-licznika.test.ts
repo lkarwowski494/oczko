@@ -78,7 +78,7 @@ describe('widokLicznika: dane ekranu licznika z bazy', () => {
       zdarzenie('s3', 'l1', 'plus', 4, ['s2'], T0 + 5 * MIN + 800),
       ustawGlowe('l1', 4, 's3'),
     ], T0 + 5 * MIN + 1000);
-    expect((await widok(s)).seria).toEqual({ ile: 3, sekundy: 1, odZdarzeniaId: 's1' });
+    expect((await widok(s)).seria).toEqual({ ile: 3, sekundy: 1, odZdarzeniaId: 's1', zrodlo: 'aplikacja', odMs: T0 + 5 * MIN }); // 07-jakosc-014: źródło i początek serii dla banera (S5)
     await wykonaj(s.baza, [zdarzenie('m1', 'l1', 'minus', 3, ['s3'], T0 + 6 * MIN), ustawGlowe('l1', 3, 'm1')]);
     expect((await widok(s)).seria).toBeNull();
   });

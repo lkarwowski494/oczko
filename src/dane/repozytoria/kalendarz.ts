@@ -52,6 +52,13 @@ export async function szczegolyDnia(baza: PortBazy, dzien: string): Promise<Proj
   return wynik;
 }
 
+/** Projekty ukończone w danym dniu lokalnym (`ukonczono_dzien`, BR-PRJ-013: zmiana daty przenosi ukończenie); kolejność: chwila ukończenia. */
+export type UkonczonyDnia = { projektId: string; nazwa: string; nienazwany: boolean; utworzonoMs: number };
+export async function ukonczoneDnia(baza: PortBazy, dzien: string): Promise<UkonczonyDnia[]> {
+  const r = await wiersze(baza.all('SELECT id, nazwa, nienazwany, utworzono_ms FROM projekt WHERE ukonczono_dzien = ? AND usunieto_ms IS NULL ORDER BY ukonczono_ms, id', [dzien]), 'ukonczoneDnia');
+  return r.map((x) => ({ projektId: tekst(x, 'id'), nazwa: tekst(x, 'nazwa'), nienazwany: liczba(x, 'nienazwany') === 1, utworzonoMs: liczba(x, 'utworzono_ms') }));
+}
+
 /** `pierwszyDzienTygodnia`: 1 = poniedziałek … 7 = niedziela; w aplikacji zawsze `PIERWSZY_DZIEN_TYGODNIA` = 1 (P-110 Q7, moduly.md „Czas w przypadkach użycia”). */
 export type Podsumowanie = { od: string; do: string; rzedy: number; czasMs: number | null; ukonczone: number; poprzednie: { rzedy: number } };
 async function rzedyOkresu(baza: PortBazy, od: string, doWyl: string): Promise<number> {

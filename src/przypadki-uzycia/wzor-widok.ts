@@ -1,11 +1,12 @@
 // Przeglądarka wzoru: obrót strony (P-246 S3a; P-218 (2): plik bez zmian) i model odczytu widoku (moduly.md „Kontrakt partii 6”: widok natywny tylko
 // rysuje wynik `polozenieZnacznika`). Wydzielone z wzor.ts (limit rozmiaru pliku, granice ROZMIAR).
 import type { Wynik } from '../domena/bledy';
-import { polozenieZnacznika } from '../domena/znacznik-wzoru';
-import { znacznikWzoru } from '../dane/repozytoria/wzory';
+import { chipyNotatek, polozenieZnacznika, type ChipNotatki } from '../domena/znacznik-wzoru';
+import { notatkiWzoruZId, znacznikWzoru } from '../dane/repozytoria/wzory';
 import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { wzorDoZapisu, zapiszRysunek } from './wzor';
+import { pozycjaWzoru, type PozycjaWzoru } from './wzor-miejsce';
 import { lista, polacz } from '../dane/pliki/system';
 import type { ZaleznosciPlikow } from './zaleznosci';
 
@@ -40,6 +41,8 @@ export type WidokWzoru = {
   oryginal: string | null;
   rysunki: { strona: number; plik: string }[];
   obroty: Record<number, KatObrotu>;
+  notatki: ChipNotatki[];                         // chipy notatek na stronie znacznika (F-56, P-330 2A)
+  miejsce: PozycjaWzoru | null;                   // 07-jakosc-006: pozycja z `ostatnie_miejsce`, tylko dla ostatnio oglądanego wzoru
   znacznik: { licznikId: string; strona: number; rzad: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1 } | null;
 };
 /** Model odczytu przeglądarki (moduly.md „Kontrakt partii 6”: widok natywny tylko rysuje wynik `polozenieZnacznika`). */
@@ -53,16 +56,18 @@ export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string }): Promise<
     const obroty: Record<number, KatObrotu> = {};
     for (const [k, v] of Object.entries(JSON.parse(tekst(r, 'obroty')) as Record<string, unknown>)) if (/^\d+$/.test(k) && (v === 90 || v === 180 || v === 270)) obroty[Number(k)] = v;
     let znacznik: WidokWzoru['znacznik'] = null;
+    let notatki: ChipNotatki[] = [];
     const zn = await znacznikWzoru(tx, w.wzorId);
     if (zn) {
       const [l] = await wiersze(tx.all('SELECT wartosc FROM licznik WHERE id = ?', [zn.licznikId]), 'widokWzoru');
       const p = l ? polozenieZnacznika(zn, liczba(l, 'wartosc')) : null;
+      if (p?.ok) notatki = chipyNotatek(zn, await notatkiWzoruZId(tx, w.wzorId));
       if (p?.ok) znacznik = { licznikId: zn.licznikId, strona: p.wartosc.strona, rzad: p.wartosc.rzad, y: p.wartosc.y, wysokosc: zn.wysokoscRzedu, pozaStrona: p.wartosc.pozaStrona, przedSchematem: p.wartosc.przedSchematem, kierunek: zn.kierunek };
     }
     return { ok: true, wartosc: {
       wzorId: w.wzorId, projektId: tekst(r, 'projekt_id'), nazwa: tekst(r, 'nazwa'), zrodlo: tekst(r, 'zrodlo'),
       plikPdf: pdf ? z.magazyn.sciezka(pdf) : null, oryginal: oryg ? z.magazyn.sciezka(oryg) : null,
-      rysunki: rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), obroty, znacznik,
+      rysunki: rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), obroty, znacznik, notatki, miejsce: await pozycjaWzoru(tx, w.wzorId),
     } };
   });
 }

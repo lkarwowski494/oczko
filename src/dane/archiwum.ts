@@ -1,7 +1,7 @@
 // Archiwum `.oczko` (ADR-0004, dane.md „Kopie i eksport”): ZIP z manifest.json, oczko.db (VACUUM INTO) i pliki/<sha256>.<rozszerzenie>.
 // sygnatura: propozycja 07, zatwierdzona w fix 05 2026-10-25 (Z07-22). ZIP i SHA-256 w TS (P-120 Q2a): src/dane/archiwum/.
 import type { Powod, Wynik } from '../domena/bledy';
-import type { ArchiwumSprawdzone, Katalogi, Licznosci, MagazynPlikow, Manifest, Migruj, PortArchiwum, PortBazy, Zegar } from '../domena/porty';
+import type { ArchiwumSprawdzone, Katalogi, Licznosci, MagazynPlikow, Manifest, Migruj, PortArchiwum, PortBazy, RodzajKopiiPrzed, Zegar } from '../domena/porty';
 import { ROZSZERZENIE_ARCHIWUM, WERSJA_FORMATU_ARCHIWUM, WERSJA_SCHEMATU, ZAPAS_MIEJSCA_EKSPORTU } from '../konfiguracja';
 import { otworzPortExpo } from './baza/adapter-expo';
 import { powodBledu } from './baza/bledy-sqlite';
@@ -74,15 +74,17 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
     return ((s ? liczba(s, 'bajty') : 0) + (p ? liczba(p, 'bajty') : 0)) * ZAPAS_MIEJSCA_EKSPORTU;
   }
 
-  return {
+  const archiwum: PortArchiwum = {
     /** VACUUM INTO + pliki + manifest; przed zapisem sprawdzenie miejsca, po błędzie żaden plik nie zostaje w katalogu docelowym. */
-    async zapisz(katalogDocelowy) {
+    async zapisz(katalogDocelowy, opcje) {
       if ((await z.magazyn.wolneMiejsce()) < (await potrzebneMiejsce())) return blad('brak_miejsca'); // ADR-0004, ŚU-17
       const teraz = z.zegar.teraz();
       const baza = polacz(z.katalogi.tymczasowy, `eksport-${teraz.ms}.db`);
-      let cel = polacz(katalogDocelowy, `oczko-${teraz.dzien}${ROZSZERZENIE_ARCHIWUM}`);
-      for (let i = 2; istniejePlik(cel); i++) cel = polacz(katalogDocelowy, `oczko-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
+      const przedrostek = opcje?.przedrostek ?? 'oczko';
+      let cel = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}${ROZSZERZENIE_ARCHIWUM}`);
+      for (let i = 2; istniejePlik(cel); i++) cel = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
       try {
+        utworzKatalog(katalogDocelowy); // Documents/Backup powstaje przy pierwszej kopii (idempotentnie); błąd → 'zapis' poniżej
         const k = await kopiaBazy(z.baza, baza);
         if (!k.ok) return k;
         if (!(await kopiaZdrowa(baza))) return blad('uszkodzony'); // nie udostępniamy uszkodzonej kopii jako zapasowej (N12-12)
@@ -149,11 +151,10 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
       }
     },
 
-    /** „Kopia przed importem” (KOPIA_PRZED_IMPORTEM_DNI); niepełny plik po błędzie usuwa kopiaBazy (P-118 W3). */
-    async kopiaPrzed() {
-      const sciezka = polacz(z.katalogi.kopie, `przed-importem-${z.zegar.teraz().ms}.db`);
-      const k = await kopiaBazy(z.baza, sciezka);
-      return k.ok ? { ok: true, wartosc: { sciezka } } : k;
+    /** Kopia bezpieczeństwa (ADR-0028, P-328): pełne archiwum `.oczko` (baza + pliki + manifest) w Documents/Backup, widoczne w Plikach; nie nadpisuje. */
+    async kopiaPrzed(rodzaj: RodzajKopiiPrzed = 'importem') {
+      const k = await archiwum.zapisz(z.katalogi.kopiePrzed, { przedrostek: `oczko-przed-${rodzaj}` });
+      return k.ok ? { ok: true, wartosc: { sciezka: k.wartosc.sciezka } } : k;
     },
 
     /** Migracja kopii tym samym runnerem → pliki do magazynu → dane (zastąp albo scal) w kolejce portu; katalog tymczasowy usuwany na końcu. */
@@ -181,6 +182,7 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
       }
     },
   };
+  return archiwum;
 
   function plikiKatalogu(a: ArchiwumSprawdzone): string[] {
     return a.manifest.pliki.map((p) => {

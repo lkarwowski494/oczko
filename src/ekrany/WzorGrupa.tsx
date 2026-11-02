@@ -75,9 +75,9 @@ export function GrupaWzorow(p: PropsGrupyWzorow): React.ReactElement {
 }
 
 /** Arkusz „Web page” (W7a): pole adresu, „Paste”, „Save page” w nagłówku (makieta fix7 `wzor.html`, P-275 (4)); zły adres → `wzor.link_blad` pod polem. */
-export function ArkuszLinku(p: { t: Tlumacz; naZapisz(adres: string): void; naAnuluj(): void; naWklej(): Promise<string | null> }): React.ReactElement {
+export function ArkuszLinku(p: { t: Tlumacz; poczatek?: string; naZapisz(adres: string): void; naAnuluj(): void; naWklej(): Promise<string | null> }): React.ReactElement {
   const { t } = p;
-  const [adres, ustawAdres] = useState('');
+  const [adres, ustawAdres] = useState(p.poczatek ?? ''); // poczatek: adres z nieudanego zapisu zlecenia (ADR-0031 pkt 3)
   const [blad, ustawBlad] = useState(false);
   const zapisz = () => { const a = adresStrony(adres); if (a) p.naZapisz(a); else ustawBlad(true); };
   return (

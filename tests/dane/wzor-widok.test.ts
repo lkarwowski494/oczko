@@ -15,7 +15,7 @@ test('wzór z rysunkami, obrotem i znacznikiem przy liczniku 13 (ustawiony przy 
   const w = await widokWzoru(s.z, { wzorId: 'w1' });
   expect(w).toEqual({ ok: true, wartosc: {
     wzorId: 'w1', projektId: 'p1', nazwa: 'Wzór', zrodlo: 'pdf', plikPdf: s.magazyn.sciezka(h), oryginal: null,
-    rysunki: [{ strona: 1, plik: s.magazyn.sciezka(r) }], obroty: { 1: 90 },
+    rysunki: [{ strona: 1, plik: s.magazyn.sciezka(r) }], obroty: { 1: 90 }, notatki: [], miejsce: null, // 07-jakosc-006: brak zapisanej pozycji tego wzoru
     znacznik: { licznikId: 'l1', strona: 1, rzad: 14, y: expect.closeTo(0.26, 5), wysokosc: 0.02, pozaStrona: false, przedSchematem: false, kierunek: 1 },
   } });
 });

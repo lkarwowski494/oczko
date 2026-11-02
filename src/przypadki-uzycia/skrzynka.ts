@@ -2,6 +2,7 @@
 // Woła kompozycja po starcie danych (po `sprzatnijKosz`, poza pozycją kolejki startu: dodajWzor czeka na sieć poza transakcją) i przy `AppState → active`.
 // Zlecenie znika ze skrzynki tylko po zapisanym wzorze albo po potwierdzeniu błędu przez użytkowniczkę (alert `skrzynka.nie_dodano`) — nic po cichu.
 import type { Powod, Wynik } from '../domena/bledy';
+import { rodzajPliku } from '../domena/rodzaj-pliku';
 import type { SkrzynkaImportu, ZlecenieImportu } from '../domena/porty';
 import { zapiszBlad } from '../dane/repozytoria/bledy';
 import { tekst, wiersze } from '../dane/repozytoria/wiersze';
@@ -14,19 +15,16 @@ export const PRZEJSCIOWE: readonly Powod[] = ['brak_sieci', 'brak_miejsca', 'zap
 export type ZaleznosciSkrzynki = ZaleznosciWzoru & { skrzynka: SkrzynkaImportu };
 export type WynikSkrzynki = { zaimportowano: number; doWyboru: ZlecenieImportu[]; czekaSiec: ZlecenieImportu[]; bledy: { zlecenie: ZlecenieImportu; powod: Powod }[] };
 
-const TYP_WORD = /wordprocessingml|msword|\.docx?$/i;
-/** Źródło wzoru ze zlecenia (UTI albo MIME z rozszerzenia); null = typ nieobsługiwany (alert `wzor.blad_typ`). */
+/** Źródło wzoru ze zlecenia (UTI albo MIME z rozszerzenia, `rodzajPliku`); null = typ nieobsługiwany (alert `wzor.blad_typ`). */
 export function zrodloZlecenia(z: ZlecenieImportu): ZrodloDodania | null {
   if (z.rodzaj === 'film') return null; // film nie jest wzorem
   if (z.rodzaj === 'adres') return z.adres ? { rodzaj: 'adres', adres: z.adres } : null;
   const [pierwsza] = z.sciezki;
   if (!pierwsza) return null;
-  if (/^image\/|public\.(image|jpeg|png|heic)/i.test(z.typ)) return { rodzaj: 'obrazy', sciezki: z.sciezki }; // kilka zdjęć = jeden wzór (P-248 D1a)
-  if (z.sciezki.length !== 1) return null;
-  const plik = { id: z.id, nazwa: z.nazwa, sciezka: pierwsza, typ: z.typ };
-  if (/pdf/i.test(z.typ) || /\.pdf$/i.test(z.nazwa)) return { rodzaj: 'pdf', plik };
-  if (TYP_WORD.test(z.typ) || TYP_WORD.test(z.nazwa)) return { rodzaj: 'word', plik };
-  return null;
+  const rodzaj = rodzajPliku(z.nazwa, z.typ); // jedna reguła rozszerzeń (ADR-0031 pkt 5): Word = .docx
+  if (rodzaj === 'obraz') return { rodzaj: 'obrazy', sciezki: z.sciezki }; // kilka zdjęć = jeden wzór (P-248 D1a)
+  if (z.sciezki.length !== 1 || !rodzaj) return null;
+  return { rodzaj, plik: { id: z.id, nazwa: z.nazwa, sciezka: pierwsza, typ: z.typ } };
 }
 const nazwaWzoru = (z: ZlecenieImportu): string => z.nazwa.replace(/\.(pdf|docx?|jpe?g|png|heic)$/i, '').trim() || z.nazwa;
 

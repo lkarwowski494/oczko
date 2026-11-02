@@ -125,6 +125,26 @@ describe('przetworzSkrzynke (start i powrót na pierwszy plan)', () => {
     expect(w.ok && w.wartosc.bledy.map((b) => b.powod)).toEqual(['bledne_dane']);
   });
 
+  // 07-jakosc-017 (K-17h, ADR-0031 pkt 5): Word to wyłącznie .docx — zlecenie .doc (UTI com.microsoft.word.doc, msword) nie trafia do konwersji.
+  test.each([
+    ['stary.doc', 'application/msword'],
+    ['stary.doc', 'com.microsoft.word.doc'],
+  ])('K-17h: zlecenie %s (%s) → `bledne_dane` (alert „can’t add this type”), konwersja nie jest wołana, zlecenie zostaje do potwierdzenia', async (nazwa, typ) => {
+    const { grupa, z } = await srodowisko();
+    const naPdf = jest.fn(async () => ({ ok: false as const, powod: 'bledne_dane' as const }));
+    zlecenie(grupa, 'z1', { nazwaPliku: nazwa, nazwa, typ });
+    const w = await przetworzSkrzynke({ ...z, konwersja: { ...z.konwersja, naPdf } });
+    expect(w.ok && w.wartosc.bledy.map((b) => b.powod)).toEqual(['bledne_dane']);
+    expect(naPdf).not.toHaveBeenCalled();
+  });
+  test('K-17h: zlecenie .docx (UTI org.openxmlformats…) dalej idzie do konwersji jako Word', async () => {
+    const { grupa, z } = await srodowisko();
+    const naPdf = jest.fn(async () => ({ ok: false as const, powod: 'bledne_dane' as const }));
+    zlecenie(grupa, 'z1', { nazwaPliku: 'nowy.docx', nazwa: 'nowy.docx', typ: 'org.openxmlformats.wordprocessingml.document' });
+    await przetworzSkrzynke({ ...z, konwersja: { ...z.konwersja, naPdf } });
+    expect(naPdf).toHaveBeenCalledTimes(1);
+  });
+
   test('przypiszZlecenie: wybrany projekt → wzór w nim, zlecenie usunięte (arkusz „1 pattern to add”, scenariusz 52)', async () => {
     const { s, grupa, z } = await srodowisko();
     zlecenie(grupa, 'z1', { projektId: null });

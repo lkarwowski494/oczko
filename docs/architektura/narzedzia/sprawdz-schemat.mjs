@@ -62,7 +62,7 @@ INSERT INTO wzor (id, projekt_id, nazwa, zrodlo, pdf_sha256, zmieniono_ms) VALUE
 INSERT INTO rysunek VALUES ('w1', 0, '${sha('b')}', ${T});
 INSERT INTO sesja (id, projekt_id, stan, start_ms, strefa, dzien) VALUES ('s1', 'p1', 'trwa', ${T}, 'Europe/Warsaw', '2026-10-22');
 INSERT INTO wloczka (id, nazwa, motki, zmieniono_ms) VALUES ('y1', 'Merino', 5, ${T});
-INSERT INTO projekt_wloczka VALUES ('p1', 'y1', NULL, ${T});
+INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, odjeto_motki, zmieniono_ms) VALUES ('p1', 'y1', NULL, NULL, ${T});
 INSERT INTO zdjecie VALUES ('f1', 'p1', NULL, '${sha('c')}', ${T});
 INSERT INTO dzien_limitu VALUES ('2026-10-22', 0, ${T}, 'z1');`);
 ok(db.prepare('PRAGMA foreign_key_check').all().length === 0, 'PRAGMA foreign_key_check pusty (z danymi)');

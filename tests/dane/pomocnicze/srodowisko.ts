@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { CzasWTle, DziennikPlus, Identyfikatory, MagazynPlikow, PortBazy, Zegar, ZdarzenieWejsciowe } from '../../../src/domena/porty';
+import { utworzArchiwum } from '../../../src/dane/archiwum';
 import { utworzPortNode, type PortNode } from '../../../src/dane/baza/adapter-node';
 import { migruj } from '../../../src/dane/migracje/migruj';
 import type { Zaleznosci, ZaleznosciPlikow } from '../../../src/przypadki-uzycia/zaleznosci';
@@ -109,13 +110,19 @@ export async function przygotuj(o: { katalog?: string; zegar?: ZegarTestowy; urz
   const magazyn = magazynTestowy(join(katalog, 'pliki'));
   const dziennik = dziennikTestowy();
   const pro = { wartosc: false };
-  const katalogi = { kopie: join(katalog, 'kopie'), tymczasowy: join(katalog, 'tmp') };
+  const katalogi = { kopie: join(katalog, 'kopie'), kopiePrzed: join(katalog, 'Documents', 'Backup'), tymczasowy: join(katalog, 'tmp') };
   mkdirSync(katalogi.kopie, { recursive: true });
+  mkdirSync(katalogi.kopiePrzed, { recursive: true });
   mkdirSync(katalogi.tymczasowy, { recursive: true });
   const z = { baza, zegar, id: identyfikatory(o.prefiksId), urzadzenie: o.urzadzenie ?? 'iphone-test', pro: () => pro.wartosc, magazyn, katalogi, dziennik };
   return { katalog, baza, zegar, magazyn, dziennik, pro, z };
 }
 export const zaleznosci = (s: Srodowisko): Zaleznosci => s.z;
+/** Zależności z prawdziwym archiwum i czasem w tle (przypadki użycia, które zapisują kopię: import, eksport, „Delete all data”). */
+export function zArchiwum<Z extends ZaleznosciPlikow & { dziennik: DziennikTestowy }>(z: Z) {
+  const archiwum = utworzArchiwum({ baza: z.baza, magazyn: z.magazyn, zegar: z.zegar, katalogi: z.katalogi, migruj: (b) => migruj(b), aplikacja: '1.0.0 (test)' });
+  return { ...z, archiwum, czasWTle };
+}
 
 /** Wykonuje listę instrukcji danych wejściowych przez port (SQL tylko w testach). */
 export async function wykonaj(baza: PortBazy, instrukcje: [string, unknown[]][]): Promise<void> {

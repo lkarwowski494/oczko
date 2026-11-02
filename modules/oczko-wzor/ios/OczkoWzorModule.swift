@@ -20,6 +20,9 @@ struct DokumentProp: Record {
   @Field var plikPdf: String = ""
   @Field var rysunki: [RysunekStrony] = []
   @Field var obroty: [ObrotStrony] = []
+  /// Pozycja przy otwarciu nowego dokumentu (07-jakosc-006, BR-PRJ-011 S1): strona od 0, powiększenie jako krotność dopasowania do szerokości (0 = dopasowany).
+  @Field var startStrona: Int = 0
+  @Field var startPowiekszenie: Double = 0
 }
 struct ZnacznikProp: Record {
   @Field var strona: Int = 0
@@ -29,6 +32,18 @@ struct ZnacznikProp: Record {
   @Field var przedSchematem: Bool = false
   @Field var kierunek: Int = 1
   @Field var etykieta: String = ""
+  @Field var napis: String = ""
+  @Field var akcjaNastepnaStrona: String = ""
+}
+
+/// Chip notatki na stronie wzoru (F-56, P-330 2A; `NotatkaNatywna` w index.ts): ✎ + etykieta przy lewej krawędzi, na wysokości rzędu.
+struct NotatkaProp: Record {
+  @Field var id: String = ""
+  @Field var strona: Int = 0
+  @Field var y: Double = 0
+  @Field var wysokosc: Double = 0
+  @Field var etykieta: String = ""
+  @Field var a11y: String = ""
 }
 
 public class OczkoWzorModule: Module {
@@ -58,16 +73,26 @@ public class OczkoWzorModule: Module {
       }
     }
 
+    // ADR-0031 (07-jakosc-017): stan ścieżki sieciowej (NWPathMonitor) — odczyt i zdarzenie zmiany; podpowiedź, nie gwarancja osiągalności serwera.
+    Function("siecStan") { () -> String in SiecMonitor.shared.stan }
+    Events("siecZmiana")
+    OnStartObserving { SiecMonitor.shared.ustawOdbiorce { [weak self] stan in self?.sendEvent("siecZmiana", ["stan": stan]) } }
+    OnStopObserving { SiecMonitor.shared.ustawOdbiorce(nil) }
+
     View(WidokWzoru.self) {
-      Events("onRysunek", "onStukniecie", "onStrona", "onPierwszyRysik", "onZakreslenia")
+      Events("onRysunek", "onStukniecie", "onStrona", "onPowiekszenie", "onPierwszyRysik", "onZakreslenia", "onNotatka", "onZnacznik", "onZnacznikKrok", "onNastepnaStrona")
       Prop("dokument") { (v: WidokWzoru, d: DokumentProp) in
         v.ustawDokument(wzorId: d.wzorId, plikPdf: d.plikPdf, rysunki: d.rysunki.map { ($0.strona, $0.plik) },
-                        obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }))
+                        obroty: Dictionary(d.obroty.map { ($0.strona, $0.kat) }, uniquingKeysWith: { a, _ in a }),
+                        startStrona: d.startStrona, startPowiekszenie: d.startPowiekszenie)
       }
       Prop("katalogRysunkow") { (v: WidokWzoru, k: String) in v.ustawKatalogRysunkow(k) }
       Prop("strona") { (v: WidokWzoru, s: Int) in v.przejdzDoStrony(s) }
       Prop("znacznik") { (v: WidokWzoru, z: ZnacznikProp?) in
-        v.ustawZnacznik(z.map { Znacznik(strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, pozaStrona: $0.pozaStrona, kierunek: $0.kierunek, etykieta: $0.etykieta) })
+        v.ustawZnacznik(z.map { Znacznik(strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, pozaStrona: $0.pozaStrona, kierunek: $0.kierunek, etykieta: $0.etykieta, napis: $0.napis, przedSchematem: $0.przedSchematem, akcjaNastepnaStrona: $0.akcjaNastepnaStrona) })
+      }
+      Prop("notatki") { (v: WidokWzoru, n: [NotatkaProp]) in
+        v.ustawNotatki(n.map { ChipNotatkiNatywny(id: $0.id, strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, etykieta: $0.etykieta, a11y: $0.a11y) })
       }
       Prop("narzedzie") { (v: WidokWzoru, n: String) in v.ustawNarzedzie(NarzedzieWzoru(rawValue: n) ?? .brak) }
       Prop("polityka") { (v: WidokWzoru, p: String) in v.ustawPolityke(PolitykaPlotna(rawValue: p) ?? .wylaczone) }

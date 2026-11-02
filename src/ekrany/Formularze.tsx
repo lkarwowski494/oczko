@@ -6,31 +6,40 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Arkusz, Komunikat, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
+import { parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 /** Wynik zapisu z przypadku użycia; nieudany → komunikat formularza (bez makiety, Z07-05), wpisane dane zostają w polach. */
-async function zapiszZ<T>(f: () => Promise<WynikEkranu<T>>, naBlad: () => void): Promise<void> {
+async function zapiszZ<T>(f: () => Promise<WynikEkranu<T>>, naBlad: (powod: string) => void): Promise<void> {
   const w = await f();
-  if (!w.ok) naBlad();
+  if (!w.ok) naBlad(w.powod);
 }
 
 export type PropsFormularzaWartosci = {
   stan: { obecna: number };
   t: Tlumacz;
+  /** Język wpisu: separator tysięcy i cyfry regionu (BR-LIC-017, ER-43). */
+  jezyk: string;
+  /** Komunikat limitu dni (BR-ZAK-006) pokazywany, gdy wpisanie zaczynałoby dzień ponad limit (BR-LIC-017/S5). */
+  tekstLimitu: string;
   naZapisz(wartosc: number): Promise<WynikEkranu<void>>;  // wpiszWartosc
   naAnuluj(): void;
 };
-export function FormularzWartosci({ stan, t, naZapisz, naAnuluj }: PropsFormularzaWartosci): React.ReactElement {
+export function FormularzWartosci({ stan, t, jezyk, tekstLimitu, naZapisz, naAnuluj }: PropsFormularzaWartosci): React.ReactElement {
   const [tekst, ustaw] = useState(String(stan.obecna));
-  const [blad, ustawBlad] = useState(false);
-  const n = liczbaZPola(tekst);
-  const zapisz = () => { if (n === null) { ustawBlad(true); return; } ustawBlad(false); void zapiszZ(() => naZapisz(n), () => ustawBlad(true)); };
+  const [blad, ustawBlad] = useState<'wartosc' | 'limit' | null>(null);
+  const n = parsujCalkowita(tekst, jezyk);
+  const zapisz = () => {
+    if (n === null) { ustawBlad('wartosc'); return; }
+    ustawBlad(null);
+    void zapiszZ(() => naZapisz(n), (powod) => ustawBlad(powod === 'limit' ? 'limit' : 'wartosc'));
+  };
   return (
     <Arkusz tytul={t('formularz.wpisz_tytul')} formularz={{ t, naZapisz: zapisz, naAnuluj }}>
       <Tresc>{t('formularz.wpisz_opis')}</Tresc>
       <Pole etykieta={t('formularz.wpisz_pole')} wartosc={tekst} naZmiane={ustaw} liczbowe testID="wpisz-wartosc-pole" />
       {n !== null && <Tresc podpis>{t('formularz.wpisz_podglad', { n: n + 1 })}</Tresc>}
-      {blad && <Komunikat tekst={t('formularz.wpisz_blad')} />}
+      {blad && <Komunikat tekst={blad === 'limit' ? tekstLimitu : t('formularz.wpisz_blad')} />}
     </Arkusz>
   );
 }
@@ -62,13 +71,15 @@ export type PlanPrzypomnieniaEkranu = { tekst: string; od: number; co: number; r
 export type PropsFormularzaPrzypomnienia = {
   stan: { tekst: string; od: number | null; co: number | null; razy: number | null };
   t: Tlumacz;
+  /** Edycja istniejącego przypomnienia (07-jakosc-011): tytuł `przyp.edytuj_tytul` i wiersz „Delete reminder” na końcu; bez tego — dodawanie. */
+  naUsun?(): void;
   /** Podgląd rzędów z domeny (RD-13, `przypomnienia.ts`); ekran tylko pokazuje i dołącza do etykiety „Save reminder”. */
   podglad(plan: PlanPrzypomnieniaEkranu): WynikEkranu<number[]>;
   naZapisz(plan: PlanPrzypomnieniaEkranu): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
 };
 const naPole = (n: number | null) => (n === null ? '' : String(n));
-export function FormularzPrzypomnienia({ stan, t, podglad, naZapisz, naAnuluj }: PropsFormularzaPrzypomnienia): React.ReactElement {
+export function FormularzPrzypomnienia({ stan, t, naUsun, podglad, naZapisz, naAnuluj }: PropsFormularzaPrzypomnienia): React.ReactElement {
   const [tekst, ustawTekst] = useState(stan.tekst);
   const [od, ustawOd] = useState(naPole(stan.od));
   const [co, ustawCo] = useState(naPole(stan.co));
@@ -85,7 +96,7 @@ export function FormularzPrzypomnienia({ stan, t, podglad, naZapisz, naAnuluj }:
     void zapiszZ(() => naZapisz(plan), () => ustawBlad('plan'));
   };
   return (
-    <Arkusz tytul={t('formularz.przyp_tytul')} formularz={{ t, naZapisz: zapisz, naAnuluj, zapisz: t('formularz.przyp_zapisz'), testZapisz: 'przypomnienie-zapisz', zapiszA11y: rzedy ? t('formularz.przyp_zapisz_a11y', { rzedy }) : t('formularz.przyp_zapisz') }}>
+    <Arkusz tytul={t(naUsun ? 'przyp.edytuj_tytul' : 'formularz.przyp_tytul')} testID={naUsun ? 'przyp-edycja' : undefined} formularz={{ t, naZapisz: zapisz, naAnuluj, zapisz: t('formularz.przyp_zapisz'), testZapisz: 'przypomnienie-zapisz', zapiszA11y: rzedy ? t('formularz.przyp_zapisz_a11y', { rzedy }) : t('formularz.przyp_zapisz') }}>
       <Tresc>{t('formularz.przyp_opis')}</Tresc>
       <Pole etykieta={t('formularz.przyp_od')} wartosc={od} naZmiane={ustawOd} liczbowe testID="przypomnienie-od-rzedu" />
       <Pole etykieta={t('formularz.przyp_co')} wartosc={co} naZmiane={ustawCo} liczbowe testID="przypomnienie-co-ile" />
@@ -93,9 +104,34 @@ export function FormularzPrzypomnienia({ stan, t, podglad, naZapisz, naAnuluj }:
       <Pole etykieta={t('formularz.przyp_tekst')} wartosc={tekst} naZmiane={ustawTekst} testID="przypomnienie-co-robic" />
       {rzedy && <Tresc podpis testID="przypomnienie-podglad">{t('formularz.przyp_podglad', { rzedy })}</Tresc>}
       {blad && <Komunikat tekst={t(blad === 'od' ? 'formularz.przyp_blad_od' : 'formularz.przyp_blad')} />}
+      {naUsun && <Przycisk tekst={t('przyp.usun')} onPress={naUsun} testID="przypomnienie-usun" />}
     </Arkusz>
   );
 }
+export type PropsListyPrzypomnien = {
+  t: Tlumacz;
+  /** `opis` = druga linia wiersza (`przyp.wiersz_*`); pusta instrukcja → wiersz ma tylko opis. */
+  elementy: { id: string; tekst: string; opis: string }[];
+  naWybor(id: string): void;
+  naDodaj(): void;
+  naZamknij(): void;
+};
+/** Lista przypomnień licznika (07-jakosc-011, F-06; makieta 04 `przyp-lista`): Close / tytuł / Add, wiersz = instrukcja + druga linia, stuknięcie otwiera edycję. */
+export function ListaPrzypomnien({ t, elementy, naWybor, naDodaj, naZamknij }: PropsListyPrzypomnien): React.ReactElement {
+  return (
+    <Arkusz tytul={t('przyp.tytul')} testID="przyp-lista" formularz={{ t, naZapisz: naDodaj, naAnuluj: naZamknij, anuluj: t('wspolne.zamknij'), zapisz: t('wspolne.dodaj'), testZapisz: 'przypomnienia-dodaj' }}>
+      {elementy.map((e) => (
+        <Pressable key={e.id} accessibilityRole="button" accessibilityLabel={t('przyp.wiersz_a11y', { tekst: e.tekst, opis: e.opis })} onPress={() => naWybor(e.id)}
+          testID={`przypomnienie-wiersz-${e.id}`} style={{ minHeight: 44, justifyContent: 'center' }}>
+          {e.tekst !== '' && <Tresc>{e.tekst}</Tresc>}
+          <Tresc podpis>{e.opis}</Tresc>
+        </Pressable>
+      ))}
+      <Tresc podpis>{t('przyp.lista_opis')}</Tresc>
+    </Arkusz>
+  );
+}
+
 export type PropsKorektySesji = {
   stan: { startMs: number; koniecMs: number; terazMs: number; przerwyMs: number; doSprawdzenia: number | null; czasInnychMs: number };
   t: Tlumacz;

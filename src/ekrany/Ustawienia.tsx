@@ -22,6 +22,8 @@ export type PropsUstawien = {
   /** Dane (BR-DAN-006, BR-DAN-009): kompozycja; bez nich pozycji nie ma. */
   /** naUsunWszystko: otwiera arkusz potwierdzenia `/usun-wszystko` (BR-DAN-009; usunięcie dopiero po potwierdzeniu, P-266 (3)). */
   dane?: { naEksport(): void; naImport(): void; naUsunWszystko(): void };
+  /** Preferencje urządzenia (ADR-0029): „Keep screen on” (przełącznik) i „Units” (wiersz → /miary); bez nich wierszy nie ma. */
+  preferencje?: { ekranNieGasnie: boolean; ukladMiar: 'auto' | 'metric' | 'imperial'; naEkranNieGasnie(wlaczone: boolean): void; naMiary(): void };
   /** Wynik eksportu albo import w toku (kompozycja), pod grupą danych. */
   wynikDanych?: React.ReactNode;
   /** Panele buildu E2E (e2e/README.md, bez t()); w buildzie wydania null. */
@@ -31,7 +33,7 @@ export type PropsUstawien = {
   jezyk?: { stan: { wartosc: PreferencjaJezyka; jezyk: string }; naJezyk(): void; naZglosTlumaczenie(): void };
   naZrodla?(): void;
 };
-export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla }: PropsUstawien): React.ReactElement {
+export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, preferencje }: PropsUstawien): React.ReactElement {
   const k = useKolory();
   const st = StyleSheet.create({
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },
@@ -44,15 +46,33 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {panelE2e /* build E2E: na górze, widoczny bez przewijania (scenariusze 08, 09) */}
       <Text style={{ ...typografia.tytul, color: k.grafit }} accessibilityRole="header">{t('ustawienia.tytul')}</Text>
       <View style={st.grupa}>
-        <Przycisk tekst={t('ustawienia.oczko_pro')} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />
+        <View style={st.wiersz}>
+          <Przycisk tekst={t('ustawienia.oczko_pro')} etykieta={s.pro ? `${t('ustawienia.oczko_pro')}, ${t('ustawienia.pro_wlaczone')}` : undefined} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />
+          {/* F-63 (07-jakosc-031): stan Pro jako wartość wiersza; VoiceOver czyta „Oczko Pro, On” */}
+          {s.pro && <Text style={{ ...typografia.tresc, color: k.olowek }} testID="ustawienia-pro">{t('ustawienia.pro_wlaczone')}</Text>}
+        </View>
         {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
         {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.zostalo, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>
+      {preferencje && <Text style={{ ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m }} accessibilityRole="header">{t('ustawienia.grupa_liczenie')}</Text>}
       <View style={st.grupa}>
         <View style={st.wiersz}>
           <Text style={{ ...typografia.tresc, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>{t('ustawienia.wibracje')}</Text>
           <Switch accessibilityRole="switch" accessibilityLabel={t('ustawienia.wibracje')} value={s.wibracje} onValueChange={naWibracje} />
         </View>
+        {preferencje && (
+          <>
+            <View style={st.wiersz}>
+              <Text style={{ ...typografia.tresc, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>{t('ustawienia.ekran_nie_gasnie')}</Text>
+              <Switch accessibilityRole="switch" accessibilityLabel={t('ustawienia.ekran_nie_gasnie')} value={preferencje.ekranNieGasnie} onValueChange={preferencje.naEkranNieGasnie} testID="ustawienia-ekran-nie-gasnie" />
+            </View>
+            <Pressable accessibilityRole="button" accessibilityLabel={t('ustawienia.uklad_miar')} accessibilityValue={{ text: t(`ustawienia.miary_${preferencje.ukladMiar}`) }} onPress={preferencje.naMiary} style={st.wiersz} testID="ustawienia-miary">
+              <Text style={{ ...typografia.tresc, color: k.grafit }}>{t('ustawienia.uklad_miar')}</Text>
+              <Text style={{ ...typografia.tresc, color: k.olowek }}>{t(`ustawienia.miary_${preferencje.ukladMiar}`)}</Text>
+            </Pressable>
+            <Text style={st.podpis}>{t('ustawienia.ekran_nie_gasnie_opis')}</Text>
+          </>
+        )}
       </View>
       {dane && (
         <View style={st.grupa}>

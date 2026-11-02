@@ -15,6 +15,25 @@ struct Znacznik: Equatable {
   let pozaStrona: Bool
   let kierunek: Int    // 1 w dół, -1 w górę
   let etykieta: String // etykieta VoiceOver z `wzor.znacznik_a11y_*` (P-237 (2))
+  let napis: String    // widoczny napis zakładki z JS: „Row 48 ↑” albo „Row 61 · page end” (design-spec, F-26)
+  let przedSchematem: Bool
+  let akcjaNastepnaStrona: String // nazwa akcji VoiceOver „Move to next page”; pusty = brak (nie ma następnej strony albo pas jest na stronie)
+}
+
+struct ChipNotatkiNatywny: Equatable {
+  let id: String
+  let strona: Int
+  let y: Double        // góra rzędu, ułamek wysokości strony (jak znacznik)
+  let wysokosc: Double
+  let etykieta: String // „Row 6: ujmowanie…” albo „2 notes” (teksty z JS)
+  let a11y: String
+}
+
+/// Chip o wyglądzie 28 pt z obszarem dotyku ≥ 44 pt (obszar dotyku rozszerzony o 8 pt z każdej strony).
+final class ChipPrzycisk: UIButton {
+  override func point(inside punkt: CGPoint, with zdarzenie: UIEvent?) -> Bool {
+    bounds.insetBy(dx: -8, dy: -8).contains(punkt)
+  }
 }
 
 private func kolor(_ hex: UInt32) -> UIColor {
@@ -38,11 +57,32 @@ final class DetektorRysika: UIGestureRecognizer {
   }
 }
 
-/// Nakładka strony: płótno PencilKit i znacznik rzędu (pas z dwiema grafitowymi krawędziami i zakładką z etykietą).
+/// Pas znacznika: dotyk tylko na zakładce i uchwycie wysokości (reszta pasa przepuszcza dotyk do strony, więc przewijanie i rysowanie działają); element „adjustable” dla VoiceOver.
+final class PasZnacznika: UIView {
+  var obszaryDotyku: [CGRect] = []
+  var naKrok: ((Int) -> Void)?
+  override func point(inside punkt: CGPoint, with zdarzenie: UIEvent?) -> Bool {
+    obszaryDotyku.contains { $0.insetBy(dx: -8, dy: -8).contains(punkt) }
+  }
+  override func accessibilityIncrement() { naKrok?(1) }
+  override func accessibilityDecrement() { naKrok?(-1) }
+}
+
+/// Nakładka strony: płótno PencilKit, znacznik rzędu (pas z dwiema grafitowymi krawędziami i zakładką z etykietą) i chipy notatek.
 final class NakladkaStrony: UIView {
   let plotno = PKCanvasView()
-  let pas = UIView()
-  private let gora = UIView(), dol = UIView(), zakladka = UILabel()
+  var strona = 0
+  var naNotatke: ((String) -> Void)?
+  var naZnacznik: ((Int, Double, Double) -> Void)?   // strona, góra, wysokość po przeciągnięciu pasa albo uchwytu
+  var naKrokZnacznika: ((Int) -> Void)?              // VoiceOver: zwiększ/zmniejsz = o rząd
+  var naNastepnaStrona: (() -> Void)?                // VoiceOver: „Move to next page”
+  private var chipy: [(dane: ChipNotatkiNatywny, widok: ChipPrzycisk)] = []
+  var notatki: [ChipNotatkiNatywny] = [] { didSet { przebudujChipy() } }
+  let pas = PasZnacznika()
+  private let gora = UIView(), dol = UIView(), zakladka = UILabel(), uchwyt = UIView()
+  private let krawedzPrzerywana = CAShapeLayer()
+  private var przeciaganie: (y: Double, wysokosc: Double)?    // wartości na żywo w trakcie gestu (ułamki strony)
+  private var poczatekGestu: (y: Double, wysokosc: Double) = (0, 0)
   var znacznik: Znacznik? { didSet { setNeedsLayout() } }
 
   override init(frame: CGRect) {
@@ -56,29 +96,107 @@ final class NakladkaStrony: UIView {
     zakladka.textColor = .white
     zakladka.font = .systemFont(ofSize: 13, weight: .semibold)
     pas.addSubview(zakladka)
-    pas.isUserInteractionEnabled = false
+    zakladka.isUserInteractionEnabled = true
+    zakladka.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(przesunPas(_:))))
+    uchwyt.backgroundColor = .white
+    uchwyt.layer.borderColor = KOLOR_GRAFIT.cgColor
+    uchwyt.layer.borderWidth = 2
+    uchwyt.layer.cornerRadius = 10
+    uchwyt.isUserInteractionEnabled = true
+    uchwyt.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(zmienWysokosc(_:))))
+    pas.addSubview(uchwyt)
+    krawedzPrzerywana.strokeColor = KOLOR_GRAFIT.cgColor
+    krawedzPrzerywana.lineWidth = 2
+    krawedzPrzerywana.lineDashPattern = [6, 4]
+    krawedzPrzerywana.fillColor = nil
+    pas.layer.addSublayer(krawedzPrzerywana)
+    pas.isUserInteractionEnabled = true
     pas.isAccessibilityElement = true
     pas.accessibilityIdentifier = "wzor-znacznik"
     pas.accessibilityTraits = .adjustable
+    pas.naKrok = { [weak self] k in self?.naKrokZnacznika?(k) }
     addSubview(pas)
   }
+
+  /// Przeciągnięcie zakładki przesuwa pas w pionie (w obrębie strony); po puszczeniu JS zapisuje miejsce, rząd zostaje.
+  @objc private func przesunPas(_ g: UIPanGestureRecognizer) {
+    guard let z = znacznik, bounds.height > 0 else { return }
+    if g.state == .began { poczatekGestu = (z.y, z.wysokosc) }
+    let y = min(max(poczatekGestu.y + Double(g.translation(in: self).y / bounds.height), 0), 1 - z.wysokosc)
+    przeciaganie = (y, z.wysokosc)
+    setNeedsLayout()
+    if g.state == .ended { przeciaganie = nil; naZnacznik?(strona, y, z.wysokosc) }
+    if g.state == .cancelled || g.state == .failed { przeciaganie = nil; setNeedsLayout() }
+  }
+  /// Przeciągnięcie uchwytu na dolnej krawędzi ustala wysokość rzędu (`wysokosc_rzedu`).
+  @objc private func zmienWysokosc(_ g: UIPanGestureRecognizer) {
+    guard let z = znacznik, bounds.height > 0 else { return }
+    if g.state == .began { poczatekGestu = (z.y, z.wysokosc) }
+    let w = min(max(poczatekGestu.wysokosc + Double(g.translation(in: self).y / bounds.height), 0.005), min(0.2, 1 - z.y))
+    przeciaganie = (z.y, w)
+    setNeedsLayout()
+    if g.state == .ended { przeciaganie = nil; naZnacznik?(strona, z.y, w) }
+    if g.state == .cancelled || g.state == .failed { przeciaganie = nil; setNeedsLayout() }
+  }
   required init?(coder: NSCoder) { fatalError("init(coder:)") }
+
+  /// Chip notatki (P-330 2A): obrys i tekst grafit `#26282C` na białym środku (stałe kolory strony, 14,76:1), wizualnie 28 pt, obszar dotyku ≥ 44 pt.
+  private func przebudujChipy() {
+    for c in chipy { c.widok.removeFromSuperview() }
+    chipy = notatki.map { n in
+      let b = ChipPrzycisk(type: .custom)
+      b.setTitle("✎ \(n.etykieta)", for: .normal)
+      b.setTitleColor(KOLOR_GRAFIT, for: .normal)
+      b.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
+      b.titleLabel?.lineBreakMode = .byTruncatingTail
+      b.backgroundColor = .white
+      b.layer.borderColor = KOLOR_GRAFIT.cgColor
+      b.layer.borderWidth = 1.5
+      b.layer.cornerRadius = 14
+      b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+      b.accessibilityLabel = n.a11y
+      b.accessibilityTraits = .button
+      b.accessibilityIdentifier = "wzor-notatka-chip"
+      b.addAction(UIAction { [weak self] _ in self?.naNotatke?(n.id) }, for: .touchUpInside)
+      addSubview(b)
+      return (n, b)
+    }
+    setNeedsLayout()
+  }
 
   override func layoutSubviews() {
     super.layoutSubviews()
     plotno.frame = bounds
+    for c in chipy {
+      let w = min(max(c.widok.intrinsicContentSize.width, 28), bounds.width * 0.5)
+      let srodek = (CGFloat(c.dane.y) + CGFloat(c.dane.wysokosc) / 2) * bounds.height
+      c.widok.frame = CGRect(x: 4, y: srodek - 14, width: w, height: 28)
+    }
     guard let z = znacznik else { pas.isHidden = true; return }
     pas.isHidden = false
     let h = bounds.height
-    let gorny = CGFloat(min(max(z.y, 0), 1)) * h
-    let wys = max(CGFloat(z.wysokosc) * h, 4)
+    let gorny = CGFloat(min(max(przeciaganie?.y ?? z.y, 0), 1)) * h
+    let wys = max(CGFloat(przeciaganie?.wysokosc ?? z.wysokosc) * h, 4)
     pas.frame = CGRect(x: 0, y: gorny, width: bounds.width, height: wys)
     gora.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 2)
     dol.frame = CGRect(x: 0, y: wys - 2, width: bounds.width, height: 2)
-    zakladka.text = " \(z.kierunek < 0 ? "↑" : "↓") "
+    zakladka.text = " \(z.napis) "
     zakladka.sizeToFit()
     zakladka.frame.origin = CGPoint(x: 0, y: z.kierunek < 0 ? -zakladka.frame.height : wys)
+    uchwyt.frame = CGRect(x: bounds.width - 36, y: wys - 10, width: 20, height: 20)
+    pas.obszaryDotyku = [zakladka.frame, uchwyt.frame]
+    // Koniec strony: krawędź od strony wyjścia (↑ góra, ↓ dół) przerywana (design-spec, `pozaStrona`).
+    let y0: CGFloat = z.kierunek < 0 ? 1 : wys - 1
+    let sciezka = UIBezierPath()
+    sciezka.move(to: CGPoint(x: 0, y: y0))
+    sciezka.addLine(to: CGPoint(x: bounds.width, y: y0))
+    krawedzPrzerywana.path = sciezka.cgPath
+    krawedzPrzerywana.isHidden = !z.pozaStrona
+    gora.isHidden = z.pozaStrona && z.kierunek < 0
+    dol.isHidden = z.pozaStrona && z.kierunek >= 0
     pas.accessibilityLabel = z.etykieta
+    pas.accessibilityValue = z.napis
+    pas.accessibilityCustomActions = z.akcjaNastepnaStrona.isEmpty ? [] : [UIAccessibilityCustomAction(name: z.akcjaNastepnaStrona) { [weak self] _ in self?.naNastepnaStrona?(); return true }]
   }
 }
 
@@ -86,8 +204,13 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   let onRysunek = EventDispatcher()
   let onStukniecie = EventDispatcher()
   let onStrona = EventDispatcher()
+  let onPowiekszenie = EventDispatcher()
   let onPierwszyRysik = EventDispatcher()
   let onZakreslenia = EventDispatcher()
+  let onNotatka = EventDispatcher()
+  let onZnacznik = EventDispatcher()
+  let onZnacznikKrok = EventDispatcher()
+  let onNastepnaStrona = EventDispatcher()
 
   private let pdf = PDFView()
   private var plik = ""
@@ -101,10 +224,14 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var narzedzie: NarzedzieWzoru = .brak
   private var polityka: PolitykaPlotna = .wylaczone
   private var znacznik: Znacznik?
+  private var notatki: [ChipNotatkiNatywny] = []
   private var cofnij: Int?
   private var rysikZgloszony = false
   private var zKodu = false
   private var stronaDocelowa = 0
+  private var oczekujacePowiekszenie: CGFloat?        // zapisane powiększenie czeka na układ widoku (dopasowanie do szerokości znane dopiero po layoucie)
+  private var zegarPowiekszenia: Timer?
+  private var ostatniePowiekszenie: Double = 1
   private let przytrzymanie = UILongPressGestureRecognizer()
 
   required init(appContext: AppContext? = nil) {
@@ -124,6 +251,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     rysik.naRysik = { [weak self] in self?.pierwszyRysik() }
     addGestureRecognizer(rysik)
     NotificationCenter.default.addObserver(self, selector: #selector(zmianaStrony), name: .PDFViewPageChanged, object: pdf)
+    NotificationCenter.default.addObserver(self, selector: #selector(zmianaPowiekszenia), name: .PDFViewScaleChanged, object: pdf)
     NotificationCenter.default.addObserver(self, selector: #selector(zapiszTeraz), name: UIApplication.willResignActiveNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(zapiszTeraz), name: UIApplication.didEnterBackgroundNotification, object: nil)
   }
@@ -132,6 +260,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   override func layoutSubviews() {
     super.layoutSubviews()
     pdf.frame = bounds
+    zastosujPowiekszenie()
   }
   override func willMove(toWindow w: UIWindow?) {
     super.willMove(toWindow: w)
@@ -143,7 +272,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
 
   /// Jeden prop zamiast plikPdf + rysunki (przegląd 2026-10-26): kolejność propsów w Expo nie jest określona, a zmiana wzoru musi
   /// najpierw zapisać kreski starego wzoru pod JEGO identyfikatorem, potem wczytać nowy plik, rysunki i obroty.
-  func ustawDokument(wzorId nowy: String, plikPdf: String, rysunki r: [(Int, String)], obroty: [Int: Int]) {
+  func ustawDokument(wzorId nowy: String, plikPdf: String, rysunki r: [(Int, String)], obroty: [Int: Int], startStrona: Int, startPowiekszenie: Double) {
     if nowy != wzorId || plikPdf != plik {
       zapiszTeraz() // zdarzenia z dotychczasowym wzorId
       wzorId = nowy
@@ -155,7 +284,12 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
         guard let d = try? Data(contentsOf: URL(fileURLWithPath: sciezka)), let rys = try? PKDrawing(data: d) else { continue }
         rysunki[s] = rys
       }
+      stronaDocelowa = startStrona // zapisana pozycja (07-jakosc-006): strona przed pierwszym zdarzeniem onStrona, powiększenie po układzie
+      oczekujacePowiekszenie = startPowiekszenie > 0 ? CGFloat(startPowiekszenie) : nil
+      ostatniePowiekszenie = startPowiekszenie > 0 ? startPowiekszenie : 1
+      pdf.autoScales = true
       przejdzDoStrony(stronaDocelowa)
+      zastosujPowiekszenie()
       zmianaStrony()
       zglosZakreslenia()
     }
@@ -175,6 +309,10 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   func ustawZnacznik(_ z: Znacznik?) {
     znacznik = z
     for (s, n) in nakladki { n.znacznik = z?.strona == s ? z : nil }
+  }
+  func ustawNotatki(_ n: [ChipNotatkiNatywny]) {
+    notatki = n
+    for (s, nak) in nakladki { nak.notatki = n.filter { $0.strona == s } }
   }
   func ustawNarzedzie(_ n: NarzedzieWzoru) {
     narzedzie = n
@@ -210,6 +348,12 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     zastosujNarzedzie(n.plotno)
     zastosujPolityke(n.plotno)
     n.znacznik = znacznik?.strona == s ? znacznik : nil
+    n.strona = s
+    n.naNotatke = { [weak self] id in self?.onNotatka(["id": id]) }
+    n.naZnacznik = { [weak self] strona, y, wysokosc in self?.onZnacznik(["wzorId": self?.wzorId ?? "", "strona": strona, "y": y, "wysokosc": wysokosc]) }
+    n.naKrokZnacznika = { [weak self] delta in self?.onZnacznikKrok(["wzorId": self?.wzorId ?? "", "delta": delta]) }
+    n.naNastepnaStrona = { [weak self] in self?.onNastepnaStrona([:]) }
+    n.notatki = notatki.filter { $0.strona == s }
     nakladki[s] = n
     return n
   }
@@ -250,6 +394,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   /// Rysunki zmienionych stron do plików w katalogu oczekujących → `onRysunek` (JS: zapiszRysunek, ADR-0012). Nazwa pliku niesie wzorId
   /// i stronę, więc plik zapisany przy zamykaniu ekranu (zdarzenie bez odbiorcy) JS odzyska przy następnym otwarciu (przegląd 2026-10-26).
   @objc func zapiszTeraz() {
+    if zegarPowiekszenia != nil { zegarPowiekszenia?.invalidate(); zglosPowiekszenie() } // tło albo zamknięcie: nie gub powiększenia czekającego na opóźnienie
     zegar?.invalidate()
     zegar = nil
     guard !wzorId.isEmpty else { return }
@@ -272,6 +417,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private func pierwszyRysik() {
     guard !rysikZgloszony else { return }
     rysikZgloszony = true
+    // P-327 (a), 07-jakosc-026: bez wybranego narzędzia pierwsze dotknięcie rysikiem wybiera Pen, a płótno przechodzi na pencilOnly od razu (nie czeka na JS), więc pierwsze pociągnięcie pisze.
+    if narzedzie == .brak { ustawNarzedzie(.pioro) }
+    ustawPolityke(.tylkoRysik)
     onPierwszyRysik([:])
   }
   @objc private func przytrzymano(_ g: UILongPressGestureRecognizer) {
@@ -283,6 +431,33 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     guard ramka.height > 0 else { return }
     let y = min(max((ramka.maxY - wStronie.y) / ramka.height, 0), 1) // PDF: początek układu na dole strony
     onStukniecie(["wzorId": wzorId, "strona": d.index(for: strona), "y": y])
+  }
+  /// Zapisane powiększenie (krotność dopasowania do szerokości): ≈1 zostaje autoScales, większe ustawia scaleFactor w granicach PDFKit. Czeka na układ widoku (dopasowanie = 0 przed layoutem).
+  private func zastosujPowiekszenie() {
+    guard let p = oczekujacePowiekszenie, pdf.document != nil else { return }
+    let dopasowanie = pdf.scaleFactorForSizeToFit
+    guard bounds.width > 0, dopasowanie > 0 else { return }
+    oczekujacePowiekszenie = nil
+    if p > 1.01 {
+      pdf.autoScales = false
+      pdf.scaleFactor = min(max(dopasowanie * p, pdf.minScaleFactor), pdf.maxScaleFactor)
+      przejdzDoStrony(stronaDocelowa) // zmiana skali przesuwa widok: wróć na zapisaną stronę
+    }
+  }
+  /// Zmiana powiększenia (szczypanie albo układ) zgłaszana do JS z opóźnieniem; krotność dopasowania, więc obrót i inny rozmiar okna nie psują zapisu.
+  @objc private func zmianaPowiekszenia() {
+    guard pdf.document != nil, oczekujacePowiekszenie == nil else { return }
+    zegarPowiekszenia?.invalidate()
+    zegarPowiekszenia = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: false) { [weak self] _ in self?.zglosPowiekszenie() }
+  }
+  private func zglosPowiekszenie() {
+    zegarPowiekszenia = nil
+    let dopasowanie = pdf.scaleFactorForSizeToFit
+    guard !wzorId.isEmpty, dopasowanie > 0 else { return }
+    let krotnosc = pdf.autoScales ? 1.0 : Double(pdf.scaleFactor / dopasowanie)
+    guard krotnosc > 0, abs(krotnosc - ostatniePowiekszenie) > 0.005 else { return }
+    ostatniePowiekszenie = krotnosc
+    onPowiekszenie(["wzorId": wzorId, "powiekszenie": krotnosc])
   }
   @objc private func zmianaStrony() {
     guard let d = pdf.document, let s = biezacaStrona() else { return }

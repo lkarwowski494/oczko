@@ -12,7 +12,7 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const j = () => ({ t, jezyk: () => 'en', zegar24h: () => true });
 const W: WidokHistorii = {
-  dniRobotki: ['2026-10-22', '2026-10-23'],
+  dniRobotki: ['2026-10-22', '2026-10-23'], ukonczoneDnia: [],
   dzien: [{ projektId: 'p1', nazwa: 'Sweater', rzedy: 5, czasMs: null }, { projektId: 'p2', nazwa: 'Scarf', rzedy: 0, czasMs: 40 * 60_000 }],
   tydzien: { od: '2026-10-19', do: '2026-10-25', rzedy: 5, czasMs: 40 * 60_000, ukonczone: 0, poprzednie: { rzedy: 12 } },
   miesiac: { rzedy: 5, czasMs: null, ukonczone: 1, dni: 2 }, pierwsze: false,

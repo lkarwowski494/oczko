@@ -5,14 +5,16 @@ import React, { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import type { Produkt } from '../domena/porty';
 import { LIMIT_DNI_W_MIESIACU } from '../konfiguracja';
-import { Arkusz, Przycisk, Tresc } from './Arkusz';
+import { Arkusz, Komunikat, Przycisk, Tresc } from './Arkusz';
 import { cel, odstep, promien, typografia, useKolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type ProduktyOfert = { rodzaj: 'gotowe'; produkty: Produkt[] } | { rodzaj: 'ladowanie' } | { rodzaj: 'brak-sieci' };
+/** Linia nad przyciskiem zakupu (KP-07, design-spec 002): neutralna „i” (`role=status`) albo błąd „!” (`role=alert`), zawsze z tekstem. */
+export type KomunikatOfert = 'czeka' | 'blad' | 'przywroc_nic' | 'przywroc_blad' | 'pro_wlaczone' | null;
 export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni' } | null;
 export type PropsOfert = {
-  stan: { produkty: ProduktyOfert; aktywne: AktywnePro; familySharing: boolean };
+  stan: { produkty: ProduktyOfert; aktywne: AktywnePro; familySharing: boolean; komunikat?: KomunikatOfert; oczekujacy?: boolean }; // oczekujacy: zakup czeka na zatwierdzenie — „kup” nieaktywny, nawet gdy linia pokazuje inny komunikat
   t: Tlumacz;
   adresy: { polityka: string; warunki: string };   // z konfiguracji (KP-04); Terms of Use = standardowa EULA Apple
   naKup(produkt: string): void;
@@ -30,6 +32,29 @@ function opisPlanu(p: Produkt, t: Tlumacz): { nazwa: string; cena: string; podpi
   return { nazwa: t('oferty.dozywotni'), cena: t('oferty.cena_raz', { cena: p.cenaWyswietlana }), podpis: t('oferty.raz') };
 }
 
+const LINIE = {
+  czeka: { klucz: 'oferty.czeka', id: 'oferty-czeka', blad: false }, blad: { klucz: 'oferty.blad_zakupu', id: 'oferty-blad', blad: true },
+  przywroc_nic: { klucz: 'oferty.przywracanie_nic', id: 'oferty-przywroc-nic', blad: false }, przywroc_blad: { klucz: 'oferty.przywracanie_blad', id: 'oferty-przywroc-blad', blad: true },
+  pro_wlaczone: { klucz: 'oferty.pro_wlaczone', id: 'oferty-pro-wlaczone', blad: false },
+} as const;
+function LiniaKomunikatu({ rodzaj, t }: { rodzaj: Exclude<KomunikatOfert, null>; t: Tlumacz }): React.ReactElement {
+  const k = useKolory();
+  const l = LINIE[rodzaj];
+  const tekst = t(l.klucz);
+  return (
+    <View testID={l.id}>
+      {l.blad
+        ? <Komunikat tekst={tekst} znak />
+        : (
+          <View style={{ flexDirection: 'row', gap: odstep.s }} accessible accessibilityRole="text" accessibilityLiveRegion="polite" accessibilityLabel={tekst}>
+            <Text style={{ ...typografia.podpis, color: k.grafit }} importantForAccessibility="no" accessibilityElementsHidden>ⓘ</Text>
+            <Text style={{ ...typografia.podpis, color: k.grafit, flex: 1 }}>{tekst}</Text>
+          </View>
+        )}
+    </View>
+  );
+}
+
 export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naOtworzAdres, naZamknij }: PropsOfert): React.ReactElement {
   const k = useKolory();
   // KP-03: aktywna subskrypcja nie jest oferowana ponownie; dożywotni — brak planów.
@@ -42,7 +67,10 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
   return (
     <Arkusz tytul={t('oferty.tytul')} testID="oferty-ekran" zamknij={{ etykieta: t('wspolne.zamknij'), naZamknij, testID: 'oferty-zamknij' }} przyciski={
       <>
-        {plan && <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />}
+        {s.komunikat && <LiniaKomunikatu rodzaj={s.komunikat} t={t} />}
+        {plan && (s.oczekujacy || s.komunikat === 'czeka'
+          ? <Przycisk tekst={t('oferty.czeka_przycisk')} onPress={() => undefined} rodzaj="glowny" wylaczony testID="oferty-kup" />
+          : <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />)}
         {s.aktywne?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
         <Przycisk tekst={t('oferty.przywroc')} onPress={naPrzywroc} rodzaj="tekstowy" testID="oferty-przywroc" />
         <Przycisk tekst={t('wspolne.nie_teraz')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-nie-teraz" />

@@ -44,6 +44,9 @@ for p in "${PAKIETY[@]}"; do
   [ -f "$p/PrivacyInfo.xcprivacy" ] || [ "$p" = "$APP" ] || uwaga "$n: brak PrivacyInfo.xcprivacy w pakiecie celu"
 done
 
+# 07-jakosc-008 (D4, P-325): adres „Rate Oczko” bez zaślepki id0000000000.
+node scripts/wydanie/kontrola-adresow.mjs || bledy=$((bledy + 1))
+
 # Hermes i brak modułów deweloperskich.
 B="$APP/main.jsbundle"
 if [ ! -s "$B" ]; then blad "brak main.jsbundle"; elif LC_ALL=C grep -qI . "$B"; then blad "main.jsbundle jest tekstem JS, nie bajtkodem Hermesa"; fi

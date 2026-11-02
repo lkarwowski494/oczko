@@ -195,7 +195,7 @@ describe('zapisy licznika (BR-LIC-*)', () => {
     if (!pierwszy.ok) throw new Error(pierwszy.powod);
     for (let i = 1; i < 100; i++) await dodajRzad(s.z, { licznikId: 'l1' });
     expect(await stanLicznika(s.baza)).toMatchObject({ wartosc: 130 });
-    expect(await cofnijSerie(s.z, { licznikId: 'l1', odZdarzeniaId: pierwszy.wartosc.zdarzenieId })).toMatchObject({ ok: true, wartosc: { wartosc: 30 } });
+    expect(await cofnijSerie(s.z, { licznikId: 'l1', odZdarzeniaId: pierwszy.wartosc.zdarzenieId, zrodlo: 'pytanie-serii' })).toMatchObject({ ok: true, wartosc: { wartosc: 30 } });
     expect(await stanLicznika(s.baza)).toMatchObject({ wartosc: 30 });
     expect(await wykonanieDnia(s.baza, s.zegar.teraz().dzien)).toEqual({ rzedy: 0 });
     expect(await ile(s.baza, 'zdarzenie', "licznik_id = 'l1'")).toBe(131); // historia tylko dopisywana (ADR-0005)

@@ -197,6 +197,11 @@ export async function zastosujPartie(tx: PortBazy, p: PartiaIcloud, terazMs: num
 export async function licznikiWKonflikcie(baza: PortBazy): Promise<number> {
   return liczba((await wiersze(baza.all('SELECT count(*) AS n FROM licznik WHERE konflikt = 1 AND usunieto_ms IS NULL'), 'konflikty'))[0], 'n');
 }
+/** Pierwszy licznik w konflikcie (najdawniej zmieniony) — „Choose a version” z Data and sync otwiera go i przechodzi do wyboru; null, gdy nie ma konfliktu. */
+export async function pierwszyLicznikWKonflikcie(baza: PortBazy): Promise<string | null> {
+  const [w] = await wiersze(baza.all('SELECT id FROM licznik WHERE konflikt = 1 AND usunieto_ms IS NULL ORDER BY zmieniono_ms, id LIMIT 1'), 'konflikty');
+  return w ? tekst(w, 'id') : null;
+}
 /** Czy w poczekalni czeka rekord iCloud nowszej wersji aplikacji, który przyszedł przed `przedMs` — „Update Oczko…” w Data and sync. */
 export async function nowszaWersjaWPoczekalni(baza: PortBazy, przedMs: number): Promise<boolean> {
   return (await baza.all("SELECT 1 FROM poczekalnia WHERE zrodlo = 'synchronizacja' AND powod = 'nowsza_wersja' AND przyszlo_ms < ? LIMIT 1", [przedMs])).length > 0;

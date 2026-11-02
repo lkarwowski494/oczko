@@ -47,6 +47,28 @@ struct WidokAktywnosci: View {
   }
 }
 
+/// Etykieta VoiceOver karty (design-spec „VoiceOver”, 07-jakosc-030): `karta_a11y`, przy blokadzie `zablokowany_a11y`; stan limitu dopisany jako część karty.
+/// Czas sesji nie wchodzi do etykiety: rysuje go system (`timerInterval`), a statyczna etykieta by się starzała między odświeżeniami.
+func etykietaKarty(_ a: StanAktywnosci) -> String {
+  let s = a.stan, j = a.jezyk
+  let zrobione = Teksty.tl("zrobione", s.wartosc, j)
+  if s.zablokowany { return Teksty.t("zablokowany_a11y", j, ["nazwa": s.nazwa, "zrobione": zrobione]) }
+  let karta = Teksty.t("karta_a11y", j, ["nazwa": s.nazwa, "zrobione": zrobione, "n": String(rzadWRobocie(s))])
+  if !s.dzienDozwolony { return karta + ". " + Teksty.t("wstrzymane", j) }
+  if let pas = pasPrzypomnienia(s) {
+    return karta + ". " + Teksty.t("przypomnienie_a11y", j, ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)])
+  }
+  return karta
+}
+
+/// Etykieta przycisku +1: przy rzędzie z przypomnieniem pełna `plus_a11y_przypomnienie` (nie sklejanie „Add row. ” z pasem), inaczej `plus_a11y`.
+func etykietaPlus(_ a: StanAktywnosci) -> String {
+  if let pas = pasPrzypomnienia(a.stan) {
+    return Teksty.t("plus_a11y_przypomnienie", a.jezyk, ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)])
+  }
+  return Teksty.t("plus_a11y", a.jezyk, ["n": String(rzadWRobocie(a.stan))])
+}
+
 /// Smart Stack i CarPlay (P-158; design-spec „Smart Stack (Live Activity na zegarku) i CarPlay”): bez przycisków (CarPlay wyłącza elementy
 /// interaktywne; liczenie na zegarku w jego aplikacji), `uwaga` pomijana (3.1a). Wiersz 1: znak, liczba, nazwa, czas sesji; wiersz 2: linia stanu
 /// według pierwszeństwa zablokowany → limit → przypomnienie (pas, tylko pierwsze, wersja krótka) → typowy. Ustępowanie przy dużym tekście:
@@ -84,6 +106,8 @@ struct SmartStack: View {
       .font(.system(size: 15, weight: .semibold)).foregroundStyle(Color("grafit")).lineLimit(1).truncationMode(.tail).layoutPriority(4)
     }
     .padding(.horizontal, 8)
+    .accessibilityElement(children: .ignore) // karta jako jeden element (design-spec „VoiceOver”); brak przycisków w Smart Stack
+    .accessibilityLabel(etykietaKarty(a))
   }
 }
 
@@ -170,7 +194,7 @@ struct Przycisk: View {
   var body: some View {
     if !a.stan.zablokowany && a.stan.dzienDozwolony {
       Button(intent: OczkoStuknij(rodzaj: "plus")) { Text(Teksty.t("plus", a.jezyk)).font(.headline).frame(minWidth: 96, minHeight: 60) }
-        .accessibilityLabel(Teksty.t("plus_a11y", a.jezyk, ["n": String(rzadWRobocie(a.stan))]))
+        .accessibilityLabel(etykietaPlus(a))
         .buttonStyle(.borderedProminent)
         .tint(Color("przyciskTlo"))
         .foregroundStyle(Color("przyciskTekst"))

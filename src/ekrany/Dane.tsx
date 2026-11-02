@@ -7,7 +7,7 @@ import { odstep, typografia, useKolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type PropsImportu = {
-  stan: { rodzaj: 'wybor'; plik: string; licznosci?: string } | { rodzaj: 'zastapiono'; kopia: { nazwa: string; miejsce: string } }; // kopia przed „Zastąp” (P-047, dane.md:69)
+  stan: { rodzaj: 'wybor'; plik: string; licznosci?: string } | { rodzaj: 'zastapiono'; kopia: string }; // kopia przed „Replace”: nazwa pliku w Plikach › Oczko › Backup (ADR-0028, P-047)
   t: Tlumacz;
   naZastap(): void;
   naScal(): void;
@@ -39,8 +39,9 @@ export function Import({ stan, t, naZastap, naScal, naAnuluj, wbudowany, wynik }
   }
   if (stan.rodzaj === 'zastapiono') {
     return (
-      <Ramka wbudowany={wbudowany} tytul={t('dane.import_tytul')} przyciski={<Przycisk tekst={t('wspolne.zamknij')} onPress={naAnuluj} rodzaj="tekstowy" testID="arkusz-zamknij" />}>
-        <Tresc testID="import-wynik">{t('dane.zastapiono', { nazwa: stan.kopia.nazwa, miejsce: stan.kopia.miejsce })}</Tresc>
+      <Ramka wbudowany={wbudowany} tytul={t('dane.zastapiono_tytul')} testID="dane-zastapiono" przyciski={<Przycisk tekst={t('wspolne.gotowe')} onPress={naAnuluj} rodzaj="tekstowy" testID="arkusz-zamknij" />}>
+        <Tresc testID="import-wynik">{t('dane.zastapiono', { kopia: stan.kopia })}</Tresc>
+        <Tresc podpis>{t('dane.zastapiono_wroc')}</Tresc>
       </Ramka>
     );
   }

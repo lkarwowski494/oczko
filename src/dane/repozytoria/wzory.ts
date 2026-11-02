@@ -4,7 +4,7 @@
 // Notatki wzoru = `notatka_rzedu` licznika ze znacznika (schemat v1 nie ma osobnej tabeli; P-120: [DO USTALENIA 05] potwierdzenie).
 import { BladDanych } from '../../domena/bledy';
 import type { PortBazy } from '../../domena/porty';
-import { polozenieZnacznika, type ZnacznikWzoru } from '../../domena/znacznik-wzoru';
+import { polozenieZnacznika, type NotatkaWzoru, type ZnacznikWzoru } from '../../domena/znacznik-wzoru';
 import { liczba, tekst, wiersz, wiersze } from './wiersze';
 
 export type ZnacznikZapisany = ZnacznikWzoru & { licznikId: string };
@@ -47,4 +47,12 @@ export async function notatkiWzoru(baza: PortBazy, wzorId: string): Promise<{ rz
   if (!licznikId) return [];
   const w = await wiersze(baza.all('SELECT rzad, tekst FROM notatka_rzedu WHERE licznik_id = ? ORDER BY rzad', [licznikId]), 'notatkiWzoru');
   return w.map((r) => ({ rzad: liczba(r, 'rzad'), tekst: tekst(r, 'tekst') }));
+}
+
+/** Notatki wzoru z identyfikatorem (chip na stronie i zmiana/usunięcie): kolejność rząd, kolejność wstawienia (zmiana treści jej nie ruszą) (BR-WZR-008). */
+export async function notatkiWzoruZId(baza: PortBazy, wzorId: string): Promise<NotatkaWzoru[]> {
+  const licznikId = await licznikZnacznika(baza, wzorId);
+  if (!licznikId) return [];
+  const w = await wiersze(baza.all('SELECT id, rzad, tekst FROM notatka_rzedu WHERE licznik_id = ? ORDER BY rzad, rowid', [licznikId]), 'notatkiWzoruZId');
+  return w.map((r) => ({ id: tekst(r, 'id'), rzad: liczba(r, 'rzad'), tekst: tekst(r, 'tekst') }));
 }

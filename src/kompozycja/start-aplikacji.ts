@@ -9,7 +9,7 @@ import { stanPlikuBazy } from '../dane/pliki/magazyn';
 import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
-import { sprzatnijKopie, zipSurowejKopii } from '../niezawodnosc/kopie';
+import { sprzatnijKopie, sprzatnijKopiePrzed, zipSurowejKopii } from '../niezawodnosc/kopie';
 import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
@@ -50,6 +50,7 @@ export async function zapiszKamien(): Promise<void> {
   zapisz(s.stanStartu, kamienMilowy(await czytajStan(s.stanStartu)));
   zapiszEtapStartu('kamien');
   sprzatnijKopie(s.kopie, zegarAplikacji().teraz().ms); // ADR-0020 (6): kopie po KOPIE_RATUNKOWE_DNI, tylko po kamieniu milowym; błąd nie blokuje startu
+  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0028 pkt 4: kopie przed importem i usunięciem — 2 najnowsze, maks. 30 dni
 }
 /** P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest nieudanym startem (app/_layout.tsx, AppState „background”, tylko start normalny). */
 export async function zapiszWyjscieDoTla(): Promise<void> {
@@ -73,7 +74,7 @@ export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' => (p ==
 export function trybAwaryjny() {
   const s = sciezki();
   const zegar = zegarAplikacji();
-  const katalogi = { kopie: s.kopie, tymczasowy: polacz(s.katalogDanych, 'tmp') };
+  const katalogi = { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy: polacz(s.katalogDanych, 'tmp') };
   utworzKatalog(katalogi.kopie);
   utworzKatalog(katalogi.tymczasowy);
   const kopia = surowaKopia(s.katalogDanych, s.kopie, zegar);

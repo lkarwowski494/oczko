@@ -186,6 +186,7 @@ CREATE TABLE projekt_wloczka (                        -- przypisanie i zużycie 
   projekt_id TEXT NOT NULL REFERENCES projekt(id) ON DELETE CASCADE,
   wloczka_id TEXT NOT NULL REFERENCES wloczka(id) ON DELETE CASCADE,
   zuzyto_motki REAL CHECK (zuzyto_motki IS NULL OR zuzyto_motki >= 0),
+  odjeto_motki REAL CHECK (odjeto_motki IS NULL OR odjeto_motki >= 0),    -- ile faktycznie odjęto od zapasu przy potwierdzeniu (po obcięciu do 0); NULL = brak odjęcia; zwrot przy odznaczeniu (P-334)
   zmieniono_ms INTEGER NOT NULL,
   PRIMARY KEY (projekt_id, wloczka_id)
 ) STRICT;

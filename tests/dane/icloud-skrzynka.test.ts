@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { utworzPortNode, type PortNode } from '../../src/dane/baza/adapter-node';
 import { migruj } from '../../src/dane/migracje/migruj';
 import { usunWszystkieDane } from '../../src/przypadki-uzycia/projekt';
-import { katalogTymczasowy, przygotuj } from './pomocnicze/srodowisko';
+import { katalogTymczasowy, przygotuj, zArchiwum } from './pomocnicze/srodowisko';
 
 type Kontrakt = { tabele: { tabela: string; klucz: string[]; tylko_klucze?: string[]; pomin?: string[] }[]; lokalne: string[] };
 const KONTRAKT: Kontrakt = JSON.parse(readFileSync(join(__dirname, '../../docs/architektura/icloud-tabele.json'), 'utf8'));
@@ -150,7 +150,7 @@ describe('F1 łatka L1: operacje na całej bazie a skrzynka (zero utraty danych 
     await s.baza.run('UPDATE synchronizacja SET wlaczona = 1, stan_silnika = ? WHERE id = 1', [new Uint8Array([1, 2, 3])]);
     await projektZLicznikiem(s.baza as PortNode, 'p1');
     expect((await s.baza.all('SELECT count(*) AS n FROM zmiana_icloud'))[0]).toEqual({ n: 3 });
-    expect(await usunWszystkieDane(s.z)).toEqual({ ok: true, wartosc: undefined });
+    expect(await usunWszystkieDane(zArchiwum(s.z))).toEqual({ ok: true, wartosc: undefined });
     expect(await s.baza.all('SELECT encja FROM zmiana_icloud')).toEqual([]);
     expect(await s.baza.all('SELECT id, wlaczona, wejscie, stan_silnika FROM synchronizacja')).toEqual([{ id: 1, wlaczona: 0, wejscie: 0, stan_silnika: null }]);
     expect((await s.baza.all('SELECT count(*) AS n FROM projekt'))[0]).toEqual({ n: 0 });

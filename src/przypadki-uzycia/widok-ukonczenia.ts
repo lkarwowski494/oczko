@@ -9,6 +9,7 @@ export type KartaUkonczenia = {
   nazwa: string; nienazwany: boolean; utworzonoMs: number; startMs: number; ukonczonoMs: number | null;
   dni: number; rzedy: number; czasMs: number | null; czesci: number;
   wloczka: { id: string; nazwa: string; motki: number; zuzyto: number | null }[]; zdjecieSha: string | null; // motki = zapas przed zapisem
+  maZapas: boolean; // w zapasie jest choć jedna włóczka (nieusunięta): bez niej karta nie proponuje wyboru włóczki (P-330 1B)
 };
 
 export function kartaUkonczenia(z: Zaleznosci, w: { projektId: string }): Promise<Wynik<KartaUkonczenia>> {
@@ -25,6 +26,7 @@ export function kartaUkonczenia(z: Zaleznosci, w: { projektId: string }): Promis
       "SELECT count(*) AS n, coalesce(sum(max(0, koniec_ms - start_ms - przerwy_ms)), 0) AS ms FROM sesja WHERE projekt_id = ? AND stan = 'zakonczona'", [w.projektId]), 'kartaUkonczenia');
     const wl = await wiersze(tx.all('SELECT w.id, w.nazwa, w.motki, pw.zuzyto_motki FROM projekt_wloczka pw JOIN wloczka w ON w.id = pw.wloczka_id WHERE pw.projekt_id = ? ORDER BY w.nazwa', [w.projektId]), 'kartaUkonczenia');
     const [zd] = await wiersze(tx.all('SELECT plik_sha256 FROM zdjecie WHERE projekt_id = ? ORDER BY utworzono_ms DESC LIMIT 1', [w.projektId]), 'kartaUkonczenia');
+    const [zp] = await wiersze(tx.all('SELECT count(*) AS n FROM wloczka WHERE usunieto_ms IS NULL'), 'kartaUkonczenia');
     const utworzono = liczba(p, 'utworzono_ms');
     return {
       ok: true,
@@ -34,6 +36,7 @@ export function kartaUkonczenia(z: Zaleznosci, w: { projektId: string }): Promis
         dni: d ? liczba(d, 'dni') : 0, rzedy: r ? liczba(r, 'rzedy') : 0, czesci: r ? liczba(r, 'czesci') : 0,
         czasMs: s && liczba(s, 'n') > 0 ? liczba(s, 'ms') : null,
         wloczka: wl.map((x) => ({ id: tekst(x, 'id'), nazwa: tekst(x, 'nazwa'), motki: liczba(x, 'motki'), zuzyto: liczbaLubNull(x, 'zuzyto_motki') })), zdjecieSha: zd ? tekstLubNull(zd, 'plik_sha256') : null,
+        maZapas: zp ? liczba(zp, 'n') > 0 : false,
       },
     };
   });

@@ -2,9 +2,10 @@
 // Rozszerzenie kopiuje plik do `<grupa>/skrzynka/<id>/` i na końcu zapisuje manifest `zlecenie.json` (plik tymczasowy → rename); `sciezka`
 // w manifeście: `sciezki` względne (nazwy plików w katalogu zlecenia; kilka zdjęć jednego udostępnienia = jedno zlecenie, P-248 D1a). Katalog bez poprawnego manifestu to zlecenie niepełne: usuwane dopiero, gdy
 // nie zmieniał się od SKRZYNKA_PORZUCONE_H (rozszerzenie mogło jeszcze kopiować).
-import type { SkrzynkaImportu, ZlecenieImportu } from '../domena/porty';
+import type { NoweZlecenie, SkrzynkaImportu, ZlecenieImportu } from '../domena/porty';
 import { SKRZYNKA_PORZUCONE_H } from '../konfiguracja';
-import { czasZmianyKatalogu, czytajTekst, istniejePlik, lista, polacz, usunKatalog } from '../dane/pliki/system';
+import { czasZmianyKatalogu, czytajTekst, istniejePlik, lista, polacz, przenies, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { identyfikatory } from './identyfikatory';
 
 const MANIFEST = 'zlecenie.json';
 const GODZINA_MS = 3_600_000;
@@ -25,8 +26,11 @@ function zlecenieZManifestu(tekst: string, katalog: string, id: string): Zleceni
   return { id, rodzaj, nazwa, sciezki: rodzaj === 'plik' ? sciezki.map((x) => polacz(katalog, x)) : [], adres: napis('adres'), typ, projektId: napis('projektId'), utworzonoMs: r.utworzonoMs };
 }
 
-/** `grupa` = katalog kontenera App Group (null: grupa niedostępna — np. build bez uprawnień; skrzynka pusta). */
-export function skrzynkaWKatalogu(grupa: string | null, teraz: () => number): SkrzynkaImportu {
+/**
+ * `grupa` = katalog kontenera App Group (null: grupa niedostępna — np. build bez uprawnień; skrzynka pusta, `dodaj` → `zapis`).
+ * `noweId`: id zlecenia dopisywanego z aplikacji (UUID jak w rozszerzeniu; nazwa katalogu = `id` w manifeście).
+ */
+export function skrzynkaWKatalogu(grupa: string | null, teraz: () => number, noweId: () => string = identyfikatory.nowy): SkrzynkaImportu {
   const korzen = grupa ? polacz(grupa, 'skrzynka') : null;
   return {
     async pobierz() {
@@ -44,6 +48,25 @@ export function skrzynkaWKatalogu(grupa: string | null, teraz: () => number): Sk
     async usun(id) {
       if (!korzen || id.includes('/')) return;
       usunKatalog(polacz(korzen, id));
+    },
+    /**
+     * Zlecenie z aplikacji (ADR-0031 pkt 3): ten sam `zlecenie.json` co rozszerzenie, zapisany atomowo — plik tymczasowy w katalogu zlecenia, potem zmiana nazwy.
+     * Katalog bez manifestu to zlecenie niepełne (`pobierz` go nie widzi). Błąd zapisu sprząta katalog i daje `zapis`; wołający pokazuje alert, adres zostaje w polu.
+     */
+    async dodaj(nowe: NoweZlecenie) {
+      if (!korzen) return { ok: false, powod: 'zapis' };
+      const id = noweId();
+      const k = polacz(korzen, id);
+      try {
+        utworzKatalog(k);
+        const tmp = polacz(k, `${MANIFEST}.tmp`);
+        zapiszTekst(tmp, JSON.stringify({ id, rodzaj: nowe.rodzaj, nazwa: nowe.nazwa, sciezki: [], adres: nowe.adres, typ: 'public.url', projektId: nowe.projektId, utworzonoMs: teraz() }));
+        przenies(tmp, polacz(k, MANIFEST));
+        return { ok: true, wartosc: { id } };
+      } catch {
+        try { usunKatalog(k); } catch { /* sprzątanie best-effort: katalog bez manifestu i tak usuwa `pobierz` po SKRZYNKA_PORZUCONE_H */ }
+        return { ok: false, powod: 'zapis' };
+      }
     },
   };
 }

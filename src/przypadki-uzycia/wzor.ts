@@ -5,6 +5,7 @@ import type { Wynik } from '../domena/bledy';
 import type { CzasWTle, KonwersjaWzoru, PlikWejsciowy, PortBazy } from '../domena/porty';
 import { WZOR_MAKS_MB } from '../konfiguracja';
 import { adresStrony } from '../domena/adres';
+import { czytajMiejsce } from '../domena/miejsce';
 import { licznikZnacznika, znacznikJson } from '../dane/repozytoria/wzory';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { odczytajUstawienie, zapiszUstawienie } from '../dane/repozytoria/ustawienia';
@@ -82,6 +83,36 @@ export function dodajNotatkeWzoru(z: ZaleznosciPlikow, w: { wzorId: string; rzad
     await tx.run('INSERT INTO notatka_rzedu (id, licznik_id, rzad, tekst, zmieniono_ms) VALUES (?, ?, ?, ?, ?)', [z.id.nowy(), licznikId, w.rzad, w.tekst, teraz]);
     return OK;
   });
+}
+
+/** Zmiana treści notatki wzoru (arkusz notatki: Edit → Save, P-330 2A); notatka cudzego wzoru albo pusty tekst → `bledne_dane`. */
+export function zmienNotatkeWzoru(z: ZaleznosciPlikow, w: { wzorId: string; notatkaId: string; tekst: string }): Promise<Wynik<void>> {
+  const nowy = w.tekst.trim();
+  if (!nowy) return Promise.resolve(blad('bledne_dane'));
+  return operacjaZapisu(z, 'zmienNotatkeWzoru', async (tx, teraz) => {
+    const stan = await notatkaDoZapisu(tx, w);
+    if (stan) return blad(stan);
+    await tx.run('UPDATE notatka_rzedu SET tekst = ?, zmieniono_ms = ? WHERE id = ?', [nowy, teraz, w.notatkaId]);
+    return OK;
+  });
+}
+/** Usunięcie jednej notatki wzoru („Delete note” z potwierdzeniem w UI); tylko notatka licznika ze znacznika tego wzoru. */
+export function usunNotatkeWzoru(z: ZaleznosciPlikow, w: { wzorId: string; notatkaId: string }): Promise<Wynik<void>> {
+  return operacjaZapisu(z, 'usunNotatkeWzoru', async (tx) => {
+    const stan = await notatkaDoZapisu(tx, w);
+    if (stan) return blad(stan);
+    await tx.run('DELETE FROM notatka_rzedu WHERE id = ?', [w.notatkaId]);
+    return OK;
+  });
+}
+/** Notatka musi należeć do licznika ze znacznika tego wzoru (nie ruszamy notatek innych liczników); wzór w koszu → `niedozwolone_przejscie`. */
+async function notatkaDoZapisu(tx: PortBazy, w: { wzorId: string; notatkaId: string }): Promise<'bledne_dane' | 'niedozwolone_przejscie' | null> {
+  const stan = await wzorDoZapisu(tx, w.wzorId);
+  if (stan) return stan;
+  const licznikId = await licznikZnacznika(tx, w.wzorId);
+  if (!licznikId) return 'bledne_dane';
+  const [n] = await wiersze(tx.all('SELECT 1 AS jest FROM notatka_rzedu WHERE id = ? AND licznik_id = ?', [w.notatkaId, licznikId]), 'notatkaDoZapisu');
+  return n ? null : 'bledne_dane';
 }
 
 /** Adapter platformy wzoru: port KonwersjaWzoru + pełne otwarcie PDF (PDFKit, moduł `oczko-wzor`; zastępuje kontrolę nagłówka na urządzeniu). */
@@ -170,7 +201,9 @@ async function wzoryProjektu(tx: PortBazy, projektId: string): Promise<WzorNaLis
  */
 export function zapamietajWzor(z: ZaleznosciPlikow, w: { licznikId: string; wzorId: string }): Promise<Wynik<void>> {
   return operacjaZapisu(z, 'ostatnieMiejsce', async (tx, teraz) => {
-    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: 'licznik', id: w.licznikId, wzor: w.wzorId }, teraz);
+    const m = czytajMiejsce(await odczytajUstawienie(tx, 'ostatnie_miejsce'));
+    const ten = m?.wzor === w.wzorId; // ten sam wzór: ekran i pozycja zostają (odświeżenie ekranu po +1 nie zeruje strony ani powiększenia, 07-jakosc-006)
+    await zapiszUstawienie(tx, 'ostatnie_miejsce', { ekran: ten ? m.ekran : 'licznik', id: w.licznikId, wzor: w.wzorId, ...(ten && m.strona !== undefined ? { strona: m.strona } : {}), ...(ten && m.powiekszenie !== undefined ? { powiekszenie: m.powiekszenie } : {}) }, teraz);
     return OK;
   });
 }

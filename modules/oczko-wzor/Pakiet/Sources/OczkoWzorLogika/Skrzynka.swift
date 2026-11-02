@@ -48,7 +48,7 @@ public enum RodzajZalacznika: Equatable, Sendable { case pdf, obraz, word, adres
 /// Rodzaj z identyfikatorów typu (UTI) załącznika; kolejność: plik przed adresem (plik z Plików ma też `public.file-url`).
 public func rodzajZalacznika(_ typy: [String]) -> RodzajZalacznika? {
   if typy.contains("com.adobe.pdf") { return .pdf }
-  if typy.contains(where: { $0 == "org.openxmlformats.wordprocessingml.document" || $0 == "com.microsoft.word.doc" }) { return .word }
+  if typy.contains("org.openxmlformats.wordprocessingml.document") { return .word } // tylko .docx (ADR-0031 pkt 5); .doc poza regułą
   if typy.contains(where: { $0 == "public.image" || $0 == "public.jpeg" || $0 == "public.png" || $0 == "public.heic" }) { return .obraz }
   if typy.contains("public.url") { return .adres }
   return nil

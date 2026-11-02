@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
-export type WierszProjektu = { id: string; nazwa: string; opis: string; kolorWloczki: string | null; termin?: string | null; ostatniaPraca?: string | null }; // teksty sformatowane w kompozycji
+export type WierszProjektu = { id: string; nazwa: string; opis: string; kolorWloczki: string | null; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
 /** Licznik darmowych dni (P-065 (2a), design-spec.md:18); `null` przy Pro (design-spec.md:19). */
 export type DniNaLiscie = { zostalo: number; limit: number; miesiac: string } | null;
 export type StanListyProjektow = { wToku: WierszProjektu[]; ukonczone: WierszProjektu[]; zapytanie: string; dni: DniNaLiscie; kosz?: number };
@@ -30,7 +30,7 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
     <View style={st.grupa} testID={testID}>
       <Text style={st.naglowek} accessibilityRole="header">{naglowek}</Text>
       {wiersze.map((w) => (
-        <Pressable key={w.id} accessibilityRole="button" onPress={() => naOtworz(w.id)} style={st.wiersz} testID="projekty-wiersz">
+        <Pressable key={w.id} accessibilityRole="button" accessibilityLabel={w.etykieta} onPress={() => naOtworz(w.id)} style={st.wiersz} testID="projekty-wiersz">
           {w.kolorWloczki && <View style={[st.kropka, { backgroundColor: w.kolorWloczki }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />}
           <View style={st.wierszTekst}>
             <Text style={st.nazwa}>{w.nazwa}</Text>

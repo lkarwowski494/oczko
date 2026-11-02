@@ -45,14 +45,21 @@ export async function potwierdzZuzycie(baza: PortBazy, w: { projektId: string; z
   try {
     return await baza.transakcja(async (tx): Promise<Wynik<void>> => {
       for (const z of w.zuzycie) {
-        const [byl] = await wiersze(tx.all('SELECT zuzyto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, z.wloczkaId]), 'potwierdzZuzycie');
+        const [byl] = await wiersze(tx.all('SELECT zuzyto_motki, odjeto_motki FROM projekt_wloczka WHERE projekt_id = ? AND wloczka_id = ?', [w.projektId, z.wloczkaId]), 'potwierdzZuzycie');
         const roznica = z.motki - ((byl ? liczbaLubNull(byl, 'zuzyto_motki') : null) ?? 0);
+        const [zap] = await wiersze(tx.all('SELECT motki FROM wloczka WHERE id = ?', [z.wloczkaId]), 'potwierdzZuzycie');
+        const przed = zap ? liczba(zap, 'motki') : 0;
+        const odjetoStare = (byl ? liczbaLubNull(byl, 'odjeto_motki') : null) ?? 0;
+        // P-334: zużycie rośnie → zapas nie schodzi poniżej 0, a `odjeto_motki` rośnie o faktyczne odjęcie; zużycie maleje → zwrot nie większy niż kiedykolwiek odjęto.
+        const zwrot = roznica < 0 ? Math.min(-roznica, odjetoStare) : 0;
+        const po = roznica < 0 ? przed + zwrot : Math.max(0, przed - roznica);
+        const odjeto = roznica < 0 ? odjetoStare - zwrot : odjetoStare + (przed - po);
         await tx.run(
-          `INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, zmieniono_ms) VALUES (?, ?, ?, ?)
-           ON CONFLICT (projekt_id, wloczka_id) DO UPDATE SET zuzyto_motki = excluded.zuzyto_motki, zmieniono_ms = excluded.zmieniono_ms`,
-          [w.projektId, z.wloczkaId, z.motki, w.terazMs],
+          `INSERT INTO projekt_wloczka (projekt_id, wloczka_id, zuzyto_motki, odjeto_motki, zmieniono_ms) VALUES (?, ?, ?, ?, ?)
+           ON CONFLICT (projekt_id, wloczka_id) DO UPDATE SET zuzyto_motki = excluded.zuzyto_motki, odjeto_motki = excluded.odjeto_motki, zmieniono_ms = excluded.zmieniono_ms`,
+          [w.projektId, z.wloczkaId, z.motki, odjeto, w.terazMs],
         );
-        await tx.run('UPDATE wloczka SET motki = max(0, motki - ?), zmieniono_ms = ? WHERE id = ?', [roznica, w.terazMs, z.wloczkaId]);
+        await tx.run('UPDATE wloczka SET motki = ?, zmieniono_ms = ? WHERE id = ?', [po, w.terazMs, z.wloczkaId]);
       }
       return { ok: true, wartosc: undefined };
     });

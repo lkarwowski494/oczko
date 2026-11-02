@@ -104,6 +104,7 @@ final class ZlecenieTests: XCTestCase {
     XCTAssertEqual(rodzajZalacznika(["com.adobe.pdf"]), .pdf)
     XCTAssertEqual(rodzajZalacznika(["public.jpeg", "public.image"]), .obraz)
     XCTAssertEqual(rodzajZalacznika(["org.openxmlformats.wordprocessingml.document"]), .word)
+    XCTAssertNil(rodzajZalacznika(["com.microsoft.word.doc"])) // 07-jakosc-017 (K-17h, ADR-0031 pkt 5): Word tylko .docx
     XCTAssertEqual(rodzajZalacznika(["public.url"]), .adres)
     XCTAssertEqual(rodzajZalacznika(["public.file-url", "com.adobe.pdf"]), .pdf) // plik z Plików: PDF ma pierwszeństwo przed URL
     XCTAssertNil(rodzajZalacznika(["public.zip-archive"]))
@@ -191,5 +192,15 @@ final class PodpisListyTests: XCTestCase {
     XCTAssertEqual(kluczPodpisuListy(wybrany: projekt(wzory: 2, film: true), jakoFilm: true), "udostepnij.film_zastapi")
     XCTAssertEqual(kluczPodpisuListy(wybrany: projekt(wzory: 2, film: false), jakoFilm: true), "udostepnij.gotowe")
     XCTAssertEqual(kluczPodpisuListy(wybrany: nil, jakoFilm: true), "udostepnij.gotowe_nowy")
+  }
+}
+
+// 07-jakosc-017 (K-17f, ADR-0031 pkt 1): status ścieżki sieciowej → napis portu `Siec` w TS.
+final class SiecTests: XCTestCase {
+  func testStatusSciezkiNaStanSieci() {
+    XCTAssertEqual(stanSieci(.satisfied), "jest")
+    XCTAssertEqual(stanSieci(.unsatisfied), "brak")
+    XCTAssertEqual(stanSieci(.requiresConnection), "brak")
+    XCTAssertEqual(stanSieci(nil), "nieznany") // monitor jeszcze nie odpowiedział
   }
 }
