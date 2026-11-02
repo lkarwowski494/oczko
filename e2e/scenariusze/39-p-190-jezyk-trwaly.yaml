@@ -1,5 +1,5 @@
 # P-190 (F-36, P-141 jak Trening): wybór języka w Ustawieniach jest trwały — po zabiciu procesu ten sam wybór; „Same as phone” wraca do automatu.
-# Słowników poza en jeszcze nie ma (tłumaczenia po roli 08, CLAUDE.md), więc sprawdzany jest zapisany wybór (etykieta „…, selected”), nie tekst po polsku.
+# Sprawdzany jest zapisany wybór (etykieta wybranej opcji ze słownika pl: „Polski, wybrano”; po przełączeniu na „Same as phone” wraca angielskie „…, selected”).
 appId: com.apps4brew.knitting
 name: "P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat"
 tags:
@@ -28,7 +28,7 @@ tags:
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
 - tapOn: { id: "ustawienia-jezyk" }
 - scrollUntilVisible: { element: { id: "jezyk-pl" } }
-- assertVisible: { id: "jezyk-pl", text: "Polski, selected" }
+- assertVisible: { id: "jezyk-pl", text: "Polski, wybrano" } # etykieta ze słownika pl (jezyk.wybrany_a11y); przebieg 41361451580: „Polski, wybrano” zamiast „Polski, selected” (E2-K1)
 - scrollUntilVisible: { element: { id: "jezyk-auto" }, direction: UP }
 - tapOn: { id: "jezyk-auto" }
 - assertVisible: { id: "ustawienia" }

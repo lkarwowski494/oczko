@@ -1,7 +1,7 @@
 # BR-PRJ-015/S2 (docs/brd/wymagania-projekt.md:190): karta ukończenia udostępniana arkuszem systemowym — aplikacja nic nie wysyła sama (ZP-03).
 # Brak EXIF/GPS w pliku karty sprawdza test danych w Node (poziom kryterium: dane-node:sqlite, kryteria.json); tu tylko połączenie: „Share” na karcie
 # (karta-udostepnij, 04 fix-6 D, P-191 P10a) otwiera arkusz udostępniania z obrazem, zamknięcie wraca do karty.
-# [DO USTALENIA] teksty arkusza udostępniania iOS 26: „Save Image” jest, „Close” nie ma (przebieg 40446976426) — zamknięcie przez „dismiss popup”. Funkcja bez UI na 2026-10-26 — pakiet pełny.
+# Teksty arkusza udostępniania iOS 26: „Close” nie ma (przebieg 40446976426) — zamknięcie przez „dismiss popup”; „Save Image” nie było w widocznym rzędzie akcji na iOS 26.6 (przebieg 41361451580, job 125016939022) — dowodem obrazu jest podpis załącznika. Funkcja bez UI na 2026-10-26 — pakiet pełny.
 appId: com.apps4brew.knitting
 name: "BR-PRJ-015/S2 · Karta ukończenia: Share otwiera arkusz systemowy z obrazem"
 tags:
@@ -22,7 +22,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "ukonczenie-karta" }, timeout: 20000 } # „Mark as finished” → karta, bez osobnego potwierdzenia (P-255)
 - assertVisible: { id: "karta-udostepnij" }
 - tapOn: { id: "karta-udostepnij" }
-- extendedWaitUntil: { visible: "Save Image", timeout: 20000 }
+- extendedWaitUntil: { visible: "PNG Image.*", timeout: 20000 } # podpis załącznika w arkuszu („PNG Image · 107 KB”, przebieg 41361451580, krok 49); nazwy akcji systemu (Save Image, Copy…) zmieniają się z wersją iOS i stanem symulatora (E2-K2)
 - takeScreenshot: 43-arkusz-udostepniania
 - tapOn: "dismiss popup" # arkusz iOS 26 bez „Close”; region zamknięcia z drzewa (PopoverDismissRegion) (przebieg 40446976426)
 - assertVisible: { id: "ukonczenie-karta" }
