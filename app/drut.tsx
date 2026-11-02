@@ -1,9 +1,9 @@
 // Trasa „/drut?id=…”: arkusz drutu albo szydełka (P-191 P8a; BR-ZAP-003). Bez id — nowe narzędzie.
-import React, { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { FormularzDrutu, type DaneDrutu } from '../src/ekrany/Zapas';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
@@ -16,14 +16,18 @@ export default function EkranDrutu(): React.ReactElement {
   const { kontener } = aplikacja;
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
-  const k = useKolory();
   const j = kontener.j;
   const [poczatek, ustaw] = useState<DaneDrutu | null | undefined>(id ? undefined : null);
-  useEffect(() => {
+  const [blad, ustawBlad] = useState(false); // M1-007: odczyt `{ ok: false }` albo wyjątek → błąd z „Try again” (wcześniej powrót bez słowa albo pusty arkusz)
+  const wczytaj = useCallback(async () => {
     if (!id) return;
-    void narzedzia(kontener.z).then((w) => { const n = w.ok ? w.wartosc.find((x) => x.id === id) : undefined; if (n) ustaw(n); else router.back(); });
+    const w = await narzedzia(kontener.z).catch(() => null);
+    if (!w?.ok) { ustawBlad(true); return; }
+    const n = w.wartosc.find((x) => x.id === id);
+    if (n) ustaw(n); else router.back(); // narzędzia już nie ma (np. usunięte gdzie indziej)
   }, [kontener, id, router]);
-  if (poczatek === undefined) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+  useEffect(() => { void wczytaj(); }, [wczytaj]);
+  if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzDrutu t={j.t} poczatek={poczatek} podglad={(x, r) => podgladRozmiaru(x, r, j)} parsuj={(x) => bazowa(x, 'm', j.jezyk())}
       formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })} naAnuluj={() => router.back()}

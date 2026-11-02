@@ -1,10 +1,9 @@
 // Trasa „/dni”: ekran „History” (F-59; BR-DNI-001–003; P-191 P6a) — kalendarz miesiąca, wybrany dzień (domyślnie dziś), tydzień i miesiąc.
 // Zmiana miesiąca strzałką przenosi wybór na 1. dzień miesiąca albo dziś w bieżącym; projekt dnia otwiera ekran projektu (BR-DNI-002).
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { HistoriaDni, type StanHistorii } from '../src/ekrany/HistoriaDni';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { stanHistorii } from '../src/kompozycja/historia';
@@ -18,14 +17,19 @@ const przesun = (miesiac: string, o: number): string => {
 export default function EkranHistoriiDni(): React.ReactElement {
   const { kontener } = useAplikacja();
   const router = useRouter();
-  const k = useKolory();
   const dzis = kontener.z.zegar.teraz().dzien;
   const [wybor, ustawWybor] = useState({ miesiac: dzis.slice(0, 7), dzien: dzis });
   const [stan, ustaw] = useState<StanHistorii | null>(null);
-  useFocusEffect(useCallback(() => {
-    void widokHistorii(kontener.z, wybor).then((w) => { if (w.ok) { const ch = kontener.z.zegar.teraz(); ustaw(stanHistorii(w.wartosc, { j: kontener.j, miesiac: wybor.miesiac, wybrany: wybor.dzien, dzis, terazMs: ch.ms, strefa: ch.strefa })); } });
-  }, [kontener, wybor, dzis]));
-  if (!stan) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  const [blad, ustawBlad] = useState(false); // M1-007: odczyt `{ ok: false }` albo wyjątek → błąd z „Try again”, nie pusta plansza
+  const wczytaj = useCallback(async () => {
+    const w = await widokHistorii(kontener.z, wybor).catch(() => null);
+    if (!w?.ok) { ustawBlad(true); return; }
+    const ch = kontener.z.zegar.teraz();
+    ustaw(stanHistorii(w.wartosc, { j: kontener.j, miesiac: wybor.miesiac, wybrany: wybor.dzien, dzis, terazMs: ch.ms, strefa: ch.strefa }));
+    ustawBlad(false);
+  }, [kontener, wybor, dzis]);
+  useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
+  if (!stan) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="dni" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   const miesiac = (o: number) => { const m = przesun(wybor.miesiac, o); ustawWybor({ miesiac: m, dzien: m === dzis.slice(0, 7) ? dzis : `${m}-01` }); };
   return (
     <Bezpieczny>

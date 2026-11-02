@@ -11,6 +11,7 @@ import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, 
 import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
@@ -62,11 +63,12 @@ export default function EkranWzoru(): React.ReactElement {
   // w ▾ bez ogłoszenia. Otwarty wzór zostaje ten sam; bez otwartego wzoru (grupa na ekranie projektu) nic się nie przełącza.
   const otwartyWzor = useRef<string | undefined>(undefined);
   const liczbaCzekajacych = useRef(czekaSiec.length);
+  const [blad, ustawBlad] = useState(false); // M1-007: pierwszy odczyt bez widoku licznika albo z wyjątkiem → błąd z „Try again”, nie pusta plansza
 
   const wczytaj = useCallback(async (wybrany?: string) => {
     const w = await licznik.widok();
     ustawLw(w);
-    if (!w) return;
+    if (!w) { ustawBlad(true); return; } // M1-007: widok licznika nieodczytany
     const l = await listaWzorow(zw, { projektId: w.projektId });
     ustawWzory(l.ok ? l.wartosc.map((x) => ({ wzorId: x.wzorId, nazwa: x.nazwa })) : []);
     const cel = wybrany ?? (await wzorDoOtwarcia(zw, { projektId: w.projektId }));
@@ -82,7 +84,8 @@ export default function EkranWzoru(): React.ReactElement {
   }, [licznik, zw]);
   const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
-  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).finally(() => { void wczytaj(id); }); setRysikOtwarcie(); }, [wczytaj, id, zw, katalogRysunkow]);
+  const pierwszyOdczyt = useCallback(() => { void wczytaj(id).catch(() => ustawBlad(true)); }, [wczytaj, id]); // M1-007: wyjątek odczytu → stan błędu
+  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).finally(pierwszyOdczyt); setRysikOtwarcie(); }, [pierwszyOdczyt, zw, katalogRysunkow]);
   useEffect(() => {
     if (czekaSiec.length < liczbaCzekajacych.current && otwartyWzor.current) void wczytaj(otwartyWzor.current);
     liczbaCzekajacych.current = czekaSiec.length;
@@ -157,7 +160,7 @@ export default function EkranWzoru(): React.ReactElement {
     startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
   if (link) return <Bezpieczny><ArkuszLinku t={t} poczatek={linkAdres} naAnuluj={() => { ustawLink(false); ustawLinkAdres(''); }} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); ustawLinkAdres(''); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
-  if (!lw || !wzory) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  if (!lw || !wzory) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
       naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny> // M1-006: błąd → alert, arkusz zostaje

@@ -1,9 +1,8 @@
 // Trasa „/menu”: menu ••• projektu (prototyp.html:129). Formularze otwierają się w miejsce menu; blokada, zerowanie i ukończenie zapisują od razu.
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { MenuProjektu } from '../src/ekrany/MenuProjektu';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import type { Wynik } from '../src/domena/bledy';
@@ -16,11 +15,18 @@ export default function EkranMenu(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
-  const k = useKolory();
   const [w, ustaw] = useState<WidokLicznika | null>(null);
   const [maWzor, ustawMaWzor] = useState(false); // partia 6: „Pattern” albo „Add pattern…” (W2a)
-  useEffect(() => { void licznik.widok().then(async (x) => { ustaw(x); if (x) { const l = await listaWzorow(kontener.z, { projektId: x.projektId }); ustawMaWzor(l.ok && l.wartosc.length > 0); } }); }, [licznik, kontener]);
-  if (!w) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+  const [blad, ustawBlad] = useState(false); // M1-007: brak widoku licznika (odczyt nieudany) albo wyjątek → błąd z „Try again”, nie pusty arkusz
+  const wczytaj = useCallback(async () => {
+    const x = await licznik.widok().catch(() => null);
+    if (!x) { ustawBlad(true); return; }
+    ustaw(x);
+    const l = await listaWzorow(kontener.z, { projektId: x.projektId });
+    ustawMaWzor(l.ok && l.wartosc.length > 0);
+  }, [licznik, kontener]);
+  useEffect(() => { void wczytaj(); }, [wczytaj]);
+  if (!w) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="menu" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   const z = kontener.z;
   // M1-006: błąd zapisu → alert, menu zostaje otwarte (bez powrotu jak po sukcesie; zamyka je użytkowniczka). Inny powód (np. licznik zablokowany) — jak dotąd.
   const poZapisie = async (r: Wynik<unknown>) => {

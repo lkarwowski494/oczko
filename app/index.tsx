@@ -54,7 +54,7 @@ export default function EkranLicznika(): React.ReactElement {
       if (w.ok && w.wartosc.cel === 'lista') router.push('/projekty');
       if (w.ok && w.wartosc.cel === 'wzor') router.push('/wzor'); // praca skończyła się na wzorze: licznik zostaje pod spodem, „wstecz” wraca na licznik (07-jakosc-006)
       // Okno „Uczciwe zasady” nie otwiera się na liczniku (BR-ZAK-006, ER-46, O-05, 07-jakosc-022): pierwsze miejsce to lista projektów (app/projekty.tsx).
-    });
+    }, () => { if (zywy) ustawAwarie(powodAwaryjny('zapis')); }); // M1-007: wyjątek startu danych jak `{ ok: false }` — ekran awaryjny (ADR-0019), nie pusta plansza
     return () => { zywy = false; };
   }, [licznik, router, kontener]);
   // ADR-0019: kamień milowy po zatwierdzeniu renderu licznika (efekt po narysowaniu); wyjątek w renderze pierwszego ekranu → bez kamienia (rola 12 E2).

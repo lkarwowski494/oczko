@@ -66,10 +66,12 @@ export default function Korzen(): React.ReactElement {
       else if (tryb.tryb === 'awaria-e2e') ustaw({ rodzaj: 'awaria-e2e' });
       else await normalny();
     }
+    // M1-007: wyjątek w starcie (strażnik, odczyt dostępu albo preferencji) → ekran awaryjny jak przy nieudanym kontenerze (ADR-0019), nie pusta plansza na zawsze.
+    const uruchom = () => void start().catch(() => { if (zywy) ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny('zapis') }); });
     // ADR-0019: liczy się tylko start na pierwszym planie (intencja, CloudKit i zegarek budzą proces w tle).
-    if (AppState.currentState === 'active') void start();
+    if (AppState.currentState === 'active') uruchom();
     else {
-      const sub = AppState.addEventListener('change', (st) => { if (st === 'active') { sub.remove(); void start(); } });
+      const sub = AppState.addEventListener('change', (st) => { if (st === 'active') { sub.remove(); uruchom(); } });
       return () => { zywy = false; sub.remove(); koniecNasluchu?.(); koniecTla?.(); zamknijLicznik?.(); };
     }
     return () => { zywy = false; koniecNasluchu?.(); koniecTla?.(); zamknijLicznik?.(); };
