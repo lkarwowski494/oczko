@@ -78,7 +78,7 @@
     "eksport": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
     "import": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
     "usun_wszystko": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-009.",
-    "usun_pytanie": "Pierwszy akapit arkusza „Delete all data”; „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie. Bez zdania „It can’t be undone.”: od P-328 przed usunięciem powstaje kopia. Tłumaczenie: słowo „urządzenie” neutralne wobec modelu.",
+    "usun_pytanie": "Pierwszy akapit arkusza „Delete all data”: co znika i co zostaje (M1-audytor-generalny-130, P-427). Znika wszystko z Oczka; kopie bezpieczeństwa (archiwum w Plikach, Oczko › Backup, i kopie wewnętrzne) zostają na urządzeniu, a Oczko usuwa je po 30 dniach (liczba z konfiguracji, ADR-0020 (6), ADR-0032 — nie zmieniaj jej w przekładzie). „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie; słowo „urządzenie” neutralne wobec modelu. Bez zdania „It can’t be undone.”: od P-328 przed usunięciem powstaje kopia. Spokojnie, bez straszenia.",
     "usun_potwierdz": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "usun_pro": "Drugi akapit w arkuszu „Delete all data” (KP-05): usunięcie danych nie usuwa zakupu; Pro wraca przez „Restore purchases” na ekranie Oczko Pro. Jedno zdanie spokojnym głosem; nie straszy.",
     "usun_kopia": "Drugi akapit arkusza „Delete all data” (P-328: kopia przed usunięciem, jak w Treningu; ADR-0028). „Files” = aplikacja Pliki w iOS; „Oczko › Backup” = folder w Plikach (nazwy aplikacji i folderu zgodnie z systemem). „Importing that file” = zwykły import eksportu Oczka.",
