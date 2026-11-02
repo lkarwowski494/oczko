@@ -1,0 +1,27 @@
+{
+  "zrodlo": "Rola 04, znaleziska P2 (P-364, P-368; 2026-11-02). Klucze en do nałożenia przez 08 po akceptacji koordynatora. `en`: nowe klucze. `potwierdzone`: klucze robocze 08, których wartość 04 akceptuje albo zmienia (04 nie czyta `src/`; 08 porównuje i zgłasza różnicę). Teksty tylko en; inne języki — fala po audycie (P-320).",
+  "en": {
+    "historia.wpis_opis": "{{od}} to {{do}} at {{czas}}",
+    "wspolne.blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again.",
+    "ustawienia.blad_zapisu": "Couldn’t save this setting",
+    "formularz.blad_zapisu": "Couldn’t save your changes"
+  },
+  "potwierdzone": {
+    "wzor.blad_czas": "Oczko couldn’t finish converting this file",
+    "wzor.blad_czas_opis": "“{{plik}}” took too long to convert. Nothing was added. Save it as a PDF and add the PDF, or try again.",
+    "wzor.przelacz_naglowek": "Patterns in {{projekt}}",
+    "stoper.menu_naglowek": "Session started {{godzina}}"
+  },
+  "kontekst": {
+    "historia.wpis_opis": "Opis jednego wpisu historii licznika dla VoiceOver i dla `{{wpis}}` w `historia.wpis_rozwin_a11y` („More about 30 to 31 at 20:14”). {{od}} i {{do}} = wartości licznika przed i po zmianie (liczby w zapisie regionu, bez odmiany); {{czas}} = godzina w formacie regionu. Czytane słowami „to”/„at”, nie strzałką ani kropką (VoiceOver czyta „→” jako nazwę znaku). Wpis cofnięty: do opisu dochodzi osobne zdanie `historia.cofnieto`; seria: dotychczasowy tekst `historia.seria_*`.",
+    "wspolne.blad_zapisu_opis": "Druga linia alertu błędu zapisu poza licznikiem i wzorem: Ustawienia (przełącznik wraca do poprzedniego stanu), miary, formularze projektu, sesji i włóczki. Pierwsza linia to `ustawienia.blad_zapisu` albo `formularz.blad_zapisu` (tytuł mówi, co się nie udało). Przyczyna (brak miejsca na urządzeniu) i działanie (zwolnić miejsce, spróbować ponownie); „Nothing was changed” = poprzedni stan został. Przycisk: `wspolne.ok`.",
+    "ustawienia.blad_zapisu": "Nagłówek alertu, gdy nie udał się zapis ustawienia (przełącznik wraca, ADR-0029): Vibration, Screen stays on, Units, język. „setting” = jedno ustawienie aplikacji. Druga linia: `wspolne.blad_zapisu_opis`.",
+    "formularz.blad_zapisu": "Nagłówek alertu, gdy nie udał się zapis arkusza formularza (projekt, część, sesja, włóczka, termin) po stuknięciu Save; arkusz zostaje otwarty z wpisanymi wartościami. Druga linia: `wspolne.blad_zapisu_opis`. Nie dotyczy licznika (`licznik.blad_zapisu`) ani wzoru (`wzor.blad_zapis`)."
+  },
+  "kontekstPotwierdzonych": {
+    "wzor.blad_czas": "Nagłówek alertu, gdy konwersja pliku Word do PDF przekroczyła limit czasu (powód `przekroczono_czas`; zlecenie czeka na potwierdzenie, nic nie zostało dodane). Wzorzec jak `wzor.blad_plik`; tytuł mówi, co się nie udało.",
+    "wzor.blad_czas_opis": "Druga linia tego alertu. Kolejność: najpierw pewniejsze działanie (zapis jako PDF), potem ponowienie, bo przy dużym pliku ponowienie często da ten sam wynik. {{plik}} = nazwa pliku, nie tłumaczona. „Nothing was added” = zlecenie nie trafiło do projektu.",
+    "wzor.przelacz_naglowek": "Nagłówek systemowego menu przełączania wzorów projektu (▾ w tytule, od 2 wzorów albo gdy coś czeka na sieć); {{projekt}} = nazwa projektu. Menu systemowe skraca długą nazwę samo; bez własnego kroju.",
+    "stoper.menu_naglowek": "Nagłówek systemowego menu stopera (po stuknięciu w kapsułę): kiedy sesja się zaczęła; {{godzina}} = godzina w formacie regionu. Menu systemowe rysuje nagłówek własnym stylem (nie wzorzec `.naglowek-grupy`)."
+  }
+}

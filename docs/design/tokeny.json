@@ -140,8 +140,9 @@
   "sekcja": 32
  },
  "promien": {
-  "_zasada": "Hierarchia: im większy i ważniejszy element, tym większy promień; zakreślacz prawie prosty (papier).",
+  "_zasada": "Hierarchia: im większy i ważniejszy element, tym większy promień; zakreślacz prawie prosty (papier). `przyciskGlowny` = strefa +1 (168 pt); `przyciskPelny` = przycisk pełnej szerokości w arkuszu decyzji i alercie własnym (≥ 52 pt, 17 pt 700; P2-1, 2026-11-02); `przyciskDrugi` = przycisk z obrysem w rzędzie wyboru (`.wybor` w `fix10-2026-11-01/partia8.html:105`, min. 64 pt).",
   "przyciskGlowny": 20,
+  "przyciskPelny": 14,
   "przyciskDrugi": 14,
   "grupa": 12,
   "pole": 10,
