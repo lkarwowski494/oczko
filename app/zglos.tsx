@@ -8,6 +8,7 @@ import { ZglosProblem, type PoleDiagnostyki } from '../src/ekrany/ZglosProblem';
 import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { systemAplikacji } from '../src/kompozycja/system';
+import { znacznikSynchronizacji, znacznikZegarka } from '../src/kompozycja/zgloszenie-diagnostyka';
 import { przygotujZgloszenie } from '../src/przypadki-uzycia/zgloszenie';
 import { zegarekOstatniaPartiaMs } from '../src/dane/repozytoria/ustawienia';
 
@@ -24,8 +25,8 @@ export default function EkranZgloszenia(): React.ReactElement {
         { pole: 'system', wartosc: `iOS ${String(Platform.Version)}` },
         { pole: 'model', wartosc: c?.model ?? Constants.deviceName ?? '?' },
         { pole: 'jezyk', wartosc: kontener.j.jezyk() }, // BR-DAN-010 (ER-45): język aplikacji w diagnostyce, też przy „Report a translation problem”
-        { pole: 'synchronizacja', wartosc: kontener.z.synchronizacja ? kontener.z.synchronizacja.stan() : 'wylaczona' },
-        { pole: 'zegarek', wartosc: zegarekMs === null ? 'brak' : `ostatni kontakt ${new Date(zegarekMs).toISOString().replace('.000Z', 'Z')}` }, // BR-DAN-011: czas ostatniej partii (UTC) albo brak kontaktu
+        { pole: 'synchronizacja', wartosc: znacznikSynchronizacji(kontener.z.synchronizacja ? kontener.z.synchronizacja.stan() : null) }, // P-383 B: znacznik techniczny po angielsku (podgląd = wysyłany plik)
+        { pole: 'zegarek', wartosc: znacznikZegarka(zegarekMs) }, // BR-DAN-011: czas ostatniej partii (UTC) albo „none”
         { pole: 'bledy', wartosc: w.ok ? w.wartosc.tresc : '—' },
       ]);
     });

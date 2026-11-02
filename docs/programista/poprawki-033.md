@@ -9,7 +9,7 @@ P-315: analogii w Treningu nie szukałem osobno — zadania wynikają z raportó
 |---|---|---|---|
 | 033-T1 testID | D (bez zmiany wyglądu i zachowania) | 5 nowych plików/przypadków tras z `app/` (P-377): 9 czerwonych z „Unable to find an element with testID …” → zielone | patrz `git log` (commit „033-T1”) |
 | 033-T1 hak `e2e-ocena-stan` (F-64) | D | `e2e-ocena-stan.test.tsx` 2 czerwone („Unable to find … e2e-ocena-stan”) → zielone | j.w. |
-| 033-T2 `app/zglos.tsx:27-28` | opis, bez zmiany (wartość techniczna w treści zgłoszenia) | — | ten plik |
+| 033-T2 `app/zglos.tsx:27-28` | D po decyzji P-383 (wariant B koordynatora): wartość techniczna w treści zgłoszenia → neutralne angielskie znaczniki | `zglos-trasa.test.tsx`: 8 czerwonych (stare „ostatni kontakt …”, „brak”, „wylaczona”) → zielone; test 013 zmieniony (nazwa niżej) | commit „033-T2 B” |
 
 ## 033-T1: testID (wszystkie dopisane bez zmiany wyglądu, etykiet i akcji)
 | testID | Miejsce | Test na trasie |
@@ -36,7 +36,9 @@ Wzorzec haka E2E istnieje (`paneleE2e`, `e2e-pliki-stan`, `e2e-pomiar-operacji`)
 - Użytkownik w en widzi więc „Sync: wylaczona”, „Watch: brak” — **realność: brzegowa** (dotyczy każdego, kto otworzy podgląd, ale to 2 wiersze diagnostyki, nie główny przepływ; dane nie giną, prywatność bez zmian).
 - **Dlaczego bez zmiany (zgodnie z poleceniem):** tłumaczenie wartości przez `t()` zmieniłoby treść wysyłaną twórcy (język zgłoszenia zależałby od języka użytkownika), a rozdzielenie podglądu od ładunku łamałoby BR-DAN-010 S1 („pełna treść … zanim cokolwiek opuści telefon”). Test czerwony przed nie ma czego sprawdzać — nie ma błędu i18n klucza, jest decyzja o brzmieniu ładunku.
 
-**Opcje dla koordynatora (P-087; sprawa dla 04/07 przy zmianie brzmienia):**
+**Decyzja koordynatora P-383 (2026-11-02 07:21 UTC): wariant B. Wykonane:** `src/kompozycja/zgloszenie-diagnostyka.ts` (`znacznikSynchronizacji`: off/on/error/no_account/account_changed; `znacznikZegarka`: `none` / `last contact <ISO>`), użyte w `app/zglos.tsx:27-28`. **Zmiana testu 07 nazwana:** `tests/ekrany/zglos-trasa.test.tsx` test 013 „zegarek bez kontaktu” — asercja `brak` → `Watch: none$` (+ brak polskiego „brak”); test „z kontaktem” — dokładny wiersz `Watch: last contact 2026-11-01T10:30:00Z`; dopisane przypadki synchronizacji (brak silnika → `off` oraz 5 stanów domeny). Dla 07: komentarz scenariusza 63 (linie 3-5, „część surowa, nietłumaczona”) jest nieaktualny; asercje `Sync: .*` i `Watch: .*` dalej pasują. Dla 01/05: zapis BR-DAN-011 nie podaje brzmienia, bez zmiany BRD.
+
+**Opcje rozważane przed decyzją (A zostawić, B wybrane, C t() odrzucone):**
 | Opcja | Co się zmienia | Kompromis |
 |---|---|---|
 | A. Zostawić (stan obecny) | nic | 0 kosztu; w en wiersze „Sync”/„Watch” mają polskie wartości. Twórca czyta po polsku. |
