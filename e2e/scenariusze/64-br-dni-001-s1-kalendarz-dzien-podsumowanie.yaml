@@ -1,0 +1,77 @@
+# BR-DNI-001/S1+S2, BR-DNI-002/S1, BR-DNI-003/S1+S3 (docs/brd/wymagania-dni.md:8,43,64; RD-15, RD-16, RD-20; F-59, 07-jakosc-033): ekran „History” z listy projektów.
+# Dane: wtorek 3 XI 2026 — 3 rzędy w „Harbor” (wcześniej +1 i −1 projektu roboczego: cofnięte NIE są pracą, RD-15), czwartek 5 XI — 2 rzędy; środa 4 XI bez pracy.
+# Wyrocznia: BRD + rachunek z danych scenariusza (tydzień pon. 2–nd. 8 XI = 5 rzędów, poprzedni tydzień 0, listopad = 5 rzędów i 2 dni z robótką).
+# Co widzi użytkownik: wybrany dzień (domyślnie dziś) z listą projektów i rzędów, tydzień i miesiąc z sumą rzędów; BEZ czasu „0 h”, gdy nie było stopera (S3).
+# Poza tym scenariuszem: znacznik dnia z robótką (kreska pod numerem) — widok bez testID/etykiety poza dniem wybranym (src/kompozycja/historia.ts:25-27), czyli nie do odczytania
+# Maestro — tylko zrzut 64-kalendarz; kolumny od poniedziałku (S6 BR-DNI-001), dzień przez północ i strefy (BR-DNI-002 S2–S4), stoper — Jest `historia-dni.test.tsx`, domena `tests/domena/dni/`.
+# Czas jest wstrzykiwany (`oczkoE2eTeraz`), więc daty nie zależą od zegara maszyny. Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-DNI-001/S1 · Historia: dzień 3 XI (3 rzędy), 4 XI pusty, tydzień i miesiąc 5 rzędów, 2 dni z robótką, bez czasu 0 h"
+tags:
+  - BR-DNI-001-S1
+  - BR-DNI-002-S1
+  - BR-DNI-003-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-03T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+# --- czwartek 5 XI: dwa rzędy więcej; środa 4 XI bez pracy ---
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-05T19:30:00" } }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+# --- lista projektów → History (okno „Uczciwe zasady” może otworzyć się nad listą: BR-ZAK-006/S9) ---
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- assertVisible: { id: "nav-historia" }
+- tapOn: { id: "nav-historia" }
+- assertVisible: { id: "historia-kalendarz" }
+- assertVisible: "November 2026"
+- assertVisible: "Weeks start on Monday."
+- takeScreenshot: 64-kalendarz
+# --- dziś (czwartek 5 XI): Harbor, 2 rzędy ---
+- assertVisible: "Thursday, November 5"
+- assertVisible: "Harbor, 2 rows"
+# --- tydzień (pon. 2 XI – nd. 8 XI) i miesiąc: 5 rzędów, bez czasu ze stopera ---
+- assertVisible: "This week"
+- assertVisible: { text: "5 rows", index: 1 } # dwa bloki: tydzień i listopad
+- assertVisible: "Previous week: 0 rows"
+- assertVisible: "2 crafting days"
+- assertVisible: { text: "Time shows here when you use the stopwatch.", index: 1 }
+- assertNotVisible: ".*\\b0 (h|hr|hrs|hours?)\\b.*"
+- takeScreenshot: 64-tydzien-i-miesiac
+# --- wtorek 3 XI: 3 rzędy w Harbor (cofnięte +1/−1 roboczego projektu nie liczą się) ---
+- tapOn: { id: "historia-dzien-2026-11-03" }
+- assertVisible: { id: "historia-dzien-2026-11-03", selected: true }
+- assertVisible: "Tuesday, November 3"
+- assertVisible: "Harbor, 3 rows"
+- assertVisible: { id: "historia-dzien-2026-11-03", text: ".*3 rows" }
+- takeScreenshot: 64-dzien-3-xi
+# --- środa 4 XI: bez pracy ---
+- tapOn: { id: "historia-dzien-2026-11-04" }
+- assertVisible: { id: "historia-dzien-2026-11-04", selected: true }
+- assertVisible: "Nothing counted on this day."
+- assertNotVisible: "Harbor, [0-9]+ rows?"
+# --- poprzedni miesiąc i z powrotem ---
+- tapOn: "Previous month"
+- assertVisible: "October 2026"
+- tapOn: "Next month"
+- assertVisible: "November 2026"

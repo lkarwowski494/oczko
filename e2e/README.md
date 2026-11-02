@@ -246,6 +246,16 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `icloud-konflikt-wybor-0` | arkusz konfliktu | pierwszy wybór wersji (kolejność nie jest kontraktem — scenariusz łączy id `…-0` i `…-1` alternatywą z etykietą; P-250) | etykieta VoiceOver `dane.konflikt_a11y`: „Keep {n} rows from {urządzenie}, {godzina}” | |
 | `icloud-konflikt-wybor-1` | arkusz konfliktu | drugi wybór wersji (jak wyżej) | jak wyżej | |
 | `usun-z-icloud` | arkusz „Delete all data” | przełącznik „Also delete from iCloud” | „Also delete from iCloud” | |
+| `nav-historia` | lista projektów | wejście do „History” (kalendarz dni; F-59) | „History” | |
+| `historia` | History | kontener ekranu (ScrollView) | — | |
+| `historia-dzien-2026-11-03` | History | komórka dnia 3 XI 2026 (wzorzec `historia-dzien-RRRR-MM-DD`; rola przycisku, `selected`; etykieta „Nov 3 · 3 rows” tylko dla dnia wybranego z pracą, inne dni: „Nov 4”; scen. 64) | „Nov 3 · 3 rows” | |
+| `historia-dzien-2026-11-04` | History | komórka dnia 4 XI 2026 (dzień bez pracy; scen. 64) | „Nov 4” | |
+| `ukonczenie-gotowe` | karta ukończenia | „Done” — zamknięcie karty = chwila systemowej prośby o ocenę (BR-DAN-012/S1; scen. 65) | „Done” | |
+| `dane-zastapiono` | import po „Replace” (Ustawienia) | kontener wyniku „Data replaced” (BR-DAN-006/S3; scen. 66) | „Data replaced” | |
+| `wzor-kierunek` | wzór | karta „Which way do rows go on this page?” przy pierwszym „Mark row” (P-126 3a; scen. 62) | „Which way do rows go on this page?” | |
+| `wzor-znacznik-pasek` | wzór | pasek ustawiania znacznika rzędu (kierunek, krokowiec, „Done”; BR-WZR-003, F-26; scen. 62) | — | |
+| `wzor-znacznik-rzad` | wzór, pasek znacznika | numer rzędu schematu, na którym stoi znacznik (RD-21; scen. 62) | „12” | |
+| `wzor-znacznik-gotowe` | wzór, pasek znacznika | „Done” — zamknięcie paska | „Done” | |
 | `wprowadzenie` | — | ekran wprowadzenia (NIE może istnieć przed pierwszym +1) | — | |
 | `e2e-nigdy` | — | element, którego nie ma (podprzepływ `odstep.yaml`) | — | |
 | `e2e-sklep-wygas` | oferty (build E2E) | „Test store: expire access” | bez `t()` | |
@@ -325,9 +335,16 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-DAN-009 z iCloud | `51-br-dan-009-usun-takze-z-icloud.yaml` |
 | P-230 skrzynka rozszerzenia | `52-p-230-skrzynka-rozszerzenia.yaml` |
 | P-282 Word: tekst, tabela, obraz (informacyjnie) | `53-p-282-word-tabela-obraz.yaml` |
+| BR-PRJ-007/S1 (F-20; częściowo: bez przypomnień i narzędzia — S1 „Oraz”, S2 w Node) | `61-br-prj-007-s1-zrob-taka-sama.yaml` (informacyjnie) |
+| BR-WZR-003/S1, S2, S6 (F-26; S3–S5 i koniec strony w Node/na urządzeniu) | `62-br-wzr-003-s1-znacznik-idzie-z-licznikiem.yaml` (informacyjnie) |
+| BR-DAN-010/S1, S3 (F-57; S2 częściowo: arkusz udostępniania opcjonalnie) | `63-br-dan-010-s1-zglos-problem-podglad.yaml` (informacyjnie) |
+| BR-DNI-001/S1–S2, BR-DNI-002/S1, BR-DNI-003/S1, S3 (F-59; znacznik dnia tylko na zrzucie) | `64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml` (informacyjnie) |
+| BR-DAN-012/S1, S3 (F-64; wywołanie systemowe i adres recenzji nie do odczytu w E2E) | `65-br-dan-012-s1-prosba-o-ocene.yaml` (informacyjnie) |
+| BR-DAN-006/S3 „Replace” (F-32) | `66-br-dan-006-s3-zastap-kopia-przed.yaml` (informacyjnie) |
 | (przepływy pakietu podstawowego spoza poziomu E2E) BR-LIC-002/S1–S3, BR-LIC-019/S1, BR-LIC-003/S2 · BR-ZAK-006/S1, KP-13 · BR-ZAK-001/S1, PR-09 · P-089 (3a) · BR-DAN-005/S1, BR-DAN-006/S1, P-113 Q2a (bez karty) · ADR-0019 | `04`, `05`, `06`, `07`, `08`, `09` |
 
 Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza — lista telefonu (strategia §8, TT-01–TT-09) albo „Nie sprawdzono”.
 
 ## Przebiegi nocne
 - 2026-10-26/27: pełny pakiet (`[e2e-pelny]`, iPhone + iPad) — partia 5 (STOP E2) i scenariusze 44–52 (07 fix-3); uruchomienie koordynatora (P-241, P-251).
+- 2026-11-02 (07-jakosc-033 B, P-378): scenariusze 61–66 (F-20, F-26, F-57, F-59, F-64, „Replace”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegły (brak macOS w sesji pisania), ocena po przebiegu nocnym.
