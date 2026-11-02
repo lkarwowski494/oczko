@@ -41,15 +41,32 @@ test('M1-011: migracja z „brak_miejsca” → ekran z powodem brak miejsca, ni
   expect(powodAwaryjny('zapis')).toBe('uszkodzony'); // inne powody bez zmian
 });
 
-test('M1-011: „Save a copy” przy braku miejsca w archiwum → alert błędu zapisu (bez ZIP, który też wymaga miejsca)', async () => {
+// Przegląd ścieżek wrażliwych (M2, 937b500): ADR-0020 (3) „`VACUUM INTO` zawodzi → ZIP surowej kopii”. Archiwum sprawdza miejsce na bazę i WSZYSTKIE
+// pliki magazynu (src/dane/archiwum.ts), a ZIP surowej kopii to tylko `.db`/`-wal`/`-shm` — przy `brak_miejsca` w archiwum ZIP często się mieści.
+// Wcześniejsza wersja tego testu wymagała `zipSurowej` niewywołanego, czyli utrwalała utratę drogi ratunkowej; alert dopiero, gdy ZIP też zawiedzie.
+test('M1-011: „Save a copy” przy braku miejsca w archiwum → najpierw ZIP surowej kopii; ZIP też się nie zapisał → alert o miejscu', async () => {
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  mockA.zipSurowej.mockClear();
   mockA.zapiszKopie.mockResolvedValue('brak_miejsca');
   mockA.zipSurowej.mockResolvedValue(null);
   render(<EkranAwaryjny powod="brak_miejsca" t={t} naNormalnie={jest.fn()} />);
   fireEvent.press(screen.getByRole('button', { name: /copy/i }));
   await waitFor(() => expect(alert).toHaveBeenCalled());
   expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
-  expect(mockA.zipSurowej).not.toHaveBeenCalled();
+  expect(mockA.zipSurowej).toHaveBeenCalledTimes(1);
+});
+
+test('M1-011: „Save a copy” przy braku miejsca w archiwum, a ZIP surowej kopii się mieści → arkusz udostępniania z ZIP-em, bez alertu', async () => {
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { udostepnijPlik } = require('../../src/platforma/system-plikow-uzytkownika') as { udostepnijPlik: jest.Mock };
+  udostepnijPlik.mockClear();
+  mockA.zapiszKopie.mockResolvedValue('brak_miejsca');
+  mockA.zipSurowej.mockResolvedValue('/tmp/oczko-surowa.zip');
+  render(<EkranAwaryjny powod="brak_miejsca" t={t} naNormalnie={jest.fn()} />);
+  fireEvent.press(screen.getByRole('button', { name: /copy/i }));
+  await waitFor(() => expect(udostepnijPlik).toHaveBeenCalledWith('/tmp/oczko-surowa.zip'));
+  expect(alert).not.toHaveBeenCalled();
 });
 
 test('M1-011: „Save a copy” — baza się nie otwiera i ZIP surowej kopii się nie zapisał → alert, nie cisza', async () => {

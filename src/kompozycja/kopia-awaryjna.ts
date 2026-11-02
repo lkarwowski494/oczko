@@ -13,7 +13,7 @@ import { powodBledu } from '../dane/baza/bledy-sqlite';
 export function kopiaAwaryjna(o: { sciezkaBazy: string; pliki: string; zegar: Zegar; katalogi: Katalogi }) {
   let baza: ReturnType<typeof otworzPortExpo> | null = null;
   return {
-    /** `brak_miejsca` (M1-011, ADR-0020 (4)): ekran mówi o miejscu i nie próbuje ZIP-a, który też wymaga miejsca; `null`: baza się nie otwiera. */
+    /** `brak_miejsca` (M1-011): archiwum nie zmieściło się (baza + pliki magazynu); ekran próbuje wtedy ZIP-a surowej kopii (ADR-0020 (3)), a komunikat (4) dopiero, gdy i on zawiedzie; `null`: baza się nie otwiera. */
     async zapisz(): Promise<{ sciezka: string; licznosci: Licznosci } | 'brak_miejsca' | null> {
       try {
         baza ??= otworzPortExpo(o.sciezkaBazy);

@@ -27,10 +27,11 @@ export function EkranAwaryjny({ powod, t, naNormalnie }: { powod: PowodTrybuAwar
       stan={{ powod, licznosciKopii: licznosci }}
       t={t}
       naZapiszKopie={() => { if (E2E) ustawSha(null); /* P-203, F07-19: panel ukryty, dopóki SHA po kopii się nie policzy */ void a.zapiszKopie().then(async (k) => {
-        if (k === 'brak_miejsca') { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; } // M1-011, ADR-0020 (4): komunikat zamiast ciszy
-        if (!k) { // ADR-0020 (3): baza się nie otwiera → ZIP surowej kopii; plik tymczasowy usuwany po udostępnieniu
+        // ADR-0020 (3): baza się nie otwiera albo archiwum zawodzi (także `brak_miejsca`: archiwum liczy miejsce na bazę i wszystkie pliki magazynu,
+        // a ZIP surowej kopii to tylko `.db`/`-wal`/`-shm`) → ZIP surowej kopii; plik tymczasowy usuwany po udostępnieniu.
+        if (k === 'brak_miejsca' || !k) {
           const zip = await a.zipSurowej();
-          if (!zip) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; } // M1-011: ZIP się nie zapisał (zwykle brak miejsca) → komunikat
+          if (!zip) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; } // M1-011, ADR-0020 (4): ZIP też się nie zapisał (zwykle brak miejsca) → komunikat
           if (!E2E) void udostepnijPlik(zip).finally(() => usunPlik(zip));
           return;
         }
