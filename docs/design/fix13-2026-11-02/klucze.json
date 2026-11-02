@@ -1,0 +1,26 @@
+{
+  "zrodlo": "Rola 04, fix M2 partia 2 (P-418, P-420; DEC-28 a; 2026-11-02). Teksty en nałożone przez 04 na src/i18n/slowniki/en.json i en.kontekst.json; klucze na liście oczekujących (P-357), przekład w fali 09 (P-320). Podpięcie w kodzie: M2 (08), testami przed kodem; wyrocznia testów = ten plik. `grupy`: klucze według ID planu.",
+  "odwolania": ["P-418", "P-420"],
+  "powod": "Teksty DEC-28 a (M1-audytor-generalny-102, 110, 020; P-418, P-420): rysunek na wzorze, stoper, pytanie przy wyjściu ze wzoru, ostrzeżenie o miejscu, „Discard changes?” w formularzach — en od 04, przekład w fali 09.",
+  "grupy": {
+    "M1-audytor-generalny-102": ["wzor.blad_rysunku", "wzor.blad_rysunku_opis", "wzor.rysunek_niezapisany_opis", "stoper.blad_zapisu", "wzor.wyjdz_tytul", "wzor.wyjdz_zostan", "wzor.wyjdz_potwierdz"]
+  },
+  "en": {
+    "wzor.blad_rysunku": "Couldn’t save highlights and drawings",
+    "wzor.blad_rysunku_opis": "Your device may be out of space. Your highlights and drawings are waiting on this device. Oczko will save them the next time you open this pattern with free space.",
+    "wzor.rysunek_niezapisany_opis": "Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.",
+    "stoper.blad_zapisu": "Couldn’t update the timer",
+    "wzor.wyjdz_tytul": "Leave this pattern?",
+    "wzor.wyjdz_zostan": "Stay",
+    "wzor.wyjdz_potwierdz": "Leave unsaved"
+  },
+  "kontekst": {
+    "wzor.blad_rysunku": "Nagłówek alertu, gdy nie udał się zapis zakreśleń i rysunków na stronie wzoru (zakreślacz, pióro; ta sama para słów co w `wzor.usun_opis` „highlights and drawings”). Trzy sytuacje: zapis po rysowaniu, odzysk przy otwarciu wzoru (kreski z poprzedniej wizyty) i błąd zapisu w widoku natywnym. Druga linia: `wzor.blad_rysunku_opis` albo `wzor.rysunek_niezapisany_opis`; przycisk `wspolne.ok`. Nie mylić z `wzor.blad_zapis` (dodanie wzoru).",
+    "wzor.blad_rysunku_opis": "Druga linia alertu `wzor.blad_rysunku`, gdy kreski są już w pliku na urządzeniu (zapis po rysowaniu albo odzysk przy otwarciu wzoru): nic nie zginęło, aplikacja zapisze je sama przy następnym otwarciu wzoru, gdy będzie miejsce. „are waiting on this device” = czekają na urządzeniu (przetrwają zamknięcie aplikacji). Bez „Nothing was changed” i bez „try again”: użytkowniczka nie musi niczego powtarzać.",
+    "wzor.rysunek_niezapisany_opis": "Używany w dwóch miejscach z tą samą treścią: (1) druga linia alertu `wzor.blad_rysunku`, gdy zapisu nie zrobił widok natywny (kreski są tylko w pamięci aplikacji); (2) treść pytania `wzor.wyjdz_tytul` przy „Back” z takimi kreskami. Fakt: kreski przepadną, jeśli aplikacja zostanie zamknięta, zanim zwolni się miejsce; po zwolnieniu miejsca ponowne otwarcie wzoru je zapisuje. „it” = Oczko (aplikacja). Ton informacyjny, bez straszenia.",
+    "stoper.blad_zapisu": "Nagłówek alertu, gdy nie udał się zapis stopera sesji po stuknięciu Start, Pause, Resume albo Stop; stoper zostaje w poprzednim stanie. Druga linia: `wspolne.blad_zapisu_opis` („Nothing was changed … try again” — prawdziwe: wystarczy stuknąć ponownie). „timer” jak w `stoper.*`.",
+    "wzor.wyjdz_tytul": "Tytuł pytania po stuknięciu „Back” na ekranie wzoru, gdy są kreski niezapisane przez widok natywny (brak miejsca). Pytanie o decyzję, nie komunikat błędu. Treść: `wzor.rysunek_niezapisany_opis`; przyciski `wzor.wyjdz_zostan` (anuluj) i `wzor.wyjdz_potwierdz` (niszczący).",
+    "wzor.wyjdz_zostan": "Przycisk anulujący w pytaniu `wzor.wyjdz_tytul`: zostaje na ekranie wzoru. Krótko, jedno słowo, jeśli język pozwala.",
+    "wzor.wyjdz_potwierdz": "Przycisk niszczący (czerwony) w pytaniu `wzor.wyjdz_tytul`: wychodzi ze wzoru, choć ostatnie zakreślenia i rysunki nie są zapisane. Etykieta nazywa skutek (wyjście bez zapisu), nie samą nawigację („Back”)."
+  }
+}

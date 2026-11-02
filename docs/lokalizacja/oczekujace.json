@@ -1,11 +1,13 @@
 {
-  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte. licznik.jednostka, ukonczenie.jednostka (M1-audytor-generalny-018, P-405, P-406 a): en przeszło na formy liczby mnogiej, pl przełożone od razu (przetlumaczone_czesciowo); pozostałe języki do fali trzymają stary zwykły klucz (uwaga bramki, t() bierze go jako zastępstwo). projekty.dni (M1-audytor-generalny-086, 09-lokalizacja-501, P-412 a): forma liczby mnogiej idzie za {{limit}} (count = limit), co pasuje tylko do zweryfikowanych pl, ru, lt, cs (przetlumaczone_czesciowo); w pozostałych językach rzeczownik stoi przy {{zostalo}}, więc ich przekład usunięty do fali (tekst z en).",
+  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte. licznik.jednostka, ukonczenie.jednostka (M1-audytor-generalny-018, P-405, P-406 a): en przeszło na formy liczby mnogiej, pl przełożone od razu (przetlumaczone_czesciowo); pozostałe języki do fali trzymają stary zwykły klucz (uwaga bramki, t() bierze go jako zastępstwo). projekty.dni (M1-audytor-generalny-086, 09-lokalizacja-501, P-412 a): forma liczby mnogiej idzie za {{limit}} (count = limit), co pasuje tylko do zweryfikowanych pl, ru, lt, cs (przetlumaczone_czesciowo); w pozostałych językach rzeczownik stoi przy {{zostalo}}, więc ich przekład usunięty do fali (tekst z en). Teksty DEC-28 a (M1-audytor-generalny-102, 110, 020; P-418, P-420): rysunek na wzorze, stoper, pytanie przy wyjściu ze wzoru, ostrzeżenie o miejscu, „Discard changes?” w formularzach — en od 04, przekład w fali 09.",
   "odwolania": [
     "P-320",
     "P-357",
     "P-405",
     "P-406",
-    "P-412"
+    "P-412",
+    "P-418",
+    "P-420"
   ],
   "klucze": [
     "dane.zastapiono",
@@ -65,6 +67,7 @@
     "przyp.wiersz",
     "przyp.wiersz_a11y",
     "stan_danych.kopie_opis",
+    "stoper.blad_zapisu",
     "ukonczenie.bez_wloczki",
     "ukonczenie.edytuj_zapas_opis",
     "ukonczenie.jednostka",
@@ -90,6 +93,8 @@
     "wspolne.ponow",
     "wzor.blad_czas",
     "wzor.blad_czas_opis",
+    "wzor.blad_rysunku",
+    "wzor.blad_rysunku_opis",
     "wzor.blad_zapis",
     "wzor.blad_zapis_opis",
     "wzor.notatka_chip",
@@ -103,6 +108,10 @@
     "wzor.notatki_tytul",
     "wzor.notatki_wiele",
     "wzor.przed_schematem",
+    "wzor.rysunek_niezapisany_opis",
+    "wzor.wyjdz_potwierdz",
+    "wzor.wyjdz_tytul",
+    "wzor.wyjdz_zostan",
     "wzor.znacznik_napis"
   ],
   "przetlumaczone_czesciowo": {
