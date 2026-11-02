@@ -1,7 +1,7 @@
 # Przekazanie koordynatora Oczka
 
 ## STAN NA NOC 1/2.11 (zapis 2026-11-01 21:20 UTC) — czytaj najpierw
-Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-362** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
+Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej samej sesji. Decyzje do **P-367** (`docs/decyzje.md`). Biblioteka `prompts` eb3b4e7 (P-314), składanie: `node <prompts>/tools/assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania <ID> --galaz <kopia> --plik <plik>`; wzór polecenia z nagłówkiem: `oczko-warsztat` `koordynacja/role-2026-11-01/08-partia-8b2.md` (nagłówek do linii `=== PROMPT ROLI ===` na początku wiersza; uwaga: ten napis występuje też w kroku 1 — tnij po `\n=== PROMPT ROLI ===\n`).
 
 **Właściciel śpi; cisza w czacie do ok. 05:00 czasu polskiego (04:00 UTC)** — w nocy nie piszesz mu raportów (P-346). Decydujesz sam: najpierw jak w `lkarwowski494/trening`, bez analogii wg rekomendacji roli; każda nocna decyzja z dopiskiem „noc, do weta” (P-345). Bez zgody: nic na `main`, nic do Apple/ASC, żadnych kosztów. Rano (pierwszy dyżur po 04:00 UTC): krótki raport stanu w czacie.
 
@@ -16,7 +16,7 @@ Koordynator: session_01T66VBwakbtXXLmB3joKZcd (opus/medium); po `/clear` w tej s
 | `claude/kopia-partia-8{a,b,c}-2026-11-01` | 5987e74 / 6acbd4f / edda6d3 | źródła scalenia | nie ruszać |
 | `claude/kopia-07-2026-11-01`, `claude/kopia-10-2026-11-01` (1bbf5ab) | — | faza A 07 (P-323) i 10 (P-322) | jadą razem z poprawkami po przebiegu |
 
-**Stan 01:46 UTC 2.11:** sesji ról w pracy brak (A–E, 04, 07, integracje zarchiwizowane). Robocza = integracja 3 fcbeef4 + docs (P-361); **przebieg 2 = „Jakość · iOS” #136, run 41374039738** (`[e2e-pelny] [e2e-ciemny]`). Po przebiegu: nowa sesja 07 (raport E2 #136; liczyć scenariusze, nie joby — P-358) i lista „po przebiegu 2” z P-360–P-362 dla 08/04. Luki wydania względem Treningu (P-349): sesja 10 w dzień 2.11.
+**Stan 03:45 UTC 2.11:** sesji ról w pracy brak (wszystkie zarchiwizowane). Robocza = integracja 4 **706eea4** (P-367); **przebieg 3 = „Jakość · iOS” #137, run 41384277056** (`[e2e-pelny] [e2e-ciemny]`). Przebieg 2 (#136): 12/53 czerwonych, 11 scenariuszy nieaktualnych poprawionych, 04 z krokiem kontrolnym (P-366, P-367). Po #137: raport 07 (wzór: pierwsza wiadomość jak przy #136), lista „po przebiegu 3” — znaleziska P2 z P-364 i sesji I dla 04; 032/033 (07); audyt M1 po zielonym przebiegu. Push na roboczą tylko z głównego klonu (hook w worktree, P-362). Luki wydania względem Treningu (P-349): sesja 10 w dzień 2.11.
 
 **Zaplanowane (wchodzą do tej sesji):** 22:10 UTC trig_01LkUwmsMR86SXyc9HGB3Xmv — przygotowanie poleceń 8d i 8e; 23:00 UTC trig_01MTsaUZASrY2MKDYkr2QFH4 — sygnał fazy B + start 8d/8e + plan po przebiegu. Każdy dyżur planuje następny (`send_later`, **co 30 min, P-347**) — łańcuch nie może się urwać.
 
