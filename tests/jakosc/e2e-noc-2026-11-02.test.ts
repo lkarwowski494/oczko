@@ -65,6 +65,21 @@ const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[
   { scen: '56', zrzut: '56-arkusz-znaczenia', po: { nazwa: 'assertVisible', tekst: 'The row I' }, przed: { nazwa: 'tapOn' }, opis: 'F-09 arkusz znaczenia przed wyborem' },
   // (e) wąskie okno iPada: licznik > 0 i „•••”
   { scen: '46', zrzut: '46-waskie-licznik-wartosc-menu', po: { nazwa: 'tapOn', id: 'nav-wstecz' }, przed: { nazwa: 'tapOn', id: 'nav-projekty' }, opis: '(e) wąskie okno: licznik 1 i „•••”' },
+  // NOC-2b (cz. 2, kontynuacja): Ustawienia przed wierszem (tabela luk 04, „Luki do 07/08” pkt 2), menu i formularze przed zapisem, skutki Save/Restore/„A second Back”/„Make another like this” (pkt 4)
+  { scen: '08', zrzut: '08-ustawienia-przed-eksportem', po: { nazwa: 'assertVisible', id: 'ustawienia-eksport' }, przed: { nazwa: 'tapOn', id: 'ustawienia-eksport' }, opis: 'F-32 Ustawienia przed wierszem eksportu' },
+  { scen: '08', zrzut: '08-ustawienia-przed-importem', po: { nazwa: 'assertVisible', id: 'ustawienia-import' }, przed: { nazwa: 'tapOn', id: 'e2e-pliki-importuj-ostatni' }, opis: 'F-32 Ustawienia przed importem' },
+  { scen: '51', zrzut: '51-ustawienia-przed-usun-wszystko', po: { nazwa: 'scrollUntilVisible', id: 'ustawienia-usun-wszystko' }, przed: { nazwa: 'tapOn', id: 'ustawienia-usun-wszystko' }, opis: 'F-34 Ustawienia przed wierszem Delete all data' },
+  { scen: '63', zrzut: '63-ustawienia-przed-zglos', po: { nazwa: 'assertVisible', id: 'ustawienia-zglos' }, przed: { nazwa: 'tapOn', id: 'ustawienia-zglos' }, opis: 'F-57 Ustawienia przed wierszem Report a problem' },
+  { scen: '65', zrzut: '65-menu-przed-ukoncz', po: { nazwa: 'assertVisible', id: 'menu-ukoncz' }, przed: { nazwa: 'tapOn', id: 'menu-ukoncz' }, opis: 'F-64 menu ••• przed Ukończ' },
+  { scen: '55', zrzut: '55-menu-powtorzenie', po: { nazwa: 'assertVisible', id: 'menu-powtorzenie' }, przed: { nazwa: 'tapOn', id: 'menu-powtorzenie' }, opis: 'F-05 menu ••• z pozycją Repeat' },
+  { scen: '18', zrzut: '18-formularz-nazwa-przed-zapisem', po: { nazwa: 'assertVisible', id: 'formularz-zapisz' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, opis: 'F-31 formularz nazwy przed zapisem' },
+  { scen: '36', zrzut: '36-menu-usuwania', po: { nazwa: 'assertVisible', id: 'projekt-usun' }, przed: { nazwa: 'tapOn', id: 'projekt-usun' }, opis: 'F-33 menu projektu z pozycją usuwania' },
+  { scen: '36', zrzut: '36-kosz-po-przywroceniu', po: { nazwa: 'assertNotVisible', id: 'kosz-przywroc' }, przed: { nazwa: 'tapOn', id: 'nav-wstecz' }, opis: 'F-33 kosz po Restore' },
+  { scen: '36', zrzut: '36-lista-po-przywroceniu', po: { nazwa: 'assertNotVisible', id: 'projekty-kosz' }, przed: { nazwa: 'tapOn' }, opis: 'F-33 lista po Restore' },
+  { scen: '34', zrzut: '34-po-wyborze-drugiej', po: { nazwa: 'assertVisible', id: 'licznik-wartosc', tekst: '"text":"0"' }, przed: { nazwa: 'tapOn', id: 'licznik-projekt' }, opis: 'F-52 skutek wyboru „A second Back”' },
+  { scen: '34', zrzut: '34-projekt-dwie-czesci', po: { nazwa: 'assertVisible', tekst: 'Pair of Back' }, opis: 'F-52 projekt z drugą częścią' },
+  { scen: '61', zrzut: '61-menu-zrob-taka-sama', po: { nazwa: 'assertVisible', id: 'projekt-zrob-taka-sama' }, przed: { nazwa: 'tapOn', id: 'projekt-zrob-taka-sama' }, opis: 'F-20 menu z pozycją Make another like this' },
+  { scen: '61', zrzut: '61-oryginal-po-operacji', po: { nazwa: 'assertVisible', id: 'licznik-wartosc', tekst: '"text":"2"' }, opis: 'F-20 oryginał po operacji' },
 ];
 describe('NOC-2 · luki zrzutów dla przejścia 04', () => {
   test.each(LUKI.map((x) => [x.scen, x.opis, x] as const))('%s %s', (_s, _o, x) => {
@@ -73,23 +88,58 @@ describe('NOC-2 · luki zrzutów dla przejścia 04', () => {
     expect(z).toBeGreaterThan(-1);
     const wczesniej = l.slice(0, z);
     expect(wczesniej.some((k) => trafia(k, x.po))).toBe(true);
+    const ostatniePo = wczesniej.map((k, i) => (trafia(k, x.po) ? i : -1)).filter((i) => i >= 0).pop() as number;
+    // zrzut leży zaraz po kroku „po”: między nim a zrzutem nie ma kroku zmieniającego ekran (stuknięcie, wpis, obrót, start)
+    const miedzy = l.slice(ostatniePo + 1, z);
+    expect(miedzy.filter((k) => ZMIENIAJACE.has(k.nazwa)).map((k) => k.nazwa)).toEqual([]);
     if (x.przed) {
-      const ostatniePo = wczesniej.map((k, i) => (trafia(k, x.po) ? i : -1)).filter((i) => i >= 0).pop() as number;
       const nastepny = l.findIndex((k, i) => i > z && trafia(k, x.przed!));
       expect(nastepny).toBeGreaterThan(z);
-      // zrzut leży zaraz po kroku „po”: między nim a zrzutem nie ma kroku zmieniającego ekran (stuknięcie, wpis, obrót, start)
-      const miedzy = l.slice(ostatniePo + 1, z);
-      expect(miedzy.filter((k) => ZMIENIAJACE.has(k.nazwa)).map((k) => k.nazwa)).toEqual([]);
       // i tuż przed krokiem „przed”: pierwszy krok zmieniający ekran po zrzucie to właśnie on
       const pierwszyZmieniajacy = l.findIndex((k, i) => i > z && ZMIENIAJACE.has(k.nazwa));
       expect(pierwszyZmieniajacy).toBe(nastepny);
     }
   });
   test('każda nazwa zrzutu jest unikalna w swoim scenariuszu', () => {
-    for (const s of new Set(LUKI.map((x) => x.scen))) {
+    for (const s of new Set([...LUKI.map((x) => x.scen), ...WARIANTY.flatMap((w) => w.wywolania.map((c) => c.scen))])) {
       const nazwy = lista(s).filter((k) => k.nazwa === 'takeScreenshot').map((k) => JSON.stringify(k.arg));
-      expect({ s, powt: nazwy.filter((n, i) => nazwy.indexOf(n) !== i) }).toEqual({ s, powt: [] });
+      const zEnv = lista(s).filter((k) => k.nazwa === 'runFlow' && k.arg?.env?.ZRZUT).map((k) => JSON.stringify(k.arg.env.ZRZUT));
+      expect({ s, powt: [...nazwy, ...zEnv].filter((n, i, w) => w.indexOf(n) !== i) }).toEqual({ s, powt: [] });
     }
+  });
+});
+
+/* NOC-2b (cz. 2) · zrzuty wewnątrz podprzepływów współdzielonych (nazwij-projekt, otworz-stan-danych, ustaw-powtorzenie): jedno `takeScreenshot` w pliku podprzepływu dałoby tę samą
+ *       nazwę przy każdym wywołaniu (kolizja w artefakcie części). Decyzja: wariant `<podprzepływ>-ze-zrzutem.yaml` z parametrem `ZRZUT` (nazwa zrzutu podaje wołający w `env`),
+ *       oryginał nietknięty, więc pozostałe scenariusze (które go wołają) nie zmieniają się. Pilnuje, że wariant = oryginał + jeden zrzut (bez dryfu kopii obejścia klawiatury). */
+const SUBKAT = path.join(KAT, 'subflows');
+const WARIANTY: { baza: string; po: Cel; przed: Cel; wywolania: { scen: string; zrzut: string; env?: Record<string, string> }[] }[] = [
+  { baza: 'nazwij-projekt', po: { nazwa: 'assertVisible', id: 'formularz-zapisz' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, wywolania: [{ scen: '11', zrzut: '11-formularz-nazwa-przed-zapisem' }] },
+  { baza: 'otworz-stan-danych', po: { nazwa: 'scrollUntilVisible', tekst: 'Data and sync' }, przed: { nazwa: 'tapOn', tekst: 'Data and sync' }, wywolania: [{ scen: '48', zrzut: '48-ustawienia-przed-data-and-sync' }, { scen: '50', zrzut: '50-ustawienia-przed-data-and-sync' }] },
+  { baza: 'ustaw-powtorzenie', po: { nazwa: 'assertVisible', id: 'formularz-zapisz' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, wywolania: [{ scen: '55', zrzut: '55-formularz-powtorzenie-8-przed-zapisem', env: { DLUGOSC: '8' } }] },
+];
+const sub = (n: string) => wczytaj(path.join(SUBKAT, `${n}.yaml`));
+describe('NOC-2b · warianty podprzepływów ze zrzutem (parametr ZRZUT)', () => {
+  test.each(WARIANTY.map((w) => [w.baza, w] as const))('%s-ze-zrzutem = %s + jeden zrzut ${ZRZUT} w punkcie przed zmieniającym krokiem', (_b, w) => {
+    const plikW = path.join(SUBKAT, `${w.baza}-ze-zrzutem.yaml`);
+    expect(fs.existsSync(plikW)).toBe(true);
+    const o = sub(w.baza);
+    const v = wczytaj(plikW);
+    expect(v.naglowek.appId).toBe(o.naglowek.appId);
+    const bez = v.polecenia.filter((p) => !(typeof p === 'object' && p && 'takeScreenshot' in p));
+    expect(bez).toEqual(o.polecenia);
+    const zrzuty = v.polecenia.filter((p) => typeof p === 'object' && p && 'takeScreenshot' in p);
+    expect(zrzuty).toEqual([{ takeScreenshot: '${ZRZUT}' }]);
+    // zrzut stoi na najwyższym poziomie pliku: poprzedni krok to „po”, następny zmieniający — „przed”
+    const l = [...kroki(v.polecenia)].map(({ nazwa, arg }) => ({ nazwa, arg }));
+    const z = l.findIndex((k) => k.nazwa === 'takeScreenshot');
+    expect(trafia(l[z - 1], w.po)).toBe(true);
+    expect(trafia(l.slice(z + 1).find((k) => ZMIENIAJACE.has(k.nazwa)) as Krok, w.przed)).toBe(true);
+  });
+  test.each(WARIANTY.flatMap((w) => w.wywolania.map((c) => [`${c.scen} → ${w.baza}`, w, c] as const)))('%s: scenariusz woła wariant z nazwą zrzutu', (_o, w, c) => {
+    const wyw = lista(c.scen).filter((k) => k.nazwa === 'runFlow' && JSON.stringify(k.arg).includes(`${w.baza}-ze-zrzutem.yaml`));
+    expect(wyw.map((k) => k.arg.env?.ZRZUT)).toEqual([c.zrzut]);
+    for (const [kl, wa] of Object.entries(c.env ?? {})) expect(wyw[0].arg.env[kl]).toBe(wa);
   });
 });
 

@@ -31,6 +31,7 @@ tags:
 # --- Make another like this (alert z potwierdzeniem; „projekt.kopia_*”) ---
 - tapOn: { id: "projekt-menu" }
 - assertVisible: { id: "projekt-zrob-taka-sama" }
+- takeScreenshot: 61-menu-zrob-taka-sama
 - tapOn: { id: "projekt-zrob-taka-sama" }
 - assertVisible: "Make another Harbor\\?"
 - takeScreenshot: 61-potwierdzenie
@@ -52,3 +53,4 @@ tags:
 - tapOn: ".*row 3 of 40.*"
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
+- takeScreenshot: 61-oryginal-po-operacji

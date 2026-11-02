@@ -22,6 +22,7 @@ tags:
 - tapOn: { id: "arkusz-zamknij", optional: true }
 - assertVisible: { id: "ustawienia" }
 - scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" } }
+- takeScreenshot: 51-ustawienia-przed-usun-wszystko
 - tapOn: { id: "ustawienia-usun-wszystko" }
 - scrollUntilVisible: { element: { id: "usun-z-icloud" } }
 - assertVisible: { id: "usun-z-icloud", checked: false }

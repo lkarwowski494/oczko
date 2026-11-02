@@ -26,6 +26,7 @@ tags:
 # --- ukończenie → karta → „Done” (zamknięcie karty = chwila prośby) ---
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-ukoncz" }
+- takeScreenshot: 65-menu-przed-ukoncz
 - tapOn: { id: "menu-ukoncz" }
 - extendedWaitUntil: { visible: { id: "ukonczenie-karta" }, timeout: 20000 }
 - assertVisible: { id: "ukonczenie-gotowe" }
