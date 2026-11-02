@@ -19,7 +19,7 @@ export function rozmiarZrzutu(skala: number): { width: number; height: number } 
 const bezLiczby = (tekst: string, n: number) => tekst.replace(String(n), '').trim(); // podpis pod dużą liczbą („crafting days”)
 export const ObrazKarty = React.forwardRef<View, { stan: StanObrazuKarty; t: Tlumacz }>(function ObrazKarty({ stan: s, t }, ref) {
   const kolumny: [string, string][] = [
-    [String(s.rzedy), t('ukonczenie.jednostka')],
+    [String(s.rzedy), t('ukonczenie.jednostka', { count: s.rzedy })],
     [String(s.dni), bezLiczby(t('ukonczenie.dni', { count: s.dni }), s.dni)],
     ...(s.czas ? [[s.czas, t('karta.czas')] as [string, string]] : []),
   ];

@@ -1,8 +1,10 @@
 {
-  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte.",
+  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte. licznik.jednostka, ukonczenie.jednostka (M1-audytor-generalny-018, P-405, P-406 a): en przeszło na formy liczby mnogiej, pl przełożone od razu (przetlumaczone_czesciowo); pozostałe języki do fali trzymają stary zwykły klucz (uwaga bramki, t() bierze go jako zastępstwo).",
   "odwolania": [
     "P-320",
-    "P-357"
+    "P-357",
+    "P-405",
+    "P-406"
   ],
   "klucze": [
     "dane.zastapiono",
@@ -23,6 +25,7 @@
     "historia.wpisz",
     "import.nie_rozpoznano_opis",
     "import.nie_rozpoznano_tytul",
+    "licznik.jednostka",
     "licznik.jednostka_oczka",
     "licznik.jednostka_w_trakcie",
     "licznik.minus_a11y_oczka",
@@ -62,6 +65,7 @@
     "stan_danych.kopie_opis",
     "ukonczenie.bez_wloczki",
     "ukonczenie.edytuj_zapas_opis",
+    "ukonczenie.jednostka",
     "ukonczenie.wybierz_wloczke",
     "ustawienia.blad_zapisu",
     "ustawienia.ekran_nie_gasnie",
@@ -98,5 +102,13 @@
     "wzor.notatki_wiele",
     "wzor.przed_schematem",
     "wzor.znacznik_napis"
-  ]
+  ],
+  "przetlumaczone_czesciowo": {
+    "licznik.jednostka": [
+      "pl"
+    ],
+    "ukonczenie.jednostka": [
+      "pl"
+    ]
+  }
 }
