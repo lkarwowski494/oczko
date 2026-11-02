@@ -19,10 +19,12 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
   const k = useKolory();
   const st = style(k);
   const blok = (b: BlokHistorii, testID: string) => (
-    <View style={st.grupa} testID={testID}>
+    <View style={st.blok} testID={testID}>
       <Text style={st.naglowekBloku} accessibilityRole="header">{b.naglowek}</Text>
-      {b.linie.map((l) => <Text key={l} style={st.tekst}>{l}</Text>)}
-      {b.bezStopera && <Text style={st.podpis}>{t('dni.bez_stopera')}</Text>}
+      <View style={st.grupa}>
+        {b.linie.map((l) => <Text key={l} style={st.tekst}>{l}</Text>)}
+        {b.bezStopera && <Text style={st.podpis}>{t('dni.bez_stopera')}</Text>}
+      </View>
     </View>
   );
   return (
@@ -58,7 +60,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
         <Text style={st.podpis}>{t('dni.od_poniedzialku')}</Text>
       </View>
       {s.pierwsze && <Text style={st.podpis}>{t('dni.pierwsze')}</Text>}
-      <View style={{ gap: odstep.xs }} testID="historia-dzien">
+      <View style={st.blok} testID="historia-dzien">
         <Text style={st.naglowekBloku} accessibilityRole="header">{s.naglowekDnia}</Text>
         <View style={st.grupa}>
           {s.projekty.length === 0 && !s.ukonczoneDnia?.length ? <Text style={st.podpis}>{t('dni.pusto_dzien')}</Text> : s.projekty.map((p) => (
@@ -89,7 +91,9 @@ function style(k: Kolory) {
     kolo: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
     kreska: { width: 14, height: 3, borderRadius: 1.5, transform: [{ rotate: '-8deg' }] },
     dzis: { fontWeight: '700', textDecorationLine: 'underline' },
-    naglowekBloku: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
+    blok: { gap: odstep.xs },
+    // P2-4: `.naglowek-grupy` (sesje-historia.html:75): 13 pt `olowek`, bez wagi, 20 pt nad blokiem = odstęp między blokami (`odstep.l`) + różnica do `odstep.xl`.
+    naglowekBloku: { ...typografia.drobny, color: k.olowek, marginTop: odstep.xl - odstep.l },
     tekst: { ...typografia.tresc, color: k.grafit },
     pogrubiony: { fontWeight: '700' },
     podpis: { ...typografia.podpis, color: k.olowek },

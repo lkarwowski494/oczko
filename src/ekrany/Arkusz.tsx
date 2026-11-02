@@ -68,7 +68,8 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
   }, [p.zmierz]);
   return (
     <View style={st.arkusz} testID={p.testID}>
-      <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
+      {/* P2-6 (04, Aneks P2 poz. 9): przy AX5 lista akcji nie mieści się — przycięty ostatni wiersz jest wskazówką przewijania; bez wskaźnika, cienia i przyciągania do wiersza (Trening S18). */}
+      <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         {p.zamknij ? (
           <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
             <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
@@ -140,8 +141,8 @@ export function Tresc({ children, podpis, testID }: { children: React.ReactNode;
 /** Liczba całkowita ≥ 0 z pola (cyfry ASCII; pusty, ujemny, ułamek, tekst → null). */
 export const liczbaZPola = (t: string): number | null => (/^\d+$/.test(t.trim()) ? Number(t.trim()) : null);
 
-// Przyciski pełnej szerokości (główny, niszczący): promień 14 wg wzorca `.przycisk-pelny` (partia8.html:70, design-spec.md:47). Token `promien.przyciskGlowny` (20) to strefa +1;
-// wartość 14 ma dziś tylko `przyciskDrugi` — osobny token „przyciskPelny” to sprawa roli 04 (H-1d).
+// Przyciski pełnej szerokości (główny, niszczący): promień 14 wg wzorca `.przycisk-pelny` (partia8.html:70, design-spec.md:47) z tokenu `promien.przyciskPelny` (P2-2).
+// `przyciskGlowny` (20) to strefa +1, `przyciskDrugi` (14) — przycisk z obrysem w rzędzie wyboru.
 export function style(k: Kolory) {
   return StyleSheet.create({
     arkusz: { flex: 1, backgroundColor: k.arkusz },
@@ -157,9 +158,9 @@ export function style(k: Kolory) {
     anuluj: { ...typografia.tresc, color: k.grafit },
     zapisz: { ...typografia.tresc, color: k.grafit, fontWeight: '600' },
     przyciski: { padding: odstep.l, gap: odstep.s, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
-    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     glownyTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst },
-    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     niszczacyTekst: { ...typografia.przyciskPelny, color: k.przyciskNiszczacyTekst },
     drugi: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     tekstowy: { minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
