@@ -75,7 +75,7 @@ export async function sprzatnijKoszWKolejce(z: ZaleznosciPlikow): Promise<Wynik<
  * M1-023 (05-architekt-503, ADR-0001: „plik bez odwołania jest wykrywany”): plik magazynu bez wiersza `plik` (po „zastąp”, przywróceniu kopii,
  * nieudanym imporcie) usuwany przy starcie; młodszy niż PLIKI_OCHRONA_MIN (czas zmiany pliku) zostaje, bo zapis pliku poprzedza wiersz (Z07-15).
  * Tylko w `uruchomDane` (przed pierwszym ekranem, w kolejce), nie przy ręcznym opróżnianiu kosza.
- * M1-087 (05-architekt-507, ADR-0020): kopie `.db` w `kopie/` nie mają plików magazynu, więc plik nie starszy niż najnowsza kopia zostaje (cofnięcie
+ * M1-087 (05-architekt-507, ADR-0020): kopie `.db` w `kopie/` nie mają plików magazynu, więc plik nie młodszy niż najnowsza kopia (istniał, gdy powstała) zostaje (cofnięcie
  * przywrócenia wraca z plikami); kopie znikają po KOPIE_RATUNKOWE_DNI (ADR-0020 (6)) i wtedy plik bez odwołań i bez kopii jest usuwany.
  */
 export async function sprzatnijSierotyMagazynu(z: ZaleznosciPlikow): Promise<Wynik<number>> {

@@ -31,7 +31,7 @@ export function kopieDoUsuniecia(wpisy: readonly WpisKopii[], terazMs: number, d
 
 /**
  * M1-087 (05-architekt-507): czas najnowszej kopii bazy w `kopie/` (ms z nazwy), także z przyszłości; brak kopii = null. Kopie `.db` nie mają plików
- * magazynu (ADR-0020), więc plik bez wiersza `plik` nie starszy niż ta kopia może być jej potrzebny i nie jest sprzątany (sprzatnijSierotyMagazynu).
+ * magazynu (ADR-0020), więc plik bez wiersza `plik` nie młodszy niż ta kopia (istniał, gdy powstała) może być jej potrzebny i nie jest sprzątany (sprzatnijSierotyMagazynu).
  */
 export function najnowszaKopiaMs(wpisy: readonly WpisKopii[]): number | null {
   let max: number | null = null;
