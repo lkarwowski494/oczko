@@ -2,9 +2,10 @@
 // Ścieżki ŚU-09, ŚU-10, ŚU-11, ŚU-12, ŚU-13, ŚU-17 (dane.md); BR-DAN-005/S1, BR-DAN-006/S1–S5; R-063, R-064, R-066, R-067, R-068, R-088.
 // Archiwa wejściowe budowane bez kodu aplikacji (node:sqlite + schemat.sql v1 + własny zapis ZIP); wyjściowe czytane własnym czytnikiem ZIP.
 import { mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { utworzArchiwum } from '../../src/dane/archiwum';
 import { migruj } from '../../src/dane/migracje/migruj';
+import { sprzatnijKopiePrzed } from '../../src/niezawodnosc/kopie';
 import { ROZSZERZENIE_ARCHIWUM, WERSJA_FORMATU_ARCHIWUM, WERSJA_SCHEMATU } from '../../src/konfiguracja';
 import { eksportuj, importuj } from '../../src/przypadki-uzycia/archiwum';
 import type { Manifest } from '../../src/przypadki-uzycia/porty-propozycja';
@@ -270,5 +271,27 @@ describe('07-jakosc-003 kopia przed „Replace” (ADR-0028)', () => {
     expect(pierwsza.wartosc.sciezka.endsWith(`oczko-przed-importem-2026-10-22${ROZSZERZENIE_ARCHIWUM}`)).toBe(true);
     expect(druga.wartosc.sciezka.endsWith(`oczko-przed-importem-2026-10-22-2${ROZSZERZENIE_ARCHIWUM}`)).toBe(true);
     expect(readdirSync(s.z.katalogi.kopiePrzed)).toHaveLength(2);
+  });
+  // M1-audytor-generalny-013 (12-niezawodnosc-003, DEC-18 a, ADR-0032): sprzątanie przy kamieniu milowym nie usuwa kopii z oryginalnymi danymi.
+  test('K-03h M1-013: trzy „Zastąp” jednego dnia → po sprzątaniu przy kamieniu zostaje kopia sprzed pierwszego i najnowsza; import tej pierwszej przywraca liczności, migawkę i pliki', async () => {
+    const s = await zZyciem();
+    const przed = await licznosci(s.baza);
+    const migPrzed = await migawka(s.baza, POMIN);
+    const plikiPrzed = readdirSync(s.magazyn.katalog).sort();
+    const kopie: string[] = [];
+    for (const nazwa of ['plik-a', 'plik-b', 'plik-c']) {
+      const w = await importuj(s.za, { sciezka: archiwumWzorcowe(s.katalog, nazwa, [projekt(nazwa, nazwa)]), wybierz: szpieg('zastap').wybierz });
+      if (!w.ok || w.wartosc.kopiaPrzed === null) throw new Error('zastap');
+      kopie.push(w.wartosc.kopiaPrzed);
+    }
+    const shaOryginalu = sha256Pliku(kopie[0]!);
+    expect(readdirSync(s.z.katalogi.kopiePrzed)).toHaveLength(3);
+    expect(sprzatnijKopiePrzed(s.z.katalogi.kopiePrzed, s.zegar.teraz().ms)).toEqual({ ok: true, wartosc: [basename(kopie[1]!)] });
+    expect(readdirSync(s.z.katalogi.kopiePrzed).sort()).toEqual([basename(kopie[0]!), basename(kopie[2]!)].sort());
+    expect(sha256Pliku(kopie[0]!)).toBe(shaOryginalu);
+    expect(await importuj(s.za, { sciezka: kopie[0]!, wybierz: szpieg('zastap').wybierz })).toMatchObject({ ok: true, wartosc: { tryb: 'zastap' } });
+    expect(await licznosci(s.baza)).toEqual(przed);
+    expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
+    expect(readdirSync(s.magazyn.katalog).sort()).toEqual(plikiPrzed);
   });
 });

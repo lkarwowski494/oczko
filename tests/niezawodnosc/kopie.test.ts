@@ -108,24 +108,43 @@ describe('P-080 (3b) ADR-0020 (3) ZIP surowej kopii (baza się nie otwiera)', ()
   });
 });
 
-describe('07-jakosc-003 K-03f ADR-0028 pkt 4: pula kopii z Documents/Backup (czysta funkcja)', () => {
+// DEC-18 a (P-393, M1-audytor-generalny-013, 12-niezawodnosc-003): ADR-0032 zastępuje pkt 4 ADR-0028. Dawne oczekiwania „przy 3 kopiach zostają
+// 2 najnowsze” i „-2, -3 tego samego dnia usuwają kopię bez przyrostka” wynikały z zastąpionej reguły (pula liczona samą ilością), nie z osłabienia testu.
+describe('07-jakosc-003 K-03f ADR-0032 (DEC-18 a): pula kopii z Documents/Backup (czysta funkcja)', () => {
   const dzien = (n: number) => new Date(T0 - n * DOBA).toISOString().slice(0, 10);
   const imp = (n: number, k = '') => `oczko-przed-importem-${dzien(n)}${k}.oczko`;
-  const usu = (n: number) => `oczko-przed-usunieciem-${dzien(n)}.oczko`;
-  test('przy 3 kopiach zostają 2 najnowsze (starsza usunięta)', () => {
-    expect(kopiePrzedDoUsuniecia([imp(1), imp(2), imp(3)], T0)).toEqual([imp(3)]);
+  const usu = (n: number, k = '') => `oczko-przed-usunieciem-${dzien(n)}${k}.oczko`;
+  const posortowane = (a: string[]) => [...a].sort();
+  test('M1-013 test akceptacyjny: trzy „Zastąp” jednego dnia → zostaje kopia sprzed pierwszego i najnowsza (usunięta środkowa)', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1), imp(1, '-2'), imp(1, '-3')], T0)).toEqual([imp(1, '-2')]);
   });
-  test('dwie kopie z tego samego dnia: -2 jest nowsza niż bez sufiksu', () => {
-    expect(kopiePrzedDoUsuniecia([imp(1), imp(1, '-2'), imp(1, '-3')], T0)).toEqual([imp(1)]);
+  test('kolejność wejścia bez znaczenia; -10 jest nowsza niż -9 (liczba, nie tekst)', () => {
+    expect(posortowane(kopiePrzedDoUsuniecia([imp(1, '-10'), imp(1), imp(1, '-9'), imp(1, '-2')], T0))).toEqual(posortowane([imp(1, '-9'), imp(1, '-2')]));
   });
-  test('starsza niż 30 dni jest usuwana nawet przy limicie; 29 dni zostaje', () => {
+  test('pierwsza kopia każdego dnia zostaje do 30 dni ponad limit: kopie z trzech dni → żadna nie jest usuwana', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1), imp(2), imp(3)], T0)).toEqual([]);
+  });
+  test('limit 2 liczy pierwsze kopie dni i najnowszą: dzień −3 (A, A-2) i dzień −1 (B) → usunięta tylko A-2', () => {
+    expect(kopiePrzedDoUsuniecia([imp(3), imp(3, '-2'), imp(1)], T0)).toEqual([imp(3, '-2')]);
+  });
+  test('najnowsza zostaje zawsze, także gdy pierwsze kopie dni już przekraczają limit', () => {
+    expect(kopiePrzedDoUsuniecia([imp(5), imp(3), imp(1), imp(1, '-2')], T0)).toEqual([]);
+    expect(kopiePrzedDoUsuniecia([imp(5), imp(3), imp(1), imp(1, '-2'), imp(1, '-3')], T0)).toEqual([imp(1, '-2')]);
+  });
+  test('bez kopii bez przyrostka (usunięta w Plikach) chroniona jest najstarsza zostawiona z tego dnia', () => {
+    expect(kopiePrzedDoUsuniecia([imp(1, '-2'), imp(1, '-3'), imp(1, '-4')], T0)).toEqual([imp(1, '-3')]);
+  });
+  test('starsza niż 30 dni jest usuwana także jako pierwsza kopia dnia; 29 dni zostaje', () => {
     expect(kopiePrzedDoUsuniecia([imp(29), imp(40)], T0)).toEqual([imp(40)]);
+    expect(kopiePrzedDoUsuniecia([imp(31), imp(31, '-2'), imp(1)], T0)).toEqual([imp(31, '-2'), imp(31)]);
   });
-  test('limit liczy się osobno dla importu i usunięcia', () => {
+  test('ochrona i limit osobno dla importu i usunięcia (ta sama reguła, ADR-0032)', () => {
     expect(kopiePrzedDoUsuniecia([imp(1), imp(2), usu(1), usu(2)], T0)).toEqual([]);
+    expect(posortowane(kopiePrzedDoUsuniecia([imp(1), imp(1, '-2'), imp(1, '-3'), usu(1), usu(1, '-2'), usu(1, '-3')], T0))).toEqual(posortowane([imp(1, '-2'), usu(1, '-2')]));
   });
-  test('obca nazwa, stara kopia .db i data z przyszłości zostają', () => {
-    expect(kopiePrzedDoUsuniecia(['notatki.txt', 'przed-importem-1.db', `oczko-przed-importem-${dzien(-5)}.oczko`, imp(1), imp(2), imp(3)], T0)).toEqual([imp(3)]);
+  test('obca nazwa, stara kopia .db i data z przyszłości zostają i nie liczą się do limitu ani do pierwszej kopii dnia', () => {
+    const przyszla = `oczko-przed-importem-${dzien(-5)}.oczko`;
+    expect(kopiePrzedDoUsuniecia(['notatki.txt', 'przed-importem-1.db', przyszla, `oczko-przed-importem-${dzien(-5)}-2.oczko`, imp(1), imp(1, '-2'), imp(1, '-3')], T0)).toEqual([imp(1, '-2')]);
   });
 });
 
