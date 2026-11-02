@@ -164,6 +164,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-minus-plus-bez-projektu.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-002/S3, P-358 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-oczek.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-006 | `src/dane/repozytoria/dni`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-p5.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-011/S1, BR-LIC-018/S1, P-182, P-191 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-trasa-032.test.tsx` | zielony (główny zestaw) | 7 | BR-LIC-002, BR-LIC-006, BR-LIC-012, BR-LIC-019, BR-LIC-020, BR-PRJ-011, RD-12, RD-15 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-wzor.test.tsx` | zielony (główny zestaw) | 2 | P-046, P-220 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik.test.tsx` | zielony (główny zestaw) | 26 | BR-DNI-005/S5, BR-LIC-001, BR-LIC-004, BR-LIC-004/S1, BR-LIC-004/S2, BR-LIC-004/S3, BR-LIC-005/S2, BR-LIC-011/S1, BR-LIC-011/S2, BR-LIC-012, BR-LIC-012/S1, BR-LIC-019, BR-LIC-019/S4, BR-LIC-020/S1, BR-LIC-020/S2, BR-LIC-020/S3, BR-PRJ-002/S1, BR-PRJ-014/S2, KP-13, NFR-DAN-002, NFR-DOS-001, NFR-PIE-001, P-046, P-090, P-275, P-284, P-361, R-004, R-148 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | ER-36, Z07-04, Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/lista-kosz.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-008, BR-PRJ-016/S1, P-182, P-183, P-266 | `src/ekrany/Kosz`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -194,6 +195,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-po-drugiej-czesci-ekran.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/czesc`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-po-drugiej-czesci-trasa.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-film-siec.test.tsx` | zielony (główny zestaw) | 3 | BR-WZR-007 | `src/domena/porty`<br>`src/kompozycja/licznik`<br>`src/przypadki-uzycia/film` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-miejsce-032.test.tsx` | zielony (główny zestaw) | 1 | BR-PRJ-005/S1 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-trasa-wloczka.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-zdjecie-pomiar.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/blad-zapisu`<br>`src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
@@ -281,4 +283,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 277; zależnych od poprawek: 178.
+Razem plików testów: 279; zależnych od poprawek: 179.
