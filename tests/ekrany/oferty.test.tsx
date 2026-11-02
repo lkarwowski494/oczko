@@ -94,6 +94,16 @@ describe('Oferty', () => {
     expect(within(screen.getByTestId('oferty-plan-roczny')).queryByText(DALEJ)).toBeNull();
     expect(przycisk('Manage subscription', 'button')).toBeTruthy();
   });
+  // M1-014 (reaudit p1, 02-monetyzacja-001): przycisk planu ma jawną `accessibilityLabel` (element dostępności VoiceOver), więc tekst potomka
+  // nie jest czytany — ostrzeżenie KP-03 musi być w etykiecie przycisku planu dożywotniego.
+  test('M1-014 KP-03 VoiceOver: etykieta przycisku planu dożywotniego zawiera ostrzeżenie o odnawianiu; bez subskrypcji — nie', () => {
+    pokaz({ aktywne: { rodzaj: 'subskrypcja', produkt: 'oczko.pro.miesiac' } });
+    expect(screen.getByTestId('oferty-plan-dozywotni').props.accessibilityLabel).toContain(DALEJ);
+    expect(screen.getByTestId('oferty-plan-roczny').props.accessibilityLabel).not.toContain(DALEJ);
+    screen.unmount();
+    pokaz();
+    expect(screen.getByTestId('oferty-plan-dozywotni').props.accessibilityLabel).not.toContain(DALEJ);
+  });
   test('M1-014 KP-03: bez aktywnej subskrypcji (brak Pro albo dożywotni) informacji o odnawianiu nie ma', () => {
     pokaz();
     expect(screen.queryByText(DALEJ)).toBeNull();

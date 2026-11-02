@@ -86,12 +86,12 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
             const o = opisPlanu(p, t);
             const zaznaczony = p.id === plan?.id;
             return (
-              <Pressable key={p.id} accessibilityRole="radio" accessibilityState={{ selected: zaznaczony }} accessibilityLabel={`${o.nazwa} · ${o.cena}`}
+              <Pressable key={p.id} accessibilityRole="radio" accessibilityState={{ selected: zaznaczony }} accessibilityLabel={p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' ? `${o.nazwa} · ${o.cena}. ${t('oferty.dozywotni_przy_subskrypcji')}` : `${o.nazwa} · ${o.cena}`}
                 onPress={() => wybierz(p.id)} testID={TESTID[p.okres]}
                 style={{ minHeight: cel.minimum, padding: odstep.m, borderRadius: promien.grupa, borderWidth: 2, borderColor: zaznaczony ? k.przyciskObrys : k.linia, backgroundColor: k.papierGrupa }}>
                 <Text style={{ ...typografia.tresc, color: k.grafit, fontWeight: '700' }}>{`${o.nazwa} · ${o.cena}`}</Text>
                 <Text style={{ ...typografia.podpis, color: k.olowek }}>{o.podpis}</Text>
-                {/* KP-03 pełne (M1-014, P-403): dożywotni nie anuluje subskrypcji — informacja przy planie, „Manage subscription” w przyciskach. */}
+                {/* KP-03 pełne (M1-014, P-403): dożywotni nie anuluje subskrypcji — informacja przy planie (też w etykiecie przycisku: VoiceOver czyta tylko ją), „Manage subscription” w przyciskach. */}
                 {p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' && <Text style={{ ...typografia.podpis, color: k.olowek }}>{t('oferty.dozywotni_przy_subskrypcji')}</Text>}
               </Pressable>
             );
