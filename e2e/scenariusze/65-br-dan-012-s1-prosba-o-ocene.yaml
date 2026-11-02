@@ -31,8 +31,16 @@ tags:
 - assertVisible: { id: "ukonczenie-gotowe" }
 - takeScreenshot: 65-karta-ukonczenia
 - tapOn: { id: "ukonczenie-gotowe" }
-- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
-- tapOn: { text: "Not Now", optional: true } # systemowa prośba o ocenę, jeśli system ją pokazał (granica (a))
+# E2-138-S6: systemowa prośba o ocenę (jeśli system ją pokazał, granica (a)) zakrywa aplikację dla XCTest, a jej proces może wystartować nawet 21 s po żądaniu (przebieg 138, scenariusz 28) —
+# najpierw krótkie czekanie na zniknięcie listy, potem (tylko gdy znikła) czekanie na „Not Now” do 60 s ze zrzutem
+- extendedWaitUntil: { notVisible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 5000, optional: true }
+- runFlow:
+    when: { notVisible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" } }
+    commands:
+      - takeScreenshot: opoznienie-ocena-65
+      - extendedWaitUntil: { visible: { text: "Not Now" }, timeout: 60000, optional: true }
+      - tapOn: { text: "Not Now", optional: true }
+      - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 20000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8)
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 3000, optional: true }
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
 - extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }

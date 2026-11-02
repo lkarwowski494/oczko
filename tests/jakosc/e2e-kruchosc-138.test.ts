@@ -35,24 +35,45 @@ describe('E2-138-S1 · 08: przycisk „Back” po imporcie leży poza ekranem', 
   });
 });
 
+/** Wspólny kontrakt prośby o ocenę (28 i 65): okno prośby zakrywa listę ok. 3 s po „Done”, a jej zawartość startuje do ~20 s później. */
+const kontraktProsbyOOcene = (n: string) => {
+  const l = lista(n);
+  const gotowe = l.findIndex((k) => k.nazwa === 'tapOn' && idy(k).includes('ukonczenie-gotowe'));
+  expect(gotowe).toBeGreaterThan(-1);
+  const twarda = l.findIndex((k, i) => i > gotowe && ['assertVisible', 'extendedWaitUntil'].includes(k.nazwa) && !k.arg?.optional && idy(k).includes('projekty-lista'));
+  expect(twarda).toBeGreaterThan(gotowe);
+  const miedzy = l.slice(gotowe + 1, twarda);
+  // najpierw czekanie na ZNIKNIĘCIE listy (lista bywa krótko widoczna, zanim okno prośby ją zakryje); samo czekanie na listę pomijałoby przepływ
+  const znik = miedzy.findIndex((k) => k.nazwa === 'extendedWaitUntil' && k.arg?.notVisible && String(k.arg.notVisible.id).split('|').includes('projekty-lista'));
+  expect(znik).toBeGreaterThan(-1);
+  expect(miedzy[znik].arg.optional).toBe(true);
+  const czekanie = miedzy.findIndex((k) => k.nazwa === 'extendedWaitUntil' && tekst(k) === 'Not Now');
+  expect(czekanie).toBeGreaterThan(znik);
+  expect(miedzy[czekanie].arg.optional).toBe(true);
+  expect(miedzy[czekanie].arg.timeout).toBeGreaterThanOrEqual(45000);
+  const stuk = miedzy.findIndex((k, i) => i > czekanie && k.nazwa === 'tapOn' && tekst(k) === 'Not Now' && k.arg.optional === true);
+  expect(stuk).toBeGreaterThan(czekanie);
+  // czekanie na prośbę jest warunkowe: lista widoczna od razu nie kosztuje 60 s
+  expect(miedzy.some((k) => k.nazwa === 'runFlow' && String(k.arg?.when?.notVisible?.id ?? '').split('|').includes('projekty-lista'))).toBe(true);
+  // zrzut przed czekaniem: dowód, że prośba się pojawiła (opóźnienie, nie błąd aplikacji)
+  expect(miedzy.slice(0, czekanie).some((k) => k.nazwa === 'takeScreenshot')).toBe(true);
+  // żadne stuknięcie „Not Now” poza tym przepływem (stary wzorzec: jedno stuknięcie bez czekania)
+  expect(l.filter((k) => k.nazwa === 'tapOn' && tekst(k) === 'Not Now').length).toBe(1);
+};
+
 describe('E2-138-S2 · 28: systemowa prośba o ocenę startuje do ~20 s po żądaniu', () => {
-  test('po „Done” scenariusz czeka na „Not Now” do 60 s (opcjonalnie), zamyka prośbę i dopiero wtedy wymaga listy', () => {
-    const l = lista('28');
-    const gotowe = l.findIndex((k) => k.nazwa === 'tapOn' && idy(k).includes('ukonczenie-gotowe'));
-    expect(gotowe).toBeGreaterThan(-1);
-    const twarda = l.findIndex((k, i) => i > gotowe && ['assertVisible', 'extendedWaitUntil'].includes(k.nazwa) && !k.arg?.optional && idy(k).includes('projekty-lista'));
-    expect(twarda).toBeGreaterThan(gotowe);
-    const miedzy = l.slice(gotowe + 1, twarda);
-    const czekanie = miedzy.findIndex((k) => k.nazwa === 'extendedWaitUntil' && tekst(k) === 'Not Now');
-    expect(czekanie).toBeGreaterThan(-1);
-    expect(miedzy[czekanie].arg.optional).toBe(true);
-    expect(miedzy[czekanie].arg.timeout).toBeGreaterThanOrEqual(45000);
-    const stuk = miedzy.findIndex((k, i) => i > czekanie && k.nazwa === 'tapOn' && tekst(k) === 'Not Now' && k.arg.optional === true);
-    expect(stuk).toBeGreaterThan(czekanie);
-    // czekanie na prośbę jest warunkowe: lista widoczna od razu nie kosztuje 60 s
-    expect(miedzy.some((k) => k.nazwa === 'runFlow' && k.arg?.when?.notVisible?.id === 'projekty-lista')).toBe(true);
-    // zrzut przed czekaniem: dowód, że prośba się pojawiła (opóźnienie, nie błąd aplikacji)
-    expect(miedzy.slice(0, czekanie).some((k) => k.nazwa === 'takeScreenshot')).toBe(true);
+  test('po „Done”: czekanie na zniknięcie listy, „Not Now” do 60 s (opcjonalnie), stuknięcie, dopiero wtedy twarda lista', () => kontraktProsbyOOcene('28'));
+});
+
+describe('E2-138-S6 · 65: ten sam wyścig z prośbą o ocenę co w 28', () => {
+  test('po „Done”: czekanie na zniknięcie listy, „Not Now” do 60 s (opcjonalnie), stuknięcie, dopiero wtedy twarda lista', () => kontraktProsbyOOcene('65'));
+});
+
+describe('E2-138-S7 · 63: komentarz o wartościach „Sync” i „Watch” po 033-T2 (P-383 B)', () => {
+  test('komentarz nagłówkowy podaje znaczniki off/none/last contact, nie „część surowa”', () => {
+    const naglowek = fs.readFileSync(path.join(KAT, plik('63')), 'utf8').split('\n').filter((w) => w.startsWith('#')).join('\n');
+    for (const z of ['off', 'none', 'last contact', 'zgloszenie-diagnostyka.ts']) expect(naglowek).toContain(z);
+    expect(naglowek).not.toContain('część surowa');
   });
 });
 
