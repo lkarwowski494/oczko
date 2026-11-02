@@ -130,6 +130,21 @@ final class DziennikTests: XCTestCase {
     XCTAssertEqual(tresc(p), wzor[2].linia + "\n")
   }
 
+  /// M1-audytor-generalny-024 (05-architekt-002/505, ARCH-22): nieudany zapis pliku tymczasowego przy `skroc` (krótki zapis, błąd fsync)
+  /// → błąd, a plik dziennika bajt w bajt bez zmian (linie zostają do następnego scalenia).
+  func testSkrocenieNieudanyZapisZostawiaPlik() throws {
+    let wzor = try Repo.tekst("tests/wspolne/dziennik-plus-poprawny.jsonl").split(separator: "\n").map { try XCTUnwrap(ZdarzenieWejsciowe.zLinii($0)) }
+    for awaria in [Atrapa.Awaria.krotki, .fsync] {
+      let p = plik("skroc-\(awaria).jsonl")
+      try DziennikPlus(sciezka: p).dopisz(wzor[0])
+      try DziennikPlus(sciezka: p).dopisz(wzor[1])
+      let przed = tresc(p)
+      let d = DziennikPlus(sciezka: p) { try Atrapa(sciezka: $0, awaria: awaria) }
+      XCTAssertThrowsError(try d.skroc(doId: wzor[0].id), "\(awaria)")
+      XCTAssertEqual(tresc(p), przed, "\(awaria): skrócenie podmieniło dziennik mimo nieudanego zapisu")
+    }
+  }
+
   /// X-DZ-13 (8A): krótki zapis albo błąd fsync → plik obcięty do rozmiaru sprzed zapisu, dopisz zgłasza błąd.
   func testKrotkiZapisIBladFsync() throws {
     let wzor = try XCTUnwrap(ZdarzenieWejsciowe.zLinii(Repo.tekst("tests/wspolne/dziennik-plus-poprawny.jsonl").split(separator: "\n")[0]))

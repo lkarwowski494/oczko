@@ -94,7 +94,7 @@ public final class DziennikPlus {
   let sciezka: String
   let otworz: (String) throws -> UchwytDziennika
   let kolejka = DispatchQueue(label: "oczko.dziennik-plus") // jedyny pisarz w procesie (ADR-0008 (8A))
-  /// Tylko test (X-ZG-10): wołane w `zastap` po zapisie pliku tymczasowego, przed `rename` — błąd symuluje przerwanie procesu.
+  /// Tylko test (X-ZG-10): wołane w `zastap` i `skroc` po zapisie pliku tymczasowego, przed `rename` — błąd symuluje przerwanie procesu.
   public var przedPodmiana: (() throws -> Void)?
 
   public init(sciezka: String, otworz: @escaping (String) throws -> UchwytDziennika = { try UchwytPosix(sciezka: $0) }) {
@@ -130,33 +130,36 @@ public final class DziennikPlus {
     try kolejka.sync { parsujDziennik(try tekstPliku()) }
   }
 
-  /// (8S) po COMMIT scalenia; zapis nowej treści do pliku tymczasowego i podmiana (`rename`), w tej samej kolejce co dopisywanie.
+  /// (8S) po COMMIT scalenia, w tej samej kolejce co dopisywanie; przepisanie atomowe jak `zastap` (M1-024: nieudany zapis pliku
+  /// tymczasowego → błąd, dziennik bez zmian).
   public func skroc(doId: String) throws {
     try kolejka.sync {
       guard let nowy = poSkroceniu(try tekstPliku(), doId: doId) else { return }
-      let tymczasowy = sciezka + ".skroc"
-      FileManager.default.createFile(atPath: tymczasowy, contents: Data(nowy.utf8))
-      let u = try otworz(tymczasowy)
-      try u.synchronizuj()
-      u.zamknij()
-      if rename(tymczasowy, sciezka) != 0 { throw BladDziennika.system(operacja: "rename", errno: errno) }
+      try przepisz(nowy)
     }
   }
 
   /// Przepisanie atomowe (ADR-0009, 2026-10-26 pkt 1): linie do pliku tymczasowego w tym samym katalogu, `fsync`, `rename` — przerwane
   /// w połowie zostawia stary albo nowy plik, nigdy pusty ani częściowy. Pozostały plik tymczasowy usuwa `sprzatnijTymczasowy`.
   public func zastap(_ linie: [String]) throws {
-    try kolejka.sync {
-      let tymczasowy = sciezka + ".zastap"
-      guard FileManager.default.createFile(atPath: tymczasowy, contents: Data(linie.map { $0 + "\n" }.joined().utf8)) else {
-        throw BladDziennika.system(operacja: "create", errno: errno)
-      }
-      let u = try otworz(tymczasowy)
-      defer { u.zamknij() }
-      try u.synchronizuj()
-      try przedPodmiana?()
-      if rename(tymczasowy, sciezka) != 0 { throw BladDziennika.system(operacja: "rename", errno: errno) }
+    try kolejka.sync { try przepisz(linie.map { $0 + "\n" }.joined()) }
+  }
+
+  /// Wspólne dla `zastap` i `skroc` (wołane w kolejce): plik tymczasowy przez uchwyt (`otworz`, w teście atrapa) obcięty do zera, cała
+  /// treść jednym zapisem sprawdzonym co do długości, `fsync`, dopiero potem `rename`. Krótki zapis albo błąd → błąd przed podmianą.
+  private func przepisz(_ tresc: String) throws {
+    let tymczasowy = sciezka + ".zastap"
+    let u = try otworz(tymczasowy)
+    defer { u.zamknij() }
+    try u.obetnij(do: 0)
+    let bajty = Array(tresc.utf8)
+    if !bajty.isEmpty {
+      let n = try u.dopisz(bajty)
+      if n != bajty.count { throw BladDziennika.krotkiZapis(zapisano: n, oczekiwano: bajty.count) }
     }
+    try u.synchronizuj()
+    try przedPodmiana?()
+    if rename(tymczasowy, sciezka) != 0 { throw BladDziennika.system(operacja: "rename", errno: errno) }
   }
 
   /// Plik tymczasowy przerwanego `zastap` (przy starcie, przed odczytem).
