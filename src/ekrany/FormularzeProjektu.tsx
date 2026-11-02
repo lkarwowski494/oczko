@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
-import { Arkusz, Komunikat, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza } from './Arkusz';
 import { useKolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
@@ -32,7 +32,7 @@ export function FormularzNowegoProjektu(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa
       ))}
       <Przycisk tekst={t('projekt.dodaj_czesc')} onPress={() => ustawCzesci((l) => [...l, ''])} rodzaj="tekstowy" testID="formularz-dodaj-czesc" />
       <Tresc podpis>{t('formularz.nowy_czesci_opis')}</Tresc>
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -56,7 +56,7 @@ export function FormularzCzesci(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string
       <Pole etykieta={t('formularz.cel_opcjonalny')} wartosc={cel} naZmiane={ustawCel} liczbowe testID="formularz-cel-czesci" />
       <Tresc podpis>{t('formularz.nazwa_opis')}</Tresc>
       {zlyCel && <Komunikat tekst={t('formularz.przyp_blad')} />}
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -79,7 +79,7 @@ export function FormularzLicznika(p: {
       <Tresc podpis>{t('formularz.licznik_rodzaj')}</Tresc>
       <Wybor<'rzedy' | 'oczka'> opcje={[{ wartosc: 'rzedy', tekst: t('formularz.rodzaj_rzedy') }, { wartosc: 'oczka', tekst: t('formularz.rodzaj_oczka') }]} wybrana={rodzaj} naWybor={ustawRodzaj} />
       <Tresc podpis>{t('formularz.licznik_sekcje')}</Tresc>
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -93,7 +93,7 @@ export function FormularzNotatki(p: { t: Tlumacz; projekt: string; tekst: string
     <Arkusz tytul={t('licznik.notatka')} formularz={{ t, naZapisz: () => zapisz(p.naZapisz, tekst), naAnuluj: p.naAnuluj }}>
       <Pole etykieta={t('formularz.notatka_pole', { projekt: p.projekt })} wartosc={tekst} naZmiane={ustaw} wielowierszowe testID="formularz-notatka" />
       <Tresc podpis>{t('formularz.notatka_opis')}</Tresc>
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -110,7 +110,7 @@ export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 
         { wartosc: 'w_trakcie', tekst: t('formularz.znaczenie_w_trakcie'), opis: t('formularz.znaczenie_w_trakcie_opis', { nastepny: p.wartosc + 1 }) },
       ]} />
       <Tresc podpis>{t('formularz.znaczenie_info')}</Tresc>
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -136,7 +136,7 @@ export function FormularzNarzedzia(p: {
       {mm !== null && <Tresc podpis>{t('formularz.narzedzie_podglad', { rozmiar: p.podglad(mm, n) })}</Tresc>}
       {zly && <Komunikat tekst={t('formularz.narzedzie_blad')} />}
       <Przycisk tekst={t('formularz.wyczysc')} onPress={() => { ustaw(''); ustawZly(false); zapisz(p.naZapisz, { narzedzie: n, mm: null }); }} rodzaj="tekstowy" testID="formularz-wyczysc" />
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -186,7 +186,7 @@ export function FormularzTerminu(p: {
         accessibilityLabel={t('formularz.termin_tytul')} onValueChange={(_e, d) => ustawDzien(dzienZDaty(d))} />
       {cel !== undefined && <Tresc podpis>{cel === null ? t('formularz.termin_bez_celow') : t('formularz.termin_podglad', { count: cel })}</Tresc>}
       <Przycisk tekst={t('formularz.termin_brak')} onPress={() => zapisz(p.naZapisz, null)} rodzaj="tekstowy" testID="formularz-termin-brak" />
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -223,7 +223,7 @@ export function FormularzWloczekProjektu(p: {
         );
       })}
       <Przycisk tekst={t('zapas.dodaj')} onPress={p.naDodajWloczke} rodzaj="tekstowy" testID="wloczka-dodaj" />
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }

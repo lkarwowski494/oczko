@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { PodgladZdjec, type Miniatura } from '../src/ekrany/Zdjecia';
+import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { systemCzarny } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { usunZdjecie, zdjecia } from '../src/przypadki-uzycia/zdjecia';
@@ -32,7 +33,7 @@ export default function EkranZdjecia(): React.ReactElement {
         const sha = lista.find((x) => x.id === id)?.sha;
         if (!sha) return;
         const czysty = await zdjecieBezMetadanych(z.magazyn.sciezka(sha), zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy)).catch(() => null);
-        if (!czysty) { Alert.alert(t('licznik.blad_zapisu')); return; }
+        if (!czysty) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
         await udostepnijPlik(czysty.sciezka, 'image/jpeg');
         usunPlik(czysty.sciezka);
       })()}

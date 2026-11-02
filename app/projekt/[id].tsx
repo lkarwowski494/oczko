@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { useFocusEffect, useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
 import { Projekt } from '../../src/ekrany/Projekt';
+import { alertBleduZapisu } from '../../src/ekrany/blad-zapisu';
 import { GrupaZdjec, type Miniatura } from '../../src/ekrany/Zdjecia';
 import { zaleznosciObrazu } from '../../src/kompozycja/obrazy-aplikacji';
 import { zdjecieBezMetadanych } from '../../src/kompozycja/zdjecie-bez-metadanych';
@@ -86,10 +87,10 @@ export default function EkranProjektu(): React.ReactElement {
   // P-219 (2A): każde zdjęcie przekodowane bez metadanych i GPS, zanim trafi do magazynu.
   const dodajPlik = async (sciezka: string) => {
     const czysty = await zdjecieBezMetadanych(sciezka, zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy)).catch(() => null);
-    if (!czysty) { Alert.alert(t('licznik.blad_zapisu')); return; }
+    if (!czysty) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
     const r = await dodajZdjecie(z, { cel: { projektId: w.id }, plik: czysty });
     usunPlik(czysty.sciezka);
-    if (r.ok) await wczytaj(); else Alert.alert(t('licznik.blad_zapisu'));
+    if (r.ok) await wczytaj(); else Alert.alert(...alertBleduZapisu(t, 'formularz'));
   };
   const wybierzZdjecie = async (zrodlo: 'aparat' | 'biblioteka') => {
     const r = await wybieraczZdjec().wybierz(zrodlo);
@@ -98,7 +99,7 @@ export default function EkranProjektu(): React.ReactElement {
       Alert.alert(t('zdjecia.brak_aparatu_tytul'), t('zdjecia.brak_aparatu_opis'), [
         { text: t('wspolne.anuluj'), style: 'cancel' }, { text: t('zdjecia.otworz_ustawienia'), onPress: () => void Linking.openSettings() },
       ]);
-    } else if (r.rodzaj === 'blad') Alert.alert(t('licznik.blad_zapisu'));
+    } else if (r.rodzaj === 'blad') Alert.alert(...alertBleduZapisu(t, 'formularz'));
   };
   const grupaZdjec = (
     <GrupaZdjec t={t} miniatury={miniatury} naWybierz={(zr) => void wybierzZdjecie(zr)}

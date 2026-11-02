@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { FormularzWloczki } from '../src/ekrany/Zapas';
+import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { GrupaZdjec, type Miniatura } from '../src/ekrany/Zdjecia';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
 import { zaleznosciObrazu } from '../src/kompozycja/obrazy-aplikacji';
@@ -43,10 +44,10 @@ export default function EkranWloczki(): React.ReactElement {
     const r = await wybieraczZdjec().wybierz(zrodlo);
     if (r.rodzaj === 'zdjecie') { // P-219 (2A): bez metadanych i GPS przed zapisem
       const czysty = await zdjecieBezMetadanych(r.sciezka, zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy)).catch(() => null);
-      if (!czysty) { Alert.alert(j.t('licznik.blad_zapisu')); return; }
+      if (!czysty) { Alert.alert(...alertBleduZapisu(j.t, 'formularz')); return; }
       const w = await dodajZdjecie(z, { cel: { wloczkaId: id }, plik: czysty });
       usunPlik(czysty.sciezka);
-      if (w.ok) await wczytajZdjecia(); else Alert.alert(j.t('licznik.blad_zapisu'));
+      if (w.ok) await wczytajZdjecia(); else Alert.alert(...alertBleduZapisu(j.t, 'formularz'));
     }
     else if (r.rodzaj === 'brak_zgody') {
       Alert.alert(j.t('zdjecia.brak_aparatu_tytul'), j.t('zdjecia.brak_aparatu_opis'), [
