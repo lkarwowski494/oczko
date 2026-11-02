@@ -116,7 +116,8 @@ export default function EkranWzoru(): React.ReactElement {
   useEffect(() => {
     if (!widok || miejsceSprawdzone.current) return;
     miejsceSprawdzone.current = true;
-    if (!bladRysunku.current) void ostrzezenieMiejsca(zw.magazyn, t);
+    // M1-110: pokazane ostrzeżenie liczy się jak alert rysunku (do udanego zapisu) — `onBladZapisu` z kolejki widoku nie dokłada drugiego.
+    void ostrzezenieMiejsca(zw.magazyn, t, () => !bladRysunku.current).then((p) => { if (p) bladRysunku.current = true; });
   }, [widok, zw, t]);
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }

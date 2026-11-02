@@ -151,3 +151,15 @@ describe('M1-084 (DEC-31 b): ostrzeżenie o braku miejsca przy otwarciu wzoru', 
     expect(alert).not.toHaveBeenCalled();
   });
 });
+
+describe('M1-110 (04-studio-projektowe-515): ostrzeżenie o miejscu i błąd natywny przy otwarciu — najwyżej jeden alert', () => {
+  test('wolne poniżej progu, potem onBladZapisu z kolejki widoku → Alert.alert raz (ostrzeżenie wystarcza do udanego zapisu)', async () => {
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
+    expect(alert).toHaveBeenCalledTimes(1);
+    await bladNatywny();
+    expect(alert).toHaveBeenCalledTimes(1);
+    await rysunek(0); // udany zapis zdejmuje blokadę: następny błąd znów alertuje
+    await bladNatywny();
+    expect(alert).toHaveBeenCalledTimes(2);
+  });
+});

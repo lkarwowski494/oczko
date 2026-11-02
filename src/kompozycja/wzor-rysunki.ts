@@ -14,11 +14,14 @@ export function wyjscieZWzoru(t: Tlumacz, niezapisane: boolean, wyjdz: () => voi
   Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: t('wspolne.wstecz'), style: 'destructive', onPress: wyjdz }]);
 }
 
-/** DEC-31 b (tańsza kontrola): wolne miejsce poniżej `RYSUNEK_MIEJSCE_MIN_MB` → ostrzeżenie przed rysowaniem; `true`, gdy pokazane. Błąd odczytu: bez ostrzeżenia. */
-export async function ostrzezenieMiejsca(magazyn: Pick<MagazynPlikow, 'wolneMiejsce'>, t: Tlumacz): Promise<boolean> {
+/**
+ * DEC-31 b (tańsza kontrola): wolne miejsce poniżej `RYSUNEK_MIEJSCE_MIN_MB` → ostrzeżenie przed rysowaniem; `true`, gdy pokazane. Błąd odczytu: bez ostrzeżenia.
+ * M1-110: `mozna()` sprawdzane po odczycie miejsca — gdy w międzyczasie przyszedł alert błędu zapisu rysunku, ostrzeżenia już nie ma (jeden alert).
+ */
+export async function ostrzezenieMiejsca(magazyn: Pick<MagazynPlikow, 'wolneMiejsce'>, t: Tlumacz, mozna: () => boolean = () => true): Promise<boolean> {
   let wolne: number;
   try { wolne = await magazyn.wolneMiejsce(); } catch { return false; }
-  if (!(wolne < RYSUNEK_MIEJSCE_MIN_MB * 1024 * 1024)) return false;
+  if (!(wolne < RYSUNEK_MIEJSCE_MIN_MB * 1024 * 1024) || !mozna()) return false;
   Alert.alert(t('wspolne.blad_zapisu_opis'), undefined, [{ text: t('wspolne.ok') }]);
   return true;
 }
