@@ -112,7 +112,7 @@ export function style(k: Kolory) {
     tresc: { padding: odstep.l, gap: odstep.m },
     tytul: { ...typografia.tytul, color: k.grafit },
     naglowek: { ...typografia.podpis, color: k.olowek, fontWeight: '700', marginTop: odstep.s }, // etykiety wyników próbki (`.etyk`, 15 pt)
-    naglowekGrupy: { ...typografia.drobny, color: k.olowek, fontWeight: '700', marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt (narzedzia-zdjecia.html), H-2
+    naglowekGrupy: { ...typografia.drobny, color: k.olowek, marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt `olowek`, bez wagi (narzedzia-zdjecia.html, sesje-historia.html:75), H-2, P2-4
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszOstatni: { borderBottomWidth: 0 },
