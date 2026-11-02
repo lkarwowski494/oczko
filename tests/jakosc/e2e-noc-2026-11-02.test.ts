@@ -115,3 +115,38 @@ describe('NOC-3 · 67: podpis „current row” w pasku pod wzorem (P2-5b)', () 
     expect(l.slice(wzorPo).some((k) => k.nazwa === 'takeScreenshot')).toBe(true);
   });
 });
+
+/* NOC-6 · wagi części E2E z pomiaru (#140, run 41430188910): do tej pory wszystkie wagi były SZACUNKIEM z liczby kroków. Pomiar z dzienników zadań e2e leży w
+ *       docs/jakosc/e2e-pomiar-140.json. Wagi [Passed] = czas z dziennika; [Failed] (pada w trakcie, czas zaniżony) i brak pomiaru (67) zostają szacunkiem.
+ *       Limit czasu zadania zostaje formułą workflow (30 + 4 × scenariusze części, e2e-czesci.mjs:91) — test pilnuje, że mieści zmierzony czas kroku z zapasem 20 %. */
+import { execFileSync } from 'child_process';
+type Pomiar = { krok_scenariusze_s: Record<string, number>; scenariusze: Record<string, { czesc: string; wynik: string; s: number }> };
+const ROOT = path.join(__dirname, '..', '..');
+const pomiar = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/jakosc/e2e-pomiar-140.json'), 'utf8')) as Pomiar;
+const wagi = (JSON.parse(fs.readFileSync(path.join(ROOT, 'e2e/czesci.json'), 'utf8')) as { wagi_s: Record<string, number> }).wagi_s;
+const planCzesci = (): { czesc: number; files: string[]; osobne: string[]; timeout_min: number }[] =>
+  JSON.parse(execFileSync('node', [path.join(ROOT, 'scripts/ci/e2e-czesci.mjs'), 'plan'], { encoding: 'utf8', env: { ...process.env, ONLY: '', PAKIET: '', COMMIT_MSG: '' } }));
+describe('NOC-6 · wagi części E2E z pomiaru #140', () => {
+  test('pomiar obejmuje wszystkie scenariusze poza nowym 67 i ma sensowne czasy', () => {
+    const pliki = fs.readdirSync(KAT).filter((f) => /^\d\d-.*\.yaml$/.test(f));
+    expect(pliki.filter((f) => !pomiar.scenariusze[f])).toEqual([plik('67')]);
+    for (const [f, r] of Object.entries(pomiar.scenariusze)) expect({ f, ok: r.s > 0 && r.s < 900 }).toEqual({ f, ok: true });
+  });
+  test('waga każdego scenariusza [Passed] równa się czasowi z dziennika #140', () => {
+    const rozne = Object.entries(pomiar.scenariusze).filter(([f, r]) => r.wynik === 'Passed' && wagi[f] !== r.s).map(([f, r]) => `${f}: waga ${wagi[f]}, pomiar ${r.s}`);
+    expect(rozne).toEqual([]);
+  });
+  test('scenariusze [Failed] w #140 zachowują wagę szacunkową (czas zaniżony przez przerwanie), dodatnią', () => {
+    for (const [f, r] of Object.entries(pomiar.scenariusze)) if (r.wynik === 'Failed') expect(wagi[f]).toBeGreaterThan(r.s);
+  });
+  test('trzy części iPhone: rozpiętość zmierzonych czasów ≤ 10 % średniej (bez scenariuszy iPada)', () => {
+    const ipad = (f: string) => /^tags:\n(?:\s+- .*\n)*?\s+- ipad\s*$/m.test(fs.readFileSync(path.join(KAT, f), 'utf8').split(/^---$/m)[0]);
+    const obc = planCzesci().map((c) => [...c.files, ...c.osobne].filter((f) => !ipad(f)).reduce((a, f) => a + (pomiar.scenariusze[f]?.s ?? wagi[f]), 0));
+    const sr = obc.reduce((a, b) => a + b, 0) / obc.length;
+    expect({ obc, rozpietoscProc: Math.round(((Math.max(...obc) - Math.min(...obc)) / sr) * 100), ok: Math.max(...obc) - Math.min(...obc) <= 0.1 * sr }).toMatchObject({ ok: true });
+  });
+  test('limit czasu zadania części (30 + 4 × scenariusze) mieści zmierzony czas kroku „Scenariusze” z zapasem 20 %', () => {
+    const maxKrokMin = Math.max(...['iphone-1', 'iphone-2', 'iphone-3'].map((k) => pomiar.krok_scenariusze_s[k])) / 60;
+    for (const c of planCzesci()) expect({ czesc: c.czesc, ok: c.timeout_min >= 1.2 * maxKrokMin }).toEqual({ czesc: c.czesc, ok: true });
+  });
+});
