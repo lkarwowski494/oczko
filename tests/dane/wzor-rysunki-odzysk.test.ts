@@ -4,8 +4,8 @@ import { existsSync, mkdirSync, utimesSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { PortBazy } from '../../src/domena/porty';
 import { zapiszRysunek } from '../../src/przypadki-uzycia/wzor';
-import { odzyskajRysunki } from '../../src/przypadki-uzycia/wzor-widok';
-import { plik, projekt, wzor } from './pomocnicze/dane-wejsciowe';
+import { odzyskajRysunki, widokWzoru } from '../../src/przypadki-uzycia/wzor-widok';
+import { plik, projekt, rysunek, wzor } from './pomocnicze/dane-wejsciowe';
 import { ile, jeden, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 test('pliki oczekujące → rysunki stron we właściwych wzorach; pliki usunięte; obce i uszkodzone nazwy zostają', async () => {
@@ -112,5 +112,44 @@ describe('M1-084: plik oczekujący rysunku przeżywa nieudany zapis', () => {
     writeFileSync(f, 'x');
     expect(await zapiszRysunek(s.z, { wzorId: 'w1', strona: 0, plikTymczasowy: f })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
     expect(existsSync(f)).toBe(false);
+  });
+});
+
+// M1-084, przegląd ścieżki wrażliwej (P1): widok natywny rysuje to, co dostaje w `rysunki`. Gdy dla strony czeka plik oczekujący (zapis się nie udał),
+// widok musi dostać ten plik, a nie starszy rysunek z bazy — inaczej nowa kreska daje nowszy plik bez kresek z nieudanego zapisu, a ten po udanym
+// zapisie kasuje starszy plik (utrata kresek). Odzysk: wyjątek przy jednej stronie nie przerywa pozostałych i daje błąd zapisu.
+describe('M1-084 cd.: widok bierze najnowszy plik oczekujący strony; wyjątek w odzysku', () => {
+  test('widokWzoru z katalogiem oczekujących: strona z plikiem oczekującym → najnowszy plik; strona bez → rysunek z bazy; inne wzory pominięte', async () => {
+    const s = await przygotuj();
+    const h = wlozPlik(s.magazyn, Buffer.from('%PDF-1.4\n%%EOF\n'), 'pdf');
+    const r0 = wlozPlik(s.magazyn, 'baza-0', 'pkdrawing');
+    const r1 = wlozPlik(s.magazyn, 'baza-1', 'pkdrawing');
+    await wykonaj(s.baza, [projekt('p1', 'Harbor'), plik(h, 'pdf', 15), plik(r0, 'pkdrawing', 6), plik(r1, 'pkdrawing', 6), wzor('w1', 'p1', h), wzor('w2', 'p1', h), rysunek('w1', 0, r0), rysunek('w1', 1, r1)]);
+    const k = join(s.katalog, 'tmp', 'rysunki-wzoru');
+    mkdirSync(k, { recursive: true });
+    const starszy = join(k, 'w1__0__a.pkdrawing'), nowszy = join(k, 'w1__0__b.pkdrawing'), nowa = join(k, 'w1__3__c.pkdrawing'), obcy = join(k, 'w2__1__d.pkdrawing');
+    for (const f of [starszy, nowszy, nowa, obcy]) writeFileSync(f, 'x');
+    utimesSync(starszy, 1000, 1000);
+    utimesSync(nowszy, 2000, 2000);
+    const w = await widokWzoru(s.z, { wzorId: 'w1', katalogOczekujacych: k });
+    expect(w.ok && w.wartosc.rysunki).toEqual([{ strona: 0, plik: nowszy }, { strona: 1, plik: s.magazyn.sciezka(r1) }, { strona: 3, plik: nowa }]);
+    const bez = await widokWzoru(s.z, { wzorId: 'w1' });
+    expect(bez.ok && bez.wartosc.rysunki.map((x) => x.plik)).toEqual([s.magazyn.sciezka(r0), s.magazyn.sciezka(r1)]);
+  });
+
+  test('wyjątek zapisu jednej strony w odzysku → pozostałe strony zapisane, wynik błąd zapisu, plik strony z wyjątkiem zostaje', async () => {
+    const s = await przygotuj();
+    const h = wlozPlik(s.magazyn, Buffer.from('%PDF-1.4\n%%EOF\n'), 'pdf');
+    await wykonaj(s.baza, [projekt('p1', 'Harbor'), plik(h, 'pdf', 15), wzor('w1', 'p1', h)]);
+    const k = join(s.katalog, 'tmp', 'rysunki-wzoru');
+    mkdirSync(k, { recursive: true });
+    const zly = join(k, 'w1__0__a.pkdrawing'), dobry = join(k, 'w1__1__b.pkdrawing');
+    writeFileSync(zly, 'zly');
+    writeFileSync(dobry, 'dobry');
+    const zapisz = s.magazyn.zapisz.bind(s.magazyn);
+    const magazyn = { ...s.magazyn, zapisz: async (sciezka: string, roz: string) => { if (sciezka === zly) throw new Error('EIO'); return zapisz(sciezka, roz); } };
+    expect(await odzyskajRysunki({ ...s.z, magazyn }, { katalog: k })).toEqual({ ok: false, powod: 'zapis' });
+    expect([existsSync(zly), existsSync(dobry)]).toEqual([true, false]);
+    expect(await ile(s.baza, 'rysunek', "wzor_id = 'w1' AND strona = 1")).toBe(1);
   });
 });

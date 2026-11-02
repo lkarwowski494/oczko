@@ -6,7 +6,7 @@ import { notatkiWzoruZId, znacznikWzoru } from '../dane/repozytoria/wzory';
 import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { wzorDoZapisu, zapiszRysunek } from './wzor';
-import { ODRZUCENIA_TRWALE, PLIK_OCZEKUJACY } from './rysunki-oczekujace';
+import { ODRZUCENIA_TRWALE, PLIK_OCZEKUJACY, najnowszeOczekujace } from './rysunki-oczekujace';
 import { pozycjaWzoru, type PozycjaWzoru } from './wzor-miejsce';
 import { czasZmiany, istniejePlik, lista, polacz, usunPlik } from '../dane/pliki/system';
 import type { ZaleznosciPlikow } from './zaleznosci';
@@ -47,7 +47,8 @@ export type WidokWzoru = {
   znacznik: { licznikId: string; strona: number; rzad: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1 } | null;
 };
 /** Model odczytu przeglądarki (moduly.md „Kontrakt partii 6”: widok natywny tylko rysuje wynik `polozenieZnacznika`). */
-export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string }): Promise<Wynik<WidokWzoru>> {
+/** `katalogOczekujacych` (M1-084): strona z plikiem oczekującym dostaje najnowszy taki plik zamiast rysunku z bazy. */
+export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string; katalogOczekujacych?: string }): Promise<Wynik<WidokWzoru>> {
   return operacjaZapisu(z, 'widokWzoru', async (tx) => {
     const stan = await wzorDoZapisu(tx, w.wzorId);
     if (stan) return blad(stan);
@@ -68,11 +69,16 @@ export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string }): Promise<
     return { ok: true, wartosc: {
       wzorId: w.wzorId, projektId: tekst(r, 'projekt_id'), nazwa: tekst(r, 'nazwa'), zrodlo: tekst(r, 'zrodlo'),
       plikPdf: pdf ? z.magazyn.sciezka(pdf) : null, oryginal: oryg ? z.magazyn.sciezka(oryg) : null,
-      rysunki: rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), obroty, znacznik, notatki, miejsce: await pozycjaWzoru(tx, w.wzorId),
+      rysunki: zOczekujacymi(rys.map((x) => ({ strona: liczba(x, 'strona'), plik: z.magazyn.sciezka(tekst(x, 'plik_sha256')) })), w), obroty, znacznik, notatki, miejsce: await pozycjaWzoru(tx, w.wzorId),
     } };
   });
 }
 
+function zOczekujacymi(z: { strona: number; plik: string }[], w: { wzorId: string; katalogOczekujacych?: string }): { strona: number; plik: string }[] {
+  if (!w.katalogOczekujacych) return z;
+  const ocz = najnowszeOczekujace(w.katalogOczekujacych, w.wzorId);
+  return [...z.filter((x) => !ocz.has(x.strona)), ...[...ocz].map(([strona, plik]) => ({ strona, plik }))].sort((a, b) => a.strona - b.strona);
+}
 /**
  * Odzysk rysunków zapisanych przez widok natywny, gdy ekran już się zamykał (zdarzenie `onRysunek` bez odbiorcy; przegląd 2026-10-26), i rysunków,
  * których zapis się nie udał (M1-084: plik zostaje): pliki `<wzorId>__<strona>__<uuid>.pkdrawing` z katalogu oczekujących → `zapiszRysunek`.
@@ -94,7 +100,7 @@ export async function odzyskajRysunki(z: ZaleznosciPlikow, w: { katalog: string 
     const kolejne = pliki.sort((a, b) => b.czas - a.czas); // najnowszy pierwszy
     for (const [i, p] of kolejne.entries()) {
       if (!istniejePlik(p.sciezka)) continue;
-      const r = await zapiszRysunek(z, { wzorId: p.wzorId, strona: p.strona, plikTymczasowy: p.sciezka });
+      const r = await zapiszRysunek(z, { wzorId: p.wzorId, strona: p.strona, plikTymczasowy: p.sciezka }).catch((): Wynik<void> => ({ ok: false, powod: 'zapis' })); // wyjątek: plik zostaje
       if (r.ok) {
         n += 1;
         for (const starszy of kolejne.slice(i + 1)) if (istniejePlik(starszy.sciezka)) usunPlik(starszy.sciezka);

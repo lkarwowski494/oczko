@@ -69,6 +69,7 @@ export default function EkranWzoru(): React.ReactElement {
   const liczbaCzekajacych = useRef(czekaSiec.length);
   const [blad, ustawBlad] = useState(false); // M1-007: pierwszy odczyt bez widoku licznika albo z wyjątkiem → błąd z „Try again”, nie pusta plansza
 
+  const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
   const wczytaj = useCallback(async (wybrany?: string) => {
     const w = await licznik.widok();
     ustawLw(w);
@@ -78,15 +79,14 @@ export default function EkranWzoru(): React.ReactElement {
     const cel = wybrany ?? (await wzorDoOtwarcia(zw, { projektId: w.projektId }));
     const wzorId = typeof cel === 'string' ? cel : cel.ok ? cel.wartosc : null;
     if (!wzorId) { ustawWidok(null); return; }
-    const v = await widokWzoru(zw, { wzorId });
+    const v = await widokWzoru(zw, { wzorId, katalogOczekujacych: katalogRysunkow }); // M1-084: strona z plikiem oczekującym → ten plik
     if (v.ok && poczatek.current?.wzorId !== wzorId) { // wzór otwarty albo przełączony: zapisana pozycja tego wzoru, strona z poprzedniego wzoru nie przechodzi
       poczatek.current = { wzorId, strona: v.wartosc.miejsce?.strona ?? 0, powiekszenie: v.wartosc.miejsce?.powiekszenie ?? 0 };
       ustawStrone(null);
     }
     ustawWidok(v.ok ? v.wartosc : null);
     if (v.ok) await zapamietajWzor(zw, { licznikId: w.licznikId, wzorId });
-  }, [licznik, zw]);
-  const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
+  }, [licznik, zw, katalogRysunkow]);
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
   const pierwszyOdczyt = useCallback(() => { void wczytaj(id).catch(() => ustawBlad(true)); }, [wczytaj, id]); // M1-007: wyjątek odczytu → stan błędu
   // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
@@ -253,7 +253,7 @@ export default function EkranWzoru(): React.ReactElement {
         naZmienKierunek={(kierunek) => { if (gdzieZnacznik) void postaw({ ...gdzieZnacznik, kierunek }); }}
         naKrokRzaduZnacznika={(delta) => {
           kolejkaKrokow.current = kolejkaKrokow.current.then(async () => {
-            const v = await widokWzoru(zw, { wzorId: widok.wzorId });
+            const v = await widokWzoru(zw, { wzorId: widok.wzorId, katalogOczekujacych: katalogRysunkow });
             const z = v.ok ? v.wartosc.znacznik : null;
             if (z) await postaw({ strona: z.strona, y: z.y, kierunek: z.kierunek, rzadBazowy: Math.max(1, Math.max(1, z.rzad) + delta) });
           });

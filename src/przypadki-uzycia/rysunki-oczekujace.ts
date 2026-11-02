@@ -21,3 +21,20 @@ export function usunStarszeOczekujace(w: { wzorId: string; strona: number; plikT
     }
   } catch { /* plik starszy zostaje; odzysk weźmie najnowszy */ }
 }
+/**
+ * M1-084 (przegląd ścieżki wrażliwej): najnowszy plik oczekujący każdej strony wzoru (strona → ścieżka). Widok natywny dostaje go zamiast rysunku
+ * z bazy, więc nowa kreska trafia do pliku, który zawiera też kreski z nieudanego zapisu (cały rysunek strony).
+ */
+export function najnowszeOczekujace(katalog: string, wzorId: string): Map<number, string> {
+  const wynik = new Map<number, { sciezka: string; czas: number }>();
+  for (const nazwa of lista(katalog)) {
+    const m = PLIK_OCZEKUJACY.exec(nazwa);
+    if (!m || m[1] !== wzorId) continue;
+    const sciezka = polacz(katalog, nazwa);
+    const czas = czasZmiany(sciezka) ?? 0;
+    const strona = Number(m[2]);
+    const byl = wynik.get(strona);
+    if (!byl || czas > byl.czas) wynik.set(strona, { sciezka, czas });
+  }
+  return new Map([...wynik].map(([s, p]) => [s, p.sciezka]));
+}
