@@ -1,6 +1,9 @@
 // sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--oczekujace o.json [--wydanie]] [--pseudo plik.json]
 // --oczekujace (P-357, wzór Treningu): { powod, odwolania, klucze: [bazy kluczy] } — brak przekładu tych kluczy to uwaga, nie błąd; lista = dokładnie różnica źródło ↔ słowniki
 //   (klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd). --wydanie: niepusta lista = błąd (fala przekładu przed wydaniem, P-320).
+//   Opcjonalnie przetlumaczone_czesciowo: { baza: [języki] } (P-406 a, M1-audytor-generalny-018) dla kluczy z `klucze`: język z mapy sprawdzany normalnie
+//   (brak klucza = błąd); język spoza mapy ze starym zwykłym kluczem, gdy źródło ma już formy liczby mnogiej = uwaga (t() bierze zwykły klucz języka);
+//   język spoza mapy z formami = błąd „już przetłumaczony”; wpis mapy dla klucza spoza `klucze` albo źródła, albo języka bez słownika = błąd.
 // --wyjatki: { klucze, wartosci, pliki: { ścieżka względna: powód } } — `pliki` (M1-051): pliki pod ścieżką poza skanem kodu; nieistniejąca ścieżka = kod 2.
 // --krytyczne k.json --przeglad p.json (M1-audytor-generalny-008, DEC-11 a): k.json = klucze treści krytycznej oznaczone przez 06 ID twierdzeń; p.json = stan kontroli (a) na język
 //   (przekład zwrotny na pl w świeżej sesji, zgodny z kluczem przez skrót tekstu). --wydanie bez tych dwóch flag = kod 2; brak ważnego wpisu (a) dla klucza krytycznego w którymkolwiek języku poza źródłem = błąd (kod 1).
@@ -41,9 +44,19 @@ export function wpisy(slownik) { // baza → { formy: {kategoria: tekst}, porzad
 const kategorie = (j, p) => { try { return new Intl.PluralRules(j, { type: p ? 'ordinal' : 'cardinal' }).resolvedOptions().pluralCategories; } catch { return null; } };
 const pismo = (j) => { try { const s = PISMO[new Intl.Locale(j).maximize().script]; return s && new RegExp(s.split('|').map((x) => `\\p{Script=${x}}`).join('|'), 'u'); } catch { return null; } };
 
-export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null, oczekujace = [] } = {}) {
+export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null, oczekujace = [], czesciowo = {} } = {}) {
   const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]), ocz = new Set(oczekujace);
   for (const b of ocz) if (!zr[b]) bledy.push(`oczekujace: klucza ${b} nie ma w źródle`);
+  for (const [b, jj] of Object.entries(czesciowo)) {
+    const e = (m) => bledy.push(`oczekujace: przetlumaczone_czesciowo ${b} — ${m}`);
+    if (!ocz.has(b)) e('klucza nie ma na liście klucze');
+    if (!zr[b]) e('klucza nie ma w źródle');
+    if (!Array.isArray(jj)) { e('wartość nie jest listą języków'); continue; }
+    for (const j of jj) if (j === zrodlo || !slowniki[j]) e(`język ${j} bez słownika${j === zrodlo ? ' (to źródło)' : ''}`);
+  }
+  const czesc = (j, b) => ocz.has(b) && Array.isArray(czesciowo[b]) && czesciowo[b].includes(j);
+  // stary zwykły klucz języka spoza mapy, gdy źródło ma już formy (P-406 a): czeka na falę przekładu
+  const stara = (j, b, w) => ocz.has(b) && !czesc(j, b) && zr[b]?.formy && w && !w.formy;
   for (const [j, slownik] of Object.entries(slowniki)) {
     const ws = wpisy(slownik), baz = j.split('-')[0], nakladka = j !== baz && slowniki[baz], litery = pismo(j);
     for (const [b, w] of Object.entries(ws)) {
@@ -58,6 +71,7 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
       const z = zr[b];
       if (j === zrodlo) continue;
       if (!z) { u('klucza nie ma w źródle'); continue; }
+      if (stara(j, b, w)) { u('stara forma bez liczby mnogiej, czeka na falę przekładu (oczekujace.json)'); continue; }
       if (!z.formy !== !w.formy) { e(`formy liczby mnogiej tylko w ${z.formy ? 'źródle' : 'tłumaczeniu'}`); continue; }
       const t = w.formy ? Object.values(w.formy) : [w.tekst], zt = z.formy ? Object.values(z.formy) : [z.tekst];
       if (znaczniki(t) !== znaczniki(zt)) e(`parametry [${znaczniki(t)}] ≠ źródło [${znaczniki(zt)}]`);
@@ -67,8 +81,11 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
       for (const s of t) { const l = bez(s).match(/\p{L}/gu) || []; if (litery && l.length && !l.some((c) => litery.test(c))) u(`brak liter pisma języka („${s}”)`); }
       if (!w.formy && w.tekst === z.tekst && (w.tekst.match(/\p{L}/gu) || []).length >= 4 && !(wyjatki.wartosci || []).includes(w.tekst)) u('tekst taki sam jak w źródle');
     }
-    if (j !== zrodlo && !nakladka) for (const b in zr) if (!ws[b]) (ocz.has(b) ? uwagi : bledy).push(`${j} ${b}: brak tłumaczenia${ocz.has(b) ? ' (czeka na falę przekładu, oczekujace.json)' : ''}`);
-    if (j !== zrodlo) for (const b of ocz) if (ws[b] && zr[b]) bledy.push(`${j} ${b}: klucz z oczekujace.json już przetłumaczony — usuń go z listy`);
+    if (j !== zrodlo) for (const b in zr) if (!ws[b] && (!nakladka || czesc(j, b))) {
+      const czeka = ocz.has(b) && !czesc(j, b);
+      (czeka ? uwagi : bledy).push(`${j} ${b}: brak tłumaczenia${czeka ? ' (czeka na falę przekładu, oczekujace.json)' : czesc(j, b) ? ' (język z przetlumaczone_czesciowo w oczekujace.json — mapa się zestarzała)' : ''}`);
+    }
+    if (j !== zrodlo) for (const b of ocz) if (ws[b] && zr[b] && !czesc(j, b) && !stara(j, b, ws[b])) bledy.push(`${j} ${b}: klucz z oczekujace.json już przetłumaczony — ${czesciowo[b] || zr[b].formy ? 'dopisz język do przetlumaczone_czesciowo albo usuń klucz z listy' : 'usuń go z listy'}`);
   }
   const bk = kontekst ? Object.keys(zr).filter((k) => !kontekst[k]) : [];
   if (bk.length) uwagi.push(`${zrodlo}: ${bk.length} kluczy bez kontekstu (np. ${bk.slice(0, 5).join(', ')})`);
@@ -179,8 +196,9 @@ function main(argv) {
   for (const f of readdirSync(kat)) if (/^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*\.json$/.test(f)) slowniki[f.slice(0, -5)] = splaszcz(czytaj(join(kat, f)));
   if (!slowniki[zrodlo]) { console.log(`BŁĄD konfiguracji: brak ${zrodlo}.json w ${kat}`); return 2; }
   const wyjatki = o.wyjatki ? czytaj(o.wyjatki) : {}, pk = join(kat, `${zrodlo}.kontekst.json`), zr = wpisy(slowniki[zrodlo]);
-  const oczekujace = o.oczekujace ? czytaj(o.oczekujace).klucze ?? [] : [];
-  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace });
+  const plikOcz = o.oczekujace ? czytaj(o.oczekujace) : {}, oczekujace = plikOcz.klucze ?? [], czesciowo = plikOcz.przetlumaczone_czesciowo ?? {};
+  if (typeof czesciowo !== 'object' || Array.isArray(czesciowo)) { console.log(`BŁĄD konfiguracji: ${o.oczekujace}: przetlumaczone_czesciowo musi być obiektem { baza klucza: [języki] }`); return 2; }
+  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace, czesciowo });
   if (o.wydanie && oczekujace.length) bledy.push(`wydanie: oczekujace.json niepusta (${oczekujace.length} kluczy) — fala przekładu przed wydaniem (P-320, P-357)`);
   let krytyczne = null;
   if (o.krytyczne) {
