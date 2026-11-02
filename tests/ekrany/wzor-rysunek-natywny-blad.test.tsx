@@ -80,8 +80,8 @@ describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
     await start();
     await bladNatywny();
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save your changes');
-    expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save highlights and drawings'); // M1-102 (DEC-28 a): kreski tylko w pamięci widoku
+    expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.');
     expect(haptyka.zagraj).toHaveBeenCalledWith('bladZapisu');
     await bladNatywny();
     expect(alert).toHaveBeenCalledTimes(1);
@@ -99,9 +99,9 @@ describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
     expect(mockRouter.back).not.toHaveBeenCalled();
     expect(alert).toHaveBeenCalledTimes(1);
     const [tytul, opis, przyciski] = alert.mock.calls[0] as [string, string, { text: string; style?: string; onPress?: () => void }[]];
-    expect(tytul).toBe('Couldn’t save your changes');
-    expect(opis).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
-    expect(przyciski.map((p) => [p.text, p.style])).toEqual([['Cancel', 'cancel'], ['Back', 'destructive']]);
+    expect(tytul).toBe('Leave this pattern?'); // M1-102 (04-studio-projektowe-514, DEC-28 a): pytanie o decyzję, przycisk nazywa skutek
+    expect(opis).toBe('Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.');
+    expect(przyciski.map((p) => [p.text, p.style])).toEqual([['Stay', 'cancel'], ['Leave unsaved', 'destructive']]);
     expect(przyciski[0]?.onPress).toBeUndefined(); // zostaje na ekranie
     act(() => przyciski[1]?.onPress?.());
     expect(mockRouter.back).toHaveBeenCalledTimes(1);
@@ -141,7 +141,7 @@ describe('M1-084 (DEC-31 b): ostrzeżenie o braku miejsca przy otwarciu wzoru', 
   test(`wolne miejsce poniżej ${RYSUNEK_MIEJSCE_MIN_MB} MB → jedno ostrzeżenie przy otwarciu`, async () => {
     await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+    expect(alert.mock.calls[0]?.[0]).toBe('Your device is almost full'); // M1-110 (DEC-28 a): tytuł ostrzeżenia z kluczy 04 zamiast zdania błędu
     await zdarzenie('onStrona', { strona: 1, stron: 2 });
     expect(alert).toHaveBeenCalledTimes(1);
   });
@@ -149,5 +149,25 @@ describe('M1-084 (DEC-31 b): ostrzeżenie o braku miejsca przy otwarciu wzoru', 
   test(`wolne miejsce równe progowi ${RYSUNEK_MIEJSCE_MIN_MB} MB → bez ostrzeżenia`, async () => {
     await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB });
     expect(alert).not.toHaveBeenCalled();
+  });
+});
+
+describe('M1-110 (04-studio-projektowe-515): ostrzeżenie o miejscu i błąd natywny przy otwarciu — najwyżej jeden alert', () => {
+  test('ostrzeżenie ma własny tytuł i opis (DEC-28 a: wzor.miejsce_*), nie zdanie błędu wspolne.blad_zapisu_opis', async () => {
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
+    expect(alert).toHaveBeenCalledTimes(1);
+    const [tytul, opis, przyciski] = alert.mock.calls[0] as [string, string, { text: string }[]];
+    expect(tytul).toBe('Your device is almost full');
+    expect(opis).toBe('Highlights and drawings you add may not be saved. Free some space before you draw.');
+    expect(przyciski.map((p) => p.text)).toEqual(['OK']);
+  });
+  test('wolne poniżej progu, potem onBladZapisu z kolejki widoku → Alert.alert raz (ostrzeżenie wystarcza do udanego zapisu)', async () => {
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
+    expect(alert).toHaveBeenCalledTimes(1);
+    await bladNatywny();
+    expect(alert).toHaveBeenCalledTimes(1);
+    await rysunek(0); // udany zapis zdejmuje blokadę: następny błąd znów alertuje
+    await bladNatywny();
+    expect(alert).toHaveBeenCalledTimes(2);
   });
 });

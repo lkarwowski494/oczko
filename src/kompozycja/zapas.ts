@@ -7,6 +7,7 @@ import type { Narzedzie, WierszZapasu } from '../przypadki-uzycia/zapas';
 import { rozmiarUS } from '../domena/obliczenia/druty';
 import { przelicz } from '../domena/obliczenia/jednostki';
 import { formatujLiczbe, parsujLiczbe } from '../i18n/format';
+import { MM_NARZEDZIA_MIEJSCA } from '../konfiguracja';
 
 export type FiltrZapasu = 'wszystkie' | 'brak' | number;
 export type StanZapasu = {
@@ -79,7 +80,7 @@ const GRUPY: { rodzaj: Narzedzie['rodzaj']; klucz: 'druty.igly' | 'druty.szydelk
 function rozmiar(mm: number | null, rodzaj: Narzedzie['rodzaj'], j: J): { tekst: string; us: boolean } {
   if (mm === null) return { tekst: '', us: false };
   const us = rodzaj === 'inne' ? null : rozmiarUS(mm, rodzaj);
-  const m = formatujLiczbe(mm, j.jezyk(), { maks: 2 });
+  const m = formatujLiczbe(mm, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA });
   return us === null ? { tekst: j.t('projekt.rozmiar_mm', { mm: m }), us: false } : { tekst: j.t('projekt.rozmiar_us', { mm: m, us }), us: true };
 }
 export type StanDrutow = { grupy: { naglowek: string; wiersze: { id: string; rozmiar: string; opis: string }[] }[] };

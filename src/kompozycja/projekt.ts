@@ -4,7 +4,7 @@ import type { CelDnia } from '../domena/postep';
 import type { StanKosza } from '../ekrany/Kosz';
 import type { PropsProjektu } from '../ekrany/Projekt';
 import type { Tlumacz } from '../ekrany/wspolne';
-import { KOSZ_DNI } from '../konfiguracja';
+import { KOSZ_DNI, MM_NARZEDZIA_MIEJSCA } from '../konfiguracja';
 import type { ElementKosza } from '../przypadki-uzycia/widok-kosza';
 import { rozmiarUS } from '../domena/obliczenia/druty';
 import { dzienLokalny } from '../domena/postep';
@@ -59,7 +59,7 @@ export function stanKosza(elementy: readonly ElementKosza[], j: Jezyk, o: { tera
 function nazwaNarzedzia(n: ElementKosza['narzedzie'] | null, j: Jezyk): string {
   if (!n) return j.t('druty.inne');
   if (n.rozmiarMm === null) return n.opis || j.t(n.rodzaj === 'druty' ? 'druty.igly' : n.rodzaj === 'szydelko' ? 'druty.szydelka' : 'druty.inne');
-  const mm = formatujLiczbe(n.rozmiarMm, j.jezyk(), { maks: 2 });
+  const mm = formatujLiczbe(n.rozmiarMm, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA });
   const us = n.rodzaj === 'inne' ? null : rozmiarUS(n.rozmiarMm, n.rodzaj);
   return us === null ? j.t('projekt.rozmiar_mm', { mm }) : j.t('projekt.rozmiar_us', { mm, us });
 }
@@ -79,7 +79,7 @@ export function stanProjektu(w: WidokProjektu, o: { j: Jezyk; terazMs: number; s
     if (c.rodzaj === 'po_terminie') return t('projekt.termin_po', { data: termin, count: c.zostalo });
     return t('projekt.termin_osiagniety', { data: termin });
   };
-  const mm = w.drutMm === null ? null : formatujLiczbe(w.drutMm, jezyk, { maks: 2 });
+  const mm = w.drutMm === null ? null : formatujLiczbe(w.drutMm, jezyk, { maks: MM_NARZEDZIA_MIEJSCA });
   const zmiana = dzienLokalny(Math.max(w.zmienionoMs, w.ostatniaPracaMs), o.strefa);
   return {
     nazwa: w.nienazwany ? etykietaRobocza(w.utworzonoMs, o.terazMs, j, o.strefa) : w.nazwa,
@@ -116,6 +116,6 @@ function daty(utworzonoMs: number, koniecDzien: string, o: { j: Jezyk; terazMs: 
 /** Podgląd rozmiaru w arkuszu narzędzia (RD-11 / RD-19 na żywo): „4 mm (US 6)” albo „3 mm” bez odpowiednika. */
 export function podgladRozmiaru(mm: number, n: 'druty' | 'szydelko', j: Jezyk): string {
   const us = rozmiarUS(mm, n);
-  const m = formatujLiczbe(mm, j.jezyk(), { maks: 2 });
+  const m = formatujLiczbe(mm, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA });
   return us ? j.t('projekt.rozmiar_us', { mm: m, us }) : j.t('projekt.rozmiar_mm', { mm: m });
 }

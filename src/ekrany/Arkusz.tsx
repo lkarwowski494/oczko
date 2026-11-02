@@ -3,7 +3,7 @@
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
@@ -104,14 +104,16 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
 }
 
 type RodzajPrzycisku = 'glowny' | 'niszczacy' | 'drugi' | 'tekstowy'; // niszczacy: tylko arkusz decyzji o nieodwracalnym usunięciu, jeden na ekran (04 fix-8, P-275 (2))
-export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean }): React.ReactElement {
+export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean }): React.ReactElement {
   const st = style(useKolory());
   const r = p.rodzaj ?? 'drugi';
+  // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
+  const czarny = p.naCzarnym ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
   return (
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
-      style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, p.wylaczony && st.wylaczony]}>
-      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
+      style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
+      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, czarny && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
     </Pressable>
   );
 }
@@ -168,6 +170,11 @@ export function Tresc({ children, podpis, testID, etykieta }: { children: React.
 
 /** Liczba całkowita ≥ 0 z pola (cyfry ASCII; pusty, ujemny, ułamek, tekst → null). */
 export const liczbaZPola = (t: string): number | null => (/^\d+$/.test(t.trim()) ? Number(t.trim()) : null);
+
+/** Formularz zgłasza trasie, czy wartości różnią się od tych z otwarcia arkusza („Discard changes?”, M1-audytor-generalny-020). */
+export function useZglosZmiane(naZmiane: ((zmieniony: boolean) => void) | undefined, zmieniony: boolean): void {
+  useEffect(() => { naZmiane?.(zmieniony); }, [naZmiane, zmieniony]);
+}
 
 // Przyciski pełnej szerokości (główny, niszczący): promień 14 wg wzorca `.przycisk-pelny` (partia8.html:70, design-spec.md:47) z tokenu `promien.przyciskPelny` (P2-2).
 // `przyciskGlowny` (20) to strefa +1, `przyciskDrugi` (14) — przycisk z obrysem w rzędzie wyboru.

@@ -1,20 +1,18 @@
 // Synchronizacja iCloud po stronie bazy (moduly.md „Kontrakt partii 7”, ADR-0005 uzupełnienie fix-7, P-221 Q5a): stan w `synchronizacja`,
 // skrzynka `zmiana_icloud` (wypełniają wyzwalacze L1), odbiór partii z `wejscie = 1` (zapis z iCloud nie wraca do skrzynki), poczekalnia.
 // Wszystkie funkcje działają w transakcji wołającego (kolejka ADR-0002); zasoby plików kopiuje przypadek użycia przed transakcją.
-import { TABELE_ICLOUD, tabelaIcloud, type TabelaIcloud } from '../../domena/icloud/kontrakt';
+import { TABELE_ICLOUD, tabelaIcloud } from '../../domena/icloud/kontrakt';
 import { nazwaRekordu, rekordZJson, rekordZWiersza, wartosciKlucza, wierszZRekordu, type Wiersz as WierszIcloud } from '../../domena/icloud/odwzorowanie';
 import type { PartiaIcloud, PortBazy, PotwierdzenieIcloud, RekordIcloud, ZmianaDoWyslania } from '../../domena/porty';
 import { STANY } from '../../domena/stany';
 import { zapiszBladW } from './bledy';
+import { ma, odtworzWKoszu, warunekKlucza, wyrazenieKlucza, zatrzymaneNagrobki } from './icloud-nagrobki';
 import { zapiszDzienLimitu } from './liczniki';
 import { przeliczLicznik } from './przelicz';
 import { liczba, tekst, wiersze } from './wiersze';
 
 export type StanBazyIcloud = { wlaczona: boolean; stanSilnika: Uint8Array | null; zalegle: number };
 export type WynikPartii = { zastosowane: number; poczekalnia: number; bledy: number; konflikty: number; liczniki: string[] };
-
-const wyrazenieKlucza = (t: TabelaIcloud): string => (t.klucz.length === 1 ? t.klucz[0] : `json_array(${t.klucz.join(', ')})`);
-const warunekKlucza = (t: TabelaIcloud): string => t.klucz.map((k) => `${k} = ?`).join(' AND ');
 
 export async function stanBazy(baza: PortBazy): Promise<StanBazyIcloud> {
   const [s] = await wiersze(baza.all('SELECT wlaczona, stan_silnika, (SELECT count(*) FROM zmiana_icloud) AS zalegle FROM synchronizacja WHERE id = 1'), 'stanBazy');
@@ -149,7 +147,8 @@ const kolejnosc = new Map(TABELE_ICLOUD.map((t, i) => [t.tabela, i]));
 const wgKontraktu = (a: { encja: string }, b: { encja: string }): number => (kolejnosc.get(a.encja) ?? 99) - (kolejnosc.get(b.encja) ?? 99);
 
 /**
- * Partia z iCloud w transakcji wołającego: `wejscie = 1`, rekordy w kolejności tabel z kontraktu, usunięcia (kaskada), ponowienie poczekalni
+ * Partia z iCloud w transakcji wołającego: `wejscie = 1`, rekordy w kolejności tabel z kontraktu, usunięcia (kaskada; nagrobek nad niewysłanymi
+ * zmianami zatrzymany, szczyt w koszu — icloud-nagrobki.ts, ADR-0005 „Nagrobki”), ponowienie poczekalni
  * aż do braku postępu, `przeliczLicznik` dla dotkniętych liczników, stan silnika, `wejscie = 0`. `pliki` = klucze zasobów już w magazynie.
  */
 export async function zastosujPartie(tx: PortBazy, p: PartiaIcloud, terazMs: number, pliki: ReadonlySet<string>): Promise<WynikPartii> {
@@ -162,16 +161,19 @@ export async function zastosujPartie(tx: PortBazy, p: PartiaIcloud, terazMs: num
     licz(w);
     if (w === 'zastosowany' || w === 'blad') await tx.run('DELETE FROM poczekalnia WHERE id = ?', [nazwaRekordu(r.encja, r.klucz)]);
   }
+  const { zatrzymane, szczyty } = await zatrzymaneNagrobki(tx, p.usuniete);
   for (const u of [...p.usuniete].sort((a, b) => wgKontraktu(b, a))) { // dzieci przed rodzicami
     const t = tabelaIcloud(u.encja);
     const k = t ? wartosciKlucza(t, u.klucz) : null;
     await tx.run('DELETE FROM poczekalnia WHERE id = ?', [nazwaRekordu(u.encja, u.klucz)]);
     if (!t || !k || !k.ok) { wynik.bledy += 1; continue; }
+    if (ma(zatrzymane, t.tabela, u.klucz)) continue; // ADR-0005 „Nagrobki”: niewysłane dane zostają, projekt w koszu (odtworzWKoszu)
     await tx.run('SAVEPOINT icloud_usun');
     try { await tx.run(`DELETE FROM ${t.tabela} WHERE ${warunekKlucza(t)}`, k.wartosc); await tx.run('RELEASE icloud_usun'); } catch {
       await tx.run('ROLLBACK TO icloud_usun'); await tx.run('RELEASE icloud_usun'); // plik z odwołaniem (RESTRICT): zostaje
     }
   }
+  if (zatrzymane.size) await odtworzWKoszu(tx, zatrzymane, szczyty, terazMs);
   for (let postep = true; postep;) { // poczekalnia: rekord, którego rodzic doszedł w tej albo wcześniejszej partii
     postep = false;
     for (const c of await wiersze(tx.all("SELECT id, dane FROM poczekalnia WHERE zrodlo = 'synchronizacja' ORDER BY przyszlo_ms, id"), 'poczekalnia')) {

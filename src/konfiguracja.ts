@@ -7,6 +7,7 @@ export const SKLEP_LIMIT_MS = 1500; // ms; P-396 (M1-022): najdłuższe czekanie
 export const STRAZNIK_SERIA_ZDARZEN = 3; // liczba dodań; RD-17, P-047
 export const STRAZNIK_OKNO_S = 2; // s; RD-17, P-047
 export const KOSZ_DNI = 30; // dni; P-026
+export const MM_NARZEDZIA_MIEJSCA = 3; // miejsca po przecinku rozmiaru drutu/szydełka w mm; tabele CYC mają 3,125 mm (DRT-M03125, SZD-M03125; M1-021)
 export const KROK_MOTKA = 0.5; // motki; krok krokowca zużycia na karcie ukończenia (design-spec „Zużycie włóczki przy ukończeniu”, P-126 (2a))
 export const KOPIA_PRZED_IMPORTEM_DNI = 30; // dni; ADR-0004
 export const KOPIA_PRZED_IMPORTEM_MAKS = 2; // kopie `oczko-przed-importem-*` / `oczko-przed-usunieciem-*` w Documents/Backup (każdego rodzaju osobno); ADR-0032 (DEC-18 a): ponad limit zostaje pierwsza kopia każdego dnia do KOPIA_PRZED_IMPORTEM_DNI; [OCENA 05]: ok. 830 MB przy 415 MB na kopię

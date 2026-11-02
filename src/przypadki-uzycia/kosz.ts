@@ -7,6 +7,8 @@ import type { PortBazy } from '../domena/porty';
 import { KOSZ_DNI, PLIKI_OCHRONA_MIN } from '../konfiguracja';
 import { ostatniStartMs } from '../dane/repozytoria/ustawienia';
 import { liczba, tekst, wiersze } from '../dane/repozytoria/wiersze';
+import { istniejeKatalog, lista, polacz } from '../dane/pliki/system';
+import { najnowszaKopiaMs } from '../niezawodnosc/kopie';
 import { wKolejce } from './kolejka';
 import { wTransakcji } from './zapis';
 import type { ZaleznosciPlikow } from './zaleznosci';
@@ -73,12 +75,17 @@ export async function sprzatnijKoszWKolejce(z: ZaleznosciPlikow): Promise<Wynik<
  * M1-023 (05-architekt-503, ADR-0001: „plik bez odwołania jest wykrywany”): plik magazynu bez wiersza `plik` (po „zastąp”, przywróceniu kopii,
  * nieudanym imporcie) usuwany przy starcie; młodszy niż PLIKI_OCHRONA_MIN (czas zmiany pliku) zostaje, bo zapis pliku poprzedza wiersz (Z07-15).
  * Tylko w `uruchomDane` (przed pierwszym ekranem, w kolejce), nie przy ręcznym opróżnianiu kosza.
+ * M1-087 (05-architekt-507, ADR-0020): kopie `.db` w `kopie/` nie mają plików magazynu, więc plik nie młodszy niż najnowsza kopia (istniał, gdy powstała) zostaje (cofnięcie
+ * przywrócenia wraca z plikami); kopie znikają po KOPIE_RATUNKOWE_DNI (ADR-0020 (6)) i wtedy plik bez odwołań i bez kopii jest usuwany.
  */
 export async function sprzatnijSierotyMagazynu(z: ZaleznosciPlikow): Promise<Wynik<number>> {
   try {
     const granica = z.zegar.teraz().ms - PLIKI_OCHRONA_MIN * 60_000;
     const znane = new Set((await wiersze(z.baza.all('SELECT sha256 FROM plik'), 'sprzatnijSierotyMagazynu')).map((r) => tekst(r, 'sha256')));
-    const sieroty = new Set((await z.magazyn.pliki()).filter((p) => !znane.has(p.sha256) && p.zmianaMs !== null && p.zmianaMs <= granica).map((p) => p.sha256));
+    const kopie = z.katalogi.kopie;
+    const kopiaMs = najnowszaKopiaMs(lista(kopie).map((nazwa) => ({ nazwa, katalog: istniejeKatalog(polacz(kopie, nazwa)) })));
+    const sieroty = new Set((await z.magazyn.pliki())
+      .filter((p) => !znane.has(p.sha256) && p.zmianaMs !== null && p.zmianaMs <= granica && (kopiaMs === null || p.zmianaMs > kopiaMs)).map((p) => p.sha256));
     for (const h of sieroty) await z.magazyn.usun(h);
     return { ok: true, wartosc: sieroty.size };
   } catch {

@@ -95,7 +95,7 @@ export default function EkranWzoru(): React.ReactElement {
   const bladRysunku = useRef(false);
   const poZapisieRysunku = useCallback((r: Wynik<unknown>, oczekujace = 0) => {
     if (r.ok) { if (oczekujace === 0) bladRysunku.current = false; return; }
-    if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod);
+    if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod, 'rysunek'); // M1-102: kreski czekają w pliku
   }, [aplikacja]);
   // M1-084 (DEC-31 a): widok natywny nie zapisał pliku rysunku (`onBladZapisu`), kreski czekają w jego pamięci → alert jak wyżej, „Wstecz” pyta,
   // gest wstecz wyłączony; `onRysunek` z `oczekujace` 0 zdejmuje blokadę. null = na tym ekranie nie było błędu natywnego (opcje ekranu bez zmian).
@@ -116,7 +116,8 @@ export default function EkranWzoru(): React.ReactElement {
   useEffect(() => {
     if (!widok || miejsceSprawdzone.current) return;
     miejsceSprawdzone.current = true;
-    if (!bladRysunku.current) void ostrzezenieMiejsca(zw.magazyn, t);
+    // M1-110: pokazane ostrzeżenie liczy się jak alert rysunku (do udanego zapisu) — `onBladZapisu` z kolejki widoku nie dokłada drugiego.
+    void ostrzezenieMiejsca(zw.magazyn, t, () => !bladRysunku.current).then((p) => { if (p) bladRysunku.current = true; });
   }, [widok, zw, t]);
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
@@ -227,7 +228,7 @@ export default function EkranWzoru(): React.ReactElement {
         akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
       onRysunek={(e) => { const ocz = e.nativeEvent.oczekujace ?? 0; if (ocz === 0) ustawNiezapisane((n) => (n === null ? null : false)); void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then((r) => poZapisieRysunku(r, ocz)); }} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
-      onBladZapisu={(e) => { ustawNiezapisane(e.nativeEvent.oczekujace > 0); if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, 'zapis'); }}
+      onBladZapisu={(e) => { ustawNiezapisane(e.nativeEvent.oczekujace > 0); if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, 'zapis', 'rysunek_niezapisany'); }}
       onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)

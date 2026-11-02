@@ -31,7 +31,7 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
   }
   // M1-085: błąd zapisu (`zapis`, `brak_miejsca`) → alert błędu zapisu (M1-006); inny powód jak dotąd bez komunikatu. Bez haptyki: komponent nie ma portu.
   async function po(w: Wynik<unknown>, tekst: () => string): Promise<void> {
-    if (!w.ok) { if (w.powod === 'zapis' || w.powod === 'brak_miejsca') Alert.alert(...alertBleduZapisu(j.t, 'formularz')); return; }
+    if (!w.ok) { if (w.powod === 'zapis' || w.powod === 'brak_miejsca') Alert.alert(...alertBleduZapisu(j.t, 'stoper')); return; } // M1-102: stoper.blad_zapisu
     await wczytaj();
     oglos(tekst());
     await poZmianie();

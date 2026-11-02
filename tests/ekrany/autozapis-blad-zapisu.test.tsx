@@ -114,7 +114,7 @@ describe('M1-085: komunikat przy nieudanym zapisie automatycznym', () => {
     const oglos = await stoper();
     expect(mockWyniki.wolane.start).toBe(1);
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe(TYTUL);
+    expect(alert.mock.calls[0]?.slice(0, 2)).toEqual(['Couldn’t update the timer', 'Your device may be out of space. Nothing was changed. Free some space and try again.']); // M1-102 (DEC-28 a): stoper.blad_zapisu
     expect(oglos).not.toHaveBeenCalled();
   });
   test('stoper: powód inny niż zapis (niedozwolone_przejscie) → bez alertu błędu zapisu', async () => {

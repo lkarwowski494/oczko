@@ -140,7 +140,12 @@
     "blad_zapisu_opis": "Druga linia alertu błędu zapisu poza licznikiem i wzorem: Ustawienia (przełącznik wraca do poprzedniego stanu), miary, formularze projektu, sesji i włóczki. Pierwsza linia to `ustawienia.blad_zapisu` albo `formularz.blad_zapisu` (tytuł mówi, co się nie udało). Przyczyna (brak miejsca na urządzeniu) i działanie (zwolnić miejsce, spróbować ponownie); „Nothing was changed” = poprzedni stan został. Przycisk: `wspolne.ok`.",
     "ladowanie": "Podpis na środku ekranu do czasu pierwszego odczytu danych (lista projektów, ekran projektu; E2-137-A1). Jedno słowo z wielokropkiem.",
     "blad_wczytania": "Podpis nad przyciskiem „Try again”, gdy odczyt danych ekranu się nie udał (E2-137-A1). Zdanie krótkie, bez winy użytkownika.",
-    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa."
+    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa.",
+    "odrzuc_tytul": "Tytuł pytania po Cancel albo przesunięciu arkusza formularza w dół, gdy coś w nim zmieniono (słownik studia „Odrzucić zmiany?”, jak Trening). Bez zmian arkusz zamyka się od razu, bez pytania. Treść: `wspolne.odrzuc_opis_zmiany` albo `wspolne.odrzuc_opis_nowy`; przyciski `wspolne.wroc_do_edycji` i `wspolne.odrzuc_zmiany`.",
+    "odrzuc_opis_zmiany": "Treść pytania `wspolne.odrzuc_tytul` w formularzu istniejącej rzeczy (notatka, nazwa, cel, termin, narzędzie, przypomnienie, korekta sesji, włóczka lub druty w zapasie): po odrzuceniu zostaje to, co było zapisane przed otwarciem arkusza. Opis skutku, jak w Treningu „The exercise stays unchanged.”",
+    "odrzuc_opis_nowy": "Treść pytania `wspolne.odrzuc_tytul` w formularzu nowej rzeczy (nowy projekt, część, licznik, przypomnienie, włóczka lub druty): po odrzuceniu nic nie powstaje. Opis skutku, jak w Treningu „The new template won’t be saved.”; „added” jak w komunikatach `wzor.blad_*` („Nothing was added.”).",
+    "wroc_do_edycji": "Przycisk anulujący (styl cancel) w pytaniu `wspolne.odrzuc_tytul`: wraca do arkusza z wpisanymi wartościami. Celowo nie „Cancel”: „Cancel” anulujące „Cancel” myli (Trening, `lib/confirm.ts`).",
+    "odrzuc_zmiany": "Przycisk niszczący (czerwony) w pytaniu `wspolne.odrzuc_tytul`: zamyka arkusz bez zapisu. Ta sama nazwa akcji co w tytule (słownik studia „Odrzuć zmiany”)."
   },
   "projekty": {
     "szukaj": "Pole wyszukiwania na liście projektów (ekrany.html projekty).",
@@ -543,7 +548,8 @@
     "inny_opis": "Treść tego alertu; {{biezacy}} = nazwa projektu, w którym użytkownik stuknął stoper.",
     "inny_potwierdz": "Przycisk alertu: kończy sesję w tamtym projekcie i zaczyna tu. Drugi przycisk: wspolne.anuluj.",
     "sprawdz": "Jednorazowa linia informacji na liczniku projektu po automatycznym zamknięciu zapomnianej sesji (SESJA_MAKS_H = 8, P-072 7a, P-191 P5a). {{count}} = SESJA_MAKS_H. Bez tonu błędu.",
-    "sprawdz_link": "Odnośnik po stoper.sprawdz; otwiera arkusz korekty tej sesji."
+    "sprawdz_link": "Odnośnik po stoper.sprawdz; otwiera arkusz korekty tej sesji.",
+    "blad_zapisu": "Nagłówek alertu, gdy nie udał się zapis stopera sesji po stuknięciu Start, Pause, Resume albo Stop; stoper zostaje w poprzednim stanie. Druga linia: `wspolne.blad_zapisu_opis` („Nothing was changed … try again” — prawdziwe: wystarczy stuknąć ponownie). „timer” jak w `stoper.*`."
   },
   "sesje": {
     "tytul": "Lista sesji projektu (F-51, BR-PRJ-013, P-191 P4a–P5a): duży tytuł ekranu.",
@@ -762,7 +768,15 @@
     "przed_schematem": "Linia pod paskiem wzoru (07-jakosc-023, BR-WZR-003 S4, RD-21-W6): praca jest przed pierwszym rzędem schematu (prucie poza początek); znacznik stoi na rzędzie 1. Tekst roboczy 08 — design-spec wymaga „oznaczenia”, ale nie podaje brzmienia; do akceptacji 04.",
     "znacznik_napis": "Widoczny napis zakładki znacznika rzędu na stronie wzoru (07-jakosc-023, F-26): do napisu dochodzi strzałka kierunku rzędów (↑/↓, symbol); {{n}} = rząd schematu. Przy końcu strony napis to wzor.etykieta_koniec. Tekst roboczy 08 — design-spec podaje „Row 48 ↑” bez klucza; do akceptacji 04.",
     "blad_zapis": "Nagłówek alertu, gdy nie udało się zapisać zlecenia dodania wzoru (zapis lokalny nie powiódł się; wzorzec jak `wzor.blad_plik`). Przycisk: `wspolne.ok`. Nie dotyczy błędu pliku ani sieci.",
-    "blad_zapis_opis": "Treść alertu `wzor.blad_zapis`: co się stało („may be out of space” — przyczyna prawdopodobna, nie pewna), że nic nie dodano, co zrobić. Bez przeprosin i bez kodów technicznych."
+    "blad_zapis_opis": "Treść alertu `wzor.blad_zapis`: co się stało („may be out of space” — przyczyna prawdopodobna, nie pewna), że nic nie dodano, co zrobić. Bez przeprosin i bez kodów technicznych.",
+    "blad_rysunku": "Nagłówek alertu, gdy nie udał się zapis zakreśleń i rysunków na stronie wzoru (zakreślacz, pióro; ta sama para słów co w `wzor.usun_opis` „highlights and drawings”). Trzy sytuacje: zapis po rysowaniu, odzysk przy otwarciu wzoru (kreski z poprzedniej wizyty) i błąd zapisu w widoku natywnym. Druga linia: `wzor.blad_rysunku_opis` albo `wzor.rysunek_niezapisany_opis`; przycisk `wspolne.ok`. Nie mylić z `wzor.blad_zapis` (dodanie wzoru).",
+    "blad_rysunku_opis": "Druga linia alertu `wzor.blad_rysunku`, gdy kreski są już w pliku na urządzeniu (zapis po rysowaniu albo odzysk przy otwarciu wzoru): nic nie zginęło, aplikacja zapisze je sama przy następnym otwarciu wzoru, gdy będzie miejsce. „are waiting on this device” = czekają na urządzeniu (przetrwają zamknięcie aplikacji). Bez „Nothing was changed” i bez „try again”: użytkowniczka nie musi niczego powtarzać.",
+    "rysunek_niezapisany_opis": "Używany w dwóch miejscach z tą samą treścią: (1) druga linia alertu `wzor.blad_rysunku`, gdy zapisu nie zrobił widok natywny (kreski są tylko w pamięci aplikacji); (2) treść pytania `wzor.wyjdz_tytul` przy „Back” z takimi kreskami. Fakt: kreski przepadną, jeśli aplikacja zostanie zamknięta, zanim zwolni się miejsce; po zwolnieniu miejsca ponowne otwarcie wzoru je zapisuje. „it” = Oczko (aplikacja). Ton informacyjny, bez straszenia.",
+    "wyjdz_tytul": "Tytuł pytania po stuknięciu „Back” na ekranie wzoru, gdy są kreski niezapisane przez widok natywny (brak miejsca). Pytanie o decyzję, nie komunikat błędu. Treść: `wzor.rysunek_niezapisany_opis`; przyciski `wzor.wyjdz_zostan` (anuluj) i `wzor.wyjdz_potwierdz` (niszczący).",
+    "wyjdz_zostan": "Przycisk anulujący w pytaniu `wzor.wyjdz_tytul`: zostaje na ekranie wzoru. Krótko, jedno słowo, jeśli język pozwala.",
+    "wyjdz_potwierdz": "Przycisk niszczący (czerwony) w pytaniu `wzor.wyjdz_tytul`: wychodzi ze wzoru, choć ostatnie zakreślenia i rysunki nie są zapisane. Etykieta nazywa skutek (wyjście bez zapisu), nie samą nawigację („Back”).",
+    "miejsce_tytul": "Nagłówek ostrzeżenia przy otwarciu wzoru, gdy wolnego miejsca na urządzeniu jest mniej niż próg (dziś 50 MB, `RYSUNEK_MIEJSCE_MIN_MB`). Ostrzeżenie przed działaniem, nie komunikat błędu: jeszcze nic się nie udało. „almost full” = pamięć urządzenia (nie iCloud). Druga linia `wzor.miejsce_opis`, przycisk `wspolne.ok`.",
+    "miejsce_opis": "Druga linia ostrzeżenia `wzor.miejsce_tytul`: skutek (nowe zakreślenia i rysunki mogą się nie zapisać) i działanie (zwolnić miejsce przed rysowaniem). „Highlights and drawings” jak w `wzor.usun_opis` i `wzor.blad_rysunku`. Bez liczby megabajtów (próg może się zmienić)."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",

@@ -74,7 +74,7 @@ describe('M1-084: komunikat przy nieudanym zapisie rysunku', () => {
     await waitFor(() => expect(mockProps.p).not.toBeNull());
     await rysunek(BLAD);
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save your changes');
+    expect(alert.mock.calls[0]?.slice(0, 2)).toEqual(['Couldn’t save highlights and drawings', 'Your device may be out of space. Your highlights and drawings are waiting on this device. Oczko will save them the next time you open this pattern with free space.']); // M1-102 (DEC-28 a): klucze rysunku wzor.blad_rysunku*
     expect(haptyka.zagraj).toHaveBeenCalledWith('bladZapisu');
     await rysunek(BLAD);
     expect(alert).toHaveBeenCalledTimes(1);
@@ -88,7 +88,7 @@ describe('M1-084: komunikat przy nieudanym zapisie rysunku', () => {
     await start();
     await waitFor(() => expect(mockProps.p).not.toBeNull());
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save your changes');
+    expect(alert.mock.calls[0]?.slice(0, 2)).toEqual(['Couldn’t save highlights and drawings', 'Your device may be out of space. Your highlights and drawings are waiting on this device. Oczko will save them the next time you open this pattern with free space.']); // M1-102: odzysk = kreski w pliku na urządzeniu
   });
 });
 

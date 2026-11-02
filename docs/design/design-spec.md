@@ -17,7 +17,7 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | Partia 8: włóczka w projekcie, komunikaty zakupu, „Replace”, notatka na wzorze, przypomnienia, cofanie z historii, licznik oczek, ukończone (P-326) | `fix10-2026-11-01/partia8.html` (32 stany), wzorce `wzorce-zrzuty/partia8-*` (256, `narzedzia/zrzuty-partia8.mjs`), klucze `fix10-2026-11-01/klucze.json`; plan `fix10-2026-11-01.md` |
 | Aneks partii 8 (P-342, P-351, P-352, P-353): 12 decyzji wyglądu i tekstów en | `fix11-2026-11-02/aneks8.html` (15 stanów), wzorce `wzorce-zrzuty/aneks8-*` (75, `narzedzia/zrzuty-aneks8.mjs`), klucze `fix11-2026-11-02/klucze.json`; sekcja „Aneks partii 8” niżej |
 | Klikalny prototyp i przejście poznawcze | `prototyp.html`, scenorys `przejscie/` (`narzedzia/scenorys.mjs`) |
-| Ikona | `ikona/` (warstwy SVG, `icon.png`, `ios-dark.png`, `watch.png`, `android-foreground.png`, `android-monochrome.png`, `splash-icon.png`, `arkusz.png`) |
+| Ikona | `ikona/` (warstwy SVG, `icon.png`, `ios-dark.png`, `watch.png`, `android-foreground.png`, `android-monochrome.png`, `splash-icon.png` ze `start.svg`, `splash-icon-dark.png` ze `start-ciemny.svg`, `arkusz.png`) |
 | Kroje (OFL) | `fonty/LibreFranklin.ttf` + licencja; treść: krój systemowy |
 | Historia kierunków | `01-swiat.md`, `kierunki/`, `porownanie.html`, `kroje.html` |
 
@@ -54,6 +54,7 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | **+1 row / −1** | główne działanie; −1 to korekta, nie cofnięcie |
 | **Undo** | baner strażnika i ostatnia zmiana w historii (BR-LIC-003) |
 | **Save / Cancel** | formularze w arkuszach |
+| **Discard changes?** [Back to editing] [Discard changes] | Cancel albo przesunięcie arkusza formularza w dół, gdy coś zmieniono (słownik studia „Odrzucić zmiany?”; Trening `confirmDiscard`); bez zmian arkusz zamyka się od razu. Opis skutku pod tytułem (aneks M2 partia 2, 004) |
 | **Mark as finished** | ukończenie (U-9), potem karta i pytanie o włóczkę |
 | **Delete {object}** | z potwierdzeniem; trafia do „Recently deleted” na 30 dni (P-026, BR-DAN-008) |
 | **Not now** | neutralna odmowa na komunikacie limitu |
@@ -854,8 +855,9 @@ Istniejące klucze użyte bez zmian: `stan_danych.*` (7), `dane.konflikt_tytul`,
 { "icon": "./assets/icon.png",
   "ios": { "icon": { "light": "./assets/icon.png", "dark": "./assets/ios-dark.png" } },
   "android": { "adaptiveIcon": { "foregroundImage": "./assets/android-foreground.png", "monochromeImage": "./assets/android-monochrome.png", "backgroundColor": "#FCFCFA" } },
-  "plugins": [["expo-splash-screen", { "image": "./assets/splash-icon.png", "backgroundColor": "#FCFCFA", "dark": { "backgroundColor": "#1B1C1F" } }]] }
+  "plugins": [["expo-splash-screen", { "image": "./assets/splash-icon.png", "backgroundColor": "#FCFCFA", "dark": { "image": "./assets/splash-icon-dark.png", "backgroundColor": "#1B1C1F" } }]] }
 ```
+**Ekran startowy w motywie ciemnym (M1-audytor-generalny-088, 04-studio-projektowe-507; DEC-23 a, 2026-11-02).** Ciemny motyw to pełny wariant, nie ten sam obraz (SP-16): `dark.image` = `ikona/splash-icon-dark.png` (1024 × 1024 RGBA, przezroczyste tło), wyrenderowany `narzedzia/ikona.mjs ikona/start-ciemny.svg … 1024 --alfa`. `start-ciemny.svg` = geometria `start.svg` (znak 80 % kadru, jak jasny) w kolorach `pierwszy-plan-ciemny.svg` (kreski `#ECECE8`, pas `#B8A637`, jak ikona ciemna iOS). SHA-256 `splash-icon-dark.png`: `2188c1ac8057ece4cbe274ae9892807a22e71c328fc431f0fe10fa17743aad95` (jasny `splash-icon.png`: `ce9862f5…eb84`, render ze `start.svg` bajt w bajt). Kontrast na `#1B1C1F` (próg grafiki 3:1, WCAG 2.2 1.4.11): kreski 14,39:1 (przed: ten sam obraz, kreski `#26282C` 1,15:1), pas 6,94:1. `imageWidth` zostaje domyślne 100 pt (znak ma 80 % kadru; 200 pt na iPhonie SE zajęłoby ponad połowę szerokości). **Dla 08:** skopiować plik do `assets/splash-icon-dark.png`, wpis `dark.image` jak wyżej; trwała kontrola w `tests/jakosc/ikona-konfiguracja.test.ts`: plik z `dark.image` ma sumę SHA-256 równą `docs/design/ikona/splash-icon-dark.png` (jak jasny obraz).
 Zegarek: `ikona/watch.png` (1088 × 1088). Ikona warstwowa `.icon` (Liquid Glass) wymaga Icon Composer na macOS: warstwy `ikona/tlo.svg` i `ikona/pierwszy-plan*.svg` to paczka dla kroku właściciela; PNG działają bez `.icon`.
 
 ## Audyt 04 2.1 (2026-10-30): rozstrzygnięcia „Do audytu 04” partii 6, D1a, kosz wzoru
@@ -980,6 +982,60 @@ Odrzucone: `square.and.pencil` dla notatki (to „nowa wiadomość” w aplikacj
 **Nowe znalezisko N1 (P2, D):** gumka i cofnij w pasku iPada to glify tekstowe ⌫ i ↶ (`47-ipad-zakreslenie.png`), nie symbole — ta sama klasa defektu co 009; rozwiązanie w tabeli symboli.
 
 **Dla 08.** (1) Nałóż `fix12-2026-11-02/klucze.json`; (2) token `promien.przyciskPelny` = 14 do `tokeny.ts`; (3) symbole wg tabeli, test: w `src/` brak ⏱ ⏸ 🖍 ✎ ⌫ ↶ w etykietach i ikonach; (4) nagłówek „Tools” bez wagi 700, „Historia dni” jako `.naglowek-grupy`; (5) pasek pod wzorem: bez „Now working row n” w trybie w trakcie (+ test); (6) lista akcji menu AX5: ostatni wiersz przycięty; (7) alerty błędu zapisu: Ustawienia i formularze; (8) etykieta wpisu historii z `historia.wpis_opis`; (9) pozycja 10 C wg opisu; (10) kopia `stoper.menu_naglowek` wg spec.
+
+## Aneks M2 partia 2 (2026-11-02): tło stanu wczytywania, teksty rysunku, stopera i „Discard changes?” (P-418, P-420; DEC-24 a, DEC-28 a)
+Rola 04, tryb fix, na zlecenie koordynatora napraw M2. Odczyt kodu (`app/`, `src/`) tylko jako materiał do listy tras i do tekstów zgodnych z faktycznym zachowaniem (polecenie koordynatora, wyjątek nazwany od zwyczaju „04 nie czyta `src/`”); kwarantanna `archiwum/` bez zmian. Makiety i pomiary: katalog wyjścia sesji w `oczko-warsztat` (`audit/M1-2026-11-02/role/04-studio-projektowe/fix-2026-11-02-p2/`).
+
+### Tło `StanWczytywania` (M1-audytor-generalny-089, 04-studio-projektowe-503; DEC-24 a)
+Stan „Loading…” i błąd odczytu z „Try again” stoją na **tym samym tle co treść trasy po wczytaniu**; inaczej tło przeskakuje (zasada studia 8: zmiana ma znaczenie, błysk tła go nie ma). Właściwość komponentu `tlo: 'papier' | 'arkusz' | 'czarne'`, domyślnie `'papier'`.
+
+| `tlo` | Tło | Podpis („Loading…”, „Couldn’t load this.”) | Przycisk „Try again” | Kiedy |
+|---|---|---|---|---|
+| `papier` (domyślne) | `papier` motywu | `olowek` motywu | `przyciskTlo` / `przyciskObrys` / `przyciskTekst` motywu | ekran w stosie na papierze |
+| `arkusz` | `arkusz` motywu (jasny `#FCFCFA` = papier, ciemny `#2A2C31` ≠ papier `#1B1C1F`) | `olowek` motywu | jak wyżej | trasa pokazywana jako arkusz (`presentation: 'modal'`, treść w `Arkusz`) |
+| `czarne` | `systemCzarny.tlo` `#000000` w obu motywach | `systemCzarny.olowek` | `systemCzarny.przyciskTlo` / `przyciskObrys` / `przyciskTekst` | pełnoekranowa przeglądarka na czarnym tle (jak podgląd zdjęcia, który używa `systemCzarny`) |
+
+Kolory motywu idą za „Zwiększ kontrast” jak w reszcie aplikacji (`jasnyKontrast`, `ciemnyKontrast`); `systemCzarny` nie ma wariantu i go nie potrzebuje (najniższa para 6,56:1). Kontrast wszystkich par: podpis 5,96–9,23:1 (próg 4,5), obrys przycisku 4,36–14,37:1 (próg 3). Kontrprzykład: podpis motywu jasnego na czerni 3,43:1, dlatego `czarne` nie bierze kolorów motywu.
+
+**Trasy → `tlo` (stan na e05553c: 16 tras z `StanWczytywania`).**
+
+| `tlo` | Trasy |
+|---|---|
+| `arkusz` | `menu`, `formularz/[rodzaj]`, `ukonczenie`, `zglos`, `konflikt`, `sesja-korekta`, `wloczka`, `drut` |
+| `czarne` | `zdjecie` |
+| `papier` | `projekty`, `projekt/[id]`, `wzor`, `sesje`, `dni`, `probka`, `kosz` |
+
+Reguła dla nowej trasy: wartość = tło treści trasy po wczytaniu. Widoczna zmiana: arkusze tylko w motywie ciemnym (w jasnym `arkusz` = `papier`), zdjęcie tylko w jasnym (w ciemnym błysk `#1B1C1F` → `#000000` jest słabszy, ale też znika). **Dla 08 (testy przed kodem):** test komponentu dla trzech wartości (tło i kolor podpisu); test tras `menu` → `arkusz`, `zdjecie` → `czarne`; trwała kontrola: każda trasa z `presentation: 'modal'`, która renderuje `StanWczytywania`, podaje `tlo="arkusz"`.
+
+### Teksty rysunku i stopera, pytanie przy wyjściu ze wzoru (M1-audytor-generalny-102: 04-studio-projektowe-512, 514; DEC-28 a)
+Aneks P2 poz. 5 (wariant C: tytuł nazywa, co się nie udało) dostaje dwa nowe miejsca; tekst formularza (`formularz.blad_zapisu` + „Nothing was changed … try again”) przestaje opisywać rysunek i stoper, bo mówi nieprawdę o skutku. Rzeczownik jak w `wzor.usun_opis`: „highlights and drawings” (ta sama rzecz ma tę samą nazwę; „marks” należy do kresek sesji na liczniku, „Mark row” do znacznika). Klucze, kontekst tłumacza i grupy: `fix13-2026-11-02/klucze.json`.
+
+| Sytuacja (kod dziś) | Alert | Przyciski |
+|---|---|---|
+| Zapis po rysowaniu i odzysk przy otwarciu wzoru — kreski są w pliku oczekującym na urządzeniu i wracają przy następnym otwarciu (`app/wzor.tsx` `poZapisieRysunku`) | `wzor.blad_rysunku` „Couldn’t save highlights and drawings” / `wzor.blad_rysunku_opis` „Your device may be out of space. Your highlights and drawings are waiting on this device. Oczko will save them the next time you open this pattern with free space.” | `wspolne.ok`; haptyka `bladZapisu` jak dotąd |
+| Błąd zapisu w widoku natywnym (`onBladZapisu`) — kreski tylko w pamięci aplikacji (`KolejkaRysunkow`), przepadają po zamknięciu Oczka | `wzor.blad_rysunku` / `wzor.rysunek_niezapisany_opis` „Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.” | `wspolne.ok`; haptyka jak dotąd |
+| „Back” z niezapisanymi kreskami natywnymi (`wyjscieZWzoru`) | pytanie: `wzor.wyjdz_tytul` „Leave this pattern?” / `wzor.rysunek_niezapisany_opis` (ta sama treść co wyżej — ten sam fakt) | `wzor.wyjdz_zostan` „Stay” (`cancel`), `wzor.wyjdz_potwierdz` „Leave unsaved” (`destructive`, etykieta nazywa skutek) |
+| Start, Pause, Resume, Stop stopera nie zapisały się (`StoperLicznika` `po`) — stoper zostaje w poprzednim stanie | `stoper.blad_zapisu` „Couldn’t update the timer” / wspólne `wspolne.blad_zapisu_opis` (tu prawdziwe: nic się nie zmieniło, wystarczy stuknąć ponownie) | `wspolne.ok` |
+
+Dlaczego dwie treści rysunku: plik oczekujący przetrwa zamknięcie aplikacji, kolejka natywna nie (zasada wspólna 10; głos: błąd mówi, co się stało i co zrobić, bez straszenia i bez obietnicy, której aplikacja nie spełni). Pytanie przy wyjściu nie dzieli kluczy z „Discard changes?” (004): wyjście nie odrzuca kresek od razu (wracają przy ponownym otwarciu, póki Oczko działa), a „Back to editing” źle nazywa ekran przeglądania wzoru; wspólna jest za to treść z alertem natywnym. **Dla 08 (testy przed kodem; wyrocznia `fix13-2026-11-02/klucze.json`):** błąd zapisu rysunku i błąd odzysku → `wzor.blad_rysunku` + `wzor.blad_rysunku_opis`; `onBladZapisu` → `wzor.blad_rysunku` + `wzor.rysunek_niezapisany_opis`; „Back” → pytanie z kluczami `wzor.wyjdz_*`; stoper → `stoper.blad_zapisu`; żadne z tych miejsc nie używa `formularz.blad_zapisu`. Makieta alertów przed/po: katalog wyjścia sesji, `zrzuty/dec28-alerty.png`.
+
+### Ostrzeżenie o miejscu przy otwarciu wzoru (M1-audytor-generalny-110, 04-studio-projektowe-515; DEC-28 a)
+Macierz stanów, poz. 8 „Ostrzeżenie”: tekst o progu, nie o błędzie (dziś tytułem jest całe zdanie `wspolne.blad_zapisu_opis` „…Nothing was changed… try again”, choć niczego jeszcze nie próbowano). Alert: `wzor.miejsce_tytul` „Your device is almost full” / `wzor.miejsce_opis` „Highlights and drawings you add may not be saved. Free some space before you draw.” / `wspolne.ok`; bez haptyki błędu (to nie błąd). Bez liczby MB w tekście (próg `RYSUNEK_MIEJSCE_MIN_MB` = 50 to [OCENA 08], do korekty 05).
+
+**Najwyżej jeden alert przy otwarciu wzoru.** Pierwszeństwo ma alert błędu rysunku (mówi o kreskach, które już są) przed ostrzeżeniem (mówi o przyszłych): gdy błąd rysunku (odzysk JS albo `onBladZapisu`) przyszedł przed ostrzeżeniem, ostrzeżenia nie ma (dziś tylko po błędzie odzysku JS); gdy ostrzeżenie już stoi, kolejny błąd rysunku z tego otwarcia nie daje drugiego alertu, a stan niezapisanych kresek pokaże pytanie przy „Back” (`wzor.wyjdz_tytul`), które mówi to samo. **Dla 08:** test trasy wzoru — wolne miejsce poniżej progu → ostrzeżenie z kluczami `wzor.miejsce_*` (tytuł ≠ `wspolne.blad_zapisu_opis`); wolne poniżej progu i `onBladZapisu` przy otwarciu → `Alert.alert` wywołany raz.
+
+### „Discard changes?” w formularzach (M1-audytor-generalny-020, 04-studio-projektowe-004; DEC-28 a, wzór Treningu P-315)
+Wzorzec Treningu (`components/DraftHeader.tsx` `confirmDiscard`, `lib/confirm.ts` `backToEditButton`, `lib/i18n.en.ts`; odczyt 2026-11-02, HEAD 2e4b0f8): tytuł „Odrzucić zmiany?” / „Discard changes?”, opis skutku zależny od obiektu („The new template won’t be saved.”, „The template stays unchanged.”), przyciski „Back to editing” (`cancel`) i „Discard changes” (`destructive`); bez zmian — zamknięcie od razu. Oczko bierze ten wzorzec bez zmian, z dwoma opisami zamiast jednego na obiekt (jedna para tekstów obejmuje kilkanaście arkuszy; mniej przekładów, ten sam skutek):
+
+| Klucz | en | Kiedy |
+|---|---|---|
+| `wspolne.odrzuc_tytul` | Discard changes? | tytuł |
+| `wspolne.odrzuc_opis_zmiany` | Everything stays as it was. | arkusz istniejącej rzeczy: `notatka`, `nazwa`, `cel`, `wpisz`, `powtorzenie`, `termin`, `narzedzie`, `znaczenie`, `wloczki` (wybór włóczki projektu), `przypomnienie-edycja`, trasy `sesja-korekta`, `wloczka` i `drut` przy edycji |
+| `wspolne.odrzuc_opis_nowy` | Nothing will be added. | arkusz nowej rzeczy: `nowy-projekt`, `czesc`, `licznik`, `przypomnienie`, trasy `wloczka` i `drut` przy dodawaniu |
+| `wspolne.wroc_do_edycji` | Back to editing | przycisk `cancel` (nie „Cancel”: „Cancel” anulujące „Cancel” myli — Trening) |
+| `wspolne.odrzuc_zmiany` | Discard changes | przycisk `destructive` |
+
+Zachowanie (opcja a ze znaleziska, rekomendacja; 08): pytanie tylko, gdy wartości różnią się od tych z otwarcia arkusza; wyzwalacze — Cancel w nagłówku i systemowe przesunięcie arkusza w dół (gest zostaje włączony, HIG Sheets; przy zmianach przechwycony, np. `usePreventRemove`); „Discard changes” zamyka bez zapisu, „Back to editing” zostawia arkusz z wpisanymi wartościami i klawiaturą. Arkusze decyzji bez pól (`co-dalej`, ukończenie, menu) — nie dotyczy. Trening wyłącza gest (`gestureEnabled: false`); Oczko go zostawia, bo arkusze formularzy są tu `presentation: 'modal'`, a przesunięcie w dół to standardowe zamknięcie arkusza iOS (SP-15) — jedyna różnica wobec Treningu, nazwana. **Dla 08 (testy przed kodem):** notatka i przypomnienie ze zmianą — Cancel i `beforeRemove` pokazują pytanie z tymi kluczami; bez zmian — zamknięcie bez pytania; „Back to editing” zostawia wartości. Makieta: katalog wyjścia sesji, `zrzuty/dec28-alerty.png` (wiersze 004).
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.

@@ -161,7 +161,12 @@
     "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again.",
     "ladowanie": "Loading…",
     "blad_wczytania": "Couldn’t load this.",
-    "ponow": "Try again"
+    "ponow": "Try again",
+    "odrzuc_tytul": "Discard changes?",
+    "odrzuc_opis_zmiany": "Everything stays as it was.",
+    "odrzuc_opis_nowy": "Nothing will be added.",
+    "wroc_do_edycji": "Back to editing",
+    "odrzuc_zmiany": "Discard changes"
   },
   "projekty": {
     "szukaj": "Search",
@@ -609,7 +614,8 @@
     "inny_potwierdz": "Stop and start here",
     "sprawdz_one": "The timer ran for {{count}} hour, so Oczko stopped it.",
     "sprawdz_other": "The timer ran for {{count}} hours, so Oczko stopped it.",
-    "sprawdz_link": "Check the end time"
+    "sprawdz_link": "Check the end time",
+    "blad_zapisu": "Couldn’t update the timer"
   },
   "sesje": {
     "tytul": "Sessions",
@@ -842,7 +848,15 @@
     "przed_schematem": "Before the pattern",
     "znacznik_napis": "Row {{n}}",
     "blad_zapis": "Oczko can’t save this pattern",
-    "blad_zapis_opis": "Your device may be out of space. Nothing was added. Free some space and try again."
+    "blad_zapis_opis": "Your device may be out of space. Nothing was added. Free some space and try again.",
+    "blad_rysunku": "Couldn’t save highlights and drawings",
+    "blad_rysunku_opis": "Your device may be out of space. Your highlights and drawings are waiting on this device. Oczko will save them the next time you open this pattern with free space.",
+    "rysunek_niezapisany_opis": "Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.",
+    "wyjdz_tytul": "Leave this pattern?",
+    "wyjdz_zostan": "Stay",
+    "wyjdz_potwierdz": "Leave unsaved",
+    "miejsce_tytul": "Your device is almost full",
+    "miejsce_opis": "Highlights and drawings you add may not be saved. Free some space before you draw."
   },
   "udostepnij": {
     "tytul": "Add to Oczko",

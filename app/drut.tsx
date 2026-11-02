@@ -7,8 +7,10 @@ import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { useOdrzucZmiany } from '../src/kompozycja/odrzuc-zmiany';
 import { bazowa, podgladRozmiaru, stanDrutow } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
+import { MM_NARZEDZIA_MIEJSCA } from '../src/konfiguracja';
 import { narzedzia, usunNarzedzie, zapiszNarzedzie } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranDrutu(): React.ReactElement {
@@ -27,18 +29,21 @@ export default function EkranDrutu(): React.ReactElement {
     if (n) ustaw(n); else router.back(); // narzędzia już nie ma (np. usunięte gdzie indziej)
   }, [kontener, id, router]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  // M1-020: „Cancel” i przesunięcie arkusza w dół pytają „Discard changes?”, gdy formularz zgłosił zmianę; po zapisie i usunięciu wyjście bez pytania.
+  const odrzuc = useOdrzucZmiany(j.t, id ? 'zmiany' : 'nowy', () => router.back());
+  if (poczatek === undefined) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzDrutu t={j.t} poczatek={poczatek} podglad={(x, r) => podgladRozmiaru(x, r, j)} parsuj={(x) => bazowa(x, 'm', j.jezyk())}
-      formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })} naAnuluj={() => router.back()}
+      formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA })} naAnuluj={odrzuc.anuluj} naZmiane={odrzuc.naZmiane}
       naUsun={id && poczatek ? () => {
         const w = stanDrutow([{ id, ...poczatek }], j).grupy[0]?.wiersze[0];
         potwierdzUsuniecie(kontener, { nazwa: w?.rozmiar || w?.opis || j.t('druty.inne'), przycisk: j.t('usun.narzedzie'), alert: Alert.alert,
-          usun: () => usunNarzedzie(kontener.z, { narzedzieId: id }), potem: () => router.back(), naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }); // M1-006
+          usun: () => usunNarzedzie(kontener.z, { narzedzieId: id }), potem: () => { odrzuc.poZapisie(); router.back(); }, naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }); // M1-006
       } : undefined}
       naZapisz={async (d) => {
         const w = await zapiszNarzedzie(kontener.z, { ...d, id });
         if (!w.ok) return { ok: false, powod: w.powod === 'bledne_dane' ? 'bledne_dane' : 'zapis' };
+        odrzuc.poZapisie();
         router.back();
         return { ok: true, wartosc: undefined };
       }} />

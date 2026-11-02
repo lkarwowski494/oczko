@@ -323,3 +323,96 @@ describe('konto (dane/icloud-konto): zmiana konta, polacz, nie_synchronizuj', ()
     expect(MIN).toBeGreaterThan(0);
   });
 });
+
+// ADR-0005 „Nagrobki” (uzupełnienie 2026-10-25): rekord dziecka po nagrobku rodzica nie wskrzesza projektu w „W toku”, tylko wraca
+// jako projekt w „Ostatnio usuniętych”; niewysłane +1 z drugiego urządzenia nie ginie po cichu (zasada 10; M1-audytor-generalny-005).
+const TABELE_LICZNOSCI = ['projekt', 'czesc', 'licznik', 'zdarzenie', 'zmiana_icloud', 'poczekalnia', 'blad'] as const;
+async function licznosci(b: PortBazy): Promise<Record<string, number>> {
+  const out: Record<string, number> = {};
+  for (const t of TABELE_LICZNOSCI) out[t] = await n(b, `SELECT count(*) AS n FROM ${t}`);
+  out.projekt_w_koszu = await n(b, 'SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL');
+  return out;
+}
+
+describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projektu na A', () => {
+  test('nagrobek po +1 offline na B: projekt na B w koszu z niewysłanym zdarzeniem; po wysłaniu zdarzenie na serwerze, A ma projekt w koszu, nie w toku', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    await dodajRzad(a.s.z, { licznikId: l });
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    const przed = await licznosci(b.s.baza);
+    expect(przed).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 1, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 0 });
+    const [e1] = await b.s.baza.all<{ id: string }>('SELECT id FROM zdarzenie');
+    b.u.bladWysylki = { kod: 'siec' }; // B bez sieci
+    expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true);
+    const [e2] = await b.s.baza.all<{ id: string }>('SELECT id FROM zdarzenie WHERE id <> ?', [e1.id]);
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie na A (jak sprzatnijKosz)
+    await a.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] }); // B dostaje nagrobki
+    const poNagrobku = await licznosci(b.s.baza);
+    // Projekt z całą historią licznika zostaje na B w koszu (bez E1 `scal` czekałby na brakującego rodzica E2); nic nie trafia do poczekalni.
+    expect({ przed, poNagrobku }).toEqual({ przed, poNagrobku: { ...przed, zdarzenie: 2, projekt_w_koszu: 1, zmiana_icloud: poNagrobku.zmiana_icloud } });
+    expect(await b.s.baza.all('SELECT id FROM zdarzenie WHERE id = ?', [e2.id])).toHaveLength(1);
+    expect(await b.s.baza.all("SELECT encja FROM zmiana_icloud WHERE usuniete = 0 AND encja IN ('projekt', 'czesc', 'licznik', 'zdarzenie') ORDER BY encja"))
+      .toEqual(['czesc', 'licznik', 'projekt', 'zdarzenie', 'zdarzenie'].map((encja) => ({ encja }))); // odtworzenie trafia do skrzynki (serwer je usunął)
+    expect(await licznik(b.s.baza, l)).toEqual([{ wartosc: 2, konflikt: 0 }]);
+    // Powtórne dostarczenie tych samych nagrobków nic nie zmienia.
+    await b.u.dostarcz({ rekordy: [] });
+    expect(await licznosci(b.s.baza)).toEqual(poNagrobku);
+    // Po powrocie sieci: zdarzenie na serwerze, skrzynka B pusta; A dostaje projekt w koszu z historią, nie w „W toku”.
+    b.u.bladWysylki = null;
+    await b.st.wyslijZaleglosci();
+    expect(serwer.rekordy.has(`zdarzenie:${e2.id}`)).toBe(true);
+    expect(serwer.rekordy.get(`projekt:${p.id}`)?.pola.usunieto_ms).toEqual(expect.any(Number));
+    expect(await skrzynka(b.s.baza)).toBe(0);
+    await a.u.dostarcz();
+    const poOdbiorzeA = await licznosci(a.s.baza);
+    expect(poOdbiorzeA).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 2, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1 });
+    expect(await licznik(a.s.baza, l)).toEqual([{ wartosc: 2, konflikt: 0 }]);
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
+  });
+  test('niewysłane dane w innym projekcie nie blokują nagrobków usuniętego projektu (kaskada jak dotąd)', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l1 = await szybki(a.s.z);
+    const l2 = await szybki(a.s.z);
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    expect(await n(b.s.baza, 'SELECT count(*) AS n FROM projekt')).toBe(2);
+    b.u.bladWysylki = { kod: 'siec' };
+    await dodajRzad(b.s.z, { licznikId: l2 }); // niewysłane +1 w drugim projekcie
+    const [p1] = await a.s.baza.all<{ id: string }>('SELECT c.projekt_id AS id FROM czesc c JOIN licznik l ON l.czesc_id = c.id WHERE l.id = ?', [l1]);
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p1.id]);
+    await a.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] });
+    expect(await b.s.baza.all('SELECT id FROM licznik ORDER BY id')).toEqual([{ id: l2 }]);
+    expect(await n(b.s.baza, 'SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL')).toBe(0);
+    expect(await licznik(b.s.baza, l2)).toEqual([{ wartosc: 1, konflikt: 0 }]);
+  });
+
+  // Przegląd ścieżki wrażliwej M2 p2 (P1): niewysłana zmiana na samym wierszu z nagrobkiem (projekt przywrócony z kosza offline) też zatrzymuje nagrobek.
+  test('przywrócenie projektu z kosza offline na B, potem trwałe usunięcie na A → projekt z historią zostaje na B w koszu i wraca na serwer', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    for (let i = 0; i < 5; i += 1) await dodajRzad(a.s.z, { licznikId: l });
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('UPDATE projekt SET usunieto_ms = 1000, zmieniono_ms = zmieniono_ms + 1 WHERE id = ?', [p.id]); // do kosza na A
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, zdarzenie: 5, zmiana_icloud: 0 });
+    b.u.bladWysylki = { kod: 'siec' }; // B bez sieci
+    await b.s.baza.run('UPDATE projekt SET usunieto_ms = NULL, zmieniono_ms = zmieniono_ms + 10 WHERE id = ?', [p.id]); // przywrócenie z kosza na B
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 0, zmiana_icloud: 1 });
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie (sprzątanie kosza) na A
+    await a.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] });
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, czesc: 1, licznik: 1, zdarzenie: 5, blad: 0 });
+    b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
+    expect(await n(b.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
+    expect(serwer.rekordy.has(`projekt:${p.id}`)).toBe(true);
+  });
+});
