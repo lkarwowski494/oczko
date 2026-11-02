@@ -62,3 +62,9 @@ tags:
 - pressKey: Enter
 - assertNotVisible: { id: "zapas-wynik" }
 - assertVisible: { id: "zapas-brak-wynikow" }
+# --- powrót przyciskiem (M1-016): „‹ Back” (nav-wstecz) Yarn → Tools → Projects, nie tylko gest od krawędzi (HIG Gestures; Switch Control) ---
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "narzedzia-wloczki" }
+- takeScreenshot: 16-wstecz-narzedzia
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "projekty-lista" }

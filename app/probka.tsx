@@ -2,7 +2,7 @@
 // i domyślna podstawa próbki z układu miar urządzenia (R-131, P-075 (4a); wiersza „Units” w Ustawieniach jeszcze nie ma — zgłoszenie
 // partii 5). Z projektu (U-10): próbka projektu na start i linia `probka.z_projektu`; zmiana próbki zapisuje się w projekcie, szerokość nie.
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Probka } from '../src/ekrany/Narzedzia';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
@@ -18,6 +18,7 @@ type Start = { oczka: string; na: WejscieProbki['na']; zProjektu?: string; narze
 export default function EkranProbki(): React.ReactElement {
   const { kontener, preferencje } = useAplikacja();
   const { projekt } = useLocalSearchParams<{ projekt?: string }>();
+  const router = useRouter();
   const j = kontener.j;
   const cm = !imperialny(preferencje.stan().ukladMiar);
   const [start, ustawStart] = useState<Start | null>(projekt ? null : { oczka: '', na: cm ? '10cm' : '4in' });
@@ -45,7 +46,7 @@ export default function EkranProbki(): React.ReactElement {
   return (
     <Bezpieczny>
       <Probka t={j.t} jednostka={cm ? 'cm' : 'in'} poczatek={{ oczka: start.oczka, na: start.na }} zProjektu={start.zProjektu}
-        licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie }, j)} naZmianeProbki={zapisz} />
+        licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie }, j)} naZmianeProbki={zapisz} naWstecz={() => router.back()} />
     </Bezpieczny>
   );
 }
