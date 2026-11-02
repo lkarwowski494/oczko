@@ -21,9 +21,9 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "nav-ustawienia" }
 - assertVisible: { id: "ustawienia" }
-- scrollUntilVisible: { element: { text: "Report a problem" } }
-- assertVisible: "Report a problem"
-- tapOn: "Report a problem"
+- scrollUntilVisible: { element: { id: "ustawienia-zglos" } }
+- assertVisible: { id: "ustawienia-zglos" }
+- tapOn: { id: "ustawienia-zglos" }
 # --- podgląd: cała treść przed wysyłką (S1) ---
 - extendedWaitUntil: { visible: { id: "arkusz-zamknij" }, timeout: 20000 }
 - assertVisible: "This is everything the report contains.*"
@@ -43,4 +43,4 @@ tags:
 - assertVisible: { id: "arkusz-zamknij" }
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "ustawienia" }
-- assertVisible: "Report a problem"
+- assertVisible: { id: "ustawienia-zglos" }

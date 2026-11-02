@@ -62,6 +62,9 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
 | `licznik-wartosc` | licznik | duża liczba rzędów skończonych (sam numer, z separatorem tysięcy regionu) | „47” | |
 | `licznik-teraz-rzad` | licznik | podpis pod tytułem | „Now working row 48” | |
+| `licznik-powtorzenie` | licznik | linia powtórzenia (nazwa · „repeat N · row R of D”; `Licznik.tsx`; 033-T1) | „repeat 3 · row 1 of 8” (z nazwą powtórzenia z przodu, jeśli jest) | |
+| `licznik-calosc` | licznik | podpis całości części (BR-LIC-018/S1; 033-T1) | „Przód in total: 20 rows” (część nazwana; projekt roboczy: „Whole piece: 20 rows”) | |
+| `licznik-notatka` | licznik | nagłówek „Note” nad notatką projektu (033-T1) | „Note” | |
 | `licznik-projekt` | licznik | nazwa projektu nad tytułem części | nazwa użytkownika | |
 | `licznik-menu` | licznik | menu ••• | „Project options: name, goal, reminder, lock, finish” | |
 | `licznik-historia` | licznik | przycisk historii | „History” | |
@@ -81,6 +84,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `menu-wpisz-wartosc` | menu ••• | pozycja wpisania wartości (F-45) | — | |
 | `menu-przypomnienie` | menu ••• | pozycja | „Add a reminder (“every N rows”)” | |
 | `menu-powtorzenie` | menu ••• | pozycja „Set a repeat length” (F-05; tylko licznik rzędów; istnieje w `src/ekrany/MenuProjektu.tsx:36`, dopisane przez 07-jakosc-033 A) | „Set a repeat length” | |
+| `powtorzenie-dlugosc-pole` | arkusz „Set a repeat length” | pole długości powtórzenia (`Formularze.tsx`; 033-T1, wniosek 07-jakosc-033 A) | „Rows in one repeat” | liczbowa |
 | `menu-wzor` | menu ••• | wzór projektu | — | |
 | `menu-ukoncz` | menu ••• | ukończenie | „Mark project as finished” | |
 | `formularz-nazwa-projektu` | formularz nazwy | pole nazwy | etykieta „Project” | tekstowa |
@@ -147,6 +151,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-usun` | ekran projektu (menu •••) | Delete project… | „Delete project…” | |
 | `projekt-wznow` | ekran projektu (menu •••, ukończony) | Resume project | „Resume project” | |
 | `projekt-linia-terminu` | ekran projektu | linia terminu (tylko z terminem) | „Done by Oct 31 · today 3 of 10 rows” | |
+| `projekt-postep` | ekran projektu | tekst postępu w procentach (tylko część z celem; 033-T1) | „51% done” | |
 | `projekt-notatka` | ekran projektu | notatka (otwiera arkusz) | tekst notatki albo „Add a note” | |
 | `projekt-narzedzie` | ekran projektu | druty albo szydełko (otwiera arkusz) | „4 mm (US 6)” | |
 | `projekt-termin` | ekran projektu | termin „Done by” (otwiera arkusz) | krótka data albo „None” | |
@@ -172,6 +177,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
+| `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
+| `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |
 | `ustawienia-usun-wszystko` | Ustawienia | usunięcie wszystkich danych (BR-DAN-009) | — | |
 | `potwierdz-usun-wszystko` | arkusz „Delete all data” (trasa `/usun-wszystko`, P-268) | potwierdzenie usunięcia — w pasku przycisków arkusza, zawsze widoczny | — | |
@@ -191,6 +198,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `eksport-wynik` | eksport | wynik eksportu | — | |
 | `eksport-licznosci` | eksport | liczności archiwum | „1 project, 1 counter, 2 changes…” (propozycja) | |
 | `import-gotowy` | import | stan „gotowy” maszyny importu | — | |
+| `import-zastap` | import | przycisk „Replace what’s here” w oknie wyboru scal / zastąp (033-T1) | „Replace what’s here” | |
 | `import-licznosci` | import | liczności pliku przed decyzją | jak `eksport-licznosci` | |
 | `import-scal` | import | wybór „scal” (P-091 6a) | — | |
 | `import-wynik` | import | wynik (`… 0 new …` przy powtórnym imporcie) | — | |
@@ -253,6 +261,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ukonczenie-gotowe` | karta ukończenia | „Done” — zamknięcie karty = chwila systemowej prośby o ocenę (BR-DAN-012/S1; scen. 65) | „Done” | |
 | `dane-zastapiono` | import po „Replace” (Ustawienia) | kontener wyniku „Data replaced” (BR-DAN-006/S3; scen. 66) | „Data replaced” | |
 | `wzor-kierunek` | wzór | karta „Which way do rows go on this page?” przy pierwszym „Mark row” (P-126 3a; scen. 62) | „Which way do rows go on this page?” | |
+| `wzor-zaznacz` | wzór | ikona „Mark row” w pasku wzoru (033-T1; pierwszy raz pyta o kierunek: `wzor-kierunek`) | „Mark row” | |
 | `wzor-znacznik-pasek` | wzór | pasek ustawiania znacznika rzędu (kierunek, krokowiec, „Done”; BR-WZR-003, F-26; scen. 62) | — | |
 | `wzor-znacznik-rzad` | wzór, pasek znacznika | numer rzędu schematu, na którym stoi znacznik (RD-21; scen. 62) | „12” | |
 | `wzor-znacznik-gotowe` | wzór, pasek znacznika | „Done” — zamknięcie paska | „Done” | |

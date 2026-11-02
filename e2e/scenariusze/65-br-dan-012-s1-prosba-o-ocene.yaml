@@ -42,12 +42,12 @@ tags:
 # --- S3: „Rate Oczko” w Ustawieniach ---
 - tapOn: { id: "nav-ustawienia" }
 - assertVisible: { id: "ustawienia" }
-- scrollUntilVisible: { element: { text: "Rate Oczko" } }
-- assertVisible: "Rate Oczko"
+- scrollUntilVisible: { element: { id: "ustawienia-ocen" } }
+- assertVisible: { id: "ustawienia-ocen" }
 - takeScreenshot: 65-ustawienia
-- tapOn: "Rate Oczko"
+- tapOn: { id: "ustawienia-ocen" }
 # adres otwiera system (poza aplikacją; symulator bez App Store): czekanie opcjonalne, potem powrót i dowód, że aplikacja żyje na tym samym ekranie
 - extendedWaitUntil: { notVisible: { id: "ustawienia" }, timeout: 5000, optional: true }
 - launchApp: { stopApp: false }
 - assertVisible: { id: "ustawienia" }
-- assertVisible: "Rate Oczko"
+- assertVisible: { id: "ustawienia-ocen" }

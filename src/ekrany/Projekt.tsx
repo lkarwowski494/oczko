@@ -113,7 +113,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.nazwa}</Text>
       {s.postep.rodzaj === 'procent' ? (
         <View>
-          <Text style={st.tekst}>{t('projekt.postep', { procent: s.postep.wartosc })}</Text>
+          <Text style={st.tekst} testID="projekt-postep">{t('projekt.postep', { procent: s.postep.wartosc })}</Text>
           <Text style={st.podpis}>{t('projekt.postep_opis')}</Text>
         </View>
       ) : <Text style={st.podpis}>{t('projekt.postep_bez_celow')}</Text>}

@@ -138,3 +138,11 @@ test('VoiceOver „Move to next page” robi to samo co przycisk „Place on pag
   act(() => mockWidok.onNastepnaStrona?.({ nativeEvent: {} }));
   await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 2, y: 0, rzadBazowy: 11 }));
 });
+
+test('033-T1 (lista dla 08 #2, scenariusz 62): ikona „Mark row” ma testID `wzor-zaznacz` i etykietę „Mark row”; stuknięcie przy pierwszym znaczniku pyta o kierunek', async () => {
+  await start(45);
+  const ikona = await screen.findByTestId('wzor-zaznacz');
+  expect(ikona.props.accessibilityLabel).toBe('Mark row');
+  fireEvent.press(ikona);
+  expect(await screen.findByText('↑ Up, like a chart')).toBeTruthy();
+});

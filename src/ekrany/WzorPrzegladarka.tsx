@@ -125,7 +125,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       </View>
       <View style={st.grupa}>
         {!s.word && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
             <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>▭</Text>
           </Pressable>
         )}

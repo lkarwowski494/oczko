@@ -61,7 +61,7 @@ export function FormularzPowtorzenia({ stan, t, naZapisz, naAnuluj }: PropsFormu
   };
   return (
     <Arkusz tytul={t('formularz.powt_tytul')} formularz={{ t, naZapisz: zapisz, naAnuluj }}>
-      <Pole etykieta={t('formularz.powt_pole')} wartosc={tekst} naZmiane={ustaw} liczbowe />
+      <Pole etykieta={t('formularz.powt_pole')} wartosc={tekst} naZmiane={ustaw} liczbowe testID="powtorzenie-dlugosc-pole" />
       {blad && <Komunikat tekst={t('formularz.powt_blad')} />}
     </Arkusz>
   );

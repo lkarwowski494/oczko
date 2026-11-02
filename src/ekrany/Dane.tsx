@@ -49,7 +49,7 @@ export function Import({ stan, t, naZastap, naScal, naAnuluj, wbudowany, wynik }
     <Ramka wbudowany={wbudowany} tytul={t('dane.import_tytul')} testID="import-gotowy" przyciski={
       <>
         <Przycisk tekst={t('dane.scal')} onPress={naScal} rodzaj="glowny" testID="import-scal" />
-        <Przycisk tekst={t('dane.zastap')} onPress={naZastap} />
+        <Przycisk tekst={t('dane.zastap')} onPress={naZastap} testID="import-zastap" />
         <Przycisk tekst={t('wspolne.anuluj')} onPress={naAnuluj} rodzaj="tekstowy" testID="arkusz-zamknij" />
       </>
     }>

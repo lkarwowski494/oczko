@@ -2,7 +2,7 @@
 # obecnych danych i POKAZUJE, gdzie ona jest („Oczko saved your previous data first as …. Find it in the Files app, in Oczko › Backup.”), a dopiero potem zastępuje dane zawartością pliku.
 # Dane: projekt „Harbor” z 2 rzędami → eksport do katalogu testowego → +1 (licznik 3) → import ostatniego eksportu z „Replace” → licznik wraca do 2 (zawartość pliku), jeden projekt „Harbor”
 # (zastąpienie, nie scalenie — brak duplikatu). Okno wyboru pliku i arkusz udostępniania są poza zasięgiem symulatora (panel „Test files”, jak scenariusz 08).
-# Przycisk „Replace what’s here” nie ma testID (Dane.tsx:52) — selektor po etykiecie [DO USTALENIA: apostrof typograficzny, stąd „.” w wyrażeniu]. Scenariusz 08 (scal, idempotencja) bez zmian.
+# Przycisk „Replace what’s here” ma testID `import-zastap` (Dane.tsx, 033-T1; wcześniej selektor po etykiecie z „.” za apostrof typograficzny). Scenariusz 08 (scal, idempotencja) bez zmian.
 # Poza scenariuszem: odtworzenie danych Z KOPII PRZED (import kopii „zastąpiono”), błąd wczytania po „Replace” (wycofanie) — Jest `archiwum.test.ts`, `kopie.test.ts`. Informacyjnie do pierwszego zielonego (P-091).
 appId: com.apps4brew.knitting
 name: "BR-DAN-006/S3 · Import z „Replace”: kopia przed zastąpieniem pokazana, dane z pliku (2 rzędy), bez duplikatu projektu"
@@ -54,10 +54,10 @@ tags:
       - takeScreenshot: opoznienie-import-gotowy-zastap
       - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
 - assertVisible: { id: "import-gotowy" }
-- scrollUntilVisible: { element: { text: "Replace what.s here" }, direction: DOWN, timeout: 30000 }
-- assertVisible: "Replace what.s here"
+- scrollUntilVisible: { element: { id: "import-zastap" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "import-zastap" }
 - takeScreenshot: 66-wybor-scal-zastap
-- tapOn: "Replace what.s here"
+- tapOn: { id: "import-zastap" }
 # --- wynik: kopia przed zastąpieniem wskazana użytkownikowi ---
 - extendedWaitUntil: { visible: { id: "dane-zastapiono" }, timeout: 60000 }
 - scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }

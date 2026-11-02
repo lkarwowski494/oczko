@@ -27,6 +27,6 @@ tags:
 - takeScreenshot: 56-w-trakcie-13
 # S2: powtórzenie 8 rzędów przy 12 skończonych w trybie „rząd w trakcie” (RD-12-W7: r = 13)
 - runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "8" } }
-- extendedWaitUntil: { visible: { text: ".*repeat 2 · row 5 of 8.*" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 2 · row 5 of 8.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "13" }
 - takeScreenshot: 56-w-trakcie-powtorzenie

@@ -2,8 +2,8 @@
 # Licznik 11 (tryb „skończone rzędy”) → „Mark row” proponuje rząd 12 (S2, RD-21-W1) → po +1 licznik 12, a znacznik stoi na rzędzie 13 (S1, RD-21-W4)
 # → po restarcie znacznik nadal na 13 (S6 „Powrót do wzoru”; start na ekranie wzoru: BR-PRJ-011/S1, jak scenariusz 26).
 # Wynik widoczny dla użytkownika to rząd w pasku ustawiania znacznika (`wzor-znacznik-rzad`, krokowiec); sam pas rysuje widok natywny (`oczko-wzor`)
-# i jego położenia Maestro nie czyta — przesunięcie pasa na zrzucie (62-znacznik-13) i na urządzeniu (lista telefonu). Pasek otwiera „Mark row” (bez testID:
-# etykieta VoiceOver „Mark row”, WzorPrzegladarka.tsx:127) — druga „Mark row” z istniejącym znacznikiem zachowuje jego rząd (`rzadPoPrzeniesieniu`, znacznik-wzoru.ts:59).
+# i jego położenia Maestro nie czyta — przesunięcie pasa na zrzucie (62-znacznik-13) i na urządzeniu (lista telefonu). Pasek otwiera „Mark row” (`wzor-zaznacz`, 033-T1;
+# wcześniej selektor po etykiecie VoiceOver „Mark row”) — druga „Mark row” z istniejącym znacznikiem zachowuje jego rząd (`rzadPoPrzeniesieniu`, znacznik-wzoru.ts:59).
 # Poza scenariuszem: S3 (schemat od innego rzędu), S4 (prucie przed schemat), S5 (notatka na znaczniku) — Jest `tests/domena/wzor/rd21.test.ts`, `wzor-trasa-znacznik`;
 # koniec strony („Place on page 2”) i przytrzymanie w rzędzie (S3 BR-WZR-003 minimum) — gest na PDF, nie sprawdzany tu. Informacyjnie do pierwszego zielonego (P-091).
 appId: com.apps4brew.knitting
@@ -37,7 +37,7 @@ tags:
 - runFlow: subflows/otworz-wzor-pdf.yaml
 - assertVisible: { id: "licznik-wartosc", text: "11" }
 # --- „Mark row”: pierwszy znacznik pyta o kierunek rzędów (P-126 3a), potem proponuje rząd w robocie 12 ---
-- tapOn: "Mark row"
+- tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-kierunek" }
 - tapOn: "Down, like written steps"
 - assertVisible: { id: "wzor-znacznik-rzad", text: "12" }
@@ -48,7 +48,7 @@ tags:
 # --- użytkownik kończy rząd: licznik 12, znacznik przesuwa się na rząd 13 ---
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "12" }
-- tapOn: "Mark row"
+- tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-znacznik-rzad", text: "13" }
 - takeScreenshot: 62-znacznik-13
 - tapOn: { id: "wzor-znacznik-gotowe" }
@@ -57,6 +57,6 @@ tags:
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-12T20:30:00" } }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "licznik-wartosc", text: "12" }
-- tapOn: "Mark row"
+- tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-znacznik-rzad", text: "13" }
 - takeScreenshot: 62-po-restarcie

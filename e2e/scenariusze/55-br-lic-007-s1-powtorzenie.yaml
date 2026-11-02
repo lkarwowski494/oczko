@@ -23,7 +23,7 @@ tags:
 - retry:
     maxRetries: 1
     commands:
-      - tapOn: "Rows in one repeat.*"
+      - tapOn: { id: "powtorzenie-dlugosc-pole" }
       - waitForAnimationToEnd
       - eraseText: 6
       - inputText: "0"
@@ -33,14 +33,14 @@ tags:
 - takeScreenshot: 55-dlugosc-zero
 - tapOn: { id: "arkusz-zamknij" }
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "17" }, timeout: 20000 }
-- assertNotVisible: ".*repeat [0-9]+ · row.*"
+- assertNotVisible: { id: "licznik-powtorzenie" }
 # S1 (RD-12-W1): 17 przy długości 8
 - runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "8" } }
-- extendedWaitUntil: { visible: { text: ".*repeat 3 · row 1 of 8.*" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 3 · row 1 of 8.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "17" }
 - takeScreenshot: 55-powtorzenie-3-rzad-1
 # BR-LIC-008/S1 (RD-12): zmiana długości na 10, wartość zostaje 17
 - runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "10" } }
-- extendedWaitUntil: { visible: { text: ".*repeat 2 · row 7 of 10.*" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 2 · row 7 of 10.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "17" }
 - takeScreenshot: 55-powtorzenie-2-rzad-7
