@@ -219,10 +219,12 @@ export function FormularzDrutu(p: {
 }): React.ReactElement {
   const { t, poczatek: w } = p;
   const [rodzaj, ustawRodzaj] = useState<RodzajNarzedzia>(w?.rodzaj ?? 'druty');
-  const [mm, ustawMm] = useState(w?.rozmiarMm == null ? '' : p.formatuj(w.rozmiarMm));
+  const mmZBazy = w?.rozmiarMm == null ? '' : p.formatuj(w.rozmiarMm);
+  const [mm, ustawMm] = useState(mmZBazy);
   const [opis, ustawOpis] = useState(w?.opis ?? '');
   const [blad, zapisz] = useZapis();
-  const r = p.parsuj(mm);
+  // M1-021: pole niezmienione → rozmiar z bazy, nie zaokrąglony z ekranu (jak długość i waga włóczki).
+  const r = w && mm === mmZBazy ? w.rozmiarMm : p.parsuj(mm);
   const podglad = p.podglad(mm, rodzaj);
   return (
     <Arkusz tytul={t(w ? 'druty.edytuj' : 'druty.dodaj')} formularz={{ t, zapisz: t(w ? 'wspolne.zapisz' : 'wspolne.dodaj'), wylaczony: r === 'zly', naAnuluj: p.naAnuluj, naZapisz: () => { if (r !== 'zly') zapisz(p.naZapisz, { rodzaj, rozmiarMm: r, opis: opis.trim() }); } }}>

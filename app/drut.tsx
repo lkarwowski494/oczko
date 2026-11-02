@@ -9,6 +9,7 @@ import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { bazowa, podgladRozmiaru, stanDrutow } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
+import { MM_NARZEDZIA_MIEJSCA } from '../src/konfiguracja';
 import { narzedzia, usunNarzedzie, zapiszNarzedzie } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranDrutu(): React.ReactElement {
@@ -30,7 +31,7 @@ export default function EkranDrutu(): React.ReactElement {
   if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzDrutu t={j.t} poczatek={poczatek} podglad={(x, r) => podgladRozmiaru(x, r, j)} parsuj={(x) => bazowa(x, 'm', j.jezyk())}
-      formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })} naAnuluj={() => router.back()}
+      formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA })} naAnuluj={() => router.back()}
       naUsun={id && poczatek ? () => {
         const w = stanDrutow([{ id, ...poczatek }], j).grupy[0]?.wiersze[0];
         potwierdzUsuniecie(kontener, { nazwa: w?.rozmiar || w?.opis || j.t('druty.inne'), przycisk: j.t('usun.narzedzie'), alert: Alert.alert,
