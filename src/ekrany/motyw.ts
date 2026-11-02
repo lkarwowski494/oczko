@@ -41,6 +41,8 @@ export const MAX_SKALA_LICZBY = ty.liczba.maxSkala;
  */
 export const MAX_SKALA_TYTULOWA = 1.8;
 export const MAX_SKALA_MINUSA = 1.4;
+/** Kapsuła stopera: „skala tekstu najwyżej ×1,6” (design-spec.md:528); ten sam wyjątek P-277. */
+export const MAX_SKALA_KAPSULY = 1.6;
 /** Pierwsza kategoria dostępności Dynamic Type (AX1) w mnożniku RN; od niej układ licznika „liczba nad nazwami” (04 fix-8 wariant (d), P-275). */
 export const PROG_KATEGORII_DOSTEPNOSCI = 1.786;
 

@@ -31,3 +31,15 @@ test('wstrzymana kapsuła ma ten sam rozmiar etykiety (17 pt)', () => {
   pokaz({ rodzaj: 'wstrzymana', czasMs: 600_000, startGodzina: '19:52' });
   expect(etykieta('⏸ 10:00').fontSize).toBe(17);
 });
+
+// H-1 (P-361, znalezisko sesji H): design-spec.md:528 — kapsuła stopera ma „skalę tekstu najwyżej ×1,6”, a kod dawał limit tytułowy ×1,8.
+const limit = (tekst: string) => screen.getByText(tekst, { includeHiddenElements: true }).props.maxFontSizeMultiplier;
+test('kapsuła trwającego stopera: skala tekstu najwyżej ×1,6 (design-spec.md:528)', () => {
+  pokaz({ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' });
+  expect(limit('⏱ 1:05')).toBe(1.6);
+});
+
+test('kapsuła wstrzymanego stopera: skala tekstu najwyżej ×1,6', () => {
+  pokaz({ rodzaj: 'wstrzymana', czasMs: 600_000, startGodzina: '19:52' });
+  expect(limit('⏸ 10:00')).toBe(1.6);
+});
