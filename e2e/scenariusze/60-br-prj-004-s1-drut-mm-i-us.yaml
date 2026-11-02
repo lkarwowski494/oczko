@@ -31,7 +31,8 @@ tags:
 - assertVisible: "Shows as: 4 mm \\(US 6\\)"
 - takeScreenshot: 60-podglad-4-mm
 - tapOn: { id: "formularz-zapisz" }
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
 - scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "projekt-narzedzie", text: ".*4 mm \\(US 6\\).*" }
 - takeScreenshot: 60-projekt-4-mm-us-6
@@ -49,7 +50,8 @@ tags:
 - assertVisible: "Shows as: 3 mm"
 - assertNotVisible: ".*\\(US.*"
 - tapOn: { id: "formularz-zapisz" }
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
 - scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "projekt-narzedzie", text: ".*3 mm.*" }
 - assertNotVisible: ".*\\(US.*"
@@ -70,7 +72,8 @@ tags:
 - assertVisible: "Shows as: 6\\.5 mm \\(US K-10.*"
 - takeScreenshot: 60-podglad-szydelko-6-5
 - tapOn: { id: "formularz-zapisz" }
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
 - scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "projekt-narzedzie", text: ".*6\\.5 mm \\(US K-10.*" }
 - takeScreenshot: 60-projekt-szydelko

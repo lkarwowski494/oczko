@@ -52,8 +52,10 @@ tags:
 - assertVisible: "Harbor, 2 rows"
 # --- tydzień (pon. 2 XI – nd. 8 XI) i miesiąc: 5 rzędów, bez czasu ze stopera ---
 - assertVisible: "This week"
-- assertVisible: { text: "5 rows", index: 1 } # dwa bloki: tydzień i listopad
 - assertVisible: "Previous week: 0 rows"
+# E2-139-S5: blok miesiąca leży pod dolną krawędzią ekranu (poza ekranem elementu nie ma w hierarchii iOS) — przewinięcie, potem drugi blok „5 rows”
+- scrollUntilVisible: { element: { id: "historia-miesiac" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { text: "5 rows", index: 1 } # dwa bloki: tydzień i listopad
 - assertVisible: "2 crafting days"
 - assertVisible: { text: "Time shows here when you use the stopwatch.", index: 1 }
 - assertNotVisible: ".*\\b0 (h|hr|hrs|hours?)\\b.*"
