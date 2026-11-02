@@ -34,11 +34,11 @@ tags:
 - assertVisible: "Watch: .*"
 - assertVisible: "Recent errors: .*"
 - assertNotVisible: ".*Harbor.*"
-- takeScreenshot: 56-podglad
+- takeScreenshot: 63-podglad
 # --- S2: Share → arkusz systemowy (opcjonalnie), potem rezygnacja (S3) ---
 - tapOn: "Share"
 - extendedWaitUntil: { visible: "Oczko report.*", timeout: 20000, optional: true }
-- takeScreenshot: 56-arkusz-udostepniania
+- takeScreenshot: 63-arkusz-udostepniania
 - tapOn: { text: "dismiss popup", optional: true } # region zamknięcia arkusza iOS 26 (jak scenariusz 43); gdy arkusza nie było — pominięte
 - assertVisible: { id: "arkusz-zamknij" }
 - tapOn: { id: "arkusz-zamknij" }

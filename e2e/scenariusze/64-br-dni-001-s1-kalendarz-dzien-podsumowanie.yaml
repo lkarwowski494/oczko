@@ -3,7 +3,7 @@
 # Wyrocznia: BRD + rachunek z danych scenariusza (tydzień pon. 2–nd. 8 XI = 5 rzędów, poprzedni tydzień 0, listopad = 5 rzędów i 2 dni z robótką).
 # Co widzi użytkownik: wybrany dzień (domyślnie dziś) z listą projektów i rzędów, tydzień i miesiąc z sumą rzędów; BEZ czasu „0 h”, gdy nie było stopera (S3).
 # Poza tym scenariuszem: znacznik dnia z robótką (kreska pod numerem) — widok bez testID/etykiety poza dniem wybranym (src/kompozycja/historia.ts:25-27), czyli nie do odczytania
-# Maestro — tylko zrzut 57-kalendarz; kolumny od poniedziałku (S6 BR-DNI-001), dzień przez północ i strefy (BR-DNI-002 S2–S4), stoper — Jest `historia-dni.test.tsx`, domena `tests/domena/dni/`.
+# Maestro — tylko zrzut 64-kalendarz; kolumny od poniedziałku (S6 BR-DNI-001), dzień przez północ i strefy (BR-DNI-002 S2–S4), stoper — Jest `historia-dni.test.tsx`, domena `tests/domena/dni/`.
 # Czas jest wstrzykiwany (`oczkoE2eTeraz`), więc daty nie zależą od zegara maszyny. Informacyjnie do pierwszego zielonego (P-091).
 appId: com.apps4brew.knitting
 name: "BR-DNI-001/S1 · Historia: dzień 3 XI (3 rzędy), 4 XI pusty, tydzień i miesiąc 5 rzędów, 2 dni z robótką, bez czasu 0 h"
@@ -46,7 +46,7 @@ tags:
 - assertVisible: { id: "historia-kalendarz" }
 - assertVisible: "November 2026"
 - assertVisible: "Weeks start on Monday."
-- takeScreenshot: 57-kalendarz
+- takeScreenshot: 64-kalendarz
 # --- dziś (czwartek 5 XI): Harbor, 2 rzędy ---
 - assertVisible: "Thursday, November 5"
 - assertVisible: "Harbor, 2 rows"
@@ -57,14 +57,14 @@ tags:
 - assertVisible: "2 crafting days"
 - assertVisible: { text: "Time shows here when you use the stopwatch.", index: 1 }
 - assertNotVisible: ".*\\b0 (h|hr|hrs|hours?)\\b.*"
-- takeScreenshot: 57-tydzien-i-miesiac
+- takeScreenshot: 64-tydzien-i-miesiac
 # --- wtorek 3 XI: 3 rzędy w Harbor (cofnięte +1/−1 roboczego projektu nie liczą się) ---
 - tapOn: { id: "historia-dzien-2026-11-03" }
 - assertVisible: { id: "historia-dzien-2026-11-03", selected: true }
 - assertVisible: "Tuesday, November 3"
 - assertVisible: "Harbor, 3 rows"
 - assertVisible: { id: "historia-dzien-2026-11-03", text: ".*3 rows" }
-- takeScreenshot: 57-dzien-3-xi
+- takeScreenshot: 64-dzien-3-xi
 # --- środa 4 XI: bez pracy ---
 - tapOn: { id: "historia-dzien-2026-11-04" }
 - assertVisible: { id: "historia-dzien-2026-11-04", selected: true }

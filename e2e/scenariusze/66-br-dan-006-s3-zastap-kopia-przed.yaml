@@ -56,14 +56,14 @@ tags:
 - assertVisible: { id: "import-gotowy" }
 - scrollUntilVisible: { element: { text: "Replace what.s here" }, direction: DOWN, timeout: 30000 }
 - assertVisible: "Replace what.s here"
-- takeScreenshot: 59-wybor-scal-zastap
+- takeScreenshot: 66-wybor-scal-zastap
 - tapOn: "Replace what.s here"
 # --- wynik: kopia przed zastąpieniem wskazana użytkownikowi ---
 - extendedWaitUntil: { visible: { id: "dane-zastapiono" }, timeout: 60000 }
 - scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-wynik", text: "Oczko saved your previous data first as .*" }
 - assertVisible: { id: "import-wynik", text: ".*Oczko › Backup.*" }
-- takeScreenshot: 59-zastapiono
+- takeScreenshot: 66-zastapiono
 # --- dane z pliku: licznik 2, jeden projekt ---
 - tapOn: { id: "nav-wstecz" }
 - assertVisible: { id: "projekty-lista" }

@@ -26,18 +26,18 @@ tags:
 - tapOn: { id: "licznik-projekt" }
 - assertVisible: { id: "projekt-menu" }
 - assertVisible: "2 of 40 rows"
-- takeScreenshot: 54-oryginal
+- takeScreenshot: 61-oryginal
 # --- Make another like this (alert z potwierdzeniem; „projekt.kopia_*”) ---
 - tapOn: { id: "projekt-menu" }
 - assertVisible: { id: "projekt-zrob-taka-sama" }
 - tapOn: { id: "projekt-zrob-taka-sama" }
 - assertVisible: "Make another Harbor\\?"
-- takeScreenshot: 54-potwierdzenie
+- takeScreenshot: 61-potwierdzenie
 - tapOn: "Make another"
 # nowy projekt zastępuje ekran (router.replace): wskazuje go „0 of 40 rows” zamiast „2 of 40 rows”
 - extendedWaitUntil: { visible: "0 of 40 rows", timeout: 20000 }
 - assertNotVisible: "2 of 40 rows"
-- takeScreenshot: 54-nowy-projekt
+- takeScreenshot: 61-nowy-projekt
 # --- lista: dwa projekty, oryginał nietknięty ---
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 20000 }
@@ -47,7 +47,7 @@ tags:
 - assertNotVisible: { id: "projekty-wiersz", index: 2 }
 - assertVisible: ".*row 1 of 40.*"
 - assertVisible: ".*row 3 of 40.*"
-- takeScreenshot: 54-lista-dwa-projekty
+- takeScreenshot: 61-lista-dwa-projekty
 - tapOn: ".*row 3 of 40.*"
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
