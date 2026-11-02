@@ -1,0 +1,52 @@
+# BR-LIC-012/S1 w pasku pod wzorem (F-09, P2-5b, P-373 wariant B, design-spec.md:905; 07-jakosc NOC-3): w trybie „rząd w trakcie” liczba pod wzorem ma podpis „current row”
+# (`licznik-podpis`, WzorLicznik.tsx:30) i nie ma linii „Now working row n” (`licznik-teraz-rzad`); w trybie „skończone” jest odwrotnie (linia jest, podpisu nie ma).
+# Przebieg: 12 skończonych → wzór PDF otwarty w „skończone” (linia „Now working row 13”) → Back → „What the number shows” → „The row I’m on” (licznik 13, jak scenariusz 56)
+# → ikona „Pattern” w pasku licznika → ten sam wzór w „w trakcie”: podpis „current row”, bez linii → +1 → 14, podpis zostaje.
+# Telefon pionowo = pasek pod wzorem (`wzor-pasek-licznika`); kolumna obok (iPad poziomo) pokryta w Jest (`tests/ekrany/wzor-przegladarka.test.tsx`, P2-5b). Informacyjnie do pierwszego
+# zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-LIC-012/S1 · Pasek pod wzorem: „skończone” — „Now working row 13”; „rząd w trakcie” — podpis „current row” zamiast linii (P2-5b)"
+tags:
+  - BR-LIC-012-S1
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "12" } }
+# --- wzór w trybie „skończone”: linia jest, podpisu nie ma ---
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-pasek-licznika" }
+- assertVisible: { id: "licznik-wartosc", text: "12" }
+- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 13" }
+- assertNotVisible: { id: "licznik-podpis" }
+- takeScreenshot: 67-wzor-skonczone
+# --- zmiana znaczenia na „rząd w trakcie” (jak scenariusz 56) ---
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "licznik-plus" }
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-znaczenie" }
+- tapOn: { id: "menu-znaczenie" }
+- assertVisible: "The row I’m on"
+- tapOn: "The row I’m on"
+- assertVisible: { text: "The row I’m on", selected: true }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "13" }
+# --- ten sam wzór w „w trakcie”: podpis zamiast linii ---
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-pasek-licznika" }
+- assertVisible: { id: "licznik-wartosc", text: "13" }
+- assertVisible: { id: "licznik-podpis", text: "current row" }
+- assertNotVisible: { id: "licznik-teraz-rzad" }
+- takeScreenshot: 67-wzor-w-trakcie
+# --- +1 z paska pod wzorem: liczba rośnie, podpis zostaje ---
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "14" }
+- assertVisible: { id: "licznik-podpis", text: "current row" }
+- assertNotVisible: { id: "licznik-teraz-rzad" }

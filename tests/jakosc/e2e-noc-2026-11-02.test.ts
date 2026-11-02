@@ -83,3 +83,35 @@ describe('NOC-2 · luki zrzutów dla przejścia 04', () => {
     }
   });
 });
+
+/* NOC-3 · scenariusz 67 (P2-5b, P-373 wariant B; F-09, design-spec.md:905): w trybie „rząd w trakcie” pasek pod wzorem (iPhone pionowo) podpisuje liczbę „current row”
+ *       (`licznik-podpis`, WzorLicznik.tsx:30) i nie ma linii „Now working row n” (`licznik-teraz-rzad`); w trybie „skończone” odwrotnie. Do #139 nie było scenariusza
+ *       (raport 138: „P2-5b niepotwierdzone”). Kolejność kroków: wzór otwarty w „skończone” (linia jest, podpisu nie ma) → zmiana znaczenia → ten sam wzór w „w trakcie”. */
+describe('NOC-3 · 67: podpis „current row” w pasku pod wzorem (P2-5b)', () => {
+  test('scenariusz istnieje, jest informacyjny (bez tagu podstawowy) i ma tag BR-LIC-012-S1', () => {
+    const p = plik('67');
+    expect(p).toBeDefined();
+    const s = wczytaj(path.join(KAT, p));
+    expect((s.naglowek.tags ?? []).map(String)).toEqual(expect.arrayContaining(['BR-LIC-012-S1', 'wzor']));
+    expect((s.naglowek.tags ?? []).map(String)).not.toContain('podstawowy');
+  });
+  test('w „skończone”: linia „Now working row” jest, podpisu „current row” nie ma — w „w trakcie”: odwrotnie, podpis dosłownie „current row”', () => {
+    const l = lista('67');
+    // wzór otwiera podprzepływ (menu ••• → Pattern → źródło testowe PDF); `kroki` nie rozwija runFlow, więc kotwicą jest jego wywołanie
+    const wzor = l.findIndex((k) => k.nazwa === 'runFlow' && JSON.stringify(k.arg).includes('otworz-wzor-pdf'));
+    expect(wzor).toBeGreaterThan(-1);
+    const znaczenie = l.findIndex((k, i) => i > wzor && k.nazwa === 'tapOn' && idy(k).includes('menu-znaczenie'));
+    expect(znaczenie).toBeGreaterThan(wzor);
+    const po = (od: number, doI: number, nazwa: string, id: string) => l.slice(od, doI).filter((k) => k.nazwa === nazwa && idy(k).includes(id));
+    // przed zmianą znaczenia
+    expect(po(wzor, znaczenie, 'assertVisible', 'licznik-teraz-rzad').length).toBeGreaterThan(0);
+    expect(po(wzor, znaczenie, 'assertNotVisible', 'licznik-podpis').length).toBeGreaterThan(0);
+    // po zmianie: podpis dosłownie „current row” (Maestro dopasowuje cały tekst), w widoku wzoru
+    const wzorPo = l.findIndex((k, i) => i > znaczenie && ['extendedWaitUntil', 'assertVisible'].includes(k.nazwa) && idy(k).includes('wzor-widok'));
+    expect(wzorPo).toBeGreaterThan(znaczenie);
+    const podpis = l.slice(wzorPo).find((k) => k.nazwa === 'assertVisible' && idy(k).includes('licznik-podpis'));
+    expect(podpis?.arg.text).toBe('current row');
+    expect(l.slice(wzorPo).some((k) => k.nazwa === 'assertNotVisible' && idy(k).includes('licznik-teraz-rzad'))).toBe(true);
+    expect(l.slice(wzorPo).some((k) => k.nazwa === 'takeScreenshot')).toBe(true);
+  });
+});

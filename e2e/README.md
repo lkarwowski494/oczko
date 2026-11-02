@@ -218,6 +218,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zdjecia-miniatura` | ekran projektu, grupa „Photos” | miniatura (powtarzalna, `index`) | „Photo 1 of 1” (`zdjecia.a11y`) | |
 | `wzor-dodaj` | wzór | dodanie wzoru | — | |
 | `wzor-widok` | wzór | widok dokumentu (jeden naraz, OG-07) | — | |
+| `wzor-pasek-licznika` | wzór | pasek licznika pod wzorem (telefon pionowo; poziomo i na iPadzie to `wzor-kolumna-licznika`) | — | |
+| `licznik-podpis` | wzór, pasek licznika | podpis liczby w trybie „rząd w trakcie” (P2-5b, zamiast `licznik-teraz-rzad`) | „current row” | |
 | `wzor-zrodlo` | wzór | rodzaj źródła | „PDF”, „Photo”, „Web page”, „Word document” | |
 | `wzor-strona` | wzór | numer strony | „Page 1 of 3” (etykieta VoiceOver „Pattern page 1 of 3” — asercje `.*[Pp]age 1 of .*`, przebieg 40446976426) | |
 | `wzor-zakreslacz` | wzór | przełącznik zakreślacza (`accessibilityState.selected`) | — | |
@@ -351,6 +353,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-DNI-001/S1–S2, BR-DNI-002/S1, BR-DNI-003/S1, S3 (F-59; znacznik dnia tylko na zrzucie) | `64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml` (informacyjnie) |
 | BR-DAN-012/S1, S3 (F-64; wywołanie systemowe i adres recenzji nie do odczytu w E2E) | `65-br-dan-012-s1-prosba-o-ocene.yaml` (informacyjnie) |
 | BR-DAN-006/S3 „Replace” (F-32) | `66-br-dan-006-s3-zastap-kopia-przed.yaml` (informacyjnie) |
+| BR-LIC-012/S1 w pasku pod wzorem (F-09, P2-5b) | `67-br-lic-012-s1-podpis-w-pasku-wzoru.yaml` (informacyjnie) |
 | (przepływy pakietu podstawowego spoza poziomu E2E) BR-LIC-002/S1–S3, BR-LIC-019/S1, BR-LIC-003/S2 · BR-ZAK-006/S1, KP-13 · BR-ZAK-001/S1, PR-09 · P-089 (3a) · BR-DAN-005/S1, BR-DAN-006/S1, P-113 Q2a (bez karty) · ADR-0019 | `04`, `05`, `06`, `07`, `08`, `09` |
 
 Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza — lista telefonu (strategia §8, TT-01–TT-09) albo „Nie sprawdzono”.
@@ -358,3 +361,4 @@ Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza —
 ## Przebiegi nocne
 - 2026-10-26/27: pełny pakiet (`[e2e-pelny]`, iPhone + iPad) — partia 5 (STOP E2) i scenariusze 44–52 (07 fix-3); uruchomienie koordynatora (P-241, P-251).
 - 2026-11-02 (07-jakosc-033 B, P-378): scenariusze 61–66 (F-20, F-26, F-57, F-59, F-64, „Replace”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegły (brak macOS w sesji pisania), ocena po przebiegu nocnym.
+- 2026-11-02 (przebieg nocny 2/3.11, 07-jakosc NOC-3, P-400): scenariusz 67 (BR-LIC-012/S1 w pasku pod wzorem, P2-5b — podpis „current row”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegł (brak macOS w sesji pisania).
