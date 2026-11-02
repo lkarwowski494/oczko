@@ -36,6 +36,14 @@ import dvi from './vi.json';
 import dzh_Hant from './zh-Hant.json';
 import type { Zasoby } from '../i18n';
 
+/**
+ * Pseudolokalizacja en-XA (M1-051): tylko build deweloperski z EXPO_PUBLIC_PSEUDO=1, nigdy w supportedLocales (i18n.ts). Odwołanie statyczne
+ * `process.env.EXPO_PUBLIC_PSEUDO` (babel-preset-expo wstawia wartość przy budowaniu; destrukturyzacja nie działa) i `require` w gałęzi warunku
+ * w tym samym module, jak tryb-e2e.ts (P-238): bez zmiennej Metro składa stałą i en-XA.json nie trafia do bundla.
+ */
+export const ZASOBY_PSEUDO: Zasoby[string] | undefined =
+  process.env.EXPO_PUBLIC_PSEUDO === '1' ? { translation: require('../pseudo/en-XA.json') as Record<string, unknown> } : undefined;
+
 export const ZASOBY: Zasoby = {
   en: { translation: en },
   bg: { translation: dbg },

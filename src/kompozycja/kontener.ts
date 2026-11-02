@@ -14,7 +14,7 @@ import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
 import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszAtomowo, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { utworzI18n } from '../i18n/i18n';
-import { ZASOBY } from '../i18n/slowniki';
+import { ZASOBY, ZASOBY_PSEUDO } from '../i18n/slowniki';
 import type { PreferencjaJezyka } from '../i18n/jezyki';
 import { magazynJezyka } from '../przypadki-uzycia/jezyk';
 import { dziennikUrzadzenia } from '../platforma/dziennik-plus';
@@ -77,8 +77,8 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   if (!b.ok) return b;
   const baza = b.wartosc;
   const zegar = zegarAplikacji();
-  // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem.
-  const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY });
+  // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem; pseudo en-XA tylko z EXPO_PUBLIC_PSEUDO=1 (M1-051).
+  const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
   const jezyk = () => i18n.jezyk();
   const id = await urzadzenie(katalogDanych);
   // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep nie istnieje (sprawdz-ipa).

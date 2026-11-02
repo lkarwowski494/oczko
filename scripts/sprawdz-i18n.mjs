@@ -1,9 +1,10 @@
 // sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--oczekujace o.json [--wydanie]] [--pseudo plik.json]
 // --oczekujace (P-357, wzór Treningu): { powod, odwolania, klucze: [bazy kluczy] } — brak przekładu tych kluczy to uwaga, nie błąd; lista = dokładnie różnica źródło ↔ słowniki
 //   (klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd). --wydanie: niepusta lista = błąd (fala przekładu przed wydaniem, P-320).
+// --wyjatki: { klucze, wartosci, pliki: { ścieżka względna: powód } } — `pliki` (M1-051): pliki pod ścieżką poza skanem kodu; nieistniejąca ścieżka = kod 2.
 // Słowniki <tag>.json w formacie i18next v4. Kod wyjścia: 0 bez błędów, 1 błędy, 2 konfiguracja albo skan kodu niewykonany.
 import { readFileSync, readdirSync, writeFileSync, statSync, existsSync } from 'node:fs';
-import { join, resolve, relative } from 'node:path';
+import { join, resolve, relative, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
@@ -85,8 +86,9 @@ const pliki = (k, w = []) => {
   return w;
 };
 export function skanujKod(ts, katalogi, wyjatki = {}) {
-  const uzyte = new Map(), teksty = [], dynamiczne = [], sklejenia = [];
-  for (const plik of katalogi.flatMap((k) => pliki(k))) {
+  const uzyte = new Map(), teksty = [], dynamiczne = [], sklejenia = [], pomin = Object.keys(wyjatki.pliki || {});
+  const pominiety = (p) => { const r = relative(process.cwd(), p).split(sep).join('/'); return pomin.some((w) => r === w || r.startsWith(`${w}/`)); };
+  for (const plik of katalogi.flatMap((k) => pliki(k)).filter((p) => !pominiety(p))) {
     const zr = ts.createSourceFile(plik, readFileSync(plik, 'utf8'), ts.ScriptTarget.Latest, true, /(x|\.js)$/.test(plik) ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
     const gdzie = (n) => `${relative(process.cwd(), plik)}:${zr.getLineAndCharacterOfPosition(n.getStart()).line + 1}`;
     const lit = (n) => n && (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n));
@@ -130,7 +132,9 @@ function main(argv) {
     if (!ts) { console.log('BŁĄD konfiguracji: brak pakietu typescript w projekcie; skan kodu niewykonany'); kod = 2; }
     const brak = o.kod.split(',').filter((k) => !existsSync(k));
     if (brak.length) { console.log(`BŁĄD konfiguracji: brak katalogu ${brak.join(', ')}; skan kodu niewykonany`); kod = 2; }
-    if (ts && !brak.length) {
+    const zbedne = Object.keys(wyjatki.pliki || {}).filter((w) => !existsSync(w));
+    if (zbedne.length) { console.log(`BŁĄD konfiguracji: wyjątek pliki na nieistniejącą ścieżkę ${zbedne.join(', ')}; skan kodu niewykonany`); kod = 2; }
+    if (ts && !brak.length && !zbedne.length) {
       const s = skanujKod(ts, o.kod.split(','), wyjatki);
       for (const [k, g] of s.uzyte) if (!zr[k] && !(wyjatki.klucze || []).includes(k)) bledy.push(`kod ${g}: klucza „${k}” nie ma w ${zrodlo}.json`);
       for (const t of s.teksty) (t.blad ? bledy : uwagi).push(`kod ${t.gdzie}: tekst na sztywno „${t.tekst}”`);
