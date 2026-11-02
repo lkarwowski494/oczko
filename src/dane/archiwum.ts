@@ -68,7 +68,7 @@ function parsujManifest(b: Uint8Array): Manifest | null {
 }
 
 /**
- * Nazwa nowego archiwum dnia (ADR-0032 pkt 3, przegląd M1-013): przyrostek o jeden większy od największego istniejącego tego dnia, nie pierwszy wolny.
+ * Nazwa nowego archiwum dnia (ADR-0032 pkt 6, przegląd M1-013): przyrostek o jeden większy od największego istniejącego tego dnia, nie pierwszy wolny.
  * Pierwsza wolna nazwa wypełniała lukę po kopii usuniętej przez pulę, więc najnowsza kopia wyglądała na starszą i znikała przy następnym sprzątaniu.
  */
 export function nazwaArchiwum(istniejace: readonly string[], przedrostek: string, dzien: string): string {
@@ -100,7 +100,7 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
       let cel: string | null = null; // ustawiany dopiero na nazwę, która nie istnieje — tylko taki plik wolno usunąć po błędzie
       try {
         utworzKatalog(katalogDocelowy); // Documents/Backup powstaje przy pierwszej kopii (idempotentnie); błąd → 'zapis' poniżej
-        let nowy = polacz(katalogDocelowy, nazwaArchiwum(listaPlikow(katalogDocelowy), przedrostek, teraz.dzien)); // ADR-0032 pkt 3: przyrostek rośnie
+        let nowy = polacz(katalogDocelowy, nazwaArchiwum(listaPlikow(katalogDocelowy), przedrostek, teraz.dzien)); // ADR-0032 pkt 6: przyrostek rośnie
         for (let i = 2; istniejePlik(nowy); i++) nowy = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
         cel = nowy;
         const k = await kopiaBazy(z.baza, baza);
