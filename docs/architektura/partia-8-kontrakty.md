@@ -31,7 +31,7 @@ Pliki 08: `src/dane/archiwum.ts` (`kopiaPrzed` przez `zapisz` z przedrostkiem), 
 | K-03c | Ekran po „Replace” (przez trasę `app/ustawienia`, nie sam komponent) pokazuje stan `zastapiono` z nazwą kopii i miejscem w Plikach; po „Merge” pokazuje wynik scalenia i **nie** tworzy kopii. |
 | K-03d | Błąd zapisu kopii (`brak_miejsca`, `zapis`) → import kończy się błędem przed pierwszym zapisem do bazy: `PRAGMA data_version` i liczności bez zmian, ekran pokazuje błąd, nie „Merged” ani `zastapiono`. |
 | K-03e | Druga kopia tego samego dnia dostaje `-2`, nie nadpisuje pierwszej. |
-| K-03f | Pula: przy 3 kopiach zostają 2 najnowsze; kopia starsza niż 30 dni jest usuwana; plik o obcej nazwie w `Documents/Backup` i nazwa z datą w przyszłości zostają (czysta funkcja, test w Node). |
+| K-03f | Pula (ADR-0032, zastępuje pierwotne „przy 3 kopiach zostają 2 najnowsze”, DEC-18 a): trzy kopie jednego dnia → zostają pierwsza i najnowsza; pierwsza kopia każdego dnia zostaje do 30 dni ponad limit; kopia starsza niż 30 dni jest usuwana; plik o obcej nazwie w `Documents/Backup` i nazwa z datą w przyszłości zostają (czysta funkcja, test w Node). |
 | K-03g | „Replace” przy włączonym iCloud nadal odmawia (`niedozwolone_przejscie`) i nie tworzy kopii (ADR-0005). |
 Ryzyko: ARCH-13 — pakowanie i VACUUM pod `czasWTle.chron('import', …)` (jak dziś). Realność: realny (ścieżka danych). Czas 08: 1,5–2 h (raport). Zależność: 04 (tekst `dane.zastapiono`, `miejsce`).
 

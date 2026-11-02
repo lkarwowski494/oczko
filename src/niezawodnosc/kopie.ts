@@ -32,8 +32,10 @@ export function kopieDoUsuniecia(wpisy: readonly WpisKopii[], terazMs: number, d
 /** Kopie z ADR-0028 w Documents/Backup: `oczko-przed-importem-RRRR-MM-DD[-n].oczko` i `oczko-przed-usunieciem-…`; nic innego w tym katalogu nie jest tykane. */
 const PLIK_PRZED = /^oczko-przed-(importem|usunieciem)-(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?\.oczko$/;
 /**
- * Pula kopii bezpieczeństwa (ADR-0028 pkt 4, K-03f): każdego rodzaju zostaje `maks` najnowszych, a starsze niż `dni` (ściśle, liczone od północy dnia
- * z nazwy UTC) są usuwane. Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu.
+ * Pula kopii bezpieczeństwa (ADR-0032, zastępuje ADR-0028 pkt 4; DEC-18 a; K-03f), osobno dla każdego rodzaju. Kopie starsze niż `dni` (ściśle, od
+ * północy dnia z nazwy, UTC) są usuwane. Z młodszych zostają: pierwsza kopia każdego dnia (najmniejszy przyrostek; seria „Zastąp” jednego dnia zaczyna
+ * się od kopii z danymi sprzed serii) niezależnie od `maks`, najnowsza zawsze, a pozostałe od najnowszej, dopóki zostawionych jest mniej niż `maks`.
+ * Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu ani do pierwszej kopii dnia.
  */
 export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number, maks = KOPIA_PRZED_IMPORTEM_MAKS, dni = KOPIA_PRZED_IMPORTEM_DNI): string[] {
   const usun: string[] = [];
@@ -45,7 +47,12 @@ export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number,
       return dzienMs - terazMs > DOBA_MS ? [] : [{ nazwa, dzienMs, n: m[5] === undefined ? 1 : Number(m[5]) }];
     });
     wpisy.sort((a, b) => b.dzienMs - a.dzienMs || b.n - a.n);
-    wpisy.forEach((w, i) => { if (i >= maks || terazMs - w.dzienMs > dni * DOBA_MS) usun.push(w.nazwa); });
+    const mlode = wpisy.filter((w) => terazMs - w.dzienMs <= dni * DOBA_MS);
+    const pierwszaDnia = new Map<number, string>(); // od najnowszej, więc ostatni zapis dla dnia to najmniejszy przyrostek
+    for (const w of mlode) pierwszaDnia.set(w.dzienMs, w.nazwa);
+    const zostaja = new Set([...pierwszaDnia.values(), ...mlode.slice(0, 1).map((w) => w.nazwa)]);
+    for (const w of mlode) if (zostaja.size < maks) zostaja.add(w.nazwa);
+    for (const w of wpisy) if (!zostaja.has(w.nazwa)) usun.push(w.nazwa);
   }
   return usun;
 }
