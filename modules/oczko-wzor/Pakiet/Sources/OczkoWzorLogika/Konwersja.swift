@@ -4,7 +4,7 @@
 import Foundation
 
 public enum PowodWzoru: String, CaseIterable, Error, Sendable {
-  case brakSieci = "brak_sieci", odmowa, pusty, anulowano, uszkodzony, zaDuze = "za_duze", bledneDane = "bledne_dane", zapis
+  case brakSieci = "brak_sieci", przekroczonoCzas = "przekroczono_czas", odmowa, pusty, anulowano, uszkodzony, zaDuze = "za_duze", bledneDane = "bledne_dane", zapis
 }
 
 public enum ZrodloKonwersji: Equatable, Sendable {
@@ -37,6 +37,12 @@ public func zrodloKonwersji(_ json: String) throws -> ZrodloKonwersji {
   default:
     throw PowodWzoru.bledneDane
   }
+}
+
+/// Powód, gdy konwersja nie skończyła się w limicie czasu (E2-A3): strona WWW, która się nie ładuje, = brak sieci (zlecenie czeka w skrzynce);
+/// plik lokalny (Word) nie zależy od sieci, więc dostaje własny powód i komunikat o czasie, nie o sieci.
+public func powodPrzekroczeniaCzasu(plikLokalny: Bool) -> PowodWzoru {
+  plikLokalny ? .przekroczonoCzas : .brakSieci
 }
 
 /// Kod HTTP strony po załadowaniu: 401/403 → `odmowa` (logowanie), inne ≥ 400 → `pusty` (BR-WZR-007 S3), 2xx/3xx i brak kodu → nil.

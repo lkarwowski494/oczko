@@ -7,7 +7,7 @@ import UIKit
 import WebKit
 
 enum Konwersja {
-  static let limitCzasuS: TimeInterval = 60 // [OCENA 08]: strona, która nie skończy się ładować, = brak sieci (zlecenie czeka w skrzynce)
+  static let limitCzasuS: TimeInterval = 60 // [OCENA 08]: strona, która nie skończy się ładować, = brak sieci (zlecenie czeka w skrzynce); plik Word: osobny powód (E2-A3)
 
   @MainActor static func naPdf(_ z: ZrodloKonwersji) async -> String {
     let wynik: Result<URL, PowodWzoru>
@@ -58,7 +58,10 @@ enum Konwersja {
   }
 }
 
-enum WejscieStrony { case adres(URL), plik(URL) }
+enum WejscieStrony {
+  case adres(URL), plik(URL)
+  var lokalny: Bool { if case .plik = self { return true } else { return false } }
+}
 
 @MainActor final class KonwerterStrony: NSObject, WKNavigationDelegate {
   private let web: WKWebView
@@ -77,8 +80,9 @@ enum WejscieStrony { case adres(URL), plik(URL) }
   func konwertuj(_ w: WejscieStrony) async -> Result<URL, PowodWzoru> {
     await withCheckedContinuation { c in
       ciag = c
+      let powodCzasu = powodPrzekroczeniaCzasu(plikLokalny: w.lokalny) // E2-A3: Word ≠ brak sieci
       zegar = Timer.scheduledTimer(withTimeInterval: Konwersja.limitCzasuS, repeats: false) { [weak self] _ in
-        Task { @MainActor in self?.zakoncz(.failure(.brakSieci)) }
+        Task { @MainActor in self?.zakoncz(.failure(powodCzasu)) }
       }
       switch w {
       case let .adres(u): web.load(URLRequest(url: u))

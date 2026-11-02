@@ -1,6 +1,6 @@
 // Most do modułu Swift OczkoWzor (ADR-0007, ADR-0011, ADR-0012; moduly.md „Kontrakt partii 6”); jedyne miejsce require dla tego modułu.
 // Moduł opcjonalny: build bez modułu (np. nocny przebieg sprzed partii 6) dostaje null — adapter src/platforma/ zwraca wtedy błąd zamiast awarii.
-// Funkcje zwracają JSON `{ ok: true, … }` albo `{ ok: false, powod }` (powody z src/domena/bledy.ts: brak_sieci, odmowa, pusty, anulowano, uszkodzony, …).
+// Funkcje zwracają JSON `{ ok: true, … }` albo `{ ok: false, powod }` (powody z src/domena/bledy.ts: brak_sieci, przekroczono_czas, odmowa, pusty, anulowano, uszkodzony, …).
 import type { ComponentType } from 'react';
 import type { NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
 import { requireNativeViewManager, requireOptionalNativeModule } from 'expo-modules-core';

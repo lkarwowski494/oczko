@@ -26,16 +26,16 @@ function zlecenie(grupa: string, id: string, o: Partial<ZlecenieImportu> & { pli
     typ: o.typ ?? 'application/pdf', projektId: o.projektId === undefined ? 'p1' : o.projektId, utworzonoMs: o.utworzonoMs ?? T0 };
   writeFileSync(join(k, 'zlecenie.json'), JSON.stringify(m));
 }
-const konwersja = (wynik?: 'brak_sieci'): KonwersjaPlatformy => ({
+const konwersja = (wynik?: 'brak_sieci' | 'przekroczono_czas'): KonwersjaPlatformy => ({
   async naPdf() { return wynik ? { ok: false, powod: wynik } : { ok: false, powod: 'bledne_dane' }; },
   async sprawdzPdf(sciezka) { return sciezka.endsWith('.pdf') && !sciezka.includes('zepsuty') ? { ok: true, wartosc: { strony: 1 } } : { ok: false, powod: 'uszkodzony' }; },
 });
-async function srodowisko(o: { siec?: 'brak' } = {}) {
+async function srodowisko(o: { siec?: 'brak'; konwersja?: 'przekroczono_czas' } = {}) {
   const s = await przygotuj();
   await wykonaj(s.baza, [projekt('p1', 'Harbor'), projekt('p2', 'Scarf')]);
   const grupa = katalogTymczasowy('oczko-grupa-');
   const skrzynka = skrzynkaWKatalogu(grupa, () => s.zegar.teraz().ms);
-  return { s, grupa, skrzynka, z: { ...s.z, konwersja: konwersja(o.siec ? 'brak_sieci' : undefined), czasWTle, skrzynka } };
+  return { s, grupa, skrzynka, z: { ...s.z, konwersja: konwersja(o.siec ? 'brak_sieci' : o.konwersja), czasWTle, skrzynka } };
 }
 
 describe('adapter skrzynki w App Group (manifest na końcu, porzucone)', () => {
@@ -105,6 +105,14 @@ describe('przetworzSkrzynke (start i powrót na pierwszy plan)', () => {
     expect(w.ok && [w.wartosc.zaimportowano, w.wartosc.czekaSiec.map((x) => x.id), w.wartosc.bledy]).toEqual([0, ['www'], []]);
     expect(existsSync(join(grupa, 'skrzynka', 'www'))).toBe(true);
     expect(await ile(s.baza, 'blad')).toBe(0);
+  });
+
+  test('E2-A3: Word, którego konwersja przekroczyła czas → błąd z własnym powodem (alert z przyczyną), nie „czeka na sieć”; zlecenie zostaje do potwierdzenia', async () => {
+    const { grupa, z } = await srodowisko({ konwersja: 'przekroczono_czas' });
+    zlecenie(grupa, 'w1', { nazwaPliku: 'Harbor.docx', nazwa: 'Harbor.docx', typ: 'org.openxmlformats.wordprocessingml.document' });
+    const w = await przetworzSkrzynke(z);
+    expect(w.ok && [w.wartosc.czekaSiec, w.wartosc.bledy.map((b) => b.powod)]).toEqual([[], ['przekroczono_czas']]);
+    expect(existsSync(join(grupa, 'skrzynka', 'w1'))).toBe(true);
   });
 
   test('błąd importu (plik uszkodzony) → zlecenie zostaje do potwierdzenia, wpis w `blad`, powód dla alertu; odrzucenie usuwa', async () => {

@@ -12,6 +12,7 @@ export function alertImportu(powod: Powod, plik: string, t: Tlumacz): { tytul: s
     case 'uszkodzony': return { tytul: t('wzor.blad_plik'), opis: t('wzor.blad_plik_opis', { plik }) };
     case 'bledne_dane': return { tytul: t('wzor.blad_typ'), opis: t('wzor.blad_typ_opis') };
     case 'za_duze': return { tytul: t('wzor.blad_rozmiar'), opis: t('wzor.blad_rozmiar_opis', { mb: WZOR_MAKS_MB }) };
+    case 'przekroczono_czas': return { tytul: t('wzor.blad_czas'), opis: t('wzor.blad_czas_opis', { plik }) }; // plik Word nie skończył się konwertować w limicie czasu (E2-A3)
     case 'odmowa': case 'pusty': return { tytul: t('wzor.blad_strona'), opis: t('wzor.blad_strona_opis') };
     default: return { tytul: t('licznik.blad_zapisu'), opis: '' };
   }

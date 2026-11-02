@@ -68,6 +68,8 @@
     "ustawienia.usun_kopia",
     "ustawienia.usun_kopia_blad",
     "ustawienia.usun_pro",
+    "wzor.blad_czas",
+    "wzor.blad_czas_opis",
     "wzor.notatka_chip",
     "wzor.notatka_chip_a11y",
     "wzor.notatka_edytuj",
