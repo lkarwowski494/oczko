@@ -3,6 +3,7 @@
 export const LIMIT_DNI_W_MIESIACU = 5; // dni; P-057 (D2)
 export const PRZERWA_NOWEGO_DNIA_MS = 3_600_000; // ms; P-057 (D3)
 export const OKNO_OFFLINE_PRO_MS = 7 * 86_400_000; // ms; P-103 (3a): pamięć Pro przy błędzie sklepu, 7 dni po `wygasa` (jak Trening)
+export const SKLEP_LIMIT_MS = 1500; // ms; P-396 (M1-022): najdłuższe czekanie pierwszego ekranu na odczyt sklepu; potem pamięć offline, wynik sklepu później przez nasłuch
 export const STRAZNIK_SERIA_ZDARZEN = 3; // liczba dodań; RD-17, P-047
 export const STRAZNIK_OKNO_S = 2; // s; RD-17, P-047
 export const KOSZ_DNI = 30; // dni; P-026

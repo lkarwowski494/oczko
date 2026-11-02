@@ -45,6 +45,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/cofniecie-podwojne.test.ts` | zielony (główny zestaw) | 5 | BR-LIC-003 | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-licznika` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/czas-w-tle.test.ts` | zielony (główny zestaw) | 5 | P-128 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/przywracanie` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/czesc-menu.test.ts` | zielony (główny zestaw) | 4 | BR-PRJ-015, RD-12, RD-13 | `src/przypadki-uzycia/czesc`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-ukonczenia` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-limit-sklepu.test.ts` | zielony (główny zestaw) | 5 | KP-06, P-396 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-pro.test.ts` | zielony (główny zestaw) | 4 | KP-06, P-103 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-blad.test.ts` | zielony (główny zestaw) | 2 | R-024 | `src/dane/dziennik`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-pro.test.ts` | zielony (główny zestaw) | 5 | P-103, P-111 | `src/dane/dziennik`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
@@ -216,6 +217,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/sesje.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-013, BR-PRJ-013/S4, P-191, P-195 | `src/ekrany/Formularze`<br>`src/ekrany/Sesje`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/skrzynka-na-ekranie.test.tsx` | zielony (główny zestaw) | 5 | P-218, P-283, P-301 | `src/domena/porty`<br>`src/ekrany/wspolne`<br>`src/kompozycja/SkrzynkaNaEkranie`<br>`src/kompozycja/wzor` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-danych-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-002, P-220, P-339 | `src/dane/repozytoria/icloud` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/start-limit-sklepu.test.tsx` | zielony (główny zestaw) | 2 | P-396 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/start-na-wzorze.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-011 | `src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor-miejsce` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-kapsula-rozmiar.test.tsx` | zielony (główny zestaw) | 4 | P-361 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-kompozycja.test.tsx` | zielony (główny zestaw) | 2 | P-191, P-199 | `src/ekrany/wspolne`<br>`src/kompozycja/StoperLicznika`<br>`src/przypadki-uzycia/sesja` | Z07-22 |
@@ -297,4 +299,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 293; zależnych od poprawek: 187.
+Razem plików testów: 295; zależnych od poprawek: 187.

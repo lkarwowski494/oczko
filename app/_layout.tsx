@@ -17,6 +17,7 @@ import { useKolory } from '../src/ekrany/motyw';
 import { zainstalujObslugeBledow } from '../src/kompozycja/bledy-js';
 import { paneleE2e } from '../src/platforma/tryb-e2e';
 import { orientacjaEkranu } from '../src/domena/uklad';
+import { SKLEP_LIMIT_MS } from '../src/konfiguracja';
 import { wKolejce } from '../src/przypadki-uzycia/kolejka';
 import { zapiszBlad } from '../src/dane/repozytoria/bledy';
 
@@ -48,7 +49,8 @@ export default function Korzen(): React.ReactElement {
       const koniecDostepu = w.wartosc.dostep.nasluchuj(); // KP-07: nasłuch transakcji od startu
       const koniecSieci = w.wartosc.wzor.k.obserwujSiec(w.wartosc.porty.siec); // ADR-0031 pkt 4: sieć wróciła → strony czekające w skrzynce zapisują się same
       koniecNasluchu = () => { koniecDostepu(); koniecSieci(); };
-      await w.wartosc.dostep.odswiez(); // limit dni liczony z bieżącym dostępem już przy pierwszym ekranie
+      // Limit dni liczony z bieżącym dostępem już przy pierwszym ekranie; sklep bez odpowiedzi w SKLEP_LIMIT_MS → pamięć offline (M1-022, P-396).
+      await w.wartosc.dostep.odswiez(SKLEP_LIMIT_MS);
       if (!zywy) return;
       const z = w.wartosc.z;
       await p.wczytaj(z); // ADR-0029: preferencje urządzenia z bazy przed pierwszym ekranem licznika i narzędzi
@@ -56,6 +58,11 @@ export default function Korzen(): React.ReactElement {
       obslugaBledow?.ustawZapis(async (b) => { await wKolejce(z.baza, () => zapiszBlad(z.baza, { czasMs: z.zegar.teraz().ms, kod: b.kod, szczegoly: { ramki: b.szczegoly.ramki, fatal: b.szczegoly.fatal ? 1 : 0 } })); });
       const licznik = kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, aplikacjaAktywna: () => AppState.currentState === 'active', ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } });
       zamknijLicznik = () => licznik.zamknij(); // odpięcie `Zegarek.odbieraj` przy zniszczeniu kontenera (ADR-0030 pkt 1)
+      // M1-022: wynik sklepu po limicie (albo z nasłuchu KP-07) zmienia Pro → licznik przelicza limit dni bez ponownego startu.
+      let proNaStarcie = w.wartosc.dostep.stan().pro;
+      const koniecZmianDostepu = w.wartosc.dostep.naZmiane((st) => { if (st.pro !== proNaStarcie) { proNaStarcie = st.pro; void licznik.poZmianie().catch(() => undefined); } });
+      const koniecNasluchuStartu = koniecNasluchu;
+      koniecNasluchu = () => { koniecNasluchuStartu?.(); koniecZmianDostepu(); };
       ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik, preferencje: p } });
     }
     async function start(): Promise<void> {
