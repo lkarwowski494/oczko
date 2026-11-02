@@ -30,7 +30,7 @@ export const portOcenySklepu: PortOceny = {
 export async function wybierzPlikWzoru(): Promise<{ sciezka: string; nazwa: string; typ: string } | null> {
   const w = await DocumentPicker.getDocumentAsync({
     copyToCacheDirectory: true, multiple: false,
-    type: ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'],
+    type: ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], // bez msword: Word tylko .docx (ADR-0031 pkt 5, P-353)
   });
   const a = w.canceled ? undefined : w.assets?.[0];
   if (!a) return null;

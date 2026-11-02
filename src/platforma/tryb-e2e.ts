@@ -4,6 +4,7 @@
 import { Platform, Settings } from 'react-native';
 import { chwilaLokalna } from '../domena/postep';
 import type { Zegar } from '../domena/porty';
+import { STRAZNIK_OKNO_S } from '../konfiguracja';
 import { zegarSystemu } from './zegar';
 
 export const E2E = process.env.EXPO_PUBLIC_E2E === '1';
@@ -60,3 +61,13 @@ export const skrzynkaE2e = (): 'pdf' | null => (argument('oczkoE2eSkrzynka') ===
  */
 export const grupaAplikacjiE2e = (grupa: string | null, katalogDanych: string): string | null =>
   grupa ?? (skrzynkaE2e() ? `${katalogDanych}/e2e-grupa` : null);
+/**
+ * `oczkoE2eOknoStraznika=<s>` (E2E-A4, P-358 opcja 1): okno strażnika serii (RD-17) w sekundach zamiast `STRAZNIK_OKNO_S` (2 s). Czas trzech stuknięć Maestro
+ * zależy od maszyny (#131: 2,45 s, #135: 4,18 s), więc scenariusz 04 podaje 6 s; domena z oknem 2 s ma osobne testy jednostkowe. Poza E2E albo przy złej
+ * wartości (poza 0 < s ≤ 600) okno z konfiguracji.
+ */
+export function oknoStraznikaS(): number {
+  const a = argument('oczkoE2eOknoStraznika');
+  const n = a === null ? NaN : Number(a);
+  return Number.isFinite(n) && n > 0 && n <= 600 ? n : STRAZNIK_OKNO_S;
+}

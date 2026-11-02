@@ -42,6 +42,7 @@ Argumenty startu (`launchApp: arguments:`; na iOS Maestro przekazuje je jako arg
 | Argument | Wartość | Kontrakt |
 |---|---|---|
 | `oczkoE2eTeraz` | czas lokalny ISO bez strefy, np. `2026-11-07T20:00:00` | port `Zegar` (Z07-18): `teraz()` = podana chwila + czas, który upłynął od startu procesu (zegar **biegnie**: RD-17 liczy odstępy); `strefa` = strefa symulatora; `dzien` z podanej daty |
+| `oczkoE2eOknoStraznika` | liczba sekund, 0 < s ≤ 600, np. `6` | okno strażnika serii (RD-17) zamiast `STRAZNIK_OKNO_S` (2 s); tylko scenariusz 04 (czas 3 stuknięć Maestro zależy od maszyny: #131 2,45 s, #135 4,18 s; E2E-A4, P-358). Zła wartość albo build bez E2E: 2 s. Domena z oknem 2 s ma testy jednostkowe — E2E sprawdza podłączenie |
 | `oczkoE2eSiec` | `brak` | adapter sieci zwraca „brak połączenia”, każde wywołanie sieci = błąd w logu (NFR-OFF-001) |
 | `oczkoE2eAwariaStartu` | `przed-kamieniem` | wymuszona awaria procesu przed kamieniem milowym ADR-0019 (start liczony jako nieudany); po zapisie stanu startu pusty ekran z `testID` `e2e-awaria-startu` |
 | `oczkoE2eIcloud` | `wlaczony` \| `wylaczony` \| `brak-konta` \| `brak-miejsca` \| `konflikt` | atrapa iCloud (tylko z `EXPO_PUBLIC_ICLOUD_FAKE=1`): stan konta; `konflikt` = przy starcie druga wersja pierwszego licznika: wartość +5, urządzenie „iPad (test)”, teraz − 1 min (P-230) |

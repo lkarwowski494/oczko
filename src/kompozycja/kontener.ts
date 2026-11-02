@@ -25,7 +25,7 @@ import { liveActivity } from '../platforma/live-activity';
 import { tagiSystemowe, zegar24h } from '../platforma/lokalizacja';
 import { siecAplikacji } from '../platforma/siec';
 import { sklepAplikacji } from '../platforma/sklep';
-import { grupaAplikacjiE2e, paneleE2e, skrzynkaE2e, skrzynkaTestowa, trybIcloudE2e, ZEGAREK_SZTUCZNY, zegarAplikacji } from '../platforma/tryb-e2e';
+import { grupaAplikacjiE2e, oknoStraznikaS, paneleE2e, skrzynkaE2e, skrzynkaTestowa, trybIcloudE2e, ZEGAREK_SZTUCZNY, zegarAplikacji } from '../platforma/tryb-e2e';
 import { przelacznikIcloudWidoczny, silnikIcloud, type SilnikIcloud } from '../platforma/icloud';
 import { platformaWzoru, type PlatformaWzoru } from '../platforma/wzor';
 import { skrzynkaWKatalogu } from '../platforma/skrzynka';
@@ -90,6 +90,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszTekst(plikPro, t) }, () => zegar.teraz().ms);
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
+    straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
     magazyn: utworzMagazyn(s.pliki), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
     dziennik: dziennikUrzadzenia(baza),

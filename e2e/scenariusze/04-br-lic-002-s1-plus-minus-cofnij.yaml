@@ -13,10 +13,17 @@ tags:
   - podstawowy
   - stan-licznika
 ---
-- runFlow:
-    file: subflows/start-czysty.yaml
-    env:
-      TERAZ: "2026-11-10T19:30:00"
+# Własny start zamiast subflows/start-czysty.yaml (te same kroki + oczkoE2eOknoStraznika): okno strażnika 6 s zamiast 2 s, bo czas 3 stuknięć Maestro zależy od maszyny
+# (#131: 2,45 s, #135: 4,18 s; E2E-A4, P-358). Tylko build E2E; domena z oknem 2 s ma testy jednostkowe, tu sprawdzamy podłączenie i pytanie o serię.
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "6"
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- assertVisible: { id: "licznik-plus" }
 # --- granica zera: −1 przy 0 zostaje 0 (BR-LIC-002/S3) ---
 - tapOn: { id: "licznik-minus" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
@@ -32,8 +39,9 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - assertNotVisible: { id: "baner-serii" }
 - takeScreenshot: 04-po-minus
-- runFlow: subflows/odstep.yaml
-# --- seria: 3 stuknięcia w < 2 s → baner strażnika bez limitu czasu (BR-LIC-019/S1, RD-17) ---
+# odstęp > okno strażnika (6 s), żeby dwa wcześniejsze +1 nie weszły do serii (baner „Added 3 rows”, nie 5)
+- extendedWaitUntil: { visible: { id: "e2e-nigdy" }, timeout: 6500, optional: true }
+# --- seria: 3 stuknięcia w oknie strażnika (w E2E 6 s, produkt 2 s) → baner strażnika bez limitu czasu (BR-LIC-019/S1, RD-17) ---
 - tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - assertVisible: { id: "baner-serii", text: "Added 3 rows in .*Undo\\?" }

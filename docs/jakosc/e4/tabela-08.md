@@ -100,6 +100,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-importu.test.ts` | zielony (główny zestaw) | 16 | P-220, P-230, P-248 | `src/domena/porty`<br>`src/kompozycja/e2e/skrzynka`<br>`src/konfiguracja`<br>`src/platforma/skrzynka`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/stan-blokada.test.ts` | zielony (główny zestaw) | 3 | BR-LIC-004, P-133, P-135 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/ekran-blokady` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/start-kopie.test.ts` | zielony (główny zestaw) | 8 | BR-DAN-004/S1, BR-DAN-010/S3, NFR-PRY-001, P-047, P-070, P-080, R-082, R-088, R-089 | `src/dane/baza/kopia`<br>`src/dane/baza/polaczenie`<br>`src/dane/baza/sciezki`<br>`src/dane/kopia-ratunkowa`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/start`<br>`src/przypadki-uzycia/zgloszenie` | Z07-21, Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-okno-e2e.test.ts` | zielony (główny zestaw) | 3 | P-358, RD-17 | `src/przypadki-uzycia/widok-licznika` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-serii-8b.test.ts` | zielony (główny zestaw) | 7 | BR-LIC-019, RD-17 | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-licznika` | ER-24, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/ukonczenie-pora.test.ts` | zielony (główny zestaw) | 0 | P-137, RD-16 | `src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/usun-wszystko-kopia.test.ts` | zielony (główny zestaw) | 3 | P-328 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/porty-propozycja`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
@@ -108,7 +109,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-licznika.test.ts` | zielony (główny zestaw) | 13 | BR-LIC-001, BR-LIC-003, BR-PRJ-014, P-065, P-126, RD-13, RD-17 | `src/konfiguracja`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/sesja`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektow` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-projektu.test.ts` | zielony (główny zestaw) | 10 | BR-LIC-018, BR-PRJ-004/S3, BR-PRJ-005, BR-PRJ-014, P-184, P-199, RD-11, RD-14, RD-15, RD-19 | `src/przypadki-uzycia/widok-projektu` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wloczki-projektu.test.ts` | zielony (główny zestaw) | 12 | BR-ZAP-002, P-330, P-333, P-334 | `src/przypadki-uzycia/widok-ukonczenia`<br>`src/przypadki-uzycia/zapas` | — |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-dodaj.test.ts` | zielony (główny zestaw) | 10 | BR-WZR-001, BR-WZR-002, BR-WZR-007, P-218, P-221, P-252 | `src/domena/bledy`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-dodaj.test.ts` | zielony (główny zestaw) | 10 | BR-WZR-001, BR-WZR-002, BR-WZR-007, P-218, P-221, P-252, P-353 | `src/domena/bledy`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miejsce.test.ts` | zielony (główny zestaw) | 6 | BR-PRJ-011 | `src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-miejsce`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miniatury.test.ts` | zielony (główny zestaw) | 2 | — | `src/kompozycja/miniatury`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-notatki-widok.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003, BR-WZR-008, BR-WZR-008/S2, P-330 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
@@ -232,7 +233,9 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 7 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 8 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
+| 9 ? | `tests/adaptery/tryb-e2e-straznik.test.ts` | zielony (główny zestaw) | 6 | P-358, RD-17 | `src/konfiguracja`<br>`src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 6 | — | `src/domena/rysik` | — |
+| 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 6 | P-285 | `src/platforma/wzor` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/platforma/zdjecia` | — |
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
@@ -249,4 +252,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 245; zależnych od poprawek: 158.
+Razem plików testów: 248; zależnych od poprawek: 158.

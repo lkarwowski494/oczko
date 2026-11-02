@@ -144,9 +144,12 @@ test('drugi import tego samego PDF do projektu = drugi wzór (osobny wiersz), pl
   expect(await ile(s.baza, 'plik')).toBe(1);
 });
 
-test('przegląd: oryginał .doc zapisany z rozszerzeniem doc (nie docx)', async () => {
+// P-353 (b), ADR-0031 pkt 5: Word to wyłącznie .docx — .doc odsiewa `rodzajPliku` przed dodajWzor, więc gałąź „oryginał .doc” była nieosiągalna i usunięto ją
+// razem z dawnym testem („przegląd 2026-10-26”). Oryginał Worda trafia do magazynu zawsze jako docx.
+test('oryginał Word zapisany zawsze z rozszerzeniem docx (bez gałęzi .doc)', async () => {
   const { s, z } = await srodowisko();
   const p = plikWe(s.katalog, 'Stary.doc', Buffer.from('ÐÏ doc'), 'application/msword');
   expect((await dodajWzor(z, { projektId: 'p1', nazwa: 'Stary', zrodlo: { rodzaj: 'word', plik: p } })).ok).toBe(true);
-  expect(await ile(s.baza, 'plik', "rozszerzenie = 'doc'")).toBe(1);
+  expect(await ile(s.baza, 'plik', "rozszerzenie = 'doc'")).toBe(0);
+  expect(await ile(s.baza, 'plik', "rozszerzenie = 'docx'")).toBe(1);
 });
