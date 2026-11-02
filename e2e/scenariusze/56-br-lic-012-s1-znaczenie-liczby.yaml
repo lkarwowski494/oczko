@@ -1,0 +1,32 @@
+# BR-LIC-012/S1 (docs/brd/wymagania-licznik.md:201): tryb „rząd w trakcie”, 12 skończonych → licznik pokazuje „rząd 13”;
+# S2 (RD-12-W7): tryb „rząd w trakcie”, powtórzenie 8 rzędów, 12 skończonych → „rząd 13” oraz „powtórzenie 2, rząd 5”. F-09 (07-jakosc-033, część A).
+# Domyślnie (przed zmianą) licznik pokazuje 12 i „Now working row 13”. Wyrocznia: BRD i RD-12, nie kod. Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-LIC-012/S1 · Tryb „rząd w trakcie”: 12 skończonych → duża liczba 13 (S2: powtórzenie 8 → powtórzenie 2, rząd 5)"
+tags:
+  - BR-LIC-012-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "12" } }
+- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 13" }
+- takeScreenshot: 56-domyslnie-skonczone
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-znaczenie" }
+- tapOn: { id: "menu-znaczenie" }
+- assertVisible: "The row I’m on"
+- tapOn: "The row I’m on"
+- assertVisible: { text: "The row I’m on", selected: true }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "13" }
+- assertNotVisible: { id: "licznik-teraz-rzad" }
+- takeScreenshot: 56-w-trakcie-13
+# S2: powtórzenie 8 rzędów przy 12 skończonych w trybie „rząd w trakcie” (RD-12-W7: r = 13)
+- runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "8" } }
+- extendedWaitUntil: { visible: { text: ".*repeat 2 · row 5 of 8.*" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "13" }
+- takeScreenshot: 56-w-trakcie-powtorzenie
