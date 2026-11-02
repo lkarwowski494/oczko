@@ -211,8 +211,9 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 16 | BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 19 | BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284, P-353, P-360, P-361 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-skrzynka.test.tsx` | zielony (główny zestaw) | 4 | P-046, P-230 | `src/ekrany/WzorSkrzynka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-czeka-w-liscie.test.tsx` | zielony (główny zestaw) | 3 | P-353 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-miejsce.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-011 | `src/przypadki-uzycia/wzor-miejsce` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-notatki.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-003, BR-WZR-008, P-330 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-plik-word.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/bledy`<br>`src/domena/rodzaj-pliku` | — |
@@ -261,4 +262,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 257; zależnych od poprawek: 166.
+Razem plików testów: 258; zależnych od poprawek: 166.

@@ -53,6 +53,10 @@ export default function EkranWzoru(): React.ReactElement {
   const [linkAdres, ustawLinkAdres] = useState(''); // adres wpisany w arkuszu linku; wraca do pola, gdy zlecenia „czeka na sieć” nie da się zapisać (ADR-0031 pkt 3)
   const [czekaSiec, ustawCzekaSiec] = useState(() => kontener.wzor.k.stan().czekaSiec); // strony WWW czekające na sieć (design-spec :660)
   useEffect(() => { const odswiez = () => ustawCzekaSiec(kontener.wzor.k.stan().czekaSiec); odswiez(); return kontener.wzor.k.naZmiane(odswiez); }, [kontener]);
+  // Poz. 12 C: gdy strona przestaje czekać (zapisała się po powrocie sieci albo użytkowniczka ją usunęła), lista wzorów otwartego wzoru się odświeża — nowy wzór pojawia się
+  // w ▾ bez ogłoszenia. Otwarty wzór zostaje ten sam; bez otwartego wzoru (grupa na ekranie projektu) nic się nie przełącza.
+  const otwartyWzor = useRef<string | undefined>(undefined);
+  const liczbaCzekajacych = useRef(czekaSiec.length);
 
   const wczytaj = useCallback(async (wybrany?: string) => {
     const w = await licznik.widok();
@@ -74,6 +78,10 @@ export default function EkranWzoru(): React.ReactElement {
   const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
   useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).finally(() => { void wczytaj(id); }); setRysikOtwarcie(); }, [wczytaj, id, zw, katalogRysunkow]);
+  useEffect(() => {
+    if (czekaSiec.length < liczbaCzekajacych.current && otwartyWzor.current) void wczytaj(otwartyWzor.current);
+    liczbaCzekajacych.current = czekaSiec.length;
+  }, [czekaSiec, wczytaj]);
   const [dodano, ustawDodano] = useState(false); // „Add pattern” z ekranu projektu: źródło od razu, raz (W7a)
   useEffect(() => {
     if (!lw || dodano || !dodajParam || !['plik', 'skan', 'zdjecia', 'link'].includes(dodajParam)) return;
@@ -136,6 +144,7 @@ export default function EkranWzoru(): React.ReactElement {
   }
 
   // Dokument dla widoku natywnego: nowy obiekt tylko przy zmianie wzoru albo obrotów — +1 nie wysyła ponownie rysunków (przegląd 2026-10-26).
+  otwartyWzor.current = widok?.wzorId;
   const obrotyKlucz = widok ? JSON.stringify(widok.obroty) : '';
   const dokument = useMemo(() => (widok && widok.plikPdf ? {
     wzorId: widok.wzorId, plikPdf: widok.plikPdf, rysunki: widok.rysunki,
@@ -195,17 +204,19 @@ export default function EkranWzoru(): React.ReactElement {
         else ustawPrzytrzymanie({ strona: n.strona, y: n.y });
       }} />
   ) : <View style={{ flex: 1 }} />;
+  const oczekujace = czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa }));
   const liczba = lw.znaczenie === 'w_trakcie' ? lw.wartosc + 1 : lw.wartosc;
   const strony = strona?.razem ?? 0;
   return (
     <Bezpieczny pelnaSzerokosc>
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1 }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1 }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => router.back()}
         naPrzelacz={(w) => void wczytaj(w)}
+        naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}
         naCofnij={() => ustawCofnij((n) => n + 1)}
         chipy={chipy} otwartyChip={otwartyChip} naChip={ustawOtwartyChip}

@@ -111,6 +111,34 @@ test('W9b, P-218 (3): przy ≥ 2 wzorach tytuł przełącza (menu z ✓ przy bie
   expect(w.naPrzelacz).toHaveBeenCalledWith('w2');
 });
 
+// Aneks partii 8, poz. 12 (wariant C, P-353 (d), P-360/P-361; design-spec.md:936, makieta `aneks8.html` `wzor-przelacznik-czeka`): wiersz „czeka na sieć” w liście
+// wzorów ▾ z ✕ (`wzor.czeka_siec`, `wzor.usun_oczekujacy_a11y`); ▾ jest też przy jednym wzorze, gdy coś czeka.
+test('poz. 12 C: jeden wzór i strona czekająca na sieć → ▾ jest, lista pokazuje wiersz „Waiting for the internet…” z ✕, ✕ usuwa oczekującego', () => {
+  const w = { ...wywolania(), naUsunOczekujacy: jest.fn() };
+  render(<PrzegladarkaWzoru stan={stan({ oczekujace: [{ id: 'z1', nazwa: 'Web page' }] })} t={t} widok={widok} {...w} />);
+  fireEvent.press(screen.getByRole('button', { name: 'Pattern: Harbor chart. Switch pattern' }));
+  expect(screen.getByText('Waiting for the internet to save the web page.')).toBeTruthy();
+  expect(screen.getByText('Web page')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Remove Web page from the list' }));
+  expect(w.naUsunOczekujacy).toHaveBeenCalledWith('z1');
+});
+test('poz. 12 C: wiersz oczekującego jest obok wzorów (≥ 2), nie przełącza i nie jest zaznaczony; bez oczekujących lista bez wiersza', () => {
+  const w = { ...wywolania(), naUsunOczekujacy: jest.fn() };
+  const dwa = [{ wzorId: 'w1', nazwa: 'Harbor chart' }, { wzorId: 'w2', nazwa: 'Edging' }];
+  const r = render(<PrzegladarkaWzoru stan={stan({ wzory: dwa, oczekujace: [{ id: 'z1', nazwa: 'Web page' }] })} t={t} widok={widok} {...w} />);
+  fireEvent.press(screen.getByTestId('wzor-przelacz'));
+  expect(screen.getByRole('menuitem', { name: 'Harbor chart', selected: true })).toBeTruthy();
+  expect(screen.getByRole('menuitem', { name: 'Edging' })).toBeTruthy();
+  fireEvent.press(screen.getByText('Waiting for the internet to save the web page.'));
+  expect(w.naPrzelacz).not.toHaveBeenCalled();
+  r.rerender(<PrzegladarkaWzoru stan={stan({ wzory: dwa, oczekujace: [] })} t={t} widok={widok} {...w} />);
+  expect(screen.queryByText('Waiting for the internet to save the web page.')).toBeNull();
+});
+test('poz. 12 C (strażnik): bez oczekujących jeden wzór nie ma ▾, jak dotąd', () => {
+  render(<PrzegladarkaWzoru stan={stan({ oczekujace: [] })} t={t} widok={widok} {...wywolania()} />);
+  expect(screen.queryByTestId('wzor-przelacz')).toBeNull();
+});
+
 test('menu •••: obrót strony, usunięcie do kosza po potwierdzeniu (P-229, P-275: tekst 04 wzor.usun_opis z terminem)', () => {
   const w = wywolania();
   render(<PrzegladarkaWzoru stan={stan()} t={t} widok={widok} {...w} terminKosza="Nov 25" />);
