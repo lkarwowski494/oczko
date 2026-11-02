@@ -257,7 +257,7 @@ function style(k: Kolory) {
     ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.podpis, color: k.olowek, marginTop: odstep.s },
+    naglowek: { ...typografia.drobny, color: k.olowek, marginTop: odstep.s }, // wzorzec `.naglowek-grupy`: 13 pt (partia8.html:76), H-1c
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     czesc: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wiersz: { flexDirection: 'row', alignItems: 'center', minHeight: cel.minimum },
