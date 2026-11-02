@@ -1295,7 +1295,7 @@
   "sprawdzalne": "czesciowo",
   "wyrocznia": "RD-13-W1",
   "poziom_sugerowany": "domena-Node",
-  "uwagi": "reguła tak; „zmienia wygląd całego ekranu” → RNTL (stan zakreślenia, docs/design/design-spec.md:23); wibracja jak BR-LIC-020",
+  "uwagi": "reguła tak (RD-13-W1); pas zakreślacza pod liczbą z instrukcją w podpisie +1, reszta ekranu bez zmian (docs/design/design-spec.md:30; ZM-09, ER-59) → RNTL (stan pasa i podpis przycisku +1); wibracja jak BR-LIC-020",
   "plik": "docs/brd/wymagania-licznik.md:138",
   "rodzaj": "BR"
  },
@@ -1971,7 +1971,7 @@
   "sprawdzalne": "czesciowo",
   "wyrocznia": "brak",
   "poziom_sugerowany": "tylko-urządzenie",
-  "uwagi": "stoper na ekranie blokady (Live Activity) tylko urządzenie; zatrzymanie przez intencję testowalne w dane-node",
+  "uwagi": "ekran blokady tylko do odczytu: czas sesji i rząd, bez elementu zatrzymującego stoper; jedyny element sterujący to +1 (BR-LIC-014; P-133 1.1a; ZM-10, ER-60); Live Activity na ekranie blokady tylko urządzenie; zatrzymanie po odblokowaniu w aplikacji — ekran (RNTL/E2E)",
   "plik": "docs/brd/wymagania-projekt.md:93",
   "rodzaj": "BR"
  },
@@ -2272,6 +2272,19 @@
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "odrzucenie dłoni tylko na iPadzie z Pencil; automat: konfiguracja PencilKit drawingPolicy = pencilOnly (P-042). Ryzyko szczątkowe (docs/scope-contract.md:219)",
   "plik": "docs/brd/wymagania-projekt.md:287",
+  "rodzaj": "BR"
+ },
+ {
+  "id": "BR-WZR-004/S2",
+  "br": "BR-WZR-004",
+  "f": "F-28",
+  "modul": "wzór",
+  "tytul": "Pisanie po wzorze: Rysik pisze, palec przewija (P-042, ADR-0012; P-217; P-327, ER-61)",
+  "sprawdzalne": "czesciowo",
+  "wyrocznia": "brak",
+  "poziom_sugerowany": "domena-Node",
+  "uwagi": "po pierwszym dotknięciu rysikiem bez wybranego narzędzia wybierany jest Pen, potem pencilOnly (P-327 a; P-218 Q2a): czysta funkcja `poPierwszymRysiku` z testem jednostkowym (partia 8d, P-225; obecnie tests/domena/wzor/uklad-rysik.test.ts); prawdziwy rysik tylko urządzenie — ryzyko szczątkowe P-226",
+  "plik": "docs/brd/wymagania-projekt.md:291",
   "rodzaj": "BR"
  },
  {

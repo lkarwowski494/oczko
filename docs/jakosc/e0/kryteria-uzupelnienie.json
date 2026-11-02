@@ -1360,22 +1360,6 @@
   }
  },
  {
-  "id": "BR-WZR-004/S2",
-  "br": "BR-WZR-004",
-  "f": "F-28",
-  "tytul": "Pisanie po wzorze: Rysik pisze, palec przewija (P-042, ADR-0012; P-217)",
-  "zakres": "MVP",
-  "rodzaj": "BR",
-  "plik": null,
-  "pokrycie": {
-   "typ": "poziom-br",
-   "pliki": [
-    "tests/domena/wzor/uklad-rysik.test.ts"
-   ],
-   "uwaga": "ID scenariusza do dopisania w nazwie testu (1.0.1, 07-jakosc-003)"
-  }
- },
- {
   "id": "BR-WZR-005/S2",
   "br": "BR-WZR-005",
   "f": "F-25",

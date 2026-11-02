@@ -2,23 +2,23 @@
  "stats": {
   "br": 71,
   "f": 49,
-  "scen": 183,
-  "all": 220,
+  "scen": 184,
+  "all": 221,
   "cnt": {
    "tak": 159,
-   "czesciowo": 56,
+   "czesciowo": 57,
    "nie": 5
   },
   "cntb": {
    "tak": 143,
-   "czesciowo": 39,
+   "czesciowo": 40,
    "nie": 1
   },
   "lvl": {
    "E2E-symulator": 26,
    "dane-node:sqlite": 53,
    "tylko-urządzenie": 18,
-   "domena-Node": 70,
+   "domena-Node": 71,
    "ekran-RNTL": 52,
    "—": 1
   },
