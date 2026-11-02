@@ -9,5 +9,5 @@ export default function EkranUczciweZasady(): React.ReactElement {
   const { kontener } = useAplikacja();
   const router = useRouter();
   useEffect(() => () => { void oznaczOknoWidziane(kontener.z); }, [kontener]); // gest w dół też zamyka = widziane
-  return <OknoUczciweZasady t={kontener.j.t} naZamknij={() => router.back()} naPlany={() => router.replace('/oferty')} />;
+  return <OknoUczciweZasady t={kontener.j.t} naZamknij={() => router.back()} naPlany={() => router.replace({ pathname: '/oferty', params: { skad: 'uczciwe-zasady' } })} /* E2-137-A2: oferty wiedzą, że przyszły z okna, i kończą jawnie na liście */ />;
 }
