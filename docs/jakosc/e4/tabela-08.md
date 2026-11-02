@@ -167,6 +167,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ladowanie-trasy.test.tsx` | zielony (główny zestaw) | 7 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/liczba-mnoga-limit-dni.test.ts` | zielony (główny zestaw) | 3 | P-307 | `src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-ax5.test.tsx` | zielony (główny zestaw) | 4 | NFR-DOS-002, P-266, P-275, P-277, P-287 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-blad-zapisu.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/Licznik`<br>`src/ekrany/wspolne`<br>`src/kompozycja/preferencje` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-limit.test.tsx` | zielony (główny zestaw) | 7 | BR-ZAK-006, BR-ZAK-006/S1, BR-ZAK-006/S2, BR-ZAK-006/S3, BR-ZAK-006/S5, BR-ZAK-006/S6, KP-13, P-046, P-065 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-minus-plus-bez-projektu.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-002/S3, P-358 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-oczek.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-006 | `src/dane/repozytoria/dni`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu` | Z07-22 |
@@ -296,4 +297,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 292; zależnych od poprawek: 186.
+Razem plików testów: 293; zależnych od poprawek: 187.

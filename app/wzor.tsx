@@ -11,11 +11,14 @@ import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, 
 import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
+import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
+import type { WynikEkranu } from '../src/ekrany/wspolne';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano } from '../src/kompozycja/po-zapisie';
+import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
@@ -150,6 +153,13 @@ export default function EkranWzoru(): React.ReactElement {
   function pokaz(a: { tytul: string; opis: string } | null): void {
     if (a) Alert.alert(a.tytul, a.opis || undefined, [{ text: t('wspolne.ok') }]);
   }
+  /** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
+   *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
+  function bladLicznika(r: WynikEkranu<unknown>): void {
+    if (r.ok || r.powod === 'limit' || r.powod === 'zablokowany') return;
+    if (aplikacja.preferencje.stan().wibracje) kontener.porty.haptyka.zagraj('bladZapisu');
+    oglos(tekstBleduZapisu(t));
+  }
 
   // Dokument dla widoku natywnego: nowy obiekt tylko przy zmianie wzoru albo obrotów — +1 nie wysyła ponownie rysunków (przegląd 2026-10-26).
   otwartyWzor.current = widok?.wzorId;
@@ -247,8 +257,8 @@ export default function EkranWzoru(): React.ReactElement {
         tylkoRysik={rysik.tylkoRysik}
         naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (zapisano(aplikacja, r)) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
         potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])}
-        naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
-        naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; await wczytaj(widok.wzorId); return r; }}
+        naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); bladLicznika(r); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
+        naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
       />
     </Bezpieczny>
   );

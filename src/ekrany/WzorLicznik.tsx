@@ -15,6 +15,9 @@ export type PropsLicznikaWzoru = {
   naMinus(): void;
 };
 
+/** M1-004: tekst błędu zapisu paska — ten sam w alercie pod liczbą i w ogłoszeniu VoiceOver, które gra trasa (`app/wzor.tsx`). */
+export const tekstBleduZapisu = (t: Tlumacz): string => t('licznik.blad_zapisu');
+
 export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   const { t, obok } = p;
   const st = style(useKolory());
@@ -26,7 +29,7 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
           ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
           : <Text style={st.podpis} testID="licznik-podpis">{t('licznik.jednostka_w_trakcie')}</Text>}{/* P2-5b, P-373: jak Licznik.tsx:100 */}
       </View>
-      {p.blad && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{t('licznik.blad_zapisu')}</Text>}
+      {p.blad && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{tekstBleduZapisu(t)}</Text>}
       <View style={obok ? st.przyciskiKolumna : st.przyciski}>
         <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={st.minus} testID="licznik-minus">
           <Text style={st.minusTekst}>{t('licznik.minus')}</Text>
