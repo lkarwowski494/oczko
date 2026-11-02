@@ -412,7 +412,6 @@
     "import_plik": "Fil: {{plik}}",
     "scal": "Slå sammen med det som er her",
     "zastap": "Erstatt det som er her",
-    "zastapiono": "Ferdig. En kopi av dataene dine fra før importen er lagret som {{nazwa}} i {{miejsce}}.",
     "konflikt_tytul": "To versjoner av {{licznik}}",
     "l_projekt_one": "{{count}} prosjekt",
     "l_projekt_other": "{{count}} prosjekter",

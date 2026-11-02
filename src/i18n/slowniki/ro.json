@@ -456,7 +456,6 @@
     "import_plik": "Fișier: {{plik}}",
     "scal": "Îmbină cu ce există aici",
     "zastap": "Înlocuiește ce există aici",
-    "zastapiono": "Gata. O copie a datelor tale de dinainte de import este salvată ca {{nazwa}} în {{miejsce}}.",
     "konflikt_tytul": "Două versiuni pentru {{licznik}}",
     "konflikt_wybor_one": "{{count}} rând · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} rânduri · {{urzadzenie}} · {{godzina}}",

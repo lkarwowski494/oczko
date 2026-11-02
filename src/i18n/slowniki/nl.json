@@ -412,7 +412,6 @@
     "import_plik": "Bestand: {{plik}}",
     "scal": "Samenvoegen met wat er is",
     "zastap": "Vervang wat er is",
-    "zastapiono": "Klaar. Een kopie van je gegevens van vóór de import is bewaard als {{nazwa}} in {{miejsce}}.",
     "konflikt_tytul": "Twee versies van {{licznik}}",
     "l_projekt_one": "{{count}} project",
     "l_projekt_other": "{{count}} projecten",

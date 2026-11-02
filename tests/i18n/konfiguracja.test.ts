@@ -50,7 +50,7 @@ describe('zależności i18n (ADR-0017: bez biblioteki i polyfilla, wzór z Treni
 describe('pseudolokalizacja wygenerowana skryptem', () => {
   it('src/i18n/pseudo/en-XA.json zgodny ze skryptem na en.json (npm run i18n:pseudo)', () => {
     const tmp = join(mkdtempSync(join(tmpdir(), 'xa-')), 'xa.json');
-    const r = spawnSync(process.execPath, ['scripts/sprawdz-i18n.mjs', 'src/i18n/slowniki', '--zrodlo', 'en', '--pseudo', tmp], { cwd: root, encoding: 'utf8' });
+    const r = spawnSync(process.execPath, ['scripts/sprawdz-i18n.mjs', 'src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json', '--pseudo', tmp], { cwd: root, encoding: 'utf8' });
     expect(r.status).toBe(0);
     expect(readFileSync(join(root, 'src/i18n/pseudo/en-XA.json'), 'utf8')).toBe(readFileSync(tmp, 'utf8'));
   });

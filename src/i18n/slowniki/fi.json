@@ -412,7 +412,6 @@
     "import_plik": "Tiedosto: {{plik}}",
     "scal": "Yhdistä nykyisiin",
     "zastap": "Korvaa nykyiset",
-    "zastapiono": "Valmis. Kopio tiedoistasi ennen tuontia on tallennettu nimellä {{nazwa}} sijaintiin {{miejsce}}.",
     "konflikt_tytul": "Kaksi versiota: {{licznik}}",
     "l_projekt_one": "{{count}} projekti",
     "l_projekt_other": "{{count}} projektia",

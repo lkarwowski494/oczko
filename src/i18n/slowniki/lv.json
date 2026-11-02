@@ -456,7 +456,6 @@
     "import_plik": "Fails: {{plik}}",
     "scal": "Apvienot ar esošo",
     "zastap": "Aizstāt esošo",
-    "zastapiono": "Gatavs. Datu kopija no pirms importa ir saglabāta ar nosaukumu {{nazwa}}, atrašanās vieta: {{miejsce}}.",
     "konflikt_tytul": "Divas versijas: {{licznik}}",
     "konflikt_wybor_one": "{{count}} rinda · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_zero": "{{count}} rindu · {{urzadzenie}} · {{godzina}}",

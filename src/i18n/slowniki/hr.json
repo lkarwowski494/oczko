@@ -456,7 +456,6 @@
     "import_plik": "Datoteka: {{plik}}",
     "scal": "Spoji s postojećim",
     "zastap": "Zamijeni postojeće",
-    "zastapiono": "Gotovo. Kopija tvojih podataka prije uvoza spremljena je kao {{nazwa}} u {{miejsce}}.",
     "konflikt_tytul": "Dvije verzije: {{licznik}}",
     "konflikt_wybor_one": "{{count}} red · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} reda · {{urzadzenie}} · {{godzina}}",

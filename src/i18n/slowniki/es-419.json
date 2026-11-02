@@ -456,7 +456,6 @@
     "import_plik": "Archivo: {{plik}}",
     "scal": "Combinar con lo que hay aquí",
     "zastap": "Reemplazar lo que hay aquí",
-    "zastapiono": "Listo. Una copia de tus datos de antes de la importación se guardó como {{nazwa}} en {{miejsce}}.",
     "konflikt_tytul": "Dos versiones de {{licznik}}",
     "konflikt_wybor_one": "{{count}} vuelta · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} vueltas · {{urzadzenie}} · {{godzina}}",

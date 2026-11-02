@@ -412,7 +412,6 @@
     "import_plik": "Файл: {{plik}}",
     "scal": "Обединяване с наличното",
     "zastap": "Замяна на наличното",
-    "zastapiono": "Готово. Копие на данните ви отпреди импорта е запазено като {{nazwa}} в {{miejsce}}.",
     "konflikt_tytul": "Две версии на {{licznik}}",
     "konflikt_wybor_one": "{{count}} ред · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} реда · {{urzadzenie}} · {{godzina}}",

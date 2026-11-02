@@ -500,7 +500,6 @@
     "import_plik": "Файл: {{plik}}",
     "scal": "Об'єднати з наявним",
     "zastap": "Замінити наявне",
-    "zastapiono": "Готово. Копію ваших даних до імпорту збережено як {{nazwa}} у {{miejsce}}.",
     "konflikt_tytul": "Дві версії {{licznik}}",
     "konflikt_wybor_one": "{{count}} ряд · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} ряди · {{urzadzenie}} · {{godzina}}",

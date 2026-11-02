@@ -500,7 +500,6 @@
     "import_plik": "Failas: {{plik}}",
     "scal": "Sujungti su esamais duomenimis",
     "zastap": "Pakeisti esamus duomenis",
-    "zastapiono": "Atlikta. Jūsų duomenų kopija iki importo išsaugota kaip {{nazwa}} vietoje: {{miejsce}}.",
     "konflikt_tytul": "Dvi versijos: {{licznik}}",
     "konflikt_wybor_one": "{{count}} eilė · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} eilės · {{urzadzenie}} · {{godzina}}",

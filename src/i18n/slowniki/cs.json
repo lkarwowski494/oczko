@@ -500,7 +500,6 @@
     "import_plik": "Soubor: {{plik}}",
     "scal": "Sloučit s tím, co tu je",
     "zastap": "Nahradit to, co tu je",
-    "zastapiono": "Hotovo. Kopie vašich dat před importem je uložena jako {{nazwa}} v {{miejsce}}.",
     "konflikt_tytul": "Dvě verze: {{licznik}}",
     "konflikt_wybor_one": "{{count}} řada · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} řady · {{urzadzenie}} · {{godzina}}",

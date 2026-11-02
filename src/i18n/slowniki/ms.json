@@ -368,7 +368,6 @@
     "import_plik": "Fail: {{plik}}",
     "scal": "Gabungkan dengan yang ada di sini",
     "zastap": "Gantikan yang ada di sini",
-    "zastapiono": "Selesai. Salinan data anda sebelum import disimpan sebagai {{nazwa}} dalam {{miejsce}}.",
     "konflikt_tytul": "Dua versi {{licznik}}",
     "konflikt_wybor_other": "{{count}} baris · {{urzadzenie}} · {{godzina}}",
     "konflikt_a11y_other": "Simpan {{count}} baris daripada {{urzadzenie}}, {{godzina}}",

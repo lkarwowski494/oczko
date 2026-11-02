@@ -456,7 +456,6 @@
     "import_plik": "Fichier : {{plik}}",
     "scal": "Fusionner avec l’existant",
     "zastap": "Remplacer l’existant",
-    "zastapiono": "Terminé. Une copie de vos données d’avant l’import est enregistrée sous {{nazwa}} dans {{miejsce}}.",
     "konflikt_tytul": "Deux versions de {{licznik}}",
     "l_projekt_many": "{{count}} projets",
     "l_projekt_one": "{{count}} projet",

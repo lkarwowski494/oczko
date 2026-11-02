@@ -412,7 +412,6 @@
     "import_plik": "Fil: {{plik}}",
     "scal": "Slå ihop med det som finns här",
     "zastap": "Ersätt det som finns här",
-    "zastapiono": "Klart. En kopia av dina data från före importen är sparad som {{nazwa}} i {{miejsce}}.",
     "konflikt_tytul": "Två versioner av {{licznik}}",
     "l_projekt_one": "{{count}} projekt",
     "l_projekt_other": "{{count}} projekt",

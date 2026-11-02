@@ -412,7 +412,6 @@
     "import_plik": "Αρχείο: {{plik}}",
     "scal": "Συγχώνευση με τα υπάρχοντα",
     "zastap": "Αντικατάσταση των υπαρχόντων",
-    "zastapiono": "Έτοιμο. Ένα αντίγραφο των δεδομένων σας από πριν την εισαγωγή αποθηκεύτηκε ως {{nazwa}} στο {{miejsce}}.",
     "konflikt_tytul": "Δύο εκδοχές του {{licznik}}",
     "konflikt_wybor_one": "{{count}} σειρά · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} σειρές · {{urzadzenie}} · {{godzina}}",

@@ -500,7 +500,6 @@
     "import_plik": "Файл: {{plik}}",
     "scal": "Объединить с текущими",
     "zastap": "Заменить текущие",
-    "zastapiono": "Готово. Копия ваших данных до импорта сохранена как {{nazwa}} в {{miejsce}}.",
     "konflikt_tytul": "Две версии: {{licznik}}",
     "l_projekt_one": "{{count}} проект",
     "l_projekt_few": "{{count}} проекта",

@@ -412,7 +412,6 @@
     "import_plik": "Dosya: {{plik}}",
     "scal": "Buradakilerle birleştir",
     "zastap": "Buradakilerin yerine koy",
-    "zastapiono": "Bitti. İçe aktarma öncesi verilerinizin kopyası kaydedildi. Ad: {{nazwa}}, konum: {{miejsce}}.",
     "konflikt_tytul": "{{licznik}} için iki sürüm",
     "konflikt_wybor_one": "{{count}} sıra · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} sıra · {{urzadzenie}} · {{godzina}}",

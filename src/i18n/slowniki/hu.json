@@ -412,7 +412,6 @@
     "import_plik": "Fájl: {{plik}}",
     "scal": "Egyesítés a meglévővel",
     "zastap": "A meglévő felülírása",
-    "zastapiono": "Kész. Az importálás előtti adataid másolata ezen a néven van elmentve: {{nazwa}}, itt: {{miejsce}}.",
     "konflikt_tytul": "A(z) {{licznik}} két változata",
     "konflikt_wybor_one": "{{count}} sor · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} sor · {{urzadzenie}} · {{godzina}}",

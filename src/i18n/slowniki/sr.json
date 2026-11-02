@@ -456,7 +456,6 @@
     "import_plik": "Датотека: {{plik}}",
     "scal": "Споји са постојећим",
     "zastap": "Замени постојеће",
-    "zastapiono": "Готово. Копија ваших података пре увоза сачувана је као {{nazwa}} у {{miejsce}}.",
     "konflikt_tytul": "Две верзије: {{licznik}}",
     "konflikt_wybor_one": "{{count}} ред · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} реда · {{urzadzenie}} · {{godzina}}",

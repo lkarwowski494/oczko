@@ -456,7 +456,6 @@
     "import_plik": "File: {{plik}}",
     "scal": "Unisci a quello che c’è",
     "zastap": "Sostituisci quello che c’è",
-    "zastapiono": "Fatto. Una copia dei tuoi dati precedenti all’importazione è salvata come {{nazwa}} in {{miejsce}}.",
     "konflikt_tytul": "Due versioni di {{licznik}}",
     "l_projekt_one": "{{count}} progetto",
     "l_projekt_many": "{{count}} di progetti",

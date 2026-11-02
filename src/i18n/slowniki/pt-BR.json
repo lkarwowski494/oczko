@@ -456,7 +456,6 @@
     "import_plik": "Arquivo: {{plik}}",
     "scal": "Mesclar com o que já está aqui",
     "zastap": "Substituir o que já está aqui",
-    "zastapiono": "Pronto. Uma cópia dos seus dados de antes da importação foi salva como {{nazwa}} em {{miejsce}}.",
     "konflikt_tytul": "Duas versões de {{licznik}}",
     "konflikt_wybor_one": "{{count}} carreira · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_many": "{{count}} carreiras · {{urzadzenie}} · {{godzina}}",

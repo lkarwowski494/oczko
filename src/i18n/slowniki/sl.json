@@ -500,7 +500,6 @@
     "import_plik": "Datoteka: {{plik}}",
     "scal": "Združi s tukajšnjimi podatki",
     "zastap": "Zamenjaj tukajšnje podatke",
-    "zastapiono": "Končano. Kopija vaših podatkov izpred uvoza je shranjena kot {{nazwa}} v {{miejsce}}.",
     "konflikt_tytul": "Dve različici: {{licznik}}",
     "konflikt_wybor_one": "{{count}} vrsta · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_two": "{{count}} vrsti · {{urzadzenie}} · {{godzina}}",

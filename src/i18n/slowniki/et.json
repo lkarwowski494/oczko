@@ -412,7 +412,6 @@
     "import_plik": "Fail: {{plik}}",
     "scal": "Ühenda olemasolevaga",
     "zastap": "Asenda olemasolev",
-    "zastapiono": "Valmis. Sinu andmete koopia enne importi on salvestatud nimega {{nazwa}} asukohta {{miejsce}}.",
     "konflikt_tytul": "Kaks versiooni: {{licznik}}",
     "konflikt_wybor_one": "{{count}} rida · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} rida · {{urzadzenie}} · {{godzina}}",

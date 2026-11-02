@@ -368,7 +368,6 @@
     "import_plik": "파일: {{plik}}",
     "scal": "현재 데이터와 병합",
     "zastap": "현재 데이터 대체",
-    "zastapiono": "완료되었습니다. 가져오기 전 데이터 사본을 {{miejsce}}에 저장했습니다: {{nazwa}}",
     "konflikt_tytul": "{{licznik}}: 두 가지 버전",
     "l_projekt_other": "프로젝트 {{count}}개",
     "l_licznik_other": "카운터 {{count}}개",

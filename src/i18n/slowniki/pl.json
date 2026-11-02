@@ -500,7 +500,6 @@
     "import_plik": "Plik: {{plik}}",
     "scal": "Scal z tym, co jest",
     "zastap": "Zastąp to, co jest",
-    "zastapiono": "Gotowe. Kopia twoich danych sprzed importu jest zapisana jako {{nazwa}} w: {{miejsce}}.",
     "konflikt_tytul": "Dwie wersje: {{licznik}}",
     "l_projekt_one": "{{count}} projekt",
     "l_projekt_few": "{{count}} projekty",

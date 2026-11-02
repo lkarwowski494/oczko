@@ -368,7 +368,6 @@
     "import_plik": "檔案：{{plik}}",
     "scal": "與現有資料合併",
     "zastap": "取代現有資料",
-    "zastapiono": "完成。匯入前的資料副本已儲存為{{nazwa}}，位於{{miejsce}}。",
     "konflikt_tytul": "{{licznik}}有兩個版本",
     "konflikt_wybor_other": "{{count}} 段・{{urzadzenie}}・{{godzina}}",
     "konflikt_a11y_other": "保留來自{{urzadzenie}}的 {{count}} 段，{{godzina}}",

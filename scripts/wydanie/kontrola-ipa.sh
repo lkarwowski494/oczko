@@ -49,6 +49,9 @@ done
 # 07-jakosc-008 (D4, P-325): adres „Rate Oczko” bez zaślepki id0000000000.
 node scripts/wydanie/kontrola-adresow.mjs || bledy=$((bledy + 1))
 
+# P-357 (P-320): lista kluczy czekających na falę przekładu musi być pusta w buildzie wydania.
+node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --oczekujace docs/lokalizacja/oczekujace.json --wydanie || bledy=$((bledy + 1))
+
 # Hermes i brak modułów deweloperskich.
 B="$APP/main.jsbundle"
 if [ ! -s "$B" ]; then blad "brak main.jsbundle"; elif LC_ALL=C grep -qI . "$B"; then blad "main.jsbundle jest tekstem JS, nie bajtkodem Hermesa"; fi

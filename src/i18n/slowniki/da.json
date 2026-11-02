@@ -412,7 +412,6 @@
     "import_plik": "Fil: {{plik}}",
     "scal": "Flet med det, der er her",
     "zastap": "Erstat det, der er her",
-    "zastapiono": "Færdig. En kopi af dine data fra før importen er gemt som {{nazwa}} i {{miejsce}}.",
     "konflikt_tytul": "To versioner af {{licznik}}",
     "l_projekt_one": "{{count}} projekt",
     "l_projekt_other": "{{count}} projekter",

@@ -1,4 +1,6 @@
-// sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--pseudo plik.json]
+// sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--oczekujace o.json [--wydanie]] [--pseudo plik.json]
+// --oczekujace (P-357, wzór Treningu): { powod, odwolania, klucze: [bazy kluczy] } — brak przekładu tych kluczy to uwaga, nie błąd; lista = dokładnie różnica źródło ↔ słowniki
+//   (klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd). --wydanie: niepusta lista = błąd (fala przekładu przed wydaniem, P-320).
 // Słowniki <tag>.json w formacie i18next v4. Kod wyjścia: 0 bez błędów, 1 błędy, 2 konfiguracja albo skan kodu niewykonany.
 import { readFileSync, readdirSync, writeFileSync, statSync, existsSync } from 'node:fs';
 import { join, resolve, relative } from 'node:path';
@@ -34,8 +36,9 @@ export function wpisy(slownik) { // baza → { formy: {kategoria: tekst}, porzad
 const kategorie = (j, p) => { try { return new Intl.PluralRules(j, { type: p ? 'ordinal' : 'cardinal' }).resolvedOptions().pluralCategories; } catch { return null; } };
 const pismo = (j) => { try { const s = PISMO[new Intl.Locale(j).maximize().script]; return s && new RegExp(s.split('|').map((x) => `\\p{Script=${x}}`).join('|'), 'u'); } catch { return null; } };
 
-export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null } = {}) {
-  const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]);
+export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null, oczekujace = [] } = {}) {
+  const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]), ocz = new Set(oczekujace);
+  for (const b of ocz) if (!zr[b]) bledy.push(`oczekujace: klucza ${b} nie ma w źródle`);
   for (const [j, slownik] of Object.entries(slowniki)) {
     const ws = wpisy(slownik), baz = j.split('-')[0], nakladka = j !== baz && slowniki[baz], litery = pismo(j);
     for (const [b, w] of Object.entries(ws)) {
@@ -59,7 +62,8 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
       for (const s of t) { const l = bez(s).match(/\p{L}/gu) || []; if (litery && l.length && !l.some((c) => litery.test(c))) u(`brak liter pisma języka („${s}”)`); }
       if (!w.formy && w.tekst === z.tekst && (w.tekst.match(/\p{L}/gu) || []).length >= 4 && !(wyjatki.wartosci || []).includes(w.tekst)) u('tekst taki sam jak w źródle');
     }
-    if (j !== zrodlo && !nakladka) for (const b in zr) if (!ws[b]) bledy.push(`${j} ${b}: brak tłumaczenia`);
+    if (j !== zrodlo && !nakladka) for (const b in zr) if (!ws[b]) (ocz.has(b) ? uwagi : bledy).push(`${j} ${b}: brak tłumaczenia${ocz.has(b) ? ' (czeka na falę przekładu, oczekujace.json)' : ''}`);
+    if (j !== zrodlo) for (const b of ocz) if (ws[b] && zr[b]) bledy.push(`${j} ${b}: klucz z oczekujace.json już przetłumaczony — usuń go z listy`);
   }
   const bk = kontekst ? Object.keys(zr).filter((k) => !kontekst[k]) : [];
   if (bk.length) uwagi.push(`${zrodlo}: ${bk.length} kluczy bez kontekstu (np. ${bk.slice(0, 5).join(', ')})`);
@@ -109,13 +113,15 @@ export function skanujKod(ts, katalogi, wyjatki = {}) {
 
 function main(argv) {
   const o = { _: [] }, czytaj = (p) => JSON.parse(readFileSync(p, 'utf8')), slowniki = {};
-  for (let i = 0; i < argv.length; i++) argv[i].startsWith('--') ? (o[argv[i].slice(2)] = argv[++i]) : o._.push(argv[i]);
+  for (let i = 0; i < argv.length; i++) argv[i] === '--wydanie' ? (o.wydanie = true) : argv[i].startsWith('--') ? (o[argv[i].slice(2)] = argv[++i]) : o._.push(argv[i]);
   const [kat] = o._, zrodlo = o.zrodlo;
   if (!kat || !zrodlo) { console.log('Użycie: patrz nagłówek pliku'); return 2; }
   for (const f of readdirSync(kat)) if (/^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*\.json$/.test(f)) slowniki[f.slice(0, -5)] = splaszcz(czytaj(join(kat, f)));
   if (!slowniki[zrodlo]) { console.log(`BŁĄD konfiguracji: brak ${zrodlo}.json w ${kat}`); return 2; }
   const wyjatki = o.wyjatki ? czytaj(o.wyjatki) : {}, pk = join(kat, `${zrodlo}.kontekst.json`), zr = wpisy(slowniki[zrodlo]);
-  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null });
+  const oczekujace = o.oczekujace ? czytaj(o.oczekujace).klucze ?? [] : [];
+  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace });
+  if (o.wydanie && oczekujace.length) bledy.push(`wydanie: oczekujace.json niepusta (${oczekujace.length} kluczy) — fala przekładu przed wydaniem (P-320, P-357)`);
   let kod = 0;
   if (o.kod) {
     let ts;

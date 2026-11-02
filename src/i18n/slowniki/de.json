@@ -412,7 +412,6 @@
     "import_plik": "Datei: {{plik}}",
     "scal": "Mit Vorhandenem zusammenführen",
     "zastap": "Vorhandenes ersetzen",
-    "zastapiono": "Fertig. Eine Kopie deiner Daten von vor dem Import ist als {{nazwa}} in {{miejsce}} gespeichert.",
     "konflikt_tytul": "Zwei Versionen von {{licznik}}",
     "l_projekt_one": "{{count}} Projekt",
     "l_projekt_other": "{{count}} Projekte",

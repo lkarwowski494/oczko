@@ -368,7 +368,6 @@
     "import_plik": "Tệp: {{plik}}",
     "scal": "Gộp với dữ liệu hiện có",
     "zastap": "Thay thế dữ liệu hiện có",
-    "zastapiono": "Xong. Một bản sao dữ liệu của bạn từ trước khi nhập đã được lưu với tên {{nazwa}} trong {{miejsce}}.",
     "konflikt_tytul": "Hai phiên bản của {{licznik}}",
     "l_projekt_other": "{{count}} dự án",
     "l_licznik_other": "{{count}} bộ đếm",

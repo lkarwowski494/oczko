@@ -368,7 +368,6 @@
     "import_plik": "ファイル：{{plik}}",
     "scal": "現在のデータと統合",
     "zastap": "現在のデータを置き換え",
-    "zastapiono": "完了。読み込み前のデータのコピーを、{{miejsce}}に{{nazwa}}として保存しました。",
     "konflikt_tytul": "{{licznik}}の2つのバージョン",
     "l_projekt_other": "{{count}}件のプロジェクト",
     "l_licznik_other": "{{count}}個のカウンター",
