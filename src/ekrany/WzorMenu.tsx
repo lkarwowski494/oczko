@@ -1,6 +1,8 @@
-// Menu przeglądarki wzoru: arkusz u dołu ekranu z pozycjami (••• i przełączanie wzorów; design-spec „Wzór, rysik i iPad”). Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku).
+// Menu przeglądarki wzoru: arkusz u dołu ekranu z pozycjami (••• i lista wzorów ▾; design-spec „Wzór, rysik i iPad”). Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku).
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type TextStyle, type ViewStyle } from 'react-native';
+import { cel, odstep, typografia, useKolory } from './motyw';
+import type { Tlumacz } from './wspolne';
 
 export type StyleMenu = { menuTlo: ViewStyle; menu: ViewStyle; pozycja: ViewStyle; tresc: TextStyle; niszczaca: TextStyle };
 
@@ -17,5 +19,37 @@ export function Pozycja(p: { st: StyleMenu; tekst: string; id: string; niszczaca
     <Pressable accessibilityRole="menuitem" accessibilityLabel={p.tekst} onPress={p.onPress} style={p.st.pozycja} testID={p.id}>
       <Text style={[p.st.tresc, p.niszczaca && p.st.niszczaca]}>{p.tekst}</Text>
     </Pressable>
+  );
+}
+
+/**
+ * Lista wzorów projektu (▾, W9b): ✓ przy bieżącym; stuknięcie wybiera wzór (przełączanie i zamknięcie menu robi wywołujący). Pod wzorami wiersze stron WWW
+ * czekających na sieć z ✕ (aneks partii 8, poz. 12 C; `wzor.czeka_siec`): wiersz niczego nie przełącza, a po zapisie strony zamienia się we wzór.
+ */
+export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; wzory: { wzorId: string; nazwa: string }[]; oczekujace: { id: string; nazwa: string }[]; wzorId: string; zamknij(): void; naWybor(wzorId: string): void; naUsunOczekujacy(id: string): void }) {
+  const k = useKolory();
+  const w = StyleSheet.create({
+    wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s }, rosnie: { flex: 1 }, podpis: { ...typografia.podpis, color: k.olowek },
+    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' }, znak: { ...typografia.instrukcja, color: k.grafit },
+  });
+  return (
+    <Menu st={p.st} zamknij={p.zamknij}>
+      {p.wzory.map((x) => (
+        <Pressable key={x.wzorId} accessibilityRole="menuitem" accessibilityLabel={x.nazwa} accessibilityState={{ selected: x.wzorId === p.wzorId }} onPress={() => p.naWybor(x.wzorId)} style={p.st.pozycja}>
+          <Text style={p.st.tresc}>{`${x.wzorId === p.wzorId ? '✓ ' : ''}${x.nazwa}`}</Text>
+        </Pressable>
+      ))}
+      {p.oczekujace.map((o) => (
+        <View key={o.id} style={[p.st.pozycja, w.wiersz]} testID="wzor-czeka-siec">
+          <View style={w.rosnie}>
+            <Text style={p.st.tresc}>{o.nazwa}</Text>
+            <Text style={w.podpis}>{p.t('wzor.czeka_siec')}</Text>
+          </View>
+          <Pressable accessibilityRole="button" accessibilityLabel={p.t('wzor.usun_oczekujacy_a11y', { nazwa: o.nazwa })} style={w.ikona} onPress={() => p.naUsunOczekujacy(o.id)}>
+            <Text style={w.znak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+          </Pressable>
+        </View>
+      ))}
+    </Menu>
   );
 }

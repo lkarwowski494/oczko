@@ -125,6 +125,22 @@ describe('Licznik', () => {
     expect(screen.queryAllByText('12', { includeHiddenElements: true })).toHaveLength(0);
   });
 
+  // E2-C-N1 (wariant A, P-361): design-spec.md:905 F-09 — w trybie „rząd w trakcie” liczba to rząd, który się dzierga, więc podpis to
+  // „current row” (klucz licznik.jednostka_w_trakcie), nie „rows” (to sugerowałoby liczbę skończonych).
+  test('E2-C-N1 / BR-LIC-012: tryb „rząd w trakcie” bez celu podpisuje liczbę „current row”, nie „rows”', () => {
+    pokaz(stanLicznika({ znaczenie: 'w_trakcie', skonczone: 12, dziergany: 13, cel: null }));
+    expect(screen.getByText('current row')).toBeTruthy();
+    expect(screen.queryByText('rows')).toBeNull();
+  });
+  test('E2-C-N1 / BR-LIC-012: tryb „skończone” bez celu zostaje przy „rows”; z celem podpis to „of {cel}” w obu trybach', () => {
+    const { ponow } = pokaz(stanLicznika({ znaczenie: 'skonczone', skonczone: 12, dziergany: 13, cel: null }));
+    expect(screen.getByText('rows')).toBeTruthy();
+    expect(screen.queryByText('current row')).toBeNull();
+    ponow(stanLicznika({ znaczenie: 'w_trakcie', skonczone: 12, dziergany: 13, cel: 40 }));
+    expect(screen.getByText('of 40')).toBeTruthy();
+    expect(screen.queryByText('current row')).toBeNull();
+  });
+
   test('BR-LIC-019/S4: bez serii dodań nic o strażniku na ekranie (P-046)', () => {
     pokaz(stanLicznika({ baner: null }));
     expect(screen.queryByText(/Added \d+ rows?|Undo/)).toBeNull();

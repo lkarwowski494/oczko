@@ -7,7 +7,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import type { Narzedzie } from '../domena/rysik';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
-import { Menu, Pozycja } from './WzorMenu';
+import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
 import { cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -18,6 +18,7 @@ export type StanPrzegladarki = {
   opis: string;                                   // `wzor.wiersz_opis` („PDF · 6 pages”), testID `wzor-zrodlo`
   czesc: string;                                  // część licznika: „‹” wraca do niej (`wzor.wstecz_a11y`)
   wzory: { wzorId: string; nazwa: string }[];     // wzory projektu (W9b); ≥ 2 → tytuł przełącza
+  oczekujace?: { id: string; nazwa: string }[];   // strony WWW projektu czekające na sieć: wiersze w liście ▾, a ▾ jest też przy jednym wzorze (poz. 12 C)
   wzorId: string;
   strona: { n: number; razem: number } | null;
   zakreslenia: number;
@@ -34,6 +35,7 @@ export type PropsPrzegladarki = {
   terminKosza?: string;                           // krótka data końca kosza do opisu usunięcia (P-229)
   naWstecz(): void;
   naPrzelacz(wzorId: string): void;
+  naUsunOczekujacy?(id: string): void;            // ✕ w wierszu „czeka na sieć”
   naNarzedzie(n: Narzedzie): void;
   naCofnij(): void;
   naZaznaczRzad(kierunek: 1 | -1): void;
@@ -82,6 +84,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const ipad = s.uklad.klasa === 'regular';
   const tryb = s.narzedzie !== 'brak';
   const obok = s.uklad.wzor === 'obok';
+  const czekajace = s.oczekujace ?? [];
 
   async function licz(f: () => Promise<WynikEkranu<unknown>>) { ustawBlad(!(await f()).ok); }
   const narzedzie = (n: Narzedzie, klucz: 'wzor.zakreslacz' | 'wzor.pioro' | 'wzor.gumka', id: string, znak: string) => (
@@ -111,7 +114,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>‹</Text>
       </Pressable>
       <View style={st.tytulPaska}>
-        {s.wzory.length >= 2 ? (
+        {s.wzory.length >= 2 || czekajace.length > 0 ? (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">
             <Text style={st.tytul} numberOfLines={2}>{`${s.nazwa} ▾`}</Text>
           </Pressable>
@@ -231,16 +234,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           }} />
         </Menu>
       )}
-      {menu === 'wzory' && (
-        <Menu st={st} zamknij={() => ustawMenu('brak')}>
-          {s.wzory.map((w) => (
-            <Pressable key={w.wzorId} accessibilityRole="menuitem" accessibilityLabel={w.nazwa} accessibilityState={{ selected: w.wzorId === s.wzorId }}
-              onPress={() => { ustawMenu('brak'); if (w.wzorId !== s.wzorId) p.naPrzelacz(w.wzorId); }} style={st.pozycja}>
-              <Text style={st.tresc}>{`${w.wzorId === s.wzorId ? '✓ ' : ''}${w.nazwa}`}</Text>
-            </Pressable>
-          ))}
-        </Menu>
-      )}
+      {menu === 'wzory' && <MenuWzorow st={st} t={t} wzory={s.wzory} oczekujace={czekajace} wzorId={s.wzorId} zamknij={() => ustawMenu('brak')} naWybor={(id) => { ustawMenu('brak'); if (id !== s.wzorId) p.naPrzelacz(id); }}
+        naUsunOczekujacy={(id) => { if (s.wzory.length < 2 && czekajace.length <= 1) ustawMenu('brak'); p.naUsunOczekujacy?.(id); }} />}
     </View>
   );
 }

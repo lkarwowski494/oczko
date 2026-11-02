@@ -6,6 +6,7 @@
     "tytul_roboczy": "Duży tytuł licznika bez projektu (pierwsze uruchomienie) i projektu nienazwanego (design-spec „Projekt roboczy”).",
     "podpowiedz_start": "Podpowiedź pierwszego liczenia pod liczbą 0 (ekrany.html licznik-start, NFR-PIE-001).",
     "jednostka": "Podpis przy dużej liczbie bez celu („0 rows”, ekrany.html licznik-start).",
+    "jednostka_w_trakcie": "Podpis przy dużej liczbie w trybie „rząd w trakcie” (BR-LIC-012, F-09): liczba to rząd, który się dzierga, a nie liczba skończonych (zamiast „rows”).",
     "z_celu": "Podpis przy dużej liczbie, gdy część ma cel („47 of 96”).",
     "teraz": "Pod tytułem części: rząd, który się dzierga (design-spec „Komponenty”). „Working row” = rząd, nad którym pracujesz teraz (neutralnie dla drutów i szydełka; P-302), nie „dziergany”.",
     "plus": "Widoczny tekst przycisku +1 (WCAG 2.5.3).",

@@ -8,6 +8,7 @@
     "tytul_roboczy": "Counter",
     "podpowiedz_start": "Tap the big button each time you finish a row. Each row gets a pencil mark here.",
     "jednostka": "rows",
+    "jednostka_w_trakcie": "current row",
     "z_celu": "of {{cel}}",
     "teraz": "Now working row {{n}}",
     "plus": "+1 row",
