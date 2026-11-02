@@ -1,3 +1,9 @@
+# Stan · 2026-11-01 (07, sesja sonnet/high, faza A bez macOS)
+- **Kopia do wysłania na roboczą 2.11 razem z poprawkami 08 (sygnał koordynatora):** `claude/kopia-07-2026-11-01` (origin, 011a574) = robocza d426858 + P-313 (23c3199, test kontraktu `select-xcode.sh` i runnerów `macos-26`) + P-316 (011a574, zegarek w teście na urządzeniu: TT-12…TT-15, strategia §8). `npm run verify` kod 0 (240 zestawów, 2681 testów).
+- **Zrzuty sklepu (P-320: po audycie, nie w nocnym przebiegu):** `claude/kopia-07-zrzuty-2026-11-01` (origin, 1022393) i patch `oczko-warsztat` `07-jakosc/2026-11-02-e2/zrzuty-sklepu-kopia.patch`. **verify patcha niepotwierdzony** (przerwany zmianą zakresu), nie uruchomione na macOS: `oczkoE2eTeraz` przy `launchApp`, przyjęcie wgranej bazy przez start aplikacji, gest zakreślenia, nazwy symulatorów, rozmiary PNG.
+- Raport: `oczko-warsztat` `07-jakosc/2026-11-02-e2/faza-a-przygotowanie.md`. P-321 (zgodność z zakresem 1.0) przeniesiony do osobnej sesji.
+- **Czeka:** faza B (raport E2 pełnego przebiegu `[e2e-pelny] [e2e-ciemny]`, aneks werdyktu) na sygnał koordynatora.
+
 # WSTRZYMANIE 2026-10-30 (polecenie właściciela przez koordynatora; pracę przejmuje inne konto)
 - **Rola i tryb:** 07-jakosc, `audit` plan-prac 2.4 (sonnet/medium, P-293). Prompt: `oczko-warsztat` `koordynacja/role-2026-10-30/07-audyt-2-4.md` (af7f61d). Raport: `oczko-warsztat` `07-jakosc/2026-10-30-audyt/07-jakosc-2026-10-30.md` + `fix-001-002-ciemny.md` + `dowody/`.
 - **Werdykt:** GOTOWE Z ZASTRZEŻENIAMI dla kodu fb5d819 (= kod przebiegu iOS 131, 258a026). Brak P0/P1; 3 × P2 (001, 002, 003) — wszystkie naprawione (P-305): 001 i 002 w 1a08f2b/12d49eb, 003 w 5371f56/f3f9d97; roboczą zweryfikowano pre-push 2655/2655.
