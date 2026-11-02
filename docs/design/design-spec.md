@@ -982,6 +982,30 @@ Odrzucone: `square.and.pencil` dla notatki (to „nowa wiadomość” w aplikacj
 
 **Dla 08.** (1) Nałóż `fix12-2026-11-02/klucze.json`; (2) token `promien.przyciskPelny` = 14 do `tokeny.ts`; (3) symbole wg tabeli, test: w `src/` brak ⏱ ⏸ 🖍 ✎ ⌫ ↶ w etykietach i ikonach; (4) nagłówek „Tools” bez wagi 700, „Historia dni” jako `.naglowek-grupy`; (5) pasek pod wzorem: bez „Now working row n” w trybie w trakcie (+ test); (6) lista akcji menu AX5: ostatni wiersz przycięty; (7) alerty błędu zapisu: Ustawienia i formularze; (8) etykieta wpisu historii z `historia.wpis_opis`; (9) pozycja 10 C wg opisu; (10) kopia `stoper.menu_naglowek` wg spec.
 
+## Aneks M2 partia 2 (2026-11-02): tło stanu wczytywania, teksty rysunku, stopera i „Discard changes?” (P-418, P-420; DEC-24 a, DEC-28 a)
+Rola 04, tryb fix, na zlecenie koordynatora napraw M2. Odczyt kodu (`app/`, `src/`) tylko jako materiał do listy tras i do tekstów zgodnych z faktycznym zachowaniem (polecenie koordynatora, wyjątek nazwany od zwyczaju „04 nie czyta `src/`”); kwarantanna `archiwum/` bez zmian. Makiety i pomiary: katalog wyjścia sesji w `oczko-warsztat` (`audit/M1-2026-11-02/role/04-studio-projektowe/fix-2026-11-02-p2/`).
+
+### Tło `StanWczytywania` (M1-audytor-generalny-089, 04-studio-projektowe-503; DEC-24 a)
+Stan „Loading…” i błąd odczytu z „Try again” stoją na **tym samym tle co treść trasy po wczytaniu**; inaczej tło przeskakuje (zasada studia 8: zmiana ma znaczenie, błysk tła go nie ma). Właściwość komponentu `tlo: 'papier' | 'arkusz' | 'czarne'`, domyślnie `'papier'`.
+
+| `tlo` | Tło | Podpis („Loading…”, „Couldn’t load this.”) | Przycisk „Try again” | Kiedy |
+|---|---|---|---|---|
+| `papier` (domyślne) | `papier` motywu | `olowek` motywu | `przyciskTlo` / `przyciskObrys` / `przyciskTekst` motywu | ekran w stosie na papierze |
+| `arkusz` | `arkusz` motywu (jasny `#FCFCFA` = papier, ciemny `#2A2C31` ≠ papier `#1B1C1F`) | `olowek` motywu | jak wyżej | trasa pokazywana jako arkusz (`presentation: 'modal'`, treść w `Arkusz`) |
+| `czarne` | `systemCzarny.tlo` `#000000` w obu motywach | `systemCzarny.olowek` | `systemCzarny.przyciskTlo` / `przyciskObrys` / `przyciskTekst` | pełnoekranowa przeglądarka na czarnym tle (jak podgląd zdjęcia, który używa `systemCzarny`) |
+
+Kolory motywu idą za „Zwiększ kontrast” jak w reszcie aplikacji (`jasnyKontrast`, `ciemnyKontrast`); `systemCzarny` nie ma wariantu i go nie potrzebuje (najniższa para 6,56:1). Kontrast wszystkich par: podpis 5,96–9,23:1 (próg 4,5), obrys przycisku 4,36–14,37:1 (próg 3). Kontrprzykład: podpis motywu jasnego na czerni 3,43:1, dlatego `czarne` nie bierze kolorów motywu.
+
+**Trasy → `tlo` (stan na e05553c: 16 tras z `StanWczytywania`).**
+
+| `tlo` | Trasy |
+|---|---|
+| `arkusz` | `menu`, `formularz/[rodzaj]`, `ukonczenie`, `zglos`, `konflikt`, `sesja-korekta`, `wloczka`, `drut` |
+| `czarne` | `zdjecie` |
+| `papier` | `projekty`, `projekt/[id]`, `wzor`, `sesje`, `dni`, `probka`, `kosz` |
+
+Reguła dla nowej trasy: wartość = tło treści trasy po wczytaniu. Widoczna zmiana: arkusze tylko w motywie ciemnym (w jasnym `arkusz` = `papier`), zdjęcie tylko w jasnym (w ciemnym błysk `#1B1C1F` → `#000000` jest słabszy, ale też znika). **Dla 08 (testy przed kodem):** test komponentu dla trzech wartości (tło i kolor podpisu); test tras `menu` → `arkusz`, `zdjecie` → `czarne`; trwała kontrola: każda trasa z `presentation: 'modal'`, która renderuje `StanWczytywania`, podaje `tlo="arkusz"`.
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 
