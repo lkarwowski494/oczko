@@ -1,0 +1,24 @@
+# Podprzepływ (07-jakosc-033 A): z licznika → menu ••• → „Set a repeat length” → długość DLUGOSC → Save → arkusz zamknięty.
+# Parametr (env runFlow): DLUGOSC — liczba rzędów powtórzenia jako tekst (np. "8").
+# Pole długości ma testID `powtorzenie-dlugosc-pole` (src/ekrany/Formularze.tsx, 033-T1; wcześniej selektor po etykiecie „Rows in one repeat”).
+# Skutek wpisu sprawdza scenariusz na liczniku (`licznik-powtorzenie`, tekst „repeat N · row R of D”).
+# Wariant ze zrzutem (NOC-2b cz. 2): jak ustaw-powtorzenie.yaml + jeden zrzut `${ZRZUT}` z wpisaną długością, przed zapisem.
+# Parametr (env runFlow): ZRZUT — nazwa zrzutu (wołający daje unikalną w swoim scenariuszu; pilnuje tests/jakosc/e2e-noc-2026-11-02.test.ts: wariant = oryginał + zrzut).
+appId: com.apps4brew.knitting
+name: "podprzepływ: ustaw długość powtórzenia (ze zrzutem)"
+---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-powtorzenie" }
+- tapOn: { id: "menu-powtorzenie" }
+- assertVisible: { id: "formularz-zapisz" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "powtorzenie-dlugosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: ${DLUGOSC}
+      - assertVisible: { id: "formularz-zapisz" }
+- takeScreenshot: ${ZRZUT}
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }

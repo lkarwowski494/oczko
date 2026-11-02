@@ -17,7 +17,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 7. Zwykłe kolejne +1 rozdziela `runFlow: subflows/odstep.yaml` (> 2 s): okno strażnika serii RD-17 to 3 dodania w 2 s; seria celowo: `tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }`.
 8. `takeScreenshot` w punktach kontrolnych (nazwa `NN-opis`); zrzuty idą do artefaktu części i do logu (Trening: base64 przy porażce).
 9. **Pomiar (P-374, po P-372):** po kroku krytycznym, który w #137 nie dał wyniku (07 lista po ofertach, 08 `import-gotowy`, 17 miniatura, 34 ekran projektu), scenariusz robi zrzut `pomiar-*` i **opcjonalny** odczyt panelu (`assertVisible … optional: true` z regexem na liczbę, np. `.*import [0-9]+ ms.*`). W ścieżce `opoznienie-*` czyta też opcjonalnie stany `*-ladowanie` / `*-blad`. Panel pomiaru nie jest nigdy twardą asercją ani celem `tapOn` (pilnuje `tests/jakosc/e2e-pomiar-374.test.ts`). Klasyfikacja po przebiegu: liczba na zrzucie i status WARNED/COMPLETED w logu Maestro, nie hipoteza.
-10. **Wynik poza ekranem:** wynik operacji, który leży poniżej widocznej części (Ustawienia po ADR-0029: `eksport-licznosci`, `import-gotowy`, `import-wynik`), poprzedza `scrollUntilVisible`, nie samo `extendedWaitUntil`.
+10. **Wynik poza ekranem:** wynik operacji, który leży poniżej widocznej części (Ustawienia po ADR-0029: `eksport-wynik`, `eksport-licznosci`, `import-gotowy`, `import-wynik`; `eksport-wynik` spadł za ekran w #139, gdy doszedł panel `e2e-ocena-stan`), poprzedza `scrollUntilVisible`, nie samo `extendedWaitUntil`.
 
 ## Tagi
 | Tag | Znaczenie |
@@ -44,7 +44,7 @@ Argumenty startu (`launchApp: arguments:`; na iOS Maestro przekazuje je jako arg
 | Argument | Wartość | Kontrakt |
 |---|---|---|
 | `oczkoE2eTeraz` | czas lokalny ISO bez strefy, np. `2026-11-07T20:00:00` | port `Zegar` (Z07-18): `teraz()` = podana chwila + czas, który upłynął od startu procesu (zegar **biegnie**: RD-17 liczy odstępy); `strefa` = strefa symulatora; `dzien` z podanej daty |
-| `oczkoE2eOknoStraznika` | liczba sekund, 0 < s ≤ 600, np. `6` | okno strażnika serii (RD-17) zamiast `STRAZNIK_OKNO_S` (2 s); tylko scenariusz 04 (czas 3 stuknięć Maestro zależy od maszyny: #131 2,45 s, #135 4,18 s; E2E-A4, P-358). Zła wartość albo build bez E2E: 2 s. Domena z oknem 2 s ma testy jednostkowe — E2E sprawdza podłączenie |
+| `oczkoE2eOknoStraznika` | liczba sekund, 0 < s ≤ 600, np. `6` | okno strażnika serii (RD-17) zamiast `STRAZNIK_OKNO_S` (2 s); scenariusze 04 i 12 (czas 3 stuknięć Maestro zależy od maszyny: #131 2,45 s, #135 4,18 s; E2E-A4, P-358). Zła wartość albo build bez E2E: 2 s. Domena z oknem 2 s ma testy jednostkowe — E2E sprawdza podłączenie |
 | `oczkoE2eSiec` | `brak` | adapter sieci zwraca „brak połączenia”, każde wywołanie sieci = błąd w logu (NFR-OFF-001) |
 | `oczkoE2eAwariaStartu` | `przed-kamieniem` | wymuszona awaria procesu przed kamieniem milowym ADR-0019 (start liczony jako nieudany); po zapisie stanu startu pusty ekran z `testID` `e2e-awaria-startu` |
 | `oczkoE2eIcloud` | `wlaczony` \| `wylaczony` \| `brak-konta` \| `brak-miejsca` \| `konflikt` | atrapa iCloud (tylko z `EXPO_PUBLIC_ICLOUD_FAKE=1`): stan konta; `konflikt` = przy starcie druga wersja pierwszego licznika: wartość +5, urządzenie „iPad (test)”, teraz − 1 min (P-230) |
@@ -170,6 +170,12 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `formularz-termin-data` | arkusz terminu | systemowy wybór daty (inline) | — | |
 | `formularz-termin-brak` | arkusz terminu | No date | „No date” | |
 | `menu-znaczenie` | menu ••• licznika | What the number shows (F-09) | „What the number shows” | |
+| `wybor-znaczenie-skonczone` | arkusz „What the number shows” | opcja radia `Wybor` (NOC-4: wdrożone w `src/ekrany/Arkusz.tsx` i `FormularzeProjektu.tsx` (wyjątek P-404); test `tests/ekrany/wybor-testid.test.tsx`) | „Rows finished” | |
+| `wybor-znaczenie-w-trakcie` | arkusz „What the number shows” | opcja radia `Wybor` (NOC-4, jak wyżej; id bez `_` z wartości `w_trakcie`, zasada 2) | „The row I’m on” | |
+| `wybor-rodzaj-rzedy` | arkusz „Add counter” | opcja radia `Wybor` rodzaju licznika (NOC-4, jak wyżej) | „Rows” | |
+| `wybor-rodzaj-oczka` | arkusz „Add counter” | opcja radia `Wybor` rodzaju licznika (NOC-4, jak wyżej) | „Stitches” | |
+| `wybor-narzedzie-druty` | arkusz narzędzia | opcja radia `Wybor` (NOC-4, jak wyżej) | „Needles” | |
+| `wybor-narzedzie-szydelko` | arkusz narzędzia | opcja radia `Wybor` (NOC-4, jak wyżej) | „Hook” | |
 | `ustawienia-jezyk` | Ustawienia | wiersz „Language” (F-36, P-190) | „Language” | |
 | `jezyk-auto` | Language | „Same as phone” (radio; etykieta z „, selected” przy wyborze) | „Same as phone” / „Same as phone, selected” | |
 | `jezyk-pl` | Language | wiersz języka (wzorzec `jezyk-<kod>`, nazwa własna języka; tu polski) | „Polski” / „Polski, selected” | |
@@ -218,6 +224,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zdjecia-miniatura` | ekran projektu, grupa „Photos” | miniatura (powtarzalna, `index`) | „Photo 1 of 1” (`zdjecia.a11y`) | |
 | `wzor-dodaj` | wzór | dodanie wzoru | — | |
 | `wzor-widok` | wzór | widok dokumentu (jeden naraz, OG-07) | — | |
+| `wzor-pasek-licznika` | wzór | pasek licznika pod wzorem (telefon pionowo; poziomo i na iPadzie to `wzor-kolumna-licznika`) | — | |
+| `licznik-podpis` | wzór, pasek licznika | podpis liczby w trybie „rząd w trakcie” (P2-5b, zamiast `licznik-teraz-rzad`) | „current row” | |
 | `wzor-zrodlo` | wzór | rodzaj źródła | „PDF”, „Photo”, „Web page”, „Word document” | |
 | `wzor-strona` | wzór | numer strony | „Page 1 of 3” (etykieta VoiceOver „Pattern page 1 of 3” — asercje `.*[Pp]age 1 of .*`, przebieg 40446976426) | |
 | `wzor-zakreslacz` | wzór | przełącznik zakreślacza (`accessibilityState.selected`) | — | |
@@ -351,6 +359,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-DNI-001/S1–S2, BR-DNI-002/S1, BR-DNI-003/S1, S3 (F-59; znacznik dnia tylko na zrzucie) | `64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml` (informacyjnie) |
 | BR-DAN-012/S1, S3 (F-64; wywołanie systemowe i adres recenzji nie do odczytu w E2E) | `65-br-dan-012-s1-prosba-o-ocene.yaml` (informacyjnie) |
 | BR-DAN-006/S3 „Replace” (F-32) | `66-br-dan-006-s3-zastap-kopia-przed.yaml` (informacyjnie) |
+| BR-LIC-012/S1 w pasku pod wzorem (F-09, P2-5b) | `67-br-lic-012-s1-podpis-w-pasku-wzoru.yaml` (informacyjnie) |
 | (przepływy pakietu podstawowego spoza poziomu E2E) BR-LIC-002/S1–S3, BR-LIC-019/S1, BR-LIC-003/S2 · BR-ZAK-006/S1, KP-13 · BR-ZAK-001/S1, PR-09 · P-089 (3a) · BR-DAN-005/S1, BR-DAN-006/S1, P-113 Q2a (bez karty) · ADR-0019 | `04`, `05`, `06`, `07`, `08`, `09` |
 
 Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza — lista telefonu (strategia §8, TT-01–TT-09) albo „Nie sprawdzono”.
@@ -358,3 +367,6 @@ Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza —
 ## Przebiegi nocne
 - 2026-10-26/27: pełny pakiet (`[e2e-pelny]`, iPhone + iPad) — partia 5 (STOP E2) i scenariusze 44–52 (07 fix-3); uruchomienie koordynatora (P-241, P-251).
 - 2026-11-02 (07-jakosc-033 B, P-378): scenariusze 61–66 (F-20, F-26, F-57, F-59, F-64, „Replace”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegły (brak macOS w sesji pisania), ocena po przebiegu nocnym.
+- 2026-11-02 (przebieg nocny 2/3.11, 07-jakosc NOC-3, P-400): scenariusz 67 (BR-LIC-012/S1 w pasku pod wzorem, P2-5b — podpis „current row”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegł (brak macOS w sesji pisania).
+- 2026-11-02 (przebieg nocny, 07-jakosc NOC-4): kontrakt testID opcji radia `Wybor` (6 wierszy `wybor-*`) i test przed kodem w `tests/akceptacja/ekrany/`; scenariusze 54, 56, 60, 67 stukają jeszcze po tekście — przejście na `id` po wdrożeniu przez 08 (lista „Dla 08” w raporcie).
+- 2026-11-02 (07-jakosc NOC-4, wyjątek P-404): testID `wybor-*` wdrożone w kodzie przez 07 (tylko propsy, bez zmiany zachowania); scenariusze 54, 56, 60, 67 stukają opcje po `id`.

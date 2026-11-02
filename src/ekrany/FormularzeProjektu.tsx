@@ -77,7 +77,7 @@ export function FormularzLicznika(p: {
       <Tresc podpis>{t('formularz.licznik_czesc')}</Tresc>
       <Wybor opcje={p.czesci.map((c) => ({ wartosc: c.id, tekst: c.nazwa }))} wybrana={czesc} naWybor={ustawCzesc} />
       <Tresc podpis>{t('formularz.licznik_rodzaj')}</Tresc>
-      <Wybor<'rzedy' | 'oczka'> opcje={[{ wartosc: 'rzedy', tekst: t('formularz.rodzaj_rzedy') }, { wartosc: 'oczka', tekst: t('formularz.rodzaj_oczka') }]} wybrana={rodzaj} naWybor={ustawRodzaj} />
+      <Wybor<'rzedy' | 'oczka'> opcje={[{ wartosc: 'rzedy', tekst: t('formularz.rodzaj_rzedy'), testID: 'wybor-rodzaj-rzedy' }, { wartosc: 'oczka', tekst: t('formularz.rodzaj_oczka'), testID: 'wybor-rodzaj-oczka' }]} wybrana={rodzaj} naWybor={ustawRodzaj} />
       <Tresc podpis>{t('formularz.licznik_sekcje')}</Tresc>
       {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
@@ -106,8 +106,8 @@ export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 
   return (
     <Arkusz tytul={t('formularz.znaczenie_tytul')} formularz={{ t, naZapisz: () => zapisz(p.naZapisz, z), naAnuluj: p.naAnuluj }}>
       <Wybor<'skonczone' | 'w_trakcie'> wybrana={z} naWybor={ustaw} opcje={[
-        { wartosc: 'skonczone', tekst: t('formularz.znaczenie_skonczone'), opis: t('formularz.znaczenie_skonczone_opis', { count: p.wartosc }) },
-        { wartosc: 'w_trakcie', tekst: t('formularz.znaczenie_w_trakcie'), opis: t('formularz.znaczenie_w_trakcie_opis', { nastepny: p.wartosc + 1 }) },
+        { wartosc: 'skonczone', tekst: t('formularz.znaczenie_skonczone'), opis: t('formularz.znaczenie_skonczone_opis', { count: p.wartosc }), testID: 'wybor-znaczenie-skonczone' },
+        { wartosc: 'w_trakcie', tekst: t('formularz.znaczenie_w_trakcie'), opis: t('formularz.znaczenie_w_trakcie_opis', { nastepny: p.wartosc + 1 }), testID: 'wybor-znaczenie-w-trakcie' },
       ]} />
       <Tresc podpis>{t('formularz.znaczenie_info')}</Tresc>
       {blad && <KomunikatZapisu t={t} />}
@@ -131,7 +131,7 @@ export function FormularzNarzedzia(p: {
   const naZapisz = () => { if (mm === null) { ustawZly(true); return; } ustawZly(false); zapisz(p.naZapisz, { narzedzie: n, mm }); };
   return (
     <Arkusz tytul={t('formularz.narzedzie_tytul')} formularz={{ t, naZapisz, naAnuluj: p.naAnuluj }}>
-      <Wybor<'druty' | 'szydelko'> opcje={[{ wartosc: 'druty', tekst: t('projekt.druty') }, { wartosc: 'szydelko', tekst: t('projekt.szydelko') }]} wybrana={n} naWybor={ustawN} />
+      <Wybor<'druty' | 'szydelko'> opcje={[{ wartosc: 'druty', tekst: t('projekt.druty'), testID: 'wybor-narzedzie-druty' }, { wartosc: 'szydelko', tekst: t('projekt.szydelko'), testID: 'wybor-narzedzie-szydelko' }]} wybrana={n} naWybor={ustawN} />
       <Pole etykieta={t('formularz.narzedzie_mm')} wartosc={tekst} naZmiane={ustaw} dziesietne testID="formularz-rozmiar-mm" />
       {mm !== null && <Tresc podpis>{t('formularz.narzedzie_podglad', { rozmiar: p.podglad(mm, n) })}</Tresc>}
       {zly && <Komunikat tekst={t('formularz.narzedzie_blad')} />}

@@ -32,6 +32,8 @@ tags:
       - inputText: "4"
       - inputText: "6"
       - assertVisible: { id: "wpisz-wartosc-pole", text: "46" }
+# NOC-2b (F-31, 04): formularz „Enter the row number” z wpisaną wartością przed zapisem
+- takeScreenshot: 10-formularz-wpisz-wartosc-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "46" }
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:33:00" } }

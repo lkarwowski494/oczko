@@ -13,7 +13,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 } # górna część ekranu — czytelna także przy orientacji z poprzedniego scenariusza
 - setOrientation: PORTRAIT # jak start-czysty (przebieg 40446976426)
 - assertVisible: { id: "licznik-plus" }
-- runFlow: subflows/otworz-stan-danych.yaml
+- runFlow: { file: subflows/otworz-stan-danych-ze-zrzutem.yaml, env: { ZRZUT: "50-ustawienia-przed-data-and-sync" } }
 - tapOn: { id: "icloud-przelacznik" }
 - assertVisible: "Turn on"
 - tapOn: "Turn on"

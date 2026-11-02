@@ -22,6 +22,12 @@ Wykonawca: sesja 09 (kopia `claude/kopia-09-2026-10-30`). Bez API (P-309 zastęp
 4. Teksty z limitem długości wymagają decyzji 04 przy zrzutach (np. `licznik.po_dodaniu` 47–48 znaków przy limicie ok. 30 w pl/vi/es-419).
 5. Wątpliwości formy „many” w es/es-419/pt/fr/it (CLDR: miliony — „de”): tłumacze dali formę „other” albo z „de”; test wektorów w aplikacji po podpięciu.
 
+## Treść krytyczna: bramka kontroli (a) (2026-11-02, M1-audytor-generalny-008 / 09-lokalizacja-003, DEC-11 a)
+- **Mapa (06):** `docs/lokalizacja/krytyczne.json` — 10 kluczy `probka.*` z twierdzeniem z listy 28 krytycznych rejestru 06 (`kategoria`, `kategoria_otwarta`, `kategoria_miedzy`, `kategoria_obie`, `kategoria_powyzej`, `uwaga_4in`, `uwaga_kategoria`, `uwaga_koronka`, `uwaga_oczka`, `uwaga_zaokraglenie`), z ID twierdzeń i skrótem tekstu źródłowego `sha_en`. Znaczniki `[T:ID]` znikają przy budowie słowników, więc to jedyny ślad klucz → twierdzenie w tym repo. Nowy albo zmieniony klucz krytyczny: 06 dopisuje go w tym samym commicie co zmianę `en.json`.
+- **Stan (09):** `docs/lokalizacja/przeglad-krytyczne.json` — wpis `a` na język × klucz: kto, data, metoda `przeklad-zwrotny-pl`, wynik `zgodny`, skrót przekładu, który kontrolowano. Obecnie **pusty**: kontrola (a) niewykonana w żadnym z 34 języków (340 par).
+- **Bramka:** `node scripts/sprawdz-i18n.mjs … --krytyczne … --przeglad … --wydanie` kończy się kodem 1, gdy którykolwiek klucz krytyczny nie ma w języku ważnego wpisu (brak, wynik niezgodny, tekst zmieniony po kontroli) albo `sha_en` nie zgadza się z `en.json`; bez `--krytyczne/--przeglad` `--wydanie` kończy się kodem 2. Poza `--wydanie` ta sama kontrola daje jedną uwagę z liczbą par. Wołają ją `npm run i18n*` (uwaga) i `scripts/wydanie/kontrola-ipa.sh` (TestFlight, błąd).
+- **Wpis kontroli (a):** `--skrot <język>` wypisuje skróty kluczy krytycznych języka; wpis robi się dopiero po wykonaniu przekładu zwrotnego na pl w świeżej sesji i porównaniu sensu (nigdy z góry).
+
 ## WSTRZYMANIE 2026-10-30 (16:40 UTC, polecenie koordynatora/właściciela; pracę przejmuje inne konto)
 - **HEAD kopii** `claude/kopia-09-2026-10-30`: patrz commit z tą sekcją (poprzedni: 714e46f „podpięcie 35 języków”). Nic nie wypchnięto na roboczą poza tym plikiem (same docs); nocny push odwołany.
 - **verify:** kod 0 na 714e46f (245 zestawów, 2702 testy); `sprawdz-i18n` błędy 0, `slownik.mjs --slowniki` błędy 0 na 35 językach.

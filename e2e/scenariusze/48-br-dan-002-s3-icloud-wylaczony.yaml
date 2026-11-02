@@ -17,7 +17,7 @@ tags:
 - assertVisible: { id: "licznik-plus" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- runFlow: subflows/otworz-stan-danych.yaml
+- runFlow: { file: subflows/otworz-stan-danych-ze-zrzutem.yaml, env: { ZRZUT: "48-ustawienia-przed-data-and-sync" } }
 - assertVisible: { id: "icloud-przelacznik", checked: false }
 - assertVisible: { id: "e2e-icloud-wyslane", text: "0" }
 - takeScreenshot: 48-wylaczony

@@ -66,6 +66,8 @@ tags:
 - assertVisible: { id: "import-wynik", text: ".*Oczko › Backup.*" }
 - takeScreenshot: 66-zastapiono
 # --- dane z pliku: licznik 2, jeden projekt ---
+# NOC-1 (P-393, M1): po przewinięciu do `import-wynik` ekran Ustawień jest w dole — „Back” leży nad ekranem i nie ma go w hierarchii iOS (jak scenariusz 08, E2-138-S1)
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "nav-wstecz" }
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: { id: "projekty-wiersz", index: 0 }

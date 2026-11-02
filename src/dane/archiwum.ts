@@ -67,6 +67,22 @@ function parsujManifest(b: Uint8Array): Manifest | null {
   return { format: 'oczko', wersja_formatu: v.wersja_formatu, wersja_schematu: v.wersja_schematu, aplikacja: v.aplikacja, utworzono: v.utworzono, licznosci: licz, pliki };
 }
 
+/**
+ * Nazwa nowego archiwum dnia (ADR-0032 pkt 6, przegląd M1-013): przyrostek o jeden większy od największego istniejącego tego dnia, nie pierwszy wolny.
+ * Pierwsza wolna nazwa wypełniała lukę po kopii usuniętej przez pulę, więc najnowsza kopia wyglądała na starszą i znikała przy następnym sprzątaniu.
+ */
+export function nazwaArchiwum(istniejace: readonly string[], przedrostek: string, dzien: string): string {
+  const baza = `${przedrostek}-${dzien}`;
+  let maks = 0;
+  for (const n of istniejace) {
+    if (!n.startsWith(baza) || !n.endsWith(ROZSZERZENIE_ARCHIWUM)) continue;
+    const reszta = n.slice(baza.length, n.length - ROZSZERZENIE_ARCHIWUM.length); // '' albo '-<n>'
+    if (reszta === '') maks = Math.max(maks, 1);
+    else if (/^-\d+$/.test(reszta)) maks = Math.max(maks, Number(reszta.slice(1)));
+  }
+  return maks === 0 ? `${przedrostek}-${dzien}${ROZSZERZENIE_ARCHIWUM}` : `${przedrostek}-${dzien}-${maks + 1}${ROZSZERZENIE_ARCHIWUM}`;
+}
+
 export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zegar: Zegar; katalogi: Katalogi; migruj: Migruj; aplikacja: string; skrot?: (sciezka: string) => Promise<string> }): PortArchiwum {
   async function potrzebneMiejsce(): Promise<number> {
     const [s] = await wiersze(z.baza.all('SELECT (SELECT page_count FROM pragma_page_count()) * (SELECT page_size FROM pragma_page_size()) AS bajty'), 'miejsce');
@@ -81,10 +97,12 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
       const teraz = z.zegar.teraz();
       const baza = polacz(z.katalogi.tymczasowy, `eksport-${teraz.ms}.db`);
       const przedrostek = opcje?.przedrostek ?? 'oczko';
-      let cel = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}${ROZSZERZENIE_ARCHIWUM}`);
-      for (let i = 2; istniejePlik(cel); i++) cel = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
+      let cel: string | null = null; // ustawiany dopiero na nazwę, która nie istnieje — tylko taki plik wolno usunąć po błędzie
       try {
         utworzKatalog(katalogDocelowy); // Documents/Backup powstaje przy pierwszej kopii (idempotentnie); błąd → 'zapis' poniżej
+        let nowy = polacz(katalogDocelowy, nazwaArchiwum(listaPlikow(katalogDocelowy), przedrostek, teraz.dzien)); // ADR-0032 pkt 6: przyrostek rośnie
+        for (let i = 2; istniejePlik(nowy); i++) nowy = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
+        cel = nowy;
         const k = await kopiaBazy(z.baza, baza);
         if (!k.ok) return k;
         if (!(await kopiaZdrowa(baza))) return blad('uszkodzony'); // nie udostępniamy uszkodzonej kopii jako zapasowej (N12-12)
@@ -103,7 +121,7 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
         if (!zip.ok) return zip; // za_duze (bez ZIP64, ADR-0016): plik archiwum nie powstał albo został usunięty
         return { ok: true, wartosc: { sciezka: cel, manifest } };
       } catch (e) {
-        usunPlik(cel);
+        if (cel !== null) usunPlik(cel);
         return zapisNieudany(e);
       } finally {
         usunPlik(baza);

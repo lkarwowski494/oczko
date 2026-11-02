@@ -20,7 +20,7 @@ tags:
 - assertVisible: { id: "projekt-dodaj-licznik" }
 - tapOn: { id: "projekt-dodaj-licznik" }
 - assertVisible: { id: "formularz-nazwa-licznika" }
-- tapOn: "Stitches"
+- tapOn: { id: "wybor-rodzaj-oczka" } # wyjątek P-404: testID zamiast tekstu
 - assertVisible: { text: "Stitches", selected: true }
 - takeScreenshot: 54-nowy-licznik-oczka
 - tapOn: { id: "formularz-zapisz" }
