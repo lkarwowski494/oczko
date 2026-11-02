@@ -23,6 +23,7 @@ tags:
 - assertVisible: { id: "ustawienia" }
 - scrollUntilVisible: { element: { id: "ustawienia-zglos" } }
 - assertVisible: { id: "ustawienia-zglos" }
+- takeScreenshot: 63-ustawienia-przed-zglos
 - tapOn: { id: "ustawienia-zglos" }
 # --- podgląd: cała treść przed wysyłką (S1) ---
 - extendedWaitUntil: { visible: { id: "arkusz-zamknij" }, timeout: 20000 }

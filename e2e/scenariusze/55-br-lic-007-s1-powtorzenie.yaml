@@ -18,6 +18,7 @@ tags:
 # S3 (RD-12-W5): długość 0 → komunikat, ustawienie nie zapisane
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-powtorzenie" }
+- takeScreenshot: 55-menu-powtorzenie
 - tapOn: { id: "menu-powtorzenie" }
 - assertVisible: { id: "formularz-zapisz" }
 - retry:
@@ -35,7 +36,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "17" }, timeout: 20000 }
 - assertNotVisible: { id: "licznik-powtorzenie" }
 # S1 (RD-12-W1): 17 przy długości 8
-- runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "8" } }
+- runFlow: { file: subflows/ustaw-powtorzenie-ze-zrzutem.yaml, env: { DLUGOSC: "8", ZRZUT: "55-formularz-powtorzenie-8-przed-zapisem" } }
 - extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 3 · row 1 of 8.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "17" }
 - takeScreenshot: 55-powtorzenie-3-rzad-1

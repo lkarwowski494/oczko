@@ -12,7 +12,7 @@ tags:
       TERAZ: "2026-11-10T19:30:00"
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: { file: subflows/nazwij-projekt-ze-zrzutem.yaml, env: { ZRZUT: "11-formularz-nazwa-przed-zapisem" } }
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }

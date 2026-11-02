@@ -31,6 +31,7 @@ tags:
       - assertVisible: { id: "formularz-nazwa-projektu", text: "Vest" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
+- takeScreenshot: 18-formularz-nazwa-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 - tapOn: { id: "nav-projekty" }
