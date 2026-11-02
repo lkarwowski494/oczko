@@ -31,12 +31,17 @@ export function Historia({ stan, t, naCofnij, naCofnijSerie, naWpisz, naZamknij 
           const tekst = w.seria
             ? `${w.godzina} · ${t('historia.seria', { count: w.seria.ile, czas: w.seria.czas })} · ${w.z} → ${w.na}`
             : w.opis ? t('historia.wpis_opis', { czas: w.godzina, z: w.z, na: w.na, opis: w.opis }) : t('historia.wpis', { czas: w.godzina, z: w.z, na: w.na });
+          // P2-8 (Aneks P2 poz. 4): VoiceOver czyta zdanie „{{od}} to {{do}} at {{czas}}”, nie znaki „·” i „→”; wpis cofnięty dostaje dopisek „Undone”.
+          // Seria i wpis z rodzajem zmiany (Reset, Entered…) zostają przy dotychczasowym tekście wiersza (zdania dla nich nie ma w kluczach 04).
+          const zdanie = w.seria || w.opis ? null : t('historia.wpis_a11y', { od: w.z, do: w.na, czas: w.godzina });
+          const opisWpisu = zdanie ?? tekst;
+          const etykietaWiersza = zdanie === null ? undefined : w.cofniety ? `${zdanie}. ${t('historia.cofnieto')}` : zdanie;
           const starszy = !w.mozeCofnac && !w.cofniety; // starszy, niecofnięty wpis: rozwija się i prowadzi do wpisania wartości
           return (
             <View key={w.id} testID={w.mozeCofnac ? 'historia-ostatni' : w.cofniety ? 'historia-cofniety' : 'historia-starszy'} style={{ gap: odstep.s }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.s }}>
                 <View style={{ flex: 1 }}>
-                  <Tresc>
+                  <Tresc etykieta={etykietaWiersza}>
                     {w.cofniety ? <Text style={{ textDecorationLine: 'line-through' }}>{tekst}</Text> : tekst}
                     {w.cofniety ? ` · ${t('historia.cofnieto')}` : ''}
                   </Tresc>
@@ -46,7 +51,7 @@ export function Historia({ stan, t, naCofnij, naCofnijSerie, naWpisz, naZamknij 
                   : <Przycisk tekst={t('wspolne.cofnij')} onPress={() => naCofnij(w.id)} testID="historia-cofnij-ostatnia" />)}
                 {starszy && (
                   // ▸/▾ po prawej, cel ≥ 44 pt (przycisk tekstowy), stan w `expanded`, etykieta stała (aneks partii 8, poz. 4; wzorzec 20 Treningu)
-                  <Przycisk tekst={rozwiniety === w.id ? '▾' : '▸'} etykieta={t('historia.wpis_rozwin_a11y', { wpis: tekst })} podpowiedz={t('historia.wpis_rozwin_podpowiedz')}
+                  <Przycisk tekst={rozwiniety === w.id ? '▾' : '▸'} etykieta={t('historia.wpis_rozwin_a11y', { wpis: opisWpisu })} podpowiedz={t('historia.wpis_rozwin_podpowiedz')}
                     rozwiniety={rozwiniety === w.id} rodzaj="tekstowy" onPress={() => ustawRozwiniety(rozwiniety === w.id ? null : w.id)} testID={`historia-rozwin-${w.id}`} />
                 )}
               </View>

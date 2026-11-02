@@ -203,7 +203,8 @@
     "starszy_info": "Only the latest change can be undone. To fix this one, enter the right number.",
     "wpisz": "Enter the right number",
     "wpis_rozwin_a11y": "More about {{wpis}}",
-    "wpis_rozwin_podpowiedz": "Shows how to change this entry."
+    "wpis_rozwin_podpowiedz": "Shows how to change this entry.",
+    "wpis_a11y": "{{od}} to {{do}} at {{czas}}"
   },
   "menu": {
     "nazwa": "Name project and part",

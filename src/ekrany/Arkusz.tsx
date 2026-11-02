@@ -142,9 +142,9 @@ export function KomunikatZapisu({ t }: { t: Tlumacz }): React.ReactElement {
     </View>
   );
 }
-export function Tresc({ children, podpis, testID }: { children: React.ReactNode; podpis?: boolean; testID?: string }): React.ReactElement {
+export function Tresc({ children, podpis, testID, etykieta }: { children: React.ReactNode; podpis?: boolean; testID?: string; etykieta?: string }): React.ReactElement {
   const st = style(useKolory());
-  return <Text style={podpis ? st.podpis : st.zwykly} testID={testID}>{children}</Text>;
+  return <Text style={podpis ? st.podpis : st.zwykly} testID={testID} accessibilityLabel={etykieta}>{children}</Text>;
 }
 
 /** Liczba całkowita ≥ 0 z pola (cyfry ASCII; pusty, ujemny, ułamek, tekst → null). */
