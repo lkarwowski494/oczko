@@ -94,9 +94,7 @@ final class EksperymentyTests: XCTestCase {
   /// Pusta strona 2 po wydruku (przebiegi 121/123, scen. 25: „2 pages” przy 3 wierszach) — wariant (a): końcowe jednolicie białe strony przycięte,
   /// nigdy do zera stron; strona z treścią na końcu zostaje. Bez WebKit (sam PDFKit), więc działa w xctest pakietu.
   func testW1PustaStronaNaKoncu() throws {
-    // Oczekiwana porażka do decyzji o wariancie (a) po zrzucie 07 (P-282): przycinanie nie jest włączone (zaślepka). Czerwień zadania
-    // `eksperymenty-wzoru` ma znaczyć tylko nowy problem; po decyzji zdjąć XCTExpectFailure (bez porażki XCTest sam zgłosi niespełnione oczekiwanie).
-    XCTExpectFailure("P-282: przycinanie końcowych pustych stron czeka na zrzut scenariusza 07")
+    // E2-A5 (P-282 wariant A): przycinanie włączone w `Konwersja.naPdf` dla Worda, więc oczekiwana porażka zdjęta.
     func pdf(_ strony: [Bool]) throws -> URL { // true = z tekstem
       let cel = FileManager.default.temporaryDirectory.appendingPathComponent("w1-pusta-\(UUID().uuidString).pdf")
       try UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 612, height: 792)).writePDF(to: cel) { ctx in

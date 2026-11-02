@@ -13,7 +13,10 @@ enum Konwersja {
     let wynik: Result<URL, PowodWzoru>
     switch z {
     case let .adres(u): wynik = await KonwerterStrony().konwertuj(.adres(u))
-    case let .word(u): wynik = await KonwerterStrony().konwertuj(.plik(u))
+    case let .word(u):
+      wynik = await KonwerterStrony().konwertuj(.plik(u))
+      // E2-A5 (P-282 wariant A): wydruk Worda przez WKWebView dokłada pustą ostatnią stronę; liczba stron w wyniku jest już z przyciętego pliku.
+      if case let .success(plik) = wynik { SprawdzeniePdf.bezPustychStronNaKoncu(plik) }
     case let .obrazy(u): wynik = obrazyNaPdf(u)
     }
     switch wynik {
