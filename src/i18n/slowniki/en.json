@@ -161,7 +161,12 @@
     "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again.",
     "ladowanie": "Loading…",
     "blad_wczytania": "Couldn’t load this.",
-    "ponow": "Try again"
+    "ponow": "Try again",
+    "odrzuc_tytul": "Discard changes?",
+    "odrzuc_opis_zmiany": "Everything stays as it was.",
+    "odrzuc_opis_nowy": "Nothing will be added.",
+    "wroc_do_edycji": "Back to editing",
+    "odrzuc_zmiany": "Discard changes"
   },
   "projekty": {
     "szukaj": "Search",

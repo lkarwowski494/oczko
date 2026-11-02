@@ -54,6 +54,7 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | **+1 row / −1** | główne działanie; −1 to korekta, nie cofnięcie |
 | **Undo** | baner strażnika i ostatnia zmiana w historii (BR-LIC-003) |
 | **Save / Cancel** | formularze w arkuszach |
+| **Discard changes?** [Back to editing] [Discard changes] | Cancel albo przesunięcie arkusza formularza w dół, gdy coś zmieniono (słownik studia „Odrzucić zmiany?”; Trening `confirmDiscard`); bez zmian arkusz zamyka się od razu. Opis skutku pod tytułem (aneks M2 partia 2, 004) |
 | **Mark as finished** | ukończenie (U-9), potem karta i pytanie o włóczkę |
 | **Delete {object}** | z potwierdzeniem; trafia do „Recently deleted” na 30 dni (P-026, BR-DAN-008) |
 | **Not now** | neutralna odmowa na komunikacie limitu |
@@ -1022,6 +1023,19 @@ Dlaczego dwie treści rysunku: plik oczekujący przetrwa zamknięcie aplikacji, 
 Macierz stanów, poz. 8 „Ostrzeżenie”: tekst o progu, nie o błędzie (dziś tytułem jest całe zdanie `wspolne.blad_zapisu_opis` „…Nothing was changed… try again”, choć niczego jeszcze nie próbowano). Alert: `wzor.miejsce_tytul` „Your device is almost full” / `wzor.miejsce_opis` „Highlights and drawings you add may not be saved. Free some space before you draw.” / `wspolne.ok`; bez haptyki błędu (to nie błąd). Bez liczby MB w tekście (próg `RYSUNEK_MIEJSCE_MIN_MB` = 50 to [OCENA 08], do korekty 05).
 
 **Najwyżej jeden alert przy otwarciu wzoru.** Pierwszeństwo ma alert błędu rysunku (mówi o kreskach, które już są) przed ostrzeżeniem (mówi o przyszłych): gdy błąd rysunku (odzysk JS albo `onBladZapisu`) przyszedł przed ostrzeżeniem, ostrzeżenia nie ma (dziś tylko po błędzie odzysku JS); gdy ostrzeżenie już stoi, kolejny błąd rysunku z tego otwarcia nie daje drugiego alertu, a stan niezapisanych kresek pokaże pytanie przy „Back” (`wzor.wyjdz_tytul`), które mówi to samo. **Dla 08:** test trasy wzoru — wolne miejsce poniżej progu → ostrzeżenie z kluczami `wzor.miejsce_*` (tytuł ≠ `wspolne.blad_zapisu_opis`); wolne poniżej progu i `onBladZapisu` przy otwarciu → `Alert.alert` wywołany raz.
+
+### „Discard changes?” w formularzach (M1-audytor-generalny-020, 04-studio-projektowe-004; DEC-28 a, wzór Treningu P-315)
+Wzorzec Treningu (`components/DraftHeader.tsx` `confirmDiscard`, `lib/confirm.ts` `backToEditButton`, `lib/i18n.en.ts`; odczyt 2026-11-02, HEAD 2e4b0f8): tytuł „Odrzucić zmiany?” / „Discard changes?”, opis skutku zależny od obiektu („The new template won’t be saved.”, „The template stays unchanged.”), przyciski „Back to editing” (`cancel`) i „Discard changes” (`destructive`); bez zmian — zamknięcie od razu. Oczko bierze ten wzorzec bez zmian, z dwoma opisami zamiast jednego na obiekt (jedna para tekstów obejmuje kilkanaście arkuszy; mniej przekładów, ten sam skutek):
+
+| Klucz | en | Kiedy |
+|---|---|---|
+| `wspolne.odrzuc_tytul` | Discard changes? | tytuł |
+| `wspolne.odrzuc_opis_zmiany` | Everything stays as it was. | arkusz istniejącej rzeczy: `notatka`, `nazwa`, `cel`, `wpisz`, `powtorzenie`, `termin`, `narzedzie`, `znaczenie`, `wloczki` (wybór włóczki projektu), `przypomnienie-edycja`, trasy `sesja-korekta`, `wloczka` i `drut` przy edycji |
+| `wspolne.odrzuc_opis_nowy` | Nothing will be added. | arkusz nowej rzeczy: `nowy-projekt`, `czesc`, `licznik`, `przypomnienie`, trasy `wloczka` i `drut` przy dodawaniu |
+| `wspolne.wroc_do_edycji` | Back to editing | przycisk `cancel` (nie „Cancel”: „Cancel” anulujące „Cancel” myli — Trening) |
+| `wspolne.odrzuc_zmiany` | Discard changes | przycisk `destructive` |
+
+Zachowanie (opcja a ze znaleziska, rekomendacja; 08): pytanie tylko, gdy wartości różnią się od tych z otwarcia arkusza; wyzwalacze — Cancel w nagłówku i systemowe przesunięcie arkusza w dół (gest zostaje włączony, HIG Sheets; przy zmianach przechwycony, np. `usePreventRemove`); „Discard changes” zamyka bez zapisu, „Back to editing” zostawia arkusz z wpisanymi wartościami i klawiaturą. Arkusze decyzji bez pól (`co-dalej`, ukończenie, menu) — nie dotyczy. Trening wyłącza gest (`gestureEnabled: false`); Oczko go zostawia, bo arkusze formularzy są tu `presentation: 'modal'`, a przesunięcie w dół to standardowe zamknięcie arkusza iOS (SP-15) — jedyna różnica wobec Treningu, nazwana. **Dla 08 (testy przed kodem):** notatka i przypomnienie ze zmianą — Cancel i `beforeRemove` pokazują pytanie z tymi kluczami; bez zmian — zamknięcie bez pytania; „Back to editing” zostawia wartości. Makieta: katalog wyjścia sesji, `zrzuty/dec28-alerty.png` (wiersze 004).
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.

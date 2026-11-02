@@ -140,7 +140,12 @@
     "blad_zapisu_opis": "Druga linia alertu błędu zapisu poza licznikiem i wzorem: Ustawienia (przełącznik wraca do poprzedniego stanu), miary, formularze projektu, sesji i włóczki. Pierwsza linia to `ustawienia.blad_zapisu` albo `formularz.blad_zapisu` (tytuł mówi, co się nie udało). Przyczyna (brak miejsca na urządzeniu) i działanie (zwolnić miejsce, spróbować ponownie); „Nothing was changed” = poprzedni stan został. Przycisk: `wspolne.ok`.",
     "ladowanie": "Podpis na środku ekranu do czasu pierwszego odczytu danych (lista projektów, ekran projektu; E2-137-A1). Jedno słowo z wielokropkiem.",
     "blad_wczytania": "Podpis nad przyciskiem „Try again”, gdy odczyt danych ekranu się nie udał (E2-137-A1). Zdanie krótkie, bez winy użytkownika.",
-    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa."
+    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa.",
+    "odrzuc_tytul": "Tytuł pytania po Cancel albo przesunięciu arkusza formularza w dół, gdy coś w nim zmieniono (słownik studia „Odrzucić zmiany?”, jak Trening). Bez zmian arkusz zamyka się od razu, bez pytania. Treść: `wspolne.odrzuc_opis_zmiany` albo `wspolne.odrzuc_opis_nowy`; przyciski `wspolne.wroc_do_edycji` i `wspolne.odrzuc_zmiany`.",
+    "odrzuc_opis_zmiany": "Treść pytania `wspolne.odrzuc_tytul` w formularzu istniejącej rzeczy (notatka, nazwa, cel, termin, narzędzie, przypomnienie, korekta sesji, włóczka lub druty w zapasie): po odrzuceniu zostaje to, co było zapisane przed otwarciem arkusza. Opis skutku, jak w Treningu „The exercise stays unchanged.”",
+    "odrzuc_opis_nowy": "Treść pytania `wspolne.odrzuc_tytul` w formularzu nowej rzeczy (nowy projekt, część, licznik, przypomnienie, włóczka lub druty): po odrzuceniu nic nie powstaje. Opis skutku, jak w Treningu „The new template won’t be saved.”; „added” jak w komunikatach `wzor.blad_*` („Nothing was added.”).",
+    "wroc_do_edycji": "Przycisk anulujący (styl cancel) w pytaniu `wspolne.odrzuc_tytul`: wraca do arkusza z wpisanymi wartościami. Celowo nie „Cancel”: „Cancel” anulujące „Cancel” myli (Trening, `lib/confirm.ts`).",
+    "odrzuc_zmiany": "Przycisk niszczący (czerwony) w pytaniu `wspolne.odrzuc_tytul`: zamyka arkusz bez zapisu. Ta sama nazwa akcji co w tytule (słownik studia „Odrzuć zmiany”)."
   },
   "projekty": {
     "szukaj": "Pole wyszukiwania na liście projektów (ekrany.html projekty).",
