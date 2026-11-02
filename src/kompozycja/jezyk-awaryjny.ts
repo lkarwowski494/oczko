@@ -4,7 +4,10 @@ import { ZASOBY } from '../i18n/slowniki';
 import { tagiSystemowe } from '../platforma/lokalizacja';
 import type { Tlumacz } from '../ekrany/wspolne';
 
+// M1-012: nieczytelny język systemu (moduł natywny rzuca) → język źródłowy; inaczej odrzucona obietnica zostawia pustą planszę zamiast ekranu awaryjnego.
+const systemoweBezpieczne = (): string[] => { try { return tagiSystemowe(); } catch { return []; } };
+
 export async function tAwaryjny(): Promise<Tlumacz> {
-  const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => undefined }, systemowe: tagiSystemowe, zasoby: ZASOBY });
+  const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => undefined }, systemowe: systemoweBezpieczne, zasoby: ZASOBY });
   return (k, p) => i.t(k, p);
 }
