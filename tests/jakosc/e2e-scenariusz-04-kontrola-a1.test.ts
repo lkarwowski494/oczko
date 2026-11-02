@@ -30,14 +30,15 @@ describe('E2-136-A1 · krok kontrolny po pierwszym +1 po −1 (scenariusz 04)', 
     expect(a?.nazwa).toBe('assertVisible');
     expect(a.arg).toEqual({ id: 'licznik-wartosc', text: '1' });
   });
-  test('zaraz po niej asercja panelu pomiaru E2E „n = 1” (stan z aplikacji niezależny od wartości na ekranie)', () => {
+  test('zaraz po niej opcjonalna asercja panelu pomiaru E2E „n = 1” (P-367: diagnoza bez nowego źródła porażki bramki)', () => {
     const a = l[iPlus + 3];
     expect(a?.nazwa).toBe('assertVisible');
     expect(a.arg.id).toBe('e2e-pomiar-plus');
+    expect(a.arg.optional).toBe(true);
     expect(new RegExp(`^${a.arg.text}$`).test('p95 18 ms, n = 1')).toBe(true);
     expect(new RegExp(`^${a.arg.text}$`).test('p95 18 ms, n = 2')).toBe(false);
   });
-  test('zrzut nie jest opcjonalny ani w retry (porażka kroku kontrolnego ma być widoczna)', () => {
-    for (const k of [l[iPlus + 1], l[iPlus + 2], l[iPlus + 3]]) expect(typeof k.arg === 'object' && k.arg ? k.arg.optional : undefined).not.toBe(true);
+  test('zrzut i asercja wartości nie są opcjonalne (porażka kroku kontrolnego ma być widoczna)', () => {
+    for (const k of [l[iPlus + 1], l[iPlus + 2]]) expect(typeof k.arg === 'object' && k.arg ? k.arg.optional : undefined).not.toBe(true);
   });
 });

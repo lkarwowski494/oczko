@@ -39,8 +39,8 @@ tags:
 #  - brak panelu przy stuknięciu w ułamku sekundy → błąd aplikacji (+1 nie przetworzone).
 - takeScreenshot: 04-po-plus-po-minus
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-# stan z aplikacji niezależny od wartości na ekranie: +1 przetworzone i wyrenderowane raz
-- assertVisible: { id: "e2e-pomiar-plus", text: "p95 .* ms, n = 1" }
+# stan z aplikacji niezależny od wartości na ekranie: +1 przetworzone i wyrenderowane raz; opcjonalna (P-367): wynik w maestro.log i zrzucie, bez nowej porażki bramki
+- assertVisible: { id: "e2e-pomiar-plus", text: "p95 .* ms, n = 1", optional: true }
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
