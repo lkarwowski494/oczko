@@ -158,7 +158,7 @@ export function style(k: Kolory) {
     glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     glownyTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst },
     niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
-    niszczacyTekst: { ...typografia.przycisk, color: k.przyciskNiszczacyTekst },
+    niszczacyTekst: { ...typografia.przyciskPelny, color: k.przyciskNiszczacyTekst },
     drugi: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     tekstowy: { minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     drugiTekst: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
