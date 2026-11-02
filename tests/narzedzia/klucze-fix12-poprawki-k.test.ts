@@ -32,16 +32,16 @@ describe('P2-7: klucze błędu zapisu poza licznikiem i wzorem', () => {
   });
 });
 
-// P2-8 (poz. 4): klucz.json nazywa zdanie `historia.wpis_opis`, ale ta nazwa jest zajęta w 35 językach przez widoczny wiersz z rodzajem zmiany
-// („{{czas}} · {{z}} → {{na}} ({{opis}})”). Zdanie dla dostępności dostaje nazwę `historia.wpis_a11y` (treść, parametry i kontekst bez zmian; do akceptacji koordynatora).
+// P2-8 (poz. 4): nazwa `historia.wpis_opis` była w 35 językach zajęta przez widoczny wiersz z rodzajem zmiany („{{czas}} · {{z}} → {{na}} ({{opis}})”),
+// więc zdanie dla dostępności nazywa się `historia.wpis_a11y` (P-371: koordynator wybrał wariant A; nazwa poprawiona także w klucze.json).
 describe('P2-8: zdanie opisu wpisu historii dla dostępności', () => {
   const NOWY = 'historia.wpis_a11y';
-  test('en.json: treść z klucze.json (`historia.wpis_opis`), stary klucz wiersza z rodzajem zmiany bez zmian', () => {
-    expect(wartosc(EN, NOWY)).toBe(ANEKS.en['historia.wpis_opis']);
+  test('en.json: treść z klucze.json, stary klucz wiersza z rodzajem zmiany bez zmian', () => {
+    expect(wartosc(EN, NOWY)).toBe(ANEKS.en[NOWY]);
     expect(wartosc(EN, 'historia.wpis_opis')).toBe('{{czas}} · {{z}} → {{na}} ({{opis}})');
   });
   test('en.kontekst.json: kontekst z klucze.json i nowa nazwa klucza w opisie', () => {
-    expect(wartosc(KONTEKST, NOWY)).toBe(ANEKS.kontekst['historia.wpis_opis']);
+    expect(wartosc(KONTEKST, NOWY)).toBe(ANEKS.kontekst[NOWY]);
   });
   test('klucz na liście „oczekujące na falę przekładu” (P-357)', () => {
     expect(OCZEKUJACE).toContain(NOWY);
