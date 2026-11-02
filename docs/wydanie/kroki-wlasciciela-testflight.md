@@ -16,6 +16,7 @@ Instrukcja dla właściciela konta Apple i GitHub. Format jak Trening `docs/48-z
 | A6 | Schemat CloudKit: Development → Production | — | A2, audyt kandydata | **po audycie (P-320); nie zaczynaj** |
 | B2 | Produkty: grupa „Oczko Pro”, `monthly`, `yearly`, `lifetime` | 25–30 min | — | do zrobienia |
 | B3 | Zakup w TestFlight | 0 min | B2 | rozstrzygnięte (bez działania) |
+| C1 | Content Rights w App Information (Yes + potwierdzenie praw) | 2 min [OCENA] | B2 (rekord aplikacji istnieje) | **po audycie (P-320); nie teraz** — blokuje „Add for Review”, jeśli puste |
 
 Razem A1–A5 i B2 ok. 65–75 min [OCENA]; plan-prac zakłada 20–40 min (dla A5 przy kopiowaniu istniejących wartości) — różnica to A1–A4 (nie ma analogii w Treningu) i B2. B1 (Paid Apps) zrobione (P-316) — nie wymieniam.
 
@@ -94,6 +95,16 @@ Potem **Continue** → **Register**.
 - **Wniosek:** zakup w TestFlight jest bezpłatny i nie wymaga konta Sandbox; wymaga istnienia produktów (B2). Konto Sandbox jest potrzebne tylko do scenariuszy szczególnych (ta sama strona).
 
 ---
+
+## C1. Content Rights w App Information — po audycie (P-349 (1), P-320); jeszcze nie rób
+**Po co:** App Store Connect nie pozwala dodać wersji do zgłoszenia („Add for Review”), dopóki pole Content Rights jest puste (Trening, lekcja L-028: zablokowało go 30.10.2026). Odpowiedź to Twoja deklaracja prawna na Twoim koncie; uzasadnienie dla Oczka i odrzucona opcja „No” są w `sklep.md` §3 krok 11.
+**Gdzie:** https://appstoreconnect.apple.com/apps → Oczko → w pasku bocznym **General → App Information** → pole **Content Rights**.
+**Kroki:**
+1. W polu Content Rights wybierz odpowiedź, że aplikacja zawiera, pokazuje lub otwiera treści osób trzecich, i potwierdź, że masz do nich prawa (**Yes**, jak w Treningu). Etykiety przycisków mogą się różnić od mojego opisu — liczy się odpowiedź Yes.
+2. Zapisz (**Save**).
+**Czas:** 2 min [OCENA]. **Kategoria podatkowa:** nic nie zmieniasz — bez zmiany Apple przypisuje „App Store software” (`sklep.md` §3 krok 12); zmiana tylko, jeśli doradca podatkowy tak zaleci.
+**Źródła (odczyt 2026-11-02):** https://developer.apple.com/help/app-store-connect/reference/app-information/ — „Apps that contain, show, or access third-party content must have all the necessary rights to that content or be otherwise permitted to use it under the laws of each App Store country or region in which they’re available.” · https://developer.apple.com/help/app-store-connect/manage-app-information/set-a-tax-category/ — „If you choose not to make any changes, your apps and In-App Purchases will be assigned the App Store software category.”
+**Sprawdzenie:** zrzut pola z zapisaną odpowiedzią; przy późniejszym „Add for Review” brak komunikatu o Content Rights.
 
 ## Po tych zadaniach (nie teraz)
 Krok 7 planu: `testflight.yml` z gałęzi roboczej, zatwierdzenie w środowisku `release` (jeden build, jedna zgoda). Krok 11: scalenie do `main` (za zgodą), workflowy `asc-*` (`sklep.md` §3b — działają dopiero po scaleniu), formularze i „Submit for Review”.
