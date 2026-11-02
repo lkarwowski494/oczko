@@ -159,6 +159,8 @@
     "gotowe": "Done",
     "ok": "OK",
     "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again.",
+    "blad_udostepnienia": "Couldn’t prepare the image",
+    "blad_udostepnienia_opis": "Your device may be out of space. Free some space and try sharing again.",
     "ladowanie": "Loading…",
     "blad_wczytania": "Couldn’t load this.",
     "ponow": "Try again",

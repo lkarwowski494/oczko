@@ -43,7 +43,7 @@ export default function EkranUkonczenia(): React.ReactElement {
       naWybierzWloczke={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'wloczki', projekt } })}
       naUdostepnij={() => void (async () => {
         const plik = await zrzutKarty(obraz).catch(() => null);
-        if (!plik) { Alert.alert(...alertBleduZapisu(kontener.j.t, 'formularz')); return; }
+        if (!plik) { Alert.alert(...alertBleduZapisu(kontener.j.t, 'udostepnienie')); return; } // M1-120
         await udostepnijPlik(plik, 'image/png'); // aplikacja nic nie wysyła sama — arkusz systemowy (ZP-03)
         usunPlik(plik);
       })()}
