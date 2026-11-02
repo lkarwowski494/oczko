@@ -10,6 +10,17 @@ Kod 1.0 kompletny (etap 1 zamknięty, P-299); audyty 04 (P-301) i 07 (P-305) prz
 **Pełny audyt (M1, opus/high, P-293) na kodzie po poprawkach; od jego startu zamrożenie zakresu — tylko naprawy blokerów (jak Trening, „Audyty i wydania” pkt 3).**
 **Dopiero z buildu kandydata (po naprawach audytu):** zrzuty sklepu (scenariusz, dane pokazowe, ramki, podpisy, kadry 04), metadane en ostateczne i ich przekład na 35 języków (09), fala przekładu zmienionych kluczy UI (jedna, po audycie), przeglądy rodzime i przekład zwrotny, commit wydania 1.0.0 + `tests/bazy/v1.db` (P-306: zamraża schemat), wdrożenie schematu CloudKit do Production (A6 — nieodwracalne), build TestFlight i test właściciela na urządzeniach (inaczej test do powtórki), App Privacy, notatka do recenzji, metadane i zrzuty w App Store Connect, wysyłka.
 
+## Plan 2.11 (P-368; UTC) [OCENA]
+| Kiedy | Tor | Sesja | Co | Wynik |
+|---|---|---|---|---|
+| ~05:00– | B | 10 (sonnet) | P-349 (1) Content Rights, (3) `check-urls` jak Trening, (4) lista wytycznych | kopia, verify 0 |
+| ~05:00– | C | 04 (sonnet) | znaleziska P2 z P-364 → `docs/design/` | lista dla 08 |
+| po cz. 3 #137 (~05:20) | A | 07 (sonnet) | raport E2 #137 (07/20/36, 30) | `07-jakosc/2026-11-02-e2-137/` |
+| ~06:30–10:00 | A | 08 (sonnet, ≤ 2 ID/sesja, równolegle) | poprawki z 07 i 04 | kopie, verify 0 |
+| ~10:30 | A | koordynator | scalenie, verify, jeden push `[e2e-pelny] [e2e-ciemny]` | przebieg 4 (~10:30–13:00) |
+| w czasie przebiegu 4 | — | 07; koordynator | 032 (033 na noc); polecenie M1 | — |
+| po zielonym przebiegu 4 | — | M1 (opus/high) | pełny audyt (P-293) | raport z werdyktem |
+
 ## Harmonogram 1–4.11 (UTC; czas polski = UTC+1) — P-319, P-320
 | Kiedy | Sesja (sonnet/high) | Co | Wynik / dowód | Czeka na |
 |---|---|---|---|---|
