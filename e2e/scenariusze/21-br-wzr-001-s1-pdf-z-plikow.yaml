@@ -19,6 +19,8 @@ tags:
 - takeScreenshot: 21-menu-przed-wzorem
 - tapOn: { id: "menu-wzor" }
 - assertVisible: { id: "wzor-dodaj" }
+# NOC-2b (F-24, 04): ekran „dodaj wzór” przed wyborem źródła
+- takeScreenshot: 21-ekran-dodaj-wzor
 - tapOn: { id: "wzor-dodaj" }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }

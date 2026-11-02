@@ -38,7 +38,7 @@ describe('NOC-1 · 66 i 08: „Back” po imporcie wymaga przewinięcia w górę
 type Cel = { nazwa: string; id?: string; tekst?: string };
 const trafia = (k: Krok, c: Cel) => k.nazwa === c.nazwa && (!c.id || idy(k).includes(c.id)) && (!c.tekst || JSON.stringify(k.arg).includes(c.tekst));
 const zrzut = (nazwa: string): Cel => ({ nazwa: 'takeScreenshot', tekst: nazwa });
-const ZMIENIAJACE = new Set(['tapOn', 'inputText', 'eraseText', 'setOrientation', 'launchApp', 'back', 'swipe', 'longPressOn']);
+const ZMIENIAJACE = new Set(['runFlow', 'tapOn', 'inputText', 'eraseText', 'setOrientation', 'launchApp', 'back', 'swipe', 'longPressOn']);
 const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[] = [
   // (a) menu „•••” otwarte, zanim scenariusz stuknie „Pattern”
   { scen: '21', zrzut: '21-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
@@ -54,6 +54,15 @@ const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[
   { scen: '62', zrzut: '62-wzor-po-plus-1-panel-zamkniety', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'tapOn', id: 'wzor-zaznacz' }, opis: '(c) wzór po +1, panel znacznika zamknięty' },
   // (d) +1 w poziomie na telefonie
   { scen: '23', zrzut: '23-poziomo-po-plus-1', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'setOrientation' }, opis: '(d) +1 w poziomie' },
+  // NOC-2b: uzupełnienie koordynatora — tabela luk 04 (docs/design/przejscie/maestro-2026-11-02.md @ e93f0e9), priorytet F-24, F-26, F-31, F-18, F-09
+  { scen: '21', zrzut: '21-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
+  { scen: '22', zrzut: '22-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
+  { scen: '62', zrzut: '62-wybor-kierunku', po: { nazwa: 'assertVisible', id: 'wzor-kierunek' }, przed: { nazwa: 'tapOn' }, opis: 'F-26 wybór kierunku rzędów' },
+  { scen: '62', zrzut: '62-wzor-po-gotowe', po: { nazwa: 'assertNotVisible', id: 'wzor-znacznik-pasek' }, przed: { nazwa: 'tapOn', id: 'licznik-plus' }, opis: 'F-26 stan po Done' },
+  { scen: '10', zrzut: '10-formularz-wpisz-wartosc-przed-zapisem', po: { nazwa: 'assertVisible', id: 'wpisz-wartosc-pole' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, opis: 'F-31 formularz przed zapisem' },
+  { scen: '18', zrzut: '18-przed-restartem', po: { nazwa: 'assertVisible', id: 'licznik-wartosc' }, przed: { nazwa: 'runFlow' }, opis: 'F-18 licznik przed zamknięciem' },
+  { scen: '56', zrzut: '56-menu-znaczenie', po: { nazwa: 'assertVisible', id: 'menu-znaczenie' }, przed: { nazwa: 'tapOn', id: 'menu-znaczenie' }, opis: 'F-09 menu przed wyborem znaczenia' },
+  { scen: '56', zrzut: '56-arkusz-znaczenia', po: { nazwa: 'assertVisible', tekst: 'The row I' }, przed: { nazwa: 'tapOn' }, opis: 'F-09 arkusz znaczenia przed wyborem' },
   // (e) wąskie okno iPada: licznik > 0 i „•••”
   { scen: '46', zrzut: '46-waskie-licznik-wartosc-menu', po: { nazwa: 'tapOn', id: 'nav-wstecz' }, przed: { nazwa: 'tapOn', id: 'nav-projekty' }, opis: '(e) wąskie okno: licznik 1 i „•••”' },
 ];

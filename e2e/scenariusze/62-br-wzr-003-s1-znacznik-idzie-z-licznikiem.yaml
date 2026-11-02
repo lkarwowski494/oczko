@@ -43,12 +43,16 @@ tags:
 # --- „Mark row”: pierwszy znacznik pyta o kierunek rzędów (P-126 3a), potem proponuje rząd w robocie 12 ---
 - tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-kierunek" }
+# NOC-2b (F-26, 04): pytanie o kierunek rzędów przed wyborem
+- takeScreenshot: 62-wybor-kierunku
 - tapOn: "Down, like written steps"
 - assertVisible: { id: "wzor-znacznik-rzad", text: "12" }
 - assertVisible: { id: "wzor-znacznik-pasek" }
 - takeScreenshot: 62-znacznik-12
 - tapOn: { id: "wzor-znacznik-gotowe" }
 - assertNotVisible: { id: "wzor-znacznik-pasek" }
+# NOC-2b (F-26, 04): stan po „Done”, panel zamknięty
+- takeScreenshot: 62-wzor-po-gotowe
 # --- użytkownik kończy rząd: licznik 12, znacznik przesuwa się na rząd 13 ---
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "12" }
