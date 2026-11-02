@@ -22,7 +22,9 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
     <View style={obok ? [st.kolumna, { width: p.szerokoscKolumny ?? undefined }] : st.pasekLicznika} testID={obok ? 'wzor-kolumna-licznika' : 'wzor-pasek-licznika'}>
       <View style={obok ? st.liczbaBlokKolumna : st.liczbaBlok} testID="wzor-liczba-blok">
         <Text style={obok ? st.liczbaKolumna : st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(p.licznik.liczba)}</Text>
-        {p.licznik.znaczenie !== 'w_trakcie' && <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>}
+        {p.licznik.znaczenie !== 'w_trakcie'
+          ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
+          : <Text style={st.podpis} testID="licznik-podpis">{t('licznik.jednostka_w_trakcie')}</Text>}{/* P2-5b, P-373: jak Licznik.tsx:100 */}
       </View>
       {p.blad && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{t('licznik.blad_zapisu')}</Text>}
       <View style={obok ? st.przyciskiKolumna : st.przyciski}>
