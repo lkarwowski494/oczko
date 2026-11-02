@@ -109,7 +109,8 @@
     "miary_imperial_opis": "in, oz",
     "miary_opis": "Changes how sizes and lengths are shown and entered. Your saved data doesn’t change.",
     "pro_wlaczone": "On",
-    "grupa_liczenie": "Counting"
+    "grupa_liczenie": "Counting",
+    "blad_zapisu": "Couldn’t save this setting"
   },
   "aktywnosc": {
     "plus": "+1 row",
@@ -155,7 +156,8 @@
     "wstecz": "Back",
     "dodaj": "Add",
     "gotowe": "Done",
-    "ok": "OK"
+    "ok": "OK",
+    "blad_zapisu_opis": "Your device may be out of space. Nothing was changed. Free some space and try again."
   },
   "projekty": {
     "szukaj": "Search",
@@ -201,7 +203,8 @@
     "starszy_info": "Only the latest change can be undone. To fix this one, enter the right number.",
     "wpisz": "Enter the right number",
     "wpis_rozwin_a11y": "More about {{wpis}}",
-    "wpis_rozwin_podpowiedz": "Shows how to change this entry."
+    "wpis_rozwin_podpowiedz": "Shows how to change this entry.",
+    "wpis_a11y": "{{od}} to {{do}} at {{czas}}"
   },
   "menu": {
     "nazwa": "Name project and part",
@@ -291,7 +294,8 @@
     "wloczka_opis": "Choose what you’re using. When you finish, Oczko asks how many skeins you used and takes them from your stash.",
     "wloczka_pusto": "No yarn in your stash yet. Add the yarn you’re using first, then choose it here.",
     "wloczka_wiersz_a11y_one": "{{nazwa}}, {{count}} skein in your stash",
-    "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} skeins in your stash"
+    "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} skeins in your stash",
+    "blad_zapisu": "Couldn’t save your changes"
   },
   "ukonczenie": {
     "udostepnij": "Share",
@@ -815,7 +819,7 @@
     "blad_strona": "Oczko can’t save this page",
     "blad_strona_opis": "The page asks you to sign in, or it has no text or pictures. Nothing was added. Open it in your browser, save it as a PDF and add the PDF.",
     "blad_czas": "Oczko couldn’t finish converting this file",
-    "blad_czas_opis": "“{{plik}}” took too long to convert. Nothing was added. Try again, or save it as a PDF and add the PDF.",
+    "blad_czas_opis": "“{{plik}}” took too long to convert. Nothing was added. Save it as a PDF and add the PDF, or try again.",
     "brak_aparatu_opis": "To scan pattern pages, allow camera access in Settings. You can still choose photos or a file.",
     "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF.",
     "notatka_chip": "Row {{n}}: {{tekst}}",

@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Import } from '../src/ekrany/Dane';
+import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { Ustawienia } from '../src/ekrany/Ustawienia';
 import { Tresc } from '../src/ekrany/Arkusz';
 import type { DniNaLiscie } from '../src/ekrany/ListaProjektow';
@@ -54,10 +55,10 @@ export default function EkranUstawien(): React.ReactElement {
     return koniec;
   }, [kontener, z]));
 
-  /** ADR-0029: zapis w bazie przez kolejkę; migawka zmienia się po COMMIT, błąd = przełącznik wraca i komunikat `licznik.blad_zapisu`. */
+  /** ADR-0029: zapis w bazie przez kolejkę; migawka zmienia się po COMMIT, błąd = przełącznik wraca i alert `ustawienia.blad_zapisu`. */
   async function zapiszPreferencje(zmiana: Parameters<typeof preferencje.zapisz>[1]): Promise<void> {
     const w = await preferencje.zapisz(z, zmiana);
-    if (!w.ok) Alert.alert(t('ustawienia.tytul'), t('licznik.blad_zapisu'));
+    if (!w.ok) Alert.alert(...alertBleduZapisu(t, 'ustawienia'));
     ustawPref({ ...preferencje.stan() });
   }
   async function eksport(): Promise<string | null> {

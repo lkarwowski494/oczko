@@ -71,13 +71,14 @@ test('K-04d: wiersz „Units” pokazuje „Automatic” i prowadzi do /miary; w
   await waitFor(async () => expect((await poRestarcie(z)).ukladMiar).toBe('imperial'));
   expect(mockRouter.back).toHaveBeenCalled();
 });
-test('K-04g: błąd zapisu → przełącznik wraca do poprzedniej wartości i jest komunikat „Couldn’t save that row…”', async () => {
+test('K-04g: błąd zapisu → przełącznik wraca do poprzedniej wartości i jest alert „Couldn’t save this setting” z opisem (P2-7)', async () => {
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
   const { z } = await aplikacja(true);
   render(<EkranUstawien />);
   fireEvent(screen.getByRole('switch', { name: 'Vibration' }), 'valueChange', false);
   await waitFor(() => expect(alert).toHaveBeenCalled());
-  expect(alert.mock.calls[0][1]).toBe('Couldn’t save that row. It’s still on screen; try again.');
+  expect(alert.mock.calls[0][0]).toBe('Couldn’t save this setting'); // P2-7: tytuł mówi, co się nie udało (nie tekst o rzędzie licznika)
+  expect(alert.mock.calls[0][1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
   expect(screen.getByRole('switch', { name: 'Vibration' }).props.value).toBe(true);
   expect((await poRestarcie(z)).wibracje).toBe(true);
 });

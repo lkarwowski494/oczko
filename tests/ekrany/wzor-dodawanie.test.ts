@@ -13,7 +13,7 @@ test.each([
   ['odmowa', 'Oczko can’t save this page', 'The page asks you to sign in'],
   ['pusty', 'Oczko can’t save this page', 'The page asks you to sign in'],
   // E2-A3: plik Word, którego konwersja przekroczyła limit czasu, to nie brak sieci (osobny komunikat, nic po cichu)
-  ['przekroczono_czas', 'Oczko couldn’t finish converting this file', '“a.pdf” took too long to convert. Nothing was added. Try again, or save it as a PDF and add the PDF.'],
+  ['przekroczono_czas', 'Oczko couldn’t finish converting this file', '“a.pdf” took too long to convert. Nothing was added. Save it as a PDF and add the PDF, or try again.'],
 ] as const)('%s → %s', (powod, tytul, opis) => {
   const a = alertImportu(powod, 'a.pdf', t);
   expect(a?.tytul).toBe(tytul);

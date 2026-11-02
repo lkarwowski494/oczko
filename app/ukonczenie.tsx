@@ -3,6 +3,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Ukonczenie, type StanUkonczenia } from '../src/ekrany/Ukonczenie';
+import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { oglos, portOceny, systemAplikacji } from '../src/kompozycja/system';
@@ -40,7 +41,7 @@ export default function EkranUkonczenia(): React.ReactElement {
       naWybierzWloczke={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'wloczki', projekt } })}
       naUdostepnij={() => void (async () => {
         const plik = await zrzutKarty(obraz).catch(() => null);
-        if (!plik) { Alert.alert(kontener.j.t('licznik.blad_zapisu')); return; }
+        if (!plik) { Alert.alert(...alertBleduZapisu(kontener.j.t, 'formularz')); return; }
         await udostepnijPlik(plik, 'image/png'); // aplikacja nic nie wysyła sama — arkusz systemowy (ZP-03)
         usunPlik(plik);
       })()}

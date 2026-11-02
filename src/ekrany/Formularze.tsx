@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Arkusz, Komunikat, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
 import { formatujLiczbe, parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
@@ -197,7 +197,7 @@ export function FormularzNazwy({ stan, t, naZapisz, naAnuluj }: PropsFormularzaN
       <Pole etykieta={t('formularz.nazwa_czesc')} wartosc={czesc} naZmiane={ustawCzesc} />
       <Pole etykieta={t('formularz.nazwa_projekt')} wartosc={projekt} naZmiane={ustawProjekt} testID="formularz-nazwa-projektu" />
       <Tresc podpis>{t('formularz.nazwa_opis')}</Tresc>
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }

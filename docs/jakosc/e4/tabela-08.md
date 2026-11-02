@@ -129,6 +129,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-klawiatura.test.tsx` | zielony (główny zestaw) | 3 | P-255, P-262 | `src/ekrany/Arkusz`<br>`src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/baner-serii-zrodlo.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-019, RD-17 | `src/ekrany/Licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bezpieczny-ipad.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/kompozycja/Bezpieczny` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-zapisu-poza-licznikiem.test.tsx` | zielony (główny zestaw) | 5 | P-368 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/Zapas`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bledy-js.test.ts` | zielony (główny zestaw) | 3 | P-194 | `src/kompozycja/bledy-js` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-panel-wzoru-word.test.tsx` | zielony (główny zestaw) | 1 | P-282 | `src/kompozycja/e2e/panele` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-plus.test.tsx` | zielony (główny zestaw) | 2 | NFR-WYD-001, P-255 | `src/kompozycja/e2e/panele` | — |
@@ -138,7 +139,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze.test.tsx` | zielony (główny zestaw) | 8 | BR-LIC-007/S3, BR-LIC-010/S1, BR-LIC-010/S2, BR-LIC-017, BR-LIC-017/S7, BR-PRJ-013/S3, P-191, P-360, RD-12, RD-13 | `src/ekrany/Formularze`<br>`src/ekrany/wspolne` | ER-43, Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-dni.test.tsx` | zielony (główny zestaw) | 4 | BR-DNI-001, BR-DNI-003, P-191 | `src/ekrany/HistoriaDni`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | ER-55, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-menu.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-003, BR-LIC-003/S1, BR-LIC-004, BR-LIC-017/S6, BR-PRJ-006, R-007 | `src/ekrany/Historia`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-rozwin.test.tsx` | zielony (główny zestaw) | 5 | P-330, P-360 | `src/ekrany/Historia`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-rozwin.test.tsx` | zielony (główny zestaw) | 8 | P-330, P-360 | `src/ekrany/Historia`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-trasa.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-003, BR-LIC-003/S2, BR-LIC-003/S4 | `src/ekrany/Historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-ukonczenia.test.tsx` | zielony (główny zestaw) | 2 | BR-DNI-001/S4, BR-DNI-003/S2, BR-PRJ-013, P-043 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-konflikt.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/IcloudKonflikt`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -273,4 +274,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 269; zależnych od poprawek: 174.
+Razem plików testów: 270; zależnych od poprawek: 175.

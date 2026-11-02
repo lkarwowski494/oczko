@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { IcloudKonflikt } from '../src/ekrany/IcloudKonflikt';
+import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import type { WyborKonfliktu } from '../src/kompozycja/licznik';
 
@@ -23,6 +24,6 @@ export default function EkranKonfliktu(): React.ReactElement | null {
   if (!stan) return null;
   return (
     <IcloudKonflikt t={t} licznik={stan.nazwa} wybory={stan.wybory} naZamknij={() => router.back()}
-      naWybor={(glowa) => void licznik.konflikt.wybierz(glowa).then((r) => { if (!r.ok) Alert.alert(t('licznik.blad_zapisu')); router.back(); })} />
+      naWybor={(glowa) => void licznik.konflikt.wybierz(glowa).then((r) => { if (!r.ok) Alert.alert(...alertBleduZapisu(t, 'formularz')); router.back(); })} />
   );
 }

@@ -3,7 +3,7 @@
 // Pielęgnacja tylko tekstem (OG-13, OP-11). Krokowiec motków co KROK_MOTKA (jak karta ukończenia, P-126 (2a)).
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Arkusz, Komunikat, Pole, Przycisk, Tresc, Wybor } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor } from './Arkusz';
 import { useZapis, type Zapis } from './FormularzeProjektu';
 import { WierszGrupy, style as styleNarzedzi } from './Narzedzia';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -179,7 +179,7 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
       <Pole etykieta={t('zapas.pole_notatka')} wartosc={notatka} naZmiane={ustawNotatke} wielowierszowe />
       {p.zdjecia}
       {w && p.naUsun && <Przycisk tekst={t('usun.wloczka')} onPress={p.naUsun} rodzaj="tekstowy" testID="zapas-usun" />}
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
@@ -231,7 +231,7 @@ export function FormularzDrutu(p: {
       <Pole etykieta={t('druty.pole_opis')} wartosc={opis} naZmiane={ustawOpis} />
       <Tresc podpis>{t('druty.pole_opis_przyklad')}</Tresc>
       {w && p.naUsun && <Przycisk tekst={t('usun.narzedzie')} onPress={p.naUsun} rodzaj="tekstowy" testID="drut-usun" />}
-      {blad && <Komunikat tekst={t('licznik.blad_zapisu')} />}
+      {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
   );
 }
