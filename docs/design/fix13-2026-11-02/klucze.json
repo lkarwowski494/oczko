@@ -1,9 +1,24 @@
 {
   "zrodlo": "Rola 04, fix M2 partia 2 (P-418, P-420; DEC-28 a; 2026-11-02). Teksty en nałożone przez 04 na src/i18n/slowniki/en.json i en.kontekst.json; klucze na liście oczekujących (P-357), przekład w fali 09 (P-320). Podpięcie w kodzie: M2 (08), testami przed kodem; wyrocznia testów = ten plik. `grupy`: klucze według ID planu.",
-  "odwolania": ["P-418", "P-420"],
+  "odwolania": [
+    "P-418",
+    "P-420"
+  ],
   "powod": "Teksty DEC-28 a (M1-audytor-generalny-102, 110, 020; P-418, P-420): rysunek na wzorze, stoper, pytanie przy wyjściu ze wzoru, ostrzeżenie o miejscu, „Discard changes?” w formularzach — en od 04, przekład w fali 09.",
   "grupy": {
-    "M1-audytor-generalny-102": ["wzor.blad_rysunku", "wzor.blad_rysunku_opis", "wzor.rysunek_niezapisany_opis", "stoper.blad_zapisu", "wzor.wyjdz_tytul", "wzor.wyjdz_zostan", "wzor.wyjdz_potwierdz"]
+    "M1-audytor-generalny-102": [
+      "wzor.blad_rysunku",
+      "wzor.blad_rysunku_opis",
+      "wzor.rysunek_niezapisany_opis",
+      "stoper.blad_zapisu",
+      "wzor.wyjdz_tytul",
+      "wzor.wyjdz_zostan",
+      "wzor.wyjdz_potwierdz"
+    ],
+    "M1-audytor-generalny-110": [
+      "wzor.miejsce_tytul",
+      "wzor.miejsce_opis"
+    ]
   },
   "en": {
     "wzor.blad_rysunku": "Couldn’t save highlights and drawings",
@@ -12,7 +27,9 @@
     "stoper.blad_zapisu": "Couldn’t update the timer",
     "wzor.wyjdz_tytul": "Leave this pattern?",
     "wzor.wyjdz_zostan": "Stay",
-    "wzor.wyjdz_potwierdz": "Leave unsaved"
+    "wzor.wyjdz_potwierdz": "Leave unsaved",
+    "wzor.miejsce_tytul": "Your device is almost full",
+    "wzor.miejsce_opis": "Highlights and drawings you add may not be saved. Free some space before you draw."
   },
   "kontekst": {
     "wzor.blad_rysunku": "Nagłówek alertu, gdy nie udał się zapis zakreśleń i rysunków na stronie wzoru (zakreślacz, pióro; ta sama para słów co w `wzor.usun_opis` „highlights and drawings”). Trzy sytuacje: zapis po rysowaniu, odzysk przy otwarciu wzoru (kreski z poprzedniej wizyty) i błąd zapisu w widoku natywnym. Druga linia: `wzor.blad_rysunku_opis` albo `wzor.rysunek_niezapisany_opis`; przycisk `wspolne.ok`. Nie mylić z `wzor.blad_zapis` (dodanie wzoru).",
@@ -21,6 +38,8 @@
     "stoper.blad_zapisu": "Nagłówek alertu, gdy nie udał się zapis stopera sesji po stuknięciu Start, Pause, Resume albo Stop; stoper zostaje w poprzednim stanie. Druga linia: `wspolne.blad_zapisu_opis` („Nothing was changed … try again” — prawdziwe: wystarczy stuknąć ponownie). „timer” jak w `stoper.*`.",
     "wzor.wyjdz_tytul": "Tytuł pytania po stuknięciu „Back” na ekranie wzoru, gdy są kreski niezapisane przez widok natywny (brak miejsca). Pytanie o decyzję, nie komunikat błędu. Treść: `wzor.rysunek_niezapisany_opis`; przyciski `wzor.wyjdz_zostan` (anuluj) i `wzor.wyjdz_potwierdz` (niszczący).",
     "wzor.wyjdz_zostan": "Przycisk anulujący w pytaniu `wzor.wyjdz_tytul`: zostaje na ekranie wzoru. Krótko, jedno słowo, jeśli język pozwala.",
-    "wzor.wyjdz_potwierdz": "Przycisk niszczący (czerwony) w pytaniu `wzor.wyjdz_tytul`: wychodzi ze wzoru, choć ostatnie zakreślenia i rysunki nie są zapisane. Etykieta nazywa skutek (wyjście bez zapisu), nie samą nawigację („Back”)."
+    "wzor.wyjdz_potwierdz": "Przycisk niszczący (czerwony) w pytaniu `wzor.wyjdz_tytul`: wychodzi ze wzoru, choć ostatnie zakreślenia i rysunki nie są zapisane. Etykieta nazywa skutek (wyjście bez zapisu), nie samą nawigację („Back”).",
+    "wzor.miejsce_tytul": "Nagłówek ostrzeżenia przy otwarciu wzoru, gdy wolnego miejsca na urządzeniu jest mniej niż próg (dziś 50 MB, `RYSUNEK_MIEJSCE_MIN_MB`). Ostrzeżenie przed działaniem, nie komunikat błędu: jeszcze nic się nie udało. „almost full” = pamięć urządzenia (nie iCloud). Druga linia `wzor.miejsce_opis`, przycisk `wspolne.ok`.",
+    "wzor.miejsce_opis": "Druga linia ostrzeżenia `wzor.miejsce_tytul`: skutek (nowe zakreślenia i rysunki mogą się nie zapisać) i działanie (zwolnić miejsce przed rysowaniem). „Highlights and drawings” jak w `wzor.usun_opis` i `wzor.blad_rysunku`. Bez liczby megabajtów (próg może się zmienić)."
   }
 }

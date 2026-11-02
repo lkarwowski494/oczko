@@ -849,7 +849,9 @@
     "rysunek_niezapisany_opis": "Your device may be out of space. Oczko keeps your latest highlights and drawings only while it’s open. Free some space, then open this pattern again to save them.",
     "wyjdz_tytul": "Leave this pattern?",
     "wyjdz_zostan": "Stay",
-    "wyjdz_potwierdz": "Leave unsaved"
+    "wyjdz_potwierdz": "Leave unsaved",
+    "miejsce_tytul": "Your device is almost full",
+    "miejsce_opis": "Highlights and drawings you add may not be saved. Free some space before you draw."
   },
   "udostepnij": {
     "tytul": "Add to Oczko",
