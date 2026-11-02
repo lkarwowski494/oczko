@@ -17,10 +17,13 @@ test.each([
   expect(a?.tytul).toBe(tytul);
   expect(a?.opis).toContain(opis);
 });
-test('anulowano i brak_sieci → bez alertu; inny powód → błąd zapisu licznika (nic po cichu)', () => {
+test('anulowano i brak_sieci → bez alertu; inny powód → błąd zapisu wzoru z aneksu 04 (nic po cichu; poprawki 04 D1, P-353 c)', () => {
   expect(alertImportu('anulowano', 'x', t)).toBeNull();
   expect(alertImportu('brak_sieci', 'x', t)).toBeNull();
-  expect(alertImportu('zapis', 'x', t)).toEqual({ tytul: 'Couldn’t save that row. It’s still on screen; try again.', opis: '' });
+  const zapis = { tytul: 'Oczko can’t save this pattern', opis: 'Your device may be out of space. Nothing was added. Free some space and try again.' };
+  expect(alertImportu('zapis', 'x', t)).toEqual(zapis);
+  expect(alertImportu('brak_miejsca', 'x', t)).toEqual(zapis);
+  expect(alertImportu('zapis', 'x', t)?.tytul).not.toContain('row'); // nie tekst o liczniku (licznik.blad_zapisu)
 });
 test('nazwa domyślna: plik bez rozszerzenia, host strony, „Scan …” / „Photos …” z datą', () => {
   expect(nazwaDomyslna({ rodzaj: 'plik', nazwa: 'Harbor Sweater.PDF' }, t, 'Nov 10')).toBe('Harbor Sweater');
