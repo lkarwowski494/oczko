@@ -50,6 +50,8 @@ describe('ścieżki danych i start nad 0.1.0', () => {
     ['SQLITE_IOERR: disk I/O error', 'zapis'],
     ['SQLITE_NOTADB: file is not a database', 'uszkodzony'],
     ['SQLITE_CORRUPT: database disk image is malformed', 'uszkodzony'],
+    ['SQLITE_FULL: database or disk is full', 'brak_miejsca'], // M1-audytor-generalny-100: brak miejsca przy otwarciu (ADR-0020 (4))
+    ['ENOSPC: no space left on device', 'brak_miejsca'],
   ])('ŚU-18 R-082 R-089 ADR-0019 Z07-21: otwarcie bazy rzuca „%s” → powod „%s”, bez bazy zastępczej (fabryka wołana raz, z tą samą ścieżką)', async (blad, powod) => {
     const wolania: string[] = [];
     const fabryka = (sciezka: string): PortBazy => { wolania.push(sciezka); throw new Error(blad); };
