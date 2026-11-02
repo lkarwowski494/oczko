@@ -30,7 +30,17 @@ tags:
 - runFlow: subflows/odstep.yaml
 # --- +1, +1, −1 (BR-LIC-002/S1, S2) ---
 - tapOn: { id: "licznik-plus" }
+# Krok kontrolny E2-136-A1 (przebieg #136: ten +1 po „−1” bez projektu bez efektu, stuknięcie 14,7 s, w #135 0,5 s; test aplikacji na prawdziwej bazie zielony,
+# tests/ekrany/licznik-minus-plus-bez-projektu.test.tsx). Zrzut zaraz po stuknięciu, przed asercją (P-091 9a: zrzut jest przezroczysty, pierwszą asercją zostaje wartość):
+# porażka asercji zostawia inaczej tylko zrzut awarii po 17 s. Rozróżnienie w przebiegu 3: panel pomiaru E2E (e2e-pomiar-plus, „n = 1”) pojawia się dopiero,
+# gdy aplikacja przetworzyła +1 (app/index.tsx: dodajRzad → ustawPomiar), więc jest w zrzucie i w hierarchii porażki:
+#  - panel jest, licznik nie pokazuje „1” → błąd aplikacji (odświeżenie ekranu);
+#  - brak panelu, a stuknięcie w maestro.log trwało dziesiątki sekund → maszyna (sterownik nie dostarczył stuknięcia);
+#  - brak panelu przy stuknięciu w ułamku sekundy → błąd aplikacji (+1 nie przetworzone).
+- takeScreenshot: 04-po-plus-po-minus
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+# stan z aplikacji niezależny od wartości na ekranie: +1 przetworzone i wyrenderowane raz
+- assertVisible: { id: "e2e-pomiar-plus", text: "p95 .* ms, n = 1" }
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
