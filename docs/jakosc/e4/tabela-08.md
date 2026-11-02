@@ -214,6 +214,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-po-pierwszym-plusie.test.tsx` | zielony (główny zestaw) | 1 | P-191, P-262 | `src/kompozycja/Kontekst` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper-sprawdz.test.tsx` | zielony (główny zestaw) | 1 | P-191 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stoper.test.tsx` | zielony (główny zestaw) | 6 | P-191, P-287 | `src/ekrany/Stoper`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/symbole-sf.test.tsx` | zielony (główny zestaw) | 9 | P-374 | `src/domena/uklad`<br>`src/ekrany/Stoper`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/tryb-awaryjny-dane.test.tsx` | zielony (główny zestaw) | 4 | NFR-DAN-001, NFR-DAN-003, R-050, R-068, R-079 | `src/ekrany/Dane`<br>`src/ekrany/TrybAwaryjny`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/tytuly-limit-skali.test.tsx` | zielony (główny zestaw) | 9 | P-277, P-287, P-361 | `src/ekrany/Kosz`<br>`src/ekrany/LicznikArkuszLimitu`<br>`src/ekrany/LicznikStyl`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/Projekt`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/uczciwe-zasady-trasa.test.tsx` | zielony (główny zestaw) | 3 | BR-ZAK-006 | `src/przypadki-uzycia/informacje-pro` | ER-46 |
@@ -265,7 +266,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 8 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-straznik.test.ts` | zielony (główny zestaw) | 6 | P-358, RD-17 | `src/konfiguracja`<br>`src/platforma/tryb-e2e` | — |
-| 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 7 | P-360 | `src/domena/rysik` | — |
+| 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-360 | `src/domena/rysik` | — |
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/platforma/zdjecia` | — |
@@ -283,4 +284,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 279; zależnych od poprawek: 179.
+Razem plików testów: 280; zależnych od poprawek: 180.

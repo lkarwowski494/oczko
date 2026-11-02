@@ -36,7 +36,7 @@ struct ZnacznikProp: Record {
   @Field var akcjaNastepnaStrona: String = ""
 }
 
-/// Chip notatki na stronie wzoru (F-56, P-330 2A; `NotatkaNatywna` w index.ts): ✎ + etykieta przy lewej krawędzi, na wysokości rzędu.
+/// Chip notatki na stronie wzoru (F-56, P-330 2A; `NotatkaNatywna` w index.ts): symbol note.text + etykieta przy lewej krawędzi, na wysokości rzędu.
 struct NotatkaProp: Record {
   @Field var id: String = ""
   @Field var strona: Int = 0

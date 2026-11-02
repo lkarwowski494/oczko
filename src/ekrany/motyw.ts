@@ -32,6 +32,10 @@ export const typografia = {
   podpis: systemowy(ty.podpis),
   drobny: systemowy(ty.drobny),
 };
+/** Rozmiar symbolu SF w pasku (jak glif, który zastępuje: rozmiar tekstu instrukcji z tokenów). */
+export const ROZMIAR_SYMBOLU = ty.instrukcja.rozmiar;
+/** Rozmiar symbolu w kapsule stopera: jak etykieta kapsuły (`przyciskPelny`, rozmiar treści, 17 pt; design-spec:528). */
+export const ROZMIAR_SYMBOLU_KAPSULY = ty.tresc.rozmiar;
 /** Największa skala kluczowej liczby licznika (bez ucięcia przy dużym tekście, tokeny „liczba.maxSkala”). */
 export const MAX_SKALA_LICZBY = ty.liczba.maxSkala;
 /**
