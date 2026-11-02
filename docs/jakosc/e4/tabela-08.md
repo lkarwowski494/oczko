@@ -78,6 +78,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/luki/limit-eksport-aktualizacja.test.ts` | zielony (główny zestaw) | 2 | BR-DAN-005, BR-DAN-005/S2, BR-ZAK-003, BR-ZAK-003/S2, KP-01, KP-02, P-057 | `src/dane/archiwum`<br>`src/dane/baza/adapter-node`<br>`src/dane/migracje/migruj`<br>`src/domena/limit`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/porty-propozycja` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/luki/sesja-dzien-granica.test.ts` | zielony (główny zestaw) | 3 | BR-DNI-001/S3, P-195, P-202 | `src/dane/repozytoria/kalendarz`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/sesja` | ER-55, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/luki/zapas.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, BR-ZAP-002/S1, BR-ZAP-004, BR-ZAP-004/S1, RD-10 | `src/dane/repozytoria/zapas`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/magazyn-sieroty-kopie.test.ts` | zielony (główny zestaw) | 3 | — | `src/dane/migracje/migruj`<br>`src/konfiguracja`<br>`src/niezawodnosc/kopie`<br>`src/przypadki-uzycia/przywracanie`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/magazyn-sieroty.test.ts` | zielony (główny zestaw) | 3 | P-110 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/dane/pliki/magazyn`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/start` | Z07-15, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/migawka-projektow.test.ts` | zielony (główny zestaw) | 5 | P-190, P-220, P-243, P-248, P-276 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/platforma/migawka`<br>`src/przypadki-uzycia/migawka`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/migracje-kopia.test.ts` | zielony (główny zestaw) | 2 | NFR-DAN-001, P-110 | `src/dane/migracje/sql` | — |
@@ -310,4 +311,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 306; zależnych od poprawek: 193.
+Razem plików testów: 307; zależnych od poprawek: 194.

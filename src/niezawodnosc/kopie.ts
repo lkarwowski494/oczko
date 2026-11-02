@@ -29,6 +29,19 @@ export function kopieDoUsuniecia(wpisy: readonly WpisKopii[], terazMs: number, d
     .map((w) => w.nazwa);
 }
 
+/**
+ * M1-087 (05-architekt-507): czas najnowszej kopii bazy w `kopie/` (ms z nazwy), także z przyszłości; brak kopii = null. Kopie `.db` nie mają plików
+ * magazynu (ADR-0020), więc plik bez wiersza `plik` nie starszy niż ta kopia może być jej potrzebny i nie jest sprzątany (sprzatnijSierotyMagazynu).
+ */
+export function najnowszaKopiaMs(wpisy: readonly WpisKopii[]): number | null {
+  let max: number | null = null;
+  for (const w of wpisy) {
+    const m = (w.katalog ? SUROWA : PLIK).exec(w.nazwa);
+    if (m && (max === null || Number(m[1]) > max)) max = Number(m[1]);
+  }
+  return max;
+}
+
 /** Kopie z ADR-0028 w Documents/Backup: `oczko-przed-importem-RRRR-MM-DD[-n].oczko` i `oczko-przed-usunieciem-…`; nic innego w tym katalogu nie jest tykane. */
 const PLIK_PRZED = /^oczko-przed-(importem|usunieciem)-(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?\.oczko$/;
 /**
