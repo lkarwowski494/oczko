@@ -17,7 +17,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 7. Zwykłe kolejne +1 rozdziela `runFlow: subflows/odstep.yaml` (> 2 s): okno strażnika serii RD-17 to 3 dodania w 2 s; seria celowo: `tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }`.
 8. `takeScreenshot` w punktach kontrolnych (nazwa `NN-opis`); zrzuty idą do artefaktu części i do logu (Trening: base64 przy porażce).
 9. **Pomiar (P-374, po P-372):** po kroku krytycznym, który w #137 nie dał wyniku (07 lista po ofertach, 08 `import-gotowy`, 17 miniatura, 34 ekran projektu), scenariusz robi zrzut `pomiar-*` i **opcjonalny** odczyt panelu (`assertVisible … optional: true` z regexem na liczbę, np. `.*import [0-9]+ ms.*`). W ścieżce `opoznienie-*` czyta też opcjonalnie stany `*-ladowanie` / `*-blad`. Panel pomiaru nie jest nigdy twardą asercją ani celem `tapOn` (pilnuje `tests/jakosc/e2e-pomiar-374.test.ts`). Klasyfikacja po przebiegu: liczba na zrzucie i status WARNED/COMPLETED w logu Maestro, nie hipoteza.
-10. **Wynik poza ekranem:** wynik operacji, który leży poniżej widocznej części (Ustawienia po ADR-0029: `eksport-licznosci`, `import-gotowy`, `import-wynik`), poprzedza `scrollUntilVisible`, nie samo `extendedWaitUntil`.
+10. **Wynik poza ekranem:** wynik operacji, który leży poniżej widocznej części (Ustawienia po ADR-0029: `eksport-wynik`, `eksport-licznosci`, `import-gotowy`, `import-wynik`; `eksport-wynik` spadł za ekran w #139, gdy doszedł panel `e2e-ocena-stan`), poprzedza `scrollUntilVisible`, nie samo `extendedWaitUntil`.
 
 ## Tagi
 | Tag | Znaczenie |
@@ -44,7 +44,7 @@ Argumenty startu (`launchApp: arguments:`; na iOS Maestro przekazuje je jako arg
 | Argument | Wartość | Kontrakt |
 |---|---|---|
 | `oczkoE2eTeraz` | czas lokalny ISO bez strefy, np. `2026-11-07T20:00:00` | port `Zegar` (Z07-18): `teraz()` = podana chwila + czas, który upłynął od startu procesu (zegar **biegnie**: RD-17 liczy odstępy); `strefa` = strefa symulatora; `dzien` z podanej daty |
-| `oczkoE2eOknoStraznika` | liczba sekund, 0 < s ≤ 600, np. `6` | okno strażnika serii (RD-17) zamiast `STRAZNIK_OKNO_S` (2 s); tylko scenariusz 04 (czas 3 stuknięć Maestro zależy od maszyny: #131 2,45 s, #135 4,18 s; E2E-A4, P-358). Zła wartość albo build bez E2E: 2 s. Domena z oknem 2 s ma testy jednostkowe — E2E sprawdza podłączenie |
+| `oczkoE2eOknoStraznika` | liczba sekund, 0 < s ≤ 600, np. `6` | okno strażnika serii (RD-17) zamiast `STRAZNIK_OKNO_S` (2 s); scenariusze 04 i 12 (czas 3 stuknięć Maestro zależy od maszyny: #131 2,45 s, #135 4,18 s; E2E-A4, P-358). Zła wartość albo build bez E2E: 2 s. Domena z oknem 2 s ma testy jednostkowe — E2E sprawdza podłączenie |
 | `oczkoE2eSiec` | `brak` | adapter sieci zwraca „brak połączenia”, każde wywołanie sieci = błąd w logu (NFR-OFF-001) |
 | `oczkoE2eAwariaStartu` | `przed-kamieniem` | wymuszona awaria procesu przed kamieniem milowym ADR-0019 (start liczony jako nieudany); po zapisie stanu startu pusty ekran z `testID` `e2e-awaria-startu` |
 | `oczkoE2eIcloud` | `wlaczony` \| `wylaczony` \| `brak-konta` \| `brak-miejsca` \| `konflikt` | atrapa iCloud (tylko z `EXPO_PUBLIC_ICLOUD_FAKE=1`): stan konta; `konflikt` = przy starcie druga wersja pierwszego licznika: wartość +5, urządzenie „iPad (test)”, teraz − 1 min (P-230) |
