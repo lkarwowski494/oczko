@@ -3,7 +3,7 @@
 // 320/390 × wysokość, poziomo 844 × 390, iPad 820 × 1180, 1180 × 820, wąskie okno 375 × 1180; kolumna treści iPada maks. 640 pt; kolumna licznika
 // poziomo 34 % w granicach 220–360 pt, na iPadzie 340 pt), moduly.md „iPad i orientacja” (układ według szerokości okna, nie orientacji).
 import { KOLUMNA_TRESCI_MAKS, ukladOkna } from '../../../src/domena/uklad';
-import { politykaPlotna, poDotyku, poPierwszymRysiku } from '../../../src/domena/rysik';
+import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku } from '../../../src/domena/rysik';
 
 describe('ukladOkna', () => {
   test.each([
@@ -49,16 +49,42 @@ describe('rysik: pencilOnly po pierwszym dotknięciu (P-218 Q2a)', () => {
 
 describe('07-jakosc-026 (F-28, P-327 (a), BR-WZR-004 S2): pierwsze dotknięcie rysikiem bez wybranego narzędzia wybiera Pen', () => {
   test('bez narzędzia: Pen i od razu pencilOnly — rysik pisze (płótno nie jest wyłączone), palec przewija', () => {
-    const po = poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false });
+    const po = poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false }, 'regular');
     expect(po).toEqual({ narzedzie: 'pioro', tylkoRysik: true });
     expect(politykaPlotna(po)).toBe('tylkoRysik');
   });
   test('z wybranym narzędziem zostaje ono (zakreślacz, gumka, pióro); tylkoRysik włącza się', () => {
-    for (const n of ['zakreslacz', 'pioro', 'gumka'] as const) expect(poPierwszymRysiku({ narzedzie: n, tylkoRysik: false })).toEqual({ narzedzie: n, tylkoRysik: true });
+    for (const n of ['zakreslacz', 'pioro', 'gumka'] as const) expect(poPierwszymRysiku({ narzedzie: n, tylkoRysik: false }, 'regular')).toEqual({ narzedzie: n, tylkoRysik: true });
   });
   test('tylko pierwszy raz: po odznaczeniu narzędzia przez użytkownika kolejne zgłoszenie rysika go nie wybiera na nowo', () => {
     const odznaczone = { narzedzie: 'brak' as const, tylkoRysik: true };
-    expect(poPierwszymRysiku(odznaczone)).toEqual(odznaczone);
+    expect(poPierwszymRysiku(odznaczone, 'regular')).toEqual(odznaczone);
+    expect(poPierwszymRysiku(odznaczone, 'compact')).toEqual(odznaczone);
     expect(politykaPlotna(odznaczone)).toBe('wylaczone'); // rysik też nic nie rysuje, dopóki nie wybierze narzędzia (BR-WZR-008 S3)
+  });
+});
+
+// P2-9 (Aneks P2 poz. 3, pozycja 10 C, P-360): w oknie iPada compact pasek ma jedno narzędzie rysujące — Highlighter; Pen jest tylko w regular.
+describe('P2-9 / P-360 (10 C): iPad compact — pierwszy rysik wybiera Highlighter, zmiana szerokości z Pen → Highlighter', () => {
+  test('pierwszy rysik bez narzędzia: compact → Highlighter i pencilOnly od razu; regular → Pen (P-327 (a) bez zmian)', () => {
+    const compact = poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false }, 'compact');
+    expect(compact).toEqual({ narzedzie: 'zakreslacz', tylkoRysik: true });
+    expect(politykaPlotna(compact)).toBe('tylkoRysik');
+    expect(poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false }, 'regular')).toEqual({ narzedzie: 'pioro', tylkoRysik: true });
+  });
+  test('z wybranym narzędziem w compact zostaje ono (Highlighter, gumka); tylko jednorazowo', () => {
+    for (const n of ['zakreslacz', 'gumka'] as const) expect(poPierwszymRysiku({ narzedzie: n, tylkoRysik: false }, 'compact')).toEqual({ narzedzie: n, tylkoRysik: true });
+  });
+  test('narzedzieRysika: narzędzie, które natywny widok wybiera przy pierwszym rysiku — wspólne z poPierwszymRysiku', () => {
+    expect(narzedzieRysika('compact')).toBe('zakreslacz');
+    expect(narzedzieRysika('regular')).toBe('pioro');
+    for (const klasa of ['compact', 'regular'] as const) expect(poPierwszymRysiku({ narzedzie: 'brak', tylkoRysik: false }, klasa).narzedzie).toBe(narzedzieRysika(klasa));
+  });
+  test('zmiana szerokości: wybrany Pen przechodzi w Highlighter tylko do compact; compact → regular zostawia Highlighter; reszta bez zmian', () => {
+    expect(narzedzieDlaKlasy('pioro', 'compact')).toBe('zakreslacz');
+    expect(narzedzieDlaKlasy('pioro', 'regular')).toBe('pioro');
+    expect(narzedzieDlaKlasy('zakreslacz', 'regular')).toBe('zakreslacz');
+    expect(narzedzieDlaKlasy('zakreslacz', 'compact')).toBe('zakreslacz');
+    for (const klasa of ['compact', 'regular'] as const) for (const n of ['brak', 'gumka'] as const) expect(narzedzieDlaKlasy(n, klasa)).toBe(n);
   });
 });

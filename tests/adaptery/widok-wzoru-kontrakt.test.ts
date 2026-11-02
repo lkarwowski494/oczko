@@ -47,3 +47,14 @@ test('kontrakt widoku wzoru: pozycja startowa (startStrona, startPowiekszenie) w
     expect(rekordSwift).toMatch(new RegExp(`@Field var ${pole}: (Int|Double) = 0`));
   }
 });
+
+// P2-9 (P-360, 10 C): pierwsze pociągnięcie rysikiem nie czeka na JS, więc natywny widok sam wybiera narzędzie — to ustawione propem `narzedzieRysika`
+// (compact → Highlighter), nie na sztywno Pen.
+test('kontrakt widoku wzoru: pierwszy rysik wybiera narzędzie z propa narzedzieRysika (nie sztywno Pen)', () => {
+  const widok = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+  const pierwszy = /private func pierwszyRysik\(\) \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(pierwszy).toContain('if narzedzie == .brak { ustawNarzedzie(narzedzieRysika) }');
+  expect(pierwszy).not.toContain('ustawNarzedzie(.pioro)');
+  expect(widok).toMatch(/func ustawNarzedzieRysika\(_ n: NarzedzieWzoru\) \{ narzedzieRysika = n \}/);
+  expect(swift).toMatch(/Prop\("narzedzieRysika"\) \{ \(v: WidokWzoru, n: String\) in v\.ustawNarzedzieRysika\(/);
+});

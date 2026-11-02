@@ -59,7 +59,7 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     render(<PrzegladarkaWzoru stan={{
       nazwa: 'Harbor chart', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
       strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
-      licznik: { liczba: 47, dziergany: 48 }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
+      licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
     }} t={t} widok={<RN.Text>PDF</RN.Text>} {...w} />);
     nieZlewaSie(screen.getByRole('button', { name: /^\+1 row/ }), k);
   });

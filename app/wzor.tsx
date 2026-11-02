@@ -8,7 +8,7 @@ import { WidokWzoruNatywny } from '../modules/oczko-wzor';
 import { rodzajPliku } from '../src/domena/rodzaj-pliku';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
-import { politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
+import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
 import { useKolory } from '../src/ekrany/motyw';
@@ -32,6 +32,8 @@ export default function EkranWzoru(): React.ReactElement {
   const router = useRouter();
   const k = useKolory();
   const okno = useWindowDimensions();
+  const szerokosc = szerokoscOknaE2e() ?? okno.width;
+  const uklad = ukladOkna({ szerokosc, wysokosc: okno.height });
   const { id, dodaj: dodajParam } = useLocalSearchParams<{ id?: string; dodaj?: string }>();
   const { t } = kontener.j;
   const zw = kontener.wzor.z;
@@ -40,6 +42,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [widok, ustawWidok] = useState<WidokWzoru | null>(null);
   const [narzedzie, ustawNarzedzie] = useState<Narzedzie>('brak');
   const [rysik, ustawRysik] = useState({ tylkoRysik: false });
+  useEffect(() => { ustawNarzedzie((n) => narzedzieDlaKlasy(n, uklad.klasa)); }, [uklad.klasa]); // zmiana szerokości okna: wybrany Pen → Highlighter w compact (P-360, 10 C)
   const [strona, ustawStrone] = useState<{ n: number; razem: number } | null>(null);
   const [zakreslenia, ustawZakreslenia] = useState(0);
   const [cofnij, ustawCofnij] = useState(0);
@@ -157,8 +160,6 @@ export default function EkranWzoru(): React.ReactElement {
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
       naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (r.ok) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny>
   );
-  const szerokosc = szerokoscOknaE2e() ?? okno.width;
-  const uklad = ukladOkna({ szerokosc, wysokosc: okno.height });
   if (!widok) {
     return (
       <Bezpieczny>
@@ -183,7 +184,7 @@ export default function EkranWzoru(): React.ReactElement {
     return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
   });
   const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
+    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
       onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
       onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
@@ -195,7 +196,7 @@ export default function EkranWzoru(): React.ReactElement {
       onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
       onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
-      onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a): bez narzędzia Pen
+      onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)
       onZakreslenia={(e) => ustawZakreslenia(e.nativeEvent.liczba)}
       onStukniecie={(e) => { // przytrzymanie: pas staje w tym miejscu, rząd zostaje (S3); pierwszy znacznik pyta o kierunek (3a) i bierze rząd w robocie (S2)
         const n = e.nativeEvent;
@@ -211,7 +212,7 @@ export default function EkranWzoru(): React.ReactElement {
     <Bezpieczny pelnaSzerokosc>
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1 }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => router.back()}

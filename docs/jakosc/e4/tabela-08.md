@@ -223,13 +223,13 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 19 | BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284, P-353, P-360, P-361 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 23 | BR-LIC-012, BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284, P-353, P-360, P-361 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-skrzynka.test.tsx` | zielony (główny zestaw) | 4 | P-046, P-230 | `src/ekrany/WzorSkrzynka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-czeka-w-liscie.test.tsx` | zielony (główny zestaw) | 3 | P-353 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-miejsce.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-011 | `src/przypadki-uzycia/wzor-miejsce` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-notatki.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-003, BR-WZR-008, P-330 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-plik-word.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/bledy`<br>`src/domena/rodzaj-pliku` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-rysik.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-004, P-226, P-327 | `src/domena/rysik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-rysik.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-004, P-226, P-327, P-360 | `src/domena/rysik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-strona-bez-sieci.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-007 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-znacznik.test.tsx` | zielony (główny zestaw) | 11 | BR-WZR-003 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zapas-kompozycja.test.ts` | zielony (główny zestaw) | 11 | BR-ZAP-001, BR-ZAP-001/S1, BR-ZAP-003, BR-ZAP-004, BR-ZAP-004/S1, BR-ZAP-004/S2, P-191, P-277, RD-03, RD-11, RD-19 | `src/ekrany/wspolne`<br>`src/kompozycja/zapas`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
@@ -256,7 +256,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 8 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-straznik.test.ts` | zielony (główny zestaw) | 6 | P-358, RD-17 | `src/konfiguracja`<br>`src/platforma/tryb-e2e` | — |
-| 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 6 | — | `src/domena/rysik` | — |
+| 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 7 | P-360 | `src/domena/rysik` | — |
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/platforma/zdjecia` | — |
@@ -270,7 +270,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/notatki-chipy.test.ts` | zielony (główny zestaw) | 5 | BR-WZR-003, BR-WZR-008, RD-21 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/wzor/orientacja-ekranu.test.ts` | zielony (główny zestaw) | 3 | P-221, P-258, P-259 | `src/domena/uklad` | — |
 | 9 ? | `tests/domena/wzor/rd21.test.ts` | zielony (główny zestaw) | 3 | BR-WZR-003, P-134, P-139, RD-21 | `src/domena/licznik`<br>`src/domena/znacznik-wzoru` | Z07-22 |
-| 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 8 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226, P-327 | `src/domena/rysik`<br>`src/domena/uklad` | — |
+| 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 12 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226, P-327, P-360 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
