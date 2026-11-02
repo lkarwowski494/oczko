@@ -7,7 +7,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import type { Narzedzie } from '../domena/rysik';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
-import { Menu, Pozycja } from './WzorMenu';
+import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
 import { cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -231,16 +231,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           }} />
         </Menu>
       )}
-      {menu === 'wzory' && (
-        <Menu st={st} zamknij={() => ustawMenu('brak')}>
-          {s.wzory.map((w) => (
-            <Pressable key={w.wzorId} accessibilityRole="menuitem" accessibilityLabel={w.nazwa} accessibilityState={{ selected: w.wzorId === s.wzorId }}
-              onPress={() => { ustawMenu('brak'); if (w.wzorId !== s.wzorId) p.naPrzelacz(w.wzorId); }} style={st.pozycja}>
-              <Text style={st.tresc}>{`${w.wzorId === s.wzorId ? '✓ ' : ''}${w.nazwa}`}</Text>
-            </Pressable>
-          ))}
-        </Menu>
-      )}
+      {menu === 'wzory' && <MenuWzorow st={st} wzory={s.wzory} wzorId={s.wzorId} zamknij={() => ustawMenu('brak')} naWybor={(id) => { ustawMenu('brak'); if (id !== s.wzorId) p.naPrzelacz(id); }} />}
     </View>
   );
 }

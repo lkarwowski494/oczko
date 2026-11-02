@@ -1,4 +1,4 @@
-// Menu przeglądarki wzoru: arkusz u dołu ekranu z pozycjami (••• i przełączanie wzorów; design-spec „Wzór, rysik i iPad”). Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku).
+// Menu przeglądarki wzoru: arkusz u dołu ekranu z pozycjami (••• i lista wzorów ▾; design-spec „Wzór, rysik i iPad”). Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku).
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type TextStyle, type ViewStyle } from 'react-native';
 
@@ -17,5 +17,18 @@ export function Pozycja(p: { st: StyleMenu; tekst: string; id: string; niszczaca
     <Pressable accessibilityRole="menuitem" accessibilityLabel={p.tekst} onPress={p.onPress} style={p.st.pozycja} testID={p.id}>
       <Text style={[p.st.tresc, p.niszczaca && p.st.niszczaca]}>{p.tekst}</Text>
     </Pressable>
+  );
+}
+
+/** Lista wzorów projektu (▾, W9b): ✓ przy bieżącym; stuknięcie wybiera wzór (przełączanie i zamknięcie menu robi wywołujący). */
+export function MenuWzorow(p: { st: StyleMenu; wzory: { wzorId: string; nazwa: string }[]; wzorId: string; zamknij(): void; naWybor(wzorId: string): void }) {
+  return (
+    <Menu st={p.st} zamknij={p.zamknij}>
+      {p.wzory.map((w) => (
+        <Pressable key={w.wzorId} accessibilityRole="menuitem" accessibilityLabel={w.nazwa} accessibilityState={{ selected: w.wzorId === p.wzorId }} onPress={() => p.naWybor(w.wzorId)} style={p.st.pozycja}>
+          <Text style={p.st.tresc}>{`${w.wzorId === p.wzorId ? '✓ ' : ''}${w.nazwa}`}</Text>
+        </Pressable>
+      ))}
+    </Menu>
   );
 }
