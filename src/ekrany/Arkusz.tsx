@@ -171,6 +171,11 @@ export function Tresc({ children, podpis, testID, etykieta }: { children: React.
 /** Liczba całkowita ≥ 0 z pola (cyfry ASCII; pusty, ujemny, ułamek, tekst → null). */
 export const liczbaZPola = (t: string): number | null => (/^\d+$/.test(t.trim()) ? Number(t.trim()) : null);
 
+/** Formularz zgłasza trasie, czy wartości różnią się od tych z otwarcia arkusza („Discard changes?”, M1-audytor-generalny-020). */
+export function useZglosZmiane(naZmiane: ((zmieniony: boolean) => void) | undefined, zmieniony: boolean): void {
+  useEffect(() => { naZmiane?.(zmieniony); }, [naZmiane, zmieniony]);
+}
+
 // Przyciski pełnej szerokości (główny, niszczący): promień 14 wg wzorca `.przycisk-pelny` (partia8.html:70, design-spec.md:47) z tokenu `promien.przyciskPelny` (P2-2).
 // `przyciskGlowny` (20) to strefa +1, `przyciskDrugi` (14) — przycisk z obrysem w rzędzie wyboru.
 export function style(k: Kolory) {

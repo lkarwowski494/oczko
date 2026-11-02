@@ -4,11 +4,13 @@
 import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
-import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza, useZglosZmiane } from './Arkusz';
 import { useKolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type Zapis<T> = (w: T) => Promise<WynikEkranu<unknown>>;
+/** Wartości różne od tych z otwarcia arkusza („Discard changes?”, M1-audytor-generalny-020). */
+type NaZmiane = { naZmiane?(zmieniony: boolean): void };
 /** Nieudany zapis → komunikat „Couldn’t save…” (jak arkusz nazwy), wpisane dane zostają. */
 export function useZapis(): [boolean, <T>(f: Zapis<T>, w: T) => void] {
   const [blad, ustaw] = useState(false);
@@ -18,10 +20,11 @@ export function useZapis(): [boolean, <T>(f: Zapis<T>, w: T) => void] {
 const celZPola = (t: string): number | null | 'zly' => { if (t.trim() === '') return null; const n = liczbaZPola(t); return n === null || n < 1 ? 'zly' : n; };
 
 /** Nowy projekt (F-14, U-5): pusta nazwa = projekt roboczy (P-126 (1b)), bez części = jedna część domyślna. */
-export function FormularzNowegoProjektu(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string; czesci: string[] }>; naAnuluj(): void }): React.ReactElement {
+export function FormularzNowegoProjektu(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string; czesci: string[] }>; naAnuluj(): void } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [nazwa, ustawNazwe] = useState('');
   const [czesci, ustawCzesci] = useState<string[]>([]);
+  useZglosZmiane(p.naZmiane, nazwa !== '' || czesci.some((c) => c !== '')); // pusty wiersz części nic nie dodaje
   const [blad, zapisz] = useZapis();
   return (
     <Arkusz tytul={t('formularz.nowy_tytul')} formularz={{ t, zapisz: t('wspolne.dodaj'), naAnuluj: p.naAnuluj, naZapisz: () => zapisz(p.naZapisz, { nazwa: nazwa.trim(), czesci: czesci.map((c) => c.trim()).filter((c) => c !== '') }) }}>
@@ -38,10 +41,11 @@ export function FormularzNowegoProjektu(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa
 }
 
 /** Nowa część (BR-PRJ-001): nazwa wymagana (przycisk nieaktywny), cel opcjonalny. */
-export function FormularzCzesci(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string; cel: number | null }>; naAnuluj(): void }): React.ReactElement {
+export function FormularzCzesci(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string; cel: number | null }>; naAnuluj(): void } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [nazwa, ustawNazwe] = useState('');
   const [cel, ustawCel] = useState('');
+  useZglosZmiane(p.naZmiane, nazwa !== '' || cel !== '');
   const [zlyCel, ustawZlyCel] = useState(false);
   const [blad, zapisz] = useZapis();
   const naZapisz = () => {
@@ -65,11 +69,12 @@ export function FormularzCzesci(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string
 export function FormularzLicznika(p: {
   t: Tlumacz; czesci: { id: string; nazwa: string }[]; domyslnaCzesc: string;
   naZapisz: Zapis<{ czescId: string; rodzaj: 'rzedy' | 'oczka'; nazwa: string }>; naAnuluj(): void;
-}): React.ReactElement {
+} & NaZmiane): React.ReactElement {
   const { t } = p;
   const [nazwa, ustawNazwe] = useState('');
   const [czesc, ustawCzesc] = useState(p.domyslnaCzesc);
   const [rodzaj, ustawRodzaj] = useState<'rzedy' | 'oczka'>('rzedy');
+  useZglosZmiane(p.naZmiane, nazwa !== '' || czesc !== p.domyslnaCzesc || rodzaj !== 'rzedy');
   const [blad, zapisz] = useZapis();
   return (
     <Arkusz tytul={t('formularz.licznik_tytul')} formularz={{ t, zapisz: t('wspolne.dodaj'), naAnuluj: p.naAnuluj, naZapisz: () => zapisz(p.naZapisz, { czescId: czesc, rodzaj, nazwa: nazwa.trim() }) }}>
@@ -85,9 +90,10 @@ export function FormularzLicznika(p: {
 }
 
 /** Notatka projektu (F-15, BR-PRJ-002/S2): pole wielowierszowe bez limitu i bez licznika znaków. */
-export function FormularzNotatki(p: { t: Tlumacz; projekt: string; tekst: string; naZapisz: Zapis<string>; naAnuluj(): void }): React.ReactElement {
+export function FormularzNotatki(p: { t: Tlumacz; projekt: string; tekst: string; naZapisz: Zapis<string>; naAnuluj(): void } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [tekst, ustaw] = useState(p.tekst);
+  useZglosZmiane(p.naZmiane, tekst !== p.tekst);
   const [blad, zapisz] = useZapis();
   return (
     <Arkusz tytul={t('licznik.notatka')} formularz={{ t, naZapisz: () => zapisz(p.naZapisz, tekst), naAnuluj: p.naAnuluj }}>
@@ -99,9 +105,10 @@ export function FormularzNotatki(p: { t: Tlumacz; projekt: string; tekst: string
 }
 
 /** Znaczenie liczby (F-09, BR-LIC-012): przykłady na bieżącej wartości (skończone n → w robocie n + 1, P-161). */
-export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 'skonczone' | 'w_trakcie'; naZapisz: Zapis<'skonczone' | 'w_trakcie'>; naAnuluj(): void }): React.ReactElement {
+export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 'skonczone' | 'w_trakcie'; naZapisz: Zapis<'skonczone' | 'w_trakcie'>; naAnuluj(): void } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [z, ustaw] = useState(p.znaczenie);
+  useZglosZmiane(p.naZmiane, z !== p.znaczenie);
   const [blad, zapisz] = useZapis();
   return (
     <Arkusz tytul={t('formularz.znaczenie_tytul')} formularz={{ t, naZapisz: () => zapisz(p.naZapisz, z), naAnuluj: p.naAnuluj }}>
@@ -121,10 +128,11 @@ const mmZPola = (t: string): number | null => { const n = Number(t.trim().replac
 export function FormularzNarzedzia(p: {
   t: Tlumacz; narzedzie: 'druty' | 'szydelko'; mm: number | null; podglad(mm: number, n: 'druty' | 'szydelko'): string;
   naZapisz: Zapis<{ narzedzie: 'druty' | 'szydelko'; mm: number | null }>; naAnuluj(): void;
-}): React.ReactElement {
+} & NaZmiane): React.ReactElement {
   const { t } = p;
   const [n, ustawN] = useState(p.narzedzie);
   const [tekst, ustaw] = useState(p.mm === null ? '' : String(p.mm));
+  useZglosZmiane(p.naZmiane, n !== p.narzedzie || tekst !== (p.mm === null ? '' : String(p.mm)));
   const [zly, ustawZly] = useState(false);
   const [blad, zapisz] = useZapis();
   const mm = mmZPola(tekst);
@@ -169,9 +177,10 @@ const dataZDnia = (dzien: string): Date => { const [r, m, d] = dzien.split('-').
 export function FormularzTerminu(p: {
   t: Tlumacz; dzis: string; termin: string | null; jezyk: string; podglad(dzien: string): Promise<number | null>;
   naZapisz: Zapis<string | null>; naAnuluj(): void;
-}): React.ReactElement {
+} & NaZmiane): React.ReactElement {
   const { t } = p;
   const [dzien, ustawDzien] = useState(p.termin ?? p.dzis);
+  useZglosZmiane(p.naZmiane, dzien !== (p.termin ?? p.dzis));
   const [cel, ustawCel] = useState<number | null | undefined>(undefined);
   const [blad, zapisz] = useZapis();
   const { podglad } = p;
@@ -197,10 +206,12 @@ export function FormularzTerminu(p: {
  */
 export function FormularzWloczekProjektu(p: {
   t: Tlumacz; zapas: { id: string; nazwa: string; motki: number }[]; poczatkowe: string[]; naZapisz: Zapis<string[]>; naAnuluj(): void; naDodajWloczke(): void;
-}): React.ReactElement {
+} & NaZmiane): React.ReactElement {
   const { t } = p;
   const k = useKolory();
   const [wybrane, ustaw] = useState<string[]>(p.poczatkowe);
+  // Zbiór wybranych inny niż przy otwarciu (także włóczka dodana w międzyczasie i od razu zaznaczona).
+  useZglosZmiane(p.naZmiane, wybrane.length !== p.poczatkowe.length || wybrane.some((id) => !p.poczatkowe.includes(id)));
   const [znane, ustawZnane] = useState<string[]>(p.zapas.map((x) => x.id));
   const [blad, zapisz] = useZapis();
   useEffect(() => { // włóczka dodana w międzyczasie: zaznaczona, o ile nie było jej na liście przy otwarciu

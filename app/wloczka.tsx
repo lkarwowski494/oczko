@@ -14,6 +14,7 @@ import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { useOdrzucZmiany } from '../src/kompozycja/odrzuc-zmiany';
 import { imperialny } from '../src/kompozycja/miary';
 import { bazowa, przeliczenie } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
@@ -29,6 +30,8 @@ export default function EkranWloczki(): React.ReactElement {
   const [miniatury, ustawMiniatury] = useState<Miniatura[]>([]);
   const [blad, ustawBlad] = useState(false); // M1-007: odczyt `{ ok: false }` (inny niż brak włóczki) albo wyjątek → błąd z „Try again”, nie pusty arkusz
   const z = kontener.z;
+  // M1-020: „Cancel” i przesunięcie arkusza w dół pytają „Discard changes?”, gdy formularz zgłosił zmianę; po zapisie i usunięciu wyjście bez pytania.
+  const odrzuc = useOdrzucZmiany(j.t, id ? 'zmiany' : 'nowy', () => router.back());
   const wczytajZdjecia = useCallback(async () => {
     if (!id) return;
     const f = await zdjecia(z, { wloczkaId: id });
@@ -68,14 +71,15 @@ export default function EkranWloczki(): React.ReactElement {
   return (
     <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny(preferencje.stan().ukladMiar) ? 'imperialne' : 'metryczne'}
       przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
-      naAnuluj={() => router.back()}
+      naAnuluj={odrzuc.anuluj} naZmiane={odrzuc.naZmiane}
       naUsun={id && poczatek ? () => potwierdzUsuniecie(kontener, { nazwa: poczatek.nazwa, przycisk: j.t('usun.wloczka'), alert: Alert.alert,
-        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => router.back(), naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }) : undefined} // M1-006
+        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => { odrzuc.poZapisie(); router.back(); }, naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }) : undefined} // M1-006
       zdjecia={id ? <GrupaZdjec t={j.t} miniatury={miniatury} naWybierz={(zr) => void wybierz(zr)} naOtworz={() => undefined}
         naglowek={j.t('zapas.zdjecie_etykiety')} testID="wloczka-zdjecia" /> : undefined}
       naZapisz={async (d) => {
         const w = await zapiszWloczke(kontener.z, { ...d, id });
         if (!w.ok) return { ok: false, powod: w.powod === 'bledne_dane' ? 'bledne_dane' : 'zapis' };
+        odrzuc.poZapisie();
         router.back();
         return { ok: true, wartosc: undefined };
       }} />

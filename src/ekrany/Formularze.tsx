@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, liczbaZPola } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, liczbaZPola, useZglosZmiane } from './Arkusz';
 import { formatujLiczbe, parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
@@ -24,9 +24,12 @@ export type PropsFormularzaWartosci = {
   tekstLimitu: string;
   naZapisz(wartosc: number): Promise<WynikEkranu<void>>;  // wpiszWartosc
   naAnuluj(): void;
+  /** Wartości różne od tych z otwarcia arkusza („Discard changes?”, M1-020). */
+  naZmiane?(zmieniony: boolean): void;
 };
-export function FormularzWartosci({ stan, t, jezyk, tekstLimitu, naZapisz, naAnuluj }: PropsFormularzaWartosci): React.ReactElement {
+export function FormularzWartosci({ stan, t, jezyk, tekstLimitu, naZapisz, naAnuluj, naZmiane }: PropsFormularzaWartosci): React.ReactElement {
   const [tekst, ustaw] = useState(String(stan.obecna));
+  useZglosZmiane(naZmiane, tekst !== String(stan.obecna));
   const [blad, ustawBlad] = useState<'wartosc' | 'limit' | null>(null);
   const n = parsujCalkowita(tekst, jezyk);
   const zapisz = () => {
@@ -49,9 +52,11 @@ export type PropsFormularzaPowtorzenia = {
   t: Tlumacz;
   naZapisz(p: { nazwa: string; dlugosc: number }): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
+  naZmiane?(zmieniony: boolean): void;
 };
-export function FormularzPowtorzenia({ stan, t, naZapisz, naAnuluj }: PropsFormularzaPowtorzenia): React.ReactElement {
+export function FormularzPowtorzenia({ stan, t, naZapisz, naAnuluj, naZmiane }: PropsFormularzaPowtorzenia): React.ReactElement {
   const [tekst, ustaw] = useState(stan.dlugosc === null ? '' : String(stan.dlugosc));
+  useZglosZmiane(naZmiane, tekst !== (stan.dlugosc === null ? '' : String(stan.dlugosc)));
   const [blad, ustawBlad] = useState(false);
   const zapisz = () => {
     const n = liczbaZPola(tekst);
@@ -77,13 +82,15 @@ export type PropsFormularzaPrzypomnienia = {
   podglad(plan: PlanPrzypomnieniaEkranu): WynikEkranu<number[]>;
   naZapisz(plan: PlanPrzypomnieniaEkranu): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
+  naZmiane?(zmieniony: boolean): void;
 };
 const naPole = (n: number | null) => (n === null ? '' : String(n));
-export function FormularzPrzypomnienia({ stan, t, naUsun, podglad, naZapisz, naAnuluj }: PropsFormularzaPrzypomnienia): React.ReactElement {
+export function FormularzPrzypomnienia({ stan, t, naUsun, podglad, naZapisz, naAnuluj, naZmiane }: PropsFormularzaPrzypomnienia): React.ReactElement {
   const [tekst, ustawTekst] = useState(stan.tekst);
   const [od, ustawOd] = useState(naPole(stan.od));
   const [co, ustawCo] = useState(naPole(stan.co));
   const [razy, ustawRazy] = useState(naPole(stan.razy));
+  useZglosZmiane(naZmiane, tekst !== stan.tekst || od !== naPole(stan.od) || co !== naPole(stan.co) || razy !== naPole(stan.razy));
   const [blad, ustawBlad] = useState<'od' | 'plan' | null>(null);
   // Brak pola = NaN (nie zgadywany rząd, OP-06): domena odrzuca plan, podgląd pusty.
   const plan: PlanPrzypomnieniaEkranu = { tekst: tekst.trim(), od: liczbaZPola(od) ?? NaN, co: liczbaZPola(co) ?? NaN, razy: liczbaZPola(razy) ?? NaN };
@@ -138,15 +145,17 @@ export type PropsKorektySesji = {
   formatuj: { dataGodzina(ms: number): string; czas(ms: number): string };
   naZapisz(z: { startMs: number; koniecMs: number }): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
+  naZmiane?(zmieniony: boolean): void;
 };
 /**
  * Korekta sesji (F-51, BR-PRJ-013; makieta 04 fix-6 `sesja-korekta`, P-191 P4a–P5a): wiersze Start / End z systemowym wyborem daty i godziny
  * (koło; koniec nie później niż teraz), podgląd na żywo, linia „do sprawdzenia” i — przy przerwach — zdanie, że korekta liczy od startu
  * do końca (P-195 Q2a). Koniec przed początkiem: komunikat, Save nieaktywny (BR-PRJ-013 S3).
  */
-export function KorektaSesji({ stan: s, t, formatuj, naZapisz, naAnuluj }: PropsKorektySesji): React.ReactElement {
+export function KorektaSesji({ stan: s, t, formatuj, naZapisz, naAnuluj, naZmiane }: PropsKorektySesji): React.ReactElement {
   const [startMs, ustawStart] = useState(s.startMs);
   const [koniecMs, ustawKoniec] = useState(s.koniecMs);
+  useZglosZmiane(naZmiane, startMs !== s.startMs || koniecMs !== s.koniecMs);
   const [otwarte, ustawOtwarte] = useState<'start' | 'koniec' | null>(null);
   const [bladZapisu, ustawBladZapisu] = useState(false);
   const zly = koniecMs < startMs;
@@ -186,10 +195,12 @@ export type PropsFormularzaNazwy = {
   t: Tlumacz;
   naZapisz(n: { projekt: string; czesc: string }): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
+  naZmiane?(zmieniony: boolean): void;
 };
-export function FormularzNazwy({ stan, t, naZapisz, naAnuluj }: PropsFormularzaNazwy): React.ReactElement {
+export function FormularzNazwy({ stan, t, naZapisz, naAnuluj, naZmiane }: PropsFormularzaNazwy): React.ReactElement {
   const [projekt, ustawProjekt] = useState(stan.projekt);
   const [czesc, ustawCzesc] = useState(stan.czesc);
+  useZglosZmiane(naZmiane, projekt !== stan.projekt || czesc !== stan.czesc);
   const [blad, ustawBlad] = useState(false);
   const zapisz = () => void zapiszZ(() => naZapisz({ projekt: projekt.trim(), czesc: czesc.trim() }), () => ustawBlad(true));
   return (
@@ -208,9 +219,11 @@ export type PropsFormularzaCelu = {
   t: Tlumacz;
   naZapisz(cel: number | null): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
+  naZmiane?(zmieniony: boolean): void;
 };
-export function FormularzCelu({ stan, t, naZapisz, naAnuluj }: PropsFormularzaCelu): React.ReactElement {
+export function FormularzCelu({ stan, t, naZapisz, naAnuluj, naZmiane }: PropsFormularzaCelu): React.ReactElement {
   const [tekst, ustaw] = useState(naPole(stan.cel));
+  useZglosZmiane(naZmiane, tekst !== naPole(stan.cel));
   const [blad, ustawBlad] = useState(false);
   const zapisz = () => {
     const n = tekst.trim() === '' ? null : liczbaZPola(tekst);

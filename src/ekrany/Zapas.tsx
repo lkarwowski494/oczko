@@ -3,7 +3,7 @@
 // Pielęgnacja tylko tekstem (OG-13, OP-11). Krokowiec motków co KROK_MOTKA (jak karta ukończenia, P-126 (2a)).
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor } from './Arkusz';
+import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, useZglosZmiane } from './Arkusz';
 import { useZapis, type Zapis } from './FormularzeProjektu';
 import { WierszGrupy, style as styleNarzedzi } from './Narzedzia';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -116,6 +116,7 @@ export type PropsFormularzaWloczki = {
   naAnuluj(): void;
   zdjecia?: React.ReactNode;                                      // grupa „Label photo” (tylko przy edycji: zdjęcie potrzebuje id włóczki)
   naUsun?(): void;                                                // P-209: „Delete yarn” (potwierdzenie z terminem w trasie), tylko przy edycji
+  naZmiane?(zmieniony: boolean): void;                            // „Discard changes?” (M1-audytor-generalny-020)
 };
 export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement {
   const { t, poczatek: w } = p;
@@ -137,6 +138,10 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
   const [pielegnacja, ustawPielegnacje] = useState(w?.pielegnacja ?? '');
   const [notatka, ustawNotatke] = useState(w?.notatka ?? '');
   const [blad, zapisz] = useZapis();
+  // Wartości inne niż przy otwarciu (sama zmiana jednostki pola niczego nie zmienia).
+  useZglosZmiane(p.naZmiane, nazwa !== (w?.nazwa ?? '') || producent !== (w?.producent ?? '') || sklad !== (w?.sklad ?? '') || kolor !== (w?.kolor ?? '')
+    || kategoria !== (w?.kategoria ?? null) || motki !== (w?.motki ?? 0) || dlugosc !== dlugoscZBazy || waga !== wagaZBazy
+    || pielegnacja !== (w?.pielegnacja ?? '') || notatka !== (w?.notatka ?? ''));
   // Pole niezmienione (tekst i jednostka bazowa jak przy otwarciu) → wartość z bazy, nie zaokrąglona z ekranu (bez cichej zmiany danych).
   const d: number | null | 'zly' = w && dlugosc === dlugoscZBazy && jd === 'm' ? w.dlugoscMotkaM : p.bazowa(dlugosc, jd);
   const g: number | null | 'zly' = w && waga === wagaZBazy && jw === 'g' ? w.wagaMotkaG : p.bazowa(waga, jw);
@@ -216,6 +221,7 @@ export type DaneDrutu = { rodzaj: RodzajNarzedzia; rozmiarMm: number | null; opi
 export function FormularzDrutu(p: {
   t: Tlumacz; poczatek: DaneDrutu | null; podglad(tekst: string, r: RodzajNarzedzia): string | null; parsuj(tekst: string): number | null | 'zly';
   formatuj(n: number): string; naZapisz: Zapis<DaneDrutu>; naAnuluj(): void; naUsun?(): void; // P-209, tylko przy edycji
+  naZmiane?(zmieniony: boolean): void; // „Discard changes?” (M1-audytor-generalny-020)
 }): React.ReactElement {
   const { t, poczatek: w } = p;
   const [rodzaj, ustawRodzaj] = useState<RodzajNarzedzia>(w?.rodzaj ?? 'druty');
@@ -223,6 +229,7 @@ export function FormularzDrutu(p: {
   const [mm, ustawMm] = useState(mmZBazy);
   const [opis, ustawOpis] = useState(w?.opis ?? '');
   const [blad, zapisz] = useZapis();
+  useZglosZmiane(p.naZmiane, rodzaj !== (w?.rodzaj ?? 'druty') || mm !== mmZBazy || opis !== (w?.opis ?? ''));
   // M1-021: pole niezmienione → rozmiar z bazy, nie zaokrąglony z ekranu (jak długość i waga włóczki).
   const r = w && mm === mmZBazy ? w.rozmiarMm : p.parsuj(mm);
   const podglad = p.podglad(mm, rodzaj);
