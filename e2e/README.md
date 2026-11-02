@@ -275,6 +275,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `e2e-icloud-usuniete` | Data and sync (build E2E, atrapa iCloud) | „tak” / „nie” — usunięcie strefy po „Also delete from iCloud” | bez `t()` | |
 | `e2e-pliki-zachowaj-eksport` | Ustawienia (build E2E) | zachowanie ostatniego eksportu w katalogu testowym | bez `t()` | |
 | `e2e-pliki-stan` | Ustawienia (build E2E) | „Saved: N file” | bez `t()` | |
+| `e2e-ocena-stan` | Ustawienia (build E2E; 033-T1, hak F-64) | „rating requests: N · last address: <adres albo none>” — N = wywołania `portOceny.popros` (`app/ukonczenie.tsx`), adres = ostatni z `systemAplikacji.otworzAdres` (np. wiersz „Rate Oczko”); stan w pamięci procesu (restart zeruje); `src/kompozycja/e2e/ocena-stan.tsx` | bez `t()` | |
 | `e2e-pliki-importuj-ostatni` | Ustawienia (build E2E) | import ostatniego eksportu bez okna Pliki | bez `t()` | |
 | `e2e-zegarek-stan` | licznik (build E2E, `EXPO_PUBLIC_WATCH_FAKE`) | ostatni `StanZegarka` jako tekst | bez `t()` | |
 | `e2e-pomiar-plus` | licznik (build E2E) | „p95 … ms, n = 20” (NFR-WYD-001) | bez `t()` | |
