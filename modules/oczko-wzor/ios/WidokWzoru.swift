@@ -145,7 +145,12 @@ final class NakladkaStrony: UIView {
     for c in chipy { c.widok.removeFromSuperview() }
     chipy = notatki.map { n in
       let b = ChipPrzycisk(type: .custom)
-      b.setTitle("✎ \(n.etykieta)", for: .normal)
+      // Symbol SF `note.text` (iOS 14+, kontur; Aneks P2 poz. 2) zamiast glifu tekstowego; dekoracyjny — etykieta VoiceOver niżej bez zmian.
+      b.setImage(UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold)), for: .normal)
+      b.tintColor = KOLOR_GRAFIT
+      b.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
+      b.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: -4)
+      b.setTitle(n.etykieta, for: .normal)
       b.setTitleColor(KOLOR_GRAFIT, for: .normal)
       b.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
       b.titleLabel?.lineBreakMode = .byTruncatingTail
@@ -153,7 +158,7 @@ final class NakladkaStrony: UIView {
       b.layer.borderColor = KOLOR_GRAFIT.cgColor
       b.layer.borderWidth = 1.5
       b.layer.cornerRadius = 14
-      b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+      b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 12) // +4 pt: odstęp symbolu od tekstu (imageEdgeInsets/titleEdgeInsets)
       b.accessibilityLabel = n.a11y
       b.accessibilityTraits = .button
       b.accessibilityIdentifier = "wzor-notatka-chip"
