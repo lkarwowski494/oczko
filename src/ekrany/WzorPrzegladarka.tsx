@@ -8,9 +8,10 @@ import type { Narzedzie } from '../domena/rysik';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
+import { LicznikWzoru } from './WzorLicznik';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
-import { MAX_SKALA_TYTULOWA, cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_TYTULOWA, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type StanPrzegladarki = {
@@ -203,21 +204,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   );
 
   const licznik = (
-    <View style={obok ? [st.kolumna, { width: s.uklad.kolumnaLicznika ?? undefined }] : st.pasekLicznika} testID={obok ? 'wzor-kolumna-licznika' : 'wzor-pasek-licznika'}>
-      <View style={obok ? st.liczbaBlokKolumna : st.liczbaBlok} testID="wzor-liczba-blok">
-        <Text style={obok ? st.liczbaKolumna : st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(s.licznik.liczba)}</Text>
-        <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: s.licznik.dziergany })}</Text>
-      </View>
-      {blad && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{t('licznik.blad_zapisu')}</Text>}
-      <View style={obok ? st.przyciskiKolumna : st.przyciski}>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={() => void licz(p.naMinus)} style={st.minus} testID="licznik-minus">
-          <Text style={st.minusTekst}>{t('licznik.minus')}</Text>
-        </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: s.licznik.dziergany })} onPress={() => void licz(p.naPlus)} style={[st.plus, obok && st.plusKolumna]} testID="licznik-plus">
-          <Text style={st.plusTekst}>{t('licznik.plus')}</Text>
-        </Pressable>
-      </View>
-    </View>
+    <LicznikWzoru t={t} licznik={s.licznik} obok={obok} szerokoscKolumny={s.uklad.kolumnaLicznika} blad={blad}
+      naPlus={() => void licz(p.naPlus)} naMinus={() => void licz(p.naMinus)} />
   );
 
   return (
@@ -262,21 +250,6 @@ function style(k: Kolory) {
     stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: 640 }, // kolumna strony iPada maks. 640 pt (W4b)
     podpowiedz: { top: odstep.m, bottom: undefined }, // makieta ipad-rysik: nad stroną, nie na plakietce strony
     plakietka: { ...typografia.podpis, color: k.grafit, alignSelf: 'center', position: 'absolute', bottom: odstep.m, paddingHorizontal: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papier },
-    pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.m, backgroundColor: k.papier },
-    kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.linia, padding: odstep.l, gap: odstep.m, backgroundColor: k.papier },
-    liczbaBlok: { flexShrink: 1 },
-    liczba: { ...typografia.liczba, fontSize: 40, lineHeight: 48, color: k.grafit }, // pasek licznika: 40 pt (design-spec W1a)
-    // Kolumna (W3, W4b): liczba 64 pt, nigdy ściśnięta; +1 bierze resztę z jawną podstawą 0 — na urządzeniu blok liczby wyszedł 0 pt, a −1
-    // poza kolumną (P-262 (b), przebieg 119, scen. 23 i 44; przyczyna w Yoga nieodtworzona poza urządzeniem).
-    liczbaBlokKolumna: { flexShrink: 0 },
-    liczbaKolumna: { ...typografia.liczba, fontSize: 64, lineHeight: 64, color: k.grafit },
-    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, flexGrow: 1, justifyContent: 'flex-end' },
-    przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
-    minus: { width: 56, height: 56, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
-    minusTekst: { ...typografia.przycisk, color: k.grafit },
-    plus: { minHeight: 72, minWidth: 132, flexGrow: 1, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
-    plusKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0 },
-    plusTekst: { ...typografia.przycisk, color: k.przyciskTekst },
     menuTlo: { ...StyleSheet.absoluteFill, justifyContent: 'flex-end' },
     menu: { maxHeight: '60%', margin: odstep.l, borderRadius: promien.grupa, backgroundColor: k.arkusz },
     pozycja: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
