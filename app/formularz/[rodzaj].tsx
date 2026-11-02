@@ -117,7 +117,7 @@ export default function EkranFormularza(): React.ReactElement {
       return <FormularzCelu t={t} naAnuluj={anuluj} stan={{ cel: w.czesc.cel }} naZapisz={(cel) => zapisz(() => ustawCel(z, { czescId: w.czescId, cel }))} />;
     case 'wpisz':
       return <FormularzWartosci t={t} naAnuluj={anuluj} stan={{ obecna: w.wartosc }} jezyk={kontener.j.jezyk()}
-        tekstLimitu={t('limit.arkusz_dni', { limit: LIMIT_DNI_W_MIESIACU, miesiac: miesiac(w.dzis, kontener.j.jezyk()), data: miesiac(w.wznowienie, kontener.j.jezyk(), true) })} naZapisz={async (v) => {
+        tekstLimitu={t('limit.arkusz_dni', { count: LIMIT_DNI_W_MIESIACU, limit: LIMIT_DNI_W_MIESIACU, miesiac: miesiac(w.dzis, kontener.j.jezyk()), data: miesiac(w.wznowienie, kontener.j.jezyk(), true) })} naZapisz={async (v) => {
           const r = await licznik.wpisz(v); // zapis, odświeżenie i sygnał wejścia w rząd z instrukcją (S4)
           if (!r.ok) return { ok: false, powod: r.powod === 'limit' ? 'limit' : 'zapis' };
           const wej = r.wartosc.wejscieWPrzypomnienie;

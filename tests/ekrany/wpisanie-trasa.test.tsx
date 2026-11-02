@@ -35,7 +35,7 @@ test('024/S5: wpisanie w nowym dniu ponad limit mówi o limicie, nie zapisuje i 
   const { k } = await start(5);
   await wpisz('10');
   const komunikat = screen.getByRole('alert');
-  expect(JSON.stringify(komunikat.props.children)).toContain(`Your ${LIMIT_DNI_W_MIESIACU} free knitting days for October are used`);
+  expect(JSON.stringify(komunikat.props.children)).toContain(`Your ${LIMIT_DNI_W_MIESIACU} free crafting days for October are used`);
   expect(screen.queryByText('Enter a whole number, 0 or more.')).toBeNull();
   expect(mockRouter.back).not.toHaveBeenCalled();
   expect((await k.widok())?.wartosc).toBe(3);
