@@ -18,6 +18,8 @@ tags:
 - assertVisible: { id: "licznik-minus" }
 - takeScreenshot: 30-ax5-licznik-start
 - tapOn: { id: "licznik-menu" }
+# Arkusz menu to ScrollView (src/ekrany/Arkusz.tsx), a akcje przy AX5 są wysokie: „Enter value” leży poniżej pierwszego ekranu (przebieg 136, zrzut kroku 24; E2-136-S4)
+- scrollUntilVisible: { element: { id: "menu-wpisz-wartosc" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "menu-wpisz-wartosc" }
 - takeScreenshot: 30-ax5-menu
 - tapOn: { id: "menu-wpisz-wartosc" }

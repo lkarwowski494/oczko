@@ -38,3 +38,8 @@ if (process.env.PROP_SEED || process.env.MATRIX_SEED) {
 
 // Globalny timeout dla testów UI i integracyjnych (30s)
 jest.setTimeout(30000);
+
+// P-364 / 07 E2 #136: `waitFor` i `findBy*` czekają na zdarzenie (stan po zapisie do bazy i render), a domyślne 1 s pękało pod obciążeniem maszyny
+// (tests/ekrany/projekt-trasa-film-siec.test.tsx: 3/3 czerwone przy 12 pętlach CPU na 4 rdzeniach). To pułap czekania, nie opóźnienie — przy spełnionym
+// warunku wynik wraca od razu, a test z prawdziwą usterką pada najwyżej po tym limicie (mniejszym niż testTimeout 30 s).
+require('@testing-library/react-native').configure({ asyncUtilTimeout: 10000 });

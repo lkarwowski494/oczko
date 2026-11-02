@@ -29,8 +29,11 @@ tags:
 - assertVisible: { id: "ustawienia-eksport" }
 - tapOn: { id: "ustawienia-eksport" }
 - extendedWaitUntil: { visible: { id: "eksport-wynik" }, timeout: 30000 }
+# ADR-0029 (07-jakosc-004): Ustawienia mają wiersze „Keep screen on” i „Units”, więc wynik leży poniżej ekranu (E2-136-S3)
+- scrollUntilVisible: { element: { id: "eksport-licznosci" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "eksport-licznosci", text: "1 project.*1 counter.*2 changes.*" }
 - takeScreenshot: 08-eksport-gotowy
+- scrollUntilVisible: { element: { id: "e2e-pliki-zachowaj-eksport" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "e2e-pliki-zachowaj-eksport" }
 - assertVisible: { id: "e2e-pliki-stan", text: "Saved: 1 file" }
 # --- usunięcie wszystkich danych (BR-DAN-009/S1), potem import ---
@@ -42,19 +45,25 @@ tags:
 - assertVisible: { id: "ustawienia-import" }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
 - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-licznosci" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-licznosci", text: "1 project.*1 counter.*2 changes.*" }
 - takeScreenshot: 08-import-gotowy
+- scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "import-scal" }
 - extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-wynik", text: ".*1 project.*" }
 # --- P-113 Q2a (P-117 Q1a): po imporcie własnej kopii w wersji darmowej karty z planami Pro nie ma ---
 - assertNotVisible: { id: "karta-pro-po-imporcie" }
 - takeScreenshot: 08-import-bez-karty-pro
 # --- drugi import tego samego pliku: scalenie idempotentne (P-091 6a, M-02) — bez duplikatów ---
+- scrollUntilVisible: { element: { id: "e2e-pliki-importuj-ostatni" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
 - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "import-scal" }
 - extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-wynik", text: ".*0 new.*" }
 - assertNotVisible: { id: "karta-pro-po-imporcie" }
 - tapOn: { id: "nav-wstecz" }

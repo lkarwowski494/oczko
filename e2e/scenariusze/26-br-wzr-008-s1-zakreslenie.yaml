@@ -29,8 +29,6 @@ tags:
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: false }
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
-- tapOn: { id: "licznik-menu" }
-- assertVisible: { id: "menu-wzor" }
-- tapOn: { id: "menu-wzor" }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
