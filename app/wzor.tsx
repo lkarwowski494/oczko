@@ -197,7 +197,7 @@ export default function EkranWzoru(): React.ReactElement {
   const zn = widok.znacznik;
   const plikPdf = widok.plikPdf;
   const WYSOKOSC_RZEDU_DOMYSLNA = 0.02;
-  const postaw = (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, ...w, wysokoscRzedu: w.wysokoscRzedu ?? zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA }).then(() => wczytaj(widok.wzorId));
+  const postaw = (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, ...w, wysokoscRzedu: w.wysokoscRzedu ?? zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA }).then((r) => { zapisano(aplikacja, r); return wczytaj(widok.wzorId); }); // M1-085: błąd → alert, znacznik wraca na zapisane miejsce
   const nastepnaStrona = zn ? (strona?.razem ?? 0) > zn.strona + 1 : false;
   const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
   const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };

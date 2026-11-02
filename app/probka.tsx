@@ -1,12 +1,13 @@
 // Trasa „/probka?projekt=…”: kalkulator „Swatch” (F-38; BR-KAL-001, BR-KAL-003; design-spec „Kalkulator Swatch”). Jednostka szerokości
 // i domyślna podstawa próbki z układu miar urządzenia (R-131, P-075 (4a); wiersza „Units” w Ustawieniach jeszcze nie ma — zgłoszenie
 // partii 5). Z projektu (U-10): próbka projektu na start i linia `probka.z_projektu`; zmiana próbki zapisuje się w projekcie, szerokość nie.
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Probka } from '../src/ekrany/Narzedzia';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
+import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { stanProbki, type WejscieProbki } from '../src/kompozycja/probka';
 import { imperialny } from '../src/kompozycja/miary';
 import { formatujLiczbe, parsujLiczbe } from '../src/i18n/format';
@@ -16,7 +17,8 @@ import { widokProjektu } from '../src/przypadki-uzycia/widok-projektu';
 type Start = { oczka: string; na: WejscieProbki['na']; zProjektu?: string; narzedzie?: WejscieProbki['narzedzie'] };
 
 export default function EkranProbki(): React.ReactElement {
-  const { kontener, preferencje } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, preferencje } = aplikacja;
   const { projekt } = useLocalSearchParams<{ projekt?: string }>();
   const router = useRouter();
   const j = kontener.j;
@@ -36,12 +38,16 @@ export default function EkranProbki(): React.ReactElement {
     });
   }, [kontener, projekt, j, cm]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
+  const bladZapisu = useRef(false); // M1-085: zapis przy każdej zmianie pola — alert błędu zapisu raz, do następnego udanego zapisu (jak rysunek, M1-084)
   if (!start) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="probka" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   const zapisz = projekt ? (p: { oczka: string; na: WejscieProbki['na'] }) => {
     const n = p.oczka.trim() === '' ? null : parsujLiczbe(p.oczka, j.jezyk());
     if (n === null && p.oczka.trim() !== '') return; // zapis niezgodny: bez zmiany w projekcie (komunikat na ekranie)
     if (n !== null && n <= 0) return;
-    void ustawProbke(kontener.z, { projektId: projekt, probka: n === null ? null : { oczka: n, naCm: p.na === '10cm' ? 10 : 10.16 } });
+    void ustawProbke(kontener.z, { projektId: projekt, probka: n === null ? null : { oczka: n, naCm: p.na === '10cm' ? 10 : 10.16 } }).then((r) => {
+      if (r.ok) { bladZapisu.current = false; return; }
+      if (!bladZapisu.current) bladZapisu.current = zglosBladZapisu(aplikacja, r.powod);
+    });
   } : undefined;
   return (
     <Bezpieczny>

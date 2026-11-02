@@ -136,6 +136,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza-ax5-trasa.test.tsx` | zielony (główny zestaw) | 10 | NFR-DOS-002, P-377 | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza.test.tsx` | zielony (główny zestaw) | 4 | P-262, P-271, P-275 | `src/ekrany/Arkusz`<br>`src/ekrany/Formularze`<br>`src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-klawiatura.test.tsx` | zielony (główny zestaw) | 3 | P-255, P-262 | `src/ekrany/Arkusz`<br>`src/ekrany/motyw` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/autozapis-blad-zapisu.test.tsx` | zielony (główny zestaw) | 4 | — | `src/kompozycja/StoperLicznika`<br>`src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/baner-serii-zrodlo.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-019, RD-17 | `src/ekrany/Licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bezpieczny-ipad.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/kompozycja/Bezpieczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-odczytu-trasy.test.tsx` | zielony (główny zestaw) | 5 | P-374 | `src/kompozycja/preferencje` | — |
@@ -307,4 +308,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 303; zależnych od poprawek: 192.
+Razem plików testów: 304; zależnych od poprawek: 192.
