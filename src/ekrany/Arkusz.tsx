@@ -140,6 +140,8 @@ export function Tresc({ children, podpis, testID }: { children: React.ReactNode;
 /** Liczba całkowita ≥ 0 z pola (cyfry ASCII; pusty, ujemny, ułamek, tekst → null). */
 export const liczbaZPola = (t: string): number | null => (/^\d+$/.test(t.trim()) ? Number(t.trim()) : null);
 
+// Przyciski pełnej szerokości (główny, niszczący): promień 14 wg wzorca `.przycisk-pelny` (partia8.html:70, design-spec.md:47). Token `promien.przyciskGlowny` (20) to strefa +1;
+// wartość 14 ma dziś tylko `przyciskDrugi` — osobny token „przyciskPelny” to sprawa roli 04 (H-1d).
 export function style(k: Kolory) {
   return StyleSheet.create({
     arkusz: { flex: 1, backgroundColor: k.arkusz },
@@ -155,9 +157,9 @@ export function style(k: Kolory) {
     anuluj: { ...typografia.tresc, color: k.grafit },
     zapisz: { ...typografia.tresc, color: k.grafit, fontWeight: '600' },
     przyciski: { padding: odstep.l, gap: odstep.s, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
-    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     glownyTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst },
-    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     niszczacyTekst: { ...typografia.przyciskPelny, color: k.przyciskNiszczacyTekst },
     drugi: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     tekstowy: { minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
