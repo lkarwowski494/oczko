@@ -3,7 +3,8 @@
 // zamyka się od razu. Gest zostaje włączony (SP-15): `usePreventRemove` zatrzymuje usunięcie ekranu (native stack: `preventNativeDismiss`),
 // a „Discard changes” kończy je akcją z gestu. Po udanym zapisie trasa woła `poZapisie()` przed `router.back()`, więc wyjście idzie bez pytania.
 import { useRef, useState } from 'react';
-import { useNavigation, usePreventRemove } from 'expo-router/react-navigation';
+import { useNavigation } from 'expo-router';
+import { usePreventRemove } from 'expo-router/react-navigation';
 import { pytajOdrzucZmiany, type OpisOdrzucenia } from '../ekrany/pytanie-odrzucenia';
 import type { Tlumacz } from '../ekrany/wspolne';
 

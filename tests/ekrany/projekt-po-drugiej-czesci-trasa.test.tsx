@@ -10,7 +10,7 @@ const mock: { kontener?: unknown; licznik?: unknown; router: { back: jest.Mock; 
 jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const R = require('react') as typeof import('react');
-  return { useRouter: () => mock.router, useLocalSearchParams: () => ({ rodzaj: 'co-dalej', czesc: 'c1' }), useFocusEffect: (f: () => void) => R.useEffect(f, [f]) };
+  return { useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mock.router, useLocalSearchParams: () => ({ rodzaj: 'co-dalej', czesc: 'c1' }), useFocusEffect: (f: () => void) => R.useEffect(f, [f]) };
 });
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => ({ kontener: mock.kontener, licznik: mock.licznik }) }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports

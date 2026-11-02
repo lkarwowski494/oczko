@@ -37,7 +37,7 @@ let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const R = require('react') as typeof import('react');
-  return { useRouter: () => mockRouter, useLocalSearchParams: () => mockParams, useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]), Stack: Object.assign(() => null, { Screen: () => null }) };
+  return { useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => mockParams, useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]), Stack: Object.assign(() => null, { Screen: () => null }) };
 });
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja, DostawcaAplikacji: ({ children }: { children: React.ReactNode }) => children }));

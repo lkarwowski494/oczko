@@ -6,7 +6,7 @@ module.exports = {
     '^expo-file-system$': '<rootDir>/tests/narzedzia/expo-file-system-node.ts',
     '^expo-sqlite$': '<rootDir>/tests/narzedzia/expo-sqlite-node.ts',
     '^expo-crypto$': '<rootDir>/tests/narzedzia/expo-crypto-node.ts',
-    // Trasy w Jest bez kontenera nawigacji: `usePreventRemove`/`useNavigation` z zastępnika (M1-audytor-generalny-020).
+    // Trasy w Jest bez kontenera nawigacji: `usePreventRemove` z zastępnika (M1-audytor-generalny-020); `useNavigation` z expo-router przez atrapę testu (M1-122).
     '^expo-router/react-navigation$': '<rootDir>/tests/narzedzia/expo-router-react-navigation.ts',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.app-after-env.js'],
