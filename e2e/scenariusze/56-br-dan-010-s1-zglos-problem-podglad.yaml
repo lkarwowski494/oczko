@@ -1,0 +1,46 @@
+# BR-DAN-010/S1+S3 (docs/brd/wymagania-dane.md:147, F-57, 07-jakosc-033): „Report a problem” w Ustawieniach pokazuje PEŁNĄ treść diagnostyki przed wysyłką
+# (wersja aplikacji i iOS, model urządzenia, stan synchronizacji i zegarka, ostatnie błędy) BEZ nazw projektów, a „Cancel” wraca do Ustawień. Wynik widoczny
+# dla użytkownika: lista pól na ekranie zgłoszenia (app/zglos.tsx → ZglosProblem.tsx) i brak nazwy projektu „Harbor” w treści (prywatność, NFR-PRY-001).
+# Wiersze zgłoszenia mają format „{etykieta}: {wartość}” (zglos.pole_* w en.json; wartości z `app/zglos.tsx:30-36` — część surowa, nietłumaczona).
+# Wysyłka (S2): „Share” otwiera arkusz systemowy — aplikacja sama niczego nie wysyła; nazwa załącznika w arkuszu iOS 26 [DO USTALENIA: potwierdzi pierwszy przebieg],
+# dlatego krok jest ostatni i opcjonalny (jak scenariusz 43). Wybór kanału (Mail, Pliki) — lista telefonu. Poza scenariuszem: wiersz „Translation quality” (S4/S5, język ≠ en).
+# Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-DAN-010/S1 · Report a problem: podgląd diagnostyki bez nazw projektów, Cancel wraca do Ustawień"
+tags:
+  - BR-DAN-010-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "nav-ustawienia" }
+- assertVisible: { id: "ustawienia" }
+- scrollUntilVisible: { element: { text: "Report a problem" } }
+- assertVisible: "Report a problem"
+- tapOn: "Report a problem"
+# --- podgląd: cała treść przed wysyłką (S1) ---
+- extendedWaitUntil: { visible: { id: "arkusz-zamknij" }, timeout: 20000 }
+- assertVisible: "This is everything the report contains.*"
+- assertVisible: "App version: .*"
+- assertVisible: "iOS: iOS .*"
+- assertVisible: "Device: .*"
+- assertVisible: "Sync: .*"
+- assertVisible: "Watch: .*"
+- assertVisible: "Recent errors: .*"
+- assertNotVisible: ".*Harbor.*"
+- takeScreenshot: 56-podglad
+# --- S2: Share → arkusz systemowy (opcjonalnie), potem rezygnacja (S3) ---
+- tapOn: "Share"
+- extendedWaitUntil: { visible: "Oczko report.*", timeout: 20000, optional: true }
+- takeScreenshot: 56-arkusz-udostepniania
+- tapOn: { text: "dismiss popup", optional: true } # region zamknięcia arkusza iOS 26 (jak scenariusz 43); gdy arkusza nie było — pominięte
+- assertVisible: { id: "arkusz-zamknij" }
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "ustawienia" }
+- assertVisible: "Report a problem"

@@ -1,0 +1,53 @@
+# BR-PRJ-007/S1 (docs/brd/wymagania-projekt.md:71, F-20, 07-jakosc-033): „Make another like this” tworzy NOWY projekt z tą samą częścią i celem, liczniki od 0,
+# a oryginał się nie zmienia. Wynik widoczny dla użytkownika: ekran nowego projektu (część „Back”: „0 of 40 rows”), lista z DWOMA projektami „Harbor”
+# (nazwa kopii = nazwa oryginału, 04-fix5-N1), po otwarciu oryginału licznik nadal 2. Wyrocznia: BRD (wartości nie z kodu).
+# Poza scenariuszem (Jest `tests/dane/projekt-kosz.test.ts`, Node): przypomnienia, narzędzie i rozmiar (S1 „Oraz”), szydełko (S2, ER-53), brak zdjęć/notatki/terminu.
+# Opisy wierszy listy i części ("… row 3 of 40", "2 of 40 rows") — format z kluczy `projekty.*`, `projekt.czesc_cel` (en.json); etykieta wiersza listy
+# [DO USTALENIA: potwierdzi pierwszy przebieg — czy tekst „row N of 40” jest w etykiecie wiersza, czy tylko w tekście potomnym]. Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-PRJ-007/S1 · Make another like this: nowy projekt z częścią i celem, liczniki od 0, oryginał bez zmian"
+tags:
+  - BR-PRJ-007-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "40" } }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- tapOn: { id: "licznik-projekt" }
+- assertVisible: { id: "projekt-menu" }
+- assertVisible: "2 of 40 rows"
+- takeScreenshot: 54-oryginal
+# --- Make another like this (alert z potwierdzeniem; „projekt.kopia_*”) ---
+- tapOn: { id: "projekt-menu" }
+- assertVisible: { id: "projekt-zrob-taka-sama" }
+- tapOn: { id: "projekt-zrob-taka-sama" }
+- assertVisible: "Make another Harbor\\?"
+- takeScreenshot: 54-potwierdzenie
+- tapOn: "Make another"
+# nowy projekt zastępuje ekran (router.replace): wskazuje go „0 of 40 rows” zamiast „2 of 40 rows”
+- extendedWaitUntil: { visible: "0 of 40 rows", timeout: 20000 }
+- assertNotVisible: "2 of 40 rows"
+- takeScreenshot: 54-nowy-projekt
+# --- lista: dwa projekty, oryginał nietknięty ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty", optional: true }
+- assertVisible: { id: "projekty-lista" }
+- assertVisible: { id: "projekty-wiersz", index: 1 }
+- assertNotVisible: { id: "projekty-wiersz", index: 2 }
+- assertVisible: ".*row 1 of 40.*"
+- assertVisible: ".*row 3 of 40.*"
+- takeScreenshot: 54-lista-dwa-projekty
+- tapOn: ".*row 3 of 40.*"
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }

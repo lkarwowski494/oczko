@@ -1,0 +1,74 @@
+# BR-DAN-006/S3 (docs/brd/wymagania-dane.md:66, ER-22, P-047, F-32, 07-jakosc-003 i 033): import na NIEPUSTEJ bazie z wyborem „Replace what’s here” — aplikacja najpierw zapisuje kopię
+# obecnych danych i POKAZUJE, gdzie ona jest („Oczko saved your previous data first as …. Find it in the Files app, in Oczko › Backup.”), a dopiero potem zastępuje dane zawartością pliku.
+# Dane: projekt „Harbor” z 2 rzędami → eksport do katalogu testowego → +1 (licznik 3) → import ostatniego eksportu z „Replace” → licznik wraca do 2 (zawartość pliku), jeden projekt „Harbor”
+# (zastąpienie, nie scalenie — brak duplikatu). Okno wyboru pliku i arkusz udostępniania są poza zasięgiem symulatora (panel „Test files”, jak scenariusz 08).
+# Przycisk „Replace what’s here” nie ma testID (Dane.tsx:52) — selektor po etykiecie [DO USTALENIA: apostrof typograficzny, stąd „.” w wyrażeniu]. Scenariusz 08 (scal, idempotencja) bez zmian.
+# Poza scenariuszem: odtworzenie danych Z KOPII PRZED (import kopii „zastąpiono”), błąd wczytania po „Replace” (wycofanie) — Jest `archiwum.test.ts`, `kopie.test.ts`. Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-DAN-006/S3 · Import z „Replace”: kopia przed zastąpieniem pokazana, dane z pliku (2 rzędy), bez duplikatu projektu"
+tags:
+  - BR-DAN-006-S3
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/nazwij-projekt.yaml
+# --- eksport do katalogu testowego (jak scenariusz 08) ---
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "nav-ustawienia" }
+- assertVisible: { id: "ustawienia-eksport" }
+- tapOn: { id: "ustawienia-eksport" }
+- extendedWaitUntil: { visible: { id: "eksport-wynik" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "eksport-licznosci" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "eksport-licznosci", text: "1 project.*1 counter.*2 changes.*" }
+- scrollUntilVisible: { element: { id: "e2e-pliki-zachowaj-eksport" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "e2e-pliki-zachowaj-eksport" }
+- assertVisible: { id: "e2e-pliki-stan", text: "Saved: 1 file" }
+# --- zmiana po eksporcie: licznik 3 (baza niepusta i inna niż plik) ---
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: "Harbor.*"
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "nav-ustawienia" }
+- assertVisible: { id: "ustawienia-import" }
+# --- import ostatniego eksportu: wybór scal / zastąp ---
+- tapOn: { id: "e2e-pliki-importuj-ostatni" }
+- scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe przewijanie; asercja końcowa twarda
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 1000, optional: true }
+- runFlow:
+    when: { notVisible: { id: "import-gotowy" } }
+    commands:
+      - takeScreenshot: opoznienie-import-gotowy-zastap
+      - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
+- assertVisible: { id: "import-gotowy" }
+- scrollUntilVisible: { element: { text: "Replace what.s here" }, direction: DOWN, timeout: 30000 }
+- assertVisible: "Replace what.s here"
+- takeScreenshot: 59-wybor-scal-zastap
+- tapOn: "Replace what.s here"
+# --- wynik: kopia przed zastąpieniem wskazana użytkownikowi ---
+- extendedWaitUntil: { visible: { id: "dane-zastapiono" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "import-wynik", text: "Oczko saved your previous data first as .*" }
+- assertVisible: { id: "import-wynik", text: ".*Oczko › Backup.*" }
+- takeScreenshot: 59-zastapiono
+# --- dane z pliku: licznik 2, jeden projekt ---
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "projekty-lista" }
+- assertVisible: { id: "projekty-wiersz", index: 0 }
+- assertNotVisible: { id: "projekty-wiersz", index: 1 }
+- tapOn: "Harbor.*"
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
