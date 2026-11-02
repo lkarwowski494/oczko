@@ -1,5 +1,7 @@
 // M1-audytor-generalny-084: trasa wzoru pokazuje komunikat, gdy zapis rysunku albo jego odzysk przy otwarciu się nie udał (wzorzec: sonda reaudytu 08).
 import React from 'react';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { Alert, View } from 'react-native';
 import { act, render, waitFor } from '@testing-library/react-native';
 import { czesc, licznik, plik, projekt, wzor } from './../dane/pomocnicze/dane-wejsciowe';
@@ -36,8 +38,9 @@ let alert: jest.SpyInstance;
 let haptyka: { zagraj: jest.Mock };
 const BLAD = { ok: false, powod: 'brak_miejsca' };
 
-async function start() {
+async function start(przed?: (katalogTymczasowy: string) => void) {
   const { s, k, j } = await kompozycjaTestowa();
+  przed?.(s.z.katalogi.tymczasowy);
   const h = wlozPlik(s.magazyn, PDF, 'pdf');
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 5), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h)]);
   await k.otworz('l1');
@@ -86,5 +89,25 @@ describe('M1-084: komunikat przy nieudanym zapisie rysunku', () => {
     await waitFor(() => expect(mockProps.p).not.toBeNull());
     expect(alert).toHaveBeenCalledTimes(1);
     expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save your changes');
+  });
+});
+
+// M1-audytor-generalny-103 (07-jakosc-511): strażnik podłączenia M1-084 w trasie — prawdziwy `widokWzoru` (bez atrapy) i plik oczekujący
+// `w1__0__*.pkdrawing` w katalogu `rysunki-wzoru`, którego odzysk się nie udał (wciąż brak miejsca). Widok natywny ma dostać ten plik, nie rysunek
+// z bazy; mutant bez `katalogOczekujacych` w `app/wzor.tsx` daje stronie 0 brak rysunku (wzór bez rysunku w bazie).
+describe('M1-103: trasa wzoru przekazuje widokowi plik oczekujący strony', () => {
+  test('odzysk nieudany, plik w1__0__a.pkdrawing w rysunki-wzoru → dokument.rysunki strony 0 wskazuje ten plik', async () => {
+    mockWyniki.odzysk = BLAD;
+    let oczekujacy = '';
+    await start((tmp) => {
+      const katalog = join(tmp, 'rysunki-wzoru');
+      mkdirSync(katalog, { recursive: true });
+      oczekujacy = join(katalog, 'w1__0__a.pkdrawing');
+      writeFileSync(oczekujacy, Buffer.from('kreski-z-nieudanego-zapisu'));
+    });
+    await waitFor(() => expect(mockProps.p).not.toBeNull());
+    const dokument = mockProps.p?.dokument as { wzorId: string; rysunki: { strona: number; plik: string }[] };
+    expect(dokument.wzorId).toBe('w1');
+    expect(dokument.rysunki).toEqual([{ strona: 0, plik: oczekujacy }]);
   });
 });
