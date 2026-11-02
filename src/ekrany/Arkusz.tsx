@@ -131,13 +131,13 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
 }
 
 /** Wybór jednej z opcji (radio, `selected`; design-spec „VoiceOver”: wybory znaczenia i narzędzia jako radio). */
-export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
+export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string; testID?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
   const st = style(useKolory());
   return (
     <View accessibilityRole="radiogroup" style={st.wybor}>
       {p.opcje.map((o) => (
         <Pressable key={o.wartosc} accessibilityRole="radio" accessibilityLabel={o.tekst} accessibilityState={{ selected: o.wartosc === p.wybrana }}
-          onPress={() => p.naWybor(o.wartosc)} style={[st.opcja, o.wartosc === p.wybrana && st.opcjaWybrana]}>
+          onPress={() => p.naWybor(o.wartosc)} style={[st.opcja, o.wartosc === p.wybrana && st.opcjaWybrana]} testID={o.testID}>
           <Text style={st.drugiTekst}>{o.tekst}</Text>
           {o.opis && <Text style={st.podpis}>{o.opis}</Text>}
         </Pressable>

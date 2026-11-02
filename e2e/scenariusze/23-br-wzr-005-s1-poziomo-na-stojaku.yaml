@@ -14,6 +14,8 @@ tags:
 - runFlow: subflows/projekt-roboczy.yaml
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-wzor" }
+# NOC-2 (przejście poznawcze 04): menu ••• otwarte, zanim scenariusz stuknie „Pattern”
+- takeScreenshot: 23-menu-przed-wzorem
 - tapOn: { id: "menu-wzor" }
 - assertVisible: { id: "wzor-dodaj" }
 - tapOn: { id: "wzor-dodaj" }
@@ -27,6 +29,8 @@ tags:
 - takeScreenshot: 23-poziomo
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+# NOC-2 (04): +1 w poziomie na telefonie — wartość 1 przy wzorze
+- takeScreenshot: 23-poziomo-po-plus-1
 - assertVisible: { id: "wzor-widok" }
 - setOrientation: PORTRAIT
 - assertVisible: { id: "licznik-wartosc", text: "1" }

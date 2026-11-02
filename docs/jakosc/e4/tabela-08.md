@@ -248,6 +248,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wloczki-projektu-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-330 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-sygnal.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-009/S4, RD-13 | `src/kompozycja/system` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wybor-testid.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-006/S1, BR-LIC-012/S1, BR-PRJ-004/S1, P-087, P-404 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 3 | P-353 | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -303,4 +304,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 299; zależnych od poprawek: 189.
+Razem plików testów: 300; zależnych od poprawek: 190.

@@ -32,6 +32,8 @@ tags:
 - assertVisible: { id: "wzor-widok" }
 - tapOn: { id: "nav-wstecz" }
 - assertVisible: { id: "licznik-plus" }
+# NOC-2 (04): wąskie okno, licznik 1 (> 0) i „•••” w pasku
+- takeScreenshot: 46-waskie-licznik-wartosc-menu
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - takeScreenshot: 46-waskie-projekty
