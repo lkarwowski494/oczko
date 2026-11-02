@@ -1,7 +1,7 @@
 // Środowisko testów akceptacyjnych warstwy danych (rola 07, E3): katalog tymczasowy, baza przez utworzPortNode + migruj aplikacji,
 // atrapy portów (Zegar, Identyfikatory, MagazynPlikow, DziennikPlus, CzasWTle). Atrapy są kodem testu, nie aplikacji.
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { CzasWTle, DziennikPlus, Identyfikatory, MagazynPlikow, PortBazy, Zegar, ZdarzenieWejsciowe } from '../../../src/domena/porty';
@@ -61,6 +61,7 @@ export function magazynTestowy(katalog: string): MagazynTestowy {
       for (const n of readdirSync(katalog)) if (n.startsWith(h)) rmSync(join(katalog, n));
     },
     async wolneMiejsce() { return m.wolne; },
+    async pliki() { return readdirSync(katalog).map((n) => ({ sha256: n.split('.')[0] ?? n, zmianaMs: statSync(join(katalog, n)).mtimeMs })); },
   };
   return m;
 }
