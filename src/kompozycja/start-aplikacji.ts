@@ -9,7 +9,7 @@ import { stanPlikuBazy } from '../dane/pliki/magazyn';
 import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
-import { sprzatnijKopie, sprzatnijKopiePrzed, zipSurowejKopii } from '../niezawodnosc/kopie';
+import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
 import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
@@ -51,6 +51,7 @@ export async function zapiszKamien(): Promise<void> {
   zapiszEtapStartu('kamien');
   sprzatnijKopie(s.kopie, zegarAplikacji().teraz().ms); // ADR-0020 (6): kopie po KOPIE_RATUNKOWE_DNI, tylko po kamieniu milowym; błąd nie blokuje startu
   sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0028 pkt 4: kopie przed importem i usunięciem — 2 najnowsze, maks. 30 dni
+  sprzatnijTymczasowe(polacz(s.katalogDanych, 'tmp'), poczatekMs); // M1-001: pliki pochodne sprzed bieżącego startu; błąd nie blokuje startu
 }
 /** P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest nieudanym startem (app/_layout.tsx, AppState „background”, tylko start normalny). */
 export async function zapiszWyjscieDoTla(): Promise<void> {

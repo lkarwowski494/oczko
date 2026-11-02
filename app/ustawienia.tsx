@@ -21,7 +21,7 @@ import { udostepnijPlik, wybierzArchiwum } from '../src/platforma/system-plikow-
 import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
-import { nazwaPliku } from '../src/dane/pliki/system';
+import { nazwaPliku, usunPlik } from '../src/dane/pliki/system';
 
 type Dane =
   | { rodzaj: 'eksport'; licznosci: string }
@@ -147,7 +147,7 @@ export default function EkranUstawien(): React.ReactElement {
         naZrodla={() => router.push('/zrodla')}
         naStanDanych={() => router.push('/stan-danych')}
         dane={{
-          naEksport: () => void eksport().then((s) => { if (s && !E2E) void udostepnijPlik(s); }),
+          naEksport: () => void eksport().then(async (s) => { if (s && !E2E) { await udostepnijPlik(s); usunPlik(s); } }), // M1-001: plik eksportu znika po zamknięciu arkusza
           naImport: () => void wybierzArchiwum().then((p) => { if (p) void importZ(p); }),
           naUsunWszystko: () => router.push('/usun-wszystko'), // arkusz potwierdzenia (P-266 (3))
         }}

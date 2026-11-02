@@ -5,7 +5,7 @@ import { KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DN
 import { zapiszZip, type WpisZip } from '../dane/archiwum/zip';
 import { powodBledu } from '../dane/baza/bledy-sqlite';
 import { sha256PlikuTs } from '../dane/pliki/magazyn';
-import { istniejeKatalog, istniejePlik, lista, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
+import { czasZmiany, istniejeKatalog, istniejePlik, lista, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
 
 const DOBA_MS = 86_400_000;
 export type WpisKopii = { nazwa: string; katalog: boolean };
@@ -66,6 +66,32 @@ export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<str
   try {
     const usun = kopiePrzedDoUsuniecia(lista(katalog), terazMs).sort();
     for (const n of usun) usunPlik(polacz(katalog, n));
+    return { ok: true, wartosc: usun };
+  } catch (e) {
+    return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };
+  }
+}
+
+/** Pamięci podręczne w katalogu tymczasowym (dane odtwarzalne): bez sprzątania przy starcie, czyszczone przy „Delete all data”. */
+const PAMIECI_PODRECZNE = ['miniatury', 'rysunki-wzoru'];
+/**
+ * M1-001 (05-architekt-501): `Application Support/tmp` wchodzi do kopii urządzenia, więc pliki pochodne (eksport, ZIP ratunkowy, katalogi importu
+ * i zgłoszeń) nie mogą zostawać. Przy kamieniu milowym usuwane są wpisy zmienione przed początkiem bieżącego startu; nowsze (np. eksport w otwartym
+ * arkuszu udostępniania), pamięci podręczne i wpisy bez czasu zostają.
+ */
+export function tymczasoweDoUsuniecia(wpisy: { nazwa: string; zmianaMs: number | null }[], odMs: number): string[] {
+  return wpisy.filter((w) => !PAMIECI_PODRECZNE.includes(w.nazwa) && w.zmianaMs !== null && w.zmianaMs < odMs).map((w) => w.nazwa);
+}
+/** Adapter: lista katalogu tymczasowego → usunięcie wybranych plików i katalogów; brak katalogu = nic do zrobienia, błąd nie blokuje startu. */
+export function sprzatnijTymczasowe(katalog: string, odMs: number): Wynik<string[]> {
+  try {
+    if (!istniejeKatalog(katalog)) return { ok: true, wartosc: [] };
+    const usun = tymczasoweDoUsuniecia(lista(katalog).map((nazwa) => ({ nazwa, zmianaMs: czasZmiany(polacz(katalog, nazwa)) })), odMs).sort();
+    for (const n of usun) {
+      const p = polacz(katalog, n);
+      if (istniejeKatalog(p)) usunKatalog(p);
+      else usunPlik(p);
+    }
     return { ok: true, wartosc: usun };
   } catch (e) {
     return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };

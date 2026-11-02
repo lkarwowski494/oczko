@@ -7,6 +7,7 @@ import { chwilaOPorze } from '../domena/postep';
 import type { PortBazy } from '../domena/porty';
 import { stanProjektu, ustawUsuniecie, usunietoMs, zapiszStanProjektu, type TabelaKosza } from '../dane/repozytoria/projekty-zapis';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
+import { istniejeKatalog, lista, polacz, usunKatalog, usunPlik } from '../dane/pliki/system';
 import { jestDniem } from './daty';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { scalDziennikWKolejce } from './dziennik';
@@ -158,6 +159,19 @@ export function dodajCzescPara(z: Zaleznosci, w: { czescId: string; nazwa: strin
 
 /** Kolejność usuwania przy „Usuń wszystkie dane”: dzieci przed rodzicami (RESTRICT do `plik` działa od razu, także przy odroczonych kluczach). */
 const KOLEJNOSC_USUWANIA = ['zdjecie', 'rysunek', 'wzor', 'projekt_wloczka', 'obliczenie', 'sesja', 'przypomnienie', 'notatka_rzedu', 'zdarzenie', 'licznik', 'czesc', 'projekt', 'wloczka', 'narzedzie', 'plik', 'dzien_limitu', 'poczekalnia', 'ustawienie', 'blad', 'zmiana_icloud'];
+/**
+ * Zawartość katalogu tymczasowego (pliki i podkatalogi); sam katalog zostaje. Brak katalogu = nic do zrobienia. Archiwum eksportu `.oczko` zostaje:
+ * w aplikacji znika po zamknięciu arkusza udostępniania, a pozostałe (build E2E bez arkusza, zabicie aplikacji przy otwartym arkuszu) usuwa
+ * sprzątanie przy następnym starcie (M1-001); scenariusz E2-137-A3 importuje taki eksport po usunięciu wszystkiego.
+ */
+function wyczyscKatalog(katalog: string): void {
+  if (!istniejeKatalog(katalog)) return;
+  for (const n of lista(katalog).filter((x) => !x.endsWith('.oczko'))) {
+    const p = polacz(katalog, n);
+    if (istniejeKatalog(p)) usunKatalog(p);
+    else usunPlik(p);
+  }
+}
 /** Stan iCloud urządzenia: wiersz zostaje, synchronizacja wyłączona przed usuwaniem, żeby wyzwalacze nie wysłały usunięć do iCloud (ADR-0005, fix-7). */
 const STAN_SYNCHRONIZACJI = 'synchronizacja';
 /** Niepowodzenie przed jakąkolwiek zmianą: kopia bezpieczeństwa się nie zapisała (ADR-0028, P-328); ekran mówi to innym tekstem niż błąd usuwania. */
@@ -186,6 +200,7 @@ export async function usunWszystkieDane(z: ZaleznosciArchiwum): Promise<Wynik<vo
   });
   if (!w.ok) return w;
   for (const h of pliki) await z.magazyn.usun(h); // po COMMIT: plik bez odwołań (ADR-0001)
+  wyczyscKatalog(z.katalogi.tymczasowy); // M1-001: pamięci podręczne i katalogi robocze z danymi też znikają (eksport `.oczko`: patrz wyczyscKatalog)
   if (z.synchronizacja) await z.synchronizacja.wylacz(); // „Usuń też z iCloud” to osobna opcja (P-110 Q3a)
   return OK;
 }

@@ -110,3 +110,19 @@ test('07-jakosc-031 F-32: obcy plik zamiast archiwum → alert „not recognized
   expect(screen.queryByTestId('import-gotowy')).toBeNull();
   expect(await licznosci(s.baza)).toEqual(przed);
 });
+
+test('M1-001 (05-architekt-501): eksport przez trasę → plik .oczko trafia do arkusza i znika z katalogu tymczasowego po zamknięciu arkusza', async () => {
+  const { s } = await aplikacja();
+  mockParametry.import = undefined;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { udostepnijPlik } = require('../../src/platforma/system-plikow-uzytkownika') as { udostepnijPlik: jest.Mock };
+  let zamknijArkusz: () => void = () => undefined;
+  let wArkuszu: string[] = [];
+  udostepnijPlik.mockImplementation(() => new Promise<void>((r) => { wArkuszu = readdirSync(s.z.katalogi.tymczasowy).filter((n) => n.endsWith('.oczko')); zamknijArkusz = r; }));
+  render(<EkranUstawien />);
+  await userEvent.press(await waitFor(() => przycisk('Export all data')));
+  await waitFor(() => expect(udostepnijPlik).toHaveBeenCalledTimes(1));
+  expect(wArkuszu).toHaveLength(1); // plik istnieje, dopóki arkusz jest otwarty
+  zamknijArkusz();
+  await waitFor(() => expect(readdirSync(s.z.katalogi.tymczasowy).filter((n) => n.endsWith('.oczko'))).toEqual([]));
+});

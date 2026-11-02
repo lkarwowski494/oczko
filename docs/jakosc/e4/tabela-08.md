@@ -102,6 +102,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/start-kopie.test.ts` | zielony (główny zestaw) | 8 | BR-DAN-004/S1, BR-DAN-010/S3, NFR-PRY-001, P-047, P-070, P-080, R-082, R-088, R-089 | `src/dane/baza/kopia`<br>`src/dane/baza/polaczenie`<br>`src/dane/baza/sciezki`<br>`src/dane/kopia-ratunkowa`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/start`<br>`src/przypadki-uzycia/zgloszenie` | Z07-21, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-okno-e2e.test.ts` | zielony (główny zestaw) | 3 | P-358, RD-17 | `src/przypadki-uzycia/widok-licznika` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-serii-8b.test.ts` | zielony (główny zestaw) | 7 | BR-LIC-019, RD-17 | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-licznika` | ER-24, Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/tymczasowe-cykl.test.ts` | zielony (główny zestaw) | 7 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/niezawodnosc/kopie`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/ukonczenie-pora.test.ts` | zielony (główny zestaw) | 0 | P-137, RD-16 | `src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/usun-wszystko-import-kolejka.test.ts` | zielony (główny zestaw) | 1 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/kolejka`<br>`src/przypadki-uzycia/porty-propozycja`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/usun-wszystko-kopia.test.ts` | zielony (główny zestaw) | 3 | P-328 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/porty-propozycja`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
@@ -228,7 +229,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ukonczenie-zapas.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-126 | `src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne`<br>`src/i18n/format` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ukonczenie.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-012/S1, BR-PRJ-015, BR-PRJ-015/S1, BR-PRJ-015/S3, BR-ZAP-002, NFR-DOS-001, P-126, P-150, P-160 | `src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-import-wyjatek.test.tsx` | zielony (główny zestaw) | 3 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia.test.tsx` | zielony (główny zestaw) | 7 | BR-DAN-010, BR-DAN-012/S3, BR-LIC-020/S3, BR-ZAK-004, BR-ZAK-004/S1, BR-ZAK-006/S5, BR-ZAK-006/S7, KP-13 | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | KP-05, P-328 | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-tresc.test.tsx` | zielony (główny zestaw) | 2 | P-328, P-330 | `src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
@@ -290,4 +291,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 286; zależnych od poprawek: 183.
+Razem plików testów: 287; zależnych od poprawek: 184.
