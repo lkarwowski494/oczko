@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type LicznikProjektu = { id: string; nazwa: string; opis: string }; // opis sformatowany: „12 rows”, „18 stitches”
@@ -110,7 +110,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
           {pozycja(t('projekt.usun'), p.naUsunProjekt, 'projekt-usun', true)}
         </View>
       )}
-      <Text style={st.tytul} accessibilityRole="header">{s.nazwa}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.nazwa}</Text>
       {s.postep.rodzaj === 'procent' ? (
         <View>
           <Text style={st.tekst}>{t('projekt.postep', { procent: s.postep.wartosc })}</Text>
@@ -257,7 +257,7 @@ function style(k: Kolory) {
     ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.podpis, color: k.olowek, marginTop: odstep.s },
+    naglowek: { ...typografia.drobny, color: k.olowek, marginTop: odstep.s }, // wzorzec `.naglowek-grupy`: 13 pt (partia8.html:76), H-1c
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     czesc: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wiersz: { flexDirection: 'row', alignItems: 'center', minHeight: cel.minimum },

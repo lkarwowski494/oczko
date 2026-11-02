@@ -4,7 +4,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Przycisk } from './Arkusz';
-import { cel, odstep, promien, typografia, useKolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory } from './motyw';
 import type { System, Tlumacz } from './wspolne';
 import type { AktywnePro } from './Oferty';
 import type { DniNaLiscie } from './ListaProjektow';
@@ -44,7 +44,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
     <ScrollView style={{ flex: 1, backgroundColor: k.papier }} contentContainerStyle={{ padding: odstep.l, gap: odstep.l }} testID="ustawienia">
       {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
       {panelE2e /* build E2E: na górze, widoczny bez przewijania (scenariusze 08, 09) */}
-      <Text style={{ ...typografia.tytul, color: k.grafit }} accessibilityRole="header">{t('ustawienia.tytul')}</Text>
+      <Text style={{ ...typografia.tytul, color: k.grafit }} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.tytul')}</Text>
       <View style={st.grupa}>
         <View style={st.wiersz}>
           <Przycisk tekst={t('ustawienia.oczko_pro')} etykieta={s.pro ? `${t('ustawienia.oczko_pro')}, ${t('ustawienia.pro_wlaczone')}` : undefined} onPress={naOferty} rodzaj="tekstowy" testID="ustawienia-oczko-pro" />

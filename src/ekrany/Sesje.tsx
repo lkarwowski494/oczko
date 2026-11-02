@@ -4,7 +4,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Przycisk } from './Arkusz';
-import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type DrugaLiniaSesji = { rodzaj: 'brak' } | { rodzaj: 'do_sprawdzenia'; godziny: number } | { rodzaj: 'trwa' } | { rodzaj: 'wstrzymana' } | { rodzaj: 'pauzy'; czas: string } | { rodzaj: 'skorygowana' };
@@ -28,7 +28,7 @@ export function Sesje({ stan: s, t, naKorekta, naWstecz }: PropsSesji): React.Re
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="sesje">
       {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
-      <Text style={st.tytul} accessibilityRole="header">{t('sesje.tytul')}</Text>
+      <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('sesje.tytul')}</Text>
       <Text style={st.podpis}>{t('sesje.podsumowanie', { count: s.podsumowanie.liczba, czas: s.podsumowanie.czas })}</Text>
       <View testID="sesje-lista" style={{ gap: odstep.l }}>
         {dni.map((dzien) => (

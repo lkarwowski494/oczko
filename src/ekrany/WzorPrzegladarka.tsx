@@ -10,7 +10,7 @@ import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
-import { cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_TYTULOWA, cel as rozmiary, MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type StanPrzegladarki = {
@@ -118,7 +118,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">
             <Text style={st.tytul} numberOfLines={2}>{`${s.nazwa} ▾`}</Text>
           </Pressable>
-        ) : <Text style={st.tytul} accessibilityRole="header" numberOfLines={2}>{s.nazwa}</Text>}
+        ) : <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{s.nazwa}</Text>}
         <Text style={st.podpis} testID="wzor-zrodlo">{s.opis}</Text>
       </View>
       <View style={st.grupa}>
