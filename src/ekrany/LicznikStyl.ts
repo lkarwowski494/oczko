@@ -29,7 +29,7 @@ export function style(k: Kolory) {
     przyciski: { flexDirection: 'row', alignItems: 'flex-end', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     minus: { width: rozmiary.przyciskMinus, height: rozmiary.przyciskMinus, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.grafit },
-    plus: { flex: 1, minHeight: rozmiary.przyciskPlusWysokosc, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
+    plus: { flex: 1, minHeight: rozmiary.przyciskPlusWysokosc, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusTekst: { ...typografia.przycisk, color: k.przyciskTekst },
     plusPodpis: { ...typografia.podpis, color: k.przyciskTekst },
     drugiPrzycisk: { minHeight: rozmiary.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },

@@ -47,7 +47,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
             return (
               <Pressable key={d.dzien} accessibilityRole="button" accessibilityLabel={d.a11y} accessibilityState={{ selected: wybrany }}
                 onPress={() => naWybierz(d.dzien)} style={st.komorka} testID={`historia-dzien-${d.dzien}`}>
-                <View style={[st.kolo, wybrany && { backgroundColor: k.przyciskTlo }]}>
+                <View style={[st.kolo, wybrany && { backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys }]}>
                   <Text style={[st.tekst, wybrany && { color: k.przyciskTekst }, d.dzis && st.dzis]}>{d.numer}</Text>
                 </View>
                 {d.robotka && <View style={[st.kreska, { backgroundColor: wybrany ? k.grafit : k.kreska }]} />}

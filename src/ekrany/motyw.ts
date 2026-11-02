@@ -26,6 +26,8 @@ export const typografia = {
   tytul: tytulowy(ty.tytul),
   instrukcja: tytulowy(ty.instrukcja),
   przycisk: tytulowy(ty.przycisk),
+  /** Etykieta przycisku pełnej szerokości: Libre Franklin 700 w rozmiarze treści, 17 pt (wzorzec `partia8.html:70` `.przycisk-pelny`; 04-studio-projektowe-008). Bez nowego tokenu: rozmiar z `tresc`, interlinia z `przycisk`. */
+  przyciskPelny: tytulowy({ rozmiar: ty.tresc.rozmiar, interlinia: ty.przycisk.interlinia }),
   tresc: systemowy(ty.tresc),
   podpis: systemowy(ty.podpis),
   drobny: systemowy(ty.drobny),
