@@ -1,10 +1,14 @@
 // sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--oczekujace o.json [--wydanie]] [--pseudo plik.json]
 // --oczekujace (P-357, wzór Treningu): { powod, odwolania, klucze: [bazy kluczy] } — brak przekładu tych kluczy to uwaga, nie błąd; lista = dokładnie różnica źródło ↔ słowniki
 //   (klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd). --wydanie: niepusta lista = błąd (fala przekładu przed wydaniem, P-320).
+// --krytyczne k.json --przeglad p.json (M1-audytor-generalny-008, DEC-11 a): k.json = klucze treści krytycznej oznaczone przez 06 ID twierdzeń; p.json = stan kontroli (a) na język
+//   (przekład zwrotny na pl w świeżej sesji, zgodny z kluczem przez skrót tekstu). --wydanie bez tych dwóch flag = kod 2; brak ważnego wpisu (a) dla klucza krytycznego w którymkolwiek języku poza źródłem = błąd (kod 1).
+//   --skrot <język> wypisuje skróty kluczy krytycznych tego języka (do wpisu kontroli).
 // Słowniki <tag>.json w formacie i18next v4. Kod wyjścia: 0 bez błędów, 1 błędy, 2 konfiguracja albo skan kodu niewykonany.
 import { readFileSync, readdirSync, writeFileSync, statSync, existsSync } from 'node:fs';
 import { join, resolve, relative } from 'node:path';
 import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const KAT = /_(ordinal_)?(zero|one|two|few|many|other)$/;
@@ -70,6 +74,59 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
   return { bledy, uwagi };
 }
 
+// --- Treść krytyczna (DEC-11 a): mapa klucz → ID twierdzeń (06) × stan kontroli (a) na język (09) ---
+const ID_TW = /^[A-Z]{3}-[A-Z0-9]+$/;
+const METODY_A = ['przeklad-zwrotny-pl']; // kontrola (a) „szerokiej” (docs/lokalizacja/jezyki.md): przekład zwrotny na pl w świeżej sesji z porównaniem sensu
+const WYNIKI_A = ['zgodny', 'rozbieżny'];
+// Skrót tekstu klucza (12 znaków sha256): tekst albo linie „kategoria=tekst” posortowane po kategorii; zmiana tekstu po kontroli unieważnia wpis.
+export const skrotKlucza = (w) => createHash('sha256').update(w.formy ? Object.keys(w.formy).sort().map((k) => `${k}=${w.formy[k]}`).join('\n') : w.tekst).digest('hex').slice(0, 12);
+
+export function sprawdzKrytyczne(slowniki, zrodlo, mapa, przeglad, { wydanie = false } = {}) {
+  const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]), klucze = mapa.klucze ?? {}, ids = new Set(mapa.krytyczne_id ?? []);
+  const sl = Object.fromEntries(Object.entries(slowniki).map(([j, x]) => [j, wpisy(x)]));
+  for (const [k, m] of Object.entries(klucze)) {
+    if (!zr[k]) { bledy.push(`krytyczne: klucza ${k} nie ma w źródle`); continue; }
+    const tw = m.twierdzenia ?? [];
+    if (!tw.length || !tw.every((id) => ID_TW.test(id))) bledy.push(`krytyczne: ${k} — brak twierdzeń albo zły format ID`);
+    else if (!tw.some((id) => ids.has(id))) bledy.push(`krytyczne: ${k} nie ma twierdzenia z listy krytyczne_id`);
+    const sk = skrotKlucza(zr[k]);
+    if (m.sha_en !== sk) (wydanie ? bledy : uwagi).push(`krytyczne: ${k} — tekst źródłowy zmieniony od oznaczenia przez 06 (sha_en ${m.sha_en} ≠ ${sk}); 06 weryfikuje twierdzenie i odnawia mapę, 09 unieważnia kontrole (a)`);
+  }
+  for (const [j, kk] of Object.entries(przeglad.jezyki ?? {})) {
+    if (!slowniki[j]) { bledy.push(`przeglad: język ${j} — brak słownika`); continue; }
+    if (j === zrodlo) { bledy.push(`przeglad: język ${j} — źródło nie ma kontroli (a), kanon prowadzi 06`); continue; }
+    for (const [k, e] of Object.entries(kk)) {
+      if (!klucze[k]) { bledy.push(`przeglad: ${j} ${k} — klucz spoza krytyczne.json`); continue; }
+      const a = e?.a;
+      if (!a) continue;
+      const brak = ['kto', 'data', 'metoda', 'wynik', 'sha'].filter((f) => !a[f]);
+      if (brak.length) bledy.push(`przeglad: ${j} ${k} — wpis a bez pól ${brak.join(', ')}`);
+      if (a.data && !/^\d{4}-\d{2}-\d{2}$/.test(a.data)) bledy.push(`przeglad: ${j} ${k} — data „${a.data}” nie jest RRRR-MM-DD`);
+      if (a.metoda && !METODY_A.includes(a.metoda)) bledy.push(`przeglad: ${j} ${k} — metoda „${a.metoda}” spoza ${METODY_A.join(', ')}`);
+      if (a.wynik && !WYNIKI_A.includes(a.wynik)) bledy.push(`przeglad: ${j} ${k} — wynik „${a.wynik}” spoza ${WYNIKI_A.join(', ')}`);
+    }
+  }
+  let par = 0, bezWpisu = 0;
+  for (const j of Object.keys(slowniki).filter((x) => x !== zrodlo)) {
+    const braki = [], nieaktualne = [], niezgodne = [];
+    for (const k of Object.keys(klucze)) {
+      const w = sl[j][k];
+      if (!w) continue; // brak tekstu: nakładka dziedziczy z języka bazowego (jego wpis), brak w pełnym słowniku to błąd sprawdzSlowniki
+      par++;
+      const a = przeglad.jezyki?.[j]?.[k]?.a;
+      if (!a || !a.kto || !a.data || !a.metoda || !a.sha || !WYNIKI_A.includes(a.wynik) || !METODY_A.includes(a.metoda)) { braki.push(k); bezWpisu++; }
+      else if (a.wynik !== 'zgodny') { niezgodne.push(k); bezWpisu++; }
+      else if (a.sha !== skrotKlucza(w)) { nieaktualne.push(k); bezWpisu++; }
+    }
+    if (wydanie) {
+      const e = (m, l) => l.length && bledy.push(`${j}: kontrola (a) treści krytycznej — ${m} dla ${l.join(', ')}`);
+      e('brak wpisu', braki); e('wpis nieaktualny (tekst zmieniony po kontroli)', nieaktualne); e('wynik niezgodny', niezgodne);
+    }
+  }
+  if (!wydanie && bezWpisu) uwagi.push(`kontrola (a) treści krytycznej: ${bezWpisu} z ${par} par język × klucz bez ważnego wpisu (sprawdz-i18n --wydanie traktuje to jako błąd; stan: docs/lokalizacja/przeglad-krytyczne.json)`);
+  return { bledy, uwagi };
+}
+
 const AKC = Object.fromEntries([...'aceinorsuyzACEINORSUYZ'].map((c, i) => [c, 'àçéîñöŕšûýžÀÇÉÎÑÖŔŠÛÝŽ'[i]]));
 export function pseudo(s) { // akcenty, wydłużenie według tabeli W3C, nawiasy; parametry nietknięte
   let n = 0, w = '', od = 0;
@@ -116,12 +173,19 @@ function main(argv) {
   for (let i = 0; i < argv.length; i++) argv[i] === '--wydanie' ? (o.wydanie = true) : argv[i].startsWith('--') ? (o[argv[i].slice(2)] = argv[++i]) : o._.push(argv[i]);
   const [kat] = o._, zrodlo = o.zrodlo;
   if (!kat || !zrodlo) { console.log('Użycie: patrz nagłówek pliku'); return 2; }
+  if ((o.wydanie || o.krytyczne || o.przeglad) && !(o.krytyczne && o.przeglad)) { console.log(o.wydanie ? 'BŁĄD konfiguracji: --wydanie wymaga --krytyczne i --przeglad (kontrola treści krytycznej, DEC-11 a)' : 'BŁĄD konfiguracji: --krytyczne i --przeglad idą parą'); return 2; }
   for (const f of readdirSync(kat)) if (/^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*\.json$/.test(f)) slowniki[f.slice(0, -5)] = splaszcz(czytaj(join(kat, f)));
   if (!slowniki[zrodlo]) { console.log(`BŁĄD konfiguracji: brak ${zrodlo}.json w ${kat}`); return 2; }
   const wyjatki = o.wyjatki ? czytaj(o.wyjatki) : {}, pk = join(kat, `${zrodlo}.kontekst.json`), zr = wpisy(slowniki[zrodlo]);
   const oczekujace = o.oczekujace ? czytaj(o.oczekujace).klucze ?? [] : [];
   const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace });
   if (o.wydanie && oczekujace.length) bledy.push(`wydanie: oczekujace.json niepusta (${oczekujace.length} kluczy) — fala przekładu przed wydaniem (P-320, P-357)`);
+  let krytyczne = null;
+  if (o.krytyczne) {
+    try { krytyczne = sprawdzKrytyczne(slowniki, zrodlo, czytaj(o.krytyczne), czytaj(o.przeglad), { wydanie: !!o.wydanie }); } catch (e) { console.log(`BŁĄD konfiguracji: ${o.krytyczne} / ${o.przeglad}: ${e.message}`); return 2; }
+    bledy.push(...krytyczne.bledy); uwagi.push(...krytyczne.uwagi);
+    if (o.skrot) for (const k of Object.keys(czytaj(o.krytyczne).klucze ?? {})) { const w = wpisy(slowniki[o.skrot] ?? {})[k]; if (w) console.log(`${o.skrot} ${k} ${skrotKlucza(w)}`); }
+  }
   let kod = 0;
   if (o.kod) {
     let ts;

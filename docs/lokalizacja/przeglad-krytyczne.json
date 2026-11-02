@@ -1,0 +1,5 @@
+{
+  "opis": "Stan kontroli (a) treści krytycznej na język (rola 09, DEC-11 a, M1-audytor-generalny-008). Wpis a = przekład zwrotny na polski w świeżej sesji z porównaniem sensu z kluczem źródłowym (docs/lokalizacja/jezyki.md, polityka „szeroka”). Wpis powstaje dopiero po wykonaniu kontroli i zawiera skrót tekstu, który kontrolowano (node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --krytyczne docs/lokalizacja/krytyczne.json --przeglad docs/lokalizacja/przeglad-krytyczne.json --skrot <język>). Zmiana tekstu unieważnia wpis. Wzór wpisu: { \"jezyki\": { \"<kod>\": { \"<klucz>\": { \"a\": { \"kto\": \"...\", \"data\": \"RRRR-MM-DD\", \"metoda\": \"przeklad-zwrotny-pl\", \"wynik\": \"zgodny\", \"sha\": \"<12 znaków>\" } } } } }. Przegląd człowieka (próg wyższy niż a) to osobny wpis poza zakresem tej bramki.",
+  "stan_2026-11-02": "Kontrola (a) niewykonana w żadnym z 34 języków (docs/lokalizacja/stan-przeklad.md, „Otwarte” 2; P-320 odkłada falę po audycie M1). Do czasu fali sprawdz-i18n --wydanie kończy się kodem 1.",
+  "jezyki": {}
+}

@@ -16,12 +16,16 @@ const projekt = (slowniki: Record<string, unknown>, oczekujace: unknown) => {
   mkdirSync(join(d, 'locales'));
   for (const [j, s] of Object.entries(slowniki)) writeFileSync(join(d, 'locales', `${j}.json`), JSON.stringify(s));
   writeFileSync(join(d, 'oczekujace.json'), JSON.stringify(oczekujace));
+  // DEC-11 a (M1-audytor-generalny-008): --wydanie wymaga mapy treści krytycznej i stanu kontroli; tu puste (bez kluczy krytycznych).
+  writeFileSync(join(d, 'krytyczne.json'), JSON.stringify({ krytyczne_id: [], klucze: {} }));
+  writeFileSync(join(d, 'przeglad.json'), JSON.stringify({ jezyki: {} }));
   return d;
 };
 const lista = (klucze: string[]) => ({ powod: 'test', odwolania: ['P-320', 'P-357'], klucze });
 const EN = { a: { b: 'Hello', c: 'Bye {{x}}' } };
 const PL_BEZ_C = { a: { b: 'Cześć' } };
 const ARGS = ['locales', '--zrodlo', 'en', '--oczekujace', 'oczekujace.json'];
+const WYDANIE = [...ARGS, '--krytyczne', 'krytyczne.json', '--przeglad', 'przeglad.json', '--wydanie'];
 
 describe('lista oczekujących na falę przekładu (sprawdz-i18n.mjs --oczekujace)', () => {
   it('brak przekładu spoza listy: błąd, kod 1', () => {
@@ -51,12 +55,12 @@ describe('lista oczekujących na falę przekładu (sprawdz-i18n.mjs --oczekujace
     expect(r.kod).toBe(1);
   });
   it('--wydanie: niepusta lista = błąd (fala przekładu przed wydaniem), kod 1', () => {
-    const r = uruchom([...ARGS, '--wydanie'], projekt({ en: EN, pl: PL_BEZ_C }, lista(['a.c'])));
+    const r = uruchom(WYDANIE, projekt({ en: EN, pl: PL_BEZ_C }, lista(['a.c'])));
     expect(r.wyjscie).toMatch(/BŁĄD wydanie: oczekujace\.json niepusta \(1 kluczy\)/);
     expect(r.kod).toBe(1);
   });
   it('--wydanie: pusta lista i komplet przekładów = kod 0', () => {
-    const r = uruchom([...ARGS, '--wydanie'], projekt({ en: EN, pl: { a: { b: 'Cześć', c: 'Pa {{x}}' } } }, lista([])));
+    const r = uruchom(WYDANIE, projekt({ en: EN, pl: { a: { b: 'Cześć', c: 'Pa {{x}}' } } }, lista([])));
     expect(r.kod).toBe(0);
   });
 });
@@ -90,7 +94,7 @@ describe('docs/lokalizacja/oczekujace.json w repo', () => {
   });
   it('kontrola-ipa.sh woła bramkę i18n z --wydanie jako BŁĄD wydania', () => {
     const sh = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
-    expect(sh).toMatch(/node scripts\/sprawdz-i18n\.mjs src\/i18n\/slowniki --zrodlo en --oczekujace docs\/lokalizacja\/oczekujace\.json --wydanie \|\| bledy=\$\(\(bledy \+ 1\)\)/);
+    expect(sh).toMatch(/node scripts\/sprawdz-i18n\.mjs src\/i18n\/slowniki --zrodlo en --oczekujace docs\/lokalizacja\/oczekujace\.json --krytyczne docs\/lokalizacja\/krytyczne\.json --przeglad docs\/lokalizacja\/przeglad-krytyczne\.json --wydanie \|\| bledy=\$\(\(bledy \+ 1\)\)/);
   });
   it('skrypty npm i18n, i18n:kod, i18n:pseudo przekazują --oczekujace', () => {
     const s = (JSON.parse(readFileSync(join(KORZEN, 'package.json'), 'utf8')) as { scripts: Record<string, string> }).scripts;

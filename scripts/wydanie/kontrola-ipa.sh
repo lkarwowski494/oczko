@@ -50,7 +50,7 @@ done
 node scripts/wydanie/kontrola-adresow.mjs || bledy=$((bledy + 1))
 
 # P-357 (P-320): lista kluczy czekających na falę przekładu musi być pusta w buildzie wydania.
-node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --oczekujace docs/lokalizacja/oczekujace.json --wydanie || bledy=$((bledy + 1))
+node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --oczekujace docs/lokalizacja/oczekujace.json --krytyczne docs/lokalizacja/krytyczne.json --przeglad docs/lokalizacja/przeglad-krytyczne.json --wydanie || bledy=$((bledy + 1))
 
 # Hermes i brak modułów deweloperskich.
 B="$APP/main.jsbundle"
