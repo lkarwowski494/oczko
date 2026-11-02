@@ -34,6 +34,7 @@ export type PropsWidokuNatywnego = {
   notatki?: NotatkaNatywna[];                        // chipy notatek tej strony wzoru (testID `wzor-notatka-chip`)
   znacznik: ZnacznikNatywny | null;                  // wynik polozenieZnacznika — widok tylko rysuje (testID `wzor-znacznik`, P-237 (2))
   narzedzie: 'brak' | 'zakreslacz' | 'pioro' | 'gumka';
+  narzedzieRysika: 'zakreslacz' | 'pioro';            // narzędzie, które wybiera pierwsze dotknięcie rysikiem bez narzędzia (narzedzieRysika, src/domena/rysik.ts; P-360: compact → zakreslacz)
   polityka: 'wylaczone' | 'dowolne' | 'tylkoRysik'; // politykaPlotna (src/domena/rysik.ts)
   cofnij: number;                                    // licznik: każda zmiana = cofnięcie ostatniej kreski na bieżącej stronie
   style?: StyleProp<ViewStyle>;

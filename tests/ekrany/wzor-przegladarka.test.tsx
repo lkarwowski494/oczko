@@ -1,13 +1,17 @@
 // Przeglądarka wzoru (design-spec „Wzór, rysik i iPad”; P-220 W1a, W3, W4b, W5a, W9b; P-218 (3); BR-WZR-005, BR-WZR-008; testID z e2e/README.md
 // i scenariuszy 44–47, 52). Widok strony PDF to moduł natywny `oczko-wzor` — tu slot (`widok`), więc ekran jest testowalny bez urządzenia.
 import React from 'react';
+import * as RN from 'react-native';
 import { StyleSheet, Text } from 'react-native';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { RYSIK_PODPOWIEDZ_MS } from '../../src/konfiguracja';
 import { ukladOkna } from '../../src/domena/uklad';
 import { PrzegladarkaWzoru, type StanPrzegladarki } from '../../src/ekrany/WzorPrzegladarka';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
+import tokeny from '../../docs/design/tokeny.json';
 import { tEn } from './pomoc';
+
+afterEach(() => jest.restoreAllMocks());
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
@@ -103,6 +107,31 @@ test('iPhone: zakreślacz włącza tryb (selected), pasek narzędzi: gumka, cofn
   fireEvent.press(screen.getByRole('button', { name: 'Done' }));
   expect(w.naNarzedzie).toHaveBeenLastCalledWith('brak');
   expect(screen.queryByTestId('wzor-pioro')).toBeNull(); // pióro tylko na iPadzie
+});
+
+// P2-9 (Aneks P2 poz. 3, pozycja 10 C): wybrane narzędzie w pasku compact — kształt niesie stan: obrys 2 pt `przyciskObrys`, promień 10 (`promien.pole`),
+// tło `papierGrupa`, obszar dotyku 44 × 44 pt; VoiceOver: przycisk „Highlighter”, stan selected. Niewybrane: bez obrysu i bez tła.
+describe('P2-9 / 10 C: stan wybrany zakreślacza w pasku', () => {
+  const compact = ukladOkna({ szerokosc: 390, wysokosc: 844 });
+  test.each([['jasny', 'light', tokeny.kolor.jasny], ['ciemny', 'dark', tokeny.kolor.ciemny]] as const)('motyw %s: wybrany Highlighter ma obrys, promień 10, tło papierGrupa, 44 pt', (_n, schemat, k) => {
+    jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
+    render(<PrzegladarkaWzoru stan={stan({ uklad: compact, narzedzie: 'zakreslacz' })} t={t} widok={widok} {...wywolania()} />);
+    const plaski = StyleSheet.flatten(screen.getByTestId('wzor-zakreslacz').props.style);
+    expect(plaski).toMatchObject({ borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: tokeny.promien.pole, backgroundColor: k.papierGrupa, minWidth: 44, minHeight: 44 });
+    expect(screen.getByRole('button', { name: 'Highlighter', selected: true })).toBe(screen.getByTestId('wzor-zakreslacz'));
+  });
+  test('niewybrany Highlighter: bez obrysu i bez tła (stan nie jest kolorem)', () => {
+    render(<PrzegladarkaWzoru stan={stan({ uklad: compact })} t={t} widok={widok} {...wywolania()} />);
+    const plaski = StyleSheet.flatten(screen.getByTestId('wzor-zakreslacz').props.style);
+    expect(plaski.borderWidth ?? 0).toBe(0);
+    expect(plaski.backgroundColor).toBeUndefined();
+    expect(screen.getByRole('button', { name: 'Highlighter', selected: false })).toBeTruthy();
+  });
+  test('iPad regular: wybrany Pen ma ten sam stan co Highlighter (jak poz. 10 C)', () => {
+    jest.spyOn(RN, 'useColorScheme').mockReturnValue('light');
+    render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 820, wysokosc: 1180 }), narzedzie: 'pioro' })} t={t} widok={widok} {...wywolania()} />);
+    expect(StyleSheet.flatten(screen.getByTestId('wzor-pioro').props.style)).toMatchObject({ borderWidth: 2, borderRadius: tokeny.promien.pole, backgroundColor: tokeny.kolor.jasny.papierGrupa });
+  });
 });
 
 test('iPad (regular): stały pasek z piórem; zaznaczenie pióra', () => {

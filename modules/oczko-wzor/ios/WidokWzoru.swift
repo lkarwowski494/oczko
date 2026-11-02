@@ -222,6 +222,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var doZapisu = Set<Int>()
   private var zegar: Timer?
   private var narzedzie: NarzedzieWzoru = .brak
+  private var narzedzieRysika: NarzedzieWzoru = .pioro // wybierane przy pierwszym rysiku bez narzędzia: Pen, w oknie compact Highlighter (P-360)
   private var polityka: PolitykaPlotna = .wylaczone
   private var znacznik: Znacznik?
   private var notatki: [ChipNotatkiNatywny] = []
@@ -318,6 +319,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     narzedzie = n
     for k in nakladki.values { zastosujNarzedzie(k.plotno) }
   }
+  func ustawNarzedzieRysika(_ n: NarzedzieWzoru) { narzedzieRysika = n }
   func ustawPolityke(_ p: PolitykaPlotna) {
     polityka = p
     for k in nakladki.values { zastosujPolityke(k.plotno) }
@@ -417,8 +419,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private func pierwszyRysik() {
     guard !rysikZgloszony else { return }
     rysikZgloszony = true
-    // P-327 (a), 07-jakosc-026: bez wybranego narzędzia pierwsze dotknięcie rysikiem wybiera Pen, a płótno przechodzi na pencilOnly od razu (nie czeka na JS), więc pierwsze pociągnięcie pisze.
-    if narzedzie == .brak { ustawNarzedzie(.pioro) }
+    // P-327 (a), 07-jakosc-026: bez wybranego narzędzia pierwsze dotknięcie rysikiem wybiera Pen (w oknie compact Highlighter, P-360; narzędzie ustawia JS propem narzedzieRysika),
+    // a płótno przechodzi na pencilOnly od razu (nie czeka na JS), więc pierwsze pociągnięcie pisze.
+    if narzedzie == .brak { ustawNarzedzie(narzedzieRysika) }
     ustawPolityke(.tylkoRysik)
     onPierwszyRysik([:])
   }

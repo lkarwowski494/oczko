@@ -95,6 +95,7 @@ public class OczkoWzorModule: Module {
         v.ustawNotatki(n.map { ChipNotatkiNatywny(id: $0.id, strona: $0.strona, y: $0.y, wysokosc: $0.wysokosc, etykieta: $0.etykieta, a11y: $0.a11y) })
       }
       Prop("narzedzie") { (v: WidokWzoru, n: String) in v.ustawNarzedzie(NarzedzieWzoru(rawValue: n) ?? .brak) }
+      Prop("narzedzieRysika") { (v: WidokWzoru, n: String) in v.ustawNarzedzieRysika(n == NarzedzieWzoru.zakreslacz.rawValue ? .zakreslacz : .pioro) }
       Prop("polityka") { (v: WidokWzoru, p: String) in v.ustawPolityke(PolitykaPlotna(rawValue: p) ?? .wylaczone) }
       Prop("cofnij") { (v: WidokWzoru, n: Int) in v.cofnijDo(n) }
     }

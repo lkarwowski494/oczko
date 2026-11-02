@@ -13,12 +13,22 @@ export function poDotyku(s: { tylkoRysik: boolean }, z: 'palec' | 'rysik' | 'otw
   if (z === 'otwarcie') return { tylkoRysik: false };
   return { tylkoRysik: s.tylkoRysik || z === 'rysik' };
 }
+/** Klasa okna (`Uklad.klasa`): regular = pasek z Pen, Highlighter i gumką; compact = Highlighter i gumka (design-spec, „Pozycja 10 C”, P-360). */
+export type KlasaOkna = 'compact' | 'regular';
+/** Narzędzie, które wybiera pierwsze dotknięcie rysikiem bez wybranego narzędzia: regular → Pen (P-327 (a)), compact → Highlighter, jedyne narzędzie rysujące w pasku (P-360, 10 C). */
+export function narzedzieRysika(klasa: KlasaOkna): 'zakreslacz' | 'pioro' {
+  return klasa === 'compact' ? 'zakreslacz' : 'pioro';
+}
+/** Zmiana szerokości okna: wybrany Pen przechodzi w Highlighter w compact (nie ma go w pasku); compact → regular zostawia Highlighter (10 C). */
+export function narzedzieDlaKlasy(n: Narzedzie, klasa: KlasaOkna): Narzedzie {
+  return klasa === 'compact' && n === 'pioro' ? 'zakreslacz' : n;
+}
 /**
- * Pierwsze dotknięcie rysikiem (`onPierwszyRysik`; P-327 (a), BR-WZR-004 S2, 07-jakosc-026): bez wybranego narzędzia rysik wybiera Pen i od razu pisze (pencilOnly);
+ * Pierwsze dotknięcie rysikiem (`onPierwszyRysik`; P-327 (a), P-360, BR-WZR-004 S2, 07-jakosc-026): bez wybranego narzędzia rysik wybiera `narzedzieRysika(klasa)` i od razu pisze (pencilOnly);
  * z wybranym narzędziem zostaje ono. Działa raz — gdy `tylkoRysik` już włączony, a użytkownik odznaczył narzędzie, rysik go nie wybiera na nowo (BR-WZR-008 S3).
- * Widok natywny robi to samo synchronicznie w chwili dotyku (pierwsze pociągnięcie nie czeka na JS), a JS dostaje zdarzenie i zgadza swój stan.
+ * Widok natywny robi to samo synchronicznie w chwili dotyku (pierwsze pociągnięcie nie czeka na JS; prop `narzedzieRysika`), a JS dostaje zdarzenie i zgadza swój stan.
  */
-export function poPierwszymRysiku(s: { narzedzie: Narzedzie; tylkoRysik: boolean }): { narzedzie: Narzedzie; tylkoRysik: boolean } {
+export function poPierwszymRysiku(s: { narzedzie: Narzedzie; tylkoRysik: boolean }, klasa: KlasaOkna): { narzedzie: Narzedzie; tylkoRysik: boolean } {
   if (s.tylkoRysik) return s;
-  return { narzedzie: s.narzedzie === 'brak' ? 'pioro' : s.narzedzie, tylkoRysik: true };
+  return { narzedzie: s.narzedzie === 'brak' ? narzedzieRysika(klasa) : s.narzedzie, tylkoRysik: true };
 }

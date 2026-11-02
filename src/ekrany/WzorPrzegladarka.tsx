@@ -239,7 +239,7 @@ function style(k: Kolory) {
     grupa: { flexDirection: 'row', alignItems: 'center' },
     tytulPaska: { flex: 1, minWidth: 120 },
     ikona: { minWidth: rozmiary.minimum, minHeight: rozmiary.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi },
-    wybrane: { backgroundColor: k.papierGrupa },
+    wybrane: { backgroundColor: k.papierGrupa, borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: promien.pole }, // stan wybranego narzędzia niesie kształt, nie kolor (10 C, P-360)
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },
