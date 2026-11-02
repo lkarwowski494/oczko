@@ -1,0 +1,61 @@
+# BR-LIC-018/S1 (docs/brd/wymagania-licznik.md:309): część ma dwie sekcje (liczniki rzędów) po 20 i 5 rzędów, licznik całości pokazuje 25;
+# +1 w drugiej → sekcja 6, całość 26 (S1); −1 → 5 i 25; −1 → 4 i 24 (S2, prucie). F-46 (07-jakosc-033, część A). Wyrocznia: BRD (20, 5, 25, 26, 24), nie kod.
+# Linia całości: „{część} in total: N rows” na liczniku (src/ekrany/Licznik.tsx:160) albo „Whole piece: N rows” (bez nazwy części, projekt roboczy; zgłoszenie 031/F-46) —
+# oba brzmienia dopuszczone, liczba jest wynikiem. S3–S5 (osobne części, kosz, konflikt iCloud) pokrywa Jest; S5 w 1.0 nieosiągalny (ZM-06).
+# Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-LIC-018/S1 · Dwie sekcje 20 i 5: +1 w drugiej → całość 26, prucie → 24"
+tags:
+  - BR-LIC-018-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "20" } }
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- tapOn: { id: "projekt-dodaj" }
+- assertVisible: { id: "projekt-dodaj-licznik" }
+- tapOn: { id: "projekt-dodaj-licznik" }
+- assertVisible: { id: "formularz-nazwa-licznika" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-licznika" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "F"
+      - inputText: "l"
+      - inputText: "a"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-licznika", text: "Flat" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- assertVisible: ".*Whole piece: 20 rows.*"
+- tapOn: "Flat.*"
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "5" } }
+- assertVisible: ".*(in total: |Whole piece: )25 rows.*"
+- takeScreenshot: 58-calosc-25
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "6" }
+- assertVisible: ".*(in total: |Whole piece: )26 rows.*"
+- takeScreenshot: 58-calosc-26
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+- assertVisible: ".*(in total: |Whole piece: )25 rows.*"
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- assertVisible: ".*(in total: |Whole piece: )24 rows.*"
+- takeScreenshot: 58-calosc-24
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: ".*Whole piece: 24 rows.*"
+- takeScreenshot: 58-projekt-calosc-24

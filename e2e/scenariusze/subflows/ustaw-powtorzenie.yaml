@@ -1,0 +1,21 @@
+# Podprzepływ (07-jakosc-033 A): z licznika → menu ••• → „Set a repeat length” → długość DLUGOSC → Save → arkusz zamknięty.
+# Parametr (env runFlow): DLUGOSC — liczba rzędów powtórzenia jako tekst (np. "8").
+# Pole „Rows in one repeat” nie ma testID (src/ekrany/Formularze.tsx:64 — zgłoszenie dla 08 w raporcie 033-A): selektor po etykiecie VoiceOver pola
+# (Pole → accessibilityLabel = „Rows in one repeat”). Bez id nie ma asercji wartości pola; skutek wpisu sprawdza scenariusz na liczniku (tekst „repeat N · row R of D”).
+appId: com.apps4brew.knitting
+name: "podprzepływ: ustaw długość powtórzenia"
+---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-powtorzenie" }
+- tapOn: { id: "menu-powtorzenie" }
+- assertVisible: { id: "formularz-zapisz" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: "Rows in one repeat.*"
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: ${DLUGOSC}
+      - assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }

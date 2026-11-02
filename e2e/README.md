@@ -80,6 +80,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `menu-cel` | menu ••• | pozycja (nieużywana jeszcze w scenariuszach) | „Set a goal for this part” | |
 | `menu-wpisz-wartosc` | menu ••• | pozycja wpisania wartości (F-45) | — | |
 | `menu-przypomnienie` | menu ••• | pozycja | „Add a reminder (“every N rows”)” | |
+| `menu-powtorzenie` | menu ••• | pozycja „Set a repeat length” (F-05; tylko licznik rzędów; istnieje w `src/ekrany/MenuProjektu.tsx:36`, dopisane przez 07-jakosc-033 A) | „Set a repeat length” | |
 | `menu-wzor` | menu ••• | wzór projektu | — | |
 | `menu-ukoncz` | menu ••• | ukończenie | „Mark project as finished” | |
 | `formularz-nazwa-projektu` | formularz nazwy | pole nazwy | etykieta „Project” | tekstowa |

@@ -1,0 +1,52 @@
+# BR-LIC-006/S1 (docs/brd/wymagania-licznik.md:94): projekt ma licznik rzędów 20; użytkownik dodaje licznik oczek i dodaje w nim 5 →
+# projekt pokazuje licznik rzędów 20 i licznik oczek 5. F-04 (07-jakosc-033, część A). Wyrocznia: BRD (wartości 20 i 5), nie kod.
+# Licznik oczek bez nazwy dostaje nazwę rodzaju („Stitches”, nazwaLicznika, src/kompozycja/projekt.ts:36). Wyświetlenie słowem pracy na ekranie licznika:
+# etykieta przycisku „Add stitch” (nie „+1 row…”; zgłoszenie 07-jakosc-025). Nowy scenariusz: informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-LIC-006/S1 · Drugi licznik: rzędy 20 i oczka 5 w jednym projekcie"
+tags:
+  - BR-LIC-006-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "20" } }
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- tapOn: { id: "projekt-dodaj" }
+- assertVisible: { id: "projekt-dodaj-licznik" }
+- tapOn: { id: "projekt-dodaj-licznik" }
+- assertVisible: { id: "formularz-nazwa-licznika" }
+- tapOn: "Stitches"
+- assertVisible: { text: "Stitches", selected: true }
+- takeScreenshot: 54-nowy-licznik-oczka
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- assertVisible: "Rows.*20 rows.*"
+- assertVisible: "Stitches.*0.*"
+- tapOn: "Stitches.*"
+- extendedWaitUntil: { visible: { id: "licznik-plus", text: "Add stitch" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+- takeScreenshot: 54-licznik-oczek-5
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: "Rows.*20 rows.*"
+- assertVisible: "Stitches.*5.*"
+- takeScreenshot: 54-projekt-dwa-liczniki

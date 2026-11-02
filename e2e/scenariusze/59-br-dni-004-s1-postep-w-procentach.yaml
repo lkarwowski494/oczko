@@ -1,0 +1,46 @@
+# BR-DNI-004 (docs/brd/wymagania-dni.md:82, RD-14: ⌊100·Σmin(r,c)/Σc⌋ po częściach z celem): S3 — żadna część nie ma celu → brak procentu, informacja o celu;
+# S1 (skala 1 : 33 przez dzielnik 3) — cel 3, zrobiono 1 → 33% (zaokrąglenie w dół, nie 33,3 i nie 34); zrobiono 2 → 66% (nie 67); S2 — część ponad cel (5 przy celu 3) → 100%, nie więcej.
+# F-60 (07-jakosc-033, część A). Wyrocznia: rachunek RD-14 z BRD (Σmin/Σc), nie kod; część projektu roboczego bez celu nie wchodzi do sumy.
+# Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-DNI-004 · Postęp projektu w procentach: brak celów → informacja; cel 3 → 33%, 66%, nie więcej niż 100%"
+tags:
+  - BR-DNI-004
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: "Set a goal for a part to see progress."
+- assertNotVisible: ".*% done.*"
+- takeScreenshot: 59-brak-celow
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "3" } }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: "33% done"
+- assertVisible: "Approximate, counted from rows of parts with a goal."
+- takeScreenshot: 59-33-procent
+- tapOn: "Back.*"
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "2" } }
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: "66% done"
+- takeScreenshot: 59-66-procent
+- tapOn: "Back.*"
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "5" } }
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: "100% done"
+- assertNotVisible: "(1(0[1-9]|[1-9][0-9])|[2-9][0-9][0-9])% done"
+- takeScreenshot: 59-100-procent-nie-wiecej

@@ -1,0 +1,45 @@
+# BR-PRJ-002/S1 (docs/brd/wymagania-projekt.md:14): zapisana notatka „następne: 3 oczka prawe, potem warkocz” → po powrocie do ekranu licznika tego projektu
+# widać ją obok licznika bez otwierania innego ekranu. F-15 (07-jakosc-033, część A). Tekst notatki po angielsku (język symulatora en-US), zapis w „Note” na ekranie projektu.
+# Powrót: stuknięcie „Back” z ekranu projektu oraz restart procesu na tych samych danych. S2 (5000 znaków) pokrywa Jest `tests/dane/projekt-kosz.test.ts` — wpis tylu znaków
+# przez klawiaturę symulatora nie jest powtarzalny (poza zakresem E2E). Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-PRJ-002/S1 · Notatka z ekranu projektu widoczna obok licznika po powrocie i po restarcie"
+tags:
+  - BR-PRJ-002-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- assertNotVisible: "next: 3 knit, then cable"
+- tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "projekt-notatka" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "projekt-notatka" }
+- assertVisible: { id: "formularz-notatka" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-notatka" }
+      - waitForAnimationToEnd
+      - eraseText: 60
+      - inputText: "next: 3 knit, then cable"
+      - assertVisible: { id: "formularz-notatka", text: "next: 3 knit, then cable" }
+- takeScreenshot: 57-notatka-wpisana
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-notatka" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-notatka", text: ".*next: 3 knit, then cable.*" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: "next: 3 knit, then cable"
+- assertVisible: "Note"
+- takeScreenshot: 57-notatka-przy-liczniku
+- runFlow:
+    file: subflows/restart.yaml
+    env:
+      TERAZ: "2026-11-10T19:40:00"
+- assertVisible: "next: 3 knit, then cable"
+- takeScreenshot: 57-notatka-po-restarcie

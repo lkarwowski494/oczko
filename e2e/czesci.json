@@ -1,5 +1,5 @@
 {
-  "_opis": "Podział scenariuszy Maestro (e2e/scenariusze) na części w jakosc-ios.yml (scripts/ci/e2e-czesci.mjs, port e2e-shards.mjs Treningu @928d0ff). Wagi w sekundach. 2026-10-25: WSZYSTKIE wagi to SZACUNEK z liczby kroków (czas ≈ 50 s + 1,86 s × krok, kroki rekurencyjnie z retry i runFlow; regresja Treningu na 25 zmierzonych scenariuszach, docs/38:120 tamtego repo) — scenariusze jeszcze nie biegły na symulatorze; odświeżyć z logu pierwszego zielonego przebiegu (linie „[Passed] nazwa (1m 40s)”). Szacunek nie liczy czekania podprzepływu odstep.yaml (2,2 s) ani pominiętych stuknięć optional (do kilku s), więc zaniża scenariusze z wieloma odstępami. Scenariusz bez wpisu dostaje szacunek z kroków i trafia do dokładnie jednej części (nic nie jest pomijane); wagi tylko równoważą obciążenie. Pakiet podstawowy = tag podstawowy w pliku scenariusza (nie lista tutaj). narzut_osobnego_kroku_s: zmiana rozmiaru tekstu simctl i ponowny start symulatora dla tagu osobny-krok [OCENA].",
+  "_opis": "Podział scenariuszy Maestro (e2e/scenariusze) na części w jakosc-ios.yml (scripts/ci/e2e-czesci.mjs, port e2e-shards.mjs Treningu @928d0ff). Wagi w sekundach. 2026-10-25: WSZYSTKIE wagi to SZACUNEK z liczby kroków (czas ≈ 50 s + 1,86 s × krok, kroki rekurencyjnie z retry i runFlow; regresja Treningu na 25 zmierzonych scenariuszach, docs/38:120 tamtego repo) — scenariusze jeszcze nie biegły na symulatorze; odświeżyć z logu pierwszego zielonego przebiegu (linie „[Passed] nazwa (1m 40s)”). Szacunek nie liczy czekania podprzepływu odstep.yaml (2,2 s) ani pominiętych stuknięć optional (do kilku s), więc zaniża scenariusze z wieloma odstępami. Scenariusz bez wpisu dostaje szacunek z kroków i trafia do dokładnie jednej części (nic nie jest pomijane); wagi tylko równoważą obciążenie. Pakiet podstawowy = tag podstawowy w pliku scenariusza (nie lista tutaj). 2026-11-02 (07-jakosc-033 A): wagi scenariuszy 54–60 to ten sam SZACUNEK z liczby kroków (nie pomiar); odświeżyć z logu pierwszego zielonego przebiegu. narzut_osobnego_kroku_s: zmiana rozmiaru tekstu simctl i ponowny start symulatora dla tagu osobny-krok [OCENA].",
   "czesci": 3,
   "czesci_podstawowy": 2,
   "czesci_ipad": 1,
@@ -57,6 +57,13 @@
     "50-p-230-icloud-problemy-konta.yaml": 110,
     "51-br-dan-009-usun-takze-z-icloud.yaml": 113,
     "52-p-230-skrzynka-rozszerzenia.yaml": 123,
-    "53-p-282-word-tabela-obraz.yaml": 290
+    "53-p-282-word-tabela-obraz.yaml": 290,
+    "54-br-lic-006-s1-drugi-licznik.yaml": 173,
+    "55-br-lic-007-s1-powtorzenie.yaml": 188,
+    "56-br-lic-012-s1-znaczenie-liczby.yaml": 150,
+    "57-br-prj-002-s1-notatka-przy-liczniku.yaml": 130,
+    "58-br-lic-018-s1-licznik-calosci.yaml": 201,
+    "59-br-dni-004-s1-postep-w-procentach.yaml": 242,
+    "60-br-prj-004-s1-drut-mm-i-us.yaml": 173
   }
 }
