@@ -1,7 +1,7 @@
 /* Scenariusze E2E nieaktualne wobec zamierzonych zmian partii 8 (raport E2, przebieg 136, SHA fcbeef4, 2026-11-02).
  * Każda reguła ma w nazwie ID porażki (E2-136-Sn = scenariusz n) i decyzję/BR, która zmianę uzasadnia. Wyrocznia: wymaganie i kod aplikacji, nie zapis w scenariuszu.
  *  - E2-136-S1 (21, 22, 24, 25, 26): start otwiera ekran wzoru (BR-PRJ-011/S1, 07-jakosc-006 e1c533a, F-49) — po restarcie nie ma licznika do stuknięcia.
- *  - E2-136-S2 (05, 20, 36): okno „Uczciwe zasady” otwiera się na liście projektów, nigdy na liczniku (BR-ZAK-006/S9, ER-46, 07-jakosc-022 3cc9dcb, app/projekty.tsx:27-31).
+ *  - E2-136-S2 (05, 20, 36): okno „Uczciwe zasady” otwiera się na liście projektów, nigdy na liczniku (BR-ZAK-006/S9, ER-46, 07-jakosc-022 3cc9dcb, app/projekty.tsx:27-31) — kolejność kroków poprawiona w E2-137-S1.
  *  - E2-136-S3 (08): wynik eksportu i importu leży poniżej ekranu, bo Ustawienia mają nowe wiersze Keep screen on i Units (ADR-0029, 07-jakosc-004 8511e0b).
  *  - E2-136-S4 (30): akcje arkusza menu przy AX5 przewija się (ArkuszDecyzji = ScrollView, src/ekrany/Arkusz.tsx), tytuł ma limit skali (E2-A1 79b2ffe).
  *  - E2-136-S5 (17): panel E2E „Test photo” leży pod arkuszem „Add photo” przy układzie sprzed przewinięcia (zrzut kroku 48). */
@@ -30,24 +30,7 @@ describe('E2-136-S1 · po restarcie start na ekranie wzoru (BR-PRJ-011/S1)', () 
   }
 });
 
-describe('E2-136-S2 · okno „Uczciwe zasady” na liście projektów (BR-ZAK-006/S9)', () => {
-  for (const n of ['05', '20', '36']) {
-    test(`scenariusz ${n}: po restarcie każde wejście w Projekty zamyka okno opcjonalnym stuknięciem (po asercji listy)`, () => {
-      const l = lista(plik(n));
-      const r = l.findIndex(jestRestartem);
-      expect(r).toBeGreaterThan(-1);
-      const wejscia = l.map((k, i) => ({ k, i })).filter(({ k, i }) => i > r && k.nazwa === 'tapOn' && idKroku(k) === 'nav-projekty');
-      expect(wejscia.length).toBeGreaterThan(0);
-      for (const { i } of wejscia) {
-        expect(['assertVisible', 'extendedWaitUntil']).toContain(l[i + 1]?.nazwa); // lista widoczna (strażnik asercji po akcji), potem zamknięcie okna
-        const nast = l[i + 2];
-        expect(nast?.nazwa).toBe('tapOn');
-        expect(idKroku(nast)).toBe('uczciwe-zasady-zamknij');
-        expect(nast.arg.optional).toBe(true);
-      }
-    });
-  }
-});
+// E2-136-S2 zastąpiony przez E2-137-S1 (tests/jakosc/e2e-kruchosc-137.test.ts): poprawka #136 zakładała listę widoczną przed zamknięciem okna, a okno jest modalem nad listą (przebieg #137, zrzuty kroków 54/63/75).
 
 describe('E2-136-S3 · wynik eksportu i importu po przewinięciu Ustawień (ADR-0029)', () => {
   const l = lista('08-br-dan-006-s1-eksport-import.yaml');

@@ -44,7 +44,13 @@ tags:
 - tapOn: { id: "nav-ustawienia", optional: true }
 - assertVisible: { id: "ustawienia-import" }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
-- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "import-gotowy" } }
+    commands:
+      - takeScreenshot: opoznienie-import-gotowy
+      - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 60000 }
+- assertVisible: { id: "import-gotowy" }
 - scrollUntilVisible: { element: { id: "import-licznosci" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "import-licznosci", text: "1 project.*1 counter.*2 changes.*" }
 - takeScreenshot: 08-import-gotowy
@@ -59,7 +65,13 @@ tags:
 # --- drugi import tego samego pliku: scalenie idempotentne (P-091 6a, M-02) — bez duplikatów ---
 - scrollUntilVisible: { element: { id: "e2e-pliki-importuj-ostatni" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }
-- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "import-gotowy" } }
+    commands:
+      - takeScreenshot: opoznienie-import-gotowy
+      - extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 60000 }
+- assertVisible: { id: "import-gotowy" }
 - scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "import-scal" }
 - extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }

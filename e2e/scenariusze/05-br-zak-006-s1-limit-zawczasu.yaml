@@ -46,8 +46,10 @@ tags:
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "limit-zawczasu" }
 - tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)
 - extendedWaitUntil: { visible: { id: "projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
-- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” otwiera się dopiero na liście projektów (BR-ZAK-006/S9, 07-jakosc-022; E2-136-S2)
 - assertVisible: { id: "projekty-dni-darmowe", text: "0 of 5 free crafting days left in November" }
 - takeScreenshot: 05-lista-projektow-na-limicie
 - tapOn: { id: "projekty-wiersz", index: 0 }
