@@ -309,7 +309,8 @@ jobs:
           { echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})"; sort e2e-out/wyniki.txt | sed 's/^/- /'; } >> "$GITHUB_STEP_SUMMARY"
           exit $porazki
       - name: Scenariusze w osobnym kroku (duży tekst AX5)
-        if: steps.plan.outputs.osobne == 'true'
+        # `!cancelled()`: krok biegnie także po czerwonym kroku „Scenariusze” (przebieg #137 część 2: 07 czerwony → 30 pominięty); wynik zadania i tak zależy od obu kroków (E2-137-S2)
+        if: ${{ !cancelled() && steps.plan.outputs.osobne == 'true' }}
         env:
           BRAMKA: ${{ steps.plan.outputs.bramka }}
         run: |
