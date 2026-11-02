@@ -42,7 +42,7 @@ async function wartosciPo(tx: PortBazy, t: TabelaIcloud, wynik: string, kolumna:
 }
 
 /**
- * Nagrobki partii, które skasowałyby (wprost albo kaskadą) wiersz z niewysłaną zmianą. Zatrzymany jest nagrobek przodka takiego wiersza
+ * Nagrobki partii, które skasowałyby (wprost albo kaskadą) wiersz z niewysłaną zmianą. Zatrzymany jest nagrobek samego wiersza i jego przodków
  * (CASCADE i RESTRICT) oraz nagrobki całego poddrzewa tego przodka (kaskada): historia licznika zostaje cała, bo `scal` bez rodzica
  * zdarzenia czeka. Szczyty = zatrzymane bez zatrzymanego rodzica; trafiają do kosza (`odtworzWKoszu`).
  */
@@ -52,8 +52,12 @@ export async function zatrzymaneNagrobki(tx: PortBazy, usuniete: readonly { encj
   if (!nagrobki.size) return { zatrzymane: new Map(), szczyty: [] };
   const fk = new Map<string, KluczObcy[]>();
   let fala: Zbior = new Map();
-  for (const z of await wiersze(tx.all('SELECT encja, klucz FROM zmiana_icloud WHERE usuniete = 0'), 'nagrobki')) dodaj(fala, tekst(z, 'encja'), tekst(z, 'klucz'));
-  const przodkowie: Zbior = new Map();
+  const przodkowie: Zbior = new Map(); // wiersze z niewysłaną zmianą i ich przodkowie
+  for (const z of await wiersze(tx.all('SELECT encja, klucz FROM zmiana_icloud WHERE usuniete = 0'), 'nagrobki')) {
+    // Przegląd ścieżki wrażliwej M2 p2 (P1): sam wiersz z niewysłaną zmianą (np. projekt przywrócony z kosza offline) też zatrzymuje swój nagrobek.
+    dodaj(fala, tekst(z, 'encja'), tekst(z, 'klucz'));
+    dodaj(przodkowie, tekst(z, 'encja'), tekst(z, 'klucz'));
+  }
   while (fala.size) { // w górę od wierszy z niewysłaną zmianą
     const nastepna: Zbior = new Map();
     for (const [tabela, klucze] of fala) {

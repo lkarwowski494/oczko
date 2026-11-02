@@ -392,4 +392,27 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     expect(await n(b.s.baza, 'SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL')).toBe(0);
     expect(await licznik(b.s.baza, l2)).toEqual([{ wartosc: 1, konflikt: 0 }]);
   });
+
+  // Przegląd ścieżki wrażliwej M2 p2 (P1): niewysłana zmiana na samym wierszu z nagrobkiem (projekt przywrócony z kosza offline) też zatrzymuje nagrobek.
+  test('przywrócenie projektu z kosza offline na B, potem trwałe usunięcie na A → projekt z historią zostaje na B w koszu i wraca na serwer', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    for (let i = 0; i < 5; i += 1) await dodajRzad(a.s.z, { licznikId: l });
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('UPDATE projekt SET usunieto_ms = 1000, zmieniono_ms = zmieniono_ms + 1 WHERE id = ?', [p.id]); // do kosza na A
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, zdarzenie: 5, zmiana_icloud: 0 });
+    b.u.bladWysylki = { kod: 'siec' }; // B bez sieci
+    await b.s.baza.run('UPDATE projekt SET usunieto_ms = NULL, zmieniono_ms = zmieniono_ms + 10 WHERE id = ?', [p.id]); // przywrócenie z kosza na B
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 0, zmiana_icloud: 1 });
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie (sprzątanie kosza) na A
+    await a.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] });
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, czesc: 1, licznik: 1, zdarzenie: 5, blad: 0 });
+    b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
+    expect(await n(b.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
+    expect(serwer.rekordy.has(`projekt:${p.id}`)).toBe(true);
+  });
 });
