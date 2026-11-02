@@ -17,6 +17,7 @@ class BazaNode {
   }
   async getAllAsync<T>(sql: string, params: Parametry = []): Promise<T[]> { return this.db.prepare(sql).all(...params) as T[]; }
   async closeAsync(): Promise<void> { this.db.close(); }
+  async isInTransactionAsync(): Promise<boolean> { return this.db.isTransaction; }
   closeSync(): void { this.db.close(); }
 }
 

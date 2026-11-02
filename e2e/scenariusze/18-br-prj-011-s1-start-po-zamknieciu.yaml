@@ -31,6 +31,7 @@ tags:
       - assertVisible: { id: "formularz-nazwa-projektu", text: "Vest" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
+- takeScreenshot: 18-formularz-nazwa-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 - tapOn: { id: "nav-projekty" }
@@ -40,6 +41,8 @@ tags:
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
+# NOC-2b (F-18, 04): licznik tuż przed zamknięciem aplikacji (do porównania z 18-po-starcie)
+- takeScreenshot: 18-przed-restartem
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T22:00:00" } }
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }

@@ -9,7 +9,8 @@ import { stanPlikuBazy } from '../dane/pliki/magazyn';
 import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
-import { sprzatnijKopie, sprzatnijKopiePrzed, zipSurowejKopii } from '../niezawodnosc/kopie';
+import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
+import { skrotPliku } from '../platforma/dziennik-plus';
 import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
@@ -50,7 +51,8 @@ export async function zapiszKamien(): Promise<void> {
   zapisz(s.stanStartu, kamienMilowy(await czytajStan(s.stanStartu)));
   zapiszEtapStartu('kamien');
   sprzatnijKopie(s.kopie, zegarAplikacji().teraz().ms); // ADR-0020 (6): kopie po KOPIE_RATUNKOWE_DNI, tylko po kamieniu milowym; błąd nie blokuje startu
-  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0028 pkt 4: kopie przed importem i usunięciem — 2 najnowsze, maks. 30 dni
+  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0032 (zastępuje ADR-0028 pkt 4): pierwsza kopia dnia i najnowsza, limit 2, maks. 30 dni
+  sprzatnijTymczasowe(polacz(s.katalogDanych, 'tmp'), poczatekMs); // M1-001: pliki pochodne sprzed bieżącego startu; błąd nie blokuje startu
 }
 /** P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest nieudanym startem (app/_layout.tsx, AppState „background”, tylko start normalny). */
 export async function zapiszWyjscieDoTla(): Promise<void> {
@@ -68,7 +70,7 @@ export async function sprobujNormalnieTeraz(): Promise<void> {
   zapisz(s.stanStartu, sprobujNormalnie(await czytajStan(s.stanStartu)));
 }
 /** Powód błędu startu normalnego → nagłówek ekranu awaryjnego (ten sam ekran, ADR-0019). */
-export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' => (p === 'wersja_nowsza' ? 'wersja_nowsza' : 'uszkodzony');
+export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' | 'brak_miejsca' => (p === 'wersja_nowsza' || p === 'brak_miejsca' ? p : 'uszkodzony'); // M1-011: brak miejsca osobno (ADR-0020 (4))
 
 /** Tryb awaryjny: surowa kopia przed czymkolwiek, potem archiwum `.oczko` z bazy w jej obecnej wersji (bez migracji i bez zapisów do bazy). */
 export function trybAwaryjny() {
@@ -82,7 +84,7 @@ export function trybAwaryjny() {
   return {
     kopia,
     sha: () => stanPlikuBazy(s.baza), // P-203 (kontrakt 07): para .db + -wal bez checkpointu i rozmiar -wal
-    async zapiszKopie(): Promise<{ sciezka: string; licznosci: Licznosci } | null> {
+    async zapiszKopie(): Promise<{ sciezka: string; licznosci: Licznosci } | 'brak_miejsca' | null> {
       await kopia;
       return archiwum.zapisz();
     },
@@ -120,7 +122,7 @@ export function trybAwaryjny() {
       const k = await kopia;
       if (!k.ok) return null;
       const cel = polacz(katalogi.tymczasowy, `oczko-ratunkowa-${zegar.teraz().ms}.zip`);
-      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms });
+      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku });
       return w.ok ? cel : null;
     },
   };

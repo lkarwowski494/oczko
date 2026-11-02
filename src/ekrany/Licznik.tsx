@@ -1,7 +1,7 @@
 // Ekran licznika (F-01–F-10, F-47, BR-LIC-*, BR-ZAK-006). Sygnatura: propozycja 07 (E3), porty i granice zatwierdzone przez 05 (Z07-22).
 // Wygląd: docs/design/design-spec.md (komponenty, macierz stanów, VoiceOver) i ekrany.html `licznik-start`, `licznik-w-toku`, `limit`,
 // `limit-zawczasu`; wartości z modułu motywu (tokeny 04), teksty przez t(). Decyzje (limit, blokada w danych, cel dnia) liczy domena —
-// ekran pokazuje stan, który dostał; ogłoszenie i haptyka dopiero po wyniku ok (R-148). Typy: LicznikTypy.ts, style: LicznikStyl.ts.
+// ekran pokazuje stan, który dostał; ogłoszenie i haptyka dopiero po wyniku (R-148; błąd zapisu: M1-004). Typy: LicznikTypy.ts, style: LicznikStyl.ts.
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { LiniaKonfliktu } from './IcloudKonflikt';
@@ -47,6 +47,13 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   }, [baner?.rodzaj, baner?.n]);
 
   const zagraj = (w: WzorzecHaptyki) => { if (s.wibracje) p.haptyka.zagraj(w); };
+  // M1-004 (wariant (a) 04-studio-projektowe-003): nieudany zapis +1/−1 nie jest cichy dla VoiceOver i dotyku — komunikat, haptyka
+  // `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tego samego tekstu; `accessibilityLiveRegion` działa tylko na Androidzie.
+  const bladZapisu = () => {
+    ustawKomunikat('blad_zapisu');
+    zagraj('bladZapisu');
+    p.oglos(t('licznik.blad_zapisu'));
+  };
   const start = s.projekt === null && s.skonczone === 0;
   const nrRobocza = s.dziergany;
   const oczka = s.rodzaj === 'oczka'; // BR-LIC-006: „stitch” zamiast „row”, bez rzędu w robocie (07-jakosc-025)
@@ -63,7 +70,8 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
       if (w.powod === 'limit') {
         ustawArkuszLimitu(nrRobocza);
         p.oglos(t('limit.ogloszenie', { n: nrRobocza, miesiac: s.miesiac.nazwa }));
-      } else ustawKomunikat(w.powod === 'zablokowany' ? 'zablokowany' : 'blad_zapisu');
+      } else if (w.powod === 'zablokowany') ustawKomunikat('zablokowany');
+      else bladZapisu();
       return;
     }
     ustawKomunikat(null);
@@ -77,7 +85,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     if (s.zablokowany) { ustawKomunikat('zablokowany'); zagraj('blokadaStukniecie'); return; }
     const w = await p.naMinus();
     if (!zamontowany.current) return;
-    if (!w.ok) { ustawKomunikat(w.powod === 'zablokowany' ? 'zablokowany' : 'blad_zapisu'); return; }
+    if (!w.ok) { if (w.powod === 'zablokowany') ustawKomunikat('zablokowany'); else bladZapisu(); return; }
     ustawKomunikat(null);
     zagraj('minus');
   }
@@ -97,7 +105,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const wierszLiczby = (
     <View style={st.liczbaWiersz} testID="licznik-wartosc-wiersz">
       <Text style={st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(liczba)}</Text>
-      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : s.znaczenie === 'w_trakcie' ? t('licznik.jednostka_w_trakcie') : t('licznik.jednostka')}</Text>
+      <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : s.znaczenie === 'w_trakcie' ? t('licznik.jednostka_w_trakcie') : t('licznik.jednostka', { count: liczba })}</Text>
     </View>
   );
 
@@ -194,12 +202,13 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         {s.blizniak && (s.blizniak.notatka || s.blizniak.przypomnienie) && (
           <Text style={st.tresc}>{t('licznik.blizniak', { rzad: s.blizniak.rzad, tresc: [s.blizniak.notatka, s.blizniak.przypomnienie].filter(Boolean).join(' · ') })}</Text>
         )}
-        {komunikat && (
-          <Text style={st.tresc} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>
-            {t(komunikat === 'zablokowany' ? 'licznik.zablokowany_stukniecie' : 'licznik.blad_zapisu')}
-          </Text>
-        )}
       </ScrollView>
+      {/* M1-004: komunikat w stałym miejscu nad przyciskami, poza przewijaną treścią (dawniej ostatnie dziecko ScrollView, pod notatką i kreskami) */}
+      {komunikat && (
+        <Text style={[st.tresc, st.komunikat]} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>
+          {t(komunikat === 'zablokowany' ? 'licznik.zablokowany_stukniecie' : 'licznik.blad_zapisu')}
+        </Text>
+      )}
       {zawczasu ? (
         <View style={st.komunikatLimitu} accessibilityRole="summary">
           <Text style={st.tresc} testID="limit-zawczasu">{t('limit.zawczasu', { count: s.miesiac.rzedyDanych, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>

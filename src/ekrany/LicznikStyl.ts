@@ -33,6 +33,7 @@ export function style(k: Kolory) {
     plusTekst: { ...typografia.przycisk, color: k.przyciskTekst },
     plusPodpis: { ...typografia.podpis, color: k.przyciskTekst },
     drugiPrzycisk: { minHeight: rozmiary.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    komunikat: { paddingHorizontal: odstep.xl }, // M1-004: komunikat nad przyciskami, w linii z treścią `srodek`
     komunikatLimitu: { padding: odstep.l, margin: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     arkusz: { ...StyleSheet.absoluteFill, backgroundColor: k.arkusz, padding: odstep.xl, gap: odstep.m, justifyContent: 'center' },
   });

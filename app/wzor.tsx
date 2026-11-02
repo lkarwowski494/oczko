@@ -11,9 +11,15 @@ import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, 
 import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
+import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
+import type { WynikEkranu } from '../src/ekrany/wspolne';
+import type { Wynik } from '../src/domena/bledy';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
@@ -28,7 +34,8 @@ import { KOSZ_DNI } from '../src/konfiguracja';
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
 
 export default function EkranWzoru(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik } = aplikacja;
   const router = useRouter();
   const k = useKolory();
   const okno = useWindowDimensions();
@@ -60,27 +67,36 @@ export default function EkranWzoru(): React.ReactElement {
   // w ▾ bez ogłoszenia. Otwarty wzór zostaje ten sam; bez otwartego wzoru (grupa na ekranie projektu) nic się nie przełącza.
   const otwartyWzor = useRef<string | undefined>(undefined);
   const liczbaCzekajacych = useRef(czekaSiec.length);
+  const [blad, ustawBlad] = useState(false); // M1-007: pierwszy odczyt bez widoku licznika albo z wyjątkiem → błąd z „Try again”, nie pusta plansza
 
+  const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
   const wczytaj = useCallback(async (wybrany?: string) => {
     const w = await licznik.widok();
     ustawLw(w);
-    if (!w) return;
+    if (!w) { ustawBlad(true); return; } // M1-007: widok licznika nieodczytany
     const l = await listaWzorow(zw, { projektId: w.projektId });
     ustawWzory(l.ok ? l.wartosc.map((x) => ({ wzorId: x.wzorId, nazwa: x.nazwa })) : []);
     const cel = wybrany ?? (await wzorDoOtwarcia(zw, { projektId: w.projektId }));
     const wzorId = typeof cel === 'string' ? cel : cel.ok ? cel.wartosc : null;
     if (!wzorId) { ustawWidok(null); return; }
-    const v = await widokWzoru(zw, { wzorId });
+    const v = await widokWzoru(zw, { wzorId, katalogOczekujacych: katalogRysunkow }); // M1-084: strona z plikiem oczekującym → ten plik
     if (v.ok && poczatek.current?.wzorId !== wzorId) { // wzór otwarty albo przełączony: zapisana pozycja tego wzoru, strona z poprzedniego wzoru nie przechodzi
       poczatek.current = { wzorId, strona: v.wartosc.miejsce?.strona ?? 0, powiekszenie: v.wartosc.miejsce?.powiekszenie ?? 0 };
       ustawStrone(null);
     }
     ustawWidok(v.ok ? v.wartosc : null);
     if (v.ok) await zapamietajWzor(zw, { licznikId: w.licznikId, wzorId });
-  }, [licznik, zw]);
-  const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
+  }, [licznik, zw, katalogRysunkow]);
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
-  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).finally(() => { void wczytaj(id); }); setRysikOtwarcie(); }, [wczytaj, id, zw, katalogRysunkow]);
+  const pierwszyOdczyt = useCallback(() => { void wczytaj(id).catch(() => ustawBlad(true)); }, [wczytaj, id]); // M1-007: wyjątek odczytu → stan błędu
+  // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
+  // przerywałby pracę); plik oczekujący zostaje i wraca przy następnym otwarciu (`odzyskajRysunki`).
+  const bladRysunku = useRef(false);
+  const poZapisieRysunku = useCallback((r: Wynik<unknown>) => {
+    if (r.ok) { bladRysunku.current = false; return; }
+    if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod);
+  }, [aplikacja]);
+  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).then(poZapisieRysunku).finally(pierwszyOdczyt); setRysikOtwarcie(); }, [pierwszyOdczyt, zw, katalogRysunkow, poZapisieRysunku]);
   useEffect(() => {
     if (czekaSiec.length < liczbaCzekajacych.current && otwartyWzor.current) void wczytaj(otwartyWzor.current);
     liczbaCzekajacych.current = czekaSiec.length;
@@ -145,6 +161,13 @@ export default function EkranWzoru(): React.ReactElement {
   function pokaz(a: { tytul: string; opis: string } | null): void {
     if (a) Alert.alert(a.tytul, a.opis || undefined, [{ text: t('wspolne.ok') }]);
   }
+  /** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
+   *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
+  function bladLicznika(r: WynikEkranu<unknown>): void {
+    if (r.ok || r.powod === 'limit' || r.powod === 'zablokowany') return;
+    if (aplikacja.preferencje.stan().wibracje) kontener.porty.haptyka.zagraj('bladZapisu');
+    oglos(tekstBleduZapisu(t));
+  }
 
   // Dokument dla widoku natywnego: nowy obiekt tylko przy zmianie wzoru albo obrotów — +1 nie wysyła ponownie rysunków (przegląd 2026-10-26).
   otwartyWzor.current = widok?.wzorId;
@@ -155,10 +178,10 @@ export default function EkranWzoru(): React.ReactElement {
     startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
   if (link) return <Bezpieczny><ArkuszLinku t={t} poczatek={linkAdres} naAnuluj={() => { ustawLink(false); ustawLinkAdres(''); }} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); ustawLinkAdres(''); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
-  if (!lw || !wzory) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  if (!lw || !wzory) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
-      naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (r.ok) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny>
+      naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny> // M1-006: błąd → alert, arkusz zostaje
   );
   if (!widok) {
     return (
@@ -174,7 +197,7 @@ export default function EkranWzoru(): React.ReactElement {
   const zn = widok.znacznik;
   const plikPdf = widok.plikPdf;
   const WYSOKOSC_RZEDU_DOMYSLNA = 0.02;
-  const postaw = (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, ...w, wysokoscRzedu: w.wysokoscRzedu ?? zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA }).then(() => wczytaj(widok.wzorId));
+  const postaw = (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => ustawZnacznik(zw, { wzorId: widok.wzorId, licznikId: lw.licznikId, ...w, wysokoscRzedu: w.wysokoscRzedu ?? zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA }).then((r) => { zapisano(aplikacja, r); return wczytaj(widok.wzorId); }); // M1-085: błąd → alert, znacznik wraca na zapisane miejsce
   const nastepnaStrona = zn ? (strona?.razem ?? 0) > zn.strona + 1 : false;
   const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
   const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };
@@ -193,7 +216,7 @@ export default function EkranWzoru(): React.ReactElement {
         napis: zn.pozaStrona ? t('wzor.etykieta_koniec', { n: zn.rzad }) : `${t('wzor.znacznik_napis', { n: Math.max(1, zn.rzad) })} ${zn.kierunek === -1 ? '↑' : '↓'}`,
         akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
-      onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
+      onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then(poZapisieRysunku)} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
       onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)
@@ -230,20 +253,20 @@ export default function EkranWzoru(): React.ReactElement {
         naZmienKierunek={(kierunek) => { if (gdzieZnacznik) void postaw({ ...gdzieZnacznik, kierunek }); }}
         naKrokRzaduZnacznika={(delta) => {
           kolejkaKrokow.current = kolejkaKrokow.current.then(async () => {
-            const v = await widokWzoru(zw, { wzorId: widok.wzorId });
+            const v = await widokWzoru(zw, { wzorId: widok.wzorId, katalogOczekujacych: katalogRysunkow });
             const z = v.ok ? v.wartosc.znacznik : null;
             if (z) await postaw({ strona: z.strona, y: z.y, kierunek: z.kierunek, rzadBazowy: Math.max(1, Math.max(1, z.rzad) + delta) });
           });
         }}
         naNastepnaStrona={przejdzNaNastepna}
-        naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst })}
-        naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(() => wczytaj(widok.wzorId))}
+        naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst }).then((r) => { zapisano(aplikacja, r); })} // M1-006
+        naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); })} // M1-006
         naZmienNazwe={() => ustawArkuszNazwy(true)}
         tylkoRysik={rysik.tylkoRysik}
-        naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (r.ok) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
+        naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (zapisano(aplikacja, r)) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
         potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])}
-        naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
-        naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; await wczytaj(widok.wzorId); return r; }}
+        naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); bladLicznika(r); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
+        naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
       />
     </Bezpieczny>
   );

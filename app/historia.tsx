@@ -4,13 +4,16 @@ import { useRouter } from 'expo-router';
 import { Historia, type WpisHistorii } from '../src/ekrany/Historia';
 import { formatujGodzine } from '../src/i18n/format';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zapisano } from '../src/kompozycja/po-zapisie';
+import type { Wynik } from '../src/domena/bledy';
 import { cofnijOstatnie, cofnijSerie } from '../src/przypadki-uzycia/licznik';
 import { historiaLicznika } from '../src/przypadki-uzycia/widok-licznika';
 
 const OPIS = { zerowanie: 'historia.opis_zerowanie', wpisanie: 'historia.opis_wpisanie', cofniecie: 'historia.opis_cofniecie' } as const;
 
 export default function EkranHistorii(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik } = aplikacja;
   const router = useRouter();
   const { t, jezyk, zegar24h } = kontener.j;
   const [wpisy, ustaw] = useState<WpisHistorii[]>([]);
@@ -29,7 +32,7 @@ export default function EkranHistorii(): React.ReactElement {
     })));
   }, [kontener, licznik, t, jezyk, zegar24h]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  const poCofnieciu = async (r: { ok: boolean }) => { if (r.ok) { await licznik.poZmianie(); await wczytaj(); } };
+  const poCofnieciu = async (r: Wynik<unknown>) => { if (zapisano(aplikacja, r)) { await licznik.poZmianie(); await wczytaj(); } }; // M1-006: błąd zapisu → alert
   return (
     <Historia stan={{ wpisy }} t={t} naZamknij={() => router.back()}
       naCofnij={async () => { if (licznikId) await poCofnieciu(await cofnijOstatnie(kontener.z, { licznikId })); }}

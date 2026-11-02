@@ -13,11 +13,12 @@ export type StanDostepu = { pro: boolean; poziom: PoziomDostepu; aktywne: Aktywn
 export function dostepPro(sklep: Sklep, magazyn: MagazynPamieci, terazMs: () => number) {
   let stan: StanDostepu = { pro: false, poziom: 'niepewny', aktywne: null, wygasa: null };
   const sluchacze = new Set<(s: StanDostepu) => void>();
-  async function odswiez(): Promise<StanDostepu> {
-    let pamiec: Pamiec = null;
-    try { pamiec = odczytajPamiec(await magazyn.czytaj()); } catch { pamiec = null; }
-    let transakcje: Awaited<ReturnType<Sklep['transakcje']>> | null = null;
-    try { transakcje = await sklep.transakcje(); } catch { transakcje = null; }
+  let ostatni = 0; // numer odczytu, którego wynik ustawił stan — późny wynik starszego odczytu nie nadpisuje nowszego
+  let licznikOdczytow = 0;
+  type Transakcje = Awaited<ReturnType<Sklep['transakcje']>>;
+  async function zastosuj(nr: number, pamiec: Pamiec, transakcje: Transakcje | null): Promise<StanDostepu> {
+    if (nr < ostatni) return stan;
+    ostatni = nr;
     const d = decyzja(transakcje ? { zrodlo: 'sklep', uprawnienia: transakcje } : { zrodlo: 'blad' }, pamiec, terazMs(), PRODUKTY_PRO);
     if (transakcje) await magazyn.zapisz(JSON.stringify(d.pamiec ?? { produkty: [], wygasa: null })).catch(() => undefined);
     const produkty = d.pamiec?.produkty ?? [];
@@ -26,6 +27,22 @@ export function dostepPro(sklep: Sklep, magazyn: MagazynPamieci, terazMs: () => 
     stan = { pro: d.dostep, poziom: d.dostep ? 'pro' : transakcje ? 'darmowa' : 'niepewny', aktywne, wygasa: d.pamiec?.wygasa ?? null };
     sluchacze.forEach((f) => f(stan));
     return stan;
+  }
+  /** `limitMs` (M1-022, P-396): sklep bez odpowiedzi w limicie → decyzja jak przy błędzie odczytu (pamięć offline); wynik sklepu, który
+   *  przyjdzie później, ustawia stan i trafia do słuchaczy `naZmiane`. Bez limitu: czeka na sklep. */
+  async function odswiez(limitMs?: number): Promise<StanDostepu> {
+    const nr = ++licznikOdczytow;
+    let pamiec: Pamiec = null;
+    try { pamiec = odczytajPamiec(await magazyn.czytaj()); } catch { pamiec = null; }
+    const odczyt: Promise<Transakcje | null> = (async () => sklep.transakcje())().then((t) => t, () => null); // także wyjątek synchroniczny = błąd odczytu
+    if (limitMs === undefined) return zastosuj(nr, pamiec, await odczyt);
+    let zegar: ReturnType<typeof setTimeout> | undefined;
+    const PO_LIMICIE = Symbol('po-limicie');
+    const wynik = await Promise.race([odczyt, new Promise<typeof PO_LIMICIE>((r) => { zegar = setTimeout(() => r(PO_LIMICIE), limitMs); })]);
+    clearTimeout(zegar);
+    if (wynik !== PO_LIMICIE) return zastosuj(nr, pamiec, wynik);
+    void odczyt.then((t) => (t ? zastosuj(nr, pamiec, t) : undefined)).catch(() => undefined);
+    return zastosuj(nr, pamiec, null);
   }
   return {
     odswiez,

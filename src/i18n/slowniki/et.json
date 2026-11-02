@@ -134,8 +134,6 @@
     "brak_wynikow": "Projekti nimega „{{zapytanie}}“ pole.",
     "w_toku": "Pooleli",
     "ukonczone": "Lõpetatud",
-    "dni_one": "{{zostalo}} / {{limit}} tasuta käsitööpäeva alles ({{miesiac}})",
-    "dni_other": "{{zostalo}} / {{limit}} tasuta käsitööpäeva alles ({{miesiac}})",
     "tytul": "Projektid",
     "nazwa_robocza": "Loendur kuupäevast {{data}}",
     "ostatnia_praca_dzis": "viimati tööl täna",

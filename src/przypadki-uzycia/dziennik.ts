@@ -84,7 +84,9 @@ export async function scalDziennikWKolejce(z: ZaleznosciDziennika): Promise<Wyni
   } catch (e) {
     return blad(czyBladDanych(e) ? 'bledne_dane' : 'zapis'); // nic nie skracamy: linie zostają do następnego scalenia (zabicie procesu, NFR-DAN-002)
   }
-  await z.dziennik.skroc(linie[linie.length - 1].id); // po COMMIT ostatniej partii, do ostatniej przetworzonej linii (ADR-0008 (3))
+  // Po COMMIT ostatniej partii, do ostatniej przetworzonej linii (ADR-0008 (3)). Nieudane skrócenie (M1-024: np. brak miejsca na plik
+  // tymczasowy; natywnie plik zostaje bez zmian) nie cofa scalenia: linie zostają do następnego razu, ponowne scalenie ich nie dubluje (R-022).
+  await z.dziennik.skroc(linie[linie.length - 1].id).catch(() => undefined);
   return { ok: true, wartosc: suma };
 }
 

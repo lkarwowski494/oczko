@@ -14,7 +14,7 @@ export default function EkranDrutow(): React.ReactElement {
   useFocusEffect(useCallback(() => { void narzedzia(kontener.z).then((w) => { if (w.ok) ustaw(stanDrutow(w.wartosc, kontener.j)); }); }, [kontener]));
   return (
     <Bezpieczny>
-      <ListaDrutow t={kontener.j.t} stan={stan} naDodaj={() => router.push('/drut')} naOtworz={(id) => router.push({ pathname: '/drut', params: { id } })} />
+      <ListaDrutow t={kontener.j.t} stan={stan} naDodaj={() => router.push('/drut')} naOtworz={(id) => router.push({ pathname: '/drut', params: { id } })} naWstecz={() => router.back()} />
     </Bezpieczny>
   );
 }

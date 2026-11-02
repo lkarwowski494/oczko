@@ -23,16 +23,20 @@ export function numerBuildu({ przebieg, podejscie, przesuniecie, ostatni = 0 }) 
   return numer;
 }
 
-const E2E = /^e2e \(część \d+\)$/;
-/** Bramka D5a: zielony przebieg „Jakość · iOS” na commicie, w którym KAŻDE zadanie ma success albo skipped i jest co najmniej jedno zadanie e2e
- *  (pakiet pełny ma continue-on-error, więc sam wynik przebiegu nie wystarcza). */
+// Nazwy zadań z `.github/workflows/jakosc-ios.yml` (M1-003): e2e z macierzy „e2e (część N, urządzenie)”; bramkę daje iPhone. Zadania
+// informacyjne = te z `continue-on-error` w workflowie (eksperymenty wzoru, e2e iPad) — API zwraca dla nich `failure`, a przebieg i tak
+// jest zielony. Rozjazd z workflowem łapie test kontraktu w tests/wydanie/potok-testflight.test.ts (czyta macierz i continue-on-error).
+const E2E = /^e2e \(część \d+, iphone\)$/;
+const INFORMACYJNE = [/^eksperymenty-wzoru$/, /^e2e \(część \d+, ipad\)$/];
+/** Bramka D5a: zielony przebieg „Jakość · iOS” na commicie, w którym KAŻDE zadanie poza informacyjnymi ma success albo skipped i jest
+ *  co najmniej jedno zielone zadanie e2e iPhone'a (pakiet pełny ma continue-on-error, więc sam wynik przebiegu nie wystarcza). */
 export function ocenBramke(przebiegi, zadaniaPrzebiegu) {
   let czekaj, czerwony;
   for (const r of przebiegi) {
     if (r.status !== 'completed') { czekaj ??= r.id; continue; }
     if (r.conclusion !== 'success') { czerwony ??= { przebieg: r.id, powod: `wynik ${r.conclusion}` }; continue; }
     const z = zadaniaPrzebiegu[r.id] ?? [];
-    const zle = z.filter((j) => !['success', 'skipped'].includes(j.conclusion)).map((j) => `${j.name}: ${j.conclusion}`);
+    const zle = z.filter((j) => !INFORMACYJNE.some((r) => r.test(j.name)) && !['success', 'skipped'].includes(j.conclusion)).map((j) => `${j.name}: ${j.conclusion}`);
     if (!z.some((j) => E2E.test(j.name) && j.conclusion === 'success')) zle.push('brak zielonego zadania e2e');
     if (!zle.length) return { wynik: 'ok', przebieg: r.id };
     czerwony ??= { przebieg: r.id, powod: zle.join('; ') };

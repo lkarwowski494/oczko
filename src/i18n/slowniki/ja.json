@@ -129,8 +129,7 @@
     "kosz": "最近削除した項目",
     "kosz_a11y_other": "最近削除した項目、{{count}}件",
     "wiersz": "{{czesc}} · {{n}}段目",
-    "wiersz_cel": "{{czesc}} · {{cel}}段中{{n}}段目",
-    "dni_other": "{{miesiac}}の無料の手芸日は残り{{zostalo}}日（全{{limit}}日）"
+    "wiersz_cel": "{{czesc}} · {{cel}}段中{{n}}段目"
   },
   "historia": {
     "pusto": "まだ変更はありません。",

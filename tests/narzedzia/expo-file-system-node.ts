@@ -35,6 +35,7 @@ class Plik {
   constructor(...uris: (string | Plik | Katalog)[]) { this.uri = uriZ(uris); }
   get exists(): boolean { return existsSync(sciezka(this.uri)) && statSync(sciezka(this.uri)).isFile(); }
   get size(): number { return statSync(sciezka(this.uri)).size; }
+  info(): { exists: boolean; modificationTime?: number } { return this.exists ? { exists: true, modificationTime: statSync(sciezka(this.uri)).mtimeMs } : { exists: false }; }
   get name(): string { return sciezka(this.uri).split('/').pop() ?? ''; }
   create(o: { overwrite?: boolean } = {}): void {
     if (this.exists && !o.overwrite) throw new Error(`plik istnieje: ${this.uri}`);

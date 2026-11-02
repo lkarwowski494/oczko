@@ -64,6 +64,25 @@ describe('sprawdz-i18n.mjs', () => {
     expect(r.wyjscie).toMatch(/skan kodu niewykonany/);
     expect(r.kod).toBe(2);
   });
+  it('--wyjatki z „pliki” (ścieżka → powód): pliki pod ścieżką poza skanem kodu, reszta skanowana (M1-051)', () => {
+    const d = projekt({ en: EN }, { 'e.tsx': 'export const E = () => <Text>Add row</Text>;\n', 'e2e-ekran.tsx': 'export const S = () => <Text>Next row</Text>;\n' });
+    mkdirSync(join(d, 'src', 'e2e'));
+    writeFileSync(join(d, 'src', 'e2e', 'panel.tsx'), 'export const P = () => <Text>Test panel</Text>;\n');
+    writeFileSync(join(d, 'w.json'), JSON.stringify({ pliki: { 'src/e2e': 'panel buildu E2E' } }));
+    const r = uruchom(['locales', '--zrodlo', 'en', '--kod', 'src', '--wyjatki', 'w.json'], d);
+    expect(r.wyjscie).not.toMatch(/Test panel/);
+    expect(r.wyjscie).toMatch(/tekst na sztywno „Add row”/);
+    expect(r.wyjscie).toMatch(/tekst na sztywno „Next row”/); // prefiks src/e2e nie obejmuje src/e2e-ekran.tsx
+    expect(r.kod).toBe(1);
+  });
+  it('wyjątek „pliki” na nieistniejącą ścieżkę: kod 2 (przeterminowany wyjątek nie przechodzi po cichu)', () => {
+    const d = projekt({ en: EN }, { 'e.tsx': "export const E = () => <Text>{t('a.b')}</Text>;\n" });
+    writeFileSync(join(d, 'w.json'), JSON.stringify({ pliki: { 'src/nie-ma': 'usunięty panel' } }));
+    const r = uruchom(['locales', '--zrodlo', 'en', '--kod', 'src', '--wyjatki', 'w.json'], d);
+    expect(r.wyjscie).toMatch(/src\/nie-ma/);
+    expect(r.wyjscie).toMatch(/skan kodu niewykonany/);
+    expect(r.kod).toBe(2);
+  });
   it('brak źródła: kod 2', () => {
     const r = uruchom(['locales', '--zrodlo', 'xx'], projekt({ en: EN }));
     expect(r.kod).toBe(2);

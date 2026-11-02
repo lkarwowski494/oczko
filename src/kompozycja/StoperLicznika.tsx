@@ -1,6 +1,9 @@
 // Kontener stopera na liczniku (F-21; P-191 P1a–P3a; P-199 Q3c): czyta otwartą sesję, woła przypadki użycia sesji, ogłasza wynik dopiero
 // po zapisie (R-148) i po każdym przejściu woła `poZmianie` (stan ekranu blokady i zegarka, przeładowanie kresek licznika).
 import React, { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import type { Wynik } from '../domena/bledy';
+import { alertBleduZapisu } from '../ekrany/blad-zapisu';
 import { LiniaSprawdzenia, Stoper, czasStopera, type StanStopera } from '../ekrany/Stoper';
 import type { Oglos } from '../ekrany/wspolne';
 import { formatujGodzine } from '../i18n/format';
@@ -26,8 +29,9 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
     if (!p) return '';
     return p.nienazwany === 1 ? etykietaRobocza(p.utworzono_ms, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : p.nazwa;
   }
-  async function po(ok: boolean, tekst: () => string): Promise<void> {
-    if (!ok) return;
+  // M1-085: błąd zapisu (`zapis`, `brak_miejsca`) → alert błędu zapisu (M1-006); inny powód jak dotąd bez komunikatu. Bez haptyki: komponent nie ma portu.
+  async function po(w: Wynik<unknown>, tekst: () => string): Promise<void> {
+    if (!w.ok) { if (w.powod === 'zapis' || w.powod === 'brak_miejsca') Alert.alert(...alertBleduZapisu(j.t, 'formularz')); return; }
     await wczytaj();
     oglos(tekst());
     await poZmianie();
@@ -39,22 +43,22 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
       naStart={() => void (async () => {
         if (sesja && sesja.projektId !== projektId) { ustawInny({ projekt: await nazwa(sesja.projektId), biezacy: await nazwa(projektId) }); return; }
         const w = await startSesji(z, { projektId });
-        await po(w.ok, () => j.t('stoper.uruchomiono'));
+        await po(w, () => j.t('stoper.uruchomiono'));
       })()}
       naWstrzymaj={() => void (async () => {
         if (!sesja) return;
         const czas = czasStopera(sekundyTeraz());
-        await po((await wstrzymajSesje(z, { sesjaId: sesja.id })).ok, () => j.t('stoper.wstrzymano', { czas }));
+        await po(await wstrzymajSesje(z, { sesjaId: sesja.id }), () => j.t('stoper.wstrzymano', { czas }));
       })()}
-      naWznow={() => void (async () => { if (sesja) await po((await wznowSesje(z, { sesjaId: sesja.id })).ok, () => j.t('stoper.wznowiono')); })()}
+      naWznow={() => void (async () => { if (sesja) await po(await wznowSesje(z, { sesjaId: sesja.id }), () => j.t('stoper.wznowiono')); })()}
       naZatrzymaj={() => void (async () => {
         if (!sesja) return;
         const w = await zakonczSesje(z, { sesjaId: sesja.id });
-        await po(w.ok, () => j.t('stoper.zapisano', { czas: w.ok ? czasPracy(w.wartosc.czasMs, j) : '' }));
+        await po(w, () => j.t('stoper.zapisano', { czas: w.ok ? czasPracy(w.wartosc.czasMs, j) : '' }));
       })()}
       naInnyPotwierdz={() => void (async () => {
         ustawInny(null);
-        await po((await przelaczSesje(z, { projektId })).ok, () => j.t('stoper.uruchomiono'));
+        await po(await przelaczSesje(z, { projektId }), () => j.t('stoper.uruchomiono'));
       })()}
       naInnyAnuluj={() => ustawInny(null)}
     />

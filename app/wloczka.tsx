@@ -1,6 +1,6 @@
 // Trasa „/wloczka?id=…”: arkusz włóczki (P-191 P8a; BR-ZAP-001). Bez id — nowa włóczka; zapis przez kolejkę przypadków użycia, potem powrót.
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { FormularzWloczki } from '../src/ekrany/Zapas';
 import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
@@ -10,33 +10,42 @@ import { zaleznosciObrazu } from '../src/kompozycja/obrazy-aplikacji';
 import { zdjecieBezMetadanych } from '../src/kompozycja/zdjecie-bez-metadanych';
 import { usunPlik } from '../src/dane/pliki/system';
 import { dodajZdjecie, zdjecia } from '../src/przypadki-uzycia/zdjecia';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { imperialny } from '../src/kompozycja/miary';
 import { bazowa, przeliczenie } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
 import { usunWloczke, wloczka, zapiszWloczke, type FormularzWloczki as Dane } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranWloczki(): React.ReactElement {
-  const { kontener, preferencje } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, preferencje } = aplikacja;
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
-  const k = useKolory();
   const j = kontener.j;
   const [poczatek, ustaw] = useState<Dane | null | undefined>(id ? undefined : null);
   const [miniatury, ustawMiniatury] = useState<Miniatura[]>([]);
+  const [blad, ustawBlad] = useState(false); // M1-007: odczyt `{ ok: false }` (inny niż brak włóczki) albo wyjątek → błąd z „Try again”, nie pusty arkusz
   const z = kontener.z;
   const wczytajZdjecia = useCallback(async () => {
     if (!id) return;
     const f = await zdjecia(z, { wloczkaId: id });
     if (f.ok) ustawMiniatury(f.wartosc.map((x) => ({ id: x.id, uri: `file://${z.magazyn.sciezka(x.sha256)}` })));
   }, [z, id]);
+  const wczytaj = useCallback(async () => {
+    if (!id) return;
+    const w = await wloczka(z, id).catch(() => null);
+    if (w?.ok) ustaw(w.wartosc);
+    else if (w?.powod === 'bledne_dane') router.back(); // włóczki już nie ma (w koszu albo usunięta)
+    else ustawBlad(true);
+  }, [z, id, router]);
   useEffect(() => {
     if (!id) return;
-    void wloczka(z, id).then((w) => { if (w.ok) ustaw(w.wartosc); else router.back(); });
+    void wczytaj();
     void wczytajZdjecia();
-  }, [z, id, router, wczytajZdjecia]);
+  }, [id, wczytaj, wczytajZdjecia]);
   // Zdjęcie etykiety (P-191 P9a) tylko przy edycji: wiersz zdjęcia potrzebuje id zapisanej włóczki. Podgląd i usuwanie — z ekranu projektu
   // (ta sama grupa); w arkuszu miniatura bez podglądu (odstępstwo do raportu).
   const wybierz = async (zrodlo: 'aparat' | 'biblioteka') => {
@@ -55,13 +64,13 @@ export default function EkranWloczki(): React.ReactElement {
       ]);
     }
   };
-  if (poczatek === undefined) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+  if (poczatek === undefined) return <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="wloczka" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny(preferencje.stan().ukladMiar) ? 'imperialne' : 'metryczne'}
       przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
       naAnuluj={() => router.back()}
       naUsun={id && poczatek ? () => potwierdzUsuniecie(kontener, { nazwa: poczatek.nazwa, przycisk: j.t('usun.wloczka'), alert: Alert.alert,
-        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => router.back() }) : undefined}
+        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => router.back(), naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }) : undefined} // M1-006
       zdjecia={id ? <GrupaZdjec t={j.t} miniatury={miniatury} naWybierz={(zr) => void wybierz(zr)} naOtworz={() => undefined}
         naglowek={j.t('zapas.zdjecie_etykiety')} testID="wloczka-zdjecia" /> : undefined}
       naZapisz={async (d) => {

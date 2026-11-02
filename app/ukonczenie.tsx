@@ -4,7 +4,7 @@ import { Alert, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Ukonczenie, type StanUkonczenia } from '../src/ekrany/Ukonczenie';
 import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { oglos, portOceny, systemAplikacji } from '../src/kompozycja/system';
 import { stanUkonczenia } from '../src/kompozycja/ukonczenie';
@@ -21,19 +21,21 @@ export default function EkranUkonczenia(): React.ReactElement {
   const { kontener } = useAplikacja();
   const { projekt } = useLocalSearchParams<{ projekt: string }>();
   const router = useRouter();
-  const k = useKolory();
   const [stan, ustaw] = useState<StanUkonczenia | null>(null);
   const [blad, ustawBlad] = useState(false);
+  const [bladOdczytu, ustawBladOdczytu] = useState(false); // M1-007: odczyt `{ ok: false }` albo wyjątek → błąd z „Try again”, nie karta bez wyjścia
   const obraz = useRef<View>(null); // obraz karty 1080 × 1350 (P-191 P10a, P-219 2A)
   const jezyk = kontener.j.jezyk();
   // Odświeżana po powrocie z arkusza wyboru włóczek i z „Edit stash” (07-jakosc-001): zapas i grupa włóczek na karcie od razu aktualne.
-  useFocusEffect(useCallback(() => {
-    void kartaUkonczenia(kontener.z, { projektId: projekt }).then((w) => {
-      const ch = kontener.z.zegar.teraz();
-      if (w.ok) ustaw(stanUkonczenia(w.wartosc, { j: kontener.j, terazMs: ch.ms, strefa: ch.strefa, zdjecie: (sha) => kontener.z.magazyn.sciezka(sha) }));
-    });
-  }, [kontener, projekt]));
-  if (!stan) return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+  const wczytaj = useCallback(async () => {
+    const w = await kartaUkonczenia(kontener.z, { projektId: projekt }).catch(() => null);
+    if (!w?.ok) { ustawBladOdczytu(true); return; }
+    const ch = kontener.z.zegar.teraz();
+    ustaw(stanUkonczenia(w.wartosc, { j: kontener.j, terazMs: ch.ms, strefa: ch.strefa, zdjecie: (sha) => kontener.z.magazyn.sciezka(sha) }));
+    ustawBladOdczytu(false);
+  }, [kontener, projekt]);
+  useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
+  if (!stan) return <StanWczytywania stan={bladOdczytu ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="ukonczenie" naPonow={() => { ustawBladOdczytu(false); void wczytaj(); }} />;
   return (
     <Ukonczenie stan={{ ...stan, bladZapisu: blad }} t={kontener.j.t} oglos={oglos} system={systemAplikacji}
       liczby={{ formatuj: (n) => formatujLiczbe(n, jezyk, { maks: 2 }), parsuj: (x) => parsujLiczbe(x, jezyk) }}

@@ -5,7 +5,7 @@ import type { Wynik } from '../../domena/bledy';
 import type { MagazynPlikow } from '../../domena/porty';
 import { sha256 } from '../archiwum/sha256';
 import { powodBledu } from '../baza/bledy-sqlite';
-import { istniejePlik, kopiuj, lista, otworzDoCzytania, polacz, przenies, rozmiar, usunPlik, utworzKatalog, wolneMiejsce } from './system';
+import { czasZmiany, istniejeKatalog, istniejePlik, kopiuj, lista, otworzDoCzytania, polacz, przenies, rozmiar, usunPlik, utworzKatalog, wolneMiejsce } from './system';
 
 const KAWALEK = 1 << 20;
 const ROZSZERZENIE = /^[A-Za-z0-9]{1,16}$/;
@@ -52,6 +52,10 @@ export function utworzMagazyn(katalog: string, o: { skrot?: (sciezka: string) =>
       for (const n of lista(katalog)) if (n.startsWith(`${h}.`)) usunPlik(polacz(katalog, n));
     },
     async wolneMiejsce() { return wolne(); },
+    async pliki() {
+      if (!istniejeKatalog(katalog)) return [];
+      return lista(katalog).map((n) => ({ sha256: n.split('.')[0] ?? n, zmianaMs: czasZmiany(polacz(katalog, n)) }));
+    },
   };
 }
 

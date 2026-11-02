@@ -134,8 +134,6 @@
     "brak_wynikow": "Δεν υπάρχει έργο με όνομα “{{zapytanie}}”.",
     "w_toku": "Σε εξέλιξη",
     "ukonczone": "Ολοκληρωμένα",
-    "dni_one": "Απομένουν {{zostalo}} από {{limit}} δωρεάν ημέρες χειροτεχνίας ({{miesiac}})",
-    "dni_other": "Απομένουν {{zostalo}} από {{limit}} δωρεάν ημέρες χειροτεχνίας ({{miesiac}})",
     "tytul": "Έργα",
     "nazwa_robocza": "Μετρητής από {{data}}",
     "ostatnia_praca_dzis": "τελευταία εργασία σήμερα",

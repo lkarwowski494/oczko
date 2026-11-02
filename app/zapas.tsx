@@ -19,7 +19,7 @@ export default function EkranZapasu(): React.ReactElement {
   return (
     <Bezpieczny>
       <Zapas t={kontener.j.t} stan={stan} zapytanie={zapytanie} filtr={filtr} naSzukaj={ustawZapytanie} naFiltr={ustawFiltr}
-        naDodaj={() => router.push('/wloczka')} naOtworz={(id) => router.push({ pathname: '/wloczka', params: { id } })} />
+        naDodaj={() => router.push('/wloczka')} naOtworz={(id) => router.push({ pathname: '/wloczka', params: { id } })} naWstecz={() => router.back()} />
     </Bezpieczny>
   );
 }

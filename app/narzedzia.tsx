@@ -18,7 +18,7 @@ export default function EkranNarzedzi(): React.ReactElement {
   }, [kontener]));
   return (
     <Bezpieczny>
-      <Narzedzia stan={stan} t={kontener.j.t} naWloczki={() => router.push('/zapas')} naDruty={() => router.push('/druty')} naProbke={() => router.push('/probka')} />
+      <Narzedzia stan={stan} t={kontener.j.t} naWloczki={() => router.push('/zapas')} naDruty={() => router.push('/druty')} naProbke={() => router.push('/probka')} naWstecz={() => router.back()} />
     </Bezpieczny>
   );
 }

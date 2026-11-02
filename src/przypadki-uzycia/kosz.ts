@@ -69,6 +69,23 @@ export async function sprzatnijKoszWKolejce(z: ZaleznosciPlikow): Promise<Wynik<
   return w;
 }
 
+/**
+ * M1-023 (05-architekt-503, ADR-0001: „plik bez odwołania jest wykrywany”): plik magazynu bez wiersza `plik` (po „zastąp”, przywróceniu kopii,
+ * nieudanym imporcie) usuwany przy starcie; młodszy niż PLIKI_OCHRONA_MIN (czas zmiany pliku) zostaje, bo zapis pliku poprzedza wiersz (Z07-15).
+ * Tylko w `uruchomDane` (przed pierwszym ekranem, w kolejce), nie przy ręcznym opróżnianiu kosza.
+ */
+export async function sprzatnijSierotyMagazynu(z: ZaleznosciPlikow): Promise<Wynik<number>> {
+  try {
+    const granica = z.zegar.teraz().ms - PLIKI_OCHRONA_MIN * 60_000;
+    const znane = new Set((await wiersze(z.baza.all('SELECT sha256 FROM plik'), 'sprzatnijSierotyMagazynu')).map((r) => tekst(r, 'sha256')));
+    const sieroty = new Set((await z.magazyn.pliki()).filter((p) => !znane.has(p.sha256) && p.zmianaMs !== null && p.zmianaMs <= granica).map((p) => p.sha256));
+    for (const h of sieroty) await z.magazyn.usun(h);
+    return { ok: true, wartosc: sieroty.size };
+  } catch {
+    return { ok: false, powod: 'zapis' };
+  }
+}
+
 export function sprzatnijKosz(z: ZaleznosciPlikow): Promise<Wynik<WynikSprzatania>> {
   return wKolejce(z.baza, () => sprzatnijKoszWKolejce(z));
 }

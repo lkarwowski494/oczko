@@ -1,10 +1,18 @@
 // sprawdz-i18n.mjs <katalog> --zrodlo en [--kod src,app] [--wyjatki w.json] [--oczekujace o.json [--wydanie]] [--pseudo plik.json]
 // --oczekujace (P-357, wzór Treningu): { powod, odwolania, klucze: [bazy kluczy] } — brak przekładu tych kluczy to uwaga, nie błąd; lista = dokładnie różnica źródło ↔ słowniki
 //   (klucz z listy już przetłumaczony albo nieistniejący w źródle = błąd). --wydanie: niepusta lista = błąd (fala przekładu przed wydaniem, P-320).
+//   Opcjonalnie przetlumaczone_czesciowo: { baza: [języki] } (P-406 a, M1-audytor-generalny-018) dla kluczy z `klucze`: język z mapy sprawdzany normalnie
+//   (brak klucza = błąd); język spoza mapy ze starym zwykłym kluczem, gdy źródło ma już formy liczby mnogiej = uwaga (t() bierze zwykły klucz języka);
+//   język spoza mapy z formami = błąd „już przetłumaczony”; wpis mapy dla klucza spoza `klucze` albo źródła, albo języka bez słownika = błąd.
+// --wyjatki: { klucze, wartosci, pliki: { ścieżka względna: powód } } — `pliki` (M1-051): pliki pod ścieżką poza skanem kodu; nieistniejąca ścieżka = kod 2.
+// --krytyczne k.json --przeglad p.json (M1-audytor-generalny-008, DEC-11 a): k.json = klucze treści krytycznej oznaczone przez 06 ID twierdzeń; p.json = stan kontroli (a) na język
+//   (przekład zwrotny na pl w świeżej sesji, zgodny z kluczem przez skrót tekstu). --wydanie bez tych dwóch flag = kod 2; brak ważnego wpisu (a) dla klucza krytycznego w którymkolwiek języku poza źródłem = błąd (kod 1).
+//   --skrot <język> wypisuje skróty kluczy krytycznych tego języka (do wpisu kontroli).
 // Słowniki <tag>.json w formacie i18next v4. Kod wyjścia: 0 bez błędów, 1 błędy, 2 konfiguracja albo skan kodu niewykonany.
 import { readFileSync, readdirSync, writeFileSync, statSync, existsSync } from 'node:fs';
-import { join, resolve, relative } from 'node:path';
+import { join, resolve, relative, sep } from 'node:path';
 import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const KAT = /_(ordinal_)?(zero|one|two|few|many|other)$/;
@@ -36,9 +44,19 @@ export function wpisy(slownik) { // baza → { formy: {kategoria: tekst}, porzad
 const kategorie = (j, p) => { try { return new Intl.PluralRules(j, { type: p ? 'ordinal' : 'cardinal' }).resolvedOptions().pluralCategories; } catch { return null; } };
 const pismo = (j) => { try { const s = PISMO[new Intl.Locale(j).maximize().script]; return s && new RegExp(s.split('|').map((x) => `\\p{Script=${x}}`).join('|'), 'u'); } catch { return null; } };
 
-export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null, oczekujace = [] } = {}) {
+export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = null, oczekujace = [], czesciowo = {} } = {}) {
   const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]), ocz = new Set(oczekujace);
   for (const b of ocz) if (!zr[b]) bledy.push(`oczekujace: klucza ${b} nie ma w źródle`);
+  for (const [b, jj] of Object.entries(czesciowo)) {
+    const e = (m) => bledy.push(`oczekujace: przetlumaczone_czesciowo ${b} — ${m}`);
+    if (!ocz.has(b)) e('klucza nie ma na liście klucze');
+    if (!zr[b]) e('klucza nie ma w źródle');
+    if (!Array.isArray(jj)) { e('wartość nie jest listą języków'); continue; }
+    for (const j of jj) if (j === zrodlo || !slowniki[j]) e(`język ${j} bez słownika${j === zrodlo ? ' (to źródło)' : ''}`);
+  }
+  const czesc = (j, b) => ocz.has(b) && Array.isArray(czesciowo[b]) && czesciowo[b].includes(j);
+  // stary zwykły klucz języka spoza mapy, gdy źródło ma już formy (P-406 a): czeka na falę przekładu
+  const stara = (j, b, w) => ocz.has(b) && !czesc(j, b) && zr[b]?.formy && w && !w.formy;
   for (const [j, slownik] of Object.entries(slowniki)) {
     const ws = wpisy(slownik), baz = j.split('-')[0], nakladka = j !== baz && slowniki[baz], litery = pismo(j);
     for (const [b, w] of Object.entries(ws)) {
@@ -53,6 +71,7 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
       const z = zr[b];
       if (j === zrodlo) continue;
       if (!z) { u('klucza nie ma w źródle'); continue; }
+      if (stara(j, b, w)) { u('stara forma bez liczby mnogiej, czeka na falę przekładu (oczekujace.json)'); continue; }
       if (!z.formy !== !w.formy) { e(`formy liczby mnogiej tylko w ${z.formy ? 'źródle' : 'tłumaczeniu'}`); continue; }
       const t = w.formy ? Object.values(w.formy) : [w.tekst], zt = z.formy ? Object.values(z.formy) : [z.tekst];
       if (znaczniki(t) !== znaczniki(zt)) e(`parametry [${znaczniki(t)}] ≠ źródło [${znaczniki(zt)}]`);
@@ -62,11 +81,67 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
       for (const s of t) { const l = bez(s).match(/\p{L}/gu) || []; if (litery && l.length && !l.some((c) => litery.test(c))) u(`brak liter pisma języka („${s}”)`); }
       if (!w.formy && w.tekst === z.tekst && (w.tekst.match(/\p{L}/gu) || []).length >= 4 && !(wyjatki.wartosci || []).includes(w.tekst)) u('tekst taki sam jak w źródle');
     }
-    if (j !== zrodlo && !nakladka) for (const b in zr) if (!ws[b]) (ocz.has(b) ? uwagi : bledy).push(`${j} ${b}: brak tłumaczenia${ocz.has(b) ? ' (czeka na falę przekładu, oczekujace.json)' : ''}`);
-    if (j !== zrodlo) for (const b of ocz) if (ws[b] && zr[b]) bledy.push(`${j} ${b}: klucz z oczekujace.json już przetłumaczony — usuń go z listy`);
+    if (j !== zrodlo) for (const b in zr) if (!ws[b] && (!nakladka || czesc(j, b))) {
+      const czeka = ocz.has(b) && !czesc(j, b);
+      (czeka ? uwagi : bledy).push(`${j} ${b}: brak tłumaczenia${czeka ? ' (czeka na falę przekładu, oczekujace.json)' : czesc(j, b) ? ' (język z przetlumaczone_czesciowo w oczekujace.json — mapa się zestarzała)' : ''}`);
+    }
+    if (j !== zrodlo) for (const b of ocz) if (ws[b] && zr[b] && !czesc(j, b) && !stara(j, b, ws[b])) bledy.push(`${j} ${b}: klucz z oczekujace.json już przetłumaczony — ${czesciowo[b] || zr[b].formy ? 'dopisz język do przetlumaczone_czesciowo albo usuń klucz z listy' : 'usuń go z listy'}`);
   }
   const bk = kontekst ? Object.keys(zr).filter((k) => !kontekst[k]) : [];
   if (bk.length) uwagi.push(`${zrodlo}: ${bk.length} kluczy bez kontekstu (np. ${bk.slice(0, 5).join(', ')})`);
+  return { bledy, uwagi };
+}
+
+// --- Treść krytyczna (DEC-11 a): mapa klucz → ID twierdzeń (06) × stan kontroli (a) na język (09) ---
+const ID_TW = /^[A-Z]{3}-[A-Z0-9]+$/;
+const METODY_A = ['przeklad-zwrotny-pl']; // kontrola (a) „szerokiej” (docs/lokalizacja/jezyki.md): przekład zwrotny na pl w świeżej sesji z porównaniem sensu
+const WYNIKI_A = ['zgodny', 'rozbieżny'];
+// Skrót tekstu klucza (12 znaków sha256): tekst albo linie „kategoria=tekst” posortowane po kategorii; zmiana tekstu po kontroli unieważnia wpis.
+export const skrotKlucza = (w) => createHash('sha256').update(w.formy ? Object.keys(w.formy).sort().map((k) => `${k}=${w.formy[k]}`).join('\n') : w.tekst).digest('hex').slice(0, 12);
+
+export function sprawdzKrytyczne(slowniki, zrodlo, mapa, przeglad, { wydanie = false } = {}) {
+  const bledy = [], uwagi = [], zr = wpisy(slowniki[zrodlo]), klucze = mapa.klucze ?? {}, ids = new Set(mapa.krytyczne_id ?? []);
+  const sl = Object.fromEntries(Object.entries(slowniki).map(([j, x]) => [j, wpisy(x)]));
+  for (const [k, m] of Object.entries(klucze)) {
+    if (!zr[k]) { bledy.push(`krytyczne: klucza ${k} nie ma w źródle`); continue; }
+    const tw = m.twierdzenia ?? [];
+    if (!tw.length || !tw.every((id) => ID_TW.test(id))) bledy.push(`krytyczne: ${k} — brak twierdzeń albo zły format ID`);
+    else if (!tw.some((id) => ids.has(id))) bledy.push(`krytyczne: ${k} nie ma twierdzenia z listy krytyczne_id`);
+    const sk = skrotKlucza(zr[k]);
+    if (m.sha_en !== sk) (wydanie ? bledy : uwagi).push(`krytyczne: ${k} — tekst źródłowy zmieniony od oznaczenia przez 06 (sha_en ${m.sha_en} ≠ ${sk}); 06 weryfikuje twierdzenie i odnawia mapę, 09 unieważnia kontrole (a)`);
+  }
+  for (const [j, kk] of Object.entries(przeglad.jezyki ?? {})) {
+    if (!slowniki[j]) { bledy.push(`przeglad: język ${j} — brak słownika`); continue; }
+    if (j === zrodlo) { bledy.push(`przeglad: język ${j} — źródło nie ma kontroli (a), kanon prowadzi 06`); continue; }
+    for (const [k, e] of Object.entries(kk)) {
+      if (!klucze[k]) { bledy.push(`przeglad: ${j} ${k} — klucz spoza krytyczne.json`); continue; }
+      const a = e?.a;
+      if (!a) continue;
+      const brak = ['kto', 'data', 'metoda', 'wynik', 'sha'].filter((f) => !a[f]);
+      if (brak.length) bledy.push(`przeglad: ${j} ${k} — wpis a bez pól ${brak.join(', ')}`);
+      if (a.data && !/^\d{4}-\d{2}-\d{2}$/.test(a.data)) bledy.push(`przeglad: ${j} ${k} — data „${a.data}” nie jest RRRR-MM-DD`);
+      if (a.metoda && !METODY_A.includes(a.metoda)) bledy.push(`przeglad: ${j} ${k} — metoda „${a.metoda}” spoza ${METODY_A.join(', ')}`);
+      if (a.wynik && !WYNIKI_A.includes(a.wynik)) bledy.push(`przeglad: ${j} ${k} — wynik „${a.wynik}” spoza ${WYNIKI_A.join(', ')}`);
+    }
+  }
+  let par = 0, bezWpisu = 0;
+  for (const j of Object.keys(slowniki).filter((x) => x !== zrodlo)) {
+    const braki = [], nieaktualne = [], niezgodne = [];
+    for (const k of Object.keys(klucze)) {
+      const w = sl[j][k];
+      if (!w) continue; // brak tekstu: nakładka dziedziczy z języka bazowego (jego wpis), brak w pełnym słowniku to błąd sprawdzSlowniki
+      par++;
+      const a = przeglad.jezyki?.[j]?.[k]?.a;
+      if (!a || !a.kto || !a.data || !a.metoda || !a.sha || !WYNIKI_A.includes(a.wynik) || !METODY_A.includes(a.metoda)) { braki.push(k); bezWpisu++; }
+      else if (a.wynik !== 'zgodny') { niezgodne.push(k); bezWpisu++; }
+      else if (a.sha !== skrotKlucza(w)) { nieaktualne.push(k); bezWpisu++; }
+    }
+    if (wydanie) {
+      const e = (m, l) => l.length && bledy.push(`${j}: kontrola (a) treści krytycznej — ${m} dla ${l.join(', ')}`);
+      e('brak wpisu', braki); e('wpis nieaktualny (tekst zmieniony po kontroli)', nieaktualne); e('wynik niezgodny', niezgodne);
+    }
+  }
+  if (!wydanie && bezWpisu) uwagi.push(`kontrola (a) treści krytycznej: ${bezWpisu} z ${par} par język × klucz bez ważnego wpisu (sprawdz-i18n --wydanie traktuje to jako błąd; stan: docs/lokalizacja/przeglad-krytyczne.json)`);
   return { bledy, uwagi };
 }
 
@@ -85,8 +160,9 @@ const pliki = (k, w = []) => {
   return w;
 };
 export function skanujKod(ts, katalogi, wyjatki = {}) {
-  const uzyte = new Map(), teksty = [], dynamiczne = [], sklejenia = [];
-  for (const plik of katalogi.flatMap((k) => pliki(k))) {
+  const uzyte = new Map(), teksty = [], dynamiczne = [], sklejenia = [], pomin = Object.keys(wyjatki.pliki || {});
+  const pominiety = (p) => { const r = relative(process.cwd(), p).split(sep).join('/'); return pomin.some((w) => r === w || r.startsWith(`${w}/`)); };
+  for (const plik of katalogi.flatMap((k) => pliki(k)).filter((p) => !pominiety(p))) {
     const zr = ts.createSourceFile(plik, readFileSync(plik, 'utf8'), ts.ScriptTarget.Latest, true, /(x|\.js)$/.test(plik) ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
     const gdzie = (n) => `${relative(process.cwd(), plik)}:${zr.getLineAndCharacterOfPosition(n.getStart()).line + 1}`;
     const lit = (n) => n && (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n));
@@ -116,12 +192,20 @@ function main(argv) {
   for (let i = 0; i < argv.length; i++) argv[i] === '--wydanie' ? (o.wydanie = true) : argv[i].startsWith('--') ? (o[argv[i].slice(2)] = argv[++i]) : o._.push(argv[i]);
   const [kat] = o._, zrodlo = o.zrodlo;
   if (!kat || !zrodlo) { console.log('Użycie: patrz nagłówek pliku'); return 2; }
+  if ((o.wydanie || o.krytyczne || o.przeglad) && !(o.krytyczne && o.przeglad)) { console.log(o.wydanie ? 'BŁĄD konfiguracji: --wydanie wymaga --krytyczne i --przeglad (kontrola treści krytycznej, DEC-11 a)' : 'BŁĄD konfiguracji: --krytyczne i --przeglad idą parą'); return 2; }
   for (const f of readdirSync(kat)) if (/^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*\.json$/.test(f)) slowniki[f.slice(0, -5)] = splaszcz(czytaj(join(kat, f)));
   if (!slowniki[zrodlo]) { console.log(`BŁĄD konfiguracji: brak ${zrodlo}.json w ${kat}`); return 2; }
   const wyjatki = o.wyjatki ? czytaj(o.wyjatki) : {}, pk = join(kat, `${zrodlo}.kontekst.json`), zr = wpisy(slowniki[zrodlo]);
-  const oczekujace = o.oczekujace ? czytaj(o.oczekujace).klucze ?? [] : [];
-  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace });
+  const plikOcz = o.oczekujace ? czytaj(o.oczekujace) : {}, oczekujace = plikOcz.klucze ?? [], czesciowo = plikOcz.przetlumaczone_czesciowo ?? {};
+  if (typeof czesciowo !== 'object' || Array.isArray(czesciowo)) { console.log(`BŁĄD konfiguracji: ${o.oczekujace}: przetlumaczone_czesciowo musi być obiektem { baza klucza: [języki] }`); return 2; }
+  const { bledy, uwagi } = sprawdzSlowniki(slowniki, zrodlo, { wyjatki, kontekst: existsSync(pk) ? splaszcz(czytaj(pk)) : null, oczekujace, czesciowo });
   if (o.wydanie && oczekujace.length) bledy.push(`wydanie: oczekujace.json niepusta (${oczekujace.length} kluczy) — fala przekładu przed wydaniem (P-320, P-357)`);
+  let krytyczne = null;
+  if (o.krytyczne) {
+    try { krytyczne = sprawdzKrytyczne(slowniki, zrodlo, czytaj(o.krytyczne), czytaj(o.przeglad), { wydanie: !!o.wydanie }); } catch (e) { console.log(`BŁĄD konfiguracji: ${o.krytyczne} / ${o.przeglad}: ${e.message}`); return 2; }
+    bledy.push(...krytyczne.bledy); uwagi.push(...krytyczne.uwagi);
+    if (o.skrot) for (const k of Object.keys(czytaj(o.krytyczne).klucze ?? {})) { const w = wpisy(slowniki[o.skrot] ?? {})[k]; if (w) console.log(`${o.skrot} ${k} ${skrotKlucza(w)}`); }
+  }
   let kod = 0;
   if (o.kod) {
     let ts;
@@ -130,7 +214,9 @@ function main(argv) {
     if (!ts) { console.log('BŁĄD konfiguracji: brak pakietu typescript w projekcie; skan kodu niewykonany'); kod = 2; }
     const brak = o.kod.split(',').filter((k) => !existsSync(k));
     if (brak.length) { console.log(`BŁĄD konfiguracji: brak katalogu ${brak.join(', ')}; skan kodu niewykonany`); kod = 2; }
-    if (ts && !brak.length) {
+    const zbedne = Object.keys(wyjatki.pliki || {}).filter((w) => !existsSync(w));
+    if (zbedne.length) { console.log(`BŁĄD konfiguracji: wyjątek pliki na nieistniejącą ścieżkę ${zbedne.join(', ')}; skan kodu niewykonany`); kod = 2; }
+    if (ts && !brak.length && !zbedne.length) {
       const s = skanujKod(ts, o.kod.split(','), wyjatki);
       for (const [k, g] of s.uzyte) if (!zr[k] && !(wyjatki.klucze || []).includes(k)) bledy.push(`kod ${g}: klucza „${k}” nie ma w ${zrodlo}.json`);
       for (const t of s.teksty) (t.blad ? bledy : uwagi).push(`kod ${t.gdzie}: tekst na sztywno „${t.tekst}”`);

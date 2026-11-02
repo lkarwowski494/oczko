@@ -55,6 +55,22 @@ export function zapiszTekst(sciezka: string, tekst: string): void {
   if (!p.exists) p.create();
   p.write(tekst);
 }
+/** Zapis przez plik tymczasowy (ARCH-22, M1-026; wzorzec `src/platforma/migawka.ts`): `<cel>.tmp` → odczyt kontrolny → przeniesienie.
+ *  Przerwany zapis zostawia poprzednią treść celu; przeniesienie nie nadpisuje, więc cel jest usuwany tuż przed nim (krótkie okno bez pliku
+ *  = stan jak przy pierwszym uruchomieniu, nigdy plik w połowie). */
+export function zapiszAtomowo(sciezka: string, tekst: string): void {
+  const tmp = `${sciezka}.tmp`;
+  usunPlik(tmp);
+  try {
+    zapiszTekst(tmp, tekst);
+    if (new File(uri(tmp)).textSync() !== tekst) throw new Error('zapis atomowy: odczyt kontrolny niezgodny');
+  } catch (e) {
+    usunPlik(tmp); // pozostały plik tymczasowy nie jest czytany; błąd usuwania też idzie do wołającego
+    throw e;
+  }
+  usunPlik(sciezka);
+  przenies(tmp, sciezka);
+}
 
 export interface Czytnik { czytaj(od: number, dlugosc: number): Uint8Array; readonly rozmiar: number; zamknij(): void }
 export interface Pisarz { zapisz(bajty: Uint8Array): void; readonly zapisano: number; zamknij(): void }
@@ -87,6 +103,12 @@ export function katalogBiblioteki(): string {
 /** Czas ostatniej zmiany katalogu (ms; dopisanie pliku go przesuwa) — wiek niepełnego zlecenia skrzynki (fix-7, SKRZYNKA_PORZUCONE_H). */
 export function czasZmianyKatalogu(sciezka: string): number | null {
   const i = new Directory(uri(sciezka)).info();
+  return i.exists && typeof i.modificationTime === 'number' ? i.modificationTime : null;
+}
+/** Czas ostatniej zmiany pliku albo katalogu (ms od epoki, expo-file-system 57 `FileInfo`/`DirectoryInfo.modificationTime`); brak → null. */
+export function czasZmiany(sciezka: string): number | null {
+  if (istniejeKatalog(sciezka)) return czasZmianyKatalogu(sciezka);
+  const i = new File(uri(sciezka)).info();
   return i.exists && typeof i.modificationTime === 'number' ? i.modificationTime : null;
 }
 /** Katalog kontenera App Group (ADR-0011 fix-7; `Paths.appleSharedContainers` czyta grupy z uprawnień aplikacji); null bez grupy w podpisie. */

@@ -5,7 +5,7 @@ import { KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DN
 import { zapiszZip, type WpisZip } from '../dane/archiwum/zip';
 import { powodBledu } from '../dane/baza/bledy-sqlite';
 import { sha256PlikuTs } from '../dane/pliki/magazyn';
-import { istniejeKatalog, istniejePlik, lista, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
+import { czasZmiany, istniejeKatalog, istniejePlik, lista, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
 
 const DOBA_MS = 86_400_000;
 export type WpisKopii = { nazwa: string; katalog: boolean };
@@ -32,8 +32,10 @@ export function kopieDoUsuniecia(wpisy: readonly WpisKopii[], terazMs: number, d
 /** Kopie z ADR-0028 w Documents/Backup: `oczko-przed-importem-RRRR-MM-DD[-n].oczko` i `oczko-przed-usunieciem-…`; nic innego w tym katalogu nie jest tykane. */
 const PLIK_PRZED = /^oczko-przed-(importem|usunieciem)-(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?\.oczko$/;
 /**
- * Pula kopii bezpieczeństwa (ADR-0028 pkt 4, K-03f): każdego rodzaju zostaje `maks` najnowszych, a starsze niż `dni` (ściśle, liczone od północy dnia
- * z nazwy UTC) są usuwane. Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu.
+ * Pula kopii bezpieczeństwa (ADR-0032, zastępuje ADR-0028 pkt 4; DEC-18 a; K-03f), osobno dla każdego rodzaju. Kopie starsze niż `dni` (ściśle, od
+ * północy dnia z nazwy, UTC) są usuwane. Z młodszych zostają: pierwsza kopia każdego dnia (najmniejszy przyrostek; seria „Zastąp” jednego dnia zaczyna
+ * się od kopii z danymi sprzed serii) niezależnie od `maks`, najnowsza zawsze, a pozostałe od najnowszej, dopóki zostawionych jest mniej niż `maks`.
+ * Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu ani do pierwszej kopii dnia.
  */
 export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number, maks = KOPIA_PRZED_IMPORTEM_MAKS, dni = KOPIA_PRZED_IMPORTEM_DNI): string[] {
   const usun: string[] = [];
@@ -45,7 +47,12 @@ export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number,
       return dzienMs - terazMs > DOBA_MS ? [] : [{ nazwa, dzienMs, n: m[5] === undefined ? 1 : Number(m[5]) }];
     });
     wpisy.sort((a, b) => b.dzienMs - a.dzienMs || b.n - a.n);
-    wpisy.forEach((w, i) => { if (i >= maks || terazMs - w.dzienMs > dni * DOBA_MS) usun.push(w.nazwa); });
+    const mlode = wpisy.filter((w) => terazMs - w.dzienMs <= dni * DOBA_MS);
+    const pierwszaDnia = new Map<number, string>(); // od najnowszej, więc ostatni zapis dla dnia to najmniejszy przyrostek
+    for (const w of mlode) pierwszaDnia.set(w.dzienMs, w.nazwa);
+    const zostaja = new Set([...pierwszaDnia.values(), ...mlode.slice(0, 1).map((w) => w.nazwa)]);
+    for (const w of mlode) if (zostaja.size < maks) zostaja.add(w.nazwa);
+    for (const w of wpisy) if (!zostaja.has(w.nazwa)) usun.push(w.nazwa);
   }
   return usun;
 }
@@ -66,6 +73,32 @@ export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<str
   try {
     const usun = kopiePrzedDoUsuniecia(lista(katalog), terazMs).sort();
     for (const n of usun) usunPlik(polacz(katalog, n));
+    return { ok: true, wartosc: usun };
+  } catch (e) {
+    return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };
+  }
+}
+
+/** Pamięci podręczne w katalogu tymczasowym (dane odtwarzalne): bez sprzątania przy starcie, czyszczone przy „Delete all data”. */
+const PAMIECI_PODRECZNE = ['miniatury', 'rysunki-wzoru'];
+/**
+ * M1-001 (05-architekt-501): `Application Support/tmp` wchodzi do kopii urządzenia, więc pliki pochodne (eksport, ZIP ratunkowy, katalogi importu
+ * i zgłoszeń) nie mogą zostawać. Przy kamieniu milowym usuwane są wpisy zmienione przed początkiem bieżącego startu; nowsze (np. eksport w otwartym
+ * arkuszu udostępniania), pamięci podręczne i wpisy bez czasu zostają.
+ */
+export function tymczasoweDoUsuniecia(wpisy: { nazwa: string; zmianaMs: number | null }[], odMs: number): string[] {
+  return wpisy.filter((w) => !PAMIECI_PODRECZNE.includes(w.nazwa) && w.zmianaMs !== null && w.zmianaMs < odMs).map((w) => w.nazwa);
+}
+/** Adapter: lista katalogu tymczasowego → usunięcie wybranych plików i katalogów; brak katalogu = nic do zrobienia, błąd nie blokuje startu. */
+export function sprzatnijTymczasowe(katalog: string, odMs: number): Wynik<string[]> {
+  try {
+    if (!istniejeKatalog(katalog)) return { ok: true, wartosc: [] };
+    const usun = tymczasoweDoUsuniecia(lista(katalog).map((nazwa) => ({ nazwa, zmianaMs: czasZmiany(polacz(katalog, nazwa)) })), odMs).sort();
+    for (const n of usun) {
+      const p = polacz(katalog, n);
+      if (istniejeKatalog(p)) usunKatalog(p);
+      else usunPlik(p);
+    }
     return { ok: true, wartosc: usun };
   } catch (e) {
     return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };
@@ -119,7 +152,8 @@ function naglowekBazy(sciezka: string): { user_version: number | null; applicati
  * i `manifest.json` (wersja aplikacji, build, user_version i application_id z nagłówka, SHA-256 plików). Bazy nie otwiera. Nazwy plików bierze
  * od wołającego (jedno źródło nazwy bazy: sciezki.ts, P-180). Cel nie może istnieć; niepełny plik po błędzie jest usuwany.
  */
-export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number }): Promise<Wynik<ManifestSurowejKopii>> {
+export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number; skrot?: (sciezka: string) => Promise<string> }): Promise<Wynik<ManifestSurowejKopii>> {
+  const skrot = o.skrot ?? sha256PlikuTs; // P-130 (M1-017): na urządzeniu natywny; TS w Node i jako wzorzec
   const nazwy = pliki.filter((n) => istniejePlik(polacz(katalogSurowej, n)));
   const glowny = nazwy.find((n) => !/-(wal|shm)$/.test(n));
   if (!glowny) return { ok: false, powod: 'bledne_dane' };
@@ -129,7 +163,7 @@ export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly st
     const pliki: ManifestSurowejKopii['pliki'] = [];
     for (const n of nazwy) {
       const p = polacz(katalogSurowej, n);
-      pliki.push({ nazwa: n, bajty: rozmiar(p), sha256: await sha256PlikuTs(p) });
+      pliki.push({ nazwa: n, bajty: rozmiar(p), sha256: await skrot(p) });
     }
     const manifest: ManifestSurowejKopii = { format: 'oczko-ratunkowa', wersja: 1, aplikacja: o.aplikacja, build: o.build, utworzono: o.terazMs, ...naglowekBazy(baza), pliki };
     const wpisy: WpisZip[] = [{ nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest, null, 2)) }, ...nazwy.map((n) => ({ nazwa: n, plik: polacz(katalogSurowej, n) }))];

@@ -7,7 +7,7 @@ import { zapiszUstawienie } from '../dane/repozytoria/ustawienia';
 import { liczba, liczbaLubNull, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { scalDziennikWKolejce } from './dziennik';
 import { pracaDoKonca } from './sesja';
-import { sprzatnijKoszWKolejce } from './kosz';
+import { sprzatnijKoszWKolejce, sprzatnijSierotyMagazynu } from './kosz';
 import { wKolejce } from './kolejka';
 import { wTransakcji } from './zapis';
 import type { Zaleznosci, ZaleznosciDziennika, ZaleznosciStartu } from './zaleznosci';
@@ -31,7 +31,7 @@ function domknijSesje(z: ZaleznosciStartu): Promise<Wynik<number>> {
   });
 }
 
-/** Kolejność: migruj → scalDziennik → domknięcie zapomnianych sesji (SESJA_MAKS_H) → sprzatnijKosz; na końcu `ostatni_start_ms` (P-110 Q5a). */
+/** Kolejność: migruj → scalDziennik → domknięcie zapomnianych sesji (SESJA_MAKS_H) → sprzatnijKosz → sieroty magazynu (M1-023); na końcu `ostatni_start_ms` (P-110 Q5a). */
 export function uruchomDane(z: ZaleznosciStartu): Promise<Wynik<WynikStartuDanych>> {
   return wKolejce(z.baza, async () => {
     const migracja = await z.migruj(z.baza);
@@ -42,6 +42,7 @@ export function uruchomDane(z: ZaleznosciStartu): Promise<Wynik<WynikStartuDanyc
     if (!sesje.ok) return sesje;
     const kosz = await sprzatnijKoszWKolejce(z); // czyta ostatni_start_ms poprzedniego startu, zanim zapiszemy bieżący
     if (!kosz.ok) return kosz;
+    await sprzatnijSierotyMagazynu(z); // M1-023: pliki bez wiersza `plik` (po „zastąp”, przywróceniu kopii, nieudanym imporcie); błąd nie blokuje startu
     const start = await wTransakcji(z, 'ostatniStart', async (tx, teraz) => {
       await zapiszUstawienie(tx, 'ostatni_start_ms', teraz, teraz);
       return { ok: true, wartosc: undefined };

@@ -85,6 +85,33 @@ describe('Oferty', () => {
     expect(screen.queryByRole('button', { name: /^Continue with/ })).toBeNull();
   });
 
+  // M1-audytor-generalny-014 (02-monetyzacja-001, KP-03 pełne, P-403): dożywotni przy aktywnej subskrypcji tylko z informacją, że subskrypcja
+  // odnawia się dalej, dopóki osoba jej nie anuluje, i z „Manage subscription” obok; bez subskrypcji tej informacji nie ma.
+  const DALEJ = 'Your subscription keeps renewing until you cancel it.';
+  test('M1-014 KP-03: aktywna subskrypcja → przy planie dożywotnim informacja o dalszym odnawianiu + „Manage subscription”', () => {
+    pokaz({ aktywne: { rodzaj: 'subskrypcja', produkt: 'oczko.pro.miesiac' } });
+    expect(within(screen.getByTestId('oferty-plan-dozywotni')).getByText(DALEJ)).toBeTruthy();
+    expect(within(screen.getByTestId('oferty-plan-roczny')).queryByText(DALEJ)).toBeNull();
+    expect(przycisk('Manage subscription', 'button')).toBeTruthy();
+  });
+  // M1-014 (reaudit p1, 02-monetyzacja-001): przycisk planu ma jawną `accessibilityLabel` (element dostępności VoiceOver), więc tekst potomka
+  // nie jest czytany — ostrzeżenie KP-03 musi być w etykiecie przycisku planu dożywotniego.
+  test('M1-014 KP-03 VoiceOver: etykieta przycisku planu dożywotniego zawiera ostrzeżenie o odnawianiu; bez subskrypcji — nie', () => {
+    pokaz({ aktywne: { rodzaj: 'subskrypcja', produkt: 'oczko.pro.miesiac' } });
+    expect(screen.getByTestId('oferty-plan-dozywotni').props.accessibilityLabel).toContain(DALEJ);
+    expect(screen.getByTestId('oferty-plan-roczny').props.accessibilityLabel).not.toContain(DALEJ);
+    screen.unmount();
+    pokaz();
+    expect(screen.getByTestId('oferty-plan-dozywotni').props.accessibilityLabel).not.toContain(DALEJ);
+  });
+  test('M1-014 KP-03: bez aktywnej subskrypcji (brak Pro albo dożywotni) informacji o odnawianiu nie ma', () => {
+    pokaz();
+    expect(screen.queryByText(DALEJ)).toBeNull();
+    screen.unmount();
+    pokaz({ aktywne: { rodzaj: 'dozywotni' } });
+    expect(screen.queryByText(DALEJ)).toBeNull();
+  });
+
   test('KP-14: „Manage subscription” otwiera systemowe zarządzanie (design-spec.md:56)', () => {
     const w = pokaz({ aktywne: { rodzaj: 'subskrypcja', produkt: 'oczko.pro.rok' } });
     fireEvent.press(przycisk('Manage subscription', 'button'));

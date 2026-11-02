@@ -10,7 +10,7 @@ module.exports = {
   displayName: 'Oczko',
   bundleIdentifier: '.watchkitapp',
   deploymentTarget: '11.0', // ADR-0006
-  icon: '../../assets/icon.png',
+  icon: '../../assets/watch.png', // P-407: ikona zegarka z projektu 04 (design-spec „Ikona: wpisy konfiguracji”), 1088 × 1088
   frameworks: ['SwiftUI', 'WatchConnectivity', 'StoreKit', 'WatchKit'],
   colors: {
     $accent: kolor('grafit'), grafit: kolor('grafit'), olowek: kolor('olowek'), przyciskTlo: kolor('przyciskTlo'),

@@ -119,7 +119,6 @@
     "brak_wynikow": "Tidak ada proyek bernama “{{zapytanie}}”.",
     "w_toku": "Sedang berjalan",
     "ukonczone": "Selesai",
-    "dni_other": "Sisa {{zostalo}} dari {{limit}} hari berkarya gratis di {{miesiac}}",
     "tytul": "Proyek",
     "nazwa_robocza": "Penghitung dari {{data}}",
     "ostatnia_praca_dzis": "terakhir dikerjakan hari ini",

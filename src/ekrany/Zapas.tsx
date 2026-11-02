@@ -14,7 +14,7 @@ import type { FormularzWloczki as DaneWloczki, RodzajNarzedzia } from '../przypa
 
 const NAZWY_KATEGORII = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 
-/** Pasek ekranu listy: tytuł i „+” (makieta: „‹ Tools … ＋”; powrót gestem systemowym jak „Recently deleted”). */
+/** Pasek ekranu listy: tytuł i „+” (makieta: „‹ Tools … ＋”). Powrót: „‹ Back” (`nav-wstecz`) nad paskiem, jak „Recently deleted” (M1-016). */
 function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: string }): React.ReactElement {
   const st = style(useKolory());
   return (
@@ -29,15 +29,16 @@ function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: st
 
 export type PropsZapasu = {
   t: Tlumacz; stan: StanZapasu; zapytanie: string; filtr: FiltrZapasu;
-  naSzukaj(z: string): void; naFiltr(f: FiltrZapasu): void; naDodaj(): void; naOtworz(id: string): void;
+  naSzukaj(z: string): void; naFiltr(f: FiltrZapasu): void; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void;
 };
-export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj, naOtworz }: PropsZapasu): React.ReactElement {
+export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj, naOtworz, naWstecz }: PropsZapasu): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const sn = styleNarzedzi(k);
   const pustyZapas = s.pusto?.rodzaj === 'zapas';
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} keyboardShouldPersistTaps="handled" testID="zapas-lista">
+      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
       <Naglowek tytul={t('narzedzia.wloczki')} dodaj={t('zapas.dodaj')} naDodaj={naDodaj} testID="zapas-dodaj" />
       {pustyZapas ? (
         <View style={st.pusto}>
@@ -184,12 +185,13 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
   );
 }
 
-export type PropsListyDrutow = { t: Tlumacz; stan: StanDrutow; naDodaj(): void; naOtworz(id: string): void };
-export function ListaDrutow({ t, stan: s, naDodaj, naOtworz }: PropsListyDrutow): React.ReactElement {
+export type PropsListyDrutow = { t: Tlumacz; stan: StanDrutow; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void };
+export function ListaDrutow({ t, stan: s, naDodaj, naOtworz, naWstecz }: PropsListyDrutow): React.ReactElement {
   const k = useKolory();
   const sn = styleNarzedzi(k);
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} testID="druty-lista">
+      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
       <Naglowek tytul={t('narzedzia.druty')} dodaj={t('druty.dodaj')} naDodaj={naDodaj} testID="druty-dodaj" />
       {s.grupy.length === 0 ? <Text style={sn.opis}>{t('druty.pusto')}</Text> : (
         <>

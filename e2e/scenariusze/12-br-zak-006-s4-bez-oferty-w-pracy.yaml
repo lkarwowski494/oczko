@@ -6,15 +6,23 @@ tags:
   - BR-ZAK-006-S4
   - stan-licznika
 ---
-- runFlow:
-    file: subflows/start-czysty.yaml
-    env:
-      TERAZ: "2026-11-10T19:30:00"
+# E2-139-S2: własny start zamiast subflows/start-czysty.yaml (te same kroki + oczkoE2eOknoStraznika, jak w 04, P-358): przy wolnej maszynie trzy stuknięcia Maestro
+# rozciągają się na > 2 s (cz. 3 #139: 2,105 s) i baner serii nie powstaje; okno 6 s + odstęp > 6 s (niżej) przed serią, żeby pierwsze +1 nie weszło do serii.
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "6"
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- assertVisible: { id: "licznik-plus" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - assertNotVisible: { id: "oferty-ekran" }
 - assertNotVisible: "Oczko Pro.*"
-- runFlow: subflows/odstep.yaml
+# odstęp > okno strażnika (6 s), żeby pierwsze +1 nie weszło do serii (baner „Undo 3 rows”, nie 4)
+- extendedWaitUntil: { visible: { id: "e2e-nigdy" }, timeout: 6500, optional: true }
 - tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - assertNotVisible: "Oczko Pro.*"

@@ -4,7 +4,7 @@ import React from 'react';
 import { Arkusz, Przycisk, Tresc } from './Arkusz';
 import type { Tlumacz } from './wspolne';
 
-export type PowodTrybuAwaryjnego = 'petla-startow' | 'wersja_nowsza' | 'uszkodzony';
+export type PowodTrybuAwaryjnego = 'petla-startow' | 'wersja_nowsza' | 'uszkodzony' | 'brak_miejsca';
 export type PropsTrybuAwaryjnego = {
   stan: { powod: PowodTrybuAwaryjnego; licznosciKopii?: string | null };
   t: Tlumacz;
@@ -14,7 +14,7 @@ export type PropsTrybuAwaryjnego = {
   /** Panel buildu E2E (`e2e-sha-bazy`, bez t()); w buildzie wydania brak. */
   panelE2e?: React.ReactNode;
 };
-const TYTUL = { 'petla-startow': 'awaryjny.tytul_petla', wersja_nowsza: 'awaryjny.tytul_nowsza', uszkodzony: 'awaryjny.tytul_uszkodzony' } as const;
+const TYTUL = { 'petla-startow': 'awaryjny.tytul_petla', wersja_nowsza: 'awaryjny.tytul_nowsza', uszkodzony: 'awaryjny.tytul_uszkodzony', brak_miejsca: 'awaryjny.tytul_petla' } as const; // M1-011: brak miejsca to nie uszkodzenie (teksty z systemu 04)
 export function TrybAwaryjny({ stan, t, naZapiszKopie, naSprobujNormalnie, naZglosProblem, panelE2e }: PropsTrybuAwaryjnego): React.ReactElement {
   return (
     <Arkusz tytul={t(TYTUL[stan.powod])} testID="tryb-awaryjny" przyciski={
@@ -24,6 +24,7 @@ export function TrybAwaryjny({ stan, t, naZapiszKopie, naSprobujNormalnie, naZgl
         <Przycisk tekst={t('awaryjny.zglos')} onPress={naZglosProblem} rodzaj="tekstowy" testID="awaryjny-zglos-problem" />
       </>
     }>
+      {stan.powod === 'brak_miejsca' && <Tresc testID="awaryjny-brak-miejsca">{t('wspolne.blad_zapisu_opis')}</Tresc>}
       <Tresc>{t('awaryjny.opis')}</Tresc>
       {stan.licznosciKopii && <Tresc podpis>{t('awaryjny.zapisano')}</Tresc>}
       {stan.licznosciKopii && <Tresc podpis testID="awaryjny-licznosci">{stan.licznosciKopii}</Tresc>}

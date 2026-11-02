@@ -134,8 +134,6 @@
     "brak_wynikow": "Няма проект „{{zapytanie}}“.",
     "w_toku": "В процес",
     "ukonczone": "Завършени",
-    "dni_one": "Остава {{zostalo}} от {{limit}} безплатни дни за ръкоделие през {{miesiac}}",
-    "dni_other": "Остават {{zostalo}} от {{limit}} безплатни дни за ръкоделие през {{miesiac}}",
     "tytul": "Проекти",
     "nazwa_robocza": "Брояч от {{data}}",
     "ostatnia_praca_dzis": "последна работа днес",

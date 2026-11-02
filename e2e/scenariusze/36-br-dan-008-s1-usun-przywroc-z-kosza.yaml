@@ -20,6 +20,7 @@ tags:
 - assertVisible: { id: "projekt-menu" }
 - tapOn: { id: "projekt-menu" }
 - assertVisible: { id: "projekt-usun" }
+- takeScreenshot: 36-menu-usuwania
 - tapOn: { id: "projekt-usun" }
 - assertVisible: "Delete “Harbor”\\?"
 - takeScreenshot: 36-potwierdzenie
@@ -41,9 +42,11 @@ tags:
 - takeScreenshot: 36-kosz
 - tapOn: { id: "kosz-przywroc", index: 0 }
 - assertNotVisible: { id: "kosz-przywroc" }
+- takeScreenshot: 36-kosz-po-przywroceniu
 - tapOn: { id: "nav-wstecz" }
 - assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "projekty-kosz" }
+- takeScreenshot: 36-lista-po-przywroceniu
 - tapOn: "Harbor.*"
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }

@@ -167,10 +167,7 @@
     "kosz_a11y_many": "Eliminati di recente, {{count}} di elementi",
     "kosz_a11y_other": "Eliminati di recente, {{count}} elementi",
     "wiersz": "{{czesc}} · riga {{n}}",
-    "wiersz_cel": "{{czesc}} · riga {{n}} di {{cel}}",
-    "dni_one": "{{zostalo}} su {{limit}} giorno creativo gratuito ancora disponibile in {{miesiac}}",
-    "dni_many": "{{zostalo}} su {{limit}} di giorni creativi gratuiti ancora disponibili in {{miesiac}}",
-    "dni_other": "{{zostalo}} su {{limit}} giorni creativi gratuiti ancora disponibili in {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · riga {{n}} di {{cel}}"
   },
   "historia": {
     "pusto": "Ancora nessuna modifica.",

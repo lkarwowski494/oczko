@@ -2,10 +2,10 @@
 // Partia 5: arkusze projektu (`nowy-projekt`, `czesc`, `licznik`, `notatka`, `narzedzie` z parametrem `projekt`), `znaczenie` (licznik bieżący)
 // i „What’s next?” (`co-dalej`, parametr `czesc`) — FormularzeProjektu.tsx, design-spec „Arkusze” (04 fix-5).
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { FormularzCelu, FormularzNazwy, FormularzPowtorzenia, FormularzPrzypomnienia, FormularzWartosci, ListaPrzypomnien } from '../../src/ekrany/Formularze';
-import { useKolory } from '../../src/ekrany/motyw';
+import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
 import type { WynikEkranu } from '../../src/ekrany/wspolne';
 import { planPrzypomnien } from '../../src/domena/przypomnienia';
 import { LIMIT_DNI_W_MIESIACU } from '../../src/konfiguracja';
@@ -26,23 +26,28 @@ export default function EkranFormularza(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();
   const { rodzaj, projekt: projektId, czesc: czescParam, otworz, przypomnienie: przypomnienieId } = useLocalSearchParams<{ rodzaj: string; projekt?: string; czesc?: string; otworz?: string; przypomnienie?: string }>();
   const router = useRouter();
-  const k = useKolory();
-  const [w, ustaw] = useState<WidokLicznika | null>(null);
+  const [w, ustaw] = useState<WidokLicznika | null | undefined>(undefined); // M1-007: undefined = jeszcze nie odczytany, null = brak widoku albo błąd odczytu
   const [wp, ustawWp] = useState<WidokProjektu | null>(null);
   const [koniec, ustawKoniec] = useState<Extract<NastepnaCzesc, { rodzaj: 'koniec' }> | null>(null);
   const [wybor, ustawWybor] = useState<WyborWloczek | null>(null);
-  useEffect(() => { void licznik.widok().then(ustaw); }, [licznik]);
+  const [blad, ustawBlad] = useState(false); // M1-007: odczyt zapasu, projektu albo części `{ ok: false }` albo wyjątek → błąd z „Try again”, nie pusty arkusz
+  const [proba, ustawProbe] = useState(0); // M1-007: „Try again” czyta wszystko od nowa
+  useEffect(() => { void licznik.widok().then(ustaw, () => ustaw(null)); }, [licznik, proba]);
   useFocusEffect(useCallback(() => { // zapas odświeżany po powrocie z „Add yarn” (07-jakosc-001)
-    if (rodzaj === 'wloczki' && projektId) void wyborWloczek(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWybor(r.wartosc); });
-  }, [kontener, rodzaj, projektId]));
-  useEffect(() => { if (projektId) void widokProjektu(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWp(r.wartosc); }); }, [kontener, projektId]);
+    if (rodzaj === 'wloczki' && projektId) void wyborWloczek(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWybor(r.wartosc); else ustawBlad(true); }, () => ustawBlad(true));
+  }, [kontener, rodzaj, projektId, proba]));
+  useEffect(() => { if (projektId) void widokProjektu(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWp(r.wartosc); else ustawBlad(true); }, () => ustawBlad(true)); }, [kontener, projektId, proba]);
   useEffect(() => {
     const id = licznik.biezacy();
-    if (rodzaj === 'co-dalej' && id) void nastepnaCzesc(kontener.z, { licznikId: id }).then((r) => { if (r.ok && r.wartosc.rodzaj === 'koniec') ustawKoniec(r.wartosc); });
-  }, [kontener, licznik, rodzaj]);
+    if (rodzaj === 'co-dalej' && id) {
+      void nastepnaCzesc(kontener.z, { licznikId: id }).then((r) => { if (!r.ok) ustawBlad(true); else if (r.wartosc.rodzaj === 'koniec') ustawKoniec(r.wartosc); }, () => ustawBlad(true));
+    }
+  }, [kontener, licznik, rodzaj, proba]);
   const z = kontener.z, t = kontener.j.t;
   const anuluj = () => router.back();
-  const pusty = <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+  const pusty = (bladOdczytu: boolean) => (
+    <StanWczytywania stan={bladOdczytu ? 'blad' : 'ladowanie'} t={t} przedrostek="formularz" naPonow={() => { ustawBlad(false); ustaw(undefined); ustawProbe((n) => n + 1); }} />
+  );
   // Podgląd celu w arkuszu terminu (RD-15): liczba rzędów na dziś; „osiągnięty” = 0; bez celów części = null.
   const podgladCelu = useCallback(async (d: string): Promise<number | null> => {
     const r = projektId ? await podgladTerminu(kontener.z, { projektId, terminDzien: d }) : null;
@@ -60,7 +65,7 @@ export default function EkranFormularza(): React.ReactElement {
   const idLicznika = (x: unknown): string | undefined => (typeof x === 'object' && x !== null && 'licznikId' in x && typeof x.licznikId === 'string' ? x.licznikId : undefined);
   switch (rodzaj) {
     case 'wloczki':
-      if (!wybor || !projektId) return pusty;
+      if (!wybor || !projektId) return pusty(blad || !projektId);
       return <FormularzWloczekProjektu t={t} zapas={wybor.zapas} poczatkowe={wybor.wybrane} naAnuluj={anuluj} naDodajWloczke={() => router.push('/wloczka')}
         naZapisz={async (ids) => { const r = await przypiszWloczki(z, { projektId, wloczkaIds: ids }); if (!r.ok) return { ok: false, powod: 'zapis' }; router.back(); return { ok: true, wartosc: undefined }; }} />;
     case 'nowy-projekt':
@@ -69,13 +74,13 @@ export default function EkranFormularza(): React.ReactElement {
         return idLicznika(c); // nowy projekt otwiera licznik pierwszej części (BR-PRJ-001, U-5)
       })} />;
     case 'co-dalej':
-      if (!koniec) return pusty;
+      if (!koniec) return pusty(blad);
       return <CoDalej t={t} czesc={koniec.czesc} projekt={koniec.projekt} celDrugiej={koniec.celDrugiej} naNieTeraz={anuluj}
         naDruga={() => void wProjekcie(() => dodajCzescPara(z, { czescId: koniec.czescId, nazwa: koniec.czesc }), idLicznika)}
         naNowa={() => router.replace({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'czesc', projekt: w?.projektId ?? '', otworz: '1' } })} />;
   }
   if (projektId && ['czesc', 'licznik', 'notatka', 'narzedzie', 'termin'].includes(rodzaj)) {
-    if (!wp) return pusty;
+    if (!wp) return pusty(blad);
     const nazwa = wp.nienazwany ? (w ? licznik.nazwaProjektu(w) : wp.nazwa) : wp.nazwa;
     switch (rodzaj) {
       case 'czesc':
@@ -96,7 +101,7 @@ export default function EkranFormularza(): React.ReactElement {
           naZapisz={(d) => wProjekcie(() => ustawTermin(z, { projektId: wp.id, terminDzien: d }))} />;
     }
   }
-  if (!w) return pusty;
+  if (!w) return pusty(w === null); // M1-007: null = widok licznika nieodczytany
   async function zapisz(f: () => Promise<Zapis>): Promise<WynikEkranu<void>> {
     const r = await f();
     if (!r.ok) return { ok: false, powod: r.powod === 'limit' ? 'limit' : 'zapis' }; // limit dni: formularz wartości pokazuje komunikat limitu (07-jakosc-024)
@@ -144,7 +149,7 @@ export default function EkranFormularza(): React.ReactElement {
         naDodaj={() => router.replace({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'przypomnienie' } })} />;
     case 'przypomnienie-edycja': {
       const p = w.plany.find((x) => x.id === przypomnienieId);
-      if (!p) return pusty;
+      if (!p) return pusty(true);
       return <FormularzPrzypomnienia t={t} naAnuluj={anuluj} stan={{ tekst: p.tekst, od: p.od, co: p.co, razy: p.razy }}
         podglad={(plan) => { const r = planPrzypomnien(plan); return r.ok ? r : { ok: false, powod: 'bledne_dane' }; }}
         naZapisz={(plan) => zapisz(() => zmienPrzypomnienie(z, { id: p.id, ...plan }))}
@@ -154,6 +159,6 @@ export default function EkranFormularza(): React.ReactElement {
         ])} />;
     }
     default:
-      return <View style={{ flex: 1, backgroundColor: k.arkusz }} />;
+      return pusty(true); // M1-007: nieznany rodzaj formularza — błąd z wyjściem, nie pusty arkusz
   }
 }

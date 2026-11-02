@@ -57,7 +57,7 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
       <Tresc podpis>{t('ukonczenie.okres', { okres: s.okres })}</Tresc>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: odstep.s }}>
         <Text style={{ ...typografia.liczba, color: k.grafit }}>{String(s.rzedy)}</Text>
-        <Tresc podpis>{t('ukonczenie.jednostka')}</Tresc>
+        <Tresc podpis>{t('ukonczenie.jednostka', { count: s.rzedy })}</Tresc>
       </View>
       <Tresc podpis>{podsumowanie}</Tresc>
       {s.zdjecie && <Image source={{ uri: s.zdjecie }} accessible accessibilityRole="image" accessibilityLabel={t('ukonczenie.zdjecie', { nazwa: s.nazwa })} style={st.zdjecie} />}

@@ -129,8 +129,7 @@
     "kosz": "Đã xóa gần đây",
     "kosz_a11y_other": "Đã xóa gần đây, {{count}} mục",
     "wiersz": "{{czesc}} · hàng {{n}}",
-    "wiersz_cel": "{{czesc}} · hàng {{n}}/{{cel}}",
-    "dni_other": "Còn {{zostalo}} trong {{limit}} ngày đan móc miễn phí ở {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · hàng {{n}}/{{cel}}"
   },
   "historia": {
     "pusto": "Chưa có thay đổi nào.",

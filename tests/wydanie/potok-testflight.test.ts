@@ -2,7 +2,9 @@
 // token i odpowiedzi App Store Connect API. Kroki macOS (archiwum, eksport, kontrola .ipa) sprawdza dopiero przebieg dowodowy `bez_wysylki`.
 import { generateKeyPairSync, createPublicKey, verify } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { parse } from '../jakosc/jakosc-ios-pomoc';
 
 // Jest nie ładuje .mjs (jak w tests/jakosc: skrypty przez node). Funkcja wołana w osobnym procesie, wynik albo błąd jako JSON;
 // pierwszy argument „test” zajmuje argv[1], żeby moduł nie uruchomił swojego polecenia.
@@ -38,13 +40,13 @@ describe('numer buildu (ADR-0014: run_number × 10 + run_attempt + przesunięcie
 describe('bramka: zielony „Jakość · iOS” na tym commicie (D5a)', () => {
   const run = (id: number, status: string, conclusion: string | null) => ({ id, status, conclusion });
   const job = (name: string, conclusion: string) => ({ name, conclusion });
-  const zadaniaOk = [job('swift-test', 'success'), job('build', 'success'), job('e2e (część 1)', 'success'), job('e2e (część 3)', 'skipped')];
+  const zadaniaOk = [job('swift-test', 'success'), job('build', 'success'), job('e2e (część 1, iphone)', 'success'), job('e2e (część 3, iphone)', 'skipped')];
 
   test('zielony przebieg z zielonymi zadaniami: ok', () => {
     expect(ocenBramke([run(5, 'completed', 'success')], { 5: zadaniaOk })).toEqual({ wynik: 'ok', przebieg: 5 });
   });
   test('przebieg zielony, ale e2e czerwone pod continue-on-error ([e2e-pelny]): nie ok', () => {
-    const z = [...zadaniaOk, job('e2e (część 2)', 'failure')];
+    const z = [...zadaniaOk, job('e2e (część 2, iphone)', 'failure')];
     expect(ocenBramke([run(5, 'completed', 'success')], { 5: z })).toMatchObject({ wynik: 'czerwony', przebieg: 5 });
   });
   test('przebieg bez zadań e2e (np. tylko swift-test): nie ok', () => {
@@ -57,6 +59,57 @@ describe('bramka: zielony „Jakość · iOS” na tym commicie (D5a)', () => {
   });
   test('jeden zielony wystarcza obok starszego czerwonego (ponowienie ręczne, P-091 10a)', () => {
     expect(ocenBramke([run(4, 'completed', 'failure'), run(5, 'completed', 'success')], { 5: zadaniaOk })).toEqual({ wynik: 'ok', przebieg: 5 });
+  });
+});
+
+// M1-audytor-generalny-003 (07-jakosc-001): nazwy zadań z workflowu, nie wymyślone. Zadania `jakosc-ios.yml` rozwinięte z macierzy
+// (nazwa z szablonu `name`, wykluczenia `exclude`) i z flagą `continue-on-error` (stała albo wyrażenie po `matrix.urzadzenie`).
+type ZadanieWf = { name?: string; 'continue-on-error'?: unknown; strategy?: { matrix?: Record<string, unknown> } };
+function zadaniaJakosciIos(): { name: string; informacyjne: boolean }[] {
+  const wf = parse(readFileSync(join(__dirname, '../../.github/workflows/jakosc-ios.yml'), 'utf8')) as unknown as { jobs: Record<string, ZadanieWf> };
+  return Object.entries(wf.jobs).flatMap(([id, j]) => {
+    const m = j.strategy?.matrix;
+    if (!m) return [{ name: j.name ?? id, informacyjne: j['continue-on-error'] === true }];
+    const { exclude = [], include, ...osie } = m as { exclude?: Record<string, unknown>[]; include?: unknown };
+    if (include) throw new Error(`${id}: matrix.include nieobsługiwane w teście kontraktu`);
+    let kombinacje: Record<string, unknown>[] = [{}];
+    for (const [k, wartosci] of Object.entries(osie)) kombinacje = kombinacje.flatMap((c) => (wartosci as unknown[]).map((v) => ({ ...c, [k]: v })));
+    kombinacje = kombinacje.filter((c) => !exclude.some((e) => Object.entries(e).every(([k, v]) => c[k] === v)));
+    return kombinacje.map((c) => {
+      const name = (j.name ?? id).replace(/\$\{\{\s*matrix\.(\w+)\s*\}\}/g, (_x, k: string) => String(c[k]));
+      const coe = j['continue-on-error'];
+      const wyr = typeof coe === 'string' ? /^\$\{\{\s*matrix\.(\w+) == '(\w+)'\s*\}\}$/.exec(coe) : null;
+      if (typeof coe === 'string' && !wyr) throw new Error(`${id}: continue-on-error „${coe}” nieobsługiwane w teście kontraktu`);
+      return { name, informacyjne: coe === true || (wyr !== null && c[wyr[1]] === wyr[2]) };
+    });
+  });
+}
+
+describe('bramka na nazwach zadań z jakosc-ios.yml (M1-003, kontrakt)', () => {
+  const zadania = zadaniaJakosciIos();
+  const run = { id: 9, status: 'completed', conclusion: 'success' };
+  test('workflow ma zadania e2e iPhone 1–3, iPad 1 (informacyjnie) i eksperymenty-wzoru (informacyjnie)', () => {
+    expect(zadania.filter((z) => z.name.startsWith('e2e')).map((z) => `${z.name}${z.informacyjne ? ' [inf]' : ''}`).sort()).toEqual(
+      ['e2e (część 1, ipad) [inf]', 'e2e (część 1, iphone)', 'e2e (część 2, iphone)', 'e2e (część 3, iphone)']);
+    expect(zadania.find((z) => z.name === 'eksperymenty-wzoru')?.informacyjne).toBe(true);
+  });
+  test('wszystkie wymagane zielone, informacyjne (iPad, eksperymenty) z failure pod continue-on-error → ok', () => {
+    const z = zadania.map((j) => ({ name: j.name, conclusion: j.informacyjne ? 'failure' : 'success' }));
+    expect(ocenBramke([run], { 9: z })).toEqual({ wynik: 'ok', przebieg: 9 });
+  });
+  test('czerwony iPhone (część 2) → czerwony z nazwą zadania', () => {
+    const z = zadania.map((j) => ({ name: j.name, conclusion: j.name === 'e2e (część 2, iphone)' ? 'failure' : 'success' }));
+    expect(ocenBramke([run], { 9: z })).toMatchObject({ wynik: 'czerwony', powod: expect.stringContaining('e2e (część 2, iphone): failure') });
+  });
+  test('każde wymagane zadanie z failure → czerwony (bramka nie pomija niczego poza continue-on-error)', () => {
+    for (const w of zadania.filter((j) => !j.informacyjne)) {
+      const z = zadania.map((j) => ({ name: j.name, conclusion: j === w ? 'failure' : 'success' }));
+      expect([w.name, ocenBramke([run], { 9: z })]).toMatchObject([w.name, { wynik: 'czerwony' }]);
+    }
+  });
+  test('tylko iPad e2e zielony (iPhone pominięte) → czerwony: brak zielonego zadania e2e iPhone', () => {
+    const z = zadania.map((j) => ({ name: j.name, conclusion: /iphone/.test(j.name) ? 'skipped' : 'success' }));
+    expect(ocenBramke([run], { 9: z })).toMatchObject({ wynik: 'czerwony', powod: expect.stringContaining('brak zielonego zadania e2e') });
   });
 });
 

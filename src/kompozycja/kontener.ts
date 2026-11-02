@@ -11,13 +11,13 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszAtomowo, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { utworzI18n } from '../i18n/i18n';
-import { ZASOBY } from '../i18n/slowniki';
+import { ZASOBY, ZASOBY_PSEUDO } from '../i18n/slowniki';
 import type { PreferencjaJezyka } from '../i18n/jezyki';
 import { magazynJezyka } from '../przypadki-uzycia/jezyk';
-import { dziennikUrzadzenia } from '../platforma/dziennik-plus';
+import { dziennikUrzadzenia, skrotPliku } from '../platforma/dziennik-plus';
 import { ekranAktywny } from '../platforma/ekran-aktywny';
 import { haptyka } from '../platforma/haptyka';
 import { identyfikatory } from '../platforma/identyfikatory';
@@ -62,7 +62,7 @@ async function urzadzenie(katalog: string): Promise<string> {
     if (/^[0-9a-f-]{36}$/i.test(t)) return t;
   }
   const nowy = identyfikatory.nowy();
-  zapiszTekst(plik, nowy);
+  zapiszAtomowo(plik, nowy); // M1-026: przerwany zapis nie zostawia uciętego identyfikatora
   return nowy;
 }
 
@@ -77,8 +77,8 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   if (!b.ok) return b;
   const baza = b.wartosc;
   const zegar = zegarAplikacji();
-  // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem.
-  const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY });
+  // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem; pseudo en-XA tylko z EXPO_PUBLIC_PSEUDO=1 (M1-051).
+  const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
   const jezyk = () => i18n.jezyk();
   const id = await urzadzenie(katalogDanych);
   // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep nie istnieje (sprawdz-ipa).
@@ -87,12 +87,13 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms);
   // Pamięć uprawnień Pro (KP-06): plik obok bazy, poza bazą i archiwum.
   const plikPro = polacz(katalogDanych, 'pamiec-pro.json');
-  const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszTekst(plikPro, t) }, () => zegar.teraz().ms);
+  const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszAtomowo(plikPro, t) }, () => zegar.teraz().ms);
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
     straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
-    magazyn: utworzMagazyn(s.pliki), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
+    // magazyn: SHA-256 natywnie (P-130, M1-017), nie TS na wątku JS
+    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),
@@ -110,7 +111,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   } : null;
   const z: ZaleznosciAplikacji = {
     ...z0, czasWTle: czasWTle(), ...(silnik ? { synchronizacja: silnik } : {}),
-    archiwum: utworzArchiwum({ baza, magazyn: z0.magazyn, zegar, katalogi: z0.katalogi, migruj: z0.migruj, aplikacja: 'oczko' }),
+    archiwum: utworzArchiwum({ baza, magazyn: z0.magazyn, zegar, katalogi: z0.katalogi, migruj: z0.migruj, aplikacja: 'oczko', skrot: skrotPliku }),
   };
   // Partia 6: App Group (ADR-0011 fix-7) — skrzynka rozszerzenia i migawka projektów; bez grupy w podpisie (build symulatora) obie są puste,
   // poza E2E ze zleceniem testowym: katalog zastępczy w danych aplikacji (P-266, tryb-e2e.ts).
