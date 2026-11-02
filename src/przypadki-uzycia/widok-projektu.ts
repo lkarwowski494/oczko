@@ -10,6 +10,7 @@ import { postepProcent, type CelDnia } from '../domena/postep';
 import type { NarzedzieProjektu } from '../domena/stany';
 import { dzienProjektu } from '../dane/repozytoria/kalendarz';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
+import { czytajMiejsce } from '../domena/miejsce';
 import { polozenieZnacznika } from '../domena/znacznik-wzoru';
 import { znacznikWzoru } from '../dane/repozytoria/wzory';
 import { odczytajUstawienie } from '../dane/repozytoria/ustawienia';
@@ -30,7 +31,7 @@ export type WidokProjektu = {
   ukonczonoDzien: string | null; // dzień lokalny ukończenia (F-51, `ukonczono_dzien`); w toku null
   probka: ProbkaProjektu | null;  // U-10: `projekt.probka` {oczka, na_cm}; brak albo zły zapis = null
   /** Miejsce we wzorze (F-18, BR-PRJ-005/S1): strona (od 1) i rząd znacznika ostatnio oglądanego wzoru, a bez niego pierwszego ze znacznikiem; brak znacznika albo rząd przed schematem = null. */
-  miejsceWzoru: { strona: number; rzad: number } | null;
+  miejsceWzoru: { strona: number; rzad: number | null } | null; // rzad null: znana tylko strona (ostatnie_miejsce), rzędu nie zgadujemy (aneks 04, poz. 3)
   /** Włóczki przypisane do projektu (wiersz „Yarn” w Details, 07-jakosc-001), po nazwie; także usunięte do kosza (historia zużycia zostaje). */
   wloczki: { id: string; nazwa: string }[];
 };
@@ -110,7 +111,9 @@ async function miejsceWzoruProjektu(tx: PortBazy, projektId: string): Promise<Wi
     const p = l ? polozenieZnacznika(zn, liczba(l, 'wartosc')) : null;
     if (p?.ok && !p.wartosc.przedSchematem) return { strona: p.wartosc.strona + 1, rzad: p.wartosc.rzad };
   }
-  return null;
+  // Brak znacznika z rzędem: zapisana strona ostatnio oglądanego wzoru tego projektu → samo „Page N” (aneks 04, poz. 3; strona od 0 jak `znacznik.strona`).
+  const zapisane = czytajMiejsce(m);
+  return zapisane?.wzor && ids.includes(zapisane.wzor) && zapisane.strona !== undefined ? { strona: zapisane.strona + 1, rzad: null } : null;
 }
 /** Podgląd celu na dziś dla wybranej daty w arkuszu „Done by” (RD-15, design-spec) — odczyt bez zapisu; bez celów części → null. */
 export function podgladTerminu(z: Zaleznosci, w: { projektId: string; terminDzien: string }): Promise<Wynik<CelDnia | null>> {
