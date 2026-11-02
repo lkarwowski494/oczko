@@ -141,7 +141,7 @@ describe('M1-084 (DEC-31 b): ostrzeżenie o braku miejsca przy otwarciu wzoru', 
   test(`wolne miejsce poniżej ${RYSUNEK_MIEJSCE_MIN_MB} MB → jedno ostrzeżenie przy otwarciu`, async () => {
     await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+    expect(alert.mock.calls[0]?.[0]).toBe('Your device is almost full'); // M1-110 (DEC-28 a): tytuł ostrzeżenia z kluczy 04 zamiast zdania błędu
     await zdarzenie('onStrona', { strona: 1, stron: 2 });
     expect(alert).toHaveBeenCalledTimes(1);
   });
@@ -153,6 +153,14 @@ describe('M1-084 (DEC-31 b): ostrzeżenie o braku miejsca przy otwarciu wzoru', 
 });
 
 describe('M1-110 (04-studio-projektowe-515): ostrzeżenie o miejscu i błąd natywny przy otwarciu — najwyżej jeden alert', () => {
+  test('ostrzeżenie ma własny tytuł i opis (DEC-28 a: wzor.miejsce_*), nie zdanie błędu wspolne.blad_zapisu_opis', async () => {
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
+    expect(alert).toHaveBeenCalledTimes(1);
+    const [tytul, opis, przyciski] = alert.mock.calls[0] as [string, string, { text: string }[]];
+    expect(tytul).toBe('Your device is almost full');
+    expect(opis).toBe('Highlights and drawings you add may not be saved. Free some space before you draw.');
+    expect(przyciski.map((p) => p.text)).toEqual(['OK']);
+  });
   test('wolne poniżej progu, potem onBladZapisu z kolejki widoku → Alert.alert raz (ostrzeżenie wystarcza do udanego zapisu)', async () => {
     await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
     expect(alert).toHaveBeenCalledTimes(1);

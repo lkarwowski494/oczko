@@ -22,6 +22,6 @@ export async function ostrzezenieMiejsca(magazyn: Pick<MagazynPlikow, 'wolneMiej
   let wolne: number;
   try { wolne = await magazyn.wolneMiejsce(); } catch { return false; }
   if (!(wolne < RYSUNEK_MIEJSCE_MIN_MB * 1024 * 1024) || !mozna()) return false;
-  Alert.alert(t('wspolne.blad_zapisu_opis'), undefined, [{ text: t('wspolne.ok') }]);
+  Alert.alert(t('wzor.miejsce_tytul'), t('wzor.miejsce_opis'), [{ text: t('wspolne.ok') }]); // M1-110, DEC-28 a: ostrzeżenie przed działaniem, nie zdanie błędu
   return true;
 }
