@@ -5,6 +5,12 @@ appId: com.apps4brew.knitting
 name: "podprzepływ: część Back z celem"
 ---
 - tapOn: { id: "licznik-projekt" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "projekt-dodaj" } }
+    commands:
+      - takeScreenshot: opoznienie-ekran-projektu
+      - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: { id: "projekt-dodaj" }
 - tapOn: { id: "projekt-dodaj" }
 - assertVisible: { id: "projekt-dodaj-czesc" }

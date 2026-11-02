@@ -75,5 +75,11 @@ tags:
 - assertVisible: { id: "oferty-plan-dozywotni" }
 - takeScreenshot: 07-plany-z-okna
 - tapOn: { id: "oferty-nie-teraz" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "projekty-lista" } }
+    commands:
+      - takeScreenshot: opoznienie-lista-po-ofertach
+      - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 60000 }
 - assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
