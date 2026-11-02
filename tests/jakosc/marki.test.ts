@@ -18,9 +18,19 @@ function repo(pliki: Record<string, string>, stan: Record<string, number> = {}):
   for (const [p, t] of Object.entries(wszystkie)) { mkdirSync(dirname(join(k, p)), { recursive: true }); writeFileSync(join(k, p), t); }
   return k;
 }
-const uruchom = (k: string, ...arg: string[]) => spawnSync('node', [MARKI, '--katalog', k, ...arg], { encoding: 'utf8' });
+/** Środowisko procesu potomnego bez zmiennych repozytorium git: hook pre-push z git worktree podaje `GIT_DIR` (P-362), a skrypt woła `git ls-files` w katalogu tymczasowym
+ * i wtedy listowałby pliki repozytorium z hooka zamiast katalogu testu. Dlaczego tu: test ma być niezależny od środowiska, z którego go uruchomiono (JAK-05). */
+const ZMIENNE_GIT = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_PREFIX', 'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_NAMESPACE'];
+const envBezGit = (): NodeJS.ProcessEnv => { const e = { ...process.env }; for (const z of ZMIENNE_GIT) delete e[z]; return e; };
+const uruchom = (k: string, ...arg: string[]) => spawnSync('node', [MARKI, '--katalog', k, ...arg], { encoding: 'utf8', env: envBezGit() });
 
 describe('marki.mjs: nazwy konkurencji (P-107, P-117 Q2a)', () => {
+  test('P-362 środowisko procesów potomnych jest bez zmiennych repozytorium git (hook z git worktree podaje GIT_DIR)', () => {
+    const stare = process.env.GIT_DIR;
+    process.env.GIT_DIR = join(KORZEN, '.git');
+    try { const e = envBezGit(); for (const z of ZMIENNE_GIT) expect(e[z]).toBeUndefined(); expect(e.PATH).toBeDefined(); }
+    finally { if (stare === undefined) delete process.env.GIT_DIR; else process.env.GIT_DIR = stare; }
+  });
   test('F07-05 repo zgodne ze stanem zapadki: bez nowych plików z nazwami i bez wzrostu (kod 0)', () => {
     const w = uruchom(KORZEN);
     expect(w.stdout).toContain('naruszeń 0');
