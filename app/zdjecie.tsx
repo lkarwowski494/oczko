@@ -7,6 +7,7 @@ import { PodgladZdjec, type Miniatura } from '../src/ekrany/Zdjecia';
 import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { systemCzarny } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zapisano } from '../src/kompozycja/po-zapisie';
 import { usunZdjecie, zdjecia } from '../src/przypadki-uzycia/zdjecia';
 import { zaleznosciObrazu } from '../src/kompozycja/obrazy-aplikacji';
 import { zdjecieBezMetadanych } from '../src/kompozycja/zdjecie-bez-metadanych';
@@ -14,7 +15,8 @@ import { usunPlik } from '../src/dane/pliki/system';
 import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
 
 export default function EkranZdjecia(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener } = aplikacja;
   const { projekt, i } = useLocalSearchParams<{ projekt: string; i?: string }>();
   const router = useRouter();
   const z = kontener.z, t = kontener.j.t;
@@ -37,7 +39,7 @@ export default function EkranZdjecia(): React.ReactElement {
         await udostepnijPlik(czysty.sciezka, 'image/jpeg');
         usunPlik(czysty.sciezka);
       })()}
-      naUsun={(id) => void usunZdjecie(z, { zdjecieId: id }).then(async (r) => { if (r.ok) await wczytaj(); })}
+      naUsun={(id) => void usunZdjecie(z, { zdjecieId: id }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(); })} // M1-006
       potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])} />
   );
 }

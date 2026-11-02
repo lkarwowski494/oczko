@@ -23,6 +23,7 @@ import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
 import { dzienLokalny } from '../../src/domena/postep';
 import { KOSZ_DNI } from '../../src/konfiguracja';
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
+import { zapisano } from '../../src/kompozycja/po-zapisie';
 import { Bezpieczny } from '../../src/kompozycja/Bezpieczny';
 import { krotkaData, stanProjektu } from '../../src/kompozycja/projekt';
 import { projektyDoSkrzynki } from '../../src/kompozycja/projekty';
@@ -35,7 +36,8 @@ import { widokProjektu, type WidokProjektu } from '../../src/przypadki-uzycia/wi
 import { sesjeProjektu, type SesjaNaEkranie } from '../../src/przypadki-uzycia/sesja';
 import { stanCzasu } from '../../src/kompozycja/sesje';
 export default function EkranProjektu(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik } = aplikacja;
   const siec = useStanSieci(kontener.porty.siec); // ADR-0031: film otwiera się według stanu sieci z portu (BR-WZR-007 S4)
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
@@ -83,7 +85,7 @@ export default function EkranProjektu(): React.ReactElement {
     return (
       <Bezpieczny>
         <ArkuszFilmu t={t} poczatek={film} naAnuluj={() => ustawArkuszFilmu(false)}
-          naZapisz={(f) => void kontener.wzor.k.zapiszFilm(w.id, f).then(async (r) => { if (r.ok) { ustawArkuszFilmu(false); await wczytaj(); } })} />
+          naZapisz={(f) => void kontener.wzor.k.zapiszFilm(w.id, f).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszFilmu(false); await wczytaj(); } })} /* M1-006: błąd → alert, arkusz zostaje */ />
       </Bezpieczny>
     );
   }
@@ -102,7 +104,7 @@ export default function EkranProjektu(): React.ReactElement {
     const pomiar = paneleE2e;
     pomiar?.poczatekOperacji('zdjecie');
     let czysty: Awaited<ReturnType<typeof zdjecieBezMetadanych>> = null;
-    let zapisano = false;
+    let zdjecieZapisane = false;
     try {
       const zmierz = <T,>(f: () => Promise<T>): Promise<T> => (pomiar ? pomiar.zmierzOperacje('przekodowanie', f) : f());
       czysty = await zmierz(() => zdjecieBezMetadanych(sciezka, zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy))).catch(() => null);
@@ -110,14 +112,14 @@ export default function EkranProjektu(): React.ReactElement {
       const r = await dodajZdjecie(z, { cel: { projektId: w.id }, plik: czysty });
       pomiar?.koniecOperacji('zdjecie', r.ok);
       if (!r.ok) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
-      zapisano = true;
+      zdjecieZapisane = true;
     } catch {
       pomiar?.koniecOperacji('zdjecie', false);
       Alert.alert(...alertBleduZapisu(t, 'formularz')); // wyjątek spoza `Wynik` (kolejka, magazyn): zapis nieudany nie wygląda na udany (DEV-10)
     } finally {
       if (czysty) usunPlik(czysty.sciezka);
     }
-    if (zapisano) await (pomiar ? pomiar.zmierzOperacje('projekt', wczytaj) : wczytaj()); // zdjęcie jest zapisane: błąd odczytu to nie „nie zapisano”
+    if (zdjecieZapisane) await (pomiar ? pomiar.zmierzOperacje('projekt', wczytaj) : wczytaj()); // zdjęcie jest zapisane: błąd odczytu to nie „nie zapisano”
   };
   const wybierzZdjecie = async (zrodlo: 'aparat' | 'biblioteka') => {
     const r = await wybieraczZdjec().wybierz(zrodlo);
@@ -154,7 +156,7 @@ export default function EkranProjektu(): React.ReactElement {
       naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid).then(wczytaj)}
       film={film
         ? <WierszFilmu film={film} siec={siec} t={t} system={systemAplikacji}
-            naZmien={() => ustawArkuszFilmu(true)} naUsun={() => void kontener.wzor.k.usunFilm(w.id).then(wczytaj)} />
+            naZmien={() => ustawArkuszFilmu(true)} naUsun={() => void kontener.wzor.k.usunFilm(w.id).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(); })} />
         : <DodajFilm t={t} naDodaj={() => ustawArkuszFilmu(true)} />} />
   );
   const licznikW = (lid: string) => stan.czesci.flatMap((c) => c.liczniki ?? []).find((l) => l.id === lid);
@@ -170,20 +172,20 @@ export default function EkranProjektu(): React.ReactElement {
         naDodajCzesc={() => formularz('czesc')} naDodajLicznik={() => formularz('licznik')}
         naNotatka={() => formularz('notatka')} naNarzedzie={() => formularz('narzedzie')} naTermin={() => formularz('termin')} naWloczka={() => formularz('wloczki')}
         naEdytuj={() => ustawEdycje(true)} naKoniecEdycji={() => ustawEdycje(false)}
-        naDataUkonczenia={(dzien) => void zmienDateUkonczenia(z, { projektId: w.id, ukonczonoDzien: dzien }).then(async (r) => { if (r.ok) await wczytaj(); })}
+        naDataUkonczenia={(dzien) => void zmienDateUkonczenia(z, { projektId: w.id, ukonczonoDzien: dzien }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(); })}
         naWznow={() => void wznowProjekt(z, { projektId: w.id }).then(async (r) => {
-          if (!r.ok) return;
+          if (!zapisano(aplikacja, r)) return; // M1-006: nieudany zapis → alert błędu zapisu
           await licznik.poZmianie();
           oglos(t('projekt.wznowiono', { nazwa: stan.nazwa }));
           await wczytaj();
         })}
         naZrobTakaSama={() => potwierdz(t('projekt.kopia_tytul', { nazwa: stan.nazwa }), t('projekt.kopia_opis'), t('projekt.kopia_potwierdz'), async () => {
           const r = await zrobPonownie(z, { projektId: w.id }); // nazwa kopii = nazwa oryginału (04-fix5-N1, decyzja 08 w raporcie)
-          if (r.ok) router.replace({ pathname: '/projekt/[id]', params: { id: r.wartosc.projektId } });
+          if (zapisano(aplikacja, r)) router.replace({ pathname: '/projekt/[id]', params: { id: r.wartosc.projektId } });
         }, false)}
         naUsunProjekt={() => potwierdz(t('usun.tytul', { nazwa: stan.nazwa }), t('usun.projekt_opis', { data: doDnia() }), t('usun.projekt'), async () => {
           const r = await usunProjekt(z, { projektId: w.id });
-          if (!r.ok) return;
+          if (!zapisano(aplikacja, r)) return;
           await licznik.poUsunieciu(w.id);
           oglos(t('usun.ogloszenie', { nazwa: stan.nazwa }));
           router.replace('/projekty');
@@ -192,13 +194,13 @@ export default function EkranProjektu(): React.ReactElement {
           const c = czesc(cid);
           if (!c) return;
           potwierdz(t('usun.tytul', { nazwa: c.nazwa }), t('usun.czesc_opis', { count: c.liczniki.length, data: doDnia() }), t('usun.czesc'), async () => {
-            if ((await usunCzesc(z, { czescId: cid })).ok) await poUsunieciu(c.nazwa);
+            if (zapisano(aplikacja, await usunCzesc(z, { czescId: cid }))) await poUsunieciu(c.nazwa);
           });
         }}
         naUsunLicznik={(lid) => {
           const nazwa = licznikW(lid)?.nazwa ?? '';
           potwierdz(t('usun.tytul', { nazwa }), t('usun.licznik_opis', { data: doDnia() }), t('usun.licznik'), async () => {
-            if ((await usunLicznik(z, { licznikId: lid })).ok) await poUsunieciu(nazwa);
+            if (zapisano(aplikacja, await usunLicznik(z, { licznikId: lid }))) await poUsunieciu(nazwa);
           });
         }}
       />

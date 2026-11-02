@@ -1,0 +1,28 @@
+// M1-006 (Aneks P2 poz. 5, P-368): nieudany zapis poza licznikiem nie kończy się po cichu. Alert „Couldn’t save your changes”
+// (`alertBleduZapisu(t, 'formularz')`) i haptyka `bladZapisu`, gdy w preferencjach włączone są wibracje (jak licznik, ADR-0029).
+// Tylko powody zapisu (`zapis`, `brak_miejsca`): opis alertu mówi o braku miejsca, więc np. `zablokowany` albo `niedozwolone_przejscie` go nie dostają.
+import { Alert } from 'react-native';
+import type { Powod, Wynik } from '../domena/bledy';
+import type { Haptyka } from '../domena/porty';
+import { alertBleduZapisu } from '../ekrany/blad-zapisu';
+import type { Tlumacz } from '../ekrany/wspolne';
+
+/** To, co trasa ma z `useAplikacja()`: tłumacz, port haptyki i migawka preferencji. */
+export type ZrodloBleduZapisu = { kontener: { j: { t: Tlumacz }; porty: { haptyka: Haptyka } }; preferencje: { stan(): { wibracje: boolean } } };
+
+const POWODY_ZAPISU: readonly Powod[] = ['zapis', 'brak_miejsca'];
+
+/** M1-006: przy błędzie zapisu alert i haptyka; `true`, gdy komunikat został pokazany (inny powód: nic, `false`). */
+export function zglosBladZapisu(a: ZrodloBleduZapisu, powod: Powod): boolean {
+  if (!POWODY_ZAPISU.includes(powod)) return false;
+  if (a.preferencje.stan().wibracje) a.kontener.porty.haptyka.zagraj('bladZapisu');
+  Alert.alert(...alertBleduZapisu(a.kontener.j.t, 'formularz'));
+  return true;
+}
+
+/** M1-006: `true`, gdy zapis się udał; przy błędzie zapisu pokazuje komunikat i zwraca `false`. */
+export function zapisano<W extends Wynik<unknown>>(a: ZrodloBleduZapisu, r: W): r is Extract<W, { ok: true }> {
+  const w: Wynik<unknown> = r;
+  if (!w.ok) zglosBladZapisu(a, w.powod);
+  return w.ok;
+}

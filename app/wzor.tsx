@@ -14,6 +14,7 @@ import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zapisano } from '../src/kompozycja/po-zapisie';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
@@ -28,7 +29,8 @@ import { KOSZ_DNI } from '../src/konfiguracja';
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
 
 export default function EkranWzoru(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik } = aplikacja;
   const router = useRouter();
   const k = useKolory();
   const okno = useWindowDimensions();
@@ -158,7 +160,7 @@ export default function EkranWzoru(): React.ReactElement {
   if (!lw || !wzory) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
-      naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (r.ok) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny>
+      naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny> // M1-006: błąd → alert, arkusz zostaje
   );
   if (!widok) {
     return (
@@ -236,11 +238,11 @@ export default function EkranWzoru(): React.ReactElement {
           });
         }}
         naNastepnaStrona={przejdzNaNastepna}
-        naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst })}
-        naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(() => wczytaj(widok.wzorId))}
+        naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst }).then((r) => { zapisano(aplikacja, r); })} // M1-006
+        naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); })} // M1-006
         naZmienNazwe={() => ustawArkuszNazwy(true)}
         tylkoRysik={rysik.tylkoRysik}
-        naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (r.ok) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
+        naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (zapisano(aplikacja, r)) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
         potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])}
         naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
         naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; await wczytaj(widok.wzorId); return r; }}

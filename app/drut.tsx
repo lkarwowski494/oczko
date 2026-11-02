@@ -6,12 +6,14 @@ import { FormularzDrutu, type DaneDrutu } from '../src/ekrany/Zapas';
 import { useKolory } from '../src/ekrany/motyw';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { bazowa, podgladRozmiaru, stanDrutow } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
 import { narzedzia, usunNarzedzie, zapiszNarzedzie } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranDrutu(): React.ReactElement {
-  const { kontener } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener } = aplikacja;
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
   const k = useKolory();
@@ -28,7 +30,7 @@ export default function EkranDrutu(): React.ReactElement {
       naUsun={id && poczatek ? () => {
         const w = stanDrutow([{ id, ...poczatek }], j).grupy[0]?.wiersze[0];
         potwierdzUsuniecie(kontener, { nazwa: w?.rozmiar || w?.opis || j.t('druty.inne'), przycisk: j.t('usun.narzedzie'), alert: Alert.alert,
-          usun: () => usunNarzedzie(kontener.z, { narzedzieId: id }), potem: () => router.back() });
+          usun: () => usunNarzedzie(kontener.z, { narzedzieId: id }), potem: () => router.back(), naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }); // M1-006
       } : undefined}
       naZapisz={async (d) => {
         const w = await zapiszNarzedzie(kontener.z, { ...d, id });

@@ -13,13 +13,15 @@ import { dodajZdjecie, zdjecia } from '../src/przypadki-uzycia/zdjecia';
 import { useKolory } from '../src/ekrany/motyw';
 import { potwierdzUsuniecie } from '../src/kompozycja/zapas-kosz';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { imperialny } from '../src/kompozycja/miary';
 import { bazowa, przeliczenie } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
 import { usunWloczke, wloczka, zapiszWloczke, type FormularzWloczki as Dane } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranWloczki(): React.ReactElement {
-  const { kontener, preferencje } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, preferencje } = aplikacja;
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
   const k = useKolory();
@@ -61,7 +63,7 @@ export default function EkranWloczki(): React.ReactElement {
       przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
       naAnuluj={() => router.back()}
       naUsun={id && poczatek ? () => potwierdzUsuniecie(kontener, { nazwa: poczatek.nazwa, przycisk: j.t('usun.wloczka'), alert: Alert.alert,
-        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => router.back() }) : undefined}
+        usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => router.back(), naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }) : undefined} // M1-006
       zdjecia={id ? <GrupaZdjec t={j.t} miniatury={miniatury} naWybierz={(zr) => void wybierz(zr)} naOtworz={() => undefined}
         naglowek={j.t('zapas.zdjecie_etykiety')} testID="wloczka-zdjecia" /> : undefined}
       naZapisz={async (d) => {

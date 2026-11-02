@@ -7,6 +7,7 @@ import { Kosz, type PozycjaKosza, type StanKosza } from '../src/ekrany/Kosz';
 import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
+import { zapisano } from '../src/kompozycja/po-zapisie';
 import { stanKosza } from '../src/kompozycja/projekt';
 import { oglos } from '../src/kompozycja/system';
 import { przywrocCzesc, przywrocLicznik, przywrocProjekt } from '../src/przypadki-uzycia/projekt';
@@ -15,7 +16,8 @@ import { przywrocWzor } from '../src/przypadki-uzycia/wzor';
 import { przywrocNarzedzie, przywrocWloczke } from '../src/przypadki-uzycia/zapas';
 
 export default function EkranKosza(): React.ReactElement {
-  const { kontener, licznik } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik } = aplikacja;
   const router = useRouter();
   const k = useKolory();
   const [stan, ustaw] = useState<StanKosza | null>(null);
@@ -34,7 +36,7 @@ export default function EkranKosza(): React.ReactElement {
       : p.rodzaj === 'wzor' ? await przywrocWzor(z, { wzorId: p.id }) // partia 6, P-229
       : p.rodzaj === 'narzedzie' ? await przywrocNarzedzie(z, { narzedzieId: p.id })
       : await przywrocLicznik(z, { licznikId: p.id });
-    if (!r.ok) return;
+    if (!zapisano(aplikacja, r)) return; // M1-006: nieudane przywrócenie → alert błędu zapisu
     await licznik.poZmianie();
     oglos(kontener.j.t('kosz.przywrocono', { nazwa }));
     await wczytaj();
