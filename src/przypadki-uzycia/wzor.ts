@@ -9,7 +9,8 @@ import { czytajMiejsce } from '../domena/miejsce';
 import { licznikZnacznika, znacznikJson } from '../dane/repozytoria/wzory';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { odczytajUstawienie, zapiszUstawienie } from '../dane/repozytoria/ustawienia';
-import { otworzDoCzytania, rozmiar, usunPlik } from '../dane/pliki/system';
+import { czasZmiany, otworzDoCzytania, rozmiar, usunPlik } from '../dane/pliki/system';
+import { ODRZUCENIA_TRWALE, usunStarszeOczekujace } from './rysunki-oczekujace';
 import { OK, blad, operacjaZapisu, wTransakcji } from './zapis';
 import { wKolejce } from './kolejka';
 import type { ZaleznosciPlikow } from './zaleznosci';
@@ -255,32 +256,40 @@ export function przywrocWzor(z: ZaleznosciPlikow, w: { wzorId: string }): Promis
 
 /**
  * Rysunek strony (ADR-0012 uzupełnienie): plik do magazynu przed kolejką, potem UPSERT (wzor_id, strona); poprzedni plik bez odwołań
- * usuwany po COMMIT. Plik tymczasowy z modułu natywnego usuwany zawsze (zapisany albo odrzucony).
+ * usuwany po COMMIT. M1-084: plik z modułu natywnego znika po zapisie albo odrzuceniu trwałym; przy innym błędzie (SQLITE_FULL, brak miejsca,
+ * wyjątek) zostaje do ponowienia (`odzyskajRysunki`). Po zapisie starsze pliki tej strony znikają (cały rysunek strony; starszy by go cofnął).
  */
 export async function zapiszRysunek(z: ZaleznosciPlikow, w: { wzorId: string; strona: number; plikTymczasowy: string }): Promise<Wynik<void>> {
+  const czas = czasZmiany(w.plikTymczasowy); // przed zapisem: po udanym plik znika
+  let wynik: Wynik<void> | null = null;
   try {
-    if (!Number.isInteger(w.strona) || w.strona < 0) return blad('bledne_dane');
-    const zapis = await z.magazyn.zapisz(w.plikTymczasowy, 'pkdrawing');
-    if (!zapis.ok) return zapis;
-    const doUsuniecia: string[] = [];
-    const wynik = await wKolejce(z.baza, () => wTransakcji(z, 'zapiszRysunek', async (tx, teraz) => {
-      const stan = await wzorDoZapisu(tx, w.wzorId);
-      if (stan) return blad(stan);
-      const [stary] = await wiersze(tx.all('SELECT plik_sha256 FROM rysunek WHERE wzor_id = ? AND strona = ?', [w.wzorId, w.strona]), 'zapiszRysunek');
-      await tx.run('INSERT INTO plik (sha256, rozszerzenie, bajty, utworzono_ms) VALUES (?, ?, ?, ?) ON CONFLICT (sha256) DO NOTHING', [zapis.wartosc.sha256, 'pkdrawing', zapis.wartosc.bajty, teraz]);
-      await tx.run(`INSERT INTO rysunek (wzor_id, strona, plik_sha256, zmieniono_ms) VALUES (?, ?, ?, ?)
-        ON CONFLICT (wzor_id, strona) DO UPDATE SET plik_sha256 = excluded.plik_sha256, zmieniono_ms = excluded.zmieniono_ms`, [w.wzorId, w.strona, zapis.wartosc.sha256, teraz]);
-      const h = stary ? tekstLubNull(stary, 'plik_sha256') : null;
-      if (h && h !== zapis.wartosc.sha256) {
-        const r = await tx.run(`DELETE FROM plik WHERE sha256 = ?1 AND NOT EXISTS (SELECT 1 FROM rysunek WHERE plik_sha256 = ?1)
-          AND NOT EXISTS (SELECT 1 FROM wzor WHERE pdf_sha256 = ?1 OR oryginal_sha256 = ?1) AND NOT EXISTS (SELECT 1 FROM zdjecie WHERE plik_sha256 = ?1)`, [h]);
-        if (r.zmiany === 1) doUsuniecia.push(h);
-      }
-      return OK;
-    }));
-    if (wynik.ok) for (const h of doUsuniecia) await z.magazyn.usun(h); // po COMMIT (ADR-0001)
+    wynik = await zapiszPlikRysunku(z, w);
     return wynik;
   } finally {
-    usunPlik(w.plikTymczasowy);
+    if (wynik && (wynik.ok || ODRZUCENIA_TRWALE.includes(wynik.powod))) usunPlik(w.plikTymczasowy);
+    if (wynik?.ok && czas !== null) usunStarszeOczekujace(w, czas);
   }
+}
+async function zapiszPlikRysunku(z: ZaleznosciPlikow, w: { wzorId: string; strona: number; plikTymczasowy: string }): Promise<Wynik<void>> {
+  if (!Number.isInteger(w.strona) || w.strona < 0) return blad('bledne_dane');
+  const zapis = await z.magazyn.zapisz(w.plikTymczasowy, 'pkdrawing');
+  if (!zapis.ok) return zapis;
+  const doUsuniecia: string[] = [];
+  const wynik = await wKolejce(z.baza, () => wTransakcji(z, 'zapiszRysunek', async (tx, teraz) => {
+    const stan = await wzorDoZapisu(tx, w.wzorId);
+    if (stan) return blad(stan);
+    const [stary] = await wiersze(tx.all('SELECT plik_sha256 FROM rysunek WHERE wzor_id = ? AND strona = ?', [w.wzorId, w.strona]), 'zapiszRysunek');
+    await tx.run('INSERT INTO plik (sha256, rozszerzenie, bajty, utworzono_ms) VALUES (?, ?, ?, ?) ON CONFLICT (sha256) DO NOTHING', [zapis.wartosc.sha256, 'pkdrawing', zapis.wartosc.bajty, teraz]);
+    await tx.run(`INSERT INTO rysunek (wzor_id, strona, plik_sha256, zmieniono_ms) VALUES (?, ?, ?, ?)
+      ON CONFLICT (wzor_id, strona) DO UPDATE SET plik_sha256 = excluded.plik_sha256, zmieniono_ms = excluded.zmieniono_ms`, [w.wzorId, w.strona, zapis.wartosc.sha256, teraz]);
+    const h = stary ? tekstLubNull(stary, 'plik_sha256') : null;
+    if (h && h !== zapis.wartosc.sha256) {
+      const r = await tx.run(`DELETE FROM plik WHERE sha256 = ?1 AND NOT EXISTS (SELECT 1 FROM rysunek WHERE plik_sha256 = ?1)
+        AND NOT EXISTS (SELECT 1 FROM wzor WHERE pdf_sha256 = ?1 OR oryginal_sha256 = ?1) AND NOT EXISTS (SELECT 1 FROM zdjecie WHERE plik_sha256 = ?1)`, [h]);
+      if (r.zmiany === 1) doUsuniecia.push(h);
+    }
+    return OK;
+  }));
+  if (wynik.ok) for (const h of doUsuniecia) await z.magazyn.usun(h); // po COMMIT (ADR-0001)
+  return wynik;
 }

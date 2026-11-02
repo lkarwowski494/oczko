@@ -13,11 +13,12 @@ import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } 
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
 import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
+import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { zapisano } from '../src/kompozycja/po-zapisie';
+import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
@@ -88,7 +89,14 @@ export default function EkranWzoru(): React.ReactElement {
   const katalogRysunkow = `${kontener.z.katalogi.tymczasowy}/rysunki-wzoru`;
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
   const pierwszyOdczyt = useCallback(() => { void wczytaj(id).catch(() => ustawBlad(true)); }, [wczytaj, id]); // M1-007: wyjątek odczytu → stan błędu
-  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).finally(pierwszyOdczyt); setRysikOtwarcie(); }, [pierwszyOdczyt, zw, katalogRysunkow]);
+  // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
+  // przerywałby pracę); plik oczekujący zostaje i wraca przy następnym otwarciu (`odzyskajRysunki`).
+  const bladRysunku = useRef(false);
+  const poZapisieRysunku = useCallback((r: Wynik<unknown>) => {
+    if (r.ok) { bladRysunku.current = false; return; }
+    if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod);
+  }, [aplikacja]);
+  useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).then(poZapisieRysunku).finally(pierwszyOdczyt); setRysikOtwarcie(); }, [pierwszyOdczyt, zw, katalogRysunkow, poZapisieRysunku]);
   useEffect(() => {
     if (czekaSiec.length < liczbaCzekajacych.current && otwartyWzor.current) void wczytaj(otwartyWzor.current);
     liczbaCzekajacych.current = czekaSiec.length;
@@ -208,7 +216,7 @@ export default function EkranWzoru(): React.ReactElement {
         napis: zn.pozaStrona ? t('wzor.etykieta_koniec', { n: zn.rzad }) : `${t('wzor.znacznik_napis', { n: Math.max(1, zn.rzad) })} ${zn.kierunek === -1 ? '↑' : '↓'}`,
         akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
-      onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy })} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego
+      onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then(poZapisieRysunku)} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
       onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)

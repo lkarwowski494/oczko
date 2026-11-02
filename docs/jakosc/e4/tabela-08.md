@@ -121,7 +121,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miniatury.test.ts` | zielony (główny zestaw) | 2 | — | `src/kompozycja/miniatury`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-notatki-widok.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003, BR-WZR-008, BR-WZR-008/S2, P-330 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-obroty-film.test.ts` | zielony (główny zestaw) | 7 | P-218, P-246, P-276, P-283 | `src/platforma/skrzynka`<br>`src/przypadki-uzycia/film`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-rysunki-odzysk.test.ts` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/wzor-widok` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-rysunki-odzysk.test.ts` | zielony (główny zestaw) | 8 | — | `src/domena/porty`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-usun.test.ts` | zielony (główny zestaw) | 14 | P-026, P-118, P-220, P-229, P-233, P-252 | `src/dane/repozytoria/kosz`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/kosz`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-widok.test.ts` | zielony (główny zestaw) | 2 | P-246 | `src/przypadki-uzycia/wzor-widok` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzory.test.ts` | zielony (główny zestaw) | 3 | BR-WZR-001/S2, BR-WZR-003/S2, BR-WZR-008/S2, P-120 | `src/dane/baza/adapter-node`<br>`src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
@@ -256,6 +256,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 24 | BR-LIC-012, BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284, P-353, P-360, P-361, P-373 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-rysunek-blad-zapisu.test.tsx` | zielony (główny zestaw) | 2 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-skrzynka.test.tsx` | zielony (główny zestaw) | 4 | P-046, P-230 | `src/ekrany/WzorSkrzynka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-czeka-w-liscie.test.tsx` | zielony (główny zestaw) | 3 | P-353 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-miejsce.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-011 | `src/przypadki-uzycia/wzor-miejsce` | — |
@@ -306,4 +307,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 302; zależnych od poprawek: 191.
+Razem plików testów: 303; zależnych od poprawek: 192.

@@ -6,8 +6,9 @@ import { notatkiWzoruZId, znacznikWzoru } from '../dane/repozytoria/wzory';
 import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { wzorDoZapisu, zapiszRysunek } from './wzor';
+import { ODRZUCENIA_TRWALE, PLIK_OCZEKUJACY } from './rysunki-oczekujace';
 import { pozycjaWzoru, type PozycjaWzoru } from './wzor-miejsce';
-import { lista, polacz } from '../dane/pliki/system';
+import { czasZmiany, istniejePlik, lista, polacz, usunPlik } from '../dane/pliki/system';
 import type { ZaleznosciPlikow } from './zaleznosci';
 
 export type KatObrotu = 0 | 90 | 180 | 270;
@@ -72,18 +73,35 @@ export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string }): Promise<
   });
 }
 
-const PLIK_OCZEKUJACY = /^(.+)__(\d+)__[^/]+\.pkdrawing$/;
 /**
- * Odzysk rysunków zapisanych przez widok natywny, gdy ekran już się zamykał (zdarzenie `onRysunek` bez odbiorcy; przegląd 2026-10-26):
- * pliki `<wzorId>__<strona>__<uuid>.pkdrawing` z katalogu oczekujących → `zapiszRysunek` (usuwa plik). Wynik = liczba zapisanych.
+ * Odzysk rysunków zapisanych przez widok natywny, gdy ekran już się zamykał (zdarzenie `onRysunek` bez odbiorcy; przegląd 2026-10-26), i rysunków,
+ * których zapis się nie udał (M1-084: plik zostaje): pliki `<wzorId>__<strona>__<uuid>.pkdrawing` z katalogu oczekujących → `zapiszRysunek`.
+ * Na stronę liczy się najnowszy plik (cały rysunek strony): po jego zapisie starsze znikają; przy błędzie zapisu wszystkie zostają, a wynik to ten błąd.
+ * Wynik = liczba zapisanych stron.
  */
 export async function odzyskajRysunki(z: ZaleznosciPlikow, w: { katalog: string }): Promise<Wynik<number>> {
-  let n = 0;
+  const strony = new Map<string, { wzorId: string; strona: number; sciezka: string; czas: number }[]>();
   for (const nazwa of lista(w.katalog)) {
     const m = PLIK_OCZEKUJACY.exec(nazwa);
     if (!m) continue;
-    const r = await zapiszRysunek(z, { wzorId: m[1], strona: Number(m[2]), plikTymczasowy: polacz(w.katalog, nazwa) });
-    if (r.ok) n += 1;
+    const sciezka = polacz(w.katalog, nazwa);
+    const klucz = `${m[1]}__${m[2]}`;
+    strony.set(klucz, [...(strony.get(klucz) ?? []), { wzorId: m[1], strona: Number(m[2]), sciezka, czas: czasZmiany(sciezka) ?? 0 }]);
   }
-  return { ok: true, wartosc: n };
+  let n = 0;
+  let bladZapisu: Wynik<number> | null = null;
+  for (const pliki of strony.values()) {
+    const kolejne = pliki.sort((a, b) => b.czas - a.czas); // najnowszy pierwszy
+    for (const [i, p] of kolejne.entries()) {
+      if (!istniejePlik(p.sciezka)) continue;
+      const r = await zapiszRysunek(z, { wzorId: p.wzorId, strona: p.strona, plikTymczasowy: p.sciezka });
+      if (r.ok) {
+        n += 1;
+        for (const starszy of kolejne.slice(i + 1)) if (istniejePlik(starszy.sciezka)) usunPlik(starszy.sciezka);
+        break;
+      }
+      if (!ODRZUCENIA_TRWALE.includes(r.powod)) { bladZapisu = r; break; } // pliki strony zostają; starszy nie zastępuje nowszego
+    }
+  }
+  return bladZapisu ?? { ok: true, wartosc: n };
 }
