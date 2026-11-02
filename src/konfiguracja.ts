@@ -38,6 +38,7 @@ export const MINIATURA_PT = 96; // pt; [OCENA 08], plan 1.1 pkt 7: szerokość m
 export const RYSIK_PODPOWIEDZ_MS = 4000; // ms; [OCENA 08], P-284 (1) A: jak długo widać podpowiedź rysika (raz na otwarcie wzoru)
 export const POWIEKSZENIE_WZORU_MAKS = 16; // krotność dopasowania do szerokości; [OCENA 08], 07-jakosc-006: granica poprawności zapisanego powiększenia (widok natywny dodatkowo ogranicza maxScaleFactor PDFKit)
 export const RYSUNEK_ZAPIS_MS = 1000; // ms; ADR-0012 (uzupełnienie, Z07-17): najdłuższe opóźnienie zapisu rysunku
+export const RYSUNEK_MIEJSCE_MIN_MB = 50; // MB; [OCENA 08] (M1-084, DEC-31 b): poniżej tego wolnego miejsca otwarcie wzoru ostrzega, że kreski mogą się nie zapisać; do korekty 05
 export const SKRZYNKA_PORZUCONE_H = 1; // h; [OCENA] roli 05 (fix-7): katalog zlecenia bez manifestu usuwany po tym czasie
 export const SIEC_PONOWIENIE_MS = 5000; // ms; [OCENA] roli 05 (ADR-0031 pkt 4): odstęp przed ponownym przetworzeniem skrzynki po zdarzeniu sieci „jest”
 export const MIGAWKA_WERSJA = 1; // wersja koperty migawki projektów w App Group (P-220 N2)

@@ -3,7 +3,7 @@
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Linking, View, useWindowDimensions } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { WidokWzoruNatywny } from '../modules/oczko-wzor';
 import { rodzajPliku } from '../src/domena/rodzaj-pliku';
 import { ukladOkna } from '../src/domena/uklad';
@@ -22,6 +22,7 @@ import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
+import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunki';
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
 import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
@@ -92,10 +93,14 @@ export default function EkranWzoru(): React.ReactElement {
   // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
   // przerywałby pracę); plik oczekujący zostaje i wraca przy następnym otwarciu (`odzyskajRysunki`).
   const bladRysunku = useRef(false);
-  const poZapisieRysunku = useCallback((r: Wynik<unknown>) => {
-    if (r.ok) { bladRysunku.current = false; return; }
+  const poZapisieRysunku = useCallback((r: Wynik<unknown>, oczekujace = 0) => {
+    if (r.ok) { if (oczekujace === 0) bladRysunku.current = false; return; }
     if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod);
   }, [aplikacja]);
+  // M1-084 (DEC-31 a): widok natywny nie zapisał pliku rysunku (`onBladZapisu`), kreski czekają w jego pamięci → alert jak wyżej, „Wstecz” pyta,
+  // gest wstecz wyłączony; `onRysunek` z `oczekujace` 0 zdejmuje blokadę. null = na tym ekranie nie było błędu natywnego (opcje ekranu bez zmian).
+  const [niezapisane, ustawNiezapisane] = useState<boolean | null>(null);
+  const miejsceSprawdzone = useRef(false); // DEC-31 b: raz na otwarcie ekranu, przy pierwszym wzorze
   useEffect(() => { void odzyskajRysunki(zw, { katalog: katalogRysunkow }).then(poZapisieRysunku).finally(pierwszyOdczyt); setRysikOtwarcie(); }, [pierwszyOdczyt, zw, katalogRysunkow, poZapisieRysunku]);
   useEffect(() => {
     if (czekaSiec.length < liczbaCzekajacych.current && otwartyWzor.current) void wczytaj(otwartyWzor.current);
@@ -108,6 +113,11 @@ export default function EkranWzoru(): React.ReactElement {
     void dodaj(dodajParam as ZrodloDodaniaEkranu);
   }, [lw, dodano, dodajParam]);
   // Wyjście z ekranu wzoru: miejsce pracy wraca na licznik (pozycja wzoru zostaje); zamknięcie aplikacji na wzorze zostawia ekran wzoru, więc start otworzy wzór (07-jakosc-006).
+  useEffect(() => {
+    if (!widok || miejsceSprawdzone.current) return;
+    miejsceSprawdzone.current = true;
+    if (!bladRysunku.current) void ostrzezenieMiejsca(zw.magazyn, t);
+  }, [widok, zw, t]);
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
@@ -216,7 +226,8 @@ export default function EkranWzoru(): React.ReactElement {
         napis: zn.pozaStrona ? t('wzor.etykieta_koniec', { n: zn.rzad }) : `${t('wzor.znacznik_napis', { n: Math.max(1, zn.rzad) })} ${zn.kierunek === -1 ? '↑' : '↓'}`,
         akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
         etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
-      onRysunek={(e) => void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then(poZapisieRysunku)} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
+      onRysunek={(e) => { const ocz = e.nativeEvent.oczekujace ?? 0; if (ocz === 0) ustawNiezapisane((n) => (n === null ? null : false)); void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then((r) => poZapisieRysunku(r, ocz)); }} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
+      onBladZapisu={(e) => { ustawNiezapisane(e.nativeEvent.oczekujace > 0); if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, 'zapis'); }}
       onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)
@@ -233,12 +244,13 @@ export default function EkranWzoru(): React.ReactElement {
   const strony = strona?.razem ?? 0;
   return (
     <Bezpieczny pelnaSzerokosc>
+      {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
-        naWstecz={() => router.back()}
+        naWstecz={() => wyjscieZWzoru(t, niezapisane === true, () => router.back())}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}
