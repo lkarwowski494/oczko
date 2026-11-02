@@ -52,7 +52,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
           {s.pro && <Text style={{ ...typografia.tresc, color: k.olowek }} testID="ustawienia-pro">{t('ustawienia.pro_wlaczone')}</Text>}
         </View>
         {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
-        {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.zostalo, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
+        {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.limit, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>
       {preferencje && <Text style={{ ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.m }} accessibilityRole="header">{t('ustawienia.grupa_liczenie')}</Text>}
       <View style={st.grupa}>
