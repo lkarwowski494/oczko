@@ -15,7 +15,8 @@ tags:
 - runFlow: subflows/nazwij-projekt.yaml
 - tapOn: { id: "licznik-projekt" }
 - assertVisible: { id: "projekt-zdjecia" }
-- scrollUntilVisible: { element: { id: "zdjecia-dodaj" } }
+# przycisk E2E „Test photo” leży pod przyciskiem „Add photo”; arkusz „Add photo” wjeżdża od dołu i przy układzie z przebiegu 136 zakrywał jego środek (zrzut kroku 48) — wyśrodkowanie podnosi oba nad arkusz (E2-136-S5)
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "zdjecia-dodaj" }
 - assertVisible: { id: "e2e-zdjecie-testowe" }
 - waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża — w 17 (przebieg 40457386369) stuknięcie nie trafiło w pozycję testową
