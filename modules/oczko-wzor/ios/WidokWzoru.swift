@@ -220,8 +220,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
 
   private let pdf = PDFView()
   private var plik = ""
-  private var wzorId = ""
-  private var katalogRysunkow: URL?                    // pliki rysunków czekające na zapis w JS (odzyskiwane przy następnym otwarciu)
+  private var propsy = PropsyWzoru()                  // wzorId i katalog plików rysunków czekających na zapis w JS (odzyskiwane przy następnym otwarciu)
+  private var wzorId: String { propsy.wzorId }
   private var nakladki: [Int: NakladkaStrony] = [:]   // strony wyświetlane
   private var rysunki: [Int: PKDrawing] = [:]         // bieżący rysunek każdej strony (wczytany albo narysowany)
   private var historia: [Int: [PKDrawing]] = [:]      // cofanie ostatniej kreski na stronie
@@ -288,9 +288,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
       // rysunki nowego wzoru, które czekają w kolejce, są nowsze niż pliki z JS, więc nakładane po wczytaniu.
       zatrzymajZegary()
       doKolejki()
-      let zKolejki = Self.kolejka.dane(wzorId: nowy)
-      oproznijKolejke()
-      wzorId = nowy
+      let (zKolejki, oproznijPo) = propsy.otworzWzor(nowy, kolejka: Self.kolejka) // M1-109: rysunki z kolejki przed jej zapisem
       plik = plikPdf
       nakladki = [:]; rysunki = [:]; historia = [:]; doZapisu = []
       rysikZgloszony = false
@@ -300,6 +298,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
         rysunki[s] = rys
       }
       for (s, d) in zKolejki { if let rys = try? PKDrawing(data: d) { rysunki[s] = rys } }
+      if oproznijPo { oproznijKolejke() } // M1-109: katalog był wcześniej — zapis po wczytaniu, ekran pokazuje kreski odzyskane z kolejki
       stronaDocelowa = startStrona // zapisana pozycja (07-jakosc-006): strona przed pierwszym zdarzeniem onStrona, powiększenie po układzie
       oczekujacePowiekszenie = startPowiekszenie > 0 ? CGFloat(startPowiekszenie) : nil
       ostatniePowiekszenie = startPowiekszenie > 0 ? startPowiekszenie : 1
@@ -315,8 +314,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     }
   }
   func ustawKatalogRysunkow(_ k: String) {
-    katalogRysunkow = k.isEmpty ? nil : URL(fileURLWithPath: k, isDirectory: true)
-    oproznijKolejke() // M1-084: rysunki czekające na katalog (dokument ustawiony przed tym propem) — teraz zapis
+    if propsy.ustawKatalog(k) { oproznijKolejke() } // M1-084, M1-109: zapis tylko, gdy dokument był wcześniej (PropsyWzoru)
   }
   func przejdzDoStrony(_ s: Int) {
     stronaDocelowa = s
@@ -429,8 +427,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     doZapisu = []
   }
   private func oproznijKolejke() {
-    guard Self.kolejka.liczba > 0, katalogRysunkow != nil else { return } // bez katalogu oczekujących dane czekają w kolejce (KolejkaRysunkow.zapisz(do:))
-    let w = Self.kolejka.zapisz(do: katalogRysunkow) { k, klucz, dane in
+    guard Self.kolejka.liczba > 0, propsy.moznaOproznicKolejke else { return } // M1-109: przed nałożeniem obu propsów dane czekają w kolejce
+    let w = Self.kolejka.zapisz(do: propsy.katalog) { k, klucz, dane in
       try FileManager.default.createDirectory(at: k, withIntermediateDirectories: true)
       let u = k.appendingPathComponent("\(klucz.wzorId)__\(klucz.strona)__\(UUID().uuidString).pkdrawing")
       try dane.write(to: u, options: .atomic)
