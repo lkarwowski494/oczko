@@ -26,7 +26,8 @@ tags:
 - tapOn: { id: "nav-ustawienia" }
 - assertVisible: { id: "ustawienia-eksport" }
 - tapOn: { id: "ustawienia-eksport" }
-- extendedWaitUntil: { visible: { id: "eksport-wynik" }, timeout: 30000 }
+# E2-139-S1: widok wyniku leży pod grupą Eksport/Import/Usuń, a od #139 panel `e2e-ocena-stan` spycha go za dolną krawędź — poza ekranem elementu nie ma w hierarchii iOS, więc przewijamy, nie czekamy
+- scrollUntilVisible: { element: { id: "eksport-wynik" }, direction: DOWN, timeout: 30000 }
 - scrollUntilVisible: { element: { id: "eksport-licznosci" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "eksport-licznosci", text: "1 project.*1 counter.*2 changes.*" }
 - scrollUntilVisible: { element: { id: "e2e-pliki-zachowaj-eksport" }, direction: UP, timeout: 30000 }
