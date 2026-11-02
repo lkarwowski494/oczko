@@ -157,8 +157,7 @@ export async function dodajWzor(z: ZaleznosciWzoru, w: { projektId: string; nazw
     const strony = Number.isInteger(spr.wartosc.strony) && spr.wartosc.strony > 0 ? spr.wartosc.strony : null;
     const zapisPdf = await z.magazyn.zapisz(pdf.wartosc.sciezka, 'pdf');
     if (!zapisPdf.ok) return zapisPdf;
-    const rozszerzenieWorda = zr.rodzaj === 'word' && /\.doc$/i.test(zr.plik.nazwa) ? 'doc' : 'docx'; // .doc zostaje .doc (przegląd 2026-10-26)
-    const zapisOryg = zr.rodzaj === 'word' ? await z.magazyn.zapisz(zr.plik.sciezka, rozszerzenieWorda) : null;
+    const zapisOryg = zr.rodzaj === 'word' ? await z.magazyn.zapisz(zr.plik.sciezka, 'docx') : null; // Word tylko .docx (ADR-0031 pkt 5; .doc odsiewa rodzajPliku)
     if (zapisOryg && !zapisOryg.ok) return zapisOryg;
     return await operacjaZapisu(z, 'dodajWzor', async (tx, teraz) => {
       const [p] = await wiersze(tx.all('SELECT usunieto_ms FROM projekt WHERE id = ?', [w.projektId]), 'dodajWzor');
@@ -167,7 +166,7 @@ export async function dodajWzor(z: ZaleznosciWzoru, w: { projektId: string; nazw
       const wstaw = (h: { sha256: string; bajty: number }, roz: string) =>
         tx.run('INSERT INTO plik (sha256, rozszerzenie, bajty, utworzono_ms) VALUES (?, ?, ?, ?) ON CONFLICT (sha256) DO NOTHING', [h.sha256, roz, h.bajty, teraz]);
       await wstaw(zapisPdf.wartosc, 'pdf');
-      if (zapisOryg) await wstaw(zapisOryg.wartosc, rozszerzenieWorda);
+      if (zapisOryg) await wstaw(zapisOryg.wartosc, 'docx');
       const wzorId = z.id.nowy();
       await tx.run('INSERT INTO wzor (id, projekt_id, nazwa, zrodlo, pdf_sha256, oryginal_sha256, adres, strony, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [wzorId, w.projektId, nazwa, ZRODLO_W_BAZIE[zr.rodzaj], zapisPdf.wartosc.sha256, zapisOryg?.wartosc.sha256 ?? null, adres, strony, teraz]); // strony: P-252
