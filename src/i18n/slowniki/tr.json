@@ -134,8 +134,6 @@
     "brak_wynikow": "“{{zapytanie}}” adlı proje yok.",
     "w_toku": "Devam eden",
     "ukonczone": "Biten",
-    "dni_one": "{{miesiac}} ayında {{limit}} ücretsiz el işi gününden {{zostalo}} kaldı",
-    "dni_other": "{{miesiac}} ayında {{limit}} ücretsiz el işi gününden {{zostalo}} kaldı",
     "tytul": "Projeler",
     "nazwa_robocza": "Sayaç: {{data}}",
     "ostatnia_praca_dzis": "son çalışma: bugün",

@@ -1,10 +1,11 @@
 {
-  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte. licznik.jednostka, ukonczenie.jednostka (M1-audytor-generalny-018, P-405, P-406 a): en przeszło na formy liczby mnogiej, pl przełożone od razu (przetlumaczone_czesciowo); pozostałe języki do fali trzymają stary zwykły klucz (uwaga bramki, t() bierze go jako zastępstwo).",
+  "powod": "Klucze UI dodane w partii 8 (8a–8e, 07-jakosc-001…033) po przekładzie 09 z 2026-10-30; przekład jedną falą po audycie M1, bo audyt może zmienić en (P-320). Do czasu fali brak przekładu = uwaga, tekst z en (src/i18n/i18n.ts, łańcuch język → źródło). dane.zastapiono: stare przekłady z innymi zmiennymi usunięte. licznik.jednostka, ukonczenie.jednostka (M1-audytor-generalny-018, P-405, P-406 a): en przeszło na formy liczby mnogiej, pl przełożone od razu (przetlumaczone_czesciowo); pozostałe języki do fali trzymają stary zwykły klucz (uwaga bramki, t() bierze go jako zastępstwo). projekty.dni (M1-audytor-generalny-086, 09-lokalizacja-501, P-412 a): forma liczby mnogiej idzie za {{limit}} (count = limit), co pasuje tylko do zweryfikowanych pl, ru, lt, cs (przetlumaczone_czesciowo); w pozostałych językach rzeczownik stoi przy {{zostalo}}, więc ich przekład usunięty do fali (tekst z en).",
   "odwolania": [
     "P-320",
     "P-357",
     "P-405",
-    "P-406"
+    "P-406",
+    "P-412"
   ],
   "klucze": [
     "dane.zastapiono",
@@ -49,6 +50,7 @@
     "projekt.wloczka",
     "projekt.wloczka_brak",
     "projekt.wloczki",
+    "projekty.dni",
     "projekty.ukonczono_a11y",
     "projekty.ukonczono_bez_czasu",
     "projekty.ukonczono_bez_czasu_a11y",
@@ -106,6 +108,12 @@
   "przetlumaczone_czesciowo": {
     "licznik.jednostka": [
       "pl"
+    ],
+    "projekty.dni": [
+      "cs",
+      "lt",
+      "pl",
+      "ru"
     ],
     "ukonczenie.jednostka": [
       "pl"

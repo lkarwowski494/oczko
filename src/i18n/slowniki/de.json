@@ -148,9 +148,7 @@
     "kosz_a11y_one": "Zuletzt gelöscht, {{count}} Element",
     "kosz_a11y_other": "Zuletzt gelöscht, {{count}} Elemente",
     "wiersz": "{{czesc}} · Reihe {{n}}",
-    "wiersz_cel": "{{czesc}} · Reihe {{n}} von {{cel}}",
-    "dni_one": "Noch {{zostalo}} von {{limit}} kostenlosen Handarbeitstagen im {{miesiac}}",
-    "dni_other": "Noch {{zostalo}} von {{limit}} kostenlosen Handarbeitstagen im {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · Reihe {{n}} von {{cel}}"
   },
   "historia": {
     "pusto": "Noch keine Änderungen.",

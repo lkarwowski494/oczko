@@ -167,10 +167,7 @@
     "kosz_a11y_one": "Supprimés récemment, {{count}} élément",
     "kosz_a11y_other": "Supprimés récemment, {{count}} éléments",
     "wiersz": "{{czesc}} · rang {{n}}",
-    "wiersz_cel": "{{czesc}} · rang {{n}} sur {{cel}}",
-    "dni_one": "Il reste {{zostalo}} jour d’ouvrage gratuit sur {{limit}} en {{miesiac}}",
-    "dni_many": "Il reste {{zostalo}} de jours d’ouvrage gratuits sur {{limit}} en {{miesiac}}",
-    "dni_other": "Il reste {{zostalo}} jours d’ouvrage gratuits sur {{limit}} en {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · rang {{n}} sur {{cel}}"
   },
   "historia": {
     "pusto": "Aucune modification pour l’instant.",

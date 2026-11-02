@@ -148,9 +148,7 @@
     "kosz_a11y_one": "Äskettäin poistetut, {{count}} kohde",
     "kosz_a11y_other": "Äskettäin poistetut, {{count}} kohdetta",
     "wiersz": "{{czesc}} · kerros {{n}}",
-    "wiersz_cel": "{{czesc}} · kerros {{n}} / {{cel}}",
-    "dni_one": "{{miesiac}}: jäljellä {{zostalo}} / {{limit}} ilmainen käsityöpäivä",
-    "dni_other": "{{miesiac}}: jäljellä {{zostalo}} / {{limit}} ilmaista käsityöpäivää"
+    "wiersz_cel": "{{czesc}} · kerros {{n}} / {{cel}}"
   },
   "historia": {
     "pusto": "Ei vielä muutoksia.",

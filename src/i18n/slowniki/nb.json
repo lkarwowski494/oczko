@@ -148,9 +148,7 @@
     "kosz_a11y_one": "Nylig slettet, {{count}} element",
     "kosz_a11y_other": "Nylig slettet, {{count}} elementer",
     "wiersz": "{{czesc}} · rad {{n}}",
-    "wiersz_cel": "{{czesc}} · rad {{n}} av {{cel}}",
-    "dni_one": "{{zostalo}} av {{limit}} gratis håndarbeidsdag igjen i {{miesiac}}",
-    "dni_other": "{{zostalo}} av {{limit}} gratis håndarbeidsdager igjen i {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · rad {{n}} av {{cel}}"
   },
   "historia": {
     "pusto": "Ingen endringer ennå.",

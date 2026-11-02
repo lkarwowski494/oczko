@@ -134,8 +134,6 @@
     "brak_wynikow": "Nincs „{{zapytanie}}” nevű projekt.",
     "w_toku": "Folyamatban",
     "ukonczone": "Befejezett",
-    "dni_one": "{{zostalo}}/{{limit}} ingyenes alkotónap maradt ebben a hónapban: {{miesiac}}",
-    "dni_other": "{{zostalo}}/{{limit}} ingyenes alkotónap maradt ebben a hónapban: {{miesiac}}",
     "tytul": "Projektek",
     "nazwa_robocza": "Számláló ekkorról: {{data}}",
     "ostatnia_praca_dzis": "utoljára ma dolgoztál rajta",

@@ -148,9 +148,7 @@
     "kosz_a11y_one": "Onlangs verwijderd, {{count}} onderdeel",
     "kosz_a11y_other": "Onlangs verwijderd, {{count}} onderdelen",
     "wiersz": "{{czesc}} · rij {{n}}",
-    "wiersz_cel": "{{czesc}} · rij {{n}} van {{cel}}",
-    "dni_one": "{{zostalo}} van {{limit}} gratis handwerkdagen over in {{miesiac}}",
-    "dni_other": "{{zostalo}} van {{limit}} gratis handwerkdagen over in {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · rij {{n}} van {{cel}}"
   },
   "historia": {
     "pusto": "Nog geen wijzigingen.",

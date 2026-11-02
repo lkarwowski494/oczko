@@ -129,8 +129,7 @@
     "kosz": "최근 삭제된 항목",
     "kosz_a11y_other": "최근 삭제된 항목, {{count}}개",
     "wiersz": "{{czesc}} · {{n}}단",
-    "wiersz_cel": "{{czesc}} · {{cel}}단 중 {{n}}단",
-    "dni_other": "{{miesiac}}에 무료 작업일 {{limit}}일 중 {{zostalo}}일 남음"
+    "wiersz_cel": "{{czesc}} · {{cel}}단 중 {{n}}단"
   },
   "historia": {
     "pusto": "아직 변경 사항이 없습니다.",

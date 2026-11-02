@@ -148,9 +148,7 @@
     "kosz_a11y_one": "Nyligen raderade, {{count}} objekt",
     "kosz_a11y_other": "Nyligen raderade, {{count}} objekt",
     "wiersz": "{{czesc}} · varv {{n}}",
-    "wiersz_cel": "{{czesc}} · varv {{n}} av {{cel}}",
-    "dni_one": "{{zostalo}} av {{limit}} gratis hantverksdagar kvar i {{miesiac}}",
-    "dni_other": "{{zostalo}} av {{limit}} gratis hantverksdagar kvar i {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · varv {{n}} av {{cel}}"
   },
   "historia": {
     "pusto": "Inga ändringar ännu.",

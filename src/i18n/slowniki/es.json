@@ -167,10 +167,7 @@
     "kosz_a11y_many": "Eliminados recientemente, {{count}} elementos",
     "kosz_a11y_other": "Eliminados recientemente, {{count}} elementos",
     "wiersz": "{{czesc}} · vuelta {{n}}",
-    "wiersz_cel": "{{czesc}} · vuelta {{n}} de {{cel}}",
-    "dni_one": "{{zostalo}} de {{limit}} día de labor gratuito restante en {{miesiac}}",
-    "dni_many": "{{zostalo}} de {{limit}} de días de labor gratuitos restantes en {{miesiac}}",
-    "dni_other": "{{zostalo}} de {{limit}} días de labor gratuitos restantes en {{miesiac}}"
+    "wiersz_cel": "{{czesc}} · vuelta {{n}} de {{cel}}"
   },
   "historia": {
     "pusto": "Aún no hay cambios.",
