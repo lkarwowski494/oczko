@@ -61,7 +61,8 @@
     "seria_blokada_one": "Added {{count}} row from the lock screen at {{godzina}}. Undo?",
     "seria_blokada_other": "Added {{count}} rows from the lock screen at {{godzina}}. Undo?",
     "seria_zegarek_one": "Added {{count}} row on your watch at {{godzina}}. Undo?",
-    "seria_zegarek_other": "Added {{count}} rows on your watch at {{godzina}}. Undo?"
+    "seria_zegarek_other": "Added {{count}} rows on your watch at {{godzina}}. Undo?",
+    "wpisz_blad_format": "Enter a whole number, 0 or more, for example {{przyklad}}."
   },
   "limit": {
     "zawczasu_one": "No free crafting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",
@@ -197,7 +198,9 @@
     "cofnij_serie_other": "Undo {{count}} rows",
     "cofnieto": "Undone",
     "starszy_info": "Only the latest change can be undone. To fix this one, enter the right number.",
-    "wpisz": "Enter the right number"
+    "wpisz": "Enter the right number",
+    "wpis_rozwin_a11y": "More about {{wpis}}",
+    "wpis_rozwin_podpowiedz": "Shows how to change this entry."
   },
   "menu": {
     "nazwa": "Name project and part",
@@ -383,6 +386,7 @@
     "wzor": "Pattern",
     "wzory": "Patterns",
     "miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}",
+    "miejsce_wzoru_strona": "Page {{strona}}",
     "wloczka": "Yarn",
     "wloczka_brak": "None",
     "wloczki_one": "{{count}} yarn",
@@ -821,8 +825,11 @@
     "notatka_usun_tytul": "Delete this note?",
     "notatka_usun_opis": "It’s removed from the pattern and from row {{n}}.",
     "notatka_edytuj": "Edit",
+    "notatka_edytuj_a11y": "Edit note for row {{n}}",
     "przed_schematem": "Before the pattern",
-    "znacznik_napis": "Row {{n}}"
+    "znacznik_napis": "Row {{n}}",
+    "blad_zapis": "Oczko can’t save this pattern",
+    "blad_zapis_opis": "Your device may be out of space. Nothing was added. Free some space and try again."
   },
   "udostepnij": {
     "tytul": "Add to Oczko",
