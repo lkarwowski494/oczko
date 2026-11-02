@@ -1,6 +1,6 @@
 // Poprawki 04, sesja D (P-360), D1: klucze aneksu partii 8 (04, 2026-11-02): 7 nowych w en.json i en.kontekst.json, na liście „oczekujące na falę” (P-357),
 // oraz 7 wartości roboczych potwierdzonych przez 04 (różnica treści = poprawka). Wyrocznia: docs/design/fix11-2026-11-02/klucze.json.
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const KORZEN = join(__dirname, '../..');
@@ -40,4 +40,16 @@ test('„Undo is available.” (potwierdzone 04) kończy ogłoszenie serii w en.
 test('korekta P-330: `ustawienia.pro_wlaczone` = „On”, a zdanie „Oczko Pro is on.” to `oferty.pro_wlaczone`', () => {
   expect(wartosc(EN, 'ustawienia.pro_wlaczone')).toBe('On');
   expect(wartosc(EN, 'oferty.pro_wlaczone')).toBe('Oczko Pro is on.');
+});
+
+// D3 (04-studio-projektowe-013, P-328): treść `ustawienia.usun_pytanie` zmieniła sens po P-328 (kopia przed usunięciem, „this device”, bez „can’t be undone”),
+// więc stare tłumaczenia (34 języki) są nieprawdziwe — jak `dane.zastapiono` w P-357: usunięte (tekst z en), klucz na liście „oczekujące na falę” (P-320).
+test('`ustawienia.usun_pytanie`: brak starych tłumaczeń w 34 słownikach, klucz na liście oczekujących na falę', () => {
+  expect(OCZEKUJACE).toContain('ustawienia.usun_pytanie');
+  const jezyki = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => f.endsWith('.json') && !f.endsWith('.kontekst.json') && f !== 'en.json');
+  expect(jezyki.length).toBe(34);
+  for (const f of jezyki) {
+    const s = czytaj(`src/i18n/slowniki/${f}`) as Record<string, Record<string, string>>;
+    expect([f, wartosc(s, 'ustawienia.usun_pytanie')]).toEqual([f, undefined]);
+  }
 });
