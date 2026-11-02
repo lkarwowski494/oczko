@@ -35,10 +35,32 @@ enum SprawdzeniePdf {
 }
 
 extension SprawdzeniePdf {
-  /// ZAŚLEPKA (W1, pusta strona 2 po wydruku WKWebView): przycięcie końcowych jednolicie białych stron — nieużywana, dopóki zrzut z E2E
-  /// nie potwierdzi problemu (koordynator 2026-10-27, wariant (a)); test: TestyOknaMaszyn `testW1PustaStronaNaKoncu`.
+  /// E2-A5 (W1-A, P-282 wariant A; zrzut 53 z E2 #135 potwierdził pustą stronę 2 po wydruku WKWebView): przycina końcowe strony bez tekstu i jednolicie białe,
+  /// nigdy do zera stron; pusta strona w środku i strona z treścią na końcu zostają (treść bez zmian, P-218 (2)). Plik jest nadpisywany przyciętą kopią
+  /// (zapis obok i podmiana, bo dokument otwarty z tego pliku nie nadaje się do zapisu w to samo miejsce). Zwraca liczbę stron pliku po operacji;
+  /// przy błędzie zapisu plik zostaje bez zmian i wynik to liczba stron sprzed przycięcia. Test: TestyOknaMaszyn `testW1PustaStronaNaKoncu`.
+  @discardableResult
   static func bezPustychStronNaKoncu(_ url: URL) -> Int {
-    PDFDocument(url: url)?.pageCount ?? 0
+    guard let d = PDFDocument(url: url) else { return 0 }
+    let przed = d.pageCount
+    if d.isLocked { return przed }
+    var zostaje = przed
+    while zostaje > 1, let s = d.page(at: zostaje - 1), stronaPusta(s) { zostaje -= 1 }
+    guard zostaje < przed else { return przed }
+    for i in stride(from: przed - 1, through: zostaje, by: -1) { d.removePage(at: i) }
+    let obok = url.deletingLastPathComponent().appendingPathComponent(".przyciete-\(UUID().uuidString).pdf")
+    guard d.write(to: obok) else { return przed }
+    do { _ = try FileManager.default.replaceItemAt(url, withItemAt: obok) } catch {
+      try? FileManager.default.removeItem(at: obok)
+      return przed
+    }
+    return zostaje
+  }
+
+  /// Bez tekstu i z jednolicie białą miniaturą (jak w `sprawdz`); strona z samym obrazem nie jest pusta.
+  static func stronaPusta(_ s: PDFPage) -> Bool {
+    if let t = s.string, !t.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return false }
+    return jednolicieBiala(s.thumbnail(of: CGSize(width: 96, height: 96), for: .mediaBox))
   }
 }
 

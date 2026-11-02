@@ -11,6 +11,7 @@ export type Powod =
   | 'za_duze'
   | 'konflikt'
   | 'brak_sieci' // konwersja strony WWW bez połączenia (fix-7, moduly.md „Fundament partii 6 i 7”)
+  | 'przekroczono_czas' // konwersja pliku Word nie skończyła się w limicie czasu; plik lokalny nie zależy od sieci (E2-A3, 08 poprawki E2)
   | 'odmowa' // strona odpowiada 401/403 (BR-WZR-007 S3)
   | 'pusty' // PDF bez tekstu i obrazu (BR-WZR-007 S3)
   | 'anulowano'; // skaner albo wybór pliku przerwany przez użytkowniczkę

@@ -73,6 +73,8 @@
     "ustawienia.usun_kopia_blad",
     "ustawienia.usun_pro",
     "ustawienia.usun_pytanie",
+    "wzor.blad_czas",
+    "wzor.blad_czas_opis",
     "wzor.blad_zapis",
     "wzor.blad_zapis_opis",
     "wzor.notatka_chip",

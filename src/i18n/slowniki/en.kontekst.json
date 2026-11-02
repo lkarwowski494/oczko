@@ -733,6 +733,8 @@
     "blad_rozmiar_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu; {{mb}} = limit w MB (liczba).",
     "blad_strona": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek alertu: strona wymaga logowania albo nie ma treści (BR-WZR-007 S3).",
     "blad_strona_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu: co się stało i co zrobić.",
+    "blad_czas": "Wzór (E2-A3, 08 poprawki E2; tekst roboczy 08 do akceptacji 04): nagłówek alertu: konwersja pliku Word przekroczyła limit czasu (nie brak sieci).",
+    "blad_czas_opis": "Wzór (E2-A3, 08 poprawki E2; tekst roboczy 08 do akceptacji 04): treść alertu: co się stało i co zrobić; {{plik}} = nazwa pliku.",
     "brak_aparatu_opis": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): treść alertu braku dostępu do aparatu przy skanowaniu; nagłówek zdjecia.brak_aparatu_tytul, przycisk zdjecia.otworz_ustawienia.",
     "word_podglad": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): linia informacji nad plikiem Word w podglądzie zastępczym (bez znacznika i rysowania, ADR-0011).",
     "film_menu": "Etykieta dostępności widocznego przycisku „•••” w wierszu „Video” na ekranie projektu (04-studio-projektowe-006): otwiera menu „Change link” / „Remove link”; do tej pory menu tylko przez przytrzymanie. Krótko (czyta VoiceOver). Tekst roboczy 08, do akceptacji 04.",

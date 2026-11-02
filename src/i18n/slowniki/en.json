@@ -813,6 +813,8 @@
     "blad_rozmiar_opis": "A pattern can be up to {{mb}} MB. Nothing was added.",
     "blad_strona": "Oczko can’t save this page",
     "blad_strona_opis": "The page asks you to sign in, or it has no text or pictures. Nothing was added. Open it in your browser, save it as a PDF and add the PDF.",
+    "blad_czas": "Oczko couldn’t finish converting this file",
+    "blad_czas_opis": "“{{plik}}” took too long to convert. Nothing was added. Try again, or save it as a PDF and add the PDF.",
     "brak_aparatu_opis": "To scan pattern pages, allow camera access in Settings. You can still choose photos or a file.",
     "word_podglad": "Word documents open as they are. To mark rows and highlight, save it as a PDF and add the PDF.",
     "notatka_chip": "Row {{n}}: {{tekst}}",

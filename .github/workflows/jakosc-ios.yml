@@ -143,6 +143,11 @@ jobs:
         run: |
           set -o pipefail # domyślny bash -e bez pipefail: kod skryptu zginąłby w potoku do tee
           node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350; Trening L-021, jak verify:native)
+        # Cel zegarka bez ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon: brak CFBundleIconName, App Store Connect odrzuca wysyłkę (build 1026 w Treningu). Test: tests/jakosc/ikona-zegarka-prebuild.test.ts.
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
       - name: pods
         run: cd ios && pod install 2>&1 | tee pod-install.log
       - name: Cele natywne podłączone (ADR-0006, ADR-0007; 08 partia 3)

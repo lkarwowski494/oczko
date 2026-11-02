@@ -748,6 +748,8 @@
   "wzor.blad_rozmiar_opis": "⟦À pàttéŕñ çàñ bé ûp tö {{mb}} MB. Ñöthîñg wàš àddéd.~~~~~~~~~~~~~~⟧",
   "wzor.blad_strona": "⟦Öçžkö çàñ’t šàvé thîš pàgé~~~~~~~~~~~~~⟧",
   "wzor.blad_strona_opis": "⟦Thé pàgé àškš ýöû tö šîgñ îñ, öŕ ît hàš ñö téxt öŕ pîçtûŕéš. Ñöthîñg wàš àddéd. Öpéñ ît îñ ýöûŕ bŕöwšéŕ, šàvé ît àš à PDF àñd àdd thé PDF.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
+  "wzor.blad_czas": "⟦Öçžkö çöûldñ’t fîñîšh çöñvéŕtîñg thîš fîlé~~~~~~~~~~~~~~~⟧",
+  "wzor.blad_czas_opis": "⟦“{{plik}}” töök töö löñg tö çöñvéŕt. Ñöthîñg wàš àddéd. Tŕý àgàîñ, öŕ šàvé ît àš à PDF àñd àdd thé PDF.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
   "wzor.brak_aparatu_opis": "⟦Tö šçàñ pàttéŕñ pàgéš, àllöw çàméŕà àççéšš îñ Šéttîñgš. Ýöû çàñ štîll çhööšé phötöš öŕ à fîlé.~~~~~~~~~~~~~~~~~~~~~~~⟧",
   "wzor.word_podglad": "⟦Wöŕd döçûméñtš öpéñ àš théý àŕé. Tö màŕk ŕöwš àñd hîghlîght, šàvé ît àš à PDF àñd àdd thé PDF.~~~~~~~~~~~~~~~~~~~~~~⟧",
   "wzor.notatka_chip": "⟦Ŕöw {{n}}: {{tekst}}~~~⟧",

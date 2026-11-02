@@ -44,7 +44,11 @@ final class ZrodloTests: XCTestCase {
     let b = try JSONSerialization.jsonObject(with: Data(wynikBlad(.brakSieci).utf8)) as? [String: Any]
     XCTAssertEqual(b?["ok"] as? Bool, false)
     XCTAssertEqual(b?["powod"] as? String, "brak_sieci")
-    XCTAssertEqual(Set(PowodWzoru.allCases.map(\.rawValue)), ["brak_sieci", "odmowa", "pusty", "anulowano", "uszkodzony", "za_duze", "bledne_dane", "zapis"])
+    XCTAssertEqual(Set(PowodWzoru.allCases.map(\.rawValue)), ["brak_sieci", "przekroczono_czas", "odmowa", "pusty", "anulowano", "uszkodzony", "za_duze", "bledne_dane", "zapis"])
+  }
+  func testPowodPrzekroczeniaCzasu() {
+    XCTAssertEqual(powodPrzekroczeniaCzasu(plikLokalny: true), .przekroczonoCzas) // Word: nie brak sieci (E2-A3)
+    XCTAssertEqual(powodPrzekroczeniaCzasu(plikLokalny: false), .brakSieci) // strona WWW, która się nie ładuje: czeka w skrzynce
   }
   func testKodHttp() {
     XCTAssertEqual(powodHttp(401), .odmowa)

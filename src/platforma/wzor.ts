@@ -8,7 +8,7 @@ import { natywny as modul, type OczkoWzorNatywny } from '../../modules/oczko-wzo
 import type { KonwersjaPlatformy } from '../przypadki-uzycia/wzor';
 import { MINIATURA_PT } from '../konfiguracja';
 
-const POWODY: readonly Powod[] = ['zablokowany', 'limit', 'zapis', 'bledne_dane', 'niedozwolone_przejscie', 'brak_miejsca', 'wersja_nowsza', 'uszkodzony', 'za_duze', 'konflikt', 'brak_sieci', 'odmowa', 'pusty', 'anulowano'];
+const POWODY: readonly Powod[] = ['zablokowany', 'limit', 'zapis', 'bledne_dane', 'niedozwolone_przejscie', 'brak_miejsca', 'wersja_nowsza', 'uszkodzony', 'za_duze', 'konflikt', 'brak_sieci', 'przekroczono_czas', 'odmowa', 'pusty', 'anulowano'];
 
 function wynik<T>(json: string, wartosc: (o: Record<string, unknown>) => T | null): Wynik<T> {
   let o: unknown;

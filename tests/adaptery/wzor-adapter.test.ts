@@ -20,6 +20,9 @@ test('naPdf: źródło jako JSON do Swift, wynik ok → ścieżka i strony; pow�
   expect(await platformaWzoru(atrapa({ naPdf: JSON.stringify({ ok: false, powod: 'odmowa' }) })).naPdf({ rodzaj: 'adres', adres: 'https://x.org' })).toEqual({ ok: false, powod: 'odmowa' });
 });
 
+test('E2-A3: przekroczenie czasu konwersji Worda (`przekroczono_czas`) przechodzi jako własny powód, nie jako zapis ani brak_sieci', async () => {
+  expect(await platformaWzoru(atrapa({ naPdf: JSON.stringify({ ok: false, powod: 'przekroczono_czas' }) })).naPdf({ rodzaj: 'word', sciezka: '/a.docx' })).toEqual({ ok: false, powod: 'przekroczono_czas' });
+});
 test('nieznany powód albo zły JSON → zapis', async () => {
   expect(await platformaWzoru(atrapa({ naPdf: JSON.stringify({ ok: false, powod: 'cos' }) })).naPdf({ rodzaj: 'word', sciezka: '/a' })).toEqual({ ok: false, powod: 'zapis' });
   expect(await platformaWzoru(atrapa({ sprawdzPdf: '{nie json' })).sprawdzPdf('/a.pdf')).toEqual({ ok: false, powod: 'zapis' });

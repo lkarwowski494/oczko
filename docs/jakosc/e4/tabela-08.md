@@ -97,7 +97,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/sesja.test.ts` | zielony (główny zestaw) | 5 | BR-PRJ-008, BR-PRJ-008/S1, BR-PRJ-013, P-072 | `src/domena/maszyny/sesja`<br>`src/przypadki-uzycia/sesja` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/sha-pary-bazy.test.ts` | zielony (główny zestaw) | 1 | P-203 | `src/dane/pliki/magazyn` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-dodaj.test.ts` | zielony (główny zestaw) | 6 | — | `src/platforma/skrzynka` | — |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-importu.test.ts` | zielony (główny zestaw) | 16 | P-220, P-230, P-248 | `src/domena/porty`<br>`src/kompozycja/e2e/skrzynka`<br>`src/konfiguracja`<br>`src/platforma/skrzynka`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/skrzynka-importu.test.ts` | zielony (główny zestaw) | 17 | P-220, P-230, P-248 | `src/domena/porty`<br>`src/kompozycja/e2e/skrzynka`<br>`src/konfiguracja`<br>`src/platforma/skrzynka`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/stan-blokada.test.ts` | zielony (główny zestaw) | 3 | BR-LIC-004, P-133, P-135 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/ekran-blokady` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/start-kopie.test.ts` | zielony (główny zestaw) | 8 | BR-DAN-004/S1, BR-DAN-010/S3, NFR-PRY-001, P-047, P-070, P-080, R-082, R-088, R-089 | `src/dane/baza/kopia`<br>`src/dane/baza/polaczenie`<br>`src/dane/baza/sciezki`<br>`src/dane/kopia-ratunkowa`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/start`<br>`src/przypadki-uzycia/zgloszenie` | Z07-21, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/straznik-okno-e2e.test.ts` | zielony (główny zestaw) | 3 | P-358, RD-17 | `src/przypadki-uzycia/widok-licznika` | — |
@@ -207,7 +207,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wloczki-projektu-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-330 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-sygnal.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-009/S4, RD-13 | `src/kompozycja/system` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 4 | P-353 | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 3 | P-353 | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -215,7 +215,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-skrzynka.test.tsx` | zielony (główny zestaw) | 4 | P-046, P-230 | `src/ekrany/WzorSkrzynka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-miejsce.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-011 | `src/przypadki-uzycia/wzor-miejsce` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-notatki.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-003, BR-WZR-008, P-330 | `src/przypadki-uzycia/wzor-widok` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-plik-word.test.tsx` | zielony (główny zestaw) | 2 | — | `src/domena/rodzaj-pliku` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-plik-word.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/bledy`<br>`src/domena/rodzaj-pliku` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-rysik.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-004, P-226, P-327 | `src/domena/rysik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-strona-bez-sieci.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-007 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-znacznik.test.tsx` | zielony (główny zestaw) | 11 | BR-WZR-003 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
@@ -232,6 +232,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/icloud-platforma.test.ts` | zielony (główny zestaw) | 11 | P-230, P-242 | `src/domena/porty`<br>`src/platforma/icloud`<br>`src/platforma/icloud-atrapa`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/synchronizacja` | Z07-22 |
 | 9 ? | `tests/adaptery/identyfikatory.test.ts` | zielony (główny zestaw) | 2 | — | `src/platforma/identyfikatory` | — |
 | 9 ? | `tests/adaptery/jpeg-metadane.test.ts` | zielony (główny zestaw) | 2 | P-219 | `src/dane/pliki/jpeg`<br>`src/kompozycja/e2e-zdjecie` | — |
+| 9 ? | `tests/adaptery/konwersja-pdf-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-282 | `src/domena/bledy` | — |
 | 9 ? | `tests/adaptery/live-activity.test.ts` | zielony (główny zestaw) | 7 | P-115, P-139 | `src/domena/porty`<br>`src/platforma/dziennik-plus`<br>`src/platforma/live-activity`<br>`src/platforma/zegarek` | Z07-22 |
 | 9 ? | `tests/adaptery/magazyn.test.ts` | zielony (główny zestaw) | 2 | P-130 | `src/dane/pliki/magazyn` | — |
 | 9 ? | `tests/adaptery/platforma-proste.test.ts` | zielony (główny zestaw) | 3 | P-135, RD-16 | `src/platforma/ekran-aktywny`<br>`src/platforma/haptyka`<br>`src/platforma/zegar` | — |
@@ -244,7 +245,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/tryb-e2e-straznik.test.ts` | zielony (główny zestaw) | 6 | P-358, RD-17 | `src/konfiguracja`<br>`src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 6 | — | `src/domena/rysik` | — |
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
-| 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 6 | P-285 | `src/platforma/wzor` | — |
+| 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/platforma/zdjecia` | — |
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
 | 9 ? | `tests/domena/icloud/wektory-swift.test.ts` | zielony (główny zestaw) | 1 | — | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie`<br>`src/domena/porty` | Z07-22 |
@@ -260,4 +261,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 256; zależnych od poprawek: 166.
+Razem plików testów: 257; zależnych od poprawek: 166.
