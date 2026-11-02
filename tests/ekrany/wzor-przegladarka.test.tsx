@@ -63,6 +63,24 @@ describe('P2-5 / F-09 / BR-LIC-012: linia „Now working row n” w liczniku prz
     expect(screen.getByTestId('licznik-plus')).toBeTruthy();
     expect(screen.getByRole('button', { name: /^\+1 row/ })).toBeTruthy();
   });
+  // P2-5b (P-373, wariant B; F-09 design-spec.md:905): w trybie „rząd w trakcie” (bez celu) pod liczbą stoi podpis `licznik.jednostka_w_trakcie`
+  // „current row”, jak na ekranie licznika (Licznik.tsx:100) — VoiceOver czyta „48, current row”.
+  test.each([
+    ['pasek pod wzorem', ukladOkna({ szerokosc: 390, wysokosc: 844 }), 'wzor-pasek-licznika'],
+    ['kolumna obok', ukladOkna({ szerokosc: 1180, wysokosc: 820 }), 'wzor-kolumna-licznika'],
+  ])('P2-5b %s: „rząd w trakcie” podpisuje liczbę „current row”, w bloku liczby', (_nazwa, uklad, kontener) => {
+    render(<PrzegladarkaWzoru stan={stan({ licznik: wTrakcie, uklad })} t={t} widok={widok} {...wywolania()} />);
+    const podpis = screen.getByTestId('licznik-podpis');
+    expect(podpis.props.children).toBe('current row');
+    expect(screen.getByTestId('wzor-liczba-blok')).toContainElement(podpis);
+    expect(screen.getByTestId(kontener)).toContainElement(podpis);
+    expect(screen.queryByText(/Now working row/)).toBeNull();
+  });
+  test('P2-5b: tryb „skończone” nie dostaje podpisu „current row”', () => {
+    render(<PrzegladarkaWzoru stan={stan()} t={t} widok={widok} {...wywolania()} />);
+    expect(screen.queryByTestId('licznik-podpis')).toBeNull();
+    expect(screen.queryByText('current row')).toBeNull();
+  });
   test('tryb „skończone” zachowuje linię „Now working row n”', () => {
     render(<PrzegladarkaWzoru stan={stan({ licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' } })} t={t} widok={widok} {...wywolania()} />);
     expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 48');
