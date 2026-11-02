@@ -1,8 +1,14 @@
-# Stan audytu 04 wyglądu 2.1 (2026-10-30, wstrzymany na polecenie właściciela)
+# Stan audytu 04 wyglądu 2.1 (2026-10-30; aneks wariantów i aneks partii 8 domknięte 2026-11-02)
 Rola 04, tryb audit. Raport: `oczko-warsztat` `04-studio/2026-10-30-audyt/04-studio-projektowe-2026-10-30.md` (+ `teksty-crafting-days.md`, `lista-ciemny.md`, `narzedzia/probka-motywu.py`).
 
 **Zrobione:** 7 znalezisk (001–007; 2×P1, 5×P2) i rozstrzygnięcia „Do audytu 04”, D1a, S2a przyjęte (P-301); termin „crafting days” i teksty neutralne (P-302, P-304) naniesione w design-spec i makietach, łatka kluczy `fix9-2026-10-30/klucze.json` zgodna z kodem 08 (28 kluczy, 0 różnic; korekta `wzor.film_usun_opis` do zastosowania przez 08).
 
-**Czeka (następca):** aneks wariantów na zrzutach pełnego przebiegu (AX5, iPad, poziomo, ciemny, długości etykiet z 09): przebieg nocny odwołany, numer przebiegu od koordynatora. Do ciemnego użyj `lista-ciemny.md` i `narzedzia/probka-motywu.py` (zamyka 04-studio-projektowe-002). Po aneksie: `sprawdz-raport` kod 0, push `oczko-warsztat` `main`.
+**Czekało (zrobione 2026-11-02, sekcja niżej):** aneks wariantów na zrzutach pełnego przebiegu (AX5, iPad, poziomo, ciemny, długości etykiet z 09): przebieg nocny odwołany, numer przebiegu od koordynatora. Do ciemnego użyj `lista-ciemny.md` i `narzedzia/probka-motywu.py` (zamyka 04-studio-projektowe-002). Po aneksie: `sprawdz-raport` kod 0, push `oczko-warsztat` `main`.
 
 **Nie sprawdzono:** wzór, rysik, iPad, ikona i ekran startowy, VoiceOver na urządzeniu, „Zwiększ kontrast” na obrazie.
+
+## 2026-11-02: aneks wariantów (P-301) i aneks partii 8 (P-342, P-351–P-353)
+Rola 04, tryb fix, sesja `session_01T66VBxN3ekbAHkuHkZ89Tq`; raport `oczko-warsztat` `04-studio/2026-11-02-aneks/raport.md` (+ `dowody/`, `zrzuty/`).
+**Aneks wariantów (zrzuty przebiegu #135, run 41361451580, SHA 53693f3, całość w ciemnym):** ciemny — 63 zrzuty OK wobec tokenów, 24 wyjaśnione (strony dokumentów, alert, podgląd zdjęcia); krój Libre Franklin 700 potwierdzony na obrazie (IoU 0,932) — zamyka 001 na obrazie; 003, 004, 007 widoczne jako naprawione; AX5 tylko scenariusz 30; iPad i poziomo zgodne z W3. **Nowe znaleziska 008–014** (P1: 008 brak obrysu głównych przycisków w ciemnym; P2: 009 ikony emoji, 010 i 011 AX5, 012 nagłówek „Photos”, 013 stary tekst „Delete all data”, 014 glif ✎ dla Pen i notatki); P0 brak. **Brak zrzutu:** jasny, „Zwiększ kontrast”, vi i es-419 `licznik.po_dodaniu`, nb `ukonczenie.dni_*`, AX5 poza licznikiem.
+**Aneks partii 8:** 12 pozycji (opcje, rekomendacje) w `design-spec.md` sekcja „Aneks partii 8 (2026-11-02)”; makiety `fix11-2026-11-02/aneks8.html` (15 stanów), wzorce `aneks8-*` (75), klucze `fix11-2026-11-02/klucze.json` (7 nowych, 7 potwierdzonych). Do wyboru koordynatora tylko pozycja 10 (iPad compact: C rek., A, D). Korekta P-330: `ustawienia.pro_wlaczone` = „On”; zdanie to `oferty.pro_wlaczone`.
+**Następny krok:** 08 nakłada klucze i wdraża wg sekcji; 008–014 po akceptacji koordynatora; po audycie M1 powtórka wariantów (jasny, „Zwiększ kontrast”, vi, es-419, nb) w tym samym przebiegu co zrzuty sklepu (P-320).
