@@ -22,7 +22,7 @@ function kopia(zmien: (u: { id: string; pokrycie: { typ: string; pliki?: string[
 describe('kompletność inwentarza kryteriów względem BRD (07-jakosc-003)', () => {
   test('repo: każdy scenariusz BRD ma wpis, a pokrycie wpisów uzupełnienia jest prawdziwe', () => {
     const r = uruchom(KORZEN);
-    expect(r.stdout).toMatch(/scenariusze BRD: \d+, inwentarz: 220 \+ uzupełnienie: 86, błędów: 0/);
+    expect(r.stdout).toMatch(/scenariusze BRD: \d+, inwentarz: 221 \+ uzupełnienie: 85, błędów: 0/);
     expect(r.status).toBe(0);
   });
   test('scenariusz BRD bez wpisu → kod 1', () => {

@@ -16,9 +16,9 @@ const kopia = () => {
 };
 
 describe('linie-kryteriow.mjs (F07-20)', () => {
-  test('repo: każde z 220 odwołań wskazuje właściwy wiersz BRD/kontraktu (--check kod 0)', () => {
+  test('repo: każde z 221 odwołań wskazuje właściwy wiersz BRD/kontraktu (--check kod 0)', () => {
     const r = uruchom(KORZEN, '--check');
-    expect(r.stdout).toMatch(/kryteria: 220, rozjazdów: 0, bez miejsca: 0/);
+    expect(r.stdout).toMatch(/kryteria: 221, rozjazdów: 0, bez miejsca: 0/);
     expect(r.status).toBe(0);
   });
   test('pułapka: wiersz wstawiony na początku pliku BRD → rozjazd i kod 1; --zapisz naprawia JSON i MD', () => {
