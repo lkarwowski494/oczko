@@ -11,7 +11,8 @@ import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { LicznikWzoru } from './WzorLicznik';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import type { Uklad } from '../domena/uklad';
-import { MAX_SKALA_TYTULOWA, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type StanPrzegladarki = {
@@ -88,23 +89,23 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const czekajace = s.oczekujace ?? [];
 
   async function licz(f: () => Promise<WynikEkranu<unknown>>) { ustawBlad(!(await f()).ok); }
-  const narzedzie = (n: Narzedzie, klucz: 'wzor.zakreslacz' | 'wzor.pioro' | 'wzor.gumka', id: string, znak: string) => (
+  const narzedzie = (n: Narzedzie, klucz: 'wzor.zakreslacz' | 'wzor.pioro' | 'wzor.gumka', id: string, symbol: NazwaSymbolu) => (
     <Pressable key={id} accessibilityRole="button" accessibilityLabel={t(klucz)} accessibilityState={{ selected: s.narzedzie === n }}
       accessibilityValue={n === 'zakreslacz' ? { text: t('wzor.zakreslenia', { count: s.zakreslenia }) } : undefined}
       onPress={() => p.naNarzedzie(s.narzedzie === n ? 'brak' : n)} style={[st.ikona, s.narzedzie === n && st.wybrane]} testID={id}>
-      <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>{znak}</Text>
+      <SymbolSf nazwa={symbol} rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
     </Pressable>
   );
   const cofnij = (
     <Pressable key="cofnij" accessibilityRole="button" accessibilityLabel={t('wzor.cofnij_rysunek')} onPress={p.naCofnij} style={st.ikona} testID="wzor-cofnij-rysunek">
-      <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>↶</Text>
+      <SymbolSf nazwa="arrow.uturn.backward" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
     </Pressable>
   );
 
   const pasekNawigacji = !ipad && tryb ? (
     // iPhone i iPad compact w trybie rysowania: pasek nawigacji zamienia się w pasek narzędzi (W5a)
     <View style={st.pasek}>
-      <View style={st.grupa}>{narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', '🖍')}{narzedzie('gumka', 'wzor.gumka', 'wzor-gumka', '⌫')}{cofnij}</View>
+      <View style={st.grupa}>{narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', 'highlighter')}{narzedzie('gumka', 'wzor.gumka', 'wzor-gumka', 'eraser')}{cofnij}</View>
       <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.gotowe')} onPress={() => p.naNarzedzie('brak')} style={st.ikona}>
         <Text style={[st.tresc, st.pogrubiony]}>{t('wspolne.gotowe')}</Text>
       </Pressable>
@@ -124,16 +125,16 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       </View>
       <View style={st.grupa}>
         {!s.word && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
             <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>▭</Text>
           </Pressable>
         )}
         {!s.word && p.naNotatka && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.dodaj_notatke')} onPress={() => ustawNotatke(s.kierunek ? 'arkusz' : 'pasek')} style={st.ikona}>
-            <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✎</Text>
+            <SymbolSf nazwa="note.text.badge.plus" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
           </Pressable>
         )}
-        {!s.word && !ipad && narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', '🖍')}
+        {!s.word && !ipad && narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', 'highlighter')}
         <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.menu_a11y')} onPress={() => ustawMenu('opcje')} style={st.ikona} testID="wzor-menu">
           <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>•••</Text>
         </Pressable>
@@ -147,7 +148,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       {ipad && !s.word && (
         // iPad (regular): stały pasek narzędzi pod paskiem nawigacji (W5a)
         <View style={st.pasekNarzedzi}>
-          {narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', '🖍')}{narzedzie('pioro', 'wzor.pioro', 'wzor-pioro', '✎')}{narzedzie('gumka', 'wzor.gumka', 'wzor-gumka', '⌫')}{cofnij}
+          {narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', 'highlighter')}{narzedzie('pioro', 'wzor.pioro', 'wzor-pioro', 'pencil.tip')}{narzedzie('gumka', 'wzor.gumka', 'wzor-gumka', 'eraser')}{cofnij}
         </View>
       )}
       {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text">{t('wzor.word_podglad')}</Text>}

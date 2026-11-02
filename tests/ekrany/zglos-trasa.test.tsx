@@ -15,12 +15,12 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApli
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranZgloszenia = (require('../../app/zglos') as { default: React.ComponentType }).default;
 
-async function aplikacja(ostatniaPartiaMs?: number) {
+async function aplikacja(ostatniaPartiaMs?: number, synchronizacja?: string) {
   const t = await tEn();
   const s = await przygotuj();
   if (ostatniaPartiaMs !== undefined) await s.baza.run("INSERT INTO ustawienie (klucz, wartosc, zmieniono_ms) VALUES ('zegarek_ostatnia_partia_ms', ?, 1)", [String(ostatniaPartiaMs)]);
   expect(await zegarekOstatniaPartiaMs(s.baza)).toBe(ostatniaPartiaMs ?? null); // dane wejściowe testu są w bazie tak, jak czyta je kod
-  mockAplikacja = { kontener: { z: s.z, j: { t, jezyk: () => 'en' } }, licznik: {}, preferencje: {} };
+  mockAplikacja = { kontener: { z: synchronizacja ? { ...s.z, synchronizacja: { stan: () => synchronizacja } } : s.z, j: { t, jezyk: () => 'en' } }, licznik: {}, preferencje: {} };
 }
 const wiersz = async () => (await screen.findByText(/Watch/i, { exact: false }));
 
@@ -28,12 +28,25 @@ test('013: zegarek z kontaktem → w diagnostyce znacznik czasu ostatniej partii
   await aplikacja(Date.UTC(2026, 10, 1, 10, 30));
   render(<EkranZgloszenia />);
   await wiersz();
-  expect(screen.getByText(/2026-11-01T10:30:00Z/)).toBeTruthy();
+  expect(screen.getByText('Watch: last contact 2026-11-01T10:30:00Z')).toBeTruthy(); // 033-T2: znacznik techniczny po angielsku, ten sam w podglądzie i w wysyłanym pliku
 });
-test('013: zegarek bez kontaktu → w diagnostyce „brak”, a nie myślnik', async () => {
+test('013 / 033-T2 (P-383 B): zegarek bez kontaktu → w diagnostyce znacznik „none”, a nie myślnik ani polskie „brak”', async () => {
   await aplikacja();
   render(<EkranZgloszenia />);
   await wiersz();
   expect(screen.queryByText(/Watch\W+—/)).toBeNull();
-  expect(screen.getAllByText(/Watch/i).some((e) => /brak/.test(JSON.stringify(e.props.children)))).toBe(true);
+  expect(screen.getAllByText(/Watch/i).some((e) => /Watch: none$/.test(String(e.props.children)))).toBe(true);
+  expect(screen.queryByText(/brak/)).toBeNull();
+});
+
+test('033-T2 (P-383 B): synchronizacja — brak silnika → „off”, stany domeny → znaczniki angielskie (bez polskiego „wylaczona”)', async () => {
+  await aplikacja();
+  render(<EkranZgloszenia />);
+  expect(await screen.findByText('Sync: off')).toBeTruthy();
+  expect(screen.queryByText(/wylaczona/)).toBeNull();
+});
+test.each([['aktywna', 'on'], ['blad', 'error'], ['brak_konta', 'no_account'], ['konto_zmienione', 'account_changed'], ['wylaczona', 'off']])('033-T2: stan synchronizacji %s → „Sync: %s”', async (stan, znacznik) => {
+  await aplikacja(undefined, stan);
+  render(<EkranZgloszenia />);
+  expect(await screen.findByText(`Sync: ${znacznik}`)).toBeTruthy();
 });

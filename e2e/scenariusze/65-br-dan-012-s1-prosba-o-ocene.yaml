@@ -1,0 +1,61 @@
+# BR-DAN-012/S1+S3 (docs/brd/wymagania-dane.md:196, F-64, OG-15, 07-jakosc-033): (S1) po zamknięciu karty ukończenia („Done”) użytkownik ląduje na liście projektów i aplikacja
+# NIE pokazuje własnego okna z prośbą o ocenę — ewentualną prośbę systemową (SKStoreReviewController) pokazuje i pomija system; (S3) w Ustawieniach jest wiersz „Rate Oczko”,
+# a jego stuknięcie nie zawiesza ani nie zamyka aplikacji.
+# GRANICE (nazwane): (a) wywołanie systemowe nie jest widoczne dla Maestro — czy `requestReview` poszło i czy bramka `czyProsicOOcene` je dopuściła sprawdza Jest
+# (`tests/domena/prosba-o-ocene.test.ts`, wektory PO-01–PO-11); aplikacja nie ma w buildzie E2E panelu zapisującego wywołanie ani otwarty adres (propozycja dla 08: `e2e-ocena-stan`, raport 033-B);
+# (b) adres strony recenzji (`?action=write-review`, nie zaślepka `id0000000000`) pilnuje skrypt kontroli wydania (07-jakosc-008), nie E2E; symulator nie ma aplikacji App Store;
+# (c) „brak własnego okna” to negatyw słaby — tekst takiego okna nie jest znany, więc asercja dotyczy jedynego tekstu „Rate Oczko” poza Ustawieniami; dowód uzupełnia zrzut 65-po-ukonczeniu.
+# Systemowa prośba w symulatorze [DO USTALENIA: potwierdzi pierwszy przebieg] — „Not Now” zamyka ją, jeśli się pojawi. S2 (nigdy w trakcie pracy) — Jest. Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-DAN-012/S1 · Ukończenie projektu: po „Done” lista bez własnego okna z prośbą o ocenę; „Rate Oczko” w Ustawieniach"
+tags:
+  - BR-DAN-012-S1
+  - BR-DAN-012-S3
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- nigdy w trakcie pracy: licznik po +1 bez okna z prośbą (S2, tylko widoczne) ---
+- assertNotVisible: ".*[Rr]ate Oczko.*"
+# --- ukończenie → karta → „Done” (zamknięcie karty = chwila prośby) ---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-ukoncz" }
+- tapOn: { id: "menu-ukoncz" }
+- extendedWaitUntil: { visible: { id: "ukonczenie-karta" }, timeout: 20000 }
+- assertVisible: { id: "ukonczenie-gotowe" }
+- takeScreenshot: 65-karta-ukonczenia
+- tapOn: { id: "ukonczenie-gotowe" }
+# E2-138-S6: systemowa prośba o ocenę (jeśli system ją pokazał, granica (a)) zakrywa aplikację dla XCTest, a jej proces może wystartować nawet 21 s po żądaniu (przebieg 138, scenariusz 28) —
+# najpierw krótkie czekanie na zniknięcie listy, potem (tylko gdy znikła) czekanie na „Not Now” do 60 s ze zrzutem
+- extendedWaitUntil: { notVisible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 5000, optional: true }
+- runFlow:
+    when: { notVisible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" } }
+    commands:
+      - takeScreenshot: opoznienie-ocena-65
+      - extendedWaitUntil: { visible: { text: "Not Now" }, timeout: 60000, optional: true }
+      - tapOn: { text: "Not Now", optional: true }
+      - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 20000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8)
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 3000, optional: true }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- assertVisible: { id: "projekty-ukonczone" }
+- assertNotVisible: ".*[Rr]ate Oczko.*"
+- takeScreenshot: 65-po-ukonczeniu
+# --- S3: „Rate Oczko” w Ustawieniach ---
+- tapOn: { id: "nav-ustawienia" }
+- assertVisible: { id: "ustawienia" }
+- scrollUntilVisible: { element: { id: "ustawienia-ocen" } }
+- assertVisible: { id: "ustawienia-ocen" }
+- takeScreenshot: 65-ustawienia
+- tapOn: { id: "ustawienia-ocen" }
+# adres otwiera system (poza aplikacją; symulator bez App Store): czekanie opcjonalne, potem powrót i dowód, że aplikacja żyje na tym samym ekranie
+- extendedWaitUntil: { notVisible: { id: "ustawienia" }, timeout: 5000, optional: true }
+- launchApp: { stopApp: false }
+- assertVisible: { id: "ustawienia" }
+- assertVisible: { id: "ustawienia-ocen" }

@@ -58,3 +58,14 @@ test('kontrakt widoku wzoru: pierwszy rysik wybiera narzędzie z propa narzedzie
   expect(widok).toMatch(/func ustawNarzedzieRysika\(_ n: NarzedzieWzoru\) \{ narzedzieRysika = n \}/);
   expect(swift).toMatch(/Prop\("narzedzieRysika"\) \{ \(v: WidokWzoru, n: String\) in v\.ustawNarzedzieRysika\(/);
 });
+
+// P2-3 (Aneks P2 poz. 2, design-spec „Symbole SF”): chip notatki na stronie ma symbol `note.text` (kontur, 14 pt), nie glif ✎.
+test('kontrakt widoku wzoru: chip notatki używa symbolu SF note.text, bez glifu ✎', () => {
+  const widok = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+  const chip = /private func przebudujChipy\(\) \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(chip.length).toBeGreaterThan(100);
+  expect(chip).toMatch(/UIImage\(systemName: "note\.text"/);
+  expect(chip).toMatch(/pointSize: 14/);
+  expect(chip).not.toContain('✎');
+  expect(chip).toContain('b.setTitle(n.etykieta, for: .normal)');
+});

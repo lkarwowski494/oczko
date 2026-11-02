@@ -60,5 +60,6 @@ describe('Stoper', () => {
 
 test('P-287 (30): ikona i kapsuła stopera w pasku najwyżej ×1,8 przy dużym tekście (makieta fix-8 `.nav svg`)', () => {
   pokaz({ rodzaj: 'brak' });
-  expect(screen.getByText('⏱', { includeHiddenElements: true }).props.maxFontSizeMultiplier).toBe(1.8);
+  // P2-3: ikona to symbol SF; limit skali niesie jej rozmiar (symbole-sf.test.tsx „skala symbolu”), tu: symbol jest i jest dekoracyjny.
+  expect(screen.getByTestId('symbol-stopwatch', { includeHiddenElements: true }).props.accessible).toBe(false);
 });

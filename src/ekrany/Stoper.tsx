@@ -4,7 +4,8 @@
 // Odstępstwo nazwane (jak R8, P-191): menu i alert „inny projekt” jako widoki w ekranie, nie systemowy arkusz akcji / Alert.
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { cel, MAX_SKALA_KAPSULY, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_KAPSULY, MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { SymbolSf } from './SymbolSf';
 import { Przycisk } from './Arkusz';
 import type { Tlumacz } from './wspolne';
 
@@ -40,7 +41,8 @@ function useCzas(stan: StanStopera, teraz: () => number): string {
 
 export function Stoper(p: PropsStopera): React.ReactElement {
   const { stan: s, t } = p;
-  const st = style(useKolory());
+  const k = useKolory();
+  const st = style(k);
   const czas = useCzas(s, p.teraz);
   const [menu, ustawMenu] = useState(false);
   const wybierz = (f: () => void) => () => { ustawMenu(false); f(); };
@@ -48,15 +50,17 @@ export function Stoper(p: PropsStopera): React.ReactElement {
     <View>
       {s.rodzaj === 'brak' ? (
         <Pressable accessibilityRole="button" accessibilityLabel={t('stoper.start_a11y')} onPress={p.naStart} style={st.ikona} testID="licznik-stoper">
-          <Text style={st.ikonaTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>⏱</Text>
+          <SymbolSf nazwa="stopwatch" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
         </Pressable>
       ) : (
         <Pressable accessibilityRole="button" testID="licznik-stoper"
           accessibilityLabel={t(s.rodzaj === 'trwa' ? 'stoper.trwa_a11y' : 'stoper.wstrzymana_a11y', { czas })}
           onPress={() => ustawMenu((m) => !m)} style={[st.kapsula, s.rodzaj === 'wstrzymana' && st.kapsulaPauza]}>
-          <Text style={[st.kapsulaTekst, s.rodzaj === 'wstrzymana' && st.kapsulaTekstPauza]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-            {`${s.rodzaj === 'trwa' ? '⏱' : '⏸'} `}<Text>{czas}</Text>
-          </Text>
+          <View style={st.kapsulaWiersz}>
+            {/* kapsuła 17 pt 700 (design-spec:528): stoper w trwającej, pause.fill (wypełniony = stan) we wstrzymanej */}
+            <SymbolSf nazwa={s.rodzaj === 'trwa' ? 'stopwatch' : 'pause.fill'} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={s.rodzaj === 'wstrzymana' ? k.grafit : k.przyciskTekst} maxSkala={MAX_SKALA_KAPSULY} waga="bold" />
+            <Text style={[st.kapsulaTekst, s.rodzaj === 'wstrzymana' && st.kapsulaTekstPauza]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>{czas}</Text>
+          </View>
         </Pressable>
       )}
       {menu && s.rodzaj !== 'brak' && (
@@ -86,6 +90,7 @@ function style(k: Kolory) {
     ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     kapsula: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, justifyContent: 'center', paddingHorizontal: odstep.m },
     kapsulaPauza: { backgroundColor: k.papier, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
+    kapsulaWiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },
     kapsulaTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst, fontVariant: ['tabular-nums'] },
     kapsulaTekstPauza: { color: k.grafit },
     menu: { position: 'absolute', top: cel.minimum + odstep.xs, right: 0, minWidth: 240, zIndex: 10, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },

@@ -5,6 +5,7 @@ import type { CyklAplikacji, Oglos, StanCyklu, System } from '../ekrany/wspolne'
 import type { PortOceny } from '../przypadki-uzycia/ocena';
 import { portOcenySklepu, udostepnijPlik } from '../platforma/system-plikow-uzytkownika';
 import { polacz, zapiszTekst } from '../dane/pliki/system';
+import { paneleE2e } from '../platforma/tryb-e2e';
 
 export const cyklAplikacji: CyklAplikacji = {
   naZmiane(fn) {
@@ -15,7 +16,7 @@ export const cyklAplikacji: CyklAplikacji = {
 export const oglos: Oglos = (tekst) => AccessibilityInfo.announceForAccessibility(tekst);
 const nic = () => undefined;
 export const systemAplikacji: System = {
-  otworzAdres: (url) => { void Linking.openURL(url).catch(nic); },
+  otworzAdres: (url) => { paneleE2e?.zapamietajAdres(url); void Linking.openURL(url).catch(nic); }, // hak E2E F-64: tylko w buildzie E2E
   prosbaOOcene: nic,
   // KP-14: systemowe zarządzanie subskrypcjami (adres Apple zamiast arkusza showManageSubscriptions — odstępstwo nazwane, arkusz z expo-iap po 05).
   zarzadzajSubskrypcja: () => { void Linking.openURL('https://apps.apple.com/account/subscriptions').catch(nic); },
@@ -32,4 +33,4 @@ let katalogTymczasowy = '/tmp';
 /** Kontener podaje katalog tymczasowy aplikacji przy starcie. */
 export function ustawKatalogTymczasowy(k: string): void { katalogTymczasowy = k; }
 /** Prośba o ocenę (moduly.md „Prośba o ocenę”): StoreReview przez adapter platformy; decyzję podejmuje bramka w przypadku użycia. */
-export const portOceny: PortOceny = portOcenySklepu;
+export const portOceny: PortOceny = paneleE2e ? paneleE2e.zliczajProsby(portOcenySklepu) : portOcenySklepu; // hak E2E F-64: liczy wywołania `popros`

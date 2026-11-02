@@ -1,0 +1,46 @@
+# BR-LIC-007/S1 (docs/brd/wymagania-licznik.md:103, RD-12-W1): powtórzenie ma 8 rzędów, licznik rzędów 17 → „powtórzenie 3, rząd 1 powtórzenia”;
+# BR-LIC-008/S1 (:124, RD-12): zmiana długości powtórzenia na 10 → licznik nadal 17, „powtórzenie 2, rząd 7”; BR-LIC-007/S3 (RD-12-W5): długość 0 odrzucona.
+# F-05 (07-jakosc-033, część A). Wyrocznia: BRD i RD-12 (⌊(r−1)/d⌋+1, ((r−1) mod d)+1, r = skończone), nie kod; przed poprawką 020 ekran pokazywał „row 2” (zgłoszenie 020).
+# Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-LIC-007/S1 · Licznik 17, powtórzenie 8 → powtórzenie 3, rząd 1; po zmianie na 10 → powtórzenie 2, rząd 7 (BR-LIC-008/S1)"
+tags:
+  - BR-LIC-007-S1
+  - BR-LIC-008-S1
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "17" } }
+# S3 (RD-12-W5): długość 0 → komunikat, ustawienie nie zapisane
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-powtorzenie" }
+- tapOn: { id: "menu-powtorzenie" }
+- assertVisible: { id: "formularz-zapisz" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "powtorzenie-dlugosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "0"
+      - assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: "A repeat needs at least 1 row."
+- takeScreenshot: 55-dlugosc-zero
+- tapOn: { id: "arkusz-zamknij" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "17" }, timeout: 20000 }
+- assertNotVisible: { id: "licznik-powtorzenie" }
+# S1 (RD-12-W1): 17 przy długości 8
+- runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "8" } }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 3 · row 1 of 8.*" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "17" }
+- takeScreenshot: 55-powtorzenie-3-rzad-1
+# BR-LIC-008/S1 (RD-12): zmiana długości na 10, wartość zostaje 17
+- runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "10" } }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 2 · row 7 of 10.*" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "17" }
+- takeScreenshot: 55-powtorzenie-2-rzad-7

@@ -20,7 +20,7 @@ export interface OczkoWzorNatywny {
 export type ZnacznikNatywny = { strona: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1; etykieta: string;
   /** Widoczny napis zakładki („Row 48 ↑”, „Row 61 · page end”) i nazwa akcji VoiceOver „Move to next page” (pusta = brak): teksty z `t()`. */
   napis: string; akcjaNastepnaStrona: string };
-/** Chip notatki na stronie wzoru (F-56, P-330 2A): widok rysuje ✎ + `etykieta` przy lewej krawędzi strony na wysokości rzędu (`y`, `wysokosc` — ułamki wysokości strony);
+/** Chip notatki na stronie wzoru (F-56, P-330 2A): widok rysuje symbol SF note.text + `etykieta` przy lewej krawędzi strony na wysokości rzędu (`y`, `wysokosc` — ułamki wysokości strony);
  *  `id` wraca w `onNotatka`; `a11y` = etykieta VoiceOver przycisku. Treść, numery rzędów i arkusz notatki składa JS (teksty z `t()`). */
 export type NotatkaNatywna = { id: string; strona: number; y: number; wysokosc: number; etykieta: string; a11y: string };
 export type PropsWidokuNatywnego = {

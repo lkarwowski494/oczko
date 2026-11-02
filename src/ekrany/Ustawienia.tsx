@@ -84,8 +84,8 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {wynikDanych}
       <View style={st.grupa}>
         <Przycisk tekst={t('ustawienia.stan_danych')} onPress={naStanDanych} rodzaj="tekstowy" />
-        <Przycisk tekst={t('ustawienia.zglos')} onPress={naZglosProblem} rodzaj="tekstowy" />
-        <Przycisk tekst={t('ustawienia.ocen')} onPress={() => system.otworzAdres(adresy.recenzja)} rodzaj="tekstowy" />
+        <Przycisk tekst={t('ustawienia.zglos')} onPress={naZglosProblem} rodzaj="tekstowy" testID="ustawienia-zglos" />
+        <Przycisk tekst={t('ustawienia.ocen')} onPress={() => system.otworzAdres(adresy.recenzja)} rodzaj="tekstowy" testID="ustawienia-ocen" />
         <Przycisk tekst={t('ustawienia.polityka')} onPress={() => system.otworzAdres(adresy.polityka)} rodzaj="tekstowy" rola="link" />
         {naZrodla && <Przycisk tekst={t('ustawienia.zrodla_wiedzy')} onPress={naZrodla} rodzaj="tekstowy" testID="ustawienia-zrodla" />}
       </View>
