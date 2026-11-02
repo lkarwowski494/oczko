@@ -170,7 +170,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `formularz-termin-data` | arkusz terminu | systemowy wybór daty (inline) | — | |
 | `formularz-termin-brak` | arkusz terminu | No date | „No date” | |
 | `menu-znaczenie` | menu ••• licznika | What the number shows (F-09) | „What the number shows” | |
-| `wybor-znaczenie-skonczone` | arkusz „What the number shows” | opcja radia `Wybor` (NOC-4: **propozycja 07 dla 08, jeszcze nie w `src/`**; test przed kodem `tests/akceptacja/ekrany/wybor-testid.test.tsx`) | „Rows finished” | |
+| `wybor-znaczenie-skonczone` | arkusz „What the number shows” | opcja radia `Wybor` (NOC-4: wdrożone w `src/ekrany/Arkusz.tsx` i `FormularzeProjektu.tsx` (wyjątek P-404); test `tests/ekrany/wybor-testid.test.tsx`) | „Rows finished” | |
 | `wybor-znaczenie-w-trakcie` | arkusz „What the number shows” | opcja radia `Wybor` (NOC-4, jak wyżej; id bez `_` z wartości `w_trakcie`, zasada 2) | „The row I’m on” | |
 | `wybor-rodzaj-rzedy` | arkusz „Add counter” | opcja radia `Wybor` rodzaju licznika (NOC-4, jak wyżej) | „Rows” | |
 | `wybor-rodzaj-oczka` | arkusz „Add counter” | opcja radia `Wybor` rodzaju licznika (NOC-4, jak wyżej) | „Stitches” | |
@@ -369,3 +369,4 @@ Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza —
 - 2026-11-02 (07-jakosc-033 B, P-378): scenariusze 61–66 (F-20, F-26, F-57, F-59, F-64, „Replace”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegły (brak macOS w sesji pisania), ocena po przebiegu nocnym.
 - 2026-11-02 (przebieg nocny 2/3.11, 07-jakosc NOC-3, P-400): scenariusz 67 (BR-LIC-012/S1 w pasku pod wzorem, P2-5b — podpis „current row”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegł (brak macOS w sesji pisania).
 - 2026-11-02 (przebieg nocny, 07-jakosc NOC-4): kontrakt testID opcji radia `Wybor` (6 wierszy `wybor-*`) i test przed kodem w `tests/akceptacja/ekrany/`; scenariusze 54, 56, 60, 67 stukają jeszcze po tekście — przejście na `id` po wdrożeniu przez 08 (lista „Dla 08” w raporcie).
+- 2026-11-02 (07-jakosc NOC-4, wyjątek P-404): testID `wybor-*` wdrożone w kodzie przez 07 (tylko propsy, bez zmiany zachowania); scenariusze 54, 56, 60, 67 stukają opcje po `id`.

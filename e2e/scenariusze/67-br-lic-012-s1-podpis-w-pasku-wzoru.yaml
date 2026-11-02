@@ -31,7 +31,7 @@ tags:
 - assertVisible: { id: "menu-znaczenie" }
 - tapOn: { id: "menu-znaczenie" }
 - assertVisible: "The row I’m on"
-- tapOn: "The row I’m on"
+- tapOn: { id: "wybor-znaczenie-w-trakcie" } # wyjątek P-404: testID zamiast tekstu
 - assertVisible: { text: "The row I’m on", selected: true }
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "13" }

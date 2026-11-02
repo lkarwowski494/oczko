@@ -18,7 +18,7 @@ tags:
 - scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "projekt-narzedzie" }
 - assertVisible: { id: "formularz-rozmiar-mm" }
-- tapOn: "Needles"
+- tapOn: { id: "wybor-narzedzie-druty" } # wyjątek P-404: testID zamiast tekstu
 - assertVisible: { text: "Needles", selected: true }
 - retry:
     maxRetries: 1
@@ -59,7 +59,7 @@ tags:
 # S3: szydełko 6,5 mm (RD-19-W3)
 - tapOn: { id: "projekt-narzedzie" }
 - assertVisible: { id: "formularz-rozmiar-mm" }
-- tapOn: "Hook"
+- tapOn: { id: "wybor-narzedzie-szydelko" } # wyjątek P-404: testID zamiast tekstu
 - assertVisible: { text: "Hook", selected: true }
 - retry:
     maxRetries: 1

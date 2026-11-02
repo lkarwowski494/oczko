@@ -1,14 +1,13 @@
-// Testy akceptacyjne przed kodem (DS-02), 07-jakosc NOC-4: testID pojedynczych opcji radia `Wybor` (src/ekrany/Arkusz.tsx:134).
+// 07-jakosc NOC-4 (wyjątek P-404: wdrożenie przez 07; do commitu wdrożenia test był czerwony w tests/akceptacja/ekrany): testID pojedynczych opcji radia `Wybor` (src/ekrany/Arkusz.tsx:134).
 // Dziś scenariusze Maestro stukają opcje po tekście („Needles”, „Stitches”, „The row I’m on”), który powtarza się na ekranie i zmienia z językiem.
 // Kontrakt dla 08 (e2e/README.md, wiersze `wybor-*`): `opcje[].testID?` przekazane do `Pressable` opcji; wywołania w FormularzeProjektu.tsx podają
 // `wybor-rodzaj-rzedy|oczka`, `wybor-znaczenie-skonczone|w-trakcie`, `wybor-narzedzie-druty|szydelko` (id tylko [a-z0-9-], README zasada 2: bez `_` z wartości `w_trakcie`).
 // Wyrocznia: decyzja koordynatora (P-087) o kontrakcie id + istniejąca semantyka radia (`accessibilityRole radio`, `selected`), nie wynik testowanego kodu.
-// Czerwień ma być z braku elementu o testID, nie z importu ani typu. 08 przenosi test do tests/ekrany/ w commicie, który go zazielenia.
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { FormularzLicznika, FormularzNarzedzia, FormularzZnaczenia } from '../../../src/ekrany/FormularzeProjektu';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import { tEn } from '../../ekrany/pomoc';
+import { FormularzLicznika, FormularzNarzedzia, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
