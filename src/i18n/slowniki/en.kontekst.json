@@ -175,7 +175,7 @@
     "wpisz": "Przycisk pod starszym wpisem historii; otwiera arkusz wpisania wartości licznika (BR-LIC-017).",
     "seria": "Opis zgrupowanej serii w historii licznika (≥ 2 w praktyce); {{czas}} = czas trwania serii z formatu czasu trwania (np. „4 s”).",
     "cofnij_serie": "Przycisk przy ostatniej serii w historii; cofa całą serię (BR-LIC-003 S2). Przy dużym tekście zawija się do dwóch wierszy.",
-    "wpis_rozwin_a11y": "Etykieta VoiceOver strzałki ▸/▾ przy starszym wpisie historii (BR-LIC-003 S4; wzorzec rozwijania jak Trening, wzorzec 20): stała, taka sama po rozwinięciu; stan niesie `expanded`. {{wpis}} = krótki opis wpisu, np. „30 to 31 at 20:14” (`historia.wpis_a11y`) (godzina w formacie regionu).",
+    "wpis_rozwin_a11y": "Etykieta VoiceOver strzałki ▸/▾ przy starszym wpisie historii (BR-LIC-003 S4; wzorzec rozwijania jak Trening, wzorzec 20): stała, taka sama po rozwinięciu; stan niesie `expanded`. {{wpis}} = krótki opis wpisu, np. „30 → 31 at 20:14” (godzina w formacie regionu).",
     "wpis_rozwin_podpowiedz": "Podpowiedź VoiceOver (accessibilityHint) tej samej strzałki: co się stanie po stuknięciu. Jedno zdanie, strona czynna; „entry” = jeden wpis historii licznika.",
     "wpis_a11y": "Opis jednego wpisu historii licznika dla VoiceOver i dla `{{wpis}}` w `historia.wpis_rozwin_a11y` („More about 30 to 31 at 20:14”). {{od}} i {{do}} = wartości licznika przed i po zmianie (liczby w zapisie regionu, bez odmiany); {{czas}} = godzina w formacie regionu. Czytane słowami „to”/„at”, nie strzałką ani kropką (VoiceOver czyta „→” jako nazwę znaku). Wpis cofnięty: do opisu dochodzi osobne zdanie `historia.cofnieto`; seria: dotychczasowy tekst `historia.seria_*`."
   },
