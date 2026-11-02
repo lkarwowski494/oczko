@@ -3,7 +3,8 @@
 # (nazwa kopii = nazwa oryginału, 04-fix5-N1), po otwarciu oryginału licznik nadal 2. Wyrocznia: BRD (wartości nie z kodu).
 # Poza scenariuszem (Jest `tests/dane/projekt-kosz.test.ts`, Node): przypomnienia, narzędzie i rozmiar (S1 „Oraz”), szydełko (S2, ER-53), brak zdjęć/notatki/terminu.
 # Opisy wierszy listy i części ("… row 3 of 40", "2 of 40 rows") — format z kluczy `projekty.*`, `projekt.czesc_cel` (en.json); etykieta wiersza listy
-# [DO USTALENIA: potwierdzi pierwszy przebieg — czy tekst „row N of 40” jest w etykiecie wiersza, czy tylko w tekście potomnym]. Informacyjnie do pierwszego zielonego (P-091).
+# Przebieg #139 (hierarchia kroku 85): etykieta wiersza części to „Back, 2 of 40 rows” (nazwa części + opis), a Maestro dopasowuje cały tekst — stąd prefiks „.*” (E2-139-S4).
+# Etykiety wierszy listy projektów („row N of 40”) — jeszcze niepotwierdzone przebiegiem (scenariusz padł wcześniej). Informacyjnie do pierwszego zielonego (P-091).
 appId: com.apps4brew.knitting
 name: "BR-PRJ-007/S1 · Make another like this: nowy projekt z częścią i celem, liczniki od 0, oryginał bez zmian"
 tags:
@@ -25,7 +26,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - tapOn: { id: "licznik-projekt" }
 - assertVisible: { id: "projekt-menu" }
-- assertVisible: "2 of 40 rows"
+- assertVisible: ".*2 of 40 rows"
 - takeScreenshot: 61-oryginal
 # --- Make another like this (alert z potwierdzeniem; „projekt.kopia_*”) ---
 - tapOn: { id: "projekt-menu" }
@@ -35,8 +36,8 @@ tags:
 - takeScreenshot: 61-potwierdzenie
 - tapOn: "Make another"
 # nowy projekt zastępuje ekran (router.replace): wskazuje go „0 of 40 rows” zamiast „2 of 40 rows”
-- extendedWaitUntil: { visible: "0 of 40 rows", timeout: 20000 }
-- assertNotVisible: "2 of 40 rows"
+- extendedWaitUntil: { visible: ".*0 of 40 rows", timeout: 20000 }
+- assertNotVisible: ".*2 of 40 rows"
 - takeScreenshot: 61-nowy-projekt
 # --- lista: dwa projekty, oryginał nietknięty ---
 - tapOn: { id: "nav-wstecz" }
