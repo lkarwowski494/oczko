@@ -155,7 +155,10 @@
     "wstecz": "Back",
     "dodaj": "Add",
     "gotowe": "Done",
-    "ok": "OK"
+    "ok": "OK",
+    "ladowanie": "Loading…",
+    "blad_wczytania": "Couldn’t load this.",
+    "ponow": "Try again"
   },
   "projekty": {
     "szukaj": "Search",

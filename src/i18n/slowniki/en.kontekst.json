@@ -135,7 +135,10 @@
     "wstecz": "Systemowy „Back” ekranów wtórnych (e2e/README.md `nav-wstecz`, słownik iOS).",
     "dodaj": "Przycisk zatwierdzenia w prawym górnym rogu arkusza tworzącego nowy obiekt (słownik studia: Zapisz/Dodaj).",
     "gotowe": "Przycisk końca trybu Edit w pasku nawigacji (systemowe „Done”).",
-    "ok": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): jedyny przycisk alertu informacyjnego (błędy importu)."
+    "ok": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): jedyny przycisk alertu informacyjnego (błędy importu).",
+    "ladowanie": "Podpis na środku ekranu do czasu pierwszego odczytu danych (lista projektów, ekran projektu; E2-137-A1). Jedno słowo z wielokropkiem.",
+    "blad_wczytania": "Podpis nad przyciskiem „Try again”, gdy odczyt danych ekranu się nie udał (E2-137-A1). Zdanie krótkie, bez winy użytkownika.",
+    "ponow": "Przycisk pod komunikatem o nieudanym odczycie ekranu: ponawia odczyt (E2-137-A1). Dwa słowa."
   },
   "projekty": {
     "szukaj": "Pole wyszukiwania na liście projektów (ekrany.html projekty).",
