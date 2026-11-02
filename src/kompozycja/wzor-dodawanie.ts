@@ -13,7 +13,7 @@ export function alertImportu(powod: Powod, plik: string, t: Tlumacz): { tytul: s
     case 'bledne_dane': return { tytul: t('wzor.blad_typ'), opis: t('wzor.blad_typ_opis') };
     case 'za_duze': return { tytul: t('wzor.blad_rozmiar'), opis: t('wzor.blad_rozmiar_opis', { mb: WZOR_MAKS_MB }) };
     case 'odmowa': case 'pusty': return { tytul: t('wzor.blad_strona'), opis: t('wzor.blad_strona_opis') };
-    default: return { tytul: t('licznik.blad_zapisu'), opis: '' };
+    default: return { tytul: t('wzor.blad_zapis'), opis: t('wzor.blad_zapis_opis') }; // aneks 04 poz. 11, P-353 (c): zapis zlecenia wzoru; nie tekst o liczniku
   }
 }
 export function nazwaDomyslna(z: { rodzaj: 'plik'; nazwa: string } | { rodzaj: 'adres'; adres: string } | { rodzaj: 'skan' | 'zdjecia' }, t: Tlumacz, data: string): string {

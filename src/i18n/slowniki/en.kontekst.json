@@ -47,7 +47,8 @@
     "po_dodaniu_oczka": "Ogłoszenie VoiceOver po +1 na liczniku oczek (zamiast „{{zrobione}} done. Now row {{nastepny}}.”). Krótko.",
     "znaczniki_sesji_oczka": "Podpis nad kreskami sesji na liczniku oczek (zamiast „rows”).",
     "seria_blokada": "Baner strażnika tempa, gdy serię stuknięć z ekranu blokady scalono po otwarciu aplikacji (BR-LIC-019 S5). {{godzina}} = godzina serii, nie scalenia (format godziny regionu). Forma pojedyncza dla reguł języka; w praktyce ≥ 2.",
-    "seria_zegarek": "Baner strażnika tempa dla serii z zegarka scalonej po otwarciu aplikacji. {{godzina}} = godzina serii."
+    "seria_zegarek": "Baner strażnika tempa dla serii z zegarka scalonej po otwarciu aplikacji. {{godzina}} = godzina serii.",
+    "wpisz_blad_format": "Linia błędu pod polem wpisania wartości licznika (BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): wartość musi być liczbą całkowitą od 0. {{przyklad}} = liczba 1000 sformatowana zapisem regionu telefonu (en-US „1,000”, pl-PL „1 000”, de-DE „1.000”, ar-EG cyfry arabsko-indyjskie), dzięki czemu użytkownik widzi, jak region zapisuje tysiące. Ten sam tekst dla ujemnej, tekstu i zapisu niezgodnego z regionem — aplikacja niczego nie zgaduje (nie zamienia „1,000” na 1000 ani na 1)."
   },
   "limit": {
     "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków.",
@@ -170,7 +171,9 @@
     "starszy_info": "Linia informacji pod starszym wpisem historii po stuknięciu w niego (BR-LIC-003 S4); nie błąd. „Change” = zmiana wartości licznika.",
     "wpisz": "Przycisk pod starszym wpisem historii; otwiera arkusz wpisania wartości licznika (BR-LIC-017).",
     "seria": "Opis zgrupowanej serii w historii licznika (≥ 2 w praktyce); {{czas}} = czas trwania serii z formatu czasu trwania (np. „4 s”).",
-    "cofnij_serie": "Przycisk przy ostatniej serii w historii; cofa całą serię (BR-LIC-003 S2). Przy dużym tekście zawija się do dwóch wierszy."
+    "cofnij_serie": "Przycisk przy ostatniej serii w historii; cofa całą serię (BR-LIC-003 S2). Przy dużym tekście zawija się do dwóch wierszy.",
+    "wpis_rozwin_a11y": "Etykieta VoiceOver strzałki ▸/▾ przy starszym wpisie historii (BR-LIC-003 S4; wzorzec rozwijania jak Trening, wzorzec 20): stała, taka sama po rozwinięciu; stan niesie `expanded`. {{wpis}} = krótki opis wpisu, np. „30 → 31 at 20:14” (godzina w formacie regionu).",
+    "wpis_rozwin_podpowiedz": "Podpowiedź VoiceOver (accessibilityHint) tej samej strzałki: co się stanie po stuknięciu. Jedno zdanie, strona czynna; „entry” = jeden wpis historii licznika."
   },
   "menu": {
     "nazwa": "Tekst z prototyp.html roli 04.",
@@ -338,6 +341,7 @@
     "wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy zerze albo jednym wzorze.",
     "wzory": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): nagłówek grupy na ekranie projektu przy dwóch i więcej wzorach (jeden widoczny naraz, P-218).",
     "miejsce_wzoru_wartosc": "Wartość wiersza „Pattern” w grupie „Details” na ekranie projektu (07-jakosc-010): gdzie stoi znacznik rzędu na wzorze. {{strona}} = numer strony PDF (od 1), {{rzad}} = rząd schematu. Krótkie, jak „Page 3, row 48”; tekst roboczy 08 do akceptacji 04.",
+    "miejsce_wzoru_strona": "Druga linia wiersza wzoru na ekranie projektu, gdy wzór ma zapisaną stronę, ale nie ma rzędu znacznika. Samo „Page {{strona}}”; rzędu nie zgadujemy (macierz stanów, dane częściowe). {{strona}} = numer strony (liczba, bez odmiany).",
     "wloczka": "Wiersz w grupie „Details” na ekranie projektu (partia 8, 07-jakosc-001): włóczka użyta w projekcie. Rzeczownik, krótka etykieta (ok. 12 znaków); wartość po prawej to nazwa włóczki albo liczba włóczek.",
     "wloczka_brak": "Wartość wiersza „Yarn” na ekranie projektu, gdy żadna włóczka nie jest wybrana. Jedno słowo; to nie jest przycisk.",
     "wloczki": "Wartość wiersza „Yarn”, gdy wybrano kilka włóczek (≥ 2; liczba mnoga wg reguł języka). Przy jednej włóczce wiersz pokazuje jej nazwę. Krótko, mieści się obok etykiety przy 320 pt."
@@ -743,8 +747,11 @@
     "notatka_usun_opis": "Opis alertu usunięcia notatki wzoru; {{n}} = rząd notatki. Notatki nie trafiają do kosza.",
     "notatki_wiele": "Chip zbiorczy, gdy kilka notatek leży w obrębie jednego rzędu na stronie (≥ 2 w praktyce). Stuknięcie otwiera listę `wzor.notatki_tytul`.",
     "notatka_edytuj": "Przycisk w nagłówku arkusza notatki wzoru (Close / tytuł / Edit; 07-jakosc-007, P-330 2A): przechodzi w tryb zmiany treści (Cancel / Save). Tekst roboczy 08 — brak klucza w klucze.json, do akceptacji 04.",
+    "notatka_edytuj_a11y": "Etykieta VoiceOver przycisku „Edit” (`wzor.notatka_edytuj`) w arkuszu podglądu notatki wzoru: akcja plus obiekt (słownik interakcji). {{n}} = numer rzędu notatki.",
     "przed_schematem": "Linia pod paskiem wzoru (07-jakosc-023, BR-WZR-003 S4, RD-21-W6): praca jest przed pierwszym rzędem schematu (prucie poza początek); znacznik stoi na rzędzie 1. Tekst roboczy 08 — design-spec wymaga „oznaczenia”, ale nie podaje brzmienia; do akceptacji 04.",
-    "znacznik_napis": "Widoczny napis zakładki znacznika rzędu na stronie wzoru (07-jakosc-023, F-26): do napisu dochodzi strzałka kierunku rzędów (↑/↓, symbol); {{n}} = rząd schematu. Przy końcu strony napis to wzor.etykieta_koniec. Tekst roboczy 08 — design-spec podaje „Row 48 ↑” bez klucza; do akceptacji 04."
+    "znacznik_napis": "Widoczny napis zakładki znacznika rzędu na stronie wzoru (07-jakosc-023, F-26): do napisu dochodzi strzałka kierunku rzędów (↑/↓, symbol); {{n}} = rząd schematu. Przy końcu strony napis to wzor.etykieta_koniec. Tekst roboczy 08 — design-spec podaje „Row 48 ↑” bez klucza; do akceptacji 04.",
+    "blad_zapis": "Nagłówek alertu, gdy nie udało się zapisać zlecenia dodania wzoru (zapis lokalny nie powiódł się; wzorzec jak `wzor.blad_plik`). Przycisk: `wspolne.ok`. Nie dotyczy błędu pliku ani sieci.",
+    "blad_zapis_opis": "Treść alertu `wzor.blad_zapis`: co się stało („may be out of space” — przyczyna prawdopodobna, nie pewna), że nic nie dodano, co zrobić. Bez przeprosin i bez kodów technicznych."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",

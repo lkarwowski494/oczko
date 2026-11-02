@@ -44,7 +44,11 @@ export function Historia({ stan, t, naCofnij, naCofnijSerie, naWpisz, naZamknij 
                 {w.mozeCofnac && (w.seria
                   ? <Przycisk tekst={t('historia.cofnij_serie', { count: w.seria.ile })} onPress={() => naCofnijSerie(w.seria!.odZdarzeniaId)} testID="historia-cofnij-serie" />
                   : <Przycisk tekst={t('wspolne.cofnij')} onPress={() => naCofnij(w.id)} testID="historia-cofnij-ostatnia" />)}
-                {starszy && <Przycisk tekst={rozwiniety === w.id ? '–' : '+'} etykieta={tekst} rodzaj="tekstowy" onPress={() => ustawRozwiniety(rozwiniety === w.id ? null : w.id)} testID={`historia-rozwin-${w.id}`} />}
+                {starszy && (
+                  // ▸/▾ po prawej, cel ≥ 44 pt (przycisk tekstowy), stan w `expanded`, etykieta stała (aneks partii 8, poz. 4; wzorzec 20 Treningu)
+                  <Przycisk tekst={rozwiniety === w.id ? '▾' : '▸'} etykieta={t('historia.wpis_rozwin_a11y', { wpis: tekst })} podpowiedz={t('historia.wpis_rozwin_podpowiedz')}
+                    rozwiniety={rozwiniety === w.id} rodzaj="tekstowy" onPress={() => ustawRozwiniety(rozwiniety === w.id ? null : w.id)} testID={`historia-rozwin-${w.id}`} />
+                )}
               </View>
               {starszy && rozwiniety === w.id && (
                 <View style={{ gap: odstep.s }} testID="historia-starszy-info">

@@ -6,6 +6,7 @@ import { Projekt } from '../../src/ekrany/Projekt';
 import { stanProjektu } from '../../src/kompozycja/projekt';
 import type { Jezyk } from '../../src/kompozycja/licznik';
 import { dodajRzad } from '../../src/przypadki-uzycia/licznik';
+import { zapamietajPozycjeWzoru } from '../../src/przypadki-uzycia/wzor-miejsce';
 import { widokProjektu } from '../../src/przypadki-uzycia/widok-projektu';
 import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { T0, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -36,6 +37,32 @@ test('znacznik na stronie 3, licznik 47 → „Pattern: Page 3, row 48”; po +1
 test('wzór bez znacznika → brak wiersza miejsca (nic zgadniętego)', async () => {
   const s = await przygotuj();
   await wykonaj(s.baza, baza('{}'));
+  await pokaz(s);
+  expect(screen.queryByText(/Pattern:/)).toBeNull();
+});
+
+// Poprawki 04, D1 (P-360, aneks partii 8, poz. 3): wzór ma zapisaną stronę (`ostatnie_miejsce`), ale nie ma rzędu znacznika → samo „Page 3”; rzędu nie zgadujemy.
+test('zapisana strona 3 bez znacznika → „Pattern: Page 3” (bez rzędu, nic nie zgadnięte)', async () => {
+  const s = await przygotuj();
+  await wykonaj(s.baza, baza('{}'));
+  expect((await zapamietajPozycjeWzoru(s.z, { licznikId: 'l1', wzorId: 'w1', strona: 2 })).ok).toBe(true);
+  await pokaz(s);
+  expect(screen.getByText('Pattern: Page 3')).toBeTruthy();
+  expect(screen.queryByText(/Pattern: Page 3, row/)).toBeNull();
+});
+
+test('znacznik ma pierwszeństwo przed samą stroną: „Page 3, row 48”', async () => {
+  const s = await przygotuj();
+  await wykonaj(s.baza, baza(ZNACZNIK));
+  expect((await zapamietajPozycjeWzoru(s.z, { licznikId: 'l1', wzorId: 'w1', strona: 5 })).ok).toBe(true);
+  await pokaz(s);
+  expect(screen.getByText('Pattern: Page 3, row 48')).toBeTruthy();
+});
+
+test('powiększenie bez strony i bez znacznika → brak wiersza miejsca', async () => {
+  const s = await przygotuj();
+  await wykonaj(s.baza, baza('{}'));
+  expect((await zapamietajPozycjeWzoru(s.z, { licznikId: 'l1', wzorId: 'w1', powiekszenie: 2 })).ok).toBe(true);
   await pokaz(s);
   expect(screen.queryByText(/Pattern:/)).toBeNull();
 });

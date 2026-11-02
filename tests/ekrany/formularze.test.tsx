@@ -27,6 +27,25 @@ describe('Formularze', () => {
     await waitFor(() => expect(naZapisz).toHaveBeenCalledWith(50));
   });
 
+  // Poprawki 04, D1 (P-360, aneks partii 8, poz. 5; BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): jedna linia błędu z przykładem 1000 w zapisie regionu;
+  // aplikacja niczego nie zgaduje („1,000” nie staje się 1000 ani 1 w regionie, który tak nie pisze).
+  describe('komunikat 024: „Enter a whole number, 0 or more, for example {{przyklad}}.”', () => {
+    const blad = async (jezyk: string, wpis: string, oczekiwany: string) => {
+      const naZapisz = jest.fn(ok);
+      render(<FormularzWartosci stan={{ obecna: 42 }} t={t} jezyk={jezyk} tekstLimitu="" naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+      fireEvent.changeText(screen.getByLabelText('Rows already finished'), wpis);
+      fireEvent.press(przycisk('Save', 'button'));
+      expect(naZapisz).not.toHaveBeenCalled();
+      expect(screen.getByRole('alert')).toBeTruthy();
+      expect(screen.getByText(oczekiwany)).toBeTruthy();
+    };
+    test('en-US: ujemna, tekst i zapis niezgodny z regionem dają ten sam tekst z „1,000”', async () => {
+      for (const zle of ['-3', 'abc', '1.5']) await blad('en-US', zle, 'Enter a whole number, 0 or more, for example 1,000.');
+    });
+    test('de-DE: przykład w zapisie regionu „1.000”', async () => { await blad('de-DE', 'abc', 'Enter a whole number, 0 or more, for example 1.000.'); });
+    test('ar-EG: przykład cyframi regionu', async () => { await blad('ar-EG', 'abc', `Enter a whole number, 0 or more, for example ${new Intl.NumberFormat('ar-EG').format(1000)}.`); });
+  });
+
   test('BR-LIC-007/S3: długość powtórzenia 0 — bez zapisu, prośba o co najmniej 1 (RD-12-W5; Z07-05)', () => {
     const naZapisz = jest.fn(ok);
     render(<FormularzPowtorzenia stan={{ nazwa: 'Cable pattern', dlugosc: null }} t={t} naZapisz={naZapisz} naAnuluj={jest.fn()} />);

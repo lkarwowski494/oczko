@@ -33,8 +33,8 @@ export function ArkuszNotatekWzoru(p: PropsArkuszaNotatek): React.ReactElement |
   const naglowek = (lewy: React.ReactNode, tytul: string, prawy: React.ReactNode) => (
     <View style={st.naglowek}>{lewy}<Text style={[st.tresc, st.pogrubiony, st.tytul]} accessibilityRole="header">{tytul}</Text>{prawy}</View>
   );
-  const przycisk = (tekst: string, id: string, f: () => void, pogrubiony = false) => (
-    <Pressable accessibilityRole="button" accessibilityLabel={tekst} style={st.przyciskNaglowka} testID={id} onPress={f}><Text style={[st.tresc, pogrubiony && st.pogrubiony]}>{tekst}</Text></Pressable>
+  const przycisk = (tekst: string, id: string, f: () => void, pogrubiony = false, etykieta = tekst) => (
+    <Pressable accessibilityRole="button" accessibilityLabel={etykieta} style={st.przyciskNaglowka} testID={id} onPress={f}><Text style={[st.tresc, pogrubiony && st.pogrubiony]}>{tekst}</Text></Pressable>
   );
   return (
     <View style={st.tlo} accessibilityViewIsModal>
@@ -45,7 +45,7 @@ export function ArkuszNotatekWzoru(p: PropsArkuszaNotatek): React.ReactElement |
             {naglowek(
               przycisk(t(edycja === null ? 'wspolne.zamknij' : 'wspolne.anuluj'), 'wzor-notatka-zamknij', () => (edycja === null ? zamknij() : ustawEdycje(null))),
               t('wzor.notatka_tytul', { n: chip.rzadWzoru }),
-              przycisk(t(edycja === null ? 'wzor.notatka_edytuj' : 'wspolne.zapisz'), 'wzor-notatka-edytuj', () => { if (edycja === null) ustawEdycje(notatka.tekst); else if (edycja.trim()) void zapisz(notatka.id, edycja); }, true),
+              przycisk(t(edycja === null ? 'wzor.notatka_edytuj' : 'wspolne.zapisz'), 'wzor-notatka-edytuj', () => { if (edycja === null) ustawEdycje(notatka.tekst); else if (edycja.trim()) void zapisz(notatka.id, edycja); }, true, edycja === null ? t('wzor.notatka_edytuj_a11y', { n: chip.rzadWzoru }) : undefined),
             )}
             {edycja === null
               ? <Text style={[st.tresc, st.zawartosc]} testID="wzor-notatka-tresc">{notatka.tekst}</Text>

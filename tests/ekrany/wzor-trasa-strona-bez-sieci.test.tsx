@@ -56,7 +56,7 @@ test('K-17d: zlecenia nie da się zapisać (brak App Group) → alert zapisu, ar
   mockRouter.back.mockClear();
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
   await start({ grupa: false });
-  await waitFor(() => expect(alert).toHaveBeenCalledWith('Couldn’t save that row. It’s still on screen; try again.', undefined, expect.anything()));
+  await waitFor(() => expect(alert).toHaveBeenCalledWith('Oczko can’t save this pattern', 'Your device may be out of space. Nothing was added. Free some space and try again.', expect.anything()));
   expect((await screen.findByTestId('wzor-link-pole')).props.value).toBe(ADRES);
   expect(mockRouter.back).not.toHaveBeenCalled();
   alert.mockRestore();
