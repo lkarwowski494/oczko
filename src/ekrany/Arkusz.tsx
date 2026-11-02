@@ -68,7 +68,8 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
   }, [p.zmierz]);
   return (
     <View style={st.arkusz} testID={p.testID}>
-      <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
+      {/* P2-6 (04, Aneks P2 poz. 9): przy AX5 lista akcji nie mieści się — przycięty ostatni wiersz jest wskazówką przewijania; bez wskaźnika, cienia i przyciągania do wiersza (Trening S18). */}
+      <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         {p.zamknij ? (
           <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
             <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
