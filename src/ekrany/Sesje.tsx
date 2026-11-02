@@ -70,7 +70,7 @@ function style(k: Kolory) {
     ekran: { flex: 1, backgroundColor: k.papier },
     tresc: { padding: odstep.l, gap: odstep.l },
     tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m },
+    naglowek: { ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.m }, // `.naglowek-grupy`: 13 pt (sesje-historia.html), H-2
     podpis: { ...typografia.podpis, color: k.olowek },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { minHeight: cel.minimum, paddingHorizontal: odstep.l, paddingVertical: odstep.s, justifyContent: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },

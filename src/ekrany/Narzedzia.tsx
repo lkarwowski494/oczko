@@ -46,12 +46,12 @@ export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke }: PropsNar
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('narzedzia.tytul')}</Text>
-      <Text style={st.naglowek} accessibilityRole="header">{t('narzedzia.zapas')}</Text>
+      <Text style={st.naglowekGrupy} accessibilityRole="header">{t('narzedzia.zapas')}</Text>
       <View style={st.grupa}>
         <WierszGrupy tekst={t('narzedzia.wloczki')} wartosc={String(s.wloczki)} onPress={naWloczki} testID="narzedzia-wloczki" />
         <WierszGrupy tekst={t('narzedzia.druty')} wartosc={String(s.druty)} onPress={naDruty} testID="narzedzia-druty" ostatni />
       </View>
-      <Text style={st.naglowek} accessibilityRole="header">{t('narzedzia.obliczenia')}</Text>
+      <Text style={st.naglowekGrupy} accessibilityRole="header">{t('narzedzia.obliczenia')}</Text>
       <View style={st.grupa}>
         <WierszGrupy tekst={t('narzedzia.probka')} opis={t('narzedzia.probka_opis')} onPress={naProbke} testID="narzedzia-probka" ostatni />
       </View>
@@ -111,7 +111,8 @@ export function style(k: Kolory) {
     ekran: { flex: 1, backgroundColor: k.papier },
     tresc: { padding: odstep.l, gap: odstep.m },
     tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.podpis, color: k.olowek, fontWeight: '700', marginTop: odstep.s },
+    naglowek: { ...typografia.podpis, color: k.olowek, fontWeight: '700', marginTop: odstep.s }, // etykiety wyników próbki (`.etyk`, 15 pt)
+    naglowekGrupy: { ...typografia.drobny, color: k.olowek, fontWeight: '700', marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt (narzedzia-zdjecia.html), H-2
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszOstatni: { borderBottomWidth: 0 },

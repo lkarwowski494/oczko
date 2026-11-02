@@ -95,7 +95,7 @@ function style(k: Kolory) {
     tytul: { ...typografia.tytul, color: k.grafit },
     szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
-    naglowek: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l, paddingTop: odstep.m },
+    naglowek: { ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.l, paddingTop: odstep.m }, // `.naglowek-grupy`: 13 pt (ekrany.html), H-2
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     kropka: { width: odstep.m, height: odstep.m, borderRadius: odstep.m / 2 },
     wierszTekst: { flex: 1 },
