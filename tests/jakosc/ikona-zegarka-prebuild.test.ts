@@ -82,3 +82,19 @@ describe('jakosc-ios.yml (P-350)', () => {
     expect(kroki[krok]?.run).toMatch(/set -o pipefail/); // kod skryptu nie ginie w potoku do tee
   });
 });
+
+describe('testflight.yml (P-350; krok także w wydaniu, zgłoszenie koordynatora P-361)', () => {
+  const wf = parse(readFileSync(join(KORZEN, '.github/workflows/testflight.yml'), 'utf8'));
+  test('w jobie build, po expo prebuild i przed numerem buildu, podami i archiwum, krok woła strażnika ikony zegarka na projekcie z prebuild', () => {
+    const kroki = yamlKroki(wf, 'build');
+    const prebuild = kroki.findIndex((k) => /expo prebuild/.test(k.run ?? ''));
+    const krok = kroki.findIndex((k) => /ikona-zegarka\.mjs[^\n]*--pbxproj ios\/\*\.xcodeproj\/project\.pbxproj/.test(k.run ?? ''));
+    const pody = kroki.findIndex((k) => /pod install/.test(k.run ?? ''));
+    const archiwum = kroki.findIndex((k) => /xcodebuild[\s\S]*archive/.test(k.run ?? ''));
+    expect(prebuild).toBeGreaterThanOrEqual(0);
+    expect(krok).toBeGreaterThan(prebuild);
+    expect(krok).toBeLessThan(pody);
+    expect(krok).toBeLessThan(archiwum);
+    expect(kroki[krok]?.run).toMatch(/set -o pipefail/); // kod skryptu nie ginie w potoku do tee
+  });
+});

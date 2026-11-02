@@ -163,6 +163,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/lista-kosz.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-008, BR-PRJ-016/S1, P-182, P-183, P-266 | `src/ekrany/Kosz`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/lista-projektow.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-012, BR-PRJ-012/S3, BR-ZAK-006/S5, BR-ZAK-006/S7 | `src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-ax5.test.tsx` | zielony (główny zestaw) | 3 | NFR-DOS-002, P-277, P-287 | `src/ekrany/Arkusz`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-oczka.test.tsx` | zielony (główny zestaw) | 4 | P-360, P-361 | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-wzor.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/miary.test.ts` | zielony (główny zestaw) | 1 | BR-KAL-003/S6 | `src/kompozycja/miary` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/narzedzia-probka.test.tsx` | zielony (główny zestaw) | 4 | BR-KAL-001, BR-KAL-001/S1, BR-KAL-003, BR-KAL-003/S1, P-075, P-191, R-131, RD-01 | `src/ekrany/Narzedzia`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka` | Z07-22 |
@@ -262,4 +263,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 258; zależnych od poprawek: 166.
+Razem plików testów: 259; zależnych od poprawek: 167.
