@@ -439,6 +439,7 @@
     "odnawianie_miesiac": "Renews every month until you cancel in your Apple ID settings.",
     "odnawianie_rok": "Renews every year until you cancel in your Apple ID settings.",
     "raz": "Pay once. Nothing renews.",
+    "dozywotni_przy_subskrypcji": "Your subscription keeps renewing until you cancel it.",
     "bez_pro_one": "Without Pro: {{limit}} crafting day every month, and all your projects and data, always.",
     "bez_pro_other": "Without Pro: {{limit}} crafting days every month, and all your projects and data, always.",
     "rodzina": "Shared with your family through Family Sharing.",

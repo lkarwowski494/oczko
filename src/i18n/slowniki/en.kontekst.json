@@ -388,6 +388,7 @@
     "odnawianie_miesiac": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "odnawianie_rok": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "raz": "Tekst z ekrany.html roli 04 (ekran ofert).",
+    "dozywotni_przy_subskrypcji": "Podpis pod planem dożywotnim, tylko gdy osoba ma aktywną subskrypcję (KP-03, M1-014, P-403): zakup dożywotniego nie anuluje subskrypcji, osoba musi ją anulować sama (obok przycisk „Manage subscription”). Do akceptacji 04.",
     "bez_pro": "Tekst z ekrany.html roli 04 (ekran ofert). {{limit}} = LIMIT_DNI_W_MIESIACU. Liczba mnoga (P-307): formy CLDR wg `count` podanego przy wywołaniu; liczba stoi w kluczu liczby mnogiej, nie obok niego.",
     "rodzina": "Tekst z ekrany.html roli 04 (ekran ofert). Tylko gdy Family Sharing włączone (P-089 (2)).",
     "kup": "Tekst z ekrany.html roli 04 (ekran ofert).",

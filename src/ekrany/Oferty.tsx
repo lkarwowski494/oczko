@@ -91,6 +91,8 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
                 style={{ minHeight: cel.minimum, padding: odstep.m, borderRadius: promien.grupa, borderWidth: 2, borderColor: zaznaczony ? k.przyciskObrys : k.linia, backgroundColor: k.papierGrupa }}>
                 <Text style={{ ...typografia.tresc, color: k.grafit, fontWeight: '700' }}>{`${o.nazwa} · ${o.cena}`}</Text>
                 <Text style={{ ...typografia.podpis, color: k.olowek }}>{o.podpis}</Text>
+                {/* KP-03 pełne (M1-014, P-403): dożywotni nie anuluje subskrypcji — informacja przy planie, „Manage subscription” w przyciskach. */}
+                {p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' && <Text style={{ ...typografia.podpis, color: k.olowek }}>{t('oferty.dozywotni_przy_subskrypcji')}</Text>}
               </Pressable>
             );
           })}
