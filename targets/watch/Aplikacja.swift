@@ -72,7 +72,7 @@ final class ModelZegarka: NSObject, ObservableObject, WCSessionDelegate {
     } catch {
       // Zapis do skrzynki nieudany (pełna pamięć, błąd we/wy): stan bez zmian, haptyka „ponów” zamiast potwierdzenia (P-142 (1b)).
       niezapisano = rodzaj
-      WKInterfaceDevice.current().play(.retry)
+      zagraj(rodzaj, .zapisNieudany)
       oglos(tekstNiezapisano(rodzaj))
       return
     }
@@ -80,7 +80,7 @@ final class ModelZegarka: NSObject, ObservableObject, WCSessionDelegate {
     case .zapisz:
       niezapisano = nil
       limit = false
-      WKInterfaceDevice.current().play(.click) // dopiero po trwałym zapisie
+      zagraj(rodzaj, .wynik(w)) // dopiero po trwałym zapisie; wzorzec wybiera czysta funkcja (plus albo przypomnienie, K-05g)
       wyslij()
     case .limit: limit = true
     case .zablokowany: stuknietoZablokowany()
@@ -88,9 +88,24 @@ final class ModelZegarka: NSObject, ObservableObject, WCSessionDelegate {
     }
   }
 
+  /// Haptyka po stuknięciu: o wzorcu decyduje czysta funkcja z pakietu reguł (`wzorzecHaptykiZegarka`, ADR-0030 pkt 4, K-05g); tu tylko mapowanie
+  /// na `WKHapticType` według tokenów `haptykaZegarek` (docs/design/tokeny.json): przypomnienie = notification, bladZapisu = retry, blokadaStukniecie = failure;
+  /// zwykły rząd = click (jak dotąd).
+  func zagraj(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, _ przebieg: PrzebiegStukniecia) {
+    guard let wzorzec = wzorzecHaptykiZegarka(rodzaj, przebieg) else { return }
+    let typ: WKHapticType
+    switch wzorzec {
+    case .plus: typ = .click
+    case .przypomnienie: typ = .notification
+    case .bladZapisu: typ = .retry
+    case .blokadaStukniecie: typ = .failure
+    }
+    WKInterfaceDevice.current().play(typ)
+  }
+
   /// Stuknięcie w ekran przy zablokowanym liczniku: haptyka „niepowodzenie” i ogłoszenie tekstu blokady (P-142 (2a)).
   func stuknietoZablokowany() {
-    WKInterfaceDevice.current().play(.failure)
+    zagraj(.plus, .wynik(.zablokowany))
     oglos(Teksty.t("zablokowany", jezyk) + ". " + Teksty.t("zablokowany_jak_zegarek", jezyk))
   }
 

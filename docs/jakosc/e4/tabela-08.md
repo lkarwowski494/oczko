@@ -66,6 +66,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kompozycja-preferencje.test.ts` | zielony (główny zestaw) | 2 | BR-LIC-013/S2, BR-LIC-020/S3 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/kompozycja/preferencje` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kompozycja-usuniecie.test.ts` | zielony (główny zestaw) | 3 | — | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kompozycja-wyscig-plus.test.ts` | zielony (główny zestaw) | 3 | P-287 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kompozycja-zegarek-odbior.test.ts` | zielony (główny zestaw) | 11 | P-316 | `src/dane/migracje/migruj`<br>`src/domena/bledy`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/kompozycja/zegarek-odbior` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kopia-awaryjna.test.ts` | zielony (główny zestaw) | 1 | P-203 | `src/kompozycja/kopia-awaryjna` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/kosz-zapas.test.ts` | zielony (główny zestaw) | 3 | P-209 | `src/konfiguracja`<br>`src/przypadki-uzycia/kosz`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-kosza`<br>`src/przypadki-uzycia/widok-ukonczenia`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/licznik-minus-zero.test.ts` | zielony (główny zestaw) | 2 | BR-LIC-002 | `src/przypadki-uzycia/licznik` | Z07-22 |
@@ -248,4 +249,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 244; zależnych od poprawek: 157.
+Razem plików testów: 245; zależnych od poprawek: 158.
