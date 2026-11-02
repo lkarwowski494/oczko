@@ -141,6 +141,16 @@ describe('Licznik', () => {
     expect(screen.queryByText('current row')).toBeNull();
   });
 
+  // F-a (F-09, design-spec.md:905): tryb „rząd w trakcie” — „bez linii „Now working row n” (liczba nią jest)”.
+  test('F-09 / BR-LIC-012: tryb „rząd w trakcie” nie pokazuje linii „Now working row n”; tryb „skończone” ją zachowuje', () => {
+    const { ponow } = pokaz(stanLicznika({ znaczenie: 'w_trakcie', skonczone: 12, dziergany: 13, cel: null }));
+    expect(screen.queryByTestId('licznik-teraz-rzad')).toBeNull();
+    expect(screen.queryByText(/Now working row/)).toBeNull();
+    expect(screen.getByTestId('licznik-wartosc').props.children).toBe('13');
+    ponow(stanLicznika({ znaczenie: 'skonczone', skonczone: 12, dziergany: 13, cel: null }));
+    expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 13');
+  });
+
   test('BR-LIC-019/S4: bez serii dodań nic o strażniku na ekranie (P-046)', () => {
     pokaz(stanLicznika({ baner: null }));
     expect(screen.queryByText(/Added \d+ rows?|Undo/)).toBeNull();
