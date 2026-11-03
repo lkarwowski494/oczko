@@ -101,6 +101,7 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
           naFokus={() => przewijanie.current?.scrollTo({ y: yPolaSzerokosci.current, animated: true })} />
       </View>
       {s.bladSzerokosci ? <Komunikat tekst={s.bladSzerokosci} znak /> : null}
+      {s.zaproszenie ? <Text style={st.opis} testID="probka-zaproszenie-szerokosc">{s.zaproszenie}</Text> : null}
       {s.wynik ? (
         <View style={st.blok}>
           <Text style={st.naglowek} accessibilityRole="header">{t('probka.wynik_oczka')}</Text>

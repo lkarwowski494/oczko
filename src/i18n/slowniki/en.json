@@ -650,6 +650,7 @@
     "na_4in": "per 4 in",
     "szerokosc_cm": "Width you want, cm",
     "szerokosc_in": "Width you want, in",
+    "zaproszenie_szerokosc": "Enter a width to get the number of stitches.",
     "przeliczona_one": "= {{p}} stitch per 10 cm",
     "przeliczona_other": "= {{p}} stitches per 10 cm",
     "wynik_oczka": "Stitches for this width",
