@@ -8,6 +8,11 @@
 // właściciela); język z polem `czeka` (pl: P-422) jest tylko pokazany w planie, bez zapisu;
 // repozytorium jest publiczne — w logu tylko liczby, kody lokalizacji i nazwy produktów, nigdy identyfikatory klucza, tokeny ani odpowiedzi API.
 // Dane logowania z zmiennych środowiskowych: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (plik .p8).
+// Grupa subskrypcji (P-517): `customAppName` = pełna nazwa aplikacji z docs/wydanie/metadane/nazwy.store.json (apple.info[<ascLocale>].title; jedno źródło prawdy, P-174) —
+// bez niego opcja „Use App Name” pokazuje nazwę z języka podstawowego (pl) we wszystkich lokalizacjach. Brak nazwy dla lokalizacji = błąd planu.
+// Limit długości customAppName: Apple go NIE podaje (odczyt 2026-11-03: https://developer.apple.com/tutorials/data/documentation/appstoreconnectapi/subscriptiongrouplocalization/attributes-data.dictionary.json
+// — `customAppName: string`, bez maxLength; tak samo w SubscriptionGroupLocalizationCreateRequest/UpdateRequest; pomoc ASC „Auto-renewable subscription information”, wiersz
+// App Name Display Options — bez limitu). Założenie nazwane: nazwy pochodzą z pola Name (≤ 30 znaków, test tests/wydanie/iap-nazwa-aplikacji.test.ts) — potwierdzi pierwszy zapis.
 import { createPrivateKey, sign as cryptoSign } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -59,14 +64,16 @@ export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r
 }
 
 /** Plan dla jednego obiektu: istniejące lokalizacje (locale → {id, name, description}) kontra tłumaczenia. */
-export function planObject({ key, translations, existing, hasDescription }) {
-  const fields = hasDescription ? ['name', 'description'] : ['name'];
+export function planObject({ key, translations, existing, hasDescription, appNames = null }) {
+  const fields = [...(hasDescription ? ['name', 'description'] : ['name']), ...(appNames ? ['customAppName'] : [])];
   const same = (a, b) => fields.every(f => (a?.[f] ?? '') === (b?.[f] ?? ''));
   const items = [];
   for (const [lang, tr] of Object.entries(translations)) {
     if (tr.czeka) { items.push({ key, lang, locale: tr.ascLocale ?? null, action: 'czeka', reason: `czeka na ${tr.czeka}${tr.czekaPowod ? ` (${tr.czekaPowod})` : ''}` }); continue; }
     if (!tr.ascLocale) { items.push({ key, lang, locale: null, action: 'pomiń', reason: 'brak lokalizacji w App Store Connect' }); continue; }
-    const have = existing.get(tr.ascLocale); const want = tr[key];
+    const have = existing.get(tr.ascLocale);
+    if (appNames && !appNames[tr.ascLocale]) { items.push({ key, lang, locale: tr.ascLocale, action: 'błąd', reason: `brak nazwy aplikacji dla ${tr.ascLocale} w nazwy.store.json (customAppName)` }); continue; }
+    const want = appNames ? { ...tr[key], customAppName: appNames[tr.ascLocale] } : tr[key];
     if (!have) items.push({ key, lang, locale: tr.ascLocale, action: 'utwórz', want });
     else if (same(have, want)) items.push({ key, lang, locale: tr.ascLocale, action: 'pomiń', reason: 'bez zmian' });
     else items.push({ key, lang, locale: tr.ascLocale, action: 'zaktualizuj', id: have.id, want });
@@ -76,7 +83,7 @@ export function planObject({ key, translations, existing, hasDescription }) {
   return { items, extra };
 }
 
-const toMap = rows => new Map(rows.map(r => [r.attributes.locale, { id: r.id, name: r.attributes.name, description: r.attributes.description }]));
+const toMap = rows => new Map(rows.map(r => [r.attributes.locale, { id: r.id, name: r.attributes.name, description: r.attributes.description, customAppName: r.attributes.customAppName }]));
 
 /** Znajduje obiekty w App Store Connect i ich istniejące lokalizacje. Zwraca listę celów (cel = obiekt z `existing`, ścieżkami tworzenia i aktualizacji). */
 export async function discover(client, log) {
@@ -91,8 +98,8 @@ export async function discover(client, log) {
     if (grupy.length !== 1) throw new Error(`grupa subskrypcji „${SUBSCRIPTION_GROUP_NAME}”: znaleziono ${grupy.length} (najpierw uruchom workflow asc-produkty)`);
     const group = grupy[0];
     const locs = await client.list(`/v1/subscriptionGroups/${group.id}/subscriptionGroupLocalizations`);
-    targets.push({ key: 'group', label: 'grupa subskrypcji', hasDescription: false, existing: toMap(locs),
-      create: (locale, w) => ({ type: 'subscriptionGroupLocalizations', attributes: { locale, name: w.name }, relationships: { subscriptionGroup: { data: { type: 'subscriptionGroups', id: group.id } } } }),
+    targets.push({ key: 'group', label: 'grupa subskrypcji', hasDescription: false, appName: true, existing: toMap(locs),
+      create: (locale, w) => ({ type: 'subscriptionGroupLocalizations', attributes: { locale, name: w.name, customAppName: w.customAppName }, relationships: { subscriptionGroup: { data: { type: 'subscriptionGroups', id: group.id } } } }),
       createPath: '/v1/subscriptionGroupLocalizations', updatePath: id => `/v1/subscriptionGroupLocalizations/${id}`, updateType: 'subscriptionGroupLocalizations' });
     const subs = await client.list(`/v1/subscriptionGroups/${group.id}/subscriptions`);
     for (const [key, p] of Object.entries(PRODUCTS).filter(([, p]) => p.kind === 'subscription')) {
@@ -119,12 +126,12 @@ export async function discover(client, log) {
 }
 
 /** Główny przebieg. Zwraca { code, counts } (code 1 przy brakujących obiektach lub błędach zapisu). */
-export async function run({ client, data, apply = false, log = console.log }) {
+export async function run({ client, data, apply = false, log = console.log, appNames = {} }) {
   const { targets, problems } = await discover(client, log);
   log(`Tryb: ${apply ? 'APPLY (zapis)' : 'DRY-RUN (bez zmian)'}; obiektów znalezionych: ${targets.length} z 4`);
-  const counts = { 'utwórz': 0, 'zaktualizuj': 0, 'pomiń': 0, 'czeka': 0, błędy: 0 };
+  const counts = { 'utwórz': 0, 'zaktualizuj': 0, 'pomiń': 0, 'czeka': 0, 'błąd': 0, błędy: 0 };
   for (const t of targets) {
-    const plan = planObject({ key: t.key, translations: data.tlumaczenia, existing: t.existing, hasDescription: t.hasDescription });
+    const plan = planObject({ key: t.key, translations: data.tlumaczenia, existing: t.existing, hasDescription: t.hasDescription, appNames: t.appName ? appNames : null });
     log(`\n== ${t.label} (istniejących lokalizacji: ${t.existing.size}) ==`);
     if (plan.extra.length) log(`  [obce, nietykane] ${plan.extra.join(', ')}`);
     for (const it of plan.items) {
@@ -132,7 +139,7 @@ export async function run({ client, data, apply = false, log = console.log }) {
       if (apply && (it.action === 'utwórz' || it.action === 'zaktualizuj')) {
         try {
           if (it.action === 'utwórz') await client.call('POST', t.createPath, { data: t.create(it.locale, it.want) });
-          else await client.call('PATCH', t.updatePath(it.id), { data: { type: t.updateType, id: it.id, attributes: t.hasDescription ? { name: it.want.name, description: it.want.description } : { name: it.want.name } } });
+          else await client.call('PATCH', t.updatePath(it.id), { data: { type: t.updateType, id: it.id, attributes: t.hasDescription ? { name: it.want.name, description: it.want.description } : t.appName ? { name: it.want.name, customAppName: it.want.customAppName } : { name: it.want.name } } });
           note = ' → zapisano';
         } catch (e) { counts.błędy++; note = ` → BŁĄD ${e.message}`; }
       }
@@ -141,8 +148,8 @@ export async function run({ client, data, apply = false, log = console.log }) {
     }
   }
   for (const p of problems) log(`PROBLEM: ${p}`);
-  log(`\nPodsumowanie: utwórz ${counts['utwórz']}, zaktualizuj ${counts['zaktualizuj']}, pomiń ${counts['pomiń']}, czeka ${counts['czeka']}, błędy zapisu ${counts.błędy}, problemy ${problems.length}`);
-  return { code: problems.length || counts.błędy ? 1 : 0, counts, problems };
+  log(`\nPodsumowanie: utwórz ${counts['utwórz']}, zaktualizuj ${counts['zaktualizuj']}, pomiń ${counts['pomiń']}, czeka ${counts['czeka']}, błędy planu ${counts['błąd']}, błędy zapisu ${counts.błędy}, problemy ${problems.length}`);
+  return { code: problems.length || counts.błędy || counts['błąd'] ? 1 : 0, counts, problems };
 }
 
 async function main() {
@@ -151,8 +158,9 @@ async function main() {
   const { ASC_KEY_ID: keyId, ASC_ISSUER_ID: issuerId, ASC_KEY_PATH: keyPath } = process.env;
   if (!keyId || !issuerId || !keyPath) { console.error('Brak ASC_KEY_ID, ASC_ISSUER_ID lub ASC_KEY_PATH.'); process.exit(2); }
   const data = JSON.parse(readFileSync(new URL('../../docs/wydanie/metadane/produkty.store.json', import.meta.url), 'utf8'));
+  const appNames = Object.fromEntries(Object.entries(JSON.parse(readFileSync(new URL('../../docs/wydanie/metadane/nazwy.store.json', import.meta.url), 'utf8')).apple.info).map(([k, v]) => [k, v.title]));
   const token = makeJwt({ keyId, issuerId, keyPem: readFileSync(keyPath, 'utf8') });
-  const { code } = await run({ client: makeClient({ token }), data, apply });
+  const { code } = await run({ client: makeClient({ token }), data, apply, appNames });
   process.exit(code);
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main().catch(e => { console.error(`Błąd: ${String(e.message).slice(0, 200)}`); process.exit(1); });
