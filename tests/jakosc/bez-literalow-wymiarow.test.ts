@@ -21,14 +21,13 @@ const WYJATKI: Record<string, string> = {
   'src/ekrany/HistoriaDni.tsx:height:3': 'jak wyżej: grubość kreski dnia „14 × 3 pt” (design-spec)',
   'src/ekrany/HistoriaDni.tsx:width:34': 'koło wybranego dnia wewnątrz komórki 44 pt (`cel.minimum`); rysunek wyróżnienia, nie cel dotyku — tokenu brak, do nazwania przez 04 przy najbliższej sesji kalendarza (M1-078)',
   'src/ekrany/HistoriaDni.tsx:height:34': 'jak wyżej: koło wybranego dnia',
-  // M1-audytor-generalny-140: literały odsłonięte rozszerzeniem kontroli; bez tokenu — wyjątek do uzasadnienia 04 (przekazanie), nie decyzja 08/07.
-  'src/ekrany/HistoriaDni.tsx:borderRadius:17': 'do uzasadnienia 04: promień koła wybranego dnia = połowa 34 (wyjątek wyżej)',
-  'src/ekrany/HistoriaDni.tsx:borderRadius:1.5': 'do uzasadnienia 04: zaokrąglenie kreski dnia „14 × 3 pt” (design-spec podaje wymiar, nie promień)',
-  'src/ekrany/Stoper.tsx:minWidth:240': 'do uzasadnienia 04: minimalna szerokość menu stopera; tokenu ani wartości w design-spec brak',
-  'src/ekrany/WzorLicznik.tsx:minWidth:132': 'do uzasadnienia 04: +1 paska pod wzorem „≥ 132 pt szerokości” (design-spec W1a); tokenu brak (propozycja 528: `cel.przyciskPlusPaskaSzerokosc`)',
-  'src/ekrany/WzorPrzegladarka.tsx:minWidth:120': 'do uzasadnienia 04: minimalna szerokość tytułu paska wzoru; tokenu ani wartości w design-spec brak',
-  'src/ekrany/WzorPrzegladarka.tsx:maxWidth:640': 'do uzasadnienia 04: kolumna strony na iPadzie „maks. 640 pt” (design-spec W4b); tokenu brak',
-  'src/ekrany/WzorZnacznik.tsx:minWidth:36': 'do uzasadnienia 04: minimalna szerokość liczby w pasku znacznika; tokenu ani wartości w design-spec brak',
+  // M1-audytor-generalny-140 (04-studio-projektowe-528, decyzja 04 z 2026-11-03): 132 → token `cel.przyciskPlusPaskaSzerokosc`, 640 → stała `KOLUMNA_TRESCI_MAKS`;
+  // pięć pozostałych to wyjątki 04 — geometria rysunku albo lokalna podłoga układu, nie wartość systemu (token tylko dla wartości, która wraca w kilku miejscach).
+  'src/ekrany/HistoriaDni.tsx:borderRadius:17': 'koło wybranego dnia (design-spec.md:544 „Wybrany dzień: koło”): promień = połowa średnicy 34 (wyjątek wyżej), czyli geometria koła, nie stopień hierarchii `promien.*`; zmienia się tylko razem z 34',
+  'src/ekrany/HistoriaDni.tsx:borderRadius:1.5': 'kreska ołówkiem „14 × 3 pt” (design-spec.md:544): zaokrąglone końce = połowa grubości 3 pt, jak ślad ołówka; geometria rysunku elementu firmowego, nie promień kontenera `promien.*`',
+  'src/ekrany/Stoper.tsx:minWidth:240': 'podłoga szerokości menu stopera rysowanego w aplikacji zamiast „menu systemowego” z design-spec.md:530 (makieta `fix6-2026-10-26/sesje-historia.html:133` `.menu-ios`: min(280, szerokość − 24)); wartość 08 przyjęta przez 04 tymczasowo, do decyzji o menu stopera jako widoku (P-215 (3), P-373 — otwarte dla 04); znika z menu systemowym, nie staje się tokenem',
+  'src/ekrany/WzorPrzegladarka.tsx:minWidth:120': 'tytuł paska wzoru (design-spec.md:671 „tytuł = nazwa wzoru”) ma co najmniej 120 pt (ok. 10 znaków Libre Franklin 20 pt, dwa wiersze), zanim ikony narzędzi przejdą do drugiego rzędu (`pasek` z flexWrap); lokalna podłoga układu tego paska, nie wymiar systemu',
+  'src/ekrany/WzorZnacznik.tsx:minWidth:36': 'liczba krokowca rzędu znacznika (design-spec.md:182 „krokowiec w pasku”) między − i + ma stałą podłogę szerokości 36 pt (trzy cyfry treści 17 pt pogrubionej), żeby przyciski nie skakały przy 9 → 10 → 100; lokalna podłoga, nie wymiar systemu',
 };
 
 const pliki = (k: string): string[] => fs.readdirSync(k, { withFileTypes: true })
@@ -59,6 +58,9 @@ describe('M1-078: ekrany bez wymiarów i rozmiarów tekstu wpisanych liczbami', 
   test('każdy wyjątek nadal występuje w kodzie (lista nie rośnie po cichu ani nie zostaje martwa)', () => {
     const klucze = new Set(znalezione.map((x) => x.klucz));
     expect(Object.keys(WYJATKI).filter((k) => !klucze.has(k))).toEqual([]);
+  });
+  test('M1-140 (04-studio-projektowe-528): każdy wyjątek ma uzasadnienie 04, bez „do uzasadnienia”', () => {
+    expect(Object.entries(WYJATKI).filter(([, u]) => /do uzasadnienia/i.test(u)).map(([k]) => k)).toEqual([]);
   });
   test('kontrola potrafi paść: wykrywa `fontSize: 40,` i `padding: 16 }`, przepuszcza tokeny, wyrażenia i 0', () => {
     const traf = (s: string) => [...s.matchAll(LITERAL)].map((m) => `${m[1]}:${m[2]}`).filter((x) => !x.endsWith(':0'));

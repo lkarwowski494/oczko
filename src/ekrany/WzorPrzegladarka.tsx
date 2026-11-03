@@ -11,7 +11,7 @@ import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { LicznikWzoru } from './WzorLicznik';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
-import type { Uklad } from '../domena/uklad';
+import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
@@ -255,7 +255,7 @@ function style(k: Kolory) {
     pogrubiony: { fontWeight: '700' },
     informacja: { padding: odstep.m, marginHorizontal: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     strona: { flex: 1, backgroundColor: k.papierGrupa },
-    stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: 640 }, // kolumna strony iPada maks. 640 pt (W4b)
+    stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: KOLUMNA_TRESCI_MAKS }, // kolumna strony iPada maks. 640 pt (W4b, design-spec:683); ta sama stała co kolumna treści G1 (Bezpieczny)
     podpowiedz: { top: odstep.m, bottom: undefined }, // makieta ipad-rysik: nad stroną, nie na plakietce strony
     plakietka: { ...typografia.podpis, color: k.grafit, alignSelf: 'center', position: 'absolute', bottom: odstep.m, paddingHorizontal: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papier },
     menuTlo: { ...StyleSheet.absoluteFill, justifyContent: 'flex-end' },
