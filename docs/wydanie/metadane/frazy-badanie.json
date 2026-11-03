@@ -1,0 +1,1226 @@
+{
+ "_opis": "Słowa z nazw wyników wyszukiwarki App Store w kraju lokalizacji (df = liczba różnych aplikacji, ≥ 3); bez nazw aplikacji (P-121/P-466). Wejście do słów kluczowych (P-501); sygnał, nie liczba wyszukań.",
+ "odczyt": "2026-11-03",
+ "zrodlo": "iTunes Search API (itunes.apple.com/search, entity=software, limit=25)",
+ "lokalizacje": {
+  "cs": {
+   "kraj": "cz",
+   "zapytania": [
+    "počítadlo řad",
+    "pletení a háčkování",
+    "háčkovat",
+    "plést"
+   ],
+   "aplikacji": 40,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 16
+    },
+    {
+     "s": "crochet",
+     "df": 14
+    },
+    {
+     "s": "knitting",
+     "df": 14
+    },
+    {
+     "s": "row",
+     "df": 11
+    },
+    {
+     "s": "knit",
+     "df": 6
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "yarn",
+     "df": 4
+    },
+    {
+     "s": "tally",
+     "df": 3
+    },
+    {
+     "s": "wool",
+     "df": 3
+    }
+   ]
+  },
+  "sk": {
+   "kraj": "sk",
+   "zapytania": [
+    "počítadlo riadkov",
+    "pletenie a háčkovanie",
+    "háčkovať",
+    "pliesť"
+   ],
+   "aplikacji": 32,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 13
+    },
+    {
+     "s": "crochet",
+     "df": 12
+    },
+    {
+     "s": "knitting",
+     "df": 11
+    },
+    {
+     "s": "row",
+     "df": 9
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "knit",
+     "df": 3
+    }
+   ]
+  },
+  "hr": {
+   "kraj": "hr",
+   "zapytania": [
+    "brojač redova",
+    "pletenje i kukičanje",
+    "kukičati",
+    "plesti"
+   ],
+   "aplikacji": 28,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 15
+    },
+    {
+     "s": "knitting",
+     "df": 11
+    },
+    {
+     "s": "row",
+     "df": 11
+    },
+    {
+     "s": "crochet",
+     "df": 9
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "knit",
+     "df": 3
+    }
+   ]
+  },
+  "sl": {
+   "kraj": "si",
+   "zapytania": [
+    "števec vrstic",
+    "pletenje in kvačkanje",
+    "kvačkati",
+    "plesti"
+   ],
+   "aplikacji": 0,
+   "slowa": []
+  },
+  "uk": {
+   "kraj": "ua",
+   "zapytania": [
+    "лічильник рядів",
+    "в'язання",
+    "в'язати гачком",
+    "в'язати спицями"
+   ],
+   "aplikacji": 48,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 19
+    },
+    {
+     "s": "knitting",
+     "df": 15
+    },
+    {
+     "s": "crochet",
+     "df": 14
+    },
+    {
+     "s": "row",
+     "df": 13
+    },
+    {
+     "s": "patterns",
+     "df": 9
+    },
+    {
+     "s": "knit",
+     "df": 7
+    },
+    {
+     "s": "tally",
+     "df": 4
+    },
+    {
+     "s": "yarn",
+     "df": 4
+    },
+    {
+     "s": "sort",
+     "df": 3
+    },
+    {
+     "s": "stitch",
+     "df": 3
+    }
+   ]
+  },
+  "ru": {
+   "kraj": "ru",
+   "zapytania": [
+    "счётчик рядов",
+    "вязание",
+    "вязать крючком",
+    "вязать спицами"
+   ],
+   "aplikacji": 50,
+   "slowa": [
+    {
+     "s": "вязание",
+     "df": 24
+    },
+    {
+     "s": "счётчик",
+     "df": 13
+    },
+    {
+     "s": "крючком",
+     "df": 11
+    },
+    {
+     "s": "рядов",
+     "df": 9
+    },
+    {
+     "s": "вязания",
+     "df": 7
+    },
+    {
+     "s": "для",
+     "df": 4
+    },
+    {
+     "s": "крючок",
+     "df": 3
+    },
+    {
+     "s": "схемы",
+     "df": 3
+    }
+   ]
+  },
+  "hu": {
+   "kraj": "hu",
+   "zapytania": [
+    "sorszámláló",
+    "kötés-horgolás",
+    "horgolni",
+    "kötni"
+   ],
+   "aplikacji": 36,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 17
+    },
+    {
+     "s": "knitting",
+     "df": 13
+    },
+    {
+     "s": "crochet",
+     "df": 12
+    },
+    {
+     "s": "row",
+     "df": 11
+    },
+    {
+     "s": "patterns",
+     "df": 5
+    },
+    {
+     "s": "knit",
+     "df": 3
+    },
+    {
+     "s": "pattern",
+     "df": 3
+    },
+    {
+     "s": "tally",
+     "df": 3
+    }
+   ]
+  },
+  "ro": {
+   "kraj": "ro",
+   "zapytania": [
+    "numărător de rânduri",
+    "împletire",
+    "a croșeta",
+    "a tricota"
+   ],
+   "aplikacji": 14,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 7
+    },
+    {
+     "s": "crochet",
+     "df": 5
+    },
+    {
+     "s": "knitting",
+     "df": 5
+    },
+    {
+     "s": "row",
+     "df": 4
+    }
+   ]
+  },
+  "it": {
+   "kraj": "it",
+   "zapytania": [
+    "contagiri",
+    "lavoro",
+    "lavorare all’uncinetto",
+    "lavorare a maglia"
+   ],
+   "aplikacji": 70,
+   "slowa": [
+    {
+     "s": "maglia",
+     "df": 16
+    },
+    {
+     "s": "lavoro",
+     "df": 14
+    },
+    {
+     "s": "uncinetto",
+     "df": 8
+    },
+    {
+     "s": "rpm",
+     "df": 5
+    },
+    {
+     "s": "bpm",
+     "df": 4
+    },
+    {
+     "s": "conta",
+     "df": 3
+    },
+    {
+     "s": "contagiri",
+     "df": 3
+    },
+    {
+     "s": "per",
+     "df": 3
+    },
+    {
+     "s": "trova",
+     "df": 3
+    }
+   ]
+  },
+  "es-ES": {
+   "kraj": "es",
+   "zapytania": [
+    "cuentavueltas",
+    "tejer",
+    "hacer ganchillo"
+   ],
+   "aplikacji": 34,
+   "slowa": [
+    {
+     "s": "punto",
+     "df": 9
+    },
+    {
+     "s": "ganchillo",
+     "df": 6
+    },
+    {
+     "s": "contador",
+     "df": 5
+    },
+    {
+     "s": "crochet",
+     "df": 5
+    },
+    {
+     "s": "tejer",
+     "df": 4
+    },
+    {
+     "s": "knit",
+     "df": 3
+    },
+    {
+     "s": "patrones",
+     "df": 3
+    },
+    {
+     "s": "vueltas",
+     "df": 3
+    }
+   ]
+  },
+  "es-MX": {
+   "kraj": "mx",
+   "zapytania": [
+    "cuentavueltas",
+    "tejer",
+    "tejer a crochet"
+   ],
+   "aplikacji": 39,
+   "slowa": [
+    {
+     "s": "crochet",
+     "df": 10
+    },
+    {
+     "s": "contador",
+     "df": 7
+    },
+    {
+     "s": "tejer",
+     "df": 7
+    },
+    {
+     "s": "tejido",
+     "df": 7
+    },
+    {
+     "s": "para",
+     "df": 5
+    },
+    {
+     "s": "aprende",
+     "df": 4
+    },
+    {
+     "s": "vueltas",
+     "df": 4
+    },
+    {
+     "s": "ganchillo",
+     "df": 3
+    },
+    {
+     "s": "knit",
+     "df": 3
+    }
+   ]
+  },
+  "pt-PT": {
+   "kraj": "pt",
+   "zapytania": [
+    "contador de carreiras",
+    "trabalho",
+    "fazer crochet",
+    "tricotar"
+   ],
+   "aplikacji": 63,
+   "slowa": [
+    {
+     "s": "contador",
+     "df": 19
+    },
+    {
+     "s": "tricô",
+     "df": 9
+    },
+    {
+     "s": "carreiras",
+     "df": 6
+    },
+    {
+     "s": "knit",
+     "df": 4
+    },
+    {
+     "s": "cliques",
+     "df": 3
+    },
+    {
+     "s": "counter",
+     "df": 3
+    },
+    {
+     "s": "croché",
+     "df": 3
+    },
+    {
+     "s": "crochet",
+     "df": 3
+    },
+    {
+     "s": "emprego",
+     "df": 3
+    },
+    {
+     "s": "padrões",
+     "df": 3
+    },
+    {
+     "s": "para",
+     "df": 3
+    },
+    {
+     "s": "trabalho",
+     "df": 3
+    }
+   ]
+  },
+  "pt-BR": {
+   "kraj": "br",
+   "zapytania": [
+    "contador de carreiras",
+    "tecer",
+    "fazer crochê",
+    "tricotar"
+   ],
+   "aplikacji": 56,
+   "slowa": [
+    {
+     "s": "contador",
+     "df": 20
+    },
+    {
+     "s": "carreiras",
+     "df": 11
+    },
+    {
+     "s": "tricô",
+     "df": 11
+    },
+    {
+     "s": "crochê",
+     "df": 6
+    },
+    {
+     "s": "knit",
+     "df": 5
+    },
+    {
+     "s": "receitas",
+     "df": 5
+    },
+    {
+     "s": "cliques",
+     "df": 4
+    },
+    {
+     "s": "puzzle",
+     "df": 3
+    },
+    {
+     "s": "yarn",
+     "df": 3
+    }
+   ]
+  },
+  "nl-NL": {
+   "kraj": "nl",
+   "zapytania": [
+    "toerenteller",
+    "breien en haken",
+    "haken",
+    "breien"
+   ],
+   "aplikacji": 67,
+   "slowa": [
+    {
+     "s": "breien",
+     "df": 27
+    },
+    {
+     "s": "haken",
+     "df": 24
+    },
+    {
+     "s": "toerenteller",
+     "df": 12
+    },
+    {
+     "s": "counter",
+     "df": 5
+    },
+    {
+     "s": "crochet",
+     "df": 4
+    },
+    {
+     "s": "knit",
+     "df": 4
+    },
+    {
+     "s": "row",
+     "df": 4
+    },
+    {
+     "s": "teller",
+     "df": 4
+    },
+    {
+     "s": "brei",
+     "df": 3
+    },
+    {
+     "s": "patronen",
+     "df": 3
+    },
+    {
+     "s": "snelheidsmeter",
+     "df": 3
+    }
+   ]
+  },
+  "sv": {
+   "kraj": "se",
+   "zapytania": [
+    "varvräknare",
+    "stickning och virkning",
+    "virka",
+    "sticka"
+   ],
+   "aplikacji": 69,
+   "slowa": [
+    {
+     "s": "varvräknare",
+     "df": 15
+    },
+    {
+     "s": "crochet",
+     "df": 8
+    },
+    {
+     "s": "stickning",
+     "df": 7
+    },
+    {
+     "s": "virka",
+     "df": 7
+    },
+    {
+     "s": "counter",
+     "df": 6
+    },
+    {
+     "s": "sticka",
+     "df": 6
+    },
+    {
+     "s": "virkning",
+     "df": 6
+    },
+    {
+     "s": "stick",
+     "df": 5
+    },
+    {
+     "s": "knit",
+     "df": 4
+    },
+    {
+     "s": "knitting",
+     "df": 4
+    },
+    {
+     "s": "och",
+     "df": 3
+    },
+    {
+     "s": "patterns",
+     "df": 3
+    }
+   ]
+  },
+  "da": {
+   "kraj": "dk",
+   "zapytania": [
+    "rækketæller",
+    "strik og hækling",
+    "hækle",
+    "strikke"
+   ],
+   "aplikacji": 72,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 26
+    },
+    {
+     "s": "crochet",
+     "df": 23
+    },
+    {
+     "s": "knitting",
+     "df": 19
+    },
+    {
+     "s": "row",
+     "df": 19
+    },
+    {
+     "s": "knit",
+     "df": 8
+    },
+    {
+     "s": "patterns",
+     "df": 8
+    },
+    {
+     "s": "craft",
+     "df": 3
+    },
+    {
+     "s": "pattern",
+     "df": 3
+    },
+    {
+     "s": "tally",
+     "df": 3
+    },
+    {
+     "s": "yarn",
+     "df": 3
+    }
+   ]
+  },
+  "fi": {
+   "kraj": "fi",
+   "zapytania": [
+    "kerroslaskin",
+    "neulominen ja virkkaus",
+    "virkata",
+    "neuloa"
+   ],
+   "aplikacji": 18,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 6
+    },
+    {
+     "s": "knitting",
+     "df": 6
+    },
+    {
+     "s": "crochet",
+     "df": 5
+    },
+    {
+     "s": "knit",
+     "df": 4
+    },
+    {
+     "s": "row",
+     "df": 3
+    }
+   ]
+  },
+  "tr": {
+   "kraj": "tr",
+   "zapytania": [
+    "sıra sayacı",
+    "örgü",
+    "tığla örmek",
+    "şişle örmek"
+   ],
+   "aplikacji": 46,
+   "slowa": [
+    {
+     "s": "crochet",
+     "df": 20
+    },
+    {
+     "s": "counter",
+     "df": 19
+    },
+    {
+     "s": "knitting",
+     "df": 18
+    },
+    {
+     "s": "row",
+     "df": 14
+    },
+    {
+     "s": "knit",
+     "df": 7
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "tally",
+     "df": 4
+    },
+    {
+     "s": "wool",
+     "df": 3
+    }
+   ]
+  },
+  "el": {
+   "kraj": "gr",
+   "zapytania": [
+    "μετρητής σειρών",
+    "πλέξιμο",
+    "πλέκω με βελονάκι",
+    "πλέκω με βελόνες"
+   ],
+   "aplikacji": 39,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 13
+    },
+    {
+     "s": "knitting",
+     "df": 12
+    },
+    {
+     "s": "crochet",
+     "df": 10
+    },
+    {
+     "s": "row",
+     "df": 9
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "yarn",
+     "df": 5
+    },
+    {
+     "s": "knit",
+     "df": 4
+    }
+   ]
+  },
+  "id": {
+   "kraj": "id",
+   "zapytania": [
+    "penghitung baris",
+    "merajut",
+    "merajut dengan jarum"
+   ],
+   "aplikacji": 44,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 18
+    },
+    {
+     "s": "knitting",
+     "df": 14
+    },
+    {
+     "s": "crochet",
+     "df": 13
+    },
+    {
+     "s": "row",
+     "df": 7
+    },
+    {
+     "s": "patterns",
+     "df": 6
+    },
+    {
+     "s": "tally",
+     "df": 6
+    },
+    {
+     "s": "knit",
+     "df": 5
+    },
+    {
+     "s": "yarn",
+     "df": 5
+    },
+    {
+     "s": "puzzle",
+     "df": 3
+    }
+   ]
+  },
+  "ms": {
+   "kraj": "my",
+   "zapytania": [
+    "pembilang baris",
+    "mengait",
+    "mengait krusye"
+   ],
+   "aplikacji": 34,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 14
+    },
+    {
+     "s": "crochet",
+     "df": 10
+    },
+    {
+     "s": "knit",
+     "df": 7
+    },
+    {
+     "s": "knitting",
+     "df": 7
+    },
+    {
+     "s": "tally",
+     "df": 6
+    },
+    {
+     "s": "yarn",
+     "df": 6
+    },
+    {
+     "s": "patterns",
+     "df": 5
+    },
+    {
+     "s": "row",
+     "df": 4
+    },
+    {
+     "s": "clicker",
+     "df": 3
+    },
+    {
+     "s": "puzzle",
+     "df": 3
+    }
+   ]
+  },
+  "vi": {
+   "kraj": "vn",
+   "zapytania": [
+    "bộ đếm hàng",
+    "đan móc",
+    "móc",
+    "đan"
+   ],
+   "aplikacji": 91,
+   "slowa": [
+    {
+     "s": "counter",
+     "df": 21
+    },
+    {
+     "s": "piano",
+     "df": 15
+    },
+    {
+     "s": "crochet",
+     "df": 13
+    },
+    {
+     "s": "knitting",
+     "df": 11
+    },
+    {
+     "s": "tally",
+     "df": 8
+    },
+    {
+     "s": "learn",
+     "df": 6
+    },
+    {
+     "s": "row",
+     "df": 6
+    },
+    {
+     "s": "game",
+     "df": 5
+    },
+    {
+     "s": "mộc",
+     "df": 5
+    },
+    {
+     "s": "tiles",
+     "df": 5
+    },
+    {
+     "s": "count",
+     "df": 4
+    },
+    {
+     "s": "knit",
+     "df": 4
+    },
+    {
+     "s": "patterns",
+     "df": 4
+    },
+    {
+     "s": "tracker",
+     "df": 4
+    },
+    {
+     "s": "baby",
+     "df": 3
+    },
+    {
+     "s": "maker",
+     "df": 3
+    },
+    {
+     "s": "moc",
+     "df": 3
+    },
+    {
+     "s": "simple",
+     "df": 3
+    },
+    {
+     "s": "step",
+     "df": 3
+    }
+   ]
+  },
+  "ko": {
+   "kraj": "kr",
+   "zapytania": [
+    "카운터",
+    "뜨개",
+    "코바늘뜨기",
+    "대바늘뜨기"
+   ],
+   "aplikacji": 55,
+   "slowa": [
+    {
+     "s": "카운터",
+     "df": 10
+    },
+    {
+     "s": "뜨개질",
+     "df": 8
+    },
+    {
+     "s": "counter",
+     "df": 6
+    },
+    {
+     "s": "만보기",
+     "df": 5
+    },
+    {
+     "s": "코바늘",
+     "df": 5
+    }
+   ]
+  },
+  "zh-Hant": {
+   "kraj": "tw",
+   "zapytania": [
+    "計數器",
+    "編織",
+    "鉤針編織",
+    "棒針編織"
+   ],
+   "aplikacji": 70,
+   "slowa": [
+    {
+     "s": "編織",
+     "df": 33
+    },
+    {
+     "s": "數器",
+     "df": 26
+    },
+    {
+     "s": "計數",
+     "df": 26
+    },
+    {
+     "s": "計數器",
+     "df": 26
+    },
+    {
+     "s": "鉤針",
+     "df": 20
+    },
+    {
+     "s": "針編",
+     "df": 12
+    },
+    {
+     "s": "針編織",
+     "df": 11
+    },
+    {
+     "s": "棒針",
+     "df": 9
+    },
+    {
+     "s": "編織計",
+     "df": 8
+    },
+    {
+     "s": "織計",
+     "df": 8
+    },
+    {
+     "s": "織計數",
+     "df": 7
+    },
+    {
+     "s": "鉤針編",
+     "df": 6
+    },
+    {
+     "s": "助手",
+     "df": 5
+    },
+    {
+     "s": "棒針編",
+     "df": 5
+    },
+    {
+     "s": "編織與",
+     "df": 5
+    },
+    {
+     "s": "織與",
+     "df": 5
+    },
+    {
+     "s": "記錄",
+     "df": 5
+    },
+    {
+     "s": "點擊",
+     "df": 5
+    },
+    {
+     "s": "擊計",
+     "df": 4
+    },
+    {
+     "s": "擊計數",
+     "df": 4
+    },
+    {
+     "s": "數計",
+     "df": 4
+    },
+    {
+     "s": "數計數",
+     "df": 4
+    },
+    {
+     "s": "步器",
+     "df": 4
+    },
+    {
+     "s": "段數",
+     "df": 4
+    },
+    {
+     "s": "段數計",
+     "df": 4
+    },
+    {
+     "s": "毛線",
+     "df": 4
+    },
+    {
+     "s": "编织",
+     "df": 4
+    },
+    {
+     "s": "計步",
+     "df": 4
+    },
+    {
+     "s": "計步器",
+     "df": 4
+    },
+    {
+     "s": "針與",
+     "df": 4
+    },
+    {
+     "s": "鉤針與",
+     "df": 4
+    },
+    {
+     "s": "點擊計",
+     "df": 4
+    },
+    {
+     "s": "knit",
+     "df": 3
+    },
+    {
+     "s": "yarn",
+     "df": 3
+    },
+    {
+     "s": "圖解",
+     "df": 3
+    },
+    {
+     "s": "數與",
+     "df": 3
+    },
+    {
+     "s": "紀錄",
+     "df": 3
+    },
+    {
+     "s": "織圖",
+     "df": 3
+    },
+    {
+     "s": "與棒",
+     "df": 3
+    },
+    {
+     "s": "與棒針",
+     "df": 3
+    }
+   ]
+  }
+ }
+}

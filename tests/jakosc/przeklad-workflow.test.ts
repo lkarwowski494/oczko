@@ -34,12 +34,12 @@ describe('workflow przeklad-tlumaczen.yml', () => {
     expect(bezKomentarzy).toMatch(/powyżej 30 USD/); expect(bezKomentarzy).not.toMatch(/6 USD/);
   });
   test('tryb przeglad (P-486): wejście tryb przeklad|przeglad (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
-    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad\]/);
+    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad, metadane\]/);
     expect(bezKomentarzy).toMatch(/WEJ_TRYB: \$\{\{ inputs\.tryb \}\}/);
     expect((bezKomentarzy.match(/--tryb "\$WEJ_TRYB"/g) ?? []).length).toBe(2);
     expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/zakres-fali-2026-11-03\.json; WYJ=raport-przegladu/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'przeglad'[\s\S]*?name: raport-przegladu[\s\S]*?retention-days: 7/);
-    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb != 'przeglad'/);
+    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'przeklad'/);
     expect(bezKomentarzy.match(/secrets\./g)).toHaveLength(1);
     expect(bezKomentarzy).not.toMatch(/src\/i18n\/slowniki/);
   });

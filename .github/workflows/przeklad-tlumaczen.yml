@@ -13,10 +13,10 @@ on:
   workflow_dispatch:
     inputs:
       tryb:
-        description: 'Tryb: przeklad (propozycje przekładu) albo przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu)'
+        description: 'Tryb: przeklad (propozycje przekładu), przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu) albo metadane (metadane sklepu 29 lokalizacji ASC, P-501)'
         type: choice
         default: przeklad
-        options: [przeklad, przeglad]
+        options: [przeklad, przeglad, metadane]
       model:
         description: 'Model przekładu'
         type: choice
@@ -28,13 +28,22 @@ on:
         default: high
         options: [low, medium, high, xhigh, max]
       limit:
-        description: 'Tylko N pierwszych języków (puste = wszystkie 33); przebieg dowodowy: 2'
+        description: 'Tylko N pierwszych języków (puste = wszystkie: 33 albo, w trybie metadane, 29 lokalizacji); przebieg dowodowy: 2'
         type: string
         default: ''
       tylko_szacuj:
         description: 'Tylko szacunek kosztu, bez wysyłania niczego płatnego'
         type: boolean
         default: true
+      etap:
+        description: 'Tylko tryb metadane: przeklad+krytyk (dwa batche), przeklad albo krytyk (krytyk obecnych plików docs/wydanie/metadane/<kod>.store.json)'
+        type: choice
+        default: przeklad+krytyk
+        options: [przeklad+krytyk, przeklad, krytyk]
+      tylko:
+        description: 'Tylko tryb metadane: kody lokalizacji ASC po przecinku, np. cs,sk (puste = wszystkie 29)'
+        type: string
+        default: ''
       zgoda_koszt:
         description: 'Zgoda na koszt powyżej 30 USD (tak / nie)'
         type: choice
@@ -66,14 +75,22 @@ jobs:
           WEJ_MODEL: ${{ inputs.model }}
           WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
+          WEJ_ETAP: ${{ inputs.etap }}
+          WEJ_TYLKO: ${{ inputs.tylko }}
           WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
         run: |
           set -eu
-          if [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          SKRYPT=scripts/i18n/przeklad-api.mjs
+          if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
           ARGS=(--szacuj --tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
-          node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
+          if [ "$WEJ_TRYB" = "metadane" ]; then
+            ARGS+=(--etap "$WEJ_ETAP")
+            if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          fi
+          node "$SKRYPT" "${ARGS[@]}"
       - name: Przekład (szacunek dokładny lub batch)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -81,12 +98,16 @@ jobs:
           WEJ_MODEL: ${{ inputs.model }}
           WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
+          WEJ_ETAP: ${{ inputs.etap }}
+          WEJ_TYLKO: ${{ inputs.tylko }}
           WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
           WEJ_SZACUJ: ${{ inputs.tylko_szacuj }}
           WEJ_WZNOW: ${{ inputs.wznow }}
         run: |
           set -eu
-          if [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          SKRYPT=scripts/i18n/przeklad-api.mjs
+          if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
           ARGS=(--tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
@@ -95,17 +116,21 @@ jobs:
             [[ "$WEJ_WZNOW" =~ ^msgbatch_[A-Za-z0-9]+$ ]] || { echo "::error::wznow: oczekiwany identyfikator msgbatch_…"; exit 1; }
             ARGS+=(--wznow "$WEJ_WZNOW")
           fi
-          node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
+          if [ "$WEJ_TRYB" = "metadane" ]; then
+            ARGS+=(--etap "$WEJ_ETAP")
+            if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          fi
+          node "$SKRYPT" "${ARGS[@]}"
       - name: Podsumowanie w logu przebiegu
         if: always()
         env:
           WEJ_TRYB: ${{ inputs.tryb }}
         run: |
-          if [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; else WYJ=raport-przekladu; fi
+          if [ "$WEJ_TRYB" = "metadane" ]; then WYJ=raport-metadane; elif [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; else WYJ=raport-przekladu; fi
           if [ -f "$WYJ/podsumowanie.md" ]; then cat "$WYJ/podsumowanie.md" >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f "$WYJ/szacunek.json" ]; then node -e "const s=require('./$WYJ/szacunek.json');console.log('Szacunek ('+s.tryb+'): '+JSON.stringify(s.koszt_wg_modelu))" >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Artefakt przekładu (tylko raporty, 7 dni)
-        if: always() && inputs.tryb != 'przeglad'
+        if: always() && inputs.tryb == 'przeklad'
         uses: actions/upload-artifact@v4
         with:
           name: raport-przekladu
@@ -122,5 +147,15 @@ jobs:
           path: |
             raport-przegladu/*.json
             raport-przegladu/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt metadanych (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'metadane'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-metadane
+          path: |
+            raport-metadane/*.json
+            raport-metadane/podsumowanie.md
           if-no-files-found: ignore
           retention-days: 7

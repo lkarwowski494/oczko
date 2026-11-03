@@ -1,0 +1,78 @@
+{
+  "_opis": "Podtytuły i słowa kluczowe lokalizacji z badania fraz E1 (P-157/P-148 E1-3a; tabela ASO w docs/wzrost.md, stan 2026-11-03 po P-487; badanie 2026-10-26). Te pięć lokalizacji (pl, ja, no, de-DE, fr-FR) ma pola STAŁE — przekład API ich nie generuje, tylko je dostaje jako kontekst (P-501). en-US/CA i en-GB/AU: en.store.json. Klucze = kody lokalizacji ASC (nb → no). Pilnuje tests/wydanie/metadane-przeklad.test.ts (zgodność z tabelą we wzrost.md, ≤ 100 B).",
+  "pl": {
+    "subtitle": "Druty i szydełko, bez konta",
+    "keywords": [
+      "dzierganie",
+      "włóczka",
+      "oczka",
+      "rzędy",
+      "wzór",
+      "pdf",
+      "projekt",
+      "robótki",
+      "szydełkowanie",
+      "drutach",
+      "notatki",
+      "zapas"
+    ]
+  },
+  "ja": {
+    "subtitle": "かぎ針・棒針の段数と編み図",
+    "keywords": [
+      "棒針編み",
+      "かぎ針編み",
+      "あみぐるみ",
+      "目数計算",
+      "リマインド",
+      "PDF",
+      "メモ帳",
+      "毛糸管理"
+    ]
+  },
+  "no": {
+    "subtitle": "Teller for omganger og pinner",
+    "keywords": [
+      "strikking",
+      "hekling",
+      "strikkeapp",
+      "omgangsteller",
+      "garn",
+      "oppskrift",
+      "prosjekter",
+      "masker",
+      "notater",
+      "strikkeprosjekt"
+    ]
+  },
+  "de-DE": {
+    "subtitle": "Häkeln, Stricken, eigenes PDF",
+    "keywords": [
+      "Strickzähler",
+      "Maschenzähler",
+      "Wolle",
+      "Garn",
+      "Nadeln",
+      "Strickmuster",
+      "Häkelmuster",
+      "Handarbeit",
+      "Projekte"
+    ]
+  },
+  "fr-FR": {
+    "subtitle": "Tricot & crochet, votre patron",
+    "keywords": [
+      "tricoter",
+      "crocheter",
+      "laine",
+      "pelote",
+      "aiguilles",
+      "mailles",
+      "projet",
+      "modèle",
+      "amigurumi",
+      "PDF",
+      "notes"
+    ]
+  }
+}
