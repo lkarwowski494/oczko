@@ -331,6 +331,10 @@ async function licznosci(b: PortBazy): Promise<Record<string, number>> {
   const out: Record<string, number> = {};
   for (const t of TABELE_LICZNOSCI) out[t] = await n(b, `SELECT count(*) AS n FROM ${t}`);
   out.projekt_w_koszu = await n(b, 'SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL');
+  // M1-audytor-generalny-126 (07-jakosc-518): do kosza trafia tylko szczyt (projekt); część i licznik mają własne `usunieto_ms`, a ustawione
+  // pokazałyby się w „Ostatnio usuniętych” osobno od przywróconego projektu (kosz.ts).
+  out.czesc_w_koszu = await n(b, 'SELECT count(*) AS n FROM czesc WHERE usunieto_ms IS NOT NULL');
+  out.licznik_w_koszu = await n(b, 'SELECT count(*) AS n FROM licznik WHERE usunieto_ms IS NOT NULL');
   return out;
 }
 
@@ -343,7 +347,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     await dodajRzad(a.s.z, { licznikId: l });
     await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
     const przed = await licznosci(b.s.baza);
-    expect(przed).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 1, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 0 });
+    expect(przed).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 1, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 0, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     const [e1] = await b.s.baza.all<{ id: string }>('SELECT id FROM zdarzenie');
     b.u.bladWysylki = { kod: 'siec' }; // B bez sieci
     expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true);
@@ -370,7 +374,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     expect(await skrzynka(b.s.baza)).toBe(0);
     await a.u.dostarcz();
     const poOdbiorzeA = await licznosci(a.s.baza);
-    expect(poOdbiorzeA).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 2, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1 });
+    expect(poOdbiorzeA).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 2, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     expect(await licznik(a.s.baza, l)).toEqual([{ wartosc: 2, konflikt: 0 }]);
     expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
   });
@@ -410,7 +414,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie (sprzątanie kosza) na A
     await a.st.wyslijZaleglosci();
     await b.u.dostarcz({ rekordy: [] });
-    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, czesc: 1, licznik: 1, zdarzenie: 5, blad: 0 });
+    expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, czesc: 1, licznik: 1, zdarzenie: 5, blad: 0, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
     expect(await n(b.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
     expect(serwer.rekordy.has(`projekt:${p.id}`)).toBe(true);
