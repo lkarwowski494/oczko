@@ -27,7 +27,7 @@ const EkranStanuDanych = (require('../../app/stan-danych') as { default: React.C
 const EkranZgloszenia = (require('../../app/zglos') as { default: React.ComponentType }).default;
 
 const EN = JSON.parse(readFileSync(join(__dirname, '../../src/i18n/slowniki/en.json'), 'utf8')) as Record<string, Record<string, string>>;
-const MODEL = /iPhone|iPad/;
+const MODEL = /iPhon|iPad/; // M1-audytor-generalny-155: rdzeń „iPhon” łapie odmianę („na tym iPhonie”, „iPhone’a”)
 
 beforeEach(() => {
   jest.spyOn(Platform as { isPad: boolean }, 'isPad', 'get').mockReturnValue(true); // iOS: typ Platform bez isPad w unii
