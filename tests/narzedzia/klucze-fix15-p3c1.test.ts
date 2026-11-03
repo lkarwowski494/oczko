@@ -14,7 +14,10 @@ const EN = czytaj('src/i18n/slowniki/en.json') as Record<string, Record<string, 
 const KONTEKST = czytaj('src/i18n/slowniki/en.kontekst.json') as Record<string, Record<string, string>>;
 const PSEUDO = czytaj('src/i18n/pseudo/en-XA.json') as Record<string, string>;
 const OCZEKUJACE = (czytaj('docs/lokalizacja/oczekujace.json') as { klucze: string[] }).klucze;
-const SLOWNIKI = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => /^[a-z]{2}(-[A-Za-z0-9]+)?\.json$/.test(f) && f !== 'en.json');
+const WSZYSTKIE = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => /^[a-z]{2}(-[A-Za-z0-9]+)?\.json$/.test(f) && f !== 'en.json');
+// pl ma przekład od P-469 (uzupełnienie 143 brakujących tekstów); pozostałe języki czekają na falę 09.
+const SLOWNIKI = WSZYSTKIE.filter((f) => f !== 'pl.json');
+const PL = czytaj('src/i18n/slowniki/pl.json') as Record<string, Record<string, string>>;
 const wartosc = (s: Record<string, Record<string, string>>, klucz: string) => { const [sekcja, nazwa] = klucz.split('.'); return s[sekcja]?.[nazwa]; };
 
 /** Wspólny kontrakt grupy: wartość i kontekst z wyroczni, klucz na liście oczekujących, wpis pseudo, brak (starych) przekładów do fali 09. */
@@ -27,8 +30,11 @@ function kontraktGrupy(id: string): void {
   test(`${id}: en.kontekst.json = wyrocznia`, () => { for (const k of klucze) expect([k, bez055(k, wartosc(KONTEKST, k))]).toEqual([k, ANEKS.kontekst[k]]); });
   test(`${id}: klucze na liście oczekujących (P-357)`, () => { for (const k of klucze) expect(OCZEKUJACE).toContain(k); });
   test(`${id}: pseudolokalizacja en-XA ma klucz`, () => { for (const k of klucze) expect([k, typeof PSEUDO[k]]).toEqual([k, 'string']); });
-  test(`${id}: brak przekładów w ${SLOWNIKI.length} słownikach do fali 09 (pl też, P-422)`, () => {
-    expect(SLOWNIKI.length).toBe(34);
+  test(`${id}: pl ma polski przekład (P-469)`, () => {
+    for (const k of klucze) expect([k, typeof wartosc(PL, k) === 'string' || typeof wartosc(PL, `${k}_other`) === 'string']).toEqual([k, true]);
+  });
+  test(`${id}: brak przekładów w ${SLOWNIKI.length} słownikach do fali 09 (poza pl)`, () => {
+    expect(SLOWNIKI.length).toBe(33);
     for (const f of SLOWNIKI) {
       const s = czytaj(`src/i18n/slowniki/${f}`) as Record<string, Record<string, string>>;
       for (const k of klucze) expect([f, k, wartosc(s, k)]).toEqual([f, k, undefined]);

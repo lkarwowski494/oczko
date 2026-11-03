@@ -190,6 +190,435 @@
     ],
     "ukonczenie.jednostka": [
       "pl"
+    ],
+    "licznik.jednostka_w_trakcie": [
+      "pl"
+    ],
+    "licznik.przypomnienie_postep": [
+      "pl"
+    ],
+    "licznik.powtorzenie": [
+      "pl"
+    ],
+    "licznik.blizniak_oba": [
+      "pl"
+    ],
+    "licznik.jednostka_oczka": [
+      "pl"
+    ],
+    "licznik.plus_oczka": [
+      "pl"
+    ],
+    "licznik.podpis_plus_oczka": [
+      "pl"
+    ],
+    "licznik.plus_a11y_oczka": [
+      "pl"
+    ],
+    "licznik.minus_a11y_oczka": [
+      "pl"
+    ],
+    "licznik.po_dodaniu_oczka": [
+      "pl"
+    ],
+    "licznik.znaczniki_sesji_oczka": [
+      "pl"
+    ],
+    "licznik.seria_blokada": [
+      "pl"
+    ],
+    "licznik.seria_zegarek": [
+      "pl"
+    ],
+    "licznik.wpisz_blad_format": [
+      "pl"
+    ],
+    "ustawienia.pomoc": [
+      "pl"
+    ],
+    "ustawienia.usun_pytanie": [
+      "pl"
+    ],
+    "ustawienia.usun_pro": [
+      "pl"
+    ],
+    "ustawienia.usun_kopia": [
+      "pl"
+    ],
+    "ustawienia.usun_kopia_blad": [
+      "pl"
+    ],
+    "ustawienia.ekran_nie_gasnie": [
+      "pl"
+    ],
+    "ustawienia.ekran_nie_gasnie_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_auto": [
+      "pl"
+    ],
+    "ustawienia.miary_metric": [
+      "pl"
+    ],
+    "ustawienia.miary_metric_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_imperial": [
+      "pl"
+    ],
+    "ustawienia.miary_imperial_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_opis": [
+      "pl"
+    ],
+    "ustawienia.pro_wlaczone": [
+      "pl"
+    ],
+    "ustawienia.grupa_liczenie": [
+      "pl"
+    ],
+    "ustawienia.blad_zapisu": [
+      "pl"
+    ],
+    "wspolne.blad_zapisu_opis": [
+      "pl"
+    ],
+    "wspolne.blad_udostepnienia": [
+      "pl"
+    ],
+    "wspolne.blad_udostepnienia_opis": [
+      "pl"
+    ],
+    "wspolne.ladowanie": [
+      "pl"
+    ],
+    "wspolne.blad_wczytania": [
+      "pl"
+    ],
+    "wspolne.ponow": [
+      "pl"
+    ],
+    "wspolne.odrzuc_tytul": [
+      "pl"
+    ],
+    "wspolne.odrzuc_opis_zmiany": [
+      "pl"
+    ],
+    "wspolne.odrzuc_opis_nowy": [
+      "pl"
+    ],
+    "wspolne.wroc_do_edycji": [
+      "pl"
+    ],
+    "wspolne.odrzuc_zmiany": [
+      "pl"
+    ],
+    "projekty.ukonczono_wiersz": [
+      "pl"
+    ],
+    "projekty.ukonczono_bez_czasu": [
+      "pl"
+    ],
+    "projekty.ukonczono_a11y": [
+      "pl"
+    ],
+    "projekty.ukonczono_bez_czasu_a11y": [
+      "pl"
+    ],
+    "historia.seria": [
+      "pl"
+    ],
+    "historia.cofnij_serie": [
+      "pl"
+    ],
+    "historia.cofnieto": [
+      "pl"
+    ],
+    "historia.starszy_info": [
+      "pl"
+    ],
+    "historia.wpisz": [
+      "pl"
+    ],
+    "historia.wpis_rozwin_a11y": [
+      "pl"
+    ],
+    "historia.wpis_rozwin_podpowiedz": [
+      "pl"
+    ],
+    "historia.wpis_a11y": [
+      "pl"
+    ],
+    "menu.zeruj_zablokowany": [
+      "pl"
+    ],
+    "formularz.wloczka_tytul": [
+      "pl"
+    ],
+    "formularz.wloczka_opis": [
+      "pl"
+    ],
+    "formularz.wloczka_pusto": [
+      "pl"
+    ],
+    "formularz.wloczka_wiersz_a11y": [
+      "pl"
+    ],
+    "formularz.blad_zapisu": [
+      "pl"
+    ],
+    "ukonczenie.bez_wloczki": [
+      "pl"
+    ],
+    "ukonczenie.wybierz_wloczke": [
+      "pl"
+    ],
+    "ukonczenie.edytuj_zapas_opis": [
+      "pl"
+    ],
+    "projekt.termin_dzis": [
+      "pl"
+    ],
+    "projekt.termin_po": [
+      "pl"
+    ],
+    "projekt.termin_osiagniety": [
+      "pl"
+    ],
+    "projekt.termin_bez_celow": [
+      "pl"
+    ],
+    "projekt.kopia_nazwa": [
+      "pl"
+    ],
+    "projekt.miejsce_wzoru_wartosc": [
+      "pl"
+    ],
+    "projekt.miejsce_wzoru_strona": [
+      "pl"
+    ],
+    "projekt.wloczka": [
+      "pl"
+    ],
+    "projekt.wloczka_brak": [
+      "pl"
+    ],
+    "projekt.wloczki": [
+      "pl"
+    ],
+    "oferty.dozywotni_przy_subskrypcji": [
+      "pl"
+    ],
+    "oferty.czeka": [
+      "pl"
+    ],
+    "oferty.czeka_przycisk": [
+      "pl"
+    ],
+    "oferty.blad_zakupu": [
+      "pl"
+    ],
+    "oferty.przywracanie_nic": [
+      "pl"
+    ],
+    "oferty.przywracanie_blad": [
+      "pl"
+    ],
+    "oferty.pro_wlaczone": [
+      "pl"
+    ],
+    "awaryjny.blad_kopii": [
+      "pl"
+    ],
+    "awaryjny.blad_kopii_opis": [
+      "pl"
+    ],
+    "awaryjny.tytul_brak_miejsca": [
+      "pl"
+    ],
+    "awaryjny.opis_brak_miejsca": [
+      "pl"
+    ],
+    "dane.zastapiono": [
+      "pl"
+    ],
+    "dane.zastapiono_tytul": [
+      "pl"
+    ],
+    "dane.zastapiono_wroc": [
+      "pl"
+    ],
+    "stan_danych.zapisane": [
+      "pl"
+    ],
+    "stan_danych.kopie_opis": [
+      "pl"
+    ],
+    "zglos.opis": [
+      "pl"
+    ],
+    "zglos.kontakt": [
+      "pl"
+    ],
+    "stoper.blad_zapisu": [
+      "pl"
+    ],
+    "probka.zaproszenie_szerokosc": [
+      "pl"
+    ],
+    "karta.dni_podpis": [
+      "pl"
+    ],
+    "wzor.wskazowka_znacznika": [
+      "pl"
+    ],
+    "wzor.blad_czas": [
+      "pl"
+    ],
+    "wzor.blad_czas_opis": [
+      "pl"
+    ],
+    "wzor.notatka_chip": [
+      "pl"
+    ],
+    "wzor.notatka_chip_a11y": [
+      "pl"
+    ],
+    "wzor.notatki_wiele": [
+      "pl"
+    ],
+    "wzor.notatki_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_usun": [
+      "pl"
+    ],
+    "wzor.notatka_usun_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_usun_opis": [
+      "pl"
+    ],
+    "wzor.notatka_edytuj": [
+      "pl"
+    ],
+    "wzor.notatka_edytuj_a11y": [
+      "pl"
+    ],
+    "wzor.przed_schematem": [
+      "pl"
+    ],
+    "wzor.znacznik_napis": [
+      "pl"
+    ],
+    "wzor.blad_zapis": [
+      "pl"
+    ],
+    "wzor.blad_zapis_opis": [
+      "pl"
+    ],
+    "wzor.blad_rysunku": [
+      "pl"
+    ],
+    "wzor.blad_rysunku_opis": [
+      "pl"
+    ],
+    "wzor.rysunek_niezapisany_opis": [
+      "pl"
+    ],
+    "wzor.wyjdz_tytul": [
+      "pl"
+    ],
+    "wzor.wyjdz_zostan": [
+      "pl"
+    ],
+    "wzor.wyjdz_potwierdz": [
+      "pl"
+    ],
+    "wzor.miejsce_tytul": [
+      "pl"
+    ],
+    "wzor.miejsce_opis": [
+      "pl"
+    ],
+    "icloud.wlacz_opis": [
+      "pl"
+    ],
+    "icloud.wylacz_opis": [
+      "pl"
+    ],
+    "icloud.brak_konta_opis": [
+      "pl"
+    ],
+    "icloud.brak_miejsca_opis": [
+      "pl"
+    ],
+    "icloud.konto_zmienione_opis": [
+      "pl"
+    ],
+    "icloud.niepelna_nowsza": [
+      "pl"
+    ],
+    "import.nie_rozpoznano_tytul": [
+      "pl"
+    ],
+    "import.nie_rozpoznano_opis": [
+      "pl"
+    ],
+    "przyp.menu": [
+      "pl"
+    ],
+    "przyp.tytul": [
+      "pl"
+    ],
+    "przyp.lista_opis": [
+      "pl"
+    ],
+    "przyp.wiersz": [
+      "pl"
+    ],
+    "przyp.edytuj_tytul": [
+      "pl"
+    ],
+    "przyp.usun": [
+      "pl"
+    ],
+    "przyp.usun_tytul": [
+      "pl"
+    ],
+    "przyp.usun_opis": [
+      "pl"
+    ],
+    "przyp.wiersz_a11y": [
+      "pl"
+    ],
+    "jednostka.m": [
+      "pl"
+    ],
+    "jednostka.yd": [
+      "pl"
+    ],
+    "jednostka.g": [
+      "pl"
+    ],
+    "jednostka.oz": [
+      "pl"
+    ],
+    "jednostka.m_nazwa": [
+      "pl"
+    ],
+    "jednostka.yd_nazwa": [
+      "pl"
+    ],
+    "jednostka.g_nazwa": [
+      "pl"
+    ],
+    "jednostka.oz_nazwa": [
+      "pl"
     ]
   }
 }

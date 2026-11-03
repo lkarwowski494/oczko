@@ -155,7 +155,8 @@ describe('docs/lokalizacja/oczekujace.json w repo', () => {
       const zwykle = new Set(klucze.filter((k) => !FORMA.test(k)));
       const wMapie = (k: string) => (mapa[k] ?? []).includes(j);
       expect([j, l.klucze.filter((k) => !wMapie(k) && (formy.has(k) || (zwykle.has(k) && !enFormy.has(k))))]).toEqual([j, []]);
-      expect([j, l.klucze.filter((k) => wMapie(k) && !formy.has(k))]).toEqual([j, []]);
+      // język z mapy ma przekład: formy, gdy en ma formy tej bazy; zwykły klucz, gdy en ma zwykły (pl od P-469 ma przekład kluczy zwykłych przed falą)
+      expect([j, l.klucze.filter((k) => wMapie(k) && !(enFormy.has(k) ? formy.has(k) : zwykle.has(k)))]).toEqual([j, []]);
     }
   });
   // M1-audytor-generalny-129 (09-lokalizacja-513, trwała kontrola 504): każde P-NNN z listy (odwolania i powod) ma wiersz w docs/decyzje.md.
