@@ -1,7 +1,7 @@
 # Wymagania: zapas (ZAP), obliczenia (KAL), słownik (SLO)
 Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`; reguły w `reguly.md`.
 
-Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i założenia oraz informację, że tabele CYC to wytyczne [FAKT S-19]. Wyniki oczek są niezaokrąglone, dopóki OP-02 nie jest rozstrzygnięte. Dotyczy to wartości w obliczeniach: podgląd kalkulatora próbki pokazuje liczbę wyliczoną z najwyżej jednym miejscem po przecinku (najbliższa dziesiąta, połowa w górę), a każde dalsze obliczenie bierze wartość pełną (DEC-34 a, P-438, P-446; ER-62); to sposób wyświetlania, nie zaokrąglanie do całości z OP-02.
+Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i założenia oraz informację, że tabele CYC to wytyczne [FAKT S-19]. Wyniki oczek są niezaokrąglone, dopóki OP-02 nie jest rozstrzygnięte. Dotyczy to wartości w obliczeniach: podgląd kalkulatora próbki pokazuje liczbę wyliczoną z najwyżej jednym miejscem po przecinku (najbliższa dziesiąta, połowa w górę), a każde dalsze obliczenie bierze wartość pełną (DEC-34 a, P-438, P-446; ER-62); to sposób wyświetlania, nie zaokrąglanie do całości z OP-02. Wpisywanie: pola liczb dziesiętnych (np. próbka, długość i masa motka) przyjmują przecinek i kropkę jako separator dziesiętny niezależnie od języka telefonu, jeden separator, bez grupowania tysięcy (DEC-12 a, P-449; ER-65). Znane ograniczenie tego wyboru: w języku, w którym kropka grupuje tysiące (np. de-DE [FAKT S-40]), „1.000” w polu dziesiętnym to 1, nie 1000; pole całkowite licznika grupowanie przyjmuje bez zmian (BR-LIC-017).
 
 ## Zapas (ZAP)
 ### BR-ZAP-001: Włóczka w zapasie
@@ -86,10 +86,10 @@ Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i za
       | fr-FR | 21,5 |
       | en-US | 21.5 |
       | ar-EG | ٢١٫٥ |
-  - Scenariusz: Separator dziesiętny innego regionu (ER-43)
-    - Zakładając, że telefon ma język i region de-DE
-    - Gdy użytkownik wpisuje próbkę „21.5” (w de-DE kropka jest separatorem tysięcy)
-    - Wtedy aplikacja nie liczy wyniku i pokazuje przykład zapisu „21,5”, bez zgadywania [FAKT S-40]
+  - Scenariusz: Separator dziesiętny innego regionu (ER-43, ER-65)
+    - Zakładając, że szerokość to 50 cm, a telefon ma język i region de-DE albo język en i region PL
+    - Gdy użytkownik wpisuje próbkę „21.5” w de-DE (tam kropka jest separatorem tysięcy [FAKT S-40]) albo „21,5” w języku en z regionem PL
+    - Wtedy wynik to 107,5 oczka (w en „107.5 stitches”; rachunek RD-01: 50 × 21,5 / 10), bez błędu, bo pole dziesiętne przyjmuje przecinek i kropkę niezależnie od języka (DEC-12 a)
 
 ### BR-KAL-002: Przeliczenie wzoru na własną próbkę
 - Przepływ: PR-11 · Reguła: RD-02
