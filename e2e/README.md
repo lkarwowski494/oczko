@@ -360,6 +360,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-DAN-012/S1, S3 (F-64; wywołanie systemowe i adres recenzji nie do odczytu w E2E) | `65-br-dan-012-s1-prosba-o-ocene.yaml` (informacyjnie) |
 | BR-DAN-006/S3 „Replace” (F-32) | `66-br-dan-006-s3-zastap-kopia-przed.yaml` (informacyjnie) |
 | BR-LIC-012/S1 w pasku pod wzorem (F-09, P2-5b) | `67-br-lic-012-s1-podpis-w-pasku-wzoru.yaml` (informacyjnie) |
+| BR-ZAK-004/S1 (F-36, zadanie 002: wiersz „Privacy Policy” w Ustawieniach, tylko widoczność i zrzut) | `68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml` (informacyjnie) |
 | (przepływy pakietu podstawowego spoza poziomu E2E) BR-LIC-002/S1–S3, BR-LIC-019/S1, BR-LIC-003/S2 · BR-ZAK-006/S1, KP-13 · BR-ZAK-001/S1, PR-09 · P-089 (3a) · BR-DAN-005/S1, BR-DAN-006/S1, P-113 Q2a (bez karty) · ADR-0019 | `04`, `05`, `06`, `07`, `08`, `09` |
 
 Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza — lista telefonu (strategia §8, TT-01–TT-09) albo „Nie sprawdzono”.

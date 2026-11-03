@@ -2,9 +2,9 @@
 # a oryginał się nie zmienia. Wynik widoczny dla użytkownika: ekran nowego projektu (część „Back”: „0 of 40 rows”), lista z DWOMA projektami „Harbor”
 # (nazwa kopii = nazwa oryginału, 04-fix5-N1), po otwarciu oryginału licznik nadal 2. Wyrocznia: BRD (wartości nie z kodu).
 # Poza scenariuszem (Jest `tests/dane/projekt-kosz.test.ts`, Node): przypomnienia, narzędzie i rozmiar (S1 „Oraz”), szydełko (S2, ER-53), brak zdjęć/notatki/terminu.
-# Opisy wierszy listy i części ("… row 3 of 40", "2 of 40 rows") — format z kluczy `projekty.*`, `projekt.czesc_cel` (en.json); etykieta wiersza listy
+# Opisy wierszy listy i części (liczba w etykiecie to wartość licznika) — format z kluczy `projekty.*`, `projekt.czesc_cel` (en.json); etykieta wiersza listy
 # Przebieg #139 (hierarchia kroku 85): etykieta wiersza części to „Back, 2 of 40 rows” (nazwa części + opis), a Maestro dopasowuje cały tekst — stąd prefiks „.*” (E2-139-S4).
-# Etykiety wierszy listy projektów („row N of 40”) — jeszcze niepotwierdzone przebiegiem (scenariusz padł wcześniej). Informacyjnie do pierwszego zielonego (P-091).
+# Etykiety wierszy listy projektów potwierdzone w #141 (hierarchia kroku: „row 0, last worked today” i „row 2 of 40, last worked today”, E2-141-S2). Informacyjnie do pierwszego zielonego (P-091).
 appId: com.apps4brew.knitting
 name: "BR-PRJ-007/S1 · Make another like this: nowy projekt z częścią i celem, liczniki od 0, oryginał bez zmian"
 tags:
@@ -47,10 +47,11 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: { id: "projekty-wiersz", index: 1 }
 - assertNotVisible: { id: "projekty-wiersz", index: 2 }
-- assertVisible: ".*row 1 of 40.*"
-- assertVisible: ".*row 3 of 40.*"
+# etykieta wiersza to „<projekt>, <część> · row N of cel” z WARTOŚCIĄ licznika (E2-141-S2): nowy projekt „row 0” (pierwsza część, bez celu), oryginał „row 2 of 40”
+- assertVisible: ".*row 0, last worked today.*"
+- assertVisible: ".*row 2 of 40.*"
 - takeScreenshot: 61-lista-dwa-projekty
-- tapOn: ".*row 3 of 40.*"
+- tapOn: ".*row 2 of 40.*"
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - takeScreenshot: 61-oryginal-po-operacji
