@@ -121,6 +121,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-licznika.test.ts` | zielony (główny zestaw) | 13 | BR-LIC-001, BR-LIC-003, BR-PRJ-014, P-065, P-126, RD-13, RD-17 | `src/konfiguracja`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/sesja`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektow` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/widok-projektu.test.ts` | zielony (główny zestaw) | 10 | BR-LIC-018, BR-PRJ-004/S3, BR-PRJ-005, BR-PRJ-014, P-184, P-199, RD-11, RD-14, RD-15, RD-19 | `src/przypadki-uzycia/widok-projektu` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wloczki-projektu.test.ts` | zielony (główny zestaw) | 12 | BR-ZAP-002, P-330, P-333, P-334 | `src/przypadki-uzycia/widok-ukonczenia`<br>`src/przypadki-uzycia/zapas` | — |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wskazowka-znacznika-kopia.test.ts` | zielony (główny zestaw) | 1 | P-447 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-dodaj.test.ts` | zielony (główny zestaw) | 11 | BR-WZR-001, BR-WZR-002, BR-WZR-007, P-218, P-221, P-252, P-353 | `src/domena/bledy`<br>`src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miejsce.test.ts` | zielony (główny zestaw) | 6 | BR-PRJ-011 | `src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-miejsce`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miniatury.test.ts` | zielony (główny zestaw) | 2 | — | `src/kompozycja/miniatury`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
@@ -298,6 +299,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-rysik.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-004, P-226, P-327, P-360 | `src/domena/rysik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-strona-bez-sieci.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-007 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-znacznik.test.tsx` | zielony (główny zestaw) | 12 | BR-WZR-003 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-wskazowka-znacznika-131.test.tsx` | zielony (główny zestaw) | 8 | P-447 | `src/dane/repozytoria/ustawienia` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-znacznik-stukniecie-131.test.tsx` | zielony (główny zestaw) | 6 | — | `src/dane/repozytoria/wzory`<br>`src/ekrany/motyw` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zapas-kompozycja.test.ts` | zielony (główny zestaw) | 11 | BR-ZAP-001, BR-ZAP-001/S1, BR-ZAP-003, BR-ZAP-004, BR-ZAP-004/S1, BR-ZAP-004/S2, P-191, P-277, RD-03, RD-11, RD-19 | `src/ekrany/wspolne`<br>`src/kompozycja/zapas`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zapas.test.tsx` | zielony (główny zestaw) | 11 | BR-ZAP-001, BR-ZAP-001/S1, BR-ZAP-004/S2, P-191, P-209 | `src/ekrany/Zapas`<br>`src/ekrany/wspolne`<br>`src/kompozycja/zapas`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
@@ -341,4 +343,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 337; zależnych od poprawek: 207.
+Razem plików testów: 339; zależnych od poprawek: 208.
