@@ -57,7 +57,7 @@ Pełna, z dowodami: [`e0-rozpoznanie.md`](e0-rozpoznanie.md) §1. Skrót: Linux 
 | Dziennik +1 i stany Live Activity/zegarka | **złote pliki** `tests/wspolne/dziennik-*.jsonl`, `stan-*.json` czytane przez Jest i XCTest (Z07-11, Z07-12) | 07 w E3 (szkic), 05 zatwierdza w sesji fix | syntetyczne |
 | Raporty MetricKit (ADR-0018) | przykładowy ładunek z dokumentacji Apple (adres w opisie) | 12 w E2–E3 | bez identyfikatorów urządzenia |
 | Ślady GPS | nie dotyczy (moduł `geo-slady` nie dotyczy, E0 §6) | — | — |
-Każdy plik danych ma obok opis (`*.opis.md`: skąd, data, licencja, co zawiera, oczekiwany wynik ze źródłem).
+Każdy plik danych ma obok opis (`*.opis.md`: skąd, data, licencja, co zawiera, oczekiwany wynik ze źródłem) i co najmniej jeden test, który go czyta (`tests/jakosc/dane-testowe.test.ts`). Stan: wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (2 strony) — Jest `tests/adaptery/e2e-pliki-wzoru.test.ts` i scenariusz 21 (panel `e2e-wzor-pdf-skan`, P-439, 07-jakosc-002); pozostałe warianty z tabeli (tekstowy, eksport LibreOffice i przeglądarki, `.docx` z LibreOffice): **plan, nie wykonano**.
 
 ## 5. CI: zadania, koszt, limity czasu, bramki
 Wyzwalacze: **`workflow_dispatch` i `schedule` działają tylko z gałęzi domyślnej** (stare workflowy na `main`), więc na gałęzi roboczej zadania uruchamia `push` (decyzja DS-11).

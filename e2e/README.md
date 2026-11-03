@@ -295,7 +295,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-ladowanie` | ekran projektu (08 P, E2-137-A1) | stan do końca pierwszego odczytu; podprzepływ `dodaj-czesc-cel` czyta go opcjonalnie w ścieżce `opoznienie-ekran-projektu` | „Loading…” | |
 | `projekt-blad` | ekran projektu | stan błędu odczytu | „Couldn’t load this.” | |
 | `projekt-ponow` | ekran projektu (stan błędu) | „Try again” | „Try again” | |
-| `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy (strategia §4) | bez `t()` | |
+| `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy pisany w kodzie (2 strony tekstu Helvetica) | bez `t()` | |
+| `e2e-wzor-pdf-skan` | dodanie wzoru (build E2E) | prawdziwy wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, strategia §4; P-439; scen. 21) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |
 | `e2e-wzor-www` | dodanie wzoru (build E2E) | zapisana strona testowa | bez `t()` | |
 | `e2e-wzor-word` | dodanie wzoru (build E2E) | plik .docx testowy | bez `t()` | |

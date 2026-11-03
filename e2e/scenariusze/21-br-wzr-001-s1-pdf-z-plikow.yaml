@@ -1,5 +1,7 @@
 # BR-WZR-001/S1 (docs/brd/wymagania-projekt.md:212): Import wzoru PDF (z aplikacji Pliki) i odczyt bez sieci po restarcie.
-# Rozszerzenie udostępniania i okno Pliki (ADR-0011) poza zasięgiem Maestro — build E2E podaje plik testowy (domena publiczna, strategia §4) bez okna systemowego; zapis i odczyt offline: dane-node.
+# Rozszerzenie udostępniania i okno Pliki (ADR-0011) poza zasięgiem Maestro — build E2E podaje bez okna systemowego prawdziwy wycinek skanu z OCR
+# `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, 2 strony, strategia §4; panel `e2e-wzor-pdf-skan`, P-439, 07-jakosc-002); zapis i odczyt offline: dane-node.
+# Wyrocznia z *.opis.md: plik 2-stronicowy przyjęty, znacznik rzędu (BR-WZR-003) działa na stronie skanu bez warstwy wektorowej.
 # Reguła OG-07 (design-spec „Ekrany wzoru a patenty”): jeden dokument wzoru naraz, w całości.
 appId: com.apps4brew.knitting
 name: "BR-WZR-001/S1 · Import wzoru PDF (z aplikacji Pliki) i odczyt bez sieci po restarcie"
@@ -22,12 +24,21 @@ tags:
 # NOC-2b (F-24, 04): ekran „dodaj wzór” przed wyborem źródła
 - takeScreenshot: 21-ekran-dodaj-wzor
 - tapOn: { id: "wzor-dodaj" }
-- assertVisible: { id: "e2e-wzor-pdf" }
-- tapOn: { id: "e2e-wzor-pdf" }
+- assertVisible: { id: "e2e-wzor-pdf-skan" }
+- tapOn: { id: "e2e-wzor-pdf-skan" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
-- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 2" }
 - takeScreenshot: 21-wzor-po-imporcie
+# Znacznik rzędu na stronie skanu (BR-WZR-003; kroki jak scenariusz 62): pierwszy „Mark row” pyta o kierunek, potem pasek znacznika
+- tapOn: { id: "wzor-zaznacz" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-pasek" }
+- assertVisible: { id: "wzor-znacznik-rzad" }
+- takeScreenshot: 21-znacznik-na-skanie
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
 # BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
