@@ -98,7 +98,7 @@ export default function EkranFormularza(): React.ReactElement {
       case 'notatka':
         return <FormularzNotatki t={t} naZmiane={zmiana} naAnuluj={anuluj} projekt={nazwa} tekst={wp.notatka} naZapisz={(tekst) => wProjekcie(() => zapiszNotatke(z, { projektId: wp.id, tekst }))} />;
       case 'narzedzie':
-        return <FormularzNarzedzia t={t} naZmiane={zmiana} naAnuluj={anuluj} narzedzie={wp.narzedzie} mm={wp.drutMm}
+        return <FormularzNarzedzia t={t} jezyk={kontener.j.jezyk()} naZmiane={zmiana} naAnuluj={anuluj} narzedzie={wp.narzedzie} mm={wp.drutMm}
           podglad={(mm, n) => podgladRozmiaru(mm, n, kontener.j)}
           naZapisz={(d) => wProjekcie(() => ustawDrut(z, { projektId: wp.id, drutMm: d.mm, narzedzie: d.narzedzie }))} />;
       case 'termin':

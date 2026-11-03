@@ -154,7 +154,7 @@ describe('M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”,
 });
 
 describe('M1-007: start aplikacji — odrzucona obietnica startu daje ekran awaryjny (ADR-0019), nie pustą planszę', () => {
-  const LICZNIK_BAZA = { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, widok: async () => null };
+  const LICZNIK_BAZA = { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, widok: async () => null };
   // M1-074: trasa „/” nie rysuje już własnego ekranu awaryjnego — oddaje go korzeniowi (`naAwarie`), który wyłącza zapis błędów i ponawia start;
   // ekran z „Try normally” po błędzie startu danych sprawdza tests/ekrany/tryb-awaryjny-trasa-licznika.test.tsx (korzeń z trasą „/”).
   const naAwarie = jest.fn();

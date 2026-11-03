@@ -12,7 +12,10 @@ import type { Tlumacz } from './wspolne';
 export type ProduktyOfert = { rodzaj: 'gotowe'; produkty: Produkt[] } | { rodzaj: 'ladowanie' } | { rodzaj: 'brak-sieci' };
 /** Linia nad przyciskiem zakupu (KP-07, design-spec 002): neutralna „i” (`role=status`) albo błąd „!” (`role=alert`), zawsze z tekstem. */
 export type KomunikatOfert = 'czeka' | 'blad' | 'przywroc_nic' | 'przywroc_blad' | 'pro_wlaczone' | null;
-export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni' } | null;
+/** `subskrypcja` przy dożywotnim (M1-091, KP-14): ważna subskrypcja trwa obok zakupu dożywotniego (odnawia się, dopóki osoba jej nie anuluje). */
+export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni'; subskrypcja?: string } | null;
+/** „Manage subscription” (KP-14, design-spec „aktywna subskrypcja”): póki trwa subskrypcja — także obok dożywotniego (M1-091, KP-03). */
+export const trwaSubskrypcja = (a: AktywnePro): boolean => a?.rodzaj === 'subskrypcja' || (a?.rodzaj === 'dozywotni' && a.subskrypcja !== undefined);
 export type PropsOfert = {
   stan: { produkty: ProduktyOfert; aktywne: AktywnePro; familySharing: boolean; komunikat?: KomunikatOfert; oczekujacy?: boolean }; // oczekujacy: zakup czeka na zatwierdzenie — „kup” nieaktywny, nawet gdy linia pokazuje inny komunikat
   t: Tlumacz;
@@ -71,7 +74,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
         {plan && (s.oczekujacy || s.komunikat === 'czeka'
           ? <Przycisk tekst={t('oferty.czeka_przycisk')} onPress={() => undefined} rodzaj="glowny" wylaczony testID="oferty-kup" />
           : <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />)}
-        {s.aktywne?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
+        {trwaSubskrypcja(s.aktywne) && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
         <Przycisk tekst={t('oferty.przywroc')} onPress={naPrzywroc} rodzaj="tekstowy" testID="oferty-przywroc" />
         <Przycisk tekst={t('wspolne.nie_teraz')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-nie-teraz" />
       </>
@@ -86,12 +89,13 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
             const o = opisPlanu(p, t);
             const zaznaczony = p.id === plan?.id;
             return (
-              <Pressable key={p.id} accessibilityRole="radio" accessibilityState={{ selected: zaznaczony }} accessibilityLabel={p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' ? `${o.nazwa} · ${o.cena}. ${t('oferty.dozywotni_przy_subskrypcji')}` : `${o.nazwa} · ${o.cena}`}
+              <Pressable key={p.id} accessibilityRole="radio" accessibilityState={{ selected: zaznaczony }} accessibilityLabel={p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' ? `${o.nazwa} · ${o.cena}. ${o.podpis} ${t('oferty.dozywotni_przy_subskrypcji')}` : `${o.nazwa} · ${o.cena}. ${o.podpis}`}
                 onPress={() => wybierz(p.id)} testID={TESTID[p.okres]}
                 style={{ minHeight: cel.minimum, padding: odstep.m, borderRadius: promien.grupa, borderWidth: 2, borderColor: zaznaczony ? k.przyciskObrys : k.linia, backgroundColor: k.papierGrupa }}>
                 <Text style={{ ...typografia.tresc, color: k.grafit, fontWeight: '700' }}>{`${o.nazwa} · ${o.cena}`}</Text>
                 <Text style={{ ...typografia.podpis, color: k.olowek }}>{o.podpis}</Text>
-                {/* KP-03 pełne (M1-014, P-403): dożywotni nie anuluje subskrypcji — informacja przy planie (też w etykiecie przycisku: VoiceOver czyta tylko ją), „Manage subscription” w przyciskach. */}
+                {/* KP-03 pełne (M1-014, P-403): dożywotni nie anuluje subskrypcji — informacja przy planie (też w etykiecie przycisku: VoiceOver czyta tylko ją), „Manage subscription” w przyciskach.
+                    M1-092 (MON-10, SP-18): etykieta niesie też podpis planu (odnowienie albo „Pay once”), w kolejności wizualnej. */}
                 {p.okres === 'dozywotni' && s.aktywne?.rodzaj === 'subskrypcja' && <Text style={{ ...typografia.podpis, color: k.olowek }}>{t('oferty.dozywotni_przy_subskrypcji')}</Text>}
               </Pressable>
             );

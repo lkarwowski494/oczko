@@ -450,7 +450,7 @@
   },
   "zrodla": {
     "zdanie": "Các bảng và mẹo trong Oczko được viết bằng lời của chúng tôi, dựa trên tiêu chuẩn ngành và hướng dẫn từ các tổ chức thủ công.",
-    "linia_standardow": "Nguồn: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Bắt đầu bấm giờ phiên",
@@ -702,20 +702,15 @@
     "przelacznik": "Đồng bộ với iCloud",
     "opis": "Giữ dự án, mẫu và lịch sử giống nhau trên các thiết bị của bạn. Dữ liệu của bạn chỉ đến iCloud của chính bạn; Oczko không có máy chủ.",
     "wlacz_tytul": "Bật đồng bộ iCloud?",
-    "wlacz_opis": "Các dự án trên iPhone này và những dự án đã có trong iCloud của bạn được gộp lại. Không có gì bị xóa. Nếu một bộ đếm có giá trị khác nhau, Oczko hiện cả hai và bạn chọn.",
     "wlacz_potwierdz": "Bật",
     "wylacz_tytul": "Tắt đồng bộ iCloud?",
-    "wylacz_opis": "Mọi thứ vẫn ở trên iPhone này. Các thay đổi ở đây ngừng đi đến iCloud, và các thiết bị khác của bạn giữ những gì chúng có.",
     "wylacz_potwierdz": "Tắt",
     "synchronizuje": "Đang đồng bộ…",
     "brak_konta": "Oczko không dùng được iCloud",
-    "brak_konta_opis": "Hãy kiểm tra bạn đã đăng nhập iCloud và iCloud đã bật cho Oczko trong Cài đặt. Mọi thứ vẫn được lưu trên iPhone này.",
     "ustawienia": "Mở Cài đặt",
     "brak_miejsca": "Dung lượng iCloud của bạn đã đầy",
-    "brak_miejsca_opis": "Các thay đổi chưa được đồng bộ. Chúng được lưu trên iPhone này và sẽ đồng bộ khi có chỗ trống.",
     "zarzadzaj": "Quản lý dung lượng",
     "konto_zmienione_tytul": "Một tài khoản iCloud khác",
-    "konto_zmienione_opis": "iPhone này hiện đăng nhập vào tài khoản iCloud khác. Đồng bộ đã tạm dừng và dữ liệu của bạn ở đây không thay đổi. Đồng bộ với tài khoản này? Các dự án của bạn ở đây và trong tài khoản đó sẽ được gộp lại.",
     "polacz": "Đồng bộ với tài khoản này",
     "nie_synchronizuj": "Không đồng bộ",
     "konflikt_licznik": "Hai phiên bản của bộ đếm này",
@@ -723,7 +718,6 @@
     "konflikt_wybor_opis": "Hãy chọn phiên bản khớp với việc bạn đã làm. Phiên bản còn lại vẫn nằm trong lịch sử.",
     "konflikty_other": "{{count}} bộ đếm có hai phiên bản",
     "niepelna": "Một số thay đổi từ các thiết bị khác của bạn chưa được hiển thị",
-    "niepelna_nowsza": "Chúng đến từ một bản Oczko mới hơn. Hãy cập nhật Oczko trên iPhone này để xem. Các bộ đếm của bạn ở đây không thay đổi.",
     "niepelna_opis": "Oczko vẫn đang thử lại. Các bộ đếm của bạn ở đây không thay đổi.",
     "zastap_wylacz": "Hãy tắt đồng bộ iCloud trước",
     "zastap_wylacz_opis": "Để thay thế dữ liệu hiện có, đồng bộ iCloud cần tắt. Nếu không, iCloud sẽ đưa dữ liệu cũ trở lại. Bạn có thể bật lại sau đó.",

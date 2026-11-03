@@ -3,7 +3,7 @@ Account: none needed. There is no sign-in, so there are no demo credentials.
 
 Main flow
 1. Open the app. Tap "+1 row" on the counter: the row count goes up with a vibration. "−1" takes one back. "History" lists every change with its time.
-2. Projects: "New project" (name, optional parts). The project menu has "Add pattern…" with "Choose file (PDF or Word)" and "Scan pages" (camera).
+2. Projects: "New project" (name, optional parts). The project menu has "Add pattern…" with "Choose file (PDF or Word)", "Scan pages" (camera) and "Web page link…".
 3. Open the pattern: tap and hold on a line to mark the current row; "Highlighter" draws with a finger (iPad: Apple Pencil).
 4. Share to Oczko: in Safari, Files or Photos tap Share, then Oczko, then pick a project.
 5. Settings: "Export all data", "Import a backup", "Delete all data", "Report a problem" (shows a preview, the user sends it through the share sheet).
@@ -20,6 +20,7 @@ Non-obvious features
 - Lock Screen / Dynamic Island: a Live Activity shows the active counter with +1 and −1 while the user counts.
 - Background mode "remote-notification" and the iCloud (CloudKit) entitlement are used only by optional iCloud sync, to receive change notices from the user's own private iCloud database. The app shows no push alerts and does not ask for notification permission. [FILL BEFORE SUBMIT: if the iCloud switch is hidden in this build, say so here.]
 - Apple Watch app: shows the same counter; optional.
+- "Add pattern…" > "Web page link…": the app loads the address the user enters in an off-screen web view, once, without cookies, and saves the page as a PDF pattern. Any address can be entered, so the age rating answers Unrestricted Web Access: Yes (16+).
 
 Data
 Nothing is sent to the developer. Data stays on the device unless the user turns on iCloud sync or exports a backup. When the user shares a web page link, Oczko downloads that page once to save it as a pattern. App Privacy: Data Not Collected. No tracking.

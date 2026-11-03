@@ -6,6 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza, useZglosZmiane } from './Arkusz';
 import { cel, MAX_SKALA_ZNAKU_WYBORU, odstep, useKolory } from './motyw';
+import { formatujLiczbe, parsujLiczbe } from '../i18n/format';
+import { MM_NARZEDZIA_MIEJSCA } from '../konfiguracja';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type Zapis<T> = (w: T) => Promise<WynikEkranu<unknown>>;
@@ -122,20 +124,21 @@ export function FormularzZnaczenia(p: { t: Tlumacz; wartosc: number; znaczenie: 
   );
 }
 
-/** Rozmiar mm z pola: przecinek albo kropka dziesiętna; ≤ 0 albo nieliczba → null. */
-const mmZPola = (t: string): number | null => { const n = Number(t.trim().replace(',', '.')); return t.trim() !== '' && Number.isFinite(n) && n > 0 ? n : null; };
+/** Rozmiar mm z pola w zapisie języka (P-097 (5a), `parsujLiczbe` jak drut w zapasie; M1-audytor-generalny-123); ≤ 0 albo nieliczba → null. */
+const mmZPola = (t: string, jezyk: string): number | null => { const n = parsujLiczbe(t, jezyk); return n !== null && n > 0 ? n : null; };
 /** Druty albo szydełko w mm (F-17, BR-PRJ-004; P-184): podgląd na żywo liczy domena (`podglad` = RD-11 / RD-19 z kompozycji). */
 export function FormularzNarzedzia(p: {
-  t: Tlumacz; narzedzie: 'druty' | 'szydelko'; mm: number | null; podglad(mm: number, n: 'druty' | 'szydelko'): string;
+  t: Tlumacz; jezyk: string; narzedzie: 'druty' | 'szydelko'; mm: number | null; podglad(mm: number, n: 'druty' | 'szydelko'): string;
   naZapisz: Zapis<{ narzedzie: 'druty' | 'szydelko'; mm: number | null }>; naAnuluj(): void;
 } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [n, ustawN] = useState(p.narzedzie);
-  const [tekst, ustaw] = useState(p.mm === null ? '' : String(p.mm));
-  useZglosZmiane(p.naZmiane, n !== p.narzedzie || tekst !== (p.mm === null ? '' : String(p.mm)));
+  const mmZBazy = p.mm === null ? '' : formatujLiczbe(p.mm, p.jezyk, { maks: MM_NARZEDZIA_MIEJSCA });
+  const [tekst, ustaw] = useState(mmZBazy);
+  useZglosZmiane(p.naZmiane, n !== p.narzedzie || tekst !== mmZBazy);
   const [zly, ustawZly] = useState(false);
   const [blad, zapisz] = useZapis();
-  const mm = mmZPola(tekst);
+  const mm = p.mm !== null && tekst === mmZBazy ? p.mm : mmZPola(tekst, p.jezyk); // pole niezmienione: pełna liczba z bazy (jak FormularzDrutu)
   const naZapisz = () => { if (mm === null) { ustawZly(true); return; } ustawZly(false); zapisz(p.naZapisz, { narzedzie: n, mm }); };
   return (
     <Arkusz tytul={t('formularz.narzedzie_tytul')} formularz={{ t, naZapisz, naAnuluj: p.naAnuluj }}>

@@ -47,7 +47,7 @@ export default function EkranUkonczenia(): React.ReactElement {
         await udostepnijPlik(plik, 'image/png'); // aplikacja nic nie wysyła sama — arkusz systemowy (ZP-03)
         usunKatalog(katalogPliku(plik)); // katalog tymczasowy zrzutu razem z plikiem
       })()}
-      obrazKarty={<ObrazKarty ref={obraz} t={kontener.j.t}
+      obrazKarty={<ObrazKarty ref={obraz} t={kontener.j.t} formatuj={(n) => formatujLiczbe(n, jezyk)}
         stan={{ nazwa: stan.nazwa, okres: stan.okres, rzedy: stan.rzedy, dni: stan.dni, czas: stan.czas, czesci: stan.czesci, wloczka: stan.wloczka.map((w) => w.nazwa), zdjecie: stan.zdjecie }} />}
       naGotowe={(zuzycie) => void (async () => {
         // F-37: zapis zużycia przed zamknięciem; nieudany — komunikat, karta zostaje (dane bez zmian, transakcja wycofana).

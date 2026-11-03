@@ -27,6 +27,11 @@ jobs:
       - run: npm ci
       - name: verify (typecheck, lint, kontrole repo i wektory, testy)
         run: npm run verify
+      - name: Kolejność testów losowa (JAK-05, M1-audytor-generalny-161; ziarno z SHA)
+        run: |
+          seed=$((16#${GITHUB_SHA:0:7}))
+          echo "JEST_SEED=$seed (powtórzenie lokalne - npx jest --randomize --seed=$seed)" >> "$GITHUB_STEP_SUMMARY"
+          npx jest --ci --randomize --seed="$seed" --silent
       - name: Strefy czasowe (DS-09, jedna pętla w jednym zadaniu)
         run: |
           for tz in Europe/Warsaw UTC America/Los_Angeles Pacific/Kiritimati Pacific/Pago_Pago Asia/Kolkata Australia/Lord_Howe Asia/Tokyo; do

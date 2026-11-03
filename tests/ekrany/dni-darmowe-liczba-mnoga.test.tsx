@@ -15,7 +15,7 @@ import { atrapaSystemu, tekst } from './pomoc';
 const tDla = async (jezyk: string): Promise<Tlumacz> =>
   (await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => [jezyk], zasoby: ZASOBY })).t;
 const POJEDYNCZA: Record<string, RegExp | null> = { pl: /darmowego dnia/, ru: /бесплатного дня/, lt: /nemokamos rankdarbio dienos/, cs: null };
-const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
+const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', wsparcie: 'https://example.invalid/oczko/support', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
 
 describe.each(Object.keys(POJEDYNCZA))('M1-019 %s: „z 5” zawsze z formą liczby mnogiej dla 5', (jezyk) => {
   let t: Tlumacz;

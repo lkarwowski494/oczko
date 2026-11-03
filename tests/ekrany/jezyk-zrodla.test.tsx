@@ -11,7 +11,7 @@ import { atrapaSystemu, przycisk, tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
-const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
+const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', wsparcie: 'https://example.invalid/oczko/support', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
 function ustawienia(jezyk: NonNullable<PropsUstawien['jezyk']>['stan']) {
   const w = { naJezyk: jest.fn(), naZglosTlumaczenie: jest.fn(), naZrodla: jest.fn() };
   render(<Ustawienia stan={{ pro: null, dni: null, wibracje: true }} t={t} system={atrapaSystemu()} adresy={ADRESY}
@@ -111,7 +111,7 @@ describe('Zgłoszenie z językiem aplikacji (BR-DAN-010, ER-45)', () => {
   test('pole „Language” w diagnostyce przed wysyłką', () => {
     const { ZglosProblem } = jest.requireActual<typeof import('../../src/ekrany/ZglosProblem')>('../../src/ekrany/ZglosProblem');
     const system = atrapaSystemu();
-    render(<ZglosProblem stan={{ diagnostyka: [{ pole: 'jezyk', wartosc: 'de' }] }} t={t} system={system} naAnuluj={jest.fn()} />);
+    render(<ZglosProblem stan={{ diagnostyka: [{ pole: 'jezyk', wartosc: 'de' }] }} t={t} system={system} kontakt="support@apps4brew.com" naAnuluj={jest.fn()} />);
     expect(screen.getByText('Language: de')).toBeTruthy();
   });
 });

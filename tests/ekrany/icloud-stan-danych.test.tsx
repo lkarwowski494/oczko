@@ -97,7 +97,7 @@ describe('Delete all data z „Also delete from iCloud” (BR-DAN-009, P-229)', 
   const props = (icloudWlaczona: boolean, blad = false) => ({ t, icloudWlaczona, blad, naUsun: jest.fn(), naZamknij: jest.fn() });
   test('Ustawienia: „Delete all data” otwiera arkusz potwierdzenia (trasa), bez usuwania (P-266 (3))', () => {
     const naUsunWszystko = jest.fn();
-    render(<Ustawienia stan={{ pro: null, dni: null, wibracje: true }} t={t} system={atrapaSystemu()} adresy={{ polityka: 'p', recenzja: 'r' }}
+    render(<Ustawienia stan={{ pro: null, dni: null, wibracje: true }} t={t} system={atrapaSystemu()} adresy={{ polityka: 'p', wsparcie: 'w', recenzja: 'r' }}
       naOferty={jest.fn()} naWibracje={jest.fn()} naZglosProblem={jest.fn()} naStanDanych={jest.fn()} dane={{ naEksport: jest.fn(), naImport: jest.fn(), naUsunWszystko }} />);
     fireEvent.press(screen.getByTestId('ustawienia-usun-wszystko'));
     expect(naUsunWszystko).toHaveBeenCalledTimes(1);

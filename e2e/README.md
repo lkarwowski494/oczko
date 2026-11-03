@@ -31,7 +31,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 | ID kryterium | np. `NFR-PIE-001`, `BR-LIC-001-S1`, `P-089-3a`, `ADR-0019` |
 
 ## Build E2E (dla 08 i workflowu `jakosc-ios.yml`)
-Build Release na symulator bez podpisu (`CODE_SIGNING_ALLOWED=NO`, DS-07). Przełączniki ustawiane **tylko** w kroku buildu E2E (kontrola repo: poza tym krokiem nie występują; `sprawdz-workflowy.mjs`: workflow wydania ich nie ustawia). Kontroli napisów testowych w `.ipa` wydania jeszcze nie ma (`scripts/wydanie/kontrola-ipa.sh` roli 10 jej nie robi; zgłoszenie 07 fix-3) — wcześniejsze zdanie o `sprawdz-ipa.mjs` było nieprawdziwe (JAK-15):
+Build Release na symulator bez podpisu (`CODE_SIGNING_ALLOWED=NO`, DS-07). Przełączniki ustawiane **tylko** w kroku buildu E2E (kontrola repo: poza tym krokiem nie występują; `sprawdz-workflowy.mjs`: workflow wydania ich nie ustawia). Ślady trybu testowego w `.ipa` wydania (napisy paneli E2E, testID `e2e-`, klucze `oczkoE2e*`, nazwy przełączników `EXPO_PUBLIC_*`) sprawdza `scripts/wydanie/slady-testowe.mjs`, który `scripts/wydanie/kontrola-ipa.sh` roli 10 woła na `main.jsbundle` (JAK-15, P-237):
 | Zmienna buildu | Co włącza |
 |---|---|
 | `EXPO_PUBLIC_E2E=1` | odczyt argumentów startu `oczkoE2e*` (niżej), panele `e2e-*` (bez `t()`, jak „Test store” Treningu `app/paywall.tsx:108-113`), plik `e2e-sha-bazy` w Ustawieniach i na ekranie awaryjnym |
@@ -183,6 +183,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
+| `ustawienia-pomoc` | Ustawienia | wiersz „Help” (link do strony wsparcia z FAQ; DEC-22 a, M1-audytor-generalny-061) | „Help” | |
 | `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
 | `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |
@@ -190,9 +191,9 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `potwierdz-usun-wszystko` | arkusz „Delete all data” (trasa `/usun-wszystko`, P-268) | potwierdzenie usunięcia — w pasku przycisków arkusza, zawsze widoczny | — | |
 | `usun-wszystko-anuluj` | arkusz „Delete all data” (P-268) | Cancel — zamyka arkusz bez zmian | „Cancel” | |
 | `oferty-ekran` | oferty | kontener ekranu ofert | nagłówek „Oczko Pro” | |
-| `oferty-plan-miesieczny` | oferty | plan (rola radio) | „Monthly · $0.99 / month” (cena ze sklepu) | |
-| `oferty-plan-roczny` | oferty | plan (rola radio) | „Yearly · $6.99 / year” | |
-| `oferty-plan-dozywotni` | oferty | plan (rola radio) | „Lifetime · $14.99 once” | |
+| `oferty-plan-miesieczny` | oferty | plan (rola radio) | „Monthly · $0.99 / month. Renews every month until you cancel in your Apple ID settings.” (cena ze sklepu; podpis w etykiecie, M1-092) | |
+| `oferty-plan-roczny` | oferty | plan (rola radio) | „Yearly · $6.99 / year. Renews every year until you cancel in your Apple ID settings.” | |
+| `oferty-plan-dozywotni` | oferty | plan (rola radio) | „Lifetime · $14.99 once. Pay once. Nothing renews.” | |
 | `oferty-kup` | oferty | zakup wybranego planu | — | |
 | `oferty-przywroc` | oferty | przywrócenie zakupów | „Restore purchases” | |
 | `oferty-nie-teraz` | oferty | neutralna odmowa | „Not now” | |

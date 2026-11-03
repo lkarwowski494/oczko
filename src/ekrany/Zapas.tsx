@@ -92,13 +92,13 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
 }
 
 type Jednostka = 'm' | 'yd' | 'g' | 'oz';
-/** Przełącznik jednostki pola (radio, `selected`; testID `zapas-jednostka-{j}`). */
-function Jednostki(p: { opcje: [Jednostka, Jednostka]; wybrana: Jednostka; naWybor(j: Jednostka): void }): React.ReactElement {
+/** Przełącznik jednostki pola (radio, `selected`; testID `zapas-jednostka-{j}`); VoiceOver czyta pełną nazwę `jednostka.*_nazwa` (M1-audytor-generalny-052). */
+function Jednostki(p: { t: Tlumacz; opcje: [Jednostka, Jednostka]; wybrana: Jednostka; naWybor(j: Jednostka): void }): React.ReactElement {
   const st = style(useKolory());
   return (
     <View accessibilityRole="radiogroup" style={st.chipy}>
       {p.opcje.map((j) => (
-        <Pressable key={j} accessibilityRole="radio" accessibilityLabel={j} accessibilityState={{ selected: j === p.wybrana }} onPress={() => p.naWybor(j)}
+        <Pressable key={j} accessibilityRole="radio" accessibilityLabel={p.t(`jednostka.${j}_nazwa`)} accessibilityState={{ selected: j === p.wybrana }} onPress={() => p.naWybor(j)}
           style={[st.chip, j === p.wybrana && st.chipWybrany]} testID={`zapas-jednostka-${j}`}>
           <Text style={[st.chipTekst, j === p.wybrana && st.chipTekstWybrany]}>{j}</Text>
         </Pressable>
@@ -178,10 +178,10 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
         <Pressable accessibilityRole="button" accessibilityLabel={t('ukonczenie.zuzycie_wiecej')} onPress={() => ustawMotki((m) => krokMotkow(m, 1))} style={st.krok}><Text style={st.znak}>+</Text></Pressable>
       </View>
       <Pole etykieta={t('zapas.pole_dlugosc')} wartosc={dlugosc} naZmiane={ustawDlugosc} dziesietne testID="zapas-dlugosc" />
-      <Jednostki opcje={['m', 'yd']} wybrana={jd} naWybor={ustawJd} />
+      <Jednostki t={t} opcje={['m', 'yd']} wybrana={jd} naWybor={ustawJd} />
       {liniaPola(dlugosc, d, jd, 'zapas-przeliczone')}
       <Pole etykieta={t('zapas.pole_waga')} wartosc={waga} naZmiane={ustawWage} dziesietne testID="zapas-waga" />
-      <Jednostki opcje={['g', 'oz']} wybrana={jw} naWybor={ustawJw} />
+      <Jednostki t={t} opcje={['g', 'oz']} wybrana={jw} naWybor={ustawJw} />
       {liniaPola(waga, g, jw)}
       <Pole etykieta={t('narzedzia.pielegnacja')} wartosc={pielegnacja} naZmiane={ustawPielegnacje} wielowierszowe />
       <Pole etykieta={t('zapas.pole_notatka')} wartosc={notatka} naZmiane={ustawNotatke} wielowierszowe />

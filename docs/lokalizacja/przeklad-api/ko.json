@@ -411,7 +411,7 @@
   "jezyk.ustawienia_ios": "iOS 설정에서 변경",
   "jezyk.ustawienia_ios_opis": "아이콘 아래의 앱 이름과 카메라 권한 안내 문구는 iOS 설정에서 Oczko에 지정한 언어를 따릅니다.",
   "zrodla.zdanie": "Oczko의 표와 팁은 업계 표준과 공예 단체의 안내를 바탕으로 우리가 직접 쓴 것입니다.",
-  "zrodla.linia_standardow": "출처: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "세션 타이머 시작",
   "stoper.trwa_a11y": "세션 타이머, {{czas}}, 실행 중. 일시 중지 또는 정지",
   "stoper.wstrzymana_a11y": "세션 타이머, {{czas}}, 일시 중지됨. 재개 또는 정지",

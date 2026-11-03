@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { ZglosProblem, type PoleDiagnostyki } from '../src/ekrany/ZglosProblem';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
+import { ADRES_WSPARCIA } from '../src/kompozycja/adresy';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { systemAplikacji } from '../src/kompozycja/system';
 import { znacznikSynchronizacji, znacznikZegarka } from '../src/kompozycja/zgloszenie-diagnostyka';
@@ -34,5 +35,5 @@ export default function EkranZgloszenia(): React.ReactElement {
   }, [kontener]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
   if (!diag) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="zglos" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
-  return <ZglosProblem stan={{ diagnostyka: diag }} t={kontener.j.t} system={systemAplikacji} naAnuluj={() => router.back()} />;
+  return <ZglosProblem stan={{ diagnostyka: diag }} t={kontener.j.t} system={systemAplikacji} kontakt={ADRES_WSPARCIA} naAnuluj={() => router.back()} />;
 }

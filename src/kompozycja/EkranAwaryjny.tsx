@@ -6,6 +6,7 @@ import { alertBleduZapisu } from '../ekrany/blad-zapisu';
 import Constants from 'expo-constants';
 import { TrybAwaryjny, type PowodTrybuAwaryjnego } from '../ekrany/TrybAwaryjny';
 import { ZglosProblem, type PoleDiagnostyki } from '../ekrany/ZglosProblem';
+import { ADRES_WSPARCIA } from './adresy';
 import { systemAplikacji } from './system';
 import { diagnostykaAwaryjna } from './zgloszenie-awaryjne';
 import type { Tlumacz } from '../ekrany/wspolne';
@@ -21,7 +22,7 @@ export function EkranAwaryjny({ powod, t, naNormalnie }: { powod: PowodTrybuAwar
   const [sha, ustawSha] = useState<{ sha: string; walBajty: number } | null>(null);
   const [zgloszenie, ustawZgloszenie] = useState<PoleDiagnostyki[] | null>(null); // P-194 Q4a: podgląd przed udostępnieniem (F-57)
   useEffect(() => { if (E2E) void a.kopia.then(() => a.sha()).then(ustawSha); }, [a]);
-  if (zgloszenie) return <ZglosProblem stan={{ diagnostyka: zgloszenie }} t={t} system={systemAplikacji} naAnuluj={() => ustawZgloszenie(null)} />;
+  if (zgloszenie) return <ZglosProblem stan={{ diagnostyka: zgloszenie }} t={t} system={systemAplikacji} kontakt={ADRES_WSPARCIA} naAnuluj={() => ustawZgloszenie(null)} />;
   return (
     <TrybAwaryjny
       stan={{ powod, licznosciKopii: licznosci }}

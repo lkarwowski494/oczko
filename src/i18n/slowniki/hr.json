@@ -552,7 +552,7 @@
   },
   "zrodla": {
     "zdanie": "Tablice i savjeti u Oczku napisani su našim riječima, na temelju industrijskih standarda i smjernica organizacija za rukotvorstvo.",
-    "linia_standardow": "Izvor: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Pokreni štopericu sesije",
@@ -836,20 +836,15 @@
     "przelacznik": "Sinkroniziraj s iCloudom",
     "opis": "Održava projekte, upute i povijest jednakima na tvojim uređajima. Tvoji podaci idu samo u tvoj vlastiti iCloud; Oczko nema poslužitelj.",
     "wlacz_tytul": "Uključiti iCloud sinkronizaciju?",
-    "wlacz_opis": "Projekti na ovom iPhoneu i oni koji su već u tvom iCloud računu spajaju se. Ništa se ne briše. Ako brojač ima različite vrijednosti, Oczko prikazuje obje i ti biraš.",
     "wlacz_potwierdz": "Uključi",
     "wylacz_tytul": "Isključiti iCloud sinkronizaciju?",
-    "wylacz_opis": "Sve ostaje na ovom iPhoneu. Promjene ovdje više ne idu u iCloud, a tvoji drugi uređaji zadržavaju što imaju.",
     "wylacz_potwierdz": "Isključi",
     "synchronizuje": "Sinkronizacija…",
     "brak_konta": "iCloud nije dostupan za Oczko",
-    "brak_konta_opis": "Provjeri jesi li prijavljen u iCloud i je li iCloud uključen za Oczko u Postavkama. Sve ostaje spremljeno na ovom iPhoneu.",
     "ustawienia": "Otvori Postavke",
     "brak_miejsca": "Tvoj iCloud prostor je pun",
-    "brak_miejsca_opis": "Promjene se ne sinkroniziraju. Spremljene su na ovom iPhoneu i sinkronizirat će se kad bude mjesta.",
     "zarzadzaj": "Upravljaj pohranom",
     "konto_zmienione_tytul": "Drugi iCloud račun",
-    "konto_zmienione_opis": "Ovaj iPhone sada je prijavljen na drugi iCloud račun. Sinkronizacija je pauzirana, a tvoji podaci ovdje nisu promijenjeni. Sinkronizirati s ovim računom? Tvoji projekti ovdje i u tom računu spajaju se.",
     "polacz": "Sinkroniziraj s ovim računom",
     "nie_synchronizuj": "Ne sinkroniziraj",
     "konflikt_licznik": "Dvije verzije ovog brojača",
@@ -863,7 +858,6 @@
     "konflikty_few": "{{count}} brojača imaju dvije verzije",
     "konflikty_other": "{{count}} brojača ima dvije verzije",
     "niepelna": "Neke promjene s tvojih drugih uređaja još se ne prikazuju",
-    "niepelna_nowsza": "Potječu iz novije verzije Oczka. Ažuriraj Oczko na ovom iPhoneu da ih vidiš. Tvoji brojači ovdje nisu promijenjeni.",
     "niepelna_opis": "Oczko nastavlja pokušavati. Tvoji brojači ovdje nisu promijenjeni.",
     "zastap_wylacz": "Prvo isključi iCloud sinkronizaciju",
     "zastap_wylacz_opis": "Za zamjenu postojećeg iCloud sinkronizacija mora biti isključena. Inače bi iCloud vratio stare podatke. Poslije je možeš ponovno uključiti.",

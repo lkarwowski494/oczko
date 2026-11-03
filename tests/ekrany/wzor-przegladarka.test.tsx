@@ -1,6 +1,8 @@
 // Przeglądarka wzoru (design-spec „Wzór, rysik i iPad”; P-220 W1a, W3, W4b, W5a, W9b; P-218 (3); BR-WZR-005, BR-WZR-008; testID z e2e/README.md
 // i scenariuszy 44–47, 52). Widok strony PDF to moduł natywny `oczko-wzor` — tu slot (`widok`), więc ekran jest testowalny bez urządzenia.
 import React from 'react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import * as RN from 'react-native';
 import { StyleSheet, Text } from 'react-native';
 import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
@@ -178,6 +180,19 @@ test('W9b, P-218 (3): przy ≥ 2 wzorach tytuł przełącza (menu z ✓ przy bie
   expect(screen.getByRole('menuitem', { name: 'Harbor chart', selected: true })).toBeTruthy();
   fireEvent.press(screen.getByRole('menuitem', { name: 'Edging' }));
   expect(w.naPrzelacz).toHaveBeenCalledWith('w2');
+});
+
+// M1-audytor-generalny-175 (04-studio-projektowe-560, SP-06): przełącznik wzorów w tytule paska ma cel dotyku cel.minimum w pionie, także przy nazwie
+// w jednym wierszu (tytuł 20/24 pt nie rozciąga Pressable); przełącznik jest na liście ręcznego przejścia TT-16 (docs/jakosc/strategia.md §8).
+test('M1-175: przełącznik wzorów ma styl minHeight = cel.minimum (deklaracja stylu); wzor-przelacz na liście TT-16', () => {
+  const dwa = [{ wzorId: 'w1', nazwa: 'Harbor chart' }, { wzorId: 'w2', nazwa: 'Edging' }];
+  render(<PrzegladarkaWzoru stan={stan({ wzory: dwa })} t={t} widok={widok} {...wywolania()} />);
+  const plaski = StyleSheet.flatten(screen.getByTestId('wzor-przelacz').props.style);
+  expect(plaski?.minHeight).toBe(tokeny.cel.minimum);
+  expect(plaski?.justifyContent).toBe('center');
+  const strategia = readFileSync(join(__dirname, '../../docs/jakosc/strategia.md'), 'utf8');
+  const tt16 = strategia.split('\n').find((l) => l.startsWith('| TT-16 |')) ?? '';
+  expect(tt16).toContain('`wzor-przelacz`');
 });
 
 // Aneks partii 8, poz. 12 (wariant C, P-353 (d), P-360/P-361; design-spec.md:936, makieta `aneks8.html` `wzor-przelacznik-czeka`): wiersz „czeka na sieć” w liście

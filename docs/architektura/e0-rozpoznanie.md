@@ -40,16 +40,16 @@ Przepływy w zakresie według kontraktu (`docs/scope-contract.md`, „Kolejnoś�
 Wniosek dla modułów: dane użytkownika relacyjne z historią i agregatami po dniach → `dane-lokalne-sqlite`; ekran blokady, zegarek, rozszerzenie udostępniania i iCloud → `tlo-i-sensory-ios` w części „zadania poza aplikacją, zawieszenie z blokadą pliku, wspólny kontener”; brak treści wersjonowanych osobno od kodu (słownik PÓŹNIEJ, liczby obliczeń w kodzie z rejestru 06) → `pakiety-tresci` nie.
 
 ## 3. Skala danych ([OCENA]; skrypt `eksperymenty/e0/skala.mjs`, kod wyjścia 0)
-Założenia: profil darmowy 60 dni z robótką/rok × 80 zdarzeń/dzień, 4 projekty, 3 wzory; intensywny (Pro) 250 dni × 200 zdarzeń, 15 projektów, 20 wzorów, 8 zdjęć/projekt; wiersz zdarzenia ≈ 120 B z indeksem; PDF ≈ 3 MB, zdjęcie ≈ 0,6 MB, strona rysunku ≈ 40 KB.
+Założenia: profil darmowy 60 dni z robótką/rok × 80 zdarzeń/dzień, 4 projekty, 3 wzory; intensywny (Pro) 250 dni × 200 zdarzeń, 15 projektów, 20 wzorów, 8 zdjęć/projekt; wiersz zdarzenia ≈ 120 B z indeksem (szacunek 2026-10, zaniżony ok. 3×: pomiar na schemacie aplikacji daje ok. 384 B na zdarzenie, ADR-0001); PDF ≈ 3 MB, zdjęcie ≈ 0,6 MB, strona rysunku ≈ 40 KB.
 
-| Profil | Zdarzenia licznika | Projekty | Baza | Pliki (wzory, zdjęcia, rysunki) |
-|---|---|---|---|---|
-| darmowy, 1 rok | 4 800 | 4 | ≈ 0,6 MB | ≈ 19 MB |
-| darmowy, 3 lata | 14 400 | 12 | ≈ 1,8 MB | ≈ 57 MB |
-| intensywny, 1 rok | 50 000 | 15 | ≈ 6,1 MB | ≈ 138 MB |
-| intensywny, 3 lata | 150 000 | 45 | ≈ 18,4 MB | ≈ 415 MB |
+| Profil | Zdarzenia licznika | Projekty | Baza — dawny szacunek 2026-10 | Baza — pomiar `VACUUM INTO` (ADR-0033, 2026-11-03) | Pliki (wzory, zdjęcia, rysunki) |
+|---|---|---|---|---|---|
+| darmowy, 1 rok | 4 800 | 4 | ≈ 0,6 MB (dawny szacunek) | 2,1 MB | ≈ 19 MB |
+| darmowy, 3 lata | 14 400 | 12 | ≈ 1,8 MB (dawny szacunek) | 5,9 MB | ≈ 57 MB |
+| intensywny, 1 rok | 50 000 | 15 | ≈ 6,1 MB (dawny szacunek) | 19,6 MB | ≈ 138 MB |
+| intensywny, 3 lata | 150 000 | 45 | ≈ 18,4 MB (dawny szacunek) | 58,4 MB (57,6 MB w pomiarze samych zdarzeń, ADR-0001) | ≈ 415 MB |
 
-Wnioski: (1) baza jest mała, a 96–98% objętości to pliki → pliki poza bazą, w bazie tylko odwołanie, rozmiar i SHA-256; (2) historia zdarzeń to jedyna duża tabela → zapytania licznika i kalendarza po indeksie `(licznik, czas)` i agregatach dnia, `EXPLAIN QUERY PLAN` na 150 000 zdarzeń w E2; (3) eksport z plikami może mieć setki MB → zapis strumieniowy, sprawdzenie miejsca przed zapisem (required reason E174.1), praca na pierwszym planie albo z ochroną czasu w tle (0xdead10cc); (4) synchronizacja plików przez iCloud zużywa miejsce użytkownika (rejestr Apple 8a), nie nasze pieniądze. Pakietów treści brak.
+Wnioski: (1) baza jest mniejsza od plików: według pomiaru pliki to ok. 88–91% objętości (dawny szacunek: 96–98%) → pliki poza bazą, w bazie tylko odwołanie, rozmiar i SHA-256; (2) historia zdarzeń to jedyna duża tabela → zapytania licznika i kalendarza po indeksie `(licznik, czas)` i agregatach dnia, `EXPLAIN QUERY PLAN` na 150 000 zdarzeń w E2; (3) eksport z plikami może mieć setki MB → zapis strumieniowy, sprawdzenie miejsca przed zapisem (required reason E174.1), praca na pierwszym planie albo z ochroną czasu w tle (0xdead10cc); (4) synchronizacja plików przez iCloud zużywa miejsce użytkownika (rejestr Apple 8a), nie nasze pieniądze. Pakietów treści brak.
 
 ## 4. Rejestr ograniczeń platformy
 Pełne tabele z adresem, cytatem i datą odczytu 2026-10-22: [`rejestr/apple.md`](rejestr/apple.md) (44 wiersze), [`rejestr/expo.md`](rejestr/expo.md) (32), [`rejestr/sqlite.md`](rejestr/sqlite.md) (23 + 4 eksperymenty z kodem wyjścia 0, `eksperymenty/e0/`). Kopie pobranych stron: `oczko-warsztat/05-architekt/2026-10-22-build/e0-zrodla/`. Zebrane przez trzech subagentów; tezy decydujące sprawdziła rola 05 w pobranych plikach (oznaczone ✔).
@@ -81,7 +81,7 @@ Otwarte w rejestrze ([DO USTALENIA]): App Group w kopii zapasowej (apple 9b), wi
 ## 5. Stosowalność modułów
 | Moduł | Decyzja | Powód |
 |---|---|---|
-| `dane-lokalne-sqlite` | **tak** | relacyjne dane użytkownika z historią zmian (BR-LIC-003), agregaty po dniach (F-59), kaskady części → liczników → zdarzeń, „Ostatnio usunięte” 30 dni (F-33); 18 MB po 3 latach |
+| `dane-lokalne-sqlite` | **tak** | relacyjne dane użytkownika z historią zmian (BR-LIC-003), agregaty po dniach (F-59), kaskady części → liczników → zdarzeń, „Ostatnio usunięte” 30 dni (F-33); ok. 58 MB po 3 latach (pomiar, ADR-0001, ADR-0033; dawny szacunek 18 MB) |
 | `tlo-i-sensory-ios` | **tak, w części** | bez lokalizacji i dźwięku; dotyczy: intencja +1 w procesie uruchomionym bez interfejsu (G-02), zawieszenie z blokadą pliku (G-05), wspólny kontener (App Group) z osobnym ADR (zasada 5 modułu), stoper ze znaczników czasu (zasada 4), zegarek i transport, tryby tła tylko dla przepływów z kontraktu (2.5.4) |
 | `pakiety-tresci` | **nie** | brak treści wersjonowanych osobno od kodu: słownik F-44 PÓŹNIEJ, liczby obliczeń F-38 z rejestru roli 06 trafiają do `konfiguracja.ts`; wzory to pliki użytkownika, nie pakiety |
 | kod z innych aplikacji | **tylko wskazany** | P-036 wskazuje wzorzec zakupów z Treningu (`lkarwowski494/trening` @8b2c14c); innego repo właściciel nie wskazał, więc z nich nie biorę |

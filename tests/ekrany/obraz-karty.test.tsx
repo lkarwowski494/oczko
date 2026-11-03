@@ -18,7 +18,7 @@ test('rozmiar zrzutu w punktach tak, żeby plik miał 1080 × 1350 px przy skali
 });
 
 test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, stopka; tło papier motywu jasnego', () => {
-  render(<ObrazKarty stan={STAN} t={t} />);
+  render(<ObrazKarty stan={STAN} t={t} formatuj={String} />);
   for (const x of ['Finished · Oct 1 – Oct 21, 2026', 'Harbor Sweater', '640', 'rows', '21', 'crafting days', '18 h', 'crafting time', 'Harbor merino, navy · 4 parts', 'Counted in Oczko']) {
     expect(screen.getByText(x)).toBeTruthy();
   }
@@ -26,7 +26,7 @@ test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, 
 });
 
 test('karta-obraz-bez-stopera: bez kolumny czasu (BR-PRJ-015 S3)', () => {
-  render(<ObrazKarty stan={{ ...STAN, czas: null, wloczka: [] }} t={t} />);
+  render(<ObrazKarty stan={{ ...STAN, czas: null, wloczka: [] }} t={t} formatuj={String} />);
   expect(screen.queryByText('crafting time')).toBeNull();
   expect(screen.getByText('4 parts')).toBeTruthy();
 });
@@ -35,7 +35,7 @@ test('karta ukończenia: „Share” (`karta-udostepnij`) woła udostępnienie; 
   const naUdostepnij = jest.fn();
   render(<Ukonczenie stan={{ nazwa: 'Harbor', okres: 'Oct 1 – Oct 21', dni: 21, rzedy: 640, czas: null, czesci: 1, wloczka: [], zdjecie: null }} t={t} oglos={jest.fn()}
     system={atrapaSystemu()} liczby={{ formatuj: String, parsuj: () => null }} naUdostepnij={naUdostepnij} naGotowe={jest.fn()}
-    obrazKarty={<ObrazKarty stan={STAN} t={t} />} />);
+    obrazKarty={<ObrazKarty stan={STAN} t={t} formatuj={String} />} />);
   fireEvent.press(screen.getByTestId('karta-udostepnij'));
   expect(naUdostepnij).toHaveBeenCalledTimes(1);
   expect(screen.getByTestId('karta-obraz', { includeHiddenElements: true })).toBeTruthy();

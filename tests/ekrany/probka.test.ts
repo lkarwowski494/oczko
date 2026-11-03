@@ -28,8 +28,18 @@ describe('BR-KAL-001 (RD-01)', () => {
   test('ER-43: 21,5 w pl-PL → 107,5 oczka w zapisie regionu', () => {
     expect(licz({ oczka: '21,5', szerokosc: '50' }, 'pl-PL').wynik?.liczba).toBe('107,5 stitches');
   });
-  test('ER-43: 21.5 w de-DE → bez wyniku, przykład zapisu 21,5', () => {
+  // DEC-12 a (M1-audytor-generalny-069): pole próbki nie ma separatora tysięcy, więc „,” i „.” są oba dziesiętne; zastępuje scenariusz „21.5 w de-DE → bez wyniku”
+  // (BRD ER-43 do zmiany przez rolę 01).
+  test('ER-43/DEC-12: 21.5 w de-DE → wynik jak dla 21,5', () => {
     const s = licz({ oczka: '21.5', szerokosc: '50' }, 'de-DE');
+    expect(s.bladOczka).toBeNull();
+    expect(s.wynik?.liczba).toBe('107,5 stitches');
+  });
+  test('DEC-12: język en (telefon z regionem PL wpisuje przecinek) — „21,5” przyjęte w polu próbki', () => {
+    expect(licz({ oczka: '21,5', szerokosc: '50' }, 'en').wynik?.liczba).toBe('107.5 stitches');
+  });
+  test('ER-43: zapis z dwoma separatorami w de-DE → bez wyniku, przykład zapisu 21,5', () => {
+    const s = licz({ oczka: '21.5.1', szerokosc: '50' }, 'de-DE');
     expect(s.bladOczka).toBe('Write it as 21,5.');
     expect([s.wynik, s.grubosc]).toEqual([null, null]);
   });
@@ -59,7 +69,8 @@ describe('BR-KAL-003 (RD-04) i grubość (RD-10)', () => {
     const g = licz({ oczka: '22' }).grubosc;
     expect(g?.linie).toEqual(['Category 3, light: 21–24 stitches per 4 in, knitted in stockinette stitch.']);
     expect(g?.dokladnie).toBe('22.4 stitches per 4 in.'); // DEC-34 a: wyliczona — jedno miejsce
-    expect(g?.uwagi).toEqual([t('probka.uwaga_zaokraglenie'), t('probka.uwaga_kategoria')]);
+    // M1-037 (06-tresci-002): bez wyniku oczek kategoria kończy się zaleceniem blokowania (kanon calc.note.category; wcześniej wariant design-spec bez niego).
+    expect(g?.uwagi).toEqual([t('probka.uwaga_zaokraglenie'), t('probka.uwaga_kategoria'), t('probka.uwaga_oczka')]);
   });
   test('23 o./4 in → obie kategorie 2 i 3, bez wartości dokładnej i bez uwagi o zaokrągleniu', () => {
     const g = licz({ oczka: '23', na: '4in' }).grubosc;
@@ -69,7 +80,7 @@ describe('BR-KAL-003 (RD-04) i grubość (RD-10)', () => {
       'Category 3, light: 21–24 stitches per 4 in, knitted in stockinette stitch.',
     ]);
     expect(g?.dokladnie).toBeNull();
-    expect(g?.uwagi).toEqual([t('probka.uwaga_kategoria')]);
+    expect(g?.uwagi).toEqual([t('probka.uwaga_kategoria'), t('probka.uwaga_oczka')]); // M1-037: zalecenie blokowania bez wyniku oczek
   });
   test('połówka 20.5 o./4 in bez części wspólnej → między kategoriami 3 i 4', () => {
     expect(licz({ oczka: '20.5', na: '4in' }).grubosc?.linie).toEqual(['This gauge falls between categories 3 and 4.']);
@@ -77,8 +88,8 @@ describe('BR-KAL-003 (RD-04) i grubość (RD-10)', () => {
   test('45 o./4 in → powyżej tabeli z uwagą o koronce; 35 → kategoria 0 też z uwagą o koronce', () => {
     const g = licz({ oczka: '45', na: '4in' }).grubosc;
     expect(g?.linie).toEqual(['This gauge is above category 0, which goes up to 40 stitches per 4 in.']);
-    expect(g?.uwagi).toEqual([t('probka.uwaga_koronka'), t('probka.uwaga_kategoria')]);
-    expect(licz({ oczka: '35', na: '4in' }).grubosc?.uwagi).toEqual([t('probka.uwaga_koronka'), t('probka.uwaga_kategoria')]);
+    expect(g?.uwagi).toEqual([t('probka.uwaga_koronka'), t('probka.uwaga_kategoria'), t('probka.uwaga_oczka')]); // M1-037
+    expect(licz({ oczka: '35', na: '4in' }).grubosc?.uwagi).toEqual([t('probka.uwaga_koronka'), t('probka.uwaga_kategoria'), t('probka.uwaga_oczka')]);
   });
   test('5 o./4 in → kategoria 7 bez dolnej granicy (wariant otwarty)', () => {
     expect(licz({ oczka: '5', na: '4in' }).grubosc?.linie).toEqual(['Category 7, jumbo: at most 6 stitches per 4 in, knitted in stockinette stitch.']);

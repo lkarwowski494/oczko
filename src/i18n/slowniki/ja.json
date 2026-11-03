@@ -450,7 +450,7 @@
   },
   "zrodla": {
     "zdanie": "Oczkoの表やヒントは、業界標準と手芸団体のガイダンスをもとに、独自の言葉で書かれています。",
-    "linia_standardow": "出典：Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "セッションタイマーを開始",
@@ -702,20 +702,15 @@
     "przelacznik": "iCloudで同期",
     "opis": "プロジェクト、編み図、履歴をお使いのデバイス間で同じに保ちます。データはご自身のiCloudにのみ送られ、Oczkoにはサーバがありません。",
     "wlacz_tytul": "iCloud同期をオンにしますか？",
-    "wlacz_opis": "このiPhoneのプロジェクトと、すでにiCloudにあるプロジェクトが統合されます。削除されるものはありません。カウンターの値が異なる場合は、Oczkoが両方を表示するので選択してください。",
     "wlacz_potwierdz": "オンにする",
     "wylacz_tytul": "iCloud同期をオフにしますか？",
-    "wylacz_opis": "すべてこのiPhoneに残ります。ここでの変更はiCloudに送られなくなり、ほかのデバイスはそれぞれの内容のままです。",
     "wylacz_potwierdz": "オフにする",
     "synchronizuje": "同期中…",
     "brak_konta": "OczkoはiCloudを利用できません",
-    "brak_konta_opis": "iCloudにサインインしていること、設定でOczkoのiCloudがオンになっていることを確認してください。すべてこのiPhoneに保存されています。",
     "ustawienia": "設定を開く",
     "brak_miejsca": "iCloudの容量がいっぱいです",
-    "brak_miejsca_opis": "変更は同期されていません。このiPhoneに保存され、空き容量ができたら同期されます。",
     "zarzadzaj": "ストレージを管理",
     "konto_zmienione_tytul": "別のiCloudアカウント",
-    "konto_zmienione_opis": "このiPhoneは別のiCloudアカウントにサインインしています。同期は一時停止中で、ここのデータは変更されていません。このアカウントと同期しますか？ここと、そのアカウントのプロジェクトが統合されます。",
     "polacz": "このアカウントと同期",
     "nie_synchronizuj": "同期しない",
     "konflikt_licznik": "このカウンターの2つのバージョン",
@@ -723,7 +718,6 @@
     "konflikt_wybor_opis": "作業内容に合うほうを選んでください。もう一方は履歴に残ります。",
     "konflikty_other": "{{count}}個のカウンターに2つのバージョンがあります",
     "niepelna": "ほかのデバイスの変更の一部がまだ表示されていません",
-    "niepelna_nowsza": "新しいバージョンのOczkoからの変更です。表示するには、このiPhoneのOczkoを更新してください。ここのカウンターは変更されていません。",
     "niepelna_opis": "Oczkoは再試行を続けます。ここのカウンターは変更されていません。",
     "zastap_wylacz": "先にiCloud同期をオフにしてください",
     "zastap_wylacz_opis": "ここにあるものを置き換えるには、iCloud同期をオフにする必要があります。そうしないと、iCloudが古いデータを戻してしまいます。あとでまたオンにできます。",

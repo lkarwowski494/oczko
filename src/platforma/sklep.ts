@@ -4,7 +4,7 @@
 // Bez verifyPurchaseWithProvider i usług zewnętrznych (ADR-0010 „Brak żądań sieciowych poza StoreKit”). Sztuczny sklep: sklep-sztuczny.ts.
 import type { Wynik } from '../domena/bledy';
 import type { Produkt, Sklep, StatusZakupu, Transakcja } from '../domena/porty';
-import { PRODUKTY_PRO } from '../konfiguracja';
+import { PRODUKT_DOZYWOTNI, PRODUKTY_PRO } from '../konfiguracja';
 import { sklepSztuczny, type ZapisSklepu } from './sklep-sztuczny';
 
 /** Podzbiór expo-iap używany przez adapter (typy paczki 5.8.1: build/index.d.ts, build/types.d.ts). */
@@ -20,7 +20,6 @@ export interface ModulIap {
   subscriptionStatusIOS(sku: string): Promise<unknown[]>;
 }
 
-const DOZYWOTNI = 'oczko.pro.lifetime';
 const liczba = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
 const pole = (o: unknown, k: string): unknown => (typeof o === 'object' && o !== null && k in o ? Reflect.get(o, k) : undefined);
 
@@ -28,15 +27,15 @@ const pole = (o: unknown, k: string): unknown => (typeof o === 'object' && o !==
 export function transakcjaZZakupu(p: unknown): Transakcja | null {
   const produkt = pole(p, 'productId');
   if (typeof produkt !== 'string' || !PRODUKTY_PRO.includes(produkt)) return null;
-  const wygasa = produkt === DOZYWOTNI ? null : liczba(pole(p, 'expirationDateIOS'));
-  if (produkt !== DOZYWOTNI && wygasa === null) return null;
+  const wygasa = produkt === PRODUKT_DOZYWOTNI ? null : liczba(pole(p, 'expirationDateIOS'));
+  if (produkt !== PRODUKT_DOZYWOTNI && wygasa === null) return null;
   return { produkt, wygasa, odebrane: liczba(pole(p, 'revocationDateIOS')) !== null, karencjaDo: liczba(pole(pole(p, 'renewalInfoIOS'), 'gracePeriodExpirationDate')) };
 }
 /** Produkt ze StoreKit → Produkt; cena tylko `displayPrice` Apple (P-089 (1)); obcy identyfikator → null. */
 export function produktZeSklepu(p: unknown): Produkt | null {
   const id = pole(p, 'id'), cena = pole(p, 'displayPrice'), jednostka = pole(p, 'subscriptionPeriodUnitIOS');
   if (typeof id !== 'string' || !PRODUKTY_PRO.includes(id) || typeof cena !== 'string' || !cena) return null;
-  const okres = id === DOZYWOTNI ? 'dozywotni' : jednostka === 'year' ? 'rok' : jednostka === 'month' ? 'miesiac' : null;
+  const okres = id === PRODUKT_DOZYWOTNI ? 'dozywotni' : jednostka === 'year' ? 'rok' : jednostka === 'month' ? 'miesiac' : null;
   return okres ? { id, cenaWyswietlana: cena, okres } : null;
 }
 /** Kod błędu expo-iap → status zakupu (anulowanie i oczekiwanie nie są błędem, MON-04). */
@@ -48,7 +47,7 @@ export function statusZBledu(e: unknown): StatusZakupu {
 async function biezace(m: ModulIap, terazMs: () => number): Promise<Transakcja[]> {
   const lista = (await m.getAvailablePurchases({ onlyIncludeActiveItemsIOS: true })).map(transakcjaZZakupu).filter((t): t is Transakcja => t !== null);
   let bladStatusu: unknown = null;
-  for (const sku of PRODUKTY_PRO.filter((s) => s !== DOZYWOTNI)) {
+  for (const sku of PRODUKTY_PRO.filter((s) => s !== PRODUKT_DOZYWOTNI)) {
     if (lista.some((t) => t.produkt === sku && t.wygasa !== null && t.wygasa > terazMs())) continue;
     try {
       for (const st of await m.subscriptionStatusIOS(sku)) {
@@ -68,7 +67,7 @@ export function sklepIap(m: ModulIap, terazMs: () => number = Date.now): Sklep {
   async function kup(id: string): Promise<StatusZakupu> {
     try {
       await polacz();
-      const r = await m.requestPurchase({ request: { apple: { sku: id } }, type: id === DOZYWOTNI ? 'in-app' : 'subs' });
+      const r = await m.requestPurchase({ request: { apple: { sku: id } }, type: id === PRODUKT_DOZYWOTNI ? 'in-app' : 'subs' });
       for (const p of Array.isArray(r) ? r : r ? [r] : []) await m.finishTransaction({ purchase: p, isConsumable: false }).catch(() => undefined);
       return 'sukces';
     } catch (e) {

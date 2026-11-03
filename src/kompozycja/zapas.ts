@@ -51,10 +51,13 @@ export function stanZapasu(l: WierszZapasu[], o: { zapytanie: string; filtr: Fil
   return { chipy, wiersze, pusto };
 }
 
+/** Liczba z symbolem jednostki ze słownika (`jednostka.*`, M1-audytor-generalny-052): symbol i odstęp według języka, nie doklejane w kodzie. */
+const zJednostka = (x: number, jednostka: Jednostka, j: J): string => j.t(`jednostka.${jednostka}`, { wartosc: f(x, j) });
+
 function wartoscMotka(bazowa: number, jednostka: 'm' | 'g', imperialny: boolean, j: J): string {
-  const metr = `${f(bazowa, j)} ${jednostka}`;
+  const metr = zJednostka(bazowa, jednostka, j);
   if (!imperialny) return metr;
-  const imp = jednostka === 'm' ? `${f(przelicz(bazowa, 'm→yd'), j)} yd` : `${f(przelicz(bazowa, 'g→oz'), j)} oz`;
+  const imp = jednostka === 'm' ? zJednostka(przelicz(bazowa, 'm→yd'), 'yd', j) : zJednostka(przelicz(bazowa, 'g→oz'), 'oz', j);
   return j.t('zapas.dlugosc_obie', { wpisane: imp, przeliczone: metr });
 }
 
@@ -69,8 +72,8 @@ export function bazowa(tekst: string, jednostka: Jednostka, jezyk: string): numb
 export function przeliczenie(tekst: string, jednostka: Jednostka, j: J): string | null {
   const b = bazowa(tekst, jednostka, j.jezyk());
   if (b === null || b === 'zly') return null;
-  const wynik = jednostka === 'yd' ? `${f(b, j)} m` : jednostka === 'oz' ? `${f(b, j)} g`
-    : jednostka === 'm' ? `${f(przelicz(b, 'm→yd'), j)} yd` : `${f(przelicz(b, 'g→oz'), j)} oz`;
+  const wynik = jednostka === 'yd' ? zJednostka(b, 'm', j) : jednostka === 'oz' ? zJednostka(b, 'g', j)
+    : jednostka === 'm' ? zJednostka(przelicz(b, 'm→yd'), 'yd', j) : zJednostka(przelicz(b, 'g→oz'), 'oz', j);
   return j.t('zapas.przeliczone', { wartosc: wynik });
 }
 

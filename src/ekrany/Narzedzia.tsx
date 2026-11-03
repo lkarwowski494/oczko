@@ -71,13 +71,15 @@ export type PropsProbki = {
   licz(w: WejscieProbki): StanProbki;
   naZmianeProbki?(p: { oczka: string; na: WejscieProbki['na'] }): void; // zapis próbki w projekcie (szerokość się nie zapisuje)
   naWstecz?(): void;                                        // M1-016: „‹ Back” (`nav-wstecz`)
+  wyborNarzedzia?: boolean;                                 // M1-066 (DEC-06 a): kalkulator bez projektu — „Needles / Hook”; przy szydełku bez kategorii
 };
-export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki, naWstecz }: PropsProbki): React.ReactElement {
+export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki, naWstecz, wyborNarzedzia }: PropsProbki): React.ReactElement {
   const st = style(useKolory());
   const [oczka, ustawOczka] = useState(poczatek.oczka);
   const [na, ustawNa] = useState(poczatek.na);
   const [szerokosc, ustawSzerokosc] = useState('');
-  const s = licz({ oczka, na, szerokosc, jednostka });
+  const [narzedzie, ustawNarzedzie] = useState<NonNullable<WejscieProbki['narzedzie']>>('druty'); // domyślnie druty: kategoria jak dotąd
+  const s = licz({ oczka, na, szerokosc, jednostka, ...(wyborNarzedzia ? { narzedzie } : {}) });
   const zmienProbke = (o: string, n: WejscieProbki['na']) => { ustawOczka(o); ustawNa(n); naZmianeProbki?.({ oczka: o, na: n }); };
   // M1-133: klawiatura dziesiętna nie ma Return — treść odsunięta od klawiatury, chowanie gestem w dół, a przy wpisywaniu szerokości
   // pole przewija się na górę, więc wynik pod nim zostaje nad klawiaturą (04-studio-projektowe-523, opcja b, bez nowego elementu).
@@ -88,6 +90,7 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('probka.tytul')}</Text>
       {zProjektu ? <Text style={st.opis}>{zProjektu}</Text> : null}
+      {wyborNarzedzia ? <Wybor<NonNullable<WejscieProbki['narzedzie']>> opcje={[{ wartosc: 'druty', tekst: t('projekt.druty') }, { wartosc: 'szydelko', tekst: t('projekt.szydelko') }]} wybrana={narzedzie} naWybor={ustawNarzedzie} /> : null}
       <Pole etykieta={t('probka.oczka')} wartosc={oczka} naZmiane={(o) => zmienProbke(o, na)} dziesietne testID="probka-oczka" />
       <Wybor opcje={[{ wartosc: '10cm', tekst: t('probka.na_10cm') }, { wartosc: '4in', tekst: t('probka.na_4in') }]} wybrana={na} naWybor={(n) => zmienProbke(oczka, n)} />
       {s.bladOczka ? <Komunikat tekst={s.bladOczka} znak /> : null}

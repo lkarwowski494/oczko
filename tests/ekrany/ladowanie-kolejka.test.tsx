@@ -103,7 +103,7 @@ describe('M1-068: długa pozycja kolejki przypadków użycia — trasa pokazuje 
     const dane = odroczona<unknown>();
     mockAplikacja = {
       kontener: { z: {}, j: { t, jezyk: () => 'en-US', zegar24h: () => false }, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) } },
-      licznik: { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, widok: async () => null, przygotuj: () => dane.obietnica }, preferencje: {}, naAwarie: jest.fn(),
+      licznik: { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, widok: async () => null, przygotuj: () => dane.obietnica }, preferencje: {}, naAwarie: jest.fn(),
     };
     mockParams = {};
     render(React.createElement(trasa('../../app/index')));

@@ -1,4 +1,5 @@
 # Stan: przekład 34 języków przez agentów (rola 09, plan-prac 2.3, P-309; aktualizacja 2026-10-30)
+**Dziennik wykonania. Stan przekładu na język (data, SHA en, przeglądy, kontrole (a)–(e)) prowadzi wyłącznie `docs/lokalizacja/jezyki.md` (DEC-13 a, M1-audytor-generalny-053).**
 Wykonawca: sesja 09 (kopia `claude/kopia-09-2026-10-30`). Bez API (P-309 zastępuje P-144); skrypt i workflow API zostają na kopii, nieużyte.
 
 ## Źródło i wynik

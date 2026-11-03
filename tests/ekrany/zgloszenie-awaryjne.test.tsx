@@ -26,7 +26,7 @@ test('otwarcie bazy rzuca → „database=not_opened”; Share oddaje treść z 
     bledy: async () => { throw new Error('SQLITE_CORRUPT'); } });
   expect(d.find((x) => x.pole === 'bledy')?.wartosc).toBe('safe_mode=wersja_nowsza failed_starts=?\ndatabase=not_opened');
   const system = atrapaSystemu();
-  render(<ZglosProblem stan={{ diagnostyka: d }} t={t} system={system} naAnuluj={jest.fn()} />);
+  render(<ZglosProblem stan={{ diagnostyka: d }} t={t} system={system} kontakt="support@apps4brew.com" naAnuluj={jest.fn()} />);
   expect(screen.getByText(/database=not_opened/)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: t('zglos.udostepnij') }));
   expect(system.udostepnij).toHaveBeenCalledTimes(1);

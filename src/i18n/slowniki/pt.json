@@ -552,7 +552,7 @@
   },
   "zrodla": {
     "zdanie": "As tabelas e as dicas do Oczko são escritas com palavras nossas, com base em normas do setor e em orientações de organizações de artesanato.",
-    "linia_standardow": "Fonte: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Iniciar cronómetro",
@@ -836,20 +836,15 @@
     "przelacznik": "Sincronizar com o iCloud",
     "opis": "Mantém projetos, modelos e histórico iguais nos seus dispositivos. Os dados vão apenas para o seu próprio iCloud; o Oczko não tem servidor.",
     "wlacz_tytul": "Ativar a sincronização do iCloud?",
-    "wlacz_opis": "Os projetos neste iPhone e os que já estão no iCloud são combinados. Nada é apagado. Se um contador tiver valores diferentes, o Oczko mostra ambos para que escolha.",
     "wlacz_potwierdz": "Ativar",
     "wylacz_tytul": "Desativar a sincronização do iCloud?",
-    "wylacz_opis": "Tudo fica neste iPhone. As alterações aqui deixam de ir para o iCloud, e os outros dispositivos mantêm o que têm.",
     "wylacz_potwierdz": "Desativar",
     "synchronizuje": "A sincronizar…",
     "brak_konta": "O iCloud não está disponível para o Oczko",
-    "brak_konta_opis": "Verifique se tem sessão iniciada no iCloud e se o iCloud está ativado para o Oczko nas Definições. Tudo continua guardado neste iPhone.",
     "ustawienia": "Abrir Definições",
     "brak_miejsca": "O armazenamento do iCloud está cheio",
-    "brak_miejsca_opis": "As alterações não estão a sincronizar. Estão guardadas neste iPhone e sincronizam quando houver espaço.",
     "zarzadzaj": "Gerir armazenamento",
     "konto_zmienione_tytul": "Outra conta iCloud",
-    "konto_zmienione_opis": "Este iPhone tem agora sessão iniciada noutra conta iCloud. A sincronização está em pausa e os dados aqui não foram alterados. Sincronizar com esta conta? Os projetos daqui e dessa conta são combinados.",
     "polacz": "Sincronizar com esta conta",
     "nie_synchronizuj": "Não sincronizar",
     "konflikt_licznik": "Duas versões deste contador",
@@ -863,7 +858,6 @@
     "konflikty_many": "{{count}} de contadores têm duas versões",
     "konflikty_other": "{{count}} contadores têm duas versões",
     "niepelna": "Algumas alterações dos seus outros dispositivos ainda não aparecem",
-    "niepelna_nowsza": "Vêm de uma versão mais recente do Oczko. Atualize o Oczko neste iPhone para as ver. Os seus contadores aqui não foram alterados.",
     "niepelna_opis": "O Oczko continua a tentar. Os seus contadores aqui não foram alterados.",
     "zastap_wylacz": "Desative primeiro a sincronização do iCloud",
     "zastap_wylacz_opis": "Para substituir o que existe, a sincronização do iCloud tem de estar desativada. Caso contrário, o iCloud traria de volta os dados antigos. Pode voltar a ativá-la depois.",

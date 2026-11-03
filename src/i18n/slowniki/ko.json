@@ -450,7 +450,7 @@
   },
   "zrodla": {
     "zdanie": "Oczko의 표와 팁은 업계 표준과 공예 단체의 안내를 바탕으로 우리가 직접 쓴 것입니다.",
-    "linia_standardow": "출처: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "세션 타이머 시작",
@@ -702,20 +702,15 @@
     "przelacznik": "iCloud와 동기화",
     "opis": "기기마다 프로젝트, 도안, 기록을 동일하게 유지합니다. 데이터는 여러분의 iCloud로만 전송되며, Oczko에는 서버가 없습니다.",
     "wlacz_tytul": "iCloud 동기화를 켤까요?",
-    "wlacz_opis": "이 iPhone의 프로젝트와 이미 iCloud에 있는 프로젝트가 합쳐집니다. 삭제되는 것은 없습니다. 카운터 값이 서로 다르면 Oczko가 두 값을 모두 보여 주고 선택하게 합니다.",
     "wlacz_potwierdz": "켜기",
     "wylacz_tytul": "iCloud 동기화를 끌까요?",
-    "wylacz_opis": "모든 것이 이 iPhone에 그대로 남습니다. 여기서 한 변경은 더 이상 iCloud로 전송되지 않으며, 다른 기기는 가지고 있는 것을 유지합니다.",
     "wylacz_potwierdz": "끄기",
     "synchronizuje": "동기화 중…",
     "brak_konta": "Oczko에서 iCloud를 사용할 수 없습니다",
-    "brak_konta_opis": "iCloud에 로그인되어 있는지, 설정에서 Oczko의 iCloud가 켜져 있는지 확인하세요. 모든 것이 이 iPhone에 저장되어 있습니다.",
     "ustawienia": "설정 열기",
     "brak_miejsca": "iCloud 저장 공간이 가득 찼습니다",
-    "brak_miejsca_opis": "변경 사항이 동기화되지 않고 있습니다. 이 iPhone에 저장되어 있으며 공간이 생기면 동기화됩니다.",
     "zarzadzaj": "저장 공간 관리",
     "konto_zmienione_tytul": "다른 iCloud 계정",
-    "konto_zmienione_opis": "이 iPhone이 이제 다른 iCloud 계정에 로그인되어 있습니다. 동기화가 일시 중지되었고 여기 있는 데이터는 변경되지 않았습니다. 이 계정과 동기화할까요? 여기와 그 계정의 프로젝트가 합쳐집니다.",
     "polacz": "이 계정과 동기화",
     "nie_synchronizuj": "동기화 안 함",
     "konflikt_licznik": "이 카운터의 두 가지 버전",
@@ -723,7 +718,6 @@
     "konflikt_wybor_opis": "작업 내용과 일치하는 쪽을 고르세요. 다른 쪽은 기록에 남습니다.",
     "konflikty_other": "카운터 {{count}}개에 두 가지 버전이 있습니다",
     "niepelna": "다른 기기의 일부 변경 사항이 아직 표시되지 않습니다",
-    "niepelna_nowsza": "더 최신 버전의 Oczko에서 온 변경입니다. 보려면 이 iPhone의 Oczko를 업데이트하세요. 여기 카운터는 변경되지 않았습니다.",
     "niepelna_opis": "Oczko가 계속 시도합니다. 여기 카운터는 변경되지 않았습니다.",
     "zastap_wylacz": "먼저 iCloud 동기화를 끄세요",
     "zastap_wylacz_opis": "현재 데이터를 대체하려면 iCloud 동기화가 꺼져 있어야 합니다. 그렇지 않으면 iCloud가 이전 데이터를 되돌려 놓습니다. 나중에 다시 켤 수 있습니다.",

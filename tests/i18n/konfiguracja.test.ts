@@ -31,7 +31,7 @@ describe('app.json', () => {
     for (const [, sciezka] of Object.entries<string>(expo.locales)) {
       expect(existsSync(join(root, sciezka))).toBe(true);
       const p = czytaj(sciezka);
-      expect(p.ios.CFBundleDisplayName).toBe('Oczko');
+      expect(String(p.ios.CFBundleDisplayName).length).toBeGreaterThan(1); // wartość = słowo marki z nazwy w sklepie: nazwa-pod-ikona-056.test.ts
       expect(String(p.ios.NSCameraUsageDescription).length).toBeGreaterThan(10);
     }
   });

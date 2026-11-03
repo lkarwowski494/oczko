@@ -9,7 +9,7 @@ import { atrapaSystemu, przycisk, tEn } from './pomoc';
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 // [DO USTALENIA] id aplikacji w App Store (rola 10); adres polityki (rola 10/11)
-const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
+const ADRESY = { polityka: 'https://example.invalid/oczko/privacy', wsparcie: 'https://example.invalid/oczko/support', recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review' };
 function pokaz(stan: Partial<PropsUstawien['stan']> = {}) {
   const system = atrapaSystemu();
   const w = { naOferty: jest.fn(), naWibracje: jest.fn(), naZglosProblem: jest.fn(), naStanDanych: jest.fn() };
@@ -22,6 +22,12 @@ describe('Ustawienia', () => {
     const { system } = pokaz();
     fireEvent.press(przycisk('Privacy Policy', 'link'));
     expect(system.otworzAdres).toHaveBeenCalledWith(ADRESY.polityka);
+  });
+
+  test('061 (DEC-22 a): wiersz „Help” otwiera stronę wsparcia (jak „Privacy Policy”: link, adres z konfiguracji)', () => {
+    const { system } = pokaz();
+    fireEvent.press(przycisk('Help', 'link'));
+    expect(system.otworzAdres).toHaveBeenCalledWith(ADRESY.wsparcie);
   });
 
   test('BR-DAN-012/S3: „Oceń” otwiera stronę recenzji (action=write-review), nie systemową prośbę (Z07-05: „Rate Oczko”)', () => {

@@ -582,7 +582,7 @@
   "jezyk.ustawienia_ios": "Змінити в налаштуваннях iOS",
   "jezyk.ustawienia_ios_opis": "Назва застосунку під іконкою та текст дозволу на камеру відповідають мові, заданій для Oczko в налаштуваннях iOS.",
   "zrodla.zdanie": "Таблиці та поради в Oczko написані нашими словами на основі галузевих стандартів і рекомендацій рукодільних організацій.",
-  "zrodla.linia_standardow": "Джерело: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Старт таймера сесії",
   "stoper.trwa_a11y": "Таймер сесії, {{czas}}, іде. Пауза або зупинка",
   "stoper.wstrzymana_a11y": "Таймер сесії, {{czas}}, на паузі. Продовжити або зупинити",

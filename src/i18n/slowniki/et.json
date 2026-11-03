@@ -501,7 +501,7 @@
   },
   "zrodla": {
     "zdanie": "Oczko tabelid ja nõuanded on kirjutatud meie enda sõnadega, tuginedes valdkonna standarditele ja käsitööorganisatsioonide juhistele.",
-    "linia_standardow": "Allikas: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Käivita seansitaimer",
@@ -769,20 +769,15 @@
     "przelacznik": "Sünkroonimine iCloudiga",
     "opis": "Hoiab projektid, juhendid ja ajaloo sinu seadmetes ühesugusena. Sinu andmed lähevad ainult sinu enda iCloudi; Oczkol pole serverit.",
     "wlacz_tytul": "Kas lülitada iCloudi sünkroonimine sisse?",
-    "wlacz_opis": "Selle iPhone’i projektid ja need, mis on juba sinu iCloudis, ühendatakse. Midagi ei kustutata. Kui loenduril on erinevad väärtused, näitab Oczko mõlemat ja sina valid.",
     "wlacz_potwierdz": "Lülita sisse",
     "wylacz_tytul": "Kas lülitada iCloudi sünkroonimine välja?",
-    "wylacz_opis": "Kõik jääb sellesse iPhone’i. Siinsed muudatused ei lähe enam iCloudi ja sinu teised seadmed säilitavad oma andmed.",
     "wylacz_potwierdz": "Lülita välja",
     "synchronizuje": "Sünkroonimine…",
     "brak_konta": "iCloud pole Oczkole saadaval",
-    "brak_konta_opis": "Kontrolli, et oled iCloudi sisse logitud ja et iCloud on Oczko jaoks seadetes sees. Kõik jääb salvestatuks sellesse iPhone’i.",
     "ustawienia": "Ava seaded",
     "brak_miejsca": "Sinu iCloudi salvestusruum on täis",
-    "brak_miejsca_opis": "Muudatusi ei sünkroonita. Need on salvestatud sellesse iPhone’i ja sünkroonitakse, kui ruumi on.",
     "zarzadzaj": "Halda salvestusruumi",
     "konto_zmienione_tytul": "Teine iCloudi konto",
-    "konto_zmienione_opis": "See iPhone on nüüd sisse logitud teise iCloudi kontoga. Sünkroonimine on peatatud ja siinsed andmed on muutmata. Kas sünkroonida selle kontoga? Siinsed projektid ja selle konto projektid ühendatakse.",
     "polacz": "Sünkrooni selle kontoga",
     "nie_synchronizuj": "Ära sünkrooni",
     "konflikt_licznik": "Selle loenduri kaks versiooni",
@@ -794,7 +789,6 @@
     "konflikty_one": "{{count}} loenduril on kaks versiooni",
     "konflikty_other": "{{count}} loenduril on kaks versiooni",
     "niepelna": "Mõned muudatused su teistest seadmetest pole veel nähtaval",
-    "niepelna_nowsza": "Need pärinevad Oczko uuemast versioonist. Nägemiseks uuenda Oczko selles iPhone’is. Siinsed loendurid on muutmata.",
     "niepelna_opis": "Oczko proovib edasi. Siinsed loendurid on muutmata.",
     "zastap_wylacz": "Lülita esmalt iCloudi sünkroonimine välja",
     "zastap_wylacz_opis": "Olemasoleva asendamiseks peab iCloudi sünkroonimine olema väljas. Muidu tooks iCloud vanad andmed tagasi. Saad selle hiljem uuesti sisse lülitada.",

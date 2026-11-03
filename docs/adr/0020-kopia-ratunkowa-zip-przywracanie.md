@@ -25,7 +25,7 @@ Opcja B (właściciel: „3b”, P-080). Zasady:
 
 ### Konsekwencje
 - Dobre: żadna operacja ratunkowa nie zmienia oryginału; jeden plik do wysłania; przywrócenie ma kopię „przed”.
-- Złe: kopie zajmują miejsce do 30 dni (przy 18 MB bazy kilka kopii to dziesiątki MB; pliki wzorów nie są kopiowane, bo nie zmieniają się w miejscu, ADR-0001); ZIP zależy od nierozstrzygniętego wyboru w ADR-0016.
+- Złe: kopie zajmują miejsce do 30 dni (przy ok. 58 MB bazy po 3 latach intensywnego użycia, pomiar w ADR-0001 i ADR-0033, kilka kopii to ponad 100 MB; dawny szacunek 18 MB z E0 zaniżał bazę ok. 3×; pliki wzorów nie są kopiowane, bo nie zmieniają się w miejscu, ADR-0001); ZIP zależy od nierozstrzygniętego wyboru w ADR-0016.
 - Prywatność: kopie zostają na urządzeniu (w kopii systemowej urządzenia jak baza); wychodzą tylko przez arkusz udostępniania z decyzji użytkownika; u dewelopera to dane osobowe (pkt 7). Koszt: 0 zł.
 
 ### Potwierdzenie

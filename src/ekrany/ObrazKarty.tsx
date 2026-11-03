@@ -16,11 +16,11 @@ export function rozmiarZrzutu(skala: number): { width: number; height: number } 
   return { width: PIKSELE.width / skala, height: PIKSELE.height / skala };
 }
 
-const bezLiczby = (tekst: string, n: number) => tekst.replace(String(n), '').trim(); // podpis pod dużą liczbą („crafting days”)
-export const ObrazKarty = React.forwardRef<View, { stan: StanObrazuKarty; t: Tlumacz }>(function ObrazKarty({ stan: s, t }, ref) {
+// M1-audytor-generalny-098: podpis pod liczbą dni z osobnego klucza z formami (karta.dni_podpis), liczby przez Intl języka aplikacji (`formatuj`).
+export const ObrazKarty = React.forwardRef<View, { stan: StanObrazuKarty; t: Tlumacz; formatuj(n: number): string }>(function ObrazKarty({ stan: s, t, formatuj }, ref) {
   const kolumny: [string, string][] = [
-    [String(s.rzedy), t('ukonczenie.jednostka', { count: s.rzedy })],
-    [String(s.dni), bezLiczby(t('ukonczenie.dni', { count: s.dni }), s.dni)],
+    [formatuj(s.rzedy), t('ukonczenie.jednostka', { count: s.rzedy })],
+    [formatuj(s.dni), t('karta.dni_podpis', { count: s.dni })],
     ...(s.czas ? [[s.czas, t('karta.czas')] as [string, string]] : []),
   ];
   const linia = [s.wloczka.join(', '), t('ukonczenie.czesci', { count: s.czesci })].filter(Boolean).join(' · ');

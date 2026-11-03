@@ -420,7 +420,7 @@
   "jezyk.ustawienia_ios": "在 iOS 設定中更改",
   "jezyk.ustawienia_ios_opis": "圖示下方的 App 名稱與相機權限文字，會依你在 iOS 設定中為 Oczko 所選的語言顯示。",
   "zrodla.zdanie": "Oczko 中的表格與小提示皆以我們自己的話寫成，依據業界標準與手作組織的指引。",
-  "zrodla.linia_standardow": "來源：Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "開始作業計時",
   "stoper.trwa_a11y": "作業計時，{{czas}}，進行中。暫停或停止",
   "stoper.wstrzymana_a11y": "作業計時，{{czas}}，已暫停。繼續或停止",

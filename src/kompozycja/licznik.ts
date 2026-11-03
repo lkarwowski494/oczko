@@ -16,6 +16,7 @@ import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
+import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
 import { liczba, wiersze } from '../dane/repozytoria/wiersze';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
@@ -79,6 +80,8 @@ export type KompozycjaLicznika = {
   wersja(): number;
   /** 07-jakosc-005 (ADR-0030): +1 z zegarka scalone przy otwartej aplikacji (`wersja` już wzrosła) → ekran czyta stan od nowa; telefon nie wibruje (pkt 5). Zwraca odpięcie. */
   poZegarku(f: () => void): () => void;
+  /** M1-063: zmiana Pro przeliczona → ekran od nowa (licznik-dostep.ts). */
+  poDostepie(f: () => void): () => void;
   /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1). */
   zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
@@ -101,7 +104,7 @@ export type KompozycjaLicznika = {
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
 /** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`; `aplikacjaAktywna` = `AppState === 'active'` — bez niej nie ma odbioru z zegarka (ADR-0030, ARCH-13). */
-export type OpcjeKompozycji = { wibracje(): boolean; aplikacjaAktywna?(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
+export type OpcjeKompozycji = { wibracje(): boolean; dostep?: DostepLicznika; aplikacjaAktywna?(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
@@ -142,7 +145,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   async function poZapisie(w: WidokLicznika | null): Promise<void> {
     if (!w) return;
     const nazwa = w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa;
-    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: { pro: z.pro(), wygasa: null } });
+    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy() });
     if (e.ok && !aktywnosc) {
       aktywnosc = true;
       await z.liveActivity.start(e.wartosc);
@@ -161,6 +164,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     return r;
   }
   const odbior = o.aplikacjaAktywna ? odbiorZZegarka(z, { aktywna: o.aplikacjaAktywna, scal: scalenieZZegarka }) : null;
+  const dostep = dostepLicznika(o.dostep, z.pro, () => k.poZmianie()); // M1-063, M1-064
   const ekranu = <T>(w: Wynik<T>): WynikEkranu<T> => (w.ok ? w : { ok: false, powod: w.powod === 'limit' || w.powod === 'zablokowany' || w.powod === 'bledne_dane' || w.powod === 'niedozwolone_przejscie' ? w.powod : 'zapis' });
 
   /** +1 z ekranu (BR-LIC-001/S2: pierwsze tworzy projekt roboczy); przez `uslugi.dodajRzad`, które zapamiętuje zapis w toku (P-287). */
@@ -204,7 +208,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     },
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
-    zamknij: () => odbior?.zamknij(),
+    poDostepie: dostep.poDostepie,
+    zamknij: () => { odbior?.zamknij(); dostep.zamknij(); },
     biezacy: () => licznikId,
     async poUsunieciu(projektId) {
       if (licznikId && !(await widokLicznika(z, { licznikId })).ok) {
@@ -274,6 +279,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         return p;
       },
       async scalDziennik() {
+        dostep.odswiez(); // M1-063
         void o.skrzynka?.start().catch(() => undefined); // partia 6: nowe zlecenia z rozszerzenia po powrocie na pierwszy plan
         const r = await naPierwszyPlan(z);
         if (r.ok) potwierdz(r.wartosc.potwierdzone);

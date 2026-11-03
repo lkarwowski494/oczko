@@ -456,7 +456,7 @@
   "jezyk.ustawienia_ios": "Muuta iOS:n asetuksissa",
   "jezyk.ustawienia_ios_opis": "Kuvakkeen alla oleva sovelluksen nimi ja kameran käyttöoikeusteksti noudattavat iOS:n asetuksissa Oczkolle asetettua kieltä.",
   "zrodla.zdanie": "Oczkon taulukot ja vinkit on kirjoitettu omin sanoin alan standardien ja käsityöjärjestöjen ohjeiden pohjalta.",
-  "zrodla.linia_standardow": "Lähde: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Aloita istuntoajastin",
   "stoper.trwa_a11y": "Istuntoajastin, {{czas}}, käynnissä. Keskeytä tai pysäytä",
   "stoper.wstrzymana_a11y": "Istuntoajastin, {{czas}}, tauolla. Jatka tai pysäytä",

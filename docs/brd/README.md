@@ -117,8 +117,9 @@ Razem: 10–15 h pracy agenta (kilka sesji z punktami czyszczenia); od właścic
 | OP-16 | [DO WYJAŚNIENIA] Podłoga dużego tekstu (Dynamic Type) na ekranach głównych przepływów | rola 04 | NFR-DOS-002 |
 | OP-17 | [DO WYJAŚNIENIA] Budżet czasu reakcji licznika | rola 05 | NFR-WYD-001 |
 | OP-18 | Okres przechowywania usuniętych projektów: zamknięte decyzją P-026 (30 dni) | właściciel | BR-DAN-008 |
-| OP-22 | [DO USTALENIA] Jak aplikacja na zegarku odczytuje Pro bez telefonu w pobliżu (wpis źródłowy: `docs/monetyzacja.md`, rola 02) | 05 | BR-ZAK-001, BR-LIC-015 |
+| OP-22 | Jak aplikacja na zegarku odczytuje Pro bez telefonu w pobliżu: zamknięte decyzją P-071 (ADR-0009: ostatni stan Pro z kontekstu telefonu z datą ważności albo StoreKit na zegarku; spełnia P-039; ER-63, 2026-11-03) (wpis źródłowy: `docs/monetyzacja.md`, rola 02) | 05 | BR-ZAK-001, BR-LIC-015 |
 | OP-25 | [DO USTALENIA] Czy zgłoszenie problemu wysłane arkuszem udostępniania spełnia kryteria „optional disclosure” (S-37), czy wymaga wpisu w etykiecie App Privacy (np. „Customer Support”, „Other Diagnostic Data”) | rola 10, 05 | OG-14, BR-DAN-010, NFR-PRY-001 |
-| OP-26 | [DO USTALENIA] Minimalne wersje iOS i watchOS oraz czas od premiery nowego systemu do poprawki (P-047) | rola 05 | NFR-SYS-001 |
+| OP-26 | Minimalne wersje iOS i watchOS: zamknięte decyzją P-070 (iOS 18, watchOS 11; ER-63, 2026-11-03); [DO USTALENIA] czas od premiery nowego systemu do poprawki (P-047) | rola 05 | NFR-SYS-001 |
 | OP-33 | [DO WYJAŚNIENIA] Dokładna chwila prośby o ocenę po ukończeniu projektu i czy aplikacja dokłada własny limit poza systemowym (np. raz na wersję); system: najwyżej 3 razy w 365 dniach (S-39) (ER-25) | rola 11 | BR-DAN-012, OG-15 |
 | OP-32 | Strażnik limitu przy zerowaniu, −1, licznikach oczek i powtórzeń, zegarku i ekranie blokady oraz dni na nowym urządzeniu: zamknięte decyzją P-067 (rola 02, `wolaStraznika`, wektory S-01–S-10, L-16–L-18; ER-30) | 02 | BR-ZAK-005, BR-LIC-017, BR-LIC-015 |
+| OP-34 | [DO WYJAŚNIENIA] Wymaganie BR dla karty „Jak zmierzyć próbkę” (ZM-17, decyzja PÓŹNIEJ: wersja 1.1 razem z atlasem, P-200): 01 pisze je przed 1.1, z przepływem PR-11 i pracą J-09, gdy 06 przygotuje treść z przeczytanymi źródłami, a 04 wskaże miejsce obok kalkulatora; w 1.0 bez BR i bez wiersza F (ER-64) | 01 z 04 i 06, przed 1.1 | PR-11, BR-KAL-003 |

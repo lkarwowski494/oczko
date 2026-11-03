@@ -456,7 +456,7 @@
   "jezyk.ustawienia_ios": "Ändra i iOS-inställningar",
   "jezyk.ustawienia_ios_opis": "Appens namn under ikonen och texten om kameratillstånd följer det språk som är inställt för Oczko i iOS-inställningar.",
   "zrodla.zdanie": "Tabellerna och tipsen i Oczko är skrivna med egna ord, utifrån branschstandarder och vägledning från hantverksorganisationer.",
-  "zrodla.linia_standardow": "Källa: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Starta sessionstimer",
   "stoper.trwa_a11y": "Sessionstimer, {{czas}}, pågår. Pausa eller stoppa",
   "stoper.wstrzymana_a11y": "Sessionstimer, {{czas}}, pausad. Återuppta eller stoppa",

@@ -14,7 +14,7 @@ jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }:
 jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
 const mockStan = { projekt: null as string | null, widoki: 0 };
 const mockLicznik = {
-  przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'licznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, // 07-jakosc-005: nowy członek interfejsu kompozycji (app/index.tsx)
+  przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'licznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, // 07-jakosc-005: nowy członek interfejsu kompozycji (app/index.tsx)
   widok: () => { mockStan.widoki += 1; return Promise.resolve(mockStan.projekt ? { projektId: mockStan.projekt } : null); },
   uslugi: { dodajRzad: () => { mockStan.projekt = 'p1'; return Promise.resolve({ ok: true, wartosc: undefined }); } }, dzialania: {},
 };

@@ -89,6 +89,7 @@
     "zglos_tlumaczenie": "Report a translation problem",
     "oczko_pro": "Oczko Pro",
     "wibracje": "Vibration",
+    "pomoc": "Help",
     "zglos": "Report a problem",
     "ocen": "Rate Oczko",
     "polityka": "Privacy Policy",
@@ -531,6 +532,7 @@
   "zglos": {
     "tytul": "Report a problem",
     "opis": "This is everything the report contains. Nothing leaves your device until you share it.",
+    "kontakt": "Send it by email to {{adres}}.",
     "udostepnij": "Share",
     "pole_wersja": "App version",
     "pole_system": "iOS",
@@ -744,6 +746,8 @@
   "karta": {
     "stopka": "Counted in Oczko",
     "czas": "crafting time",
+    "dni_podpis_one": "crafting day",
+    "dni_podpis_other": "crafting days",
     "obraz_a11y": "Card for {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {
@@ -948,5 +952,15 @@
     "usun_tytul": "Delete this reminder?",
     "usun_opis": "Oczko stops reminding you about “{{tekst}}”. Your count and history stay as they are.",
     "wiersz_a11y": "{{tekst}}, {{opis}}. Edit"
+  },
+  "jednostka": {
+    "m": "{{wartosc}} m",
+    "yd": "{{wartosc}} yd",
+    "g": "{{wartosc}} g",
+    "oz": "{{wartosc}} oz",
+    "m_nazwa": "Meters",
+    "yd_nazwa": "Yards",
+    "g_nazwa": "Grams",
+    "oz_nazwa": "Ounces"
   }
 }

@@ -501,7 +501,7 @@
   },
   "zrodla": {
     "zdanie": "Tabellene og tipsene i Oczko er skrevet med våre egne ord, basert på bransjestandarder og veiledning fra håndarbeidsorganisasjoner.",
-    "linia_standardow": "Kilde: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Start økttidtaker",
@@ -769,20 +769,15 @@
     "przelacznik": "Synkroniser med iCloud",
     "opis": "Holder prosjekter, oppskrifter og historikk like på enhetene dine. Dataene dine går bare til din egen iCloud; Oczko har ingen server.",
     "wlacz_tytul": "Slå på iCloud-synkronisering?",
-    "wlacz_opis": "Prosjekter på denne iPhone og de som allerede ligger i iCloud, slås sammen. Ingenting slettes. Hvis en teller har ulike verdier, viser Oczko begge, og du velger.",
     "wlacz_potwierdz": "Slå på",
     "wylacz_tytul": "Slå av iCloud-synkronisering?",
-    "wylacz_opis": "Alt blir værende på denne iPhone. Endringer her sendes ikke lenger til iCloud, og de andre enhetene dine beholder det de har.",
     "wylacz_potwierdz": "Slå av",
     "synchronizuje": "Synkroniserer…",
     "brak_konta": "iCloud er ikke tilgjengelig for Oczko",
-    "brak_konta_opis": "Sjekk at du er logget på iCloud og at iCloud er slått på for Oczko i Innstillinger. Alt forblir lagret på denne iPhone.",
     "ustawienia": "Åpne Innstillinger",
     "brak_miejsca": "iCloud-lagringen din er full",
-    "brak_miejsca_opis": "Endringer synkroniseres ikke. De er lagret på denne iPhone og synkroniseres når det er plass.",
     "zarzadzaj": "Administrer lagring",
     "konto_zmienione_tytul": "En annen iCloud-konto",
-    "konto_zmienione_opis": "Denne iPhone er nå logget på en annen iCloud-konto. Synkroniseringen er satt på pause, og dataene dine her er uendret. Synkronisere med denne kontoen? Prosjektene dine her og i den kontoen slås sammen.",
     "polacz": "Synkroniser med denne kontoen",
     "nie_synchronizuj": "Ikke synkroniser",
     "konflikt_licznik": "To versjoner av denne telleren",
@@ -791,7 +786,6 @@
     "konflikty_one": "{{count}} teller har to versjoner",
     "konflikty_other": "{{count}} tellere har to versjoner",
     "niepelna": "Noen endringer fra de andre enhetene dine vises ikke ennå",
-    "niepelna_nowsza": "De kommer fra en nyere versjon av Oczko. Oppdater Oczko på denne iPhone for å se dem. Tellerne dine her er uendret.",
     "niepelna_opis": "Oczko prøver fortsatt. Tellerne dine her er uendret.",
     "zastap_wylacz": "Slå først av iCloud-synkronisering",
     "zastap_wylacz_opis": "For å erstatte det som er her, må iCloud-synkronisering være av. Ellers ville iCloud hentet de gamle dataene tilbake. Du kan slå den på igjen etterpå.",

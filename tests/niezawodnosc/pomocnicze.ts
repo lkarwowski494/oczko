@@ -3,6 +3,14 @@ import { spawnSync } from 'node:child_process';
 import { closeSync, openSync, writeSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
+import { setFlagsFromString } from 'node:v8';
+import { runInNewContext } from 'node:vm';
+
+/** M1-audytor-generalny-163 (07-jakosc-540): `node:sqlite` przy odśmiecaniu zamyka porzucone połączenie, a SQLite przy zamknięciu ostatniego
+ *  połączenia robi checkpoint i usuwa -wal i -shm. Wymuszone odśmiecanie przed porównaniem oryginałów sprawdza, że test trzyma połączenie
+ *  „procesu bez zamknięcia” (silna referencja) aż do jawnego zamknięcia po asercjach, zamiast zależeć od chwili GC pod obciążeniem. */
+setFlagsFromString('--expose-gc');
+export const odsmiec = runInNewContext('gc') as () => void;
 
 /** Osobny proces pisze do bazy w WAL bez checkpointu i ginie od SIGKILL z otwartym połączeniem (awaria, nie zamknięcie). */
 export function procesZabityZOtwartaBaza(katalog: string, wierszy: number): void {

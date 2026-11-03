@@ -450,7 +450,7 @@
   },
   "zrodla": {
     "zdanie": "Tabel dan tips di Oczko ditulis dengan kata-kata kami sendiri, berdasarkan standar industri dan panduan organisasi kerajinan.",
-    "linia_standardow": "Sumber: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Mulai timer sesi",
@@ -702,20 +702,15 @@
     "przelacznik": "Sinkronkan dengan iCloud",
     "opis": "Menjaga proyek, pola, dan riwayat tetap sama di perangkat Anda. Data Anda hanya dikirim ke iCloud Anda sendiri; Oczko tidak punya server.",
     "wlacz_tytul": "Aktifkan sinkronisasi iCloud?",
-    "wlacz_opis": "Proyek di iPhone ini dan yang sudah ada di iCloud Anda digabungkan. Tidak ada yang dihapus. Jika sebuah penghitung memiliki nilai berbeda, Oczko menampilkan keduanya dan Anda memilih.",
     "wlacz_potwierdz": "Aktifkan",
     "wylacz_tytul": "Nonaktifkan sinkronisasi iCloud?",
-    "wylacz_opis": "Semuanya tetap di iPhone ini. Perubahan di sini tidak lagi dikirim ke iCloud, dan perangkat Anda yang lain mempertahankan isinya.",
     "wylacz_potwierdz": "Nonaktifkan",
     "synchronizuje": "Menyinkronkan…",
     "brak_konta": "iCloud tidak tersedia untuk Oczko",
-    "brak_konta_opis": "Pastikan Anda masuk ke iCloud dan iCloud aktif untuk Oczko di Pengaturan. Semuanya tetap tersimpan di iPhone ini.",
     "ustawienia": "Buka Pengaturan",
     "brak_miejsca": "Penyimpanan iCloud Anda penuh",
-    "brak_miejsca_opis": "Perubahan tidak tersinkronkan. Perubahan tersimpan di iPhone ini dan akan disinkronkan saat ada ruang.",
     "zarzadzaj": "Kelola penyimpanan",
     "konto_zmienione_tytul": "Akun iCloud berbeda",
-    "konto_zmienione_opis": "iPhone ini kini masuk ke akun iCloud lain. Sinkronisasi dijeda dan data Anda di sini tidak berubah. Sinkronkan dengan akun ini? Proyek Anda di sini dan di akun itu digabungkan.",
     "polacz": "Sinkronkan dengan akun ini",
     "nie_synchronizuj": "Jangan sinkronkan",
     "konflikt_licznik": "Dua versi penghitung ini",
@@ -725,7 +720,6 @@
     "konflikt_wybor_opis": "Pilih yang sesuai dengan pekerjaan Anda. Yang lain tetap ada di riwayat.",
     "konflikty_other": "{{count}} penghitung memiliki dua versi",
     "niepelna": "Beberapa perubahan dari perangkat Anda yang lain belum ditampilkan",
-    "niepelna_nowsza": "Perubahan itu berasal dari Oczko versi lebih baru. Perbarui Oczko di iPhone ini untuk melihatnya. Penghitung Anda di sini tidak berubah.",
     "niepelna_opis": "Oczko terus mencoba. Penghitung Anda di sini tidak berubah.",
     "zastap_wylacz": "Nonaktifkan sinkronisasi iCloud dulu",
     "zastap_wylacz_opis": "Untuk mengganti yang ada di sini, sinkronisasi iCloud harus nonaktif. Jika tidak, iCloud akan mengembalikan data lama. Anda dapat mengaktifkannya lagi setelahnya.",

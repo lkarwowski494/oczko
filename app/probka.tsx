@@ -1,6 +1,7 @@
 // Trasa „/probka?projekt=…”: kalkulator „Swatch” (F-38; BR-KAL-001, BR-KAL-003; design-spec „Kalkulator Swatch”). Jednostka szerokości
 // i domyślna podstawa próbki z układu miar urządzenia (R-131, P-075 (4a); wiersza „Units” w Ustawieniach jeszcze nie ma — zgłoszenie
 // partii 5). Z projektu (U-10): próbka projektu na start i linia `probka.z_projektu`; zmiana próbki zapisuje się w projekcie, szerokość nie.
+// Bez projektu (M1-066, DEC-06 a): wybór „Needles / Hook”; przy szydełku bez kategorii grubości (zakresy CYC są drutowe, P-304 (3)).
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Probka } from '../src/ekrany/Narzedzia';
@@ -52,7 +53,8 @@ export default function EkranProbki(): React.ReactElement {
   return (
     <Bezpieczny>
       <Probka t={j.t} jednostka={cm ? 'cm' : 'in'} poczatek={{ oczka: start.oczka, na: start.na }} zProjektu={start.zProjektu}
-        licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie }, j)} naZmianeProbki={zapisz} naWstecz={() => router.back()} />
+        licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie ?? w.narzedzie }, j)} naZmianeProbki={zapisz} naWstecz={() => router.back()}
+        wyborNarzedzia={!projekt} />
     </Bezpieczny>
   );
 }

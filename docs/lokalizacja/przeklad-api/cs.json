@@ -582,7 +582,7 @@
   "jezyk.ustawienia_ios": "Změnit v Nastavení iOS",
   "jezyk.ustawienia_ios_opis": "Název aplikace pod ikonou a text oprávnění k fotoaparátu se řídí jazykem nastaveným pro Oczko v Nastavení iOS.",
   "zrodla.zdanie": "Tabulky a tipy v Oczku jsou napsány našimi vlastními slovy podle oborových standardů a doporučení rukodělných organizací.",
-  "zrodla.linia_standardow": "Zdroj: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Spustit stopky",
   "stoper.trwa_a11y": "Stopky sezení, {{czas}}, běží. Pozastavit nebo zastavit",
   "stoper.wstrzymana_a11y": "Stopky sezení, {{czas}}, pozastaveny. Pokračovat nebo zastavit",

@@ -528,7 +528,7 @@
   "jezyk.ustawienia_ios": "Promijeni u postavkama iOS-a",
   "jezyk.ustawienia_ios_opis": "Naziv aplikacije ispod ikone i tekst dopuštenja za kameru slijede jezik postavljen za Oczko u postavkama iOS-a.",
   "zrodla.zdanie": "Tablice i savjeti u Oczku napisani su našim riječima, na temelju industrijskih standarda i smjernica organizacija za rukotvorstvo.",
-  "zrodla.linia_standardow": "Izvor: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Pokreni štopericu sesije",
   "stoper.trwa_a11y": "Štoperica sesije, {{czas}}, radi. Pauziraj ili zaustavi",
   "stoper.wstrzymana_a11y": "Štoperica sesije, {{czas}}, pauzirana. Nastavi ili zaustavi",

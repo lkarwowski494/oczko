@@ -25,9 +25,9 @@ tags:
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
 - assertVisible: "Count rows on as many days as you like\\. Everything else stays the same\\."
-- assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month" }
-- assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year" }
-- assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once" }
+- assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month\\. Renews every month.+" }
+- assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year\\. Renews every year.+" }
+- assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once\\. Pay once\\. Nothing renews\\." }
 - assertVisible: "Without Pro: 5 crafting days every month, and all your projects and data, always\\."
 - assertVisible: { id: "oferty-przywroc", text: "Restore purchases" }
 - takeScreenshot: 06-oferty

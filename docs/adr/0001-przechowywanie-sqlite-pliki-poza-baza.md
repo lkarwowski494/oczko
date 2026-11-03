@@ -2,7 +2,7 @@
 Data: 2026-10-22 · Status: **przyjęta** (P-071) · Rola: 05 (E1) · Zależy od: P-021, P-070, NFR-DAN-001, NFR-DAN-002
 
 ## Kontekst i problem
-Aplikacja zapisuje każdą zmianę licznika z godziną (BR-LIC-003), projekty z częściami, sesje stopera, zapas, dni limitu (`docs/monetyzacja/limit.mjs`) i agregaty po dniach (F-59). Szacunek 3-letni (E0 §3): 150 000 zdarzeń, ok. 18 MB danych i ok. 415 MB plików. Każde +1 ma być trwałe po zabiciu procesu (NFR-DAN-002).
+Aplikacja zapisuje każdą zmianę licznika z godziną (BR-LIC-003), projekty z częściami, sesje stopera, zapas, dni limitu (`docs/monetyzacja/limit.mjs`) i agregaty po dniach (F-59). Profil intensywny, 3 lata (E0 §3): 150 000 zdarzeń i ok. 415 MB plików; baza po `VACUUM INTO` ma 57,6 MB (pomiar 2026-11-03, M1-audytor-generalny-165: schemat `src/dane/migracje/0001.sql`, 45 projektów z jednym licznikiem, 150 000 zdarzeń `plus` z UUID w `id`, `licznik_id` i `urzadzenie`, `rodzice` z jednym UUID, SQLite 3.53.4 przez `node:sqlite`; 57 573 376 B, czyli ok. 384 B na zdarzenie (rozmiar bazy przez liczbę zdarzeń)), zgodnie z pomiarem R w ADR-0033 (58,4 MB). Dawny szacunek E0 z 2026-10 (ok. 18 MB, 120 B na wiersz) zaniżał bazę ok. 3×; pliki to nadal ok. 88% objętości, więc kierunek decyzji się nie zmienia. Każde +1 ma być trwałe po zabiciu procesu (NFR-DAN-002).
 
 ## Czynniki decyzji
 Zero utraty danych · koszt zapisu jednego +1 przy 3 latach danych · zapytania kalendarza i historii · migracje schematu · eksport i kopia · prostota (zasada architekta 2).

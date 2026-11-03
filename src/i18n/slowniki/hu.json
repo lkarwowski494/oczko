@@ -501,7 +501,7 @@
   },
   "zrodla": {
     "zdanie": "Az Oczko táblázatai és tippjei saját szavainkkal íródtak, iparági szabványok és kézműves szervezetek útmutatásai alapján.",
-    "linia_standardow": "Forrás: Craft Yarn Council's www.YarnStandards.com"
+    "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
   },
   "stoper": {
     "start_a11y": "Munkamenet-időzítő indítása",
@@ -769,20 +769,15 @@
     "przelacznik": "Szinkronizálás iCloudon",
     "opis": "Az eszközeiden azonosan tartja a projekteket, leírásokat és előzményeket. Az adataid csak a saját iCloudodba kerülnek; az Oczkónak nincs szervere.",
     "wlacz_tytul": "Bekapcsolod az iCloud-szinkronizálást?",
-    "wlacz_opis": "Az ezen az iPhone-on lévő projektek és az iCloudodban már meglévők egyesülnek. Semmi sem törlődik. Ha egy számláló értékei eltérnek, az Oczko mindkettőt megmutatja, és te választasz.",
     "wlacz_potwierdz": "Bekapcsolás",
     "wylacz_tytul": "Kikapcsolod az iCloud-szinkronizálást?",
-    "wylacz_opis": "Minden ezen az iPhone-on marad. Az itteni módosítások nem kerülnek többé az iCloudba, a többi eszközöd pedig megtartja, amije van.",
     "wylacz_potwierdz": "Kikapcsolás",
     "synchronizuje": "Szinkronizálás…",
     "brak_konta": "Az iCloud nem érhető el az Oczkónak",
-    "brak_konta_opis": "Ellenőrizd, hogy be vagy jelentkezve az iCloudba, és hogy az iCloud be van kapcsolva az Oczkónál a Beállításokban. Minden el van mentve ezen az iPhone-on.",
     "ustawienia": "Beállítások megnyitása",
     "brak_miejsca": "Betelt az iCloud-tárhelyed",
-    "brak_miejsca_opis": "A módosítások nem szinkronizálódnak. El vannak mentve ezen az iPhone-on, és szinkronizálódnak, ha lesz hely.",
     "zarzadzaj": "Tárhely kezelése",
     "konto_zmienione_tytul": "Másik iCloud-fiók",
-    "konto_zmienione_opis": "Ez az iPhone most másik iCloud-fiókba van bejelentkezve. A szinkronizálás szünetel, az itteni adataid változatlanok. Szinkronizálsz ezzel a fiókkal? Az itteni és az abban a fiókban lévő projektjeid egyesülnek.",
     "polacz": "Szinkronizálás ezzel a fiókkal",
     "nie_synchronizuj": "Ne szinkronizáljon",
     "konflikt_licznik": "A számláló két változata",
@@ -794,7 +789,6 @@
     "konflikty_one": "{{count}} számlálónak két változata van",
     "konflikty_other": "{{count}} számlálónak két változata van",
     "niepelna": "A többi eszközöd néhány módosítása még nem látszik",
-    "niepelna_nowsza": "Az Oczko újabb verziójából származnak. A megtekintésükhöz frissítsd az Oczkót ezen az iPhone-on. Az itteni számlálóid változatlanok.",
     "niepelna_opis": "Az Oczko tovább próbálkozik. Az itteni számlálóid változatlanok.",
     "zastap_wylacz": "Előbb kapcsold ki az iCloud-szinkronizálást",
     "zastap_wylacz_opis": "A meglévő felülírásához az iCloud-szinkronizálásnak ki kell lennie kapcsolva. Különben az iCloud visszahozná a régi adatokat. Utána újra bekapcsolhatod.",
