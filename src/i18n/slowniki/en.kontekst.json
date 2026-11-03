@@ -864,5 +864,15 @@
     "usun_tytul": "Tytuł alertu usunięcia przypomnienia.",
     "usun_opis": "Opis alertu usunięcia przypomnienia; {{tekst}} = treść instrukcji użytkowniczki. Uspokaja: licznik i historia bez zmian.",
     "wiersz_a11y": "Etykieta VoiceOver wiersza listy przypomnień; {{opis}} = druga linia wiersza (`przyp.wiersz_*`); „Edit” = akcja otwarcia edycji."
+  },
+  "jednostka": {
+    "m": "Symbol jednostki przy liczbie w zapasie włóczki (lista, linia przeliczenia pod polem, „437 yd (399.59 m)”; M1-audytor-generalny-052, LOK-07). {{wartosc}} = liczba już sformatowana w języku aplikacji. Symbol w zapisie i piśmie języka (np. ru „м”, „г”), z odstępem według zwyczaju języka; bez pełnej nazwy, bez kropki skrótu, jeśli język jej nie używa. Metr.",
+    "yd": "Symbol jednostki przy liczbie w zapasie włóczki (lista, linia przeliczenia pod polem, „437 yd (399.59 m)”; M1-audytor-generalny-052, LOK-07). {{wartosc}} = liczba już sformatowana w języku aplikacji. Symbol w zapisie i piśmie języka (np. ru „м”, „г”), z odstępem według zwyczaju języka; bez pełnej nazwy, bez kropki skrótu, jeśli język jej nie używa. Jard (yard, 0,9144 m).",
+    "g": "Symbol jednostki przy liczbie w zapasie włóczki (lista, linia przeliczenia pod polem, „437 yd (399.59 m)”; M1-audytor-generalny-052, LOK-07). {{wartosc}} = liczba już sformatowana w języku aplikacji. Symbol w zapisie i piśmie języka (np. ru „м”, „г”), z odstępem według zwyczaju języka; bez pełnej nazwy, bez kropki skrótu, jeśli język jej nie używa. Gram.",
+    "oz": "Symbol jednostki przy liczbie w zapasie włóczki (lista, linia przeliczenia pod polem, „437 yd (399.59 m)”; M1-audytor-generalny-052, LOK-07). {{wartosc}} = liczba już sformatowana w języku aplikacji. Symbol w zapisie i piśmie języka (np. ru „м”, „г”), z odstępem według zwyczaju języka; bez pełnej nazwy, bez kropki skrótu, jeśli język jej nie używa. Uncja (ounce, avoirdupois, 28,35 g).",
+    "m_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Metry.",
+    "yd_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Jardy (yards).",
+    "g_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Gramy.",
+    "oz_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Uncje (ounces)."
   }
 }

@@ -873,5 +873,13 @@
   "przyp.usun": "⟦Délété ŕémîñdéŕ~~~~~~~~~~~~⟧",
   "przyp.usun_tytul": "⟦Délété thîš ŕémîñdéŕ?~~~~~~~~~~~~~~~⟧",
   "przyp.usun_opis": "⟦Öçžkö štöpš ŕémîñdîñg ýöû àböût “{{tekst}}”. Ýöûŕ çöûñt àñd hîštöŕý štàý àš théý àŕé.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
-  "przyp.wiersz_a11y": "⟦{{tekst}}, {{opis}}. Édît~~~~⟧"
+  "przyp.wiersz_a11y": "⟦{{tekst}}, {{opis}}. Édît~~~~⟧",
+  "jednostka.m": "⟦{{wartosc}} m~⟧",
+  "jednostka.yd": "⟦{{wartosc}} ýd~~⟧",
+  "jednostka.g": "⟦{{wartosc}} g~⟧",
+  "jednostka.oz": "⟦{{wartosc}} öž~~⟧",
+  "jednostka.m_nazwa": "⟦Météŕš~~~~~~⟧",
+  "jednostka.yd_nazwa": "⟦Ýàŕdš~~~~~⟧",
+  "jednostka.g_nazwa": "⟦Gŕàmš~~~~~⟧",
+  "jednostka.oz_nazwa": "⟦Öûñçéš~~~~~~⟧"
 }
