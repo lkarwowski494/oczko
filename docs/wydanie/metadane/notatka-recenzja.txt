@@ -1,6 +1,8 @@
 Purpose: Oczko is a row counter for knitting and crochet. Users keep a pattern next to the counter. No account, no server, no ads.
 Account: none needed. There is no sign-in, so there are no demo credentials.
 
+How Oczko differs from a plain tally counter: the counter sits next to the user's own pattern (PDF, Word file, scan or saved web page) on one screen, with a marker on the current row. Every change goes into a history with its time, and a burst of stray taps can be undone with one tap. Everything works without an account, and data stays on the device.
+
 Main flow
 1. Open the app. Tap "+1 row" on the counter: the row count goes up with a vibration. "−1" takes one back. "History" lists every change with its time.
 2. Projects: "New project" (name, optional parts). The project menu has "Add pattern…" with "Choose file (PDF or Word)", "Scan pages" (camera) and "Web page link…".

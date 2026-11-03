@@ -58,7 +58,7 @@ Szczegóły z adresami, wątkami i cytatami regulaminów: `oczko-warsztat/11-wzr
 
 | Kanał (adres) | Dowód niszy | Reguła (cytat, data odczytu) | Forma dozwolona | Godz./tydz. | Efekt × pewność ÷ godziny [OCENA] | Decyzja |
 |---|---|---|---|---|---|---|
-| sklep: ASO 7 lokalizacji | frazy licznika: słaba konkurencja (US: pierwsza dziesiątka 150–330 ocen; PL 0–7 wyników) | 2.3.7, limity ASC | metadane (rola 10) | 0 | 3 × 2 ÷ 0,25 = 24 | E1-1 |
+| sklep: ASO 7 lokalizacji | frazy licznika: US „row counter” — pozycje 1–2 mają ok. 3,9 tys. i 17 tys. ocen, słaba konkurencja tylko na miejscach 3–10 (pomiar 3.11, iTunes Search API, jedno zapytanie; poprzednia teza „pierwsza dziesiątka 150–330 ocen” wycofana, P-484); PL 0–7 wyników | 2.3.7, limity ASC | metadane (rola 10) | 0 | 3 × 2 ÷ 0,25 = 24 | E1-1 |
 | sklep: odpowiedzi na recenzje | linia bazowa: liderzy odpowiadają na 6–7 z 8 recenzji w próbce | 5.6.1 | odpowiedź (en, pl zawsze; inne ≤ 3★) | 0,25 | 2 × 2 ÷ 0,25 = 16 | E1-1 |
 | prośba o ocenę w aplikacji | F-64 | requestReview (E2) | systemowa | 0 | funkcja produktu | E2 |
 | forum EN: KnittingHelp, https://forum.knittinghelp.com/ (wygasające) | wątki o liczniku na iPhone (2024) i zgubionym miejscu (2026) | 2026-11-03, FAQ forum https://forum.knittinghelp.com/faq: „Respect our forum. Don’t post spam or otherwise vandalize the forum.”; ToS https://forum.knittinghelp.com/tos: „does not contain unethical or unwanted commercial content designed to drive traffic to third party sites” | odpowiedź w wątku o liczniku wyłącznie po zgodzie administracji; bez niej nic; kontakt wymaga konta | 0,25 | 1 × 1 ÷ 0,25 = 4 | poza startem (rekomendacja) |
@@ -72,17 +72,21 @@ Szczegóły z adresami, wątkami i cytatami regulaminów: `oczko-warsztat/11-wzr
 Skala [OCENA]: efekt 0–3 (zasięg wśród person), pewność 0–2 (przeczytana reguła i dowód niszy), godziny właściciela na tydzień. Heurystyka roli, nie norma.
 
 ## ASO — propozycja dla roli 10 (P-145 D2a; P-148 E1-3a)
-Znaki i bajty UTF-8 policzone skryptem; nazwa ≤ 30, podtytuł ≤ 30, słowa ≤ 100 B, każde > 2 znaki, bez nazw innych firm i aplikacji. Nazwy ja, nb, de-DE, fr-FR zmienione 2026-10-26 według P-157 (słowo marki lokalne, sekcja „Nazwa w sklepie”).
+Znaki i bajty UTF-8 policzone skryptem; nazwa ≤ 30, podtytuł ≤ 30, słowa ≤ 100 B, każde > 2 znaki, bez nazw innych firm i aplikacji. **Stan 2026-11-03:** wiersze en = `docs/wydanie/metadane/en.store.json` (K1, P-484; nazwa N0 i podtytuł S0 bez zmian; en-AU = en-GB, en-CA = en-US); nazwy wszystkich lokalizacji = `nazwy.store.json` po P-170 i P-172 (fr-FR i nb „Oczko”, nie „Maille”/„Maske”); fi „Silmukka: kerroslaskuri” zgodne z P-174 (sprawdzone skryptem, brak rozbieżności). Słowa pl, ja, nb, de-DE, fr-FR z 2026-10-26 (badanie fraz E1), bez zmian.
 
 | Lok. | Nazwa | Podtytuł | Słowa kluczowe | B |
 |---|---|---|---|---|
-| en-US | Oczko: Row Counter | Knit & crochet, no account | knitting,stitch,tracker,pattern,pdf,yarn,stash,needles,project,tally,gauge,notes,hook,reminder | 94 |
-| en-GB | Oczko: Row Counter | Knit & crochet, no account | knitting,stitch,tracker,pattern,pdf,yarn,wool,stash,needles,project,tally,gauge,notes,hook,reminder | 99 |
+| en-US, en-CA | Oczko: Row Counter | Knit & crochet, no account | knitting,stitch,tracker,pattern,pdf,yarn,stash,needles,project,tally,gauge,crochet,amigurumi,swatch | 99 |
+| en-GB, en-AU | Oczko: Row Counter | Knit & crochet, no account | knitting,stitch,tracker,pattern,pdf,yarn,wool,stash,needles,project,tally,gauge,crochet,amigurumi | 97 |
 | pl | Oczko: Licznik rzędów | Druty i szydełko, bez konta | dzierganie,włóczka,oczka,rzędy,wzór,pdf,projekt,robótki,szydełkowanie,drutach,notatki,zapas | 97 |
 | ja | 編み目: 編み物カウンター | かぎ針・棒針の段数と編み図 | 棒針編み,かぎ針編み,あみぐるみ,目数計算,リマインド,PDF,メモ帳,毛糸管理 | 100 |
-| nb | Maske: Strikk og hekle | Teller for omganger og pinner | strikking,hekling,strikkeapp,omgangsteller,garn,oppskrift,prosjekter,masker,notater,strikkeprosjekt | 99 |
+| nb | Oczko: Strikk og hekle | Teller for omganger og pinner | strikking,hekling,strikkeapp,omgangsteller,garn,oppskrift,prosjekter,masker,notater,strikkeprosjekt | 99 |
 | de-DE | Masche: Reihenzähler | Häkeln, Stricken, eigenes PDF | Strickzähler,Maschenzähler,Wolle,Garn,Nadeln,Strickmuster,Häkelmuster,Handarbeit,Projekte | 92 |
-| fr-FR | Maille: Compteur de rangs | Tricot & crochet, votre patron | tricoter,crocheter,laine,pelote,aiguilles,mailles,projet,modèle,amigurumi,PDF,notes | 84 |
+| fr-FR | Oczko: Compteur de rangs | Tricot & crochet, votre patron | tricoter,crocheter,laine,pelote,aiguilles,mailles,projet,modèle,amigurumi,PDF,notes | 84 |
+
+Podtytuły awaryjne de, fr, ja (wersja bez słów o wzorze, gdyby funkcja wzoru nie przeszła OG-07): **do 09** — w tabeli nie ma dla nich wersji bez wzoru, a tekstów obcych tu nie piszę; podtytuły z tabeli (wszystkie trzy niosą wzór) obowiązują tylko po OG-07. Wersja robocza en: „Knit & crochet, no account” nie zawiera wzoru; wariant S1 z wzorem — test strony produktu H-12 po 1.0 (P-484).
+
+**Hipoteza dla storefrontów z językiem dodatkowym (obok H-13; ocena z H-13, 2027-01-09):** w storefroncie, w którym kraj nie ma własnej lokalizacji metadanych (PL: domyślny en-GB), wyszukiwanie może korzystać ze słów lokalizacji dodatkowej — więc słowa en-GB mogłyby dawać wyświetlenia z wyszukiwania w PL niezależnie od słów pl. To założenie, nie wiedza: u źródła pierwotnego niepotwierdzone (zob. „Nie wiemy” niżej). Pomiar: pobrania z wyszukiwania ÷ wszystkie w PL (App Analytics); próg i wpis do `hipotezy.json` dopiero po decyzji koordynatora (limit 3 aktywnych H).
 
 Warunki: słowa o wzorze (pattern, pdf, wzór, 編み図, oppskrift, Strickmuster, eigenes PDF, modèle, votre patron) tylko po potwierdzeniu funkcji wzoru (OG-07); bez słów o zegarku, ekranie blokady i widżecie do potwierdzenia przez 07 (P-146); bez słów o dodawaniu i ujmowaniu oczek (F-40 PÓŹNIEJ). Do przeglądu native speakera: ja 目数計算 i あみぐるみ, nb omgang/pinne, de umlauty, fr patron/modèle, wymowa „Oczko” w ja. Kategoria: wyniki fraz to głównie Lifestyle (rekomendacja badania), decyduje rola 10. Nie wiemy: liczby wyszukań (bez płatnych narzędzi) ani tego, czy storefront z językiem dodatkowym indeksuje słowa tej lokalizacji.
 
