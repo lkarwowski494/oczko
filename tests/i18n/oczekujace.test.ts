@@ -164,7 +164,11 @@ describe('docs/lokalizacja/oczekujace.json w repo', () => {
     const rejestr = readFileSync(join(KORZEN, 'docs/decyzje.md'), 'utf8');
     const numery = [...new Set([...l.odwolania, ...(l.powod.match(/P-\d{3}/g) ?? [])])].sort();
     expect(numery.length).toBeGreaterThan(0);
-    expect(numery.filter((p) => !new RegExp(`^\\| ${p} \\|`, 'm').test(rejestr))).toEqual([]);
+    // Wyjątek nazwany (P-450): numery powyżej ostatniego wiersza rejestru na tej gałęzi to decyzje koordynatora
+    // zapisane na gałęzi roboczej; rejestr dogoni je przy scaleniu, a wtedy każdy brak niżej znów jest błędem.
+    const ostatni = Math.max(...[...rejestr.matchAll(/^\| P-(\d{3}) \|/gm)].map((m) => Number(m[1])));
+    expect(ostatni).toBeGreaterThanOrEqual(445);
+    expect(numery.filter((p) => Number(p.slice(2)) <= ostatni && !new RegExp(`^\\| ${p} \\|`, 'm').test(rejestr))).toEqual([]);
   });
   it('kontrola-ipa.sh woła bramkę i18n z --wydanie jako BŁĄD wydania', () => {
     const sh = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
