@@ -50,8 +50,12 @@ test('udany zapis: nowa treść pod nazwą docelową, bez pozostałego pliku tym
 
 test('trwała kontrola: kontener zapisuje pamięć Pro i identyfikator urządzenia tylko przez zapiszAtomowo', () => {
   const kontener = readFileSync(join(__dirname, '../../src/kompozycja/kontener.ts'), 'utf8');
-  expect(kontener).not.toMatch(/zapiszTekst\(plikPro\b/);
-  expect(kontener).not.toMatch(/zapiszTekst\(plik, nowy\)/);
-  expect(kontener).toMatch(/zapiszAtomowo\(plikPro, t\)/);
-  expect(kontener).toMatch(/zapiszAtomowo\(plik, nowy\)/);
+  const pliki = readFileSync(join(__dirname, '../../src/kompozycja/pliki-urzadzenia.ts'), 'utf8'); // odczyt i zapis obu plików (wydzielone z kontenera)
+  expect(kontener).toMatch(/identyfikatorUrzadzenia\(katalogDanych,/);
+  expect(kontener).toMatch(/pamiecProWPliku\(katalogDanych\)/);
+  expect(kontener).not.toMatch(/pamiec-pro\.json|urzadzenie\.txt/);
+  expect(pliki).not.toMatch(/zapiszTekst\(plikPro\b/);
+  expect(pliki).not.toMatch(/zapiszTekst\(plik, nowy\)/);
+  expect(pliki).toMatch(/zapiszAtomowo\(plikPro, t\)/);
+  expect(pliki).toMatch(/zapiszAtomowo\(plik, nowy\)/);
 });
