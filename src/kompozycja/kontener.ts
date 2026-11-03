@@ -11,7 +11,7 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, wolneMiejsce, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { identyfikatorUrzadzenia, pamiecProWPliku } from './pliki-urzadzenia';
 import { utworzI18n } from '../i18n/i18n';
@@ -59,7 +59,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const tymczasowy = polacz(katalogDanych, 'tmp');
   for (const k of [katalogDanych, s.pliki, s.kopie, tymczasowy]) utworzKatalog(k);
   ustawKatalogTymczasowy(tymczasowy);
-  const b = await otworzBaze(s.baza, (p) => otworzPortExpo(p));
+  const b = await otworzBaze(s.baza, (p) => otworzPortExpo(p), wolneMiejsce); // M1-157: wolne miejsce rozstrzyga `zapis` vs `brak_miejsca`
   if (!b.ok) return b;
   const baza = b.wartosc;
   const zegar = zegarAplikacji();

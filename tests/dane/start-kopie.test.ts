@@ -9,7 +9,7 @@ import { otworzBaze } from '../../src/dane/baza/polaczenie';
 import { sciezkiDanych } from '../../src/dane/baza/sciezki';
 import { przywrocZKopii, sprawdzKopie, surowaKopia } from '../../src/dane/kopia-ratunkowa';
 import { migruj } from '../../src/dane/migracje/migruj';
-import { WERSJA_SCHEMATU } from '../../src/konfiguracja';
+import { PROG_BRAK_MIEJSCA_OTWARCIA_B, WERSJA_SCHEMATU } from '../../src/konfiguracja';
 import { uruchomDane } from '../../src/przypadki-uzycia/start';
 import { przygotujZgloszenie } from '../../src/przypadki-uzycia/zgloszenie';
 import { bazaWzorcowa, czytajBaze, wloczka, zycie } from './pomocnicze/dane-wejsciowe';
@@ -58,6 +58,26 @@ describe('ścieżki danych i start nad 0.1.0', () => {
     const sciezka = join(katalogTymczasowy(), 'Application Support', 'oczko.db');
     expect(await otworzBaze(sciezka, fabryka)).toEqual({ ok: false, powod });
     expect(wolania).toEqual([sciezka]);
+  });
+
+  // M1-audytor-generalny-157 (12-niezawodnosc-505, ADR-0020 (4)): brak miejsca przy odbudowie indeksu WAL (`-shm` zniknął przy niepustym `-wal`)
+  // SQLite zgłasza jako SQLITE_IOERR „disk I/O error”. Powód `zapis` z wolnym miejscem znanym i poniżej progu → `brak_miejsca`; nieznane albo duże → `zapis`.
+  test.each([
+    ['SQLITE_IOERR: disk I/O error', 0, 'brak_miejsca'],
+    ['SQLITE_IOERR: disk I/O error', PROG_BRAK_MIEJSCA_OTWARCIA_B - 1, 'brak_miejsca'],
+    ['SQLITE_IOERR: disk I/O error', PROG_BRAK_MIEJSCA_OTWARCIA_B, 'zapis'],
+    ['SQLITE_IOERR: disk I/O error', 10_000_000_000, 'zapis'],
+    ['SQLITE_IOERR: disk I/O error', null, 'zapis'],
+    ['SQLITE_CANTOPEN: unable to open database file', 0, 'brak_miejsca'],
+    ['SQLITE_NOTADB: file is not a database', 0, 'uszkodzony'], // uszkodzenie nie zmienia się w brak miejsca
+  ] as const)('M1-157 ADR-0020 (4): otwarcie bazy rzuca „%s” przy wolnym miejscu %p B → powod „%s”', async (blad, wolne, powod) => {
+    const fabryka = (): PortBazy => { throw new Error(blad); };
+    const sciezka = join(katalogTymczasowy(), 'Application Support', 'oczko.db');
+    expect(await otworzBaze(sciezka, fabryka, () => wolne)).toEqual({ ok: false, powod });
+  });
+  test('M1-157: odczyt wolnego miejsca rzuca → powod „zapis” (nie wiadomo, nie brak miejsca)', async () => {
+    const fabryka = (): PortBazy => { throw new Error('SQLITE_IOERR: disk I/O error'); };
+    expect(await otworzBaze(join(katalogTymczasowy(), 'oczko.db'), fabryka, () => { throw new Error('odczyt'); })).toEqual({ ok: false, powod: 'zapis' });
   });
 });
 
