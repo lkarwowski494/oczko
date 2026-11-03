@@ -40,4 +40,15 @@ describe('kontrakt testID design-spec → e2e/README.md (F07-17)', () => {
     const ids = idZeSpec('- **testID** (propozycja dla 07): `licznik-plus`, `nie-ma-takiego-id`.');
     expect(ids.filter((id) => !tabela.has(id))).toEqual(['nie-ma-takiego-id']);
   });
+
+  // M1-audytor-generalny-150 (07-jakosc-524, JAK-15): przykład tekstu w tabeli to wzorzec dla autorów scenariuszy — zdania stanu z en.json
+  // (decyzja 04 „Separator „ · ””, M1-034: bez „ · ”). Przykład spoza en.json daje scenariusz czerwony po przepisaniu z README.
+  test('M1-150 przykład w wierszu projekt-linia-terminu jest tekstem klucza projekt.termin_dzis_other z en.json, bez „ · ”', () => {
+    const en = JSON.parse(fs.readFileSync(path.join(root, 'src/i18n/slowniki/en.json'), 'utf8')) as { projekt: Record<string, string> };
+    const wiersz = README.split('\n').find((l) => l.startsWith('| `projekt-linia-terminu` |')) ?? '';
+    const przyklad = /„([^”]+)”/.exec(wiersz.split('|')[4] ?? '')?.[1] ?? '';
+    expect(przyklad).not.toContain(' · ');
+    const wzor = new RegExp(`^${en.projekt.termin_dzis_other.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\{\\\{\w+\\\}\\\}/g, '.+')}$`);
+    expect(przyklad).toMatch(wzor);
+  });
 });
