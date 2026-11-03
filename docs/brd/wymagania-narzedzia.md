@@ -1,7 +1,7 @@
 # Wymagania: zapas (ZAP), obliczenia (KAL), słownik (SLO)
 Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`; reguły w `reguly.md`.
 
-Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i założenia oraz informację, że tabele CYC to wytyczne [FAKT S-19]. Wyniki oczek są niezaokrąglone, dopóki OP-02 nie jest rozstrzygnięte.
+Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i założenia oraz informację, że tabele CYC to wytyczne [FAKT S-19]. Wyniki oczek są niezaokrąglone, dopóki OP-02 nie jest rozstrzygnięte. Dotyczy to wartości w obliczeniach: podgląd kalkulatora próbki pokazuje liczbę wyliczoną z najwyżej jednym miejscem po przecinku (najbliższa dziesiąta, połowa w górę), a każde dalsze obliczenie bierze wartość pełną (DEC-34 a, P-438, P-446; ER-62); to sposób wyświetlania, nie zaokrąglanie do całości z OP-02.
 
 ## Zapas (ZAP)
 ### BR-ZAP-001: Włóczka w zapasie
@@ -111,7 +111,7 @@ Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i za
   - Scenariusz: Próbka amerykańska
     - Zakładając, że wzór podaje 20 o. na 4 in
     - Gdy użytkownik przelicza na 10 cm
-    - Wtedy wynik to 19,685 o./10 cm (RD-04-W1), a obok jest informacja, że wzory często zrównują 4 in z 10 cm (P-081 P3a; ER-35)
+    - Wtedy wynik to 19,7 o./10 cm (wartość pełna 19,685… z RD-04-W1 pokazana z jednym miejscem po przecinku; ER-62), obok jest informacja, że wzory często zrównują 4 in z 10 cm (P-081 P3a; ER-35), a po wpisaniu szerokości 100 cm liczba oczek to 196,9, liczona z wartości pełnej (rachunek RD-01: 100 × 19,685… / 10 = 196,85… → 196,9), nie 197 z wartości pokazanej 19,7
   - Scenariusz: Masa
     - Zakładając, że etykieta podaje 3,5 oz
     - Gdy użytkownik przelicza na gramy
@@ -119,7 +119,7 @@ Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i za
   - Scenariusz: Próbka w calach z przecinkiem (ER-43)
     - Zakładając, że telefon ma język i region pl-PL, a wzór podaje 20,5 o. na 4 in
     - Gdy użytkownik wpisuje „20,5” i przelicza na 10 cm
-    - Wtedy wynik to 20,177 o./10 cm (rachunek RD-04: 20,5 × 10 / 10,16)
+    - Wtedy wynik to 20,2 o./10 cm (rachunek RD-04: 20,5 × 10 / 10,16 = 20,177…, pokazany z jednym miejscem po przecinku; ER-62)
   - Scenariusz: Jednostki domyślnie z systemu (ER-45)
     - Zakładając, że w Ustawieniach aplikacji jednostki mają wartość „jak w systemie” (stan po instalacji)
     - Gdy użytkownik z regionem en-US (system miar US) otwiera obliczenia, a potem użytkownik z regionem pl-PL (system metryczny) robi to samo
