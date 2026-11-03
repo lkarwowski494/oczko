@@ -111,7 +111,7 @@ export async function przygotuj(o: { katalog?: string; zegar?: ZegarTestowy; urz
   const magazyn = magazynTestowy(join(katalog, 'pliki'));
   const dziennik = dziennikTestowy();
   const pro = { wartosc: false };
-  const katalogi = { kopie: join(katalog, 'kopie'), kopiePrzed: join(katalog, 'Documents', 'Backup'), tymczasowy: join(katalog, 'tmp') };
+  const katalogi = { kopie: join(katalog, 'kopie'), kopiePrzed: join(katalog, 'Documents', 'Backup'), tymczasowy: join(katalog, 'tmp'), podreczny: join(katalog, 'Caches') };
   mkdirSync(katalogi.kopie, { recursive: true });
   mkdirSync(katalogi.kopiePrzed, { recursive: true });
   mkdirSync(katalogi.tymczasowy, { recursive: true });

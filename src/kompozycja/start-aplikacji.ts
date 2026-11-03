@@ -6,7 +6,7 @@ import type { Licznosci } from '../domena/porty';
 import { sciezkiDanych } from '../dane/baza/sciezki';
 import { surowaKopia } from '../dane/kopia-ratunkowa';
 import { stanPlikuBazy } from '../dane/pliki/magazyn';
-import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogPamieciPodrecznej, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
 import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
@@ -77,7 +77,7 @@ export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' | 'brak_
 export function trybAwaryjny() {
   const s = sciezki();
   const zegar = zegarAplikacji();
-  const katalogi = { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy: polacz(s.katalogDanych, 'tmp') };
+  const katalogi = { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy: polacz(s.katalogDanych, 'tmp'), podreczny: katalogPamieciPodrecznej() };
   utworzKatalog(katalogi.kopie);
   utworzKatalog(katalogi.tymczasowy);
   const kopia = surowaKopia(s.katalogDanych, s.kopie, zegar);

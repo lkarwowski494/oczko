@@ -11,7 +11,7 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { identyfikatorUrzadzenia, pamiecProWPliku } from './pliki-urzadzenia';
 import { utworzI18n } from '../i18n/i18n';
@@ -77,7 +77,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
     straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
     // magazyn: SHA-256 natywnie (P-130, M1-017), nie TS na wątku JS
-    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
+    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy, podreczny: katalogPamieciPodrecznej() },
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),

@@ -64,7 +64,7 @@ export interface PotwierdzenieIcloud { wyslane: readonly { encja: string; klucz:
 
 // Archiwum, migracje i katalogi (ADR-0004, dane.md; przeniesione z src/przypadki-uzycia/porty-propozycja.ts, Z07-22).
 export interface Licznosci { [tabela: string]: number }    // tabela → liczba wierszy
-export interface Katalogi { kopie: string; kopiePrzed: string; tymczasowy: string } // Application Support/kopie (dane.md), Documents/Backup — kopie przed importem i przed usunięciem (ADR-0028), katalog tymczasowy importu
+export interface Katalogi { kopie: string; kopiePrzed: string; tymczasowy: string; podreczny: string } // Application Support/kopie (dane.md), Documents/Backup — kopie przed importem i przed usunięciem (ADR-0028), katalog tymczasowy importu, Library/Caches — dane odtwarzalne poza kopią urządzenia (M1-095)
 export interface Manifest { format: 'oczko'; wersja_formatu: number; wersja_schematu: number; aplikacja: string; utworzono: number; licznosci: Licznosci; pliki: { sha256: string; bajty: number }[] } // manifest.json archiwum `.oczko`
 export type TrybImportu = 'scal' | 'zastap';
 /** Kopia bezpieczeństwa w Documents/Backup: przed „Replace” (import) albo przed „Delete all data” (usunięcie), ADR-0028, P-328. */
