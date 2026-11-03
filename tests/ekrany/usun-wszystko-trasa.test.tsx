@@ -41,7 +41,7 @@ test('07-jakosc-012 (KP-05): potwierdzenie usunięcia mówi, że zakup Oczko Pro
 test('N-05-1: arkusz mówi o kopii w Plikach; potwierdzenie → kopia w Documents/Backup, dane usunięte, powrót do listy', async () => {
   const { s, licznik } = await aplikacja();
   render(<EkranUsunWszystko />);
-  expect(screen.getByText('This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them after 30 days.')).toBeTruthy(); // M1-130 (P-427 a)
+  expect(screen.getByText('This removes all projects, counters, history, patterns and photos from Oczko. Safety copies stay on this device. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space.')).toBeTruthy(); // M1-130 (P-427 a); termin: M1-160 (DEC-37 a)
   expect(screen.getByText('Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.')).toBeTruthy();
   await userEvent.press(przycisk('Delete all data'));
   await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledWith('/projekty'));

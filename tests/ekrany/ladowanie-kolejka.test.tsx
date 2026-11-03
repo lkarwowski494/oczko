@@ -55,7 +55,8 @@ async function srodowisko(dane: [string, unknown[]][] = []) {
 }
 beforeEach(() => { Object.values(mockRouter).forEach((f) => { if (typeof f === 'function' && 'mockClear' in f) f.mockClear(); }); });
 
-type Przypadek = { trasa: string; plik: string; przedrostek: string; params?: Record<string, string>; dane?: [string, unknown[]][] };
+/** `port`: odczyt trasy idzie prosto przez kolejkę portu bazy (bez `wKolejce` przypadków użycia), więc długa pozycja to transakcja portu (np. partia iCloud). */
+type Przypadek = { trasa: string; plik: string; przedrostek: string; params?: Record<string, string>; dane?: [string, unknown[]][]; kolejka?: 'port' };
 const PRZYPADKI: Przypadek[] = [
   { trasa: '/projekty', plik: '../../app/projekty', przedrostek: 'projekty' },
   { trasa: '/projekt/[id]', plik: '../../app/projekt/[id]', przedrostek: 'projekt', params: { id: 'p1' } },
@@ -71,6 +72,11 @@ const PRZYPADKI: Przypadek[] = [
   { trasa: '/wzor', plik: '../../app/wzor', przedrostek: 'wzor' },
   { trasa: '/formularz/nazwa', plik: '../../app/formularz/[rodzaj]', przedrostek: 'formularz', params: { rodzaj: 'nazwa' } },
   { trasa: '/formularz/notatka', plik: '../../app/formularz/[rodzaj]', przedrostek: 'formularz', params: { rodzaj: 'notatka', projekt: 'p1' } },
+  // M1-audytor-generalny-152 (08-programista-521): zapas, druty, Narzędzia i historia licznika — w czasie długiej pozycji kolejki „Loading…”, nie pusty zapas ani „0”.
+  { trasa: '/zapas', plik: '../../app/zapas', przedrostek: 'zapas', kolejka: 'port' },
+  { trasa: '/druty', plik: '../../app/druty', przedrostek: 'druty', kolejka: 'port' },
+  { trasa: '/narzedzia', plik: '../../app/narzedzia', przedrostek: 'narzedzia', kolejka: 'port' },
+  { trasa: '/historia', plik: '../../app/historia', przedrostek: 'historia' },
 ];
 
 describe('M1-068: długa pozycja kolejki przypadków użycia — trasa pokazuje „Loading…”, nie pustą planszę (DEC-10 (a))', () => {
@@ -78,7 +84,9 @@ describe('M1-068: długa pozycja kolejki przypadków użycia — trasa pokazuje 
     const { s } = await srodowisko(p.dane);
     mockParams = p.params ?? {};
     const dluga = odroczona<void>();
-    const pozycja = wKolejce(s.z.baza, () => dluga.obietnica); // np. eksport: scalenie dziennika, VACUUM INTO, zapis ZIP
+    const pozycja = p.kolejka === 'port'
+      ? s.z.baza.transakcja(() => dluga.obietnica) // transakcja portu (partia iCloud, import): odczyty portu czekają za nią
+      : wKolejce(s.z.baza, () => dluga.obietnica); // np. eksport: scalenie dziennika, VACUUM INTO, zapis ZIP
     render(React.createElement(trasa(p.plik)));
     await act(async () => { await new Promise((r) => setTimeout(r, 150)); }); // odczyt czeka za długą pozycją
     expect(screen.getByTestId(`${p.przedrostek}-ladowanie`)).toBeTruthy();

@@ -12,7 +12,7 @@ public final class OczkoIcloudModule: Module {
 
   public func definition() -> ModuleDefinition {
     Name("OczkoIcloud")
-    Events("partia", "wyslane", "konto")
+    Events("partia", "wyslane", "konto", "pobranie")
 
     AsyncFunction("statusKonta") { () async throws -> String in try await self.silnik.statusKonta() }
     AsyncFunction("uruchom") { (stan: String?) in self.silnik.uruchom(stanBase64: stan) }

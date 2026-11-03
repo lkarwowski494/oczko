@@ -43,6 +43,7 @@ export function atrapaIcloud(o: { tryb: string | null; baza: PortBazy; zegar: Ze
   let stan: StanSynchronizacji = 'wylaczona';
   let odbior: ((p: PartiaIcloud) => Promise<void>) | null = null;
   let potw: ((p: PotwierdzenieIcloud) => Promise<void>) | null = null;
+  let pob: ((f: 'poczatek' | 'koniec') => Promise<void>) | null = null;
   let wstrzyknieto = false;
   const sluchacze = new Set<() => void>();
   const zapisz = (n: StanAtrapyIcloud) => { e2e = n; o.plik.zapisz(JSON.stringify(n)); for (const f of sluchacze) f(); };
@@ -62,9 +63,11 @@ export function atrapaIcloud(o: { tryb: string | null; baza: PortBazy; zegar: Ze
       if (tryb === 'brak-miejsca') { stan = 'blad'; throw { kod: 'brak_miejsca' }; }
       zapisz({ ...e2e, wyslane: e2e.wyslane + zmiany.length });
       await potw?.({ wyslane: zmiany.map((z) => ({ encja: z.encja, klucz: z.klucz, nr: z.nr })), stanSilnika: new Uint8Array([1]) });
+      await pob?.('poczatek'); await pob?.('koniec'); // pełne pobranie bez zmian innych urządzeń: wpisy wysłane znikają (ADR-0005 uzupełnienie 2026-11-03)
     },
     odbieraj(fn) { odbior = fn; return () => { odbior = null; }; },
     wyslane(fn) { potw = fn; return () => { potw = null; }; },
+    pobieranie(fn) { pob = fn; return () => { pob = null; }; },
     zdarzeniaKonta(fn: (z: ZdarzenieKonta) => void) { void fn; return () => undefined; }, // konto atrapy się nie zmienia (inne konto: test na urządzeniu)
     async usunStrefe() { zapisz({ ...e2e, usuniete: true }); return { ok: true, wartosc: undefined }; },
     e2e: { stan: () => e2e, obserwuj(fn) { sluchacze.add(fn); return () => { sluchacze.delete(fn); }; } },

@@ -29,10 +29,12 @@ export interface OczkoIcloudNatywny {
   addListener(nazwa: 'partia', fn: (e: { id: string; rekordy: string; usuniete: string; stanSilnika: string | null }) => void): { remove(): void };
   addListener(nazwa: 'wyslane', fn: (e: { id: string; wyslane: string; stanSilnika: string | null }) => void): { remove(): void };
   addListener(nazwa: 'konto', fn: (e: { zdarzenie: string }) => void): { remove(): void };
+  addListener(nazwa: 'pobranie', fn: (e: { id: string; faza: string }) => void): { remove(): void }; // pełne pobranie strefy (ADR-0005 uzupełnienie 2026-11-03)
 }
 
 const STATUSY: readonly StatusKonta[] = ['dostepne', 'brak_konta', 'ograniczone', 'tymczasowo_niedostepne', 'nieznany'];
 const KONTO: readonly ZdarzenieKonta[] = ['zalogowano', 'wylogowano', 'zmiana_konta'];
+const FAZY = ['poczatek', 'koniec'] as const;
 export function zBase64(t: string | null): Uint8Array | null {
   if (t === null) return null;
   const s = globalThis.atob(t);
@@ -54,7 +56,7 @@ function czytajJson(t: string): unknown {
 /** Adapter modułu Swift; `natywny` wstrzykiwany w testach. Kod błędu wysyłki przechodzi jako `kod` (sterownik: przyczyna stanu `blad`). */
 export function silnikNatywny(natywny: OczkoIcloudNatywny): SilnikIcloud {
   let stan: StanSynchronizacji = 'wylaczona';
-  const pod = <T>(nazwa: 'partia' | 'wyslane' | 'konto', fn: (e: T) => void): (() => void) => {
+  const pod = <T>(nazwa: 'partia' | 'wyslane' | 'konto' | 'pobranie', fn: (e: T) => void): (() => void) => {
     const s = (natywny.addListener as (n: string, f: (e: T) => void) => { remove(): void })(nazwa, fn);
     return () => s.remove();
   };
@@ -82,6 +84,13 @@ export function silnikNatywny(natywny: OczkoIcloudNatywny): SilnikIcloud {
       return pod<{ id: string; wyslane: string; stanSilnika: string | null }>('wyslane', (e) => {
         const p = (async () => fn({ wyslane: potwierdzeniaZJson(czytajJson(e.wyslane)), stanSilnika: zBase64(e.stanSilnika) }))();
         void p.then(() => natywny.zakonczonoPartie(e.id, true), () => natywny.zakonczonoPartie(e.id, false));
+      });
+    },
+    pobieranie(fn: (faza: 'poczatek' | 'koniec') => Promise<void>) {
+      return pod<{ id: string; faza: string }>('pobranie', (e) => {
+        const faza = FAZY.find((x) => x === e.faza);
+        if (!faza) { natywny.zakonczonoPartie(e.id, false); return; } // nieznana faza z granicy: nic nie zmienia
+        void fn(faza).then(() => natywny.zakonczonoPartie(e.id, true), () => natywny.zakonczonoPartie(e.id, false));
       });
     },
     zdarzeniaKonta(fn) { return pod<{ zdarzenie: string }>('konto', (e) => { const z = KONTO.find((x) => x === e.zdarzenie); if (z) fn(z); }); },

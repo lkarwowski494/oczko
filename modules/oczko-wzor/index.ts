@@ -43,7 +43,7 @@ export type PropsWidokuNatywnego = {
   onRysunek?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; plikTymczasowy: string; oczekujace?: number }>) => void;
   /** M1-084 (DEC-31 a): zapis pliku rysunku się nie udał (np. pełny dysk); `oczekujace` stron czeka w pamięci widoku na następną próbę. */
   onBladZapisu?: (e: NativeSyntheticEvent<{ wzorId: string; oczekujace: number }>) => void;
-  onStukniecie?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number }>) => void;            // przytrzymanie; y = ułamek wysokości strony bez /Rotate
+  onStukniecie?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; rodzaj: 'stukniecie' | 'przytrzymanie' }>) => void; // pojedyncze stuknięcie palcem albo przytrzymanie (M1-131, DEC-33 b); y = ułamek wysokości strony bez /Rotate
   onNotatka?: (e: NativeSyntheticEvent<{ id: string }>) => void;                               // stuknięcie chipu notatki
   onZnacznik?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; wysokosc: number }>) => void; // pas przeciągnięty albo wysokość zmieniona uchwytem
   onZnacznikKrok?: (e: NativeSyntheticEvent<{ wzorId: string; delta: 1 | -1 }>) => void;                       // VoiceOver: zwiększ/zmniejsz o rząd

@@ -7,6 +7,9 @@ import { utworzPortNode, type PortNode } from '../../src/dane/baza/adapter-node'
 import { migruj } from '../../src/dane/migracje/migruj';
 import { usunWszystkieDane } from '../../src/przypadki-uzycia/projekt';
 import { katalogTymczasowy, przygotuj, zArchiwum } from './pomocnicze/srodowisko';
+import { potwierdzWyslane, stanBazy, zaleglosci } from '../../src/dane/repozytoria/icloud';
+import { sterownikSynchronizacji } from '../../src/przypadki-uzycia/synchronizacja';
+import { serwerIcloud } from './pomocnicze/serwer-icloud';
 
 type Kontrakt = { tabele: { tabela: string; klucz: string[]; tylko_klucze?: string[]; pomin?: string[] }[]; lokalne: string[] };
 const KONTRAKT: Kontrakt = JSON.parse(readFileSync(join(__dirname, '../../docs/architektura/icloud-tabele.json'), 'utf8'));
@@ -189,5 +192,57 @@ describe('F1 łatka L1: operacje na całej bazie a skrzynka (zero utraty danych 
       await b.run('DELETE FROM zmiana_icloud');
     }
     b.zamknij();
+  });
+});
+
+// M1-audytor-generalny-117 (ADR-0005 uzupełnienie 2026-11-03, P-440 wariant (a); dane.md „wpis wysłany zostaje do pełnego pobrania”): wektory W1–W7
+// stanów wpisu skrzynki. Oczekujące = to, co bierze wysyłka (`zaleglosci`, `stanBazy.zalegle`); pełne pobranie przez port `pobieranie` sterownika.
+describe('M1-117: wpis wysłany zostaje do pełnego pobrania (W1–W7)', () => {
+  async function srodowisko() {
+    const s = await przygotuj();
+    const u = serwerIcloud().urzadzenie();
+    const st = sterownikSynchronizacji({ ...s.z, synchronizacja: u, magazyn: s.magazyn });
+    await st.start(); // synchronizacja wyłączona: sterownik niczego nie wysyła sam, obsługa pobrania podpięta
+    await s.baza.run('UPDATE synchronizacja SET wlaczona = 1 WHERE id = 1');
+    for (const id of ['p1', 'p2', 'p3']) await s.baza.run('INSERT INTO projekt (id, nazwa, utworzono_ms, zmieniono_ms, ostatnia_praca_ms) VALUES (?, ?, ?, ?, ?)', [id, id, T, T, T]);
+    const nr = async (k: string) => (await s.baza.all<{ nr: number }>("SELECT nr FROM zmiana_icloud WHERE encja = 'projekt' AND klucz = ?", [k]))[0].nr;
+    const potwierdz = async (k: string) => { const n = await nr(k); await s.baza.transakcja((tx) => potwierdzWyslane(tx, { wyslane: [{ encja: 'projekt', klucz: k, nr: n }], stanSilnika: null })); };
+    const oczekujace = async () => (await zaleglosci(s.baza, 100, (h) => h)).map((z) => z.klucz).sort();
+    const wszystkie = async () => (await s.baza.all<{ klucz: string }>('SELECT klucz FROM zmiana_icloud ORDER BY klucz')).map((r) => r.klucz);
+    return { s, u, potwierdz, oczekujace, wszystkie };
+  }
+
+  test('W1–W6: oczekujący → wysłany → usunięty na udanym końcu pełnego pobrania; potwierdzenie w trakcie pobrania czeka do następnego', async () => {
+    const { s, u, potwierdz, oczekujace, wszystkie } = await srodowisko();
+    expect(await oczekujace()).toEqual(['p1', 'p2', 'p3']); // W1
+    await potwierdz('p1');
+    expect({ oczekujace: await oczekujace(), wszystkie: await wszystkie(), zalegle: (await stanBazy(s.baza)).zalegle }).toEqual({ oczekujace: ['p2', 'p3'], wszystkie: ['p1', 'p2', 'p3'], zalegle: 2 }); // W2
+    await u.pobranie('poczatek');
+    await potwierdz('p2'); // potwierdzenie w trakcie pobrania
+    await s.baza.run("UPDATE projekt SET nazwa = 'p1b', zmieniono_ms = ? WHERE id = 'p1'", [T + 1]); // zmiana po wysłaniu, w trakcie pobrania
+    await u.pobranie('koniec');
+    expect(await wszystkie()).toEqual(['p1', 'p2', 'p3']); // W3
+    expect(await oczekujace()).toEqual(['p1', 'p3']); // W4
+    await u.pobranie('poczatek'); await u.pobranie('koniec');
+    expect(await wszystkie()).toEqual(['p1', 'p3']); // W5
+    await s.baza.run("DELETE FROM projekt WHERE id = 'p3'");
+    await potwierdz('p3');
+    expect(await wszystkie()).toEqual(['p1']); // W6: potwierdzone usunięcie znika od razu
+    s.baza.zamknij();
+  });
+
+  test('W7: CHECK wyslano_nr <= nr odrzuca wpis „wysłany później, niż zmieniony”', async () => {
+    const { s } = await srodowisko();
+    await expect(s.baza.run("UPDATE zmiana_icloud SET wyslano_nr = nr + 1 WHERE klucz = 'p1'")).rejects.toThrow(/CHECK constraint failed: wyslano_nr IS NULL OR wyslano_nr <= nr/);
+    s.baza.zamknij();
+  });
+
+  test('pobranie bez udanego końca (błąd) nie usuwa wpisów wysłanych', async () => {
+    const { s, u, potwierdz, wszystkie } = await srodowisko();
+    await potwierdz('p1');
+    await u.pobranie('poczatek'); // didFetchRecordZoneChanges z błędem: bez fazy „koniec”
+    await u.pobranie('poczatek'); // następne pobranie też przerwane
+    expect(await wszystkie()).toEqual(['p1', 'p2', 'p3']);
+    s.baza.zamknij();
   });
 });

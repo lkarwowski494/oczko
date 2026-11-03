@@ -176,6 +176,8 @@ export type ManifestSurowejKopii = {
   user_version: number | null;
   application_id: number | null;
   pliki: { nazwa: string; bajty: number; sha256: string }[];
+  /** M1-156: plik dodatkowy, którego migawki nie dało się zrobić (ZIP powstał bez niego; plik zostaje na urządzeniu). Brak pola = nic nie pominięto. */
+  pominiete?: { nazwa: string; powod: 'brak_miejsca' | 'zapis' }[];
 };
 
 /** Nagłówek pliku SQLite (sqlite.org/fileformat2.html §1.3): sygnatura 16 B, user_version offset 60, application_id offset 68, big-endian. */
@@ -199,7 +201,8 @@ function naglowekBazy(sciezka: string): { user_version: number | null; applicati
  * od wołającego (jedno źródło nazwy bazy: sciezki.ts, P-180). Cel nie może istnieć; niepełny plik po błędzie jest usuwany.
  * M1-075 (ADR-0008, zasada wspólna 10): `dodatkowe` to pliki danych spoza surowej kopii (dziennik +1 z ekranu blokady i zegarka, którego tryb
  * awaryjny nie scala do bazy); w ZIP pod własną nazwą, w manifeście z SHA-256. Najpierw migawka obok celu (moduł Swift może dopisywać linie),
- * więc bajty i SHA w ZIP pochodzą z tego samego stanu; migawka usuwana na końcu. Brak pliku = brak wpisu.
+ * więc bajty i SHA w ZIP pochodzą z tego samego stanu; migawka usuwana na końcu. Brak pliku = brak wpisu. M1-156: nieudana migawka nie odbiera
+ * ZIP-a z bazą — plik jest pomijany z adnotacją `pominiete` w manifeście (baza ważniejsza niż plik poboczny, ADR-0020 (3)).
  */
 export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number; skrot?: (sciezka: string) => Promise<string>; dodatkowe?: readonly string[] }): Promise<Wynik<ManifestSurowejKopii>> {
   const skrot = o.skrot ?? sha256PlikuTs; // P-130 (M1-017): na urządzeniu natywny; TS w Node i jako wzorzec
@@ -211,17 +214,23 @@ export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly st
   const migawki: string[] = [];
   try {
     const zrodla = nazwy.map((n) => ({ nazwa: n, plik: polacz(katalogSurowej, n) }));
+    const pominiete: NonNullable<ManifestSurowejKopii['pominiete']> = [];
     for (const d of o.dodatkowe ?? []) {
       if (!istniejePlik(d)) continue;
       const m = `${cel}.${nazwaPliku(d)}`;
-      usunPlik(m);
-      migawki.push(m);
-      kopiuj(d, m);
+      try {
+        usunPlik(m);
+        migawki.push(m);
+        kopiuj(d, m);
+      } catch (e) {
+        pominiete.push({ nazwa: nazwaPliku(d), powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' });
+        continue;
+      }
       zrodla.push({ nazwa: nazwaPliku(d), plik: m });
     }
     const pliki: ManifestSurowejKopii['pliki'] = [];
     for (const z of zrodla) pliki.push({ nazwa: z.nazwa, bajty: rozmiar(z.plik), sha256: await skrot(z.plik) });
-    const manifest: ManifestSurowejKopii = { format: 'oczko-ratunkowa', wersja: 1, aplikacja: o.aplikacja, build: o.build, utworzono: o.terazMs, ...naglowekBazy(baza), pliki };
+    const manifest: ManifestSurowejKopii = { format: 'oczko-ratunkowa', wersja: 1, aplikacja: o.aplikacja, build: o.build, utworzono: o.terazMs, ...naglowekBazy(baza), pliki, ...(pominiete.length ? { pominiete } : {}) };
     const wpisy: WpisZip[] = [{ nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest, null, 2)) }, ...zrodla];
     const w = zapiszZip(cel, wpisy);
     return w.ok ? { ok: true, wartosc: manifest } : w;

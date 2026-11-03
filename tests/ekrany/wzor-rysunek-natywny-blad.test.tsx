@@ -16,7 +16,7 @@ jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const R = require('react') as typeof import('react');
   return {
-    useRouter: () => mockRouter, useLocalSearchParams: () => ({}), useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]),
+    useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => ({}), useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]),
     Stack: Object.assign(() => null, { Screen: (p: { options: Record<string, unknown> }) => { mockOpcje.push(p.options); return null; } }),
   };
 });

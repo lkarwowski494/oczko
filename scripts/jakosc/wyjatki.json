@@ -8,6 +8,22 @@
       "wlasciciel": "12",
       "termin": "stały, dopóki obowiązuje ADR-0020",
       "kontrola_zastepcza": "test akceptacyjny kopii ratunkowej sprawdza komplet trzech plików i liczności po przywróceniu (tests/akceptacja/dane)"
+    },
+    {
+      "regula": "TRYB-E2E",
+      "plik": "src/kompozycja/e2e/panele.tsx",
+      "powod": "nazwa zmiennej buildu E2E tylko w komentarzu nagłówka (moduł ładowany wyłącznie przez src/platforma/tryb-e2e.ts); w kodzie modułu przełącznika nie ma (M1-audytor-generalny-148)",
+      "wlasciciel": "07",
+      "termin": "stały, dopóki komentarz nagłówka opisuje gałąź ładowania z tryb-e2e.ts",
+      "kontrola_zastepcza": "scripts/wydanie/slady-testowe.mjs (moduł poza bundlem wydania) i scripts/wydanie/kontrola-ipa.sh (przełączniki w buildzie wydania)"
+    },
+    {
+      "regula": "TRYB-E2E",
+      "plik": "src/kompozycja/e2e/skrzynka.ts",
+      "powod": "nazwa zmiennej buildu E2E tylko w komentarzu nagłówka (moduł ładowany wyłącznie przez src/platforma/tryb-e2e.ts); w kodzie modułu przełącznika nie ma (M1-audytor-generalny-148)",
+      "wlasciciel": "07",
+      "termin": "stały, dopóki komentarz nagłówka opisuje gałąź ładowania z tryb-e2e.ts",
+      "kontrola_zastepcza": "scripts/wydanie/slady-testowe.mjs (moduł poza bundlem wydania) i scripts/wydanie/kontrola-ipa.sh (przełączniki w buildzie wydania)"
     }
   ],
   "workflowy": [

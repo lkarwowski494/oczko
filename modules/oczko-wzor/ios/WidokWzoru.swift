@@ -243,6 +243,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var zegarPowiekszenia: Timer?
   private var ostatniePowiekszenie: Double = 1
   private let przytrzymanie = UILongPressGestureRecognizer()
+  /// M1-131 (DEC-33 b): pojedyncze stuknięcie palcem w stronę — JS decyduje, czy stawia pas (bez znacznika albo przy otwartym pasku ustawień).
+  private let stukniecie = UITapGestureRecognizer()
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
@@ -256,6 +258,12 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     przytrzymanie.addTarget(self, action: #selector(przytrzymano(_:)))
     przytrzymanie.delegate = self
     pdf.addGestureRecognizer(przytrzymanie)
+    stukniecie.numberOfTapsRequired = 1
+    stukniecie.cancelsTouchesInView = false
+    stukniecie.addTarget(self, action: #selector(stuknieto(_:)))
+    stukniecie.delegate = self
+    pdf.addGestureRecognizer(stukniecie)
+    czekajNaPodwojneStukniecie()
     let rysik = DetektorRysika(target: nil, action: nil)
     rysik.delegate = self
     rysik.naRysik = { [weak self] in self?.pierwszyRysik() }
@@ -277,6 +285,28 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     if w == nil { zapiszTeraz() } // zamknięcie ekranu wzoru; M1-084: porażka → onBladZapisu, rysunek zostaje w kolejce (wspólnej) do następnej próby
   }
   func gestureRecognizer(_ g: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith o: UIGestureRecognizer) -> Bool { true }
+  /// M1-131: pierwszeństwo dotyku — chip notatki (UIControl), zakładka i uchwyt pasa (PasZnacznika) i rysik nie wyzwalają stuknięcia w stronę.
+  func gestureRecognizer(_ g: UIGestureRecognizer, shouldReceive t: UITouch) -> Bool {
+    guard g === stukniecie else { return true }
+    if t.type == .pencil { return false }
+    var v = t.view
+    while let w = v, w !== pdf {
+      if w is UIControl || w is PasZnacznika { return false }
+      v = w.superview
+    }
+    return true
+  }
+  /// M1-131: systemowe podwójne stuknięcie PDFView (powiększenie) ma pierwszeństwo przed pojedynczym; PDFView może dodać rozpoznawacze po wczytaniu dokumentu, więc wołane też po zmianie dokumentu.
+  private func czekajNaPodwojneStukniecie() {
+    var kolejka: [UIView] = [pdf]
+    while !kolejka.isEmpty {
+      let v = kolejka.removeFirst()
+      for r in v.gestureRecognizers ?? [] {
+        if let tap = r as? UITapGestureRecognizer, tap !== stukniecie, tap.numberOfTapsRequired == 2 { stukniecie.require(toFail: tap) }
+      }
+      kolejka.append(contentsOf: v.subviews)
+    }
+  }
 
   // MARK: właściwości z JS
 
@@ -293,6 +323,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
       nakladki = [:]; rysunki = [:]; historia = [:]; doZapisu = []
       rysikZgloszony = false
       pdf.document = PDFDocument(url: URL(fileURLWithPath: plikPdf))
+      czekajNaPodwojneStukniecie() // M1-131: rozpoznawacze PDFView po wczytaniu dokumentu
       for (s, sciezka) in r {
         guard let d = try? Data(contentsOf: URL(fileURLWithPath: sciezka)), let rys = try? PKDrawing(data: d) else { continue }
         rysunki[s] = rys
@@ -340,6 +371,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     // Tryb zakreślacza palcem: jeden palec rysuje, dwa przewijają (design-spec W5a); poza nim przewija jeden palec.
     przewijanie()?.panGestureRecognizer.minimumNumberOfTouches = p == .dowolne ? 2 : 1
     przytrzymanie.isEnabled = p != .dowolne
+    stukniecie.isEnabled = p != .dowolne
   }
   func cofnijDo(_ n: Int) {
     defer { cofnij = n }
@@ -458,14 +490,22 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     onPierwszyRysik([:])
   }
   @objc private func przytrzymano(_ g: UILongPressGestureRecognizer) {
-    guard g.state == .began, let d = pdf.document else { return }
-    let p = g.location(in: pdf)
+    guard g.state == .began else { return }
+    zglosDotyk(g.location(in: pdf), rodzaj: "przytrzymanie")
+  }
+  @objc private func stuknieto(_ g: UITapGestureRecognizer) {
+    guard g.state == .ended else { return }
+    zglosDotyk(g.location(in: pdf), rodzaj: "stukniecie")
+  }
+  /// Miejsce dotyku na stronie → `onStukniecie` (y = ułamek wysokości strony od góry); rodzaj: "stukniecie" albo "przytrzymanie" (M1-131).
+  private func zglosDotyk(_ p: CGPoint, rodzaj: String) {
+    guard let d = pdf.document else { return }
     guard let strona = pdf.page(for: p, nearest: true) else { return }
     let wStronie = pdf.convert(p, to: strona)
     let ramka = strona.bounds(for: pdf.displayBox) // ramka wyświetlana (cropBox), jak nakładka i znacznik (przegląd 2026-10-26)
     guard ramka.height > 0 else { return }
     let y = min(max((ramka.maxY - wStronie.y) / ramka.height, 0), 1) // PDF: początek układu na dole strony
-    onStukniecie(["wzorId": wzorId, "strona": d.index(for: strona), "y": y])
+    onStukniecie(["wzorId": wzorId, "strona": d.index(for: strona), "y": y, "rodzaj": rodzaj])
   }
   /// Zapisane powiększenie (krotność dopasowania do szerokości): ≈1 zostaje autoScales, większe ustawia scaleFactor w granicach PDFKit. Czeka na układ widoku (dopasowanie = 0 przed layoutem).
   private func zastosujPowiekszenie() {

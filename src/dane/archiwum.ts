@@ -9,7 +9,7 @@ import { kopiaBazy } from './baza/kopia';
 import { scalZKopia, zastapZKopii } from './baza/przeniesienie';
 import { sha256 } from './archiwum/sha256';
 import { czytajKatalog, czytajWpis, wypakuj, zapiszZip } from './archiwum/zip';
-import { istniejePlik, lista as listaPlikow, polacz, usunKatalog, usunPlik, utworzKatalog } from './pliki/system';
+import { istniejePlik, lista as listaPlikow, polacz, przenies, usunKatalog, usunPlik, utworzKatalog } from './pliki/system';
 import { PLIK_BAZY } from './baza/sciezki';
 import { sprawdzKopie } from './kopia-ratunkowa';
 import { liczba, tekst, wiersze } from './repozytoria/wiersze';
@@ -94,18 +94,21 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
   }
 
   const archiwum: PortArchiwum = {
-    /** VACUUM INTO + pliki + manifest; przed zapisem sprawdzenie miejsca, po błędzie żaden plik nie zostaje w katalogu docelowym. */
+    /** VACUUM INTO + pliki + manifest; przed zapisem sprawdzenie miejsca, po błędzie żaden plik nie zostaje w katalogu docelowym.
+     *  12-niezawodnosc-506 (P-443): ZIP powstaje w katalogu tymczasowym pod nazwą spoza puli kopii (ADR-0032 pkt 5) i dopiero po zamknięciu jest
+     *  przenoszony na nazwę docelową (wzorzec `zapiszAtomowo`, bez usuwania celu), więc zabity proces nie zostawia niepełnego pliku pod nazwą kopii;
+     *  sierotę w katalogu tymczasowym usuwa `sprzatnijTymczasowe` przy kamieniu milowym, a „Delete all data” — `wyczyscKatalog` (nie `.oczko`). */
     async zapisz(katalogDocelowy, opcje) {
       if (zaMaloMiejsca(await z.magazyn.wolneMiejsce(), await potrzebneMiejsce())) return blad('brak_miejsca'); // ADR-0004, ŚU-17
       const teraz = z.zegar.teraz();
       const baza = polacz(z.katalogi.tymczasowy, `eksport-${teraz.ms}.db`);
+      const zipTymczasowy = polacz(z.katalogi.tymczasowy, `archiwum-${teraz.ms}.zapis`);
       const przedrostek = opcje?.przedrostek ?? 'oczko';
-      let cel: string | null = null; // ustawiany dopiero na nazwę, która nie istnieje — tylko taki plik wolno usunąć po błędzie
       try {
         utworzKatalog(katalogDocelowy); // Documents/Backup powstaje przy pierwszej kopii (idempotentnie); błąd → 'zapis' poniżej
         let nowy = polacz(katalogDocelowy, nazwaArchiwum(listaPlikow(katalogDocelowy), przedrostek, teraz.dzien)); // ADR-0032 pkt 6: przyrostek rośnie
         for (let i = 2; istniejePlik(nowy); i++) nowy = polacz(katalogDocelowy, `${przedrostek}-${teraz.dzien}-${i}${ROZSZERZENIE_ARCHIWUM}`); // nigdy nie nadpisuje
-        cel = nowy;
+        const cel = nowy;
         const k = await kopiaBazy(z.baza, baza);
         if (!k.ok) return k;
         if (!(await kopiaZdrowa(baza))) return blad('uszkodzony'); // nie udostępniamy uszkodzonej kopii jako zapasowej (N12-12)
@@ -116,17 +119,19 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
           licznosci: await licznosciPliku(baza), // liczności z migawki, która trafia do archiwum
           pliki: pliki.map((p) => ({ sha256: p.sha256, bajty: p.bajty })),
         };
-        const zip = zapiszZip(cel, [
+        usunPlik(zipTymczasowy);
+        const zip = zapiszZip(zipTymczasowy, [
           { nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest)) },
           { nazwa: PLIK_BAZY, plik: baza },
           ...pliki.map((p) => ({ nazwa: `pliki/${p.sha256}.${p.rozszerzenie}`, plik: z.magazyn.sciezka(p.sha256) })),
         ]);
         if (!zip.ok) return zip; // za_duze (bez ZIP64, ADR-0016): plik archiwum nie powstał albo został usunięty
+        przenies(zipTymczasowy, cel); // przeniesienie nie nadpisuje: cel, który pojawił się w międzyczasie, zostaje, a błąd idzie do catch
         return { ok: true, wartosc: { sciezka: cel, manifest } };
       } catch (e) {
-        if (cel !== null) usunPlik(cel);
         return zapisNieudany(e);
       } finally {
+        usunPlik(zipTymczasowy);
         usunPlik(baza);
       }
     },

@@ -6,7 +6,8 @@
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, ROZMIAR_SYMBOLU_TRESCI, typografia, useKolory, type Kolory } from './motyw';
+import { StrzalkaWiersza, SymbolSf } from './SymbolSf';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import type { Tlumacz } from './wspolne';
 
@@ -65,7 +66,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
   );
   const usun = (nazwa: string, f: () => void, testID: string) => p.edycja && (
     <Pressable accessibilityRole="button" accessibilityLabel={t('usun.a11y', { nazwa })} onPress={f} style={st.usun} testID={testID}>
-      <Text style={[st.tekst, { color: k.blad }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">⊖</Text>
+      <SymbolSf nazwa="minus.circle.fill" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.blad} maxSkala={MAX_SKALA_TYTULOWA} />{/* M1-146: zamiast glifu ⊖ */}
     </Pressable>
   );
   const opisCzesci = (c: CzescProjektu) => (c.cel !== null ? t('projekt.czesc_cel', { rzedy: c.rzedy, count: c.cel }) : t('projekt.czesc_rzedy', { count: c.rzedy }));
@@ -163,7 +164,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
                 <Pressable accessibilityRole="button" onPress={p.naSesje} disabled={!p.naSesje} style={st.wierszGrupy} testID="projekt-sesje">
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={st.tekst}>{t('projekt.sesje')}</Text>
-                    <Text style={st.tekst}>{String(s.czas.sesje)}<Text importantForAccessibility="no" accessibilityElementsHidden>{' ›'}</Text></Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs }}><Text style={st.tekst}>{String(s.czas.sesje)}</Text><StrzalkaWiersza /></View>
                   </View>
                   {s.czas.doSprawdzenia > 0 && <Text style={st.podpis}>{t('projekt.sesje_sprawdz', { count: s.czas.doSprawdzenia })}</Text>}
                 </Pressable>

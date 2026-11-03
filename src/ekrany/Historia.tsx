@@ -50,8 +50,8 @@ export function Historia({ stan, t, naCofnij, naCofnijSerie, naWpisz, naZamknij 
                   ? <Przycisk tekst={t('historia.cofnij_serie', { count: w.seria.ile })} onPress={() => naCofnijSerie(w.seria!.odZdarzeniaId)} testID="historia-cofnij-serie" />
                   : <Przycisk tekst={t('wspolne.cofnij')} onPress={() => naCofnij(w.id)} testID="historia-cofnij-ostatnia" />)}
                 {starszy && (
-                  // ▸/▾ po prawej, cel ≥ 44 pt (przycisk tekstowy), stan w `expanded`, etykieta stała (aneks partii 8, poz. 4; wzorzec 20 Treningu)
-                  <Przycisk tekst={rozwiniety === w.id ? '▾' : '▸'} etykieta={t('historia.wpis_rozwin_a11y', { wpis: opisWpisu })} podpowiedz={t('historia.wpis_rozwin_podpowiedz')}
+                  // Rozwinięcie po prawej (chevron.right / chevron.down, M1-146), cel ≥ 44 pt (przycisk tekstowy), stan w `expanded`, etykieta stała (aneks partii 8, poz. 4; wzorzec 20 Treningu)
+                  <Przycisk tekst={t('historia.wpis_rozwin_a11y', { wpis: opisWpisu })} symbol={rozwiniety === w.id ? 'chevron.down' : 'chevron.right'} podpowiedz={t('historia.wpis_rozwin_podpowiedz')}
                     rozwiniety={rozwiniety === w.id} rodzaj="tekstowy" onPress={() => ustawRozwiniety(rozwiniety === w.id ? null : w.id)} testID={`historia-rozwin-${w.id}`} />
                 )}
               </View>

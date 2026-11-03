@@ -70,7 +70,7 @@ describe('P-195 Q4a: kopia z narzędziem i rozmiarem', () => {
     const s = await przygotuj();
     await wykonaj(s.baza, [projekt('p1', 'Torba', T0, { notatka: 'x' }), czesc('c1', 'p1', 'Dno'), ...licznik('l1', 'c1', 12),
       ["UPDATE projekt SET narzedzie = 'szydelko', drut_mm = 6.5, termin_dzien = '2026-12-01' WHERE id = 'p1'", []]]);
-    const k = await zrobPonownie(s.z, { projektId: 'p1' });
+    const k = await zrobPonownie(s.z, { projektId: 'p1', szablonNazwy: '{{nazwa}} {{n}}' });
     if (!k.ok) throw new Error(k.powod);
     const [p] = await s.baza.all<Record<string, unknown>>('SELECT narzedzie, drut_mm, notatka, termin_dzien FROM projekt WHERE id = ?', [k.wartosc.projektId]);
     expect(p).toEqual({ narzedzie: 'szydelko', drut_mm: 6.5, notatka: '', termin_dzien: null });

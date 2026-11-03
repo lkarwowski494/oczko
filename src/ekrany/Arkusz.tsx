@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
-import { SymbolSf } from './SymbolSf';
+import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
 export function odstepNadKlawiatura(w: { dolPrzyciskow: number; gornaKlawiatury: number | null }): number {
@@ -105,8 +105,9 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
 }
 
 type RodzajPrzycisku = 'glowny' | 'niszczacy' | 'drugi' | 'tekstowy'; // niszczacy: tylko arkusz decyzji o nieodwracalnym usunięciu, jeden na ekran (04 fix-8, P-275 (2))
-export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean }): React.ReactElement {
-  const st = style(useKolory());
+export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean; symbol?: NazwaSymbolu }): React.ReactElement {
+  const k = useKolory();
+  const st = style(k);
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
   // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
@@ -115,12 +116,14 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
-      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
+      {p.symbol
+        ? <SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />/* M1-146: sam symbol (rozwinięcie wpisu historii), `tekst` zostaje etykietą VoiceOver */
+        : <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>}
     </Pressable>
   );
 }
 
-export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string): void; liczbowe?: boolean; dziesietne?: boolean; wielowierszowe?: boolean; testID?: string; naKoniec?(): void }): React.ReactElement {
+export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string): void; liczbowe?: boolean; dziesietne?: boolean; wielowierszowe?: boolean; testID?: string; naKoniec?(): void; naFokus?(): void }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   return (
@@ -128,7 +131,7 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
       <Text style={st.podpis} importantForAccessibility="no" accessibilityElementsHidden>{p.etykieta}</Text>
       <TextInput accessibilityLabel={p.etykieta} value={p.wartosc} onChangeText={p.naZmiane} testID={p.testID} style={st.wejscie}
         keyboardType={p.dziesietne ? 'decimal-pad' : p.liczbowe ? 'number-pad' : 'default'} returnKeyType={p.liczbowe || p.dziesietne || p.wielowierszowe ? undefined : 'done'}
-        onSubmitEditing={p.naKoniec} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
+        onSubmitEditing={p.naKoniec} onFocus={p.naFokus} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
         autoCorrect={false} placeholderTextColor={k.olowek} />
     </View>
   );
@@ -212,10 +215,10 @@ export function style(k: Kolory) {
     opcja: { minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia, padding: odstep.m, justifyContent: 'center' },
     opcjaWybrana: { borderColor: k.drugiPrzyciskObrys },
     // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
-    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Bez osobnych tokenów rozmiaru, promienia (8) i kroju (700 18 pt)
-    // najbliższe istniejące: `odstep.xxl` (28), `promien.pole` (10), `typografia.instrukcja` (Libre Franklin 700, 20 pt) — do tokenów roli 04 (M1-audytor-generalny-050).
+    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru`, `promien.poleWyboru`, `typografia.znakWyboru`
+    // (M1-audytor-generalny-145; wcześniej zastępcze z M1-050); znak ✓ najwyżej ×1,6 (`MAX_SKALA_ZNAKU_WYBORU`) w FormularzeProjektu.tsx.
     wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
-    poleWyboru: { ...typografia.instrukcja, color: k.grafit, width: odstep.xxl, minHeight: odstep.xxl, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.pole, overflow: 'hidden' },
+    poleWyboru: { ...typografia.znakWyboru, color: k.grafit, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.poleWyboru, overflow: 'hidden' },
     poleWyboruZaznaczone: { backgroundColor: k.przyciskTlo, color: k.przyciskTekst },
     wejscie: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, paddingHorizontal: odstep.m },
     podpis: { ...typografia.podpis, color: k.olowek },

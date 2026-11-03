@@ -10,7 +10,7 @@ import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 const mockRouter = { back: jest.fn(), replace: jest.fn(), push: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => ({}) }));
+jest.mock('expo-router', () => ({ useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => ({}) }));
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 type PropsWidoku = { notatki?: { id: string; strona: number; y: number; wysokosc: number; etykieta: string; a11y: string }[]; onNotatka?: (e: { nativeEvent: { id: string } }) => void };

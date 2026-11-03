@@ -150,7 +150,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-zrob-taka-sama` | ekran projektu (menu •••) | Make another like this | „Make another like this” | |
 | `projekt-usun` | ekran projektu (menu •••) | Delete project… | „Delete project…” | |
 | `projekt-wznow` | ekran projektu (menu •••, ukończony) | Resume project | „Resume project” | |
-| `projekt-linia-terminu` | ekran projektu | linia terminu (tylko z terminem) | „Done by Oct 31 · today 3 of 10 rows” | |
+| `projekt-linia-terminu` | ekran projektu | linia terminu (tylko z terminem; klucz `projekt.termin_dzis`, M1-034) | „Done by Oct 31, today 3 of 10 rows” | |
 | `projekt-postep` | ekran projektu | tekst postępu w procentach (tylko część z celem; 033-T1) | „51% done” | |
 | `projekt-notatka` | ekran projektu | notatka (otwiera arkusz) | tekst notatki albo „Add a note” | |
 | `projekt-narzedzie` | ekran projektu | druty albo szydełko (otwiera arkusz) | „4 mm (US 6)” | |

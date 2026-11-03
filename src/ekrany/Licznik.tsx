@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { LiniaKonfliktu } from './IcloudKonflikt';
 import type { WzorzecHaptyki } from '../domena/porty';
-import { MAX_SKALA_LICZBY, MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, PROG_KATEGORII_DOSTEPNOSCI, useKolory } from './motyw';
+import { MAX_SKALA_LICZBY, MAX_SKALA_MINUSA, MIN_SKALA_LICZBY, MAX_SKALA_TYTULOWA, PROG_KATEGORII_DOSTEPNOSCI, useKolory } from './motyw';
 import { Kreski } from './Kreski';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
 import { LinijkaCelu } from './LicznikCel';
@@ -104,8 +104,9 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
       : t('licznik.plus_a11y', { n: nrRobocza });
 
   const wierszLiczby = (
-    <View style={st.liczbaWiersz} testID="licznik-wartosc-wiersz">
-      <Text style={st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} testID="licznik-wartosc">{String(liczba)}</Text>
+    <View style={duzyTekst ? st.liczbaKolumna : st.liczbaWiersz} testID="licznik-wartosc-wiersz">
+      {/* M1-132 (SP-07): liczba zawsze w jednym wierszu — zmniejsza się zamiast zawijać; przy kategoriach dostępności jednostka pod liczbą. */}
+      <Text style={st.liczba} maxFontSizeMultiplier={MAX_SKALA_LICZBY} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={MIN_SKALA_LICZBY} testID="licznik-wartosc">{String(liczba)}</Text>
       <Text style={st.podpis}>{s.cel !== null ? t('licznik.z_celu', { cel: s.cel }) : oczka ? t('licznik.jednostka_oczka', { count: liczba }) : s.znaczenie === 'w_trakcie' ? t('licznik.jednostka_w_trakcie') : t('licznik.jednostka', { count: liczba })}</Text>
     </View>
   );
@@ -193,7 +194,9 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </View>
         )}
         {s.blizniak && (s.blizniak.notatka || s.blizniak.przypomnienie) && (
-          <Text style={st.tresc}>{t('licznik.blizniak', { rzad: s.blizniak.rzad, tresc: [s.blizniak.notatka, s.blizniak.przypomnienie].filter(Boolean).join(' · ') })}</Text>
+          <Text style={st.tresc}>{s.blizniak.notatka && s.blizniak.przypomnienie
+            ? t('licznik.blizniak_oba', { rzad: s.blizniak.rzad, notatka: s.blizniak.notatka, przypomnienie: s.blizniak.przypomnienie }) // M1-144: zdanie stanu z przecinkiem ze słownika, bez „ · ”
+            : t('licznik.blizniak', { rzad: s.blizniak.rzad, tresc: s.blizniak.notatka || s.blizniak.przypomnienie || '' })}</Text>
         )}
       </ScrollView>
       {/* M1-004: komunikat w stałym miejscu nad przyciskami, poza przewijaną treścią (dawniej ostatnie dziecko ScrollView, pod notatką i kreskami) */}

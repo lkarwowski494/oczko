@@ -44,17 +44,21 @@ describe('BR-KAL-001 (RD-01)', () => {
 });
 
 describe('BR-KAL-003 (RD-04) i grubość (RD-10)', () => {
-  test('S1: 20 o./4 in → „= 19.685 stitches per 10 cm” + uwaga 4 in; 10 in → 50 oczek', () => {
+  test('S1 (ER-62, DEC-34 a): 20 o./4 in → „= 19.7 stitches per 10 cm” + uwaga 4 in; 10 in → 50 oczek', () => {
     const s = licz({ oczka: '20', na: '4in', szerokosc: '10', jednostka: 'in' });
-    expect(s.przeliczona).toBe('= 19.685 stitches per 10 cm');
+    expect(s.przeliczona).toBe('= 19.7 stitches per 10 cm');
     expect(s.uwaga4in).toBe(t('probka.uwaga_4in'));
     expect(s.wynik?.liczba).toBe('50 stitches');
     expect(s.wynik?.zDanych).toBe('From 20 stitches per 4 in and 10 in.');
   });
+  test('S3 (ER-62): 20,5 o./4 in → „= 20.2 stitches per 10 cm”; 100 cm → 196.9 oczek z pełnej gęstości (nie 197 z zaokrąglonej 19,7)', () => {
+    expect(licz({ oczka: '20.5', na: '4in' }).przeliczona).toBe('= 20.2 stitches per 10 cm');
+    expect(licz({ oczka: '20', na: '4in', szerokosc: '100', jednostka: 'cm' }).wynik?.liczba).toBe('196.9 stitches');
+  });
   test('22 o./10 cm → kategoria 3 z dokładną wartością na 4 in i uwagą o zaokrągleniu', () => {
     const g = licz({ oczka: '22' }).grubosc;
     expect(g?.linie).toEqual(['Category 3, light: 21–24 stitches per 4 in, knitted in stockinette stitch.']);
-    expect(g?.dokladnie).toBe('22.352 stitches per 4 in.');
+    expect(g?.dokladnie).toBe('22.4 stitches per 4 in.'); // DEC-34 a: wyliczona — jedno miejsce
     expect(g?.uwagi).toEqual([t('probka.uwaga_zaokraglenie'), t('probka.uwaga_kategoria')]);
   });
   test('23 o./4 in → obie kategorie 2 i 3, bez wartości dokładnej i bez uwagi o zaokrągleniu', () => {

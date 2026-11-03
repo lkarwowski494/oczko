@@ -2,7 +2,7 @@
 // starszy, niecofnięty wpis historii ma strzałkę ▸ (zwinięty) / ▾ (rozwinięty) po prawej, cel ≥ 44 pt, stan niesie `accessibilityState.expanded`, etykieta VoiceOver
 // jest stała („More about …”, taka sama po rozwinięciu), podpowiedź „Shows how to change this entry.”. Stan nie jest zapamiętywany (nowy ekran = zwinięty).
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, within } from '@testing-library/react-native';
 import { Historia, type WpisHistorii } from '../../src/ekrany/Historia';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { tEn } from './pomoc';
@@ -13,10 +13,11 @@ const wpis = (p: Partial<WpisHistorii> & { id: string }): WpisHistorii => ({ god
 const WPISY = [wpis({ id: 'e3', godzina: '21:02', z: 40, na: 41, mozeCofnac: true }), wpis({ id: 'e2' }), wpis({ id: 'e1', godzina: '19:50', z: 29, na: 30, cofniety: true })];
 const ekran = () => render(<Historia stan={{ wpisy: WPISY }} t={t} naCofnij={jest.fn()} naCofnijSerie={jest.fn()} naWpisz={jest.fn()} naZamknij={jest.fn()} />);
 const strzalka = () => screen.getByTestId('historia-rozwin-e2');
+const znak = () => within(strzalka()).getByTestId(/^symbol-/, { includeHiddenElements: true }).props.name as string;
 
 test('zwinięty starszy wpis: ▸, expanded=false, etykieta „More about …” z opisem wpisu, podpowiedź, rola przycisku', () => {
   ekran();
-  expect(strzalka()).toHaveTextContent('▸');
+  expect(znak()).toBe('chevron.right'); // M1-146: symbol SF zamiast glifu ▸
   expect(strzalka().props.accessibilityState).toMatchObject({ expanded: false });
   expect(strzalka().props.accessibilityLabel).toBe('More about 30 to 31 at 20:14');
   expect(strzalka().props.accessibilityHint).toBe('Shows how to change this entry.');
@@ -26,13 +27,13 @@ test('zwinięty starszy wpis: ▸, expanded=false, etykieta „More about …”
 test('stuknięcie rozwija: ▾, expanded=true, ta sama etykieta, wyjaśnienie i „Enter the right number”; drugie stuknięcie zwija', () => {
   ekran();
   fireEvent.press(strzalka());
-  expect(strzalka()).toHaveTextContent('▾');
+  expect(znak()).toBe('chevron.down'); // M1-146: symbol SF zamiast glifu ▾
   expect(strzalka().props.accessibilityState).toMatchObject({ expanded: true });
   expect(strzalka().props.accessibilityLabel).toBe('More about 30 to 31 at 20:14'); // stała (wzorzec 20): stan niesie `expanded`, nie etykieta
   expect(screen.getByText(/Only the latest change can be undone/)).toBeTruthy();
   expect(screen.getByText('Enter the right number')).toBeTruthy();
   fireEvent.press(strzalka());
-  expect(strzalka()).toHaveTextContent('▸');
+  expect(znak()).toBe('chevron.right'); // M1-146: symbol SF zamiast glifu ▸
   expect(screen.queryByText(/Only the latest change can be undone/)).toBeNull();
 });
 test('strzałka: styl minHeight 44 (deklaracja stylu; render testowy nie liczy układu)', () => {
@@ -51,7 +52,7 @@ test('nowy ekran historii zaczyna zwinięty (stan niezapamiętywany)', () => {
   fireEvent.press(strzalka());
   pierwszy.unmount();
   ekran();
-  expect(strzalka()).toHaveTextContent('▸');
+  expect(znak()).toBe('chevron.right'); // M1-146: symbol SF zamiast glifu ▸
 });
 
 // P2-8 (Aneks P2 poz. 4, 04): VoiceOver czyta wiersz zdaniem „{{od}} to {{do}} at {{czas}}” (nie znakami „·” i „→”); widoczny tekst bez zmian;

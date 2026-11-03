@@ -68,3 +68,38 @@ test('pasek przy AX5: ikony historii i ••• najwyżej ×1,8, grupa ikon fle
   expect(screen.getByTestId('licznik-ikony')).toContainElement(screen.getByTestId('licznik-menu'));
   expect(screen.getByTestId('nav-projekty')).toHaveStyle({ flexShrink: 1 });
 });
+
+// M1-132 (04-studio-projektowe-522, SP-07): przy AX5 liczba 12345 zawijała się na dwa wiersze („1234” / „5”), a jednostka była ucięta.
+// Opcja (a): liczba zawsze w jednym wierszu i zmniejsza się, żeby się zmieścić; przy kategoriach dostępności jednostka pod liczbą.
+test('AX5, liczba pięciocyfrowa: liczba w jednym wierszu (zmniejsza się zamiast zawijać), jednostka pod liczbą i widoczna', () => {
+  skala(3.571);
+  render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 12345, dziergany: 12346 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+  const liczba = screen.getByTestId('licznik-wartosc');
+  expect(liczba).toHaveTextContent('12345');
+  expect(liczba.props.numberOfLines).toBe(1);
+  expect(liczba.props.adjustsFontSizeToFit).toBe(true);
+  expect(liczba).toHaveStyle({ flexShrink: 1 });
+  expect(screen.getByTestId('licznik-wartosc-wiersz')).toHaveStyle({ flexDirection: 'column' });
+  expect(screen.getByText('rows')).toBeTruthy();
+});
+
+test('M1-132: przy tekście domyślnym liczba też w jednym wierszu, jednostka obok liczby (linia bazowa)', () => {
+  render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 12345, dziergany: 12346 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+  expect(screen.getByTestId('licznik-wartosc').props.numberOfLines).toBe(1);
+  expect(screen.getByTestId('licznik-wartosc').props.adjustsFontSizeToFit).toBe(true);
+  expect(screen.getByTestId('licznik-wartosc-wiersz')).toHaveStyle({ flexDirection: 'row', alignItems: 'baseline' });
+});
+
+// M1-132 próg (04-studio-projektowe-522, przekazanie P-445; design-spec „dolny próg skali liczby licznika”): liczba zmniejsza się najwyżej do ×0,5
+// (`minimumFontScale` z tokenu `typografia.liczba.minSkala`), więc sześć cyfr mieści się przy 320 pt i AX5, a liczba nie spada poniżej ok. 48 pt.
+test('M1-132: dolny próg dopasowania liczby = token typografia.liczba.minSkala (0,5), przy AX5 i przy tekście domyślnym', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const tokeny = require('../../docs/design/tokeny.json') as { typografia: { liczba: { minSkala?: unknown } } };
+  expect(tokeny.typografia.liczba.minSkala).toBe(0.5);
+  for (const s of [3.571, 1]) {
+    skala(s);
+    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 123456, dziergany: 123457 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+    expect(screen.getByTestId('licznik-wartosc').props.minimumFontScale).toBe(0.5);
+    screen.unmount();
+  }
+});

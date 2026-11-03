@@ -17,9 +17,9 @@ jest.mock('../../src/kompozycja/start-aplikacji', () => ({
   ...jest.requireActual<object>('../../src/kompozycja/start-aplikacji'),
   rozpocznijStart: async () => ({ tryb: 'normalny' }), zapiszEtap: () => undefined, zapiszWyjscieDoTla: async () => undefined,
 }));
-const mockBlad: { tekst: string } = { tekst: '' };
+const mockBlad: { tekst: string; wolne: number | null } = { tekst: '', wolne: null };
 jest.mock('../../src/kompozycja/kontener', () => ({
-  utworzKontener: () => jest.requireActual<typeof import('../../src/dane/baza/polaczenie')>('../../src/dane/baza/polaczenie').otworzBaze('/kontener/Library/Application Support/oczko.db', (): PortBazy => { throw new Error(mockBlad.tekst); }),
+  utworzKontener: () => jest.requireActual<typeof import('../../src/dane/baza/polaczenie')>('../../src/dane/baza/polaczenie').otworzBaze('/kontener/Library/Application Support/oczko.db', (): PortBazy => { throw new Error(mockBlad.tekst); }, () => mockBlad.wolne),
 }));
 jest.mock('../../src/kompozycja/bledy-js', () => ({ zainstalujObslugeBledow: () => ({ ustawZapis: () => undefined }) }));
 jest.mock('../../src/kompozycja/Kontekst', () => ({ DostawcaAplikacji: ({ children }: { children: React.ReactNode }) => children }));
@@ -35,6 +35,7 @@ const Korzen = (require('../../app/_layout') as { default: React.ComponentType }
 const chwila = (ms: number) => act(async () => { await new Promise((r) => setTimeout(r, ms)); });
 
 beforeEach(() => {
+  mockBlad.wolne = null; // wolne miejsce nieznane: powód tylko z treści błędu
   Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true }); // start na pierwszym planie (ADR-0019)
 });
 
@@ -48,4 +49,14 @@ test.each([
   render(<Korzen />);
   await chwila(50);
   expect(screen.getByTestId('ekran-awaryjny').props.children).toBe(powod);
+});
+
+// M1-audytor-generalny-157 (12-niezawodnosc-505, ADR-0020 (4)): SQLite zgłasza brak miejsca przy powiększaniu `-shm` (odbudowa indeksu WAL) jako
+// SQLITE_IOERR „disk I/O error”, nie SQLITE_FULL. Przy znanym wolnym miejscu poniżej progu korzeń ma pokazać `brak_miejsca`, nie „can’t read your data”.
+test('M1-157 ADR-0020 (4): otwarcie bazy rzuca „disk I/O error” przy wolnym miejscu 0 → ekran awaryjny z powodem „brak_miejsca”', async () => {
+  mockBlad.tekst = 'SQLITE_IOERR: disk I/O error';
+  mockBlad.wolne = 0;
+  render(<Korzen />);
+  await chwila(50);
+  expect(screen.getByTestId('ekran-awaryjny').props.children).toBe('brak_miejsca');
 });

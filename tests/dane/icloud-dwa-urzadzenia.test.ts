@@ -21,7 +21,8 @@ async function urzadzenie(serwer: SerwerTestowy, nazwa: string, prefiks: string)
   return { s, u, st };
 }
 const n = async (b: PortBazy, sql: string, p: unknown[] = []) => (await b.all<{ n: number }>(sql, p))[0].n;
-const skrzynka = (b: PortBazy) => n(b, 'SELECT count(*) AS n FROM zmiana_icloud');
+// Brak oczekujących (M1-117: wpis wysłany zostaje do pełnego pobrania, ADR-0005 uzupełnienie 2026-11-03).
+const skrzynka = (b: PortBazy) => n(b, 'SELECT count(*) AS n FROM zmiana_icloud WHERE wyslano_nr IS NULL OR wyslano_nr < nr');
 const licznik = (b: PortBazy, id: string) => b.all<{ wartosc: number; konflikt: number }>('SELECT wartosc, konflikt FROM licznik WHERE id = ?', [id]);
 /** Stan danych synchronizowanych (bez tabel lokalnych), do porównań „ten sam stan”. */
 async function zrzut(b: PortBazy): Promise<Record<string, unknown[]>> {
@@ -418,7 +419,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     await b.u.dostarcz({ rekordy: [] });
     expect(await licznosci(b.s.baza)).toMatchObject({ projekt: 1, projekt_w_koszu: 1, czesc: 1, licznik: 1, zdarzenie: 5, blad: 0, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
-    expect(await n(b.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
+    expect(await skrzynka(b.s.baza)).toBe(0);
     expect(serwer.rekordy.has(`projekt:${p.id}`)).toBe(true);
   });
 
@@ -453,5 +454,111 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     expect(await licznik(a.s.baza, l)).toEqual([{ wartosc: 4, konflikt: 0 }]);
     expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
     for (const baza of [a.s.baza, b.s.baza]) expect([await baza.all('PRAGMA integrity_check'), await baza.all('PRAGMA foreign_key_check')]).toEqual([[{ integrity_check: 'ok' }], []]);
+  });
+});
+
+// M1-audytor-generalny-117 (05-architekt-510; ADR-0005 uzupełnienie 2026-11-03, P-440 wariant (a), P-442, P-444): zmiana wysłana przez B, zanim B
+// odebrał nagrobki, nie ginie — wpis wysłany zostaje do pełnego pobrania, a zapis rekordu usuniętego na serwerze (`unknownItem`) to nagrobek dla nadawcy.
+const kosz = async (b: PortBazy) => ({
+  projekt: await n(b, 'SELECT count(*) AS n FROM projekt'), czesc: await n(b, 'SELECT count(*) AS n FROM czesc'), licznik: await n(b, 'SELECT count(*) AS n FROM licznik'),
+  zdarzenie: await n(b, 'SELECT count(*) AS n FROM zdarzenie'), plik: await n(b, 'SELECT count(*) AS n FROM plik'), poczekalnia: await n(b, 'SELECT count(*) AS n FROM poczekalnia'),
+  projekt_w_koszu: await n(b, 'SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL'),
+  czesc_w_koszu: await n(b, 'SELECT count(*) AS n FROM czesc WHERE usunieto_ms IS NOT NULL'),
+  wartosc: (await b.all<{ wartosc: number }>('SELECT wartosc FROM licznik'))[0]?.wartosc ?? null,
+});
+const czyste = async (b: PortBazy) => expect([await b.all('PRAGMA integrity_check'), await b.all('PRAGMA foreign_key_check')]).toEqual([[{ integrity_check: 'ok' }], []]);
+
+describe('ADR-0005 nagrobki: zmiana wysłana przed odebraniem nagrobka (M1-audytor-generalny-117)', () => {
+  test('117: B wysyła +1 przed odebraniem nagrobka → na A i B projekt w koszu z licznikiem 2 i 2 zdarzeniami, poczekalnia pusta, zrzut(A) = zrzut(B)', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    await dodajRzad(a.s.z, { licznikId: l });
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    expect(await kosz(b.s.baza)).toMatchObject({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 1, projekt_w_koszu: 0 });
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie na A (jak sprzatnijKosz)
+    await a.st.wyslijZaleglosci();
+    expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true); // B online, nagrobków jeszcze nie odebrał
+    await b.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] }); // B dostaje nagrobki
+    await b.st.wyslijZaleglosci();
+    await a.u.dostarcz(); // A dostaje to, co jest na serwerze
+    const oczekiwany = { projekt: 1, czesc: 1, licznik: 1, zdarzenie: 2, plik: 0, poczekalnia: 0, projekt_w_koszu: 1, czesc_w_koszu: 0, wartosc: 2 };
+    expect({ A: await kosz(a.s.baza), B: await kosz(b.s.baza) }).toEqual({ A: oczekiwany, B: oczekiwany });
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
+    expect(await skrzynka(b.s.baza)).toBe(0); // brak oczekujących na B
+    expect(await n(a.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
+    await czyste(a.s.baza); await czyste(b.s.baza);
+  });
+
+  test('116 z wysyłką B między partiami jednego pobrania: A i B mają 4 zdarzenia, licznik 4 i projekt w koszu', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    for (let i = 0; i < 3; i += 1) await dodajRzad(a.s.z, { licznikId: l });
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    b.u.bladWysylki = { kod: 'siec' };
+    expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true); // E4 niewysłane
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]);
+    await a.st.wyslijZaleglosci();
+    const wszystkie = [...serwer.usuniete.values()];
+    const zd = wszystkie.filter((x) => x.encja === 'zdarzenie').sort((x, y) => x.klucz.localeCompare(y.klucz));
+    await b.u.pobranie('poczatek');
+    await b.u.dostarcz({ rekordy: [], usuniete: wszystkie.filter((x) => x !== zd[1] && x !== zd[2]) }, { bezPobrania: true }); // partia 1
+    b.u.bladWysylki = null; await b.st.wyslijZaleglosci(); // wysyłka B między partiami
+    await b.u.dostarcz({ rekordy: [], usuniete: [zd[1], zd[2]] }, { bezPobrania: true }); // partia 2: nagrobki E2, E3
+    await b.u.pobranie('koniec');
+    await b.st.wyslijZaleglosci(); await a.u.dostarcz();
+    expect(await kosz(b.s.baza)).toMatchObject({ zdarzenie: 4, wartosc: 4, projekt_w_koszu: 1, czesc_w_koszu: 0 });
+    expect(await kosz(a.s.baza)).toMatchObject({ zdarzenie: 4, wartosc: 4, projekt_w_koszu: 1, czesc_w_koszu: 0, poczekalnia: 0 });
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
+    await czyste(a.s.baza); await czyste(b.s.baza);
+  });
+
+  test('usunięcie samej części na A przy +1 offline na B: na obu część w koszu, projekt w „W toku”', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    await dodajRzad(a.s.z, { licznikId: l });
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    b.u.bladWysylki = { kod: 'siec' };
+    await dodajRzad(b.s.z, { licznikId: l });
+    const [c] = await a.s.baza.all<{ id: string }>('SELECT id FROM czesc');
+    await a.s.baza.run('DELETE FROM czesc WHERE id = ?', [c.id]); // trwałe usunięcie samej części
+    await a.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] });
+    b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
+    await a.u.dostarcz();
+    const oczekiwany = { projekt_w_koszu: 0, czesc_w_koszu: 1, zdarzenie: 2, wartosc: 2, poczekalnia: 0 };
+    expect({ A: await kosz(a.s.baza), B: await kosz(b.s.baza) }).toMatchObject({ A: oczekiwany, B: oczekiwany });
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
+  });
+
+  test('edycja projektu usuniętego trwale na A (B jeszcze bez nagrobka) → na A i B projekt w koszu z nową nazwą', async () => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    await dodajRzad(a.s.z, { licznikId: l });
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]);
+    await a.st.wyslijZaleglosci();
+    await b.s.baza.run("UPDATE projekt SET nazwa = 'Nowa nazwa', zmieniono_ms = zmieniono_ms + 10 WHERE id = ?", [p.id]); // edycja na B przed nagrobkiem
+    await b.st.wyslijZaleglosci();
+    await b.u.dostarcz({ rekordy: [] });
+    await b.st.wyslijZaleglosci();
+    await a.u.dostarcz();
+    for (const u of [a, b]) {
+      expect(await u.s.baza.all('SELECT nazwa, usunieto_ms IS NOT NULL AS w_koszu FROM projekt')).toEqual([{ nazwa: 'Nowa nazwa', w_koszu: 1 }]);
+      // Chroniony jest tylko wiersz ze zmianą B (i jego przodkowie); części bez zmian na B idą za trwałym usunięciem z A.
+      expect(await kosz(u.s.baza)).toMatchObject({ projekt: 1, czesc: 0, licznik: 0, zdarzenie: 0, poczekalnia: 0 });
+    }
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
   });
 });

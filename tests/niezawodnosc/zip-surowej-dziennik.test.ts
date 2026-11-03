@@ -2,8 +2,8 @@
 // kompletna): tryb awaryjny nie scala dziennika +1 z ekranu blokady i zegarka do bazy, więc ZIP surowej kopii („Zapisz kopię danych”, gdy baza się
 // nie otwiera albo archiwum zawodzi) musi zawierać plik dziennika z SHA-256 w manifeście. Prawdziwy kod trybu awaryjnego
 // (`src/kompozycja/start-aplikacji.ts`) na prawdziwym dysku i SQLite (zastępniki z jest.config.js), na kopii instalacji w katalogu tymczasowym.
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { rozpocznijStart, trybAwaryjny } from '../../src/kompozycja/start-aplikacji';
 import type { ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
@@ -11,7 +11,19 @@ import { czytajZip, licznosciPliku, zycie } from '../dane/pomocnicze/dane-wejsci
 import { katalogTymczasowy, licznosci, przygotuj, sha256, sha256Pliku, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 let mockBiblioteka = '';
-jest.mock('../../src/dane/pliki/system', () => ({ ...jest.requireActual('../../src/dane/pliki/system'), katalogBiblioteki: () => mockBiblioteka }));
+let mockBladKopiiDziennika: Error | null = null;
+jest.mock('../../src/dane/pliki/system', () => {
+  const prawdziwy = jest.requireActual<typeof import('../../src/dane/pliki/system')>('../../src/dane/pliki/system');
+  return {
+    ...prawdziwy,
+    katalogBiblioteki: () => mockBiblioteka,
+    // M1-156: błąd kopii samego dziennika +1 (migawka obok ZIP-a); pliki bazy kopiowane jak zwykle.
+    kopiuj: (zrodlo: string, cel: string) => {
+      if (mockBladKopiiDziennika && zrodlo.endsWith('dziennik-plus.jsonl')) throw mockBladKopiiDziennika;
+      prawdziwy.kopiuj(zrodlo, cel);
+    },
+  };
+});
 // SHA-256 pliku: na urządzeniu natywnie (P-130), w Node wzorzec TS (ten sam wynik, tests/niezawodnosc/kopie.test.ts).
 jest.mock('../../src/platforma/dziennik-plus', () => ({
   skrotPliku: (p: string) => jest.requireActual<typeof import('../../src/dane/pliki/magazyn')>('../../src/dane/pliki/magazyn').sha256PlikuTs(p),
@@ -74,4 +86,30 @@ test('M1-075: bez dziennika (nie było stuknięć poza aplikacją) ZIP powstaje 
   const zip = czytajZip(cel);
   expect([...zip.keys()].sort()).toEqual(['manifest.json', ...PLIKI].sort());
   expect(bazaZZipa(zip)).toEqual({ integrity: [{ integrity_check: 'ok' }], fk: 0, licznosci: przed });
+});
+
+// M1-audytor-generalny-156 (12-niezawodnosc-504; ADR-0020 (3), zasada roli 12 nr 1 — baza przed plikiem pobocznym): nieudana kopia dziennika +1
+// nie odbiera osobie ZIP-a z bazą. ZIP ma trzy pliki bazy, a manifest adnotację `pominiete` z powodem; dziennik zostaje na telefonie nietknięty.
+describe.each([
+  ['ENOSPC', 'ENOSPC: no space left on device, copyfile', 'brak_miejsca'],
+  ['EACCES', 'EACCES: permission denied, copyfile', 'zapis'],
+] as const)('M1-156: kopia dziennika +1 rzuca %s', (_kod, komunikat, powod) => {
+  afterEach(() => { mockBladKopiiDziennika = null; });
+  test('ZIP powstaje z trzema plikami bazy i manifestem z adnotacją pominięcia; baza z ZIP-a ma liczności sprzed awarii; oryginały nietknięte', async () => {
+    const { as, przed, sha, a } = await trybAwaryjnyZDanymi(DZIENNIK);
+    const shaPrzed = sha();
+    mockBladKopiiDziennika = new Error(komunikat);
+    const cel = await a.zipSurowej();
+    if (!cel) throw new Error('ZIP surowej kopii = null');
+    const zip = czytajZip(cel);
+    expect([...zip.keys()].sort()).toEqual(['manifest.json', ...PLIKI].sort());
+    const manifest = JSON.parse(zip.get('manifest.json')!.toString('utf8')) as ManifestSurowejKopii;
+    expect(manifest.pliki.map((p) => p.nazwa).sort()).toEqual([...PLIKI].sort());
+    for (const p of manifest.pliki) expect({ nazwa: p.nazwa, sha: sha256(zip.get(p.nazwa)!) }).toEqual({ nazwa: p.nazwa, sha: p.sha256 });
+    expect(manifest.pominiete).toEqual([{ nazwa: 'dziennik-plus.jsonl', powod }]);
+    expect(bazaZZipa(zip)).toEqual({ integrity: [{ integrity_check: 'ok' }], fk: 0, licznosci: przed });
+    expect(readdirSync(dirname(cel)).filter((n) => n.includes('dziennik-plus'))).toEqual([]); // bez migawki w katalogu tymczasowym
+    expect(sha()).toEqual(shaPrzed);
+    expect(linie(readFileSync(join(as, 'dziennik-plus.jsonl'), 'utf8'))).toEqual(linie(DZIENNIK));
+  });
 });

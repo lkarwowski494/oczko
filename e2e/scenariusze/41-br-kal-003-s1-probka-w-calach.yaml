@@ -1,9 +1,9 @@
-# BR-KAL-003/S1 (docs/brd/wymagania-narzedzia.md:107): 20 o. na 4 in → 19,685 o./10 cm (RD-04-W1) z informacją o 4 in i 10 cm. Wyrocznia: wektor BRD.
+# BR-KAL-003/S1 (docs/brd/wymagania-narzedzia.md:114, ER-62): 20 o. na 4 in → 19,7 o./10 cm (pełna 19,685… z RD-04-W1, pokazana z 1 miejscem, DEC-34 a) z informacją o 4 in i 10 cm. Wyrocznia: wektor BRD i ER-62.
 # BR-KAL-001/S1 (tamże :60, RD-01): liczba oczek na szerokość — region symulatora en-US daje jednostki calowe (P-075 (4a) „auto”), więc wektor
 # RD-01-W1 (cm) nie pasuje; tu 20 o./4 in × 10 in = 50 oczek — rachunek niezależny (5 o./in × 10 in), nie wynik kodu.
 # Kalkulator „Swatch” z „Tools” (04 fix-6 D, P-191 P7a), wynik na żywo bez przycisku. Funkcja bez UI na 2026-10-26 — pakiet pełny.
 appId: com.apps4brew.knitting
-name: "BR-KAL-003/S1 · Próbka 20 na 4 in: 19.685 na 10 cm; 10 in → 50 oczek (BR-KAL-001/S1)"
+name: "BR-KAL-003/S1 · Próbka 20 na 4 in: 19.7 na 10 cm; 10 in → 50 oczek (BR-KAL-001/S1)"
 tags:
   - BR-KAL-003-S1
   - BR-KAL-001-S1
@@ -29,7 +29,7 @@ tags:
       - inputText: "2"
       - inputText: "0"
       - assertVisible: { id: "probka-oczka", text: "20" }
-- assertVisible: "= 19.685 stitches per 10 cm"
+- assertVisible: "= 19.7 stitches per 10 cm"
 - assertVisible: "The standard way to give gauge is .*"
 - retry:
     maxRetries: 1

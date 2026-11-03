@@ -1,0 +1,230 @@
+{
+  "zrodlo": "Rola 04, fix M2 partia 3c1 (P-441; DEC-33 b P-432, DEC-34 a, DEC-35 b, DEC-36 a P-438; 2026-11-03). Teksty en nałożone przez 04 na src/i18n/slowniki/en.json i en.kontekst.json; klucze na liście oczekujących (P-357), pl po akceptacji właściciela (P-422) i przekład w fali 09 (P-320). Zachowanie kodu: przekazania do 08 w design-spec „Aneks M2 partia 3c1”. Wyrocznia testów: ten plik.",
+  "odwolania": [
+    "P-422",
+    "P-432",
+    "P-438",
+    "P-441",
+    "P-445"
+  ],
+  "grupy": {
+    "M1-audytor-generalny-131": [
+      "wzor.wskazowka_znacznika"
+    ],
+    "M1-audytor-generalny-136": [
+      "projekt.kopia_nazwa"
+    ],
+    "M1-audytor-generalny-142": [
+      "awaryjny.blad_kopii",
+      "awaryjny.blad_kopii_opis"
+    ],
+    "M1-audytor-generalny-143": [
+      "stan_danych.kopie_opis"
+    ],
+    "M1-audytor-generalny-160": [
+      "ustawienia.usun_pytanie"
+    ]
+  },
+  "en": {
+    "wzor.wskazowka_znacznika": "Tap a row to place your marker.",
+    "projekt.kopia_nazwa": "{{nazwa}} {{n}}",
+    "awaryjny.blad_kopii": "Couldn’t save a copy",
+    "awaryjny.blad_kopii_opis": "Your device may be out of space. Free some space, then save a copy again or try starting normally.",
+    "stan_danych.kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space. They count toward your device’s iCloud backup until then.",
+    "ustawienia.usun_pytanie": "This removes all projects, counters, history, patterns and photos from Oczko. Safety copies stay on this device. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space."
+  },
+  "kontekst": {
+    "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`.",
+    "projekt.kopia_nazwa": "Nazwa nowego projektu z „Make another like this” (`projekt.zrob_taka_sama`; M1-audytor-generalny-136, 04-studio-projektowe-526, DEC-35 b): {{nazwa}} = nazwa oryginału bez końcowego numeru kopii, {{n}} = najmniejszy wolny numer od 2 („Harbor 2”, potem „Harbor 3”). Jak numer kopii pliku w systemie: sam numer po nazwie, bez słowa „copy”. Jeśli w języku numer stoi inaczej (np. w nawiasie), zostaw tylko {{nazwa}}, {{n}} i znaki interpunkcji, bez słów: aplikacja rozpoznaje ten wzór, żeby kopia „Harbor 2” dostała „Harbor 3”, a nie „Harbor 2 2”. Nazwa zapisuje się w danych projektu w języku z chwili kopii.",
+    "awaryjny.blad_kopii": "Tytuł alertu na ekranie awaryjnym, gdy „Save a copy of my data” (`awaryjny.zapisz_kopie`) nie zapisało kopii — ani archiwum, ani ZIP surowej kopii (M1-audytor-generalny-142, 04-studio-projektowe-519, DEC-36 a). Nazywa, co się nie udało (wariant C aneksu P2 poz. 5), jak `wzor.blad_rysunku`, `stoper.blad_zapisu`; osoba nie zmieniała danych, więc nie „your changes”. „copy” = ta sama kopia danych co w przycisku. Bez kropki, jak inne tytuły alertów.",
+    "awaryjny.blad_kopii_opis": "Treść alertu pod `awaryjny.blad_kopii`: przyczyna (zwykle brak miejsca na urządzeniu; „device” = telefon albo iPad, P-328) i dwa działania z tego ekranu — zwolnić miejsce i ponowić kopię albo stuknąć `awaryjny.sprobuj` („Try starting normally”). „save a copy” i „try starting normally” powtarzają przyciski ekranu, więc w przekładzie użyj tych samych fraz co w `awaryjny.zapisz_kopie` i `awaryjny.sprobuj`. Bez „Nothing was changed” (na tym ekranie nic się nie zmienia, mówi to `awaryjny.opis`). Przycisk alertu: `wspolne.ok`.",
+    "stan_danych.kopie_opis": "Podpis na ekranie „Data and sync”, pokazywany tylko gdy w Documents/Backup są kopie Oczka (N-05-2, ADR-0028): gdzie są, że Oczko samo je usuwa i że do tego czasu wliczają się do kopii iCloud urządzenia. M1-audytor-generalny-143 (04-studio-projektowe-520; DEC-37 a, P-445, koryguje DEC-36 a): Oczko sprząta kopie tylko przy otwarciu aplikacji (po udanym starcie) — usuwa kopie starsze niż 30 dni, a część wcześniej, gdy zajmują dużo miejsca (budżet na rodzaj kopii i limit kopii dnia, ADR-0033); bez otwierania Oczka kopie zostają. Stąd „after 30 days, when you next open it, and some sooner if they take up a lot of space”. To samo zdanie o terminie co w `ustawienia.usun_pytanie` (te same pliki); liczba z konfiguracji — nie zmieniaj jej w przekładzie. „it” = Oczko, „they” = kopie. Bez wezwania do ręcznego usuwania. Spokojnie, bez straszenia.",
+    "ustawienia.usun_pytanie": "Pierwszy akapit arkusza „Delete all data”: co znika i co zostaje (M1-audytor-generalny-130, P-427; termin: M1-audytor-generalny-160, 04-studio-projektowe-533, DEC-37 a, P-445). Znika wszystko z Oczka; kopie bezpieczeństwa („Safety copies”: archiwum w Plikach, Oczko › Backup, i kopie wewnętrzne) zostają na urządzeniu. Oczko sprząta je tylko przy otwarciu aplikacji: usuwa kopie starsze niż 30 dni, a część wcześniej, gdy zajmują dużo miejsca (budżet na rodzaj kopii i limit kopii dnia, ADR-0033; ADR-0020 (6), ADR-0032). Chronione są najnowsza kopia i pierwsza kopia najstarszego dnia, więc kopia z tego usunięcia zostaje co najmniej do 30 dni; kopia o nieczytelnym rozmiarze nie jest usuwana — wyjątek nazwany tutaj, bez słowa w interfejsie. To samo zdanie o terminie co w `stan_danych.kopie_opis`; liczba z konfiguracji — nie zmieniaj jej w przekładzie; „it” = Oczko, „they” = kopie. „this device” zamiast „this iPhone”, bo aplikacja działa też na iPadzie. Bez zdania „It can’t be undone.”: od P-328 przed usunięciem powstaje kopia. Spokojnie, bez straszenia."
+  },
+  "probka_podglad": {
+    "zasada": "DEC-34 a (M1-audytor-generalny-134, 04-studio-projektowe-524): liczba wyliczona w podglądzie kalkulatora próbki — najwyżej jedno miejsce po przecinku (najbliższa dziesiąta, połowa w górę, bez zer końcowych, zapis regionu: formatujLiczbe(Math.round(x × 10) / 10, język, { maks: 1 })); liczba przepisana z pola bez przeliczenia — jak wpisano (do 3 miejsc); obliczenia (wynik oczek, kategoria grubości) z pełnej wartości; {{count}} = wartość pokazana. Teksty bez zmian; przypadki en (wyrocznia testów 08 dla src/kompozycja/probka.ts).",
+    "przypadki": [
+      {
+        "opis": "BR-KAL-003/S1 (RD-04-W1): 20 o./4 in → 10 cm",
+        "oczka": "20",
+        "na": "4in",
+        "klucz": "probka.przeliczona",
+        "pelna": 19.685039,
+        "pokazana": "= 19.7 stitches per 10 cm"
+      },
+      {
+        "opis": "BR-KAL-003/S3: 20,5 o./4 in → 10 cm (rachunek 20,5 × 10 / 10,16)",
+        "oczka": "20.5",
+        "na": "4in",
+        "klucz": "probka.przeliczona",
+        "pelna": 20.177165,
+        "pokazana": "= 20.2 stitches per 10 cm"
+      },
+      {
+        "opis": "wynik oczek liczony z pełnej gęstości: 19,685… × 100 / 10 = 196,85 → 196.9 (z zaokrąglonej 19,7 wyszłoby 197)",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "100",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 196.850394,
+        "pokazana": "196.9 stitches",
+        "nie": "197 stitches"
+      },
+      {
+        "opis": "wynik oczek 59,055 → 59.1",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "30",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 59.055118,
+        "pokazana": "59.1 stitches"
+      },
+      {
+        "opis": "dane wyniku: gęstość przeliczona na 10 cm — jedno miejsce; szerokość przepisana z pola",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "30",
+        "jednostka": "cm",
+        "klucz": "probka.z_danych_cm",
+        "pelna": 19.685039,
+        "pokazana": "From 19.7 stitches per 10 cm and 30 cm."
+      },
+      {
+        "opis": "próbka na 10 cm → gęstość na 4 in przy kategorii grubości (22 × 10,16 / 10 = 22,352)",
+        "oczka": "22",
+        "na": "10cm",
+        "klucz": "probka.na_4in_dokladnie",
+        "pelna": 22.352,
+        "pokazana": "22.4 stitches per 4 in."
+      },
+      {
+        "opis": "echo wejścia bez przeliczenia: próbka i szerokość jak wpisano (do 3 miejsc)",
+        "oczka": "21.25",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.z_danych_cm",
+        "pelna": 21.25,
+        "pokazana": "From 21.25 stitches per 10 cm and 50 cm.",
+        "echo": true
+      },
+      {
+        "opis": "wynik oczek 106,25 → 106.3 (połowa w górę)",
+        "oczka": "21.25",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 106.25,
+        "pokazana": "106.3 stitches"
+      },
+      {
+        "opis": "BR-KAL-001/S4 (ER-43): 21,5 o./10 cm, 50 cm → 107,5 bez zmian",
+        "oczka": "21.5",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 107.5,
+        "pokazana": "107.5 stitches"
+      },
+      {
+        "opis": "BR-KAL-003/S1 + BR-KAL-001: 20 o./4 in, 10 in → 50 oczek; dane wyniku jak wpisano",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "10",
+        "jednostka": "in",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 50,
+        "pokazana": "50 stitches"
+      },
+      {
+        "opis": "dane wyniku w calach: próbka na 4 in i szerokość jak wpisano",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "10",
+        "jednostka": "in",
+        "klucz": "probka.z_danych_in",
+        "pelna": 20,
+        "pokazana": "From 20 stitches per 4 in and 10 in.",
+        "echo": true
+      }
+    ]
+  },
+  "kopia_nazwa_przypadki": {
+    "zasada": "DEC-35 b: baza = nazwa oryginału bez końcowego numeru kopii (liczba całkowita 1–999 w miejscu {{n}} szablonu; większa liczba należy do nazwy); n = najmniejsza liczba ≥ 2, dla której gotowa nazwa nie jest zajęta przez żaden projekt z nazwą (także ukończony i w „Recently deleted”); porównanie bez wielkości liter i spacji na końcach. Projekt roboczy (nienazwany = 1): kopia z własną datą, bez numeru (P-126 (1b)). Przypadki en (wyrocznia testów 08 dla zrobPonownie).",
+    "przypadki": [
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor"
+        ],
+        "baza": "Harbor",
+        "n": 2,
+        "kopia": "Harbor 2"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "Harbor 2"
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3"
+      },
+      {
+        "oryginal": "Harbor 2",
+        "istniejace": [
+          "Harbor",
+          "Harbor 2"
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "Harbor 3"
+        ],
+        "baza": "Harbor",
+        "n": 2,
+        "kopia": "Harbor 2"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "harbor 2 "
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3",
+        "opis": "„harbor 2 ” zajmuje numer 2 (bez wielkości liter i spacji na końcach); może leżeć w Recently deleted"
+      },
+      {
+        "oryginal": "Sock 1",
+        "istniejace": [
+          "Sock 1"
+        ],
+        "baza": "Sock",
+        "n": 2,
+        "kopia": "Sock 2"
+      },
+      {
+        "oryginal": "Blanket 2026",
+        "istniejace": [
+          "Blanket 2026"
+        ],
+        "baza": "Blanket 2026",
+        "n": 2,
+        "kopia": "Blanket 2026 2",
+        "opis": "liczba ≥ 1000 należy do nazwy (rok)"
+      }
+    ]
+  }
+}

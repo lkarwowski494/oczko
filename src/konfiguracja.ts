@@ -36,6 +36,7 @@ export const MIN_IOS = '18.0'; // P-070, ADR-0006
 export const MIN_WATCHOS = '11.0'; // P-070, ADR-0006
 export const PROG_NIEUDANYCH_STARTOW = 2; // P-080 (interpretacja do weta), ADR-0019
 export const KOPIE_RATUNKOWE_DNI = 30; // P-080, ADR-0020
+export const PROG_BRAK_MIEJSCA_OTWARCIA_B = 1_000_000; // B; [OCENA 12] (M1-157, 12-niezawodnosc-505 (a), ADR-0020 (4)): nieudane otwarcie bazy z powodem `zapis` przy znanym wolnym miejscu poniżej progu = `brak_miejsca` (SQLITE_IOERR przy powiększaniu `-shm`)
 export const WZOR_MAKS_MB = 200; // MB; [OCENA] roli 05 (Z07-17): największy plik wzoru (rozszerzenie i import); do korekty po pomiarze
 export const ZDJECIA_WZORU_MAKS = 20; // zdjęcia; [OCENA] roli 05 (moduly.md „Kontrakt partii 6”): najwięcej zdjęć stron jednego wzoru — wybór z biblioteki i reguła aktywacji celu share (`targets/share/Info.plist`, zgodność: generuj-stale --check)
 export const MINIATURA_PT = 96; // pt; [OCENA 08], plan 1.1 pkt 7: szerokość miniatury pierwszej strony w wierszu wzoru (W8)

@@ -1,7 +1,7 @@
 // Korzeń nawigacji expo-router (P-114 Q1a, jak Trening; wiersz w ADR-0016): strażnik startu (ADR-0019) przed bazą, potem kontener zależności
 // raz na proces i stos ekranów bez paska systemowego (pasek rysuje ekran według design-spec). Do kontenera nic nie jest pokazywane poza tłem
 // papieru — pierwszy ekran to licznik (NFR-PIE-001); pętla nieudanych startów albo baza nie do otwarcia → ekran awaryjny.
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AppState, Platform, View } from 'react-native';
 import { Stack } from 'expo-router';
 import type { PowodTrybuAwaryjnego } from '../src/ekrany/TrybAwaryjny';
@@ -32,19 +32,33 @@ export default function Korzen(): React.ReactElement {
   const k = useKolory();
   const [faza, ustaw] = useState<Faza>({ rodzaj: 'czeka' });
   const [proba, ustawProbe] = useState(0); // „Spróbuj normalnie”: start normalny w tym samym procesie
+  // M1-151, ADR-0019 (P-211): port bazy kontenera sprzed błędu zostaje otwarty w trybie awaryjnym (zamknięcie ostatniego połączenia robi checkpoint
+  // WAL do oryginału); zamyka go dopiero nowy start po „Spróbuj normalnie”, który ekran awaryjny woła po kopii surowej.
+  const doZamkniecia = useRef<(() => Promise<void>) | null>(null);
   useEffect(() => {
     let koniecNasluchu: (() => void) | null = null;
     let koniecTla: (() => void) | null = null;
     let zamknijLicznik: (() => void) | null = null;
+    let zwolnijKontener: (() => void) | null = null; // M1-151: zasoby kontenera sprzed błędu (iCloud od razu, baza przy następnym starcie) — przed każdym ekranem awaryjnym po utworzeniu kontenera
     let zywy = true;
     async function normalny(): Promise<void> {
       // P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest awarią (start awaryjny i wymuszona awaria E2E nie słuchają — scen. 09).
       const tlo = AppState.addEventListener('change', (st) => { if (st === 'background') void zapiszWyjscieDoTla(); });
       koniecTla = () => tlo.remove();
+      const zamknij = doZamkniecia.current; doZamkniecia.current = null;
+      await Promise.resolve().then(() => zamknij?.()).catch(() => undefined); // błąd zamknięcia nie zatrzymuje startu
       const w = await utworzKontener().catch(() => null);
       if (!zywy) return;
       if (!w || !w.ok) { ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny(w && !w.ok ? w.powod : 'zapis') }); return; } // bez zastępczej bazy (ADR-0019)
       zapiszEtap('kontener'); // P-271: diagnostyka etapu dla „Zgłoś problem”
+      // M1-151 (DEV-15): sterownik iCloud odpina słuchaczy modułu od razu (partie nie trafiają do starego połączenia); połączenie z bazą zamyka nowy
+      // start przed otwarciem swojego (ADR-0019: oryginał bez zmian do kopii surowej), więc w procesie jest jedno połączenie i jeden sterownik.
+      const kontener = w.wartosc;
+      // Błąd sprzątania nie zatrzymuje ekranu awaryjnego (ADR-0019): zakończenie sterownika w `try`.
+      zwolnijKontener = () => {
+        try { kontener.icloud?.sterownik.zakoncz(); } catch { /* sterownik bez słuchaczy albo już zakończony */ }
+        doZamkniecia.current = () => kontener.zamknij();
+      };
       const p = preferencje();
       const koniecDostepu = w.wartosc.dostep.nasluchuj(); // KP-07: nasłuch transakcji od startu
       const koniecSieci = w.wartosc.wzor.k.obserwujSiec(w.wartosc.porty.siec); // ADR-0031 pkt 4: sieć wróciła → strony czekające w skrzynce zapisują się same
@@ -70,6 +84,7 @@ export default function Korzen(): React.ReactElement {
         obslugaBledow?.ustawZapis(null);
         koniecNasluchu?.(); koniecNasluchu = null;
         zamknijLicznik?.(); zamknijLicznik = null;
+        zwolnijKontener?.(); zwolnijKontener = null;
         ustaw({ rodzaj: 'awaryjny', powod });
       };
       ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik, preferencje: p, naAwarie } });
@@ -83,7 +98,7 @@ export default function Korzen(): React.ReactElement {
       else await normalny();
     }
     // M1-007: wyjątek w starcie (strażnik, odczyt dostępu albo preferencji) → ekran awaryjny jak przy nieudanym kontenerze (ADR-0019), nie pusta plansza na zawsze.
-    const uruchom = () => void start().catch(() => { if (zywy) ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny('zapis') }); });
+    const uruchom = () => void start().catch(() => { if (zywy) { zwolnijKontener?.(); zwolnijKontener = null; ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny('zapis') }); } });
     // ADR-0019: liczy się tylko start na pierwszym planie (intencja, CloudKit i zegarek budzą proces w tle).
     if (AppState.currentState === 'active') uruchom();
     else {

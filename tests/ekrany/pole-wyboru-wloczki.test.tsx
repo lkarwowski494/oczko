@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { StyleSheet } from 'react-native';
 import { render, screen, within } from '@testing-library/react-native';
 import { FormularzWloczekProjektu } from '../../src/ekrany/FormularzeProjektu';
-import { kolorJasny, odstep } from '../../src/ekrany/motyw';
+import { cel, kolorJasny } from '../../src/ekrany/motyw';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { tEn } from './pomoc';
 
@@ -29,9 +29,28 @@ test('pole wyboru włóczki wg wzorca 04: obrys drugiPrzyciskObrys, rozmiar z to
   const zaznaczone = pole('y1');
   const puste = pole('y2');
   for (const s of [zaznaczone, puste]) {
-    expect(s).toMatchObject({ width: odstep.xxl, borderWidth: 2, borderColor: kolorJasny.drugiPrzyciskObrys, textAlign: 'center' });
+    expect(s).toMatchObject({ width: cel.poleWyboru, borderWidth: 2, borderColor: kolorJasny.drugiPrzyciskObrys, textAlign: 'center' });
   }
   expect(zaznaczone).toMatchObject({ backgroundColor: kolorJasny.przyciskTlo, color: kolorJasny.przyciskTekst });
   expect(puste.backgroundColor).toBeUndefined();
   expect(within(screen.getByTestId('wloczka-wybor-y1')).getByText('✓', { includeHiddenElements: true })).toBeTruthy();
+});
+
+// M1-audytor-generalny-145 (04-studio-projektowe-529, opcja a): pole wyboru brało tokeny zastępcze (`odstep.xxl`, `promien.pole` 10, `instrukcja` 20 pt),
+// a znak ✓ rósł bez granicy (przy AX5 ok. 71 pt w polu 28 pt, ucięty). Wzorzec `.pole-wyboru` (partia8.html:208): 28 × 28, promień 8, 700 18 pt;
+// granica skali znaku ×1,6 jak kapsuła stopera (design-spec:529). Tokeny `cel.poleWyboru`, `promien.poleWyboru`, `typografia.znakWyboru`.
+test('145: pole wyboru z własnych tokenów (28 pt, promień 8, znak 700 18 pt) i znak ✓ najwyżej ×1,6', () => {
+  const tokeny = JSON.parse(readFileSync(join(__dirname, '../../docs/design/tokeny.json'), 'utf8')) as {
+    cel: Record<string, number>; promien: Record<string, number>; typografia: Record<string, Record<string, number | string>>;
+  };
+  expect(tokeny.cel.poleWyboru).toBe(28);
+  expect(tokeny.promien.poleWyboru).toBe(8);
+  expect(tokeny.typografia.znakWyboru).toMatchObject({ krój: 'Libre Franklin', grubość: 700, rozmiar: 18, maxSkala: 1.6 });
+  render(<FormularzWloczekProjektu t={t} zapas={[{ id: 'y1', nazwa: 'Merino', motki: 3 }]} poczatkowe={['y1']}
+    naZapisz={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} naAnuluj={jest.fn()} naDodajWloczke={jest.fn()} />);
+  const znak = within(screen.getByTestId('wloczka-wybor-y1')).getByText('✓', { includeHiddenElements: true });
+  expect(StyleSheet.flatten(znak.props.style)).toMatchObject({
+    width: tokeny.cel.poleWyboru, minHeight: tokeny.cel.poleWyboru, borderRadius: tokeny.promien.poleWyboru, fontSize: 18, fontWeight: '700', fontFamily: 'Libre Franklin',
+  });
+  expect(znak.props.maxFontSizeMultiplier).toBe(1.6);
 });

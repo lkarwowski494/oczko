@@ -73,6 +73,18 @@ describe('most do modułu Swift', () => {
     expect(odebrane[0]).toEqual({ rekordy: [{ encja: 'projekt', klucz: 'a', pola: { id: 'a' }, plik: null }], usuniete: [], stanSilnika: new Uint8Array([9]) });
     expect(n.zakonczone).toEqual([['p1', true], ['p2', false]]);
   });
+  test('pobranie (M1-117): faza do JS, potwierdzenie do Swift po obsłudze; nieznana faza nic nie wywołuje i kończy się błędem', async () => {
+    const n = natywny();
+    const s = silnikNatywny(n);
+    const fazy: string[] = [];
+    s.pobieranie(async (f) => { fazy.push(f); if (fazy.length === 2) throw new Error('x'); });
+    n.emituj('pobranie', { id: 'f1', faza: 'poczatek' });
+    n.emituj('pobranie', { id: 'f2', faza: 'koniec' });
+    n.emituj('pobranie', { id: 'f3', faza: 'srodek' });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(fazy).toEqual(['poczatek', 'koniec']);
+    expect(n.zakonczone).toEqual([['f3', false], ['f1', true], ['f2', false]]);
+  });
 });
 
 describe('most do modułu Swift: dane z granicy', () => {
@@ -110,7 +122,7 @@ describe('atrapa E2E (oczkoE2eIcloud) na prawdziwej bazie', () => {
     expect(a.e2e?.stan().wyslane).toBe(0);
     expect((await st.wlacz()).stan).toBe('aktywna');
     expect(a.e2e?.stan().wyslane).toBeGreaterThan(0);
-    expect(await s.baza.all('SELECT count(*) AS n FROM zmiana_icloud')).toEqual([{ n: 0 }]);
+    expect(await s.baza.all('SELECT count(*) AS n FROM zmiana_icloud WHERE wyslano_nr IS NULL OR wyslano_nr < nr')).toEqual([{ n: 0 }]); // brak oczekujących (M1-117)
     expect(atrapaIcloud({ tryb: 'wlaczony', baza: s.baza, zegar: s.zegar, plik: { czytaj: () => plik.t, zapisz: () => undefined } }).e2e?.stan().wyslane).toBe(a.e2e?.stan().wyslane);
   });
   test('49: konflikt przy starcie — druga wersja pierwszego licznika (+5, „iPad (test)”, minutę wcześniej) → kandydaci 6 i 1', async () => {

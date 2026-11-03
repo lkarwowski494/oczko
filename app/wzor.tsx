@@ -3,24 +3,26 @@
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, View, useWindowDimensions } from 'react-native';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
-import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { akcjeWzoru } from '../src/ekrany/WzorAkcje';
+import { pytajOdrzucZmiany } from '../src/ekrany/pytanie-odrzucenia';
 import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
+import { useWskazowkaZnacznika } from '../src/kompozycja/wskazowka-znacznika';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { dodajZrodlo, type ZrodloDodaniaTrasy } from '../src/kompozycja/wzor-import-trasy';
 import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunki';
@@ -29,6 +31,7 @@ import { listaWzorow, wzorDoOtwarcia, zapamietajWzor, ustawZnacznik, zmienNazweW
 import { odzyskajRysunki, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
 import { KOSZ_DNI } from '../src/konfiguracja';
+import { dodajDni } from '../src/przypadki-uzycia/daty';
 
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
 
@@ -36,6 +39,7 @@ export default function EkranWzoru(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
+  const navigation = useNavigation();
   const k = useKolory();
   const okno = useWindowDimensions();
   const szerokosc = szerokoscOknaE2e() ?? okno.width;
@@ -55,6 +59,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [link, ustawLink] = useState(false);
   const [arkuszNazwy, ustawArkuszNazwy] = useState(false); // ••• → „Rename” (W1a)
   const poczatek = useRef<{ wzorId: string; strona: number; powiekszenie: number } | null>(null); // pozycja zapisana w chwili otwarcia wzoru (BR-PRJ-011 S1); powiększenie 0 = dopasowany
+  const pasekZn = useRef(false); // M1-131
   const kolejkaKrokow = useRef<Promise<void>>(Promise.resolve()); // kroki rzędu znacznika jeden po drugim (każdy czyta świeży stan)
   const [przytrzymanie, ustawPrzytrzymanie] = useState<{ strona: number; y: number } | null>(null); // przytrzymanie bez znacznika czeka na kierunek (3a)
   const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
@@ -119,19 +124,29 @@ export default function EkranWzoru(): React.ReactElement {
     void ostrzezenieMiejsca(zw.magazyn, t, () => !bladRysunku.current).then((p) => { if (p) bladRysunku.current = true; });
   }, [widok, zw, t]);
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
+  // M1-141 (08-programista-519, 04-studio-projektowe-530; DEC-31 a): przycisk „Back” i gest wstecz mają jedną ścieżkę wyjścia. M1-112: onBladZapisu z zapisu
+  // przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca. `zwolniony`: decyzja zapadła, kolejne usunięcie bez pytania.
+  const zwolniony = useRef(false);
+  const nowaNotatka = useRef(false); // arkusz nowej notatki z tekstem (WzorPrzegladarka) — gest pyta „Discard changes?” jak „Back”
+  function wyjdzZWzoru(dokoncz: () => void): void {
+    const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
+    void wyjscieZWzoru(t, niezapisane === true, () => { zwolniony.current = true; dokoncz(); }, u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
+  }
+  // Gest (i każde usunięcie ekranu z zewnątrz) zatrzymany, dopóki widać wzór: najpierw zapis kresek na żądanie, potem decyzja jak przy „Back” (native stack:
+  // `preventNativeDismiss`; zachowanie gestu do sprawdzenia na urządzeniu). Gest dalej wyłączony przy znanych niezapisanych kreskach (M1-084).
+  usePreventRemove(widok !== null, ({ data }) => {
+    const dokoncz = () => navigation.dispatch(data.action);
+    if (zwolniony.current) { dokoncz(); return; }
+    if (nowaNotatka.current) pytajOdrzucZmiany(t, 'nowy', () => wyjdzZWzoru(dokoncz)); else wyjdzZWzoru(dokoncz);
+  });
+  const wskazowka = useWskazowkaZnacznika(zw, widok); // M1-131
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
   async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
     if (!lw) return;
     await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: () => router.back(), ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
   }
-  /** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
-   *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
-  function bladLicznika(r: WynikEkranu<unknown>): void {
-    if (r.ok || r.powod === 'limit' || r.powod === 'zablokowany') return;
-    if (aplikacja.preferencje.stan().wibracje) kontener.porty.haptyka.zagraj('bladZapisu');
-    oglos(tekstBleduZapisu(t));
-  }
+  const bladLicznika = (r: WynikEkranu<unknown>) => bladPaskaLicznika(aplikacja, r, oglos); // M1-004 (po-zapisie.ts)
 
   // Dokument dla widoku natywnego: nowy obiekt tylko przy zmianie wzoru albo obrotów — +1 nie wysyła ponownie rysunków (przegląd 2026-10-26).
   otwartyWzor.current = widok?.wzorId;
@@ -166,7 +181,7 @@ export default function EkranWzoru(): React.ReactElement {
   const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
   const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };
   const chipy = widok.notatki;
-  const natywny = widokNatywnyWzoru({ t, aplikacja, zw, widok, lw, dokument, uchwyt: uchwytWidoku, katalogRysunkow, strona, startStrona: poczatek.current?.strona ?? 0, nastepnaStrona, narzedzie, polityka, cofnij, uklad, tylkoRysik: rysik.tylkoRysik,
+  const natywny = widokNatywnyWzoru({ t, aplikacja, zw, widok, lw, dokument, uchwyt: uchwytWidoku, katalogRysunkow, strona, startStrona: poczatek.current?.strona ?? 0, nastepnaStrona, narzedzie, pasekZn, polityka, cofnij, uklad, tylkoRysik: rysik.tylkoRysik,
     bladRysunku, ustawOtwartyChip, ustawNiezapisane, ustawStrone, ustawZakreslenia, ustawNarzedzie, ustawRysik, ustawPrzytrzymanie, poZapisieRysunku, przejdzNaNastepna, postaw });
   const oczekujace = czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa }));
   const liczba = lw.znaczenie === 'w_trakcie' ? lw.wartosc + 1 : lw.wartosc;
@@ -176,13 +191,12 @@ export default function EkranWzoru(): React.ReactElement {
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
-        naWstecz={() => { // M1-112: onBladZapisu z zapisu przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca
-          const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
-          void wyjscieZWzoru(t, niezapisane === true, () => router.back(), u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
-        }}
+        naWstecz={() => wyjdzZWzoru(() => router.back())}
+        naNowaNotatka={(jest) => { nowaNotatka.current = jest; }}
+        pasekZn={pasekZn}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}
@@ -210,4 +224,3 @@ export default function EkranWzoru(): React.ReactElement {
     </Bezpieczny>
   );
 }
-const dodajDni = (dzien: string, n: number): string => { const [r, m, d] = dzien.split('-').map(Number); return new Date(Date.UTC(r, m - 1, d + n)).toISOString().slice(0, 10); };

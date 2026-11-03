@@ -18,6 +18,7 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
   private var czekaNaJs: [String: CheckedContinuation<Bool, Never>] = [:]
   private var stanZablokowany = false   // JS nie zapisał partii: nie utrwalamy nowszego stanu (następny start pobierze ją jeszcze raz)
   private var brakMiejsca = false
+  private var pobranieOdrzucone = false // partia odrzucona przez JS w trakcie pobrania strefy: koniec pobrania nie jest „pełny” (ADR-0005 uzupełnienie 2026-11-03)
   private lazy var systemowe = PamiecPolSystemowych()
 
   init(emituj: @escaping Emituj) { self.emituj = emituj }
@@ -105,7 +106,7 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
     let u: [[String: String]] = usuniete.compactMap { id in Odwzorowanie.rozbierz(id).map { ["encja": $0.encja, "klucz": $0.klucz] } }
     if r.isEmpty && u.isEmpty { return }
     let ok = await doJs("partia", ["rekordy": json(r), "usuniete": json(u), "stanSilnika": stanBase64()])
-    if !ok { stanZablokowany = true }
+    if !ok { stanZablokowany = true; pobranieOdrzucone = true }
   }
 
   // MARK: - CKSyncEngineDelegate
@@ -122,8 +123,14 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
       case .switchAccounts: systemowe.wyczysc(); emituj("konto", ["zdarzenie": "zmiana_konta"])
       @unknown default: break
       }
+    case .willFetchRecordZoneChanges(let e) where e.zoneID == Odwzorowanie.strefa:
+      // Pełne pobranie (M1-117): początek obejmuje wpisy wysłane w skrzynce JS; usuwa je tylko udany koniec bez odrzuconej partii.
+      pobranieOdrzucone = stanZablokowany
+      if !(await doJs("pobranie", ["faza": "poczatek"])) { pobranieOdrzucone = true } // JS nie oznaczył wpisów: koniec tego pobrania niczego nie usuwa
     case .fetchedRecordZoneChanges(let e):
       await partia(rekordy: e.modifications.map(\.record), usuniete: e.deletions.map(\.recordID))
+    case .didFetchRecordZoneChanges(let e) where e.zoneID == Odwzorowanie.strefa:
+      if e.error == nil && !pobranieOdrzucone && !stanZablokowany { _ = await doJs("pobranie", ["faza": "koniec"]) }
     case .sentRecordZoneChanges(let e):
       await wyslano(e, syncEngine: syncEngine)
     case .sentDatabaseChanges(let e):
@@ -140,6 +147,7 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
     var potwierdzone: [[String: Any]] = []
     var zSerwera: [CKRecord] = []
     var ponow: [CKSyncEngine.PendingRecordZoneChange] = []
+    var usunietyNaSerwerze: [CKRecord.ID] = []
     kolejka.sync {
       func potwierdz(_ id: CKRecord.ID) {
         guard let n = Odwzorowanie.rozbierz(id), let o = oczekujace.removeValue(forKey: id) else { return }
@@ -160,7 +168,11 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
           brakMiejsca = true
           oczekujace.removeValue(forKey: id) // zostaje w skrzynce JS; ponowienie przy następnym wyslijZaleglosci
         case .unknownItem:
-          systemowe.zapomnij(id); ponow.append(.saveRecord(id)) // rekord usunięty na serwerze: zapis od nowa bez znacznika zmiany
+          // Rekord usunięty na serwerze = nagrobek dla nadawcy (ADR-0005 uzupełnienie 2026-11-03 pkt 4, M1-117): bez zapisu od nowa tutaj;
+          // do JS jako usunięcie, reguła nagrobków zatrzymuje go (wpis oczekujący), wkłada szczyt do kosza i zapisuje od nowa ze skrzynki.
+          systemowe.zapomnij(id)
+          oczekujace.removeValue(forKey: id)
+          usunietyNaSerwerze.append(id)
         default:
           oczekujace.removeValue(forKey: id) // inne błędy: zmiana zostaje w skrzynce JS
         }
@@ -171,7 +183,9 @@ final class Silnik: CKSyncEngineDelegate, @unchecked Sendable {
       syncEngine.state.add(pendingRecordZoneChanges: ponow)
     }
     if !zSerwera.isEmpty { await partia(rekordy: zSerwera, usuniete: []) }
-    if !potwierdzone.isEmpty { _ = await doJs("wyslane", ["wyslane": json(potwierdzone), "stanSilnika": stanBase64()]) }
+    if !usunietyNaSerwerze.isEmpty { await partia(rekordy: [], usuniete: usunietyNaSerwerze) }
+    // Potwierdzenie także bez potwierdzonych rekordów po `unknownItem`: obsługa w JS wysyła zaległości (zapis od nowa ze skrzynki).
+    if !potwierdzone.isEmpty || !usunietyNaSerwerze.isEmpty { _ = await doJs("wyslane", ["wyslane": json(potwierdzone), "stanSilnika": stanBase64()]) }
   }
 
   func nextRecordZoneChangeBatch(_ kontekst: CKSyncEngine.SendChangesContext, syncEngine: CKSyncEngine) async -> CKSyncEngine.RecordZoneChangeBatch? {

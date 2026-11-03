@@ -12,7 +12,7 @@ import { czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 const mockWymiary = { width: 820, height: 1180 };
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({ __esModule: true, default: () => ({ ...mockWymiary, scale: 2, fontScale: 1 }) }));
 const mockRouter = { back: jest.fn(), replace: jest.fn(), push: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => ({}) }));
+jest.mock('expo-router', () => ({ useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => ({}) }));
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 type PropsWidoku = { strona?: number; narzedzie?: string; polityka?: string; narzedzieRysika?: string; onPierwszyRysik?: (e: { nativeEvent: Record<string, never> }) => void };

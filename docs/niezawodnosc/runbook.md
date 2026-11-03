@@ -38,13 +38,14 @@ Zasada: agent przygotowuje polecenie, skutek i ryzyko. Każdy krok zewnętrzny (
 3. Nie usuwaj aplikacji — usunięcie kasuje dane i kopie na telefonie.
 
 **Co przychodzi:**
-- `*.oczko` — zwykłe archiwum (ADR-0004), baza w swojej wersji schematu. Gdy baza nie dała się otworzyć: ZIP surowej kopii z `oczko.db`, `oczko.db-wal`, `oczko.db-shm`, `dziennik-plus.jsonl` (jeśli był: +1 z ekranu blokady i zegarka niescalone do bazy, ADR-0008; M1-075) i `manifest.json` z SHA-256 każdego pliku (ADR-0020 (3), `src/niezawodnosc/kopie.ts`).
+- `*.oczko` — zwykłe archiwum (ADR-0004), baza w swojej wersji schematu. Gdy baza nie dała się otworzyć: ZIP surowej kopii z `oczko.db`, `oczko.db-wal`, `oczko.db-shm`, `dziennik-plus.jsonl` (jeśli był: +1 z ekranu blokady i zegarka niescalone do bazy, ADR-0008; M1-075) i `manifest.json` z SHA-256 każdego pliku (ADR-0020 (3), `src/niezawodnosc/kopie.ts`). Pole `pominiete` w manifeście (np. `dziennik-plus.jsonl`, powód `brak_miejsca` albo `zapis`): kopia tego pliku zawiodła, ZIP ma samą bazę, a +1 zostały na telefonie i scalą się po starcie aplikacji z działającą bazą (M1-156).
 
 **Procedura u dewelopera** (tylko na kopii, w scratchpadzie):
 1. Sprawdzić SHA-256 plików z manifestu (`sha256sum`).
 2. Uruchomić `docs/niezawodnosc/narzedzia/naprawa-kopii.sh <katalog> oczko.db`. Robi `integrity_check` kopii, `.recover` do `odzyskana.db` i liczności tabel. Oryginały są kopiowane, nie zmieniane. Brak `sqlite3` w kontenerze: sqlite-tools z sqlite.org/download.html do scratchpadu.
-3. Porównać liczności z tym, co pamięta użytkownik. O zwrocie danych decyduje właściciel z użytkownikiem. Zwrot to plik `.oczko` z odzyskanej bazy do importu „Zastąp” (przywrócenie robi kopię „przed”, ADR-0020 (5′)).
-4. Po zamknięciu sprawy pliki są usuwane za zgodą właściciela.
+3. Jeśli manifest wymienia `dziennik-plus.jsonl`: to +1 niescalone do bazy (ADR-0008), których nie ma w `odzyskana.db`. Przed zwrotem scalić je do `odzyskana.db` tym samym kodem co aplikacja: `scalDziennik` (`src/przypadki-uzycia/dziennik.ts`) z adapterem pliku `utworzDziennikNode` (`src/dane/dziennik.ts`) na porcie `node:sqlite` otwartym na `odzyskana.db`, jak w `tests/dane/dziennik.test.ts`; adapter skraca plik po scaleniu, więc podać mu kopię dziennika, nie plik z ZIP-a. Scalanie jest idempotentne po UUID (`src/przypadki-uzycia/dziennik.ts`), więc gdy telefon ma dalej swój dziennik, scalenie po przywróceniu nie podwoi stuknięć; linia już obecna w bazie jest pomijana, linia bez licznika w bazie albo nieczytelna trafia do `blad` (ADR-0008 (3)), a linia bez rodzica do poczekalni. Gotowego skryptu w `docs/niezawodnosc/narzedzia/` nie ma; bez tego kroku linie przepadają, gdy telefon nie ma już dziennika (nowa instalacja).
+4. Porównać liczności z tym, co pamięta użytkownik. O zwrocie danych decyduje właściciel z użytkownikiem. Zwrot to plik `.oczko` z odzyskanej bazy do importu „Zastąp” (przywrócenie robi kopię „przed”, ADR-0020 (5′)).
+5. Po zamknięciu sprawy pliki są usuwane za zgodą właściciela.
 
 ## 5. Tor poprawki (bez OTA, ADR-0021)
 Każda poprawka to nowy build (P-080 (4c)). Kolejność:

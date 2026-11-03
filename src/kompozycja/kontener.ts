@@ -3,7 +3,7 @@
 import { Platform } from 'react-native';
 import type { Wynik } from '../domena/bledy';
 import type { Haptyka, EkranAktywny, Siec, Sklep } from '../domena/porty';
-import { otworzPortExpo } from '../dane/baza/adapter-expo';
+import { otworzPortExpo, type PortExpo } from '../dane/baza/adapter-expo';
 import { otworzBaze } from '../dane/baza/polaczenie';
 import { sciezkiDanych } from '../dane/baza/sciezki';
 import { migruj } from '../dane/migracje/migruj';
@@ -11,7 +11,7 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, wolneMiejsce, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
 import { identyfikatorUrzadzenia, pamiecProWPliku } from './pliki-urzadzenia';
 import { utworzI18n } from '../i18n/i18n';
@@ -50,6 +50,8 @@ export type Kontener = {
   /** Partia 6: wzory (konwersja, skaner), skrzynka importu i migawka w App Group, stan arkusza skrzynki. */
   wzor: { z: ZaleznosciKompozycjiWzoru; k: KompozycjaWzoru; platforma: PlatformaWzoru };
   icloud: { sterownik: Sterownik; widoczny: boolean; e2e: SilnikIcloud['e2e']; naPartie(f: () => void): () => void } | null;
+  /** M1-151 (DEV-15): zamknięcie połączenia z bazą (po kolejce portu) — tryb awaryjny przed ponownym startem w tym samym procesie. */
+  zamknij(): Promise<void>;
 };
 
 /** Błąd otwarcia bazy albo plików → `powod` dla ekranu awaryjnego (ADR-0019, krok 3C); nic nie jest zastępowane po cichu. */
@@ -59,7 +61,9 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const tymczasowy = polacz(katalogDanych, 'tmp');
   for (const k of [katalogDanych, s.pliki, s.kopie, tymczasowy]) utworzKatalog(k);
   ustawKatalogTymczasowy(tymczasowy);
-  const b = await otworzBaze(s.baza, (p) => otworzPortExpo(p));
+  const polaczenia: PortExpo[] = [];
+  const zamknij = async (): Promise<void> => { for (const p of polaczenia.splice(0)) await p.zamknij().catch(() => undefined); };
+  const b = await otworzBaze(s.baza, (p) => { const port = otworzPortExpo(p); polaczenia.push(port); return port; }, wolneMiejsce); // M1-157: wolne miejsce rozstrzyga `zapis` vs `brak_miejsca`
   if (!b.ok) return b;
   const baza = b.wartosc;
   const zegar = zegarAplikacji();
@@ -111,7 +115,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
       z,
       j: { t, jezyk, zegar24h, naZmiane: (f) => i18n.naZmiane(f), preferencja: () => i18n.preferencja(), ustawJezyk: (p) => i18n.ustawJezyk(p) },
       porty: { sklep, ekranAktywny: ekranAktywny(), haptyka: haptyka(), siec: siecAplikacji() },
-      dostep, katalogDanych, icloud, wzor,
+      dostep, katalogDanych, icloud, wzor, zamknij,
     },
   };
 }

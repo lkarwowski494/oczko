@@ -213,6 +213,14 @@ describe('Licznik', () => {
     expect(screen.getByText(/decrease at both ends/)).toBeTruthy();
   });
 
+  test('M1-144: linia bliźniaka z notatką i przypomnieniem to jedno zdanie z przecinkiem ze słownika, bez „ · ” (decyzja 04)', () => {
+    pokaz(stanLicznika({ czesc: 'Right sleeve', skonczone: 30, dziergany: 31, blizniak: { rzad: 30, notatka: 'ujmowanie', przypomnienie: 'decrease at both ends' } }));
+    expect(screen.getByText('Paired part, row 30: ujmowanie, decrease at both ends')).toBeTruthy();
+    screen.unmount();
+    pokaz(stanLicznika({ czesc: 'Right sleeve', skonczone: 30, dziergany: 31, blizniak: { rzad: 30, notatka: null, przypomnienie: 'decrease at both ends' } }));
+    expect(screen.getByText('Paired part, row 30: decrease at both ends')).toBeTruthy();
+  });
+
   test('BR-DNI-005/S5: bez terminu ekran licznika nie pokazuje celu dziennego ani kalendarza (P-046)', () => {
     pokaz(stanLicznika({ cel: 96, celDnia: null }));
     expect(screen.getByText(/Goal 96 rows/)).toBeTruthy(); // design-spec.md:24 linijka celu części jest dozwolona

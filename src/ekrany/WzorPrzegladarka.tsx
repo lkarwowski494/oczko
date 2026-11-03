@@ -10,9 +10,9 @@ import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { LicznikWzoru } from './WzorLicznik';
-import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
-import type { Uklad } from '../domena/uklad';
-import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { GlifZnacznika, PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
+import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
@@ -28,6 +28,7 @@ export type StanPrzegladarki = {
   zakreslenia: number;
   narzedzie: Narzedzie;
   word: boolean;                                  // podgląd zastępczy Worda: bez znacznika i rysowania (W11)
+  wskazowka?: boolean;                            // M1-131: pierwsze otwarcie — linia `wzor.wskazowka_znacznika` (decyzja i flaga: trasa)
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
   licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
@@ -44,6 +45,8 @@ export type PropsPrzegladarki = {
   naCofnij(): void;
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
+  naNowaNotatka?(jest: boolean): void;          // M1-141: arkusz nowej notatki z wpisanym tekstem — trasa pyta przy geście wstecz jak „Back”
+  pasekZn?: { current: boolean };        // M1-131: przeglądarka zapisuje, czy pasek ustawień znacznika jest widoczny (do „Done”) — trasa pozwala wtedy przenieść pas stuknięciem
   znacznik?: StanZnacznika | null;                // pas na stronie: pasek ustawiania (krokowiec rzędu), koniec strony, „przed schematem” (F-26)
   razemStron?: number;
   oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
@@ -73,8 +76,12 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [blad, ustawBlad] = useState(false);
   const [pytanie, ustawPytanie] = useState<'brak' | 'zaznacz' | 'zmien'>('brak'); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
   const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
+  const pasekOtwarty = ustawianie && p.znacznik != null; // PasekZnacznika rysuje pasek tylko przy znaczniku
+  useEffect(() => { if (p.pasekZn) p.pasekZn.current = pasekOtwarty; }, [pasekOtwarty, p.pasekZn]);
   const [notatka, ustawNotatke] = useState<'brak' | 'pasek' | 'arkusz'>('brak');
   const [tekst, ustawTekst] = useState('');
+  const nowaZTekstem = notatka === 'arkusz' && tekst.trim().length > 0;
+  useEffect(() => { p.naNowaNotatka?.(nowaZTekstem); }, [nowaZTekstem]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko zmiana stanu arkusza
   const [podpowiedz, ustawPodpowiedz] = useState<'nie' | 'widac' | 'byla'>('nie'); // `wzor.rysik_podpowiedz` raz na otwarcie (P-284 (1) A)
   useEffect(() => {
     if (!p.tylkoRysik || podpowiedz !== 'nie') return;
@@ -85,6 +92,9 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [notatkaPo, ustawNotatkaPo] = useState(false); // po ustawieniu znacznika arkusz notatki otwiera się sam (design-spec)
   const znacznikUstawiony = (kier: 1 | -1) => { p.naZaznaczRzad(kier); ustawUstawianie(true); if (notatkaPo) { ustawNotatkaPo(false); ustawNotatke('arkusz'); } };
   const zaznacz = () => { if (s.kierunek === 1 || s.kierunek === -1) znacznikUstawiony(s.kierunek); else ustawPytanie('zaznacz'); };
+  const ustawiam = pytanie !== 'brak' || !!p.oczekujacePrzytrzymanie || ustawianie || p.znacznik != null; // M1-131: ustawianie zaczęte
+  const [bezWskazowki, ustawBezWskazowki] = useState(false); // …i wskazówka już nie wraca (spec pkt 3 „Znika”)
+  useEffect(() => { if (ustawiam) ustawBezWskazowki(true); }, [ustawiam]);
   const ipad = s.uklad.klasa === 'regular';
   const tryb = s.narzedzie !== 'brak';
   const obok = s.uklad.wzor === 'obok';
@@ -115,11 +125,14 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   ) : (
     <View style={st.pasek}>
       <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={t('wzor.wstecz_a11y', { czesc: s.czesc })}
-        onPress={() => { if (notatka === 'arkusz' && tekst.trim()) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
+        onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">
-            <Text style={st.tytul} numberOfLines={2}>{`${s.nazwa} ▾`}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs }}>{/* M1-146: chevron.down zamiast glifu ▾ */}
+              <Text style={[st.tytul, { flexShrink: 1 }]} numberOfLines={2}>{s.nazwa}</Text>
+              <SymbolSf nazwa="chevron.down" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
+            </View>
           </Pressable>
         ) : <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{s.nazwa}</Text>}
         <Text style={st.podpis} testID="wzor-zrodlo">{s.opis}</Text>
@@ -127,7 +140,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       <View style={st.grupa}>
         {!s.word && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
-            <SymbolSf nazwa="bookmark" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
+            <GlifZnacznika k={k} />
           </Pressable>
         )}
         {!s.word && p.naNotatka && (
@@ -151,6 +164,9 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         </View>
       )}
       {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text">{t('wzor.word_podglad')}</Text>}
+      {s.wskazowka && !bezWskazowki && !ustawiam && !tryb && notatka !== 'pasek' && podpowiedz !== 'widac' && (
+        <Text style={[st.tresc, st.informacja]} testID="wzor-wskazowka-znacznika" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{t('wzor.wskazowka_znacznika')}</Text>
+      )}
       {notatka === 'pasek' && (
         <View style={st.informacja} accessibilityRole="summary">
           <Text style={st.tresc}>{t('wzor.notatka_bez_znacznika')}</Text>
@@ -249,7 +265,7 @@ function style(k: Kolory) {
     pogrubiony: { fontWeight: '700' },
     informacja: { padding: odstep.m, marginHorizontal: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     strona: { flex: 1, backgroundColor: k.papierGrupa },
-    stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: 640 }, // kolumna strony iPada maks. 640 pt (W4b)
+    stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: KOLUMNA_TRESCI_MAKS }, // kolumna strony iPada maks. 640 pt (W4b, design-spec:683); ta sama stała co kolumna treści G1 (Bezpieczny)
     podpowiedz: { top: odstep.m, bottom: undefined }, // makieta ipad-rysik: nad stroną, nie na plakietce strony
     plakietka: { ...typografia.podpis, color: k.grafit, alignSelf: 'center', position: 'absolute', bottom: odstep.m, paddingHorizontal: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papier },
     menuTlo: { ...StyleSheet.absoluteFill, justifyContent: 'flex-end' },

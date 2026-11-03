@@ -120,6 +120,12 @@ ok(dbs.prepare('PRAGMA foreign_key_list(poczekalnia)').all().length === 0, 'pocz
 ok(rzuca(() => dbs.exec(`INSERT INTO poczekalnia (id, rodzaj_rekordu, dane, powod, zrodlo, przyszlo_ms) VALUES ('zx', 'zdarzenie', '{"licznik":"brak"}', 'brak_encji', 'synchronizacja', 1)`)) === null
   && /CHECK/.test(rzuca(() => dbs.exec(`INSERT INTO poczekalnia (id, rodzaj_rekordu, dane, powod, zrodlo, przyszlo_ms) VALUES ('zy', 'zdarzenie', 'x', 'brak_encji', 'synchronizacja', 1)`)) ?? ''), 'poczekalnia: zdarzenie bez licznika przyjęte, dane niebędące JSON odrzucone');
 ok(kolumny('sesja').includes('do_korekty') && /CHECK/.test(rzuca(() => dbs.exec(`INSERT INTO projekt (id, nazwa, utworzono_ms, zmieniono_ms, ostatnia_praca_ms) VALUES ('p', 'A', 1, 1, 1); INSERT INTO sesja (id, projekt_id, stan, start_ms, strefa, dzien, do_korekty) VALUES ('s', 'p', 'trwa', 1, 'UTC', '2026-10-22', 2)`)) ?? ''), 'sesja.do_korekty ∈ {0, 1} (zapomniany stoper, druga otwarta sesja przy scaleniu)');
+// Skrzynka iCloud (M1-audytor-generalny-117, ADR-0005 uzupełnienie 2026-11-03, dane.md): wpis wysłany (wyslano_nr = nr) zostaje do pełnego pobrania.
+dbs.exec("UPDATE synchronizacja SET wlaczona = 1 WHERE id = 1; INSERT INTO projekt (id, nazwa, utworzono_ms, zmieniono_ms, ostatnia_praca_ms) VALUES ('pz', 'Z', 1, 1, 1)");
+ok(dbs.prepare("SELECT wyslano_nr, objete FROM zmiana_icloud WHERE encja = 'projekt' AND klucz = 'pz'").get()?.objete === 0
+  && rzuca(() => dbs.exec("UPDATE zmiana_icloud SET wyslano_nr = nr, objete = 1 WHERE klucz = 'pz'")) === null
+  && /CHECK/.test(rzuca(() => dbs.exec("UPDATE zmiana_icloud SET wyslano_nr = nr + 1 WHERE klucz = 'pz'")) ?? '')
+  && /CHECK/.test(rzuca(() => dbs.exec("UPDATE zmiana_icloud SET objete = 2 WHERE klucz = 'pz'")) ?? ''), 'zmiana_icloud: nowy wpis objete = 0; CHECK odrzuca wyslano_nr > nr i objete = 2');
 // Baza nowsza niż aplikacja: odrzucona bez zmian.
 const db2 = otworz(); db2.exec('PRAGMA user_version = 2');
 ok(/nowsza/.test(rzuca(() => migruj(db2, MIGRACJE)) ?? '') && db2.prepare('PRAGMA user_version').get().user_version === 2, 'baza w wersji 2 odrzucona przez aplikację w wersji 1, bez zmian');

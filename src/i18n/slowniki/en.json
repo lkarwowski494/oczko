@@ -42,6 +42,7 @@
     "powtorzenie": "{{nazwa}}: repeat {{numer}}, row {{rzad}} of {{dlugosc}}",
     "notatka": "Note",
     "blizniak": "Paired part, row {{rzad}}: {{tresc}}",
+    "blizniak_oba": "Paired part, row {{rzad}}: {{notatka}}, {{przypomnienie}}",
     "znaczniki_sesji_one": "Marks this session: {{count}} row since {{godzina}}",
     "znaczniki_sesji_other": "Marks this session: {{count}} rows since {{godzina}}",
     "ostatni_darmowy": "1 free crafting day left in {{miesiac}}",
@@ -96,7 +97,7 @@
     "eksport": "Export all data",
     "import": "Import a backup",
     "usun_wszystko": "Delete all data",
-    "usun_pytanie": "This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them after 30 days.",
+    "usun_pytanie": "This removes all projects, counters, history, patterns and photos from Oczko. Safety copies stay on this device. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space.",
     "usun_potwierdz": "Delete all data",
     "usun_pro": "Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.",
     "usun_kopia": "Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.",
@@ -384,6 +385,7 @@
     "kopia_tytul": "Make another {{nazwa}}?",
     "kopia_opis": "Same parts, goals, reminders, and needles or hook with their size. All counters start at 0, and this project stays as it is.",
     "kopia_potwierdz": "Make another",
+    "kopia_nazwa": "{{nazwa}} {{n}}",
     "edycja_info": "Deleted parts and counters stay in Recently deleted for 30 days.",
     "data_startu": "Started",
     "data_ukonczenia": "Finished",
@@ -486,6 +488,8 @@
     "sprobuj": "Try starting normally",
     "zglos": "Report a problem",
     "zapisano": "Copy saved",
+    "blad_kopii": "Couldn’t save a copy",
+    "blad_kopii_opis": "Your device may be out of space. Free some space, then save a copy again or try starting normally.",
     "tytul_brak_miejsca": "Your device is out of space",
     "opis_brak_miejsca": "Nothing was changed. Free some space on this device, then try starting normally."
   },
@@ -522,7 +526,7 @@
     "wylaczona": "iCloud sync is off.",
     "aktywna": "iCloud sync is on.",
     "zegarek_kontakt": "Last contact with your watch: {{data}}.",
-    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. They count toward your device’s iCloud backup, so delete the ones you no longer need."
+    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space. They count toward your device’s iCloud backup until then."
   },
   "zglos": {
     "tytul": "Report a problem",
@@ -824,6 +828,7 @@
     "cofnij_rysunek": "Undo last stroke",
     "zakreslacz_podpowiedz": "Drag a finger to highlight. Two fingers scroll.",
     "rysik_podpowiedz": "The pencil writes. Your finger scrolls.",
+    "wskazowka_znacznika": "Tap a row to place your marker.",
     "import_w_toku": "Adding the pattern…",
     "czeka_siec": "Waiting for the internet to save the web page.",
     "usun_oczekujacy_a11y": "Remove {{nazwa}} from the list",

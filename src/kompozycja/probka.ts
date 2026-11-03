@@ -1,6 +1,7 @@
 // Kalkulator „Swatch” (F-38; BR-KAL-001, BR-KAL-003, BR-KAL-008; design-spec „Kalkulator Swatch”, P-191): stan ekranu liczony na żywo z pól.
 // RD-01 (oczka na szerokość), RD-04 (4 in → 10 cm), RD-10 (kategoria grubości, P-084) z domeny; wpis liczby w zapisie regionu (P-097 (5a)).
-// Wyniki do 3 miejsc (BR-KAL-003 S1), bez zaokrąglania do całości (BR-KAL-001 S4).
+// DEC-34 a (M1-134, ER-62): liczba wyliczona najwyżej z 1 miejscem po przecinku, liczba przepisana z pola jak wpisano (do 3 miejsc); obliczenia
+// (wynik oczek, kategoria) z pełnej wartości, {{count}} = wartość pokazana; bez zaokrąglania do całości (BR-KAL-001 S4).
 import type { Tlumacz } from '../ekrany/wspolne';
 import { klasyfikujGrubosc } from '../domena/obliczenia/grubosc';
 import { CAL_W_CM, CZTERY_CALE_W_CM, GRUBOSC } from '../domena/obliczenia/parametry';
@@ -19,9 +20,10 @@ export type StanProbki = {
 };
 
 const NAZWY = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
-const MIEJSCA = 3;
+const MIEJSCA_WPISANE = 3;   // echo pola (próbka, szerokość) bez przeliczenia
+const MIEJSCA_WYLICZONE = 1; // DEC-34 a: liczba wyliczona w podglądzie
 const GORA_TABELI = Math.max(...GRUBOSC.map((g) => g.max ?? 0)); // 40 o./4 in (kategoria 0)
-const zaokr = (x: number) => Math.round(x * 10 ** MIEJSCA) / 10 ** MIEJSCA;
+const zaokr = (x: number, miejsca: number) => Math.round(x * 10 ** miejsca) / 10 ** miejsca;
 
 type Pole = { rodzaj: 'puste' } | { rodzaj: 'liczba'; wartosc: number } | { rodzaj: 'blad'; tekst: string };
 function pole(tekst: string, j: { t: Tlumacz; jezyk(): string }): Pole {
@@ -32,7 +34,10 @@ function pole(tekst: string, j: { t: Tlumacz; jezyk(): string }): Pole {
 }
 
 export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string }): StanProbki {
-  const t = j.t, f = (x: number) => formatujLiczbe(zaokr(x), j.jezyk(), { maks: MIEJSCA });
+  const t = j.t;
+  // Liczba pokazana i ta sama wartość jako {{count}} (forma liczby mnogiej idzie za tym, co widać): wyliczona — 1 miejsce, wpisana — do 3.
+  const wyl = (x: number) => { const v = zaokr(x, MIEJSCA_WYLICZONE); return { count: v, tekst: formatujLiczbe(v, j.jezyk(), { maks: MIEJSCA_WYLICZONE }) }; };
+  const wpis = (x: number) => { const v = zaokr(x, MIEJSCA_WPISANE); return { count: v, tekst: formatujLiczbe(v, j.jezyk(), { maks: MIEJSCA_WPISANE }) }; };
   const o = pole(w.oczka, j), s = pole(w.szerokosc, j);
   const stan: StanProbki = { bladOczka: null, przeliczona: null, uwaga4in: null, bladSzerokosci: null, wynik: null, grubosc: null };
   if (o.rodzaj === 'blad') stan.bladOczka = o.tekst;
@@ -42,16 +47,17 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
 
   const p = o.wartosc;
   const naCm = w.na === '10cm' ? p / 10 : p / CZTERY_CALE_W_CM; // oczka na 1 cm
-  if (w.na === '4in') { stan.przeliczona = t('probka.przeliczona', { count: zaokr(naCm * 10), p: f(naCm * 10) }); stan.uwaga4in = t('probka.uwaga_4in'); }
+  if (w.na === '4in') { const g = wyl(naCm * 10); stan.przeliczona = t('probka.przeliczona', { count: g.count, p: g.tekst }); stan.uwaga4in = t('probka.uwaga_4in'); }
 
   if (s.rodzaj === 'liczba') {
     const szer = s.wartosc;
-    const n = zaokr((w.jednostka === 'cm' ? szer : szer * CAL_W_CM) * naCm); // RD-01: N = W × P / 10 (W w cm)
-    const pWJednostce = w.jednostka === 'cm' ? (w.na === '10cm' ? p : naCm * 10) : (w.na === '4in' ? p : naCm * CZTERY_CALE_W_CM);
+    const n = wyl((w.jednostka === 'cm' ? szer : szer * CAL_W_CM) * naCm); // RD-01: N = W × P / 10 (W w cm), z pełnej gęstości
+    const bezPrzeliczenia = (w.jednostka === 'cm') === (w.na === '10cm'); // próbka w tej samej jednostce co szerokość: echo pola
+    const pW = bezPrzeliczenia ? wpis(p) : wyl(w.jednostka === 'cm' ? naCm * 10 : naCm * CZTERY_CALE_W_CM);
     stan.wynik = {
       // {{count}} wybiera formę liczby mnogiej; w tekście liczba w zapisie regionu (t wstawia surową wartość count).
-      liczba: t('probka.oczka_wynik', { count: n }).replace(String(n), f(n)),
-      zDanych: t(w.jednostka === 'cm' ? 'probka.z_danych_cm' : 'probka.z_danych_in', { count: zaokr(pWJednostce), p: f(pWJednostce), w: f(szer) }),
+      liczba: t('probka.oczka_wynik', { count: n.count }).replace(String(n.count), n.tekst),
+      zDanych: t(w.jednostka === 'cm' ? 'probka.z_danych_cm' : 'probka.z_danych_in', { count: pW.count, p: pW.tekst, w: wpis(szer).tekst }),
       uwaga: t('probka.uwaga_oczka'),
     };
   }
@@ -81,6 +87,7 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
   const calaAlboPolowka = Number.isInteger(p4 * 2);
   if (!calaAlboPolowka) uwagi.unshift(t('probka.uwaga_zaokraglenie'));
   uwagi.push(t('probka.uwaga_kategoria'));
-  stan.grubosc = { linie, dokladnie: w.na === '10cm' ? t('probka.na_4in_dokladnie', { count: zaokr(p4), p: f(p4) }) : null, uwagi };
+  const d4 = wyl(p4);
+  stan.grubosc = { linie, dokladnie: w.na === '10cm' ? t('probka.na_4in_dokladnie', { count: d4.count, p: d4.tekst }) : null, uwagi };
   return stan;
 }

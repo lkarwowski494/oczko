@@ -6,7 +6,8 @@ import type { Tlumacz } from './wspolne';
 // M1-102 (DEC-28 a, 04): rysunek na wzorze i stoper mają własne teksty — `rysunek` (kreski czekają w pliku na urządzeniu: zapis po rysowaniu,
 // odzysk przy otwarciu), `rysunek_niezapisany` (kreski tylko w pamięci widoku natywnego), `stoper` (Start/Pause/Resume/Stop).
 // M1-120 (04-studio-projektowe-517 a): `udostepnienie` — „Share” nie przygotował pliku (karta ukończenia, zdjęcie); nic nie zapisywano, więc bez tekstu formularza.
-export type MiejsceBleduZapisu = 'ustawienia' | 'formularz' | 'rysunek' | 'rysunek_niezapisany' | 'stoper' | 'udostepnienie';
+// M1-142 (DEC-36 a, 04-studio-projektowe-519): `kopia` — ekran awaryjny, archiwum i ZIP surowej kopii się nie zapisały (nic z formularza nie ginie).
+export type MiejsceBleduZapisu = 'ustawienia' | 'formularz' | 'rysunek' | 'rysunek_niezapisany' | 'stoper' | 'udostepnienie' | 'kopia';
 const TEKSTY: Record<MiejsceBleduZapisu, [Klucz, Klucz]> = {
   ustawienia: ['ustawienia.blad_zapisu', 'wspolne.blad_zapisu_opis'],
   formularz: ['formularz.blad_zapisu', 'wspolne.blad_zapisu_opis'],
@@ -14,6 +15,7 @@ const TEKSTY: Record<MiejsceBleduZapisu, [Klucz, Klucz]> = {
   rysunek_niezapisany: ['wzor.blad_rysunku', 'wzor.rysunek_niezapisany_opis'],
   stoper: ['stoper.blad_zapisu', 'wspolne.blad_zapisu_opis'],
   udostepnienie: ['wspolne.blad_udostepnienia', 'wspolne.blad_udostepnienia_opis'],
+  kopia: ['awaryjny.blad_kopii', 'awaryjny.blad_kopii_opis'],
 };
 /** Argumenty `Alert.alert(tytul, opis, przyciski)`: `Alert.alert(...alertBleduZapisu(t, 'formularz'))`. */
 export function alertBleduZapisu(t: Tlumacz, miejsce: MiejsceBleduZapisu): [string, string, { text: string }[]] {

@@ -261,6 +261,8 @@ CREATE TABLE zmiana_icloud (                          -- skrzynka zmian do wysł
   klucz TEXT NOT NULL,                                              -- klucz główny; klucz złożony = json_array(kolumny)
   usuniete INTEGER NOT NULL CHECK (usuniete IN (0, 1)),             -- 1 = usunięcie (także kaskadą) → rekord usunięty w CloudKit
   nr INTEGER NOT NULL,                                              -- nr_zmiany ostatniej zmiany; potwierdzenie wysyłki usuwa wpis tylko z nr ≤ wysłanego
+  wyslano_nr INTEGER CHECK (wyslano_nr IS NULL OR wyslano_nr <= nr),   -- NULL = niewysłany; = nr: potwierdzony, czeka na pełne pobranie strefy (ADR-0005, uzupełnienie 2026-11-03)
+  objete INTEGER NOT NULL DEFAULT 0 CHECK (objete IN (0, 1)),          -- 1 = wysłany przed początkiem bieżącego pobrania strefy; usuwany na jego udanym końcu
   PRIMARY KEY (encja, klucz)
 ) STRICT;
 

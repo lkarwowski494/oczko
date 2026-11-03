@@ -5,7 +5,8 @@ import { Alert } from 'react-native';
 import type { Powod, Wynik } from '../domena/bledy';
 import type { Haptyka } from '../domena/porty';
 import { alertBleduZapisu, type MiejsceBleduZapisu } from '../ekrany/blad-zapisu';
-import type { Tlumacz } from '../ekrany/wspolne';
+import type { Oglos, Tlumacz, WynikEkranu } from '../ekrany/wspolne';
+import { tekstBleduZapisu } from '../ekrany/WzorLicznik';
 
 /** To, co trasa ma z `useAplikacja()`: tłumacz, port haptyki i migawka preferencji. */
 export type ZrodloBleduZapisu = { kontener: { j: { t: Tlumacz }; porty: { haptyka: Haptyka } }; preferencje: { stan(): { wibracje: boolean } } };
@@ -25,4 +26,12 @@ export function zapisano<W extends Wynik<unknown>>(a: ZrodloBleduZapisu, r: W): 
   const w: Wynik<unknown> = r;
   if (!w.ok) zglosBladZapisu(a, w.powod);
   return w.ok;
+}
+
+/** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
+ *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
+export function bladPaskaLicznika(a: ZrodloBleduZapisu, r: WynikEkranu<unknown>, oglos: Oglos): void {
+  if (r.ok || r.powod === 'limit' || r.powod === 'zablokowany') return;
+  if (a.preferencje.stan().wibracje) a.kontener.porty.haptyka.zagraj('bladZapisu');
+  oglos(tekstBleduZapisu(a.kontener.j.t));
 }

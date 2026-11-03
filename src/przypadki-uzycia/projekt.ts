@@ -4,6 +4,7 @@ import type { Powod, Wynik } from '../domena/bledy';
 import { przejdzProjekt, type ZdarzenieProjektu } from '../domena/maszyny/projekt';
 import { STANY, type NarzedzieProjektu } from '../domena/stany';
 import { chwilaOPorze } from '../domena/postep';
+import { nazwaKopii } from '../domena/nazwa-kopii';
 import type { PortBazy } from '../domena/porty';
 import { stanProjektu, ustawUsuniecie, usunietoMs, zapiszStanProjektu, type TabelaKosza } from '../dane/repozytoria/projekty-zapis';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
@@ -106,8 +107,9 @@ export const przywrocLicznik = (z: Zaleznosci, w: { licznikId: string }): Promis
 export const usunCzesc = (z: Zaleznosci, w: { czescId: string }): Promise<Wynik<void>> => kosz(z, 'czesc', w.czescId, true);
 export const przywrocCzesc = (z: Zaleznosci, w: { czescId: string }): Promise<Wynik<void>> => kosz(z, 'czesc', w.czescId, false);
 
-/** „Zrób taką samą” (F-20): części (z celem i parą `para_z` przepisaną na nowe części, P-199 Q2a) i przypomnienia skopiowane, liczniki 0, `kopia_z` = oryginał; oryginał bez zmian. */
-export function zrobPonownie(z: Zaleznosci, w: { projektId: string }): Promise<Wynik<{ projektId: string }>> {
+/** „Zrób taką samą” (F-20): części (z celem i parą `para_z` przepisaną na nowe części, P-199 Q2a) i przypomnienia skopiowane, liczniki 0, `kopia_z` = oryginał; oryginał bez zmian.
+ *  Nazwa kopii: kolejny wolny numer wg szablonu `projekt.kopia_nazwa` z kompozycji (M1-136, DEC-35 b, `nazwaKopii`); projekt roboczy bez numeru. */
+export function zrobPonownie(z: Zaleznosci, w: { projektId: string; szablonNazwy: string }): Promise<Wynik<{ projektId: string }>> {
   return operacjaZapisu(z, 'zrobPonownie', async (tx, teraz, chwila) => {
     const [p] = await wiersze(tx.all('SELECT nazwa, nienazwany, narzedzie, drut_mm, usunieto_ms FROM projekt WHERE id = ?', [w.projektId]), 'zrobPonownie');
     if (!p) return blad('bledne_dane');
@@ -115,9 +117,11 @@ export function zrobPonownie(z: Zaleznosci, w: { projektId: string }): Promise<W
     const projektId = z.id.nowy();
     // Z projektu roboczego powstaje roboczy z własną datą startu jako nazwą zapasową (dane.md, P-126 (1b)).
     const roboczy = liczba(p, 'nienazwany') === 1;
+    // DEC-35 b: numer zajmuje każdy projekt z nazwą (także ukończony i w koszu); roboczy ma datę zamiast nazwy, więc nie zajmuje numeru.
+    const zajete = roboczy ? [] : (await wiersze(tx.all('SELECT nazwa FROM projekt WHERE nienazwany = 0', []), 'zrobPonownie')).map((r) => tekst(r, 'nazwa'));
     // P-195 Q4a (BR-PRJ-007): narzędzie i rozmiar z oryginału; bez stanu (wartości, historii, sesji, dat, zdjęć, notatki, terminu).
     await tx.run('INSERT INTO projekt (id, nazwa, nienazwany, narzedzie, drut_mm, kopia_z, utworzono_ms, zmieniono_ms, ostatnia_praca_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [projektId, roboczy ? chwila.dzien : tekst(p, 'nazwa'), roboczy ? 1 : 0, tekst(p, 'narzedzie'), liczbaLubNull(p, 'drut_mm'), w.projektId, teraz, teraz, teraz]);
+      [projektId, roboczy ? chwila.dzien : nazwaKopii(tekst(p, 'nazwa'), zajete, w.szablonNazwy), roboczy ? 1 : 0, tekst(p, 'narzedzie'), liczbaLubNull(p, 'drut_mm'), w.projektId, teraz, teraz, teraz]);
     const czesci = await wiersze(tx.all('SELECT id, nazwa, kolejnosc, cel_rzedow, para_z FROM czesc WHERE projekt_id = ? AND usunieto_ms IS NULL ORDER BY kolejnosc', [w.projektId]), 'zrobPonownie');
     const noweId = new Map<string, string>(); // część oryginału → część kopii (para wskazuje część kopii, nie oryginału)
     for (const c of czesci) {
