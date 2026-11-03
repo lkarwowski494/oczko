@@ -331,6 +331,24 @@
         "description": "Giorni di lavoro illimitati, paghi una volta"
       }
     },
+    "ja": {
+      "ascLocale": "ja",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro（月額）",
+        "description": "編んだ日の上限なし、毎月のお支払い"
+      },
+      "yearly": {
+        "name": "Oczko Pro（年額）",
+        "description": "編んだ日の上限なし、毎年のお支払い"
+      },
+      "lifetime": {
+        "name": "Oczko Pro（買い切り）",
+        "description": "編んだ日の上限なし、一回のお支払いのみ"
+      }
+    },
     "ko": {
       "ascLocale": "ko",
       "group": {

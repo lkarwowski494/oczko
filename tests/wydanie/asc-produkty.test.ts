@@ -289,7 +289,7 @@ describe('lokalizacje bez wyjątku właściciela (P-467)', () => {
     const w = JSON.parse(execFileSync('node', ['--input-type=module', '-e', kod, JSON.stringify(p)], { encoding: 'utf8' }));
     expect(w.items.slice(0, 2)).toEqual(['en:zaktualizuj:', 'pl:czeka:czeka na P-422 (akceptacja polskich tekstów przez właściciela)']);
     expect(w.items).toEqual(expect.arrayContaining(['de:zaktualizuj:', 'cs:utwórz:', 'nb:utwórz:', 'sl:pomiń:brak lokalizacji w App Store Connect', 'sr:pomiń:brak lokalizacji w App Store Connect']));
-    expect(w.items.filter((i: string) => i.includes(':utwórz:'))).toHaveLength(28); // 29 lokalizacji ASC bez pl, minus de-DE (istnieje)
+    expect(w.items.filter((i: string) => i.includes(':utwórz:'))).toHaveLength(26); // 28 lokalizacji ASC poza en-US (29 z metadanych minus sl = null), bez pl (czeka) i de-DE (istnieje)
     expect(w.extra).toEqual([]); expect(w.owners).toBeNull(); // OWNER_LOCALES usunięte
   });
   test('teksty en: limity Apple (nazwa ≤ 30, opis ≤ 45 znaków), bez cen i bez nazw innych aplikacji', () => {
