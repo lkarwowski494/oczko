@@ -2,6 +2,7 @@
 //  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: release`; wyjątek P-463 (M1-010, jak Trening):
 //    zadanie TYLKO CZYTAJĄCE z ASC z listy ASC_TYLKO_ODCZYT może użyć sekretów repozytorium ASC_* bez środowiska, o ile nie ma warunku trybu zapisu;
 //    każde inne zadanie z ASC_* (testflight, asc-metadane, asc-zrzuty, asc-iap-localizations apply…) jest zapisujące i wymaga `environment: release`;
+//    wyjątek P-474 (API_PRZEKLAD): zadanie `przeklad` w przeklad-tlumaczen.yml może użyć tylko sekretu ANTHROPIC_API_KEY bez środowiska (tylko workflow_dispatch);
 //  ODCZYT-WYZWALACZ / ODCZYT-Z-ZAPISEM: zadanie z listy ASC_TYLKO_ODCZYT — jedyny wyzwalacz workflow_dispatch; skrypty scripts/asc/ w jego `run:` tylko z --dry-run (przegląd bezpieczeństwa 2026-11-03);
 //  WYZWALACZ-Z-SEKRETAMI: workflow z takim zadaniem nie ma `pull_request`, `pull_request_target` ani `workflow_run`;
 //  SZTUCZNY-SKLEP-W-WYDANIU: przełączniki testowe (`EXPO_PUBLIC_STORE_FAKE`, `_WATCH_FAKE`, `_ICLOUD_FAKE`, `_E2E`, `_WYMUS_AWARIE`, `_PSEUDO`) nie występują w workflowie z `environment: release`;
@@ -25,6 +26,11 @@ import { parse } from 'yaml';
 export const ASC_TYLKO_ODCZYT = [
   { plik: '.github/workflows/asc-kontrola.yml', zadanie: 'kontrola', dlaczego: 'workflow wielokrotnego użytku apps4brew-narzedzia przypięty do SHA, tylko GET, tylko workflow_dispatch' },
   { plik: '.github/workflows/asc-produkty.yml', zadanie: 'plan', dlaczego: 'plan produktów zakupów: scripts/asc/produkty.mjs --dry-run (tylko GET), tylko workflow_dispatch; zapis (--apply) w zadaniu apply z environment: release (P-467)' },
+];
+/** Zadania z kluczem API Anthropic (opłacane z kredytów właściciela) bez `environment`: P-474, jak Trening. Klucz nie daje dostępu do ASC ani repo;
+ *  workflow ma tylko `workflow_dispatch`, `permissions: contents: read` (kontrola PERMISSIONS-KORZEN), wynik tylko jako artefakt. */
+export const API_PRZEKLAD = [
+  { plik: '.github/workflows/przeklad-tlumaczen.yml', zadanie: 'przeklad', sekret: 'ANTHROPIC_API_KEY', dlaczego: 'przekład fali 09 przez Message Batches, limit 6 USD na przebieg (P-144), tylko workflow_dispatch (P-474)' },
 ];
 const TRYB_ZAPISU = /\b(apply|zapis|upload|wyslij|push)\b/i;
 const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
@@ -73,11 +79,15 @@ export function sprawdzWorkflowy(korzen) {
         zSekretami = true;
         const czytajace = ASC_TYLKO_ODCZYT.some((o) => o.plik === rel && o.zadanie === id) && sekrety.every((s) => s.startsWith('ASC_'))
           && !TRYB_ZAPISU.test(String(job?.if ?? ''));
-        if (env !== 'release' && !czytajace) zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: release (zapis do ASC i inne sekrety tylko w release, P-463)`);
+        const przeklad = API_PRZEKLAD.some((o) => o.plik === rel && o.zadanie === id) && sekrety.every((s) => s === API_PRZEKLAD[0].sekret);
+        if (env !== 'release' && !czytajace && !przeklad) zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: release (zapis do ASC i inne sekrety tylko w release, P-463)`);
       }
     }
     if (/secrets\.(?!GITHUB_TOKEN)/.test(JSON.stringify(wf?.env ?? {}))) { zSekretami = true; zgl('SEKRET-BEZ-SRODOWISKA', 'sekret w env na poziomie workflowu'); }
     // Zadanie z listy czytających zwalnia z `environment`, więc: workflow ma tylko `workflow_dispatch`, a każdy skrypt scripts/asc/ w jego `run:` ma `--dry-run` i nie ma `--apply`.
+    for (const o of API_PRZEKLAD.filter((x) => x.plik === rel)) {
+      if (wyzwalacze.length !== 1 || wyzwalacze[0] !== 'workflow_dispatch') zgl('ODCZYT-WYZWALACZ', `workflow z zadaniem ${o.zadanie} (klucz API) ma wyzwalacze ${wyzwalacze.join(', ')} (dozwolony tylko workflow_dispatch)`);
+    }
     for (const o of ASC_TYLKO_ODCZYT.filter((x) => x.plik === rel)) {
       if (wyzwalacze.length !== 1 || wyzwalacze[0] !== 'workflow_dispatch') zgl('ODCZYT-WYZWALACZ', `workflow z zadaniem czytającym ${o.zadanie} ma wyzwalacze ${wyzwalacze.join(', ')} (dozwolony tylko workflow_dispatch)`);
       for (const [i, krok] of (wf?.jobs?.[o.zadanie]?.steps ?? []).entries()) {

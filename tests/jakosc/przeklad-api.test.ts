@@ -96,3 +96,40 @@ describe('przeklad-api: przebieg (main) z atrapą fetch', () => {
     expect(readdirSync(join(ROOT, 'src/i18n/slowniki')).sort()).toEqual(slowniki);
   });
 });
+
+describe('przeklad-api: fala 2026-11-03 (zakres = oczekujace.json, bez pl, P-474)', () => {
+  const wyj = () => mkdtempSync(join(tmpdir(), 'przeklad-fala-'));
+  const ZAKRES = ['--zakres', 'docs/lokalizacja/oczekujace.json', '--pomin', 'pl'];
+  const oczekujace = JSON.parse(readFileSync(join(ROOT, 'docs/lokalizacja/oczekujace.json'), 'utf8')) as { klucze: string[] };
+  test('zbierz z zakresem zwraca tylko wskazane bazy kluczy; nieznana baza to błąd (lista nie może się cicho zestarzeć)', () => {
+    const r = json(`const p = m.zbierz(undefined, ['licznik.cofnij', 'wspolne.ladowanie']); let blad = null; try { m.zbierz(undefined, ['nie.ma.takiego']); } catch (e) { blad = e.message; } console.log(JSON.stringify({ k: p.map((x) => x.klucz), blad }))`);
+    expect(r.k).toEqual(['licznik.cofnij', 'wspolne.ladowanie']);
+    expect(r.blad).toMatch(/nie\.ma\.takiego/);
+  });
+  test('--szacuj z zakresem: 33 języki bez pl i en, tyle pozycji co klucze oczekujące, bez klucza API, w limicie 6 USD (Sonnet)', () => {
+    const w = wyj();
+    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'sonnet', ...ZAKRES, '--wyjscie', w], { encoding: 'utf8', env: BEZ_KLUCZA, cwd: ROOT });
+    expect(s.status).toBe(0); expect(s.stdout).toMatch(/33 języków × \d+ pozycji/);
+    const sz = JSON.parse(readFileSync(join(w, 'szacunek.json'), 'utf8'));
+    expect(sz.pozycji).toBe(oczekujace.klucze.length);
+    expect(sz.wiersze.map((x: { jezyk: string }) => x.jezyk)).not.toContain('pl'); expect(sz.wiersze).toHaveLength(33);
+    expect(sz.koszt_usd).toBeLessThan(6);
+  });
+  test('stop powyżej limitu 6 USD bez zgody (kod 3) działa także z zakresem; nic nie jest wysyłane (brak klucza)', () => {
+    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'sonnet', ...ZAKRES, '--wyjscie', wyj()], { encoding: 'utf8', env: { ...BEZ_KLUCZA, PRZEKLAD_LIMIT_USD: '0.01' }, cwd: ROOT });
+    expect(s.status).toBe(3); expect(s.stdout).toMatch(/STOP/);
+  });
+  test('żądanie dla języka zawiera glosariusz jednostek tego języka (symbol i nazwa pełna)', () => {
+    const t = json(`const sl = JSON.parse((await import('node:fs')).readFileSync('docs/lokalizacja/slownik-terminow.json','utf8')); const p = m.zbierz(undefined, ['jednostka.g_nazwa']); console.log(JSON.stringify(m.budujZadanie('de', p, sl).messages[0].content))`) as string;
+    expect(t).toContain('Glosariusz jednostek'); expect(t).toContain('5 Gramm');
+  });
+  test('nałożenie fali: stare formy bazy zastąpione, chronione pary (język, baza) nietknięte, kolejność jak w en', () => {
+    const r = json(`const mod = await import(${JSON.stringify(join(ROOT, 'scripts/i18n/przeklad-zastosuj-delta.mjs'))}); const k = new Map([['a.b', 0], ['c.d', 1], ['e.f', 2]]);
+      const aktualny = { 'e.f': 'stare ef', 'c.d_one': 'stare', 'c.d_other': 'stare', 'a.b': 'stare ab', 'x.obcy': 'obcy' };
+      const prop = { 'a.b': 'nowe ab', 'c.d_one': 'nowe1', 'c.d_few': 'nowe2', 'c.d_other': 'nowe3' };
+      console.log(JSON.stringify({ zwykle: mod.nalozDelta(aktualny, prop, new Set(['a.b', 'c.d']), {}, 'cs', k), chronione: mod.nalozDelta(aktualny, prop, new Set(['a.b', 'c.d']), { 'c.d': ['cs'] }, 'cs', k) }))`);
+    expect(Object.keys(r.zwykle.wynik)).toEqual(['a.b', 'c.d_one', 'c.d_few', 'c.d_other', 'e.f', 'x.obcy']);
+    expect(r.zwykle.wynik['a.b']).toBe('nowe ab'); expect(r.zwykle.nowe).toBe(4);
+    expect(r.chronione.wynik['c.d_one']).toBe('stare'); expect(r.chronione.wynik['c.d_few']).toBeUndefined(); expect(r.chronione.wynik['a.b']).toBe('nowe ab');
+  });
+});
