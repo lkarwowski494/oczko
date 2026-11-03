@@ -128,7 +128,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">
+          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} style={st.przelacz} testID="wzor-przelacz">
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs }}>{/* M1-146: chevron.down zamiast glifu ▾ */}
               <Text style={[st.tytul, { flexShrink: 1 }]} numberOfLines={2}>{s.nazwa}</Text>
               <SymbolSf nazwa="chevron.down" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
@@ -257,6 +257,7 @@ function style(k: Kolory) {
     pasekNarzedzi: { flexDirection: 'row', gap: odstep.s, paddingHorizontal: odstep.l, minHeight: rozmiary.minimum, alignItems: 'center' },
     grupa: { flexDirection: 'row', alignItems: 'center' },
     tytulPaska: { flex: 1, minWidth: 120 },
+    przelacz: { minHeight: rozmiary.minimum, justifyContent: 'center' }, // cel dotyku przełącznika wzorów w tytule (M1-175, SP-06; TT-16)
     ikona: { minWidth: rozmiary.minimum, minHeight: rozmiary.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi },
     wybrane: { backgroundColor: k.papierGrupa, borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: promien.pole }, // stan wybranego narzędzia niesie kształt, nie kolor (10 C, P-360)
     tytul: { ...typografia.instrukcja, color: k.grafit },
