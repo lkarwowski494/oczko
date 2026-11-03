@@ -33,8 +33,8 @@ describe('workflow przeklad-tlumaczen.yml', () => {
     expect((bezKomentarzy.match(/--wysilek "\$WEJ_WYSILEK"/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/powyżej 30 USD/); expect(bezKomentarzy).not.toMatch(/6 USD/);
   });
-  test('tryby przeglad (P-486) i zwrotny (P-498): wejście tryb przeklad|przeglad|zwrotny (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
-    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad, zwrotny\]/);
+  test('tryby przeglad (P-486) i zwrotny (P-498), metadane (P-501): wejście tryb przeklad|przeglad|zwrotny|metadane (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
+    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad, zwrotny, metadane\]/);
     expect(bezKomentarzy).toMatch(/WEJ_TRYB: \$\{\{ inputs\.tryb \}\}/);
     expect((bezKomentarzy.match(/--tryb "\$WEJ_TRYB"/g) ?? []).length).toBe(2);
     expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/zakres-fali-2026-11-03\.json; WYJ=raport-przegladu/g) ?? []).length).toBe(2);

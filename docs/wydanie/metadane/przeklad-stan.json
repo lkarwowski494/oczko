@@ -1,0 +1,6 @@
+{
+  "_opis": "Stan przekładu metadanych sklepu (P-501, rola 10): które z 29 lokalizacji ASC do uzupełnienia (nazwy.store.json bez en-*) mają przyjęty plik <kod ASC>.store.json. Aktualizuje scripts/i18n/przeklad-metadane-przyjmij.mjs; pilnuje tests/wydanie/metadane-przeklad.test.ts. Pełny zapis do App Store Connect (asc-metadane) jest blokowany walidacją, dopóki oczekujace nie jest puste.",
+  "wymagane": ["pl", "cs", "sk", "hr", "sl", "uk", "ru", "hu", "ro", "de-DE", "fr-FR", "it", "es-ES", "es-MX", "pt-PT", "pt-BR", "nl-NL", "sv", "da", "no", "fi", "tr", "el", "id", "ms", "vi", "ja", "ko", "zh-Hant"],
+  "przyjete": {},
+  "oczekujace": ["pl", "cs", "sk", "hr", "sl", "uk", "ru", "hu", "ro", "de-DE", "fr-FR", "it", "es-ES", "es-MX", "pt-PT", "pt-BR", "nl-NL", "sv", "da", "no", "fi", "tr", "el", "id", "ms", "vi", "ja", "ko", "zh-Hant"]
+}
