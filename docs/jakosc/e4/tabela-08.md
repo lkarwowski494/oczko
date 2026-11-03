@@ -141,6 +141,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/baner-serii-zrodlo.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-019, RD-17 | `src/ekrany/Licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bezpieczny-ipad.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/kompozycja/Bezpieczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-odczytu-trasy.test.tsx` | zielony (główny zestaw) | 5 | P-374 | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-udostepnienia-trasy.test.tsx` | zielony (główny zestaw) | 2 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-zapisu-poza-licznikiem.test.tsx` | zielony (główny zestaw) | 5 | P-368 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/Zapas`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-zapisu-trasy.test.tsx` | zielony (główny zestaw) | 9 | P-368, P-377 | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bledy-js.test.ts` | zielony (główny zestaw) | 3 | P-194 | `src/kompozycja/bledy-js` | — |
@@ -165,6 +166,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-stan-danych.test.tsx` | zielony (główny zestaw) | 14 | BR-DAN-002/S3, BR-DAN-009, P-220, P-229, P-242, P-266 | `src/ekrany/StanDanych`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/import-pliku.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/import-pliku` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/informacje-pro.test.tsx` | zielony (główny zestaw) | 2 | P-089, P-113, P-117, P-118, R-120, R-121 | `src/domena/porty`<br>`src/ekrany/InformacjePro`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ipad-tekst-urzadzenia.test.tsx` | zielony (główny zestaw) | 4 | — | `src/i18n/i18n`<br>`src/i18n/slowniki` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/jednostka-rzedow-liczba-mnoga.test.tsx` | zielony (główny zestaw) | 6 | P-405 | `src/ekrany/Licznik`<br>`src/ekrany/ObrazKarty`<br>`src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/jezyk-zrodla.test.tsx` | zielony (główny zestaw) | 12 | BR-DAN-010, BR-KAL-008, BR-ZAK-004, P-075 | `src/ekrany/Jezyk`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/ZrodlaWiedzy`<br>`src/ekrany/wspolne`<br>`src/i18n/jezyki` | ER-45, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/kompozycja-projektu.test.ts` | zielony (główny zestaw) | 13 | P-199, P-209, P-229, P-307, RD-15 | `src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/kompozycja/projekty`<br>`src/przypadki-uzycia/widok-projektu` | — |
@@ -250,8 +252,9 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-import-wyjatek.test.tsx` | zielony (główny zestaw) | 3 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia.test.tsx` | zielony (główny zestaw) | 7 | BR-DAN-010, BR-DAN-012/S3, BR-LIC-020/S3, BR-ZAK-004, BR-ZAK-004/S1, BR-ZAK-006/S5, BR-ZAK-006/S7, KP-13 | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | KP-05, P-328 | `src/kompozycja/preferencje` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-tresc.test.tsx` | zielony (główny zestaw) | 2 | P-328, P-330 | `src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-co-zostaje.test.tsx` | zielony (główny zestaw) | 4 | P-426, P-427 | `src/ekrany/UsunWszystko`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/konfiguracja` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | KP-05, P-328, P-427 | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-tresc.test.tsx` | zielony (główny zestaw) | 2 | P-328, P-330, P-427 | `src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wloczki-projektu-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-330 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-sygnal.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-009/S4, RD-13 | `src/kompozycja/system` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
@@ -260,6 +263,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatki-odrzuc.test.tsx` | zielony (główny zestaw) | 7 | BR-WZR-003 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-przegladarka.test.tsx` | zielony (główny zestaw) | 24 | BR-LIC-012, BR-WZR-005, BR-WZR-008, P-124, P-126, P-218, P-220, P-229, P-262, P-275, P-284, P-353, P-360, P-361, P-373 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/konfiguracja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-rysunek-blad-zapisu.test.tsx` | zielony (główny zestaw) | 3 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-rysunek-natywny-blad.test.tsx` | zielony (główny zestaw) | 9 | — | `src/kompozycja/preferencje`<br>`src/konfiguracja` | — |
@@ -313,4 +317,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 309; zależnych od poprawek: 194.
+Razem plików testów: 313; zależnych od poprawek: 194.

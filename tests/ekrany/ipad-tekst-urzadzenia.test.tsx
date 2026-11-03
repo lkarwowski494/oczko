@@ -6,6 +6,8 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import { przygotuj } from '../dane/pomocnicze/srodowisko';
+import { utworzI18n } from '../../src/i18n/i18n';
+import { ZASOBY } from '../../src/i18n/slowniki';
 import { tEn } from './pomoc';
 
 const mockRouter = { push: jest.fn(), back: jest.fn() };
@@ -47,6 +49,11 @@ test('słownik en: `stan_danych.zapisane` i `zglos.opis` bez nazwy modelu urząd
   expect(EN.zglos?.opis).not.toMatch(MODEL);
   expect(EN.stan_danych?.zapisane).toMatch(/this device/);
   expect(EN.zglos?.opis).toMatch(/your device/);
+});
+test.each(['pl-PL', 'de-DE', 'ja-JP'])('%s: stary przekład z „iPhone” nie wraca — do fali 09 tekst z en (klucze na liście oczekujących)', async (jezyk) => {
+  const { t } = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => [jezyk], zasoby: ZASOBY });
+  expect(t('stan_danych.zapisane')).not.toMatch(MODEL);
+  expect(t('zglos.opis')).not.toMatch(MODEL);
 });
 test.each([false, true])('iPad, /stan-danych (iCloud widoczny: %s): zdanie o miejscu zapisu bez „iPhone”', async (icloud) => {
   await aplikacja(icloud);
