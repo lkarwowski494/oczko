@@ -47,7 +47,11 @@ describe('502: stan błędu wczytania z wyjściem', () => {
     const pliki = (k: string): string[] => fs.readdirSync(k, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? pliki(path.join(k, e.name)) : e.name.endsWith('.tsx') ? [path.join(k, e.name)] : []));
     const uzycia = pliki(APP).flatMap((p) => [...fs.readFileSync(p, 'utf8').matchAll(/<StanWczytywania\b[\s\S]*?\/>/g)].map((m) => ({ plik: path.relative(APP, p), kod: m[0] })));
     expect(uzycia.length).toBeGreaterThanOrEqual(16);
-    expect(uzycia.filter((u) => !/wyjscie=\{\{ rodzaj: '(wstecz|zamknij)', naWyjdz: \(\) => router\.back\(\) \}\}/.test(u.kod)).map((u) => u.plik)).toEqual([]);
+    // Stały stan="ladowanie" (licznik na korzeniu „/” po 068) nigdy nie rysuje błędu, a komponent pokazuje wyjście tylko przy stan='blad' —
+    // kontrola dotyczy użyć, które mogą pokazać błąd; liczba stałych użyć jest przypięta, żeby wyjątek nie rósł po cichu.
+    const stale = uzycia.filter((u) => /\bstan="ladowanie"/.test(u.kod));
+    expect(stale.map((u) => u.plik)).toEqual(['index.tsx']);
+    expect(uzycia.filter((u) => !stale.includes(u)).filter((u) => !/wyjscie=\{\{ rodzaj: '(wstecz|zamknij)', naWyjdz: \(\) => router\.back\(\) \}\}/.test(u.kod)).map((u) => u.plik)).toEqual([]);
   });
 });
 
