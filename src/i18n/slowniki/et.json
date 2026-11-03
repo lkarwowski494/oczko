@@ -675,7 +675,7 @@
     "kategoria_powyzej_one": "See koetihedus ületab kategooriat 0, mille ülempiir on {{max}} silmus 4 tolli kohta.",
     "kategoria_powyzej_other": "See koetihedus ületab kategooriat 0, mille ülempiir on {{max}} silmust 4 tolli kohta.",
     "uwaga_kategoria": "Lõnga jämeduse kategooriad on vaid juhis, mitte nimekiri lõngadest, mida saab omavahel vahetada. Ka sama koetiheduse korral võivad kaks lõnga olla erineva tunnetuse ja langevusega.",
-    "uwaga_oczka": "Viimistle oma proovitükk ja võrdle seda siis juhendiga: juhendid annavad koetiheduse pärast viimistlemist.",
+    "uwaga_oczka": "Viimistle (blocking) oma proovitükk ja võrdle seda siis juhendiga: juhendid annavad koetiheduse pärast viimistlemist.",
     "uwaga_koronka": "Pitslõnga on raske koetiheduse vahemikku paigutada; lähtu alati oma juhendis antud koetihedusest.",
     "uwaga_zaokraglenie": "Sinu koetihedus 4 tolli kohta on ümardatud lähima täissilmuseni.",
     "uwaga_4in": "Koetiheduse standardne esitus on silmuste ja ridade arv 4 tolli / 10 cm kohta. 4 tolli on täpselt 10,16 cm."
