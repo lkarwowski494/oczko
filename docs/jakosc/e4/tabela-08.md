@@ -152,6 +152,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dni-darmowe-liczba-mnoga.test.tsx` | zielony (główny zestaw) | 5 | P-307, P-412 | `src/ekrany/ListaProjektow`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/drut-rozmiar-3125-trasa.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/Zapas`<br>`src/kompozycja/preferencje`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-projektu`<br>`src/przypadki-uzycia/zaleznosci`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-ocena-stan.test.tsx` | zielony (główny zestaw) | 2 | P-238, P-377 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-panel-wzoru-skan.test.tsx` | zielony (główny zestaw) | 1 | P-439 | `src/kompozycja/e2e/panele` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-panel-wzoru-word.test.tsx` | zielony (główny zestaw) | 1 | P-282 | `src/kompozycja/e2e/panele` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-ladowania.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-operacji.test.tsx` | zielony (główny zestaw) | 5 | — | `src/kompozycja/e2e/pomiar-operacji` | — |
@@ -298,7 +299,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zgloszenie-awaryjne.test.tsx` | zielony (główny zestaw) | 2 | P-194 | `src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne`<br>`src/kompozycja/zgloszenie-awaryjne` | Z07-22 |
 | 9 ? | `tests/adaptery/archiwum-skrot.test.ts` | zielony (główny zestaw) | 2 | P-130, R-067 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/dane/pliki/magazyn` | Z07-22 |
 | 9 ? | `tests/adaptery/czas-w-tle.test.ts` | zielony (główny zestaw) | 2 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/platforma/czas-w-tle`<br>`src/przypadki-uzycia/archiwum` | Z07-22 |
-| 9 ? | `tests/adaptery/e2e-pliki-wzoru.test.ts` | zielony (główny zestaw) | 3 | P-121, P-282 | `src/kompozycja/e2e/pliki-wzoru` | — |
+| 9 ? | `tests/adaptery/e2e-pliki-wzoru.test.ts` | zielony (główny zestaw) | 4 | P-121, P-282, P-439 | `src/kompozycja/e2e/pliki-wzoru` | — |
 | 9 ? | `tests/adaptery/haptyka-wzorce.test.ts` | zielony (główny zestaw) | 2 | P-135 | `src/platforma/haptyka` | — |
 | 9 ? | `tests/adaptery/icloud-platforma.test.ts` | zielony (główny zestaw) | 11 | P-230, P-242 | `src/domena/porty`<br>`src/platforma/icloud`<br>`src/platforma/icloud-atrapa`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/synchronizacja` | Z07-22 |
 | 9 ? | `tests/adaptery/identyfikatory.test.ts` | zielony (główny zestaw) | 1 | — | `src/platforma/identyfikatory` | — |
@@ -332,4 +333,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 328; zależnych od poprawek: 202.
+Razem plików testów: 329; zależnych od poprawek: 202.
