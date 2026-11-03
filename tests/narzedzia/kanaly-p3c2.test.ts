@@ -15,11 +15,13 @@ describe('073 (DEC-16 b): tabela „Kanały” w docs/wzrost.md — odczyt regu�
     expect(pelne.length).toBeGreaterThanOrEqual(3);
   });
 
-  test('miejsce, którego reguł nie dało się przeczytać, nie ma cytatu i jest oznaczone „nie sprawdzono” z krokiem właściciela', () => {
+  test('Reddit po odczycie właściciela (P-470): cytaty reguł autopromocji r/knitting (Rule 6) i r/crochet (Rule 4) z datą 2026-11-03, bez „nie sprawdzono”', () => {
     const reddit = wiersze.map(kolumny).find((c) => /reddit\.com\/r\/knitting/.test(c[0]));
     expect(reddit).toBeDefined();
-    expect(reddit?.[2]).toMatch(/nie sprawdzono/);
-    expect(reddit?.[2]).toMatch(/403/);
+    expect(reddit?.[1]).toMatch(/przeczytane/);
+    expect(reddit?.[2]).not.toMatch(/nie sprawdzono/);
+    expect(reddit?.[2]).toMatch(/Rule 6 „No spam, no self-promotion”: „Promotional content is not allowed/);
+    expect(reddit?.[2]).toMatch(/Rule 4: „No self-promotion/);
     expect(reddit?.[2]).toContain('2026-11-03');
   });
 });
