@@ -1,6 +1,6 @@
 /*
  * Lokalizacje produktów zakupu we wszystkich językach aplikacji (P-515, rola 09): `tlumaczenia` w docs/wydanie/metadane/produkty.store.json.
- * Nazwa ≤ 30, opis ≤ 45 znaków (limity Apple z pliku), komplet 35 języków, ascLocale jak metadane sklepu (P-501/P-504), pl wg P-515 z polem `czeka` (P-422).
+ * Nazwa ≤ 30, opis ≤ 45 znaków (limity Apple z pliku), komplet 35 języków, ascLocale jak metadane sklepu (P-501/P-504), pl wg P-515, zaakceptowane przez właściciela 2026-11-03 (pole `czeka` zdjęte).
  * Przekład przez API (Batch, jak P-474/P-504): moduł scripts/i18n/przeklad-produkty.mjs, tryb `produkty` w przeklad-tlumaczen.yml. Testy PRZED kodem i danymi; bez sieci (atrapa fetch).
  */
 import { spawnSync } from 'node:child_process';
@@ -60,15 +60,16 @@ describe('dane: komplet języków i limity (P-515)', () => {
       expect([j, new Set(PRODUKTY.map((p) => t[p].name)).size, new Set(PRODUKTY.map((p) => t[p].description)).size]).toEqual([j, 3, 3]);
     }
   });
-  test('en bez zmian (źródło); pl wg P-515, pole `czeka` P-422 zostaje (akceptację wpisuje koordynator)', () => {
+  test('en bez zmian (źródło); pl wg P-515, zaakceptowane przez właściciela — żaden język nie czeka (pole `czeka` zdjęte, akceptacja w _opis)', () => {
     expect(T.en.monthly).toEqual({ name: 'Oczko Pro, monthly', description: 'No limit on crafting days, billed monthly' });
     expect(T.en.yearly).toEqual({ name: 'Oczko Pro, yearly', description: 'No limit on crafting days, billed yearly' });
     expect(T.en.lifetime).toEqual({ name: 'Oczko Pro, lifetime', description: 'No limit on crafting days, one purchase' });
-    expect(T.pl).toMatchObject({ ascLocale: 'pl', czeka: 'P-422', group: { name: 'Oczko Pro' },
+    expect(T.pl).toEqual({ ascLocale: 'pl', group: { name: 'Oczko Pro' },
       monthly: { name: 'Oczko Pro, miesięcznie', description: 'Bez limitu dni robótkowych, płatne co miesiąc' },
       yearly: { name: 'Oczko Pro, rocznie', description: 'Bez limitu dni robótkowych, płatne co rok' },
       lifetime: { name: 'Oczko Pro, na zawsze', description: 'Bez limitu dni robótkowych, jedna płatność' } });
-    for (const j of JEZYKI.filter((x) => x !== 'pl')) expect([j, T[j].czeka]).toEqual([j, undefined]);
+    for (const j of JEZYKI) expect([j, T[j].czeka, T[j].czekaPowod]).toEqual([j, undefined, undefined]);
+    expect(dane._opis).toMatch(/P-515[^.]*zaakceptowane przez właściciela 2026-11-03/);
   });
 });
 
