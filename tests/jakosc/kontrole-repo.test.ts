@@ -150,6 +150,21 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
   // M1-audytor-generalny-010 (10-wydanie-004; P-463, jak Trening): zadania ZAPISUJĄCE do ASC tylko z `environment: release`; zadania tylko
   // czytające z listy w strażniku (asc-kontrola) mogą używać sekretów repozytorium bez środowiska — bez wyjątku w wyjatki.json.
   const KONTROLA = 'on: workflow_dispatch\npermissions:\n  contents: read\njobs:\n  kontrola:\n    uses: lkarwowski494/apps4brew-narzedzia/.github/workflows/asc-kontrola.yml@43afe81aa37a117dd32259f6452196a1efccd0ec\n    secrets:\n      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}\n';
+  // P-474 (jak Trening): przekład przez API — sekret repozytorium ANTHROPIC_API_KEY w zadaniu `przeklad` bez środowiska; wyjątek wąski: ten plik, to zadanie,
+  // tylko ten sekret, tylko workflow_dispatch. Klucz API nie daje dostępu do ASC ani do repozytorium (wynik tylko jako artefakt).
+  const PRZEKLAD = (wyzw: string, zadanie = 'przeklad', sekret = 'ANTHROPIC_API_KEY') =>
+    `on:\n${wyzw}\npermissions:\n  contents: read\njobs:\n  ${zadanie}:\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n    steps:\n      - run: node scripts/i18n/przeklad-api.mjs\n        env:\n          ANTHROPIC_API_KEY: \${{ secrets.${sekret} }}\n`;
+  test('P-474 zadanie przeklad z ANTHROPIC_API_KEY bez środowiska przechodzi (workflow_dispatch)', () => {
+    const w = uruchom(WORKFLOWY, wf('przeklad-tlumaczen.yml', PRZEKLAD('  workflow_dispatch:')));
+    expect(w.stdout).not.toContain('SEKRET-BEZ-SRODOWISKA'); expect(w.status).toBe(0);
+  });
+  test('P-474 wyjątek nie obejmuje: innego pliku, innego zadania, innego sekretu ani wyzwalacza push', () => {
+    expect(uruchom(WORKFLOWY, wf('inny.yml', PRZEKLAD('  workflow_dispatch:'))).stdout).toContain('SEKRET-BEZ-SRODOWISKA');
+    expect(uruchom(WORKFLOWY, wf('przeklad-tlumaczen.yml', PRZEKLAD('  workflow_dispatch:', 'inne'))).stdout).toContain('SEKRET-BEZ-SRODOWISKA');
+    expect(uruchom(WORKFLOWY, wf('przeklad-tlumaczen.yml', PRZEKLAD('  workflow_dispatch:', 'przeklad', 'ASC_KEY_P8'))).stdout).toContain('SEKRET-BEZ-SRODOWISKA');
+    const p = uruchom(WORKFLOWY, wf('przeklad-tlumaczen.yml', PRZEKLAD('  workflow_dispatch:\n  push:')));
+    expect(p.status).toBe(1); expect(p.stdout).toMatch(/ODCZYT-WYZWALACZ|WYZWALACZ-Z-SEKRETAMI/);
+  });
   test('M1-010 zadanie czytające (asc-kontrola) bez środowiska przechodzi', () => {
     const w = uruchom(WORKFLOWY, wf('asc-kontrola.yml', KONTROLA));
     expect(w.stdout).not.toContain('SEKRET-BEZ-SRODOWISKA');

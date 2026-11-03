@@ -7,6 +7,7 @@
 //   node scripts/i18n/przeklad-api.mjs --szacuj [--model sonnet|opus] [--limit N]
 //   node scripts/i18n/przeklad-api.mjs [--model sonnet] [--wyjscie raport-przekladu] [--zgoda-koszt] [--wznow msgbatch_…]
 //   node scripts/i18n/przeklad-api.mjs --zastosuj [--wyjscie raport-przekladu]
+//   Fala częściowa (P-474): --zakres docs/lokalizacja/oczekujace.json (tylko te bazy kluczy) --pomin pl (języki bez przekładu); nałożenie: scripts/i18n/przeklad-zastosuj-delta.mjs
 // Kody wyjścia: 0 ok, 1 błąd przebiegu lub odrzucone tłumaczenia, 2 konfiguracja (brak klucza, zły argument), 3 koszt ponad limit bez zgody, 4 przekroczono czas oczekiwania.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -17,6 +18,8 @@ export const MODELE = { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5' };
 export const CENY = { 'claude-opus-5-5': { we: 4, wy: 20 }, 'claude-sonnet-5-5': { we: 2, wy: 10 } };
 export const RABAT_BATCH = 0.5;
 export const LIMIT_KOSZTU_USD = 6;
+/** Limit na przebieg; zmienna PRZEKLAD_LIMIT_USD może go tylko obniżyć (test), nigdy podnieść ponad P-144. */
+export const limitKosztu = (env = process.env) => { const v = Number(env.PRZEKLAD_LIMIT_USD); return v > 0 && v < LIMIT_KOSZTU_USD ? v : LIMIT_KOSZTU_USD; };
 export const MAX_TOKENS = 32000;
 /** Założenia szacunku (nie pomiar, zawyżone celowo): wyjście ≈ tokeny angielskiego × współczynnik języka + obwiednia JSON na pozycję + myślenie. */
 export const ZALOZENIA = { obwiednia: 6, myslenie: 2000 };
@@ -63,7 +66,7 @@ export function przyblizTokeny(t) { let n = 0; for (const ch of String(t)) { con
 export const maskuj = (s) => String(s).replace(/sk-ant-[A-Za-z0-9_-]+/g, 'sk-ant-***');
 
 /** Pozycje do przekładu: { id, klucz (baza bez przyrostka), formy | tekst, kontekst }. Formy liczby mnogiej łączone w jedną pozycję. */
-export function zbierz(root = KORZEN) {
+export function zbierz(root = KORZEN, zakres = null) {
   const en = splaszcz(CZYTAJ(join(root, 'src/i18n/slowniki/en.json')));
   const kx = splaszcz(CZYTAJ(join(root, 'src/i18n/slowniki/en.kontekst.json')));
   const poz = new Map();
@@ -72,6 +75,12 @@ export function zbierz(root = KORZEN) {
     const p = poz.get(b) ?? { klucz: b, kontekst: kx[b] ?? kx[k] ?? '' };
     m ? ((p.formy ??= {})[m[1]] = v) : (p.tekst = v);
     poz.set(b, p);
+  }
+  if (zakres) { // fala częściowa: tylko wskazane bazy kluczy; baza spoza en to błąd (lista nie może się cicho zestarzeć)
+    const brak = zakres.filter((b) => !poz.has(b));
+    if (brak.length) throw new Error(`zakres: bazy kluczy spoza en.json: ${brak.join(', ')}`);
+    const chciane = new Set(zakres);
+    return [...poz.values()].filter((p) => chciane.has(p.klucz)).map((p, i) => ({ id: String(i + 1), ...p }));
   }
   return [...poz.values()].map((p, i) => ({ id: String(i + 1), ...p }));
 }
@@ -107,7 +116,9 @@ export const SYSTEM = [
 
 export function budujZadanie(kod, poz, slownik) {
   const lista = poz.map((p) => ({ id: p.id, ...(p.formy ? { formy: p.formy, kategorie: kategorie(kod) } : { tekst: p.tekst }), kontekst: p.kontekst }));
-  const tresc = `Język docelowy: ${nazwaJezyka(kod)} (${kod}). Rejestr: ${REJESTR[kod] ?? 'jak w iOS danego języka'}.\n\nSłownik terminów:\n${wycinekSlownika(kod, poz, slownik)}\n\nPozycje (JSON):\n${JSON.stringify(lista)}`;
+  const jedn = slownik.jednostki?.jezyki?.[kod]; // glosariusz jednostek (M1-audytor-generalny-052): symbole i nazwy pełne VoiceOver dla jednostka.* i tekstów z mm/cm/in
+  const glosJedn = jedn ? `\n\nGlosariusz jednostek (dla kluczy jednostka.* i jednostka.*_nazwa oraz każdego tekstu z jednostką): widoczny symbol = pole symbol; etykieta nazwy (VoiceOver, klucze *_nazwa) = nazwa z pelny_przyklad bez liczby 5, w mianowniku liczby mnogiej. ${JSON.stringify(jedn)}` : '';
+  const tresc = `Język docelowy: ${nazwaJezyka(kod)} (${kod}). Rejestr: ${REJESTR[kod] ?? 'jak w iOS danego języka'}.\n\nSłownik terminów:\n${wycinekSlownika(kod, poz, slownik)}${glosJedn}\n\nPozycje (JSON):\n${JSON.stringify(lista)}`;
   return { system: SYSTEM, messages: [{ role: 'user', content: tresc }] };
 }
 
@@ -210,12 +221,13 @@ export function podsumowanieMd(raporty, meta) {
 }
 
 function argumenty(a) {
-  const o = { model: MODELE.sonnet, szacuj: false, limit: null, wyjscie: 'raport-przekladu', zgodaKoszt: false, wznow: null, zastosuj: false, czekajMin: 120 };
+  const o = { model: MODELE.sonnet, szacuj: false, limit: null, zakres: null, pomin: [], wyjscie: 'raport-przekladu', zgodaKoszt: false, wznow: null, zastosuj: false, czekajMin: 120 };
   const wart = (i, n) => { if (i + 1 >= a.length) throw new Error(`brak wartości dla ${n}`); return a[i + 1]; };
   for (let i = 0; i < a.length; i++) {
     const x = a[i];
     if (x === '--szacuj') o.szacuj = true; else if (x === '--zgoda-koszt') o.zgodaKoszt = true; else if (x === '--zastosuj') o.zastosuj = true;
     else if (x === '--model') { const v = wart(i++, x); o.model = MODELE[v] ?? v; } else if (x === '--limit') o.limit = Number(wart(i++, x)) || null;
+    else if (x === '--zakres') o.zakres = wart(i++, x); else if (x === '--pomin') o.pomin = wart(i++, x).split(',').filter(Boolean);
     else if (x === '--wyjscie') o.wyjscie = wart(i++, x); else if (x === '--wznow') o.wznow = wart(i++, x); else throw new Error(`nieznany argument: ${x}`);
   }
   if (!CENY[o.model]) throw new Error(`nieznany model: ${o.model} (dozwolone: ${Object.values(MODELE).join(', ')})`);
@@ -224,8 +236,9 @@ function argumenty(a) {
 
 export async function main(argv, { fetchFn = globalThis.fetch, env = process.env, root = KORZEN, log = console.log, spij } = {}) {
   let o; try { o = argumenty(argv); } catch (e) { log(`BŁĄD: ${e.message}`); return 2; }
-  const wyj = resolve(root, o.wyjscie), poz = zbierz(root), slownik = CZYTAJ(join(root, 'docs/lokalizacja/slownik-terminow.json'));
-  let kody = jezyki(root); if (o.limit) kody = kody.slice(0, o.limit);
+  const wyj = resolve(root, o.wyjscie), poz = zbierz(root, o.zakres ? CZYTAJ(resolve(root, o.zakres)).klucze : null), slownik = CZYTAJ(join(root, 'docs/lokalizacja/slownik-terminow.json'));
+  let kody = jezyki(root).filter((k) => !o.pomin.includes(k)); if (o.limit) kody = kody.slice(0, o.limit);
+  if (o.zastosuj && o.zakres) { log('BŁĄD: --zastosuj nie łączy się z --zakres (nadpisałby cały słownik częścią); użyj scripts/i18n/przeklad-zastosuj-delta.mjs'); return 2; }
   if (o.zastosuj) { // lokalnie, po przeglądzie: raport-przekladu/<kod>.json → src/i18n/slowniki/<kod>.json
     for (const k of kody) {
       const p = join(wyj, `${k}.json`); if (!existsSync(p)) { log(`pominięto ${k}: brak ${p}`); continue; }
@@ -243,7 +256,8 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   const s = szacunek(wiersze, o.model);
   writeFileSync(join(wyj, 'szacunek.json'), JSON.stringify({ model: o.model, zalozenia: ZALOZENIA, dokladne_we: !!api, ...s, wiersze }, null, 1) + '\n');
   log(`szacunek (Batch −${RABAT_BATCH * 100}%${api ? ', wejście zmierzone count_tokens' : ', przybliżenie'}): ${s.jezykow} języków × ${s.pozycji} pozycji; wejście ${s.tokeny_we}, wyjście ${s.tokeny_wy}; ${Object.entries(s.koszt_wg_modelu).map(([m, c]) => `${m} ≈ ${c.toFixed(2)} USD`).join(', ')}`);
-  if (s.koszt_usd > LIMIT_KOSZTU_USD && !o.zgodaKoszt) { log(`STOP: ${s.koszt_usd.toFixed(2)} USD > limit ${LIMIT_KOSZTU_USD} USD; ponów ze zgodą (--zgoda-koszt) po decyzji właściciela`); return 3; }
+  const limitUsd = limitKosztu(env);
+  if (s.koszt_usd > limitUsd && !o.zgodaKoszt) { log(`STOP: ${s.koszt_usd.toFixed(2)} USD > limit ${limitUsd} USD; ponów ze zgodą (--zgoda-koszt) po decyzji właściciela`); return 3; }
   if (o.szacuj) return 0;
   const a = klient(fetchFn, klucz);
   let id = o.wznow;
