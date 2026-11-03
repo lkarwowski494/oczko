@@ -370,7 +370,7 @@ describe('badanie fraz: iTunes Search API (atrapa) → tylko słowa i liczby, be
 describe('workflow przeklad-tlumaczen.yml: tryb metadane (P-501) w istniejącym pliku — P-472: nowy plik workflow nie byłby dostępny przed scaleniem do main', () => {
   const wf = read('.github/workflows/przeklad-tlumaczen.yml');
   test('tryb metadane + etap + tylko; domyślnie tylko szacunek; ten sam pułap 30 USD; klucz API w jednym kroku; artefakt raport-metadane 7 dni', () => {
-    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane\]/);
+    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane, produkty\]/);
     expect(wf).toContain('scripts/i18n/przeklad-metadane.mjs'); expect(wf).toContain('raport-metadane');
     expect(wf).toMatch(/etap:/); expect(wf).toMatch(/tylko:/);
     expect(wf).toMatch(/tylko_szacuj:[\s\S]*?default: true/); expect(wf).toMatch(/retention-days: 7/);

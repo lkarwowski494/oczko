@@ -62,7 +62,22 @@
     "pl": {
       "ascLocale": "pl",
       "czeka": "P-422",
-      "czekaPowod": "akceptacja polskich tekstów przez właściciela"
+      "czekaPowod": "akceptacja polskich tekstów przez właściciela",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, miesięcznie",
+        "description": "Bez limitu dni robótkowych, płatne co miesiąc"
+      },
+      "yearly": {
+        "name": "Oczko Pro, rocznie",
+        "description": "Bez limitu dni robótkowych, płatne co rok"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, na zawsze",
+        "description": "Bez limitu dni robótkowych, jedna płatność"
+      }
     }
   }
 }

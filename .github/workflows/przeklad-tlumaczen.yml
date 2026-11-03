@@ -10,15 +10,17 @@
 # node scripts/i18n/przeklad-zastosuj-poprawki.mjs --raport <katalog artefaktu> <kod…>.
 # Tryb `zwrotny` (P-498, D-027, DEC-11 a): kontrola (a) treści krytycznej — ŚLEPY przekład zwrotny na polski (model widzi tylko tekst języka, bez en i kontekstu) dla kluczy z
 # docs/lokalizacja/krytyczne.json; wynik = artefakt `raport-zwrotny` (<kod>.json: tekst języka, skrót, przekład zwrotny); sens porównuje rola 06, słowniki bez zmian.
+# Tryb `produkty` (P-515): nazwy (≤ 30) i opisy (≤ 45) produktów zakupu dla 33 języków (bez en i pl) — scripts/i18n/przeklad-produkty.mjs, jeden batch; wynik = artefakt `raport-produkty`,
+# przyjęcie lokalnie: node scripts/i18n/przeklad-produkty.mjs przyjmij --raport <katalog artefaktu>.
 name: Przekład tłumaczeń (API, ręcznie)
 on:
   workflow_dispatch:
     inputs:
       tryb:
-        description: 'Tryb: przeklad (propozycje przekładu), przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu), zwrotny (kontrola (a) treści krytycznej: ślepy przekład zwrotny na pl) albo metadane (metadane sklepu 29 lokalizacji ASC, P-501)'
+        description: 'Tryb: przeklad (propozycje przekładu), przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu), zwrotny (kontrola (a) treści krytycznej: ślepy przekład zwrotny na pl) albo metadane (metadane sklepu 29 lokalizacji ASC, P-501), produkty (nazwy i opisy produktów zakupu, 33 języki, P-515)'
         type: choice
         default: przeklad
-        options: [przeklad, przeglad, zwrotny, metadane]
+        options: [przeklad, przeglad, zwrotny, metadane, produkty]
       model:
         description: 'Model przekładu'
         type: choice
@@ -43,7 +45,7 @@ on:
         default: przeklad+krytyk
         options: [przeklad+krytyk, przeklad, krytyk]
       tylko:
-        description: 'Tylko tryb metadane: kody lokalizacji ASC po przecinku, np. cs,sk (puste = wszystkie 29)'
+        description: 'Tylko tryby metadane i produkty: kody po przecinku — lokalizacje ASC (metadane, np. cs,sk) albo języki aplikacji (produkty, np. de,nb); puste = wszystkie'
         type: string
         default: ''
       zgoda_koszt:
@@ -84,6 +86,7 @@ jobs:
           set -eu
           SKRYPT=scripts/i18n/przeklad-api.mjs
           if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "produkty" ]; then SKRYPT=scripts/i18n/przeklad-produkty.mjs; ZAKRES=-; WYJ=raport-produkty
           elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then ZAKRES=docs/lokalizacja/krytyczne.json; WYJ=raport-zwrotny; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
           ARGS=(--szacuj --tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
@@ -91,6 +94,7 @@ jobs:
           if [ "$WEJ_TRYB" = "metadane" ]; then
             ARGS+=(--etap "$WEJ_ETAP")
             if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          elif [ "$WEJ_TRYB" = "produkty" ] && [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO")
           fi
           node "$SKRYPT" "${ARGS[@]}"
       - name: Przekład (szacunek dokładny lub batch)
@@ -109,6 +113,7 @@ jobs:
           set -eu
           SKRYPT=scripts/i18n/przeklad-api.mjs
           if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "produkty" ]; then SKRYPT=scripts/i18n/przeklad-produkty.mjs; ZAKRES=-; WYJ=raport-produkty
           elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then ZAKRES=docs/lokalizacja/krytyczne.json; WYJ=raport-zwrotny; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
           ARGS=(--tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
@@ -121,6 +126,7 @@ jobs:
           if [ "$WEJ_TRYB" = "metadane" ]; then
             ARGS+=(--etap "$WEJ_ETAP")
             if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          elif [ "$WEJ_TRYB" = "produkty" ] && [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO")
           fi
           node "$SKRYPT" "${ARGS[@]}"
       - name: Podsumowanie w logu przebiegu
@@ -128,7 +134,7 @@ jobs:
         env:
           WEJ_TRYB: ${{ inputs.tryb }}
         run: |
-          if [ "$WEJ_TRYB" = "metadane" ]; then WYJ=raport-metadane; elif [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then WYJ=raport-zwrotny; else WYJ=raport-przekladu; fi
+          if [ "$WEJ_TRYB" = "metadane" ]; then WYJ=raport-metadane; elif [ "$WEJ_TRYB" = "produkty" ]; then WYJ=raport-produkty; elif [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then WYJ=raport-zwrotny; else WYJ=raport-przekladu; fi
           if [ -f "$WYJ/podsumowanie.md" ]; then cat "$WYJ/podsumowanie.md" >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f "$WYJ/szacunek.json" ]; then node -e "const s=require('./$WYJ/szacunek.json');console.log('Szacunek ('+s.tryb+'): '+JSON.stringify(s.koszt_wg_modelu))" >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Artefakt przekładu (tylko raporty, 7 dni)
@@ -169,5 +175,15 @@ jobs:
           path: |
             raport-metadane/*.json
             raport-metadane/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt produktów zakupu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'produkty'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-produkty
+          path: |
+            raport-produkty/*.json
+            raport-produkty/podsumowanie.md
           if-no-files-found: ignore
           retention-days: 7

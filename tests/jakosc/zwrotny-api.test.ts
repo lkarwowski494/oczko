@@ -154,7 +154,7 @@ describe('zwrotny: przebieg (main) z atrapą fetch', () => {
 describe('zwrotny: workflow', () => {
   const wf = readFileSync(join(ROOT, '.github/workflows/przeklad-tlumaczen.yml'), 'utf8');
   test('tryb zwrotny na liście wyborów, zakres krytyczne.json, wyjście raport-zwrotny, artefakt raport-zwrotny (7 dni)', () => {
-    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane\]/);
+    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane, produkty\]/);
     expect(wf).toContain('docs/lokalizacja/krytyczne.json');
     expect(wf).toContain('raport-zwrotny');
     expect(wf).toMatch(/name: raport-zwrotny/);
