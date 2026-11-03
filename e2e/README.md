@@ -190,9 +190,9 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `potwierdz-usun-wszystko` | arkusz „Delete all data” (trasa `/usun-wszystko`, P-268) | potwierdzenie usunięcia — w pasku przycisków arkusza, zawsze widoczny | — | |
 | `usun-wszystko-anuluj` | arkusz „Delete all data” (P-268) | Cancel — zamyka arkusz bez zmian | „Cancel” | |
 | `oferty-ekran` | oferty | kontener ekranu ofert | nagłówek „Oczko Pro” | |
-| `oferty-plan-miesieczny` | oferty | plan (rola radio) | „Monthly · $0.99 / month” (cena ze sklepu) | |
-| `oferty-plan-roczny` | oferty | plan (rola radio) | „Yearly · $6.99 / year” | |
-| `oferty-plan-dozywotni` | oferty | plan (rola radio) | „Lifetime · $14.99 once” | |
+| `oferty-plan-miesieczny` | oferty | plan (rola radio) | „Monthly · $0.99 / month. Renews every month until you cancel in your Apple ID settings.” (cena ze sklepu; podpis w etykiecie, M1-092) | |
+| `oferty-plan-roczny` | oferty | plan (rola radio) | „Yearly · $6.99 / year. Renews every year until you cancel in your Apple ID settings.” | |
+| `oferty-plan-dozywotni` | oferty | plan (rola radio) | „Lifetime · $14.99 once. Pay once. Nothing renews.” | |
 | `oferty-kup` | oferty | zakup wybranego planu | — | |
 | `oferty-przywroc` | oferty | przywrócenie zakupów | „Restore purchases” | |
 | `oferty-nie-teraz` | oferty | neutralna odmowa | „Not now” | |
