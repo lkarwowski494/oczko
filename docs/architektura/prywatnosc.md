@@ -34,16 +34,29 @@ Usługi zewnętrzne: brak serwera i konta (P-021, NFR-KOS-001). Sieć: App Store
 | Powiadomienia lokalne | **brak** (przypomnienie F-06 na ekranie licznika; 04 nie użyło powiadomień) | design-spec |
 
 ## Required reason API (aplikacja i zależności)
-Zależności: instalacja w katalogu roboczym 2026-10-22 (`expo@57.0.31`, `expo-sqlite@57.0.4`, `expo-file-system@57.0.7`, `expo-haptics@57.0.3`, `expo-keep-awake@57.0.2`, `expo-image-picker@57.0.20`, `expo-document-picker@57.0.3`, `expo-sharing@57.0.24`, `expo-store-review@57.0.3`, `expo-localization@57.0.2`, `expo-crypto@57.0.4`, `expo-iap@5.8.1`, `react-native@0.86.3`), potem `find node_modules -name PrivacyInfo.xcprivacy -not -path '*/example/*'` → 9 plików (`narzedzia/privacy-pliki-e3.txt`), odczyt `plistlib`. Żaden nie deklaruje `NSPrivacyTracking` ani `NSPrivacyCollectedDataTypes`.
+Zależności: instalacja w katalogu roboczym 2026-10-22 (`expo@57.0.31`, `expo-sqlite@57.0.4`, `expo-file-system@57.0.7`, `expo-haptics@57.0.3`, `expo-keep-awake@57.0.2`, `expo-image-picker@57.0.20`, `expo-document-picker@57.0.3`, `expo-sharing@57.0.24`, `expo-store-review@57.0.3`, `expo-localization@57.0.2`, `expo-crypto@57.0.4`, `expo-iap@5.8.1`, `react-native@0.86.3`), potem `find node_modules -name PrivacyInfo.xcprivacy -not -path '*/example/*'` → 9 plików (`narzedzia/privacy-pliki-e3.txt`), odczyt `plistlib`. Żaden nie deklaruje `NSPrivacyTracking` ani `NSPrivacyCollectedDataTypes`. Ponowny odczyt 2026-11-03 (fix p3c2, ta sama komenda po `npm ci`): 10 plików — doszedł `react-native-view-shot` (bez kategorii); `expo-document-picker@57.0.3` nie ma własnego manifestu, a czyta `contentModificationDateKey` i `fileSizeKey` wybranego pliku (`ios/DocumentPickerModule.swift`).
 
-| Kategoria | Kody z zależności | Kod aplikacji (moduły Swift ADR-0007) | Do `app.json` → `ios.privacyManifests` (Expo: Apple nie zawsze czyta manifesty zależności, rejestr Expo 11) |
+Zasada kolumny „Do `app.json`” (P-453, rejestr Apple 11f–11g, odczyt 2026-11-03): powody, które opisują rzeczywiste użycie w pliku wykonywalnym aplikacji — kod aplikacji i zależności, bo Apple nie zawsze czyta ich manifesty (rejestr Expo 11). Apple: powody mają „accurately reflect your use”. Dlatego kolumna nie bierze automatycznie wszystkich kodów zależności. Odpadają powody tylko dla SDK (0A2A.1, C56D.1: „This reason may only be declared by third-party SDKs”) i powody zależności, których aplikacja nie używa (85F4.1). Test zgodności `app.json` → `ios.privacyManifests` z tą kolumną: M1-audytor-generalny-083 (rola 08).
+
+| Kategoria | Kody z zależności | Kod aplikacji (JS przez `expo-*`, moduły Swift ADR-0007) | Do `app.json` → `ios.privacyManifests` (Expo: Apple nie zawsze czyta manifesty zależności, rejestr Expo 11) |
 |---|---|---|---|
 | UserDefaults | CA92.1 (`expo-constants`, `expo-localization`, `react-native`) | nie używa (ustawienia w bazie); **nie** współdzieli UserDefaults przez App Group (inaczej 1C8F.1, rejestr Apple 11b) | CA92.1 |
-| FileTimestamp | C617.1 (`react-native`, Folly, boost, glog); 0A2A.1, 3B52.1 (`expo-file-system`) | skrzynka importu i sprzątanie plików: C617.1 (pliki w kontenerze aplikacji i App Group, rejestr Apple 11c) | C617.1, 0A2A.1, 3B52.1 |
+| FileTimestamp | C617.1 (`react-native`, Folly, boost, glog); 0A2A.1, 3B52.1 (`expo-file-system`); `expo-document-picker` bez manifestu (wyżej) | czas zmiany i rozmiar plików w kontenerze aplikacji i App Group (skrzynka importu, sprzątanie kopii i plików tymczasowych, rysunki oczekujące; `fstat` dziennika w `oczko-dziennik-plus`): C617.1 (rejestr Apple 11c). Metadane pliku wybranego w wyborze dokumentów (`expo-document-picker`, import archiwum i wzoru): 3B52.1 (rejestr Apple 11f). Dat plików aplikacja nie pokazuje (daty kopii z nazwy pliku albo z bazy), więc DDA9.1 nie pasuje | C617.1, 3B52.1 |
 | SystemBootTime | 35F9.1 (`react-native`, boost) | nie (czas ze znaczników `Date`) | 35F9.1 |
-| DiskSpace | E174.1, 85F4.1 (`expo-file-system`) | `wolneMiejsce()` przed eksportem i importem: E174.1 (rejestr Apple 11d) | E174.1, 85F4.1 |
+| DiskSpace | E174.1, 85F4.1 (`expo-file-system`) | `wolneMiejsce()` (`Paths.availableDiskSpace`) przed eksportem i importem, przy błędzie otwarcia bazy i przed rysowaniem; zmienia zachowanie widoczne dla użytkownika (komunikat braku miejsca, ostrzeżenie): E174.1 (rejestr Apple 11d). Liczby wolnego miejsca aplikacja nie pokazuje i nie dołącza do zgłoszenia problemu (F-57), więc bez 85F4.1 i 7D9E.1 | E174.1 |
 | ActiveKeyboards | — | — | — |
-Stary `app.json` 0.1.0 deklarował DDA9.1 (FileTimestamp) i nie miał 0A2A.1/3B52.1 — do zastąpienia tabelą wyżej (rola 10). Lista do ponownego wygenerowania po każdej zmianie pliku blokady (rola 07: kontrola w CI). Cele `@bacons/apple-targets` (Live Activity, zegarek, rozszerzenie) mają własne manifesty, jeśli używają kategorii z listy [DO USTALENIA przy kodzie celu, rola 08/10].
+
+Powód DDA9.1 (FileTimestamp) pochodzi ze starego `app.json` 0.1.0. Opisuje pokazywanie dat plików użytkownikowi (rejestr Apple 11f), a aplikacja tego nie robi; zastępują go C617.1 i 3B52.1 z tabeli. Listę trzeba wygenerować ponownie po każdej zmianie pliku blokady (rola 07: kontrola w CI).
+
+### Cele `@bacons/apple-targets` (osobne pliki wykonywalne, własny manifest — rejestr Apple 11g)
+Grep symboli z listy Apple (rejestr Apple 11a) w `targets/`, 2026-11-03.
+
+| Cel | Kategoria | Użycie w kodzie celu | Manifest celu |
+|---|---|---|---|
+| zegarek (`targets/watch`) | UserDefaults | `UserDefaults.standard` (`Aplikacja.swift`): kopia kontekstu telefonu, kolejka sprzed partii 3, identyfikator instalacji zegarka; bez App Group (cel bez `entitlements`) | CA92.1 (`targets/watch/PrivacyInfo.xcprivacy`) |
+| zegarek (`targets/watch`) | FileTimestamp | `fstat` dziennika w `Application Support` zegarka (`Wspolne/Dziennik.swift`) — kontener aplikacji | C617.1 (`targets/watch/PrivacyInfo.xcprivacy`) |
+| widżet / Live Activity (`targets/widget`) | — | brak symboli z listy; `LiveActivityIntent` działa w procesie aplikacji (rejestr Apple 1f) | brak (niepotrzebny) |
+| rozszerzenie udostępniania (`targets/share`) | — | brak symboli z listy; rozmiar pliku przez `attributesOfItem` z kluczem `.size`, a Apple wymienia tylko klucze `creationDate` i `modificationDate` | brak (niepotrzebny według listy Apple; potwierdza kontrola `.ipa`, rola 10) |
 
 ## Sekrety (ADR-0014)
 Repo publiczne: brak kluczy w kodzie i w `EXPO_PUBLIC_` (Expo: „Do not store sensitive info … in `EXPO_PUBLIC_` variables”); klucz App Store Connect tylko w środowisku `testflight` GitHub (P-071 (6b)). Aplikacja nie ma własnych kluczy API (brak usług).
