@@ -46,6 +46,8 @@ export const ROZMIAR_SYMBOLU_KAPSULY = ty.tresc.rozmiar;
 export const ROZMIAR_SYMBOLU_TRESCI = ty.tresc.rozmiar;
 /** Największa skala kluczowej liczby licznika (bez ucięcia przy dużym tekście, tokeny „liczba.maxSkala”). */
 export const MAX_SKALA_LICZBY = ty.liczba.maxSkala;
+/** Dolny próg dopasowania liczby licznika do szerokości (`minimumFontScale`, tokeny „liczba.minSkala”; M1-132, design-spec „dolny próg skali liczby”). */
+export const MIN_SKALA_LICZBY = ty.liczba.minSkala;
 /**
  * Wyjątek nazwany P-277 (do zastąpienia tokenami po audycie 04): RN mnoży każdy tekst przez jeden mnożnik Dynamic Type (AX5 = 3,571,
  * react-native RCTAccessibilityManager.mm `multipliers`), a system 04 skaluje krój tytułowy najwyżej ×1,8 (tokeny.json typografia._zasada)

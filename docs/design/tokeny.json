@@ -91,6 +91,7 @@
    "rozmiar": 96,
    "interlinia": 1.0,
    "maxSkala": 1.3,
+   "minSkala": 0.5,
    "cyfry": "tabelaryczne"
   },
   "liczbaPaska": {
