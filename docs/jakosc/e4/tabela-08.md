@@ -154,6 +154,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-plus.test.tsx` | zielony (główny zestaw) | 2 | NFR-WYD-001, P-255 | `src/kompozycja/e2e/panele` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zdjecie.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/e2e-zdjecie` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 2 | BR-LIC-015/S2, P-287 | `src/domena/porty`<br>`src/kompozycja/e2e/panele` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-nie-gasnie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-013, P-284 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze-projektu.test.tsx` | zielony (główny zestaw) | 11 | BR-LIC-011/S1, P-126, P-307, RD-11, RD-19 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze.test.tsx` | zielony (główny zestaw) | 8 | BR-LIC-007/S3, BR-LIC-010/S1, BR-LIC-010/S2, BR-LIC-017, BR-LIC-017/S7, BR-PRJ-013/S3, P-191, P-360, RD-12, RD-13 | `src/ekrany/Formularze`<br>`src/ekrany/wspolne` | ER-43, Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-dni.test.tsx` | zielony (główny zestaw) | 4 | BR-DNI-001, BR-DNI-003, P-191 | `src/ekrany/HistoriaDni`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | ER-55, Z07-22 |
@@ -205,6 +206,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-trasa.test.tsx` | zielony (główny zestaw) | 9 | KP-07, P-330 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty.test.tsx` | zielony (główny zestaw) | 14 | KP-03, KP-04, KP-08, KP-09, KP-14, P-054, P-065, P-089, P-403, R-118, R-124 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/p202-stan-danych-korekta.test.tsx` | zielony (główny zestaw) | 1 | BR-DAN-011/S3, BR-PRJ-013/S4, P-193, P-195, P-202 | `src/ekrany/StanDanych`<br>`src/ekrany/wspolne` | ER-52, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pole-wyboru-wloczki.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/preferencje-trasa.test.tsx` | zielony (główny zestaw) | 5 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/probka.test.ts` | zielony (główny zestaw) | 20 | BR-KAL-001, BR-KAL-003, P-304, P-307, RD-01, RD-04, RD-10 | `src/ekrany/wspolne`<br>`src/kompozycja/probka` | ER-43, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-dni.test.tsx` | zielony (główny zestaw) | 3 | BR-DNI-001/S4, BR-DNI-003/S2, BR-DNI-004/S3, BR-PRJ-005, BR-PRJ-005/S1, BR-PRJ-014/S3, RD-14 | `src/ekrany/Projekt`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
@@ -319,4 +321,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 315; zależnych od poprawek: 195.
+Razem plików testów: 317; zależnych od poprawek: 197.
