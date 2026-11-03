@@ -5,11 +5,18 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { inflateSync } from 'node:zlib';
 
 const K = join(__dirname, '../..');
 const json = (p: string): Record<string, any> => JSON.parse(readFileSync(join(K, p), 'utf8'));
 const sha = (p: string) => createHash('sha256').update(readFileSync(join(K, p))).digest('hex');
 const projekt = (plik: string) => sha(join('docs/design/ikona', plik));
+
+const idat = (b: Buffer): Buffer[] => {
+  const czesci: Buffer[] = [];
+  for (let i = 8; i < b.length; i += 12 + b.readUInt32BE(i)) if (b.toString('ascii', i + 4, i + 8) === 'IDAT') czesci.push(b.subarray(i + 8, i + 8 + b.readUInt32BE(i)));
+  return czesci;
+};
 
 const expo = json('app.json').expo;
 const tokeny = json('docs/design/tokeny.json').kolor;
@@ -19,6 +26,7 @@ const wpisy: Record<string, unknown> = {
   icon: expo.icon,
   'ios.icon.light': expo.ios?.icon?.light,
   'ios.icon.dark': expo.ios?.icon?.dark,
+  'ios.icon.tinted': expo.ios?.icon?.tinted, // P-497: wariant barwiony iOS 18+
   'android.adaptiveIcon.foregroundImage': expo.android?.adaptiveIcon?.foregroundImage,
   'android.adaptiveIcon.monochromeImage': expo.android?.adaptiveIcon?.monochromeImage,
   'plugin expo-splash-screen image': splash?.[1].image,
@@ -29,6 +37,7 @@ test.each([
   ['icon', 'icon.png'],
   ['ios.icon.light', 'icon.png'],
   ['ios.icon.dark', 'ios-dark.png'],
+  ['ios.icon.tinted', 'ios-tinted.png'],
   ['android.adaptiveIcon.foregroundImage', 'android-foreground.png'],
   ['android.adaptiveIcon.monochromeImage', 'android-monochrome.png'],
   ['plugin expo-splash-screen image', 'splash-icon.png'],
@@ -38,6 +47,26 @@ test.each([
   if (typeof sciezka !== 'string') throw new Error(`app.json: brak wpisu ${wpis} (oczekiwany plik o sumie docs/design/ikona/${plik})`);
   expect(existsSync(join(K, sciezka))).toBe(true);
   expect(sha(sciezka)).toBe(projekt(plik));
+});
+
+test('ikona barwiona iOS (P-497; Apple: „Provide your tinted app icon as a grayscale image”): PNG 1024 × 1024, RGBA, każdy piksel widoczny ma R = G = B', () => {
+  const b = readFileSync(join(K, expo.ios.icon.tinted));
+  expect([b.readUInt32BE(16), b.readUInt32BE(20), b[24], b[25]]).toEqual([1024, 1024, 8, 6]);
+  const surowe = inflateSync(Buffer.concat(idat(b)));
+  const w = 1024;
+  let niszare = 0, widoczne = 0;
+  for (let y = 0; y < w; y++) {
+    const wiersz = y * (1 + w * 4);
+    expect(surowe[wiersz]).toBe(0); // render projektu: filtr 0 (narzedzia/ikona.mjs)
+    for (let x = 0; x < w; x++) {
+      const i = wiersz + 1 + x * 4;
+      if (surowe[i + 3] === 0) continue;
+      widoczne++;
+      if (surowe[i] !== surowe[i + 1] || surowe[i + 1] !== surowe[i + 2]) niszare++;
+    }
+  }
+  expect(widoczne).toBeGreaterThan(0);
+  expect(niszare).toBe(0);
 });
 
 test('ekran startowy: plugin expo-splash-screen z tłem = token papier (jasny) i dark.backgroundColor = token papier (ciemny)', () => {
