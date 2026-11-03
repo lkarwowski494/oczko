@@ -237,7 +237,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-danych-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-002, P-220, P-339 | `src/dane/repozytoria/icloud` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-wczytywania-przycisk.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/StanWczytywania` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-wczytywania-tlo.test.tsx` | zielony (główny zestaw) | 5 | — | `src/ekrany/StanWczytywania` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stany-bledow-094.test.tsx` | zielony (główny zestaw) | 10 | P-418 | `src/ekrany/ListaProjektow`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/StanWczytywania`<br>`src/ekrany/TrybAwaryjny`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stany-bledow-094.test.tsx` | zielony (główny zestaw) | 11 | P-418 | `src/ekrany/ListaProjektow`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/StanWczytywania`<br>`src/ekrany/TrybAwaryjny`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/start-brak-miejsca.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/porty` | Z07-21, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/start-limit-sklepu.test.tsx` | zielony (główny zestaw) | 2 | P-396 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/start-na-wzorze.test.tsx` | zielony (główny zestaw) | 2 | BR-PRJ-011 | `src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor-miejsce` | — |
