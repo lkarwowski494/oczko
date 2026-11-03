@@ -1116,7 +1116,7 @@
     "menu": "Opomniki",
     "tytul": "Opomniki",
     "lista_opis": "Tapnite opomnik, da ga spremenite ali izbrišete.",
-    "wiersz_one": "Od vrste {{od}}, vsako vrsto, {{razy}}×",
+    "wiersz_one": "Od vrste {{od}}, vsako {{count}} vrsto, {{razy}}×",
     "wiersz_two": "Od vrste {{od}}, vsaki {{count}} vrsti, {{razy}}×",
     "wiersz_few": "Od vrste {{od}}, vsake {{count}} vrste, {{razy}}×",
     "wiersz_other": "Od vrste {{od}}, vsakih {{count}} vrst, {{razy}}×",

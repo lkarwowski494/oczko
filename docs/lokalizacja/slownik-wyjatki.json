@@ -46,6 +46,14 @@
     "ko"
    ],
    "powod": "„코줄임” (zmniejszanie oczek) zawiera 줄 jako część słowa złożonego; zakaz dotyczy 줄 jako „rząd”"
+  },
+  {
+   "klucz": "probka.zaproszenie_szerokosc",
+   "pojecie": "oczko",
+   "jezyki": [
+    "pt"
+   ],
+   "powod": "2026-11-03 (09, drugi przegląd AI P-486): klucz jest tekstem narzędzia „Hook” (szydełko; kontekst en.kontekst.json), a zakaz „pontos” dotyczy oczek drutowych — w pt-PT na szydełku jednostką jest „ponto” (S-R4-CUPCAKE „2 pb em cada ponto”, opis pojęcia w slownik-terminow.json); fałszywy alarm sprawdzony na tekście"
   }
  ]
 }

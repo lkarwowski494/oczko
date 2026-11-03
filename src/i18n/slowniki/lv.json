@@ -65,7 +65,7 @@
     "jednostka_oczka_one": "valdziņš",
     "jednostka_oczka_other": "valdziņi",
     "plus_oczka": "+1 valdziņš",
-    "podpis_plus_oczka": "pieskarieties katram valdziņam",
+    "podpis_plus_oczka": "pieskarieties pēc katra valdziņa",
     "plus_a11y_oczka": "Pievienot valdziņu",
     "minus_a11y_oczka": "Noņemt valdziņu",
     "po_dodaniu_oczka_zero": "{{count}} valdziņi.",
@@ -245,7 +245,7 @@
     "wpisz": "Ievadīt pareizo skaitli",
     "wpis_rozwin_a11y": "Vairāk par: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Parāda, kā mainīt šo ierakstu.",
-    "wpis_a11y": "{{od}} uz {{do}} plkst. {{czas}}"
+    "wpis_a11y": "no {{od}} uz {{do}} plkst. {{czas}}"
   },
   "menu": {
     "nazwa": "Nosaukt projektu un detaļu",
@@ -926,7 +926,7 @@
     "blad_strona": "Oczko nevar saglabāt šo lapu",
     "blad_strona_opis": "Lapa prasa pierakstīties vai tajā nav teksta vai attēlu. Nekas netika pievienots. Atveriet to pārlūkā, saglabājiet kā PDF un pievienojiet PDF.",
     "blad_czas": "Oczko nevarēja pabeigt šī faila konvertēšanu",
-    "blad_czas_opis": "„{{plik}}” konvertēšana aizņēma pārāk ilgu laiku. Nekas netika pievienots. Saglabājiet to kā PDF un pievienojiet PDF failu vai mēģiniet vēlreiz.",
+    "blad_czas_opis": "Faila „{{plik}}” konvertēšana aizņēma pārāk ilgu laiku. Nekas netika pievienots. Saglabājiet to kā PDF un pievienojiet PDF failu vai mēģiniet vēlreiz.",
     "brak_aparatu_opis": "Lai skenētu apraksta lapas, atļaujiet piekļuvi kamerai iestatījumos. Joprojām varat izvēlēties foto vai failu.",
     "word_podglad": "Word dokumenti tiek atvērti tādi, kādi ir. Lai atzīmētu rindas un iezīmētu, saglabājiet to kā PDF un pievienojiet PDF.",
     "notatka_chip": "Rinda {{n}}: {{tekst}}",

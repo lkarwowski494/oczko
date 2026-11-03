@@ -271,7 +271,7 @@
     "cofnieto": "Atšaukta",
     "starszy_info": "Galima atšaukti tik paskutinį pakeitimą. Norėdami pataisyti šį, įveskite teisingą skaičių.",
     "wpisz": "Įvesti teisingą skaičių",
-    "wpis_rozwin_a11y": "Daugiau apie {{wpis}}",
+    "wpis_rozwin_a11y": "Daugiau apie įrašą: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Parodo, kaip pakeisti šį įrašą.",
     "wpis_a11y": "nuo {{od}} iki {{do}}, {{czas}}"
   },
