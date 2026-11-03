@@ -2,8 +2,8 @@
 // schematu (domyślnie rząd w robocie), „Before the pattern”, oraz koniec strony („Row n is past the bottom of page p” + „Place on page p+1” albo
 // „past the end of the pattern” + „Move marker”). Sam pas rysuje widok natywny (`oczko-wzor`); tu tylko pasek ekranu, bez ruchu.
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type StanZnacznika = { strona: number; rzad: number; kierunek: 1 | -1; pozaStrona: boolean; przedSchematem: boolean };
@@ -92,4 +92,19 @@ function style(k: Kolory) {
     liczba: { minWidth: 36, textAlign: 'center' },
     przycisk: { minWidth: rozmiary.minimum, minHeight: rozmiary.minimum, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.m, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
   });
+}
+
+/** M1-131 (DEC-33 b, design-spec „Aneks M2 partia 3c1” pkt 2): glif „Mark row” = uchwyt pasa znacznika z tokenów — pole ROZMIAR_SYMBOLU (skala jak symbole
+ *  paska, najwyżej ×1,8), linia 0,1 pola przez całą szerokość w połowie wysokości (`grafit`), okrąg 0,5 pola ze środkiem na 0,7 szerokości, obrys 0,1 pola
+ *  `grafit`, wypełnienie `papier` (tło paska). Dekoracyjny: etykieta VoiceOver zostaje na przycisku. */
+export function GlifZnacznika({ k }: { k: Kolory }): React.ReactElement {
+  const { fontScale } = useWindowDimensions();
+  const pole = Math.round(ROZMIAR_SYMBOLU * Math.min(Math.max(fontScale, 1), MAX_SKALA_TYTULOWA));
+  const gr = pole * 0.1, sr = pole * 0.5;
+  return (
+    <View style={{ width: pole, height: pole }} testID="wzor-zaznacz-glif" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <View style={{ position: 'absolute', left: 0, width: pole, height: gr, top: (pole - gr) / 2, backgroundColor: k.grafit }} testID="wzor-zaznacz-glif-linia" />
+      <View style={{ position: 'absolute', width: sr, height: sr, borderRadius: sr / 2, borderWidth: gr, borderColor: k.grafit, backgroundColor: k.papier, left: pole * 0.7 - sr / 2, top: (pole - sr) / 2 }} testID="wzor-zaznacz-glif-okrag" />
+    </View>
+  );
 }

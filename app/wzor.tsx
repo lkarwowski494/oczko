@@ -11,7 +11,6 @@ import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, 
 import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
 import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
-import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
@@ -21,7 +20,7 @@ import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { dodajZrodlo, type ZrodloDodaniaTrasy } from '../src/kompozycja/wzor-import-trasy';
@@ -31,6 +30,7 @@ import { listaWzorow, wzorDoOtwarcia, zapamietajWzor, ustawZnacznik, zmienNazweW
 import { odzyskajRysunki, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
 import { KOSZ_DNI } from '../src/konfiguracja';
+import { dodajDni } from '../src/przypadki-uzycia/daty';
 
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
 
@@ -144,13 +144,7 @@ export default function EkranWzoru(): React.ReactElement {
     if (!lw) return;
     await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: () => router.back(), ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
   }
-  /** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
-   *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
-  function bladLicznika(r: WynikEkranu<unknown>): void {
-    if (r.ok || r.powod === 'limit' || r.powod === 'zablokowany') return;
-    if (aplikacja.preferencje.stan().wibracje) kontener.porty.haptyka.zagraj('bladZapisu');
-    oglos(tekstBleduZapisu(t));
-  }
+  const bladLicznika = (r: WynikEkranu<unknown>) => bladPaskaLicznika(aplikacja, r, oglos); // M1-004 (po-zapisie.ts)
 
   // Dokument dla widoku natywnego: nowy obiekt tylko przy zmianie wzoru albo obrotów — +1 nie wysyła ponownie rysunków (przegląd 2026-10-26).
   otwartyWzor.current = widok?.wzorId;
@@ -228,4 +222,3 @@ export default function EkranWzoru(): React.ReactElement {
     </Bezpieczny>
   );
 }
-const dodajDni = (dzien: string, n: number): string => { const [r, m, d] = dzien.split('-').map(Number); return new Date(Date.UTC(r, m - 1, d + n)).toISOString().slice(0, 10); };
