@@ -2,9 +2,12 @@
 // (`portOceny.popros`, tak jak woła ją `app/ukonczenie.tsx`) i ostatni adres otwarty przez `systemAplikacji.otworzAdres` (tak jak wiersz „Rate Oczko”), jak `e2e-pliki-stan`.
 // Bez haka scenariusz 65 nie odróżnia „prośby nie było” od „bramka ją zablokowała” ani zaślepki adresu od właściwego. Poza buildem E2E panelu nie ma (P-238).
 // Zachowanie wywołań bez zmian: panel tylko liczy i przepuszcza. P-377: panel jest na trasie „/ustawienia” z `app/`; liczenie sprawdza prawdziwy moduł systemu (granica: Linking, StoreReview).
+// M1-043 (07-jakosc-003): stan haka (liczba próśb, ostatni adres) żyje w pamięci modułu `ocena-stan.tsx` przez cały proces, jak w aplikacji — więc każdy test
+// bierze świeży rejestr modułów (`jest.isolateModules`) dla ekranu, modułu systemu i haka; React i React Native zostają te same co w bibliotece testów
+// (`jest.doMock` na instancje z tego pliku — jedna kopia Reacta dla renderera i hooków). Bez tego wynik zależał od kolejności testów (`--randomize`).
 process.env.EXPO_PUBLIC_E2E = '1'; // panele E2E ładuje `src/platforma/tryb-e2e.ts` przy imporcie (require niżej, po ustawieniu)
 import React from 'react';
-import { Linking } from 'react-native';
+import * as RN from 'react-native';
 import { act, render, screen } from '@testing-library/react-native';
 import { projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { czasWTle, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -27,10 +30,18 @@ jest.mock('../../src/platforma/system-plikow-uzytkownika', () => ({
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 
-/* eslint-disable @typescript-eslint/no-require-imports */
-const EkranUstawien = (require('../../app/ustawienia') as { default: React.ComponentType }).default;
-const { systemAplikacji, portOceny } = require('../../src/kompozycja/system') as typeof import('../../src/kompozycja/system');
-/* eslint-enable @typescript-eslint/no-require-imports */
+let EkranUstawien: React.ComponentType;
+let system: typeof import('../../src/kompozycja/system');
+beforeEach(() => {
+  /* eslint-disable @typescript-eslint/no-require-imports */
+  jest.isolateModules(() => {
+    jest.doMock('react', () => React);
+    jest.doMock('react-native', () => RN);
+    EkranUstawien = (require('../../app/ustawienia') as { default: React.ComponentType }).default;
+    system = require('../../src/kompozycja/system') as typeof import('../../src/kompozycja/system');
+  });
+  /* eslint-enable @typescript-eslint/no-require-imports */
+});
 
 async function ustawienia() {
   const t = await tEn();
@@ -51,7 +62,8 @@ test('033-T1 hak F-64: panel w Ustawieniach zaczyna od „rating requests: 0 · 
   expect(tekstPanelu(panel)).toBe('rating requests: 0 · last address: none');
 });
 test('033-T1 hak F-64: wywołanie prośby o ocenę zwiększa licznik, a otwarcie adresu zapisuje ostatni adres; oba wywołania idą dalej do systemu', async () => {
-  const otworz = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
+  const { systemAplikacji, portOceny } = system;
+  const otworz = jest.spyOn(RN.Linking, 'openURL').mockResolvedValue(true);
   const panel = await ustawienia();
   await act(async () => { await portOceny.popros(); await portOceny.popros(); });
   expect(tekstPanelu(panel)).toBe('rating requests: 2 · last address: none');
