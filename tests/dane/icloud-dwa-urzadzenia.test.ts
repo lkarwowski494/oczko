@@ -9,7 +9,7 @@ import { nowszaWersjaWPoczekalni } from '../../src/dane/repozytoria/icloud';
 import { dodajRzad, utworzSzybkiLicznik } from '../../src/przypadki-uzycia/licznik';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt, sterownikSynchronizacji, type Sterownik } from '../../src/przypadki-uzycia/synchronizacja';
 import { usunWszystkieDane } from '../../src/przypadki-uzycia/projekt';
-import { przygotuj, sha256, MIN, type Srodowisko, zArchiwum } from './pomocnicze/srodowisko';
+import { przygotuj, sha256, MIN, sierotyPrzyStarcie, type Srodowisko, zArchiwum } from './pomocnicze/srodowisko';
 import { serwerIcloud, type SerwerTestowy, type UrzadzenieTestowe } from './pomocnicze/serwer-icloud';
 
 type Urz = { s: Srodowisko; u: UrzadzenieTestowe; st: Sterownik };
@@ -261,7 +261,7 @@ describe('rekordy z sieci: błędne, kolizja, zasoby', () => {
     expect(await nowszaWersjaWPoczekalni(b.s.baza, teraz - 1)).toBe(false);
     expect(await nowszaWersjaWPoczekalni(b.s.baza, teraz + 1)).toBe(true);
   });
-  test('zasób pliku: zgodny SHA-256 trafia do magazynu; inny SHA-256 nie trafia, rekord czeka, wpis `blad`', async () => {
+  test('zasób pliku: zgodny SHA-256 trafia do magazynu; inny SHA-256 bez wiersza `plik` (plik usuwa krok startu), rekord czeka, wpis `blad`', async () => {
     const serwer = serwerIcloud();
     const b = await urzadzenie(serwer, 'ipad', 'b');
     await b.st.wlacz();
@@ -272,7 +272,9 @@ describe('rekordy z sieci: błędne, kolizja, zasoby', () => {
     const shaObcy = 'f'.repeat(64);
     await b.u.dostarcz({ rekordy: [rek(shaDobry, dobry), rek(shaObcy, zly)], usuniete: [] } as Partial<PartiaIcloud>);
     expect((await b.s.baza.all<{ sha256: string }>('SELECT sha256 FROM plik')).map((r) => r.sha256)).toEqual([shaDobry]);
-    expect(b.s.magazyn.usuniete).toContain(sha256('podmieniony'));
+    expect(b.s.magazyn.usuniete).toEqual([]); // plik bez wiersza usuwa krok startu (ADR-0001, 05-architekt-513)
+    await sierotyPrzyStarcie(b.s);
+    expect(b.s.magazyn.usuniete).toEqual([sha256('podmieniony')]);
     expect(await n(b.s.baza, "SELECT count(*) AS n FROM blad WHERE kod = 'icloud_zly_zasob'")).toBe(1);
     expect(await n(b.s.baza, 'SELECT count(*) AS n FROM poczekalnia')).toBe(1);
   });

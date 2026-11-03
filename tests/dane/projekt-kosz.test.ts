@@ -14,7 +14,7 @@ import { uruchomDane } from '../../src/przypadki-uzycia/start';
 import { utworzPortNode } from '../../src/dane/baza/adapter-node';
 import { join } from 'node:path';
 import { czesc, dzienLimitu, licznik, plik, projekt, przypomnienie, sesja, wzor, zycie, type Instr } from './pomocnicze/dane-wejsciowe';
-import { DOBA, GODZ, MIN, T0, dzienLokalny, ile, jeden, licznosci, migawka, przygotuj, wlozPlik, wykonaj, zArchiwum } from './pomocnicze/srodowisko';
+import { DOBA, GODZ, MIN, T0, dzienLokalny, ile, jeden, licznosci, migawka, przygotuj, sierotyPrzyStarcie, wlozPlik, wykonaj, zArchiwum } from './pomocnicze/srodowisko';
 
 const OK = { ok: true, wartosc: undefined };
 /** Warunek wstępny W2 (P-118, P-120 Q3a): poprzedni start aplikacji teraz — sprzątanie wymaga dwóch startów po terminie (moduly.md). */
@@ -107,6 +107,8 @@ describe('kosz „Ostatnio usunięte” (F-33, P-026)', () => {
     ]);
     await poprzedniStartTeraz(s);
     expect(await sprzatnijKosz(s.z)).toMatchObject({ ok: true, wartosc: { projekty: 1, pliki: 1 } });
+    expect(s.magazyn.usuniete).toEqual([]); // sprzątanie kosza usuwa wiersze `plik`, pliki — start (ADR-0001, 05-architekt-513)
+    expect(await sierotyPrzyStarcie(s)).toEqual({ ok: true, wartosc: 1 });
     expect(s.magazyn.usuniete).toEqual([A]);
     expect((await s.baza.all<{ sha256: string }>('SELECT sha256 FROM plik ORDER BY sha256')).map((r) => r.sha256)).toEqual([B, C].sort());
   });

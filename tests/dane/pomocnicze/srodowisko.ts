@@ -1,7 +1,7 @@
 // Środowisko testów akceptacyjnych warstwy danych (rola 07, E3): katalog tymczasowy, baza przez utworzPortNode + migruj aplikacji,
 // atrapy portów (Zegar, Identyfikatory, MagazynPlikow, DziennikPlus, CzasWTle). Atrapy są kodem testu, nie aplikacji.
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { CzasWTle, DziennikPlus, Identyfikatory, MagazynPlikow, PortBazy, Zegar, ZdarzenieWejsciowe } from '../../../src/domena/porty';
@@ -9,6 +9,8 @@ import { utworzArchiwum } from '../../../src/dane/archiwum';
 import { utworzPortNode, type PortNode } from '../../../src/dane/baza/adapter-node';
 import { migruj } from '../../../src/dane/migracje/migruj';
 import type { Zaleznosci, ZaleznosciPlikow } from '../../../src/przypadki-uzycia/zaleznosci';
+import { PLIKI_OCHRONA_MIN } from '../../../src/konfiguracja';
+import { sprzatnijSierotyMagazynu } from '../../../src/przypadki-uzycia/kosz';
 
 export const MIN = 60_000;
 export const GODZ = 3_600_000;
@@ -157,3 +159,12 @@ export async function migawka(baza: PortBazy, pomin: string[] = []): Promise<str
   return JSON.stringify(w);
 }
 export const istnieje = existsSync;
+/**
+ * Krok startu, który usuwa pliki bez wierszy `plik` (ADR-0001, 05-architekt-513: zapisy i kasowania usuwają tylko wiersze): pliki magazynu
+ * postarzone poza PLIKI_OCHRONA_MIN względem zegara testu, potem `sprzatnijSierotyMagazynu` (bez kopii w `kopie/` usuwa każdy plik bez wiersza).
+ */
+export function sierotyPrzyStarcie(s: Pick<Srodowisko, 'z' | 'zegar' | 'magazyn'>) {
+  const ms = s.zegar.teraz().ms - (PLIKI_OCHRONA_MIN + 1) * 60_000;
+  for (const n of readdirSync(s.magazyn.katalog)) utimesSync(join(s.magazyn.katalog, n), ms / 1000, ms / 1000);
+  return sprzatnijSierotyMagazynu(s.z);
+}

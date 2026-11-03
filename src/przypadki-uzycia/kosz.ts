@@ -1,4 +1,4 @@
-// Sprzątanie „Ostatnio usuniętych” przy starcie (P-026, KOSZ_DNI; pliki bez odwołań po COMMIT, ADR-0001).
+// Sprzątanie „Ostatnio usuniętych” przy starcie (P-026, KOSZ_DNI; wiersze `plik` bez odwołań w transakcji, same pliki — `sprzatnijSierotyMagazynu`, ADR-0001).
 // sygnatura: propozycja 07, zatwierdzona w fix 05 2026-10-25 (Z07-22).
 // Warunek dwóch startów w domenie (`doSprzatniecia`, P-118 W2): `ostatni_start_ms` czytany z `ustawienie` przed sprzątaniem.
 import type { Wynik } from '../domena/bledy';
@@ -24,10 +24,13 @@ async function usunieci(tx: PortBazy, sql: string): Promise<{ id: string; usunie
   return (await wiersze(tx.all(sql), 'sprzatnijKosz')).map((r) => ({ id: tekst(r, 'id'), usunietoMs: liczba(r, 'usunieto_ms') }));
 }
 
-/** Bez kolejki: woła ją pozycja kolejki startu (`uruchomDane`). Pliki usuwane z magazynu po COMMIT, w tej samej pozycji kolejki. */
+/**
+ * Bez kolejki: woła ją pozycja kolejki startu (`uruchomDane`). Usuwa tylko wiersze `plik`; pliki bez wierszy usuwa `sprzatnijSierotyMagazynu`
+ * (ADR-0001, 05-architekt-513), więc obowiązuje reguła kopii M1-087: plik potrzebny kopii `.db` zostaje (05-architekt-512).
+ */
 export async function sprzatnijKoszWKolejce(z: ZaleznosciPlikow): Promise<Wynik<WynikSprzatania>> {
   const doUsuniecia: string[] = [];
-  const w = await wTransakcji(z, 'sprzatnijKosz', async (tx, teraz): Promise<Wynik<WynikSprzatania>> => {
+  return wTransakcji(z, 'sprzatnijKosz', async (tx, teraz): Promise<Wynik<WynikSprzatania>> => {
     const ostatni = await ostatniStartMs(tx);
     const doKosza = (u: { usunietoMs: number }) => doSprzatniecia({ stan: 'w_toku', ukonczonoMs: null, usunietoMs: u.usunietoMs }, teraz, ostatni, KOSZ_DNI);
     const projekty = (await usunieci(tx, 'SELECT id, usunieto_ms FROM projekt WHERE usunieto_ms IS NOT NULL')).filter(doKosza);
@@ -67,13 +70,12 @@ export async function sprzatnijKoszWKolejce(z: ZaleznosciPlikow): Promise<Wynik<
     }
     return { ok: true, wartosc: { projekty: projekty.length, czesci: czesci.length, liczniki: liczniki.length, wzory: wzory.length, wloczki, narzedzia: narzedzia.length, pliki: doUsuniecia.length } };
   });
-  if (w.ok) for (const h of doUsuniecia) await z.magazyn.usun(h); // po COMMIT (ADR-0001)
-  return w;
 }
 
 /**
  * M1-023 (05-architekt-503, ADR-0001: „plik bez odwołania jest wykrywany”): plik magazynu bez wiersza `plik` (po „zastąp”, przywróceniu kopii,
- * nieudanym imporcie) usuwany przy starcie; młodszy niż PLIKI_OCHRONA_MIN (czas zmiany pliku) zostaje, bo zapis pliku poprzedza wiersz (Z07-15).
+ * nieudanym imporcie, zapisie rysunku, usunięciu zdjęcia, sprzątaniu kosza) usuwany przy starcie — jedyne miejsce usuwania plików poza „Usuń wszystkie
+ * dane” (ADR-0001, 05-architekt-513); młodszy niż PLIKI_OCHRONA_MIN (czas zmiany pliku) zostaje, bo zapis pliku poprzedza wiersz (Z07-15).
  * Tylko w `uruchomDane` (przed pierwszym ekranem, w kolejce), nie przy ręcznym opróżnianiu kosza.
  * M1-087 (05-architekt-507, ADR-0020): kopie `.db` w `kopie/` nie mają plików magazynu, więc plik nie młodszy niż najnowsza kopia (istniał, gdy powstała) zostaje (cofnięcie
  * przywrócenia wraca z plikami); kopie znikają po KOPIE_RATUNKOWE_DNI (ADR-0020 (6)) i wtedy plik bez odwołań i bez kopii jest usuwany.

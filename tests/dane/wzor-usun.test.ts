@@ -10,7 +10,7 @@ import { zapamietajLicznik } from '../../src/przypadki-uzycia/widok-licznika';
 import { listaWzorow, przywrocWzor, usunWzor, ustawZnacznik, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, zmienNazweWzoru } from '../../src/przypadki-uzycia/wzor';
 import { dodajNotatkeWzoru } from '../../src/przypadki-uzycia/wzor-notatki';
 import { czesc, licznik, plik, projekt, rysunek, wzor, type Instr } from './pomocnicze/dane-wejsciowe';
-import { DOBA, T0, ile, jeden, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { DOBA, T0, ile, jeden, przygotuj, sha256, sierotyPrzyStarcie, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 const OK = { ok: true, wartosc: undefined };
 const PDF = Buffer.from('%PDF-1.4\n%%EOF\n');
@@ -99,7 +99,7 @@ describe('usunWzor i przywrocWzor — kosz (P-229, P-233 (6), N4)', () => {
     expect(await jeden(s.baza, "SELECT usunieto_ms FROM wzor WHERE id = 'w2'")).toEqual(w2);
   });
 
-  test.each([[KOSZ_DNI - 1, 1], [KOSZ_DNI, 0]])('sprzątanie po %i dniach i dwóch startach → zostaje %i (kaskada rysunków, pliki bez odwołań po COMMIT)', async (dni, zostaje) => {
+  test.each([[KOSZ_DNI - 1, 1], [KOSZ_DNI, 0]])('sprzątanie po %i dniach i dwóch startach → zostaje %i (kaskada rysunków, pliki bez odwołań przy starcie)', async (dni, zostaje) => {
     const { s, h, r } = await zDwomaWzorami();
     await usunWzor(s.z, { wzorId: 'w1' });
     s.zegar.przesun(dni * DOBA + 60_000);
@@ -108,6 +108,9 @@ describe('usunWzor i przywrocWzor — kosz (P-229, P-233 (6), N4)', () => {
     expect(w).toMatchObject({ ok: true, wartosc: { wzory: 1 - zostaje } });
     expect(await ile(s.baza, 'wzor', "id = 'w1'")).toBe(zostaje);
     expect(await ile(s.baza, 'rysunek')).toBe(zostaje);
+    expect(await ile(s.baza, 'plik', 'sha256 = ?', [r])).toBe(zostaje);
+    expect(s.magazyn.usuniete).toEqual([]); // pliki bez wierszy usuwa krok startu (ADR-0001, 05-architekt-513)
+    await sierotyPrzyStarcie(s);
     expect(s.magazyn.usuniete.includes(r)).toBe(!zostaje); // rysunek bez odwołań
     expect(s.magazyn.usuniete.includes(h)).toBe(false); // PDF nadal w w2
   });
@@ -124,7 +127,7 @@ describe('usunWzor i przywrocWzor — kosz (P-229, P-233 (6), N4)', () => {
   });
 });
 
-describe('zapiszRysunek (ADR-0012 uzupełnienie: UPSERT strony, stary plik po COMMIT)', () => {
+describe('zapiszRysunek (ADR-0012 uzupełnienie: UPSERT strony, stary plik przy starcie)', () => {
   test('nowa strona → wiersz rysunku i plik w magazynie; plik tymczasowy usunięty', async () => {
     const { s } = await zDwomaWzorami();
     const tmp = join(s.katalog, 'tmp', 'r.pkdrawing');
@@ -135,7 +138,7 @@ describe('zapiszRysunek (ADR-0012 uzupełnienie: UPSERT strony, stary plik po CO
     expect(existsSync(tmp)).toBe(false);
   });
 
-  test('ta sama strona drugi raz → jeden wiersz z nowym plikiem; stary plik bez odwołań usunięty z bazy i magazynu po COMMIT', async () => {
+  test('ta sama strona drugi raz → jeden wiersz z nowym plikiem; stary plik bez odwołań usunięty z bazy, z magazynu przy starcie', async () => {
     const { s, r } = await zDwomaWzorami();
     s.zegar.przesun(5_000);
     const tmp = join(s.katalog, 'tmp', 'r.pkdrawing');
@@ -143,6 +146,8 @@ describe('zapiszRysunek (ADR-0012 uzupełnienie: UPSERT strony, stary plik po CO
     expect(await zapiszRysunek(s.z, { wzorId: 'w1', strona: 0, plikTymczasowy: tmp })).toEqual(OK);
     expect(await jeden(s.baza, "SELECT plik_sha256, zmieniono_ms FROM rysunek WHERE wzor_id = 'w1' AND strona = 0")).toEqual({ plik_sha256: sha256('strona-0-v2'), zmieniono_ms: T0 + 5_000 });
     expect(await ile(s.baza, 'plik', 'sha256 = ?', [r])).toBe(0);
+    expect(s.magazyn.usuniete).toEqual([]); // plik bez wiersza usuwa krok startu (ADR-0001, 05-architekt-513)
+    await sierotyPrzyStarcie(s);
     expect(s.magazyn.usuniete).toEqual([r]);
   });
 
