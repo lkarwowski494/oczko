@@ -19,7 +19,7 @@ jest.mock('expo-router', () => {
     return mockReact.createElement(mockRn.View, { testID: 'stos' }, mockReact.createElement(Indeks));
   };
   Stack.Screen = () => null;
-  return { Stack, useRouter: () => mockRouter, useFocusEffect: () => undefined };
+  return { Stack, useRouter: () => mockRouter, useFocusEffect: () => undefined, usePathname: () => '/' };
 });
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({
