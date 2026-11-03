@@ -103,8 +103,9 @@ export type KompozycjaLicznika = {
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
 /** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`; `aplikacjaAktywna` = `AppState === 'active'` — bez niej nie ma odbioru z zegarka (ADR-0030, ARCH-13). */
-/** `dostep` (M1-063, MON-05): stan dostępu Pro (kompozycja/dostep.ts) — zmiana Pro przelicza limit dni, powrót na pierwszy plan woła ponowną decyzję. */
-export type DostepLicznika = { stan(): { pro: boolean }; naZmiane(f: (s: { pro: boolean }) => void): () => void; odswiez(): Promise<unknown> };
+/** `dostep` (M1-063, MON-05): stan dostępu Pro (kompozycja/dostep.ts) — zmiana Pro przelicza limit dni, powrót na pierwszy plan woła ponowną decyzję;
+ *  `wygasa` (M1-064, KP-17): koniec okresu subskrypcji w stanie ekranu blokady i zegarka (`proWaznoscDo`), null = dożywotni. */
+export type DostepLicznika = { stan(): { pro: boolean; wygasa: number | null }; naZmiane(f: (s: { pro: boolean }) => void): () => void; odswiez(): Promise<unknown> };
 export type OpcjeKompozycji = { wibracje(): boolean; dostep?: DostepLicznika; aplikacjaAktywna?(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
@@ -146,7 +147,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   async function poZapisie(w: WidokLicznika | null): Promise<void> {
     if (!w) return;
     const nazwa = w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa;
-    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: { pro: z.pro(), wygasa: null } });
+    const pro = z.pro();
+    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: { pro, wygasa: pro ? o.dostep?.stan().wygasa ?? null : null } }); // M1-064: koniec subskrypcji, nie „bez końca”
     if (e.ok && !aktywnosc) {
       aktywnosc = true;
       await z.liveActivity.start(e.wartosc);
