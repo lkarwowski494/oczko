@@ -58,8 +58,8 @@ export function zapiszTekst(sciezka: string, tekst: string): void {
   p.write(tekst);
 }
 /** Zapis przez plik tymczasowy (ARCH-22, M1-026; wzorzec `src/platforma/migawka.ts`): `<cel>.tmp` → odczyt kontrolny → przeniesienie.
- *  Przerwany zapis zostawia poprzednią treść celu; przeniesienie nie nadpisuje, więc cel jest usuwany tuż przed nim (krótkie okno bez pliku
- *  = stan jak przy pierwszym uruchomieniu, nigdy plik w połowie). */
+ *  Przerwany zapis zostawia poprzednią treść celu; przeniesienie nie nadpisuje, więc cel jest usuwany tuż przed nim — przerwanie w tym oknie
+ *  zostawia tylko `<cel>.tmp` po odczycie kontrolnym, który odzyskuje `czytajAtomowo` (M1-096). Czytaj takie pliki tylko przez `czytajAtomowo`. */
 export function zapiszAtomowo(sciezka: string, tekst: string): void {
   const tmp = `${sciezka}.tmp`;
   usunPlik(tmp);
@@ -72,6 +72,18 @@ export function zapiszAtomowo(sciezka: string, tekst: string): void {
   }
   usunPlik(sciezka);
   przenies(tmp, sciezka);
+}
+
+/** Odczyt pliku zapisywanego przez `zapiszAtomowo` (ARCH-22: odzyskanie pliku tymczasowego przy starcie, M1-096): brak celu i jest `<cel>.tmp`
+ *  → najpierw przeniesienie `.tmp` na cel, potem odczyt; brak obu → null. Cel i `.tmp` naraz → cel (`.tmp` usuwa następny zapis). Treść waliduje
+ *  wołający: `.tmp` z przerwanego pierwszego zapisu (przed odczytem kontrolnym) może być niepełny — skutek jak brak pliku. */
+export async function czytajAtomowo(sciezka: string): Promise<string | null> {
+  if (!istniejePlik(sciezka)) {
+    const tmp = `${sciezka}.tmp`;
+    if (!istniejePlik(tmp)) return null;
+    przenies(tmp, sciezka);
+  }
+  return czytajTekst(sciezka);
 }
 
 export interface Czytnik { czytaj(od: number, dlugosc: number): Uint8Array; readonly rozmiar: number; zamknij(): void }

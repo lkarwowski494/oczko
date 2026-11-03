@@ -6,6 +6,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { File } from 'expo-file-system';
 import { zapiszAtomowo, zapiszTekst } from '../../src/dane/pliki/system';
+import { identyfikatorUrzadzenia, pamiecProWPliku } from '../../src/kompozycja/pliki-urzadzenia';
 import { katalogTymczasowy } from './pomocnicze/srodowisko';
 
 afterEach(() => jest.restoreAllMocks());
@@ -58,4 +59,48 @@ test('trwała kontrola: kontener zapisuje pamięć Pro i identyfikator urządzen
   expect(pliki).not.toMatch(/zapiszTekst\(plik, nowy\)/);
   expect(pliki).toMatch(/zapiszAtomowo\(plikPro, t\)/);
   expect(pliki).toMatch(/zapiszAtomowo\(plik, nowy\)/);
+});
+
+// M1-audytor-generalny-096 (05-architekt-509; ARCH-22 „odzyskanie pliku tymczasowego przy starcie”): moveSync nie nadpisuje, więc
+// zapiszAtomowo usuwa cel tuż przed przeniesieniem; proces ubity w tym oknie zostawia tylko `<cel>.tmp` (treść po odczycie kontrolnym).
+/** Proces ubity po usunięciu celu, przed przeniesieniem `.tmp` → cel. */
+function przerwijPrzeniesienie(): void {
+  jest.spyOn(File.prototype, 'moveSync').mockImplementationOnce(() => { throw new Error('proces ubity przed przeniesieniem'); });
+}
+const ID_A = '0f8fad5b-d9cb-469f-a165-70867728950e', ID_B = '7c9e6679-7425-40de-944b-e07fc1f90ae7';
+const PRO_A = '{"produkty":[],"wygasa":null}', PRO_B = '{"produkty":["oczko.pro.yearly"],"wygasa":1900000000000}';
+
+describe('M1-audytor-generalny-096: odczyt przy starcie odzyskuje `.tmp`, gdy zapis przerwano między usunięciem celu a przeniesieniem', () => {
+  test.each([
+    ['pamiec-pro.json', PRO_A, PRO_B, (k: string) => pamiecProWPliku(k).czytaj()],
+    ['urzadzenie.txt', ID_A, ID_B, (k: string) => identyfikatorUrzadzenia(k, () => 'ffffffff-ffff-4fff-bfff-ffffffffffff')],
+  ] as const)('%s: cel usunięty, `.tmp` z ostatnią zapisaną treścią → odczyt zwraca tę treść, potem cel jest, `.tmp` nie', async (nazwa, stara, nowa, czytaj) => {
+    const k = katalogTymczasowy('oczko-atomowo-');
+    const cel = join(k, nazwa);
+    zapiszAtomowo(cel, stara);
+    przerwijPrzeniesienie();
+    expect(() => zapiszAtomowo(cel, nowa)).toThrow('proces ubity');
+    jest.restoreAllMocks();
+    const przed = readdirSync(k).sort();
+    expect(przed).toEqual([`${nazwa}.tmp`]); // stan po przerwaniu: 0 plików docelowych, 1 tymczasowy
+    expect(readFileSync(`${cel}.tmp`, 'utf8')).toBe(nowa);
+    expect(await czytaj(k)).toBe(nowa);
+    expect(readdirSync(k).sort()).toEqual([nazwa]); // po odczycie: 1 plik docelowy, 0 tymczasowych
+    expect(readFileSync(cel, 'utf8')).toBe(nowa);
+  });
+
+  test('urzadzenie.txt: niepełny `.tmp` z przerwanego pierwszego zapisu (bez celu) → nowy identyfikator jak przy pierwszym starcie, bez `.tmp`', async () => {
+    const k = katalogTymczasowy('oczko-atomowo-');
+    writeFileSync(join(k, 'urzadzenie.txt.tmp'), ID_A.slice(0, 17));
+    expect(await identyfikatorUrzadzenia(k, () => ID_B)).toBe(ID_B);
+    expect(readdirSync(k)).toEqual(['urzadzenie.txt']);
+    expect(readFileSync(join(k, 'urzadzenie.txt'), 'utf8')).toBe(ID_B);
+  });
+
+  test('cel i `.tmp` naraz (przerwanie przed usunięciem celu) → odczyt celu', async () => {
+    const k = katalogTymczasowy('oczko-atomowo-');
+    zapiszAtomowo(join(k, 'pamiec-pro.json'), PRO_A);
+    writeFileSync(join(k, 'pamiec-pro.json.tmp'), PRO_B.slice(0, 10));
+    expect(await pamiecProWPliku(k).czytaj()).toBe(PRO_A);
+  });
 });
