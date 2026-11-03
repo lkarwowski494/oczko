@@ -44,10 +44,14 @@ test('korekta P-330: `ustawienia.pro_wlaczone` = „On”, a zdanie „Oczko Pro
 
 // D3 (04-studio-projektowe-013, P-328): treść `ustawienia.usun_pytanie` zmieniła sens po P-328 (kopia przed usunięciem, „this device”, bez „can’t be undone”),
 // więc stare tłumaczenia (34 języki) są nieprawdziwe — jak `dane.zastapiono` w P-357: usunięte (tekst z en), klucz na liście „oczekujące na falę” (P-320).
-test('`ustawienia.usun_pytanie`: brak starych tłumaczeń w 34 słownikach, klucz na liście oczekujących na falę', () => {
+test('`ustawienia.usun_pytanie`: brak starych tłumaczeń w 33 słownikach (pl ma nowy przekład, P-469), klucz na liście oczekujących na falę', () => {
   expect(OCZEKUJACE).toContain('ustawienia.usun_pytanie');
-  const jezyki = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => f.endsWith('.json') && !f.endsWith('.kontekst.json') && f !== 'en.json');
-  expect(jezyki.length).toBe(34);
+  // pl: przekład napisany po zmianie sensu (P-328, P-469) — nie stary; pozostałe 33 języki czekają na falę 09.
+  const pl = czytaj('src/i18n/slowniki/pl.json') as Record<string, Record<string, string>>;
+  expect(wartosc(pl, 'ustawienia.usun_pytanie')).toMatch(/^To usuwa z Oczka wszystkie projekty/);
+  expect(wartosc(pl, 'ustawienia.usun_pytanie')).not.toMatch(/iPhon|nie można cofnąć/i);
+  const jezyki = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => f.endsWith('.json') && !f.endsWith('.kontekst.json') && f !== 'en.json' && f !== 'pl.json');
+  expect(jezyki.length).toBe(33);
   for (const f of jezyki) {
     const s = czytaj(`src/i18n/slowniki/${f}`) as Record<string, Record<string, string>>;
     expect([f, wartosc(s, 'ustawienia.usun_pytanie')]).toEqual([f, undefined]);

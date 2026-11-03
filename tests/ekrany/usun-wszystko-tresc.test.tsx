@@ -22,7 +22,15 @@ test('en: pytanie P-328/P-330 + akapit o kopii w Plikach; bez starej treści', a
   expect(screen.queryByText(/on this iPhone/)).toBeNull();
   expect(screen.queryByText(/can’t be undone/)).toBeNull();
 });
-test.each(['de-DE', 'pl-PL', 'fr-FR', 'ja-JP'])('%s: pytanie nie niesie starego tłumaczenia („iPhone”, „nie można cofnąć”) — do fali przekładu tekst z en', async (jezyk) => {
+// pl: przekład napisany po zmianie sensu (P-328, P-469); bez „iPhone” i bez „nie można cofnąć”.
+test('pl-PL: pytanie i akapit o kopii po polsku (P-469), bez starej treści', async () => {
+  arkusz(await tJezyk('pl-PL'));
+  expect(screen.getByText('To usuwa z Oczka wszystkie projekty, liczniki, historię, wzory i zdjęcia. Kopie bezpieczeństwa zostają na tym urządzeniu. Oczko usuwa je po 30 dniach, przy następnym otwarciu, a część wcześniej, jeśli zajmują dużo miejsca.')).toBeTruthy();
+  expect(screen.getByText('Najpierw Oczko zapisuje kopię w aplikacji Pliki, w Oczko › Backup. Zaimportowanie tego pliku przywraca wszystko.')).toBeTruthy();
+  expect(screen.queryByText(/iPhon/)).toBeNull();
+  expect(screen.queryByText(/nie można cofnąć/i)).toBeNull();
+});
+test.each(['de-DE', 'fr-FR', 'ja-JP'])('%s: pytanie nie niesie starego tłumaczenia („iPhone”, „nie można cofnąć”) — do fali przekładu tekst z en', async (jezyk) => {
   arkusz(await tJezyk(jezyk));
   expect(screen.getByText(PYTANIE)).toBeTruthy();
   expect(screen.getByText(KOPIA)).toBeTruthy();
