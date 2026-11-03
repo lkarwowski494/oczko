@@ -2,8 +2,8 @@
 // interfejsu, jak `przygotujZgloszenie`): wersja i build, system, model, powód trybu awaryjnego, liczba nieudanych startów (ADR-0019) i etap ostatniego startu (P-271);
 // kody `blad` (bez szczegółów) z kopii tylko do odczytu — gdy się nie da, „database=not_opened”. Żaden błąd odczytu nie blokuje zgłoszenia.
 import type { PoleDiagnostyki } from '../ekrany/ZglosProblem';
+import { OSTATNIE_BLEDY } from '../konfiguracja';
 
-const OSTATNIE_BLEDY = 20;
 export async function diagnostykaAwaryjna(o: {
   powod: string; nieudaneStarty: () => Promise<number>; etap?: () => Promise<string>; bledy: () => Promise<{ czasMs: number; kod: string }[]>;
   srodowisko: { wersja: string; system: string; model: string };

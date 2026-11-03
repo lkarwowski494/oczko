@@ -15,6 +15,7 @@ import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
 import { awariaStartu, zegarAplikacji } from '../platforma/tryb-e2e';
+import { OSTATNIE_BLEDY } from '../konfiguracja';
 
 export type TrybStartu = { tryb: 'normalny' } | { tryb: 'awaryjny'; powod: 'petla-startow' | 'wersja_nowsza' | 'uszkodzony' } | { tryb: 'awaria-e2e' };
 
@@ -108,7 +109,7 @@ export function trybAwaryjny() {
         for (const n of k.wartosc.pliki) kopiuj(polacz(k.wartosc.katalog, n), polacz(kat, n));
         const port = otworzPortExpo(polacz(kat, nazwaPliku(s.baza)), { tylkoOdczyt: true }); // nazwa z jednego źródła (sciezkiDanych)
         try {
-          const w = await port.all<{ czas_ms: unknown; kod: unknown }>('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT 20');
+          const w = await port.all<{ czas_ms: unknown; kod: unknown }>('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]);
           return w.flatMap((r) => (typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod }] : []));
         } finally {
           await port.zamknij();

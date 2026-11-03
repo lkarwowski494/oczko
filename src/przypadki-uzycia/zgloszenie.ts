@@ -2,11 +2,10 @@
 // sygnatura: propozycja 07, zatwierdzona w fix 05 2026-10-25 (Z07-22).
 // Treść techniczna dla dewelopera (nie tekst interfejsu): wersja schematu, liczności tabel, ostatnie kody błędów — bez nazw, notatek i treści (NFR-PRY-001).
 import type { Wynik } from '../domena/bledy';
-import { WERSJA_SCHEMATU } from '../konfiguracja';
+import { OSTATNIE_BLEDY, WERSJA_SCHEMATU } from '../konfiguracja';
 import { liczba, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import type { Zaleznosci } from './zaleznosci';
 
-const OSTATNIE_BLEDY = 20;
 export async function przygotujZgloszenie(z: Zaleznosci): Promise<Wynik<{ tresc: string }>> {
   const tabele = (await wiersze(z.baza.all("SELECT name FROM sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name"), 'zgloszenie')).map((r) => tekst(r, 'name'));
   const licznosci: string[] = [];
