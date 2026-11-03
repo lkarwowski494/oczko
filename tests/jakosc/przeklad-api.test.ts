@@ -62,14 +62,14 @@ describe('przeklad-api: przebieg (main) z atrapą fetch', () => {
     const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--wyjscie', w], { encoding: 'utf8', env: BEZ_KLUCZA });
     expect(s.status).toBe(0); expect(s.stdout).toMatch(/34 języków/); expect(existsSync(join(w, 'szacunek.json'))).toBe(true);
   });
-  test('limit kosztu: Opus ponad 6 USD → kod 3 bez zgody (przed jakimkolwiek wysłaniem)', () => {
-    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'opus', '--wyjscie', wyj()], { encoding: 'utf8', env: BEZ_KLUCZA });
+  test('limit kosztu: Opus ponad limit (obniżony do 1 USD zmienną testową) → kod 3 bez zgody (przed jakimkolwiek wysłaniem)', () => {
+    const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'opus', '--wyjscie', wyj()], { encoding: 'utf8', env: { ...BEZ_KLUCZA, PRZEKLAD_LIMIT_USD: '1' } });
     expect(s.status).toBe(3); expect(s.stdout).toMatch(/STOP/);
   });
-  test('Sonnet na wszystkie 34 języki mieści się w 6 USD wg szacunku (wariant A, P-144)', () => {
+  test('Sonnet na wszystkie 34 języki mieści się w pułapie 30 USD wg szacunku (P-481; myślenie z próby 2026-11-03, było 6 USD wg P-144)', () => {
     const r = json(`const poz = m.zbierz(), sl = JSON.parse((await import('node:fs')).readFileSync('docs/lokalizacja/slownik-terminow.json','utf8'));
       console.log(JSON.stringify(m.szacunek(m.jezyki().map((k) => m.wiersz(k, poz, sl)), 'claude-sonnet-5-5')))`);
-    expect(r.jezykow).toBe(34); expect(r.koszt_usd).toBeLessThan(6);
+    expect(r.jezykow).toBe(34); expect(r.koszt_usd).toBeLessThan(30);
   });
   test('przebieg z atrapą API (2 języki): batch → pliki propozycji, klucz tylko w nagłówku, słowniki nietknięte', () => {
     const w = wyj(), slowniki = readdirSync(join(ROOT, 'src/i18n/slowniki')).sort();
@@ -131,5 +131,38 @@ describe('przeklad-api: fala 2026-11-03 (zakres = oczekujace.json, bez pl, P-474
     expect(Object.keys(r.zwykle.wynik)).toEqual(['a.b', 'c.d_one', 'c.d_few', 'c.d_other', 'e.f', 'x.obcy']);
     expect(r.zwykle.wynik['a.b']).toBe('nowe ab'); expect(r.zwykle.nowe).toBe(4);
     expect(r.chronione.wynik['c.d_one']).toBe('stare'); expect(r.chronione.wynik['c.d_few']).toBeUndefined(); expect(r.chronione.wynik['a.b']).toBe('nowe ab');
+  });
+});
+
+describe('przeklad-api: wysiłek, pułap 30 USD i szacunek myślenia (P-481)', () => {
+  const wyj = () => mkdtempSync(join(tmpdir(), 'przeklad-wys-'));
+  const ZAKRES = ['--zakres', 'docs/lokalizacja/oczekujace.json', '--pomin', 'pl'];
+  test('pułap 30 USD (wyjątek od P-144 dla fali 1.0); zmienna PRZEKLAD_LIMIT_USD tylko obniża; MAX_TOKENS w limicie wyjścia modelu (128K)', () => {
+    const r = json(`console.log(JSON.stringify({ l: m.LIMIT_KOSZTU_USD, wyzej: m.limitKosztu({ PRZEKLAD_LIMIT_USD: '50' }), nizej: m.limitKosztu({ PRZEKLAD_LIMIT_USD: '2' }), brak: m.limitKosztu({}), max: m.MAX_TOKENS }))`);
+    expect(r.l).toBe(30); expect(r.wyzej).toBe(30); expect(r.nizej).toBe(2); expect(r.brak).toBe(30);
+    expect(r.max).toBeGreaterThanOrEqual(64000); expect(r.max).toBeLessThanOrEqual(128000);
+  });
+  test('--wysilek: zła wartość to kod 2; szacunek rośnie z wysiłkiem (myślenie), high < 30 USD dla Opus na zakresie fali', () => {
+    const z = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--wysilek', 'ogromny', '--wyjscie', wyj()], { encoding: 'utf8', env: BEZ_KLUCZA, cwd: ROOT });
+    expect(z.status).toBe(2);
+    const koszt = (w: string) => {
+      const d = wyj(); const s = spawnSync(process.execPath, [SCRIPT, '--szacuj', '--model', 'opus', '--wysilek', w, ...ZAKRES, '--wyjscie', d], { encoding: 'utf8', env: BEZ_KLUCZA, cwd: ROOT });
+      expect(s.status).toBe(0); return JSON.parse(readFileSync(join(d, 'szacunek.json'), 'utf8')).koszt_usd as number;
+    };
+    const low = koszt('low'), med = koszt('medium'), high = koszt('high');
+    expect(low).toBeLessThan(med); expect(med).toBeLessThan(high); expect(high).toBeLessThan(30);
+  });
+  test('żądanie batcha niesie output_config.effort tylko gdy podano --wysilek; klucz tylko w nagłówku', () => {
+    const r = json(`const poz = m.zbierz(undefined, ['wspolne.ladowanie']); const cialaPost = [];
+      const mk = () => async (url, opcje) => { const u = new URL(url); const ok = (d) => ({ ok: true, json: async () => d, text: async () => d });
+        if (u.pathname.endsWith('/count_tokens')) return ok({ input_tokens: 100 });
+        if (opcje.method === 'POST') { cialaPost.push(JSON.parse(opcje.body)); return ok({ id: 'msgbatch_t' }); }
+        if (u.pathname.endsWith('msgbatch_t')) return ok({ processing_status: 'ended', results_url: 'https://api.anthropic.com/v1/messages/batches/msgbatch_t/results' });
+        return ok(''); };
+      const w1 = ${JSON.stringify(wyj())}, w2 = ${JSON.stringify(wyj())};
+      await m.main(['--limit', '1', '--model', 'opus', '--wysilek', 'high', '--wyjscie', w1], { fetchFn: mk(), env: { ANTHROPIC_API_KEY: 'sk-ant-t' }, log: () => {}, spij: async () => {} });
+      await m.main(['--limit', '1', '--model', 'opus', '--wyjscie', w2], { fetchFn: mk(), env: { ANTHROPIC_API_KEY: 'sk-ant-t' }, log: () => {}, spij: async () => {} });
+      console.log(JSON.stringify(cialaPost.map((c) => ({ effort: c.requests[0].params.output_config?.effort ?? null, max: c.requests[0].params.max_tokens }))))`);
+    expect(r[0].effort).toBe('high'); expect(r[1].effort).toBeNull(); expect(r[0].max).toBeGreaterThanOrEqual(64000);
   });
 });

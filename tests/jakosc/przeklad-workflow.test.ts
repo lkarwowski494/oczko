@@ -26,4 +26,10 @@ describe('workflow przeklad-tlumaczen.yml', () => {
     expect(bezKomentarzy).toMatch(/upload-artifact@v4[\s\S]*name: raport-przekladu[\s\S]*retention-days: 7/);
     expect(bezKomentarzy).not.toMatch(/src\/i18n\/slowniki/);
   });
+  test('wejście wysilek (low…max, domyślnie high) trafia do skryptu jako --wysilek; opis limitu mówi 30 USD (P-481)', () => {
+    expect(bezKomentarzy).toMatch(/wysilek:[\s\S]*?type: choice[\s\S]*?default: high[\s\S]*?options: \[low, medium, high, xhigh, max\]/);
+    expect(bezKomentarzy).toMatch(/WEJ_WYSILEK: \$\{\{ inputs\.wysilek \}\}/);
+    expect((bezKomentarzy.match(/--wysilek "\$WEJ_WYSILEK"/g) ?? []).length).toBe(2);
+    expect(bezKomentarzy).toMatch(/powyżej 30 USD/); expect(bezKomentarzy).not.toMatch(/6 USD/);
+  });
 });

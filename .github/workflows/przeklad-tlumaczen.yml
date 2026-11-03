@@ -3,7 +3,7 @@
 # Płatny z kredytów API właściciela (Message Batches, −50%). Klucz: sekret repozytorium ANTHROPIC_API_KEY, użyty w JEDNYM kroku jako zmienna
 # środowiskowa; skrypt nigdy go nie wypisuje. Słowniki NIE są zmieniane i nic nie jest zapisywane do repo — wynik to artefakt `raport-przekladu`
 # (propozycje, 7 dni); nałożenie lokalnie po przeglądzie: node scripts/i18n/przeklad-zastosuj-delta.mjs <kod…>.
-# Limit kosztu 6 USD na przebieg (P-144); powyżej — stop bez zgoda_koszt=tak. Domyślnie tylko szacunek (tylko_szacuj=true), bez klucza.
+# Limit kosztu 30 USD na przebieg (P-481, wyjątek od P-144 = 6 USD, zgoda właściciela 2026-11-03); powyżej — stop bez zgoda_koszt=tak. Domyślnie tylko szacunek (tylko_szacuj=true), bez klucza.
 # Uruchom z gałęzi roboczej („Use workflow from”); na main leży punkt startowy tej samej nazwy (P-472).
 name: Przekład tłumaczeń (API, ręcznie)
 on:
@@ -12,8 +12,13 @@ on:
       model:
         description: 'Model przekładu'
         type: choice
-        default: sonnet
+        default: opus
         options: [sonnet, opus]
+      wysilek:
+        description: 'Wysiłek modelu (output_config.effort); Opus 5.5 bez wartości = medium'
+        type: choice
+        default: high
+        options: [low, medium, high, xhigh, max]
       limit:
         description: 'Tylko N pierwszych języków (puste = wszystkie 33); przebieg dowodowy: 2'
         type: string
@@ -23,7 +28,7 @@ on:
         type: boolean
         default: true
       zgoda_koszt:
-        description: 'Zgoda na koszt powyżej 6 USD (tak / nie)'
+        description: 'Zgoda na koszt powyżej 30 USD (tak / nie)'
         type: choice
         default: 'nie'
         options: ['nie', 'tak']
@@ -47,14 +52,15 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Szacunek kosztu bez klucza — stop powyżej 6 USD bez zgody
+      - name: Szacunek kosztu bez klucza — stop powyżej 30 USD bez zgody
         env:
           WEJ_MODEL: ${{ inputs.model }}
+          WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
           WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
         run: |
           set -eu
-          ARGS=(--szacuj --model "$WEJ_MODEL" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
+          ARGS=(--szacuj --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
           node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
@@ -62,13 +68,14 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           WEJ_MODEL: ${{ inputs.model }}
+          WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
           WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
           WEJ_SZACUJ: ${{ inputs.tylko_szacuj }}
           WEJ_WZNOW: ${{ inputs.wznow }}
         run: |
           set -eu
-          ARGS=(--model "$WEJ_MODEL" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
+          ARGS=(--model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
           if [ "$WEJ_SZACUJ" = "true" ]; then ARGS+=(--szacuj); fi
