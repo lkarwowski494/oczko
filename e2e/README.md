@@ -287,7 +287,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `e2e-ocena-stan` | Ustawienia (build E2E; 033-T1, hak F-64) | „rating requests: N · last address: <adres albo none>” — N = wywołania `portOceny.popros` (`app/ukonczenie.tsx`), adres = ostatni z `systemAplikacji.otworzAdres` (np. wiersz „Rate Oczko”); stan w pamięci procesu (restart zeruje); `src/kompozycja/e2e/ocena-stan.tsx` | bez `t()` | |
 | `e2e-pliki-importuj-ostatni` | Ustawienia (build E2E) | import ostatniego eksportu bez okna Pliki | bez `t()` | |
 | `e2e-zegarek-stan` | licznik (build E2E, `EXPO_PUBLIC_WATCH_FAKE`) | ostatni `StanZegarka` jako tekst | bez `t()` | |
-| `e2e-pomiar-plus` | licznik (build E2E) | „p95 … ms, n = 20” (NFR-WYD-001) | bez `t()` | |
+| `e2e-pomiar-plus` | licznik (build E2E) | „p95 … ms, n = 20 · first … ms” (NFR-WYD-001; pierwsze stuknięcie osobno, P-456) | bez `t()` | |
 | `e2e-pomiar-operacji` | Ustawienia (pod `e2e-pliki-importuj-ostatni`) i menu „Add photo” (build E2E; 08 R, E2-137-A3/A4) | ms ostatnich operacji: „import N ms”; „recode N ms · photo N ms · project N ms”; „… running”, gdy trwa; „… (error)” po błędzie. Scen. 08 i 17 robią zrzut `pomiar-*` i odczyt **opcjonalny** (P-374, bez nowego źródła czerwieni, P-367) | bez `t()` | |
 | `e2e-pomiar-ladowania` | ekran projektu (build E2E; 08 P, E2-137-A1) | „first data N ms” — od zamontowania ekranu do pierwszych danych; podprzepływ `dodaj-czesc-cel` (34, 35): zrzut `pomiar-ekran-projektu` + odczyt opcjonalny | bez `t()` | |
 | `projekty-ladowanie` | lista projektów (08 P, E2-137-A1) | stan do końca pierwszego odczytu („Loading…”); scen. 07 czyta go opcjonalnie w ścieżce `opoznienie-lista-po-ofertach` | „Loading…” | |

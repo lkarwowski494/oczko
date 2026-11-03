@@ -104,7 +104,7 @@ Lista jest szeroka (zasada roli 7): obejmuje wszystko, na co wskazują dowody. K
 - Metoda: zrzuty przy każdym rozmiarze Dynamic Type na iPhonie i iPadzie (P-217).
 ### NFR-WYD-001: Reakcja licznika
 - Miara: czas od dotknięcia do pokazania nowej wartości.
-- Próg: [DO USTALENIA] (OP-17), budżet ustala rola 05.
+- Próg: p95 ≤ 100 ms z 20 stuknięć +1 w stanie ustalonym; pierwsze stuknięcie po otwarciu licznika (zimna ścieżka) tylko informacyjnie (P-456, 2026-11-03; OP-17 zamknięte; ER-67); ten sam budżet w `docs/architektura/e3-tlo-bledy-prywatnosc-wydajnosc.md` (05) i w asercji scenariusza 31 (07).
 - Metoda: pomiar automatyczny w teście UI w CI (czas od zdarzenia dotknięcia do nowej wartości na ekranie), symulator najstarszego obsługiwanego iPhone’a (rola 05 i 07). Ryzyko szczątkowe (P-041, ER-10): symulator nie odwzorowuje szybkości urządzenia, więc budżet ma zapas ustalony przez 05.
 ### NFR-ZEG-001: Zgodność zegarka i telefonu
 - Miara: różnica wartości licznika między zegarkiem a telefonem po serii zmian na obu urządzeniach.
