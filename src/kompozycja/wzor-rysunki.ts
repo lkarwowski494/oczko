@@ -23,13 +23,13 @@ export async function wyjscieZWzoru(t: Tlumacz, niezapisane: boolean, wyjdz: () 
 const liczbaOczekujacych = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) && v >= 0 ? v : null);
 
 /**
- * DEC-31 b (tańsza kontrola): wolne miejsce poniżej `RYSUNEK_MIEJSCE_MIN_MB` → ostrzeżenie przed rysowaniem; `true`, gdy pokazane. Błąd odczytu: bez ostrzeżenia.
+ * DEC-31 b (tańsza kontrola): wolne miejsce poniżej `RYSUNEK_MIEJSCE_MIN_MB` → ostrzeżenie przed rysowaniem; `true`, gdy pokazane. Błąd odczytu i brak wartości (`null`): bez ostrzeżenia.
  * M1-110: `mozna()` sprawdzane po odczycie miejsca — gdy w międzyczasie przyszedł alert błędu zapisu rysunku, ostrzeżenia już nie ma (jeden alert).
  */
 export async function ostrzezenieMiejsca(magazyn: Pick<MagazynPlikow, 'wolneMiejsce'>, t: Tlumacz, mozna: () => boolean = () => true): Promise<boolean> {
-  let wolne: number;
+  let wolne: number | null;
   try { wolne = await magazyn.wolneMiejsce(); } catch { return false; }
-  if (!(wolne < RYSUNEK_MIEJSCE_MIN_MB * 1024 * 1024) || !mozna()) return false;
+  if (wolne === null || wolne >= RYSUNEK_MIEJSCE_MIN_MB * 1024 * 1024 || !mozna()) return false; // M1-113: null = nie wiadomo, bez ostrzeżenia
   Alert.alert(t('wzor.miejsce_tytul'), t('wzor.miejsce_opis'), [{ text: t('wspolne.ok') }]); // M1-110, DEC-28 a: ostrzeżenie przed działaniem, nie zdanie błędu
   return true;
 }

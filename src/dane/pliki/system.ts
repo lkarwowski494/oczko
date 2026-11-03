@@ -43,9 +43,11 @@ export function kopiuj(zrodlo: string, cel: string): void {
 export function przenies(zrodlo: string, cel: string): void {
   new File(uri(zrodlo)).moveSync(new File(uri(cel)));
 }
-/** Wolne miejsce na woluminie aplikacji w bajtach (required reason E174.1, rejestr Apple 11d). */
-export function wolneMiejsce(): number {
-  return Paths.availableDiskSpace;
+/** Wolne miejsce na woluminie aplikacji w bajtach (required reason E174.1, rejestr Apple 11d). M1-113: wartość platformy (`Int64?` w expo-file-system)
+ *  parsowana z `unknown` — brak odczytu albo wartość spoza skończonych liczb ≥ 0 → `null` („nie wiadomo”, nie „brak miejsca”). */
+export function wolneMiejsce(): number | null {
+  const v: unknown = Paths.availableDiskSpace;
+  return typeof v === 'number' && Number.isFinite(v) && v >= 0 ? v : null;
 }
 export function czytajTekst(sciezka: string): Promise<string> {
   return new File(uri(sciezka)).text();

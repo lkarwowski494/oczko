@@ -38,7 +38,7 @@ export function identyfikatory(prefiks = '0'): Identyfikatory {
   return { nowy: () => `${prefiks.repeat(8)}-0000-4000-8000-${String(++n).padStart(12, '0')}` };
 }
 
-export type MagazynTestowy = MagazynPlikow & { katalog: string; usuniete: string[]; wolne: number };
+export type MagazynTestowy = MagazynPlikow & { katalog: string; usuniete: string[]; wolne: number | null };
 /** Atrapa magazynu plików po SHA-256 (ADR-0001) z szpiegiem `usun` i ustawianym wolnym miejscem. */
 export function magazynTestowy(katalog: string): MagazynTestowy {
   mkdirSync(katalog, { recursive: true });

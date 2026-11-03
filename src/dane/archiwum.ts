@@ -83,6 +83,9 @@ export function nazwaArchiwum(istniejace: readonly string[], przedrostek: string
   return maks === 0 ? `${przedrostek}-${dzien}${ROZSZERZENIE_ARCHIWUM}` : `${przedrostek}-${dzien}-${maks + 1}${ROZSZERZENIE_ARCHIWUM}`;
 }
 
+/** M1-113: wolne miejsce nieznane (`null`, platforma nie podała) nie jest brakiem miejsca — zapis idzie, a jego błąd ma własną ścieżkę (plik usunięty, `zapis`). */
+const zaMaloMiejsca = (wolne: number | null, potrzebne: number): boolean => wolne !== null && wolne < potrzebne;
+
 export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zegar: Zegar; katalogi: Katalogi; migruj: Migruj; aplikacja: string; skrot?: (sciezka: string) => Promise<string> }): PortArchiwum {
   async function potrzebneMiejsce(): Promise<number> {
     const [s] = await wiersze(z.baza.all('SELECT (SELECT page_count FROM pragma_page_count()) * (SELECT page_size FROM pragma_page_size()) AS bajty'), 'miejsce');
@@ -93,7 +96,7 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
   const archiwum: PortArchiwum = {
     /** VACUUM INTO + pliki + manifest; przed zapisem sprawdzenie miejsca, po błędzie żaden plik nie zostaje w katalogu docelowym. */
     async zapisz(katalogDocelowy, opcje) {
-      if ((await z.magazyn.wolneMiejsce()) < (await potrzebneMiejsce())) return blad('brak_miejsca'); // ADR-0004, ŚU-17
+      if (zaMaloMiejsca(await z.magazyn.wolneMiejsce(), await potrzebneMiejsce())) return blad('brak_miejsca'); // ADR-0004, ŚU-17
       const teraz = z.zegar.teraz();
       const baza = polacz(z.katalogi.tymczasowy, `eksport-${teraz.ms}.db`);
       const przedrostek = opcje?.przedrostek ?? 'oczko';
@@ -141,7 +144,7 @@ export function utworzArchiwum(z: { baza: PortBazy; magazyn: MagazynPlikow; zega
       if (!wpisBazy) return blad('bledne_dane');
       const wpisyPlikow = kat.filter((w) => w.nazwa.startsWith('pliki/'));
       const rozmiarDanych = kat.reduce((s, w) => s + w.rozmiar, 0);
-      if ((await z.magazyn.wolneMiejsce()) < rozmiarDanych * ZAPAS_MIEJSCA_EKSPORTU) return blad('brak_miejsca');
+      if (zaMaloMiejsca(await z.magazyn.wolneMiejsce(), rozmiarDanych * ZAPAS_MIEJSCA_EKSPORTU)) return blad('brak_miejsca');
       const katalog = polacz(z.katalogi.tymczasowy, `import-${z.zegar.teraz().ms}`);
       try {
         utworzKatalog(polacz(katalog, 'pliki'));

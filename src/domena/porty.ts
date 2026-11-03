@@ -12,7 +12,7 @@ export interface MagazynPlikow {                                                
   zapisz(zrodlo: string, rozszerzenie: string): Promise<Wynik<{ sha256: string; bajty: number }>>;
   sciezka(sha256: string): string;
   usun(sha256: string): Promise<void>;
-  wolneMiejsce(): Promise<number>;            // required reason E174.1 (rejestr Apple 11d)
+  wolneMiejsce(): Promise<number | null>;            // required reason E174.1 (rejestr Apple 11d)
   pliki(): Promise<{ sha256: string; zmianaMs: number | null }[]>; // M1-023: wpisy katalogu (także `.tmp`) do uzgodnienia z tabelą `plik`
 }
 export interface DziennikPlus {                                                   // ADR-0008 (moduł Swift)
