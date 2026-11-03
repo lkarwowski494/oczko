@@ -3,7 +3,8 @@
 # Użycie: bash scripts/wydanie/kontrola-ipa.sh <Payload/X.app> <numer buildu> [ostatni numer w App Store Connect]
 # BŁĄD (kod 1): tożsamość i integralność buildu — pakiety, numer i wersja, minimum systemu, zegarek, Hermes, brak modułów deweloperskich i śladów trybu testowego (JAK-15),
 #   manifest prywatności aplikacji z kategoriami z app.json, klucz szyfrowania, tryby tła, reguła rozszerzenia udostępniania.
-# UWAGA (kod 0, ::warning::): pozycje zależne od prac 08 w toku — typ `.oczko` (ADR-0004), katalogi .lproj (ADR-0017), manifest w celach,
+#   Manifest zegarka z kategoriami wymaganymi przez kod celu (manifest-celow.mjs, M1-audytor-generalny-076).
+# UWAGA (kod 0, ::warning::): pozycje zależne od prac 08 w toku — typ `.oczko` (ADR-0004), katalogi .lproj (ADR-0017), manifest w widżecie i rozszerzeniu,
 #   lista uprawnień per pakiet (wypisana do podsumowania; wzorzec listy: docs/architektura/prywatnosc.md). Przed wysyłką do App Store UWAGI
 #   rozstrzyga docs/wydanie/sklep.md (lista przed wysyłką). Trening: scripts/ci/check-entitlements.sh, ensure-privacy-manifest.mjs.
 set -uo pipefail
@@ -30,6 +31,9 @@ if [ -d targets/watch ]; then
     [ "$(pb MinimumOSVersion "$ZEGAREK/Info.plist")" = "$MIN_WATCH" ] || blad "zegarek: MinimumOSVersion ≠ $MIN_WATCH"
     # L-021 (Trening, P-349): bez ikony zegarka App Store Connect odrzuca wysyłkę („Missing Icons… CFBundleIconFiles”); actool wpisuje CFBundleIconName tylko z AppIcon.
     [ -n "$(pb CFBundleIconName "$ZEGAREK/Info.plist")" ] || blad "zegarek: brak CFBundleIconName w Info.plist (ikona zegarka; Trening L-021)"
+    # M1-audytor-generalny-076: zegarek używa UserDefaults i fstat — bez własnego manifestu App Store Connect odrzuca build (ITMS-91053).
+    m="-"; [ -f "$ZEGAREK/PrivacyInfo.xcprivacy" ] && { m="${RUNNER_TEMP:-/tmp}/privacy-zegarek.xml"; plutil -convert xml1 -o "$m" "$ZEGAREK/PrivacyInfo.xcprivacy"; }
+    node scripts/wydanie/manifest-celow.mjs --pakiet "$m" --cel watch || bledy=$((bledy + 1))
   fi
 fi
 
@@ -43,7 +47,7 @@ for p in "${PAKIETY[@]}"; do
   [ "$p" = "$ZEGAREK" ] || [ "$(pb MinimumOSVersion "$p/Info.plist")" = "$MIN_IOS" ] || blad "$n: MinimumOSVersion ≠ $MIN_IOS"
   u=$(codesign -d --entitlements - --xml "$p" 2>/dev/null | plutil -convert json -o - - 2>/dev/null || echo '{}')
   podsum "- $n: uprawnienia \`$u\`"
-  [ -f "$p/PrivacyInfo.xcprivacy" ] || [ "$p" = "$APP" ] || uwaga "$n: brak PrivacyInfo.xcprivacy w pakiecie celu"
+  [ -f "$p/PrivacyInfo.xcprivacy" ] || [ "$p" = "$APP" ] || [ "$p" = "$ZEGAREK" ] || uwaga "$n: brak PrivacyInfo.xcprivacy w pakiecie celu (kod celu bez API z listy: node scripts/wydanie/manifest-celow.mjs)"
 done
 
 # 07-jakosc-008 (D4, P-325): adres „Rate Oczko” bez zaślepki id0000000000.
