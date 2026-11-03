@@ -40,9 +40,13 @@ async function start(wartosc: number, zn = '{}') {
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
   mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
   render(<EkranWzoru />);
-  await waitFor(() => expect(mockWidok.strona).toBeDefined());
+  // M1-193 (07-jakosc-544): czekamy na propsy widoku z tego testu — strona i znacznik bieżącego wzoru (null bez znacznika), nie na resztki poprzedniego.
+  const strona = (JSON.parse(zn) as { strona?: number }).strona ?? null;
+  await waitFor(() => { expect(mockWidok.strona).toBeDefined(); expect(mockWidok.znacznik === undefined ? 'brak' : mockWidok.znacznik?.strona ?? null).toBe(strona); });
   return s;
 }
+// M1-193: atrapa widoku jest modułowa — bez resetu zdarzenia z wolnego testu trafiają do widoku (i bazy) poprzedniego.
+beforeEach(() => { mockWidok = {}; });
 const zapisany = async (s: Awaited<ReturnType<typeof start>>) => znacznikWzoru(s.baza, 'w1');
 const przytrzymaj = (strona: number, y: number) => act(() => mockWidok.onStukniecie?.({ nativeEvent: { wzorId: 'w1', strona, y } }));
 const naStronach = (strona: number, stron: number) => act(() => mockWidok.onStrona?.({ nativeEvent: { strona, stron } }));
@@ -53,6 +57,20 @@ test('S2: przytrzymanie na wzorze bez znacznika pyta o kierunek i stawia pas w t
   fireEvent.press(await screen.findByText('↑ Up, like a chart'));
   await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 2, kierunek: -1, rzadBazowy: 46, wartoscPrzyUstawieniu: 45 }));
   expect((await zapisany(s))?.y).toBeCloseTo(0.59, 9);
+});
+// M1-168 (04-studio-projektowe-534, DEC-38 a): przypadkowe stuknięcie bez znacznika otwiera kartę kierunku, z której da się wyjść „Not now”.
+test('168: stuknięcie bez znacznika → karta → „Not now”: brak karty, brak znacznika w bazie, brak wskazówki; ponowne stuknięcie znów pyta', async () => {
+  const s = await start(45);
+  przytrzymaj(2, 0.6);
+  expect(await screen.findByTestId('wzor-kierunek')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Not now' }));
+  await waitFor(() => expect(screen.queryByTestId('wzor-kierunek')).toBeNull());
+  expect(await zapisany(s)).toBeNull();
+  expect(screen.queryByTestId('wzor-wskazowka-znacznika')).toBeNull();
+  expect(screen.queryByText('Done')).toBeNull();
+  przytrzymaj(3, 0.2);
+  expect(await screen.findByTestId('wzor-kierunek')).toBeTruthy();
+  expect(await zapisany(s)).toBeNull();
 });
 test('S3: przeniesienie pasa przytrzymaniem zachowuje rząd znacznika (nie wraca do rzędu w robocie)', async () => {
   const s = await start(45, znacznik({}));

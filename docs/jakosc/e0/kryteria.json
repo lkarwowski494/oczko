@@ -2501,10 +2501,10 @@
   "f": "F-01",
   "modul": "przekrojowe (NFR)",
   "tytul": "Reakcja licznika",
-  "sprawdzalne": "nie",
-  "wyrocznia": "próg [DO USTALENIA] OP-17",
+  "sprawdzalne": "tak",
+  "wyrocznia": "p95 ≤ 100 ms z 20 stuknięć w stanie ustalonym, pierwsze informacyjnie (P-456; OP-17 zamknięte)",
   "poziom_sugerowany": "E2E-symulator",
-  "uwagi": "budżet „po pomiarze bazowym” (docs/architektura/e3-tlo-bledy-prywatnosc-wydajnosc.md:30); propozycja: p95 z 20 powtórzeń ≤ pomiar bazowy × 1,2 jako regresja",
+  "uwagi": "twarda asercja panelu `e2e-pomiar-plus` w scenariuszu 31 (M1-062); budżet w docs/architektura/e3-tlo-bledy-prywatnosc-wydajnosc.md:35",
   "plik": "docs/brd/wymagania.md:105",
   "rodzaj": "NFR"
  },

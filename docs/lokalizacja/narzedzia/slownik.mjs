@@ -18,6 +18,7 @@ export const splaszcz = (o, p = '', w = {}) => {
   return w;
 };
 const rx = (s) => new RegExp(s, 'iu');
+export const SYMBOLE_JEDNOSTEK = ['m', 'yd', 'g', 'oz', 'cm', 'mm', 'in'];
 
 export function sprawdz(slownik, en) {
   const bledy = [], uwagi = [], { jezyki, pojecia, zrodla } = slownik;
@@ -66,6 +67,24 @@ export function sprawdz(slownik, en) {
       if (l.nazwy_ui?.some((n, i) => n.toLowerCase() === k.nazwy_en?.[i]?.toLowerCase() && !l.wyjatki?.[i]) && l.nazwy_ui?.length === 8 && l.nazwy_ui.every((n, i) => n === k.nazwy_en?.[i])) e(`${j}: nazwy_ui = nazwy en (język powinien być poza jezyki_lokalne)`);
     }
     if (!k.pozostale?.trim()) e('brak reguły dla pozostałych języków (numer + nazwa en)');
+  }
+  // M1-052 (09-lokalizacja-005): glosariusz jednostek — każdy język ma symbol i przykład każdej jednostki ze źródła szczebla ≤ 3 (CLDR).
+  const jd = slownik.jednostki;
+  if (!jd) bledy.push(`jednostki: brak sekcji (M1-052: symbole ${SYMBOLE_JEDNOSTEK.join(', ')} dla każdego języka, źródło CLDR)`);
+  else {
+    const e = (m) => bledy.push(`jednostki: ${m}`);
+    const z = zrodla[jd.zrodlo];
+    if (!z || z.szczebel > 3) e(`źródło ${jd.zrodlo ?? 'brak'} spoza listy źródeł albo szczebla > 3`);
+    if (JSON.stringify(jd.symbole) !== JSON.stringify(SYMBOLE_JEDNOSTEK)) e(`symbole: oczekiwano ${SYMBOLE_JEDNOSTEK.join(', ')}`);
+    for (const j of jezyki) {
+      const w = jd.jezyki?.[j];
+      if (!w) { e(`${j}: brak języka`); continue; }
+      for (const s of SYMBOLE_JEDNOSTEK) {
+        if (!w[s]?.symbol?.trim()) e(`${j}: brak symbolu ${s}`);
+        else if (!w[s].przyklad?.trim() || !w[s].pelny_przyklad?.trim()) e(`${j}: ${s} bez przykładu zapisu`);
+      }
+    }
+    for (const j of Object.keys(jd.jezyki || {})) if (!jezyki.includes(j)) e(`${j}: język spoza listy słownika`);
   }
   return { bledy, uwagi };
 }
@@ -121,6 +140,11 @@ export function md(slownik, en) {
     o.push('', '## Nazwy kategorii grubości CYC 0–7 (P-298)', '', k.decyzja, '', `Pozostałe języki: ${k.pozostale}`, '', `| kategoria | en | ${Object.keys(k.jezyki_lokalne).join(' | ')} |`, `|---|---|${Object.keys(k.jezyki_lokalne).map(() => '---').join('|')}|`);
     k.nazwy_en.forEach((n, i) => o.push(`| ${i} | ${n} | ${Object.values(k.jezyki_lokalne).map((l) => esc(l.nazwy_ui[i])).join(' | ')} |`));
     for (const [j, l] of Object.entries(k.jezyki_lokalne)) o.push('', `- **${j}** (${l.zrodlo}, odczyt ${l.odczyt}, ${l.miejsce}): „${esc(l.cytat)}” — ${esc(l.uwaga)}`);
+  }
+  if (slownik.jednostki) {
+    const jd = slownik.jednostki;
+    o.push('', `## Jednostki miary (M1-052; źródło ${jd.zrodlo}, odczyt ${jd.odczyt})`, '', jd.zasada, '', `| język | ${jd.symbole.join(' | ')} | przykład pełnej nazwy (m) |`, `|---|${jd.symbole.map(() => '---').join('|')}|---|`);
+    for (const j of jezyki) o.push(`| ${j} | ${jd.symbole.map((s) => esc(jd.jezyki[j]?.[s]?.symbol)).join(' | ')} | ${esc(jd.jezyki[j]?.m?.pelny_przyklad)} |`);
   }
   o.push('', '## Do sprawdzenia przez rodzimego użytkownika albo źródło (pewność niska)', '');
   for (const j of jezyki) {

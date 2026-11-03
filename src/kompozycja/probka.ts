@@ -17,6 +17,7 @@ export type StanProbki = {
   bladSzerokosci: string | null;
   wynik: { liczba: string; zDanych: string; uwaga: string } | null;
   grubosc: { linie: string[]; dokladnie: string | null; uwagi: string[] } | null;
+  zaproszenie: string | null;          // Hook bez szerokości: „Enter a width…” pod polem szerokości (M2-036, P-461)
 };
 
 const NAZWY = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
@@ -39,7 +40,7 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
   const wyl = (x: number) => { const v = zaokr(x, MIEJSCA_WYLICZONE); return { count: v, tekst: formatujLiczbe(v, j.jezyk(), { maks: MIEJSCA_WYLICZONE }) }; };
   const wpis = (x: number) => { const v = zaokr(x, MIEJSCA_WPISANE); return { count: v, tekst: formatujLiczbe(v, j.jezyk(), { maks: MIEJSCA_WPISANE }) }; };
   const o = pole(w.oczka, j), s = pole(w.szerokosc, j);
-  const stan: StanProbki = { bladOczka: null, przeliczona: null, uwaga4in: null, bladSzerokosci: null, wynik: null, grubosc: null };
+  const stan: StanProbki = { bladOczka: null, przeliczona: null, uwaga4in: null, bladSzerokosci: null, wynik: null, grubosc: null, zaproszenie: null };
   if (o.rodzaj === 'blad') stan.bladOczka = o.tekst;
   else if (o.rodzaj === 'puste' && s.rodzaj !== 'puste') stan.bladOczka = t('probka.blad_brak'); // RD-01-W5
   if (s.rodzaj === 'blad') stan.bladSzerokosci = s.tekst;
@@ -62,6 +63,8 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
     };
   }
 
+  // M2-036 (P-461 = a, design-spec „Kalkulator Swatch” N1): przy szydełku bez kategorii pusta szerokość nie daje żadnego wyniku — zaproszenie.
+  if (w.narzedzie === 'szydelko' && s.rodzaj === 'puste') stan.zaproszenie = t('probka.zaproszenie_szerokosc');
   if (w.narzedzie === 'szydelko') return stan; // bez kategorii; wynik szerokości i przeliczenie zostają
   // M1-037 (kanon 06, README „Warunki wyświetlania”): uwaga 4 in także przy próbce z 10 cm przeliczonej na 4 in (wiersz `na_4in_dokladnie`).
   if (w.na === '10cm') stan.uwaga4in = t('probka.uwaga_4in');

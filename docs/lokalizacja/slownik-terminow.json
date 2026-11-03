@@ -150,6 +150,13 @@
    "odczyt": "2026-10-27",
    "rejestr": "oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json"
   },
+  "S-CLDR-48": {
+   "szczebel": 2,
+   "kraj": "—",
+   "jezyk": "*",
+   "odczyt": "2026-11-03",
+   "rejestr": "oczko-warsztat/09-lokalizacja/2026-11-03-jednostki/zrodla.json"
+  },
   "S-CYC-C": {
    "szczebel": 1,
    "kraj": "US",
@@ -23746,6 +23753,1318 @@
      "Géant"
     ],
     "uwaga": "W źródle „Trés Épais” z błędnym akcentem; w UI „Très épais” (ortografia, do przeglądu rodzimego fr). Kategoria 5 w CYC-FR zostaje po angielsku („Bulky”) — źródło tak ją nazywa. „Dentelle” to też koronka jako technika: w UI zawsze z numerem 0 (patrz wloczka_lace fr). CYC-FR pisze też „fils de poids dentelles” w przypisie; ta kalka „poids” nie wchodzi do UI."
+   }
+  }
+ },
+ "jednostki": {
+  "_opis": "Glosariusz jednostek miary (M1-audytor-generalny-052, 09-lokalizacja-005; P-459 część agenta): symbol i przykład zapisu dla każdego języka, z CLDR przez ICU. Kontekst dla tłumacza kluczy `jednostka.*` i tekstów z mm/cm/in; klucze src/i18n zmienia dopiero przekład w fali (P-422). Kontrola: slownik.mjs (każdy język, każda jednostka).",
+  "zrodlo": "S-CLDR-48",
+  "odczyt": "2026-11-03",
+  "zasada": "Symbol z kolumny „symbol” (CLDR „short”); przykład dla 5 pokazuje też formę liczby mnogiej dla tej liczby — przy innych liczbach odmiana według reguł języka. Pełna nazwa („pelny_przyklad”, CLDR „long”) to wzór dla etykiet VoiceOver `jednostka.*_nazwa`.",
+  "symbole": [
+   "m",
+   "yd",
+   "g",
+   "oz",
+   "cm",
+   "mm",
+   "in"
+  ],
+  "jezyki": {
+   "en": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meters"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yards"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grams"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ounces"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimeters"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeters"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inches"
+    }
+   },
+   "pl": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metrów"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardów"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramów"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncji"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centymetrów"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetrów"
+    },
+    "in": {
+     "symbol": "cali",
+     "przyklad": "5 cali",
+     "pelny_przyklad": "5 cali"
+    }
+   },
+   "bg": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 метра"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 ярда"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 грама"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 унции"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 сантиметра"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 милиметра"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 инча"
+    }
+   },
+   "cs": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metrů"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yardů"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramů"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncí"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetrů"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetrů"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 palců"
+    }
+   },
+   "da": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "yard",
+     "przyklad": "5 yard",
+     "pelny_przyklad": "5 engelske yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ounces"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeter"
+    },
+    "in": {
+     "symbol": "tommer",
+     "przyklad": "5 tommer",
+     "pelny_przyklad": "5 tommer"
+    }
+   },
+   "de": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 Meter"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 Yards"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 Gramm"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 Unzen"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 Zentimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 Millimeter"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 Zoll"
+    }
+   },
+   "el": {
+    "m": {
+     "symbol": "μ.",
+     "przyklad": "5 μ.",
+     "pelny_przyklad": "5 μέτρα"
+    },
+    "yd": {
+     "symbol": "γρδ",
+     "przyklad": "5 γρδ",
+     "pelny_przyklad": "5 γιάρδες"
+    },
+    "g": {
+     "symbol": "γρ.",
+     "przyklad": "5 γρ.",
+     "pelny_przyklad": "5 γραμμάρια"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ουγγιές"
+    },
+    "cm": {
+     "symbol": "εκ.",
+     "przyklad": "5 εκ.",
+     "pelny_przyklad": "5 εκατοστά"
+    },
+    "mm": {
+     "symbol": "χλστ.",
+     "przyklad": "5 χλστ.",
+     "pelny_przyklad": "5 χιλιοστόμετρα"
+    },
+    "in": {
+     "symbol": "ίν.",
+     "przyklad": "5 ίν.",
+     "pelny_przyklad": "5 ίντσες"
+    }
+   },
+   "es": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metros"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yardas"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramos"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 onzas"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centímetros"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milímetros"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 pulgadas"
+    }
+   },
+   "es-419": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metros"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yardas"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramos"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 onzas"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centímetros"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milímetros"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 pulgadas"
+    }
+   },
+   "et": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meetrit"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardi"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grammi"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 untsi"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 sentimeetrit"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeetrit"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 tolli"
+    }
+   },
+   "fi": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metriä"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jaardia"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grammaa"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 unssia"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 senttimetriä"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimetriä"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 tuumaa"
+    }
+   },
+   "fr": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 mètres"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yards"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grammes"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 onces"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimètres"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimètres"
+    },
+    "in": {
+     "symbol": "po",
+     "przyklad": "5 po",
+     "pelny_przyklad": "5 pouces"
+    }
+   },
+   "hr": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metara"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardi"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grama"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 unci"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetara"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetara"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inča"
+    }
+   },
+   "hu": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 méter"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramm"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncia"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centiméter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milliméter"
+    },
+    "in": {
+     "symbol": "hüvelyk",
+     "przyklad": "5 hüvelyk",
+     "pelny_przyklad": "5 hüvelyk"
+    }
+   },
+   "id": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ounce"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 sentimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimeter"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inci"
+    }
+   },
+   "it": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metri"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 iarde"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grammi"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 once"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetri"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimetri"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 pollici"
+    }
+   },
+   "ja": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 メートル"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 ヤード"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 グラム"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 オンス"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 センチメートル"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 ミリメートル"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 インチ"
+    }
+   },
+   "ko": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5m",
+     "pelny_przyklad": "5미터"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5yd",
+     "pelny_przyklad": "5야드"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5g",
+     "pelny_przyklad": "5그램"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5oz",
+     "pelny_przyklad": "5온스"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5cm",
+     "pelny_przyklad": "5센티미터"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5mm",
+     "pelny_przyklad": "5밀리미터"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5in",
+     "pelny_przyklad": "5인치"
+    }
+   },
+   "lt": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metrai"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardai"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramai"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncijos"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetrai"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetrai"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 coliai"
+    }
+   },
+   "lv": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metri"
+    },
+    "yd": {
+     "symbol": "jardi",
+     "przyklad": "5 jardi",
+     "pelny_przyklad": "5 jardi"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grami"
+    },
+    "oz": {
+     "symbol": "unces",
+     "przyklad": "5 unces",
+     "pelny_przyklad": "5 unces"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetri"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetri"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 collas"
+    }
+   },
+   "ms": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "ela",
+     "przyklad": "5 ela",
+     "pelny_przyklad": "5 ela"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 auns"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 sentimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimeter"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inci"
+    }
+   },
+   "nb": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "yard",
+     "przyklad": "5 yard",
+     "pelny_przyklad": "5 yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "unser",
+     "przyklad": "5 unser",
+     "pelny_przyklad": "5 unser"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeter"
+    },
+    "in": {
+     "symbol": "tommer",
+     "przyklad": "5 tommer",
+     "pelny_przyklad": "5 tommer"
+    }
+   },
+   "nl": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yards"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ounce"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeter"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inches"
+    }
+   },
+   "pt": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metros"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardas"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramas"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 onças"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centímetros"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milímetros"
+    },
+    "in": {
+     "symbol": "pol.",
+     "przyklad": "5 pol.",
+     "pelny_przyklad": "5 polegadas"
+    }
+   },
+   "pt-BR": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metros"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardas"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramas"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 onças"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centímetros"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milímetros"
+    },
+    "in": {
+     "symbol": "pol.",
+     "przyklad": "5 pol.",
+     "pelny_przyklad": "5 polegadas"
+    }
+   },
+   "ro": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metri"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 iarzi"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 grame"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncii"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetri"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetri"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 inchi"
+    }
+   },
+   "ru": {
+    "m": {
+     "symbol": "м",
+     "przyklad": "5 м",
+     "pelny_przyklad": "5 метров"
+    },
+    "yd": {
+     "symbol": "ярд.",
+     "przyklad": "5 ярд.",
+     "pelny_przyklad": "5 ярдов"
+    },
+    "g": {
+     "symbol": "г",
+     "przyklad": "5 г",
+     "pelny_przyklad": "5 грамм"
+    },
+    "oz": {
+     "symbol": "унц.",
+     "przyklad": "5 унц.",
+     "pelny_przyklad": "5 унций"
+    },
+    "cm": {
+     "symbol": "см",
+     "przyklad": "5 см",
+     "pelny_przyklad": "5 сантиметров"
+    },
+    "mm": {
+     "symbol": "мм",
+     "przyklad": "5 мм",
+     "pelny_przyklad": "5 миллиметров"
+    },
+    "in": {
+     "symbol": "дюйм.",
+     "przyklad": "5 дюйм.",
+     "pelny_przyklad": "5 дюймов"
+    }
+   },
+   "sk": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metrov"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yardov"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramov"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 uncí"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetrov"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetrov"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 palcov"
+    }
+   },
+   "sl": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metrov"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 jardov"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gramov"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 unč"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimetrov"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetrov"
+    },
+    "in": {
+     "symbol": "in",
+     "przyklad": "5 in",
+     "pelny_przyklad": "5 palcev"
+    }
+   },
+   "sr": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 метара"
+    },
+    "yd": {
+     "symbol": "јрд",
+     "przyklad": "5 јрд",
+     "pelny_przyklad": "5 јарди"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 грама"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 унци"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 центиметара"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 милиметара"
+    },
+    "in": {
+     "symbol": "инча",
+     "przyklad": "5 инча",
+     "pelny_przyklad": "5 инча"
+    }
+   },
+   "sv": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 meter"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "uns",
+     "przyklad": "5 uns",
+     "pelny_przyklad": "5 uns"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 centimeter"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 millimeter"
+    },
+    "in": {
+     "symbol": "tum",
+     "przyklad": "5 tum",
+     "pelny_przyklad": "5 tum"
+    }
+   },
+   "tr": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 metre"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yarda"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gram"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 ons"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 santimetre"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimetre"
+    },
+    "in": {
+     "symbol": "inç",
+     "przyklad": "5 inç",
+     "pelny_przyklad": "5 inç"
+    }
+   },
+   "uk": {
+    "m": {
+     "symbol": "м",
+     "przyklad": "5 м",
+     "pelny_przyklad": "5 метрів"
+    },
+    "yd": {
+     "symbol": "ярдів",
+     "przyklad": "5 ярдів",
+     "pelny_przyklad": "5 ярдів"
+    },
+    "g": {
+     "symbol": "г",
+     "przyklad": "5 г",
+     "pelny_przyklad": "5 грамів"
+    },
+    "oz": {
+     "symbol": "унц.",
+     "przyklad": "5 унц.",
+     "pelny_przyklad": "5 унцій"
+    },
+    "cm": {
+     "symbol": "см",
+     "przyklad": "5 см",
+     "pelny_przyklad": "5 сантиметрів"
+    },
+    "mm": {
+     "symbol": "мм",
+     "przyklad": "5 мм",
+     "pelny_przyklad": "5 міліметрів"
+    },
+    "in": {
+     "symbol": "дюймів",
+     "przyklad": "5 дюймів",
+     "pelny_przyklad": "5 дюймів"
+    }
+   },
+   "vi": {
+    "m": {
+     "symbol": "m",
+     "przyklad": "5 m",
+     "pelny_przyklad": "5 mét"
+    },
+    "yd": {
+     "symbol": "yd",
+     "przyklad": "5 yd",
+     "pelny_przyklad": "5 yard"
+    },
+    "g": {
+     "symbol": "g",
+     "przyklad": "5 g",
+     "pelny_przyklad": "5 gam"
+    },
+    "oz": {
+     "symbol": "oz",
+     "przyklad": "5 oz",
+     "pelny_przyklad": "5 aoxơ"
+    },
+    "cm": {
+     "symbol": "cm",
+     "przyklad": "5 cm",
+     "pelny_przyklad": "5 xentimét"
+    },
+    "mm": {
+     "symbol": "mm",
+     "przyklad": "5 mm",
+     "pelny_przyklad": "5 milimét"
+    },
+    "in": {
+     "symbol": "inch",
+     "przyklad": "5 inch",
+     "pelny_przyklad": "5 inch"
+    }
+   },
+   "zh-Hant": {
+    "m": {
+     "symbol": "公尺",
+     "przyklad": "5 公尺",
+     "pelny_przyklad": "5 公尺"
+    },
+    "yd": {
+     "symbol": "碼",
+     "przyklad": "5 碼",
+     "pelny_przyklad": "5 碼"
+    },
+    "g": {
+     "symbol": "克",
+     "przyklad": "5 克",
+     "pelny_przyklad": "5 克"
+    },
+    "oz": {
+     "symbol": "盎司",
+     "przyklad": "5 盎司",
+     "pelny_przyklad": "5 盎司"
+    },
+    "cm": {
+     "symbol": "公分",
+     "przyklad": "5 公分",
+     "pelny_przyklad": "5 公分"
+    },
+    "mm": {
+     "symbol": "公釐",
+     "przyklad": "5 公釐",
+     "pelny_przyklad": "5 公釐"
+    },
+    "in": {
+     "symbol": "吋",
+     "przyklad": "5 吋",
+     "pelny_przyklad": "5 英寸"
+    }
    }
   }
  }

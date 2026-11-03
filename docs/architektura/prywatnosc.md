@@ -10,7 +10,8 @@ Zasada: aplikacja zbiera tylko to, czego wymaga przepływ z kontraktu (zasada ar
 | Zdjęcia projektu i etykiet | aparat albo systemowy wybór zdjęć | `Application Support/pliki/` | jak wyżej; karta ukończenia (F-53) udostępniana arkuszem systemowym tylko na żądanie | dokumentacja projektu | jak wyżej |
 | Metadane zdjęć (w tym lokalizacja EXIF) | plik zdjęcia | w pliku zdjęcia | **karta ukończenia i każde udostępnienie zdjęcia z aplikacji bez metadanych lokalizacji** (NFR-PRY-001, F-53, P-073 (10a)); oryginał w kopii użytkownika bez zmian [DO USTALENIA: czy `expo-image-picker` usuwa EXIF przy `exif: false` — test 07; zabezpieczenie: karta renderowana od nowa, bez EXIF] | — | jak zdjęcie |
 | Dni limitu | aplikacja (pierwsze +1 dnia) | baza | iCloud użytkownika (KP-15) | limit V4 | do „Usuń wszystko” |
-| Uprawnienie Pro | App Store | StoreKit (system); ostatni stan dla zegarka w `ustawienie` | między urządzeniami użytkownika (StoreKit, WatchConnectivity) | dostęp Pro | system |
+| Uprawnienie Pro | App Store | StoreKit (system); pamięć ostatniego stanu (ID produktów, data wygaśnięcia; KP-06) w `pamiec-pro.json` obok bazy, poza bazą, archiwum i iCloud (M1-195) | między urządzeniami użytkownika (StoreKit, WatchConnectivity) | dostęp Pro | system; plik zostaje po „Usuń wszystkie dane” (stan urządzenia) |
+| Pliki stanu urządzenia obok bazy: `stan-startu.json` i `stan-startu-etap.json` (strażnik startu, ADR-0019), `jezyk.json` (lustro wybranego języka dla ekranu awaryjnego, P-455), `pamiec-pro.json` i `urzadzenie.txt` (wiersze wyżej) | aplikacja | `Application Support/` obok `oczko.db`; opis jednym źródłem: `dane.md` „Pliki stanu urządzenia poza bazą” (M1-195) | nie; tylko kopia urządzenia (system); poza archiwum `.oczko`, iCloud i kopią ratunkową | start, ekran awaryjny, dostęp Pro | zostają po „Usuń wszystkie dane”; do usunięcia aplikacji |
 | Stan licznika dla ekranu blokady i zegarka | aplikacja | Live Activity (system, ≤ 4 KB), kontekst WatchConnectivity | zegarek użytkownika (sparowany) | F-11, F-12 | do końca Live Activity / następnego stanu |
 | Dziennik +1 z ekranu blokady | intencja | `Application Support/dziennik-plus.jsonl` | nie | ADR-0008 | do scalenia |
 | Skrzynka importu (plik wzoru albo adres strony, manifest zlecenia z wybranym projektem) | rozszerzenie udostępniania | kontener App Group `skrzynka/` | nie | ADR-0011 | do importu; porzucone zlecenie bez manifestu po `SKRZYNKA_PORZUCONE_H` |
@@ -47,6 +48,8 @@ Zasada kolumny „Do `app.json`” (P-453, rejestr Apple 11f–11g, odczyt 2026-
 | ActiveKeyboards | — | — | — |
 
 Powód DDA9.1 (FileTimestamp) pochodzi ze starego `app.json` 0.1.0. Opisuje pokazywanie dat plików użytkownikowi (rejestr Apple 11f), a aplikacja tego nie robi; zastępują go C617.1 i 3B52.1 z tabeli. Listę trzeba wygenerować ponownie po każdej zmianie pliku blokady (rola 07: kontrola w CI).
+
+Pliki stanu urządzenia obok bazy (M1-195, 2026-11-03): `stan-startu.json`, `stan-startu-etap.json`, `jezyk.json`, `pamiec-pro.json` i `urzadzenie.txt` są tylko zapisywane i czytane jako tekst przez `expo-file-system` (`zapiszAtomowo`, `czytajAtomowo`: zapis, odczyt, `exists`, przeniesienie, usunięcie — `src/dane/pliki/system.ts:63-89`), bez czasu zmiany, rozmiaru i wolnego miejsca, więc nie dodają kategorii ani powodu. Gdyby kiedyś czytały metadane, mieści się to w C617.1: „Declare this reason to access the timestamps, size, or other metadata of files inside the app container” (rejestr Apple 11c). Kolumna „Do `app.json`” bez zmian; zgodność z `app.json` sprawdza `tests/wydanie/manifest-app-json.test.ts`.
 
 ### Cele `@bacons/apple-targets` (osobne pliki wykonywalne, własny manifest — rejestr Apple 11g)
 Grep symboli z listy Apple (rejestr Apple 11a) w `targets/`, 2026-11-03.

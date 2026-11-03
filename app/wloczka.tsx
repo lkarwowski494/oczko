@@ -16,7 +16,7 @@ import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { useOdrzucZmiany } from '../src/kompozycja/odrzuc-zmiany';
 import { imperialny } from '../src/kompozycja/miary';
-import { bazowa, przeliczenie } from '../src/kompozycja/zapas';
+import { bazowa, podpowiedzPolaMotka, przeliczenie } from '../src/kompozycja/zapas';
 import { formatujLiczbe } from '../src/i18n/format';
 import { usunWloczke, wloczka, zapiszWloczke, type FormularzWloczki as Dane } from '../src/przypadki-uzycia/zapas';
 
@@ -70,7 +70,7 @@ export default function EkranWloczki(): React.ReactElement {
   if (poczatek === undefined) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="wloczka" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzWloczki t={j.t} poczatek={poczatek} jednostki={imperialny(preferencje.stan().ukladMiar) ? 'imperialne' : 'metryczne'}
-      przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
+      przelicz={(x, u) => przeliczenie(x, u, j)} bazowa={(x, u) => bazowa(x, u, j.jezyk())} podpowiedz={(x) => podpowiedzPolaMotka(x, j)} formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: 2 })}
       naAnuluj={odrzuc.anuluj} naZmiane={odrzuc.naZmiane}
       naUsun={id && poczatek ? () => potwierdzUsuniecie(kontener, { nazwa: poczatek.nazwa, przycisk: j.t('usun.wloczka'), alert: Alert.alert,
         usun: () => usunWloczke(z, { wloczkaId: id }), potem: () => { odrzuc.poZapisie(); router.back(); }, naBlad: (powod) => zglosBladZapisu(aplikacja, powod) }) : undefined} // M1-006

@@ -46,7 +46,7 @@ describe('BR-KAL-001 (RD-01)', () => {
   test('bez szerokości: bez bloku wyniku i bez błędu; puste pola — nic', () => {
     expect(licz({ oczka: '22' }).wynik).toBeNull();
     expect(licz({ oczka: '22' }).bladSzerokosci).toBeNull();
-    expect(licz({})).toEqual({ bladOczka: null, przeliczona: null, uwaga4in: null, bladSzerokosci: null, wynik: null, grubosc: null });
+    expect(licz({})).toEqual({ bladOczka: null, przeliczona: null, uwaga4in: null, bladSzerokosci: null, wynik: null, grubosc: null, zaproszenie: null });
   });
   test('1 oczko → liczba pojedyncza', () => {
     expect(licz({ oczka: '2', szerokosc: '5' }).wynik?.liczba).toBe('1 stitch');
