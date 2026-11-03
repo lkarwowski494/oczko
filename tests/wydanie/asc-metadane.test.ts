@@ -134,8 +134,8 @@ describe('walidacja (limity Apple, odczyt dokumentacji Treningu 22.10.2026; spra
     const r = drive({ zapis: true, only: PRZED_ZRODLEM, versions: ['PREPARE_FOR_SUBMISSION'], mutate: [['en-US', 'subtitle', 'x'.repeat(31)]] });
     expect(r.code1).toBe(1); expect(writes(r.calls1)).toEqual([]); expect(r.logs1).toContain('en-US / subtitle: 31 znaków > 30');
   });
-  test('pełny zapis przed uzupełnieniem 33 lokalizacji (09) jest zablokowany: pola „puste”, zero zapisów — zapis tylko z --tylko', () => {
-    const r = drive({ zapis: true, versions: ['PREPARE_FOR_SUBMISSION'] });
+  test('pełny zapis przy pustym polu dowolnej lokalizacji jest zablokowany: pola „puste”, zero zapisów — zapis tylko z --tylko (przed przyjęciem metadanych P-501 puste były wszystkie poza en; teraz wymuszone mutacją)', () => {
+    const r = drive({ zapis: true, versions: ['PREPARE_FOR_SUBMISSION'], mutate: [['de-DE', 'description', '']] });
     expect(r.code1).toBe(1); expect(writes(r.calls1)).toEqual([]); expect(r.logs1).toContain('de-DE / description: puste');
   });
 });
