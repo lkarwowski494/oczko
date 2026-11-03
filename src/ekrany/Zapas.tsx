@@ -270,6 +270,6 @@ function style(k: Kolory) {
     krokowiec: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },
     krok: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
     znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    wartoscKroku: { ...typografia.tresc, color: k.grafit, minWidth: 72, textAlign: 'center' },
+    wartoscKroku: { ...typografia.tresc, color: k.grafit, minWidth: cel.przyciskMinus, textAlign: 'center' }, // 72 pt = `cel.przyciskMinus` (M1-140, 04-studio-projektowe-528)
   });
 }

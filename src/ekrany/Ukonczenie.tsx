@@ -139,6 +139,6 @@ function styleWiersza(k: Kolory) {
     // obrysy drugiPrzyciskObrys (≥ 3:1, design-spec), jak przycisk „drugi” i pole w Arkusz.tsx
     przycisk: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
     znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    pole: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, minWidth: 72, textAlign: 'center', borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
+    pole: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, minWidth: cel.przyciskMinus, textAlign: 'center', borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
   });
 }
