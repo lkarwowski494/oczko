@@ -37,7 +37,7 @@
     "blizniak": "Notatka i przypomnienie z tego samego rzędu części-pary (BR-PRJ-014/S2; tekst 08 do akceptacji 04, Z07-05).",
     "blizniak_oba": "Zdanie stanu na liczniku, gdy rząd części-pary ma i notatkę, i przypomnienie (BR-PRJ-014/S2): {{notatka}} = notatka użytkownika, {{przypomnienie}} = treść przypomnienia; oba wpisuje użytkownik. Części łączy przecinek, nie „ · ” (decyzja 04, design-spec „Separator „ · ””; M1-audytor-generalny-144). Kolejność notatka → przypomnienie można zmienić, jeśli szyk języka tego wymaga. Tekst 08 do akceptacji 04.",
     "znaczniki_sesji": "Podpis nad kreskami sesji (design-spec „Kreski sesji przez północ”).",
-    "ostatni_darmowy": "Cicha linia pod liczbą w ostatnim darmowym dniu (design-spec „Limit dni”, P-065 (2a)).",
+    "ostatni_darmowy": "Cicha linia pod liczbą w ostatnim darmowym dniu (design-spec „Limit dni”, P-065 (2a)). {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
     "cel_dnia": "Cel dzienny tylko przy terminie (BR-DNI-005/S5; tekst 08 do akceptacji 04).",
     "calosc": "Ekran licznika sekcji, cicha linia pod liczbą: suma sekcji kawałka (BR-LIC-018/S1); {{czesc}} = nazwa części (kawałka), {{count}} = suma. Ok. 30 znaków.",
     "wzor_a11y": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): etykieta VoiceOver ikony dokumentu w pasku licznika; ikona jest tylko, gdy projekt ma wzór (W2a). Jedno słowo.",
@@ -53,14 +53,14 @@
     "wpisz_blad_format": "Linia błędu pod polem wpisania wartości licznika (BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): wartość musi być liczbą całkowitą od 0. {{przyklad}} = liczba 1000 sformatowana zapisem regionu telefonu (en-US „1,000”, pl-PL „1 000”, de-DE „1.000”, ar-EG cyfry arabsko-indyjskie), dzięki czemu użytkownik widzi, jak region zapisuje tysiące. Ten sam tekst dla ujemnej, tekstu i zapisu niezgodnego z regionem — aplikacja niczego nie zgaduje (nie zamienia „1,000” na 1000 ani na 1)."
   },
   "limit": {
-    "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków.",
+    "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków. {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
     "pro_link": "Odnośnik pod liczbą przy limicie zawczasu (rola link, poza strefą +1, KP-13).",
     "nie_dodano": "Nagłówek arkusza, gdy nowy dzień zaczął się przy otwartej aplikacji (ekrany.html limit).",
-    "arkusz_dni": "Treść arkusza limitu: definicja dnia i data powrotu. „Crafting day” = dzień, w którym policzono co najmniej jeden rząd; pojęcie wspólne dla drutów i szydełka (P-302), nie „dzień dziergania”. Użyj w języku docelowym słowa szerszego niż „dziergać”/„knit”. Liczba mnoga (P-307): formy CLDR wg `count` podanego przy wywołaniu; liczba stoi w kluczu liczby mnogiej, nie obok niego.",
+    "arkusz_dni": "Treść arkusza limitu: definicja dnia i data powrotu. „Crafting day” = dzień, w którym policzono co najmniej jeden rząd; pojęcie wspólne dla drutów i szydełka (P-302), nie „dzień dziergania”. Użyj w języku docelowym słowa szerszego niż „dziergać”/„knit”. Liczba mnoga (P-307): formy CLDR wg `count` podanego przy wywołaniu; liczba stoi w kluczu liczby mnogiej, nie obok niego. {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
     "arkusz_zachowane": "Treść arkusza limitu: dane zostają.",
     "arkusz_pro": "Cicha linia w arkuszu limitu.",
     "zobacz_pro": "Przycisk arkusza limitu, otwiera oferty.",
-    "ogloszenie": "Ogłoszenie VoiceOver arkusza limitu (design-spec „VoiceOver”)."
+    "ogloszenie": "Ogłoszenie VoiceOver arkusza limitu (design-spec „VoiceOver”). {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054)."
   },
   "ustawienia": {
     "tytul": "Etykieta VoiceOver przycisku Ustawień na liście projektów i tytuł ekranu Ustawień (ekrany.html roli 04, ekran „Settings”). Dopisane przez 08 (partia 4, 3A). Ok. 8 znaków.",
@@ -106,7 +106,7 @@
     "zrobione": "VoiceOver karty; podpis na zegarku przy limicie i blokadzie (liczba mnoga).",
     "wstrzymane": "Nagłówek karty przy wyczerpanym limicie dni.",
     "zachowane": "Druga linia karty przy limicie.",
-    "limit": "Linia informacji przy limicie; {{miesiac}} = nazwa miesiąca w bieżącym języku; bez odnośnika do Pro (KP-13).",
+    "limit": "Linia informacji przy limicie; {{miesiac}} = nazwa miesiąca w bieżącym języku; bez odnośnika do Pro (KP-13). {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
     "limit_wznowienie": "Po linii limitu; {{data}} = dzień wznowienia, krótki format regionu.",
     "nie_dodano": "Nagłówek po nieudanym +1 (ekran blokady: odblokowanie albo błąd zapisu; zegarek: nieudany zapis).",
     "odblokuj": "Po nagłówku „wasn’t added”, gdy telefon nie był odblokowany od restartu (P-133 (1.2a), wyjątek w „Głosie”).",
@@ -157,7 +157,7 @@
     "brak_wynikow": "Brak wyników wyszukiwania (macierz stanów).",
     "w_toku": "Nagłówek sekcji projektów w toku.",
     "ukonczone": "Nagłówek sekcji projektów ukończonych.",
-    "dni": "Licznik darmowych dni na liście (design-spec „Limit dni”, P-065 (2a)); bez linii przy Pro. „Crafting days” = dni limitu (dzień z co najmniej jednym rzędem), dla drutów i szydełka (P-302). Liczba mnoga (P-307): formy CLDR wg `count` = {{limit}} (M1-019: rzeczownik stoi po „of {{limit}}”, więc odmienia się według limitu, nie {{zostalo}}).",
+    "dni": "Licznik darmowych dni na liście (design-spec „Limit dni”, P-065 (2a)); bez linii przy Pro. „Crafting days” = dni limitu (dzień z co najmniej jednym rzędem), dla drutów i szydełka (P-302). Liczba mnoga (P-307): formy CLDR wg `count` = {{limit}} (M1-019: rzeczownik stoi po „of {{limit}}”, więc odmienia się według limitu, nie {{zostalo}}). {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
     "tytul": "Duży tytuł listy projektów.",
     "nazwa_robocza": "Etykieta projektu roboczego bez nazwy na liście projektów, w wyszukiwaniu i nad tytułem licznika (design-spec „Projekt roboczy”, P-126 (1b)). {{data}} = data i godzina startu w krótkim formacie regionu, rok tylko gdy inny niż bieżący. Tekst roli 04.",
     "ostatnia_praca_dzis": "Lista projektów, trzecia linia wiersza projektu w toku (BR-PRJ-016, bez progu dni, P-047): ostatnia zmiana licznika była dziś (data lokalna RD-16). Mała litera, bo stoi jako dopisek w wierszu. Ok. 20 znaków.",
