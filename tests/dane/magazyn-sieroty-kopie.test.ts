@@ -6,7 +6,7 @@
 import { mkdirSync, readdirSync, utimesSync } from 'node:fs';
 import { join } from 'node:path';
 import { migruj } from '../../src/dane/migracje/migruj';
-import { KOPIE_RATUNKOWE_DNI, PLIKI_OCHRONA_MIN } from '../../src/konfiguracja';
+import { KOPIE_RATUNKOWE_DNI, KOSZ_DNI, PLIKI_OCHRONA_MIN } from '../../src/konfiguracja';
 import { sprzatnijKopie } from '../../src/niezawodnosc/kopie';
 import { przywrocKopie } from '../../src/przypadki-uzycia/przywracanie';
 import { uruchomDane } from '../../src/przypadki-uzycia/start';
@@ -142,4 +142,46 @@ test('M1-128 (ADR-0020 (6), wyjątek nazwany): kopia z czasem teraz+365 dni wstr
   }
   expect(await przebieg(zNazwy + (KOPIE_RATUNKOWE_DNI + 1) * DOBA_MS)).toEqual({ usuniete_kopie: 1, kopie: 0, pliki: 0 });
   expect({ ...(await licznosci(s.baza)), ustawienie: 0 }).toEqual({ ...przed, ustawienie: 0 }); // start zapisuje tylko ustawienia; wiersze bez zmian
+});
+
+// M1-audytor-generalny-118 (05-architekt-512): trwałe usunięcie projektu z kosza kasowało od razu pliki, których potrzebuje młodsza kopia `.db`
+// w `kopie/`, więc przywrócenie kopii dawało projekt bez zdjęć, wzorów i rysunków. Po ADR-0001 (uzupełnienie 2026-11-03) `sprzatnijKosz` usuwa
+// tylko wiersze `plik`, a pliki — `sprzatnijSierotyMagazynu` z regułą M1-087 (plik nie młodszy niż najnowsza kopia zostaje).
+async function koszZKopia() {
+  const s = await przygotuj();
+  const pliki = { pdf: wlozPlik(s.magazyn, Buffer.from('PDF-1.4 abc'), 'pdf'), rys: wlozPlik(s.magazyn, Buffer.from('PKDRAWING'), 'pkdrawing'), jpg: wlozPlik(s.magazyn, Buffer.from('JPEG-DANE!'), 'jpg') };
+  await wykonaj(s.baza, zycie(pliki));
+  postarz(s, s.zegar.teraz().ms - (PLIKI_OCHRONA_MIN + 1) * 60_000);
+  const teraz = s.zegar.teraz().ms;
+  await s.baza.run("UPDATE projekt SET usunieto_ms = ?, zmieniono_ms = ? WHERE id = 'p1'", [teraz, teraz]); // projekt ze wzorem, rysunkiem i zdjęciem do kosza
+  const przed = await licznosci(s.baza);
+  s.zegar.przesun(DOBA_MS);
+  const kopia = join(s.z.katalogi.kopie, `przed-migracja-2-${s.zegar.teraz().ms}.db`);
+  await s.baza.run('VACUUM INTO ?', [kopia]); // kopia z ADR-0020 (np. przed migracją): projekt w koszu z wierszami `plik`
+  s.zegar.przesun(KOSZ_DNI * DOBA_MS);
+  expect(await start(s)).toMatchObject({ ok: true });
+  s.zegar.przesun(DOBA_MS);
+  expect(await start(s)).toMatchObject({ ok: true, wartosc: { sprzatnieto: 1 } }); // drugi start po terminie: p1 trwale usunięty
+  return { s, przed, kopia };
+}
+
+test('M1-118 (05-architekt-512): kosz → kopia `.db` → po KOSZ_DNI dwa starty: 0 wierszy `plik`, 3 pliki zostają → przywrócenie kopii: 0 wierszy `plik` bez pliku', async () => {
+  const { s, przed, kopia } = await koszZKopia();
+  expect(await stan(s)).toEqual({ wiersze_plik: 0, projekty: przed.projekt - 1, pliki: 3, bez_pliku: 0 }); // pliki czekają na kopię (reguła M1-087)
+  const r = await przywrocKopie({ ...s.z, czasWTle }, kopia);
+  if (!r.ok) throw new Error(r.powod);
+  expect(await stan(s)).toEqual({ wiersze_plik: 3, projekty: przed.projekt, pliki: 3, bez_pliku: 0 });
+  expect({ ...(await licznosci(s.baza)), ustawienie: 0 }).toEqual({ ...przed, ustawienie: 0 }); // projekt, czesc, licznik, zdarzenie, plik, … jak przed
+  expect(await s.baza.all('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NOT NULL')).toEqual([{ n: 1 }]); // wraca do kosza
+  expect(await s.baza.all('PRAGMA integrity_check')).toEqual([{ integrity_check: 'ok' }]);
+  expect(await s.baza.all('PRAGMA foreign_key_check')).toEqual([]);
+});
+
+test('M1-118: bez przywrócenia — po KOPIE_RATUNKOWE_DNI + 1 dzień kopia znika, a 3 pliki trwale usuniętego projektu są usuwane przy starcie', async () => {
+  const { s } = await koszZKopia();
+  s.zegar.przesun((KOPIE_RATUNKOWE_DNI + 1) * DOBA_MS);
+  const k = sprzatnijKopie(s.z.katalogi.kopie, s.zegar.teraz().ms);
+  expect(k.ok && k.wartosc.some((n) => n.startsWith('przed-migracja-2-'))).toBe(true);
+  expect(await start(s)).toMatchObject({ ok: true });
+  expect(await stan(s)).toEqual({ wiersze_plik: 0, projekty: 11, pliki: 0, bez_pliku: 0 });
 });
