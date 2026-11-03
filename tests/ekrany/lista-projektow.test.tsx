@@ -7,7 +7,7 @@ import { przycisk, tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
-const HARBOR = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today', kolorWloczki: '#4F6F94' };
+const HARBOR = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today' };
 const stan = (z: Partial<StanListyProjektow> = {}): StanListyProjektow =>
   ({ wToku: [HARBOR], ukonczone: [], zapytanie: '', dni: { zostalo: 3, limit: 5, miesiac: 'November' }, ...z });
 function pokaz(s: StanListyProjektow) {

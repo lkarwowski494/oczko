@@ -30,7 +30,7 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
   beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat); });
 
   test('ListaProjektow: „In progress” i „Finished” — 13 pt, kolor olowek', () => {
-    const wiersz = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today', kolorWloczki: '#4F6F94' };
+    const wiersz = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today' };
     render(<ListaProjektow stan={{ wToku: [wiersz], ukonczone: [{ ...wiersz, id: 'p2', nazwa: 'Scarf' }], zapytanie: '', dni: { zostalo: 3, limit: 5, miesiac: 'November' } }} t={t} naSzukaj={jest.fn()} naOtworz={jest.fn()} naNowy={jest.fn()} />);
     expect([rozmiar('In progress'), rozmiar('Finished')]).toEqual([13, 13]);
     expect(kolor('In progress')).toBe(olowek(schemat));

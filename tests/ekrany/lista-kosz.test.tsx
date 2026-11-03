@@ -10,8 +10,8 @@ import { przycisk, tEn } from './pomoc';
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const lista = (z: Partial<StanListyProjektow> = {}): StanListyProjektow => ({
-  wToku: [{ id: 'p1', nazwa: 'Harbor', opis: 'Back · Now working row 2', kolorWloczki: null, termin: 'Today: 3 of 10 rows', ostatniaPraca: 'last worked 41 days ago' }],
-  ukonczone: [{ id: 'p2', nazwa: 'Hat', opis: '', kolorWloczki: null }], zapytanie: '', dni: null, ...z,
+  wToku: [{ id: 'p1', nazwa: 'Harbor', opis: 'Back · Now working row 2', termin: 'Today: 3 of 10 rows', ostatniaPraca: 'last worked 41 days ago' }],
+  ukonczone: [{ id: 'p2', nazwa: 'Hat', opis: '' }], zapytanie: '', dni: null, ...z,
 });
 
 describe('lista projektów (partia 5)', () => {
