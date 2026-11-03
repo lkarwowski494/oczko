@@ -1,7 +1,7 @@
 // M1-audytor-generalny-108 (09-lokalizacja-512, trwała kontrola 501): w „{{zostalo}} of {{limit}} free crafting days” forma liczby mnogiej idzie za
 // {{limit}} (count = limit). Kontekst tłumacza zabrania zgody czasownika i rzeczownika z {{zostalo}}, a każdy język z przekładem `projekty.dni`
 // ma zatwierdzoną tabelę wektorów (zostalo ∈ {0, 1, 2, 5}, limit = 5): język dopisany w fali bez wektorów albo z inną treścią = czerwień.
-// Wektory pl, ru, lt, cs = przekłady zweryfikowane w P-412 (a); pl z „w {{miesiac}}” do poprawki przypadku po uwadze właściciela (M1-audytor-generalny-054, P-422).
+// Wektory pl, ru, lt, cs = przekłady zweryfikowane w P-412 (a); pl: „({{miesiac}})” zamiast „w {{miesiac}}” (M1-audytor-generalny-054, 2026-11-03; do akceptacji właściciela, P-422).
 // Pozostałe 30 języków: fala przekładu 2026-11-03 (P-474) + drugi przegląd AI (P-486) — tabela w projekty-dni-wektory-108.json (generuje
 // scripts/i18n/wektory-projekty-dni.mjs po każdej zmianie słownika; zmiana treści = widoczny diff do przeglądu). To blokada regresji, nie dowód poprawności
 // gramatycznej: tę oceniał przegląd AI (reguła „forma za {{limit}}”), a przegląd rodzimy (jezyki.md) może ją zmienić — wtedy wektory regeneruje się świadomie.
@@ -13,7 +13,7 @@ import { ZASOBY } from '../../src/i18n/slowniki';
 const ZOSTALO = [0, 1, 2, 5] as const;
 const WEKTORY: Record<string, [string, string, string, string]> = {
   en: ['0 of 5 free crafting days left in M', '1 of 5 free crafting days left in M', '2 of 5 free crafting days left in M', '5 of 5 free crafting days left in M'],
-  pl: ['Zostało 0 z 5 darmowych dni robótkowych w M', 'Zostało 1 z 5 darmowych dni robótkowych w M', 'Zostało 2 z 5 darmowych dni robótkowych w M', 'Zostało 5 z 5 darmowych dni robótkowych w M'],
+  pl: ['Zostało 0 z 5 darmowych dni robótkowych (M)', 'Zostało 1 z 5 darmowych dni robótkowych (M)', 'Zostało 2 z 5 darmowych dni robótkowych (M)', 'Zostało 5 z 5 darmowych dni robótkowych (M)'],
   ru: ['M: осталось 0 из 5 бесплатных дней рукоделия', 'M: осталось 1 из 5 бесплатных дней рукоделия', 'M: осталось 2 из 5 бесплатных дней рукоделия', 'M: осталось 5 из 5 бесплатных дней рукоделия'],
   lt: ['M: liko 0 iš 5 nemokamų rankdarbio dienų', 'M: liko 1 iš 5 nemokamų rankdarbio dienų', 'M: liko 2 iš 5 nemokamų rankdarbio dienų', 'M: liko 5 iš 5 nemokamų rankdarbio dienų'],
   cs: ['Zbývá 0 z 5 volných dnů tvoření pro M', 'Zbývá 1 z 5 volných dnů tvoření pro M', 'Zbývá 2 z 5 volných dnů tvoření pro M', 'Zbývá 5 z 5 volných dnů tvoření pro M'],

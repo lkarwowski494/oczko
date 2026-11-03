@@ -248,10 +248,10 @@
     "ukonczono_bez_czasu": "Ukończono {{data}}",
     "ukonczono_a11y": "{{nazwa}}, ukończono {{data}}, {{czas}}",
     "ukonczono_bez_czasu_a11y": "{{nazwa}}, ukończono {{data}}",
-    "dni_one": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego w {{miesiac}}",
-    "dni_few": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych w {{miesiac}}",
-    "dni_many": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych w {{miesiac}}",
-    "dni_other": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego w {{miesiac}}"
+    "dni_one": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego ({{miesiac}})",
+    "dni_few": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych ({{miesiac}})",
+    "dni_many": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych ({{miesiac}})",
+    "dni_other": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego ({{miesiac}})"
   },
   "historia": {
     "pusto": "Brak zmian.",
@@ -798,7 +798,7 @@
     "blad_zapis": "Zapisz to jako {{przyklad}}.",
     "kategoria_obie": "Ta gęstość splotu pasuje do kategorii {{a}} i {{b}}.",
     "kategoria_miedzy": "Ta gęstość splotu mieści się między kategoriami {{a}} i {{b}}.",
-    "uwaga_kategoria": "Kategorie grubości włóczki to tylko wskazówka, a nie lista włóczek, które można zamieniać. Nawet przy tej samej gęstości splotu dwie włóczki mogą inaczej leżeć i się układać.",
+    "uwaga_kategoria": "Kategorie grubości włóczki to tylko wskazówka, a nie lista włóczek, które można zamieniać. Nawet przy tej samej gęstości splotu dwie włóczki mogą być inne w dotyku i inaczej się układać.",
     "uwaga_oczka": "Zblokuj próbkę, a potem porównaj ją ze wzorem: wzory podają gęstość splotu po blokowaniu.",
     "uwaga_koronka": "Włóczkę koronkową trudno przypisać do zakresu gęstości splotu; kieruj się zawsze gęstością splotu ze wzoru.",
     "uwaga_zaokraglenie": "Twoja gęstość splotu na 4 cale jest zaokrąglona do najbliższego całego oczka.",
