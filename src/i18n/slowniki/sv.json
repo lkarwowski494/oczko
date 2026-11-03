@@ -101,7 +101,7 @@
     "usun_pytanie": "Det här tar bort alla projekt, varvräknare, historik, mönster och foton från Oczko. Säkerhetskopior finns kvar på den här enheten. Oczko raderar dem efter 30 dagar, nästa gång du öppnar Oczko, och vissa tidigare om de tar mycket plats.",
     "usun_potwierdz": "Radera alla data",
     "usun_pro": "Oczko Pro raderas inte. Om Pro är avstängt efteråt väljer du Återställ köp i Oczko Pro.",
-    "usun_kopia": "Oczko sparar först en kopia i appen Filer, i Oczko › Backup. Om du importerar den filen kommer allt tillbaka.",
+    "usun_kopia": "Oczko sparar först en kopia i appen Filer, i Maska › Backup. Om du importerar den filen kommer allt tillbaka.",
     "usun_kopia_blad": "Oczko kunde inte spara en kopia, så inget raderades. Frigör utrymme och försök igen.",
     "ekran_nie_gasnie": "Håll skärmen tänd vid räkning",
     "ekran_nie_gasnie_opis": "Skärmen hålls tänd medan varvräknaren är öppen. Om du stänger av detta kan du spara batteri.",
@@ -499,7 +499,7 @@
     "import_plik": "Fil: {{plik}}",
     "scal": "Slå ihop med det som finns här",
     "zastap": "Ersätt det som finns här",
-    "zastapiono": "Oczko sparade först dina tidigare data som ”{{kopia}}”. Du hittar filen i appen Filer, i Oczko › Backup.",
+    "zastapiono": "Oczko sparade först dina tidigare data som ”{{kopia}}”. Du hittar filen i appen Filer, i Maska › Backup.",
     "konflikt_tytul": "Två versioner av {{licznik}}",
     "konflikt_wybor_one": "{{count}} varv · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} varv · {{urzadzenie}} · {{godzina}}",
@@ -527,7 +527,7 @@
     "wylaczona": "iCloud-synk är av.",
     "aktywna": "iCloud-synk är på.",
     "zegarek_kontakt": "Senaste kontakt med din klocka: {{data}}.",
-    "kopie_opis": "Kopior som Oczko sparade före import eller radering finns i appen Filer, i Oczko › Backup. Oczko raderar dem efter 30 dagar, nästa gång du öppnar Oczko, och vissa tidigare om de tar mycket plats. Fram till dess räknas de in i enhetens iCloud-säkerhetskopia."
+    "kopie_opis": "Kopior som Oczko sparade före import eller radering finns i appen Filer, i Maska › Backup. Oczko raderar dem efter 30 dagar, nästa gång du öppnar Oczko, och vissa tidigare om de tar mycket plats. Fram till dess räknas de in i enhetens iCloud-säkerhetskopia."
   },
   "zglos": {
     "tytul": "Rapportera ett problem",

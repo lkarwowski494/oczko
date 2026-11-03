@@ -83,7 +83,7 @@
     "usun_pytanie": "Ini membuang semua projek, pembilang baris, sejarah, corak dan foto daripada Oczko. Salinan keselamatan kekal pada peranti ini. Oczko memadamkan salinan itu selepas 30 hari, apabila anda membuka Oczko lagi, dan sebahagiannya lebih awal jika ia mengambil banyak ruang.",
     "usun_potwierdz": "Padam semua data",
     "usun_pro": "Oczko Pro tidak dipadamkan. Jika ia tidak aktif selepas itu, pilih Pulihkan pembelian dalam Oczko Pro.",
-    "usun_kopia": "Oczko terlebih dahulu menyimpan salinan dalam apl Fail, dalam Oczko › Backup. Mengimport fail itu akan memulihkan semuanya.",
+    "usun_kopia": "Oczko terlebih dahulu menyimpan salinan dalam apl Fail, dalam Gelungan › Backup. Mengimport fail itu akan memulihkan semuanya.",
     "usun_kopia_blad": "Oczko tidak dapat menyimpan salinan, jadi tiada apa-apa yang dipadamkan. Kosongkan sedikit ruang dan cuba lagi.",
     "ekran_nie_gasnie": "Skrin kekal hidup semasa mengira",
     "ekran_nie_gasnie_opis": "Skrin kekal hidup semasa pembilang baris dibuka. Mematikannya boleh menjimatkan bateri.",
@@ -444,7 +444,7 @@
     "import_plik": "Fail: {{plik}}",
     "scal": "Gabungkan dengan yang ada di sini",
     "zastap": "Gantikan yang ada di sini",
-    "zastapiono": "Oczko terlebih dahulu menyimpan data lama anda sebagai “{{kopia}}”. Cari fail itu dalam apl Fail, dalam Oczko › Backup.",
+    "zastapiono": "Oczko terlebih dahulu menyimpan data lama anda sebagai “{{kopia}}”. Cari fail itu dalam apl Fail, dalam Gelungan › Backup.",
     "konflikt_tytul": "Dua versi {{licznik}}",
     "konflikt_wybor_other": "{{count}} baris · {{urzadzenie}} · {{godzina}}",
     "konflikt_a11y_other": "Simpan {{count}} baris daripada {{urzadzenie}}, {{godzina}}",
@@ -466,7 +466,7 @@
     "wylaczona": "Segerak iCloud dimatikan.",
     "aktywna": "Segerak iCloud dihidupkan.",
     "zegarek_kontakt": "Hubungan terakhir dengan jam tangan anda: {{data}}.",
-    "kopie_opis": "Salinan yang disimpan Oczko sebelum mengimport atau memadam terdapat dalam apl Fail, dalam Oczko › Backup. Oczko memadamkan salinan itu selepas 30 hari, apabila anda membuka Oczko lagi, dan sebahagiannya lebih awal jika ia mengambil banyak ruang. Sehingga itu, salinan ini dikira dalam sandaran iCloud peranti anda."
+    "kopie_opis": "Salinan yang disimpan Oczko sebelum mengimport atau memadam terdapat dalam apl Fail, dalam Gelungan › Backup. Oczko memadamkan salinan itu selepas 30 hari, apabila anda membuka Oczko lagi, dan sebahagiannya lebih awal jika ia mengambil banyak ruang. Sehingga itu, salinan ini dikira dalam sandaran iCloud peranti anda."
   },
   "zglos": {
     "tytul": "Laporkan masalah",

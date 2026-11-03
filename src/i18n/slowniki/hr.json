@@ -119,7 +119,7 @@
     "usun_pytanie": "Ovime se iz Oczka uklanjaju svi projekti, brojači, povijest, upute i fotografije. Sigurnosne kopije ostaju na ovom uređaju. Oczko ih briše nakon 30 dana, kad ga sljedeći put otvorite, a neke i ranije ako zauzimaju puno prostora.",
     "usun_potwierdz": "Izbriši sve podatke",
     "usun_pro": "Oczko Pro se ne briše. Ako nakon toga nije uključen, odaberite Vrati kupnje na zaslonu Oczko Pro.",
-    "usun_kopia": "Oczko najprije sprema kopiju u aplikaciju Datoteke, u Oczko › Backup. Uvozom te datoteke sve se vraća.",
+    "usun_kopia": "Oczko najprije sprema kopiju u aplikaciju Datoteke, u Očica › Backup. Uvozom te datoteke sve se vraća.",
     "usun_kopia_blad": "Oczko nije moglo spremiti kopiju pa ništa nije izbrisano. Oslobodite prostor i pokušajte ponovno.",
     "ekran_nie_gasnie": "Zaslon uključen pri brojenju",
     "ekran_nie_gasnie_opis": "Zaslon ostaje uključen dok je brojač otvoren. Isključivanjem možete uštedjeti bateriju.",
@@ -554,7 +554,7 @@
     "import_plik": "Datoteka: {{plik}}",
     "scal": "Spoji s postojećim",
     "zastap": "Zamijeni postojeće",
-    "zastapiono": "Oczko je najprije spremilo vaše prethodne podatke kao „{{kopia}}“. Pronaći ćete ih u aplikaciji Datoteke, u Oczko › Backup.",
+    "zastapiono": "Oczko je najprije spremilo vaše prethodne podatke kao „{{kopia}}“. Pronaći ćete ih u aplikaciji Datoteke, u Očica › Backup.",
     "konflikt_tytul": "Dvije verzije: {{licznik}}",
     "konflikt_wybor_one": "{{count}} red · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} reda · {{urzadzenie}} · {{godzina}}",
@@ -588,7 +588,7 @@
     "wylaczona": "iCloud sinkronizacija je isključena.",
     "aktywna": "iCloud sinkronizacija je uključena.",
     "zegarek_kontakt": "Zadnji kontakt sa satom: {{data}}.",
-    "kopie_opis": "Kopije koje je Oczko spremilo prije uvoza ili brisanja nalaze se u aplikaciji Datoteke, u Oczko › Backup. Oczko ih briše nakon 30 dana, kad ga sljedeći put otvorite, a neke i ranije ako zauzimaju puno prostora. Do tada se ubrajaju u iCloud sigurnosnu kopiju vašeg uređaja."
+    "kopie_opis": "Kopije koje je Oczko spremilo prije uvoza ili brisanja nalaze se u aplikaciji Datoteke, u Očica › Backup. Oczko ih briše nakon 30 dana, kad ga sljedeći put otvorite, a neke i ranije ako zauzimaju puno prostora. Do tada se ubrajaju u iCloud sigurnosnu kopiju vašeg uređaja."
   },
   "zglos": {
     "tytul": "Prijavi problem",

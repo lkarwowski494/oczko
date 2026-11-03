@@ -101,7 +101,7 @@
     "usun_pytanie": "Dadurch werden alle Projekte, Zähler, der Verlauf, Anleitungen und Fotos aus Oczko entfernt. Sicherungskopien bleiben auf diesem Gerät. Oczko löscht sie nach 30 Tagen, wenn du die App das nächste Mal öffnest, und manche früher, wenn sie viel Platz belegen.",
     "usun_potwierdz": "Alle Daten löschen",
     "usun_pro": "Oczko Pro wird nicht gelöscht. Falls es danach aus ist, wähle „Käufe wiederherstellen“ in Oczko Pro.",
-    "usun_kopia": "Oczko speichert zuerst eine Kopie in der Dateien-App unter Oczko › Backup. Wenn du diese Datei importierst, ist alles wieder da.",
+    "usun_kopia": "Oczko speichert zuerst eine Kopie in der Dateien-App unter Masche › Backup. Wenn du diese Datei importierst, ist alles wieder da.",
     "usun_kopia_blad": "Oczko konnte keine Kopie speichern, daher wurde nichts gelöscht. Gib etwas Speicherplatz frei und versuche es erneut.",
     "ekran_nie_gasnie": "Bildschirm beim Zählen anlassen",
     "ekran_nie_gasnie_opis": "Der Bildschirm bleibt an, solange der Zähler geöffnet ist. Ausschalten kann Akku sparen.",
@@ -499,7 +499,7 @@
     "import_plik": "Datei: {{plik}}",
     "scal": "Mit Vorhandenem zusammenführen",
     "zastap": "Vorhandenes ersetzen",
-    "zastapiono": "Oczko hat deine bisherigen Daten zuerst als „{{kopia}}“ gesichert. Du findest sie in der Dateien-App unter Oczko › Backup.",
+    "zastapiono": "Oczko hat deine bisherigen Daten zuerst als „{{kopia}}“ gesichert. Du findest sie in der Dateien-App unter Masche › Backup.",
     "konflikt_tytul": "Zwei Versionen von {{licznik}}",
     "konflikt_wybor_one": "{{count}} Reihe · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} Reihen · {{urzadzenie}} · {{godzina}}",
@@ -527,7 +527,7 @@
     "wylaczona": "iCloud-Sync ist aus.",
     "aktywna": "iCloud-Sync ist an.",
     "zegarek_kontakt": "Letzter Kontakt mit deiner Uhr: {{data}}.",
-    "kopie_opis": "Kopien, die Oczko vor dem Importieren oder Löschen gespeichert hat, findest du in der Dateien-App unter Oczko › Backup. Oczko löscht sie nach 30 Tagen, wenn du die App das nächste Mal öffnest, und manche früher, wenn sie viel Platz belegen. Bis dahin zählen sie zum iCloud-Backup deines Geräts."
+    "kopie_opis": "Kopien, die Oczko vor dem Importieren oder Löschen gespeichert hat, findest du in der Dateien-App unter Masche › Backup. Oczko löscht sie nach 30 Tagen, wenn du die App das nächste Mal öffnest, und manche früher, wenn sie viel Platz belegen. Bis dahin zählen sie zum iCloud-Backup deines Geräts."
   },
   "zglos": {
     "tytul": "Problem melden",

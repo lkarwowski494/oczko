@@ -1,0 +1,600 @@
+{
+  "powod": "Zakres drugiego przeglądu AI fali 2026-11-03 (P-486, D-027): 146 baz kluczy przełożonych w fali (commit ee8ffed), kopia listy oczekujace.json sprzed fali (5d61e68), bo oczekujace.json jest po fali pusty. przetlumaczone_czesciowo = pary (język, baza) zweryfikowane wcześniej (pl, cs, lt, ru) — nie nakładamy na nie poprawek automatycznie. Źródło: tryb przeglad w scripts/i18n/przeklad-api.mjs.",
+  "odwolania": [
+    "P-474",
+    "P-481",
+    "P-485",
+    "P-486"
+  ],
+  "klucze": [
+    "awaryjny.blad_kopii",
+    "awaryjny.blad_kopii_opis",
+    "awaryjny.opis_brak_miejsca",
+    "awaryjny.tytul_brak_miejsca",
+    "dane.zastapiono",
+    "dane.zastapiono_tytul",
+    "dane.zastapiono_wroc",
+    "formularz.blad_zapisu",
+    "formularz.wloczka_opis",
+    "formularz.wloczka_pusto",
+    "formularz.wloczka_tytul",
+    "formularz.wloczka_wiersz_a11y",
+    "historia.cofnieto",
+    "historia.cofnij_serie",
+    "historia.seria",
+    "historia.starszy_info",
+    "historia.wpis_a11y",
+    "historia.wpis_rozwin_a11y",
+    "historia.wpis_rozwin_podpowiedz",
+    "historia.wpisz",
+    "icloud.brak_konta_opis",
+    "icloud.brak_miejsca_opis",
+    "icloud.konto_zmienione_opis",
+    "icloud.niepelna_nowsza",
+    "icloud.wlacz_opis",
+    "icloud.wylacz_opis",
+    "import.nie_rozpoznano_opis",
+    "import.nie_rozpoznano_tytul",
+    "jednostka.g",
+    "jednostka.g_nazwa",
+    "jednostka.m",
+    "jednostka.m_nazwa",
+    "jednostka.oz",
+    "jednostka.oz_nazwa",
+    "jednostka.yd",
+    "jednostka.yd_nazwa",
+    "karta.dni_podpis",
+    "licznik.blizniak_oba",
+    "licznik.jednostka",
+    "licznik.jednostka_oczka",
+    "licznik.jednostka_w_trakcie",
+    "licznik.minus_a11y_oczka",
+    "licznik.plus_a11y_oczka",
+    "licznik.plus_oczka",
+    "licznik.po_dodaniu_oczka",
+    "licznik.podpis_plus_oczka",
+    "licznik.powtorzenie",
+    "licznik.przypomnienie_postep",
+    "licznik.seria_blokada",
+    "licznik.seria_zegarek",
+    "licznik.wpisz_blad_format",
+    "licznik.znaczniki_sesji_oczka",
+    "menu.zeruj_zablokowany",
+    "oferty.blad_zakupu",
+    "oferty.czeka",
+    "oferty.czeka_przycisk",
+    "oferty.dozywotni_przy_subskrypcji",
+    "oferty.pro_wlaczone",
+    "oferty.przywracanie_blad",
+    "oferty.przywracanie_nic",
+    "probka.zaproszenie_szerokosc",
+    "projekt.kopia_nazwa",
+    "projekt.miejsce_wzoru_strona",
+    "projekt.miejsce_wzoru_wartosc",
+    "projekt.termin_bez_celow",
+    "projekt.termin_dzis",
+    "projekt.termin_osiagniety",
+    "projekt.termin_po",
+    "projekt.wloczka",
+    "projekt.wloczka_brak",
+    "projekt.wloczki",
+    "projekty.dni",
+    "projekty.ukonczono_a11y",
+    "projekty.ukonczono_bez_czasu",
+    "projekty.ukonczono_bez_czasu_a11y",
+    "projekty.ukonczono_wiersz",
+    "przyp.edytuj_tytul",
+    "przyp.lista_opis",
+    "przyp.menu",
+    "przyp.tytul",
+    "przyp.usun",
+    "przyp.usun_opis",
+    "przyp.usun_tytul",
+    "przyp.wiersz",
+    "przyp.wiersz_a11y",
+    "stan_danych.kopie_opis",
+    "stan_danych.zapisane",
+    "stoper.blad_zapisu",
+    "ukonczenie.bez_wloczki",
+    "ukonczenie.edytuj_zapas_opis",
+    "ukonczenie.jednostka",
+    "ukonczenie.wybierz_wloczke",
+    "ustawienia.blad_zapisu",
+    "ustawienia.ekran_nie_gasnie",
+    "ustawienia.ekran_nie_gasnie_opis",
+    "ustawienia.grupa_liczenie",
+    "ustawienia.miary_auto",
+    "ustawienia.miary_imperial",
+    "ustawienia.miary_imperial_opis",
+    "ustawienia.miary_metric",
+    "ustawienia.miary_metric_opis",
+    "ustawienia.miary_opis",
+    "ustawienia.pomoc",
+    "ustawienia.pro_wlaczone",
+    "ustawienia.usun_kopia",
+    "ustawienia.usun_kopia_blad",
+    "ustawienia.usun_pro",
+    "ustawienia.usun_pytanie",
+    "wspolne.blad_udostepnienia",
+    "wspolne.blad_udostepnienia_opis",
+    "wspolne.blad_wczytania",
+    "wspolne.blad_zapisu_opis",
+    "wspolne.ladowanie",
+    "wspolne.odrzuc_opis_nowy",
+    "wspolne.odrzuc_opis_zmiany",
+    "wspolne.odrzuc_tytul",
+    "wspolne.odrzuc_zmiany",
+    "wspolne.ponow",
+    "wspolne.wroc_do_edycji",
+    "wzor.blad_czas",
+    "wzor.blad_czas_opis",
+    "wzor.blad_rysunku",
+    "wzor.blad_rysunku_opis",
+    "wzor.blad_zapis",
+    "wzor.blad_zapis_opis",
+    "wzor.miejsce_opis",
+    "wzor.miejsce_tytul",
+    "wzor.notatka_chip",
+    "wzor.notatka_chip_a11y",
+    "wzor.notatka_edytuj",
+    "wzor.notatka_edytuj_a11y",
+    "wzor.notatka_tytul",
+    "wzor.notatka_usun",
+    "wzor.notatka_usun_opis",
+    "wzor.notatka_usun_tytul",
+    "wzor.notatki_tytul",
+    "wzor.notatki_wiele",
+    "wzor.przed_schematem",
+    "wzor.rysunek_niezapisany_opis",
+    "wzor.wskazowka_znacznika",
+    "wzor.wyjdz_potwierdz",
+    "wzor.wyjdz_tytul",
+    "wzor.wyjdz_zostan",
+    "wzor.znacznik_napis",
+    "zglos.kontakt",
+    "zglos.opis"
+  ],
+  "przetlumaczone_czesciowo": {
+    "licznik.jednostka": [
+      "pl"
+    ],
+    "projekty.dni": [
+      "cs",
+      "lt",
+      "pl",
+      "ru"
+    ],
+    "ukonczenie.jednostka": [
+      "pl"
+    ],
+    "licznik.jednostka_w_trakcie": [
+      "pl"
+    ],
+    "licznik.przypomnienie_postep": [
+      "pl"
+    ],
+    "licznik.powtorzenie": [
+      "pl"
+    ],
+    "licznik.blizniak_oba": [
+      "pl"
+    ],
+    "licznik.jednostka_oczka": [
+      "pl"
+    ],
+    "licznik.plus_oczka": [
+      "pl"
+    ],
+    "licznik.podpis_plus_oczka": [
+      "pl"
+    ],
+    "licznik.plus_a11y_oczka": [
+      "pl"
+    ],
+    "licznik.minus_a11y_oczka": [
+      "pl"
+    ],
+    "licznik.po_dodaniu_oczka": [
+      "pl"
+    ],
+    "licznik.znaczniki_sesji_oczka": [
+      "pl"
+    ],
+    "licznik.seria_blokada": [
+      "pl"
+    ],
+    "licznik.seria_zegarek": [
+      "pl"
+    ],
+    "licznik.wpisz_blad_format": [
+      "pl"
+    ],
+    "ustawienia.pomoc": [
+      "pl"
+    ],
+    "ustawienia.usun_pytanie": [
+      "pl"
+    ],
+    "ustawienia.usun_pro": [
+      "pl"
+    ],
+    "ustawienia.usun_kopia": [
+      "pl"
+    ],
+    "ustawienia.usun_kopia_blad": [
+      "pl"
+    ],
+    "ustawienia.ekran_nie_gasnie": [
+      "pl"
+    ],
+    "ustawienia.ekran_nie_gasnie_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_auto": [
+      "pl"
+    ],
+    "ustawienia.miary_metric": [
+      "pl"
+    ],
+    "ustawienia.miary_metric_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_imperial": [
+      "pl"
+    ],
+    "ustawienia.miary_imperial_opis": [
+      "pl"
+    ],
+    "ustawienia.miary_opis": [
+      "pl"
+    ],
+    "ustawienia.pro_wlaczone": [
+      "pl"
+    ],
+    "ustawienia.grupa_liczenie": [
+      "pl"
+    ],
+    "ustawienia.blad_zapisu": [
+      "pl"
+    ],
+    "wspolne.blad_zapisu_opis": [
+      "pl"
+    ],
+    "wspolne.blad_udostepnienia": [
+      "pl"
+    ],
+    "wspolne.blad_udostepnienia_opis": [
+      "pl"
+    ],
+    "wspolne.ladowanie": [
+      "pl"
+    ],
+    "wspolne.blad_wczytania": [
+      "pl"
+    ],
+    "wspolne.ponow": [
+      "pl"
+    ],
+    "wspolne.odrzuc_tytul": [
+      "pl"
+    ],
+    "wspolne.odrzuc_opis_zmiany": [
+      "pl"
+    ],
+    "wspolne.odrzuc_opis_nowy": [
+      "pl"
+    ],
+    "wspolne.wroc_do_edycji": [
+      "pl"
+    ],
+    "wspolne.odrzuc_zmiany": [
+      "pl"
+    ],
+    "projekty.ukonczono_wiersz": [
+      "pl"
+    ],
+    "projekty.ukonczono_bez_czasu": [
+      "pl"
+    ],
+    "projekty.ukonczono_a11y": [
+      "pl"
+    ],
+    "projekty.ukonczono_bez_czasu_a11y": [
+      "pl"
+    ],
+    "historia.seria": [
+      "pl"
+    ],
+    "historia.cofnij_serie": [
+      "pl"
+    ],
+    "historia.cofnieto": [
+      "pl"
+    ],
+    "historia.starszy_info": [
+      "pl"
+    ],
+    "historia.wpisz": [
+      "pl"
+    ],
+    "historia.wpis_rozwin_a11y": [
+      "pl"
+    ],
+    "historia.wpis_rozwin_podpowiedz": [
+      "pl"
+    ],
+    "historia.wpis_a11y": [
+      "pl"
+    ],
+    "menu.zeruj_zablokowany": [
+      "pl"
+    ],
+    "formularz.wloczka_tytul": [
+      "pl"
+    ],
+    "formularz.wloczka_opis": [
+      "pl"
+    ],
+    "formularz.wloczka_pusto": [
+      "pl"
+    ],
+    "formularz.wloczka_wiersz_a11y": [
+      "pl"
+    ],
+    "formularz.blad_zapisu": [
+      "pl"
+    ],
+    "ukonczenie.bez_wloczki": [
+      "pl"
+    ],
+    "ukonczenie.wybierz_wloczke": [
+      "pl"
+    ],
+    "ukonczenie.edytuj_zapas_opis": [
+      "pl"
+    ],
+    "projekt.termin_dzis": [
+      "pl"
+    ],
+    "projekt.termin_po": [
+      "pl"
+    ],
+    "projekt.termin_osiagniety": [
+      "pl"
+    ],
+    "projekt.termin_bez_celow": [
+      "pl"
+    ],
+    "projekt.kopia_nazwa": [
+      "pl"
+    ],
+    "projekt.miejsce_wzoru_wartosc": [
+      "pl"
+    ],
+    "projekt.miejsce_wzoru_strona": [
+      "pl"
+    ],
+    "projekt.wloczka": [
+      "pl"
+    ],
+    "projekt.wloczka_brak": [
+      "pl"
+    ],
+    "projekt.wloczki": [
+      "pl"
+    ],
+    "oferty.dozywotni_przy_subskrypcji": [
+      "pl"
+    ],
+    "oferty.czeka": [
+      "pl"
+    ],
+    "oferty.czeka_przycisk": [
+      "pl"
+    ],
+    "oferty.blad_zakupu": [
+      "pl"
+    ],
+    "oferty.przywracanie_nic": [
+      "pl"
+    ],
+    "oferty.przywracanie_blad": [
+      "pl"
+    ],
+    "oferty.pro_wlaczone": [
+      "pl"
+    ],
+    "awaryjny.blad_kopii": [
+      "pl"
+    ],
+    "awaryjny.blad_kopii_opis": [
+      "pl"
+    ],
+    "awaryjny.tytul_brak_miejsca": [
+      "pl"
+    ],
+    "awaryjny.opis_brak_miejsca": [
+      "pl"
+    ],
+    "dane.zastapiono": [
+      "pl"
+    ],
+    "dane.zastapiono_tytul": [
+      "pl"
+    ],
+    "dane.zastapiono_wroc": [
+      "pl"
+    ],
+    "stan_danych.zapisane": [
+      "pl"
+    ],
+    "stan_danych.kopie_opis": [
+      "pl"
+    ],
+    "zglos.opis": [
+      "pl"
+    ],
+    "zglos.kontakt": [
+      "pl"
+    ],
+    "stoper.blad_zapisu": [
+      "pl"
+    ],
+    "probka.zaproszenie_szerokosc": [
+      "pl"
+    ],
+    "karta.dni_podpis": [
+      "pl"
+    ],
+    "wzor.wskazowka_znacznika": [
+      "pl"
+    ],
+    "wzor.blad_czas": [
+      "pl"
+    ],
+    "wzor.blad_czas_opis": [
+      "pl"
+    ],
+    "wzor.notatka_chip": [
+      "pl"
+    ],
+    "wzor.notatka_chip_a11y": [
+      "pl"
+    ],
+    "wzor.notatki_wiele": [
+      "pl"
+    ],
+    "wzor.notatki_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_usun": [
+      "pl"
+    ],
+    "wzor.notatka_usun_tytul": [
+      "pl"
+    ],
+    "wzor.notatka_usun_opis": [
+      "pl"
+    ],
+    "wzor.notatka_edytuj": [
+      "pl"
+    ],
+    "wzor.notatka_edytuj_a11y": [
+      "pl"
+    ],
+    "wzor.przed_schematem": [
+      "pl"
+    ],
+    "wzor.znacznik_napis": [
+      "pl"
+    ],
+    "wzor.blad_zapis": [
+      "pl"
+    ],
+    "wzor.blad_zapis_opis": [
+      "pl"
+    ],
+    "wzor.blad_rysunku": [
+      "pl"
+    ],
+    "wzor.blad_rysunku_opis": [
+      "pl"
+    ],
+    "wzor.rysunek_niezapisany_opis": [
+      "pl"
+    ],
+    "wzor.wyjdz_tytul": [
+      "pl"
+    ],
+    "wzor.wyjdz_zostan": [
+      "pl"
+    ],
+    "wzor.wyjdz_potwierdz": [
+      "pl"
+    ],
+    "wzor.miejsce_tytul": [
+      "pl"
+    ],
+    "wzor.miejsce_opis": [
+      "pl"
+    ],
+    "icloud.wlacz_opis": [
+      "pl"
+    ],
+    "icloud.wylacz_opis": [
+      "pl"
+    ],
+    "icloud.brak_konta_opis": [
+      "pl"
+    ],
+    "icloud.brak_miejsca_opis": [
+      "pl"
+    ],
+    "icloud.konto_zmienione_opis": [
+      "pl"
+    ],
+    "icloud.niepelna_nowsza": [
+      "pl"
+    ],
+    "import.nie_rozpoznano_tytul": [
+      "pl"
+    ],
+    "import.nie_rozpoznano_opis": [
+      "pl"
+    ],
+    "przyp.menu": [
+      "pl"
+    ],
+    "przyp.tytul": [
+      "pl"
+    ],
+    "przyp.lista_opis": [
+      "pl"
+    ],
+    "przyp.wiersz": [
+      "pl"
+    ],
+    "przyp.edytuj_tytul": [
+      "pl"
+    ],
+    "przyp.usun": [
+      "pl"
+    ],
+    "przyp.usun_tytul": [
+      "pl"
+    ],
+    "przyp.usun_opis": [
+      "pl"
+    ],
+    "przyp.wiersz_a11y": [
+      "pl"
+    ],
+    "jednostka.m": [
+      "pl"
+    ],
+    "jednostka.yd": [
+      "pl"
+    ],
+    "jednostka.g": [
+      "pl"
+    ],
+    "jednostka.oz": [
+      "pl"
+    ],
+    "jednostka.m_nazwa": [
+      "pl"
+    ],
+    "jednostka.yd_nazwa": [
+      "pl"
+    ],
+    "jednostka.g_nazwa": [
+      "pl"
+    ],
+    "jednostka.oz_nazwa": [
+      "pl"
+    ]
+  }
+}

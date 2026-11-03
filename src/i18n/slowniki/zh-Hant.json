@@ -83,7 +83,7 @@
     "usun_pytanie": "這會從 Oczko 移除所有作品、計數器、歷史記錄、織法和照片。安全副本會保留在這部裝置上。Oczko 會在 30 天後、你下次開啟 Oczko 時刪除這些副本；若副本佔用大量空間，部分會更早刪除。",
     "usun_potwierdz": "刪除所有資料",
     "usun_pro": "Oczko Pro 不會被刪除。如果之後 Pro 沒有開啟，請在 Oczko Pro 畫面中選擇「回復購買項目」。",
-    "usun_kopia": "Oczko 會先在「檔案」App 的 Oczko › Backup 中儲存一份副本。匯入該檔案即可恢復所有內容。",
+    "usun_kopia": "Oczko 會先在「檔案」App 的 針目 › Backup 中儲存一份副本。匯入該檔案即可恢復所有內容。",
     "usun_kopia_blad": "Oczko 無法儲存副本，因此未刪除任何資料。請釋放一些空間後再試一次。",
     "ekran_nie_gasnie": "計數時保持螢幕開啟",
     "ekran_nie_gasnie_opis": "開啟計數器時，螢幕會保持開啟。關閉此選項可節省電量。",
@@ -444,7 +444,7 @@
     "import_plik": "檔案：{{plik}}",
     "scal": "與現有資料合併",
     "zastap": "取代現有資料",
-    "zastapiono": "Oczko 已先將你先前的資料儲存為「{{kopia}}」。你可以在「檔案」App 的 Oczko › Backup 中找到它。",
+    "zastapiono": "Oczko 已先將你先前的資料儲存為「{{kopia}}」。你可以在「檔案」App 的 針目 › Backup 中找到它。",
     "konflikt_tytul": "{{licznik}}有兩個版本",
     "konflikt_wybor_other": "{{count}} 段・{{urzadzenie}}・{{godzina}}",
     "konflikt_a11y_other": "保留來自{{urzadzenie}}的 {{count}} 段，{{godzina}}",
@@ -466,7 +466,7 @@
     "wylaczona": "iCloud 同步已關閉。",
     "aktywna": "iCloud 同步已開啟。",
     "zegarek_kontakt": "上次與手錶連線：{{data}}。",
-    "kopie_opis": "Oczko 在匯入或刪除前儲存的副本位於「檔案」App 的 Oczko › Backup 中。Oczko 會在 30 天後、你下次開啟 Oczko 時刪除這些副本；若副本佔用大量空間，部分會更早刪除。在那之前，它們會計入裝置的 iCloud 備份。"
+    "kopie_opis": "Oczko 在匯入或刪除前儲存的副本位於「檔案」App 的 針目 › Backup 中。Oczko 會在 30 天後、你下次開啟 Oczko 時刪除這些副本；若副本佔用大量空間，部分會更早刪除。在那之前，它們會計入裝置的 iCloud 備份。"
   },
   "zglos": {
     "tytul": "回報問題",

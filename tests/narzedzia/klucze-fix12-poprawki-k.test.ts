@@ -1,7 +1,8 @@
 // Poprawki 04 P2, sesja K (P-368; Aneks P2 poz. 5 i 6): klucze alertów błędu zapisu poza licznikiem i wzorem oraz nowa kolejność zdań w `wzor.blad_czas_opis`.
-// Wyrocznia: docs/design/fix12-2026-11-02/klucze.json. Nowe klucze en są na liście „oczekujące na falę” (P-357); przekład po audycie (P-320).
+// Wyrocznia: docs/design/fix12-2026-11-02/klucze.json. Nowe klucze en zostały przełożone w fali 2026-11-03 (P-474, po audycie P-320); lista oczekujących jest pusta.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { ZAKRES_FALI, brakiPrzekladu } from '../i18n/fala-2026-11-03';
 
 const KORZEN = join(__dirname, '../..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -20,8 +21,8 @@ describe('P2-7: klucze błędu zapisu poza licznikiem i wzorem', () => {
   test('każdy z 3 kluczy ma kontekst w en.kontekst.json z klucze.json', () => {
     for (const k of P27) expect([k, wartosc(KONTEKST, k)]).toEqual([k, ANEKS.kontekst[k]]);
   });
-  test('3 klucze są na liście „oczekujące na falę przekładu” (P-357)', () => {
-    for (const k of P27) expect(OCZEKUJACE).toContain(k);
+  test('3 klucze są w zakresie fali 2026-11-03 i mają kompletny przekład w 33 językach; nie ma ich na liście oczekujących', () => {
+    for (const k of P27) { expect([k, ZAKRES_FALI.includes(k)]).toEqual([k, true]); expect([k, OCZEKUJACE.includes(k)]).toEqual([k, false]); expect([k, brakiPrzekladu(k)]).toEqual([k, []]); }
   });
   test('`wzor.blad_czas_opis`: najpierw pewniejsze działanie (PDF), potem ponowienie — treść i kontekst z klucze.json', () => {
     expect(wartosc(EN, 'wzor.blad_czas_opis')).toBe(ANEKS.potwierdzone['wzor.blad_czas_opis']);
@@ -43,7 +44,7 @@ describe('P2-8: zdanie opisu wpisu historii dla dostępności', () => {
   test('en.kontekst.json: kontekst z klucze.json i nowa nazwa klucza w opisie', () => {
     expect(wartosc(KONTEKST, NOWY)).toBe(ANEKS.kontekst[NOWY]);
   });
-  test('klucz na liście „oczekujące na falę przekładu” (P-357)', () => {
-    expect(OCZEKUJACE).toContain(NOWY);
+  test('klucz w zakresie fali 2026-11-03 z kompletnym przekładem w 33 językach; nie na liście oczekujących', () => {
+    expect(ZAKRES_FALI).toContain(NOWY); expect(OCZEKUJACE).not.toContain(NOWY); expect(brakiPrzekladu(NOWY)).toEqual([]);
   });
 });

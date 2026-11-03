@@ -83,7 +83,7 @@
     "usun_pytanie": "Oczkoからすべてのプロジェクト、カウンター、履歴、編み図、写真が削除されます。安全用コピーはこのデバイスに残ります。Oczkoは、30日が過ぎたあと次に開いたときにコピーを削除します。容量が大きい場合は、一部をそれより早く削除します。",
     "usun_potwierdz": "すべてのデータを削除",
     "usun_pro": "Oczko Proは削除されません。削除後にオフになっている場合は、Oczko Proで「購入を復元」を選んでください。",
-    "usun_kopia": "Oczkoは先に「ファイル」アプリのOczko › Backupにコピーを保存します。そのファイルをインポートすると、すべて元に戻ります。",
+    "usun_kopia": "Oczkoは先に「ファイル」アプリの編み目 › Backupにコピーを保存します。そのファイルをインポートすると、すべて元に戻ります。",
     "usun_kopia_blad": "Oczkoはコピーを保存できなかったため、何も削除していません。空き容量を増やしてから、もう一度お試しください。",
     "ekran_nie_gasnie": "カウント中は画面をオンのままにする",
     "ekran_nie_gasnie_opis": "カウンターを開いている間、画面はオンのままです。オフにするとバッテリーを節約できます。",
@@ -444,7 +444,7 @@
     "import_plik": "ファイル：{{plik}}",
     "scal": "現在のデータと統合",
     "zastap": "現在のデータを置き換え",
-    "zastapiono": "Oczkoは以前のデータを先に「{{kopia}}」として保存しました。「ファイル」アプリのOczko › Backupにあります。",
+    "zastapiono": "Oczkoは以前のデータを先に「{{kopia}}」として保存しました。「ファイル」アプリの編み目 › Backupにあります。",
     "konflikt_tytul": "{{licznik}}の2つのバージョン",
     "konflikt_wybor_other": "{{count}}段 · {{urzadzenie}} · {{godzina}}",
     "konflikt_a11y_other": "{{urzadzenie}}の{{count}}段を残す（{{godzina}}）",
@@ -466,7 +466,7 @@
     "wylaczona": "iCloud同期はオフです。",
     "aktywna": "iCloud同期はオンです。",
     "zegarek_kontakt": "Apple Watchとの最終通信：{{data}}。",
-    "kopie_opis": "インポートや削除の前にOczkoが保存したコピーは、「ファイル」アプリのOczko › Backupにあります。Oczkoは、30日が過ぎたあと次に開いたときにコピーを削除します。容量が大きい場合は、一部をそれより早く削除します。それまでは、このデバイスのiCloudバックアップの容量に含まれます。"
+    "kopie_opis": "インポートや削除の前にOczkoが保存したコピーは、「ファイル」アプリの編み目 › Backupにあります。Oczkoは、30日が過ぎたあと次に開いたときにコピーを削除します。容量が大きい場合は、一部をそれより早く削除します。それまでは、このデバイスのiCloudバックアップの容量に含まれます。"
   },
   "zglos": {
     "tytul": "問題を報告",

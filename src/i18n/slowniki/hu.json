@@ -101,7 +101,7 @@
     "usun_pytanie": "Ez minden projektet, sorszámlálót, előzményt, leírást és fotót töröl az Oczko alkalmazásból. A biztonsági másolatok ezen az eszközön maradnak. Az Oczko 30 nap után törli őket, amikor legközelebb megnyitja az alkalmazást, és némelyiket korábban is, ha sok helyet foglalnak.",
     "usun_potwierdz": "Minden adat törlése",
     "usun_pro": "Az Oczko Pro nem törlődik. Ha utána nem aktív, válassza a Vásárlások visszaállítása lehetőséget az Oczko Pro képernyőn.",
-    "usun_kopia": "Az Oczko előbb másolatot ment a Fájlok appba, az Oczko › Backup mappába. Ha importálja ezt a fájlt, minden visszakerül.",
+    "usun_kopia": "Az Oczko előbb másolatot ment a Fájlok appba, az Szem › Backup mappába. Ha importálja ezt a fájlt, minden visszakerül.",
     "usun_kopia_blad": "Az Oczko nem tudott másolatot menteni, ezért semmi sem törlődött. Szabadítson fel helyet, és próbálja újra.",
     "ekran_nie_gasnie": "Képernyő bekapcsolva számoláskor",
     "ekran_nie_gasnie_opis": "A képernyő bekapcsolva marad, amíg a sorszámláló nyitva van. A kikapcsolása kímélheti az akkumulátort.",
@@ -499,7 +499,7 @@
     "import_plik": "Fájl: {{plik}}",
     "scal": "Egyesítés a meglévővel",
     "zastap": "A meglévő felülírása",
-    "zastapiono": "Az Oczko előbb „{{kopia}}” néven mentette a korábbi adatait. A Fájlok appban, az Oczko › Backup mappában találja.",
+    "zastapiono": "Az Oczko előbb „{{kopia}}” néven mentette a korábbi adatait. A Fájlok appban, az Szem › Backup mappában találja.",
     "konflikt_tytul": "A(z) {{licznik}} két változata",
     "konflikt_wybor_one": "{{count}} sor · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} sor · {{urzadzenie}} · {{godzina}}",
@@ -527,7 +527,7 @@
     "wylaczona": "Az iCloud-szinkronizálás ki van kapcsolva.",
     "aktywna": "Az iCloud-szinkronizálás be van kapcsolva.",
     "zegarek_kontakt": "Utolsó kapcsolat az órával: {{data}}.",
-    "kopie_opis": "Az Oczko által importálás vagy törlés előtt mentett másolatok a Fájlok appban, az Oczko › Backup mappában vannak. Az Oczko 30 nap után törli őket, amikor legközelebb megnyitja az alkalmazást, és némelyiket korábban is, ha sok helyet foglalnak. Addig beleszámítanak az eszköz iCloud-biztonsági mentésébe."
+    "kopie_opis": "Az Oczko által importálás vagy törlés előtt mentett másolatok a Fájlok appban, az Szem › Backup mappában vannak. Az Oczko 30 nap után törli őket, amikor legközelebb megnyitja az alkalmazást, és némelyiket korábban is, ha sok helyet foglalnak. Addig beleszámítanak az eszköz iCloud-biztonsági mentésébe."
   },
   "zglos": {
     "tytul": "Hiba jelentése",

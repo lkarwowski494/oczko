@@ -22,7 +22,8 @@ describe('workflow przeklad-tlumaczen.yml', () => {
   test('domyślnie tylko szacunek, limit 6 USD bez zgody, zakres = oczekujace.json bez pl, wynik jako artefakt 7 dni', () => {
     expect(bezKomentarzy).toMatch(/tylko_szacuj:[\s\S]*?default: true/);
     expect(bezKomentarzy).toMatch(/zgoda_koszt:[\s\S]*?default: 'nie'/);
-    expect((bezKomentarzy.match(/--zakres docs\/lokalizacja\/oczekujace\.json --pomin pl/g) ?? []).length).toBe(2);
+    expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/oczekujace\.json/g) ?? []).length).toBe(2);
+    expect((bezKomentarzy.match(/--zakres "\$ZAKRES" --pomin pl --wyjscie "\$WYJ"/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/upload-artifact@v4[\s\S]*name: raport-przekladu[\s\S]*retention-days: 7/);
     expect(bezKomentarzy).not.toMatch(/src\/i18n\/slowniki/);
   });
@@ -31,5 +32,15 @@ describe('workflow przeklad-tlumaczen.yml', () => {
     expect(bezKomentarzy).toMatch(/WEJ_WYSILEK: \$\{\{ inputs\.wysilek \}\}/);
     expect((bezKomentarzy.match(/--wysilek "\$WEJ_WYSILEK"/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/powyżej 30 USD/); expect(bezKomentarzy).not.toMatch(/6 USD/);
+  });
+  test('tryb przeglad (P-486): wejście tryb przeklad|przeglad (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
+    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad\]/);
+    expect(bezKomentarzy).toMatch(/WEJ_TRYB: \$\{\{ inputs\.tryb \}\}/);
+    expect((bezKomentarzy.match(/--tryb "\$WEJ_TRYB"/g) ?? []).length).toBe(2);
+    expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/zakres-fali-2026-11-03\.json; WYJ=raport-przegladu/g) ?? []).length).toBe(2);
+    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'przeglad'[\s\S]*?name: raport-przegladu[\s\S]*?retention-days: 7/);
+    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb != 'przeglad'/);
+    expect(bezKomentarzy.match(/secrets\./g)).toHaveLength(1);
+    expect(bezKomentarzy).not.toMatch(/src\/i18n\/slowniki/);
   });
 });

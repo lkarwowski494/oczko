@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { ZAKRES_FALI, brakiPrzekladu } from './fala-2026-11-03';
 
 const KORZEN = join(__dirname, '..', '..');
 const skrypt = join(KORZEN, 'scripts', 'sprawdz-i18n.mjs');
@@ -122,12 +123,22 @@ describe('docs/lokalizacja/oczekujace.json w repo', () => {
   const plik = join(KORZEN, 'docs/lokalizacja/oczekujace.json');
   const wczytaj = () => JSON.parse(readFileSync(plik, 'utf8')) as { powod: string; odwolania: string[]; klucze: string[]; przetlumaczone_czesciowo?: Record<string, string[]> };
 
-  it('ma powód i odwołania do P-320 i P-357; klucze bez powtórzeń, posortowane', () => {
+  it('ma powód i odwołania do P-320, P-357 i fali przekładu (P-474, P-481); klucze bez powtórzeń, posortowane; pusta lista jest stanem poprawnym (po fali 2026-11-03)', () => {
     const l = wczytaj();
     expect(l.powod.length).toBeGreaterThan(20);
-    expect(l.odwolania).toEqual(expect.arrayContaining(['P-320', 'P-357']));
-    expect(l.klucze.length).toBeGreaterThan(0);
+    expect(l.odwolania).toEqual(expect.arrayContaining(['P-320', 'P-357', 'P-474', 'P-481']));
+    expect(Array.isArray(l.klucze)).toBe(true);
     expect([...new Set(l.klucze)].sort()).toEqual(l.klucze);
+  });
+  it('pusta lista nie zostawia pozostałości: przetlumaczone_czesciowo i pierwsze_w_fali puste; każdy wpis mapy i pierwsze_w_fali dotyczy klucza z listy', () => {
+    const l = wczytaj() as { klucze: string[]; pierwsze_w_fali?: string[]; przetlumaczone_czesciowo?: Record<string, string[]> };
+    expect(Object.keys(l.przetlumaczone_czesciowo ?? {}).filter((k) => !l.klucze.includes(k))).toEqual([]);
+    expect((l.pierwsze_w_fali ?? []).filter((k) => !l.klucze.includes(k))).toEqual([]);
+  });
+  it('zakres fali 2026-11-03 (kopia listy sprzed fali, P-486): 146 baz, żadna nie wróciła na listę oczekujących, każda ma kompletny przekład w 33 językach', () => {
+    expect(ZAKRES_FALI).toHaveLength(146);
+    expect(ZAKRES_FALI.filter((k) => wczytaj().klucze.includes(k))).toEqual([]);
+    expect(ZAKRES_FALI.flatMap((k) => brakiPrzekladu(k).map((j) => `${j} ${k}`))).toEqual([]);
   });
   it('lista = dokładnie różnica en ↔ słowniki: bramka i18n na repo kończy się kodem 0', () => {
     const r = spawnSync(process.execPath, [skrypt, 'src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json'], { cwd: KORZEN, encoding: 'utf8' });

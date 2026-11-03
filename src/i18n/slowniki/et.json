@@ -101,7 +101,7 @@
     "usun_pytanie": "See eemaldab Oczkost kõik projektid, loendurid, ajaloo, juhendid ja fotod. Turvakoopiad jäävad sellesse seadmesse. Oczko kustutab need 30 päeva möödudes, kui sa Oczko järgmine kord avad, ja mõned varem, kui need võtavad palju ruumi.",
     "usun_potwierdz": "Kustuta kõik andmed",
     "usun_pro": "Oczko Pro-d ei kustutata. Kui see on pärast väljas, vali Oczko Pro kuval „Taasta ostud“.",
-    "usun_kopia": "Oczko salvestab enne koopia rakendusse Failid, kausta Oczko › Backup. Selle faili importimine taastab kõik.",
+    "usun_kopia": "Oczko salvestab enne koopia rakendusse Failid, kausta Silmus › Backup. Selle faili importimine taastab kõik.",
     "usun_kopia_blad": "Oczko ei saanud koopiat salvestada, seega midagi ei kustutatud. Vabasta ruumi ja proovi uuesti.",
     "ekran_nie_gasnie": "Hoia ekraan loendamisel sees",
     "ekran_nie_gasnie_opis": "Ekraan jääb sisse, kuni loendur on avatud. Väljalülitamine võib akut säästa.",
@@ -499,7 +499,7 @@
     "import_plik": "Fail: {{plik}}",
     "scal": "Ühenda olemasolevaga",
     "zastap": "Asenda olemasolev",
-    "zastapiono": "Oczko salvestas sinu varasemad andmed enne koopiana „{{kopia}}“. Leiad selle rakendusest Failid, kaustast Oczko › Backup.",
+    "zastapiono": "Oczko salvestas sinu varasemad andmed enne koopiana „{{kopia}}“. Leiad selle rakendusest Failid, kaustast Silmus › Backup.",
     "konflikt_tytul": "Kaks versiooni: {{licznik}}",
     "konflikt_wybor_one": "{{count}} rida · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} rida · {{urzadzenie}} · {{godzina}}",
@@ -527,7 +527,7 @@
     "wylaczona": "iCloudi sünkroonimine on väljas.",
     "aktywna": "iCloudi sünkroonimine on sees.",
     "zegarek_kontakt": "Viimane kontakt kellaga: {{data}}.",
-    "kopie_opis": "Koopiad, mille Oczko enne importimist või kustutamist salvestas, on rakenduses Failid, kaustas Oczko › Backup. Oczko kustutab need 30 päeva möödudes, kui sa Oczko järgmine kord avad, ja mõned varem, kui need võtavad palju ruumi. Seni arvestatakse need seadme iCloudi varukoopiasse."
+    "kopie_opis": "Koopiad, mille Oczko enne importimist või kustutamist salvestas, on rakenduses Failid, kaustas Silmus › Backup. Oczko kustutab need 30 päeva möödudes, kui sa Oczko järgmine kord avad, ja mõned varem, kui need võtavad palju ruumi. Seni arvestatakse need seadme iCloudi varukoopiasse."
   },
   "zglos": {
     "tytul": "Teata probleemist",

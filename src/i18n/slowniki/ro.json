@@ -119,7 +119,7 @@
     "usun_pytanie": "Astfel se șterg din Oczko toate proiectele, numărătoarele, istoricul, modelele și fotografiile. Copiile de siguranță rămân pe acest dispozitiv. Oczko le șterge după 30 de zile, la următoarea deschidere, iar pe unele mai devreme, dacă ocupă mult spațiu.",
     "usun_potwierdz": "Șterge toate datele",
     "usun_pro": "Oczko Pro nu se șterge. Dacă după aceea este dezactivat, alegeți Restaurați achizițiile în Oczko Pro.",
-    "usun_kopia": "Oczko salvează mai întâi o copie în aplicația Fișiere, în Oczko › Backup. Dacă importați acel fișier, totul revine.",
+    "usun_kopia": "Oczko salvează mai întâi o copie în aplicația Fișiere, în Ochi › Backup. Dacă importați acel fișier, totul revine.",
     "usun_kopia_blad": "Oczko nu a putut salva o copie, așa că nu s-a șters nimic. Eliberați spațiu și încercați din nou.",
     "ekran_nie_gasnie": "Ecran pornit în timpul numărării",
     "ekran_nie_gasnie_opis": "Ecranul rămâne pornit cât timp numărătorul este deschis. Dezactivarea poate economisi bateria.",
@@ -554,7 +554,7 @@
     "import_plik": "Fișier: {{plik}}",
     "scal": "Îmbină cu ce există aici",
     "zastap": "Înlocuiește ce există aici",
-    "zastapiono": "Oczko a salvat mai întâi datele anterioare ca „{{kopia}}”. Îl găsiți în aplicația Fișiere, în Oczko › Backup.",
+    "zastapiono": "Oczko a salvat mai întâi datele anterioare ca „{{kopia}}”. Îl găsiți în aplicația Fișiere, în Ochi › Backup.",
     "konflikt_tytul": "Două versiuni pentru {{licznik}}",
     "konflikt_wybor_one": "{{count}} rând · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_few": "{{count}} rânduri · {{urzadzenie}} · {{godzina}}",
@@ -588,7 +588,7 @@
     "wylaczona": "Sincronizarea iCloud este dezactivată.",
     "aktywna": "Sincronizarea iCloud este activată.",
     "zegarek_kontakt": "Ultimul contact cu ceasul tău: {{data}}.",
-    "kopie_opis": "Copiile salvate de Oczko înainte de import sau ștergere se află în aplicația Fișiere, în Oczko › Backup. Oczko le șterge după 30 de zile, la următoarea deschidere, iar pe unele mai devreme, dacă ocupă mult spațiu. Până atunci, sunt incluse în backupul iCloud al dispozitivului."
+    "kopie_opis": "Copiile salvate de Oczko înainte de import sau ștergere se află în aplicația Fișiere, în Ochi › Backup. Oczko le șterge după 30 de zile, la următoarea deschidere, iar pe unele mai devreme, dacă ocupă mult spațiu. Până atunci, sunt incluse în backupul iCloud al dispozitivului."
   },
   "zglos": {
     "tytul": "Raportează o problemă",

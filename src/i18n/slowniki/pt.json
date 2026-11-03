@@ -119,7 +119,7 @@
     "usun_pytanie": "Isto remove todos os projetos, contadores, histórico, modelos e fotografias do Oczko. As cópias de segurança ficam neste dispositivo. O Oczko elimina-as passados 30 dias, da próxima vez que for aberto, e algumas mais cedo se ocuparem muito espaço.",
     "usun_potwierdz": "Apagar todos os dados",
     "usun_pro": "O Oczko Pro não é eliminado. Se depois estiver desativado, escolha Restaurar compras no Oczko Pro.",
-    "usun_kopia": "Primeiro, o Oczko guarda uma cópia na app Ficheiros, em Oczko › Backup. Importar esse ficheiro repõe tudo.",
+    "usun_kopia": "Primeiro, o Oczko guarda uma cópia na app Ficheiros, em Malha › Backup. Importar esse ficheiro repõe tudo.",
     "usun_kopia_blad": "O Oczko não conseguiu guardar uma cópia, por isso nada foi eliminado. Liberte espaço e tente novamente.",
     "ekran_nie_gasnie": "Manter ecrã ligado ao contar",
     "ekran_nie_gasnie_opis": "O ecrã fica ligado enquanto o contador está aberto. Desativar esta opção pode poupar bateria.",
@@ -554,7 +554,7 @@
     "import_plik": "Ficheiro: {{plik}}",
     "scal": "Juntar ao que já existe",
     "zastap": "Substituir o que já existe",
-    "zastapiono": "O Oczko guardou primeiro os seus dados anteriores no ficheiro «{{kopia}}». Pode encontrá-lo na app Ficheiros, em Oczko › Backup.",
+    "zastapiono": "O Oczko guardou primeiro os seus dados anteriores no ficheiro «{{kopia}}». Pode encontrá-lo na app Ficheiros, em Malha › Backup.",
     "konflikt_tytul": "Duas versões de {{licznik}}",
     "konflikt_wybor_one": "{{count}} carreira · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_many": "{{count}} de carreiras · {{urzadzenie}} · {{godzina}}",
@@ -588,7 +588,7 @@
     "wylaczona": "A sincronização do iCloud está desativada.",
     "aktywna": "A sincronização do iCloud está ativada.",
     "zegarek_kontakt": "Último contacto com o relógio: {{data}}.",
-    "kopie_opis": "As cópias que o Oczko guardou antes de importar ou eliminar estão na app Ficheiros, em Oczko › Backup. O Oczko elimina-as passados 30 dias, da próxima vez que for aberto, e algumas mais cedo se ocuparem muito espaço. Até lá, contam para a cópia de segurança em iCloud do dispositivo."
+    "kopie_opis": "As cópias que o Oczko guardou antes de importar ou eliminar estão na app Ficheiros, em Malha › Backup. O Oczko elimina-as passados 30 dias, da próxima vez que for aberto, e algumas mais cedo se ocuparem muito espaço. Até lá, contam para a cópia de segurança em iCloud do dispositivo."
   },
   "zglos": {
     "tytul": "Comunicar um problema",

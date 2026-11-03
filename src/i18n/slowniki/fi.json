@@ -101,7 +101,7 @@
     "usun_pytanie": "Tämä poistaa Oczkosta kaikki projektit, kerroslaskimet, historian, ohjeet ja kuvat. Varmuuskopiot jäävät tälle laitteelle. Oczko poistaa ne 30 päivän jälkeen, kun seuraavan kerran avaat sen, ja osan aiemmin, jos ne vievät paljon tilaa.",
     "usun_potwierdz": "Poista kaikki tiedot",
     "usun_pro": "Oczko Pro ei poistu. Jos se on tämän jälkeen pois päältä, valitse Oczko Pro ‑näytöllä Palauta ostot.",
-    "usun_kopia": "Oczko tallentaa ensin kopion Tiedostot-appiin kansioon Oczko › Backup. Kun tuot tämän tiedoston, kaikki palautuu.",
+    "usun_kopia": "Oczko tallentaa ensin kopion Tiedostot-appiin kansioon Silmukka › Backup. Kun tuot tämän tiedoston, kaikki palautuu.",
     "usun_kopia_blad": "Oczko ei voinut tallentaa kopiota, joten mitään ei poistettu. Vapauta tilaa ja yritä uudelleen.",
     "ekran_nie_gasnie": "Pidä näyttö päällä laskiessa",
     "ekran_nie_gasnie_opis": "Näyttö pysyy päällä, kun kerroslaskin on auki. Asetuksen kytkeminen pois voi säästää akkua.",
@@ -499,7 +499,7 @@
     "import_plik": "Tiedosto: {{plik}}",
     "scal": "Yhdistä nykyisiin",
     "zastap": "Korvaa nykyiset",
-    "zastapiono": "Oczko tallensi ensin aiemmat tietosi nimellä ”{{kopia}}”. Löydät sen Tiedostot-apista kansiosta Oczko › Backup.",
+    "zastapiono": "Oczko tallensi ensin aiemmat tietosi nimellä ”{{kopia}}”. Löydät sen Tiedostot-apista kansiosta Silmukka › Backup.",
     "konflikt_tytul": "Kaksi versiota: {{licznik}}",
     "konflikt_wybor_one": "{{count}} kerros · {{urzadzenie}} · {{godzina}}",
     "konflikt_wybor_other": "{{count}} kerrosta · {{urzadzenie}} · {{godzina}}",
@@ -527,7 +527,7 @@
     "wylaczona": "iCloud-synkronointi on pois päältä.",
     "aktywna": "iCloud-synkronointi on päällä.",
     "zegarek_kontakt": "Viimeisin yhteys kelloosi: {{data}}.",
-    "kopie_opis": "Kopiot, jotka Oczko tallensi ennen tuontia tai poistoa, ovat Tiedostot-apissa kansiossa Oczko › Backup. Oczko poistaa ne 30 päivän jälkeen, kun seuraavan kerran avaat sen, ja osan aiemmin, jos ne vievät paljon tilaa. Siihen asti ne lasketaan mukaan laitteesi iCloud-varmuuskopioon."
+    "kopie_opis": "Kopiot, jotka Oczko tallensi ennen tuontia tai poistoa, ovat Tiedostot-apissa kansiossa Silmukka › Backup. Oczko poistaa ne 30 päivän jälkeen, kun seuraavan kerran avaat sen, ja osan aiemmin, jos ne vievät paljon tilaa. Siihen asti ne lasketaan mukaan laitteesi iCloud-varmuuskopioon."
   },
   "zglos": {
     "tytul": "Ilmoita ongelmasta",
