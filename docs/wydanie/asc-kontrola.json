@@ -53,9 +53,9 @@
     "plik": "docs/wydanie/metadane/adresy.json"
   },
   "kategoria": {
-    "glowna": null,
+    "glowna": "LIFESTYLE",
     "dodatkowa": null,
-    "_uwaga": "[DO USTALENIA] Lifestyle vs Productivity (docs/wzrost.md: rekomendacja badania Lifestyle); po wyborze wpisz kod kategorii ASC"
+    "_uwaga": "P-501/P-514: Lifestyle (rekomendacja badania, docs/wzrost.md); bez kategorii dodatkowej jak Trening (Z-20); ustawia właściciel w ASC → App Information"
   },
   "wiek": {},
   "dostepnosc": {
