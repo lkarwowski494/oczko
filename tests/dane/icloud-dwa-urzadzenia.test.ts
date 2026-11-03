@@ -421,4 +421,37 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     expect(await n(b.s.baza, 'SELECT count(*) AS n FROM zmiana_icloud')).toBe(0);
     expect(serwer.rekordy.has(`projekt:${p.id}`)).toBe(true);
   });
+
+  // M1-audytor-generalny-116 (05-architekt-511, regresja od M1-005): CloudKit dostarcza nagrobki w kilku partiach; nagrobek zdarzenia w partii
+  // bez nagrobka licznika (albo po odtworzeniu projektu w koszu w poprzedniej partii) kasował zdarzenie — dziura w historii na B, licznik 0 na A.
+  test.each(['zdarzenie_najpierw', 'kolejnosc_skrzynki_A', 'jedna_partia'] as const)('nagrobki w partiach (%s): na B projekt w koszu z 4 zdarzeniami, licznik 4 na A i B, zrzut(A) = zrzut(B)', async (podzial) => {
+    const serwer = serwerIcloud();
+    const a = await urzadzenie(serwer, 'iphone', 'a');
+    const b = await urzadzenie(serwer, 'ipad', 'b');
+    const l = await szybki(a.s.z);
+    for (let i = 0; i < 3; i += 1) await dodajRzad(a.s.z, { licznikId: l }); // E1–E3 zsynchronizowane
+    await a.st.wlacz(); await b.st.wlacz(); await b.u.dostarcz();
+    b.u.bladWysylki = { kod: 'siec' };
+    expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true); // E4 niewysłane na B
+    const przed = await licznosci(b.s.baza);
+    expect(przed).toMatchObject({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, poczekalnia: 0, blad: 0, projekt_w_koszu: 0 });
+    const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
+    await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie na A
+    await a.st.wyslijZaleglosci();
+    const wszystkie = [...serwer.usuniete.values()];
+    const zd = wszystkie.filter((u) => u.encja === 'zdarzenie').sort((x, y) => x.klucz.localeCompare(y.klucz));
+    const wgSkrzynki = [...wszystkie].sort((x, y) => x.encja.localeCompare(y.encja) || x.klucz.localeCompare(y.klucz));
+    const partie = podzial === 'zdarzenie_najpierw' ? [[zd[0]], wszystkie.filter((u) => u !== zd[0])]
+      : podzial === 'kolejnosc_skrzynki_A' ? [wgSkrzynki.slice(0, 4), wgSkrzynki.slice(4)] : [wszystkie];
+    for (const usuniete of partie) await b.u.dostarcz({ rekordy: [], usuniete });
+    const poNagrobkach = await licznosci(b.s.baza);
+    expect({ ...poNagrobkach, zmiana_icloud: 0 }).toEqual({ ...przed, zmiana_icloud: 0, projekt_w_koszu: 1 });
+    expect(await licznik(b.s.baza, l)).toEqual([{ wartosc: 4, konflikt: 0 }]);
+    b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
+    await a.u.dostarcz();
+    expect(await licznosci(a.s.baza)).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1 });
+    expect(await licznik(a.s.baza, l)).toEqual([{ wartosc: 4, konflikt: 0 }]);
+    expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
+    for (const baza of [a.s.baza, b.s.baza]) expect([await baza.all('PRAGMA integrity_check'), await baza.all('PRAGMA foreign_key_check')]).toEqual([[{ integrity_check: 'ok' }], []]);
+  });
 });
