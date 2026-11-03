@@ -158,6 +158,14 @@ describe('docs/lokalizacja/oczekujace.json w repo', () => {
       expect([j, l.klucze.filter((k) => wMapie(k) && !formy.has(k))]).toEqual([j, []]);
     }
   });
+  // M1-audytor-generalny-129 (09-lokalizacja-513, trwała kontrola 504): każde P-NNN z listy (odwolania i powod) ma wiersz w docs/decyzje.md.
+  it('każda decyzja P-NNN z odwolania i powod ma wiersz „| P-NNN |” w docs/decyzje.md', () => {
+    const l = wczytaj();
+    const rejestr = readFileSync(join(KORZEN, 'docs/decyzje.md'), 'utf8');
+    const numery = [...new Set([...l.odwolania, ...(l.powod.match(/P-\d{3}/g) ?? [])])].sort();
+    expect(numery.length).toBeGreaterThan(0);
+    expect(numery.filter((p) => !new RegExp(`^\\| ${p} \\|`, 'm').test(rejestr))).toEqual([]);
+  });
   it('kontrola-ipa.sh woła bramkę i18n z --wydanie jako BŁĄD wydania', () => {
     const sh = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
     expect(sh).toMatch(/node scripts\/sprawdz-i18n\.mjs src\/i18n\/slowniki --zrodlo en --oczekujace docs\/lokalizacja\/oczekujace\.json --krytyczne docs\/lokalizacja\/krytyczne\.json --przeglad docs\/lokalizacja\/przeglad-krytyczne\.json --wydanie \|\| bledy=\$\(\(bledy \+ 1\)\)/);
