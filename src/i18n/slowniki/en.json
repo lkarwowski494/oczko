@@ -745,6 +745,8 @@
   "karta": {
     "stopka": "Counted in Oczko",
     "czas": "crafting time",
+    "dni_podpis_one": "crafting day",
+    "dni_podpis_other": "crafting days",
     "obraz_a11y": "Card for {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {

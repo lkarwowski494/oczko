@@ -49,7 +49,7 @@ describe.each(PRZYPADKI)('M1-018 %s, %i rzędów → „%s”', (jezyk, n, forma
   });
 
   test('obraz karty ukończenia: podpis kolumny pod liczbą rzędów', () => {
-    render(<ObrazKarty stan={{ ...KARTA, rzedy: n, wloczka: [] }} t={t} />);
+    render(<ObrazKarty stan={{ ...KARTA, rzedy: n, wloczka: [] }} t={t} formatuj={String} />);
     expect(screen.getByText(forma)).toBeTruthy();
     for (const f of inneFormy()) expect(screen.queryByText(f)).toBeNull();
   });

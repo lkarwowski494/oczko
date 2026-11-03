@@ -668,6 +668,7 @@
   "karta": {
     "stopka": "Obraz karty ukończenia do udostępnienia (F-53, BR-PRJ-015 S1–S3, ER-24, P-191 P10a): plik 1080 × 1350, zawsze w kolorach motywu jasnego, bez metadanych położenia: stopka obok znaku kresek. „Oczko” to nazwa aplikacji, nie tłumaczyć.",
     "czas": "Obraz karty ukończenia do udostępnienia (F-53, BR-PRJ-015 S1–S3, ER-24, P-191 P10a): plik 1080 × 1350, zawsze w kolorach motywu jasnego, bez metadanych położenia: podpis pod czasem ze stopera (np. „18 h”); bez sesji cała kolumna znika (S3).",
+    "dni_podpis": "Podpis pod dużą liczbą dni na obrazie karty ukończenia (PNG do udostępnienia; design-spec „Obraz karty ukończenia”). Liczba stoi osobno nad tym tekstem, sformatowana przez aplikację; formę liczby mnogiej wybiera count = ta liczba (en: 1 crafting day, 2 crafting days). Sam rzeczownik (z przymiotnikiem), bez liczby, klasyfikatora liczebnika ani przyimka, który wymaga liczby obok (ja bez 日 po liczbie, zh-Hant bez 個, ro bez „de”). „Crafting day” = dzień z co najmniej jednym rzędem, jak w ukonczenie.dni (P-302). Ok. 20 znaków (M1-audytor-generalny-098).",
     "obraz_a11y": "Obraz karty ukończenia do udostępnienia (F-53, BR-PRJ-015 S1–S3, ER-24, P-191 P10a): plik 1080 × 1350, zawsze w kolorach motywu jasnego, bez metadanych położenia: opis obrazu w podglądzie (VoiceOver); {{szczegoly}} = okres, dni, czas, rzędy połączone przecinkami."
   },
   "wzor": {

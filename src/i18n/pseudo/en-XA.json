@@ -682,6 +682,8 @@
   "zdjecia.otworz_ustawienia": "⟦Öpéñ Šéttîñgš~~~~~~~~~~⟧",
   "karta.stopka": "⟦Çöûñtéd îñ Öçžkö~~~~~~~~~~~~⟧",
   "karta.czas": "⟦çŕàftîñg tîmé~~~~~~~~~~⟧",
+  "karta.dni_podpis_one": "⟦çŕàftîñg dàý~~~~~~~~~⟧",
+  "karta.dni_podpis_other": "⟦çŕàftîñg dàýš~~~~~~~~~~⟧",
   "karta.obraz_a11y": "⟦Çàŕd föŕ {{nazwa}}: {{szczegoly}}~~~~~~~⟧",
   "wzor.zaznacz_rzad": "⟦Màŕk ŕöw~~~~~~~⟧",
   "wzor.kierunek_pytanie": "⟦Whîçh wàý dö ŕöwš gö öñ thîš pàgé?~~~~~~~~~~~~~~~~⟧",
