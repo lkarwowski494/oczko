@@ -12,7 +12,7 @@ import { odczytajUstawienie, zapiszUstawienie } from '../dane/repozytoria/ustawi
 import { czasZmiany, otworzDoCzytania, rozmiar, usunPlik } from '../dane/pliki/system';
 import { ODRZUCENIA_TRWALE, usunStarszeOczekujace } from './rysunki-oczekujace';
 import { OK, blad, operacjaZapisu, wTransakcji } from './zapis';
-import { wKolejce } from './kolejka';
+import { wKolejce, wKolejceKlucza } from './kolejka';
 import type { ZaleznosciPlikow } from './zaleznosci';
 
 const NAGLOWEK_PDF = '%PDF-';
@@ -258,8 +258,12 @@ export function przywrocWzor(z: ZaleznosciPlikow, w: { wzorId: string }): Promis
  * Rysunek strony (ADR-0012 uzupełnienie): plik do magazynu przed kolejką, potem UPSERT (wzor_id, strona); poprzedni plik bez odwołań
  * usuwany po COMMIT. M1-084: plik z modułu natywnego znika po zapisie albo odrzuceniu trwałym; przy innym błędzie (SQLITE_FULL, brak miejsca,
  * wyjątek) zostaje do ponowienia (`odzyskajRysunki`). Po zapisie starsze pliki tej strony znikają (cały rysunek strony; starszy by go cofnął).
+ * M1-105: zapisy tej samej strony po kolei w kolejności wywołań (plik, transakcja, sprzątanie), bo krok magazynu jest przed kolejką bazy.
  */
-export async function zapiszRysunek(z: ZaleznosciPlikow, w: { wzorId: string; strona: number; plikTymczasowy: string }): Promise<Wynik<void>> {
+export function zapiszRysunek(z: ZaleznosciPlikow, w: { wzorId: string; strona: number; plikTymczasowy: string }): Promise<Wynik<void>> {
+  return wKolejceKlucza(z.baza, `rysunek:${w.wzorId}:${w.strona}`, () => zapiszRysunekStrony(z, w)); // M1-105: starszy zapis strony nie wyprzedzi nowszego
+}
+async function zapiszRysunekStrony(z: ZaleznosciPlikow, w: { wzorId: string; strona: number; plikTymczasowy: string }): Promise<Wynik<void>> {
   const czas = czasZmiany(w.plikTymczasowy); // przed zapisem: po udanym plik znika
   let wynik: Wynik<void> | null = null;
   try {

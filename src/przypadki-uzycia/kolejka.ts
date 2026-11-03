@@ -10,3 +10,18 @@ export function wKolejce<T>(baza: PortBazy, zadanie: () => Promise<T>): Promise<
   ogony.set(baza, wynik.catch(() => undefined)); // błąd zostaje u wołającego; następna pozycja i tak rusza
   return wynik;
 }
+
+const ogonyKluczy = new WeakMap<PortBazy, Map<string, Promise<unknown>>>();
+/**
+ * M1-105: kolejka na klucz (np. strona rysunku) dla zadań, które przed `wKolejce` robią coś poza bazą (plik do magazynu): następne zadanie z tym
+ * kluczem rusza po poprzednim, więc kolejność zapisów wyznacza kolejność wywołań, a nie czas kroku poza bazą. Pusty ogon znika z mapy.
+ */
+export function wKolejceKlucza<T>(baza: PortBazy, klucz: string, zadanie: () => Promise<T>): Promise<T> {
+  const mapa = ogonyKluczy.get(baza) ?? new Map<string, Promise<unknown>>();
+  ogonyKluczy.set(baza, mapa);
+  const wynik = (mapa.get(klucz) ?? Promise.resolve()).then(zadanie, zadanie);
+  const ogon = wynik.catch(() => undefined);
+  mapa.set(klucz, ogon);
+  void ogon.then(() => { if (mapa.get(klucz) === ogon) mapa.delete(klucz); });
+  return wynik;
+}
