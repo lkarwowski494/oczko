@@ -3037,6 +3037,98 @@
           "sha": "6dc931b18df4"
         }
       }
+    },
+    "pl": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "479633e9f089"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "a4fc95bb10c1"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "c42eccd88b2e"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "499c19fda831"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "2518baec00fc"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "86737254e8e9"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "de7a77181e9b"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "67b50b8fdc80"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "a5c42cf2e3ca"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "właściciel zaakceptował teksty pl (P-473, P-505) + porównanie z en i twierdzeniami: rola 06 (AI); zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "akceptacja-wlasciciela-pl",
+          "wynik": "zgodny",
+          "sha": "1d45de22795d"
+        }
+      }
     }
   }
 }
