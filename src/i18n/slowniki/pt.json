@@ -718,7 +718,7 @@
     "na_4in": "por 4 pol.",
     "szerokosc_cm": "Largura pretendida, cm",
     "szerokosc_in": "Largura pretendida, pol.",
-    "zaproszenie_szerokosc": "Indique a largura para obter o número de malhas.",
+    "zaproszenie_szerokosc": "Indique a largura para obter o número de pontos.",
     "przeliczona_one": "= {{p}} malha por 10 cm",
     "przeliczona_many": "= {{p}} de malhas por 10 cm",
     "przeliczona_other": "= {{p}} malhas por 10 cm",

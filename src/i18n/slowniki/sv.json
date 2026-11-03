@@ -166,11 +166,11 @@
     "ladowanie": "Läser in…",
     "blad_wczytania": "Kunde inte läsa in det här.",
     "ponow": "Försök igen",
-    "odrzuc_tytul": "Ignorera ändringar?",
+    "odrzuc_tytul": "Släng ändringar?",
     "odrzuc_opis_zmiany": "Allt förblir som det var.",
     "odrzuc_opis_nowy": "Inget läggs till.",
     "wroc_do_edycji": "Tillbaka till redigering",
-    "odrzuc_zmiany": "Ignorera ändringar"
+    "odrzuc_zmiany": "Släng ändringar"
   },
   "projekty": {
     "szukaj": "Sök",

@@ -904,7 +904,7 @@
     "przelacznik": "Mit iCloud synchronisieren",
     "opis": "Hält Projekte, Anleitungen und Verlauf auf deinen Geräten gleich. Deine Daten gehen nur an dein eigenes iCloud; Oczko hat keinen Server.",
     "wlacz_tytul": "iCloud-Sync einschalten?",
-    "wlacz_opis": "Projekte auf diesem Gerät und die bereits in deiner iCloud werden zusammengeführt. Nichts wird gelöscht. Wenn ein Zähler unterschiedliche Werte hat, zeigt Oczko beide an und du wählst.",
+    "wlacz_opis": "Projekte auf diesem Gerät und die bereits in deiner iCloud gespeicherten werden zusammengeführt. Nichts wird gelöscht. Wenn ein Zähler unterschiedliche Werte hat, zeigt Oczko beide an und du wählst.",
     "wlacz_potwierdz": "Einschalten",
     "wylacz_tytul": "iCloud-Sync ausschalten?",
     "wylacz_opis": "Alles bleibt auf diesem Gerät. Änderungen hier werden nicht mehr an iCloud übertragen, und deine anderen Geräte behalten ihren Stand.",

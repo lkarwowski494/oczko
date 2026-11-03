@@ -43,7 +43,7 @@
     "cofnieto_many": "Rimosse {{count}} di righe. Si torna a {{wartosc}}.",
     "cofnieto_other": "Rimosse {{count}} righe. Si torna a {{wartosc}}.",
     "przypomnienie": "Riga {{n}}: {{tekst}}",
-    "przypomnienie_postep": "{{ktory}} di {{razy}}, prossima alla riga {{nastepny}}",
+    "przypomnienie_postep": "{{ktory}} di {{razy}}, la prossima alla riga {{nastepny}}",
     "przypomnienie_postep_ostatnie": "{{ktory}} di {{razy}}",
     "wejscie_w_przypomnienie": "Riga {{n}}: {{tekst}}, {{ktory}} di {{razy}}.",
     "powtorzenie": "{{nazwa}}: ripetizione {{numer}}, riga {{rzad}} di {{dlugosc}}",
