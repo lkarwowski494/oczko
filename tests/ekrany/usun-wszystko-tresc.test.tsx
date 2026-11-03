@@ -1,7 +1,10 @@
 // Poprawki 04, D3 (04-studio-projektowe-013, P-328, P-330 5a; design-spec „012 · Delete all data”): okno „Delete all data” ma treść zatwierdzoną po P-328:
 // `ustawienia.usun_pytanie` (bez „can’t be undone”, „this device”), akapit `ustawienia.usun_kopia`, akapit `ustawienia.usun_pro`. Test na prawdziwym słowniku i prawdziwej
 // ścieżce wyboru języka: stare tłumaczenia (34 języki: „na tym iPhonie… Tego nie można cofnąć”) nie mogą pokazać nieprawdziwego zdania, gdy przed usunięciem powstaje kopia.
+// Po fali 2026-11-03 (P-474) 33 języki mają nowy przekład; test czyta go wprost ze słownika języka (niezależnie od komponentu) i sprawdza, że nie ma w nim starej treści.
 import React from 'react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { render, screen } from '@testing-library/react-native';
 import { ArkuszUsunWszystko } from '../../src/ekrany/UsunWszystko';
 import { utworzI18n } from '../../src/i18n/i18n';
@@ -30,8 +33,13 @@ test('pl-PL: pytanie i akapit o kopii po polsku (P-469), bez starej treści', as
   expect(screen.queryByText(/iPhon/)).toBeNull();
   expect(screen.queryByText(/nie można cofnąć/i)).toBeNull();
 });
-test.each(['de-DE', 'fr-FR', 'ja-JP'])('%s: pytanie nie niesie starego tłumaczenia („iPhone”, „nie można cofnąć”) — do fali przekładu tekst z en', async (jezyk) => {
+const slownikJezyka = (kod: string) => (JSON.parse(readFileSync(join(__dirname, '..', '..', 'src', 'i18n', 'slowniki', `${kod}.json`), 'utf8')) as { ustawienia: Record<string, string> }).ustawienia;
+test.each([['de-DE', 'de'], ['fr-FR', 'fr'], ['ja-JP', 'ja']])('%s: pytanie i akapit o kopii z przekładu fali 2026-11-03 (słownik %s), bez tekstu z en i bez starej treści („iPhone”)', async (jezyk, kod) => {
   arkusz(await tJezyk(jezyk));
-  expect(screen.getByText(PYTANIE)).toBeTruthy();
-  expect(screen.getByText(KOPIA)).toBeTruthy();
+  const s = slownikJezyka(kod);
+  expect(s.usun_pytanie).not.toBe(PYTANIE); expect(s.usun_kopia).not.toBe(KOPIA); // przekład, nie fallback do en
+  expect(screen.getByText(s.usun_pytanie as string)).toBeTruthy();
+  expect(screen.getByText(s.usun_kopia as string)).toBeTruthy();
+  expect(screen.queryByText(PYTANIE)).toBeNull();
+  expect(screen.queryByText(/iPhone/)).toBeNull();
 });

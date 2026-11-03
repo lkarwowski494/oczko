@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ADRESY } from '../../src/kompozycja/adresy';
+import { ZAKRES_FALI, brakiPrzekladu } from '../i18n/fala-2026-11-03';
 
 const KORZEN = join(__dirname, '../..');
 const czytaj = (p: string): string => readFileSync(join(KORZEN, p), 'utf8');
@@ -19,11 +20,13 @@ describe('061 (DEC-22 a): adres wsparcia jest jedną stałą ze strony wydania',
 });
 
 describe('061 (DEC-22 a): tekst wiersza „Help”', () => {
-  test('en: ustawienia.pomoc = „Help”, kontekst tłumacza, pseudolokalizacja i lista oczekujących na falę (P-422)', () => {
+  test('en: ustawienia.pomoc = „Help”, kontekst tłumacza, pseudolokalizacja; przekład 33 języków z fali 2026-11-03 (P-422, P-474), nie na liście oczekujących', () => {
     expect(EN.ustawienia.pomoc).toBe('Help');
     expect(typeof KONTEKST.ustawienia?.pomoc).toBe('string');
     expect(typeof PSEUDO['ustawienia.pomoc']).toBe('string');
-    expect(OCZEKUJACE).toContain('ustawienia.pomoc');
+    expect(ZAKRES_FALI).toContain('ustawienia.pomoc');
+    expect(OCZEKUJACE).not.toContain('ustawienia.pomoc');
+    expect(brakiPrzekladu('ustawienia.pomoc')).toEqual([]);
   });
 });
 

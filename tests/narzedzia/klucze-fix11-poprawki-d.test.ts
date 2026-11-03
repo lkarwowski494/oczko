@@ -1,7 +1,8 @@
-// Poprawki 04, sesja D (P-360), D1: klucze aneksu partii 8 (04, 2026-11-02): 7 nowych w en.json i en.kontekst.json, na liście „oczekujące na falę” (P-357),
+// Poprawki 04, sesja D (P-360), D1: klucze aneksu partii 8 (04, 2026-11-02): 7 nowych w en.json i en.kontekst.json, przełożone w fali 2026-11-03 (P-474; lista oczekujących pusta),
 // oraz 7 wartości roboczych potwierdzonych przez 04 (różnica treści = poprawka). Wyrocznia: docs/design/fix11-2026-11-02/klucze.json.
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { JEZYKI_FALI, ZAKRES_FALI, brakiPrzekladu, teksty } from '../i18n/fala-2026-11-03';
 
 const KORZEN = join(__dirname, '../..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -24,8 +25,9 @@ test('każdy nowy klucz aneksu jest w en.json z wartością z klucze.json', () =
 test('każdy nowy klucz aneksu ma kontekst w en.kontekst.json z klucze.json', () => {
   for (const k of NOWE) expect([k, wartosc(KONTEKST, k)]).toEqual([k, ANEKS.kontekst[k]]);
 });
-test('nowe klucze są na liście „oczekujące na falę przekładu” (P-357), bez przekładu 34 języków', () => {
-  for (const k of NOWE) expect(OCZEKUJACE).toContain(k);
+test('nowe klucze są w zakresie fali 2026-11-03 i mają kompletny przekład w 33 językach (formy CLDR); nie ma ich na liście oczekujących', () => {
+  expect(JEZYKI_FALI).toHaveLength(33);
+  for (const k of NOWE) { expect([k, ZAKRES_FALI.includes(k)]).toEqual([k, true]); expect([k, OCZEKUJACE.includes(k)]).toEqual([k, false]); expect([k, brakiPrzekladu(k)]).toEqual([k, []]); }
 });
 test('wartości robocze potwierdzone przez 04 są w en.json bez zmian (różnica treści = poprawka)', () => {
   const klucze = Object.entries(ANEKS.potwierdzone).filter(([k]) => k !== BEZ_KLUCZA_04);
@@ -43,17 +45,18 @@ test('korekta P-330: `ustawienia.pro_wlaczone` = „On”, a zdanie „Oczko Pro
 });
 
 // D3 (04-studio-projektowe-013, P-328): treść `ustawienia.usun_pytanie` zmieniła sens po P-328 (kopia przed usunięciem, „this device”, bez „can’t be undone”),
-// więc stare tłumaczenia (34 języki) są nieprawdziwe — jak `dane.zastapiono` w P-357: usunięte (tekst z en), klucz na liście „oczekujące na falę” (P-320).
-test('`ustawienia.usun_pytanie`: brak starych tłumaczeń w 33 słownikach (pl ma nowy przekład, P-469), klucz na liście oczekujących na falę', () => {
-  expect(OCZEKUJACE).toContain('ustawienia.usun_pytanie');
-  // pl: przekład napisany po zmianie sensu (P-328, P-469) — nie stary; pozostałe 33 języki czekają na falę 09.
+// więc stare tłumaczenia (34 języki) były nieprawdziwe i zostały usunięte do fali (P-320); fala 2026-11-03 (P-474) dała nowy przekład 33 języków.
+test('`ustawienia.usun_pytanie`: nowy przekład w 33 słownikach (pl od P-469), żaden nie niesie starej treści („iPhone”, „nie można cofnąć”); klucz w zakresie fali, nie na liście oczekujących', () => {
+  expect(ZAKRES_FALI).toContain('ustawienia.usun_pytanie'); expect(OCZEKUJACE).not.toContain('ustawienia.usun_pytanie');
+  // pl: przekład napisany po zmianie sensu (P-328, P-469) — nie stary.
   const pl = czytaj('src/i18n/slowniki/pl.json') as Record<string, Record<string, string>>;
   expect(wartosc(pl, 'ustawienia.usun_pytanie')).toMatch(/^To usuwa z Oczka wszystkie projekty/);
   expect(wartosc(pl, 'ustawienia.usun_pytanie')).not.toMatch(/iPhon|nie można cofnąć/i);
-  const jezyki = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => f.endsWith('.json') && !f.endsWith('.kontekst.json') && f !== 'en.json' && f !== 'pl.json');
-  expect(jezyki.length).toBe(33);
-  for (const f of jezyki) {
-    const s = czytaj(`src/i18n/slowniki/${f}`) as Record<string, Record<string, string>>;
-    expect([f, wartosc(s, 'ustawienia.usun_pytanie')]).toEqual([f, undefined]);
+  expect(JEZYKI_FALI).toHaveLength(33);
+  expect(brakiPrzekladu('ustawienia.usun_pytanie')).toEqual([]);
+  for (const j of JEZYKI_FALI) {
+    const t = teksty(j, 'ustawienia.usun_pytanie').join(' ');
+    expect([j, /iPhone/.test(t)]).toEqual([j, false]); // en: „this device”; stary przekład mówił „na tym iPhonie”
+    expect([j, t === wartosc(EN, 'ustawienia.usun_pytanie')]).toEqual([j, false]); // przekład, nie tekst z en
   }
 });

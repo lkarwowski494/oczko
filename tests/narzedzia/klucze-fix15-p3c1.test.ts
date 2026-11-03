@@ -1,10 +1,11 @@
 // Rola 04, fix M2 partia 3c1 (P-441; design-spec „Aneks M2 partia 3c1”): teksty en i wyrocznie dla 08.
-// Wyrocznia: docs/design/fix15-2026-11-03/klucze.json. Nowe i zmienione klucze en są na liście „oczekujące na falę” (P-357); pl po akceptacji
-// właściciela (P-422), przekład w fali 09 (P-320).
+// Wyrocznia: docs/design/fix15-2026-11-03/klucze.json. Nowe i zmienione klucze en były na liście „oczekujące na falę” (P-357); pl po akceptacji
+// właściciela (P-422), przekład 33 języków w fali 09 przez API 2026-11-03 (P-474; lista oczekujących pusta).
 import { readFileSync, readdirSync } from 'node:fs';
 import { KOPIA_PRZED_IMPORTEM_DNI, KOPIE_RATUNKOWE_DNI } from '../../src/konfiguracja';
 import { join } from 'node:path';
 import { KLUCZE_FOLDERU, ZDANIE_FOLDERU } from '../i18n/folder-kopii';
+import { ZAKRES_FALI, brakiPrzekladu } from '../i18n/fala-2026-11-03';
 
 const KORZEN = join(__dirname, '../..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -15,12 +16,12 @@ const KONTEKST = czytaj('src/i18n/slowniki/en.kontekst.json') as Record<string, 
 const PSEUDO = czytaj('src/i18n/pseudo/en-XA.json') as Record<string, string>;
 const OCZEKUJACE = (czytaj('docs/lokalizacja/oczekujace.json') as { klucze: string[] }).klucze;
 const WSZYSTKIE = readdirSync(join(KORZEN, 'src/i18n/slowniki')).filter((f) => /^[a-z]{2}(-[A-Za-z0-9]+)?\.json$/.test(f) && f !== 'en.json');
-// pl ma przekład od P-469 (uzupełnienie 143 brakujących tekstów); pozostałe języki czekają na falę 09.
+// pl ma przekład od P-469 (uzupełnienie 143 brakujących tekstów); pozostałe 33 języki — z fali 2026-11-03 (P-474).
 const SLOWNIKI = WSZYSTKIE.filter((f) => f !== 'pl.json');
 const PL = czytaj('src/i18n/slowniki/pl.json') as Record<string, Record<string, string>>;
 const wartosc = (s: Record<string, Record<string, string>>, klucz: string) => { const [sekcja, nazwa] = klucz.split('.'); return s[sekcja]?.[nazwa]; };
 
-/** Wspólny kontrakt grupy: wartość i kontekst z wyroczni, klucz na liście oczekujących, wpis pseudo, brak (starych) przekładów do fali 09. */
+/** Wspólny kontrakt grupy: wartość i kontekst z wyroczni, klucz w zakresie fali (nie na liście oczekujących), wpis pseudo, kompletny przekład w 33 językach po fali 09. */
 function kontraktGrupy(id: string): void {
   const klucze = ANEKS.grupy[id] ?? [];
   test(`${id}: grupa w wyroczni niepusta`, () => expect(klucze.length).toBeGreaterThan(0));
@@ -28,17 +29,14 @@ function kontraktGrupy(id: string): void {
   // M1-audytor-generalny-055: do kontekstu kluczy z „Oczko › Backup” dopisane wspólne zdanie o folderze (folder-kopii.ts); reszta = wyrocznia bez zmian.
   const bez055 = (k: string, v: string | undefined) => ((KLUCZE_FOLDERU as readonly string[]).includes(k) ? v?.replace(` ${ZDANIE_FOLDERU}`, '') : v);
   test(`${id}: en.kontekst.json = wyrocznia`, () => { for (const k of klucze) expect([k, bez055(k, wartosc(KONTEKST, k))]).toEqual([k, ANEKS.kontekst[k]]); });
-  test(`${id}: klucze na liście oczekujących (P-357)`, () => { for (const k of klucze) expect(OCZEKUJACE).toContain(k); });
+  test(`${id}: klucze w zakresie fali 2026-11-03, nie na liście oczekujących (P-474)`, () => { for (const k of klucze) { expect([k, ZAKRES_FALI.includes(k)]).toEqual([k, true]); expect([k, OCZEKUJACE.includes(k)]).toEqual([k, false]); } });
   test(`${id}: pseudolokalizacja en-XA ma klucz`, () => { for (const k of klucze) expect([k, typeof PSEUDO[k]]).toEqual([k, 'string']); });
   test(`${id}: pl ma polski przekład (P-469)`, () => {
     for (const k of klucze) expect([k, typeof wartosc(PL, k) === 'string' || typeof wartosc(PL, `${k}_other`) === 'string']).toEqual([k, true]);
   });
-  test(`${id}: brak przekładów w ${SLOWNIKI.length} słownikach do fali 09 (poza pl)`, () => {
+  test(`${id}: kompletny przekład w ${SLOWNIKI.length} słownikach po fali 09 (poza pl)`, () => {
     expect(SLOWNIKI.length).toBe(33);
-    for (const f of SLOWNIKI) {
-      const s = czytaj(`src/i18n/slowniki/${f}`) as Record<string, Record<string, string>>;
-      for (const k of klucze) expect([f, k, wartosc(s, k)]).toEqual([f, k, undefined]);
-    }
+    for (const k of klucze) expect([k, brakiPrzekladu(k)]).toEqual([k, []]); // każda forma CLDR języka, tekst niepusty
   });
 }
 

@@ -5,7 +5,8 @@
     "cofnij_other": "復原 {{count}} 段",
     "tytul_roboczy": "計數器",
     "podpowiedz_start": "每織完一段就點一下大按鈕，這裡會留下一筆鉛筆記號。",
-    "jednostka": "段",
+    "jednostka_other": "段",
+    "jednostka_w_trakcie": "目前這段",
     "z_celu": "／{{cel}}",
     "teraz": "正在織第 {{n}} 段",
     "plus": "+1 段",
@@ -28,15 +29,28 @@
     "baner_seria_other": "{{sekundy}} 秒內新增了 {{count}} 段。要復原嗎？",
     "cofnieto_other": "已移除 {{count}} 段。回到 {{wartosc}}。",
     "przypomnienie": "第 {{n}} 段：{{tekst}}",
+    "przypomnienie_postep": "共 {{razy}} 次中的第 {{ktory}} 次，下次在第 {{nastepny}} 段",
     "przypomnienie_postep_ostatnie": "第 {{ktory}} 次／共 {{razy}} 次",
     "wejscie_w_przypomnienie": "第 {{n}} 段：{{tekst}}，第 {{ktory}} 次，共 {{razy}} 次。",
+    "powtorzenie": "{{nazwa}}：重複第 {{numer}} 次，第 {{rzad}} 段（共 {{dlugosc}} 段）",
     "notatka": "備註",
     "blizniak": "成對織片，第 {{rzad}} 段：{{tresc}}",
+    "blizniak_oba": "成對織片第 {{rzad}} 段：{{notatka}}，{{przypomnienie}}",
     "znaczniki_sesji_other": "本次作業時段：自 {{godzina}} 起 {{count}} 段",
     "ostatni_darmowy": "{{miesiac}}還剩 1 個免費手作日",
     "cel_dnia_other": "今日目標：{{count}} 段",
     "calosc_other": "{{czesc}}合計：{{count}} 段",
-    "wzor_a11y": "織圖"
+    "wzor_a11y": "織圖",
+    "jednostka_oczka_other": "針",
+    "plus_oczka": "+1 針",
+    "podpis_plus_oczka": "每織一針點一下",
+    "plus_a11y_oczka": "針數加 1",
+    "minus_a11y_oczka": "針數減 1",
+    "po_dodaniu_oczka_other": "{{count}} 針。",
+    "znaczniki_sesji_oczka_other": "本次記錄：{{godzina}} 起共 {{count}} 針",
+    "seria_blokada_other": "已於 {{godzina}} 從鎖定畫面增加 {{count}} 段。要還原嗎？",
+    "seria_zegarek_other": "已於 {{godzina}} 從手錶增加 {{count}} 段。要還原嗎？",
+    "wpisz_blad_format": "請輸入 0 或以上的整數，例如 {{przyklad}}。"
   },
   "limit": {
     "zawczasu_other": "{{miesiac}}已沒有免費手作日。暫停計數至 {{data}}。你的 {{count}} 段和其他內容都會保留。",
@@ -57,6 +71,7 @@
     "zglos_tlumaczenie": "回報翻譯問題",
     "oczko_pro": "Oczko Pro",
     "wibracje": "震動",
+    "pomoc": "說明",
     "zglos": "回報問題",
     "ocen": "為 Oczko 評分",
     "polityka": "隱私權政策",
@@ -65,7 +80,22 @@
     "eksport": "匯出所有資料",
     "import": "匯入備份",
     "usun_wszystko": "刪除所有資料",
-    "usun_potwierdz": "刪除所有資料"
+    "usun_pytanie": "這會從 Oczko 移除所有作品、計數器、歷史記錄、織法和照片。安全副本會保留在這部裝置上。Oczko 會在 30 天後、你下次開啟 Oczko 時刪除這些副本；若副本佔用大量空間，部分會更早刪除。",
+    "usun_potwierdz": "刪除所有資料",
+    "usun_pro": "Oczko Pro 不會被刪除。如果之後 Pro 沒有開啟，請在 Oczko Pro 畫面中選擇「回復購買項目」。",
+    "usun_kopia": "Oczko 會先在「檔案」App 的 針目 › Backup 中儲存一份副本。匯入該檔案即可恢復所有內容。",
+    "usun_kopia_blad": "Oczko 無法儲存副本，因此未刪除任何資料。請釋放一些空間後再試一次。",
+    "ekran_nie_gasnie": "計數時保持螢幕開啟",
+    "ekran_nie_gasnie_opis": "開啟計數器時，螢幕會保持開啟。關閉此選項可節省電量。",
+    "miary_auto": "自動",
+    "miary_metric": "公制",
+    "miary_metric_opis": "公釐、公分、克",
+    "miary_imperial": "英制",
+    "miary_imperial_opis": "吋、盎司",
+    "miary_opis": "會變更尺寸和長度的顯示與輸入方式。已儲存的資料不會改變。",
+    "pro_wlaczone": "開啟",
+    "grupa_liczenie": "計數",
+    "blad_zapisu": "無法儲存此設定"
   },
   "aktywnosc": {
     "plus": "+1 段",
@@ -108,7 +138,18 @@
     "wstecz": "返回",
     "dodaj": "加入",
     "gotowe": "完成",
-    "ok": "好"
+    "ok": "好",
+    "blad_zapisu_opis": "你的裝置空間可能不足。未做任何更改。請釋放一些空間後再試一次。",
+    "blad_udostepnienia": "無法準備圖片",
+    "blad_udostepnienia_opis": "你的裝置空間可能不足。請釋放一些空間後再分享一次。",
+    "ladowanie": "載入中…",
+    "blad_wczytania": "無法載入此內容。",
+    "ponow": "再試一次",
+    "odrzuc_tytul": "要捨棄變更嗎？",
+    "odrzuc_opis_zmiany": "一切都會維持原樣。",
+    "odrzuc_opis_nowy": "不會新增任何項目。",
+    "wroc_do_edycji": "返回編輯",
+    "odrzuc_zmiany": "捨棄變更"
   },
   "projekty": {
     "szukaj": "搜尋",
@@ -117,6 +158,7 @@
     "brak_wynikow": "沒有名為「{{zapytanie}}」的專案。",
     "w_toku": "進行中",
     "ukonczone": "已完成",
+    "dni_other": "{{miesiac}}：免費編織日還剩 {{zostalo}} 天（共 {{limit}} 天）",
     "tytul": "專案",
     "nazwa_robocza": "{{data}}的計數器",
     "ostatnia_praca_dzis": "上次作業：今天",
@@ -127,7 +169,11 @@
     "kosz": "最近刪除",
     "kosz_a11y_other": "最近刪除，{{count}} 個項目",
     "wiersz": "{{czesc}}・第 {{n}} 段",
-    "wiersz_cel": "{{czesc}}・第 {{n}} 段／共 {{cel}} 段"
+    "wiersz_cel": "{{czesc}}・第 {{n}} 段／共 {{cel}} 段",
+    "ukonczono_wiersz": "完成於 {{data}} · {{czas}}",
+    "ukonczono_bez_czasu": "完成於 {{data}}",
+    "ukonczono_a11y": "{{nazwa}}，完成於 {{data}}，{{czas}}",
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}，完成於 {{data}}"
   },
   "historia": {
     "pusto": "尚無變更。",
@@ -135,7 +181,15 @@
     "wpis_opis": "{{czas}}・{{z}} → {{na}}（{{opis}}）",
     "opis_zerowanie": "歸零",
     "opis_wpisanie": "手動輸入",
-    "opis_cofniecie": "已復原"
+    "opis_cofniecie": "已復原",
+    "seria_other": "{{czas}} 內完成 {{count}} 段",
+    "cofnij_serie_other": "還原 {{count}} 段",
+    "cofnieto": "已還原",
+    "starszy_info": "只能還原最近一次更改。若要修正這筆記錄，請輸入正確的數字。",
+    "wpisz": "輸入正確的數字",
+    "wpis_rozwin_a11y": "關於 {{wpis}} 的更多資訊",
+    "wpis_rozwin_podpowiedz": "顯示如何更改這筆記錄。",
+    "wpis_a11y": "於 {{czas}} 從 {{od}} 變為 {{do}}"
   },
   "menu": {
     "nazwa": "為專案與織片命名",
@@ -151,7 +205,8 @@
     "zeruj_potwierdz": "歸零為 0",
     "znaczenie": "數字的意義",
     "wzor": "織圖",
-    "dodaj_wzor": "新增織圖…"
+    "dodaj_wzor": "新增織圖…",
+    "zeruj_zablokowany": "解鎖計數器後即可歸零。"
   },
   "formularz": {
     "wpisz_tytul": "輸入段數",
@@ -217,14 +272,19 @@
     "sesja_projekt": "儲存後專案時間：{{czas}}。",
     "sesja_sprawdz_other": "Oczko 在 {{count}} 小時後停止了這個計時器。請設定你實際停止的時間。",
     "sesja_przerwy": "這個作業時段有 {{czas}} 的暫停。你更改時間後，會改為從開始到結束計算。",
-    "termin_osiagniety": "已達成目標，所以沒有每日目標。"
+    "termin_osiagniety": "已達成目標，所以沒有每日目標。",
+    "wloczka_tytul": "此作品的毛線",
+    "wloczka_opis": "選擇你正在使用的毛線。完成作品時，Oczko 會詢問你用了幾球，並從庫存毛線中扣除。",
+    "wloczka_pusto": "庫存毛線中還沒有毛線。請先新增你正在使用的毛線，再於這裡選擇。",
+    "wloczka_wiersz_a11y_other": "{{nazwa}}，庫存毛線中有 {{count}} 球",
+    "blad_zapisu": "無法儲存變更"
   },
   "ukonczenie": {
     "udostepnij": "分享",
     "gotowe": "完成",
     "ogloszenie": "{{nazwa}}已移至「已完成」。",
     "okres": "已完成・{{okres}}",
-    "jednostka": "段",
+    "jednostka_other": "段",
     "czesci_other": "{{count}} 個織片",
     "dni_other": "{{count}} 個手作日",
     "zdjecie": "{{nazwa}}的照片",
@@ -238,7 +298,10 @@
     "zuzycie_wiecej": "多一球",
     "zuzycie_ponad_zapas_other": "超過庫存毛線的 {{count}} 球。庫存將顯示 0。",
     "zapas_juz_pusty": "這款毛線的庫存已是 0。",
-    "edytuj_zapas": "編輯庫存"
+    "edytuj_zapas": "編輯庫存",
+    "bez_wloczki": "此作品未選擇毛線，因此庫存毛線維持不變。",
+    "wybierz_wloczke": "選擇毛線",
+    "edytuj_zapas_opis": "儲存後會回到此卡片，並顯示新的數字。"
   },
   "projekt": {
     "czesc_cel_other": "{{rzedy}}／{{count}} 段",
@@ -249,6 +312,10 @@
     "ostatnia_zmiana": "上次變更 {{data}}",
     "czesc_rzedy_other": "{{count}} 段",
     "postep_opis": "概略值，依有目標的織片段數計算。",
+    "termin_dzis_other": "{{data}}前完成，今天 {{zrobione}}/{{count}} 段",
+    "termin_po_other": "截止日期 {{data}} 已過，還有 {{count}} 段",
+    "termin_osiagniety": "{{data}}前完成，已達成目標",
+    "termin_bez_celow": "{{data}}前完成。為任一織片設定目標，即可取得每日目標。",
     "czesci": "織片",
     "calosc_other": "整片：{{count}} 段",
     "para": "{{nazwa}}的另一片",
@@ -276,6 +343,7 @@
     "kopia_tytul": "要再做一個{{nazwa}}嗎？",
     "kopia_opis": "相同的織片、目標、提醒，以及棒針或鉤針與其尺寸。所有計數器從 0 開始，這個專案維持原樣。",
     "kopia_potwierdz": "再做一個",
+    "kopia_nazwa": "{{nazwa}} {{n}}",
     "edycja_info": "已刪除的織片與計數器會在「最近刪除」中保留 30 天。",
     "data_startu": "開始日",
     "data_ukonczenia": "完成日",
@@ -290,7 +358,12 @@
     "probka_wartosc_other": "{{p}} 針／10 cm",
     "probka_wartosc_in_other": "{{p}} 針／4 吋",
     "wzor": "織圖",
-    "wzory": "所有織圖"
+    "wzory": "所有織圖",
+    "miejsce_wzoru_wartosc": "第 {{strona}} 頁，第 {{rzad}} 段",
+    "miejsce_wzoru_strona": "第 {{strona}} 頁",
+    "wloczka": "毛線",
+    "wloczka_brak": "無",
+    "wloczki_other": "{{count}} 種毛線"
   },
   "dni": {
     "dzien_other": "{{etykieta}}・{{count}} 段",
@@ -326,6 +399,7 @@
     "odnawianie_miesiac": "每月自動續訂，直到你在 Apple ID 設定中取消。",
     "odnawianie_rok": "每年自動續訂，直到你在 Apple ID 設定中取消。",
     "raz": "一次付清。不會續訂。",
+    "dozywotni_przy_subskrypcji": "在你取消之前，訂閱會持續自動續訂。",
     "bez_pro_other": "未使用 Pro：每月 {{limit}} 個手作日，而你所有的專案與資料永遠都在。",
     "rodzina": "透過「家人共享」與家人共用。",
     "kup": "繼續使用{{plan}}",
@@ -335,7 +409,13 @@
     "zarzadzaj": "管理訂閱",
     "masz_pro": "你已擁有 Oczko Pro。",
     "brak_sieci": "目前無法取得價格。請檢查網路連線。",
-    "ladowanie": "正在載入方案…"
+    "ladowanie": "正在載入方案…",
+    "czeka": "等待核准中。核准後 Oczko Pro 會立即開啟。",
+    "czeka_przycisk": "等待核准中",
+    "blad_zakupu": "購買未完成。請檢查網路連線後再試一次。",
+    "przywracanie_nic": "找不到此 Apple ID 的 Oczko Pro 購買項目。若你是用其他 Apple ID 購買，請在「設定」中登入該帳號後再試一次。",
+    "przywracanie_blad": "無法回復購買項目。請檢查網路連線後再試一次。",
+    "pro_wlaczone": "Oczko Pro 已開啟。"
   },
   "uczciwe": {
     "tytul": "你的第一個手作日完成了",
@@ -353,13 +433,18 @@
     "zapisz_kopie": "儲存我的資料副本",
     "sprobuj": "試著正常啟動",
     "zglos": "回報問題",
-    "zapisano": "副本已儲存"
+    "zapisano": "副本已儲存",
+    "blad_kopii": "無法儲存副本",
+    "blad_kopii_opis": "你的裝置空間可能不足。請釋放一些空間，然後再次儲存副本，或嘗試正常啟動。",
+    "tytul_brak_miejsca": "你的裝置空間不足",
+    "opis_brak_miejsca": "未做任何更改。請釋放這部裝置上的空間，然後嘗試正常啟動。"
   },
   "dane": {
     "import_tytul": "匯入備份",
     "import_plik": "檔案：{{plik}}",
     "scal": "與現有資料合併",
     "zastap": "取代現有資料",
+    "zastapiono": "Oczko 已先將你先前的資料儲存為「{{kopia}}」。你可以在「檔案」App 的 針目 › Backup 中找到它。",
     "konflikt_tytul": "{{licznik}}有兩個版本",
     "konflikt_wybor_other": "{{count}} 段・{{urzadzenie}}・{{godzina}}",
     "konflikt_a11y_other": "保留來自{{urzadzenie}}的 {{count}} 段，{{godzina}}",
@@ -369,18 +454,24 @@
     "nowe_other": "{{count}} 個新專案",
     "zaimportowano": "已合併。{{nowe}}。目前：{{licznosci}}。",
     "blad": "未成功。你的資料沒有變更。",
-    "eksport_gotowy_tytul": "匯出完成"
+    "eksport_gotowy_tytul": "匯出完成",
+    "zastapiono_tytul": "資料已取代",
+    "zastapiono_wroc": "若要回到先前的資料，請在 Oczko 中開啟該檔案並選擇「取代」。"
   },
   "stan_danych": {
     "tytul": "資料與同步",
     "ostatnia": "上次同步 {{data}}",
     "czeka": "同步正在等待網路連線。",
+    "zapisane": "所有資料都儲存在這部裝置上。",
     "wylaczona": "iCloud 同步已關閉。",
     "aktywna": "iCloud 同步已開啟。",
-    "zegarek_kontakt": "上次與手錶連線：{{data}}。"
+    "zegarek_kontakt": "上次與手錶連線：{{data}}。",
+    "kopie_opis": "Oczko 在匯入或刪除前儲存的副本位於「檔案」App 的 針目 › Backup 中。Oczko 會在 30 天後、你下次開啟 Oczko 時刪除這些副本；若副本佔用大量空間，部分會更早刪除。在那之前，它們會計入裝置的 iCloud 備份。"
   },
   "zglos": {
     "tytul": "回報問題",
+    "opis": "這就是報告的全部內容。在你分享之前，任何資料都不會離開你的裝置。",
+    "kontakt": "請透過電子郵件寄到 {{adres}}。",
     "udostepnij": "分享",
     "pole_wersja": "App 版本",
     "pole_system": "iOS",
@@ -468,7 +559,8 @@
     "inny_opis": "一次只能進行一個作業時段。要在那邊停止，並開始{{biezacy}}的計時嗎？",
     "inny_potwierdz": "停止並在此開始",
     "sprawdz_other": "計時器已執行 {{count}} 小時，因此 Oczko 已將它停止。",
-    "sprawdz_link": "檢查結束時間"
+    "sprawdz_link": "檢查結束時間",
+    "blad_zapisu": "無法更新計時器"
   },
   "sesje": {
     "tytul": "作業時段",
@@ -490,6 +582,7 @@
     "na_4in": "每 4 吋",
     "szerokosc_cm": "你想要的寬度（cm）",
     "szerokosc_in": "你想要的寬度（吋）",
+    "zaproszenie_szerokosc": "輸入寬度即可算出針數。",
     "przeliczona_other": "＝ 每 10 cm {{p}} 針",
     "wynik_oczka": "此寬度的針數",
     "oczka_wynik_other": "{{count}} 針",
@@ -577,6 +670,7 @@
   "karta": {
     "stopka": "用 Oczko 計數",
     "czas": "作業時間",
+    "dni_podpis_other": "編織日",
     "obraz_a11y": "{{nazwa}}的卡片：{{szczegoly}}"
   },
   "wzor": {
@@ -659,6 +753,7 @@
     "cofnij_rysunek": "復原上一筆",
     "zakreslacz_podpowiedz": "用手指拖移來標示。兩指捲動。",
     "rysik_podpowiedz": "用 Apple Pencil 書寫，用手指捲動。",
+    "wskazowka_znacznika": "點一下某段以放置記號。",
     "import_w_toku": "正在加入織圖…",
     "czeka_siec": "正在等待網路以儲存網頁。",
     "usun_oczekujacy_a11y": "從清單移除{{nazwa}}",
@@ -670,8 +765,32 @@
     "blad_rozmiar_opis": "織圖最大可達 {{mb}} MB。沒有加入任何內容。",
     "blad_strona": "Oczko 無法儲存這個頁面",
     "blad_strona_opis": "這個頁面要求登入，或沒有文字與圖片。沒有加入任何內容。請在瀏覽器中開啟，存成 PDF 後再加入 PDF。",
+    "blad_czas": "Oczko 無法完成此檔案的轉換",
+    "blad_czas_opis": "「{{plik}}」轉換時間過長，未新增任何內容。請將它另存為 PDF 並加入該 PDF，或再試一次。",
     "brak_aparatu_opis": "若要掃描織圖頁面，請在「設定」中允許存取相機。你仍可選擇照片或檔案。",
-    "word_podglad": "Word 文件會以原樣開啟。若要標記段數與螢光標示，請存成 PDF 後加入 PDF。"
+    "word_podglad": "Word 文件會以原樣開啟。若要標記段數與螢光標示，請存成 PDF 後加入 PDF。",
+    "notatka_chip": "第 {{n}} 段：{{tekst}}",
+    "notatka_chip_a11y": "第 {{n}} 段的備註：{{tekst}}。開啟",
+    "notatki_wiele_other": "{{count}} 則備註",
+    "notatki_tytul": "第 {{strona}} 頁的備註",
+    "notatka_tytul": "第 {{n}} 段的備註",
+    "notatka_usun": "刪除備註",
+    "notatka_usun_tytul": "要刪除這則備註嗎？",
+    "notatka_usun_opis": "它會從織法和第 {{n}} 段中移除。",
+    "notatka_edytuj": "編輯",
+    "notatka_edytuj_a11y": "編輯第 {{n}} 段的備註",
+    "przed_schematem": "織法開始前",
+    "znacznik_napis": "第 {{n}} 段",
+    "blad_zapis": "Oczko 無法儲存此織法",
+    "blad_zapis_opis": "你的裝置空間可能不足。未新增任何內容。請釋放一些空間後再試一次。",
+    "blad_rysunku": "無法儲存螢光標記與繪圖",
+    "blad_rysunku_opis": "你的裝置空間可能不足。你的螢光標記與繪圖已暫存在這部裝置上。下次在有可用空間時開啟此織法，Oczko 會自動儲存它們。",
+    "rysunek_niezapisany_opis": "你的裝置空間可能不足。只有在 Oczko 保持開啟時，才會保留你最新的螢光標記與繪圖。請釋放一些空間，然後再次開啟此織法以儲存它們。",
+    "wyjdz_tytul": "要離開此織法嗎？",
+    "wyjdz_zostan": "留下",
+    "wyjdz_potwierdz": "不儲存並離開",
+    "miejsce_tytul": "你的裝置空間快滿了",
+    "miejsce_opis": "你新增的螢光標記與繪圖可能無法儲存。請在繪圖前釋放一些空間。"
   },
   "udostepnij": {
     "tytul": "加入 Oczko",
@@ -702,15 +821,20 @@
     "przelacznik": "與 iCloud 同步",
     "opis": "讓你各部裝置上的專案、織圖與記錄保持一致。你的資料只會傳到你自己的 iCloud；Oczko 沒有伺服器。",
     "wlacz_tytul": "要開啟 iCloud 同步嗎？",
+    "wlacz_opis": "這部裝置上的作品會與 iCloud 中現有的作品合併。不會刪除任何資料。如果計數器的數值不同，Oczko 會同時顯示兩者讓你選擇。",
     "wlacz_potwierdz": "開啟",
     "wylacz_tytul": "要關閉 iCloud 同步嗎？",
+    "wylacz_opis": "所有資料都會保留在這部裝置上。這裡的更改將不再同步到 iCloud，其他裝置則會保留現有資料。",
     "wylacz_potwierdz": "關閉",
     "synchronizuje": "正在同步…",
     "brak_konta": "Oczko 無法使用 iCloud",
+    "brak_konta_opis": "請確認你已登入 iCloud，並已在「設定」中為 Oczko 開啟 iCloud。所有資料仍會儲存在這部裝置上。",
     "ustawienia": "打開設定",
     "brak_miejsca": "你的 iCloud 儲存空間已滿",
+    "brak_miejsca_opis": "更改目前無法同步。它們已儲存在這部裝置上，有足夠空間時就會同步。",
     "zarzadzaj": "管理儲存空間",
     "konto_zmienione_tytul": "不同的 iCloud 帳號",
+    "konto_zmienione_opis": "這部裝置現在已登入另一個 iCloud 帳號。同步已暫停，這裡的資料沒有改變。要與此帳號同步嗎？這裡的作品會與該帳號中的作品合併。",
     "polacz": "與這個帳號同步",
     "nie_synchronizuj": "不要同步",
     "konflikt_licznik": "這個計數器有兩個版本",
@@ -720,6 +844,7 @@
     "konflikt_wybor_opis": "選擇與你作品相符的一個。另一個會保留在記錄中。",
     "konflikty_other": "{{count}} 個計數器有兩個版本",
     "niepelna": "你其他裝置的部分變更尚未顯示",
+    "niepelna_nowsza": "它們來自較新版本的 Oczko。請在這部裝置上更新 Oczko 才能查看。這裡的計數器不會改變。",
     "niepelna_opis": "Oczko 會持續嘗試。你這裡的計數器沒有變更。",
     "zastap_wylacz": "請先關閉 iCloud 同步",
     "zastap_wylacz_opis": "若要取代這裡的內容，必須先關閉 iCloud 同步。否則 iCloud 會把舊資料帶回來。之後你可以再開啟。",
@@ -727,5 +852,30 @@
     "usun_z_icloud": "同時從 iCloud 刪除",
     "usun_z_icloud_opis": "你其他裝置下次同步時，會失去這些專案。",
     "usun_zostaje": "iCloud 與你其他裝置上的資料會保留。"
+  },
+  "import": {
+    "nie_rozpoznano_tytul": "Oczko 無法辨識此檔案",
+    "nie_rozpoznano_opis": "請選擇從 Oczko 匯出的檔案。未做任何更改。"
+  },
+  "przyp": {
+    "menu": "提醒",
+    "tytul": "提醒",
+    "lista_opis": "點一下提醒即可更改或刪除。",
+    "wiersz_other": "從第 {{od}} 段起，每 {{count}} 段一次，共 {{razy}} 次",
+    "edytuj_tytul": "編輯提醒",
+    "usun": "刪除提醒",
+    "usun_tytul": "要刪除這則提醒嗎？",
+    "usun_opis": "Oczko 將不再提醒你「{{tekst}}」。你的計數與記錄會維持原樣。",
+    "wiersz_a11y": "{{tekst}}，{{opis}}。編輯"
+  },
+  "jednostka": {
+    "m": "{{wartosc}} 公尺",
+    "yd": "{{wartosc}} 碼",
+    "g": "{{wartosc}} 克",
+    "oz": "{{wartosc}} 盎司",
+    "m_nazwa": "公尺",
+    "yd_nazwa": "碼",
+    "g_nazwa": "克",
+    "oz_nazwa": "盎司"
   }
 }

@@ -5,10 +5,18 @@
 # (propozycje, 7 dni); nałożenie lokalnie po przeglądzie: node scripts/i18n/przeklad-zastosuj-delta.mjs <kod…>.
 # Limit kosztu 30 USD na przebieg (P-481, wyjątek od P-144 = 6 USD, zgoda właściciela 2026-11-03); powyżej — stop bez zgoda_koszt=tak. Domyślnie tylko szacunek (tylko_szacuj=true), bez klucza.
 # Uruchom z gałęzi roboczej („Use workflow from”); na main leży punkt startowy tej samej nazwy (P-472).
+# Tryb `przeglad` (P-486, D-027): drugi przegląd AI fali w świeżym kontekście — Batch, ten sam model i wysiłek; recenzent na język dostaje en + kontekst + wycinek słownika + OBECNY tekst języka
+# dla baz kluczy z docs/lokalizacja/zakres-fali-2026-11-03.json i zwraca TYLKO poprawki z powodem; wynik = artefakt `raport-przegladu` (<kod>.json), przyjęcie lokalnie:
+# node scripts/i18n/przeklad-zastosuj-poprawki.mjs --raport <katalog artefaktu> <kod…>.
 name: Przekład tłumaczeń (API, ręcznie)
 on:
   workflow_dispatch:
     inputs:
+      tryb:
+        description: 'Tryb: przeklad (propozycje przekładu) albo przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu)'
+        type: choice
+        default: przeklad
+        options: [przeklad, przeglad]
       model:
         description: 'Model przekładu'
         type: choice
@@ -54,19 +62,22 @@ jobs:
           node-version: 22
       - name: Szacunek kosztu bez klucza — stop powyżej 30 USD bez zgody
         env:
+          WEJ_TRYB: ${{ inputs.tryb }}
           WEJ_MODEL: ${{ inputs.model }}
           WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
           WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
         run: |
           set -eu
-          ARGS=(--szacuj --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
+          if [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          ARGS=(--szacuj --tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
           node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
       - name: Przekład (szacunek dokładny lub batch)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          WEJ_TRYB: ${{ inputs.tryb }}
           WEJ_MODEL: ${{ inputs.model }}
           WEJ_WYSILEK: ${{ inputs.wysilek }}
           WEJ_LIMIT: ${{ inputs.limit }}
@@ -75,7 +86,8 @@ jobs:
           WEJ_WZNOW: ${{ inputs.wznow }}
         run: |
           set -eu
-          ARGS=(--model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres docs/lokalizacja/oczekujace.json --pomin pl --wyjscie raport-przekladu)
+          if [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          ARGS=(--tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
           if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
           if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
           if [ "$WEJ_SZACUJ" = "true" ]; then ARGS+=(--szacuj); fi
@@ -86,16 +98,29 @@ jobs:
           node scripts/i18n/przeklad-api.mjs "${ARGS[@]}"
       - name: Podsumowanie w logu przebiegu
         if: always()
+        env:
+          WEJ_TRYB: ${{ inputs.tryb }}
         run: |
-          if [ -f raport-przekladu/podsumowanie.md ]; then cat raport-przekladu/podsumowanie.md >> "$GITHUB_STEP_SUMMARY"; fi
-          if [ -f raport-przekladu/szacunek.json ]; then node -e "const s=require('./raport-przekladu/szacunek.json');console.log('Szacunek: '+JSON.stringify(s.koszt_wg_modelu))" >> "$GITHUB_STEP_SUMMARY"; fi
-      - name: Artefakt (tylko raporty, 7 dni)
-        if: always()
+          if [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; else WYJ=raport-przekladu; fi
+          if [ -f "$WYJ/podsumowanie.md" ]; then cat "$WYJ/podsumowanie.md" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f "$WYJ/szacunek.json" ]; then node -e "const s=require('./$WYJ/szacunek.json');console.log('Szacunek ('+s.tryb+'): '+JSON.stringify(s.koszt_wg_modelu))" >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Artefakt przekładu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb != 'przeglad'
         uses: actions/upload-artifact@v4
         with:
           name: raport-przekladu
           path: |
             raport-przekladu/*.json
             raport-przekladu/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt przeglądu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'przeglad'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-przegladu
+          path: |
+            raport-przegladu/*.json
+            raport-przegladu/podsumowanie.md
           if-no-files-found: ignore
           retention-days: 7
