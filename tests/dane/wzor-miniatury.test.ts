@@ -1,5 +1,6 @@
-// Plan 1.1 pkt 7 (design-spec W8: „Wiersz wzoru: miniatura pierwszej strony”): miniatury PDF wzorów projektu — plik pochodny w katalogu
-// tymczasowym (`miniatury/<sha256>.png`), generowany raz na plik PDF; Word bez PDF (podgląd zastępczy) i wzory w koszu bez miniatury; błąd → brak.
+// Plan 1.1 pkt 7 (design-spec W8: „Wiersz wzoru: miniatura pierwszej strony”): miniatury PDF wzorów projektu — plik pochodny (odtwarzalny) w systemowej
+// pamięci podręcznej `Library/Caches/miniatury/<sha256>.png`, poza kopią urządzenia (M1-095, 05-architekt-506), generowany raz na plik PDF;
+// Word bez PDF (podgląd zastępczy) i wzory w koszu bez miniatury; błąd → brak.
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { miniaturyWzorow } from '../../src/kompozycja/miniatury';
@@ -27,8 +28,9 @@ test('miniaturyWzorow: jeden plik PNG na PDF (ten sam sha = jedna generacja), dr
   const { s, h } = await srodowisko();
   const gen = jest.fn(async (_pdf: string, cel: string) => { writeFileSync(cel, 'png'); return { ok: true as const, wartosc: undefined }; });
   const m = await miniaturyWzorow(s.z, gen, { projektId: 'p1' });
-  const cel = join(s.z.katalogi.tymczasowy, 'miniatury', `${h}.png`);
+  const cel = join(s.z.katalogi.podreczny, 'miniatury', `${h}.png`);
   expect(m).toEqual({ w1: `file://${cel}`, w2: `file://${cel}` });
+  expect(existsSync(join(s.z.katalogi.tymczasowy, 'miniatury'))).toBe(false); // nie w Application Support (kopia urządzenia)
   expect(gen).toHaveBeenCalledTimes(1);
   expect(gen).toHaveBeenCalledWith(s.z.magazyn.sciezka(h), cel);
   expect(existsSync(cel)).toBe(true);

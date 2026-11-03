@@ -200,7 +200,8 @@ export async function usunWszystkieDane(z: ZaleznosciArchiwum): Promise<Wynik<vo
   });
   if (!w.ok) return w;
   for (const h of pliki) await z.magazyn.usun(h); // po COMMIT: plik bez odwołań (ADR-0001)
-  wyczyscKatalog(z.katalogi.tymczasowy); // M1-001: pamięci podręczne i katalogi robocze z danymi też znikają (eksport `.oczko`: patrz wyczyscKatalog)
+  wyczyscKatalog(z.katalogi.tymczasowy); // M1-001: rysunki czekające na zapis i katalogi robocze z danymi też znikają (eksport `.oczko`: patrz wyczyscKatalog)
+  usunKatalog(polacz(z.katalogi.podreczny, 'miniatury')); // M1-095: miniatury wzorów w Caches (tylko nasz podkatalog; reszta Caches należy do bibliotek)
   if (z.synchronizacja) await z.synchronizacja.wylacz(); // „Usuń też z iCloud” to osobna opcja (P-110 Q3a)
   return OK;
 }

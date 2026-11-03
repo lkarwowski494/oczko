@@ -1,6 +1,7 @@
 // M1-audytor-generalny-001 (05-architekt-501, 12-niezawodnosc-004): katalog tymczasowy w `Application Support/tmp` jest objęty kopią urządzenia,
 // więc pliki pochodne (eksport `.oczko`, ZIP ratunkowy, katalogi importu i zgłoszeń) muszą mieć cykl życia: usunięcie po użyciu, sprzątanie przy
-// kamieniu milowym startu (wpisy starsze niż start procesu, poza pamięciami podręcznymi) i pełne czyszczenie przy „Delete all data”.
+// kamieniu milowym startu (wpisy starsze niż start procesu, poza rysunkami czekającymi na zapis) i pełne czyszczenie przy „Delete all data”.
+// M1-095 (05-architekt-506): miniatury (odtwarzalne) w `Library/Caches`, poza kopią; `rysunki-wzoru` (niezapisane kreski) zostają w katalogu trwałym.
 import { existsSync, mkdirSync, readFileSync, readdirSync, utimesSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -32,9 +33,13 @@ test('M1-001: po „Delete all data” w katalogu tymczasowym nie zostają pliki
   writeFileSync(join(tmp, 'miniatury', 'abc.png'), 'PNG');
   mkdirSync(join(tmp, 'import-1'), { recursive: true });
   writeFileSync(join(tmp, 'import-1', 'baza.db'), 'DB');
+  const miniatury = join(s.z.katalogi.podreczny, 'miniatury');
+  mkdirSync(miniatury, { recursive: true });
+  writeFileSync(join(miniatury, 'abc.png'), 'PNG');
   expect(readdirSync(tmp).length).toBeGreaterThan(0);
   expect(await usunWszystkieDane(s.za)).toMatchObject({ ok: true });
   expect(existsSync(tmp) ? readdirSync(tmp) : []).toEqual([]);
+  expect(existsSync(miniatury) ? readdirSync(miniatury) : []).toEqual([]); // M1-095: miniatury wzorów w Caches też znikają
   expect((await licznosci(s.baza)).projekt).toBe(0);
   expect(readdirSync(s.z.katalogi.kopiePrzed)).toEqual(['oczko-przed-usunieciem-2026-10-22.oczko']); // kopia bezpieczeństwa poza tmp zostaje
 });
@@ -51,7 +56,7 @@ test('M1-001: eksport .oczko z bieżącego startu przeżywa „Delete all data�
   expect(readdirSync(tmp)).toEqual([]);
 });
 
-test('M1-001: wybór sprzątania — starsze niż start procesu znikają; nowsze (eksport w otwartym arkuszu), pamięci podręczne i wpisy bez czasu zostają', () => {
+test('M1-001, M1-095: wybór sprzątania — starsze niż start procesu znikają (także stary katalog miniatur sprzed przeniesienia do Caches); nowsze (eksport w otwartym arkuszu), rysunki czekające na zapis i wpisy bez czasu zostają', () => {
   const start = 1_000_000;
   const w = tymczasoweDoUsuniecia([
     { nazwa: 'oczko-2026-10-22.oczko', zmianaMs: start - 1 },
@@ -63,10 +68,10 @@ test('M1-001: wybór sprzątania — starsze niż start procesu znikają; nowsze
     { nazwa: 'rysunki-wzoru', zmianaMs: 1 },
     { nazwa: 'nieczytelny', zmianaMs: null },
   ], start);
-  expect(w.sort()).toEqual(['import-5', 'oczko-2026-10-22.oczko', 'oczko-ratunkowa-1.zip']);
+  expect(w.sort()).toEqual(['import-5', 'miniatury', 'oczko-2026-10-22.oczko', 'oczko-ratunkowa-1.zip']);
 });
 
-test('M1-001: adapter na kopii — usuwa stare pliki i katalogi tmp; baza, magazyn i kopie bez zmian (liczności i pliki przed/po)', async () => {
+test('M1-001, M1-095: adapter na kopii — usuwa stare pliki i katalogi tmp (stary katalog miniatur też); `.pkdrawing` w rysunki-wzoru przeżywa; baza, magazyn i kopie bez zmian (liczności i pliki przed/po)', async () => {
   const s = await srodowisko();
   const tmp = s.z.katalogi.tymczasowy;
   const start = Date.now();
@@ -78,12 +83,17 @@ test('M1-001: adapter na kopii — usuwa stare pliki i katalogi tmp; baza, magaz
   writeFileSync(join(tmp, 'oczko-2026-10-22.oczko'), 'W ARKUSZU');
   ustawCzas(join(tmp, 'oczko-2026-10-22.oczko'), start + 1_000);
   mkdirSync(join(tmp, 'miniatury'));
+  writeFileSync(join(tmp, 'miniatury', 'abc.png'), 'PNG');
   ustawCzas(join(tmp, 'miniatury'), start - 60_000);
+  mkdirSync(join(tmp, 'rysunki-wzoru'));
+  writeFileSync(join(tmp, 'rysunki-wzoru', 'w1.pkdrawing'), 'KRESKI');
+  ustawCzas(join(tmp, 'rysunki-wzoru'), start - 60_000);
   const przed = await licznosci(s.baza);
   const magazynPrzed = readdirSync(s.magazyn.katalog).sort();
   const w = sprzatnijTymczasowe(tmp, start);
-  expect(w).toEqual({ ok: true, wartosc: ['import-1', 'oczko-2026-10-21.oczko'] });
-  expect(readdirSync(tmp).sort()).toEqual(['miniatury', 'oczko-2026-10-22.oczko']);
+  expect(w).toEqual({ ok: true, wartosc: ['import-1', 'miniatury', 'oczko-2026-10-21.oczko'] });
+  expect(readdirSync(tmp).sort()).toEqual(['oczko-2026-10-22.oczko', 'rysunki-wzoru']);
+  expect(readFileSync(join(tmp, 'rysunki-wzoru', 'w1.pkdrawing'), 'utf8')).toBe('KRESKI');
   expect(await licznosci(s.baza)).toEqual(przed);
   expect(readdirSync(s.magazyn.katalog).sort()).toEqual(magazynPrzed);
 });
@@ -105,13 +115,12 @@ test('M1-001 (trwała kontrola): każde miejsce, które pisze do katalogu tymcza
     'app/zdjecie.tsx': 'zdjęcie bez metadanych: usunięcie po zapisie do magazynu; siatka: kamień milowy',
     'app/projekt/[id].tsx': 'zdjęcie bez metadanych i panel E2E: usunięcie po zapisie; siatka: kamień milowy',
     'app/wloczka.tsx': 'zdjęcie bez metadanych: usunięcie po zapisie; siatka: kamień milowy',
-    'app/wzor.tsx': 'rysunki-wzoru: pamięć podręczna (wyjęta ze sprzątania startu), czyszczona przy Delete all data',
+    'app/wzor.tsx': 'rysunki-wzoru: dane niezapisane, nie Caches (kreski czekające na zapis w JS, odzysk przy otwarciu wzoru) — wyjęte ze sprzątania startu, czyszczone przy Delete all data',
     'src/dane/archiwum.ts': 'eksport-*.db i import-*: usunięcie po użyciu; siatka: kamień milowy',
     'src/dane/kopia-ratunkowa.ts': 'przywracanie-*.db: siatka: kamień milowy',
     'src/kompozycja/kontener.ts': 'utworzenie katalogu',
     'src/kompozycja/start-aplikacji.ts': 'zgłoszenie i ZIP ratunkowy trybu awaryjnego; siatka: kamień milowy',
     'src/kompozycja/kopia-awaryjna.ts': 'archiwum trybu awaryjnego: siatka: kamień milowy',
-    'src/kompozycja/miniatury.ts': 'miniatury: pamięć podręczna (wyjęta ze sprzątania startu), czyszczona przy Delete all data',
     'src/przypadki-uzycia/projekt.ts': 'Delete all data: czyszczenie całego katalogu',
   };
   const wynik = execFileSync('grep', ['-rlE', 'katalogi\\.tymczasowy|polacz\\([a-zA-Z.]*katalogDanych, .tmp.\\)', 'src', 'app', '--include=*.ts', '--include=*.tsx'], { cwd: join(__dirname, '../..'), encoding: 'utf8' });

@@ -92,15 +92,17 @@ export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<str
   }
 }
 
-/** Pamięci podręczne w katalogu tymczasowym (dane odtwarzalne): bez sprzątania przy starcie, czyszczone przy „Delete all data”. */
-const PAMIECI_PODRECZNE = ['miniatury', 'rysunki-wzoru'];
+/** Dane niezapisane w katalogu tymczasowym, nie pamięć podręczna (M1-095): `rysunki-wzoru` to kreski czekające na zapis w JS, odzyskiwane przy
+ *  następnym otwarciu wzoru — nie do `Caches` (system mógłby je usunąć) i bez sprzątania przy starcie; czyszczone przy „Delete all data”.
+ *  Miniatury (odtwarzalne) są w `Library/Caches` (Katalogi.podreczny); stary katalog `tmp/miniatury` znika przy pierwszym kamieniu milowym. */
+const OCZEKUJACE_NA_ZAPIS = ['rysunki-wzoru'];
 /**
  * M1-001 (05-architekt-501): `Application Support/tmp` wchodzi do kopii urządzenia, więc pliki pochodne (eksport, ZIP ratunkowy, katalogi importu
  * i zgłoszeń) nie mogą zostawać. Przy kamieniu milowym usuwane są wpisy zmienione przed początkiem bieżącego startu; nowsze (np. eksport w otwartym
- * arkuszu udostępniania), pamięci podręczne i wpisy bez czasu zostają.
+ * arkuszu udostępniania), rysunki czekające na zapis i wpisy bez czasu zostają.
  */
 export function tymczasoweDoUsuniecia(wpisy: { nazwa: string; zmianaMs: number | null }[], odMs: number): string[] {
-  return wpisy.filter((w) => !PAMIECI_PODRECZNE.includes(w.nazwa) && w.zmianaMs !== null && w.zmianaMs < odMs).map((w) => w.nazwa);
+  return wpisy.filter((w) => !OCZEKUJACE_NA_ZAPIS.includes(w.nazwa) && w.zmianaMs !== null && w.zmianaMs < odMs).map((w) => w.nazwa);
 }
 /** Adapter: lista katalogu tymczasowego → usunięcie wybranych plików i katalogów; brak katalogu = nic do zrobienia, błąd nie blokuje startu. */
 export function sprzatnijTymczasowe(katalog: string, odMs: number): Wynik<string[]> {
