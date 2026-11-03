@@ -540,7 +540,7 @@
   },
   "zrodla": {
     "zdanie": "Jedno ogólne zdanie ekranu „Źródła wiedzy” (P-108 (4)). Tekst z design-spec roli 04.",
-    "linia_standardow": "Linia źródła wymagana warunkami użycia organizacji standardów (BR-KAL-008, P-112 (2)), dosłownie z BRD. W przekładzie zmienia się tylko słowo „Source:”; nazwa i adres zostają."
+    "linia_standardow": "Linia źródła wymagana warunkami użycia organizacji standardów (BR-KAL-008, P-112 (2)), dosłownie z BRD. Nie tłumaczyć: we wszystkich językach zostaje cała linia po angielsku, także słowo „Source:” (formuła dawcy; README 06, P-085, DEC-21 a)."
   },
   "stoper": {
     "start_a11y": "Stoper sesji na liczniku (F-21, P-191 P1a): etykieta VoiceOver ikony stopera w pasku nawigacji, gdy nie ma sesji. Jedno stuknięcie zaczyna sesję. Ok. 20 znaków.",

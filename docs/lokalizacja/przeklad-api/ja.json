@@ -411,7 +411,7 @@
   "jezyk.ustawienia_ios": "iOSの設定で変更",
   "jezyk.ustawienia_ios_opis": "アイコンの下のアプリ名とカメラの許可テキストは、iOSの設定でOczkoに設定した言語に従います。",
   "zrodla.zdanie": "Oczkoの表やヒントは、業界標準と手芸団体のガイダンスをもとに、独自の言葉で書かれています。",
-  "zrodla.linia_standardow": "出典：Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "セッションタイマーを開始",
   "stoper.trwa_a11y": "セッションタイマー、{{czas}}、動作中。一時停止または停止",
   "stoper.wstrzymana_a11y": "セッションタイマー、{{czas}}、一時停止中。再開または停止",

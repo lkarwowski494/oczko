@@ -582,7 +582,7 @@
   "jezyk.ustawienia_ios": "Keisti iOS nustatymuose",
   "jezyk.ustawienia_ios_opis": "Programos pavadinimas po piktograma ir fotoaparato leidimo tekstas atitinka kalbą, nustatytą Oczko iOS nustatymuose.",
   "zrodla.zdanie": "Oczko lentelės ir patarimai parašyti mūsų pačių žodžiais, remiantis pramonės standartais ir rankdarbių organizacijų rekomendacijomis.",
-  "zrodla.linia_standardow": "Šaltinis: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Pradėti seanso chronometrą",
   "stoper.trwa_a11y": "Seanso chronometras, {{czas}}, veikia. Pristabdyti arba sustabdyti",
   "stoper.wstrzymana_a11y": "Seanso chronometras, {{czas}}, pristabdytas. Tęsti arba sustabdyti",

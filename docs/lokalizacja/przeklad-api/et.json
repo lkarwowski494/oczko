@@ -474,7 +474,7 @@
   "jezyk.ustawienia_ios": "Muuda iOS-i seadetes",
   "jezyk.ustawienia_ios_opis": "Rakenduse nimi ikooni all ja kaamera loa tekst järgivad keelt, mis on Oczkole iOS-i seadetes määratud.",
   "zrodla.zdanie": "Oczko tabelid ja nõuanded on kirjutatud meie enda sõnadega, tuginedes valdkonna standarditele ja käsitööorganisatsioonide juhistele.",
-  "zrodla.linia_standardow": "Allikas: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Käivita seansitaimer",
   "stoper.trwa_a11y": "Seansitaimer, {{czas}}, töötab. Peata või lõpeta",
   "stoper.wstrzymana_a11y": "Seansitaimer, {{czas}}, pausil. Jätka või lõpeta",

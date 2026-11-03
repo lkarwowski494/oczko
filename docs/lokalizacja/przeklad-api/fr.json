@@ -501,7 +501,7 @@
   "jezyk.ustawienia_ios": "Modifier dans les Réglages iOS",
   "jezyk.ustawienia_ios_opis": "Le nom de l’app sous l’icône et le texte d’autorisation de l’appareil photo suivent la langue définie pour Oczko dans les Réglages iOS.",
   "zrodla.zdanie": "Les tableaux et conseils d’Oczko sont rédigés avec nos propres mots, d’après des normes du secteur et des recommandations d’organisations d’artisanat.",
-  "zrodla.linia_standardow": "Source : Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Lancer le chronomètre",
   "stoper.trwa_a11y": "Chronomètre de séance, {{czas}}, en cours. Mettre en pause ou arrêter",
   "stoper.wstrzymana_a11y": "Chronomètre de séance, {{czas}}, en pause. Reprendre ou arrêter",

@@ -546,7 +546,7 @@
   "jezyk.ustawienia_ios": "Zmień w Ustawieniach iOS",
   "jezyk.ustawienia_ios_opis": "Nazwa aplikacji pod ikoną i tekst uprawnienia do aparatu zależą od języka ustawionego dla Oczka w Ustawieniach iOS.",
   "zrodla.zdanie": "Tabele i wskazówki w Oczku napisaliśmy własnymi słowami, na podstawie standardów branżowych i wskazówek organizacji rękodzielniczych.",
-  "zrodla.linia_standardow": "Źródło: Craft Yarn Council's www.YarnStandards.com",
+  "zrodla.linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com",
   "stoper.start_a11y": "Uruchom stoper sesji",
   "stoper.trwa_a11y": "Stoper sesji, {{czas}}, działa. Wstrzymaj lub zatrzymaj",
   "stoper.wstrzymana_a11y": "Stoper sesji, {{czas}}, wstrzymany. Wznów lub zatrzymaj",
