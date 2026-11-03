@@ -10,7 +10,8 @@ const nazwa = (e: unknown): string => (e instanceof Error && /^[A-Za-z0-9_]{1,40
 /** Ramki stosu jako „plik:linia:kolumna” (nazwa pliku bez ścieżki i adresu), bez treści komunikatu z pierwszej linii stosu. */
 function ramki(e: unknown): string[] {
   const stos = e instanceof Error && typeof e.stack === 'string' ? e.stack : '';
-  return stos.split('\n').slice(1).flatMap((l) => {
+  // Tylko linie stosu („at …”, Hermes): dalsze linie wieloliniowego komunikatu mogą nieść dane osoby (przegląd p3a, M1-058).
+  return stos.split('\n').slice(1).filter((l) => /^\s*at\s/.test(l)).flatMap((l) => {
     const m = /([^\s/()]+):(\d+):(\d+)\)?\s*$/.exec(l);
     return m ? [`${m[1]}:${m[2]}:${m[3]}`] : [];
   }).slice(0, MAKS_RAMEK);
