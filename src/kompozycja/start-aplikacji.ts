@@ -118,12 +118,12 @@ export function trybAwaryjny() {
         usunKatalog(kat);
       }
     },
-    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (trzy pliki + manifest) do arkusza udostępniania. */
+    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (trzy pliki + manifest) do arkusza udostępniania; M1-075: z dziennikiem +1 (ADR-0008), którego tryb awaryjny nie scala. */
     async zipSurowej(): Promise<string | null> {
       const k = await kopia;
       if (!k.ok) return null;
       const cel = polacz(katalogi.tymczasowy, `oczko-ratunkowa-${zegar.teraz().ms}.zip`);
-      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku });
+      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku, dodatkowe: [s.dziennik] });
       return w.ok ? cel : null;
     },
   };

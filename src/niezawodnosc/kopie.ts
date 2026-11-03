@@ -5,7 +5,7 @@ import { KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DN
 import { zapiszZip, type WpisZip } from '../dane/archiwum/zip';
 import { powodBledu } from '../dane/baza/bledy-sqlite';
 import { sha256PlikuTs } from '../dane/pliki/magazyn';
-import { czasZmiany, istniejeKatalog, istniejePlik, lista, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
+import { czasZmiany, istniejeKatalog, istniejePlik, kopiuj, lista, nazwaPliku, otworzDoCzytania, polacz, rozmiar, usunKatalog, usunPlik } from '../dane/pliki/system';
 
 const DOBA_MS = 86_400_000;
 export type WpisKopii = { nazwa: string; katalog: boolean };
@@ -164,26 +164,38 @@ function naglowekBazy(sciezka: string): { user_version: number | null; applicati
  * ADR-0020 (3), P-080 (3b): jeden ZIP z plikami surowej kopii (`pliki` z wyniku `surowaKopia`: plik bazy oraz jego -wal i -shm, które są)
  * i `manifest.json` (wersja aplikacji, build, user_version i application_id z nagłówka, SHA-256 plików). Bazy nie otwiera. Nazwy plików bierze
  * od wołającego (jedno źródło nazwy bazy: sciezki.ts, P-180). Cel nie może istnieć; niepełny plik po błędzie jest usuwany.
+ * M1-075 (ADR-0008, zasada wspólna 10): `dodatkowe` to pliki danych spoza surowej kopii (dziennik +1 z ekranu blokady i zegarka, którego tryb
+ * awaryjny nie scala do bazy); w ZIP pod własną nazwą, w manifeście z SHA-256. Najpierw migawka obok celu (moduł Swift może dopisywać linie),
+ * więc bajty i SHA w ZIP pochodzą z tego samego stanu; migawka usuwana na końcu. Brak pliku = brak wpisu.
  */
-export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number; skrot?: (sciezka: string) => Promise<string> }): Promise<Wynik<ManifestSurowejKopii>> {
+export async function zipSurowejKopii(katalogSurowej: string, pliki: readonly string[], cel: string, o: { aplikacja: string; build: string; terazMs: number; skrot?: (sciezka: string) => Promise<string>; dodatkowe?: readonly string[] }): Promise<Wynik<ManifestSurowejKopii>> {
   const skrot = o.skrot ?? sha256PlikuTs; // P-130 (M1-017): na urządzeniu natywny; TS w Node i jako wzorzec
   const nazwy = pliki.filter((n) => istniejePlik(polacz(katalogSurowej, n)));
   const glowny = nazwy.find((n) => !/-(wal|shm)$/.test(n));
   if (!glowny) return { ok: false, powod: 'bledne_dane' };
   const baza = polacz(katalogSurowej, glowny);
   if (istniejePlik(cel)) return { ok: false, powod: 'zapis' };
+  const migawki: string[] = [];
   try {
-    const pliki: ManifestSurowejKopii['pliki'] = [];
-    for (const n of nazwy) {
-      const p = polacz(katalogSurowej, n);
-      pliki.push({ nazwa: n, bajty: rozmiar(p), sha256: await skrot(p) });
+    const zrodla = nazwy.map((n) => ({ nazwa: n, plik: polacz(katalogSurowej, n) }));
+    for (const d of o.dodatkowe ?? []) {
+      if (!istniejePlik(d)) continue;
+      const m = `${cel}.${nazwaPliku(d)}`;
+      usunPlik(m);
+      migawki.push(m);
+      kopiuj(d, m);
+      zrodla.push({ nazwa: nazwaPliku(d), plik: m });
     }
+    const pliki: ManifestSurowejKopii['pliki'] = [];
+    for (const z of zrodla) pliki.push({ nazwa: z.nazwa, bajty: rozmiar(z.plik), sha256: await skrot(z.plik) });
     const manifest: ManifestSurowejKopii = { format: 'oczko-ratunkowa', wersja: 1, aplikacja: o.aplikacja, build: o.build, utworzono: o.terazMs, ...naglowekBazy(baza), pliki };
-    const wpisy: WpisZip[] = [{ nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest, null, 2)) }, ...nazwy.map((n) => ({ nazwa: n, plik: polacz(katalogSurowej, n) }))];
+    const wpisy: WpisZip[] = [{ nazwa: 'manifest.json', dane: new TextEncoder().encode(JSON.stringify(manifest, null, 2)) }, ...zrodla];
     const w = zapiszZip(cel, wpisy);
     return w.ok ? { ok: true, wartosc: manifest } : w;
   } catch (e) {
     usunPlik(cel);
     return { ok: false, powod: powodBledu(e) === 'brak_miejsca' ? 'brak_miejsca' : 'zapis' };
+  } finally {
+    for (const m of migawki) usunPlik(m);
   }
 }
