@@ -94,7 +94,8 @@ export function sprawdzSlowniki(slowniki, zrodlo, { wyjatki = {}, kontekst = nul
 
 // --- Treść krytyczna (DEC-11 a): mapa klucz → ID twierdzeń (06) × stan kontroli (a) na język (09) ---
 const ID_TW = /^[A-Z]{3}-[A-Z0-9]+$/;
-const METODY_A = ['przeklad-zwrotny-pl']; // kontrola (a) „szerokiej” (docs/lokalizacja/jezyki.md): przekład zwrotny na pl w świeżej sesji z porównaniem sensu
+const METODY_A = ['przeklad-zwrotny-pl', 'akceptacja-wlasciciela-pl']; // kontrola (a) „szerokiej” (docs/lokalizacja/jezyki.md): przekład zwrotny na pl w świeżej sesji z porównaniem sensu;
+const METODA_TYLKO_PL = 'akceptacja-wlasciciela-pl'; // P-498: pl jest językiem źródłowym przekładu zwrotnego, więc jego kontrolą jest akceptacja tekstów przez właściciela (P-473) + porównanie z en; w innym języku ta metoda nie wystarcza
 const WYNIKI_A = ['zgodny', 'rozbieżny'];
 // Skrót tekstu klucza (12 znaków sha256): tekst albo linie „kategoria=tekst” posortowane po kategorii; zmiana tekstu po kontroli unieważnia wpis.
 export const skrotKlucza = (w) => createHash('sha256').update(w.formy ? Object.keys(w.formy).sort().map((k) => `${k}=${w.formy[k]}`).join('\n') : w.tekst).digest('hex').slice(0, 12);
@@ -121,6 +122,7 @@ export function sprawdzKrytyczne(slowniki, zrodlo, mapa, przeglad, { wydanie = f
       if (brak.length) bledy.push(`przeglad: ${j} ${k} — wpis a bez pól ${brak.join(', ')}`);
       if (a.data && !/^\d{4}-\d{2}-\d{2}$/.test(a.data)) bledy.push(`przeglad: ${j} ${k} — data „${a.data}” nie jest RRRR-MM-DD`);
       if (a.metoda && !METODY_A.includes(a.metoda)) bledy.push(`przeglad: ${j} ${k} — metoda „${a.metoda}” spoza ${METODY_A.join(', ')}`);
+      if (a.metoda === METODA_TYLKO_PL && j !== 'pl') bledy.push(`przeglad: ${j} ${k} — metoda „${a.metoda}” tylko dla pl`);
       if (a.wynik && !WYNIKI_A.includes(a.wynik)) bledy.push(`przeglad: ${j} ${k} — wynik „${a.wynik}” spoza ${WYNIKI_A.join(', ')}`);
     }
   }
@@ -132,7 +134,7 @@ export function sprawdzKrytyczne(slowniki, zrodlo, mapa, przeglad, { wydanie = f
       if (!w) continue; // brak tekstu: nakładka dziedziczy z języka bazowego (jego wpis), brak w pełnym słowniku to błąd sprawdzSlowniki
       par++;
       const a = przeglad.jezyki?.[j]?.[k]?.a;
-      if (!a || !a.kto || !a.data || !a.metoda || !a.sha || !WYNIKI_A.includes(a.wynik) || !METODY_A.includes(a.metoda)) { braki.push(k); bezWpisu++; }
+      if (!a || !a.kto || !a.data || !a.metoda || !a.sha || !WYNIKI_A.includes(a.wynik) || !METODY_A.includes(a.metoda) || (a.metoda === METODA_TYLKO_PL && j !== 'pl')) { braki.push(k); bezWpisu++; }
       else if (a.wynik !== 'zgodny') { niezgodne.push(k); bezWpisu++; }
       else if (a.sha !== skrotKlucza(w)) { nieaktualne.push(k); bezWpisu++; }
     }

@@ -33,13 +33,15 @@ describe('workflow przeklad-tlumaczen.yml', () => {
     expect((bezKomentarzy.match(/--wysilek "\$WEJ_WYSILEK"/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/powyżej 30 USD/); expect(bezKomentarzy).not.toMatch(/6 USD/);
   });
-  test('tryb przeglad (P-486): wejście tryb przeklad|przeglad (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
-    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad\]/);
+  test('tryby przeglad (P-486) i zwrotny (P-498): wejście tryb przeklad|przeglad|zwrotny (domyślnie przeklad), zakres fali i osobny artefakt; sekret nadal w jednym kroku', () => {
+    expect(bezKomentarzy).toMatch(/tryb:[\s\S]*?type: choice[\s\S]*?default: przeklad[\s\S]*?options: \[przeklad, przeglad, zwrotny\]/);
     expect(bezKomentarzy).toMatch(/WEJ_TRYB: \$\{\{ inputs\.tryb \}\}/);
     expect((bezKomentarzy.match(/--tryb "\$WEJ_TRYB"/g) ?? []).length).toBe(2);
     expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/zakres-fali-2026-11-03\.json; WYJ=raport-przegladu/g) ?? []).length).toBe(2);
     expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'przeglad'[\s\S]*?name: raport-przegladu[\s\S]*?retention-days: 7/);
-    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb != 'przeglad'/);
+    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'przeklad'/);
+    expect((bezKomentarzy.match(/ZAKRES=docs\/lokalizacja\/krytyczne\.json; WYJ=raport-zwrotny/g) ?? []).length).toBe(2);
+    expect(bezKomentarzy).toMatch(/if: always\(\) && inputs\.tryb == 'zwrotny'[\s\S]*?name: raport-zwrotny[\s\S]*?retention-days: 7/);
     expect(bezKomentarzy.match(/secrets\./g)).toHaveLength(1);
     expect(bezKomentarzy).not.toMatch(/src\/i18n\/slowniki/);
   });
