@@ -57,10 +57,10 @@ jest.mock('../../modules/oczko-wzor', () => ({ WidokWzoruNatywny: () => mockReac
 jest.mock('../../src/przypadki-uzycia/sesja', () => mockOdczyty('../../src/przypadki-uzycia/sesja', ['sesjeProjektu']));
 jest.mock('../../src/przypadki-uzycia/historia', () => mockOdczyty('../../src/przypadki-uzycia/historia', ['widokHistorii']));
 jest.mock('../../src/przypadki-uzycia/widok-ukonczenia', () => mockOdczyty('../../src/przypadki-uzycia/widok-ukonczenia', ['kartaUkonczenia']));
-jest.mock('../../src/przypadki-uzycia/zapas', () => mockOdczyty('../../src/przypadki-uzycia/zapas', ['narzedzia', 'wloczka']));
+jest.mock('../../src/przypadki-uzycia/zapas', () => mockOdczyty('../../src/przypadki-uzycia/zapas', ['narzedzia', 'wloczka', 'zapasZDetalami']));
 jest.mock('../../src/przypadki-uzycia/zgloszenie', () => mockOdczyty('../../src/przypadki-uzycia/zgloszenie', ['przygotujZgloszenie']));
 jest.mock('../../src/przypadki-uzycia/zdjecia', () => mockOdczyty('../../src/przypadki-uzycia/zdjecia', ['zdjecia']));
-jest.mock('../../src/przypadki-uzycia/widok-licznika', () => mockOdczyty('../../src/przypadki-uzycia/widok-licznika', ['widokLicznika']));
+jest.mock('../../src/przypadki-uzycia/widok-licznika', () => mockOdczyty('../../src/przypadki-uzycia/widok-licznika', ['widokLicznika', 'historiaLicznika']));
 jest.mock('../../src/przypadki-uzycia/widok-kosza', () => mockOdczyty('../../src/przypadki-uzycia/widok-kosza', ['widokKosza']));
 jest.mock('../../src/przypadki-uzycia/widok-projektu', () => mockOdczyty('../../src/przypadki-uzycia/widok-projektu', ['widokProjektu']));
 // Start aplikacji: strażnik i kontener podmienione (bez dysku i modułów natywnych); ekran awaryjny prawdziwy.
@@ -101,7 +101,7 @@ beforeEach(() => {
   Object.values(mockRouter).forEach((f) => { if (typeof f === 'function' && 'mockClear' in f) f.mockClear(); });
 });
 
-type Przypadek = { trasa: string; plik: string; przedrostek: string; odczyt: string; params?: Record<string, string>; dane?: [string, unknown[]][]; awarie?: Awaria[] };
+type Przypadek = { trasa: string; plik: string; przedrostek: string; odczyt: string; params?: Record<string, string>; dane?: [string, unknown[]][]; awarie?: Awaria[]; wyjscie?: string };
 const PRZYPADKI: Przypadek[] = [
   { trasa: '/sesje', plik: '../../app/sesje', przedrostek: 'sesje', odczyt: 'sesjeProjektu', params: { projekt: 'p1' } },
   { trasa: '/dni', plik: '../../app/dni', przedrostek: 'dni', odczyt: 'widokHistorii' },
@@ -119,6 +119,13 @@ const PRZYPADKI: Przypadek[] = [
   { trasa: '/wzor', plik: '../../app/wzor', przedrostek: 'wzor', odczyt: 'widokLicznika' },
   { trasa: '/formularz/notatka', plik: '../../app/formularz/[rodzaj]', przedrostek: 'formularz', odczyt: 'widokProjektu', params: { rodzaj: 'notatka', projekt: 'p1' } },
   { trasa: '/formularz/nazwa', plik: '../../app/formularz/[rodzaj]', przedrostek: 'formularz', odczyt: 'widokLicznika', params: { rodzaj: 'nazwa' } },
+  // M1-audytor-generalny-152 (08-programista-521): błąd odczytu zostaje błędem z „Try again” i wyjściem (M1-094: trasy push — „Back”, arkusz historii — „Close”),
+  // nie pustym zapasem ani „0” na Narzędziach do następnego wejścia.
+  { trasa: '/zapas', plik: '../../app/zapas', przedrostek: 'zapas', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
+  { trasa: '/druty', plik: '../../app/druty', przedrostek: 'druty', odczyt: 'narzedzia', wyjscie: 'Back' },
+  { trasa: '/narzedzia (włóczki)', plik: '../../app/narzedzia', przedrostek: 'narzedzia', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
+  { trasa: '/narzedzia (druty)', plik: '../../app/narzedzia', przedrostek: 'narzedzia', odczyt: 'narzedzia', wyjscie: 'Back' },
+  { trasa: '/historia', plik: '../../app/historia', przedrostek: 'historia', odczyt: 'historiaLicznika', wyjscie: 'Close' },
 ];
 const ZESTAW = PRZYPADKI.flatMap((p) => (p.awarie ?? ['wynik', 'wyjatek']).map((a): [string, Awaria, string, Przypadek] => [p.trasa, a, p.przedrostek, p]));
 /** Render i chwila na odczyty po zamontowaniu (aktualizacje stanu w act). */
@@ -137,6 +144,7 @@ describe('M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”,
     expect(screen.getByText(BLAD)).toBeTruthy();
     const ponow = screen.getByTestId(`${p.przedrostek}-ponow`);
     expect(screen.getByText(PONOW)).toBeTruthy();
+    if (p.wyjscie) { fireEvent.press(screen.getByText(p.wyjscie)); expect(mockRouter.back).toHaveBeenCalledTimes(1); } // M1-152: wyjście ze stanu błędu (M1-094)
     // Ponowienie: odczyt wraca do prawdziwego → ekran z danymi albo wyjście (np. konflikt rozstrzygnięty, brak zdjęć), bez stanu błędu.
     mockAwaria[p.odczyt] = undefined;
     await act(async () => { fireEvent.press(ponow); await new Promise((r) => setTimeout(r, 100)); });

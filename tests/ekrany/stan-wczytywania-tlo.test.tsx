@@ -114,7 +114,7 @@ describe('M1-089: trwała kontrola — trasa-arkusz z `StanWczytywania` podaje t
 
   test('lista tras z StanWczytywania obejmuje arkusze ze specyfikacji 04 (pułapka na zmianę zapisu)', () => {
     const arkuszowe = zeStanem.filter((x) => ARKUSZE.has(x.trasa)).map((x) => x.trasa).sort();
-    expect(arkuszowe).toEqual(['drut', 'formularz/[rodzaj]', 'konflikt', 'menu', 'sesja-korekta', 'ukonczenie', 'wloczka', 'zglos']);
+    expect(arkuszowe).toEqual(['drut', 'formularz/[rodzaj]', 'historia', 'konflikt', 'menu', 'sesja-korekta', 'ukonczenie', 'wloczka', 'zglos']); // M1-152: + historia
   });
   test.each([...ARKUSZE].filter((n) => zeStanem.some((x) => x.trasa === n)).sort())('arkusz %s: każdy StanWczytywania ma tlo="arkusz"', (n) => {
     const w = tla(zeStanem.find((x) => x.trasa === n)!.zrodlo);
@@ -125,7 +125,7 @@ describe('M1-089: trwała kontrola — trasa-arkusz z `StanWczytywania` podaje t
     expect(prezentacja('fullScreenModal')).toContain('zdjecie');
     expect(tla(zeStanem.find((x) => x.trasa === 'zdjecie')!.zrodlo)).toEqual(['czarne']);
     const wStosie = zeStanem.filter((x) => !ARKUSZE.has(x.trasa) && x.trasa !== 'zdjecie');
-    expect(wStosie.map((x) => x.trasa).sort()).toEqual(['dni', 'index', 'kosz', 'probka', 'projekt/[id]', 'projekty', 'sesje', 'wzor']);
+    expect(wStosie.map((x) => x.trasa).sort()).toEqual(['dni', 'druty', 'index', 'kosz', 'narzedzia', 'probka', 'projekt/[id]', 'projekty', 'sesje', 'wzor', 'zapas']); // M1-152: + druty, narzedzia, zapas
     for (const x of wStosie) expect(tla(x.zrodlo).every((v) => v === 'papier')).toBe(true);
   });
 });
