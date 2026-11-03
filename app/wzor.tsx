@@ -2,35 +2,32 @@
 // Bez wzoru: grupa „Add pattern” (W7a, subflow otworz-wzor-pdf). Widok strony = moduł natywny `oczko-wzor` (WidokWzoru); build bez modułu: pusta strona.
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Linking, View, useWindowDimensions } from 'react-native';
+import { Alert, View, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { WidokWzoruNatywny, type UchwytWidokuWzoru } from '../modules/oczko-wzor';
-import { rodzajPliku } from '../src/domena/rodzaj-pliku';
+import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { ukladOkna } from '../src/domena/uklad';
-import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
-import { narzedzieDlaKlasy, narzedzieRysika, politykaPlotna, poDotyku, poPierwszymRysiku, type Narzedzie } from '../src/domena/rysik';
-import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow, type ZrodloDodaniaEkranu } from '../src/ekrany/WzorGrupa';
+import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
+import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
+import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow } from '../src/ekrany/WzorGrupa';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
 import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
+import { akcjeWzoru } from '../src/ekrany/WzorAkcje';
+import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { krotkaData } from '../src/kompozycja/projekt';
-import { alertImportu, alertSkanu, nazwaDomyslna } from '../src/kompozycja/wzor-dodawanie';
+import { dodajZrodlo, type ZrodloDodaniaTrasy } from '../src/kompozycja/wzor-import-trasy';
 import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunki';
-import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
 import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
-import { wybieraczZdjec } from '../src/platforma/zdjecia';
-import { dodajWzor, listaWzorow, usunWzor, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
-import { dodajNotatkeWzoru, usunNotatkeWzoru, zmienNotatkeWzoru } from '../src/przypadki-uzycia/wzor-notatki';
-import { odzyskajRysunki, ustawObrot, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
+import { listaWzorow, wzorDoOtwarcia, zapamietajWzor, ustawZnacznik, zmienNazweWzoru } from '../src/przypadki-uzycia/wzor';
+import { odzyskajRysunki, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
-import { zapamietajPozycjeWzoru } from '../src/przypadki-uzycia/wzor-miejsce';
 import { KOSZ_DNI } from '../src/konfiguracja';
 
 const RODZAJ: Record<string, 'wzor.rodzaj_pdf' | 'wzor.rodzaj_zdjecie' | 'wzor.rodzaj_strona' | 'wzor.rodzaj_word'> = { pdf: 'wzor.rodzaj_pdf', obraz: 'wzor.rodzaj_zdjecie', www: 'wzor.rodzaj_strona', word: 'wzor.rodzaj_word' };
@@ -112,7 +109,7 @@ export default function EkranWzoru(): React.ReactElement {
   useEffect(() => {
     if (!lw || dodano || !dodajParam || !['plik', 'skan', 'zdjecia', 'link'].includes(dodajParam)) return;
     ustawDodano(true);
-    void dodaj(dodajParam as ZrodloDodaniaEkranu);
+    void dodaj(dodajParam as ZrodloDodaniaTrasy);
   }, [lw, dodano, dodajParam]);
   // Wyjście z ekranu wzoru: miejsce pracy wraca na licznik (pozycja wzoru zostaje); zamknięcie aplikacji na wzorze zostawia ekran wzoru, więc start otworzy wzór (07-jakosc-006).
   useEffect(() => {
@@ -124,55 +121,9 @@ export default function EkranWzoru(): React.ReactElement {
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
-  async function dodaj(zrodlo: ZrodloDodaniaEkranu | { rodzaj: 'adres'; adres: string } | { rodzaj: 'gotowe'; nazwa: string; zrodlo: ZrodloDodania }): Promise<void> {
+  async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
     if (!lw) return;
-    const data = krotkaData(zw.zegar.teraz().dzien, kontener.j.jezyk());
-    let z: ZrodloDodania | null = null, nazwa = '', plik = '';
-    if (typeof zrodlo === 'object') {
-      if (zrodlo.rodzaj === 'adres') { z = { rodzaj: 'adres', adres: zrodlo.adres }; nazwa = nazwaDomyslna(zrodlo, t, data); plik = nazwa; }
-      else { z = zrodlo.zrodlo; nazwa = zrodlo.nazwa; } // źródło złożone przez panel buildu E2E (tryb-e2e.ts, P-238)
-    } else if (zrodlo === 'link') { ustawLink(true); return; }
-    else if (zrodlo === 'plik') {
-      const p = await wybierzPlikWzoru();
-      if (!p) return;
-      const rodzaj = rodzajPliku(p.nazwa, p.typ); // jedna reguła rozszerzeń (ADR-0031 pkt 5): Word = .docx, .doc → „can’t add this type”
-      if (rodzaj !== 'pdf' && rodzaj !== 'word') { pokaz(alertImportu('bledne_dane', p.nazwa, t)); return; }
-      z = { rodzaj, plik: { id: p.nazwa, nazwa: p.nazwa, sciezka: p.sciezka, typ: p.typ } };
-      nazwa = nazwaDomyslna({ rodzaj: 'plik', nazwa: p.nazwa }, t, data); plik = p.nazwa;
-    } else if (zrodlo === 'skan') {
-      const s = await kontener.wzor.platforma.skanuj();
-      if (!s.ok) { // W11 :664: brak aparatu → „Open Settings” / „Cancel”
-        const a = alertSkanu(s.powod, t);
-        if (a?.ustawienia) Alert.alert(a.tytul, a.opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: t('zdjecia.otworz_ustawienia'), onPress: () => void Linking.openSettings() }]);
-        else pokaz(a);
-        return;
-      }
-      z = { rodzaj: 'obrazy', sciezki: s.wartosc.sciezki }; nazwa = nazwaDomyslna({ rodzaj: 'skan' }, t, data);
-    } else {
-      const s = await wybieraczZdjec().wybierzStrony();
-      if (s.rodzaj !== 'zdjecia') { if (s.rodzaj === 'blad') pokaz(alertImportu('zapis', '', t)); return; }
-      z = { rodzaj: 'obrazy', sciezki: s.sciezki }; nazwa = nazwaDomyslna({ rodzaj: 'zdjecia' }, t, data);
-    }
-    if (!z) return;
-    ustawImport(nazwa);
-    const r = await dodajWzor(zw, { projektId: lw.projektId, nazwa, zrodlo: z }).finally(() => ustawImport(null));
-    if (r.ok) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(r.wartosc.wzorId); }
-    else if (r.powod === 'brak_sieci' && z.rodzaj === 'adres') await zapiszCzekanieNaSiec(z.adres, nazwa, lw.projektId);
-    else pokaz(alertImportu(r.powod, plik, t));
-  }
-  /**
-   * Strona WWW bez sieci (BR-WZR-007 S3, ADR-0031 pkt 3): zlecenie do skrzynki (zapis sam po powrocie sieci), wiersz „czeka na sieć”, bez pustego wzoru. Z ekranu projektu
-   * („Add pattern”, parametr `dodaj`) wracamy tam, gdzie wiersz widać; przy błędzie zapisu alert i arkusz linku z wpisanym adresem.
-   */
-  async function zapiszCzekanieNaSiec(adres: string, nazwa: string, projektId: string): Promise<void> {
-    const w = await kontener.wzor.k.czekajNaSiec({ projektId, adres, nazwa });
-    if (w.ok) { if (dodajParam) router.back(); return; }
-    pokaz(alertImportu(w.powod, '', t));
-    ustawLinkAdres(adres);
-    ustawLink(true);
-  }
-  function pokaz(a: { tytul: string; opis: string } | null): void {
-    if (a) Alert.alert(a.tytul, a.opis || undefined, [{ text: t('wspolne.ok') }]);
+    await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: () => router.back(), ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
   }
   /** M1-004: nieudany zapis +1/−1 z paska pod wzorem — haptyka `bladZapisu` (przy włączonych wibracjach) i jedno ogłoszenie tekstu alertu
    *  paska, jak na ekranie licznika; `limit` i `zablokowany` to nie błąd zapisu (bez zmian). Alert pod liczbą ustawia ekran (`blad`). */
@@ -215,33 +166,8 @@ export default function EkranWzoru(): React.ReactElement {
   const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
   const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };
   const chipy = widok.notatki;
-  const notatkiNatywne = chipy.map((c) => {
-    const etykieta = c.notatki.length > 1 ? t('wzor.notatki_wiele', { count: c.notatki.length }) : t('wzor.notatka_chip', { n: c.rzadWzoru, tekst: c.notatki[0]?.tekst ?? '' });
-    return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
-  });
-  const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny ref={uchwytWidoku} style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
-      onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
-      onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
-      onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
-      onNastepnaStrona={przejdzNaNastepna}
-      znacznik={zn ? { strona: zn.strona, y: zn.y, wysokosc: zn.wysokosc, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem, kierunek: zn.kierunek,
-        napis: zn.pozaStrona ? t('wzor.etykieta_koniec', { n: zn.rzad }) : `${t('wzor.znacznik_napis', { n: Math.max(1, zn.rzad) })} ${zn.kierunek === -1 ? '↑' : '↓'}`,
-        akcjaNastepnaStrona: zn.pozaStrona && nastepnaStrona ? t('wzor.nastepna_strona_a11y') : '',
-        etykieta: t(zn.kierunek === -1 ? 'wzor.znacznik_a11y_gora' : 'wzor.znacznik_a11y_dol', { n: Math.max(1, zn.rzad) }) } : null}
-      onRysunek={(e) => { const ocz = e.nativeEvent.oczekujace ?? 0; if (ocz === 0) ustawNiezapisane((n) => (n === null ? null : false)); void zapiszRysunek(zw, { wzorId: e.nativeEvent.wzorId, strona: e.nativeEvent.strona, plikTymczasowy: e.nativeEvent.plikTymczasowy }).then((r) => poZapisieRysunku(r, ocz)); }} // wzorId ze zdarzenia: kreski starego wzoru po przełączeniu trafiają do niego; M1-084
-      onBladZapisu={(e) => { ustawNiezapisane(e.nativeEvent.oczekujace > 0); if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, 'zapis', 'rysunek_niezapisany'); }}
-      onStrona={(e) => { ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
-      onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
-      onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie, tylkoRysik: rysik.tylkoRysik }, uklad.klasa); ustawNarzedzie(po.narzedzie); ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)
-      onZakreslenia={(e) => ustawZakreslenia(e.nativeEvent.liczba)}
-      onStukniecie={(e) => { // przytrzymanie: pas staje w tym miejscu, rząd zostaje (S3); pierwszy znacznik pyta o kierunek (3a) i bierze rząd w robocie (S2)
-        const n = e.nativeEvent;
-        if (n.wzorId !== widok.wzorId) return;
-        if (zn) void postaw({ strona: n.strona, y: gornaKrawedzRzedu(n.y, zn.wysokosc), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek: zn.kierunek });
-        else ustawPrzytrzymanie({ strona: n.strona, y: n.y });
-      }} />
-  ) : <View style={{ flex: 1 }} />;
+  const natywny = widokNatywnyWzoru({ t, aplikacja, zw, widok, lw, dokument, uchwyt: uchwytWidoku, katalogRysunkow, strona, startStrona: poczatek.current?.strona ?? 0, nastepnaStrona, narzedzie, polityka, cofnij, uklad, tylkoRysik: rysik.tylkoRysik,
+    bladRysunku, ustawOtwartyChip, ustawNiezapisane, ustawStrone, ustawZakreslenia, ustawNarzedzie, ustawRysik, ustawPrzytrzymanie, poZapisieRysunku, przejdzNaNastepna, postaw });
   const oczekujace = czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa }));
   const liczba = lw.znaczenie === 'w_trakcie' ? lw.wartosc + 1 : lw.wartosc;
   const strony = strona?.razem ?? 0;
@@ -261,9 +187,7 @@ export default function EkranWzoru(): React.ReactElement {
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}
         naCofnij={() => ustawCofnij((n) => n + 1)}
-        chipy={chipy} otwartyChip={otwartyChip} naChip={ustawOtwartyChip}
-        naZmienNotatke={async (id, nowa) => { const r = await zmienNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id, tekst: nowa }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
-        naUsunNotatke={async (id) => { const r = await usunNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; }}
+        chipy={chipy} otwartyChip={otwartyChip} naChip={ustawOtwartyChip} {...akcjeWzoru({ aplikacja, zw, widok, lw, strona, wczytaj })}
         naZaznaczRzad={(kierunek) => void postaw({ strona: strona ? strona.n - 1 : 0, y: gornaKrawedzRzedu(0.5, zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek })}
         znacznik={zn ? { strona: zn.strona, rzad: zn.rzad, kierunek: zn.kierunek, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem } : null} razemStron={strona?.razem}
         oczekujacePrzytrzymanie={przytrzymanie !== null}
@@ -277,11 +201,8 @@ export default function EkranWzoru(): React.ReactElement {
           });
         }}
         naNastepnaStrona={przejdzNaNastepna}
-        naNotatka={(tekst) => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: zn?.rzad ?? lw.wartosc + 1, tekst }).then((r) => { zapisano(aplikacja, r); })} // M1-006
-        naObroc={() => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); })} // M1-006
         naZmienNazwe={() => ustawArkuszNazwy(true)}
         tylkoRysik={rysik.tylkoRysik}
-        naUsun={() => void usunWzor(zw, { wzorId: widok.wzorId }).then(async (r) => { if (zapisano(aplikacja, r)) { await kontener.wzor.k.odswiezMigawke(); await wczytaj(); } })}
         potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])}
         naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); bladLicznika(r); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
         naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
