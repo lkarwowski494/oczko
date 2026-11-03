@@ -15,7 +15,7 @@ import { formatujLiczbe, parsujLiczbe } from '../src/i18n/format';
 import { ObrazKarty } from '../src/ekrany/ObrazKarty';
 import { zrzutKarty } from '../src/platforma/zrzut';
 import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
-import { usunPlik } from '../src/dane/pliki/system';
+import { katalogPliku, usunKatalog } from '../src/dane/pliki/system';
 
 export default function EkranUkonczenia(): React.ReactElement {
   const { kontener } = useAplikacja();
@@ -42,10 +42,10 @@ export default function EkranUkonczenia(): React.ReactElement {
       naEdytujZapas={(id) => router.push({ pathname: '/wloczka', params: { id } })}
       naWybierzWloczke={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'wloczki', projekt } })}
       naUdostepnij={() => void (async () => {
-        const plik = await zrzutKarty(obraz).catch(() => null);
+        const plik = await zrzutKarty(obraz, stan.nazwa).catch(() => null); // M1-135: plik „<nazwa projektu>.png”, nie GUID
         if (!plik) { Alert.alert(...alertBleduZapisu(kontener.j.t, 'udostepnienie')); return; } // M1-120
         await udostepnijPlik(plik, 'image/png'); // aplikacja nic nie wysyła sama — arkusz systemowy (ZP-03)
-        usunPlik(plik);
+        usunKatalog(katalogPliku(plik)); // katalog tymczasowy zrzutu razem z plikiem
       })()}
       obrazKarty={<ObrazKarty ref={obraz} t={kontener.j.t}
         stan={{ nazwa: stan.nazwa, okres: stan.okres, rzedy: stan.rzedy, dni: stan.dni, czas: stan.czas, czesci: stan.czesci, wloczka: stan.wloczka.map((w) => w.nazwa), zdjecie: stan.zdjecie }} />}
