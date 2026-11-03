@@ -51,7 +51,7 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
 
   test('Ustawienia: grupa „Counting” — 13 pt', () => {
     render(<Ustawienia stan={{ pro: null, dni: { zostalo: 3, limit: 5, miesiac: 'November' }, wibracje: true }} t={t} system={atrapaSystemu()}
-      adresy={{ polityka: 'https://example.invalid/privacy', recenzja: 'https://example.invalid/review' }}
+      adresy={{ polityka: 'https://example.invalid/privacy', wsparcie: 'https://example.invalid/support', recenzja: 'https://example.invalid/review' }}
       naOferty={jest.fn()} naWibracje={jest.fn()} naZglosProblem={jest.fn()} naStanDanych={jest.fn()}
       preferencje={{ ekranNieGasnie: true, ukladMiar: 'auto', naEkranNieGasnie: jest.fn(), naMiary: jest.fn() }} />);
     expect(rozmiar('Counting')).toBe(13);

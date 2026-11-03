@@ -1,6 +1,7 @@
 // Ustawienia (BR-ZAK-004, BR-ZAK-006/S5, S7, BR-DAN-012/S3, KP-13, KP-14, F-48). Ekran nienarysowany (design-spec.md:95, Z07-05): lista grupowana
 // z komponentów design-spec, etykiety robocze w en.kontekst.json. Sygnatura: propozycja 07 (E3), granice 05 (Z07-22).
 // „Rate Oczko” otwiera stronę recenzji (action=write-review), nie systemową prośbę (BR-DAN-012/S3).
+// „Help” otwiera stronę wsparcia z FAQ (DEC-22 a, M1-audytor-generalny-061): wiersz jak „Privacy Policy” (link), bez nowego ekranu i bez własnych tekstów pomocy w aplikacji.
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Przycisk } from './Arkusz';
@@ -15,7 +16,7 @@ export type PropsUstawien = {
   stan: { pro: AktywnePro; dni: DniNaLiscie; wibracje: boolean };
   t: Tlumacz;
   system: System;
-  adresy: { polityka: string; recenzja: string };  // recenzja: strona App Store z action=write-review (BR-DAN-012/S3)
+  adresy: { polityka: string; wsparcie: string; recenzja: string };  // recenzja: strona App Store z action=write-review (BR-DAN-012/S3)
   naOferty(): void;                                 // drugie miejsce wejścia do ofert (KP-13)
   naWibracje(wlaczone: boolean): void;
   naZglosProblem(): void;
@@ -85,6 +86,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {wynikDanych}
       <View style={st.grupa}>
         <Przycisk tekst={t('ustawienia.stan_danych')} onPress={naStanDanych} rodzaj="tekstowy" />
+        <Przycisk tekst={t('ustawienia.pomoc')} onPress={() => system.otworzAdres(adresy.wsparcie)} rodzaj="tekstowy" rola="link" testID="ustawienia-pomoc" />
         <Przycisk tekst={t('ustawienia.zglos')} onPress={naZglosProblem} rodzaj="tekstowy" testID="ustawienia-zglos" />
         <Przycisk tekst={t('ustawienia.ocen')} onPress={() => system.otworzAdres(adresy.recenzja)} rodzaj="tekstowy" testID="ustawienia-ocen" />
         <Przycisk tekst={t('ustawienia.polityka')} onPress={() => system.otworzAdres(adresy.polityka)} rodzaj="tekstowy" rola="link" />

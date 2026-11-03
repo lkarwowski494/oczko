@@ -3,6 +3,7 @@
 // Recenzja: strona App Store z action=write-review — [DO USTALENIA: identyfikator aplikacji w App Store Connect (OP-24)].
 export const ADRESY = {
   polityka: 'https://apps4brew.com/oczko/privacy.html', // P-239; baza w docs/wydanie/adres-strony.json
+  wsparcie: 'https://apps4brew.com/oczko/support.html', // DEC-22 a (M1-audytor-generalny-061): wiersz „Help” w Ustawieniach; baza + wsparcie z docs/wydanie/adres-strony.json
   warunki: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
   recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review',
 } as const;

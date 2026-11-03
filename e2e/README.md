@@ -183,6 +183,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
+| `ustawienia-pomoc` | Ustawienia | wiersz „Help” (link do strony wsparcia z FAQ; DEC-22 a, M1-audytor-generalny-061) | „Help” | |
 | `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
 | `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |

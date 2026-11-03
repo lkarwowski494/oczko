@@ -71,6 +71,7 @@
     "zglos_tlumaczenie": "Odnośnik pod wierszem jakości przekładu: otwiera zgłoszenie błędu (F-57) z kodem języka. Propozycja roli 09, zatwierdza 04. Ok. 30 znaków.",
     "oczko_pro": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Pozycja wejścia do ofert (KP-13).",
     "wibracje": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nazwa robocza 07 (BR-LIC-020/S3).",
+    "pomoc": "Wiersz w Ustawieniach, nad „Report a problem”: link, który otwiera w przeglądarce stronę wsparcia z odpowiedziami na częste pytania (jak dodać wzór, jak ustawić przypomnienie) (M1-audytor-generalny-061, DEC-22 a). Jedno słowo, jak nazwa działu pomocy w innych aplikacjach; nie „Support” ani „Contact us”, bo strona zawiera też odpowiedzi, nie tylko kontakt.",
     "zglos": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nazwa robocza 07 (BR-DAN-010).",
     "ocen": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nazwa robocza 07 (BR-DAN-012/S3).",
     "polityka": "Jak w ofertach (design-spec.md:68).",

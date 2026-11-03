@@ -138,7 +138,7 @@ export default function EkranUstawien(): React.ReactElement {
         stan={{ pro: dostep.aktywne, dni: dostep.pro ? null : dni, wibracje: pref.wibracje }}
         t={t}
         system={systemAplikacji}
-        adresy={{ polityka: ADRESY.polityka, recenzja: ADRESY.recenzja }}
+        adresy={{ polityka: ADRESY.polityka, wsparcie: ADRESY.wsparcie, recenzja: ADRESY.recenzja }}
         naOferty={() => router.push('/oferty')}
         naWstecz={() => router.back()}
         naWibracje={(w) => void zapiszPreferencje({ wibracje: w })}

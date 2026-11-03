@@ -1,11 +1,13 @@
 // 033-T1 (07-jakosc-033 B, lista dla 08 #1 i #3): testID przycisków na TRASIE „/ustawienia” (app/ustawienia.tsx), na prawdziwej bazie i archiwum — scenariusze E2E 63, 65 i 66
 // stukają je zamiast etykiety (apostrof typograficzny w „Replace what’s here” jest kruchy). Zachowanie bez zmian: ten sam tekst/etykieta i ta sama akcja. P-377: test montuje trasę z `app/`.
 import React from 'react';
+import { join } from 'node:path';
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { utworzArchiwum } from '../../src/dane/archiwum';
 import { migruj } from '../../src/dane/migracje/migruj';
 import { archiwumWzorcowe, projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { czasWTle, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
+import { readFileSync } from 'node:fs';
 import { tEn } from './pomoc';
 
 const mockRouter = { push: jest.fn(), back: jest.fn() };
@@ -48,6 +50,16 @@ describe('033-T1: testID na trasie „/ustawienia”', () => {
     expect(el.props.accessibilityLabel).toBe('Report a problem');
     await userEvent.press(el);
     expect(mockRouter.push).toHaveBeenCalledWith('/zglos');
+  });
+  test('061 (DEC-22 a) ustawienia-pomoc: wiersz „Help” na trasie otwiera adres strony wsparcia z docs/wydanie/adres-strony.json', async () => {
+    const strona = JSON.parse(readFileSync(join(__dirname, '../../docs/wydanie/adres-strony.json'), 'utf8')) as { baza: string; wsparcie: string };
+    await aplikacja(false);
+    render(<EkranUstawien />);
+    const el = await screen.findByTestId('ustawienia-pomoc');
+    expect(el.props.accessibilityLabel).toBe('Help');
+    await userEvent.press(el);
+    expect(mockSystem.otworzAdres).toHaveBeenCalledTimes(1);
+    expect(mockSystem.otworzAdres).toHaveBeenCalledWith(strona.baza + strona.wsparcie);
   });
   test('ustawienia-ocen: wiersz „Rate Oczko” ma testID i otwiera adres recenzji', async () => {
     await aplikacja(false);
