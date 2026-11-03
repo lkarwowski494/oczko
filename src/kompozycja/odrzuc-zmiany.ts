@@ -3,12 +3,11 @@
 // zamyka się od razu. Gest zostaje włączony (SP-15): `usePreventRemove` zatrzymuje usunięcie ekranu (native stack: `preventNativeDismiss`),
 // a „Discard changes” kończy je akcją z gestu. Po udanym zapisie trasa woła `poZapisie()` przed `router.back()`, więc wyjście idzie bez pytania.
 import { useRef, useState } from 'react';
-import { Alert } from 'react-native';
 import { useNavigation, usePreventRemove } from 'expo-router/react-navigation';
+import { pytajOdrzucZmiany, type OpisOdrzucenia } from '../ekrany/pytanie-odrzucenia';
 import type { Tlumacz } from '../ekrany/wspolne';
 
-/** Opis skutku: `zmiany` — istniejąca rzecz zostaje jak była; `nowy` — nowa rzecz nie powstanie. */
-export type OpisOdrzucenia = 'zmiany' | 'nowy';
+export type { OpisOdrzucenia };
 
 export type OdrzucZmiany = {
   /** Formularz zgłasza, czy jego wartości różnią się od tych z otwarcia arkusza. */
@@ -23,10 +22,7 @@ export function useOdrzucZmiany(t: Tlumacz, opis: OpisOdrzucenia, wyjdz: () => v
   const [zmieniony, naZmiane] = useState(false);
   const zwolniony = useRef(false);
   const navigation = useNavigation();
-  const pytaj = (odrzuc: () => void) => Alert.alert(t('wspolne.odrzuc_tytul'), t(opis === 'nowy' ? 'wspolne.odrzuc_opis_nowy' : 'wspolne.odrzuc_opis_zmiany'), [
-    { text: t('wspolne.wroc_do_edycji'), style: 'cancel' },
-    { text: t('wspolne.odrzuc_zmiany'), style: 'destructive', onPress: () => { zwolniony.current = true; odrzuc(); } },
-  ]);
+  const pytaj = (odrzuc: () => void) => pytajOdrzucZmiany(t, opis, () => { zwolniony.current = true; odrzuc(); });
   usePreventRemove(zmieniony, ({ data }) => {
     if (zwolniony.current) navigation.dispatch(data.action);
     else pytaj(() => navigation.dispatch(data.action));
