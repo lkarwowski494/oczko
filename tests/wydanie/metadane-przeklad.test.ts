@@ -308,11 +308,11 @@ describe('przyjęcie artefaktu skryptem: pliki <kod ASC>.store.json i stan przek
 describe('badanie fraz: iTunes Search API (atrapa) → tylko słowa i liczby, bez nazw aplikacji', () => {
   test('agregacja: słowa z nazw wyników z df ≥ 2 różnych aplikacji (duplikat trackId liczony raz); nazwa własna jednej aplikacji i słowa zakazane nie trafiają do pliku', () => {
     const r = run(BADANIE, `console.log(JSON.stringify(m.agreguj([
-      { trackId: 1, trackName: 'Zähler Strickfix: Reihenzähler', userRatingCount: 10 }, { trackId: 2, trackName: 'Reihenzähler Stricken App', userRatingCount: 5 },
+      { trackId: 1, trackName: 'Zähler Wollquark: Reihenzähler', userRatingCount: 10 }, { trackId: 2, trackName: 'Reihenzähler zum Stricken App', userRatingCount: 5 },
       { trackId: 3, trackName: 'Pro Maschen', userRatingCount: 1 }, { trackId: 3, trackName: 'Pro Maschen', userRatingCount: 1 }, { trackId: 4, trackName: 'Maschen App 12', userRatingCount: 1 }], { zakazane: ['app'] })))`);
     const s = Object.fromEntries(r.map((x: any) => [x.s, x.df]));
     expect(s['reihenzähler']).toBe(2); expect(s['maschen']).toBe(2);
-    expect(s).not.toHaveProperty('strickfix'); expect(s).not.toHaveProperty('app'); expect(s).not.toHaveProperty('12'); expect(s).not.toHaveProperty('pro');
+    expect(s).not.toHaveProperty('wollquark'); expect(s).not.toHaveProperty('app'); expect(s).not.toHaveProperty('12'); expect(s).not.toHaveProperty('pro');
   });
   test('zapytania z słownika terminów (zalecane wyrazy), kraje iTunes dla 24 lokalizacji generowanych, ponawianie po 403 bez zasypywania', () => {
     const r = run(BADANIE, `console.log(JSON.stringify({ k: m.KRAJE, z: m.zapytania('cs', m.wczytajSlownik()) }))`);
@@ -325,7 +325,7 @@ describe('badanie fraz: iTunes Search API (atrapa) → tylko słowa i liczby, be
 describe('workflow przeklad-tlumaczen.yml: tryb metadane (P-501) w istniejącym pliku — P-472: nowy plik workflow nie byłby dostępny przed scaleniem do main', () => {
   const wf = read('.github/workflows/przeklad-tlumaczen.yml');
   test('tryb metadane + etap + tylko; domyślnie tylko szacunek; ten sam pułap 30 USD; klucz API w jednym kroku; artefakt raport-metadane 7 dni', () => {
-    expect(wf).toMatch(/options: \[przeklad, przeglad, metadane\]/);
+    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane\]/);
     expect(wf).toContain('scripts/i18n/przeklad-metadane.mjs'); expect(wf).toContain('raport-metadane');
     expect(wf).toMatch(/etap:/); expect(wf).toMatch(/tylko:/);
     expect(wf).toMatch(/tylko_szacuj:[\s\S]*?default: true/); expect(wf).toMatch(/retention-days: 7/);
