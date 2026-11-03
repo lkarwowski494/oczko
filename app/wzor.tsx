@@ -3,7 +3,8 @@
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, View, useWindowDimensions } from 'react-native';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
@@ -15,6 +16,7 @@ import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { akcjeWzoru } from '../src/ekrany/WzorAkcje';
+import { pytajOdrzucZmiany } from '../src/ekrany/pytanie-odrzucenia';
 import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
@@ -36,6 +38,7 @@ export default function EkranWzoru(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
+  const navigation = useNavigation();
   const k = useKolory();
   const okno = useWindowDimensions();
   const szerokosc = szerokoscOknaE2e() ?? okno.width;
@@ -119,6 +122,21 @@ export default function EkranWzoru(): React.ReactElement {
     void ostrzezenieMiejsca(zw.magazyn, t, () => !bladRysunku.current).then((p) => { if (p) bladRysunku.current = true; });
   }, [widok, zw, t]);
   useEffect(() => () => { const idLicznika = licznik.biezacy(); if (idLicznika) void zapamietajLicznik(kontener.z, { licznikId: idLicznika }); }, [licznik, kontener]);
+  // M1-141 (08-programista-519, 04-studio-projektowe-530; DEC-31 a): przycisk „Back” i gest wstecz mają jedną ścieżkę wyjścia. M1-112: onBladZapisu z zapisu
+  // przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca. `zwolniony`: decyzja zapadła, kolejne usunięcie bez pytania.
+  const zwolniony = useRef(false);
+  const nowaNotatka = useRef(false); // arkusz nowej notatki z tekstem (WzorPrzegladarka) — gest pyta „Discard changes?” jak „Back”
+  function wyjdzZWzoru(dokoncz: () => void): void {
+    const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
+    void wyjscieZWzoru(t, niezapisane === true, () => { zwolniony.current = true; dokoncz(); }, u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
+  }
+  // Gest (i każde usunięcie ekranu z zewnątrz) zatrzymany, dopóki widać wzór: najpierw zapis kresek na żądanie, potem decyzja jak przy „Back” (native stack:
+  // `preventNativeDismiss`; zachowanie gestu do sprawdzenia na urządzeniu). Gest dalej wyłączony przy znanych niezapisanych kreskach (M1-084).
+  usePreventRemove(widok !== null, ({ data }) => {
+    const dokoncz = () => navigation.dispatch(data.action);
+    if (zwolniony.current) { dokoncz(); return; }
+    if (nowaNotatka.current) pytajOdrzucZmiany(t, 'nowy', () => wyjdzZWzoru(dokoncz)); else wyjdzZWzoru(dokoncz);
+  });
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
   async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
@@ -179,10 +197,8 @@ export default function EkranWzoru(): React.ReactElement {
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
-        naWstecz={() => { // M1-112: onBladZapisu z zapisu przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca
-          const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
-          void wyjscieZWzoru(t, niezapisane === true, () => router.back(), u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
-        }}
+        naWstecz={() => wyjdzZWzoru(() => router.back())}
+        naNowaNotatka={(jest) => { nowaNotatka.current = jest; }}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}

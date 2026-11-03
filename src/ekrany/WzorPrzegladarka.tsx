@@ -44,6 +44,7 @@ export type PropsPrzegladarki = {
   naCofnij(): void;
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
+  naNowaNotatka?(jest: boolean): void;          // M1-141: arkusz nowej notatki z wpisanym tekstem — trasa pyta przy geście wstecz jak „Back”
   znacznik?: StanZnacznika | null;                // pas na stronie: pasek ustawiania (krokowiec rzędu), koniec strony, „przed schematem” (F-26)
   razemStron?: number;
   oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
@@ -75,6 +76,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
   const [notatka, ustawNotatke] = useState<'brak' | 'pasek' | 'arkusz'>('brak');
   const [tekst, ustawTekst] = useState('');
+  const nowaZTekstem = notatka === 'arkusz' && tekst.trim().length > 0;
+  useEffect(() => { p.naNowaNotatka?.(nowaZTekstem); }, [nowaZTekstem]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko zmiana stanu arkusza
   const [podpowiedz, ustawPodpowiedz] = useState<'nie' | 'widac' | 'byla'>('nie'); // `wzor.rysik_podpowiedz` raz na otwarcie (P-284 (1) A)
   useEffect(() => {
     if (!p.tylkoRysik || podpowiedz !== 'nie') return;
@@ -115,7 +118,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   ) : (
     <View style={st.pasek}>
       <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={t('wzor.wstecz_a11y', { czesc: s.czesc })}
-        onPress={() => { if (notatka === 'arkusz' && tekst.trim()) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
+        onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">

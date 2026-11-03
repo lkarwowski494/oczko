@@ -13,7 +13,7 @@ import { join } from 'node:path';
 import { czasWTle, katalogTymczasowy, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 const mockRouter = { back: jest.fn(), replace: jest.fn(), push: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => ({ dodaj: 'plik' }) }));
+jest.mock('expo-router', () => ({ useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => ({ dodaj: 'plik' }) }));
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 const mockReact = React;
