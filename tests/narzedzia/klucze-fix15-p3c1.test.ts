@@ -84,6 +84,12 @@ describe('M1-audytor-generalny-134: wyrocznia liczb podglądu próbki', () => {
       if (c.nie) expect(c.pokazana).not.toBe(c.nie);
     }
   });
+  test('design-spec, kalkulator „Swatch”: `probka.przeliczona` z jednym miejscem po przecinku w podglądzie, pełna wartość w obliczeniach (BR-KAL-003 S1 po ER-62, P-446)', () => {
+    const spec = readFileSync(join(KORZEN, 'docs/design/design-spec.md'), 'utf8');
+    const wiersz = spec.split('\n').find((l) => l.startsWith('- Próbka na 4 in: pod polem `probka.przeliczona`')) ?? '';
+    expect(wiersz).toMatch(/jedno miejsce po przecinku w podglądzie, pełna wartość w obliczeniach/);
+    expect(spec).not.toMatch(/3 miejsca jak BR-KAL-003/);
+  });
 });
 
 // M1-audytor-generalny-136 (04-studio-projektowe-526; DEC-35 b, P-438): kopia z „Make another like this” dostaje kolejny wolny numer („Harbor 2”).
