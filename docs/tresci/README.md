@@ -25,6 +25,7 @@ Warunki wyświetlania (dla 04 i 08):
 - `calc.note.four_inches` przy próbce na 4 in albo przeliczonej z 10 cm (wiersz wartości na 4 in przy próbce z 10 cm; bez kategorii — np. projekt szydełkowy — nic nie jest przeliczane, więc bez uwagi);
 - `calc.note.category` (zastrzeżenie + zalecenie blokowania, PRB-002, PRB-005) przy każdym wyniku kategorii; zdanie o blokowaniu jest tym samym tekstem co `calc.note.stitches`, więc przy widocznym wyniku oczek stoi raz, w jego bloku (M1-audytor-generalny-037);
 - linia źródła CYC tylko na ekranie „Źródła wiedzy”, dosłownie, bez tłumaczenia (P-085).
+- wynik kategorii grubości tylko dla próbki z drutów: zakresy `GRB-Z*` to wiersz drutowy CYC, a szydełko ma w CYC osobne zakresy (P-304 (3)); w projekcie szydełkowym i w kalkulatorze bez projektu po wyborze „Hook” kategorii nie ma (DEC-06 a, M1-audytor-generalny-066).
 
 ## Zmiana treści później
 Każda zmiana zdania z twierdzeniem krytycznym (28, lista w rejestrze) unieważnia przegląd (skrót zdań) i wymaga ponownej weryfikacji roli 06; błąd w wydanej treści zgłasza się też roli 12.
