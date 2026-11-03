@@ -65,6 +65,23 @@ describe('sprawdz-i18n.mjs: treść krytyczna (DEC-11 a)', () => {
     expect(r.wyjscie).toMatch(/BŁĄD pl: kontrola \(a\) treści krytycznej — wynik niezgodny dla a\.b/);
     expect(r.kod).toBe(1);
   });
+  it('P-498: pl może mieć kontrolę (a) metodą akceptacja-wlasciciela-pl (P-473) = kod 0; ta sama metoda w innym języku = błąd, kod 1', () => {
+    const wpisPl = (sha: string) => ({ a: { kto: 'właściciel (P-473) + porównanie 06', data: '2026-11-03', metoda: 'akceptacja-wlasciciela-pl', wynik: 'zgodny', sha } });
+    const pl = { jezyki: { pl: { 'a.b': wpisPl(skrot(PL.a.b)), 'a.n': wpisPl(skrot(PL_N)) } } };
+    const ok = uruchom([...ARGS, '--wydanie'], projekt(MAPA, pl));
+    expect(ok.wyjscie).toMatch(/błędy: 0/); expect(ok.kod).toBe(0);
+    const DE = { a: { b: 'Zuerst blocken.', n_one: '{{count}} Masche', n_other: '{{count}} Maschen', inny: 'Hallo' } };
+    const de = { a: { b: wpisPl(skrot(DE.a.b)), n: wpisPl(skrot({ one: DE.a.n_one, other: DE.a.n_other })) } };
+    const zle = uruchom([...ARGS, '--wydanie'], projekt(MAPA, { jezyki: { pl: pl.jezyki.pl, de: { 'a.b': de.a.b, 'a.n': de.a.n } } }, { en: EN, pl: PL, de: DE }));
+    expect(zle.wyjscie).toMatch(/BŁĄD przeglad: de a\.b — metoda „akceptacja-wlasciciela-pl” tylko dla pl/);
+    expect(zle.kod).toBe(1);
+  });
+  it('wpis (a) z metodą spoza listy (np. „na-slowo”) = błąd, kod 1', () => {
+    const w = { a: { kto: 'x', data: '2026-11-03', metoda: 'na-slowo', wynik: 'zgodny', sha: skrot(PL.a.b) } };
+    const r = uruchom(ARGS, projekt(MAPA, { jezyki: { pl: { 'a.b': w } } }));
+    expect(r.wyjscie).toMatch(/BŁĄD przeglad: pl a\.b — metoda „na-slowo” spoza przeklad-zwrotny-pl, akceptacja-wlasciciela-pl/);
+    expect(r.kod).toBe(1);
+  });
   it('--wydanie: źródło (en) nie wymaga kontroli (a), a każdy inny język tak', () => {
     const r = uruchom([...ARGS, '--wydanie'], projekt(MAPA, PRZEGLAD_PL, { en: EN, pl: PL, de: { a: { b: 'Zuerst blocken.', n_one: '{{count}} Masche', n_other: '{{count}} Maschen', inny: 'Hallo' } } }));
     expect(r.wyjscie).toMatch(/BŁĄD de: kontrola \(a\)/);
