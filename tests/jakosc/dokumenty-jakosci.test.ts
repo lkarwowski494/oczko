@@ -184,12 +184,16 @@ describe('046 · nazwy testów Jest bez twierdzenia o celu dotyku; cel dotyku ja
     expect(PLIKI_TESTOW.length).toBeGreaterThan(100);
     expect(PLIKI_TESTOW.flatMap((p) => nazwyZDotykiem(czytaj(p)).map((n) => `${p}: ${n}`))).toEqual([]);
   });
-  test('strategia §10: pozycja audytu celu dotyku z decyzją (XCTest po prebuild albo przejście ręczne)', () => {
-    const wiersze = sekcja(czytaj('docs/jakosc/strategia.md'), 10).split('\n').filter((l) => l.startsWith('| ') && /cel dotyku/.test(l));
+  test('strategia §10: pozycja audytu celu dotyku z podjętą decyzją (XCTest po prebuild albo przejście ręczne), bez [DO USTALENIA]', () => {
+    const strategia = czytaj('docs/jakosc/strategia.md');
+    const wiersze = sekcja(strategia, 10).split('\n').filter((l) => l.startsWith('| ') && /cel dotyku/.test(l));
     expect(wiersze).toHaveLength(1);
     expect(wiersze[0]).toMatch(/XCTest/);
     expect(wiersze[0]).toMatch(/przejście ręczne/);
-    expect(wiersze[0]).toMatch(/\[DO USTALENIA\]|\bP-\d{3}\b/);
+    expect(wiersze[0]).not.toMatch(/\[DO USTALENIA/);
+    expect(wiersze[0]).toMatch(/\bP-\d{3}\b/);
+    // przejście ręczne ma pozycję na liście kandydata wydania (§8, „Pozycja bez wyniku na kandydacie = nie sprawdzono”)
+    expect(sekcja(strategia, 8).split('\n').filter((l) => /^\| TT-\d{2} \|/.test(l) && /cel dotyku/.test(l))).toHaveLength(1);
   });
   test('pułapki: nazwy z twierdzeniem o dotyku są wykrywane, deklaracja stylu nie', () => {
     expect(nazwyZDotykiem("test('cel dotyku strzałki ≥ 44 pt', () => {")).toHaveLength(1);
