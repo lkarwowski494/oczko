@@ -1,6 +1,7 @@
 // Moduł motywu (zasada 15, design-spec „Pliki”): wartości wyłącznie z docs/design/tokeny.json roli 04 — bez liczb wpisanych w ekranach.
-// Kolory motywu jasnego i ciemnego z `useColorScheme`; krój tytułowy Libre Franklin (P-064), treść krojem systemowym (Dynamic Type).
-import { useColorScheme, type TextStyle } from 'react-native';
+// Kolory motywu jasnego i ciemnego z `useColorScheme`, z wariantem „Zwiększ kontrast” (M1-032); krój tytułowy Libre Franklin (P-064), treść krojem systemowym (Dynamic Type).
+import { useSyncExternalStore } from 'react';
+import { AccessibilityInfo, useColorScheme, type TextStyle } from 'react-native';
 import tokeny from '../../docs/design/tokeny.json';
 
 export type Kolory = typeof tokeny.kolor.jasny;
@@ -50,6 +51,43 @@ export const MAX_SKALA_KAPSULY = 1.6;
 /** Pierwsza kategoria dostępności Dynamic Type (AX1) w mnożniku RN; od niej układ licznika „liczba nad nazwami” (04 fix-8 wariant (d), P-275). */
 export const PROG_KATEGORII_DOSTEPNOSCI = 1.786;
 
+/**
+ * Cztery palety (M1-032, 04-studio-projektowe-005): przy „Zwiększ kontrast” paleta motywu nadpisana wariantem `jasnyKontrast` / `ciemnyKontrast`
+ * (te same pary co docs/design/narzedzia/tokeny-kontrast.mjs i kontrast-tabela.txt). Obiekty stałe, żeby `style(k)` nie liczył się od nowa bez zmiany.
+ */
+const PALETY: Record<'jasny' | 'ciemny' | 'jasnyKontrast' | 'ciemnyKontrast', Kolory> = {
+  jasny: tokeny.kolor.jasny,
+  ciemny: tokeny.kolor.ciemny,
+  jasnyKontrast: { ...tokeny.kolor.jasny, ...tokeny.kolor.jasnyKontrast },
+  ciemnyKontrast: { ...tokeny.kolor.ciemny, ...tokeny.kolor.ciemnyKontrast },
+};
+
+/**
+ * „Zwiększ kontrast” z systemu: `AccessibilityInfo.isDarkerSystemColorsEnabled` i zdarzenie `darkerSystemColorsChanged` (iOS, UIAccessibilityDarkerSystemColorsEnabled;
+ * react-native 0.86.3, odczyt 2026-11-03). Jedna subskrypcja na całą aplikację; do pierwszej odpowiedzi systemu — paleta bez wariantu.
+ */
+let kontrast = false;
+const sluchacze = new Set<() => void>();
+let subskrypcja: { remove(): void } | null = null;
+function ustawKontrast(v: boolean): void {
+  if (v === kontrast) return;
+  kontrast = v;
+  sluchacze.forEach((f) => f());
+}
+function subskrybujKontrast(f: () => void): () => void {
+  sluchacze.add(f);
+  if (!subskrypcja) {
+    subskrypcja = AccessibilityInfo.addEventListener('darkerSystemColorsChanged', ustawKontrast);
+    AccessibilityInfo.isDarkerSystemColorsEnabled().then(ustawKontrast, () => undefined); // brak API (np. inna platforma): bez wariantu
+  }
+  return () => {
+    sluchacze.delete(f);
+    if (sluchacze.size === 0) { subskrypcja?.remove(); subskrypcja = null; }
+  };
+}
+
 export function useKolory(): Kolory {
-  return useColorScheme() === 'dark' ? tokeny.kolor.ciemny : tokeny.kolor.jasny;
+  const ciemny = useColorScheme() === 'dark';
+  const zwiekszony = useSyncExternalStore(subskrybujKontrast, () => kontrast);
+  return PALETY[ciemny ? (zwiekszony ? 'ciemnyKontrast' : 'ciemny') : (zwiekszony ? 'jasnyKontrast' : 'jasny')];
 }
