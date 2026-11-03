@@ -10,10 +10,10 @@ const scenariusz = czytaj('e2e/scenariusze/31-nfr-wyd-001-reakcja-licznika.yaml'
 describe('scenariusz 31: twarda asercja budżetu na panelu e2e-pomiar-plus', () => {
   const m = /- assertVisible: \{ id: "e2e-pomiar-plus", text: "([^"]+)" \}/.exec(scenariusz);
   const budzet = new RegExp(`^(?:${m?.[1] ?? '$^'})$`); // Maestro: tekst to wyrażenie dopasowane do całości
-  test.each(['p95 100 ms, n = 20 · first 350 ms', 'p95 7 ms, n = 20 · first 1200 ms', 'p95 99 ms, n = 20 · first 0 ms'])('„%s” mieści się w budżecie', (t) => {
+  test.each(['p95 100 ms, n = 20; first 350 ms', 'p95 7 ms, n = 20; first 1200 ms', 'p95 99 ms, n = 20; first 0 ms'])('„%s” mieści się w budżecie', (t) => {
     expect(budzet.test(t)).toBe(true);
   });
-  test.each(['p95 101 ms, n = 20 · first 5 ms', 'p95 250 ms, n = 20 · first 5 ms', 'p95 50 ms, n = 19 · first 5 ms', 'p95 50 ms, n = 20'])('„%s” poza budżetem albo bez 20 próbek stanu ustalonego', (t) => {
+  test.each(['p95 101 ms, n = 20; first 5 ms', 'p95 250 ms, n = 20; first 5 ms', 'p95 50 ms, n = 19; first 5 ms', 'p95 50 ms, n = 20'])('„%s” poza budżetem albo bez 20 próbek stanu ustalonego', (t) => {
     expect(budzet.test(t)).toBe(false);
   });
   test('21 stuknięć: pierwsze informacyjne, potem 20 do p95 (licznik kończy na 21)', () => {

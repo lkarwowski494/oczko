@@ -144,13 +144,13 @@ export function p95(probki: readonly number[]): number | null {
   return s[Math.ceil(0.95 * s.length) - 1];
 }
 /** Licznik (P-255 (c)): czas od stuknięcia +1 do klatki po nowej wartości, bez t(). P-456 (M1-062): pierwsze stuknięcie (zimna ścieżka) osobno,
- *  informacyjnie; p95 i n z kolejnych (stan ustalony, budżet NFR-WYD-001): „p95 … ms, n = N · first … ms”. */
+ *  informacyjnie; p95 i n z kolejnych (stan ustalony, budżet NFR-WYD-001): „p95 … ms, n = N; first … ms”. */
 export function PanelPomiaru({ probkiMs }: { probkiMs: readonly number[] }): React.ReactElement | null {
   if (!probkiMs.length) return null;
   const [pierwsze, ...ustalone] = probkiMs;
   const p = p95(ustalone);
   const first = `first ${Math.round(pierwsze)} ms`;
-  return <Text testID="e2e-pomiar-plus">{p === null ? first : `p95 ${Math.round(p)} ms, n = ${ustalone.length} · ${first}`}</Text>;
+  return <Text testID="e2e-pomiar-plus">{p === null ? first : `p95 ${Math.round(p)} ms, n = ${ustalone.length}; ${first}`}</Text>;
 }
 /** Ekran projektu (E2-137-A1, scenariusz 34): czas od zamontowania ekranu do pierwszych danych, „first data 812 ms”, bez `t()`. Liczba rozstrzyga, czy aplikacja, czy maszyna. */
 export function PanelPomiaruLadowania({ ms }: { ms: number }): React.ReactElement {
