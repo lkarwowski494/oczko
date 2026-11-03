@@ -1,8 +1,9 @@
 // Menu przeglądarki wzoru: arkusz u dołu ekranu z pozycjami (••• i lista wzorów ▾; design-spec „Wzór, rysik i iPad”). Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku).
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type TextStyle, type ViewStyle } from 'react-native';
-import { cel, odstep, typografia, useKolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, typografia, useKolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 export type StyleMenu = { menuTlo: ViewStyle; menu: ViewStyle; pozycja: ViewStyle; tresc: TextStyle; niszczaca: TextStyle };
 
@@ -30,7 +31,7 @@ export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; wzory: { wzorId: stri
   const k = useKolory();
   const w = StyleSheet.create({
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s }, rosnie: { flex: 1 }, podpis: { ...typografia.podpis, color: k.olowek },
-    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' }, znak: { ...typografia.instrukcja, color: k.grafit },
+    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
   });
   return (
     <Menu st={p.st} zamknij={p.zamknij}>
@@ -46,7 +47,7 @@ export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; wzory: { wzorId: stri
             <Text style={w.podpis}>{p.t('wzor.czeka_siec')}</Text>
           </View>
           <Pressable accessibilityRole="button" accessibilityLabel={p.t('wzor.usun_oczekujacy_a11y', { nazwa: o.nazwa })} style={w.ikona} onPress={() => p.naUsunOczekujacy(o.id)}>
-            <Text style={w.znak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+            <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
           </Pressable>
         </View>
       ))}

@@ -6,11 +6,13 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, useZglosZmiane } from './Arkusz';
 import { useZapis, type Zapis } from './FormularzeProjektu';
 import { WierszGrupy, style as styleNarzedzi } from './Narzedzia';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, ROZMIAR_SYMBOLU, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { krokMotkow } from '../domena/zapas';
 import type { FiltrZapasu, StanDrutow, StanZapasu } from '../kompozycja/zapas';
 import type { FormularzWloczki as DaneWloczki, RodzajNarzedzia } from '../przypadki-uzycia/zapas';
+import { Wstecz } from './Pasek';
+import { SymbolSf } from './SymbolSf';
 
 const NAZWY_KATEGORII = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 
@@ -21,7 +23,7 @@ function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: st
     <View style={st.naglowek}>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tytul}</Text>
       <Pressable accessibilityRole="button" accessibilityLabel={p.dodaj} onPress={p.naDodaj} style={st.plus} testID={p.testID}>
-        <Text style={st.plusZnak}>＋</Text>
+        <SymbolSf nazwa="plus" rozmiar={ROZMIAR_SYMBOLU} kolor={st.plusZnak.color} maxSkala={MAX_SKALA_TYTULOWA} />
       </Pressable>
     </View>
   );
@@ -38,7 +40,7 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
   const pustyZapas = s.pusto?.rodzaj === 'zapas';
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} keyboardShouldPersistTaps="handled" testID="zapas-lista">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Naglowek tytul={t('narzedzia.wloczki')} dodaj={t('zapas.dodaj')} naDodaj={naDodaj} testID="zapas-dodaj" />
       {pustyZapas ? (
         <View style={st.pusto}>
@@ -196,7 +198,7 @@ export function ListaDrutow({ t, stan: s, naDodaj, naOtworz, naWstecz }: PropsLi
   const sn = styleNarzedzi(k);
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} testID="druty-lista">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Naglowek tytul={t('narzedzia.druty')} dodaj={t('druty.dodaj')} naDodaj={naDodaj} testID="druty-dodaj" />
       {s.grupy.length === 0 ? <Text style={sn.opis}>{t('druty.pusto')}</Text> : (
         <>
@@ -252,7 +254,7 @@ function style(k: Kolory) {
     naglowek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.m },
     tytul: { ...typografia.tytul, color: k.grafit, flex: 1 },
     plus: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    plusZnak: { ...typografia.tytul, color: k.grafit },
+    plusZnak: { color: k.grafit },
     szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
     chipy: { flexDirection: 'row', flexWrap: 'wrap', gap: odstep.s },
     chip: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.m, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia },

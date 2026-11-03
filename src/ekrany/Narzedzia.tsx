@@ -3,10 +3,11 @@
 // etykiety, bez symboli (OG-13, OP-11). Wyniki kalkulatora liczy kompozycja (`licz`), ekran tylko pokazuje.
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Arkusz, Komunikat, Pole, Przycisk, Tresc, Wybor } from './Arkusz';
+import { Arkusz, Komunikat, Pole, Tresc, Wybor } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
+import { Wstecz } from './Pasek';
 
 export type PropsWloczki = {
   stan: { nazwa: string; pielegnacja: { tekst: string | null; zdjecie: string | null } }; // bez symboli pielęgnacji (OG-13, OP-11)
@@ -46,7 +47,7 @@ export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke, naWstecz }
   const st = style(useKolory());
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('narzedzia.tytul')}</Text>
       <Text style={st.naglowekGrupy} accessibilityRole="header">{t('narzedzia.zapas')}</Text>
       <View style={st.grupa}>
@@ -79,7 +80,7 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
   const zmienProbke = (o: string, n: WejscieProbki['na']) => { ustawOczka(o); ustawNa(n); naZmianeProbki?.({ oczka: o, na: n }); };
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('probka.tytul')}</Text>
       {zProjektu ? <Text style={st.opis}>{zProjektu}</Text> : null}
       <Pole etykieta={t('probka.oczka')} wartosc={oczka} naZmiane={(o) => zmienProbke(o, na)} dziesietne testID="probka-oczka" />

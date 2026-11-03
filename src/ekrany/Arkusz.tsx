@@ -3,8 +3,9 @@
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
 export function odstepNadKlawiatura(w: { dolPrzyciskow: number; gornaKlawiatury: number | null }): number {
@@ -92,7 +93,7 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
           <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
             <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
-              <Text style={st.zamknijZnak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+              <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.zamknijZnak.color} maxSkala={MAX_SKALA_TYTULOWA} />
             </Pressable>
           </View>
         ) : <Text style={st.tytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>}

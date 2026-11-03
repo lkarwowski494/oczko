@@ -3,9 +3,9 @@
 // pod kalendarzem projekty wybranego dnia i dwa bloki bez przełącznika: tydzień wybranego dnia i miesiąc. Bez serii i ponagleń (BR-DNI-001 S5).
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Przycisk } from './Arkusz';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU_KAPSULY, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 
 export type KomorkaDnia = { dzien: string; numer: number; robotka: boolean; dzis: boolean; a11y: string };
 export type BlokHistorii = { naglowek: string; linie: string[]; bezStopera: boolean };
@@ -29,14 +29,14 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
   );
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="historia">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dni.tytul')}</Text>
       <View style={st.grupa}>
         <View style={st.wierszMiesiaca}>
           <Text style={[st.tekst, st.pogrubiony]}>{s.miesiac}</Text>
           <View style={{ flexDirection: 'row' }}>
-            <Pressable accessibilityRole="button" accessibilityLabel={t('dni.poprzedni_miesiac_a11y')} onPress={naPoprzedni} style={st.strzalka}><Text style={st.tekst}>‹</Text></Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel={t('dni.nastepny_miesiac_a11y')} onPress={naNastepny} style={st.strzalka}><Text style={st.tekst}>›</Text></Pressable>
+            <PrzyciskSymbolu symbol="chevron.backward" etykieta={t('dni.poprzedni_miesiac_a11y')} onPress={naPoprzedni} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} />
+            <PrzyciskSymbolu symbol="chevron.forward" etykieta={t('dni.nastepny_miesiac_a11y')} onPress={naNastepny} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} />
           </View>
         </View>
         <View style={st.siatka} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
@@ -85,7 +85,6 @@ function style(k: Kolory) {
     tytul: { ...typografia.tytul, color: k.grafit },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.m, gap: odstep.xs },
     wierszMiesiaca: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    strzalka: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     siatka: { flexDirection: 'row', flexWrap: 'wrap' },
     komorka: { width: `${100 / 7}%`, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     kolo: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },

@@ -15,6 +15,7 @@ import type { Uklad } from '../domena/uklad';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 
 export type StanPrzegladarki = {
   nazwa: string;
@@ -113,10 +114,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     </View>
   ) : (
     <View style={st.pasek}>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.wstecz_a11y', { czesc: s.czesc })} style={st.ikona} testID="nav-wstecz"
-        onPress={() => { if (notatka === 'arkusz' && tekst.trim()) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }}>
-        <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>‹</Text>
-      </Pressable>
+      <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={t('wzor.wstecz_a11y', { czesc: s.czesc })}
+        onPress={() => { if (notatka === 'arkusz' && tekst.trim()) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} testID="wzor-przelacz">
@@ -128,7 +127,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       <View style={st.grupa}>
         {!s.word && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
-            <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>▭</Text>
+            <SymbolSf nazwa="bookmark" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
           </Pressable>
         )}
         {!s.word && p.naNotatka && (
@@ -137,9 +136,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           </Pressable>
         )}
         {!s.word && !ipad && narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', 'highlighter')}
-        <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.menu_a11y')} onPress={() => ustawMenu('opcje')} style={st.ikona} testID="wzor-menu">
-          <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>•••</Text>
-        </Pressable>
+        <PrzyciskSymbolu symbol="ellipsis" etykieta={t('wzor.menu_a11y')} onPress={() => ustawMenu('opcje')} testID="wzor-menu" />
       </View>
     </View>
   );
@@ -246,7 +243,6 @@ function style(k: Kolory) {
     tytulPaska: { flex: 1, minWidth: 120 },
     ikona: { minWidth: rozmiary.minimum, minHeight: rozmiary.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi },
     wybrane: { backgroundColor: k.papierGrupa, borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: promien.pole }, // stan wybranego narzędzia niesie kształt, nie kolor (10 C, P-360)
-    ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },
     podpis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l },

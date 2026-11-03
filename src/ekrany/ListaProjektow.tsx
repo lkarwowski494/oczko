@@ -3,6 +3,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { PrzyciskSymbolu } from './Pasek';
 import type { Tlumacz } from './wspolne';
 
 export type WierszProjektu = { id: string; nazwa: string; opis: string; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
@@ -45,24 +46,11 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="projekty-lista">
       <View style={st.pasek}>
-        {naUstawienia && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('ustawienia.tytul')} onPress={naUstawienia} style={st.ikona} testID="nav-ustawienia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">⚙︎</Text>
-          </Pressable>
-        )}
-        {naHistoria && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('dni.tytul')} onPress={naHistoria} style={st.ikona} testID="nav-historia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">◷</Text>
-          </Pressable>
-        )}
-        {naNarzedzia && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('narzedzia.tytul')} onPress={naNarzedzia} style={st.ikona} testID="nav-narzedzia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">✂︎</Text>
-          </Pressable>
-        )}
-        <Pressable accessibilityRole="button" accessibilityLabel={t('projekty.nowy')} onPress={naNowy} style={st.ikona} testID="projekty-nowy">
-          <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">＋</Text>
-        </Pressable>
+        {naUstawienia && <PrzyciskSymbolu symbol="gearshape" etykieta={t('ustawienia.tytul')} onPress={naUstawienia} testID="nav-ustawienia" />}
+        {naHistoria && <PrzyciskSymbolu symbol="calendar" etykieta={t('dni.tytul')} onPress={naHistoria} testID="nav-historia" />}
+        {/* DEC-05 a: jedyny symbol z widocznym podpisem — kształt linijki nie mówi sam, że tu są kalkulatory, zapas i druty (przejście C1, D1) */}
+        {naNarzedzia && <PrzyciskSymbolu symbol="ruler" etykieta={t('narzedzia.tytul')} podpis={t('narzedzia.tytul')} onPress={naNarzedzia} testID="nav-narzedzia" />}
+        <PrzyciskSymbolu symbol="plus" etykieta={t('projekty.nowy')} onPress={naNowy} testID="projekty-nowy" />
       </View>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('projekty.tytul')}</Text>
       <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.olowek} value={s.zapytanie}
@@ -89,8 +77,6 @@ function style(k: Kolory) {
     ekran: { flex: 1, backgroundColor: k.papier },
     tresc: { padding: odstep.l, gap: odstep.l },
     pasek: { flexDirection: 'row', justifyContent: 'flex-end' },
-    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.tytul, color: k.grafit },
     szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },

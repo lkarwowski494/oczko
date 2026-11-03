@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import type { Tlumacz } from './wspolne';
 
 export type LicznikProjektu = { id: string; nazwa: string; opis: string }; // opis sformatowany: „12 rows”, „18 stitches”
@@ -73,9 +74,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
       {(p.naWstecz || p.naEdytuj || p.edycja) && (
         <View style={st.pasek}>
           {p.naWstecz && (
-            <Pressable accessibilityRole="button" onPress={p.naWstecz} style={st.ikona} testID="nav-wstecz">
-              <Text style={st.tekst}>‹ {t('wspolne.wstecz')}</Text>
-            </Pressable>
+            <Wstecz tekst={t('wspolne.wstecz')} onPress={p.naWstecz} />
           )}
           <View style={st.odstep} />
           {p.edycja ? (
@@ -85,13 +84,9 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
           ) : (
             <>
               {!s.ukonczony && p.naDodajCzesc && (
-                <Pressable accessibilityRole="button" accessibilityLabel={t('projekt.dodaj_a11y')} onPress={() => ustawMenu(menu === 'dodaj' ? null : 'dodaj')} style={st.ikona} testID="projekt-dodaj">
-                  <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">＋</Text>
-                </Pressable>
+                <PrzyciskSymbolu symbol="plus" etykieta={t('projekt.dodaj_a11y')} onPress={() => ustawMenu(menu === 'dodaj' ? null : 'dodaj')} testID="projekt-dodaj" />
               )}
-              <Pressable accessibilityRole="button" accessibilityLabel={t('projekt.menu_a11y')} onPress={() => ustawMenu(menu === 'opcje' ? null : 'opcje')} style={st.ikona} testID="projekt-menu">
-                <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">•••</Text>
-              </Pressable>
+              <PrzyciskSymbolu symbol="ellipsis" etykieta={t('projekt.menu_a11y')} onPress={() => ustawMenu(menu === 'opcje' ? null : 'opcje')} testID="projekt-menu" />
             </>
           )}
         </View>
@@ -255,7 +250,6 @@ function style(k: Kolory) {
     pasek: { flexDirection: 'row', alignItems: 'center' },
     odstep: { flex: 1 },
     ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
     tytul: { ...typografia.tytul, color: k.grafit },
     naglowek: { ...typografia.drobny, color: k.olowek, marginTop: odstep.s }, // wzorzec `.naglowek-grupy`: 13 pt (partia8.html:76), H-1c
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },

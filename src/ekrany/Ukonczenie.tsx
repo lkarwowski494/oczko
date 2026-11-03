@@ -7,6 +7,7 @@ import { Arkusz, Przycisk, Tresc } from './Arkusz';
 import { cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { krokMotkow, liniaZapasu } from '../domena/zapas';
 import type { Oglos, System, Tlumacz } from './wspolne';
+import { PrzyciskSymbolu } from './Pasek';
 
 export type StanUkonczenia = {
   nazwa: string;
@@ -49,7 +50,7 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
     <Arkusz tytul={s.nazwa} testID="ukonczenie-karta" przyciski={<Przycisk tekst={t('ukonczenie.gotowe')} rodzaj="glowny" testID="ukonczenie-gotowe"
       onPress={() => naGotowe(Object.entries(zuzycie).map(([wloczkaId, motki]) => ({ wloczkaId, motki })))} />}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Przycisk tekst="⇪" etykieta={t('ukonczenie.udostepnij')} onPress={naUdostepnij} rodzaj="tekstowy" testID="karta-udostepnij" />
+        <PrzyciskSymbolu symbol="square.and.arrow.up" etykieta={t('ukonczenie.udostepnij')} onPress={naUdostepnij} testID="karta-udostepnij" />
       </View>
       {obrazKarty ? (
         <View style={st.pozaEkranem} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{obrazKarty}</View>

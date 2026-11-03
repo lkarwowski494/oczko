@@ -46,7 +46,7 @@ Stan: E4 (przekazanie) · 2026-10-22 · Rola 04, build; fix NZ-P217-04 2026-10-2
 | Arkusze (historia, menu •••, formularze, limit, oferty, ukończenie) | systemowe arkusze | przy dużym tekście sięgają pod pasek stanu, treść się przewija, przyciski zawsze widoczne. Dwa rodzaje (jak w makietach od E3): **arkusz formularza** (pola, klawiatura) ma Cancel / tytuł / Save w nagłówku u góry (słownik studia; `naglowek-arkusza`), więc klawiatura go nie zasłania; **arkusz decyzji** bez pól (limit, ukończenie, skrzynka, „Delete all data”) ma przyciski na dole (`przyciski`) |
 | Przycisk niszczący (`niszczacy`, fix-8, P-268) | własny, zachowanie przycisku systemowego | tło `przyciskNiszczacyTlo` (= `blad`), tekst `przyciskNiszczacyTekst` (= `papier`), wymiary jak przycisk pełny (≥ 52 pt, promień 14); tylko w arkuszu decyzji, której jedynym celem jest nieodwracalne usunięcie (dziś: „Delete all data”), jeden na ekran, nad Cancel; etykieta to nazwa akcji („Delete all data”), więc znaczenie nie zależy od koloru (SP-05). Potwierdzenia usunięcia z koszem i bez zostają alertem systemowym ze stylem `destructive`. Nieaktywny: tokeny `przyciskNieaktywny*`. Kontrast: tekst 6,36:1 jasny / 9,98:1 ciemny, tło do arkusza 6,36:1 / 8,18:1 (`kontrast-tabela.txt`, także „Zwiększ kontrast”) |
 | Listy (projekty, ustawienia) | systemowe listy grupowane | nagłówki sekcji zwykłą wielką literą na początku (nie wersalikami) |
-| Symbole | SF Symbols, waga jak sąsiedni tekst | skalują się z tekstem |
+| Symbole | SF Symbols, waga jak sąsiedni tekst | skalują się z tekstem; wspólny komponent paska i tabela symboli: „Aneks M2 partia 3a” |
 
 ## Słownik interakcji (domyślny studia, z decyzjami projektu)
 | Termin | Kiedy |
@@ -1039,6 +1039,33 @@ Wzorzec Treningu (`components/DraftHeader.tsx` `confirmDiscard`, `lib/confirm.ts
 Zachowanie (opcja a ze znaleziska, rekomendacja; 08): pytanie tylko, gdy wartości różnią się od tych z otwarcia arkusza; wyzwalacze — Cancel w nagłówku i systemowe przesunięcie arkusza w dół (gest zostaje włączony, HIG Sheets; przy zmianach przechwycony, np. `usePreventRemove`); „Discard changes” zamyka bez zapisu, „Back to editing” zostawia arkusz z wpisanymi wartościami i klawiaturą. Arkusze decyzji bez pól (`co-dalej`, ukończenie, menu) — nie dotyczy. Trening wyłącza gest (`gestureEnabled: false`); Oczko go zostawia, bo arkusze formularzy są tu `presentation: 'modal'`, a przesunięcie w dół to standardowe zamknięcie arkusza iOS (SP-15) — jedyna różnica wobec Treningu, nazwana. **Dla 08 (testy przed kodem):** notatka i przypomnienie ze zmianą — Cancel i `beforeRemove` pokazują pytanie z tymi kluczami; bez zmian — zamknięcie bez pytania; „Back to editing” zostawia wartości. Makieta: katalog wyjścia sesji, `zrzuty/dec28-alerty.png` (wiersze 004).
 
 **Panele notatek na ekranie wzoru (M1-audytor-generalny-121, 04-studio-projektowe-518 opcja a; 08, bez nowych tekstów):** te same klucze i ta sama reguła — arkusz notatki w edycji: zmieniona treść + Cancel albo stuknięcie w tło → pytanie z `wspolne.odrzuc_opis_zmiany` („Discard changes” w edycji wraca do zapisanej treści, z tła zamyka panel); nowa notatka: wpisany tekst + Cancel albo „Back” na wzorze → pytanie z `wspolne.odrzuc_opis_nowy`; bez zmian — zamknięcie od razu. Test: `tests/ekrany/wzor-notatki-odrzuc.test.tsx` (trasa `/wzor`).
+
+## Aneks M2 partia 3a (2026-11-03): paski, „wstecz”, menu •••, stany błędów, separator „ · ” (P-418, P-427; DEC-04 a, DEC-05 a, DEC-26 a)
+Rola 04, tryb fix (projekt i wdrożenie w jednej sesji, polecenie koordynatora M2). Odczyt `src/` jako materiał do listy miejsc (wyjątek nazwany jak w aneksie M2 partii 2). Makiet nie renderuję: symbole SF nie rysują się w Chromium na Linuksie (jak Aneks P2 poz. 2), więc wzorcem obrazu jest zrzut z przebiegu nocnego po wdrożeniu (SP-13 przez 07).
+
+### Paski i „wstecz” (M1-audytor-generalny-033, 04-studio-projektowe-006; 036, 04-studio-projektowe-009, DEC-05 a)
+**Jeden komponent paska** (`src/ekrany/Pasek.tsx`): `Wstecz` i `PrzyciskSymbolu`. Żaden ekran nie rysuje ikony glifem Unicode ani „‹” tekstem (kontrola: `tests/ekrany/pasek-symbole-033-036.test.tsx`).
+- **„Wstecz”**: symbol `chevron.backward` 17 pt + nazwa celu („Projects” na liczniku) albo `wspolne.wstecz` „Back”; treść 17 pt zwykłą odmianą, `grafit`, bez podkreślenia i bez pogrubienia (jak systemowy przycisk wstecz; podkreślenie tylko w linkach). Skala z tekstem najwyżej ×1,8 (pasek jak pasek systemowy), przy AX5 tekst się zawija, symbol zostaje. Pasek wzoru: sam symbol z etykietą `wzor.wstecz_a11y` (pasek nad wzorem ma tylko symbole).
+- **Symbole** (nazwy i iOS ze zbioru `sf-symbols-typescript` 2.2.0, jak tabela Aneksu P2; kontur, waga zwykła jak tekst obok, rozmiar 20 pt w paskach, 17 pt przy treści):
+
+| Miejsce | Było | Symbol | iOS |
+|---|---|---|---|
+| Lista projektów: Settings | ⚙︎ | `gearshape` | 14 |
+| Lista projektów: History (kalendarz dni) | ◷ | `calendar` | 13 |
+| Lista projektów: Tools | ✂︎ | `ruler` + **widoczny podpis „Tools”** (`narzedzia.tytul`) | 14 |
+| Lista projektów, ekran projektu, zapas: nowy / dodaj | ＋ | `plus` | 13 |
+| Licznik: Pattern | ▤ | `doc.text` | 13 |
+| Licznik: History (zmiany licznika) | ◷ | `clock.arrow.circlepath` | 14 |
+| Licznik, projekt, wzór, film: menu | ••• | `ellipsis` | 13 |
+| Karta ukończenia: Share | ⇪ | `square.and.arrow.up` | 13 |
+| Wzór: Mark row | ▭ | `bookmark` (znacznik to „zakładka”, 007) | 13 |
+| Zamknięcie arkusza decyzji, usunięcie wzoru czekającego | ✕ | `xmark` | 13 |
+| Film: otwórz | ↗ | `arrow.up.right` | 13 |
+| Historia: poprzedni / następny miesiąc | ‹ › | `chevron.backward` / `chevron.forward` | 14 |
+
+*Dlaczego tak:* „History” na liście to kalendarz dni, a „History” na liczniku to lista zmian z cofaniem — dwa różne ekrany nie dzielą symbolu (ten sam znak = ta sama rzecz); `clock.arrow.circlepath` to systemowy znak historii i ma inny obrys niż `stopwatch` obok (przejście C1: ◷ mylił się ze stoperem). Podpis tylko przy Tools: `gearshape`, `calendar` i `plus` są rozpoznawalne same, a linijka nie mówi, że za nią są kalkulator próbki, zapas i druty (przejście D1, Q2 porażka). Odrzucone: `scissors` (cięcie, nie miara), zakładki systemowe (opcja b DEC-05 — zmiana nawigacji, decyzja 03). Zostają glify poza paskami: `›` przy wierszach list (znak wiersza z przejściem, jak w makietach) i `⊖` w trybie Edit projektu — nowe znalezisko N1 niżej.
+
+**Menu ••• licznika w dwóch grupach (DEC-05 a, to-be 04, U12).** Grupa 1 (ustawienia liczenia): Name project and part, Set a goal, Pattern, reminder(s), Set a repeat length, Enter the row number. Odstęp sekcji (`odstep.sekcja` 32 pt) zamiast podziałki. Grupa 2 (cały projekt): Mark project as finished, What the number shows, Lock/Unlock counter, Reset to 0… — reset na końcu, z dala od ukończenia; pytanie o reset pod nim. Bez nagłówków grup (bez nowych tekstów; odstęp wystarcza, NN/g grupowanie). testID grup: `menu-grupa-liczenie`, `menu-grupa-projekt`; nowe testID pozycji: `menu-zablokuj`, `menu-odblokuj`, `menu-zeruj`.
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.

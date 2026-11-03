@@ -23,30 +23,36 @@ export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
   const [pytanie, ustawPytanie] = useState(false);
   return (
     <Arkusz tytul={s.projekt} przyciski={<Przycisk tekst={t('wspolne.anuluj')} onPress={p.naZamknij} rodzaj="tekstowy" testID="arkusz-zamknij" />}>
-      <View style={{ gap: odstep.s }}>
-        <Przycisk tekst={t('menu.nazwa')} onPress={p.naNazwa} testID="menu-nazwa" />
-        {!s.oczka && <Przycisk tekst={t('menu.cel')} onPress={p.naCel} testID="menu-cel" />}
-        {p.naWzor && <Przycisk tekst={t(s.maWzor ? 'menu.wzor' : 'menu.dodaj_wzor')} onPress={p.naWzor} testID="menu-wzor" />}
-        {!s.oczka && (s.przypomnienia ?? 0) > 0 && p.naPrzypomnienia
-          ? <Pressable accessibilityRole="button" accessibilityLabel={`${t('przyp.menu')}, ${s.przypomnienia}`} onPress={p.naPrzypomnienia} testID="menu-przypomnienia" style={{ minHeight: cel.minimum, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Tresc>{t('przyp.menu')}</Tresc>
-              <Tresc podpis>{String(s.przypomnienia)}</Tresc>
-            </Pressable>
-          : !s.oczka && <Przycisk tekst={t('menu.przypomnienie')} onPress={p.naPrzypomnienie} testID="menu-przypomnienie" />}
-        {!s.oczka && <Przycisk tekst={t('menu.powtorzenie')} onPress={p.naPowtorzenie} testID="menu-powtorzenie" />}
-        <Przycisk tekst={t('menu.wpisz')} onPress={p.naWpisz} testID="menu-wpisz-wartosc" />
-        {p.naZnaczenie && !s.oczka && <Przycisk tekst={t('menu.znaczenie')} onPress={p.naZnaczenie} testID="menu-znaczenie" />}
-        {s.zablokowany
-          ? <Przycisk tekst={t('menu.odblokuj')} onPress={p.naOdblokuj} />
-          : <Przycisk tekst={t('menu.zablokuj')} onPress={p.naZablokuj} />}
-        <Przycisk tekst={t('menu.zeruj')} onPress={() => ustawPytanie(true)} />
-        {pytanie && (
-          <View style={{ gap: odstep.s }} accessibilityRole="alert">
-            <Tresc>{t('menu.zeruj_pytanie', { projekt: s.projekt })}</Tresc>
-            <Przycisk tekst={t('menu.zeruj_potwierdz')} onPress={() => { ustawPytanie(false); p.naZeruj(); }} rodzaj="glowny" />
-          </View>
-        )}
-        <Przycisk tekst={t('menu.ukoncz')} onPress={p.naUkoncz} testID="menu-ukoncz" />
+      {/* DEC-05 a (to-be 04, U12): dwie grupy — ustawienia liczenia u góry, sprawy całego projektu niżej z odstępem sekcji;
+          „Reset to 0…” na końcu, z dala od „Mark project as finished” (mniejsze ryzyko pomyłki przy pozycjach, których skutek trudno cofnąć). */}
+      <View style={{ gap: odstep.sekcja }}>
+        <View style={{ gap: odstep.s }} testID="menu-grupa-liczenie">
+          <Przycisk tekst={t('menu.nazwa')} onPress={p.naNazwa} testID="menu-nazwa" />
+          {!s.oczka && <Przycisk tekst={t('menu.cel')} onPress={p.naCel} testID="menu-cel" />}
+          {p.naWzor && <Przycisk tekst={t(s.maWzor ? 'menu.wzor' : 'menu.dodaj_wzor')} onPress={p.naWzor} testID="menu-wzor" />}
+          {!s.oczka && (s.przypomnienia ?? 0) > 0 && p.naPrzypomnienia
+            ? <Pressable accessibilityRole="button" accessibilityLabel={`${t('przyp.menu')}, ${s.przypomnienia}`} onPress={p.naPrzypomnienia} testID="menu-przypomnienia" style={{ minHeight: cel.minimum, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Tresc>{t('przyp.menu')}</Tresc>
+                <Tresc podpis>{String(s.przypomnienia)}</Tresc>
+              </Pressable>
+            : !s.oczka && <Przycisk tekst={t('menu.przypomnienie')} onPress={p.naPrzypomnienie} testID="menu-przypomnienie" />}
+          {!s.oczka && <Przycisk tekst={t('menu.powtorzenie')} onPress={p.naPowtorzenie} testID="menu-powtorzenie" />}
+          <Przycisk tekst={t('menu.wpisz')} onPress={p.naWpisz} testID="menu-wpisz-wartosc" />
+        </View>
+        <View style={{ gap: odstep.s }} testID="menu-grupa-projekt">
+          <Przycisk tekst={t('menu.ukoncz')} onPress={p.naUkoncz} testID="menu-ukoncz" />
+          {p.naZnaczenie && !s.oczka && <Przycisk tekst={t('menu.znaczenie')} onPress={p.naZnaczenie} testID="menu-znaczenie" />}
+          {s.zablokowany
+            ? <Przycisk tekst={t('menu.odblokuj')} onPress={p.naOdblokuj} testID="menu-odblokuj" />
+            : <Przycisk tekst={t('menu.zablokuj')} onPress={p.naZablokuj} testID="menu-zablokuj" />}
+          <Przycisk tekst={t('menu.zeruj')} onPress={() => ustawPytanie(true)} testID="menu-zeruj" />
+          {pytanie && (
+            <View style={{ gap: odstep.s }} accessibilityRole="alert">
+              <Tresc>{t('menu.zeruj_pytanie', { projekt: s.projekt })}</Tresc>
+              <Przycisk tekst={t('menu.zeruj_potwierdz')} onPress={() => { ustawPytanie(false); p.naZeruj(); }} rodzaj="glowny" />
+            </View>
+          )}
+        </View>
       </View>
     </Arkusz>
   );
