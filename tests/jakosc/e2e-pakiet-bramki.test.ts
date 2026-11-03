@@ -56,6 +56,7 @@ const WYJATKI: Record<string, string> = {
   '49-nfr-dan-003-konflikt-icloud.yaml': INFORMACYJNY,
   '62-br-wzr-003-s1-znacznik-idzie-z-licznikiem.yaml': INFORMACYJNY,
   '66-br-dan-006-s3-zastap-kopia-przed.yaml': INFORMACYJNY,
+  '68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml': INFORMACYJNY, // 07 dla 002 (P-435), nowy
 };
 
 describe('kontrakt pakietu bramki E2E (M1-audytor-generalny-047; 07-jakosc-008; DEC-08 a)', () => {
