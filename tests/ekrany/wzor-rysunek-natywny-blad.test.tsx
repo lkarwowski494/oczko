@@ -38,7 +38,9 @@ jest.mock('../../modules/oczko-wzor', () => ({ WidokWzoruNatywny: (p: Record<str
   return mockReact.createElement(mockRn.View, { testID: 'wzor-pdf' });
 } }));
 jest.mock('../../src/przypadki-uzycia/wzor', () => ({ ...jest.requireActual('../../src/przypadki-uzycia/wzor'), zapiszRysunek: async () => mockWyniki.rysunek.shift() ?? { ok: true, wartosc: undefined } }));
-jest.mock('../../src/przypadki-uzycia/wzor-widok', () => ({ ...jest.requireActual('../../src/przypadki-uzycia/wzor-widok'), odzyskajRysunki: async () => ({ ok: true, wartosc: 0 }) }));
+// M1-111: wynik odzysku kresek przy otwarciu (domyślnie udany; `{ ok: false }` = odzysk z błędem zapisu).
+const mockOdzysk: { w: unknown } = { w: null };
+jest.mock('../../src/przypadki-uzycia/wzor-widok', () => ({ ...jest.requireActual('../../src/przypadki-uzycia/wzor-widok'), odzyskajRysunki: async () => mockOdzysk.w ?? { ok: true, wartosc: 0 } }));
 /* eslint-disable @typescript-eslint/no-require-imports */
 const trasa = (p: string) => (require(p) as { default: React.ComponentType }).default;
 const EkranWzoru = trasa('../../app/wzor');
@@ -49,11 +51,13 @@ let alert: jest.SpyInstance;
 let haptyka: { zagraj: jest.Mock };
 let ekran: ReturnType<typeof render>;
 
-async function start(o: { wolne?: number } = {}) {
+async function start(o: { wolne?: number; wolneRzuca?: boolean; drugiWzor?: boolean } = {}) {
   const { s, k, j } = await kompozycjaTestowa();
   if (o.wolne !== undefined) s.magazyn.wolne = o.wolne;
+  if (o.wolneRzuca) s.magazyn.wolneMiejsce = async () => { throw new Error('odczyt wolnego miejsca'); };
   const h = wlozPlik(s.magazyn, PDF, 'pdf');
-  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 5), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h)]);
+  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 5), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h),
+    ...(o.drugiWzor ? [wzor('w2', 'p1', h), ["UPDATE wzor SET nazwa = 'Edging' WHERE id = 'w2'", []] as [string, unknown[]]] : [])]);
   await k.otworz('l1');
   haptyka = { zagraj: jest.fn() };
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
@@ -78,7 +82,7 @@ const rysunek = (oczekujace: number) => zdarzenie('onRysunek', { wzorId: 'w1', s
 const gest = () => mockOpcje.at(-1)?.gestureEnabled;
 async function wstecz() { await act(async () => { fireEvent.press(ekran.getByTestId('nav-wstecz')); await new Promise((r) => setTimeout(r, 10)); }); }
 
-beforeEach(() => { mockZapis.f = null; mockWyniki.rysunek = []; mockProps.p = null; mockOpcje.length = 0; mockRouter.back.mockClear(); alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined); });
+beforeEach(() => { mockOdzysk.w = null; mockZapis.f = null; mockWyniki.rysunek = []; mockProps.p = null; mockOpcje.length = 0; mockRouter.back.mockClear(); alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined); });
 afterEach(() => alert.mockRestore());
 
 describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
@@ -225,5 +229,44 @@ describe('M1-112 (08-programista-515): „Wstecz” decyduje po zapisie na żąd
     await wstecz();
     expect(mockRouter.back).not.toHaveBeenCalled();
     expect(alert).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('M1-111 (07-jakosc-513): polityka komunikatów zapisu rysunku — jeden alert', () => {
+  test('mało miejsca → jedno ostrzeżenie; udany zapis kresek, dwa razy +1 na pasku wzoru (wczytaj → nowy widok) i przełączenie wzoru → nadal jedno', async () => {
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1, drugiWzor: true });
+    expect(alert).toHaveBeenCalledTimes(1);
+    await rysunek(0); // udany zapis zdejmuje blokadę alertu rysunku (M1-110) — ostrzeżenie o miejscu i tak jest raz na otwarcie ekranu (DEC-31 b)
+    for (let i = 0; i < 2; i++) await act(async () => { fireEvent.press(ekran.getByTestId('licznik-plus')); await new Promise((r) => setTimeout(r, 100)); });
+    expect(ekran.getByTestId('licznik-wartosc').props.children).toBe('7');
+    expect(alert).toHaveBeenCalledTimes(1);
+    await act(async () => { fireEvent.press(ekran.getByTestId('wzor-przelacz')); });
+    await act(async () => { fireEvent.press(ekran.getByRole('menuitem', { name: 'Edging' })); await new Promise((r) => setTimeout(r, 100)); });
+    expect(ekran.getByTestId('wzor-zrodlo')).toBeTruthy();
+    expect((mockProps.p?.dokument as { wzorId: string } | undefined)?.wzorId).toBe('w2'); // widok natywny dostał drugi wzór (nowy widok trasy)
+    expect(alert).toHaveBeenCalledTimes(1);
+  });
+
+  test('odzysk kresek z błędem zapisu przy małej ilości miejsca → jeden alert (błąd zapisu), bez ostrzeżenia o miejscu', async () => {
+    mockOdzysk.w = { ok: false, powod: 'zapis' };
+    await start({ wolne: RYSUNEK_MIEJSCE_MIN_MB * MB - 1 });
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(alert.mock.calls[0]?.[0]).toBe('Couldn’t save highlights and drawings'); // M1-102: alert błędu zapisu rysunku (odzysk), nie ostrzeżenie o miejscu
+    expect(haptyka.zagraj).toHaveBeenCalledWith('bladZapisu');
+  });
+
+  test('onBladZapisu, potem onRysunek z oczekujace 1 (część stron zapisana) i kolejny onBladZapisu → nadal jeden alert', async () => {
+    await start();
+    await bladNatywny(2);
+    expect(alert).toHaveBeenCalledTimes(1);
+    await rysunek(1);
+    await bladNatywny(1);
+    expect(alert).toHaveBeenCalledTimes(1);
+  });
+
+  test('odczyt wolnego miejsca rzuca → bez ostrzeżenia (nie wiadomo ≠ brak miejsca)', async () => {
+    await start({ wolneRzuca: true });
+    expect(mockProps.p).not.toBeNull();
+    expect(alert).not.toHaveBeenCalled();
   });
 });
