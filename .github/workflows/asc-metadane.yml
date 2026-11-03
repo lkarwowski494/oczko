@@ -1,0 +1,15 @@
+# Punkt startowy na main (P-472, P-319): właściwa definicja jest na gałęzi roboczej.
+# Run workflow → „Use workflow from” → claude/jolly-thompson-paz6d8.
+name: ASC · metadane
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Komunikat
+        run: |
+          echo "::notice::Uruchom z gałęzi roboczej claude/jolly-thompson-paz6d8 (Use workflow from). Ten plik na main nic nie robi."
