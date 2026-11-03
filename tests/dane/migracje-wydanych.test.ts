@@ -1,5 +1,6 @@
 // Kontrola roli 05 nr 3 (strategia §10): migracja z kopii każdej wydanej wersji schematu (`tests/bazy/vN.db`, dane.md „Polityka migracji”).
-// Dziś (przed 1.0) wydanych wersji nie ma: zbiór pusty jest jawnie nazwany testem „brak wydanych wersji (przed 1.0)”, nie zaliczeniem po cichu (R-074).
+// Od wersji 1.0.0 (P-306 B, P-519) zbiór = [v1.db] z `scripts/dane/generuj-wzorzec-v1.mjs` (treść i powtarzalność: tests/dane/wzorzec-v1.test.ts).
+// Gałąź „brak wydanych wersji” zostaje dla zbioru pustego: jawnie nazwany test, nie zaliczenie po cichu (R-074).
 // Wersja 0.1.0 poza testem (P-070, ADR-0015). Wzorzec vN.db kopiowany razem z -wal/-shm, jeśli są (R-075).
 import { copyFileSync, existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
