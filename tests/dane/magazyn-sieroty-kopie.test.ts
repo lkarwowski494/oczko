@@ -72,3 +72,30 @@ test('M1-087: kopia `.db` starsza niż plik nie chroni go — plik powstały po 
   expect(readdirSync(s.magazyn.katalog).some((n) => n.startsWith(nowy))).toBe(false);
   expect(readdirSync(s.magazyn.katalog)).toHaveLength(3); // pliki sprzed kopii zostają
 });
+
+// M1-audytor-generalny-128 (12-niezawodnosc-503, P-428): wyjątek nazwany w ADR-0020 (6), uzupełnienie 2026-11-03. Kopia `.db` z czasem z przyszłości
+// w nazwie (zegar urządzenia przestawiony do przodu, gdy powstała) zostaje do czasu z nazwy + KOPIE_RATUNKOWE_DNI i do tej chwili wstrzymuje
+// sprzątanie sierot magazynu (M1-087). Skutek: miejsce zajęte dłużej, bez utraty danych. Test utrwala to zachowanie jako oczekiwane; zmiana
+// (np. opcja (a) z 12-niezawodnosc-503: czas kopii ograniczony do teraz) wymaga najpierw zmiany ADR-0020 i tego wektora.
+test('M1-128 (ADR-0020 (6), wyjątek nazwany): kopia z czasem teraz+365 dni wstrzymuje sprzątanie 3 sierot do czasu z nazwy + KOPIE_RATUNKOWE_DNI, potem kopia i sieroty znikają', async () => {
+  const s = await przygotuj();
+  const teraz = s.zegar.teraz().ms;
+  const zNazwy = teraz + 365 * DOBA_MS;
+  const kopia = join(s.z.katalogi.kopie, `przed-migracja-2-${zNazwy}.db`);
+  await s.baza.run('VACUUM INTO ?', [kopia]);
+  utimesSync(kopia, zNazwy / 1000, zNazwy / 1000); // zegar do przodu przy zapisie: czas zmiany pliku kopii też z przyszłości (sonda M2, wariant 1)
+  for (const t of ['A', 'B', 'C']) wlozPlik(s.magazyn, Buffer.from(`SIEROTA-${t}`), 'jpg');
+  postarz(s, teraz - (PLIKI_OCHRONA_MIN + 1) * 60_000);
+  const przed = await licznosci(s.baza);
+  const przebieg = async (ms: number) => {
+    s.zegar.ustaw(ms);
+    const k = sprzatnijKopie(s.z.katalogi.kopie, ms);
+    expect(await start(s)).toMatchObject({ ok: true });
+    return { usuniete_kopie: k.ok ? k.wartosc.length : -1, kopie: readdirSync(s.z.katalogi.kopie).length, pliki: readdirSync(s.magazyn.katalog).length };
+  };
+  for (const ms of [teraz + DOBA_MS, teraz + (KOPIE_RATUNKOWE_DNI + 1) * DOBA_MS, teraz + 340 * DOBA_MS, zNazwy + KOPIE_RATUNKOWE_DNI * DOBA_MS]) {
+    expect(await przebieg(ms)).toEqual({ usuniete_kopie: 0, kopie: 1, pliki: 3 }); // wyjątek: sieroty czekają na kopię z przyszłości
+  }
+  expect(await przebieg(zNazwy + (KOPIE_RATUNKOWE_DNI + 1) * DOBA_MS)).toEqual({ usuniete_kopie: 1, kopie: 0, pliki: 0 });
+  expect({ ...(await licznosci(s.baza)), ustawienie: 0 }).toEqual({ ...przed, ustawienie: 0 }); // start zapisuje tylko ustawienia; wiersze bez zmian
+});
