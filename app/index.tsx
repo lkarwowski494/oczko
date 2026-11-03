@@ -1,9 +1,8 @@
 // Trasa „/”: ekran licznika (pierwszy ekran, NFR-PIE-001; powrót do miejsca F-49). Gdy zapamiętane miejsce jest w koszu, lista projektów (moduly.md:238).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View } from 'react-native';
 import { useFocusEffect, usePathname, useRouter } from 'expo-router';
 import { Aplikacja } from '../src/ekrany/Aplikacja';
-import { useKolory } from '../src/ekrany/motyw';
+import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { cyklAplikacji, oglos, systemAplikacji } from '../src/kompozycja/system';
@@ -17,7 +16,6 @@ export default function EkranLicznika(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik, naAwarie } = aplikacja;
   const router = useRouter();
-  const k = useKolory();
   // U11, M1-audytor-generalny-059: licznik zostaje zamontowany pod listą projektów, Ustawieniami i Narzędziami (`router.push`), więc blokada
   // wygaszania zależy od trasy na wierzchu: licznik albo wzór (także otwarty z projektu; P-284 (2)).
   const sciezka = usePathname();
@@ -72,7 +70,8 @@ export default function EkranLicznika(): React.ReactElement {
     if (r.wartosc.rodzaj === 'licznik') { await licznik.otworz(r.wartosc.licznikId); ustawWersje(licznik.wersja()); return; }
     router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'co-dalej', czesc: r.wartosc.czescId } });
   }
-  if (!gotowe) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
+  // M1-068 (DEC-10 (a)): `przygotuj()` czeka w kolejce za długą pozycją (import, partia iCloud) → „Loading…”, nie pusta plansza; błąd to ekran awaryjny (naAwarie).
+  if (!gotowe) return <StanWczytywania stan="ladowanie" t={kontener.j.t} przedrostek="licznik" naPonow={() => undefined} />;
   return (
     <Bezpieczny>
       <Aplikacja
