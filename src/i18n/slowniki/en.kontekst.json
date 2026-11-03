@@ -819,7 +819,7 @@
     "przelacznik": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): etykieta przełącznika w Ustawieniach › Data and sync; domyślnie wyłączony. „iCloud” to nazwa usługi, bez tłumaczenia.",
     "opis": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): podpis pod przełącznikiem: co robi i dokąd idą dane (prywatność).",
     "wlacz_tytul": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): nagłówek potwierdzenia przy włączaniu.",
-    "wlacz_opis": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): treść potwierdzenia: scalanie, nic nie znika, konflikt pokazany. „iPhone” zamieniany na „iPad” na iPadzie (ten sam wzorzec co ustawienia.usun_pytanie).",
+    "wlacz_opis": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): treść potwierdzenia: scalanie, nic nie znika, konflikt pokazany. „this device” = urządzenie, na którym działa Oczko (iPhone albo iPad): słowo neutralne, bez nazwy modelu (design-spec 012 opcja a, M1-audytor-generalny-153).",
     "wlacz_potwierdz": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): przycisk potwierdzenia włączenia.",
     "wylacz_tytul": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): nagłówek potwierdzenia przy wyłączaniu.",
     "wylacz_opis": "Synchronizacja iCloud (F-27, F-58, BR-DAN-002, BR-DAN-011, ADR-0005; P-220 I1a; fix NZ-P217-04): treść potwierdzenia wyłączenia: dane lokalne zostają.",
