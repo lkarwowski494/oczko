@@ -15,7 +15,7 @@ import { atrapaHaptyki, zagrane } from './pomoc';
 
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined }));
+jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));
 jest.mock('../../src/kompozycja/system', () => {
   const p = jest.requireActual('./pomoc') as typeof import('./pomoc');
   return { cyklAplikacji: p.atrapaCyklu().cykl, oglos: jest.fn(), systemAplikacji: p.atrapaSystemu() };
@@ -61,13 +61,13 @@ const dane = (n: number, o: { rodzaj?: string } = {}) => [projekt('p1', 'Sweter'
 beforeEach(() => { mockRouter.push.mockClear(); });
 
 describe('07-jakosc-032: trasa „/” (app/index.tsx) na prawdziwej bazie', () => {
-  test('032-020 (F-05, RD-12-W1/W3): 17 skończonych rzędów, powtórzenie co 8 → na ekranie „repeat 3 · row 1 of 8”, po +1 „row 2 of 8” (wektory: docs/brd/reguly.md RD-12)', async () => {
+  test('032-020 (F-05, RD-12-W1/W3): 17 skończonych rzędów, powtórzenie co 8 → na ekranie „repeat 3, row 1 of 8”, po +1 „row 2 of 8” (wektory: docs/brd/reguly.md RD-12)', async () => {
     await trasa([...dane(17), ['UPDATE licznik SET dlugosc_powtorzenia = 8 WHERE id = ?', ['l1']]]);
     await czekajNa('17');
-    expect(await screen.findByText(/repeat 3 · row 1 of 8/)).toBeTruthy();
+    expect(await screen.findByText(/repeat 3, row 1 of 8/)).toBeTruthy();
     await plus();
     await czekajNa('18');
-    expect(await screen.findByText(/repeat 3 · row 2 of 8/)).toBeTruthy();
+    expect(await screen.findByText(/repeat 3, row 2 of 8/)).toBeTruthy();
   });
 
   test('032-009 (F-48, BR-LIC-020 S2, RD-15): przy celu dnia 10 dziesiąte +1 wibruje wzorem przypomnienia, rzędy 1–9 wzorem rzędu', async () => {

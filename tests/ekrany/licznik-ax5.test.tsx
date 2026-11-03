@@ -5,7 +5,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import { Licznik } from '../../src/ekrany/Licznik';
-import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
+import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU } from '../../src/ekrany/motyw';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { atrapaHaptyki, stanLicznika, tEn, wywolaniaLicznika } from './pomoc';
 
@@ -56,11 +56,14 @@ test('P-277: krój tytułowy (+1, nazwa części, „Now working”) najwyżej �
 
 // P-287 (30), przebieg 126: przy AX5 menu ••• (`licznik-menu`) wypadało z paska — link „‹ Projects” rósł ×3,571 i wypychał ikony.
 // Makieta fix-8 (`.nav`): grupa ikon nie kurczy się (pola 44 pt, ikona ×1,8), link może się zawijać.
-test('pasek przy AX5: ikony ◷ i ••• najwyżej ×1,8, grupa ikon flexShrink 0, link „Projects” kurczy się', () => {
+// M1-033 (design-spec „Aneks M2 partia 3a”): glify ◷ i ••• zastąpione symbolami SF; ta sama granica skali ×1,8 liczona w rozmiarze symbolu.
+test('pasek przy AX5: ikony historii i ••• najwyżej ×1,8, grupa ikon flexShrink 0, link „Projects” kurczy się', () => {
   skala(3.571);
   render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naProjekty={() => undefined} />);
-  expect(screen.getByText('◷', { includeHiddenElements: true }).props.maxFontSizeMultiplier).toBe(1.8);
-  expect(screen.getByText('•••', { includeHiddenElements: true }).props.maxFontSizeMultiplier).toBe(1.8);
+  const ax5 = Math.round(ROZMIAR_SYMBOLU * MAX_SKALA_TYTULOWA);
+  expect(MAX_SKALA_TYTULOWA).toBe(1.8);
+  expect(screen.getByTestId('symbol-clock.arrow.circlepath', { includeHiddenElements: true }).props.size).toBe(ax5);
+  expect(screen.getByTestId('symbol-ellipsis', { includeHiddenElements: true }).props.size).toBe(ax5);
   expect(screen.getByTestId('licznik-ikony')).toHaveStyle({ flexShrink: 0 });
   expect(screen.getByTestId('licznik-ikony')).toContainElement(screen.getByTestId('licznik-menu'));
   expect(screen.getByTestId('nav-projekty')).toHaveStyle({ flexShrink: 1 });

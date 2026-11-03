@@ -1,7 +1,7 @@
 // Most do modułu Swift OczkoWzor (ADR-0007, ADR-0011, ADR-0012; moduly.md „Kontrakt partii 6”); jedyne miejsce require dla tego modułu.
 // Moduł opcjonalny: build bez modułu (np. nocny przebieg sprzed partii 6) dostaje null — adapter src/platforma/ zwraca wtedy błąd zamiast awarii.
 // Funkcje zwracają JSON `{ ok: true, … }` albo `{ ok: false, powod }` (powody z src/domena/bledy.ts: brak_sieci, przekroczono_czas, odmowa, pusty, anulowano, uszkodzony, …).
-import type { ComponentType } from 'react';
+import type { ComponentType, Ref } from 'react';
 import type { NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
 import { requireNativeViewManager, requireOptionalNativeModule } from 'expo-modules-core';
 
@@ -54,5 +54,12 @@ export type PropsWidokuNatywnego = {
   onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number }>) => void;                       // kreski zakreślacza na wszystkich stronach
 };
 
+/** Funkcje widoku (ref; Expo `AsyncFunction` w `View(WidokWzoru.self)`, kolejka główna). M1-112: zapis rysunków bez czekania na zegar → liczba stron
+ *  wciąż tylko w pamięci widoku (0 = wszystko w plikach oczekujących); „Wstecz” pyta przy > 0. */
+export type UchwytWidokuWzoru = {
+  zapiszRysunki(): Promise<number>;
+};
+
 export const natywny = (): OczkoWzorNatywny | null => requireOptionalNativeModule<OczkoWzorNatywny>('OczkoWzor');
-export const WidokWzoruNatywny: ComponentType<PropsWidokuNatywnego> | null = natywny() ? requireNativeViewManager<PropsWidokuNatywnego>('OczkoWzor') : null;
+type PropsZRef = PropsWidokuNatywnego & { ref?: Ref<UchwytWidokuWzoru | null> };
+export const WidokWzoruNatywny: ComponentType<PropsZRef> | null = natywny() ? requireNativeViewManager<PropsZRef>('OczkoWzor') : null;

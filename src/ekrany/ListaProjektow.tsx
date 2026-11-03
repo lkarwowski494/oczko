@@ -3,9 +3,10 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import type { Tlumacz } from './wspolne';
 
-export type WierszProjektu = { id: string; nazwa: string; opis: string; kolorWloczki: string | null; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
+export type WierszProjektu = { id: string; nazwa: string; opis: string; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
 /** Licznik darmowych dni (P-065 (2a), design-spec.md:18); `null` przy Pro (design-spec.md:19). */
 export type DniNaLiscie = { zostalo: number; limit: number; miesiac: string } | null;
 export type StanListyProjektow = { wToku: WierszProjektu[]; ukonczone: WierszProjektu[]; zapytanie: string; dni: DniNaLiscie; kosz?: number };
@@ -20,9 +21,11 @@ export type PropsListyProjektow = {
   naHistoria?(): void;
   naNarzedzia?(): void;
   naKosz?(): void;
+  /** „Back” do licznika (M1-094, 04-studio-projektowe-501, DEC-26 a): lista jest wypychana nad licznikiem; bez przycisku pusta lista była zaułkiem. */
+  naWstecz?(): void;
 };
 
-export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstawienia, naKosz, naHistoria, naNarzedzia }: PropsListyProjektow): React.ReactElement {
+export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstawienia, naKosz, naHistoria, naNarzedzia, naWstecz }: PropsListyProjektow): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const pusto = s.wToku.length === 0 && s.ukonczone.length === 0;
@@ -31,7 +34,6 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
       <Text style={st.naglowek} accessibilityRole="header">{naglowek}</Text>
       {wiersze.map((w) => (
         <Pressable key={w.id} accessibilityRole="button" accessibilityLabel={w.etykieta} onPress={() => naOtworz(w.id)} style={st.wiersz} testID="projekty-wiersz">
-          {w.kolorWloczki && <View style={[st.kropka, { backgroundColor: w.kolorWloczki }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />}
           <View style={st.wierszTekst}>
             <Text style={st.nazwa}>{w.nazwa}</Text>
             {w.opis !== '' && <Text style={st.opis}>{w.opis}</Text>}
@@ -46,24 +48,14 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="projekty-lista">
       <View style={st.pasek}>
-        {naUstawienia && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('ustawienia.tytul')} onPress={naUstawienia} style={st.ikona} testID="nav-ustawienia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">⚙︎</Text>
-          </Pressable>
-        )}
-        {naHistoria && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('dni.tytul')} onPress={naHistoria} style={st.ikona} testID="nav-historia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">◷</Text>
-          </Pressable>
-        )}
-        {naNarzedzia && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('narzedzia.tytul')} onPress={naNarzedzia} style={st.ikona} testID="nav-narzedzia">
-            <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">✂︎</Text>
-          </Pressable>
-        )}
-        <Pressable accessibilityRole="button" accessibilityLabel={t('projekty.nowy')} onPress={naNowy} style={st.ikona} testID="projekty-nowy">
-          <Text style={st.ikonaTekst} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">＋</Text>
-        </Pressable>
+        {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
+        <View style={st.paskaPrawa}>
+        {naUstawienia && <PrzyciskSymbolu symbol="gearshape" etykieta={t('ustawienia.tytul')} onPress={naUstawienia} testID="nav-ustawienia" />}
+        {naHistoria && <PrzyciskSymbolu symbol="calendar" etykieta={t('dni.tytul')} onPress={naHistoria} testID="nav-historia" />}
+        {/* DEC-05 a: jedyny symbol z widocznym podpisem — kształt linijki nie mówi sam, że tu są kalkulatory, zapas i druty (przejście C1, D1) */}
+        {naNarzedzia && <PrzyciskSymbolu symbol="ruler" etykieta={t('narzedzia.tytul')} podpis={t('narzedzia.tytul')} onPress={naNarzedzia} testID="nav-narzedzia" />}
+        <PrzyciskSymbolu symbol="plus" etykieta={t('projekty.nowy')} onPress={naNowy} testID="projekty-nowy" />
+        </View>
       </View>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('projekty.tytul')}</Text>
       <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.olowek} value={s.zapytanie}
@@ -89,15 +81,13 @@ function style(k: Kolory) {
   return StyleSheet.create({
     ekran: { flex: 1, backgroundColor: k.papier },
     tresc: { padding: odstep.l, gap: odstep.l },
-    pasek: { flexDirection: 'row', justifyContent: 'flex-end' },
-    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
+    pasek: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    paskaPrawa: { flexDirection: 'row', flexShrink: 0, marginLeft: 'auto' }, // symbole zostają w pasku przy AX5, „Back” zawija się jak na liczniku
     tytul: { ...typografia.tytul, color: k.grafit },
     szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     naglowek: { ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.l, paddingTop: odstep.m }, // `.naglowek-grupy`: 13 pt (ekrany.html), H-2
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
-    kropka: { width: odstep.m, height: odstep.m, borderRadius: odstep.m / 2 },
     wierszTekst: { flex: 1 },
     nazwa: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
     opis: { ...typografia.podpis, color: k.olowek },

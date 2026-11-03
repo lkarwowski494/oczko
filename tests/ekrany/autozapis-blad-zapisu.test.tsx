@@ -99,13 +99,16 @@ describe('M1-085: komunikat przy nieudanym zapisie automatycznym', () => {
     expect(haptyka.zagraj).toHaveBeenCalledWith('bladZapisu');
   });
 
-  async function stoper() {
+  // M1-107 (04-studio-projektowe-511): stoper dostaje port haptyki i preferencje z `useAplikacja()` (jak trasy z `zglosBladZapisu`).
+  async function stoper(wibracje = true) {
     const t = await tEn();
     const s = await przygotuj();
     await wykonaj(s.baza, [projekt('pb', 'Scarf')]);
     s.zegar.ustaw(T0);
     const oglos = jest.fn();
-    render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} projektId="pb" oglos={oglos} poZmianie={async () => undefined} />);
+    haptyka = { zagraj: jest.fn() };
+    const zrodlo = { kontener: { j: { t }, porty: { haptyka } }, preferencje: { stan: () => ({ wibracje }) } };
+    render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} zrodlo={zrodlo} projektId="pb" oglos={oglos} poZmianie={async () => undefined} />);
     await waitFor(() => expect(screen.getByTestId('licznik-stoper')).toBeTruthy());
     await act(async () => { fireEvent.press(screen.getByRole('button', { name: 'Start session timer' })); await new Promise((r) => setTimeout(r, 50)); });
     return oglos;
@@ -122,5 +125,27 @@ describe('M1-085: komunikat przy nieudanym zapisie automatycznym', () => {
     await stoper();
     expect(mockWyniki.wolane.start).toBe(1);
     expect(alert).not.toHaveBeenCalled();
+  });
+  test('M1-107 stoper: błąd zapisu przy włączonych wibracjach → haptyka `bladZapisu` (aneks P2 poz. 5), bez haptyki startu', async () => {
+    await stoper(true);
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(haptyka.zagraj.mock.calls).toEqual([['bladZapisu']]);
+  });
+  test('M1-107 stoper: błąd zapisu przy wyłączonych wibracjach → alert bez haptyki', async () => {
+    await stoper(false);
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(haptyka.zagraj).not.toHaveBeenCalled();
+  });
+  test('M1-107 stoper: udany start → wzorzec z tokenu `haptyka.stoperStart` (design-spec: „Stuknięcie = start, haptyka lekka”) po zapisie, bez alertu', async () => {
+    mockWyniki.start.push(OK);
+    const oglos = await stoper(true);
+    expect(alert).not.toHaveBeenCalled();
+    expect(haptyka.zagraj.mock.calls).toEqual([['stoperStart']]);
+    expect(oglos).toHaveBeenCalledWith('Session timer started.');
+  });
+  test('M1-107 stoper: udany start przy wyłączonych wibracjach → bez haptyki', async () => {
+    mockWyniki.start.push(OK);
+    await stoper(false);
+    expect(haptyka.zagraj).not.toHaveBeenCalled();
   });
 });

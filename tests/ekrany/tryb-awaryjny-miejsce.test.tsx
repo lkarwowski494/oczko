@@ -37,7 +37,9 @@ test('M1-011: migracja z „brak_miejsca” → ekran z powodem brak miejsca, ni
   expect(powod).toBe('brak_miejsca');
   render(<TrybAwaryjny stan={{ powod }} t={t} {...dzialania()} />);
   expect(tekst(screen.getByRole('header'))).not.toBe('Oczko can’t read your data');
-  expect(screen.getByText('Your device may be out of space. Nothing was changed. Free some space and try again.')).toBeTruthy();
+  // M1-094 (DEC-26 a, design-spec „Aneks M2 partia 3a”): własny nagłówek i akapit zamiast `awaryjny.tytul_petla` + `wspolne.blad_zapisu_opis`.
+  expect(tekst(screen.getByRole('header'))).toBe('Your device is out of space');
+  expect(screen.getByText('Nothing was changed. Free some space on this device, then try starting normally.')).toBeTruthy();
   expect(powodAwaryjny('zapis')).toBe('uszkodzony'); // inne powody bez zmian
 });
 

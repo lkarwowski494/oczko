@@ -62,7 +62,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
 | `licznik-wartosc` | licznik | duża liczba rzędów skończonych (sam numer, z separatorem tysięcy regionu) | „47” | |
 | `licznik-teraz-rzad` | licznik | podpis pod tytułem | „Now working row 48” | |
-| `licznik-powtorzenie` | licznik | linia powtórzenia (nazwa · „repeat N · row R of D”; `Licznik.tsx`; 033-T1) | „repeat 3 · row 1 of 8” (z nazwą powtórzenia z przodu, jeśli jest) | |
+| `licznik-powtorzenie` | licznik | linia powtórzenia („{nazwa}: repeat N, row R of D”, klucz `licznik.powtorzenie`; M1-034) | „repeat 3, row 1 of 8” (z nazwą powtórzenia z przodu, jeśli jest) | |
 | `licznik-calosc` | licznik | podpis całości części (BR-LIC-018/S1; 033-T1) | „Przód in total: 20 rows” (część nazwana; projekt roboczy: „Whole piece: 20 rows”) | |
 | `licznik-notatka` | licznik | nagłówek „Note” nad notatką projektu (033-T1) | „Note” | |
 | `licznik-projekt` | licznik | nazwa projektu nad tytułem części | nazwa użytkownika | |

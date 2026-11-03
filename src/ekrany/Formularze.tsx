@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, liczbaZPola, useZglosZmiane } from './Arkusz';
+import { cel } from './motyw';
 import { formatujLiczbe, parsujCalkowita } from '../i18n/format';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
@@ -129,7 +130,7 @@ export function ListaPrzypomnien({ t, elementy, naWybor, naDodaj, naZamknij }: P
     <Arkusz tytul={t('przyp.tytul')} testID="przyp-lista" formularz={{ t, naZapisz: naDodaj, naAnuluj: naZamknij, anuluj: t('wspolne.zamknij'), zapisz: t('wspolne.dodaj'), testZapisz: 'przypomnienia-dodaj' }}>
       {elementy.map((e) => (
         <Pressable key={e.id} accessibilityRole="button" accessibilityLabel={t('przyp.wiersz_a11y', { tekst: e.tekst, opis: e.opis })} onPress={() => naWybor(e.id)}
-          testID={`przypomnienie-wiersz-${e.id}`} style={{ minHeight: 44, justifyContent: 'center' }}>
+          testID={`przypomnienie-wiersz-${e.id}`} style={{ minHeight: cel.minimum, justifyContent: 'center' }}>
           {e.tekst !== '' && <Tresc>{e.tekst}</Tresc>}
           <Tresc podpis>{e.opis}</Tresc>
         </Pressable>
@@ -162,7 +163,7 @@ export function KorektaSesji({ stan: s, t, formatuj, naZapisz, naAnuluj, naZmian
   const wiersz = (pole: 'start' | 'koniec', ms: number, ustaw: (v: number) => void) => (
     <View>
       <Pressable accessibilityRole="button" accessibilityLabel={`${t(pole === 'start' ? 'formularz.sesja_start' : 'formularz.sesja_koniec')}, ${formatuj.dataGodzina(ms)}`}
-        onPress={() => ustawOtwarte(otwarte === pole ? null : pole)} testID={`formularz-sesja-${pole}`} style={{ minHeight: 44, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        onPress={() => ustawOtwarte(otwarte === pole ? null : pole)} testID={`formularz-sesja-${pole}`} style={{ minHeight: cel.minimum, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Tresc>{t(pole === 'start' ? 'formularz.sesja_start' : 'formularz.sesja_koniec')}</Tresc>
         <Tresc podpis>{formatuj.dataGodzina(ms)}</Tresc>
       </Pressable>

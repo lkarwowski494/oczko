@@ -14,18 +14,20 @@ export type PropsTrybuAwaryjnego = {
   /** Panel buildu E2E (`e2e-sha-bazy`, bez t()); w buildzie wydania brak. */
   panelE2e?: React.ReactNode;
 };
-const TYTUL = { 'petla-startow': 'awaryjny.tytul_petla', wersja_nowsza: 'awaryjny.tytul_nowsza', uszkodzony: 'awaryjny.tytul_uszkodzony', brak_miejsca: 'awaryjny.tytul_petla' } as const; // M1-011: brak miejsca to nie uszkodzenie (teksty z systemu 04)
+const TYTUL = { 'petla-startow': 'awaryjny.tytul_petla', wersja_nowsza: 'awaryjny.tytul_nowsza', uszkodzony: 'awaryjny.tytul_uszkodzony', brak_miejsca: 'awaryjny.tytul_brak_miejsca' } as const; // M1-011: brak miejsca to nie uszkodzenie; M1-094 (DEC-26 a): własny nagłówek
 export function TrybAwaryjny({ stan, t, naZapiszKopie, naSprobujNormalnie, naZglosProblem, panelE2e }: PropsTrybuAwaryjnego): React.ReactElement {
+  // Brak miejsca (M1-094, 04-studio-projektowe-504): kopia zwykle się nie zmieści, więc główne jest „Try starting normally” po zwolnieniu miejsca; kopia druga.
+  const miejsce = stan.powod === 'brak_miejsca';
+  const kopia = <Przycisk tekst={t('awaryjny.zapisz_kopie')} onPress={naZapiszKopie} rodzaj={miejsce ? 'drugi' : 'glowny'} testID="awaryjny-zapisz-kopie" />;
+  const sprobuj = <Przycisk tekst={t('awaryjny.sprobuj')} onPress={naSprobujNormalnie} rodzaj={miejsce ? 'glowny' : 'drugi'} testID="awaryjny-sprobuj-normalnie" />;
   return (
     <Arkusz tytul={t(TYTUL[stan.powod])} testID="tryb-awaryjny" przyciski={
       <>
-        <Przycisk tekst={t('awaryjny.zapisz_kopie')} onPress={naZapiszKopie} rodzaj="glowny" testID="awaryjny-zapisz-kopie" />
-        <Przycisk tekst={t('awaryjny.sprobuj')} onPress={naSprobujNormalnie} testID="awaryjny-sprobuj-normalnie" />
+        {miejsce ? <>{sprobuj}{kopia}</> : <>{kopia}{sprobuj}</>}
         <Przycisk tekst={t('awaryjny.zglos')} onPress={naZglosProblem} rodzaj="tekstowy" testID="awaryjny-zglos-problem" />
       </>
     }>
-      {stan.powod === 'brak_miejsca' && <Tresc testID="awaryjny-brak-miejsca">{t('wspolne.blad_zapisu_opis')}</Tresc>}
-      <Tresc>{t('awaryjny.opis')}</Tresc>
+      {miejsce ? <Tresc testID="awaryjny-brak-miejsca">{t('awaryjny.opis_brak_miejsca')}</Tresc> : <Tresc>{t('awaryjny.opis')}</Tresc>}
       {stan.licznosciKopii && <Tresc podpis>{t('awaryjny.zapisano')}</Tresc>}
       {stan.licznosciKopii && <Tresc podpis testID="awaryjny-licznosci">{stan.licznosciKopii}</Tresc>}
       {panelE2e}

@@ -22,7 +22,7 @@ export async function sha256PlikuTs(sciezka: string): Promise<string> {
   }
 }
 
-export function utworzMagazyn(katalog: string, o: { skrot?: (sciezka: string) => Promise<string>; wolne?: () => number } = {}): MagazynPlikow {
+export function utworzMagazyn(katalog: string, o: { skrot?: (sciezka: string) => Promise<string>; wolne?: () => number | null } = {}): MagazynPlikow {
   const skrot = o.skrot ?? sha256PlikuTs;
   const wolne = o.wolne ?? wolneMiejsce;
   return {

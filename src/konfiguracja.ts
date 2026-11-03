@@ -18,6 +18,7 @@ export const WERSJA_FORMATU_ARCHIWUM = 1; // ADR-0004
 export const ROZSZERZENIE_ARCHIWUM = '.oczko'; // ADR-0004
 export const ZAPAS_MIEJSCA_EKSPORTU = 2; // × rozmiar; [OCENA] roli 05
 export const BLEDY_MAKS_WIERSZY = 200; // wiersze; [OCENA] roli 05
+export const OSTATNIE_BLEDY = 20; // wiersze `blad` w „Zgłoś problem” (zwykłym i z trybu awaryjnego); F-57, ADR-0018 (M1-082: jedno źródło)
 export const DZIENNIK_BLAD_TEKST_MAKS = 4096; // znaki; ADR-0008 (3′) (fix-3 05): tekst uszkodzonej linii dziennika w `blad`
 export const WERSJA_STANU = 3; // stan Live Activity i zegarka, moduly.md (v1 → v2: 08 partia 3, P-111 (3), P-129 Q7a; v2 → v3 `zablokowany`: 08 partia 4, N1, P-135 Q7a)
 export const STAN_NAZWA_MAKS_ZNAKOW = 60; // znaki (punkty kodowe); [OCENA] roli 05 (Z07-12): ładunek < 4 KB (rejestr Apple 1b)

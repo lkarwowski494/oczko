@@ -38,7 +38,7 @@ export default function EkranProjektow(): React.ReactElement {
   if (!widok) {
     return (
       <Bezpieczny>
-        <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="projekty" naPonow={() => { ustawBlad(false); void wczytaj(() => true); }} />
+        <StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="projekty" naPonow={() => { ustawBlad(false); void wczytaj(() => true); }} />
       </Bezpieczny>
     );
   }
@@ -57,6 +57,7 @@ export default function EkranProjektow(): React.ReactElement {
           void licznik.otworz(p.licznik.id).then(wroc);
         }}
         naNowy={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'nowy-projekt' } })}
+        naWstecz={() => (router.canGoBack() ? router.back() : router.replace('/'))}
         naUstawienia={() => router.push('/ustawienia')}
         naHistoria={() => router.push('/dni')}
         naNarzedzia={() => router.push('/narzedzia')}

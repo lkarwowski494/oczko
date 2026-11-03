@@ -29,10 +29,10 @@ export function stanListy(w: WidokProjektow, o: { zapytanie: string; j: Jezyk; t
       : p.licznik.cel === null ? j.t('projekty.wiersz', { czesc: p.licznik.czesc, n: p.licznik.wartosc }) : j.t('projekty.wiersz_cel', { czesc: p.licznik.czesc, n: p.licznik.wartosc, cel: p.licznik.cel });
     if (!wToku && p.ukonczonoDzien) { // lista ukończonych: „Finished {data} · {czas}” bez stopera sama data, nigdy „0 min” (BR-PRJ-006/S1, design-spec 027)
       const data = ukonczonoData(p.ukonczonoDzien, j.jezyk(), o.terazMs, o.strefa), czas = p.czasPracyMs === null ? null : czasPracy(p.czasPracyMs, j);
-      return { id: p.id, nazwa, kolorWloczki: null, opis: czas === null ? j.t('projekty.ukonczono_bez_czasu', { data }) : j.t('projekty.ukonczono_wiersz', { data, czas }),
+      return { id: p.id, nazwa, opis: czas === null ? j.t('projekty.ukonczono_bez_czasu', { data }) : j.t('projekty.ukonczono_wiersz', { data, czas }),
         etykieta: czas === null ? j.t('projekty.ukonczono_bez_czasu_a11y', { nazwa, data }) : j.t('projekty.ukonczono_a11y', { nazwa, data, czas }) };
     }
-    return { id: p.id, nazwa, opis, kolorWloczki: null, ...(wToku ? { termin: liniaDzis(p.dzis, j.t), ostatniaPraca: ostatniaPraca(p.dniOdPracy, j.t) } : {}) };
+    return { id: p.id, nazwa, opis, ...(wToku ? { termin: liniaDzis(p.dzis, j.t), ostatniaPraca: ostatniaPraca(p.dniOdPracy, j.t) } : {}) };
   };
   const filtr = (l: ProjektNaEkranie[], wToku = false) => l.map((p) => wiersz(p, wToku)).filter((x) => !szukaj || x.nazwa.toLocaleLowerCase().includes(szukaj));
   return {

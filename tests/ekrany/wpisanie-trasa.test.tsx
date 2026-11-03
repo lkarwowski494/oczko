@@ -9,7 +9,7 @@ import { wykonaj } from '../dane/pomocnicze/srodowisko';
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn(), dismissTo: jest.fn() };
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => ({ rodzaj: 'wpisz' }), useFocusEffect: (f: () => void) => { const R = require('react') as typeof import('react'); R.useEffect(f, [f]); } })); // useFocusEffect: patrz przypomnienia-trasa.test.tsx
+jest.mock('expo-router', () => ({ useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), useRouter: () => mockRouter, useLocalSearchParams: () => ({ rodzaj: 'wpisz' }), useFocusEffect: (f: () => void) => { const R = require('react') as typeof import('react'); R.useEffect(f, [f]); } })); // useFocusEffect: patrz przypomnienia-trasa.test.tsx
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports

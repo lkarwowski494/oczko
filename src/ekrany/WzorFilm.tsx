@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { adresStrony } from '../domena/adres';
 import { Arkusz, Komunikat, Pole, Tresc } from './Arkusz';
-import { cel as rozmiary, odstep, typografia, useKolory, type Kolory } from './motyw';
+import { cel as rozmiary, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU_KAPSULY, typografia, useKolory, type Kolory } from './motyw';
 import type { System, Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 export type FilmProjektu = { adres: string; nazwa: string | null };
 
@@ -35,10 +36,10 @@ export function WierszFilmu(p: { film: FilmProjektu; siec: 'jest' | 'brak'; t: T
           <Text style={st.podpis} numberOfLines={2}>{p.film.nazwa ?? p.film.adres}</Text>
         </View>
         <Pressable accessibilityRole="link" accessibilityLabel={t('wzor.film_otworz_a11y')} onPress={otworz} style={st.ikona}>
-          <Text style={[st.tekst, st.akcja]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>↗</Text>
+          <SymbolSf nazwa="arrow.up.right" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.tekst.color} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />
         </Pressable>
         <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.film_menu')} onPress={() => ustawMenu(!menu)} style={st.ikona} testID="wzor-film-menu">
-          <Text style={[st.tekst, st.akcja]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>•••</Text>
+          <SymbolSf nazwa="ellipsis" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.tekst.color} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />
         </Pressable>
       </Pressable>
       {menu && (

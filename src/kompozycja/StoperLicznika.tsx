@@ -1,18 +1,19 @@
 // Kontener stopera na liczniku (F-21; P-191 P1a–P3a; P-199 Q3c): czyta otwartą sesję, woła przypadki użycia sesji, ogłasza wynik dopiero
 // po zapisie (R-148) i po każdym przejściu woła `poZmianie` (stan ekranu blokady i zegarka, przeładowanie kresek licznika).
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import type { Wynik } from '../domena/bledy';
-import { alertBleduZapisu } from '../ekrany/blad-zapisu';
 import { LiniaSprawdzenia, Stoper, czasStopera, type StanStopera } from '../ekrany/Stoper';
 import type { Oglos } from '../ekrany/wspolne';
 import { formatujGodzine } from '../i18n/format';
 import { otwartaSesja, przelaczSesje, sesjaDoSprawdzenia, startSesji, wstrzymajSesje, wznowSesje, zakonczSesje, type SesjaNaEkranie } from '../przypadki-uzycia/sesja';
 import type { Zaleznosci } from '../przypadki-uzycia/zaleznosci';
+import { zglosBladZapisu, type ZrodloBleduZapisu } from './po-zapisie';
 import { czasPracy } from './ukonczenie';
 import { etykietaRobocza, type Jezyk } from './licznik';
+import { liczba, tekst, wiersze } from '../dane/repozytoria/wiersze';
 
-export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zaleznosci; j: Jezyk; projektId: string; oglos: Oglos; poZmianie(): Promise<void> }): React.ReactElement {
+/** `zrodlo` = to, co trasa ma z `useAplikacja()` (port haptyki i preferencje wibracji; M1-107). */
+export function StoperLicznika({ z, j, zrodlo, projektId, oglos, poZmianie }: { z: Zaleznosci; j: Jezyk; zrodlo: ZrodloBleduZapisu; projektId: string; oglos: Oglos; poZmianie(): Promise<void> }): React.ReactElement {
   const [sesja, ustawSesje] = useState<SesjaNaEkranie | null>(null);
   const [inny, ustawInny] = useState<{ projekt: string; biezacy: string } | null>(null);
   const wczytaj = useCallback(async () => { const o = await otwartaSesja(z); ustawSesje(o.ok ? o.wartosc : null); }, [z]);
@@ -25,13 +26,15 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
     : { rodzaj: 'wstrzymana', czasMs: (sesja.wstrzymanoMs ?? ch.ms) - sesja.startMs - sesja.przerwyMs, startGodzina: godzina(sesja.startMs) };
 
   async function nazwa(id: string): Promise<string> {
-    const [p] = await z.baza.all<{ nazwa: string; nienazwany: number; utworzono_ms: number }>('SELECT nazwa, nienazwany, utworzono_ms FROM projekt WHERE id = ?', [id]);
+    const [p] = await wiersze(z.baza.all('SELECT nazwa, nienazwany, utworzono_ms FROM projekt WHERE id = ?', [id]), 'stoper');
     if (!p) return '';
-    return p.nienazwany === 1 ? etykietaRobocza(p.utworzono_ms, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : p.nazwa;
+    return liczba(p, 'nienazwany') === 1 ? etykietaRobocza(liczba(p, 'utworzono_ms'), z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : tekst(p, 'nazwa');
   }
-  // M1-085: błąd zapisu (`zapis`, `brak_miejsca`) → alert błędu zapisu (M1-006); inny powód jak dotąd bez komunikatu. Bez haptyki: komponent nie ma portu.
-  async function po(w: Wynik<unknown>, tekst: () => string): Promise<void> {
-    if (!w.ok) { if (w.powod === 'zapis' || w.powod === 'brak_miejsca') Alert.alert(...alertBleduZapisu(j.t, 'stoper')); return; } // M1-102: stoper.blad_zapisu
+  // M1-085: błąd zapisu (`zapis`, `brak_miejsca`) → alert błędu zapisu (M1-006, M1-102: stoper.blad_zapisu) z haptyką `bladZapisu` przy włączonych
+  // wibracjach (M1-107, aneks P2 poz. 5); inny powód jak dotąd bez komunikatu. `start`: haptyka `stoperStart` po udanym zapisie (design-spec: „haptyka lekka”).
+  async function po(w: Wynik<unknown>, tekst: () => string, start = false): Promise<void> {
+    if (!w.ok) { zglosBladZapisu(zrodlo, w.powod, 'stoper'); return; }
+    if (start && zrodlo.preferencje.stan().wibracje) zrodlo.kontener.porty.haptyka.zagraj('stoperStart');
     await wczytaj();
     oglos(tekst());
     await poZmianie();
@@ -43,7 +46,7 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
       naStart={() => void (async () => {
         if (sesja && sesja.projektId !== projektId) { ustawInny({ projekt: await nazwa(sesja.projektId), biezacy: await nazwa(projektId) }); return; }
         const w = await startSesji(z, { projektId });
-        await po(w, () => j.t('stoper.uruchomiono'));
+        await po(w, () => j.t('stoper.uruchomiono'), true);
       })()}
       naWstrzymaj={() => void (async () => {
         if (!sesja) return;
@@ -58,7 +61,7 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
       })()}
       naInnyPotwierdz={() => void (async () => {
         ustawInny(null);
-        await po(await przelaczSesje(z, { projektId }), () => j.t('stoper.uruchomiono'));
+        await po(await przelaczSesje(z, { projektId }), () => j.t('stoper.uruchomiono'), true);
       })()}
       naInnyAnuluj={() => ustawInny(null)}
     />

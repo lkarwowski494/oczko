@@ -4,7 +4,8 @@ import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { utworzPortNode } from '../../src/dane/baza/adapter-node';
 import { notatkiWzoru, odczytajZnacznik } from '../../src/dane/repozytoria/wzory';
-import { dodajNotatkeWzoru, importujWzor, ustawZnacznik } from '../../src/przypadki-uzycia/wzor';
+import { importujWzor, ustawZnacznik } from '../../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru } from '../../src/przypadki-uzycia/wzor-notatki';
 import { czesc, licznik, plik, projekt, wzor } from './pomocnicze/dane-wejsciowe';
 import { DOBA, ile, jeden, przygotuj, sha256Pliku, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 

@@ -15,6 +15,7 @@ import { kopiaAwaryjna } from './kopia-awaryjna';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
 import { awariaStartu, zegarAplikacji } from '../platforma/tryb-e2e';
+import { OSTATNIE_BLEDY } from '../konfiguracja';
 
 export type TrybStartu = { tryb: 'normalny' } | { tryb: 'awaryjny'; powod: 'petla-startow' | 'wersja_nowsza' | 'uszkodzony' } | { tryb: 'awaria-e2e' };
 
@@ -96,10 +97,10 @@ export function trybAwaryjny() {
       try { return opisEtapu(odczytajEtap(istniejePlik(plik) ? await czytajTekst(plik) : null)); } catch { return opisEtapu(null); }
     },
     /**
-     * P-194 Q4a: kody `blad` do „Zgłoś problem” bez otwierania oryginału — z kopii surowej przeniesionej do katalogu tymczasowego (zamknięcie
+     * P-194 Q4a: kody `blad` (z surowymi `szczegoly` — zgłoszenie bierze z nich tylko ramki js_*, M1-058) do „Zgłoś problem” bez otwierania oryginału — z kopii surowej przeniesionej do katalogu tymczasowego (zamknięcie
      * połączenia z oryginałem przeniosłoby WAL do `.db`, P-211). Tylko odczyt; katalog usuwany po odczycie. Błąd → wyjątek (wołający: „not_opened”).
      */
-    async bledyZKopii(): Promise<{ czasMs: number; kod: string }[]> {
+    async bledyZKopii(): Promise<{ czasMs: number; kod: string; szczegoly: unknown }[]> {
       const k = await kopia;
       if (!k.ok) throw new Error('brak kopii surowej');
       const kat = polacz(katalogi.tymczasowy, `zgloszenie-${zegar.teraz().ms}`);
@@ -108,8 +109,8 @@ export function trybAwaryjny() {
         for (const n of k.wartosc.pliki) kopiuj(polacz(k.wartosc.katalog, n), polacz(kat, n));
         const port = otworzPortExpo(polacz(kat, nazwaPliku(s.baza)), { tylkoOdczyt: true }); // nazwa z jednego źródła (sciezkiDanych)
         try {
-          const w = await port.all<{ czas_ms: unknown; kod: unknown }>('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT 20');
-          return w.flatMap((r) => (typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod }] : []));
+          const w = await port.all('SELECT czas_ms, kod, szczegoly FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]); // kopia może być uszkodzona: zły wiersz pominięty, nie zgadywany
+          return w.flatMap((r) => (typeof r === 'object' && r !== null && 'czas_ms' in r && 'kod' in r && typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod, szczegoly: 'szczegoly' in r ? r.szczegoly : undefined }] : []));
         } finally {
           await port.zamknij();
         }
@@ -117,12 +118,12 @@ export function trybAwaryjny() {
         usunKatalog(kat);
       }
     },
-    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (trzy pliki + manifest) do arkusza udostępniania. */
+    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (trzy pliki + manifest) do arkusza udostępniania; M1-075: z dziennikiem +1 (ADR-0008), którego tryb awaryjny nie scala. */
     async zipSurowej(): Promise<string | null> {
       const k = await kopia;
       if (!k.ok) return null;
       const cel = polacz(katalogi.tymczasowy, `oczko-ratunkowa-${zegar.teraz().ms}.zip`);
-      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku });
+      const w = await zipSurowejKopii(k.wartosc.katalog, k.wartosc.pliki, cel, { aplikacja: Constants.expoConfig?.version ?? '?', build: Constants.expoConfig?.ios?.buildNumber ?? '?', terazMs: zegar.teraz().ms, skrot: skrotPliku, dodatkowe: [s.dziennik] });
       return w.ok ? cel : null;
     },
   };

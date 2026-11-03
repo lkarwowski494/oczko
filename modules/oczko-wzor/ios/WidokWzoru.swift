@@ -410,10 +410,13 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   /// Rysunki zmienionych stron do plików w katalogu oczekujących → `onRysunek` (JS: zapiszRysunek, ADR-0012). Nazwa pliku niesie wzorId
   /// i stronę, więc plik zapisany przy zamykaniu ekranu (zdarzenie bez odbiorcy) JS odzyska przy następnym otwarciu (przegląd 2026-10-26).
   /// M1-084: nieudany zapis zostawia rysunek w kolejce i wysyła `onBladZapisu` (JS: alert, ostrzeżenie przed wyjściem z ekranu).
-  @objc func zapiszTeraz() {
+  @objc func zapiszTeraz() { zapiszNaZadanie() }
+  /// M1-112 (08-programista-515): zapis bez czekania na zegar `RYSUNEK_ZAPIS_MS` — funkcja widoku `zapiszRysunki` („Wstecz” w JS pyta, gdy wynik > 0).
+  /// Zwraca liczbę rysunków stron wciąż tylko w pamięci (kolejka) po tej próbie.
+  @discardableResult func zapiszNaZadanie() -> Int {
     zatrzymajZegary()
     doKolejki()
-    oproznijKolejke()
+    return oproznijKolejke()
   }
   private func zatrzymajZegary() {
     if zegarPowiekszenia != nil { zegarPowiekszenia?.invalidate(); zglosPowiekszenie() } // tło albo zamknięcie: nie gub powiększenia czekającego na opóźnienie
@@ -426,9 +429,9 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     for s in doZapisu.sorted() { Self.kolejka.dodaj(wzorId: wzorId, strona: s, dane: (rysunki[s] ?? PKDrawing()).dataRepresentation()) }
     doZapisu = []
   }
-  private func oproznijKolejke() {
-    guard Self.kolejka.liczba > 0, propsy.moznaOproznicKolejke else { return } // M1-109: przed nałożeniem obu propsów dane czekają w kolejce
-    let w = Self.kolejka.zapisz(do: propsy.katalog) { k, klucz, dane in
+  @discardableResult private func oproznijKolejke() -> Int {
+    guard Self.kolejka.liczba > 0 else { return 0 }
+    let w = Self.kolejka.zapisz(propsy: propsy) { k, klucz, dane in // M1-109: przed nałożeniem obu propsów bez próby, dane czekają w kolejce
       try FileManager.default.createDirectory(at: k, withIntermediateDirectories: true)
       let u = k.appendingPathComponent("\(klucz.wzorId)__\(klucz.strona)__\(UUID().uuidString).pkdrawing")
       try dane.write(to: u, options: .atomic)
@@ -436,6 +439,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     }
     for z in w.zapisane { onRysunek(["wzorId": z.wzorId, "strona": z.strona, "plikTymczasowy": z.sciezka, "oczekujace": w.oczekujace]) }
     if !w.nieudane.isEmpty { onBladZapisu(["wzorId": wzorId, "oczekujace": w.oczekujace]) }
+    return w.oczekujace
   }
   private func zglosZakreslenia() {
     let n = rysunki.values.reduce(0) { $0 + $1.strokes.filter { $0.ink.inkType == .marker }.count }

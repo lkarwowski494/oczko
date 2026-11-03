@@ -49,6 +49,13 @@ public final class KolejkaRysunkow {
     return zapisz { klucz, d in try zapis(k, klucz, d) }
   }
 
+  /// Zapis po nałożeniu obu propsów widoku (M1-109: wcześniej bez próby, dane czekają). M1-112: wynik niesie `oczekujace` — liczbę pozycji wciąż
+  /// tylko w pamięci, którą widok zwraca z zapisu na żądanie (`zapiszRysunki`, „Wstecz” w JS pyta przy > 0).
+  public func zapisz(propsy: PropsyWzoru, _ zapis: (URL, KluczRysunku, Data) throws -> String) -> WynikZapisuRysunkow {
+    guard propsy.moznaOproznicKolejke else { var w = WynikZapisuRysunkow(); w.oczekujace = dane.count; return w }
+    return zapisz(do: propsy.katalog, zapis)
+  }
+
   /// Próba zapisu każdej pozycji (kolejność: wzorId, strona). `zapis` zwraca ścieżkę pliku albo rzuca błąd.
   public func zapisz(_ zapis: (KluczRysunku, Data) throws -> String) -> WynikZapisuRysunkow {
     var w = WynikZapisuRysunkow()

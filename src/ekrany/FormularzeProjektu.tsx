@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza, useZglosZmiane } from './Arkusz';
-import { useKolory } from './motyw';
+import { cel, odstep, useKolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type Zapis<T> = (w: T) => Promise<WynikEkranu<unknown>>;
@@ -209,6 +209,7 @@ export function FormularzWloczekProjektu(p: {
 } & NaZmiane): React.ReactElement {
   const { t } = p;
   const k = useKolory();
+  const st = styleArkusza(k);
   const [wybrane, ustaw] = useState<string[]>(p.poczatkowe);
   // Zbiór wybranych inny niż przy otwarciu (także włóczka dodana w międzyczasie i od razu zaznaczona).
   useZglosZmiane(p.naZmiane, wybrane.length !== p.poczatkowe.length || wybrane.some((id) => !p.poczatkowe.includes(id)));
@@ -227,8 +228,8 @@ export function FormularzWloczekProjektu(p: {
         const zazn = wybrane.includes(x.id);
         return (
           <Pressable key={x.id} accessibilityRole="checkbox" accessibilityState={{ checked: zazn }} accessibilityLabel={t('formularz.wloczka_wiersz_a11y', { nazwa: x.nazwa, count: x.motki })}
-            onPress={() => przelacz(x.id)} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44 }} testID={`wloczka-wybor-${x.id}`}>
-            <Text style={{ color: k.grafit, fontSize: 20, width: 28, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: 4 }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{zazn ? '✓' : ' '}</Text>
+            onPress={() => przelacz(x.id)} style={st.wierszWyboru} testID={`wloczka-wybor-${x.id}`}>
+            <Text style={[st.poleWyboru, zazn && st.poleWyboruZaznaczone]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{zazn ? '✓' : ' '}</Text>
             <Text style={{ flex: 1, color: k.grafit }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{x.nazwa}{'\n'}{t('ukonczenie.w_zapasie', { count: x.motki })}</Text>
           </Pressable>
         );

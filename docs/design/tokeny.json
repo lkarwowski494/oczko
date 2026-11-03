@@ -47,6 +47,7 @@
    "olowek": "#44474D",
    "linia": "#8F939A",
    "zakreslaczKrawedz": "#26282C",
+   "drugiPrzyciskObrys": "#26282C",
    "przyciskNieaktywnyTlo": "#8F939A",
    "przyciskNieaktywnyTekst": "#44474D"
   },
@@ -54,6 +55,7 @@
    "olowek": "#CDD0D4",
    "linia": "#7A7E85",
    "przyciskObrys": "#CDD0D4",
+   "drugiPrzyciskObrys": "#CDD0D4",
    "zakreslaczKrawedz": "#F4ECB4",
    "przyciskNieaktywnyTlo": "#7A7E85",
    "przyciskNieaktywnyTekst": "#CDD0D4"
@@ -90,6 +92,16 @@
    "interlinia": 1.0,
    "maxSkala": 1.3,
    "cyfry": "tabelaryczne"
+  },
+  "liczbaPaska": {
+   "_opis": "Liczba w pasku licznika pod wzorem (design-spec W1a: Libre Franklin 40 pt); krój, grubość i cyfry jak „liczba” (M1-078).",
+   "rozmiar": 40,
+   "interlinia": 1.2
+  },
+  "liczbaKolumny": {
+   "_opis": "Liczba w kolumnie licznika obok wzoru (design-spec W3: 64 pt); krój, grubość i cyfry jak „liczba” (M1-078).",
+   "rozmiar": 64,
+   "interlinia": 1.0
   },
   "tytul": {
    "krój": "Libre Franklin",
@@ -152,7 +164,9 @@
   "minimum": 44,
   "przyciskMinus": 72,
   "przyciskPlusWysokosc": 168,
-  "odstepMinusPlus": 28
+  "odstepMinusPlus": 28,
+  "przyciskMinusPaska": 56,
+  "przyciskPlusPaskaWysokosc": 72
  },
  "miniatura": {
   "_zasada": "Miniatura pierwszej strony wzoru w wierszu (audyt 04 2.1, 2026-10-30): strona = papier, więc bez promienia; obrys kolorem `linia`; szerokość = cel.minimum, wysokość = szerokość × proporcja.",
@@ -186,7 +200,8 @@
   "rzadZInstrukcja": "dwa uderzenia .medium co 90 ms (Core Haptics), inne niż rząd",
   "minus": "UIImpactFeedbackGenerator .soft",
   "blokadaStukniecie": "UIImpactFeedbackGenerator .rigid",
-  "bladZapisu": "UINotificationFeedbackGenerator .error"
+  "bladZapisu": "UINotificationFeedbackGenerator .error",
+  "stoperStart": "UIImpactFeedbackGenerator .light"
  },
  "haptykaZegarek": {
   "_zasada": "Zegarek (NZ-05-F4-04, P-142): watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, odczyt 2026-10-26). Klucze jak w „haptyka”; wzorce spoza tej listy zegarek gra jak dotąd (decyzja 08 przy celu watch).",

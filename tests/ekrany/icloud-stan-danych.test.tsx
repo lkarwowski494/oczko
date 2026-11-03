@@ -24,7 +24,7 @@ describe('Data and sync: przełącznik iCloud', () => {
   test('bez `icloud` (ZM-06: wiersz ukryty) — brak przełącznika, dane zapisane na telefonie', () => {
     render(<StanDanych stan={stan()} t={t} />);
     expect(screen.queryByTestId('icloud-przelacznik')).toBeNull();
-    expect(screen.getByText('Everything is saved on this iPhone.')).toBeTruthy();
+    expect(screen.getByText('Everything is saved on this device.')).toBeTruthy(); // M1-060: „this device” (iPad)
   });
   test('domyślnie wyłączony (BR-DAN-002/S3): przełącznik off z etykietą i podpisem; stuknięcie prosi o włączenie (alert w kompozycji)', () => {
     const i = icloud();
@@ -41,7 +41,7 @@ describe('Data and sync: przełącznik iCloud', () => {
     expect(screen.getByTestId('icloud-przelacznik').props.accessibilityState).toMatchObject({ checked: true });
     expect(screen.getByTestId('icloud-stan')).toBeTruthy();
     expect(screen.getByText('iCloud sync is on.')).toBeTruthy();
-    expect(screen.getByText('Everything is saved on this iPhone.')).toBeTruthy();
+    expect(screen.getByText('Everything is saved on this device.')).toBeTruthy(); // M1-060: „this device” (iPad)
     expect(screen.queryByTestId('icloud-problem')).toBeNull();
   });
   test('brak konta: linia problemu z nagłówkiem i „Open Settings”; dane na telefonie', () => {
@@ -51,7 +51,7 @@ describe('Data and sync: przełącznik iCloud', () => {
     expect(screen.getByText(/Check that you’re signed in to iCloud/)).toBeTruthy();
     fireEvent.press(screen.getByText('Open Settings'));
     expect(i.naUstawienia).toHaveBeenCalled();
-    expect(screen.getByText('Everything is saved on this iPhone.')).toBeTruthy();
+    expect(screen.getByText('Everything is saved on this device.')).toBeTruthy(); // M1-060: „this device” (iPad)
   });
   test('brak miejsca: „Your iCloud storage is full” i „Manage storage”', () => {
     const i = icloud({ wlaczona: true, stan: 'blad', przyczyna: 'brak_miejsca' });

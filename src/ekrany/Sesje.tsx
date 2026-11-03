@@ -3,9 +3,9 @@
 // w kompozycji (daty Intl), druga linia przez t().
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Przycisk } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { Wstecz } from './Pasek';
 
 export type DrugaLiniaSesji = { rodzaj: 'brak' } | { rodzaj: 'do_sprawdzenia'; godziny: number } | { rodzaj: 'trwa' } | { rodzaj: 'wstrzymana' } | { rodzaj: 'pauzy'; czas: string } | { rodzaj: 'skorygowana' };
 export type WierszSesji = { id: string; dzien: string; wiersz: string; czas: string; a11y: string; druga: DrugaLiniaSesji; edytowalna: boolean };
@@ -27,7 +27,7 @@ export function Sesje({ stan: s, t, naKorekta, naWstecz }: PropsSesji): React.Re
   const dni = [...new Set(s.sesje.map((x) => x.dzien))];
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="sesje">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('sesje.tytul')}</Text>
       <Text style={st.podpis}>{t('sesje.podsumowanie', { count: s.podsumowanie.liczba, czas: s.podsumowanie.czas })}</Text>
       <View testID="sesje-lista" style={{ gap: odstep.l }}>

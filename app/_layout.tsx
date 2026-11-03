@@ -63,7 +63,16 @@ export default function Korzen(): React.ReactElement {
       const koniecZmianDostepu = w.wartosc.dostep.naZmiane((st) => { if (st.pro !== proNaStarcie) { proNaStarcie = st.pro; void licznik.poZmianie().catch(() => undefined); } });
       const koniecNasluchuStartu = koniecNasluchu;
       koniecNasluchu = () => { koniecNasluchuStartu?.(); koniecZmianDostepu(); };
-      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik, preferencje: p } });
+      // M1-074 (ADR-0019): błąd startu danych na trasie „/” → ten sam tryb awaryjny co w korzeniu: bez zapisu błędów JS do bazy i bez nasłuchów
+      // zapisujących, a „Spróbuj normalnie” zaczyna start od nowa (nowy kontener i licznik, `uruchomDane` ponownie).
+      const naAwarie = (powod: PowodTrybuAwaryjnego) => {
+        if (!zywy) return;
+        obslugaBledow?.ustawZapis(null);
+        koniecNasluchu?.(); koniecNasluchu = null;
+        zamknijLicznik?.(); zamknijLicznik = null;
+        ustaw({ rodzaj: 'awaryjny', powod });
+      };
+      ustaw({ rodzaj: 'gotowe', a: { kontener: w.wartosc, licznik, preferencje: p, naAwarie } });
     }
     async function start(): Promise<void> {
       if (proba > 0) { await normalny(); return; }

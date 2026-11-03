@@ -1,5 +1,5 @@
 # P-229/P-230 (design-spec „iCloud”, „Problemy”; BR-DAN-002): brak konta iCloud i brak miejsca — linia problemu z nagłówkiem, dane lokalne zostają
-# („Everything is saved on this iPhone.”). Atrapa: oczkoE2eIcloud=brak-konta, potem brak-miejsca. Pakiet pełny.
+# („Everything is saved on this device.”, M1-060). Atrapa: oczkoE2eIcloud=brak-konta, potem brak-miejsca. Pakiet pełny.
 appId: com.apps4brew.knitting
 name: "P-230 · iCloud: brak konta i brak miejsca — linia problemu, dane na telefonie"
 tags:
@@ -18,7 +18,7 @@ tags:
 - assertVisible: "Turn on"
 - tapOn: "Turn on"
 - extendedWaitUntil: { visible: { id: "icloud-problem", text: "iCloud isn’t available to Oczko.*" }, timeout: 20000 }
-- assertVisible: "Everything is saved on this iPhone."
+- assertVisible: "Everything is saved on this device."
 - takeScreenshot: 50-brak-konta
 - stopApp
 - launchApp:

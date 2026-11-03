@@ -57,7 +57,7 @@ OK   10.31:1 (min 4.5) ciemny+kontrast: tekst na zakreślaczu #F4ECB4 na #38351F
 OK   14.20:1 (min 3) ciemny+kontrast: krawędź zakreślenia / papier (element, 3:1) #F4ECB4 na #1B1C1F
 OK   11.02:1 (min 4.5) ciemny+kontrast: przycisk: tekst / tło #ECECE8 na #2E3136
 OK   11.01:1 (min 3) ciemny+kontrast: przycisk: obrys / papier (element, 3:1) #CDD0D4 na #1B1C1F
-OK   5.32:1 (min 3) ciemny+kontrast: przycisk −1: obrys / papier (element, 3:1) #8C9098 na #1B1C1F
+OK   11.01:1 (min 3) ciemny+kontrast: przycisk −1: obrys / papier (element, 3:1) #CDD0D4 na #1B1C1F
 OK   14.39:1 (min 3) ciemny+kontrast: kreska / papier (grafika z danymi, 3:1) #ECECE8 na #1B1C1F
 OK   9.98:1 (min 4.5) ciemny+kontrast: błąd / papier #F2B8B5 na #1B1C1F
 OK   8.18:1 (min 4.5) ciemny+kontrast: błąd / arkusz #F2B8B5 na #2A2C31

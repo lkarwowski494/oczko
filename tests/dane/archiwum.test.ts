@@ -104,6 +104,32 @@ describe('eksport (BR-DAN-005, ADR-0004)', () => {
   });
 });
 
+describe('M1-113 (08-programista-516): wolne miejsce nieznane (null z platformy) przy eksporcie i imporcie', () => {
+  test('eksport przy wolneMiejsce null → archiwum powstaje (nie „brak_miejsca”), liczności manifestu = baza, baza bez zmian', async () => {
+    const s = await zZyciem();
+    const przed = await migawka(s.baza, POMIN);
+    s.magazyn.wolne = null;
+    const w = await eksportuj(s.za, { katalogDocelowy: doKatalogu(join(s.katalog, 'eksport')) });
+    if (!w.ok) throw new Error(w.powod);
+    expect(w.wartosc.manifest.licznosci).toEqual(await licznosci(s.baza));
+    expect(await migawka(s.baza, POMIN)).toBe(przed);
+  });
+  test('import przy wolneMiejsce null → sprawdzenie przechodzi do scalenia (nie „brak_miejsca”), liczności jak po imporcie przy znanym miejscu', async () => {
+    const a = await zZyciem();
+    const w = await eksportuj(a.za, { katalogDocelowy: doKatalogu(join(a.katalog, 'eksport')) });
+    if (!w.ok) throw new Error(w.powod);
+    const znane = await srodowisko();
+    const nieznane = await srodowisko();
+    nieznane.magazyn.wolne = null;
+    expect(await importuj(znane.za, { sciezka: w.wartosc.sciezka, wybierz: szpieg('scal').wybierz })).toMatchObject({ ok: true });
+    expect(await importuj(nieznane.za, { sciezka: w.wartosc.sciezka, wybierz: szpieg('scal').wybierz })).toMatchObject({ ok: true });
+    expect(await licznosci(nieznane.baza)).toEqual(await licznosci(znane.baza));
+    expect(readdirSync(nieznane.magazyn.katalog).sort()).toEqual(readdirSync(znane.magazyn.katalog).sort()); // pliki magazynu
+    expect(await nieznane.baza.all('PRAGMA integrity_check')).toEqual([{ integrity_check: 'ok' }]);
+    expect(await nieznane.baza.all('PRAGMA foreign_key_check')).toEqual([]);
+  });
+});
+
 describe('import (BR-DAN-006, ADR-0004, maszyna importu)', () => {
   test('BR-DAN-006/S1: pełny obieg — eksport z A, import na czystej instalacji B → te same projekty, liczniki, historia, notatki, zapas, wzory, zdjęcia', async () => {
     const a = await zZyciem();

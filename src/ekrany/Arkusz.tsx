@@ -3,8 +3,9 @@
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
 export function odstepNadKlawiatura(w: { dolPrzyciskow: number; gornaKlawiatury: number | null }): number {
@@ -92,7 +93,7 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
           <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
             <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
-              <Text style={st.zamknijZnak} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+              <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.zamknijZnak.color} maxSkala={MAX_SKALA_TYTULOWA} />
             </Pressable>
           </View>
         ) : <Text style={st.tytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>}
@@ -108,12 +109,13 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
   const st = style(useKolory());
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
-  const czarny = p.naCzarnym ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
+  // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
+  const czarny = p.naCzarnym && r !== 'tekstowy' ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
   return (
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
-      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, czarny && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
+      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
     </Pressable>
   );
 }
@@ -209,6 +211,12 @@ export function style(k: Kolory) {
     wybor: { gap: odstep.s },
     opcja: { minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia, padding: odstep.m, justifyContent: 'center' },
     opcjaWybrana: { borderColor: k.drugiPrzyciskObrys },
+    // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
+    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Bez osobnych tokenów rozmiaru, promienia (8) i kroju (700 18 pt)
+    // najbliższe istniejące: `odstep.xxl` (28), `promien.pole` (10), `typografia.instrukcja` (Libre Franklin 700, 20 pt) — do tokenów roli 04 (M1-audytor-generalny-050).
+    wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
+    poleWyboru: { ...typografia.instrukcja, color: k.grafit, width: odstep.xxl, minHeight: odstep.xxl, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.pole, overflow: 'hidden' },
+    poleWyboruZaznaczone: { backgroundColor: k.przyciskTlo, color: k.przyciskTekst },
     wejscie: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, paddingHorizontal: odstep.m },
     podpis: { ...typografia.podpis, color: k.olowek },
     zwykly: { ...typografia.tresc, color: k.grafit },

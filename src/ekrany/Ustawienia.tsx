@@ -9,6 +9,7 @@ import type { System, Tlumacz } from './wspolne';
 import type { AktywnePro } from './Oferty';
 import type { DniNaLiscie } from './ListaProjektow';
 import { NAZWY_JEZYKOW, ZRODLO, type PreferencjaJezyka } from '../i18n/jezyki';
+import { Wstecz } from './Pasek';
 
 export type PropsUstawien = {
   stan: { pro: AktywnePro; dni: DniNaLiscie; wibracje: boolean };
@@ -42,7 +43,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
   });
   return (
     <ScrollView style={{ flex: 1, backgroundColor: k.papier }} contentContainerStyle={{ padding: odstep.l, gap: odstep.l }} testID="ustawienia">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       {panelE2e /* build E2E: na górze, widoczny bez przewijania (scenariusze 08, 09) */}
       <Text style={{ ...typografia.tytul, color: k.grafit }} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.tytul')}</Text>
       <View style={st.grupa}>

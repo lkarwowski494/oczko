@@ -3,8 +3,9 @@
 // „Share” podglądu (P-219 2A): plik przekodowany bez metadanych i GPS (kompozycja), arkusz systemowy.
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { cel, odstep, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 export type Miniatura = { id: string; uri: string };
 const MINIATURA = 88; // pt (design-spec „Zdjęcia”)
@@ -28,7 +29,7 @@ export function GrupaZdjec(p: {
           </Pressable>
         ))}
         <Pressable accessibilityRole="button" accessibilityLabel={t('zdjecia.dodaj')} onPress={() => ustawZrodlo((x) => !x)} style={st.kafel} testID="zdjecia-dodaj">
-          <Text style={st.plus} importantForAccessibility="no" accessibilityElementsHidden>＋</Text>
+          <SymbolSf nazwa="plus" rozmiar={Number(typografia.tytul.fontSize)} kolor={st.plus.color} maxSkala={MAX_SKALA_TYTULOWA} />
           <Text style={st.kafelTekst}>{t('zdjecia.dodaj')}</Text>
         </Pressable>
       </ScrollView>

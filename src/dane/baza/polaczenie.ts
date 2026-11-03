@@ -5,7 +5,7 @@ import type { Wynik } from '../../domena/bledy';
 import type { PortBazy } from '../../domena/porty';
 import { powodBledu } from './bledy-sqlite';
 
-/** SQLITE_CORRUPT / SQLITE_NOTADB → `uszkodzony`; SQLITE_CANTOPEN / IOERR → `zapis` (osobny powód „plik niedostępny”: [DO USTALENIA] Z07-21). */
+/** SQLITE_CORRUPT / SQLITE_NOTADB → `uszkodzony`; SQLITE_FULL / ENOSPC → `brak_miejsca` (ADR-0020 (4), M1-100); SQLITE_CANTOPEN / IOERR → `zapis` (osobny powód „plik niedostępny”: [DO USTALENIA] Z07-21). */
 export async function otworzBaze(sciezka: string, fabryka: (sciezka: string) => PortBazy): Promise<Wynik<PortBazy>> {
   try {
     const baza = fabryka(sciezka);
@@ -13,6 +13,6 @@ export async function otworzBaze(sciezka: string, fabryka: (sciezka: string) => 
     return { ok: true, wartosc: baza };
   } catch (e) {
     const powod = powodBledu(e);
-    return { ok: false, powod: powod === 'uszkodzony' ? 'uszkodzony' : 'zapis' };
+    return { ok: false, powod: powod === 'uszkodzony' || powod === 'brak_miejsca' ? powod : 'zapis' };
   }
 }

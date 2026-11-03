@@ -1,0 +1,51 @@
+{
+  "zrodlo": "Rola 04, fix M2 partia 3a (P-418, P-427; DEC-26 a i decyzja 04 o separatorze „ · ”; 2026-11-03). Teksty en nałożone przez 04 na src/i18n/slowniki/en.json i en.kontekst.json; klucze na liście oczekujących (P-357), pl i przekład w fali 09 (P-320, P-422). Wyrocznia testów: ten plik.",
+  "odwolania": [
+    "P-418",
+    "P-422",
+    "P-427"
+  ],
+  "grupy": {
+    "M1-audytor-generalny-094": [
+      "awaryjny.tytul_brak_miejsca",
+      "awaryjny.opis_brak_miejsca",
+      "menu.zeruj_zablokowany"
+    ],
+    "M1-audytor-generalny-034": [
+      "licznik.przypomnienie_postep",
+      "licznik.powtorzenie",
+      "projekt.termin_dzis_one",
+      "projekt.termin_dzis_other",
+      "projekt.termin_po_one",
+      "projekt.termin_po_other",
+      "projekt.termin_osiagniety",
+      "projekt.termin_bez_celow"
+    ]
+  },
+  "en": {
+    "awaryjny.tytul_brak_miejsca": "Your device is out of space",
+    "awaryjny.opis_brak_miejsca": "Nothing was changed. Free some space on this device, then try starting normally.",
+    "menu.zeruj_zablokowany": "Unlock the counter to reset it.",
+    "licznik.przypomnienie_postep": "{{ktory}} of {{razy}}, next on row {{nastepny}}",
+    "licznik.powtorzenie": "{{nazwa}}: repeat {{numer}}, row {{rzad}} of {{dlugosc}}",
+    "projekt.termin_dzis_one": "Done by {{data}}, today {{zrobione}} of {{count}} row",
+    "projekt.termin_dzis_other": "Done by {{data}}, today {{zrobione}} of {{count}} rows",
+    "projekt.termin_po_one": "The due date {{data}} has passed, {{count}} row to go",
+    "projekt.termin_po_other": "The due date {{data}} has passed, {{count}} rows to go",
+    "projekt.termin_osiagniety": "Done by {{data}}, goal reached",
+    "projekt.termin_bez_celow": "Done by {{data}}. Set a goal for a part to get a daily goal."
+  },
+  "kontekst": {
+    "awaryjny.tytul_brak_miejsca": "Nagłówek ekranu awaryjnego, gdy Oczko nie uruchomiło się z powodu braku wolnego miejsca w pamięci urządzenia (M1-audytor-generalny-094, 04-studio-projektowe-504, DEC-26 a). „device” = telefon albo iPad (P-328), nie iCloud. Stwierdzenie, bez przeprosin; krótko, bez kropki, jak inne nagłówki `awaryjny.tytul_*`.",
+    "awaryjny.opis_brak_miejsca": "Jedyny akapit ekranu awaryjnego przy braku miejsca (pod `awaryjny.tytul_brak_miejsca`): dane nie zostały zmienione, co zrobić — zwolnić miejsce na urządzeniu i stuknąć główny przycisk `awaryjny.sprobuj` („Try starting normally”); „try starting normally” powtarza jego treść, więc w przekładzie użyj tej samej frazy co w przycisku.",
+    "menu.zeruj_zablokowany": "Podpowiedź pod wyłączoną pozycją `menu.zeruj` („Reset to 0…”) w menu ••• licznika, gdy licznik jest zablokowany (M1-audytor-generalny-094, 04-studio-projektowe-506); także podpowiedź VoiceOver tej pozycji. Co zrobić: odblokować licznik (pozycja `menu.odblokuj` jest w tym samym menu, wyżej). Zdanie z kropką.",
+    "licznik.przypomnienie_postep": "Pod instrukcją: które powtórzenie i następny rząd z instrukcją. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "licznik.powtorzenie": "Linia powtórzenia wzoru na liczniku: „Cable pattern: repeat 6, row 7 of 8”. {{nazwa}} = nazwa powtórzenia nadana przez użytkowniczkę (wcześniej doklejana w kodzie przed „ · ”); {{numer}} = które powtórzenie, {{rzad}} = rząd w powtórzeniu, {{dlugosc}} = długość powtórzenia w rzędach. Dwukropek po nazwie, części stanu po przecinku (M1-audytor-generalny-034, 04, 2026-11-03).",
+    "projekt.termin_dzis_one": "Ekran projektu, linia terminu (BR-DNI-005); {{data}} = termin, krótka data regionu (np. Nov 4), {{zrobione}} = wykonanie dnia, {{count}} = cel na dziś (stały w ciągu dnia). Ok. 45 znaków. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "projekt.termin_dzis_other": "Ekran projektu, linia terminu (BR-DNI-005); {{data}} = termin, krótka data regionu (np. Nov 4), {{zrobione}} = wykonanie dnia, {{count}} = cel na dziś (stały w ciągu dnia). Ok. 45 znaków. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "projekt.termin_po_one": "Ekran projektu, termin minął (RD-15 gałąź 2, „termin minął, zostało N rzędów”); {{data}} = termin, {{count}} = rzędy, które zostały, na bieżąco. Ok. 55 znaków. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "projekt.termin_po_other": "Ekran projektu, termin minął (RD-15 gałąź 2, „termin minął, zostało N rzędów”); {{data}} = termin, {{count}} = rzędy, które zostały, na bieżąco. Ok. 55 znaków. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "projekt.termin_osiagniety": "Ekran projektu, termin ustawiony i wszystkie rzędy celów zrobione (RD-15 gałąź 1, przed „termin minął”); {{data}} = termin. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09.",
+    "projekt.termin_bez_celow": "Ekran projektu, termin ustawiony, ale żadna część nie ma celu rzędów (RD-15 C = 0): bez celu dnia; {{data}} = termin. M1-audytor-generalny-034 (04, 2026-11-03): zdanie stanu bez separatora „ · ” (klisza z kalibracji, design-spec „Separator „ · ””) — części łączy przecinek; przekład w fali 09."
+  }
+}

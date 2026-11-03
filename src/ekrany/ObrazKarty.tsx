@@ -2,7 +2,7 @@
 // `karta-obraz-bez-stopera`). Widok 360 × 450 pt (4:5) zawsze w kolorach motywu jasnego; zrzut przez view-shot do PNG 1080 × 1350 px
 // (`rozmiarZrzutu`). Wielkości liczone od szerokości obrazu, nie od Dynamic Type (to plik, nie ekran) — `allowFontScaling={false}`.
 // Zdjęcie: górne 46%, przycięte do wypełnienia; bez zdjęcia treść na środku papieru. Zrzut z pikseli — bez metadanych źródła.
-// Odstępstwa do audytu 04: bez kropki koloru włóczki (zapas trzyma kolor tekstem) i bez znaku kresek w stopce (zasób SVG bez biblioteki SVG).
+// Bez kropki koloru włóczki (DEC-04 a, design-spec „Element firmowy”: model nie zna koloru). Odstępstwo do audytu 04: bez znaku kresek w stopce (zasób SVG bez biblioteki SVG).
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { kolorJasny as k } from './motyw';

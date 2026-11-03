@@ -6,7 +6,7 @@ import type { PortBazy } from '../../src/domena/porty';
 import { zapiszRysunek } from '../../src/przypadki-uzycia/wzor';
 import { odzyskajRysunki, widokWzoru } from '../../src/przypadki-uzycia/wzor-widok';
 import { plik, projekt, rysunek, wzor } from './pomocnicze/dane-wejsciowe';
-import { ile, jeden, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { ile, jeden, licznosci, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 test('pliki oczekujące → rysunki stron we właściwych wzorach; pliki usunięte; obce i uszkodzone nazwy zostają', async () => {
   const s = await przygotuj();
@@ -105,12 +105,12 @@ describe('M1-084: plik oczekujący rysunku przeżywa nieudany zapis', () => {
     expect([existsSync(starszy), existsSync(nowszy)]).toEqual([false, false]);
   });
 
-  test('odrzucenie trwałe (wzór w koszu) nadal usuwa plik — nie ma czego ponawiać', async () => {
+  // M1-104 (DEC-29 (a)): wzór w koszu nie jest odrzuceniem trwałym (kosz da się cofnąć; tests/dane/wzor-rysunki-kosz.test.ts); trwałe jest tylko `bledne_dane`.
+  test('odrzucenie trwałe (wzoru nie ma) nadal usuwa plik — nie ma czego ponawiać', async () => {
     const { s, k } = await zWzorem();
-    await wykonaj(s.baza, [["UPDATE wzor SET usunieto_ms = 1 WHERE id = 'w1'", []]]);
-    const f = join(k, 'w1__0__a.pkdrawing');
+    const f = join(k, 'nie-ma__0__a.pkdrawing');
     writeFileSync(f, 'x');
-    expect(await zapiszRysunek(s.z, { wzorId: 'w1', strona: 0, plikTymczasowy: f })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
+    expect(await zapiszRysunek(s.z, { wzorId: 'nie-ma', strona: 0, plikTymczasowy: f })).toEqual({ ok: false, powod: 'bledne_dane' });
     expect(existsSync(f)).toBe(false);
   });
 });
@@ -151,5 +151,40 @@ describe('M1-084 cd.: widok bierze najnowszy plik oczekujący strony; wyjątek w
     expect(await odzyskajRysunki({ ...s.z, magazyn }, { katalog: k })).toEqual({ ok: false, powod: 'zapis' });
     expect([existsSync(zly), existsSync(dobry)]).toEqual([true, false]);
     expect(await ile(s.baza, 'rysunek', "wzor_id = 'w1' AND strona = 1")).toBe(1);
+  });
+});
+
+// M1-audytor-generalny-105 (08-programista-512): plik do magazynu szedł przed kolejką zapisów, więc przy dwóch zapisach tej samej strony w locie
+// kolejność transakcji wyznaczał koniec skrótu, nie kolejność zapisów — wolniejszy starszy plik nadpisywał w bazie nowszy (ADR-0002, jedna kolejka).
+describe('M1-105: kolejność zapisów rysunku tej samej strony', () => {
+  test('dwa równoległe zapiszRysunek tej samej strony, starszy wolniejszy w magazynie → w bazie nowszy, oba pliki usunięte', async () => {
+    const s = await przygotuj();
+    const h = wlozPlik(s.magazyn, Buffer.from('%PDF-1.4\n%%EOF\n'), 'pdf');
+    await wykonaj(s.baza, [projekt('p1', 'Harbor'), plik(h, 'pdf', 15), wzor('w1', 'p1', h)]);
+    const k = join(s.katalog, 'tmp', 'rysunki-wzoru');
+    mkdirSync(k, { recursive: true });
+    const starszy = join(k, 'w1__0__a.pkdrawing'), nowszy = join(k, 'w1__0__b.pkdrawing');
+    writeFileSync(starszy, 'v1');
+    writeFileSync(nowszy, 'v2');
+    utimesSync(starszy, 1000, 1000);
+    utimesSync(nowszy, 2000, 2000);
+    const zapisz = s.magazyn.zapisz.bind(s.magazyn);
+    const magazyn = { ...s.magazyn, zapisz: async (sciezka: string, roz: string) => {
+      const r = await zapisz(sciezka, roz);
+      if (sciezka === starszy) await new Promise((t) => setTimeout(t, 50)); // plik przeczytany, skrót starszego (większego) kończy się później
+      return r;
+    } };
+    const z = { ...s.z, magazyn };
+    const przed = await licznosci(s.baza);
+    const [ra, rb] = await Promise.all([
+      zapiszRysunek(z, { wzorId: 'w1', strona: 0, plikTymczasowy: starszy }),
+      zapiszRysunek(z, { wzorId: 'w1', strona: 0, plikTymczasowy: nowszy }),
+    ]);
+    expect([ra.ok, rb.ok]).toEqual([true, true]);
+    expect(await jeden(s.baza, "SELECT plik_sha256 FROM rysunek WHERE wzor_id = 'w1' AND strona = 0")).toEqual({ plik_sha256: sha256('v2') });
+    expect([existsSync(starszy), existsSync(nowszy)]).toEqual([false, false]);
+    expect(await licznosci(s.baza)).toEqual({ ...przed, rysunek: przed.rysunek + 1, plik: przed.plik + 1 }); // plik v1 bez odwołań usunięty
+    expect(await s.baza.all('PRAGMA integrity_check')).toEqual([{ integrity_check: 'ok' }]);
+    expect(await s.baza.all('PRAGMA foreign_key_check')).toEqual([]);
   });
 });

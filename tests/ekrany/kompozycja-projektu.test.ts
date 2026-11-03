@@ -69,7 +69,7 @@ const W: WidokProjektu = {
 };
 test('stanProjektu: termin, szczegóły z US, pusta notatka = null, liczniki z nazwą rodzaju, całość z modelu (`licznikCalosci`, P-199 Q1a)', () => {
   const s = stanProjektu(W, { j, terazMs: Date.UTC(2026, 9, 22, 12), strefa: 'UTC' });
-  expect(s.termin).toBe('Done by Oct 31 · today 3 of 10 rows');
+  expect(s.termin).toBe('Done by Oct 31, today 3 of 10 rows');
   expect(s.szczegoly).toEqual({ narzedzie: 'Needles', rozmiar: '4 mm (US 6)', termin: 'Oct 31', probka: null, wloczka: 'None' }); // probka: pole U-10 (D5), mechanicznie
   expect(s.notatka).toBeNull();
   expect(s.ostatniaZmiana).toBe('Oct 22');
@@ -78,9 +78,9 @@ test('stanProjektu: termin, szczegóły z US, pusta notatka = null, liczniki z n
 });
 test('stanProjektu: gałęzie terminu RD-15 i brak terminu', () => {
   const linia = (z: Partial<WidokProjektu>) => stanProjektu({ ...W, ...z }, { j, terazMs: 0, strefa: 'UTC' }).termin;
-  expect(linia({ celDnia: { rodzaj: 'po_terminie', zostalo: 5 } })).toBe('The due date Oct 31 has passed · 5 rows to go');
-  expect(linia({ celDnia: { rodzaj: 'osiagniety' } })).toBe('Done by Oct 31 · goal reached');
-  expect(linia({ celDnia: null })).toBe('Done by Oct 31 · set a goal for a part to get a daily goal');
+  expect(linia({ celDnia: { rodzaj: 'po_terminie', zostalo: 5 } })).toBe('The due date Oct 31 has passed, 5 rows to go');
+  expect(linia({ celDnia: { rodzaj: 'osiagniety' } })).toBe('Done by Oct 31, goal reached');
+  expect(linia({ celDnia: null })).toBe('Done by Oct 31. Set a goal for a part to get a daily goal.');
   expect(linia({ terminDzien: null, celDnia: null })).toBeNull();
   expect(stanProjektu({ ...W, drutMm: 6.5, drutUS: null, narzedzie: 'szydelko' }, { j, terazMs: 0, strefa: 'UTC' }).szczegoly).toEqual({ narzedzie: 'Hook', rozmiar: '6.5 mm', termin: 'Oct 31', probka: null, wloczka: 'None' });
 });

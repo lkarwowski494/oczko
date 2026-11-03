@@ -7,6 +7,7 @@ import { Przycisk } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import { JEZYKI, NAZWY_JEZYKOW, type PreferencjaJezyka } from '../i18n/jezyki';
 import type { Tlumacz } from './wspolne';
+import { Wstecz } from './Pasek';
 
 export type PropsWyboruJezyka = { t: Tlumacz; wybrany: PreferencjaJezyka; naWybierz(p: PreferencjaJezyka): void; naUstawieniaIos(): void; naWstecz?(): void };
 
@@ -18,7 +19,7 @@ export function WyborJezyka({ t, wybrany, naWybierz, naUstawieniaIos, naWstecz }
   ];
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="jezyk">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.jezyk')}</Text>
       <View style={st.grupa} accessibilityRole="radiogroup">
         {opcje.map((o) => {

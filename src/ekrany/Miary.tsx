@@ -2,10 +2,10 @@
 // Wybór działa od razu (kompozycja zapisuje i wraca); miary zmieniają wyświetlanie i wpisywanie, dane zostają w mm i g.
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Przycisk } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { PreferencjaMiar } from '../domena/preferencje';
 import type { Tlumacz } from './wspolne';
+import { Wstecz } from './Pasek';
 
 export type PropsWyboruMiar = { t: Tlumacz; wybrany: PreferencjaMiar; naWybierz(p: PreferencjaMiar): void; naWstecz?(): void };
 
@@ -18,7 +18,7 @@ export function WyborMiar({ t, wybrany, naWybierz, naWstecz }: PropsWyboruMiar):
   ];
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="miary">
-      {naWstecz && <View style={{ flexDirection: 'row' }}><Przycisk tekst={`‹ ${t('wspolne.wstecz')}`} etykieta={t('wspolne.wstecz')} onPress={naWstecz} rodzaj="tekstowy" testID="nav-wstecz" /></View>}
+      {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.uklad_miar')}</Text>
       <View style={st.grupa} accessibilityRole="radiogroup">
         {opcje.map((o) => {

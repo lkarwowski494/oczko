@@ -37,7 +37,7 @@ let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const R = require('react') as typeof import('react');
-  return { useRouter: () => mockRouter, useLocalSearchParams: () => mockParams, useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]), Stack: Object.assign(() => null, { Screen: () => null }) };
+  return { useNavigation: () => (require('../narzedzia/expo-router-react-navigation') as typeof import('../narzedzia/expo-router-react-navigation')).useNavigation(), usePathname: () => '/', useRouter: () => mockRouter, useLocalSearchParams: () => mockParams, useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]), Stack: Object.assign(() => null, { Screen: () => null }) };
 });
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja, DostawcaAplikacji: ({ children }: { children: React.ReactNode }) => children }));
@@ -147,20 +147,22 @@ describe('M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”,
 
 describe('M1-007: start aplikacji — odrzucona obietnica startu daje ekran awaryjny (ADR-0019), nie pustą planszę', () => {
   const LICZNIK_BAZA = { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, widok: async () => null };
+  // M1-074: trasa „/” nie rysuje już własnego ekranu awaryjnego — oddaje go korzeniowi (`naAwarie`), który wyłącza zapis błędów i ponawia start;
+  // ekran z „Try normally” po błędzie startu danych sprawdza tests/ekrany/tryb-awaryjny-trasa-licznika.test.tsx (korzeń z trasą „/”).
+  const naAwarie = jest.fn();
   async function ekranLicznika(przygotuj: () => Promise<unknown>) {
     const t = await tEn();
-    mockAplikacja = { kontener: { z: {}, j: { t, jezyk: () => 'en-US', zegar24h: () => false }, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) } }, licznik: { ...LICZNIK_BAZA, przygotuj }, preferencje: {} };
+    naAwarie.mockClear();
+    mockAplikacja = { kontener: { z: {}, j: { t, jezyk: () => 'en-US', zegar24h: () => false }, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) } }, licznik: { ...LICZNIK_BAZA, przygotuj }, preferencje: {}, naAwarie };
     await zamontuj(trasa('../../app/index'));
   }
-  test('M1-007: „/” — `przygotuj()` zwraca { ok: false } → ekran awaryjny z „Try normally” [kontrola: tak było i zostaje]', async () => {
+  test('M1-007: „/” — `przygotuj()` zwraca { ok: false } → ekran awaryjny (korzeń, `naAwarie`) [kontrola: tak było i zostaje]', async () => {
     await ekranLicznika(async () => ({ ok: false, powod: 'zapis' }));
-    await waitFor(() => expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy());
-    expect(screen.getByTestId('awaryjny-sprobuj-normalnie')).toBeTruthy();
+    await waitFor(() => expect(naAwarie).toHaveBeenCalledWith('uszkodzony'));
   });
-  test('M1-007: „/” — `przygotuj()` odrzuca obietnicę → ekran awaryjny z „Try normally” zamiast pustej planszy', async () => {
+  test('M1-007: „/” — `przygotuj()` odrzuca obietnicę → ekran awaryjny (korzeń, `naAwarie`) zamiast pustej planszy', async () => {
     await ekranLicznika(async () => { throw new Error('baza zajęta'); });
-    await waitFor(() => expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy());
-    expect(screen.getByTestId('awaryjny-sprobuj-normalnie')).toBeTruthy();
+    await waitFor(() => expect(naAwarie).toHaveBeenCalledWith('uszkodzony'));
   });
 
   async function korzen() {

@@ -23,7 +23,7 @@ export default function EkranKonfliktu(): React.ReactElement {
     ustaw({ nazwa: w.nazwa || w.czesc.nazwa || licznik.nazwaProjektu(w), wybory });
   }, [licznik, router]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (!stan) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="konflikt" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!stan) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="konflikt" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <IcloudKonflikt t={t} licznik={stan.nazwa} wybory={stan.wybory} naZamknij={() => router.back()}
       naWybor={(glowa) => void licznik.konflikt.wybierz(glowa).then((r) => { if (!r.ok) Alert.alert(...alertBleduZapisu(t, 'formularz')); router.back(); })} />

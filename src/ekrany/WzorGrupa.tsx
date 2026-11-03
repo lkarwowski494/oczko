@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { adresStrony } from '../domena/adres';
 import { Arkusz, Komunikat, Pole, Przycisk, Tresc } from './Arkusz';
-import { cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel as rozmiary, MAX_SKALA_TYTULOWA, odstep, promien, ROZMIAR_SYMBOLU_KAPSULY, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
+import { SymbolSf } from './SymbolSf';
 
 export type ZrodloDodaniaEkranu = 'plik' | 'skan' | 'zdjecia' | 'link';
 export type PropsGrupyWzorow = {
@@ -50,7 +51,7 @@ export function GrupaWzorow(p: PropsGrupyWzorow): React.ReactElement {
             </View>
             {o.stan === 'siec' && (
               <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.usun_oczekujacy_a11y', { nazwa: o.nazwa })} onPress={() => p.naUsunOczekujacy(o.id)} style={st.ikona}>
-                <Text style={st.tekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>✕</Text>
+                <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.tekst.color} maxSkala={MAX_SKALA_TYTULOWA} />
               </Pressable>
             )}
           </View>

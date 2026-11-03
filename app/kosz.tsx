@@ -28,7 +28,7 @@ export default function EkranKosza(): React.ReactElement {
     ustawBlad(false);
   }, [kontener]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!stan) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="kosz" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
+  if (!stan) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="kosz" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   const z = kontener.z;
   async function przywroc(p: { rodzaj: PozycjaKosza['rodzaj']; id: string }): Promise<void> {
     const nazwa = stan?.pozycje.find((x) => x.id === p.id && x.rodzaj === p.rodzaj)?.nazwa ?? '';

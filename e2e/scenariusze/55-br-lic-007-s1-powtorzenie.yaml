@@ -37,11 +37,11 @@ tags:
 - assertNotVisible: { id: "licznik-powtorzenie" }
 # S1 (RD-12-W1): 17 przy długości 8
 - runFlow: { file: subflows/ustaw-powtorzenie-ze-zrzutem.yaml, env: { DLUGOSC: "8", ZRZUT: "55-formularz-powtorzenie-8-przed-zapisem" } }
-- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 3 · row 1 of 8.*" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 3, row 1 of 8.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "17" }
 - takeScreenshot: 55-powtorzenie-3-rzad-1
 # BR-LIC-008/S1 (RD-12): zmiana długości na 10, wartość zostaje 17
 - runFlow: { file: subflows/ustaw-powtorzenie.yaml, env: { DLUGOSC: "10" } }
-- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 2 · row 7 of 10.*" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: "licznik-powtorzenie", text: ".*repeat 2, row 7 of 10.*" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "17" }
 - takeScreenshot: 55-powtorzenie-2-rzad-7

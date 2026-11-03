@@ -91,11 +91,11 @@ describe('M1-089: trwała kontrola — trasa-arkusz z `StanWczytywania` podaje t
     expect(w.length).toBeGreaterThan(0);
     expect(w.every((x) => x === 'arkusz')).toBe(true);
   });
-  test('zdjecie (fullScreenModal na czerni): tlo="czarne"; trasy w stosie: domyślne papier', () => {
+  test('zdjecie (fullScreenModal na czerni): tlo="czarne"; trasy w stosie: domyślne papier (M1-068: także licznik „/”, app/index.tsx)', () => {
     expect(prezentacja('fullScreenModal')).toContain('zdjecie');
     expect(tla(zeStanem.find((x) => x.trasa === 'zdjecie')!.zrodlo)).toEqual(['czarne']);
     const wStosie = zeStanem.filter((x) => !ARKUSZE.has(x.trasa) && x.trasa !== 'zdjecie');
-    expect(wStosie.map((x) => x.trasa).sort()).toEqual(['dni', 'kosz', 'probka', 'projekt/[id]', 'projekty', 'sesje', 'wzor']);
+    expect(wStosie.map((x) => x.trasa).sort()).toEqual(['dni', 'index', 'kosz', 'probka', 'projekt/[id]', 'projekty', 'sesje', 'wzor']);
     for (const x of wStosie) expect(tla(x.zrodlo).every((v) => v === 'papier')).toBe(true);
   });
 });

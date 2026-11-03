@@ -97,6 +97,27 @@ final class KolejkaRysunkowTests: XCTestCase {
     XCTAssertEqual(w2.oczekujace, 0)
   }
 
+  // M1-112 (08-programista-515): zapis na żądanie („Wstecz” w JS przed decyzją o pytaniu) zwraca liczbę oczekujących po próbie; przed nałożeniem
+  // obu propsów (M1-109) bez próby — wszystko czeka. Widok: `zapiszNaZadanie() -> Int` = `oczekujace` z tego wyniku.
+  func testZapisNaZadanieZwracaLiczbeOczekujacych() {
+    let k = KolejkaRysunkow()
+    k.dodaj(wzorId: "w1", strona: 0, dane: a)
+    k.dodaj(wzorId: "w1", strona: 1, dane: b)
+    var propsy = PropsyWzoru()
+    var wywolania = 0
+    XCTAssertEqual(k.zapisz(propsy: propsy) { _, _, _ in wywolania += 1; return "/tmp/p" }.oczekujace, 2) // bez wzoru i katalogu
+    _ = propsy.otworzWzor("w1", kolejka: k)
+    XCTAssertEqual(k.zapisz(propsy: propsy) { _, _, _ in wywolania += 1; return "/tmp/p" }.oczekujace, 2) // bez katalogu
+    XCTAssertEqual(wywolania, 0)
+    XCTAssertTrue(propsy.ustawKatalog("/dane/tmp/rysunki-wzoru"))
+    let pelny = k.zapisz(propsy: propsy) { _, klucz, _ in if klucz.strona == 1 { throw PelnyDysk() }; return "/tmp/w1-0" } // pełny dysk w połowie
+    XCTAssertEqual(pelny.oczekujace, 1)
+    XCTAssertEqual(pelny.nieudane, [KluczRysunku(wzorId: "w1", strona: 1)])
+    let po = k.zapisz(propsy: propsy) { _, _, _ in "/tmp/w1-1" }
+    XCTAssertEqual(po.oczekujace, 0)
+    XCTAssertEqual(k.zapisz(propsy: propsy) { _, _, _ in "/tmp/x" }, WynikZapisuRysunkow()) // pusta kolejka: 0, bez zapisu
+  }
+
   func testPustaKolejkaNicNieZapisuje() {
     let k = KolejkaRysunkow()
     var wywolania = 0

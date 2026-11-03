@@ -9,7 +9,7 @@ import type { Aplikacja as KontekstAplikacji } from '../../src/kompozycja/Kontek
 const mockKamien = jest.fn(() => Promise.resolve());
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => mockKamien(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() }; // stały jak w expo-router
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined }));
+jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));
 jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: jest.fn() }));
 jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));
 jest.mock('../../src/przypadki-uzycia/informacje-pro', () => ({ pokazacOknoUczciweZasady: () => Promise.resolve({ ok: true, wartosc: false }) }));

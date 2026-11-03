@@ -1,5 +1,5 @@
 // Trasa „/zglos”: „Zgłoś problem” (F-57, ADR-0018, R-162, R-163): pełna diagnostyka na ekranie przed wysyłką, wyjście tylko arkuszem
-// udostępniania. Bez nazw projektów i notatek (przygotujZgloszenie: liczności i kody błędów). Raporty MetricKit (moduł Swift ADR-0018): poza partią 4.
+// udostępniania. Bez nazw projektów i notatek (przygotujZgloszenie: liczności, kody błędów, ramki js_* M1-058). Raporty MetricKit (moduł Swift ADR-0018): poza partią 4.
 import React, { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
@@ -33,6 +33,6 @@ export default function EkranZgloszenia(): React.ReactElement {
     ]);
   }, [kontener]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (!diag) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="zglos" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!diag) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="zglos" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return <ZglosProblem stan={{ diagnostyka: diag }} t={kontener.j.t} system={systemAplikacji} naAnuluj={() => router.back()} />;
 }

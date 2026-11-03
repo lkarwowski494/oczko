@@ -31,7 +31,7 @@ Blok A to pierwsza część „zaraz po buildzie” (ok. 6 min); reszta w kolejn
 |---|---|---|---|
 | U7 | Na liczniku obróć telefon poziomo. Potem otwórz wzór (blok C albo dowolny PDF) i obróć. | Licznik i pozostałe ekrany zostają w pionie; obraca się tylko wzór. | ekran inny niż wzór obrócony |
 | TT-09 | Stuknij „+1 row” raz (włącza się Live Activity). Zablokuj telefon. Na ekranie blokady stuknij +1 trzy razy. Odblokuj. | Wartość większa o 3, bez komunikatu o konflikcie. | inna liczba, brak Live Activity na ekranie blokady |
-| U11 | Otwórz wzór i nie dotykaj telefonu przez ok. 2 min (dłużej niż automatyczna blokada). Potem wyjdź ze wzoru i z licznika (np. do listy projektów) i odczekaj 2 min. | Na wzorze ekran nie gaśnie; poza wzorem i licznikiem gaśnie normalnie. | ekran zgasł na wzorze albo nie gaśnie poza nimi |
+| U11 | Otwórz wzór i nie dotykaj telefonu przez ok. 2 min (dłużej niż automatyczna blokada). Potem wyjdź ze wzoru i z licznika (np. do listy projektów) i odczekaj 2 min. Potem w Ustawieniach wyłącz „Keep screen on while counting”, wróć na licznik bez zamykania aplikacji i odczekaj 2 min; na koniec włącz opcję z powrotem (M1-059). | Na wzorze ekran nie gaśnie; poza wzorem i licznikiem gaśnie normalnie; z wyłączoną opcją gaśnie także na liczniku. | ekran zgasł na wzorze albo nie gaśnie poza nimi albo na liczniku z wyłączoną opcją |
 
 ## C. Wzory — iPhone, ok. 20 min
 | ID | Kroki | Oczekiwany wynik | Zgłoś |

@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Linking, View, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { WidokWzoruNatywny } from '../modules/oczko-wzor';
+import { WidokWzoruNatywny, type UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { rodzajPliku } from '../src/domena/rodzaj-pliku';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
@@ -15,7 +15,7 @@ import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
-import { useKolory } from '../src/ekrany/motyw';
+import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
@@ -26,7 +26,8 @@ import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunk
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
 import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
-import { dodajNotatkeWzoru, dodajWzor, listaWzorow, usunNotatkeWzoru, usunWzor, zmienNotatkeWzoru, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
+import { dodajWzor, listaWzorow, usunWzor, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru, usunNotatkeWzoru, zmienNotatkeWzoru } from '../src/przypadki-uzycia/wzor-notatki';
 import { odzyskajRysunki, ustawObrot, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
 import { zapamietajPozycjeWzoru } from '../src/przypadki-uzycia/wzor-miejsce';
@@ -93,6 +94,7 @@ export default function EkranWzoru(): React.ReactElement {
   // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
   // przerywałby pracę); plik oczekujący zostaje i wraca przy następnym otwarciu (`odzyskajRysunki`).
   const bladRysunku = useRef(false);
+  const uchwytWidoku = useRef<UchwytWidokuWzoru | null>(null); // M1-112: zapis na żądanie przed decyzją „Wstecz”
   const poZapisieRysunku = useCallback((r: Wynik<unknown>, oczekujace = 0) => {
     if (r.ok) { if (oczekujace === 0) bladRysunku.current = false; return; }
     if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod, 'rysunek'); // M1-102: kreski czekają w pliku
@@ -189,7 +191,7 @@ export default function EkranWzoru(): React.ReactElement {
     startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
   if (link) return <Bezpieczny><ArkuszLinku t={t} poczatek={linkAdres} naAnuluj={() => { ustawLink(false); ustawLinkAdres(''); }} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); ustawLinkAdres(''); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
-  if (!lw || !wzory) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
+  if (!lw || !wzory) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
       naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny> // M1-006: błąd → alert, arkusz zostaje
@@ -197,7 +199,7 @@ export default function EkranWzoru(): React.ReactElement {
   if (!widok) {
     return (
       <Bezpieczny>
-        <View style={{ flex: 1, padding: 16, backgroundColor: k.papier }}>
+        <View style={{ flex: 1, padding: odstep.l, backgroundColor: k.papier }}>
           <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
             panelE2e={paneleE2e ? <paneleE2e.PanelWzoru katalogTymczasowy={kontener.z.katalogi.tymczasowy} naDodaj={(w) => void dodaj({ rodzaj: 'gotowe', ...w })} /> : null} />
         </View>
@@ -218,7 +220,7 @@ export default function EkranWzoru(): React.ReactElement {
     return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
   });
   const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
+    <WidokWzoruNatywny ref={uchwytWidoku} style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
       onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
       onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
@@ -251,7 +253,10 @@ export default function EkranWzoru(): React.ReactElement {
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
-        naWstecz={() => wyjscieZWzoru(t, niezapisane === true, () => router.back())}
+        naWstecz={() => { // M1-112: onBladZapisu z zapisu przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca
+          const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
+          void wyjscieZWzoru(t, niezapisane === true, () => router.back(), u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
+        }}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}

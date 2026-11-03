@@ -6,7 +6,7 @@ import { notatkiWzoruZId, znacznikWzoru } from '../dane/repozytoria/wzory';
 import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { OK, blad, operacjaZapisu } from './zapis';
 import { wzorDoZapisu, zapiszRysunek } from './wzor';
-import { ODRZUCENIA_TRWALE, PLIK_OCZEKUJACY, najnowszeOczekujace } from './rysunki-oczekujace';
+import { ODRZUCENIA_ODWRACALNE, ODRZUCENIA_TRWALE, PLIK_OCZEKUJACY, najnowszeOczekujace } from './rysunki-oczekujace';
 import { pozycjaWzoru, type PozycjaWzoru } from './wzor-miejsce';
 import { czasZmiany, istniejePlik, lista, polacz, usunPlik } from '../dane/pliki/system';
 import type { ZaleznosciPlikow } from './zaleznosci';
@@ -83,6 +83,7 @@ function zOczekujacymi(z: { strona: number; plik: string }[], w: { wzorId: strin
  * Odzysk rysunków zapisanych przez widok natywny, gdy ekran już się zamykał (zdarzenie `onRysunek` bez odbiorcy; przegląd 2026-10-26), i rysunków,
  * których zapis się nie udał (M1-084: plik zostaje): pliki `<wzorId>__<strona>__<uuid>.pkdrawing` z katalogu oczekujących → `zapiszRysunek`.
  * Na stronę liczy się najnowszy plik (cały rysunek strony): po jego zapisie starsze znikają; przy błędzie zapisu wszystkie zostają, a wynik to ten błąd.
+ * M1-104: strona wzoru w koszu (albo w projekcie w koszu) jest pomijana bez błędu, a jej pliki czekają; znikają dopiero, gdy wzoru nie ma (`bledne_dane`).
  * Wynik = liczba zapisanych stron.
  */
 export async function odzyskajRysunki(z: ZaleznosciPlikow, w: { katalog: string }): Promise<Wynik<number>> {
@@ -106,6 +107,7 @@ export async function odzyskajRysunki(z: ZaleznosciPlikow, w: { katalog: string 
         for (const starszy of kolejne.slice(i + 1)) if (istniejePlik(starszy.sciezka)) usunPlik(starszy.sciezka);
         break;
       }
+      if (ODRZUCENIA_ODWRACALNE.includes(r.powod)) break; // M1-104: wzór albo projekt w koszu — pliki strony czekają na przywrócenie, bez błędu
       if (!ODRZUCENIA_TRWALE.includes(r.powod)) { bladZapisu = r; break; } // pliki strony zostają; starszy nie zastępuje nowszego
     }
   }

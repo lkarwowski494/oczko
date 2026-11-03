@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
+import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
@@ -28,6 +29,9 @@ export function ArkuszNotatekWzoru(p: PropsArkuszaNotatek): React.ReactElement |
   if (!chip) return null;
   const notatka = chip.notatki.length === 1 ? chip.notatki[0] : chip.notatki.find((n) => n.id === wybrana);
   const zamknij = () => { ustawWybrana(null); ustawEdycje(null); p.naChip?.(null); };
+  // M1-121 (04-studio-projektowe-518 a): zmieniona treść w edycji — „Cancel” i tło pytają „Discard changes?” (jak arkusze tras); bez zmiany od razu.
+  const zmieniona = edycja !== null && notatka !== undefined && edycja !== notatka.tekst;
+  const poOdrzuceniu = (f: () => void) => { if (zmieniona) pytajOdrzucZmiany(t, 'zmiany', f); else f(); };
   async function zapisz(id: string, nowa: string) { if (await (p.naZmienNotatke?.(id, nowa) ?? Promise.resolve(false))) ustawEdycje(null); else p.naBlad(); }
   async function usun(id: string) { ustawWybrana(null); if (!(await (p.naUsunNotatke?.(id) ?? Promise.resolve(false)))) p.naBlad(); }
   const naglowek = (lewy: React.ReactNode, tytul: string, prawy: React.ReactNode) => (
@@ -38,12 +42,12 @@ export function ArkuszNotatekWzoru(p: PropsArkuszaNotatek): React.ReactElement |
   );
   return (
     <View style={st.tlo} accessibilityViewIsModal>
-      <Pressable style={StyleSheet.absoluteFill} onPress={zamknij} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
+      <Pressable style={StyleSheet.absoluteFill} onPress={() => poOdrzuceniu(zamknij)} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
       <ScrollView style={st.arkusz}>
         {notatka ? (
           <View>
             {naglowek(
-              przycisk(t(edycja === null ? 'wspolne.zamknij' : 'wspolne.anuluj'), 'wzor-notatka-zamknij', () => (edycja === null ? zamknij() : ustawEdycje(null))),
+              przycisk(t(edycja === null ? 'wspolne.zamknij' : 'wspolne.anuluj'), 'wzor-notatka-zamknij', () => (edycja === null ? zamknij() : poOdrzuceniu(() => ustawEdycje(null)))),
               t('wzor.notatka_tytul', { n: chip.rzadWzoru }),
               przycisk(t(edycja === null ? 'wzor.notatka_edytuj' : 'wspolne.zapisz'), 'wzor-notatka-edytuj', () => { if (edycja === null) ustawEdycje(notatka.tekst); else if (edycja.trim()) void zapisz(notatka.id, edycja); }, true, edycja === null ? t('wzor.notatka_edytuj_a11y', { n: chip.rzadWzoru }) : undefined),
             )}

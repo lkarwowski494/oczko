@@ -13,6 +13,7 @@ import { LinijkaCelu } from './LicznikCel';
 import { style } from './LicznikStyl';
 import type { PropsLicznika, StanEkranuLicznika, ZdarzeniePlus } from './LicznikTypy';
 import type { Tlumacz } from './wspolne';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 
 export type { BanerLicznika, LimitNaLiczniku, PropsLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from './LicznikTypy';
 export type { Style } from './LicznikStyl';
@@ -113,24 +114,16 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     <View style={st.ekran} onMagicTap={() => void plus()}>{/* Magic Tap = +1, ta sama ścieżka co przycisk (design-spec:88, P-284) */}
       <View style={st.pasek}>
         {p.naProjekty ? (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('projekty.tytul')} onPress={p.naProjekty} style={[st.ikona, st.navLink]} testID="nav-projekty">
-            <Text style={[st.tresc, st.link]}>{`‹ ${t('projekty.tytul')}`}</Text>
-          </Pressable>
+          <Wstecz tekst={t('projekty.tytul')} onPress={p.naProjekty} testID="nav-projekty" />
         ) : <View />}
         <View style={st.paskaPrawa} testID="licznik-ikony">
           {p.stoper}
           {p.naWzor && (
-            <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.wzor_a11y')} onPress={p.naWzor} style={st.ikona} testID="licznik-wzor">
-              <Text style={st.ikonaTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>▤</Text>
-            </Pressable>
+            <PrzyciskSymbolu symbol="doc.text" etykieta={t('licznik.wzor_a11y')} onPress={p.naWzor} testID="licznik-wzor" />
           )}
-          <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.historia')} onPress={p.naHistorie} style={st.ikona} testID="licznik-historia">
-            <Text style={st.ikonaTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>◷</Text>
-          </Pressable>
+          <PrzyciskSymbolu symbol="clock.arrow.circlepath" etykieta={t('licznik.historia')} onPress={p.naHistorie} testID="licznik-historia" />
           {s.projekt !== null && (
-            <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.menu_a11y')} onPress={p.naMenu} style={st.ikona} testID="licznik-menu">
-              <Text style={st.ikonaTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>•••</Text>
-            </Pressable>
+            <PrzyciskSymbolu symbol="ellipsis" etykieta={t('licznik.menu_a11y')} onPress={p.naMenu} testID="licznik-menu" />
           )}
         </View>
       </View>
@@ -191,7 +184,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </View>
         )}
         {s.powtorzenie && (
-          <Text style={st.tresc} testID="licznik-powtorzenie">{`${s.powtorzenie.nazwa} · ${t('licznik.powtorzenie', { numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}`}</Text>
+          <Text style={st.tresc} testID="licznik-powtorzenie">{t('licznik.powtorzenie', { nazwa: s.powtorzenie.nazwa, numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}</Text>
         )}
         {s.notatka && (
           <View>

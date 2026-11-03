@@ -31,14 +31,14 @@ export default function EkranZdjecia(): React.ReactElement {
     ustawBlad(false);
   }, [z, projekt, router]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!lista) return <StanWczytywania tlo="czarne" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="zdjecie" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!lista) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="czarne" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="zdjecie" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <PodgladZdjec t={t} zdjecia={lista} poczatek={Number(i ?? 0) || 0} naZamknij={() => router.back()}
       naUdostepnij={(id) => void (async () => {
         const sha = lista.find((x) => x.id === id)?.sha;
         if (!sha) return;
         const czysty = await zdjecieBezMetadanych(z.magazyn.sciezka(sha), zaleznosciObrazu(z.katalogi.tymczasowy, z.id.nowy)).catch(() => null);
-        if (!czysty) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; }
+        if (!czysty) { Alert.alert(...alertBleduZapisu(t, 'udostepnienie')); return; } // M1-120
         await udostepnijPlik(czysty.sciezka, 'image/jpeg');
         usunPlik(czysty.sciezka);
       })()}

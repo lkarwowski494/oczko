@@ -2,7 +2,7 @@
 // notatkę da się zmienić i usunąć (arkusz notatki: Edit/Save, „Delete note”); zapis nie rusza pliku wzoru ani cudzych notatek.
 import { notatkiWzoruZId } from '../../src/dane/repozytoria/wzory';
 import { widokWzoru } from '../../src/przypadki-uzycia/wzor-widok';
-import { dodajNotatkeWzoru, usunNotatkeWzoru, zmienNotatkeWzoru } from '../../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru, usunNotatkeWzoru, zmienNotatkeWzoru } from '../../src/przypadki-uzycia/wzor-notatki';
 import { czesc, licznik, notatkaRzedu, plik, projekt, wzor } from './pomocnicze/dane-wejsciowe';
 import { ile, jeden, przygotuj, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 

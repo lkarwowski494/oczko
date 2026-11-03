@@ -77,7 +77,7 @@ export default function EkranProjektu(): React.ReactElement {
   if (!w) {
     return (
       <Bezpieczny>
-        <StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="projekt" naPonow={() => { ustawBlad(false); void wczytaj(); }} />
+        <StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="projekt" naPonow={() => { ustawBlad(false); void wczytaj(); }} />
       </Bezpieczny>
     );
   }

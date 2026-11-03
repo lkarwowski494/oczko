@@ -30,7 +30,13 @@ const mockReact = React;
 const mockRn = { View };
 const mockProps: { p: Record<string, unknown> | null } = { p: null };
 const mockWyniki: { rysunek: unknown[] } = { rysunek: [] };
-jest.mock('../../modules/oczko-wzor', () => ({ WidokWzoruNatywny: (p: Record<string, unknown>) => { mockProps.p = p; return mockReact.createElement(mockRn.View, { testID: 'wzor-pdf' }); } }));
+// M1-112: funkcja widoku `zapiszRysunki` (zapis na żądanie → liczba oczekujących) przez ref; f null = build bez funkcji (odrzucenie → stan ze zdarzeń).
+const mockZapis: { f: (() => Promise<unknown>) | null } = { f: null };
+jest.mock('../../modules/oczko-wzor', () => ({ WidokWzoruNatywny: (p: Record<string, unknown>) => {
+  mockProps.p = p;
+  mockReact.useImperativeHandle(p.ref as React.Ref<unknown>, () => ({ zapiszRysunki: () => (mockZapis.f ? mockZapis.f() : Promise.reject(new Error('build bez funkcji widoku'))) }), []);
+  return mockReact.createElement(mockRn.View, { testID: 'wzor-pdf' });
+} }));
 jest.mock('../../src/przypadki-uzycia/wzor', () => ({ ...jest.requireActual('../../src/przypadki-uzycia/wzor'), zapiszRysunek: async () => mockWyniki.rysunek.shift() ?? { ok: true, wartosc: undefined } }));
 jest.mock('../../src/przypadki-uzycia/wzor-widok', () => ({ ...jest.requireActual('../../src/przypadki-uzycia/wzor-widok'), odzyskajRysunki: async () => ({ ok: true, wartosc: 0 }) }));
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -72,7 +78,7 @@ const rysunek = (oczekujace: number) => zdarzenie('onRysunek', { wzorId: 'w1', s
 const gest = () => mockOpcje.at(-1)?.gestureEnabled;
 async function wstecz() { await act(async () => { fireEvent.press(ekran.getByTestId('nav-wstecz')); await new Promise((r) => setTimeout(r, 10)); }); }
 
-beforeEach(() => { mockWyniki.rysunek = []; mockProps.p = null; mockOpcje.length = 0; mockRouter.back.mockClear(); alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined); });
+beforeEach(() => { mockZapis.f = null; mockWyniki.rysunek = []; mockProps.p = null; mockOpcje.length = 0; mockRouter.back.mockClear(); alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined); });
 afterEach(() => alert.mockRestore());
 
 describe('M1-084 (DEC-31 a): błąd zapisu rysunku po stronie natywnej', () => {
@@ -169,5 +175,55 @@ describe('M1-110 (04-studio-projektowe-515): ostrzeżenie o miejscu i błąd nat
     await rysunek(0); // udany zapis zdejmuje blokadę: następny błąd znów alertuje
     await bladNatywny();
     expect(alert).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('M1-112 (08-programista-515): „Wstecz” decyduje po zapisie na żądanie w widoku (oczekujace z funkcji widoku)', () => {
+  test('kreska przed upływem zegara zapisu, zapis widoku zostawia oczekujace > 0 → „Wstecz” pyta, nie wychodzi', async () => {
+    await start();
+    const wywolania: number[] = [];
+    mockZapis.f = async () => { wywolania.push(1); return 2; };
+    await wstecz();
+    expect(wywolania).toHaveLength(1);
+    expect(mockRouter.back).not.toHaveBeenCalled();
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(alert.mock.calls[0]?.[0]).toBe('Leave this pattern?');
+  });
+
+  test('zapis widoku zwraca 0 (kolejka zapisana) → „Wstecz” wychodzi bez pytania, choć wcześniej był błąd zapisu', async () => {
+    await start();
+    await bladNatywny(1);
+    alert.mockClear();
+    mockZapis.f = async () => 0;
+    await wstecz();
+    expect(alert).not.toHaveBeenCalled();
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+  });
+
+  test('zapis przy wyjściu zgłasza onBladZapisu, potem oczekujace 1 → jeden alert (pytanie), bez alertu błędu zapisu', async () => {
+    await start();
+    mockZapis.f = async () => {
+      (mockProps.p?.onBladZapisu as ((e: unknown) => void) | undefined)?.({ nativeEvent: { wzorId: 'w1', oczekujace: 1 } });
+      return 1;
+    };
+    await wstecz();
+    expect(mockRouter.back).not.toHaveBeenCalled();
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(alert.mock.calls[0]?.[0]).toBe('Leave this pattern?');
+  });
+
+  test('funkcja widoku zawodzi albo zwraca nie-liczbę → decyzja ze stanu niezapisanych kresek (zdarzenie onBladZapisu)', async () => {
+    await start();
+    mockZapis.f = async () => { throw new Error('widok odmontowany'); };
+    await wstecz();
+    expect(alert).not.toHaveBeenCalled();
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    mockRouter.back.mockClear();
+    await bladNatywny(1);
+    alert.mockClear();
+    mockZapis.f = async () => null;
+    await wstecz();
+    expect(mockRouter.back).not.toHaveBeenCalled();
+    expect(alert).toHaveBeenCalledTimes(1);
   });
 });

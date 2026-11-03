@@ -13,7 +13,7 @@ import { atrapaHaptyki } from './pomoc';
 
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined }));
+jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));
 jest.mock('../../src/kompozycja/system', () => {
   const p = jest.requireActual('./pomoc') as typeof import('./pomoc');
   return { cyklAplikacji: p.atrapaCyklu().cykl, oglos: jest.fn(), systemAplikacji: p.atrapaSystemu() };
@@ -51,10 +51,10 @@ async function trasa(seed: Parameters<typeof wykonaj>[1]) {
 const dane = (...u: Parameters<typeof wykonaj>[1]) => [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 17), ...u];
 
 describe('033-T1: testID tekstów wyniku licznika na trasie „/”', () => {
-  test('licznik-powtorzenie: długość 8, 17 skończonych → element z tekstem „repeat 3 · row 1 of 8”', async () => {
+  test('licznik-powtorzenie: długość 8, 17 skończonych → element z tekstem „repeat 3, row 1 of 8”', async () => {
     await trasa(dane(['UPDATE licznik SET dlugosc_powtorzenia = 8 WHERE id = ?', ['l1']]));
     const el = await screen.findByTestId('licznik-powtorzenie');
-    expect(JSON.stringify(el.props.children)).toMatch(/repeat 3 · row 1 of 8/);
+    expect(JSON.stringify(el.props.children)).toMatch(/repeat 3, row 1 of 8/);
   });
   test('licznik-calosc: część z dwoma licznikami (17 + 3) → element z tekstem całości (np. „Przód in total: 20 rows”)', async () => {
     await trasa(dane(...licznik('l2', 'c1', 3, { kolejnosc: 2 })));

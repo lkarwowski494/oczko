@@ -12,7 +12,7 @@ export interface MagazynPlikow {                                                
   zapisz(zrodlo: string, rozszerzenie: string): Promise<Wynik<{ sha256: string; bajty: number }>>;
   sciezka(sha256: string): string;
   usun(sha256: string): Promise<void>;
-  wolneMiejsce(): Promise<number>;            // required reason E174.1 (rejestr Apple 11d)
+  wolneMiejsce(): Promise<number | null>;            // required reason E174.1 (rejestr Apple 11d)
   pliki(): Promise<{ sha256: string; zmianaMs: number | null }[]>; // M1-023: wpisy katalogu (także `.tmp`) do uzgodnienia z tabelą `plik`
 }
 export interface DziennikPlus {                                                   // ADR-0008 (moduł Swift)
@@ -26,7 +26,7 @@ export interface Synchronizacja { wlacz(): Promise<Wynik<void>>; wylacz(): Promi
 // odbieraj/wyslane: obsługa w JS w jednej transakcji kolejki (partia + stanSilnika albo DELETE ze skrzynki z nr ≤ wysłanego + stanSilnika); Swift czeka na Promise przed potwierdzeniem silnikowi.
 export type StatusZakupu = 'sukces' | 'oczekujacy' | 'anulowany' | 'blad'; // P-135 Q3a, ADR-0010: anulowanie i oczekiwanie nie są błędem (MON-04); adapter: statusZBledu
 export interface Sklep { produkty(): Promise<Produkt[]>; kup(id: string): Promise<StatusZakupu>; przywroc(): Promise<Wynik<void>>; transakcje(): Promise<Transakcja[]>; obserwuj(fn: () => void): () => void } // ADR-0010
-export type WzorzecHaptyki = 'plus' | 'piataKreska' | 'rzadZInstrukcja' | 'minus' | 'blokadaStukniecie' | 'bladZapisu'; // klucze tokenów 04 „haptyka” (P-135 Q4a)
+export type WzorzecHaptyki = 'plus' | 'piataKreska' | 'rzadZInstrukcja' | 'minus' | 'blokadaStukniecie' | 'bladZapisu' | 'stoperStart'; // klucze tokenów 04 „haptyka” (P-135 Q4a)
 export interface Haptyka { zagraj(w: WzorzecHaptyki): void } // F-48: rozpoznawalne tylko plus i rzadZInstrukcja, reszta systemowa; brak dźwięku (BR-LIC-005)
 export interface EkranAktywny { wlacz(tag: string): void; wylacz(tag: string): void } // F-10, każdy tag wyłączany (rejestr Expo 7)
 export interface CzasWTle { chron<T>(nazwa: string, fn: (s: SygnalCzasu) => Promise<T>): Promise<T> } // beginBackgroundTask (rejestr Apple 17); wygaśnięcie → sygnał (ADR-0002 (7))

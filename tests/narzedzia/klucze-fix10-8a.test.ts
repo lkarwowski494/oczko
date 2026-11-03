@@ -8,23 +8,25 @@ const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 
 const LATKA = czytaj('docs/design/fix10-2026-11-01/klucze.json') as { en: Record<string, string>; kontekst: Record<string, string>; zastapEn: Record<string, string | { z: string; na: string }> };
 const EN = czytaj('src/i18n/slowniki/en.json') as Record<string, Record<string, string>>;
 const KONTEKST = czytaj('src/i18n/slowniki/en.kontekst.json') as Record<string, Record<string, string>>;
-const MOJE = (k: string) => k.startsWith('oferty.') || k.startsWith('dane.zastapiono') || k.startsWith('import.nie_rozpoznano') || k.startsWith('ustawienia.usun_') ||
+// M1-audytor-generalny-130 (P-427 a): nowa treść `ustawienia.usun_pytanie` (co zostaje i jak długo) zastępuje wartość z tej łatki; jej kontrakt: tests/ekrany/usun-wszystko-co-zostaje.test.tsx.
+const ZASTAPIONE_PO_LATCE = ['ustawienia.usun_pytanie'];
+const MOJE = (k: string) => !ZASTAPIONE_PO_LATCE.includes(k) && (k.startsWith('oferty.') || k.startsWith('dane.zastapiono') || k.startsWith('import.nie_rozpoznano') || k.startsWith('ustawienia.usun_') ||
   ['ustawienia.ekran_nie_gasnie', 'ustawienia.ekran_nie_gasnie_opis', 'ustawienia.miary_auto', 'ustawienia.miary_metric', 'ustawienia.miary_metric_opis', 'ustawienia.miary_imperial',
-    'ustawienia.miary_imperial_opis', 'ustawienia.miary_opis', 'stan_danych.kopie_opis', 'ustawienia.pro_wlaczone'].includes(k);
+    'ustawienia.miary_imperial_opis', 'ustawienia.miary_opis', 'stan_danych.kopie_opis', 'ustawienia.pro_wlaczone'].includes(k));
 const wartosc = (s: Record<string, Record<string, string>>, klucz: string) => { const [sekcja, nazwa] = klucz.split('.'); return s[sekcja]?.[nazwa]; };
 
 test('każda wartość en grupy 8a z łatki fix10 jest w en.json bez zmian', () => {
   const klucze = Object.entries(LATKA.en).filter(([k]) => MOJE(k));
-  expect(klucze.length).toBe(24);
+  expect(klucze.length).toBe(23);
   for (const [k, v] of klucze) expect([k, wartosc(EN, k)]).toEqual([k, v]);
 });
 test('każdy wpis kontekstu grupy 8a jest w en.kontekst.json bez zmian', () => {
   const klucze = Object.entries(LATKA.kontekst).filter(([k]) => MOJE(k));
-  expect(klucze.length).toBe(24);
+  expect(klucze.length).toBe(23);
   for (const [k, v] of klucze) expect([k, wartosc(KONTEKST, k)]).toEqual([k, v]);
 });
 test('zastąpienia: „this iPhone” → „this device” w usunięciu danych i w kluczach iCloud (zastapEn, wariant „na”)', () => {
-  const klucze = Object.entries(LATKA.zastapEn).filter(([k]) => k.startsWith('icloud.') || k === 'ustawienia.usun_pytanie');
-  expect(klucze.length).toBe(7);
+  const klucze = Object.entries(LATKA.zastapEn).filter(([k]) => k.startsWith('icloud.'));
+  expect(klucze.length).toBe(6);
   for (const [k, v] of klucze) expect([k, wartosc(EN, k)]).toEqual([k, typeof v === 'string' ? v : v.na]);
 });

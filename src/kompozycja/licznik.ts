@@ -16,6 +16,7 @@ import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
+import { liczba, wiersze } from '../dane/repozytoria/wiersze';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
@@ -195,8 +196,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       if (!b.ok) return b;
       licznikId = b.wartosc;
       if (!licznikId) {
-        const [p] = await z.baza.all<{ n: number }>('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL');
-        if (p && p.n > 0) return { ok: true, wartosc: { cel: 'lista' } }; // moduly.md:238: miejsce w koszu → lista projektów
+        const [p] = await wiersze(z.baza.all('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL'), 'przygotuj');
+        if (p && liczba(p, 'n') > 0) return { ok: true, wartosc: { cel: 'lista' } }; // moduly.md:238: miejsce w koszu → lista projektów
       }
       if (licznikId) { const n = await startNaWzorze(z); if (n.ok && n.wartosc) return { ok: true, wartosc: { cel: 'wzor' } }; }
       return { ok: true, wartosc: { cel: 'licznik' } };
@@ -280,6 +281,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         await poZapisie(w);
       },
       przyTle: async () => { await o.skrzynka?.migawka().catch(() => undefined); await przyTle(z); },
+      ekranWlaczony: () => o.ekranWlaczony?.() ?? true, // M1-audytor-generalny-059: preferencja w chwili wejścia na licznik, nie ze startu
     },
     dzialania: {
       async naMinus() {
