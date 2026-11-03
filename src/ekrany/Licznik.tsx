@@ -184,7 +184,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </View>
         )}
         {s.powtorzenie && (
-          <Text style={st.tresc} testID="licznik-powtorzenie">{`${s.powtorzenie.nazwa} · ${t('licznik.powtorzenie', { numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}`}</Text>
+          <Text style={st.tresc} testID="licznik-powtorzenie">{t('licznik.powtorzenie', { nazwa: s.powtorzenie.nazwa, numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}</Text>
         )}
         {s.notatka && (
           <View>

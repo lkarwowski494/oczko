@@ -10,7 +10,7 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const stan = (z: Partial<PropsProjektu['stan']> = {}): PropsProjektu['stan'] => ({
   nazwa: 'Harbor Sweater', notatka: 'Switch to 4 mm for the cuff', miejsceWzoru: null, ostatniaZmiana: 'Oct 22', postep: { rodzaj: 'procent', wartosc: 51 },
-  termin: 'Done by Oct 31 · today 3 of 10 rows', ukonczony: false,
+  termin: 'Done by Oct 31, today 3 of 10 rows', ukonczony: false,
   czesci: [
     { id: 'c1', nazwa: 'Back', rzedy: 60, cel: 96, paraZ: null, liczniki: [{ id: 'l1', nazwa: 'Rows', opis: '60 rows' }], calosc: null },
     { id: 'c2', nazwa: 'Blanket', rzedy: 20, cel: null, paraZ: null, calosc: 20, liczniki: [{ id: 'l2', nazwa: 'Square 1', opis: '12 rows' }, { id: 'l3', nazwa: 'Square 2', opis: '8 rows' }] },
@@ -40,7 +40,7 @@ describe('Projekt (partia 5)', () => {
     pokaz();
     expect(screen.getByText('51% done')).toBeTruthy();
     expect(screen.getByText('Approximate, counted from rows of parts with a goal.')).toBeTruthy();
-    expect(screen.getByText('Done by Oct 31 · today 3 of 10 rows')).toBeTruthy();
+    expect(screen.getByText('Done by Oct 31, today 3 of 10 rows')).toBeTruthy();
     for (const n of ['Parts', 'Note', 'Details']) expect(screen.getByText(n)).toBeTruthy();
     expect(screen.getByText('4 mm (US 6)')).toBeTruthy();
     expect(screen.getByText('Last change Oct 22')).toBeTruthy();
@@ -98,7 +98,7 @@ describe('Projekt (partia 5)', () => {
 
   test('BR-DNI-005: bez terminu brak linii terminu, w Details „None”; narzędzie nieustawione → „Needles or hook” + „Add”', () => {
     pokaz(stan({ termin: null, szczegoly: { narzedzie: null, rozmiar: null, termin: null } }));
-    expect(screen.queryByText(/Done by .* ·/)).toBeNull();
+    expect(screen.queryByText(/Done by .+[,.] /)).toBeNull();
     expect(screen.getByText('None')).toBeTruthy();
     expect(screen.getByText('Needles or hook')).toBeTruthy();
     expect(screen.getByText('Add')).toBeTruthy();

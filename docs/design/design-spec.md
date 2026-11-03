@@ -416,10 +416,10 @@ Makiety: `fix5-2026-10-26/projekt-kosz.html` (22 stany), wzorce `wzorce-zrzuty/p
 | `projekty.kosz` | Recently deleted |
 | `projekty.kosz_a11y_one` / `projekty.kosz_a11y_other` | Recently deleted, {{count}} item / Recently deleted, {{count}} items |
 | `projekt.postep_opis` | Approximate, counted from rows of parts with a goal. |
-| `projekt.termin_dzis_one` / `projekt.termin_dzis_other` | Done by {{data}} · today {{zrobione}} of {{count}} row / Done by {{data}} · today {{zrobione}} of {{count}} rows |
-| `projekt.termin_po_one` / `projekt.termin_po_other` | The due date {{data}} has passed · {{count}} row to go / The due date {{data}} has passed · {{count}} rows to go |
-| `projekt.termin_osiagniety` | Done by {{data}} · goal reached |
-| `projekt.termin_bez_celow` | Done by {{data}} · set a goal for a part to get a daily goal |
+| `projekt.termin_dzis_one` / `projekt.termin_dzis_other` | Done by {{data}}, today {{zrobione}} of {{count}} row / Done by {{data}}, today {{zrobione}} of {{count}} rows (M1-034: przecinek zamiast „ · ”) |
+| `projekt.termin_po_one` / `projekt.termin_po_other` | The due date {{data}} has passed, {{count}} row to go / The due date {{data}} has passed, {{count}} rows to go (M1-034) |
+| `projekt.termin_osiagniety` | Done by {{data}}, goal reached (M1-034) |
+| `projekt.termin_bez_celow` | Done by {{data}}. Set a goal for a part to get a daily goal. (M1-034) |
 | `projekt.czesci` | Parts |
 | `projekt.calosc_one` / `projekt.calosc_other` | Whole piece: {{count}} row / Whole piece: {{count}} rows |
 | `projekt.para` | Pair of {{nazwa}} |
@@ -1080,6 +1080,18 @@ Macierz stanów, poz. 4: błąd mówi, co się stało i co zrobić — „co zro
 | Menu ••• przy zablokowanym liczniku | „Reset to 0…” wyłączony (`accessibilityState.disabled`, tokeny `przyciskNieaktywny*`), pod nim podpis „Unlock the counter to reset it.” (też podpowiedź VoiceOver); pytania o reset nie ma (506 opcja a: nie pytamy o coś, czego nie da się zrobić) | nowy: `menu.zeruj_zablokowany` |
 
 Trwałe kontrole: `tests/ekrany/stany-bledow-094.test.tsx` (każda trasa z `StanWczytywania` podaje wyjście z `router.back()`), `tests/ekrany/narzedzia-wstecz-trasa.test.tsx` (lista tras push bez przycisku pusta). Teksty en do akceptacji pl przez właściciela i do fali 09 (P-422): lista w `oczekujace.json`.
+
+### Separator „ · ” (M1-audytor-generalny-034, 04-studio-projektowe-007; SP-12)
+Kalibracja nazywa ciągi „A · B · C” kliszą bez decyzji. **Decyzja 04 (2026-11-03):** „ · ” zostaje **tylko jako separator krótkich metadanych** w wierszu listy, podpisie wiersza, nagłówku dnia, wierszu wyboru i na karcie aktywności (zwyczaj iOS: druga linia wiersza w Poczcie i Plikach; każda część to osobny fakt, kolejność dowolna). **W zdaniach stanu na liczniku i na ekranie projektu „ · ” nie występuje** — tam części łączy przecinek, a dwa zdania kropka (stan czyta się jak zdanie, także w VoiceOver). „→” tylko w wierszu historii licznika (Aneks P2 poz. 4: widoczne „30 → 31”, etykieta VoiceOver zdaniem).
+
+| Rodzaj | Klucze (`src/i18n/slowniki/en.json`) |
+|---|---|
+| Dozwolone (b) — 26 kluczy, lista w teście `tests/i18n/kropka-srodkowa-034.test.ts` | `projekty.wiersz`, `projekty.wiersz_cel`, `projekty.ukonczono_wiersz`, `projekty.po_terminie_*`; `kosz.projekt`, `kosz.czesc`, `kosz.licznik`, `kosz.wloczka`, `kosz.narzedzie`, `kosz.wzor`; `historia.wpis`, `historia.wpis_opis`; `dni.dzien_*`, `dni.rzedy_czas`, `dni.suma_czas`; `dane.konflikt_wybor_*`; `zapas.motek`; `wzor.wiersz_opis`, `wzor.etykieta_koniec` (zakładka znacznika); `udostepnij.wiersz`; `probka.z_projektu` (podpis pod nazwą); `ukonczenie.okres` (podpis karty); `aktywnosc.przypomnienie` (karta ekranu blokady: kolejność ucinania z sekcji „Ekran blokady i zegarek”) |
+| Zdania (a) — 6 kluczy, en zmienione, przekłady do fali 09 | `licznik.przypomnienie_postep` „{{ktory}} of {{razy}}, next on row {{nastepny}}”; `licznik.powtorzenie` „{{nazwa}}: repeat {{numer}}, row {{rzad}} of {{dlugosc}}” (nazwa powtórzenia w kluczu zamiast doklejania w kodzie); `projekt.termin_dzis_*` „Done by {{data}}, today {{zrobione}} of {{count}} row(s)”; `projekt.termin_po_*` „The due date {{data}} has passed, {{count}} row(s) to go”; `projekt.termin_osiagniety` „Done by {{data}}, goal reached”; `projekt.termin_bez_celow` „Done by {{data}}. Set a goal for a part to get a daily goal.” |
+
+Nowy klucz z „ · ” wymaga wpisu tutaj i na liście testu. Sklejenia „ · ” w kodzie (`Historia.tsx` wiersz serii, `ObrazKarty.tsx`, `Ukonczenie.tsx` podsumowanie, `Oferty.tsx`, `Zapas.tsx`, `kompozycja/zapas.ts`) to metadane wierszy, więc wygląd jest zgodny z decyzją; samo sklejanie napisów w kodzie (zasada 8 roli 08) — znalezisko N2 niżej. Klucze i kontekst tłumacza: `fix14-2026-11-03/klucze.json`.
+
+**Nowe znaleziska tej sesji (do planu napraw, nie naprawiane).** N1 (P2, D, SP-13): `›` przy wierszach list i `⊖` w trybie Edit projektu (`Projekt.tsx`) zostały glifami — przy `⊖` symbol `minus.circle.fill` (iOS 13) z kolorem `blad`; `›` może zostać (znak wiersza z przejściem, jak makiety), do decyzji 04 w reaudicie. N2 (P2, D, 08 zasada 8): sklejanie tekstów z „ · ” w kodzie (lista wyżej) — w językach o innym szyku separator i kolejność powinny pochodzić ze słownika.
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.

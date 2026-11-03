@@ -47,4 +47,4 @@ tags:
 # Linia terminu jest pod nagłówkiem projektu (src/ekrany/Projekt.tsx:119), a ekran stoi przewinięty do „Details” (przebieg 126:
 # `projekt-termin` „Done by, Nov 4”, „Parts” nad górną krawędzią) — przewinięcie w górę. F07-34.
 - scrollUntilVisible: { element: { id: "projekt-linia-terminu" }, direction: UP }
-- assertVisible: { id: "projekt-linia-terminu", text: "Done by Nov 4 · today 0 of 13 rows" }
+- assertVisible: { id: "projekt-linia-terminu", text: "Done by Nov 4, today 0 of 13 rows" }
