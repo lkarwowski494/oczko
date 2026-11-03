@@ -155,7 +155,13 @@ describe('treść krytyczna: dane i okablowanie repozytorium', () => {
     const r = uruchom(['src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json', '--krytyczne', 'docs/lokalizacja/krytyczne.json', '--przeglad', 'docs/lokalizacja/przeglad-krytyczne.json'], KORZEN);
     expect(r.wyjscie).not.toMatch(/BŁĄD (krytyczne|przeglad)/);
     expect(r.wyjscie).not.toMatch(/UWAGA krytyczne: .* zmieniony/);
-    expect(r.wyjscie).toMatch(/UWAGA kontrola \(a\) treści krytycznej: \d+ z \d+ par/);
+    // Stan niepełny: jedna uwaga z liczbą par. Stan pełny (P-507: 340 par z ważnym wpisem a): uwagi brak, a bramka --wydanie przechodzi (kod 0).
+    if (/kontrola \(a\) treści krytycznej/.test(r.wyjscie)) {
+      expect(r.wyjscie).toMatch(/UWAGA kontrola \(a\) treści krytycznej: \d+ z \d+ par/);
+    } else {
+      const w = uruchom(['src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json', '--krytyczne', 'docs/lokalizacja/krytyczne.json', '--przeglad', 'docs/lokalizacja/przeglad-krytyczne.json', '--wydanie'], KORZEN);
+      expect(w.kod).toBe(0);
+    }
   });
   it('skrypty npm i18n, i18n:kod, i18n:pseudo i kontrola-ipa.sh (TestFlight) przekazują --krytyczne i --przeglad; kontrola-ipa.sh z --wydanie', () => {
     const s = (wczytaj('package.json') as { scripts: Record<string, string> }).scripts;
