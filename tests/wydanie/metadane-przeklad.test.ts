@@ -84,6 +84,36 @@ describe('słowa kluczowe: pakowanie kandydatów (nie dosłowny przekład)', () 
   });
 });
 
+describe('słowa kluczowe: długość minimalna zależy od pisma (P-510 wariant a)', () => {
+  const pakuj = (k: string[], tytul = 'Oczko: licznik', podtytul = 'dwie techniki') => mod(`console.log(JSON.stringify(m.pakujSlowa(${JSON.stringify(k)}, ${JSON.stringify({ tytul, podtytul })})))`);
+  test('słowo CJK (Han, hiragana, katakana, hangul) o długości 2 jest przyjmowane', () => {
+    const r = pakuj(['棒針', 'ねこ', 'メモ', '뜨개']);
+    expect(r.slowa).toEqual(['棒針', 'ねこ', 'メモ', '뜨개']);
+    expect(r.pominiete).toEqual([]);
+  });
+  test('słowo łacińskie ≤ 2 znaki nadal odpada; CJK o długości 1 też', () => {
+    const r = pakuj(['ab', 'x', '棒', 'pdf']);
+    expect(r.slowa).toEqual(['pdf']);
+    expect(r.pominiete.map((p: any) => p.slowo)).toEqual(['ab', 'x', '棒']);
+    for (const p of r.pominiete) expect(p.powod).toMatch(/krótkie/);
+  });
+  test('pozostałe reguły bez zmian dla 2-znakowego CJK: powtórzenie, słowo w podtytule, limit 100 B', () => {
+    const r = pakuj(['棒針', '棒針', '毛線', '鉤針'], '針目: 編織', '打毛線皆可');
+    expect(r.slowa).toEqual(['棒針', '鉤針']);
+    const powody = r.pominiete.map((p: any) => p.powod);
+    expect(powody[0]).toMatch(/powtórzenie/); expect(powody[1]).toMatch(/podtytu|zawarte/);
+    const dużo = pakuj(Array.from({ length: 20 }, (_, i) => String.fromCodePoint(0x4e00 + i * 2) + String.fromCodePoint(0x4e01 + i * 2)));
+    expect(dużo.bajty).toBeLessThanOrEqual(100); expect(dużo.slowa).toHaveLength(14); expect(Buffer.byteLength(dużo.slowa.join(','))).toBe(dużo.bajty);
+    expect(dużo.pominiete.every((p: any) => /limit/.test(p.powod))).toBe(true);
+  });
+  test('kontrola wpisu przed zapisem: keywords z 2-znakowym CJK przechodzą, z 2-znakowym łacińskim nie', () => {
+    const tytulZh = nazwy['zh-Hant'].title;
+    const kontrola = (kw: string[]) => mod(`const c = m.wczytajKontekst(); const e = { title: ${JSON.stringify(tytulZh)}, subtitle: 'x', promoText: 'x', description: 'x', keywords: ${JSON.stringify(kw)}, supportUrl: c.adresy.supportUrl, privacyPolicyUrl: c.adresy.privacyPolicyUrl }; console.log(JSON.stringify(m.sprawdzWpis('zh-Hant', e, c).filter((x) => x.startsWith('keywords'))))`);
+    expect(kontrola(['棒針', '鉤針'])).toEqual([]);
+    expect(kontrola(['ab', '棒針'])).toEqual(['keywords: słowo ≤ 2 znaki']);
+  });
+});
+
 describe('żądanie do API: etap przekładu', () => {
   test('lokalizacja generowana (cs): źródło en, marka z nazwy, limity, słownik interfejsu, dane wyszukiwarki, prośba o podtytuł i kandydatów na słowa; bez klucza API', () => {
     const z = mod(`const c = m.wczytajKontekst(); console.log(JSON.stringify(m.budujZadanie('cs', c)))`);
@@ -295,6 +325,21 @@ describe('przyjęcie artefaktu skryptem: pliki <kod ASC>.store.json i stan przek
     const k2 = kopia(); const b = artefakt('sk', [], false);
     const r = przyjmij(k2, b, ['sk']);
     expect(r.status).toBe(1); expect(existsSync(join(k2, MET, 'sk.store.json'))).toBe(false);
+  });
+  test('--przepakuj: słowa z raportu pakowane ponownie (przyjęte najpierw, potem pominięte w kolejności) wg bieżących reguł; bez opcji raport przyjęty bez zmian', () => {
+    const d = mkdtempSync(join(tmpdir(), 'artefakt-zh-'));
+    const p = mod(`const c = m.wczytajKontekst(); console.log(JSON.stringify(m.parsuj(${JSON.stringify(JSON.stringify(odpowiedz('zh-Hant')))}, 'zh-Hant', c)))`);
+    const stare = { ...p.propozycja, slowa: ['PDF'], bajty: 3, pominiete: ['鉤針', '棒針', '織圖', '針數'].map((slowo) => ({ slowo, powod: 'krótkie (≤ 2 znaki)' })) };
+    writeFileSync(join(d, 'zh-Hant.json'), JSON.stringify({ jezyk: 'zh-Hant', propozycja: stare, odrzucone: [], krytyk: { poprawki: [], odrzucone: [] }, blad: null }));
+    const k = kopia(); const k2 = kopia();
+    expect(przyjmij(k, d, ['zh-Hant']).status).toBe(0);
+    expect(JSON.parse(readFileSync(join(k, MET, 'zh-Hant.store.json'), 'utf8')).apple.info['zh-Hant'].keywords).toEqual(['PDF']);
+    expect(przyjmij(k2, d, ['zh-Hant'], ['--przepakuj']).status).toBe(0);
+    const f = JSON.parse(readFileSync(join(k2, MET, 'zh-Hant.store.json'), 'utf8')).apple.info['zh-Hant'];
+    expect(f.keywords).toEqual(['PDF', '鉤針', '棒針', '織圖', '針數']);
+    expect(Buffer.byteLength(f.keywords.join(','))).toBeLessThanOrEqual(100);
+    const l = przyjmij(kopia(), d, ['zh-Hant'], ['--przepakuj']);
+    expect(l.stdout).toMatch(/zh-Hant: przyjęta/);
   });
   test('nie przyjmuje kodu spoza listy 29 i nie nadpisuje bez --nadpisz', () => {
     const k = kopia(); const a = artefakt('cs');

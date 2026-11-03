@@ -64,7 +64,9 @@ export function sprawdzTekst(pole, v, loc, ctx) {
 
 /* ---------- słowa kluczowe: pakowanie kandydatów do 100 B ---------- */
 const CJK = /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/u;
-/** Kandydaci w kolejności ważności → słowa do 100 B (UTF-8, razem z przecinkami). Odpadają: ≤ 2 znaki, powtórzenia, słowa z nazwy i podtytułu, to, co się nie mieści. */
+/** Za krótkie na słowo kluczowe: łacińskie ≤ 2 znaki; w piśmie CJK (Han, hiragana, katakana, hangul) dopiero 1 znak, bo hasła mają zwykle 2 (棒針, 毛線; P-510). */
+export const zaKrotkie = (w) => len(w) <= (CJK.test(String(w)) ? 1 : 2);
+/** Kandydaci w kolejności ważności → słowa do 100 B (UTF-8, razem z przecinkami). Odpadają: za krótkie (zaKrotkie), powtórzenia, słowa z nazwy i podtytułu, to, co się nie mieści. */
 export function pakujSlowa(kandydaci, { tytul: t = '', podtytul = '', limit = LIMITY.keywords } = {}) {
   const f = (s) => String(s).normalize('NFC').toLowerCase();
   const tok = (s) => f(s).split(/[^\p{L}\p{N}\p{M}]+/u).filter(Boolean);
@@ -72,7 +74,7 @@ export function pakujSlowa(kandydaci, { tytul: t = '', podtytul = '', limit = LI
   const slowa = [], pominiete = [], widziane = new Set(); let suma = 0;
   for (const w of (kandydaci ?? []).flatMap((k) => String(k ?? '').split(/[\s,]+/)).filter(Boolean)) {
     const k = f(w), pomin = (powod) => pominiete.push({ slowo: w, powod });
-    if (len(w) <= 2) pomin('krótkie (≤ 2 znaki)');
+    if (zaKrotkie(w)) pomin(CJK.test(w) ? 'krótkie (1 znak)' : 'krótkie (≤ 2 znaki)');
     else if (widziane.has(k)) pomin('powtórzenie');
     else if (nazwa.has(k)) pomin('słowo z nazwy');
     else if (pod.has(k)) pomin('słowo z podtytułu');
@@ -233,7 +235,7 @@ export function sprawdzWpis(loc, e, ctx) {
   for (const [pole, k] of [['subtitle', 'subtitle'], ['promoText', 'promoText'], ['description', 'description']]) for (const x of sprawdzTekst(pole, e[k], loc, ctx)) p.push(`${pole}: ${x}`);
   if (!Array.isArray(e.keywords) || !e.keywords.length) p.push('keywords: puste'); else {
     if (bajty(e.keywords) > LIMITY.keywords) p.push(`keywords: ${bajty(e.keywords)} B > ${LIMITY.keywords} B`);
-    if (e.keywords.some((x) => len(x) <= 2)) p.push('keywords: słowo ≤ 2 znaki');
+    if (e.keywords.some(zaKrotkie)) p.push('keywords: słowo ≤ 2 znaki');
   }
   if (e.title !== tytul(loc, ctx)) p.push('title ≠ nazwy.store.json');
   if (e.supportUrl !== ctx.adresy.supportUrl || e.privacyPolicyUrl !== ctx.adresy.privacyPolicyUrl) p.push('adresy ≠ adresy.json');

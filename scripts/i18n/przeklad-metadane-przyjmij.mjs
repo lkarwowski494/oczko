@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 // Przyjęcie artefaktu `raport-metadane` (scripts/i18n/przeklad-metadane.mjs, P-501) do repozytorium: <kod ASC>.store.json w docs/wydanie/metadane/ + przeklad-stan.json.
 // Przed zapisem pełna kontrola wpisu (limity Apple, struktura opisu, liczby i zakazane słowa ze źródła, adresy apps4brew, title = nazwy.store.json). Poprawki krytyka nakładane po kontroli każdej z osobna.
+// --przepakuj: słowa kluczowe pakowane ponownie wg bieżących reguł z tego, co raport zachował (przyjęte, potem pominięte w kolejności; surowa lista modelu nie jest w raporcie) — po poprawce reguły pakowania, bez nowego przebiegu API (P-510).
 // Lokalizacja z błędem w raporcie albo z nieprawidłowym wpisem NIE jest zapisywana (kod 1), reszta tak. Nie dotyka en.store.json ani nazwy.store.json; nic nie wysyła.
-// Użycie: node scripts/i18n/przeklad-metadane-przyjmij.mjs --raport <katalog artefaktu> [--korzen <repo>] [--bez-krytyka] [--nadpisz] [<kod ASC>…]   (bez kodów: wszystkie <kod>.json z raportu)
+// Użycie: node scripts/i18n/przeklad-metadane-przyjmij.mjs --raport <katalog artefaktu> [--korzen <repo>] [--bez-krytyka] [--przepakuj] [--nadpisz] [<kod ASC>…]   (bez kodów: wszystkie <kod>.json z raportu)
 // Kody wyjścia: 0 ok, 1 lokalizacja odrzucona, 2 konfiguracja (zły kod, istniejący plik bez --nadpisz, brak raportu).
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { LOKALIZACJE, MET, wczytajKontekst, zloz, sprawdzWpis } from './przeklad-metadane.mjs';
+import { LOKALIZACJE, MET, wczytajKontekst, zloz, sprawdzWpis, pakujSlowa } from './przeklad-metadane.mjs';
 
 export function przyjmij(argv, { log = console.log } = {}) {
-  const o = { raport: null, korzen: fileURLToPath(new URL('../..', import.meta.url)), bezKrytyka: false, nadpisz: false, kody: [] };
+  const o = { raport: null, korzen: fileURLToPath(new URL('../..', import.meta.url)), bezKrytyka: false, przepakuj: false, nadpisz: false, kody: [] };
   for (let i = 0; i < argv.length; i++) {
     const x = argv[i];
-    if (x === '--raport') o.raport = argv[++i]; else if (x === '--korzen') o.korzen = argv[++i]; else if (x === '--bez-krytyka') o.bezKrytyka = true; else if (x === '--nadpisz') o.nadpisz = true;
+    if (x === '--raport') o.raport = argv[++i]; else if (x === '--korzen') o.korzen = argv[++i]; else if (x === '--bez-krytyka') o.bezKrytyka = true; else if (x === '--przepakuj') o.przepakuj = true; else if (x === '--nadpisz') o.nadpisz = true;
     else if (x.startsWith('--')) { log(`BŁĄD: nieznany argument ${x}`); return 2; } else o.kody.push(x);
   }
   if (!o.raport || !existsSync(o.raport)) { log('BŁĄD: podaj --raport <katalog artefaktu raport-metadane>'); return 2; }
@@ -30,6 +31,10 @@ export function przyjmij(argv, { log = console.log } = {}) {
     if (!existsSync(f)) { log(`${k}: brak ${f}`); kod = 1; continue; }
     const r = JSON.parse(readFileSync(f, 'utf8')), p = r.propozycja;
     if (r.blad || !p || !p.subtitle || !p.promoText || !p.description || !p.slowa?.length) { log(`${k}: odrzucona — ${r.blad ?? 'brak pól propozycji'}${r.odrzucone?.length ? ` (odrzucone pola: ${r.odrzucone.map((x) => `${x.pole}: ${x.powod}`).join(' | ')})` : ''}`); kod = 1; continue; }
+    if (o.przepakuj && !ctx.stale[k] && p.pominiete?.length) {
+      const sl = pakujSlowa([...p.slowa, ...p.pominiete.map((x) => x.slowo)], { tytul: ctx.nazwy[k].title, podtytul: p.subtitle });
+      if (sl.slowa.length) { p.slowa = sl.slowa; p.bajty = sl.bajty; p.pominiete = sl.pominiete; }
+    }
     const poprawki = o.bezKrytyka ? [] : (r.krytyk?.poprawki ?? []), wpis = zloz(k, ctx, p, poprawki), problemy = sprawdzWpis(k, wpis.apple.info[k], ctx);
     if (problemy.length) { log(`${k}: odrzucona — ${problemy.join(' | ')}`); kod = 1; continue; }
     writeFileSync(join(met, `${k}.store.json`), JSON.stringify(wpis, null, 2) + '\n');
