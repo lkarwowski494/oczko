@@ -34,5 +34,5 @@ test('import „zastąp” pod czasem w tle, który wygasa po 3 instrukcjach →
   const sciezka = archiwumWzorcowe(s.katalog, 'czapka', [projekt('cz', 'Czapka'), czesc('cc', 'cz', 'Główka'), ...licznik('lc', 'cc', 4)]);
   expect(await importuj({ ...s.z, archiwum, czasWTle: czasWTle(n) }, { sciezka, wybierz: async () => 'zastap' })).toEqual({ ok: false, powod: 'zapis' });
   expect(await migawka(s.baza, ['blad'])).toBe(przed);
-  expect(n.zdarzenia).toEqual(['start import', 'koniec z1']);
+  expect(n.zdarzenia).toEqual(['start import-sprawdzenie', 'koniec z1', 'start import', 'koniec z1']); // M1-065: sprawdzenie pod osobnym zadaniem, zakończonym przed dialogiem wyboru
 });
