@@ -78,6 +78,582 @@
         "name": "Oczko Pro, na zawsze",
         "description": "Bez limitu dni robótkowych, jedna płatność"
       }
+    },
+    "bg": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, месечно",
+        "description": "Неограничени дни с ръкоделие, месечно плащане"
+      },
+      "yearly": {
+        "name": "Oczko Pro, годишно",
+        "description": "Неограничени дни с ръкоделие, годишно плащане"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, доживотно",
+        "description": "Неограничени дни с ръкоделие, едно плащане"
+      }
+    },
+    "cs": {
+      "ascLocale": "cs",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, měsíčně",
+        "description": "Bez limitu dnů tvoření, účtováno měsíčně"
+      },
+      "yearly": {
+        "name": "Oczko Pro, ročně",
+        "description": "Bez limitu dnů tvoření, účtováno ročně"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, doživotně",
+        "description": "Bez limitu dnů tvoření, jednorázová platba"
+      }
+    },
+    "da": {
+      "ascLocale": "da",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, månedlig",
+        "description": "Ubegrænsede håndarbejdsdage, betal månedligt"
+      },
+      "yearly": {
+        "name": "Oczko Pro, årlig",
+        "description": "Ubegrænsede håndarbejdsdage, betal årligt"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, livstid",
+        "description": "Ubegrænsede håndarbejdsdage, betal én gang"
+      }
+    },
+    "de": {
+      "ascLocale": "de-DE",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, monatlich",
+        "description": "Unbegrenzte Handarbeitstage, monatlich zahlen"
+      },
+      "yearly": {
+        "name": "Oczko Pro, jährlich",
+        "description": "Unbegrenzte Handarbeitstage, jährlich zahlen"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, lebenslang",
+        "description": "Unbegrenzte Handarbeitstage, einmal zahlen"
+      }
+    },
+    "el": {
+      "ascLocale": "el",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, μηνιαίο",
+        "description": "Χωρίς όριο ημερών χειροτεχνίας, χρέωση/μήνα"
+      },
+      "yearly": {
+        "name": "Oczko Pro, ετήσιο",
+        "description": "Χωρίς όριο ημερών χειροτεχνίας, ετήσια χρέωση"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, εφ’ όρου ζωής",
+        "description": "Χωρίς όριο ημερών χειροτεχνίας, μία πληρωμή"
+      }
+    },
+    "es-419": {
+      "ascLocale": "es-MX",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensual",
+        "description": "Sin límite de días de labor, cobro mensual"
+      },
+      "yearly": {
+        "name": "Oczko Pro, anual",
+        "description": "Sin límite de días de labor, cobro anual"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, de por vida",
+        "description": "Sin límite de días de labor, pago único"
+      }
+    },
+    "es": {
+      "ascLocale": "es-ES",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensual",
+        "description": "Sin límite de días de labor, pago mensual"
+      },
+      "yearly": {
+        "name": "Oczko Pro, anual",
+        "description": "Sin límite de días de labor, pago anual"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, de por vida",
+        "description": "Sin límite de días de labor, pago único"
+      }
+    },
+    "et": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, igakuine",
+        "description": "Piiramatult käsitööpäevi, makse kord kuus"
+      },
+      "yearly": {
+        "name": "Oczko Pro, iga-aastane",
+        "description": "Piiramatult käsitööpäevi, makse kord aastas"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, eluaegne",
+        "description": "Piiramatult käsitööpäevi, ühekordne makse"
+      }
+    },
+    "fi": {
+      "ascLocale": "fi",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, kuukausi",
+        "description": "Rajattomat käsityöpäivät, kuukausimaksu"
+      },
+      "yearly": {
+        "name": "Oczko Pro, vuosi",
+        "description": "Rajattomat käsityöpäivät, vuosimaksu"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, elinikäinen",
+        "description": "Rajattomat käsityöpäivät, kertamaksu"
+      }
+    },
+    "fr": {
+      "ascLocale": "fr-FR",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensuel",
+        "description": "Jours d’ouvrage illimités, paiement mensuel"
+      },
+      "yearly": {
+        "name": "Oczko Pro, annuel",
+        "description": "Jours d’ouvrage illimités, paiement annuel"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, à vie",
+        "description": "Jours d’ouvrage illimités, paiement unique"
+      }
+    },
+    "hr": {
+      "ascLocale": "hr",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mjesečno",
+        "description": "Bez limita dana ručnog rada, naplata mjesečno"
+      },
+      "yearly": {
+        "name": "Oczko Pro, godišnje",
+        "description": "Bez limita dana ručnog rada, naplata godišnje"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, doživotno",
+        "description": "Bez limita dana ručnog rada, jedno plaćanje"
+      }
+    },
+    "hu": {
+      "ascLocale": "hu",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, havi",
+        "description": "Korlátlan alkotónap, havi számlázás"
+      },
+      "yearly": {
+        "name": "Oczko Pro, éves",
+        "description": "Korlátlan alkotónap, éves számlázás"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, élethosszig",
+        "description": "Korlátlan alkotónap, egyszeri fizetés"
+      }
+    },
+    "id": {
+      "ascLocale": "id",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, bulanan",
+        "description": "Tanpa batas hari berkarya, ditagih bulanan"
+      },
+      "yearly": {
+        "name": "Oczko Pro, tahunan",
+        "description": "Tanpa batas hari berkarya, ditagih tahunan"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, seumur hidup",
+        "description": "Tanpa batas hari berkarya, bayar sekali"
+      }
+    },
+    "it": {
+      "ascLocale": "it",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensile",
+        "description": "Giorni di lavoro illimitati, addebito mensile"
+      },
+      "yearly": {
+        "name": "Oczko Pro, annuale",
+        "description": "Giorni di lavoro illimitati, addebito annuale"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, a vita",
+        "description": "Giorni di lavoro illimitati, paghi una volta"
+      }
+    },
+    "ko": {
+      "ascLocale": "ko",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, 월간",
+        "description": "작업일 무제한, 매월 결제"
+      },
+      "yearly": {
+        "name": "Oczko Pro, 연간",
+        "description": "작업일 무제한, 매년 결제"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, 평생 이용",
+        "description": "작업일 무제한, 한 번만 결제"
+      }
+    },
+    "lt": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mėnesinis",
+        "description": "Be rankdarbių dienų limito, mokama kas mėnesį"
+      },
+      "yearly": {
+        "name": "Oczko Pro, metinis",
+        "description": "Be rankdarbių dienų limito, mokama kasmet"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, visam laikui",
+        "description": "Be rankdarbių dienų limito, vienas pirkimas"
+      }
+    },
+    "lv": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mēneša",
+        "description": "Bez rokdarbu dienu limita, apmaksa ik mēnesi"
+      },
+      "yearly": {
+        "name": "Oczko Pro, gada",
+        "description": "Bez rokdarbu dienu limita, apmaksa ik gadu"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, uz mūžu",
+        "description": "Bez rokdarbu dienu limita, viens pirkums"
+      }
+    },
+    "ms": {
+      "ascLocale": "ms",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, bulanan",
+        "description": "Tiada had hari berkraf, dibayar setiap bulan"
+      },
+      "yearly": {
+        "name": "Oczko Pro, tahunan",
+        "description": "Tiada had hari berkraf, dibayar setiap tahun"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, seumur hidup",
+        "description": "Tiada had hari berkraf, bayar sekali"
+      }
+    },
+    "nb": {
+      "ascLocale": "no",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, månedlig",
+        "description": "Ubegrensede håndarbeidsdager, betal månedlig"
+      },
+      "yearly": {
+        "name": "Oczko Pro, årlig",
+        "description": "Ubegrensede håndarbeidsdager, betal årlig"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, livstid",
+        "description": "Ubegrensede håndarbeidsdager, betal én gang"
+      }
+    },
+    "nl": {
+      "ascLocale": "nl-NL",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, maandelijks",
+        "description": "Onbeperkte handwerkdagen, per maand betaald"
+      },
+      "yearly": {
+        "name": "Oczko Pro, jaarlijks",
+        "description": "Onbeperkte handwerkdagen, per jaar betaald"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, levenslang",
+        "description": "Onbeperkte handwerkdagen, eenmalige aankoop"
+      }
+    },
+    "pt-BR": {
+      "ascLocale": "pt-BR",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensal",
+        "description": "Dias de artesanato sem limite, pago por mês"
+      },
+      "yearly": {
+        "name": "Oczko Pro, anual",
+        "description": "Dias de artesanato sem limite, pago por ano"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, vitalício",
+        "description": "Dias de artesanato sem limite, pago uma vez"
+      }
+    },
+    "pt": {
+      "ascLocale": "pt-PT",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mensal",
+        "description": "Dias de lavores sem limite, faturação mensal"
+      },
+      "yearly": {
+        "name": "Oczko Pro, anual",
+        "description": "Dias de lavores sem limite, faturação anual"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, vitalício",
+        "description": "Dias de lavores sem limite, pagamento único"
+      }
+    },
+    "ro": {
+      "ascLocale": "ro",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, lunar",
+        "description": "Fără limită de zile de lucru, plată lunară"
+      },
+      "yearly": {
+        "name": "Oczko Pro, anual",
+        "description": "Fără limită de zile de lucru, plată anuală"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, pe viață",
+        "description": "Fără limită de zile de lucru, plată unică"
+      }
+    },
+    "ru": {
+      "ascLocale": "ru",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, месяц",
+        "description": "Без лимита дней рукоделия, оплата ежемесячно"
+      },
+      "yearly": {
+        "name": "Oczko Pro, год",
+        "description": "Без лимита дней рукоделия, оплата ежегодно"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, навсегда",
+        "description": "Без лимита дней рукоделия, оплата один раз"
+      }
+    },
+    "sk": {
+      "ascLocale": "sk",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mesačne",
+        "description": "Bez limitu tvorivých dní, účtované mesačne"
+      },
+      "yearly": {
+        "name": "Oczko Pro, ročne",
+        "description": "Bez limitu tvorivých dní, účtované ročne"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, doživotne",
+        "description": "Bez limitu tvorivých dní, jednorazový nákup"
+      }
+    },
+    "sl": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, mesečno",
+        "description": "Neomejeni ustvarjalni dnevi, mesečno plačilo"
+      },
+      "yearly": {
+        "name": "Oczko Pro, letno",
+        "description": "Neomejeni ustvarjalni dnevi, letno plačilo"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, doživljenjsko",
+        "description": "Neomejeni ustvarjalni dnevi, enkratno plačilo"
+      }
+    },
+    "sr": {
+      "ascLocale": null,
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, месечно",
+        "description": "Без ограничења дана рада, наплата месечно"
+      },
+      "yearly": {
+        "name": "Oczko Pro, годишње",
+        "description": "Без ограничења дана рада, наплата годишње"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, доживотно",
+        "description": "Без ограничења дана рада, једна куповина"
+      }
+    },
+    "sv": {
+      "ascLocale": "sv",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, månadsvis",
+        "description": "Obegränsade hantverksdagar, betalas månadsvis"
+      },
+      "yearly": {
+        "name": "Oczko Pro, årsvis",
+        "description": "Obegränsade hantverksdagar, betalas årsvis"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, livstid",
+        "description": "Obegränsade hantverksdagar, engångsköp"
+      }
+    },
+    "tr": {
+      "ascLocale": "tr",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, aylık",
+        "description": "Sınırsız el işi günü, her ay ödenir"
+      },
+      "yearly": {
+        "name": "Oczko Pro, yıllık",
+        "description": "Sınırsız el işi günü, her yıl ödenir"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, ömür boyu",
+        "description": "Sınırsız el işi günü, bir kez ödenir"
+      }
+    },
+    "uk": {
+      "ascLocale": "uk",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, щомісяця",
+        "description": "Без ліміту днів рукоділля, оплата щомісяця"
+      },
+      "yearly": {
+        "name": "Oczko Pro, щороку",
+        "description": "Без ліміту днів рукоділля, оплата щороку"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, довічно",
+        "description": "Без ліміту днів рукоділля, одна оплата"
+      }
+    },
+    "vi": {
+      "ascLocale": "vi",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro, hằng tháng",
+        "description": "Không giới hạn ngày đan móc, trả hằng tháng"
+      },
+      "yearly": {
+        "name": "Oczko Pro, hằng năm",
+        "description": "Không giới hạn ngày đan móc, trả hằng năm"
+      },
+      "lifetime": {
+        "name": "Oczko Pro, trọn đời",
+        "description": "Không giới hạn ngày đan móc, trả một lần"
+      }
+    },
+    "zh-Hant": {
+      "ascLocale": "zh-Hant",
+      "group": {
+        "name": "Oczko Pro"
+      },
+      "monthly": {
+        "name": "Oczko Pro，月繳",
+        "description": "手作日無上限，每月收費"
+      },
+      "yearly": {
+        "name": "Oczko Pro，年繳",
+        "description": "手作日無上限，每年收費"
+      },
+      "lifetime": {
+        "name": "Oczko Pro，買斷",
+        "description": "手作日無上限，一次付清"
+      }
     }
   }
 }
