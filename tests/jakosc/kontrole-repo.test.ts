@@ -147,6 +147,24 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
     expect(w.status).toBe(1);
     expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA');
   });
+  // M1-audytor-generalny-010 (10-wydanie-004; P-463, jak Trening): zadania ZAPISUJĄCE do ASC tylko z `environment: release`; zadania tylko
+  // czytające z listy w strażniku (asc-kontrola) mogą używać sekretów repozytorium bez środowiska — bez wyjątku w wyjatki.json.
+  const KONTROLA = 'on: workflow_dispatch\npermissions:\n  contents: read\njobs:\n  kontrola:\n    uses: lkarwowski494/apps4brew-narzedzia/.github/workflows/asc-kontrola.yml@43afe81aa37a117dd32259f6452196a1efccd0ec\n    secrets:\n      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}\n';
+  test('M1-010 zadanie czytające (asc-kontrola) bez środowiska przechodzi', () => {
+    const w = uruchom(WORKFLOWY, wf('asc-kontrola.yml', KONTROLA));
+    expect(w.stdout).not.toContain('SEKRET-BEZ-SRODOWISKA');
+    expect(w.status).toBe(0);
+  });
+  test.each([['asc-zrzuty.yml', 'zapis'], ['asc-metadane.yml', 'zapis'], ['asc-iap-localizations.yml', 'lokalizacje'], ['testflight.yml', 'build'], ['asc-kontrola.yml', 'inne']])(
+    'M1-010 zadanie zapisujące %s → %s z ASC_* bez environment: release pada', (plik, zadanie) => {
+      const w = uruchom(WORKFLOWY, wf(plik, `on: workflow_dispatch\npermissions:\n  contents: read\njobs:\n  ${zadanie}:\n    runs-on: macos-26\n    timeout-minutes: 30\n    steps:\n      - run: node x.mjs\n        env:\n          K: \${{ secrets.ASC_KEY_P8 }}\n`));
+      expect(w.status).toBe(1);
+      expect(w.stdout).toContain(`SEKRET-BEZ-SRODOWISKA .github/workflows/${plik}: zadanie ${zadanie}`);
+    });
+  test('M1-010 zadanie z listy czytających, ale z warunkiem trybu zapisu, pada', () => {
+    const w = uruchom(WORKFLOWY, wf('asc-kontrola.yml', KONTROLA.replace('    uses:', "    if: ${{ inputs.tryb == 'apply' }}\n    uses:")));
+    expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA');
+  });
   test('R-173 dowolna nazwa sekretu (nie tylko ASC_*) też pada', () => {
     const w = uruchom(WORKFLOWY, wf('a.yml', 'on: push\njobs:\n  b:\n    runs-on: ubuntu-latest\n    env:\n      K: ${{ secrets.KLUCZ_PODPISU }}\n    steps:\n      - run: true\n'));
     expect(w.stdout).toContain('KLUCZ_PODPISU');

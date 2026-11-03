@@ -217,12 +217,15 @@ describe('workflowy asc-*.yml (statycznie)', () => {
       expect(t).not.toMatch(/run: .*\$\{\{ inputs\./);
     }
   });
-  test('kontrola ASC: workflow wielokrotnego użytku przypięty do pełnego SHA, tylko ręcznie, konfiguracja istnieje (wyjątek nazwany w wyjatki.json)', () => {
+  // P-463 (M1-010): zamiast wyjątku w wyjatki.json — zadanie czytające na liście ASC_TYLKO_ODCZYT strażnika (jak Trening: odczyt bez środowiska).
+  test('kontrola ASC: workflow wielokrotnego użytku przypięty do pełnego SHA, tylko ręcznie, konfiguracja istnieje (zadanie czytające, P-463)', () => {
     const t = read('.github/workflows/asc-kontrola.yml');
     expect(t).toMatch(/uses: lkarwowski494\/apps4brew-narzedzia\/\.github\/workflows\/asc-kontrola\.yml@[0-9a-f]{40}\n/);
     expect(t).toContain('config: docs/wydanie/asc-kontrola.json');
-    const wyj = json('scripts/jakosc/wyjatki.json').workflowy as { regula: string; plik: string; termin: string }[];
-    expect(wyj.some((w) => w.plik === '.github/workflows/asc-kontrola.yml' && w.regula === 'SEKRET-BEZ-SRODOWISKA' && w.termin)).toBe(true);
+    expect(t).not.toMatch(/^\s+environment:/m);
+    expect(read('scripts/jakosc/sprawdz-workflowy.mjs')).toContain("{ plik: '.github/workflows/asc-kontrola.yml', zadanie: 'kontrola',");
+    const wyj = json('scripts/jakosc/wyjatki.json').workflowy as { regula: string; plik: string }[];
+    expect(wyj.some((w) => w.plik === '.github/workflows/asc-kontrola.yml')).toBe(false);
   });
 });
 

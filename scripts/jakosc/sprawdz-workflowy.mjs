@@ -1,5 +1,7 @@
 // Strażnik workflowów (ADR-0014, kontrola 05-9; P-089; strategia §5). Reguły:
-//  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: release`;
+//  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: release`; wyjątek P-463 (M1-010, jak Trening):
+//    zadanie TYLKO CZYTAJĄCE z ASC z listy ASC_TYLKO_ODCZYT może użyć sekretów repozytorium ASC_* bez środowiska, o ile nie ma warunku trybu zapisu;
+//    każde inne zadanie z ASC_* (testflight, asc-metadane, asc-zrzuty, asc-iap-localizations apply…) jest zapisujące i wymaga `environment: release`;
 //  WYZWALACZ-Z-SEKRETAMI: workflow z takim zadaniem nie ma `pull_request`, `pull_request_target` ani `workflow_run`;
 //  SZTUCZNY-SKLEP-W-WYDANIU: przełączniki testowe (`EXPO_PUBLIC_STORE_FAKE`, `_WATCH_FAKE`, `_ICLOUD_FAKE`, `_E2E`, `_WYMUS_AWARIE`, `_PSEUDO`) nie występują w workflowie z `environment: release`;
 //  BRAK-WORKFLOWOW: katalog bez plików .yml to błąd (pusty zbiór to nie zaliczenie).
@@ -17,6 +19,12 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 
+/** P-463 (M1-010): zadania tylko czytające z App Store Connect (GET, plan, --dry-run) — bez środowiska, sekrety repozytorium jak w Treningu.
+ *  Domyślnie każde zadanie z ASC_* jest zapisujące; nowe zadanie czytające (np. `plan` z --dry-run) dopisuje się tu z uzasadnieniem. */
+export const ASC_TYLKO_ODCZYT = [
+  { plik: '.github/workflows/asc-kontrola.yml', zadanie: 'kontrola', dlaczego: 'workflow wielokrotnego użytku apps4brew-narzedzia przypięty do SHA, tylko GET, tylko workflow_dispatch' },
+];
+const TRYB_ZAPISU = /\b(apply|zapis|upload|wyslij|push)\b/i;
 const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
 
 export function sprawdzWorkflowy(korzen) {
@@ -59,7 +67,9 @@ export function sprawdzWorkflowy(korzen) {
       if (env === 'release') wydanie = true;
       if (sekrety.length) {
         zSekretami = true;
-        if (env !== 'release') zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: release`);
+        const czytajace = ASC_TYLKO_ODCZYT.some((o) => o.plik === rel && o.zadanie === id) && sekrety.every((s) => s.startsWith('ASC_'))
+          && !TRYB_ZAPISU.test(String(job?.if ?? ''));
+        if (env !== 'release' && !czytajace) zgl('SEKRET-BEZ-SRODOWISKA', `zadanie ${id} używa ${[...new Set(sekrety)].join(', ')} bez environment: release (zapis do ASC i inne sekrety tylko w release, P-463)`);
       }
     }
     if (/secrets\.(?!GITHUB_TOKEN)/.test(JSON.stringify(wf?.env ?? {}))) { zSekretami = true; zgl('SEKRET-BEZ-SRODOWISKA', 'sekret w env na poziomie workflowu'); }
