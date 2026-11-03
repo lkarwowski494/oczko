@@ -15,7 +15,7 @@ import { atrapaHaptyki, zagrane } from './pomoc';
 
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined }));
+jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));
 jest.mock('../../src/kompozycja/system', () => {
   const p = jest.requireActual('./pomoc') as typeof import('./pomoc');
   return { cyklAplikacji: p.atrapaCyklu().cykl, oglos: jest.fn(), systemAplikacji: p.atrapaSystemu() };

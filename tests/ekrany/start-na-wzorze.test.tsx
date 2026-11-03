@@ -10,7 +10,7 @@ import { wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), canGoBack: () => false, back: jest.fn() };
 jest.mock('expo-router', () => ({
-  useRouter: () => mockRouter,
+  usePathname: () => '/', useRouter: () => mockRouter,
   useIsFocused: () => true,
   useFocusEffect: (f: () => void | (() => void)) => { // eslint-disable-next-line @typescript-eslint/no-require-imports
     (require('react') as typeof React).useEffect(f, []);

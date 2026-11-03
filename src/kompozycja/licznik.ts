@@ -281,6 +281,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         await poZapisie(w);
       },
       przyTle: async () => { await o.skrzynka?.migawka().catch(() => undefined); await przyTle(z); },
+      ekranWlaczony: () => o.ekranWlaczony?.() ?? true, // M1-audytor-generalny-059: preferencja w chwili wejścia na licznik, nie ze startu
     },
     dzialania: {
       async naMinus() {

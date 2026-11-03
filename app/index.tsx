@@ -1,7 +1,7 @@
 // Trasa „/”: ekran licznika (pierwszy ekran, NFR-PIE-001; powrót do miejsca F-49). Gdy zapamiętane miejsce jest w koszu, lista projektów (moduly.md:238).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, usePathname, useRouter } from 'expo-router';
 import { Aplikacja } from '../src/ekrany/Aplikacja';
 import { useKolory } from '../src/ekrany/motyw';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
@@ -17,6 +17,10 @@ export default function EkranLicznika(): React.ReactElement {
   const { kontener, licznik, naAwarie } = useAplikacja();
   const router = useRouter();
   const k = useKolory();
+  // U11, M1-audytor-generalny-059: licznik zostaje zamontowany pod listą projektów, Ustawieniami i Narzędziami (`router.push`), więc blokada
+  // wygaszania zależy od trasy na wierzchu: licznik albo wzór (także otwarty z projektu; P-284 (2)).
+  const sciezka = usePathname();
+  const naWierzchu = sciezka === '/' || sciezka === '/wzor';
   const [gotowe, ustawGotowe] = useState(false);
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [plusy, ustawPlusy] = useState(0); // P-191 P5a: linia „zapomniany stoper” liczona od nowa po każdym udanym +1
@@ -72,6 +76,7 @@ export default function EkranLicznika(): React.ReactElement {
     <Bezpieczny>
       <Aplikacja
         key={wersja}
+        naWierzchu={naWierzchu}
         porty={kontener.porty}
         uslugi={uslugi}
         cykl={cyklAplikacji}
