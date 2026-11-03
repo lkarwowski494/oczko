@@ -75,7 +75,7 @@ Opcja A. Zdarzenia licznika są tylko dopisywane, więc scalanie jest determinis
 **Konsekwencje.**
 - Dobre: zamyka okno „nagrobek sprzed wysyłki odebrany po niej” po stronie nadawcy. `unknownItem` daje nadawcy pewny sygnał usunięcia także przy zwykłej edycji: edycja projektu usuniętego na innym urządzeniu kończy się koszem, nie „W toku”.
 - Złe: wpisy wysłane zostają do najbliższego pełnego pobrania, po włączeniu synchronizacji cała baza. Gdy w partii są nagrobki, `zatrzymaneNagrobki` liczy przodków także od tych wpisów; koszt do pomiaru (ARCH-19). Rzadko wraca do kosza rekord, który drugie urządzenie usunęło już po zobaczeniu tej zmiany. Kierunek jest bezpieczny: nic nie ginie, rekord da się usunąć drugi raz.
-- Zostaje: A trwale usuwa projekt, zanim pobrał zmianę, którą B już wysłał, a B zdążył po niej przejść pełne pobranie. Wtedy zdarzenie B czeka na A w poczekalni (po `POCZEKALNIA_DNI` stan „niepełna historia”). Zamknięcie wymagałoby pamięci własnych nagrobków na A (opcja (b) z analizy p3b), poza P-440.
+- Zostaje: A trwale usuwa projekt, zanim pobrał zmianę, którą B już wysłał, a B zdążył po niej przejść pełne pobranie. Wtedy zdarzenie B czeka na A w poczekalni (po `POCZEKALNIA_DNI` stan „niepełna historia”). Zamknięcie wymagałoby pamięci własnych nagrobków na A (opcja (b) z analizy p3b), poza P-440. To ryzyko szczątkowe jest warunkiem przed `ICLOUD_W_1_0 = true` (P-444): przed przełączeniem koordynator przyjmuje je wprost albo decyduje o opcji (b) z analizy p3b; w 1.0 (bezpiecznik `false`) nie dotyczy.
 
 **Potwierdzenie.**
 - Test „116 z wysyłką B między partiami jednego pobrania” (A i B: 4 zdarzenia, licznik 4, projekt w koszu) oraz test „usunięcie samej części na A przy +1 offline na B” (A i B: część w koszu, projekt w „W toku”).
