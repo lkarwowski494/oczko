@@ -13,8 +13,9 @@ const root = join(__dirname, '../..');
 const read = (f: string) => readFileSync(join(root, f), 'utf8');
 const json = (f: string) => JSON.parse(read(f)) as Record<string, any>; // dane z repo
 const DRIVER = join(__dirname, 'asc-produkty-driver.mjs');
+const BEZ_NADPISAN = { nadpisania: { nadpisaniaCen: {} } }; // czysty równoważnik Apple
 
-type Akcja = { typ: string; klucz?: string; ile?: number | null; opis: string };
+type Akcja = { typ: string; klucz?: string; ile?: number | null; opis: string; nadpisania?: string[] };
 type Krok = { code: number; akcje: Akcja[]; stop: string[]; nieodwracalne: string[]; zapisy: number; metody: string[]; log: string[] };
 type Wynik = { kroki: Krok[]; stan: any; calls: { m: string; p: string; raw: string }[] };
 function uruchom(sc: Record<string, unknown>): Wynik {
@@ -22,7 +23,7 @@ function uruchom(sc: Record<string, unknown>): Wynik {
 }
 const typy = (k: Krok) => k.akcje.map((a) => a.typ).sort();
 const ILE = (k: Krok, t: string) => k.akcje.filter((a) => a.typ === t).length;
-const KRAJE = ['DEU', 'FRA', 'JPN', 'POL', 'USA'];
+const KRAJE = ['DEU', 'FRA', 'GBR', 'JPN', 'POL', 'USA'];
 
 describe('plan na pustym App Store Connect', () => {
   const w = uruchom({ kroki: [{ apply: false }] });
@@ -56,12 +57,14 @@ describe('zapis na pustym serwerze i ponowny przebieg', () => {
       const id = w.stan.subskrypcje.find((x: any) => x.productId === pid).id;
       const c = w.stan.ceny.filter((x: any) => x.sub === id);
       expect(c.map((x: any) => x.kraj).sort()).toEqual(KRAJE); expect(c.find((x: any) => x.kraj === 'USA').punkt).toBe(usa);
-      expect(c.find((x: any) => x.kraj === 'POL').punkt).toBe(pid.endsWith('monthly') ? 'POL:3.99' : 'POL:29.99'); // równoważnik z atrapy
+      expect(c.find((x: any) => x.kraj === 'POL').punkt).toBe(pid.endsWith('monthly') ? 'POL:4.99' : 'POL:19.99'); // P-089/P-472: ręczna cena PL
+      expect(c.find((x: any) => x.kraj === 'GBR').punkt).toBe(pid.endsWith('monthly') ? 'GBR:0.99' : 'GBR:6.99'); // P-089/P-472: ręczna cena GB
+      expect(c.find((x: any) => x.kraj === 'DEU').punkt).toBe(pid.endsWith('monthly') ? 'DEU:0.99' : 'DEU:6.99'); // EUR i reszta: równoważnik Apple
     }
   });
-  test('zakup jednorazowy: harmonogram z krajem bazowym USA i jedną ceną ręczną 14,99 (reszta automatycznie po stronie Apple)', () => {
+  test('zakup jednorazowy: harmonogram z krajem bazowym USA, ceną 14,99 i dwiema cenami ręcznymi z P-089 (PL 59,99, GB 14,99); reszta automatycznie po stronie Apple', () => {
     expect(w.stan.harmonogramy).toHaveLength(1); const h = w.stan.harmonogramy[0];
-    expect(h.baza).toBe('USA'); expect(h.reczne).toEqual([{ kraj: 'USA', punkt: 'USA:14.99' }]);
+    expect(h.baza).toBe('USA'); expect(h.reczne.map((x: any) => x.punkt).sort()).toEqual(['GBR:14.99', 'POL:59.99', 'USA:14.99']);
   });
   test('dostępność: wszystkie kraje i nowe kraje (availableInNewTerritories) dla trzech produktów', () => {
     expect(w.stan.dostSub).toHaveLength(2); expect(w.stan.dostIap).toHaveLength(1);
@@ -154,8 +157,9 @@ describe('wznowienie po przerwanym przebiegu i Family Sharing', () => {
     };
     const w = uruchom({ stan, kroki: [{ apply: false }, { apply: true }, { apply: false }] });
     expect(ILE(w.kroki[0], 'subskrypcja:dostepnosc')).toBe(2); // monthly (niepełna) + yearly (nowa)
-    expect(w.kroki[0].akcje.find((a) => a.typ === 'subskrypcja:dostepnosc' && a.klucz === 'monthly')!.ile).toBe(4); // brakujące kraje
-    expect(ILE(w.kroki[0], 'iap:dostepnosc')).toBe(1); expect(ILE(w.kroki[0], 'iap:cena')).toBe(0);
+    expect(w.kroki[0].akcje.find((a) => a.typ === 'subskrypcja:dostepnosc' && a.klucz === 'monthly')!.ile).toBe(5); // brakujące kraje (6 w atrapie, USA jest)
+    expect(ILE(w.kroki[0], 'iap:dostepnosc')).toBe(1); expect(ILE(w.kroki[0], 'iap:cena')).toBe(1); // dokłada 2 ręczne ceny (PL, GB), cena bazowa nietknięta
+    expect(w.kroki[0].akcje.find((x) => x.typ === 'iap:cena')!.ile).toBe(2);
     expect(w.kroki[1].code).toBe(0);
     const d = w.stan.dostSub.find((x: any) => x.sub === 'SX'); expect([...d.kraje].sort()).toEqual(KRAJE); expect(d.nowe).toBe(true);
     expect(w.stan.dostIap).toHaveLength(1); expect([...w.stan.dostIap[0].kraje].sort()).toEqual(KRAJE);
@@ -182,9 +186,20 @@ describe('wznowienie po przerwanym przebiegu i Family Sharing', () => {
   });
 });
 
-describe('nadpisania cen w wybranych krajach (mechanizm; domyślnie puste)', () => {
-  test('domyślne dane nie mają nadpisań (kraje inne niż USA liczy Apple)', () => {
-    expect(json('docs/wydanie/metadane/produkty.store.json').nadpisaniaCen).toEqual({});
+describe('nadpisania cen w wybranych krajach (P-089, P-472: PL i GB jak Trening)', () => {
+  test('dane: nadpisania z P-089/P-472 — PL 4,99 / 19,99 / 59,99 zł i GB 0,99 / 6,99 / 14,99 £ (EUR i reszta z przeliczenia Apple)', () => {
+    expect(json('docs/wydanie/metadane/produkty.store.json').nadpisaniaCen).toEqual({ POL: { monthly: '4.99', yearly: '19.99', lifetime: '59.99' }, GBR: { monthly: '0.99', yearly: '6.99', lifetime: '14.99' } });
+  });
+  test('plan na pustym ASC pokazuje 2 nadpisania na produkt (kraj i cena) w pozycjach cen i w logu', () => {
+    const k = uruchom({ kroki: [{ apply: false }] }).kroki[0];
+    for (const a of k.akcje.filter((x) => x.typ === 'subskrypcja:ceny' || x.typ === 'iap:cena')) expect(a.nadpisania).toHaveLength(2);
+    const m = k.akcje.find((x) => x.klucz === 'monthly' && x.typ === 'subskrypcja:ceny')!; expect(m.nadpisania).toEqual(['POL 4.99', 'GBR 0.99']);
+    expect(k.log.join('\n')).toMatch(/nadpisania: POL 59\.99, GBR 14\.99/);
+  });
+  test('bez nadpisań (dane puste) kraje dostają równoważniki Apple', () => {
+    const w = uruchom({ ...BEZ_NADPISAN, kroki: [{ apply: true }] });
+    const mid = w.stan.subskrypcje.find((x: any) => x.productId === 'oczko.pro.monthly').id;
+    expect(w.stan.ceny.find((c: any) => c.sub === mid && c.kraj === 'POL').punkt).toBe('POL:3.99'); expect(w.stan.harmonogramy[0].reczne).toEqual([{ kraj: 'USA', punkt: 'USA:14.99' }]);
   });
   test('nadpisanie POL: kraj dostaje wskazany poziom ceny zamiast równoważnika (subskrypcja i zakup jednorazowy)', () => {
     const w = uruchom({ nadpisania: { nadpisaniaCen: { POL: { monthly: '4.99', yearly: '19.99', lifetime: '59.99' } } }, kroki: [{ apply: true }, { apply: false }] });

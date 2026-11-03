@@ -86,7 +86,9 @@ export async function odczytajStan(client, data) {
 /** Plan z samego stanu (czysta funkcja): { akcje, stop, nieodwracalne }. */
 export function planuj(st, data, { familySharing = data.familySharing } = {}) {
   const akcje = []; const stop = []; const nieodwracalne = [];
-  const dod = (typ, klucz, opis, ile = null) => akcje.push({ typ, klucz, opis, ile });
+  const dod = (typ, klucz, opis, ile = null, nadpisania = undefined) => akcje.push({ typ, klucz, opis, ile, ...(nadpisania?.length ? { nadpisania } : {}) });
+  const nad = k => Object.entries(data.nadpisaniaCen ?? {}).filter(([, c]) => c[k] !== undefined).map(([kr, c]) => `${kr} ${c[k]}`);
+  const opNad = k => (nad(k).length ? `; nadpisania: ${nad(k).join(', ')}` : '');
   const id = k => PRODUCTS[k].productId;
   const FS = k => { nieodwracalne.push(`NIEODWRACALNE: Family Sharing dla ${id(k)} (Apple: „once you turn on Family Sharing for an In-App Purchases in App Store Connect, you can't turn it off”)`); };
   if (st.zdublowanaGrupa) stop.push(`grupa subskrypcji „${SUBSCRIPTION_GROUP_NAME}”: znaleziono ${st.zdublowanaGrupa} (nie wybieram sam)`);
@@ -101,7 +103,7 @@ export function planuj(st, data, { familySharing = data.familySharing } = {}) {
       dod('subskrypcja:utworz', k, `subskrypcja ${id(k)} (${def.okres}, poziom grupy ${def.poziomGrupy}${familySharing ? ', Family Sharing' : ''})`);
       if (familySharing) FS(k);
       dostepnosc('subskrypcja:dostepnosc', k, null);
-      dod('subskrypcja:ceny', k, `ceny ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy}) i równoważniki Apple w pozostałych krajach`);
+      dod('subskrypcja:ceny', k, `ceny ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy}) i równoważniki Apple w pozostałych krajach${opNad(k)}`, null, nad(k));
       continue;
     }
     if (p.okres !== def.okres) { stop.push(`${id(k)}: okres w App Store Connect ${p.okres} ≠ ${def.okres} z planu (nie zmieniam okresu istniejącej subskrypcji)`); continue; }
@@ -121,7 +123,7 @@ export function planuj(st, data, { familySharing = data.familySharing } = {}) {
       dod('iap:utworz', k, `zakup jednorazowy ${id(k)} (${def.typ}${familySharing ? ', Family Sharing' : ''})`);
       if (familySharing) FS(k);
       dostepnosc('iap:dostepnosc', k, null);
-      dod('iap:cena', k, `cena ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy}), pozostałe kraje automatycznie (Apple)`);
+      dod('iap:cena', k, `cena ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy}), pozostałe kraje automatycznie (Apple)${opNad(k)}`, null, nad(k));
       continue;
     }
     if (p.typ !== def.typ) { stop.push(`${id(k)}: typ w App Store Connect ${p.typ} ≠ ${def.typ} z planu (nie zmieniam typu)`); continue; }
@@ -130,7 +132,7 @@ export function planuj(st, data, { familySharing = data.familySharing } = {}) {
     const w = p.wskazane;
     if (w.blad) { stop.push(`${id(k)}: ${w.blad}`); continue; }
     const h = p.harmonogram;
-    if (!h) { dod('iap:cena', k, `cena ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy})`); continue; }
+    if (!h) { dod('iap:cena', k, `cena ${id(k)}: ${def.cenaBazowa} (kraj bazowy ${data.krajBazowy})${opNad(k)}`, null, nad(k)); continue; }
     if (h.baza !== data.krajBazowy) { stop.push(`${id(k)}: kraj bazowy w App Store Connect ${h.baza} ≠ ${data.krajBazowy} z planu (nie zmieniam)`); continue; }
     const usa = h.reczne.get(data.krajBazowy);
     if (usa !== w.bazaPunkt) { stop.push(`${id(k)}: cena ${data.krajBazowy} w App Store Connect ${w.nazwyPunktow.get(usa) ?? 'inna'} ≠ ${w.cena} z planu (zmiana ceny istniejącego produktu poza zakresem skryptu)`); continue; }
