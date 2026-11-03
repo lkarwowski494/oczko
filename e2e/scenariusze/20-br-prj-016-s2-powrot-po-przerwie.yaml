@@ -29,3 +29,4 @@ tags:
 - tapOn: "Harbor.*"
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- takeScreenshot: 20-projekt-po-powrocie

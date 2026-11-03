@@ -33,6 +33,10 @@ tags:
 - assertVisible: "A repeat needs at least 1 row."
 - takeScreenshot: 55-dlugosc-zero
 - tapOn: { id: "arkusz-zamknij" }
+# poprawka 020: zamknięcie zmienionego formularza pyta o odrzucenie (E2-141-S1; „?” w wyrażeniu regularnym Maestro trzeba zasłonić)
+- assertVisible: "Discard changes\\?"
+- takeScreenshot: 55-odrzuc-zmiany
+- tapOn: "Discard changes"
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "17" }, timeout: 20000 }
 - assertNotVisible: { id: "licznik-powtorzenie" }
 # S1 (RD-12-W1): 17 przy długości 8

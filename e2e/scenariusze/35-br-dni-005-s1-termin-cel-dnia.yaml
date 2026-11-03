@@ -36,6 +36,7 @@ tags:
 # elementów całkiem poza ekranem (przebieg 123: drzewo kończy się na wzor-dodaj [16,807][386,865]). F07-32.
 - scrollUntilVisible: { element: { id: "projekt-termin" } }
 - assertVisible: { id: "projekt-termin" }
+- takeScreenshot: 35-termin-pole-przed-wpisem
 - tapOn: { id: "projekt-termin" }
 - assertVisible: { id: "formularz-termin-data" }
 - tapOn: "Next Month"

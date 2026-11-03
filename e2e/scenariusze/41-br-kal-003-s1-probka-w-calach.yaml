@@ -16,6 +16,7 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "nav-narzedzia" }
 - assertVisible: { id: "narzedzia-probka" }
+- takeScreenshot: 41-narzedzia-wejscie
 - tapOn: { id: "narzedzia-probka" }
 - assertVisible: { id: "probka-oczka" }
 - assertVisible: "per 4 in"
