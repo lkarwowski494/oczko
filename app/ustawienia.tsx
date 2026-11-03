@@ -29,7 +29,7 @@ type Dane =
   | { rodzaj: 'wybor'; plik: string; licznosci: string }
   | { rodzaj: 'wynik'; tekst: string }
   | { rodzaj: 'zastapiono'; kopia: string }
-  | { rodzaj: 'blad' }
+  | { rodzaj: 'blad'; miejsce?: boolean } // M1-159 (ADR-0020 (4)): `brak_miejsca` z archiwum → tekst o miejscu zamiast ogólnego `dane.blad`
   | null;
 
 export default function EkranUstawien(): React.ReactElement {
@@ -64,7 +64,7 @@ export default function EkranUstawien(): React.ReactElement {
   }
   async function eksport(): Promise<string | null> {
     const w = await eksportuj(z, { katalogDocelowy: z.katalogi.tymczasowy });
-    if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return null; }
+    if (!w.ok) { ustawDane({ rodzaj: 'blad', miejsce: w.powod === 'brak_miejsca' }); return null; }
     ustawOstatni(w.wartosc.sciezka);
     ustawDane({ rodzaj: 'eksport', licznosci: licznosciTekst(w.wartosc.manifest.licznosci, t) });
     return w.wartosc.sciezka;
@@ -102,7 +102,7 @@ export default function EkranUstawien(): React.ReactElement {
       Alert.alert(t('import.nie_rozpoznano_tytul'), t('import.nie_rozpoznano_opis'));
       return;
     }
-    if (!w.ok) { ustawDane({ rodzaj: 'blad' }); return; }
+    if (!w.ok) { ustawDane({ rodzaj: 'blad', miejsce: w.powod === 'brak_miejsca' }); return; }
     if (w.wartosc.tryb === 'anulowano') { ustawDane(null); return; }
     if (w.wartosc.tryb === 'zastap') licznik.zresetuj(); else await licznik.poZmianie();
     if (w.wartosc.tryb === 'zastap' && w.wartosc.kopiaPrzed) { ustawDane({ rodzaj: 'zastapiono', kopia: nazwaPliku(w.wartosc.kopiaPrzed) }); return; } // ADR-0028: nazwa kopii z Plików, nie „Merged”
@@ -121,7 +121,7 @@ export default function EkranUstawien(): React.ReactElement {
 
   const wynikDanych = dane === null ? null
     : dane.rodzaj === 'eksport' ? <View testID="eksport-wynik"><Tresc>{t('dane.eksport_gotowy_tytul')}</Tresc><Tresc testID="eksport-licznosci">{dane.licznosci}</Tresc></View>
-    : dane.rodzaj === 'blad' ? <Tresc>{t('dane.blad')}</Tresc>
+    : dane.rodzaj === 'blad' ? <Tresc>{t(dane.miejsce ? 'wspolne.blad_zapisu_opis' : 'dane.blad')}</Tresc>
     : dane.rodzaj === 'zastapiono' ? <Import wbudowany t={t} stan={{ rodzaj: 'zastapiono', kopia: dane.kopia }} naZastap={naZastap} naScal={() => undefined} naAnuluj={zamknijDane} />
     : <Import wbudowany t={t} stan={dane.rodzaj === 'wybor' ? { rodzaj: 'wybor', plik: dane.plik, licznosci: dane.licznosci } : { rodzaj: 'wybor', plik: '' }}
         wynik={dane.rodzaj === 'wynik' ? dane.tekst : undefined}

@@ -126,3 +126,44 @@ test('M1-001 (05-architekt-501): eksport przez trasę → plik .oczko trafia do 
   zamknijArkusz();
   await waitFor(() => expect(readdirSync(s.z.katalogi.tymczasowy).filter((n) => n.endsWith('.oczko'))).toEqual([]));
 });
+
+// M1-audytor-generalny-159 (12-niezawodnosc-507; ADR-0020 (4), NIE-03): za mało miejsca na kopię przed „Replace” albo na eksport (`archiwum.zapisz`
+// zwraca `brak_miejsca` przed zapisem) → ekran mówi o miejscu (istniejący tekst `wspolne.blad_zapisu_opis`), a nie ogólne `dane.blad`; baza bez zmian.
+const MIEJSCE = 'Your device may be out of space. Nothing was changed. Free some space and try again.';
+const stanBazy = async (s: Awaited<ReturnType<typeof aplikacja>>['s']) => ({
+  licznosci: await licznosci(s.baza),
+  integrity: await s.baza.all('PRAGMA integrity_check'),
+  fk: (await s.baza.all('PRAGMA foreign_key_check')).length,
+  kopiePrzed: readdirSync(s.z.katalogi.kopiePrzed).length,
+  tymczasowe: readdirSync(s.z.katalogi.tymczasowy).length,
+});
+test('M1-159: brak miejsca na kopię przed „Replace” → tekst o miejscu, nie „That didn’t work”; baza, kopie i katalog tymczasowy bez zmian', async () => {
+  const { s } = await aplikacja();
+  render(<EkranUstawien />);
+  await waitFor(() => expect(screen.getByTestId('import-gotowy')).toBeTruthy());
+  const przed = await stanBazy(s);
+  s.magazyn.wolne = 1; // wolne miejsce poniżej potrzebnego (rozmiar bazy i plików × zapas)
+  await userEvent.press(przycisk('Replace what’s here'));
+  expect(await screen.findByText(MIEJSCE)).toBeTruthy();
+  expect(screen.queryByText('That didn’t work. Your data is unchanged.')).toBeNull();
+  expect(screen.queryByText('Data replaced')).toBeNull();
+  expect(await stanBazy(s)).toEqual(przed);
+  expect(przed.integrity).toEqual([{ integrity_check: 'ok' }]);
+  expect(await nazwyProjektow(s)).toEqual(['Stary sweter']);
+});
+test('M1-159: brak miejsca na eksport → tekst o miejscu, nie „That didn’t work”; bez arkusza, baza i katalog tymczasowy bez zmian', async () => {
+  const { s } = await aplikacja();
+  mockParametry.import = undefined;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { udostepnijPlik } = require('../../src/platforma/system-plikow-uzytkownika') as { udostepnijPlik: jest.Mock };
+  udostepnijPlik.mockClear();
+  render(<EkranUstawien />);
+  const eksport = await waitFor(() => przycisk('Export all data'));
+  const przed = await stanBazy(s);
+  s.magazyn.wolne = 1;
+  await userEvent.press(eksport);
+  expect(await screen.findByText(MIEJSCE)).toBeTruthy();
+  expect(screen.queryByText('That didn’t work. Your data is unchanged.')).toBeNull();
+  expect(udostepnijPlik).not.toHaveBeenCalled();
+  expect(await stanBazy(s)).toEqual(przed);
+});
