@@ -49,7 +49,7 @@ Kontekst: schematy czyta się od dołu do góry („schemat czyta się od dołu 
 - Potwierdzenie: test 07 z wyroczni; kontrola pól `schemat.sql` = pola typu `ZnacznikWzoru` (po zmianie typu przez 08).
 
 ## Uzupełnienie 2026-10-26 (fix-3 05: P-123 pkt 3, P-124 Q6a; decyzja A bez zmian)
-- **Notatka tekstowa w miejscu wzoru (BR-WZR-008 „Notatka w miejscu wzoru”)** = wiersz `notatka_rzedu` licznika, do którego wzór ma znacznik (`dodajNotatkeWzoru`, `src/przypadki-uzycia/wzor.ts:68-79`). Miejsce na stronie wynika z rzędu przez znacznik (strona, `y`, wysokość rzędu, kierunek, uzupełnienia wyżej), a ta sama notatka jest widoczna przy rzędzie na liczniku (BR-PRJ-014). Plik wzoru bez zmian.
+- **Notatka tekstowa w miejscu wzoru (BR-WZR-008 „Notatka w miejscu wzoru”)** = wiersz `notatka_rzedu` licznika, do którego wzór ma znacznik (`dodajNotatkeWzoru`, `src/przypadki-uzycia/wzor-notatki.ts`). Miejsce na stronie wynika z rzędu przez znacznik (strona, `y`, wysokość rzędu, kierunek, uzupełnienia wyżej), a ta sama notatka jest widoczna przy rzędzie na liczniku (BR-PRJ-014). Plik wzoru bez zmian.
 - **Wzór bez znacznika** (bez licznika): `{ ok: false, powod: 'niedozwolone_przejscie' }` — bez rzędu nie ma miejsca na stronie. Ekran nie pokazuje wtedy błędu, tylko prowadzi do ustawienia znacznika (wzorzec i tekst: 04). Zakreślanie i odręczne notatki (PencilKit, ADR-0012) działają bez znacznika. Odrzucone: notatka przypięta do strony i pozycji bez licznika — nowa tabela i szerszy zakres (P-124 Q6a).
 
 ## Uzupełnienie 2026-10-26 (fix-7 05: NZ-P217-05, P-221 Q1a, Q2a, P-220 W7a, W9b, R1a, N2, N4, P-218; decyzja A bez zmian)
