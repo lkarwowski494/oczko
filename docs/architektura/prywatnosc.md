@@ -51,15 +51,20 @@ Powód DDA9.1 (FileTimestamp) pochodzi ze starego `app.json` 0.1.0. Opisuje poka
 
 Pliki stanu urządzenia obok bazy (M1-195, 2026-11-03): `stan-startu.json`, `stan-startu-etap.json`, `jezyk.json`, `pamiec-pro.json` i `urzadzenie.txt` są tylko zapisywane i czytane jako tekst przez `expo-file-system` (`zapiszAtomowo`, `czytajAtomowo`: zapis, odczyt, `exists`, przeniesienie, usunięcie — `src/dane/pliki/system.ts:63-89`), bez czasu zmiany, rozmiaru i wolnego miejsca, więc nie dodają kategorii ani powodu. Gdyby kiedyś czytały metadane, mieści się to w C617.1: „Declare this reason to access the timestamps, size, or other metadata of files inside the app container” (rejestr Apple 11c). Kolumna „Do `app.json`” bez zmian; zgodność z `app.json` sprawdza `tests/wydanie/manifest-app-json.test.ts`.
 
-### Cele `@bacons/apple-targets` (osobne pliki wykonywalne, własny manifest — rejestr Apple 11g)
+### Cele `@bacons/apple-targets` (osobne pliki wykonywalne; manifest: zegarek zbiorczy z app.json, pozostałe własny plik — rejestr Apple 11g, P-471)
 Grep symboli z listy Apple (rejestr Apple 11a) w `targets/`, 2026-11-03.
 
 | Cel | Kategoria | Użycie w kodzie celu | Manifest celu |
 |---|---|---|---|
-| zegarek (`targets/watch`) | UserDefaults | `UserDefaults.standard` (`Aplikacja.swift`): kopia kontekstu telefonu, kolejka sprzed partii 3, identyfikator instalacji zegarka; bez App Group (cel bez `entitlements`) | CA92.1 (`targets/watch/PrivacyInfo.xcprivacy`) |
-| zegarek (`targets/watch`) | FileTimestamp | `fstat` dziennika w `Application Support` zegarka (`Wspolne/Dziennik.swift`) — kontener aplikacji | C617.1 (`targets/watch/PrivacyInfo.xcprivacy`) |
+| zegarek (`targets/watch`) | UserDefaults | `UserDefaults.standard` (`Aplikacja.swift`): kopia kontekstu telefonu, kolejka sprzed partii 3, identyfikator instalacji zegarka; bez App Group (cel bez `entitlements`) | CA92.1 (manifest zbiorczy: `expo.ios.privacyManifests` w `app.json`; bez własnego pliku w `targets/watch`, P-471) |
+| zegarek (`targets/watch`) | FileTimestamp | `fstat` dziennika w `Application Support` zegarka (`Wspolne/Dziennik.swift`) — kontener aplikacji | C617.1 (manifest zbiorczy jak wyżej; kontrola `scripts/wydanie/manifest-celow.mjs`) |
 | widżet / Live Activity (`targets/widget`) | — | brak symboli z listy; `LiveActivityIntent` działa w procesie aplikacji (rejestr Apple 1f) | brak (niepotrzebny) |
 | rozszerzenie udostępniania (`targets/share`) | — | brak symboli z listy; rozmiar pliku przez `attributesOfItem` z kluczem `.size`, a Apple wymienia tylko klucze `creationDate` i `modificationDate` | brak (niepotrzebny według listy Apple; potwierdza kontrola `.ipa`, rola 10) |
+
+Dlaczego zegarek nie ma własnego pliku (P-471, build #144, 2026-11-03): cel `watch` jest aplikacją watchOS, więc `pod install` (React Native, „Privacy Manifest Aggregation”,
+`privacy_manifest_utils.rb`, `ensure_reference`) dopisuje do jego fazy zasobów manifest aplikacji (`Oczko/PrivacyInfo.xcprivacy`, kategorie z `app.json`). Własny plik w `targets/watch`
+kopiuje jeszcze grupa synchronizowana Xcode, a dwa kopiowania na `OczkoZegarek.app/PrivacyInfo.xcprivacy` kończą się „Multiple commands produce” (kod 65). Ten sam błąd Trening opisał 14.10.2026
+(`docs/35-zegarek-apple.md`). Pakiet zegarka ma jeden manifest, z kategoriami UserDefaults (CA92.1) i FileTimestamp (C617.1); `kontrola-ipa.sh` sprawdza to w gotowym pakiecie.
 
 ## Sekrety (ADR-0014)
 Repo publiczne: brak kluczy w kodzie i w `EXPO_PUBLIC_` (Expo: „Do not store sensitive info … in `EXPO_PUBLIC_` variables”); klucz App Store Connect tylko w środowisku `testflight` GitHub (P-071 (6b)). Aplikacja nie ma własnych kluczy API (brak usług).

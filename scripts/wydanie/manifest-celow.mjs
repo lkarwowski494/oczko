@@ -2,10 +2,18 @@
 // `expo.ios.privacyManifests` z app.json trafia tylko do pakietu aplikacji; zegarek, widżet i rozszerzenie to osobne pakiety, a Apple wymaga manifestu
 // w każdym pakiecie, którego kod używa „required reason API” (developer.apple.com, describing-use-of-required-reason-api, odczyt 2026-11-02).
 // Biblioteka celów wiąże katalog targets/<cel> jako folder synchronizowany Xcode, więc targets/<cel>/PrivacyInfo.xcprivacy trafia do pakietu celu.
+// WYJĄTEK (P-471, build #144 „Multiple commands produce OczkoZegarek.app/PrivacyInfo.xcprivacy”): cel typu watch to aplikacja (xcodeproj `symbol_type` :application),
+// a React Native „Privacy Manifest Aggregation” (node_modules/react-native/scripts/cocoapods/privacy_manifest_utils.rb, `ensure_reference`, krok `pod install`) dopisuje
+// manifest aplikacji do fazy zasobów każdego takiego celu. Własny plik w targets/watch kopiuje jeszcze grupa synchronizowana: dwa kopiowania na jedną ścieżkę pakietu.
+// Dlatego zegarek nie ma własnego pliku; jego jedyny manifest to zbiorczy z `expo.ios.privacyManifests` (app.json) i to jego kategorie sprawdza kontrola repo
+// (jak Trening, docs/35-zegarek-apple.md „Manifest prywatności zegarka”). Kontrola pakietu (--pakiet) pilnuje, że gotowy pakiet zegarka ma kategorie kodu.
 //
 // Użycie:
-//   node scripts/wydanie/manifest-celow.mjs [--katalog targets]
-//     kontrola repo (Linux): każdy cel, którego kod Swift używa API z listy Apple, ma targets/<cel>/PrivacyInfo.xcprivacy z tą kategorią i powodem.
+//   node scripts/wydanie/manifest-celow.mjs [--katalog targets] [--app-json app.json]
+//     kontrola repo (Linux): każdy cel, którego kod Swift używa API z listy Apple, ma targets/<cel>/PrivacyInfo.xcprivacy z tą kategorią i powodem;
+//     cel typu watch odwrotnie: bez własnego pliku, a kategorie jego kodu są w `expo.ios.privacyManifests` z app.json.
+//   node scripts/wydanie/manifest-celow.mjs --kopie <cel> [--katalog targets]
+//     liczba kopii PrivacyInfo.xcprivacy w pakiecie celu (własne pliki w folderze + kopia z agregacji RN dla celu typu aplikacja); ma być 1.
 //   node scripts/wydanie/manifest-celow.mjs --pakiet <PrivacyInfo.xcprivacy w XML albo „-” gdy brak> --cel <cel> [--katalog targets]
 //     kontrola pakietu (kontrola-ipa.sh, macOS): manifest w gotowym pakiecie ma kategorie wymagane przez kod celu.
 // Kod 1 = błąd. Lista API: NSPrivacyAccessedAPIType (developer.apple.com, surowy JSON z 2026-11-02, dowód audytu 05-architekt-001).
@@ -74,21 +82,48 @@ export function sprawdzCel(nazwa, uzycia, xml) {
   return bledy;
 }
 
-export function sprawdzRepo(katalog) {
+/** Cel typu watch (aplikacja watchOS): agregacja RN dopisuje mu manifest aplikacji (P-471). */
+export const celZAgregacja = (katalogCelu) => {
+  const konf = join(katalogCelu, 'expo-target.config.js');
+  return existsSync(konf) && /\btype:\s*['"]watch['"]/.test(readFileSync(konf, 'utf8'));
+};
+const wlasneManifesty = (katalogCelu) => pliki(katalogCelu).filter((p) => p.endsWith('.xcprivacy'));
+
+/** Kopie PrivacyInfo.xcprivacy w pakiecie celu: własne pliki w folderze (grupa synchronizowana) + 1 z agregacji RN dla celu typu aplikacja. */
+export const kopieManifestu = (katalogCelu) => wlasneManifesty(katalogCelu).length + (celZAgregacja(katalogCelu) ? 1 : 0);
+
+/** Manifest zbiorczy aplikacji w XML (kształt jak czytajManifest) z `expo.ios.privacyManifests` w app.json. */
+export function manifestZAppJson(appJson) {
+  const typy = JSON.parse(appJson)?.expo?.ios?.privacyManifests?.NSPrivacyAccessedAPITypes ?? [];
+  const wpis = (t) => `<dict><key>NSPrivacyAccessedAPIType</key><string>${t.NSPrivacyAccessedAPIType}</string><key>NSPrivacyAccessedAPITypeReasons</key><array>${(t.NSPrivacyAccessedAPITypeReasons ?? []).map((r) => `<string>${r}</string>`).join('')}</array></dict>`;
+  return `<plist version="1.0"><dict><key>NSPrivacyAccessedAPITypes</key><array>${typy.map(wpis).join('')}</array></dict></plist>`;
+}
+
+export function sprawdzRepo(katalog, appJson = 'app.json') {
   return readdirSync(katalog).filter((n) => n !== '_shared' && statSync(join(katalog, n)).isDirectory()).sort().flatMap((cel) => {
+    const nazwa = `targets/${cel}`, uzycia = uzyciaCelu(join(katalog, cel));
+    if (celZAgregacja(join(katalog, cel))) {
+      const wlasne = wlasneManifesty(join(katalog, cel));
+      if (wlasne.length) return wlasne.map((p) => `${nazwa}: własny ${relative(join(katalog, cel), p)} dubluje manifest zbiorczy RN (agregacja dopisuje manifest aplikacji do celu typu aplikacja, a folder synchronizowany kopiuje własny: „Multiple commands produce …/PrivacyInfo.xcprivacy”, P-471); usuń go, manifest zegarka pochodzi z expo.ios.privacyManifests w app.json`);
+      return sprawdzCel(nazwa, uzycia, manifestZAppJson(readFileSync(appJson, 'utf8')));
+    }
     const m = join(katalog, cel, 'PrivacyInfo.xcprivacy');
-    return sprawdzCel(`targets/${cel}`, uzyciaCelu(join(katalog, cel)), existsSync(m) ? readFileSync(m, 'utf8') : null);
+    return sprawdzCel(nazwa, uzycia, existsSync(m) ? readFileSync(m, 'utf8') : null);
   });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const a = process.argv.slice(2), opcja = (n) => { const i = a.indexOf(n); return i >= 0 ? a[i + 1] : undefined; };
-  const katalog = opcja('--katalog') ?? 'targets', pakiet = opcja('--pakiet'), cel = opcja('--cel');
+  const katalog = opcja('--katalog') ?? 'targets', pakiet = opcja('--pakiet'), cel = opcja('--cel'), kopie = opcja('--kopie');
   let bledy;
-  if (pakiet !== undefined) {
+  if (kopie !== undefined) {
+    const n = kopieManifestu(join(katalog, kopie));
+    console.log(`kopie PrivacyInfo.xcprivacy w pakiecie celu ${kopie}: ${n}`);
+    process.exit(n === 1 ? 0 : 1);
+  } else if (pakiet !== undefined) {
     if (!cel) { console.error('Użycie: manifest-celow.mjs --pakiet <plik|-> --cel <cel>'); process.exit(2); }
     bledy = sprawdzCel(`pakiet celu ${cel}`, uzyciaCelu(join(katalog, cel)), pakiet === '-' || !existsSync(pakiet) ? null : readFileSync(pakiet, 'utf8'));
-  } else bledy = sprawdzRepo(katalog);
+  } else bledy = sprawdzRepo(katalog, opcja('--app-json') ?? 'app.json');
   for (const b of bledy) console.log(`::error::manifest celu: ${b}`);
   if (bledy.length === 0) console.log('manifesty celów: OK');
   process.exit(bledy.length ? 1 : 0);

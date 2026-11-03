@@ -18,18 +18,36 @@ function cele(pliki: Record<string, string>): string {
 }
 const UD = 'NSPrivacyAccessedAPICategoryUserDefaults', FT = 'NSPrivacyAccessedAPICategoryFileTimestamp';
 
-test('repo: każdy cel z API z listy Apple ma własny manifest z tą kategorią (zegarek: UserDefaults, fstat)', () => {
+test('repo: każdy cel z API z listy Apple ma manifest z tą kategorią (widżet i rozszerzenie: własny plik; zegarek: zbiorczy z app.json, P-471)', () => {
   const w = uruchom([]);
   expect(w.wyjscie).toContain('manifesty celów: OK');
   expect(w.kod).toBe(0);
 });
 
-test('manifest zegarka: UserDefaults CA92.1 (dane tylko zegarka) i FileTimestamp C617.1 (rozmiar dziennika w kontenerze), bez śledzenia i zbierania', () => {
-  const xml = readFileSync(join(K, 'targets/watch/PrivacyInfo.xcprivacy'), 'utf8');
-  expect(xml).toMatch(/<key>NSPrivacyTracking<\/key>\s*<false\/>/);
-  expect(xml).toMatch(/<key>NSPrivacyCollectedDataTypes<\/key>\s*<array\/>/);
-  expect(xml).toMatch(new RegExp(`<string>${UD}</string>\\s*<key>NSPrivacyAccessedAPITypeReasons</key>\\s*<array>\\s*<string>CA92.1</string>\\s*</array>`));
-  expect(xml).toMatch(new RegExp(`<string>${FT}</string>\\s*<key>NSPrivacyAccessedAPITypeReasons</key>\\s*<array>\\s*<string>C617.1</string>\\s*</array>`));
+// P-471 (build #144, „Multiple commands produce OczkoZegarek.app/PrivacyInfo.xcprivacy”): React Native „Privacy Manifest Aggregation” (privacy_manifest_utils.rb,
+// `ensure_reference`) dopisuje manifest aplikacji do fazy zasobów KAŻDEGO celu typu aplikacja, także zegarka, a własny plik w targets/watch kopiuje jeszcze grupa
+// synchronizowana Xcode: dwa kopiowania na jedną ścieżkę w pakiecie. Jedno źródło = manifest zbiorczy z `expo.ios.privacyManifests` (jak Trening, docs/35-zegarek-apple.md).
+test('P-471: w pakiecie zegarka manifest ma dokładnie jedno źródło (własny plik w folderze celu + kopia z agregacji RN = 1)', () => {
+  const w = uruchom(['--kopie', 'watch']);
+  expect(w.wyjscie).toContain('kopie PrivacyInfo.xcprivacy w pakiecie celu watch: 1');
+  expect(w.kod).toBe(0);
+});
+
+test('P-471: założenie agregacji — w wyniku prebuild (dane) manifest ma cel aplikacji, a zegarek nie ma jawnego odwołania w fazie zasobów', () => {
+  const pbx = readFileSync(join(K, 'tests/wydanie/dane/project.pbxproj'), 'utf8');
+  const faza = (cel: string) => new RegExp(`/\\* ${cel} \\*/ = \\{\\s*isa = PBXNativeTarget;[\\s\\S]*?buildPhases = \\(([\\s\\S]*?)\\);`).exec(pbx)?.[1] ?? '';
+  const zasoby = (blok: string) => [...blok.matchAll(/(\w+) \/\* Resources \*\//g)].map((m) => new RegExp(`${m[1]} /\\* Resources \\*/ = \\{[\\s\\S]*?files = \\(([\\s\\S]*?)\\);`).exec(pbx)?.[1] ?? '');
+  expect(zasoby(faza('Oczko')).join('')).toContain('PrivacyInfo.xcprivacy in Resources');
+  expect(zasoby(faza('OczkoZegarek')).join('')).not.toContain('PrivacyInfo.xcprivacy');
+});
+
+test('manifest zegarka (zbiorczy z app.json): UserDefaults CA92.1 (dane tylko zegarka) i FileTimestamp C617.1 (rozmiar dziennika w kontenerze), bez śledzenia i zbierania', () => {
+  const m = JSON.parse(readFileSync(join(K, 'app.json'), 'utf8')).expo.ios.privacyManifests;
+  expect(m.NSPrivacyTracking).toBe(false);
+  expect(m.NSPrivacyCollectedDataTypes).toEqual([]);
+  const powody = (kat: string) => m.NSPrivacyAccessedAPITypes.find((t: { NSPrivacyAccessedAPIType: string }) => t.NSPrivacyAccessedAPIType === kat)?.NSPrivacyAccessedAPITypeReasons;
+  expect(powody(UD)).toContain('CA92.1');
+  expect(powody(FT)).toContain('C617.1');
 });
 
 describe('kontrola potrafi paść (cele w katalogu tymczasowym)', () => {
@@ -54,6 +72,25 @@ describe('kontrola potrafi paść (cele w katalogu tymczasowym)', () => {
     const w = uruchom(['--katalog', cele({ 'widget/A.swift': 'let x = 1\n', '_shared/B.swift': 'let d = UserDefaults.standard\n' })]);
     expect(w.wyjscie).toMatch(/targets\/widget: brak PrivacyInfo\.xcprivacy, a kod używa UserDefaults \(\.\.\/_shared\/B\.swift:1\)/);
     expect(w.kod).toBe(1);
+  });
+  describe('P-471: cel typu watch (aplikacja) dostaje manifest z agregacji RN, nie z własnego pliku', () => {
+    const KONF = "module.exports = { type: 'watch', name: 'Z' };\n";
+    const APP = (kat: [string, string[]][]) => JSON.stringify({ expo: { ios: { privacyManifests: { NSPrivacyAccessedAPITypes: kat.map(([k, p]) => ({ NSPrivacyAccessedAPIType: k, NSPrivacyAccessedAPITypeReasons: p })) } } } });
+    const swift = 'let d = UserDefaults.standard\nvar s = stat()\nfstat(fd, &s)\n';
+    test('własny *.xcprivacy w folderze celu watch → błąd o dublu (kopiuje go grupa synchronizowana, a agregacja dokłada drugi), kod 1', () => {
+      const d = cele({ 'watch/expo-target.config.js': KONF, 'watch/A.swift': swift, 'watch/PrivacyInfo.xcprivacy': manifest([[UD, ['CA92.1']], [FT, ['C617.1']]]), 'app.json': APP([[UD, ['CA92.1']], [FT, ['C617.1']]]) });
+      const w = uruchom(['--katalog', join(d, ''), '--app-json', join(d, 'app.json')]);
+      expect(w.wyjscie).toMatch(/targets\/watch: własny PrivacyInfo\.xcprivacy dubluje manifest zbiorczy/);
+      expect(w.kod).toBe(1);
+    });
+    test('bez własnego pliku i z kategoriami w app.json → OK; bez kategorii kodu (FileTimestamp) w app.json → błąd z miejscem użycia', () => {
+      const ok = cele({ 'watch/expo-target.config.js': KONF, 'watch/A.swift': swift, 'app.json': APP([[UD, ['CA92.1']], [FT, ['C617.1']]]) });
+      expect(uruchom(['--katalog', ok, '--app-json', join(ok, 'app.json')]).kod).toBe(0);
+      const brak = cele({ 'watch/expo-target.config.js': KONF, 'watch/A.swift': swift, 'app.json': APP([[UD, ['CA92.1']]]) });
+      const w = uruchom(['--katalog', brak, '--app-json', join(brak, 'app.json')]);
+      expect(w.wyjscie).toMatch(new RegExp(`targets/watch: manifest bez kategorii ${FT} \\(użycie: A\\.swift:2\\)`));
+      expect(w.kod).toBe(1);
+    });
   });
   test('--pakiet: brak manifestu w pakiecie celu, który go wymaga → kod 1; pełny manifest → 0', () => {
     const d = cele({ 'watch/A.swift': 'let d = UserDefaults.standard\n', 'm.xcprivacy': manifest([[UD, ['CA92.1']]]) });
