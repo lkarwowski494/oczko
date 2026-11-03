@@ -2570,7 +2570,7 @@
   "wyrocznia": "LIMIT_DNI wobec poprzedniego wydania",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "kontrola przed wydaniem (07)",
-  "plik": "docs/monetyzacja.md:93",
+  "plik": "docs/monetyzacja.md:94",
   "rodzaj": "KP"
  },
  {
@@ -2583,7 +2583,7 @@
   "wyrocznia": "W-05, W-06, W-14, W-16; L-09",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "wersja V4; wersja sesji 2 (docs/monetyzacja.md:539) nieaktualna",
-  "plik": "docs/monetyzacja.md:94",
+  "plik": "docs/monetyzacja.md:95",
   "rodzaj": "KP"
  },
  {
@@ -2596,7 +2596,7 @@
   "wyrocznia": "W-15, W-17",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:95",
+  "plik": "docs/monetyzacja.md:96",
   "rodzaj": "KP"
  },
  {
@@ -2609,7 +2609,7 @@
   "wyrocznia": "BR-ZAK-004",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "metadane: rola 11, przegląd",
-  "plik": "docs/monetyzacja.md:96",
+  "plik": "docs/monetyzacja.md:97",
   "rodzaj": "KP"
  },
  {
@@ -2622,7 +2622,7 @@
   "wyrocznia": "W-02",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "potwierdzenie z tekstem (RNTL); TestFlight (docs/monetyzacja.md:590)",
-  "plik": "docs/monetyzacja.md:105",
+  "plik": "docs/monetyzacja.md:106",
   "rodzaj": "KP"
  },
  {
@@ -2635,7 +2635,7 @@
   "wyrocznia": "W-03, W-04, W-11, P-01–P-06",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:102",
+  "plik": "docs/monetyzacja.md:103",
   "rodzaj": "KP"
  },
  {
@@ -2648,7 +2648,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "mock adaptera: listener zarejestrowany przy starcie",
-  "plik": "docs/monetyzacja.md:103",
+  "plik": "docs/monetyzacja.md:104",
   "rodzaj": "KP"
  },
  {
@@ -2661,7 +2661,7 @@
   "wyrocznia": "W-02, W-07",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "mock: restore wołane tylko z akcji",
-  "plik": "docs/monetyzacja.md:595",
+  "plik": "docs/monetyzacja.md:596",
   "rodzaj": "KP"
  },
  {
@@ -2674,7 +2674,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "kontrola statyczna: brak literałów cen w kodzie i tłumaczeniach",
-  "plik": "docs/monetyzacja.md:596",
+  "plik": "docs/monetyzacja.md:597",
   "rodzaj": "KP"
  },
  {
@@ -2687,7 +2687,7 @@
   "wyrocznia": "zawężone KP-13",
   "poziom_sugerowany": "E2E-symulator",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:597",
+  "plik": "docs/monetyzacja.md:598",
   "rodzaj": "KP"
  },
  {
@@ -2700,7 +2700,7 @@
   "wyrocznia": "NFR-PRY-001",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "lista zależności; zakaz verifyPurchaseWithProvider itd. (docs/monetyzacja.md:571)",
-  "plik": "docs/monetyzacja.md:598",
+  "plik": "docs/monetyzacja.md:599",
   "rodzaj": "KP"
  },
  {
@@ -2713,7 +2713,7 @@
   "wyrocznia": "S-01–S-10, L-01–L-18",
   "poziom_sugerowany": "domena-Node",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:97",
+  "plik": "docs/monetyzacja.md:98",
   "rodzaj": "KP"
  },
  {
@@ -2726,7 +2726,7 @@
   "wyrocznia": "Z-01–Z-08",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:98",
+  "plik": "docs/monetyzacja.md:99",
   "rodzaj": "KP"
  },
  {
@@ -2739,7 +2739,7 @@
   "wyrocznia": "brak",
   "poziom_sugerowany": "ekran-RNTL",
   "uwagi": "mock showManageSubscriptions",
-  "plik": "docs/monetyzacja.md:99",
+  "plik": "docs/monetyzacja.md:100",
   "rodzaj": "KP"
  },
  {
@@ -2752,7 +2752,7 @@
   "wyrocznia": "L-11, L-14, L-16, L-17, L-18",
   "poziom_sugerowany": "dane-node:sqlite",
   "uwagi": "",
-  "plik": "docs/monetyzacja.md:100",
+  "plik": "docs/monetyzacja.md:101",
   "rodzaj": "KP"
  },
  {
@@ -2765,7 +2765,7 @@
   "wyrocznia": "W-01",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2778,7 +2778,7 @@
   "wyrocznia": "W-02",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2791,7 +2791,7 @@
   "wyrocznia": "W-03",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2804,7 +2804,7 @@
   "wyrocznia": "W-09",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2817,7 +2817,7 @@
   "wyrocznia": "W-07",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2830,7 +2830,7 @@
   "wyrocznia": "W-02",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2843,7 +2843,7 @@
   "wyrocznia": "W-10, W-14",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia); oczekiwanie „dane do odczytu” z modelu B, w V4 pełne dane (KP-02)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2856,7 +2856,7 @@
   "wyrocznia": "W-05, W-06; OP-21",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia); OP-21 otwarte; oczekiwanie „dane do odczytu” z modelu B, w V4 pełne dane (KP-02)",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  },
  {
@@ -2869,7 +2869,7 @@
   "wyrocznia": "brak (OP-22)",
   "poziom_sugerowany": "tylko-urządzenie",
   "uwagi": "krok właściciela w TestFlight (P-041: brak testów ręcznych — konflikt do rozstrzygnięcia); OP-22 → ADR-0009",
-  "plik": "docs/monetyzacja.md:632",
+  "plik": "docs/monetyzacja.md:633",
   "rodzaj": "tylko-telefon"
  }
 ]
