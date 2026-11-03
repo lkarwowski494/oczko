@@ -26,7 +26,7 @@ function oferty(aktywne: AktywnePro) {
     naKup={jest.fn()} naPrzywroc={jest.fn()} naZarzadzaj={jest.fn()} naOtworzAdres={jest.fn()} naZamknij={jest.fn()} />);
 }
 function ustawienia(aktywne: AktywnePro) {
-  render(<Ustawienia stan={{ pro: aktywne, dni: null, wibracje: true }} t={t} system={atrapaSystemu()} adresy={{ polityka: 'https://example.invalid/p', recenzja: 'https://example.invalid/r' }}
+  render(<Ustawienia stan={{ pro: aktywne, dni: null, wibracje: true }} t={t} system={atrapaSystemu()} adresy={{ polityka: 'https://example.invalid/p', wsparcie: 'https://example.invalid/s', recenzja: 'https://example.invalid/r' }}
     naOferty={jest.fn()} naWibracje={jest.fn()} naZglosProblem={jest.fn()} naStanDanych={jest.fn()} />);
 }
 const zarzadzaj = () => screen.queryByRole('button', { name: 'Manage subscription' });
