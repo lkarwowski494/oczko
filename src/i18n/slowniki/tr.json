@@ -675,7 +675,7 @@
     "kategoria_powyzej_one": "Bu örgü sıklığı 0 numaralı kategorinin üstünde; o kategori 4 inçte en fazla {{max}} ilmeğe kadar gider.",
     "kategoria_powyzej_other": "Bu örgü sıklığı 0 numaralı kategorinin üstünde; o kategori 4 inçte en fazla {{max}} ilmeğe kadar gider.",
     "uwaga_kategoria": "İplik kalınlığı kategorileri yalnızca bir rehberdir, birbirinin yerine kullanabileceğiniz iplikler listesi değildir. Örgü sıklığı aynı olsa bile iki iplik farklı hissedilebilir ve farklı dökülebilir.",
-    "uwaga_oczka": "Numunenizi buharla şekillendirin, sonra tarifinizle karşılaştırın: tarifler örgü sıklığını buharla şekillendirmeden sonraki hâliyle verir.",
+    "uwaga_oczka": "Numunenizi bloklayın (blocking), sonra tarifinizle karşılaştırın: tarifler örgü sıklığını blokladıktan sonraki hâliyle verir.",
     "uwaga_koronka": "Lace iplikleri bir örgü sıklığı aralığına oturtmak zordur; her zaman tarifinizdeki örgü sıklığına göre gidin.",
     "uwaga_zaokraglenie": "4 inçteki örgü sıklığınız en yakın tam ilmeğe yuvarlandı.",
     "uwaga_4in": "Örgü sıklığı standart olarak 4 inç/10 cm’de ilmek ve sıra olarak verilir. 4 inç tam olarak 10,16 cm’dir."

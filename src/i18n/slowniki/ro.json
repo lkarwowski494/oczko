@@ -751,7 +751,7 @@
     "kategoria_powyzej_few": "Această densitate depășește categoria 0, care merge până la {{max}} ochiuri la 4 in.",
     "kategoria_powyzej_other": "Această densitate depășește categoria 0, care merge până la {{max}} de ochiuri la 4 in.",
     "uwaga_kategoria": "Categoriile de grosime a firului sunt doar un ghid, nu o listă de fire pe care le poți înlocui. Chiar și cu aceeași densitate, două fire pot avea alt aspect la pipăit și altă cădere.",
-    "uwaga_oczka": "Calcă mostra prin cârpă umedă, apoi compară-o cu modelul: modelele indică densitatea după călcare.",
+    "uwaga_oczka": "Blochează mostra (blocking), apoi compar-o cu modelul: modelele indică densitatea după blocare.",
     "uwaga_koronka": "Firul foarte subțire (lace) este greu de încadrat într-un interval de densitate; ține-te mereu de densitatea din model.",
     "uwaga_zaokraglenie": "Densitatea ta la 4 in este rotunjită la cel mai apropiat ochi întreg.",
     "uwaga_4in": "Modul standard de a indica densitatea este în ochiuri și rânduri la 4 in/10 cm. 4 in înseamnă exact 10,16 cm."

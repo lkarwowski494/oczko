@@ -54,6 +54,22 @@
     "pt"
    ],
    "powod": "2026-11-03 (09, drugi przegląd AI P-486): klucz jest tekstem narzędzia „Hook” (szydełko; kontekst en.kontekst.json), a zakaz „pontos” dotyczy oczek drutowych — w pt-PT na szydełku jednostką jest „ponto” (S-R4-CUPCAKE „2 pb em cada ponto”, opis pojęcia w slownik-terminow.json); fałszywy alarm sprawdzony na tekście"
+  },
+  {
+   "klucz": "probka.kategoria",
+   "pojecie": "scieg_dzersejowy",
+   "jezyki": [
+    "zh-Hant"
+   ],
+   "powod": "P-506 (koordynator): zh-Hant „stockinette stitch” = 平針 (jak karta atlasu druty.scieg.stst TRM-ZHT-003, rola 06); poprzednie „以平面編織成” czytano jako „tkane na płasko” (kontrola (a) 2026-11-03, 06 a23a85d). Zakaz słownika (平針 = termin przemysłowy) sam jest oznaczony [DO SPRAWDZENIA]; sprzeczność słownik (平面編) ↔ atlas (平針) do rozstrzygnięcia przez 06/rodzimego recenzenta"
+  },
+  {
+   "klucz": "probka.kategoria_otwarta",
+   "pojecie": "scieg_dzersejowy",
+   "jezyki": [
+    "zh-Hant"
+   ],
+   "powod": "P-506 (koordynator): zh-Hant „stockinette stitch” = 平針 (jak karta atlasu druty.scieg.stst TRM-ZHT-003, rola 06); poprzednie „以平面編織成” czytano jako „tkane na płasko” (kontrola (a) 2026-11-03, 06 a23a85d). Zakaz słownika (平針 = termin przemysłowy) sam jest oznaczony [DO SPRAWDZENIA]; sprzeczność słownik (平面編) ↔ atlas (平針) do rozstrzygnięcia przez 06/rodzimego recenzenta"
   }
  ]
 }
