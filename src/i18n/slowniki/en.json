@@ -488,6 +488,8 @@
     "sprobuj": "Try starting normally",
     "zglos": "Report a problem",
     "zapisano": "Copy saved",
+    "blad_kopii": "Couldn’t save a copy",
+    "blad_kopii_opis": "Your device may be out of space. Free some space, then save a copy again or try starting normally.",
     "tytul_brak_miejsca": "Your device is out of space",
     "opis_brak_miejsca": "Nothing was changed. Free some space on this device, then try starting normally."
   },

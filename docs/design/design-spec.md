@@ -1168,6 +1168,22 @@ Kopia dostaje nazwę z numerem, bez pytania: `projekt.kopia_nazwa` „{{nazwa}} 
 
 **Dla 08 (testy przed kodem).** Test akceptacyjny w katalogu wyjścia sesji 04 (`przekazanie-08/projekt-kopia-nazwa-136.test.ts`, miejsce docelowe `tests/dane/projekt-kopia-nazwa.test.ts`; na kodzie dziś 8 z 8 czerwonych: kopia ma nazwę oryginału); wyrocznia `fix15-2026-11-03/klucze.json` → `kopia_nazwa_przypadki`. `zrobPonownie` (`src/przypadki-uzycia/projekt.ts`) liczy numer z nazw w bazie, a szablon dostaje z kompozycji (przypadek użycia bez i18n; sposób — wybór 08). Asercja „kopia „Sweter” = „Sweter”” w `tests/dane/projekt-fix3.test.ts` i komentarz „nazwa kopii = nazwa oryginału” w `app/projekt/[id].tsx` zmieniają się zgodnie z decyzją. **Dla 07:** zrzut listy po scenariuszu 61 z „Harbor” i „Harbor 2”.
 
+### Nieudany zapis kopii na ekranie awaryjnym (M1-audytor-generalny-142, 04-studio-projektowe-519; DEC-36 a, P-438)
+Aneks P2 poz. 5 (wariant C: tytuł nazywa, co się nie udało) dostaje miejsce `kopia`. Dziś nieudany ZIP pokazuje tekst formularza „Couldn’t save your changes” / „…Nothing was changed… try again”, choć osoba stuknęła „Save a copy of my data” i niczego nie zmieniała; przy braku miejsca główny przycisk to „Try starting normally”, a alert o nim nie mówi.
+
+| Sytuacja | Alert | Przyciski |
+|---|---|---|
+| Ekran awaryjny (każdy powód), „Save a copy of my data”: archiwum zawiodło i ZIP surowej kopii też się nie zapisał (`zipSurowej` → `null`, ADR-0020 (3)–(4)) | `awaryjny.blad_kopii` „Couldn’t save a copy” / `awaryjny.blad_kopii_opis` „Your device may be out of space. Free some space, then save a copy again or try starting normally.” | `wspolne.ok` |
+
+„save a copy” i „try starting normally” powtarzają przyciski ekranu (`awaryjny.zapisz_kopie`, `awaryjny.sprobuj`), więc osoba wie, co stuknąć; bez „Nothing was changed” (na tym ekranie nic się nie zmienia — mówi to `awaryjny.opis`). Ten sam opis przy każdym powodzie: ZIP zawodzi praktycznie tylko przy braku miejsca, a oba działania są na ekranie zawsze.
+
+| Klucz | en |
+|---|---|
+| `awaryjny.blad_kopii` | Couldn’t save a copy |
+| `awaryjny.blad_kopii_opis` | Your device may be out of space. Free some space, then save a copy again or try starting normally. |
+
+**Dla 08 (testy przed kodem).** `src/ekrany/blad-zapisu.ts`: miejsce `kopia: ['awaryjny.blad_kopii', 'awaryjny.blad_kopii_opis']`; `src/kompozycja/EkranAwaryjny.tsx`: `Alert.alert(...alertBleduZapisu(t, 'kopia'))` zamiast `'formularz'`. Test akceptacyjny z trwałą kontrolą (klasa 512, 517: `EkranAwaryjny` nie używa tekstu formularza) w katalogu wyjścia sesji 04 (`przekazanie-08/ekran-awaryjny-kopia-142.test.tsx`, miejsce docelowe `tests/ekrany/ekran-awaryjny-kopia.test.tsx`; na kodzie dziś 5 z 5 czerwonych). Asercja opisu „…Nothing was changed. Free some space and try again.” w `tests/ekrany/tryb-awaryjny-miejsce.test.tsx` zmienia się zgodnie z decyzją. **Dla 07:** brak zrzutu (alert systemowy w stanie brzegowym; wystarczy test).
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 

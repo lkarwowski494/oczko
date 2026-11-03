@@ -110,3 +110,16 @@ describe('M1-audytor-generalny-136: nazwa kopii projektu', () => {
     }
   });
 });
+
+// M1-audytor-generalny-142 (04-studio-projektowe-519; DEC-36 a, P-438): nieudany zapis kopii na ekranie awaryjnym ma własne teksty, nie tekst formularza.
+describe('M1-audytor-generalny-142: alert nieudanej kopii na ekranie awaryjnym', () => {
+  kontraktGrupy('M1-audytor-generalny-142');
+  test('tytuł nazywa kopię, nie zmiany; opis powtarza działania z przycisków ekranu i nie mówi „Nothing was changed”', () => {
+    const tytul = wartosc(EN, 'awaryjny.blad_kopii') ?? '', opis = wartosc(EN, 'awaryjny.blad_kopii_opis') ?? '';
+    expect(tytul).toMatch(/\bcopy\b/);
+    expect(tytul).not.toBe(wartosc(EN, 'formularz.blad_zapisu'));
+    expect(opis).not.toMatch(/Nothing was changed/);
+    expect(opis.toLowerCase()).toContain((wartosc(EN, 'awaryjny.sprobuj') ?? '?').toLowerCase());
+    expect(opis).toContain('save a copy');
+  });
+});

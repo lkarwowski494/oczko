@@ -12,15 +12,23 @@
     ],
     "M1-audytor-generalny-136": [
       "projekt.kopia_nazwa"
+    ],
+    "M1-audytor-generalny-142": [
+      "awaryjny.blad_kopii",
+      "awaryjny.blad_kopii_opis"
     ]
   },
   "en": {
     "wzor.wskazowka_znacznika": "Tap a row to place your marker.",
-    "projekt.kopia_nazwa": "{{nazwa}} {{n}}"
+    "projekt.kopia_nazwa": "{{nazwa}} {{n}}",
+    "awaryjny.blad_kopii": "Couldn’t save a copy",
+    "awaryjny.blad_kopii_opis": "Your device may be out of space. Free some space, then save a copy again or try starting normally."
   },
   "kontekst": {
     "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`.",
-    "projekt.kopia_nazwa": "Nazwa nowego projektu z „Make another like this” (`projekt.zrob_taka_sama`; M1-audytor-generalny-136, 04-studio-projektowe-526, DEC-35 b): {{nazwa}} = nazwa oryginału bez końcowego numeru kopii, {{n}} = najmniejszy wolny numer od 2 („Harbor 2”, potem „Harbor 3”). Jak numer kopii pliku w systemie: sam numer po nazwie, bez słowa „copy”. Jeśli w języku numer stoi inaczej (np. w nawiasie), zostaw tylko {{nazwa}}, {{n}} i znaki interpunkcji, bez słów: aplikacja rozpoznaje ten wzór, żeby kopia „Harbor 2” dostała „Harbor 3”, a nie „Harbor 2 2”. Nazwa zapisuje się w danych projektu w języku z chwili kopii."
+    "projekt.kopia_nazwa": "Nazwa nowego projektu z „Make another like this” (`projekt.zrob_taka_sama`; M1-audytor-generalny-136, 04-studio-projektowe-526, DEC-35 b): {{nazwa}} = nazwa oryginału bez końcowego numeru kopii, {{n}} = najmniejszy wolny numer od 2 („Harbor 2”, potem „Harbor 3”). Jak numer kopii pliku w systemie: sam numer po nazwie, bez słowa „copy”. Jeśli w języku numer stoi inaczej (np. w nawiasie), zostaw tylko {{nazwa}}, {{n}} i znaki interpunkcji, bez słów: aplikacja rozpoznaje ten wzór, żeby kopia „Harbor 2” dostała „Harbor 3”, a nie „Harbor 2 2”. Nazwa zapisuje się w danych projektu w języku z chwili kopii.",
+    "awaryjny.blad_kopii": "Tytuł alertu na ekranie awaryjnym, gdy „Save a copy of my data” (`awaryjny.zapisz_kopie`) nie zapisało kopii — ani archiwum, ani ZIP surowej kopii (M1-audytor-generalny-142, 04-studio-projektowe-519, DEC-36 a). Nazywa, co się nie udało (wariant C aneksu P2 poz. 5), jak `wzor.blad_rysunku`, `stoper.blad_zapisu`; osoba nie zmieniała danych, więc nie „your changes”. „copy” = ta sama kopia danych co w przycisku. Bez kropki, jak inne tytuły alertów.",
+    "awaryjny.blad_kopii_opis": "Treść alertu pod `awaryjny.blad_kopii`: przyczyna (zwykle brak miejsca na urządzeniu; „device” = telefon albo iPad, P-328) i dwa działania z tego ekranu — zwolnić miejsce i ponowić kopię albo stuknąć `awaryjny.sprobuj` („Try starting normally”). „save a copy” i „try starting normally” powtarzają przyciski ekranu, więc w przekładzie użyj tych samych fraz co w `awaryjny.zapisz_kopie` i `awaryjny.sprobuj`. Bez „Nothing was changed” (na tym ekranie nic się nie zmienia, mówi to `awaryjny.opis`). Przycisk alertu: `wspolne.ok`."
   },
   "probka_podglad": {
     "zasada": "DEC-34 a (M1-audytor-generalny-134, 04-studio-projektowe-524): liczba wyliczona w podglądzie kalkulatora próbki — najwyżej jedno miejsce po przecinku (najbliższa dziesiąta, połowa w górę, bez zer końcowych, zapis regionu: formatujLiczbe(Math.round(x × 10) / 10, język, { maks: 1 })); liczba przepisana z pola bez przeliczenia — jak wpisano (do 3 miejsc); obliczenia (wynik oczek, kategoria grubości) z pełnej wartości; {{count}} = wartość pokazana. Teksty bez zmian; przypadki en (wyrocznia testów 08 dla src/kompozycja/probka.ts).",
