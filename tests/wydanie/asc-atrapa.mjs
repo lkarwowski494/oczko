@@ -3,16 +3,17 @@
 // to, że prawdziwy serwer przyjmie te same żądania, potwierdzi dopiero pierwszy przebieg workflowu (STOP w raporcie roli).
 // Rejestruje każde żądanie (metoda + ścieżka bez identyfikatorów) w `calls`; DELETE kończy się błędem testu.
 
-const TERYTORIA = ['USA', 'POL', 'DEU', 'JPN', 'FRA', 'GBR'];
+// CHN jest w atrapie jak na prawdziwym serwerze (Apple zwraca 175 terytoriów); skrypt ma je pominąć (P-479).
+const TERYTORIA = ['USA', 'POL', 'DEU', 'JPN', 'FRA', 'GBR', 'CHN'];
 /** Poziomy cen: dla USA ceny z planu; równoważniki w pozostałych krajach (tablica jak z „equalizations”). */
 const POZIOMY_USA = ['0.99', '1.99', '6.99', '14.99'];
 const ROWNOWAZNIKI = {
-  '0.99': { POL: '3.99', DEU: '0.99', JPN: '150', FRA: '0.99', GBR: '0.79' },
-  '1.99': { POL: '8.99', DEU: '1.99', JPN: '300', FRA: '1.99', GBR: '1.79' },
-  '6.99': { POL: '29.99', DEU: '6.99', JPN: '1000', FRA: '6.99', GBR: '5.99' },
-  '14.99': { POL: '64.99', DEU: '14.99', JPN: '2200', FRA: '14.99', GBR: '11.99' },
+  '0.99': { POL: '3.99', DEU: '0.99', JPN: '150', FRA: '0.99', GBR: '0.79', CHN: '6' },
+  '1.99': { POL: '8.99', DEU: '1.99', JPN: '300', FRA: '1.99', GBR: '1.79', CHN: '12' },
+  '6.99': { POL: '29.99', DEU: '6.99', JPN: '1000', FRA: '6.99', GBR: '5.99', CHN: '45' },
+  '14.99': { POL: '64.99', DEU: '14.99', JPN: '2200', FRA: '14.99', GBR: '11.99', CHN: '98' },
 };
-const POZIOMY_INNE = { POL: ['3.99', '4.99', '19.99', '29.99', '59.99', '64.99'], DEU: ['0.99', '6.99', '14.99'], JPN: ['150', '1000', '2200'], FRA: ['0.99', '6.99', '14.99'], GBR: ['0.79', '0.99', '5.99', '6.99', '11.99', '14.99'] };
+const POZIOMY_INNE = { POL: ['3.99', '4.99', '19.99', '29.99', '59.99', '64.99'], DEU: ['0.99', '6.99', '14.99'], JPN: ['150', '1000', '2200'], FRA: ['0.99', '6.99', '14.99'], GBR: ['0.79', '0.99', '5.99', '6.99', '11.99', '14.99'], CHN: ['6', '12', '45', '98'] };
 const punkt = (kraj, cena) => ({ id: `${kraj}:${cena}`, type: 'pricePoints', attributes: { customerPrice: cena }, relationships: { territory: { data: { type: 'territories', id: kraj } } } });
 
 export function utworzAtrape({ stan = {}, bundleId = 'com.apps4brew.knitting' } = {}) {

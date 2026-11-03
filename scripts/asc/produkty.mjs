@@ -6,7 +6,7 @@
 //   node scripts/asc/produkty.mjs --apply                  → tworzy brakujące (kolejność: grupa, produkt, dostępność, Family Sharing, ceny)
 //   node scripts/asc/produkty.mjs --apply --bez-family-sharing → jak wyżej, bez NIEODWRACALNEGO włączenia Family Sharing
 // Zasady: ten sam klient co iap-localizations.mjs (tylko GET/POST/PATCH, NIGDY DELETE); idempotentny — produkt znajduje po Product ID (grupę po nazwie referencyjnej),
-// tworzy tylko brakujące, nigdy nie zmienia Product ID, nazwy referencyjnej, typu, okresu ani istniejącej ceny (dostępność istniejącego produktu UZUPEŁNIA do wszystkich krajów i nowych krajów — widać w planie). Rozbieżność z planem (inny okres/typ/cena) = STOP w planie:
+// tworzy tylko brakujące, nigdy nie zmienia Product ID, nazwy referencyjnej, typu, okresu ani istniejącej ceny (dostępność istniejącego produktu UZUPEŁNIA do wszystkich krajów poza WYKLUCZONE_TERYTORIA i nowych krajów — widać w planie). Rozbieżność z planem (inny okres/typ/cena) = STOP w planie:
 // przy jakimkolwiek STOP zapis nie rusza niczego (także innych produktów). Bez „Add for Review”, bez ofert wprowadzających (P-057).
 // Repozytorium jest publiczne — w logu tylko liczby, kody krajów, Product ID i nazwy; nigdy identyfikatory klucza, tokeny ani odpowiedzi API.
 // Dane logowania: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (plik .p8) — jak iap-localizations.mjs.
@@ -16,6 +16,10 @@ import { makeClient, makeJwt, BUNDLE_ID, SUBSCRIPTION_GROUP_NAME, PRODUCTS } fro
 
 const SUBS = Object.entries(PRODUCTS).filter(([, p]) => p.kind === 'subscription').map(([k]) => k);
 const IAPS = Object.entries(PRODUCTS).filter(([, p]) => p.kind === 'iap').map(([k]) => k);
+// P-479 (właściciel, 2026-11-03): bez China mainland — 174 kraje wszędzie (dostępność i ceny produktów). Apple zwraca 175 terytoriów w /v1/territories; ta lista je odfiltrowuje.
+// Skrypt nigdy nie usuwa: CHN w dostępności ISTNIEJĄCEGO produktu = STOP w planie (rozstrzyga właściciel w App Store Connect). `availableInNewTerritories: true` zostaje (nowe terytoria Apple).
+export const WYKLUCZONE_TERYTORIA = ['CHN'];
+const wykluczone = c => WYKLUCZONE_TERYTORIA.includes(c);
 const rowna = (a, b) => Number(a) === Number(b);
 const nie404 = e => { if (e?.status !== 404) throw e; return null; };
 const kraj = (r, rel) => r.relationships?.[rel]?.data?.id ?? null;
@@ -31,10 +35,10 @@ export async function ustalCeny(client, { rodzaj, id, klucz, data }) {
   const pb = bazowe.find(p => rowna(p.attributes?.customerPrice, cena));
   if (!pb) throw new Error(`brak poziomu ceny ${cena} w kraju bazowym ${baza} dla ${PRODUCTS[klucz].productId}`);
   const rownowazniki = new Map();
-  if (rodzaj === 'sub') for (const p of await client.list(`/v1/subscriptionPricePoints/${pb.id}/equalizations?include=territory`)) { const k = kraj(p, 'territory'); if (k) rownowazniki.set(k, p.id); }
+  if (rodzaj === 'sub') for (const p of await client.list(`/v1/subscriptionPricePoints/${pb.id}/equalizations?include=territory`)) { const k = kraj(p, 'territory'); if (k && !wykluczone(k)) rownowazniki.set(k, p.id); }
   const nadpisania = new Map();
   for (const [k, ceny] of Object.entries(data.nadpisaniaCen ?? {})) {
-    if (ceny[klucz] === undefined) continue;
+    if (ceny[klucz] === undefined || wykluczone(k)) continue;
     const p = (await punkty(k)).find(x => rowna(x.attributes?.customerPrice, ceny[klucz]));
     if (!p) throw new Error(`brak poziomu ceny ${ceny[klucz]} w kraju ${k} dla ${PRODUCTS[klucz].productId}`);
     nadpisania.set(k, p.id);
@@ -48,7 +52,7 @@ export async function odczytajStan(client, data) {
   const apps = await client.list('/v1/apps?filter[bundleId]=' + BUNDLE_ID);
   if (apps.length !== 1) throw new Error(`aplikacja ${BUNDLE_ID}: znaleziono ${apps.length}`);
   const appId = apps[0].id;
-  const kraje = (await client.list('/v1/territories')).map(t => t.id);
+  const kraje = (await client.list('/v1/territories')).map(t => t.id).filter(c => !wykluczone(c)); // 175 z Apple → 174 (P-479)
   const st = { appId, kraje, grupa: null, produkty: {} };
   const grupy = (await client.list(`/v1/apps/${appId}/subscriptionGroups`)).filter(g => g.attributes?.referenceName === SUBSCRIPTION_GROUP_NAME);
   if (grupy.length > 1) st.zdublowanaGrupa = grupy.length;
@@ -95,7 +99,9 @@ export function planuj(st, data, { familySharing = data.familySharing } = {}) {
   if (!st.grupa) dod('grupa:utworz', 'group', `grupa subskrypcji „${SUBSCRIPTION_GROUP_NAME}”`);
   const dostepnosc = (typ, k, d) => {
     const brak = st.kraje.filter(c => !d?.kraje.includes(c));
-    if (!d || brak.length || !d.nowe) dod(typ, k, `dostępność ${id(k)}: wszystkie kraje i nowe kraje`, d ? brak.length : st.kraje.length);
+    const zabronione = (d?.kraje ?? []).filter(wykluczone);
+    if (zabronione.length) stop.push(`${id(k)}: dostępność w App Store Connect zawiera wykluczone terytorium ${zabronione.join(', ')} (P-479: bez China mainland; skrypt nie usuwa — wyłącz kraj w App Store Connect)`);
+    if (!d || brak.length || !d.nowe) dod(typ, k, `dostępność ${id(k)}: ${st.kraje.length} krajów (bez wykluczonych, P-479) i nowe kraje`, d ? brak.length : st.kraje.length);
   };
   for (const k of SUBS) {
     const p = st.produkty[k]; const def = data.produkty[k];
