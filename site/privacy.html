@@ -20,13 +20,13 @@
 <body>
 <main>
 <!-- Treść z inwentarza roli 05 (docs/architektura/prywatnosc.md) i kodu „Zgłoś problem” (src/przypadki-uzycia/zgloszenie.ts) i decyzji P-196 (D7a–D9a); wzór: strona Treningu. Zmiana działania aplikacji,
-     która dotyczy danych (np. włączenie synchronizacji iCloud, ukrytej w 1.0 — P-091 (1), import strony WWW — 1.1), wymaga zmiany tej strony
+     która dotyczy danych (np. włączenie synchronizacji iCloud, ukrytej w 1.0 — P-091 (1); import strony WWW jest w 1.0 — M1-audytor-generalny-072), wymaga zmiany tej strony
      przed wydaniem takiej wersji. Odbiorcy opisowo, bez nazw firm (P-121 (5)); bez listy źródeł (P-108). Test: tests/wydanie/repo-wydanie.test.ts. -->
 <nav><a href="support.html">Wsparcie / Support</a><a href="#en">English</a></nav>
 
 <section lang="pl">
 <h1>Oczko — polityka prywatności</h1>
-<p class="muted">Wersja z 26 października 2026 r., przygotowana przed wydaniem wersji 1.0.</p>
+<p class="muted">Wersja z 3 listopada 2026 r., przygotowana przed wydaniem wersji 1.0.</p>
 
 <h2>W skrócie</h2>
 <p>Aplikacja Oczko sama nie zbiera żadnych danych. Wszystko, co wpisujesz i dodajesz, zostaje na Twoich urządzeniach. Aplikacja nie ma konta ani własnego serwera.
@@ -37,6 +37,7 @@ Nie ma też reklam, analityki ani śledzenia. Zakupy obsługuje App Store. Jedyn
   <li>Projekty, części, liczniki, historia zmian, notatki, przypomnienia, czas pracy, zapas włóczki i ustawienia są zapisywane wyłącznie w pamięci Twojego urządzenia (baza aplikacji).</li>
   <li>Wzory, które zaimportujesz (np. PDF), oraz zdjęcia projektu i etykiet, które dodasz, są przechowywane w plikach aplikacji na urządzeniu.</li>
   <li>Nikt poza Tobą, także twórca aplikacji, nie ma do nich dostępu. Aplikacja ich nigdzie nie wysyła.</li>
+  <li>Gdy dodasz wzór z linku do strony WWW (także przez „Udostępnij” w Safari), aplikacja raz otwiera tę stronę tak jak przeglądarka, bez Twoich ciasteczek i logowań, i zapisuje ją jako PDF na urządzeniu razem z adresem. Strona (i usługi, z których sama korzysta) dostaje wtedy zwykłe zapytanie, np. Twój adres IP. Do twórcy aplikacji nic nie trafia.</li>
   <li>Kopia zapasowa iPhone’a (w iCloud albo na komputerze), jeśli ją włączysz w iOS, obejmuje też dane aplikacji. Podlega zasadom Apple.</li>
   <li>W tej wersji aplikacja nie synchronizuje danych między urządzeniami przez iCloud.</li>
 </ul>
@@ -96,7 +97,7 @@ Pytania: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>.</p>
 
 <section lang="en" id="en">
 <h1>Oczko — Privacy Policy</h1>
-<p class="muted">Version of 26 October 2026, prepared before the release of version 1.0.</p>
+<p class="muted">Version of 3 November 2026, prepared before the release of version 1.0.</p>
 
 <h2>In short</h2>
 <p>The Oczko app itself does not collect any data. Everything you enter and add stays on your devices. The app has no account and no server of its own.
@@ -107,6 +108,7 @@ It has no ads, no analytics and no tracking. Purchases are handled by the App St
   <li>Projects, parts, counters, change history, notes, reminders, working time, yarn stash and settings are stored only on your device (the app’s database).</li>
   <li>Patterns you import (for example PDF files) and project and label photos you add are stored in the app’s files on your device.</li>
   <li>No one but you, including the developer, has access to them. The app does not send them anywhere.</li>
+  <li>When you add a pattern from a web page link (also through Share in Safari), the app opens that page once, as a browser would, without your cookies or logins, and saves it as a PDF on your device together with its address. The website (and any services the page itself uses) receives an ordinary request, such as your IP address. Nothing is sent to the developer.</li>
   <li>An iPhone backup (in iCloud or on a computer), if you turn it on in iOS, also includes the app’s data. It is subject to Apple’s terms.</li>
   <li>In this version the app does not sync data between devices through iCloud.</li>
 </ul>
