@@ -241,23 +241,21 @@ describe('produkty (lokalizacje zakupów) i konfiguracja kontroli ASC', () => {
     expect(json('app.json').expo.ios.bundleIdentifier).toBe(k.aplikacja.bundleId);
   });
   test('teksty en-US produktów: limity Apple (nazwa ≤ 30, opis ≤ 45 znaków, jak Trening), bez cen i bez nazw innych aplikacji', () => {
-    const en = p.wpisaneRecznie['en-US'];
+    const en = p.tlumaczenia.en; // P-467: en-US to zwykła lokalizacja z pliku (koniec wyjątku właściciela)
     for (const key of ['group', 'monthly', 'yearly', 'lifetime']) {
       expect([...en[key].name].length).toBeLessThanOrEqual(30);
       if (en[key].description) expect([...en[key].description].length).toBeLessThanOrEqual(45);
       expect(JSON.stringify(en[key])).not.toMatch(/\d[.,]\d\d|USD|\$/);
     }
-    expect(Object.keys(p.tlumaczenia)).toEqual([]); /* przekład 09 po zamrożeniu en */
   });
-  test('plan lokalizacji produktów: tworzy brakujące, nie rusza en-US, pomija języki bez ASC (atrapa, bez sieci)', () => {
+  test('plan lokalizacji produktów: tworzy brakujące, pomija języki bez ASC, obce lokalizacje nietykane (atrapa, bez sieci; P-467: bez wyjątku właściciela)', () => {
     const kod = `import * as I from ${JSON.stringify(join(root, 'scripts/asc/iap-localizations.mjs'))};
       const tr = { cs: { ascLocale: 'cs', group: { name: 'Oczko Pro' }, monthly: { name: 'a', description: 'b' } }, sl: { ascLocale: null, group: { name: 'x' }, monthly: { name: 'x', description: 'y' } } };
-      const owner = { 'en-US': { monthly: { name: 'Pro, monthly', description: 'd' } } };
       const existing = new Map([['en-US', { id: '1', name: 'Pro, monthly', description: 'd' }]]);
-      const pl = I.planObject({ key: 'monthly', translations: tr, owner, existing, hasDescription: true });
-      process.stdout.write(JSON.stringify({ items: pl.items.map(i => i.lang + ':' + i.action), owner: pl.ownerReport.map(o => o.status), owners: I.OWNER_LOCALES, bundle: I.BUNDLE_ID }));`;
+      const pl = I.planObject({ key: 'monthly', translations: tr, existing, hasDescription: true });
+      process.stdout.write(JSON.stringify({ items: pl.items.map(i => i.lang + ':' + i.action), extra: pl.extra, bundle: I.BUNDLE_ID }));`;
     const w = JSON.parse(execFileSync('node', ['--input-type=module', '-e', kod], { encoding: 'utf8' }));
-    expect(w).toEqual({ items: ['cs:utwórz', 'sl:pomiń'], owner: ['zgodne z plikiem'], owners: ['en-US'], bundle: 'com.apps4brew.knitting' });
+    expect(w).toEqual({ items: ['cs:utwórz', 'sl:pomiń'], extra: ['en-US'], bundle: 'com.apps4brew.knitting' });
   });
   test('asc-kontrola-oczekiwane.json jest aktualne (generator --check) i zawiera tylko lokalizacje ASC z kompletem pól', () => {
     execFileSync('node', [join(root, 'scripts/asc/kontrola-oczekiwane.mjs'), '--check']);

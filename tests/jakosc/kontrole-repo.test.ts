@@ -165,6 +165,28 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
     const w = uruchom(WORKFLOWY, wf('asc-kontrola.yml', KONTROLA.replace('    uses:', "    if: ${{ inputs.tryb == 'apply' }}\n    uses:")));
     expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA');
   });
+  // Przegląd bezpieczeństwa asc-produkty (2026-11-03): wpis na liście czytających zwalnia zadanie z `environment`, więc strażnik sprawdza też treść i wyzwalacze.
+  const PLAN = (run: string, on = 'workflow_dispatch') => `on: ${on}\npermissions:\n  contents: read\njobs:\n  plan:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - run: ${run}\n        env:\n          K: \${{ secrets.ASC_KEY_ID }}\n`;
+  test('zadanie czytające z listy: --dry-run przechodzi', () => {
+    const w = uruchom(WORKFLOWY, wf('asc-produkty.yml', PLAN('node scripts/asc/produkty.mjs --dry-run')));
+    expect(w.stdout).not.toContain('ODCZYT-'); expect(w.status).toBe(0);
+  });
+  test.each(['node scripts/asc/produkty.mjs --apply', 'node scripts/asc/produkty.mjs', 'node scripts/asc/produkty.mjs --dry-run --apply'])('zadanie czytające z listy: `%s` pada (ODCZYT-Z-ZAPISEM)', (run) => {
+    const w = uruchom(WORKFLOWY, wf('asc-produkty.yml', PLAN(run)));
+    expect(w.stdout).toContain('ODCZYT-Z-ZAPISEM'); expect(w.status).toBe(1);
+  });
+  test.each(['[workflow_dispatch, push]', '[workflow_dispatch, schedule]'])('zadanie czytające z listy w workflowie z wyzwalaczem %s pada (ODCZYT-WYZWALACZ)', (on) => {
+    const w = uruchom(WORKFLOWY, wf('asc-produkty.yml', PLAN('node scripts/asc/produkty.mjs --dry-run', on)));
+    expect(w.stdout).toContain('ODCZYT-WYZWALACZ'); expect(w.status).toBe(1);
+  });
+  test.each([["secrets['ASC_KEY_P8']", 'K: ${{ secrets[\'ASC_KEY_P8\'] }}'], ['toJSON(secrets)', 'K: ${{ toJSON(secrets) }}']])('sekret podany przez %s jest wykrywany (nie wygląda na „bez sekretów”)', (_n, env) => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', `on: workflow_dispatch\npermissions:\n  contents: read\njobs:\n  b:\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    steps:\n      - run: true\n        env:\n          ${env}\n`));
+    expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA'); expect(w.status).toBe(1);
+  });
+  test('`secrets: inherit` w zadaniu workflow wielokrotnego użytku pada', () => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', 'on: workflow_dispatch\npermissions:\n  contents: read\njobs:\n  b:\n    uses: lkarwowski494/apps4brew-narzedzia/.github/workflows/x.yml@43afe81aa37a117dd32259f6452196a1efccd0ec\n    secrets: inherit\n'));
+    expect(w.stdout).toContain('SEKRET-BEZ-SRODOWISKA'); expect(w.status).toBe(1);
+  });
   test('R-173 dowolna nazwa sekretu (nie tylko ASC_*) też pada', () => {
     const w = uruchom(WORKFLOWY, wf('a.yml', 'on: push\njobs:\n  b:\n    runs-on: ubuntu-latest\n    env:\n      K: ${{ secrets.KLUCZ_PODPISU }}\n    steps:\n      - run: true\n'));
     expect(w.stdout).toContain('KLUCZ_PODPISU');

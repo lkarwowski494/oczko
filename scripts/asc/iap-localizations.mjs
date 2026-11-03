@@ -1,10 +1,11 @@
 // Dopisanie lokalizacji produktów zakupu (grupa subskrypcji + 2 subskrypcje + zakup jednorazowy) w App Store Connect przez API.
 // Przeniesione z Treningu (P-315, P-316 (4); wzór: scripts/asc/iap-localizations.mjs tamtego repo, 2e4b0f8), dostosowane do Oczka (rola 10, 2026-11-01).
 // Źródło tekstów: docs/wydanie/metadane/produkty.store.json (jedno źródło prawdy). Grupa subskrypcji jest znajdowana po nazwie referencyjnej
-// („Oczko Pro”, docs/monetyzacja.md „Produkty”), bo jej numer powstaje dopiero przy ręcznym założeniu produktów przez właściciela.
+// („Oczko Pro”, docs/monetyzacja.md „Produkty”). Produkty zakłada wcześniej workflow asc-produkty (scripts/asc/produkty.mjs, P-467) — ten skrypt uruchamiaj PO nim.
 //   node scripts/asc/iap-localizations.mjs            → plan bez zmian (--dry-run, domyślnie)
 //   node scripts/asc/iap-localizations.mjs --apply    → tworzy brakujące i aktualizuje różniące się
-// Zasady: NIGDY nie usuwa (klient dopuszcza tylko GET, POST, PATCH); EN (U.S.) i PL wpisane przez właściciela tylko odczytuje i porównuje;
+// Zasady: NIGDY nie usuwa (klient dopuszcza tylko GET, POST, PATCH); wszystkie lokalizacje (także en-US i pl) z pliku źródłowego zapisuje skrypt (P-467: koniec wyjątku
+// właściciela); język z polem `czeka` (pl: P-422) jest tylko pokazany w planie, bez zapisu;
 // repozytorium jest publiczne — w logu tylko liczby, kody lokalizacji i nazwy produktów, nigdy identyfikatory klucza, tokeny ani odpowiedzi API.
 // Dane logowania z zmiennych środowiskowych: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (plik .p8).
 import { createPrivateKey, sign as cryptoSign } from 'node:crypto';
@@ -18,8 +19,6 @@ export const PRODUCTS = {
   yearly: { productId: 'oczko.pro.yearly', kind: 'subscription' },
   lifetime: { productId: 'oczko.pro.lifetime', kind: 'iap' },
 };
-/** Lokalizacje wpisane przez właściciela przy zakładaniu produktów (B2: pierwsza lokalizacja en-US) — skrypt ich nie zapisuje. */
-export const OWNER_LOCALES = ['en-US'];
 export const API = 'https://api.appstoreconnect.apple.com';
 const ALLOWED_METHODS = new Set(['GET', 'POST', 'PATCH']);
 
@@ -38,6 +37,8 @@ export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r
   async function call(method, path, body) {
     if (!ALLOWED_METHODS.has(method)) throw new Error(`Niedozwolona metoda ${method} — skrypt nigdy nie usuwa`);
     const url = path.startsWith('http') ? path : API + path;
+    // Token nigdy nie opuszcza api.appstoreconnect.apple.com (np. `links.next` z podstawionej odpowiedzi); przegląd bezpieczeństwa 2026-11-03.
+    if (!url.startsWith(API + '/')) throw new Error('Adres spoza API App Store Connect — odmowa');
     for (let attempt = 0; ; attempt++) {
       const res = await fetchFn(url, { method, headers: { Authorization: `Bearer ${typeof token === 'function' ? token() : token}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
       if (res.status === 429 && attempt < 3) { await sleep(2000 * (attempt + 1)); continue; }
@@ -58,27 +59,21 @@ export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r
 }
 
 /** Plan dla jednego obiektu: istniejące lokalizacje (locale → {id, name, description}) kontra tłumaczenia. */
-export function planObject({ key, translations, owner, existing, hasDescription }) {
+export function planObject({ key, translations, existing, hasDescription }) {
   const fields = hasDescription ? ['name', 'description'] : ['name'];
   const same = (a, b) => fields.every(f => (a?.[f] ?? '') === (b?.[f] ?? ''));
   const items = [];
   for (const [lang, tr] of Object.entries(translations)) {
+    if (tr.czeka) { items.push({ key, lang, locale: tr.ascLocale ?? null, action: 'czeka', reason: `czeka na ${tr.czeka}${tr.czekaPowod ? ` (${tr.czekaPowod})` : ''}` }); continue; }
     if (!tr.ascLocale) { items.push({ key, lang, locale: null, action: 'pomiń', reason: 'brak lokalizacji w App Store Connect' }); continue; }
     const have = existing.get(tr.ascLocale); const want = tr[key];
     if (!have) items.push({ key, lang, locale: tr.ascLocale, action: 'utwórz', want });
     else if (same(have, want)) items.push({ key, lang, locale: tr.ascLocale, action: 'pomiń', reason: 'bez zmian' });
     else items.push({ key, lang, locale: tr.ascLocale, action: 'zaktualizuj', id: have.id, want });
   }
-  const ownerReport = [];
-  for (const [locale, text] of Object.entries(owner)) {
-    const have = existing.get(locale); const want = text[key];
-    if (!have) ownerReport.push({ key, locale, status: 'brak w App Store Connect (wpisz ręcznie)' });
-    else if (!same(have, want)) ownerReport.push({ key, locale, status: 'RÓŻNICA względem pliku (nie zmieniam)' });
-    else ownerReport.push({ key, locale, status: 'zgodne z plikiem' });
-  }
-  const known = new Set([...OWNER_LOCALES, ...Object.values(translations).map(t => t.ascLocale).filter(Boolean)]);
+  const known = new Set(Object.values(translations).map(t => t.ascLocale).filter(Boolean));
   const extra = [...existing.keys()].filter(l => !known.has(l));
-  return { items, ownerReport, extra };
+  return { items, extra };
 }
 
 const toMap = rows => new Map(rows.map(r => [r.attributes.locale, { id: r.id, name: r.attributes.name, description: r.attributes.description }]));
@@ -93,7 +88,7 @@ export async function discover(client, log) {
     const appId = groups[0].id;
     const sg = await client.list(`/v1/apps/${appId}/subscriptionGroups`);
     const grupy = sg.filter(g => g.attributes?.referenceName === SUBSCRIPTION_GROUP_NAME);
-    if (grupy.length !== 1) throw new Error(`grupa subskrypcji „${SUBSCRIPTION_GROUP_NAME}”: znaleziono ${grupy.length} (krok B2 właściciela)`);
+    if (grupy.length !== 1) throw new Error(`grupa subskrypcji „${SUBSCRIPTION_GROUP_NAME}”: znaleziono ${grupy.length} (najpierw uruchom workflow asc-produkty)`);
     const group = grupy[0];
     const locs = await client.list(`/v1/subscriptionGroups/${group.id}/subscriptionGroupLocalizations`);
     targets.push({ key: 'group', label: 'grupa subskrypcji', hasDescription: false, existing: toMap(locs),
@@ -127,11 +122,10 @@ export async function discover(client, log) {
 export async function run({ client, data, apply = false, log = console.log }) {
   const { targets, problems } = await discover(client, log);
   log(`Tryb: ${apply ? 'APPLY (zapis)' : 'DRY-RUN (bez zmian)'}; obiektów znalezionych: ${targets.length} z 4`);
-  const counts = { 'utwórz': 0, 'zaktualizuj': 0, 'pomiń': 0, błędy: 0, różniceWłaściciela: 0 };
+  const counts = { 'utwórz': 0, 'zaktualizuj': 0, 'pomiń': 0, 'czeka': 0, błędy: 0 };
   for (const t of targets) {
-    const plan = planObject({ key: t.key, translations: data.tlumaczenia, owner: data.wpisaneRecznie, existing: t.existing, hasDescription: t.hasDescription });
+    const plan = planObject({ key: t.key, translations: data.tlumaczenia, existing: t.existing, hasDescription: t.hasDescription });
     log(`\n== ${t.label} (istniejących lokalizacji: ${t.existing.size}) ==`);
-    for (const r of plan.ownerReport) { log(`  [właściciel] ${r.locale}: ${r.status}`); if (!r.status.startsWith('zgodne')) counts.różniceWłaściciela++; }
     if (plan.extra.length) log(`  [obce, nietykane] ${plan.extra.join(', ')}`);
     for (const it of plan.items) {
       let note = it.reason ? ` (${it.reason})` : '';
@@ -147,7 +141,7 @@ export async function run({ client, data, apply = false, log = console.log }) {
     }
   }
   for (const p of problems) log(`PROBLEM: ${p}`);
-  log(`\nPodsumowanie: utwórz ${counts['utwórz']}, zaktualizuj ${counts['zaktualizuj']}, pomiń ${counts['pomiń']}, błędy zapisu ${counts.błędy}, różnice w lokalizacjach właściciela ${counts.różniceWłaściciela}, problemy ${problems.length}`);
+  log(`\nPodsumowanie: utwórz ${counts['utwórz']}, zaktualizuj ${counts['zaktualizuj']}, pomiń ${counts['pomiń']}, czeka ${counts['czeka']}, błędy zapisu ${counts.błędy}, problemy ${problems.length}`);
   return { code: problems.length || counts.błędy ? 1 : 0, counts, problems };
 }
 

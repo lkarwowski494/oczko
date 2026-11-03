@@ -1,0 +1,97 @@
+# Produkty zakupów w App Store Connect przez API (P-467, 3.11.2026: „chcę wszystko mieć automatycznie”): grupa subskrypcji „Oczko Pro”, oczko.pro.monthly/yearly,
+# oczko.pro.lifetime (Non-Consumable), ceny (kraj bazowy USA), Family Sharing (P-466) i dostępność (wszystkie kraje). Wzór: asc-iap-localizations.yml Treningu
+# (2e4b0f8) — dwa zadania; skrypt scripts/asc/produkty.mjs, dane docs/wydanie/metadane/produkty.store.json. Tylko ręcznie. Kolejność uruchamiania:
+# 1. asc-produkty (to), 2. asc-iap-localizations (nazwy i opisy w 35 językach; wymaga istnienia produktów). Nigdy nie usuwa, nie zmienia Product ID, okresu ani istniejącej ceny
+# (rozbieżność = STOP w planie, nic nie jest zapisywane); bez „Add for Review”.
+# Dwa zadania (P-463, jak Trening): `plan` — tylko odczyt (--dry-run), BEZ środowiska, sekrety REPOZYTORIUM ASC_* (zadanie na liście ASC_TYLKO_ODCZYT w scripts/jakosc/
+# sprawdz-workflowy.mjs, sklep.md §3b D-ASC-K); `apply` — zapis tylko w środowisku `release` (zatwierdzenie właściciela), po udanym planie.
+# Uruchomienie: Actions → „ASC produkty zakupów” → Run workflow → tryb dry-run (plan w podsumowaniu przebiegu) → ponów z trybem apply i zatwierdź środowisko release.
+# Działa dopiero po scaleniu do `main`: workflow_dispatch działa tylko z plikiem na gałęzi domyślnej (GitHub, „Events that trigger workflows”, P-319).
+name: ASC produkty zakupów
+on:
+  workflow_dispatch:
+    inputs:
+      tryb:
+        description: 'dry-run = tylko plan; apply = utwórz brakujące (nigdy nie usuwa, nie zmienia istniejących cen i okresów)'
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+      family_sharing:
+        description: 'Family Sharing dla trzech produktów (P-466; NIEODWRACALNE: po włączeniu nie da się wyłączyć). Odznacz, by pominąć.'
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: asc-produkty
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Klucz API do pliku tymczasowego (maskowany)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w Repository secrets (docs/wydanie/kroki-wlasciciela-testflight.md, A5; sklep.md §3b D-ASC-K)"; exit 1; }; done
+          echo "::add-mask::$ASC_KEY_ID"; echo "::add-mask::$ASC_ISSUER_ID"
+          printf '%s\n' "$ASC_KEY_P8" | while IFS= read -r line; do case "$line" in -----*) ;; *) [ ${#line} -ge 20 ] && echo "::add-mask::$line" ;; esac; done; true
+          umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+      - name: Produkty (plan, tylko odczyt)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          FAMILY_SHARING: ${{ inputs.family_sharing }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          flagi=(); [ "$FAMILY_SHARING" = "true" ] || flagi+=(--bez-family-sharing)
+          node scripts/asc/produkty.mjs --dry-run "${flagi[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Usunięcie klucza z maszyny
+        if: always()
+        run: rm -f "$RUNNER_TEMP/AuthKey.p8"
+  apply:
+    if: ${{ inputs.tryb == 'apply' }}
+    needs: plan
+    runs-on: ubuntu-latest
+    environment: release
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Klucz API do pliku tymczasowego (maskowany)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v (środowisko release albo Repository secrets; docs/wydanie/kroki-wlasciciela-testflight.md, A5)"; exit 1; }; done
+          echo "::add-mask::$ASC_KEY_ID"; echo "::add-mask::$ASC_ISSUER_ID"
+          printf '%s\n' "$ASC_KEY_P8" | while IFS= read -r line; do case "$line" in -----*) ;; *) [ ${#line} -ge 20 ] && echo "::add-mask::$line" ;; esac; done; true
+          umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+      - name: Produkty (zapis; nigdy nie usuwa)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          FAMILY_SHARING: ${{ inputs.family_sharing }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          flagi=(); [ "$FAMILY_SHARING" = "true" ] || flagi+=(--bez-family-sharing)
+          node scripts/asc/produkty.mjs --apply "${flagi[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Usunięcie klucza z maszyny
+        if: always()
+        run: rm -f "$RUNNER_TEMP/AuthKey.p8"

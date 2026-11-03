@@ -1,11 +1,37 @@
 {
-  "_opis": "Lokalizacje produktów zakupu (nazwa, opis) — JEDNO źródło prawdy dla scripts/asc/iap-localizations.mjs (workflow asc-iap-localizations.yml). Szkic rola 10, 2026-11-01: brzmienie en do przeglądu 04 (głos marki), przekład 09 dopisuje `tlumaczenia` po zamrożeniu. Wzór: Trening store/iap-localizations.json (P-315). Produkty: docs/monetyzacja.md „Produkty” (bez ofert wprowadzających, P-057). `wpisaneRecznie`: wpisuje właściciel przy zakładaniu produktów (krok B2); skrypt tylko porównuje. `tlumaczenia[język].ascLocale` = kod lokalizacji ASC albo null (sl, bg, et, lt, lv, sr: bez lokalizacji w ASC; sl — Trening L-003).",
+  "_opis": "Produkty zakupu — JEDNO źródło prawdy dla scripts/asc/produkty.mjs (workflow asc-produkty.yml: grupa, subskrypcje, zakup jednorazowy, ceny, Family Sharing, dostępność) i scripts/asc/iap-localizations.mjs (workflow asc-iap-localizations.yml: nazwy i opisy; uruchamiany PO asc-produkty). Product ID (nieodwracalne) są w stałej PRODUCTS w iap-localizations.mjs i w docs/monetyzacja.md „Produkty”; zgodność pilnuje tests/wydanie/asc-produkty.test.ts. P-467 (3.11.2026): produkty i wszystkie lokalizacje (także en-US i pl) zakłada workflow, nie właściciel; koniec wyjątku OWNER_LOCALES. `tlumaczenia[język].ascLocale` = kod lokalizacji ASC albo null (sl, bg, et, lt, lv, sr: bez lokalizacji w ASC; sl — Trening L-003); `czeka` = język czeka na decyzję (pl: P-422, akceptacja polskich tekstów przez właściciela) — plan go pokazuje, nic nie zapisuje. Przekład pozostałych języków dopisuje 09 po P-422. Ceny: kraj bazowy USA, pozostałe kraje wylicza Apple (price point 'equalization'); `nadpisaniaCen` = {KRAJ: {klucz: cena}} dla krajów z ręczną ceną (puste: P-089 PL 4,99/19,99/59,99 czeka na decyzję koordynatora). Bez ofert wprowadzających (P-057). Family Sharing TAK dla trzech produktów (P-466; nieodwracalne). Limity tekstów: nazwa 30, opis 45 znaków.",
   "limity": {
     "nazwa": 30,
     "opis": 45
   },
-  "wpisaneRecznie": {
-    "en-US": {
+  "krajBazowy": "USA",
+  "familySharing": true,
+  "nadpisaniaCen": {},
+  "produkty": {
+    "group": {
+      "referenceName": "Oczko Pro"
+    },
+    "monthly": {
+      "referenceName": "Oczko Pro Monthly",
+      "okres": "ONE_MONTH",
+      "cenaBazowa": "0.99",
+      "poziomGrupy": 1
+    },
+    "yearly": {
+      "referenceName": "Oczko Pro Yearly",
+      "okres": "ONE_YEAR",
+      "cenaBazowa": "6.99",
+      "poziomGrupy": 1
+    },
+    "lifetime": {
+      "referenceName": "Oczko Pro Lifetime",
+      "typ": "NON_CONSUMABLE",
+      "cenaBazowa": "14.99"
+    }
+  },
+  "tlumaczenia": {
+    "en": {
+      "ascLocale": "en-US",
       "group": {
         "name": "Oczko Pro"
       },
@@ -21,7 +47,11 @@
         "name": "Oczko Pro, lifetime",
         "description": "No limit on crafting days, one purchase"
       }
+    },
+    "pl": {
+      "ascLocale": "pl",
+      "czeka": "P-422",
+      "czekaPowod": "akceptacja polskich tekstów przez właściciela"
     }
-  },
-  "tlumaczenia": {}
+  }
 }
