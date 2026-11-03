@@ -34,6 +34,9 @@ tags:
 - retry:
     maxRetries: 1
     commands:
+      # P-489 3c (#145): po wpisie w „probka-oczka” klawiatura dziesiętna zasłaniała pole szerokości; hideKeyboard odpada (klawiatura liczbowa iOS nie ma akcji schowania),
+      # więc wyśrodkowanie pola w ScrollView (automaticallyAdjustKeyboardInsets) przed stuknięciem
+      - scrollUntilVisible: { element: { id: "probka-szerokosc" }, direction: DOWN, timeout: 30000, centerElement: true }
       - tapOn: { id: "probka-szerokosc" }
       - waitForAnimationToEnd
       - eraseText: 10

@@ -18,7 +18,10 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - assertVisible: "Project options.*" # menu ••• dopiero z projektem (design-spec:138; E2 fix-3)
 - assertVisible: "\\+1 row, when row 2 is done.*"
-- runFlow: subflows/odstep.yaml
+# Restart zamiast odstępu (#145, P-489): okno strażnika serii (RD-17) 15 s zamiast 2 s, bo seria 3 stuknięć Maestro trwała 7 s na wolnej maszynie (wzór 04 i 12, E2E-A4);
+# nowy proces nie pamięta pierwszego +1, więc nie wchodzi ono do serii (baner „Undo 3 rows”, nie 4) bez 15 s czekania. Licznik zostaje 1 (NFR-DAN-002).
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:31:00", OKNO: "15" } }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
 - tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - assertVisible: "Undo 3 rows"

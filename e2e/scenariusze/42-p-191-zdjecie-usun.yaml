@@ -19,8 +19,14 @@ tags:
 - assertVisible: { id: "e2e-zdjecie-testowe" }
 - waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża — w 17 (przebieg 40457386369) stuknięcie nie trafiło w pozycję testową
 - tapOn: { id: "e2e-zdjecie-testowe" }
-- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true }
-# zrzut z panelu `e2e-pomiar-operacji` także przy czerwieni (E2-141-N1: w #141 „recode running · photo running” przez 21 s, w 17 „recode 905 ms”)
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true } # jak w 17 (E2-137-S3, P-489 3b): dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "zdjecia-miniatura" } }
+    commands:
+      - takeScreenshot: opoznienie-miniatura-zdjecia
+      - assertVisible: { id: "e2e-pomiar-operacji", optional: true } # „photo running” / „recode N ms · photo running” = aplikacja jeszcze zapisuje; brak panelu = menu zamknięte
+      - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+# zrzut z panelu `e2e-pomiar-operacji` (E2-141-N1: w #141 „recode running · photo running” przez 21 s, w 17 „recode 905 ms”)
 - takeScreenshot: pomiar-zdjecie
 - assertVisible: { id: "zdjecia-miniatura" }
 - tapOn: { id: "zdjecia-miniatura", index: 0 }

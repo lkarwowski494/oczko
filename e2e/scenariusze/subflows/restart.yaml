@@ -1,4 +1,6 @@
 # Podprzepływ: zabicie procesu i start na tych samych danych z zegarem TERAZ (bez sieci).
+# Parametr opcjonalny OKNO: okno strażnika serii (RD-17) w sekundach, argument E2E `oczkoE2eOknoStraznika` (E2E-A4, P-358; 10 i 29: P-489, #145 — seria 3 stuknięć trwała 7 s).
+# Brak parametru → "2" = STRAZNIK_OKNO_S (okno z konfiguracji; pilnuje tego tests/jakosc/e2e-kruchosc-145.test.ts), więc pozostałe scenariusze są bez zmian.
 appId: com.apps4brew.knitting
 name: "podprzepływ: restart na tych samych danych"
 ---
@@ -8,6 +10,7 @@ name: "podprzepływ: restart na tych samych danych"
     arguments:
       oczkoE2eTeraz: ${TERAZ}
       oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "${typeof OKNO === 'undefined' ? '2' : OKNO}"
 # P-089 (3a): jednorazowe okno „Uczciwe zasady” po pierwszym dniu z robótką (tylko darmowa) — zamykane głównym przyciskiem; sprawdza je 07-p-089-3a-uczciwe-zasady.yaml
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|licznik-plus|limit-zawczasu|projekty-lista" }, timeout: 60000 }
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true }

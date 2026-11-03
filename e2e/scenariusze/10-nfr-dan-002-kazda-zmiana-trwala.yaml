@@ -14,11 +14,12 @@ tags:
       TERAZ: "2026-11-10T19:30:00"
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:31:00" } }
+# OKNO "15": okno strażnika serii (RD-17) w buildzie E2E 15 s zamiast 2 s — seria 3 stuknięć Maestro trwała 7 s na wolnej maszynie (#145, P-489; wzór 04 i 12, E2E-A4)
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:31:00", OKNO: "15" } }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - tapOn: { id: "licznik-minus" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:32:00" } }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:32:00", OKNO: "15" } }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 # --- wpisanie wartości (F-45: „Rows already finished”), klawiatura numeryczna: bez hideKeyboard, zapis przyciskiem arkusza ---
 - tapOn: { id: "licznik-menu" }
@@ -38,13 +39,13 @@ tags:
 - takeScreenshot: 10-formularz-wpisz-wartosc-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "46" }
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:33:00" } }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:33:00", OKNO: "15" } }
 - assertVisible: { id: "licznik-wartosc", text: "46" }
 # --- seria i Undo: po zabiciu zostaje stan po cofnięciu ---
 - tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
 - assertVisible: { id: "licznik-wartosc", text: "49" }
 - tapOn: { id: "baner-serii-cofnij" }
 - assertVisible: { id: "licznik-wartosc", text: "46" }
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:34:00" } }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:34:00", OKNO: "15" } }
 - assertVisible: { id: "licznik-wartosc", text: "46" }
 - takeScreenshot: 10-po-ostatnim-restarcie
