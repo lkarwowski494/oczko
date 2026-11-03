@@ -84,3 +84,29 @@ describe('M1-audytor-generalny-134: wyrocznia liczb podglądu próbki', () => {
     }
   });
 });
+
+// M1-audytor-generalny-136 (04-studio-projektowe-526; DEC-35 b, P-438): kopia z „Make another like this” dostaje kolejny wolny numer („Harbor 2”).
+describe('M1-audytor-generalny-136: nazwa kopii projektu', () => {
+  kontraktGrupy('M1-audytor-generalny-136');
+  type Przypadek = { oryginal: string; istniejace: string[]; baza: string; n: number; kopia: string };
+  const przypadki = (czytaj('docs/design/fix15-2026-11-03/klucze.json') as { kopia_nazwa_przypadki?: { przypadki: Przypadek[] } }).kopia_nazwa_przypadki?.przypadki ?? [];
+  const szablon = () => wartosc(EN, 'projekt.kopia_nazwa') ?? '';
+  const wypelnij = (nazwa: string, n: number) => szablon().replace('{{nazwa}}', nazwa).replace('{{n}}', String(n));
+  test('szablon ma dokładnie {{nazwa}} i {{n}}, bez słów (rozpoznawanie numeru w kopii kopii)', () => {
+    expect(szablon().match(/\{\{\w+\}\}/g)?.sort()).toEqual(['{{n}}', '{{nazwa}}'].sort());
+    expect(szablon().replace('{{nazwa}}', '').replace('{{n}}', '')).toMatch(/^[\s()]*$/);
+  });
+  test('wyrocznia: każdy przypadek spełnia regułę DEC-35 b (baza bez numeru 1–999, najmniejszy wolny numer od 2)', () => {
+    expect(przypadki.length).toBeGreaterThanOrEqual(6);
+    const wzor = new RegExp(`^${szablon().replace('{{nazwa}}', '(.+)').replace('{{n}}', '(\\d{1,3})')}$`);
+    const klucz = (x: string) => x.trim().toLowerCase();
+    for (const c of przypadki) {
+      const m = wzor.exec(c.oryginal);
+      expect([c.oryginal, m && Number(m[2]) >= 1 ? m[1] : c.oryginal]).toEqual([c.oryginal, c.baza]);
+      const zajete = new Set(c.istniejace.map(klucz));
+      for (let n = 2; n < c.n; n++) expect([c.oryginal, n, zajete.has(klucz(wypelnij(c.baza, n)))]).toEqual([c.oryginal, n, true]);
+      expect([c.oryginal, zajete.has(klucz(c.kopia))]).toEqual([c.oryginal, false]);
+      expect([c.oryginal, wypelnij(c.baza, c.n)]).toEqual([c.oryginal, c.kopia]);
+    }
+  });
+});

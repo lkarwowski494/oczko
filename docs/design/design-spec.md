@@ -1145,6 +1145,29 @@ Teksty bez zmian (bez nowych kluczy). Komplet przypadków z napisami en: `fix15-
 
 **Dla 08 (testy przed kodem).** Test akceptacyjny gotowy w katalogu wyjścia sesji 04 (`przekazanie-08/probka-134-dec34.test.ts`, miejsce docelowe `tests/ekrany/probka-dec34.test.ts`; na kodzie dziś 8 z 12 czerwonych z właściwego powodu); `probka.ts`: osobny format dla liczby wyliczonej (1 miejsce) i przepisanej (3 miejsca), `count` z wartości pokazanej; asercje „19.685” w `probka.test.ts`, `narzedzia-probka.test.tsx` i e2e 41 (07) zmieniają się po erracie 01. **Dla 07:** zrzut `41-probka` z „= 19.7 stitches per 10 cm”.
 
+### Nazwa projektu z „Make another like this” (M1-audytor-generalny-136, 04-studio-projektowe-526; DEC-35 b, P-438)
+Kopia dostaje nazwę z numerem, bez pytania: `projekt.kopia_nazwa` „{{nazwa}} {{n}}” → „Harbor 2”. Na liście projektów nie ma dwóch „Harbor” (zrzut audytu `x61-lista-dwa-harbor.jpg`); zmiana nazwy później przez „Edit”, jak dziś.
+- `{{nazwa}}` — nazwa oryginału bez końcowego numeru kopii: gdy nazwa pasuje do szablonu z liczbą całkowitą 1–999 w miejscu `{{n}}` („Harbor 2”, „Sock 1”), bazą jest część przed nią („Harbor”, „Sock”), więc kopia kopii to „Harbor 3”, nie „Harbor 2 2”. Liczba ≥ 1000 należy do nazwy („Blanket 2026” → „Blanket 2026 2”).
+- `{{n}}` — najmniejsza liczba ≥ 2, dla której gotowa nazwa nie jest zajęta przez żaden projekt z nazwą, także ukończony i leżący w „Recently deleted” (po przywróceniu nie wraca dubel). Porównanie bez wielkości liter i bez spacji na końcach.
+- Projekt roboczy (bez nazwy: nazwa = data, `nienazwany = 1`) — bez zmian: kopia dostaje własną datę (P-126 (1b)), bez numeru.
+- Potwierdzenie bez zmian (`projekt.kopia_tytul` „Make another Harbor?”, `projekt.kopia_opis`, `projekt.kopia_potwierdz`); po „Make another” otwiera się ekran nowego projektu z nową nazwą w tytule — to jest informacja o nazwie (zero kroków więcej, opcja b).
+- Nazwa zapisuje się w danych projektu w języku z chwili kopii (to dane osoby; zmiana języka aplikacji jej nie tłumaczy). Szablon w słowniku, nie sklejanie w kodzie (zasada 8 roli 08: szyk numeru w innych językach).
+
+| Oryginał | Istniejące nazwy | Kopia |
+|---|---|---|
+| Harbor | Harbor | Harbor 2 |
+| Harbor | Harbor, Harbor 2 | Harbor 3 |
+| Harbor 2 | Harbor, Harbor 2 | Harbor 3 |
+| Harbor | Harbor, Harbor 3 | Harbor 2 |
+| Sock 1 | Sock 1 | Sock 2 |
+| Blanket 2026 | Blanket 2026 | Blanket 2026 2 |
+
+| Klucz | en |
+|---|---|
+| `projekt.kopia_nazwa` | {{nazwa}} {{n}} |
+
+**Dla 08 (testy przed kodem).** Test akceptacyjny w katalogu wyjścia sesji 04 (`przekazanie-08/projekt-kopia-nazwa-136.test.ts`, miejsce docelowe `tests/dane/projekt-kopia-nazwa.test.ts`; na kodzie dziś 8 z 8 czerwonych: kopia ma nazwę oryginału); wyrocznia `fix15-2026-11-03/klucze.json` → `kopia_nazwa_przypadki`. `zrobPonownie` (`src/przypadki-uzycia/projekt.ts`) liczy numer z nazw w bazie, a szablon dostaje z kompozycji (przypadek użycia bez i18n; sposób — wybór 08). Asercja „kopia „Sweter” = „Sweter”” w `tests/dane/projekt-fix3.test.ts` i komentarz „nazwa kopii = nazwa oryginału” w `app/projekt/[id].tsx` zmieniają się zgodnie z decyzją. **Dla 07:** zrzut listy po scenariuszu 61 z „Harbor” i „Harbor 2”.
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 

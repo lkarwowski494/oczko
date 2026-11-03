@@ -9,13 +9,18 @@
   "grupy": {
     "M1-audytor-generalny-131": [
       "wzor.wskazowka_znacznika"
+    ],
+    "M1-audytor-generalny-136": [
+      "projekt.kopia_nazwa"
     ]
   },
   "en": {
-    "wzor.wskazowka_znacznika": "Tap a row to place your marker."
+    "wzor.wskazowka_znacznika": "Tap a row to place your marker.",
+    "projekt.kopia_nazwa": "{{nazwa}} {{n}}"
   },
   "kontekst": {
-    "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`."
+    "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`.",
+    "projekt.kopia_nazwa": "Nazwa nowego projektu z „Make another like this” (`projekt.zrob_taka_sama`; M1-audytor-generalny-136, 04-studio-projektowe-526, DEC-35 b): {{nazwa}} = nazwa oryginału bez końcowego numeru kopii, {{n}} = najmniejszy wolny numer od 2 („Harbor 2”, potem „Harbor 3”). Jak numer kopii pliku w systemie: sam numer po nazwie, bez słowa „copy”. Jeśli w języku numer stoi inaczej (np. w nawiasie), zostaw tylko {{nazwa}}, {{n}} i znaki interpunkcji, bez słów: aplikacja rozpoznaje ten wzór, żeby kopia „Harbor 2” dostała „Harbor 3”, a nie „Harbor 2 2”. Nazwa zapisuje się w danych projektu w języku z chwili kopii."
   },
   "probka_podglad": {
     "zasada": "DEC-34 a (M1-audytor-generalny-134, 04-studio-projektowe-524): liczba wyliczona w podglądzie kalkulatora próbki — najwyżej jedno miejsce po przecinku (najbliższa dziesiąta, połowa w górę, bez zer końcowych, zapis regionu: formatujLiczbe(Math.round(x × 10) / 10, język, { maks: 1 })); liczba przepisana z pola bez przeliczenia — jak wpisano (do 3 miejsc); obliczenia (wynik oczek, kategoria grubości) z pełnej wartości; {{count}} = wartość pokazana. Teksty bez zmian; przypadki en (wyrocznia testów 08 dla src/kompozycja/probka.ts).",
@@ -126,6 +131,80 @@
         "pelna": 20,
         "pokazana": "From 20 stitches per 4 in and 10 in.",
         "echo": true
+      }
+    ]
+  },
+  "kopia_nazwa_przypadki": {
+    "zasada": "DEC-35 b: baza = nazwa oryginału bez końcowego numeru kopii (liczba całkowita 1–999 w miejscu {{n}} szablonu; większa liczba należy do nazwy); n = najmniejsza liczba ≥ 2, dla której gotowa nazwa nie jest zajęta przez żaden projekt z nazwą (także ukończony i w „Recently deleted”); porównanie bez wielkości liter i spacji na końcach. Projekt roboczy (nienazwany = 1): kopia z własną datą, bez numeru (P-126 (1b)). Przypadki en (wyrocznia testów 08 dla zrobPonownie).",
+    "przypadki": [
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor"
+        ],
+        "baza": "Harbor",
+        "n": 2,
+        "kopia": "Harbor 2"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "Harbor 2"
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3"
+      },
+      {
+        "oryginal": "Harbor 2",
+        "istniejace": [
+          "Harbor",
+          "Harbor 2"
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "Harbor 3"
+        ],
+        "baza": "Harbor",
+        "n": 2,
+        "kopia": "Harbor 2"
+      },
+      {
+        "oryginal": "Harbor",
+        "istniejace": [
+          "Harbor",
+          "harbor 2 "
+        ],
+        "baza": "Harbor",
+        "n": 3,
+        "kopia": "Harbor 3",
+        "opis": "„harbor 2 ” zajmuje numer 2 (bez wielkości liter i spacji na końcach); może leżeć w Recently deleted"
+      },
+      {
+        "oryginal": "Sock 1",
+        "istniejace": [
+          "Sock 1"
+        ],
+        "baza": "Sock",
+        "n": 2,
+        "kopia": "Sock 2"
+      },
+      {
+        "oryginal": "Blanket 2026",
+        "istniejace": [
+          "Blanket 2026"
+        ],
+        "baza": "Blanket 2026",
+        "n": 2,
+        "kopia": "Blanket 2026 2",
+        "opis": "liczba ≥ 1000 należy do nazwy (rok)"
       }
     ]
   }

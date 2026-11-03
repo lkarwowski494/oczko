@@ -385,6 +385,7 @@
     "kopia_tytul": "Make another {{nazwa}}?",
     "kopia_opis": "Same parts, goals, reminders, and needles or hook with their size. All counters start at 0, and this project stays as it is.",
     "kopia_potwierdz": "Make another",
+    "kopia_nazwa": "{{nazwa}} {{n}}",
     "edycja_info": "Deleted parts and counters stay in Recently deleted for 30 days.",
     "data_startu": "Started",
     "data_ukonczenia": "Finished",

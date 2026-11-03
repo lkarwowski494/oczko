@@ -364,6 +364,7 @@
   "projekt.kopia_tytul": "⟦Màké àñöthéŕ {{nazwa}}?~~~~~~~~~⟧",
   "projekt.kopia_opis": "⟦Šàmé pàŕtš, göàlš, ŕémîñdéŕš, àñd ñéédléš öŕ höök wîth théîŕ šîžé. Àll çöûñtéŕš štàŕt àt 0, àñd thîš pŕöjéçt štàýš àš ît îš.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
   "projekt.kopia_potwierdz": "⟦Màké àñöthéŕ~~~~~~~~~⟧",
+  "projekt.kopia_nazwa": "⟦{{nazwa}} {{n}}⟧",
   "projekt.edycja_info": "⟦Délétéd pàŕtš àñd çöûñtéŕš štàý îñ Ŕéçéñtlý délétéd föŕ 30 dàýš.~~~~~~~~~~~~~~~~~~~~~~~~~~⟧",
   "projekt.data_startu": "⟦Štàŕtéd~~~~~~~⟧",
   "projekt.data_ukonczenia": "⟦Fîñîšhéd~~~~~~~~⟧",

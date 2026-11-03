@@ -342,6 +342,7 @@
     "kopia_tytul": "Tytuł potwierdzenia „Zrób taką samą”; {{nazwa}} = nazwa projektu.",
     "kopia_opis": "Treść potwierdzenia „Zrób taką samą” (BR-PRJ-007: te same części i przypomnienia, liczniki 0, oryginał bez zmian).",
     "kopia_potwierdz": "Przycisk potwierdzenia „Zrób taką samą”.",
+    "kopia_nazwa": "Nazwa nowego projektu z „Make another like this” (`projekt.zrob_taka_sama`; M1-audytor-generalny-136, 04-studio-projektowe-526, DEC-35 b): {{nazwa}} = nazwa oryginału bez końcowego numeru kopii, {{n}} = najmniejszy wolny numer od 2 („Harbor 2”, potem „Harbor 3”). Jak numer kopii pliku w systemie: sam numer po nazwie, bez słowa „copy”. Jeśli w języku numer stoi inaczej (np. w nawiasie), zostaw tylko {{nazwa}}, {{n}} i znaki interpunkcji, bez słów: aplikacja rozpoznaje ten wzór, żeby kopia „Harbor 2” dostała „Harbor 3”, a nie „Harbor 2 2”. Nazwa zapisuje się w danych projektu w języku z chwili kopii.",
     "edycja_info": "Podpis pod listą części w trybie Edit; 30 = okres kosza (P-026) — tłumacz zostawia liczbę.",
     "data_startu": "Etykieta wiersza daty startu projektu w szczegółach ukończonego projektu (design-spec „Data ukończenia”). Ok. 12 znaków.",
     "data_ukonczenia": "Etykieta wiersza daty ukończenia; stuknięcie rozwija systemowy wybór daty (design-spec „Data ukończenia”). Ok. 12 znaków.",
