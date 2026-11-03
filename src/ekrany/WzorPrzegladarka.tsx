@@ -28,6 +28,7 @@ export type StanPrzegladarki = {
   zakreslenia: number;
   narzedzie: Narzedzie;
   word: boolean;                                  // podgląd zastępczy Worda: bez znacznika i rysowania (W11)
+  wskazowka?: boolean;                            // M1-131: pierwsze otwarcie — linia `wzor.wskazowka_znacznika` (decyzja i flaga: trasa)
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
   licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
@@ -91,6 +92,9 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [notatkaPo, ustawNotatkaPo] = useState(false); // po ustawieniu znacznika arkusz notatki otwiera się sam (design-spec)
   const znacznikUstawiony = (kier: 1 | -1) => { p.naZaznaczRzad(kier); ustawUstawianie(true); if (notatkaPo) { ustawNotatkaPo(false); ustawNotatke('arkusz'); } };
   const zaznacz = () => { if (s.kierunek === 1 || s.kierunek === -1) znacznikUstawiony(s.kierunek); else ustawPytanie('zaznacz'); };
+  const ustawiam = pytanie !== 'brak' || !!p.oczekujacePrzytrzymanie || ustawianie || p.znacznik != null; // M1-131: ustawianie zaczęte
+  const [bezWskazowki, ustawBezWskazowki] = useState(false); // …i wskazówka już nie wraca (spec pkt 3 „Znika”)
+  useEffect(() => { if (ustawiam) ustawBezWskazowki(true); }, [ustawiam]);
   const ipad = s.uklad.klasa === 'regular';
   const tryb = s.narzedzie !== 'brak';
   const obok = s.uklad.wzor === 'obok';
@@ -160,6 +164,9 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         </View>
       )}
       {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text">{t('wzor.word_podglad')}</Text>}
+      {s.wskazowka && !bezWskazowki && !ustawiam && !tryb && notatka !== 'pasek' && podpowiedz !== 'widac' && (
+        <Text style={[st.tresc, st.informacja]} testID="wzor-wskazowka-znacznika" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{t('wzor.wskazowka_znacznika')}</Text>
+      )}
       {notatka === 'pasek' && (
         <View style={st.informacja} accessibilityRole="summary">
           <Text style={st.tresc}>{t('wzor.notatka_bez_znacznika')}</Text>

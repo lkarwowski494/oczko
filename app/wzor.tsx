@@ -22,6 +22,7 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
+import { useWskazowkaZnacznika } from '../src/kompozycja/wskazowka-znacznika';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { dodajZrodlo, type ZrodloDodaniaTrasy } from '../src/kompozycja/wzor-import-trasy';
 import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunki';
@@ -138,6 +139,7 @@ export default function EkranWzoru(): React.ReactElement {
     if (zwolniony.current) { dokoncz(); return; }
     if (nowaNotatka.current) pytajOdrzucZmiany(t, 'nowy', () => wyjdzZWzoru(dokoncz)); else wyjdzZWzoru(dokoncz);
   });
+  const wskazowka = useWskazowkaZnacznika(zw, widok); // M1-131
   function setRysikOtwarcie() { ustawRysik((s) => poDotyku(s, 'otwarcie')); }
 
   async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
@@ -189,7 +191,7 @@ export default function EkranWzoru(): React.ReactElement {
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => wyjdzZWzoru(() => router.back())}

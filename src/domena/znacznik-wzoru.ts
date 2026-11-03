@@ -64,6 +64,10 @@ export function gornaKrawedzRzedu(yDotyku: number, wysokoscRzedu: number): numbe
 export function stukniecieStawiaZnacznik(s: { jestZnacznik: boolean; pasekOtwarty: boolean; rysowanie: boolean }): boolean {
   return !s.rysowanie && (!s.jestZnacznik || s.pasekOtwarty);
 }
+/** M1-131 (design-spec „Aneks M2 partia 3c1” pkt 3): wskazówka pierwszego otwarcia tylko przy wzorze PDF albo zdjęcia bez znacznika i bez VoiceOver (gest „Tap a row” czytnik ma pod „Mark row”). */
+export function wskazowkaZnacznikaMozliwa(s: { word: boolean; jestZnacznik: boolean; czytnik: boolean }): boolean {
+  return !s.word && !s.jestZnacznik && !s.czytnik;
+}
 export function rzadPoPrzeniesieniu(obecny: { rzad: number } | null, rzadWRobocie: number): number {
   return obecny ? Math.max(1, obecny.rzad) : rzadWRobocie;
 }
