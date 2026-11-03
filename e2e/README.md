@@ -22,7 +22,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 ## Tagi
 | Tag | Znaczenie |
 |---|---|
-| `podstawowy` | pakiet bramki TestFlight (P-091 9a): pierwsze +1 świeżej instalacji offline (01–03), +1/−1/cofnij (04), limit zawczasu (05), zakup i przywrócenie na sztucznym sklepie (06), okno „Uczciwe zasady” (07), eksport/import (08), start awaryjny ADR-0019 (09) |
+| `podstawowy` | pakiet bramki TestFlight (P-091 9a): pierwsze +1 świeżej instalacji offline (01–03), +1/−1/cofnij (04), limit zawczasu (05), zakup i przywrócenie na sztucznym sklepie (06), okno „Uczciwe zasady” (07), eksport/import (08), start awaryjny ADR-0019 (09), projekt z częściami (33, P-198 Q3a), trwałość każdej zmiany licznika (10), baza bez sieci (11) i kosz 30 dni (36) — DEC-08 (a), M1-audytor-generalny-047; razem 13. Kontrakt: `tests/jakosc/e2e-pakiet-bramki.test.ts` (scenariusz z ID blokera wydania z `docs/brd/README.md` ma tag albo wyjątek nazwany) |
 | `podstawowy` w pakiecie pełnym | porażka scenariusza z tagiem `podstawowy` czerwieni zadanie także przy `[e2e-pelny]`; porażka pozostałych to „czerwony-informacyjnie” w podsumowaniu (wyjście `bramka` planu części; F07-15, P-198 Q1a) |
 | `stan-licznika` | asercja wartości licznika — bez ponowień (P-091 9a) |
 | `ipad` | scenariusz iPada: tylko pakiet `ipad` (pozycja macierzy `e2e` na symulatorze iPada, przy `[e2e-pelny]` albo `[e2e-ipad]` w commicie); poza pakietem podstawowym i pełnym; bez bramki do pierwszego zielonego (P-225 Q1a) |
@@ -335,7 +335,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-PRJ-001/S1 | `33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml` (pełny; do podstawowego po 1. zielonym, P-198 Q3a) |
 | BR-LIC-011/S1, BR-PRJ-014/S1 | `34-br-lic-011-s1-nastepna-czesc-blizniak.yaml` |
 | BR-DNI-005/S1 | `35-br-dni-005-s1-termin-cel-dnia.yaml` |
-| BR-DAN-008/S1 | `36-br-dan-008-s1-usun-przywroc-z-kosza.yaml` (pełny; do podstawowego po 1. zielonym, P-198 Q3a) |
+| BR-DAN-008/S1 | `36-br-dan-008-s1-usun-przywroc-z-kosza.yaml` (podstawowy od DEC-08 (a), P-198 Q3a) |
 | P-191 (P1a) stoper | `37-p-191-stoper-start-pauza-stop.yaml` |
 | BR-PRJ-013/S1 (częściowo) | `38-br-prj-013-s1-korekta-sesji.yaml` |
 | P-190 język | `39-p-190-jezyk-trwaly.yaml` |
