@@ -198,10 +198,10 @@ Zasada obliczeń (RYZ-04): każdy wynik pokazuje dane wejściowe, jednostki i za
     - Zakładając próbkę 23 o. na 4 in
     - Gdy użytkownik sprawdza kategorię
     - Wtedy aplikacja pokazuje kategorie 2 i 3 oraz informację, że kategoria nie oznacza zamienności i trzeba zrobić próbkę [FAKT S-20] (RD-10-W2)
-  - Scenariusz: Ekran „Źródła wiedzy” (ER-45)
+  - Scenariusz: Ekran „Źródła wiedzy” (ER-45, ER-64)
     - Zakładając, że aplikacja jest otwarta, także bez sieci
     - Gdy użytkownik otwiera w Ustawieniach „Źródła wiedzy”
-    - Wtedy widzi jedno ogólne zdanie, że treści opracowano na podstawie norm branżowych i podręczników dziewiarskich (P-108 (4)), oraz linię źródła wymaganą warunkami użycia CYC „Source: Craft Yarn Council's www.YarnStandards.com” (S-24, P-112 (2))
+    - Wtedy widzi jedno ogólne zdanie, że treści opracowano na podstawie norm branżowych i wskazówek organizacji rękodzielniczych (P-108 (4), P-304 (2)), oraz linię źródła wymaganą warunkami użycia CYC „Source: Craft Yarn Council's www.YarnStandards.com” (S-24, P-112 (2))
     - Ale nie widzi listy książek, autorów, producentów, adresów stron ani cytatów (P-108 (1), (2), P-112 (2))
   - Scenariusz: Linia źródła przy tabeli CYC (ER-45)
     - Zakładając, że aplikacja pokazuje tabelę opartą na standardach CYC: kategorie grubości włóczki, rozmiary drutów albo szydełek
