@@ -1,5 +1,3042 @@
 {
   "opis": "Stan kontroli (a) treści krytycznej na język (rola 09, DEC-11 a, M1-audytor-generalny-008). Wpis a = przekład zwrotny na polski w świeżej sesji z porównaniem sensu z kluczem źródłowym (docs/lokalizacja/jezyki.md, polityka „szeroka”). Wpis powstaje dopiero po wykonaniu kontroli i zawiera skrót tekstu, który kontrolowano (node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --krytyczne docs/lokalizacja/krytyczne.json --przeglad docs/lokalizacja/przeglad-krytyczne.json --skrot <język>). Zmiana tekstu unieważnia wpis. Wzór wpisu: { \"jezyki\": { \"<kod>\": { \"<klucz>\": { \"a\": { \"kto\": \"...\", \"data\": \"RRRR-MM-DD\", \"metoda\": \"przeklad-zwrotny-pl\", \"wynik\": \"zgodny\", \"sha\": \"<12 znaków>\" } } } } }. Metody (P-498): przeklad-zwrotny-pl — 33 języki; ślepy przekład zwrotny na pl robi `przeklad-api.mjs --tryb zwrotny` (workflow przeklad-tlumaczen.yml, artefakt raport-zwrotny, model widzi tylko tekst języka), sens porównuje z en i twierdzeniami rola 06 i dopiero wtedy powstaje wpis; akceptacja-wlasciciela-pl — tylko pl (P-473; przekład zwrotny pl→pl nie ma sensu), wpis dopiero po poprawce 042 (uwaga_kategoria) i jej akceptacji. Przegląd człowieka (próg wyższy niż a) to osobny wpis poza zakresem tej bramki.",
   "stan_2026-11-02": "Kontrola (a) niewykonana w żadnym z 34 języków (docs/lokalizacja/stan-przeklad.md, „Otwarte” 2; P-320 odkłada falę po audycie M1). Do czasu fali sprawdz-i18n --wydanie kończy się kodem 1.",
-  "jezyki": {}
+  "jezyki": {
+    "bg": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6bdeb6d83554"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "007d0b3a7521"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "be749eb3290f"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "55d7e8f1498e"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "026ef482c788"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b8763ad753f0"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "959d187a7e0c"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4be9d06d45a9"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6a5c2fb3af78"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e190efc5c038"
+        }
+      }
+    },
+    "cs": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "28ebf00da6d4"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "421012ae6e40"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "613f4462dbcd"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "228ab1af76a1"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "598d479c6bfd"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9852f471922d"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "1343630a9f7e"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a71885964de7"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "57beb31e911f"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "06bcc25aab35"
+        }
+      }
+    },
+    "da": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9a28aadff2b2"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d04bee57dc0b"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "45055ee7f7ec"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "52ef07535910"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7ed9490be973"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "eb2d65ee8dc8"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e4bc909373b9"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5c117b818ce4"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "8dde02e36ff3"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c0af9ca9afd2"
+        }
+      }
+    },
+    "de": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a81cdd223b8b"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e6963217058c"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2d2f902a218c"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5ab2e1a62633"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9f0e1d693ad1"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5b3982347de8"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f01df93ae7eb"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f2e2051676a5"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b7b99e6900fe"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b59b799c3474"
+        }
+      }
+    },
+    "el": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "170008a4da5c"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2b75a9116d8c"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b3277fb8677a"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f78e6d6b74d4"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c9b19586fc49"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fc50ea2323bc"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ea0ce071a392"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5b6c2eea78aa"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d359c7ba636d"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "bf27e43f7808"
+        }
+      }
+    },
+    "es": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fa6e089461a1"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "079b28477d48"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "364522dc108d"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "41237f3b10f6"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "78363b7456f3"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d3f82af2fe3d"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fd0e5140ac0d"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ff029fbbcfdc"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "942097544686"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fd0178414e54"
+        }
+      }
+    },
+    "es-419": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b1cfe1d33f04"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0558b5486e78"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4ab256254f46"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "222dbc469f87"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4fd4b08387ae"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ba0231ec46d0"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "871eeabaca23"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "22d48e4ca80c"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7acbe5a01b8e"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5901f8b9d508"
+        }
+      }
+    },
+    "et": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "aa381952dae7"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e936e9a89b10"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c7c7fef7e0aa"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2600a2f58906"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9adcbddfc2a7"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "de3d4b0b7945"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "4f0c4ec0f854"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7a7b618c7468"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a21562e70a33"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6a1ae7e4e737"
+        }
+      }
+    },
+    "fi": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "22fab254c24b"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f05b90102107"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "568f08ef5756"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b3ec60600540"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7c4283e18f70"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "518db68ac18b"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6677e9e252fe"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e6722c738972"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e47db557ede8"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "188ccd2b4377"
+        }
+      }
+    },
+    "fr": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "35557ee3c64c"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3d4d2e022917"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7cfdba392ad8"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "1ff1aab0339d"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0f2b2a457910"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9d2f13d288d5"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4351bbdda504"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ff54972a0ebd"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3295c1e349c7"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "71d4ed3cf79b"
+        }
+      }
+    },
+    "hr": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "1548533ee09b"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9925261b237d"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "406b8fb8c058"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7ed9ce3f1b36"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "53701851aa10"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7b1b404cfc36"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "73241b0129b5"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "8add2a876858"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6db3be5c92ec"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "116b3c887d4e"
+        }
+      }
+    },
+    "hu": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3c53bc7fa0b9"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d927ab1782d4"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f515eca304c1"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3d1dd0f74ff4"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "caad8aeb8e78"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6fdcea9be18e"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cc0abb668e1b"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "388a32bab5f4"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "aca847a3351c"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f912adc743e0"
+        }
+      }
+    },
+    "id": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3278fce961cb"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4038f00b6779"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c1402ec90c4c"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cca12424f970"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "8305bbcf827e"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "25e45c512176"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cd5969e97100"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cc20ecf18cc9"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e343f22e8535"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "47a654a5e85e"
+        }
+      }
+    },
+    "it": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "76b40ebc7a56"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "855a243f87a7"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "16ce0d72a57d"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b6c79ee8805f"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "1b8ced6dacc6"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d5c98a299741"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "63490f8b9abd"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "23fd90f87ae9"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d4757c243104"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "da1d46e5a4a9"
+        }
+      }
+    },
+    "ja": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "80c81e14dcc0"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6e0271238394"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f52f1d2d57bc"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "98e5d671a649"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c5b631c9ca24"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2ddbf7df8551"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "43768115e60f"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "686a49593704"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fbda1120b231"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9c70c4723d04"
+        }
+      }
+    },
+    "ko": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "70c9078b02b4"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "58b1e98999ce"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6f97fe6ff9ea"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0657464d0eb2"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "65350be34da4"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "54f5fd2f147b"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6a43114796d7"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "67404b619ea9"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f361163cc002"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9cdc284e97c1"
+        }
+      }
+    },
+    "lt": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a910e35e6f6d"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b7a404c3c2e8"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "14d6a80eee9d"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2d4158e11aa3"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0b6b107463be"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5d1cd6f94ce2"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c7daafa31614"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3774529b6a6c"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7f8e79225da7"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "29a21912b276"
+        }
+      }
+    },
+    "lv": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4c8fdd8a9149"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d456844d6896"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "53f573171c6c"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b28c70cae913"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cfbd5b683b15"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "65b3fe3b2aed"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "090943a5e96a"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f664a965928d"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e16e0689873e"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2211b5d233e2"
+        }
+      }
+    },
+    "ms": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "09bff5308ede"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "887f64594572"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "73a03b7cbf8e"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4b5cf156dec7"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "df11038d880d"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ab3a187e9d3d"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "87d6b8374c83"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "78d2b722b778"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6a66e2c9ef8f"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b86ad31617f4"
+        }
+      }
+    },
+    "nb": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d5186ce5d35a"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f3442ab33960"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7d79ee112c81"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "02a20ea4f7b1"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5a5eba46f022"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9719effc54e1"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "1bdf039c43d6"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "8d8251fd2354"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e9569e5af271"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "95ec90b53a6f"
+        }
+      }
+    },
+    "nl": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d1881c42597e"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "47d78187ad71"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "857b53adf378"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "aafebba2537e"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "869f9a60dd3a"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ee5c722da2e5"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0bb3d9d1aa67"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "059882254dcd"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2f2884f8332f"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cefa9003c4e5"
+        }
+      }
+    },
+    "pt": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "08f0320f3a61"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "003eb9846e39"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a85976269205"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b8d82cc24b47"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "00c6a0c62b34"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "516a490cc234"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2caf556c2e55"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b6cd74767974"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "62ffc4ba6be8"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5446b20c013c"
+        }
+      }
+    },
+    "pt-BR": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ccd87be26c50"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0bf655eb3879"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "adfaf465d331"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "8183f9157518"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a304f4f2f8d3"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "bc98a21cb88b"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ffb1f5f86344"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "42602e998668"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "03a9148c135c"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f2743471d930"
+        }
+      }
+    },
+    "ro": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5aa40399afff"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6ecb1b8be57a"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "bf07b0cbf9ac"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9542ba9724dd"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "17aa9f206536"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "24eb5d749975"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "bec35b87fbc0"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "12e354917c8c"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "860a8d420a46"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d2a506094b14"
+        }
+      }
+    },
+    "ru": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c9470d6948bc"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "20d4ea2f195a"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6ff7fb00cf6c"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "64519b5b2b5d"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ec21242827d7"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e09d9fabf906"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b188ab64ae03"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ff4888de7dd9"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0426fc8a4484"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3b360500ff04"
+        }
+      }
+    },
+    "sk": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fd15207f622e"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e440474ef62b"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4f3b38f3bddd"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "fd64b5dbd057"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "49d72fd446b3"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a3cab8ad2774"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f9864b486f81"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "20b74faf51b8"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cf7146b71ee1"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "35e44fbffe30"
+        }
+      }
+    },
+    "sl": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "09fc6736bff8"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "157576d3515d"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5b42a9618174"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7efb3a833e7d"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "ee9be1346ae3"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "e4573e967555"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c05b273b9990"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "bb6f4232cfa6"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b363c82dd7a4"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "38171c6d521d"
+        }
+      }
+    },
+    "sr": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2efa296510c4"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "07ef786eebe1"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "73f465c0b6a6"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3587a3184c48"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "12f6d121aaee"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a2ab7328ce0b"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "df9558585b36"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b029f9164a02"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "55c5e6e14e8e"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "4ff75b49b9a0"
+        }
+      }
+    },
+    "sv": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6210840dbcff"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "285cae341290"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d45fb592b2c7"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6b09a2ad7b5f"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0e6a1d61b8fd"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f55d66833b8d"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5fe713ec9be0"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "509f9b873c94"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5bca1eb5c18e"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "cc511481da15"
+        }
+      }
+    },
+    "tr": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2ab63ff861d4"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2ff4020d4721"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "041fc391cc2c"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9b8888f44fa6"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "89df5f79ba14"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "53def95d487a"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "832cde1bd051"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "f75ea75cc67e"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "591f9fac336b"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a7e6461a0fd8"
+        }
+      }
+    },
+    "uk": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a95539055f8a"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "5803c3d4c45f"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "04477ece43dd"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3cdd3744c7f7"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "c01c0fdc37b7"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "eec78234a827"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "742248b813db"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "87bd75e62db8"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d1c015bcac14"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3f7402a290e3"
+        }
+      }
+    },
+    "vi": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d6c255ff3ed5"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "7327b6f43774"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6e810b274bd1"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "d9356560ce39"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "b07350b96fbd"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "bca24a0a67a9"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a8f094d9781a"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "9e577c5daf14"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "331e47a09792"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "3b4d1d3f1cdd"
+        }
+      }
+    },
+    "zh-Hant": {
+      "probka.kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "67b1e5d83574"
+        }
+      },
+      "probka.kategoria_otwarta": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "rozbieżny",
+          "sha": "f64618a080d2"
+        }
+      },
+      "probka.kategoria_obie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6ec5b36c5f1e"
+        }
+      },
+      "probka.kategoria_miedzy": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "69f7cf82b049"
+        }
+      },
+      "probka.kategoria_powyzej": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "edd46a8e6b3e"
+        }
+      },
+      "probka.uwaga_kategoria": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "a38144bf43ee"
+        }
+      },
+      "probka.uwaga_oczka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "0bd255677c74"
+        }
+      },
+      "probka.uwaga_koronka": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "2a13ad39437d"
+        }
+      },
+      "probka.uwaga_zaokraglenie": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "42b98e044ffb"
+        }
+      },
+      "probka.uwaga_4in": {
+        "a": {
+          "kto": "rola 06 (AI): ślepy przekład zwrotny Opus 5.5 medium przez API (run 41645171752, artefakt raport-zwrotny 13234158391) + porównanie sensu z en i twierdzeniami; zastępczy przegląd D-027, P-498",
+          "data": "2026-11-03",
+          "metoda": "przeklad-zwrotny-pl",
+          "wynik": "zgodny",
+          "sha": "6dc931b18df4"
+        }
+      }
+    }
+  }
 }
