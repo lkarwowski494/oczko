@@ -12,6 +12,7 @@ import Constants from 'expo-constants';
 import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
 import { skrotPliku } from '../platforma/dziennik-plus';
 import { kopiaAwaryjna } from './kopia-awaryjna';
+import { jezykZPliku } from './pliki-urzadzenia';
 import { kamienMilowy, odczytajStan, poczatekStartu, sprobujNormalnie, wyjscieDoTla, type StanStartu } from '../niezawodnosc/start';
 import { odczytajEtap, opisEtapu, type NazwaEtapu } from '../niezawodnosc/etap-startu';
 import { awariaStartu, zegarAplikacji } from '../platforma/tryb-e2e';
@@ -36,6 +37,10 @@ function zapiszEtapStartu(etap: NazwaEtapu): void {
   try { zapiszTekst(plikEtapu(sciezki().stanStartu), JSON.stringify({ etap, ms: Math.max(0, Date.now() - poczatekMs) })); } catch { /* diagnostyka nie blokuje startu */ }
 }
 
+/** M1-070 (P-455): język wybrany w aplikacji z lustra `jezyk.json` obok bazy, bez SQLite (ekran awaryjny); brak, uszkodzony plik albo błąd → null. */
+export async function preferencjaJezykaAwaryjna(): Promise<string | null> {
+  try { const b = sciezkiDanych(katalogBiblioteki()).baza; return await jezykZPliku(b.slice(0, b.lastIndexOf('/'))); } catch { return null; }
+}
 /** Początek startu na pierwszym planie (wołający czeka na AppState = active). */
 export async function rozpocznijStart(): Promise<TrybStartu> {
   const s = sciezki();

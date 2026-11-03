@@ -13,7 +13,7 @@ import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
 import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, wolneMiejsce, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
-import { identyfikatorUrzadzenia, pamiecProWPliku } from './pliki-urzadzenia';
+import { identyfikatorUrzadzenia, pamiecProWPliku, zLustremJezyka } from './pliki-urzadzenia';
 import { utworzI18n } from '../i18n/i18n';
 import { ZASOBY, ZASOBY_PSEUDO } from '../i18n/slowniki';
 import type { PreferencjaJezyka } from '../i18n/jezyki';
@@ -68,7 +68,8 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const baza = b.wartosc;
   const zegar = zegarAplikacji();
   // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem; pseudo en-XA tylko z EXPO_PUBLIC_PSEUDO=1 (M1-051).
-  const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
+  // Lustro w `jezyk.json` obok bazy dla ekranu awaryjnego (M1-070, P-455).
+  const i18n = await utworzI18n({ magazyn: zLustremJezyka(magazynJezyka({ baza, zegar }), katalogDanych), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
   const jezyk = () => i18n.jezyk();
   const id = await identyfikatorUrzadzenia(katalogDanych, () => identyfikatory.nowy());
   // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep jest nieaktywny (moduł w bundlu, przełącznik wyłączony); ślady trybu testowego sprawdza `scripts/wydanie/slady-testowe.mjs` z `scripts/wydanie/kontrola-ipa.sh` (JAK-15).
