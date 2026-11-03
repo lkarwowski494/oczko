@@ -434,7 +434,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     b.u.bladWysylki = { kod: 'siec' };
     expect((await dodajRzad(b.s.z, { licznikId: l })).ok).toBe(true); // E4 niewysłane na B
     const przed = await licznosci(b.s.baza);
-    expect(przed).toMatchObject({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, poczekalnia: 0, blad: 0, projekt_w_koszu: 0 });
+    expect(przed).toMatchObject({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, poczekalnia: 0, blad: 0, projekt_w_koszu: 0, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     const [p] = await a.s.baza.all<{ id: string }>('SELECT id FROM projekt');
     await a.s.baza.run('DELETE FROM projekt WHERE id = ?', [p.id]); // trwałe usunięcie na A
     await a.st.wyslijZaleglosci();
@@ -449,7 +449,7 @@ describe('ADR-0005 nagrobki: niewysłane dane na B po trwałym usunięciu projek
     expect(await licznik(b.s.baza, l)).toEqual([{ wartosc: 4, konflikt: 0 }]);
     b.u.bladWysylki = null; await b.st.wyslijZaleglosci();
     await a.u.dostarcz();
-    expect(await licznosci(a.s.baza)).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1 });
+    expect(await licznosci(a.s.baza)).toEqual({ projekt: 1, czesc: 1, licznik: 1, zdarzenie: 4, zmiana_icloud: 0, poczekalnia: 0, blad: 0, projekt_w_koszu: 1, czesc_w_koszu: 0, licznik_w_koszu: 0 });
     expect(await licznik(a.s.baza, l)).toEqual([{ wartosc: 4, konflikt: 0 }]);
     expect(await zrzut(a.s.baza)).toEqual(await zrzut(b.s.baza));
     for (const baza of [a.s.baza, b.s.baza]) expect([await baza.all('PRAGMA integrity_check'), await baza.all('PRAGMA foreign_key_check')]).toEqual([[{ integrity_check: 'ok' }], []]);
