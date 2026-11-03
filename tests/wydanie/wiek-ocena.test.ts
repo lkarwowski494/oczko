@@ -88,3 +88,23 @@ describe('spójność odpowiedzi wiekowej w dokumentach wydania', () => {
     expect(kroki).toMatch(/^\| C2 \|.*Age Rating/m);
   });
 });
+
+describe('notatka dla App Review wskazuje funkcję, która daje 16+ (M1-audytor-generalny-099; 10-wydanie-501)', () => {
+  const notatka = czytaj('docs/wydanie/metadane/notatka-recenzja.txt');
+  const etykieta = (JSON.parse(czytaj('src/i18n/slowniki/en.json')) as { wzor: { link_strony: string } }).wzor.link_strony;
+
+  test('przy „Unrestricted Web Access: Yes” w §4 notatka wymienia pozycję menu „Web page link…” (tekst z en.json) i wiąże ją z tą odpowiedzią i 16+', () => {
+    expect(wiersz).toMatch(/Unrestricted Web Access: Yes/);
+    expect(etykieta).toBe('Web page link…');
+    expect(notatka).toContain(`"${etykieta}"`);
+    const zdanie = notatka.split('\n').find((l) => l.includes(`"${etykieta}"`) && /Unrestricted Web Access/.test(l)) ?? '';
+    expect(zdanie).toMatch(/16\+/);
+    expect(Buffer.byteLength(notatka)).toBeLessThanOrEqual(4000);
+  });
+
+  test('sklep.md §6 mówi to samo (import strony i odpowiedź wiekowa z §4) i podaje aktualny rozmiar notatki', () => {
+    const s6 = sekcja(sklep, '6\\.');
+    expect(s6).toMatch(/Web page link…[^\n]*Unrestricted Web Access: Yes[^\n]*16\+/);
+    expect(s6).toContain(`${Buffer.byteLength(notatka)} bajt`);
+  });
+});
