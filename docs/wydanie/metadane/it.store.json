@@ -1,0 +1,29 @@
+{
+  "_opis": "Metadane it — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "it": {
+        "title": "Oczko: contagiri per maglia",
+        "subtitle": "Ferri e crochet, senza account",
+        "description": "Oczko è un contagiri per lavorare a maglia e all’uncinetto che non ti fa perdere il segno. È gratis per 5 giorni di lavoro al mese, i tuoi progetti e l’esportazione restano sempre tuoi; Pro è un abbonamento o un acquisto unico. Senza account, i tuoi dati restano sul dispositivo e puoi esportarli in qualsiasi momento. I progetti eliminati restano 30 giorni in Eliminati di recente. Se i tocchi si accumulano per sbaglio, Oczko ti propone di annullarli.\n\nCONTA SENZA PERDERE IL SEGNO\n• Un tocco aggiunge una riga, con una vibrazione che senti. Tocca −1 per toglierne una.\n• Lo schermo resta acceso mentre conti.\n• La Cronologia mostra ogni modifica con l’orario, e Annulla è a portata di tocco.\n• Se i tocchi si accumulano troppo in fretta, Oczko ti propone di annullarli. Un blocco opzionale ignora i tocchi accidentali.\n• Oczko si apre dove avevi lasciato, con la tua nota accanto al contagiri.\n\nTIENI LA SPIEGAZIONE ACCANTO AL CONTAGIRI\n• Aggiungi una spiegazione da un PDF, da un file Word, da una foto o scansione di una pagina, oppure da una pagina web. Puoi salvare anche il link a un video.\n• Invia le spiegazioni a Oczko da altre app con Condividi.\n• Segna sulla spiegazione la riga a cui sei arrivato, evidenziala e scrivi note con il dito. Su iPad, scrivi con Apple Pencil.\n• Spiegazione e contagiri sullo stesso schermo.\n\nPROGETTI E STRUMENTI\n• Progetti con parti, più contagiri, motivi da ripetere e obiettivi.\n• Promemoria come «diminuisci ogni 6 righe, per 8 volte».\n• Misura dei ferri o dell’uncinetto, campione, foto e note per ogni progetto.\n• Un cronometro per ogni sessione e un calendario dei tuoi giorni di lavoro.\n• Scorta di filati e strumenti, e un calcolatore del campione.\n• I progetti eliminati restano in Eliminati di recente per 30 giorni.\n\nI TUOI DATI RESTANO TUOI\n• Nessun account, nessuna pubblicità, nessun tracciamento. Oczko funziona offline.\n• Esporta tutto quando vuoi e importa un backup su un nuovo telefono.\n\nGRATIS E OCZKO PRO\nOczko è gratis per 5 giorni di lavoro ogni mese. Un giorno di lavoro inizia con la prima riga di quel giorno. Il lavoro in corso non viene mai interrotto, e i tuoi progetti e l’esportazione restano sempre tuoi.\nOczko Pro toglie il limite mensile. È disponibile come abbonamento mensile o annuale, oppure come acquisto unico. Gli abbonamenti si rinnovano finché non li annulli nelle impostazioni del tuo ID Apple.\n",
+        "keywords": [
+          "sferruzzare",
+          "lana",
+          "filati",
+          "uncinetto",
+          "gomitolo",
+          "schemi",
+          "amigurumi",
+          "spiegazioni",
+          "tricot",
+          "pdf",
+          "progetti",
+          "righe"
+        ],
+        "promoText": "Conta le righe con un tocco, tieni la spiegazione accanto al contagiri e riprendi dove avevi lasciato. Gratis 5 giorni di lavoro al mese; Oczko Pro toglie il limite.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

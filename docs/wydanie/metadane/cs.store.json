@@ -1,0 +1,29 @@
+{
+  "_opis": "Metadane cs — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "cs": {
+        "title": "Oczko: počítadlo řad",
+        "subtitle": "Pletení a háčkování bez účtu",
+        "description": "Oczko je počítadlo řad pro pletení a háčkování, které si pamatuje, kde jste skončili. Je zdarma 5 dní tvoření měsíčně, vaše projekty a export vám vždy zůstanou; Pro je předplatné nebo jednorázový nákup. Nepotřebujete účet, data zůstávají ve vašem zařízení, kdykoli je můžete exportovat a smazané projekty čekají 30 dní v sekci Nedávno smazané. Když se omylem nahromadí klepnutí, Oczko nabídne jejich vrácení zpět.\n\nPOČÍTEJTE A NIKDY SE NEZTRAŤTE\n• Jedno klepnutí přidá řadu a ucítíte vibraci. Klepnutím na −1 jednu řadu vrátíte.\n• Displej při počítání nezhasne.\n• Historie ukazuje každou změnu i s časem a Vrátit zpět je na jedno klepnutí.\n• Když klepnutí přibývají příliš rychle, Oczko nabídne jejich vrácení. Volitelný zámek ignoruje nechtěná klepnutí.\n• Oczko se otevře tam, kde jste skončili, s vaší poznámkou vedle počítadla.\n\nMĚJTE NÁVOD VEDLE POČÍTADLA\n• Přidejte návod z PDF, ze souboru Word, z fotky nebo skenu stránky či z webové stránky. Uložit můžete i odkaz na video.\n• Posílejte návody do aplikace Oczko z jiných aplikací přes Sdílet.\n• Označte v návodu aktuální řadu, zvýrazněte ji a pište poznámky prstem. Na iPadu pište pomocí Apple Pencil.\n• Návod a počítadlo sdílejí jednu obrazovku.\n\nPROJEKTY A NÁSTROJE\n• Projekty s díly, více počítadly, opakováním vzoru a cíli.\n• Připomínky typu „ujmout v každé 6. řadě, 8krát“.\n• Velikost jehlic nebo háčku, zkušební vzorek, fotky a poznámky ke každému projektu.\n• Stopky pro každé sezení a kalendář vašich dní tvoření.\n• Zásoba příze a nástrojů a kalkulačka zkušebního vzorku.\n• Smazané projekty zůstávají 30 dní v sekci Nedávno smazané.\n\nVAŠE DATA ZŮSTÁVAJÍ VAŠE\n• Bez účtu, bez reklam, bez sledování. Oczko funguje offline.\n• Kdykoli vše exportujte a na novém telefonu naimportujte zálohu.\n\nZDARMA A OCZKO PRO\nOczko je zdarma 5 dní tvoření každý měsíc. Den tvoření začíná vaší první řadou v daný den. Rozdělaná práce se nikdy nepřeruší a vaše projekty a export vám vždy zůstanou.\nOczko Pro ruší měsíční limit. Je k dispozici jako měsíční nebo roční předplatné, nebo jako jednorázový nákup. Předplatné se obnovuje, dokud je nezrušíte v nastavení Apple ID.\n",
+        "keywords": [
+          "plést",
+          "háčkovat",
+          "příze",
+          "návod",
+          "návody",
+          "pdf",
+          "jehlice",
+          "pletací",
+          "háčkovací",
+          "amigurumi",
+          "vzorek",
+          "vzory"
+        ],
+        "promoText": "Počítejte řady jedním klepnutím, mějte svůj návod vedle počítadla a pokračujte tam, kde jste skončili. Zdarma 5 dní tvoření měsíčně, Oczko Pro tento limit ruší.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

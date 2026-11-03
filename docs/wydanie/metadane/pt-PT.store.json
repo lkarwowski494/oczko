@@ -1,0 +1,30 @@
+{
+  "_opis": "Metadane pt-PT — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "pt-PT": {
+        "title": "Malha: contador de carreiras",
+        "subtitle": "Tricot e crochet, sem conta",
+        "description": "Malha é um contador de carreiras para tricot e crochet que nunca perde o sítio onde parou. É grátis durante 5 dias de lavores por mês, os seus projetos e a exportação são sempre seus; o Pro é uma subscrição ou uma compra única. Sem conta, os seus dados ficam no seu dispositivo e pode exportá-los a qualquer momento. Os projetos apagados aguardam 30 dias em Apagados recentemente. Se se acumularem toques por engano, Malha propõe anulá-los.\n\nCONTE SEM PERDER O SÍTIO\n• Um toque acrescenta uma carreira, com uma vibração que se sente. Toque em −1 para retirar uma.\n• O ecrã mantém-se ligado enquanto conta.\n• O Histórico mostra cada alteração com a respetiva hora, e pode anular com um toque.\n• Se os toques se acumularem depressa demais, Malha propõe anulá-los. Um bloqueio opcional ignora toques acidentais.\n• Malha abre onde parou, com a sua nota junto ao contador.\n\nO SEU MODELO JUNTO AO CONTADOR\n• Adicione um modelo a partir de um PDF, de um ficheiro Word, de uma fotografia ou digitalização de uma página, ou de uma página web. Também pode guardar a ligação para um vídeo.\n• Envie modelos para Malha a partir de outras apps com Partilhar.\n• Marque a carreira atual no modelo, realce-a e escreva notas com o dedo. No iPad, escreva com o Apple Pencil.\n• Modelo e contador partilham o mesmo ecrã.\n\nPROJETOS E FERRAMENTAS\n• Projetos com partes, vários contadores, repetições e objetivos.\n• Lembretes como «diminuir de 6 em 6 carreiras, 8 vezes».\n• Tamanho da agulha de tricot ou de crochet, amostra, fotografias e notas para cada projeto.\n• Um cronómetro para cada sessão e um calendário dos seus dias de lavores.\n• Fios em casa, inventário de ferramentas e uma calculadora de amostra.\n• Os projetos apagados ficam em Apagados recentemente durante 30 dias.\n\nOS SEUS DADOS SÃO SEUS\n• Sem conta, sem anúncios, sem rastreio. Malha funciona sem ligação à Internet.\n• Exporte tudo a qualquer momento e importe uma cópia de segurança num telemóvel novo.\n\nGRÁTIS E MALHA PRO\nMalha é grátis durante 5 dias de lavores por mês. Um dia de lavores começa com a primeira carreira desse dia. Um trabalho em curso nunca é interrompido, e os seus projetos e a exportação são sempre seus.\nMalha Pro elimina o limite mensal. Está disponível como subscrição mensal ou anual, ou como compra única. As subscrições renovam-se até as cancelar nas definições do seu ID Apple.\n",
+        "keywords": [
+          "tricô",
+          "croché",
+          "tricotar",
+          "padrões",
+          "modelo",
+          "fio",
+          "agulhas",
+          "pontos",
+          "projetos",
+          "amigurumi",
+          "pdf",
+          "novelo",
+          "amostra"
+        ],
+        "promoText": "Conte carreiras com um toque, tenha o seu modelo junto ao contador e retome onde parou. Grátis durante 5 dias de lavores por mês; Malha Pro elimina o limite.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

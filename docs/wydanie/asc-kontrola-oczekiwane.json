@@ -1,6 +1,11 @@
 {
   "_opis": "PLIK GENEROWANY przez scripts/asc/kontrola-oczekiwane.mjs z docs/wydanie/metadane/*.store.json — tylko lokalizacje obsługiwane przez App Store Connect (bez sl) i z kompletem pól. Nie edytować ręcznie.",
   "lokalizacje": {
+    "pl": {
+      "name": "Oczko: Licznik rzędów",
+      "subtitle": "Druty i szydełko, bez konta",
+      "keywords": "dzierganie,włóczka,oczka,rzędy,wzór,pdf,projekt,robótki,szydełkowanie,druty,notatki,zapas"
+    },
     "en-US": {
       "name": "Oczko: Row Counter",
       "subtitle": "Knit & crochet, no account",
@@ -20,6 +25,141 @@
       "name": "Oczko: Row Counter",
       "subtitle": "Knit & crochet, no account",
       "keywords": "knitting,stitch,tracker,pattern,pdf,yarn,stash,needles,project,tally,gauge,crochet,amigurumi,swatch"
+    },
+    "cs": {
+      "name": "Oczko: počítadlo řad",
+      "subtitle": "Pletení a háčkování bez účtu",
+      "keywords": "plést,háčkovat,příze,návod,návody,pdf,jehlice,pletací,háčkovací,amigurumi,vzorek,vzory"
+    },
+    "sk": {
+      "name": "Oczko: počítadlo radov",
+      "subtitle": "Pletenie a háčkovanie bez účtu",
+      "keywords": "štrikovanie,háčkovať,štrikovať,pliesť,priadza,návod,ihlice,háčik,riadky,očká,pdf,vzorka"
+    },
+    "hu": {
+      "name": "Szem: sorszámláló",
+      "subtitle": "Kötés és horgolás, fiók nélkül",
+      "keywords": "számláló,kötni,horgolni,fonal,kötőtű,horgolótű,minta,leírás,kézimunka,amigurumi,pdf"
+    },
+    "ro": {
+      "name": "Ochi: numărător de rânduri",
+      "subtitle": "Tricotat, croșetat, fără cont",
+      "keywords": "tricotaj,croșetă,andrele,împletit,amigurumi,fire,lână,model,ochiuri,mostră,schemă,PDF"
+    },
+    "hr": {
+      "name": "Očica: brojač redova",
+      "subtitle": "Plesti i kukičati, bez računa",
+      "keywords": "pletenje,štrikanje,heklanje,vuna,pređa,upute,uzorak,mustra,pdf,amigurumi,kukica,pletivo,kačkanje"
+    },
+    "uk": {
+      "name": "Петля: лічильник рядів",
+      "subtitle": "Спиці й гачок, без акаунта",
+      "keywords": "в’язання,пряжа,схема,опис,рукоділля,PDF,амігурумі"
+    },
+    "es-ES": {
+      "name": "Oczko: contador de vueltas",
+      "subtitle": "Punto y ganchillo, sin cuenta",
+      "keywords": "tejer,crochet,patrones,lana,agujas,cuentavueltas,amigurumi,PDF,calceta,ovillo,tricotar,proyectos"
+    },
+    "es-MX": {
+      "name": "Oczko: contador de vueltas",
+      "subtitle": "Tejer y crochet, sin cuenta",
+      "keywords": "tejido,ganchillo,estambre,patrones,agujas,amigurumi,cuentavueltas,pdf,proyectos,lana,palitos,hilo"
+    },
+    "pt-PT": {
+      "name": "Malha: contador de carreiras",
+      "subtitle": "Tricot e crochet, sem conta",
+      "keywords": "tricô,croché,tricotar,padrões,modelo,fio,agulhas,pontos,projetos,amigurumi,pdf,novelo,amostra"
+    },
+    "pt-BR": {
+      "name": "Oczko: contador de carreiras",
+      "subtitle": "Tricô e crochê, sem conta",
+      "keywords": "receitas,tricotar,fios,agulhas,amigurumi,pontos,projetos,pdf,artesanato,novelo,amostra,linha,estoque"
+    },
+    "de-DE": {
+      "name": "Masche: Reihenzähler",
+      "subtitle": "Häkeln, Stricken, eigenes PDF",
+      "keywords": "Strickzähler,Maschenzähler,Wolle,Garn,Nadeln,Strickmuster,Häkelmuster,Handarbeit,Projekte"
+    },
+    "fr-FR": {
+      "name": "Oczko: Compteur de rangs",
+      "subtitle": "Tricot & crochet, votre patron",
+      "keywords": "tricoter,crocheter,laine,pelote,aiguilles,mailles,projet,modèle,amigurumi,PDF,notes"
+    },
+    "it": {
+      "name": "Oczko: contagiri per maglia",
+      "subtitle": "Ferri e crochet, senza account",
+      "keywords": "sferruzzare,lana,filati,uncinetto,gomitolo,schemi,amigurumi,spiegazioni,tricot,pdf,progetti,righe"
+    },
+    "nl-NL": {
+      "name": "Oczko: toerenteller",
+      "subtitle": "Breien & haken, geen account",
+      "keywords": "rijenteller,teller,brei,patronen,garen,wol,breipatroon,haakpatroon,handwerken,breinaalden,haaknaald"
+    },
+    "sv": {
+      "name": "Maska: varvräknare",
+      "subtitle": "Sticka & virka – utan konto",
+      "keywords": "stickning,virkning,garn,stickmönster,mönster,virkmönster,stickor,virknål,räknare,varv,provlapp"
+    },
+    "da": {
+      "name": "Oczko: pindetæller",
+      "subtitle": "Strik og hækling uden konto",
+      "keywords": "rækketæller,strikke,hækle,opskrift,garn,tæller,strikkeopskrift,hækleopskrift,håndarbejde,pdf"
+    },
+    "no": {
+      "name": "Oczko: Strikk og hekle",
+      "subtitle": "Teller for omganger og pinner",
+      "keywords": "strikking,hekling,strikkeapp,omgangsteller,garn,oppskrift,prosjekter,masker,notater,strikkeprosjekt"
+    },
+    "fi": {
+      "name": "Silmukka: kerroslaskuri",
+      "subtitle": "Neulo ja virkkaa ilman tiliä",
+      "keywords": "neulominen,virkkaus,knitting,crochet,counter,kerroslaskin,neuleohje,virkkausohje,käsityö,lanka,PDF"
+    },
+    "tr": {
+      "name": "Oczko: sıra sayacı",
+      "subtitle": "Şiş ve tığ örgüsü, hesap yok",
+      "keywords": "kroşe,ilmek,tarif,desen,iplik,yün,amigurumi,proje,numune,pdf,elişi,dantel,yumak,hırka,kazak,bere"
+    },
+    "el": {
+      "name": "Oczko: μετρητής σειρών",
+      "subtitle": "Βελόνες/βελονάκι χωρίς εγγραφή",
+      "keywords": "πλέξιμο,πατρόν,πλεκτό,νήματα,amigurumi,PDF,crochet,knitting,δείγμα"
+    },
+    "id": {
+      "name": "Oczko: penghitung baris rajut",
+      "subtitle": "Knitting & crochet, tanpa akun",
+      "keywords": "counter,merajut,hakpen,row,tally,knit,yarn,pola,pattern,benang,amigurumi,jarum,pdf,kerajinan"
+    },
+    "ms": {
+      "name": "Gelungan: pembilang baris kait",
+      "subtitle": "Mengait & krusye, tanpa akaun",
+      "keywords": "crochet,knitting,counter,tally,yarn,benang,corak,pattern,kroset,jarum,kiraan,amigurumi,pengira,knit"
+    },
+    "vi": {
+      "name": "Oczko: đếm hàng đan móc",
+      "subtitle": "Đan & móc, không cần tài khoản",
+      "keywords": "crochet,knitting,counter,len,knit,tally,mẫu,amigurumi,row,patterns,tracker,pdf,sợi,mũi,yarn"
+    },
+    "ru": {
+      "name": "Петля: счётчик рядов",
+      "subtitle": "Спицы и крючок, без аккаунта",
+      "keywords": "вязание,крючком,вязания,схемы,пряжа,рукоделие,PDF"
+    },
+    "ja": {
+      "name": "編み目: 編み物カウンター",
+      "subtitle": "かぎ針・棒針の段数と編み図",
+      "keywords": "棒針編み,かぎ針編み,あみぐるみ,目数計算,リマインド,PDF,メモ帳,毛糸管理"
+    },
+    "ko": {
+      "name": "Oczko: 뜨개질 단수 카운터",
+      "subtitle": "대바늘뜨기·코바늘뜨기, 계정 불필요",
+      "keywords": "계수기,손뜨개,뜨개실,아미구루미,스와치,PDF,프로젝트,뜨개도안,뜨개일지"
+    },
+    "zh-Hant": {
+      "name": "針目: 編織段數計數器",
+      "subtitle": "打毛線、鉤織皆可，無需帳號",
+      "keywords": "PDF"
     }
   }
 }

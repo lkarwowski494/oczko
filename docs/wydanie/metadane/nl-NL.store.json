@@ -1,0 +1,28 @@
+{
+  "_opis": "Metadane nl-NL — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "nl-NL": {
+        "title": "Oczko: toerenteller",
+        "subtitle": "Breien & haken, geen account",
+        "description": "Oczko is een toerenteller voor breien en haken die onthoudt waar je was: gratis voor 5 handwerkdagen per maand. Je projecten en export blijven altijd van jou; Pro is een abonnement of een eenmalige aankoop. Zonder account blijven je gegevens op je apparaat, je kunt ze altijd exporteren en verwijderde projecten blijven 30 dagen in Onlangs verwijderd staan. Tik je per ongeluk te vaak, dan biedt Oczko aan om die tikken ongedaan te maken.\n\nTELLEN ZONDER JE PLEK KWIJT TE RAKEN\n• Eén tik telt een rij erbij, met een trilling die je voelt. Tik op −1 om er een terug te nemen.\n• Het scherm blijft aan terwijl je telt.\n• De Geschiedenis toont elke wijziging met het tijdstip, en Ongedaan maken is één tik verwijderd.\n• Tik je te snel achter elkaar, dan biedt Oczko aan om die tikken ongedaan te maken. Een optionele vergrendeling negeert onbedoelde tikken.\n• Oczko opent waar je gebleven was, met je notitie naast de toerenteller.\n\nJE PATROON NAAST DE TOERENTELLER\n• Voeg een patroon toe uit een PDF, een Word-bestand, een foto of scan van een pagina, of een webpagina. Bewaar ook een link naar een video.\n• Stuur patronen vanuit andere apps naar Oczko via Deel.\n• Geef je huidige rij aan in het patroon, markeer die en schrijf notities met je vinger. Op iPad schrijf je met Apple Pencil.\n• Patroon en toerenteller staan samen op één scherm.\n\nPROJECTEN EN HULPMIDDELEN\n• Projecten met delen, meerdere toerentellers, herhalingen en doelen.\n• Herinneringen zoals ‘elke 6e rij minderen, 8 keer’.\n• Maat van je breinaalden of haaknaald, proeflapje, foto’s en notities per project.\n• Een stopwatch per sessie en een kalender van je handwerkdagen.\n• Voorraad van garen en hulpmiddelen, en een proeflapjescalculator.\n• Verwijderde projecten blijven 30 dagen in Onlangs verwijderd staan.\n\nJE GEGEVENS BLIJVEN VAN JOU\n• Geen account, geen advertenties, geen tracking. Oczko werkt offline.\n• Exporteer alles wanneer je wilt en importeer een back-up op een nieuwe telefoon.\n\nGRATIS EN OCZKO PRO\nOczko is elke maand gratis voor 5 handwerkdagen. Een handwerkdag begint met je eerste rij van die dag. Lopend werk wordt nooit onderbroken, en je projecten en export blijven altijd van jou.\nOczko Pro heft de maandelijkse limiet op. Het is verkrijgbaar als maand- of jaarabonnement, of als eenmalige aankoop. Abonnementen worden verlengd totdat je opzegt in je Apple ID-instellingen.\n",
+        "keywords": [
+          "rijenteller",
+          "teller",
+          "brei",
+          "patronen",
+          "garen",
+          "wol",
+          "breipatroon",
+          "haakpatroon",
+          "handwerken",
+          "breinaalden",
+          "haaknaald"
+        ],
+        "promoText": "Tel rijen met één tik, houd je eigen patroon naast de toerenteller en ga verder waar je gebleven was. Gratis voor 5 handwerkdagen per maand; Oczko Pro heft de limiet op.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

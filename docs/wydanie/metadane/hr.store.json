@@ -1,0 +1,30 @@
+{
+  "_opis": "Metadane hr — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "hr": {
+        "title": "Očica: brojač redova",
+        "subtitle": "Plesti i kukičati, bez računa",
+        "description": "Očica je brojač redova za pletenje i kukičanje koji pamti gdje ste stali. Besplatna je 5 dana ručnog rada mjesečno, projekti i izvoz uvijek su vaši; Pro je pretplata ili jednokratna kupnja. Bez računa podaci ostaju na vašem uređaju i možete ih izvesti u bilo kojem trenutku. Izbrisani projekti čekaju 30 dana u odjeljku Nedavno izbrisano. Ako se dodiri slučajno nagomilaju, Očica nudi da ih poništite.\n\nBROJITE I NE GUBITE MJESTO\n• Jedan dodir dodaje red, uz vibraciju koju osjetite. Dodirnite −1 da vratite jedan red.\n• Zaslon ostaje uključen dok brojite.\n• Povijest prikazuje svaku promjenu s vremenom, a Poništi je na jedan dodir.\n• Ako se dodiri prebrzo nagomilaju, Očica nudi da ih poništite. Neobavezno zaključavanje zanemaruje slučajne dodire.\n• Očica se otvara ondje gdje ste stali, s vašom bilješkom uz brojač.\n\nVAŠE UPUTE UZ BROJAČ\n• Dodajte upute iz PDF-a, Word datoteke, fotografije ili skena stranice te s web-stranice. Spremite i poveznicu na videozapis.\n• Šaljite upute u aplikaciju Očica iz drugih aplikacija pomoću opcije Dijeli.\n• Označite trenutačni red u uputama, istaknite ga i pišite bilješke prstom. Na iPadu pišite olovkom Apple Pencil.\n• Upute i brojač dijele jedan zaslon.\n\nPROJEKTI I ALATI\n• Projekti s dijelovima, više brojača, ponavljanja i ciljevi.\n• Podsjetnici poput „smanjivanje u svakom 6. redu, 8 puta”.\n• Veličina igala ili kukice, probni uzorak, fotografije i bilješke za svaki projekt.\n• Štoperica za svaku sesiju i kalendar vaših dana ručnog rada.\n• Zaliha pređe i alata te kalkulator probnog uzorka.\n• Izbrisani projekti ostaju 30 dana u odjeljku Nedavno izbrisano.\n\nVAŠI PODACI OSTAJU VAŠI\n• Bez računa, bez oglasa, bez praćenja. Očica radi izvanmrežno.\n• Izvezite sve u bilo kojem trenutku i uvezite sigurnosnu kopiju na novi telefon.\n\nBESPLATNO I OČICA PRO\nOčica je besplatna 5 dana ručnog rada svaki mjesec. Dan ručnog rada počinje vašim prvim redom tog dana. Rad u tijeku nikad se ne prekida, a vaši projekti i izvoz uvijek ostaju vaši.\nOčica Pro uklanja mjesečno ograničenje. Dostupna je kao mjesečna ili godišnja pretplata ili kao jednokratna kupnja. Pretplate se obnavljaju dok ih ne otkažete u postavkama Apple ID-a.\n",
+        "keywords": [
+          "pletenje",
+          "štrikanje",
+          "heklanje",
+          "vuna",
+          "pređa",
+          "upute",
+          "uzorak",
+          "mustra",
+          "pdf",
+          "amigurumi",
+          "kukica",
+          "pletivo",
+          "kačkanje"
+        ],
+        "promoText": "Brojite redove jednim dodirom, držite svoje upute uz brojač i nastavite gdje ste stali. Besplatno 5 dana ručnog rada mjesečno; Očica Pro uklanja ograničenje.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}
