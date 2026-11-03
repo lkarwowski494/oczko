@@ -97,10 +97,10 @@ export function trybAwaryjny() {
       try { return opisEtapu(odczytajEtap(istniejePlik(plik) ? await czytajTekst(plik) : null)); } catch { return opisEtapu(null); }
     },
     /**
-     * P-194 Q4a: kody `blad` do „Zgłoś problem” bez otwierania oryginału — z kopii surowej przeniesionej do katalogu tymczasowego (zamknięcie
+     * P-194 Q4a: kody `blad` (z surowymi `szczegoly` — zgłoszenie bierze z nich tylko ramki js_*, M1-058) do „Zgłoś problem” bez otwierania oryginału — z kopii surowej przeniesionej do katalogu tymczasowego (zamknięcie
      * połączenia z oryginałem przeniosłoby WAL do `.db`, P-211). Tylko odczyt; katalog usuwany po odczycie. Błąd → wyjątek (wołający: „not_opened”).
      */
-    async bledyZKopii(): Promise<{ czasMs: number; kod: string }[]> {
+    async bledyZKopii(): Promise<{ czasMs: number; kod: string; szczegoly: unknown }[]> {
       const k = await kopia;
       if (!k.ok) throw new Error('brak kopii surowej');
       const kat = polacz(katalogi.tymczasowy, `zgloszenie-${zegar.teraz().ms}`);
@@ -109,8 +109,8 @@ export function trybAwaryjny() {
         for (const n of k.wartosc.pliki) kopiuj(polacz(k.wartosc.katalog, n), polacz(kat, n));
         const port = otworzPortExpo(polacz(kat, nazwaPliku(s.baza)), { tylkoOdczyt: true }); // nazwa z jednego źródła (sciezkiDanych)
         try {
-          const w = await port.all('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]); // kopia może być uszkodzona: zły wiersz pominięty, nie zgadywany
-          return w.flatMap((r) => (typeof r === 'object' && r !== null && 'czas_ms' in r && 'kod' in r && typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod }] : []));
+          const w = await port.all('SELECT czas_ms, kod, szczegoly FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]); // kopia może być uszkodzona: zły wiersz pominięty, nie zgadywany
+          return w.flatMap((r) => (typeof r === 'object' && r !== null && 'czas_ms' in r && 'kod' in r && typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod, szczegoly: 'szczegoly' in r ? r.szczegoly : undefined }] : []));
         } finally {
           await port.zamknij();
         }
