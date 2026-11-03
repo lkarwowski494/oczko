@@ -16,6 +16,7 @@ import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
+import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
 import { liczba, wiersze } from '../dane/repozytoria/wiersze';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
@@ -79,9 +80,9 @@ export type KompozycjaLicznika = {
   wersja(): number;
   /** 07-jakosc-005 (ADR-0030): +1 z zegarka scalone przy otwartej aplikacji (`wersja` już wzrosła) → ekran czyta stan od nowa; telefon nie wibruje (pkt 5). Zwraca odpięcie. */
   poZegarku(f: () => void): () => void;
-  /** M1-063 (MON-05): zmiana Pro z `o.dostep` (zdarzenie sklepu, powrót na pierwszy plan) przeliczona (`poZmianie`) → ekran czyta stan od nowa. Zwraca odpięcie. */
+  /** M1-063: zmiana Pro przeliczona → ekran od nowa (licznik-dostep.ts). */
   poDostepie(f: () => void): () => void;
-  /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1) i słuchacza dostępu. */
+  /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1). */
   zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
   widok(): Promise<WidokLicznika | null>;
@@ -103,9 +104,6 @@ export type KompozycjaLicznika = {
 const NAZWA_URZADZENIA = { iphone: 'iPhone', ipad: 'iPad' } as const;
 export type WyborKonfliktu = { glowa: string; wartosc: number; tekst: string; etykieta: string };
 /** Opcje: `icloud` = sterownik synchronizacji (partia 7), uruchamiany po danych startu i poza kolejką `uruchomDane`; `aplikacjaAktywna` = `AppState === 'active'` — bez niej nie ma odbioru z zegarka (ADR-0030, ARCH-13). */
-/** `dostep` (M1-063, MON-05): stan dostępu Pro (kompozycja/dostep.ts) — zmiana Pro przelicza limit dni, powrót na pierwszy plan woła ponowną decyzję;
- *  `wygasa` (M1-064, KP-17): koniec okresu subskrypcji w stanie ekranu blokady i zegarka (`proWaznoscDo`), null = dożywotni. */
-export type DostepLicznika = { stan(): { pro: boolean; wygasa: number | null }; naZmiane(f: (s: { pro: boolean }) => void): () => void; odswiez(): Promise<unknown> };
 export type OpcjeKompozycji = { wibracje(): boolean; dostep?: DostepLicznika; aplikacjaAktywna?(): boolean; ekranWlaczony?(): boolean; icloud?: { start(): Promise<void> }; skrzynka?: { start(): Promise<void>; migawka(): Promise<unknown> } }; // skrzynka: partia 6 (P-246); migawka po zmianach listy projektów
 
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
@@ -147,8 +145,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   async function poZapisie(w: WidokLicznika | null): Promise<void> {
     if (!w) return;
     const nazwa = w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa;
-    const pro = z.pro();
-    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: { pro, wygasa: pro ? o.dostep?.stan().wygasa ?? null : null } }); // M1-064: koniec subskrypcji, nie „bez końca”
+    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy() });
     if (e.ok && !aktywnosc) {
       aktywnosc = true;
       await z.liveActivity.start(e.wartosc);
@@ -167,14 +164,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     return r;
   }
   const odbior = o.aplikacjaAktywna ? odbiorZZegarka(z, { aktywna: o.aplikacjaAktywna, scal: scalenieZZegarka }) : null;
-  // M1-063 (MON-05): jeden reaktywny stan dostępu — zmiana Pro poza ekranem ofert przelicza limit, stan ekranu blokady i zegarka (poZmianie).
-  const poDostepie = new Set<() => void>();
-  let proZnane = o.dostep?.stan().pro;
-  const koniecDostepu = o.dostep?.naZmiane((s) => {
-    if (s.pro === proZnane) return;
-    proZnane = s.pro;
-    void k.poZmianie().then(() => poDostepie.forEach((f) => f())).catch(() => undefined);
-  });
+  const dostep = dostepLicznika(o.dostep, z.pro, () => k.poZmianie()); // M1-063, M1-064
   const ekranu = <T>(w: Wynik<T>): WynikEkranu<T> => (w.ok ? w : { ok: false, powod: w.powod === 'limit' || w.powod === 'zablokowany' || w.powod === 'bledne_dane' || w.powod === 'niedozwolone_przejscie' ? w.powod : 'zapis' });
 
   /** +1 z ekranu (BR-LIC-001/S2: pierwsze tworzy projekt roboczy); przez `uslugi.dodajRzad`, które zapamiętuje zapis w toku (P-287). */
@@ -218,8 +208,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     },
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
-    poDostepie: (f) => { poDostepie.add(f); return () => { poDostepie.delete(f); }; },
-    zamknij: () => { odbior?.zamknij(); koniecDostepu?.(); },
+    poDostepie: dostep.poDostepie,
+    zamknij: () => { odbior?.zamknij(); dostep.zamknij(); },
     biezacy: () => licznikId,
     async poUsunieciu(projektId) {
       if (licznikId && !(await widokLicznika(z, { licznikId })).ok) {
@@ -289,7 +279,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         return p;
       },
       async scalDziennik() {
-        void o.dostep?.odswiez().catch(() => undefined); // M1-063: subskrypcja mogła wygasnąć w tle — nowa decyzja; wynik przez `naZmiane`
+        dostep.odswiez(); // M1-063
         void o.skrzynka?.start().catch(() => undefined); // partia 6: nowe zlecenia z rozszerzenia po powrocie na pierwszy plan
         const r = await naPierwszyPlan(z);
         if (r.ok) potwierdz(r.wartosc.potwierdzone);
