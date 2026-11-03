@@ -1,7 +1,7 @@
 // Kopie ratunkowe roli 12 (ADR-0020 (3), (6), P-080 (3b)): sprzątanie katalogu kopii po KOPIE_RATUNKOWE_DNI i ZIP surowej kopii, gdy baza się nie
 // otwiera. Logika wyboru czysta; adaptery tylko przez system plików warstwy danych. Nic tu nie otwiera bazy (działa przy uszkodzonym pliku).
 import type { Wynik } from '../domena/bledy';
-import { KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DNI } from '../konfiguracja';
+import { KOPIA_PRZED_IMPORTEM_BUDZET_B, KOPIA_PRZED_IMPORTEM_DNI, KOPIA_PRZED_IMPORTEM_MAKS, KOPIE_RATUNKOWE_DNI } from '../konfiguracja';
 import { zapiszZip, type WpisZip } from '../dane/archiwum/zip';
 import { powodBledu } from '../dane/baza/bledy-sqlite';
 import { sha256PlikuTs } from '../dane/pliki/magazyn';
@@ -44,28 +44,49 @@ export function najnowszaKopiaMs(wpisy: readonly WpisKopii[]): number | null {
 
 /** Kopie z ADR-0028 w Documents/Backup: `oczko-przed-importem-RRRR-MM-DD[-n].oczko` i `oczko-przed-usunieciem-…`; nic innego w tym katalogu nie jest tykane. */
 const PLIK_PRZED = /^oczko-przed-(importem|usunieciem)-(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?\.oczko$/;
+/** Rozmiar nieznany (ADR-0033 pkt 5): nie liczba skończona > 0 (archiwum `.oczko` ma zawsze co najmniej 22 B). */
+const znanyRozmiar = (bajty: number | null): number | null => (bajty !== null && Number.isFinite(bajty) && bajty > 0 ? bajty : null);
 /**
- * Pula kopii bezpieczeństwa (ADR-0032, zastępuje ADR-0028 pkt 4; DEC-18 a; K-03f), osobno dla każdego rodzaju. Kopie starsze niż `dni` (ściśle, od
- * północy dnia z nazwy, UTC) są usuwane. Z młodszych zostają: pierwsza kopia każdego dnia (najmniejszy przyrostek; seria „Zastąp” jednego dnia zaczyna
- * się od kopii z danymi sprzed serii) niezależnie od `maks`, najnowsza zawsze, a pozostałe od najnowszej, dopóki zostawionych jest mniej niż `maks`.
- * Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po `terazMs`) zostają i nie liczą się do limitu ani do pierwszej kopii dnia.
+ * Pula kopii bezpieczeństwa (ADR-0032, zastępuje ADR-0028 pkt 4; DEC-18 a; K-03f; ADR-0033 zastępuje ADR-0032 pkt 2, P-437), osobno dla każdego
+ * rodzaju. Kopie starsze niż `dni` (ściśle, od północy dnia z nazwy, UTC) są usuwane. Z młodszych zawsze zostają chronione: najnowsza i pierwsza kopia
+ * najstarszego dnia (najmniejszy przyrostek; seria „Zastąp” zaczyna się od kopii z danymi sprzed serii). Pozostałe pierwsze kopie dni (kandydaci)
+ * zostają niezależnie od `maks`, a inne kopie od najnowszej, dopóki zostawionych jest mniej niż `maks`. Dopóki suma znanych rozmiarów zostawionych
+ * przekracza `budzetB`, usuwany jest najstarszy kandydat o znanym rozmiarze (dzień, potem przyrostek rosnąco). Kopia o nieznanym rozmiarze (`null`)
+ * nie jest usuwana żadną regułą i nie liczy się do sumy (zasada wspólna 10, P-437). Obca nazwa i dzień z przyszłości (cofnięty zegar; ponad dobę po
+ * `terazMs`) zostają i nie liczą się do limitu, budżetu ani do pierwszej kopii dnia.
  */
-export function kopiePrzedDoUsuniecia(nazwy: readonly string[], terazMs: number, maks = KOPIA_PRZED_IMPORTEM_MAKS, dni = KOPIA_PRZED_IMPORTEM_DNI): string[] {
+export function kopiePrzedDoUsuniecia(
+  wpisy: readonly { nazwa: string; bajty: number | null }[],
+  terazMs: number,
+  maks = KOPIA_PRZED_IMPORTEM_MAKS,
+  dni = KOPIA_PRZED_IMPORTEM_DNI,
+  budzetB = KOPIA_PRZED_IMPORTEM_BUDZET_B,
+): string[] {
   const usun: string[] = [];
   for (const rodzaj of ['importem', 'usunieciem']) {
-    const wpisy = nazwy.flatMap((nazwa) => {
+    const kopie = wpisy.flatMap(({ nazwa, bajty }) => {
       const m = PLIK_PRZED.exec(nazwa);
       if (!m || m[1] !== rodzaj) return [];
       const dzienMs = Date.UTC(Number(m[2]), Number(m[3]) - 1, Number(m[4]));
-      return dzienMs - terazMs > DOBA_MS ? [] : [{ nazwa, dzienMs, n: m[5] === undefined ? 1 : Number(m[5]) }];
+      return dzienMs - terazMs > DOBA_MS ? [] : [{ nazwa, dzienMs, n: m[5] === undefined ? 1 : Number(m[5]), bajty: znanyRozmiar(bajty) }];
     });
-    wpisy.sort((a, b) => b.dzienMs - a.dzienMs || b.n - a.n);
-    const mlode = wpisy.filter((w) => terazMs - w.dzienMs <= dni * DOBA_MS);
+    kopie.sort((a, b) => b.dzienMs - a.dzienMs || b.n - a.n);
+    const mlode = kopie.filter((w) => terazMs - w.dzienMs <= dni * DOBA_MS);
     const pierwszaDnia = new Map<number, string>(); // od najnowszej, więc ostatni zapis dla dnia to najmniejszy przyrostek
     for (const w of mlode) pierwszaDnia.set(w.dzienMs, w.nazwa);
-    const zostaja = new Set([...pierwszaDnia.values(), ...mlode.slice(0, 1).map((w) => w.nazwa)]);
+    // ADR-0033 pkt 2: od najnowszej, więc ostatnia młoda to pierwsza kopia najstarszego dnia
+    const chronione = new Set([mlode[0], mlode[mlode.length - 1]].flatMap((w) => (w ? [w.nazwa] : [])));
+    const zostaja = new Set([...pierwszaDnia.values(), ...chronione]);
     for (const w of mlode) if (zostaja.size < maks) zostaja.add(w.nazwa);
-    for (const w of wpisy) if (!zostaja.has(w.nazwa)) usun.push(w.nazwa);
+    let suma = 0;
+    for (const w of mlode) if (zostaja.has(w.nazwa) && w.bajty !== null) suma += w.bajty;
+    for (const w of [...mlode].reverse()) {
+      if (suma <= budzetB) break;
+      if (w.bajty === null || chronione.has(w.nazwa) || !zostaja.has(w.nazwa)) continue;
+      zostaja.delete(w.nazwa);
+      suma -= w.bajty;
+    }
+    for (const w of kopie) if (!zostaja.has(w.nazwa) && w.bajty !== null) usun.push(w.nazwa);
   }
   return usun;
 }
@@ -81,10 +102,20 @@ export function saKopiePrzed(katalog: string): boolean {
     return false; // nieczytelny katalog: brak podpisu jest bezpieczniejszy niż podpis o kopiach, których nie widzimy (celowe, jak sprzatnijKopiePrzed)
   }
 }
+/** ADR-0033 pkt 5 (P-437): odczyt rozmiaru osobno dla każdej nazwy; wyjątek albo wartość spoza liczb skończonych > 0 = null (kopia zostaje). */
+function rozmiarKopiiPrzed(sciezka: string): number | null {
+  try {
+    const bajty: unknown = rozmiar(sciezka);
+    return typeof bajty === 'number' ? znanyRozmiar(bajty) : null;
+  } catch {
+    return null; // nieczytelny rozmiar: kopii ratunkowej nie usuwamy na zgadnięcie (celowe)
+  }
+}
 /** Adapter: lista katalogu kopii przed → usunięcie wybranych; brak katalogu = nic do zrobienia, błąd nie blokuje startu (jak `sprzatnijKopie`). */
 export function sprzatnijKopiePrzed(katalog: string, terazMs: number): Wynik<string[]> {
   try {
-    const usun = kopiePrzedDoUsuniecia(lista(katalog), terazMs).sort();
+    const wpisy = lista(katalog).map((nazwa) => ({ nazwa, bajty: PLIK_PRZED.test(nazwa) ? rozmiarKopiiPrzed(polacz(katalog, nazwa)) : null }));
+    const usun = kopiePrzedDoUsuniecia(wpisy, terazMs).sort();
     for (const n of usun) usunPlik(polacz(katalog, n));
     return { ok: true, wartosc: usun };
   } catch (e) {

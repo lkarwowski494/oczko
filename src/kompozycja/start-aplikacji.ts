@@ -52,7 +52,7 @@ export async function zapiszKamien(): Promise<void> {
   zapisz(s.stanStartu, kamienMilowy(await czytajStan(s.stanStartu)));
   zapiszEtapStartu('kamien');
   sprzatnijKopie(s.kopie, zegarAplikacji().teraz().ms); // ADR-0020 (6): kopie po KOPIE_RATUNKOWE_DNI, tylko po kamieniu milowym; błąd nie blokuje startu
-  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0032 (zastępuje ADR-0028 pkt 4): pierwsza kopia dnia i najnowsza, limit 2, maks. 30 dni
+  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0032/0033 (budżet KOPIA_PRZED_IMPORTEM_BUDZET_B) (zastępuje ADR-0028 pkt 4): pierwsza kopia dnia i najnowsza, limit 2, maks. 30 dni
   sprzatnijTymczasowe(polacz(s.katalogDanych, 'tmp'), poczatekMs); // M1-001: pliki pochodne sprzed bieżącego startu; błąd nie blokuje startu
 }
 /** P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest nieudanym startem (app/_layout.tsx, AppState „background”, tylko start normalny). */
