@@ -11,7 +11,8 @@ import { execFileSync } from 'node:child_process';
 const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
 const korzen = arg('--katalog') ?? process.cwd();
 
-export const NOWY_KOD = ['src/domena', 'src/dane', 'src/przypadki-uzycia', 'src/platforma', 'src/ekrany', 'src/komponenty', 'src/konfiguracja.ts', 'app', 'modules', 'targets'];
+// Zakres: cały kod aplikacji, nie lista podkatalogów — nowy katalog w `src/` trafia do kontroli sam (M1-audytor-generalny-148, zasada wspólna 21).
+export const NOWY_KOD = ['src', 'app', 'modules', 'targets'];
 export const STARY_KOD = ['src/core', 'src/components', 'src/screens', 'lib']; // katalogi 0.1.0: nie mogą wrócić (STARY-KOD-WRACA)
 const TEST = /(^|\/)(__tests__|tests?)\/|\.(test|spec)\.[jt]sx?$/;
 const EXT = /\.(ts|tsx|js|jsx|mjs|swift|json)$/;
@@ -63,7 +64,7 @@ function sledzone(k) {
 
 export function sprawdz(korzenKatalog, zakres) {
   const naruszenia = [];
-  for (const k of STARY_KOD) if (existsSync(join(korzenKatalog, k))) naruszenia.push(`STARY-KOD-WRACA ${k} — kod 0.1.0 usunięty (P-099 D1a); nowy kod tylko w ${NOWY_KOD.slice(0, 7).join(', ')}… (P-117 Q5a)`);
+  for (const k of STARY_KOD) if (existsSync(join(korzenKatalog, k))) naruszenia.push(`STARY-KOD-WRACA ${k} — kod 0.1.0 usunięty (P-099 D1a); nowy kod tylko w ${NOWY_KOD.join(', ')} (P-117 Q5a)`);
   const wyjatkiPlik = join(korzenKatalog, 'scripts/jakosc/wyjatki.json');
   const wyjatki = existsSync(wyjatkiPlik) ? JSON.parse(readFileSync(wyjatkiPlik, 'utf8')).kontrole ?? [] : [];
   const zwolniony = (r, p) => wyjatki.some((w) => w.regula === r && w.plik === p);

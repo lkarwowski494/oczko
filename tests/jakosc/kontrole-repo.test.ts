@@ -1,5 +1,5 @@
 // Kontrole repo roli 07 (strategia §10): każda reguła pada na pliku-pułapce i przechodzi na przypadku dobrym (zasada sceptyka 2).
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -31,6 +31,12 @@ const PULAPKI: [string, string, string][] = [
   ['WYMUSZONA-AWARIA', 'src/ekrany/Start.tsx', "if (process.env.EXPO_PUBLIC_WYMUS_AWARIE) throw new Error('x');"],
   ['CENY-W-KODZIE', 'src/ekrany/Oferty.tsx', "const cena = '14,99 zł';"],
   ['CENY-W-KODZIE', 'src/komponenty/Plan.tsx', "const c = '$0.99';"],
+  // M1-audytor-generalny-148 (07-jakosc-522, M2-koordynator-napraw-019): kod kopii awaryjnej, niezawodności, i18n i kompozycji w zakresie.
+  ['VACUUM-RATUNEK', 'src/kompozycja/kopia-awaryjna.ts', "await port.run('VACUUM');"],
+  ['KOPIA-SAMEGO-DB', 'src/kompozycja/kopia-awaryjna.ts', "await FileSystem.copyAsync({ from: 'app.db', to: kopia });"],
+  ['OR-REPLACE', 'src/niezawodnosc/kopie.ts', "export const q = 'INSERT OR REPLACE INTO kopie VALUES (?)';"],
+  ['CENY-W-KODZIE', 'src/i18n/i18n.ts', "const cena = '$4.99';"],
+  ['WYMUSZONA-AWARIA', 'src/kompozycja/licznik.ts', "if (process.env.EXPO_PUBLIC_WYMUS_AWARIE) throw new Error('x');"],
 ];
 
 describe('kontrole-repo.mjs (strategia §10, kontrola 05-8, P-089)', () => {
@@ -52,6 +58,16 @@ describe('kontrole-repo.mjs (strategia §10, kontrola 05-8, P-089)', () => {
     }));
     expect(w.stdout).toContain('naruszeń 0');
     expect(w.status).toBe(0);
+  });
+  // M1-audytor-generalny-148 (zasada wspólna 21): zakres to cały kod aplikacji, nie lista ręczna — każdy wpis `src/*` repo (i nowy katalog) jest sprawdzany.
+  test('M1-148 każdy katalog i plik src/* repo jest w zakresie kontroli (pułapka OR-REPLACE w każdym pada)', () => {
+    const src = join(__dirname, '../../src');
+    const wpisy = readdirSync(src).filter((n) => !n.startsWith('.')).map((n) => (statSync(join(src, n)).isDirectory() ? `src/${n}/pulapka.ts` : `src/${n}`));
+    wpisy.push('src/nowy-katalog/pulapka.ts');
+    const tekst = "export const q = 'INSERT OR REPLACE INTO t VALUES (?)';";
+    const w = uruchom(KONTROLE, repo(Object.fromEntries(wpisy.map((p) => [p, tekst]))));
+    expect(w.status).toBe(1);
+    expect(wpisy.filter((p) => !w.stdout.includes(`OR-REPLACE ${p}:`))).toEqual([]);
   });
   test('R-171 testy są poza zakresem nowego kodu', () => {
     const w = uruchom(KONTROLE, repo({ 'src/dane/__tests__/x.test.ts': "open(':memory:')" }));
