@@ -198,3 +198,49 @@ describe('046 · nazwy testów Jest bez twierdzenia o celu dotyku; cel dotyku ja
     expect(nazwyZDotykiem("test('strzałka: styl minHeight 44 (deklaracja)', () => {")).toEqual([]);
   });
 });
+
+/* 048 · rejestr kwarantanny (strategia §7; wzorce roli 07 „Polityka niestabilnych testów” pkt 4; JAK-05; 07-jakosc-009): każdy wpis ma ID testu, który
+ * istnieje w repo, właściciela (rola), termin (data albo wersja wydania) i kontrolę zastępczą wskazującą istniejące pliki. */
+type WpisKwarantanny = { id: string; wlasciciel: string; termin: string; zastepcza: string };
+export function wpisyKwarantanny(md: string): WpisKwarantanny[] {
+  const wiersze = md.split('\n').filter((l) => l.startsWith('| ') && !/^\|\s*-/.test(l));
+  const [naglowek, ...dane] = wiersze;
+  const kol = (naglowek ?? '').split('|').map((k) => k.trim().toLowerCase());
+  const i = (n: string) => kol.findIndex((k) => k.startsWith(n));
+  return dane.map((l) => l.split('|').map((k) => k.trim())).map((k) => ({ id: k[i('id')] ?? '', wlasciciel: k[i('właściciel')] ?? '', termin: k[i('termin')] ?? '', zastepcza: k[i('kontrola zastępcza')] ?? '' }));
+}
+export function bledyKwarantanny(md: string, kodTestow: string, istnieje: (p: string) => boolean): string[] {
+  const kol = (md.split('\n').find((l) => l.startsWith('| ')) ?? '').toLowerCase();
+  if (!['id', 'właściciel', 'termin', 'kontrola zastępcza'].every((n) => kol.includes(n))) return ['brak tabeli z kolumnami ID, Właściciel, Termin, Kontrola zastępcza'];
+  return wpisyKwarantanny(md).flatMap((w) => {
+    const b: string[] = [];
+    const nazwa = w.id.match(/`([^`]+)`/)?.[1] ?? '';
+    if (!nazwa || !kodTestow.includes(nazwa)) b.push(`${w.id}: ID testu nie występuje w kodzie testów`);
+    if (!/\b(0[1-9]|1[0-2])-[a-z]/.test(w.wlasciciel)) b.push(`${w.id}: właściciel bez roli (np. 08-programista)`);
+    if (!/\b\d{4}-\d{2}-\d{2}\b|\b\d+\.\d+\.\d+\b/.test(w.termin)) b.push(`${w.id}: termin bez daty ani wersji wydania`);
+    const pliki = [...w.zastepcza.matchAll(/`([^`\s]+\.(?:ya?ml|tsx?|swift|mjs))`/g)].map((m) => m[1]);
+    if (!pliki.length || pliki.some((p) => !istnieje(p))) b.push(`${w.id}: kontrola zastępcza bez istniejącego pliku`);
+    return b;
+  });
+}
+
+describe('048 · rejestr kwarantanny docs/jakosc/kwarantanna.md (JAK-05; 07-jakosc-009)', () => {
+  const KOD_TESTOW = PLIKI_REPO.filter((p) => /\.(swift|tsx?|ya?ml)$/.test(p) && /(^tests\/|^e2e\/|Tests?\/)/.test(p)).map(czytaj).join('\n');
+  const istnieje = (p: string) => PLIKI_REPO.some((x) => x === p || x.endsWith(`/${p}`));
+  test('plik istnieje, wpisy mają ID testu z repo, właściciela, termin i kontrolę zastępczą', () => {
+    expect(fs.existsSync(path.join(ROOT, 'docs/jakosc/kwarantanna.md'))).toBe(true);
+    const md = czytaj('docs/jakosc/kwarantanna.md');
+    expect(bledyKwarantanny(md, KOD_TESTOW, istnieje)).toEqual([]);
+  });
+  test('pułapki: wpis bez właściciela, terminu, z nieistniejącym testem albo bez kontroli zastępczej pada', () => {
+    const tab = (w: string) => `| ID testu | Właściciel | Termin | Kontrola zastępcza |\n|---|---|---|---|\n${w}\n`;
+    const kod = 'func testW1WordNaPdf()';
+    const dobry = '| `testW1WordNaPdf` | 08-programista | 1.0.0 | scenariusz `25-word.yaml` |';
+    expect(bledyKwarantanny(tab(dobry), kod, () => true)).toEqual([]);
+    expect(bledyKwarantanny(tab(dobry.replace('08-programista', 'ktoś')), kod, () => true)).toHaveLength(1);
+    expect(bledyKwarantanny(tab(dobry.replace('1.0.0', 'kiedyś')), kod, () => true)).toHaveLength(1);
+    expect(bledyKwarantanny(tab(dobry.replace('testW1WordNaPdf', 'testNieMa')), kod, () => true)).toHaveLength(1);
+    expect(bledyKwarantanny(tab(dobry), kod, () => false)).toHaveLength(1);
+    expect(bledyKwarantanny('# Kwarantanna\n', kod, () => true)).toHaveLength(1);
+  });
+});
