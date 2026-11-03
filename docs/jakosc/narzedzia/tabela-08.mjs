@@ -41,7 +41,9 @@ for (const p of pliki.sort()) {
   const t = readFileSync(p, 'utf8');
   const rel = relative(KORZEN, p);
   const src = [...new Set([...t.matchAll(/from\s+['"]((?:\.\.\/)+src\/[^'"]+)['"]/g)].map((m) => relative(KORZEN, resolve(dirname(p), m[1]))))].sort();
-  const testy = (t.match(/\b(test|it)(\.each\([^)]*\))?\s*\(/g) ?? []).length;
+  // M1-127 (07-jakosc-519): deklaracja = `test(`/`it(` albo `test.each`/`it.each` (z nawiasem w danych przypadków, z typem `<…>`, z tablicą `\`…\``), każda raz;
+  // `.test(` metody (np. `/re/.test(s)`) to nie test. Zgodne z AST TypeScript dla wszystkich plików tabeli (dowód M1-127).
+  const testy = (t.match(/(?<![.\w$])(?:test|it)(?:\.each\b|\s*\()/g) ?? []).length;
   const ids = [...new Set(t.match(ID) ?? [])].sort();
   const plikSrc = (s) => ['.ts', '.tsx', '/index.ts'].map((e) => join(KORZEN, s + e)).find((x) => existsSync(x));
   const zPropozycji = src.some((s) => { const f = plikSrc(s); return f && /Z07-22/.test(readFileSync(f, 'utf8')); });
