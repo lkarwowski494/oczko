@@ -144,3 +144,24 @@ describe('M1-audytor-generalny-143: podpis o kopiach bezpieczeństwa w „Data a
     expect(wartosc(KONTEKST, 'stan_danych.kopie_opis')).toContain('ADR-0033');
   });
 });
+
+// M1-audytor-generalny-160 (04-studio-projektowe-533; DEC-37 a, P-445): arkusz „Delete all data” — termin kopii z warunkiem otwarcia i wcześniejszym
+// usuwaniem przy budżecie (ADR-0033), to samo zdanie co `stan_danych.kopie_opis` (trwała kontrola klasy 130/520: tekst i reguła sprzątania razem).
+describe('M1-audytor-generalny-160: termin kopii w arkuszu „Delete all data”', () => {
+  kontraktGrupy('M1-audytor-generalny-160');
+  test('`usun_pytanie` i `kopie_opis`: „30 days”, warunek otwarcia i zdanie o wcześniejszym usuwaniu — to samo zdanie w obu', () => {
+    for (const k of ['ustawienia.usun_pytanie', 'stan_danych.kopie_opis']) {
+      const w = wartosc(EN, k) ?? '';
+      expect([k, w.includes(`${KOPIA_PRZED_IMPORTEM_DNI} days`), /\bopen\b/.test(w), /\bsooner\b/.test(w), w.includes(TERMIN_KOPII)]).toEqual([k, true, true, true, true]);
+    }
+  });
+  test('kontekst tłumacza `usun_pytanie` wymienia ADR-0033 i sprzątanie przy otwarciu', () => {
+    expect(wartosc(KONTEKST, 'ustawienia.usun_pytanie')).toContain('ADR-0033');
+    expect(wartosc(KONTEKST, 'ustawienia.usun_pytanie')).toMatch(/przy otwarciu/);
+  });
+  test('wiersz 012 w design-spec ma nowy tekst arkusza', () => {
+    const spec = readFileSync(join(KORZEN, 'docs/design/design-spec.md'), 'utf8');
+    const wiersz = spec.split('\n').find((l) => l.startsWith('**012 · „Delete all data”')) ?? '';
+    expect(wiersz).toContain(ANEKS.en['ustawienia.usun_pytanie']);
+  });
+});
