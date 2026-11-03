@@ -98,6 +98,8 @@ public class OczkoWzorModule: Module {
       Prop("narzedzieRysika") { (v: WidokWzoru, n: String) in v.ustawNarzedzieRysika(n == NarzedzieWzoru.zakreslacz.rawValue ? .zakreslacz : .pioro) }
       Prop("polityka") { (v: WidokWzoru, p: String) in v.ustawPolityke(PolitykaPlotna(rawValue: p) ?? .wylaczone) }
       Prop("cofnij") { (v: WidokWzoru, n: Int) in v.cofnijDo(n) }
+      // M1-112: zapis na żądanie przed wyjściem z ekranu → liczba rysunków stron wciąż tylko w pamięci (funkcje widoku Expo: kolejka główna).
+      AsyncFunction("zapiszRysunki") { (v: WidokWzoru) -> Int in v.zapiszNaZadanie() }
     }
   }
 }

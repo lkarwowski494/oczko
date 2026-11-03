@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Linking, View, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { WidokWzoruNatywny } from '../modules/oczko-wzor';
+import { WidokWzoruNatywny, type UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { rodzajPliku } from '../src/domena/rodzaj-pliku';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
@@ -94,6 +94,7 @@ export default function EkranWzoru(): React.ReactElement {
   // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
   // przerywałby pracę); plik oczekujący zostaje i wraca przy następnym otwarciu (`odzyskajRysunki`).
   const bladRysunku = useRef(false);
+  const uchwytWidoku = useRef<UchwytWidokuWzoru | null>(null); // M1-112: zapis na żądanie przed decyzją „Wstecz”
   const poZapisieRysunku = useCallback((r: Wynik<unknown>, oczekujace = 0) => {
     if (r.ok) { if (oczekujace === 0) bladRysunku.current = false; return; }
     if (!bladRysunku.current) bladRysunku.current = zglosBladZapisu(aplikacja, r.powod, 'rysunek'); // M1-102: kreski czekają w pliku
@@ -219,7 +220,7 @@ export default function EkranWzoru(): React.ReactElement {
     return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
   });
   const natywny = WidokWzoruNatywny && dokument ? (
-    <WidokWzoruNatywny style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
+    <WidokWzoruNatywny ref={uchwytWidoku} style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={katalogRysunkow} strona={strona ? strona.n - 1 : (poczatek.current?.strona ?? 0)} narzedzie={narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={polityka} cofnij={cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => ustawOtwartyChip(Number(e.nativeEvent.id))}
       onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
       onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
@@ -252,7 +253,10 @@ export default function EkranWzoru(): React.ReactElement {
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
-        naWstecz={() => wyjscieZWzoru(t, niezapisane === true, () => router.back())}
+        naWstecz={() => { // M1-112: onBladZapisu z zapisu przy wyjściu nie dokłada alertu do pytania (jeden alert, jak M1-110); bez pytania stan wraca
+          const byl = bladRysunku.current; const u = uchwytWidoku.current; bladRysunku.current = true;
+          void wyjscieZWzoru(t, niezapisane === true, () => router.back(), u ? () => u.zapiszRysunki() : null).then((pytal) => { if (!pytal) bladRysunku.current = byl; });
+        }}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}

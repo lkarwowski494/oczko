@@ -69,3 +69,22 @@ test('kontrakt widoku wzoru: chip notatki używa symbolu SF note.text, bez glifu
   expect(chip).not.toContain('✎');
   expect(chip).toContain('b.setTitle(n.etykieta, for: .normal)');
 });
+
+// M1-112 (08-programista-515): „Wstecz” najpierw woła zapis w widoku i decyduje po liczbie oczekujących. Funkcje uchwytu TS (`UchwytWidokuWzoru`)
+// = AsyncFunction w `View(WidokWzoru.self)`; zapis na żądanie zwraca wynik opróżnienia kolejki (liczba z `KolejkaRysunkow`), nie stałą.
+test('kontrakt widoku wzoru: zapis na żądanie (zapiszRysunki) w uchwycie TS i w Swift zwraca liczbę oczekujących', () => {
+  const uchwyt = /export type UchwytWidokuWzoru = \{([\s\S]*?)\n\};/.exec(ts)?.[1] ?? '';
+  const funkcjeTs = [...uchwyt.matchAll(/^ {2}(\w+)\(/gm)].map((m) => m[1] ?? '').sort();
+  const funkcjeSwift = [...widokSwift.matchAll(/AsyncFunction\("(\w+)"\)/g)].map((m) => m[1] ?? '').sort();
+  expect(funkcjeTs).toEqual(['zapiszRysunki']);
+  expect(funkcjeSwift).toEqual(funkcjeTs);
+  expect(uchwyt).toMatch(/zapiszRysunki\(\): Promise<number>/);
+  expect(widokSwift).toMatch(/AsyncFunction\("zapiszRysunki"\) \{ \(v: WidokWzoru\) -> Int in v\.zapiszNaZadanie\(\) \}/);
+  const widok = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+  const naZadanie = /func zapiszNaZadanie\(\) -> Int \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(naZadanie).toContain('doKolejki()');
+  expect(naZadanie).toContain('return oproznijKolejke()');
+  const oproznij = /private func oproznijKolejke\(\) -> Int \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(oproznij).toContain('Self.kolejka.zapisz(propsy: propsy)');
+  expect(oproznij).toContain('return w.oczekujace');
+});
