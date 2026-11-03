@@ -20,6 +20,7 @@ A + C. Kierunek zależności: `ekrany → przypadki-uzycia → domena ← dane, 
 
 ### Potwierdzenie
 - `docs/architektura/narzedzia/granice.mjs` (E3) w CI: `src/domena/**` nie importuje `react`, `react-native`, `expo-*`, `src/dane`, `src/platforma`; brak cykli; plik > 20 KB to błąd.
+- Bramki w `jakosc:kontrole` (`package.json`): `granice.mjs src` oraz `granice.mjs app --domena ../src/domena` — trasy `app/` z tymi samymi regułami rozmiaru, cykli i `expo-sqlite` (od M1-audytor-generalny-106; zapis w ADR: M1-audytor-generalny-166).
 - Testy domeny bez jsdom i bez atrap natywnych.
 
 ## Opcje: zalety i wady

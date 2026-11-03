@@ -306,3 +306,28 @@ describe('048 · rejestr kwarantanny docs/jakosc/kwarantanna.md (JAK-05; 07-jako
     expect(bledyKwarantanny('# Kwarantanna\n', kod, () => true)).toHaveLength(1);
   });
 });
+
+/* 166 (05-architekt-517; ARCH-02, zasada roli 05 nr 3): dokument kontraktu modułów i Potwierdzenie ADR-0003 opisują bramki granic, które naprawdę
+ * biegną w `jakosc:kontrole` — bez „informacyjnie”, gdy kontrola jest bramką, i z każdym katalogiem, na którym biegnie `granice.mjs`. */
+export function rozjazdyGranic(skrypty: Record<string, string>, moduly: string, adr0003: string): string[] {
+  const bramki = [...(skrypty['jakosc:kontrole'] ?? '').matchAll(/granice\.mjs (\w+)/g)].map((m) => m[1]);
+  const bledy: string[] = [];
+  if (bramki.length === 0) bledy.push('jakosc:kontrole bez granice.mjs');
+  if (!/granice\.mjs/.test(skrypty['jakosc:info'] ?? '') && /informacyjnie w `jakosc:info`/.test(moduly)) bledy.push('moduly.md: granice „informacyjnie w jakosc:info”, a jakosc:info ich nie uruchamia');
+  const potwierdzenie = adr0003.slice(adr0003.indexOf('### Potwierdzenie'));
+  for (const k of bramki) if (!potwierdzenie.includes(`granice.mjs ${k}`)) bledy.push(`ADR-0003 Potwierdzenie: brak \`granice.mjs ${k}\``);
+  return bledy;
+}
+describe('166 · moduly.md i ADR-0003 zgodne z bramkami granic w package.json (ARCH-02; 05-architekt-517)', () => {
+  test('moduly.md bez „informacyjnie” dla granic; ADR-0003 Potwierdzenie wymienia każdy katalog granice.mjs z jakosc:kontrole', () => {
+    const skrypty = JSON.parse(czytaj('package.json')).scripts as Record<string, string>;
+    expect(rozjazdyGranic(skrypty, czytaj('docs/architektura/moduly.md'), czytaj('docs/adr/0003-granice-modulow-i-stan-interfejsu.md'))).toEqual([]);
+  });
+  test('pułapki: „informacyjnie” przy bramce i brak katalogu w Potwierdzeniu są wykrywane', () => {
+    const s = { 'jakosc:kontrole': 'node granice.mjs src && node granice.mjs app --domena ../src/domena', 'jakosc:info': 'npm run -s i18n:kod' };
+    const adr = '### Potwierdzenie\n- `granice.mjs src` i `granice.mjs app` w CI';
+    expect(rozjazdyGranic(s, 'Na `src` bramka w `jakosc:kontrole`.', adr)).toEqual([]);
+    expect(rozjazdyGranic(s, 'dziś informacyjnie w `jakosc:info`', adr)).toHaveLength(1);
+    expect(rozjazdyGranic(s, '', '### Potwierdzenie\n- `granice.mjs src` w CI')).toEqual(['ADR-0003 Potwierdzenie: brak `granice.mjs app`']);
+  });
+});
