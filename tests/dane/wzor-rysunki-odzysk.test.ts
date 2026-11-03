@@ -105,12 +105,12 @@ describe('M1-084: plik oczekujący rysunku przeżywa nieudany zapis', () => {
     expect([existsSync(starszy), existsSync(nowszy)]).toEqual([false, false]);
   });
 
-  test('odrzucenie trwałe (wzór w koszu) nadal usuwa plik — nie ma czego ponawiać', async () => {
+  // M1-104 (DEC-29 (a)): wzór w koszu nie jest odrzuceniem trwałym (kosz da się cofnąć; tests/dane/wzor-rysunki-kosz.test.ts); trwałe jest tylko `bledne_dane`.
+  test('odrzucenie trwałe (wzoru nie ma) nadal usuwa plik — nie ma czego ponawiać', async () => {
     const { s, k } = await zWzorem();
-    await wykonaj(s.baza, [["UPDATE wzor SET usunieto_ms = 1 WHERE id = 'w1'", []]]);
-    const f = join(k, 'w1__0__a.pkdrawing');
+    const f = join(k, 'nie-ma__0__a.pkdrawing');
     writeFileSync(f, 'x');
-    expect(await zapiszRysunek(s.z, { wzorId: 'w1', strona: 0, plikTymczasowy: f })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
+    expect(await zapiszRysunek(s.z, { wzorId: 'nie-ma', strona: 0, plikTymczasowy: f })).toEqual({ ok: false, powod: 'bledne_dane' });
     expect(existsSync(f)).toBe(false);
   });
 });

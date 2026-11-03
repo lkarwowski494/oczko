@@ -5,8 +5,14 @@ import { czasZmiany, lista, polacz, usunPlik } from '../dane/pliki/system';
 
 /** M1-084: nazwa pliku oczekującego z widoku natywnego `<wzorId>__<strona>__<uuid>.pkdrawing` (WidokWzoru.swift `zapiszTeraz`). */
 export const PLIK_OCZEKUJACY = /^(.+)__(\d+)__[^/]+\.pkdrawing$/;
-/** M1-084: odrzucenia, których ponowienie nie zmieni (zła strona, brak wzoru, wzór albo projekt w koszu) — tylko wtedy plik oczekujący znika bez zapisu. */
-export const ODRZUCENIA_TRWALE: readonly Powod[] = ['bledne_dane', 'niedozwolone_przejscie'];
+/**
+ * M1-084: odrzucenia, których ponowienie nie zmieni (zła strona, brak wzoru) — tylko wtedy plik oczekujący znika bez zapisu.
+ * M1-104 (DEC-29 (a)): `niedozwolone_przejscie` (wzór albo projekt w koszu) NIE jest trwałe, bo kosz da się cofnąć: plik czeka (`ODRZUCENIA_ODWRACALNE`),
+ * a znika dopiero, gdy wzoru nie ma (`bledne_dane`, np. po trwałym usunięciu z kosza przez `sprzatnijKosz`).
+ */
+export const ODRZUCENIA_TRWALE: readonly Powod[] = ['bledne_dane'];
+/** M1-104: odrzucenie do cofnięcia — plik zostaje, odzysk pomija tę stronę bez błędu i ponawia po przywróceniu z kosza. */
+export const ODRZUCENIA_ODWRACALNE: readonly Powod[] = ['niedozwolone_przejscie'];
 /** M1-084: po udanym zapisie strony usuwa z tego samego katalogu pliki oczekujące tej strony zmienione wcześniej niż zapisany; błąd sprzątania nie zmienia wyniku. */
 export function usunStarszeOczekujace(w: { wzorId: string; strona: number; plikTymczasowy: string }, czas: number): void {
   try {

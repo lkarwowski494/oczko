@@ -112,7 +112,7 @@ describe('usunWzor i przywrocWzor — kosz (P-229, P-233 (6), N4)', () => {
     expect(s.magazyn.usuniete.includes(h)).toBe(false); // PDF nadal w w2
   });
 
-  test('na usuniętym wzorze nie ma zapisu: znacznik, notatka i rysunek → niedozwolone_przejscie (plik tymczasowy rysunku usunięty)', async () => {
+  test('na usuniętym wzorze nie ma zapisu: znacznik, notatka i rysunek → niedozwolone_przejscie (plik tymczasowy rysunku czeka na przywrócenie, M1-104)', async () => {
     const { s } = await zDwomaWzorami();
     await usunWzor(s.z, { wzorId: 'w1' });
     expect(await ustawZnacznik(s.z, { wzorId: 'w1', licznikId: 'l1', strona: 0, y: 0.5, wysokoscRzedu: 0.02, rzadBazowy: 4, kierunek: 1 })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
@@ -120,7 +120,7 @@ describe('usunWzor i przywrocWzor — kosz (P-229, P-233 (6), N4)', () => {
     const tmp = join(s.katalog, 'tmp', 'r.pkdrawing');
     writeFileSync(tmp, 'nowy');
     expect(await zapiszRysunek(s.z, { wzorId: 'w1', strona: 0, plikTymczasowy: tmp })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
-    expect(existsSync(tmp)).toBe(false);
+    expect(existsSync(tmp)).toBe(true); // M1-104 (DEC-29 (a)): kosz da się cofnąć, więc kreski czekają (tests/dane/wzor-rysunki-kosz.test.ts)
   });
 });
 
