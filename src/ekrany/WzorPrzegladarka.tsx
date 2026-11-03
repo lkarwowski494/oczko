@@ -7,6 +7,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import type { Narzedzie } from '../domena/rysik';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
+import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { LicznikWzoru } from './WzorLicznik';
 import { PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
@@ -112,7 +113,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     </View>
   ) : (
     <View style={st.pasek}>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.wstecz_a11y', { czesc: s.czesc })} onPress={p.naWstecz} style={st.ikona} testID="nav-wstecz">
+      <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.wstecz_a11y', { czesc: s.czesc })} style={st.ikona} testID="nav-wstecz"
+        onPress={() => { if (notatka === 'arkusz' && tekst.trim()) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }}>
         <Text style={st.ikonaTekst} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>‹</Text>
       </Pressable>
       <View style={st.tytulPaska}>
@@ -173,7 +175,10 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
             onPress={() => { if (tekst.trim()) p.naNotatka?.(tekst.trim()); ustawTekst(''); ustawNotatke('brak'); }}>
             <Text style={[st.tresc, st.pogrubiony]}>{t('wspolne.zapisz')}</Text>
           </Pressable>
-          <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.anuluj')} onPress={() => { ustawTekst(''); ustawNotatke('brak'); }} style={st.pozycja}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.anuluj')} style={st.pozycja} onPress={() => {
+            const zamknijNowa = () => { ustawTekst(''); ustawNotatke('brak'); };
+            if (tekst.trim()) pytajOdrzucZmiany(t, 'nowy', zamknijNowa); else zamknijNowa(); // M1-121: wpisana nowa notatka nie znika bez pytania
+          }}>
             <Text style={st.tresc}>{t('wspolne.anuluj')}</Text>
           </Pressable>
         </View>
