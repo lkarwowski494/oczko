@@ -26,7 +26,8 @@ import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunk
 import { wybierzPlikWzoru } from '../src/platforma/system-plikow-uzytkownika';
 import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../src/platforma/zdjecia';
-import { dodajNotatkeWzoru, dodajWzor, listaWzorow, usunNotatkeWzoru, usunWzor, zmienNotatkeWzoru, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
+import { dodajWzor, listaWzorow, usunWzor, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, ustawZnacznik, zmienNazweWzoru, type ZrodloDodania } from '../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru, usunNotatkeWzoru, zmienNotatkeWzoru } from '../src/przypadki-uzycia/wzor-notatki';
 import { odzyskajRysunki, ustawObrot, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
 import { zapamietajPozycjeWzoru } from '../src/przypadki-uzycia/wzor-miejsce';

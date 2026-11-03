@@ -7,7 +7,8 @@ import { elementyKosza } from '../../src/dane/repozytoria/kosz';
 import { sprzatnijKosz } from '../../src/przypadki-uzycia/kosz';
 import { przywrocProjekt, usunProjekt } from '../../src/przypadki-uzycia/projekt';
 import { zapamietajLicznik } from '../../src/przypadki-uzycia/widok-licznika';
-import { dodajNotatkeWzoru, listaWzorow, przywrocWzor, usunWzor, ustawZnacznik, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, zmienNazweWzoru } from '../../src/przypadki-uzycia/wzor';
+import { listaWzorow, przywrocWzor, usunWzor, ustawZnacznik, wzorDoOtwarcia, zapamietajWzor, zapiszRysunek, zmienNazweWzoru } from '../../src/przypadki-uzycia/wzor';
+import { dodajNotatkeWzoru } from '../../src/przypadki-uzycia/wzor-notatki';
 import { czesc, licznik, plik, projekt, rysunek, wzor, type Instr } from './pomocnicze/dane-wejsciowe';
 import { DOBA, T0, ile, jeden, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
