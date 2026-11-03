@@ -15,7 +15,7 @@ export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; t
   const k = useKolory();
   const kolor = p.kolor ?? k.grafit;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={st.wstecz} testID={p.testID ?? 'nav-wstecz'}>
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
       {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tekst}</Text>}
     </Pressable>
@@ -36,6 +36,8 @@ export function PrzyciskSymbolu(p: { symbol: NazwaSymbolu; etykieta: string; onP
 
 const st = StyleSheet.create({
   wstecz: { flexDirection: 'row', alignItems: 'center', gap: odstep.xs, minHeight: cel.minimum, flexShrink: 1, alignSelf: 'flex-start' },
+  // 04-studio-projektowe-532: sama strzałka (pasek wzoru) — cel dotyku 44×44 pt jak `symbol`, nie szerokość glifu.
+  wsteczSymbol: { minWidth: cel.minimum, justifyContent: 'center' },
   symbol: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', minWidth: cel.minimum, minHeight: cel.minimum },
   zPodpisem: { gap: odstep.xs, paddingHorizontal: odstep.xs },
   tekst: { ...typografia.tresc, flexShrink: 1 },
