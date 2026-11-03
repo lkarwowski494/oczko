@@ -1,6 +1,7 @@
 // Stan ekranu do czasu pierwszego odczytu (E2-137-A1): „Loading…” albo błąd odczytu z „Try again”. Zamiast pustej planszy bez testID i bez wyjścia.
 // Tylko istniejące elementy systemu: podpis jak `Tresc podpis` („Loading plans…” na ofertach), przycisk `Przycisk` z Arkusz, kolory i odstępy z motywu.
 // Tło = tło treści trasy po wczytaniu (M1-089, 04-studio-projektowe-503; design-spec aneks M2 p2 „Tło StanWczytywania”): papier, arkusz albo czerń `systemCzarny`.
+// „Try again” to przycisk wypełniony (`przyciskTlo` / `przyciskObrys` / `przyciskTekst`, na czerni z `systemCzarny`) w jednej formie na każdym tle (M1-119, 04-studio-projektowe-516).
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Przycisk, style } from './Arkusz';
@@ -29,7 +30,7 @@ export function StanWczytywania({ stan, t, przedrostek, naPonow, tlo = 'papier' 
         : (
           <>
             <Text style={podpis}>{t('wspolne.blad_wczytania')}</Text>
-            <Przycisk tekst={t('wspolne.ponow')} onPress={naPonow} testID={`${przedrostek}-ponow`} naCzarnym={czarne} />
+            <Przycisk tekst={t('wspolne.ponow')} onPress={naPonow} testID={`${przedrostek}-ponow`} rodzaj="glowny" naCzarnym={czarne} />
           </>
         )}
     </View>

@@ -47,6 +47,7 @@
    "olowek": "#44474D",
    "linia": "#8F939A",
    "zakreslaczKrawedz": "#26282C",
+   "drugiPrzyciskObrys": "#26282C",
    "przyciskNieaktywnyTlo": "#8F939A",
    "przyciskNieaktywnyTekst": "#44474D"
   },
@@ -54,6 +55,7 @@
    "olowek": "#CDD0D4",
    "linia": "#7A7E85",
    "przyciskObrys": "#CDD0D4",
+   "drugiPrzyciskObrys": "#CDD0D4",
    "zakreslaczKrawedz": "#F4ECB4",
    "przyciskNieaktywnyTlo": "#7A7E85",
    "przyciskNieaktywnyTekst": "#CDD0D4"

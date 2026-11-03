@@ -995,7 +995,7 @@ Stan „Loading…” i błąd odczytu z „Try again” stoją na **tym samym t
 | `arkusz` | `arkusz` motywu (jasny `#FCFCFA` = papier, ciemny `#2A2C31` ≠ papier `#1B1C1F`) | `olowek` motywu | jak wyżej | trasa pokazywana jako arkusz (`presentation: 'modal'`, treść w `Arkusz`) |
 | `czarne` | `systemCzarny.tlo` `#000000` w obu motywach | `systemCzarny.olowek` | `systemCzarny.przyciskTlo` / `przyciskObrys` / `przyciskTekst` | pełnoekranowa przeglądarka na czarnym tle (jak podgląd zdjęcia, który używa `systemCzarny`) |
 
-Kolory motywu idą za „Zwiększ kontrast” jak w reszcie aplikacji (`jasnyKontrast`, `ciemnyKontrast`); `systemCzarny` nie ma wariantu i go nie potrzebuje (najniższa para 6,56:1). Kontrast wszystkich par: podpis 5,96–9,23:1 (próg 4,5), obrys przycisku 4,36–14,37:1 (próg 3). Kontrprzykład: podpis motywu jasnego na czerni 3,43:1, dlatego `czarne` nie bierze kolorów motywu.
+Kolory motywu idą za „Zwiększ kontrast” jak w reszcie aplikacji (`jasnyKontrast`, `ciemnyKontrast`); `systemCzarny` nie ma wariantu i go nie potrzebuje (najniższa para 6,56:1). Kontrast wszystkich par: podpis 5,96–9,23:1 (próg 4,5), obrys przycisku 4,36–14,37:1 (próg 3). Kontrprzykład: podpis motywu jasnego na czerni 3,43:1, dlatego `czarne` nie bierze kolorów motywu. „Try again” ma przy każdej wartości `tlo` tę samą formę przycisku wypełnionego (M1-audytor-generalny-119, 04-studio-projektowe-516; kod `Przycisk` rodzaju `glowny`); `drugiPrzyciskObrys` ma wariant w `jasnyKontrast` (`#26282C`) i `ciemnyKontrast` (`#CDD0D4`, jak `przyciskObrys`; 11,01:1 do papieru, `kontrast-tabela.txt`).
 
 **Trasy → `tlo` (stan na e05553c: 16 tras z `StanWczytywania`).**
 
