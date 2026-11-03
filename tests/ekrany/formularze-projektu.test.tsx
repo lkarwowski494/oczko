@@ -90,11 +90,11 @@ test('znaczenie: dwa wybory radio z przykładami na bieżącej wartości; zapis 
 test('narzędzie: podgląd na żywo z numerem US (RD-11/RD-19), błąd przy 0, „Clear” zapisuje brak', async () => {
   const naZapisz = ok();
   const podglad = (mm: number, n: 'druty' | 'szydelko') => (n === 'druty' && mm === 4 ? '4 mm (US 6)' : n === 'szydelko' && mm === 6.5 ? '6.5 mm (US K-10 ½)' : `${mm} mm`);
-  render(<FormularzNarzedzia t={t} narzedzie="druty" mm={null} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+  render(<FormularzNarzedzia t={t} jezyk="en" narzedzie="druty" mm={null} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
   fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '4');
   expect(screen.getByText('Shows as: 4 mm (US 6)')).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Hook' }));
-  fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '6,5');
+  fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '6.5');
   expect(screen.getByText('Shows as: 6.5 mm (US K-10 ½)')).toBeTruthy();
   fireEvent.press(screen.getByTestId('formularz-zapisz'));
   await waitFor(() => expect(naZapisz).toHaveBeenCalledWith({ narzedzie: 'szydelko', mm: 6.5 }));
@@ -103,6 +103,32 @@ test('narzędzie: podgląd na żywo z numerem US (RD-11/RD-19), błąd przy 0, �
   expect(screen.getByText('Enter a size above 0, for example 4 or 3.25.')).toBeTruthy();
   fireEvent.press(przycisk('Clear', 'button'));
   await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ narzedzie: 'szydelko', mm: null }));
+});
+
+test('M1-audytor-generalny-123 (06-tresci-501): pole rozmiaru w arkuszu narzędzia projektu w zapisie języka (formatujLiczbe + MM_NARZEDZIA_MIEJSCA, parsujLiczbe), jak drut w zapasie', async () => {
+  const podglad = (mm: number) => `${mm} mm`;
+  const naZapisz = ok();
+  const r = render(<FormularzNarzedzia t={t} jezyk="pl" narzedzie="druty" mm={3.125} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+  expect(screen.getByTestId('formularz-rozmiar-mm').props.value).toBe('3,125');
+  fireEvent.press(screen.getByTestId('formularz-zapisz'));
+  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ narzedzie: 'druty', mm: 3.125 }));
+  r.unmount();
+  const r2 = render(<FormularzNarzedzia t={t} jezyk="pl" narzedzie="druty" mm={3.1254} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+  expect(screen.getByTestId('formularz-rozmiar-mm').props.value).toBe('3,125');
+  fireEvent.press(screen.getByTestId('formularz-zapisz'));
+  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ narzedzie: 'druty', mm: 3.1254 })); // pole niezmienione: pełna liczba z bazy
+  r2.unmount();
+  const r3 = render(<FormularzNarzedzia t={t} jezyk="pl" narzedzie="druty" mm={null} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+  fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '3,125');
+  expect(screen.getByText('Shows as: 3.125 mm')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('formularz-zapisz'));
+  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ narzedzie: 'druty', mm: 3.125 }));
+  r3.unmount();
+  render(<FormularzNarzedzia t={t} jezyk="en" narzedzie="druty" mm={3.125} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+  expect(screen.getByTestId('formularz-rozmiar-mm').props.value).toBe('3.125');
+  fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '3.25');
+  fireEvent.press(screen.getByTestId('formularz-zapisz'));
+  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ narzedzie: 'druty', mm: 3.25 }));
 });
 
 test('What’s next? (BR-LIC-011/S1): druga taka sama z celem albo bez, nowa część, „Not now”', () => {

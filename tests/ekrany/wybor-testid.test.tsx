@@ -34,7 +34,7 @@ describe('NOC-4 · testID opcji radia Wybor', () => {
     expect(zaznaczona('wybor-rodzaj-rzedy')).toBe(false);
   });
   test('BR-PRJ-004/S1 (F-17) narzędzie: wybor-narzedzie-druty i wybor-narzedzie-szydelko', () => {
-    render(<FormularzNarzedzia t={t} narzedzie="druty" mm={null} podglad={() => ''} naZapisz={ok() as any} naAnuluj={jest.fn()} />);
+    render(<FormularzNarzedzia t={t} jezyk="en" narzedzie="druty" mm={null} podglad={() => ''} naZapisz={ok() as any} naAnuluj={jest.fn()} />);
     expect(zaznaczona('wybor-narzedzie-druty')).toBe(true);
     fireEvent.press(opcja('wybor-narzedzie-szydelko'));
     expect(zaznaczona('wybor-narzedzie-szydelko')).toBe(true);
