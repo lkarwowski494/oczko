@@ -118,7 +118,7 @@ export function trybAwaryjny() {
         usunKatalog(kat);
       }
     },
-    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (trzy pliki + manifest) do arkusza udostępniania; M1-075: z dziennikiem +1 (ADR-0008), którego tryb awaryjny nie scala. */
+    /** ADR-0020 (3): baza się nie otwiera albo archiwum zawiodło → jeden ZIP surowej kopii (pliki bazy + manifest) do arkusza udostępniania; M1-075: z dziennikiem +1 (ADR-0008), którego tryb awaryjny nie scala; M1-156: bez niego, gdy jego kopia zawiedzie (`pominiete` w manifeście). */
     async zipSurowej(): Promise<string | null> {
       const k = await kopia;
       if (!k.ok) return null;

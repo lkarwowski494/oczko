@@ -38,7 +38,7 @@ Zasada: agent przygotowuje polecenie, skutek i ryzyko. Każdy krok zewnętrzny (
 3. Nie usuwaj aplikacji — usunięcie kasuje dane i kopie na telefonie.
 
 **Co przychodzi:**
-- `*.oczko` — zwykłe archiwum (ADR-0004), baza w swojej wersji schematu. Gdy baza nie dała się otworzyć: ZIP surowej kopii z `oczko.db`, `oczko.db-wal`, `oczko.db-shm`, `dziennik-plus.jsonl` (jeśli był: +1 z ekranu blokady i zegarka niescalone do bazy, ADR-0008; M1-075) i `manifest.json` z SHA-256 każdego pliku (ADR-0020 (3), `src/niezawodnosc/kopie.ts`).
+- `*.oczko` — zwykłe archiwum (ADR-0004), baza w swojej wersji schematu. Gdy baza nie dała się otworzyć: ZIP surowej kopii z `oczko.db`, `oczko.db-wal`, `oczko.db-shm`, `dziennik-plus.jsonl` (jeśli był: +1 z ekranu blokady i zegarka niescalone do bazy, ADR-0008; M1-075) i `manifest.json` z SHA-256 każdego pliku (ADR-0020 (3), `src/niezawodnosc/kopie.ts`). Pole `pominiete` w manifeście (np. `dziennik-plus.jsonl`, powód `brak_miejsca` albo `zapis`): kopia tego pliku zawiodła, ZIP ma samą bazę, a +1 zostały na telefonie i scalą się po starcie aplikacji z działającą bazą (M1-156).
 
 **Procedura u dewelopera** (tylko na kopii, w scratchpadzie):
 1. Sprawdzić SHA-256 plików z manifestu (`sha256sum`).
