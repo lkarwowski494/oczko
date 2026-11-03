@@ -70,7 +70,7 @@ export default function Korzen(): React.ReactElement {
       await p.wczytaj(z); // ADR-0029: preferencje urządzenia z bazy przed pierwszym ekranem licznika i narzędzi
       if (!zywy) return;
       obslugaBledow?.ustawZapis(async (b) => { await wKolejce(z.baza, () => zapiszBlad(z.baza, { czasMs: z.zegar.teraz().ms, kod: b.kod, szczegoly: { ramki: b.szczegoly.ramki, fatal: b.szczegoly.fatal ? 1 : 0 } })); });
-      const licznik = kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, aplikacjaAktywna: () => AppState.currentState === 'active', ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } });
+      const licznik = kompozycjaLicznika(w.wartosc.z, w.wartosc.j, { wibracje: () => p.stan().wibracje, dostep: w.wartosc.dostep, aplikacjaAktywna: () => AppState.currentState === 'active', ekranWlaczony: () => p.stan().ekranNieGasnie, icloud: w.wartosc.icloud?.sterownik, skrzynka: { start: () => w.wartosc.wzor.k.poStarcie(), migawka: () => w.wartosc.wzor.k.odswiezMigawke() } });
       zamknijLicznik = () => licznik.zamknij(); // odpięcie `Zegarek.odbieraj` przy zniszczeniu kontenera (ADR-0030 pkt 1)
       // M1-022: wynik sklepu po limicie (albo z nasłuchu KP-07) zmienia Pro → licznik przelicza limit dni bez ponownego startu.
       let proNaStarcie = w.wartosc.dostep.stan().pro;

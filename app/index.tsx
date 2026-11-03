@@ -44,6 +44,8 @@ export default function EkranLicznika(): React.ReactElement {
   useFocusEffect(useCallback(() => { if (projektId) void listaWzorow(kontener.z, { projektId }).then((l) => ustawMaWzor(l.ok && l.wartosc.length > 0)); else ustawMaWzor(false); }, [projektId, kontener]));
   // Partia z iCloud (partia 7): stan ekranu blokady i licznik od nowa (np. linia konfliktu, P-220 I1a).
   useEffect(() => kontener.icloud?.naPartie(() => { void licznik.poZmianie().then(() => ustawWersje(licznik.wersja())); }), [kontener, licznik]);
+  // M1-063 (MON-05): Pro nadane albo zdjęte poza ekranem ofert (zdarzenie sklepu, decyzja po powrocie na pierwszy plan) — kompozycja przeliczyła limit dni → ekran od nowa.
+  useEffect(() => licznik.poDostepie(() => ustawWersje(licznik.wersja())), [licznik]);
   // +1 z zegarka scalone przy otwartej aplikacji (07-jakosc-005, ADR-0030): kompozycja podniosła `wersja` po COMMIT — ekran czyta stan od nowa.
   useEffect(() => licznik.poZegarku(() => ustawWersje(licznik.wersja())), [licznik]);
   useEffect(() => {
