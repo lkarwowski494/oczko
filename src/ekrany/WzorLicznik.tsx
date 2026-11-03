@@ -2,7 +2,7 @@
 // Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku, P-364); stan błędu zapisu i wywołania +1/−1 zostają w ekranie.
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { MAX_SKALA_LICZBY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_LICZBY, cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type PropsLicznikaWzoru = {
@@ -49,16 +49,16 @@ function style(k: Kolory) {
     pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.m, backgroundColor: k.papier },
     kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.linia, padding: odstep.l, gap: odstep.m, backgroundColor: k.papier },
     liczbaBlok: { flexShrink: 1 },
-    liczba: { ...typografia.liczba, fontSize: 40, lineHeight: 48, color: k.grafit }, // pasek licznika: 40 pt (design-spec W1a)
+    liczba: { ...typografia.liczbaPaska, color: k.grafit }, // pasek licznika: 40 pt (design-spec W1a)
     // Kolumna (W3, W4b): liczba 64 pt, nigdy ściśnięta; +1 bierze resztę z jawną podstawą 0 — na urządzeniu blok liczby wyszedł 0 pt, a −1
     // poza kolumną (P-262 (b), przebieg 119, scen. 23 i 44; przyczyna w Yoga nieodtworzona poza urządzeniem).
     liczbaBlokKolumna: { flexShrink: 0 },
-    liczbaKolumna: { ...typografia.liczba, fontSize: 64, lineHeight: 64, color: k.grafit },
+    liczbaKolumna: { ...typografia.liczbaKolumny, color: k.grafit },
     przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, flexGrow: 1, justifyContent: 'flex-end' },
     przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
-    minus: { width: 56, height: 56, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
+    minus: { width: cel.przyciskMinusPaska, height: cel.przyciskMinusPaska, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.grafit },
-    plus: { minHeight: 72, minWidth: 132, flexGrow: 1, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
+    plus: { minHeight: cel.przyciskPlusPaskaWysokosc, minWidth: 132, flexGrow: 1, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0 },
     plusTekst: { ...typografia.przycisk, color: k.przyciskTekst },
   });

@@ -15,7 +15,7 @@ import { tekstBleduZapisu } from '../src/ekrany/WzorLicznik';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
-import { useKolory } from '../src/ekrany/motyw';
+import { odstep, useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
@@ -197,7 +197,7 @@ export default function EkranWzoru(): React.ReactElement {
   if (!widok) {
     return (
       <Bezpieczny>
-        <View style={{ flex: 1, padding: 16, backgroundColor: k.papier }}>
+        <View style={{ flex: 1, padding: odstep.l, backgroundColor: k.papier }}>
           <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
             panelE2e={paneleE2e ? <paneleE2e.PanelWzoru katalogTymczasowy={kontener.z.katalogi.tymczasowy} naDodaj={(w) => void dodaj({ rodzaj: 'gotowe', ...w })} /> : null} />
         </View>

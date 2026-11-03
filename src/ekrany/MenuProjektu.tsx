@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Arkusz, Przycisk, Tresc } from './Arkusz';
-import { odstep } from './motyw';
+import { cel, odstep } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type PropsMenuProjektu = {
@@ -28,7 +28,7 @@ export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
         {!s.oczka && <Przycisk tekst={t('menu.cel')} onPress={p.naCel} testID="menu-cel" />}
         {p.naWzor && <Przycisk tekst={t(s.maWzor ? 'menu.wzor' : 'menu.dodaj_wzor')} onPress={p.naWzor} testID="menu-wzor" />}
         {!s.oczka && (s.przypomnienia ?? 0) > 0 && p.naPrzypomnienia
-          ? <Pressable accessibilityRole="button" accessibilityLabel={`${t('przyp.menu')}, ${s.przypomnienia}`} onPress={p.naPrzypomnienia} testID="menu-przypomnienia" style={{ minHeight: 44, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          ? <Pressable accessibilityRole="button" accessibilityLabel={`${t('przyp.menu')}, ${s.przypomnienia}`} onPress={p.naPrzypomnienia} testID="menu-przypomnienia" style={{ minHeight: cel.minimum, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Tresc>{t('przyp.menu')}</Tresc>
               <Tresc podpis>{String(s.przypomnienia)}</Tresc>
             </Pressable>

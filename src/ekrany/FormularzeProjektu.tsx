@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza, useZglosZmiane } from './Arkusz';
-import { useKolory } from './motyw';
+import { cel, odstep, useKolory } from './motyw';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 
 export type Zapis<T> = (w: T) => Promise<WynikEkranu<unknown>>;

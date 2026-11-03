@@ -24,6 +24,9 @@ const tytulowy = (t: { rozmiar: number; interlinia: number }): TextStyle => ({ f
 const systemowy = (t: { rozmiar: number; interlinia: number }): TextStyle => ({ fontSize: t.rozmiar, lineHeight: Math.round(t.rozmiar * t.interlinia) });
 export const typografia = {
   liczba: { ...tytulowy(ty.liczba), fontVariant: ['tabular-nums'] } satisfies TextStyle,
+  /** Liczba w pasku licznika pod wzorem (40 pt) i w kolumnie obok wzoru (64 pt); krój i cyfry jak `liczba` (M1-078, design-spec W1a, W3). */
+  liczbaPaska: { ...tytulowy(ty.liczbaPaska), fontVariant: ['tabular-nums'] } satisfies TextStyle,
+  liczbaKolumny: { ...tytulowy(ty.liczbaKolumny), fontVariant: ['tabular-nums'] } satisfies TextStyle,
   tytul: tytulowy(ty.tytul),
   instrukcja: tytulowy(ty.instrukcja),
   przycisk: tytulowy(ty.przycisk),
