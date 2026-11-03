@@ -125,20 +125,22 @@ describe('M1-audytor-generalny-142: alert nieudanej kopii na ekranie awaryjnym',
   });
 });
 
-// M1-audytor-generalny-143 (04-studio-projektowe-520; DEC-36 a, P-438): dwa teksty o tych samych kopiach mówią to samo — Oczko usuwa je samo,
-// najpóźniej po 30 dniach, przy otwarciu (sprzątanie tylko przy starcie: src/kompozycja/start-aplikacji.ts, src/niezawodnosc/kopie.ts). Trwała kontrola.
-describe('M1-audytor-generalny-143: teksty o kopiach bezpieczeństwa z tym samym terminem', () => {
+// M1-audytor-generalny-143 (04-studio-projektowe-520; DEC-36 a skorygowana przez DEC-37 a, P-445): podpis o kopiach w „Data and sync” mówi, że Oczko
+// usuwa je samo — po 30 dniach, przy następnym otwarciu, część wcześniej przy dużym rozmiarze (sprzątanie tylko przy starcie: src/kompozycja/start-aplikacji.ts;
+// budżet i limit: src/niezawodnosc/kopie.ts, ADR-0033). `ustawienia.usun_pytanie` z tym samym zdaniem: grupa M1-audytor-generalny-160.
+const TERMIN_KOPII = `Oczko deletes them after ${KOPIA_PRZED_IMPORTEM_DNI} days, when you next open it, and some sooner if they take up a lot of space.`;
+describe('M1-audytor-generalny-143: podpis o kopiach bezpieczeństwa w „Data and sync”', () => {
   kontraktGrupy('M1-audytor-generalny-143');
-  const TERMIN = `within ${KOPIA_PRZED_IMPORTEM_DNI} days, when you open it`;
   test('obie pule kopii sprząta ta sama liczba dni (teksty podają jedną)', () => expect(KOPIE_RATUNKOWE_DNI).toBe(KOPIA_PRZED_IMPORTEM_DNI));
-  test('`stan_danych.kopie_opis` i `ustawienia.usun_pytanie` zawierają ten sam termin z warunkiem otwarcia', () => {
-    for (const k of ['stan_danych.kopie_opis', 'ustawienia.usun_pytanie']) expect([k, (wartosc(EN, k) ?? '').includes(TERMIN)]).toEqual([k, true]);
+  test('`stan_danych.kopie_opis`: termin z warunkiem otwarcia i wcześniejszym usuwaniem (DEC-37 a), bez „within”', () => {
+    expect(wartosc(EN, 'stan_danych.kopie_opis')).toContain(TERMIN_KOPII);
+    expect(wartosc(EN, 'stan_danych.kopie_opis')).not.toContain('within');
   });
   test('`stan_danych.kopie_opis` nie każe usuwać kopii ręcznie', () => {
     expect(wartosc(EN, 'stan_danych.kopie_opis')).not.toMatch(/delete the ones|no longer need/);
-    expect(wartosc(EN, 'stan_danych.kopie_opis')).toContain('Oczko deletes them');
   });
-  test('kontekst tłumacza obu kluczy mówi o sprzątaniu przy otwarciu aplikacji', () => {
-    for (const k of ['stan_danych.kopie_opis', 'ustawienia.usun_pytanie']) expect([k, /przy otwarciu/.test(wartosc(KONTEKST, k) ?? '')]).toEqual([k, true]);
+  test('kontekst tłumacza: sprzątanie przy otwarciu aplikacji i ADR-0033', () => {
+    expect(wartosc(KONTEKST, 'stan_danych.kopie_opis')).toMatch(/przy otwarciu/);
+    expect(wartosc(KONTEKST, 'stan_danych.kopie_opis')).toContain('ADR-0033');
   });
 });

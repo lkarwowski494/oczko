@@ -526,7 +526,7 @@
     "wylaczona": "iCloud sync is off.",
     "aktywna": "iCloud sync is on.",
     "zegarek_kontakt": "Last contact with your watch: {{data}}.",
-    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. Oczko deletes them within 30 days, when you open it. They count toward your device’s iCloud backup until then."
+    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. Oczko deletes them after 30 days, when you next open it, and some sooner if they take up a lot of space. They count toward your device’s iCloud backup until then."
   },
   "zglos": {
     "tytul": "Report a problem",
