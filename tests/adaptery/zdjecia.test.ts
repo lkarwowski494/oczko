@@ -1,5 +1,6 @@
 // Adapter wyboru zdjęcia (F-16; P-191 P9a „Take photo / Choose from library”): expo-image-picker 57.0.20 wstrzyknięty, bez EXIF w wyniku,
 // tylko obrazy; aparat po zgodzie; anulowanie = nic się nie dzieje; wyjątek modułu = błąd, nie cisza. Wynik adaptera własny (Powod to kontrakt 05).
+import { ZDJECIA_WZORU_MAKS } from '../../src/konfiguracja';
 import { wybieraczZdjec, type ModulWyboru } from '../../src/platforma/zdjecia';
 
 const modul = (o: Partial<{ zgoda: boolean; anuluj: boolean; uri: string; blad: boolean }> = {}) => {
@@ -40,7 +41,7 @@ describe('wybieraczZdjec.wybierzStrony (wzór ze zdjęć, W7a; P-218 (1): kilka 
   test('biblioteka z wyborem wielu (do 20), bez EXIF; ścieżki bez file://; anulowanie i wyjątek', async () => {
     const a = modul({ uri: 'file:///tmp/ImagePicker/S%201.jpeg' });
     expect(await wybieraczZdjec(a.m).wybierzStrony()).toEqual({ rodzaj: 'zdjecia', sciezki: ['/tmp/ImagePicker/S 1.jpeg'] });
-    expect(a.wywolania).toEqual([{ rodzaj: 'biblioteka', opcje: { mediaTypes: ['images'], exif: false, allowsMultipleSelection: true, selectionLimit: 20 } }]);
+    expect(a.wywolania).toEqual([{ rodzaj: 'biblioteka', opcje: { mediaTypes: ['images'], exif: false, allowsMultipleSelection: true, selectionLimit: ZDJECIA_WZORU_MAKS } }]);
     expect(await wybieraczZdjec(modul({ anuluj: true }).m).wybierzStrony()).toEqual({ rodzaj: 'anulowano' });
     expect(await wybieraczZdjec(modul({ blad: true }).m).wybierzStrony()).toEqual({ rodzaj: 'blad' });
   });
