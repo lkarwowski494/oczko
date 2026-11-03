@@ -6,7 +6,12 @@ import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { preferencje } from '../../src/kompozycja/preferencje';
-import { narzedzia, zapiszNarzedzie } from '../../src/przypadki-uzycia/zapas';
+import { narzedzia, usunNarzedzie, zapiszNarzedzie } from '../../src/przypadki-uzycia/zapas';
+import { ustawDrut } from '../../src/przypadki-uzycia/projekt';
+import { widokProjektu } from '../../src/przypadki-uzycia/widok-projektu';
+import { stanProjektu } from '../../src/kompozycja/projekt';
+import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
+import { wykonaj } from '../dane/pomocnicze/srodowisko';
 import { FormularzDrutu } from '../../src/ekrany/Zapas';
 import { tEn } from './pomoc';
 import type { Zaleznosci } from '../../src/przypadki-uzycia/zaleznosci';
@@ -29,6 +34,14 @@ async function srodowisko(): Promise<Zaleznosci> {
   const { s, k, j } = await kompozycjaTestowa();
   mockAplikacja = { kontener: { z: s.z, j }, licznik: k, preferencje: preferencje() };
   return s.z;
+}
+/** Projekt `p1` z jedną częścią i licznikiem (otwartym w kompozycji) — dla ekranu projektu i arkusza narzędzia projektu. */
+async function zProjektem(): Promise<{ z: Zaleznosci; j: Awaited<ReturnType<typeof kompozycjaTestowa>>['j'] }> {
+  const { s, k, j } = await kompozycjaTestowa();
+  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 2)]);
+  await k.otworz('l1');
+  mockAplikacja = { kontener: { z: s.z, j }, licznik: k, preferencje: preferencje() };
+  return { z: s.z, j };
 }
 async function zamontuj(Ekran: React.ComponentType): Promise<void> {
   render(<Ekran />);
@@ -81,5 +94,37 @@ describe('M1-021: rozmiar 3,125 mm przez warstwę formularza', () => {
     expect(screen.getByText('3.125 mm (US 3)')).toBeTruthy();
     expect(screen.getByText('3.125 mm (US D)')).toBeTruthy();
     expect(screen.queryByText(/3\.13 mm/)).toBeNull();
+  });
+});
+
+// M1-audytor-generalny-124 (07-jakosc-516): po 021 trzy miejsca w `src/kompozycja/projekt.ts` formatują mm do MM_NARZEDZIA_MIEJSCA, ale test
+// montował tylko `app/drut` i `app/druty` (podgląd z `zapas.ts`). Kosz, ekran projektu i podgląd arkusza narzędzia projektu — z 3,125 mm.
+describe('M1-124: 3,125 mm w koszu, na ekranie projektu i w podglądzie arkusza narzędzia projektu', () => {
+  test.each(PRZYPADKI)('%s — kosz („Recently deleted”, trasa /kosz): nazwa narzędzia z 3.125 i numerem US', async (_n, rodzaj, tekst) => {
+    const z = await srodowisko();
+    const w = await zapiszNarzedzie(z, { rodzaj, rozmiarMm: 3.125, opis: '' });
+    if (!w.ok) throw new Error(w.powod);
+    expect((await usunNarzedzie(z, { narzedzieId: w.wartosc.id })).ok).toBe(true);
+    await zamontuj(trasa('../../app/kosz'));
+    expect(screen.getByText(tekst)).toBeTruthy();
+    expect(screen.queryByText(/3\.13 mm/)).toBeNull();
+  });
+
+  test.each(PRZYPADKI)('%s — ekran projektu (stanProjektu): szczegóły „rozmiar” z 3.125 i numerem US', async (_n, rodzaj, tekst) => {
+    const { z, j } = await zProjektem();
+    expect((await ustawDrut(z, { projektId: 'p1', drutMm: 3.125, narzedzie: rodzaj })).ok).toBe(true);
+    const w = await widokProjektu(z, { projektId: 'p1' });
+    if (!w.ok) throw new Error(w.powod);
+    const ch = z.zegar.teraz();
+    expect(stanProjektu(w.wartosc, { j, terazMs: ch.ms, strefa: ch.strefa }).szczegoly?.rozmiar).toBe(tekst);
+  });
+
+  test.each(PRZYPADKI)('%s — arkusz narzędzia projektu (formularz/[rodzaj] = narzedzie): pole 3.125 i podgląd z numerem US', async (_n, rodzaj, tekst) => {
+    const { z } = await zProjektem();
+    expect((await ustawDrut(z, { projektId: 'p1', drutMm: 3.125, narzedzie: rodzaj })).ok).toBe(true);
+    mockParams = { rodzaj: 'narzedzie', projekt: 'p1' };
+    await zamontuj(trasa('../../app/formularz/[rodzaj]'));
+    expect(screen.getByTestId('formularz-rozmiar-mm').props.value).toBe('3.125');
+    expect(screen.getByText(`Shows as: ${tekst}`)).toBeTruthy();
   });
 });
