@@ -83,13 +83,13 @@ describe('nienazwany — projekt roboczy (P-126 (1b))', () => {
     const r = await utworzSzybkiLicznik(s.z);
     if (!r.ok) throw new Error(r.powod);
     s.zegar.przesun(3 * 86_400_000);
-    const kopia = await zrobPonownie(s.z, { projektId: r.wartosc.projektId });
+    const kopia = await zrobPonownie(s.z, { projektId: r.wartosc.projektId, szablonNazwy: '{{nazwa}} {{n}}' });
     if (!kopia.ok) throw new Error(kopia.powod);
     expect(await nazwa(s, kopia.wartosc.projektId)).toEqual({ nazwa: s.zegar.teraz().dzien, nienazwany: 1 });
     const { s: s2, id } = await zProjektem();
-    const k2 = await zrobPonownie(s2.z, { projektId: id });
+    const k2 = await zrobPonownie(s2.z, { projektId: id, szablonNazwy: '{{nazwa}} {{n}}' });
     if (!k2.ok) throw new Error(k2.powod);
-    expect(await nazwa(s2, k2.wartosc.projektId)).toEqual({ nazwa: 'Sweter', nienazwany: 0 });
+    expect(await nazwa(s2, k2.wartosc.projektId)).toEqual({ nazwa: 'Sweter 2', nienazwany: 0 }); // M1-136 (DEC-35 b): kolejny wolny numer
   });
 });
 

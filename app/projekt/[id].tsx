@@ -180,7 +180,7 @@ export default function EkranProjektu(): React.ReactElement {
           await wczytaj();
         })}
         naZrobTakaSama={() => potwierdz(t('projekt.kopia_tytul', { nazwa: stan.nazwa }), t('projekt.kopia_opis'), t('projekt.kopia_potwierdz'), async () => {
-          const r = await zrobPonownie(z, { projektId: w.id }); // nazwa kopii = nazwa oryginału (04-fix5-N1, decyzja 08 w raporcie)
+          const r = await zrobPonownie(z, { projektId: w.id, szablonNazwy: t('projekt.kopia_nazwa') }); // nazwa kopii z kolejnym wolnym numerem (M1-136, DEC-35 b); t() bez parametrów = szablon
           if (zapisano(aplikacja, r)) router.replace({ pathname: '/projekt/[id]', params: { id: r.wartosc.projektId } });
         }, false)}
         naUsunProjekt={() => potwierdz(t('usun.tytul', { nazwa: stan.nazwa }), t('usun.projekt_opis', { data: doDnia() }), t('usun.projekt'), async () => {

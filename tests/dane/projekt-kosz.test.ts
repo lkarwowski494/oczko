@@ -210,7 +210,7 @@ describe('projekty i części (BR-PRJ-*)', () => {
     const s = await przygotuj();
     await wykonaj(s.baza, [projekt('p1', 'Skarpeta'), czesc('c1', 'p1', 'Cholewka', 1), czesc('c2', 'p1', 'Pięta', 2), ...licznik('l1', 'c1', 40), ...licznik('l2', 'c2', 12), przypomnienie('r1', 'l1')]);
     const przed = await migawka(s.baza);
-    const w = await zrobPonownie(s.z, { projektId: 'p1' });
+    const w = await zrobPonownie(s.z, { projektId: 'p1', szablonNazwy: '{{nazwa}} {{n}}' });
     if (!w.ok) throw new Error(w.powod);
     const nowy = w.wartosc.projektId;
     expect(await jeden(s.baza, 'SELECT kopia_z FROM projekt WHERE id = ?', [nowy])).toEqual({ kopia_z: 'p1' });
@@ -283,7 +283,7 @@ describe('projekty i części (BR-PRJ-*)', () => {
   test('BR-PRJ-007 + BR-PRJ-014 (F-20, F-52, P-199 Q2a): „zrób ponownie” zachowuje parę — para_z kopii wskazuje część kopii', async () => {
     const s = await przygotuj();
     await wykonaj(s.baza, [projekt('p1', 'Skarpety'), czesc('c1', 'p1', 'Lewa', 1), czesc('c2', 'p1', 'Prawa', 2, { paraZ: 'c1' }), ...licznik('l1', 'c1', 72), ...licznik('l2', 'c2', 72)]);
-    const w = await zrobPonownie(s.z, { projektId: 'p1' });
+    const w = await zrobPonownie(s.z, { projektId: 'p1', szablonNazwy: '{{nazwa}} {{n}}' });
     if (!w.ok) throw new Error(w.powod);
     const c = await s.baza.all<{ id: string; nazwa: string; para_z: string | null }>('SELECT id, nazwa, para_z FROM czesc WHERE projekt_id = ? ORDER BY kolejnosc', [w.wartosc.projektId]);
     expect(c.map((x) => [x.nazwa, x.para_z])).toEqual([['Lewa', null], ['Prawa', c[0].id]]);
