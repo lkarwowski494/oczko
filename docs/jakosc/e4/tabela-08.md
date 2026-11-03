@@ -122,6 +122,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-miniatury.test.ts` | zielony (główny zestaw) | 2 | — | `src/kompozycja/miniatury`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-notatki-widok.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003, BR-WZR-008, BR-WZR-008/S2, P-330 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-notatki`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-obroty-film.test.ts` | zielony (główny zestaw) | 7 | P-218, P-246, P-276, P-283 | `src/platforma/skrzynka`<br>`src/przypadki-uzycia/film`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/skrzynka`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-rysunki-kosz.test.ts` | zielony (główny zestaw) | 6 | P-418 | `src/konfiguracja`<br>`src/przypadki-uzycia/kosz`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-rysunki-odzysk.test.ts` | zielony (główny zestaw) | 11 | — | `src/domena/porty`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-usun.test.ts` | zielony (główny zestaw) | 14 | P-026, P-118, P-220, P-229, P-233, P-252 | `src/dane/repozytoria/kosz`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/kosz`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/wzor`<br>`src/przypadki-uzycia/wzor-notatki` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/wzor-widok.test.ts` | zielony (główny zestaw) | 2 | P-246 | `src/przypadki-uzycia/wzor-widok` | — |
@@ -176,6 +177,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/kompozycja-wzoru.test.ts` | zielony (główny zestaw) | 7 | P-246, P-276 | `src/kompozycja/e2e/skrzynka`<br>`src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/kontekst-jezyk.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/Kontekst` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/kroj-tytulowy.test.ts` | zielony (główny zestaw) | 4 | P-306 | `src/ekrany/motyw` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ladowanie-kolejka.test.tsx` | zielony (główny zestaw) | 1 | P-418 | `src/kompozycja/preferencje`<br>`src/przypadki-uzycia/kolejka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ladowanie-trasy.test.tsx` | zielony (główny zestaw) | 7 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/liczba-mnoga-limit-dni.test.ts` | zielony (główny zestaw) | 3 | P-307 | `src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-ax5.test.tsx` | zielony (główny zestaw) | 4 | NFR-DOS-002, P-266, P-275, P-277, P-287 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -324,4 +326,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 320; zależnych od poprawek: 197.
+Razem plików testów: 322; zależnych od poprawek: 198.
