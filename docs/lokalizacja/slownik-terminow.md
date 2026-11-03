@@ -13,23 +13,23 @@ Pojęć: 44 · języków: 35 · wpisów: 1540 (wysoka 704, średnia 392, niska 4
 | `robotka` | knitting (as the app's general word for the craft: "knitting day", "Keep knitting", "knitting time") | robótka / dzierganie | ogólne słowo na pracę ręczną, której użytkownik się oddaje w aplikacji: obejmuje i druty, i szydełko (aplikacja jest dla obu). W en źródło używa „knitting” także dla osób szydełkujących. NIE: tylko robienie na drutach, jeśli język ma słowo wspólne; NIE: dzianina maszynowa. | 0 |
 | `dziergac_na_drutach` | knit (on needles) | robić na drutach | tworzyć dzianinę drutami; czynność (czasownik). NIE: szydełkować. | 4 |
 | `szydelkowac` | crochet | szydełkować | tworzyć robótkę szydełkiem (czynność i rzemiosło). | 0 |
-| `rzad` | row | rząd | jedna warstwa oczek przerobiona od brzegu do brzegu (albo jedno okrążenie przy robótce na okrągło) — jednostka licznika. NIE: wiersz tabeli, kolejka, szereg. | 139 |
+| `rzad` | row | rząd | jedna warstwa oczek przerobiona od brzegu do brzegu (albo jedno okrążenie przy robótce na okrągło) — jednostka licznika. NIE: wiersz tabeli, kolejka, szereg. | 161 |
 | `okrazenie` | round | okrążenie | rząd przerabiany na okrągło (druty z żyłką, szydełko w kółko). W interfejsie en nie występuje (licznik mówi „row”), ale tłumacz musi go znać, żeby nie użyć go zamiast „rzędu”. | 0 |
-| `oczko` | stitch (single loop on the needle) | oczko | pojedyncza pętla dzianiny/robótki — jednostka liczona (licznik „Stitches”, próbka „stitches per 10 cm”). NIE: ścieg (wzór splotu), NIE: ścieg szwalniczy/hafciarski. | 30 |
+| `oczko` | stitch (single loop on the needle) | oczko | pojedyncza pętla dzianiny/robótki — jednostka liczona (licznik „Stitches”, próbka „stitches per 10 cm”). NIE: ścieg (wzór splotu), NIE: ścieg szwalniczy/hafciarski. | 40 |
 | `scieg` | stitch pattern (e.g. "stockinette stitch") | ścieg / splot | sposób przerabiania oczek dający określoną fakturę (np. dżersej, ścieg francuski). NIE: pojedyncze oczko. | 4 |
 | `scieg_dzersejowy` | stockinette stitch (US) / stocking stitch (UK) | ścieg dżersejowy (pończoszniczy) | ścieg: na prawej stronie same oczka prawe, na lewej same lewe (w rzędach). Używany w opisie kategorii grubości („knitted in stockinette stitch”). | 4 |
-| `licznik` | counter (row counter) | licznik (rzędów) | narzędzie w aplikacji liczące rzędy albo oczka danej części. | 37 |
-| `czesc` | part (a piece counted separately: a sleeve, the back, a sock) | część (element robótki) | element projektu liczony osobno, np. rękaw, tył, skarpeta. NIE: część zamienna, rozdział. | 38 |
+| `licznik` | counter (row counter) | licznik (rzędów) | narzędzie w aplikacji liczące rzędy albo oczka danej części. | 40 |
+| `czesc` | part (a piece counted separately: a sleeve, the back, a sock) | część (element robótki) | element projektu liczony osobno, np. rękaw, tył, skarpeta. NIE: część zamienna, rozdział. | 39 |
 | `powtorzenie` | repeat (pattern repeat) | powtórzenie (raport wzoru) | zestaw rzędów (albo oczek) wzoru powtarzany wielokrotnie; „Rows in one repeat”. NIE: „powtórz” w sensie ponów operację, NIE: ponowne odtwarzanie. | 5 |
-| `wzor` | pattern (written instructions for a project) | wzór (opis / instrukcja wykonania) | dokument z instrukcją wykonania robótki (PDF, zdjęcie, strona). NIE: wzór splotu/ornament (ścieg), NIE: szablon/form krawiecki. | 40 |
+| `wzor` | pattern (written instructions for a project) | wzór (opis / instrukcja wykonania) | dokument z instrukcją wykonania robótki (PDF, zdjęcie, strona). NIE: wzór splotu/ornament (ścieg), NIE: szablon/form krawiecki. | 47 |
 | `schemat` | chart (knitting/crochet chart) | schemat | graficzny zapis wzoru w kratkach/symbolach, czytany zwykle od dołu. NIE: wykres statystyczny. | 2 |
-| `znacznik_rzedu` | marker / row marker (on the pattern page in the app) | znacznik (rzędu na stronie wzoru) | pozioma linia w aplikacji pokazująca bieżący rząd na stronie wzoru. NIE: znacznik oczek (fizyczny kółeczko na drucie) — choć słowo bywa to samo, w aplikacji chodzi o zakładkę/linijkę. | 5 |
+| `znacznik_rzedu` | marker / row marker (on the pattern page in the app) | znacznik (rzędu na stronie wzoru) | pozioma linia w aplikacji pokazująca bieżący rząd na stronie wzoru. NIE: znacznik oczek (fizyczny kółeczko na drucie) — choć słowo bywa to samo, w aplikacji chodzi o zakładkę/linijkę. | 6 |
 | `probka` | swatch | próbka | mały kawałek dzianiny wykonany przed projektem do zmierzenia gęstości. | 11 |
 | `gestosc` | gauge (US) / tension (UK) | gęstość dzianiny (oczka i rzędy na 10 cm) | liczba oczek i rzędów na 10 cm / 4 in, zmierzona na próbce. NIE: kaliber, NIE: przyrząd pomiarowy (miarka do drutów). | 10 |
 | `blokowanie` | block / blocking | blokowanie (wykończenie: namoczenie/naparowanie i rozpięcie) | nadanie gotowej dzianinie (lub próbce) kształtu i wymiaru przez zwilżenie/parowanie i suszenie rozpiętej. NIE: blokowanie ekranu/dostępu. | 1 |
-| `wloczka` | yarn | włóczka | nić do robótek ręcznych. NIE: przędza przemysłowa w sensie technicznym, NIE: nić do szycia. | 20 |
-| `motek` | skein (unit of yarn as sold; ball/hank) | motek | jednostka sprzedaży włóczki (motek/kłębek), liczona w zapasie i zużyciu. | 15 |
-| `zapas` | stash (yarn stash) | zapas (włóczki) | włóczka, którą użytkownik ma w domu. NIE: kryjówka, NIE: magazyn sklepu. | 7 |
+| `wloczka` | yarn | włóczka | nić do robótek ręcznych. NIE: przędza przemysłowa w sensie technicznym, NIE: nić do szycia. | 27 |
+| `motek` | skein (unit of yarn as sold; ball/hank) | motek | jednostka sprzedaży włóczki (motek/kłębek), liczona w zapasie i zużyciu. | 18 |
+| `zapas` | stash (yarn stash) | zapas (włóczki) | włóczka, którą użytkownik ma w domu. NIE: kryjówka, NIE: magazyn sklepu. | 12 |
 | `grubosc_wloczki` | yarn weight (category 0–7) | grubość włóczki (kategoria) | kategoria grubości nici według standardu CYC (0 lace … 7 jumbo). NIE: masa w gramach (osobne pojęcie masa_motka). | 7 |
 | `masa_motka` | weight per skein (grams) | waga (masa) motka w gramach | masa jednego motka, np. 50 g. NIE: grubość włóczki. | 1 |
 | `metraz` | length per skein (yardage) | długość nici w motku (metraż) | długość nici w jednym motku, np. 200 m / 50 g. | 1 |
@@ -801,6 +801,48 @@ Pozostałe języki: numer kategorii + nazwa en (lace, super fine, fine, light, m
 
 - **fr** (S-CYC-FR, odczyt 2026-10-30, tabela „Système Standard de Grosseur”, nagłówek „Nouvelle Catégorie Noms” (osiem komórek, kolejność 0–7)): „Dentelle \| Super Fin \| Fin \| Léger \| Moyen \| Bulky \| Trés Épais \| Géant” — W źródle „Trés Épais” z błędnym akcentem; w UI „Très épais” (ortografia, do przeglądu rodzimego fr). Kategoria 5 w CYC-FR zostaje po angielsku („Bulky”) — źródło tak ją nazywa. „Dentelle” to też koronka jako technika: w UI zawsze z numerem 0 (patrz wloczka_lace fr). CYC-FR pisze też „fils de poids dentelles” w przypisie; ta kalka „poids” nie wchodzi do UI.
 
+## Jednostki miary (M1-052; źródło S-CLDR-48, odczyt 2026-11-03)
+
+Symbol z kolumny „symbol” (CLDR „short”); przykład dla 5 pokazuje też formę liczby mnogiej dla tej liczby — przy innych liczbach odmiana według reguł języka. Pełna nazwa („pelny_przyklad”, CLDR „long”) to wzór dla etykiet VoiceOver `jednostka.*_nazwa`.
+
+| język | m | yd | g | oz | cm | mm | in | przykład pełnej nazwy (m) |
+|---|---|---|---|---|---|---|---|---|
+| en | m | yd | g | oz | cm | mm | in | 5 meters |
+| pl | m | yd | g | oz | cm | mm | cali | 5 metrów |
+| bg | m | yd | g | oz | cm | mm | in | 5 метра |
+| cs | m | yd | g | oz | cm | mm | in | 5 metrů |
+| da | m | yard | g | oz | cm | mm | tommer | 5 meter |
+| de | m | yd | g | oz | cm | mm | in | 5 Meter |
+| el | μ. | γρδ | γρ. | oz | εκ. | χλστ. | ίν. | 5 μέτρα |
+| es | m | yd | g | oz | cm | mm | in | 5 metros |
+| es-419 | m | yd | g | oz | cm | mm | in | 5 metros |
+| et | m | yd | g | oz | cm | mm | in | 5 meetrit |
+| fi | m | yd | g | oz | cm | mm | in | 5 metriä |
+| fr | m | yd | g | oz | cm | mm | po | 5 mètres |
+| hr | m | yd | g | oz | cm | mm | in | 5 metara |
+| hu | m | yd | g | oz | cm | mm | hüvelyk | 5 méter |
+| id | m | yd | g | oz | cm | mm | in | 5 meter |
+| it | m | yd | g | oz | cm | mm | in | 5 metri |
+| ja | m | yd | g | oz | cm | mm | in | 5 メートル |
+| ko | m | yd | g | oz | cm | mm | in | 5미터 |
+| lt | m | yd | g | oz | cm | mm | in | 5 metrai |
+| lv | m | jardi | g | unces | cm | mm | in | 5 metri |
+| ms | m | ela | g | oz | cm | mm | in | 5 meter |
+| nb | m | yard | g | unser | cm | mm | tommer | 5 meter |
+| nl | m | yd | g | oz | cm | mm | in | 5 meter |
+| pt | m | yd | g | oz | cm | mm | pol. | 5 metros |
+| pt-BR | m | yd | g | oz | cm | mm | pol. | 5 metros |
+| ro | m | yd | g | oz | cm | mm | in | 5 metri |
+| ru | м | ярд. | г | унц. | см | мм | дюйм. | 5 метров |
+| sk | m | yd | g | oz | cm | mm | in | 5 metrov |
+| sl | m | yd | g | oz | cm | mm | in | 5 metrov |
+| sr | m | јрд | g | oz | cm | mm | инча | 5 метара |
+| sv | m | yd | g | uns | cm | mm | tum | 5 meter |
+| tr | m | yd | g | oz | cm | mm | inç | 5 metre |
+| uk | м | ярдів | г | унц. | см | мм | дюймів | 5 метрів |
+| vi | m | yd | g | oz | cm | mm | inch | 5 mét |
+| zh-Hant | 公尺 | 碼 | 克 | 盎司 | 公分 | 公釐 | 吋 | 5 公尺 |
+
 ## Do sprawdzenia przez rodzimego użytkownika albo źródło (pewność niska)
 
 - **pl** (10): znacznik_rzedu („znacznik”), blokowanie („blokowanie”), motek („motek”), zapas („zapas włóczki”), grubosc_wloczki („grubość włóczki”), masa_motka („waga motka”), metraz („długość nici w motku”), etykieta_wloczki („etykieta”), wloczka_lace („włóczka koronkowa”), rozmiar_drutu („rozmiar (mm)”)
@@ -859,6 +901,7 @@ Tytuły, adresy i kopie surowych tekstów są w prywatnym rejestrze (kolumna „
 | S-CAMB-VI | 3 | GB | vi | 2026-10-27 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |
 | S-CB-BG | 4 | BG | bg | 2026-10-27 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |
 | S-CIR | 3 | BR | pt-BR | 2026-10-27 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |
+| S-CLDR-48 | 2 | — | * | 2026-11-03 | oczko-warsztat/09-lokalizacja/2026-11-03-jednostki/zrodla.json |
 | S-CYC-C | 1 | US | en | 2026-10-21 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |
 | S-CYC-ES | 1 | US | es | 2026-10-27 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |
 | S-CYC-FR | 1 | US | fr | 2026-10-27 | oczko-warsztat/09-lokalizacja/2026-10-27-slownik/zrodla.json |

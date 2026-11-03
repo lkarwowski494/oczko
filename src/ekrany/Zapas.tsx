@@ -92,6 +92,8 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
 }
 
 type Jednostka = 'm' | 'yd' | 'g' | 'oz';
+/** Symbol jednostki ze słownika (`jednostka.m` = „{{wartosc}} m”, glosariusz `slownik-terminow.json` „jednostki”, M1-052) — bez literału w kodzie. */
+const symbolJednostki = (t: Tlumacz, j: Jednostka): string => t(`jednostka.${j}`, { wartosc: '' }).trim();
 /** Przełącznik jednostki pola (radio, `selected`; testID `zapas-jednostka-{j}`); VoiceOver czyta pełną nazwę `jednostka.*_nazwa` (M1-audytor-generalny-052). */
 function Jednostki(p: { t: Tlumacz; opcje: [Jednostka, Jednostka]; wybrana: Jednostka; naWybor(j: Jednostka): void }): React.ReactElement {
   const st = style(useKolory());
@@ -100,7 +102,7 @@ function Jednostki(p: { t: Tlumacz; opcje: [Jednostka, Jednostka]; wybrana: Jedn
       {p.opcje.map((j) => (
         <Pressable key={j} accessibilityRole="radio" accessibilityLabel={p.t(`jednostka.${j}_nazwa`)} accessibilityState={{ selected: j === p.wybrana }} onPress={() => p.naWybor(j)}
           style={[st.chip, j === p.wybrana && st.chipWybrany]} testID={`zapas-jednostka-${j}`}>
-          <Text style={[st.chipTekst, j === p.wybrana && st.chipTekstWybrany]}>{j}</Text>
+          <Text style={[st.chipTekst, j === p.wybrana && st.chipTekstWybrany]}>{symbolJednostki(p.t, j)}</Text>
         </Pressable>
       ))}
     </View>
