@@ -212,10 +212,10 @@ export function style(k: Kolory) {
     opcja: { minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia, padding: odstep.m, justifyContent: 'center' },
     opcjaWybrana: { borderColor: k.drugiPrzyciskObrys },
     // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
-    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Bez osobnych tokenów rozmiaru, promienia (8) i kroju (700 18 pt)
-    // najbliższe istniejące: `odstep.xxl` (28), `promien.pole` (10), `typografia.instrukcja` (Libre Franklin 700, 20 pt) — do tokenów roli 04 (M1-audytor-generalny-050).
+    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru`, `promien.poleWyboru`, `typografia.znakWyboru`
+    // (M1-audytor-generalny-145; wcześniej zastępcze z M1-050); znak ✓ najwyżej ×1,6 (`MAX_SKALA_ZNAKU_WYBORU`) w FormularzeProjektu.tsx.
     wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
-    poleWyboru: { ...typografia.instrukcja, color: k.grafit, width: odstep.xxl, minHeight: odstep.xxl, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.pole, overflow: 'hidden' },
+    poleWyboru: { ...typografia.znakWyboru, color: k.grafit, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.poleWyboru, overflow: 'hidden' },
     poleWyboruZaznaczone: { backgroundColor: k.przyciskTlo, color: k.przyciskTekst },
     wejscie: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, paddingHorizontal: odstep.m },
     podpis: { ...typografia.podpis, color: k.olowek },

@@ -122,6 +122,14 @@
    "rozmiar": 28,
    "interlinia": 1.2
   },
+  "znakWyboru": {
+   "_opis": "Znak ✓ w polu wyboru (`.pole-wyboru`, fix10-2026-11-01/partia8.html:208: 700 18 pt); interlinia jak „instrukcja” i „przycisk”; skala z tekstem najwyżej ×1,6 jak kapsuła stopera (design-spec:529), żeby znak nie wychodził poza pole przy AX5 (M1-audytor-generalny-145, 04-studio-projektowe-529).",
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 18,
+   "interlinia": 1.2,
+   "maxSkala": 1.6
+  },
   "tresc": {
    "krój": "system",
    "rozmiar": 17,
@@ -158,6 +166,7 @@
   "przyciskDrugi": 14,
   "grupa": 12,
   "pole": 10,
+  "poleWyboru": 8,
   "zakreslacz": 2
  },
  "cel": {
@@ -166,7 +175,8 @@
   "przyciskPlusWysokosc": 168,
   "odstepMinusPlus": 28,
   "przyciskMinusPaska": 56,
-  "przyciskPlusPaskaWysokosc": 72
+  "przyciskPlusPaskaWysokosc": 72,
+  "poleWyboru": 28
  },
  "miniatura": {
   "_zasada": "Miniatura pierwszej strony wzoru w wierszu (audyt 04 2.1, 2026-10-30): strona = papier, więc bez promienia; obrys kolorem `linia`; szerokość = cel.minimum, wysokość = szerokość × proporcja.",

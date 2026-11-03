@@ -30,6 +30,8 @@ export const typografia = {
   tytul: tytulowy(ty.tytul),
   instrukcja: tytulowy(ty.instrukcja),
   przycisk: tytulowy(ty.przycisk),
+  /** Znak ✓ w polu wyboru: Libre Franklin 700 18 pt (tokeny „typografia.znakWyboru”, wzorzec `.pole-wyboru`; M1-145). */
+  znakWyboru: tytulowy(ty.znakWyboru),
   /** Etykieta przycisku pełnej szerokości: Libre Franklin 700 w rozmiarze treści, 17 pt (wzorzec `partia8.html:70` `.przycisk-pelny`; 04-studio-projektowe-008). Bez nowego tokenu: rozmiar z `tresc`, interlinia z `przycisk`. */
   przyciskPelny: tytulowy({ rozmiar: ty.tresc.rozmiar, interlinia: ty.przycisk.interlinia }),
   tresc: systemowy(ty.tresc),
@@ -51,6 +53,8 @@ export const MAX_SKALA_TYTULOWA = 1.8;
 export const MAX_SKALA_MINUSA = 1.4;
 /** Kapsuła stopera: „skala tekstu najwyżej ×1,6” (design-spec.md:528); ten sam wyjątek P-277. */
 export const MAX_SKALA_KAPSULY = 1.6;
+/** Znak ✓ w polu wyboru: skala najwyżej ×1,6 jak kapsuła (tokeny „typografia.znakWyboru.maxSkala”; M1-145, 04-studio-projektowe-529). */
+export const MAX_SKALA_ZNAKU_WYBORU = ty.znakWyboru.maxSkala;
 /** Pierwsza kategoria dostępności Dynamic Type (AX1) w mnożniku RN; od niej układ licznika „liczba nad nazwami” (04 fix-8 wariant (d), P-275). */
 export const PROG_KATEGORII_DOSTEPNOSCI = 1.786;
 
