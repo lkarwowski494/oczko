@@ -21,9 +21,11 @@ test('każda wartość en grupy 8a z łatki fix10 jest w en.json bez zmian', () 
   expect(klucze.length).toBe(22);
   for (const [k, v] of klucze) expect([k, wartosc(EN, k)]).toEqual([k, v]);
 });
-test('każdy wpis kontekstu grupy 8a jest w en.kontekst.json bez zmian', () => {
-  const klucze = Object.entries(LATKA.kontekst).filter(([k]) => MOJE(k));
-  expect(klucze.length).toBe(22);
+// M1-audytor-generalny-055 (09-lokalizacja-010): kontekst ścieżki „Oczko › Backup” ujednolicony jednym zdaniem; kontrakt: tests/i18n/folder-kopii-055.test.ts.
+const KONTEKST_ZASTAPIONY_055 = ['dane.zastapiono', 'ustawienia.usun_kopia'];
+test('każdy wpis kontekstu grupy 8a jest w en.kontekst.json bez zmian (poza nazwanym 055)', () => {
+  const klucze = Object.entries(LATKA.kontekst).filter(([k]) => MOJE(k) && !KONTEKST_ZASTAPIONY_055.includes(k));
+  expect(klucze.length).toBe(20);
   for (const [k, v] of klucze) expect([k, wartosc(KONTEKST, k)]).toEqual([k, v]);
 });
 test('zastąpienia: „this iPhone” → „this device” w usunięciu danych i w kluczach iCloud (zastapEn, wariant „na”)', () => {

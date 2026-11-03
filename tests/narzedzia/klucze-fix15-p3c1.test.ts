@@ -4,6 +4,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { KOPIA_PRZED_IMPORTEM_DNI, KOPIE_RATUNKOWE_DNI } from '../../src/konfiguracja';
 import { join } from 'node:path';
+import { KLUCZE_FOLDERU, ZDANIE_FOLDERU } from '../i18n/folder-kopii';
 
 const KORZEN = join(__dirname, '../..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -21,7 +22,9 @@ function kontraktGrupy(id: string): void {
   const klucze = ANEKS.grupy[id] ?? [];
   test(`${id}: grupa w wyroczni niepusta`, () => expect(klucze.length).toBeGreaterThan(0));
   test(`${id}: en.json = wyrocznia`, () => { for (const k of klucze) expect([k, wartosc(EN, k)]).toEqual([k, ANEKS.en[k]]); });
-  test(`${id}: en.kontekst.json = wyrocznia`, () => { for (const k of klucze) expect([k, wartosc(KONTEKST, k)]).toEqual([k, ANEKS.kontekst[k]]); });
+  // M1-audytor-generalny-055: do kontekstu kluczy z „Oczko › Backup” dopisane wspólne zdanie o folderze (folder-kopii.ts); reszta = wyrocznia bez zmian.
+  const bez055 = (k: string, v: string | undefined) => ((KLUCZE_FOLDERU as readonly string[]).includes(k) ? v?.replace(` ${ZDANIE_FOLDERU}`, '') : v);
+  test(`${id}: en.kontekst.json = wyrocznia`, () => { for (const k of klucze) expect([k, bez055(k, wartosc(KONTEKST, k))]).toEqual([k, ANEKS.kontekst[k]]); });
   test(`${id}: klucze na liście oczekujących (P-357)`, () => { for (const k of klucze) expect(OCZEKUJACE).toContain(k); });
   test(`${id}: pseudolokalizacja en-XA ma klucz`, () => { for (const k of klucze) expect([k, typeof PSEUDO[k]]).toEqual([k, 'string']); });
   test(`${id}: brak przekładów w ${SLOWNIKI.length} słownikach do fali 09 (pl też, P-422)`, () => {
