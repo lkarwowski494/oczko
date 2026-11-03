@@ -1,6 +1,6 @@
 // M1-audytor-generalny-011 (12-niezawodnosc-001, ADR-0020 (4) „Brak miejsca: komunikat z systemu roli 04; niczego nie usuwamy”): przy pełnym dysku
 // ekran awaryjny mówił „Oczko can’t read your data”, a „Save a copy of my data” kończyło się bez komunikatu. Teksty tylko z systemu (zasada 15):
-// nagłówek `awaryjny.tytul_petla`, opis `wspolne.blad_zapisu_opis`, alert `alertBleduZapisu`.
+// nagłówek `awaryjny.tytul_petla`, opis `wspolne.blad_zapisu_opis`, alert `alertBleduZapisu` (miejsce `kopia`: `awaryjny.blad_kopii*`, M1-142, DEC-36 a).
 import React from 'react';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -54,7 +54,7 @@ test('M1-011: „Save a copy” przy braku miejsca w archiwum → najpierw ZIP s
   render(<EkranAwaryjny powod="brak_miejsca" t={t} naNormalnie={jest.fn()} />);
   fireEvent.press(screen.getByRole('button', { name: /copy/i }));
   await waitFor(() => expect(alert).toHaveBeenCalled());
-  expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+  expect(alert.mock.calls[0]?.slice(0, 2)).toEqual(['Couldn’t save a copy', 'Your device may be out of space. Free some space, then save a copy again or try starting normally.']); // M1-142 (DEC-36 a): tekst kopii, nie formularza
   expect(mockA.zipSurowej).toHaveBeenCalledTimes(1);
 });
 
@@ -78,7 +78,7 @@ test('M1-011: „Save a copy” — baza się nie otwiera i ZIP surowej kopii si
   render(<EkranAwaryjny powod="uszkodzony" t={t} naNormalnie={jest.fn()} />);
   fireEvent.press(screen.getByRole('button', { name: /copy/i }));
   await waitFor(() => expect(alert).toHaveBeenCalled());
-  expect(alert.mock.calls[0]?.[1]).toBe('Your device may be out of space. Nothing was changed. Free some space and try again.');
+  expect(alert.mock.calls[0]?.slice(0, 2)).toEqual(['Couldn’t save a copy', 'Your device may be out of space. Free some space, then save a copy again or try starting normally.']); // M1-142 (DEC-36 a): tekst kopii, nie formularza
 });
 
 test('M1-011: kopia awaryjna przy pełnym dysku zwraca „brak_miejsca”, a baza zostaje bez zmian (liczności, SHA)', async () => {

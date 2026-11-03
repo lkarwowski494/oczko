@@ -31,7 +31,7 @@ export function EkranAwaryjny({ powod, t, naNormalnie }: { powod: PowodTrybuAwar
         // a ZIP surowej kopii to tylko `.db`/`-wal`/`-shm`) → ZIP surowej kopii; plik tymczasowy usuwany po udostępnieniu.
         if (k === 'brak_miejsca' || !k) {
           const zip = await a.zipSurowej();
-          if (!zip) { Alert.alert(...alertBleduZapisu(t, 'formularz')); return; } // M1-011, ADR-0020 (4): ZIP też się nie zapisał (zwykle brak miejsca) → komunikat
+          if (!zip) { Alert.alert(...alertBleduZapisu(t, 'kopia')); return; } // M1-011, ADR-0020 (4): ZIP też się nie zapisał (zwykle brak miejsca) → komunikat kopii (M1-142, DEC-36 a)
           if (!E2E) void udostepnijPlik(zip).finally(() => usunPlik(zip));
           return;
         }
