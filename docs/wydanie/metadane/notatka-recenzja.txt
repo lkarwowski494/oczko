@@ -16,11 +16,12 @@ In-App Purchases (open Settings, then "Oczko Pro")
 - Free use is limited to 5 crafting days per calendar month. A crafting day starts with the first row counted that day. Work in progress is never interrupted.
 - "Oczko Pro" removes the limit: Monthly and Yearly auto-renewing subscriptions, and a Lifetime non-consumable. Subscriptions have no introductory offer.
 - "Restore purchases" and "Manage subscription" are on the same screen. You can buy without waiting for the limit.
+- The app is actively developed and updated regularly; users who prefer not to subscribe can choose the one-time Lifetime unlock instead.
 
 Non-obvious features
 - Camera: used only when the user taps to take a photo of a pattern, project or yarn label. The permission text explains this.
 - Lock Screen / Dynamic Island: a Live Activity shows the active counter with +1 and −1 while the user counts.
-- Background mode "remote-notification" and the iCloud (CloudKit) entitlement are used only by optional iCloud sync, to receive change notices from the user's own private iCloud database. The app shows no push alerts and does not ask for notification permission. [FILL BEFORE SUBMIT: if the iCloud switch is hidden in this build, say so here.]
+- Background mode "remote-notification" and the iCloud (CloudKit) entitlement are used only by optional iCloud sync, to receive change notices from the user's own private iCloud database. The app shows no push alerts and does not ask for notification permission. In this build the iCloud sync switch is hidden (it will be enabled in an update after device testing), so the app does not use the network for sync.
 - Apple Watch app: shows the same counter; optional.
 - "Add pattern…" > "Web page link…": the app loads the address the user enters in an off-screen web view, once, without cookies, and saves the page as a PDF pattern. Any address can be entered, so the age rating answers Unrestricted Web Access: Yes (16+).
 
