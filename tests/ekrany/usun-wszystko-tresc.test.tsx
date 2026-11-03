@@ -12,7 +12,7 @@ const tJezyk = async (systemowy: string): Promise<Tlumacz> =>
   (await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => [systemowy], zasoby: ZASOBY })).t;
 const arkusz = (t: Tlumacz) => render(<ArkuszUsunWszystko t={t} icloudWlaczona={false} blad={false} naUsun={jest.fn()} naZamknij={jest.fn()} />);
 // M1-audytor-generalny-130 (P-427 a): pytanie mówi też, że kopie bezpieczeństwa zostają na urządzeniu i znikają po 30 dniach (kontrakt: usun-wszystko-co-zostaje.test.tsx).
-const PYTANIE = 'This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them after 30 days.';
+const PYTANIE = 'This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them within 30 days, when you open it.'; // M1-143 (DEC-36 a): „within 30 days, when you open it”
 const KOPIA = 'Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.';
 
 test('en: pytanie P-328/P-330 + akapit o kopii w Plikach; bez starej treści', async () => {

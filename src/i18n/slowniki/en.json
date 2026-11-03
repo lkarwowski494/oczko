@@ -97,7 +97,7 @@
     "eksport": "Export all data",
     "import": "Import a backup",
     "usun_wszystko": "Delete all data",
-    "usun_pytanie": "This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them after 30 days.",
+    "usun_pytanie": "This removes all projects, counters, history, patterns and photos from Oczko. Copies Oczko saved for safety stay on this device, and Oczko deletes them within 30 days, when you open it.",
     "usun_potwierdz": "Delete all data",
     "usun_pro": "Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.",
     "usun_kopia": "Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.",
@@ -526,7 +526,7 @@
     "wylaczona": "iCloud sync is off.",
     "aktywna": "iCloud sync is on.",
     "zegarek_kontakt": "Last contact with your watch: {{data}}.",
-    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. They count toward your device’s iCloud backup, so delete the ones you no longer need."
+    "kopie_opis": "Copies Oczko saved before importing or deleting are in the Files app, in Oczko › Backup. Oczko deletes them within 30 days, when you open it. They count toward your device’s iCloud backup until then."
   },
   "zglos": {
     "tytul": "Report a problem",

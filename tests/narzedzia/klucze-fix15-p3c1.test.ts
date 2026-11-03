@@ -2,6 +2,7 @@
 // Wyrocznia: docs/design/fix15-2026-11-03/klucze.json. Nowe i zmienione klucze en są na liście „oczekujące na falę” (P-357); pl po akceptacji
 // właściciela (P-422), przekład w fali 09 (P-320).
 import { readFileSync, readdirSync } from 'node:fs';
+import { KOPIA_PRZED_IMPORTEM_DNI, KOPIE_RATUNKOWE_DNI } from '../../src/konfiguracja';
 import { join } from 'node:path';
 
 const KORZEN = join(__dirname, '../..');
@@ -121,5 +122,23 @@ describe('M1-audytor-generalny-142: alert nieudanej kopii na ekranie awaryjnym',
     expect(opis).not.toMatch(/Nothing was changed/);
     expect(opis.toLowerCase()).toContain((wartosc(EN, 'awaryjny.sprobuj') ?? '?').toLowerCase());
     expect(opis).toContain('save a copy');
+  });
+});
+
+// M1-audytor-generalny-143 (04-studio-projektowe-520; DEC-36 a, P-438): dwa teksty o tych samych kopiach mówią to samo — Oczko usuwa je samo,
+// najpóźniej po 30 dniach, przy otwarciu (sprzątanie tylko przy starcie: src/kompozycja/start-aplikacji.ts, src/niezawodnosc/kopie.ts). Trwała kontrola.
+describe('M1-audytor-generalny-143: teksty o kopiach bezpieczeństwa z tym samym terminem', () => {
+  kontraktGrupy('M1-audytor-generalny-143');
+  const TERMIN = `within ${KOPIA_PRZED_IMPORTEM_DNI} days, when you open it`;
+  test('obie pule kopii sprząta ta sama liczba dni (teksty podają jedną)', () => expect(KOPIE_RATUNKOWE_DNI).toBe(KOPIA_PRZED_IMPORTEM_DNI));
+  test('`stan_danych.kopie_opis` i `ustawienia.usun_pytanie` zawierają ten sam termin z warunkiem otwarcia', () => {
+    for (const k of ['stan_danych.kopie_opis', 'ustawienia.usun_pytanie']) expect([k, (wartosc(EN, k) ?? '').includes(TERMIN)]).toEqual([k, true]);
+  });
+  test('`stan_danych.kopie_opis` nie każe usuwać kopii ręcznie', () => {
+    expect(wartosc(EN, 'stan_danych.kopie_opis')).not.toMatch(/delete the ones|no longer need/);
+    expect(wartosc(EN, 'stan_danych.kopie_opis')).toContain('Oczko deletes them');
+  });
+  test('kontekst tłumacza obu kluczy mówi o sprzątaniu przy otwarciu aplikacji', () => {
+    for (const k of ['stan_danych.kopie_opis', 'ustawienia.usun_pytanie']) expect([k, /przy otwarciu/.test(wartosc(KONTEKST, k) ?? '')]).toEqual([k, true]);
   });
 });
