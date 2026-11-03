@@ -14,8 +14,11 @@ import { liczba, liczbaLubNull, tekst, wiersze, type Wiersz } from './wiersze';
 export type StanBazyIcloud = { wlaczona: boolean; stanSilnika: Uint8Array | null; zalegle: number };
 export type WynikPartii = { zastosowane: number; poczekalnia: number; bledy: number; konflikty: number; liczniki: string[] };
 
+/** Wpis oczekujący (do wysłania); wpis wysłany (`wyslano_nr = nr`) czeka tylko na pełne pobranie (ADR-0005 uzupełnienie 2026-11-03, M1-117). */
+const OCZEKUJACY = '(wyslano_nr IS NULL OR wyslano_nr < nr)';
+
 export async function stanBazy(baza: PortBazy): Promise<StanBazyIcloud> {
-  const [s] = await wiersze(baza.all('SELECT wlaczona, stan_silnika, (SELECT count(*) FROM zmiana_icloud) AS zalegle FROM synchronizacja WHERE id = 1'), 'stanBazy');
+  const [s] = await wiersze(baza.all(`SELECT wlaczona, stan_silnika, (SELECT count(*) FROM zmiana_icloud WHERE ${OCZEKUJACY}) AS zalegle FROM synchronizacja WHERE id = 1`), 'stanBazy');
   if (!s) return { wlaczona: false, stanSilnika: null, zalegle: 0 };
   const st = s.stan_silnika;
   return { wlaczona: liczba(s, 'wlaczona') === 1, stanSilnika: st instanceof Uint8Array ? st : null, zalegle: liczba(s, 'zalegle') };
@@ -44,10 +47,10 @@ function polaIcloud(w: Wiersz): WierszIcloud {
   return pola;
 }
 
-/** Najstarsze zmiany ze skrzynki (po `nr`) z rekordem odczytanym teraz; brak wiersza = usunięcie. */
+/** Najstarsze oczekujące zmiany ze skrzynki (po `nr`) z rekordem odczytanym teraz; brak wiersza = usunięcie. */
 export async function zaleglosci(baza: PortBazy, limit: number, sciezkaPliku: (sha256: string) => string): Promise<ZmianaDoWyslania[]> {
   const out: ZmianaDoWyslania[] = [];
-  for (const z of await wiersze(baza.all('SELECT encja, klucz, usuniete, nr FROM zmiana_icloud ORDER BY nr, encja, klucz LIMIT ?', [limit]), 'zaleglosci')) {
+  for (const z of await wiersze(baza.all(`SELECT encja, klucz, usuniete, nr FROM zmiana_icloud WHERE ${OCZEKUJACY} ORDER BY nr, encja, klucz LIMIT ?`, [limit]), 'zaleglosci')) {
     const encja = tekst(z, 'encja');
     const klucz = tekst(z, 'klucz');
     const nr = liczba(z, 'nr');
@@ -60,10 +63,25 @@ export async function zaleglosci(baza: PortBazy, limit: number, sciezkaPliku: (s
   return out;
 }
 
-/** Potwierdzenie wysyłki: wpis znika tylko, gdy nie zmienił się po wysłaniu (`nr <= wysłanego`); stan silnika w tej samej transakcji. */
+/**
+ * Potwierdzenie wysyłki, tylko gdy wpis nie zmienił się po wysłaniu (`nr <= wysłanego`): usunięcie znika, zapis zostaje jako wysłany
+ * (`wyslano_nr = nr`, `objete = 0`) do pełnego pobrania — chroni przed nagrobkiem sprzed wysyłki odebranym po niej (ADR-0005 uzupełnienie
+ * 2026-11-03, M1-117). Stan silnika w tej samej transakcji.
+ */
 export async function potwierdzWyslane(tx: PortBazy, p: PotwierdzenieIcloud): Promise<void> {
-  for (const w of p.wyslane) await tx.run('DELETE FROM zmiana_icloud WHERE encja = ? AND klucz = ? AND nr <= ?', [w.encja, w.klucz, w.nr]);
+  for (const w of p.wyslane) {
+    await tx.run('DELETE FROM zmiana_icloud WHERE encja = ? AND klucz = ? AND nr <= ? AND usuniete = 1', [w.encja, w.klucz, w.nr]);
+    await tx.run('UPDATE zmiana_icloud SET wyslano_nr = nr, objete = 0 WHERE encja = ? AND klucz = ? AND nr <= ? AND usuniete = 0', [w.encja, w.klucz, w.nr]);
+  }
   await tx.run('UPDATE synchronizacja SET stan_silnika = ? WHERE id = 1', [p.stanSilnika]);
+}
+/** Początek pełnego pobrania strefy: wpisy już wysłane są nim objęte (dane.md, ADR-0005 uzupełnienie 2026-11-03). */
+export async function poczatekPobrania(tx: PortBazy): Promise<void> {
+  await tx.run('UPDATE zmiana_icloud SET objete = 1 WHERE wyslano_nr = nr');
+}
+/** Udany koniec pełnego pobrania: znikają wpisy wysłane przed jego początkiem i niezmienione od tamtej pory; potwierdzone w trakcie czekają. */
+export async function koniecPobrania(tx: PortBazy): Promise<void> {
+  await tx.run('DELETE FROM zmiana_icloud WHERE objete = 1 AND wyslano_nr = nr');
 }
 
 type Wynik1 = 'zastosowany' | 'poczekalnia' | 'blad' | 'pominiety';

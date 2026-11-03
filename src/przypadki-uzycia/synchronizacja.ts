@@ -6,7 +6,7 @@ import type { MagazynPlikow, PartiaIcloud, PotwierdzenieIcloud, StanSynchronizac
 import { tabelaIcloud } from '../domena/icloud/kontrakt';
 import { PARTIA_SYNCHRONIZACJI } from '../konfiguracja';
 import { zapiszBladW } from '../dane/repozytoria/bledy';
-import { potwierdzWyslane, stanBazy, wlaczWBazie, wylaczWBazie, zaleglosci, zastosujPartie, type WynikPartii } from '../dane/repozytoria/icloud';
+import { koniecPobrania, poczatekPobrania, potwierdzWyslane, stanBazy, wlaczWBazie, wylaczWBazie, zaleglosci, zastosujPartie, type WynikPartii } from '../dane/repozytoria/icloud';
 import { scal } from '../domena/scal';
 import { STANY, type RodzajUrzadzenia } from '../domena/stany';
 import { dopiszZdarzenie, zdarzeniaDoScalenia } from '../dane/repozytoria/liczniki';
@@ -107,6 +107,10 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
     await wKolejce(z.baza, () => z.baza.transakcja((tx) => potwierdzWyslane(tx, p)));
     if ((await stanBazy(z.baza)).zalegle > 0) await wyslijZaleglosci(); // reszta skrzynki (partie po PARTIA_SYNCHRONIZACJI)
   }
+  /** Pełne pobranie strefy (ADR-0005 uzupełnienie 2026-11-03, M1-117): początek obejmuje wpisy wysłane, udany koniec je usuwa; każda faza w jednej transakcji kolejki. */
+  async function fazaPobrania(f: 'poczatek' | 'koniec'): Promise<void> {
+    await wKolejce(z.baza, () => z.baza.transakcja((tx) => (f === 'poczatek' ? poczatekPobrania(tx) : koniecPobrania(tx))));
+  }
   function zdarzenieKonta(e: ZdarzenieKonta): void {
     if (widok.stan === 'wylaczona') return;
     if (e === 'zmiana_konta') ustaw({ stan: 'konto_zmienione', przyczyna: null });
@@ -119,6 +123,7 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
       odpiecia.push(z.synchronizacja.odbieraj(async (p) => { await odbierzPartie(p); }));
       odpiecia.push(z.synchronizacja.wyslane(poPotwierdzeniu));
       odpiecia.push(z.synchronizacja.zdarzeniaKonta(zdarzenieKonta));
+      odpiecia.push(z.synchronizacja.pobieranie(fazaPobrania));
       const s = await stanBazy(z.baza);
       if (!s.wlaczona) { ustaw({ stan: 'wylaczona' }); return; }
       const status = await z.synchronizacja.statusKonta();

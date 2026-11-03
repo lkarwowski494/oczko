@@ -67,6 +67,7 @@ export async function zatrzymaneNagrobki(tx: PortBazy, usuniete: readonly { encj
   const fk = new Map<string, KluczObcy[]>();
   let fala: Zbior = new Map();
   const przodkowie: Zbior = new Map(); // wiersze z niewysłaną zmianą i ich przodkowie
+  // Także wpisy już wysłane, czekające na pełne pobranie (M1-117, ADR-0005 uzupełnienie 2026-11-03 pkt 3): nagrobek sprzed wysyłki nie kasuje zmiany.
   for (const z of await wiersze(tx.all('SELECT encja, klucz FROM zmiana_icloud WHERE usuniete = 0'), 'nagrobki')) {
     // Przegląd ścieżki wrażliwej M2 p2 (P1): sam wiersz z niewysłaną zmianą (np. projekt przywrócony z kosza offline) też zatrzymuje swój nagrobek.
     dodaj(fala, tekst(z, 'encja'), tekst(z, 'klucz'));
@@ -108,9 +109,31 @@ export async function zatrzymaneNagrobki(tx: PortBazy, usuniete: readonly { encj
   return { zatrzymane, szczyty };
 }
 
-/** Szczyt do kosza od teraz (sprzątanie po KOSZ_DNI; tabela bez kosza: zostaje jak był), zatrzymane wiersze znów do wysłania (serwer je usunął). */
+const maKosz = async (tx: PortBazy, tabela: string): Promise<boolean> => {
+  const [kol] = await wiersze(tx.all("SELECT count(*) AS n FROM pragma_table_info(?) WHERE name = 'usunieto_ms'", [tabela]), 'nagrobki');
+  return kol !== undefined && liczba(kol, 'n') === 1;
+};
+/** Czy przodek (kaskada) wiersza jest już w koszu (`usunieto_ms` ustawione) — wtedy wiersz wraca z kosza razem z nim (ADR-0005 uzupełnienie 2026-11-03 pkt 6). */
+async function przodekWKoszu(tx: PortBazy, t: TabelaIcloud, klucz: string, fk: Map<string, KluczObcy[]>): Promise<boolean> {
+  for (const k of await kluczeObce(tx, t.tabela, fk)) {
+    const r = k.kaskada ? tabelaIcloud(k.rodzic) : null;
+    if (!r) continue;
+    for (const v of await wartosciPo(tx, t, k.kolumna, wyrazenieKlucza(t), new Set([klucz]))) {
+      if (await maKosz(tx, r.tabela) && (await tx.all(`SELECT 1 FROM ${r.tabela} WHERE ${r.klucz[0]} = ? AND usunieto_ms IS NOT NULL`, [v])).length) return true;
+      if (await przodekWKoszu(tx, r, v, fk)) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Szczyt do kosza od teraz (sprzątanie po KOSZ_DNI; tabela bez kosza: zostaje jak był), zatrzymane wiersze znów do wysłania (serwer je usunął).
+ * Szczyt pod przodkiem już w koszu (np. projekt po `unknownItem`, M1-117) nie dostaje własnego `usunieto_ms`.
+ */
 export async function odtworzWKoszu(tx: PortBazy, zatrzymane: Zbior, szczyty: readonly Szczyt[], terazMs: number): Promise<void> {
+  const fk = new Map<string, KluczObcy[]>();
   for (const s of szczyty) {
+    if (await przodekWKoszu(tx, s.t, s.klucz, fk)) continue;
     const k = wartosciKlucza(s.t, s.klucz);
     const [kol] = await wiersze(tx.all("SELECT count(*) AS n FROM pragma_table_info(?) WHERE name IN ('usunieto_ms', 'zmieniono_ms')", [s.t.tabela]), 'nagrobki');
     if (k.ok && kol && liczba(kol, 'n') === 2) {
