@@ -1,5 +1,5 @@
 # Produkty zakupów w App Store Connect przez API (P-467, 3.11.2026: „chcę wszystko mieć automatycznie”): grupa subskrypcji „Oczko Pro”, oczko.pro.monthly/yearly,
-# oczko.pro.lifetime (Non-Consumable), ceny (kraj bazowy USA), Family Sharing (P-466) i dostępność (wszystkie kraje). Wzór: asc-iap-localizations.yml Treningu
+# oczko.pro.lifetime (Non-Consumable), ceny (kraj bazowy USA), Family Sharing (P-466) i dostępność (174 kraje: wszystkie bez China mainland, P-479). Wzór: asc-iap-localizations.yml Treningu
 # (2e4b0f8) — dwa zadania; skrypt scripts/asc/produkty.mjs, dane docs/wydanie/metadane/produkty.store.json. Tylko ręcznie. Kolejność uruchamiania:
 # 1. asc-produkty (to), 2. asc-iap-localizations (nazwy i opisy w 35 językach; wymaga istnienia produktów). Nigdy nie usuwa, nie zmienia Product ID, okresu ani istniejącej ceny
 # (rozbieżność = STOP w planie, nic nie jest zapisywane); bez „Add for Review”.

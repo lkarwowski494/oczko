@@ -80,6 +80,48 @@ describe('zapis na pustym serwerze i ponowny przebieg', () => {
   });
 });
 
+describe('wykluczone terytorium China mainland (CHN) — 174 kraje wszędzie (P-479)', () => {
+  const grupa = { id: 'GX', referenceName: 'Oczko Pro' };
+  const miesieczna = { id: 'SX', grupa: 'GX', productId: 'oczko.pro.monthly', name: 'Oczko Pro Monthly', okres: 'ONE_MONTH', fs: true, poziom: 1 };
+  const jakDostepnosc = (w: Wynik, kraje: (d: any) => string[]) => [...w.stan.dostSub, ...w.stan.dostIap].map((d: any) => kraje(d));
+  test('atrapa zwraca CHN wśród terytoriów (sprawdzian testu): serwer ma 7, skrypt widzi 6', () => {
+    const k = uruchom({ kroki: [{ apply: false }] }).kroki[0];
+    expect(k.log.join('\n')).toMatch(/krajów w App Store Connect 6\b/); // bez CHN
+    for (const t of ['subskrypcja:dostepnosc', 'iap:dostepnosc']) for (const a of k.akcje.filter((x) => x.typ === t)) expect(a.ile).toBe(6);
+  });
+  test('apply na pustym serwerze: ani dostępność, ani ceny nie zawierają CHN; availableInNewTerritories zostaje true', () => {
+    const w = uruchom({ kroki: [{ apply: true }, { apply: false }] });
+    expect(w.kroki[0].code).toBe(0); expect(w.stan.dostSub).toHaveLength(2); expect(w.stan.dostIap).toHaveLength(1);
+    for (const kraje of jakDostepnosc(w, (d) => d.kraje)) { expect(kraje).not.toContain('CHN'); expect(kraje).toHaveLength(6); }
+    for (const d of [...w.stan.dostSub, ...w.stan.dostIap]) expect(d.nowe).toBe(true);
+    expect(w.stan.ceny.length).toBeGreaterThan(0); for (const c of w.stan.ceny) { expect(c.kraj).not.toBe('CHN'); expect(c.punkt).not.toMatch(/^CHN:/); }
+    for (const h of w.stan.harmonogramy) for (const r of h.reczne) expect(r.kraj).not.toBe('CHN');
+    expect(w.kroki[1].akcje).toEqual([]); expect(w.kroki[1].stop).toEqual([]); // drugi przebieg: nic do zrobienia
+  });
+  test('plan i log nie wymieniają CHN w żadnej pozycji dostępności ani cen (na pustym serwerze)', () => {
+    const k = uruchom({ kroki: [{ apply: false }] }).kroki[0];
+    expect(JSON.stringify(k.akcje)).not.toMatch(/CHN/); expect(k.log.join('\n')).not.toMatch(/CHN/);
+  });
+  test('istniejąca dostępność bez CHN (pełna, „nowe kraje” włączone) to nie „brak”: brak pozycji dostępności, brak STOP', () => {
+    const stan = { grupy: [grupa], subskrypcje: [miesieczna], dostSub: [{ id: 'DA', sub: 'SX', nowe: true, kraje: KRAJE }] };
+    const k = uruchom({ stan, kroki: [{ apply: false }] }).kroki[0];
+    expect(k.akcje.some((a) => a.typ === 'subskrypcja:dostepnosc' && a.klucz === 'monthly')).toBe(false); expect(k.stop).toEqual([]);
+  });
+  test('CHN w dostępności istniejącego produktu → STOP-rozbieżność w planie; zapis niczego nie zmienia ani nie usuwa (skrypt nigdy nie usuwa)', () => {
+    const stan = { grupy: [grupa], subskrypcje: [miesieczna], dostSub: [{ id: 'DA', sub: 'SX', nowe: true, kraje: [...KRAJE, 'CHN'] }] };
+    const w = uruchom({ stan, kroki: [{ apply: false }, { apply: true }] });
+    for (const k of w.kroki) { expect(k.stop).toHaveLength(1); expect(k.stop[0]).toMatch(/oczko\.pro\.monthly/); expect(k.stop[0]).toMatch(/CHN/); expect(k.code).toBe(1); }
+    expect(w.kroki[1].zapisy).toBe(0); expect(w.calls.map((c) => c.m)).not.toContain('DELETE');
+    expect(w.stan.dostSub).toHaveLength(1); expect(w.stan.dostSub[0].kraje).toContain('CHN'); expect(w.stan.subskrypcje).toHaveLength(1); expect(w.stan.iap).toHaveLength(0);
+  });
+  test('CHN w dostępności istniejącego zakupu jednorazowego → STOP-rozbieżność (jak dla subskrypcji)', () => {
+    const stan = { iap: [{ id: 'IX', productId: 'oczko.pro.lifetime', name: 'Oczko Pro Lifetime', typ: 'NON_CONSUMABLE', fs: true }],
+      harmonogramy: [{ id: 'PX', iap: 'IX', baza: 'USA', reczne: [{ kraj: 'USA', punkt: 'USA:14.99' }] }], dostIap: [{ id: 'IA', iap: 'IX', nowe: true, kraje: [...KRAJE, 'CHN'] }] };
+    const k = uruchom({ stan, kroki: [{ apply: true }] });
+    expect(k.kroki[0].stop.join(' ')).toMatch(/oczko\.pro\.lifetime.*CHN/); expect(k.kroki[0].zapisy).toBe(0); expect(k.stan.dostIap[0].kraje).toContain('CHN');
+  });
+});
+
 describe('obrona w głąb (przegląd bezpieczeństwa 2026-11-03)', () => {
   test('dry-run używa klienta tylko do odczytu: POST/PATCH w trybie planu rzuca wyjątek, nawet gdyby kod planu próbował zapisu', () => {
     const kod = `import { makeClient } from ${JSON.stringify(join(root, 'scripts/asc/iap-localizations.mjs'))}; import * as P from ${JSON.stringify(join(root, 'scripts/asc/produkty.mjs'))};
