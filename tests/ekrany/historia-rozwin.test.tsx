@@ -35,7 +35,7 @@ test('stuknięcie rozwija: ▾, expanded=true, ta sama etykieta, wyjaśnienie i 
   expect(strzalka()).toHaveTextContent('▸');
   expect(screen.queryByText(/Only the latest change can be undone/)).toBeNull();
 });
-test('cel dotyku strzałki ≥ 44 pt', () => {
+test('strzałka: styl minHeight 44 (deklaracja stylu; render testowy nie liczy układu)', () => {
   ekran();
   expect(strzalka()).toHaveStyle({ minHeight: 44 });
 });

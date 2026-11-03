@@ -169,3 +169,32 @@ describe('045 · strategia §3/§5/§10: tylko istniejące zadania i kontrole al
     expect(rozjazdyStrategii(md('| DS-05 | Mutacje | **Stryker 9.6.1** | ręcznie | **(a)**: Stryker nocą |'), r)).toHaveLength(1);
   });
 });
+
+/* 046 · cel dotyku ≥ 44 pt: render testowy nie liczy układu (moduł e2e-mobilne, „Dostępność: co sprawdza które narzędzie”), więc test Jest może sprawdzić
+ * tylko deklarację stylu. Nazwa testu nie twierdzi o celu dotyku; cel dotyku ma pozycję audytu w strategii §10 z decyzją (JAK-13; 07-jakosc-007). */
+const TWIERDZENIE_DOTYKU = /cel\w* dotyku|obszar\w* (?:dotyku|trafienia)|hit ?region|\b44\s*pt\b|min\. 44/i;
+export function nazwyTestow(zrodlo: string): string[] {
+  return [...zrodlo.matchAll(/\b(?:test|it|describe)(?:\.(?:each|only|skip)\b[^\n]*?\))?\(\s*(['"`])((?:(?!\1).)*)\1/g)].map((m) => m[2]);
+}
+const nazwyZDotykiem = (zrodlo: string) => nazwyTestow(zrodlo).filter((n) => TWIERDZENIE_DOTYKU.test(n));
+const PLIKI_TESTOW = skan('tests').filter((p) => /\.test\.tsx?$/.test(p) && !p.endsWith('tests/jakosc/dokumenty-jakosci.test.ts'));
+
+describe('046 · nazwy testów Jest bez twierdzenia o celu dotyku; cel dotyku jako pozycja audytu (JAK-13; 07-jakosc-007)', () => {
+  test('żaden test Jest nie nazywa sprawdzenia stylu „celem dotyku” ani „44 pt”', () => {
+    expect(PLIKI_TESTOW.length).toBeGreaterThan(100);
+    expect(PLIKI_TESTOW.flatMap((p) => nazwyZDotykiem(czytaj(p)).map((n) => `${p}: ${n}`))).toEqual([]);
+  });
+  test('strategia §10: pozycja audytu celu dotyku z decyzją (XCTest po prebuild albo przejście ręczne)', () => {
+    const wiersze = sekcja(czytaj('docs/jakosc/strategia.md'), 10).split('\n').filter((l) => l.startsWith('| ') && /cel dotyku/.test(l));
+    expect(wiersze).toHaveLength(1);
+    expect(wiersze[0]).toMatch(/XCTest/);
+    expect(wiersze[0]).toMatch(/przejście ręczne/);
+    expect(wiersze[0]).toMatch(/\[DO USTALENIA\]|\bP-\d{3}\b/);
+  });
+  test('pułapki: nazwy z twierdzeniem o dotyku są wykrywane, deklaracja stylu nie', () => {
+    expect(nazwyZDotykiem("test('cel dotyku strzałki ≥ 44 pt', () => {")).toHaveLength(1);
+    expect(nazwyZDotykiem("test('wiersz ma przycisk menu, min. 44 pt', () => {")).toHaveLength(1);
+    expect(nazwyZDotykiem("  test.each([['a', 1]] as const)('motyw %s: obrys, tło, 44 pt', (_n) => {")).toHaveLength(1);
+    expect(nazwyZDotykiem("test('strzałka: styl minHeight 44 (deklaracja)', () => {")).toEqual([]);
+  });
+});

@@ -49,7 +49,7 @@ test('P-276: menu wiersza „Video” (przytrzymanie) — „Change link” nad 
   alert.mockRestore();
 });
 
-test('04-studio-projektowe-006: wiersz „Video” ma widoczny przycisk menu (nie tylko przytrzymanie), min. 44 pt', () => {
+test('04-studio-projektowe-006: wiersz „Video” ma widoczny przycisk menu (nie tylko przytrzymanie), styl minWidth/minHeight 44 (deklaracja stylu)', () => {
   render(<WierszFilmu film={FILM} siec="jest" t={t} system={atrapaSystemu()} naZmien={jest.fn()} naUsun={jest.fn()} />);
   expect(screen.queryAllByRole('menuitem')).toHaveLength(0);
   const przycisk = screen.getByRole('button', { name: 'Video link options' });

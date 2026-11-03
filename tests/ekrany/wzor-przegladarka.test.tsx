@@ -131,7 +131,7 @@ test('iPhone: zakreślacz włącza tryb (selected), pasek narzędzi: gumka, cofn
 // tło `papierGrupa`, obszar dotyku 44 × 44 pt; VoiceOver: przycisk „Highlighter”, stan selected. Niewybrane: bez obrysu i bez tła.
 describe('P2-9 / 10 C: stan wybrany zakreślacza w pasku', () => {
   const compact = ukladOkna({ szerokosc: 390, wysokosc: 844 });
-  test.each([['jasny', 'light', tokeny.kolor.jasny], ['ciemny', 'dark', tokeny.kolor.ciemny]] as const)('motyw %s: wybrany Highlighter ma obrys, promień 10, tło papierGrupa, 44 pt', (_n, schemat, k) => {
+  test.each([['jasny', 'light', tokeny.kolor.jasny], ['ciemny', 'dark', tokeny.kolor.ciemny]] as const)('motyw %s: wybrany Highlighter ma obrys, promień 10, tło papierGrupa, styl minWidth/minHeight 44 (deklaracja stylu)', (_n, schemat, k) => {
     jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
     render(<PrzegladarkaWzoru stan={stan({ uklad: compact, narzedzie: 'zakreslacz' })} t={t} widok={widok} {...wywolania()} />);
     const plaski = StyleSheet.flatten(screen.getByTestId('wzor-zakreslacz').props.style);
