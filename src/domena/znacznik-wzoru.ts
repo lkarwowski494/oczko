@@ -56,6 +56,14 @@ export function gornaKrawedzRzedu(yDotyku: number, wysokoscRzedu: number): numbe
   return Math.min(Math.max(yDotyku - wysokoscRzedu / 2, 0), 1 - wysokoscRzedu);
 }
 /** Rząd schematu po przestawieniu pasa: przeniesienie zachowuje rząd znacznika (BR-WZR-003 S3), pierwsze ustawienie bierze rząd w robocie. Rząd przed schematem wraca na 1. */
+/**
+ * M1-audytor-generalny-131 (DEC-33 b, design-spec „Aneks M2 partia 3c1”): pojedyncze stuknięcie w stronę stawia albo przenosi pas tylko wtedy, gdy wzór nie ma
+ * znacznika albo pasek ustawień jest otwarty, i nigdy przy wybranym narzędziu rysowania; przy ustawionym znaczniku i zamkniętym pasku przypadkowe dotknięcie
+ * przy liczeniu nie przestawia rzędu (SP-17). Przytrzymanie tej reguły nie ma (przenosi jak dotąd).
+ */
+export function stukniecieStawiaZnacznik(s: { jestZnacznik: boolean; pasekOtwarty: boolean; rysowanie: boolean }): boolean {
+  return !s.rysowanie && (!s.jestZnacznik || s.pasekOtwarty);
+}
 export function rzadPoPrzeniesieniu(obecny: { rzad: number } | null, rzadWRobocie: number): number {
   return obecny ? Math.max(1, obecny.rzad) : rzadWRobocie;
 }

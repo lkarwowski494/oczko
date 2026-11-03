@@ -3,7 +3,7 @@
 // narzędzia, plakietkę strony i pasek licznika (te same testID co licznik). Jeden wzór widoczny naraz; obok wzoru tylko licznik (P-218 (3)).
 import React, { useEffect, useState } from 'react';
 import { RYSIK_PODPOWIEDZ_MS } from '../konfiguracja';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import type { Narzedzie } from '../domena/rysik';
 import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
@@ -45,6 +45,7 @@ export type PropsPrzegladarki = {
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
   naNowaNotatka?(jest: boolean): void;          // M1-141: arkusz nowej notatki z wpisanym tekstem — trasa pyta przy geście wstecz jak „Back”
+  naPasekZnacznika?(otwarty: boolean): void;    // M1-131: pasek ustawień znacznika widoczny (do „Done”) — trasa pozwala wtedy przenieść pas stuknięciem
   znacznik?: StanZnacznika | null;                // pas na stronie: pasek ustawiania (krokowiec rzędu), koniec strony, „przed schematem” (F-26)
   razemStron?: number;
   oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
@@ -74,6 +75,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [blad, ustawBlad] = useState(false);
   const [pytanie, ustawPytanie] = useState<'brak' | 'zaznacz' | 'zmien'>('brak'); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
   const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
+  const pasekOtwarty = ustawianie && p.znacznik != null; // PasekZnacznika rysuje pasek tylko przy znaczniku
+  useEffect(() => { p.naPasekZnacznika?.(pasekOtwarty); }, [pasekOtwarty]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko zmiana stanu paska
   const [notatka, ustawNotatke] = useState<'brak' | 'pasek' | 'arkusz'>('brak');
   const [tekst, ustawTekst] = useState('');
   const nowaZTekstem = notatka === 'arkusz' && tekst.trim().length > 0;
@@ -133,7 +136,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       <View style={st.grupa}>
         {!s.word && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
-            <SymbolSf nazwa="bookmark" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
+            <GlifZnacznika k={k} />
           </Pressable>
         )}
         {!s.word && p.naNotatka && (
@@ -233,6 +236,21 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       )}
       {menu === 'wzory' && <MenuWzorow st={st} t={t} wzory={s.wzory} oczekujace={czekajace} wzorId={s.wzorId} zamknij={() => ustawMenu('brak')} naWybor={(id) => { ustawMenu('brak'); if (id !== s.wzorId) p.naPrzelacz(id); }}
         naUsunOczekujacy={(id) => { if (s.wzory.length < 2 && czekajace.length <= 1) ustawMenu('brak'); p.naUsunOczekujacy?.(id); }} />}
+    </View>
+  );
+}
+
+/** M1-131 (DEC-33 b, design-spec „Aneks M2 partia 3c1” pkt 2): glif „Mark row” = uchwyt pasa znacznika z tokenów — pole ROZMIAR_SYMBOLU (skala jak symbole
+ *  paska, najwyżej ×1,8), linia 0,1 pola przez całą szerokość w połowie wysokości (`grafit`), okrąg 0,5 pola ze środkiem na 0,7 szerokości, obrys 0,1 pola
+ *  `grafit`, wypełnienie `papier` (tło paska). Dekoracyjny: etykieta VoiceOver zostaje na przycisku. */
+function GlifZnacznika({ k }: { k: Kolory }): React.ReactElement {
+  const { fontScale } = useWindowDimensions();
+  const pole = Math.round(ROZMIAR_SYMBOLU * Math.min(Math.max(fontScale, 1), MAX_SKALA_TYTULOWA));
+  const gr = pole * 0.1, sr = pole * 0.5;
+  return (
+    <View style={{ width: pole, height: pole }} testID="wzor-zaznacz-glif" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <View style={{ position: 'absolute', left: 0, width: pole, height: gr, top: (pole - gr) / 2, backgroundColor: k.grafit }} testID="wzor-zaznacz-glif-linia" />
+      <View style={{ position: 'absolute', width: sr, height: sr, borderRadius: sr / 2, borderWidth: gr, borderColor: k.grafit, backgroundColor: k.papier, left: pole * 0.7 - sr / 2, top: (pole - sr) / 2 }} testID="wzor-zaznacz-glif-okrag" />
     </View>
   );
 }

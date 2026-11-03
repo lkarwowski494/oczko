@@ -88,3 +88,26 @@ test('kontrakt widoku wzoru: zapis na żądanie (zapiszRysunki) w uchwycie TS i 
   expect(oproznij).toContain('Self.kolejka.zapisz(propsy: propsy)');
   expect(oproznij).toContain('return w.oczekujace');
 });
+
+// M1-audytor-generalny-131 (04-studio-projektowe-521; DEC-33 b; design-spec „Aneks M2 partia 3c1”, „Dla 08” (6)): pojedyncze stuknięcie w stronę
+// to `UITapGestureRecognizer` obok przytrzymania, wyłączany jak ono przy polityce `dowolne`, czekający na porażkę podwójnego stuknięcia PDFView;
+// zdarzenie `onStukniecie` niesie rodzaj dotyku (stuknięcie albo przytrzymanie), a dotyk rysika, chipu notatki i pasa (zakładka, uchwyt) go nie wyzwala.
+test('kontrakt widoku wzoru: stuknięcie w stronę (UITapGestureRecognizer) z rodzajem dotyku w onStukniecie', () => {
+  const widok = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+  expect(widok).toMatch(/private let stukniecie = UITapGestureRecognizer\(\)/);
+  expect(widok).toMatch(/pdf\.addGestureRecognizer\(stukniecie\)/);
+  const polityka = /func ustawPolityke\(_ p: PolitykaPlotna\) \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(polityka).toContain('przytrzymanie.isEnabled = p != .dowolne');
+  expect(polityka).toContain('stukniecie.isEnabled = p != .dowolne');
+  const podwojne = /private func czekajNaPodwojneStukniecie\(\) \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(podwojne).toContain('numberOfTapsRequired == 2');
+  expect(podwojne).toContain('stukniecie.require(toFail:');
+  const odbior = /func gestureRecognizer\(_ g: UIGestureRecognizer, shouldReceive t: UITouch\) -> Bool \{([\s\S]*?)\n {2}\}/.exec(widok)?.[1] ?? '';
+  expect(odbior).toContain('.pencil');
+  expect(odbior).toContain('UIControl');
+  expect(odbior).toContain('PasZnacznika');
+  expect(widok).toMatch(/onStukniecie\(\["wzorId": wzorId, "strona": d\.index\(for: strona\), "y": y, "rodzaj": rodzaj\]\)/);
+  expect(widok).toMatch(/zglosDotyk\(g\.location\(in: pdf\), rodzaj: "przytrzymanie"\)/);
+  expect(widok).toMatch(/zglosDotyk\(g\.location\(in: pdf\), rodzaj: "stukniecie"\)/);
+  expect(ts).toMatch(/onStukniecie\?: \(e: NativeSyntheticEvent<\{ wzorId: string; strona: number; y: number; rodzaj: 'stukniecie' \| 'przytrzymanie' \}>\) => void;/);
+});

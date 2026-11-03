@@ -58,6 +58,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [link, ustawLink] = useState(false);
   const [arkuszNazwy, ustawArkuszNazwy] = useState(false); // ••• → „Rename” (W1a)
   const poczatek = useRef<{ wzorId: string; strona: number; powiekszenie: number } | null>(null); // pozycja zapisana w chwili otwarcia wzoru (BR-PRJ-011 S1); powiększenie 0 = dopasowany
+  const pasekZnacznika = useRef(false); // M1-131: pasek ustawień znacznika otwarty w przeglądarce (stuknięcie w stronę przenosi wtedy pas)
   const kolejkaKrokow = useRef<Promise<void>>(Promise.resolve()); // kroki rzędu znacznika jeden po drugim (każdy czyta świeży stan)
   const [przytrzymanie, ustawPrzytrzymanie] = useState<{ strona: number; y: number } | null>(null); // przytrzymanie bez znacznika czeka na kierunek (3a)
   const [otwartyChip, ustawOtwartyChip] = useState<number | null>(null); // rząd licznika chipu notatki otwartego stuknięciem (F-56)
@@ -184,7 +185,7 @@ export default function EkranWzoru(): React.ReactElement {
   const gdzieZnacznik = zn ? { strona: zn.strona, y: zn.y, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek } : null;
   const przejdzNaNastepna = () => { if (!zn || !gdzieZnacznik) return; ustawStrone(strona ? { ...strona, n: zn.strona + 2 } : null); void postaw({ ...gdzieZnacznik, strona: zn.strona + 1, y: gornaKrawedzNaNastepnejStronie(zn.kierunek, zn.wysokosc) }); };
   const chipy = widok.notatki;
-  const natywny = widokNatywnyWzoru({ t, aplikacja, zw, widok, lw, dokument, uchwyt: uchwytWidoku, katalogRysunkow, strona, startStrona: poczatek.current?.strona ?? 0, nastepnaStrona, narzedzie, polityka, cofnij, uklad, tylkoRysik: rysik.tylkoRysik,
+  const natywny = widokNatywnyWzoru({ t, aplikacja, zw, widok, lw, dokument, uchwyt: uchwytWidoku, katalogRysunkow, strona, startStrona: poczatek.current?.strona ?? 0, nastepnaStrona, narzedzie, pasekZnacznika, polityka, cofnij, uklad, tylkoRysik: rysik.tylkoRysik,
     bladRysunku, ustawOtwartyChip, ustawNiezapisane, ustawStrone, ustawZakreslenia, ustawNarzedzie, ustawRysik, ustawPrzytrzymanie, poZapisieRysunku, przejdzNaNastepna, postaw });
   const oczekujace = czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa }));
   const liczba = lw.znaczenie === 'w_trakcie' ? lw.wartosc + 1 : lw.wartosc;
@@ -199,6 +200,7 @@ export default function EkranWzoru(): React.ReactElement {
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => wyjdzZWzoru(() => router.back())}
         naNowaNotatka={(jest) => { nowaNotatka.current = jest; }}
+        naPasekZnacznika={(otwarty) => { pasekZnacznika.current = otwarty; }}
         naPrzelacz={(w) => void wczytaj(w)}
         naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
         naNarzedzie={ustawNarzedzie}
