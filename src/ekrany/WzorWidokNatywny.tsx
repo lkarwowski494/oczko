@@ -31,7 +31,7 @@ export type ParametryWidokuNatywnego = {
   startStrona: number; // strona zapisana w chwili otwarcia wzoru (gdy `strona` jeszcze nieznana)
   nastepnaStrona: boolean;
   narzedzie: Narzedzie;
-  pasekZnacznika: { current: boolean }; // pasek ustawień znacznika otwarty (przeglądarka, do „Done”): wtedy stuknięcie przenosi pas (M1-131)
+  pasekZn: { current: boolean }; // pasek ustawień znacznika otwarty (przeglądarka, do „Done”): wtedy stuknięcie przenosi pas (M1-131)
   polityka: PropsWidokuNatywnego['polityka'];
   cofnij: number;
   uklad: Uklad;
@@ -77,7 +77,7 @@ export function widokNatywnyWzoru(p: ParametryWidokuNatywnego): React.ReactEleme
         const n = e.nativeEvent;
         if (n.wzorId !== widok.wzorId) return;
         // M1-131 (DEC-33 b): stuknięcie tylko bez znacznika albo przy otwartym pasku, nie w trybie rysowania
-        if (n.rodzaj === 'stukniecie' && !stukniecieStawiaZnacznik({ jestZnacznik: zn !== null, pasekOtwarty: p.pasekZnacznika.current, rysowanie: p.narzedzie !== 'brak' })) return;
+        if (n.rodzaj === 'stukniecie' && !stukniecieStawiaZnacznik({ jestZnacznik: zn !== null, pasekOtwarty: p.pasekZn.current, rysowanie: p.narzedzie !== 'brak' })) return;
         if (zn) void postaw({ strona: n.strona, y: gornaKrawedzRzedu(n.y, zn.wysokosc), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek: zn.kierunek });
         else p.ustawPrzytrzymanie({ strona: n.strona, y: n.y });
       }} />

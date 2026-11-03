@@ -45,7 +45,7 @@ export type PropsPrzegladarki = {
   naZaznaczRzad(kierunek: 1 | -1): void;
   naNotatka?(tekst: string): void;              // notatka przy rzędzie znacznika (BR-WZR-008/S2; bez znacznika — najpierw „Mark row”, P-124 Q6a)
   naNowaNotatka?(jest: boolean): void;          // M1-141: arkusz nowej notatki z wpisanym tekstem — trasa pyta przy geście wstecz jak „Back”
-  naPasekZnacznika?(otwarty: boolean): void;    // M1-131: pasek ustawień znacznika widoczny (do „Done”) — trasa pozwala wtedy przenieść pas stuknięciem
+  pasekZn?: { current: boolean };        // M1-131: przeglądarka zapisuje, czy pasek ustawień znacznika jest widoczny (do „Done”) — trasa pozwala wtedy przenieść pas stuknięciem
   znacznik?: StanZnacznika | null;                // pas na stronie: pasek ustawiania (krokowiec rzędu), koniec strony, „przed schematem” (F-26)
   razemStron?: number;
   oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
@@ -76,7 +76,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [pytanie, ustawPytanie] = useState<'brak' | 'zaznacz' | 'zmien'>('brak'); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
   const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
   const pasekOtwarty = ustawianie && p.znacznik != null; // PasekZnacznika rysuje pasek tylko przy znaczniku
-  useEffect(() => { p.naPasekZnacznika?.(pasekOtwarty); }, [pasekOtwarty]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko zmiana stanu paska
+  useEffect(() => { if (p.pasekZn) p.pasekZn.current = pasekOtwarty; }, [pasekOtwarty, p.pasekZn]);
   const [notatka, ustawNotatke] = useState<'brak' | 'pasek' | 'arkusz'>('brak');
   const [tekst, ustawTekst] = useState('');
   const nowaZTekstem = notatka === 'arkusz' && tekst.trim().length > 0;
