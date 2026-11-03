@@ -1214,6 +1214,15 @@ Opis decyzji mówi „Knitting/Crochet”; wdrożenie 06 użyło istniejących k
 - **N1 (P2, P, SP-10, pewność średnia — stan kodu z wyniku 06, zrzut 07):** „Hook” bez szerokości nie pokazuje żadnego wyniku (kategoria nie istnieje, blok oczek wymaga szerokości), więc ekran wygląda jak niedziałający. Opcje: (a) pod polem szerokości linia zaproszenia „Enter a width to get the number of stitches.” (nowy klucz en, oczekujący P-422); (b) bez zmian — pole szerokości jest widoczne tuż pod próbką. Rekomendacja: (a), decyzja koordynatora.
 - **Dla 07:** zrzuty `probka`, `probka-cale` i e2e 41 obok wzorców `probka-3c2-*`; scenariusz „Hook → bez bloku „Yarn weight””.
 
+### Wiersz „Help” w Ustawieniach (M1-audytor-generalny-061; DEC-22 a)
+**Decyzja 04: tekst „Help” i miejsce bezpośrednio nad „Report a problem” potwierdzone.** *Dlaczego:* „Help” to słowo, którego osoba szuka w Ustawieniach (głos: słowa użytkownika, nie „Support center” ani „FAQ”); wiersz „sam sobie poradzę” stoi przed wierszem „napiszę do autora”, więc pomoc jest pierwsza, a zgłoszenie zostaje drogą dla tego, czego strona nie wyjaśnia. Odrzucone: „Support” (słowo sprzedawcy, nie czynności) i wiersz pod „Report a problem” (najpierw kontakt, potem samopomoc).
+
+| Element | Projekt | Klucz (en) |
+|---|---|---|
+| Wiersz „Help” w Ustawieniach | wzorzec wiersza jak „Privacy Policy” (rola link, otwiera stronę w przeglądarce, bez nowego ekranu i komponentu), bezpośrednio nad „Report a problem”; otwiera `baza` + `wsparcie` z `docs/wydanie/adres-strony.json`; testID `ustawienia-pomoc` | `ustawienia.pomoc` — Help |
+
+Strona wsparcia (FAQ: dodanie wzoru, przypomnienie co kilka rzędów) cytuje nazwy menu i pól ze słowników — zmiana tych etykiet w przeglądzie pl (P-422) wymaga poprawki strony (pilnuje test 11). **Dla 07:** zrzut Ustawień (jasny, ciemny, AX5) z wierszem „Help” nad „Report a problem”; przejście „dodanie wzoru i przypomnienia bez kontaktu z autorem” z FAQ.
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 
