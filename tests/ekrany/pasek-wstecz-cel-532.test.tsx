@@ -8,7 +8,7 @@ import { cel } from '../../src/ekrany/motyw';
 
 const plaski = (s: unknown) => StyleSheet.flatten(s as never) as Record<string, unknown>;
 
-describe('532: cel dotyku „Wstecz” tylko z symbolem', () => {
+describe('532: styl „Wstecz” tylko z symbolem — minimalne wymiary jak cel.minimum', () => {
   test('tylkoSymbol: minWidth i minHeight ≥ cel.minimum, symbol wyśrodkowany', () => {
     render(<Wstecz tylkoSymbol tekst="Back" etykieta="Back to Sleeve" onPress={() => {}} />);
     const s = plaski(screen.getByTestId('nav-wstecz').props.style);
