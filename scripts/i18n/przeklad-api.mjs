@@ -17,12 +17,21 @@ export const MODELE = { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5' };
 /** USD za 1 mln tokenów, ceny standardowe, odczyt 2026-10-30 (platform.claude.com/docs/en/about-claude/pricing); Batch liczy RABAT_BATCH tej ceny. */
 export const CENY = { 'claude-opus-5-5': { we: 4, wy: 20 }, 'claude-sonnet-5-5': { we: 2, wy: 10 } };
 export const RABAT_BATCH = 0.5;
-export const LIMIT_KOSZTU_USD = 6;
-/** Limit na przebieg; zmienna PRZEKLAD_LIMIT_USD może go tylko obniżyć (test), nigdy podnieść ponad P-144. */
+/** Pułap na przebieg: 30 USD (P-481, zgoda właściciela 2026-11-03 „OPUS HIGH — zgoda do limitu 30 USD”; wyjątek od P-144 = 6 USD dla fali 1.0). */
+export const LIMIT_KOSZTU_USD = 30;
+/** Limit na przebieg; zmienna PRZEKLAD_LIMIT_USD może go tylko obniżyć (test), nigdy podnieść ponad pułap. */
 export const limitKosztu = (env = process.env) => { const v = Number(env.PRZEKLAD_LIMIT_USD); return v > 0 && v < LIMIT_KOSZTU_USD ? v : LIMIT_KOSZTU_USD; };
-export const MAX_TOKENS = 32000;
+/** Limit wyjścia żądania: 64000 (zapas na myślenie przy high); Opus 5.5 ma 128K wyjścia w Messages API (platform.claude.com/docs/en/about-claude/models/overview, „Max output | 128K tokens”, odczyt 2026-11-03). */
+export const MAX_TOKENS = 64000;
+/** Poziomy wysiłku (output_config.effort; platform.claude.com/docs/en/build-with-claude/effort, odczyt 2026-11-03). Bez wartości model używa domyślnego: Opus 5.5 i Haiku 5.5 = medium, pozostałe = high. */
+export const WYSILKI = ['low', 'medium', 'high', 'xhigh', 'max'];
+export const domyslnyWysilek = (model) => (/opus-5-5|haiku-5-5/.test(model) ? 'medium' : 'high');
+/** Myślenie na język (tokeny wyjścia): PRZYBLIŻENIE. Pomiar z próby 41607002044 (Opus 5.5, medium, bg+cs): wyjście 22066 wobec szacunku 13716 z 2000 myślenia/język → ≈ 6200/język przy medium;
+ *  mnożniki dla pozostałych poziomów to założenie (high ×2 wg P-481), nie pomiar — po pierwszym przebiegu high zastąpić zmierzoną wartością. */
+export const MYSLENIE_MEDIUM = 6200;
+export const MNOZNIK_WYSILKU = { low: 0.5, medium: 1, high: 2, xhigh: 3, max: 4 };
 /** Założenia szacunku (nie pomiar, zawyżone celowo): wyjście ≈ tokeny angielskiego × współczynnik języka + obwiednia JSON na pozycję + myślenie. */
-export const ZALOZENIA = { obwiednia: 6, myslenie: 2000 };
+export const ZALOZENIA = { obwiednia: 6, myslenie: MYSLENIE_MEDIUM };
 const API = 'https://api.anthropic.com/v1';
 const WERSJA_API = '2023-06-01';
 const KORZEN = fileURLToPath(new URL('../..', import.meta.url));
@@ -163,10 +172,10 @@ export function doSlownika(poz, tlumaczenia) {
 }
 
 /* ---------- szacunek kosztu ---------- */
-export function wiersz(kod, poz, slownik) {
+export function wiersz(kod, poz, slownik, wysilek = 'medium') {
   const z = budujZadanie(kod, poz, slownik);
   const we = przyblizTokeny(`${z.system}\n${z.messages[0].content}`);
-  const wy = Math.ceil(poz.reduce((s, p) => s + przyblizTokeny(tekstyPozycji(p).join(' ')) * WSPOLCZYNNIK(kod) * (p.formy ? kategorie(kod).length / Object.keys(p.formy).length : 1) + ZALOZENIA.obwiednia, 0)) + ZALOZENIA.myslenie;
+  const wy = Math.ceil(poz.reduce((s, p) => s + przyblizTokeny(tekstyPozycji(p).join(' ')) * WSPOLCZYNNIK(kod) * (p.formy ? kategorie(kod).length / Object.keys(p.formy).length : 1) + ZALOZENIA.obwiednia, 0)) + Math.ceil(ZALOZENIA.myslenie * MNOZNIK_WYSILKU[wysilek]);
   return { jezyk: kod, pozycji: poz.length, we, wy };
 }
 export const kosztUsd = (we, wy, model) => { const c = CENY[model]; if (!c) throw new Error(`nieznany model: ${model}`); return ((we * c.we + wy * c.wy) / 1e6) * RABAT_BATCH; };
@@ -221,15 +230,16 @@ export function podsumowanieMd(raporty, meta) {
 }
 
 function argumenty(a) {
-  const o = { model: MODELE.sonnet, szacuj: false, limit: null, zakres: null, pomin: [], wyjscie: 'raport-przekladu', zgodaKoszt: false, wznow: null, zastosuj: false, czekajMin: 120 };
+  const o = { model: MODELE.sonnet, wysilek: null, szacuj: false, limit: null, zakres: null, pomin: [], wyjscie: 'raport-przekladu', zgodaKoszt: false, wznow: null, zastosuj: false, czekajMin: 120 };
   const wart = (i, n) => { if (i + 1 >= a.length) throw new Error(`brak wartości dla ${n}`); return a[i + 1]; };
   for (let i = 0; i < a.length; i++) {
     const x = a[i];
     if (x === '--szacuj') o.szacuj = true; else if (x === '--zgoda-koszt') o.zgodaKoszt = true; else if (x === '--zastosuj') o.zastosuj = true;
     else if (x === '--model') { const v = wart(i++, x); o.model = MODELE[v] ?? v; } else if (x === '--limit') o.limit = Number(wart(i++, x)) || null;
-    else if (x === '--zakres') o.zakres = wart(i++, x); else if (x === '--pomin') o.pomin = wart(i++, x).split(',').filter(Boolean);
+    else if (x === '--wysilek') o.wysilek = wart(i++, x); else if (x === '--zakres') o.zakres = wart(i++, x); else if (x === '--pomin') o.pomin = wart(i++, x).split(',').filter(Boolean);
     else if (x === '--wyjscie') o.wyjscie = wart(i++, x); else if (x === '--wznow') o.wznow = wart(i++, x); else throw new Error(`nieznany argument: ${x}`);
   }
+  if (o.wysilek && !WYSILKI.includes(o.wysilek)) throw new Error(`nieznany wysiłek: ${o.wysilek} (dozwolone: ${WYSILKI.join(', ')})`);
   if (!CENY[o.model]) throw new Error(`nieznany model: ${o.model} (dozwolone: ${Object.values(MODELE).join(', ')})`);
   return o;
 }
@@ -251,10 +261,10 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   if (!o.szacuj && !klucz && !o.wznow) { log('BŁĄD: brak ANTHROPIC_API_KEY (bez klucza tylko --szacuj)'); return 2; }
   mkdirSync(wyj, { recursive: true });
   const zadania = kody.map((k) => ({ kod: k, z: budujZadanie(k, poz, slownik) }));
-  const wiersze = kody.map((k) => wiersz(k, poz, slownik));
+  const wiersze = kody.map((k) => wiersz(k, poz, slownik, o.wysilek ?? domyslnyWysilek(o.model)));
   if (api) for (const [i, t] of zadania.entries()) wiersze[i].we = await api.liczTokeny(o.model, t.z);
   const s = szacunek(wiersze, o.model);
-  writeFileSync(join(wyj, 'szacunek.json'), JSON.stringify({ model: o.model, zalozenia: ZALOZENIA, dokladne_we: !!api, ...s, wiersze }, null, 1) + '\n');
+  writeFileSync(join(wyj, 'szacunek.json'), JSON.stringify({ model: o.model, zalozenia: ZALOZENIA, wysilek: o.wysilek ?? domyslnyWysilek(o.model), dokladne_we: !!api, ...s, wiersze }, null, 1) + '\n');
   log(`szacunek (Batch −${RABAT_BATCH * 100}%${api ? ', wejście zmierzone count_tokens' : ', przybliżenie'}): ${s.jezykow} języków × ${s.pozycji} pozycji; wejście ${s.tokeny_we}, wyjście ${s.tokeny_wy}; ${Object.entries(s.koszt_wg_modelu).map(([m, c]) => `${m} ≈ ${c.toFixed(2)} USD`).join(', ')}`);
   const limitUsd = limitKosztu(env);
   if (s.koszt_usd > limitUsd && !o.zgodaKoszt) { log(`STOP: ${s.koszt_usd.toFixed(2)} USD > limit ${limitUsd} USD; ponów ze zgodą (--zgoda-koszt) po decyzji właściciela`); return 3; }
@@ -262,7 +272,7 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   const a = klient(fetchFn, klucz);
   let id = o.wznow;
   if (!id) {
-    id = (await a.utworz(zadania.map((t) => ({ custom_id: `pr-${t.kod}`, params: { model: o.model, max_tokens: MAX_TOKENS, system: t.z.system, messages: t.z.messages } })))).id;
+    id = (await a.utworz(zadania.map((t) => ({ custom_id: `pr-${t.kod}`, params: { model: o.model, max_tokens: MAX_TOKENS, ...(o.wysilek ? { output_config: { effort: o.wysilek } } : {}), system: t.z.system, messages: t.z.messages } })))).id;
     writeFileSync(join(wyj, 'batch-id.txt'), id + '\n'); log(`wysłano batch ${id}`);
   }
   let b;
