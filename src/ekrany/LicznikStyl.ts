@@ -19,7 +19,8 @@ export function style(k: Kolory) {
     pogrubiony: { fontWeight: '700' },
     link: { textDecorationLine: 'underline' },
     liczbaWiersz: { flexDirection: 'row', alignItems: 'baseline', gap: odstep.s },
-    liczba: { ...typografia.liczba, color: k.grafit },
+    liczbaKolumna: { flexDirection: 'column', alignItems: 'flex-start' }, // M1-132: przy AX1–AX5 jednostka pod liczbą
+    liczba: { ...typografia.liczba, color: k.grafit, flexShrink: 1 },
     linijka: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s },
     baner: { gap: odstep.s, padding: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     zakreslacz: { backgroundColor: k.zakreslacz, borderLeftWidth: 3, borderLeftColor: k.zakreslaczKrawedz, borderRadius: promien.zakreslacz, padding: odstep.m },
