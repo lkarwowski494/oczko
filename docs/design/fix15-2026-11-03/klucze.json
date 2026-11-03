@@ -1,0 +1,20 @@
+{
+  "zrodlo": "Rola 04, fix M2 partia 3c1 (P-441; DEC-33 b P-432, DEC-34 a, DEC-35 b, DEC-36 a P-438; 2026-11-03). Teksty en nałożone przez 04 na src/i18n/slowniki/en.json i en.kontekst.json; klucze na liście oczekujących (P-357), pl po akceptacji właściciela (P-422) i przekład w fali 09 (P-320). Zachowanie kodu: przekazania do 08 w design-spec „Aneks M2 partia 3c1”. Wyrocznia testów: ten plik.",
+  "odwolania": [
+    "P-422",
+    "P-432",
+    "P-438",
+    "P-441"
+  ],
+  "grupy": {
+    "M1-audytor-generalny-131": [
+      "wzor.wskazowka_znacznika"
+    ]
+  },
+  "en": {
+    "wzor.wskazowka_znacznika": "Tap a row to place your marker."
+  },
+  "kontekst": {
+    "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`."
+  }
+}

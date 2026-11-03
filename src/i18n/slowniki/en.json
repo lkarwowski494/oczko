@@ -825,6 +825,7 @@
     "cofnij_rysunek": "Undo last stroke",
     "zakreslacz_podpowiedz": "Drag a finger to highlight. Two fingers scroll.",
     "rysik_podpowiedz": "The pencil writes. Your finger scrolls.",
+    "wskazowka_znacznika": "Tap a row to place your marker.",
     "import_w_toku": "Adding the pattern…",
     "czeka_siec": "Waiting for the internet to save the web page.",
     "usun_oczekujacy_a11y": "Remove {{nazwa}} from the list",
