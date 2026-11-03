@@ -44,5 +44,6 @@ name: "podprzepływ: część Back z celem"
       - assertVisible: { id: "formularz-cel-czesci", text: "${CEL}" }
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "projekt-dodaj" }
-- tapOn: "Back.*"
+# Wiersz części „Back, 0 of 3 rows” (przecinek). Samo „Back.*” trafia też w przycisk wstecz (etykieta „Back”, 3a) i wraca na domyślną część (BR-DNI-004, #142).
+- tapOn: "Back, .*"
 - assertVisible: { id: "licznik-plus" }

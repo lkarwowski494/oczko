@@ -29,14 +29,14 @@ tags:
 - assertVisible: "33% done"
 - assertVisible: "Approximate, counted from rows of parts with a goal."
 - takeScreenshot: 59-33-procent
-- tapOn: "Back.*"
+- tapOn: "Back, .*"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "2" } }
 - tapOn: { id: "licznik-projekt" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: "66% done"
 - takeScreenshot: 59-66-procent
-- tapOn: "Back.*"
+- tapOn: "Back, .*"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "5" } }
 - tapOn: { id: "licznik-projekt" }
