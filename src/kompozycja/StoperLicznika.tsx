@@ -11,6 +11,7 @@ import { otwartaSesja, przelaczSesje, sesjaDoSprawdzenia, startSesji, wstrzymajS
 import type { Zaleznosci } from '../przypadki-uzycia/zaleznosci';
 import { czasPracy } from './ukonczenie';
 import { etykietaRobocza, type Jezyk } from './licznik';
+import { liczba, tekst, wiersze } from '../dane/repozytoria/wiersze';
 
 export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zaleznosci; j: Jezyk; projektId: string; oglos: Oglos; poZmianie(): Promise<void> }): React.ReactElement {
   const [sesja, ustawSesje] = useState<SesjaNaEkranie | null>(null);
@@ -25,9 +26,9 @@ export function StoperLicznika({ z, j, projektId, oglos, poZmianie }: { z: Zalez
     : { rodzaj: 'wstrzymana', czasMs: (sesja.wstrzymanoMs ?? ch.ms) - sesja.startMs - sesja.przerwyMs, startGodzina: godzina(sesja.startMs) };
 
   async function nazwa(id: string): Promise<string> {
-    const [p] = await z.baza.all<{ nazwa: string; nienazwany: number; utworzono_ms: number }>('SELECT nazwa, nienazwany, utworzono_ms FROM projekt WHERE id = ?', [id]);
+    const [p] = await wiersze(z.baza.all('SELECT nazwa, nienazwany, utworzono_ms FROM projekt WHERE id = ?', [id]), 'stoper');
     if (!p) return '';
-    return p.nienazwany === 1 ? etykietaRobocza(p.utworzono_ms, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : p.nazwa;
+    return liczba(p, 'nienazwany') === 1 ? etykietaRobocza(liczba(p, 'utworzono_ms'), z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : tekst(p, 'nazwa');
   }
   // M1-085: błąd zapisu (`zapis`, `brak_miejsca`) → alert błędu zapisu (M1-006); inny powód jak dotąd bez komunikatu. Bez haptyki: komponent nie ma portu.
   async function po(w: Wynik<unknown>, tekst: () => string): Promise<void> {

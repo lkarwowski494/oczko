@@ -22,6 +22,7 @@ import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
 import { nazwaPliku, usunPlik } from '../src/dane/pliki/system';
+import { liczba, wiersze } from '../src/dane/repozytoria/wiersze';
 
 type Dane =
   | { rodzaj: 'eksport'; licznosci: string }
@@ -69,8 +70,8 @@ export default function EkranUstawien(): React.ReactElement {
     return w.wartosc.sciezka;
   }
   async function licznosciBazy(): Promise<Licznosci> {
-    const [r] = await z.baza.all<{ p: number }>('SELECT count(*) AS p FROM projekt');
-    return { projekt: r?.p ?? 0 };
+    const [r] = await wiersze(z.baza.all('SELECT count(*) AS p FROM projekt'), 'licznosciBazy');
+    return { projekt: r ? liczba(r, 'p') : 0 };
   }
   async function importZ(sciezka: string) {
     const pomiar = paneleE2e; // E2-137-A3: czas do „import-gotowy” w panelu `e2e-pomiar-operacji` (tylko build E2E)

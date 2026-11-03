@@ -30,8 +30,8 @@ export function dodajPrzypomnienie(z: Zaleznosci, w: { licznikId: string; od: nu
   const plan = planPrzypomnien({ od: w.od, co: w.co, razy: w.razy });
   if (!plan.ok || !calkowita(w.od, 1) || !calkowita(w.razy, 1) || typeof w.tekst !== 'string') return Promise.resolve(blad('bledne_dane'));
   return operacjaZapisu(z, 'dodajPrzypomnienie', async (tx, teraz) => {
-    const [l] = await tx.all<{ n: number }>('SELECT count(*) AS n FROM licznik WHERE id = ? AND usunieto_ms IS NULL', [w.licznikId]);
-    if (!l || l.n !== 1) return blad('bledne_dane');
+    const [l] = await wiersze(tx.all('SELECT count(*) AS n FROM licznik WHERE id = ? AND usunieto_ms IS NULL', [w.licznikId]), 'dodajPrzypomnienie');
+    if (!l || liczba(l, 'n') !== 1) return blad('bledne_dane');
     const id = z.id.nowy();
     await tx.run('INSERT INTO przypomnienie (id, licznik_id, od_rzedu, co_n, razy, tekst, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, w.licznikId, w.od, w.co, w.razy, w.tekst.trim(), teraz]);
     return { ok: true, wartosc: { id } };

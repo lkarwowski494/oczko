@@ -109,8 +109,8 @@ export function trybAwaryjny() {
         for (const n of k.wartosc.pliki) kopiuj(polacz(k.wartosc.katalog, n), polacz(kat, n));
         const port = otworzPortExpo(polacz(kat, nazwaPliku(s.baza)), { tylkoOdczyt: true }); // nazwa z jednego źródła (sciezkiDanych)
         try {
-          const w = await port.all<{ czas_ms: unknown; kod: unknown }>('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]);
-          return w.flatMap((r) => (typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod }] : []));
+          const w = await port.all('SELECT czas_ms, kod FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]); // kopia może być uszkodzona: zły wiersz pominięty, nie zgadywany
+          return w.flatMap((r) => (typeof r === 'object' && r !== null && 'czas_ms' in r && 'kod' in r && typeof r.czas_ms === 'number' && typeof r.kod === 'string' ? [{ czasMs: r.czas_ms, kod: r.kod }] : []));
         } finally {
           await port.zamknij();
         }

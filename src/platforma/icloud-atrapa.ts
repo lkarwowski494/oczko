@@ -4,6 +4,7 @@
 // Liczba wysłanych rekordów i usunięcie strefy w pliku buildu E2E (przetrwają restart i „Usuń wszystkie dane”).
 import type { PartiaIcloud, PortBazy, PotwierdzenieIcloud, RekordIcloud, StanSynchronizacji, Zegar, ZdarzenieKonta } from '../domena/porty';
 import type { SilnikIcloud, StanAtrapyIcloud } from './icloud';
+import { liczba, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 
 export type TrybAtrapy = 'wlaczony' | 'wylaczony' | 'brak-konta' | 'brak-miejsca' | 'konflikt';
 const TRYBY: readonly TrybAtrapy[] = ['wlaczony', 'wylaczony', 'brak-konta', 'brak-miejsca', 'konflikt'];
@@ -20,17 +21,18 @@ function czytajStan(t: string | null): StanAtrapyIcloud {
 
 /** Druga wersja pierwszego licznika (tryb `konflikt`): wpisanie wartość + 5 z „iPad (test)”, minutę temu, rodzic = głowa sprzed ostatniej zmiany. */
 export async function partiaKonfliktu(baza: PortBazy, zegar: Zegar): Promise<PartiaIcloud | null> {
-  const [l] = await baza.all<{ id: string; wartosc: number; glowa: string | null }>(
-    'SELECT id, wartosc, glowa FROM licznik WHERE usunieto_ms IS NULL AND glowa IS NOT NULL ORDER BY zmieniono_ms, id LIMIT 1');
-  if (!l || !l.glowa) return null;
-  const [g] = await baza.all<{ rodzice: string }>('SELECT rodzice FROM zdarzenie WHERE id = ?', [l.glowa]);
-  const r: unknown = g ? JSON.parse(g.rodzice) : [];
+  const [l] = await wiersze(baza.all(
+    'SELECT id, wartosc, glowa FROM licznik WHERE usunieto_ms IS NULL AND glowa IS NOT NULL ORDER BY zmieniono_ms, id LIMIT 1'), 'partiaKonfliktu');
+  const glowa = l ? tekstLubNull(l, 'glowa') : null;
+  if (!l || !glowa) return null;
+  const [g] = await wiersze(baza.all('SELECT rodzice FROM zdarzenie WHERE id = ?', [glowa]), 'partiaKonfliktu');
+  const r: unknown = g ? JSON.parse(tekst(g, 'rodzice')) : [];
   const rodzic = Array.isArray(r) ? r.filter((x: unknown): x is string => typeof x === 'string').slice(0, 1) : [];
   const t = zegar.teraz();
-  const wartosc = l.wartosc + 5;
+  const wartosc = liczba(l, 'wartosc') + 5;
   const rekord: RekordIcloud = {
     encja: 'zdarzenie', klucz: ID_KONFLIKTU, plik: null,
-    pola: { id: ID_KONFLIKTU, licznik_id: l.id, rodzaj: 'wpisanie', wartosc, wartosc_po: wartosc, rodzice: JSON.stringify(rodzic), cofa: '[]', zrodlo: 'synchronizacja', urzadzenie: URZADZENIE_ATRAPY, czas_ms: t.ms - 60_000, strefa: t.strefa, dzien: t.dzien },
+    pola: { id: ID_KONFLIKTU, licznik_id: tekst(l, 'id'), rodzaj: 'wpisanie', wartosc, wartosc_po: wartosc, rodzice: JSON.stringify(rodzic), cofa: '[]', zrodlo: 'synchronizacja', urzadzenie: URZADZENIE_ATRAPY, czas_ms: t.ms - 60_000, strefa: t.strefa, dzien: t.dzien },
   };
   return { rekordy: [rekord], usuniete: [], stanSilnika: null };
 }

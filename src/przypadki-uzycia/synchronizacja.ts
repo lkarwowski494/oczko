@@ -96,7 +96,7 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
       if (!inny && !byl) await z.magazyn.usun(w.wartosc.sha256);
       zle.push(r.klucz);
     }
-    for (const [k] of (await z.baza.all<{ sha256: string }>('SELECT sha256 FROM plik')).map((r) => [r.sha256])) pliki.add(k); // już w magazynie
+    for (const r of await wiersze(z.baza.all('SELECT sha256 FROM plik'), 'odbior')) pliki.add(tekst(r, 'sha256')); // już w magazynie
     const wynik = await wKolejce(z.baza, () => z.baza.transakcja(async (tx) => {
       for (const k of zle) { pliki.delete(k); await zapiszBladW(tx, { czasMs: teraz(), kod: 'icloud_zly_zasob', szczegoly: {} }); }
       return zastosujPartie(tx, p, teraz(), pliki);

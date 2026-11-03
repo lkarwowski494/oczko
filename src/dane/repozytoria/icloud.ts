@@ -9,7 +9,7 @@ import { zapiszBladW } from './bledy';
 import { ma, odtworzWKoszu, warunekKlucza, wyrazenieKlucza, zatrzymaneNagrobki } from './icloud-nagrobki';
 import { zapiszDzienLimitu } from './liczniki';
 import { przeliczLicznik } from './przelicz';
-import { liczba, tekst, wiersze } from './wiersze';
+import { liczba, liczbaLubNull, tekst, wiersze, type Wiersz } from './wiersze';
 
 export type StanBazyIcloud = { wlaczona: boolean; stanSilnika: Uint8Array | null; zalegle: number };
 export type WynikPartii = { zastosowane: number; poczekalnia: number; bledy: number; konflikty: number; liczniki: string[] };
@@ -37,6 +37,13 @@ export async function wylaczWBazie(tx: PortBazy, terazMs: number): Promise<void>
   await tx.run('DELETE FROM zmiana_icloud');
 }
 
+/** Wiersz tabeli z kontraktu: wartości tylko tekst, liczba albo null (kontrakt nie ma kolumn BLOB); inna wartość → BladDanych (P-118 Q1a). */
+function polaIcloud(w: Wiersz): WierszIcloud {
+  const pola: WierszIcloud = {};
+  for (const k of Object.keys(w)) pola[k] = typeof w[k] === 'string' ? tekst(w, k) : liczbaLubNull(w, k);
+  return pola;
+}
+
 /** Najstarsze zmiany ze skrzynki (po `nr`) z rekordem odczytanym teraz; brak wiersza = usunięcie. */
 export async function zaleglosci(baza: PortBazy, limit: number, sciezkaPliku: (sha256: string) => string): Promise<ZmianaDoWyslania[]> {
   const out: ZmianaDoWyslania[] = [];
@@ -47,8 +54,8 @@ export async function zaleglosci(baza: PortBazy, limit: number, sciezkaPliku: (s
     const t = tabelaIcloud(encja);
     const k = t ? wartosciKlucza(t, klucz) : null;
     if (!t || !k || !k.ok) continue; // wpis spoza kontraktu nie powstaje (wyzwalacze z kontraktu); pominięty, nie wysłany
-    const [w] = liczba(z, 'usuniete') === 1 ? [] : await baza.all<WierszIcloud>(`SELECT * FROM ${t.tabela} WHERE ${warunekKlucza(t)}`, k.wartosc);
-    out.push({ encja, klucz, nr, rekord: w ? rekordZWiersza(t, w, t.zasob ? sciezkaPliku(klucz) : null) : null });
+    const [w] = liczba(z, 'usuniete') === 1 ? [] : await wiersze(baza.all(`SELECT * FROM ${t.tabela} WHERE ${warunekKlucza(t)}`, k.wartosc), 'zaleglosci');
+    out.push({ encja, klucz, nr, rekord: w ? rekordZWiersza(t, polaIcloud(w), t.zasob ? sciezkaPliku(klucz) : null) : null });
   }
   return out;
 }
