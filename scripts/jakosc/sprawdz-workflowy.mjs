@@ -2,6 +2,7 @@
 //  SEKRET-BEZ-SRODOWISKA: każde `secrets.X` poza GITHUB_TOKEN tylko w zadaniu z `environment: release`; wyjątek P-463 (M1-010, jak Trening):
 //    zadanie TYLKO CZYTAJĄCE z ASC z listy ASC_TYLKO_ODCZYT może użyć sekretów repozytorium ASC_* bez środowiska, o ile nie ma warunku trybu zapisu;
 //    każde inne zadanie z ASC_* (testflight, asc-metadane, asc-zrzuty, asc-iap-localizations apply…) jest zapisujące i wymaga `environment: release`;
+//  ODCZYT-WYZWALACZ / ODCZYT-Z-ZAPISEM: zadanie z listy ASC_TYLKO_ODCZYT — jedyny wyzwalacz workflow_dispatch; skrypty scripts/asc/ w jego `run:` tylko z --dry-run (przegląd bezpieczeństwa 2026-11-03);
 //  WYZWALACZ-Z-SEKRETAMI: workflow z takim zadaniem nie ma `pull_request`, `pull_request_target` ani `workflow_run`;
 //  SZTUCZNY-SKLEP-W-WYDANIU: przełączniki testowe (`EXPO_PUBLIC_STORE_FAKE`, `_WATCH_FAKE`, `_ICLOUD_FAKE`, `_E2E`, `_WYMUS_AWARIE`, `_PSEUDO`) nie występują w workflowie z `environment: release`;
 //  BRAK-WORKFLOWOW: katalog bez plików .yml to błąd (pusty zbiór to nie zaliczenie).
@@ -23,6 +24,7 @@ import { parse } from 'yaml';
  *  Domyślnie każde zadanie z ASC_* jest zapisujące; nowe zadanie czytające (np. `plan` z --dry-run) dopisuje się tu z uzasadnieniem. */
 export const ASC_TYLKO_ODCZYT = [
   { plik: '.github/workflows/asc-kontrola.yml', zadanie: 'kontrola', dlaczego: 'workflow wielokrotnego użytku apps4brew-narzedzia przypięty do SHA, tylko GET, tylko workflow_dispatch' },
+  { plik: '.github/workflows/asc-produkty.yml', zadanie: 'plan', dlaczego: 'plan produktów zakupów: scripts/asc/produkty.mjs --dry-run (tylko GET), tylko workflow_dispatch; zapis (--apply) w zadaniu apply z environment: release (P-467)' },
 ];
 const TRYB_ZAPISU = /\b(apply|zapis|upload|wyslij|push)\b/i;
 const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
@@ -64,6 +66,8 @@ export function sprawdzWorkflowy(korzen) {
       const env = typeof job?.environment === 'string' ? job.environment : job?.environment?.name;
       const tekstJob = JSON.stringify(job);
       const sekrety = [...tekstJob.matchAll(/secrets\.([A-Za-z0-9_]+)/g)].map((m) => m[1]).filter((s) => s !== 'GITHUB_TOKEN');
+      // Inne sposoby sięgnięcia po sekrety (nie wyglądają jak `secrets.X`): `secrets['X']`, `toJSON(secrets)`, `secrets: inherit` — liczone jak sekret spoza listy ASC_*.
+      if (/secrets\s*\[|toJSON\(\s*secrets/.test(tekstJob) || job?.secrets === 'inherit') sekrety.push('(sekrety niejawnie)');
       if (env === 'release') wydanie = true;
       if (sekrety.length) {
         zSekretami = true;
@@ -73,6 +77,14 @@ export function sprawdzWorkflowy(korzen) {
       }
     }
     if (/secrets\.(?!GITHUB_TOKEN)/.test(JSON.stringify(wf?.env ?? {}))) { zSekretami = true; zgl('SEKRET-BEZ-SRODOWISKA', 'sekret w env na poziomie workflowu'); }
+    // Zadanie z listy czytających zwalnia z `environment`, więc: workflow ma tylko `workflow_dispatch`, a każdy skrypt scripts/asc/ w jego `run:` ma `--dry-run` i nie ma `--apply`.
+    for (const o of ASC_TYLKO_ODCZYT.filter((x) => x.plik === rel)) {
+      if (wyzwalacze.length !== 1 || wyzwalacze[0] !== 'workflow_dispatch') zgl('ODCZYT-WYZWALACZ', `workflow z zadaniem czytającym ${o.zadanie} ma wyzwalacze ${wyzwalacze.join(', ')} (dozwolony tylko workflow_dispatch)`);
+      for (const [i, krok] of (wf?.jobs?.[o.zadanie]?.steps ?? []).entries()) {
+        const r = String(krok?.run ?? '');
+        if (r.includes('scripts/asc/') && (!/--dry-run\b/.test(r) || /--apply\b/.test(r))) zgl('ODCZYT-Z-ZAPISEM', `zadanie ${o.zadanie}, krok ${i + 1}: skrypt scripts/asc/ w zadaniu czytającym musi mieć --dry-run i nie może mieć --apply`);
+      }
+    }
     if (zSekretami) for (const w of ['pull_request', 'pull_request_target', 'workflow_run']) if (wyzwalacze.includes(w)) zgl('WYZWALACZ-Z-SEKRETAMI', `wyzwalacz ${w} w workflowie z sekretami`);
     const testowe = tekst.match(/EXPO_PUBLIC_(STORE_FAKE|WATCH_FAKE|ICLOUD_FAKE|E2E|WYMUS_AWARIE|PSEUDO)\b/g);
     if (wydanie && testowe) zgl('SZTUCZNY-SKLEP-W-WYDANIU', `przełączniki testowe w workflowie wydania: ${[...new Set(testowe)].join(', ')}`);
