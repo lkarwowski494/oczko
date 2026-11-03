@@ -94,7 +94,7 @@ Rutynowe usuwanie: potwierdzenie i „Recently deleted” 30 dni (P-026); cofni�
 | limit (BR-ZAK-006) | „Row 48 wasn’t added. Free crafting days for November are used. Nothing is lost.” | arkusz jako modal (`accessibilityViewIsModal`), fokus na nagłówku |
 | ukończenie | „Harbor Sweater moved to Finished.” | — |
 | arkusze i formularze | — | fokus na nagłówku; każde pole z `accessibilityLabel` (nie sam tekst obok); podgląd planu rzędów dołączony do etykiety „Save reminder” |
-| oferty | — | plany: `accessibilityRole="radio"` + `accessibilityState.selected`; Privacy Policy i Terms of Use: rola link |
+| oferty | — | plany: `accessibilityRole="radio"` + `accessibilityState.selected`; etykieta planu = nazwa · cena. podpis (odnawianie albo „Pay once”), przy planie dożywotnim w czasie trwającej subskrypcji dalej `oferty.dozywotni_przy_subskrypcji` — w kolejności wizualnej (M1-audytor-generalny-092, Aneks M2 partia 3c2); Privacy Policy i Terms of Use: rola link |
 | grafika | — | kreski i zakreślenie `accessibilityElementsHidden`; dane w podpisach |
 
 ## Głos
@@ -1232,6 +1232,18 @@ Strona wsparcia (FAQ: dodanie wzoru, przypomnienie co kilka rzędów) cytuje naz
 
 - **N2 (P2, P, SP-15, pewność średnia):** adres trzeba przepisać w Poczcie z pamięci — po „Share” → Mail pole „To” jest puste. Opcje: (a) adres jako tekst do zaznaczenia (`selectable`, systemowe „Copy” po przytrzymaniu; bez nowego komponentu); (b) przycisk tekstowy „Copy address” (nowy klucz, oczekujący P-422); (c) bez zmian. Rekomendacja: (a), decyzja koordynatora; zmiana kodu → 08.
 - **Dla 07:** zrzut „Report a problem” z obu tras (jasny, ciemny, en, 320 pt i AX5).
+
+### Etykieta VoiceOver przycisku planu (M1-audytor-generalny-092, 02-monetyzacja-501, 04-studio-projektowe-513)
+**Decyzja 04: kolejność nazwa → cena → podpis → (KP-03) potwierdzona.** To kolejność wizualna karty planu (makieta `ekrany.html`, ekran ofert; `fix10-2026-11-01/partia8.html`), więc VoiceOver czyta to, co widać, w tej samej kolejności (podłoga VoiceOver), a ujawnienie odnawiania (3.1.2(a)) nie ginie pod etykietą. Etykieta składa się z istniejących kluczy, bez nowego tekstu. Zdanie KP-03 nie ma makiety; system stawia je na karcie dożywotniego pod podpisem, więc w etykiecie jest ostatnie — zgodność miejsca na karcie z etykietą sprawdza zrzut 07.
+
+| Plan | Etykieta (en, ceny z makiety) |
+|---|---|
+| Monthly | Monthly · $0.99 / month. Renews every month until you cancel in your Apple ID settings. |
+| Yearly | Yearly · $6.99 / year. Renews every year until you cancel in your Apple ID settings. |
+| Lifetime | Lifetime · $14.99 once. Pay once. Nothing renews. |
+| Lifetime przy trwającej subskrypcji (KP-03, P-403) | … Pay once. Nothing renews. Your subscription keeps renewing until you cancel it. |
+
+Stan zaznaczenia niesie rola radio i `accessibilityState.selected`, nie tekst etykiety. „ · ” między nazwą a ceną to wyjątek nazwany `Oferty.tsx` z sekcji „Separator „ · ””; kropka przed podpisem daje pauzę zdania. Przycisk „Manage subscription” (KP-03) jest osobnym elementem. **Dla 07:** VoiceOver na trzech planach (jasny, ciemny) i na dożywotnim przy aktywnej subskrypcji — przebieg nocny.
 
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
