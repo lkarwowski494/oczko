@@ -8,5 +8,8 @@ permissions:
 jobs:
   start:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - run: echo "::notice::Uruchom z gałęzi roboczej (Use workflow from: claude/jolly-thompson-paz6d8). Ten plik na main nic nie robi."
+      - name: Komunikat
+        run: |
+          echo "::notice::Uruchom z gałęzi roboczej claude/jolly-thompson-paz6d8 (Use workflow from). Ten plik na main nic nie robi."
