@@ -23,7 +23,7 @@ Plan: `docs/plan-prac.md` etap 3 (3.1 właściciel, 3.2 rola 10, 3.3 test właś
 1. Commit z zielonym „Jakość · iOS” i werdyktem 07 (raport 07 jeszcze nie istnieje: audyt 2.4 trwa) — bez raportu nic nie wysyłam.
 2. Przebieg dowodowy `bez_wysylki = true`: budowa, podpis, kontrola `.ipa`, walidacja. UWAGI kontroli `.ipa` do rozstrzygnięcia w `sklep.md` §5.
 3. Zgoda → przebieg z wysyłką → grupa wewnętrzna → zaproszenie właściciela.
-4. Wersja przed kandydatem: `app.json` `version` `0.1.0` → `1.0.0` (zgłoszenie dla 08, jeszcze nie wykonane; sprawdzone w pliku 2026-10-30). Numer buildu: przesunięcie 1000 → pierwszy build 1011 > 1004 z 0.1.0.
+4. Wersja przed kandydatem: `app.json` `version` `0.1.0` → `1.0.0` — **zrobione 2026-11-03** (08, P-306 B, P-519; razem z wzorcem `tests/bazy/v1.db`, `docs/programista/wydanie-1.0.0.md`). Numer buildu: przesunięcie 1000 → pierwszy build 1011 > 1004 z 0.1.0.
 5. Zmiana przełącznika `ICLOUD_W_1_0 = true` dla buildu TestFlight (P-290 (1)): robi 08/koordynator w osobnym commicie; build App Store ma `false`, dopóki ZM-06 nie przejdzie.
 6. Kontrola `.ipa` po zmianach 08 z 2026-10-30 (`scripts/wydanie/kontrola-ipa.sh` wymaga `.ipa` i PlistBuddy — na Linuksie nie do uruchomienia, **nie sprawdzono**; sprawdza przebieg dowodowy `bez_wysylki = true` na macOS):
    - tryby tła i uprawnienia (P-300 (b), `plugins/icloud-tlo.js`): build z `ICLOUD_W_1_0 = false` → w `Info.plist` brak `UIBackgroundModes`, w entitlements brak `aps-environment`; build TestFlight z `true` → `UIBackgroundModes = [remote-notification]` i `aps-environment` obecne (pętla `UIBackgroundModes` w skrypcie przy braku klucza nic nie sprawdza i nie zgłasza błędu);
