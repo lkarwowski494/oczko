@@ -14,7 +14,8 @@ import { listaWzorow } from '../src/przypadki-uzycia/wzor';
 import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
 export default function EkranLicznika(): React.ReactElement {
-  const { kontener, licznik, naAwarie } = useAplikacja();
+  const aplikacja = useAplikacja();
+  const { kontener, licznik, naAwarie } = aplikacja;
   const router = useRouter();
   const k = useKolory();
   // U11, M1-audytor-generalny-059: licznik zostaje zamontowany pod listą projektów, Ustawieniami i Narzędziami (`router.push`), więc blokada
@@ -87,7 +88,7 @@ export default function EkranLicznika(): React.ReactElement {
           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),
           naNastepnaCzesc: () => void naNastepnaCzesc(), naKonflikt: () => router.push('/konflikt') }}
         stoper={projektId ? (
-          <StoperLicznika z={kontener.z} j={kontener.j} projektId={projektId} oglos={oglos}
+          <StoperLicznika z={kontener.z} j={kontener.j} zrodlo={aplikacja} projektId={projektId} oglos={oglos}
             poZmianie={async () => { await licznik.poZmianie(); ustawWersje(licznik.wersja()); }} />
         ) : null}
         sprawdzStopera={<>

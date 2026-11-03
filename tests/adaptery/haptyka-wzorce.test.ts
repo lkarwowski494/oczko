@@ -11,10 +11,11 @@ const wzorce = Object.keys(tokeny).filter((k) => !k.startsWith('_'));
 const OCZEKIWANE: Record<string, string[]> = {
   plus: ['impact:light'], piataKreska: ['impact:medium'], rzadZInstrukcja: ['impact:medium', 'impact:medium'], minus: ['impact:soft'],
   blokadaStukniecie: ['impact:rigid'], bladZapisu: ['notification:error'],
+  stoperStart: ['impact:light'], // M1-107 (04-studio-projektowe-511): start stopera, „haptyka lekka” (design-spec, „Stoper na liczniku”)
 };
 
 describe('P-135 Q4a Haptyka.zagraj z wzorcami tokenów 04', () => {
-  test('[ZIELONY-OK: wyrocznia zgodna z tokenami] P-135: tokeny 04 mają 6 wzorców, każdy z oczekiwaniem w teście', () => {
+  test('[ZIELONY-OK: wyrocznia zgodna z tokenami] P-135: tokeny 04 mają 7 wzorców (M1-107: + stoperStart), każdy z oczekiwaniem w teście', () => {
     expect([...wzorce].sort()).toEqual(Object.keys(OCZEKIWANE).sort());
   });
 

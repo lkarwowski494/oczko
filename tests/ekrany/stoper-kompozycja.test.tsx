@@ -11,13 +11,15 @@ import { tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
+/** Port haptyki i preferencje z `useAplikacja()` (M1-107); wibracje włączone. */
+const zrodlo = () => ({ kontener: { j: { t }, porty: { haptyka: { zagraj: jest.fn() } } }, preferencje: { stan: () => ({ wibracje: true }) } });
 async function pokaz(projektId = 'pb') {
   const s = await przygotuj();
   await wykonaj(s.baza, [projekt('pa', 'Harbor Sweater'), projekt('pb', 'Scarf')]);
   s.zegar.ustaw(T0);
   const oglos = jest.fn();
   const poZmianie = jest.fn(async () => undefined);
-  render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} projektId={projektId} oglos={oglos} poZmianie={poZmianie} />);
+  render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} zrodlo={zrodlo()} projektId={projektId} oglos={oglos} poZmianie={poZmianie} />);
   await waitFor(() => expect(screen.getByTestId('licznik-stoper')).toBeTruthy());
   return { s, oglos, poZmianie };
 }
@@ -43,7 +45,7 @@ test('P3a: sesja trwa w „Harbor Sweater” → start w „Scarf” pyta; „St
   await wykonaj(s.baza, [projekt('pa', 'Harbor Sweater'), projekt('pb', 'Scarf')]);
   s.zegar.ustaw(T0);
   await startSesji(s.z, { projektId: 'pa' });
-  render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} projektId="pb" oglos={jest.fn()} poZmianie={async () => undefined} />);
+  render(<StoperLicznika z={s.z} j={{ t, jezyk: () => 'en', zegar24h: () => true }} zrodlo={zrodlo()} projektId="pb" oglos={jest.fn()} poZmianie={async () => undefined} />);
   await waitFor(() => expect(screen.getByRole('button', { name: 'Start session timer' })).toBeTruthy());
   await act(async () => { fireEvent.press(screen.getByRole('button', { name: 'Start session timer' })); });
   await waitFor(() => expect(screen.getByText('The timer is running for Harbor Sweater')).toBeTruthy());

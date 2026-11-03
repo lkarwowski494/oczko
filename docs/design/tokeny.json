@@ -188,7 +188,8 @@
   "rzadZInstrukcja": "dwa uderzenia .medium co 90 ms (Core Haptics), inne niż rząd",
   "minus": "UIImpactFeedbackGenerator .soft",
   "blokadaStukniecie": "UIImpactFeedbackGenerator .rigid",
-  "bladZapisu": "UINotificationFeedbackGenerator .error"
+  "bladZapisu": "UINotificationFeedbackGenerator .error",
+  "stoperStart": "UIImpactFeedbackGenerator .light"
  },
  "haptykaZegarek": {
   "_zasada": "Zegarek (NZ-05-F4-04, P-142): watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, odczyt 2026-10-26). Klucze jak w „haptyka”; wzorce spoza tej listy zegarek gra jak dotąd (decyzja 08 przy celu watch).",

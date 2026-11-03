@@ -1,5 +1,6 @@
 // Adapter portu Haptyka (F-48, P-135 Q4a): wzorzec = klucz tokenu 04 (docs/design/tokeny.json „haptyka”), styl z tekstu tokenu:
-// plus .light, piataKreska .medium, rzadZInstrukcja dwa .medium co 90 ms, minus .soft, blokadaStukniecie .rigid, bladZapisu notification .error.
+// plus .light, piataKreska .medium, rzadZInstrukcja dwa .medium co 90 ms, minus .soft, blokadaStukniecie .rigid, bladZapisu notification .error,
+// stoperStart .light (M1-107: start stopera, design-spec „Stoper na liczniku”: „haptyka lekka”).
 // Rozpoznawalne tylko plus i rzadZInstrukcja (F-48), reszta systemowa; brak dźwięku (BR-LIC-005). Błąd modułu pomijany (nie zmienia operacji).
 import type { Haptyka, WzorzecHaptyki } from '../domena/porty';
 
@@ -8,7 +9,7 @@ export interface ModulHaptyki { impactAsync(styl: StylUderzenia): Promise<void>;
 export const ODSTEP_PRZYPOMNIENIA_MS = 90; // tokeny „rzadZInstrukcja”: dwa uderzenia co 90 ms
 
 const STYL: Record<Exclude<WzorzecHaptyki, 'rzadZInstrukcja' | 'bladZapisu'>, StylUderzenia> = {
-  plus: 'light', piataKreska: 'medium', minus: 'soft', blokadaStukniecie: 'rigid',
+  plus: 'light', piataKreska: 'medium', minus: 'soft', blokadaStukniecie: 'rigid', stoperStart: 'light',
 };
 
 export function haptyka(m: ModulHaptyki = domyslny(), czekaj: (ms: number) => Promise<void> = (ms) => new Promise((r) => setTimeout(r, ms))): Haptyka {
