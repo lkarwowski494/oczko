@@ -470,6 +470,7 @@
   "zglos": {
     "tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "opis": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. R-162. „your device”, nie „your iPhone”: aplikacja działa też na iPadzie (M1-audytor-generalny-060, design-spec 012 opcja a); słowo „urządzenie” neutralne wobec modelu.",
+    "kontakt": "Tekst roboczy 08 (M1-audytor-generalny-057, 11-wzrost-001) — do zatwierdzenia przez 04. Zdanie pod opisem zgłoszenia, przed przyciskiem „Share”: dokąd wysłać raport. {{adres}} = adres e-mail wsparcia (support@…), wstawiany bez zmian; aplikacja sama niczego nie wysyła, użytkownik wybiera pocztę w arkuszu udostępniania.",
     "udostepnij": "Tekst z ekrany.html roli 04 (ekran ukończenia).",
     "pole_wersja": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
     "pole_system": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",

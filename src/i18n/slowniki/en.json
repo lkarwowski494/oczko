@@ -531,6 +531,7 @@
   "zglos": {
     "tytul": "Report a problem",
     "opis": "This is everything the report contains. Nothing leaves your device until you share it.",
+    "kontakt": "Send it by email to {{adres}}.",
     "udostepnij": "Share",
     "pole_wersja": "App version",
     "pole_system": "iOS",

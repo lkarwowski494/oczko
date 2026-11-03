@@ -16,7 +16,7 @@ const DIAG: PoleDiagnostyki[] = [
 describe('Zgłoś problem i stan danych', () => {
   test('BR-DAN-010/S1 / R-162: pełna diagnostyka widoczna, zanim cokolwiek opuści telefon', () => {
     const system = atrapaSystemu();
-    render(<ZglosProblem stan={{ diagnostyka: DIAG }} t={t} system={system} naAnuluj={jest.fn()} />);
+    render(<ZglosProblem stan={{ diagnostyka: DIAG }} t={t} system={system} kontakt="support@apps4brew.com" naAnuluj={jest.fn()} />);
     for (const d of DIAG) expect(screen.getByText(new RegExp(d.wartosc.replace(/[.()]/g, '\\$&')))).toBeTruthy();
     expect(system.udostepnij).not.toHaveBeenCalled();
     expect(system.otworzAdres).not.toHaveBeenCalled();
@@ -24,7 +24,7 @@ describe('Zgłoś problem i stan danych', () => {
 
   test('BR-DAN-010/S2 / R-163: wysyłka tylko przez arkusz udostępniania, treść = podgląd (Z07-05: „Share”)', () => {
     const system = atrapaSystemu();
-    render(<ZglosProblem stan={{ diagnostyka: DIAG }} t={t} system={system} naAnuluj={jest.fn()} />);
+    render(<ZglosProblem stan={{ diagnostyka: DIAG }} t={t} system={system} kontakt="support@apps4brew.com" naAnuluj={jest.fn()} />);
     // nazwa jak przycisk udostępniania w ekrany.html:197 (aria-label="Share")
     fireEvent.press(screen.getByRole('button', { name: /^Share/ }));
     expect(system.udostepnij).toHaveBeenCalledTimes(1);

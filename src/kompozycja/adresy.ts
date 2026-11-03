@@ -6,5 +6,7 @@ export const ADRESY = {
   warunki: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
   recenzja: 'https://apps.apple.com/app/id0000000000?action=write-review',
 } as const;
+/** Adres kontaktu na ekranie „Report a problem” (M1-audytor-generalny-057): ten sam co mailto na stronie wsparcia i w polityce (site/support.html, site/privacy.html; test zglos-kontakt-057). */
+export const ADRES_WSPARCIA = 'support@apps4brew.com';
 /** Family Sharing (P-038): kierunek „włączamy”, włączenie w App Store Connect przy konfiguracji — do tego czasu zdanie o rodzinie się nie pokazuje (P-089 (2)). */
 export const FAMILY_SHARING = false;

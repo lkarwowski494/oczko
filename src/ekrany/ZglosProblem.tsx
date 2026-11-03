@@ -9,10 +9,11 @@ export type PropsZglosProblem = {
   stan: { diagnostyka: PoleDiagnostyki[] };
   t: Tlumacz;
   system: System;          // udostepnij: jedyna droga wyjścia (bez sieci w aplikacji)
+  kontakt: string;         // adres wsparcia pokazany przed „Share” (M1-audytor-generalny-057); wysyłkę wybiera użytkownik w arkuszu
   naAnuluj(): void;
 };
 const ETYKIETA = { wersja: 'zglos.pole_wersja', system: 'zglos.pole_system', model: 'zglos.pole_model', jezyk: 'ustawienia.jezyk', synchronizacja: 'zglos.pole_synchronizacja', zegarek: 'zglos.pole_zegarek', bledy: 'zglos.pole_bledy' } as const;
-export function ZglosProblem({ stan, t, system, naAnuluj }: PropsZglosProblem): React.ReactElement {
+export function ZglosProblem({ stan, t, system, kontakt, naAnuluj }: PropsZglosProblem): React.ReactElement {
   const wiersze = stan.diagnostyka.map((d) => `${t(ETYKIETA[d.pole])}: ${d.wartosc}`);
   return (
     <Arkusz tytul={t('zglos.tytul')} przyciski={
@@ -22,6 +23,7 @@ export function ZglosProblem({ stan, t, system, naAnuluj }: PropsZglosProblem): 
       </>
     }>
       <Tresc>{t('zglos.opis')}</Tresc>
+      <Tresc testID="zglos-kontakt">{t('zglos.kontakt', { adres: kontakt })}</Tresc>
       {wiersze.map((w) => <Tresc key={w} podpis>{w}</Tresc>)}
     </Arkusz>
   );

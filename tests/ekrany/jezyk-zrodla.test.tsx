@@ -111,7 +111,7 @@ describe('Zgłoszenie z językiem aplikacji (BR-DAN-010, ER-45)', () => {
   test('pole „Language” w diagnostyce przed wysyłką', () => {
     const { ZglosProblem } = jest.requireActual<typeof import('../../src/ekrany/ZglosProblem')>('../../src/ekrany/ZglosProblem');
     const system = atrapaSystemu();
-    render(<ZglosProblem stan={{ diagnostyka: [{ pole: 'jezyk', wartosc: 'de' }] }} t={t} system={system} naAnuluj={jest.fn()} />);
+    render(<ZglosProblem stan={{ diagnostyka: [{ pole: 'jezyk', wartosc: 'de' }] }} t={t} system={system} kontakt="support@apps4brew.com" naAnuluj={jest.fn()} />);
     expect(screen.getByText('Language: de')).toBeTruthy();
   });
 });
