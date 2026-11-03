@@ -1,6 +1,6 @@
 {
   "ios": {
-    "CFBundleDisplayName": "Oczko",
+    "CFBundleDisplayName": "Szem",
     "NSCameraUsageDescription": "Az Oczko csak akkor használja a kamerát, amikor mintát, projektet vagy fonalcímkét fényképez. A fotók az eszközén maradnak."
   }
 }
