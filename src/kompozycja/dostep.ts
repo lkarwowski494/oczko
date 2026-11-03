@@ -4,7 +4,7 @@
 import { decyzja, odczytajPamiec, type Pamiec } from '../domena/dostep';
 import type { PoziomDostepu } from '../domena/limit';
 import type { Sklep } from '../domena/porty';
-import { PRODUKTY_PRO } from '../konfiguracja';
+import { PRODUKT_DOZYWOTNI, PRODUKTY_PRO } from '../konfiguracja';
 import type { AktywnePro } from '../ekrany/Oferty';
 
 export type MagazynPamieci = { czytaj(): Promise<string | null>; zapisz(tekst: string): Promise<void> };
@@ -23,7 +23,7 @@ export function dostepPro(sklep: Sklep, magazyn: MagazynPamieci, terazMs: () => 
     if (transakcje) await magazyn.zapisz(JSON.stringify(d.pamiec ?? { produkty: [], wygasa: null })).catch(() => undefined);
     const produkty = d.pamiec?.produkty ?? [];
     const aktywne: AktywnePro = !d.dostep ? null
-      : produkty.some((p) => p.endsWith('.lifetime')) ? { rodzaj: 'dozywotni' } : { rodzaj: 'subskrypcja', produkt: produkty[0] ?? '' };
+      : produkty.includes(PRODUKT_DOZYWOTNI) ? { rodzaj: 'dozywotni' } : { rodzaj: 'subskrypcja', produkt: produkty[0] ?? '' };
     stan = { pro: d.dostep, poziom: d.dostep ? 'pro' : transakcje ? 'darmowa' : 'niepewny', aktywne, wygasa: d.pamiec?.wygasa ?? null };
     sluchacze.forEach((f) => f(stan));
     return stan;

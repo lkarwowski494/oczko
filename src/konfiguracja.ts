@@ -48,8 +48,10 @@ export const SKRZYNKA_PORZUCONE_H = 1; // h; [OCENA] roli 05 (fix-7): katalog zl
 export const SIEC_PONOWIENIE_MS = 5000; // ms; [OCENA] roli 05 (ADR-0031 pkt 4): odstęp przed ponownym przetworzeniem skrzynki po zdarzeniu sieci „jest”
 export const MIGAWKA_WERSJA = 1; // wersja koperty migawki projektów w App Group (P-220 N2)
 export const PLIKI_OCHRONA_MIN = 10; // min; [OCENA] roli 05 (Z07-15): plik młodszy nie jest sprzątany przy starcie (zapis pliku przed wierszem odwołania)
-/** ID produktów Pro: [DO USTALENIA] przy konfiguracji App Store Connect (P-038, P-089); tymczasowe jak w docs/monetyzacja/dostep.mjs. */
-export const PRODUKTY_PRO: readonly string[] = Object.freeze(['oczko.pro.lifetime', 'oczko.pro.monthly', 'oczko.pro.yearly']);
+/** ID produktów Pro: [DO USTALENIA] przy konfiguracji App Store Connect (P-038, P-089); tymczasowe jak w docs/monetyzacja/dostep.mjs.
+ *  PRODUKT_DOZYWOTNI (M1-077, MON-12): jedyne miejsce roli produktu — adapter sklepu i stan dostępu rozpoznają dożywotni tylko po tym ID; pozostałe to subskrypcje. */
+export const PRODUKT_DOZYWOTNI = 'oczko.pro.lifetime';
+export const PRODUKTY_PRO: readonly string[] = Object.freeze([PRODUKT_DOZYWOTNI, 'oczko.pro.monthly', 'oczko.pro.yearly']);
 
 /** Preferencje urządzenia (ADR-0029): wartości domyślne, gdy klucza w `ustawienie` brak albo zapis jest uszkodzony. Tylko preferencje interfejsu. */
 export const PREFERENCJE_DOMYSLNE: { readonly wibracje: boolean; readonly ekranNieGasnie: boolean; readonly ukladMiar: 'auto' | 'metric' | 'imperial' } = { wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' };
