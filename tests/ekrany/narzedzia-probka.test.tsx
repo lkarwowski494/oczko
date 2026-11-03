@@ -38,10 +38,10 @@ describe('Swatch', () => {
     expect(screen.queryByLabelText('Width you want, cm')).toBeNull();
     expect(screen.getByRole('radio', { name: 'per 4 in' }).props.accessibilityState).toMatchObject({ selected: true });
   });
-  test('BR-KAL-003/S1 + BR-KAL-001/S1 na żywo (scenariusz 41): 20 na 4 in, 10 in → 19.685 na 10 cm i 50 oczek, blok grubości', () => {
+  test('BR-KAL-003/S1 + BR-KAL-001/S1 na żywo (scenariusz 41): 20 na 4 in, 10 in → 19.7 na 10 cm (ER-62) i 50 oczek, blok grubości', () => {
     ekran('in');
     fireEvent.changeText(screen.getByTestId('probka-oczka'), '20');
-    expect(screen.getByText('= 19.685 stitches per 10 cm')).toBeTruthy();
+    expect(screen.getByText('= 19.7 stitches per 10 cm')).toBeTruthy();
     expect(screen.queryByTestId('probka-wynik-oczka')).toBeNull();
     fireEvent.changeText(screen.getByTestId('probka-szerokosc'), '10');
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '50 stitches');
@@ -55,7 +55,7 @@ describe('Swatch', () => {
     fireEvent.changeText(screen.getByTestId('probka-oczka'), '22');
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '110 stitches');
     fireEvent.press(screen.getByRole('radio', { name: 'per 4 in' }));
-    expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '108.268 stitches');
+    expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '108.3 stitches'); // DEC-34 a (ER-62): wyliczona z 1 miejscem (pełna 108,268)
   });
   // M1-133 (04-studio-projektowe-523, opcja b — bez nowego elementu): klawiatura dziesiętna nie ma Return, a wynik chował się pod nią.
   // Ekran odsuwa treść nad klawiaturę, przy wpisywaniu szerokości przewija pole na górę (wynik tuż pod nim), a klawiaturę chowa gest w dół.
