@@ -40,9 +40,13 @@ async function start(wartosc: number, zn = '{}') {
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
   mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
   render(<EkranWzoru />);
-  await waitFor(() => expect(mockWidok.strona).toBeDefined());
+  // M1-193 (07-jakosc-544): czekamy na propsy widoku z tego testu — strona i znacznik bieżącego wzoru (null bez znacznika), nie na resztki poprzedniego.
+  const strona = (JSON.parse(zn) as { strona?: number }).strona ?? null;
+  await waitFor(() => { expect(mockWidok.strona).toBeDefined(); expect(mockWidok.znacznik === undefined ? 'brak' : mockWidok.znacznik?.strona ?? null).toBe(strona); });
   return s;
 }
+// M1-193: atrapa widoku jest modułowa — bez resetu zdarzenia z wolnego testu trafiają do widoku (i bazy) poprzedniego.
+beforeEach(() => { mockWidok = {}; });
 const zapisany = async (s: Awaited<ReturnType<typeof start>>) => znacznikWzoru(s.baza, 'w1');
 const przytrzymaj = (strona: number, y: number) => act(() => mockWidok.onStukniecie?.({ nativeEvent: { wzorId: 'w1', strona, y } }));
 const naStronach = (strona: number, stron: number) => act(() => mockWidok.onStrona?.({ nativeEvent: { strona, stron } }));
