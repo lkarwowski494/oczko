@@ -5,7 +5,8 @@
     "cofnij_other": "Urungkan {{count}} baris",
     "tytul_roboczy": "Penghitung",
     "podpowiedz_start": "Ketuk tombol besar setiap kali Anda menyelesaikan satu baris. Setiap baris mendapat satu goresan pensil di sini.",
-    "jednostka": "baris",
+    "jednostka_other": "baris",
+    "jednostka_w_trakcie": "baris saat ini",
     "z_celu": "dari {{cel}}",
     "teraz": "Sedang mengerjakan baris {{n}}",
     "plus": "+1 baris",
@@ -28,15 +29,28 @@
     "baner_seria_other": "Menambah {{count}} baris dalam {{sekundy}} dtk. Urungkan?",
     "cofnieto_other": "Menghapus {{count}} baris. Kembali ke {{wartosc}}.",
     "przypomnienie": "Baris {{n}}: {{tekst}}",
+    "przypomnienie_postep": "{{ktory}} dari {{razy}}, berikutnya di baris {{nastepny}}",
     "przypomnienie_postep_ostatnie": "{{ktory}} dari {{razy}}",
     "wejscie_w_przypomnienie": "Baris {{n}}: {{tekst}}, {{ktory}} dari {{razy}}.",
+    "powtorzenie": "{{nazwa}}: pengulangan {{numer}}, baris {{rzad}} dari {{dlugosc}}",
     "notatka": "Catatan",
     "blizniak": "Bagian pasangan, baris {{rzad}}: {{tresc}}",
+    "blizniak_oba": "Bagian pasangan, baris {{rzad}}: {{notatka}}, {{przypomnienie}}",
     "znaczniki_sesji_other": "Tanda sesi ini: {{count}} baris sejak {{godzina}}",
     "ostatni_darmowy": "Sisa 1 hari berkarya gratis di {{miesiac}}",
     "cel_dnia_other": "Target hari ini: {{count}} baris",
     "calosc_other": "{{czesc}} total: {{count}} baris",
-    "wzor_a11y": "Pola"
+    "wzor_a11y": "Pola",
+    "jednostka_oczka_other": "tusuk",
+    "plus_oczka": "+1 tusuk",
+    "podpis_plus_oczka": "ketuk untuk tiap tusuk",
+    "plus_a11y_oczka": "Tambah tusuk",
+    "minus_a11y_oczka": "Kurangi tusuk",
+    "po_dodaniu_oczka_other": "{{count}} tusuk.",
+    "znaczniki_sesji_oczka_other": "Tanda sesi ini: {{count}} tusuk sejak {{godzina}}",
+    "seria_blokada_other": "{{count}} baris ditambahkan dari layar kunci pukul {{godzina}}. Urungkan?",
+    "seria_zegarek_other": "{{count}} baris ditambahkan dari jam tangan Anda pukul {{godzina}}. Urungkan?",
+    "wpisz_blad_format": "Masukkan bilangan bulat, 0 atau lebih, misalnya {{przyklad}}."
   },
   "limit": {
     "zawczasu_other": "Hari berkarya gratis di {{miesiac}} sudah habis. Penghitungan dijeda hingga {{data}}. {{count}} baris Anda dan semua data lain tetap tersimpan.",
@@ -57,6 +71,7 @@
     "zglos_tlumaczenie": "Laporkan masalah terjemahan",
     "oczko_pro": "Oczko Pro",
     "wibracje": "Getaran",
+    "pomoc": "Bantuan",
     "zglos": "Laporkan masalah",
     "ocen": "Beri nilai Oczko",
     "polityka": "Kebijakan Privasi",
@@ -65,7 +80,22 @@
     "eksport": "Ekspor semua data",
     "import": "Impor cadangan",
     "usun_wszystko": "Hapus semua data",
-    "usun_potwierdz": "Hapus semua data"
+    "usun_pytanie": "Ini menghapus semua proyek, penghitung baris, riwayat, pola, dan foto dari Oczko. Salinan pengaman tetap ada di perangkat ini. Oczko menghapus salinan tersebut setelah 30 hari, saat Anda membuka Oczko berikutnya, dan sebagian lebih awal jika salinan memakan banyak ruang.",
+    "usun_potwierdz": "Hapus semua data",
+    "usun_pro": "Oczko Pro tidak dihapus. Jika setelahnya Oczko Pro tidak aktif, pilih Pulihkan pembelian di Oczko Pro.",
+    "usun_kopia": "Oczko terlebih dahulu menyimpan salinan di app File, di Oczko › Backup. Mengimpor file itu mengembalikan semuanya.",
+    "usun_kopia_blad": "Oczko tidak dapat menyimpan salinan, jadi tidak ada yang dihapus. Kosongkan sebagian ruang dan coba lagi.",
+    "ekran_nie_gasnie": "Layar menyala saat menghitung",
+    "ekran_nie_gasnie_opis": "Layar tetap menyala selama penghitung baris terbuka. Mematikan pengaturan ini dapat menghemat baterai.",
+    "miary_auto": "Otomatis",
+    "miary_metric": "Metrik",
+    "miary_metric_opis": "mm, cm, g",
+    "miary_imperial": "Imperial",
+    "miary_imperial_opis": "in, oz",
+    "miary_opis": "Mengubah cara ukuran dan panjang ditampilkan dan dimasukkan. Data tersimpan Anda tidak berubah.",
+    "pro_wlaczone": "Aktif",
+    "grupa_liczenie": "Penghitungan",
+    "blad_zapisu": "Tidak dapat menyimpan pengaturan ini"
   },
   "aktywnosc": {
     "plus": "+1 baris",
@@ -108,7 +138,18 @@
     "wstecz": "Kembali",
     "dodaj": "Tambah",
     "gotowe": "Selesai",
-    "ok": "OK"
+    "ok": "OK",
+    "blad_zapisu_opis": "Perangkat Anda mungkin kehabisan ruang. Tidak ada yang diubah. Kosongkan sebagian ruang dan coba lagi.",
+    "blad_udostepnienia": "Tidak dapat menyiapkan gambar",
+    "blad_udostepnienia_opis": "Perangkat Anda mungkin kehabisan ruang. Kosongkan sebagian ruang dan coba bagikan lagi.",
+    "ladowanie": "Memuat…",
+    "blad_wczytania": "Tidak dapat memuat ini.",
+    "ponow": "Coba lagi",
+    "odrzuc_tytul": "Buang perubahan?",
+    "odrzuc_opis_zmiany": "Semuanya tetap seperti semula.",
+    "odrzuc_opis_nowy": "Tidak ada yang akan ditambahkan.",
+    "wroc_do_edycji": "Kembali mengedit",
+    "odrzuc_zmiany": "Buang perubahan"
   },
   "projekty": {
     "szukaj": "Cari",
@@ -117,6 +158,7 @@
     "brak_wynikow": "Tidak ada proyek bernama “{{zapytanie}}”.",
     "w_toku": "Sedang berjalan",
     "ukonczone": "Selesai",
+    "dni_other": "Tersisa {{zostalo}} dari {{limit}} hari merajut gratis di bulan {{miesiac}}",
     "tytul": "Proyek",
     "nazwa_robocza": "Penghitung dari {{data}}",
     "ostatnia_praca_dzis": "terakhir dikerjakan hari ini",
@@ -127,7 +169,11 @@
     "kosz": "Baru dihapus",
     "kosz_a11y_other": "Baru dihapus, {{count}} item",
     "wiersz": "{{czesc}} · baris {{n}}",
-    "wiersz_cel": "{{czesc}} · baris {{n}} dari {{cel}}"
+    "wiersz_cel": "{{czesc}} · baris {{n}} dari {{cel}}",
+    "ukonczono_wiersz": "Selesai {{data}} · {{czas}}",
+    "ukonczono_bez_czasu": "Selesai {{data}}",
+    "ukonczono_a11y": "{{nazwa}}, selesai {{data}}, {{czas}}",
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, selesai {{data}}"
   },
   "historia": {
     "pusto": "Belum ada perubahan.",
@@ -135,7 +181,15 @@
     "wpis_opis": "{{czas}} · {{z}} → {{na}} ({{opis}})",
     "opis_zerowanie": "reset",
     "opis_wpisanie": "dimasukkan",
-    "opis_cofniecie": "diurungkan"
+    "opis_cofniecie": "diurungkan",
+    "seria_other": "{{count}} baris dalam {{czas}}",
+    "cofnij_serie_other": "Urungkan {{count}} baris",
+    "cofnieto": "Diurungkan",
+    "starszy_info": "Hanya perubahan terakhir yang dapat diurungkan. Untuk memperbaiki yang ini, masukkan angka yang benar.",
+    "wpisz": "Masukkan angka yang benar",
+    "wpis_rozwin_a11y": "Selengkapnya tentang {{wpis}}",
+    "wpis_rozwin_podpowiedz": "Menampilkan cara mengubah entri ini.",
+    "wpis_a11y": "{{od}} menjadi {{do}} pukul {{czas}}"
   },
   "menu": {
     "nazwa": "Beri nama proyek dan bagian",
@@ -151,7 +205,8 @@
     "zeruj_potwierdz": "Reset ke 0",
     "znaczenie": "Arti angka ini",
     "wzor": "Pola",
-    "dodaj_wzor": "Tambah pola…"
+    "dodaj_wzor": "Tambah pola…",
+    "zeruj_zablokowany": "Buka kunci penghitung baris untuk mengatur ulang."
   },
   "formularz": {
     "wpisz_tytul": "Masukkan nomor baris",
@@ -217,14 +272,19 @@
     "sesja_projekt": "Waktu proyek setelah disimpan: {{czas}}.",
     "sesja_sprawdz_other": "Oczko menghentikan timer ini setelah {{count}} jam. Atur kapan Anda benar-benar berhenti.",
     "sesja_przerwy": "Sesi ini memiliki jeda {{czas}}. Setelah Anda mengubah waktunya, sesi dihitung dari awal sampai akhir.",
-    "termin_osiagniety": "Target tercapai, jadi tidak ada target harian."
+    "termin_osiagniety": "Target tercapai, jadi tidak ada target harian.",
+    "wloczka_tytul": "Benang untuk proyek ini",
+    "wloczka_opis": "Pilih yang Anda gunakan. Saat Anda selesai, Oczko menanyakan berapa gulung yang Anda pakai dan menguranginya dari stok benang Anda.",
+    "wloczka_pusto": "Stok benang Anda masih kosong. Tambahkan dulu benang yang Anda gunakan, lalu pilih di sini.",
+    "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} gulung di stok benang Anda",
+    "blad_zapisu": "Tidak dapat menyimpan perubahan Anda"
   },
   "ukonczenie": {
     "udostepnij": "Bagikan",
     "gotowe": "Selesai",
     "ogloszenie": "{{nazwa}} dipindahkan ke Selesai.",
     "okres": "Selesai · {{okres}}",
-    "jednostka": "baris",
+    "jednostka_other": "baris",
     "czesci_other": "{{count}} bagian",
     "dni_other": "{{count}} hari berkarya",
     "zdjecie": "Foto {{nazwa}}",
@@ -238,7 +298,10 @@
     "zuzycie_wiecej": "Tambah satu gulung",
     "zuzycie_ponad_zapas_other": "Itu melebihi {{count}} gulung di stok benang Anda. Stok Anda akan menunjukkan 0.",
     "zapas_juz_pusty": "Stok benang Anda sudah menunjukkan 0 untuk benang ini.",
-    "edytuj_zapas": "Ubah stok"
+    "edytuj_zapas": "Ubah stok",
+    "bez_wloczki": "Tidak ada benang yang dipilih untuk proyek ini, jadi stok benang Anda tetap seperti semula.",
+    "wybierz_wloczke": "Pilih benang",
+    "edytuj_zapas_opis": "Setelah Anda menyimpan, Anda kembali ke kartu ini dengan angka yang baru."
   },
   "projekt": {
     "czesc_cel_other": "{{rzedy}} dari {{count}} baris",
@@ -249,6 +312,10 @@
     "ostatnia_zmiana": "Perubahan terakhir {{data}}",
     "czesc_rzedy_other": "{{count}} baris",
     "postep_opis": "Perkiraan, dihitung dari baris bagian yang punya target.",
+    "termin_dzis_other": "Tenggat {{data}}, hari ini {{zrobione}} dari {{count}} baris",
+    "termin_po_other": "Tenggat {{data}} sudah lewat, tersisa {{count}} baris",
+    "termin_osiagniety": "Tenggat {{data}}, target tercapai",
+    "termin_bez_celow": "Tenggat {{data}}. Tetapkan target baris untuk satu bagian agar ada target harian.",
     "czesci": "Bagian",
     "calosc_other": "Seluruh potongan: {{count}} baris",
     "para": "Pasangan {{nazwa}}",
@@ -276,6 +343,7 @@
     "kopia_tytul": "Buat satu lagi {{nazwa}}?",
     "kopia_opis": "Bagian, target, pengingat, serta jarum atau hakpen beserta ukurannya sama. Semua penghitung mulai dari 0, dan proyek ini tetap seperti semula.",
     "kopia_potwierdz": "Buat satu lagi",
+    "kopia_nazwa": "{{nazwa}} {{n}}",
     "edycja_info": "Bagian dan penghitung yang dihapus tetap ada di Baru dihapus selama 30 hari.",
     "data_startu": "Dimulai",
     "data_ukonczenia": "Selesai",
@@ -290,7 +358,12 @@
     "probka_wartosc_other": "{{p}} tusuk / 10 cm",
     "probka_wartosc_in_other": "{{p}} tusuk / 4 in",
     "wzor": "Pola",
-    "wzory": "Pola"
+    "wzory": "Pola",
+    "miejsce_wzoru_wartosc": "Halaman {{strona}}, baris {{rzad}}",
+    "miejsce_wzoru_strona": "Halaman {{strona}}",
+    "wloczka": "Benang",
+    "wloczka_brak": "Tidak ada",
+    "wloczki_other": "{{count}} benang"
   },
   "dni": {
     "dzien_other": "{{etykieta}} · {{count}} baris",
@@ -326,6 +399,7 @@
     "odnawianie_miesiac": "Diperpanjang setiap bulan sampai Anda membatalkan di pengaturan Apple ID.",
     "odnawianie_rok": "Diperpanjang setiap tahun sampai Anda membatalkan di pengaturan Apple ID.",
     "raz": "Bayar sekali. Tidak ada perpanjangan.",
+    "dozywotni_przy_subskrypcji": "Langganan Anda terus diperpanjang sampai Anda membatalkannya.",
     "bez_pro_other": "Tanpa Pro: {{limit}} hari berkarya setiap bulan, dan semua proyek serta data Anda, selalu.",
     "rodzina": "Dibagikan ke keluarga Anda lewat Berbagi dengan Keluarga.",
     "kup": "Lanjutkan dengan {{plan}}",
@@ -335,7 +409,13 @@
     "zarzadzaj": "Kelola langganan",
     "masz_pro": "Anda memiliki Oczko Pro.",
     "brak_sieci": "Harga tidak tersedia saat ini. Periksa koneksi Anda.",
-    "ladowanie": "Memuat paket…"
+    "ladowanie": "Memuat paket…",
+    "czeka": "Menunggu persetujuan. Oczko Pro aktif segera setelah disetujui.",
+    "czeka_przycisk": "Menunggu persetujuan",
+    "blad_zakupu": "Pembelian tidak berhasil. Periksa koneksi Anda dan coba lagi.",
+    "przywracanie_nic": "Tidak ditemukan pembelian Oczko Pro untuk Apple ID ini. Jika Anda membelinya dengan Apple ID lain, masuk dengan Apple ID tersebut di Pengaturan dan coba lagi.",
+    "przywracanie_blad": "Tidak dapat memulihkan pembelian. Periksa koneksi Anda dan coba lagi.",
+    "pro_wlaczone": "Oczko Pro aktif."
   },
   "uczciwe": {
     "tytul": "Hari berkarya pertama Anda selesai",
@@ -353,13 +433,18 @@
     "zapisz_kopie": "Simpan salinan data saya",
     "sprobuj": "Coba mulai seperti biasa",
     "zglos": "Laporkan masalah",
-    "zapisano": "Salinan tersimpan"
+    "zapisano": "Salinan tersimpan",
+    "blad_kopii": "Tidak dapat menyimpan salinan",
+    "blad_kopii_opis": "Perangkat Anda mungkin kehabisan ruang. Kosongkan sebagian ruang, lalu simpan salinan lagi atau coba mulai secara normal.",
+    "tytul_brak_miejsca": "Perangkat Anda kehabisan ruang",
+    "opis_brak_miejsca": "Tidak ada yang diubah. Kosongkan sebagian ruang di perangkat ini, lalu coba mulai secara normal."
   },
   "dane": {
     "import_tytul": "Impor cadangan",
     "import_plik": "File: {{plik}}",
     "scal": "Gabungkan dengan yang ada di sini",
     "zastap": "Ganti yang ada di sini",
+    "zastapiono": "Oczko terlebih dahulu menyimpan data Anda sebelumnya sebagai “{{kopia}}”. Temukan di app File, di Oczko › Backup.",
     "konflikt_tytul": "Dua versi {{licznik}}",
     "konflikt_wybor_other": "{{count}} baris · {{urzadzenie}} · {{godzina}}",
     "konflikt_a11y_other": "Pertahankan {{count}} baris dari {{urzadzenie}}, {{godzina}}",
@@ -369,18 +454,24 @@
     "nowe_other": "{{count}} proyek baru",
     "zaimportowano": "Digabungkan. {{nowe}}. Sekarang: {{licznosci}}.",
     "blad": "Gagal. Data Anda tidak berubah.",
-    "eksport_gotowy_tytul": "Ekspor siap"
+    "eksport_gotowy_tytul": "Ekspor siap",
+    "zastapiono_tytul": "Data diganti",
+    "zastapiono_wroc": "Untuk kembali, buka file itu di Oczko dan pilih Ganti."
   },
   "stan_danych": {
     "tytul": "Data dan sinkronisasi",
     "ostatnia": "Terakhir disinkronkan {{data}}",
     "czeka": "Sinkronisasi menunggu koneksi jaringan.",
+    "zapisane": "Semuanya tersimpan di perangkat ini.",
     "wylaczona": "Sinkronisasi iCloud nonaktif.",
     "aktywna": "Sinkronisasi iCloud aktif.",
-    "zegarek_kontakt": "Kontak terakhir dengan jam tangan Anda: {{data}}."
+    "zegarek_kontakt": "Kontak terakhir dengan jam tangan Anda: {{data}}.",
+    "kopie_opis": "Salinan yang disimpan Oczko sebelum mengimpor atau menghapus ada di app File, di Oczko › Backup. Oczko menghapus salinan tersebut setelah 30 hari, saat Anda membuka Oczko berikutnya, dan sebagian lebih awal jika salinan memakan banyak ruang. Sampai saat itu, salinan tersebut ikut dihitung dalam cadangan iCloud perangkat Anda."
   },
   "zglos": {
     "tytul": "Laporkan masalah",
+    "opis": "Inilah semua isi laporan. Tidak ada yang keluar dari perangkat Anda sampai Anda membagikannya.",
+    "kontakt": "Kirim lewat email ke {{adres}}.",
     "udostepnij": "Bagikan",
     "pole_wersja": "Versi aplikasi",
     "pole_system": "iOS",
@@ -468,7 +559,8 @@
     "inny_opis": "Hanya satu sesi berjalan dalam satu waktu. Hentikan di sana dan mulai untuk {{biezacy}}?",
     "inny_potwierdz": "Hentikan dan mulai di sini",
     "sprawdz_other": "Timer berjalan selama {{count}} jam, jadi Oczko menghentikannya.",
-    "sprawdz_link": "Periksa waktu akhir"
+    "sprawdz_link": "Periksa waktu akhir",
+    "blad_zapisu": "Tidak dapat memperbarui pengatur waktu"
   },
   "sesje": {
     "tytul": "Sesi",
@@ -490,6 +582,7 @@
     "na_4in": "per 4 in",
     "szerokosc_cm": "Lebar yang Anda inginkan, cm",
     "szerokosc_in": "Lebar yang Anda inginkan, in",
+    "zaproszenie_szerokosc": "Masukkan lebar untuk mendapatkan jumlah tusuk.",
     "przeliczona_other": "= {{p}} tusuk per 10 cm",
     "wynik_oczka": "Tusuk untuk lebar ini",
     "oczka_wynik_other": "{{count}} tusuk",
@@ -577,6 +670,7 @@
   "karta": {
     "stopka": "Dihitung di Oczko",
     "czas": "waktu berkarya",
+    "dni_podpis_other": "hari merajut",
     "obraz_a11y": "Kartu untuk {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {
@@ -659,6 +753,7 @@
     "cofnij_rysunek": "Urungkan goresan terakhir",
     "zakreslacz_podpowiedz": "Seret jari untuk menyorot. Dua jari untuk menggulir.",
     "rysik_podpowiedz": "Pensil menulis. Jari Anda menggulir.",
+    "wskazowka_znacznika": "Ketuk baris untuk memasang penanda.",
     "import_w_toku": "Menambahkan pola…",
     "czeka_siec": "Menunggu internet untuk menyimpan halaman web.",
     "usun_oczekujacy_a11y": "Hapus {{nazwa}} dari daftar",
@@ -670,8 +765,32 @@
     "blad_rozmiar_opis": "Sebuah pola bisa hingga {{mb}} MB. Tidak ada yang ditambahkan.",
     "blad_strona": "Oczko tidak dapat menyimpan halaman ini",
     "blad_strona_opis": "Halaman ini meminta Anda masuk, atau tidak berisi teks maupun gambar. Tidak ada yang ditambahkan. Buka di browser, simpan sebagai PDF, lalu tambahkan PDF-nya.",
+    "blad_czas": "Oczko tidak dapat menyelesaikan konversi file ini",
+    "blad_czas_opis": "“{{plik}}” terlalu lama dikonversi. Tidak ada yang ditambahkan. Simpan sebagai PDF lalu tambahkan PDF tersebut, atau coba lagi.",
     "brak_aparatu_opis": "Untuk memindai halaman pola, izinkan akses kamera di Pengaturan. Anda tetap bisa memilih foto atau file.",
-    "word_podglad": "Dokumen Word dibuka apa adanya. Untuk menandai baris dan menyorot, simpan sebagai PDF lalu tambahkan PDF-nya."
+    "word_podglad": "Dokumen Word dibuka apa adanya. Untuk menandai baris dan menyorot, simpan sebagai PDF lalu tambahkan PDF-nya.",
+    "notatka_chip": "Baris {{n}}: {{tekst}}",
+    "notatka_chip_a11y": "Catatan di baris {{n}}: {{tekst}}. Buka",
+    "notatki_wiele_other": "{{count}} catatan",
+    "notatki_tytul": "Catatan di halaman {{strona}}",
+    "notatka_tytul": "Catatan untuk baris {{n}}",
+    "notatka_usun": "Hapus catatan",
+    "notatka_usun_tytul": "Hapus catatan ini?",
+    "notatka_usun_opis": "Catatan dihapus dari pola dan dari baris {{n}}.",
+    "notatka_edytuj": "Edit",
+    "notatka_edytuj_a11y": "Edit catatan untuk baris {{n}}",
+    "przed_schematem": "Sebelum pola",
+    "znacznik_napis": "Baris {{n}}",
+    "blad_zapis": "Oczko tidak dapat menyimpan pola ini",
+    "blad_zapis_opis": "Perangkat Anda mungkin kehabisan ruang. Tidak ada yang ditambahkan. Kosongkan sebagian ruang dan coba lagi.",
+    "blad_rysunku": "Tidak dapat menyimpan sorotan dan coretan",
+    "blad_rysunku_opis": "Perangkat Anda mungkin kehabisan ruang. Sorotan dan coretan Anda masih menunggu di perangkat ini. Oczko akan menyimpannya saat Anda membuka pola ini lagi dan ada ruang kosong.",
+    "rysunek_niezapisany_opis": "Perangkat Anda mungkin kehabisan ruang. Oczko menyimpan sorotan dan coretan terbaru Anda hanya selama Oczko terbuka. Kosongkan sebagian ruang, lalu buka pola ini lagi untuk menyimpannya.",
+    "wyjdz_tytul": "Tinggalkan pola ini?",
+    "wyjdz_zostan": "Tetap",
+    "wyjdz_potwierdz": "Keluar tanpa menyimpan",
+    "miejsce_tytul": "Perangkat Anda hampir penuh",
+    "miejsce_opis": "Sorotan dan coretan yang Anda tambahkan mungkin tidak tersimpan. Kosongkan sebagian ruang sebelum menggambar."
   },
   "udostepnij": {
     "tytul": "Tambah ke Oczko",
@@ -702,15 +821,20 @@
     "przelacznik": "Sinkronkan dengan iCloud",
     "opis": "Menjaga proyek, pola, dan riwayat tetap sama di perangkat Anda. Data Anda hanya dikirim ke iCloud Anda sendiri; Oczko tidak punya server.",
     "wlacz_tytul": "Aktifkan sinkronisasi iCloud?",
+    "wlacz_opis": "Proyek di perangkat ini dan yang sudah ada di iCloud Anda digabungkan. Tidak ada yang dihapus. Jika penghitung baris memiliki nilai berbeda, Oczko menampilkan keduanya dan Anda yang memilih.",
     "wlacz_potwierdz": "Aktifkan",
     "wylacz_tytul": "Nonaktifkan sinkronisasi iCloud?",
+    "wylacz_opis": "Semuanya tetap ada di perangkat ini. Perubahan di sini tidak lagi dikirim ke iCloud, dan perangkat Anda yang lain tetap menyimpan apa yang sudah ada.",
     "wylacz_potwierdz": "Nonaktifkan",
     "synchronizuje": "Menyinkronkan…",
     "brak_konta": "iCloud tidak tersedia untuk Oczko",
+    "brak_konta_opis": "Pastikan Anda sudah masuk ke iCloud dan iCloud aktif untuk Oczko di Pengaturan. Semuanya tetap tersimpan di perangkat ini.",
     "ustawienia": "Buka Pengaturan",
     "brak_miejsca": "Penyimpanan iCloud Anda penuh",
+    "brak_miejsca_opis": "Perubahan tidak disinkronkan. Perubahan tersimpan di perangkat ini dan akan disinkronkan saat ada ruang.",
     "zarzadzaj": "Kelola penyimpanan",
     "konto_zmienione_tytul": "Akun iCloud berbeda",
+    "konto_zmienione_opis": "Perangkat ini sekarang masuk ke akun iCloud lain. Sinkronisasi dijeda dan data Anda di sini tidak berubah. Sinkronkan dengan akun ini? Proyek Anda di sini dan di akun tersebut akan digabungkan.",
     "polacz": "Sinkronkan dengan akun ini",
     "nie_synchronizuj": "Jangan sinkronkan",
     "konflikt_licznik": "Dua versi penghitung ini",
@@ -720,6 +844,7 @@
     "konflikt_wybor_opis": "Pilih yang sesuai dengan pekerjaan Anda. Yang lain tetap ada di riwayat.",
     "konflikty_other": "{{count}} penghitung memiliki dua versi",
     "niepelna": "Beberapa perubahan dari perangkat Anda yang lain belum ditampilkan",
+    "niepelna_nowsza": "Data ini berasal dari versi Oczko yang lebih baru. Perbarui Oczko di perangkat ini untuk melihatnya. Penghitung baris Anda di sini tidak berubah.",
     "niepelna_opis": "Oczko terus mencoba. Penghitung Anda di sini tidak berubah.",
     "zastap_wylacz": "Nonaktifkan sinkronisasi iCloud dulu",
     "zastap_wylacz_opis": "Untuk mengganti yang ada di sini, sinkronisasi iCloud harus nonaktif. Jika tidak, iCloud akan mengembalikan data lama. Anda dapat mengaktifkannya lagi setelahnya.",
@@ -727,5 +852,30 @@
     "usun_z_icloud": "Hapus juga dari iCloud",
     "usun_z_icloud_opis": "Perangkat Anda yang lain kehilangan proyek ini saat disinkronkan berikutnya.",
     "usun_zostaje": "Data di iCloud dan di perangkat Anda yang lain tetap ada."
+  },
+  "import": {
+    "nie_rozpoznano_tytul": "Oczko tidak mengenali file ini",
+    "nie_rozpoznano_opis": "Pilih file yang diekspor dari Oczko. Tidak ada yang diubah."
+  },
+  "przyp": {
+    "menu": "Pengingat",
+    "tytul": "Pengingat",
+    "lista_opis": "Ketuk pengingat untuk mengubah atau menghapusnya.",
+    "wiersz_other": "Dari baris {{od}}, setiap {{count}} baris, {{razy}}×",
+    "edytuj_tytul": "Edit pengingat",
+    "usun": "Hapus pengingat",
+    "usun_tytul": "Hapus pengingat ini?",
+    "usun_opis": "Oczko berhenti mengingatkan Anda tentang “{{tekst}}”. Hitungan dan riwayat Anda tetap seperti semula.",
+    "wiersz_a11y": "{{tekst}}, {{opis}}. Edit"
+  },
+  "jednostka": {
+    "m": "{{wartosc}} m",
+    "yd": "{{wartosc}} yd",
+    "g": "{{wartosc}} g",
+    "oz": "{{wartosc}} oz",
+    "m_nazwa": "Meter",
+    "yd_nazwa": "Yard",
+    "g_nazwa": "Gram",
+    "oz_nazwa": "Ounce"
   }
 }
