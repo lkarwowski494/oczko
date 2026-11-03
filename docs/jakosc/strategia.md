@@ -175,7 +175,7 @@ Testy zależne od poprawek 01/02/05 (P-090 Q3a, P-091 11a): [`zgloszenia.md`](zg
 | `Intl.NumberFormat`/`DateTimeFormat` na Hermes | E2E: ekran z liczbą i datą w 3 językach (en, de, ja) | bramka po pierwszym zielonym |
 
 ## 11. Plan wydania (moduł `wydanie`, build)
-Jeden SHA dla wszystkich przebiegów kandydata (tag → SHA → przebieg TestFlight → build N); na tym SHA: `jakosc-linux` zielony, pakiet podstawowy E2E iPhone, pełny katalog raz (P-091 9a), `swift test` (XCTest UI: plan, §10 #11), `scripts/wydanie/kontrola-ipa.sh` na podpisanym `.ipa`, stan `VALID` w App Store Connect (rola 10), schemat CloudKit Production zgodny (P-091 1), lista §8 z wynikami, lista „Nie sprawdzono”. Test aktualizacji z poprzedniej wersji z danymi: od 1.0 (`tests/bazy/vN.db` + TT-06). Werdykt: tryb audit roli 07.
+Jeden SHA dla wszystkich przebiegów kandydata (tag → SHA → przebieg TestFlight → build N); na tym SHA: zielony `jakosc-ios` z pakietem podstawowym E2E iPhone (zadanie `bramka` w `testflight.yml`, `scripts/wydanie/testflight.mjs`), w buildzie TestFlight pełne `npm run verify` i `swift test` reguł (jak §5; bez zadania `akceptacja` i pętli stref z `jakosc-linux`, M1-audytor-generalny-162), pełny katalog raz (P-091 9a), XCTest UI: plan (§10 #11), `scripts/wydanie/kontrola-ipa.sh` na podpisanym `.ipa`, stan `VALID` w App Store Connect (rola 10), schemat CloudKit Production zgodny (P-091 1), lista §8 z wynikami, lista „Nie sprawdzono”. Test aktualizacji z poprzedniej wersji z danymi: od 1.0 (`tests/bazy/vN.db` + TT-06). Werdykt: tryb audit roli 07.
 
 ## Pytania na STOP E2
 **DS-11. Przebiegi, które GitHub uruchamia tylko z `main` (nocny pełny katalog, ręczne `workflow_dispatch`).**

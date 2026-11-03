@@ -31,7 +31,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 | ID kryterium | np. `NFR-PIE-001`, `BR-LIC-001-S1`, `P-089-3a`, `ADR-0019` |
 
 ## Build E2E (dla 08 i workflowu `jakosc-ios.yml`)
-Build Release na symulator bez podpisu (`CODE_SIGNING_ALLOWED=NO`, DS-07). Przełączniki ustawiane **tylko** w kroku buildu E2E (kontrola repo: poza tym krokiem nie występują; `sprawdz-workflowy.mjs`: workflow wydania ich nie ustawia). Kontroli napisów testowych w `.ipa` wydania jeszcze nie ma (`scripts/wydanie/kontrola-ipa.sh` roli 10 jej nie robi; zgłoszenie 07 fix-3) — wcześniejsze zdanie o `sprawdz-ipa.mjs` było nieprawdziwe (JAK-15):
+Build Release na symulator bez podpisu (`CODE_SIGNING_ALLOWED=NO`, DS-07). Przełączniki ustawiane **tylko** w kroku buildu E2E (kontrola repo: poza tym krokiem nie występują; `sprawdz-workflowy.mjs`: workflow wydania ich nie ustawia). Ślady trybu testowego w `.ipa` wydania (napisy paneli E2E, testID `e2e-`, klucze `oczkoE2e*`, nazwy przełączników `EXPO_PUBLIC_*`) sprawdza `scripts/wydanie/slady-testowe.mjs`, który `scripts/wydanie/kontrola-ipa.sh` roli 10 woła na `main.jsbundle` (JAK-15, P-237):
 | Zmienna buildu | Co włącza |
 |---|---|
 | `EXPO_PUBLIC_E2E=1` | odczyt argumentów startu `oczkoE2e*` (niżej), panele `e2e-*` (bez `t()`, jak „Test store” Treningu `app/paywall.tsx:108-113`), plik `e2e-sha-bazy` w Ustawieniach i na ekranie awaryjnym |

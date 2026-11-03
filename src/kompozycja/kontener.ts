@@ -71,7 +71,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
   const jezyk = () => i18n.jezyk();
   const id = await identyfikatorUrzadzenia(katalogDanych, () => identyfikatory.nowy());
-  // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep nie istnieje (sprawdz-ipa).
+  // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep jest nieaktywny (moduł w bundlu, przełącznik wyłączony); ślady trybu testowego sprawdza `scripts/wydanie/slady-testowe.mjs` z `scripts/wydanie/kontrola-ipa.sh` (JAK-15).
   const plikSklepu = polacz(katalogDanych, 'sklep-e2e.json');
   const zakupyE2e = istniejePlik(plikSklepu) ? await czytajTekst(plikSklepu) : null;
   const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms);

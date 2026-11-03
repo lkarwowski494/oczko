@@ -49,10 +49,21 @@ const scenariusz = (n: string): string => {
   return f ? fs.readFileSync(path.join(KAT_E2E, f), 'utf8') : '';
 };
 
+/** 162 (07-jakosc-526): każdy wpis stanu (sekcja `# Stan`), nie tylko najnowszy — starszy wpis następna sesja też czyta jako listę zadań. */
+export const wpisyStanu = (stan: string): string[] => stan.split(/^# Stan/m).slice(1).map((w) => `# Stan${w}`);
+/** Zapowiedzi „testID `x`” (identyfikator wprost po słowie testID) w pozycjach Czeka każdego wpisu, które kod już ma, bez „zrobione”. */
+export const zapowiedziWeWpisach = (stan: string, kod = KOD): string[] => wpisyStanu(stan).flatMap((w) => pozycjeCzeka(w)
+  .filter((p) => /\b08\b/.test(p) && !/zrobione/i.test(p))
+  .flatMap((p) => [...p.matchAll(/testID `([a-z][a-z0-9-]*\*?)`/g)].map((m) => m[1]).filter((id) => wKodzie(id, kod)).map((id) => `${id} — ${p.slice(0, 80)}`)));
+
 describe('097 · stan roli 07 i README E2E nie zapowiadają pracy wykonanej (JAK-15; 07-jakosc-501)', () => {
   test('najnowszy wpis docs/jakosc/stan.md: „Czeka” bez testID dla 08, które kod już ma (albo z dopiskiem „zrobione”)', () => {
     expect(pozycjeCzeka(czytaj('docs/jakosc/stan.md')).length).toBeGreaterThan(0);
     expect(zapowiedziWykonane(czytaj('docs/jakosc/stan.md'))).toEqual([]);
+  });
+  test('162 · każdy wpis docs/jakosc/stan.md: „Czeka” bez testID dla 08, które kod już ma (albo z dopiskiem „zrobione”)', () => {
+    expect(wpisyStanu(czytaj('docs/jakosc/stan.md')).length).toBeGreaterThan(1);
+    expect(zapowiedziWeWpisach(czytaj('docs/jakosc/stan.md'))).toEqual([]);
   });
   test('e2e/README.md: wiersz „stukają jeszcze po tekście” oznaczony jako zastąpiony, gdy scenariusze stukają po id', () => {
     expect(wierszeNieaktualne(czytaj('e2e/README.md'), scenariusz)).toEqual([]);
@@ -67,6 +78,32 @@ describe('097 · stan roli 07 i README E2E nie zapowiadają pracy wykonanej (JAK
     expect(wierszeNieaktualne(readme, scen)).toHaveLength(1);
     expect(wierszeNieaktualne(`${readme} (zastąpione wierszem niżej)`, scen)).toEqual([]);
     expect(wierszeNieaktualne(readme, () => 'tapOn: "Stitches"')).toEqual([]);
+    const dwa = `# Stan · nowy\n- **Czeka:** (1) przebieg na macOS\n\n${stan}`;
+    expect(zapowiedziWykonane(dwa, "testID: 'wybor-rodzaj-rzedy'")).toEqual([]); // sam najnowszy wpis tego nie widzi
+    expect(zapowiedziWeWpisach(dwa, "testID: 'wybor-rodzaj-rzedy'")).toHaveLength(1);
+    expect(zapowiedziWeWpisach(dwa.replace('(1) 08', '(1) zrobione: 08'), "testID: 'wybor-rodzaj-rzedy'")).toEqual([]);
+  });
+});
+
+/* 162 (08-programista-522, 07-jakosc-526): komentarze kodu i README E2E wskazują tylko istniejące skrypty; nazwa planowanej kontroli `sprawdz-ipa`
+ * nie udaje istniejącej, a README nie przeczy kontroli śladów, którą woła `scripts/wydanie/kontrola-ipa.sh`. */
+export function odsylaczeBledne(tekst: string, pliki: string[]): string[] {
+  const brak = [...tekst.matchAll(/\bscripts\/[A-Za-z0-9_/.-]+\.(?:mjs|sh)\b/g)].map((m) => m[0]).filter((f) => !pliki.includes(f));
+  return [...brak, ...(/sprawdz-ipa/.test(tekst) ? ['sprawdz-ipa'] : [])];
+}
+describe('162 · odsyłacze do kontroli w kodzie i README E2E (JAK-15; 08-programista-522)', () => {
+  test('src/, app/ i e2e/README.md: odsyłacze `scripts/…` istnieją, bez `sprawdz-ipa`; README wskazuje kontrolę śladów z kontrola-ipa.sh', () => {
+    const readme = czytaj('e2e/README.md');
+    expect(odsylaczeBledne(`${KOD}\n${readme}`, PLIKI_REPO)).toEqual([]);
+    const slady = czytaj('scripts/wydanie/kontrola-ipa.sh').match(/scripts\/wydanie\/slady-testowe\.mjs/)?.[0];
+    expect(slady).toBeDefined();
+    expect(readme).toContain(`\`${slady}\``);
+    expect(readme).not.toMatch(/Kontroli napisów testowych w `\.ipa` wydania jeszcze nie ma/);
+  });
+  test('pułapki: nieistniejący skrypt i `sprawdz-ipa` są wykrywane', () => {
+    expect(odsylaczeBledne('// sprawdza `scripts/wydanie/kontrola-ipa.sh`', ['scripts/wydanie/kontrola-ipa.sh'])).toEqual([]);
+    expect(odsylaczeBledne('// sprawdza `scripts/jakosc/brak.mjs`', ['scripts/wydanie/kontrola-ipa.sh'])).toHaveLength(1);
+    expect(odsylaczeBledne('// w buildzie wydania nie istnieje (sprawdz-ipa)', [])).toEqual(['sprawdz-ipa']);
   });
 });
 
@@ -146,11 +183,32 @@ export function rozjazdyStrategii(md: string, r: Repo): string[] {
   return bledy;
 }
 
+/** 162 (07-jakosc-526): §11 (plan wydania) stawia jako warunek „zielony na SHA kandydata” tylko workflowy, na które czeka bramka TestFlight
+ *  (`scripts/wydanie/testflight.mjs`); reszta testów biegnie w buildzie TestFlight (`npm run verify`), jak opisuje §5. */
+export function rozjazdyPlanuWydania(md: string, bramka: string): string[] {
+  const czeka = new Set([...bramka.matchAll(/\/actions\/workflows\/([a-z0-9-]+)\.yml\/runs/g)].map((m) => m[1]));
+  const s11 = sekcja(md, 11);
+  const zielone = [...s11.matchAll(/`(jakosc-[a-z0-9-]+)(?:\.yml)?`\s+zielon|zielon\w*\s+`(jakosc-[a-z0-9-]+)(?:\.yml)?`/g)].map((m) => m[1] ?? m[2]);
+  return zielone.filter((w) => !czeka.has(w)).map((w) => `§11: \`${w}\` zielony na SHA, a bramka TestFlight na niego nie czeka`);
+}
+
 describe('045 · strategia §3/§5/§10: tylko istniejące zadania i kontrole albo „plan, nie wykonano” z ID (JAK-17; 07-jakosc-006)', () => {
   test('docs/jakosc/strategia.md zgodna z workflowami, skryptami i package.json', () => {
     const md = czytaj('docs/jakosc/strategia.md');
     for (const nr of [3, 5, 10]) expect(sekcja(md, nr).length).toBeGreaterThan(100);
     expect(rozjazdyStrategii(md, repo())).toEqual([]);
+  });
+  test('162 · strategia §11: „zielony na SHA” tylko dla workflowów, na które czeka bramka TestFlight (§11 = §5)', () => {
+    const md = czytaj('docs/jakosc/strategia.md');
+    expect(sekcja(md, 11).length).toBeGreaterThan(100);
+    expect(rozjazdyPlanuWydania(md, czytaj('scripts/wydanie/testflight.mjs'))).toEqual([]);
+  });
+  test('162 · pułapki §11: workflow bez bramki wykryty, workflow z bramką nie', () => {
+    const bramka = "gh(`/actions/workflows/jakosc-ios.yml/runs?head_sha=${sha}`)";
+    const md = (s11: string) => `## 11. Plan wydania\n${s11}\n## Pytania\n`;
+    expect(rozjazdyPlanuWydania(md('na tym SHA: `jakosc-linux` zielony, pakiet podstawowy'), bramka)).toHaveLength(1);
+    expect(rozjazdyPlanuWydania(md('na tym SHA: zielony `jakosc-ios` (pakiet podstawowy)'), bramka)).toEqual([]);
+    expect(rozjazdyPlanuWydania(md('na tym SHA: zielony `jakosc-ios`; w buildzie `npm run verify` bez pętli stref `jakosc-linux`'), bramka)).toEqual([]);
   });
   test('pułapki: brak skryptu, zadania, Strykera i plan bez ID są wykrywane', () => {
     const r: Repo = { pliki: ['scripts/a.mjs'], zadania: new Map([['w.yml', ['build']]]), skrypty: ['test'], zaleznosci: [], swift: '', workflowy: 'TZ="$tz" npx jest tests/narzedzia' };
