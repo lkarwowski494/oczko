@@ -288,8 +288,8 @@ export function wierszPrzegladu(kod, poz, slownik, obecne, wysilek = 'medium') {
   const zPoprawkami = poz.reduce((sum, p) => sum + przyblizTokeny(JSON.stringify(obecnePozycji(kod, p, obecne))) + ZALOZENIA_PRZEGLADU.obwiednia, 0) * ZALOZENIA_PRZEGLADU.udzialPoprawek;
   return { jezyk: kod, pozycji: poz.length, we, wy: Math.ceil(zPoprawkami) + Math.ceil(ZALOZENIA_PRZEGLADU.myslenie * MNOZNIK_WYSILKU[wysilek]) };
 }
-/** Szacunek przekładu zwrotnego: wejście = system + teksty języka; wyjście ≈ tekst języka (zawyżone: tokeny tekstu docelowego) + obwiednia + myślenie (skala wysiłku, jak przy przekładzie). */
-export const ZALOZENIA_ZWROTNEGO = { myslenie: MYSLENIE_MEDIUM, obwiednia: 6 };
+/** Szacunek przekładu zwrotnego: wejście = system + teksty języka; wyjście ≈ tekst języka (zawyżone: tokeny tekstu docelowego) + obwiednia + myślenie (skala wysiłku). */
+export const ZALOZENIA_ZWROTNEGO = { myslenie: 1500, obwiednia: 6 }; // myślenie przy medium: POMIAR próby run 41643321146 (Opus 5.5, bg+cs): wyjście 1509 i 2058 tok. łącznie z odpowiedzią → ≤ ok. 1500 myślenia (zamiast 6200 z przekładu)
 export function wierszZwrotny(kod, poz, obecne, wysilek = 'medium') {
   const z = budujZadanieZwrotne(kod, poz, obecne);
   const we = przyblizTokeny(`${z.system}\n${z.messages[0].content}`);

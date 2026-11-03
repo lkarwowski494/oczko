@@ -83,7 +83,7 @@ describe('zwrotny: szacunek i CLI', () => {
     expect(s.status).toBe(0); expect(s.stdout).toMatch(/33 języków × 10 pozycji/); expect(s.stdout).toMatch(/zwrotn/i);
     expect(sz.tryb).toBe('zwrotny'); expect(sz.pozycji).toBe(10); expect(sz.wiersze).toHaveLength(33);
     const m = sz.koszt_wg_modelu['claude-opus-5-5'], h = szac('high').sz.koszt_wg_modelu['claude-opus-5-5'];
-    expect(m).toBeGreaterThan(0.5); expect(m).toBeLessThan(5); expect(h).toBeGreaterThan(m); expect(h).toBeLessThan(10);
+    expect(m).toBeGreaterThan(0.3); expect(m).toBeLessThan(3); expect(h).toBeGreaterThan(m); expect(h).toBeLessThan(5); // po pomiarze próby 41643321146: medium ≈ 0,7 USD
   });
   test('wejście zwrotne jest mniejsze niż w przeglądzie (bez en, kontekstu i słownika)', () => {
     const d = wyj();
