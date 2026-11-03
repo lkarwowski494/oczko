@@ -189,7 +189,7 @@ Account: none needed. The app has no sign-in and no server.
 Main flow: [paths after scope review] 1. Create a project. 2. Tap + on the counter to add rows. 3. Open the project history.
 New in this version: first release.
 Non-obvious features: Live Activity on the Lock Screen with +1/−1 for the active counter; Apple Watch app with the same counter (works offline and syncs with the phone over WatchConnectivity). No background modes for location or audio.
-In-App Purchases: the app is free for 5 knitting days per calendar month (a day counts at the first row added that day). Oczko Pro (monthly and yearly auto-renewable subscriptions, lifetime non-consumable) removes the limit. The purchase screen opens from Settings and from the limit message; Restore purchases and Manage subscription are in Settings. To reach the limit quickly in review: [after scope review].
+In-App Purchases: the app is free for 5 crafting days per calendar month (a day counts at the first row added that day). Oczko Pro (monthly and yearly auto-renewable subscriptions, lifetime non-consumable) removes the limit. The purchase screen opens from Settings and from the limit message; Restore purchases and Manage subscription are in Settings. To reach the limit quickly in review: [after scope review].
 Data: nothing leaves the device. "Report a problem" shows a preview of a technical text (error codes, record counts) that the user may send themselves via the share sheet. App Privacy: Data Not Collected.
 ```
 Jak zobaczyć limit bez czekania 5 dni (np. ustawienie testowe) — pytanie dla 08 i 07 przed wysyłką; bez tego recenzent nie zobaczy zakupu w naturalnym przepływie (2.1(b): zakupy „visible to the reviewer”).

@@ -68,6 +68,16 @@ export function brakujace(zrodloHtml, zywaHtml) {
   return fragmenty(zrodloHtml).filter((f) => !zywy.includes(f.slice(f.indexOf(': ') + 2)));
 }
 
+/** Termin limitu dni z aplikacji (`dni.dni_robotki_other` w en.json: „{{count}} crafting days” → „crafting days”); brak pliku albo klucza = null (kontrola pominięta). */
+export function terminLimitu(root = ROOT) {
+  const p = join(root, 'src/i18n/slowniki/en.json');
+  if (!existsSync(p)) return null;
+  const t = JSON.parse(readFileSync(p, 'utf8'))?.dni?.dni_robotki_other;
+  return typeof t === 'string' ? t.replace('{{count}}', '').trim() || null : null;
+}
+/** Stare terminy limitu („knitting days”, „days you knit”; P-302), które w tekście strony oznaczają rozjazd z aplikacją. */
+export const STARY_TERMIN = /\bknitting days?\b|days you knit/i;
+
 async function pobierz(url) {
   let ost;
   for (let i = 0; i < 3; i++) {
@@ -89,6 +99,7 @@ function plikZrodlowy(url, baza, root) {
 export async function main(argv = process.argv.slice(2), root = ROOT, pobierzFn = pobierz) {
   const tylkoStatusy = argv.includes('--tylko-statusy'), wydanie = argv.includes('--wydanie');
   const baza = JSON.parse(readFileSync(join(root, 'docs/wydanie/adres-strony.json'), 'utf8')).baza;
+  const terminAplikacji = terminLimitu(root);
   let zle = 0;
   for (const { url, zrodlo } of adresy(root)) {
     const wiersze = [];
@@ -108,6 +119,8 @@ export async function main(argv = process.argv.slice(2), root = ROOT, pobierzFn 
           if (brak.length) wiersze.push(`treść na żywo różni się od ${z.nazwa}: brak ${brak.length} fragmentów, np. „${brak[0].slice(0, 90)}”`);
         }
       }
+      const stary = terminAplikacji && tekst(r.html).match(STARY_TERMIN);
+      if (stary) wiersze.push(`termin limitu na stronie: „${stary[0]}”, aplikacja i sklep używają „${terminAplikacji}” (P-302)`);
     }
     console.log(`${wiersze.length ? 'BŁĄD' : 'OK  '} ${url}  [${zrodlo}]${wiersze.length ? '\n     ' + wiersze.join('\n     ') : ''}`);
     zle += wiersze.length ? 1 : 0;

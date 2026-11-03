@@ -131,6 +131,19 @@ describe('sprawdz-adresy: main (pobieranie podstawione, bez sieci)', () => {
     expect(w.kod).toBe(1);
     expect(w.wyj.join('\n')).toMatch(/site\/privacy\.html/);
   });
+  test('termin limitu na stronie na żywo inny niż w aplikacji („knitting days” zamiast „crafting days”) → kod 1 z nazwą terminu (plan P3C2, 10-wydanie-007)', () => {
+    const en = JSON.stringify({ dni: { dni_robotki_one: '{{count}} crafting day', dni_robotki_other: '{{count}} crafting days' } });
+    const zrodlo = '<html><body><section lang="en"><p>Free for up to 5 crafting days a month.</p><p>Drugi akapit.</p></section></body></html>';
+    const korzen = korzenTestowy({ ...MIN, 'src/i18n/slowniki/en.json': en, 'site/privacy.html': zrodlo, 'site/support.html': zrodlo });
+    const zgodna = { ...wszystkie200,
+      'https://przyklad.test/oczko/privacy.html': { status: 200, html: SHELL('<p>Free for up to 5 crafting days a month.</p><p>Drugi akapit.</p>') },
+      'https://przyklad.test/oczko/support.html': { status: 200, html: SHELL('<p>Free for up to 5 crafting days a month.</p><p>Drugi akapit.</p>') } };
+    expect(mainZ(korzen, [], zgodna).kod).toBe(0);
+    const stary = { ...zgodna, 'https://przyklad.test/oczko/support.html': { status: 200, html: SHELL('<p>Free for up to 5 crafting days a month.</p><p>Drugi akapit.</p><p>Free for 5 knitting days.</p>') } };
+    const w = mainZ(korzen, [], stary);
+    expect(w.kod).toBe(1);
+    expect(w.wyj.join('\n')).toMatch(/termin limitu[\s\S]*knitting days[\s\S]*crafting days/);
+  });
   test('strona .html pod bazą bez pliku w site/ → kod 1 (rozjazd bez źródła do porównania)', () => {
     const w = mainZ(korzenTestowy({ ...MIN }), [], wszystkie200);
     expect(w.kod).toBe(1);
