@@ -38,7 +38,7 @@ export function EkranAwaryjny({ powod, t, naNormalnie }: { powod: PowodTrybuAwar
         ustawLicznosci(licznosciTekst(k.licznosci, t));
         if (E2E) void a.sha().then(ustawSha); else void udostepnijPlik(k.sciezka);
       }); }}
-      naSprobujNormalnie={() => void sprobujNormalnieTeraz().then(naNormalnie)}
+      naSprobujNormalnie={() => void a.kopia.catch(() => undefined).then(() => sprobujNormalnieTeraz()).then(naNormalnie) /* M1-151: nowy start zamyka port starej bazy — dopiero po kopii surowej (ADR-0019) */}
       naZglosProblem={() => void diagnostykaAwaryjna({
         powod, nieudaneStarty: a.nieudaneStarty, etap: a.etapPoprzedniegoStartu, bledy: a.bledyZKopii,
         srodowisko: {

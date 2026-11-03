@@ -32,29 +32,32 @@ export default function Korzen(): React.ReactElement {
   const k = useKolory();
   const [faza, ustaw] = useState<Faza>({ rodzaj: 'czeka' });
   const [proba, ustawProbe] = useState(0); // „Spróbuj normalnie”: start normalny w tym samym procesie
-  const zamykanie = useRef<Promise<void>>(Promise.resolve()); // M1-151: zamknięcie bazy poprzedniego kontenera; nowy start czeka na nie
+  // M1-151, ADR-0019 (P-211): port bazy kontenera sprzed błędu zostaje otwarty w trybie awaryjnym (zamknięcie ostatniego połączenia robi checkpoint
+  // WAL do oryginału); zamyka go dopiero nowy start po „Spróbuj normalnie”, który ekran awaryjny woła po kopii surowej.
+  const doZamkniecia = useRef<(() => Promise<void>) | null>(null);
   useEffect(() => {
     let koniecNasluchu: (() => void) | null = null;
     let koniecTla: (() => void) | null = null;
     let zamknijLicznik: (() => void) | null = null;
-    let zwolnijKontener: (() => void) | null = null; // M1-151: zasoby kontenera sprzed błędu (iCloud, baza) — przed każdym ekranem awaryjnym po utworzeniu kontenera
+    let zwolnijKontener: (() => void) | null = null; // M1-151: zasoby kontenera sprzed błędu (iCloud od razu, baza przy następnym starcie) — przed każdym ekranem awaryjnym po utworzeniu kontenera
     let zywy = true;
     async function normalny(): Promise<void> {
       // P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest awarią (start awaryjny i wymuszona awaria E2E nie słuchają — scen. 09).
       const tlo = AppState.addEventListener('change', (st) => { if (st === 'background') void zapiszWyjscieDoTla(); });
       koniecTla = () => tlo.remove();
-      await zamykanie.current;
+      const zamknij = doZamkniecia.current; doZamkniecia.current = null;
+      await Promise.resolve().then(() => zamknij?.()).catch(() => undefined); // błąd zamknięcia nie zatrzymuje startu
       const w = await utworzKontener().catch(() => null);
       if (!zywy) return;
       if (!w || !w.ok) { ustaw({ rodzaj: 'awaryjny', powod: powodAwaryjny(w && !w.ok ? w.powod : 'zapis') }); return; } // bez zastępczej bazy (ADR-0019)
       zapiszEtap('kontener'); // P-271: diagnostyka etapu dla „Zgłoś problem”
-      // M1-151 (DEV-15): sterownik iCloud odpina słuchaczy modułu (partie nie trafiają do starego połączenia), a połączenie z bazą zamyka się po swojej
-      // kolejce; „Spróbuj normalnie” czeka na to zamknięcie, więc w procesie jest jedno połączenie i jeden sterownik.
+      // M1-151 (DEV-15): sterownik iCloud odpina słuchaczy modułu od razu (partie nie trafiają do starego połączenia); połączenie z bazą zamyka nowy
+      // start przed otwarciem swojego (ADR-0019: oryginał bez zmian do kopii surowej), więc w procesie jest jedno połączenie i jeden sterownik.
       const kontener = w.wartosc;
-      // Błąd sprzątania nie zatrzymuje ekranu awaryjnego (ADR-0019): zamknięcie w obietnicy z `catch`, zakończenie sterownika w `try`.
+      // Błąd sprzątania nie zatrzymuje ekranu awaryjnego (ADR-0019): zakończenie sterownika w `try`.
       zwolnijKontener = () => {
         try { kontener.icloud?.sterownik.zakoncz(); } catch { /* sterownik bez słuchaczy albo już zakończony */ }
-        zamykanie.current = Promise.resolve().then(() => kontener.zamknij()).catch(() => undefined);
+        doZamkniecia.current = () => kontener.zamknij();
       };
       const p = preferencje();
       const koniecDostepu = w.wartosc.dostep.nasluchuj(); // KP-07: nasłuch transakcji od startu

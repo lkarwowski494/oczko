@@ -1,9 +1,15 @@
 // M1-audytor-generalny-151 (08-programista-520, DEV-15 — zasoby zwalniane; ADR-0019): błąd startu na odczycie bieżącego licznika (`biezacyLicznik`
 // po `uruchomDane`, np. brak miejsca) → `naAwarie` → ekran awaryjny korzenia. Przed ekranem kontener zdążył otworzyć połączenie z bazą i uruchomić
-// sterownik iCloud (słuchacz partii w module natywnym). `naAwarie` zamyka port bazy i kończy sterownik, a „Try starting normally” otwiera dokładnie
-// jedno nowe połączenie z jednym słuchaczem partii. Korzeń `app/_layout.tsx` i trasa `app/index.tsx` prawdziwe, sterownik iCloud prawdziwy
+// sterownik iCloud (słuchacz partii w module natywnym). `naAwarie` kończy sterownik od razu, a port bazy zostaje otwarty do „Try starting normally”
+// (ADR-0019, P-211: zamknięcie ostatniego połączenia robi checkpoint WAL do oryginału) i zamyka się dopiero po kopii surowej, tuż przed ponownym
+// otwarciem — dalej dokładnie jedno nowe połączenie z jednym słuchaczem partii (przegląd ścieżki wrażliwej edab691, D-043). Korzeń `app/_layout.tsx` i trasa `app/index.tsx` prawdziwe, sterownik iCloud prawdziwy
 // (`sterownikSynchronizacji`) na atrapie modułu iCloud (zbiór słuchaczy wspólny dla procesu, jak moduł natywny); port bazy to atrapa z licznikiem połączeń.
 import React from 'react';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { AppState } from 'react-native';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ObslugaBledowRN } from '../../src/kompozycja/bledy-js';
@@ -23,8 +29,14 @@ jest.mock('expo-router', () => {
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({
   ...jest.requireActual<object>('../../src/kompozycja/start-aplikacji'),
   rozpocznijStart: async () => ({ tryb: 'normalny' }), zapiszEtap: () => undefined, zapiszWyjscieDoTla: async () => undefined, zapiszKamien: async () => undefined,
-  sprobujNormalnieTeraz: async () => undefined, trybAwaryjny: () => ({ kopia: Promise.resolve(null) }),
+  sprobujNormalnieTeraz: async () => undefined, trybAwaryjny: () => mockTrybAwaryjny(),
 }));
+/** Kolejność zdarzeń na plikach bazy: koniec kopii surowej, zamknięcie portu kontenera, otwarcie portu kolejnego kontenera. */
+const mockZdarzenia: string[] = [];
+let mockTrybAwaryjny: () => { kopia: Promise<unknown> } = () => ({ kopia: Promise.resolve(null) });
+/** Prawdziwa baza (node:sqlite) pod portem kontenera: ścieżka `oczko.db` w katalogu tymczasowym albo null (sama atrapa portu). */
+let mockPlikBazy: string | null = null;
+let mockPrzedAwaria: ((port: import('../../src/dane/baza/adapter-expo').PortExpo) => Promise<void>) | null = null;
 jest.mock('../../src/przypadki-uzycia/start', () => ({ ...jest.requireActual<object>('../../src/przypadki-uzycia/start'), uruchomDane: async () => ({ ok: true, wartosc: { potwierdzone: [] } }) }));
 const mockBiezacy = jest.fn(async (): Promise<unknown> => ({ ok: false, powod: 'brak_miejsca' }));
 jest.mock('../../src/przypadki-uzycia/widok-licznika', () => ({ ...jest.requireActual<object>('../../src/przypadki-uzycia/widok-licznika'), biezacyLicznik: () => mockBiezacy() }));
@@ -52,6 +64,10 @@ jest.mock('../../src/kompozycja/kontener', () => ({
     const { sterownikSynchronizacji } = require('../../src/przypadki-uzycia/synchronizacja') as typeof import('../../src/przypadki-uzycia/synchronizacja');
     const p: Polaczenie = { otwarte: true };
     mockPolaczenia.push(p);
+    mockZdarzenia.push(`otworz-${mockPolaczenia.length}`);
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const prawdziwy = mockPlikBazy ? (require('../../src/dane/baza/adapter-expo') as typeof import('../../src/dane/baza/adapter-expo')).otworzPortExpo(mockPlikBazy) : null;
+    if (prawdziwy && mockPrzedAwaria) await mockPrzedAwaria(prawdziwy);
     const baza = mockPort(p);
     const zegar = { teraz: () => ({ ms: 0, dzien: '2026-11-02', strefa: 'UTC' }) };
     const nasluch = (s: Set<unknown>) => (f: unknown) => { s.add(f); return () => { s.delete(f); }; };
@@ -64,7 +80,7 @@ jest.mock('../../src/kompozycja/kontener', () => ({
     return {
       ok: true,
       wartosc: {
-        z, zamknij: async () => { p.otwarte = false; },
+        z, zamknij: async () => { mockZdarzenia.push(`zamknij-${mockPolaczenia.indexOf(p) + 1}`); p.otwarte = false; await prawdziwy?.zamknij(); },
         j: { t: mockT, jezyk: () => 'en-US', zegar24h: () => false, naZmiane: () => () => undefined },
         dostep: { nasluchuj: () => () => undefined, odswiez: () => mockOdswiez(), stan: () => ({ pro: false, poziom: 'darmowy' }), naZmiane: () => () => undefined },
         porty: { siec: { stan: () => 'jest', obserwuj: () => () => undefined } },
@@ -90,19 +106,22 @@ const otwarte = () => mockPolaczenia.filter((p) => p.otwarte).length;
 beforeEach(async () => {
   mockT = await tEn();
   mockPolaczenia.length = 0;
+  mockZdarzenia.length = 0;
+  mockTrybAwaryjny = () => ({ kopia: Promise.resolve(null) });
+  mockPlikBazy = null; mockPrzedAwaria = null;
   mockSluchaczePartii.clear();
   mockBiezacy.mockClear();
   mockOdswiez.mockReset(); mockOdswiez.mockImplementation(async () => undefined);
   Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true }); // start na pierwszym planie (ADR-0019)
 });
 
-test('błąd `biezacyLicznik` → ekran awaryjny: port bazy zamknięty i 0 słuchaczy partii iCloud', async () => {
+test('błąd `biezacyLicznik` → ekran awaryjny: port bazy otwarty do „Try starting normally” (ADR-0019, P-211) i 0 słuchaczy partii iCloud', async () => {
   render(<Korzen />);
   await chwila();
   expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy();
   expect(mockBiezacy).toHaveBeenCalledTimes(1);
   expect(mockPolaczenia).toHaveLength(1);
-  expect(otwarte()).toBe(0);
+  expect(otwarte()).toBe(1);
   expect(mockSluchaczePartii.size).toBe(0);
 });
 test('„Try starting normally” po błędzie startu: dokładnie 1 otwarte połączenie i 1 słuchacz partii', async () => {
@@ -117,16 +136,78 @@ test('„Try starting normally” po błędzie startu: dokładnie 1 otwarte poł
   expect(otwarte()).toBe(1);
   expect(mockSluchaczePartii.size).toBe(1);
 });
-test('wyjątek startu po utworzeniu kontenera (odczyt dostępu, M1-007) → ekran awaryjny: port bazy zamknięty; ponowny start — 1 otwarte połączenie', async () => {
+test('wyjątek startu po utworzeniu kontenera (odczyt dostępu, M1-007) → ekran awaryjny: port bazy otwarty, 0 słuchaczy partii; ponowny start — 1 otwarte połączenie', async () => {
   mockOdswiez.mockImplementationOnce(async () => { throw new Error('sklep'); });
   mockBiezacy.mockImplementation(() => new Promise(() => undefined));
   render(<Korzen />);
   await chwila();
   expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy();
-  expect(otwarte()).toBe(0);
+  expect(otwarte()).toBe(1);
+  expect(mockSluchaczePartii.size).toBe(0);
   fireEvent.press(screen.getByTestId('awaryjny-sprobuj-normalnie'));
   await chwila();
   expect(mockPolaczenia).toHaveLength(2);
   expect(otwarte()).toBe(1);
   expect(mockSluchaczePartii.size).toBe(1);
+});
+
+// Przegląd ścieżki wrażliwej edab691 (D-043): zamknięcie portu przy wejściu w tryb awaryjny robiło checkpoint WAL do oryginału, zanim kopia surowa
+// skopiowała `-wal`. Port zamyka się dopiero przy „Try starting normally”, po kopii surowej (także gdy kopia jeszcze trwa w chwili naciśnięcia).
+test('kolejność: kopia surowa kończy się przed zamknięciem portu kontenera, a zamknięcie przed otwarciem nowego (naciśnięcie w trakcie kopii)', async () => {
+  mockBiezacy.mockImplementationOnce(async () => ({ ok: false, powod: 'brak_miejsca' })).mockImplementation(() => new Promise(() => undefined));
+  mockTrybAwaryjny = () => ({ kopia: new Promise((r) => setTimeout(() => { mockZdarzenia.push('kopia'); r(null); }, 300)) });
+  render(<Korzen />);
+  await chwila();
+  expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy();
+  expect(mockZdarzenia).toEqual(['otworz-1']); // kopia trwa, port nadal otwarty
+  fireEvent.press(screen.getByTestId('awaryjny-sprobuj-normalnie'));
+  await chwila(500);
+  expect(mockZdarzenia).toEqual(['otworz-1', 'kopia', 'zamknij-1', 'otworz-2']);
+  expect(otwarte()).toBe(1);
+  expect(mockSluchaczePartii.size).toBe(1);
+});
+
+const sha = (p: string) => (existsSync(p) ? createHash('sha256').update(readFileSync(p)).digest('hex') : 'BRAK');
+test('prawdziwy SQLite, niepusty WAL: po wejściu w tryb awaryjny i kopii surowej SHA-256 oryginału `.db` i `-wal` bez zmian, kopia ma wszystkie wiersze', async () => {
+  const kat = mkdtempSync(join(tmpdir(), 'awaryjny-wal-'));
+  const plik = join(kat, 'oczko.db');
+  const wiersze = 300;
+  const przed: { db?: string; wal?: string } = {};
+  mockPlikBazy = plik;
+  mockPrzedAwaria = async (port) => {
+    if (mockPolaczenia.length > 1) return; // drugi start: tylko otwarcie
+    await port.run('PRAGMA wal_autocheckpoint = 0');
+    await port.run('CREATE TABLE zdarzenie (id INTEGER PRIMARY KEY, x TEXT)');
+    await port.run('PRAGMA wal_checkpoint(TRUNCATE)');
+    for (let i = 0; i < wiersze; i++) await port.run('INSERT INTO zdarzenie (x) VALUES (?)', ['r'.repeat(50)]); // ostatnie zapisy tylko w -wal
+    przed.db = sha(plik); przed.wal = sha(`${plik}-wal`);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { surowaKopia } = require('../../src/dane/kopia-ratunkowa') as typeof import('../../src/dane/kopia-ratunkowa');
+  let kopia: Promise<Awaited<ReturnType<typeof surowaKopia>>> | null = null;
+  mockTrybAwaryjny = () => { kopia = surowaKopia(kat, join(kat, 'kopie'), { teraz: () => ({ ms: 1, dzien: '2026-11-03', strefa: 'UTC' }) } as never); return { kopia }; };
+  mockBiezacy.mockImplementationOnce(async () => ({ ok: false, powod: 'brak_miejsca' })).mockImplementation(() => new Promise(() => undefined));
+  render(<Korzen />);
+  await chwila();
+  expect(screen.getByTestId('tryb-awaryjny')).toBeTruthy();
+  expect(przed.wal).not.toBe('BRAK');
+  const k = await (kopia as unknown as Promise<Awaited<ReturnType<typeof surowaKopia>>>);
+  expect({ db: sha(plik), wal: sha(`${plik}-wal`) }).toEqual(przed); // oryginał bez zmian (ADR-0019, P-203, P-211)
+  if (!k.ok) throw new Error('kopia surowa nieudana');
+  expect(k.wartosc.pliki).toContain('oczko.db-wal');
+  const c = new DatabaseSync(join(k.wartosc.katalog, 'oczko.db'), { readOnly: true });
+  try {
+    const pomiar = {
+      wierszeOryginalu: wiersze, wierszeKopii: c.prepare('SELECT count(*) AS n FROM zdarzenie').get(), plikiKopii: k.wartosc.pliki,
+      integrity: c.prepare('PRAGMA integrity_check').all(), foreignKeys: c.prepare('PRAGMA foreign_key_check').all(),
+    };
+    console.log(`M1-151 pomiar kopii surowej: ${JSON.stringify(pomiar)}`); // dowód (dane użytkownika): liczności, integrity_check, foreign_key_check
+    expect(pomiar.wierszeKopii).toEqual({ n: wiersze });
+    expect(pomiar.integrity).toEqual([{ integrity_check: 'ok' }]);
+    expect(pomiar.foreignKeys).toEqual([]);
+  } finally { c.close(); }
+  fireEvent.press(screen.getByTestId('awaryjny-sprobuj-normalnie'));
+  await chwila();
+  expect(mockZdarzenia).toEqual(['otworz-1', 'zamknij-1', 'otworz-2']);
+  expect(otwarte()).toBe(1);
 });
