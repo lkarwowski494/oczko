@@ -20,7 +20,7 @@ export type PropsPaskaZnacznika = {
 };
 
 /** „Which way do rows go on this page?” — bez wartości domyślnej (P-126 (3a)); wybór wraca do wywołującego, który wie, po co pyta (ustawienie, zmiana, przytrzymanie). */
-export function PytanieKierunku(p: { t: Tlumacz; naWybor(kierunek: 1 | -1): void }): React.ReactElement {
+export function PytanieKierunku(p: { t: Tlumacz; naWybor(kierunek: 1 | -1): void; naNieTeraz(): void }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   return (
@@ -31,6 +31,10 @@ export function PytanieKierunku(p: { t: Tlumacz; naWybor(kierunek: 1 | -1): void
           <Text style={st.tresc}>{`${znak} ${p.t(k1)}, ${p.t(k2)}`}</Text>
         </Pressable>
       ))}
+      {/* DEC-38 a (M1-168): wyjście bez znacznika — przypadkowe stuknięcie nie zostawia pytania na ekranie */}
+      <Pressable accessibilityRole="button" accessibilityLabel={p.t('wspolne.nie_teraz')} style={st.przycisk} onPress={p.naNieTeraz} testID="wzor-kierunek-nie-teraz">
+        <Text style={st.tresc}>{p.t('wspolne.nie_teraz')}</Text>
+      </Pressable>
     </View>
   );
 }

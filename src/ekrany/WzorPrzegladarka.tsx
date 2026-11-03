@@ -51,6 +51,7 @@ export type PropsPrzegladarki = {
   razemStron?: number;
   oczekujacePrzytrzymanie?: boolean;              // przytrzymanie na wzorze bez znacznika czeka na kierunek (3a)
   naKierunekPrzytrzymania?(kierunek: 1 | -1): void;
+  naNieTerazPrzytrzymania?(): void;               // DEC-38 a: „Not now” w karcie kierunku czyści przytrzymanie, znacznik nie powstaje
   naZmienKierunek?(kierunek: 1 | -1): void;       // „Change” w pasku znacznika
   naKrokRzaduZnacznika?(delta: 1 | -1): void;     // krokowiec rzędu schematu (BR-WZR-003 S3)
   naNastepnaStrona?(): void;                      // „Place on page n”
@@ -204,7 +205,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           if (rodzaj === 'zaznacz') znacznikUstawiony(kier);
           else if (rodzaj === 'zmien') p.naZmienKierunek?.(kier);
           else { ustawUstawianie(true); p.naKierunekPrzytrzymania?.(kier); }
-        }} />
+        }} naNieTeraz={() => { ustawPytanie('brak'); p.naNieTerazPrzytrzymania?.(); }} />
       )}
       <PasekZnacznika t={t} znacznik={p.znacznik ?? null} ustawianie={ustawianie} razemStron={p.razemStron ?? 0} naGotowe={() => ustawUstawianie(false)} naKrok={(d) => p.naKrokRzaduZnacznika?.(d)}
         naZmienKierunek={() => ustawPytanie('zmien')} naNastepnaStrona={() => { ustawUstawianie(true); p.naNastepnaStrona?.(); }} naPrzestaw={() => ustawUstawianie(true)} />

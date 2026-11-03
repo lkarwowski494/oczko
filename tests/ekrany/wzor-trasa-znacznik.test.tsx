@@ -58,6 +58,20 @@ test('S2: przytrzymanie na wzorze bez znacznika pyta o kierunek i stawia pas w t
   await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 2, kierunek: -1, rzadBazowy: 46, wartoscPrzyUstawieniu: 45 }));
   expect((await zapisany(s))?.y).toBeCloseTo(0.59, 9);
 });
+// M1-168 (04-studio-projektowe-534, DEC-38 a): przypadkowe stuknięcie bez znacznika otwiera kartę kierunku, z której da się wyjść „Not now”.
+test('168: stuknięcie bez znacznika → karta → „Not now”: brak karty, brak znacznika w bazie, brak wskazówki; ponowne stuknięcie znów pyta', async () => {
+  const s = await start(45);
+  przytrzymaj(2, 0.6);
+  expect(await screen.findByTestId('wzor-kierunek')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Not now' }));
+  await waitFor(() => expect(screen.queryByTestId('wzor-kierunek')).toBeNull());
+  expect(await zapisany(s)).toBeNull();
+  expect(screen.queryByTestId('wzor-wskazowka-znacznika')).toBeNull();
+  expect(screen.queryByText('Done')).toBeNull();
+  przytrzymaj(3, 0.2);
+  expect(await screen.findByTestId('wzor-kierunek')).toBeTruthy();
+  expect(await zapisany(s)).toBeNull();
+});
 test('S3: przeniesienie pasa przytrzymaniem zachowuje rząd znacznika (nie wraca do rzędu w robocie)', async () => {
   const s = await start(45, znacznik({}));
   przytrzymaj(3, 0.2);

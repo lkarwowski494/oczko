@@ -205,6 +205,7 @@ export default function EkranWzoru(): React.ReactElement {
         naZaznaczRzad={(kierunek) => void postaw({ strona: strona ? strona.n - 1 : 0, y: gornaKrawedzRzedu(0.5, zn?.wysokosc ?? WYSOKOSC_RZEDU_DOMYSLNA), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek })}
         znacznik={zn ? { strona: zn.strona, rzad: zn.rzad, kierunek: zn.kierunek, pozaStrona: zn.pozaStrona, przedSchematem: zn.przedSchematem } : null} razemStron={strona?.razem}
         oczekujacePrzytrzymanie={przytrzymanie !== null}
+        naNieTerazPrzytrzymania={() => ustawPrzytrzymanie(null)}
         naKierunekPrzytrzymania={(kierunek) => { const g = przytrzymanie; ustawPrzytrzymanie(null); if (g) void postaw({ strona: g.strona, y: gornaKrawedzRzedu(g.y, WYSOKOSC_RZEDU_DOMYSLNA), rzadBazowy: rzadPoPrzeniesieniu(null, domyslnyRzadBazowy(lw.wartosc)), kierunek }); }}
         naZmienKierunek={(kierunek) => { if (gdzieZnacznik) void postaw({ ...gdzieZnacznik, kierunek }); }}
         naKrokRzaduZnacznika={(delta) => {
