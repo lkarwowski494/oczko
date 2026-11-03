@@ -28,8 +28,18 @@ describe('BR-KAL-001 (RD-01)', () => {
   test('ER-43: 21,5 w pl-PL → 107,5 oczka w zapisie regionu', () => {
     expect(licz({ oczka: '21,5', szerokosc: '50' }, 'pl-PL').wynik?.liczba).toBe('107,5 stitches');
   });
-  test('ER-43: 21.5 w de-DE → bez wyniku, przykład zapisu 21,5', () => {
+  // DEC-12 a (M1-audytor-generalny-069): pole próbki nie ma separatora tysięcy, więc „,” i „.” są oba dziesiętne; zastępuje scenariusz „21.5 w de-DE → bez wyniku”
+  // (BRD ER-43 do zmiany przez rolę 01).
+  test('ER-43/DEC-12: 21.5 w de-DE → wynik jak dla 21,5', () => {
     const s = licz({ oczka: '21.5', szerokosc: '50' }, 'de-DE');
+    expect(s.bladOczka).toBeNull();
+    expect(s.wynik?.liczba).toBe('107,5 stitches');
+  });
+  test('DEC-12: język en (telefon z regionem PL wpisuje przecinek) — „21,5” przyjęte w polu próbki', () => {
+    expect(licz({ oczka: '21,5', szerokosc: '50' }, 'en').wynik?.liczba).toBe('107.5 stitches');
+  });
+  test('ER-43: zapis z dwoma separatorami w de-DE → bez wyniku, przykład zapisu 21,5', () => {
+    const s = licz({ oczka: '21.5.1', szerokosc: '50' }, 'de-DE');
     expect(s.bladOczka).toBe('Write it as 21,5.');
     expect([s.wynik, s.grubosc]).toEqual([null, null]);
   });

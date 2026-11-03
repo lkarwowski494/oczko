@@ -22,15 +22,18 @@ export function ukladMiar(preferencja: PreferencjaMiar, systemowy: 'metric' | 'u
 }
 
 /**
- * Wpis liczby nieujemnej w polu (P-097 (5a)): cyfry ASCII i jeden separator dziesiętny języka (CLDR przez Intl.NumberFormat), bez separatorów
- * tysięcy i znaku. Zapis niezgodny albo pusty = null (pole odrzuca wpis). Cyfry regionu: wszystkie 35 lokalizacji (D-026) piszą cyframi ASCII.
+ * Wpis liczby nieujemnej w polu bez separatora tysięcy (P-097 (5a), DEC-12 a): cyfry ASCII i jeden separator dziesiętny, którym jest „,” albo „.” (też
+ * separator języka z CLDR przez Intl.NumberFormat, gdyby był inny). Grupowanie tysięcy jest tu odrzucane, więc oba znaki są jednoznaczne; dzięki temu
+ * telefon w języku en z regionem PL przyjmie „3,5”, a w pl „3.5”. Bez znaku i bez dwóch separatorów. Zapis niezgodny albo pusty = null (pole odrzuca
+ * wpis). Cyfry regionu: wszystkie 35 lokalizacji (D-026) piszą cyframi ASCII.
  */
 export function parsujLiczbe(tekst: string, jezyk: string): number | null {
-  // Separator z `format(1.5)` (znaki między „1” a „5”), nie z formatToParts — Hermes na iOS go nie ma (P-255 (b); hermes doc/IntlAPIs.md
+  // Separator języka z `format(1.5)` (znaki między „1” a „5”), nie z formatToParts — Hermes na iOS go nie ma (P-255 (b); hermes doc/IntlAPIs.md
   // „Supported on Android only”, PlatformIntlApple.mm „formatToParts is unimplemented on Apple platforms”; odczyt 2026-10-27).
   const sep = /1(\D+)5/.exec(new Intl.NumberFormat(jezyk, { useGrouping: false }).format(1.5))?.[1] ?? '.';
   const t = tekst.trim();
-  const [cale, ulamek, ...reszta] = t.split(sep);
+  const czesci = t.split(new RegExp(`[.,]|${sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+  const [cale, ulamek, ...reszta] = czesci;
   if (reszta.length > 0 || !/^\d*$/.test(cale ?? '') || (ulamek !== undefined && !/^\d*$/.test(ulamek)) || (cale ?? '') + (ulamek ?? '') === '') return null;
   return Number(`${cale || '0'}.${ulamek ?? ''}`.replace(/\.$/, ''));
 }
