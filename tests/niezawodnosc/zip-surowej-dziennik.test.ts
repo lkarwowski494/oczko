@@ -9,6 +9,7 @@ import { rozpocznijStart, trybAwaryjny } from '../../src/kompozycja/start-aplika
 import type { ManifestSurowejKopii } from '../../src/niezawodnosc/kopie';
 import { czytajZip, licznosciPliku, zycie } from '../dane/pomocnicze/dane-wejsciowe';
 import { katalogTymczasowy, licznosci, przygotuj, sha256, sha256Pliku, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
+import { odsmiec } from './pomocnicze';
 
 let mockBiblioteka = '';
 let mockBladKopiiDziennika: Error | null = null;
@@ -38,7 +39,8 @@ const DZIENNIK = [
 ].map((z) => JSON.stringify(z)).join('\n');
 const linie = (t: string) => t.split('\n').filter((l) => l.length > 0);
 
-/** Instalacja z danymi, pętla awarii → tryb awaryjny; proces kończy się bez zamknięcia bazy (zapisy w -wal). */
+/** Instalacja z danymi, pętla awarii → tryb awaryjny; proces kończy się bez zamknięcia bazy (zapisy w -wal). Zwraca `zamknij`: test trzyma
+ *  połączenie (silna referencja) i zamyka je jawnie po asercjach — inaczej odśmiecanie zamknie je w dowolnej chwili i usunie -wal i -shm (M1-163). */
 async function trybAwaryjnyZDanymi(dziennik: string | null) {
   mockBiblioteka = join(katalogTymczasowy('oczko-075-'), 'Library');
   const as = join(mockBiblioteka, 'Application Support');
@@ -51,7 +53,7 @@ async function trybAwaryjnyZDanymi(dziennik: string | null) {
   await rozpocznijStart(); await rozpocznijStart();
   expect((await rozpocznijStart()).tryb).toBe('awaryjny');
   const sha = () => [...PLIKI, 'dziennik-plus.jsonl'].filter((n) => existsSync(join(as, n))).map((n) => `${n}:${sha256Pliku(join(as, n))}`);
-  return { as, przed, sha, a: trybAwaryjny() };
+  return { as, przed, sha, a: trybAwaryjny(), zamknij: () => s.baza.zamknij() };
 }
 /** Baza z ZIP-a (trzy pliki surowej kopii) w osobnym katalogu: liczności, integrity_check, foreign_key_check. */
 function bazaZZipa(zip: Map<string, Buffer>) {
@@ -64,9 +66,10 @@ function bazaZZipa(zip: Map<string, Buffer>) {
 }
 
 test('M1-075: ZIP surowej kopii zawiera dziennik +1 z SHA-256 w manifeście; linie w ZIP = linie na urządzeniu; baza w ZIP kompletna', async () => {
-  const { as, przed, sha, a } = await trybAwaryjnyZDanymi(DZIENNIK);
+  const { as, przed, sha, a, zamknij } = await trybAwaryjnyZDanymi(DZIENNIK);
   const shaPrzed = sha();
   const cel = await a.zipSurowej();
+  odsmiec();
   if (!cel) throw new Error('ZIP surowej kopii = null');
   const zip = czytajZip(cel);
   const manifest = JSON.parse(zip.get('manifest.json')!.toString('utf8')) as ManifestSurowejKopii;
@@ -77,15 +80,17 @@ test('M1-075: ZIP surowej kopii zawiera dziennik +1 z SHA-256 w manifeście; lin
   for (const p of manifest.pliki) expect({ nazwa: p.nazwa, sha: sha256(zip.get(p.nazwa)!) }).toEqual({ nazwa: p.nazwa, sha: p.sha256 });
   expect(bazaZZipa(zip)).toEqual({ integrity: [{ integrity_check: 'ok' }], fk: 0, licznosci: przed });
   expect(sha()).toEqual(shaPrzed); // oryginały (baza i dziennik) nietknięte
+  zamknij();
 });
 
 test('M1-075: bez dziennika (nie było stuknięć poza aplikacją) ZIP powstaje jak dotąd — trzy pliki bazy i manifest', async () => {
-  const { przed, a } = await trybAwaryjnyZDanymi(null);
+  const { przed, a, zamknij } = await trybAwaryjnyZDanymi(null);
   const cel = await a.zipSurowej();
   if (!cel) throw new Error('ZIP surowej kopii = null');
   const zip = czytajZip(cel);
   expect([...zip.keys()].sort()).toEqual(['manifest.json', ...PLIKI].sort());
   expect(bazaZZipa(zip)).toEqual({ integrity: [{ integrity_check: 'ok' }], fk: 0, licznosci: przed });
+  zamknij();
 });
 
 // M1-audytor-generalny-156 (12-niezawodnosc-504; ADR-0020 (3), zasada roli 12 nr 1 — baza przed plikiem pobocznym): nieudana kopia dziennika +1
@@ -96,10 +101,11 @@ describe.each([
 ] as const)('M1-156: kopia dziennika +1 rzuca %s', (_kod, komunikat, powod) => {
   afterEach(() => { mockBladKopiiDziennika = null; });
   test('ZIP powstaje z trzema plikami bazy i manifestem z adnotacją pominięcia; baza z ZIP-a ma liczności sprzed awarii; oryginały nietknięte', async () => {
-    const { as, przed, sha, a } = await trybAwaryjnyZDanymi(DZIENNIK);
+    const { as, przed, sha, a, zamknij } = await trybAwaryjnyZDanymi(DZIENNIK);
     const shaPrzed = sha();
     mockBladKopiiDziennika = new Error(komunikat);
     const cel = await a.zipSurowej();
+    odsmiec();
     if (!cel) throw new Error('ZIP surowej kopii = null');
     const zip = czytajZip(cel);
     expect([...zip.keys()].sort()).toEqual(['manifest.json', ...PLIKI].sort());
@@ -111,5 +117,6 @@ describe.each([
     expect(readdirSync(dirname(cel)).filter((n) => n.includes('dziennik-plus'))).toEqual([]); // bez migawki w katalogu tymczasowym
     expect(sha()).toEqual(shaPrzed);
     expect(linie(readFileSync(join(as, 'dziennik-plus.jsonl'), 'utf8'))).toEqual(linie(DZIENNIK));
+    zamknij();
   });
 });
