@@ -35,6 +35,7 @@
     "powtorzenie": "Linia powtórzenia wzoru na liczniku: „Cable pattern: repeat 6, row 7 of 8”. {{nazwa}} = nazwa powtórzenia nadana przez użytkowniczkę (wcześniej doklejana w kodzie przed „ · ”); {{numer}} = które powtórzenie, {{rzad}} = rząd w powtórzeniu, {{dlugosc}} = długość powtórzenia w rzędach. Dwukropek po nazwie, części stanu po przecinku (M1-audytor-generalny-034, 04, 2026-11-03).",
     "notatka": "Etykieta notatki projektu przy liczniku (BR-PRJ-002/S1).",
     "blizniak": "Notatka i przypomnienie z tego samego rzędu części-pary (BR-PRJ-014/S2; tekst 08 do akceptacji 04, Z07-05).",
+    "blizniak_oba": "Zdanie stanu na liczniku, gdy rząd części-pary ma i notatkę, i przypomnienie (BR-PRJ-014/S2): {{notatka}} = notatka użytkownika, {{przypomnienie}} = treść przypomnienia; oba wpisuje użytkownik. Części łączy przecinek, nie „ · ” (decyzja 04, design-spec „Separator „ · ””; M1-audytor-generalny-144). Kolejność notatka → przypomnienie można zmienić, jeśli szyk języka tego wymaga. Tekst 08 do akceptacji 04.",
     "znaczniki_sesji": "Podpis nad kreskami sesji (design-spec „Kreski sesji przez północ”).",
     "ostatni_darmowy": "Cicha linia pod liczbą w ostatnim darmowym dniu (design-spec „Limit dni”, P-065 (2a)).",
     "cel_dnia": "Cel dzienny tylko przy terminie (BR-DNI-005/S5; tekst 08 do akceptacji 04).",

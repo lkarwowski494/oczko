@@ -37,3 +37,39 @@ test('034: linia powtórzenia na liczniku to jedno zdanie z nazwą powtórzenia 
   expect(wpisy.find(([k]) => k === 'licznik.powtorzenie')?.[1]).toContain('{{nazwa}}');
   expect(fs.readFileSync(path.join(KORZEN, 'src', 'ekrany', 'Licznik.tsx'), 'utf8')).not.toMatch(/ · \$\{t\('licznik\.powtorzenie'/);
 });
+
+// M1-audytor-generalny-144 (04-studio-projektowe-527, opcja b): test 034 czytał tylko en.json, więc nie widział „ · ” sklejanego w kodzie
+// (linia bliźniaka na liczniku: „Paired part, row 12: note · reminder”). Kontrola źródeł `src/ekrany` i `src/kompozycja`: „ · ” w kodzie
+// (poza komentarzami) tylko w plikach z listy wyjątków w design-spec („Separator „ · ””) — metadane wierszy; na liczniku nigdzie.
+const KATALOGI_KODU = ['src/ekrany', 'src/kompozycja'];
+/** Plik → liczba linii z „ · ” w kodzie. Wyjątki nazwane w design-spec; przeniesienie do słownika w fali 09 (opcja a znaleziska). */
+const WYJATKI_KROPKI_W_KODZIE: Record<string, number> = {
+  'src/ekrany/Historia.tsx': 2,     // wiersz serii i dopisek „undone” w wierszu historii
+  'src/ekrany/ObrazKarty.tsx': 1,   // podpis karty ukończenia: włóczki · części
+  'src/ekrany/Oferty.tsx': 2,       // wiersz oferty: nazwa · cena (widoczny i etykieta VoiceOver)
+  'src/ekrany/Ukonczenie.tsx': 1,   // podsumowanie: czas · części · dni
+  'src/ekrany/Zapas.tsx': 1,        // wiersz wyboru kategorii: numer · nazwa
+  'src/kompozycja/zapas.ts': 1,     // wiersz włóczki: kategoria · motki
+  'src/kompozycja/e2e/ocena-stan.tsx': 1,      // panel diagnostyczny scenariuszy e2e (nie dla użytkownika)
+  'src/kompozycja/e2e/panele.tsx': 1,          // jw.
+  'src/kompozycja/e2e/pomiar-operacji.tsx': 1, // jw.
+};
+const plikiKodu = (kat: string): string[] => fs.readdirSync(path.join(KORZEN, kat), { withFileTypes: true }).flatMap((d) =>
+  d.isDirectory() ? plikiKodu(`${kat}/${d.name}`) : /\.(ts|tsx)$/.test(d.name) ? [`${kat}/${d.name}`] : []);
+/** Linia bez komentarza: pomija linie komentarzy blokowych i ucina `//` poprzedzone spacją albo początkiem linii. */
+const kod = (linia: string): string => (/^\s*(\/\*|\*)/.test(linia) ? '' : linia.replace(/(^|\s)\/\/.*$/, ''));
+
+test('144: „ · ” sklejane w kodzie tylko w plikach z listy wyjątków design-spec; licznik bez „ · ”', () => {
+  const znalezione: Record<string, number> = {};
+  for (const plik of KATALOGI_KODU.flatMap(plikiKodu)) {
+    const ile = fs.readFileSync(path.join(KORZEN, plik), 'utf8').split('\n').filter((l) => kod(l).includes(' · ')).length;
+    if (ile > 0) znalezione[plik] = ile;
+  }
+  expect(znalezione).toEqual(WYJATKI_KROPKI_W_KODZIE);
+  expect(Object.keys(znalezione).filter((p) => /\/Licznik[^/]*\.tsx?$/.test(p))).toEqual([]);
+});
+
+test('144: lista wyjątków z testu jest w design-spec (sekcja „Separator „ · ””)', () => {
+  const spec = fs.readFileSync(path.join(KORZEN, 'docs', 'design', 'design-spec.md'), 'utf8');
+  for (const plik of Object.keys(WYJATKI_KROPKI_W_KODZIE)) expect(spec).toContain(`\`${plik}\``);
+});

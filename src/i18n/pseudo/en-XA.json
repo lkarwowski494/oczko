@@ -41,6 +41,7 @@
   "licznik.powtorzenie": "⟦{{nazwa}}: ŕépéàt {{numer}}, ŕöw {{rzad}} öf {{dlugosc}}~~~~~~~~~⟧",
   "licznik.notatka": "⟦Ñöté~~~~⟧",
   "licznik.blizniak": "⟦Pàîŕéd pàŕt, ŕöw {{rzad}}: {{tresc}}~~~~~~~~~~~⟧",
+  "licznik.blizniak_oba": "⟦Pàîŕéd pàŕt, ŕöw {{rzad}}: {{notatka}}, {{przypomnienie}}~~~~~~~~~~~⟧",
   "licznik.znaczniki_sesji_one": "⟦Màŕkš thîš šéššîöñ: {{count}} ŕöw šîñçé {{godzina}}~~~~~~~~~~~~~~~⟧",
   "licznik.znaczniki_sesji_other": "⟦Màŕkš thîš šéššîöñ: {{count}} ŕöwš šîñçé {{godzina}}~~~~~~~~~~~~~~~~⟧",
   "licznik.ostatni_darmowy": "⟦1 fŕéé çŕàftîñg dàý léft îñ {{miesiac}}~~~~~~~~~~~~~⟧",

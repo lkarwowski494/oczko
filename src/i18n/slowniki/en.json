@@ -42,6 +42,7 @@
     "powtorzenie": "{{nazwa}}: repeat {{numer}}, row {{rzad}} of {{dlugosc}}",
     "notatka": "Note",
     "blizniak": "Paired part, row {{rzad}}: {{tresc}}",
+    "blizniak_oba": "Paired part, row {{rzad}}: {{notatka}}, {{przypomnienie}}",
     "znaczniki_sesji_one": "Marks this session: {{count}} row since {{godzina}}",
     "znaczniki_sesji_other": "Marks this session: {{count}} rows since {{godzina}}",
     "ostatni_darmowy": "1 free crafting day left in {{miesiac}}",
