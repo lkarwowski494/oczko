@@ -1126,6 +1126,25 @@ Kontrakt F-26 mówi „ustawiany raz stuknięciem w rząd”; build stawiał zna
 
 **Dla 08 (testy przed kodem; kolejność P1 — to zadanie pierwsze).** (1) Trasa `/wzor`, wzór bez znacznika: stuknięcie z widoku natywnego → pytanie o kierunek → znacznik na wysokości stuknięcia; (2) znacznik ustawiony, pasek zamknięty: stuknięcie nie zmienia znacznika; pasek otwarty: przenosi; (3) wybrane narzędzie rysowania: stuknięcie nie stawia znacznika; (4) pierwsze otwarcie (flaga pusta) → `wzor-wskazowka-znacznika` z tekstem klucza; drugie otwarcie → brak; Word → brak i flaga pusta; VoiceOver włączony → brak; po stuknięciu → linia znika; (5) `wzor-zaznacz` rysuje glif uchwytu, nie `SymbolSf` `bookmark` (kontrola w `tests/ekrany/pasek-symbole-033-036.test.tsx`); (6) widok natywny: `UITapGestureRecognizer` na stronie, wyłączany jak przytrzymanie przy polityce rysowania `dowolne`, czekający na porażkę podwójnego stuknięcia PDFView; zdarzenie z rodzajem dotyku (stuknięcie albo przytrzymanie) albo osobne zdarzenie — wybór 08, kontrakt w `tests/adaptery/widok-wzoru-kontrakt.test.ts`; dowód natywny w przebiegu nocnym (kompilacja `WidokWzoru.swift`). **Dla 07:** zrzut pierwszego otwarcia wzoru z linią wskazówki (czysta flaga) i ponowne przejście F-26 (ZM-14) na nowym zrzucie.
 
+### Liczby w podglądzie „Swatch” (M1-audytor-generalny-134, 04-studio-projektowe-524; DEC-34 a, P-438)
+Nowa reguła systemu dla kalkulatora próbki. *Dlaczego:* próbkę liczy się w całych albo połówkach oczek; „19.685 stitches per 10 cm” przy próbce wpisanej w całych oczkach udaje dokładność, której wejście nie ma, a jedno miejsce zostawia ślad ułamka (20 na 4 in to nie 20 na 10 cm).
+- **Liczba wyliczona** (przeliczenie jednostki, wynik oczek, gęstość na 4 in przy kategorii grubości): najwyżej jedno miejsce po przecinku — najbliższa dziesiąta, połowa w górę (19,685 → 19,7; 106,25 → 106,3), bez zer końcowych (50,0 → 50), w zapisie regionu (`formatujLiczbe`, `maks: 1`).
+- **Liczba przepisana z pola** bez przeliczenia (próbka i szerokość w jednostce, w której je wpisano, w linii „From … and …”): jak wpisano, do 3 miejsc, jak dziś — podgląd nie poprawia tego, co osoba wpisała.
+- **Obliczenia z pełnej wartości:** wynik oczek z szerokości (20 na 4 in i 100 cm → 196,85 → „196.9”, nie 197 z zaokrąglonej gęstości), kategoria grubości (ER-35: z wartości dokładnej). Forma liczby mnogiej `{{count}}` = wartość pokazana (tekst zgadza się z liczbą).
+
+| Miejsce (`src/kompozycja/probka.ts`) | Klucz | Dziś | Po |
+|---|---|---|---|
+| przeliczenie próbki 4 in → 10 cm | `probka.przeliczona_*` | = 19.685 stitches per 10 cm | = 19.7 stitches per 10 cm |
+| wynik oczek dla szerokości | `probka.oczka_wynik_*` | 59.055 stitches | 59.1 stitches |
+| dane wyniku (gęstość po przeliczeniu) | `probka.z_danych_cm_*`, `probka.z_danych_in_*` | From 19.685 stitches per 10 cm and 30 cm. | From 19.7 stitches per 10 cm and 30 cm. |
+| gęstość na 4 in przy próbce na 10 cm | `probka.na_4in_dokladnie_*` | 22.352 stitches per 4 in. | 22.4 stitches per 4 in. |
+
+Teksty bez zmian (bez nowych kluczy). Komplet przypadków z napisami en: `fix15-2026-11-03/klucze.json` → `probka_podglad` (spójność wyroczni z parametrami domeny sprawdza `tests/narzedzia/klucze-fix15-p3c1.test.ts`).
+
+**Zależność od BRD (koordynator → 01).** BR-KAL-003 S1 mówi „Wtedy wynik to 19,685 o./10 cm (RD-04-W1)”, a S3 „20,177 o./10 cm”; ten napis na ekranie sprawdzają e2e 41 (`assertVisible: "= 19.685 stitches per 10 cm"`), `tests/ekrany/probka.test.ts` i `tests/ekrany/narzedzia-probka.test.tsx`. DEC-34 (a) zmienia napis, nie rachunek: RD-04-W1 (19,685 ± 0,001, wektor `tests/wektory/brd.json`) zostaje i jest testem pełnej wartości w obliczeniach. Potrzebna errata 01 do S1 i S3 („wynik rachunku 19,685 (RD-04-W1); na ekranie 19,7 — jedno miejsce, design-spec Aneks M2 partia 3c1”); zmiana tych testów przez 08 bez erraty byłaby dopasowaniem testu wbrew brzmieniu BR (zasada wspólna 11).
+
+**Dla 08 (testy przed kodem).** Test akceptacyjny gotowy w katalogu wyjścia sesji 04 (`przekazanie-08/probka-134-dec34.test.ts`, miejsce docelowe `tests/ekrany/probka-dec34.test.ts`; na kodzie dziś 8 z 12 czerwonych z właściwego powodu); `probka.ts`: osobny format dla liczby wyliczonej (1 miejsce) i przepisanej (3 miejsca), `count` z wartości pokazanej; asercje „19.685” w `probka.test.ts`, `narzedzia-probka.test.tsx` i e2e 41 (07) zmieniają się po erracie 01. **Dla 07:** zrzut `41-probka` z „= 19.7 stitches per 10 cm”.
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 

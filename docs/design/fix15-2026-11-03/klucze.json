@@ -16,5 +16,117 @@
   },
   "kontekst": {
     "wzor.wskazowka_znacznika": "Jednorazowa linia informacji pod paskiem nawigacji, nad stroną wzoru, przy pierwszym otwarciu wzoru na urządzeniu, dopóki nie ma znacznika (M1-audytor-generalny-131, 04-studio-projektowe-521, DEC-33 b). „row” = rząd na wydruku wzoru (linia instrukcji albo rząd schematu), „marker” = znacznik bieżącego rzędu (pas z zakładką „Row 13 ↓”) — ten sam rzeczownik co w `wzor.znacznik_a11y_gora` („Row marker…”) i `wzor.przestaw` („Move marker”). „Tap” = stuknięcie palcem (jak `licznik.podpowiedz_start`). Tryb rozkazujący, krótko (ok. 35 znaków; linia się zawija, ale ma zająć jak najmniej miejsca nad wzorem), z kropką jak `wzor.rysik_podpowiedz`."
+  },
+  "probka_podglad": {
+    "zasada": "DEC-34 a (M1-audytor-generalny-134, 04-studio-projektowe-524): liczba wyliczona w podglądzie kalkulatora próbki — najwyżej jedno miejsce po przecinku (najbliższa dziesiąta, połowa w górę, bez zer końcowych, zapis regionu: formatujLiczbe(Math.round(x × 10) / 10, język, { maks: 1 })); liczba przepisana z pola bez przeliczenia — jak wpisano (do 3 miejsc); obliczenia (wynik oczek, kategoria grubości) z pełnej wartości; {{count}} = wartość pokazana. Teksty bez zmian; przypadki en (wyrocznia testów 08 dla src/kompozycja/probka.ts).",
+    "przypadki": [
+      {
+        "opis": "BR-KAL-003/S1 (RD-04-W1): 20 o./4 in → 10 cm",
+        "oczka": "20",
+        "na": "4in",
+        "klucz": "probka.przeliczona",
+        "pelna": 19.685039,
+        "pokazana": "= 19.7 stitches per 10 cm"
+      },
+      {
+        "opis": "BR-KAL-003/S3: 20,5 o./4 in → 10 cm (rachunek 20,5 × 10 / 10,16)",
+        "oczka": "20.5",
+        "na": "4in",
+        "klucz": "probka.przeliczona",
+        "pelna": 20.177165,
+        "pokazana": "= 20.2 stitches per 10 cm"
+      },
+      {
+        "opis": "wynik oczek liczony z pełnej gęstości: 19,685… × 100 / 10 = 196,85 → 196.9 (z zaokrąglonej 19,7 wyszłoby 197)",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "100",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 196.850394,
+        "pokazana": "196.9 stitches",
+        "nie": "197 stitches"
+      },
+      {
+        "opis": "wynik oczek 59,055 → 59.1",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "30",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 59.055118,
+        "pokazana": "59.1 stitches"
+      },
+      {
+        "opis": "dane wyniku: gęstość przeliczona na 10 cm — jedno miejsce; szerokość przepisana z pola",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "30",
+        "jednostka": "cm",
+        "klucz": "probka.z_danych_cm",
+        "pelna": 19.685039,
+        "pokazana": "From 19.7 stitches per 10 cm and 30 cm."
+      },
+      {
+        "opis": "próbka na 10 cm → gęstość na 4 in przy kategorii grubości (22 × 10,16 / 10 = 22,352)",
+        "oczka": "22",
+        "na": "10cm",
+        "klucz": "probka.na_4in_dokladnie",
+        "pelna": 22.352,
+        "pokazana": "22.4 stitches per 4 in."
+      },
+      {
+        "opis": "echo wejścia bez przeliczenia: próbka i szerokość jak wpisano (do 3 miejsc)",
+        "oczka": "21.25",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.z_danych_cm",
+        "pelna": 21.25,
+        "pokazana": "From 21.25 stitches per 10 cm and 50 cm.",
+        "echo": true
+      },
+      {
+        "opis": "wynik oczek 106,25 → 106.3 (połowa w górę)",
+        "oczka": "21.25",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 106.25,
+        "pokazana": "106.3 stitches"
+      },
+      {
+        "opis": "BR-KAL-001/S4 (ER-43): 21,5 o./10 cm, 50 cm → 107,5 bez zmian",
+        "oczka": "21.5",
+        "na": "10cm",
+        "szerokosc": "50",
+        "jednostka": "cm",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 107.5,
+        "pokazana": "107.5 stitches"
+      },
+      {
+        "opis": "BR-KAL-003/S1 + BR-KAL-001: 20 o./4 in, 10 in → 50 oczek; dane wyniku jak wpisano",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "10",
+        "jednostka": "in",
+        "klucz": "probka.oczka_wynik",
+        "pelna": 50,
+        "pokazana": "50 stitches"
+      },
+      {
+        "opis": "dane wyniku w calach: próbka na 4 in i szerokość jak wpisano",
+        "oczka": "20",
+        "na": "4in",
+        "szerokosc": "10",
+        "jednostka": "in",
+        "klucz": "probka.z_danych_in",
+        "pelna": 20,
+        "pokazana": "From 20 stitches per 4 in and 10 in.",
+        "echo": true
+      }
+    ]
   }
 }

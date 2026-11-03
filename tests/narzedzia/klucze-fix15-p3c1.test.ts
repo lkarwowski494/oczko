@@ -42,3 +42,45 @@ describe('M1-audytor-generalny-131: wskazówka „stuknij w rząd”', () => {
     expect(wartosc(EN, 'wzor.przestaw')).toContain('marker');
   });
 });
+
+// M1-audytor-generalny-134 (04-studio-projektowe-524; DEC-34 a, P-438): jedno miejsce po przecinku w podglądzie „Swatch”, pełna wartość w obliczeniach.
+// Bez nowych tekstów. Test sprawdza wyrocznię 04 dla 08 (`probka_podglad`): pełna wartość = rachunek z parametrów domeny (RD-01, RD-04),
+// napis = szablon en z liczbą według reguły (wyliczona: 1 miejsce; przepisana z pola: jak wpisano). Zachowanie ekranu sprawdzi test 08.
+describe('M1-audytor-generalny-134: wyrocznia liczb podglądu próbki', () => {
+  type Przypadek = { opis: string; oczka: string; na: '10cm' | '4in'; szerokosc?: string; jednostka?: 'cm' | 'in'; klucz: string; pelna: number; pokazana: string; nie?: string; echo?: boolean };
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { CAL_W_CM, CZTERY_CALE_W_CM } = require('../../src/domena/obliczenia/parametry') as { CAL_W_CM: number; CZTERY_CALE_W_CM: number };
+  const WYR = (czytaj('docs/design/fix15-2026-11-03/klucze.json') as { probka_podglad?: { przypadki: Przypadek[] } }).probka_podglad;
+  const przypadki = WYR?.przypadki ?? [];
+  const liczba = (x: number, echo: boolean) => new Intl.NumberFormat('en', { maximumFractionDigits: echo ? 3 : 1 }).format(echo ? x : Math.round(x * 10) / 10);
+  const rachunek = (c: Przypadek): number => {
+    const p = Number(c.oczka), naCm = c.na === '10cm' ? p / 10 : p / CZTERY_CALE_W_CM;
+    const szer = Number(c.szerokosc ?? 0);
+    switch (c.klucz) {
+      case 'probka.przeliczona': return naCm * 10;
+      case 'probka.oczka_wynik': return (c.jednostka === 'in' ? szer * CAL_W_CM : szer) * naCm;
+      case 'probka.z_danych_cm': return c.na === '10cm' ? p : naCm * 10;
+      case 'probka.z_danych_in': return c.na === '4in' ? p : naCm * CZTERY_CALE_W_CM;
+      case 'probka.na_4in_dokladnie': return naCm * CZTERY_CALE_W_CM;
+      default: throw new Error(`nieznany klucz ${c.klucz}`);
+    }
+  };
+  test('wyrocznia ma przypadki dla wszystkich pięciu kluczy z liczbą w podglądzie', () => {
+    expect([...new Set(przypadki.map((c) => c.klucz))].sort()).toEqual(['probka.na_4in_dokladnie', 'probka.oczka_wynik', 'probka.przeliczona', 'probka.z_danych_cm', 'probka.z_danych_in']);
+  });
+  test('pełna wartość każdego przypadku = rachunek z parametrów domeny (4 in = 10,16 cm, 1 in = 2,54 cm)', () => {
+    for (const c of przypadki) expect([c.opis, Math.abs(rachunek(c) - c.pelna) < 1e-6]).toEqual([c.opis, true]);
+  });
+  test('napis = szablon en z liczbą według reguły DEC-34 a; echo tylko bez przeliczenia', () => {
+    for (const c of przypadki) {
+      const echo = c.echo === true;
+      if (echo) expect([c.opis, rachunek(c)]).toEqual([c.opis, Number(c.oczka)]);
+      const pokazana = liczba(c.pelna, echo);
+      const forma = new Intl.PluralRules('en').select(Number(pokazana.replace(/,/g, ''))) === 'one' ? 'one' : 'other';
+      const szablon = wartosc(EN, `${c.klucz}_${forma}`) ?? '';
+      const w = c.szerokosc === undefined ? '' : liczba(Number(c.szerokosc), true);
+      expect([c.opis, szablon.replace('{{p}}', pokazana).replace('{{count}}', pokazana).replace('{{w}}', w)]).toEqual([c.opis, c.pokazana]);
+      if (c.nie) expect(c.pokazana).not.toBe(c.nie);
+    }
+  });
+});
