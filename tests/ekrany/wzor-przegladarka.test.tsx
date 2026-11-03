@@ -3,7 +3,7 @@
 import React from 'react';
 import * as RN from 'react-native';
 import { StyleSheet, Text } from 'react-native';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
 import { RYSIK_PODPOWIEDZ_MS } from '../../src/konfiguracja';
 import { ukladOkna } from '../../src/domena/uklad';
 import { PrzegladarkaWzoru, type StanPrzegladarki } from '../../src/ekrany/WzorPrzegladarka';
@@ -202,6 +202,13 @@ test('poz. 12 C: wiersz oczekującego jest obok wzorów (≥ 2), nie przełącza
   expect(w.naPrzelacz).not.toHaveBeenCalled();
   r.rerender(<PrzegladarkaWzoru stan={stan({ wzory: dwa, oczekujace: [] })} t={t} widok={widok} {...w} />);
   expect(screen.queryByText('Waiting for the internet to save the web page.')).toBeNull();
+});
+test('M1-146: przełącznik wzorów w tytule paska ma symbol chevron.down zamiast glifu ▾; tytuł bez glifu, etykieta VoiceOver bez zmian', () => {
+  render(<PrzegladarkaWzoru stan={stan({ wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }, { wzorId: 'w2', nazwa: 'Edging' }] })} t={t} widok={widok} {...wywolania()} />);
+  const przelacz = screen.getByTestId('wzor-przelacz');
+  expect(within(przelacz).getByTestId(/^symbol-/, { includeHiddenElements: true }).props.name).toBe('chevron.down');
+  expect(within(przelacz).getByText('Harbor chart')).toBeTruthy();
+  expect(przelacz.props.accessibilityLabel).toBe('Pattern: Harbor chart. Switch pattern');
 });
 test('poz. 12 C (strażnik): bez oczekujących jeden wzór nie ma ▾, jak dotąd', () => {
   render(<PrzegladarkaWzoru stan={stan({ oczekujace: [] })} t={t} widok={widok} {...wywolania()} />);

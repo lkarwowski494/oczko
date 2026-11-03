@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
-import { SymbolSf } from './SymbolSf';
+import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
 export function odstepNadKlawiatura(w: { dolPrzyciskow: number; gornaKlawiatury: number | null }): number {
@@ -105,8 +105,9 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
 }
 
 type RodzajPrzycisku = 'glowny' | 'niszczacy' | 'drugi' | 'tekstowy'; // niszczacy: tylko arkusz decyzji o nieodwracalnym usunięciu, jeden na ekran (04 fix-8, P-275 (2))
-export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean }): React.ReactElement {
-  const st = style(useKolory());
+export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean; symbol?: NazwaSymbolu }): React.ReactElement {
+  const k = useKolory();
+  const st = style(k);
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
   // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
@@ -115,7 +116,9 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
-      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
+      {p.symbol
+        ? <SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />/* M1-146: sam symbol (rozwinięcie wpisu historii), `tekst` zostaje etykietą VoiceOver */
+        : <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>}
     </Pressable>
   );
 }

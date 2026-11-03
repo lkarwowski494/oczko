@@ -8,6 +8,7 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type K
 import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
 import { Wstecz } from './Pasek';
+import { StrzalkaWiersza } from './SymbolSf';
 
 export type PropsWloczki = {
   stan: { nazwa: string; pielegnacja: { tekst: string | null; zdjecie: string | null } }; // bez symboli pielęgnacji (OG-13, OP-11)
@@ -25,7 +26,7 @@ export function Wloczka({ stan, t }: PropsWloczki): React.ReactElement {
   );
 }
 
-/** Wiersz grupy z „›” (wejście do ekranu); `wartosc` po prawej (liczba pozycji). */
+/** Wiersz grupy ze wskaźnikiem przejścia (`chevron.forward`, M1-146; wejście do ekranu); `wartosc` po prawej (liczba pozycji). */
 export function WierszGrupy(p: { tekst: string; opis?: string; wartosc?: string; onPress(): void; testID?: string; ostatni?: boolean }): React.ReactElement {
   const st = style(useKolory());
   return (
@@ -36,7 +37,7 @@ export function WierszGrupy(p: { tekst: string; opis?: string; wartosc?: string;
         {p.opis ? <Text style={st.opis}>{p.opis}</Text> : null}
       </View>
       {p.wartosc ? <Text style={st.opis}>{p.wartosc}</Text> : null}
-      <Text style={st.opis} importantForAccessibility="no" accessibilityElementsHidden>›</Text>
+      <StrzalkaWiersza />
     </Pressable>
   );
 }

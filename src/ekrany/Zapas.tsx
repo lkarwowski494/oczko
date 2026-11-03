@@ -12,7 +12,7 @@ import { krokMotkow } from '../domena/zapas';
 import type { FiltrZapasu, StanDrutow, StanZapasu } from '../kompozycja/zapas';
 import type { FormularzWloczki as DaneWloczki, RodzajNarzedzia } from '../przypadki-uzycia/zapas';
 import { Wstecz } from './Pasek';
-import { SymbolSf } from './SymbolSf';
+import { StrzalkaWiersza, SymbolSf } from './SymbolSf';
 
 const NAZWY_KATEGORII = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 
@@ -80,7 +80,7 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
                     <Text style={sn.opis}>{w.linia}</Text>
                     {w.motek ? <Text style={sn.opis}>{w.motek}</Text> : null}
                   </View>
-                  <Text style={sn.opis} importantForAccessibility="no" accessibilityElementsHidden>›</Text>
+                  <StrzalkaWiersza />
                 </Pressable>
               ))}
             </View>
@@ -163,7 +163,7 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
       <Pole etykieta={t('zapas.pole_kolor')} wartosc={kolor} naZmiane={ustawKolor} />
       <Pressable accessibilityRole="button" accessibilityLabel={`${t('zapas.pole_kategoria')}, ${nazwaKategorii(kategoria)}`} onPress={() => ustawWybor((x) => !x)} style={st.wierszPola}>
         <Text style={st.etykieta}>{t('zapas.pole_kategoria')}</Text>
-        <Text style={st.wartosc}>{nazwaKategorii(kategoria)} ›</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs, flexShrink: 1 }}><Text style={st.wartosc}>{nazwaKategorii(kategoria)}</Text><StrzalkaWiersza /></View>
       </Pressable>
       {wyborKategorii && (
         <Wybor<string> opcje={[null, 0, 1, 2, 3, 4, 5, 6, 7].map((n) => ({ wartosc: String(n), tekst: nazwaKategorii(n) }))} wybrana={String(kategoria)}

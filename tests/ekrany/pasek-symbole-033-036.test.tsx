@@ -12,6 +12,8 @@ import { Projekt, type PropsProjektu } from '../../src/ekrany/Projekt';
 import { Kosz } from '../../src/ekrany/Kosz';
 import { Ukonczenie } from '../../src/ekrany/Ukonczenie';
 import { MenuProjektu } from '../../src/ekrany/MenuProjektu';
+import { Narzedzia } from '../../src/ekrany/Narzedzia';
+import { kolorJasny } from '../../src/ekrany/motyw';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { atrapaHaptyki, atrapaSystemu, stanLicznika, tEn, wywolaniaLicznika } from './pomoc';
 
@@ -108,5 +110,36 @@ describe('036 (DEC-05 a): menu ••• licznika w dwóch grupach (to-be 04, U1
       naPowtorzenie={jest.fn()} naWpisz={jest.fn()} naZablokuj={jest.fn()} naOdblokuj={jest.fn()} naZeruj={jest.fn()} naUkoncz={jest.fn()} naWzor={jest.fn()} naZnaczenie={jest.fn()} naZamknij={jest.fn()} />);
     expect([...new Set(ids('menu-grupa-liczenie'))]).toEqual(['menu-nazwa', 'menu-cel', 'menu-wzor', 'menu-przypomnienie', 'menu-powtorzenie', 'menu-wpisz-wartosc']);
     expect([...new Set(ids('menu-grupa-projekt'))]).toEqual(['menu-ukoncz', 'menu-znaczenie', 'menu-zablokuj', 'menu-zeruj']);
+  });
+});
+
+// M1-audytor-generalny-146 (04-studio-projektowe-531, opcja a): zdanie spec („żaden ekran nie rysuje ikony glifem Unicode”) było szersze niż wzorzec
+// testu 033 — zostały ⊖ (tryb Edit projektu), ▾ (przełącznik wzorów), ▸/▾ (rozwinięcie w historii) i › (wiersze list). Symbole z decyzji 04:
+// ⊖ → minus.circle.fill w kolorze `blad`; ▾ → chevron.down; ▸/▾ → chevron.right/chevron.down; › → chevron.forward w `olowek`, ukryty przed VoiceOver.
+describe('146: ⊖ ▾ ▸ › nie są glifami ikon', () => {
+  /** Wyjątki nazwane (design-spec „Paski i „wstecz””): brak — „›” w tekstach słownika (np. „Oczko › Backup”) to ścieżka w zdaniu, nie ikona, i nie leży w kodzie. */
+  const WYJATKI_146: string[] = [];
+  test('w src/ekrany i src/kompozycja żadna linia kodu (poza komentarzami) nie zawiera ⊖ ▾ ▸ ›', () => {
+    const katalogi = [KATALOG, join(__dirname, '..', '..', 'src', 'kompozycja')];
+    const wszystkie = (k: string): string[] => readdirSync(k, { withFileTypes: true }).flatMap((d) => d.isDirectory() ? wszystkie(join(k, d.name)) : /\.tsx?$/.test(d.name) ? [join(k, d.name)] : []);
+    const trafienia = katalogi.flatMap(wszystkie).flatMap((p) => bezKomentarzy(readFileSync(p, 'utf8')).filter((l) => /[⊖▾▸›]/u.test(l)).map((l) => `${relative(KATALOG, p)}: ${l.trim()}`));
+    expect(trafienia).toEqual(WYJATKI_146);
+  });
+  test('tryb Edit projektu: usunięcie części = minus.circle.fill w kolorze `blad`, etykieta VoiceOver bez zmian', () => {
+    const stan: PropsProjektu['stan'] = { nazwa: 'Harbor', notatka: '', miejsceWzoru: null, ostatniaZmiana: 'June 2', postep: { rodzaj: 'brak-celow' },
+      czesci: [{ id: 'c1', nazwa: 'Back', rzedy: 3, cel: null, paraZ: null }, { id: 'c2', nazwa: 'Front', rzedy: 0, cel: null, paraZ: null }] };
+    render(<Projekt stan={stan} t={t} naOtworzCzesc={jest.fn()} naWstecz={jest.fn()} edycja naUsunCzesc={jest.fn()} />);
+    const pierwszy = screen.getAllByTestId('projekt-usun-czesc')[0];
+    const s = within(pierwszy).getByTestId(/^symbol-/, UKRYTE);
+    expect(s.props.name).toBe('minus.circle.fill');
+    expect(s.props.tintColor).toBe(kolorJasny.blad);
+    expect(pierwszy.props.accessibilityLabel).toBe(t('usun.a11y', { nazwa: 'Back' }));
+  });
+  test('wiersz grupy w Tools: wskaźnik przejścia = chevron.forward w `olowek`, ukryty przed VoiceOver', () => {
+    render(<Narzedzia stan={{ wloczki: 7, druty: 9 }} t={t} naWloczki={jest.fn()} naDruty={jest.fn()} naProbke={jest.fn()} />);
+    const s = within(screen.getByTestId('narzedzia-wloczki')).getByTestId(/^symbol-/, UKRYTE);
+    expect(s.props.name).toBe('chevron.forward');
+    expect(s.props.tintColor).toBe(kolorJasny.olowek);
+    expect(s.props.accessibilityElementsHidden).toBe(true);
   });
 });

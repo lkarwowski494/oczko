@@ -42,6 +42,8 @@ export const typografia = {
 export const ROZMIAR_SYMBOLU = ty.instrukcja.rozmiar;
 /** Rozmiar symbolu w kapsule stopera: jak etykieta kapsuły (`przyciskPelny`, rozmiar treści, 17 pt; design-spec:528). */
 export const ROZMIAR_SYMBOLU_KAPSULY = ty.tresc.rozmiar;
+/** Symbol przy treści (design-spec „Paski i „wstecz””: „17 pt przy treści”): wskaźnik wiersza, rozwinięcie, usunięcie w trybie Edit (M1-146). */
+export const ROZMIAR_SYMBOLU_TRESCI = ty.tresc.rozmiar;
 /** Największa skala kluczowej liczby licznika (bez ucięcia przy dużym tekście, tokeny „liczba.maxSkala”). */
 export const MAX_SKALA_LICZBY = ty.liczba.maxSkala;
 /**
