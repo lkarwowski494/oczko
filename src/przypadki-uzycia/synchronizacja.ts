@@ -83,17 +83,15 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
     ustaw({ stan: 'wylaczona', przyczyna: null });
   }
   async function odbierzPartie(p: PartiaIcloud): Promise<WynikPartii> {
-    const pliki = new Set<string>(); // zasoby do magazynu PRZED transakcją; SHA-256 ≠ klucz → nie trafia do magazynu, wpis `blad`
+    // Zasoby do magazynu PRZED transakcją; SHA-256 ≠ klucz → bez wiersza `plik`, wpis `blad`; plik bez wiersza usuwa start (ADR-0001, 05-architekt-513).
+    const pliki = new Set<string>();
     const zle: string[] = [];
     for (const r of p.rekordy) {
       if (!tabelaIcloud(r.encja)?.zasob || !r.plik) continue;
       const roz = typeof r.pola.rozszerzenie === 'string' ? r.pola.rozszerzenie : 'bin';
-      const [byl] = await z.baza.all('SELECT 1 FROM plik WHERE sha256 = ?', [r.klucz]);
       const w = await z.magazyn.zapisz(r.plik, roz);
       if (!w.ok) continue;
       if (w.wartosc.sha256 === r.klucz) { pliki.add(r.klucz); continue; }
-      const [inny] = await z.baza.all('SELECT 1 FROM plik WHERE sha256 = ?', [w.wartosc.sha256]);
-      if (!inny && !byl) await z.magazyn.usun(w.wartosc.sha256);
       zle.push(r.klucz);
     }
     for (const r of await wiersze(z.baza.all('SELECT sha256 FROM plik'), 'odbior')) pliki.add(tekst(r, 'sha256')); // już w magazynie

@@ -19,6 +19,14 @@ describe('tests/dane (strategia §4)', () => {
     const opis = readFileSync(`${p}.opis.md`, 'utf8');
     for (const pole of ['**Źródło:**', '**Licencja', '**Oczekiwany wynik']) expect(opis).toContain(pole);
   });
+  // 07-jakosc-002 (M1-audytor-generalny-067): plik danych z opisem, którego nie czyta żaden test, to deklaracja bez pokrycia (strategia §4).
+  test('BR-WZR-001 każdy plik danych testowych czyta co najmniej jeden test (nazwa pliku w kodzie testów poza tym plikiem)', () => {
+    const kod: string[] = [];
+    const zbierz = (d: string) => { for (const n of readdirSync(d)) { const p = join(d, n); if (statSync(p).isDirectory()) { if (n !== 'node_modules') zbierz(p); } else if (/\.test\.tsx?$/.test(n) && p !== __filename) kod.push(readFileSync(p, 'utf8')); } };
+    zbierz(join(__dirname, '..'));
+    expect(pliki.length).toBeGreaterThan(0);
+    expect(pliki.filter((p) => !kod.some((k) => k.includes(p.slice(p.lastIndexOf('/') + 1)))).map((p) => p.replace(KAT + '/', ''))).toEqual([]);
+  });
   test.each(pliki.filter((p) => p.endsWith('.pdf')).map((p) => [p.replace(KAT + '/', ''), p]))('NFR-PRY-001 %s bez słownika Info z autorem i bez strumienia XMP', (_n, p) => {
     const tekst = readFileSync(p).toString('latin1');
     expect(tekst).not.toMatch(/\/Author\s*\(/);

@@ -51,6 +51,36 @@ describe('M1-089: StanWczytywania — tło i kolor podpisu według `tlo` (motyw 
   });
 });
 
+// M1-audytor-generalny-125 (07-jakosc-517): w motywie ciemnym `ciemny.olowek` = `systemCzarny.olowek` (#A9ACB2), więc podpis na czerni z motywu
+// przechodził. Rozróżnia dopiero motyw jasny (`jasny.olowek` #5E626A, 3,43:1 na czerni).
+describe('M1-125: StanWczytywania tlo="czarne" w motywie jasnym — podpis i „Try again” z `systemCzarny`, nie z motywu', () => {
+  const J = tokeny.kolor.jasny;
+  beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue('light'); });
+  test('[kontrola] tokeny: podpis motywu jasnego różni się od podpisu na czerni (inaczej test niczego nie rozróżnia)', () => {
+    expect(J.olowek).not.toBe(CZ.olowek);
+  });
+  test('czarne: „Loading…” na czerni, podpis `systemCzarny.olowek`', async () => {
+    const t = await tEn();
+    render(<StanWczytywania stan="ladowanie" t={t} przedrostek="x" naPonow={() => undefined} tlo="czarne" />);
+    expect(screen.getByTestId('x-ladowanie')).toHaveStyle({ backgroundColor: CZ.tlo });
+    expect(screen.getByText('Loading…')).toHaveStyle({ color: CZ.olowek });
+  });
+  test('czarne: błąd odczytu — podpis i „Try again” z `systemCzarny`', async () => {
+    const t = await tEn();
+    render(<StanWczytywania stan="blad" t={t} przedrostek="x" naPonow={() => undefined} tlo="czarne" />);
+    expect(screen.getByTestId('x-blad')).toHaveStyle({ backgroundColor: CZ.tlo });
+    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.olowek });
+    expect(screen.getByTestId('x-ponow')).toHaveStyle({ backgroundColor: CZ.przyciskTlo, borderColor: CZ.przyciskObrys });
+    expect(screen.getByText('Try again')).toHaveStyle({ color: CZ.przyciskTekst });
+  });
+  test('[kontrola] papier w motywie jasnym: podpis z motywu (`jasny.olowek`)', async () => {
+    const t = await tEn();
+    render(<StanWczytywania stan="ladowanie" t={t} przedrostek="x" naPonow={() => undefined} />);
+    expect(screen.getByTestId('x-ladowanie')).toHaveStyle({ backgroundColor: J.papier });
+    expect(screen.getByText('Loading…')).toHaveStyle({ color: J.olowek });
+  });
+});
+
 describe('M1-089: StanWczytywania na trasach arkuszowych ma tło `arkusz`, na zdjęciu ciemne', () => {
   async function zamontuj(plik: string): Promise<void> {
     const t = await tEn();

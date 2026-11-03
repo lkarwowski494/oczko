@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- Cel share (moduly.md „Kontrakt partii 6”): reguła aktywacji bez TRUEPREDICATE — PDF 1, Word (.docx) 1, obrazy do 20, adres 1; każdy
+<!-- Cel share (moduly.md „Kontrakt partii 6”): reguła aktywacji bez TRUEPREDICATE — PDF 1, Word (.docx) 1, obrazy do 20 (ZDJECIA_WZORU_MAKS w src/konfiguracja.ts, zgodność sprawdza generuj-stale w trybie check), adres 1; każdy
      załącznik w jednym z tych typów (inne typy nie pokazują Oczka w arkuszu). Plik z Plików ma też public.file-url (zgodny z public.url). -->
 <plist version="1.0">
   <dict>

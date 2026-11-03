@@ -1,6 +1,7 @@
 // Zdjęcia projektu i etykiety włóczki (F-16, BR-PRJ-003; P-191 P9a: grupa „Photos”, zdjęcie etykiety w formularzu włóczki, usuwanie
 // z potwierdzeniem, bez kosza — BR-DAN-008 obejmuje projekty, części i liczniki). Plik do magazynu przed wierszem (ADR-0001: sprzątanie
-// chroni pliki młodsze niż PLIKI_OCHRONA_MIN); plik bez innych odwołań usuwany z magazynu po COMMIT, w tej samej pozycji kolejki.
+// chroni pliki młodsze niż PLIKI_OCHRONA_MIN); wiersz `plik` bez innych odwołań usuwany w transakcji, sam plik przy starcie (`sprzatnijSierotyMagazynu`,
+// ADR-0001, 05-architekt-513: dodanie tego samego zdjęcia może być w locie).
 import type { Wynik } from '../domena/bledy';
 import { liczba, liczbaLubNull, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { wKolejce } from './kolejka';
@@ -35,22 +36,14 @@ export async function dodajZdjecie(z: ZaleznosciPlikow, w: { cel: CelZdjecia; pl
 }
 
 export function usunZdjecie(z: ZaleznosciPlikow, w: { zdjecieId: string }): Promise<Wynik<void>> {
-  return wKolejce(z.baza, async () => {
-    let doUsuniecia: string | null = null;
-    const r = await wTransakcji(z, 'usunZdjecie', async (tx) => {
-      const [zd] = await wiersze(tx.all('SELECT plik_sha256 FROM zdjecie WHERE id = ?', [w.zdjecieId]), 'usunZdjecie');
-      if (!zd) return blad('bledne_dane');
-      const h = tekst(zd, 'plik_sha256');
-      await tx.run('DELETE FROM zdjecie WHERE id = ?', [w.zdjecieId]);
-      if ((await wiersze(tx.all(ODWOLANIA_PLIKU, [h]), 'usunZdjecie')).length === 0) {
-        await tx.run('DELETE FROM plik WHERE sha256 = ?', [h]);
-        doUsuniecia = h;
-      }
-      return { ok: true, wartosc: undefined };
-    });
-    if (r.ok && doUsuniecia !== null) await z.magazyn.usun(doUsuniecia); // po COMMIT (ADR-0001)
-    return r;
-  });
+  return wKolejce(z.baza, () => wTransakcji(z, 'usunZdjecie', async (tx) => {
+    const [zd] = await wiersze(tx.all('SELECT plik_sha256 FROM zdjecie WHERE id = ?', [w.zdjecieId]), 'usunZdjecie');
+    if (!zd) return blad('bledne_dane');
+    const h = tekst(zd, 'plik_sha256');
+    await tx.run('DELETE FROM zdjecie WHERE id = ?', [w.zdjecieId]);
+    if ((await wiersze(tx.all(ODWOLANIA_PLIKU, [h]), 'usunZdjecie')).length === 0) await tx.run('DELETE FROM plik WHERE sha256 = ?', [h]);
+    return { ok: true, wartosc: undefined };
+  }));
 }
 
 /** Zdjęcia projektu albo włóczki, od najnowszego. */

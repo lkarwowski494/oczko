@@ -11,8 +11,9 @@ import { utworzMagazyn } from '../dane/pliki/magazyn';
 import { utworzArchiwum } from '../dane/archiwum';
 import { czasWTle } from '../platforma/czas-w-tle';
 import type { ZaleznosciArchiwum } from '../przypadki-uzycia/zaleznosci';
-import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, polacz, utworzKatalog, zapiszAtomowo, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogGrupyAplikacji, katalogPamieciPodrecznej, polacz, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { dostepPro, type DostepPro } from './dostep';
+import { identyfikatorUrzadzenia, pamiecProWPliku } from './pliki-urzadzenia';
 import { utworzI18n } from '../i18n/i18n';
 import { ZASOBY, ZASOBY_PSEUDO } from '../i18n/slowniki';
 import type { PreferencjaJezyka } from '../i18n/jezyki';
@@ -51,21 +52,6 @@ export type Kontener = {
   icloud: { sterownik: Sterownik; widoczny: boolean; e2e: SilnikIcloud['e2e']; naPartie(f: () => void): () => void } | null;
 };
 
-/**
- * Identyfikator urządzenia w zdarzeniach (`zdarzenie.urzadzenie`, ADR-0005): UUID w pliku obok bazy, poza bazą, więc nie wchodzi do kopii ani archiwum.
- * Miejsce pliku: odstępstwo nazwane 08 (partia 4, 3A) do potwierdzenia przez 05 — dane.md nie ustala źródła tego pola.
- */
-async function urzadzenie(katalog: string): Promise<string> {
-  const plik = polacz(katalog, 'urzadzenie.txt');
-  if (istniejePlik(plik)) {
-    const t = (await czytajTekst(plik)).trim();
-    if (/^[0-9a-f-]{36}$/i.test(t)) return t;
-  }
-  const nowy = identyfikatory.nowy();
-  zapiszAtomowo(plik, nowy); // M1-026: przerwany zapis nie zostawia uciętego identyfikatora
-  return nowy;
-}
-
 /** Błąd otwarcia bazy albo plików → `powod` dla ekranu awaryjnego (ADR-0019, krok 3C); nic nie jest zastępowane po cichu. */
 export async function utworzKontener(): Promise<Wynik<Kontener>> {
   const s = sciezkiDanych(katalogBiblioteki());
@@ -80,20 +66,18 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   // Język (F-36, P-190): preferencja w `ustawienie.jezyk` (stan urządzenia, dane.md), odczyt przed pierwszym ekranem; pseudo en-XA tylko z EXPO_PUBLIC_PSEUDO=1 (M1-051).
   const i18n = await utworzI18n({ magazyn: magazynJezyka({ baza, zegar }), systemowe: tagiSystemowe, zasoby: ZASOBY, pseudo: ZASOBY_PSEUDO });
   const jezyk = () => i18n.jezyk();
-  const id = await urzadzenie(katalogDanych);
+  const id = await identyfikatorUrzadzenia(katalogDanych, () => identyfikatory.nowy());
   // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep nie istnieje (sprawdz-ipa).
   const plikSklepu = polacz(katalogDanych, 'sklep-e2e.json');
   const zakupyE2e = istniejePlik(plikSklepu) ? await czytajTekst(plikSklepu) : null;
   const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms);
-  // Pamięć uprawnień Pro (KP-06): plik obok bazy, poza bazą i archiwum.
-  const plikPro = polacz(katalogDanych, 'pamiec-pro.json');
-  const dostep = dostepPro(sklep, { czytaj: async () => (istniejePlik(plikPro) ? czytajTekst(plikPro) : null), zapisz: async (t) => zapiszAtomowo(plikPro, t) }, () => zegar.teraz().ms);
+  const dostep = dostepPro(sklep, pamiecProWPliku(katalogDanych), () => zegar.teraz().ms); // pamięć uprawnień Pro (KP-06): plik obok bazy
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
     straznikOknoS: oknoStraznikaS(), // okno strażnika serii RD-17: 2 s; w buildzie E2E z `oczkoE2eOknoStraznika` (E2E-A4)
     pro: () => dostep.stan().pro, // ADR-0010: decyzja ze sklepu, przy błędzie pamięć KP-06 z oknem offline
     // magazyn: SHA-256 natywnie (P-130, M1-017), nie TS na wątku JS
-    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy },
+    magazyn: utworzMagazyn(s.pliki, { skrot: skrotPliku }), katalogi: { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy, podreczny: katalogPamieciPodrecznej() },
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),

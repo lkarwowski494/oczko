@@ -12,7 +12,7 @@ import { zdjecieTestowe } from '../e2e-zdjecie';
 import { pdfTestowy } from './skrzynka';
 import type { ZrodloDodania } from '../../przypadki-uzycia/wzor';
 import type { StanZegarka, Zegarek } from '../../domena/porty';
-import { ADRES_STRONY_TESTOWEJ, wordTestowy } from './pliki-wzoru';
+import { ADRES_STRONY_TESTOWEJ, pdfSkanuTestowy, wordTestowy } from './pliki-wzoru';
 import { PanelOceny } from './ocena-stan';
 import { PanelPomiaruOperacji } from './pomiar-operacji';
 
@@ -93,7 +93,7 @@ export function PanelIcloud({ wyslane, usuniete }: { wyslane: number; usuniete: 
   );
 }
 
-/** Dodanie wzoru (partia 6, e2e/README.md `e2e-wzor-pdf`, `e2e-wzor-zdjecie`): pliki testowe bez okna Plików i Zdjęć (subflow otworz-wzor-pdf, scenariusze 21, 22, 24, 25). */
+/** Dodanie wzoru (partia 6, e2e/README.md `e2e-wzor-pdf`, `e2e-wzor-pdf-skan`, `e2e-wzor-zdjecie`): pliki testowe bez okna Plików i Zdjęć (subflow otworz-wzor-pdf, scenariusze 21, 22, 24, 25). */
 export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: string; zrodlo: ZrodloDodania }): void }): React.ReactElement {
   // Źródła testowe składane tutaj (moduł tylko E2E, P-238): napisy i id plików testowych nie trafiają do bundla wydania przez trasę /wzor.
   const plik = (sciezka: string, nazwa: string, typ: string) => ({ id: 'test', nazwa, sciezka, typ });
@@ -103,6 +103,11 @@ export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: s
       <Pressable accessibilityRole="button" testID="e2e-wzor-pdf" style={{ padding: 12 }}
         onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfTestowyPlik(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } })}>
         <Text>Test pattern (PDF)</Text>
+      </Pressable>
+      {/* P-439 (07-jakosc-002): prawdziwy wycinek skanu z OCR z tests/dane/wzory (scenariusz 21) */}
+      <Pressable accessibilityRole="button" testID="e2e-wzor-pdf-skan" style={{ padding: 12 }}
+        onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfSkanuTestowy(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } })}>
+        <Text>Test pattern (PDF, scan)</Text>
       </Pressable>
       <Pressable accessibilityRole="button" testID="e2e-wzor-zdjecie" style={{ padding: 12 }}
         onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'obrazy', sciezki: [zdjecieTestowe(p.katalogTymczasowy)] } })}>

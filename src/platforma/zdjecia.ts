@@ -3,6 +3,7 @@
 // (ImagePicker.d.ts, launchImageLibraryAsync; minimum iOS 18, P-070) — plugin ma `photosPermission: false`. Aparat po zgodzie
 // (NSCameraUsageDescription z locales). Wynik adaptera własny: Powod jest kontraktem 05 dla domeny.
 import * as ImagePicker from 'expo-image-picker';
+import { ZDJECIA_WZORU_MAKS } from '../konfiguracja';
 
 export type WynikWyboru = { rodzaj: 'zdjecie'; sciezka: string; rozszerzenie: string } | { rodzaj: 'anulowano' } | { rodzaj: 'brak_zgody' } | { rodzaj: 'blad' };
 type WynikModulu = { canceled: true; assets: null } | { canceled: false; assets: { uri: string }[] };
@@ -20,13 +21,13 @@ function zUri(uri: string): WynikWyboru {
   return kropka < 0 ? { rodzaj: 'blad' } : { rodzaj: 'zdjecie', sciezka, rozszerzenie: sciezka.slice(kropka + 1).toLowerCase() };
 }
 
-/** Zdjęcia stron wzoru (W7a „Choose photos”): kilka naraz (do 20, jak rozszerzenie) = jeden wzór (P-218 (1)). */
+/** Zdjęcia stron wzoru (W7a „Choose photos”): kilka naraz (do ZDJECIA_WZORU_MAKS, jak rozszerzenie) = jeden wzór (P-218 (1)). */
 export type WynikWyboruStron = { rodzaj: 'zdjecia'; sciezki: string[] } | { rodzaj: 'anulowano' } | { rodzaj: 'blad' };
 export function wybieraczZdjec(m: ModulWyboru = ImagePicker): { wybierz(z: 'aparat' | 'biblioteka'): Promise<WynikWyboru>; wybierzStrony(): Promise<WynikWyboruStron> } {
   return {
     async wybierzStrony() {
       try {
-        const w = await m.launchImageLibraryAsync({ ...OPCJE, allowsMultipleSelection: true, selectionLimit: 20 });
+        const w = await m.launchImageLibraryAsync({ ...OPCJE, allowsMultipleSelection: true, selectionLimit: ZDJECIA_WZORU_MAKS });
         if (w.canceled || w.assets.length === 0) return { rodzaj: 'anulowano' };
         return { rodzaj: 'zdjecia', sciezki: w.assets.map((a) => decodeURIComponent(a.uri.replace(/^file:\/\//, ''))) };
       } catch {

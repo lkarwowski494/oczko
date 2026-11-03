@@ -22,7 +22,7 @@ Stan: rola 07, E3 (testy akceptacyjne przed kodem), 2026-10-25. Scenariusze **ni
 ## Tagi
 | Tag | Znaczenie |
 |---|---|
-| `podstawowy` | pakiet bramki TestFlight (P-091 9a): pierwsze +1 świeżej instalacji offline (01–03), +1/−1/cofnij (04), limit zawczasu (05), zakup i przywrócenie na sztucznym sklepie (06), okno „Uczciwe zasady” (07), eksport/import (08), start awaryjny ADR-0019 (09) |
+| `podstawowy` | pakiet bramki TestFlight (P-091 9a): pierwsze +1 świeżej instalacji offline (01–03), +1/−1/cofnij (04), limit zawczasu (05), zakup i przywrócenie na sztucznym sklepie (06), okno „Uczciwe zasady” (07), eksport/import (08), start awaryjny ADR-0019 (09), projekt z częściami (33, P-198 Q3a), trwałość każdej zmiany licznika (10), baza bez sieci (11) i kosz 30 dni (36) — DEC-08 (a), M1-audytor-generalny-047; razem 13. Kontrakt: `tests/jakosc/e2e-pakiet-bramki.test.ts` (scenariusz z ID blokera wydania z `docs/brd/README.md` ma tag albo wyjątek nazwany) |
 | `podstawowy` w pakiecie pełnym | porażka scenariusza z tagiem `podstawowy` czerwieni zadanie także przy `[e2e-pelny]`; porażka pozostałych to „czerwony-informacyjnie” w podsumowaniu (wyjście `bramka` planu części; F07-15, P-198 Q1a) |
 | `stan-licznika` | asercja wartości licznika — bez ponowień (P-091 9a) |
 | `ipad` | scenariusz iPada: tylko pakiet `ipad` (pozycja macierzy `e2e` na symulatorze iPada, przy `[e2e-pelny]` albo `[e2e-ipad]` w commicie); poza pakietem podstawowym i pełnym; bez bramki do pierwszego zielonego (P-225 Q1a) |
@@ -295,7 +295,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-ladowanie` | ekran projektu (08 P, E2-137-A1) | stan do końca pierwszego odczytu; podprzepływ `dodaj-czesc-cel` czyta go opcjonalnie w ścieżce `opoznienie-ekran-projektu` | „Loading…” | |
 | `projekt-blad` | ekran projektu | stan błędu odczytu | „Couldn’t load this.” | |
 | `projekt-ponow` | ekran projektu (stan błędu) | „Try again” | „Try again” | |
-| `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy (strategia §4) | bez `t()` | |
+| `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy pisany w kodzie (2 strony tekstu Helvetica) | bez `t()` | |
+| `e2e-wzor-pdf-skan` | dodanie wzoru (build E2E) | prawdziwy wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, strategia §4; P-439; scen. 21) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |
 | `e2e-wzor-www` | dodanie wzoru (build E2E) | zapisana strona testowa | bez `t()` | |
 | `e2e-wzor-word` | dodanie wzoru (build E2E) | plik .docx testowy | bez `t()` | |
@@ -335,7 +336,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-PRJ-001/S1 | `33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml` (pełny; do podstawowego po 1. zielonym, P-198 Q3a) |
 | BR-LIC-011/S1, BR-PRJ-014/S1 | `34-br-lic-011-s1-nastepna-czesc-blizniak.yaml` |
 | BR-DNI-005/S1 | `35-br-dni-005-s1-termin-cel-dnia.yaml` |
-| BR-DAN-008/S1 | `36-br-dan-008-s1-usun-przywroc-z-kosza.yaml` (pełny; do podstawowego po 1. zielonym, P-198 Q3a) |
+| BR-DAN-008/S1 | `36-br-dan-008-s1-usun-przywroc-z-kosza.yaml` (podstawowy od DEC-08 (a), P-198 Q3a) |
 | P-191 (P1a) stoper | `37-p-191-stoper-start-pauza-stop.yaml` |
 | BR-PRJ-013/S1 (częściowo) | `38-br-prj-013-s1-korekta-sesji.yaml` |
 | P-190 język | `39-p-190-jezyk-trwaly.yaml` |
@@ -369,5 +370,5 @@ Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza —
 - 2026-10-26/27: pełny pakiet (`[e2e-pelny]`, iPhone + iPad) — partia 5 (STOP E2) i scenariusze 44–52 (07 fix-3); uruchomienie koordynatora (P-241, P-251).
 - 2026-11-02 (07-jakosc-033 B, P-378): scenariusze 61–66 (F-20, F-26, F-57, F-59, F-64, „Replace”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegły (brak macOS w sesji pisania), ocena po przebiegu nocnym.
 - 2026-11-02 (przebieg nocny 2/3.11, 07-jakosc NOC-3, P-400): scenariusz 67 (BR-LIC-012/S1 w pasku pod wzorem, P2-5b — podpis „current row”) — informacyjnie do pierwszego zielonego przebiegu (P-091); nie biegł (brak macOS w sesji pisania).
-- 2026-11-02 (przebieg nocny, 07-jakosc NOC-4): kontrakt testID opcji radia `Wybor` (6 wierszy `wybor-*`) i test przed kodem w `tests/akceptacja/ekrany/`; scenariusze 54, 56, 60, 67 stukają jeszcze po tekście — przejście na `id` po wdrożeniu przez 08 (lista „Dla 08” w raporcie).
+- 2026-11-02 (przebieg nocny, 07-jakosc NOC-4): kontrakt testID opcji radia `Wybor` (6 wierszy `wybor-*`) i test przed kodem w `tests/akceptacja/ekrany/`; scenariusze 54, 56, 60, 67 stukają jeszcze po tekście — przejście na `id` po wdrożeniu przez 08 (lista „Dla 08” w raporcie). **Zastąpione** wierszem niżej (cb6f1ec, P-404): scenariusze stukają już po `id`.
 - 2026-11-02 (07-jakosc NOC-4, wyjątek P-404): testID `wybor-*` wdrożone w kodzie przez 07 (tylko propsy, bez zmiany zachowania); scenariusze 54, 56, 60, 67 stukają opcje po `id`.

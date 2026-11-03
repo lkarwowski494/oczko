@@ -6,7 +6,7 @@ import type { Licznosci } from '../domena/porty';
 import { sciezkiDanych } from '../dane/baza/sciezki';
 import { surowaKopia } from '../dane/kopia-ratunkowa';
 import { stanPlikuBazy } from '../dane/pliki/magazyn';
-import { czytajTekst, istniejePlik, katalogBiblioteki, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
+import { czytajTekst, istniejePlik, katalogBiblioteki, katalogPamieciPodrecznej, kopiuj, nazwaPliku, polacz, usunKatalog, utworzKatalog, zapiszTekst } from '../dane/pliki/system';
 import { otworzPortExpo } from '../dane/baza/adapter-expo';
 import Constants from 'expo-constants';
 import { sprzatnijKopie, sprzatnijKopiePrzed, sprzatnijTymczasowe, zipSurowejKopii } from '../niezawodnosc/kopie';
@@ -52,7 +52,7 @@ export async function zapiszKamien(): Promise<void> {
   zapisz(s.stanStartu, kamienMilowy(await czytajStan(s.stanStartu)));
   zapiszEtapStartu('kamien');
   sprzatnijKopie(s.kopie, zegarAplikacji().teraz().ms); // ADR-0020 (6): kopie po KOPIE_RATUNKOWE_DNI, tylko po kamieniu milowym; błąd nie blokuje startu
-  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0032 (zastępuje ADR-0028 pkt 4): pierwsza kopia dnia i najnowsza, limit 2, maks. 30 dni
+  sprzatnijKopiePrzed(s.kopiePrzed, zegarAplikacji().teraz().ms); // ADR-0032/0033 (budżet KOPIA_PRZED_IMPORTEM_BUDZET_B) (zastępuje ADR-0028 pkt 4): pierwsza kopia dnia i najnowsza, limit 2, maks. 30 dni
   sprzatnijTymczasowe(polacz(s.katalogDanych, 'tmp'), poczatekMs); // M1-001: pliki pochodne sprzed bieżącego startu; błąd nie blokuje startu
 }
 /** P-271 (Trening L-029): wyjście do tła przed kamieniem nie jest nieudanym startem (app/_layout.tsx, AppState „background”, tylko start normalny). */
@@ -77,7 +77,7 @@ export const powodAwaryjny = (p: Powod): 'wersja_nowsza' | 'uszkodzony' | 'brak_
 export function trybAwaryjny() {
   const s = sciezki();
   const zegar = zegarAplikacji();
-  const katalogi = { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy: polacz(s.katalogDanych, 'tmp') };
+  const katalogi = { kopie: s.kopie, kopiePrzed: s.kopiePrzed, tymczasowy: polacz(s.katalogDanych, 'tmp'), podreczny: katalogPamieciPodrecznej() };
   utworzKatalog(katalogi.kopie);
   utworzKatalog(katalogi.tymczasowy);
   const kopia = surowaKopia(s.katalogDanych, s.kopie, zegar);

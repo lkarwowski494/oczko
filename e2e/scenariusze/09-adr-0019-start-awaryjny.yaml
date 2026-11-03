@@ -4,7 +4,7 @@
 # przenoszony do .db) — inaczej własność jest trywialna (eksperyment docs/jakosc/narzedzia/n12-11-wal-checkpoint.mjs). Wymaga kodu 08:
 # panel e2e-sha-bazy = SHA pary bez checkpointu, e2e-wal-bajty = rozmiar -wal, panel ukryty w trakcie liczenia; „Zapisz kopię” tylko do odczytu.
 # Kontrola roli 12 (strategia §10): przełącznik wymuszonej awarii tylko w konfiguracji testowej (argument startu oczkoE2eAwariaStartu, build E2E),
-# nieobecny w buildzie wydania (sprawdz-ipa.mjs). PROG_NIEUDANYCH_STARTOW = 2 (P-080, do weta). Ekran awaryjny: teksty 04/09 (Z07-05) — tu tylko testID.
+# nieobecny w buildzie wydania (krok przełączników w testflight.yml, ślady oczkoE2e* w scripts/wydanie/kontrola-ipa.sh). PROG_NIEUDANYCH_STARTOW = 2 (P-080, do weta). Ekran awaryjny: teksty 04/09 (Z07-05) — tu tylko testID.
 # [DO USTALENIA] zachowanie Maestro po awarii procesu w trakcie launchApp (czy następne polecenie startuje aplikację ponownie) — rozstrzyga pierwszy przebieg macOS.
 appId: com.apps4brew.knitting
 name: "ADR-0019 · Start awaryjny po dwóch nieudanych startach: kopia z licznościami, oryginał bez zmian, „Spróbuj normalnie”"

@@ -31,3 +31,14 @@ test('F07-10 pułapka: plik testów z importem src w katalogu spoza tabeli → k
   expect(w.kod).toBe(1);
   expect(w.wyjscie).toContain('BŁĄD tests/platforma/y.test.ts: importuje src');
 });
+
+test('M1-127 (07-jakosc-519): test.each z nawiasem w danych, z typem <…> i z tablicą `…` to po jednej deklaracji; `/re/.test(s)` to nie test', () => {
+  const x = `${IMPORT(2)}test.each([['a (b)', 1], ['c', 2]])('%s', (_n, n) => expect(n).toBeGreaterThan(0));\n`
+    + `test.each<[string, number]>([['d (e)', 3]])('%s', (_n, n) => expect(n).toBe(3));\nit.each\`\n  a\n  ${'${1}'}\n\`('t $a', ({ a }) => expect(a).toBe(1));\n`;
+  const y = `${IMPORT(2)}const r = /a/.test('a');\n`;
+  const k = drzewo({ 'tests/dane/x.test.ts': x, 'tests/dane/y.test.ts': y });
+  expect(uruchom(k).kod).toBe(0);
+  const tabela = readFileSync(join(k, 'tabela.md'), 'utf8');
+  expect(tabela).toContain('| `tests/dane/x.test.ts` | zielony (główny zestaw) | 4 | BR-DAN-001 |');
+  expect(tabela).toContain('| `tests/dane/y.test.ts` | zielony (główny zestaw) | 1 | BR-DAN-001 |');
+});

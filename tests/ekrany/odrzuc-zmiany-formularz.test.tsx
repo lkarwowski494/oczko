@@ -45,6 +45,9 @@ beforeEach(() => {
   wyczyscNawigacje();
   Object.values(mockRouter).forEach((f) => { if (typeof f === 'function' && 'mockClear' in f) f.mockClear(); });
   alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  // M1-114: `router.back()` jak w aplikacji przechodzi przez blokadę usunięcia (`beforeRemove` → callback `usePreventRemove`), więc Cancel i zapis
+  // sprawdzają też drugą rundę hooka: brak zwolnienia blokady po „Discard changes” albo po zapisie daje drugie pytanie.
+  mockRouter.back.mockImplementation(() => { usunEkran({ type: 'GO_BACK' }); });
 });
 afterEach(() => jest.restoreAllMocks());
 
@@ -124,6 +127,40 @@ describe('M1-020: notatka (istniejąca rzecz) — „Discard changes?” po zmia
   });
 });
 
+describe('M1-114: Cancel → „Discard changes” i zapis w trasie `formularz/[rodzaj]` — jedno pytanie, wyjście przez blokadę raz', () => {
+  const zmien = (testID: string, tekst: string) => () => fireEvent.changeText(screen.getByTestId(testID), tekst);
+  test.each<[string, Record<string, string>, () => void, string]>([
+    ['notatka', { rodzaj: 'notatka', projekt: 'p1' }, zmien('formularz-notatka', 'Merino 4 mm, 2 skeins left'), OPIS_ZMIANY],
+    ['przypomnienie', { rodzaj: 'przypomnienie' }, zmien('przypomnienie-co-robic', 'decrease at both ends'), OPIS_NOWY],
+    ['nazwa', { rodzaj: 'nazwa' }, zmien('formularz-nazwa-projektu', 'Kardigan'), OPIS_ZMIANY],
+  ])('%s: zmiana → Cancel → „Discard changes”: jedno pytanie, `router.back()` raz, usunięcie ekranu dokończone raz', async (_n, params, zmiana, opis) => {
+    await otworz(params);
+    act(() => zmiana());
+    anuluj();
+    const [, odrzuc] = oczekujPytania(opis);
+    act(() => odrzuc.onPress?.());
+    expect(alert).toHaveBeenCalledTimes(1); // bez zwolnienia blokady `router.back()` pytałby drugi raz (i tak w kółko)
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    expect(nawigacja.dispatch).toHaveBeenCalledTimes(1);
+    expect(nawigacja.dispatch).toHaveBeenCalledWith({ type: 'GO_BACK' });
+  });
+  const zapisz = async () => { await act(async () => { fireEvent.press(screen.getByTestId('formularz-zapisz')); await new Promise((r) => setTimeout(r, 80)); }); };
+  test.each<[string, Record<string, string>, () => void, string, unknown[]]>([
+    ['nazwa (zapis licznika)', { rodzaj: 'nazwa' }, zmien('formularz-nazwa-projektu', 'Kardigan'), "SELECT nazwa AS v FROM projekt WHERE id = 'p1'", [{ v: 'Kardigan' }]],
+    ['cel (zapis licznika)', { rodzaj: 'cel' }, () => fireEvent.changeText(screen.getByLabelText('Rows in this part'), '120'), "SELECT cel_rzedow AS v FROM czesc WHERE id = 'c1'", [{ v: 120 }]],
+    ['wpisz (licznik)', { rodzaj: 'wpisz' }, zmien('wpisz-wartosc-pole', '12'), "SELECT wartosc AS v FROM licznik WHERE id = 'l1'", [{ v: 12 }]],
+    ['wloczki (włóczki projektu)', { rodzaj: 'wloczki', projekt: 'p1' }, () => fireEvent.press(screen.getByTestId('wloczka-wybor-y1')), "SELECT wloczka_id AS v FROM projekt_wloczka WHERE projekt_id = 'p1'", [{ v: 'y1' }]],
+  ])('%s: zmiana → zapis: wyjście bez pytania, przez blokadę usunięcia', async (_n, params, zmiana, sql, oczekiwane) => {
+    const { s } = await otworz(params);
+    act(() => zmiana());
+    await zapisz();
+    expect(await s.baza.all(sql)).toEqual(oczekiwane);
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    expect(alert).not.toHaveBeenCalled();
+    expect(nawigacja.dispatch).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('M1-020: nowe przypomnienie — „Nothing will be added.”', () => {
   test('wpisana instrukcja → Cancel: pytanie z opisem nowej rzeczy; „Discard changes” zamyka', async () => {
     await otworz({ rodzaj: 'przypomnienie' });
@@ -193,6 +230,7 @@ describe('M1-020: arkusze tras `wloczka`, `drut`, `sesja-korekta` — ten sam me
     const Ekran = trasa(plik);
     render(<Ekran />);
     await act(async () => { await new Promise((r) => setTimeout(r, 120)); });
+    return { s };
   }
   const zmienPole = (testID: string, tekst: string) => () => fireEvent.changeText(screen.getByTestId(testID), tekst);
   const PRZYPADKI: [string, string, Record<string, string>, () => void, string][] = [
@@ -217,5 +255,47 @@ describe('M1-020: arkusze tras `wloczka`, `drut`, `sesja-korekta` — ten sam me
     act(() => { zatrzymane = usunEkran(); });
     expect(zatrzymane).toBe(true);
     oczekujPytania(opis);
+  });
+  // M1-114: Cancel → „Discard changes” daje jedno pytanie; zapis i usunięcie po zmianie wychodzą bez pytania (`router.back()` przez blokadę).
+  test.each(PRZYPADKI)('%s: zmiana → Cancel → „Discard changes”: jedno pytanie, usunięcie ekranu dokończone raz', async (_n, plik, params, zmiana, opis) => {
+    await otworzTrase(plik, params);
+    zmiana();
+    anuluj();
+    const [, odrzuc] = oczekujPytania(opis);
+    act(() => odrzuc.onPress?.());
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    expect(nawigacja.dispatch).toHaveBeenCalledTimes(1);
+  });
+  const ZAPISY: [string, string, Record<string, string>, () => void, string, unknown[]][] = [
+    ['wloczka (edycja)', '../../app/wloczka', { id: 'y1' }, PRZYPADKI[0]![3], "SELECT nazwa AS v FROM wloczka WHERE id = 'y1'", [{ v: 'Merino DK' }]],
+    ['wloczka (nowa)', '../../app/wloczka', {}, PRZYPADKI[1]![3], "SELECT nazwa AS v FROM wloczka WHERE nazwa = 'Alpaka'", [{ v: 'Alpaka' }]],
+    ['drut (edycja)', '../../app/drut', { id: 'n1' }, PRZYPADKI[2]![3], "SELECT rozmiar_mm AS v FROM narzedzie WHERE id = 'n1'", [{ v: 4.5 }]],
+    ['drut (nowy)', '../../app/drut', {}, PRZYPADKI[3]![3], "SELECT rozmiar_mm AS v FROM narzedzie WHERE id <> 'n1'", [{ v: 3 }]],
+    ['sesja-korekta', '../../app/sesja-korekta', { sesja: 's1', projekt: 'p1' }, PRZYPADKI[4]![3], "SELECT start_ms AS v FROM sesja WHERE id = 's1'", [{ v: T_START - 1_800_000 }]],
+  ];
+  test.each(ZAPISY)('%s: zmiana → zapis: wyjście bez pytania, przez blokadę usunięcia', async (_n, plik, params, zmiana, sql, oczekiwane) => {
+    const { s } = await otworzTrase(plik, params);
+    zmiana();
+    await act(async () => { fireEvent.press(screen.getByTestId('formularz-zapisz')); await new Promise((r) => setTimeout(r, 80)); });
+    expect(await s.baza.all(sql)).toEqual(oczekiwane);
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    expect(alert).not.toHaveBeenCalled();
+    expect(nawigacja.dispatch).toHaveBeenCalledTimes(1);
+  });
+  test.each<[string, string, string, () => void, string, string]>([
+    ['wloczka', '../../app/wloczka', 'y1', PRZYPADKI[0]![3], 'zapas-usun', "SELECT count(*) AS n FROM wloczka WHERE id = 'y1' AND usunieto_ms IS NULL"],
+    ['drut', '../../app/drut', 'n1', PRZYPADKI[2]![3], 'drut-usun', "SELECT count(*) AS n FROM narzedzie WHERE id = 'n1' AND usunieto_ms IS NULL"],
+  ])('%s: zmiana → usunięcie potwierdzone: wyjście bez pytania „Discard changes?”, przez blokadę usunięcia', async (_n, plik, id, zmiana, przycisk, sql) => {
+    const { s } = await otworzTrase(plik, { id });
+    zmiana();
+    fireEvent.press(screen.getByTestId(przycisk));
+    expect(alert).toHaveBeenCalledTimes(1); // potwierdzenie usunięcia
+    const [, usun] = alert.mock.calls[0]![2] as AlertButton[];
+    await act(async () => { usun!.onPress?.(); await new Promise((r) => setTimeout(r, 80)); });
+    expect(await s.baza.all(sql)).toEqual([{ n: 0 }]);
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    expect(alert).toHaveBeenCalledTimes(1); // bez drugiego pytania o zmiany w usuniętej rzeczy
+    expect(nawigacja.dispatch).toHaveBeenCalledTimes(1);
   });
 });

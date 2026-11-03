@@ -1,9 +1,11 @@
 # BR-DAN-001/S1 (docs/brd/wymagania-dane.md:9): baza na urządzeniu jest źródłem prawdy — brak sieci, projekt z nazwą i licznikiem, zabicie procesu.
 # Wyrocznia: NFR-DAN-002. Sieć: argument startu oczkoE2eSiec=brak (adapter sieci „brak połączenia”, build E2E).
+# Bloker wydania (docs/brd/README.md) — w `podstawowy` (bramka TestFlight) od DEC-08 (a) (P-418, P-430; M1-audytor-generalny-047).
 appId: com.apps4brew.knitting
 name: "BR-DAN-001/S1 · Bez sieci: projekt, nazwa i rzędy zapisane na urządzeniu po zabiciu procesu"
 tags:
   - BR-DAN-001-S1
+  - podstawowy
   - stan-licznika
 ---
 - runFlow:

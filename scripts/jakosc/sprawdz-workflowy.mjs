@@ -9,6 +9,9 @@
 //  TIMEOUT: każde zadanie ma `timeout-minutes` (domyślne 360 min to nie limit);
 //  DANE-ZDARZEN-W-RUN: `${{ github.event.(inputs|pull_request|head_commit|issue|comment)… }}` ani `${{ github.head_ref }}` wprost w `run:` (przez env);
 //  AKCJA-NIEPRZYPIETA: `uses:` spoza actions/* przypięte do 40-znakowego SHA.
+// Wersje narzędzi (zasada wspólna 21, DS-07; 07-jakosc-005):
+//  MAESTRO-WERSJA: krok z instalatorem get.maestro.mobile.dev ma `MAESTRO_VERSION` z dokładną wersją (nie `${{ vars.* }}`, która bywa pusta),
+//  pada przy pustej zmiennej (`exit 1`, bez `unset`) i porównuje `maestro --version` z przypiętą.
 // Wyjątki nazwane: scripts/jakosc/wyjatki.json („workflowy”). Użycie: node scripts/jakosc/sprawdz-workflowy.mjs [--katalog <korzeń>]
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -39,6 +42,12 @@ export function sprawdzWorkflowy(korzen) {
       if (job?.['timeout-minutes'] === undefined) zgl('TIMEOUT', `zadanie ${id} bez timeout-minutes`);
       for (const [i, krok] of (job?.steps ?? []).entries()) {
         if (typeof krok?.run === 'string' && DANE_ZDARZEN.test(krok.run)) zgl('DANE-ZDARZEN-W-RUN', `zadanie ${id}, krok ${i + 1}: dane zdarzenia wprost w run: (przekaż przez env)`);
+        if (typeof krok?.run === 'string' && krok.run.includes('get.maestro.mobile.dev')) {
+          const v = krok.env?.MAESTRO_VERSION ?? job?.env?.MAESTRO_VERSION ?? wf?.env?.MAESTRO_VERSION;
+          if (typeof v !== 'string' || !/^\d+\.\d+\.\d+$/.test(v)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: MAESTRO_VERSION nie jest dokładną wersją (${v ?? 'brak'}); pusta = najnowsza bez commita`);
+          if (!/\[ -n "\$MAESTRO_VERSION" \] \|\| \{[^}]*exit 1/.test(krok.run) || /unset MAESTRO_VERSION/.test(krok.run)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: pusta MAESTRO_VERSION nie kończy kroku błędem`);
+          if (!/--version[\s\S]*grep -q\w* "\$MAESTRO_VERSION"/.test(krok.run)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: brak porównania maestro --version z MAESTRO_VERSION`);
+        }
         if (typeof krok?.uses === 'string' && !krok.uses.startsWith('actions/') && !krok.uses.startsWith('./') && !/@[0-9a-f]{40}$/.test(krok.uses)) zgl('AKCJA-NIEPRZYPIETA', `zadanie ${id}, krok ${i + 1}: ${krok.uses}`);
       }
     }

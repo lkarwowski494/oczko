@@ -20,6 +20,11 @@ const dodaj = (z: Zbior, tabela: string, klucz: string): boolean => {
 };
 export const ma = (z: Zbior, tabela: string, klucz: string): boolean => z.get(tabela)?.has(klucz) === true;
 type Szczyt = { t: TabelaIcloud; klucz: string };
+/**
+ * Tabele, których wiersz znika tylko kaskadą z rodzicem, nigdy sam (zdarzenia licznika są tylko dopisywane, ADR-0005 opcja A): nagrobek takiego
+ * wiersza oznacza nagrobek rodzica w tej albo innej partii (CloudKit dzieli zmiany na partie; 05-architekt-511, M1-audytor-generalny-116).
+ */
+const TYLKO_Z_RODZICEM: ReadonlySet<string> = new Set(['zdarzenie']);
 type KluczObcy = { rodzic: string; kolumna: string; kaskada: boolean };
 
 /** Klucze obce tabeli do rodzica z kontraktu; bez SET NULL (usunięcie rodzica nie usuwa wtedy dziecka, np. `kopia_z`, `para_z`). */
@@ -41,10 +46,19 @@ async function wartosciPo(tx: PortBazy, t: TabelaIcloud, wynik: string, kolumna:
     [JSON.stringify([...klucze])]), 'nagrobki')).map((r) => tekst(r, 'v'));
 }
 
+/** Czy rodzic (kaskada) wiersza `klucz` tabeli z TYLKO_Z_RODZICEM jest przodkiem wiersza z niewysłaną zmianą. */
+async function rodzicPrzodkiem(tx: PortBazy, t: TabelaIcloud, klucz: string, przodkowie: Zbior, fk: Map<string, KluczObcy[]>): Promise<boolean> {
+  for (const k of await kluczeObce(tx, t.tabela, fk)) {
+    if (k.kaskada) for (const v of await wartosciPo(tx, t, k.kolumna, wyrazenieKlucza(t), new Set([klucz]))) if (ma(przodkowie, k.rodzic, v)) return true;
+  }
+  return false;
+}
+
 /**
  * Nagrobki partii, które skasowałyby (wprost albo kaskadą) wiersz z niewysłaną zmianą. Zatrzymany jest nagrobek samego wiersza i jego przodków
  * (CASCADE i RESTRICT) oraz nagrobki całego poddrzewa tego przodka (kaskada): historia licznika zostaje cała, bo `scal` bez rodzica
- * zdarzenia czeka. Szczyty = zatrzymane bez zatrzymanego rodzica; trafiają do kosza (`odtworzWKoszu`).
+ * zdarzenia czeka. Nagrobek zdarzenia, którego licznik jest takim przodkiem, też — także gdy nagrobek licznika przyszedł w innej partii
+ * (M1-audytor-generalny-116). Szczyty = zatrzymane bez zatrzymanego rodzica; trafiają do kosza (`odtworzWKoszu`).
  */
 export async function zatrzymaneNagrobki(tx: PortBazy, usuniete: readonly { encja: string; klucz: string }[]): Promise<{ zatrzymane: Zbior; szczyty: Szczyt[] }> {
   const nagrobki: Zbior = new Map();
@@ -70,7 +84,9 @@ export async function zatrzymaneNagrobki(tx: PortBazy, usuniete: readonly { encj
   const poddrzewo: Zbior = new Map();
   for (const [tabela, klucze] of nagrobki) {
     const t = tabelaIcloud(tabela);
-    if (t) for (const k of klucze) if (ma(przodkowie, tabela, k)) { bazowe.push({ t, klucz: k }); dodaj(poddrzewo, tabela, k); }
+    if (t) for (const k of klucze) {
+      if (ma(przodkowie, tabela, k) || (TYLKO_Z_RODZICEM.has(tabela) && await rodzicPrzodkiem(tx, t, k, przodkowie, fk))) { bazowe.push({ t, klucz: k }); dodaj(poddrzewo, tabela, k); }
+    }
   }
   if (!bazowe.length) return { zatrzymane: new Map(), szczyty: [] };
   fala = new Map([...poddrzewo].map(([t, s]) => [t, new Set(s)]));

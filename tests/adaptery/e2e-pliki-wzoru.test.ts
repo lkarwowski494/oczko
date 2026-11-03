@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { inflateRawSync } from 'node:zlib';
-import { ADRES_STRONY_TESTOWEJ, wordTestowy } from '../../src/kompozycja/e2e/pliki-wzoru';
+import { ADRES_STRONY_TESTOWEJ, pdfSkanuTestowy, wordTestowy } from '../../src/kompozycja/e2e/pliki-wzoru';
 
 test('wordTestowy: ZIP z word/document.xml zawierającym tekst wzoru', () => {
   const b = readFileSync(wordTestowy(mkdtempSync(join(tmpdir(), 'oczko-e2e-'))));
@@ -28,4 +28,16 @@ const KORPUS = 'modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus';
 test.each(['tekst', 'tabela', 'obraz'] as const)('wordTestowy(%s): bajty = korpus W1', (rodzaj) => {
   const b = readFileSync(wordTestowy(mkdtempSync(join(tmpdir(), 'oczko-e2e-')), rodzaj));
   expect(b.equals(readFileSync(join(KORPUS, `${rodzaj}.docx`)))).toBe(true);
+});
+
+// M1-audytor-generalny-067 (07-jakosc-002, P-439 (1a)): prawdziwy wycinek skanu z OCR w buildzie E2E (scenariusz 21) — bajty identyczne z plikiem
+// danych testowych (jedno źródło: tests/dane/wzory, opis pochodzenia i wyrocznia w *.opis.md), dwie strony jak w opisie.
+const WYCINEK_SKANU = 'tests/dane/wzory/corbould-1879-s16-17.pdf';
+test('pdfSkanuTestowy: bajty = wycinek skanu z tests/dane, 2 strony, bez metadanych', () => {
+  const b = readFileSync(pdfSkanuTestowy(mkdtempSync(join(tmpdir(), 'oczko-e2e-'))));
+  expect(b.equals(readFileSync(WYCINEK_SKANU))).toBe(true);
+  const tekst = b.toString('latin1');
+  expect(tekst.startsWith('%PDF-')).toBe(true);
+  expect(tekst.match(/\/Type\s*\/Pages\b[^>]*?\/Count\s+(\d+)/)?.[1]).toBe('2');
+  expect(tekst).not.toMatch(/\/Author\s*\(/);
 });

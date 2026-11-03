@@ -1,11 +1,12 @@
 # BR-DAN-008/S1 (docs/brd/wymagania-dane.md:117): usunięty projekt przywrócony po 29 dniach wraca ze wszystkimi danymi (P-026, okres 30 dni).
 # Usuwanie: ekran projektu → ••• → „Delete project…” → alert systemowy („Delete project”); wejście do kosza: ostatni wiersz listy „Recently deleted”
-# (P-183 (2a), tylko przy niepustym koszu). Wyrocznia: BRD S1 + P-026 (29 dni < 30). Ścieżka utraty danych (S1) — do `podstawowy` po pierwszym
-# zielonym przebiegu (P-198 Q3a).
+# (P-183 (2a), tylko przy niepustym koszu). Wyrocznia: BRD S1 + P-026 (29 dni < 30). Ścieżka utraty danych (S1) — w `podstawowy` (bramka TestFlight)
+# od DEC-08 (a) (P-198 Q3a, P-418, P-430; M1-audytor-generalny-047).
 appId: com.apps4brew.knitting
 name: "BR-DAN-008/S1 · Usunięty projekt po 29 dniach: Restore przywraca nazwę i 1 rząd"
 tags:
   - BR-DAN-008-S1
+  - podstawowy
   - stan-licznika
 ---
 - runFlow:

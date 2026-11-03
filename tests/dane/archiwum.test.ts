@@ -1,7 +1,7 @@
 // Archiwum `.oczko`: eksport i import (ADR-0004, ADR-0020 (5), dane.md „Kopie i eksport”, maszyna importu moduly.md, P-047, P-091 (6a)).
 // Ścieżki ŚU-09, ŚU-10, ŚU-11, ŚU-12, ŚU-13, ŚU-17 (dane.md); BR-DAN-005/S1, BR-DAN-006/S1–S5; R-063, R-064, R-066, R-067, R-068, R-088.
 // Archiwa wejściowe budowane bez kodu aplikacji (node:sqlite + schemat.sql v1 + własny zapis ZIP); wyjściowe czytane własnym czytnikiem ZIP.
-import { mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, statSync, truncateSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { nazwaArchiwum, utworzArchiwum } from '../../src/dane/archiwum';
 import { migruj } from '../../src/dane/migracje/migruj';
@@ -12,7 +12,7 @@ import type { Manifest } from '../../src/przypadki-uzycia/porty-propozycja';
 import {
   archiwumWzorcowe, czesc, czytajBaze, czytajZip, licznik, licznosciPliku, projekt, ustawGlowe, zapiszZip, zdarzenie, zycie, type Instr,
 } from './pomocnicze/dane-wejsciowe';
-import { GODZ, MIN, T0, czasWTle, ile, jeden, licznosci, migawka, przygotuj, sha256, sha256Pliku, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { DOBA, GODZ, MIN, T0, czasWTle, ile, jeden, licznosci, migawka, przygotuj, sha256, sha256Pliku, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 const POMIN = ['blad', 'ustawienie']; // diagnostyka i mały stan nie są danymi użytkownika w porównaniu
 const TRESCI = { pdf: Buffer.from('PDF-1.4 abc'), rys: Buffer.from('PKDRAWING'), jpg: Buffer.from('JPEG-DANE!') }; // bajty = zycie(): 11, 9, 10
@@ -319,6 +319,30 @@ describe('07-jakosc-003 kopia przed „Replace” (ADR-0028)', () => {
     expect(await licznosci(s.baza)).toEqual(przed);
     expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
     expect(readdirSync(s.magazyn.katalog).sort()).toEqual(plikiPrzed);
+  });
+  // M1-audytor-generalny-090 (05-architekt-508, 12-niezawodnosc-501; P-437, ADR-0033): budżet 2 GB na rodzaj na prawdziwej kopii „Zastąp”.
+  test('K-03h M1-090 (ADR-0033): prawdziwa kopia „Zastąp” i cztery kopie po 600 MB z wcześniejszych dni → budżet usuwa najstarszą pośrednią; najnowsza i najstarsza dzienna zostają, a import najnowszej przywraca liczności (integrity_check, foreign_key_check)', async () => {
+    const s = await zZyciem();
+    const przed = await licznosci(s.baza);
+    const migPrzed = await migawka(s.baza, POMIN);
+    const backup = s.z.katalogi.kopiePrzed;
+    mkdirSync(backup, { recursive: true });
+    const dawna = (n: number) => join(backup, `oczko-przed-importem-${new Date(T0 - n * DOBA).toISOString().slice(0, 10)}${ROZSZERZENIE_ARCHIWUM}`);
+    for (const n of [5, 4, 3, 2]) { writeFileSync(dawna(n), ''); truncateSync(dawna(n), 600_000_000); } // pliki rzadkie o rozmiarze dużej kopii
+    const w = await importuj(s.za, { sciezka: archiwumWzorcowe(s.katalog, 'plik-a', [projekt('plik-a', 'plik-a')]), wybierz: szpieg('zastap').wybierz });
+    if (!w.ok || w.wartosc.kopiaPrzed === null) throw new Error('zastap');
+    const kopia = w.wartosc.kopiaPrzed;
+    const shaKopii = sha256Pliku(kopia);
+    expect(readdirSync(backup)).toHaveLength(5);
+    expect(sprzatnijKopiePrzed(backup, s.zegar.teraz().ms)).toEqual({ ok: true, wartosc: [basename(dawna(4))] });
+    expect(readdirSync(backup).sort()).toEqual([basename(dawna(5)), basename(dawna(3)), basename(dawna(2)), basename(kopia)].sort());
+    expect(readdirSync(backup).reduce((suma, n) => suma + statSync(join(backup, n)).size, 0)).toBeLessThanOrEqual(2_000_000_000);
+    expect(sha256Pliku(kopia)).toBe(shaKopii);
+    expect(await importuj(s.za, { sciezka: kopia, wybierz: szpieg('zastap').wybierz })).toMatchObject({ ok: true, wartosc: { tryb: 'zastap' } });
+    expect(await licznosci(s.baza)).toEqual(przed);
+    expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
+    expect(await s.baza.all('PRAGMA integrity_check')).toEqual([{ integrity_check: 'ok' }]);
+    expect(await s.baza.all('PRAGMA foreign_key_check')).toEqual([]);
   });
   test('K-03i M1-013: nazwaArchiwum — największy przyrostek dnia + 1 (liczbowo), inny dzień, inny przedrostek i obce nazwy nie liczą się', () => {
     const p = 'oczko-przed-importem';

@@ -176,6 +176,23 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
     expect(w.status).toBe(1);
     expect(w.stdout).toContain(regula);
   });
+  // 044 (07-jakosc-005, DS-07, zasada wspólna 21): instalacja Maestro tylko z przypiętą wersją, z błędem przy pustej i porównaniem z zainstalowaną.
+  const MAESTRO = (env: string, run: string) => `on: push\npermissions:\n  contents: read\njobs:\n  e2e:\n    runs-on: macos-26\n    timeout-minutes: 10\n    steps:\n      - name: Maestro\n${env}        run: |\n${run.split('\n').map((l) => `          ${l}`).join('\n')}\n`;
+  const RUN_DOBRY = '[ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta"; exit 1; }\ncurl -fsSL "https://get.maestro.mobile.dev" | bash\nv=$(maestro --version)\nprintf \'%s\\n\' "$v" | grep -qF "$MAESTRO_VERSION" || exit 1';
+  test('044 instalacja Maestro z przypiętą wersją, strażnikiem pustej i porównaniem przechodzi', () => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY)));
+    expect(w.stdout).toContain('naruszeń 0');
+  });
+  test.each([
+    ['zmienna repo (bywa pusta)', MAESTRO('        env:\n          MAESTRO_VERSION: ${{ vars.MAESTRO_VERSION }}\n', RUN_DOBRY)],
+    ['brak zmiennej', MAESTRO('', RUN_DOBRY)],
+    ['cichy zjazd do najnowszej (unset)', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY.replace(/^\[[^\n]*/, '[ -n "$MAESTRO_VERSION" ] || unset MAESTRO_VERSION'))],
+    ['bez porównania wersji', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY.replace(/\nv=.*$/s, ''))],
+  ])('044 pułapka MAESTRO-WERSJA: %s pada', (_n, tekst) => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', tekst));
+    expect(w.status).toBe(1);
+    expect(w.stdout).toContain('MAESTRO-WERSJA');
+  });
   test('R-173 brak workflowów to błąd, nie zaliczenie', () => {
     expect(uruchom(WORKFLOWY, repo({})).status).toBe(1);
   });

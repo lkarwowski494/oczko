@@ -1,10 +1,10 @@
 // Zdjęcia projektu i etykiety włóczki (F-16, BR-PRJ-003; P-191 P9a: grupa „Photos”, zdjęcie etykiety w formularzu włóczki, usuwanie bez kosza).
-// Plik do magazynu przed wierszem (ADR-0001, PLIKI_OCHRONA_MIN), usunięcie pliku bez odwołań dopiero po COMMIT.
+// Plik do magazynu przed wierszem (ADR-0001, PLIKI_OCHRONA_MIN); wiersz `plik` bez odwołań usuwany w transakcji, plik przy starcie (05-architekt-513).
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { dodajZdjecie, usunZdjecie, zdjecia } from '../../src/przypadki-uzycia/zdjecia';
 import { projekt, wloczka } from './pomocnicze/dane-wejsciowe';
-import { ile, przygotuj, sha256Pliku, wykonaj } from './pomocnicze/srodowisko';
+import { ile, przygotuj, sha256Pliku, sierotyPrzyStarcie, wykonaj } from './pomocnicze/srodowisko';
 
 const JPG = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 0xff, 0xd9]);
 const zrodlo = (katalog: string, nazwa = 'a.jpg', tresc = JPG) => { const p = join(katalog, nazwa); writeFileSync(p, tresc); return p; };
@@ -35,7 +35,7 @@ describe('zdjęcia', () => {
     expect(w.ok && w.wartosc).toHaveLength(1);
   });
 
-  test('usunięcie (P9a, bez kosza): wiersz znika; plik zostaje, gdy odwołuje się do niego inne zdjęcie; ostatnie odwołanie → plik usunięty po COMMIT', async () => {
+  test('usunięcie (P9a, bez kosza): wiersz znika; plik zostaje, gdy odwołuje się do niego inne zdjęcie; ostatnie odwołanie → wiersz `plik` usunięty, plik przy starcie (05-architekt-513)', async () => {
     const s = await przygotuj();
     await wykonaj(s.baza, [projekt('p1', 'Sweter'), wloczka('y1', 'Merino')]);
     const a = await dodajZdjecie(s.z, { cel: { wloczkaId: 'y1' }, plik: { sciezka: zrodlo(s.katalog), rozszerzenie: 'jpg' } });
@@ -44,7 +44,9 @@ describe('zdjęcia', () => {
     expect(await usunZdjecie(s.z, { zdjecieId: b.wartosc.zdjecieId })).toEqual({ ok: true, wartosc: undefined });
     expect([await ile(s.baza, 'zdjecie'), await ile(s.baza, 'plik'), s.magazyn.usuniete.length]).toEqual([1, 1, 0]);
     await usunZdjecie(s.z, { zdjecieId: a.wartosc.zdjecieId });
-    expect([await ile(s.baza, 'zdjecie'), await ile(s.baza, 'plik'), s.magazyn.usuniete.length]).toEqual([0, 0, 1]);
+    expect([await ile(s.baza, 'zdjecie'), await ile(s.baza, 'plik'), s.magazyn.usuniete.length]).toEqual([0, 0, 0]); // plik — krok startu (ADR-0001, 05-architekt-513)
+    await sierotyPrzyStarcie(s);
+    expect(s.magazyn.usuniete.length).toBe(1);
     expect(readdirSync(s.magazyn.katalog)).toEqual([]);
   });
 

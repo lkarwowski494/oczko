@@ -1,6 +1,7 @@
 // Zastępnik `expo-file-system` (nowe API: File, Directory, FileHandle, Paths) w Jest (P-120 Q1a, jak Trening `tests/setup.js`):
 // podzbiór używany przez src/dane/pliki/system.ts, na prawdziwym dysku (node:fs). Kod testu, nie aplikacji.
 import { closeSync, copyFileSync, existsSync, fstatSync, mkdirSync, openSync, readdirSync, readFileSync, readSync, renameSync, rmSync, statSync, writeFileSync, appendFileSync, writeSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const sciezka = (uri: string): string => (uri.startsWith('file://') ? fileURLToPath(uri) : uri);
@@ -82,4 +83,10 @@ class Katalog {
 export { Plik as File, Katalog as Directory };
 export class Paths {
   static get availableDiskSpace(): number { return Number.MAX_SAFE_INTEGER; }
+  /** `Library/Caches` w teście: katalog procesu w systemowym katalogu tymczasowym (M1-095). */
+  static get cache(): Katalog {
+    const k = `${tmpdir()}/expo-fs-cache-${process.pid}`;
+    mkdirSync(k, { recursive: true });
+    return new Katalog(`file://${k}`);
+  }
 }

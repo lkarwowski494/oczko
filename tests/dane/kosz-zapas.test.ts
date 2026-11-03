@@ -10,7 +10,7 @@ import {
 } from '../../src/przypadki-uzycia/zapas';
 import { zakonczProjekt } from '../../src/przypadki-uzycia/projekt';
 import { czesc, plik, projekt, projektWloczka } from './pomocnicze/dane-wejsciowe';
-import { DOBA, T0, dzienLokalny, ile, przygotuj, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
+import { DOBA, T0, dzienLokalny, ile, przygotuj, sierotyPrzyStarcie, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 const OK = { ok: true, wartosc: undefined };
 const FORM = { producent: '', sklad: '', kolor: '', kategoria: null, motki: 3, dlugoscMotkaM: null, wagaMotkaG: null, pielegnacja: '', notatka: '' };
@@ -71,6 +71,8 @@ test('po 31 dniach i dwóch startach: drut i wolna włóczka usunięte (plik ety
   expect(await ile(s.baza, 'wloczka', `id = '${wolna}'`)).toBe(0);
   expect(await ile(s.baza, 'zdjecie')).toBe(0);
   expect(await ile(s.baza, 'plik', `sha256 = '${h}'`)).toBe(0);
+  expect(s.magazyn.usuniete).toEqual([]); // plik etykiety bez wiersza usuwa krok startu (ADR-0001, 05-architekt-513)
+  await sierotyPrzyStarcie(s);
   expect(s.magazyn.usuniete).toContain(h);
   expect(await ile(s.baza, 'wloczka', `id = '${przyp}'`)).toBe(1);
   expect(await ile(s.baza, 'projekt_wloczka')).toBe(1);

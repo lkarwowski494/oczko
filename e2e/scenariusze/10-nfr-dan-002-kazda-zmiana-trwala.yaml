@@ -1,9 +1,11 @@
 # NFR-DAN-002 (docs/brd/wymagania.md:77, próg 0): każda zmiana licznika zapisana trwale — zabicie procesu po każdej zmianie (+1, −1, wpisanie wartości, Undo serii).
 # Ryzyko R-001 (COMMIT przed haptyką i Live Activity). Logika zapisu także w dane-node (ADR-0002).
+# Bloker wydania (docs/brd/README.md) — w `podstawowy` (bramka TestFlight) od DEC-08 (a) (P-418, P-430; M1-audytor-generalny-047).
 appId: com.apps4brew.knitting
 name: "NFR-DAN-002 · Każda zmiana licznika przeżywa zabicie procesu (+1, −1, wpisanie, Undo serii)"
 tags:
   - NFR-DAN-002
+  - podstawowy
   - stan-licznika
 ---
 - runFlow:

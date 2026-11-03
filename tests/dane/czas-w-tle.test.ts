@@ -83,3 +83,38 @@ describe('ADR-0020 (5′): przywrócenie kopii w jednej pozycji kolejki', () => 
     expect(await dolaczone(s)).toEqual(['main']);
   });
 });
+
+/** Czas w tle jak moduł natywny: każde `chron` to osobne zadanie; wygaśnięcie oznacza zadania aktywne w tej chwili i flaga zostaje do końca zadania. */
+function zadaniaWTle(): CzasWTle & { wygasAktywne: () => void; nazwy: string[] } {
+  const aktywne = new Set<{ wygaslo: boolean }>();
+  const nazwy: string[] = [];
+  return {
+    nazwy,
+    wygasAktywne: () => { for (const z of aktywne) z.wygaslo = true; },
+    chron: async (nazwa, fn) => {
+      const z = { wygaslo: false };
+      aktywne.add(z); nazwy.push(nazwa);
+      try { return await fn({ wygaslo: () => z.wygaslo }); } finally { aktywne.delete(z); }
+    },
+  };
+}
+const licznosci = async (s: Awaited<ReturnType<typeof przygotuj>>) =>
+  Object.fromEntries(await Promise.all(['projekt', 'czesc', 'licznik'].map(async (t) => [t, (await jeden<{ n: number }>(s.baza, `SELECT COUNT(*) AS n FROM ${t}`)).n])));
+
+describe('M1-audytor-generalny-065 (05-architekt-004): czas w tle importu zaczyna się po wyborze trybu', () => {
+  test.each([
+    ['zastap', { projekt: 1, czesc: 1, licznik: 1 }],
+    ['scal', { projekt: 2, czesc: 2, licznik: 2 }],
+  ] as const)('„%s”: wygaśnięcie w trakcie dialogu wyboru → import po wyborze kończy się powodzeniem', async (tryb, po) => {
+    const cz = zadaniaWTle();
+    const s = await srodowisko(cz);
+    expect(await licznosci(s)).toEqual({ projekt: 1, czesc: 1, licznik: 1 });
+    const w = await importuj(s.za, { sciezka: czapka(s.katalog), wybierz: async () => { cz.wygasAktywne(); return tryb; } });
+    expect(w).toMatchObject({ ok: true, wartosc: { tryb } });
+    expect(await licznosci(s)).toEqual(po);
+    expect(await jeden(s.baza, "SELECT nazwa FROM projekt WHERE id = 'cz'")).toEqual({ nazwa: 'Czapka' });
+    expect(await dolaczone(s)).toEqual(['main']);
+    expect(await s.baza.all('PRAGMA integrity_check')).toEqual([{ integrity_check: 'ok' }]);
+    expect(await s.baza.all('PRAGMA foreign_key_check')).toEqual([]);
+  });
+});
