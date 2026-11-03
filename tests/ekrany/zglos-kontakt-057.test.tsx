@@ -5,6 +5,7 @@ import React from 'react';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { render, screen } from '@testing-library/react-native';
+import { ADRES_WSPARCIA } from '../../src/kompozycja/adresy';
 import { przygotuj } from '../dane/pomocnicze/srodowisko';
 import { tEn } from './pomoc';
 
@@ -24,6 +25,7 @@ const adresyZeStrony = (plik: string): string[] => [...readFileSync(join(KORZEN,
 test('057: adres wsparcia na stronie jeden (support.html = privacy.html) — to on ma być w aplikacji', () => {
   const adresy = new Set([...adresyZeStrony('support.html'), ...adresyZeStrony('privacy.html')]);
   expect([...adresy]).toHaveLength(1);
+  expect(ADRES_WSPARCIA).toBe([...adresy][0]); // stała aplikacji = adres ze strony, bez nowego adresu
 });
 
 test('057: „/zglos” pokazuje adres kontaktu ze strony wsparcia, zanim cokolwiek zostanie udostępnione', async () => {
