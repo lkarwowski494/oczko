@@ -63,6 +63,8 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
   }
 
   if (w.narzedzie === 'szydelko') return stan; // bez kategorii; wynik szerokości i przeliczenie zostają
+  // M1-037 (kanon 06, README „Warunki wyświetlania”): uwaga 4 in także przy próbce z 10 cm przeliczonej na 4 in (wiersz `na_4in_dokladnie`).
+  if (w.na === '10cm') stan.uwaga4in = t('probka.uwaga_4in');
   const k = klasyfikujGrubosc({ oczka: p, na: w.na });
   const linia = (n: number): string => {
     const g = GRUBOSC.find((x) => x.kategoria === n);
@@ -87,6 +89,8 @@ export function stanProbki(w: WejscieProbki, j: { t: Tlumacz; jezyk(): string })
   const calaAlboPolowka = Number.isInteger(p4 * 2);
   if (!calaAlboPolowka) uwagi.unshift(t('probka.uwaga_zaokraglenie'));
   uwagi.push(t('probka.uwaga_kategoria'));
+  // M1-037: calc.note.category kończy zalecenie blokowania (PRB-002, PRB-005); przy wyniku oczek stoi już w jego bloku — bez powtórki.
+  if (!stan.wynik) uwagi.push(t('probka.uwaga_oczka'));
   const d4 = wyl(p4);
   stan.grubosc = { linie, dokladnie: w.na === '10cm' ? t('probka.na_4in_dokladnie', { count: d4.count, p: d4.tekst }) : null, uwagi };
   return stan;
