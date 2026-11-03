@@ -1,0 +1,32 @@
+{
+  "_opis": "Metadane vi — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "vi": {
+        "title": "Oczko: đếm hàng đan móc",
+        "subtitle": "Đan & móc, không cần tài khoản",
+        "description": "Oczko là bộ đếm hàng cho đan và móc, luôn giữ đúng chỗ bạn đang làm. Ứng dụng miễn phí 5 ngày đan móc mỗi tháng, dự án và dữ liệu xuất luôn thuộc về bạn; Pro là gói đăng ký hoặc mua một lần. Không cần tài khoản: dữ liệu nằm trên thiết bị của bạn, bạn có thể xuất bất cứ lúc nào, và dự án đã xóa được giữ 30 ngày trong Đã xóa gần đây. Nếu lỡ chạm dồn nhiều lần, Oczko sẽ đề nghị hoàn tác.\n\nĐẾM MÀ KHÔNG LẠC CHỖ\n• Một chạm thêm một hàng, kèm rung nhẹ để bạn cảm nhận. Chạm −1 để bớt lại một hàng.\n• Màn hình luôn sáng trong lúc bạn đếm.\n• Lịch sử ghi lại mọi thay đổi kèm thời gian, và Hoàn tác chỉ cách một chạm.\n• Nếu chạm dồn quá nhanh, Oczko sẽ đề nghị hoàn tác. Chế độ khóa tùy chọn giúp bỏ qua những lần chạm nhầm.\n• Oczko mở lại đúng chỗ bạn đã dừng, với ghi chú ngay cạnh bộ đếm hàng.\n\nĐỂ MẪU NGAY CẠNH BỘ ĐẾM HÀNG\n• Thêm mẫu từ PDF, tệp Word, ảnh chụp hoặc bản quét một trang, hay từ trang web. Lưu cả liên kết video.\n• Gửi mẫu đến Oczko từ ứng dụng khác bằng nút Chia sẻ.\n• Đánh dấu hàng đang làm trên mẫu, tô sáng và viết ghi chú bằng ngón tay. Trên iPad, viết bằng Apple Pencil.\n• Mẫu và bộ đếm hàng nằm chung một màn hình.\n\nDỰ ÁN VÀ CÔNG CỤ\n• Dự án gồm nhiều phần, nhiều bộ đếm hàng, lặp lại và mục tiêu.\n• Lời nhắc như “cứ 6 hàng giảm mũi một lần, làm 8 lần”.\n• Cỡ que đan hoặc kim móc, mẫu thử, ảnh và ghi chú cho từng dự án.\n• Đồng hồ bấm giờ cho mỗi buổi làm và lịch các ngày đan móc của bạn.\n• Kho len và dụng cụ, cùng công cụ tính mẫu thử.\n• Dự án đã xóa được giữ trong Đã xóa gần đây 30 ngày.\n\nDỮ LIỆU LUÔN LÀ CỦA BẠN\n• Không tài khoản, không quảng cáo, không theo dõi. Oczko hoạt động ngoại tuyến.\n• Xuất toàn bộ dữ liệu bất cứ lúc nào và nhập bản sao lưu trên điện thoại mới.\n\nMIỄN PHÍ VÀ OCZKO PRO\nOczko miễn phí 5 ngày đan móc mỗi tháng. Một ngày đan móc bắt đầu khi bạn đếm hàng đầu tiên trong ngày. Phần đang làm dở không bao giờ bị gián đoạn, và dự án cùng dữ liệu xuất luôn thuộc về bạn.\nOczko Pro bỏ giới hạn hằng tháng. Bạn có thể chọn gói đăng ký theo tháng hoặc theo năm, hoặc mua một lần. Gói đăng ký tự động gia hạn cho đến khi bạn hủy trong phần cài đặt Apple ID.\n",
+        "keywords": [
+          "crochet",
+          "knitting",
+          "counter",
+          "len",
+          "knit",
+          "tally",
+          "mẫu",
+          "amigurumi",
+          "row",
+          "patterns",
+          "tracker",
+          "pdf",
+          "sợi",
+          "mũi",
+          "yarn"
+        ],
+        "promoText": "Đếm hàng chỉ với một chạm, để mẫu riêng của bạn ngay cạnh bộ đếm hàng và tiếp tục từ chỗ đã dừng. Miễn phí 5 ngày đan móc mỗi tháng; Oczko Pro bỏ giới hạn.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

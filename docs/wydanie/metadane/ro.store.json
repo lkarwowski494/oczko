@@ -1,0 +1,29 @@
+{
+  "_opis": "Metadane ro — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "ro": {
+        "title": "Ochi: numărător de rânduri",
+        "subtitle": "Tricotat, croșetat, fără cont",
+        "description": "Ochi este un numărător de rânduri pentru tricotat și croșetat care știe unde ai rămas: gratuit 5 zile de lucru pe lună, cu proiectele și exportul mereu ale tale; Pro este un abonament sau o achiziție unică. Fără cont, datele rămân pe dispozitivul tău, le poți exporta oricând, iar proiectele șterse așteaptă 30 de zile în Șterse recent. Dacă atingerile se adună din greșeală, Ochi îți propune să le anulezi.\n\nNUMERI FĂRĂ SĂ PIERZI RÂNDUL\n• O atingere adaugă un rând, cu o vibrație pe care o simți. Atinge −1 ca să revii cu un rând.\n• Ecranul rămâne aprins cât timp numeri.\n• Istoricul arată fiecare modificare cu ora ei, iar Anulare e la o atingere distanță.\n• Dacă atingerile se adună prea repede, Ochi îți propune să le anulezi. Blocarea opțională ignoră atingerile accidentale.\n• Ochi se deschide unde ai rămas, cu notița ta lângă numărător.\n\nMODELUL LÂNGĂ NUMĂRĂTOR\n• Adaugă un model dintr-un PDF, dintr-un fișier Word, dintr-o fotografie sau scanare a unei pagini ori dintr-o pagină web. Poți salva și linkul unui videoclip.\n• Trimite modele către Ochi din alte aplicații cu Partajează.\n• Marchează rândul curent pe model, evidențiază-l și scrie notițe cu degetul. Pe iPad, scrie cu Apple Pencil.\n• Modelul și numărătorul stau pe același ecran.\n\nPROIECTE ȘI INSTRUMENTE\n• Proiecte cu piese, mai multe numărătoare, rapoarte și obiective.\n• Mementouri precum „scăderea ochiurilor la fiecare al 6-lea rând, de 8 ori”.\n• Mărimea andrelelor sau a croșetei, mostră, fotografii și notițe pentru fiecare proiect.\n• Un cronometru pentru fiecare sesiune și un calendar al zilelor de lucru.\n• Stoc de fire și instrumente, plus un calculator pentru mostră.\n• Proiectele șterse rămân 30 de zile în Șterse recent.\n\nDATELE TALE RĂMÂN ALE TALE\n• Fără cont, fără reclame, fără urmărire. Ochi funcționează offline.\n• Exportă totul oricând și importă o copie de rezervă pe un telefon nou.\n\nGRATUIT ȘI OCHI PRO\nOchi este gratuit 5 zile de lucru în fiecare lună. O zi de lucru începe cu primul tău rând din ziua respectivă. Proiectul în lucru nu este întrerupt niciodată, iar proiectele și exportul rămân mereu ale tale.\nOchi Pro elimină limita lunară. Este disponibil ca abonament lunar sau anual ori ca achiziție unică. Abonamentele se reînnoiesc până când le anulezi din setările Apple ID.\n",
+        "keywords": [
+          "tricotaj",
+          "croșetă",
+          "andrele",
+          "împletit",
+          "amigurumi",
+          "fire",
+          "lână",
+          "model",
+          "ochiuri",
+          "mostră",
+          "schemă",
+          "PDF"
+        ],
+        "promoText": "Numără rândurile cu o atingere, ține propriul model lângă numărător și continuă de unde ai rămas. Gratuit 5 zile de lucru pe lună; Ochi Pro elimină limita.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

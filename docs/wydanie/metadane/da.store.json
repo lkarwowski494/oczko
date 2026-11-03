@@ -1,0 +1,27 @@
+{
+  "_opis": "Metadane da — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "da": {
+        "title": "Oczko: pindetæller",
+        "subtitle": "Strik og hækling uden konto",
+        "description": "Oczko er en rækketæller til strik og hækling, der holder styr på, hvor du er. Den er gratis i 5 håndarbejdsdage om måneden, dine projekter og din eksport er altid dine; Pro er et abonnement eller et engangskøb. Uden konto bliver dine data på din enhed, du kan eksportere dem når som helst, og slettede projekter venter 30 dage i Senest slettet. Hvis der ved et uheld hober sig tryk op, tilbyder Oczko at fortryde dem.\n\nTÆL UDEN AT MISTE TRÅDEN\n• Ét tryk lægger en række til med en vibration, du kan mærke. Tryk på −1 for at trække én fra.\n• Skærmen forbliver tændt, mens du tæller.\n• Historik viser hver ændring med tidspunkt, og Fortryd er kun ét tryk væk.\n• Hvis tryk hober sig op for hurtigt, tilbyder Oczko at fortryde dem. En valgfri lås ignorerer utilsigtede tryk.\n• Oczko åbner, hvor du slap, med din note ved siden af rækketælleren.\n\nHAV DIN OPSKRIFT VED SIDEN AF RÆKKETÆLLEREN\n• Tilføj en opskrift fra en PDF, en Word-fil, et foto eller en scanning af en side eller fra en webside. Du kan også gemme et link til en video.\n• Send opskrifter til Oczko fra andre apps med Del.\n• Markér den række, du er nået til, i opskriften, fremhæv den, og skriv noter med fingeren. På iPad kan du skrive med Apple Pencil.\n• Opskrift og rækketæller deler én skærm.\n\nPROJEKTER OG VÆRKTØJ\n• Projekter med dele, flere tællere, rapporter og mål.\n• Påmindelser som »tag ind i hver 6. række, 8 gange«.\n• Pinde- eller hæklenålsstørrelse, prøve, fotos og noter til hvert projekt.\n• Et stopur til hver session og en kalender over dine håndarbejdsdage.\n• Garnlager og værktøjslager samt en prøveberegner.\n• Slettede projekter bliver i Senest slettet i 30 dage.\n\nDINE DATA FORBLIVER DINE\n• Ingen konto, ingen reklamer, ingen sporing. Oczko virker offline.\n• Eksportér alt når som helst, og importér en sikkerhedskopi på en ny telefon.\n\nGRATIS OG OCZKO PRO\nOczko er gratis i 5 håndarbejdsdage hver måned. En håndarbejdsdag starter med din første række den dag. Et igangværende arbejde bliver aldrig afbrudt, og dine projekter og din eksport forbliver altid dine.\nOczko Pro fjerner den månedlige grænse. Det fås som måneds- eller årsabonnement eller som engangskøb. Abonnementer fornyes, indtil du opsiger dem i indstillingerne for dit Apple ID.\n",
+        "keywords": [
+          "rækketæller",
+          "strikke",
+          "hækle",
+          "opskrift",
+          "garn",
+          "tæller",
+          "strikkeopskrift",
+          "hækleopskrift",
+          "håndarbejde",
+          "pdf"
+        ],
+        "promoText": "Tæl rækker med ét tryk, hav din egen opskrift ved siden af rækketælleren, og fortsæt, hvor du slap. Gratis i 5 håndarbejdsdage om måneden; Oczko Pro fjerner grænsen.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

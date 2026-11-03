@@ -260,7 +260,9 @@ describe('produkty (lokalizacje zakupów) i konfiguracja kontroli ASC', () => {
   test('asc-kontrola-oczekiwane.json jest aktualne (generator --check) i zawiera tylko lokalizacje ASC z kompletem pól', () => {
     execFileSync('node', [join(root, 'scripts/asc/kontrola-oczekiwane.mjs'), '--check']);
     const o = json('docs/wydanie/asc-kontrola-oczekiwane.json').lokalizacje as Record<string, { name: string; keywords: string }>;
-    expect(Object.keys(o).sort()).toEqual([...PRZED_ZRODLEM].sort());
+    // en (4) + każda przyjęta lokalizacja z przeklad-stan.json (P-508) poza `sl`, którego ASC nie dostaje w 1.0 (LOCALE_MAP.sl = null)
+    const przyjete = Object.keys(json('docs/wydanie/metadane/przeklad-stan.json').przyjete as Record<string, unknown>).filter((k) => k !== 'sl');
+    expect(Object.keys(o).sort()).toEqual([...PRZED_ZRODLEM, ...przyjete].sort());
     expect(o['en-US'].keywords).toBe((en['en-US'].keywords as string[]).join(','));
   });
 });

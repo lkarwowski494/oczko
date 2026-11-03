@@ -1,0 +1,18 @@
+{
+  "_opis": "Metadane zh-Hant — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "zh-Hant": {
+        "title": "針目: 編織段數計數器",
+        "subtitle": "打毛線、鉤織皆可，無需帳號",
+        "description": "針目是一款適用於棒針與鉤針編織的段數計數器，幫你記住進度：每月 5 個手作日免費，專案與匯出永遠屬於你；Pro 提供訂閱或一次性購買。無需帳號，資料保存在你的裝置上，隨時都能匯出；刪除的專案會在「最近刪除」中保留 30 天。如果不小心連續點了好幾下，針目會提示你復原。\n\n計數時不會找不到進度\n• 點一下就加一段，並有感受得到的震動。點 −1 即可退回一段。\n• 計數時螢幕會保持亮著。\n• 「記錄」會列出每次變更及其時間，點一下即可復原。\n• 如果點得太快、次數累積過多，針目會提示你復原。也可開啟鎖定，忽略誤觸。\n• 針目會從你上次停下的地方開啟，你的筆記就在計數器旁邊。\n\n織圖就在計數器旁\n• 可從 PDF、Word 檔案、頁面照片或掃描，或網頁加入織圖。也能儲存影片連結。\n• 在其他 App 中使用「分享」，將織圖傳送到針目。\n• 在織圖上標出目前織到的段、加上醒目標示，並用手指寫筆記。在 iPad 上可使用 Apple Pencil 書寫。\n• 織圖與計數器在同一個畫面。\n\n專案與工具\n• 專案可包含多個織片、數個計數器、重複與目標。\n• 提醒，例如「每 6 段減針，共 8 次」。\n• 每個專案都能記錄棒針或鉤針號數、密度織片、照片與筆記。\n• 每次編織都能用碼錶計時，並以行事曆檢視你的手作日。\n• 毛線與工具庫存，以及密度織片計算機。\n• 刪除的專案會在「最近刪除」中保留 30 天。\n\n你的資料屬於你\n• 無需帳號、沒有廣告、不追蹤。針目可離線使用。\n• 隨時匯出所有資料，換新手機時也能匯入備份。\n\n免費版與針目 Pro\n針目每月有 5 個手作日免費。手作日從你當天織的第一段開始計算。進行中的作品絕不會被中斷，你的專案與匯出永遠屬於你。\n針目 Pro 取消每月限制，提供月訂閱、年訂閱或一次性購買。訂閱會自動續訂，直到你在 Apple ID 設定中取消。\n",
+        "keywords": [
+          "PDF"
+        ],
+        "promoText": "點一下就能計段，織圖就放在計數器旁，隨時從上次停下的地方繼續。每月 5 個手作日免費；針目 Pro 取消限制。",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

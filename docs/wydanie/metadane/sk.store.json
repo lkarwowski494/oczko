@@ -1,0 +1,29 @@
+{
+  "_opis": "Metadane sk — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "sk": {
+        "title": "Oczko: počítadlo radov",
+        "subtitle": "Pletenie a háčkovanie bez účtu",
+        "description": "Oczko je počítadlo riadkov na pletenie a háčkovanie, ktoré si pamätá, kde ste skončili. Je zadarmo 5 tvorivých dní mesačne, vaše projekty a export vám vždy patria; Pro je predplatné alebo jednorazový nákup. Bez účtu zostávajú vaše údaje vo vašom zariadení, kedykoľvek ich môžete exportovať a odstránené projekty čakajú 30 dní v sekcii Nedávno odstránené. Ak sa omylom nahromadia ťuknutia, Oczko ponúkne ich vrátenie späť.\n\nPOČÍTAJTE A NESTRAŤTE PREHĽAD\n• Jedno ťuknutie pridá riadok s citeľnou vibráciou. Ťuknite na −1 a riadok vrátite.\n• Obrazovka počas počítania nezhasne.\n• História zobrazuje každú zmenu aj s časom a Vrátiť späť je na jedno ťuknutie.\n• Ak ťuknutia pribúdajú príliš rýchlo, Oczko ponúkne ich vrátenie. Voliteľný zámok ignoruje náhodné ťuknutia.\n• Oczko sa otvorí tam, kde ste skončili, s vašou poznámkou pri počítadle.\n\nNÁVOD VŽDY PRI POČÍTADLE\n• Pridajte návod z PDF, zo súboru Word, z fotky či skenu strany alebo z webovej stránky. Uložiť si môžete aj odkaz na video.\n• Posielajte návody do aplikácie Oczko z iných aplikácií cez Zdieľať.\n• Označte si v návode aktuálny riadok, zvýraznite ho a píšte poznámky prstom. Na iPade píšte pomocou Apple Pencil.\n• Návod a počítadlo sú na jednej obrazovke.\n\nPROJEKTY A NÁSTROJE\n• Projekty s časťami, viacerými počítadlami, opakovaniami a cieľmi.\n• Pripomienky, napríklad „uberajte každý 6. riadok, 8-krát“.\n• Veľkosť ihlíc alebo háčika, skúšobná vzorka, fotky a poznámky pri každom projekte.\n• Stopky pre každé sedenie a kalendár vašich tvorivých dní.\n• Zásoba priadze a nástrojov a kalkulačka skúšobnej vzorky.\n• Odstránené projekty zostávajú 30 dní v sekcii Nedávno odstránené.\n\nVAŠE ÚDAJE PATRIA VÁM\n• Bez účtu, bez reklám, bez sledovania. Oczko funguje offline.\n• Kedykoľvek všetko exportujte a na novom telefóne importujte zálohu.\n\nZADARMO A OCZKO PRO\nOczko je zadarmo 5 tvorivých dní každý mesiac. Tvorivý deň sa začína vaším prvým riadkom v daný deň. Rozpracovaná práca sa nikdy nepreruší a vaše projekty aj export vám vždy zostanú.\nOczko Pro ruší mesačný limit. Je dostupné ako mesačné alebo ročné predplatné, prípadne ako jednorazový nákup. Predplatné sa obnovuje, kým ho nezrušíte v nastaveniach Apple ID.\n",
+        "keywords": [
+          "štrikovanie",
+          "háčkovať",
+          "štrikovať",
+          "pliesť",
+          "priadza",
+          "návod",
+          "ihlice",
+          "háčik",
+          "riadky",
+          "očká",
+          "pdf",
+          "vzorka"
+        ],
+        "promoText": "Počítajte riadky jedným ťuknutím, majte vlastný návod pri počítadle a pokračujte tam, kde ste skončili. Zadarmo 5 tvorivých dní mesačne; Oczko Pro limit ruší.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

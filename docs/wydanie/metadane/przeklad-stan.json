@@ -1,6 +1,211 @@
 {
   "_opis": "Stan przekładu metadanych sklepu (P-501, rola 10): które z 29 lokalizacji ASC do uzupełnienia (nazwy.store.json bez en-*) mają przyjęty plik <kod ASC>.store.json. Aktualizuje scripts/i18n/przeklad-metadane-przyjmij.mjs; pilnuje tests/wydanie/metadane-przeklad.test.ts. Pełny zapis do App Store Connect (asc-metadane) jest blokowany walidacją, dopóki oczekujace nie jest puste.",
-  "wymagane": ["pl", "cs", "sk", "hr", "sl", "uk", "ru", "hu", "ro", "de-DE", "fr-FR", "it", "es-ES", "es-MX", "pt-PT", "pt-BR", "nl-NL", "sv", "da", "no", "fi", "tr", "el", "id", "ms", "vi", "ja", "ko", "zh-Hant"],
-  "przyjete": {},
-  "oczekujace": ["pl", "cs", "sk", "hr", "sl", "uk", "ru", "hu", "ro", "de-DE", "fr-FR", "it", "es-ES", "es-MX", "pt-PT", "pt-BR", "nl-NL", "sv", "da", "no", "fi", "tr", "el", "id", "ms", "vi", "ja", "ko", "zh-Hant"]
+  "wymagane": [
+    "pl",
+    "cs",
+    "sk",
+    "hr",
+    "sl",
+    "uk",
+    "ru",
+    "hu",
+    "ro",
+    "de-DE",
+    "fr-FR",
+    "it",
+    "es-ES",
+    "es-MX",
+    "pt-PT",
+    "pt-BR",
+    "nl-NL",
+    "sv",
+    "da",
+    "no",
+    "fi",
+    "tr",
+    "el",
+    "id",
+    "ms",
+    "vi",
+    "ja",
+    "ko",
+    "zh-Hant"
+  ],
+  "przyjete": {
+    "cs": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "da": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "de-DE": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "el": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "es-ES": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "es-MX": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "fi": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "fr-FR": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "hr": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "hu": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "id": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "it": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 2
+    },
+    "ja": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 2
+    },
+    "ko": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "ms": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "nl-NL": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "no": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "pl": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "pt-BR": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "pt-PT": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "ro": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "ru": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "sk": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "sl": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "sv": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "tr": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "uk": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    },
+    "vi": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 1
+    },
+    "zh-Hant": {
+      "data": "2026-11-03",
+      "partia": "msgbatch_0181vuhcNjcPsKxytJbrEMVC",
+      "model": "claude-opus-5-5",
+      "poprawek_krytyka": 0
+    }
+  },
+  "oczekujace": []
 }

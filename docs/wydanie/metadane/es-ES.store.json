@@ -1,0 +1,29 @@
+{
+  "_opis": "Metadane es-ES — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "es-ES": {
+        "title": "Oczko: contador de vueltas",
+        "subtitle": "Punto y ganchillo, sin cuenta",
+        "description": "Oczko es un cuentavueltas para hacer punto y ganchillo que recuerda por dónde vas: gratis durante 5 días de labor al mes, con tus proyectos y la exportación siempre tuyos; Pro es una suscripción o una compra única. Sin cuenta, tus datos se quedan en tu dispositivo, puedes exportarlos cuando quieras y los proyectos eliminados esperan 30 días en Eliminados recientemente. Si se acumulan toques por error, Oczko te ofrece deshacerlos.\n\nCUENTA SIN PERDERTE\n• Un toque suma una vuelta, con una vibración que notas. Toca −1 para quitar una.\n• La pantalla permanece encendida mientras cuentas.\n• El Historial muestra cada cambio con su hora, y Deshacer está a un toque.\n• Si los toques se acumulan demasiado rápido, Oczko te ofrece deshacerlos. Un bloqueo opcional ignora los toques accidentales.\n• Oczko se abre donde lo dejaste, con tu nota junto al cuentavueltas.\n\nTU PATRÓN JUNTO AL CUENTAVUELTAS\n• Añade un patrón desde un PDF, un archivo Word, una foto o un escaneo de una página, o una página web. También puedes guardar el enlace a un vídeo.\n• Envía patrones a Oczko desde otras apps con Compartir.\n• Marca en el patrón la vuelta por la que vas, resáltala y escribe notas con el dedo. En el iPad, escribe con el Apple Pencil.\n• Patrón y cuentavueltas comparten una misma pantalla.\n\nPROYECTOS Y HERRAMIENTAS\n• Proyectos con piezas, varios cuentavueltas, repeticiones y objetivos.\n• Recordatorios como «disminuir cada 6 vueltas, 8 veces».\n• Número de agujas o de ganchillo, muestra, fotos y notas para cada proyecto.\n• Un cronómetro para cada sesión y un calendario de tus días de labor.\n• Reserva de lanas y herramientas, y una calculadora de muestra.\n• Los proyectos eliminados se quedan 30 días en Eliminados recientemente.\n\nTUS DATOS SON TUYOS\n• Sin cuenta, sin anuncios, sin rastreo. Oczko funciona sin conexión.\n• Exporta todo cuando quieras e importa una copia de seguridad en un teléfono nuevo.\n\nGRATIS Y OCZKO PRO\nOczko es gratis durante 5 días de labor cada mes. Un día de labor empieza con tu primera vuelta de ese día. Una labor en curso nunca se interrumpe, y tus proyectos y la exportación siempre siguen siendo tuyos.\nOczko Pro elimina el límite mensual. Está disponible como suscripción mensual o anual, o como compra única. Las suscripciones se renuevan hasta que las canceles en los ajustes de tu Apple ID.\n",
+        "keywords": [
+          "tejer",
+          "crochet",
+          "patrones",
+          "lana",
+          "agujas",
+          "cuentavueltas",
+          "amigurumi",
+          "PDF",
+          "calceta",
+          "ovillo",
+          "tricotar",
+          "proyectos"
+        ],
+        "promoText": "Cuenta vueltas con un toque, ten tu patrón junto al cuentavueltas y sigue donde lo dejaste. Gratis durante 5 días de labor al mes; Oczko Pro elimina el límite.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

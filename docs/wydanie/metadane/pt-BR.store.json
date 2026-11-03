@@ -1,0 +1,30 @@
+{
+  "_opis": "Metadane pt-BR — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "pt-BR": {
+        "title": "Oczko: contador de carreiras",
+        "subtitle": "Tricô e crochê, sem conta",
+        "description": "O Oczko é um contador de carreiras para tricô e crochê que guarda onde você parou. É grátis por 5 dias de artesanato por mês, seus projetos e a exportação são sempre seus; o Pro é uma assinatura ou uma compra única. Sem conta, seus dados ficam no seu aparelho e você pode exportá-los a qualquer momento. Projetos apagados aguardam 30 dias em Apagados recentemente. Se os toques se acumularem por engano, o Oczko oferece desfazê-los.\n\nCONTE SEM SE PERDER\n• Um toque soma uma carreira, com uma vibração que você sente. Toque em −1 para voltar uma.\n• A tela fica acesa enquanto você conta.\n• O Histórico mostra cada alteração com o horário, e Desfazer está a um toque.\n• Se os toques se acumularem rápido demais, o Oczko oferece desfazê-los. Um bloqueio opcional ignora toques acidentais.\n• O Oczko abre onde você parou, com sua anotação ao lado do contador.\n\nSUA RECEITA AO LADO DO CONTADOR\n• Adicione uma receita de um PDF, de um arquivo Word, de uma foto ou digitalização de página, ou de uma página da web. Salve também o link de um vídeo.\n• Envie receitas de outros apps para o Oczko com Compartilhar.\n• Marque a carreira atual na receita, destaque-a e escreva anotações com o dedo. No iPad, escreva com o Apple Pencil.\n• Receita e contador dividem a mesma tela.\n\nPROJETOS E FERRAMENTAS\n• Projetos com partes, vários contadores, repetições e metas.\n• Lembretes como “diminua a cada 6 carreiras, 8 vezes”.\n• Tamanho da agulha de tricô ou de crochê, amostra, fotos e anotações para cada projeto.\n• Um cronômetro para cada sessão e um calendário dos seus dias de artesanato.\n• Estoque de fios e ferramentas, e uma calculadora de amostra.\n• Projetos apagados ficam em Apagados recentemente por 30 dias.\n\nSEUS DADOS SÃO SEUS\n• Sem conta, sem anúncios, sem rastreamento. O Oczko funciona offline.\n• Exporte tudo a qualquer momento e importe um backup em um celular novo.\n\nGRÁTIS E OCZKO PRO\nO Oczko é grátis por 5 dias de artesanato todo mês. Um dia de artesanato começa com a sua primeira carreira do dia. Um trabalho em andamento nunca é interrompido, e seus projetos e a exportação continuam sempre seus.\nO Oczko Pro remove o limite mensal. Ele está disponível como assinatura mensal ou anual, ou como compra única. As assinaturas são renovadas até que você as cancele nos ajustes do seu ID Apple.\n",
+        "keywords": [
+          "receitas",
+          "tricotar",
+          "fios",
+          "agulhas",
+          "amigurumi",
+          "pontos",
+          "projetos",
+          "pdf",
+          "artesanato",
+          "novelo",
+          "amostra",
+          "linha",
+          "estoque"
+        ],
+        "promoText": "Conte carreiras com um toque, deixe sua receita ao lado do contador e continue de onde parou. Grátis por 5 dias de artesanato por mês; o Oczko Pro remove o limite.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

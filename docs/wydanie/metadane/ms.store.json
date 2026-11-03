@@ -1,0 +1,31 @@
+{
+  "_opis": "Metadane ms — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "ms": {
+        "title": "Gelungan: pembilang baris kait",
+        "subtitle": "Mengait & krusye, tanpa akaun",
+        "description": "Gelungan ialah pembilang baris untuk mengait dengan jarum kait dan mengait krusye yang mengingati tempat anda: percuma 5 hari berkraf sebulan, projek dan eksport sentiasa milik anda; Pro ialah langganan atau pembelian sekali. Tanpa akaun, data anda kekal pada peranti anda, anda boleh mengeksportnya pada bila-bila masa, dan projek yang dipadam menunggu 30 hari dalam Baru dipadam. Jika ketikan bertimbun secara tidak sengaja, Gelungan menawarkan untuk membuat asal.\n\nMENGIRA TANPA HILANG TEMPAT\n• Satu ketikan menambah satu baris, dengan getaran yang dapat anda rasai. Ketik −1 untuk menariknya semula.\n• Skrin kekal menyala semasa anda mengira.\n• Sejarah menunjukkan setiap perubahan beserta masanya, dan Buat asal hanya satu ketikan sahaja.\n• Jika ketikan bertimbun terlalu cepat, Gelungan menawarkan untuk membuat asal. Kunci pilihan mengabaikan ketikan tersasar.\n• Gelungan dibuka di tempat anda berhenti, dengan nota anda di sebelah pembilang baris.\n\nSIMPAN CORAK DI SEBELAH PEMBILANG BARIS\n• Tambah corak daripada PDF, fail Word, foto atau imbasan halaman, atau halaman web. Simpan juga pautan ke video.\n• Hantar corak ke Gelungan daripada app lain dengan Kongsi.\n• Tandakan baris semasa pada corak, serlahkannya dan tulis nota dengan jari anda. Pada iPad, tulis dengan Apple Pencil.\n• Corak dan pembilang baris berkongsi satu skrin.\n\nPROJEK DAN ALAT\n• Projek dengan bahagian, beberapa pembilang baris, ulangan dan sasaran.\n• Peringatan seperti “kurangkan mata kait setiap baris ke-6, sebanyak 8 kali”.\n• Saiz jarum kait atau jarum krusye, sampel, foto dan nota untuk setiap projek.\n• Jam randik untuk setiap sesi dan kalendar hari berkraf anda.\n• Simpanan benang dan alat, serta kalkulator sampel.\n• Projek yang dipadam kekal dalam Baru dipadam selama 30 hari.\n\nDATA ANDA KEKAL MILIK ANDA\n• Tiada akaun, tiada iklan, tiada penjejakan. Gelungan berfungsi di luar talian.\n• Eksport semua data pada bila-bila masa dan import sandaran pada telefon baharu.\n\nPERCUMA DAN GELUNGAN PRO\nGelungan percuma untuk 5 hari berkraf setiap bulan. Hari berkraf bermula dengan baris pertama anda pada hari itu. Kerja yang sedang berjalan tidak pernah terganggu, dan projek serta eksport anda sentiasa kekal milik anda.\nGelungan Pro membuang had bulanan. Ia tersedia sebagai langganan bulanan atau tahunan, atau sebagai pembelian sekali. Langganan diperbaharui sehingga anda membatalkannya dalam tetapan Apple ID anda.\n",
+        "keywords": [
+          "crochet",
+          "knitting",
+          "counter",
+          "tally",
+          "yarn",
+          "benang",
+          "corak",
+          "pattern",
+          "kroset",
+          "jarum",
+          "kiraan",
+          "amigurumi",
+          "pengira",
+          "knit"
+        ],
+        "promoText": "Kira baris dengan satu ketikan, simpan corak anda di sebelah pembilang dan sambung dari tempat anda berhenti. Percuma 5 hari berkraf sebulan; Gelungan Pro membuang had.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

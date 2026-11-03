@@ -375,3 +375,37 @@ describe('dane metadanych: stan przekładu, kompletność i zakazy (P-491)', () 
     expect(s).toMatch(/bg, et, lt, lv, sr[^\n]*język[^\n]*domyślny/i); expect(s).toMatch(/notatka-recenzja\.txt[^\n]*Notes|Notes[^\n]*notatka-recenzja\.txt/);
   });
 });
+
+describe('uwagi właściciela P-508: obietnica subskrypcji w pierwszym akapicie opisu i opis pl', () => {
+  // Pierwszy akapit każdej lokalizacji niesie „Pro jest subskrypcją albo zakupem jednorazowym” (jak nowe en), nie „subskrypcja niepotrzebna” (limit 5 dni → wytyczna 2.3, P-487).
+  const PRO: Record<string, string> = {
+    cs: 'Pro je předplatné nebo jednorázový nákup', da: 'Pro er et abonnement eller et engangskøb', 'de-DE': 'Masche Pro gibt es als Abo oder als Einmalkauf', el: 'το Pro διατίθεται ως συνδρομή ή ως εφάπαξ αγορά',
+    'es-ES': 'Pro es una suscripción o una compra única', 'es-MX': 'Pro es una suscripción o una compra única', fi: 'Pro on tilaus tai kertaosto', 'fr-FR': 'Pro est un abonnement ou un achat unique',
+    hr: 'Pro je pretplata ili jednokratna kupnja', hu: 'a Pro előfizetés vagy egyszeri vásárlás', id: 'Pro berupa langganan atau pembelian sekali bayar', it: 'Pro è un abbonamento o un acquisto unico',
+    ja: 'Proはサブスクリプションまたは買い切りです', ko: 'Pro는 구독 또는 일회성 구매입니다', ms: 'Pro ialah langganan atau pembelian sekali', 'nl-NL': 'Pro is een abonnement of een eenmalige aankoop',
+    no: 'Pro er et abonnement eller et engangskjøp', pl: 'Pro kupisz jako subskrypcję albo jednorazowo', 'pt-BR': 'o Pro é uma assinatura ou uma compra única', 'pt-PT': 'o Pro é uma subscrição ou uma compra única',
+    ro: 'Pro este un abonament sau o achiziție unică', ru: 'Pro — это подписка или разовая покупка', sk: 'Pro je predplatné alebo jednorazový nákup', sl: 'Pro je naročnina ali enkratni nakup',
+    sv: 'Pro är en prenumeration eller ett engångsköp', tr: 'Pro bir abonelik ya da tek seferlik satın almadır', uk: 'Pro — це підписка або одноразова покупка', vi: 'Pro là gói đăng ký hoặc mua một lần', 'zh-Hant': 'Pro 提供訂閱或一次性購買',
+  };
+  const opis = (kod: string) => String(json(`${MET}/${kod}.store.json`).apple.info[kod].description);
+  test('tabela obejmuje wszystkie 29 lokalizacji; każda ma w pierwszym akapicie zdanie o Pro jako subskrypcji albo zakupie jednorazowym', () => {
+    expect(Object.keys(PRO).sort()).toEqual([...WYMAGANE].sort());
+    for (const kod of WYMAGANE) expect(opis(kod).split('\n\n')[0]).toContain(PRO[kod]);
+  });
+  test('en (4 lokalizacje): bez „no subscription required”, z „Pro is a subscription or a one-time purchase”', () => {
+    const info = json(`${MET}/en.store.json`).apple.info as Record<string, { description: string }>;
+    for (const k of ['en-US', 'en-GB', 'en-AU', 'en-CA']) { expect(info[k].description).not.toMatch(/no subscription required/i); expect(info[k].description.split('\n\n')[0]).toContain('Pro is a subscription or a one-time purchase'); }
+  });
+  test('pl: bez „subskrypcja nie jest wymagana”, „w folderze „Ostatnio usunięte”” we wstępie, bez dwóch powtórzonych punktów, blokada jako osobny punkt, słowa = slowa-aso.json', () => {
+    const d = opis('pl'), pl = json(`${MET}/pl.store.json`).apple.info.pl;
+    expect(d).not.toMatch(/subskrypcja nie jest wymagana/i);
+    expect(d.split('\n\n')[0]).toContain('w folderze „Ostatnio usunięte”');
+    expect(d).not.toContain('Jeśli stuknięcia posypią się');
+    expect(d).not.toContain('Usunięte projekty zostają w');
+    expect(d).toContain('• Opcjonalna blokada ignoruje przypadkowe dotknięcia.');
+    expect(pl.keywords).toEqual(stale.pl.keywords); expect(pl.subtitle).toBe(stale.pl.subtitle);
+  });
+  test('lokalizacje ze stałymi polami (ja, no, de-DE, fr-FR) mają podtytuł i słowa z slowa-aso.json', () => {
+    for (const kod of STALE_KODY) { const e = json(`${MET}/${kod}.store.json`).apple.info[kod]; expect(e.subtitle).toBe(stale[kod].subtitle); expect(e.keywords).toEqual(stale[kod].keywords); }
+  });
+});

@@ -1,0 +1,28 @@
+{
+  "_opis": "Metadane sv — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "sv": {
+        "title": "Maska: varvräknare",
+        "subtitle": "Sticka & virka – utan konto",
+        "description": "Maska är en varvräknare för stickning och virkning som håller koll på var du är. Den är gratis i 5 hantverksdagar per månad, dina projekt och din export är alltid dina; Pro är en prenumeration eller ett engångsköp. Utan konto stannar dina data på din enhet, du kan exportera dem när som helst och raderade projekt väntar i 30 dagar i Nyligen raderade. Om tryck råkar hopa sig erbjuder Maska att ångra dem.\n\nRÄKNA UTAN ATT TAPPA BORT DIG\n• Ett tryck lägger till ett varv, med en vibration du känner. Tryck på −1 för att ta bort ett.\n• Skärmen förblir tänd medan du räknar.\n• Historik visar varje ändring med tidpunkt, och Ångra är bara ett tryck bort.\n• Om tryck hopar sig för snabbt erbjuder Maska att ångra dem. Ett valfritt lås ignorerar oavsiktliga tryck.\n• Maska öppnas där du slutade, med din anteckning bredvid varvräknaren.\n\nHA MÖNSTRET BREDVID VARVRÄKNAREN\n• Lägg till ett mönster från en PDF, en Word-fil, ett foto eller en skanning av en sida, eller från en webbsida. Spara även en länk till en video.\n• Skicka mönster till Maska från andra appar med Dela.\n• Markera varvet du är på i mönstret, färgmarkera det och skriv anteckningar med fingret. På iPad skriver du med Apple Pencil.\n• Mönster och varvräknare delar samma skärm.\n\nPROJEKT OCH VERKTYG\n• Projekt med delar, flera varvräknare, rapporter och mål.\n• Påminnelser som ”minska vart 6:e varv, 8 gånger”.\n• Storlek på stickor eller virknål, provlapp, foton och anteckningar för varje projekt.\n• Tidtagarur för varje arbetspass och en kalender över dina hantverksdagar.\n• Garnlager och verktygslager, plus en kalkylator för provlappar.\n• Raderade projekt ligger kvar i Nyligen raderade i 30 dagar.\n\nDINA DATA FÖRBLIR DINA\n• Inget konto, ingen reklam, ingen spårning. Maska fungerar offline.\n• Exportera allt när som helst och importera en säkerhetskopia på en ny telefon.\n\nGRATIS OCH MASKA PRO\nMaska är gratis i 5 hantverksdagar varje månad. En hantverksdag börjar med ditt första varv den dagen. Pågående arbete avbryts aldrig, och dina projekt och din export förblir alltid dina.\nMaska Pro tar bort månadsgränsen. Det finns som månads- eller årsprenumeration, eller som engångsköp. Prenumerationer förnyas tills du avslutar dem i inställningarna för ditt Apple-ID.\n",
+        "keywords": [
+          "stickning",
+          "virkning",
+          "garn",
+          "stickmönster",
+          "mönster",
+          "virkmönster",
+          "stickor",
+          "virknål",
+          "räknare",
+          "varv",
+          "provlapp"
+        ],
+        "promoText": "Räkna varv med ett tryck, ha ditt eget mönster bredvid varvräknaren och fortsätt där du slutade. Gratis i 5 hantverksdagar per månad; Maska Pro tar bort gränsen.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}

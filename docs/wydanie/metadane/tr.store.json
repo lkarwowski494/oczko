@@ -1,0 +1,33 @@
+{
+  "_opis": "Metadane tr — przekład API z en.store.json (P-501, rola 10): opis, tekst promocyjny, podtytuł i słowa kluczowe (kandydaci modelu z danych wyszukiwarki, przycięci do 100 B), po krytyku w świeżym kontekście. Nazwa: nazwy.store.json (P-174). Format EAS Metadata; niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "tr": {
+        "title": "Oczko: sıra sayacı",
+        "subtitle": "Şiş ve tığ örgüsü, hesap yok",
+        "description": "Oczko, şiş ve tığ örgüsü için kaldığınız yeri unutmayan bir sıra sayacıdır. Ayda 5 el işi günü ücretsizdir. Projeleriniz ve dışa aktarma her zaman sizindir; Pro bir abonelik ya da tek seferlik satın almadır. Hesap gerekmediği için verileriniz cihazınızda kalır ve istediğiniz zaman dışa aktarabilirsiniz. Silinen projeler 30 gün boyunca Son silinenler bölümünde bekler. Yanlışlıkla dokunuşlar birikirse Oczko bunları geri almayı önerir.\n\nYERİNİZİ KAYBETMEDEN SAYIN\n• Tek dokunuş bir sıra ekler ve bunu titreşimle hissedersiniz. Bir sırayı geri almak için −1'e dokunun.\n• Siz sayarken ekran açık kalır.\n• Geçmiş, her değişikliği saatiyle gösterir. Geri al her zaman tek dokunuş uzağınızdadır.\n• Dokunuşlar çok hızlı birikirse Oczko bunları geri almayı önerir. İsteğe bağlı kilit, istem dışı dokunuşları yok sayar.\n• Oczko kaldığınız yerde açılır ve notunuz sayacın yanında durur.\n\nTARİFİNİZİ SAYACIN YANINDA TUTUN\n• PDF'ten, Word dosyasından, bir sayfanın fotoğrafından ya da taramasından veya bir web sayfasından tarif ekleyin. Bir video bağlantısını da kaydedebilirsiniz.\n• Diğer uygulamalardaki Paylaş seçeneğiyle tarifleri Oczko'ya gönderin.\n• Tarifte bulunduğunuz sırayı işaretleyin, vurgulayın ve parmağınızla not yazın. iPad'de Apple Pencil ile yazın.\n• Tarif ve sayaç aynı ekranda yer alır.\n\nPROJELER VE ARAÇLAR\n• Parçaları, birden fazla sayacı, tekrarları ve hedefleri olan projeler.\n• \"Her 6. sırada eksiltme, 8 kez\" gibi hatırlatıcılar.\n• Her proje için şiş veya tığ numarası, numune, fotoğraflar ve notlar.\n• Her oturum için kronometre ve el işi günlerinizi gösteren takvim.\n• İplik ve araç stoku ile numune hesaplayıcı.\n• Silinen projeler 30 gün boyunca Son silinenler bölümünde kalır.\n\nVERİLERİNİZ SİZDE KALIR\n• Hesap yok, reklam yok, izleme yok. Oczko internet bağlantısı olmadan çalışır.\n• Her şeyi istediğiniz zaman dışa aktarın ve yeni telefonunuzda yedeği içe aktarın.\n\nÜCRETSİZ SÜRÜM VE OCZKO PRO\nOczko her ay 5 el işi günü ücretsizdir. Bir el işi günü, o gün ördüğünüz ilk sırayla başlar. Devam eden çalışmanız asla yarıda kesilmez; projeleriniz ve dışa aktarma her zaman sizin kalır.\nOczko Pro aylık sınırı kaldırır. Aylık veya yıllık abonelik ya da tek seferlik satın alma olarak sunulur. Abonelikler, Apple ID ayarlarınızdan iptal edene kadar yenilenir.\n",
+        "keywords": [
+          "kroşe",
+          "ilmek",
+          "tarif",
+          "desen",
+          "iplik",
+          "yün",
+          "amigurumi",
+          "proje",
+          "numune",
+          "pdf",
+          "elişi",
+          "dantel",
+          "yumak",
+          "hırka",
+          "kazak",
+          "bere"
+        ],
+        "promoText": "Tek dokunuşla sıra sayın, kendi tarifinizi sayacın yanında tutun ve kaldığınız yerden devam edin. Ayda 5 el işi günü ücretsiz; Oczko Pro sınırı kaldırır.",
+        "supportUrl": "https://apps4brew.com/oczko/support.html",
+        "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html"
+      }
+    }
+  }
+}
