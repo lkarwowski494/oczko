@@ -277,12 +277,16 @@ jobs:
       - name: Maestro
         if: steps.plan.outputs.any == 'true'
         env:
-          MAESTRO_VERSION: ${{ vars.MAESTRO_VERSION }} # przypięcie zmienną repozytorium (jak Trening); pusta = najnowsza, wersja w logu
+          # Jedna zmienna przypięcia (DS-07, zasada wspólna 21; 07-jakosc-005): zmiana wersji = commit. 2.12.1 = wersja z przebiegów #139/#140.
+          # Pusta = błąd (nie „najnowsza”); zainstalowana ≠ przypięta = błąd. Kontrola: sprawdz-workflowy.mjs (MAESTRO-WERSJA), tests/jakosc/ci-maestro-wersja.test.ts.
+          MAESTRO_VERSION: '2.12.1'
         run: |
-          [ -n "$MAESTRO_VERSION" ] || unset MAESTRO_VERSION
+          [ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta — wersja Maestro musi być przypięta (DS-07, zasada wspólna 21)"; exit 1; }
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
-          "$HOME/.maestro/bin/maestro" --version | tee -a "$GITHUB_STEP_SUMMARY"
+          v=$("$HOME/.maestro/bin/maestro" --version)
+          echo "Maestro: $v (przypięta $MAESTRO_VERSION)" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$v" | grep -qF "$MAESTRO_VERSION" || { echo "::error::zainstalowano Maestro $v, przypięta jest $MAESTRO_VERSION"; exit 1; }
       - name: Scenariusze
         if: steps.plan.outputs.main == 'true'
         timeout-minutes: ${{ fromJSON(steps.plan.outputs.timeout_min) }}
