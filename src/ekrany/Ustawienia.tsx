@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-nat
 import { Przycisk } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory } from './motyw';
 import type { System, Tlumacz } from './wspolne';
-import type { AktywnePro } from './Oferty';
+import { trwaSubskrypcja, type AktywnePro } from './Oferty';
 import type { DniNaLiscie } from './ListaProjektow';
 import { NAZWY_JEZYKOW, ZRODLO, type PreferencjaJezyka } from '../i18n/jezyki';
 import { Wstecz } from './Pasek';
@@ -52,7 +52,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
           {/* F-63 (07-jakosc-031): stan Pro jako wartość wiersza; VoiceOver czyta „Oczko Pro, On” */}
           {s.pro && <Text style={{ ...typografia.tresc, color: k.olowek }} testID="ustawienia-pro">{t('ustawienia.pro_wlaczone')}</Text>}
         </View>
-        {s.pro?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
+        {trwaSubskrypcja(s.pro) && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} rodzaj="tekstowy" />}
         {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.limit, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
       </View>
       {preferencje && <Text style={{ ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.m }} accessibilityRole="header">{t('ustawienia.grupa_liczenie')}</Text>}

@@ -12,7 +12,10 @@ import type { Tlumacz } from './wspolne';
 export type ProduktyOfert = { rodzaj: 'gotowe'; produkty: Produkt[] } | { rodzaj: 'ladowanie' } | { rodzaj: 'brak-sieci' };
 /** Linia nad przyciskiem zakupu (KP-07, design-spec 002): neutralna „i” (`role=status`) albo błąd „!” (`role=alert`), zawsze z tekstem. */
 export type KomunikatOfert = 'czeka' | 'blad' | 'przywroc_nic' | 'przywroc_blad' | 'pro_wlaczone' | null;
-export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni' } | null;
+/** `subskrypcja` przy dożywotnim (M1-091, KP-14): ważna subskrypcja trwa obok zakupu dożywotniego (odnawia się, dopóki osoba jej nie anuluje). */
+export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni'; subskrypcja?: string } | null;
+/** „Manage subscription” (KP-14, design-spec „aktywna subskrypcja”): póki trwa subskrypcja — także obok dożywotniego (M1-091, KP-03). */
+export const trwaSubskrypcja = (a: AktywnePro): boolean => a?.rodzaj === 'subskrypcja' || (a?.rodzaj === 'dozywotni' && a.subskrypcja !== undefined);
 export type PropsOfert = {
   stan: { produkty: ProduktyOfert; aktywne: AktywnePro; familySharing: boolean; komunikat?: KomunikatOfert; oczekujacy?: boolean }; // oczekujacy: zakup czeka na zatwierdzenie — „kup” nieaktywny, nawet gdy linia pokazuje inny komunikat
   t: Tlumacz;
@@ -71,7 +74,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
         {plan && (s.oczekujacy || s.komunikat === 'czeka'
           ? <Przycisk tekst={t('oferty.czeka_przycisk')} onPress={() => undefined} rodzaj="glowny" wylaczony testID="oferty-kup" />
           : <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />)}
-        {s.aktywne?.rodzaj === 'subskrypcja' && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
+        {trwaSubskrypcja(s.aktywne) && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
         <Przycisk tekst={t('oferty.przywroc')} onPress={naPrzywroc} rodzaj="tekstowy" testID="oferty-przywroc" />
         <Przycisk tekst={t('wspolne.nie_teraz')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-nie-teraz" />
       </>

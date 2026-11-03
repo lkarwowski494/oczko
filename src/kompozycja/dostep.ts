@@ -22,8 +22,10 @@ export function dostepPro(sklep: Sklep, magazyn: MagazynPamieci, terazMs: () => 
     const d = decyzja(transakcje ? { zrodlo: 'sklep', uprawnienia: transakcje } : { zrodlo: 'blad' }, pamiec, terazMs(), PRODUKTY_PRO);
     if (transakcje) await magazyn.zapisz(JSON.stringify(d.pamiec ?? { produkty: [], wygasa: null })).catch(() => undefined);
     const produkty = d.pamiec?.produkty ?? [];
+    const subskrypcja = produkty.find((p) => p !== PRODUKT_DOZYWOTNI);
     const aktywne: AktywnePro = !d.dostep ? null
-      : produkty.includes(PRODUKT_DOZYWOTNI) ? { rodzaj: 'dozywotni' } : { rodzaj: 'subskrypcja', produkt: produkty[0] ?? '' };
+      : !produkty.includes(PRODUKT_DOZYWOTNI) ? { rodzaj: 'subskrypcja', produkt: produkty[0] ?? '' }
+      : subskrypcja === undefined ? { rodzaj: 'dozywotni' } : { rodzaj: 'dozywotni', subskrypcja }; // M1-091 (KP-14): subskrypcja trwa obok dożywotniego
     stan = { pro: d.dostep, poziom: d.dostep ? 'pro' : transakcje ? 'darmowa' : 'niepewny', aktywne, wygasa: d.pamiec?.wygasa ?? null };
     sluchacze.forEach((f) => f(stan));
     return stan;
