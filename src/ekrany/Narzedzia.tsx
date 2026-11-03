@@ -1,7 +1,7 @@
 // Warstwa „Tools” (P-046, P-191 P7a): zapas (F-37, BR-ZAP-001), druty, kalkulator „Swatch” (F-38; BR-KAL-001, BR-KAL-003, R-131).
 // Makiety 04 fix-6 `narzedzia`, `probka`, `probka-cale`, `probka-blad`; testID z e2e/README.md. Pielęgnacja tylko tekstem albo zdjęciem
 // etykiety, bez symboli (OG-13, OP-11). Wyniki kalkulatora liczy kompozycja (`licz`), ekran tylko pokazuje.
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Arkusz, Komunikat, Pole, Tresc, Wybor } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -78,8 +78,12 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
   const [szerokosc, ustawSzerokosc] = useState('');
   const s = licz({ oczka, na, szerokosc, jednostka });
   const zmienProbke = (o: string, n: WejscieProbki['na']) => { ustawOczka(o); ustawNa(n); naZmianeProbki?.({ oczka: o, na: n }); };
+  // M1-133: klawiatura dziesiętna nie ma Return — treść odsunięta od klawiatury, chowanie gestem w dół, a przy wpisywaniu szerokości
+  // pole przewija się na górę, więc wynik pod nim zostaje nad klawiaturą (04-studio-projektowe-523, opcja b, bez nowego elementu).
+  const przewijanie = useRef<ScrollView>(null);
+  const yPolaSzerokosci = useRef(0);
   return (
-    <ScrollView style={st.ekran} contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled">
+    <ScrollView ref={przewijanie} style={st.ekran} contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets keyboardDismissMode="interactive">
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('probka.tytul')}</Text>
       {zProjektu ? <Text style={st.opis}>{zProjektu}</Text> : null}
@@ -88,7 +92,10 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
       {s.bladOczka ? <Komunikat tekst={s.bladOczka} znak /> : null}
       {s.przeliczona ? <Text style={st.opis}>{s.przeliczona}</Text> : null}
       {s.uwaga4in ? <Text style={st.opis}>{s.uwaga4in}</Text> : null}
-      <Pole etykieta={t(jednostka === 'cm' ? 'probka.szerokosc_cm' : 'probka.szerokosc_in')} wartosc={szerokosc} naZmiane={ustawSzerokosc} dziesietne testID="probka-szerokosc" />
+      <View onLayout={(e) => { yPolaSzerokosci.current = e.nativeEvent.layout.y; }} testID="probka-szerokosc-pole">
+        <Pole etykieta={t(jednostka === 'cm' ? 'probka.szerokosc_cm' : 'probka.szerokosc_in')} wartosc={szerokosc} naZmiane={ustawSzerokosc} dziesietne testID="probka-szerokosc"
+          naFokus={() => przewijanie.current?.scrollTo({ y: yPolaSzerokosci.current, animated: true })} />
+      </View>
       {s.bladSzerokosci ? <Komunikat tekst={s.bladSzerokosci} znak /> : null}
       {s.wynik ? (
         <View style={st.blok}>

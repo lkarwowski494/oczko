@@ -120,7 +120,7 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
   );
 }
 
-export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string): void; liczbowe?: boolean; dziesietne?: boolean; wielowierszowe?: boolean; testID?: string; naKoniec?(): void }): React.ReactElement {
+export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string): void; liczbowe?: boolean; dziesietne?: boolean; wielowierszowe?: boolean; testID?: string; naKoniec?(): void; naFokus?(): void }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   return (
@@ -128,7 +128,7 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
       <Text style={st.podpis} importantForAccessibility="no" accessibilityElementsHidden>{p.etykieta}</Text>
       <TextInput accessibilityLabel={p.etykieta} value={p.wartosc} onChangeText={p.naZmiane} testID={p.testID} style={st.wejscie}
         keyboardType={p.dziesietne ? 'decimal-pad' : p.liczbowe ? 'number-pad' : 'default'} returnKeyType={p.liczbowe || p.dziesietne || p.wielowierszowe ? undefined : 'done'}
-        onSubmitEditing={p.naKoniec} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
+        onSubmitEditing={p.naKoniec} onFocus={p.naFokus} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
         autoCorrect={false} placeholderTextColor={k.olowek} />
     </View>
   );

@@ -1,5 +1,6 @@
 // Ekrany „Tools” i „Swatch” (P-191 P7a; BR-KAL-001, BR-KAL-003; design-spec „Narzędzia, zapas, zdjęcia”; makieta fix6 `narzedzia`, `probka`).
 import React from 'react';
+import { ScrollView } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Narzedzia, Probka } from '../../src/ekrany/Narzedzia';
 import { stanProbki } from '../../src/kompozycja/probka';
@@ -55,5 +56,16 @@ describe('Swatch', () => {
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '110 stitches');
     fireEvent.press(screen.getByRole('radio', { name: 'per 4 in' }));
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '108.268 stitches');
+  });
+  // M1-133 (04-studio-projektowe-523, opcja b — bez nowego elementu): klawiatura dziesiętna nie ma Return, a wynik chował się pod nią.
+  // Ekran odsuwa treść nad klawiaturę, przy wpisywaniu szerokości przewija pole na górę (wynik tuż pod nim), a klawiaturę chowa gest w dół.
+  test('M1-133: przy wpisywaniu szerokości wynik nad klawiaturą — wcięcie od klawiatury, przewinięcie do pola szerokości, chowanie gestem', () => {
+    ekran('in');
+    const przewijanie = screen.UNSAFE_getByType(ScrollView);
+    expect(przewijanie.props.automaticallyAdjustKeyboardInsets).toBe(true);
+    expect(przewijanie.props.keyboardDismissMode).toBe('interactive');
+    fireEvent(screen.getByTestId('probka-szerokosc-pole'), 'layout', { nativeEvent: { layout: { x: 16, y: 212, width: 370, height: 70 } } });
+    fireEvent(screen.getByTestId('probka-szerokosc'), 'focus');
+    expect(przewijanie.instance.scrollTo).toHaveBeenCalledWith({ y: 212, animated: true });
   });
 });
