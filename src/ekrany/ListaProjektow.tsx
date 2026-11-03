@@ -3,7 +3,7 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
-import { PrzyciskSymbolu } from './Pasek';
+import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import type { Tlumacz } from './wspolne';
 
 export type WierszProjektu = { id: string; nazwa: string; opis: string; termin?: string | null; ostatniaPraca?: string | null; etykieta?: string }; // teksty sformatowane w kompozycji; etykieta = zdanie dla VoiceOver (ukończone: nazwa, data, czas)
@@ -21,9 +21,11 @@ export type PropsListyProjektow = {
   naHistoria?(): void;
   naNarzedzia?(): void;
   naKosz?(): void;
+  /** „Back” do licznika (M1-094, 04-studio-projektowe-501, DEC-26 a): lista jest wypychana nad licznikiem; bez przycisku pusta lista była zaułkiem. */
+  naWstecz?(): void;
 };
 
-export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstawienia, naKosz, naHistoria, naNarzedzia }: PropsListyProjektow): React.ReactElement {
+export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstawienia, naKosz, naHistoria, naNarzedzia, naWstecz }: PropsListyProjektow): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const pusto = s.wToku.length === 0 && s.ukonczone.length === 0;
@@ -46,11 +48,14 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="projekty-lista">
       <View style={st.pasek}>
+        {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
+        <View style={st.paskaPrawa}>
         {naUstawienia && <PrzyciskSymbolu symbol="gearshape" etykieta={t('ustawienia.tytul')} onPress={naUstawienia} testID="nav-ustawienia" />}
         {naHistoria && <PrzyciskSymbolu symbol="calendar" etykieta={t('dni.tytul')} onPress={naHistoria} testID="nav-historia" />}
         {/* DEC-05 a: jedyny symbol z widocznym podpisem — kształt linijki nie mówi sam, że tu są kalkulatory, zapas i druty (przejście C1, D1) */}
         {naNarzedzia && <PrzyciskSymbolu symbol="ruler" etykieta={t('narzedzia.tytul')} podpis={t('narzedzia.tytul')} onPress={naNarzedzia} testID="nav-narzedzia" />}
         <PrzyciskSymbolu symbol="plus" etykieta={t('projekty.nowy')} onPress={naNowy} testID="projekty-nowy" />
+        </View>
       </View>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('projekty.tytul')}</Text>
       <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.olowek} value={s.zapytanie}
@@ -76,7 +81,8 @@ function style(k: Kolory) {
   return StyleSheet.create({
     ekran: { flex: 1, backgroundColor: k.papier },
     tresc: { padding: odstep.l, gap: odstep.l },
-    pasek: { flexDirection: 'row', justifyContent: 'flex-end' },
+    pasek: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    paskaPrawa: { flexDirection: 'row', flexShrink: 0, marginLeft: 'auto' }, // symbole zostają w pasku przy AX5, „Back” zawija się jak na liczniku
     tytul: { ...typografia.tytul, color: k.grafit },
     szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },

@@ -131,11 +131,15 @@ describe('M1-006: menu •••', () => {
     expect(mockRouter.replace).not.toHaveBeenCalled();
     expect(mockRouter.back).not.toHaveBeenCalled();
   });
-  test('M1-006: „Reset” na zablokowanym liczniku (powód `zablokowany`, nie zapis) — bez alertu o braku miejsca, menu wraca jak dotąd', async () => {
+  // M1-094 (04-studio-projektowe-506, DEC-26 a): wcześniej ten test utrwalał defekt — potwierdzenie resetu na zablokowanym liczniku zamykało menu
+  // bez słowa (`router.back()`), a liczba zostawała. Teraz pozycja jest wyłączona z podpowiedzią; nadal bez alertu o braku miejsca i bez haptyki błędu.
+  test('M1-006 / M1-094: „Reset” na zablokowanym liczniku — pozycja wyłączona z podpowiedzią, bez pytania, bez alertu o braku miejsca, menu zostaje', async () => {
     await start(EkranMenu, {}, [['UPDATE licznik SET zablokowany = 1 WHERE id = ?', ['l1']]]);
-    fireEvent.press(screen.getByText('Reset to 0…'));
-    await act(async () => { fireEvent.press(screen.getByText('Reset to 0')); await new Promise((r) => setTimeout(r, 50)); });
-    await waitFor(() => expect(mockRouter.back).toHaveBeenCalled());
+    expect(screen.getByTestId('menu-zeruj').props.accessibilityState).toEqual(expect.objectContaining({ disabled: true }));
+    expect(screen.getByText('Unlock the counter to reset it.')).toBeTruthy();
+    await act(async () => { fireEvent.press(screen.getByText('Reset to 0…')); await new Promise((r) => setTimeout(r, 50)); });
+    expect(screen.queryByText('Reset to 0')).toBeNull();
+    expect(mockRouter.back).not.toHaveBeenCalled();
     expect(alert).not.toHaveBeenCalled();
     expect(haptyka.zagraj).not.toHaveBeenCalled();
   });

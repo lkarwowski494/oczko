@@ -191,7 +191,7 @@ export default function EkranWzoru(): React.ReactElement {
     startStrona: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.strona : 0, startPowiekszenie: poczatek.current?.wzorId === widok.wzorId ? poczatek.current.powiekszenie : 0,
   } : null), [widok?.wzorId, widok?.plikPdf, obrotyKlucz]); // eslint-disable-line react-hooks/exhaustive-deps -- rysunki tylko przy zmianie wzoru
   if (link) return <Bezpieczny><ArkuszLinku t={t} poczatek={linkAdres} naAnuluj={() => { ustawLink(false); ustawLinkAdres(''); }} naWklej={() => kontener.wzor.platforma.wklej()} naZapisz={(adres) => { ustawLink(false); ustawLinkAdres(''); void dodaj({ rodzaj: 'adres', adres }); }} /></Bezpieczny>;
-  if (!lw || !wzory) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
+  if (!lw || !wzory) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="wzor" naPonow={() => { ustawBlad(false); pierwszyOdczyt(); }} /></Bezpieczny>;
   if (arkuszNazwy && widok) return (
     <Bezpieczny><ArkuszNazwyWzoru t={t} nazwa={widok.nazwa} naAnuluj={() => ustawArkuszNazwy(false)}
       naZapisz={(n) => void zmienNazweWzoru(zw, { wzorId: widok.wzorId, nazwa: n }).then(async (r) => { if (zapisano(aplikacja, r)) { ustawArkuszNazwy(false); await wczytaj(widok.wzorId); } })} /></Bezpieczny> // M1-006: błąd → alert, arkusz zostaje

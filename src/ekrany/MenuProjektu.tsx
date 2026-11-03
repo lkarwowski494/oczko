@@ -45,8 +45,11 @@ export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
           {s.zablokowany
             ? <Przycisk tekst={t('menu.odblokuj')} onPress={p.naOdblokuj} testID="menu-odblokuj" />
             : <Przycisk tekst={t('menu.zablokuj')} onPress={p.naZablokuj} testID="menu-zablokuj" />}
-          <Przycisk tekst={t('menu.zeruj')} onPress={() => ustawPytanie(true)} testID="menu-zeruj" />
-          {pytanie && (
+          {/* M1-094 (04-studio-projektowe-506, DEC-26 a, opcja a): przy blokadzie wyłączony z podpowiedzią — nie pytamy o coś, czego nie da się zrobić */}
+          <Przycisk tekst={t('menu.zeruj')} onPress={() => ustawPytanie(true)} testID="menu-zeruj" wylaczony={s.zablokowany}
+            podpowiedz={s.zablokowany ? t('menu.zeruj_zablokowany') : undefined} />
+          {s.zablokowany && <Tresc podpis>{t('menu.zeruj_zablokowany')}</Tresc>}
+          {pytanie && !s.zablokowany && (
             <View style={{ gap: odstep.s }} accessibilityRole="alert">
               <Tresc>{t('menu.zeruj_pytanie', { projekt: s.projekt })}</Tresc>
               <Przycisk tekst={t('menu.zeruj_potwierdz')} onPress={() => { ustawPytanie(false); p.naZeruj(); }} rodzaj="glowny" />

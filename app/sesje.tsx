@@ -22,7 +22,7 @@ export default function EkranSesji(): React.ReactElement {
     ustawBlad(false);
   }, [kontener, projekt]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!stan) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="sesje" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
+  if (!stan) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="sesje" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   return (
     <Bezpieczny>
       <Sesje stan={stan} t={kontener.j.t} naWstecz={() => router.back()}

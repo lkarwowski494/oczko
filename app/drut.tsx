@@ -31,7 +31,7 @@ export default function EkranDrutu(): React.ReactElement {
   useEffect(() => { void wczytaj(); }, [wczytaj]);
   // M1-020: „Cancel” i przesunięcie arkusza w dół pytają „Discard changes?”, gdy formularz zgłosił zmianę; po zapisie i usunięciu wyjście bez pytania.
   const odrzuc = useOdrzucZmiany(j.t, id ? 'zmiany' : 'nowy', () => router.back());
-  if (poczatek === undefined) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (poczatek === undefined) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="drut" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   return (
     <FormularzDrutu t={j.t} poczatek={poczatek} podglad={(x, r) => podgladRozmiaru(x, r, j)} parsuj={(x) => bazowa(x, 'm', j.jezyk())}
       formatuj={(n) => formatujLiczbe(n, j.jezyk(), { maks: MM_NARZEDZIA_MIEJSCA })} naAnuluj={odrzuc.anuluj} naZmiane={odrzuc.naZmiane}

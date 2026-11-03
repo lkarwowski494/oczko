@@ -77,7 +77,7 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
     expect(push).toEqual(expect.arrayContaining(['narzedzia', 'zapas', 'druty', 'probka', 'ustawienia']));
   });
   /** Znane trasy push bez przycisku powrotu — zgłoszone w M1-016, poza jego zakresem (do decyzji 04); lista ma się kurczyć, nie rosnąć. */
-  const ZNANE_BEZ_PRZYCISKU = ['projekty']; // lista projektów: `router.back()` tylko po otwarciu projektu, bez „‹ Back” (makieta: korzeń, licznik ma „‹ Projects”)
+  const ZNANE_BEZ_PRZYCISKU: string[] = []; // M1-094 (04-studio-projektowe-501, DEC-26 a): lista projektów dostała „Back” — lista pusta, nowe trasy bez przycisku nie przejdą
   test('każda trasa push przekazuje ekranowi naWstecz z router.back() (przycisk „‹ Back”, nie tylko gest od krawędzi)', () => {
     const bez = push.filter((n) => !/naWstecz=\{[^}]*router\.back\(\)/.test(fs.readFileSync(path.join(APP, `${n}.tsx`), 'utf8')));
     expect(bez).toEqual(ZNANE_BEZ_PRZYCISKU);

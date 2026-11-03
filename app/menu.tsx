@@ -26,7 +26,7 @@ export default function EkranMenu(): React.ReactElement {
     ustawMaWzor(l.ok && l.wartosc.length > 0);
   }, [licznik, kontener]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
-  if (!w) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="menu" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!w) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="menu" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   const z = kontener.z;
   // M1-006: błąd zapisu → alert, menu zostaje otwarte (bez powrotu jak po sukcesie; zamyka je użytkowniczka). Inny powód (np. licznik zablokowany) — jak dotąd.
   const poZapisie = async (r: Wynik<unknown>) => {

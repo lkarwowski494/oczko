@@ -203,7 +203,8 @@
     "zeruj_potwierdz": "Tekst roboczy 08 (Z07-05: stan bez makiety 04) — do zatwierdzenia przez 04.",
     "znaczenie": "Pozycja menu ••• licznika: zmiana znaczenia dużej liczby (BR-LIC-012, F-09). Ok. 25 znaków.",
     "wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): wiersz menu ••• licznika: otwiera wzór projektu (gdy jest).",
-    "dodaj_wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): wiersz menu ••• licznika, gdy projekt nie ma wzoru: otwiera wybór źródła."
+    "dodaj_wzor": "Wzór (F-24…F-28, F-55, F-56; fix NZ-P217-04, P-220): wiersz menu ••• licznika, gdy projekt nie ma wzoru: otwiera wybór źródła.",
+    "zeruj_zablokowany": "Podpowiedź pod wyłączoną pozycją `menu.zeruj` („Reset to 0…”) w menu ••• licznika, gdy licznik jest zablokowany (M1-audytor-generalny-094, 04-studio-projektowe-506); także podpowiedź VoiceOver tej pozycji. Co zrobić: odblokować licznik (pozycja `menu.odblokuj` jest w tym samym menu, wyżej). Zdanie z kropką."
   },
   "formularz": {
     "wpisz_tytul": "Tekst z prototyp.html roli 04.",
@@ -429,7 +430,9 @@
     "zapisz_kopie": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. ADR-0019 „Zapisz kopię danych”.",
     "sprobuj": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. ADR-0019 „Spróbuj normalnie”.",
     "zglos": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",
-    "zapisano": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nagłówek nad licznościami kopii (ADR-0019)."
+    "zapisano": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nagłówek nad licznościami kopii (ADR-0019).",
+    "tytul_brak_miejsca": "Nagłówek ekranu awaryjnego, gdy Oczko nie uruchomiło się z powodu braku wolnego miejsca w pamięci urządzenia (M1-audytor-generalny-094, 04-studio-projektowe-504, DEC-26 a). „device” = telefon albo iPad (P-328), nie iCloud. Stwierdzenie, bez przeprosin; krótko, bez kropki, jak inne nagłówki `awaryjny.tytul_*`.",
+    "opis_brak_miejsca": "Jedyny akapit ekranu awaryjnego przy braku miejsca (pod `awaryjny.tytul_brak_miejsca`): dane nie zostały zmienione, co zrobić — zwolnić miejsce na urządzeniu i stuknąć główny przycisk `awaryjny.sprobuj` („Try starting normally”); „try starting normally” powtarza jego treść, więc w przekładzie użyj tej samej frazy co w przycisku."
   },
   "dane": {
     "import_tytul": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04.",

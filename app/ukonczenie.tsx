@@ -35,7 +35,7 @@ export default function EkranUkonczenia(): React.ReactElement {
     ustawBladOdczytu(false);
   }, [kontener, projekt]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!stan) return <StanWczytywania tlo="arkusz" stan={bladOdczytu ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="ukonczenie" naPonow={() => { ustawBladOdczytu(false); void wczytaj(); }} />;
+  if (!stan) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={bladOdczytu ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="ukonczenie" naPonow={() => { ustawBladOdczytu(false); void wczytaj(); }} />;
   return (
     <Ukonczenie stan={{ ...stan, bladZapisu: blad }} t={kontener.j.t} oglos={oglos} system={systemAplikacji}
       liczby={{ formatuj: (n) => formatujLiczbe(n, jezyk, { maks: 2 }), parsuj: (x) => parsujLiczbe(x, jezyk) }}

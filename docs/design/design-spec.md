@@ -1067,6 +1067,20 @@ Rola 04, tryb fix (projekt i wdrożenie w jednej sesji, polecenie koordynatora M
 
 **Menu ••• licznika w dwóch grupach (DEC-05 a, to-be 04, U12).** Grupa 1 (ustawienia liczenia): Name project and part, Set a goal, Pattern, reminder(s), Set a repeat length, Enter the row number. Odstęp sekcji (`odstep.sekcja` 32 pt) zamiast podziałki. Grupa 2 (cały projekt): Mark project as finished, What the number shows, Lock/Unlock counter, Reset to 0… — reset na końcu, z dala od ukończenia; pytanie o reset pod nim. Bez nagłówków grup (bez nowych tekstów; odstęp wystarcza, NN/g grupowanie). testID grup: `menu-grupa-liczenie`, `menu-grupa-projekt`; nowe testID pozycji: `menu-zablokuj`, `menu-odblokuj`, `menu-zeruj`.
 
+### Stany błędów: wyjścia i teksty (M1-audytor-generalny-094, DEC-26 a: 04-studio-projektowe-501, 502, 504, 506)
+Macierz stanów, poz. 4: błąd mówi, co się stało i co zrobić — „co zrobić” obejmuje wyjście przyciskiem, nie tylko gestem (HIG Gestures, heurystyka 3).
+
+| Stan | Projekt | Klucze |
+|---|---|---|
+| Lista projektów (trasa push nad licznikiem), także pusta | „Back” po lewej w pasku listy (komponent `Wstecz`), symbole po prawej; wraca do licznika. Nazwa „Back”, nie „Counter”: jak na pozostałych ekranach, licznik nie ma tytułu „Counter” na ekranie (501 opcja a) | `wspolne.wstecz` (istniejący) |
+| `StanWczytywania` w stanie błędu, trasy push (`tlo` `papier`) | „Back” w pasku u góry, w tym samym miejscu co po wczytaniu; „Try again” (wypełniony) zostaje na środku | `wspolne.wstecz` |
+| `StanWczytywania` w stanie błędu, arkusze i zdjęcie (`arkusz`, `czarne`) | „Close” — przycisk tekstowy pod „Try again” (karta ukończenia nie ma gestu, zdjęcie to pełny ekran); na czerni tekst `systemCzarny.przyciskTekst` bez wypełnienia | `wspolne.zamknij` (istniejący) |
+| Stan „Loading…” | bez zmian (bez wyjścia: trwa chwilę) | — |
+| Ekran awaryjny, powód `brak_miejsca` | nagłówek „Your device is out of space”; jeden akapit „Nothing was changed. Free some space on this device, then try starting normally.”; przyciski: **„Try starting normally”** (wypełniony), „Save a copy of my data” (obrys), „Report a problem” (tekstowy). Pozostałe powody bez zmian (kopia pierwsza). Każdy powód ma własny klucz nagłówka | nowe: `awaryjny.tytul_brak_miejsca`, `awaryjny.opis_brak_miejsca` |
+| Menu ••• przy zablokowanym liczniku | „Reset to 0…” wyłączony (`accessibilityState.disabled`, tokeny `przyciskNieaktywny*`), pod nim podpis „Unlock the counter to reset it.” (też podpowiedź VoiceOver); pytania o reset nie ma (506 opcja a: nie pytamy o coś, czego nie da się zrobić) | nowy: `menu.zeruj_zablokowany` |
+
+Trwałe kontrole: `tests/ekrany/stany-bledow-094.test.tsx` (każda trasa z `StanWczytywania` podaje wyjście z `router.back()`), `tests/ekrany/narzedzia-wstecz-trasa.test.tsx` (lista tras push bez przycisku pusta). Teksty en do akceptacji pl przez właściciela i do fali 09 (P-422): lista w `oczekujace.json`.
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 

@@ -28,7 +28,7 @@ export default function EkranKorektySesji(): React.ReactElement {
   useEffect(() => { void wczytaj(); }, [wczytaj]);
   // M1-020: „Cancel” i przesunięcie arkusza w dół pytają „Discard changes?”, gdy start albo koniec zmieniono; po zapisie wyjście bez pytania.
   const odrzuc = useOdrzucZmiany(j.t, 'zmiany', () => router.back());
-  if (!stan) return <StanWczytywania tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="sesja-korekta" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!stan) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="arkusz" stan={blad ? 'blad' : 'ladowanie'} t={j.t} przedrostek="sesja-korekta" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
   const strefa = kontener.z.zegar.teraz().strefa;
   return (
     <KorektaSesji stan={stan} t={j.t} naAnuluj={odrzuc.anuluj} naZmiane={odrzuc.naZmiane}

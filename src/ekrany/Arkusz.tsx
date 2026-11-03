@@ -109,12 +109,13 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
   const st = style(useKolory());
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
-  const czarny = p.naCzarnym ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
+  // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
+  const czarny = p.naCzarnym && r !== 'tekstowy' ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
   return (
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
-      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, czarny && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
+      <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>
     </Pressable>
   );
 }
