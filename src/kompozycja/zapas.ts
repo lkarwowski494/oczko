@@ -61,9 +61,26 @@ function wartoscMotka(bazowa: number, jednostka: 'm' | 'g', imperialny: boolean,
   return j.t('zapas.dlugosc_obie', { wpisane: imp, przeliczone: metr });
 }
 
-/** Wartość pola w jednostce bazowej (m, g); pusty wpis → null, zły albo ≤ 0 → 'zly'. */
+/**
+ * DEC-45 a: wpis 1–3 cyfry, separator grupowania języka („,” w en, „.” w de), 3 cyfry — np. „1,094” z etykiety motka — to zapis tysięcy, a nie ułamek
+ * (DEC-12 a przyjmuje oba separatory dziesiętne). Zwraca ten zapis bez separatora („1094”) albo null. Separator z `format(1234567)` jak w parsujCalkowita
+ * (bez formatToParts, P-255 (b)); języki z grupowaniem spacją albo apostrofem nie mają tu wyjątku, bo `parsujLiczbe` i tak odrzuca taki wpis.
+ */
+export function zapisTysiecy(tekst: string, jezyk: string): string | null {
+  const sep = /^1(\D+)234/.exec(new Intl.NumberFormat(jezyk).format(1234567))?.[1];
+  if (sep !== ',' && sep !== '.') return null;
+  const m = new RegExp(`^(\\d{1,3})\\${sep}(\\d{3})$`).exec(tekst.trim());
+  return m ? `${m[1]}${m[2]}` : null;
+}
+/** Podpowiedź pod polem długości albo wagi motka (DEC-45 a): „Write it as 1094.” przy zapisie tysięcy; inny wpis → null. */
+export function podpowiedzPolaMotka(tekst: string, j: J): string | null {
+  const z = zapisTysiecy(tekst, j.jezyk());
+  return z === null ? null : j.t('probka.blad_zapis', { przyklad: z });
+}
+/** Wartość pola w jednostce bazowej (m, g); pusty wpis → null, zły, zapis tysięcy (DEC-45 a) albo ≤ 0 → 'zly'. */
 export function bazowa(tekst: string, jednostka: Jednostka, jezyk: string): number | null | 'zly' {
   if (tekst.trim() === '') return null;
+  if (zapisTysiecy(tekst, jezyk) !== null) return 'zly';
   const n = parsujLiczbe(tekst, jezyk);
   if (n === null || n <= 0) return 'zly';
   return jednostka === 'yd' ? przelicz(n, 'yd→m') : jednostka === 'oz' ? przelicz(n, 'oz→g') : n;

@@ -113,6 +113,7 @@ export type PropsFormularzaWloczki = {
   jednostki: 'metryczne' | 'imperialne';                          // domyślne jednostki pól (wartość z bazy pokazana w metrycznych)
   przelicz(tekst: string, j: Jednostka): string | null;           // linia „= …” pod polem (RD-03)
   bazowa(tekst: string, j: Jednostka): number | null | 'zly';     // wartość pola w m albo g
+  podpowiedz?(tekst: string): string | null;                      // DEC-45 a: „Write it as 1094.” zamiast ogólnego błędu przy zapisie tysięcy
   formatuj(n: number): string;
   naZapisz: Zapis<DaneWloczki>;
   naAnuluj(): void;
@@ -154,7 +155,7 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
     zapisz(p.naZapisz, { nazwa: nazwa.trim(), producent, sklad, kolor, kategoria, motki, dlugoscMotkaM: d, wagaMotkaG: g, pielegnacja, notatka });
   };
   const liniaPola = (tekst: string, wartosc: number | null | 'zly', j: Jednostka, testID?: string) =>
-    wartosc === 'zly' ? <Komunikat tekst={t('probka.blad_wartosc')} znak /> : (() => { const l = p.przelicz(tekst, j); return l ? <Tresc podpis testID={testID}>{l}</Tresc> : null; })();
+    wartosc === 'zly' ? <Komunikat tekst={p.podpowiedz?.(tekst) ?? t('probka.blad_wartosc')} znak /> : (() => { const l = p.przelicz(tekst, j); return l ? <Tresc podpis testID={testID}>{l}</Tresc> : null; })();
   return (
     <Arkusz tytul={t(w ? 'zapas.edytuj' : 'zapas.dodaj')} formularz={{ t, zapisz: t(w ? 'wspolne.zapisz' : 'wspolne.dodaj'), naZapisz, naAnuluj: p.naAnuluj, wylaczony: !mozna }}>
       <Pole etykieta={t('zapas.pole_nazwa')} wartosc={nazwa} naZmiane={ustawNazwe} testID="zapas-nazwa" />

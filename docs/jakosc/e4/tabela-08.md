@@ -203,6 +203,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-063-dostep-licznik-trasa.test.tsx` | zielony (główny zestaw) | 2 | KP-07, P-065 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/dostep`<br>`src/kompozycja/licznik`<br>`src/platforma/sklep-sztuczny` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-091-zarzadzaj-dozywotni.test.tsx` | zielony (główny zestaw) | 3 | KP-03, KP-14 | `src/ekrany/Oferty`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/kompozycja/dostep`<br>`src/platforma/sklep-sztuczny` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-092-etykiety-planow.test.tsx` | zielony (główny zestaw) | 2 | KP-03 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-196-tysiace.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-017 | `src/ekrany/Zapas`<br>`src/ekrany/wspolne`<br>`src/i18n/format`<br>`src/kompozycja/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-ax5.test.tsx` | zielony (główny zestaw) | 3 | NFR-DOS-002, P-277, P-287 | `src/ekrany/Arkusz`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-oczka.test.tsx` | zielony (główny zestaw) | 4 | P-360, P-361 | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-przewijanie-ax5.test.tsx` | zielony (główny zestaw) | 4 | P-366 | `src/ekrany/Arkusz`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -353,4 +354,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 349; zależnych od poprawek: 214.
+Razem plików testów: 350; zależnych od poprawek: 215.
