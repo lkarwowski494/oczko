@@ -21,8 +21,12 @@ const mockSciezka = { v: '/' };
 jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined, usePathname: () => mockSciezka.v }));
 jest.mock('../../src/kompozycja/system', () => {
   const p = jest.requireActual('./pomoc') as typeof import('./pomoc');
-  return { cyklAplikacji: p.atrapaCyklu().cykl, oglos: jest.fn(), systemAplikacji: p.atrapaSystemu() };
+  const c = p.atrapaCyklu();
+  return { cyklAplikacji: c.cykl, przejdzCykl: c.przejdz, oglos: jest.fn(), systemAplikacji: p.atrapaSystemu() };
 });
+/** Przejście aplikacji w tło i z powrotem (AppState z kompozycji systemu; M1-audytor-generalny-139). */
+const przejdzCykl = (s: 'background' | 'active') =>
+  (jest.requireMock('../../src/kompozycja/system') as { przejdzCykl: (s: 'background' | 'active') => void }).przejdzCykl(s);
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
 const mockApp: { biezaca: unknown } = { biezaca: null };
@@ -57,7 +61,12 @@ async function trasa(opcja: { v: boolean }) {
     await act(async () => { await new Promise((w) => setTimeout(w, 20)); });
   };
   const wlaczony = () => ekran.wlacz.mock.calls.filter(([t]) => t === TAG).length - ekran.wylacz.mock.calls.filter(([t]) => t === TAG).length;
-  return { ekran, idz, wlaczony };
+  /** Przejście w tło (inna aplikacja, telefon) i powrót na pierwszy plan. */
+  const tlo = async (s: 'background' | 'active') => {
+    act(() => przejdzCykl(s));
+    await act(async () => { await new Promise((w) => setTimeout(w, 20)); });
+  };
+  return { ekran, idz, wlaczony, tlo };
 }
 beforeEach(() => { mockSciezka.v = '/'; mockRouter.push.mockClear(); });
 
@@ -103,6 +112,29 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     expect(u.wlaczony()).toBe(0);
     await u.idz('/ustawienia');
     opcja.v = true;
+    await u.idz('/');
+    expect(u.wlaczony()).toBe(1);
+  });
+
+  // M1-audytor-generalny-139 (07-jakosc-521; F-10, BR-LIC-013, U11): po powrocie z tła blokada wraca tylko z licznikiem na wierzchu.
+  test('tło → pierwszy plan z licznikiem na wierzchu: tag wyłączony w tle i włączony ponownie po powrocie', async () => {
+    const u = await trasa({ v: true });
+    await u.tlo('background');
+    expect(u.ekran.wylacz).toHaveBeenCalledWith(TAG);
+    expect(u.wlaczony()).toBe(0);
+    await u.tlo('active');
+    expect(u.ekran.wlacz).toHaveBeenCalledTimes(2);
+    expect(u.wlaczony()).toBe(1);
+  });
+
+  test('tło → pierwszy plan z listą projektów na wierzchu: tag nie wraca; powrót na licznik: włączony', async () => {
+    const u = await trasa({ v: true });
+    await u.idz('/projekty');
+    expect(u.wlaczony()).toBe(0);
+    await u.tlo('background');
+    await u.tlo('active');
+    expect(u.ekran.wlacz).toHaveBeenCalledTimes(1); // tylko wejście przy starcie
+    expect(u.wlaczony()).toBe(0);
     await u.idz('/');
     expect(u.wlaczony()).toBe(1);
   });

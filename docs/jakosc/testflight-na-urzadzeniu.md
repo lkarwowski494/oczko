@@ -3,7 +3,7 @@ Wersja 2026-11-01 (rola 07, P-289; zegarek wraca do testu — P-316). Scala: lis
 Lista jest zawężona do tego, czego CI nie sprawdzi (jak w Treningu: „telefon zaraz po buildzie” — pierwsza część ok. 5 min, reszta w kolejności bloków). Czego nie sprawdzi CI: symulator nie ma kamery, zegarka sparowanego z telefonem (`transferUserInfo` nie działa w symulatorze, ADR-0009), wibracji, prawdziwych okien iPadOS, ekranu blokady z Live Activity, zakupów w piaskownicy, drugiego urządzenia z tym samym kontem ani instalacji nad poprzednią wersją.
 
 ## Jak to robić
-- **Czas:** część obowiązkowa ok. 85 min, z częściami warunkowymi i dodatkowymi do ok. 115 min (szacunek agenta, nie pomiar; blok A z zegarkiem ok. 6 min, blok H ok. 12 min). Można przerwać po dowolnym bloku i wrócić; kolejność bloków A i G jest ważna (niżej).
+- **Czas:** część obowiązkowa ok. 87 min, z częściami warunkowymi i dodatkowymi do ok. 117 min (szacunek agenta, nie pomiar; blok A z zegarkiem ok. 6 min, blok H ok. 12 min). Można przerwać po dowolnym bloku i wrócić; kolejność bloków A i G jest ważna (niżej).
 - **Jedno zadanie naraz.** Przy każdym punkcie: wynik **tak / nie**, a przy „nie” zrzut ekranu (albo nagranie ekranu) i jedno zdanie, co się stało.
 - **Gdzie zgłosić:** wypełnij kolumnę „Wynik” w tabeli na końcu (wystarczy zdjęcie albo wklejenie listy „U5: tak, U10: nie — …”) i wyślij koordynatorowi. Zrzuty tylko do prywatnego `oczko-warsztat` (mogą pokazywać Twoje dane), nie do tego repo.
 - Teksty w aplikacji są po angielsku — w krokach podaję je dosłownie w cudzysłowie.
@@ -26,12 +26,12 @@ Lista jest zawężona do tego, czego CI nie sprawdzi (jak w Treningu: „telefon
 TT-06 (aktualizacja z danymi z poprzedniego buildu nowej wersji) dotyczy dopiero kolejnych buildów — teraz „nie dotyczy”.
 Blok A to pierwsza część „zaraz po buildzie” (ok. 6 min); reszta w kolejności bloków. Dlaczego zegarek tu: ikony i instalacji zegarka symulator w CI nie sprawdza, a błąd widać od razu.
 
-## B. Licznik i ekran — iPhone, ok. 12 min
+## B. Licznik i ekran — iPhone, ok. 14 min
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
 |---|---|---|---|
 | U7 | Na liczniku obróć telefon poziomo. Potem otwórz wzór (blok C albo dowolny PDF) i obróć. | Licznik i pozostałe ekrany zostają w pionie; obraca się tylko wzór. | ekran inny niż wzór obrócony |
 | TT-09 | Stuknij „+1 row” raz (włącza się Live Activity). Zablokuj telefon. Na ekranie blokady stuknij +1 trzy razy. Odblokuj. | Wartość większa o 3, bez komunikatu o konflikcie. | inna liczba, brak Live Activity na ekranie blokady |
-| U11 | Otwórz wzór i nie dotykaj telefonu przez ok. 2 min (dłużej niż automatyczna blokada). Potem wyjdź ze wzoru i z licznika (np. do listy projektów) i odczekaj 2 min. Potem w Ustawieniach wyłącz „Keep screen on while counting”, wróć na licznik bez zamykania aplikacji i odczekaj 2 min; na koniec włącz opcję z powrotem (M1-059). | Na wzorze ekran nie gaśnie; poza wzorem i licznikiem gaśnie normalnie; z wyłączoną opcją gaśnie także na liczniku. | ekran zgasł na wzorze albo nie gaśnie poza nimi albo na liczniku z wyłączoną opcją |
+| U11 | Otwórz wzór i nie dotykaj telefonu przez ok. 2 min (dłużej niż automatyczna blokada). Potem wyjdź ze wzoru i z licznika (np. do listy projektów) i odczekaj 2 min. Potem w Ustawieniach wyłącz „Keep screen on while counting”, wróć na licznik bez zamykania aplikacji i odczekaj 2 min; potem włącz opcję z powrotem (M1-059). Na koniec, z licznikiem na ekranie, przejdź do innej aplikacji (np. Wiadomości), wróć do Oczka i odczekaj 2 min (M1-139). | Na wzorze ekran nie gaśnie; poza wzorem i licznikiem gaśnie normalnie; z wyłączoną opcją gaśnie także na liczniku; po powrocie z innej aplikacji na licznik ekran znów nie gaśnie. | ekran zgasł na wzorze albo nie gaśnie poza nimi albo na liczniku z wyłączoną opcją albo zgasł na liczniku po powrocie z innej aplikacji |
 
 ## C. Wzory — iPhone, ok. 20 min
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
