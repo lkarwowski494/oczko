@@ -1223,6 +1223,16 @@ Opis decyzji mówi „Knitting/Crochet”; wdrożenie 06 użyło istniejących k
 
 Strona wsparcia (FAQ: dodanie wzoru, przypomnienie co kilka rzędów) cytuje nazwy menu i pól ze słowników — zmiana tych etykiet w przeglądzie pl (P-422) wymaga poprawki strony (pilnuje test 11). **Dla 07:** zrzut Ustawień (jasny, ciemny, AX5) z wierszem „Help” nad „Report a problem”; przejście „dodanie wzoru i przypomnienia bez kontaktu z autorem” z FAQ.
 
+### Adres wsparcia na ekranie „Report a problem” (M1-audytor-generalny-057, 11-wzrost-001)
+**Decyzja 04: tekst roboczy 08 przyjęty bez zmian.** *Dlaczego:* strona czynna, jedno zadanie (dokąd wysłać), „it” odnosi się do raportu z poprzedniego zdania (`zglos.opis`: nic nie opuszcza urządzenia, dopóki go nie udostępnisz), a jedynym przyciskiem ekranu jest „Share”, więc zdanie nie musi go powtarzać. Odrzucone: „Tap Share and send it by email to …” — powtarza podpis przycisku, który stoi niżej, i opisuje gest (VoiceOver go nie używa).
+
+| Element | Projekt | Klucz (en) |
+|---|---|---|
+| Zdanie z adresem | tekst w tym samym stylu co `zglos.opis`, zaraz pod nim, przed listą pól raportu i przed „Share”; obie trasy: z Ustawień i z ekranu awaryjnego; `{{adres}}` = adres e-mail z `ADRES_WSPARCIA` (ta sama wartość co na `site/support.html`); długi adres łamie się, nie ucina (320 pt, AX5) | `zglos.kontakt` — Send it by email to {{adres}}. |
+
+- **N2 (P2, P, SP-15, pewność średnia):** adres trzeba przepisać w Poczcie z pamięci — po „Share” → Mail pole „To” jest puste. Opcje: (a) adres jako tekst do zaznaczenia (`selectable`, systemowe „Copy” po przytrzymaniu; bez nowego komponentu); (b) przycisk tekstowy „Copy address” (nowy klucz, oczekujący P-422); (c) bez zmian. Rekomendacja: (a), decyzja koordynatora; zmiana kodu → 08.
+- **Dla 07:** zrzut „Report a problem” z obu tras (jasny, ciemny, en, 320 pt i AX5).
+
 ## Poza tym etapem (dla audytu roli 04 po roli 08 albo osobnej sesji)
 Makiety nienarysowane w build (zegarek i ekran blokady: fix NZ-08-P3-04, `aktywnosc.html`; wzór pionowo i poziomo, rysowanie, iPad: fix NZ-P217-04, `fix7-2026-10-26/wzor.html`): reszta Ustawień (eksport, kopia, polityka, „Oceń”, „Zgłoś problem”; język i „Źródła wiedzy” są w fixie NZ-08-P2-04), test długości tekstu po polsku i niemiecku (P-061 (2a)). System (tokeny, komponenty, głos) je obejmuje; rola 08 buduje je z tokenów, a rola 04 sprawdza je w audycie wobec tego dokumentu.
 
