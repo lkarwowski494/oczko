@@ -5,12 +5,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { MAX_SKALA_LICZBY, cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
+/** M1-audytor-generalny-203 (SYS-01): `limit` i `zablokowany` to nie błąd zapisu — tekst jak na liczniku (`skutekPlus`), `true` = błąd zapisu. */
+export type BladPaska = boolean | 'limit' | 'zablokowany';
+
 export type PropsLicznikaWzoru = {
   t: Tlumacz;
   licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' };
   obok: boolean;                       // kolumna obok wzoru (W3, W4b) zamiast paska pod wzorem
   szerokoscKolumny?: number | null;    // pt, tylko przy `obok`
-  blad: boolean;                       // nieudany zapis +1/−1: alert pod liczbą
+  blad: BladPaska;                     // wynik +1/−1 nie-ok: alert pod liczbą (true = błąd zapisu)
+  naOferty?(): void;                   // odnośnik limitu (KP-13)
   naPlus(): void;
   naMinus(): void;
 };
@@ -29,7 +33,16 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
           ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
           : <Text style={st.podpis} testID="licznik-podpis">{t('licznik.jednostka_w_trakcie')}</Text>}{/* P2-5b, P-373: jak Licznik.tsx:100 */}
       </View>
-      {p.blad && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{tekstBleduZapisu(t)}</Text>}
+      {p.blad === true && <Text style={st.tresc} accessibilityRole="alert" testID="blad-zapisu">{tekstBleduZapisu(t)}</Text>}
+      {p.blad === 'zablokowany' && <Text style={st.tresc} accessibilityRole="alert">{t('licznik.zablokowany_stukniecie')}</Text>}
+      {p.blad === 'limit' && (
+        <View testID="limit-pasek">
+          <Text style={st.tresc}>{t('limit.nie_dodano', { n: p.licznik.dziergany })}</Text>
+          <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} testID="limit-oferta-link">
+            <Text style={[st.tresc, st.link]}>{t('limit.pro_link')}</Text>
+          </Pressable>
+        </View>
+      )}
       <View style={obok ? st.przyciskiKolumna : st.przyciski}>
         <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={st.minus} testID="licznik-minus">
           <Text style={st.minusTekst}>{t('licznik.minus')}</Text>
@@ -45,6 +58,7 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
 function style(k: Kolory) {
   return StyleSheet.create({
     tresc: { ...typografia.tresc, color: k.grafit },
+    link: { textDecorationLine: 'underline' }, // jak LicznikStyl (odnośnik limitu)
     podpis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l },
     pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.m, backgroundColor: k.papier },
     kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.linia, padding: odstep.l, gap: odstep.m, backgroundColor: k.papier },
