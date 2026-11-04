@@ -1,7 +1,7 @@
 // Model odczytu ekranu licznika (08 partia 4, krok 3A): dane StanEkranuLicznika z bazy aplikacji (node:sqlite), teksty liczy kompozycja.
 // F-49 (powrót do miejsca, moduly.md:238), RD-13 (przypomnienie na rzędzie dzierganym), RD-17 (seria na końcu historii), P-065 (limit zawczasu),
 // kreski posiedzenia (design-spec „Element firmowy”: przerwa ≥ PRZERWA_NOWEGO_DNIA_MS zaczyna nowe), BR-PRJ-014 (bliźniak w tym samym rzędzie).
-import { utworzSzybkiLicznik, dodajRzad } from '../../src/przypadki-uzycia/licznik';
+import { utworzSzybkiLicznik, dodajRzad, odejmijRzad } from '../../src/przypadki-uzycia/licznik';
 import { biezacyLicznik, historiaLicznika, widokLicznika, zapamietajLicznik } from '../../src/przypadki-uzycia/widok-licznika';
 import { widokProjektow } from '../../src/przypadki-uzycia/widok-projektow';
 import { startSesji, zakonczSesje } from '../../src/przypadki-uzycia/sesja';
@@ -67,6 +67,32 @@ describe('widokLicznika: dane ekranu licznika z bazy', () => {
       zdarzenie('l1-c', 'l1', 'cofniecie', 3, ['l1-z4'], T0 + 72 * MIN, { wartosc: 3, cofa: ['l1-z4'] }),
       ustawGlowe('l1', 3, 'l1-c'),
     ], T0 + 73 * MIN);
+    expect((await widok(s)).sesja).toEqual({ rzedy: 1, odMs: T0 + 70 * MIN });
+  });
+
+  // [04-studio-projektowe-571] design-spec:250–256: „−1 zdejmuje ostatnią kreskę”; rzędy posiedzenia = zdarzenia +1/−1 od początku posiedzenia.
+  test('kreski: +1, −1, +1, +1 → licznik 2 i 2 kreski (−1 zdejmuje ostatnią kreskę)', async () => {
+    const s = await z(licznik('l1', 'c1', 0), T0);
+    const krok = async (f: typeof dodajRzad | typeof odejmijRzad, min: number) => { s.zegar.ustaw(T0 + min * MIN); expect((await f(s.z, { licznikId: 'l1' })).ok).toBe(true); };
+    await krok(dodajRzad, 1);
+    await krok(odejmijRzad, 2);
+    expect(await widok(s)).toMatchObject({ wartosc: 0, sesja: null }); // zero kresek = brak posiedzenia (posiedzenie → null);
+    await krok(dodajRzad, 3);
+    await krok(dodajRzad, 4);
+    expect(await widok(s)).toMatchObject({ wartosc: 2, sesja: { rzedy: 2, odMs: T0 + 3 * MIN } });
+  });
+
+  test('kreski: cofnięte −1 się nie liczy; −1 po przerwie ≥ 60 min zdejmuje kreskę poprzedniego posiedzenia, a granica posiedzenia zostaje', async () => {
+    const s = await z([
+      ...licznik('l1', 'c1', 2),
+      zdarzenie('l1-z3', 'l1', 'plus', 3, ['l1-z2'], T0 + 70 * MIN),
+      zdarzenie('l1-z4', 'l1', 'plus', 4, ['l1-z3'], T0 + 71 * MIN),
+      zdarzenie('m1', 'l1', 'minus', 3, ['l1-z4'], T0 + 72 * MIN),
+      zdarzenie('l1-c', 'l1', 'cofniecie', 4, ['m1'], T0 + 73 * MIN, { wartosc: 4, cofa: ['m1'] }),
+      ustawGlowe('l1', 4, 'l1-c'),
+    ], T0 + 74 * MIN);
+    expect((await widok(s)).sesja).toEqual({ rzedy: 2, odMs: T0 + 70 * MIN });
+    await wykonaj(s.baza, [zdarzenie('m2', 'l1', 'minus', 3, ['l1-c'], T0 + 75 * MIN), ustawGlowe('l1', 3, 'm2')]);
     expect((await widok(s)).sesja).toEqual({ rzedy: 1, odMs: T0 + 70 * MIN });
   });
 

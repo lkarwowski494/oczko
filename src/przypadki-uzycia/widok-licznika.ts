@@ -6,7 +6,7 @@ import { powtorzenieLicznika } from '../domena/licznik';
 import { czytajMiejsce, type MiejsceZapisane } from '../domena/miejsce';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
-import { posiedzenie } from '../domena/posiedzenie';
+import { dodaniaPosiedzenia, posiedzenie } from '../domena/posiedzenie';
 import { serieLicznika } from '../domena/straznik-rodzaj';
 import type { PortBazy } from '../domena/porty';
 import type { ZrodloZdarzenia } from '../domena/stany';
@@ -56,13 +56,20 @@ export type WidokLicznika = {
 const OKNO_SESJI = 200; // ostatnie zdarzenia czytane dla kresek i strażnika (posiedzenie dłuższe niż 200 rzędów pokazuje 200)
 
 type Plus = { id: string; czasMs: number; zrodlo: ZrodloZdarzenia };
-/** Dodania +1 nieobjęte cofnięciem, od najnowszego. */
-async function ostatnieDodania(tx: PortBazy, licznikId: string): Promise<Plus[]> {
+type OstatnieZdarzenia = { dodania: Plus[]; plusMinus: Array<{ rodzaj: 'plus' | 'minus'; czasMs: number }> };
+/** Ostatnie zdarzenia licznika bez cofniętych, od najnowszego: `dodania` = tylko +1 (seria), `plusMinus` = +1 i −1 (kreski posiedzenia, [04-studio-projektowe-571]). */
+async function ostatnieZdarzenia(tx: PortBazy, licznikId: string): Promise<OstatnieZdarzenia> {
   const r = await wiersze(tx.all('SELECT id, rodzaj, cofa, czas_ms, zrodlo FROM zdarzenie WHERE licznik_id = ? ORDER BY czas_ms DESC, rowid DESC LIMIT ?', [licznikId, OKNO_SESJI]), 'widokLicznika');
   const cofniete = new Set(r.flatMap((w) => listaTekstow(w, 'cofa')));
-  return r.filter((w) => tekst(w, 'rodzaj') === 'plus' && !cofniete.has(tekst(w, 'id')))
-    .map((w) => ({ id: tekst(w, 'id'), czasMs: liczba(w, 'czas_ms'), zrodlo: tekst(w, 'zrodlo') as ZrodloZdarzenia }));
+  const zywe = r.filter((w) => !cofniete.has(tekst(w, 'id')));
+  return {
+    dodania: zywe.filter((w) => tekst(w, 'rodzaj') === 'plus')
+      .map((w) => ({ id: tekst(w, 'id'), czasMs: liczba(w, 'czas_ms'), zrodlo: tekst(w, 'zrodlo') as ZrodloZdarzenia })),
+    plusMinus: zywe.flatMap((w) => { const rodzaj = tekst(w, 'rodzaj'); return rodzaj === 'plus' || rodzaj === 'minus' ? [{ rodzaj, czasMs: liczba(w, 'czas_ms') } as const] : []; }),
+  };
 }
+/** Dodania +1 nieobjęte cofnięciem, od najnowszego (seria, F-47). */
+const ostatnieDodania = async (tx: PortBazy, licznikId: string): Promise<Plus[]> => (await ostatnieZdarzenia(tx, licznikId)).dodania;
 /** Ostatnia sesja stopera projektu (granica posiedzenia, design-spec:242); null bez sesji. */
 async function ostatniStoper(tx: PortBazy, projektId: string): Promise<{ startMs: number; koniecMs: number | null } | null> {
   const [r] = await wiersze(tx.all('SELECT start_ms, koniec_ms FROM sesja WHERE projekt_id = ? ORDER BY start_ms DESC LIMIT 1', [projektId]), 'widokLicznika');
@@ -117,7 +124,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         WHERE l.id = ? AND l.usunieto_ms IS NULL AND c.usunieto_ms IS NULL AND p.usunieto_ms IS NULL`, [w.licznikId]), 'widokLicznika');
     if (!r) return blad('bledne_dane');
     const wartosc = liczba(r, 'wartosc'), glowa = tekstLubNull(r, 'glowa'), dzis = chwila.dzien;
-    const dodania = await ostatnieDodania(tx, w.licznikId);
+    const { dodania, plusMinus } = await ostatnieZdarzenia(tx, w.licznikId);
     const zaw = mozeZaczacDzien({ dni: await dniLimituMiesiaca(tx, dzis.slice(0, 7)), dzis, teraz, ostatniPlus: await ostatniPlus(tx, dodajDni(dzis, -2)), pro: z.pro() });
     const dl = liczbaLubNull(r, 'dlugosc_powtorzenia');
     const znaczenie = tekst(r, 'znaczenie') === 'w_trakcie' ? 'w_trakcie' : 'skonczone';
@@ -137,7 +144,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         przypomnienie: pas(lista, wartosc, znaczenie),
         plany: lista,
         powtorzenie: powtorzenieWidoku(wartosc, znaczenie, dl), // RD-12 z wyborem r w domenie (07-jakosc-020)
-        sesja: posiedzenie({ dodaniaMs: dodania.map((d) => d.czasMs), stoper: await ostatniStoper(tx, tekst(r, 'projekt_id')) }),
+        sesja: posiedzenie({ dodaniaMs: dodaniaPosiedzenia(plusMinus), stoper: await ostatniStoper(tx, tekst(r, 'projekt_id')) }),
         limit: zaw.limitZawczasu ? 'zawczasu' : zaw.ostatniDarmowy ? 'ostatni-darmowy' : 'brak',
         dzis, wznowienie: wznowienieLimitu({ dzis }),
         seria: seria(dodania, glowa, tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', z.straznikOknoS ?? STRAZNIK_OKNO_S),

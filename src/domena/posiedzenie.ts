@@ -3,6 +3,24 @@
 // (kreski poprzedniego widać do następnego +1, więc funkcja nie patrzy na „teraz”) albo zatrzymanie stopera. Północ go nie przerywa.
 import { PRZERWA_NOWEGO_DNIA_MS } from '../konfiguracja';
 
+/** Zdarzenie +1/−1 nieobjęte cofnięciem; `dodaniaMs` dla `posiedzenie` liczy `dodaniaPosiedzenia`. */
+export type PlusMinus = { rodzaj: 'plus' | 'minus'; czasMs: number };
+
+/**
+ * −1 zdejmuje ostatnią kreskę (design-spec:250–256, [04-studio-projektowe-571]): zdarzenia od najnowszego → czasy +1, które zostają, od najnowszego.
+ * −1 bez kreski do zdjęcia (0 kresek w oknie) nic nie zmienia — wartość nie spada poniżej zera, a kolejny +1 nie jest zjadany.
+ * Zdjęcie nie patrzy na przerwę ≥ PRZERWA_NOWEGO_DNIA_MS: zdejmuje kreskę, którą widać (także poprzedniego posiedzenia); granicę wyznacza `posiedzenie`.
+ */
+export function dodaniaPosiedzenia(zdarzenia: readonly PlusMinus[]): number[] {
+  const kreski: number[] = []; // od najstarszego
+  for (let i = zdarzenia.length - 1; i >= 0; i -= 1) {
+    const z = zdarzenia[i];
+    if (z?.rodzaj === 'plus') kreski.push(z.czasMs);
+    else if (z) kreski.pop();
+  }
+  return kreski.reverse();
+}
+
 export type Posiedzenie = { rzedy: number; odMs: number } | null;
 
 /** `dodaniaMs`: czasy +1 nieobjętych cofnięciem, od najnowszego; `stoper`: ostatnia sesja stopera projektu (koniecMs null = trwa albo wstrzymana). */
