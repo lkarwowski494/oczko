@@ -11,7 +11,7 @@ import { utworzArchiwum } from '../../src/dane/archiwum';
 import { migruj } from '../../src/dane/migracje/migruj';
 import type { LiveActivity, Zegarek } from '../../src/domena/porty';
 import { WERSJA_SCHEMATU } from '../../src/konfiguracja';
-import { odbierzImportPliku } from '../../src/kompozycja/import-pliku';
+import { odbierzImportPliku, oznaczStartDanych, zerujStanImportu } from '../../src/kompozycja/import-pliku';
 import { kompozycjaLicznika } from '../../src/kompozycja/licznik';
 import { redirectSystemPath } from '../../app/+native-intent';
 import { archiwumWzorcowe, czesc, licznik as licznikDanych, projekt } from '../dane/pomocnicze/dane-wejsciowe';
@@ -72,7 +72,7 @@ const odczekaj = async () => { await act(async () => { await new Promise((r) => 
 beforeEach(() => {
   mockRouter.push.mockReset();
   delete mockParametry.import;
-  while (odbierzImportPliku() !== null) { /* pusta skrzynka między testami */ }
+  zerujStanImportu(); // pusta skrzynka i start danych od nowa (jak nowy proces)
 });
 
 test('206: zimny start z pliku .oczko → „/” (start danych), plik czeka na licznik; ciepły start → od razu Ustawienia z importem', () => {
@@ -80,6 +80,7 @@ test('206: zimny start z pliku .oczko → „/” (start danych), plik czeka na 
   expect(redirectSystemPath({ path: adres, initial: true })).toBe('/');
   expect(odbierzImportPliku()).toBe('/private/var/mobile/Inbox/Kopia 26-10.oczko');
   expect(odbierzImportPliku()).toBeNull(); // odebrany raz
+  oznaczStartDanych(); // ciepły start po zakończonym starcie danych
   expect(redirectSystemPath({ path: adres, initial: false })).toBe(`/ustawienia?import=${encodeURIComponent('/private/var/mobile/Inbox/Kopia 26-10.oczko')}`);
   expect(odbierzImportPliku()).toBeNull();
   expect(redirectSystemPath({ path: 'oczko://projekty', initial: true })).toBe('oczko://projekty'); // inne adresy bez zmian
@@ -110,3 +111,22 @@ for (const [tryb, etykieta] of [['scal', 'Merge with what’s here'], ['zastap',
     expect(await baza.all('PRAGMA foreign_key_check')).toEqual([]);
   });
 }
+
+// Przegląd ścieżek wrażliwych (D-043) do 206: proces obudzony w tle (Live Activity, zegarek, CloudKit) zużył adres startowy, więc plik
+// przychodzi z `initial: false`, zanim start danych się skończył (stos bywa jeszcze niezamontowany i link przepada). Rozstrzyga start danych, nie `initial`.
+test('206 (przegląd): plik przy żywym procesie przed końcem startu danych → „/” i skrzynka, nie Ustawienia', () => {
+  expect(redirectSystemPath({ path: 'file:///tmp/B.oczko', initial: false })).toBe('/');
+  expect(odbierzImportPliku()).toBe('/tmp/B.oczko');
+});
+
+test('206 (przegląd): plik przychodzi w trakcie `przygotuj()` licznika → po starcie danych Ustawienia z importem (push), nie cel startu', async () => {
+  const { baza } = await swiezaInstalacja();
+  const plik = plikZeStaregoTelefonu();
+  const wersjaPrzyOtwarciu: number[] = [];
+  mockRouter.push.mockImplementation(() => { void baza.all<{ user_version: number }>('PRAGMA user_version').then((w) => wersjaPrzyOtwarciu.push(w[0].user_version)); });
+  render(<EkranLicznika />);
+  redirectSystemPath({ path: `file://${plik.sciezka}`, initial: false }); // przed zakończeniem startu danych
+  await odczekaj();
+  expect(mockRouter.push.mock.calls).toEqual([[{ pathname: '/ustawienia', params: { import: plik.sciezka } }]]);
+  expect(wersjaPrzyOtwarciu).toEqual([WERSJA_SCHEMATU]);
+});

@@ -9,7 +9,7 @@ import { cyklAplikacji, oglos, systemAplikacji } from '../src/kompozycja/system'
 import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
 import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
 import { powodAwaryjny, zapiszKamien } from '../src/kompozycja/start-aplikacji';
-import { odbierzImportPliku } from '../src/kompozycja/import-pliku';
+import { odbierzImportPliku, oznaczStartDanych } from '../src/kompozycja/import-pliku';
 import { listaWzorow } from '../src/przypadki-uzycia/wzor';
 import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
@@ -55,6 +55,7 @@ export default function EkranLicznika(): React.ReactElement {
       if (!zywy) return;
       if (!w.ok) { naAwarie(powodAwaryjny(w.powod)); return; } // migracja albo baza: ekran awaryjny korzenia, nic po cichu (ADR-0019, M1-074)
       ustawGotowe(true);
+      oznaczStartDanych(); // przegląd 206: plik po tej chwili idzie od razu do Ustawień
       const plikImportu = odbierzImportPliku(); // M1-audytor-generalny-206: plik .oczko z zimnego startu — import dopiero po starcie danych, licznik pod spodem
       if (plikImportu !== null) { router.push({ pathname: '/ustawienia', params: { import: plikImportu } }); return; }
       if (w.ok && w.wartosc.cel === 'lista') router.push('/projekty');

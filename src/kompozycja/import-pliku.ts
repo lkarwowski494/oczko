@@ -28,3 +28,21 @@ export function odbierzImportPliku(): string | null {
   oczekujacyImport = null;
   return s;
 }
+
+// Przegląd ścieżek wrażliwych do 206: proces obudzony w tle (Live Activity, zegarek, CloudKit) zużywa adres startowy, więc plik przychodzi
+// z `initial: false` przed końcem startu danych (stos bywa niezamontowany i link przepada) — o skrzynce rozstrzyga start danych, nie `initial`.
+let startDanych = false;
+
+/** Start danych zakończony (licznik po udanym `przygotuj()`); od tej chwili plik idzie od razu do Ustawień. */
+export function oznaczStartDanych(): void {
+  startDanych = true;
+}
+/** `true`, gdy start danych w tym procesie już się zakończył. */
+export function startDanychZakonczony(): boolean {
+  return startDanych;
+}
+/** Stan procesu od nowa (testy). */
+export function zerujStanImportu(): void {
+  oczekujacyImport = null;
+  startDanych = false;
+}
