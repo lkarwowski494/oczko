@@ -33,3 +33,9 @@ test('kontrola-ipa.sh woła kontrolę adresów jako BŁĄD wydania', () => {
   const sh = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
   expect(sh).toMatch(/node scripts\/wydanie\/kontrola-adresow\.mjs[^\n]*bledy=\$\(\(bledy \+ 1\)\)/);
 });
+// M1-audytor-generalny-202 (10-wydanie-001, P-533): prawdziwy plik aplikacji ma Apple ID z App Store Connect (właściciel 2026-11-04), nie zaślepkę.
+test('src/kompozycja/adresy.ts: adres „Rate Oczko” z Apple ID 6823678721 → kontrola kod 0', () => {
+  const w = spawnSync(process.execPath, [SKRYPT, join(KORZEN, 'src/kompozycja/adresy.ts')], { encoding: 'utf8' });
+  expect(w.status).toBe(0);
+  expect(readFileSync(join(KORZEN, 'src/kompozycja/adresy.ts'), 'utf8')).toContain("recenzja: 'https://apps.apple.com/app/id6823678721?action=write-review'");
+});
