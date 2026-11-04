@@ -38,7 +38,7 @@ async function start(wartosc: number, zn = '{}') {
   await k.otworz('l1');
   mockZ = s.z;
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
-  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
+  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k, preferencje: { stan: () => ({ wibracje: false }) } }; // preferencje jak w aplikacji (+1 z paska czyta wibracje, M1-204)
   render(<EkranWzoru />);
   // M1-193 (07-jakosc-544): czekamy na propsy widoku z tego testu — strona i znacznik bieżącego wzoru (null bez znacznika), nie na resztki poprzedniego.
   const strona = (JSON.parse(zn) as { strona?: number }).strona ?? null;

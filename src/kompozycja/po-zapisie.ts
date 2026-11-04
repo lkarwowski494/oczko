@@ -39,10 +39,10 @@ export function bladPaskaLicznika(a: ZrodloBleduZapisu, r: WynikEkranu<unknown>,
   oglos(tekstBleduZapisu(a.kontener.j.t));
 }
 
-/** M1-audytor-generalny-203 (SYS-01): wynik +1 z paska pod wzorem — haptyka i jedno ogłoszenie jak na ekranie licznika (`skutekPlus`). */
+/** M1-audytor-generalny-203/204 (SYS-01): wynik +1 z paska pod wzorem — haptyka (przy włączonych wibracjach) i jedno ogłoszenie jak na
+ *  ekranie licznika (`skutekPlus`): udany rząd, rząd z przypomnieniem (BR-LIC-020 S1), limit, błąd zapisu. */
 export type ZrodloPoPlusie = ZrodloBleduZapisu & { kontener: { j: { jezyk(): string }; z: { zegar: { teraz(): { dzien: string } } } } };
 export function poPlusiePaska(a: ZrodloPoPlusie, r: WynikPlus, k: { nrRobocza: number; oczka: boolean }, oglos: Oglos): void {
-  if (r.ok) return;
   const sk = skutekPlus(a.kontener.j.t, r, { ...k, miesiac: miesiac(a.kontener.z.zegar.teraz().dzien, a.kontener.j.jezyk()) });
   if (sk.haptyka && a.preferencje.stan().wibracje) a.kontener.porty.haptyka.zagraj(sk.haptyka);
   if (sk.ogloszenie) oglos(sk.ogloszenie);
