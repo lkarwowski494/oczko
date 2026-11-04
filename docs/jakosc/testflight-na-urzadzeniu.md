@@ -1,5 +1,5 @@
 # Testy na urządzeniu przy TestFlight — plan dla właściciela
-Wersja 2026-11-01 (rola 07, P-289; zegarek wraca do testu — P-316). Scala: lista „tylko urządzenie” partii 6 U1–U12 (`docs/programista/partia-6-natywne.md`, kopia partii 6 a107a49), listę „tylko telefon” TT-01–TT-11 (`docs/jakosc/strategia.md` §8) i listę iCloud partii 7 (`docs/jakosc/plan-partia-7-icloud.md`, „Lista »tylko urządzenie«”).
+Wersja 2026-11-04 (rola 07, P-289; zegarek wraca do testu — P-316; blok F nie dotyczy w 1.0 — P-458, M1-audytor-generalny-209). Scala: lista „tylko urządzenie” partii 6 U1–U12 (`docs/programista/partia-6-natywne.md`, kopia partii 6 a107a49), listę „tylko telefon” TT-01–TT-11 (`docs/jakosc/strategia.md` §8) i listę iCloud partii 7 (`docs/jakosc/plan-partia-7-icloud.md`, „Lista »tylko urządzenie«”).
 Lista jest zawężona do tego, czego CI nie sprawdzi (jak w Treningu: „telefon zaraz po buildzie” — pierwsza część ok. 5 min, reszta w kolejności bloków). Czego nie sprawdzi CI: symulator nie ma kamery, zegarka sparowanego z telefonem (`transferUserInfo` nie działa w symulatorze, ADR-0009), wibracji, prawdziwych okien iPadOS, ekranu blokady z Live Activity, zakupów w piaskownicy, drugiego urządzenia z tym samym kontem ani instalacji nad poprzednią wersją.
 
 ## Jak to robić
@@ -16,7 +16,7 @@ Lista jest zawężona do tego, czego CI nie sprawdzi (jak w Treningu: „telefon
    - trzy pliki Word z repo: `modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/tekst.docx`, `tabela.docx`, `obraz.docx` (z GitHuba → „Pobierz” → zapisz w Plikach);
    - (dodatkowo, do U4) duży PDF 100–200 MB, ok. 300 stron — jeśli taki masz; inaczej U4 pomijamy.
 4. Na iPhonie: Ustawienia → Ekran i jasność → Automatyczna blokada = **1 minuta** (do U11; po testach przywróć swoje).
-5. Te same konta Apple ID i iCloud na iPhonie i iPadzie (do bloków E i F).
+5. Te same konta Apple ID i iCloud na iPhonie i iPadzie (do bloku E; blok F nie dotyczy w 1.0).
 
 ## A. Instalacja nad 0.1.0 — iPhone i zegarek, ok. 6 min (koniecznie pierwsze)
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
@@ -63,10 +63,10 @@ Blok A to pierwsza część „zaraz po buildzie” (ok. 6 min); reszta w kolejn
 TT-04 (Family Sharing — potrzebny członek rodziny) i TT-05 (zwrot w piaskownicy, sposób [DO USTALENIA] OP-21) — „nie sprawdzono”, chyba że koordynator postanowi inaczej.
 
 ## F. iCloud, ok. 8 min
-**Build TestFlight ma przełącznik „Sync with iCloud”** w Ustawieniach → „Data and sync” (`ICLOUD_W_1_0 = true` w buildzie TestFlight, P-290). Wynik TT-08 decyduje, czy przełącznik zostaje w 1.0 (ZM-06).
+**Nie dotyczy w 1.0 — pomiń ten blok** (P-458, M1-audytor-generalny-209): build TestFlight 1.0 nie ma przełącznika „Sync with iCloud” (`ICLOUD_W_1_0 = false` w `src/konfiguracja.ts`; testowe przełączniki zakazane w buildzie TestFlight). Kroki niżej są na później: wykonuje się je dopiero na buildzie z włączoną flagą.
 | ID | Kroki | Oczekiwany wynik | Zgłoś |
 |---|---|---|---|
-| TT-08 / BR-DAN-002/S1 (bramka ZM-06) | Włącz „Sync with iCloud” na obu urządzeniach. Na iPhonie +1 w projekcie. Otwórz Oczko na iPadzie (poczekaj do minuty). | Na iPadzie ten sam projekt i ta sama wartość. **Nie → iCloud zostaje ukryty w 1.0.** | wartość na iPadzie po 1 min |
+| TT-08 / BR-DAN-002/S1 (warunek włączenia `ICLOUD_W_1_0`, ZM-06) | Na buildzie z flagą: włącz „Sync with iCloud” na obu urządzeniach. Na iPhonie +1 w projekcie. Otwórz Oczko na iPadzie (poczekaj do minuty). | Na iPadzie ten sam projekt i ta sama wartość. **Nie → flaga zostaje wyłączona.** | wartość na iPadzie po 1 min |
 | BR-DAN-002/S2 (dodatkowo, +5 min) | Tryb samolotowy na obu; +1 na iPhonie i +1 na iPadzie w tym samym projekcie; wyłącz tryb na obu. | Komunikat o dwóch wersjach („Two versions…”) z wyborem; nic nie znika po cichu. | jedna wersja zniknęła bez pytania |
 BR-DAN-004/S1 (nowy telefon z kopii urządzenia) i stany „brak miejsca / wylogowane konto” — „nie sprawdzono” (wymagają innego telefonu albo zmiany konta).
 
@@ -90,6 +90,7 @@ TT-15 bez spełnionego warunku (pięć dni) — „nie sprawdzono”; ryzyko szc
 - Zegarek: **nie sprawdzamy** nieudanego zapisu stuknięcia na zegarku (komunikat „Row N wasn’t added”, P-142 (1b); wymaga pełnej pamięci zegarka), pracy zegarka przez wiele godzin bez iPhone'a ani baterii. TT-15 — tylko po spełnieniu warunku. Poprzednie „brak zegarka” (P-290) zostało skorygowane przez P-316: masz Apple Watch.
 - TT-06 — od kolejnego buildu nowej wersji.
 - TT-04, TT-05, BR-DAN-004/S1, stany iCloud bez miejsca/konta — wyżej.
+- Blok F (TT-08, BR-DAN-002/S2) — nie dotyczy w 1.0: iCloud wyłączony flagą `ICLOUD_W_1_0 = false` (P-458); TT-08 to warunek jej włączenia.
 
 ## Wyniki (do wypełnienia)
 Build: ____ · data: ____ · iPhone (model, iOS): ____ · iPad (model, iPadOS): ____ · Apple Watch (model, watchOS): ____
@@ -113,8 +114,8 @@ Build: ____ · data: ____ · iPhone (model, iOS): ____ · iPad (model, iPadOS): 
 | TT-03 | | |
 | TT-10 | | |
 | TT-11 | | |
-| TT-08 / BR-DAN-002/S1 | | |
-| BR-DAN-002/S2 | | |
+| TT-08 / BR-DAN-002/S1 | nie dotyczy w 1.0 (P-458) | |
+| BR-DAN-002/S2 | nie dotyczy w 1.0 (P-458) | |
 | TT-13 (zegarek bez telefonu; czas zniknięcia linii: ___ s) | | |
 | TT-14 (przypomnienie i wibracja) | | |
 | TT-15 (Pro na zegarku, warunkowe) | | |
