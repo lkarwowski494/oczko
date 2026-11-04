@@ -11,17 +11,13 @@ import { Kreski } from './Kreski';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
 import { LinijkaCelu } from './LicznikCel';
 import { style } from './LicznikStyl';
-import type { PropsLicznika, StanEkranuLicznika, ZdarzeniePlus } from './LicznikTypy';
+import type { PropsLicznika, StanEkranuLicznika } from './LicznikTypy';
 import type { Tlumacz } from './wspolne';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
+import { skutekPlus } from './po-plusie';
 
 export type { BanerLicznika, LimitNaLiczniku, PropsLicznika, StanEkranuLicznika, WynikPlus, ZdarzeniePlus } from './LicznikTypy';
 export type { Style } from './LicznikStyl';
-
-/** F-48: rozpoznawalne są tylko dwa wzorce — rząd i rząd „ze znaczeniem” (instrukcja, koniec powtórzenia, cel dnia lub części). */
-function wzorzecPoPlus(z: readonly ZdarzeniePlus[]): WzorzecHaptyki {
-  return z.some((x) => x !== 'rzad') ? 'rzadZInstrukcja' : 'plus';
-}
 
 /** Seria z ekranu blokady albo zegarka scalona po otwarciu: źródło i godzina serii, nie scalenia (BR-LIC-019 S5, RD-17-W8); inne źródła → null (zdanie z czasem trwania). */
 function tekstSerii(t: Tlumacz, b: Extract<NonNullable<StanEkranuLicznika['baner']>, { rodzaj: 'seria' }>): string | null {
@@ -67,20 +63,10 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     }
     const w = await p.naPlus();
     if (!zamontowany.current) return;
-    if (!w.ok) {
-      if (w.powod === 'limit') {
-        ustawArkuszLimitu(nrRobocza);
-        p.oglos(t('limit.ogloszenie', { n: nrRobocza, miesiac: s.miesiac.nazwa }));
-      } else if (w.powod === 'zablokowany') ustawKomunikat('zablokowany');
-      else bladZapisu();
-      return;
-    }
-    ustawKomunikat(null);
-    zagraj(wzorzecPoPlus(w.wartosc.zdarzenia));
-    const wej = w.wartosc.wejscieWPrzypomnienie;
-    if (wej) p.oglos(t('licznik.wejscie_w_przypomnienie', { n: wej.rzad, tekst: wej.tekst, ktory: wej.ktory, razy: wej.razy }));
-    else if (oczka) p.oglos(t('licznik.po_dodaniu_oczka', { count: w.wartosc.skonczone }));
-    else p.oglos(t('licznik.po_dodaniu', { zrobione: w.wartosc.skonczone, nastepny: w.wartosc.dziergany }));
+    const sk = skutekPlus(t, w, { nrRobocza, miesiac: s.miesiac.nazwa, oczka }); // SYS-01: ta sama funkcja co pasek pod wzorem
+    if (sk.komunikat === 'limit') ustawArkuszLimitu(nrRobocza); else ustawKomunikat(sk.komunikat);
+    if (sk.haptyka) zagraj(sk.haptyka);
+    if (sk.ogloszenie) p.oglos(sk.ogloszenie);
   }
   async function minus() {
     if (s.zablokowany) { ustawKomunikat('zablokowany'); zagraj('blokadaStukniecie'); return; }
