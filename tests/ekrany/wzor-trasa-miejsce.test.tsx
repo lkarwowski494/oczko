@@ -33,7 +33,7 @@ async function start(zapisane?: { strona?: number; powiekszenie?: number }) {
   await k.otworz('l1');
   if (zapisane) await zapamietajPozycjeWzoru(s.z, { licznikId: 'l1', wzorId: 'w1', ...zapisane });
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
-  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
+  mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k, preferencje: { stan: () => ({ wibracje: false }) } }; // preferencje jak w aplikacji (+1 z paska czyta wibracje, M1-204)
   const r = render(<EkranWzoru />);
   await waitFor(() => expect(mockWidok.strona).toBeDefined());
   return { s, r };

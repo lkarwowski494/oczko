@@ -114,14 +114,15 @@ describe('Lista wytycznych w sklep.md §5a (P-349 (4))', () => {
   });
 });
 
-describe('Link EULA w opisie sklepu (P-349 (2)) — tylko pozycja, nie teraz', () => {
-  test('sklep.md ma pozycję odłożoną do metadanych po audycie (P-320) i nie dopisuje linku do en.store.json', () => {
+describe('Link EULA w opisie sklepu (P-349 (2)) — pozycja wdrożona (10-wydanie-002)', () => {
+  test('sklep.md opisuje wdrożony link (P-349 (2), po audycie P-320); en.store.json ma go na końcu opisu (szczegóły: eula-w-opisie.test.ts)', () => {
     const s = sekcja(sklep, '5b');
     expect(s).toMatch(/Terms of Use/);
     expect(s).toMatch(/P-349 \(2\)/);
     expect(s).toMatch(/P-320/);
     expect(s).toMatch(/po audycie/);
     expect(s).toContain('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/');
-    expect(czytaj('docs/wydanie/metadane/en.store.json')).not.toMatch(/stdeula/);
+    expect(s).toMatch(/10-wydanie-002/);
+    expect(czytaj('docs/wydanie/metadane/en.store.json')).toMatch(/stdeula/);
   });
 });

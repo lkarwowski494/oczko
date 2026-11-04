@@ -110,7 +110,7 @@ beforeEach(async () => {
   mockTrybAwaryjny = () => ({ kopia: Promise.resolve(null) });
   mockPlikBazy = null; mockPrzedAwaria = null;
   mockSluchaczePartii.clear();
-  mockBiezacy.mockClear();
+  mockBiezacy.mockReset(); mockBiezacy.mockImplementation(async () => ({ ok: false, powod: 'brak_miejsca' })); // M1-audytor-generalny-207: mockClear zostawiał implementację z poprzedniego testu (kolejność losowa)
   mockOdswiez.mockReset(); mockOdswiez.mockImplementation(async () => undefined);
   Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true }); // start na pierwszym planie (ADR-0019)
 });

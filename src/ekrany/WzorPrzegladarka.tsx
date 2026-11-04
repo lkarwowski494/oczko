@@ -9,7 +9,7 @@ import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
-import { LicznikWzoru } from './WzorLicznik';
+import { LicznikWzoru, type BladPaska } from './WzorLicznik';
 import { GlifZnacznika, PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
@@ -67,6 +67,7 @@ export type PropsPrzegladarki = {
   potwierdz(tytul: string, opis: string, przycisk: string, f: () => void): void;
   naPlus(): Promise<WynikEkranu<unknown>>;
   naMinus(): Promise<WynikEkranu<unknown>>;
+  naOferty?(): void; // M1-203: odnośnik limitu na pasku
 };
 
 export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
@@ -74,7 +75,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const [menu, ustawMenu] = useState<'brak' | 'opcje' | 'wzory'>('brak');
-  const [blad, ustawBlad] = useState(false);
+  const [blad, ustawBlad] = useState<BladPaska>(false);
   const [pytanie, ustawPytanie] = useState<'brak' | 'zaznacz' | 'zmien'>('brak'); // „Which way do rows go on this page?” (3a: bez wartości domyślnej)
   const [ustawianie, ustawUstawianie] = useState(false); // pasek znacznika po „Mark row”/przeniesieniu, do „Done” (design-spec, „Przy liczeniu”)
   const pasekOtwarty = ustawianie && p.znacznik != null; // PasekZnacznika rysuje pasek tylko przy znaczniku
@@ -101,7 +102,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const obok = s.uklad.wzor === 'obok';
   const czekajace = s.oczekujace ?? [];
 
-  async function licz(f: () => Promise<WynikEkranu<unknown>>) { ustawBlad(!(await f()).ok); }
+  async function licz(f: () => Promise<WynikEkranu<unknown>>) { const r = await f(); ustawBlad(r.ok ? false : r.powod === 'limit' || r.powod === 'zablokowany' ? r.powod : true); } // M1-203
   const narzedzie = (n: Narzedzie, klucz: 'wzor.zakreslacz' | 'wzor.pioro' | 'wzor.gumka', id: string, symbol: NazwaSymbolu) => (
     <Pressable key={id} accessibilityRole="button" accessibilityLabel={t(klucz)} accessibilityState={{ selected: s.narzedzie === n }}
       accessibilityValue={n === 'zakreslacz' ? { text: t('wzor.zakreslenia', { count: s.zakreslenia }) } : undefined}
@@ -224,7 +225,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   );
 
   const licznik = (
-    <LicznikWzoru t={t} licznik={s.licznik} obok={obok} szerokoscKolumny={s.uklad.kolumnaLicznika} blad={blad}
+    <LicznikWzoru t={t} licznik={s.licznik} obok={obok} szerokoscKolumny={s.uklad.kolumnaLicznika} blad={blad} naOferty={p.naOferty}
       naPlus={() => void licz(p.naPlus)} naMinus={() => void licz(p.naMinus)} />
   );
 

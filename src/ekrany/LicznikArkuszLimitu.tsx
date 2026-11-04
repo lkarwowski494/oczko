@@ -16,7 +16,7 @@ export function ArkuszLimitu(p: { n: number; s: StanEkranuLicznika; t: Tlumacz; 
       <Text style={st.tresc}>{t('limit.arkusz_zachowane', { count: s.miesiac.rzedyDanych })}</Text>
       <Text style={st.podpis}>{t('limit.arkusz_pro')}</Text>
       <Pressable accessibilityRole="button" accessibilityLabel={t('limit.zobacz_pro')} onPress={p.naOferty} style={st.plus}>
-        <Text style={st.plusTekst}>{t('limit.zobacz_pro')}</Text>
+        <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('limit.zobacz_pro')}</Text>
       </Pressable>
       <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.nie_teraz')} onPress={p.naZamknij} style={st.drugiPrzycisk}>
         <Text style={[st.tresc, st.pogrubiony]}>{t('wspolne.nie_teraz')}</Text>

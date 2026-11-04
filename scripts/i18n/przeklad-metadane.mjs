@@ -32,9 +32,12 @@ const opc = (p) => (existsSync(p) ? CZYTAJ(p) : null);
 export function wczytajKontekst(root = KORZEN) {
   const met = join(root, MET);
   const stale = Object.fromEntries(Object.entries(CZYTAJ(join(met, 'slowa-aso.json'))).filter(([k]) => !k.startsWith('_')));
-  return { root, zrodlo: CZYTAJ(join(met, 'en.store.json')).apple.info['en-US'], nazwy: CZYTAJ(join(met, 'nazwy.store.json')).apple.info, adresy: CZYTAJ(join(met, 'adresy.json')), stale,
+  const zrodlo = CZYTAJ(join(met, 'en.store.json')).apple.info['en-US'];
+  return { root, zrodlo: { ...zrodlo, description: bezEula(zrodlo.description) }, nazwy: CZYTAJ(join(met, 'nazwy.store.json')).apple.info, adresy: CZYTAJ(join(met, 'adresy.json')), stale,
     slownik: opc(join(root, 'docs/lokalizacja/slownik-terminow.json')), frazy: opc(join(met, 'frazy-badanie.json')) };
 }
+/** Ostatnia linia opisu z adresem EULA Apple (3.1.2, 10-wydanie-002) nie jest tekstem do przekładu ani do walidacji twierdzeń; pilnuje jej tests/wydanie/eula-w-opisie.test.ts. */
+export const bezEula = (t) => String(t ?? '').replace(/\n\s*\n[^\n]*https:\/\/www\.apple\.com\/legal\/internet-services\/itunes\/dev\/stdeula\/\s*$/, '\n');
 export const markaZTytulu = (t) => (String(t).includes(':') ? String(t).split(':')[0].trim() : String(t).trim());
 const tytul = (loc, ctx) => ctx.nazwy[loc].title;
 
@@ -50,13 +53,14 @@ export function sprawdzTekst(pole, v, loc, ctx) {
   if (typeof v !== 'string' || !v.trim()) return ['puste'];
   const p = [], z = ctx.zrodlo, marka = markaZTytulu(tytul(loc, ctx));
   if (len(v) > LIMITY[pole]) p.push(`${len(v)} znaków > ${LIMITY[pole]}`);
-  const zak = v.match(ZAKAZANE); if (zak) p.push(`zakazane słowo spoza źródła: ${zak[0]}`);
+  const tresc = pole === 'description' ? bezEula(v) : v;
+  const zak = tresc.match(ZAKAZANE); if (zak) p.push(`zakazane słowo spoza źródła: ${zak[0]}`);
   if (WALUTA.test(v)) p.push('waluta lub cena w tekście (2.3.7)');
-  const znane = liczby(`${z.subtitle} ${z.promoText} ${z.description}`), obce = [...liczby(v)].filter((x) => !znane.has(x));
+  const znane = liczby(`${z.subtitle} ${z.promoText} ${z.description}`), obce = [...liczby(tresc)].filter((x) => !znane.has(x));
   if (obce.length) p.push(`liczby spoza źródła: ${obce.join(', ')}`);
   if (pole === 'description') {
-    if (punkty(v) !== punkty(z.description)) p.push(`struktura: punktów „•” ${punkty(v)} ≠ ${punkty(z.description)} w źródle`);
-    if (akapity(v) !== akapity(z.description)) p.push(`struktura: akapitów ${akapity(v)} ≠ ${akapity(z.description)} w źródle`);
+    if (punkty(tresc) !== punkty(z.description)) p.push(`struktura: punktów „•” ${punkty(tresc)} ≠ ${punkty(z.description)} w źródle`);
+    if (akapity(tresc) !== akapity(z.description)) p.push(`struktura: akapitów ${akapity(tresc)} ≠ ${akapity(z.description)} w źródle`);
   }
   if (pole === 'description' && !v.includes(marka)) p.push(`marka „${marka}” (nazwa pod ikoną) nie występuje w opisie`);
   return p;

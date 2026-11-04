@@ -101,7 +101,7 @@ Jedno zadanie naraz; przy każdej pozycji build, data, wynik. Pozycja bez wyniku
 | TT-05 | zwrot | zwrot w piaskownicy (sposób: [DO USTALENIA] OP-21, rola 10) | jak TT-04 po odebraniu | W-05, W-06 |
 | TT-06 | aktualizacja (Trening AK-05) | poprzedni build TestFlight z danymi → „Zaktualizuj” → otwórz | projekty, liczniki, historia, ustawienia na miejscu; Live Activity działa | test migracji (Node) jako pokrycie zastępcze |
 | TT-07 | start nad 0.1.0 (P-070) | na telefonie z 0.1.0 zainstaluj nowy build | pusta aplikacja bez awarii; stary plik nietknięty (diagnostyka pokazuje SHA bez zmian) | ADR-0015 |
-| TT-08 | iCloud (P-091 1) | +1 na telefonie, otwórz iPada z tym samym kontem | rekord widoczny; **niezaliczone → synchronizacja ukryta w 1.0** | R-051 |
+| TT-08 | iCloud (P-091 1) | +1 na telefonie, otwórz iPada z tym samym kontem (build z włączoną flagą) | rekord widoczny; to warunek włączenia `ICLOUD_W_1_0` (ZM-06); w 1.0 flaga wyłączona (P-458, M1-audytor-generalny-209), niezaliczone → flaga zostaje wyłączona | R-051 |
 | TT-09 | ekran blokady (ZAL-030) | zablokuj telefon w trakcie Live Activity, stuknij +1 trzy razy, odblokuj | wartość +3 bez konfliktu | R-018 |
 | TT-10 | przywrócenie na drugim urządzeniu | na iPadzie z tym samym kontem App Store (przy TT-08) „Przywróć” | Pro działa | W-09 |
 | TT-11 | usunięcie danych a zakup (KP-05) | Ustawienia → „Usuń wszystkie dane”, potem „Przywróć” | dane puste, Pro wraca | W-02 |

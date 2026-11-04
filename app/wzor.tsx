@@ -219,7 +219,7 @@ export default function EkranWzoru(): React.ReactElement {
         naZmienNazwe={() => ustawArkuszNazwy(true)}
         tylkoRysik={rysik.tylkoRysik}
         potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])}
-        naPlus={async () => { const r = await licznik.uslugi.dodajRzad(); bladLicznika(r); await wczytaj(widok.wzorId); return r.ok ? { ok: true, wartosc: undefined } : r; }}
+        naOferty={() => router.push('/oferty')}
         naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
       />
     </Bezpieczny>

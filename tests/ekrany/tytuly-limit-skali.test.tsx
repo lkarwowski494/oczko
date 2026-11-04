@@ -10,7 +10,8 @@ import { ListaProjektow } from '../../src/ekrany/ListaProjektow';
 import { Kosz } from '../../src/ekrany/Kosz';
 import { ArkuszLimitu } from '../../src/ekrany/LicznikArkuszLimitu';
 import { style as stylLicznika } from '../../src/ekrany/LicznikStyl';
-import { MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
+import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
+import { LicznikWzoru } from '../../src/ekrany/WzorLicznik';
 import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { stanLicznika, tEn } from './pomoc';
@@ -57,6 +58,34 @@ test('każdy tytuł ekranu w src/ekrany z krojem tytułowym ma maxFontSizeMultip
       if (!linia.includes('accessibilityRole="header"')) return;
       const krojTytulowy = /typografia\.(tytul|instrukcja)\b/.test(linia) || (/\bst\.tytul\b/.test(linia) && (tytulowy || !lokalnyTytul));
       if (krojTytulowy && !linia.includes('maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}')) bez.push(`${plik}:${i + 1}`);
+    });
+  }
+  expect(bez).toEqual([]);
+});
+
+// M1-audytor-generalny-205 (04-studio-projektowe-003, SP-07; P-277): etykiety −1 i +1 paska licznika pod wzorem rosły z Dynamic Type bez
+// granicy (przy AX5 ×3,571: „−1” ok. 100 pt w polu 56 pt). Limity jak na liczniku: −1 ×1,4 (`MAX_SKALA_MINUSA`), +1 ×1,8 (`MAX_SKALA_TYTULOWA`).
+test('205: etykiety −1 i +1 paska licznika pod wzorem mają limity skali jak licznik (×1,4 i ×1,8)', () => {
+  render(<LicznikWzoru t={t} licznik={{ liczba: 5, dziergany: 6, znaczenie: 'skonczone' }} obok={false} blad={false} naPlus={jest.fn()} naMinus={jest.fn()} />);
+  expect(screen.getByText(t('licznik.minus')).props.maxFontSizeMultiplier).toBe(MAX_SKALA_MINUSA);
+  expect(screen.getByText(t('licznik.plus')).props.maxFontSizeMultiplier).toBe(MAX_SKALA_TYTULOWA);
+});
+
+// Trwała kontrola klasy (205, „Powraca”): styl z krojem przycisku licznika (`...typografia.przycisk,`, 28 pt) rośnie z Dynamic Type, więc każdy
+// `Text` z takim stylem (`st.<nazwa>` w pliku, który definiuje albo importuje styl) ma `maxFontSizeMultiplier`. `przyciskPelny` ma limit w arkuszach.
+test('205: każdy Text ze stylem typografia.przycisk w src/ekrany ma maxFontSizeMultiplier', () => {
+  const katalog = path.join(__dirname, '../../src/ekrany');
+  const pliki = fs.readdirSync(katalog).filter((f) => /\.tsx?$/.test(f));
+  const nazwy = new Set<string>();
+  for (const plik of pliki) {
+    for (const m of fs.readFileSync(path.join(katalog, plik), 'utf8').matchAll(/^\s*(\w+): \{ \.\.\.typografia\.przycisk,/gm)) nazwy.add(m[1]);
+  }
+  expect([...nazwy].sort()).toEqual(['minusTekst', 'plusTekst']); // kontrola, że wzorzec coś łapie
+  const bez: string[] = [];
+  for (const plik of pliki.filter((f) => f.endsWith('.tsx'))) {
+    fs.readFileSync(path.join(katalog, plik), 'utf8').split('\n').forEach((linia, i) => {
+      const uzyte = [...linia.matchAll(/<Text\b[^>]*style=\{\[?st\.(\w+)/g)].some((m) => nazwy.has(m[1]));
+      if (uzyte && !linia.includes('maxFontSizeMultiplier=')) bez.push(`${plik}:${i + 1}`);
     });
   }
   expect(bez).toEqual([]);

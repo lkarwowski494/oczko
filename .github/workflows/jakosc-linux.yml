@@ -33,6 +33,7 @@ jobs:
           echo "JEST_SEED=$seed (powtórzenie lokalne - npx jest --randomize --seed=$seed)" >> "$GITHUB_STEP_SUMMARY"
           npx jest --ci --randomize --seed="$seed" --silent
       - name: Strefy czasowe (DS-09, jedna pętla w jednym zadaniu)
+        if: ${{ !cancelled() }} # M1-audytor-generalny-207: czerwień kroku losowej kolejności nie ukrywa wyniku stref (wynik zadania i tak zależy od obu)
         run: |
           for tz in Europe/Warsaw UTC America/Los_Angeles Pacific/Kiritimati Pacific/Pago_Pago Asia/Kolkata Australia/Lord_Howe Asia/Tokyo; do
             echo "::group::TZ=$tz"; TZ="$tz" npx jest tests/narzedzia --silent || exit 1; echo "::endgroup::"
