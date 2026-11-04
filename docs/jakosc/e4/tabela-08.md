@@ -177,6 +177,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-licznik.test.tsx` | zielony (główny zestaw) | 2 | P-046, P-220 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-stan-danych.test.tsx` | zielony (główny zestaw) | 14 | BR-DAN-002/S3, BR-DAN-009, P-220, P-229, P-242, P-266 | `src/ekrany/StanDanych`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/import-pliku.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/import-pliku` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/import-zimny-start-206.test.tsx` | zielony (główny zestaw) | 2 | BR-DAN-006 | `src/dane/archiwum`<br>`src/dane/baza/adapter-node`<br>`src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/kompozycja/import-pliku`<br>`src/kompozycja/licznik`<br>`src/konfiguracja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/informacje-pro.test.tsx` | zielony (główny zestaw) | 2 | P-089, P-113, P-117, P-118, R-120, R-121 | `src/domena/porty`<br>`src/ekrany/InformacjePro`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ipad-tekst-urzadzenia.test.tsx` | zielony (główny zestaw) | 4 | — | `src/i18n/i18n`<br>`src/i18n/slowniki` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/jednostka-rzedow-liczba-mnoga.test.tsx` | zielony (główny zestaw) | 4 | P-405 | `src/ekrany/Licznik`<br>`src/ekrany/ObrazKarty`<br>`src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
@@ -356,4 +357,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 352; zależnych od poprawek: 217.
+Razem plików testów: 353; zależnych od poprawek: 218.
