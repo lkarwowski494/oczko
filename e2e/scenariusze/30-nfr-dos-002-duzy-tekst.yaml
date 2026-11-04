@@ -45,3 +45,19 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "12[ ,.  ]?345" }
 - assertVisible: { id: "licznik-plus" }
 - takeScreenshot: 30-ax5-liczba-5-cyfr
+# M1-audytor-generalny-205 (04-studio-projektowe-003, SP-07): pasek licznika pod wzorem przy AX5 — „−1” i „+1” mają limity skali jak licznik
+# (×1,4 i ×1,8); zrzut do oceny 04 (liczba, −1 i +1 widoczne, strona wzoru zajmuje co najmniej połowę wysokości). Menu i ekran dodawania przy AX5 bywają dłuższe niż ekran.
+- tapOn: { id: "licznik-menu" }
+- scrollUntilVisible: { element: { id: "menu-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "menu-wzor" }
+- tapOn: { id: "menu-wzor" }
+- scrollUntilVisible: { element: { id: "wzor-dodaj" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "wzor-dodaj" }
+- tapOn: { id: "wzor-dodaj" }
+- scrollUntilVisible: { element: { id: "e2e-wzor-pdf" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "e2e-wzor-pdf" }
+- tapOn: { id: "e2e-wzor-pdf" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-plus" }
+- takeScreenshot: 30-ax5-wzor-pasek

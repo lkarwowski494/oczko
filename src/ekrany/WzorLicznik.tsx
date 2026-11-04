@@ -2,7 +2,7 @@
 // Wydzielone bez zmian z WzorPrzegladarka.tsx (limit rozmiaru pliku, P-364); stan błędu zapisu i wywołania +1/−1 zostają w ekranie.
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { MAX_SKALA_LICZBY, cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_LICZBY, MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 /** M1-audytor-generalny-203 (SYS-01): `limit` i `zablokowany` to nie błąd zapisu — tekst jak na liczniku (`skutekPlus`), `true` = błąd zapisu. */
@@ -45,10 +45,10 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
       )}
       <View style={obok ? st.przyciskiKolumna : st.przyciski}>
         <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={st.minus} testID="licznik-minus">
-          <Text style={st.minusTekst}>{t('licznik.minus')}</Text>
+          <Text style={st.minusTekst} maxFontSizeMultiplier={MAX_SKALA_MINUSA}>{t('licznik.minus')}</Text>
         </Pressable>
         <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: p.licznik.dziergany })} onPress={p.naPlus} style={[st.plus, obok && st.plusKolumna]} testID="licznik-plus">
-          <Text style={st.plusTekst}>{t('licznik.plus')}</Text>
+          <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('licznik.plus')}</Text>{/* M1-205: limity jak Licznik.tsx (P-277) */}
         </Pressable>
       </View>
     </View>
