@@ -1,6 +1,6 @@
 # Oczko — system „Dzianina” (redesign M3)
 
-Stan: E3 roli 04, 2026-11-05 · Decyzje: P-549 (przepływy `../to-be.md`), P-552 (kierunek „Dzianina”, ikona — kreski), P-553 (tło T2 Musket, Bree Serif, miejsce plików). Obowiązuje dla wdrożenia M3 (rola 08, partie p1–p8). Do wdrożenia p1 kod i testy czytają poprzedni system (`../design-spec.md`, `../tokeny.json`, `../ikona/`), który p1 zastępuje tym katalogiem razem z testami (P-553, wyjątek nazwany).
+Stan: zatwierdzony (P-554: system, 6 ekranów i ikona bez poprawek), przekazanie E4 roli 04, 2026-11-05 · Decyzje: P-549 (przepływy `../to-be.md`), P-552 (kierunek „Dzianina”, ikona — kreski), P-553 (tło T2 Musket, Bree Serif, miejsce plików), P-554 (zatwierdzenie). Obowiązuje dla wdrożenia M3 (rola 08, partie p1–p8). Do wdrożenia p1 kod i testy czytają poprzedni system (`../design-spec.md`, `../tokeny.json`, `../ikona/`), który p1 zastępuje tym katalogiem razem z testami (P-553, wyjątek nazwany).
 
 ## Pliki
 | Co | Plik |
@@ -80,3 +80,12 @@ Obecne kreski z zakreśleniem w barwach Dzianiny: tło `karta` `#3A332E`, kreski
 
 ## Czego nie sprawdzono
 Urządzenie (Dynamic Type na żywo, VoiceOver, haptyka, SF Symbols, cyfry tabelaryczne Bree Serif), szerokości 320 i 430 pt i pozostałe stany (przy wdrożeniu, P-546), iPad, zegarek, ekran blokady, widżet; test z 3–5 osobami (przejście poznawcze) — krok właściciela po wdrożeniu.
+
+## Przekazanie (E4, P-554)
+- Rola 08 używa wyłącznie tokenów (`tokeny.json`) i komponentów z tabeli „Komponenty”; brakujący token albo stan → zgłoszenie do 04, nie wartość w kodzie. P1 podmienia `../design-spec.md`, `../tokeny.json`, `../ikona/` na ten katalog razem z testami (P-553).
+- Po wdrożeniu każdej partii ekranów rola 04 wraca w trybie `audit`: zrzuty aplikacji porównane z `wzorce-zrzuty/` (linia bazowa SP-13); 320/430 pt i pozostałe stany dochodzą wtedy (P-546).
+- Proponowany wpis do pamięci portfolio (repo `prompts`, moduł „pamięć portfolio”; dopisuje właściciel):
+
+| Aplikacja | Metafora / element firmowy | Paleta (rdzeń) | Kroje | Uwagi właściciela |
+|---|---|---|---|---|
+| Oczko („Dzianina”, redesign M3) | Dzianina części rosnąca do celu: wysokość = rzędy gotowe / cel części, jaśniejszy pas = rzędy dziś, igła = bieżący rząd, ząbek w brzegu = rząd przypomnienia; ta sama dzianina na karcie „Kontynuuj”, liczniku, miniaturze projektu i w dniach kalendarza. Ikona: kreski z zakreśleniem (z poprzedniej wersji) w barwach Dzianiny | runo musket `#E6E1DA` / ciemne `#26211E`, tusz `#221D1A`, akcent mioget `#C08425` (ciemny `#CF9636`), grafit karty `#3A332E`; barwy z runa owiec szetlandzkich | Bree Serif (tytuły i liczby, OFL), treść systemowa | 05.11.2026: build 1071 „wygląda jak aplikacja wygenerowana w AI w 5 minut” → żaden ekran płaskim białym ani czarnym tłem, przycisk główny wypełniony w obu motywach (P-547); wybór „Dzianina”, ikona kreski (P-552), tło T2 i Bree (P-553), zatwierdzone bez poprawek (P-554). Monochromia „Kreski na wzorze” (poprzedni Oczko) uchylona P-544. |
