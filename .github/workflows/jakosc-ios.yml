@@ -20,6 +20,8 @@ on:
       - 'package-lock.json'
       - 'scripts/ci/**'
       - 'scripts/natywne/czlonkostwo-celu.mjs'
+      - 'scripts/natywne/ikona-zegarka*.mjs'
+      - 'scripts/wydanie/diagnostyka-ikony-zegarka.sh'
       - '.github/scripts/jakosc/**'
       - '.github/workflows/jakosc-ios.yml'
       - 'docs/monetyzacja/wektory-*.json' # wektory czytane przez swift test (ADR-0007)
@@ -121,6 +123,57 @@ jobs:
           name: eksperymenty-wzoru
           path: eksperymenty-wzoru.log
           retention-days: 7
+  zegarek-ikona:
+    # 10-wydanie-002 (testflight.yml #6, run 41983086785, build 1061): kontrola-ipa.sh zgłosiła brak CFBundleIconName na najwyższym poziomie Info.plist zegarka, choć projekt po prebuild ma
+    # ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon. Ten sam błąd łapiemy tu, bez sekretów i bez Approve właściciela (środowisko `release` jest tylko w testflight.yml):
+    # budujemy sam cel zegarka jak archiwum (SDK watchos, Release, bez podpisu), wypisujemy dowody (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
+    # i wymagamy CFBundleIconName = AppIcon w zbudowanym pakiecie. Bez podów i bez całej aplikacji: kilka minut zamiast ~40. Test: tests/wydanie/ikona-zegarka-pakiet.test.ts.
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Ikona zegarka w projekcie (P-350; jak w zadaniu build)
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Platforma iOS i watchOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Budowa celu zegarka (SDK watchos, Release, bez podpisu; surowy log do pliku)
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcodeproj | head -1)
+          xcodebuild -project "$WS" -target OczkoZegarek -configuration Release -sdk watchos \
+            SYMROOT="$PWD/build-zegarek/products" OBJROOT="$PWD/build-zegarek/obj" CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee xcodebuild-zegarek.log | xcbeautify
+      - name: Diagnostyka ikony zegarka (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
+        if: always()
+        run: bash scripts/wydanie/diagnostyka-ikony-zegarka.sh ios/xcodebuild-zegarek.log ios/build-zegarek "ios/$(ls ios | grep '\.xcodeproj$' | head -1)"
+      - name: Zbudowany zegarek wskazuje ikonę AppIcon w Info.plist (10-wydanie-002; ta sama kontrola co kontrola-ipa.sh, bez Approve)
+        run: |
+          set -o pipefail
+          APP=$(find ios/build-zegarek/products -type d -name 'OczkoZegarek.app' | head -n 1)
+          [ -n "$APP" ] || { echo "::error::brak zbudowanego OczkoZegarek.app"; exit 1; }
+          plutil -convert json -o "$RUNNER_TEMP/zegarek-info.json" "$APP/Info.plist"
+          node scripts/natywne/ikona-zegarka-pakiet.mjs --info "$RUNNER_TEMP/zegarek-info.json" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zegarek-ikona-log
+          path: ios/xcodebuild-zegarek.log
+          retention-days: 7
+
   build:
     runs-on: macos-26 # SDK 56+: Xcode 26.4+ (macos-15 ma najwyżej 26.3; Trening)
     timeout-minutes: 90 # Trening: build ~40 min (pods 2 + xcodebuild 36); zmierzyć w pierwszym przebiegu

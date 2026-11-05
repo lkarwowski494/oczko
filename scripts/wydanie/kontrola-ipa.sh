@@ -29,8 +29,9 @@ if [ -d targets/watch ]; then
     PAKIETY+=("$ZEGAREK")
     [ "$(pb WKCompanionAppBundleIdentifier "$ZEGAREK/Info.plist")" = "$ID" ] || blad "zegarek wskazuje inną aplikację towarzyszącą niż $ID"
     [ "$(pb MinimumOSVersion "$ZEGAREK/Info.plist")" = "$MIN_WATCH" ] || blad "zegarek: MinimumOSVersion ≠ $MIN_WATCH"
-    # L-021 (Trening, P-349): bez ikony zegarka App Store Connect odrzuca wysyłkę („Missing Icons… CFBundleIconFiles”); actool wpisuje CFBundleIconName tylko z AppIcon.
-    [ -n "$(pb CFBundleIconName "$ZEGAREK/Info.plist")" ] || blad "zegarek: brak CFBundleIconName w Info.plist (ikona zegarka; Trening L-021)"
+    # L-021 (Trening, P-349): bez ikony zegarka App Store Connect odrzuca wysyłkę („Missing Icons… CFBundleIconName”). 10-wydanie-002: actool zapisuje nazwę zestawu
+    # w CFBundleIcons › CFBundlePrimaryIcon › CFBundleIconName (nie na najwyższym poziomie; run 41987399061), więc kontrola jest w jednym miejscu z jakosc-ios.yml.
+    plutil -convert json -o "${RUNNER_TEMP:-/tmp}/zegarek-info.json" "$ZEGAREK/Info.plist" && node scripts/natywne/ikona-zegarka-pakiet.mjs --info "${RUNNER_TEMP:-/tmp}/zegarek-info.json" || bledy=$((bledy + 1))
     # M1-audytor-generalny-076: zegarek używa UserDefaults i fstat — bez własnego manifestu App Store Connect odrzuca build (ITMS-91053).
     m="-"; [ -f "$ZEGAREK/PrivacyInfo.xcprivacy" ] && { m="${RUNNER_TEMP:-/tmp}/privacy-zegarek.xml"; plutil -convert xml1 -o "$m" "$ZEGAREK/PrivacyInfo.xcprivacy"; }
     node scripts/wydanie/manifest-celow.mjs --pakiet "$m" --cel watch || bledy=$((bledy + 1))
