@@ -1,0 +1,502 @@
+{
+ "jasny: tekst/tlo": [
+  "#221D1A",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny: tekst2/tlo": [
+  "#5A5048",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny: tekst/powierzchnia": [
+  "#221D1A",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: tekst2/powierzchnia": [
+  "#5A5048",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: akcentTekst/tlo": [
+  "#8A5A12",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny: akcentTekst/powierzchnia": [
+  "#8A5A12",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: kartaTekst/karta": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny: kartaTekst2/karta": [
+  "#D6CEC6",
+  "#3A332E",
+  4.5
+ ],
+ "jasny: „+1” 26 pt pogr.": [
+  "#221D1A",
+  "#C08425",
+  3
+ ],
+ "jasny: dzianina/karta (grafika)": [
+  "#C08425",
+  "#3A332E",
+  3
+ ],
+ "jasny: rzędy dziś/karta (grafika)": [
+  "#EBC983",
+  "#3A332E",
+  3
+ ],
+ "jasny: przyciskTekst/przycisk": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny: przyciskNaKarcieTekst/przyciskNaKarcie": [
+  "#221D1A",
+  "#F3F1EC",
+  4.5
+ ],
+ "jasny: przycisk na karcie (UI)": [
+  "#F3F1EC",
+  "#3A332E",
+  3
+ ],
+ "jasny: ikona kafla (UI)": [
+  "#3A332E",
+  "#F0DDB6",
+  3
+ ],
+ "jasny: zakladka/pasek": [
+  "#625850",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny: zakladkaWybrana/pasek": [
+  "#8A5A12",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny: obwódka dnia dzierganego/dzień pusty (grafika)": [
+  "#8A5A12",
+  "#D6D0C8",
+  3
+ ],
+ "jasny: obwódka dnia dzierganego/tło (grafika)": [
+  "#8A5A12",
+  "#E6E1DA",
+  3
+ ],
+ "jasny: dzień pusty — odróżnia go kształt, nie kontrast (informacyjnie)": [
+  "#D6D0C8",
+  "#E6E1DA",
+  1
+ ],
+ "jasny: niszczacyTekst/niszczacy": [
+  "#FFFFFF",
+  "#A3261C",
+  4.5
+ ],
+ "jasny: przycisk niszczący/tło (UI)": [
+  "#A3261C",
+  "#E6E1DA",
+  3
+ ],
+ "jasny: linia podziału — dekoracyjna (informacyjnie)": [
+  "#CFC8BF",
+  "#E6E1DA",
+  1
+ ],
+ "jasny: igła = bieżący rząd (grafika)": [
+  "#A39A92",
+  "#3A332E",
+  3
+ ],
+ "jasny: tekst/wzorRama": [
+  "#221D1A",
+  "#D9D3CB",
+  4.5
+ ],
+ "ciemny: tekst/tlo": [
+  "#F1EDE9",
+  "#26211E",
+  4.5
+ ],
+ "ciemny: tekst2/tlo": [
+  "#C7BCB2",
+  "#26211E",
+  4.5
+ ],
+ "ciemny: tekst/powierzchnia": [
+  "#F1EDE9",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: tekst2/powierzchnia": [
+  "#C7BCB2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: akcentTekst/tlo": [
+  "#F0CF8A",
+  "#26211E",
+  4.5
+ ],
+ "ciemny: akcentTekst/powierzchnia": [
+  "#F0CF8A",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: kartaTekst/karta": [
+  "#F3F1EC",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny: kartaTekst2/karta": [
+  "#D3C9BF",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny: „+1” 26 pt pogr.": [
+  "#221D1A",
+  "#CF9636",
+  3
+ ],
+ "ciemny: dzianina/karta (grafika)": [
+  "#CF9636",
+  "#3A322D",
+  3
+ ],
+ "ciemny: rzędy dziś/karta (grafika)": [
+  "#F3D597",
+  "#3A322D",
+  3
+ ],
+ "ciemny: przyciskTekst/przycisk": [
+  "#221D1A",
+  "#F0CF8A",
+  4.5
+ ],
+ "ciemny: przyciskNaKarcieTekst/przyciskNaKarcie": [
+  "#221D1A",
+  "#F3F1EC",
+  4.5
+ ],
+ "ciemny: przycisk na karcie (UI)": [
+  "#F3F1EC",
+  "#3A322D",
+  3
+ ],
+ "ciemny: ikona kafla (UI)": [
+  "#F0CF8A",
+  "#4A413A",
+  3
+ ],
+ "ciemny: zakladka/pasek": [
+  "#B5A99E",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny: zakladkaWybrana/pasek": [
+  "#F0CF8A",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny: obwódka dnia dzierganego/dzień pusty (grafika)": [
+  "#F0CF8A",
+  "#40382F",
+  3
+ ],
+ "ciemny: obwódka dnia dzierganego/tło (grafika)": [
+  "#F0CF8A",
+  "#26211E",
+  3
+ ],
+ "ciemny: dzień pusty — odróżnia go kształt, nie kontrast (informacyjnie)": [
+  "#40382F",
+  "#26211E",
+  1
+ ],
+ "ciemny: niszczacyTekst/niszczacy": [
+  "#4A0E0A",
+  "#F2B8B5",
+  4.5
+ ],
+ "ciemny: przycisk niszczący/tło (UI)": [
+  "#F2B8B5",
+  "#26211E",
+  3
+ ],
+ "ciemny: linia podziału — dekoracyjna (informacyjnie)": [
+  "#3D3530",
+  "#26211E",
+  1
+ ],
+ "ciemny: igła = bieżący rząd (grafika)": [
+  "#9C918A",
+  "#3A322D",
+  3
+ ],
+ "ciemny: tekst/wzorRama": [
+  "#F1EDE9",
+  "#1E1A17",
+  4.5
+ ],
+ "jasny zwiększony: tekst/tlo": [
+  "#221D1A",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny zwiększony: tekst2/tlo": [
+  "#3F3731",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny zwiększony: tekst/powierzchnia": [
+  "#221D1A",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: tekst2/powierzchnia": [
+  "#3F3731",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: akcentTekst/tlo": [
+  "#6B450C",
+  "#E6E1DA",
+  4.5
+ ],
+ "jasny zwiększony: akcentTekst/powierzchnia": [
+  "#6B450C",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: kartaTekst/karta": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny zwiększony: kartaTekst2/karta": [
+  "#EAE4DD",
+  "#3A332E",
+  4.5
+ ],
+ "jasny zwiększony: „+1” 26 pt pogr.": [
+  "#221D1A",
+  "#C08425",
+  3
+ ],
+ "jasny zwiększony: dzianina/karta (grafika)": [
+  "#C08425",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: rzędy dziś/karta (grafika)": [
+  "#EBC983",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: przyciskTekst/przycisk": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny zwiększony: przyciskNaKarcieTekst/przyciskNaKarcie": [
+  "#221D1A",
+  "#F3F1EC",
+  4.5
+ ],
+ "jasny zwiększony: przycisk na karcie (UI)": [
+  "#F3F1EC",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: ikona kafla (UI)": [
+  "#3A332E",
+  "#F0DDB6",
+  3
+ ],
+ "jasny zwiększony: zakladka/pasek": [
+  "#3F3731",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny zwiększony: zakladkaWybrana/pasek": [
+  "#8A5A12",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny zwiększony: obwódka dnia dzierganego/dzień pusty (grafika)": [
+  "#6B450C",
+  "#D6D0C8",
+  3
+ ],
+ "jasny zwiększony: obwódka dnia dzierganego/tło (grafika)": [
+  "#6B450C",
+  "#E6E1DA",
+  3
+ ],
+ "jasny zwiększony: dzień pusty — odróżnia go kształt, nie kontrast (informacyjnie)": [
+  "#D6D0C8",
+  "#E6E1DA",
+  1
+ ],
+ "jasny zwiększony: niszczacyTekst/niszczacy": [
+  "#FFFFFF",
+  "#A3261C",
+  4.5
+ ],
+ "jasny zwiększony: przycisk niszczący/tło (UI)": [
+  "#A3261C",
+  "#E6E1DA",
+  3
+ ],
+ "jasny zwiększony: linia podziału — dekoracyjna (informacyjnie)": [
+  "#9C9288",
+  "#E6E1DA",
+  1
+ ],
+ "jasny zwiększony: igła = bieżący rząd (grafika)": [
+  "#A39A92",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: tekst/wzorRama": [
+  "#221D1A",
+  "#D9D3CB",
+  4.5
+ ],
+ "ciemny zwiększony: tekst/tlo": [
+  "#F1EDE9",
+  "#26211E",
+  4.5
+ ],
+ "ciemny zwiększony: tekst2/tlo": [
+  "#E3DAD2",
+  "#26211E",
+  4.5
+ ],
+ "ciemny zwiększony: tekst/powierzchnia": [
+  "#F1EDE9",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: tekst2/powierzchnia": [
+  "#E3DAD2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: akcentTekst/tlo": [
+  "#F8DEA6",
+  "#26211E",
+  4.5
+ ],
+ "ciemny zwiększony: akcentTekst/powierzchnia": [
+  "#F8DEA6",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: kartaTekst/karta": [
+  "#F3F1EC",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny zwiększony: kartaTekst2/karta": [
+  "#ECE6DF",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny zwiększony: „+1” 26 pt pogr.": [
+  "#221D1A",
+  "#CF9636",
+  3
+ ],
+ "ciemny zwiększony: dzianina/karta (grafika)": [
+  "#CF9636",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: rzędy dziś/karta (grafika)": [
+  "#F3D597",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: przyciskTekst/przycisk": [
+  "#221D1A",
+  "#F0CF8A",
+  4.5
+ ],
+ "ciemny zwiększony: przyciskNaKarcieTekst/przyciskNaKarcie": [
+  "#221D1A",
+  "#F3F1EC",
+  4.5
+ ],
+ "ciemny zwiększony: przycisk na karcie (UI)": [
+  "#F3F1EC",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: ikona kafla (UI)": [
+  "#F0CF8A",
+  "#4A413A",
+  3
+ ],
+ "ciemny zwiększony: zakladka/pasek": [
+  "#E3DAD2",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny zwiększony: zakladkaWybrana/pasek": [
+  "#F0CF8A",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny zwiększony: obwódka dnia dzierganego/dzień pusty (grafika)": [
+  "#F8DEA6",
+  "#40382F",
+  3
+ ],
+ "ciemny zwiększony: obwódka dnia dzierganego/tło (grafika)": [
+  "#F8DEA6",
+  "#26211E",
+  3
+ ],
+ "ciemny zwiększony: dzień pusty — odróżnia go kształt, nie kontrast (informacyjnie)": [
+  "#40382F",
+  "#26211E",
+  1
+ ],
+ "ciemny zwiększony: niszczacyTekst/niszczacy": [
+  "#4A0E0A",
+  "#F2B8B5",
+  4.5
+ ],
+ "ciemny zwiększony: przycisk niszczący/tło (UI)": [
+  "#F2B8B5",
+  "#26211E",
+  3
+ ],
+ "ciemny zwiększony: linia podziału — dekoracyjna (informacyjnie)": [
+  "#6A5F57",
+  "#26211E",
+  1
+ ],
+ "ciemny zwiększony: igła = bieżący rząd (grafika)": [
+  "#9C918A",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: tekst/wzorRama": [
+  "#F1EDE9",
+  "#1E1A17",
+  4.5
+ ]
+}

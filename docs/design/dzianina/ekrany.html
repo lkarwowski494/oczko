@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko „Dzianina” — ekrany TO BE</title>
+<link rel="stylesheet" href="tokeny.css">
+<!-- System „Dzianina” (P-552, P-553). Kolory wyłącznie z tokeny.json (przez tokeny.css). Dane: [PRZYKŁAD]. Teksty DE (data-de): [PRZYKŁAD] do arkusza
+     najdłuższego języka; tłumaczenia robi rola 09. Treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3. Ikony interfejsu zastępcze (na iOS SF Symbols). -->
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Bree Serif"; src: url(../fonty/BreeSerif.ttf); }
+:root { --w: 390px; --dt-tytul: 1; --dt-tresc: 1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.br { font-family: "Bree Serif", serif; font-weight: 400; }
+.t-duzy { font-size: calc(34px * var(--dt-tytul)); line-height: 1.12; }
+.t-tytul { font-size: calc(22px * var(--dt-tytul)); line-height: 1.2; }
+.t-tresc { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.t-pod { font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
+.cyfry { font-variant-numeric: tabular-nums; }
+.ik { display: inline-flex; width: 1em; height: 1em; flex: none; } .ik svg { width: 100%; height: 100%; }
+.ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; }
+.status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
+.status .bat { width: 26px; height: 12px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; }
+.status .bat::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }
+.naglowek { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 16px 0; gap: 12px; }
+.naglowek .data { color: var(--tekst2); margin-top: 4px; }
+.pik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; color: var(--tekst); flex: none; border-radius: 22px; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; min-height: 44px; }
+.nav a { display: inline-flex; align-items: center; gap: 2px; color: var(--akcentTekst); min-height: 44px; padding: 0 8px; }
+.tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
+.zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.zakladki a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--zakladka); font-weight: 600; text-align: center; min-height: 44px; }
+.zakladki a .ik { font-size: 26px; } .zakladki a.wybrana { color: var(--zakladkaWybrana); }
+.sekcja { font-weight: 700; margin-bottom: -8px; }
+/* karta „Kontynuuj” (K-B) */
+.karta { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 112px 1fr; gap: 16px; }
+.dz { grid-row: span 2; border-radius: 12px; background: #00000026; position: relative; min-height: 216px; }
+.dz svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.opis { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.opis .czesc { color: var(--kartaTekst2); }
+.lr { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.liczba { font-size: calc(56px * min(var(--dt-tytul), 1.6)); line-height: 1; }
+.liczba small { display: block; font-family: "Source Sans 3"; font-size: calc(15px * var(--dt-tresc)); color: var(--kartaTekst2); margin-top: 4px; }
+.plus { width: 72px; height: 72px; border-radius: 36px; background: var(--akcent); color: var(--naAkcencie); font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 -3px 0 #0003; flex: none; }
+.kont { grid-column: 2; align-self: end; display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; border-radius: 14px; background: var(--przyciskNaKarcie); color: var(--przyciskNaKarcieTekst); font-weight: 700; padding: 8px 12px; text-align: center; }
+.kont .ik { font-size: 16px; }
+.wiersz { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); min-height: 52px; }
+.wiersz .zn { width: 14px; height: 22px; border-radius: 7px 7px 2px 2px; background: var(--akcent); flex: none; }
+.wiersz p { flex: 1; } .wiersz .ik { color: var(--tekst2); font-size: 16px; }
+.tydz { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.tydz div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); }
+.tydz i { width: 100%; max-width: 44px; min-height: 44px; aspect-ratio: 1; border-radius: 10px; background: var(--dzienPusty); display: block; }
+.tydz i.z, .kal i.z { background: var(--akcent) var(--faktura); box-shadow: inset 0 0 0 2px var(--akcentTekst); }
+.tydz i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; } .tydz b { color: var(--tekst); }
+.kafle { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kafel { background: var(--powierzchnia); border-radius: 18px; padding: 16px; min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; font-weight: 600; }
+.kafel .it { width: 44px; height: 44px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--akcentTekst); font-weight: 700; }
+:root { --faktura: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13.5' height='12'%3E%3Cellipse cx='3.9' cy='6' rx='2.4' ry='4.9' transform='rotate(-28 3.9 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3Cellipse cx='9.6' cy='6' rx='2.4' ry='4.9' transform='rotate(28 9.6 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3C/svg%3E"); }
+/* licznik */
+.licz-g { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 8px 16px 0; }
+.licz-g .dz { min-height: 260px; grid-row: auto; background: var(--karta); }
+.licz-num { font-size: calc(104px * min(var(--dt-tytul), 1.3)); line-height: 1; }
+.licz-num small { display: block; font-family: "Source Sans 3"; font-size: calc(17px * var(--dt-tresc)); color: var(--tekst2); }
+.notatka { margin: 12px 16px 0; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); display: flex; gap: 12px; }
+.notatka .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 2px; }
+.akcje { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; padding: 16px 16px 0; }
+.akcje a { display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 64px; padding: 8px 4px; border-radius: 14px; background: var(--powierzchnia); font-weight: 600; text-align: center; }
+.akcje a .ik { font-size: 24px; color: var(--ikona); }
+[data-theme="dark"] .akcje a .ik { color: var(--akcentTekst); }
+.dol { margin-top: auto; display: flex; gap: 12px; align-items: stretch; padding: 16px 16px 36px; }
+.minus { width: 72px; border-radius: 18px; border: 2px solid var(--tekst2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: calc(22px * min(var(--dt-tresc), 1.6)); color: var(--tekst); flex: none; min-height: 72px; align-self: flex-end; }
+.wielki { flex: 1; min-height: 168px; border-radius: 26px; background: var(--akcent); color: var(--naAkcencie); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: inset 0 -4px 0 #0003; padding: 12px; text-align: center; }
+.wielki b { font-size: calc(34px * min(var(--dt-tytul), 1.4)); font-weight: 800; } .wielki span { font-weight: 600; }
+/* projekty */
+.szukaj { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--powierzchnia); color: var(--tekst2); min-height: 44px; }
+.lista { background: var(--powierzchnia); border-radius: 16px; overflow: hidden; }
+.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px; min-height: 72px; }
+.lista > div + div { border-top: 1px solid var(--linia); }
+.lista .pr { width: 40px; height: 48px; border-radius: 8px; background: var(--karta); position: relative; overflow: hidden; flex: none; }
+.lista .pr i { position: absolute; left: 4px; right: 4px; bottom: 4px; background: var(--akcent) var(--faktura); border-radius: 3px; }
+.lista .tx { flex: 1; min-width: 0; } .lista .tx small { display: block; color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.lista .pik { color: var(--tekst2); }
+/* historia */
+.kal { display: grid; grid-template-columns: repeat(7, 1fr); margin: 0 -16px; }
+.kal span { text-align: center; color: var(--tekst2); padding-bottom: 4px; }
+.kal i { display: flex; align-items: center; justify-content: center; min-height: 48px; border: 1px solid var(--tlo); background: var(--powierzchnia); font-style: normal; font-weight: 600; border-radius: 8px; }
+.kal i.z { color: var(--naAkcencie); } .kal i.p { background: transparent; color: var(--tekst2); font-weight: 400; }
+.kal i.dzis { outline: 2.5px solid var(--tekst); outline-offset: -3px; }
+.podsum { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.podsum div { background: var(--powierzchnia); border-radius: 14px; padding: 12px 16px; }
+.podsum b { display: block; font-size: calc(28px * min(var(--dt-tytul), 1.6)); } .podsum small { color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+/* wzór (ZM-10) */
+.wz { background: var(--wzorRama); }
+.wz .strona { margin: 8px 12px; background: #FFFFFF; color: #1A1A1A; border-radius: 4px; padding: 20px 18px; font-family: "Source Sans 3"; font-size: 13px; line-height: 1.45; box-shadow: 0 1px 6px #0004; flex: 1; }
+.wz .strona h3 { font-size: 17px; margin-bottom: 8px; } .wz .strona p { margin-bottom: 6px; }
+.wz .strona .zak { background: #F6E04A; margin: 0 -6px; padding: 2px 6px; }
+.pasek-wz { display: flex; align-items: stretch; gap: 8px; padding: 8px 12px 32px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); flex-wrap: wrap; }
+.pasek-wz a { min-height: 52px; min-width: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(20px * min(var(--dt-tresc), 1.6)); }
+.pasek-wz .m { border: 2px solid var(--tekst2); color: var(--tekst); }
+.pasek-wz .p { flex: 1; background: var(--akcent); color: var(--naAkcencie); }
+.pasek-wz .r { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--tekst); font-weight: 600; text-align: center; }
+.pasek-wz .r b { font-family: "Bree Serif"; font-weight: 400; font-size: calc(28px * min(var(--dt-tytul), 1.4)); }
+/* przy największym tekście: układy w pionowy stos */
+.duzy .karta { grid-template-columns: minmax(0, 1fr); } .kont, .kafel, .akcje a, .wielki { overflow-wrap: anywhere; hyphens: auto; } .opis, .tresc > * { min-width: 0; } .duzy .dz { grid-row: auto; min-height: 120px; } .duzy .kont { grid-column: 1; }
+.duzy .licz-g { grid-template-columns: 1fr; } .duzy .licz-g .dz { min-height: 96px; }
+.duzy .akcje { grid-template-columns: 1fr; } .duzy .akcje a { flex-direction: row; justify-content: flex-start; padding: 8px 16px; gap: 12px; }
+.duzy .tydz { grid-template-columns: repeat(4, 1fr); } .duzy .kafle { grid-template-columns: 1fr; }
+.duzy .dol { flex-direction: column-reverse; } .duzy .minus { width: 100%; align-self: auto; }
+.duzy .kal i { min-height: 48px; font-size: 17px; } .duzy .kal span { font-size: 13px; }
+.duzy .pasek-wz .r { order: -1; flex-basis: 100%; }
+.duzy .lista .pr { display: none; }
+.duzy .plus { width: 100px; height: 100px; border-radius: 50px; }
+.duzy .kafel .it { width: 72px; height: 72px; font-size: 44px; border-radius: 18px; }
+.duzy .akcje a .ik { font-size: 40px; }
+.duzy .wiersz .ik, .duzy .lista .pik { font-size: 32px; }
+.duzy .mies { flex-direction: column; align-items: flex-start !important; gap: 4px; }
+.duzy .wz-nav { flex-wrap: wrap; } .duzy .wz-nav .plik { order: 3; flex-basis: 100%; padding: 0 8px 8px; }
+.lista .pr { width: 40px; height: 56px; } .lista .pr::before { content: ""; position: absolute; left: 2px; right: 2px; top: 6px; height: 3px; border-radius: 2px; background: var(--igla); }
+.lista .pr i { top: auto; }
+
+</style></head>
+<body>
+
+<!-- 1. Dziś (typowy) -->
+<main class="ekran" data-ekran="dzis" aria-label="Dziś">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br" data-de="Heute">Dziś</h1><p class="t-pod data" data-de="Donnerstag, 5. November">czwartek, 5 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14, następne ujmowanie w rzędzie 47"><svg data-dz="42,96,14,47" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Sweter Mgła</h2><p class="t-pod czesc" data-de="Linker Ärmel · Reihe 43 von 96">Rękaw lewy · rząd 43 z 96</p>
+        <div class="lr"><p class="liczba br cyfry">42<small data-de="Reihen fertig">rzędy gotowe</small></p><a class="plus cyfry" aria-label="Dodaj rząd">+1</a></div></div>
+      <a class="kont t-tresc"><span data-de="Weiterstricken">Kontynuuj</span><i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <div class="wiersz"><span class="zn"></span><p class="t-tresc" data-de="In 4 Reihen: Abnahme (5 von 8)">Za 4 rzędy: <b>ujmowanie</b> (5 z 8)</p><i data-ik="szewron"></i></div>
+    <p class="t-tresc sekcja" data-de="Diese Woche">Ten tydzień</p>
+    <div class="tydz t-mala"><div><i class="z"></i><span data-de="Mo">pn</span></div><div><i class="z"></i><span data-de="Di">wt</span></div><div><i></i><span data-de="Mi">śr</span></div><div><i class="z dzis"></i><b data-de="Do">czw</b></div><div><i></i><span data-de="Fr">pt</span></div><div><i></i><span data-de="Sa">sb</span></div><div><i></i><span data-de="So">nd</span></div></div>
+    <div class="kafle t-tresc">
+      <a class="kafel"><span class="it"><i data-ik="nowy"></i></span><span data-de="Neues Projekt">Nowy projekt</span></a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span><span data-de="Anleitung hinzufügen">Dodaj wzór</span></a>
+      <a class="kafel"><span class="it"><i data-ik="druty"></i></span><span data-de="Garn und Nadeln">Włóczka i druty</span></a><a class="kafel"><span class="it"><i data-ik="probka"></i></span><span data-de="Maschenprobe">Próbka</span></a>
+    </div>
+    <p class="t-pod wolne"><span data-de="Noch 3 von 5 kostenlosen Stricktagen im November.">Zostały 3 z 5 darmowych dni robótkowych w listopadzie.</span> <a>Oczko Pro</a></p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i><span data-de="Heute">Dziś</span></a><a><i data-ik="projekty"></i><span data-de="Projekte">Projekty</span></a><a><i data-ik="narzedzia"></i><span data-de="Werkzeuge">Narzędzia</span></a><a><i data-ik="historia"></i><span data-de="Verlauf">Historia</span></a></nav>
+</main>
+
+<!-- 2. Dziś — pierwsze uruchomienie (bez projektu, ZM-02) -->
+<main class="ekran" data-ekran="dzis-pierwszy" aria-label="Dziś, pierwsze uruchomienie">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">czwartek, 5 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Pierwszy licznik: 0 rzędów"><svg data-dz="0,0,0,0" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Pierwszy licznik</h2><p class="t-pod czesc">Stuknij +1 po każdym skończonym rzędzie. Projekt nazwiesz później.</p>
+        <div class="lr"><p class="liczba br cyfry">0<small>rzędów</small></p><a class="plus cyfry" aria-label="Dodaj rząd">+1</a></div></div>
+      <a class="kont t-tresc">Otwórz licznik <i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <p class="t-tresc sekcja">Ten tydzień</p>
+    <div class="tydz t-mala"><div><i></i><span>pn</span></div><div><i></i><span>wt</span></div><div><i></i><span>śr</span></div><div><i class="dzis"></i><b>czw</b></div><div><i></i><span>pt</span></div><div><i></i><span>sb</span></div><div><i></i><span>nd</span></div></div>
+    <p class="t-pod wolne">Tu zobaczysz dni, w które dziergasz.</p>
+    <div class="kafle t-tresc">
+      <a class="kafel"><span class="it"><i data-ik="nowy"></i></span>Nowy projekt</a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span>Dodaj wzór</a>
+      <a class="kafel"><span class="it"><i data-ik="druty"></i></span>Włóczka i druty</a><a class="kafel"><span class="it"><i data-ik="probka"></i></span>Próbka</a>
+    </div>
+    <p class="t-pod wolne">5 darmowych dni robótkowych w każdym miesiącu. <a>Oczko Pro</a></p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 3. Licznik (ZM-04): pasek zakładek ukryty -->
+<main class="ekran" data-ekran="licznik" aria-label="Licznik">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span data-de="Heute">Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
+  <div style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center" data-de="Projekt ›">Projekt ›</a>
+    <h1 class="t-duzy br">Sweter Mgła</h1><p class="t-pod" style="color:var(--tekst2)" data-de="Linker Ärmel · Ziel 96 Reihen">Rękaw lewy · cel 96 rzędów</p></div>
+  <div class="licz-g">
+    <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
+    <div><p class="licz-num br cyfry">42<small data-de="Reihen fertig · jetzt Reihe 43">rzędy gotowe · teraz rząd 43</small></p>
+      <p class="t-pod" style="margin-top:12px"><span style="color:var(--akcentTekst);font-weight:700" data-de="In 4 Reihen:">Za 4 rzędy:</span> <span data-de="Abnahme (5 von 8)">ujmowanie (5 z 8)</span></p></div>
+  </div>
+  <div class="notatka t-pod"><i data-ik="notatka"></i><p data-de="Ärmel 2 cm kürzer als in der Anleitung.">Rękaw o 2 cm krótszy niż we wzorze.</p></div>
+  <div class="akcje t-mala">
+    <a><i data-ik="notatka"></i><span data-de="Notiz">Notatka</span></a><a><i data-ik="wzor"></i><span data-de="Anleitung">Wzór</span></a><a><i data-ik="cel"></i><span data-de="Ziel">Cel</span></a><a><i data-ik="stoper"></i><span data-de="Stoppuhr">Stoper</span></a><a><i data-ik="historiaZmian"></i><span data-de="Verlauf">Historia</span></a>
+  </div>
+  <div class="dol">
+    <a class="minus" aria-label="Odejmij rząd">−1</a>
+    <a class="wielki" aria-label="Dodaj rząd, skończony rząd 43"><b class="cyfry">+1</b><span class="t-pod" data-de="Reihe 43 fertig">rząd 43 skończony</span></a>
+  </div>
+</main>
+
+<!-- 4. Projekty (WD-1, WD-3) -->
+<main class="ekran" data-ekran="projekty" aria-label="Projekty">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Projekty</h1><span class="pik" aria-label="Nowy projekt"><i data-ik="plus" data-gr="2.2"></i></span></div>
+  <div class="tresc">
+    <div class="szukaj t-tresc"><i data-ik="szukaj"></i>Szukaj</div>
+    <p class="t-tresc sekcja">W toku</p>
+    <div class="lista t-tresc">
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.44)"></i></span><p class="tx">Sweter Mgła<small>Rękaw lewy · 44% · dziś</small></p><span class="pik" aria-label="Więcej: Sweter Mgła"><i data-ik="kropki"></i></span></div>
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.7)"></i></span><p class="tx">Skarpety w paski<small>Druga skarpeta · 70% · wczoraj</small></p><span class="pik" aria-label="Więcej: Skarpety w paski"><i data-ik="kropki"></i></span></div>
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.15)"></i></span><p class="tx">Czapka z warkoczem<small>Ściągacz · 15% · 23 dni temu</small></p><span class="pik" aria-label="Więcej: Czapka z warkoczem"><i data-ik="kropki"></i></span></div>
+    </div>
+    <p class="t-tresc sekcja">Ukończone</p>
+    <div class="lista t-tresc">
+      <div><span class="pr" aria-hidden="true"><i style="height:calc(100% - 14px)"></i></span><p class="tx">Szal z alpaki<small>Ukończony 12 października</small></p><span class="pik" aria-label="Więcej: Szal z alpaki"><i data-ik="kropki"></i></span></div>
+    </div>
+    <p class="t-pod wolne">Ostatnio usunięte: 1 projekt, do 3 grudnia. <a>Pokaż</a></p>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a class="wybrana"><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 5. Historia (kalendarz dni, F-59; dni ≥ 44 pt także przy 320 pt: siatka na pełną szerokość) -->
+<main class="ekran" data-ekran="historia" aria-label="Historia">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Historia</h1></div>
+  <div class="tresc">
+    <div class="nav t-tresc mies" style="padding:0;margin:-8px 0 -8px"><a style="padding-left:0"><i data-ik="wstecz" data-gr="2.4"></i>październik</a><b class="t-tytul br">Listopad 2026</b><a style="opacity:.35;padding-right:0" aria-disabled="true">grudzień<i data-ik="szewron" data-gr="2.4"></i></a></div>
+    <div class="kal t-tresc cyfry" id="kal" aria-label="Listopad: dziergane 2, 3 i 5 listopada"></div>
+    <div class="wiersz"><p class="t-tresc"><b>Czwartek, 5 listopada</b><br><span class="t-pod" style="color:var(--tekst2)">Sweter Mgła · 14 rzędów · 1 h 05 min</span></p><i data-ik="szewron"></i></div>
+    <p class="t-tresc sekcja">Listopad</p>
+    <div class="podsum t-pod"><div><b class="br cyfry">3</b><small>dni z robótką</small></div><div><b class="br cyfry">38</b><small>rzędów</small></div><div><b class="br cyfry">2 h 40</b><small>czasu sesji</small></div></div>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a class="wybrana"><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 6. Wzór (ZM-10): strona w oryginalnych kolorach pliku, rama i pasek w barwie motywu; bez stałej linii liczby zakreśleń -->
+<main class="ekran wz" data-ekran="wzor" aria-label="Wzór">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc wz-nav"><a><i data-ik="wstecz" data-gr="2.4"></i>Licznik</a><span class="t-pod plik" style="color:var(--tekst2)">Sweter Mgła.pdf · 3/8</span><span class="pik" aria-label="Zakreślacz"><i data-ik="zakreslacz"></i></span></div>
+  <div class="strona">
+    <!-- [PRZYKŁAD] treść wzoru: przykład kształtu strony, nie instrukcja do nauki -->
+    <h3>Rękawy (2 sztuki)</h3>
+    <p>Nabierz 56 oczek na druty 4 mm i przerób 6 cm ściągaczem 2/2.</p>
+    <p>Zmień druty na 4,5 mm i przerabiaj dżersejem.</p>
+    <p>Rzędy 41–46: dżersej bez zmian.</p>
+    <p class="zak">Rząd 47 (prawa strona): 1 o. brzegowe, 2 o. razem w prawo, dalej do 3 ostatnich oczek, 2 o. razem w lewo, 1 o. brzegowe.</p>
+    <p>Powtarzaj ujmowanie co 6. rząd jeszcze 3 razy (48 oczek).</p>
+    <p>Rzędy 72–96: dżersej bez zmian. Zamknij luźno wszystkie oczka.</p>
+    <p style="margin-top:16px;color:#555">Strona 3</p>
+  </div>
+  <div class="pasek-wz">
+    <a class="m" aria-label="Odejmij rząd">−1</a>
+    <div class="r t-mala"><b class="cyfry">43</b>rząd</div>
+    <a class="p" aria-label="Dodaj rząd">+1</a>
+  </div>
+</main>
+
+<script src="ikony.js"></script>
+<script>
+// Element firmowy „dzianina” (jak w kierunki/dzianina.html): wysokość = rzędy gotowe / cel; jaśniejszy pas = dziś; igła = bieżący rząd;
+// przerywana linia = cel; ząbek = rząd następnego przypomnienia. Bez celu (0) — sama igła z nabranymi oczkami.
+document.querySelectorAll('svg[data-dz]').forEach((el) => {
+  const [got, cel, dzis, prz] = el.dataset.dz.split(',').map(Number);
+  const [, , W, H] = el.getAttribute('viewBox').split(' ').map(Number);
+  const gora = 14, dol = 8, c = cel || 96, y = (r) => H - dol - (H - gora - dol) * r / c;
+  const yG = y(got), yD = y(got - dzis);
+  let s = `<defs><pattern id="v${W}" width="9" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)"><ellipse cx="2.6" cy="4" rx="1.6" ry="3.3" transform="rotate(-28 2.6 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/><ellipse cx="6.4" cy="4" rx="1.6" ry="3.3" transform="rotate(28 6.4 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/></pattern></defs>`;
+  if (got > 0) s += `<rect x="6" y="${yG}" width="${W - 12}" height="${yD - yG}" fill="var(--akcentJasny)"/><rect x="6" y="${yD}" width="${W - 12}" height="${H - dol - yD}" fill="var(--akcent)"/><rect x="6" y="${yG}" width="${W - 12}" height="${H - dol - yG}" fill="url(#v${W})"/>`;
+  else s += `<rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="var(--akcent)"/><rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="url(#v${W})"/>`;
+  if (cel) s += `<line x1="4" y1="${y(cel)}" x2="${W - 4}" y2="${y(cel)}" stroke="var(--akcentJasny)" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+  const yi = got > 0 ? yG - 3 : H - dol - 11;
+  s += `<line x1="2" y1="${yi}" x2="${W - 2}" y2="${yi}" stroke="var(--igla)" stroke-width="3.2" stroke-linecap="round"/><circle cx="${W - 3}" cy="${yi}" r="3.6" fill="var(--igla)"/>`;
+  if (prz) s += `<path d="M${W} ${y(prz)} l-10 -6 v12 z" fill="var(--akcentJasny)"/>`;
+  el.innerHTML = s;
+});
+// Kalendarz listopada 2026 (1.11 = niedziela; tydzień od poniedziałku). Dni dziergane: 2, 3, 5 [PRZYKŁAD].
+const kal = document.getElementById('kal'); let h = ['pn', 'wt', 'śr', 'cz', 'pt', 'sb', 'nd'].map((d) => `<span class="t-mala">${d}</span>`).join('');
+for (let i = 0; i < 6; i++) h += '<i class="p" aria-hidden="true"></i>';
+for (let d = 1; d <= 30; d++) h += `<i class="${[2, 3, 5].includes(d) ? 'z' : ''} ${d === 5 ? 'dzis' : ''} ${d > 5 ? 'p' : ''}">${d}</i>`;
+kal.innerHTML = h;
+// Arkusz najdłuższego języka: <html lang="de"> podmienia teksty z data-de.
+if (document.documentElement.lang === 'de') document.querySelectorAll('[data-de]').forEach((e) => { e.textContent = e.dataset.de; });
+</script>
+</body></html>

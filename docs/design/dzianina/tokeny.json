@@ -1,0 +1,51 @@
+{
+  "_opis": "Oczko — system „Dzianina” (redesign M3, P-552, P-553). Propozycja modułu motywu dla roli 08 (partia p1 zastępuje docs/design/tokeny.json). Barwy runa: nazwy z Shetland Sheep Society (01-swiat.md), hex wywiedzione z opisu barw, nie pomiar.",
+  "kolory": {
+    "jasny": {
+      "tlo": "#E6E1DA", "powierzchnia": "#F6F4F1", "linia": "#CFC8BF",
+      "tekst": "#221D1A", "tekst2": "#5A5048",
+      "karta": "#3A332E", "kartaTekst": "#F3F1EC", "kartaTekst2": "#D6CEC6",
+      "akcent": "#C08425", "akcentJasny": "#EBC983", "akcentTekst": "#8A5A12", "naAkcencie": "#221D1A",
+      "przycisk": "#3A332E", "przyciskTekst": "#F3F1EC", "przyciskNaKarcie": "#F3F1EC", "przyciskNaKarcieTekst": "#221D1A",
+      "ikonaTlo": "#F0DDB6", "ikona": "#3A332E",
+      "pasek": "#EEEBE6", "pasekLinia": "#CFC8BF", "zakladka": "#625850", "zakladkaWybrana": "#8A5A12",
+      "dzienPusty": "#D6D0C8", "igla": "#A39A92",
+      "niszczacy": "#A3261C", "niszczacyTekst": "#FFFFFF",
+      "zakreslacz": "#F6E04A", "wzorRama": "#D9D3CB"
+    },
+    "ciemny": {
+      "tlo": "#26211E", "powierzchnia": "#312B27", "linia": "#3D3530",
+      "tekst": "#F1EDE9", "tekst2": "#C7BCB2",
+      "karta": "#3A322D", "kartaTekst": "#F3F1EC", "kartaTekst2": "#D3C9BF",
+      "akcent": "#CF9636", "akcentJasny": "#F3D597", "akcentTekst": "#F0CF8A", "naAkcencie": "#221D1A",
+      "przycisk": "#F0CF8A", "przyciskTekst": "#221D1A", "przyciskNaKarcie": "#F3F1EC", "przyciskNaKarcieTekst": "#221D1A",
+      "ikonaTlo": "#4A413A", "ikona": "#F0CF8A",
+      "pasek": "#1E1A17", "pasekLinia": "#3D3530", "zakladka": "#B5A99E", "zakladkaWybrana": "#F0CF8A",
+      "dzienPusty": "#40382F", "igla": "#9C918A",
+      "niszczacy": "#F2B8B5", "niszczacyTekst": "#4A0E0A",
+      "zakreslacz": "#F6E04A", "wzorRama": "#1E1A17"
+    },
+    "jasnyZwiekszony": { "tekst2": "#3F3731", "akcentTekst": "#6B450C", "linia": "#9C9288", "zakladka": "#3F3731", "kartaTekst2": "#EAE4DD" },
+    "ciemnyZwiekszony": { "tekst2": "#E3DAD2", "akcentTekst": "#F8DEA6", "linia": "#6A5F57", "zakladka": "#E3DAD2", "kartaTekst2": "#ECE6DF" }
+  },
+  "kroje": {
+    "tytul": { "rodzina": "Bree Serif", "plik": "docs/design/fonty/BreeSerif.ttf", "licencja": "docs/design/fonty/breeserif-OFL.txt", "uwagi": "łacina z polskimi znakami; cyrylica, greka, CJK: krój systemowy; Bree Serif ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany (jest już gruby)" },
+    "tresc": { "rodzina": "systemowy (SF Pro)", "uwagi": "Dynamic Type do AX5" }
+  },
+  "typografia": {
+    "duzyTytul": { "kroj": "tytul", "pt": 34, "interlinia": 1.12, "styl": "largeTitle" },
+    "tytul": { "kroj": "tytul", "pt": 22, "interlinia": 1.2, "styl": "title2" },
+    "liczbaKarty": { "kroj": "tytul", "pt": 56, "interlinia": 1.0, "cyfry": "tabular-nums", "maxSkala": 1.6 },
+    "liczbaLicznika": { "kroj": "tytul", "pt": 104, "interlinia": 1.0, "cyfry": "tabular-nums", "maxSkala": 1.3, "minSkala": 0.5 },
+    "przyciskPlus": { "kroj": "tresc", "pt": 26, "waga": 800, "maxSkala": 1.4 },
+    "tresc": { "kroj": "tresc", "pt": 17, "interlinia": 1.3, "styl": "body" },
+    "tresc2": { "kroj": "tresc", "pt": 15, "interlinia": 1.3, "styl": "subheadline" },
+    "mala": { "kroj": "tresc", "pt": 13, "interlinia": 1.3, "styl": "footnote" },
+    "zakladka": { "kroj": "tresc", "pt": 11, "waga": 600, "maxSkala": 1.6 }
+  },
+  "odstepy": { "jednostka": 4, "xs": 4, "s": 8, "m": 12, "l": 16, "xl": 20, "xxl": 24 },
+  "promienie": { "_hierarchia": "karta > kafel > przycisk > próbka dnia; okrągłe +1 = połowa boku", "karta": 22, "kafel": 18, "przycisk": 14, "pole": 10, "dzien": 10, "plus": "50%" },
+  "cele": { "minimum": 44, "plus": 72, "plusLicznik": 168, "dzienKalendarza": 44 },
+  "ruch": { "rzadOczek": 180, "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
+  "haptyka": { "rzad": "impactLight", "przypomnienie": "notificationWarning", "celCzesci": "notificationSuccess", "cofniecie": "impactSoft", "blokada": "selection" }
+}
