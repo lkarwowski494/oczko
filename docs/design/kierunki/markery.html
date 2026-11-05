@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Kierunek B „Markery” — Dziś</title>
+<link rel="stylesheet" href="wspolne.css">
+<!-- Dane na ekranie: [PRZYKŁAD]. Markery oczek i rzędów: przedmiot z dziedziny (01-swiat.md, K5); barwy markerów to wybór
+     projektu (tworzywo bywa w każdym kolorze), nie norma: jeden kolor = jedno znaczenie (złoty = przypomnienie, obręcz = cel). -->
+<style>
+:root {
+  --tlo: #EDE9E6; --tekst: #24171C; --tekst2: #5E4B52; --pas: #6B1E33; --pas-tekst: #FBF4F0; --pas-tekst2: #E8C9D0;
+  --zloty: #F0B43C; --zloty-tekst: #2A1A10; --igla: #E9D3D8; --kontynuuj: #FBF4F0; --kontynuuj-tekst: #4E1324;
+  --kafel: #F8F5F3; --kafel-ik: #6B1E33; --kafel-ik-tlo: #F2DDE2; --dzien: #D5CBCD; --pasek: #F3F0EE; --pasek-linia: #D3CACC;
+  --zakl: #66535A; --zakl-wybrana: #8A2340; --zloty-lista: #9C6A0C; --status: #FBF4F0; --ikona-nag: #FBF4F0; --obrecz: #FBF4F0; --lista: #F8F5F3; --pro: #8A2340;
+}
+[data-theme="dark"] {
+  --tlo: #261A1F; --tekst: #F6ECEE; --tekst2: #CDB6BD; --pas: #4F1526; --pas-tekst: #FBF4F0; --pas-tekst2: #E3BFC8;
+  --zloty: #F3BE52; --zloty-tekst: #2A1A10; --igla: #C99BA7; --kontynuuj: #FBF4F0; --kontynuuj-tekst: #4E1324;
+  --kafel: #34242A; --kafel-ik: #F3BE52; --kafel-ik-tlo: #4A3138; --dzien: #4A3940; --pasek: #20161A; --pasek-linia: #3F2E35;
+  --zakl: #BFA8AF; --zakl-wybrana: #F3BE52; --zloty-lista: #F3BE52; --status: #FBF4F0; --ikona-nag: #FBF4F0; --obrecz: #FBF4F0; --lista: #34242A; --pro: #F3BE52;
+}
+.gr { font-family: "Schibsted Grotesk", sans-serif; }
+.pas { background: var(--pas); color: var(--pas-tekst); border-radius: 0 0 28px 28px; padding-bottom: 20px; }
+.pas .data { color: var(--pas-tekst2); }
+.pas h1 { font-weight: 800; letter-spacing: -0.02em; }
+.projekt { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.projekt .wiersz { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.projekt h2 { font-weight: 800; }
+.projekt .czesc { color: var(--pas-tekst2); }
+.liczba { font-weight: 800; font-size: calc(64px * var(--dt-tytul)); line-height: .95; letter-spacing: -0.03em; }
+.liczba small { display: block; font-family: "Source Sans 3"; font-weight: 400; letter-spacing: 0; font-size: calc(15px * var(--dt-tresc)); color: var(--pas-tekst2); }
+.plus { width: 76px; height: 76px; border-radius: 38px; background: var(--zloty); color: var(--zloty-tekst); font-family: "Source Sans 3"; font-weight: 800; font-size: calc(28px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; border: 0; flex: none; }
+.linijka { margin: 14px 0 4px; position: relative; height: 64px; }
+.linijka svg { width: 100%; height: 100%; overflow: visible; }
+.kontynuuj { margin: 12px 16px 0; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; border-radius: 25px; background: var(--kontynuuj); color: var(--kontynuuj-tekst); font-weight: 700; }
+.kontynuuj .ik { font-size: 16px; }
+.tresc { padding-top: 20px; }
+.lista { background: var(--lista); border-radius: 16px; }
+.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 52px; }
+.lista > div + div { border-top: 1px solid var(--pasek-linia); }
+.lista .m { width: 20px; height: 26px; flex: none; }
+.lista .t-tresc { flex: 1; } .lista .nr { color: var(--tekst2); }
+.sekcja-tytul { font-weight: 700; margin-bottom: -10px; }
+.tydzien { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); }
+.tydzien::before { content: ""; position: absolute; left: 4%; right: 4%; top: 10px; height: 4px; border-radius: 2px; background: var(--dzien); }
+.tydzien div { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--tekst2); min-height: 44px; }
+.tydzien svg { width: 30px; height: 26px; display: block; overflow: visible; } .tydzien svg.dzis-dzien { outline: 2px solid var(--tekst); outline-offset: 4px; border-radius: 50%; }
+.tydzien b { color: var(--tekst); }
+.kafle { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kafel { background: var(--kafel); border-radius: 16px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-height: 104px; font-weight: 600; }
+.kafel .ik-tlo { width: 48px; height: 48px; border-radius: 24px; background: var(--kafel-ik-tlo); color: var(--kafel-ik); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--pro); font-weight: 700; }
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <!-- marker z zamkiem (przypomnienie): kształt kropli z otworem -->
+  <symbol id="marker" viewBox="0 0 20 26"><circle cx="10" cy="13" r="7" fill="none" stroke="var(--zloty)" stroke-width="4"/></symbol>
+  <symbol id="marker-lista" viewBox="0 0 20 26"><circle cx="10" cy="13" r="7" fill="none" stroke="var(--zloty-lista)" stroke-width="4"/></symbol>
+  <!-- obręcz (cel części): pierścień bez wypełnienia -->
+  <symbol id="obrecz" viewBox="0 0 20 26"><circle cx="10" cy="13" r="8.5" fill="var(--obrecz)"/></symbol>
+  <symbol id="obrecz-lista" viewBox="0 0 20 26"><path d="M1 13h9" stroke="var(--tekst2)" stroke-width="3" stroke-linecap="round"/><circle cx="12" cy="13" r="7" fill="var(--tekst)"/></symbol>
+  <symbol id="dzien" viewBox="0 0 30 40"><circle cx="15" cy="12" r="8.5" fill="none" stroke="var(--zloty-lista)" stroke-width="5"/></symbol>
+  <symbol id="dzien-pusty" viewBox="0 0 30 40"><circle cx="15" cy="12" r="5" fill="var(--tlo)" stroke="var(--dzien)" stroke-width="2.5"/></symbol>
+</defs></svg>
+<main class="ekran" data-ekran="dzis" aria-label="Dziś">
+  <div class="pas">
+    <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+    <div class="naglowek">
+      <div><h1 class="t-duzy gr">Dziś</h1><p class="t-pod data">czwartek, 5 listopada</p></div>
+      <span class="przycisk-ik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span>
+    </div>
+    <section class="projekt" aria-label="Kontynuuj: Sweter Mgła, Rękaw lewy">
+      <div class="wiersz">
+        <div><h2 class="t-tytul gr">Sweter Mgła</h2><p class="t-pod czesc">Rękaw lewy · rząd 43 z 96</p></div>
+      </div>
+      <div class="wiersz">
+        <p class="liczba gr cyfry">42<small>rzędy gotowe</small></p>
+        <button class="plus cyfry" aria-label="Dodaj rząd, Sweter Mgła">+1</button>
+      </div>
+      <div class="linijka" role="img" aria-label="Linijka rzędów: rząd 43, przypomnienia w rzędach 47, 53, 59 i 65, cel w rzędzie 96"><svg id="lin" viewBox="0 0 358 64" preserveAspectRatio="none"></svg></div>
+    </section>
+    <a class="kontynuuj t-tresc">Kontynuuj <i data-ik="szewron" data-gr="2.4"></i></a>
+  </div>
+  <div class="tresc">
+    <p class="t-tresc sekcja-tytul">Co dalej</p>
+    <div class="lista">
+      <div><svg class="m"><use href="#marker-lista"/></svg><p class="t-tresc">Ujmowanie (5 z 8)</p><span class="t-pod nr cyfry">za 4 rzędy</span></div>
+      <div><svg class="m"><use href="#obrecz-lista"/></svg><p class="t-tresc">Koniec rękawa</p><span class="t-pod nr cyfry">za 54 rzędy</span></div>
+    </div>
+    <p class="t-tresc sekcja-tytul">Ten tydzień</p>
+    <div class="tydzien t-mala cyfry" aria-label="Ten tydzień: dziergane w poniedziałek, wtorek i dziś">
+      <div><svg viewBox="0 0 30 26"><use href="#dzien"/></svg><span>pn</span></div><div><svg viewBox="0 0 30 26"><use href="#dzien"/></svg><span>wt</span></div><div><svg viewBox="0 0 30 26"><use href="#dzien-pusty"/></svg><span>śr</span></div>
+      <div><svg class="dzis-dzien" viewBox="0 0 30 26"><use href="#dzien"/></svg><b>czw</b></div><div><svg viewBox="0 0 30 26"><use href="#dzien-pusty"/></svg><span>pt</span></div><div><svg viewBox="0 0 30 26"><use href="#dzien-pusty"/></svg><span>sb</span></div><div><svg viewBox="0 0 30 26"><use href="#dzien-pusty"/></svg><span>nd</span></div>
+    </div>
+    <div class="kafle t-mala">
+      <a class="kafel"><span class="ik-tlo"><i data-ik="nowy"></i></span>Nowy projekt</a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="wzor"></i></span>Dodaj wzór</a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="druty"></i></span>Włóczka i druty</a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="probka"></i></span>Próbka</a>
+    </div>
+    <p class="t-pod wolne">Zostały 3 z 5 darmowych dni robótkowych w listopadzie. <a>Oczko Pro</a></p>
+  </div>
+  <nav class="zakladki t-zakl">
+    <a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a>
+  </nav>
+</main>
+<script src="wspolne.js"></script>
+<script>
+// Element firmowy: linijka rzędów części z wpiętymi markerami. Okno: od rzędu 1 do celu; zrobione = pełna kreska,
+// bieżący rząd = wskaźnik z liczbą, markery przypomnień (co 6 rzędów, 8 razy, od 23) w swoich rzędach, obręcz = cel.
+const D = { biezacy: 43, cel: 96, przypomnienia: [23, 29, 35, 41, 47, 53, 59, 65] };
+const x = (r) => 8 + 342 * (r - 1) / (D.cel - 1);
+let s = `<line x1="8" y1="40" x2="350" y2="40" stroke="var(--igla)" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>
+<line x1="8" y1="40" x2="${x(D.biezacy)}" y2="40" stroke="var(--igla)" stroke-width="4" stroke-linecap="round"/>`;
+for (let r = 10; r < D.cel; r += 10) s += `<line x1="${x(r)}" y1="46" x2="${x(r)}" y2="52" stroke="var(--igla)" stroke-opacity=".6" stroke-width="1.5"/>`;
+for (const r of D.przypomnienia) s += r < D.biezacy
+  ? `<circle cx="${x(r)}" cy="40" r="3" fill="var(--zloty)" fill-opacity=".55"/>`
+  : `<use href="#marker" x="${x(r) - 10}" y="27" width="20" height="26"/>`;
+s += `<use href="#obrecz" x="${x(D.cel) - 10}" y="27" width="20" height="26"/>
+<circle cx="${x(D.biezacy)}" cy="40" r="7" fill="var(--pas-tekst)" stroke="var(--pas)" stroke-width="2"/>
+<text x="${x(D.biezacy)}" y="63" text-anchor="middle" font-family="Source Sans 3" font-weight="700" font-size="13" fill="var(--pas-tekst)">43</text>
+<text x="8" y="63" font-family="Source Sans 3" font-size="12" fill="var(--pas-tekst2)">1</text>
+<text x="350" y="63" text-anchor="end" font-family="Source Sans 3" font-size="12" fill="var(--pas-tekst2)">96</text>`;
+document.getElementById('lin').innerHTML = s;
+</script>
+
+<section class="panel">
+  <h2>B „Markery”</h2>
+  <p><b>Idea:</b> linijka rzędów z wpiętymi markerami pokazuje, gdzie jesteś i co Cię czeka.</p>
+  <p><b>Element firmowy:</b> linijka części od 1 do celu; wskaźnik = bieżący rząd; złote kółka nawleczone na drut = przypomnienia w ich rzędach (minione jako kropki); gałka na końcu drutu = cel części. VoiceOver: „Rząd 43 z 96; następne ujmowanie w rzędzie 47 (5 z 8); cel w rzędzie 96”.</p>
+  <h3>Paleta (jeden kolor = jedno znaczenie)</h3>
+  <div class="probki">
+    <div class="probka"><i style="background:#6B1E33"></i>bordo — pas „Dziś”, akcent</div>
+    <div class="probka"><i style="background:#F0B43C"></i>złoty marker — przypomnienie, +1</div>
+    <div class="probka"><i style="background:#EDE9E6"></i>len — tło jasne</div>
+    <div class="probka"><i style="background:#261A1F"></i>ciemne wino — tło ciemne</div>
+    <div class="probka"><i style="background:#F2DDE2"></i>róż bladego bordo — tło ikon</div>
+  </div>
+  <h3>Kroje</h3>
+  <p><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:22px">Schibsted Grotesk</span> — tytuły i liczba (grotesk etykiet i katalogów pasmanterii); treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3.</p>
+  <h3>Ruch, haptyka, dźwięk</h3>
+  <p>+1: wskaźnik przesuwa się o rząd; gdy mija marker, marker „odpina się” i opada w kropkę (240 ms), haptyka podwójna (inna niż zwykły rząd, F-48). „Ogranicz ruch”: zmiana bez przesuwu.</p>
+  <h3>Głos</h3>
+  <p>Pusty: „Wepnij pierwszy marker: dodaj przypomnienie albo cel części.”<br>Błąd: „Nie zapisałam rzędu. Stuknij +1 jeszcze raz.”<br>Sukces: „Marker zdjęty: ujmowanie 5 z 8 zrobione.”</p>
+  <h3>Ikona</h3>
+  <div class="ikony" id="ikony"></div>
+</section>
+<script>
+const ikona = (tlo, igla, m, oczko) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/>
+ <path d="M10 58 H82" stroke="${igla}" stroke-width="6" stroke-linecap="round"/>
+ <circle cx="44" cy="58" r="17" fill="none" stroke="${m}" stroke-width="10"/><circle cx="86" cy="58" r="8" fill="${igla}"/></svg>`;
+const kreski = (tlo, k, z) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/><path d="M20 57 L80 52 L79 64 L19 68z" fill="${z}"/>${[30,42,54,66].map(x=>`<path d="M${x} 28 L${x-2} 74" stroke="${k}" stroke-width="7" stroke-linecap="round"/>`).join('')}<path d="M22 64 L78 40" stroke="${k}" stroke-width="7" stroke-linecap="round"/></svg>`;
+const fig = (svg, r, opis) => `<figure><span class="maska" style="width:${r}px;height:${r}px;border-radius:${r*0.2237}px">${svg.replace('<svg', `<svg width="${r}" height="${r}"`)}</span>${opis}</figure>`;
+const jasna = ikona('#6B1E33', '#E9D3D8', '#F0B43C', '#6B1E33'), ciemna = ikona('#2A1219', '#C99BA7', '#F3BE52', '#2A1219');
+document.getElementById('ikony').innerHTML = fig(jasna, 120, '120') + fig(jasna, 60, '60') + fig(jasna, 29, '29') + fig(ciemna, 60, 'ciemna') +
+  fig(kreski('#6B1E33', '#FBF4F0', '#F0B43C'), 60, 'kreski') + fig(kreski('#2A1219', '#FBF4F0', '#F3BE52'), 60, 'kreski ciemna');
+</script>
+</body></html>

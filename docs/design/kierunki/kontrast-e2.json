@@ -1,0 +1,291 @@
+{
+"A jasny: tekst/tło": [
+"#1E252B",
+"#E4E8EA"
+],
+"A jasny: tekst2/tło": [
+"#4C5862",
+"#E4E8EA"
+],
+"A jasny: tekst karty/karta": [
+"#F3F1EC",
+"#2E3B46"
+],
+"A jasny: tekst2 karty/karta": [
+"#C9D0D5",
+"#2E3B46"
+],
+"A jasny: +1 tekst/mioget (26 pt pogr.)": [
+"#1E252B",
+"#C08425",
+3
+],
+"A jasny: Kontynuuj": [
+"#1E252B",
+"#F3F1EC"
+],
+"A jasny: tekst/kafel": [
+"#1E252B",
+"#F5F6F6"
+],
+"A jasny: ikona kafla/tło ikony (UI)": [
+"#2E3B46",
+"#F0DDB6",
+3
+],
+"A jasny: zakładka wybrana/pasek": [
+"#8A5A12",
+"#EDF0F1"
+],
+"A jasny: zakładka/pasek": [
+"#56626B",
+"#EDF0F1"
+],
+"A jasny: Oczko Pro/tło": [
+"#8A5A12",
+"#E4E8EA"
+],
+"A jasny: dzianina/karta (grafika)": [
+"#C08425",
+"#2E3B46",
+3
+],
+"A ciemny: tekst/tło": [
+"#EEF1F2",
+"#212A31"
+],
+"A ciemny: tekst2/tło": [
+"#B5C0C8",
+"#212A31"
+],
+"A ciemny: tekst karty/karta": [
+"#F3F1EC",
+"#33424F"
+],
+"A ciemny: tekst2 karty/karta": [
+"#C2CBD2",
+"#33424F"
+],
+"A ciemny: +1 tekst/mioget (26 pt pogr.)": [
+"#1E252B",
+"#CF9636",
+3
+],
+"A ciemny: tekst/kafel": [
+"#EEF1F2",
+"#2B3640"
+],
+"A ciemny: ikona kafla (UI)": [
+"#F0CF8A",
+"#3E4C58",
+3
+],
+"A ciemny: zakładka wybrana/pasek": [
+"#F0CF8A",
+"#1B2228"
+],
+"A ciemny: zakładka/pasek": [
+"#A7B3BB",
+"#1B2228"
+],
+"A ciemny: Oczko Pro/tło": [
+"#F0CF8A",
+"#212A31"
+],
+"A ciemny: dzianina/karta (grafika)": [
+"#CF9636",
+"#33424F",
+3
+],
+"B jasny: tekst pasa/pas": [
+"#FBF4F0",
+"#6B1E33"
+],
+"B jasny: tekst2 pasa/pas": [
+"#E8C9D0",
+"#6B1E33"
+],
+"B jasny: +1 tekst/złoty": [
+"#2A1A10",
+"#F0B43C"
+],
+"B jasny: Kontynuuj": [
+"#4E1324",
+"#FBF4F0"
+],
+"B jasny: tekst/tło": [
+"#24171C",
+"#EDE9E6"
+],
+"B jasny: tekst2/tło": [
+"#5E4B52",
+"#EDE9E6"
+],
+"B jasny: tekst2/lista": [
+"#5E4B52",
+"#F8F5F3"
+],
+"B jasny: ikona kafla (UI)": [
+"#6B1E33",
+"#F2DDE2",
+3
+],
+"B jasny: zakładka wybrana/pasek": [
+"#8A2340",
+"#F3F0EE"
+],
+"B jasny: zakładka/pasek": [
+"#66535A",
+"#F3F0EE"
+],
+"B jasny: Oczko Pro/tło": [
+"#8A2340",
+"#EDE9E6"
+],
+"B jasny: marker/pas (grafika)": [
+"#F0B43C",
+"#6B1E33",
+3
+],
+"B jasny: marker/lista (grafika)": [
+"#9C6A0C",
+"#F8F5F3",
+3
+],
+"B ciemny: tekst/tło": [
+"#F6ECEE",
+"#261A1F"
+],
+"B ciemny: tekst2/tło": [
+"#CDB6BD",
+"#261A1F"
+],
+"B ciemny: tekst pasa/pas": [
+"#FBF4F0",
+"#4F1526"
+],
+"B ciemny: tekst2 pasa/pas": [
+"#E3BFC8",
+"#4F1526"
+],
+"B ciemny: +1 tekst/złoty": [
+"#2A1A10",
+"#F3BE52"
+],
+"B ciemny: tekst/kafel": [
+"#F6ECEE",
+"#34242A"
+],
+"B ciemny: ikona kafla (UI)": [
+"#F3BE52",
+"#4A3138",
+3
+],
+"B ciemny: zakładka wybrana/pasek": [
+"#F3BE52",
+"#20161A"
+],
+"B ciemny: zakładka/pasek": [
+"#BFA8AF",
+"#20161A"
+],
+"B ciemny: Oczko Pro/tło": [
+"#F3BE52",
+"#261A1F"
+],
+"B ciemny: marker/pas (grafika)": [
+"#F3BE52",
+"#4F1526",
+3
+],
+"B ciemny: marker/lista (grafika)": [
+"#F3BE52",
+"#34242A",
+3
+],
+"C jasny: tekst/tło": [
+"#23261C",
+"#E3E5D8"
+],
+"C jasny: tekst2/tło": [
+"#555A47",
+"#E3E5D8"
+],
+"C jasny: tekst2/karton": [
+"#555A47",
+"#F4F4EC"
+],
+"C jasny: Kontynuuj/mech": [
+"#F7F8EF",
+"#4F5C1A"
+],
+"C jasny: +1 tekst/próbka (26 pt pogr.)": [
+"#FFFFFF",
+"#5B6E82",
+3
+],
+"C jasny: ikona kafla/karton (UI)": [
+"#4F5C1A",
+"#F4F4EC",
+3
+],
+"C jasny: Oczko Pro/tło": [
+"#4F5C1A",
+"#E3E5D8"
+],
+"C jasny: zakładka wybrana/pasek": [
+"#4F5C1A",
+"#EBEDE2"
+],
+"C jasny: zakładka/pasek": [
+"#585D49",
+"#EBEDE2"
+],
+"C jasny: próbka/okno (grafika)": [
+"#5B6E82",
+"#DCDFCF",
+3
+],
+"C ciemny: tekst/tło": [
+"#EEF0E4",
+"#262A20"
+],
+"C ciemny: tekst2/tło": [
+"#BCC1A9",
+"#262A20"
+],
+"C ciemny: tekst2/karton": [
+"#BCC1A9",
+"#323728"
+],
+"C ciemny: Kontynuuj/mech": [
+"#1E2214",
+"#B8C774"
+],
+"C ciemny: +1 tekst/próbka": [
+"#1E2214",
+"#A9BBCC"
+],
+"C ciemny: ikona kafla (UI)": [
+"#C9D68A",
+"#323728",
+3
+],
+"C ciemny: Oczko Pro/tło": [
+"#C9D68A",
+"#262A20"
+],
+"C ciemny: zakładka wybrana/pasek": [
+"#C9D68A",
+"#1F231A"
+],
+"C ciemny: zakładka/pasek": [
+"#B3B8A1",
+"#1F231A"
+],
+"C ciemny: próbka/okno (grafika)": [
+"#8EA2B6",
+"#22261C",
+3
+]
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Oczko · porównanie kierunków (E2)</title>
+<style>
+@font-face { font-family: "Source Sans 3"; src: url("fonty/SourceSans3.ttf"); font-weight: 200 900; }
+body { margin: 0; padding: 28px; background: #E6E7E9; color: #1D1F23; font: 16px/1.45 "Source Sans 3", sans-serif; }
+h1 { font-size: 30px; margin: 0 0 4px; } h2 { font-size: 22px; margin: 28px 0 10px; }
+.wstep { max-width: 1200px; color: #444; }
+.kierunki { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 18px; }
+.k { background: #fff; border-radius: 14px; padding: 18px; }
+.k h2 { margin: 0 0 6px; }
+.ekrany { display: flex; gap: 8px; } .ekrany img { width: 32%; border-radius: 10px; border: 1px solid #ccc; }
+.ikony img { height: 70px; margin-top: 10px; }
+.za { background: #F1F4EE; border-left: 4px solid #3C7A3A; padding: 8px 10px; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; background: #fff; border-radius: 10px; overflow: hidden; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid #E2E3E5; }
+th { background: #F4F5F6; }
+.reko { background: #fff; border-radius: 14px; padding: 18px; margin-top: 24px; max-width: 1200px; }
+small { color: #555; }
+</style>
+</head>
+<body>
+<h1>Oczko · trzy kierunki na ekranie licznika (E2, 2026-10-22)</h1>
+<p class="wstep">Ten sam ekran w każdym kierunku: „pierwsze liczenie” (świeża instalacja) i „sweter w toku” (rękaw, rząd 48 to zamykanie 7 z 8). Dane i teksty: [PRZYKŁAD]. Treść: na iOS SF Pro; w makiecie zastępczo Source Sans 3 (kroju treści nie oceniamy na tych zrzutach). Makiety: <code>docs/design/kierunki/*.html</code>; wszystkie warianty (jasny, ciemny, 320 pt, AX5): <code>docs/design/kierunki/zrzuty/</code>.</p>
+
+<div class="kierunki">
+  <section class="k">
+    <h2>A · Kreski na wzorze</h2>
+    <p>Licznik to wydruk wzoru, na którym zaznaczasz rzędy ołówkiem: każdy rząd stawia kreskę, piąta przekreśla cztery, a rząd z instrukcją jest zakreślony.</p>
+    <div class="ekrany"><img src="kierunki/zrzuty/kreski-pierwsze-liczenie-390-light.png" alt="A, pierwsze liczenie"><img src="kierunki/zrzuty/kreski-sweter-w-toku-390-light.png" alt="A, sweter w toku"><img src="kierunki/zrzuty/kreski-sweter-w-toku-390-dark.png" alt="A, ciemny"></div>
+    <div class="ikony"><img src="kierunki/zrzuty/kreski-ikony.png" alt="ikony A"></div>
+    <p class="za"><b>Najmocniej za:</b> to dokładnie to, czym dziergający liczą bez aplikacji („tick marks on my printed patterns”), a nikt w kategorii tego nie robi; najspokojniejszy i najłatwiejszy do pełnej dostępności.</p>
+    <small>Krój tytułów: Schibsted Grotesk · paleta: papier, grafit, ołówek HB, zakreślacz.</small>
+  </section>
+  <section class="k">
+    <h2>B · Rosnąca dzianina</h2>
+    <p>Licznik dzierga z tobą: każdy rząd dokłada rząd oczek w kolorze twojej włóczki, a znaczniki z zamkiem wiszą tam, gdzie wzór każe coś zrobić.</p>
+    <div class="ekrany"><img src="kierunki/zrzuty/dzianina-pierwsze-liczenie-390-light.png" alt="B, pierwsze liczenie"><img src="kierunki/zrzuty/dzianina-sweter-w-toku-390-light.png" alt="B, sweter w toku"><img src="kierunki/zrzuty/dzianina-sweter-w-toku-390-dark.png" alt="B, ciemny"></div>
+    <div class="ikony"><img src="kierunki/zrzuty/dzianina-ikony.png" alt="ikony B"></div>
+    <p class="za"><b>Najmocniej za:</b> element firmowy niesie najwięcej danych naraz (postęp części, cel, najbliższe instrukcje, kolor włóczki projektu); najbardziej „magiczny” moment +1.</p>
+    <small>Krój tytułów: Young Serif (cyfry wersalikowe) · paleta: szary filc, tusz, kolor włóczki, znacznik.</small>
+  </section>
+  <section class="k">
+    <h2>C · Bębenek licznika</h2>
+    <p>Licznik z torby, przebudowany na ekran: bębenek z cyframi obraca się o jeden ząbek na rząd i pokazuje, co będzie dalej; blokada jak dźwignia w małym liczniku.</p>
+    <div class="ekrany"><img src="kierunki/zrzuty/bebenek-pierwsze-liczenie-390-light.png" alt="C, pierwsze liczenie"><img src="kierunki/zrzuty/bebenek-sweter-w-toku-390-light.png" alt="C, sweter w toku"><img src="kierunki/zrzuty/bebenek-sweter-w-toku-390-dark.png" alt="C, ciemny"></div>
+    <div class="ikony"><img src="kierunki/zrzuty/bebenek-ikony.png" alt="ikony C"></div>
+    <p class="za"><b>Najmocniej za:</b> najlepszy odczyt z odległości stojaka (kontrastowy blok liczby, cel i „49 to go” w jednej linii); jedyny pokazuje blokadę na ekranie.</p>
+    <small>Krój: Chivo + Chivo Mono (cyfry bębenka) · paleta: obudowa, bębenek, języczek.</small>
+  </section>
+</div>
+
+<h2>Test generyczności (karty kontrolne w <code>docs/design/01-swiat.md</code>, napisane przed kartami kierunków)</h2>
+<table>
+<tr><th>Pole</th><th>A · Kreski</th><th>B · Dzianina</th><th>C · Bębenek</th></tr>
+<tr><td>Paleta</td><td>bez pokrycia z (a) i (b); ciemny motyw „grafit + jeden żółty” blisko „prawie czarne + jaskrawy akcent” (krytyk) → do E3: zakreślacz przygaszony w ciemnym</td><td>bez pokrycia; ochra znacznika nie jest terakotą (#B8701A wobec #D97757)</td><td><b>pokrycie</b> z kalibracją: czarny walec + jeden cynobrowy akcent → <b>zmienione</b>: języczek jasny z wcięciem, znaczenie niesie kształt</td></tr>
+<tr><td>Krój tytułów</td><td>neutralny grotesk (nie Inter/Nunito); słabsza tożsamość kroju → wybór kroju po E2</td><td>kontrastowy szeryf, ale bez kremu i terakoty (1 z 3 cech kalibracji); cyfry nautyczne poprawione na wersalikowe</td><td>mono tylko na cyfrach bębenka (cyfry licznika z dziedziny), decyzja do zapisu</td></tr>
+<tr><td>Element firmowy</td><td>kreski piątkowe (nie motek, nie pierścień); krytyk: kreski są też w licznikach nawyków, ale tu siedzą na wydruku wzoru z zakreślaczem</td><td>kolumna oczek „V” ze znacznikami; krytyk: blisko „pionowego paska postępu”</td><td>bębenek; krytyk: na zrzucie wygląda jak kafel ze statystyką, a sam bębenek ma konkurent (Knit Row Counter)</td></tr>
+<tr><td>Układ</td><td colspan="3"><b>pokrycie we wszystkich:</b> „duża liczba + mała etykieta” i strefa +1 na dole. Strefa +1 to wymóg kontekstu (ręce zajęte, NFR-PIE-001), zostaje; okrągłe −/+ z karty (a) usunięte (B: −1 z okręgu na owalny klocek); do E3: liczba połączona z elementem firmowym zamiast „bohatera”</td></tr>
+<tr><td>Ruch</td><td>kreska rysuje się (120 ms)</td><td>rząd oczek wsuwa się od dołu (180 ms)</td><td>bębenek przeskakuje o ząbek (140 ms)</td></tr>
+</table>
+
+<h2>Soczewki (cztery niezależne subagenty, bez dostępu do rozmowy; [OCENA])</h2>
+<table>
+<tr><th>Soczewka</th><th>Najlepszy</th><th>Najważniejsze uwagi i co już poprawiono</th></tr>
+<tr><td>Ręce zajęte, 40–70 cm, lampa</td><td>C</td><td>instrukcja rzędu 48 nie była w przycisku → <b>poprawione</b> (podpis +1 = treść instrukcji); −1 12 pt od +1 → <b>odstęp 28 pt</b>; w C rząd 048 łatwo pomylić z bieżącym, zera wiodące wydłużają odczyt (E3); ciemny motyw: szary +1 w A i C za słaby, niebieski +1 w B razi (E3)</td></tr>
+<tr><td>VoiceOver i AX5</td><td>A (najłatwiej w pełni dostępny)</td><td>etykieta „+1” inna niż tekst przycisku (WCAG 2.5.3) → <b>poprawione</b>; C: rząd następny ściśnięty i przyciemniony → <b>poprawione</b>; B: przy AX5 dzianina musi zejść pod liczbę, znaczniki odróżnia sam kolor/krycie (E3); A: zakreślacz w ciemnym motywie najjaśniejszy (E3)</td></tr>
+<tr><td>Krytyk kliszy</td><td>A, potem B, potem C</td><td>wspólny szkielet „liczba + podpis”; C po zakryciu nazwy „nie da się” rozpoznać → cynober zmieniony; B: jednakowe białe karty i szeryf „ciepły” (E3)</td></tr>
+<tr><td>Nowa osoba</td><td>A</td><td>„7 of 8” bez rzeczownika → <b>„Decrease 7 of 8”</b>; 14 kresek obok 47 wyglądało jak błąd → <b>podpis nad kreskami</b>; C: „000” i „001” jak dwie liczby → <b>tylko 000</b>; B: znacznik jak cyfra „3”, kropki na starcie → <b>znacznik w kształcie zapinki, nabrane oczka na starcie</b></td></tr>
+</table>
+
+<div class="reko">
+  <h2 style="margin-top:0">Rekomendacja: A · Kreski na wzorze, z dwoma elementami z innych kierunków</h2>
+  <p><b>Dlaczego (funkcja, nie gust):</b> trzy z czterech soczewek wskazały A (nowa osoba, krytyk kliszy, dostępność); A odwzorowuje to, czym ludzie liczą dziś (kreski na wydruku, zakreślacz z BR-WZR-008), więc nowa osoba rozumie go od razu; jest najodrębniejszy w kategorii i jedyny, w którym grafika nie musi nieść danych niedostępnych w tekście.</p>
+  <p><b>Co warto przenieść:</b> z C linijkę „Goal 96 rows · 49 to go” (najczytelniejsza dla nowej osoby i z odległości) i widoczną blokadę; z B kolor włóczki projektu jako jedyny kolor z danych (np. kolor kresek albo krawędzi zakreślenia), jeśli właściciel chce cieplejszego charakteru.</p>
+  <p><b>Ryzyko A:</b> kreski piątkowe znane są też z liczników nawyków (krytyk); tożsamość niesie więc połączenie wydruku, ołówka i zakreślacza, nie same kreski. Krój tytułów do wyboru po E2 (ok. 5 krojów z liternictwa wzorów).</p>
+  <p><small>Opcjonalnie (właściciel, ok. 1 h): test pięciosekundowy albo preferencji z pięcioma osobami dziergającymi; działanie zewnętrzne tylko za zgodą (P-052 (2): bez testów z ludźmi).</small></p>
+</div>
+</body>
+</html>

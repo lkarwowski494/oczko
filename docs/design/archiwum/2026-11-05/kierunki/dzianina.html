@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · Direction B · Growing fabric</title>
+<!-- Kierunek B „Rosnąca dzianina” (M4 + znaczniki M5, docs/design/01-swiat.md). Teksty i dane projektu: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Young Serif"; src: url("../fonty/YoungSerif-Regular.ttf"); }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --tlo: #EEF0F2;          /* chłodna szarość filcu / blatu; nie krem */
+  --powierzchnia: #FFFFFF;
+  --tusz: #1F2329;
+  --tusz2: #565C66;
+  --linia: #D3D7DD;
+  --wloczka: #4F6F94;      /* kolor włóczki projektu = dane użytkownika [PRZYKŁAD: niebieski melanż] */
+  --wloczka-jasna: #7F9BBB;
+  --znacznik: #B8701A;     /* znacznik z zamkiem: przypomnienie (3,4:1 do tła, WCAG 1.4.11) */
+  --przycisk: #1F2329; --tekst-przycisku: #FFFFFF;
+  --dt-tytul: 1; --dt-tresc: 1;
+}
+[data-theme="dark"] {
+  --tlo: #15181C; --powierzchnia: #1E2228; --tusz: #EDEFF2; --tusz2: #A3A9B3; --linia: #2E333A;
+  --wloczka: #7D9DC2; --wloczka-jasna: #A9C0DA; --znacznik: #F0A646;
+  --przycisk: #7D9DC2; --tekst-przycisku: #15181C; /* przycisk w kolorze włóczki: ciemny tekst */
+}
+* { box-sizing: border-box; }
+/* Young Serif ma domyślnie cyfry nautyczne: „1” wygląda jak „I”. Skrót font: w regułach niżej kasuje cechy, stąd !important. */
+main *, button, .panel * { font-feature-settings: "lnum" 1, "tnum" 1 !important; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: "Source Sans 3", sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+main[data-ekran] { width: var(--w, 390px); min-height: 844px; background: var(--tlo); color: var(--tusz); display: flex; flex-direction: column; }
+.status { height: 47px; display: flex; justify-content: space-between; align-items: center; padding: 0 28px; font: 600 calc(15px * var(--dt-tresc)) "Source Sans 3"; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 0; min-height: 44px; }
+.nav a { color: var(--tusz); text-decoration: none; font-size: calc(17px * var(--dt-tresc)); min-height: 44px; display: flex; align-items: center; }
+.nav .ikony { display: flex; gap: 4px; } .nav .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.glowa { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 8px 20px 0; align-items: start; }
+h1 { font: 400 calc(30px * var(--dt-tytul)) / 1.15 "Young Serif"; margin: 0; }
+.pod { color: var(--tusz2); font-size: calc(17px * var(--dt-tresc)); margin-top: 4px; line-height: 1.3; }
+.n { font: 400 calc(84px * var(--dt-tytul)) / 1 "Young Serif"; font-variant-numeric: tabular-nums; margin-top: 18px; }
+.z { color: var(--tusz2); font-size: calc(20px * var(--dt-tresc)); }
+.dzianina { width: 132px; }
+.dzianina svg { display: block; width: 100%; height: auto; }
+.przyp { margin: 16px 20px 0; background: var(--powierzchnia); border-left: 6px solid var(--znacznik); padding: 12px 14px; border-radius: 4px 12px 12px 4px; }
+.przyp b { font: 400 calc(20px * var(--dt-tytul)) / 1.2 "Young Serif"; display: block; }
+.przyp span { color: var(--tusz2); font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.lista { margin: 12px 20px 0; background: var(--powierzchnia); border-radius: 12px; }
+.lista div { display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; flex-wrap: wrap; }
+.lista div + div { border-top: 1px solid var(--linia); }
+.lista .w { color: var(--tusz2); }
+.spacer { flex: 1; }
+.dol { padding: 12px 16px 34px; display: flex; gap: 28px; align-items: flex-end; }
+.minus { width: 72px; height: 72px; border-radius: 22px 22px 36px 36px; border: 1.5px solid var(--tusz); background: transparent; color: var(--tusz); font: 400 calc(26px * var(--dt-tytul)) "Young Serif"; }
+.plus { flex: 1; min-height: 160px; border: 0; border-radius: 28px; background: var(--przycisk); color: var(--tekst-przycisku); font: 400 calc(28px * var(--dt-tytul)) / 1.2 "Young Serif"; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.plus small { font: 400 calc(15px * var(--dt-tresc)) "Source Sans 3"; opacity: .8; }
+.pusto { margin: 18px 20px 0; color: var(--tusz2); font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.panel { width: 390px; background: #fff; color: #222; padding: 20px; font-size: 15px; line-height: 1.4; }
+.panel h2 { font: 400 24px "Young Serif"; margin: 0 0 8px; } .panel h3 { font: 400 17px "Young Serif"; margin: 16px 0 6px; }
+.probki { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; } .probki div { height: 54px; border-radius: 6px; border: 1px solid #ccc; font-size: 11px; display: flex; align-items: flex-end; padding: 3px; }
+.ikony-rzad { display: flex; gap: 16px; align-items: flex-end; } .ikony-rzad svg { border-radius: 22%; }
+</style>
+</head>
+<body>
+
+<main data-ekran="pierwsze-liczenie">
+  <div class="status"><span>9:41</span><span>▂▄▆ ▭</span></div>
+  <div class="nav"><a href="#">Projects</a><div class="ikony"><span class="ikona" aria-label="History"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div></div>
+  <div class="glowa">
+    <div><h1>Counter</h1><div class="n">0</div><div class="z">rows</div></div>
+    <div class="dzianina" aria-hidden="true"><svg data-rzedy="0" data-cel="0" viewBox="0 0 132 300"></svg></div>
+  </div>
+  <p class="pusto">Tap the big button after each row. Your piece grows here, one row of stitches at a time.</p>
+  <div class="spacer"></div>
+  <div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row">+1 row</button></div>
+</main>
+
+<main data-ekran="sweter-w-toku">
+  <div class="status"><span>21:14</span><span>▂▄▆ ▭</span></div>
+  <div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" aria-label="History"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona">•••</span></div></div>
+  <div class="glowa">
+    <div><h1>Left sleeve</h1><div class="pod">Rows finished</div><div class="n">47</div><div class="z">of 96</div></div>
+    <div class="dzianina" role="img" aria-label="Left sleeve: 47 of 96 rows knitted. Markers at decrease rows; next marker on row 48."><svg data-rzedy="47" data-cel="96" data-znaczniki="12,18,24,30,36,42,48,54" viewBox="0 0 132 300"></svg></div>
+  </div>
+  <div class="przyp" role="status"><b>Row 48: decrease at both ends</b><span>Decrease 7 of 8 · next on row 54</span></div>
+  <div class="lista"><div><span class="w">Cable pattern</span><b>repeat 6 · row 7 of 8</b></div><div><span class="w">Note</span><span>Switch to 4 mm for the cuff</span></div></div>
+  <div class="spacer"></div>
+  <div class="dol"><button class="minus" aria-label="−1 row">−1</button><button class="plus" aria-label="+1 row. Row 48 next: decrease at both ends">+1 row<small>row 48: decrease at both ends</small></button></div>
+</main>
+
+<section class="panel">
+  <h2>B · Growing fabric</h2>
+  <p><b>Idea:</b> the counter knits along with you: every row adds a row of stitches in your yarn colour, and locking markers sit where the pattern says to do something.</p>
+  <p><b>Signature element:</b> the swatch column = rows done (height), goal (top edge), instruction rows (markers), yarn colour.</p>
+  <h3>Palette</h3>
+  <div class="probki"><div style="background:#EEF0F2">felt grey</div><div style="background:#1F2329;color:#fff">ink</div><div style="background:#4F6F94;color:#fff">your yarn*</div><div style="background:#B8701A;color:#fff">marker</div><div style="background:#fff">surface</div></div>
+  <p style="font-size:13px">*Yarn colour comes from the project (user’s choice); default is a neutral grey yarn.</p>
+  <h3>Type</h3><p style="font:400 26px 'Young Serif'">Young Serif 47 · Left sleeve</p><p>Body: SF Pro on iOS; Source Sans 3 here as a stand-in.</p>
+  <h3>Motion · haptics · sound</h3><p>+1 knits one row of V stitches in from the bottom (180 ms, off with Reduce Motion); a marker row adds a second, double tap. Sound off by default: a soft needle click.</p>
+  <h3>Voice</h3><p>Empty: “Tap the big button after each row.”<br>Error: “That row didn’t save. It’s still here; try again.”<br>Success: “Left sleeve finished: 96 rows.”</p>
+  <h3>Icon</h3><div class="ikony-rzad" id="ikony"></div>
+</section>
+
+<script>
+// Dzianina: kolumna oczek „V”; wysokość = rzędy / cel; znaczniki z zamkiem na rzędach przypomnień.
+function dzianina(svg) {
+  const ns = 'http://www.w3.org/2000/svg', r = +svg.dataset.rzedy, cel = +svg.dataset.cel || 0;
+  const zn = (svg.dataset.znaczniki || '').split(',').filter(Boolean).map(Number);
+  const H = 300, kolumny = 5, szer = 18, x0 = 10, dno = H - 6;
+  const krok = cel ? (H - 20) / cel : 0;
+  // obrys celu (pusta „siatka” do brzegu)
+  if (cel) {
+    const g = document.createElementNS(ns, 'rect');
+    Object.entries({ x: x0 - 2, y: dno - cel * krok, width: kolumny * szer + 4, height: cel * krok, fill: 'none', stroke: 'var(--linia)', 'stroke-dasharray': '3 4', rx: 3 }).forEach(([k, v]) => g.setAttribute(k, v));
+    svg.appendChild(g);
+  } else {
+    // pusty stan: nabrane oczka (jeden rząd „V” w kolorze neutralnej włóczki), z którego dzianina urośnie
+    for (let c = 0; c < kolumny; c++) { const p = document.createElementNS(ns, 'path'), cx = x0 + c * szer;
+      p.setAttribute('d', `M${cx + 3} ${dno - 12} L ${cx + szer / 2} ${dno} L ${cx + szer - 3} ${dno - 12}`);
+      p.setAttribute('stroke', 'var(--tusz2)'); p.setAttribute('stroke-width', 4.5); p.setAttribute('fill', 'none'); p.setAttribute('stroke-linecap', 'round'); svg.appendChild(p); }
+  }
+  // Oczka mają stałą, czytelną wysokość (12 px); wysokość dzianiny nadal = r / cel.
+  const wys = cel ? r * krok : 0, oczko = 12, rzedyV = Math.floor(wys / oczko);
+  for (let i = 0; i < rzedyV; i++) {
+    const y = dno - (i + 1) * oczko;
+    for (let c = 0; c < kolumny; c++) {
+      const p = document.createElementNS(ns, 'path'), cx = x0 + c * szer;
+      p.setAttribute('d', `M${cx + 3} ${y} L ${cx + szer / 2} ${y + oczko} L ${cx + szer - 3} ${y}`);
+      p.setAttribute('stroke', i % 2 ? 'var(--wloczka)' : 'var(--wloczka-jasna)'); p.setAttribute('stroke-width', 4.5); p.setAttribute('fill', 'none'); p.setAttribute('stroke-linejoin', 'round'); p.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(p);
+    }
+  }
+  for (const z of zn) {
+    if (z <= r) continue; // znacznik z minionego rzędu jest odpięty
+    const y = dno - z * krok, przyszly = z > r + 1, biezacy = z === r + 1;
+    const m = document.createElementNS(ns, 'path');
+    // znacznik z zamkiem: kropla z zapięciem, wpięta w brzeg dzianiny
+    m.setAttribute('d', `M${x0 + kolumny * szer - 2} ${y} c 10 -10 22 -4 20 6 c -2 8 -14 10 -20 2`);
+    m.setAttribute('stroke', 'var(--znacznik)'); m.setAttribute('stroke-width', biezacy ? 4 : 2.5); m.setAttribute('fill', 'none'); m.setAttribute('stroke-linecap', 'round'); m.setAttribute('opacity', przyszly ? .45 : 1);
+    svg.appendChild(m);
+  }
+}
+document.querySelectorAll('svg[data-rzedy]').forEach(dzianina);
+const ikona = (tlo, a, b) => `<svg width="SIZE" height="SIZE" viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/>` +
+  [0,1,2].map(rz => [0,1].map(c => `<path d="M${24 + c * 26} ${26 + rz * 18} L ${37 + c * 26} ${44 + rz * 18} L ${50 + c * 26} ${26 + rz * 18}" stroke="${rz % 2 ? a : b}" stroke-width="9" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`).join('')).join('') +
+  `<path d="M80 40 q 10 -6 12 2 q 2 8 -8 10" stroke="#B8701A" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`;
+document.getElementById('ikony').innerHTML = [120, 60, 29].map(s => ikona('#EEF0F2', '#4F6F94', '#7F9BBB').replaceAll('SIZE', s)).join('') + ikona('#15181C', '#7D9DC2', '#A9C0DA').replaceAll('SIZE', 60);
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+/* Wspólna baza makiet kierunków E2 (M3 redesign, 2026-11-05). Kroje z docs/design/fonty (OFL). */
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Young Serif"; src: url(../fonty/YoungSerif-Regular.ttf); font-weight: 400; }
+@font-face { font-family: "Schibsted Grotesk"; src: url(../fonty/SchibstedGrotesk.ttf); font-weight: 400 900; }
+@font-face { font-family: "Archivo"; src: url(../fonty/Archivo.ttf); font-weight: 100 900; font-stretch: 62% 125%; }
+
+:root { --w: 390px; --dt-tytul: 1; --dt-tresc: 1; --u: 4px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+
+/* rozmiary tekstu: treść skaluje --dt-tresc (AX5 ≈ 3.1), tytuły --dt-tytul (AX5 ≈ 1.8) — uproszczenie tabeli HIG */
+.t-duzy { font-size: calc(34px * var(--dt-tytul)); line-height: 1.12; }
+.t-tytul { font-size: calc(22px * var(--dt-tytul)); line-height: 1.2; }
+.t-tresc { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.t-pod { font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
+.cyfry { font-variant-numeric: tabular-nums; }
+
+.ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; overflow: visible; }
+.status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 14px 28px 0 32px; font-weight: 600; font-size: 16px; color: var(--status, var(--tekst)); }
+.status .bat { width: 26px; height: 12px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; opacity: .9; }
+.status .bat::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }
+.naglowek { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 16px 0 16px; gap: 12px; }
+.naglowek .data { color: var(--tekst2); margin-top: 2px; }
+.ik { display: inline-flex; width: 1em; height: 1em; flex: none; }
+.ik svg { width: 100%; height: 100%; }
+.przycisk-ik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; border-radius: 22px; color: var(--ikona-nag, var(--tekst)); flex: none; }
+.tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
+.zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasek-linia); }
+.zakladki a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--zakl); text-decoration: none; font-weight: 600; text-align: center; min-height: 44px; }
+.zakladki a .ik { font-size: 26px; }
+.zakladki a.wybrana { color: var(--zakl-wybrana); }
+.przyklad { display: none; }
+.panel { width: 340px; background: #f7f7f5; color: #222; border-radius: 12px; padding: 20px; font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 12px; }
+.panel h2 { font-size: 20px; } .panel h3 { font-size: 14px; margin-top: 4px; }
+.panel .probki { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel .probka { width: 96px; font-size: 11px; } .panel .probka i { display: block; height: 36px; border-radius: 6px; border: 1px solid #0002; margin-bottom: 2px; }
+.panel .ikony { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+.panel .ikony figure { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; }
+.panel .maska { overflow: hidden; display: block; }

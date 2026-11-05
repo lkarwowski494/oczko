@@ -1,82 +1,65 @@
 <!doctype html>
-<html lang="pl">
-<head>
-<meta charset="utf-8">
-<title>Oczko · porównanie kierunków (E2)</title>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko — trzy kierunki (E2, redesign M3)</title>
 <style>
-@font-face { font-family: "Source Sans 3"; src: url("fonty/SourceSans3.ttf"); font-weight: 200 900; }
-body { margin: 0; padding: 28px; background: #E6E7E9; color: #1D1F23; font: 16px/1.45 "Source Sans 3", sans-serif; }
-h1 { font-size: 30px; margin: 0 0 4px; } h2 { font-size: 22px; margin: 28px 0 10px; }
-.wstep { max-width: 1200px; color: #444; }
-.kierunki { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 18px; }
-.k { background: #fff; border-radius: 14px; padding: 18px; }
-.k h2 { margin: 0 0 6px; }
-.ekrany { display: flex; gap: 8px; } .ekrany img { width: 32%; border-radius: 10px; border: 1px solid #ccc; }
-.ikony img { height: 70px; margin-top: 10px; }
-.za { background: #F1F4EE; border-left: 4px solid #3C7A3A; padding: 8px 10px; margin-top: 10px; }
-table { border-collapse: collapse; width: 100%; background: #fff; border-radius: 10px; overflow: hidden; font-size: 15px; }
-th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid #E2E3E5; }
-th { background: #F4F5F6; }
-.reko { background: #fff; border-radius: 14px; padding: 18px; margin-top: 24px; max-width: 1200px; }
-small { color: #555; }
-</style>
-</head>
-<body>
-<h1>Oczko · trzy kierunki na ekranie licznika (E2, 2026-10-22)</h1>
-<p class="wstep">Ten sam ekran w każdym kierunku: „pierwsze liczenie” (świeża instalacja) i „sweter w toku” (rękaw, rząd 48 to zamykanie 7 z 8). Dane i teksty: [PRZYKŁAD]. Treść: na iOS SF Pro; w makiecie zastępczo Source Sans 3 (kroju treści nie oceniamy na tych zrzutach). Makiety: <code>docs/design/kierunki/*.html</code>; wszystkie warianty (jasny, ciemny, 320 pt, AX5): <code>docs/design/kierunki/zrzuty/</code>.</p>
-
-<div class="kierunki">
+@font-face { font-family: "Source Sans 3"; src: url(fonty/SourceSans3.ttf); font-weight: 200 900; }
+* { box-sizing: border-box; margin: 0; }
+body { font-family: "Source Sans 3", sans-serif; background: #d9dbdc; color: #1d2024; padding: 32px; width: 1960px; }
+h1 { font-size: 30px; } .pod { color: #4a5058; margin: 4px 0 24px; font-size: 16px; }
+.kolumny { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.k { background: #f4f5f5; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.k h2 { font-size: 24px; } .k .idea { font-size: 16px; } .k .arg { font-size: 15px; background: #e7eaec; border-radius: 10px; padding: 10px 12px; }
+.ekrany { display: flex; gap: 10px; } .ekrany img { width: 300px; border-radius: 14px; display: block; }
+.ekrany figure { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #4a5058; }
+.panel img { width: 100%; border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: #f4f5f5; border-radius: 12px; overflow: hidden; margin-top: 12px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #d5d9dc; vertical-align: top; }
+th { background: #e7eaec; }
+.rek { margin-top: 28px; background: #f4f5f5; border-radius: 18px; padding: 18px 22px; font-size: 16px; display: flex; flex-direction: column; gap: 8px; }
+.rek h2 { font-size: 22px; }
+.uw { font-size: 13px; color: #4a5058; }
+</style></head><body>
+<h1>Oczko — trzy kierunki wyglądu na ekranie „Dziś”</h1>
+<p class="pod">E2 roli 04 (redesign M3), 5.11.2026 · przepływy z <code>to-be.md</code> (P-549), kierunki z <code>01-swiat.md</code> (P-551) · dane na ekranach: [PRZYKŁAD] · treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3; ikony interfejsu zastępcze (na iOS SF Symbols)</p>
+<div class="kolumny">
   <section class="k">
-    <h2>A · Kreski na wzorze</h2>
-    <p>Licznik to wydruk wzoru, na którym zaznaczasz rzędy ołówkiem: każdy rząd stawia kreskę, piąta przekreśla cztery, a rząd z instrukcją jest zakreślony.</p>
-    <div class="ekrany"><img src="kierunki/zrzuty/kreski-pierwsze-liczenie-390-light.png" alt="A, pierwsze liczenie"><img src="kierunki/zrzuty/kreski-sweter-w-toku-390-light.png" alt="A, sweter w toku"><img src="kierunki/zrzuty/kreski-sweter-w-toku-390-dark.png" alt="A, ciemny"></div>
-    <div class="ikony"><img src="kierunki/zrzuty/kreski-ikony.png" alt="ikony A"></div>
-    <p class="za"><b>Najmocniej za:</b> to dokładnie to, czym dziergający liczą bez aplikacji („tick marks on my printed patterns”), a nikt w kategorii tego nie robi; najspokojniejszy i najłatwiejszy do pełnej dostępności.</p>
-    <small>Krój tytułów: Schibsted Grotesk · paleta: papier, grafit, ołówek HB, zakreślacz.</small>
+    <h2>A „Dzianina”</h2>
+    <p class="idea">Karta projektu to kawałek dzianiny, który przyrasta rząd po rzędzie do celu części; barwy runa (miodowy mioget, stalowa shaela).</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/dzianina-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/dzianina-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> jeden element pokazuje cztery dane naraz — ile zrobione do celu, ile dziś, bieżący rząd i najbliższe przypomnienie — i rośnie przy każdym „+1”, także na liczniku. Rośnie razem z robótką.</p>
+    <div class="panel"><img src="kierunki/zrzuty/dzianina-panel.png"></div>
   </section>
   <section class="k">
-    <h2>B · Rosnąca dzianina</h2>
-    <p>Licznik dzierga z tobą: każdy rząd dokłada rząd oczek w kolorze twojej włóczki, a znaczniki z zamkiem wiszą tam, gdzie wzór każe coś zrobić.</p>
-    <div class="ekrany"><img src="kierunki/zrzuty/dzianina-pierwsze-liczenie-390-light.png" alt="B, pierwsze liczenie"><img src="kierunki/zrzuty/dzianina-sweter-w-toku-390-light.png" alt="B, sweter w toku"><img src="kierunki/zrzuty/dzianina-sweter-w-toku-390-dark.png" alt="B, ciemny"></div>
-    <div class="ikony"><img src="kierunki/zrzuty/dzianina-ikony.png" alt="ikony B"></div>
-    <p class="za"><b>Najmocniej za:</b> element firmowy niesie najwięcej danych naraz (postęp części, cel, najbliższe instrukcje, kolor włóczki projektu); najbardziej „magiczny” moment +1.</p>
-    <small>Krój tytułów: Young Serif (cyfry wersalikowe) · paleta: szary filc, tusz, kolor włóczki, znacznik.</small>
+    <h2>B „Markery”</h2>
+    <p class="idea">Linijka rzędów z kółkami-markerami nawleczonymi na drut: gdzie jesteś, co Cię czeka, gdzie koniec; bordo z złotymi markerami.</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/markery-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/markery-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> najlepiej odpowiada na „co dalej” po powrocie — wszystkie przypomnienia części widać na raz, a lista pod spodem mówi, za ile rzędów. Najmocniejszy kolor i najprostszy we wdrożeniu.</p>
+    <div class="panel"><img src="kierunki/zrzuty/markery-panel.png"></div>
   </section>
   <section class="k">
-    <h2>C · Bębenek licznika</h2>
-    <p>Licznik z torby, przebudowany na ekran: bębenek z cyframi obraca się o jeden ząbek na rząd i pokazuje, co będzie dalej; blokada jak dźwignia w małym liczniku.</p>
-    <div class="ekrany"><img src="kierunki/zrzuty/bebenek-pierwsze-liczenie-390-light.png" alt="C, pierwsze liczenie"><img src="kierunki/zrzuty/bebenek-sweter-w-toku-390-light.png" alt="C, sweter w toku"><img src="kierunki/zrzuty/bebenek-sweter-w-toku-390-dark.png" alt="C, ciemny"></div>
-    <div class="ikony"><img src="kierunki/zrzuty/bebenek-ikony.png" alt="ikony C"></div>
-    <p class="za"><b>Najmocniej za:</b> najlepszy odczyt z odległości stojaka (kontrastowy blok liczby, cel i „49 to go” w jednej linii); jedyny pokazuje blokadę na ekranie.</p>
-    <small>Krój: Chivo + Chivo Mono (cyfry bębenka) · paleta: obudowa, bębenek, języczek.</small>
+    <h2>C „Wzornik”</h2>
+    <p class="idea">Ekran jak karta wzornika producenta: każdy projekt to próbka włóczki nawinięta na kartę, długość nawinięcia = postęp; mech i karton.</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/wzornik-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/wzornik-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> jedyny pokazuje na „Dziś” kilka projektów naraz i dni tygodnia w barwach projektów — najbogatszy obraz do sklepu. Słabość: barwa projektu nadawana automatycznie, nie z włóczki.</p>
+    <div class="panel"><img src="kierunki/zrzuty/wzornik-panel.png"></div>
   </section>
 </div>
 
-<h2>Test generyczności (karty kontrolne w <code>docs/design/01-swiat.md</code>, napisane przed kartami kierunków)</h2>
-<table>
-<tr><th>Pole</th><th>A · Kreski</th><th>B · Dzianina</th><th>C · Bębenek</th></tr>
-<tr><td>Paleta</td><td>bez pokrycia z (a) i (b); ciemny motyw „grafit + jeden żółty” blisko „prawie czarne + jaskrawy akcent” (krytyk) → do E3: zakreślacz przygaszony w ciemnym</td><td>bez pokrycia; ochra znacznika nie jest terakotą (#B8701A wobec #D97757)</td><td><b>pokrycie</b> z kalibracją: czarny walec + jeden cynobrowy akcent → <b>zmienione</b>: języczek jasny z wcięciem, znaczenie niesie kształt</td></tr>
-<tr><td>Krój tytułów</td><td>neutralny grotesk (nie Inter/Nunito); słabsza tożsamość kroju → wybór kroju po E2</td><td>kontrastowy szeryf, ale bez kremu i terakoty (1 z 3 cech kalibracji); cyfry nautyczne poprawione na wersalikowe</td><td>mono tylko na cyfrach bębenka (cyfry licznika z dziedziny), decyzja do zapisu</td></tr>
-<tr><td>Element firmowy</td><td>kreski piątkowe (nie motek, nie pierścień); krytyk: kreski są też w licznikach nawyków, ale tu siedzą na wydruku wzoru z zakreślaczem</td><td>kolumna oczek „V” ze znacznikami; krytyk: blisko „pionowego paska postępu”</td><td>bębenek; krytyk: na zrzucie wygląda jak kafel ze statystyką, a sam bębenek ma konkurent (Knit Row Counter)</td></tr>
-<tr><td>Układ</td><td colspan="3"><b>pokrycie we wszystkich:</b> „duża liczba + mała etykieta” i strefa +1 na dole. Strefa +1 to wymóg kontekstu (ręce zajęte, NFR-PIE-001), zostaje; okrągłe −/+ z karty (a) usunięte (B: −1 z okręgu na owalny klocek); do E3: liczba połączona z elementem firmowym zamiast „bohatera”</td></tr>
-<tr><td>Ruch</td><td>kreska rysuje się (120 ms)</td><td>rząd oczek wsuwa się od dołu (180 ms)</td><td>bębenek przeskakuje o ząbek (140 ms)</td></tr>
-</table>
+<div class="rek">
+  <h2>Rekomendacja: A „Dzianina”</h2>
+  <p>Powód z funkcji, nie z gustu: element firmowy A niesie najwięcej danych z najczęstszej czynności (rząd) i ma moment firmowy dokładnie tam, gdzie użytkownik stuka najczęściej — każdy „+1” dodaje rząd oczek. B niesie dobrze „co dalej”, ale jego pas nagłówka w jednym kolorze jest najbliżej układu Piekarza; C ma najbogatszy obraz, ale jego barwa projektu nie pochodzi z danych (aplikacja nie zapisuje koloru włóczki), więc łamie zasadę „element niesie dane” w połowie. Łączenie jest możliwe, np. A z listą „co dalej” z B.</p>
+  <p>Ikona: przy każdym kierunku własna (A: oczka „V” pod drutem; B: kółko-marker na drucie; C: próbka nawinięta na kartę) oraz obecne kreski w barwach kierunku (P-550, 2A).</p>
+  <p class="uw">Opcjonalny szybki test (ok. 1 h czasu właściciela): 5 osób dziergających, test pięciosekundowy na zrzutach ciemnych — „do czego jest ta aplikacja?”, „co zrobisz najpierw?”.</p>
 
-<h2>Soczewki (cztery niezależne subagenty, bez dostępu do rozmowy; [OCENA])</h2>
-<table>
-<tr><th>Soczewka</th><th>Najlepszy</th><th>Najważniejsze uwagi i co już poprawiono</th></tr>
-<tr><td>Ręce zajęte, 40–70 cm, lampa</td><td>C</td><td>instrukcja rzędu 48 nie była w przycisku → <b>poprawione</b> (podpis +1 = treść instrukcji); −1 12 pt od +1 → <b>odstęp 28 pt</b>; w C rząd 048 łatwo pomylić z bieżącym, zera wiodące wydłużają odczyt (E3); ciemny motyw: szary +1 w A i C za słaby, niebieski +1 w B razi (E3)</td></tr>
-<tr><td>VoiceOver i AX5</td><td>A (najłatwiej w pełni dostępny)</td><td>etykieta „+1” inna niż tekst przycisku (WCAG 2.5.3) → <b>poprawione</b>; C: rząd następny ściśnięty i przyciemniony → <b>poprawione</b>; B: przy AX5 dzianina musi zejść pod liczbę, znaczniki odróżnia sam kolor/krycie (E3); A: zakreślacz w ciemnym motywie najjaśniejszy (E3)</td></tr>
-<tr><td>Krytyk kliszy</td><td>A, potem B, potem C</td><td>wspólny szkielet „liczba + podpis”; C po zakryciu nazwy „nie da się” rozpoznać → cynober zmieniony; B: jednakowe białe karty i szeryf „ciepły” (E3)</td></tr>
-<tr><td>Nowa osoba</td><td>A</td><td>„7 of 8” bez rzeczownika → <b>„Decrease 7 of 8”</b>; 14 kresek obok 47 wyglądało jak błąd → <b>podpis nad kreskami</b>; C: „000” i „001” jak dwie liczby → <b>tylko 000</b>; B: znacznik jak cyfra „3”, kropki na starcie → <b>znacznik w kształcie zapinki, nabrane oczka na starcie</b></td></tr>
-</table>
-
-<div class="reko">
-  <h2 style="margin-top:0">Rekomendacja: A · Kreski na wzorze, z dwoma elementami z innych kierunków</h2>
-  <p><b>Dlaczego (funkcja, nie gust):</b> trzy z czterech soczewek wskazały A (nowa osoba, krytyk kliszy, dostępność); A odwzorowuje to, czym ludzie liczą dziś (kreski na wydruku, zakreślacz z BR-WZR-008), więc nowa osoba rozumie go od razu; jest najodrębniejszy w kategorii i jedyny, w którym grafika nie musi nieść danych niedostępnych w tekście.</p>
-  <p><b>Co warto przenieść:</b> z C linijkę „Goal 96 rows · 49 to go” (najczytelniejsza dla nowej osoby i z odległości) i widoczną blokadę; z B kolor włóczki projektu jako jedyny kolor z danych (np. kolor kresek albo krawędzi zakreślenia), jeśli właściciel chce cieplejszego charakteru.</p>
-  <p><b>Ryzyko A:</b> kreski piątkowe znane są też z liczników nawyków (krytyk); tożsamość niesie więc połączenie wydruku, ołówka i zakreślacza, nie same kreski. Krój tytułów do wyboru po E2 (ok. 5 krojów z liternictwa wzorów).</p>
-  <p><small>Opcjonalnie (właściciel, ok. 1 h): test pięciosekundowy albo preferencji z pięcioma osobami dziergającymi; działanie zewnętrzne tylko za zgodą (P-052 (2): bez testów z ludźmi).</small></p>
+  <h2>Test generyczności (karty kontrolne z <code>01-swiat.md</code> §5 i „Kalibracja domyślnych wyborów”)</h2>
+  <table>
+    <tr><th>Pole</th><th>(a) licznik bez wiedzy o dziedzinie</th><th>(b) tracker nawyków</th><th>A Dzianina</th><th>B Markery</th><th>C Wzornik</th><th>Pokrycia i co zmieniono</th></tr>
+    <tr><td>Paleta</td><td>koral/róż + biel, mięta</td><td>prawie czerń + neon / fiolet</td><td>stalowa shaela + miodowy mioget (runo)</td><td>bordo + złoty marker, len</td><td>mech + karton, próbki runa</td><td>brak pokryć; tła ciemne barwione (nie #111 ani #1B1C1F); B jasne tło lniane sprawdzone pod „krem + terakota” — szare, bez terakoty</td></tr>
+    <tr><td>Krój tytułów</td><td>zaokrąglony (Nunito/Poppins)</td><td>SF Rounded / Inter</td><td>Young Serif (druk ulotek)</td><td>Schibsted Grotesk</td><td>Archivo zwężony (banderole)</td><td>brak pokryć; wybór kroju po E2 (ok. 5 krojów na wybranym kierunku)</td></tr>
+    <tr><td>Element firmowy</td><td>kłębek, liczba w kole postępu</td><td>pierścień postępu, płomień serii</td><td>dzianina rosnąca do celu</td><td>linijka z markerami</td><td>próbka nawinięta na kartę</td><td>B: pierwsza wersja markerów wyglądała jak pinezki mapy → zmienione na kółka na drucie; okrągłe „+1” jest z decyzji P-549 (K-B) i pokrywa się z kliszą (a) — forma z dziedziny: A wełniany guzik w mioget, B kolor markera, C barwa próbki z obwódką</td></tr>
+    <tr><td>Układ</td><td>siatka jednakowych kart</td><td>duża liczba + statystyki</td><td>karta z dzianiną, tydzień z próbek, kafle 2×2</td><td>pas z linijką, lista „co dalej”, kafle 4 w rzędzie</td><td>karta wzornika, pas projektów, tydzień z dziurek</td><td>„duża liczba + mała etykieta” jest w każdym (liczba z K-B) — liczba nie jest bohaterem sama, stoi przy elemencie z danymi; C: usunięta etykieta wersalikami z rozstrzeleniem („PROJEKT W TOKU”)</td></tr>
+    <tr><td>Ruch</td><td>konfetti, sprężyste „+”</td><td>wypełnianie pierścienia, fade + slide</td><td>rząd oczek wsuwa się pod igłę</td><td>marker odpina się i opada</td><td>nitka owija się o pasmo</td><td>brak pokryć; ruch tylko przy „+1”, wyłączony przy „Ogranicz ruch”</td></tr>
+    <tr><td>Ikona</td><td>kłębek z drutami na różu</td><td>pierścień / kropla na gradiencie</td><td>oczka „V” pod drutem</td><td>kółko na drucie</td><td>próbka na karcie</td><td>brak pokryć (kłębek: 7 z 12 konkurentów — żaden kierunek go nie używa)</td></tr>
+  </table>
+  <p class="uw">Pomiary: <code>kierunki/kontrast-e2.txt</code> (68 par w obu motywach, kod 0, po poprawce 2 par grafiki); <code>warsztat.mjs</code> 390 pt: 0 błędów w każdym kierunku (ostrzeżenia: odstępy 2/3/6/14 px z paska stanu i panelu, liczba ekranu jako akapit — to jedna linia wyświetlacza). Skala szarości: dane czytelne kształtem w trzech kierunkach.</p>
 </div>
-</body>
-</html>
+</body></html>

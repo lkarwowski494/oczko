@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Kierunek C „Wzornik” — Dziś</title>
+<link rel="stylesheet" href="wspolne.css">
+<!-- Dane na ekranie: [PRZYKŁAD]. Wzornik kolorów producenta (karta z nawiniętymi próbkami): przedmiot z dziedziny (01-swiat.md, K4).
+     Barwy próbek projektów: nadawane automatycznie z palety wzornika według kolejności projektu (aplikacja nie zapisuje koloru włóczki). -->
+<style>
+:root {
+  --tlo: #E3E5D8; --tekst: #23261C; --tekst2: #555A47; --karton: #F4F4EC; --karton-linia: #C9CCB8; --okno: #DCDFCF;
+  --mech: #4F5C1A; --mech-tekst: #F7F8EF; --plus: #5B6E82; --plus-tekst: #FFFFFF; --kontynuuj-tekst: #F7F8EF;
+  --p1: #5B6E82; --p1j: #8EA0B2; --p2: #B5832A; --p3: #8A4B33; --dziurka: #C2C6B0;
+  --pasek: #EBEDE2; --pasek-linia: #C9CCB8; --zakl: #585D49; --zakl-wybrana: #4F5C1A; --kafel-ik: #4F5C1A; --pro: #4F5C1A;
+}
+[data-theme="dark"] {
+  --tlo: #262A20; --tekst: #EEF0E4; --tekst2: #BCC1A9; --karton: #323728; --karton-linia: #4A503C; --okno: #22261C;
+  --mech: #B8C774; --mech-tekst: #1E2214; --plus: #A9BBCC; --plus-tekst: #1E2214; --kontynuuj-tekst: #1E2214;
+  --p1: #8EA2B6; --p1j: #B3C3D2; --p2: #D3A04A; --p3: #B26A4E; --dziurka: #1C2016;
+  --pasek: #1F231A; --pasek-linia: #3C4232; --zakl: #B3B8A1; --zakl-wybrana: #C9D68A; --kafel-ik: #C9D68A; --pro: #C9D68A;
+}
+.ar { font-family: "Archivo", sans-serif; font-stretch: 72%; font-weight: 800; letter-spacing: 0.005em; }
+h1.ar { font-size: calc(40px * var(--dt-tytul)); text-transform: none; }
+.karta { background: var(--karton); border-radius: 6px 22px 22px 6px; padding: 16px 14px 14px 0; display: grid; grid-template-columns: 104px 1fr; gap: 16px; border-left: 0; box-shadow: 0 1px 0 var(--karton-linia); }
+.okno { margin-left: 16px; border-radius: 10px; background: var(--okno); position: relative; overflow: hidden; min-height: 200px; }
+.okno svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.etykieta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.etykieta .nr { color: var(--tekst2); letter-spacing: .06em; }
+.etykieta h2 { font-size: calc(26px * var(--dt-tytul)); line-height: 1.05; }
+.etykieta .czesc { color: var(--tekst2); }
+.wiersz { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.liczba { font-size: calc(54px * var(--dt-tytul)); line-height: 1; }
+.liczba small { display: block; font-family: "Source Sans 3"; font-stretch: 100%; font-weight: 400; font-size: calc(15px * var(--dt-tresc)); color: var(--tekst2); letter-spacing: 0; }
+.plus { width: 68px; height: 68px; border-radius: 34px; box-shadow: inset 0 0 0 3px #ffffff30, 0 0 0 3px var(--karton), 0 0 0 4.5px var(--plus); background: var(--plus); color: var(--plus-tekst); font-family: "Source Sans 3"; font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; border: 0; flex: none; }
+.kontynuuj { margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 12px; background: var(--mech); color: var(--kontynuuj-tekst); font-weight: 700; }
+.kontynuuj .ik { font-size: 16px; }
+.co-dalej { color: var(--tekst2); margin-top: -8px; } .co-dalej b { color: var(--tekst); }
+.sekcja-tytul { font-weight: 700; margin-bottom: -8px; display: flex; justify-content: space-between; }
+.sekcja-tytul a { color: var(--pro); }
+.projekty { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.projekty a { background: var(--karton); border-radius: 4px 14px 14px 4px; padding: 8px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 0 var(--karton-linia); }
+.projekty .mini { height: 56px; border-radius: 6px; background: var(--okno); position: relative; overflow: hidden; }
+.projekty .mini svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.projekty span { font-weight: 600; } .projekty small { color: var(--tekst2); font-size: inherit; }
+.tydzien { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--karton); border-radius: 14px; padding: 12px 8px; }
+.tydzien div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); min-height: 44px; }
+.tydzien i { width: 26px; height: 26px; border-radius: 13px; background: var(--dziurka); box-shadow: inset 0 2px 3px #0003; display: block; }
+.tydzien i.z1 { background: var(--p1); box-shadow: none; } .tydzien i.z2 { background: conic-gradient(var(--p1) 0 50%, var(--p2) 0); box-shadow: none; }
+.tydzien i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; }
+.tydzien b { color: var(--tekst); }
+.kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kafel { background: var(--karton); border-radius: 4px 14px 14px 4px; padding: 12px; min-height: 64px; display: flex; align-items: center; gap: 12px; font-weight: 600; box-shadow: 0 1px 0 var(--karton-linia); }
+.kafel .ik { font-size: 28px; color: var(--kafel-ik); }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--pro); font-weight: 700; }
+</style></head>
+<body>
+<main class="ekran" data-ekran="dzis" aria-label="Dziś">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek">
+    <div><h1 class="ar">Dziś</h1><p class="t-pod data">czwartek, 5 listopada</p></div>
+    <span class="przycisk-ik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span>
+  </div>
+  <div class="tresc">
+    <section class="karta" aria-label="Kontynuuj: Sweter Mgła, Rękaw lewy">
+      <div class="okno" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg id="ok" viewBox="0 0 90 200" preserveAspectRatio="none"></svg></div>
+      <div class="etykieta">
+        <h2 class="ar">Sweter Mgła</h2>
+        <p class="t-pod czesc">Rękaw lewy · rząd 43 z 96</p>
+        <div class="wiersz">
+          <p class="liczba ar cyfry">42<small>rzędy gotowe</small></p>
+          <button class="plus cyfry" aria-label="Dodaj rząd, Sweter Mgła">+1</button>
+        </div>
+        <a class="kontynuuj t-tresc">Kontynuuj <i data-ik="szewron" data-gr="2.4"></i></a>
+      </div>
+    </section>
+    <p class="t-pod co-dalej">Za 4 rzędy: <b>ujmowanie</b> (5 z 8)</p>
+    <p class="t-tresc sekcja-tytul">Twoje projekty <a class="t-pod">Wszystkie</a></p>
+    <div class="projekty t-mala">
+      <a><span class="mini" data-k="--p1" data-z="0.44"></span><span>Sweter Mgła</span><small>44%</small></a>
+      <a><span class="mini" data-k="--p2" data-z="0.70"></span><span>Skarpety</span><small>70%</small></a>
+      <a><span class="mini" data-k="--p3" data-z="0.15"></span><span>Czapka</span><small>15%</small></a>
+    </div>
+    <p class="t-tresc sekcja-tytul">Ten tydzień</p>
+    <div class="tydzien t-mala cyfry" aria-label="Ten tydzień: poniedziałek Sweter Mgła, wtorek Sweter Mgła i Skarpety, dziś Sweter Mgła">
+      <div><i class="z1"></i><span>pn</span></div><div><i class="z2"></i><span>wt</span></div><div><i></i><span>śr</span></div>
+      <div><i class="z1 dzis"></i><b>czw</b></div><div><i></i><span>pt</span></div><div><i></i><span>sb</span></div><div><i></i><span>nd</span></div>
+    </div>
+    <div class="kafle t-tresc">
+      <a class="kafel"><i data-ik="nowy"></i>Nowy projekt</a><a class="kafel"><i data-ik="wzor"></i>Dodaj wzór</a>
+      <a class="kafel"><i data-ik="druty"></i>Włóczka i druty</a><a class="kafel"><i data-ik="probka"></i>Próbka</a>
+    </div>
+    <p class="t-pod wolne">Zostały 3 z 5 darmowych dni robótkowych w listopadzie. <a>Oczko Pro</a></p>
+  </div>
+  <nav class="zakladki t-zakl">
+    <a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a>
+  </nav>
+</main>
+<script src="wspolne.js"></script>
+<script>
+// Element firmowy: próbka włóczki nawinięta na kartę wzornika. Nawinięta część okna (od góry) = rzędy gotowe / cel;
+// jaśniejsze nawinięcia = rzędy dziś. Pasma to faktura (stała grubość), wysokość nawinięcia to dana.
+const nawin = (h, w, z, dzis, k, kj) => {
+  const kon = h * z, odDzis = h * (z - dzis); let s = '';
+  for (let y = 2; y < kon; y += 5.2) s += `<rect x="-2" y="${y}" width="${w + 4}" height="4.4" rx="2.2" fill="var(${y >= odDzis ? kj : k})"/><path d="M0 ${y + 1.2} Q${w / 2} ${y + 0.2} ${w} ${y + 1.2}" stroke="#ffffff40" stroke-width="1" fill="none"/>`;
+  return s + `<line x1="0" y1="${kon + 1}" x2="${w}" y2="${kon + 1}" stroke="var(--tekst2)" stroke-width="1" stroke-dasharray="3 3"/>`;
+};
+document.getElementById('ok').innerHTML = nawin(200, 90, 42 / 96, 14 / 96, '--p1', '--p1j');
+document.querySelectorAll('.mini').forEach((m) => { m.innerHTML = `<svg viewBox="0 0 100 56" preserveAspectRatio="none">${nawin(56, 100, +m.dataset.z, 0, m.dataset.k, m.dataset.k)}</svg>`; });
+</script>
+
+<section class="panel">
+  <h2>C „Wzornik”</h2>
+  <p><b>Idea:</b> ekran jak karta wzornika producenta; każdy projekt to próbka włóczki nawinięta na kartę.</p>
+  <p><b>Element firmowy:</b> okno próbki — nawinięta wysokość = rzędy gotowe / cel części, jaśniejsze nawinięcia = dziś; ten sam znak w małej skali przy każdym projekcie i w dziurkach tygodnia (kolor = projekt dziergany tego dnia); „+1” w barwie próbki projektu. VoiceOver: „Rękaw lewy: 42 z 96 rzędów, dziś 14”. Kolor projektu nadawany automatycznie — nie koduje prawdziwej włóczki.</p>
+  <h3>Paleta</h3>
+  <div class="probki">
+    <div class="probka"><i style="background:#4F5C1A"></i>mech — akcent, przycisk</div>
+    <div class="probka"><i style="background:#E3E5D8"></i>karton — tło jasne</div>
+    <div class="probka"><i style="background:#262A20"></i>ciemny karton — tło ciemne</div>
+    <div class="probka"><i style="background:#6F8296"></i>próbka 1 (emsket)</div>
+    <div class="probka"><i style="background:#B5832A"></i>próbka 2 (mioget)</div>
+    <div class="probka"><i style="background:#8A4B33"></i>próbka 3 (moorit)</div>
+  </div>
+  <h3>Kroje</h3>
+  <p><span style="font-family:'Archivo';font-stretch:72%;font-weight:800;font-size:24px">Archivo zwężony</span> — tytuły i liczby (wąski grotesk banderol i wzorników); treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3.</p>
+  <h3>Ruch, haptyka, dźwięk</h3>
+  <p>+1: nitka owija się o jedno pasmo (160 ms; „Ogranicz ruch”: bez ruchu), haptyka „lekkie stuknięcie”; ukończenie części — karta „odkłada się” do wzornika.</p>
+  <h3>Głos</h3>
+  <p>Pusty: „Wzornik czeka na pierwszą próbkę. Zacznij projekt albo stuknij +1.”<br>Błąd: „Nie zapisałam rzędu. Stuknij +1 jeszcze raz.”<br>Sukces: „Rękaw lewy nawinięty do końca: 96 rzędów.”</p>
+  <h3>Ikona</h3>
+  <div class="ikony" id="ikony"></div>
+</section>
+<script>
+const ikona = (tlo, karton, okno, a, b) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/>
+ <rect x="24" y="16" width="52" height="68" rx="5" fill="${karton}"/><rect x="34" y="24" width="32" height="52" rx="3" fill="${okno}"/>
+ ${[0,1,2,3,4,5].map(i=>`<rect x="30" y="${42+i*6}" width="40" height="4.6" rx="2.3" fill="${i<2?b:a}"/>`).join('')}</svg>`;
+const kreski = (tlo, k, z) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/><path d="M20 57 L80 52 L79 64 L19 68z" fill="${z}"/>${[30,42,54,66].map(x=>`<path d="M${x} 28 L${x-2} 74" stroke="${k}" stroke-width="7" stroke-linecap="round"/>`).join('')}<path d="M22 64 L78 40" stroke="${k}" stroke-width="7" stroke-linecap="round"/></svg>`;
+const fig = (svg, r, opis) => `<figure><span class="maska" style="width:${r}px;height:${r}px;border-radius:${r*0.2237}px">${svg.replace('<svg', `<svg width="${r}" height="${r}"`)}</span>${opis}</figure>`;
+const jasna = ikona('#4F5C1A', '#F4F4EC', '#D3D6C4', '#6F8296', '#94A6B8'), ciemna = ikona('#20241A', '#3A4030', '#22261C', '#8EA2B6', '#B3C3D2');
+document.getElementById('ikony').innerHTML = fig(jasna, 120, '120') + fig(jasna, 60, '60') + fig(jasna, 29, '29') + fig(ciemna, 60, 'ciemna') +
+  fig(kreski('#4F5C1A', '#F7F8EF', '#D3A04A'), 60, 'kreski') + fig(kreski('#20241A', '#EEF0E4', '#D3A04A'), 60, 'kreski ciemna');
+</script>
+</body></html>

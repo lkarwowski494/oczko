@@ -1,0 +1,22 @@
+// Ikony zastępcze (SF Symbols nie da się narysować w Chromium na Linuksie). Kreska 1.8 na siatce 24, zaokrąglone końce.
+// Na iOS rola 08 bierze odpowiedniki z SF Symbols (tabela w design-spec.md); kształt tu tylko pokazuje miejsce i wagę.
+const IKONY = {
+  zebatka: '<path d="M10.3 3h3.4l.5 2.4 1.7.9 2.2-1.1 2.4 2.4-1.1 2.2.9 1.7 2.4.5v3.4l-2.4.5-.9 1.7 1.1 2.2-2.4 2.4-2.2-1.1-1.7.9-.5 2.4h-3.4l-.5-2.4-1.7-.9-2.2 1.1-2.4-2.4 1.1-2.2-.9-1.7L3 13.7v-3.4l2.4-.5.9-1.7-1.1-2.2 2.4-2.4 2.2 1.1 1.7-.9z"/><circle cx="12" cy="12" r="3.2"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  dzis: '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><circle cx="12" cy="14.8" r="1.8" fill="currentColor" stroke="none"/>',
+  projekty: '<rect x="4" y="8" width="16" height="12.5" rx="2.5"/><path d="M6.5 5h11M9 2.5h6"/>',
+  narzedzia: '<path d="M4 19.5L19.5 4"/><circle cx="19.6" cy="3.9" r="1.2" fill="currentColor" stroke="none"/><path d="M3 9.5l11.5 11.5M5.2 11.7l1.6-1.6M7.6 14.1l1.6-1.6M10 16.5l1.6-1.6"/>',
+  historia: '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2"/>',
+  wzor: '<path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14.5 3v4.5H19M9 11.5h7M9 14.5h7M9 17.5h4"/>',
+  druty: '<path d="M5 20L17.5 4.5M9 20.5L19.5 7"/><circle cx="18.2" cy="3.7" r="1.4"/><circle cx="20.2" cy="6.2" r="1.4"/><path d="M4 15.5c3 1 6.5 1 9.5-1.5"/>',
+  probka: '<rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M4 8h3M4 12h3M4 16h3M8 4v3M12 4v3M16 4v3"/>',
+  nowy: '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>',
+  szewron: '<path d="M9 5l7 7-7 7"/>',
+  zegar: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  dzwonek: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5h4"/>',
+};
+document.querySelectorAll('[data-ik]').forEach((el) => {
+  el.classList.add('ik');
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${el.dataset.gr || 1.8}" stroke-linecap="round" stroke-linejoin="round">${IKONY[el.dataset.ik] || ''}</svg>`;
+});
