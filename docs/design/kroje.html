@@ -1,0 +1,33 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>Dzianina — kroje tytułowe</title><style>
+@font-face { font-family: "Source Sans 3"; src: url(fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Young Serif"; src: url(fonty/YoungSerif-Regular.ttf); }
+@font-face { font-family: "Bree Serif"; src: url(fonty/BreeSerif.ttf); }
+@font-face { font-family: "Zilla Slab"; src: url(fonty/ZillaSlab.ttf); font-weight: 700; }
+@font-face { font-family: "Gelasio"; src: url(fonty/Gelasio.ttf); font-weight: 700; }
+@font-face { font-family: "Archivo"; src: url(fonty/Archivo.ttf); font-weight: 100 900; font-stretch: 62% 125%; }
+body { font-family: "Source Sans 3"; background: #cfd2d4; margin: 0; padding: 28px; width: 1700px; color: #1d2024; }
+h1 { font-size: 28px; margin: 0 0 4px; } p.pod { margin: 0 0 20px; color: #4a5058; }
+.g { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+.k { background: #26211E; color: #F1EDE9; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.k .n { font-family: "Source Sans 3"; font-size: 15px; color: #C7BCB2; }
+.k .d { font-size: 34px; line-height: 1.1; } .k .p { font-size: 22px; } .k .l { font-size: 56px; line-height: 1; color: #F0CF8A; }
+.k .s { font-size: 20px; }
+.k .o { font-family: "Source Sans 3"; font-weight: 400; font-stretch: 100%; font-size: 14px; color: #D3C9BF; border-top: 1px solid #3D3530; padding-top: 8px; }
+.j { background: #E6E1DA; color: #221D1A; } .j .n, .j .o { color: #5A5048; } .j .l { color: #8A5A12; } .j .o { border-color: #CFC8BF; }
+</style></head><body>
+<h1>A „Dzianina” — pięć krojów tytułowych (tytuły, nazwy projektów, liczba)</h1>
+<p class="pod">Na tle T2 (ciemny u góry, jasny u dołu). Treść zawsze krojem systemowym (na iOS SF Pro, tu zastępczo Source Sans 3). Wszystkie OFL, z polskimi znakami; cyrylicy nie ma żaden z nich (języki z cyrylicą, grecką i CJK: tytuły krojem systemowym, jak dziś).</p>
+<div class="g" id="g"></div>
+<script>
+const K = [
+ ['Young Serif', 400, 'z E2; miękki, ciężki szeryf jak tytuły brytyjskich ulotek ze wzorami z lat 50.; „1” bez daszka'],
+ ['Bree Serif', 400, 'pół-szeryf z kursywnym „a” i „g”; ciepły, odręczny charakter jak nadruki na torebkach włóczki'],
+ ['Zilla Slab', 700, 'szeryf blokowy jak druk katalogów pasmanterii i tabel rozmiarów; najlepiej czytelna liczba'],
+ ['Gelasio', 700, 'klasyczny szeryf książkowy (metryka Georgii) jak podręczniki dziewiarskie; najbardziej „poważny”'],
+ ['Archivo', 800, 'zwężony grotesk banderol (wdth 72%); najwęższy — najdłuższe nazwy projektów mieszczą się w jednej linii'],
+];
+document.getElementById('g').innerHTML = [false, true].map((j) => K.map(([f, w, o]) => `<div class="k ${j ? 'j' : ''}" style="font-family:'${f}';font-weight:${w};${f==='Archivo'?'font-stretch:72%':''}">
+ <span class="n">${f}</span><span class="d">Dziś</span><span class="p">Sweter Mgła · Rękaw lewy</span><span class="l">42 · 1 2 3 4 5 6 7 8 9 0</span>
+ <span class="s">Żółta czapka z pomponem</span>${j ? '' : `<span class="o">${o}</span>`}</div>`).join('')).join('');
+</script>
+</body></html>
