@@ -119,6 +119,37 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .lista .pr { width: 40px; height: 56px; } .lista .pr::before { content: ""; position: absolute; left: 2px; right: 2px; top: 6px; height: 3px; border-radius: 2px; background: var(--igla); }
 .lista .pr i { top: auto; }
 
+/* oferty „Oczko Pro” (F-35, P-557): wygląd i układ; kroki, model i teksty istniejących kluczy bez zmian */
+.of .nav { justify-content: flex-end; }
+.of-tresc { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 0 16px 16px; }
+.of-hero { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+.of-hero p { color: var(--kartaTekst2); }
+.of-mies { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; margin-top: 8px; }
+.of-mies i { aspect-ratio: 1; border-radius: 4px; background: var(--akcent) var(--faktura); background-size: 9px 8px; display: block; }
+.of-kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.of-kafel { background: var(--powierzchnia); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 104px; }
+.of-kafel .it { width: 40px; height: 40px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.of-kafel b { font-weight: 700; } .of-kafel small { display: block; color: var(--tekst2); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; font-weight: 400; margin-top: 2px; }
+.of-plany { display: flex; flex-direction: column; gap: 8px; }
+.of-plan { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 0 12px; padding: 12px 16px 12px 12px; min-height: 72px; border-radius: 18px; background: var(--powierzchnia); border: 2px solid transparent; }
+.of-plan[aria-checked="true"] { border-color: var(--akcentTekst); }
+.of-plan .zn { width: 26px; height: 26px; border-radius: 13px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.of-plan[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.of-plan .nz { font-weight: 700; }
+.of-plan .zn { grid-row: span 3; } .of-plan .cena { font-size: calc(22px * min(var(--dt-tresc), 2.4)); line-height: 1.2; } /* cena najwyraźniejsza (MS-02, KP-09), także przy AX5 */
+.of-plan .pod { color: var(--tekst2); }
+.of-bez { color: var(--tekst2); }
+.of-linki { display: flex; flex-wrap: wrap; gap: 0 20px; } .of-linki a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.of-dol { display: flex; flex-direction: column; gap: 4px; padding: 12px 16px 34px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.of-kom { display: flex; gap: 8px; align-items: flex-start; padding-bottom: 8px; } .of-kom .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 1px; }
+.of-kup { min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; text-align: center; }
+.of-kup[aria-disabled="true"] { background: var(--powierzchnia); color: var(--tekst2); border: 2px dashed var(--tekst2); }
+.of-wt { display: flex; justify-content: space-between; gap: 8px; } .of-wt a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; color: var(--akcentTekst); font-weight: 600; }
+.duzy .of-kafle { grid-template-columns: 1fr; } .duzy .of-kafel { flex-direction: row; align-items: flex-start; gap: 12px; } .duzy .of-kafel .it { width: 56px; height: 56px; font-size: 36px; flex: none; }
+.duzy .of-plan { grid-template-columns: 1fr; gap: 4px; } .duzy .of-plan .zn { grid-row: auto; width: 40px; height: 40px; border-radius: 20px; font-size: 28px; }
+.duzy .of-wt { flex-direction: column; align-items: stretch; } .duzy .of-wt a { justify-content: center; }
+.duzy .of-mies { grid-template-columns: repeat(10, 1fr); }
+.of-kafel, .of-plan, .of-kup, .of-wt a { overflow-wrap: anywhere; hyphens: auto; } .of-plan > * { min-width: 0; }
 </style></head>
 <body>
 
@@ -245,6 +276,48 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
     <a class="p" aria-label="Dodaj rząd">+1</a>
   </div>
 </main>
+
+<!-- 7. Oferty „Oczko Pro” (F-35, KP-13; P-557): arkusz z odnośnika limitu, z Ustawień i z „Uczciwych zasad”. Kroki i model bez zmian (KP-03, KP-09, KP-14).
+     Ceny: [PRZYKŁAD] ceny bazowe US (monetyzacja: 0,99 / 6,99 / 14,99 USD); w aplikacji wyłącznie StoreKit displayPrice (KP-09) w walucie sklepu.
+     Teksty istniejących kluczy oferty.* (pl.json). Nowe teksty kafli: propozycja kluczy oferty.kafel_* [DO USTALENIA 09]. Kafel „Dla rodziny” tylko przy FAMILY_SHARING (ujawnienie 7).
+     Bez znaczka „najlepsza oferta”, bez procentów i porównań planów (P-054), bez licznika czasu. Rocznie zaznaczone domyślnie jak dziś (`domyslny`). -->
+<main class="ekran of" data-ekran="oferty" aria-label="Oczko Pro">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a data-de="Schließen">Zamknij</a></div>
+  <div class="of-tresc">
+    <section class="of-hero">
+      <h1 class="t-duzy br">Oczko Pro</h1>
+      <p class="t-tresc" data-de="Zähle Reihen an so vielen Tagen, wie du magst. Alles andere bleibt gleich.">Licz rzędy w tylu dniach, w ilu chcesz. Reszta zostaje bez zmian.</p>
+      <div class="of-mies" aria-hidden="true"></div>
+    </section>
+    <div class="of-kafle t-pod">
+      <div class="of-kafel"><span class="it"><i data-ik="historia"></i></span><b>Każdy dzień robótkowy<small>Liczysz, kiedy dziergasz, bez limitu w miesiącu.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="zegarek"></i></span><b>iPhone i Apple Watch<small>Pro działa wszędzie, gdzie liczysz rzędy.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="rodzina"></i></span><b>Dla rodziny<small>Udostępnione rodzinie w ramach Udostępniania rodzinnego.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="dane"></i></span><b>Dane zawsze twoje<small>Projekty, wzory i historia zostają, z Pro i bez.</small></b></div>
+    </div>
+    <p class="t-tresc sekcja" style="margin-bottom:-8px">Plany</p>
+    <div class="of-plany t-tresc" role="radiogroup" aria-label="Plany">
+      <div class="of-plan" role="radio" aria-checked="false"><span class="zn"></span><p class="nz">Miesięcznie</p><p class="cena br cyfry">$0.99 / miesiąc</p><p class="t-mala pod">Odnawia się co miesiąc, dopóki nie anulujesz w ustawieniach Apple ID.</p></div>
+      <div class="of-plan" role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><p class="nz">Rocznie</p><p class="cena br cyfry">$6.99 / rok</p><p class="t-mala pod">Odnawia się co rok, dopóki nie anulujesz w ustawieniach Apple ID.</p></div>
+      <div class="of-plan" role="radio" aria-checked="false"><span class="zn"></span><p class="nz">Dożywotnio</p><p class="cena br cyfry">$14.99 jednorazowo</p><p class="t-mala pod">Płacisz raz. Nic się nie odnawia.</p></div>
+    </div>
+    <p class="t-pod of-bez">Bez Pro: 5 dni robótkowych co miesiąc oraz wszystkie twoje projekty i dane, zawsze.</p>
+    <div class="of-linki t-pod"><a>Polityka prywatności</a><a>Warunki użytkowania</a></div>
+  </div>
+  <div class="of-dol t-tresc">
+    <a class="of-kup">Kontynuuj: Rocznie</a>
+    <div class="of-wt"><a>Przywróć zakupy</a><a>Nie teraz</a></div>
+  </div>
+</main>
+<script>
+// Oferty: miesiąc z samych dni dzierganych (ilustracja „każdy dzień”, nie dane) + stan „Zapytaj o zakup” (oczekujący, KP-07) jako osobny ekran makiety.
+document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.repeat(30);
+{ const c = document.querySelector('[data-ekran="oferty"]').cloneNode(true); c.dataset.ekran = 'oferty-czeka'; c.setAttribute('aria-label', 'Oczko Pro, zakup czeka na zatwierdzenie');
+  c.querySelector('.of-dol').insertAdjacentHTML('afterbegin', '<p class="of-kom t-pod" role="status"><i data-ik="info"></i><span>Czekamy na zatwierdzenie. Oczko Pro włączy się, gdy tylko zakup zostanie zatwierdzony.</span></p>');
+  const k = c.querySelector('.of-kup'); k.setAttribute('aria-disabled', 'true'); k.innerHTML = '<i data-ik="klepsydra"></i>Czeka na zatwierdzenie';
+  document.querySelector('[data-ekran="oferty"]').after(c); }
+</script>
 
 <script src="ikony.js"></script>
 <script>

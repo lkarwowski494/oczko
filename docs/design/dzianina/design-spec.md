@@ -6,9 +6,9 @@ Stan: zatwierdzony (P-554: system, 6 ekranów i ikona bez poprawek), przekazanie
 | Co | Plik |
 |---|---|
 | Tokeny (moduł motywu, propozycja) | `tokeny.json` → `tokeny.css` (makiety) skryptem `../narzedzia/dzianina-tokeny.mjs` |
-| Tabela kontrastu (100 par: jasny, ciemny, oba „Zwiększ kontrast”; kod 0) | `kontrast-tabela.txt` (z `kontrast-pary.json`, `../narzedzia/kontrast.mjs`) |
-| Makieta 6 ekranów TO BE | `ekrany.html` (ikony zastępcze `ikony.js`) |
-| Zrzuty wzorcowe (linia bazowa SP-13): 6 ekranów × jasny/ciemny × domyślny/AX5 × 390 pt = 24, plus arkusz DE (4) | `wzorce-zrzuty/` (`../narzedzia/dzianina-zrzuty.mjs`) |
+| Tabela kontrastu (128 par: jasny, ciemny, oba „Zwiększ kontrast”, w tym 28 par ofert P-557; kod 0) | `kontrast-tabela.txt` (z `kontrast-pary.json`, `../narzedzia/kontrast.mjs`) |
+| Makieta 6 ekranów TO BE + oferty (P-557, stany: typowy i „czeka na zatwierdzenie”) | `ekrany.html` (ikony zastępcze `ikony.js`) |
+| Zrzuty wzorcowe (linia bazowa SP-13): 6 ekranów × jasny/ciemny × domyślny/AX5 × 390 pt = 24, plus arkusz DE (4), plus oferty 2 stany × 4 = 8 (P-557) | `wzorce-zrzuty/` (`../narzedzia/dzianina-zrzuty.mjs`, filtr `--ekrany=oferty,oferty-czeka`) |
 | Pomiar warsztatu 390 pt (0 błędów) | `warsztat-390.txt` |
 | Ikona (kreski w barwach Dzianiny) | `ikona/` (warstwy SVG, PNG, `arkusz.png`) |
 | Kierunek, warianty tła, kroje (historia wyboru) | `../kierunki/dzianina.html`, `../porownanie.png`, `../tla.png`, `../kroje.png`, `../01-swiat.md` |
@@ -53,7 +53,8 @@ Ikony interfejsu na iOS z SF Symbols (w makiecie zastępcze): zębatka `gearshap
 | `dni`, `sesje`, `sesja-korekta` | zakładka **Historia** (`historia-*`): kalendarz + podsumowanie | dni ≥ 44 pt przy 320 pt | p5 |
 | `narzedzia`, `zapas`, `druty`, `drut`, `probka`, `miary` | zakładka **Narzędzia** | wejście z zakładki i kafli „Dziś” | p6 |
 | `ustawienia`, `stan-danych`, `usun-wszystko`, `kosz`, `jezyk`, `zrodla`, `zglos`, `konflikt` | Ustawienia z zębatki „Dziś”, lista z ikonami (ZM-07) | wygląd | p7 |
-| `oferty`, `uczciwe-zasady`, `ukonczenie` | bez zmian kroków | wygląd, przycisk główny wypełniony | p7 |
+| `oferty` | **Oczko Pro** (`wzorce-zrzuty/oferty-*`, stan oczekujący `oferty-czeka-*`; P-557) | bez zmian kroków i modelu (zamknięcie, plany radio z rocznym domyślnie, kup, „Zarządzaj subskrypcją” przy subskrypcji, „Przywróć zakupy”, „Nie teraz”, linki prawne); wygląd: karta „Oczko Pro” z miesiącem dni dzierganych (ilustracja, `aria-hidden`), 4 kafle z ikonami, cena ze sklepu największym elementem planu (Bree, także przy AX5), pasek przycisków na dole z wypełnionym przyciskiem; bez znaczka „najlepsza oferta”, procentów, porównań i licznika czasu (P-054, ujawnienia 1–7); kafel „Dla rodziny” tylko przy Family Sharing; teksty kafli to nowe klucze `oferty.kafel_*` [DO USTALENIA 09] | p7 |
+| `uczciwe-zasady`, `ukonczenie` | bez zmian kroków | wygląd, przycisk główny wypełniony | p7 |
 | ekran blokady, zegarek, widżet (`targets/`) | barwy z tokenów | tylko kolory i ikona | p8 |
 
 ## Słownik interakcji (bez zmian względem projektu; teksty przez rolę 09)
@@ -66,6 +67,7 @@ Anuluj / Zapisz / Dodaj w arkuszach; „Odrzucić zmiany?”; „Cofnij” dla s
 | Licznik | `licznik-*` | 0 rzędów: dzianina = igła | bez celu: brak „Cel” w opisie, akcja „Cel” zostaje | przypomnienie w tym rzędzie: wiersz „co dalej” w akcencie + haptyka ostrzeżenia | blokada (F-03): kłódka przy +1, stuknięcie mówi, jak odblokować |
 | Wzór | `wzor-*` | bez wzoru: menu źródeł (ZM-06) | — | — | ciemny motyw: strona w oryginale (ZM-10) |
 | Historia | `historia-*` | pusty miesiąc: „Tu zobaczysz dni, w które dziergasz.” | — | — | — |
+| Oferty | `oferty-*` | — | ładowanie: „Wczytywanie planów…” w miejscu planów; brak sieci: „Ceny są teraz niedostępne…”, „Przywróć zakupy” zostaje (przy wdrożeniu) | „Zapytaj o zakup”: `oferty-czeka-*` — linia ⓘ nad przyciskiem, przycisk wyłączony z klepsydrą i przerywaną ramką (nie sam kolor), plany i przywracanie dostępne; błąd zakupu/przywracania: linia „!” (`role=alert`) | aktywna subskrypcja: bez tej samej subskrypcji, „Zarządzaj subskrypcją”; dożywotni: „Masz Oczko Pro.”, bez planów (KP-03) |
 
 ## Głos
 Strona czynna, druga osoba, bez wykrzykników i bez emoji. Pusty: zaprasza do działania („Stuknij +1 po każdym skończonym rzędzie.”). Błąd: co się stało i co zrobić („Nie zapisałam rzędu. Stuknij +1 jeszcze raz.”) [DO USTALENIA 09: forma rodzajowa w PL — obecne teksty]. Sukces: wynik słowami dziedziny („Rękaw lewy gotowy: 96 rzędów.”). Słowa zakazane: „zadanie”, „streak/seria”, „super!”, „brawo!”. Teksty uczące dziedziny — przez rolę 06.

@@ -124,6 +124,41 @@
   "#D9D3CB",
   4.5
  ],
+ "jasny: oferty: obwódka wybranego planu (UI)": [
+  "#8A5A12",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: oferty: znacznik wybranego planu (UI)": [
+  "#3A332E",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: oferty: kółko niewybranego planu (UI)": [
+  "#5A5048",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: oferty: tekst przycisku wyłączonego": [
+  "#5A5048",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: oferty: przycisk główny/pasek (UI)": [
+  "#3A332E",
+  "#EEEBE6",
+  3
+ ],
+ "jasny: oferty: Przywróć zakupy, Nie teraz/pasek": [
+  "#8A5A12",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny: oferty: komunikat/pasek": [
+  "#221D1A",
+  "#EEEBE6",
+  4.5
+ ],
  "ciemny: tekst/tlo": [
   "#F1EDE9",
   "#26211E",
@@ -245,6 +280,41 @@
   3
  ],
  "ciemny: tekst/wzorRama": [
+  "#F1EDE9",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny: oferty: obwódka wybranego planu (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
+ ],
+ "ciemny: oferty: znacznik wybranego planu (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
+ ],
+ "ciemny: oferty: kółko niewybranego planu (UI)": [
+  "#C7BCB2",
+  "#312B27",
+  3
+ ],
+ "ciemny: oferty: tekst przycisku wyłączonego": [
+  "#C7BCB2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: oferty: przycisk główny/pasek (UI)": [
+  "#F0CF8A",
+  "#1E1A17",
+  3
+ ],
+ "ciemny: oferty: Przywróć zakupy, Nie teraz/pasek": [
+  "#F0CF8A",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny: oferty: komunikat/pasek": [
   "#F1EDE9",
   "#1E1A17",
   4.5
@@ -374,6 +444,41 @@
   "#D9D3CB",
   4.5
  ],
+ "jasny zwiększony: oferty: obwódka wybranego planu (UI)": [
+  "#6B450C",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: oferty: znacznik wybranego planu (UI)": [
+  "#3A332E",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: oferty: kółko niewybranego planu (UI)": [
+  "#3F3731",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: oferty: tekst przycisku wyłączonego": [
+  "#3F3731",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: oferty: przycisk główny/pasek (UI)": [
+  "#3A332E",
+  "#EEEBE6",
+  3
+ ],
+ "jasny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek": [
+  "#6B450C",
+  "#EEEBE6",
+  4.5
+ ],
+ "jasny zwiększony: oferty: komunikat/pasek": [
+  "#221D1A",
+  "#EEEBE6",
+  4.5
+ ],
  "ciemny zwiększony: tekst/tlo": [
   "#F1EDE9",
   "#26211E",
@@ -495,6 +600,41 @@
   3
  ],
  "ciemny zwiększony: tekst/wzorRama": [
+  "#F1EDE9",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny zwiększony: oferty: obwódka wybranego planu (UI)": [
+  "#F8DEA6",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: oferty: znacznik wybranego planu (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: oferty: kółko niewybranego planu (UI)": [
+  "#E3DAD2",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: oferty: tekst przycisku wyłączonego": [
+  "#E3DAD2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: oferty: przycisk główny/pasek (UI)": [
+  "#F0CF8A",
+  "#1E1A17",
+  3
+ ],
+ "ciemny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek": [
+  "#F8DEA6",
+  "#1E1A17",
+  4.5
+ ],
+ "ciemny zwiększony: oferty: komunikat/pasek": [
   "#F1EDE9",
   "#1E1A17",
   4.5

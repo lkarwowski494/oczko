@@ -21,6 +21,12 @@ const IKONY = {
   wstecz: '<path d="M15 5l-7 7 7 7"/>',
   szukaj: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/>',
   historiaZmian: '<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4v4h4M12 7.5V12l3 2"/>',
+  zegarek: '<rect x="6.5" y="6" width="11" height="12" rx="3"/><path d="M8.5 6l.7-3h5.6l.7 3M8.5 18l.7 3h5.6l.7-3M12 9.5V12l1.8 1.2"/>',
+  rodzina: '<circle cx="8.5" cy="8" r="3"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M3 20c0-3.3 2.5-5.5 5.5-5.5S14 16.7 14 20M14.2 15.2c.7-.5 1.5-.7 2.3-.7 2.5 0 4.5 1.8 4.5 4.8"/>',
+  dane: '<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.3-4.6"/>',
+  ptaszek: '<path d="M6 12.5l4 4 8-9"/>',
+  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor" stroke="none"/>',
+  klepsydra: '<path d="M7 3.5h10M7 20.5h10M8 3.5c0 4 4 5.5 4 8.5s-4 4.5-4 8.5M16 3.5c0 4-4 5.5-4 8.5s4 4.5 4 8.5"/>',
 };
 document.querySelectorAll('[data-ik]').forEach((el) => {
   el.classList.add('ik');

@@ -21,6 +21,10 @@ const PARY = [
   ['akcentTekst', 'dzienPusty', 3, 'obwódka dnia dzierganego/dzień pusty (grafika)'], ['akcentTekst', 'tlo', 3, 'obwódka dnia dzierganego/tło (grafika)'], ['dzienPusty', 'tlo', 1.0, 'dzień pusty — odróżnia go kształt, nie kontrast (informacyjnie)'],
   ['niszczacyTekst', 'niszczacy'], ['niszczacy', 'tlo', 3, 'przycisk niszczący/tło (UI)'], ['linia', 'tlo', 1.0, 'linia podziału — dekoracyjna (informacyjnie)'],
   ['igla', 'karta', 3, 'igła = bieżący rząd (grafika)'], ['tekst', 'wzorRama'],
+  // oferty (P-557): obwódka i znacznik wybranego planu, kółko niewybranego, przycisk wyłączony „Czeka na zatwierdzenie”, pasek przycisków
+  ['akcentTekst', 'powierzchnia', 3, 'oferty: obwódka wybranego planu (UI)'], ['przycisk', 'powierzchnia', 3, 'oferty: znacznik wybranego planu (UI)'],
+  ['tekst2', 'powierzchnia', 3, 'oferty: kółko niewybranego planu (UI)'], ['tekst2', 'powierzchnia', 4.5, 'oferty: tekst przycisku wyłączonego'],
+  ['przycisk', 'pasek', 3, 'oferty: przycisk główny/pasek (UI)'], ['akcentTekst', 'pasek', 4.5, 'oferty: Przywróć zakupy, Nie teraz/pasek'], ['tekst', 'pasek', 4.5, 'oferty: komunikat/pasek'],
 ];
 const pary = {};
 for (const [nazwa, kolory] of [['jasny', k.jasny], ['ciemny', k.ciemny], ['jasny zwiększony', { ...k.jasny, ...k.jasnyZwiekszony }], ['ciemny zwiększony', { ...k.ciemny, ...k.ciemnyZwiekszony }]])

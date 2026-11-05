@@ -23,6 +23,13 @@ OK   5.66:1 (min 3) jasny: przycisk niszczący/tło (UI) #A3261C na #E6E1DA
 OK   1.27:1 (min 1) jasny: linia podziału — dekoracyjna (informacyjnie) #CFC8BF na #E6E1DA
 OK   4.49:1 (min 3) jasny: igła = bieżący rząd (grafika) #A39A92 na #3A332E
 OK   11.23:1 (min 4.5) jasny: tekst/wzorRama #221D1A na #D9D3CB
+OK   5.39:1 (min 3) jasny: oferty: obwódka wybranego planu (UI) #8A5A12 na #F6F4F1
+OK   11.30:1 (min 3) jasny: oferty: znacznik wybranego planu (UI) #3A332E na #F6F4F1
+OK   7.15:1 (min 3) jasny: oferty: kółko niewybranego planu (UI) #5A5048 na #F6F4F1
+OK   7.15:1 (min 4.5) jasny: oferty: tekst przycisku wyłączonego #5A5048 na #F6F4F1
+OK   10.43:1 (min 3) jasny: oferty: przycisk główny/pasek (UI) #3A332E na #EEEBE6
+OK   4.97:1 (min 4.5) jasny: oferty: Przywróć zakupy, Nie teraz/pasek #8A5A12 na #EEEBE6
+OK   14.03:1 (min 4.5) jasny: oferty: komunikat/pasek #221D1A na #EEEBE6
 OK   13.67:1 (min 4.5) ciemny: tekst/tlo #F1EDE9 na #26211E
 OK   8.54:1 (min 4.5) ciemny: tekst2/tlo #C7BCB2 na #26211E
 OK   11.98:1 (min 4.5) ciemny: tekst/powierzchnia #F1EDE9 na #312B27
@@ -48,6 +55,13 @@ OK   9.33:1 (min 3) ciemny: przycisk niszczący/tło (UI) #F2B8B5 na #26211E
 OK   1.33:1 (min 1) ciemny: linia podziału — dekoracyjna (informacyjnie) #3D3530 na #26211E
 OK   4.08:1 (min 3) ciemny: igła = bieżący rząd (grafika) #9C918A na #3A322D
 OK   14.84:1 (min 4.5) ciemny: tekst/wzorRama #F1EDE9 na #1E1A17
+OK   9.30:1 (min 3) ciemny: oferty: obwódka wybranego planu (UI) #F0CF8A na #312B27
+OK   9.30:1 (min 3) ciemny: oferty: znacznik wybranego planu (UI) #F0CF8A na #312B27
+OK   7.48:1 (min 3) ciemny: oferty: kółko niewybranego planu (UI) #C7BCB2 na #312B27
+OK   7.48:1 (min 4.5) ciemny: oferty: tekst przycisku wyłączonego #C7BCB2 na #312B27
+OK   11.52:1 (min 3) ciemny: oferty: przycisk główny/pasek (UI) #F0CF8A na #1E1A17
+OK   11.52:1 (min 4.5) ciemny: oferty: Przywróć zakupy, Nie teraz/pasek #F0CF8A na #1E1A17
+OK   14.84:1 (min 4.5) ciemny: oferty: komunikat/pasek #F1EDE9 na #1E1A17
 OK   12.83:1 (min 4.5) jasny zwiększony: tekst/tlo #221D1A na #E6E1DA
 OK   8.96:1 (min 4.5) jasny zwiększony: tekst2/tlo #3F3731 na #E6E1DA
 OK   15.20:1 (min 4.5) jasny zwiększony: tekst/powierzchnia #221D1A na #F6F4F1
@@ -73,6 +87,13 @@ OK   5.66:1 (min 3) jasny zwiększony: przycisk niszczący/tło (UI) #A3261C na 
 OK   2.35:1 (min 1) jasny zwiększony: linia podziału — dekoracyjna (informacyjnie) #9C9288 na #E6E1DA
 OK   4.49:1 (min 3) jasny zwiększony: igła = bieżący rząd (grafika) #A39A92 na #3A332E
 OK   11.23:1 (min 4.5) jasny zwiększony: tekst/wzorRama #221D1A na #D9D3CB
+OK   7.71:1 (min 3) jasny zwiększony: oferty: obwódka wybranego planu (UI) #6B450C na #F6F4F1
+OK   11.30:1 (min 3) jasny zwiększony: oferty: znacznik wybranego planu (UI) #3A332E na #F6F4F1
+OK   10.61:1 (min 3) jasny zwiększony: oferty: kółko niewybranego planu (UI) #3F3731 na #F6F4F1
+OK   10.61:1 (min 4.5) jasny zwiększony: oferty: tekst przycisku wyłączonego #3F3731 na #F6F4F1
+OK   10.43:1 (min 3) jasny zwiększony: oferty: przycisk główny/pasek (UI) #3A332E na #EEEBE6
+OK   7.12:1 (min 4.5) jasny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek #6B450C na #EEEBE6
+OK   14.03:1 (min 4.5) jasny zwiększony: oferty: komunikat/pasek #221D1A na #EEEBE6
 OK   13.67:1 (min 4.5) ciemny zwiększony: tekst/tlo #F1EDE9 na #26211E
 OK   11.55:1 (min 4.5) ciemny zwiększony: tekst2/tlo #E3DAD2 na #26211E
 OK   11.98:1 (min 4.5) ciemny zwiększony: tekst/powierzchnia #F1EDE9 na #312B27
@@ -98,3 +119,10 @@ OK   9.33:1 (min 3) ciemny zwiększony: przycisk niszczący/tło (UI) #F2B8B5 na
 OK   2.57:1 (min 1) ciemny zwiększony: linia podziału — dekoracyjna (informacyjnie) #6A5F57 na #26211E
 OK   4.08:1 (min 3) ciemny zwiększony: igła = bieżący rząd (grafika) #9C918A na #3A322D
 OK   14.84:1 (min 4.5) ciemny zwiększony: tekst/wzorRama #F1EDE9 na #1E1A17
+OK   10.62:1 (min 3) ciemny zwiększony: oferty: obwódka wybranego planu (UI) #F8DEA6 na #312B27
+OK   9.30:1 (min 3) ciemny zwiększony: oferty: znacznik wybranego planu (UI) #F0CF8A na #312B27
+OK   10.11:1 (min 3) ciemny zwiększony: oferty: kółko niewybranego planu (UI) #E3DAD2 na #312B27
+OK   10.11:1 (min 4.5) ciemny zwiększony: oferty: tekst przycisku wyłączonego #E3DAD2 na #312B27
+OK   11.52:1 (min 3) ciemny zwiększony: oferty: przycisk główny/pasek (UI) #F0CF8A na #1E1A17
+OK   13.16:1 (min 4.5) ciemny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek #F8DEA6 na #1E1A17
+OK   14.84:1 (min 4.5) ciemny zwiększony: oferty: komunikat/pasek #F1EDE9 na #1E1A17
