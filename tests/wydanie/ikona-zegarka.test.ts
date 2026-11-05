@@ -24,7 +24,7 @@ test('wtyczka @bacons/apple-targets 5.0.0 ustawia AppIcon dla celu zegarka tylko
   expect(watch).toContain('...(icon && { ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon" })');
 });
 
-test('kontrola-ipa.sh wymaga CFBundleIconName w pakiecie zegarka jako BŁĄD wydania', () => {
+test('kontrola-ipa.sh wymaga ikony w pakiecie zegarka jako BŁĄD wydania (kontrola ikona-zegarka-pakiet.mjs; postać klucza: ikona-zegarka-pakiet.test.ts)', () => {
   const sh = czytaj('scripts/wydanie/kontrola-ipa.sh');
-  expect(sh).toMatch(/pb CFBundleIconName "\$ZEGAREK\/Info\.plist"[^\n]*\|\| blad "zegarek: brak CFBundleIconName/);
+  expect(sh).toMatch(/node scripts\/natywne\/ikona-zegarka-pakiet\.mjs --info [^\n]*\|\| bledy=\$\(\(bledy \+ 1\)\)/);
 });

@@ -22,12 +22,32 @@ function kontrola(info: unknown | string): { kod: number; wyjscie: string } {
   }
 }
 
+// Dowód przyczyny: jakosc-ios.yml run 41987399061 (f330c311), zadanie zegarek-ikona, krok „Diagnostyka”: `plutil -p` Info.plist zbudowanego OczkoZegarek.app
+// (Xcode 26.6, watchOS SDK 26.5) ma ikonę w CFBundleIcons › CFBundlePrimaryIcon › CFBundleIconName = AppIcon i NIE ma klucza CFBundleIconName na najwyższym poziomie;
+// actool z `--target-device watch --app-icon AppIcon` zapisuje częściowy plist właśnie w tej postaci (assetcatalog_generated_info.plist). Kontrola z kontrola-ipa.sh:33
+// czytała tylko najwyższy poziom, więc dawała fałszywy alarm na zegarku z ikoną.
+const INFO_Z_CI = {
+  CFBundleDisplayName: 'Oczko', CFBundleExecutable: 'OczkoZegarek', CFBundleIcons: { CFBundlePrimaryIcon: { CFBundleIconName: 'AppIcon' } },
+  CFBundleIdentifier: 'com.apps4brew.knitting.watchkitapp', MinimumOSVersion: '11.0', NSAccentColorName: '$accent', UIDeviceFamily: [4], WKApplication: true,
+  WKCompanionAppBundleIdentifier: 'com.apps4brew.knitting',
+};
+
 describe('ikona-zegarka-pakiet.mjs (Info.plist zbudowanego zegarka jako JSON)', () => {
-  test('CFBundleIconName = AppIcon → kod 0', () => {
+  test('postać zapisywana przez actool dla zegarka (zagnieżdżona, jak w run 41987399061) → kod 0', () => {
+    const w = kontrola(INFO_Z_CI);
+    expect(w).toEqual({ kod: 0, wyjscie: expect.stringContaining('CFBundleIcons › CFBundlePrimaryIcon › CFBundleIconName = AppIcon') });
+  });
+  test('CFBundleIconName = AppIcon na najwyższym poziomie → kod 0', () => {
     const w = kontrola({ CFBundleIdentifier: 'com.apps4brew.knitting.watchkitapp', CFBundleIconName: 'AppIcon' });
     expect(w).toEqual({ kod: 0, wyjscie: expect.stringContaining('CFBundleIconName = AppIcon') });
   });
-  test('brak CFBundleIconName (stan z testflight.yml #6) → kod 1 i wskazanie przyczyny', () => {
+  test('CFBundleIcons bez nazwy zestawu albo z inną nazwą → kod 1 (sam słownik to nie ikona)', () => {
+    expect(kontrola({ CFBundleIcons: { CFBundlePrimaryIcon: {} } }).kod).toBe(1);
+    expect(kontrola({ CFBundleIcons: {} }).kod).toBe(1);
+    expect(kontrola({ CFBundleIcons: { CFBundlePrimaryIcon: { CFBundleIconName: 'Inna' } } }).kod).toBe(1);
+    expect(kontrola({ CFBundleIcons: { CFBundlePrimaryIcon: 'AppIcon' } }).kod).toBe(1);
+  });
+  test('brak ikony w obu miejscach (cel bez ASSETCATALOG_COMPILER_APPICON_NAME, Trening L-021) → kod 1 i wskazanie przyczyny', () => {
     const w = kontrola({ CFBundleIdentifier: 'com.apps4brew.knitting.watchkitapp', WKCompanionAppBundleIdentifier: 'com.apps4brew.knitting' });
     expect(w.kod).toBe(1);
     expect(w.wyjscie).toContain('CFBundleIconName');
@@ -83,5 +103,14 @@ describe('diagnostyka-ikony-zegarka.sh', () => {
   test('nigdy nie kończy się błędem sam z siebie (diagnostyka nie maskuje werdyktu strażnika)', () => {
     expect(sh).not.toMatch(/^set -[a-z]*e/m);
     expect(sh).toMatch(/exit 0/);
+  });
+});
+
+describe('kontrola-ipa.sh używa tej samej kontroli co jakosc-ios.yml (jedno źródło prawdy o postaci klucza)', () => {
+  const sh = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
+  test('zegarek: Info.plist → JSON → ikona-zegarka-pakiet.mjs, błąd zwiększa licznik; bez PlistBuddy na najwyższym poziomie', () => {
+    expect(sh).toMatch(/plutil -convert json -o [^\n]*"\$ZEGAREK\/Info\.plist"/);
+    expect(sh).toMatch(/node scripts\/natywne\/ikona-zegarka-pakiet\.mjs --info [^\n]*\|\| bledy=\$\(\(bledy \+ 1\)\)/);
+    expect(sh).not.toMatch(/pb CFBundleIconName "\$ZEGAREK/);
   });
 });

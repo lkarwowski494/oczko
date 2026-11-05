@@ -124,7 +124,7 @@ jobs:
           path: eksperymenty-wzoru.log
           retention-days: 7
   zegarek-ikona:
-    # 10-wydanie-002 (testflight.yml #6, run 41983086785, build 1061): zbudowany zegarek bez CFBundleIconName, choć projekt po prebuild ma
+    # 10-wydanie-002 (testflight.yml #6, run 41983086785, build 1061): kontrola-ipa.sh zgłosiła brak CFBundleIconName na najwyższym poziomie Info.plist zegarka, choć projekt po prebuild ma
     # ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon. Ten sam błąd łapiemy tu, bez sekretów i bez Approve właściciela (środowisko `release` jest tylko w testflight.yml):
     # budujemy sam cel zegarka jak archiwum (SDK watchos, Release, bez podpisu), wypisujemy dowody (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
     # i wymagamy CFBundleIconName = AppIcon w zbudowanym pakiecie. Bez podów i bez całej aplikacji: kilka minut zamiast ~40. Test: tests/wydanie/ikona-zegarka-pakiet.test.ts.
@@ -160,7 +160,7 @@ jobs:
       - name: Diagnostyka ikony zegarka (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
         if: always()
         run: bash scripts/wydanie/diagnostyka-ikony-zegarka.sh ios/xcodebuild-zegarek.log ios/build-zegarek "ios/$(ls ios | grep '\.xcodeproj$' | head -1)"
-      - name: Zbudowany zegarek ma CFBundleIconName = AppIcon (10-wydanie-002; ta sama klasa błędu co kontrola-ipa.sh, bez Approve)
+      - name: Zbudowany zegarek wskazuje ikonę AppIcon w Info.plist (10-wydanie-002; ta sama kontrola co kontrola-ipa.sh, bez Approve)
         run: |
           set -o pipefail
           APP=$(find ios/build-zegarek/products -type d -name 'OczkoZegarek.app' | head -n 1)
