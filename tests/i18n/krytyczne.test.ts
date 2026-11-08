@@ -160,7 +160,15 @@ describe('treść krytyczna: dane i okablowanie repozytorium', () => {
       expect(r.wyjscie).toMatch(/UWAGA kontrola \(a\) treści krytycznej: \d+ z \d+ par/);
     } else {
       const w = uruchom(['src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json', '--krytyczne', 'docs/lokalizacja/krytyczne.json', '--przeglad', 'docs/lokalizacja/przeglad-krytyczne.json', '--wydanie'], KORZEN);
-      expect(w.kod).toBe(0);
+      // Wyjątek nazwany M3 (P-559, polecenie 08 p2 pkt 5; jak tests/i18n/pierwsze-w-fali-154.test.ts): do fali 09 lista oczekujących z kluczami M3 blokuje
+      // wydanie i jest jedynym błędem bramki; po fali (lista pusta) — kod 0 jak dotąd.
+      const ocz = (wczytaj('docs/lokalizacja/oczekujace.json').klucze ?? []) as string[];
+      if (ocz.length === 0) expect(w.kod).toBe(0);
+      else {
+        expect(ocz.filter((k) => !/^(dzis|zakladki)\./.test(k))).toEqual([]);
+        expect(w.kod).toBe(1);
+        expect(w.wyjscie.split('\n').filter((x) => x.startsWith('BŁĄD') && !/oczekujace\.json niepusta/.test(x))).toEqual([]);
+      }
     }
   });
   it('skrypty npm i18n, i18n:kod, i18n:pseudo i kontrola-ipa.sh (TestFlight) przekazują --krytyczne i --przeglad; kontrola-ipa.sh z --wydanie', () => {
