@@ -13,17 +13,15 @@ tags:
       TERAZ: "2026-11-10T19:30:00"
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "licznik-plus" }
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-nazwa" }
-- tapOn: { id: "arkusz-zamknij" }
-- assertVisible: { id: "licznik-plus" }
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/zamknij-menu.yaml # ZM-05: menu systemowe nie ma „Close”
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }

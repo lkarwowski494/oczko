@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "이번 세션 기록: {{godzina}}부터 {{count}}코",
     "seria_blokada_other": "{{godzina}}에 잠금 화면에서 {{count}}단을 추가했습니다. 실행 취소할까요?",
     "seria_zegarek_other": "{{godzina}}에 워치에서 {{count}}단을 추가했습니다. 실행 취소할까요?",
-    "wpisz_blad_format": "0 이상의 정수를 입력하세요(예: {{przyklad}})."
+    "wpisz_blad_format": "0 이상의 정수를 입력하세요(예: {{przyklad}}).",
+    "akcja_notatka": "메모",
+    "akcja_wzor": "도안",
+    "akcja_cel": "목표",
+    "akcja_cel_a11y": "목표, 알림, 반복",
+    "akcja_stoper": "타이머",
+    "akcja_historia": "기록",
+    "projekt_wejscie": "프로젝트 ›",
+    "projekt_wejscie_a11y": "프로젝트: {{projekt}}",
+    "menu_wiecej_a11y": "카운터 옵션: 이름, 단수, 잠금, 완료",
+    "dzianina_a11y_other": "{{czesc}}: {{count}}단 완료, 이번 세션 {{sesja}}단",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{cel}}단 중 {{count}}단 완료, 이번 세션 {{sesja}}단"
   },
   "limit": {
     "zawczasu_other": "{{miesiac}}의 무료 작업일을 모두 사용했습니다. {{data}}까지 카운트가 일시 중지됩니다. 기록된 {{count}}단과 나머지 모든 데이터는 그대로 보존됩니다.",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "{{data}} 완성 · {{czas}}",
     "ukonczono_bez_czasu": "{{data}} 완성",
     "ukonczono_a11y": "{{nazwa}}, {{data}} 완성, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, {{data}} 완성"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, {{data}} 완성",
+    "menu_a11y": "더 보기: {{nazwa}}",
+    "kosz_do_other": ": {{count}}개, {{data}}까지.",
+    "kosz_pokaz": "보기"
   },
   "historia": {
     "pusto": "아직 변경 사항이 없습니다.",
@@ -189,7 +203,10 @@
     "wpisz": "올바른 숫자 입력",
     "wpis_rozwin_a11y": "{{wpis}} 자세히 보기",
     "wpis_rozwin_podpowiedz": "이 기록을 변경하는 방법을 표시합니다.",
-    "wpis_a11y": "{{czas}}에 {{od}}에서 {{do}}까지"
+    "wpis_a11y": "{{czas}}에 {{od}}에서 {{do}}까지",
+    "kafel_dni_other": "뜨개한 날",
+    "kafel_rzedy_other": "단",
+    "kafel_czas": "세션 시간"
   },
   "menu": {
     "nazwa": "프로젝트와 파트 이름 짓기",
@@ -401,7 +418,6 @@
     "raz": "한 번만 결제합니다. 갱신되지 않습니다.",
     "dozywotni_przy_subskrypcji": "구독은 직접 취소할 때까지 계속 갱신됩니다.",
     "bez_pro_other": "Pro 없이도: 매달 작업일 {{limit}}일, 그리고 모든 프로젝트와 데이터를 항상 이용할 수 있습니다.",
-    "rodzina": "가족 공유로 가족과 함께 사용할 수 있습니다.",
     "kup": "계속하기: {{plan}}",
     "przywroc": "구입 항목 복원",
     "polityka": "개인정보 처리방침",
@@ -415,7 +431,15 @@
     "blad_zakupu": "구입이 완료되지 않았습니다. 인터넷 연결을 확인한 후 다시 시도하세요.",
     "przywracanie_nic": "이 Apple ID로 구입한 Oczko Pro가 없습니다. 다른 Apple ID로 구입했다면 설정에서 해당 Apple ID로 로그인한 후 다시 시도하세요.",
     "przywracanie_blad": "구입 내역을 복원하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.",
-    "pro_wlaczone": "Oczko Pro가 켜졌습니다."
+    "pro_wlaczone": "Oczko Pro가 켜졌습니다.",
+    "kafel_dzien_tytul": "모든 뜨개한 날",
+    "kafel_dzien_opis": "뜨개하는 날이면 언제든, 월 제한 없이 세어 보세요.",
+    "kafel_urzadzenia_tytul": "모든 기기에서 제한 없음",
+    "kafel_urzadzenia_opis": "iPhone, iPad, Apple Watch.",
+    "kafel_rodzina_tytul": "가족을 위해",
+    "kafel_rodzina_opis": "가족 공유로 가족과 함께 사용할 수 있습니다.",
+    "kafel_dane_tytul": "데이터는 그대로 내 것",
+    "kafel_dane_opis": "Pro 여부와 관계없이 프로젝트, 도안, 기록은 그대로 남습니다."
   },
   "uczciwe": {
     "tytul": "첫 작업일을 마쳤습니다",
@@ -877,5 +901,32 @@
     "yd_nazwa": "야드",
     "g_nazwa": "그램",
     "oz_nazwa": "온스"
+  },
+  "dzis": {
+    "tytul": "오늘",
+    "pierwszy_tytul": "첫 카운터",
+    "pierwszy_opis": "한 단을 끝낼 때마다 +1을 탭하세요. 프로젝트 이름은 나중에 정해도 됩니다.",
+    "otworz_licznik": "카운터 열기",
+    "kontynuuj": "계속",
+    "wybierz_projekt": "프로젝트 선택",
+    "bez_miejsca_tytul": "프로젝트가 여기 있습니다",
+    "bez_miejsca_other": "진행 중인 프로젝트 {{count}}개. 하나를 선택하면 ‘오늘’에서 멈춘 곳부터 열립니다.",
+    "czesc_rzad": "{{czesc}}, {{n}}단",
+    "czesc_rzad_cel": "{{czesc}}, {{cel}}단 중 {{n}}단",
+    "gotowe_other": "단 완료",
+    "dzianina_a11y_other": "{{czesc}}: {{count}}단 완료, 오늘 {{dzis}}단",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{cel}}단 중 {{count}}단 완료, 오늘 {{dzis}}단",
+    "co_dalej_other": "{{count}}단 후: {{tekst}} ({{ktory}}/{{razy}})",
+    "co_dalej_teraz": "이번 단: {{tekst}} ({{ktory}}/{{razy}})",
+    "ten_tydzien": "이번 주",
+    "tydzien_pusty": "뜨개한 날이 여기에 표시됩니다.",
+    "dzien_dziergany_a11y": "{{etykieta}}, 뜨개한 날",
+    "kafel_wloczka": "실과 바늘"
+  },
+  "zakladki": {
+    "dzis": "오늘",
+    "projekty": "프로젝트",
+    "narzedzia": "도구",
+    "historia": "기록"
   }
 }

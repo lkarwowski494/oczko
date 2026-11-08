@@ -37,7 +37,7 @@ jest.mock('../../src/platforma/system-plikow-uzytkownika', () => ({ udostepnijPl
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 /* eslint-disable @typescript-eslint/no-require-imports */
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 const EkranUstawien = (require('../../app/ustawienia') as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 

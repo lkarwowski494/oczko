@@ -1,0 +1,16 @@
+# Podprzepływ (P-571, P-554; to-be WD-1): wejście do Ustawień — zębatka `nav-ustawienia` (gearshape) tylko na „Dziś”, bez drugiego miejsca w zakładce Projekty.
+# Jedno miejsce zmiany drogi do Ustawień: scenariusze i podprzepływy nie stukają `nav-ustawienia` same (pilnuje tests/jakosc/e2e-otworz-ustawienia.test.ts).
+# Start: dowolny ekran z paskiem zakładek albo pełny licznik (pasek ukryty, WD-1 — wtedy `nav-wstecz` wraca z licznika do ekranu źródłowego, P-583; na zakładce krok pominięty). Koniec: ekran `ustawienia`.
+appId: com.apps4brew.knitting
+name: "podprzepływ: Ustawienia z zębatki „Dziś”"
+---
+- runFlow: # P-583: z pełnego licznika (pasek zakładek ukryty) wstecz do ekranu źródłowego; na zakładce krok pominięty
+    when: { visible: { id: "licznik-plus" } }
+    commands:
+      - tapOn: { id: "nav-wstecz" }
+      - extendedWaitUntil: { visible: { id: "nav-dzis" }, timeout: 20000 }
+- assertVisible: { id: "nav-dzis" } # pasek zakładek widoczny (poza licznikiem i wzorem, WD-1)
+- tapOn: { id: "nav-dzis" }
+- assertVisible: { id: "dzis-karta" }
+- tapOn: { id: "nav-ustawienia" }
+- assertVisible: { id: "ustawienia" }

@@ -12,13 +12,15 @@ tags:
     env:
       TERAZ: "2026-11-10T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-stoper" }
 - assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-stoper" }
 - assertVisible: { id: "stoper-zatrzymaj" }
 - tapOn: { id: "stoper-zatrzymaj" }
 - assertVisible: { id: "licznik-stoper", text: "Start session timer" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-dodaj" }
 - scrollUntilVisible: { element: { id: "projekt-sesje" } }
 - tapOn: { id: "projekt-sesje" }

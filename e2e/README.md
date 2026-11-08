@@ -54,38 +54,57 @@ Argumenty startu (`launchApp: arguments:`; na iOS Maestro przekazuje je jako arg
 ## testID (propozycja 07 dla 08; zmiana nazwy = zmiana scenariuszy)
 Wiersze `projekt-*`, `kosz-*`, `co-dalej-*`, `projekty-kosz`, `projekty-ostatnia-praca`, `licznik-nastepna-czesc`, `menu-znaczenie` i `formularz-*` arkuszy projektu dopisała rola 08 w partii 5 według propozycji 04 fix-5 („Dla 08”, P-183) — do przeglądu 07. Potwierdzenia usuwania to alerty systemowe (bez testID; scenariusz stuka w tekst przycisku). Wiersze grup B i D (`licznik-stoper`, `stoper-*`, `sesje-*`, `historia-*`, `narzedzia-*`, `probka-*`, `projekt-sesje`, `projekt-zdjecia`, `projekt-probka`, `zapas-filtr`, `zdjecie-usun`, `karta-udostepnij`) dopisała rola 07 z „Dla 08” 04 fix-6 (P-191, P-205); usunięte `menu-sesja`, `sesja-trwa`, `sesja-zakoncz`, `menu-zdjecia`, `zdjecia-licznik`, `nav-zapas` (zastąpione przez 04 fix-6; F07-17). Id `nav-narzedzia`, `zapas-dlugosc`, `zapas-jednostka-yd`, `zapas-przeliczone` (spoza listy 04) koordynator przyjął jako kontrakt 07 (2026-10-26, po zamknięciu 04 fix-6); wdraża 08. Wiersze `licznik-wzor`, `wzor-dodaj-film`, `wzor-przelacz`, `wzor-menu`, `wzor-obroc`, `wzor-usun`, `wzor-gumka`, `wzor-pioro`, `wzor-cofnij-rysunek`, `wzor-link-pole`, `wzor-film-wiersz`, `wzor-czeka-siec` — z „Dla 07” 04 fix-7 (grupa W, `docs/design/fix7-2026-10-26.md`), dopisane przed listą w design-spec (nazwany wyjątek 04). Tak samo grupy R i I (`udostepnij-*`, `skrzynka*`, `icloud-*`, `licznik-konflikt`, `usun-z-icloud`; „Dla 07 (grupy R i I)”, P-229).
 
+Wiersze `dzis-*`, `nav-dzis` i rozszerzone znaczenie `nav-projekty`, `nav-narzedzia`, `nav-historia`, `limit-zawczasu`, `limit-oferta-link` dopisała rola 07 przed p2 (07-e2e, 2026-11-08; ZM-18, P-563 (4a), P-565): `docs/design/testid.md` nie miał propozycji testID „Dziś”, nazwy do potwierdzenia przez 04 (zmiana nazwy = zmiana scenariuszy). Start scenariuszy: `subflows/start-czysty.yaml` i `restart.yaml` przechodzą przez „Dziś” do licznika (jedno miejsce zmiany), `start-czysty-dzis.yaml` i `restart-dzis.yaml` zatrzymują się na „Dziś”.
+
+Licznik TO BE (07 cz. 2, 2026-11-08; ZM-04, ZM-05, P-580, P-581, P-583; kontrakt `docs/design/testid.md` M3-TESTID-02): akcje pod liczbą `licznik-akcja-notatka`, `licznik-wzor` (zastępuje `menu-wzor`), `licznik-cel` (menu systemowe z `menu-cel`, `menu-przypomnienie`, `menu-powtorzenie`), `licznik-stoper`, `licznik-historia` — przed stuknięciem w akcję `scrollUntilVisible` (AX5 i mały ekran, testid.md:158); „Projekt ›” = `licznik-projekt-wejscie`, `licznik-projekt` zostaje na nazwie; menu ••• (6 pozycji) bez `menu-grupa-*` i bez „Close” (`subflows/zamknij-menu.yaml`); z licznika do listy `nav-wstecz` + zakładka `nav-projekty`. Pilnuje `tests/jakosc/e2e-licznik-to-be.test.ts`. Do p3a scenariusze z tymi id są czerwone na iOS z właściwego powodu (lista: `docs/jakosc/e2e-dzis/stan-2026-11-08.md`, „Do zazielenienia w p3a”). [DO USTALENIA 05/08] czy pozycje UIMenu niosą testID — jeśli nie, scenariusze wybiorą pozycję po etykiecie z tej tabeli (reguła 2).
+
+Wiersze M3 p4b i p7 (07-e2e-m3, 2026-11-08; P-596, P-599; stan partii `docs/programista/m3-p4b-stan.md`, `m3-p7-stan.md`): `zdjecie-zamknij`, `zdjecie-udostepnij` (istniał bez wiersza), `znacznik-radio`, `komunikat-znak`, `projekt-menu-lista`, `projekt-czesc`, `projekt-licznik`, `projekt-licznik-wiersz`, `projekt-miniatura`, `kafelek-ikony`, `symbol-druty`, `symbol-dzien`, `ustawienia-grupa`, `ustawienia-stan-danych`, `ustawienia-polityka`, `ustawienia-subskrypcja`, `ustawienia-wibracje(-wiersz)`, `ustawienia-ekran-nie-gasnie(-wiersz)`, `oferty-karta`, `oferty-miesiac(-dzien)`, `oferty-kafel-*`, `oferty-ikona-dzien` — nazwy z kodu 08 (zmiana nazwy = zmiana scenariuszy). Elementy ukryte przed VoiceOver (znaczniki, kafelki, miniatury) nie są celem `tapOn`; wybór sprawdza `selected: true` na wierszu, błąd — tekst komunikatu. Od p7 plany „Oczko Pro” leżą pod kartą i kafelkami: przed asercją planu `scrollUntilVisible` (reguła 10; 06, 07).
+
 Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`; „—” = tekst ustala 04 (Z07-05), scenariusz używa tylko id. Kolumna ostatnia: klawiatura pola (`liczbowa`, `tekstowa`) albo puste.
 
 | id | ekran | element | tekst / etykieta | klawiatura |
 |---|---|---|---|---|
+| `dzis-karta` | „Dziś” (ZM-18, p2) | karta K-B: „Pierwszy licznik” (świeża instalacja), „Kontynuuj” (ostatni licznik) albo karta bez ostatniego miejsca (`dzis-bez-miejsca-*`) | — (04, Z07-05) | |
+| `dzis-projekt` | „Dziś” | nazwa projektu na karcie „Kontynuuj” (jak `licznik-projekt`; brak na „Pierwszy licznik”) | „Harbor” | |
+| `dzis-wartosc` | „Dziś” | liczba rzędów skończonych na karcie (ta sama wartość co `licznik-wartosc`); po `dzis-plus` pierwsza asercja (reguła 4) | „0”, „47” | |
+| `dzis-plus` | „Dziś” | „+1” karty — to samo zdarzenie co `licznik-plus` (zapis, wibracja, strażnik limitu i serii; NFR-PIE-001, ER-68); brak przy limicie zawczasu | — (04) | |
+| `dzis-kontynuuj` | „Dziś” | „Kontynuuj ›” (karta „Kontynuuj”) i „Otwórz licznik ›” (karta „Pierwszy licznik”) — jedno stuknięcie do pełnego licznika albo strony wzoru w tym samym powiększeniu (P-563 (4a)) | — (04) | |
+| `dzis-wybierz-projekt` | „Dziś” | „Wybierz projekt ›” na karcie bez ostatniego miejsca (projekty są) → zakładka Projekty (P-564, P-565) | — (04) | |
+| `dzis-dni-darmowe` | „Dziś” | linia wolnych dni (tylko bez Pro), bez odnośnika „Oczko Pro” (P-563 (10a), ER-70) | „0 of 5 free crafting days left in November” (klucz jak `projekty-dni-darmowe` — [DO USTALENIA] 04) | |
+| `nav-dzis` | pasek zakładek (p2) | zakładka „Dziś” | — (04) | |
 | `licznik-plus` | licznik | przycisk +1 (strefa ≥ 168 pt) | „+1 row…”, z instrukcją: „+1 row, when row 12 is done. Row 12: decrease at both ends” | |
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
 | `licznik-wartosc` | licznik | duża liczba rzędów skończonych (sam numer, z separatorem tysięcy regionu) | „47” | |
-| `licznik-teraz-rzad` | licznik | podpis pod tytułem | „Now working row 48” | |
+| `licznik-teraz-rzad` | licznik | numer bieżącego rzędu; TO BE (M3-TESTID-02, testid.md:159): łączy się z podpisem liczby („rzędy gotowe · teraz rząd 43”), tekst en od 04 — asercje `.*row N` (numer, nie brzmienie) | „Now working row 48” (AS IS) | |
 | `licznik-powtorzenie` | licznik | linia powtórzenia („{nazwa}: repeat N, row R of D”, klucz `licznik.powtorzenie`; M1-034) | „repeat 3, row 1 of 8” (z nazwą powtórzenia z przodu, jeśli jest) | |
 | `licznik-calosc` | licznik | podpis całości części (BR-LIC-018/S1; 033-T1) | „Przód in total: 20 rows” (część nazwana; projekt roboczy: „Whole piece: 20 rows”) | |
-| `licznik-notatka` | licznik | nagłówek „Note” nad notatką projektu (033-T1) | „Note” | |
-| `licznik-projekt` | licznik | nazwa projektu nad tytułem części | nazwa użytkownika | |
-| `licznik-menu` | licznik | menu ••• | „Project options: name, goal, reminder, lock, finish” | |
-| `licznik-historia` | licznik | przycisk historii | „History” | |
+| `licznik-notatka` | licznik | blok notatki projektu nad akcjami (ikona + tekst; TO BE bez nagłówka „Note”, M3-TESTID-02) | treść notatki | |
+| `licznik-projekt` | licznik | nazwa projektu (tytuł; P-580 (a): tylko nazwa — wejściem do projektu jest `licznik-projekt-wejscie`) | nazwa użytkownika | |
+| `licznik-projekt-wejscie` | licznik | „Projekt ›” nad tytułem → ekran projektu (P-580 (a), M3-TESTID-02; p3a) | „Project: {nazwa}” | |
+| `licznik-menu` | licznik | menu ••• — menu systemowe (ZM-05, P-581 (a): 6 pozycji w 2 grupach; korekta: `menu-nazwa`, `menu-wpisz-wartosc`, `menu-znaczenie`, `menu-zeruj`; stan: `menu-zablokuj`/`menu-odblokuj`, `menu-ukoncz`); zamyka je stuknięcie obok (`subflows/zamknij-menu.yaml`) | „Counter options: name, row number, lock, finish” (`licznik.menu_wiecej_a11y`; scenariusz 29 po etykiecie) | |
+| `licznik-historia` | licznik | 5. akcja pod liczbą „Historia” (arkusz zmian licznika; ZM-04) — przed stuknięciem `scrollUntilVisible` (AX5, testid.md:158) | „History” | |
+| `licznik-akcja-notatka` | licznik | 1. akcja pod liczbą „Notatka” → arkusz notatki (ZM-04, M3-TESTID-02; p3a) | „Note” | |
+| `licznik-cel` | licznik | 3. akcja pod liczbą „Cel” → menu systemowe: `menu-cel`, `menu-przypomnienie`, `menu-powtorzenie` (P-581 (a); p3a) | „Goal, reminder, repeat” | |
 | `kreski-podpis` | licznik | podpis nad kreskami sesji | „Marks this session: 14 rows since 19:52” (godzina w formacie regionu; P-176) | |
-| `baner-serii` | licznik | baner strażnika RD-17 | „Added 3 rows in 1 s. Undo?” | |
-| `baner-serii-cofnij` | licznik | przycisk w banerze | „Undo 3 rows” | |
+| `baner-serii` | licznik; „Dziś” pod kartą (`dzis-cofnac-*`) | baner strażnika RD-17 | „Added 3 rows in 1 s. Undo?” | |
+| `baner-serii-cofnij` | licznik; „Dziś” | przycisk w banerze | „Undo 3 rows” | |
 | `pasek-blokady-odblokuj` | licznik | „Unlock” w pasku „Counter locked · Unlock” | „Unlock” | |
 | `blad-zapisu` | licznik | komunikat błędu zapisu | „Couldn’t save that row. It’s still on screen; try again.” | |
 | `blad-sieci` | dowolny | jakikolwiek komunikat o braku sieci (nie powinien istnieć) | — | |
-| `limit-zawczasu` | licznik | komunikat zamiast +1/−1 | „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
-| `limit-oferta-link` | licznik | odnośnik pod liczbą | „Oczko Pro removes the limit” | |
-| `arkusz-zamknij` | arkusze (historia, menu) | przycisk zamknięcia arkusza | „Close” | |
+| `limit-zawczasu` | licznik; karta „Dziś” (zamiast `dzis-plus`, ER-70, `dzis-limit-*`) | komunikat zamiast +1/−1 | „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
+| `limit-oferta-link` | licznik; komunikat limitu na karcie „Dziś” (jedyny odnośnik Pro na „Dziś”, P-565) | odnośnik pod liczbą | „Oczko Pro removes the limit” | |
+| `arkusz-zamknij` | arkusze (historia, formularze) | przycisk zamknięcia arkusza; menu systemowe ••• i „Cel” go nie mają (ZM-05) | „Close” | |
 | `historia-lista` | historia | lista zmian z godziną | — | |
 | `historia-cofnij-ostatnia` | historia | „Undo” przy ostatniej zmianie (P-091 3a) | „Undo” | |
-| `menu-nazwa` | menu ••• | pozycja | „Name project and part” | |
-| `menu-cel` | menu ••• | pozycja (nieużywana jeszcze w scenariuszach) | „Set a goal for this part” | |
-| `menu-wpisz-wartosc` | menu ••• | pozycja wpisania wartości (F-45) | — | |
-| `menu-przypomnienie` | menu ••• | pozycja | „Add a reminder (“every N rows”)” | |
-| `menu-powtorzenie` | menu ••• | pozycja „Set a repeat length” (F-05; tylko licznik rzędów; istnieje w `src/ekrany/MenuProjektu.tsx:36`, dopisane przez 07-jakosc-033 A) | „Set a repeat length” | |
+| `menu-nazwa` | menu ••• | 1. pozycja grupy korekty (P-581 (a): zostaje w •••) | „Name project and part” | |
+| `menu-cel` | menu „Cel” (`licznik-cel`) | pozycja (P-581 (a); nieużywana jeszcze w scenariuszach) | „Set a goal for this part” | |
+| `menu-wpisz-wartosc` | menu ••• | pozycja wpisania wartości (F-45) | „Enter the row number” | |
+| `menu-zeruj` | menu ••• | „Reset to 0…” — destrukcyjna, z potwierdzeniem, ostatnia w grupie korekty (DEC-05 (a), M3-TESTID-02) | „Reset to 0…” | |
+| `menu-zablokuj` | menu ••• | „Lock counter” (licznik odblokowany; jedna pozycja z `menu-odblokuj`, dwa id jak `stoper-wstrzymaj`/`stoper-wznow`, F07-33) | „Lock counter” | |
+| `menu-odblokuj` | menu ••• | „Unlock counter” (licznik zablokowany) | „Unlock counter” | |
+| `menu-przypomnienie` | menu „Cel” (`licznik-cel`) | pozycja (P-581 (a): przeniesiona z •••) | „Add a reminder (“every N rows”)” | |
+| `menu-powtorzenie` | menu „Cel” (`licznik-cel`; P-581 (a): przeniesiona z •••) | pozycja „Set a repeat length” (F-05; tylko licznik rzędów; istnieje w `src/ekrany/MenuProjektu.tsx:36`, dopisane przez 07-jakosc-033 A) | „Set a repeat length” | |
 | `powtorzenie-dlugosc-pole` | arkusz „Set a repeat length” | pole długości powtórzenia (`Formularze.tsx`; 033-T1, wniosek 07-jakosc-033 A) | „Rows in one repeat” | liczbowa |
-| `menu-wzor` | menu ••• | wzór projektu | — | |
 | `menu-ukoncz` | menu ••• | ukończenie | „Mark project as finished” | |
 | `formularz-nazwa-projektu` | formularz nazwy | pole nazwy | etykieta „Project” | tekstowa |
 | `formularz-zapisz` | formularze w arkuszach | przycisk zapisu (zawsze widoczny) | „Save” | |
@@ -98,7 +117,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `przypomnienie-zapisz` | przypomnienie | przycisk | „Save reminder” | |
 | `ukonczenie-karta` | ukończenie | karta z pytaniem o włóczkę (U-9) | — | |
 | `ukonczenie-gotowe` | ukończenie | „Done” | „Done” | |
-| `licznik-stoper` | licznik | stoper sesji w pasku: ikona (bez sesji), po starcie kapsuła z czasem — ten sam id, stan w etykiecie (04 fix-6 B, P-191 P1a) | „Start session timer” / „Session timer, {czas}, running. Pause or stop” / „…, paused. Resume or stop” | |
+| `licznik-stoper` | licznik | stoper sesji — TO BE 4. akcja pod liczbą (ZM-04; przed stuknięciem `scrollUntilVisible`), dawniej w pasku: ikona (bez sesji), po starcie kapsuła z czasem — ten sam id, stan w etykiecie (04 fix-6 B, P-191 P1a) | „Start session timer” / „Session timer, {czas}, running. Pause or stop” / „…, paused. Resume or stop” | |
 | `stoper-wstrzymaj` | menu kapsuły | Pause timer (stoper biegnie) | „Pause timer” | |
 | `stoper-wznow` | menu kapsuły | Resume timer (stoper wstrzymany; ta sama pozycja menu co Pause, osobny testID — F07-33) | „Resume timer” | |
 | `stoper-zatrzymaj` | menu kapsuły | Stop timer (bez potwierdzenia) | „Stop timer” | |
@@ -128,10 +147,10 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-zdjecia` | ekran projektu | grupa „Photos” (P-191 P9a) | „Photos” | |
 | `zdjecie-usun` | podgląd zdjęcia | Delete photo (alert z potwierdzeniem, bez kosza) | „Delete photo” | |
 | `karta-udostepnij` | karta ukończenia | Share: obraz 1080 × 1350 bez EXIF/GPS (P-191 P10a) | „Share” | |
-| `nav-projekty` | licznik | powrót do listy projektów | „Projects” | |
-| `nav-ustawienia` | lista projektów | wejście do Ustawień | — | |
-| `nav-narzedzia` | lista projektów | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26 (design-spec nie podaje id wejścia) | „Tools” | |
-| `nav-wstecz` | ekrany wtórne | systemowy „Back” | „Back” | |
+| `nav-projekty` | pasek zakładek (p2) | zakładka „Projekty” (ZM-18); na liczniku od p3a nie ma wejścia do listy — scenariusz wraca `nav-wstecz`, potem zakładka (P-583) | „Projects” | |
+| `nav-ustawienia` | „Dziś” (zębatka `gearshape`; P-571, P-554, to-be WD-1) | jedyne wejście do Ustawień — bez drugiego miejsca w zakładce Projekty; scenariusze wchodzą przez `subflows/otworz-ustawienia.yaml` (pilnuje `tests/jakosc/e2e-otworz-ustawienia.test.ts`) | „Settings” | |
+| `nav-narzedzia` | lista projektów; pasek zakładek (p2) | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26; po p2 zakładka „Narzędzia” (to samo znaczenie, ZM-18) | „Tools” | |
+| `nav-wstecz` | ekrany wtórne; licznik (P-583: „‹ Dziś” / „‹ Projekty” — wstecz do ekranu źródłowego) | systemowy „Back” | „Back” | |
 | `projekty-lista` | lista projektów | lista | „Projects” | |
 | `projekty-wiersz` | lista projektów | wiersz projektu (powtarzalny, `index`) | nazwa · część · rząd | |
 | `projekty-nowy` | lista projektów | nowy projekt | „New project” | |
@@ -231,7 +250,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-strona` | wzór | numer strony | „Page 1 of 3” (etykieta VoiceOver „Pattern page 1 of 3” — asercje `.*[Pp]age 1 of .*`, przebieg 40446976426) | |
 | `wzor-zakreslacz` | wzór | przełącznik zakreślacza (`accessibilityState.selected`) | — | |
 | `wzor-zakreslenia` | wzór | liczba zakreśleń | „1 highlight”, „0 highlights” | |
-| `licznik-wzor` | licznik | ikona wzoru w pasku (tylko gdy projekt ma wzór; 04 fix-7, grupa W) | „Pattern” | |
+| `licznik-wzor` | licznik | 2. akcja pod liczbą „Wzór” — zawsze (ZM-04, P-580; zastępuje `menu-wzor`); bez wzoru do p3b → ekran z `wzor-dodaj`, w p3b od razu menu źródeł (ZM-06) | „Pattern” | |
 | `wzor-dodaj-film` | ekran projektu, grupa wzorów | dodanie odnośnika do filmu (P-218 (4): film poza wzorem) | „Add video link” | |
 | `wzor-przelacz` | wzór | tytuł z menu wzorów (≥ 2 wzory; jeden wzór naraz, P-218 (3)) | „Pattern: {nazwa}. Switch pattern” | |
 | `wzor-menu` | wzór | menu ••• | „Pattern options” | |
@@ -263,7 +282,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `icloud-konflikt-wybor-0` | arkusz konfliktu | pierwszy wybór wersji (kolejność nie jest kontraktem — scenariusz łączy id `…-0` i `…-1` alternatywą z etykietą; P-250) | etykieta VoiceOver `dane.konflikt_a11y`: „Keep {n} rows from {urządzenie}, {godzina}” | |
 | `icloud-konflikt-wybor-1` | arkusz konfliktu | drugi wybór wersji (jak wyżej) | jak wyżej | |
 | `usun-z-icloud` | arkusz „Delete all data” | przełącznik „Also delete from iCloud” | „Also delete from iCloud” | |
-| `nav-historia` | lista projektów | wejście do „History” (kalendarz dni; F-59) | „History” | |
+| `nav-historia` | lista projektów; pasek zakładek (p2) | wejście do „History” (kalendarz dni; F-59); po p2 zakładka „Historia” (to samo znaczenie, ZM-18, ER-71) | „History” | |
 | `historia` | History | kontener ekranu (ScrollView) | — | |
 | `historia-dzien-2026-11-03` | History | komórka dnia 3 XI 2026 (wzorzec `historia-dzien-RRRR-MM-DD`; rola przycisku, `selected`; etykieta „Nov 3 · 3 rows” tylko dla dnia wybranego z pracą, inne dni: „Nov 4”; scen. 64) | „Nov 3 · 3 rows” | |
 | `historia-dzien-2026-11-04` | History | komórka dnia 4 XI 2026 (dzień bez pracy; scen. 64) | „Nov 4” | |
@@ -275,6 +294,34 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-znacznik-rzad` | wzór, pasek znacznika | numer rzędu schematu, na którym stoi znacznik (RD-21; scen. 62) | „12” | |
 | `wzor-znacznik-gotowe` | wzór, pasek znacznika | „Done” — zamknięcie paska | „Done” | |
 | `wprowadzenie` | — | ekran wprowadzenia (NIE może istnieć przed pierwszym +1) | — | |
+| `zdjecie-zamknij` | podgląd zdjęcia (p4b) | „Close” w prawym górnym rogu (makieta `zdjecie`); scenariusze nie zamykają podglądu (42 kończy usunięciem) | „Close” | |
+| `zdjecie-udostepnij` | podgląd zdjęcia | Share z symbolem `square.and.arrow.up` (arkusz systemowy — scenariusze go nie otwierają) | „Share” | |
+| `znacznik-radio` | arkusze z `Wybor`; plany „Oczko Pro” (p4b) | znacznik wyboru 28 pt (AX1+ 40), powtarzalny, ukryty przed VoiceOver — wybór sprawdza `selected: true` na wierszu (`oferty-plan-*`, „Needles”, „Stitches”) | — | |
+| `komunikat-znak` | komunikat błędu (próbka, formularze włóczki i narzędzia, oferty, Usuń wszystko; p4b) | kółko „!” przy zdaniu błędu, ukryte przed VoiceOver; zdanie = etykieta widoku z rolą alert (bez „!”) | — | |
+| `projekt-menu-lista` | ekran projektu (p4b) | pływająca lista menu „+” i ••• pod paskiem (pozycje `projekt-dodaj-*`, `projekt-edytuj`, `projekt-zrob-taka-sama`, `projekt-usun`, `projekt-wznow` bez zmian) | — | |
+| `projekt-czesc` | ekran projektu (p4b) | wiersz części (powtarzalny); etykieta z tekstów wiersza — 33, 59 i `dodaj-czesc-cel` wybierają część po etykiecie („Back, …”) | „{część}, {opis}” (np. „Back, …”) | |
+| `projekt-licznik` | ekran projektu (p4b) | wiersz licznika części (powtarzalny; gdy część ma > 1 licznik albo w trybie Edit) | nazwa licznika · opis | |
+| `projekt-licznik-wiersz` | ekran projektu (p4b) | obwiednia wiersza licznika z wcięciem (⊖ w trybie Edit + `projekt-licznik`) | — | |
+| `projekt-miniatura` | ekran projektu (p4b) | miniatura dzianiny w wierszu części — ukryta przed VoiceOver i od AX1 | — | |
+| `kafelek-ikony` | Ustawienia, Narzędzia (p4b) | kafelek ikony wiersza 32 pt (AX1+ 44), powtarzalny, dekoracyjny (ukryty przed VoiceOver) | — | |
+| `symbol-druty` | Narzędzia (p4b) | rysunek drutów w wierszu Druty | — | |
+| `symbol-dzien` | Ustawienia (p4b) | ikona dnia w wierszu Oczko Pro | — | |
+| `ustawienia-grupa` | Ustawienia (p7, ZM-07) | grupa listy grupowanej (powtarzalna) | — | |
+| `ustawienia-stan-danych` | Ustawienia (p7) | wiersz „Data and sync” (`subflows/otworz-stan-danych.yaml` stuka po etykiecie) | „Data and sync” | |
+| `ustawienia-polityka` | Ustawienia (p7) | wiersz Privacy Policy (rola link; 68 po etykiecie) | „Privacy Policy” | |
+| `ustawienia-subskrypcja` | Ustawienia (p7) | „Manage subscription” (tylko przy trwającej subskrypcji) | „Manage subscription” | |
+| `ustawienia-wibracje` | Ustawienia | przełącznik wibracji (rola switch) | „Vibration” | |
+| `ustawienia-wibracje-wiersz` | Ustawienia (p7) | wiersz z przełącznikiem wibracji (ikona + tekst + `ustawienia-wibracje`) | — | |
+| `ustawienia-ekran-nie-gasnie` | Ustawienia | przełącznik „ekran nie gaśnie” (rola switch; P-585) | „Keep screen on while counting” | |
+| `ustawienia-ekran-nie-gasnie-wiersz` | Ustawienia (p7) | wiersz z przełącznikiem „ekran nie gaśnie” | — | |
+| `oferty-karta` | oferty (p7) | karta z opisem Pro i ilustracją miesiąca | „Count rows on as many days as you like. Everything else stays the same.” | |
+| `oferty-miesiac` | oferty (p7) | ilustracja miesiąca, ukryta przed VoiceOver | — | |
+| `oferty-miesiac-dzien` | oferty (p7) | komórka dnia ilustracji (powtarzalna, 30) | — | |
+| `oferty-kafel-dzien` | oferty (p7, P-563 (11)) | kafel „Every crafting day” | „Every crafting day. Count whenever you craft, with no monthly limit.” | |
+| `oferty-kafel-urzadzenia` | oferty (p7) | kafel urządzeń | „No limit on any device. iPhone, iPad, and Apple Watch.” | |
+| `oferty-kafel-rodzina` | oferty (p7; tylko z Family Sharing) | kafel „For your family” | „For your family. You can share it with your family through Family Sharing.” | |
+| `oferty-kafel-dane` | oferty (p7) | kafel danych | „Your data stays yours. Projects, patterns, and history stay, with Pro or without.” | |
+| `oferty-ikona-dzien` | oferty (p7) | ikona kafla „Every crafting day” (SVG `IkonaDnia`) | — | |
 | `e2e-nigdy` | — | element, którego nie ma (podprzepływ `odstep.yaml`) | — | |
 | `e2e-sklep-wygas` | oferty (build E2E) | „Test store: expire access” | bez `t()` | |
 | `e2e-sha-bazy` | Ustawienia i ekran awaryjny (build E2E) | SHA-256 pary pliku bazy i `-wal` (64 znaki hex), liczone **bez checkpointu**; ukryty w trakcie liczenia (F07-19, P-203 Q6a) | bez `t()` | |

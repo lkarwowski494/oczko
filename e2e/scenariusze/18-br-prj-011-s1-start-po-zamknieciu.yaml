@@ -1,6 +1,6 @@
 # BR-PRJ-011/S1 (docs/brd/wymagania-projekt.md:111): start po zamknięciu aplikacji wraca do tego samego projektu, części i rzędu (terminate + relaunch).
 appId: com.apps4brew.knitting
-name: "BR-PRJ-011/S1 · Start po zamknięciu: ten sam projekt i rząd"
+name: "BR-PRJ-011/S1 · Start po zamknięciu: „Dziś” z kartą tego samego projektu, „Kontynuuj ›” do tego rzędu"
 tags:
   - BR-PRJ-011-S1
   - stan-licznika
@@ -14,6 +14,8 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 # --- drugi projekt z listy, potem powrót do „Harbor” (ostatnio używany) ---
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "projekty-nowy" }
@@ -34,6 +36,8 @@ tags:
 - takeScreenshot: 18-formularz-nazwa-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: "Harbor.*"
@@ -43,8 +47,13 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 # NOC-2b (F-18, 04): licznik tuż przed zamknięciem aplikacji (do porównania z 18-po-starcie)
 - takeScreenshot: 18-przed-restartem
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T22:00:00" } }
+# ZM-18, ER-69, P-563 (4a): zimny start zawsze na „Dziś” z kartą tego samego projektu i licznika; „Kontynuuj ›” bez wybierania wraca do licznika
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-10T22:00:00" } }
+- assertVisible: { id: "dzis-projekt", text: "Harbor" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
+- takeScreenshot: 18-dzis-po-starcie
+- tapOn: { id: "dzis-kontynuuj" }
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 3" }
+- assertVisible: { id: "licznik-teraz-rzad", text: ".*row 3" } # testid.md:159: na makiecie TO BE linia łączy się z podpisem liczby („rzędy gotowe · teraz rząd N”), tekst en od 04 — asercja numeru rzędu, nie brzmienia
 - takeScreenshot: 18-po-starcie

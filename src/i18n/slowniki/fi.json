@@ -65,7 +65,20 @@
     "seria_blokada_other": "Lisätty {{count}} kerrosta lukitusnäytöltä klo {{godzina}}. Kumotaanko?",
     "seria_zegarek_one": "Lisätty kellollasi {{count}} kerros klo {{godzina}}. Kumotaanko?",
     "seria_zegarek_other": "Lisätty kellollasi {{count}} kerrosta klo {{godzina}}. Kumotaanko?",
-    "wpisz_blad_format": "Anna kokonaisluku, 0 tai suurempi, esimerkiksi {{przyklad}}."
+    "wpisz_blad_format": "Anna kokonaisluku, 0 tai suurempi, esimerkiksi {{przyklad}}.",
+    "akcja_notatka": "Muistio",
+    "akcja_wzor": "Ohje",
+    "akcja_cel": "Tavoite",
+    "akcja_cel_a11y": "Tavoite, muistutus, mallikerta",
+    "akcja_stoper": "Ajastin",
+    "akcja_historia": "Historia",
+    "projekt_wejscie": "Projekti ›",
+    "projekt_wejscie_a11y": "Projekti: {{projekt}}",
+    "menu_wiecej_a11y": "Kerroslaskimen valinnat: nimi, kerroksen numero, lukitus, päättäminen",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} kerros valmis, {{sesja}} tässä istunnossa",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} kerrosta valmiina, {{sesja}} tässä istunnossa",
+    "dzianina_a11y_cel_one": "{{czesc}}: kerroksia valmiina {{count}} / {{cel}}, {{sesja}} tässä istunnossa",
+    "dzianina_a11y_cel_other": "{{czesc}}: kerroksia valmiina {{count}} / {{cel}}, {{sesja}} tässä istunnossa"
   },
   "limit": {
     "zawczasu_one": "Ilmaiset käsityöpäivät on käytetty ({{miesiac}}). Laskenta on tauolla {{data}} asti. Tallessa säilyy {{count}} kerros ja kaikki muu.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Valmistunut {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Valmistunut {{data}}",
     "ukonczono_a11y": "{{nazwa}}, valmistunut {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, valmistunut {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, valmistunut {{data}}",
+    "menu_a11y": "Lisää: {{nazwa}}",
+    "kosz_do_one": ": {{count}} kohde, {{data}} asti.",
+    "kosz_do_other": ": {{count}} kohdetta, {{data}} asti.",
+    "kosz_pokaz": "Näytä"
   },
   "historia": {
     "pusto": "Ei vielä muutoksia.",
@@ -217,7 +234,12 @@
     "wpisz": "Anna oikea luku",
     "wpis_rozwin_a11y": "Lisätietoja: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Näyttää, miten voit muuttaa tätä merkintää.",
-    "wpis_a11y": "arvosta {{od}} arvoon {{do}} klo {{czas}}"
+    "wpis_a11y": "arvosta {{od}} arvoon {{do}} klo {{czas}}",
+    "kafel_dni_one": "käsityöpäivä",
+    "kafel_dni_other": "käsityöpäivää",
+    "kafel_rzedy_one": "kerros",
+    "kafel_rzedy_other": "kerrosta",
+    "kafel_czas": "istuntoaika"
   },
   "menu": {
     "nazwa": "Nimeä projekti ja osa",
@@ -455,7 +477,6 @@
     "dozywotni_przy_subskrypcji": "Tilauksesi uusiutuu, kunnes peruat sen.",
     "bez_pro_one": "Ilman Pro-versiota: {{limit}} käsityöpäivä kuukaudessa sekä kaikki projektisi ja tietosi, aina.",
     "bez_pro_other": "Ilman Pro-versiota: {{limit}} käsityöpäivää kuukaudessa sekä kaikki projektisi ja tietosi, aina.",
-    "rodzina": "Jaettu perheesi kanssa Perhejaon kautta.",
     "kup": "Jatka: {{plan}}",
     "przywroc": "Palauta ostokset",
     "polityka": "Tietosuojakäytäntö",
@@ -469,7 +490,15 @@
     "blad_zakupu": "Osto ei onnistunut. Tarkista yhteys ja yritä uudelleen.",
     "przywracanie_nic": "Tälle Apple ID:lle ei löytynyt Oczko Pro ‑ostoa. Jos ostit sen toisella Apple ID:llä, kirjaudu sillä sisään Asetuksissa ja yritä uudelleen.",
     "przywracanie_blad": "Ostoja ei voitu palauttaa. Tarkista yhteys ja yritä uudelleen.",
-    "pro_wlaczone": "Oczko Pro on päällä."
+    "pro_wlaczone": "Oczko Pro on päällä.",
+    "kafel_dzien_tytul": "Joka käsityöpäivä",
+    "kafel_dzien_opis": "Laske aina, kun neulot tai virkkaat, ilman kuukausirajaa.",
+    "kafel_urzadzenia_tytul": "Ei rajaa millään laitteella",
+    "kafel_urzadzenia_opis": "iPhone, iPad ja Apple Watch.",
+    "kafel_rodzina_tytul": "Perheellesi",
+    "kafel_rodzina_opis": "Voit jakaa sen perheesi kanssa Perhejaon avulla.",
+    "kafel_dane_tytul": "Tietosi pysyvät sinulla",
+    "kafel_dane_opis": "Projektit, ohjeet ja historia säilyvät riippumatta siitä, onko Pro käytössä."
   },
   "uczciwe": {
     "tytul": "Ensimmäinen käsityöpäiväsi on tehty",
@@ -963,5 +992,37 @@
     "yd_nazwa": "Jaardit",
     "g_nazwa": "Grammat",
     "oz_nazwa": "Unssit"
+  },
+  "dzis": {
+    "tytul": "Tänään",
+    "pierwszy_tytul": "Ensimmäinen kerroslaskin",
+    "pierwszy_opis": "Napauta +1 jokaisen valmiin kerroksen jälkeen. Voit nimetä projektin myöhemmin.",
+    "otworz_licznik": "Avaa kerroslaskin",
+    "kontynuuj": "Jatka",
+    "wybierz_projekt": "Valitse projekti",
+    "bez_miejsca_tytul": "Projektisi ovat täällä",
+    "bez_miejsca_one": "{{count}} projekti kesken. Valitse yksi, niin Tänään avaa sen siitä, mihin jäit.",
+    "bez_miejsca_other": "{{count}} projektia kesken. Valitse yksi, niin Tänään avaa sen siitä, mihin jäit.",
+    "czesc_rzad": "{{czesc}}, kerros {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, kerros {{n}} / {{cel}}",
+    "gotowe_one": "kerros valmis",
+    "gotowe_other": "kerrosta valmiina",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} kerros valmis, tänään {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} kerrosta valmiina, tänään {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: kerroksia valmiina {{count}} / {{cel}}, tänään {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: kerroksia valmiina {{count}} / {{cel}}, tänään {{dzis}}",
+    "co_dalej_one": "{{count}} kerroksen päästä: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_other": "{{count}} kerroksen päästä: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_teraz": "Tässä kerroksessa: {{tekst}} ({{ktory}} / {{razy}})",
+    "ten_tydzien": "Tämä viikko",
+    "tydzien_pusty": "Täällä näet päivät, jolloin neulot tai virkkaat.",
+    "dzien_dziergany_a11y": "{{etykieta}}, käsityöpäivä",
+    "kafel_wloczka": "Lanka ja puikot"
+  },
+  "zakladki": {
+    "dzis": "Tänään",
+    "projekty": "Projektit",
+    "narzedzia": "Työkalut",
+    "historia": "Historia"
   }
 }

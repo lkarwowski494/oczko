@@ -31,7 +31,7 @@
     },
     "jasnyZwiekszony": { "tekst2": "#3F3731", "akcentTekst": "#6B450C", "linia": "#9C9288", "zakladka": "#3F3731", "kartaTekst2": "#EAE4DD", "przyciskNieaktywnyTekst": "#3F3731", "przyciskNieaktywnyRama": "#3F3731", "rysunekDrut": "#3F3731" },
     "ciemnyZwiekszony": { "tekst2": "#E3DAD2", "akcentTekst": "#F8DEA6", "linia": "#6A5F57", "zakladka": "#E3DAD2", "kartaTekst2": "#ECE6DF", "przyciskNieaktywnyTekst": "#E3DAD2", "przyciskNieaktywnyRama": "#E3DAD2", "rysunekDrut": "#E3DAD2" },
-    "systemCzarny": { "_opis": "Dynamic Island, Smart Stack i zegarek (tło systemowe czarne; HIG Live Activities): wartości z motywu ciemnego Dzianiny. kartaStack = karta Smart Stack rysowana przez system, przybliżenie do pomiaru [DO USTALENIA na urządzeniu] (przeniesione z ../tokeny.json).", "tlo": "#000000", "kartaStack": "#1E2024", "tekst": "#F1EDE9", "tekst2": "#C7BCB2", "akcent": "#CF9636", "akcentTekst": "#F0CF8A", "przycisk": "#F0CF8A", "przyciskTekst": "#221D1A" }
+    "systemCzarny": { "_opis": "Dynamic Island, Smart Stack i zegarek (tło systemowe czarne; HIG Live Activities): wartości z motywu ciemnego Dzianiny. kartaStack = karta Smart Stack rysowana przez system, przybliżenie do pomiaru [DO USTALENIA na urządzeniu] (przeniesione z ../tokeny.json).", "tlo": "#000000", "kartaStack": "#1E2024", "tekst": "#F1EDE9", "tekst2": "#C7BCB2", "akcent": "#CF9636", "akcentTekst": "#F0CF8A", "przycisk": "#F0CF8A", "przyciskTekst": "#221D1A", "pasPrzypomnienia": "#312B27", "_pasPrzypomnienia": "P-579 (właściciel 8.11): tło pasa przypomnienia na ekranie blokady w wariancie systemCzarny = ciemny.powierzchnia (ciepłe; kontrast tekstu w kontrast-tabela.txt)." }
   },
   "kroje": {
     "tytul": { "rodzina": "Bree Serif", "plik": "docs/design/fonty/BreeSerif.ttf", "licencja": "docs/design/fonty/breeserif-OFL.txt", "uwagi": "Bree Serif ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany (jest już gruby); bez przycinania pliku (P-563 (9))",
@@ -58,6 +58,27 @@
   "ruch": { "rzadOczek": 180, "krzywa": "easeOut", "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
   "haptyka": { "rzad": "impactLight", "przypomnienie": "notificationWarning", "celCzesci": "notificationSuccess", "cofniecie": "impactSoft", "blokada": "selection", "bladZapisu": "notificationError", "stoperStart": "impactLight" },
   "haptykaZegarek": { "_opis": "watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, przeniesione 1:1 z ../tokeny.json, P-142, ADR-0030). Klucze jak w „haptyka”; zwykły rząd na zegarku bez zmian (decyzja 08 przy celu watch).", "bladZapisu": "retry", "blokada": "failure", "przypomnienie": "notification" },
+  "dzianina": { "_opis": "M3-MAK-03 (2026-11-08): kolumny elementu firmowego z zatwierdzonej makiety (P-554, linia bazowa SP-13), zamiast 1,5 × cele.plus (p2) i 72 × 252 (p3a). Kolumna licznika węższa niż „+1”, żeby liczba 104 pt (3 cyfry w komórkach 0,536 em) miała miejsce przy 320 pt.",
+    "kolumnaKarty": { "szerokosc": 112, "minWysokosc": 216, "ax5MinWysokosc": 120, "promien": 12 },
+    "kolumnaLicznika": { "szerokosc": 64, "wysokosc": 260, "ax5Wysokosc": 96, "promien": 12 } },
+  "znaczniki": { "_opis": "M3-MAK-03/04: wymiary małych elementów (p7 składała je z odstep). Cel dotykowy daje cały wiersz (≥ cele.minimum), nie znacznik.",
+    "radio": 28, "radioAx5": 40, "radioPromien": "50%", "_radio": "plany Oczko Pro i Wybor w arkuszach (jeden język wyboru: kółko z obwódką tekst2; wybrane wypełnione przycisk + ptaszek przyciskTekst)",
+    "kafelekIkonyWiersza": 32, "kafelekIkonyWierszaAx5": 44, "promienKafelkaWiersza": 8, "_kafelek": "ikona wiersza listy Ustawień (ZM-07) i zakładki Narzędzia: tło ikonaTlo, symbol ikona, symbol 20 pt (AX5 30 pt)",
+    "kafelIkonyFunkcji": 44, "kafelIkonyFunkcjiAx5": 72, "_kafel": "ikona kafla funkcji na „Dziś” (jak w ekrany.html .kafel .it)",
+    "wyboruListy": { "symbol": "checkmark", "kolor": "akcentTekst", "_gdzie": "Miary, Język: zaznaczona pozycja listy — symbol SF po prawej zamiast glifu „✓”" } },
+  "projekt": { "_opis": "M3-MAK-01 (ekran projektu, ekrany.html projekt-*).",
+    "kropkaWloczki": { "rozmiar": 14, "obrys": "tekst2", "gruboscObrysu": 1.5, "_opis": "P-567: kolor włóczki projektu tylko tu, przy nazwie; barwa z danych użytkownika (nie token), obwódka tekst2 widać ją także dla włóczki w barwie tła; ukryta przed VoiceOver (nazwę włóczki niesie wiersz Szczegóły › Włóczka)" },
+    "dzianinaCzesci": "miniatura.dzianina (ta sama co na liście Projekty); przy AX5 ukryta",
+    "naglowekGrupy": { "kroj": "tresc", "pt": 17, "waga": 700, "kolor": "tekst", "_opis": "jak „Ten tydzień”, „W toku” w makietach Dzianiny; zastępuje 13 pt tekst2 (H-1c starego systemu)" },
+    "zdjecie": { "miniatura": 88, "promien": "pole" } },
+  "arkusz": { "_opis": "M3-MAK-02: arkusz formularza (formSheet systemu). Anuluj i Zapisz/Dodaj w barwie łącza jak „‹ Wstecz” w nawigacji.",
+    "anuluj": { "kolor": "akcentTekst", "waga": 400 }, "zapisz": { "kolor": "akcentTekst", "waga": 700 }, "nieaktywny": { "kolor": "przyciskNieaktywnyTekst", "waga": 600 },
+    "pole": { "obrys": "tekst2", "obrysFokus": "akcentTekst", "grubosc": 2, "promien": "pole", "minWysokosc": 48 },
+    "blad": { "kolor": "tekst", "znak": "!", "znakObrys": "tekst", "znakRozmiar": 22, "znakRozmiarAx5": 32 } },
+  "podgladZdjecia": { "_opis": "M3-MAK-02: podgląd zdjęć projektu na czarnym tle systemu (systemCzarny); Zamknij prawy górny róg; Udostępnij i Usuń z symbolem i podpisem.",
+    "tlo": "systemCzarny.tlo", "akcja": "systemCzarny.akcentTekst", "licznik": "systemCzarny.tekst2" },
+  "stoper": { "_opis": "M3-MAK-03, P-586 (2a): biegnący stoper w rzędzie akcji licznika — ta sama komórka, czas zamiast podpisu; stan „biegnie” = rama akcentTekst (jak wybrany plan ofert), nie wypełnienie akcentem (akcent = dzianina, +1, dzień dziergany).",
+    "biegnie": { "tlo": "powierzchnia", "rama": "akcentTekst", "gruboscRamy": 2, "ikona": "akcentTekst", "czas": "tekst", "wagaCzasu": 700, "cyfry": "tabular-nums" } },
   "miniatura": {
     "dzianina": { "_gdzie": "wiersz projektu na liście Projekty (projekty-*): kolumna karty z dzianiną do postępu części i igłą u góry; przy AX5 ukryta (zrzut projekty-*-ax5)", "szerokosc": 40, "wysokosc": 56, "promien": 8, "wciecie": 4, "promienDzianiny": 3, "tlo": "karta", "dzianina": "akcent", "igla": "igla", "dostepnosc": "ukryta (aria-hidden); postęp niesie tekst wiersza" },
     "stronaWzoru": { "_gdzie": "pierwsza strona wzoru w wierszu (przeniesione z ../tokeny.json, audyt 04 2.1): strona = papier, bez promienia, obrys kolorem linia", "szerokosc": 44, "proporcja": 1.3, "promien": 0, "obrys": "linia" }

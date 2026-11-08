@@ -18,14 +18,14 @@ const plik = (n: string) => require('fs').readdirSync(KAT).find((f: string) => f
 
 describe('E2-136-S1 · po restarcie start na ekranie wzoru (BR-PRJ-011/S1)', () => {
   for (const n of ['21', '22', '24', '25', '26']) {
-    test(`scenariusz ${n}: po restarcie czeka na wzor-widok bez menu licznika`, () => {
+    test(`scenariusz ${n}: po restarcie czeka na wzor-widok bez menu licznika i bez akcji „Wzór” (ZM-04)`, () => {
       const l = lista(plik(n));
       const r = l.findIndex(jestRestartem);
       expect(r).toBeGreaterThan(-1);
       const po = l.slice(r + 1);
       const wWidok = po.findIndex((k) => idKroku(k) === 'wzor-widok');
       expect(wWidok).toBeGreaterThan(-1);
-      expect(po.slice(0, wWidok).some((k) => k.nazwa === 'tapOn' && ['licznik-menu', 'menu-wzor'].includes(idKroku(k) ?? ''))).toBe(false);
+      expect(po.slice(0, wWidok).some((k) => k.nazwa === 'tapOn' && ['licznik-menu', 'menu-wzor', 'licznik-wzor'].includes(idKroku(k) ?? ''))).toBe(false);
     });
   }
 });

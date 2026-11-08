@@ -17,9 +17,9 @@ export function LiniaKonfliktu({ k, t, oglos, na: naWybierz }: { k: Konflikt; t:
   const kol = useKolory();
   useEffect(() => { oglos(opisKonfliktu(k, t)); }, []); // ogłoszenie VoiceOver raz przy pojawieniu się linii (design-spec I1a)
   const st = StyleSheet.create({
-    linia: { gap: odstep.s, padding: odstep.m, borderRadius: promien.grupa, backgroundColor: kol.papierGrupa },
-    tresc: { ...typografia.tresc, color: kol.grafit },
-    przycisk: { minHeight: rozmiary.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: kol.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    linia: { gap: odstep.s, padding: odstep.m, borderRadius: promien.lista, backgroundColor: kol.powierzchnia },
+    tresc: { ...typografia.tresc, color: kol.tekst },
+    przycisk: { minHeight: rozmiary.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: kol.tekst2, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
   });
   return (
     <View style={st.linia} testID="licznik-konflikt">

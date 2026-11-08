@@ -34,7 +34,7 @@ jest.mock('../../src/przypadki-uzycia/widok-projektu', () => ({
   widokProjektu: (...a: unknown[]) => mock.widokProjektu(...a),
 }));
 /* eslint-disable @typescript-eslint/no-require-imports */
-const EkranProjektow = (require('../../app/projekty') as { default: React.ComponentType }).default;
+const EkranProjektow = (require('../../app/(zakladki)/projekty') as { default: React.ComponentType }).default;
 const EkranProjektu = (require('../../app/projekt/[id]') as { default: React.ComponentType }).default;
 const prawdziwe = {
   widokProjektow: jest.requireActual<typeof import('../../src/przypadki-uzycia/widok-projektow')>('../../src/przypadki-uzycia/widok-projektow').widokProjektow,

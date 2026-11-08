@@ -18,7 +18,7 @@ const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn() };
 // useFocusEffect jak w expo-router: przy montowaniu i przy każdym powrocie trasy na wierzch (`mockFokus` = powrót z „/menu” przez router.back()).
 const mockFokus = new Set<() => void>();
 jest.mock('expo-router', () => ({
-  usePathname: () => '/', useRouter: () => mockRouter,
+  usePathname: () => '/', useRouter: () => mockRouter, useLocalSearchParams: () => ({}),
   useFocusEffect: (f: () => void) => { const R = require('react') as typeof import('react'); R.useEffect(() => { mockFokus.add(f); f(); return () => { mockFokus.delete(f); }; }, [f]); }, // eslint-disable-line @typescript-eslint/no-require-imports
 }));
 jest.mock('../../src/kompozycja/system', () => {
@@ -31,7 +31,7 @@ const mockApp: { biezaca: unknown } = { biezaca: null };
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.biezaca }));
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/licznik') as { default: React.ComponentType }).default;
 const EkranMenu = (require('../../app/menu') as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -47,7 +47,7 @@ async function trasa() {
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, aplikacjaAktywna: () => true });
   expect((await k.przygotuj()).ok).toBe(true);
   await k.otworz('l1');
-  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
+  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t, jezyk: i.jezyk }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
   return { s, haptyka };
 }
 const ustabilizuj = () => act(async () => { await new Promise((r) => setTimeout(r, 40)); });
@@ -68,7 +68,7 @@ describe('048 · F-03 blokada przez trasy „/” i „/menu” (BR-LIC-004/S3)'
     mockRouter.push.mockImplementation((p: unknown) => { if (p === '/menu') ustawMenu(true); });
     mockRouter.back.mockImplementation(() => { ustawMenu(false); mockFokus.forEach((f) => f()); });
     const ekran = render(<Stos />);
-    const liczba = () => ekran.getByTestId('licznik-wartosc').children.join('');
+    const liczba = () => ekran.getByTestId('licznik-wartosc').props.accessibilityLabel as string;
     const czekajNa = async (n: string) => { await waitFor(() => expect(liczba()).toBe(n), { timeout: 10_000 }); await ustabilizuj(); };
     await czekajNa('5');
     fireEvent.press(ekran.getByTestId('licznik-menu'));

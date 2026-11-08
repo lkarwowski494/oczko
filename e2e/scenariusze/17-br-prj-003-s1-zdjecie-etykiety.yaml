@@ -13,7 +13,7 @@ tags:
       TERAZ: "2026-11-10T12:00:00"
 - runFlow: subflows/projekt-roboczy.yaml
 - runFlow: subflows/nazwij-projekt.yaml
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-zdjecia" }
 # przycisk E2E „Test photo” leży pod przyciskiem „Add photo”; arkusz „Add photo” wjeżdża od dołu i przy układzie z przebiegu 136 zakrywał jego środek (zrzut kroku 48) — wyśrodkowanie podnosi oba nad arkusz (E2-136-S5)
 - scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000, centerElement: true }
@@ -34,7 +34,7 @@ tags:
 - assertVisible: { id: "e2e-pomiar-operacji", text: ".*photo [0-9]+ ms.*", optional: true }
 - takeScreenshot: 17-zdjecie-etykiety
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-zdjecia" }
 - scrollUntilVisible: { element: { id: "zdjecia-miniatura" } }
 - assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }

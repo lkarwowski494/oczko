@@ -17,10 +17,7 @@ tags:
       TERAZ: "2026-11-12T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
 - runFlow: subflows/nazwij-projekt.yaml
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-zglos" } }
 - assertVisible: { id: "ustawienia-zglos" }
 - takeScreenshot: 63-ustawienia-przed-zglos

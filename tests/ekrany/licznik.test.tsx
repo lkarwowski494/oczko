@@ -113,7 +113,7 @@ describe('Licznik', () => {
 
   test('BR-LIC-011/S2: 41 przy celu 40 — oznaczenie „ponad cel”, bez ujemnego „to go” (Z07-05)', () => {
     pokaz(stanLicznika({ cel: 40, skonczone: 41, dziergany: 42 }));
-    expect(screen.getAllByText('41', { includeHiddenElements: true }).length).toBeGreaterThan(0);
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('41'); // M3: liczba w komórkach stałej szerokości (`Liczba`), etykieta = liczba
     // Z07-05: brak tekstu „ponad cel” w design-spec; zapytanie robocze 07
     expect(screen.getByText(/over (the )?goal|past (the )?goal|above (the )?goal/i)).toBeTruthy();
     expect(screen.queryByText(/-\s?1 to go|−\s?1 to go/)).toBeNull();
@@ -121,8 +121,8 @@ describe('Licznik', () => {
 
   test('BR-LIC-012/S1: tryb „rząd w trakcie” po 12 skończonych pokazuje rząd 13 (zgłoszenie Z07-04)', () => {
     pokaz(stanLicznika({ znaczenie: 'w_trakcie', skonczone: 12, dziergany: 13 }));
-    expect(screen.getAllByText('13', { includeHiddenElements: true }).length).toBeGreaterThan(0);
-    expect(screen.queryAllByText('12', { includeHiddenElements: true })).toHaveLength(0);
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('13'); // M3: liczba w komórkach stałej szerokości (`Liczba`), etykieta = liczba
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).not.toBe('12');
   });
 
   // E2-C-N1 (wariant A, P-361): design-spec.md:905 F-09 — w trybie „rząd w trakcie” liczba to rząd, który się dzierga, więc podpis to
@@ -146,7 +146,7 @@ describe('Licznik', () => {
     const { ponow } = pokaz(stanLicznika({ znaczenie: 'w_trakcie', skonczone: 12, dziergany: 13, cel: null }));
     expect(screen.queryByTestId('licznik-teraz-rzad')).toBeNull();
     expect(screen.queryByText(/Now working row/)).toBeNull();
-    expect(screen.getByTestId('licznik-wartosc').props.children).toBe('13');
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('13');
     ponow(stanLicznika({ znaczenie: 'skonczone', skonczone: 12, dziergany: 13, cel: null }));
     expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 13');
   });

@@ -30,7 +30,9 @@ tags:
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "10" }
 # --- przypomnienie: od rzędu 12, co 6 rzędów, 8 razy, „decrease at both ends” ---
-- tapOn: { id: "licznik-menu" }
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-cel" }
+- tapOn: { id: "licznik-cel" }
 - assertVisible: { id: "menu-przypomnienie" }
 - tapOn: { id: "menu-przypomnienie" }
 - assertVisible: { id: "przypomnienie-od-rzedu" }

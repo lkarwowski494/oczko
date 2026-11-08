@@ -13,6 +13,7 @@ export type PropsGrupyWzorow = {
   wzory: { wzorId: string; nazwa: string; opis: string; miniatura?: string }[]; // opis: `wzor.wiersz_opis`; miniatura: uri PNG pierwszej strony (W8)
   oczekujace: { id: string; nazwa: string; stan: 'import' | 'siec' }[];
   skaner: boolean;                                                  // VNDocumentCameraViewController.isSupported
+  menuOtwarte?: boolean;                                            // menu źródeł otwarte od razu (ZM-06: „Wzór” bez wzoru nie ma pośredniego kroku); na ekranie projektu zamknięte
   t: Tlumacz;
   naOtworz(wzorId: string): void;
   naDodaj(z: ZrodloDodaniaEkranu): void;
@@ -24,7 +25,7 @@ export type PropsGrupyWzorow = {
 export function GrupaWzorow(p: PropsGrupyWzorow): React.ReactElement {
   const { t } = p;
   const st = style(useKolory());
-  const [menu, ustawMenu] = useState(false);
+  const [menu, ustawMenu] = useState(p.menuOtwarte ?? false);
   const pozycja = (tekst: string, z: ZrodloDodaniaEkranu) => (
     <Pressable key={z} accessibilityRole="menuitem" accessibilityLabel={tekst} onPress={() => { ustawMenu(false); p.naDodaj(z); }} style={st.pozycja}>
       <Text style={st.tekst}>{tekst}</Text>
@@ -105,7 +106,7 @@ export function ArkuszNazwyWzoru(p: { t: Tlumacz; nazwa: string; naZapisz(nazwa:
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    naglowek: { ...typografia.drobny, color: k.olowek, marginTop: odstep.l, marginBottom: odstep.s }, // nagłówek sekcji ekranu projektu: 13 pt jak Projekt.tsx, H-1c
+    naglowek: { ...typografia.instrukcja, color: k.tekst, marginTop: odstep.l, marginBottom: odstep.s }, // nagłówek grupy ekranu projektu: 17 pt / 700 / tekst jak Projekt.tsx (`projekt.naglowekGrupy`, M3 p4b)
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, paddingVertical: odstep.s, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszPoziomy: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },

@@ -12,7 +12,7 @@ tags:
     env:
       TERAZ: "2026-11-10T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 # S1: drut 4 mm (RD-11-W1)
 - scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }

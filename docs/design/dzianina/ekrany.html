@@ -134,7 +134,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .of-plany { display: flex; flex-direction: column; gap: 8px; }
 .of-plan { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 0 12px; padding: 12px 16px 12px 12px; min-height: 72px; border-radius: 18px; background: var(--powierzchnia); border: 2px solid transparent; }
 .of-plan[aria-checked="true"] { border-color: var(--akcentTekst); }
-.of-plan .zn { width: 26px; height: 26px; border-radius: 13px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.of-plan .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .of-plan[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
 .of-plan .nz { font-weight: 700; }
 .of-plan .zn { grid-row: span 3; } .of-plan .cena { font-size: calc(22px * min(var(--dt-tresc), 2.4)); line-height: 1.2; } /* cena najwyraźniejsza (MS-02, KP-09), także przy AX5 */
@@ -166,6 +166,70 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .arkusz .dr { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--akcentTekst); font-weight: 700; }
 .karta-bm { grid-template-columns: minmax(0, 1fr); } .karta-bm .kont { grid-column: 1; }
 .duzy .lim { grid-column: 1; } .duzy .baner .ik { font-size: 34px; }
+
+/* M3-MAK-01 (2026-11-08): ekran projektu. Lista grupowana systemu na tokenach; element firmowy = dzianina każdej części (jak miniatura listy Projekty);
+   kolor włóczki tylko tu, jako kropka przy nazwie (P-567) — barwa z danych użytkownika, obwódka z tokenu (nie kolor motywu). */
+.nav .prawo { display: flex; } .nav .prawo .pik { color: var(--akcentTekst); }
+.pr-gl { padding: 0 16px; display: flex; flex-direction: column; gap: 4px; }
+.pr-gl h1 { display: flex; align-items: baseline; gap: 8px; }
+.kropka { width: 14px; height: 14px; border-radius: 7px; flex: none; box-shadow: inset 0 0 0 1.5px var(--tekst2); align-self: center; }
+.pr-gl .pod2 { color: var(--tekst2); }
+.pr-tresc { display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 40px; }
+.lista > div.pr-cz { min-height: 72px; } .lista .wc { padding-left: 68px; min-height: 52px; }
+.lista .wc .tx { font-size: calc(17px * var(--dt-tresc)); }
+.lista .sz { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.6)); flex: none; }
+.lista .war { color: var(--tekst2); text-align: right; } .lista > div.wg { min-height: 52px; padding-right: 12px; }
+.lista .usun { color: var(--niszczacy); font-size: 24px; flex: none; width: 28px; }
+.zdj { display: flex; gap: 8px; overflow: hidden; }
+.zdj .f { width: 88px; height: 88px; border-radius: 10px; flex: none; background: var(--wl) var(--faktura); background-size: 20px 18px; }
+.zdj .d { width: 88px; min-height: 88px; border-radius: 10px; flex: none; background: var(--powierzchnia); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; text-align: center; font-weight: 600; }
+.zdj .d .ik { color: var(--ikona); font-size: 26px; } [data-theme="dark"] .zdj .d .ik { color: var(--akcentTekst); }
+.strona-min { width: 44px; height: 57px; background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--linia); flex: none; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; }
+.strona-min i { height: 2px; background: #C9C4BD; display: block; } .strona-min i.zk { background: var(--zakreslacz); height: 4px; }
+.pr-stopka { color: var(--tekst2); }
+.pr-menu { position: absolute; right: 12px; top: 96px; width: 250px; background: var(--powierzchnia); border-radius: 16px; box-shadow: 0 8px 28px #0005; overflow: hidden; z-index: 2; }
+.pr-menu a { display: flex; align-items: center; min-height: 48px; padding: 0 16px; } .pr-menu a + a { border-top: 1px solid var(--linia); } .pr-menu a.nisz { color: var(--niszczacy); }
+.gotowe { color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
+.duzy .lista .wc { padding-left: 16px; } .duzy .lista > div.wg { flex-wrap: wrap; } .duzy .lista .war { flex-basis: 100%; text-align: left; order: 3; }
+.duzy .zdj { flex-wrap: wrap; } .duzy .pr-gl h1 { align-items: flex-start; } .duzy .kropka { margin-top: 0.4em; align-self: flex-start; }
+.duzy .pr-menu { left: 12px; width: auto; }
+
+/* M3-MAK-02: arkusz formularza (systemowy formSheet: Anuluj / tytuł / Dodaj albo Zapisz u góry) i podgląd zdjęć na czarnym tle (systemCzarny). */
+.fs { background: var(--tlo); }
+.fs .zaslona { background: #0006; }
+.ark-f { position: absolute; left: 0; right: 0; top: 58px; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; display: flex; flex-direction: column; }
+.ark-f .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 8px 16px 0; min-height: 52px; }
+.ark-f .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; }
+.ark-f .ng a.zap { font-weight: 700; } .ark-f .ng a[aria-disabled="true"] { color: var(--przyciskNieaktywnyTekst); font-weight: 600; }
+.ark-f .ng h2 { text-align: center; font-weight: 700; }
+.ark-f .ft { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+.pole label { display: block; color: var(--tekst2); margin-bottom: 4px; }
+.pole .we { min-height: 48px; border-radius: 10px; border: 2px solid var(--tekst2); padding: 8px 12px; color: var(--tekst); display: flex; align-items: center; }
+.pole .we.fok { border-color: var(--akcentTekst); } .pole .we .kur { width: 2px; height: 1.2em; background: var(--akcentTekst); margin-left: 1px; }
+.pole .we.pusty { color: var(--tekst2); }
+.f-pod { color: var(--tekst2); }
+.alert { display: flex; gap: 8px; align-items: flex-start; } .alert .zn { width: 22px; height: 22px; border-radius: 11px; border: 2px solid var(--tekst); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex: none; margin-top: 1px; }
+.radio { display: flex; flex-direction: column; border-radius: 16px; background: var(--tlo); overflow: hidden; }
+.radio a { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 16px; } .radio a + a { border-top: 1px solid var(--linia); }
+.radio .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); flex: none; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.radio a[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.tekstowy { align-self: flex-start; color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; }
+.zd { background: var(--sc-tlo); color: var(--sc-tekst); }
+.zd .zd-g { display: flex; justify-content: flex-end; padding: 0 8px; min-height: 44px; }
+.zd a { color: var(--sc-akcentTekst); min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; font-weight: 600; }
+.zd .foto { flex: 1; margin: 24px 0; background: var(--wl) var(--faktura); background-size: 54px 48px; }
+.zd .zd-d { display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 34px; gap: 8px; } .zd .zd-d span { color: var(--sc-tekst2); }
+.zd .ik { font-size: 22px; }
+.duzy .zd .zd-d { flex-wrap: wrap; } .duzy .zd .zd-d span { order: -1; flex-basis: 100%; text-align: center; }
+
+/* M3-MAK-03: biegnący stoper w rzędzie akcji (P-586 2) i zakładka Narzędzia z ikonami wierszy (kafelek 32 pt, jak lista Ustawień ZM-07). */
+.duzy .ark-f { position: relative; top: auto; margin-top: 8px; flex: 1; } 
+.duzy .ark-f .ng { grid-template-columns: 1fr auto; } .duzy .ark-f .ng h2 { grid-column: 1 / -1; grid-row: 2; }
+.ark-f .ng h2 { font-size: calc(17px * var(--dt-tytul)); } .duzy .radio .zn { width: 40px; height: 40px; border-radius: 20px; font-size: 28px; } .duzy .alert .zn { width: 32px; height: 32px; border-radius: 16px; font-size: 20px; }
+.akcje a.biegnie { box-shadow: inset 0 0 0 2px var(--akcentTekst); }
+.akcje a.biegnie .ik { color: var(--akcentTekst); } .akcje a.biegnie span { font-weight: 700; font-variant-numeric: tabular-nums; }
+.kik { width: 32px; height: 32px; border-radius: 8px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: none; }
+.duzy .kik { width: 44px; height: 44px; font-size: 30px; border-radius: 10px; }
 </style></head>
 <body>
 
@@ -365,6 +429,133 @@ document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.r
   const pr = document.querySelector('[data-ekran="projekty"]'); const c = pr.cloneNode(true); c.dataset.ekran = 'projekty-uczciwe'; c.setAttribute('aria-label', 'Projekty z oknem Uczciwe zasady');
   c.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="arkusz" role="dialog" aria-modal="true" aria-labelledby="uz-t"><span class="uch"></span><span class="pik zam" aria-label="Zamknij"><i data-ik="zamknij"></i></span><h2 class="t-tytul br" id="uz-t">Twój pierwszy dzień robótkowy za tobą</h2><p class="t-tresc">Wszystko w Oczku działa od pierwszego dnia, bez konta i bez reklam.</p><p class="t-tresc">Licz rzędy za darmo przez 5 dni w każdym miesiącu, jak długo chcesz. Twoje projekty i dane zawsze zostają twoje.</p><p class="t-tresc">Chcesz więcej dni? Oczko Pro znosi limit, w subskrypcji albo jednym zakupem.</p><a class="gl t-tresc">Licz dalej</a><a class="dr t-tresc">Zobacz Oczko Pro</a></section>');
   pr.after(c);
+}
+</script>
+<!-- 8. Projekt (M3-MAK-01, P-597 (1a)): trasa projekt/[id], z „Projekt ›” licznika i z wiersza listy Projekty. Elementy i kolejność grup jak w kodzie
+     (src/ekrany/Projekt.tsx): Części → Czas → Notatka → Zdjęcia → Wzory → Szczegóły → miejsce we wzorze, ostatnia zmiana. testID bez zmian (testid.md).
+     Nowe: kropka koloru włóczki przy nazwie (P-567; barwa z danych, [PRZYKŁAD]), dzianina każdej części (miniatura jak na liście Projekty; aria-hidden). -->
+<main class="ekran" data-ekran="projekt" aria-label="Projekt" style="--wl:#8E9BA6">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i>Projekty</a><span class="prawo"><span class="pik" aria-label="Dodaj część albo licznik"><i data-ik="plus" data-gr="2.2"></i></span><span class="pik" aria-label="Opcje projektu"><i data-ik="kropki"></i></span></span></div>
+  <div class="pr-gl"><h1 class="t-duzy br"><span class="kropka" style="background:var(--wl)" aria-hidden="true"></span>Sweter Mgła</h1>
+    <p class="t-pod pod2">44% gotowe · według celów części</p><p class="t-pod pod2">Termin 20 grudnia · 3 rzędy dziennie</p></div>
+  <div class="pr-tresc">
+    <p class="t-tresc sekcja">Części</p>
+    <div class="lista t-tresc">
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.44)"></i></span><p class="tx"><b>Rękaw lewy</b><small>42 z 96 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:0"></i></span><p class="tx"><b>Rękaw prawy</b><small>Para: Rękaw lewy</small><small>0 z 96 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.62)"></i></span><p class="tx"><b>Przód</b><small>Razem 74 rzędy</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="wc"><p class="tx">Korpus<small>62 rzędy</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="wc"><p class="tx">Warkocz<small>12 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Czas</p>
+    <div class="lista t-tresc">
+      <div class="wg"><p class="tx">Czas robótki</p><span class="war cyfry">5 h 20 min</span></div>
+      <div class="wg"><p class="tx">Sesje<small>2 do sprawdzenia</small></p><span class="war cyfry">7</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Notatka</p>
+    <div class="wiersz t-tresc"><p>Rękaw o 2 cm krótszy niż we wzorze. Ściągacz na drutach 4 mm.</p></div>
+    <p class="t-tresc sekcja">Zdjęcia</p>
+    <div class="zdj t-mala"><span class="f" role="img" aria-label="Zdjęcie 1 z 2"></span><span class="f" role="img" aria-label="Zdjęcie 2 z 2" style="filter:brightness(.85)"></span><a class="d"><i data-ik="plus" data-gr="2.2"></i>Dodaj zdjęcie</a></div>
+    <p class="t-tresc sekcja">Wzór</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="strona-min" aria-hidden="true"><i></i><i></i><i class="zk"></i><i></i><i></i></span><p class="tx">Sweter Mgła.pdf<small>PDF · 8 stron</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Szczegóły</p>
+    <div class="lista t-tresc">
+      <div class="wg"><p class="tx">Druty</p><span class="war">4,5 mm (US 7)</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Włóczka</p><span class="war">Mgła, 6 motków</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Próbka</p><span class="war">22 o. / 10 cm</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Termin</p><span class="war">20 grudnia</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc">Miejsce we wzorze: strona 3, rząd 47</p>
+    <p class="t-mala pr-stopka">Ostatnia zmiana: dziś, 9:12</p>
+  </div>
+</main>
+
+<!-- 9. Formularz wzorcowy (M3-MAK-02): „Nowa część” — arkusz systemowy formSheet; Anuluj (lewy) / tytuł / Dodaj (prawy), pola z etykietą nad polem,
+     podpis pod polami, błąd: znak „!” + tekst w kolorze tekstu (role=alert), bez czerwieni. „Dodaj” nieaktywny przy pustej nazwie (tekst2, waga 600). -->
+<main class="ekran fs" data-ekran="formularz-czesc" aria-label="Nowa część">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f" role="dialog" aria-modal="true" aria-labelledby="fc-t">
+    <div class="ng t-tresc"><a>Anuluj</a><h2 id="fc-t">Nowa część</h2><a class="zap">Dodaj</a></div>
+    <div class="ft t-tresc">
+      <div class="pole"><label class="t-pod">Nazwa części</label><div class="we">Rękaw prawy</div></div>
+      <div class="pole"><label class="t-pod">Cel w rzędach (opcjonalnie)</label><div class="we fok">9,5<span class="kur"></span></div></div>
+      <p class="alert t-tresc" role="alert"><span class="zn" aria-hidden="true">!</span><span>Cel to liczba całych rzędów, np. 96.</span></p>
+      <p class="t-pod f-pod">Nazwa pomaga odróżnić części, np. „Rękaw lewy”. Cel możesz dodać później.</p>
+    </div>
+  </section>
+</main>
+
+<!-- 10. Formularz z wyborem (M3-MAK-02): „Druty” — wybór jednej opcji jako lista z okrągłym znacznikiem 28 pt (jak plany Oczko Pro), pole dziesiętne, przycisk tekstowy. -->
+<main class="ekran fs" data-ekran="formularz-narzedzie" aria-label="Narzędzie">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f" role="dialog" aria-modal="true" aria-labelledby="fn-t">
+    <div class="ng t-tresc"><a>Anuluj</a><h2 id="fn-t">Narzędzie</h2><a class="zap">Zapisz</a></div>
+    <div class="ft t-tresc">
+      <div class="radio" role="radiogroup" aria-label="Narzędzie"><a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span>Druty</a><a role="radio" aria-checked="false"><span class="zn"></span>Szydełko</a></div>
+      <div class="pole"><label class="t-pod">Rozmiar w mm</label><div class="we">4,5</div></div>
+      <p class="t-pod f-pod">4,5 mm (US 7)</p>
+      <a class="tekstowy t-tresc">Wyczyść</a>
+    </div>
+  </section>
+</main>
+
+<!-- 11. Podgląd zdjęcia (M3-MAK-02): czarne tło systemu (systemCzarny), Zamknij w prawym górnym rogu (słownik interakcji), na dole Udostępnij · „1 z 2” · Usuń
+     (usunięcie po potwierdzeniu w alercie systemowym, bez kosza). Zdjęcie: [PRZYKŁAD] — faktura dzianiny w barwie włóczki. -->
+<main class="ekran zd" data-ekran="zdjecie" aria-label="Zdjęcie projektu" style="--wl:#8E9BA6">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zd-g t-tresc"><a>Zamknij</a></div>
+  <div class="foto" role="img" aria-label="Zdjęcie 1 z 2"></div>
+  <div class="zd-d t-tresc"><a><i data-ik="udostepnij"></i>Udostępnij</a><span class="cyfry">1 z 2</span><a><i data-ik="kosz"></i>Usuń</a></div>
+</main>
+
+<!-- 12. Zakładka Narzędzia (M3-MAK-03, P-595): lista grupowana z ikoną w kafelku 32 pt (jak Ustawienia, ZM-07); wartości po prawej, strzałka. -->
+<main class="ekran" data-ekran="narzedzia" aria-label="Narzędzia">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Narzędzia</h1></div>
+  <div class="tresc">
+    <p class="t-tresc sekcja">Zapas</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="kik"><i data-ik="wloczka"></i></span><p class="tx">Włóczki</p><span class="war cyfry">6</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><span class="kik"><i data-ik="druty"></i></span><p class="tx">Druty</p><span class="war cyfry">11</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Obliczenia</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="kik"><i data-ik="probka"></i></span><p class="tx">Próbka<small>Ile oczek i rzędów na twoją miarę</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a class="wybrana"><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+<script>
+// M3-MAK-01: stany ekranu projektu — menu ••• otwarte, edycja (Edytuj → znaki usunięcia, „Gotowe”), ukończony (bez „+”, daty, „Wznów” w menu).
+{ const pr = document.querySelector('[data-ekran="projekt"]');
+  const m = pr.cloneNode(true); m.dataset.ekran = 'projekt-menu'; m.setAttribute('aria-label', 'Projekt, menu opcji');
+  m.insertAdjacentHTML('beforeend', '<nav class="pr-menu t-tresc" aria-label="Opcje projektu"><a>Edytuj</a><a>Zrób taki sam</a><a class="nisz">Usuń projekt…</a></nav>');
+  const e = pr.cloneNode(true); e.dataset.ekran = 'projekt-edycja'; e.setAttribute('aria-label', 'Projekt, edycja');
+  e.querySelector('.nav .prawo').innerHTML = '<a class="gotowe">Gotowe</a>';
+  e.querySelector('.pr-gl').insertAdjacentHTML('beforeend', '<p class="t-pod pod2">Usuń część albo licznik znakiem minus. Usunięte trafiają do kosza na 30 dni.</p>');
+  e.querySelectorAll('.lista')[0].querySelectorAll(':scope > div').forEach((w) => w.insertAdjacentHTML('afterbegin', '<span class="usun" role="button" aria-label="Usuń"><i data-ik="minusKolo"></i></span>'));
+  e.querySelectorAll('.lista')[0].querySelectorAll('.wc').forEach((w) => { w.style.paddingLeft = '16px'; });
+  const u = pr.cloneNode(true); u.dataset.ekran = 'projekt-ukonczony'; u.setAttribute('aria-label', 'Projekt ukończony');
+  u.querySelector('.nav .prawo').innerHTML = '<span class="pik" aria-label="Opcje projektu"><i data-ik="kropki"></i></span>';
+  u.querySelector('.pr-gl h1').lastChild.textContent = 'Szal z alpaki'; u.style.setProperty('--wl', '#C9B7A0');
+  u.querySelector('.pr-gl').innerHTML = u.querySelector('.pr-gl h1').outerHTML + '<p class="t-pod pod2">Ukończony 12 października</p>';
+  u.querySelectorAll('.lista')[0].innerHTML = '<div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc(100% - 14px)"></i></span><p class="tx"><b>Szal</b><small>310 z 310 rzędów</small><small>Cel osiągnięty</small></p><i class="sz" data-ik="szewron"></i></div>';
+  u.querySelector('.pr-tresc').insertAdjacentHTML('beforeend', '');
+  const szc = u.querySelectorAll('.lista')[3]; szc.insertAdjacentHTML('afterend', '<div class="lista t-tresc"><div class="wg"><p class="tx">Początek</p><span class="war">2 września 2026</span></div><div class="wg"><p class="tx">Ukończenie</p><span class="war">12 października 2026</span><i class="sz" data-ik="szewron"></i></div></div><p class="t-pod f-pod">Datę ukończenia możesz zmienić.</p>');
+  szc.lastElementChild.remove();
+  u.querySelector('.zdj').innerHTML = '<span class="f" role="img" aria-label="Zdjęcie 1 z 1"></span><a class="d"><i data-ik="plus" data-gr="2.2"></i>Dodaj zdjęcie</a>';
+  u.querySelectorAll('.pr-tresc > .sekcja').forEach((s) => { if (s.textContent === 'Notatka') { s.nextElementSibling.remove(); s.remove(); } });
+  pr.after(m, e, u);
+  // M3-MAK-03: biegnący stoper (P-586 (2a), stan p3a) — ta sama komórka akcji, czas zamiast podpisu; „aktywny” = rama akcentTekst (jak wybrany plan ofert), nie wypełnienie akcentem.
+  const lz = document.querySelector('[data-ekran="licznik"]'); const s = lz.cloneNode(true); s.dataset.ekran = 'licznik-stoper'; s.setAttribute('aria-label', 'Licznik, stoper biegnie');
+  const st = s.querySelectorAll('.akcje a')[3]; st.classList.add('biegnie'); st.setAttribute('aria-label', 'Stoper, 12 minut 48 sekund, biegnie'); st.querySelector('span').textContent = '12:48';
+  s.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  lz.after(s);
 }
 </script>
 <script src="ikony.js"></script>

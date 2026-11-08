@@ -11,13 +11,12 @@ import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade,
 import { naPierwszyPlan, przyTle, uruchomDane, type WynikStartuDanych } from '../przypadki-uzycia/start';
 import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
-import { startNaWzorze } from '../przypadki-uzycia/wzor-miejsce';
+import { miejscePracy, type MiejscePracy } from './miejsce-pracy';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
-import { liczba, wiersze } from '../dane/repozytoria/wiersze';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
@@ -68,7 +67,9 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
 }
 
 export type KompozycjaLicznika = {
-  przygotuj(): Promise<Wynik<{ cel: 'licznik' | 'lista' | 'wzor' }>>; // 'wzor': praca skończyła się na ekranie wzoru (07-jakosc-006, BR-PRJ-011 S1)
+  /** Start zawsze na „Dziś” (ZM-18, P-569); `miejsce`: cel „Kontynuuj ›”. */
+  przygotuj(): Promise<Wynik<{ cel: 'dzis'; miejsce: MiejscePracy }>>;
+  miejsce(): Promise<Wynik<MiejscePracy>>;
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
   otworz(licznikId: string): Promise<void>;
@@ -82,6 +83,8 @@ export type KompozycjaLicznika = {
   poZegarku(f: () => void): () => void;
   /** M1-063: zmiana Pro przeliczona → ekran od nowa (licznik-dostep.ts). */
   poDostepie(f: () => void): () => void;
+  /** R-020 (p2): po scaleniu dziennika; odpięcie. */
+  poScaleniu(f: () => void): () => void;
   /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1). */
   zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
@@ -115,6 +118,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
   let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
+  const poScaleniu = new Set<() => void>();
   // P-287: +1 w toku (pierwsze tworzy projekt roboczy i ustawia licznikId). Odczyt ekranu rozpoczęty w tym czasie (przemontowanie po naPartie,
   // poZmianie, odswiez) czeka na zapis — inaczej nowy ekran pokazałby stan sprzed stuknięcia, a wynik +1 trafiłby do odmontowanego komponentu.
   let plusWToku: Promise<unknown> = Promise.resolve();
@@ -199,16 +203,14 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const b = await biezacyLicznik(z);
       if (!b.ok) return b;
       licznikId = b.wartosc;
-      if (!licznikId) {
-        const [p] = await wiersze(z.baza.all('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL'), 'przygotuj');
-        if (p && liczba(p, 'n') > 0) return { ok: true, wartosc: { cel: 'lista' } }; // moduly.md:238: miejsce w koszu → lista projektów
-      }
-      if (licznikId) { const n = await startNaWzorze(z); if (n.ok && n.wartosc) return { ok: true, wartosc: { cel: 'wzor' } }; }
-      return { ok: true, wartosc: { cel: 'licznik' } };
+      const m = await k.miejsce();
+      return m.ok ? { ok: true, wartosc: { cel: 'dzis', miejsce: m.wartosc } } : m;
     },
+    miejsce: () => miejscePracy(z, licznikId),
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
     poDostepie: dostep.poDostepie,
+    poScaleniu: (f) => { poScaleniu.add(f); return () => { poScaleniu.delete(f); }; },
     zamknij: () => { odbior?.zamknij(); dostep.zamknij(); },
     biezacy: () => licznikId,
     async poUsunieciu(projektId) {
@@ -285,6 +287,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         if (r.ok) potwierdz(r.wartosc.potwierdzone);
         const { w } = await stan();
         await poZapisie(w);
+        poScaleniu.forEach((f) => f());
       },
       przyTle: async () => { await o.skrzynka?.migawka().catch(() => undefined); await przyTle(z); },
       ekranWlaczony: () => o.ekranWlaczony?.() ?? true, // M1-audytor-generalny-059: preferencja w chwili wejścia na licznik, nie ze startu

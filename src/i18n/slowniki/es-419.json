@@ -80,7 +80,22 @@
     "seria_zegarek_one": "Se agregó {{count}} vuelta desde tu reloj a las {{godzina}}. ¿Deshacer?",
     "seria_zegarek_many": "Se agregaron {{count}} vueltas desde tu reloj a las {{godzina}}. ¿Deshacer?",
     "seria_zegarek_other": "Se agregaron {{count}} vueltas desde tu reloj a las {{godzina}}. ¿Deshacer?",
-    "wpisz_blad_format": "Ingresa un número entero, 0 o mayor, por ejemplo {{przyklad}}."
+    "wpisz_blad_format": "Ingresa un número entero, 0 o mayor, por ejemplo {{przyklad}}.",
+    "akcja_notatka": "Nota",
+    "akcja_wzor": "Patrón",
+    "akcja_cel": "Meta",
+    "akcja_cel_a11y": "Meta, recordatorio, repetición",
+    "akcja_stoper": "Tiempo",
+    "akcja_historia": "Historial",
+    "projekt_wejscie": "Proyecto ›",
+    "projekt_wejscie_a11y": "Proyecto: {{projekt}}",
+    "menu_wiecej_a11y": "Opciones del cuentavueltas: nombre, número de vuelta, bloqueo, finalizar",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} vuelta terminada, {{sesja}} en esta sesión",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} de vueltas terminadas, {{sesja}} en esta sesión",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} vueltas terminadas, {{sesja}} en esta sesión",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, {{sesja}} en esta sesión",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, {{sesja}} en esta sesión",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, {{sesja}} en esta sesión"
   },
   "limit": {
     "zawczasu_one": "Se acabaron los días de labor gratis de {{miesiac}}. El conteo está en pausa hasta el {{data}}. Se conservan tu {{count}} vuelta y todo lo demás.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Terminado el {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Terminado el {{data}}",
     "ukonczono_a11y": "{{nazwa}}, terminado el {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminado el {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminado el {{data}}",
+    "menu_a11y": "Más: {{nazwa}}",
+    "kosz_do_one": ": {{count}} elemento, hasta el {{data}}.",
+    "kosz_do_many": ": {{count}} de elementos, hasta el {{data}}.",
+    "kosz_do_other": ": {{count}} elementos, hasta el {{data}}.",
+    "kosz_pokaz": "Mostrar"
   },
   "historia": {
     "pusto": "Aún no hay cambios.",
@@ -245,7 +265,14 @@
     "wpisz": "Ingresar el número correcto",
     "wpis_rozwin_a11y": "Más sobre {{wpis}}",
     "wpis_rozwin_podpowiedz": "Muestra cómo cambiar este registro.",
-    "wpis_a11y": "{{od}} a {{do}} a las {{czas}}"
+    "wpis_a11y": "{{od}} a {{do}} a las {{czas}}",
+    "kafel_dni_one": "día de labor",
+    "kafel_dni_many": "de días de labor",
+    "kafel_dni_other": "días de labor",
+    "kafel_rzedy_one": "vuelta",
+    "kafel_rzedy_many": "de vueltas",
+    "kafel_rzedy_other": "vueltas",
+    "kafel_czas": "tiempo de sesión"
   },
   "menu": {
     "nazwa": "Nombra el proyecto y la pieza",
@@ -509,7 +536,6 @@
     "bez_pro_one": "Sin Pro: {{limit}} día de labor cada mes, y todos tus proyectos y datos, siempre.",
     "bez_pro_many": "Sin Pro: {{limit}} días de labor cada mes, y todos tus proyectos y datos, siempre.",
     "bez_pro_other": "Sin Pro: {{limit}} días de labor cada mes, y todos tus proyectos y datos, siempre.",
-    "rodzina": "Compartido con tu familia mediante Compartir en familia.",
     "kup": "Continuar con {{plan}}",
     "przywroc": "Restaurar compras",
     "polityka": "Política de privacidad",
@@ -523,7 +549,15 @@
     "blad_zakupu": "La compra no se completó. Revisa tu conexión e inténtalo de nuevo.",
     "przywracanie_nic": "No se encontró ninguna compra de Oczko Pro para este Apple ID. Si la hiciste con otro Apple ID, inicia sesión con ese en Configuración e inténtalo de nuevo.",
     "przywracanie_blad": "No se pudieron restaurar las compras. Revisa tu conexión e inténtalo de nuevo.",
-    "pro_wlaczone": "Oczko Pro está activado."
+    "pro_wlaczone": "Oczko Pro está activado.",
+    "kafel_dzien_tytul": "Cada día de labor",
+    "kafel_dzien_opis": "Cuenta siempre que tejas, sin límite mensual.",
+    "kafel_urzadzenia_tytul": "Sin límite en ningún dispositivo",
+    "kafel_urzadzenia_opis": "iPhone, iPad y Apple Watch.",
+    "kafel_rodzina_tytul": "Para tu familia",
+    "kafel_rodzina_opis": "Puedes compartirlo con tu familia mediante Compartir en Familia.",
+    "kafel_dane_tytul": "Tus datos siguen siendo tuyos",
+    "kafel_dane_opis": "Proyectos, patrones e historial se quedan, con Pro o sin él."
   },
   "uczciwe": {
     "tytul": "Terminaste tu primer día de labor",
@@ -1049,5 +1083,42 @@
     "yd_nazwa": "Yardas",
     "g_nazwa": "Gramos",
     "oz_nazwa": "Onzas"
+  },
+  "dzis": {
+    "tytul": "Hoy",
+    "pierwszy_tytul": "Primer cuentavueltas",
+    "pierwszy_opis": "Toca +1 al terminar cada vuelta. Puedes ponerle nombre al proyecto más tarde.",
+    "otworz_licznik": "Abrir cuentavueltas",
+    "kontynuuj": "Continuar",
+    "wybierz_projekt": "Elegir un proyecto",
+    "bez_miejsca_tytul": "Aquí están tus proyectos",
+    "bez_miejsca_one": "{{count}} proyecto en curso. Elige uno y Hoy lo abrirá donde lo dejes.",
+    "bez_miejsca_many": "{{count}} de proyectos en curso. Elige uno y Hoy lo abrirá donde lo dejes.",
+    "bez_miejsca_other": "{{count}} proyectos en curso. Elige uno y Hoy lo abrirá donde lo dejes.",
+    "czesc_rzad": "{{czesc}}, vuelta {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, vuelta {{n}} de {{cel}}",
+    "gotowe_one": "vuelta terminada",
+    "gotowe_many": "de vueltas terminadas",
+    "gotowe_other": "vueltas terminadas",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} vuelta terminada, hoy {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} de vueltas terminadas, hoy {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} vueltas terminadas, hoy {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, hoy {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, hoy {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} de {{cel}} vueltas terminadas, hoy {{dzis}}",
+    "co_dalej_one": "En {{count}} vuelta: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_many": "En {{count}} de vueltas: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_other": "En {{count}} vueltas: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_teraz": "Esta vuelta: {{tekst}} ({{ktory}} de {{razy}})",
+    "ten_tydzien": "Esta semana",
+    "tydzien_pusty": "Aquí verás los días en que tejes.",
+    "dzien_dziergany_a11y": "{{etykieta}}, día de labor",
+    "kafel_wloczka": "Estambre y agujas"
+  },
+  "zakladki": {
+    "dzis": "Hoy",
+    "projekty": "Proyectos",
+    "narzedzia": "Herramientas",
+    "historia": "Historial"
   }
 }

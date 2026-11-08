@@ -1,5 +1,5 @@
-// E2-136-A1 (raport 07 E2 #136, scenariusz 04, krok 13): „−1 przy braku projektu, potem pierwsze +1” przez prawdziwy ekran licznika (Aplikacja + Licznik)
-// i prawdziwą kompozycję na prawdziwej bazie (node:sqlite); atrapy tylko na granicy platformy (Live Activity, zegarek, haptyka, sklep).
+// E2-136-A1 (raport 07 E2 #136, scenariusz 04, krok 13): „−1 przy braku projektu, potem pierwsze +1” przez prawdziwy ekran licznika (EkranLicznika + Licznik, M3 p2)
+// i prawdziwą kompozycję na prawdziwej bazie (node:sqlite); atrapy tylko na granicy platformy (Live Activity, zegarek, haptyka; sklep i cykl życia ma korzeń „Dziś”, M3 p2).
 // Pytanie 07: czy w E2E licznik 0 po „−1” i potem bez zmian po „+1” (14 s, asercja „1” niewidoczna) to błąd aplikacji, czy maszyna.
 // Ścieżki: src/kompozycja/licznik.ts `naMinus` (bez projektu: zostaje 0, bez zapisu) i `plusZEkranu` (pierwsze +1 tworzy projekt roboczy, potem zwykłe +1);
 // okno strażnika serii 6 s z argumentu E2E `oczkoE2eOknoStraznika` (P-358) to zależność `straznikOknoS`.
@@ -7,18 +7,16 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { migruj } from '../../src/dane/migracje/migruj';
 import type { LiveActivity, Zegarek } from '../../src/domena/porty';
-import { Aplikacja } from '../../src/ekrany/Aplikacja';
+import { EkranLicznika } from '../../src/ekrany/Aplikacja';
 import { utworzI18n } from '../../src/i18n/i18n';
 import { ZASOBY } from '../../src/i18n/slowniki';
 import { kompozycjaLicznika, type KompozycjaLicznika } from '../../src/kompozycja/licznik';
 import { przygotuj } from '../dane/pomocnicze/srodowisko';
-import type { Sklep } from '../../src/domena/porty';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
-import { atrapaCyklu, atrapaHaptyki, atrapaSystemu } from './pomoc';
+import { atrapaHaptyki } from './pomoc';
 
 const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
-const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 
 async function start(straznikOknoS?: number) {
   const s = await przygotuj();
@@ -28,12 +26,11 @@ async function start(straznikOknoS?: number) {
   expect((await k.przygotuj()).ok).toBe(true); // świeża instalacja: brak projektu
   return { s, k, t };
 }
-/** Ekran jak w app/index.tsx: usługi i działania z kompozycji; ekran montowany od nowa po zmianie wersji (key). */
+/** Ekran jak w app/licznik.tsx (M3 p2; dawniej Aplikacja na „/”): usługi i działania z kompozycji; ekran montowany od nowa po zmianie wersji (key). */
 function ekran(k: KompozycjaLicznika, t: Tlumacz, wersja = 0) {
-  const { cykl } = atrapaCyklu();
-  return <Aplikacja key={wersja} porty={{ sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka: atrapaHaptyki() }} uslugi={k.uslugi} dzialania={k.dzialania} cykl={cykl} system={atrapaSystemu()} oglos={jest.fn()} t={t} />;
+  return <EkranLicznika key={wersja} porty={{ haptyka: atrapaHaptyki() }} uslugi={k.uslugi} dzialania={k.dzialania} oglos={jest.fn()} t={t} />;
 }
-const liczba = () => screen.getByTestId('licznik-wartosc').children.join('');
+const liczba = () => screen.getByTestId('licznik-wartosc').props.accessibilityLabel as string;
 const czekajNa = (n: string) => waitFor(() => expect(liczba()).toBe(n));
 const stukPlus = async (n: string) => { fireEvent.press(await screen.findByTestId('licznik-plus')); await czekajNa(n); };
 async function projektyWBazie(s: Awaited<ReturnType<typeof start>>['s']): Promise<number> {

@@ -10,11 +10,13 @@ import { atrapaHaptyki, przycisk, stanLicznika, tEn, wywolaniaLicznika } from '.
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 
-test('stuknięcie w nazwę projektu (licznik-projekt) otwiera ekran projektu; etykieta = nazwa', () => {
+// M3 p3a (P-580 a): wejściem do ekranu projektu jest „Projekt ›” (`licznik-projekt-wejscie`, VoiceOver „Project: {nazwa}”); `licznik-projekt` to nazwa (nagłówek).
+test('stuknięcie w „Projekt ›” (licznik-projekt-wejscie) otwiera ekran projektu; etykieta niesie nazwę, nazwa to licznik-projekt', () => {
   const w = { ...wywolaniaLicznika(), naProjekt: jest.fn() };
   render(<Licznik stan={stanLicznika()} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...w} />);
-  fireEvent.press(przycisk('Harbor Sweater', 'button'));
+  fireEvent.press(przycisk('Project: Harbor Sweater', 'button'));
   expect(w.naProjekt).toHaveBeenCalledTimes(1);
+  expect(screen.getByTestId('licznik-projekt-wejscie')).toBeTruthy();
   expect(screen.getByTestId('licznik-projekt').props.children).toBe('Harbor Sweater');
 });
 

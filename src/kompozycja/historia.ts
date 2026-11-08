@@ -20,13 +20,21 @@ export function stanHistorii(w: WidokHistorii, o: { j: Jezyk; miesiac: string; w
     const r = robotka.has(dzien);
     // Rzędy znamy tylko dla wybranego dnia (szczegolyDnia); inne dni czytane etykietą (`dni.dzien_bez_a11y`) — zgłoszenie do 04 (klucz bez liczby).
     const rzedy = dzien === o.wybrany ? w.dzien.reduce((a, p) => a + p.rzedy, 0) : null;
-    return { dzien, numer: i + 1, robotka: r, dzis: dzien === o.dzis, a11y: r && rzedy !== null ? t('dni.dzien', { etykieta, count: rzedy }) : t('dni.dzien_bez_a11y', { etykieta }) };
+    return { dzien, numer: i + 1, robotka: r, dzis: dzien === o.dzis, przyszly: dzien > o.dzis, a11y: r && rzedy !== null ? t('dni.dzien', { etykieta, count: rzedy }) : t('dni.dzien_bez_a11y', { etykieta }) };
   });
   const skroty = ['2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25'].map((d) => fmt(jz, { weekday: 'narrow' }, d));
   const czasLinia = (rzedy: number, czasMs: number | null) => (czasMs === null ? t('dni.rzedy', { count: rzedy }) : t('dni.suma_czas', { rzedy: t('dni.rzedy', { count: rzedy }), czas: czasPracy(czasMs, o.j) }));
+  // Sąsiednie miesiące: nazwa z Intl w języku aplikacji (mianownik, jak nagłówek bloku miesiąca), bez nowych kluczy na nazwy.
+  const sasiad = (przesuniecie: number) => fmt(jz, { month: 'long' }, new Date(Date.UTC(Number(o.miesiac.slice(0, 4)), Number(o.miesiac.slice(5, 7)) - 1 + przesuniecie, 1)).toISOString().slice(0, 10));
+  // Kafelki podsumowania miesiąca (makieta `historia`): tylko z odczytu `miesiac`; czasu bez sesji nie ma (brak zostaje brakiem, nota `dni.bez_stopera` pod kafelkami).
+  const kafle: StanHistorii['kafle'] = [
+    { id: 'dni', wartosc: String(w.miesiac.dni), etykieta: t('historia.kafel_dni', { count: w.miesiac.dni }) },
+    { id: 'rzedy', wartosc: String(w.miesiac.rzedy), etykieta: t('historia.kafel_rzedy', { count: w.miesiac.rzedy }) },
+    ...(w.miesiac.czasMs === null ? [] : [{ id: 'czas' as const, wartosc: czasPracy(w.miesiac.czasMs, o.j), etykieta: t('historia.kafel_czas') }]),
+  ];
   const tydzienBiezacy = o.dzis >= w.tydzien.od && o.dzis <= w.tydzien.do;
   return {
-    miesiac: fmt(jz, { month: 'long', year: 'numeric' }, pierwszy), skroty, puste, komorki, wybrany: o.wybrany,
+    miesiac: fmt(jz, { month: 'long', year: 'numeric' }, pierwszy), poprzedniNazwa: sasiad(-1), nastepnyNazwa: sasiad(1), kafle, skroty, puste, komorki, wybrany: o.wybrany,
     naglowekDnia: fmt(jz, { weekday: 'long', month: 'long', day: 'numeric' }, o.wybrany),
     projekty: w.dzien.map((p) => ({
       id: p.projektId, nazwa: p.nazwa,
@@ -40,7 +48,7 @@ export function stanHistorii(w: WidokHistorii, o: { j: Jezyk; miesiac: string; w
     },
     miesiacBlok: {
       naglowek: fmt(jz, { month: 'long' }, pierwszy),
-      linie: [czasLinia(w.miesiac.rzedy, w.miesiac.czasMs), ...(w.miesiac.ukonczone > 0 ? [t('dni.ukonczono', { count: w.miesiac.ukonczone })] : []), t('dni.dni_robotki', { count: w.miesiac.dni })],
+      linie: w.miesiac.ukonczone > 0 ? [t('dni.ukonczono', { count: w.miesiac.ukonczone })] : [], // dni, rzędy i czas są w kafelkach
       bezStopera: w.miesiac.czasMs === null,
     },
     pierwsze: w.pierwsze,

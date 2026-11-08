@@ -65,7 +65,20 @@
     "seria_blokada_other": "Tilføjede {{count}} rækker fra låseskærmen kl. {{godzina}}. Fortryd?",
     "seria_zegarek_one": "Tilføjede {{count}} række på dit ur kl. {{godzina}}. Fortryd?",
     "seria_zegarek_other": "Tilføjede {{count}} rækker på dit ur kl. {{godzina}}. Fortryd?",
-    "wpisz_blad_format": "Skriv et heltal, 0 eller mere, fx {{przyklad}}."
+    "wpisz_blad_format": "Skriv et heltal, 0 eller mere, fx {{przyklad}}.",
+    "akcja_notatka": "Note",
+    "akcja_wzor": "Opskrift",
+    "akcja_cel": "Mål",
+    "akcja_cel_a11y": "Mål, påmindelse, rapport",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Historik",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Tællerindstillinger: navn, rækkenummer, lås, afslut",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} række færdig, {{sesja}} i denne session",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rækker færdige, {{sesja}} i denne session",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} af {{cel}} rækker færdige, {{sesja}} i denne session",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} af {{cel}} rækker færdige, {{sesja}} i denne session"
   },
   "limit": {
     "zawczasu_one": "Ingen gratis håndarbejdsdage tilbage i {{miesiac}}. Tællingen er på pause til {{data}}. Din {{count}} række og alt andet bliver gemt.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Færdig {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Færdig {{data}}",
     "ukonczono_a11y": "{{nazwa}}, færdig {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, færdig {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, færdig {{data}}",
+    "menu_a11y": "Mere: {{nazwa}}",
+    "kosz_do_one": ": {{count}} element, til {{data}}.",
+    "kosz_do_other": ": {{count}} elementer, til {{data}}.",
+    "kosz_pokaz": "Vis"
   },
   "historia": {
     "pusto": "Ingen ændringer endnu.",
@@ -217,7 +234,12 @@
     "wpisz": "Skriv det rigtige tal",
     "wpis_rozwin_a11y": "Mere om {{wpis}}",
     "wpis_rozwin_podpowiedz": "Viser, hvordan du ændrer denne post.",
-    "wpis_a11y": "{{od}} til {{do}} kl. {{czas}}"
+    "wpis_a11y": "{{od}} til {{do}} kl. {{czas}}",
+    "kafel_dni_one": "håndarbejdsdag",
+    "kafel_dni_other": "håndarbejdsdage",
+    "kafel_rzedy_one": "række",
+    "kafel_rzedy_other": "rækker",
+    "kafel_czas": "sessionstid"
   },
   "menu": {
     "nazwa": "Navngiv projekt og del",
@@ -455,7 +477,6 @@
     "dozywotni_przy_subskrypcji": "Dit abonnement fornyes, indtil du opsiger det.",
     "bez_pro_one": "Uden Pro: {{limit}} håndarbejdsdag hver måned og alle dine projekter og data, altid.",
     "bez_pro_other": "Uden Pro: {{limit}} håndarbejdsdage hver måned og alle dine projekter og data, altid.",
-    "rodzina": "Deles med din familie via Familiedeling.",
     "kup": "Fortsæt med {{plan}}",
     "przywroc": "Gendan køb",
     "polityka": "Privatlivspolitik",
@@ -469,7 +490,15 @@
     "blad_zakupu": "Købet gik ikke igennem. Tjek din forbindelse, og prøv igen.",
     "przywracanie_nic": "Der blev ikke fundet noget køb af Oczko Pro for dette Apple-id. Hvis du købte det med et andet Apple-id, så log ind med det i Indstillinger, og prøv igen.",
     "przywracanie_blad": "Købene kunne ikke gendannes. Tjek din forbindelse, og prøv igen.",
-    "pro_wlaczone": "Oczko Pro er slået til."
+    "pro_wlaczone": "Oczko Pro er slået til.",
+    "kafel_dzien_tytul": "Hver håndarbejdsdag",
+    "kafel_dzien_opis": "Tæl, hver gang du strikker eller hækler, uden månedsgrænse.",
+    "kafel_urzadzenia_tytul": "Ingen grænse på nogen enhed",
+    "kafel_urzadzenia_opis": "iPhone, iPad og Apple Watch.",
+    "kafel_rodzina_tytul": "Til din familie",
+    "kafel_rodzina_opis": "Du kan dele det med din familie via Familiedeling.",
+    "kafel_dane_tytul": "Dine data forbliver dine",
+    "kafel_dane_opis": "Projekter, opskrifter og historik bevares, med eller uden Pro."
   },
   "uczciwe": {
     "tytul": "Din første håndarbejdsdag er overstået",
@@ -963,5 +992,37 @@
     "yd_nazwa": "Engelske yard",
     "g_nazwa": "Gram",
     "oz_nazwa": "Ounces"
+  },
+  "dzis": {
+    "tytul": "I dag",
+    "pierwszy_tytul": "Første rækketæller",
+    "pierwszy_opis": "Tryk på +1 efter hver færdig række. Du kan navngive projektet senere.",
+    "otworz_licznik": "Åbn rækketæller",
+    "kontynuuj": "Fortsæt",
+    "wybierz_projekt": "Vælg et projekt",
+    "bez_miejsca_tytul": "Dine projekter er her",
+    "bez_miejsca_one": "{{count}} projekt i gang. Vælg et, så åbner I dag det, hvor du slap.",
+    "bez_miejsca_other": "{{count}} projekter i gang. Vælg et, så åbner I dag det, hvor du slap.",
+    "czesc_rzad": "{{czesc}}, række {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, række {{n}} af {{cel}}",
+    "gotowe_one": "række færdig",
+    "gotowe_other": "rækker færdige",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} række færdig, i dag {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rækker færdige, i dag {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} af {{cel}} rækker færdige, i dag {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} af {{cel}} rækker færdige, i dag {{dzis}}",
+    "co_dalej_one": "Om {{count}} række: {{tekst}} ({{ktory}} af {{razy}})",
+    "co_dalej_other": "Om {{count}} rækker: {{tekst}} ({{ktory}} af {{razy}})",
+    "co_dalej_teraz": "Denne række: {{tekst}} ({{ktory}} af {{razy}})",
+    "ten_tydzien": "Denne uge",
+    "tydzien_pusty": "Her kan du se de dage, du strikker.",
+    "dzien_dziergany_a11y": "{{etykieta}}, håndarbejdsdag",
+    "kafel_wloczka": "Garn og strikkepinde"
+  },
+  "zakladki": {
+    "dzis": "I dag",
+    "projekty": "Projekter",
+    "narzedzia": "Værktøj",
+    "historia": "Historik"
   }
 }

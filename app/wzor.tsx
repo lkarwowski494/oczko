@@ -44,7 +44,7 @@ export default function EkranWzoru(): React.ReactElement {
   const okno = useWindowDimensions();
   const szerokosc = szerokoscOknaE2e() ?? okno.width;
   const uklad = ukladOkna({ szerokosc, wysokosc: okno.height });
-  const { id, dodaj: dodajParam } = useLocalSearchParams<{ id?: string; dodaj?: string }>();
+  const { id, dodaj: dodajParam, zrodla } = useLocalSearchParams<{ id?: string; dodaj?: string; zrodla?: string }>(); // `zrodla`: kafel „Dodaj wzór” na „Dziś” — menu źródeł także przy projekcie z wzorem (P-588)
   const { t } = kontener.j;
   const zw = kontener.wzor.z;
   const [lw, ustawLw] = useState<WidokLicznika | null>(null);
@@ -80,7 +80,7 @@ export default function EkranWzoru(): React.ReactElement {
     if (!w) { ustawBlad(true); return; } // M1-007: widok licznika nieodczytany
     const l = await listaWzorow(zw, { projektId: w.projektId });
     ustawWzory(l.ok ? l.wartosc.map((x) => ({ wzorId: x.wzorId, nazwa: x.nazwa })) : []);
-    const cel = wybrany ?? (await wzorDoOtwarcia(zw, { projektId: w.projektId }));
+    const cel = wybrany ?? (zrodla ? '' : await wzorDoOtwarcia(zw, { projektId: w.projektId })); // zrodla bez wybranego wzoru: nie otwieramy przeglądarki, menu źródeł (ZM-06, P-588)
     const wzorId = typeof cel === 'string' ? cel : cel.ok ? cel.wartosc : null;
     if (!wzorId) { ustawWidok(null); return; }
     const v = await widokWzoru(zw, { wzorId, katalogOczekujacych: katalogRysunkow }); // M1-084: strona z plikiem oczekującym → ten plik
@@ -90,7 +90,7 @@ export default function EkranWzoru(): React.ReactElement {
     }
     ustawWidok(v.ok ? v.wartosc : null);
     if (v.ok) await zapamietajWzor(zw, { licznikId: w.licznikId, wzorId });
-  }, [licznik, zw, katalogRysunkow]);
+  }, [licznik, zw, katalogRysunkow, zrodla]);
   // Odzysk kresek zapisanych przy poprzednim zamknięciu ekranu (zdarzenie bez odbiorcy), potem wczytanie (przegląd 2026-10-26).
   const pierwszyOdczyt = useCallback(() => { void wczytaj(id).catch(() => ustawBlad(true)); }, [wczytaj, id]); // M1-007: wyjątek odczytu → stan błędu
   // M1-084: nieudany zapis rysunku → komunikat raz, do następnego udanego zapisu (zapis idzie po każdej przerwie w rysowaniu, alert przy każdej kresce
@@ -166,7 +166,7 @@ export default function EkranWzoru(): React.ReactElement {
     return (
       <Bezpieczny>
         <View style={{ flex: 1, padding: odstep.l, backgroundColor: k.papier }}>
-          <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
+          <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} menuOtwarte t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
             panelE2e={paneleE2e ? <paneleE2e.PanelWzoru katalogTymczasowy={kontener.z.katalogi.tymczasowy} naDodaj={(w) => void dodaj({ rodzaj: 'gotowe', ...w })} /> : null} />
         </View>
       </Bezpieczny>
@@ -191,7 +191,7 @@ export default function EkranWzoru(): React.ReactElement {
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad, jezyk: kontener.j.jezyk() }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => wyjdzZWzoru(() => router.back())}

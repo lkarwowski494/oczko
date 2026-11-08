@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka": "Podpis nad kreskami sesji na liczniku oczek (zamiast „rows”).",
     "seria_blokada": "Baner strażnika tempa, gdy serię stuknięć z ekranu blokady scalono po otwarciu aplikacji (BR-LIC-019 S5). {{godzina}} = godzina serii, nie scalenia (format godziny regionu). Forma pojedyncza dla reguł języka; w praktyce ≥ 2.",
     "seria_zegarek": "Baner strażnika tempa dla serii z zegarka scalonej po otwarciu aplikacji. {{godzina}} = godzina serii.",
-    "wpisz_blad_format": "Linia błędu pod polem wpisania wartości licznika (BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): wartość musi być liczbą całkowitą od 0. {{przyklad}} = liczba 1000 sformatowana zapisem regionu telefonu (en-US „1,000”, pl-PL „1 000”, de-DE „1.000”, ar-EG cyfry arabsko-indyjskie), dzięki czemu użytkownik widzi, jak region zapisuje tysiące. Ten sam tekst dla ujemnej, tekstu i zapisu niezgodnego z regionem — aplikacja niczego nie zgaduje (nie zamienia „1,000” na 1000 ani na 1)."
+    "wpisz_blad_format": "Linia błędu pod polem wpisania wartości licznika (BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): wartość musi być liczbą całkowitą od 0. {{przyklad}} = liczba 1000 sformatowana zapisem regionu telefonu (en-US „1,000”, pl-PL „1 000”, de-DE „1.000”, ar-EG cyfry arabsko-indyjskie), dzięki czemu użytkownik widzi, jak region zapisuje tysiące. Ten sam tekst dla ujemnej, tekstu i zapisu niezgodnego z regionem — aplikacja niczego nie zgaduje (nie zamienia „1,000” na 1000 ani na 1).",
+    "akcja_notatka": "Podpis akcji pod liczbą na liczniku (ikona + słowo): otwiera arkusz notatki projektu. Jedno słowo, ok. 8 znaków; nazwa przycisku dla VoiceOver jest taka sama.",
+    "akcja_wzor": "Podpis akcji pod liczbą: otwiera wzór projektu (bez wzoru: dodanie wzoru). Jedno słowo, ok. 8 znaków.",
+    "akcja_cel": "Podpis akcji pod liczbą: otwiera arkusz z celem części, przypomnieniem i długością powtórzenia. Jedno słowo, ok. 6 znaków.",
+    "akcja_cel_a11y": "Nazwa dla VoiceOver akcji „Cel” (P-581): wymienia trzy rzeczy, które arkusz zawiera. Musi zaczynać się od widocznego podpisu akcji.",
+    "akcja_stoper": "Podpis akcji pod liczbą: stoper sesji (bez uruchomionej sesji). W trakcie sesji w tym miejscu stoi upływający czas. Jedno słowo, ok. 8 znaków.",
+    "akcja_historia": "Podpis akcji pod liczbą: arkusz historii zmian licznika (nie zakładka „Historia” z kalendarzem dni). Jedno słowo, ok. 10 znaków.",
+    "projekt_wejscie": "Odnośnik nad nazwą projektu na liczniku, otwiera ekran projektu. Strzałka › jest częścią tekstu; ok. 12 znaków.",
+    "projekt_wejscie_a11y": "Nazwa dla VoiceOver odnośnika „Projekt ›”; {{projekt}} = nazwa projektu użytkownika.",
+    "menu_wiecej_a11y": "Nazwa dla VoiceOver przycisku ••• na liczniku: wymienia pozycje arkusza (nazwa, numer rzędu, blokada, zakończenie; zerowanie i znaczenie liczby pomijamy).",
+    "dzianina_a11y": "VoiceOver rysunku dzianiny na liczniku bez celu części: część, rzędy gotowe ({{count}}), rzędy w tej sesji. Formy liczby mnogiej.",
+    "dzianina_a11y_cel": "VoiceOver rysunku dzianiny na liczniku z celem części: {{count}} gotowe z {{cel}}, rzędy w tej sesji. Formy liczby mnogiej."
   },
   "limit": {
     "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków. {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "Druga linia wiersza ukończonego projektu na liście (BR-PRJ-006 S1). {{data}} = data ukończenia (krótka, rok tylko gdy inny niż bieżący), {{czas}} = czas pracy ze stopera (format czasu trwania, np. „4 h 20 min”).",
     "ukonczono_bez_czasu": "Druga linia wiersza ukończonego projektu, gdy nie używano stopera (nie pokazujemy „0 min”).",
     "ukonczono_a11y": "Etykieta VoiceOver wiersza ukończonego projektu z czasem; {{czas}} słownie („4 hours 20 minutes”).",
-    "ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu."
+    "ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu.",
+    "menu_a11y": "Nazwa VoiceOver przycisku ••• w wierszu projektu (M3 p4, WD-3): otwiera arkusz z usunięciem projektu do kosza. {{nazwa}} = nazwa projektu.",
+    "kosz_do": "Stopka listy projektów po słowie „Ostatnio usunięte” (osobny element tego samego zdania): dwukropek, liczba elementów kosza i data końca przechowywania najwcześniej usuniętego, kończy się kropką. Czyta się: „Recently deleted: 3 items, until Nov 23.”",
+    "kosz_pokaz": "Odnośnik na końcu stopki kosza, wejście do „Ostatnio usunięte” (jedno słowo, wyróżnione barwą akcentu)."
   },
   "historia": {
     "pusto": "Tekst z prototyp.html roli 04.",
@@ -189,7 +203,10 @@
     "cofnij_serie": "Przycisk przy ostatniej serii w historii; cofa całą serię (BR-LIC-003 S2). Przy dużym tekście zawija się do dwóch wierszy.",
     "wpis_rozwin_a11y": "Etykieta VoiceOver strzałki ▸/▾ przy starszym wpisie historii (BR-LIC-003 S4; wzorzec rozwijania jak Trening, wzorzec 20): stała, taka sama po rozwinięciu; stan niesie `expanded`. {{wpis}} = krótki opis wpisu, np. „30 → 31 at 20:14” (godzina w formacie regionu).",
     "wpis_rozwin_podpowiedz": "Podpowiedź VoiceOver (accessibilityHint) tej samej strzałki: co się stanie po stuknięciu. Jedno zdanie, strona czynna; „entry” = jeden wpis historii licznika.",
-    "wpis_a11y": "Opis jednego wpisu historii licznika dla VoiceOver i dla `{{wpis}}` w `historia.wpis_rozwin_a11y` („More about 30 to 31 at 20:14”). {{od}} i {{do}} = wartości licznika przed i po zmianie (liczby w zapisie regionu, bez odmiany); {{czas}} = godzina w formacie regionu. Czytane słowami „to”/„at”, nie strzałką ani kropką (VoiceOver czyta „→” jako nazwę znaku). Wpis cofnięty: do opisu dochodzi osobne zdanie `historia.cofnieto`; seria: dotychczasowy tekst `historia.seria_*`."
+    "wpis_a11y": "Opis jednego wpisu historii licznika dla VoiceOver i dla `{{wpis}}` w `historia.wpis_rozwin_a11y` („More about 30 to 31 at 20:14”). {{od}} i {{do}} = wartości licznika przed i po zmianie (liczby w zapisie regionu, bez odmiany); {{czas}} = godzina w formacie regionu. Czytane słowami „to”/„at”, nie strzałką ani kropką (VoiceOver czyta „→” jako nazwę znaku). Wpis cofnięty: do opisu dochodzi osobne zdanie `historia.cofnieto`; seria: dotychczasowy tekst `historia.seria_*`.",
+    "kafel_dni": "Ekran Historia, podsumowanie miesiąca (M3 p5, makieta `dzianina/ekrany.html` historia, P-590): etykieta pod liczbą dni z robótką w kafelku; {{count}} niewidoczne, liczba stoi nad etykietą; odmiana przez count (pl: dzień/dni/dni/dnia z robótką).",
+    "kafel_rzedy": "Ekran Historia, podsumowanie miesiąca (M3 p5, makieta `dzianina/ekrany.html` historia, P-590): etykieta pod liczbą rzędów miesiąca; odmiana przez count (pl: rząd/rzędy/rzędów/rzędu).",
+    "kafel_czas": "Ekran Historia, podsumowanie miesiąca (M3 p5, makieta `dzianina/ekrany.html` historia, P-590): etykieta pod czasem sesji miesiąca (np. „2 h 40 min”); kafelka nie ma, gdy w miesiącu nie było sesji. Czytane po wartości: „2 h 40 min session time”."
   },
   "menu": {
     "nazwa": "Tekst z prototyp.html roli 04.",
@@ -401,7 +418,6 @@
     "raz": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "dozywotni_przy_subskrypcji": "Podpis pod planem dożywotnim, tylko gdy osoba ma aktywną subskrypcję (KP-03, M1-014, P-403): zakup dożywotniego nie anuluje subskrypcji, osoba musi ją anulować sama (obok przycisk „Manage subscription”). Do akceptacji 04.",
     "bez_pro": "Tekst z ekrany.html roli 04 (ekran ofert). {{limit}} = LIMIT_DNI_W_MIESIACU. Liczba mnoga (P-307): formy CLDR wg `count` podanego przy wywołaniu; liczba stoi w kluczu liczby mnogiej, nie obok niego.",
-    "rodzina": "Tekst z ekrany.html roli 04 (ekran ofert). Tylko gdy Family Sharing włączone (P-089 (2)).",
     "kup": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "przywroc": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "polityka": "Tekst z ekrany.html roli 04 (ekran ofert).",
@@ -415,7 +431,15 @@
     "blad_zakupu": "Linia błędu na ekranie ofert, gdy zakup się nie powiódł (błąd sklepu lub sieci). Anulowanie przez użytkowniczkę nie daje żadnego komunikatu. Znak „!” + tekst, role=alert. Bez kodów technicznych i bez przeprosin.",
     "przywracanie_nic": "Linia informacji po „Restore purchases”, gdy sklep nie zwrócił zakupu Oczko Pro dla bieżącego Apple ID. Nie błąd. „Settings” = ustawienia systemu iOS (konto Apple ID).",
     "przywracanie_blad": "Linia błędu po „Restore purchases”, gdy samo przywracanie się nie powiodło (sieć, sklep). Znak „!” + tekst, role=alert.",
-    "pro_wlaczone": "Jednorazowa linia na ekranie ofert po zatwierdzeniu zakupu poza aplikacją (Ask to Buy / rodzinna zgoda): Pro jest już włączone. Krótkie zdanie oznajmujące, jak „Oczko Pro is on.”; ok. 20 znaków. Tekst roboczy 08 wg P-330 (klucz `ustawienia.pro_wlaczone` to tylko „On” wiersza Ustawień) — do akceptacji 04."
+    "pro_wlaczone": "Jednorazowa linia na ekranie ofert po zatwierdzeniu zakupu poza aplikacją (Ask to Buy / rodzinna zgoda): Pro jest już włączone. Krótkie zdanie oznajmujące, jak „Oczko Pro is on.”; ok. 20 znaków. Tekst roboczy 08 wg P-330 (klucz `ustawienia.pro_wlaczone` to tylko „On” wiersza Ustawień) — do akceptacji 04.",
+    "kafel_dzien_tytul": "Nazwa kafla 1 ekranu Oczko Pro (P-557, P-563). Pro zdejmuje limit dni w miesiącu. „Crafting day” = dzień, w którym osoba coś dziergała; jak w `oferty.bez_pro`. Ok. 20 znaków.",
+    "kafel_dzien_opis": "Opis kafla 1 ekranu Oczko Pro: korzyść to brak limitu dni w miesiącu (nie nowa funkcja). Zwrot „kiedy dziergasz” obejmuje też szydełkowanie. Jedno zdanie, ok. 50 znaków.",
+    "kafel_urzadzenia_tytul": "Nazwa kafla 2 ekranu Oczko Pro (P-563 (11), 02-monetyzacja-001): mówi o LIMICIE, nie o urządzeniach jako funkcji Pro — zegarek, iPad i ekran blokady działają też bez Pro. Nie przekładaj tak, by urządzenia wyglądały na płatną funkcję. Ok. 30 znaków.",
+    "kafel_urzadzenia_opis": "Opis kafla 2: lista urządzeń Apple, na których limit znika. Nazwy własne urządzeń Apple zostają bez przekładu (jak w lokalizacji Apple).",
+    "kafel_rodzina_tytul": "Nazwa kafla 3 ekranu Oczko Pro, tylko gdy Family Sharing jest włączone (`FAMILY_SHARING`, P-561, ujawnienie 7). Ok. 15 znaków.",
+    "kafel_rodzina_opis": "Opis kafla 3 (P-563 (12), 02-monetyzacja-003): zdanie o możliwości, nie o stanie. „Family Sharing” w każdym języku to nazwa funkcji z ustawień iPhone’a w tym języku (po polsku „Chmura rodzinna”), nie przekład dosłowny.",
+    "kafel_dane_tytul": "Nazwa kafla 4 ekranu Oczko Pro: dane zostają bez Pro i z Pro (ten kafel mówi, co NIE jest za zakupem). Ok. 20 znaków.",
+    "kafel_dane_opis": "Opis kafla 4: projekty, wzory i historia nie zależą od Pro. Jedno zdanie, ok. 50 znaków."
   },
   "uczciwe": {
     "tytul": "Tekst z design-spec roli 04. „Crafting day” = dzień z policzonym rzędem, dla drutów i szydełka (P-302).",
@@ -877,5 +901,32 @@
     "yd_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Jardy (yards).",
     "g_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Gramy.",
     "oz_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Uncje (ounces)."
+  },
+  "dzis": {
+    "tytul": "Duży tytuł ekranu startowego „Dziś” (M3 p2, ZM-01); krój tytułowy.",
+    "pierwszy_tytul": "Tytuł karty przy świeżej instalacji (licznik bez projektu, dzis-pierwszy).",
+    "pierwszy_opis": "Opis karty „Pierwszy licznik”: co robi +1; projekt nazywa się później (BR-LIC-001/S1).",
+    "otworz_licznik": "Przycisk karty przy świeżej instalacji, prowadzi do pełnego licznika (ze strzałką ›).",
+    "kontynuuj": "Przycisk karty „Kontynuuj ›”: wraca do licznika albo strony wzoru, gdzie skończyła się praca (P-563 4a).",
+    "wybierz_projekt": "Przycisk karty bez ostatniego miejsca → zakładka Projekty (P-564, P-565).",
+    "bez_miejsca_tytul": "Tytuł karty, gdy nie wiadomo, gdzie skończyła się praca, a projekty są (dzis-bez-miejsca).",
+    "bez_miejsca": "Zdanie karty bez ostatniego miejsca; {{count}} = projekty w toku; „Dziś” = nazwa ekranu. Formy liczby mnogiej.",
+    "czesc_rzad": "Podpis karty: część i rząd w robocie, bez celu części (przecinek zamiast kropki środkowej z makiety — kropka tylko w kluczach z listy 04, test 034).",
+    "czesc_rzad_cel": "Podpis karty: część, rząd w robocie {{n}} i cel części {{cel}}.",
+    "gotowe": "Podpis pod liczbą na karcie: rzędy skończone ({{count}}). Formy liczby mnogiej.",
+    "dzianina_a11y": "VoiceOver rysunku dzianiny bez celu części: część, rzędy gotowe ({{count}}), rzędy dziś. Formy liczby mnogiej.",
+    "dzianina_a11y_cel": "VoiceOver rysunku dzianiny z celem części: {{count}} gotowe z {{cel}}, rzędy dziś. Formy liczby mnogiej.",
+    "co_dalej": "Wiersz „co dalej” pod kartą: za ile rzędów ({{count}}) przypomnienie {{tekst}}, które z ilu. Formy liczby mnogiej.",
+    "co_dalej_teraz": "Wiersz „co dalej”, gdy przypomnienie wypada w rzędzie w robocie.",
+    "ten_tydzien": "Nagłówek paska tygodnia na „Dziś”.",
+    "tydzien_pusty": "Pusty tydzień przy pierwszym użyciu (jak pusty miesiąc Historii).",
+    "dzien_dziergany_a11y": "VoiceOver dnia tygodnia z robótką; {{etykieta}} = data dnia.",
+    "kafel_wloczka": "Kafel „Dziś” prowadzący do zakładki Narzędzia (zapas włóczki, druty)."
+  },
+  "zakladki": {
+    "dzis": "Podpis zakładki „Dziś” w pasku zakładek (WD-1); krótko, ×1,6.",
+    "projekty": "Podpis zakładki Projekty.",
+    "narzedzia": "Podpis zakładki Narzędzia.",
+    "historia": "Podpis zakładki Historia (kalendarz dni, ER-71)."
   }
 }

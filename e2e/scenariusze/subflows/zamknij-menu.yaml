@@ -1,0 +1,10 @@
+# Podprzepływ (ZM-05, P-581 a; docs/design/testid.md:140): menu systemowe licznika (••• `licznik-menu` i „Cel” `licznik-cel`, UIMenu) nie ma przycisku „Close” —
+# zamyka je stuknięcie obok menu. Jedno miejsce zmiany sposobu zamknięcia. Cel stuknięcia: tytuł z nazwą projektu (`licznik-projekt`) — po P-580 (a) to sam tekst
+# bez akcji (wejściem do projektu jest `licznik-projekt-wejscie`), więc stuknięcie, jeśli przejdzie pod menu, nie zmienia ekranu.
+# [DO USTALENIA, pierwszy przebieg iOS po p3a] czy XCUITest widzi tytuł pod otwartym menu; jeśli nie — tu `tapOn: { point: … }` poza menu (decyzja 07 po zrzucie).
+appId: com.apps4brew.knitting
+name: "podprzepływ: zamknij menu systemowe licznika stuknięciem obok"
+---
+- tapOn: { id: "licznik-projekt" }
+- assertNotVisible: { id: "menu-wpisz-wartosc|menu-nazwa|menu-cel" }
+- assertVisible: { id: "licznik-plus" }

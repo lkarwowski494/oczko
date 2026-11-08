@@ -2,10 +2,21 @@
 // arkusz formularza — Cancel / tytuł / Save w nagłówku u góry (`naglowek-arkusza` makiet, Trening design-spec:66), arkusz decyzji — przyciski na dole.
 // Prezentację arkusza (formSheet) daje trasa expo-router; tu tylko zawartość. Wartości z modułu motywu (tokeny 04).
 import React, { useEffect, useRef, useState } from 'react';
-import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type KeyboardEvent, type TextStyle } from 'react-native';
+import tokeny from '../../docs/design/tokeny.json';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, ROZMIAR_SYMBOLU_TRESCI, systemCzarny, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
+import { ZnacznikRadio } from './ZnacznikRadio';
+
+export { ZnacznikRadio } from './ZnacznikRadio';
+export { Komunikat, KomunikatZapisu } from './Komunikat';
+
+// Tokeny arkusza formularza i znaczników (M3-MAK-02/03/04): `arkusz.*`, `znaczniki.*`; kolory z palety motywu po nazwie z tokenu.
+const ark = tokeny.arkusz;
+const znaczniki = tokeny.znaczniki;
+const waga = (w: number) => String(w) as TextStyle['fontWeight'];
+const kolor = (k: Kolory, nazwa: string) => (k as unknown as Record<string, string>)[nazwa]!;
 
 /** Ile dół paska przycisków (współrzędne okna) zachodzi na górną krawędź klawiatury; bez klawiatury 0 (P-255 (a)). */
 export function odstepNadKlawiatura(w: { dolPrzyciskow: number; gornaKlawiatury: number | null }): number {
@@ -46,7 +57,7 @@ function ArkuszFormularza(p: { tytul: string; children: React.ReactNode; f: Form
   const zapisanie = (
     <Pressable accessibilityRole="button" accessibilityLabel={f.zapiszA11y ?? zapisz} onPress={f.naZapisz} style={st.akcja} testID={f.testZapisz ?? 'formularz-zapisz'}
       disabled={f.wylaczony} accessibilityState={f.wylaczony ? { disabled: true } : undefined}>
-      <Text style={[st.zapisz, f.wylaczony && st.wylaczonyTekst]}>{zapisz}</Text>
+      <Text style={f.wylaczony ? st.zapiszNieaktywny : st.zapisz}>{zapisz}</Text>
     </Pressable>
   );
   return (
@@ -105,20 +116,25 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
 }
 
 type RodzajPrzycisku = 'glowny' | 'niszczacy' | 'drugi' | 'tekstowy'; // niszczacy: tylko arkusz decyzji o nieodwracalnym usunięciu, jeden na ekran (04 fix-8, P-275 (2))
-export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean; symbol?: NazwaSymbolu }): React.ReactElement {
+export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: string; onPress(): void; rodzaj?: RodzajPrzycisku; testID?: string; rola?: 'button' | 'link'; wylaczony?: boolean; rozwiniety?: boolean; naCzarnym?: boolean; symbol?: NazwaSymbolu; symbolPrzed?: NazwaSymbolu }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
   // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
   const czarny = p.naCzarnym && r !== 'tekstowy' ? { backgroundColor: systemCzarny.przycisk, borderColor: systemCzarny.przycisk } : null;
+  // Kolor tekstu przycisku (M3 p4b, P-598): symbol przed tekstem (`symbolPrzed`) ma tę samą barwę co tekst — w stanie nieaktywnym `przyciskNieaktywnyTekst`.
+  const kolorTekstu = p.wylaczony ? k.przyciskNieaktywnyTekst : p.naCzarnym && r !== 'tekstowy' ? systemCzarny.przyciskTekst : r === 'glowny' ? k.przyciskTekst : r === 'niszczacy' ? k.niszczacyTekst : k.tekst;
+  const tekst = <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>;
   return (
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
       {p.symbol
         ? <SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.tekst} maxSkala={MAX_SKALA_TYTULOWA} />/* M1-146: sam symbol (rozwinięcie wpisu historii), `tekst` zostaje etykietą VoiceOver */
-        : <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>}
+        : p.symbolPrzed
+          ? <View style={st.przedTekstem}><SymbolSf nazwa={p.symbolPrzed} rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={kolorTekstu} maxSkala={MAX_SKALA_TYTULOWA} />{tekst}</View>
+          : tekst}
     </Pressable>
   );
 }
@@ -126,48 +142,37 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
 export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string): void; liczbowe?: boolean; dziesietne?: boolean; wielowierszowe?: boolean; testID?: string; naKoniec?(): void; naFokus?(): void }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
+  const [fokus, ustawFokus] = useState(false); // obrys pola z fokusem: `arkusz.pole.obrysFokus` (stan niesie też kursor, nie tylko kolor)
   return (
     <View style={st.pole}>
       <Text style={st.podpis} importantForAccessibility="no" accessibilityElementsHidden>{p.etykieta}</Text>
-      <TextInput accessibilityLabel={p.etykieta} value={p.wartosc} onChangeText={p.naZmiane} testID={p.testID} style={st.wejscie}
+      <TextInput accessibilityLabel={p.etykieta} value={p.wartosc} onChangeText={p.naZmiane} testID={p.testID} style={[st.wejscie, fokus && st.wejscieFokus]}
         keyboardType={p.dziesietne ? 'decimal-pad' : p.liczbowe ? 'number-pad' : 'default'} returnKeyType={p.liczbowe || p.dziesietne || p.wielowierszowe ? undefined : 'done'}
-        onSubmitEditing={p.naKoniec} onFocus={p.naFokus} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
+        onSubmitEditing={p.naKoniec} onFocus={() => { ustawFokus(true); p.naFokus?.(); }} onBlur={() => ustawFokus(false)} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
         autoCorrect={false} placeholderTextColor={k.tekst2} />
     </View>
   );
 }
 
-/** Wybór jednej z opcji (radio, `selected`; design-spec „VoiceOver”: wybory znaczenia i narzędzia jako radio). */
+/** Wybór jednej z opcji jako lista ze znacznikiem (radio, `selected`; design-spec „VoiceOver”: wybory znaczenia i narzędzia jako radio; makieta `formularz-narzedzie`). */
 export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string; testID?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
   const st = style(useKolory());
   return (
     <View accessibilityRole="radiogroup" style={st.wybor}>
-      {p.opcje.map((o) => (
+      {p.opcje.map((o, i) => (
         <Pressable key={o.wartosc} accessibilityRole="radio" accessibilityLabel={o.tekst} accessibilityState={{ selected: o.wartosc === p.wybrana }}
-          onPress={() => p.naWybor(o.wartosc)} style={[st.opcja, o.wartosc === p.wybrana && st.opcjaWybrana]} testID={o.testID}>
-          <Text style={st.drugiTekst}>{o.tekst}</Text>
-          {o.opis && <Text style={st.podpis}>{o.opis}</Text>}
+          onPress={() => p.naWybor(o.wartosc)} style={[st.opcja, i > 0 && st.opcjaPodzialka]} testID={o.testID}>
+          <ZnacznikRadio wybrany={o.wartosc === p.wybrana} />
+          <View style={st.opcjaTekst}>
+            <Text style={st.zwykly}>{o.tekst}</Text>
+            {o.opis && <Text style={st.podpis}>{o.opis}</Text>}
+          </View>
         </Pressable>
       ))}
     </View>
   );
 }
 
-/** Komunikat błędu; `znak` dodaje „!” przed tekstem (design-spec: błąd tekstem i znakiem, nie samym kolorem), VoiceOver czyta sam tekst. */
-export function Komunikat({ tekst, znak }: { tekst: string; znak?: boolean }): React.ReactElement {
-  const st = style(useKolory());
-  return <Text style={st.blad} accessibilityRole="alert" accessibilityLiveRegion="assertive" accessibilityLabel={znak ? tekst : undefined}>{znak ? `! ${tekst}` : tekst}</Text>;
-}
-/** Błąd zapisu w formularzu poza licznikiem i wzorem (Aneks P2 poz. 5): tytuł mówi, co się nie udało, druga linia wspólna; arkusz zostaje z wpisanymi wartościami. */
-export function KomunikatZapisu({ t }: { t: Tlumacz }): React.ReactElement {
-  const st = style(useKolory());
-  return (
-    <View accessibilityRole="alert" accessibilityLiveRegion="assertive" style={{ gap: odstep.s }}>
-      <Text style={st.blad}>{t('formularz.blad_zapisu')}</Text>
-      <Text style={st.podpis}>{t('wspolne.blad_zapisu_opis')}</Text>
-    </View>
-  );
-}
 export function Tresc({ children, podpis, testID, etykieta }: { children: React.ReactNode; podpis?: boolean; testID?: string; etykieta?: string }): React.ReactElement {
   const st = style(useKolory());
   return <Text style={podpis ? st.podpis : st.zwykly} testID={testID} accessibilityLabel={etykieta}>{children}</Text>;
@@ -198,8 +203,10 @@ export function style(k: Kolory) {
     akcjeDuzy: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum },
     naglowekTytulOsobny: { ...typografia.tresc, color: k.tekst, fontWeight: '700', alignSelf: 'stretch', textAlign: 'center' },
     akcja: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },
-    anuluj: { ...typografia.tresc, color: k.tekst },
-    zapisz: { ...typografia.tresc, color: k.tekst, fontWeight: '600' },
+    // Nagłówek arkusza formularza (`arkusz.*`): Anuluj i Zapisz/Dodaj w barwie łącza (akcentTekst), nieaktywny — przyciskNieaktywnyTekst.
+    anuluj: { ...typografia.tresc, color: kolor(k, ark.anuluj.kolor), fontWeight: waga(ark.anuluj.waga) },
+    zapisz: { ...typografia.tresc, color: kolor(k, ark.zapisz.kolor), fontWeight: waga(ark.zapisz.waga) },
+    zapiszNieaktywny: { ...typografia.tresc, color: kolor(k, ark.nieaktywny.kolor), fontWeight: waga(ark.nieaktywny.waga) },
     przyciski: { padding: odstep.l, gap: odstep.s, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
     glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przycisk, borderWidth: 2, borderColor: k.przycisk, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     glownyTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst },
@@ -211,18 +218,21 @@ export function style(k: Kolory) {
     pole: { gap: odstep.xs },
     wylaczony: { backgroundColor: k.przyciskNieaktywny, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama }, // Dzianina: przerywana rama, nie sam kolor (design-spec „Kolory”)
     wylaczonyTekst: { color: k.przyciskNieaktywnyTekst },
-    wybor: { gap: odstep.s },
-    opcja: { minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia, padding: odstep.m, justifyContent: 'center' },
-    opcjaWybrana: { borderColor: k.tekst2 },
+    przedTekstem: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: odstep.s },
+    // Lista wyboru (makieta `.radio`): tło `tlo` w arkuszu `powierzchnia`, promień listy, wiersze z podziałką `linia`, znacznik 28 pt, cały wiersz jest celem dotyku.
+    wybor: { borderRadius: promien.lista, backgroundColor: k.tlo, overflow: 'hidden' },
+    opcja: { minHeight: cel.minimum, flexDirection: 'row', alignItems: 'center', columnGap: odstep.m, paddingVertical: odstep.s, paddingHorizontal: odstep.l },
+    opcjaPodzialka: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
+    opcjaTekst: { flex: 1, flexShrink: 1 },
     // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
     // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru` (= `cele.minimum`), `promien.poleWyboru` (= `promienie.plus`), `typografia.znakWyboru`
     // (M1-audytor-generalny-145; wcześniej zastępcze z M1-050); znak ✓ najwyżej ×1,6 (`MAX_SKALA_ZNAKU_WYBORU`) w FormularzeProjektu.tsx.
     wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
     poleWyboru: { ...typografia.znakWyboru, color: k.tekst, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.tekst2, borderRadius: promien.poleWyboru, overflow: 'hidden' },
     poleWyboruZaznaczone: { backgroundColor: k.przycisk, color: k.przyciskTekst },
-    wejscie: { ...typografia.tresc, color: k.tekst, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.tekst2, paddingHorizontal: odstep.m },
+    wejscie: { ...typografia.tresc, color: k.tekst, minHeight: ark.pole.minWysokosc, borderRadius: promien.pole, borderWidth: ark.pole.grubosc, borderColor: kolor(k, ark.pole.obrys), paddingHorizontal: odstep.m },
+    wejscieFokus: { borderColor: kolor(k, ark.pole.obrysFokus) },
     podpis: { ...typografia.podpis, color: k.tekst2 },
     zwykly: { ...typografia.tresc, color: k.tekst },
-    blad: { ...typografia.tresc, color: k.tekst },
   });
 }

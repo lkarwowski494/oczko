@@ -80,7 +80,22 @@
     "seria_zegarek_one": "{{count}} rang ajouté sur votre montre à {{godzina}}. Annuler ?",
     "seria_zegarek_many": "{{count}} de rangs ajoutés sur votre montre à {{godzina}}. Annuler ?",
     "seria_zegarek_other": "{{count}} rangs ajoutés sur votre montre à {{godzina}}. Annuler ?",
-    "wpisz_blad_format": "Saisissez un nombre entier, 0 ou plus, par exemple {{przyklad}}."
+    "wpisz_blad_format": "Saisissez un nombre entier, 0 ou plus, par exemple {{przyklad}}.",
+    "akcja_notatka": "Note",
+    "akcja_wzor": "Modèle",
+    "akcja_cel": "Objectif",
+    "akcja_cel_a11y": "Objectif, rappel, motif",
+    "akcja_stoper": "Minuteur",
+    "akcja_historia": "Historique",
+    "projekt_wejscie": "Projet ›",
+    "projekt_wejscie_a11y": "Projet : {{projekt}}",
+    "menu_wiecej_a11y": "Options du compteur : nom, numéro de rang, verrouillage, fin",
+    "dzianina_a11y_one": "{{czesc}} : {{count}} rang terminé, {{sesja}} cette session",
+    "dzianina_a11y_many": "{{czesc}} : {{count}} de rangs terminés, {{sesja}} cette session",
+    "dzianina_a11y_other": "{{czesc}} : {{count}} rangs terminés, {{sesja}} cette session",
+    "dzianina_a11y_cel_one": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, {{sesja}} cette session",
+    "dzianina_a11y_cel_many": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, {{sesja}} cette session",
+    "dzianina_a11y_cel_other": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, {{sesja}} cette session"
   },
   "limit": {
     "zawczasu_one": "Plus aucun jour d’ouvrage gratuit en {{miesiac}}. Le comptage est en pause jusqu’au {{data}}. Votre {{count}} rang et tout le reste sont conservés.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Terminé le {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Terminé le {{data}}",
     "ukonczono_a11y": "{{nazwa}}, terminé le {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminé le {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminé le {{data}}",
+    "menu_a11y": "Plus : {{nazwa}}",
+    "kosz_do_one": " : {{count}} élément, jusqu’au {{data}}.",
+    "kosz_do_many": " : {{count}} d’éléments, jusqu’au {{data}}.",
+    "kosz_do_other": " : {{count}} éléments, jusqu’au {{data}}.",
+    "kosz_pokaz": "Afficher"
   },
   "historia": {
     "pusto": "Aucune modification pour l’instant.",
@@ -245,7 +265,14 @@
     "wpisz": "Saisir le bon nombre",
     "wpis_rozwin_a11y": "Plus d’infos sur {{wpis}}",
     "wpis_rozwin_podpowiedz": "Indique comment modifier cette entrée.",
-    "wpis_a11y": "{{od}} à {{do}}, à {{czas}}"
+    "wpis_a11y": "{{od}} à {{do}}, à {{czas}}",
+    "kafel_dni_one": "jour d’ouvrage",
+    "kafel_dni_many": "jours d’ouvrage",
+    "kafel_dni_other": "jours d’ouvrage",
+    "kafel_rzedy_one": "rang",
+    "kafel_rzedy_many": "rangs",
+    "kafel_rzedy_other": "rangs",
+    "kafel_czas": "temps de séance"
   },
   "menu": {
     "nazwa": "Nommer le projet et la partie",
@@ -509,7 +536,6 @@
     "bez_pro_one": "Sans Pro : {{limit}} jour d’ouvrage par mois, et tous vos projets et vos données, toujours.",
     "bez_pro_many": "Sans Pro : {{limit}} de jours d’ouvrage par mois, et tous vos projets et vos données, toujours.",
     "bez_pro_other": "Sans Pro : {{limit}} jours d’ouvrage par mois, et tous vos projets et vos données, toujours.",
-    "rodzina": "Partagé avec votre famille via le Partage familial.",
     "kup": "Continuer avec {{plan}}",
     "przywroc": "Restaurer les achats",
     "polityka": "Politique de confidentialité",
@@ -523,7 +549,15 @@
     "blad_zakupu": "L’achat n’a pas abouti. Vérifiez votre connexion et réessayez.",
     "przywracanie_nic": "Aucun achat Oczko Pro trouvé pour cet identifiant Apple. Si vous l’avez acheté avec un autre identifiant Apple, connectez-vous avec celui-ci dans Réglages et réessayez.",
     "przywracanie_blad": "Impossible de restaurer les achats. Vérifiez votre connexion et réessayez.",
-    "pro_wlaczone": "Oczko Pro est activé."
+    "pro_wlaczone": "Oczko Pro est activé.",
+    "kafel_dzien_tytul": "Chaque jour d’ouvrage",
+    "kafel_dzien_opis": "Comptez dès que vous travaillez, sans limite mensuelle.",
+    "kafel_urzadzenia_tytul": "Sans limite sur chaque appareil",
+    "kafel_urzadzenia_opis": "iPhone, iPad et Apple Watch.",
+    "kafel_rodzina_tytul": "Pour votre famille",
+    "kafel_rodzina_opis": "Vous pouvez le partager avec votre famille grâce à Partage familial.",
+    "kafel_dane_tytul": "Vos données restent à vous",
+    "kafel_dane_opis": "Projets, modèles et historique restent, avec ou sans Pro."
   },
   "uczciwe": {
     "tytul": "Votre premier jour d’ouvrage est terminé",
@@ -1049,5 +1083,42 @@
     "yd_nazwa": "Yards",
     "g_nazwa": "Grammes",
     "oz_nazwa": "Onces"
+  },
+  "dzis": {
+    "tytul": "Aujourd’hui",
+    "pierwszy_tytul": "Premier compteur",
+    "pierwszy_opis": "Touchez +1 après chaque rang terminé. Vous pourrez nommer le projet plus tard.",
+    "otworz_licznik": "Ouvrir le compteur",
+    "kontynuuj": "Continuer",
+    "wybierz_projekt": "Choisir un projet",
+    "bez_miejsca_tytul": "Vos projets sont ici",
+    "bez_miejsca_one": "{{count}} projet en cours. Choisissez-en un, et Aujourd’hui l’ouvrira là où vous en étiez.",
+    "bez_miejsca_many": "{{count}} de projets en cours. Choisissez-en un, et Aujourd’hui l’ouvrira là où vous en étiez.",
+    "bez_miejsca_other": "{{count}} projets en cours. Choisissez-en un, et Aujourd’hui l’ouvrira là où vous en étiez.",
+    "czesc_rzad": "{{czesc}}, rang {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rang {{n}} sur {{cel}}",
+    "gotowe_one": "rang terminé",
+    "gotowe_many": "rangs terminés",
+    "gotowe_other": "rangs terminés",
+    "dzianina_a11y_one": "{{czesc}} : {{count}} rang terminé, aujourd’hui {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}} : {{count}} de rangs terminés, aujourd’hui {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}} : {{count}} rangs terminés, aujourd’hui {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, aujourd’hui {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, aujourd’hui {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}} : {{count}} sur {{cel}} rangs terminés, aujourd’hui {{dzis}}",
+    "co_dalej_one": "Dans {{count}} rang : {{tekst}} ({{ktory}} sur {{razy}})",
+    "co_dalej_many": "Dans {{count}} de rangs : {{tekst}} ({{ktory}} sur {{razy}})",
+    "co_dalej_other": "Dans {{count}} rangs : {{tekst}} ({{ktory}} sur {{razy}})",
+    "co_dalej_teraz": "Ce rang : {{tekst}} ({{ktory}} sur {{razy}})",
+    "ten_tydzien": "Cette semaine",
+    "tydzien_pusty": "Vous verrez ici les jours où vous avez travaillé.",
+    "dzien_dziergany_a11y": "{{etykieta}}, jour d’ouvrage",
+    "kafel_wloczka": "Fil et aiguilles"
+  },
+  "zakladki": {
+    "dzis": "Aujourd’hui",
+    "projekty": "Projets",
+    "narzedzia": "Outils",
+    "historia": "Historique"
   }
 }

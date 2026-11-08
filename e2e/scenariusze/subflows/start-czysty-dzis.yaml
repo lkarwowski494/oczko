@@ -1,0 +1,14 @@
+# Podprzepływ (ZM-18, P-563 (4a), ER-68): czysta instalacja (clearState) z wstrzykniętym zegarem (Z07-18) i bez sieci — zatrzymuje się na „Dziś”.
+# Pierwszy ekran to „Dziś” z kartą „Pierwszy licznik” (wartość 0, „+1” karty); używają go scenariusze o samym starcie (01, 02, 03, 12).
+# Parametr (env runFlow): TERAZ — czas lokalny ISO bez strefy, np. "2026-11-02T20:00:00"; zegar biegnie dalej od tej chwili (kontrakt: e2e/README.md).
+appId: com.apps4brew.knitting
+name: "podprzepływ: czysta instalacja z zegarem, ekran „Dziś”"
+---
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: ${TERAZ}
+      oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 } # karta jest w górnej części ekranu — czytelna także w orientacji z poprzedniego scenariusza
+- setOrientation: PORTRAIT # orientacja symulatora przeżywa scenariusz, który padł w poziomie (przebieg 40446976426)
+- assertVisible: { id: "dzis-plus" }

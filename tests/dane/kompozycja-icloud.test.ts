@@ -35,7 +35,7 @@ describe('kompozycja licznika z iCloud', () => {
     const icloud = { start: () => { wystartowal = true; return new Promise<void>(() => undefined); } }; // sendChanges bez odpowiedzi
     const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, await j(), { wibracje: () => true, icloud });
     const wynik = await Promise.race([k.przygotuj(), new Promise<'czeka'>((r) => setTimeout(() => r('czeka'), 1000))]);
-    expect(wynik).toEqual({ ok: true, wartosc: { cel: 'licznik' } });
+    expect(wynik).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'licznik' } });
     expect(wystartowal).toBe(true);
   });
 

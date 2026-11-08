@@ -24,7 +24,7 @@ export function ArkuszUsunWszystko(p: PropsUsunWszystko): React.ReactElement {
       {p.icloudWlaczona && (
         <>
           <View style={st.wiersz}>
-            <Text style={{ ...typografia.tresc, color: k.grafit, flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden>{t('icloud.usun_z_icloud')}</Text>
+            <Text style={{ ...typografia.tresc, color: k.tekst, flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden>{t('icloud.usun_z_icloud')}</Text>
             <Switch accessibilityRole="switch" accessibilityLabel={t('icloud.usun_z_icloud')} accessibilityState={{ checked: zIcloud }} value={zIcloud} onValueChange={ustawZIcloud} testID="usun-z-icloud" />
           </View>
           <Tresc podpis>{t('icloud.usun_z_icloud_opis')}</Tresc>

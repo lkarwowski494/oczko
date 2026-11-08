@@ -51,9 +51,12 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     expect(screen.getByTestId('p')).toHaveStyle({ backgroundColor: k.przyciskNieaktywny, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama });
   });
 
-  test('„+1 row” na liczniku', () => {
+  // M3 p3a (makieta `licznik`, `.wielki`): „+1” licznika to duży przycisk w kolorze `akcent` z tekstem `naAkcencie` (jak okrągłe „+1” karty „Dziś”), nie `przycisk`; bez obrysu.
+  test('„+1 row” na liczniku: wypełnienie `akcent`, tekst `naAkcencie`, bez obrysu', () => {
     render(<Licznik stan={stanLicznika()} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
-    wypelniony(screen.getByTestId('licznik-plus'), k);
+    expect(screen.getByTestId('licznik-plus')).toHaveStyle({ backgroundColor: k.akcent });
+    expect(RN.StyleSheet.flatten(screen.getByTestId('licznik-plus').props.style).borderWidth).toBeUndefined();
+    expect(screen.getByText('+1 row')).toHaveStyle({ color: k.naAkcencie });
   });
 
   test('„+1 row” w pasku licznika pod wzorem', () => {
@@ -66,28 +69,34 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
       strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
       licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
     }} t={t} widok={<RN.Text>PDF</RN.Text>} {...w} />);
-    wypelniony(screen.getByRole('button', { name: /^\+1 row/ }), k);
+    // M3 p3b (ekran `wzor` makiety, `.pasek-wz .p`): „+1” paska jak „+1” licznika — wypełnienie `akcent`, tekst `naAkcencie`, bez obrysu (dawniej `przycisk` z obrysem).
+    const plus = screen.getByRole('button', { name: /^\+1 row/ });
+    expect(plus).toHaveStyle({ backgroundColor: k.akcent });
+    expect(RN.StyleSheet.flatten(plus.props.style).borderWidth).toBeUndefined();
+    expect(screen.getByText('+1 row')).toHaveStyle({ color: k.naAkcencie });
   });
 
-  test('kapsuła stopera w trakcie sesji (tokeny przycisku głównego, design-spec)', () => {
+  // M3 p4b (token `stoper.biegnie`, M3-MAK-03): trwająca sesja stopera to akcja pod liczbą z tłem `powierzchnia` i ramą 2 pt `akcentTekst` — nie wypełnienie `akcent`
+  // (stan niesie też symbol i etykieta VoiceOver); zastępuje wypełnienie `akcent` ze stanu p3a.
+  test('akcja stopera w trakcie sesji: tło `powierzchnia` z ramą `akcentTekst`, nie wypełnienie `akcent`', () => {
     const T = 1_000_000_000_000;
     const f = { naStart: jest.fn(), naWstrzymaj: jest.fn(), naWznow: jest.fn(), naZatrzymaj: jest.fn(), naInnyPotwierdz: jest.fn(), naInnyAnuluj: jest.fn() };
     render(<Stoper stan={{ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' }} inny={null} t={t} teraz={() => T + 65_000} {...f} />);
-    wypelniony(screen.getByTestId('licznik-stoper'), k);
+    expect(screen.getByTestId('licznik-stoper')).toHaveStyle({ backgroundColor: k.powierzchnia, borderWidth: tokeny.stoper.biegnie.gruboscRamy, borderColor: k.akcentTekst });
   });
 
-  test('wybrany dzień w Historii = przycisk główny (design-spec: „wybrany dzień = przycisk główny”)', () => {
+  test('Historia (M3 p5): dzień z robótką = kwadrat `akcent` z obwódką `akcentTekst`, wybrany dzień = obwódka `tekst`', () => {
     const widok = {
-      dniRobotki: ['2026-10-22'], ukonczoneDnia: [], dzien: [{ projektId: 'p1', nazwa: 'Sweater', rzedy: 5, czasMs: null }],
+      dniRobotki: ['2026-10-22', '2026-10-23'], ukonczoneDnia: [], dzien: [{ projektId: 'p1', nazwa: 'Sweater', rzedy: 5, czasMs: null }],
       tydzien: { od: '2026-10-19', do: '2026-10-25', rzedy: 5, czasMs: null, ukonczone: 0, poprzednie: { rzedy: 0 } },
-      miesiac: { rzedy: 5, czasMs: null, ukonczone: 0, dni: 1 }, pierwsze: false,
+      miesiac: { rzedy: 5, czasMs: null, ukonczone: 0, dni: 2 }, pierwsze: false,
     };
     const j = { t, jezyk: () => 'en', zegar24h: () => true };
     render(<HistoriaDni stan={stanHistorii(widok, { j, miesiac: '2026-10', wybrany: '2026-10-22', dzis: '2026-10-26' })} t={t}
       naWybierz={jest.fn()} naPoprzedni={jest.fn()} naNastepny={jest.fn()} naProjekt={jest.fn()} />);
-    const dzien = screen.getByTestId('historia-dzien-2026-10-22');
-    const kolo = dzien.findAll((n) => typeof n.type === 'string' && n.props.style && JSON.stringify(RN.StyleSheet.flatten(n.props.style)).includes(k.przycisk))[0];
-    expect(kolo).toBeTruthy();
-    expect(RN.StyleSheet.flatten(kolo!.props.style)).toMatchObject({ backgroundColor: k.przycisk });
+    const kwadrat = (id: string) => screen.getByTestId(id).findAll((n) => typeof n.type === 'string' && n.props.style && RN.StyleSheet.flatten(n.props.style).backgroundColor !== undefined && RN.StyleSheet.flatten(n.props.style).borderWidth !== undefined)[0];
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-22')!.props.style)).toMatchObject({ backgroundColor: k.akcent, borderColor: k.tekst }); // wybrany
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-23')!.props.style)).toMatchObject({ backgroundColor: k.akcent, borderColor: k.akcentTekst }); // dziergany, niewybrany
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-24')!.props.style)).toMatchObject({ backgroundColor: k.dzienPusty }); // bez robótki
   });
 });

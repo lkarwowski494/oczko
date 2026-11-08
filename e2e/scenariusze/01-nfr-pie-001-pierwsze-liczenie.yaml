@@ -1,9 +1,11 @@
-# NFR-PIE-001 (docs/brd/wymagania.md:89; metoda: 1 stuknięcie, 0 ekranów przed licznikiem, offline, 1. i ostatni dzień miesiąca).
+# NFR-PIE-001 (docs/brd/wymagania.md:89–92 po ER-68, ZM-18, P-562, P-563 (4a), (10a)): pierwsze +1 = 1 stuknięcie w „+1” karty „Pierwszy licznik” na „Dziś”;
+# 0 ekranów, arkuszy i okien przed „Dziś” i nad „+1” karty; z istniejącym licznikiem: zimny start → „Dziś” → „+1” karty → n+1 bez zmiany ekranu;
+# pełny licznik 1 stuknięciem („Otwórz licznik ›” / „Kontynuuj ›”, testID `dzis-kontynuuj`); offline; 1. i ostatni dzień miesiąca (L-01).
 # Kontrola 05-12 (strategia §10): E2E świeżej instalacji + test przypadku użycia z wstrzykniętym zegarem dla dat (Z07-18).
 # Zegar: argument startu oczkoE2eTeraz tylko w buildzie E2E (EXPO_PUBLIC_E2E=1), sieć: oczkoE2eSiec=brak (kontrakt: e2e/README.md).
-# Scenorys 04: docs/design/przejscie/z1-k1.png (start), z1-k2.png (po +1 row).
+# Wzorzec 04: docs/design/dzianina/wzorce-zrzuty/dzis-pierwszy-390-jasny.png (start), dzis-390-jasny.png (karta „Kontynuuj”).
 appId: com.apps4brew.knitting
-name: "NFR-PIE-001 · Pierwsze liczenie: 1 stuknięcie, 0 ekranów, offline, 1. i ostatni dzień miesiąca"
+name: "NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca"
 tags:
   - NFR-PIE-001
   - podstawowy
@@ -11,34 +13,50 @@ tags:
 ---
 # --- 1. dzień miesiąca, tuż po północy, czysta instalacja, bez sieci ---
 - runFlow:
-    file: subflows/start-czysty.yaml
+    file: subflows/start-czysty-dzis.yaml
     env:
       TERAZ: "2026-11-01T00:05:00"
-- assertVisible: { id: "licznik-wartosc", text: "0" }
-- assertVisible: "\\+1 row.*"
+- assertVisible: { id: "dzis-wartosc", text: "0" }
 - assertNotVisible: { id: "oferty-ekran" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 - assertNotVisible: { id: "wprowadzenie" }
-- takeScreenshot: 01-start-1-dnia
-- tapOn: { id: "licznik-plus" }
-- assertVisible: { id: "licznik-wartosc", text: "1" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 2" }
-- takeScreenshot: 01-po-pierwszym-plus-1-dnia
+- assertNotVisible: { id: "limit-oferta-link" } # P-563 (10a): na „Dziś” bez odnośnika „Oczko Pro”
+- takeScreenshot: 01-dzis-start-1-dnia
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
+- assertVisible: { id: "dzis-karta" } # bez zmiany ekranu (próg (3))
+- assertNotVisible: { id: "licznik-plus" }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 01-dzis-po-pierwszym-plus-1-dnia
+# --- drugi przebieg z istniejącym licznikiem: zimny start → „Dziś” → „+1” karty → n+1 bez zmiany ekranu; pełny licznik jednym stuknięciem ---
+- runFlow:
+    file: subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-01T00:20:00"
+- assertVisible: { id: "dzis-wartosc", text: "1" }
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
+- assertVisible: { id: "dzis-karta" }
+- assertNotVisible: { id: "licznik-plus" }
+- tapOn: { id: "dzis-kontynuuj" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "licznik-teraz-rzad", text: ".*row 3" } # testid.md:159: na makiecie TO BE linia łączy się z podpisem liczby („rzędy gotowe · teraz rząd N”), tekst en od 04 — asercja numeru rzędu, nie brzmienia
+- takeScreenshot: 01-licznik-po-kontynuuj
 # --- ostatni dzień miesiąca, tuż przed północą, czysta instalacja ---
 - runFlow:
-    file: subflows/start-czysty.yaml
+    file: subflows/start-czysty-dzis.yaml
     env:
       TERAZ: "2026-11-30T23:55:00"
-- assertVisible: { id: "licznik-wartosc", text: "0" }
+- assertVisible: { id: "dzis-wartosc", text: "0" }
 - assertNotVisible: { id: "oferty-ekran" }
-- tapOn: { id: "licznik-plus" }
-- assertVisible: { id: "licznik-wartosc", text: "1" }
-- takeScreenshot: 01-po-pierwszym-plus-ostatni-dzien
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
+- takeScreenshot: 01-dzis-po-pierwszym-plus-ostatni-dzien
 # --- luty w roku przestępnym, ostatni dzień (granica miesiąca inna niż 30/31) ---
 - runFlow:
-    file: subflows/start-czysty.yaml
+    file: subflows/start-czysty-dzis.yaml
     env:
       TERAZ: "2028-02-29T21:00:00"
-- tapOn: { id: "licznik-plus" }
-- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
 - assertNotVisible: { id: "oferty-ekran" }

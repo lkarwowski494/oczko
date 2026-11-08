@@ -17,7 +17,7 @@ tags:
 - runFlow: subflows/nazwij-projekt.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-menu" }
 - tapOn: { id: "projekt-menu" }
 - assertVisible: { id: "projekt-usun" }

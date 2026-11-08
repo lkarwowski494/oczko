@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "今回の記録：{{godzina}}から{{count}}目",
     "seria_blokada_other": "{{godzina}}にロック画面から{{count}}段追加しました。取り消しますか？",
     "seria_zegarek_other": "{{godzina}}にウォッチで{{count}}段追加しました。取り消しますか？",
-    "wpisz_blad_format": "0以上の整数を入力してください（例：{{przyklad}}）。"
+    "wpisz_blad_format": "0以上の整数を入力してください（例：{{przyklad}}）。",
+    "akcja_notatka": "メモ",
+    "akcja_wzor": "編み図",
+    "akcja_cel": "目標",
+    "akcja_cel_a11y": "目標、リマインダー、繰り返し",
+    "akcja_stoper": "タイマー",
+    "akcja_historia": "履歴",
+    "projekt_wejscie": "プロジェクト ›",
+    "projekt_wejscie_a11y": "プロジェクト：{{projekt}}",
+    "menu_wiecej_a11y": "カウンターのオプション：名前、段数、ロック、完了",
+    "dzianina_a11y_other": "{{czesc}}：{{count}}段完了、このセッションで{{sesja}}段",
+    "dzianina_a11y_cel_other": "{{czesc}}：{{cel}}段中{{count}}段完了、このセッションで{{sesja}}段"
   },
   "limit": {
     "zawczasu_other": "{{miesiac}}の無料の編み日は残っていません。{{data}}までカウントは一時停止です。{{count}}段とすべてのデータは保存されています。",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "{{data}}に完成 · {{czas}}",
     "ukonczono_bez_czasu": "{{data}}に完成",
     "ukonczono_a11y": "{{nazwa}}、{{data}}に完成、{{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}、{{data}}に完成"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}、{{data}}に完成",
+    "menu_a11y": "その他：{{nazwa}}",
+    "kosz_do_other": "：{{count}}件、{{data}}まで。",
+    "kosz_pokaz": "表示"
   },
   "historia": {
     "pusto": "まだ変更はありません。",
@@ -189,7 +203,10 @@
     "wpisz": "正しい数を入力",
     "wpis_rozwin_a11y": "{{wpis}}の詳細",
     "wpis_rozwin_podpowiedz": "この記録を変更する方法を表示します。",
-    "wpis_a11y": "{{czas}}に{{od}}から{{do}}"
+    "wpis_a11y": "{{czas}}に{{od}}から{{do}}",
+    "kafel_dni_other": "編み物の日",
+    "kafel_rzedy_other": "段",
+    "kafel_czas": "セッション時間"
   },
   "menu": {
     "nazwa": "プロジェクトとパーツに名前を付ける",
@@ -401,7 +418,6 @@
     "raz": "1回のお支払いのみ。更新はありません。",
     "dozywotni_przy_subskrypcji": "サブスクリプションは、解約するまで自動更新されます。",
     "bez_pro_other": "Proなし：毎月{{limit}}日の手芸日。すべてのプロジェクトとデータはいつでも使えます。",
-    "rodzina": "ファミリー共有で家族と共有されます。",
     "kup": "{{plan}}で続ける",
     "przywroc": "購入を復元",
     "polityka": "プライバシーポリシー",
@@ -415,7 +431,15 @@
     "blad_zakupu": "購入できませんでした。接続を確認して、もう一度お試しください。",
     "przywracanie_nic": "このApple IDでのOczko Proの購入は見つかりませんでした。別のApple IDで購入した場合は、「設定」でそのApple IDでサインインして、もう一度お試しください。",
     "przywracanie_blad": "購入を復元できませんでした。接続を確認して、もう一度お試しください。",
-    "pro_wlaczone": "Oczko Proがオンになりました。"
+    "pro_wlaczone": "Oczko Proがオンになりました。",
+    "kafel_dzien_tytul": "編み物の日、毎日",
+    "kafel_dzien_opis": "編み物をする日はいつでも、月ごとの上限なしでカウントできます。",
+    "kafel_urzadzenia_tytul": "どの端末でも制限なし",
+    "kafel_urzadzenia_opis": "iPhone、iPad、Apple Watch。",
+    "kafel_rodzina_tytul": "ご家族のために",
+    "kafel_rodzina_opis": "ファミリー共有でご家族と共有できます。",
+    "kafel_dane_tytul": "データはあなたのもの",
+    "kafel_dane_opis": "Proの有無にかかわらず、プロジェクト、編み図、履歴はそのまま残ります。"
   },
   "uczciwe": {
     "tytul": "最初の編み日が終わりました",
@@ -877,5 +901,32 @@
     "yd_nazwa": "ヤード",
     "g_nazwa": "グラム",
     "oz_nazwa": "オンス"
+  },
+  "dzis": {
+    "tytul": "今日",
+    "pierwszy_tytul": "最初のカウンター",
+    "pierwszy_opis": "1段編み終えるたびに+1をタップします。プロジェクト名はあとで付けられます。",
+    "otworz_licznik": "カウンターを開く",
+    "kontynuuj": "続ける",
+    "wybierz_projekt": "プロジェクトを選ぶ",
+    "bez_miejsca_tytul": "プロジェクトはこちら",
+    "bez_miejsca_other": "進行中のプロジェクトは{{count}}件です。1つ選ぶと、「今日」が作業の続きから開きます。",
+    "czesc_rzad": "{{czesc}}、{{n}}段目",
+    "czesc_rzad_cel": "{{czesc}}、{{cel}}段中{{n}}段目",
+    "gotowe_other": "段完了",
+    "dzianina_a11y_other": "{{czesc}}：{{count}}段完了、今日は{{dzis}}段",
+    "dzianina_a11y_cel_other": "{{czesc}}：{{cel}}段中{{count}}段完了、今日は{{dzis}}段",
+    "co_dalej_other": "{{count}}段後：{{tekst}}（{{ktory}}/{{razy}}）",
+    "co_dalej_teraz": "この段：{{tekst}}（{{ktory}}/{{razy}}）",
+    "ten_tydzien": "今週",
+    "tydzien_pusty": "ここに編み物をした日が表示されます。",
+    "dzien_dziergany_a11y": "{{etykieta}}、編み物の日",
+    "kafel_wloczka": "糸と編み針"
+  },
+  "zakladki": {
+    "dzis": "今日",
+    "projekty": "プロジェクト",
+    "narzedzia": "ツール",
+    "historia": "履歴"
   }
 }

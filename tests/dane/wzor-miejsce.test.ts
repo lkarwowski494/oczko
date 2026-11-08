@@ -31,7 +31,7 @@ test('S1: strona 3 (indeks 2) w powiększeniu 2× przeżywa restart — zapis w 
   expect(await biezacyLicznik(s.z)).toEqual({ ok: true, wartosc: 'l1' });
   expect(await startNaWzorze(s.z)).toEqual({ ok: true, wartosc: true });
   expect(await pozycja(s, 'w1')).toEqual({ strona: 2, powiekszenie: 2 });
-  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'wzor' } });
+  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'wzor' } });
 });
 
 test('widok natywny zgłasza strony i powiększenie osobno: zapis jednego nie kasuje drugiego', async () => {
@@ -61,7 +61,7 @@ test('wyjście z ekranu wzoru: zapamietajLicznik ustawia ekran „licznik”, po
   await zapamietajLicznik(s.z, { licznikId: 'l1' });
   expect(await miejsce(s)).toEqual({ ekran: 'licznik', id: 'l1', wzor: 'w1', strona: 2, powiekszenie: 2 });
   expect(await startNaWzorze(s.z)).toEqual({ ok: true, wartosc: false });
-  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'licznik' } });
+  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'licznik' } });
   expect(await pozycja(s, 'w1')).toEqual({ strona: 2, powiekszenie: 2 });
 });
 
@@ -83,5 +83,5 @@ test('wzór usunięty, z innego projektu albo licznik w koszu: start nie otwiera
   expect(await miejsce(s)).toEqual({ ekran: 'wzor', id: 'l1', wzor: 'w1', strona: 2, powiekszenie: 2 });
   await usunWzor(s.z, { wzorId: 'w1' });
   expect(await startNaWzorze(s.z)).toEqual({ ok: true, wartosc: false });
-  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'licznik' } });
+  expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'licznik' } });
 });

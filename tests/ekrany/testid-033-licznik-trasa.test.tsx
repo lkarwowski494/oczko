@@ -24,7 +24,7 @@ const mockApp: { biezaca: unknown } = { biezaca: null };
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.biezaca }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/licznik') as { default: React.ComponentType }).default;
 
 const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
@@ -43,7 +43,7 @@ async function trasa(seed: Parameters<typeof wykonaj>[1]) {
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, aplikacjaAktywna: () => true });
   expect((await k.przygotuj()).ok).toBe(true);
   await k.otworz('l1'); // zapamiętuje „ostatnie miejsce”: trasa „/” startuje na tym liczniku (BR-PRJ-011)
-  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
+  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t, jezyk: i.jezyk }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
   render(<EkranLicznika />);
   return { s, k, haptyka, zdarzenie: (linie: ZdarzenieWejsciowe[]) => { s.dziennik.linie.push(...linie); odbior?.(linie); } };
 }
@@ -61,10 +61,11 @@ describe('033-T1: testID tekstów wyniku licznika na trasie „/”', () => {
     const el = await screen.findByTestId('licznik-calosc');
     expect(JSON.stringify(el.props.children)).toMatch(/20/);
   });
-  test('licznik-notatka: notatka projektu → nagłówek „Note” i treść mają testID (nagłówek: licznik-notatka)', async () => {
+  // M3 p3a (testid.md M3-TESTID-02): nagłówek „Note” znika (ikona zamiast słowa) — `licznik-notatka` to blok z treścią notatki.
+  test('licznik-notatka: notatka projektu → blok z ikoną i treścią ma testID `licznik-notatka`', async () => {
     await trasa(dane(['UPDATE projekt SET notatka = ? WHERE id = ?', ['ujmowanie co 4 rzędy', 'p1']]));
     const el = await screen.findByTestId('licznik-notatka');
-    expect(JSON.stringify(el.props.children)).toMatch(/Note/);
+    expect(el).toHaveTextContent('ujmowanie co 4 rzędy');
     expect(await screen.findByText('ujmowanie co 4 rzędy')).toBeTruthy();
   });
 });

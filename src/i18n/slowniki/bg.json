@@ -65,7 +65,20 @@
     "seria_blokada_other": "Добавени са {{count}} реда от заключения екран в {{godzina}}. Отмяна?",
     "seria_zegarek_one": "Добавен е {{count}} ред от часовника в {{godzina}}. Отмяна?",
     "seria_zegarek_other": "Добавени са {{count}} реда от часовника в {{godzina}}. Отмяна?",
-    "wpisz_blad_format": "Въведете цяло число, 0 или повече, например {{przyklad}}."
+    "wpisz_blad_format": "Въведете цяло число, 0 или повече, например {{przyklad}}.",
+    "akcja_notatka": "Бележка",
+    "akcja_wzor": "Модел",
+    "akcja_cel": "Цел",
+    "akcja_cel_a11y": "Цел, напомняне, повторение",
+    "akcja_stoper": "Таймер",
+    "akcja_historia": "История",
+    "projekt_wejscie": "Проект ›",
+    "projekt_wejscie_a11y": "Проект: {{projekt}}",
+    "menu_wiecej_a11y": "Опции на брояча: име, номер на ред, заключване, приключване",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} готов ред, {{sesja}} в тази сесия",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} готови реда, {{sesja}} в тази сесия",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} от {{cel}} реда готови, {{sesja}} в тази сесия",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} от {{cel}} реда готови, {{sesja}} в тази сесия"
   },
   "limit": {
     "zawczasu_one": "Няма безплатни дни през {{miesiac}}. Броенето е на пауза до {{data}}. Вашият {{count}} ред и всичко друго се пазят.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Завършен на {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Завършен на {{data}}",
     "ukonczono_a11y": "{{nazwa}}, завършен на {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завършен на {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завършен на {{data}}",
+    "menu_a11y": "Още: {{nazwa}}",
+    "kosz_do_one": ": {{count}} елемент, до {{data}}.",
+    "kosz_do_other": ": {{count}} елемента, до {{data}}.",
+    "kosz_pokaz": "Покажи"
   },
   "historia": {
     "pusto": "Още няма промени.",
@@ -217,7 +234,12 @@
     "wpisz": "Въведи правилното число",
     "wpis_rozwin_a11y": "Още за {{wpis}}",
     "wpis_rozwin_podpowiedz": "Показва как да промените този запис.",
-    "wpis_a11y": "{{od}} до {{do}} в {{czas}}"
+    "wpis_a11y": "{{od}} до {{do}} в {{czas}}",
+    "kafel_dni_one": "ден с плетене",
+    "kafel_dni_other": "дни с плетене",
+    "kafel_rzedy_one": "ред",
+    "kafel_rzedy_other": "реда",
+    "kafel_czas": "време на сесиите"
   },
   "menu": {
     "nazwa": "Именувайте проекта и частта",
@@ -455,7 +477,6 @@
     "dozywotni_przy_subskrypcji": "Абонаментът ви продължава да се подновява, докато не го анулирате.",
     "bez_pro_one": "Без Pro: {{limit}} ден за ръкоделие всеки месец, а всичките ви проекти и данни остават винаги.",
     "bez_pro_other": "Без Pro: {{limit}} дни за ръкоделие всеки месец, а всичките ви проекти и данни остават винаги.",
-    "rodzina": "Споделено със семейството ви чрез Family Sharing.",
     "kup": "Продължи с {{plan}}",
     "przywroc": "Възстановяване на покупки",
     "polityka": "Политика за поверителност",
@@ -469,7 +490,15 @@
     "blad_zakupu": "Покупката не бе извършена. Проверете връзката и опитайте отново.",
     "przywracanie_nic": "Не е намерена покупка на Oczko Pro за този Apple ID. Ако сте я направили с друг Apple ID, влезте с него в Настройки и опитайте отново.",
     "przywracanie_blad": "Покупките не можаха да се възстановят. Проверете връзката и опитайте отново.",
-    "pro_wlaczone": "Oczko Pro е включено."
+    "pro_wlaczone": "Oczko Pro е включено.",
+    "kafel_dzien_tytul": "Всеки ден на плетене",
+    "kafel_dzien_opis": "Броете, когато плетете, без месечен лимит.",
+    "kafel_urzadzenia_tytul": "Без лимит на всяко устройство",
+    "kafel_urzadzenia_opis": "iPhone, iPad и Apple Watch.",
+    "kafel_rodzina_tytul": "За семейството",
+    "kafel_rodzina_opis": "Можете да го споделите със семейството си чрез Family Sharing.",
+    "kafel_dane_tytul": "Данните остават ваши",
+    "kafel_dane_opis": "Проекти, модели и история остават — с Pro или без."
   },
   "uczciwe": {
     "tytul": "Първият ви ден за ръкоделие е изпълнен",
@@ -963,5 +992,37 @@
     "yd_nazwa": "Ярдове",
     "g_nazwa": "Грамове",
     "oz_nazwa": "Унции"
+  },
+  "dzis": {
+    "tytul": "Днес",
+    "pierwszy_tytul": "Първи брояч",
+    "pierwszy_opis": "Докоснете +1 след всеки завършен ред. Името на проекта можете да зададете по-късно.",
+    "otworz_licznik": "Отвори брояча",
+    "kontynuuj": "Продължи",
+    "wybierz_projekt": "Избери проект",
+    "bez_miejsca_tytul": "Проектите ви са тук",
+    "bez_miejsca_one": "{{count}} проект в процес. Изберете един и „Днес“ ще го отвори там, където сте спрели.",
+    "bez_miejsca_other": "{{count}} проекта в процес. Изберете един и „Днес“ ще го отвори там, където сте спрели.",
+    "czesc_rzad": "{{czesc}}, ред {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, ред {{n}} от {{cel}}",
+    "gotowe_one": "готов ред",
+    "gotowe_other": "готови реда",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} готов ред, днес {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} готови реда, днес {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} от {{cel}} реда готови, днес {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} от {{cel}} реда готови, днес {{dzis}}",
+    "co_dalej_one": "След {{count}} ред: {{tekst}} ({{ktory}} от {{razy}})",
+    "co_dalej_other": "След {{count}} реда: {{tekst}} ({{ktory}} от {{razy}})",
+    "co_dalej_teraz": "В този ред: {{tekst}} ({{ktory}} от {{razy}})",
+    "ten_tydzien": "Тази седмица",
+    "tydzien_pusty": "Тук ще виждате дните, в които плетете.",
+    "dzien_dziergany_a11y": "{{etykieta}}, ден с плетене",
+    "kafel_wloczka": "Прежда и игли"
+  },
+  "zakladki": {
+    "dzis": "Днес",
+    "projekty": "Проекти",
+    "narzedzia": "Инструменти",
+    "historia": "История"
   }
 }

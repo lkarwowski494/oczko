@@ -32,6 +32,7 @@ export type StanPrzegladarki = {
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
   licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
+  jezyk?: string;
 };
 export type PropsPrzegladarki = {
   stan: StanPrzegladarki;
@@ -225,7 +226,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   );
 
   const licznik = (
-    <LicznikWzoru t={t} licznik={s.licznik} obok={obok} szerokoscKolumny={s.uklad.kolumnaLicznika} blad={blad} naOferty={p.naOferty}
+    <LicznikWzoru t={t} licznik={s.licznik} jezyk={s.jezyk} obok={obok} szerokoscKolumny={s.uklad.kolumnaLicznika} blad={blad} naOferty={p.naOferty}
       naPlus={() => void licz(p.naPlus)} naMinus={() => void licz(p.naMinus)} />
   );
 
@@ -252,7 +253,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
 type Style = ReturnType<typeof style>;
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.wzorRama },
     obok: { flexDirection: 'row' },
     wzor: { flex: 1 },
     pasek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.s, minHeight: rozmiary.minimum, flexWrap: 'wrap' },
@@ -267,7 +268,7 @@ function style(k: Kolory) {
     podpis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l },
     pogrubiony: { fontWeight: '700' },
     informacja: { padding: odstep.m, marginHorizontal: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
-    strona: { flex: 1, backgroundColor: k.papierGrupa },
+    strona: { flex: 1, backgroundColor: k.wzorRama },
     stronaIpad: { alignSelf: 'center', width: '100%', maxWidth: KOLUMNA_TRESCI_MAKS }, // kolumna strony iPada maks. 640 pt (W4b, design-spec:683); ta sama stała co kolumna treści G1 (Bezpieczny)
     podpowiedz: { top: odstep.m, bottom: undefined }, // makieta ipad-rysik: nad stroną, nie na plakietce strony
     plakietka: { ...typografia.podpis, color: k.grafit, alignSelf: 'center', position: 'absolute', bottom: odstep.m, paddingHorizontal: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papier },

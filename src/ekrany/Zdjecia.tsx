@@ -3,7 +3,7 @@
 // „Share” podglądu (P-219 2A): plik przekodowany bez metadanych i GPS (kompozycja), arkusz systemowy.
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, ROZMIAR_SYMBOLU_TRESCI, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { SymbolSf } from './SymbolSf';
 
@@ -61,13 +61,16 @@ export function PodgladZdjec(p: {
   const { t } = p;
   const st = style(useKolory());
   const { width } = useWindowDimensions();
+  const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const [i, ustawI] = useState(Math.min(p.poczatek, Math.max(0, p.zdjecia.length - 1)));
   const biezace = p.zdjecia[i];
+  // Licznik „1 z 2”: obok akcji, od AX1 nad nimi (makieta `zdjecie`, `.duzy .zd-d span { order: -1 }`).
+  const licznik = <Text style={st.licznik}>{t('zdjecia.a11y', { n: i + 1, count: p.zdjecia.length })}</Text>;
   return (
     <View style={st.podglad}>
-      <View style={st.pasek}>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.zamknij')} onPress={p.naZamknij} style={st.przycisk}>
-          <Text style={st.jasny}>{t('wspolne.zamknij')}</Text>
+      <View style={st.pasekGora}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.zamknij')} onPress={p.naZamknij} style={st.przycisk} testID="zdjecie-zamknij">
+          <Text style={st.akcja}>{t('wspolne.zamknij')}</Text>
         </Pressable>
       </View>
       <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} contentOffset={{ x: i * width, y: 0 }}
@@ -77,15 +80,18 @@ export function PodgladZdjec(p: {
             accessibilityLabel={t('zdjecia.a11y', { n: k + 1, count: p.zdjecia.length })} style={{ width, flex: 1 }} />
         ))}
       </ScrollView>
-      <View style={st.pasek}>
+      <View style={[st.pasek, duzyTekst && st.pasekDuzy]}>
+        {duzyTekst && licznik}
         <Pressable accessibilityRole="button" accessibilityLabel={t('ukonczenie.udostepnij')} onPress={() => { if (biezace) p.naUdostepnij(biezace.id); }}
           style={st.przycisk} testID="zdjecie-udostepnij">
-          <Text style={st.jasny}>{t('ukonczenie.udostepnij')}</Text>
+          <SymbolSf nazwa="square.and.arrow.up" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={systemCzarny.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
+          <Text style={st.akcja}>{t('ukonczenie.udostepnij')}</Text>
         </Pressable>
-        <Text style={st.jasny}>{t('zdjecia.a11y', { n: i + 1, count: p.zdjecia.length })}</Text>
+        {!duzyTekst && licznik}
         <Pressable accessibilityRole="button" accessibilityLabel={t('zdjecia.usun')} testID="zdjecie-usun" style={st.przycisk}
           onPress={() => { if (biezace) p.potwierdz(t('zdjecia.usun_tytul'), t('zdjecia.usun_opis'), t('zdjecia.usun'), () => p.naUsun(biezace.id)); }}>
-          <Text style={st.jasny}>{t('zdjecia.usun')}</Text>
+          <SymbolSf nazwa="trash" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={systemCzarny.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
+          <Text style={st.akcja}>{t('zdjecia.usun')}</Text>
         </Pressable>
       </View>
     </View>
@@ -94,19 +100,23 @@ export function PodgladZdjec(p: {
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    naglowek: { ...typografia.drobny, color: k.olowek }, // jak nagłówki sekcji ekranu projektu (Projekt.tsx), 04-studio-projektowe-012, H-1c (13 pt)
+    naglowek: { ...typografia.instrukcja, color: k.tekst }, // jak nagłówki grup ekranu projektu (Projekt.tsx): 17 pt / 700 / tekst (`projekt.naglowekGrupy`, M3 p4b)
     rzad: { gap: odstep.s, alignItems: 'center' },
     miniatura: { width: MINIATURA, height: MINIATURA, borderRadius: promien.pole },
-    kafel: { minWidth: MINIATURA, minHeight: MINIATURA, padding: odstep.s, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
-    plus: { ...typografia.tytul, color: k.grafit },
-    kafelTekst: { ...typografia.podpis, color: k.grafit, textAlign: 'center' },
-    menu: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    // Kafel „Dodaj zdjęcie” (makieta `.zdj .d`): `powierzchnia` bez obrysu, plus w `ikona`, podpis 600 w `tekst`.
+    kafel: { minWidth: MINIATURA, minHeight: MINIATURA, padding: odstep.s, borderRadius: promien.pole, backgroundColor: k.powierzchnia, alignItems: 'center', justifyContent: 'center', rowGap: odstep.xs },
+    plus: { ...typografia.tytul, color: k.ikona },
+    kafelTekst: { ...typografia.podpis, color: k.tekst, fontWeight: '600', textAlign: 'center' },
+    menu: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     pozycja: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
-    tekst: { ...typografia.tresc, color: k.grafit },
+    tekst: { ...typografia.tresc, color: k.tekst },
     // Podgląd: czarne tło (makieta `zdjecie-podglad`) — tokeny kolor.systemCzarny, bez nowych kolorów.
     podglad: { flex: 1, backgroundColor: systemCzarny.tlo },
+    pasekGora: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: odstep.l, minHeight: cel.minimum }, // Zamknij w prawym górnym rogu (podgladZdjecia, słownik interakcji)
     pasek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.l, minHeight: cel.minimum },
-    przycisk: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },
-    jasny: { ...typografia.tresc, color: systemCzarny.grafit },
+    pasekDuzy: { flexDirection: 'column', alignItems: 'stretch' }, // od AX1: licznik nad akcjami, akcje jedna pod drugą
+    przycisk: { minHeight: cel.minimum, minWidth: cel.minimum, flexDirection: 'row', alignItems: 'center', columnGap: odstep.s },
+    akcja: { ...typografia.tresc, fontWeight: '600', color: systemCzarny.akcentTekst }, // `podgladZdjecia.akcja`
+    licznik: { ...typografia.tresc, color: systemCzarny.tekst2, textAlign: 'center' }, // `podgladZdjecia.licznik`
   });
 }

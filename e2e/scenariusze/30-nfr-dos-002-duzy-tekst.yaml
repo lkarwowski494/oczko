@@ -18,7 +18,7 @@ tags:
 - assertVisible: { id: "licznik-minus" }
 - takeScreenshot: 30-ax5-licznik-start
 - tapOn: { id: "licznik-menu" }
-# Arkusz menu to ScrollView (src/ekrany/Arkusz.tsx), a akcje przy AX5 są wysokie: „Enter value” leży poniżej pierwszego ekranu (przebieg 136, zrzut kroku 24; E2-136-S4)
+# Menu ••• (ZM-05, P-581: menu systemowe, 6 pozycji) przy AX5 bywa dłuższe niż ekran — jak arkusz-ScrollView w przebiegu 136 (zrzut kroku 24; E2-136-S4): przewinięcie do „Enter the row number”
 - scrollUntilVisible: { element: { id: "menu-wpisz-wartosc" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "menu-wpisz-wartosc" }
 - takeScreenshot: 30-ax5-menu
@@ -46,14 +46,12 @@ tags:
 - assertVisible: { id: "licznik-plus" }
 - takeScreenshot: 30-ax5-liczba-5-cyfr
 # M1-audytor-generalny-205 (04-studio-projektowe-003, SP-07): pasek licznika pod wzorem przy AX5 — „−1” i „+1” mają limity skali jak licznik
-# (×1,4 i ×1,8); zrzut do oceny 04 (liczba, −1 i +1 widoczne, strona wzoru zajmuje co najmniej połowę wysokości). Menu i ekran dodawania przy AX5 bywają dłuższe niż ekran.
-- tapOn: { id: "licznik-menu" }
-- scrollUntilVisible: { element: { id: "menu-wzor" }, direction: DOWN, timeout: 30000 }
-- assertVisible: { id: "menu-wzor" }
-- tapOn: { id: "menu-wzor" }
-- scrollUntilVisible: { element: { id: "wzor-dodaj" }, direction: DOWN, timeout: 30000 }
-- assertVisible: { id: "wzor-dodaj" }
-- tapOn: { id: "wzor-dodaj" }
+# (×1,4 i ×1,8); zrzut do oceny 04 (liczba, −1 i +1 widoczne, strona wzoru zajmuje co najmniej połowę wysokości). Rząd akcji i ekran dodawania przy AX5 bywają dłuższe niż ekran.
+# ZM-04 (P-580): „Wzór” to akcja pod liczbą (`licznik-wzor`, ten sam id w układzie zwykłym i AX5); przy AX5 rząd akcji leży pod notatką, poniżej pierwszego ekranu (testid.md:158)
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- takeScreenshot: 30-ax5-akcje-pod-liczba
+- tapOn: { id: "licznik-wzor" }
 - scrollUntilVisible: { element: { id: "e2e-wzor-pdf" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }

@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 2026-11-03 (P-473, P-474, P-481) przetłumaczyła wszystkie 146 baz kluczy w 33 językach (pl wcześniej, P-469); lista pusta. Historia powodów: git log tego pliku (przed commitem fali).",
+  "powod": "Fala 09 dla M3 „Dzianina” (2026-11-08, P-600; wyjątek P-578 wygasł): 48 baz kluczy partii M3 przetłumaczonych w 33 językach (pl i en wcześniej); lista pusta. Wcześniej: fala 2026-11-03 (P-473, P-474, P-481). Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -15,7 +15,10 @@
     "P-445",
     "P-473",
     "P-474",
-    "P-481"
+    "P-481",
+    "P-559",
+    "P-578",
+    "P-600"
   ],
   "klucze": [],
   "pierwsze_w_fali": [],

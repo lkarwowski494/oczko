@@ -80,7 +80,22 @@
     "seria_zegarek_one": "Aggiunta {{count}} riga dall'orologio alle ore {{godzina}}. Annullare?",
     "seria_zegarek_many": "Aggiunte {{count}} righe dall'orologio alle ore {{godzina}}. Annullare?",
     "seria_zegarek_other": "Aggiunte {{count}} righe dall'orologio alle ore {{godzina}}. Annullare?",
-    "wpisz_blad_format": "Inserisci un numero intero, da 0 in su, ad esempio {{przyklad}}."
+    "wpisz_blad_format": "Inserisci un numero intero, da 0 in su, ad esempio {{przyklad}}.",
+    "akcja_notatka": "Nota",
+    "akcja_wzor": "Modello",
+    "akcja_cel": "Meta",
+    "akcja_cel_a11y": "Meta, promemoria, ripetizione",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Cronologia",
+    "projekt_wejscie": "Progetto ›",
+    "projekt_wejscie_a11y": "Progetto: {{projekt}}",
+    "menu_wiecej_a11y": "Opzioni del contagiri: nome, numero del ferro, blocco, fine",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ferro finito, {{sesja}} in questa sessione",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} di ferri finiti, {{sesja}} in questa sessione",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} ferri finiti, {{sesja}} in questa sessione",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} di {{cel}} ferri finiti, {{sesja}} in questa sessione",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} di {{cel}} ferri finiti, {{sesja}} in questa sessione",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} di {{cel}} ferri finiti, {{sesja}} in questa sessione"
   },
   "limit": {
     "zawczasu_one": "Nessun giorno di lavoro gratuito rimasto in {{miesiac}}. Conteggio in pausa fino al {{data}}. Resta salvata {{count}} riga, con tutto il resto.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Terminato il {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Terminato il {{data}}",
     "ukonczono_a11y": "{{nazwa}}, terminato il {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminato il {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminato il {{data}}",
+    "menu_a11y": "Altro: {{nazwa}}",
+    "kosz_do_one": ": {{count}} elemento, fino al {{data}}.",
+    "kosz_do_many": ": {{count}} di elementi, fino al {{data}}.",
+    "kosz_do_other": ": {{count}} elementi, fino al {{data}}.",
+    "kosz_pokaz": "Mostra"
   },
   "historia": {
     "pusto": "Ancora nessuna modifica.",
@@ -245,7 +265,14 @@
     "wpisz": "Inserisci il numero giusto",
     "wpis_rozwin_a11y": "Dettagli: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Mostra come modificare questa voce.",
-    "wpis_a11y": "Da {{od}} a {{do}} alle ore {{czas}}"
+    "wpis_a11y": "Da {{od}} a {{do}} alle ore {{czas}}",
+    "kafel_dni_one": "giorno di lavoro",
+    "kafel_dni_many": "giorni di lavoro",
+    "kafel_dni_other": "giorni di lavoro",
+    "kafel_rzedy_one": "ferro",
+    "kafel_rzedy_many": "ferri",
+    "kafel_rzedy_other": "ferri",
+    "kafel_czas": "tempo di sessione"
   },
   "menu": {
     "nazwa": "Dai un nome a progetto e parte",
@@ -509,7 +536,6 @@
     "bez_pro_one": "Senza Pro: {{limit}} giorno creativo al mese, e tutti i tuoi progetti e dati, sempre.",
     "bez_pro_many": "Senza Pro: {{limit}} di giorni creativi al mese, e tutti i tuoi progetti e dati, sempre.",
     "bez_pro_other": "Senza Pro: {{limit}} giorni creativi al mese, e tutti i tuoi progetti e dati, sempre.",
-    "rodzina": "Condiviso con la tua famiglia tramite In famiglia.",
     "kup": "Continua con {{plan}}",
     "przywroc": "Ripristina acquisti",
     "polityka": "Informativa sulla privacy",
@@ -523,7 +549,15 @@
     "blad_zakupu": "L'acquisto non è andato a buon fine. Controlla la connessione e riprova.",
     "przywracanie_nic": "Nessun acquisto di Oczko Pro trovato per questo ID Apple. Se l'hai acquistato con un altro ID Apple, accedi con quello in Impostazioni e riprova.",
     "przywracanie_blad": "Impossibile ripristinare gli acquisti. Controlla la connessione e riprova.",
-    "pro_wlaczone": "Oczko Pro è attivo."
+    "pro_wlaczone": "Oczko Pro è attivo.",
+    "kafel_dzien_tytul": "Ogni giorno di lavoro",
+    "kafel_dzien_opis": "Conta ogni volta che lavori, senza limite mensile.",
+    "kafel_urzadzenia_tytul": "Senza limiti su ogni dispositivo",
+    "kafel_urzadzenia_opis": "iPhone, iPad e Apple Watch.",
+    "kafel_rodzina_tytul": "Per la tua famiglia",
+    "kafel_rodzina_opis": "Puoi condividerlo con la tua famiglia tramite In famiglia.",
+    "kafel_dane_tytul": "I tuoi dati restano tuoi",
+    "kafel_dane_opis": "Progetti, modelli e cronologia restano, con Pro o senza."
   },
   "uczciwe": {
     "tytul": "Il tuo primo giorno di lavoro è fatto",
@@ -1049,5 +1083,42 @@
     "yd_nazwa": "Iarde",
     "g_nazwa": "Grammi",
     "oz_nazwa": "Once"
+  },
+  "dzis": {
+    "tytul": "Oggi",
+    "pierwszy_tytul": "Primo contagiri",
+    "pierwszy_opis": "Tocca +1 dopo ogni ferro finito. Potrai dare un nome al progetto più tardi.",
+    "otworz_licznik": "Apri il contagiri",
+    "kontynuuj": "Continua",
+    "wybierz_projekt": "Scegli un progetto",
+    "bez_miejsca_tytul": "I tuoi progetti sono qui",
+    "bez_miejsca_one": "{{count}} progetto in corso. Scegline uno e Oggi lo aprirà da dove ti eri fermato.",
+    "bez_miejsca_many": "{{count}} di progetti in corso. Scegline uno e Oggi lo aprirà da dove ti eri fermato.",
+    "bez_miejsca_other": "{{count}} progetti in corso. Scegline uno e Oggi lo aprirà da dove ti eri fermato.",
+    "czesc_rzad": "{{czesc}}, ferro {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, ferro {{n}} di {{cel}}",
+    "gotowe_one": "ferro finito",
+    "gotowe_many": "ferri finiti",
+    "gotowe_other": "ferri finiti",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ferro finito, oggi {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} di ferri finiti, oggi {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} ferri finiti, oggi {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} di {{cel}} ferri finiti, oggi {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} di {{cel}} ferri finiti, oggi {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} di {{cel}} ferri finiti, oggi {{dzis}}",
+    "co_dalej_one": "Tra {{count}} ferro: {{tekst}} ({{ktory}} di {{razy}})",
+    "co_dalej_many": "Tra {{count}} di ferri: {{tekst}} ({{ktory}} di {{razy}})",
+    "co_dalej_other": "Tra {{count}} ferri: {{tekst}} ({{ktory}} di {{razy}})",
+    "co_dalej_teraz": "In questo ferro: {{tekst}} ({{ktory}} di {{razy}})",
+    "ten_tydzien": "Questa settimana",
+    "tydzien_pusty": "Qui vedrai i giorni in cui hai lavorato.",
+    "dzien_dziergany_a11y": "{{etykieta}}, giorno di lavoro",
+    "kafel_wloczka": "Filato e ferri"
+  },
+  "zakladki": {
+    "dzis": "Oggi",
+    "projekty": "Progetti",
+    "narzedzia": "Strumenti",
+    "historia": "Cronologia"
   }
 }

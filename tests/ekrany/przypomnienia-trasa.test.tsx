@@ -31,14 +31,15 @@ async function start(przypomnienia: 0 | 1 | 2, ekran: React.ComponentType, param
   return { s, k };
 }
 
-describe('menu •••: pozycja przypomnień', () => {
+// M3 p3a (P-581 a, P-586): przypomnienia są w arkuszu „Cel” (`/menu?arkusz=cel`, akcja `licznik-cel`), nie w •••.
+describe('arkusz „Cel”: pozycja przypomnień', () => {
   test('bez przypomnień: „Add a reminder…” jak dotąd, bez „Reminders”', async () => {
-    await start(0, EkranMenu);
+    await start(0, EkranMenu, { arkusz: 'cel' });
     expect(screen.getByTestId('menu-przypomnienie')).toBeTruthy();
     expect(screen.queryByTestId('menu-przypomnienia')).toBeNull();
   });
   test('z przypomnieniami: „Reminders” z liczbą zastępuje „Add a reminder…” i otwiera listę', async () => {
-    await start(2, EkranMenu);
+    await start(2, EkranMenu, { arkusz: 'cel' });
     expect(screen.queryByTestId('menu-przypomnienie')).toBeNull();
     const poz = screen.getByTestId('menu-przypomnienia');
     expect(screen.getByText('Reminders')).toBeTruthy();

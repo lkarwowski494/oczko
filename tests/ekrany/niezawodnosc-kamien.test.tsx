@@ -17,13 +17,13 @@ jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }:
 // widok: atrapa dodana przez 08 (partia 5, stoper P-191 P1a — trasa „/” czyta projekt bieżącego licznika); sens testu bez zmian.
 const mockLicznik = { przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'mockLicznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, widok: () => Promise.resolve(null) }; // poZegarku: 07-jakosc-005
 jest.mock('../../src/kompozycja/Kontekst', () => ({
-  useAplikacja: () => ({ kontener: { z: {}, dostep: { stan: () => ({ poziom: 'darmowy' }) }, j: { t: (k: string) => k } }, licznik: mockLicznik, preferencje: {} }),
+  useAplikacja: () => ({ kontener: { z: {}, dostep: { stan: () => ({ poziom: 'darmowy' }) }, j: { t: (k: string) => k, jezyk: () => 'en' } }, licznik: mockLicznik, preferencje: {} }), // jezyk: „Dziś” (M3 p2) podaje język aplikacji ekranowi
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { Aplikacja } = require('../../src/ekrany/Aplikacja') as { Aplikacja: jest.Mock };
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 
 class Granica extends React.Component<{ children: React.ReactNode }, { blad: boolean }> {
   state = { blad: false };

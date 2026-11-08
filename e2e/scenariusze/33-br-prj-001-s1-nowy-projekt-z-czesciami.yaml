@@ -12,6 +12,8 @@ tags:
     file: subflows/start-czysty.yaml
     env:
       TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "projekty-nowy" }
@@ -67,7 +69,7 @@ tags:
 - assertVisible: "Back"
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-dodaj" }
 - assertVisible: "Back.*row 1.*|Back.*1 row.*"
 - assertVisible: "Front.*"

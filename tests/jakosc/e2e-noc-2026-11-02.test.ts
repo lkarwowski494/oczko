@@ -40,23 +40,22 @@ const trafia = (k: Krok, c: Cel) => k.nazwa === c.nazwa && (!c.id || idy(k).incl
 const zrzut = (nazwa: string): Cel => ({ nazwa: 'takeScreenshot', tekst: nazwa });
 const ZMIENIAJACE = new Set(['runFlow', 'tapOn', 'inputText', 'eraseText', 'setOrientation', 'launchApp', 'back', 'swipe', 'longPressOn']);
 const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[] = [
-  // (a) menu „•••” otwarte, zanim scenariusz stuknie „Pattern”
-  { scen: '21', zrzut: '21-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
-  { scen: '22', zrzut: '22-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
-  { scen: '23', zrzut: '23-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wzor' }, opis: '(a) menu ••• przed menu-wzor' },
-  { scen: '62', zrzut: '62-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wpisz-wartosc' }, opis: '(a) menu ••• (to samo, z którego podprzepływ otworz-wzor-pdf stuka menu-wzor)' },
-  { scen: '57', zrzut: '57-licznik-menu-przed-notatka', po: { nazwa: 'assertNotVisible' }, przed: { nazwa: 'tapOn', id: 'licznik-projekt' }, opis: '(a) licznik z „•••” przed wejściem do projektu i notatki' },
-  // (b) ekran projektu z wierszem „Note” przed i po zapisie
-  { scen: '57', zrzut: '57-projekt-wiersz-note-przed-zapisem', po: { nazwa: 'scrollUntilVisible', id: 'projekt-notatka' }, przed: { nazwa: 'tapOn', id: 'projekt-notatka' }, opis: '(b) wiersz Note przed zapisem' },
-  { scen: '57', zrzut: '57-projekt-wiersz-note-po-zapisie', po: { nazwa: 'assertVisible', id: 'projekt-notatka' }, przed: { nazwa: 'tapOn', id: 'nav-wstecz' }, opis: '(b) wiersz Note po zapisie' },
+  // (a) licznik z akcją „Wzór” pod liczbą (do 07 cz. 2: menu „•••” otwarte), zanim scenariusz stuknie „Pattern”
+  { scen: '21', zrzut: '21-licznik-przed-wzorem', po: { nazwa: 'assertVisible', id: 'licznik-wzor' }, przed: { nazwa: 'tapOn', id: 'licznik-wzor' }, opis: '(a) licznik z akcją „Wzór” pod liczbą przed jej stuknięciem (ZM-04, P-580)' },
+  { scen: '22', zrzut: '22-licznik-przed-wzorem', po: { nazwa: 'assertVisible', id: 'licznik-wzor' }, przed: { nazwa: 'tapOn', id: 'licznik-wzor' }, opis: '(a) licznik z akcją „Wzór” pod liczbą przed jej stuknięciem (ZM-04, P-580)' },
+  { scen: '23', zrzut: '23-licznik-przed-wzorem', po: { nazwa: 'assertVisible', id: 'licznik-wzor' }, przed: { nazwa: 'tapOn', id: 'licznik-wzor' }, opis: '(a) licznik z akcją „Wzór” pod liczbą przed jej stuknięciem (ZM-04, P-580)' },
+  { scen: '62', zrzut: '62-menu-przed-wzorem', po: { nazwa: 'tapOn', id: 'licznik-menu' }, przed: { nazwa: 'tapOn', id: 'menu-wpisz-wartosc' }, opis: '(a) menu ••• przed „Enter the row number” (wzór otwiera akcja „Wzór” pod liczbą w otworz-wzor-pdf)' },
+  { scen: '57', zrzut: '57-licznik-przed-notatka', po: { nazwa: 'assertVisible', id: 'licznik-akcja-notatka' }, przed: { nazwa: 'tapOn', id: 'licznik-akcja-notatka' }, opis: '(a) licznik z akcją „Notatka” przed otwarciem arkusza (ZM-04)' },
+  // (b) notatka: licznik z akcją „Notatka” i arkusz notatki przed wpisem (07 cz. 2, ZM-04; do tego dnia — ekran projektu z wierszem „Note”)
+  { scen: '57', zrzut: '57-arkusz-notatki-przed-zapisem', po: { nazwa: 'assertVisible', id: 'formularz-notatka' }, przed: { nazwa: 'tapOn', id: 'formularz-notatka' }, opis: '(b) arkusz notatki z licznika przed wpisem' },
   // (c) widok wzoru przed pierwszym znacznikiem i po +1 przy zamkniętym panelu
   { scen: '62', zrzut: '62-wzor-przed-znacznikiem', po: { nazwa: 'assertVisible', id: 'licznik-wartosc' }, przed: { nazwa: 'tapOn', id: 'wzor-zaznacz' }, opis: '(c) wzór przed pierwszym znacznikiem' },
   { scen: '62', zrzut: '62-wzor-po-plus-1-panel-zamkniety', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'tapOn', id: 'wzor-zaznacz' }, opis: '(c) wzór po +1, panel znacznika zamknięty' },
   // (d) +1 w poziomie na telefonie
   { scen: '23', zrzut: '23-poziomo-po-plus-1', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'setOrientation' }, opis: '(d) +1 w poziomie' },
   // NOC-2b: uzupełnienie koordynatora — tabela luk 04 (docs/design/przejscie/maestro-2026-11-02.md @ e93f0e9), priorytet F-24, F-26, F-31, F-18, F-09
-  { scen: '21', zrzut: '21-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
-  { scen: '22', zrzut: '22-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
+  { scen: '21', zrzut: '21-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'e2e-wzor-pdf-skan' }, przed: { nazwa: 'tapOn', id: 'e2e-wzor-pdf-skan' }, opis: 'F-24 menu źródeł wzoru otwarte od razu po „Wzór” (ZM-06, p3b; bez kroku wzor-dodaj)' },
+  { scen: '22', zrzut: '22-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'e2e-wzor-zdjecie' }, przed: { nazwa: 'tapOn', id: 'e2e-wzor-zdjecie' }, opis: 'F-24 menu źródeł wzoru otwarte od razu po „Wzór” (ZM-06, p3b; bez kroku wzor-dodaj)' },
   { scen: '62', zrzut: '62-wybor-kierunku', po: { nazwa: 'assertVisible', id: 'wzor-kierunek' }, przed: { nazwa: 'tapOn' }, opis: 'F-26 wybór kierunku rzędów' },
   { scen: '62', zrzut: '62-wzor-po-gotowe', po: { nazwa: 'assertNotVisible', id: 'wzor-znacznik-pasek' }, przed: { nazwa: 'tapOn', id: 'licznik-plus' }, opis: 'F-26 stan po Done' },
   { scen: '10', zrzut: '10-formularz-wpisz-wartosc-przed-zapisem', po: { nazwa: 'assertVisible', id: 'wpisz-wartosc-pole' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, opis: 'F-31 formularz przed zapisem' },
@@ -64,7 +63,7 @@ const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[
   { scen: '56', zrzut: '56-menu-znaczenie', po: { nazwa: 'assertVisible', id: 'menu-znaczenie' }, przed: { nazwa: 'tapOn', id: 'menu-znaczenie' }, opis: 'F-09 menu przed wyborem znaczenia' },
   { scen: '56', zrzut: '56-arkusz-znaczenia', po: { nazwa: 'assertVisible', tekst: 'The row I' }, przed: { nazwa: 'tapOn' }, opis: 'F-09 arkusz znaczenia przed wyborem' },
   // (e) wąskie okno iPada: licznik > 0 i „•••”
-  { scen: '46', zrzut: '46-waskie-licznik-wartosc-menu', po: { nazwa: 'tapOn', id: 'nav-wstecz' }, przed: { nazwa: 'tapOn', id: 'nav-projekty' }, opis: '(e) wąskie okno: licznik 1 i „•••”' },
+  { scen: '46', zrzut: '46-waskie-licznik-wartosc-menu', po: { nazwa: 'tapOn', id: 'nav-wstecz' }, przed: { nazwa: 'tapOn', id: 'nav-wstecz' }, opis: '(e) wąskie okno: licznik 1 i „•••” (potem wstecz do listy, P-583)' },
   // NOC-2b (cz. 2, kontynuacja): Ustawienia przed wierszem (tabela luk 04, „Luki do 07/08” pkt 2), menu i formularze przed zapisem, skutki Save/Restore/„A second Back”/„Make another like this” (pkt 4)
   { scen: '08', zrzut: '08-ustawienia-przed-eksportem', po: { nazwa: 'assertVisible', id: 'ustawienia-eksport' }, przed: { nazwa: 'tapOn', id: 'ustawienia-eksport' }, opis: 'F-32 Ustawienia przed wierszem eksportu' },
   { scen: '08', zrzut: '08-ustawienia-przed-importem', po: { nazwa: 'assertVisible', id: 'ustawienia-import' }, przed: { nazwa: 'tapOn', id: 'e2e-pliki-importuj-ostatni' }, opis: 'F-32 Ustawienia przed importem' },
@@ -76,7 +75,7 @@ const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[
   { scen: '36', zrzut: '36-menu-usuwania', po: { nazwa: 'assertVisible', id: 'projekt-usun' }, przed: { nazwa: 'tapOn', id: 'projekt-usun' }, opis: 'F-33 menu projektu z pozycją usuwania' },
   { scen: '36', zrzut: '36-kosz-po-przywroceniu', po: { nazwa: 'assertNotVisible', id: 'kosz-przywroc' }, przed: { nazwa: 'tapOn', id: 'nav-wstecz' }, opis: 'F-33 kosz po Restore' },
   { scen: '36', zrzut: '36-lista-po-przywroceniu', po: { nazwa: 'assertNotVisible', id: 'projekty-kosz' }, przed: { nazwa: 'tapOn' }, opis: 'F-33 lista po Restore' },
-  { scen: '34', zrzut: '34-po-wyborze-drugiej', po: { nazwa: 'assertVisible', id: 'licznik-wartosc', tekst: '"text":"0"' }, przed: { nazwa: 'tapOn', id: 'licznik-projekt' }, opis: 'F-52 skutek wyboru „A second Back”' },
+  { scen: '34', zrzut: '34-po-wyborze-drugiej', po: { nazwa: 'assertVisible', id: 'licznik-wartosc', tekst: '"text":"0"' }, przed: { nazwa: 'tapOn', id: 'licznik-projekt-wejscie' }, opis: 'F-52 skutek wyboru „A second Back”' },
   { scen: '34', zrzut: '34-projekt-dwie-czesci', po: { nazwa: 'assertVisible', tekst: 'Pair of Back' }, opis: 'F-52 projekt z drugą częścią' },
   { scen: '61', zrzut: '61-menu-zrob-taka-sama', po: { nazwa: 'assertVisible', id: 'projekt-zrob-taka-sama' }, przed: { nazwa: 'tapOn', id: 'projekt-zrob-taka-sama' }, opis: 'F-20 menu z pozycją Make another like this' },
   { scen: '61', zrzut: '61-oryginal-po-operacji', po: { nazwa: 'assertVisible', id: 'licznik-wartosc', tekst: '"text":"2"' }, opis: 'F-20 oryginał po operacji' },

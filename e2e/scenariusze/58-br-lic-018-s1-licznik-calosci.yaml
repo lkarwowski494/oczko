@@ -15,7 +15,7 @@ tags:
       TERAZ: "2026-11-10T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "20" } }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - tapOn: { id: "projekt-dodaj" }
 - assertVisible: { id: "projekt-dodaj-licznik" }
@@ -55,7 +55,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - assertVisible: ".*(in total: |Whole piece: )24 rows.*"
 - takeScreenshot: 58-calosc-24
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: ".*Whole piece: 24 rows.*"
 - takeScreenshot: 58-projekt-calosc-24

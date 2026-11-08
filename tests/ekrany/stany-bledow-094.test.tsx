@@ -50,7 +50,7 @@ describe('502: stan błędu wczytania z wyjściem', () => {
     // Stały stan="ladowanie" (licznik na korzeniu „/” po 068) nigdy nie rysuje błędu, a komponent pokazuje wyjście tylko przy stan='blad' —
     // kontrola dotyczy użyć, które mogą pokazać błąd; liczba stałych użyć jest przypięta, żeby wyjątek nie rósł po cichu.
     const stale = uzycia.filter((u) => /\bstan="ladowanie"/.test(u.kod));
-    expect(stale.map((u) => u.plik)).toEqual(['index.tsx']);
+    expect(stale.map((u) => u.plik)).toEqual(['(zakladki)/index.tsx']); // M3 p2: korzeń „/” = „Dziś” w grupie zakładek (start danych przeniesiony z licznika)
     expect(uzycia.filter((u) => !stale.includes(u)).filter((u) => !/wyjscie=\{\{ rodzaj: '(wstecz|zamknij)', naWyjdz: \(\) => router\.back\(\) \}\}/.test(u.kod)).map((u) => u.plik)).toEqual([]);
   });
 });
@@ -75,7 +75,7 @@ describe('504: brak miejsca na ekranie awaryjnym', () => {
 
 describe('506: „Reset to 0…” przy zablokowanym liczniku', () => {
   const menu = (zablokowany: boolean, naZeruj = jest.fn()) => {
-    const p: PropsMenuProjektu = { stan: { projekt: 'Harbor', zablokowany, wartosc: 3 }, t, naNazwa: jest.fn(), naCel: jest.fn(), naPrzypomnienie: jest.fn(), naPowtorzenie: jest.fn(),
+    const p: PropsMenuProjektu = { stan: { projekt: 'Harbor', zablokowany, wartosc: 3 }, t, naNazwa: jest.fn(),
       naWpisz: jest.fn(), naZablokuj: jest.fn(), naOdblokuj: jest.fn(), naZeruj, naUkoncz: jest.fn(), naZamknij: jest.fn() };
     render(<MenuProjektu {...p} />);
   };

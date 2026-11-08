@@ -80,7 +80,22 @@
     "seria_zegarek_zero": "Plkst. {{godzina}} jūsu pulkstenī pievienotas {{count}} rindas. Atsaukt?",
     "seria_zegarek_one": "Plkst. {{godzina}} jūsu pulkstenī pievienota {{count}} rinda. Atsaukt?",
     "seria_zegarek_other": "Plkst. {{godzina}} jūsu pulkstenī pievienotas {{count}} rindas. Atsaukt?",
-    "wpisz_blad_format": "Ievadiet veselu skaitli, 0 vai lielāku, piemēram, {{przyklad}}."
+    "wpisz_blad_format": "Ievadiet veselu skaitli, 0 vai lielāku, piemēram, {{przyklad}}.",
+    "akcja_notatka": "Piezīme",
+    "akcja_wzor": "Apraksts",
+    "akcja_cel": "Mērķis",
+    "akcja_cel_a11y": "Mērķis, atgādinājums, raksta atkārtojums",
+    "akcja_stoper": "Taimeris",
+    "akcja_historia": "Vēsture",
+    "projekt_wejscie": "Projekts ›",
+    "projekt_wejscie_a11y": "Projekts: {{projekt}}",
+    "menu_wiecej_a11y": "Skaitītāja opcijas: nosaukums, rindas numurs, bloķēšana, pabeigšana",
+    "dzianina_a11y_zero": "{{czesc}}: pabeigtas {{count}} rindu, {{sesja}} šajā sesijā",
+    "dzianina_a11y_one": "{{czesc}}: pabeigta {{count}} rinda, {{sesja}} šajā sesijā",
+    "dzianina_a11y_other": "{{czesc}}: pabeigtas {{count}} rindas, {{sesja}} šajā sesijā",
+    "dzianina_a11y_cel_zero": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, {{sesja}} šajā sesijā",
+    "dzianina_a11y_cel_one": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, {{sesja}} šajā sesijā",
+    "dzianina_a11y_cel_other": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, {{sesja}} šajā sesijā"
   },
   "limit": {
     "zawczasu_zero": "{{miesiac}}: bezmaksas rokdarbu dienu vairs nav. Skaitīšana ir apturēta līdz {{data}}. Jūsu {{count}} rindu un viss pārējais ir saglabāts.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Pabeigts {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Pabeigts {{data}}",
     "ukonczono_a11y": "{{nazwa}}, pabeigts {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, pabeigts {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, pabeigts {{data}}",
+    "menu_a11y": "Vairāk: {{nazwa}}",
+    "kosz_do_zero": ": {{count}} elementu, līdz {{data}}.",
+    "kosz_do_one": ": {{count}} elements, līdz {{data}}.",
+    "kosz_do_other": ": {{count}} elementi, līdz {{data}}.",
+    "kosz_pokaz": "Rādīt"
   },
   "historia": {
     "pusto": "Vēl nav izmaiņu.",
@@ -245,7 +265,14 @@
     "wpisz": "Ievadīt pareizo skaitli",
     "wpis_rozwin_a11y": "Vairāk par: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Parāda, kā mainīt šo ierakstu.",
-    "wpis_a11y": "no {{od}} uz {{do}} plkst. {{czas}}"
+    "wpis_a11y": "no {{od}} uz {{do}} plkst. {{czas}}",
+    "kafel_dni_zero": "rokdarbu dienu",
+    "kafel_dni_one": "rokdarbu diena",
+    "kafel_dni_other": "rokdarbu dienas",
+    "kafel_rzedy_zero": "rindu",
+    "kafel_rzedy_one": "rinda",
+    "kafel_rzedy_other": "rindas",
+    "kafel_czas": "sesiju laiks"
   },
   "menu": {
     "nazwa": "Nosaukt projektu un detaļu",
@@ -509,7 +536,6 @@
     "bez_pro_zero": "Bez Pro: {{limit}} rokdarbu dienu katru mēnesi, un visi jūsu projekti un dati vienmēr.",
     "bez_pro_one": "Bez Pro: {{limit}} rokdarbu diena katru mēnesi, un visi jūsu projekti un dati vienmēr.",
     "bez_pro_other": "Bez Pro: {{limit}} rokdarbu dienas katru mēnesi, un visi jūsu projekti un dati vienmēr.",
-    "rodzina": "Kopīgots ar ģimeni, izmantojot ģimenes koplietošanu.",
     "kup": "Turpināt ar {{plan}}",
     "przywroc": "Atjaunot pirkumus",
     "polityka": "Privātuma politika",
@@ -523,7 +549,15 @@
     "blad_zakupu": "Pirkums neizdevās. Pārbaudiet savienojumu un mēģiniet vēlreiz.",
     "przywracanie_nic": "Šim Apple ID nav atrasts Oczko Pro pirkums. Ja to iegādājāties ar citu Apple ID, pierakstieties ar to lietotnē Iestatījumi un mēģiniet vēlreiz.",
     "przywracanie_blad": "Neizdevās atjaunot pirkumus. Pārbaudiet savienojumu un mēģiniet vēlreiz.",
-    "pro_wlaczone": "Oczko Pro ir ieslēgts."
+    "pro_wlaczone": "Oczko Pro ir ieslēgts.",
+    "kafel_dzien_tytul": "Katra rokdarbu diena",
+    "kafel_dzien_opis": "Skaiti, kad vien adi vai tamborē, bez mēneša ierobežojuma.",
+    "kafel_urzadzenia_tytul": "Bez ierobežojuma nevienā ierīcē",
+    "kafel_urzadzenia_opis": "iPhone, iPad un Apple Watch.",
+    "kafel_rodzina_tytul": "Tavai ģimenei",
+    "kafel_rodzina_opis": "Vari dalīties ar ģimeni, izmantojot Family Sharing.",
+    "kafel_dane_tytul": "Tavi dati paliek pie tevis",
+    "kafel_dane_opis": "Projekti, apraksti un vēsture paliek gan ar Pro, gan bez tā."
   },
   "uczciwe": {
     "tytul": "Jūsu pirmā rokdarbu diena ir paveikta",
@@ -1049,5 +1083,42 @@
     "yd_nazwa": "Jardi",
     "g_nazwa": "Grami",
     "oz_nazwa": "Unces"
+  },
+  "dzis": {
+    "tytul": "Šodien",
+    "pierwszy_tytul": "Pirmais skaitītājs",
+    "pierwszy_opis": "Pieskaries +1 pēc katras pabeigtas rindas. Projektam nosaukumu vari dot vēlāk.",
+    "otworz_licznik": "Atvērt skaitītāju",
+    "kontynuuj": "Turpināt",
+    "wybierz_projekt": "Izvēlēties projektu",
+    "bez_miejsca_tytul": "Tavi projekti ir šeit",
+    "bez_miejsca_zero": "{{count}} projektu darbā. Izvēlies vienu, un Šodien to atvērs tur, kur pārtrauci.",
+    "bez_miejsca_one": "{{count}} projekts darbā. Izvēlies vienu, un Šodien to atvērs tur, kur pārtrauci.",
+    "bez_miejsca_other": "{{count}} projekti darbā. Izvēlies vienu, un Šodien to atvērs tur, kur pārtrauci.",
+    "czesc_rzad": "{{czesc}}, rinda {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rinda {{n}} no {{cel}}",
+    "gotowe_zero": "pabeigtu rindu",
+    "gotowe_one": "pabeigta rinda",
+    "gotowe_other": "pabeigtas rindas",
+    "dzianina_a11y_zero": "{{czesc}}: pabeigtas {{count}} rindu, šodien {{dzis}}",
+    "dzianina_a11y_one": "{{czesc}}: pabeigta {{count}} rinda, šodien {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: pabeigtas {{count}} rindas, šodien {{dzis}}",
+    "dzianina_a11y_cel_zero": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, šodien {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, šodien {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: pabeigtas rindas: {{count}} no {{cel}}, šodien {{dzis}}",
+    "co_dalej_zero": "Pēc {{count}} rindām: {{tekst}} ({{ktory}} no {{razy}})",
+    "co_dalej_one": "Pēc {{count}} rindas: {{tekst}} ({{ktory}} no {{razy}})",
+    "co_dalej_other": "Pēc {{count}} rindām: {{tekst}} ({{ktory}} no {{razy}})",
+    "co_dalej_teraz": "Šajā rindā: {{tekst}} ({{ktory}} no {{razy}})",
+    "ten_tydzien": "Šī nedēļa",
+    "tydzien_pusty": "Šeit redzēsi dienas, kad adi vai tamborē.",
+    "dzien_dziergany_a11y": "{{etykieta}}, rokdarbu diena",
+    "kafel_wloczka": "Dzija un adāmadatas"
+  },
+  "zakladki": {
+    "dzis": "Šodien",
+    "projekty": "Projekti",
+    "narzedzia": "Rīki",
+    "historia": "Vēsture"
   }
 }

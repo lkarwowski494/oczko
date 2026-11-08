@@ -58,10 +58,10 @@ beforeEach(() => { Object.values(mockRouter).forEach((f) => { if (typeof f === '
 /** `port`: odczyt trasy idzie prosto przez kolejkę portu bazy (bez `wKolejce` przypadków użycia), więc długa pozycja to transakcja portu (np. partia iCloud). */
 type Przypadek = { trasa: string; plik: string; przedrostek: string; params?: Record<string, string>; dane?: [string, unknown[]][]; kolejka?: 'port' };
 const PRZYPADKI: Przypadek[] = [
-  { trasa: '/projekty', plik: '../../app/projekty', przedrostek: 'projekty' },
+  { trasa: '/projekty', plik: '../../app/(zakladki)/projekty', przedrostek: 'projekty' },
   { trasa: '/projekt/[id]', plik: '../../app/projekt/[id]', przedrostek: 'projekt', params: { id: 'p1' } },
   { trasa: '/sesje', plik: '../../app/sesje', przedrostek: 'sesje', params: { projekt: 'p1' } },
-  { trasa: '/dni', plik: '../../app/dni', przedrostek: 'dni' },
+  { trasa: '/dni', plik: '../../app/(zakladki)/dni', przedrostek: 'dni' },
   { trasa: '/ukonczenie', plik: '../../app/ukonczenie', przedrostek: 'ukonczenie', params: { projekt: 'p1' } },
   { trasa: '/drut', plik: '../../app/drut', przedrostek: 'drut', params: { id: 'n1' } },
   { trasa: '/zdjecie', plik: '../../app/zdjecie', przedrostek: 'zdjecie', params: { projekt: 'p1' } },
@@ -75,7 +75,7 @@ const PRZYPADKI: Przypadek[] = [
   // M1-audytor-generalny-152 (08-programista-521): zapas, druty, Narzędzia i historia licznika — w czasie długiej pozycji kolejki „Loading…”, nie pusty zapas ani „0”.
   { trasa: '/zapas', plik: '../../app/zapas', przedrostek: 'zapas', kolejka: 'port' },
   { trasa: '/druty', plik: '../../app/druty', przedrostek: 'druty', kolejka: 'port' },
-  { trasa: '/narzedzia', plik: '../../app/narzedzia', przedrostek: 'narzedzia', kolejka: 'port' },
+  { trasa: '/narzedzia', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', kolejka: 'port' },
   { trasa: '/historia', plik: '../../app/historia', przedrostek: 'historia' },
 ];
 
@@ -106,7 +106,7 @@ describe('M1-068: długa pozycja kolejki przypadków użycia — trasa pokazuje 
       licznik: { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, widok: async () => null, przygotuj: () => dane.obietnica }, preferencje: {}, naAwarie: jest.fn(),
     };
     mockParams = {};
-    render(React.createElement(trasa('../../app/index')));
+    render(React.createElement(trasa('../../app/(zakladki)/index')));
     await act(async () => { await new Promise((r) => setTimeout(r, 50)); });
     expect(screen.getByTestId('licznik-ladowanie')).toBeTruthy();
     expect(screen.getByText('Loading…')).toBeTruthy();

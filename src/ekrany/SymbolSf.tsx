@@ -10,7 +10,19 @@ import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU_TRESCI, useKolory } from './motyw';
  *  M1-146 (04-studio-projektowe-531 opcja a): minus.circle.fill, chevron.down, chevron.right (iOS 13); chevron.forward przy wierszach list. */
 export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.tip' | 'note.text.badge.plus' | 'note.text' | 'eraser' | 'arrow.uturn.backward'
   | 'chevron.backward' | 'chevron.forward' | 'gearshape' | 'calendar' | 'ruler' | 'plus' | 'doc.text' | 'clock.arrow.circlepath' | 'ellipsis' | 'square.and.arrow.up' | 'xmark' | 'arrow.up.right' | 'bookmark'
-  | 'minus.circle.fill' | 'chevron.down' | 'chevron.right';
+  | 'minus.circle.fill' | 'chevron.down' | 'chevron.right'
+  // M3 p2, P-577 (nazwany wyjątek od zamrożenia p1, tylko typ): zakładki i kafle „Dziś” z design-spec.md:48 — Dziś sun.max (wybór koordynatora z pary
+  // calendar.day.timeline.left / sun.max [DO USTALENIA 08: okiem na urządzeniu]), Projekty square.stack, kafle plus.square, scribble.variable, square.grid.3x3.
+  // M3 p3a (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): akcja „Cel” na liczniku (testid.md: `licznik-cel` = `flag`).
+  | 'flag'
+  // M3 p7 (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): ikony wierszy Ustawień (ZM-07) i kafli Oczko Pro; wybór 08, do zgłoszenia 04 (design-spec nie nazywa ich).
+  | 'sparkles' | 'iphone.radiowaves.left.and.right' | 'square.and.arrow.down' | 'trash' | 'icloud' | 'questionmark.circle' | 'exclamationmark.bubble' | 'star' | 'hand.raised' | 'book' | 'globe'
+  | 'applewatch' | 'person.2' | 'checkmark.shield' | 'checkmark' | 'hourglass' | 'info.circle' | 'creditcard'
+  // M3 p4 (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): pole szukania na liście Projekty (makieta `projekty`: lupa).
+  | 'magnifyingglass'
+  // M3 p4b (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): „Ekran nie gaśnie” w Ustawieniach (decyzja 04 M3-MAK-03: `sun.max` znaczy zakładkę Dziś).
+  | 'iphone'
+  | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {
   const { fontScale } = useWindowDimensions();

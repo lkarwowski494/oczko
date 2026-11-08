@@ -125,9 +125,9 @@ describe('Oferty', () => {
     expect(przycisk('Restore purchases', 'button')).toBeTruthy();
   });
 
-  test('P-089 (2): zdanie o Family Sharing tylko, gdy włączone (design-spec.md:80, ekrany.html:168)', () => {
+  test('P-089 (2) → P-563 (12): informacja o Family Sharing tylko, gdy włączone — jako kafel „Dla rodziny”, nie zdanie przy „Bez Pro” (design-spec Dzianiny, wiersz oferty)', () => {
     pokaz({ familySharing: true });
-    expect(screen.getByText(/Shared with your family through Family Sharing\./)).toBeTruthy();
+    expect(screen.getByText(/You can share it with your family through Family Sharing\./)).toBeTruthy();
     screen.unmount();
     pokaz({ familySharing: false });
     expect(screen.queryByText(/Family Sharing/)).toBeNull();

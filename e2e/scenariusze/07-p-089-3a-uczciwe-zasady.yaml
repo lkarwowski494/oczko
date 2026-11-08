@@ -1,6 +1,6 @@
 # Okno „Uczciwe zasady” (pakiet podstawowy): P-089 (3a) — jednorazowe, po pierwszym ukończonym dniu z robótką, tylko wersja darmowa;
 # główny przycisk zamyka okno, link prowadzi do planów Pro; nigdy na ekranie licznika (BR-ZAK-006/S9, ER-46, O-05, 07-jakosc-022):
-# aplikacja otwiera się na liczniku bez okna, okno pojawia się dopiero na liście projektów.
+# ZM-18 (P-563 (4a), ER-70): aplikacja otwiera się na „Dziś” bez okna (nigdy nad „+1” karty), okno pojawia się dopiero nad zakładką Projekty (dzianina/design-spec.md:73).
 # Definicja „ukończonego dnia” [DO USTALENIA] Z07-09 (02): scenariusz przyjmuje propozycję 07 — otwarcie aplikacji następnego dnia po dniu z ≥ 1 +1.
 # Teksty okna: rola 04 (Z07-05, okno nienarysowane) — scenariusz używa tylko testID.
 appId: com.apps4brew.knitting
@@ -24,14 +24,9 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 # --- dzień 2: okno raz; główny przycisk zamyka i zostawia licznik ---
-- stopApp
-- launchApp:
-    clearState: false
-    arguments:
-      oczkoE2eTeraz: "2026-11-11T20:00:00"
-      oczkoE2eSiec: "brak"
-- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
-- assertNotVisible: { id: "okno-uczciwe-zasady" } # licznik zostaje wolny od okna (S9)
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-11T20:00:00" } }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 3000, optional: true } # ER-70: okno nigdy nad „Dziś” (karta z „+1”); czekamy, czy się nie pojawi
+- assertNotVisible: { id: "okno-uczciwe-zasady" } # „Dziś” zostaje wolne od okna (S9, ER-70)
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 60000 }
 - assertVisible: { id: "uczciwe-zasady-zamknij" }
@@ -42,13 +37,8 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - assertNotVisible: { id: "oferty-ekran" }
 # --- dzień 3: okno się nie powtarza ---
-- stopApp
-- launchApp:
-    clearState: false
-    arguments:
-      oczkoE2eTeraz: "2026-11-12T20:00:00"
-      oczkoE2eSiec: "brak"
-- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-12T20:00:00" } }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 3000, optional: true } # ER-70: okno nigdy nad „Dziś” (karta z „+1”); czekamy, czy się nie pojawi
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
@@ -60,18 +50,14 @@ tags:
       TERAZ: "2026-11-20T20:00:00"
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- stopApp
-- launchApp:
-    clearState: false
-    arguments:
-      oczkoE2eTeraz: "2026-11-21T20:00:00"
-      oczkoE2eSiec: "brak"
-- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-21T20:00:00" } }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 3000, optional: true } # ER-70: okno nigdy nad „Dziś” (karta z „+1”); czekamy, czy się nie pojawi
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 60000 }
 - tapOn: { id: "uczciwe-zasady-plany-pro" }
 - assertVisible: { id: "oferty-ekran" }
+- scrollUntilVisible: { element: { id: "oferty-plan-dozywotni" }, direction: DOWN, timeout: 30000, centerElement: true } # p7 (P-596): plan pod kartą i kafelkami Pro (reguła 10)
 - assertVisible: { id: "oferty-plan-dozywotni" }
 - takeScreenshot: 07-plany-z-okna
 - tapOn: { id: "oferty-nie-teraz" }

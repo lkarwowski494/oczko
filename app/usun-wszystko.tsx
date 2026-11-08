@@ -1,5 +1,5 @@
 // Trasa „/usun-wszystko”: arkusz „Delete all data” (BR-DAN-009, P-229, P-266 (3)). Przełącznik iCloud tylko przy włączonej synchronizacji;
-// po usunięciu silnik wyłączony (L1: skrzynka pusta), strefa iCloud tylko na życzenie, licznik od nowa i powrót do listy projektów.
+// po usunięciu silnik wyłączony (L1: skrzynka pusta), strefa iCloud tylko na życzenie, licznik od nowa i powrót na „Dziś” (zimny start bez projektów).
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -29,7 +29,7 @@ export default function EkranUsunWszystko(): React.ReactElement {
     }
     await preferencje.wczytaj(z); // ADR-0029 pkt 4: reset = ustawienia domyślne (wiersze preferencji usunięte razem z resztą)
     licznik.zresetuj();
-    router.dismissTo('/projekty');
+    router.dismissTo('/'); // BR-DAN-009, P-573: po usunięciu start na „Dziś” w stanie pustym (jak zimny start, P-563 (4a)), nie na liście projektów
   }
   return (
     <Bezpieczny>

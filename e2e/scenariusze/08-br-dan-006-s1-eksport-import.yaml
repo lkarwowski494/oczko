@@ -23,9 +23,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - runFlow: subflows/nazwij-projekt.yaml
 # --- eksport z Ustawień ---
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-eksport" }
 - takeScreenshot: 08-ustawienia-przed-eksportem
 - tapOn: { id: "ustawienia-eksport" }
@@ -42,8 +40,8 @@ tags:
 - tapOn: { id: "ustawienia-usun-wszystko" }
 - assertVisible: { id: "potwierdz-usun-wszystko" }
 - tapOn: { id: "potwierdz-usun-wszystko" }
-- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 30000 }
-- tapOn: { id: "nav-ustawienia", optional: true }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista|dzis-karta" }, timeout: 30000 } # P-571: ekran po usunięciu w p2 [DO USTALENIA] (BR-DAN-009 go nie ustala) — „Dziś” dopuszczone
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-import" }
 - takeScreenshot: 08-ustawienia-przed-importem
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }

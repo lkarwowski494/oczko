@@ -30,6 +30,11 @@ const IKONY = {
   dzien: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M6.5 8l2 3 2-3M10.5 8l2 3 2-3M14.5 8l2 3 2-3M6.5 13l2 3 2-3M10.5 13l2 3 2-3M14.5 13l2 3 2-3"/>',
   zamknij: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   klepsydra: '<path d="M7 3.5h10M7 20.5h10M8 3.5c0 4 4 5.5 4 8.5s-4 4.5-4 8.5M16 3.5c0 4-4 5.5-4 8.5s4 4.5 4 8.5"/>',
+  // M3-MAK-01..03 (2026-11-08): zdjęcie, edycja projektu, Narzędzia (na iOS SF Symbols: square.and.arrow.up, trash, minus.circle.fill, scribble.variable)
+  udostepnij: '<path d="M12 3.5v11M8 7l4-4 4 4"/><path d="M8.5 10.5H6v10h12v-10h-2.5"/>',
+  kosz: '<path d="M4.5 6.5h15M9.5 6.5V4h5v2.5M6.5 6.5l1 14h9l1-14M10 10v7M14 10v7"/>',
+  minusKolo: '<circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><path d="M8 12h8" stroke="var(--powierzchnia)" stroke-width="2.4"/>',
+  wloczka: '<circle cx="12" cy="12" r="8"/><path d="M5.5 8.5c4 0 9 2.5 12 7M4.5 12.5c3.5 0 7.5 2 9.5 7.5M8 4.8c3 .8 7.5 4 10.6 9.4"/>',
 };
 document.querySelectorAll('[data-ik]').forEach((el) => {
   el.classList.add('ik');

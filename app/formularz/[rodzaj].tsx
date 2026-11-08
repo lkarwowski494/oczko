@@ -65,7 +65,7 @@ export default function EkranFormularza(): React.ReactElement {
     if (!r.ok) return { ok: false, powod: 'zapis' };
     odrzuc.poZapisie();
     const id = nowyLicznik?.(r.wartosc);
-    if (id) { await licznik.otworz(id); router.dismissTo('/'); } else { await licznik.poZmianie(); router.back(); }
+    if (id) { await licznik.otworz(id); router.dismissTo('/licznik'); } else { await licznik.poZmianie(); router.back(); }
     return { ok: true, wartosc: undefined };
   }
   const idLicznika = (x: unknown): string | undefined => (typeof x === 'object' && x !== null && 'licznikId' in x && typeof x.licznikId === 'string' ? x.licznikId : undefined);

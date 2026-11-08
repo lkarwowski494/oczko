@@ -16,7 +16,7 @@ jest.mock('expo-router', () => {
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranDni = (require('../../app/dni') as { default: React.ComponentType }).default;
+const EkranDni = (require('../../app/(zakladki)/dni') as { default: React.ComponentType }).default;
 
 async function otworz(instrukcje: Parameters<typeof wykonaj>[1], teraz: number) {
   const s = await przygotuj();

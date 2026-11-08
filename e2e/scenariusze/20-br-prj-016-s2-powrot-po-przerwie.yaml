@@ -15,10 +15,14 @@ tags:
 - runFlow: subflows/nazwij-projekt.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-11T19:30:00" } }
-- tapOn: { id: "nav-projekty", optional: true }
+# ZM-18 (P-563 (4a)): zimny start zawsze na „Dziś”; lista projektów z zakładki Projekty (testID `nav-projekty`); okno „Uczciwe zasady” nad listą, nigdy nad „Dziś” (ER-70)
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-11T19:30:00" } }
+- assertVisible: { id: "dzis-projekt", text: "Harbor" }
+- tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)

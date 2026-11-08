@@ -16,7 +16,7 @@ tags:
 - assertVisible: "History"
 - tapOn: "\\+1 row.*"
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- assertVisible: "Project options.*" # menu ••• dopiero z projektem (design-spec:138; E2 fix-3)
+- assertVisible: "Counter options.*" # menu ••• dopiero z projektem (design-spec:138; E2 fix-3); od p3a etykieta licznik.menu_wiecej_a11y (src/ekrany/Licznik.tsx:129), „Project options” to ••• ekranu projektu
 - assertVisible: "\\+1 row, when row 2 is done.*"
 # Restart zamiast odstępu (#145, P-489): okno strażnika serii (RD-17) 15 s zamiast 2 s, bo seria 3 stuknięć Maestro trwała 7 s na wolnej maszynie (wzór 04 i 12, E2E-A4);
 # nowy proces nie pamięta pierwszego +1, więc nie wchodzi ono do serii (baner „Undo 3 rows”, nie 4) bez 15 s czekania. Licznik zostaje 1 (NFR-DAN-002).
@@ -27,7 +27,7 @@ tags:
 - assertVisible: "Undo 3 rows"
 - tapOn: "Undo 3 rows"
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: "Project options.*"
+- tapOn: "Counter options.*"
 - assertVisible: "Lock counter \\(ignore taps\\)"
 - tapOn: "Lock counter \\(ignore taps\\)"
 - assertVisible: "Counter locked.*"

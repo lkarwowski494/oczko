@@ -80,7 +80,22 @@
     "seria_zegarek_one": "Додат је {{count}} ред са сата у {{godzina}}. Поништити?",
     "seria_zegarek_few": "Додата су {{count}} реда са сата у {{godzina}}. Поништити?",
     "seria_zegarek_other": "Додато је {{count}} редова са сата у {{godzina}}. Поништити?",
-    "wpisz_blad_format": "Унесите цео број, 0 или већи, на пример {{przyklad}}."
+    "wpisz_blad_format": "Унесите цео број, 0 или већи, на пример {{przyklad}}.",
+    "akcja_notatka": "Белешка",
+    "akcja_wzor": "Мустра",
+    "akcja_cel": "Циљ",
+    "akcja_cel_a11y": "Циљ, подсетник, понављање",
+    "akcja_stoper": "Штоперица",
+    "akcja_historia": "Историја",
+    "projekt_wejscie": "Пројекат ›",
+    "projekt_wejscie_a11y": "Пројекат: {{projekt}}",
+    "menu_wiecej_a11y": "Опције бројача: назив, број реда, закључавање, завршетак",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ред готов, {{sesja}} у овој сесији",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} реда готова, {{sesja}} у овој сесији",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} редова готово, {{sesja}} у овој сесији",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} од {{cel}} редова готово, {{sesja}} у овој сесији",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} од {{cel}} редова готово, {{sesja}} у овој сесији",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} од {{cel}} редова готово, {{sesja}} у овој сесији"
   },
   "limit": {
     "zawczasu_one": "Нема више бесплатних дана рада за {{miesiac}}. Бројање је паузирано до {{data}}. Ваш {{count}} ред и све остало остају сачувани.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Завршено {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Завршено {{data}}",
     "ukonczono_a11y": "{{nazwa}}, завршено {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завршено {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завршено {{data}}",
+    "menu_a11y": "Више: {{nazwa}}",
+    "kosz_do_one": ": {{count}} ставка, до {{data}}.",
+    "kosz_do_few": ": {{count}} ставке, до {{data}}.",
+    "kosz_do_other": ": {{count}} ставки, до {{data}}.",
+    "kosz_pokaz": "Прикажи"
   },
   "historia": {
     "pusto": "Још нема промена.",
@@ -245,7 +265,14 @@
     "wpisz": "Унеси тачан број",
     "wpis_rozwin_a11y": "Више о: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Приказује како да измените овај унос.",
-    "wpis_a11y": "са {{od}} на {{do}} у {{czas}}"
+    "wpis_a11y": "са {{od}} на {{do}} у {{czas}}",
+    "kafel_dni_one": "дан са радом",
+    "kafel_dni_few": "дана са радом",
+    "kafel_dni_other": "дана са радом",
+    "kafel_rzedy_one": "ред",
+    "kafel_rzedy_few": "реда",
+    "kafel_rzedy_other": "редова",
+    "kafel_czas": "време сесија"
   },
   "menu": {
     "nazwa": "Назовите пројекат и део",
@@ -509,7 +536,6 @@
     "bez_pro_one": "Без Pro верзије: {{limit}} дан рада сваког месеца, и сви ваши пројекти и подаци, увек.",
     "bez_pro_few": "Без Pro верзије: {{limit}} дана рада сваког месеца, и сви ваши пројекти и подаци, увек.",
     "bez_pro_other": "Без Pro верзије: {{limit}} дана рада сваког месеца, и сви ваши пројекти и подаци, увек.",
-    "rodzina": "Дели се с породицом преко Family Sharing.",
     "kup": "Настави са {{plan}}",
     "przywroc": "Врати куповине",
     "polityka": "Политика приватности",
@@ -523,7 +549,15 @@
     "blad_zakupu": "Куповина није успела. Проверите везу и покушајте поново.",
     "przywracanie_nic": "Није пронађена куповина Oczko Pro за овај Apple ID. Ако сте куповину обавили са другим Apple ID-јем, пријавите се њиме у Подешавањима и покушајте поново.",
     "przywracanie_blad": "Враћање куповина није успело. Проверите везу и покушајте поново.",
-    "pro_wlaczone": "Oczko Pro је укључен."
+    "pro_wlaczone": "Oczko Pro је укључен.",
+    "kafel_dzien_tytul": "Сваки дан рада",
+    "kafel_dzien_opis": "Бројте кад год радите, без месечног ограничења.",
+    "kafel_urzadzenia_tytul": "Без ограничења на свим уређајима",
+    "kafel_urzadzenia_opis": "iPhone, iPad и Apple Watch.",
+    "kafel_rodzina_tytul": "За вашу породицу",
+    "kafel_rodzina_opis": "Можете га делити са породицом помоћу функције „Family Sharing”.",
+    "kafel_dane_tytul": "Ваши подаци остају ваши",
+    "kafel_dane_opis": "Пројекти, мустре и историја остају и са Pro и без њега."
   },
   "uczciwe": {
     "tytul": "Ваш први дан рада је завршен",
@@ -1049,5 +1083,42 @@
     "yd_nazwa": "Јарди",
     "g_nazwa": "Грами",
     "oz_nazwa": "Унце"
+  },
+  "dzis": {
+    "tytul": "Данас",
+    "pierwszy_tytul": "Први бројач",
+    "pierwszy_opis": "Додирните +1 након сваког завршеног реда. Пројекат можете именовати касније.",
+    "otworz_licznik": "Отвори бројач",
+    "kontynuuj": "Настави",
+    "wybierz_projekt": "Изабери пројекат",
+    "bez_miejsca_tytul": "Ваши пројекти су овде",
+    "bez_miejsca_one": "{{count}} пројекат у току. Изаберите један, а Данас ће га отворити тамо где станете.",
+    "bez_miejsca_few": "{{count}} пројекта у току. Изаберите један, а Данас ће га отворити тамо где станете.",
+    "bez_miejsca_other": "{{count}} пројеката у току. Изаберите један, а Данас ће га отворити тамо где станете.",
+    "czesc_rzad": "{{czesc}}, ред {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, ред {{n}} од {{cel}}",
+    "gotowe_one": "ред готов",
+    "gotowe_few": "реда готова",
+    "gotowe_other": "редова готово",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ред готов, данас {{dzis}}",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} реда готова, данас {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} редова готово, данас {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} од {{cel}} редова готово, данас {{dzis}}",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} од {{cel}} редова готово, данас {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} од {{cel}} редова готово, данас {{dzis}}",
+    "co_dalej_one": "За {{count}} ред: {{tekst}} ({{ktory}} од {{razy}})",
+    "co_dalej_few": "За {{count}} реда: {{tekst}} ({{ktory}} од {{razy}})",
+    "co_dalej_other": "За {{count}} редова: {{tekst}} ({{ktory}} од {{razy}})",
+    "co_dalej_teraz": "У овом реду: {{tekst}} ({{ktory}} од {{razy}})",
+    "ten_tydzien": "Ове недеље",
+    "tydzien_pusty": "Овде ћете видети дане када плетете.",
+    "dzien_dziergany_a11y": "{{etykieta}}, дан са радом",
+    "kafel_wloczka": "Вуница и игле за плетење"
+  },
+  "zakladki": {
+    "dzis": "Данас",
+    "projekty": "Пројекти",
+    "narzedzia": "Алати",
+    "historia": "Историја"
   }
 }

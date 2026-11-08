@@ -72,14 +72,14 @@ describe('Lista języków (design-spec „Ustawienia › Język”)', () => {
     expect(radia.filter((r) => r.props.accessibilityState?.checked)).toHaveLength(1);
   });
 
-  test('nazwy we własnym języku, czytane głosem swojego języka (accessibilityLanguage = tag); wybrana z ✓ i „{name}, selected”', () => {
+  test('nazwy we własnym języku, czytane głosem swojego języka (accessibilityLanguage = tag); wybrana ze znakiem wyboru (symbol checkmark) i „{name}, selected”', () => {
     pokaz('de');
     const de = screen.getByRole('radio', { name: 'Deutsch, selected' });
     expect(de.props.accessibilityLanguage).toBe('de');
     expect(de.props.accessibilityState).toEqual({ checked: true });
     expect(screen.getByRole('radio', { name: '日本語' }).props.accessibilityLanguage).toBe('ja');
     expect(screen.getByRole('radio', { name: 'Same as phone' }).props.accessibilityState).toEqual({ checked: false });
-    expect(screen.getAllByText('✓', { includeHiddenElements: true })).toHaveLength(1); // widoczny znak; VoiceOver dostaje stan z checked
+    expect(screen.getAllByTestId('symbol-checkmark', { includeHiddenElements: true })).toHaveLength(1); // widoczny znak (symbol SF, M3 p4b); VoiceOver dostaje stan z checked
   });
 
   test('stuknięcie w „Polski” wybiera pl; „Same as phone” wybiera auto', () => {

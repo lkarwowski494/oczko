@@ -65,7 +65,20 @@
     "seria_blokada_other": "{{count}} sor hozzáadva a zárolási képernyőről {{godzina}}-kor. Visszavonja?",
     "seria_zegarek_one": "{{count}} sor hozzáadva az óráról {{godzina}}-kor. Visszavonja?",
     "seria_zegarek_other": "{{count}} sor hozzáadva az óráról {{godzina}}-kor. Visszavonja?",
-    "wpisz_blad_format": "Adjon meg egy egész számot (0 vagy nagyobb), például: {{przyklad}}."
+    "wpisz_blad_format": "Adjon meg egy egész számot (0 vagy nagyobb), például: {{przyklad}}.",
+    "akcja_notatka": "Jegyzet",
+    "akcja_wzor": "Leírás",
+    "akcja_cel": "Cél",
+    "akcja_cel_a11y": "Cél, emlékeztető, ismétlés",
+    "akcja_stoper": "Stopper",
+    "akcja_historia": "Előzmények",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Számláló beállításai: név, sorszám, zárolás, befejezés",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} sor kész, {{sesja}} ebben a munkamenetben",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} sor kész, {{sesja}} ebben a munkamenetben",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} / {{cel}} sor kész, {{sesja}} ebben a munkamenetben",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} / {{cel}} sor kész, {{sesja}} ebben a munkamenetben"
   },
   "limit": {
     "zawczasu_one": "Nincs több ingyenes alkotónap ebben a hónapban: {{miesiac}}. A számlálás eddig szünetel: {{data}}. A(z) {{count}} sor és minden más megmarad.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Befejezve: {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Befejezve: {{data}}",
     "ukonczono_a11y": "{{nazwa}}, befejezve: {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, befejezve: {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, befejezve: {{data}}",
+    "menu_a11y": "Továbbiak: {{nazwa}}",
+    "kosz_do_one": ": {{count}} elem, lejárat: {{data}}.",
+    "kosz_do_other": ": {{count}} elem, lejárat: {{data}}.",
+    "kosz_pokaz": "Megjelenítés"
   },
   "historia": {
     "pusto": "Még nincs módosítás.",
@@ -217,7 +234,12 @@
     "wpisz": "Helyes szám megadása",
     "wpis_rozwin_a11y": "Részletek: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Megmutatja, hogyan módosíthatja ezt a bejegyzést.",
-    "wpis_a11y": "{{od}} helyett {{do}}, {{czas}}-kor"
+    "wpis_a11y": "{{od}} helyett {{do}}, {{czas}}-kor",
+    "kafel_dni_one": "alkotónap",
+    "kafel_dni_other": "alkotónap",
+    "kafel_rzedy_one": "sor",
+    "kafel_rzedy_other": "sor",
+    "kafel_czas": "munkamenet-idő"
   },
   "menu": {
     "nazwa": "Projekt és darab elnevezése",
@@ -455,7 +477,6 @@
     "dozywotni_przy_subskrypcji": "Az előfizetése a lemondásig folyamatosan megújul.",
     "bez_pro_one": "Pro nélkül: havonta {{limit}} alkotónap, a projektjeid és az adataid pedig mindig megmaradnak.",
     "bez_pro_other": "Pro nélkül: havonta {{limit}} alkotónap, a projektjeid és az adataid pedig mindig megmaradnak.",
-    "rodzina": "Megosztva a családoddal a Családi megosztáson keresztül.",
     "kup": "Folytatás: {{plan}}",
     "przywroc": "Vásárlások visszaállítása",
     "polityka": "Adatvédelmi irányelvek",
@@ -469,7 +490,15 @@
     "blad_zakupu": "A vásárlás nem sikerült. Ellenőrizze a kapcsolatot, és próbálja újra.",
     "przywracanie_nic": "Ehhez az Apple ID-hoz nem található Oczko Pro-vásárlás. Ha másik Apple ID-val vásárolta, jelentkezzen be azzal a Beállításokban, és próbálja újra.",
     "przywracanie_blad": "Nem sikerült visszaállítani a vásárlásokat. Ellenőrizze a kapcsolatot, és próbálja újra.",
-    "pro_wlaczone": "Az Oczko Pro bekapcsolva."
+    "pro_wlaczone": "Az Oczko Pro bekapcsolva.",
+    "kafel_dzien_tytul": "Minden alkotónap",
+    "kafel_dzien_opis": "Számolj, amikor alkotsz, havi korlát nélkül.",
+    "kafel_urzadzenia_tytul": "Korlát nélkül, minden eszközön",
+    "kafel_urzadzenia_opis": "iPhone, iPad és Apple Watch.",
+    "kafel_rodzina_tytul": "A családodnak",
+    "kafel_rodzina_opis": "Megoszthatod a családoddal a Családi megosztáson keresztül.",
+    "kafel_dane_tytul": "Adataid nálad maradnak",
+    "kafel_dane_opis": "Projektek, leírások és előzmények megmaradnak, Pro-val vagy anélkül."
   },
   "uczciwe": {
     "tytul": "Megvan az első alkotónapod",
@@ -963,5 +992,37 @@
     "yd_nazwa": "Yard",
     "g_nazwa": "Gramm",
     "oz_nazwa": "Uncia"
+  },
+  "dzis": {
+    "tytul": "Ma",
+    "pierwszy_tytul": "Első számláló",
+    "pierwszy_opis": "Koppints a +1-re minden kész sor után. A projektet később elnevezheted.",
+    "otworz_licznik": "Számláló megnyitása",
+    "kontynuuj": "Folytatás",
+    "wybierz_projekt": "Projekt választása",
+    "bez_miejsca_tytul": "Itt vannak a projektjeid",
+    "bez_miejsca_one": "{{count}} folyamatban lévő projekt. Válassz egyet, és a Ma ott nyitja meg, ahol abbahagytad.",
+    "bez_miejsca_other": "{{count}} folyamatban lévő projekt. Válassz egyet, és a Ma ott nyitja meg, ahol abbahagytad.",
+    "czesc_rzad": "{{czesc}}, {{n}}. sor",
+    "czesc_rzad_cel": "{{czesc}}, {{n}} / {{cel}}. sor",
+    "gotowe_one": "kész sor",
+    "gotowe_other": "kész sor",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} sor kész, ma {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} sor kész, ma {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} / {{cel}} sor kész, ma {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} / {{cel}} sor kész, ma {{dzis}}",
+    "co_dalej_one": "{{count}} sor múlva: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_other": "{{count}} sor múlva: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_teraz": "Ez a sor: {{tekst}} ({{ktory}} / {{razy}})",
+    "ten_tydzien": "Ezen a héten",
+    "tydzien_pusty": "Itt látod azokat a napokat, amikor kötöttél.",
+    "dzien_dziergany_a11y": "{{etykieta}}, alkotónap",
+    "kafel_wloczka": "Fonal és kötőtű"
+  },
+  "zakladki": {
+    "dzis": "Ma",
+    "projekty": "Projektek",
+    "narzedzia": "Eszközök",
+    "historia": "Előzmények"
   }
 }

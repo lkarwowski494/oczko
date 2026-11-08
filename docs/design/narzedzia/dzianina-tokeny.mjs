@@ -11,6 +11,7 @@ writeFileSync(join(kat, 'tokeny.css'), `/* wygenerowane z tokeny.json — nie ed
 [data-theme="dark"] { ${css(k.ciemny)} }
 [data-kontrast="zwiekszony"] { ${css(k.jasnyZwiekszony)} }
 [data-theme="dark"][data-kontrast="zwiekszony"] { ${css(k.ciemnyZwiekszony)} }
+:root { ${Object.entries(k.systemCzarny).filter(([n]) => !n.startsWith('_')).map(([n, v]) => `--sc-${n}: ${v};`).join(' ')} }
 `);
 // Pary sąsiadujące (tekst/tło, element/tło). Próg 3 tylko dla tekstu ≥ 24 pt / 19 pt pogr. i grafiki/UI.
 const PARY = [
@@ -34,6 +35,12 @@ const PARY = [
   ['akcent', 'karta', 3, 'miniatura: dzianina/karta (grafika)'], ['igla', 'karta', 3, 'miniatura: igła/karta (grafika)'], ['karta', 'tlo', 1.0, 'miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie)'],
   // M3-S3-06: stany p2 na „Dziś” (limit zawczasu na karcie, baner „Cofnąć?”)
   ['kartaTekst', 'karta', 4.5, 'limit na karcie: komunikat i odnośnik Oczko Pro'], ['kartaTekst2', 'karta', 3, 'limit na karcie: ikona klepsydry (UI)'],
+  // M3-MAK-01..03 (2026-11-08): ekran projektu, arkusz formularza, biegnący stoper, kafelek ikony wiersza
+  ['niszczacy', 'powierzchnia', 4.5, 'menu projektu: Usuń projekt… (tekst)'], ['niszczacy', 'powierzchnia', 3, 'edycja projektu: znak usunięcia (UI)'],
+  ['tekst2', 'tlo', 3, 'projekt: obwódka kropki włóczki (grafika)'], ['przyciskNieaktywnyTekst', 'powierzchnia', 4.5, 'arkusz: Dodaj nieaktywny'],
+  ['akcentTekst', 'powierzchnia', 4.5, 'arkusz: Anuluj, Zapisz, Wyczyść'], ['tekst2', 'powierzchnia', 3, 'arkusz: obrys pola (UI)'], ['akcentTekst', 'powierzchnia', 3, 'arkusz: obrys pola z fokusem (UI)'],
+  ['przycisk', 'tlo', 3, 'arkusz: znacznik wybranej opcji/tło listy (UI)'], ['tekst2', 'tlo', 3, 'arkusz: kółko niewybranej opcji/tło listy (UI)'],
+  ['akcentTekst', 'powierzchnia', 3, 'licznik: rama biegnącego stopera (UI)'], ['ikona', 'ikonaTlo', 3, 'kafelek ikony wiersza 32 pt (UI)'],
   ['tekst', 'powierzchnia', 4.5, 'baner Cofnąć?: tekst'], ['akcentTekst', 'powierzchnia', 4.5, 'baner Cofnąć?: przycisk tekstowy Cofnij'], ['akcentTekst', 'powierzchnia', 3, 'baner Cofnąć?: rama przycisku i ikona (UI)'],
 ];
 const pary = {};
@@ -47,6 +54,10 @@ for (const tlo of ['tlo', 'kartaStack']) {
   pary[`systemCzarny: znak kresek/${tlo} (grafika)`] = [sc.tekst, sc[tlo], 3];
 }
 pary['systemCzarny: przyciskTekst/przycisk'] = [sc.przyciskTekst, sc.przycisk, 4.5];
+// P-579: pas przypomnienia na ekranie blokady (systemCzarny) i podgląd zdjęć (M3-MAK-02)
+for (const n of ['tekst', 'tekst2', 'akcentTekst']) pary[`systemCzarny: ${n}/pasPrzypomnienia`] = [sc[n], sc.pasPrzypomnienia, 4.5];
+pary['systemCzarny: pasPrzypomnienia/tlo — pas odróżnia kształt i tekst na nim (informacyjnie)'] = [sc.pasPrzypomnienia, sc.tlo, 1.0];
+pary['podgląd zdjęcia: akcja akcentTekst/tlo'] = [sc.akcentTekst, sc.tlo, 4.5]; pary['podgląd zdjęcia: licznik tekst2/tlo'] = [sc.tekst2, sc.tlo, 4.5];
 // strona wzoru (stałe, oba motywy): znacznik rzędu na białej stronie, etykieta znacznika
 pary['wzor: znacznik/strona (grafika)'] = [t.wzor.znacznik, t.wzor.strona, 3]; pary['wzor: etykietaTekst/etykietaTlo'] = [t.wzor.etykietaTekst, t.wzor.etykietaTlo, 4.5];
 pary['wzor: etykietaTlo/strona (UI)'] = [t.wzor.etykietaTlo, t.wzor.strona, 3];

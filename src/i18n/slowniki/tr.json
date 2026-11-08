@@ -65,7 +65,20 @@
     "seria_blokada_other": "Kilit ekranından {{count}} sıra eklendi ({{godzina}}). Geri alınsın mı?",
     "seria_zegarek_one": "Saatinizden {{count}} sıra eklendi ({{godzina}}). Geri alınsın mı?",
     "seria_zegarek_other": "Saatinizden {{count}} sıra eklendi ({{godzina}}). Geri alınsın mı?",
-    "wpisz_blad_format": "0 veya daha büyük bir tam sayı girin, örneğin {{przyklad}}."
+    "wpisz_blad_format": "0 veya daha büyük bir tam sayı girin, örneğin {{przyklad}}.",
+    "akcja_notatka": "Not",
+    "akcja_wzor": "Tarif",
+    "akcja_cel": "Hedef",
+    "akcja_cel_a11y": "Hedef, hatırlatıcı, tekrar",
+    "akcja_stoper": "Süre",
+    "akcja_historia": "Geçmiş",
+    "projekt_wejscie": "Proje ›",
+    "projekt_wejscie_a11y": "Proje: {{projekt}}",
+    "menu_wiecej_a11y": "Sayaç seçenekleri: ad, sıra numarası, kilit, bitirme",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} sıra tamamlandı, bu oturumda {{sesja}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} sıra tamamlandı, bu oturumda {{sesja}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{cel}} sıradan {{count}} tamamlandı, bu oturumda {{sesja}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{cel}} sıradan {{count}} tamamlandı, bu oturumda {{sesja}}"
   },
   "limit": {
     "zawczasu_one": "Ücretsiz el işi günü kalmadı ({{miesiac}}). Sayım şu tarihe kadar durdu: {{data}}. {{count}} sıranız ve diğer her şey saklanıyor.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Tamamlandı: {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Tamamlandı: {{data}}",
     "ukonczono_a11y": "{{nazwa}}, tamamlandı: {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, tamamlandı: {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, tamamlandı: {{data}}",
+    "menu_a11y": "Diğer: {{nazwa}}",
+    "kosz_do_one": ": {{count}} öğe, {{data}} tarihine kadar.",
+    "kosz_do_other": ": {{count}} öğe, {{data}} tarihine kadar.",
+    "kosz_pokaz": "Göster"
   },
   "historia": {
     "pusto": "Henüz değişiklik yok.",
@@ -217,7 +234,12 @@
     "wpisz": "Doğru sayıyı gir",
     "wpis_rozwin_a11y": "Daha fazla bilgi: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Bu kaydın nasıl değiştirileceğini gösterir.",
-    "wpis_a11y": "{{od}} değerinden {{do}} değerine, saat {{czas}}"
+    "wpis_a11y": "{{od}} değerinden {{do}} değerine, saat {{czas}}",
+    "kafel_dni_one": "örgü günü",
+    "kafel_dni_other": "örgü günü",
+    "kafel_rzedy_one": "sıra",
+    "kafel_rzedy_other": "sıra",
+    "kafel_czas": "oturum süresi"
   },
   "menu": {
     "nazwa": "Projeye ve parçaya ad verin",
@@ -455,7 +477,6 @@
     "dozywotni_przy_subskrypcji": "Aboneliğiniz siz iptal edene kadar yenilenmeye devam eder.",
     "bez_pro_one": "Pro olmadan: her ay {{limit}} el işi günü; tüm projeleriniz ve verileriniz ise her zaman sizde.",
     "bez_pro_other": "Pro olmadan: her ay {{limit}} el işi günü; tüm projeleriniz ve verileriniz ise her zaman sizde.",
-    "rodzina": "Aile Paylaşımı ile ailenizle paylaşılır.",
     "kup": "Devam et: {{plan}}",
     "przywroc": "Satın alımları geri yükle",
     "polityka": "Gizlilik Politikası",
@@ -469,7 +490,15 @@
     "blad_zakupu": "Satın alma tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.",
     "przywracanie_nic": "Bu Apple Kimliği için Oczko Pro satın alımı bulunamadı. Başka bir Apple Kimliği ile satın aldıysanız Ayarlar’da o hesapla giriş yapıp tekrar deneyin.",
     "przywracanie_blad": "Satın alımlar geri yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.",
-    "pro_wlaczone": "Oczko Pro açık."
+    "pro_wlaczone": "Oczko Pro açık.",
+    "kafel_dzien_tytul": "Her örgü günü",
+    "kafel_dzien_opis": "Ördüğünüz her gün sayın, aylık sınır yok.",
+    "kafel_urzadzenia_tytul": "Her cihazda sınırsız",
+    "kafel_urzadzenia_opis": "iPhone, iPad ve Apple Watch.",
+    "kafel_rodzina_tytul": "Aileniz için",
+    "kafel_rodzina_opis": "Aile İçi Paylaşım ile ailenizle paylaşabilirsiniz.",
+    "kafel_dane_tytul": "Verileriniz sizde kalır",
+    "kafel_dane_opis": "Projeler, tarifler ve geçmiş, Pro ile de Pro olmadan da kalır."
   },
   "uczciwe": {
     "tytul": "İlk el işi gününüz tamam",
@@ -963,5 +992,37 @@
     "yd_nazwa": "Yarda",
     "g_nazwa": "Gram",
     "oz_nazwa": "Ons"
+  },
+  "dzis": {
+    "tytul": "Bugün",
+    "pierwszy_tytul": "İlk sayaç",
+    "pierwszy_opis": "Biten her sıradan sonra +1'e dokunun. Projeyi sonra adlandırabilirsiniz.",
+    "otworz_licznik": "Sayacı aç",
+    "kontynuuj": "Devam et",
+    "wybierz_projekt": "Proje seçin",
+    "bez_miejsca_tytul": "Projeleriniz burada",
+    "bez_miejsca_one": "{{count}} devam eden proje. Birini seçin, Bugün onu kaldığınız yerden açsın.",
+    "bez_miejsca_other": "{{count}} devam eden proje. Birini seçin, Bugün onu kaldığınız yerden açsın.",
+    "czesc_rzad": "{{czesc}}, sıra {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, sıra {{n}} / {{cel}}",
+    "gotowe_one": "sıra tamamlandı",
+    "gotowe_other": "sıra tamamlandı",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} sıra tamamlandı, bugün {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} sıra tamamlandı, bugün {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{cel}} sıradan {{count}} tamamlandı, bugün {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{cel}} sıradan {{count}} tamamlandı, bugün {{dzis}}",
+    "co_dalej_one": "{{count}} sıra sonra: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_other": "{{count}} sıra sonra: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_teraz": "Bu sıra: {{tekst}} ({{ktory}} / {{razy}})",
+    "ten_tydzien": "Bu hafta",
+    "tydzien_pusty": "Burada örgü ördüğünüz günleri göreceksiniz.",
+    "dzien_dziergany_a11y": "{{etykieta}}, örgü günü",
+    "kafel_wloczka": "İplik ve şişler"
+  },
+  "zakladki": {
+    "dzis": "Bugün",
+    "projekty": "Projeler",
+    "narzedzia": "Araçlar",
+    "historia": "Geçmiş"
   }
 }

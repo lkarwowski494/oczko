@@ -33,25 +33,19 @@ export const miniatura = tokeny.miniatura;
 /** Strona wzoru w oryginalnych kolorach (ZM-10) i rama w barwie motywu (`kolory.<motyw>.wzorRama`). */
 export const wzorTokeny = tokeny.wzor;
 
-/** Kolory na stałym czarnym tle (zegarek, Dynamic Island, podgląd zdjęcia; design-spec „systemCzarny”) + stare nazwy z mapy (grafit → tekst, olowek → tekst2, przyciskTlo/Obrys → przycisk). */
-const sc = tokeny.kolory.systemCzarny;
-export const systemCzarny = {
-  ...sc,
-  grafit: sc.tekst, olowek: sc.tekst2, przyciskTlo: sc.przycisk, przyciskObrys: sc.przycisk,
-  zakreslacz: sc.akcent, tekstNaZakreslaczu: sc.tekst, zakreslaczKrawedz: sc.akcentTekst,
-};
+/** Kolory na stałym czarnym tle (zegarek, Dynamic Island, podgląd zdjęcia; design-spec „systemCzarny”): wprost z tokenów; stare nazwy ról (grafit, olowek, przyciskTlo…) usunięte w M3 p4b. */
+export const systemCzarny = tokeny.kolory.systemCzarny;
 
 /** Dodatkowe nazwy ról z poprzedniego systemu, liczone z palety (już z wariantem „Zwiększ kontrast”), według mapa-tokenow.md. */
 function zgodnosc(p: KoloryTokenow & Partial<Record<string, string>>) {
   return {
     papier: p.tlo, papierGrupa: p.powierzchnia, arkusz: p.powierzchnia,
-    grafit: p.tekst, olowek: p.tekst2, kreska: p.tekst,
+    grafit: p.tekst, olowek: p.tekst2,
     przyciskTlo: p.przycisk, przyciskObrys: p.przycisk, drugiPrzyciskObrys: p.tekst2,
     // Czerwień tylko dla działań nieodwracalnych (design-spec „Kolory”): pozostałe użycia `blad` w ekranach to działania usuwające (Projekt, WzorNotatki, WzorPrzegladarka);
     // tekst błędu w Arkusz.tsx używa `tekst` + znaku „!” (mapa: blad → tekst). Ekran licznika dopóki rysuje zakreślenie (p3a) czyta `zakreslacz` (żółć w obu motywach)
     // z tekstem `naAkcencie` (ciemny tusz) — odstępstwo od mapy (tekstNaZakreslaczu → tekst), bo w ciemnym motywie jasny tekst na żółci byłby nieczytelny.
     blad: p.niszczacy, tekstNaZakreslaczu: p.naAkcencie, zakreslaczKrawedz: p.akcent,
-    przyciskNieaktywnyTlo: p.przyciskNieaktywny, przyciskNiszczacyTlo: p.niszczacy, przyciskNiszczacyTekst: p.niszczacyTekst,
   };
 }
 type Zgodnosc = ReturnType<typeof zgodnosc>;

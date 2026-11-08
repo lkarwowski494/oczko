@@ -29,7 +29,7 @@ const poKolejce = () => new Promise((r) => setTimeout(r, 30)); // odświeżenie 
 describe('kompozycjaLicznika', () => {
   test('NFR-PIE-001: świeża instalacja → licznik z 0 bez projektu; pierwsze +1 tworzy projekt roboczy „Counter from Oct 22, 12:00”, wartość 1', async () => {
     const { s, k, zdarzenia } = await srodowisko();
-    expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'licznik' } });
+    expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'licznik' } });
     const start = await k.uslugi.start();
     expect([start.licznik.projekt, start.licznik.skonczone, start.licznik.dziergany]).toEqual([null, 0, 1]);
     const w = await k.uslugi.dodajRzad();
@@ -50,12 +50,12 @@ describe('kompozycjaLicznika', () => {
     await a.k.uslugi.dodajRzad();
     await poKolejce(); // drugie połączenie na tym samym pliku: odświeżenie ekranu blokady pierwszego musi się skończyć (BEGIN IMMEDIATE)
     const b = await srodowisko(a.s.katalog);
-    expect(await b.k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'licznik' } });
+    expect(await b.k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'licznik' } });
     expect((await b.k.uslugi.start()).licznik.skonczone).toBe(1);
     await poKolejce();
     await wykonaj(b.s.baza, [['UPDATE licznik SET usunieto_ms = ?', [T0]]]);
     const c = await srodowisko(a.s.katalog);
-    expect(await c.k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'lista' } });
+    expect(await c.k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'lista' } });
   });
 
   test('RD-17: trzy +1 w 1 s → baner serii; „Undo 3 rows” → wartość sprzed serii i baner „Removed”; kolejne +1 gasi baner', async () => {

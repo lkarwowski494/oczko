@@ -1,11 +1,13 @@
-# Podprzepływ (07-jakosc-033 A): z licznika → menu ••• → „Set a repeat length” → długość DLUGOSC → Save → arkusz zamknięty.
+# Podprzepływ (07-jakosc-033 A): z licznika → akcja „Cel” pod liczbą (`licznik-cel`, menu systemowe: cel, przypomnienie, powtórzenie; P-581 a) → „Set a repeat length” → długość DLUGOSC → Save → arkusz zamknięty.
 # Parametr (env runFlow): DLUGOSC — liczba rzędów powtórzenia jako tekst (np. "8").
 # Pole długości ma testID `powtorzenie-dlugosc-pole` (src/ekrany/Formularze.tsx, 033-T1; wcześniej selektor po etykiecie „Rows in one repeat”).
 # Skutek wpisu sprawdza scenariusz na liczniku (`licznik-powtorzenie`, tekst „repeat N · row R of D”).
 appId: com.apps4brew.knitting
 name: "podprzepływ: ustaw długość powtórzenia"
 ---
-- tapOn: { id: "licznik-menu" }
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-cel" }
+- tapOn: { id: "licznik-cel" }
 - assertVisible: { id: "menu-powtorzenie" }
 - tapOn: { id: "menu-powtorzenie" }
 - assertVisible: { id: "formularz-zapisz" }

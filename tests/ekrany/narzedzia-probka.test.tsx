@@ -51,7 +51,8 @@ describe('Swatch', () => {
     ekran('cm', 'Swatch of Harbor Sweater · saved with the project');
     expect(screen.getByText('Swatch of Harbor Sweater · saved with the project')).toBeTruthy();
     fireEvent.changeText(screen.getByTestId('probka-szerokosc'), '50');
-    expect(screen.getByRole('alert')).toHaveProperty('props.children', '! Enter the stitches in your swatch first.');
+    expect(screen.getByRole('alert')).toHaveProperty('props.accessibilityLabel', 'Enter the stitches in your swatch first.'); // M3 p4b: znak „!” w kółku (ukryty przed VoiceOver), zdanie osobno
+    expect(screen.getByText('Enter the stitches in your swatch first.')).toBeTruthy();
     fireEvent.changeText(screen.getByTestId('probka-oczka'), '22');
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '110 stitches');
     fireEvent.press(screen.getByRole('radio', { name: 'per 4 in' }));

@@ -2,12 +2,12 @@
 // Zmiana miesiąca strzałką przenosi wybór na 1. dzień miesiąca albo dziś w bieżącym; projekt dnia otwiera ekran projektu (BR-DNI-002).
 import React, { useCallback, useState } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { HistoriaDni, type StanHistorii } from '../src/ekrany/HistoriaDni';
-import { StanWczytywania } from '../src/ekrany/StanWczytywania';
-import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
-import { stanHistorii } from '../src/kompozycja/historia';
-import { widokHistorii } from '../src/przypadki-uzycia/historia';
+import { HistoriaDni, type StanHistorii } from '../../src/ekrany/HistoriaDni';
+import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
+import { useAplikacja } from '../../src/kompozycja/Kontekst';
+import { Bezpieczny } from '../../src/kompozycja/Bezpieczny';
+import { stanHistorii } from '../../src/kompozycja/historia';
+import { widokHistorii } from '../../src/przypadki-uzycia/historia';
 
 const przesun = (miesiac: string, o: number): string => {
   const d = new Date(Date.UTC(Number(miesiac.slice(0, 4)), Number(miesiac.slice(5, 7)) - 1 + o, 1));

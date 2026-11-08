@@ -21,9 +21,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - runFlow: subflows/nazwij-projekt.yaml
 # --- eksport do katalogu testowego (jak scenariusz 08) ---
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-eksport" }
 - tapOn: { id: "ustawienia-eksport" }
 # E2-139-S1: widok wyniku leży pod grupą Eksport/Import/Usuń, a od #139 panel `e2e-ocena-stan` spycha go za dolną krawędź — poza ekranem elementu nie ma w hierarchii iOS, więc przewijamy, nie czekamy
@@ -41,9 +39,7 @@ tags:
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-import" }
 # --- import ostatniego eksportu: wybór scal / zastąp ---
 - tapOn: { id: "e2e-pliki-importuj-ostatni" }

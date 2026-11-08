@@ -18,16 +18,18 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 # --- Ustawienia: licznik darmowych dni i wejście do ofert (KP-13) ---
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-dni-darmowe", text: "4 of 5 free crafting days left in November" }
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
 - assertVisible: "Count rows on as many days as you like\\. Everything else stays the same\\."
+- scrollUntilVisible: { element: { id: "oferty-plan-miesieczny" }, direction: DOWN, timeout: 30000, centerElement: true } # p7 (P-596): plany pod kartą i 4 kafelkami Pro (src/ekrany/Oferty.tsx:118–150) — poza ekranem bez przewinięcia (reguła 10)
 - assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month\\. Renews every month.+" }
+- scrollUntilVisible: { element: { id: "oferty-plan-roczny" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year\\. Renews every year.+" }
+- scrollUntilVisible: { element: { id: "oferty-plan-dozywotni" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once\\. Pay once\\. Nothing renews\\." }
+- scrollUntilVisible: { element: { text: "Without Pro: 5 crafting days.*" }, direction: DOWN, timeout: 30000 }
 - assertVisible: "Without Pro: 5 crafting days every month, and all your projects and data, always\\."
 - assertVisible: { id: "oferty-przywroc", text: "Restore purchases" }
 - takeScreenshot: 06-oferty
@@ -46,6 +48,7 @@ tags:
 - scrollUntilVisible: { element: { id: "e2e-sklep-wygas" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "e2e-sklep-wygas" }
 - assertNotVisible: { id: "oferty-stan-pro" }
+- scrollUntilVisible: { element: { id: "oferty-plan-dozywotni" }, direction: DOWN, timeout: 30000, centerElement: true } # p7: plan pod kafelkami Pro
 - assertVisible: { id: "oferty-plan-dozywotni" }
 - scrollUntilVisible: { element: { id: "oferty-przywroc" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "oferty-przywroc" }
@@ -64,8 +67,6 @@ tags:
     env:
       TERAZ: "2026-11-10T19:50:00"
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - assertNotVisible: { id: "ustawienia-dni-darmowe" }

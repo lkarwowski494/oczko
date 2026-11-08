@@ -16,10 +16,12 @@ tags:
 - launchApp: { stopApp: false }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "dzis-karta" } # ZM-18: „Dziś” tylko przy zimnym starcie; powrót z innej aplikacji zostaje na tym samym ekranie
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 # --- otwarta historia zostaje otwarta po powrocie ---
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - pressKey: Home

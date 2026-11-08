@@ -22,6 +22,8 @@ tags:
       oczkoE2eSkrzynka: "pdf"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
 - assertNotVisible: { id: "skrzynka" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "skrzynka" }, timeout: 20000 }
 - assertVisible: "1 pattern to add"
@@ -30,6 +32,7 @@ tags:
 - assertNotVisible: { id: "skrzynka" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: "Harbor.*"
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - assertVisible: { id: "licznik-wzor" }
 - tapOn: { id: "licznik-wzor" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }

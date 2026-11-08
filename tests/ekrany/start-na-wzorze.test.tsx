@@ -1,5 +1,5 @@
 // 07-jakosc-006 (F-49, BR-PRJ-011 S1): start aplikacji po zamknięciu na ekranie wzoru otwiera ekran wzoru (licznik zostaje pod spodem); po wyjściu z wzoru — sam licznik.
-// Trasa app/index.tsx na prawdziwej bazie (jak uczciwe-zasady-trasa.test.tsx).
+// Trasa „/” (po M3 p2: „Dziś”, app/(zakladki)/index.tsx) na prawdziwej bazie (jak uczciwe-zasady-trasa.test.tsx).
 import React from 'react';
 import { act, render } from '@testing-library/react-native';
 import { zapamietajLicznik } from '../../src/przypadki-uzycia/widok-licznika';
@@ -24,7 +24,7 @@ jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => P
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 
 const PDF = Buffer.from('%PDF-1.4\n%%EOF\n');
 async function start(ekranWzoru: boolean) {
@@ -40,11 +40,8 @@ async function start(ekranWzoru: boolean) {
 const monta = async () => { render(<EkranLicznika />); await act(async () => { await new Promise((r) => setTimeout(r, 150)); }); };
 const naWzor = () => mockRouter.push.mock.calls.filter(([c]) => c === '/wzor').length;
 
-test('S1: praca skończyła się na wzorze → start otwiera ekran wzoru dokładnie raz', async () => {
-  await start(true);
-  await monta();
-  expect(naWzor()).toBe(1);
-});
+// S1 AS IS („start otwiera ekran wzoru dokładnie raz”) zastąpiony w M3 p2 testem TO BE tests/ekrany/start-dzis-wzor.test.tsx (07-e2e, ZM-18, P-563 (4a):
+// zimny start zawsze na „Dziś”, wzór otwiera „Kontynuuj ›”); wykaz: docs/programista/m3-p2-zastapione-testy.md.
 test('praca skończyła się na liczniku (wyjście z wzoru) → start nie otwiera wzoru', async () => {
   await start(false);
   await monta();
