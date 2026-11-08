@@ -2,7 +2,7 @@
 // Wybór działa od razu (kompozycja zapisuje i wraca); miary zmieniają wyświetlanie i wpisywanie, dane zostają w mm i g.
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { PreferencjaMiar } from '../domena/preferencje';
 import type { Tlumacz } from './wspolne';
 import { Wstecz } from './Pasek';
@@ -41,14 +41,14 @@ export function WyborMiar({ t, wybrany, naWybierz, naWstecz }: PropsWyboruMiar):
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.l },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    tytul: { ...typografiaDzianiny.duzyTytul, color: k.tekst },
+    grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum, paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
-    nazwa: { ...typografia.tresc, color: k.grafit },
-    opisWiersza: { ...typografia.podpis, color: k.olowek },
-    znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    opis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m },
+    nazwa: { ...typografiaDzianiny.tresc, color: k.tekst },
+    opisWiersza: { ...typografiaDzianiny.tresc2, color: k.tekst2 },
+    znak: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
+    opis: { ...typografiaDzianiny.tresc2, color: k.tekst2, paddingHorizontal: odstep.m },
   });
 }

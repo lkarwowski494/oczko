@@ -4,7 +4,7 @@
 import React, { useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Arkusz, Komunikat, Pole, Tresc, Wybor } from './Arkusz';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
 import { Wstecz } from './Pasek';
@@ -122,22 +122,22 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
   );
 }
 
-const stale = StyleSheet.create({ zdjecie: { width: '100%', aspectRatio: 4 / 3, borderRadius: promien.grupa } });
+const stale = StyleSheet.create({ zdjecie: { width: '100%', aspectRatio: 4 / 3, borderRadius: promien.lista } });
 export function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.m },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.podpis, color: k.olowek, fontWeight: '700', marginTop: odstep.s }, // etykiety wyników próbki (`.etyk`, 15 pt)
-    naglowekGrupy: { ...typografia.drobny, color: k.olowek, marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt `olowek`, bez wagi (narzedzia-zdjecia.html, sesje-historia.html:75), H-2, P2-4
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    tytul: { ...typografiaDzianiny.duzyTytul, color: k.tekst },
+    naglowek: { ...typografiaDzianiny.tresc2, color: k.tekst2, fontWeight: '700', marginTop: odstep.s }, // etykiety wyników próbki (`.etyk`, 15 pt)
+    naglowekGrupy: { ...typografiaDzianiny.mala, color: k.tekst2, marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt `tekst2`, bez wagi (narzedzia-zdjecia.html, sesje-historia.html:75), H-2, P2-4
+    grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszOstatni: { borderBottomWidth: 0 },
     wierszTekst: { flex: 1 },
-    nazwa: { ...typografia.tresc, color: k.grafit },
-    opis: { ...typografia.podpis, color: k.olowek },
-    zwykly: { ...typografia.tresc, color: k.grafit },
-    blok: { gap: odstep.xs, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.l },
-    wynik: { ...typografia.tytul, color: k.grafit },
+    nazwa: { ...typografiaDzianiny.tresc, color: k.tekst },
+    opis: { ...typografiaDzianiny.tresc2, color: k.tekst2 },
+    zwykly: { ...typografiaDzianiny.tresc, color: k.tekst },
+    blok: { gap: odstep.xs, borderRadius: promien.lista, backgroundColor: k.powierzchnia, padding: odstep.l },
+    wynik: { ...typografiaDzianiny.duzyTytul, color: k.tekst },
   });
 }
