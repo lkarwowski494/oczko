@@ -4,7 +4,8 @@
 import { coDalej } from '../domena/co-dalej';
 import type { PlanPrzypomnienia } from '../domena/przypomnienia';
 import type { DaneDzis } from '../ekrany/Dzis';
-import type { Jezyk, MiejscePracy } from './licznik';
+import type { Jezyk } from './licznik';
+import type { MiejscePracy } from './miejsce-pracy';
 
 export type WejscieDzis = {
   dzis: string;                        // RRRR-MM-DD (zegar aplikacji)

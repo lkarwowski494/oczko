@@ -11,13 +11,12 @@ import { cofnijSerie, dodajRzad, odejmijRzad, utworzSzybkiLicznik, ustawBlokade,
 import { naPierwszyPlan, przyTle, uruchomDane, type WynikStartuDanych } from '../przypadki-uzycia/start';
 import { widokProjektu } from '../przypadki-uzycia/widok-projektu';
 import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } from '../przypadki-uzycia/widok-licznika';
-import { startNaWzorze } from '../przypadki-uzycia/wzor-miejsce';
+import { miejscePracy, type MiejscePracy } from './miejsce-pracy';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
-import { liczba, wiersze } from '../dane/repozytoria/wiersze';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
 export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
@@ -67,12 +66,9 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
   };
 }
 
-/** Miejsce, do którego prowadzi „Kontynuuj ›” na „Dziś” (P-569). */
-export type MiejscePracy = 'licznik' | 'wzor' | 'lista';
 export type KompozycjaLicznika = {
-  /** Zimny start zawsze na „Dziś” (ZM-18, P-563 4a, P-569); `miejsce` = gdzie skończyła się praca — cel „Kontynuuj ›” (BR-PRJ-011 S1). */
+  /** Start zawsze na „Dziś” (ZM-18, P-569); `miejsce`: cel „Kontynuuj ›”. */
   przygotuj(): Promise<Wynik<{ cel: 'dzis'; miejsce: MiejscePracy }>>;
-  /** Miejsce pracy teraz (bieżący licznik w tej sesji): 'wzor' — praca skończyła się na wzorze (07-jakosc-006); 'lista' — brak licznika, projekty są (P-564, P-565). */
   miejsce(): Promise<Wynik<MiejscePracy>>;
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
@@ -87,7 +83,7 @@ export type KompozycjaLicznika = {
   poZegarku(f: () => void): () => void;
   /** M1-063: zmiana Pro przeliczona → ekran od nowa (licznik-dostep.ts). */
   poDostepie(f: () => void): () => void;
-  /** R-020 po p2: scalenie dziennika +1 (ekran blokady) skończone — ekran licznika nad „Dziś” czyta stan od nowa (korzeń scala raz). Zwraca odpięcie. */
+  /** R-020 (p2): po scaleniu dziennika; odpięcie. */
   poScaleniu(f: () => void): () => void;
   /** Zamknięcie kontenera: odpięcie `Zegarek.odbieraj` (ADR-0030 pkt 1). */
   zamknij(): void;
@@ -210,14 +206,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const m = await k.miejsce();
       return m.ok ? { ok: true, wartosc: { cel: 'dzis', miejsce: m.wartosc } } : m;
     },
-    async miejsce() {
-      if (!licznikId) {
-        const [p] = await wiersze(z.baza.all('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL'), 'przygotuj');
-        return { ok: true, wartosc: p && liczba(p, 'n') > 0 ? 'lista' : 'licznik' }; // moduly.md:238, :425: miejsce w koszu albo brak klucza → karta „Wybierz projekt ›”
-      }
-      const n = await startNaWzorze(z);
-      return { ok: true, wartosc: n.ok && n.wartosc ? 'wzor' : 'licznik' };
-    },
+    miejsce: () => miejscePracy(z, licznikId),
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
     poDostepie: dostep.poDostepie,
