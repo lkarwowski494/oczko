@@ -6,7 +6,7 @@ Gałąź `claude/kopia-08-p2-2026-11-08` od 96fb5c2c (HEAD zgodny na starcie). K
 `npm run test:akceptacja`: 8 testów, 8 × asercja (czerwone z właściwego powodu, jak w `docs/jakosc/e2e-dzis/stan-2026-11-08.md`).
 
 ## Zrobione (commity `[M3 p2] …`)
-cf4057a trasy zakładek do `app/(zakladki)/` (struktura) · 37a1ab1 „Dziś”, zakładki, licznik na `/licznik` (zachowanie; 8 testów 07 zielone i przeniesione) · 8d90ef7 wyjątek nazwany i18n do fali 09 (do akceptacji koordynatora) · 23b7bd6 `miejsce-pracy.ts` (limit 20 KB), tabela-08.
+cf4057a trasy zakładek do `app/(zakladki)/` (struktura) · 37a1ab1 „Dziś”, zakładki, licznik na `/licznik` (zachowanie; 8 testów 07 zielone i przeniesione) · 8d90ef7 + P-578 wyjątek nazwany i18n do fali 09 (prefiksy `tests/i18n/m3-prefiksy.ts`) · 6b11152 symbole (P-577) · 23b7bd6 `miejsce-pracy.ts` (limit 20 KB), tabela-08.
 Wykaz zastąpionych i przeniesionych testów: `m3-p2-zastapione-testy.md`.
 
 ## Architektura (do wpisu decyzji)
@@ -22,7 +22,7 @@ Wykaz zastąpionych i przeniesionych testów: `m3-p2-zastapione-testy.md`.
 Urządzenie i symulator (brak macOS): wygląd, zakładki natywnie, haptyka, VoiceOver, AX5; zrzuty (brak Expo web — `react-native-web` niezainstalowany); E2E iOS `[e2e-pelny] [e2e-ciemny]` — uruchamia koordynator po scaleniu.
 
 ## Otwarte
-1. SymbolSf (zamrożony) bez symboli zakładek/kafli z design-spec:48 — zastępcze: Dziś `calendar`, Projekty `bookmark`, Historia `clock.arrow.circlepath`, kafle `plus`/`doc.text`/`pencil.tip`/`ruler` (zgłoszenie do koordynatora, opcja (a): dopisać nazwy do unii typu).
+1. Symbole zakładek i kafli z design-spec:48 (P-577, 6b11152); Dziś `sun.max` z pary `calendar.day.timeline.left`/`sun.max` — [DO USTALENIA 04] okiem na urządzeniu; `scribble.variable` [DO USTALENIA] w spec.
 2. Odstępstwa od makiety do 04: przecinek zamiast „ · ” w podpisie karty (test 034); skrót dnia z Intl („czw.”); dzień dziergany jako kwadrat w kolorze `akcent` bez faktury oczek; „co dalej” bez pogrubienia nazwy (tekst przez jeden klucz); kolumna dzianiny 1,5 × `cele.plus` (brak tokenu); „Back” zostaje na zakładkach Narzędzia i Historia (e2e 16, M1-016).
 3. Kafel „Dodaj wzór” prowadzi do miejsca pracy (jak „Kontynuuj ›”) [DO USTALENIA 04/p3b]; „Włóczka i druty” → zakładka Narzędzia.
 4. Nowe teksty (en, pl) do akceptacji 04/09: klucze `dzis.*`, `zakladki.*` (`src/i18n/slowniki/en.kontekst.json`).
