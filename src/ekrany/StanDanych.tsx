@@ -41,10 +41,10 @@ function Problem({ ikona, naglowek, opis, przycisk }: { ikona: '!' | 'i'; naglow
   const k = useKolory();
   return (
     <View style={{ flexDirection: 'row', gap: odstep.s, alignItems: 'flex-start' }}>
-      <Text style={{ ...typografia.tresc, color: k.grafit, fontWeight: '700' }} importantForAccessibility="no" accessibilityElementsHidden>{ikona}</Text>
+      <Text style={{ ...typografia.tresc, color: k.tekst, fontWeight: '700' }} importantForAccessibility="no" accessibilityElementsHidden>{ikona}</Text>
       <View style={{ flex: 1, gap: odstep.xs }}>
-        <Text style={{ ...typografia.tresc, color: k.grafit, fontWeight: '600' }} testID="icloud-problem" accessibilityRole="text">{naglowek}</Text>
-        <Text style={{ ...typografia.podpis, color: k.olowek }}>{opis}</Text>
+        <Text style={{ ...typografia.tresc, color: k.tekst, fontWeight: '600' }} testID="icloud-problem" accessibilityRole="text">{naglowek}</Text>
+        <Text style={{ ...typografia.podpis, color: k.tekst2 }}>{opis}</Text>
         {przycisk && <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}><Przycisk tekst={przycisk.tekst} onPress={przycisk.onPress} rodzaj="tekstowy" /></View>}
       </View>
     </View>
@@ -71,7 +71,7 @@ export function StanDanych({ stan: s, t, naZamknij, icloud: i, kopie, panelE2e }
   return (
     <Arkusz tytul={t('stan_danych.tytul')} przyciski={naZamknij ? <Przycisk tekst={t('wspolne.zamknij')} onPress={naZamknij} rodzaj="tekstowy" testID="arkusz-zamknij" /> : null}>
       <View style={st.wiersz}>
-        <Text style={{ ...typografia.tresc, color: k.grafit, flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden>{t('icloud.przelacznik')}</Text>
+        <Text style={{ ...typografia.tresc, color: k.tekst, flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden>{t('icloud.przelacznik')}</Text>
         <Switch accessibilityRole="switch" accessibilityLabel={t('icloud.przelacznik')} accessibilityState={{ checked: i.wlaczona }} value={i.wlaczona}
           onValueChange={i.naPrzelacz} testID="icloud-przelacznik" />
       </View>

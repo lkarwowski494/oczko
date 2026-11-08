@@ -63,6 +63,8 @@ function LiniaKomunikatu({ rodzaj, t }: { rodzaj: Exclude<KomunikatOfert, null>;
 
 // Kafle „co daje zakup” (P-558, P-563 (11)(12), raport 02 `02-monetyzacja-2026-11-08`): tylko to, co Pro faktycznie zmienia (limit dni, `src/domena/limit.ts:70`), albo jawnie to, co zostaje bez Pro.
 // Kafel „rodzina” tylko przy Family Sharing (ujawnienie 7). Ikona kafla 1 własna (nie kalendarz zakładki Historia, 02-monetyzacja-004), pozostałe SF Symbols.
+// Brak tokenu rozmiaru znacznika radio planu (makieta: 28 pt kolumna, 26 pt kółko) — składane z odstępów, do zgłoszenia 04.
+const ZNACZNIK = odstep.xxl + odstep.xs;
 const LICZBA_DNI_W_ILUSTRACJI = 30; // ilustracja „każdy dzień” (nie dane): pełny miesiąc dni dzierganych; kolumny: 15, przy dużym tekście 10 (ekrany.html `.of-mies`)
 type Kafel = { id: string; tytul: Klucz; opis: Klucz; symbol: NazwaSymbolu | null; tylkoRodzina?: true };
 const KAFLE: readonly Kafel[] = [
@@ -94,7 +96,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
     kafelOpis: { ...typografiaDzianiny.mala, color: k.tekst2 },
     sekcja: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
     plan: { minHeight: cel.plus, padding: odstep.m, borderRadius: promien.kafel, borderWidth: 2, backgroundColor: k.powierzchnia, flexDirection: duzyTekst ? 'column' : 'row', gap: odstep.m, alignItems: duzyTekst ? 'flex-start' : 'center' },
-    znacznik: { width: 26, height: 26, borderRadius: 13, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
+    znacznik: { width: ZNACZNIK, height: ZNACZNIK, borderRadius: ZNACZNIK / 2, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
     znacznikWybrany: { borderWidth: 0, backgroundColor: k.przycisk },
     planTekst: { flex: 1, gap: odstep.xs },
     cena: { ...typografiaDzianiny.tytul, color: k.tekst },

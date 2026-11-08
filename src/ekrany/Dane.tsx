@@ -23,7 +23,7 @@ function Ramka(p: { wbudowany?: boolean; tytul: string; testID?: string; przycis
   if (!p.wbudowany) return <Arkusz tytul={p.tytul} testID={p.testID} przyciski={p.przyciski}>{p.children}</Arkusz>;
   return (
     <View testID={p.testID} style={{ gap: odstep.s }}>
-      <Text style={{ ...typografia.instrukcja, color: k.grafit }} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tytul}</Text>
+      <Text style={{ ...typografia.instrukcja, color: k.tekst }} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tytul}</Text>
       {p.children}
       {p.przyciski}
     </View>

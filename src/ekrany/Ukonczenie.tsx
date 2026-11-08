@@ -57,7 +57,7 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
       ) : null}
       <Tresc podpis>{t('ukonczenie.okres', { okres: s.okres })}</Tresc>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: odstep.s }}>
-        <Text style={{ ...typografia.liczba, color: k.grafit }}>{liczby.formatuj(s.rzedy)}</Text>
+        <Text style={{ ...typografia.liczba, color: k.tekst }}>{liczby.formatuj(s.rzedy)}</Text>
         <Tresc podpis>{t('ukonczenie.jednostka', { count: s.rzedy })}</Tresc>
       </View>
       <Tresc podpis>{podsumowanie}</Tresc>
@@ -73,8 +73,8 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
       {s.wybierzWloczke && s.wloczka.length === 0 && naWybierzWloczke && (
         <View style={{ gap: odstep.xs }} testID="ukonczenie-bez-wloczki">
           <View accessible role="status" style={{ flexDirection: 'row', gap: odstep.xs }}>
-            <Text style={{ ...typografia.podpis, color: k.olowek }} importantForAccessibility="no" accessibilityElementsHidden>ⓘ</Text>
-            <Text style={{ ...typografia.podpis, color: k.olowek, flex: 1 }}>{t('ukonczenie.bez_wloczki')}</Text>
+            <Text style={{ ...typografia.podpis, color: k.tekst2 }} importantForAccessibility="no" accessibilityElementsHidden>ⓘ</Text>
+            <Text style={{ ...typografia.podpis, color: k.tekst2, flex: 1 }}>{t('ukonczenie.bez_wloczki')}</Text>
           </View>
           <Przycisk tekst={t('ukonczenie.wybierz_wloczke')} onPress={naWybierzWloczke} rodzaj="tekstowy" rola="link" testID="ukonczenie-wybierz-wloczke" />
         </View>
@@ -84,7 +84,7 @@ export function Ukonczenie({ stan: s, t, oglos, liczby, naUdostepnij, naGotowe, 
   );
 }
 const st = StyleSheet.create({
-  zdjecie: { width: '100%', aspectRatio: 4 / 3, borderRadius: promien.grupa },
+  zdjecie: { width: '100%', aspectRatio: 4 / 3, borderRadius: promien.lista },
   pozaEkranem: { position: 'absolute', left: -10000, top: 0 }, // zrzut widoku wymaga, żeby był narysowany
 });
 
@@ -133,12 +133,12 @@ function WierszZuzycia(p: {
 }
 function styleWiersza(k: Kolory) {
   return StyleSheet.create({
-    nazwa: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    podpis: { ...typografia.podpis, color: k.olowek },
+    nazwa: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
+    podpis: { ...typografia.podpis, color: k.tekst2 },
     krokowiec: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },
     // obrysy drugiPrzyciskObrys (≥ 3:1, design-spec), jak przycisk „drugi” i pole w Arkusz.tsx
-    przycisk: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
-    znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    pole: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, minWidth: cel.przyciskMinus, textAlign: 'center', borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
+    przycisk: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.tekst2 },
+    znak: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
+    pole: { ...typografia.tresc, color: k.tekst, minHeight: cel.minimum, minWidth: cel.przyciskMinus, textAlign: 'center', borderRadius: promien.pole, borderWidth: 2, borderColor: k.tekst2 },
   });
 }

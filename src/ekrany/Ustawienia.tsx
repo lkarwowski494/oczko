@@ -38,6 +38,8 @@ export type PropsUstawien = {
   naZrodla?(): void;
 };
 
+// Brak tokenu rozmiaru kafelka ikony wiersza (przy kaflach „Dziś” cel.minimum = 44 pt jest za duży dla wiersza listy) — składany z odstępów, do zgłoszenia 04.
+const IKONA_WIERSZA = odstep.xxl + odstep.s;
 /** Wiersz listy grupowanej (ZM-07): ikona (kafelek `ikonaTlo`), podpis od lewej, wartość po prawej, strzałka tylko przy przejściu (`strzalka`). `przelacznik`: wiersz z przełącznikiem zamiast stuknięcia. */
 type PropsWiersza = {
   symbol: NazwaSymbolu; tekst: string; testID: string;
@@ -49,7 +51,7 @@ function Wiersz(p: PropsWiersza): React.ReactElement {
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const st = StyleSheet.create({
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, paddingHorizontal: odstep.m, paddingVertical: odstep.xs },
-    ikona: { width: 32, height: 32, borderRadius: promien.pole, backgroundColor: k.ikonaTlo, alignItems: 'center', justifyContent: 'center' },
+    ikona: { width: IKONA_WIERSZA, height: IKONA_WIERSZA, borderRadius: promien.pole, backgroundColor: k.ikonaTlo, alignItems: 'center', justifyContent: 'center' },
     tekst: { ...typografia.tresc, color: k.tekst, flex: duzyTekst ? undefined : 1, flexShrink: 1 },
     wartosc: { ...typografia.tresc, color: k.tekst2, flexShrink: 1, textAlign: 'right' },
   });
