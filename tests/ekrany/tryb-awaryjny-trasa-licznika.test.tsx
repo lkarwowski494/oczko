@@ -15,7 +15,7 @@ jest.mock('expo-router', () => {
   // Stos rysuje trasę „/” (pierwszy ekran) — jak expo-router przy starcie.
   const Stack = () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const Indeks = (require('../../app/index') as { default: React.ComponentType }).default;
+    const Indeks = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
     return mockReact.createElement(mockRn.View, { testID: 'stos' }, mockReact.createElement(Indeks));
   };
   Stack.Screen = () => null;

@@ -5,11 +5,11 @@
 // testID z kontraktu e2e/README.md (wiersze `dzis-*`, 07-e2e). Harness jak tests/ekrany/aplikacja.test.tsx (atrapy portów, `UslugiAplikacji` = atrapa przypadków użycia).
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import { Aplikacja, type UslugiAplikacji } from '../../../src/ekrany/Aplikacja';
-import type { EkranAktywny, Sklep } from '../../../src/domena/porty';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import type { StanEkranuLicznika } from '../../../src/ekrany/Licznik';
-import { atrapaCyklu, atrapaHaptyki, atrapaSystemu, plusOk, stanLicznika, tEn, zagrane } from '../../ekrany/pomoc';
+import { Aplikacja, type UslugiAplikacji } from '../../src/ekrany/Aplikacja';
+import type { EkranAktywny, Sklep } from '../../src/domena/porty';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import type { StanEkranuLicznika } from '../../src/ekrany/Licznik';
+import { atrapaCyklu, atrapaHaptyki, atrapaSystemu, plusOk, stanLicznika, tEn, zagrane } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });

@@ -963,5 +963,37 @@
     "yd_nazwa": "Yards",
     "g_nazwa": "Grams",
     "oz_nazwa": "Ounces"
+  },
+  "dzis": {
+    "tytul": "Today",
+    "pierwszy_tytul": "First counter",
+    "pierwszy_opis": "Tap +1 after each finished row. You can name the project later.",
+    "otworz_licznik": "Open counter",
+    "kontynuuj": "Continue",
+    "wybierz_projekt": "Choose a project",
+    "bez_miejsca_tytul": "Your projects are here",
+    "bez_miejsca_one": "{{count}} project in progress. Choose one, and Today will open it where you stop.",
+    "bez_miejsca_other": "{{count}} projects in progress. Choose one, and Today will open it where you stop.",
+    "czesc_rzad": "{{czesc}}, row {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, row {{n}} of {{cel}}",
+    "gotowe_one": "row done",
+    "gotowe_other": "rows done",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} row done, today {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rows done, today {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} of {{cel}} rows done, today {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} of {{cel}} rows done, today {{dzis}}",
+    "co_dalej_one": "In {{count}} row: {{tekst}} ({{ktory}} of {{razy}})",
+    "co_dalej_other": "In {{count}} rows: {{tekst}} ({{ktory}} of {{razy}})",
+    "co_dalej_teraz": "This row: {{tekst}} ({{ktory}} of {{razy}})",
+    "ten_tydzien": "This week",
+    "tydzien_pusty": "Here you’ll see the days you knit.",
+    "dzien_dziergany_a11y": "{{etykieta}}, crafting day",
+    "kafel_wloczka": "Yarn and needles"
+  },
+  "zakladki": {
+    "dzis": "Today",
+    "projekty": "Projects",
+    "narzedzia": "Tools",
+    "historia": "History"
   }
 }

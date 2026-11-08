@@ -162,7 +162,7 @@ describe('M1-007: start aplikacji — odrzucona obietnica startu daje ekran awar
     const t = await tEn();
     naAwarie.mockClear();
     mockAplikacja = { kontener: { z: {}, j: { t, jezyk: () => 'en-US', zegar24h: () => false }, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) } }, licznik: { ...LICZNIK_BAZA, przygotuj }, preferencje: {}, naAwarie };
-    await zamontuj(trasa('../../app/index'));
+    await zamontuj(trasa('../../app/(zakladki)/index'));
   }
   test('M1-007: „/” — `przygotuj()` zwraca { ok: false } → ekran awaryjny (korzeń, `naAwarie`) [kontrola: tak było i zostaje]', async () => {
     await ekranLicznika(async () => ({ ok: false, powod: 'zapis' }));

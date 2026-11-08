@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 2026-11-03 (P-473, P-474, P-481) przetłumaczyła wszystkie 146 baz kluczy w 33 językach (pl wcześniej, P-469); lista pusta. Historia powodów: git log tego pliku (przed commitem fali).",
+  "powod": "M3 p2 (2026-11-08): klucze „Dziś” i zakładek tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -15,9 +15,104 @@
     "P-445",
     "P-473",
     "P-474",
-    "P-481"
+    "P-481",
+    "P-559"
   ],
-  "klucze": [],
+  "klucze": [
+    "dzis.bez_miejsca",
+    "dzis.bez_miejsca_tytul",
+    "dzis.co_dalej",
+    "dzis.co_dalej_teraz",
+    "dzis.czesc_rzad",
+    "dzis.czesc_rzad_cel",
+    "dzis.dzianina_a11y",
+    "dzis.dzianina_a11y_cel",
+    "dzis.dzien_dziergany_a11y",
+    "dzis.gotowe",
+    "dzis.kafel_wloczka",
+    "dzis.kontynuuj",
+    "dzis.otworz_licznik",
+    "dzis.pierwszy_opis",
+    "dzis.pierwszy_tytul",
+    "dzis.ten_tydzien",
+    "dzis.tydzien_pusty",
+    "dzis.tytul",
+    "dzis.wybierz_projekt",
+    "zakladki.dzis",
+    "zakladki.historia",
+    "zakladki.narzedzia",
+    "zakladki.projekty"
+  ],
   "pierwsze_w_fali": [],
-  "przetlumaczone_czesciowo": {}
+  "przetlumaczone_czesciowo": {
+    "dzis.bez_miejsca": [
+      "pl"
+    ],
+    "dzis.bez_miejsca_tytul": [
+      "pl"
+    ],
+    "dzis.co_dalej": [
+      "pl"
+    ],
+    "dzis.co_dalej_teraz": [
+      "pl"
+    ],
+    "dzis.czesc_rzad": [
+      "pl"
+    ],
+    "dzis.czesc_rzad_cel": [
+      "pl"
+    ],
+    "dzis.dzianina_a11y": [
+      "pl"
+    ],
+    "dzis.dzianina_a11y_cel": [
+      "pl"
+    ],
+    "dzis.dzien_dziergany_a11y": [
+      "pl"
+    ],
+    "dzis.gotowe": [
+      "pl"
+    ],
+    "dzis.kafel_wloczka": [
+      "pl"
+    ],
+    "dzis.kontynuuj": [
+      "pl"
+    ],
+    "dzis.otworz_licznik": [
+      "pl"
+    ],
+    "dzis.pierwszy_opis": [
+      "pl"
+    ],
+    "dzis.pierwszy_tytul": [
+      "pl"
+    ],
+    "dzis.ten_tydzien": [
+      "pl"
+    ],
+    "dzis.tydzien_pusty": [
+      "pl"
+    ],
+    "dzis.tytul": [
+      "pl"
+    ],
+    "dzis.wybierz_projekt": [
+      "pl"
+    ],
+    "zakladki.dzis": [
+      "pl"
+    ],
+    "zakladki.historia": [
+      "pl"
+    ],
+    "zakladki.narzedzia": [
+      "pl"
+    ],
+    "zakladki.projekty": [
+      "pl"
+    ]
+  }
 }

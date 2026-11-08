@@ -67,7 +67,10 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
   /** Arkusze i pełnoekranowe modale z `_layout.tsx` (własne „Cancel”/„Close”/„Done”) — poza tą kontrolą. */
   const ARKUSZE = new Set([...uklad.matchAll(/<Stack\.Screen name="([^"]+)" options=\{\{[^}]*presentation: '(?:modal|fullScreenModal|formSheet)'/g)].map((m) => m[1]));
   /** Poza kontrolą z nazwy: licznik (pierwszy ekran, korzeń stosu), układ i przekierowanie intencji (nie ekrany). */
-  const POZA = new Set(['index', '_layout', '+native-intent']);
+  const POZA = new Set(['index', '_layout', '+native-intent',
+    // M3 p2 (WD-1): korzenie zakładek Dziś i Projekty (bez „Back”; Narzędzia i Historia zachowują „Back” — e2e 16, M1-016) i układ grupy; licznik wraca
+    // „‹ Projects” (`nav-projekty`, router.navigate do zakładki) do p3a („Projekt ›”).
+    '(zakladki)/_layout', '(zakladki)/index', '(zakladki)/projekty', 'licznik']);
   const pliki = (kat: string): string[] => fs.readdirSync(kat, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? pliki(path.join(kat, e.name)) : e.name.endsWith('.tsx') ? [path.join(kat, e.name)] : []));
   const pushPliki = pliki(APP).map((p) => path.relative(APP, p).replace(/\.tsx$/, '')).filter((n) => !ARKUSZE.has(n) && !POZA.has(n)).sort();

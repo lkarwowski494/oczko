@@ -1,4 +1,5 @@
-// Trasa „/projekty”: lista projektów (F-50, F-54). Otwarcie projektu zapamiętuje jego pierwszy licznik (F-49) i wraca do licznika.
+// Trasa „/projekty”: zakładka Projekty (F-50, F-54; M3 p2 WD-1). Otwarcie projektu zapamiętuje jego pierwszy licznik (F-49) i otwiera licznik (/licznik nad zakładkami).
+// Ustawienia tylko z zębatki „Dziś” (P-571); Historia i Narzędzia to zakładki — bez ikon w pasku listy i bez „Back” (korzeń zakładki).
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect, useIsFocused, useRouter } from 'expo-router';
 import { ListaProjektow, type StanListyProjektow } from '../../src/ekrany/ListaProjektow';
@@ -44,7 +45,6 @@ export default function EkranProjektow(): React.ReactElement {
   }
   const ch = kontener.z.zegar.teraz();
   const stan: StanListyProjektow = stanListy(widok, { zapytanie, j: kontener.j, terazMs: ch.ms, strefa: ch.strefa });
-  const wroc = () => (router.canGoBack() ? router.back() : router.replace('/'));
   return (
     <Bezpieczny>
       <ListaProjektow
@@ -54,13 +54,9 @@ export default function EkranProjektow(): React.ReactElement {
         naOtworz={(id) => {
           const p = [...widok.wToku, ...widok.ukonczone].find((x) => x.id === id);
           if (!p?.licznik) return;
-          void licznik.otworz(p.licznik.id).then(wroc);
+          void licznik.otworz(p.licznik.id).then(() => router.navigate('/licznik'));
         }}
         naNowy={() => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'nowy-projekt' } })}
-        naWstecz={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-        naUstawienia={() => router.push('/ustawienia')}
-        naHistoria={() => router.push('/dni')}
-        naNarzedzia={() => router.push('/narzedzia')}
         naKosz={() => router.push('/kosz')}
       />
       {/* Partia 6 (R2, scenariusz 52): arkusz „N patterns to add” nad listą — zlecenia ze skrzynki bez projektu; nie nad licznikiem (P-046). */}

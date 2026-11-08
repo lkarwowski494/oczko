@@ -108,7 +108,7 @@ describe('M1-089: trwała kontrola — trasa-arkusz z `StanWczytywania` podaje t
   const prezentacja = (r: string): string[] => [...uklad.matchAll(new RegExp(`<Stack\\.Screen name="([^"]+)" options=\\{\\{[^}]*presentation: '${r}'`, 'g'))].map((m) => m[1]);
   const pliki = (kat: string): string[] => fs.readdirSync(kat, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? pliki(path.join(kat, e.name)) : e.name.endsWith('.tsx') ? [path.join(kat, e.name)] : []));
-  const zeStanem = pliki(APP).map((p) => ({ trasa: path.relative(APP, p).replace(/\.tsx$/, ''), zrodlo: fs.readFileSync(p, 'utf8') }))
+  const zeStanem = pliki(APP).map((p) => ({ trasa: path.relative(APP, p).replace(/\.tsx$/, '').replace(/\([^)]+\)\//g, ''), zrodlo: fs.readFileSync(p, 'utf8') }))
     .filter((x) => x.zrodlo.includes('<StanWczytywania'));
   /** Wartości `tlo` przy każdym `<StanWczytywania …/>` w źródle trasy (brak = domyślne `papier`). */
   const tla = (zrodlo: string): string[] => [...zrodlo.matchAll(/<StanWczytywania\b([\s\S]*?)\/>/g)].map((m) => /\btlo="([a-z]+)"/.exec(m[1])?.[1] ?? 'papier');
@@ -123,7 +123,7 @@ describe('M1-089: trwała kontrola — trasa-arkusz z `StanWczytywania` podaje t
     expect(w.length).toBeGreaterThan(0);
     expect(w.every((x) => x === 'arkusz')).toBe(true);
   });
-  test('zdjecie (fullScreenModal na czerni): tlo="czarne"; trasy w stosie: domyślne papier (M1-068: także licznik „/”, app/index.tsx)', () => {
+  test('zdjecie (fullScreenModal na czerni): tlo="czarne"; trasy w stosie: domyślne papier (M1-068: także „/” = „Dziś”, app/(zakladki)/index.tsx; grupa tras „(…)/” nie zmienia nazwy)', () => {
     expect(prezentacja('fullScreenModal')).toContain('zdjecie');
     expect(tla(zeStanem.find((x) => x.trasa === 'zdjecie')!.zrodlo)).toEqual(['czarne']);
     const wStosie = zeStanem.filter((x) => !ARKUSZE.has(x.trasa) && x.trasa !== 'zdjecie');

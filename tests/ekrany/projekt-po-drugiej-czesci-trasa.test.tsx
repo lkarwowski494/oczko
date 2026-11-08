@@ -26,7 +26,7 @@ test('scen. 34: „A second Back” → licznik nowej części należy do tego s
   mock.licznik = k;
   render(<EkranFormularza />);
   fireEvent.press(await screen.findByTestId('co-dalej-druga'));
-  await waitFor(() => expect(mock.router.dismissTo).toHaveBeenCalledWith('/'));
+  await waitFor(() => expect(mock.router.dismissTo).toHaveBeenCalledWith('/licznik')); // M3 p2: licznik na trasie /licznik (dawniej „/”)
   const w = await k.widok();
   expect(w).not.toBeNull();
   expect(w?.projektId).toBe('p1');

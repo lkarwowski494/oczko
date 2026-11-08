@@ -106,7 +106,7 @@ describe('M1-068: długa pozycja kolejki przypadków użycia — trasa pokazuje 
       licznik: { wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, widok: async () => null, przygotuj: () => dane.obietnica }, preferencje: {}, naAwarie: jest.fn(),
     };
     mockParams = {};
-    render(React.createElement(trasa('../../app/index')));
+    render(React.createElement(trasa('../../app/(zakladki)/index')));
     await act(async () => { await new Promise((r) => setTimeout(r, 50)); });
     expect(screen.getByTestId('licznik-ladowanie')).toBeTruthy();
     expect(screen.getByText('Loading…')).toBeTruthy();

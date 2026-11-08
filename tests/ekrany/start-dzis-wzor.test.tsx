@@ -4,10 +4,10 @@
 // Trasa app/index.tsx na prawdziwej bazie, harness jak start-na-wzorze.test.tsx. 08 zastępuje stary test tym w commicie, który go zazielenia.
 import React from 'react';
 import { act, render } from '@testing-library/react-native';
-import { zapamietajPozycjeWzoru } from '../../../src/przypadki-uzycia/wzor-miejsce';
-import { czesc, licznik, plik, projekt, wzor } from '../../dane/pomocnicze/dane-wejsciowe';
-import { kompozycjaTestowa } from '../../dane/pomocnicze/kompozycja-licznika';
-import { wlozPlik, wykonaj } from '../../dane/pomocnicze/srodowisko';
+import { zapamietajPozycjeWzoru } from '../../src/przypadki-uzycia/wzor-miejsce';
+import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
+import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
+import { wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), canGoBack: () => false, back: jest.fn() };
 jest.mock('expo-router', () => ({
@@ -17,15 +17,15 @@ jest.mock('expo-router', () => ({
     (require('react') as typeof React).useEffect(f, []);
   },
 }));
-jest.mock('../../../src/ekrany/Aplikacja', () => ({ Aplikacja: () => null }));
-jest.mock('../../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
-jest.mock('../../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
-jest.mock('../../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));
-jest.mock('../../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
+jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: () => null }));
+jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
+jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
+jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));
+jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 let mockAplikacja: unknown;
-jest.mock('../../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
+jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const Start = (require('../../../app/index') as { default: React.ComponentType }).default;
+const Start = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 
 const PDF = Buffer.from('%PDF-1.4\n%%EOF\n');
 test('BR-PRJ-011/S1 (ER-69, P-563 4a): praca skończyła się na wzorze → zimny start NIE otwiera wzoru sam (start na „Dziś”)', async () => {

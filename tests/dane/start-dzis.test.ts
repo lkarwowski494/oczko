@@ -4,15 +4,15 @@
 // P-564/P-565 (karta bez ostatniego miejsca → „Wybierz projekt ›” → Projekty).
 // Kształt wyniku (propozycja 07 dla 08): `{ cel: 'dzis', miejsce: 'licznik' | 'wzor' | 'lista' }` — `miejsce` to dotychczasowy `cel` (ta sama logika, P-563 4a).
 // Zmiana nazwy pola przez 08 jest dozwolona razem z tym testem (zgłoszenie do 07), byle start nie zależał od miejsca.
-import { zapamietajLicznik } from '../../../src/przypadki-uzycia/widok-licznika';
-import { pozycjaWzoru, zapamietajPozycjeWzoru } from '../../../src/przypadki-uzycia/wzor-miejsce';
-import { czesc, licznik, plik, projekt, wzor } from '../../dane/pomocnicze/dane-wejsciowe';
-import { migruj } from '../../../src/dane/migracje/migruj';
-import type { LiveActivity, Zegarek } from '../../../src/domena/porty';
-import { utworzI18n } from '../../../src/i18n/i18n';
-import { ZASOBY } from '../../../src/i18n/slowniki';
-import { kompozycjaLicznika, type Jezyk } from '../../../src/kompozycja/licznik';
-import { T0, przygotuj, wlozPlik, wykonaj } from '../../dane/pomocnicze/srodowisko';
+import { zapamietajLicznik } from '../../src/przypadki-uzycia/widok-licznika';
+import { pozycjaWzoru, zapamietajPozycjeWzoru } from '../../src/przypadki-uzycia/wzor-miejsce';
+import { czesc, licznik, plik, projekt, wzor } from './pomocnicze/dane-wejsciowe';
+import { migruj } from '../../src/dane/migracje/migruj';
+import type { LiveActivity, Zegarek } from '../../src/domena/porty';
+import { utworzI18n } from '../../src/i18n/i18n';
+import { ZASOBY } from '../../src/i18n/slowniki';
+import { kompozycjaLicznika, type Jezyk } from '../../src/kompozycja/licznik';
+import { T0, przygotuj, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
 /** Jak `tests/dane/pomocnicze/kompozycja-licznika.ts`, z katalogiem bazy (restart = nowa kompozycja na tym samym pliku, jak F-49 w kompozycja-licznika.test.ts). */
 async function kompozycjaTestowa(o: { katalog?: string } = {}) {
