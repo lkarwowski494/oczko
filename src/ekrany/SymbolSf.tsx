@@ -15,6 +15,8 @@ export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.
   // calendar.day.timeline.left / sun.max [DO USTALENIA 08: okiem na urządzeniu]), Projekty square.stack, kafle plus.square, scribble.variable, square.grid.3x3.
   // M3 p3a (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): akcja „Cel” na liczniku (testid.md: `licznik-cel` = `flag`).
   | 'flag'
+  // M3 p4 (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): pole szukania na liście Projekty (makieta `projekty`: lupa).
+  | 'magnifyingglass'
   | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {

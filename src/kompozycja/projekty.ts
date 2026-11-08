@@ -7,7 +7,7 @@ import type { Zaleznosci } from '../przypadki-uzycia/zaleznosci';
 import { projektyZFilmem } from '../przypadki-uzycia/film';
 import { etykietaRobocza, type Jezyk } from './licznik';
 import { czasPracy } from './ukonczenie';
-import { liniaDzis, ostatniaPraca } from './projekt';
+import { krotkaData, liniaDzis, ostatniaPraca } from './projekt';
 
 const nazwaMiesiaca = (dzien: string, j: string) =>
   new Intl.DateTimeFormat(j, { month: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(Number(dzien.slice(0, 4)), Number(dzien.slice(5, 7)) - 1, 1)));
@@ -27,16 +27,18 @@ export function stanListy(w: WidokProjektow, o: { zapytanie: string; j: Jezyk; t
     // Wiersz w toku: „{część} · row {n} of {cel}” (design-spec „Lista projektów”; n = liczba widoczna na liczniku); projekt roboczy bez nazwy części: „Now knitting row n”.
     const opis = !p.licznik ? '' : p.nienazwany ? j.t('licznik.teraz', { n: p.licznik.wartosc + 1 })
       : p.licznik.cel === null ? j.t('projekty.wiersz', { czesc: p.licznik.czesc, n: p.licznik.wartosc }) : j.t('projekty.wiersz_cel', { czesc: p.licznik.czesc, n: p.licznik.wartosc, cel: p.licznik.cel });
+    // Miniatura dzianiny (M3 p4): rzędy licznika ostatniej pracy / cel części; ukończony — dzianina do linii celu; bez licznika brak miniatury (brak zostaje brakiem).
+    const dzianina = !p.licznik ? undefined : !wToku && p.ukonczonoDzien ? { gotowe: p.licznik.wartosc, cel: p.licznik.wartosc } : { gotowe: p.licznik.wartosc, cel: p.licznik.cel };
     if (!wToku && p.ukonczonoDzien) { // lista ukończonych: „Finished {data} · {czas}” bez stopera sama data, nigdy „0 min” (BR-PRJ-006/S1, design-spec 027)
       const data = ukonczonoData(p.ukonczonoDzien, j.jezyk(), o.terazMs, o.strefa), czas = p.czasPracyMs === null ? null : czasPracy(p.czasPracyMs, j);
-      return { id: p.id, nazwa, opis: czas === null ? j.t('projekty.ukonczono_bez_czasu', { data }) : j.t('projekty.ukonczono_wiersz', { data, czas }),
+      return { id: p.id, nazwa, ...(dzianina ? { dzianina } : {}), opis: czas === null ? j.t('projekty.ukonczono_bez_czasu', { data }) : j.t('projekty.ukonczono_wiersz', { data, czas }),
         etykieta: czas === null ? j.t('projekty.ukonczono_bez_czasu_a11y', { nazwa, data }) : j.t('projekty.ukonczono_a11y', { nazwa, data, czas }) };
     }
-    return { id: p.id, nazwa, opis, ...(wToku ? { termin: liniaDzis(p.dzis, j.t), ostatniaPraca: ostatniaPraca(p.dniOdPracy, j.t) } : {}) };
+    return { id: p.id, nazwa, opis, ...(dzianina ? { dzianina } : {}), ...(wToku ? { termin: liniaDzis(p.dzis, j.t), ostatniaPraca: ostatniaPraca(p.dniOdPracy, j.t) } : {}) };
   };
   const filtr = (l: ProjektNaEkranie[], wToku = false) => l.map((p) => wiersz(p, wToku)).filter((x) => !szukaj || x.nazwa.toLocaleLowerCase().includes(szukaj));
   return {
-    wToku: filtr(w.wToku, true), ukonczone: filtr(w.ukonczone), zapytanie: o.zapytanie, kosz: w.kosz,
+    wToku: filtr(w.wToku, true), ukonczone: filtr(w.ukonczone), zapytanie: o.zapytanie, kosz: w.kosz, ...(w.koszDo ? { koszDo: krotkaData(w.koszDo, j.jezyk()) } : {}),
     dni: w.dni && { zostalo: w.dni.zostalo, limit: w.dni.limit, miesiac: nazwaMiesiaca(w.dni.dzis, j.jezyk()) },
   };
 }

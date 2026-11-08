@@ -1,5 +1,5 @@
 {
-  "powod": "M3 p2+p3a (2026-11-08): klucze „Dziś”, zakładek i licznika tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
+  "powod": "M3 p2+p3a+p4 (2026-11-08): klucze „Dziś”, zakładek, licznika i listy projektów tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -49,6 +49,9 @@
     "licznik.menu_wiecej_a11y",
     "licznik.projekt_wejscie",
     "licznik.projekt_wejscie_a11y",
+    "projekty.kosz_do",
+    "projekty.kosz_pokaz",
+    "projekty.menu_a11y",
     "zakladki.dzis",
     "zakladki.historia",
     "zakladki.narzedzia",
@@ -156,6 +159,15 @@
       "pl"
     ],
     "zakladki.projekty": [
+      "pl"
+    ],
+    "projekty.menu_a11y": [
+      "pl"
+    ],
+    "projekty.kosz_do": [
+      "pl"
+    ],
+    "projekty.kosz_pokaz": [
       "pl"
     ]
   }

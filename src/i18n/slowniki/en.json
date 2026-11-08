@@ -212,7 +212,11 @@
     "ukonczono_wiersz": "Finished {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Finished {{data}}",
     "ukonczono_a11y": "{{nazwa}}, finished {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, finished {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, finished {{data}}",
+    "menu_a11y": "More: {{nazwa}}",
+    "kosz_do_one": ": {{count}} item, until {{data}}.",
+    "kosz_do_other": ": {{count}} items, until {{data}}.",
+    "kosz_pokaz": "Show"
   },
   "historia": {
     "pusto": "No changes yet.",

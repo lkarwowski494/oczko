@@ -184,7 +184,10 @@
     "ukonczono_wiersz": "Druga linia wiersza ukończonego projektu na liście (BR-PRJ-006 S1). {{data}} = data ukończenia (krótka, rok tylko gdy inny niż bieżący), {{czas}} = czas pracy ze stopera (format czasu trwania, np. „4 h 20 min”).",
     "ukonczono_bez_czasu": "Druga linia wiersza ukończonego projektu, gdy nie używano stopera (nie pokazujemy „0 min”).",
     "ukonczono_a11y": "Etykieta VoiceOver wiersza ukończonego projektu z czasem; {{czas}} słownie („4 hours 20 minutes”).",
-    "ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu."
+    "ukonczono_bez_czasu_a11y": "Etykieta VoiceOver wiersza ukończonego projektu bez czasu.",
+    "menu_a11y": "Nazwa VoiceOver przycisku ••• w wierszu projektu (M3 p4, WD-3): otwiera arkusz z usunięciem projektu do kosza. {{nazwa}} = nazwa projektu.",
+    "kosz_do": "Stopka listy projektów po słowie „Ostatnio usunięte” (osobny element tego samego zdania): dwukropek, liczba elementów kosza i data końca przechowywania najwcześniej usuniętego, kończy się kropką. Czyta się: „Recently deleted: 3 items, until Nov 23.”",
+    "kosz_pokaz": "Odnośnik na końcu stopki kosza, wejście do „Ostatnio usunięte” (jedno słowo, wyróżnione barwą akcentu)."
   },
   "historia": {
     "pusto": "Tekst z prototyp.html roli 04.",
