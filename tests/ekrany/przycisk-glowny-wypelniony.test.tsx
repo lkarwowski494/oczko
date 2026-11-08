@@ -1,7 +1,7 @@
-// 04-studio-projektowe-008 (P1, aneks 2026-11-02): główne przyciski w ciemnym motywie zlewały się z tłem (tło przycisku #2E3136 na arkuszu #2A2C31 = 1,07:1,
-// WCAG 2.2 1.4.11 wymaga 3:1). Wzorzec `docs/design/fix10-2026-11-01/partia8.html:56` (`.plus`) i `:70` (`.przycisk-pelny`): obrys 2 pt w tokenie `przyciskObrys`
-// (ciemny #8C9098; jasny = kolor tła przycisku, więc bez widocznej zmiany). Etykieta przycisku pełnej szerokości: Libre Franklin 700 17 pt (`:70`), nie 28 pt.
-// Test sprawdza prawdziwe komponenty z prawdziwymi tokenami w obu motywach; „+1 row” z licznika i z przeglądarki wzoru, przycisk arkusza, kapsułę stopera i wybrany dzień.
+// M3 p1 (P-547, P-553 wyjątek nazwany; zastępuje przycisk-glowny-obrys.test.tsx kierunku „Kreski”): w Dzianinie przycisk główny jest WYPEŁNIONY w obu motywach
+// (jasny: grafit z jasnym tekstem, ciemny: miód z ciemnym tekstem), bez obrysu w innym kolorze (design-spec „Kolory”, token `przycisk`). Przycisk nieaktywny:
+// tło powierzchni, tekst drugi i PRZERYWANA rama (nigdy sam kolor). Test sprawdza prawdziwe komponenty z prawdziwymi tokenami w obu motywach; „+1 row” z licznika
+// i z przeglądarki wzoru, przycisk arkusza, kapsułę stopera i wybrany dzień (ekrany p2–p8 dostaną własny wygląd w swoich partiach; do tego czasu obrys ma kolor wypełnienia).
 import React from 'react';
 import * as RN from 'react-native';
 import { render, screen } from '@testing-library/react-native';
@@ -20,35 +20,40 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 afterEach(() => jest.restoreAllMocks());
 
-const MOTYWY = [['jasny', 'light', tokeny.kolor.jasny], ['ciemny', 'dark', tokeny.kolor.ciemny]] as const;
-const GRUBOSC_OBRYSU = 2; // jak „−1” i przyciski drugie (pt)
-const nieZlewaSie = (el: Parameters<typeof expect>[0], k: typeof tokeny.kolor.jasny) => {
-  expect(el).toHaveStyle({ backgroundColor: k.przyciskTlo, borderWidth: GRUBOSC_OBRYSU, borderColor: k.przyciskObrys });
+const MOTYWY = [['jasny', 'light', tokeny.kolory.jasny], ['ciemny', 'dark', tokeny.kolory.ciemny]] as const;
+const wypelniony = (el: Parameters<typeof expect>[0], k: typeof tokeny.kolory.jasny) => {
+  expect(el).toHaveStyle({ backgroundColor: k.przycisk });
+  const st = RN.StyleSheet.flatten((el as { props: { style?: RN.StyleProp<RN.ViewStyle> } }).props.style) ?? {};
+  // bez obrysu w innym kolorze niż wypełnienie (obrys, jeśli jest, ma kolor wypełnienia)
+  expect(!st.borderWidth || st.borderColor === k.przycisk).toBe(true);
 };
 
-test('wartości wzorca: w ciemnym obrys różni się od tła przycisku, w jasnym jest nim (tokeny.json:36 i :15)', () => {
-  expect(tokeny.kolor.ciemny.przyciskObrys).toBe('#8C9098');
-  expect(tokeny.kolor.ciemny.przyciskObrys).not.toBe(tokeny.kolor.ciemny.przyciskTlo);
-  expect(tokeny.kolor.jasny.przyciskObrys).toBe(tokeny.kolor.jasny.przyciskTlo);
+test('wartości Dzianiny: przycisk wypełniony miodem (ciemny) i grafitem (jasny), różny od tła; poprzedni „obrys” nie istnieje w tokenach', () => {
+  expect(tokeny.kolory.ciemny.przycisk).toBe('#F0CF8A');
+  expect(tokeny.kolory.jasny.przycisk).toBe('#3A332E');
+  for (const k of [tokeny.kolory.jasny, tokeny.kolory.ciemny]) {
+    expect(k.przycisk).not.toBe(k.tlo);
+    expect(k).not.toHaveProperty('przyciskObrys');
+  }
 });
 
 describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
   beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat); });
 
-  test('przycisk główny arkusza („Keep counting”, „Continue with Yearly”, „Save a copy of my data”): obrys i etykieta 17 pt', () => {
+  test('przycisk główny arkusza („Keep counting”, „Continue with Yearly”, „Save a copy of my data”): wypełniony, etykieta 17 pt', () => {
     render(<Przycisk tekst="Keep counting" onPress={() => undefined} rodzaj="glowny" testID="p" />);
-    nieZlewaSie(screen.getByTestId('p'), k);
-    expect(screen.getByText('Keep counting')).toHaveStyle({ fontSize: tokeny.typografia.tresc.rozmiar, color: k.przyciskTekst });
+    wypelniony(screen.getByTestId('p'), k);
+    expect(screen.getByText('Keep counting')).toHaveStyle({ fontSize: tokeny.typografia.tresc.pt, color: k.przyciskTekst });
   });
 
-  test('przycisk główny nieaktywny: bez obrysu w kolorze akcentu (design-spec R1, tło i obrys = przyciskNieaktywnyTlo)', () => {
+  test('przycisk główny nieaktywny: tło powierzchni, rama PRZERYWANA w kolorze tekstu drugiego (nie sam kolor; design-spec „Kolory”)', () => {
     render(<Przycisk tekst="Keep counting" onPress={() => undefined} rodzaj="glowny" wylaczony testID="p" />);
-    expect(screen.getByTestId('p')).toHaveStyle({ backgroundColor: k.przyciskNieaktywnyTlo, borderColor: k.przyciskNieaktywnyTlo });
+    expect(screen.getByTestId('p')).toHaveStyle({ backgroundColor: k.przyciskNieaktywny, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama });
   });
 
   test('„+1 row” na liczniku', () => {
     render(<Licznik stan={stanLicznika()} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
-    nieZlewaSie(screen.getByTestId('licznik-plus'), k);
+    wypelniony(screen.getByTestId('licznik-plus'), k);
   });
 
   test('„+1 row” w pasku licznika pod wzorem', () => {
@@ -61,14 +66,14 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
       strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
       licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
     }} t={t} widok={<RN.Text>PDF</RN.Text>} {...w} />);
-    nieZlewaSie(screen.getByRole('button', { name: /^\+1 row/ }), k);
+    wypelniony(screen.getByRole('button', { name: /^\+1 row/ }), k);
   });
 
   test('kapsuła stopera w trakcie sesji (tokeny przycisku głównego, design-spec)', () => {
     const T = 1_000_000_000_000;
     const f = { naStart: jest.fn(), naWstrzymaj: jest.fn(), naWznow: jest.fn(), naZatrzymaj: jest.fn(), naInnyPotwierdz: jest.fn(), naInnyAnuluj: jest.fn() };
     render(<Stoper stan={{ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' }} inny={null} t={t} teraz={() => T + 65_000} {...f} />);
-    nieZlewaSie(screen.getByTestId('licznik-stoper'), k);
+    wypelniony(screen.getByTestId('licznik-stoper'), k);
   });
 
   test('wybrany dzień w Historii = przycisk główny (design-spec: „wybrany dzień = przycisk główny”)', () => {
@@ -81,8 +86,8 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     render(<HistoriaDni stan={stanHistorii(widok, { j, miesiac: '2026-10', wybrany: '2026-10-22', dzis: '2026-10-26' })} t={t}
       naWybierz={jest.fn()} naPoprzedni={jest.fn()} naNastepny={jest.fn()} naProjekt={jest.fn()} />);
     const dzien = screen.getByTestId('historia-dzien-2026-10-22');
-    const kolo = dzien.findAll((n) => typeof n.type === 'string' && n.props.style && JSON.stringify(RN.StyleSheet.flatten(n.props.style)).includes(k.przyciskTlo))[0];
+    const kolo = dzien.findAll((n) => typeof n.type === 'string' && n.props.style && JSON.stringify(RN.StyleSheet.flatten(n.props.style)).includes(k.przycisk))[0];
     expect(kolo).toBeTruthy();
-    expect(RN.StyleSheet.flatten(kolo!.props.style)).toMatchObject({ backgroundColor: k.przyciskTlo, borderWidth: GRUBOSC_OBRYSU, borderColor: k.przyciskObrys });
+    expect(RN.StyleSheet.flatten(kolo!.props.style)).toMatchObject({ backgroundColor: k.przycisk });
   });
 });

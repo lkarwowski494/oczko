@@ -96,18 +96,19 @@ test('układ „obok” (telefon poziomo W3, iPad poziomo W4b): kolumna licznika
   expect(screen.getByTestId('wzor-widok')).toBeTruthy();
 });
 
-test('P-262 (b), design-spec W3: w kolumnie liczba 64 pt, blok liczby się nie kurczy; kurczy się tylko +1 (jawna podstawa 0 — przebieg 119: blok 0 pt)', () => {
+// P-553 (Dzianina, mapa-tokenow.md): `typografia.liczbaKolumny` (64 pt) i `liczbaPaska` (40 pt) → jeden token `typografia.liczbaPaskaWzoru` (28 pt, interlinia 1,0): liczba przy wzorze = pasek wzoru.
+test('P-262 (b), design-spec W3: w kolumnie liczba w rozmiarze paska wzoru (liczbaPaskaWzoru; dawniej 64 pt), blok liczby się nie kurczy; kurczy się tylko +1 (jawna podstawa 0 — przebieg 119: blok 0 pt)', () => {
   render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 874, wysokosc: 402 }) })} t={t} widok={widok} {...wywolania()} />);
   const plaski = (id: string) => StyleSheet.flatten(screen.getByTestId(id).props.style);
-  expect(plaski('licznik-wartosc')).toMatchObject({ fontSize: 64, lineHeight: 64 });
+  expect(plaski('licznik-wartosc')).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt, lineHeight: Math.round(tokeny.typografia.liczbaPaskaWzoru.pt * tokeny.typografia.liczbaPaskaWzoru.interlinia) });
   expect(plaski('licznik-wartosc').flexShrink ?? 0).toBe(0);
   expect(plaski('wzor-liczba-blok')).toMatchObject({ flexShrink: 0 });
   expect(plaski('licznik-plus')).toMatchObject({ flexGrow: 1, flexShrink: 1, flexBasis: 0 });
 });
 
-test('pasek licznika (pionowo) bez zmian: liczba 40 pt (W1a)', () => {
+test('pasek licznika (pionowo): liczba w rozmiarze paska wzoru z tokenów (liczbaPaskaWzoru 28 pt; dawniej 40 pt, W1a)', () => {
   render(<PrzegladarkaWzoru stan={stan()} t={t} widok={widok} {...wywolania()} />);
-  expect(StyleSheet.flatten(screen.getByTestId('licznik-wartosc').props.style)).toMatchObject({ fontSize: 40 });
+  expect(StyleSheet.flatten(screen.getByTestId('licznik-wartosc').props.style)).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt });
 });
 
 test('iPhone: zakreślacz włącza tryb (selected), pasek narzędzi: gumka, cofnij, Done; liczba zakreśleń jako tekst (scenariusz 47)', () => {
@@ -130,14 +131,14 @@ test('iPhone: zakreślacz włącza tryb (selected), pasek narzędzi: gumka, cofn
 });
 
 // P2-9 (Aneks P2 poz. 3, pozycja 10 C): wybrane narzędzie w pasku compact — kształt niesie stan: obrys 2 pt `przyciskObrys`, promień 10 (`promien.pole`),
-// tło `papierGrupa`, obszar dotyku 44 × 44 pt; VoiceOver: przycisk „Highlighter”, stan selected. Niewybrane: bez obrysu i bez tła.
+// tło `papierGrupa`, obszar dotyku 44 × 44 pt; P-553 (Dzianina, mapa-tokenow.md): przyciskObrys → `kolory.<motyw>.przycisk`, papierGrupa → `powierzchnia`, `promienie.pole`, `cele.minimum`; VoiceOver: przycisk „Highlighter”, stan selected. Niewybrane: bez obrysu i bez tła.
 describe('P2-9 / 10 C: stan wybrany zakreślacza w pasku', () => {
   const compact = ukladOkna({ szerokosc: 390, wysokosc: 844 });
-  test.each([['jasny', 'light', tokeny.kolor.jasny], ['ciemny', 'dark', tokeny.kolor.ciemny]] as const)('motyw %s: wybrany Highlighter ma obrys, promień 10, tło papierGrupa, styl minWidth/minHeight 44 (deklaracja stylu)', (_n, schemat, k) => {
+  test.each([['jasny', 'light', tokeny.kolory.jasny], ['ciemny', 'dark', tokeny.kolory.ciemny]] as const)('motyw %s: wybrany Highlighter ma obrys, promień 10, tło powierzchni (dawniej papierGrupa), styl minWidth/minHeight 44 (deklaracja stylu)', (_n, schemat, k) => {
     jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
     render(<PrzegladarkaWzoru stan={stan({ uklad: compact, narzedzie: 'zakreslacz' })} t={t} widok={widok} {...wywolania()} />);
     const plaski = StyleSheet.flatten(screen.getByTestId('wzor-zakreslacz').props.style);
-    expect(plaski).toMatchObject({ borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: tokeny.promien.pole, backgroundColor: k.papierGrupa, minWidth: 44, minHeight: 44 });
+    expect(plaski).toMatchObject({ borderWidth: 2, borderColor: k.przycisk, borderRadius: tokeny.promienie.pole, backgroundColor: k.powierzchnia, minWidth: tokeny.cele.minimum, minHeight: tokeny.cele.minimum });
     expect(screen.getByRole('button', { name: 'Highlighter', selected: true })).toBe(screen.getByTestId('wzor-zakreslacz'));
   });
   test('niewybrany Highlighter: bez obrysu i bez tła (stan nie jest kolorem)', () => {
@@ -150,7 +151,7 @@ describe('P2-9 / 10 C: stan wybrany zakreślacza w pasku', () => {
   test('iPad regular: wybrany Pen ma ten sam stan co Highlighter (jak poz. 10 C)', () => {
     jest.spyOn(RN, 'useColorScheme').mockReturnValue('light');
     render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 820, wysokosc: 1180 }), narzedzie: 'pioro' })} t={t} widok={widok} {...wywolania()} />);
-    expect(StyleSheet.flatten(screen.getByTestId('wzor-pioro').props.style)).toMatchObject({ borderWidth: 2, borderRadius: tokeny.promien.pole, backgroundColor: tokeny.kolor.jasny.papierGrupa });
+    expect(StyleSheet.flatten(screen.getByTestId('wzor-pioro').props.style)).toMatchObject({ borderWidth: 2, borderRadius: tokeny.promienie.pole, backgroundColor: tokeny.kolory.jasny.powierzchnia });
   });
 });
 
@@ -188,7 +189,7 @@ test('M1-175: przełącznik wzorów ma styl minHeight = cel.minimum (deklaracja 
   const dwa = [{ wzorId: 'w1', nazwa: 'Harbor chart' }, { wzorId: 'w2', nazwa: 'Edging' }];
   render(<PrzegladarkaWzoru stan={stan({ wzory: dwa })} t={t} widok={widok} {...wywolania()} />);
   const plaski = StyleSheet.flatten(screen.getByTestId('wzor-przelacz').props.style);
-  expect(plaski?.minHeight).toBe(tokeny.cel.minimum);
+  expect(plaski?.minHeight).toBe(tokeny.cele.minimum);
   expect(plaski?.justifyContent).toBe('center');
   const strategia = readFileSync(join(__dirname, '../../docs/jakosc/strategia.md'), 'utf8');
   const tt16 = strategia.split('\n').find((l) => l.startsWith('| TT-16 |')) ?? '';

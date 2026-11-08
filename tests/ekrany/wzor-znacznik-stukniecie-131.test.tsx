@@ -6,7 +6,8 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { znacznikWzoru } from '../../src/dane/repozytoria/wzory';
-import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, kolorJasny } from '../../src/ekrany/motyw';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU } from '../../src/ekrany/motyw';
+import tokeny from '../../docs/design/tokeny.json';
 import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -87,19 +88,20 @@ test('131 (3): wybrane narzędzie rysowania — stuknięcie na wzorze bez znaczn
   expect(screen.queryByTestId('wzor-kierunek')).toBeNull();
   expect(await zapisany(s)).toBeNull();
 });
-test('131 (5): „Mark row” rysuje glif uchwytu znacznika z tokenów (linia 2 pt i okrąg 10 pt na 0,7 szerokości pola 20 pt), nie symbol `bookmark`', async () => {
+test('131 (5): „Mark row” rysuje glif uchwytu znacznika z tokenów (linia 0,1 i okrąg 0,5 pola o rozmiarze symbolu paska 17 pt, środek okręgu na 0,7 szerokości), nie symbol `bookmark`', async () => {
   await start(45);
   const ikona = screen.getByTestId('wzor-zaznacz');
   expect(ikona.props.accessibilityLabel).toBe('Mark row');
   expect(screen.queryByTestId('symbol-bookmark', { includeHiddenElements: true })).toBeNull();
-  const k = kolorJasny;
+  const k = tokeny.kolory.jasny; // tusz (dawniej grafit) i tło (dawniej papier) motywu jasnego z tokenów Dzianiny
   const P = Math.round(ROZMIAR_SYMBOLU * Math.min(Math.max(Dimensions.get('window').fontScale, 1), MAX_SKALA_TYTULOWA)); // pole skaluje się jak symbole paska (najwyżej ×1,8)
   const pole = StyleSheet.flatten(screen.getByTestId('wzor-zaznacz-glif', { includeHiddenElements: true }).props.style);
   expect(pole).toMatchObject({ width: P, height: P });
   const linia = StyleSheet.flatten(screen.getByTestId('wzor-zaznacz-glif-linia', { includeHiddenElements: true }).props.style);
-  expect(linia).toMatchObject({ width: P, height: P * 0.1, top: P * 0.45, backgroundColor: k.grafit });
+  expect(linia).toMatchObject({ width: P, height: P * 0.1, backgroundColor: k.tekst });
+  expect(linia.top).toBeCloseTo(P * 0.45, 9); // komponent liczy (P − grubość) / 2; różnica tylko w zapisie zmiennoprzecinkowym
   const okrag = StyleSheet.flatten(screen.getByTestId('wzor-zaznacz-glif-okrag', { includeHiddenElements: true }).props.style);
-  expect(okrag).toMatchObject({ width: P * 0.5, height: P * 0.5, borderRadius: P * 0.25, borderWidth: P * 0.1, borderColor: k.grafit, backgroundColor: k.papier });
+  expect(okrag).toMatchObject({ width: P * 0.5, height: P * 0.5, borderRadius: P * 0.25, borderWidth: P * 0.1, borderColor: k.tekst, backgroundColor: k.tlo });
   expect(okrag.left).toBeCloseTo(P * 0.45, 9);
   expect(okrag.top).toBeCloseTo(P * 0.25, 9);
 });

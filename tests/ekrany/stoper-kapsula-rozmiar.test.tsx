@@ -1,3 +1,5 @@
+// P-553 (Dzianina): zamiast „Libre Franklin 700 17 pt” — krój systemowy (bez `fontFamily`), waga 700, `typografia.tresc.pt`, cyfry tabelaryczne; tokeny: mapa-tokenow.md
+// (`typografia.przycisk`/`instrukcja` 700 → `tresc` pogrubiona). Kapsuła stopera nie ma osobnej makiety Dzianiny w design-spec — krój liczby w kapsule do decyzji 04 (raport).
 // H-1b (P-361, znalezisko sesji E): etykieta kapsuły stopera („0:00”, obok symbolu) miała 28 pt (`typografia.przycisk`), a design-spec.md:528 mówi:
 // „Libre Franklin 700 17 pt, cyfry tabelaryczne, skala tekstu najwyżej ×1,6”. Test sprawdza rozmiar, krój i cyfry tabelaryczne, w obu stanach kapsuły.
 import React from 'react';
@@ -5,6 +7,7 @@ import * as RN from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import { Stoper } from '../../src/ekrany/Stoper';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
+import tokeny from '../../docs/design/tokeny.json';
 import { tEn } from './pomoc';
 
 let t: Tlumacz;
@@ -21,15 +24,15 @@ const etykieta = (tekst: string) => {
   return { fontFamily: s.fontFamily, fontWeight: s.fontWeight, fontSize: s.fontSize, fontVariant: s.fontVariant };
 };
 
-test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: czas w kapsule trwającego stopera to Libre Franklin 700 17 pt z cyframi tabelarycznymi', (_m, schemat) => {
+test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: czas w kapsule trwającego stopera to krój systemowy 700 w rozmiarze treści (17 pt) z cyframi tabelarycznymi', (_m, schemat) => {
   jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
   pokaz({ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' });
-  expect(etykieta('1:05')).toEqual({ fontFamily: 'Libre Franklin', fontWeight: '700', fontSize: 17, fontVariant: ['tabular-nums'] });
+  expect(etykieta('1:05')).toEqual({ fontFamily: undefined, fontWeight: '700', fontSize: tokeny.typografia.tresc.pt, fontVariant: ['tabular-nums'] });
 });
 
 test('wstrzymana kapsuła ma ten sam rozmiar etykiety (17 pt)', () => {
   pokaz({ rodzaj: 'wstrzymana', czasMs: 600_000, startGodzina: '19:52' });
-  expect(etykieta('10:00').fontSize).toBe(17);
+  expect(etykieta('10:00').fontSize).toBe(tokeny.typografia.tresc.pt);
 });
 
 // H-1 (P-361, znalezisko sesji H): design-spec.md:528 — kapsuła stopera ma „skalę tekstu najwyżej ×1,6”, a kod dawał limit tytułowy ×1,8.

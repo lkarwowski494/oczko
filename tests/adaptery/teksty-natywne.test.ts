@@ -112,7 +112,7 @@ test('każdy klucz Teksty.t/tl("…") w Swift celu share jest w tabeli share (tl
   expect([...uzyte, ...mnogie].filter((k) => !KLUCZE_SHARE.includes(k))).toEqual([]);
 });
 test('P-143: klucze `aktywnosc` = tabela „Ekran blokady i zegarek” w design-spec (04 fix-2, fix-3); bez znaków sterujących', () => {
-  const spec = readFileSync(join(KORZEN, 'docs/design/design-spec.md'), 'utf8');
+  const spec = readFileSync(join(KORZEN, 'docs/design/archiwum/2026-11-08-kreski/design-spec.md'), 'utf8');
   const sekcja = spec.slice(spec.indexOf('## Ekran blokady i zegarek'), spec.indexOf('## Dla 08 (fix NZ-08-P3-04'));
   const zSpec = [...sekcja.matchAll(/^\| `aktywnosc\.([a-z_0-9]+)`(?: \/ `aktywnosc\.([a-z_0-9]+)`| \/ `_([a-z]+)`)? \|/gm)]
     .flatMap((m) => [m[1], m[2], m[3] ? `${(m[1] ?? '').replace(/_[a-z]+$/, '')}_${m[3]}` : undefined]).filter((k): k is string => !!k);

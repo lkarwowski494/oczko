@@ -11,7 +11,9 @@ const funkcja = czytaj('modules/oczko-reguly/Sources/OczkoDziennik/Haptyka.swift
 const testySwift = czytaj('modules/oczko-reguly/Tests/OczkoRegulyTests/HaptykaZegarkaTests.swift');
 
 /** Typ WKHapticType zapisany na początku opisu tokenu („WKHapticType.notification — …”). */
-const typTokenu = (klucz: string): string | undefined => /^WKHapticType\.(\w+)/.exec(tokeny.haptykaZegarek[klucz] ?? '')?.[1];
+// M3 p1: Dzianina nazywa wzorzec blokady `blokada` (adapter Swift zostaje przy `blokadaStukniecie` do partii p8).
+const TOKEN = (klucz: string): string => (klucz === 'blokadaStukniecie' ? 'blokada' : klucz);
+const typTokenu = (klucz: string): string | undefined => /^WKHapticType\.(\w+)/.exec(tokeny.haptykaZegarek[TOKEN(klucz)] ?? '')?.[1] ?? tokeny.haptykaZegarek[TOKEN(klucz)];
 
 describe('haptyka zegarka: token 04 ↔ czysta funkcja ↔ adapter', () => {
   test.each([

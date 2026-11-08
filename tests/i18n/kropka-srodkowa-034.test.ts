@@ -70,6 +70,6 @@ test('144: „ · ” sklejane w kodzie tylko w plikach z listy wyjątków desig
 });
 
 test('144: lista wyjątków z testu jest w design-spec (sekcja „Separator „ · ””)', () => {
-  const spec = fs.readFileSync(path.join(KORZEN, 'docs', 'design', 'design-spec.md'), 'utf8');
+  const spec = fs.readFileSync(path.join(KORZEN, 'docs', 'design', 'archiwum', '2026-11-08-kreski', 'design-spec.md'), 'utf8');
   for (const plik of Object.keys(WYJATKI_KROPKI_W_KODZIE)) expect(spec).toContain(`\`${plik}\``);
 });

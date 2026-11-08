@@ -1,6 +1,6 @@
 // M1-audytor-generalny-015 (04-studio-projektowe-001, P1): ikona aplikacji i ekran startowy z zatwierdzonego projektu, nie z poprzedniej wersji.
 // Kontrakt: wpisy w app.json wskazują pliki o tych samych SHA-256 co odpowiedniki w docs/design/ikona/ (design-spec.md, „Ikona: wpisy konfiguracji
-// (dla 08)”), a kolory tła ekranu startowego i ikony Androida to tokeny `papier` z docs/design/tokeny.json (zasada 15: bez nowych kolorów).
+// (dla 08)”), a kolory tła ekranu startowego i ikony Androida to tokeny `tlo` i `karta` z docs/design/tokeny.json (Dzianina, M3 p1) (zasada 15: bez nowych kolorów).
 // Ekran startowy przez plugin expo-splash-screen jak w Treningu (P-315): w SDK 57 klucz `expo.splash` nie ma już pluginu w @expo/prebuild-config.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -19,7 +19,7 @@ const idat = (b: Buffer): Buffer[] => {
 };
 
 const expo = json('app.json').expo;
-const tokeny = json('docs/design/tokeny.json').kolor;
+const tokeny = json('docs/design/tokeny.json').kolory;
 const splash = (expo.plugins as unknown[]).find((p): p is [string, Record<string, any>] => Array.isArray(p) && p[0] === 'expo-splash-screen');
 
 const wpisy: Record<string, unknown> = {
@@ -69,14 +69,17 @@ test('ikona barwiona iOS (P-497; Apple: „Provide your tinted app icon as a gra
   expect(niszare).toBe(0);
 });
 
-test('ekran startowy: plugin expo-splash-screen z tłem = token papier (jasny) i dark.backgroundColor = token papier (ciemny)', () => {
+test('ekran startowy (M3 p1, design-spec „Ikona i ekran startowy”): plugin expo-splash-screen z tłem = token tlo (jasny #E6E1DA) i dark.backgroundColor = token tlo (ciemny #26211E); nie biel ani czerń (P-547)', () => {
   expect(splash).toBeDefined();
-  expect(splash![1].backgroundColor).toBe(tokeny.jasny.papier);
-  expect(splash![1].dark?.backgroundColor).toBe(tokeny.ciemny.papier);
+  expect(splash![1].backgroundColor).toBe(tokeny.jasny.tlo);
+  expect(splash![1].dark?.backgroundColor).toBe(tokeny.ciemny.tlo);
+  expect(splash![1].backgroundColor).toBe('#E6E1DA');
+  expect(splash![1].dark?.backgroundColor).toBe('#26211E');
 });
 
-test('tło ikony Androida = token papier (jasny)', () => {
-  expect(expo.android?.adaptiveIcon?.backgroundColor).toBe(tokeny.jasny.papier);
+test('tło ikony Androida = token karta (jasny #3A332E, design-spec „android.adaptiveIcon.backgroundColor”)', () => {
+  expect(expo.android?.adaptiveIcon?.backgroundColor).toBe(tokeny.jasny.karta);
+  expect(expo.android?.adaptiveIcon?.backgroundColor).toBe('#3A332E');
 });
 
 test('brak martwego klucza expo.splash (SDK 57 go nie czyta) i plugin expo-splash-screen jest zależnością z app.plugin.js', () => {
@@ -85,8 +88,8 @@ test('brak martwego klucza expo.splash (SDK 57 go nie czyta) i plugin expo-splas
   expect(existsSync(join(K, 'node_modules/expo-splash-screen/app.plugin.js'))).toBe(true);
 });
 
-test('primaryColor nie wprowadza koloru spoza tokenów (brak albo token grafit jasny)', () => {
-  expect([undefined, tokeny.jasny.grafit]).toContain(expo.primaryColor);
+test('primaryColor nie wprowadza koloru spoza tokenów (brak albo token tekst jasny)', () => {
+  expect([undefined, tokeny.jasny.tekst]).toContain(expo.primaryColor);
 });
 
 test('ikona zegarka (P-407, design-spec „Ikona: wpisy konfiguracji”): cel watch wskazuje plik o sumie SHA-256 docs/design/ikona/watch.png', () => {

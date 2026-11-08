@@ -1,4 +1,5 @@
 // P2-4 (04, Aneks P2, poz. 7; P-368): nagłówki bez własnych wag i krojów.
+// Wartości wyglądu z tokenów Dzianiny (P-553): `drobny`→`typografia.mala.pt`, `olowek`→`kolory.<motyw>.tekst2`, `odstep.xl`→`odstepy.xl`; intencja testu bez zmian.
 // (a) „Tools”: `.naglowek-grupy` (`docs/design/fix6-2026-10-26/narzedzia-zdjecia.html`, `sesje-historia.html:75`) to 13 pt `olowek` BEZ wagi 700.
 // (b) Historia dni: nagłówki dnia, tygodnia i miesiąca jak `.naglowek-grupy` (13 pt, `olowek`, bez wagi), 20 pt nad blokiem (`margin: 20px …`, `sesje-historia.html:75`).
 // (c) Menu stopera: nagłówek „Session started {{godzina}}” (design-spec Aneks P2 poz. 7c; `stoper.menu_naglowek`) w stylu systemu — krój systemowy, bez wagi i bez Libre Franklin.
@@ -19,7 +20,7 @@ beforeAll(async () => { t = await tEn(); });
 afterEach(() => jest.restoreAllMocks());
 
 const styl = (el: { props: { style?: unknown } }) => RN.StyleSheet.flatten(el.props.style as RN.TextStyle);
-const olowek = (schemat: 'light' | 'dark') => (schemat === 'dark' ? tokeny.kolor.ciemny : tokeny.kolor.jasny).olowek;
+const olowek = (schemat: 'light' | 'dark') => (schemat === 'dark' ? tokeny.kolory.ciemny : tokeny.kolory.jasny).tekst2;
 
 describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m, schemat) => {
   beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat); });
@@ -28,7 +29,7 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
     render(<Narzedzia stan={{ wloczki: 7, druty: 9 }} t={t} naWloczki={jest.fn()} naDruty={jest.fn()} naProbke={jest.fn()} />);
     for (const nazwa of ['Stash', 'Calculations']) {
       const s = styl(screen.getByRole('header', { name: nazwa }));
-      expect({ nazwa, rozmiar: s.fontSize, kolor: s.color, waga: s.fontWeight }).toEqual({ nazwa, rozmiar: tokeny.typografia.drobny.rozmiar, kolor: olowek(schemat), waga: undefined });
+      expect({ nazwa, rozmiar: s.fontSize, kolor: s.color, waga: s.fontWeight }).toEqual({ nazwa, rozmiar: tokeny.typografia.mala.pt, kolor: olowek(schemat), waga: undefined });
     }
   });
 
@@ -48,7 +49,7 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
       const naglowek = within(screen.getByTestId(id)).getAllByRole('header')[0]!;
       const s = styl(naglowek);
       expect({ id, rozmiar: s.fontSize, kolor: s.color, waga: s.fontWeight, nadBlokiem: odstepMiedzyBlokami + Number(s.marginTop ?? 0) })
-        .toEqual({ id, rozmiar: tokeny.typografia.drobny.rozmiar, kolor: olowek(schemat), waga: undefined, nadBlokiem: tokeny.odstep.xl });
+        .toEqual({ id, rozmiar: tokeny.typografia.mala.pt, kolor: olowek(schemat), waga: undefined, nadBlokiem: tokeny.odstepy.xl });
     }
   });
 

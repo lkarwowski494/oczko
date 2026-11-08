@@ -1,5 +1,5 @@
 // H-1c (P-361, znalezisko sesji E): nagłówki sekcji ekranu projektu miały `typografia.podpis` (15 pt), a wzorzec `.naglowek-grupy` ma 13 pt w kolorze `olowek`:
-// `docs/design/fix10-2026-11-01/partia8.html:76` i `docs/design/fix11-2026-11-02/aneks8.html:75` (font-size: 13px), rola `drobny` w `tokeny.json` (13 pt, „footnote”).
+// `docs/design/fix10-2026-11-01/partia8.html:76` i `docs/design/fix11-2026-11-02/aneks8.html:75` (font-size: 13px), rola `drobny` w `tokeny.json` (13 pt, „footnote”; po P-553 `typografia.mala`).
 // Dotyczy wszystkich sześciu nagłówków ekranu: Parts, Time, Note, Photos, Pattern, Details (Photos i Pattern mają własne komponenty).
 import React from 'react';
 import * as RN from 'react-native';
@@ -36,6 +36,6 @@ const styl = (nazwa: string) => {
 test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: wszystkie nagłówki sekcji projektu mają 13 pt (wzorzec), kolor olowek, bez pogrubienia', (_m, schemat) => {
   jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
   pokaz();
-  const olowek = tokeny.kolor[schemat === 'dark' ? 'ciemny' : 'jasny'].olowek;
-  for (const n of NAGLOWKI) expect({ n, ...styl(n) }).toEqual({ n, fontSize: 13, fontWeight: undefined, color: olowek });
+  const olowek = tokeny.kolory[schemat === 'dark' ? 'ciemny' : 'jasny'].tekst2; // dawniej `olowek` (mapa-tokenow.md)
+  for (const n of NAGLOWKI) expect({ n, ...styl(n) }).toEqual({ n, fontSize: tokeny.typografia.mala.pt, fontWeight: undefined, color: olowek });
 });

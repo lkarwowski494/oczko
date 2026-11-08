@@ -122,11 +122,11 @@ describe('Delete all data z „Also delete from iCloud” (BR-DAN-009, P-229)', 
     fireEvent.press(screen.getByTestId('potwierdz-usun-wszystko'));
     expect(p.naUsun).toHaveBeenCalledWith(true);
   });
-  test('P-266 (3), scen. 51, design-spec:776: potwierdzenie w pasku arkusza (zawsze widoczny), tło `blad`; Cancel zamyka bez usuwania; błąd w arkuszu', () => {
+  test('P-266 (3), scen. 51, design-spec:776: potwierdzenie w pasku arkusza (zawsze widoczny), tło `blad` (alias `niszczacy` w Dzianinie); Cancel zamyka bez usuwania; błąd w arkuszu', () => {
     const p = props(true);
     const { rerender } = render(<ArkuszUsunWszystko {...p} />);
     const pasek = screen.getByTestId('arkusz-przyciski');
-    expect(within(pasek).getByTestId('potwierdz-usun-wszystko')).toHaveStyle({ backgroundColor: tokeny.kolor.jasny.blad });
+    expect(within(pasek).getByTestId('potwierdz-usun-wszystko')).toHaveStyle({ backgroundColor: tokeny.kolory.jasny.niszczacy });
     expect(within(pasek).queryByTestId('usun-z-icloud')).toBeNull(); // przełącznik w treści arkusza, nie w pasku
     fireEvent.press(within(pasek).getByTestId('usun-wszystko-anuluj'));
     expect(p.naZamknij).toHaveBeenCalledTimes(1);

@@ -9,12 +9,14 @@ import { act, render, screen } from '@testing-library/react-native';
 import tokeny from '../../docs/design/tokeny.json';
 import { useKolory, type Kolory } from '../../src/ekrany/motyw';
 
-const K = tokeny.kolor;
-const OCZEKIWANE: Record<string, Kolory> = {
+// M3 p1 (P-553): tokeny Dzianiny — `kolory.<motyw>` + wariant `<motyw>Zwiekszony` (podmienia tylko wskazane klucze); stare nazwy ról (papier, grafit, olowek…) są
+// aliasami na te tokeny według docs/design/dzianina/mapa-tokenow.md (do usunięcia, gdy partie p2–p8 przejdą na nowe nazwy).
+const K = tokeny.kolory;
+const OCZEKIWANE: Record<string, Record<string, string>> = {
   'jasny': K.jasny,
   'ciemny': K.ciemny,
-  'jasny+kontrast': { ...K.jasny, ...K.jasnyKontrast },
-  'ciemny+kontrast': { ...K.ciemny, ...K.ciemnyKontrast },
+  'jasny+kontrast': { ...K.jasny, ...K.jasnyZwiekszony },
+  'ciemny+kontrast': { ...K.ciemny, ...K.ciemnyZwiekszony },
 };
 
 let sluchacz: ((v: boolean) => void) | null = null;
@@ -27,7 +29,7 @@ function systemowe(schemat: 'light' | 'dark', kontrast: boolean): void {
   }) as never);
 }
 let wynik: Kolory | null = null;
-function Sonda(): React.ReactElement { wynik = useKolory(); return <RN.Text testID="sonda">{wynik.olowek}</RN.Text>; }
+function Sonda(): React.ReactElement { wynik = useKolory(); return <RN.Text testID="sonda">{wynik.tekst2}</RN.Text>; }
 
 afterEach(() => { jest.restoreAllMocks(); wynik = null; }); // odmontowanie (i zdjęcie słuchacza) robi automatyczne sprzątanie RNTL
 
@@ -41,27 +43,29 @@ describe('M1-032: useKolory — paleta dla czterech stanów (motyw × „Zwięks
     systemowe(schemat, kontrast);
     render(<Sonda />);
     await act(async () => { await Promise.resolve(); });
-    expect(wynik).toEqual(OCZEKIWANE[nazwa]);
+    expect(wynik).toMatchObject(OCZEKIWANE[nazwa]!);
+    expect(wynik?.olowek).toBe(OCZEKIWANE[nazwa]!.tekst2); // alias z mapy: stary `olowek` = `tekst2` (także w wariancie kontrastu)
+    expect(wynik?.papier).toBe(OCZEKIWANE[nazwa]!.tlo);
   });
 
   test('przełączenie „Zwiększ kontrast” w trakcie działania zmienia paletę bez ponownego uruchomienia (zdarzenie systemu)', async () => {
     systemowe('dark', false);
     render(<Sonda />);
     await act(async () => { await Promise.resolve(); });
-    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemny.olowek);
+    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemny.tekst2);
     expect(sluchacz).not.toBeNull();
     await act(async () => { sluchacz?.(true); });
-    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemnyKontrast.olowek);
-    expect(wynik?.drugiPrzyciskObrys).toBe(K.ciemnyKontrast.drugiPrzyciskObrys);
+    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemnyZwiekszony.tekst2);
+    expect(wynik?.drugiPrzyciskObrys).toBe(K.ciemnyZwiekszony.tekst2); // mapa: obrys −1 = tekst2 wariantu zwiększonego
     await act(async () => { sluchacz?.(false); });
-    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemny.olowek);
+    expect(screen.getByTestId('sonda')).toHaveTextContent(K.ciemny.tekst2);
   });
 
-  test('szare podpisy z przykładu znaleziska: jasny #5E626A, jasny + „Zwiększ kontrast” #44474D', async () => {
+  test('podpisy (tekst2): jasny #5A5048, jasny + „Zwiększ kontrast” #3F3731 (mapa-tokenow.md: olowek → tekst2)', async () => {
     systemowe('light', true);
     render(<Sonda />);
     await act(async () => { await Promise.resolve(); });
-    expect(K.jasny.olowek).toBe('#5E626A');
-    expect(screen.getByTestId('sonda')).toHaveTextContent('#44474D');
+    expect(K.jasny.tekst2).toBe('#5A5048');
+    expect(screen.getByTestId('sonda')).toHaveTextContent('#3F3731');
   });
 });

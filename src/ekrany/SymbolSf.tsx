@@ -23,5 +23,5 @@ export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: Color
 
 /** Wskaźnik przejścia przy wierszu listy (M1-146, decyzja 04): `chevron.forward` w kolorze `olowek`, rozmiar treści 17 pt, skala najwyżej ×1,8; dekoracyjny (ukryty przed VoiceOver). */
 export function StrzalkaWiersza(): React.ReactElement {
-  return <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={useKolory().olowek} maxSkala={MAX_SKALA_TYTULOWA} />;
+  return <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={useKolory().tekst2} maxSkala={MAX_SKALA_TYTULOWA} />;
 }

@@ -17,12 +17,12 @@ test('rozmiar zrzutu w punktach tak, żeby plik miał 1080 × 1350 px przy skali
   expect([3, 2, 1].map(rozmiarZrzutu)).toEqual([{ width: 360, height: 450 }, { width: 540, height: 675 }, { width: 1080, height: 1350 }]);
 });
 
-test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, stopka; tło papier motywu jasnego', () => {
+test('karta-obraz: okres, nazwa, trzy liczby z podpisami, włóczka i części, stopka; tło `tlo` motywu jasnego (dawniej papier)', () => {
   render(<ObrazKarty stan={STAN} t={t} formatuj={String} />);
   for (const x of ['Finished · Oct 1 – Oct 21, 2026', 'Harbor Sweater', '640', 'rows', '21', 'crafting days', '18 h', 'crafting time', 'Harbor merino, navy · 4 parts', 'Counted in Oczko']) {
     expect(screen.getByText(x)).toBeTruthy();
   }
-  expect(StyleSheet.flatten(screen.getByTestId('karta-obraz').props.style)).toMatchObject({ backgroundColor: tokeny.kolor.jasny.papier, width: 360, height: 450 });
+  expect(StyleSheet.flatten(screen.getByTestId('karta-obraz').props.style)).toMatchObject({ backgroundColor: tokeny.kolory.jasny.tlo, width: 360, height: 450 });
 });
 
 test('karta-obraz-bez-stopera: bez kolumny czasu (BR-PRJ-015 S3)', () => {

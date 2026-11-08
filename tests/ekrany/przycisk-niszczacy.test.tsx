@@ -1,14 +1,15 @@
 // P-275 (2), 04 fix-8: przycisk niszczący (arkusz decyzji o nieodwracalnym usunięciu) z tokenów przyciskNiszczacyTlo / przyciskNiszczacyTekst
 // w motywie jasnym i ciemnym (kontrast 6,36:1 i 9,98:1, docs/design/kontrast-tabela.txt); wcześniej tło `blad` i tekst `papier` (P-268).
-// Dziś wartości są równe `blad`/`papier`, więc test podmienia tokeny na odróżnialne — sprawdza, którego tokenu używa przycisk, nie przypadek wartości.
+// Test podmienia tokeny na odróżnialne — sprawdza, którego tokenu używa przycisk, nie przypadek wartości.
+// P-553 (Dzianina): `kolor.<motyw>.przyciskNiszczacyTlo/Tekst` → `kolory.<motyw>.niszczacy/niszczacyTekst`, `przyciskNieaktywnyTlo` → `przyciskNieaktywny`.
 import React from 'react';
 import * as RN from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
 jest.mock('../../docs/design/tokeny.json', () => {
   const t = jest.requireActual('../../docs/design/tokeny.json');
-  const odroznij = (k: Record<string, string>) => ({ ...k, przyciskNiszczacyTlo: '#010203', przyciskNiszczacyTekst: '#040506', przyciskNieaktywnyTlo: '#0a0b0c', przyciskNieaktywnyTekst: '#0d0e0f' });
-  return { ...t, kolor: { ...t.kolor, jasny: odroznij(t.kolor.jasny), ciemny: { ...odroznij(t.kolor.ciemny), przyciskNiszczacyTlo: '#070809' } } };
+  const odroznij = (k: Record<string, string>) => ({ ...k, niszczacy: '#010203', niszczacyTekst: '#040506', przyciskNieaktywny: '#0a0b0c', przyciskNieaktywnyTekst: '#0d0e0f' });
+  return { ...t, kolory: { ...t.kolory, jasny: odroznij(t.kolory.jasny), ciemny: { ...odroznij(t.kolory.ciemny), niszczacy: '#070809' } } };
 });
 import { Przycisk } from '../../src/ekrany/Arkusz';
 
@@ -21,7 +22,7 @@ test.each([['jasny', 'light', '#010203'], ['ciemny', 'dark', '#070809']] as cons
   expect(screen.getByText('Delete everything')).toHaveStyle({ color: '#040506' });
 });
 
-test('nieaktywny (także niszczący): tokeny przyciskNieaktywnyTlo / przyciskNieaktywnyTekst (design-spec R1, komponent niszczący)', () => {
+test('nieaktywny (także niszczący): tokeny przyciskNieaktywny / przyciskNieaktywnyTekst (design-spec R1, komponent niszczący)', () => {
   render(<Przycisk tekst="Delete everything" onPress={() => undefined} rodzaj="niszczacy" wylaczony testID="p" />);
   expect(screen.getByTestId('p')).toHaveStyle({ backgroundColor: '#0a0b0c' });
   expect(screen.getByText('Delete everything')).toHaveStyle({ color: '#0d0e0f' });
