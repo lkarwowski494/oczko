@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import type { EkranAktywny, Haptyka, Sklep } from '../domena/porty';
-import { wejdzNaEkranLicznika } from '../przypadki-uzycia/ekran-aktywny';
+import { kartaZPlusem, TAG_DZIS, TAG_LICZNIK, wejdzNaEkran } from '../przypadki-uzycia/ekran-aktywny';
 import { Dzis, type DaneDzis, type KafelDzis } from './Dzis';
 import { Licznik, type PropsLicznika, type StanEkranuLicznika, type WynikPlus } from './Licznik';
 import { useKolory } from './motyw';
@@ -41,6 +41,8 @@ export type PropsAplikacji = {
   sprawdzStopera?: React.ReactNode; // P-191 P5a
   /** Licznik albo wzór na wierzchu stosu (U11, M1-audytor-generalny-059): tylko wtedy ekran nie gaśnie. Bez trasy (testy komponentu): zawsze. */
   naWierzchu?: boolean;
+  /** „Dziś” na wierzchu (P-585): ekran nie gaśnie także tu, ale tylko gdy karta ma „+1” (`kartaZPlusem`); osobny tag `oczko-dzis`. */
+  dzisNaWierzchu?: boolean;
   /** „Dziś” (M3 p2): dane spoza stanu licznika (tydzień, wolne dni, miejsce pracy) i przejścia; bez nich karta z samego stanu licznika. */
   dane?: DaneDzis | null;
   jezyk?: string;
@@ -87,14 +89,31 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
   const naWierzchu = p.naWierzchu ?? true;
   const wierzch = useRef(naWierzchu);
   wierzch.current = naWierzchu;
+  const dzisWierzch = useRef(p.dzisNaWierzchu ?? false);
+  dzisWierzch.current = p.dzisNaWierzchu ?? false;
+  const daneDzis = useRef(p.dane ?? null);
+  daneDzis.current = p.dane ?? null;
+  const stanRef = useRef<StanStartu | null>(null);
+  stanRef.current = stan;
   const wTle = useRef(false);
-  // Wejście na ekran licznika (F-10, BR-LIC-013): po starcie, na pierwszym planie i z licznikiem albo wzorem na wierzchu; opcja czytana teraz,
+  const wyjscieTag = useRef<string | null>(null);
+  /** Który tag ma teraz trzymać ekran: licznik albo wzór na wierzchu (BR-LIC-013) → `oczko-licznik`; „Dziś” z kartą „+1” (P-585) → `oczko-dzis`; inaczej żaden. */
+  const tagTeraz = (): string | null => {
+    if (wierzch.current) return TAG_LICZNIK;
+    const s = stanRef.current;
+    return dzisWierzch.current && s && kartaZPlusem(s.licznik, daneDzis.current) ? TAG_DZIS : null;
+  };
+  // Wejście na ekran (F-10, BR-LIC-013): po starcie, na pierwszym planie i z licznikiem, wzorem albo „Dziś” z kartą „+1” na wierzchu; opcja czytana teraz,
   // więc przełącznik w Ustawieniach działa po powrocie na licznik bez ponownego uruchomienia (M1-audytor-generalny-059).
   const wejdz = () => {
-    if (ekranWlaczony.current === null || wyjscieEkranu.current || wTle.current || !wierzch.current) return;
-    wyjscieEkranu.current = wejdzNaEkranLicznika({ ekran: porty.ekranAktywny }, { opcjaWlaczona: uslugi.ekranWlaczony?.() ?? ekranWlaczony.current });
+    if (ekranWlaczony.current === null || wyjscieEkranu.current || wTle.current) return;
+    const tag = tagTeraz();
+    if (tag === null) return;
+    wyjscieTag.current = tag;
+    wyjscieEkranu.current = wejdzNaEkran({ ekran: porty.ekranAktywny }, { opcjaWlaczona: uslugi.ekranWlaczony?.() ?? ekranWlaczony.current }, tag);
   };
-  const wyjdz = () => { wyjscieEkranu.current?.(); wyjscieEkranu.current = null; };
+  const wyjdz = () => { wyjscieEkranu.current?.(); wyjscieEkranu.current = null; wyjscieTag.current = null; };
+  const tagWymagany = wierzch.current ? TAG_LICZNIK : dzisWierzch.current && stan && kartaZPlusem(stan.licznik, p.dane ?? null) ? TAG_DZIS : null;
 
   const l = useStanLicznika(uslugi, p.dzialania, ustawStan);
   useEffect(() => porty.sklep.obserwuj(nic), [porty.sklep]); // KP-07: nasłuch transakcji od startu
@@ -104,11 +123,13 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
       if (!zywy) return;
       ustawStan(s);
       ekranWlaczony.current = s.ekranWlaczony;
+      stanRef.current = s; // wejdz() czyta stan sprzed następnego renderu (karta „+1” na „Dziś”)
       wejdz();
     });
     return () => { zywy = false; wyjdz(); };
   }, [uslugi, porty.ekranAktywny]);
-  useEffect(() => { if (naWierzchu) wejdz(); else wyjdz(); }, [naWierzchu]); // lista projektów, Ustawienia, Narzędzia nad licznikiem: ekran gaśnie (U11)
+  // Zmiana tagu (lista projektów, Ustawienia, Narzędzia nad licznikiem: ekran gaśnie, U11; „Dziś” ↔ licznik: jeden tag naraz) → wyjście ze starego, wejście do nowego.
+  useEffect(() => { if (wyjscieTag.current !== null && wyjscieTag.current !== tagWymagany) wyjdz(); wejdz(); }, [tagWymagany]);
   useEffect(() => cykl.naZmiane((c) => {
     if (c === 'background') {
       wTle.current = true;

@@ -75,6 +75,7 @@ export default function EkranDzis(): React.ReactElement {
       <Aplikacja
         key={wersja}
         naWierzchu={naWierzchu}
+        dzisNaWierzchu={sciezka === '/'}
         porty={kontener.porty}
         uslugi={uslugi}
         cykl={cyklAplikacji}

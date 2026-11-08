@@ -1,5 +1,5 @@
 # Testy akceptacyjne: stan przed kodem
-Wygenerowano: 2026-11-08T20:04:10.623Z · `node scripts/jakosc/akceptacja-raport.mjs`
+Wygenerowano: 2026-11-08T20:19:26.778Z · `node scripts/jakosc/akceptacja-raport.mjs`
 
 Razem 3: asercja 3; błędy raportu: 0.
 
