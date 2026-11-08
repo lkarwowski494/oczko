@@ -31,6 +31,6 @@ tags:
 - takeScreenshot: 51-usun-z-icloud
 - scrollUntilVisible: { element: { id: "potwierdz-usun-wszystko" } } # pod zgięciem (przebieg 40411351211: stuknięcie poza ekranem)
 - tapOn: { id: "potwierdz-usun-wszystko" }
-- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 60000 }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista|dzis-karta" }, timeout: 60000 } # P-592/P-596: po usunięciu „Dziś” (pusty stan też ma dzis-karta), jak 08
 - runFlow: subflows/otworz-stan-danych.yaml
 - assertVisible: { id: "e2e-icloud-usuniete", text: "tak" }

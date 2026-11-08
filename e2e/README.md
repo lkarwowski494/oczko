@@ -58,6 +58,8 @@ Wiersze `dzis-*`, `nav-dzis` i rozszerzone znaczenie `nav-projekty`, `nav-narzed
 
 Licznik TO BE (07 cz. 2, 2026-11-08; ZM-04, ZM-05, P-580, P-581, P-583; kontrakt `docs/design/testid.md` M3-TESTID-02): akcje pod liczbą `licznik-akcja-notatka`, `licznik-wzor` (zastępuje `menu-wzor`), `licznik-cel` (menu systemowe z `menu-cel`, `menu-przypomnienie`, `menu-powtorzenie`), `licznik-stoper`, `licznik-historia` — przed stuknięciem w akcję `scrollUntilVisible` (AX5 i mały ekran, testid.md:158); „Projekt ›” = `licznik-projekt-wejscie`, `licznik-projekt` zostaje na nazwie; menu ••• (6 pozycji) bez `menu-grupa-*` i bez „Close” (`subflows/zamknij-menu.yaml`); z licznika do listy `nav-wstecz` + zakładka `nav-projekty`. Pilnuje `tests/jakosc/e2e-licznik-to-be.test.ts`. Do p3a scenariusze z tymi id są czerwone na iOS z właściwego powodu (lista: `docs/jakosc/e2e-dzis/stan-2026-11-08.md`, „Do zazielenienia w p3a”). [DO USTALENIA 05/08] czy pozycje UIMenu niosą testID — jeśli nie, scenariusze wybiorą pozycję po etykiecie z tej tabeli (reguła 2).
 
+Wiersze M3 p4b i p7 (07-e2e-m3, 2026-11-08; P-596, P-599; stan partii `docs/programista/m3-p4b-stan.md`, `m3-p7-stan.md`): `zdjecie-zamknij`, `zdjecie-udostepnij` (istniał bez wiersza), `znacznik-radio`, `komunikat-znak`, `projekt-menu-lista`, `projekt-czesc`, `projekt-licznik`, `projekt-licznik-wiersz`, `projekt-miniatura`, `kafelek-ikony`, `symbol-druty`, `symbol-dzien`, `ustawienia-grupa`, `ustawienia-stan-danych`, `ustawienia-polityka`, `ustawienia-subskrypcja`, `ustawienia-wibracje(-wiersz)`, `ustawienia-ekran-nie-gasnie(-wiersz)`, `oferty-karta`, `oferty-miesiac(-dzien)`, `oferty-kafel-*`, `oferty-ikona-dzien` — nazwy z kodu 08 (zmiana nazwy = zmiana scenariuszy). Elementy ukryte przed VoiceOver (znaczniki, kafelki, miniatury) nie są celem `tapOn`; wybór sprawdza `selected: true` na wierszu, błąd — tekst komunikatu. Od p7 plany „Oczko Pro” leżą pod kartą i kafelkami: przed asercją planu `scrollUntilVisible` (reguła 10; 06, 07).
+
 Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`; „—” = tekst ustala 04 (Z07-05), scenariusz używa tylko id. Kolumna ostatnia: klawiatura pola (`liczbowa`, `tekstowa`) albo puste.
 
 | id | ekran | element | tekst / etykieta | klawiatura |
@@ -79,7 +81,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `licznik-notatka` | licznik | blok notatki projektu nad akcjami (ikona + tekst; TO BE bez nagłówka „Note”, M3-TESTID-02) | treść notatki | |
 | `licznik-projekt` | licznik | nazwa projektu (tytuł; P-580 (a): tylko nazwa — wejściem do projektu jest `licznik-projekt-wejscie`) | nazwa użytkownika | |
 | `licznik-projekt-wejscie` | licznik | „Projekt ›” nad tytułem → ekran projektu (P-580 (a), M3-TESTID-02; p3a) | „Project: {nazwa}” | |
-| `licznik-menu` | licznik | menu ••• — menu systemowe (ZM-05, P-581 (a): 6 pozycji w 2 grupach; korekta: `menu-nazwa`, `menu-wpisz-wartosc`, `menu-znaczenie`, `menu-zeruj`; stan: `menu-zablokuj`/`menu-odblokuj`, `menu-ukoncz`); zamyka je stuknięcie obok (`subflows/zamknij-menu.yaml`) | „Counter options: row number, lock, finish” | |
+| `licznik-menu` | licznik | menu ••• — menu systemowe (ZM-05, P-581 (a): 6 pozycji w 2 grupach; korekta: `menu-nazwa`, `menu-wpisz-wartosc`, `menu-znaczenie`, `menu-zeruj`; stan: `menu-zablokuj`/`menu-odblokuj`, `menu-ukoncz`); zamyka je stuknięcie obok (`subflows/zamknij-menu.yaml`) | „Counter options: name, row number, lock, finish” (`licznik.menu_wiecej_a11y`; scenariusz 29 po etykiecie) | |
 | `licznik-historia` | licznik | 5. akcja pod liczbą „Historia” (arkusz zmian licznika; ZM-04) — przed stuknięciem `scrollUntilVisible` (AX5, testid.md:158) | „History” | |
 | `licznik-akcja-notatka` | licznik | 1. akcja pod liczbą „Notatka” → arkusz notatki (ZM-04, M3-TESTID-02; p3a) | „Note” | |
 | `licznik-cel` | licznik | 3. akcja pod liczbą „Cel” → menu systemowe: `menu-cel`, `menu-przypomnienie`, `menu-powtorzenie` (P-581 (a); p3a) | „Goal, reminder, repeat” | |
@@ -292,6 +294,34 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-znacznik-rzad` | wzór, pasek znacznika | numer rzędu schematu, na którym stoi znacznik (RD-21; scen. 62) | „12” | |
 | `wzor-znacznik-gotowe` | wzór, pasek znacznika | „Done” — zamknięcie paska | „Done” | |
 | `wprowadzenie` | — | ekran wprowadzenia (NIE może istnieć przed pierwszym +1) | — | |
+| `zdjecie-zamknij` | podgląd zdjęcia (p4b) | „Close” w prawym górnym rogu (makieta `zdjecie`); scenariusze nie zamykają podglądu (42 kończy usunięciem) | „Close” | |
+| `zdjecie-udostepnij` | podgląd zdjęcia | Share z symbolem `square.and.arrow.up` (arkusz systemowy — scenariusze go nie otwierają) | „Share” | |
+| `znacznik-radio` | arkusze z `Wybor`; plany „Oczko Pro” (p4b) | znacznik wyboru 28 pt (AX1+ 40), powtarzalny, ukryty przed VoiceOver — wybór sprawdza `selected: true` na wierszu (`oferty-plan-*`, „Needles”, „Stitches”) | — | |
+| `komunikat-znak` | komunikat błędu (próbka, formularze włóczki i narzędzia, oferty, Usuń wszystko; p4b) | kółko „!” przy zdaniu błędu, ukryte przed VoiceOver; zdanie = etykieta widoku z rolą alert (bez „!”) | — | |
+| `projekt-menu-lista` | ekran projektu (p4b) | pływająca lista menu „+” i ••• pod paskiem (pozycje `projekt-dodaj-*`, `projekt-edytuj`, `projekt-zrob-taka-sama`, `projekt-usun`, `projekt-wznow` bez zmian) | — | |
+| `projekt-czesc` | ekran projektu (p4b) | wiersz części (powtarzalny); etykieta z tekstów wiersza — 33, 59 i `dodaj-czesc-cel` wybierają część po etykiecie („Back, …”) | „{część}, {opis}” (np. „Back, …”) | |
+| `projekt-licznik` | ekran projektu (p4b) | wiersz licznika części (powtarzalny; gdy część ma > 1 licznik albo w trybie Edit) | nazwa licznika · opis | |
+| `projekt-licznik-wiersz` | ekran projektu (p4b) | obwiednia wiersza licznika z wcięciem (⊖ w trybie Edit + `projekt-licznik`) | — | |
+| `projekt-miniatura` | ekran projektu (p4b) | miniatura dzianiny w wierszu części — ukryta przed VoiceOver i od AX1 | — | |
+| `kafelek-ikony` | Ustawienia, Narzędzia (p4b) | kafelek ikony wiersza 32 pt (AX1+ 44), powtarzalny, dekoracyjny (ukryty przed VoiceOver) | — | |
+| `symbol-druty` | Narzędzia (p4b) | rysunek drutów w wierszu Druty | — | |
+| `symbol-dzien` | Ustawienia (p4b) | ikona dnia w wierszu Oczko Pro | — | |
+| `ustawienia-grupa` | Ustawienia (p7, ZM-07) | grupa listy grupowanej (powtarzalna) | — | |
+| `ustawienia-stan-danych` | Ustawienia (p7) | wiersz „Data and sync” (`subflows/otworz-stan-danych.yaml` stuka po etykiecie) | „Data and sync” | |
+| `ustawienia-polityka` | Ustawienia (p7) | wiersz Privacy Policy (rola link; 68 po etykiecie) | „Privacy Policy” | |
+| `ustawienia-subskrypcja` | Ustawienia (p7) | „Manage subscription” (tylko przy trwającej subskrypcji) | „Manage subscription” | |
+| `ustawienia-wibracje` | Ustawienia | przełącznik wibracji (rola switch) | „Vibration” | |
+| `ustawienia-wibracje-wiersz` | Ustawienia (p7) | wiersz z przełącznikiem wibracji (ikona + tekst + `ustawienia-wibracje`) | — | |
+| `ustawienia-ekran-nie-gasnie` | Ustawienia | przełącznik „ekran nie gaśnie” (rola switch; P-585) | „Keep screen on while counting” | |
+| `ustawienia-ekran-nie-gasnie-wiersz` | Ustawienia (p7) | wiersz z przełącznikiem „ekran nie gaśnie” | — | |
+| `oferty-karta` | oferty (p7) | karta z opisem Pro i ilustracją miesiąca | „Count rows on as many days as you like. Everything else stays the same.” | |
+| `oferty-miesiac` | oferty (p7) | ilustracja miesiąca, ukryta przed VoiceOver | — | |
+| `oferty-miesiac-dzien` | oferty (p7) | komórka dnia ilustracji (powtarzalna, 30) | — | |
+| `oferty-kafel-dzien` | oferty (p7, P-563 (11)) | kafel „Every crafting day” | „Every crafting day. Count whenever you craft, with no monthly limit.” | |
+| `oferty-kafel-urzadzenia` | oferty (p7) | kafel urządzeń | „No limit on any device. iPhone, iPad, and Apple Watch.” | |
+| `oferty-kafel-rodzina` | oferty (p7; tylko z Family Sharing) | kafel „For your family” | „For your family. You can share it with your family through Family Sharing.” | |
+| `oferty-kafel-dane` | oferty (p7) | kafel danych | „Your data stays yours. Projects, patterns, and history stay, with Pro or without.” | |
+| `oferty-ikona-dzien` | oferty (p7) | ikona kafla „Every crafting day” (SVG `IkonaDnia`) | — | |
 | `e2e-nigdy` | — | element, którego nie ma (podprzepływ `odstep.yaml`) | — | |
 | `e2e-sklep-wygas` | oferty (build E2E) | „Test store: expire access” | bez `t()` | |
 | `e2e-sha-bazy` | Ustawienia i ekran awaryjny (build E2E) | SHA-256 pary pliku bazy i `-wal` (64 znaki hex), liczone **bez checkpointu**; ukryty w trakcie liczenia (F07-19, P-203 Q6a) | bez `t()` | |

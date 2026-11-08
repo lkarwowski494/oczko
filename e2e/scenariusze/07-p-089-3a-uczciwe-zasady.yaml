@@ -57,6 +57,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 60000 }
 - tapOn: { id: "uczciwe-zasady-plany-pro" }
 - assertVisible: { id: "oferty-ekran" }
+- scrollUntilVisible: { element: { id: "oferty-plan-dozywotni" }, direction: DOWN, timeout: 30000, centerElement: true } # p7 (P-596): plan pod kartą i kafelkami Pro (reguła 10)
 - assertVisible: { id: "oferty-plan-dozywotni" }
 - takeScreenshot: 07-plany-z-okna
 - tapOn: { id: "oferty-nie-teraz" }
