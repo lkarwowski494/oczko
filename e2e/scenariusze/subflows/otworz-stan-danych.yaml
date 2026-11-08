@@ -1,11 +1,8 @@
-# Podprzepływ (partia 7): z licznika → lista projektów → Ustawienia → „Data and sync” (wiersz bez testID: tekst klucza ustawienia.stan_danych).
+# Podprzepływ (partia 7; P-571): z licznika albo zakładki → „Dziś” → zębatka → Ustawienia (otworz-ustawienia.yaml) → „Data and sync” (wiersz bez testID: tekst klucza ustawienia.stan_danych).
 appId: com.apps4brew.knitting
 name: "podprzepływ: Data and sync"
 ---
-- tapOn: { id: "nav-projekty", optional: true }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { text: "Data and sync" } }
 - tapOn: "Data and sync"
 - assertVisible: { id: "icloud-przelacznik" }

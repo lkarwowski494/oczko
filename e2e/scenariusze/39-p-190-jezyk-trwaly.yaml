@@ -9,10 +9,7 @@ tags:
     file: subflows/start-czysty.yaml
     env:
       TERAZ: "2026-11-10T19:30:00"
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
 - tapOn: { id: "ustawienia-jezyk" }
 - assertVisible: { id: "jezyk-auto", text: "Same as phone, selected" }
@@ -21,10 +18,7 @@ tags:
 - assertVisible: { id: "ustawienia-jezyk", text: ".*Polski.*" } # wybór działa od razu i wraca do Ustawień (src/ekrany/Jezyk.tsx:3, app/jezyk.tsx:17; przebieg 40457386369)
 - takeScreenshot: 39-polski
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:40:00" } }
-- tapOn: { id: "nav-projekty", optional: true }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
 - tapOn: { id: "ustawienia-jezyk" }
 - scrollUntilVisible: { element: { id: "jezyk-pl" } }

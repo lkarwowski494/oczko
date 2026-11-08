@@ -49,8 +49,7 @@ tags:
 - assertNotVisible: ".*[Rr]ate Oczko.*"
 - takeScreenshot: 65-po-ukonczeniu
 # --- S3: „Rate Oczko” w Ustawieniach ---
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-ocen" } }
 - assertVisible: { id: "ustawienia-ocen" }
 - takeScreenshot: 65-ustawienia

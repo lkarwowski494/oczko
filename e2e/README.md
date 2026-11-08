@@ -139,7 +139,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zdjecie-usun` | podgląd zdjęcia | Delete photo (alert z potwierdzeniem, bez kosza) | „Delete photo” | |
 | `karta-udostepnij` | karta ukończenia | Share: obraz 1080 × 1350 bez EXIF/GPS (P-191 P10a) | „Share” | |
 | `nav-projekty` | licznik; pasek zakładek (p2) | powrót z licznika do listy projektów (do p3a) i zakładka „Projekty” (ZM-18: to samo znaczenie — wejście do listy projektów) | „Projects” | |
-| `nav-ustawienia` | lista projektów | wejście do Ustawień | — | |
+| `nav-ustawienia` | „Dziś” (zębatka `gearshape`; P-571, P-554, to-be WD-1) | jedyne wejście do Ustawień — bez drugiego miejsca w zakładce Projekty; scenariusze wchodzą przez `subflows/otworz-ustawienia.yaml` (pilnuje `tests/jakosc/e2e-otworz-ustawienia.test.ts`) | „Settings” | |
 | `nav-narzedzia` | lista projektów; pasek zakładek (p2) | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26; po p2 zakładka „Narzędzia” (to samo znaczenie, ZM-18) | „Tools” | |
 | `nav-wstecz` | ekrany wtórne | systemowy „Back” | „Back” | |
 | `projekty-lista` | lista projektów | lista | „Projects” | |

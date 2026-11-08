@@ -1,13 +1,10 @@
-# Podprzepływ (partia 7): z licznika → lista projektów → Ustawienia → „Data and sync” (wiersz bez testID: tekst klucza ustawienia.stan_danych).
+# Podprzepływ (partia 7; P-571): z licznika albo zakładki → „Dziś” → zębatka → Ustawienia (otworz-ustawienia.yaml) → „Data and sync” (wiersz bez testID: tekst klucza ustawienia.stan_danych).
 # Wariant ze zrzutem (NOC-2b cz. 2): jak otworz-stan-danych.yaml + jeden zrzut `${ZRZUT}` po przewinięciu do wiersza „Data and sync”, przed stuknięciem.
 # Parametr (env runFlow): ZRZUT — nazwa zrzutu (wołający daje unikalną w swoim scenariuszu; pilnuje tests/jakosc/e2e-noc-2026-11-02.test.ts: wariant = oryginał + zrzut).
 appId: com.apps4brew.knitting
 name: "podprzepływ: Data and sync (ze zrzutem)"
 ---
-- tapOn: { id: "nav-projekty", optional: true }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
-- assertVisible: { id: "ustawienia" }
+- runFlow: otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { text: "Data and sync" } }
 - takeScreenshot: ${ZRZUT}
 - tapOn: "Data and sync"
