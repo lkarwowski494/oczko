@@ -9,7 +9,7 @@ Wejście: E2 przyjęte (P-072). Nowe pliki: [`prywatnosc.md`](prywatnosc.md), [`
 | iCloud (F-27; ADR-0005) | `CKSyncEngine`, harmonogram systemowy, ciche powiadomienia (tryb `remote-notification`, rejestr Apple 19a, 19b) | zapis zmian z iCloud przez kolejkę w małych partiach (`PARTIA_SYNCHRONIZACJI` wierszy na transakcję) | brak konta / pełny iCloud → maszyna synchronizacji (`moduly.md`), dane lokalne bez zmian |
 | Eksport, import, migracja z przebudową (ADR-0004) | tylko na pierwszym planie, pod `CzasWTle.chron` (`beginBackgroundTask`, rejestr Apple 17), dzielone na krótkie transakcje | `endBackgroundTask` w `finally`; przy wygaśnięciu: przerwanie po bieżącej partii, plik tymczasowy usuwany, baza spójna | komunikat „Eksport przerwany — spróbuj ponownie” (04) |
 | Przejście aplikacji w tło | `AppState → background`: dokończenie kolejki, `PRAGMA wal_checkpoint(TRUNCATE)` (dane.md, kopia urządzenia), wyłączenie `EkranAktywny` | żadna transakcja nie czeka na sieć, timer ani okno (kontrola portu w trybie deweloperskim) | — |
-Lokalizacja, dźwięk, `expo-background-task`: nie dotyczy (żaden przepływ kontraktu). Drabina uprawnień: jedyna prośba to aparat, w chwili pierwszego zdjęcia (nigdy przed licznikiem, NFR-PIE-001).
+Lokalizacja, dźwięk, `expo-background-task`: nie dotyczy (żaden przepływ kontraktu). Drabina uprawnień: jedyna prośba to aparat, w chwili pierwszego zdjęcia (nigdy przed „Dziś” ani przed pierwszym +1 z karty; NFR-PIE-001 po ZM-18, P-562).
 
 ## 2. Polityka błędów projektu
 | Rodzaj | Przykład w Oczku | Zachowanie |
@@ -53,7 +53,7 @@ Urządzenie odniesienia: najstarszy wspierany iPhone — XR / XS (rejestr Apple 
 9. Workflow: sekrety `ASC_*` tylko w zadaniu z `environment: testflight`, brak wyzwalacza `pull_request` w tym workflow (ADR-0014).
 10. Po `expo prebuild`: `IPHONEOS_DEPLOYMENT_TARGET = 18.0`; `UIBackgroundModes` = tylko `remote-notification`; `NSSupportsLiveActivities = true`; brak `NSPhotoLibraryUsageDescription`, jest `NSCameraUsageDescription`; reguła aktywacji rozszerzenia bez `TRUEPREDICATE`.
 11. Audyt dostępności `performAccessibilityAudit` na ekranach PR-01–PR-05 (NFR-DOS-001, S-36).
-12. NFR-PIE-001: świeża instalacja, 1 stuknięcie do pierwszego rzędu, 0 ekranów, także offline i 1. / ostatniego dnia miesiąca (L-01).
+12. NFR-PIE-001 (brzmienie po ZM-18, P-562): świeża instalacja, 1 stuknięcie w „+1” karty „Pierwszy licznik” na „Dziś” do pierwszego rzędu, 0 ekranów i arkuszy przed „Dziś”, +1 z karty bez zmiany ekranu, bez sieci, zakup tylko po stuknięciu (KP-10); także offline i 1. / ostatniego dnia miesiąca (L-01).
 13. Budżety z sekcji 3: pomiar bazowy w CI zapisany jako artefakt; regresja ponad próg ustalony przez właściciela = błąd.
 **Scenariusze tylko na urządzeniu (ryzyko szczątkowe, P-041 — bez kroku właściciela):** +1 z Live Activity przy zablokowanym telefonie (ZAL-030); restart bez odblokowania; zegarek poza zasięgiem z prawdziwym `transferUserInfo` (symulator nie obsługuje, rejestr Apple 4a); iCloud między prawdziwymi urządzeniami; bateria. Sprawdzenie po wydaniu: F-57, recenzje, MetricKit.
 
