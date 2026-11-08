@@ -17,14 +17,8 @@ const LITERAL = new RegExp(`\\b(${WLASCIWOSCI})\\s*:\\s*(-?\\d+(?:\\.\\d+)?)\\s*
 const WYJATKI: Record<string, string> = {
   'src/ekrany/ObrazKarty.tsx:width:1080': 'rozmiar pliku PNG karty ukończenia w pikselach (obraz trafia poza aplikację, design-spec P10a), nie wymiar ekranu; reszta karty liczona od szerokości obrazu (`U`)',
   'src/ekrany/ObrazKarty.tsx:height:1350': 'jak wyżej: wysokość pliku PNG karty (4:5)',
-  'src/ekrany/HistoriaDni.tsx:width:14': 'kreska dnia z robótką — rysunek elementu firmowego „14 × 3 pt” podany wprost w design-spec („Dzień z robótką: kreska ołówkiem pod liczbą”), nie odstęp ani cel dotyku',
-  'src/ekrany/HistoriaDni.tsx:height:3': 'jak wyżej: grubość kreski dnia „14 × 3 pt” (design-spec)',
-  'src/ekrany/HistoriaDni.tsx:width:34': 'koło wybranego dnia wewnątrz komórki 44 pt (`cel.minimum`); rysunek wyróżnienia, nie cel dotyku — tokenu brak, do nazwania przez 04 przy najbliższej sesji kalendarza (M1-078)',
-  'src/ekrany/HistoriaDni.tsx:height:34': 'jak wyżej: koło wybranego dnia',
   // M1-audytor-generalny-140 (04-studio-projektowe-528, decyzja 04 z 2026-11-03): 132 → token `cel.przyciskPlusPaskaSzerokosc`, 640 → stała `KOLUMNA_TRESCI_MAKS`;
   // pięć pozostałych to wyjątki 04 — geometria rysunku albo lokalna podłoga układu, nie wartość systemu (token tylko dla wartości, która wraca w kilku miejscach).
-  'src/ekrany/HistoriaDni.tsx:borderRadius:17': 'koło wybranego dnia (design-spec.md:544 „Wybrany dzień: koło”): promień = połowa średnicy 34 (wyjątek wyżej), czyli geometria koła, nie stopień hierarchii `promien.*`; zmienia się tylko razem z 34',
-  'src/ekrany/HistoriaDni.tsx:borderRadius:1.5': 'kreska ołówkiem „14 × 3 pt” (design-spec.md:544): zaokrąglone końce = połowa grubości 3 pt, jak ślad ołówka; geometria rysunku elementu firmowego, nie promień kontenera `promien.*`',
   'src/ekrany/Stoper.tsx:minWidth:240': 'podłoga szerokości menu stopera rysowanego w aplikacji zamiast „menu systemowego” z design-spec.md:530 (makieta `fix6-2026-10-26/sesje-historia.html:133` `.menu-ios`: min(280, szerokość − 24)); wartość 08 przyjęta przez 04 tymczasowo, do decyzji o menu stopera jako widoku (P-215 (3), P-373 — otwarte dla 04); znika z menu systemowym, nie staje się tokenem',
   'src/ekrany/WzorPrzegladarka.tsx:minWidth:120': 'tytuł paska wzoru (design-spec.md:671 „tytuł = nazwa wzoru”) ma co najmniej 120 pt (ok. 10 znaków Libre Franklin 20 pt, dwa wiersze), zanim ikony narzędzi przejdą do drugiego rzędu (`pasek` z flexWrap); lokalna podłoga układu tego paska, nie wymiar systemu',
   'src/ekrany/WzorZnacznik.tsx:minWidth:36': 'liczba krokowca rzędu znacznika (design-spec.md:182 „krokowiec w pasku”) między − i + ma stałą podłogę szerokości 36 pt (trzy cyfry treści 17 pt pogrubionej), żeby przyciski nie skakały przy 9 → 10 → 100; lokalna podłoga, nie wymiar systemu',

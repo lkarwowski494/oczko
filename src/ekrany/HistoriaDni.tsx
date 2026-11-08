@@ -1,8 +1,9 @@
-// Ekran „History” (F-59; BR-DNI-001–003; P-191 P6a; makiety sesje-historia `historia*`): kalendarz miesiąca od poniedziałku z kreską ołówkiem
-// pod dniem z robótką (element firmowy niesie dane, nie kolor), wybrany dzień w kole przycisku głównego, dziś pogrubione i podkreślone;
-// pod kalendarzem projekty wybranego dnia i dwa bloki bez przełącznika: tydzień wybranego dnia i miesiąc. Bez serii i ponagleń (BR-DNI-001 S5).
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+// Ekran „History” (F-59; BR-DNI-001–003; M3 p5, makieta dzianina/ekrany.html `historia`): kalendarz miesiąca od poniedziałku na pełną szerokość ekranu
+// (dzień ≥ 44 pt także przy 320 pt; przy AX5 siatka zostaje); dzień z robótką to kwadrat w kolorze `akcent` z obwódką `akcentTekst` (jak „Ten tydzień” na „Dziś”),
+// wybrany dzień ma obwódkę `tekst`, dziś jest pogrubione i podkreślone; pod kalendarzem projekty wybranego dnia i dwa bloki bez przełącznika:
+// tydzień wybranego dnia i miesiąc, w kartach. Bez serii i ponagleń (BR-DNI-001 S5).
+import React, { useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU_KAPSULY, promien, typografia, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
@@ -17,11 +18,15 @@ export type PropsHistorii = { stan: StanHistorii; t: Tlumacz; naWybierz(dzien: s
 
 export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, naProjekt, naWstecz }: PropsHistorii): React.ReactElement {
   const k = useKolory();
-  const st = style(k);
+  // Szerokość komórki: siedem kolumn na pełną szerokość ekranu (treść ma po bokach `odstep.l`, siatka je zabiera ujemnym marginesem). Do pierwszego pomiaru — szerokość okna.
+  const okno = useWindowDimensions().width;
+  const [trescSzer, ustawTrescSzer] = useState<number | null>(null);
+  const komorka = Math.floor((trescSzer === null ? okno : trescSzer + 2 * odstep.l) / 7);
+  const st = style(k, komorka);
   const blok = (b: BlokHistorii, testID: string) => (
     <View style={st.blok} testID={testID}>
       <Text style={st.naglowekBloku} accessibilityRole="header">{b.naglowek}</Text>
-      <View style={st.grupa}>
+      <View style={st.karta}>
         {b.linie.map((l) => <Text key={l} style={st.tekst}>{l}</Text>)}
         {b.bezStopera && <Text style={st.podpis}>{t('dni.bez_stopera')}</Text>}
       </View>
@@ -31,7 +36,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc} testID="historia">
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dni.tytul')}</Text>
-      <View style={st.grupa}>
+      <View style={st.kalendarz} onLayout={(e) => ustawTrescSzer(e.nativeEvent.layout.width)}>
         <View style={st.wierszMiesiaca}>
           <Text style={[st.tekst, st.pogrubiony]}>{s.miesiac}</Text>
           <View style={{ flexDirection: 'row' }}>
@@ -49,10 +54,9 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
             return (
               <Pressable key={d.dzien} accessibilityRole="button" accessibilityLabel={d.a11y} accessibilityState={{ selected: wybrany }}
                 onPress={() => naWybierz(d.dzien)} style={st.komorka} testID={`historia-dzien-${d.dzien}`}>
-                <View style={[st.kolo, wybrany && { backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys }]}>
-                  <Text style={[st.tekst, wybrany && { color: k.przyciskTekst }, d.dzis && st.dzis]}>{d.numer}</Text>
+                <View style={[st.kwadrat, d.robotka && st.dziergany, wybrany && st.wybrany]}>
+                  <Text style={[st.tekst, d.robotka && { color: k.naAkcencie }, d.dzis && st.dzis]}>{d.numer}</Text>
                 </View>
-                {d.robotka && <View style={[st.kreska, { backgroundColor: wybrany ? k.grafit : k.kreska }]} />}
               </Pressable>
             );
           })}
@@ -62,7 +66,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
       {s.pierwsze && <Text style={st.podpis}>{t('dni.pierwsze')}</Text>}
       <View style={st.blok} testID="historia-dzien">
         <Text style={st.naglowekBloku} accessibilityRole="header">{s.naglowekDnia}</Text>
-        <View style={st.grupa}>
+        <View style={st.karta}>
           {s.projekty.length === 0 && !s.ukonczoneDnia?.length ? <Text style={st.podpis}>{t('dni.pusto_dzien')}</Text> : s.projekty.map((p) => (
             <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={`${p.nazwa}, ${p.linia}`} onPress={() => naProjekt(p.id)} style={st.wiersz}>
               <Text style={st.tekst}>{p.nazwa}</Text>
@@ -78,24 +82,26 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
   );
 }
 
-function style(k: Kolory) {
+function style(k: Kolory, komorka: number) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.l },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.m, gap: odstep.xs },
-    wierszMiesiaca: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    siatka: { flexDirection: 'row', flexWrap: 'wrap' },
-    komorka: { width: `${100 / 7}%`, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    kolo: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
-    kreska: { width: 14, height: 3, borderRadius: 1.5, transform: [{ rotate: '-8deg' }] },
+    tytul: { ...typografia.tytul, color: k.tekst },
+    kalendarz: { gap: odstep.xs },
+    karta: { borderRadius: promien.przycisk, backgroundColor: k.powierzchnia, padding: odstep.l, gap: odstep.xs },
+    wierszMiesiaca: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' },
+    // Siatka na pełną szerokość ekranu: ujemny margines zabiera boczne `odstep.l` treści, komórka = szerokość ekranu / 7 (≥ 44 pt od 308 pt).
+    siatka: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -odstep.l, width: komorka * 7, alignSelf: 'center' },
+    komorka: { width: komorka, minHeight: cel.minimum, padding: odstep.xs / 2, alignItems: 'stretch', justifyContent: 'center' },
+    kwadrat: { flex: 1, borderRadius: promien.dzien, backgroundColor: k.dzienPusty, borderWidth: 2, borderColor: k.dzienPusty, alignItems: 'center', justifyContent: 'center' },
+    dziergany: { backgroundColor: k.akcent, borderColor: k.akcentTekst },
+    wybrany: { borderColor: k.tekst },
     dzis: { fontWeight: '700', textDecorationLine: 'underline' },
     blok: { gap: odstep.xs },
-    // P2-4: `.naglowek-grupy` (sesje-historia.html:75): 13 pt `olowek`, bez wagi, 20 pt nad blokiem = odstęp między blokami (`odstep.l`) + różnica do `odstep.xl`.
-    naglowekBloku: { ...typografia.drobny, color: k.olowek, marginTop: odstep.xl - odstep.l },
-    tekst: { ...typografia.tresc, color: k.grafit },
+    naglowekBloku: { ...typografia.tresc, fontWeight: '700', color: k.tekst, marginTop: odstep.xl - odstep.l },
+    tekst: { ...typografia.tresc, color: k.tekst },
     pogrubiony: { fontWeight: '700' },
-    podpis: { ...typografia.podpis, color: k.olowek },
+    podpis: { ...typografia.podpis, color: k.tekst2 },
     wiersz: { minHeight: cel.minimum, justifyContent: 'center', paddingVertical: odstep.xs },
   });
 }
