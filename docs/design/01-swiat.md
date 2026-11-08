@@ -1,6 +1,6 @@
 # Oczko — świat dziedziny (redesign M3, E1 roli 04)
 
-Data: 2026-11-05 · Podstawa: P-544 (redesign), P-549 (przepływy `to-be.md`), P-550 (STOP E0: „1a 2a 3a”). Poprzedni inwentarz (kierunek A „Kreski na wzorze”, P-062–P-064) leży w `archiwum/2026-11-05/01-swiat.md` jako materiał AS IS; tu wszystko od zera, stare metafory wracają tylko jako kandydaci na równi z nowymi.
+Data: 2026-11-05 · Podstawa: P-544 (redesign), P-549 (przepływy `to-be.md`), P-550 (STOP E0: „1a 2a 3a”). Poprzedni inwentarz (kierunek A „Kreski na wzorze”, P-062–P-064) leży w prywatnym warsztacie (`oczko-warsztat` `redesign/M3-2026-11-05/archiwum-z-oczko/01-swiat.md`, nazwy konkurencji — P-107) jako materiał AS IS; tu wszystko od zera, stare metafory wracają tylko jako kandydaci na równi z nowymi.
 
 Co zmieniło się od 22.10: właściciel ocenił kierunek A okiem w buildzie 1071 („dwa czarne ekrany”, „jakby nie miała żadnych funkcji”) i chce „ładne kafelki, ikony, uporządkowane ekrany, wyzwalacze… atrakcyjne marketingowo” (P-544, P-545). Kryterium E1 dochodzi więc jedno: **metafora musi dawać barwę i kształt na ekranie „Dziś” w obu motywach**, nie tylko na liczniku.
 

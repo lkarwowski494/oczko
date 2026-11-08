@@ -88,7 +88,7 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite. Decyzje architektury: [`docs
 - lint (tylko `src/dane`): `npm run lint`
 - kontrole repozytorium: `npm run jakosc:kontrole`
 
-Dokumenty: wymagania [`docs/brd/README.md`](docs/brd/README.md), projekt wyglądu [`docs/design/00-rozpoznanie.md`](docs/design/00-rozpoznanie.md), strategia testów [`docs/jakosc/strategia.md`](docs/jakosc/strategia.md), wydanie [`docs/wydanie/stan.md`](docs/wydanie/stan.md), atlas technik [`docs/atlas/README.md`](docs/atlas/README.md).
+Dokumenty: wymagania [`docs/brd/README.md`](docs/brd/README.md), projekt wyglądu [`docs/design/dzianina/design-spec.md`](docs/design/dzianina/design-spec.md), strategia testów [`docs/jakosc/strategia.md`](docs/jakosc/strategia.md), wydanie [`docs/wydanie/stan.md`](docs/wydanie/stan.md), atlas technik [`docs/atlas/README.md`](docs/atlas/README.md).
 
 ---
 
