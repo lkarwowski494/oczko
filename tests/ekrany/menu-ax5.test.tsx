@@ -18,7 +18,7 @@ afterEach(() => { mockSkala = 1; });
 let mockSkala = 1;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({ __esModule: true, default: () => ({ width: 402, height: 874, scale: 3, fontScale: mockSkala }) }));
 const AX5 = 3.571; // react-native RCTAccessibilityManager.mm `multipliers`, jak w licznik-ax5.test.tsx
-const ROZMIAR_TYTULU = tokeny.typografia.tytul.rozmiar;
+const ROZMIAR_TYTULU = tokeny.typografia.tytul.pt; // Dzianina: `typografia.<rola>.pt` zamiast `.rozmiar` (P-553)
 const NAZWA = 'Counter from Nov 10 at 7:30 PM';
 const wywolania = () => ({ naNazwa: jest.fn(), naCel: jest.fn(), naPrzypomnienie: jest.fn(), naPowtorzenie: jest.fn(), naWpisz: jest.fn(), naZablokuj: jest.fn(), naOdblokuj: jest.fn(), naZeruj: jest.fn(), naUkoncz: jest.fn(), naZamknij: jest.fn() });
 

@@ -37,8 +37,9 @@ describe('Content Rights (P-349 (1))', () => {
     expect(wiersz).toMatch(/Add for Review/);
   });
   test('licencja czcionki, na którą powołuje się odpowiedź, istnieje w repo', () => {
-    expect(fs.existsSync(path.join(ROOT, 'assets/fonts/librefranklin-OFL.txt'))).toBe(true);
-    expect(fs.existsSync(path.join(ROOT, 'assets/fonts/LibreFranklin-Bold.ttf'))).toBe(true);
+    // Krój tytułowy w aplikacji po podmianie systemu (P-553): Bree Serif (tokeny `kroje.tytul`), licencja OFL obok pliku.
+    expect(fs.existsSync(path.join(ROOT, 'assets/fonts/breeserif-OFL.txt'))).toBe(true);
+    expect(fs.existsSync(path.join(ROOT, 'assets/fonts/BreeSerif.ttf'))).toBe(true);
   });
   test('kategoria podatkowa (ta sama blokada „Add for Review” w Treningu): krok z adresem i datą odczytu', () => {
     const w = sklep.split('\n').find((l) => /^\|\s*\d+\s*\|\s*\*\*Kategoria podatkowa/.test(l)) ?? '';

@@ -1,6 +1,8 @@
 // M1-audytor-generalny-089 (źródło 04-studio-projektowe-503; DEC-24 a): „Loading…” i błąd odczytu z „Try again” stoją na tym samym tle
 // co treść trasy po wczytaniu (design-spec, aneks M2 partia 2, „Tło StanWczytywania”): `tlo: 'papier' | 'arkusz' | 'czarne'`, domyślnie `papier`.
-// Motyw ciemny, bo w jasnym `arkusz` = `papier` (#FCFCFA) i test nie odróżniłby tokenów. Trasy z `app/` z atrapą routera i kontenera
+// Motyw ciemny (w starym systemie w jasnym `arkusz` = `papier`; w Dzianinie `powierzchnia` ≠ `tlo` w obu motywach, ale zostaje ciemny jak dotąd).
+// P-553: papier → `tlo`, arkusz → `powierzchnia`, olowek → `tekst2`, przyciskTlo → `przycisk`, przyciskObrys → `przycisk` (obrys usunięty: rama w kolorze wypełnienia), mapa-tokenow.md.
+// Trasy z `app/` z atrapą routera i kontenera
 // (stan błędu odczytu jest trwały, więc tło widać bez wyścigu z odczytem).
 import * as fs from 'fs';
 import * as path from 'path';
@@ -24,16 +26,16 @@ jest.mock('../../src/przypadki-uzycia/zdjecia', () => ({ zdjecia: async () => ({
 const trasa = (p: string) => (require(p) as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
-const C = tokeny.kolor.ciemny, CZ = tokeny.kolor.systemCzarny;
+const C = tokeny.kolory.ciemny, CZ = tokeny.kolory.systemCzarny;
 beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue('dark'); });
 afterEach(() => jest.restoreAllMocks());
 
 describe('M1-089: StanWczytywania — tło i kolor podpisu według `tlo` (motyw ciemny)', () => {
   test.each([
-    ['domyślne (bez tlo)', undefined, C.papier, C.olowek],
-    ['papier', 'papier', C.papier, C.olowek],
-    ['arkusz', 'arkusz', C.arkusz, C.olowek],
-    ['czarne', 'czarne', CZ.tlo, CZ.olowek],
+    ['domyślne (bez tlo)', undefined, C.tlo, C.tekst2],
+    ['papier', 'papier', C.tlo, C.tekst2],
+    ['arkusz', 'arkusz', C.powierzchnia, C.tekst2],
+    ['czarne', 'czarne', CZ.tlo, CZ.tekst2],
   ] as const)('%s: „Loading…” — tło i kolor podpisu z tokenów', async (_n, tlo, kolorTla, kolorPodpisu) => {
     const t = await tEn();
     render(<StanWczytywania stan="ladowanie" t={t} przedrostek="x" naPonow={() => undefined} {...(tlo ? { tlo } : {})} />);
@@ -45,39 +47,39 @@ describe('M1-089: StanWczytywania — tło i kolor podpisu według `tlo` (motyw 
     const t = await tEn();
     render(<StanWczytywania stan="blad" t={t} przedrostek="x" naPonow={() => undefined} tlo="czarne" />);
     expect(screen.getByTestId('x-blad')).toHaveStyle({ backgroundColor: CZ.tlo });
-    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.olowek });
-    expect(screen.getByTestId('x-ponow')).toHaveStyle({ backgroundColor: CZ.przyciskTlo, borderColor: CZ.przyciskObrys });
+    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.tekst2 });
+    expect(screen.getByTestId('x-ponow')).toHaveStyle({ backgroundColor: CZ.przycisk, borderColor: CZ.przycisk });
     expect(screen.getByText('Try again')).toHaveStyle({ color: CZ.przyciskTekst });
   });
 });
 
-// M1-audytor-generalny-125 (07-jakosc-517): w motywie ciemnym `ciemny.olowek` = `systemCzarny.olowek` (#A9ACB2), więc podpis na czerni z motywu
-// przechodził. Rozróżnia dopiero motyw jasny (`jasny.olowek` #5E626A, 3,43:1 na czerni).
+// M1-audytor-generalny-125 (07-jakosc-517): w motywie ciemnym `ciemny.tekst2` = `systemCzarny.tekst2` (dawniej olowek), więc podpis na czerni z motywu
+// przechodził. Rozróżnia dopiero motyw jasny (`jasny.tekst2` ≠ `systemCzarny.tekst2`).
 describe('M1-125: StanWczytywania tlo="czarne" w motywie jasnym — podpis i „Try again” z `systemCzarny`, nie z motywu', () => {
-  const J = tokeny.kolor.jasny;
+  const J = tokeny.kolory.jasny;
   beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue('light'); });
   test('[kontrola] tokeny: podpis motywu jasnego różni się od podpisu na czerni (inaczej test niczego nie rozróżnia)', () => {
-    expect(J.olowek).not.toBe(CZ.olowek);
+    expect(J.tekst2).not.toBe(CZ.tekst2);
   });
-  test('czarne: „Loading…” na czerni, podpis `systemCzarny.olowek`', async () => {
+  test('czarne: „Loading…” na czerni, podpis `systemCzarny.tekst2`', async () => {
     const t = await tEn();
     render(<StanWczytywania stan="ladowanie" t={t} przedrostek="x" naPonow={() => undefined} tlo="czarne" />);
     expect(screen.getByTestId('x-ladowanie')).toHaveStyle({ backgroundColor: CZ.tlo });
-    expect(screen.getByText('Loading…')).toHaveStyle({ color: CZ.olowek });
+    expect(screen.getByText('Loading…')).toHaveStyle({ color: CZ.tekst2 });
   });
   test('czarne: błąd odczytu — podpis i „Try again” z `systemCzarny`', async () => {
     const t = await tEn();
     render(<StanWczytywania stan="blad" t={t} przedrostek="x" naPonow={() => undefined} tlo="czarne" />);
     expect(screen.getByTestId('x-blad')).toHaveStyle({ backgroundColor: CZ.tlo });
-    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.olowek });
-    expect(screen.getByTestId('x-ponow')).toHaveStyle({ backgroundColor: CZ.przyciskTlo, borderColor: CZ.przyciskObrys });
+    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.tekst2 });
+    expect(screen.getByTestId('x-ponow')).toHaveStyle({ backgroundColor: CZ.przycisk, borderColor: CZ.przycisk });
     expect(screen.getByText('Try again')).toHaveStyle({ color: CZ.przyciskTekst });
   });
-  test('[kontrola] papier w motywie jasnym: podpis z motywu (`jasny.olowek`)', async () => {
+  test('[kontrola] papier w motywie jasnym: podpis z motywu (`jasny.tekst2`, dawniej olowek)', async () => {
     const t = await tEn();
     render(<StanWczytywania stan="ladowanie" t={t} przedrostek="x" naPonow={() => undefined} />);
-    expect(screen.getByTestId('x-ladowanie')).toHaveStyle({ backgroundColor: J.papier });
-    expect(screen.getByText('Loading…')).toHaveStyle({ color: J.olowek });
+    expect(screen.getByTestId('x-ladowanie')).toHaveStyle({ backgroundColor: J.tlo });
+    expect(screen.getByText('Loading…')).toHaveStyle({ color: J.tekst2 });
   });
 });
 
@@ -91,12 +93,12 @@ describe('M1-089: StanWczytywania na trasach arkuszowych ma tło `arkusz`, na zd
   }
   test('/menu (arkusz): błąd odczytu na tle `arkusz` motywu', async () => {
     await zamontuj('../../app/menu');
-    expect(screen.getByTestId('menu-blad')).toHaveStyle({ backgroundColor: C.arkusz });
+    expect(screen.getByTestId('menu-blad')).toHaveStyle({ backgroundColor: C.powierzchnia });
   });
   test('/zdjecie (pełnoekranowa przeglądarka na czerni): błąd odczytu na tle `systemCzarny.tlo`', async () => {
     await zamontuj('../../app/zdjecie');
     expect(screen.getByTestId('zdjecie-blad')).toHaveStyle({ backgroundColor: CZ.tlo });
-    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.olowek });
+    expect(screen.getByText('Couldn’t load this.')).toHaveStyle({ color: CZ.tekst2 });
   });
 });
 

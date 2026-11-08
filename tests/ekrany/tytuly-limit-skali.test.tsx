@@ -10,7 +10,7 @@ import { ListaProjektow } from '../../src/ekrany/ListaProjektow';
 import { Kosz } from '../../src/ekrany/Kosz';
 import { ArkuszLimitu } from '../../src/ekrany/LicznikArkuszLimitu';
 import { style as stylLicznika } from '../../src/ekrany/LicznikStyl';
-import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
+import { kolorJasny, MAX_SKALA_LICZBY, MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
 import { LicznikWzoru } from '../../src/ekrany/WzorLicznik';
 import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
@@ -21,9 +21,12 @@ beforeAll(async () => { t = await tEn(); });
 
 const limit = (nazwa: string) => screen.getByRole('header', { name: nazwa }).props.maxFontSizeMultiplier;
 
-test('limit skali tytułów to 1,8 z tokenów (jedno źródło dla wszystkich ekranów)', () => {
+// P-553 (Dzianina): `tokeny.json` nie ma już `typografia._zasada` z zapisem „tytuły ×1,8”; ×1,8 zostaje wyjątkiem nazwanym P-277 w `motyw.ts` (`MAX_SKALA_TYTULOWA`, „do zastąpienia
+// tokenami po audycie 04”) — jedno źródło dla wszystkich ekranów. Pozostałe granice skali pochodzą z tokenów `typografia.<rola>.maxSkala` i test sprawdza, że `motyw.ts` je czyta.
+test('limit skali tytułów to 1,8 (wyjątek P-277 w motyw.ts, jedno źródło dla wszystkich ekranów); granice liczby i „−1” z tokenów Dzianiny', () => {
   expect(MAX_SKALA_TYTULOWA).toBe(1.8);
-  expect(tokeny.typografia._zasada).toContain('tytuły ×1,8');
+  expect(MAX_SKALA_LICZBY).toBe(tokeny.typografia.liczbaLicznika.maxSkala);
+  expect(MAX_SKALA_MINUSA).toBe(tokeny.typografia.przyciskPlus.maxSkala);
 });
 
 test('nazwa projektu użytkownika (Projekt.tsx) ma limit skali tytułu', () => {
@@ -33,7 +36,7 @@ test('nazwa projektu użytkownika (Projekt.tsx) ma limit skali tytułu', () => {
 
 test('arkusz „Nie dodano rzędu” przy limicie dni (LicznikArkuszLimitu.tsx) ma limit skali tytułu', () => {
   const s = stanLicznika({ cel: 96, skonczone: 61, dziergany: 62, miesiac: { nazwa: 'November', wznowienie: 'December 1', rzedyDanych: 61 }, limit: { rodzaj: 'zawczasu' } });
-  render(<ArkuszLimitu n={62} s={s} t={t} st={stylLicznika({ ...tokeny.kolor.jasny })} naOferty={jest.fn()} naZamknij={jest.fn()} />);
+  render(<ArkuszLimitu n={62} s={s} t={t} st={stylLicznika(kolorJasny)} naOferty={jest.fn()} naZamknij={jest.fn()} />);
   expect(screen.getByRole('header').props.maxFontSizeMultiplier).toBe(MAX_SKALA_TYTULOWA);
 });
 

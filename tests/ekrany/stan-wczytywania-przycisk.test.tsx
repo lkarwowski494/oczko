@@ -4,6 +4,9 @@
 // (makieta 04 `fix-2026-11-02-p2/zrzuty/503-tlo-stanu-wczytywania.html`: tło #2E3136, obrys 2 pt #8C9098). Test czyta tokeny z wiersza tabeli spec,
 // więc rozjazd spec i kodu (np. obrys bez wypełnienia na papierze, wypełnienie tylko na czerni) daje czerwony wynik.
 // Druga część (wariant „Zwiększ kontrast”): `drugiPrzyciskObrys` jest w obu paletach kontrastu, a w `ciemnyKontrast` jest mocniejszy niż w `ciemny`.
+// P-553 (Dzianina): tabela „Tło StanWczytywania” jest w archiwalnym design-spec (`docs/design/archiwum/2026-11-08-kreski/`, treść bez zmian); nazwy ról ze spec tłumaczy
+// `NA_DZIANINE` według `docs/design/dzianina/mapa-tokenow.md` (papier → tlo, arkusz → powierzchnia, przyciskTlo → przycisk, przyciskTekst bez zmiany, przyciskObrys → przycisk:
+// obrys usunięty, przycisk główny jest wypełniony i rama ma ten sam kolor; drugiPrzyciskObrys → tekst2 z wariantem zwiększonym).
 import * as fs from 'fs';
 import * as path from 'path';
 import React from 'react';
@@ -15,7 +18,7 @@ import { tEn } from './pomoc';
 
 afterEach(() => jest.restoreAllMocks());
 
-const SPEC = fs.readFileSync(path.join(__dirname, '..', '..', 'docs', 'design', 'design-spec.md'), 'utf8');
+const SPEC = fs.readFileSync(path.join(__dirname, '..', '..', 'docs', 'design', 'archiwum', '2026-11-08-kreski', 'design-spec.md'), 'utf8');
 /** Kolumna „Przycisk »Try again«” wiersza `tlo` w tabeli spec: nazwy tokenów w kolejności tło / obrys / tekst (bez przedrostka palety). */
 function tokenyPrzyciskuZeSpec(tlo: 'papier' | 'arkusz' | 'czarne'): { paleta: 'motyw' | 'systemCzarny'; tlo: string; obrys: string; tekst: string } {
   const wiersz = SPEC.split('\n').find((l) => l.startsWith(`| \`${tlo}\``));
@@ -29,8 +32,10 @@ function tokenyPrzyciskuZeSpec(tlo: 'papier' | 'arkusz' | 'czarne'): { paleta: '
 }
 
 type Paleta = Record<string, string>;
-const PALETY: Record<'light' | 'dark', Paleta> = { light: tokeny.kolor.jasny, dark: tokeny.kolor.ciemny };
-const CZ: Paleta = tokeny.kolor.systemCzarny;
+const PALETY: Record<'light' | 'dark', Paleta> = { light: tokeny.kolory.jasny, dark: tokeny.kolory.ciemny };
+const CZ: Paleta = tokeny.kolory.systemCzarny;
+/** Stara nazwa roli (tabela spec) → token Dzianiny (mapa-tokenow.md). */
+const NA_DZIANINE: Record<string, string> = { papier: 'tlo', arkusz: 'powierzchnia', olowek: 'tekst2', przyciskTlo: 'przycisk', przyciskObrys: 'przycisk', przyciskTekst: 'przyciskTekst', drugiPrzyciskObrys: 'tekst2' };
 
 async function przycisk(schemat: 'light' | 'dark', tlo: 'papier' | 'arkusz' | 'czarne') {
   jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
@@ -52,7 +57,7 @@ describe('M1-119: „Try again” w StanWczytywania — kolory z kolumny przycis
     const spec = tokenyPrzyciskuZeSpec(tlo);
     const p = spec.paleta === 'systemCzarny' ? CZ : PALETY[schemat];
     const { kolory } = await przycisk(schemat, tlo);
-    expect(kolory).toEqual({ tlo: p[spec.tlo], obrys: p[spec.obrys], tekst: p[spec.tekst] });
+    expect(kolory).toEqual({ tlo: p[NA_DZIANINE[spec.tlo]], obrys: p[NA_DZIANINE[spec.obrys]], tekst: p[NA_DZIANINE[spec.tekst]] });
   });
 
   test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: jedna forma przycisku na papierze, arkuszu i czerni (obrys, promień, krój)', async (_m, schemat) => {
@@ -67,21 +72,21 @@ describe('M1-119: „Try again” w StanWczytywania — kolory z kolumny przycis
   });
 });
 
-describe('M1-119: `drugiPrzyciskObrys` w obu wariantach „Zwiększ kontrast” (tokeny.json)', () => {
+describe('M1-119: obrys przycisku drugiego (dawniej `drugiPrzyciskObrys`, teraz `tekst2`) w obu wariantach „Zwiększ kontrast” (tokeny.json: `jasnyZwiekszony`, `ciemnyZwiekszony`)', () => {
   const lin = (c: number) => { const x = c / 255; return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; };
   const lum = (hex: string) => { const n = parseInt(hex.slice(1), 16); return 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255); };
   const kontrast = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-  const K = tokeny.kolor as unknown as Record<string, Paleta>;
+  const K = tokeny.kolory as unknown as Record<string, Paleta>;
 
-  test.each(['jasnyKontrast', 'ciemnyKontrast'])('%s ma własny `drugiPrzyciskObrys`', (w) => {
-    expect(K[w].drugiPrzyciskObrys).toMatch(/^#[0-9A-F]{6}$/i);
+  test.each(['jasnyZwiekszony', 'ciemnyZwiekszony'])('%s ma własny `tekst2` (obrys przycisku drugiego)', (w) => {
+    expect(K[w].tekst2).toMatch(/^#[0-9A-F]{6}$/i);
   });
-  test('ciemnyKontrast: obrys przycisku drugiego mocniejszy niż w `ciemny` (do papieru i arkusza)', () => {
-    const c = K.ciemny, ck = { ...K.ciemny, ...K.ciemnyKontrast };
-    for (const tlo of ['papier', 'arkusz']) expect(kontrast(ck.drugiPrzyciskObrys, ck[tlo])).toBeGreaterThan(kontrast(c.drugiPrzyciskObrys, c[tlo]));
+  test('ciemnyZwiekszony: obrys przycisku drugiego mocniejszy niż w `ciemny` (do tła i powierzchni; dawniej papier i arkusz)', () => {
+    const c = K.ciemny, ck = { ...K.ciemny, ...K.ciemnyZwiekszony };
+    for (const tlo of ['tlo', 'powierzchnia']) expect(kontrast(ck.tekst2, ck[tlo])).toBeGreaterThan(kontrast(c.tekst2, c[tlo]));
   });
-  test('jasnyKontrast: obrys przycisku drugiego nie słabszy niż w `jasny`', () => {
-    const j = K.jasny, jk = { ...K.jasny, ...K.jasnyKontrast };
-    expect(kontrast(jk.drugiPrzyciskObrys, jk.papier)).toBeGreaterThanOrEqual(kontrast(j.drugiPrzyciskObrys, j.papier));
+  test('jasnyZwiekszony: obrys przycisku drugiego nie słabszy niż w `jasny`', () => {
+    const j = K.jasny, jk = { ...K.jasny, ...K.jasnyZwiekszony };
+    expect(kontrast(jk.tekst2, jk.tlo)).toBeGreaterThanOrEqual(kontrast(j.tekst2, j.tlo));
   });
 });

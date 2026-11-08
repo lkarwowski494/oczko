@@ -92,10 +92,10 @@ test('M1-132: przy tekście domyślnym liczba też w jednym wierszu, jednostka o
 
 // M1-132 próg (04-studio-projektowe-522, przekazanie P-445; design-spec „dolny próg skali liczby licznika”): liczba zmniejsza się najwyżej do ×0,5
 // (`minimumFontScale` z tokenu `typografia.liczba.minSkala`), więc sześć cyfr mieści się przy 320 pt i AX5, a liczba nie spada poniżej ok. 48 pt.
-test('M1-132: dolny próg dopasowania liczby = token typografia.liczba.minSkala (0,5), przy AX5 i przy tekście domyślnym', () => {
+test('M1-132: dolny próg dopasowania liczby = token typografia.liczbaLicznika.minSkala (0,5; dawniej typografia.liczba), przy AX5 i przy tekście domyślnym', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const tokeny = require('../../docs/design/tokeny.json') as { typografia: { liczba: { minSkala?: unknown } } };
-  expect(tokeny.typografia.liczba.minSkala).toBe(0.5);
+  const tokeny = require('../../docs/design/tokeny.json') as { typografia: { liczbaLicznika: { minSkala?: unknown } } };
+  expect(tokeny.typografia.liczbaLicznika.minSkala).toBe(0.5);
   for (const s of [3.571, 1]) {
     skala(s);
     render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 123456, dziergany: 123457 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);

@@ -19,11 +19,13 @@ beforeAll(async () => { t = await tEn(); });
 afterEach(() => jest.restoreAllMocks());
 
 const rozmiar = (nazwa: string) => RN.StyleSheet.flatten(screen.getByRole('header', { name: nazwa }).props.style).fontSize;
-const olowek = (schemat: 'light' | 'dark') => (schemat === 'dark' ? tokeny.kolor.ciemny : tokeny.kolor.jasny).olowek;
+const olowek = (schemat: 'light' | 'dark') => (schemat === 'dark' ? tokeny.kolory.ciemny : tokeny.kolory.jasny).tekst2;
+/** 13 pt: rola `mala` w tokenach Dzianiny (dawniej `drobny`). */
+const MALA = tokeny.typografia.mala.pt;
 const kolor = (nazwa: string) => RN.StyleSheet.flatten(screen.getByRole('header', { name: nazwa }).props.style).color;
 
-test('wzorzec ma 13 pt (rola drobny w tokenach), a podpis 15 pt', () => {
-  expect([tokeny.typografia.drobny.rozmiar, tokeny.typografia.podpis.rozmiar]).toEqual([13, 15]);
+test('wzorzec ma 13 pt (rola mala w tokenach Dzianiny, dawniej drobny), a podpis 15 pt (tresc2, dawniej podpis)', () => {
+  expect([tokeny.typografia.mala.pt, tokeny.typografia.tresc2.pt]).toEqual([13, 15]);
 });
 
 describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m, schemat) => {
@@ -32,20 +34,20 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
   test('ListaProjektow: „In progress” i „Finished” — 13 pt, kolor olowek', () => {
     const wiersz = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today' };
     render(<ListaProjektow stan={{ wToku: [wiersz], ukonczone: [{ ...wiersz, id: 'p2', nazwa: 'Scarf' }], zapytanie: '', dni: { zostalo: 3, limit: 5, miesiac: 'November' } }} t={t} naSzukaj={jest.fn()} naOtworz={jest.fn()} naNowy={jest.fn()} />);
-    expect([rozmiar('In progress'), rozmiar('Finished')]).toEqual([13, 13]);
+    expect([rozmiar('In progress'), rozmiar('Finished')]).toEqual([MALA, MALA]);
     expect(kolor('In progress')).toBe(olowek(schemat));
   });
 
   test('Sesje: nagłówki dni — 13 pt', () => {
     const druga = { rodzaj: 'skorygowana' as const };
     render(<Sesje stan={{ podsumowanie: { czas: '60 min', liczba: 1 }, sesje: [{ id: 's2', dzien: 'Oct 22', wiersz: '20:00–21:00', czas: '60 min', a11y: 'Oct 22, 20:00 to 21:00, 60 min. Edit', druga, edytowalna: true }] }} t={t} naKorekta={jest.fn()} />);
-    expect(rozmiar('Oct 22')).toBe(13);
+    expect(rozmiar('Oct 22')).toBe(MALA);
     expect(kolor('Oct 22')).toBe(olowek(schemat));
   });
 
   test('Narzedzia: „Stash” i „Calculations” — 13 pt', () => {
     render(<Narzedzia stan={{ wloczki: 7, druty: 9 }} t={t} naWloczki={jest.fn()} naDruty={jest.fn()} naProbke={jest.fn()} />);
-    expect([rozmiar('Stash'), rozmiar('Calculations')]).toEqual([13, 13]);
+    expect([rozmiar('Stash'), rozmiar('Calculations')]).toEqual([MALA, MALA]);
     expect(kolor('Stash')).toBe(olowek(schemat));
   });
 
@@ -54,12 +56,12 @@ describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m
       adresy={{ polityka: 'https://example.invalid/privacy', wsparcie: 'https://example.invalid/support', recenzja: 'https://example.invalid/review' }}
       naOferty={jest.fn()} naWibracje={jest.fn()} naZglosProblem={jest.fn()} naStanDanych={jest.fn()}
       preferencje={{ ekranNieGasnie: true, ukladMiar: 'auto', naEkranNieGasnie: jest.fn(), naMiary: jest.fn() }} />);
-    expect(rozmiar('Counting')).toBe(13);
+    expect(rozmiar('Counting')).toBe(MALA);
     expect(kolor('Counting')).toBe(olowek(schemat));
   });
 });
 
 test('strażnik wzorca: „Add to” w arkuszu skrzynki to `.etyk` (15 pt), zostaje przy 15', () => {
   render(<ArkuszSkrzynki t={t} pozycje={[{ id: 'z1', nazwa: 'Harbor test pattern.pdf' }]} projekty={[{ id: 'p1', nazwa: 'Harbor Sweater' }]} naWybierz={jest.fn()} naNieTeraz={jest.fn()} />);
-  expect(rozmiar('Add to')).toBe(15);
+  expect(rozmiar('Add to')).toBe(tokeny.typografia.tresc2.pt);
 });

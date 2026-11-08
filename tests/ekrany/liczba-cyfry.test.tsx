@@ -1,11 +1,12 @@
 // M3 p1 (P-563 (2a), M3-S3-03): Bree Serif nie ma cyfr tabelarycznych, więc każda cyfra liczby stoi w komórce szerokości najszerszej cyfry (typografia.cyfry.komorkaEm × rozmiar),
 // wyśrodkowana; znaki inne niż cyfry bez komórki. Języki z krojem systemowym (kroje.tytul.jezykiSystemowe): bez komórek, tabular-nums.
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import tokeny from '../../docs/design/tokeny.json';
 import { komorkiLiczby, szerokoscKomorki } from '../../src/ekrany/liczba';
 import { Liczba } from '../../src/ekrany/Liczba';
-import { krojTytulowy, typografia } from '../../src/ekrany/motyw';
+import { krojTytulowy, typografiaDzianiny as typografia } from '../../src/ekrany/motyw';
 
 const T = tokeny as unknown as { typografia: Record<string, any>; kroje: { tytul: { jezykiSystemowe: string[] } } };
 
@@ -35,7 +36,8 @@ describe('M3-S3-03: komórki cyfr', () => {
     expect(screen.queryAllByTestId(/^liczba-cyfra-/)).toHaveLength(0);
     const t = screen.getByTestId('liczba-tekst');
     expect(t.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ fontVariant: ['tabular-nums'] })]));
-    expect(JSON.stringify(t.props.style)).not.toContain('Bree');
+    // Styl to tablica [krój tytułowy, nadpisanie systemowe]: Bree znika dopiero po spłaszczeniu (`fontFamily: undefined` w drugim elemencie).
+    expect(StyleSheet.flatten(t.props.style).fontFamily).toBeUndefined();
   });
 });
 
