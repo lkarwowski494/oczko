@@ -60,7 +60,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
         poScaleniu={licznik.poScaleniu}
         jezyk={kontener.j.jezyk()}
         dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
-          // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor pokazuje dodanie wzoru; menu źródeł p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
+          // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor otwiera od razu menu źródeł, ZM-06 p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
           naWzor: () => router.push('/wzor'), naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
           naNotatka: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'notatka', projekt: w.projektId } }); }),
           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),

@@ -18,11 +18,9 @@ tags:
 # NOC-2 (przejście poznawcze 04): licznik z akcją „Wzór” pod liczbą (ZM-04, P-580), zanim scenariusz ją stuknie
 - takeScreenshot: 22-licznik-przed-wzorem
 - tapOn: { id: "licznik-wzor" }
-- assertVisible: { id: "wzor-dodaj" }
-# NOC-2b (F-24, 04): ekran „dodaj wzór” przed wyborem źródła
-- takeScreenshot: 22-ekran-dodaj-wzor
-- tapOn: { id: "wzor-dodaj" }
 - assertVisible: { id: "e2e-wzor-zdjecie" }
+# NOC-2b (F-24, 04; p3b ZM-06): menu źródeł otwarte od razu po „Wzór” (bez kroku „Add pattern”), przed wyborem źródła
+- takeScreenshot: 22-ekran-dodaj-wzor
 - tapOn: { id: "e2e-wzor-zdjecie" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }

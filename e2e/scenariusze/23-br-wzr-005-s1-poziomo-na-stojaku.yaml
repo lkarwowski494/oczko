@@ -17,8 +17,6 @@ tags:
 # NOC-2 (przejście poznawcze 04): licznik z akcją „Wzór” pod liczbą (ZM-04, P-580), zanim scenariusz ją stuknie
 - takeScreenshot: 23-licznik-przed-wzorem
 - tapOn: { id: "licznik-wzor" }
-- assertVisible: { id: "wzor-dodaj" }
-- tapOn: { id: "wzor-dodaj" }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }

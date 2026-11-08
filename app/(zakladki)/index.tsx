@@ -63,9 +63,16 @@ export default function EkranDzis(): React.ReactElement {
     router.push('/licznik');
     if (m.ok && m.wartosc === 'wzor') router.push('/wzor'); // praca skończyła się na wzorze: licznik pod spodem, „wstecz” wraca na licznik (07-jakosc-006)
   }
+  // P-588: „Dodaj wzór” → menu źródeł bieżącego projektu (trasa „/wzor” z `zrodla`, licznik pod spodem, „wstecz” wraca na licznik); bez bieżącego projektu → Projekty.
+  async function naDodajWzor(): Promise<void> {
+    const m = await licznik.miejsce();
+    if (!licznik.biezacy() || (m.ok && m.wartosc === 'lista')) { router.navigate('/projekty'); return; }
+    router.push('/licznik');
+    router.push({ pathname: '/wzor', params: { zrodla: '1' } });
+  }
   const naKafel = (x: KafelDzis) => {
     if (x === 'nowy-projekt') router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'nowy-projekt' } });
-    else if (x === 'dodaj-wzor') void naKontynuuj(); // [DO USTALENIA 04/p3b]: wzór dodaje się do projektu — do miejsca pracy (licznik z ikoną wzoru); bez projektu → Projekty
+    else if (x === 'dodaj-wzor') void naDodajWzor();
     else if (x === 'wloczka') router.navigate('/narzedzia');
     else router.push('/probka');
   };

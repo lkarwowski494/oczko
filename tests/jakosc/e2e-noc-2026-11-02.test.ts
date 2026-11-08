@@ -54,8 +54,8 @@ const LUKI: { scen: string; zrzut: string; po: Cel; przed?: Cel; opis: string }[
   // (d) +1 w poziomie na telefonie
   { scen: '23', zrzut: '23-poziomo-po-plus-1', po: { nazwa: 'tapOn', id: 'licznik-plus' }, przed: { nazwa: 'setOrientation' }, opis: '(d) +1 w poziomie' },
   // NOC-2b: uzupełnienie koordynatora — tabela luk 04 (docs/design/przejscie/maestro-2026-11-02.md @ e93f0e9), priorytet F-24, F-26, F-31, F-18, F-09
-  { scen: '21', zrzut: '21-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
-  { scen: '22', zrzut: '22-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'wzor-dodaj' }, przed: { nazwa: 'tapOn', id: 'wzor-dodaj' }, opis: 'F-24 ekran dodaj wzór' },
+  { scen: '21', zrzut: '21-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'e2e-wzor-pdf-skan' }, przed: { nazwa: 'tapOn', id: 'e2e-wzor-pdf-skan' }, opis: 'F-24 menu źródeł wzoru otwarte od razu po „Wzór” (ZM-06, p3b; bez kroku wzor-dodaj)' },
+  { scen: '22', zrzut: '22-ekran-dodaj-wzor', po: { nazwa: 'assertVisible', id: 'e2e-wzor-zdjecie' }, przed: { nazwa: 'tapOn', id: 'e2e-wzor-zdjecie' }, opis: 'F-24 menu źródeł wzoru otwarte od razu po „Wzór” (ZM-06, p3b; bez kroku wzor-dodaj)' },
   { scen: '62', zrzut: '62-wybor-kierunku', po: { nazwa: 'assertVisible', id: 'wzor-kierunek' }, przed: { nazwa: 'tapOn' }, opis: 'F-26 wybór kierunku rzędów' },
   { scen: '62', zrzut: '62-wzor-po-gotowe', po: { nazwa: 'assertNotVisible', id: 'wzor-znacznik-pasek' }, przed: { nazwa: 'tapOn', id: 'licznik-plus' }, opis: 'F-26 stan po Done' },
   { scen: '10', zrzut: '10-formularz-wpisz-wartosc-przed-zapisem', po: { nazwa: 'assertVisible', id: 'wpisz-wartosc-pole' }, przed: { nazwa: 'tapOn', id: 'formularz-zapisz' }, opis: 'F-31 formularz przed zapisem' },

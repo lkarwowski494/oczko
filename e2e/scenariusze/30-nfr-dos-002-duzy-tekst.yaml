@@ -52,9 +52,6 @@ tags:
 - assertVisible: { id: "licznik-wzor" }
 - takeScreenshot: 30-ax5-akcje-pod-liczba
 - tapOn: { id: "licznik-wzor" }
-- scrollUntilVisible: { element: { id: "wzor-dodaj" }, direction: DOWN, timeout: 30000 }
-- assertVisible: { id: "wzor-dodaj" }
-- tapOn: { id: "wzor-dodaj" }
 - scrollUntilVisible: { element: { id: "e2e-wzor-pdf" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }

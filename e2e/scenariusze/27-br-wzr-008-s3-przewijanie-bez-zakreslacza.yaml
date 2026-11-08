@@ -14,8 +14,6 @@ tags:
 - scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - assertVisible: { id: "licznik-wzor" }
 - tapOn: { id: "licznik-wzor" }
-- assertVisible: { id: "wzor-dodaj" }
-- tapOn: { id: "wzor-dodaj" }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }

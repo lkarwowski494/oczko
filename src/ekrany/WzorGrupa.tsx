@@ -13,6 +13,7 @@ export type PropsGrupyWzorow = {
   wzory: { wzorId: string; nazwa: string; opis: string; miniatura?: string }[]; // opis: `wzor.wiersz_opis`; miniatura: uri PNG pierwszej strony (W8)
   oczekujace: { id: string; nazwa: string; stan: 'import' | 'siec' }[];
   skaner: boolean;                                                  // VNDocumentCameraViewController.isSupported
+  menuOtwarte?: boolean;                                            // menu źródeł otwarte od razu (ZM-06: „Wzór” bez wzoru nie ma pośredniego kroku); na ekranie projektu zamknięte
   t: Tlumacz;
   naOtworz(wzorId: string): void;
   naDodaj(z: ZrodloDodaniaEkranu): void;
@@ -24,7 +25,7 @@ export type PropsGrupyWzorow = {
 export function GrupaWzorow(p: PropsGrupyWzorow): React.ReactElement {
   const { t } = p;
   const st = style(useKolory());
-  const [menu, ustawMenu] = useState(false);
+  const [menu, ustawMenu] = useState(p.menuOtwarte ?? false);
   const pozycja = (tekst: string, z: ZrodloDodaniaEkranu) => (
     <Pressable key={z} accessibilityRole="menuitem" accessibilityLabel={tekst} onPress={() => { ustawMenu(false); p.naDodaj(z); }} style={st.pozycja}>
       <Text style={st.tekst}>{tekst}</Text>
