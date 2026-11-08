@@ -21,6 +21,7 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 # --- otwarta historia zostaje otwarta po powrocie ---
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - pressKey: Home

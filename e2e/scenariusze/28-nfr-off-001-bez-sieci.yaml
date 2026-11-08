@@ -17,6 +17,7 @@ tags:
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-minus" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - tapOn: { id: "arkusz-zamknij" }
@@ -24,9 +25,11 @@ tags:
 - runFlow: subflows/nazwij-projekt.yaml
 # --- PR-14: stoper sesji ---
 # Stoper w pasku licznika (04 fix-6 B, P-191 P1a; F07-17 zamiast menu-sesja / sesja-trwa / sesja-zakoncz): start → kapsuła → menu → Stop.
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-stoper" }
 - assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
 - takeScreenshot: 28-sesja-trwa
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-stoper" }
 - assertVisible: { id: "stoper-zatrzymaj" }
 - tapOn: { id: "stoper-zatrzymaj" }

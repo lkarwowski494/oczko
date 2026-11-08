@@ -16,7 +16,9 @@ tags:
 - runFlow: subflows/projekt-roboczy.yaml
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "17" } }
 # S3 (RD-12-W5): długość 0 → komunikat, ustawienie nie zapisane
-- tapOn: { id: "licznik-menu" }
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-cel" }
+- tapOn: { id: "licznik-cel" }
 - assertVisible: { id: "menu-powtorzenie" }
 - takeScreenshot: 55-menu-powtorzenie
 - tapOn: { id: "menu-powtorzenie" }

@@ -50,10 +50,13 @@ tags:
 - assertVisible: { id: "limit-zawczasu" }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
 # --- historia i menu działają na limicie ---
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "limit-zawczasu" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)

@@ -15,6 +15,8 @@ tags:
 - runFlow: subflows/nazwij-projekt.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 # ZM-18 (P-563 (4a)): zimny start zawsze na „Dziś”; lista projektów z zakładki Projekty (testID `nav-projekty`); okno „Uczciwe zasady” nad listą, nigdy nad „Dziś” (ER-70)

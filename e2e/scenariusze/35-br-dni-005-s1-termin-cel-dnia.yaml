@@ -31,7 +31,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "140" }
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-10-22T19:30:00" } }
 - assertVisible: { id: "licznik-wartosc", text: "140" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 # „Done by” jest w sekcji „Details” pod wzorami (src/ekrany/Projekt.tsx:207), poniżej ekranu iPhone’a — XCUITest nie zwraca
 # elementów całkiem poza ekranem (przebieg 123: drzewo kończy się na wzor-dodaj [16,807][386,865]). F07-32.
 - scrollUntilVisible: { element: { id: "projekt-termin" } }

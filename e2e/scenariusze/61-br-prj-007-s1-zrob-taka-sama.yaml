@@ -24,7 +24,7 @@ tags:
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-menu" }
 - assertVisible: ".*2 of 40 rows"
 - takeScreenshot: 61-oryginal
@@ -43,6 +43,11 @@ tags:
 # --- lista: dwa projekty, oryginał nietknięty ---
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 20000 }
+- runFlow: # P-583: z licznika do listy przez „wstecz” i zakładkę (licznik nie ma już wejścia do listy)
+    when: { visible: { id: "licznik-plus" } }
+    commands:
+      - tapOn: { id: "nav-wstecz" }
+      - extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty", optional: true }
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: { id: "projekty-wiersz", index: 1 }

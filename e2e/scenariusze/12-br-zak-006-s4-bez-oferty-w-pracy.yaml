@@ -34,6 +34,7 @@ tags:
 - tapOn: { id: "baner-serii-cofnij" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - assertNotVisible: "Oczko Pro.*"
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }
 - assertNotVisible: "Oczko Pro.*"
@@ -42,8 +43,7 @@ tags:
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-nazwa" }
 - assertNotVisible: "Oczko Pro.*"
-- tapOn: { id: "arkusz-zamknij" }
-- assertVisible: { id: "licznik-plus" }
+- runFlow: subflows/zamknij-menu.yaml # ZM-05: menu systemowe nie ma „Close”
 - runFlow: subflows/nazwij-projekt.yaml
 - assertNotVisible: "Oczko Pro.*"
 - assertNotVisible: { id: "oferty-ekran" }

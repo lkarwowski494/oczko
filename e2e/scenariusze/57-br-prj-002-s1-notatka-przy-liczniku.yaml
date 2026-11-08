@@ -1,9 +1,12 @@
 # BR-PRJ-002/S1 (docs/brd/wymagania-projekt.md:14): zapisana notatka „następne: 3 oczka prawe, potem warkocz” → po powrocie do ekranu licznika tego projektu
-# widać ją obok licznika bez otwierania innego ekranu. F-15 (07-jakosc-033, część A). Tekst notatki po angielsku (język symulatora en-US), zapis w „Note” na ekranie projektu.
-# Powrót: stuknięcie „Back” z ekranu projektu oraz restart procesu na tych samych danych. S2 (5000 znaków) pokrywa Jest `tests/dane/projekt-kosz.test.ts` — wpis tylu znaków
+# widać ją obok licznika bez otwierania innego ekranu. F-15 (07-jakosc-033, część A). Tekst notatki po angielsku (język symulatora en-US).
+# ZM-04 (P-580, docs/design/testid.md M3-TESTID-02): notatkę otwiera akcja „Notatka” pod liczbą (`licznik-akcja-notatka`, arkusz notatki) — 2 stuknięcia zamiast 4
+# (dawniej „Projekt” → wiersz „Note” na ekranie projektu). Nagłówek „Note” nad notatką znika (ikona zamiast słowa), etykieta `licznik-notatka` = treść notatki.
+# [DO USTALENIA 04/08, p3a] pola arkusza notatki z licznika: przyjęto te same id co formularz notatki projektu (`formularz-notatka`, `formularz-zapisz`) — ta sama treść, ten sam zapis.
+# Powrót: zapis arkusza zostawia licznik oraz restart procesu na tych samych danych. S2 (5000 znaków) pokrywa Jest `tests/dane/projekt-kosz.test.ts` — wpis tylu znaków
 # przez klawiaturę symulatora nie jest powtarzalny (poza zakresem E2E). Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
 appId: com.apps4brew.knitting
-name: "BR-PRJ-002/S1 · Notatka z ekranu projektu widoczna obok licznika po powrocie i po restarcie"
+name: "BR-PRJ-002/S1 · Notatka z akcji „Notatka” pod liczbą widoczna obok licznika po zapisie i po restarcie"
 tags:
   - BR-PRJ-002-S1
   - stan-licznika
@@ -14,15 +17,14 @@ tags:
       TERAZ: "2026-11-10T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
 - assertNotVisible: "next: 3 knit, then cable"
-# NOC-2 (04): licznik z „•••” przed wejściem do projektu i notatki
-- takeScreenshot: 57-licznik-menu-przed-notatka
-- tapOn: { id: "licznik-projekt" }
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
-- scrollUntilVisible: { element: { id: "projekt-notatka" }, direction: DOWN, timeout: 30000, centerElement: true }
-# NOC-2 (04): ekran projektu, wiersz „Note” przed zapisem
-- takeScreenshot: 57-projekt-wiersz-note-przed-zapisem
-- tapOn: { id: "projekt-notatka" }
+- scrollUntilVisible: { element: { id: "licznik-akcja-notatka" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-akcja-notatka" }
+# NOC-2 (04): licznik z akcją „Notatka” przed otwarciem arkusza notatki
+- takeScreenshot: 57-licznik-przed-notatka
+- tapOn: { id: "licznik-akcja-notatka" }
 - assertVisible: { id: "formularz-notatka" }
+# arkusz notatki przed wpisem
+- takeScreenshot: 57-arkusz-notatki-przed-zapisem
 - retry:
     maxRetries: 1
     commands:
@@ -33,15 +35,9 @@ tags:
       - assertVisible: { id: "formularz-notatka", text: "next: 3 knit, then cable" }
 - takeScreenshot: 57-notatka-wpisana
 - tapOn: { id: "formularz-zapisz" }
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
-- scrollUntilVisible: { element: { id: "projekt-notatka" }, direction: DOWN, timeout: 30000, centerElement: true }
-- assertVisible: { id: "projekt-notatka", text: ".*next: 3 knit, then cable.*" }
-# NOC-2 (04): ekran projektu, wiersz „Note” po zapisie
-- takeScreenshot: 57-projekt-wiersz-note-po-zapisie
-- tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - assertVisible: "next: 3 knit, then cable"
-- assertVisible: "Note"
+- assertVisible: { id: "licznik-notatka", text: ".*next: 3 knit, then cable.*" }
 - takeScreenshot: 57-notatka-przy-liczniku
 - runFlow:
     file: subflows/restart.yaml

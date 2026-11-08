@@ -13,7 +13,7 @@ tags:
     env:
       TERAZ: "2026-11-10T19:30:00"
 - runFlow: subflows/projekt-roboczy.yaml
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: "Set a goal for a part to see progress."
 - assertNotVisible: ".*% done.*"
@@ -24,7 +24,7 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: "33% done"
 - assertVisible: "Approximate, counted from rows of parts with a goal."
@@ -32,14 +32,14 @@ tags:
 - tapOn: "Back, .*"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "2" } }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: "66% done"
 - takeScreenshot: 59-66-procent
 - tapOn: "Back, .*"
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "5" } }
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - assertVisible: "100% done"
 - assertNotVisible: "(1(0[1-9]|[1-9][0-9])|[2-9][0-9][0-9])% done"

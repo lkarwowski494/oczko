@@ -1,10 +1,10 @@
-# Podprzepływ (partia 6): licznik → ••• → „Pattern” / „Add pattern…” → źródło testowe PDF (build E2E, e2e-wzor-pdf) → przeglądarka wzoru.
+# Podprzepływ (partia 6): licznik → akcja „Wzór” pod liczbą (`licznik-wzor`, ZM-04, P-580; bez wzoru do p3b przez `wzor-dodaj`, w p3b od razu menu źródeł — ZM-06) → źródło testowe PDF (build E2E, e2e-wzor-pdf) → przeglądarka wzoru.
 appId: com.apps4brew.knitting
 name: "podprzepływ: wzór PDF testowy otwarty"
 ---
-- tapOn: { id: "licznik-menu" }
-- assertVisible: { id: "menu-wzor" }
-- tapOn: { id: "menu-wzor" }
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
 - assertVisible: { id: "wzor-dodaj" }
 - tapOn: { id: "wzor-dodaj" }
 - assertVisible: { id: "e2e-wzor-pdf" }

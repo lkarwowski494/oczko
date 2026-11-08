@@ -9,6 +9,8 @@ tags:
     file: subflows/start-czysty.yaml
     env:
       TERAZ: "2026-11-10T12:00:00"
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 } # przejście trwało dłużej niż asercja (w ponowieniu, przebieg 40411351211)
 # Wejście: „Tools” → „Yarn” (04 fix-6 D, P-191 P7a; F07-17 zamiast nav-zapas).

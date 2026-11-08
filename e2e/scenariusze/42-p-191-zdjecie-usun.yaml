@@ -12,7 +12,7 @@ tags:
     env:
       TERAZ: "2026-11-10T12:00:00"
 - runFlow: subflows/projekt-roboczy.yaml
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-zdjecia" }
 - scrollUntilVisible: { element: { id: "zdjecia-dodaj" } }
 - tapOn: { id: "zdjecia-dodaj" }

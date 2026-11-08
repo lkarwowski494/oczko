@@ -14,6 +14,8 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 # --- drugi projekt z listy, potem powrót do „Harbor” (ostatnio używany) ---
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "projekty-nowy" }
@@ -34,6 +36,8 @@ tags:
 - takeScreenshot: 18-formularz-nazwa-przed-zapisem
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
 - tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: "Harbor.*"
@@ -51,5 +55,5 @@ tags:
 - tapOn: { id: "dzis-kontynuuj" }
 - assertVisible: { id: "licznik-projekt", text: "Harbor" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
-- assertVisible: { id: "licznik-teraz-rzad", text: "Now working row 3" }
+- assertVisible: { id: "licznik-teraz-rzad", text: ".*row 3" } # testid.md:159: na makiecie TO BE linia łączy się z podpisem liczby („rzędy gotowe · teraz rząd N”), tekst en od 04 — asercja numeru rzędu, nie brzmienia
 - takeScreenshot: 18-po-starcie

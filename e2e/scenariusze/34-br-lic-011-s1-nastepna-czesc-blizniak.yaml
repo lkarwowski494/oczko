@@ -42,7 +42,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "0" }
 - takeScreenshot: 34-po-wyborze-drugiej
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "licznik-projekt-wejscie" }
 - assertVisible: { id: "projekt-dodaj" }
 # Podpis „Pair of {{nazwa}}” (design-spec:419) jest częścią etykiety wiersza części („Back, Pair of Back, 0 of 40 rows”, przebieg 123),
 # a Maestro dopasowuje cały tekst — regex obejmuje też cel pary 40 (relacja BR-PRJ-014/S1). F07-31.

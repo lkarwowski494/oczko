@@ -144,6 +144,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zdjecie-bez-metadanych.test.ts` | zielony (główny zestaw) | 1 | P-219 | `src/dane/pliki/jpeg`<br>`src/kompozycja/e2e-zdjecie`<br>`src/kompozycja/zdjecie-bez-metadanych`<br>`src/przypadki-uzycia/zdjecia` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-kontakt.test.ts` | zielony (główny zestaw) | 4 | BR-DAN-011, P-193, P-195, P-199 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-potwierdzenia.test.ts` | zielony (główny zestaw) | 6 | P-135, P-139, R-021 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/platforma/zegarek`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/licznik-to-be.test.tsx` | oczekuje | 3 | P-580, P-581, P-583 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/aplikacja.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-012/S2, BR-LIC-001, BR-LIC-001/S1, KP-07, KP-08, KP-13, NFR-DAN-002, NFR-PIE-001, R-020, R-091 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne` | ER-68, Z07-11, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza-ax5-trasa.test.tsx` | zielony (główny zestaw) | 7 | NFR-DOS-002, P-377 | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza.test.tsx` | zielony (główny zestaw) | 4 | P-262, P-271, P-275 | `src/ekrany/Arkusz`<br>`src/ekrany/Formularze`<br>`src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -369,4 +370,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 365; zależnych od poprawek: 225.
+Razem plików testów: 366; zależnych od poprawek: 226.
