@@ -7,6 +7,10 @@ import tokeny from '../../docs/design/tokeny.json';
 import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_KAPSULY, ROZMIAR_SYMBOLU_TRESCI, systemCzarny, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
+import { ZnacznikRadio } from './ZnacznikRadio';
+
+export { ZnacznikRadio } from './ZnacznikRadio';
+export { Komunikat, KomunikatZapisu } from './Komunikat';
 
 // Tokeny arkusza formularza i znaczników (M3-MAK-02/03/04): `arkusz.*`, `znaczniki.*`; kolory z palety motywu po nazwie z tokenu.
 const ark = tokeny.arkusz;
@@ -150,21 +154,6 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
   );
 }
 
-/**
- * Znacznik wyboru jednej opcji (M3-MAK-03, `znaczniki.radio`): kółko 28 pt (od AX1 40) z obwódką `tekst2`, wybrane wypełnione `przycisk` z ptaszkiem w `przyciskTekst` —
- * ten sam język wyboru co plany Oczko Pro. Dekoracyjny (ukryty przed VoiceOver): stan niesie `accessibilityState.selected` wiersza.
- */
-export function ZnacznikRadio({ wybrany }: { wybrany: boolean }): React.ReactElement {
-  const k = useKolory();
-  const r = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI ? znaczniki.radioAx5 : znaczniki.radio;
-  return (
-    <View testID="znacznik-radio" accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-      style={[{ width: r, height: r, borderRadius: r / 2, alignItems: 'center', justifyContent: 'center' }, wybrany ? { backgroundColor: k.przycisk } : { borderWidth: 2, borderColor: k.tekst2 }]}>
-      {wybrany && <SymbolSf nazwa="checkmark" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />}
-    </View>
-  );
-}
-
 /** Wybór jednej z opcji jako lista ze znacznikiem (radio, `selected`; design-spec „VoiceOver”: wybory znaczenia i narzędzia jako radio; makieta `formularz-narzedzie`). */
 export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string; testID?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
   const st = style(useKolory());
@@ -184,34 +173,6 @@ export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string;
   );
 }
 
-/**
- * Komunikat błędu; `znak` dodaje „!” w kółku przed zdaniem (makieta `formularz-czesc`: błąd tekstem i znakiem, nie samym kolorem; `arkusz.blad`, bez czerwieni).
- * VoiceOver czyta samo zdanie (etykieta alertu), znak jest ozdobny i ukryty.
- */
-export function Komunikat({ tekst, znak }: { tekst: string; znak?: boolean }): React.ReactElement {
-  const st = style(useKolory());
-  const duzy = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
-  if (!znak) return <Text style={st.blad} accessibilityRole="alert" accessibilityLiveRegion="assertive">{tekst}</Text>;
-  const r = duzy ? ark.blad.znakRozmiarAx5 : ark.blad.znakRozmiar;
-  return (
-    <View accessible accessibilityRole="alert" accessibilityLiveRegion="assertive" accessibilityLabel={tekst} style={st.bladWiersz}>
-      <View testID="komunikat-znak" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={[st.bladZnak, { width: r, height: r, borderRadius: r / 2 }]}>
-        <Text style={st.bladZnakTekst} maxFontSizeMultiplier={ark.blad.znakRozmiarAx5 / ark.blad.znakRozmiar}>!</Text>
-      </View>
-      <Text style={[st.blad, st.rosnie]}>{tekst}</Text>
-    </View>
-  );
-}
-/** Błąd zapisu w formularzu poza licznikiem i wzorem (Aneks P2 poz. 5): tytuł mówi, co się nie udało, druga linia wspólna; arkusz zostaje z wpisanymi wartościami. */
-export function KomunikatZapisu({ t }: { t: Tlumacz }): React.ReactElement {
-  const st = style(useKolory());
-  return (
-    <View accessibilityRole="alert" accessibilityLiveRegion="assertive" style={{ gap: odstep.s }}>
-      <Text style={st.blad}>{t('formularz.blad_zapisu')}</Text>
-      <Text style={st.podpis}>{t('wspolne.blad_zapisu_opis')}</Text>
-    </View>
-  );
-}
 export function Tresc({ children, podpis, testID, etykieta }: { children: React.ReactNode; podpis?: boolean; testID?: string; etykieta?: string }): React.ReactElement {
   const st = style(useKolory());
   return <Text style={podpis ? st.podpis : st.zwykly} testID={testID} accessibilityLabel={etykieta}>{children}</Text>;
@@ -273,9 +234,5 @@ export function style(k: Kolory) {
     wejscieFokus: { borderColor: kolor(k, ark.pole.obrysFokus) },
     podpis: { ...typografia.podpis, color: k.tekst2 },
     zwykly: { ...typografia.tresc, color: k.tekst },
-    blad: { ...typografia.tresc, color: kolor(k, ark.blad.kolor) },
-    bladWiersz: { flexDirection: 'row', alignItems: 'flex-start', columnGap: odstep.s },
-    bladZnak: { borderWidth: 2, borderColor: kolor(k, ark.blad.znakObrys), alignItems: 'center', justifyContent: 'center' },
-    bladZnakTekst: { ...typografiaDzianiny.mala, fontWeight: '800', color: kolor(k, ark.blad.kolor) },
   });
 }
