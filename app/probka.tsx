@@ -54,7 +54,7 @@ export default function EkranProbki(): React.ReactElement {
     <Bezpieczny>
       <Probka t={j.t} jednostka={cm ? 'cm' : 'in'} poczatek={{ oczka: start.oczka, na: start.na }} zProjektu={start.zProjektu}
         licz={(w) => stanProbki({ ...w, narzedzie: start.narzedzie ?? w.narzedzie }, j)} naZmianeProbki={zapisz} naWstecz={() => router.back()}
-        wyborNarzedzia={!projekt} />
+        wyborNarzedzia={!projekt} jezyk={j.jezyk()} />
     </Bezpieczny>
   );
 }

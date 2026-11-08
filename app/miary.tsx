@@ -15,7 +15,7 @@ export default function EkranMiar(): React.ReactElement {
   const [wybrany, ustaw] = useState(preferencje.stan().ukladMiar);
   return (
     <Bezpieczny>
-      <WyborMiar t={t} wybrany={wybrany} naWstecz={() => router.back()}
+      <WyborMiar t={t} wybrany={wybrany} naWstecz={() => router.back()} jezyk={kontener.j.jezyk()}
         naWybierz={(p) => void preferencje.zapisz(kontener.z, { ukladMiar: p }).then((w) => {
           if (!w.ok) { Alert.alert(...alertBleduZapisu(t, 'ustawienia')); return; }
           ustaw(p);

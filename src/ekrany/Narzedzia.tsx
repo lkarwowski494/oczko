@@ -4,7 +4,7 @@
 import React, { useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Arkusz, Komunikat, Pole, Tresc, Wybor } from './Arkusz';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny, useKolory, type Kolory } from './motyw';
+import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
 import { Wstecz } from './Pasek';
@@ -43,9 +43,9 @@ export function WierszGrupy(p: { tekst: string; opis?: string; wartosc?: string;
 }
 
 // M1-016: „‹ Back” (`nav-wstecz`) jak na pozostałych ekranach push — pasek rysuje ekran (`headerShown: false`), gest od krawędzi tylko uzupełnia.
-export type PropsNarzedzi = { stan: { wloczki: number; druty: number }; t: Tlumacz; naWloczki(): void; naDruty(): void; naProbke(): void; naWstecz?(): void };
-export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke, naWstecz }: PropsNarzedzi): React.ReactElement {
-  const st = style(useKolory());
+export type PropsNarzedzi = { stan: { wloczki: number; druty: number }; t: Tlumacz; naWloczki(): void; naDruty(): void; naProbke(): void; naWstecz?(): void; jezyk?: string };
+export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke, naWstecz, jezyk }: PropsNarzedzi): React.ReactElement {
+  const st = style(useKolory(), jezyk);
   return (
     <ScrollView style={st.ekran} contentContainerStyle={st.tresc}>
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
@@ -72,9 +72,10 @@ export type PropsProbki = {
   naZmianeProbki?(p: { oczka: string; na: WejscieProbki['na'] }): void; // zapis próbki w projekcie (szerokość się nie zapisuje)
   naWstecz?(): void;                                        // M1-016: „‹ Back” (`nav-wstecz`)
   wyborNarzedzia?: boolean;                                 // M1-066 (DEC-06 a): kalkulator bez projektu — „Needles / Hook”; przy szydełku bez kategorii
+  jezyk?: string;                                           // M3-S3-04: tytuł w kroju systemowym dla języków spoza pokrycia Bree
 };
-export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki, naWstecz, wyborNarzedzia }: PropsProbki): React.ReactElement {
-  const st = style(useKolory());
+export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki, naWstecz, wyborNarzedzia, jezyk }: PropsProbki): React.ReactElement {
+  const st = style(useKolory(), jezyk);
   const [oczka, ustawOczka] = useState(poczatek.oczka);
   const [na, ustawNa] = useState(poczatek.na);
   const [szerokosc, ustawSzerokosc] = useState('');
@@ -123,11 +124,13 @@ export function Probka({ t, jednostka, poczatek, zProjektu, licz, naZmianeProbki
 }
 
 const stale = StyleSheet.create({ zdjecie: { width: '100%', aspectRatio: 4 / 3, borderRadius: promien.lista } });
-export function style(k: Kolory) {
+/** `jezyk` (opcjonalny): języki z krojem systemowym (design-spec „Typografia”, M3-S3-04) dostają tytuł bez Bree; bez języka krój zostaje Bree. */
+export function style(k: Kolory, jezyk?: string) {
+  const bree = jezyk === undefined ? {} : { fontFamily: krojTytulowy(jezyk) };
   return StyleSheet.create({
     ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.m },
-    tytul: { ...typografiaDzianiny.duzyTytul, color: k.tekst },
+    tytul: { ...typografiaDzianiny.duzyTytul, ...bree, color: k.tekst },
     naglowek: { ...typografiaDzianiny.tresc2, color: k.tekst2, fontWeight: '700', marginTop: odstep.s }, // etykiety wyników próbki (`.etyk`, 15 pt)
     naglowekGrupy: { ...typografiaDzianiny.mala, color: k.tekst2, marginTop: odstep.s }, // `.naglowek-grupy`: 13 pt `tekst2`, bez wagi (narzedzia-zdjecia.html, sesje-historia.html:75), H-2, P2-4
     grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
