@@ -1,4 +1,4 @@
-/* Kontrakt testID 04 → 07 (F07-17): każdy id z list „**testID** (propozycja dla tabeli 07 / dla 07)” w docs/design/design-spec.md ma wiersz
+/* Kontrakt testID 04 → 07 (F07-17): każdy id z list „**testID** (propozycja dla tabeli 07 / dla 07)” w docs/design/testid.md (przeniesione z design-spec.md bez zmiany treści, M3-S3-05; P-553) ma wiersz
  * w tabeli e2e/README.md, a żaden scenariusz nie używa id wycofanych przez 04. Bez tego tabela 07 rozjechała się z fix-6 (scenariusz 28 na
  * menu-sesja / sesja-trwa, których nie było ani w kodzie, ani w projekcie). */
 import * as fs from 'fs';
@@ -7,7 +7,7 @@ import { opisyIdentyfikatorow } from './maestro-runner';
 
 const root = path.join(__dirname, '..', '..');
 const README = fs.readFileSync(path.join(root, 'e2e/README.md'), 'utf8');
-const SPEC = fs.readFileSync(path.join(root, 'docs/design/design-spec.md'), 'utf8');
+const SPEC = fs.readFileSync(path.join(root, 'docs/design/testid.md'), 'utf8');
 /** Wyjątki nazwane: id z design-spec, którego tabela 07 świadomie nie ma. */
 const BEZ_WIERSZA: Record<string, string> = {
   'potwierdz-usun': 'potwierdzenie usuwania to alert systemowy bez testID (08 partia 5, e2e/README.md: scenariusz stuka w tekst przycisku)',
