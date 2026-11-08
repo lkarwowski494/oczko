@@ -18,7 +18,7 @@ Gałąź `claude/kopia-08-p3b-2026-11-08` od 936a1227 (HEAD zgodny na starcie). 
 | 04-003 (etykiety przy AX) | granica AX1, limity skali ×1,4 / ×1,8, etykiety VoiceOver bez zmian | `wzor-pasek-dzianina` „granica przy AX1–AX5” (9) + 205 w `tytuly-limit-skali` | nowe czerwone |
 
 ## Dowody
-`npm run verify`: wynik w raporcie (dopisany po przebiegu). Stan wyjściowy 517 zestawów / 5385 testów; po partii 520 / 5409 (3 nowe pliki, +24 testy).
+`npm run verify` kod 0 (typecheck, typecheck:testy, lint, `jakosc:kontrole`, jest): 520 zestawów, 5410 testów (przed partią 517 / 5385; 3 nowe pliki, +25 testów). Pierwszy przebieg padł z właściwego powodu: `WzorPrzegladarka.tsx` 20,1 KB > 20 KB (skrócone komentarze), testy bez importu `src` i nieaktualna `tabela-08` (naprawione).
 
 ## Nie sprawdzono
 Urządzenie i symulator (Linux, brak macOS): wygląd, układ przy AX1–AX5 na prawdziwym Dynamic Type, haptyka, VoiceOver, kolor strony PDF w ciemnym motywie (kontrast ramy do strony); zrzuty `wzor-*` (brak Expo web); E2E iOS `[e2e-pelny]` — uruchamia koordynator po scaleniu.

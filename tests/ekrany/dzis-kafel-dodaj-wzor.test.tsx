@@ -3,6 +3,7 @@
 // Przed kodem: czerwone, bo kafel wołał `naKontynuuj` (licznik bez menu źródeł).
 import React from 'react';
 import { act, render } from '@testing-library/react-native';
+import type { KafelDzis } from '../../src/ekrany/Dzis';
 import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -15,8 +16,8 @@ jest.mock('expo-router', () => ({
     (require('react') as typeof React).useEffect(f, []);
   },
 }));
-let mockDzis: { naKafel(k: string): void } | null = null;
-jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: (p: { dzis: { naKafel(k: string): void } }) => { mockDzis = p.dzis; return null; } }));
+let mockDzis: { naKafel(k: KafelDzis): void } | null = null;
+jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: (p: { dzis: { naKafel(k: KafelDzis): void } }) => { mockDzis = p.dzis; return null; } }));
 jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));

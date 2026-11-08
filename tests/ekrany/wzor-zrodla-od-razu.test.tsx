@@ -4,6 +4,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { GrupaWzorow } from '../../src/ekrany/WzorGrupa';
+import { tEn } from './pomoc';
 import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -61,4 +63,14 @@ test('kontrola: bez parametru `zrodla` projekt z wzorem otwiera przeglądarkę w
   await start({ zWzorem: true });
   expect(await screen.findByTestId('wzor-widok')).toBeTruthy();
   expect(screen.queryByRole('menuitem', { name: 'Choose file (PDF or Word)' })).toBeNull();
+});
+
+test('GrupaWzorow: `menuOtwarte` otwiera menu źródeł od razu, bez niego (ekran projektu) menu jest zamknięte do stuknięcia „Add pattern”', async () => {
+  const t = await tEn();
+  const w = { naOtworz: jest.fn(), naDodaj: jest.fn(), naUsunOczekujacy: jest.fn() };
+  const r = render(<GrupaWzorow wzory={[]} oczekujace={[]} skaner t={t} {...w} />);
+  expect(screen.queryByRole('menuitem', { name: 'Choose photos' })).toBeNull();
+  r.unmount();
+  render(<GrupaWzorow wzory={[]} oczekujace={[]} skaner menuOtwarte t={t} {...w} />);
+  expect(screen.getByRole('menuitem', { name: 'Choose photos' })).toBeTruthy();
 });

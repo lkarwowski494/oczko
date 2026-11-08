@@ -32,7 +32,7 @@ export type StanPrzegladarki = {
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
   licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
-  jezyk?: string;                                 // kod języka aplikacji dla liczby paska (krój systemowy w części języków)
+  jezyk?: string;
 };
 export type PropsPrzegladarki = {
   stan: StanPrzegladarki;
@@ -253,7 +253,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
 type Style = ReturnType<typeof style>;
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.wzorRama }, // ZM-10: rama w barwie motywu (`wzorRama`), strona w oryginalnych kolorach pliku
+    ekran: { flex: 1, backgroundColor: k.wzorRama },
     obok: { flexDirection: 'row' },
     wzor: { flex: 1 },
     pasek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.s, minHeight: rozmiary.minimum, flexWrap: 'wrap' },
