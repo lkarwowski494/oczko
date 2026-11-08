@@ -191,7 +191,7 @@ export default function EkranWzoru(): React.ReactElement {
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
         stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.czesc.nazwa,
-          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad }}
+          wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie }, uklad, jezyk: kontener.j.jezyk() }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}
         naWstecz={() => wyjdzZWzoru(() => router.back())}

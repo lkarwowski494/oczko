@@ -69,7 +69,11 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
       strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
       licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
     }} t={t} widok={<RN.Text>PDF</RN.Text>} {...w} />);
-    wypelniony(screen.getByRole('button', { name: /^\+1 row/ }), k);
+    // M3 p3b (ekran `wzor` makiety, `.pasek-wz .p`): „+1” paska jak „+1” licznika — wypełnienie `akcent`, tekst `naAkcencie`, bez obrysu (dawniej `przycisk` z obrysem).
+    const plus = screen.getByRole('button', { name: /^\+1 row/ });
+    expect(plus).toHaveStyle({ backgroundColor: k.akcent });
+    expect(RN.StyleSheet.flatten(plus.props.style).borderWidth).toBeUndefined();
+    expect(screen.getByText('+1 row')).toHaveStyle({ color: k.naAkcencie });
   });
 
   // M3 p3a (P-586 2a): trwająca sesja stopera to akcja pod liczbą w kolorze `akcent` (stan niesie też symbol i etykieta VoiceOver); wygląd biegnącego stopera [DO USTALENIA 04].

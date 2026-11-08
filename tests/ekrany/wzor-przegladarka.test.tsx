@@ -39,7 +39,7 @@ test('iPhone pionowo (W1a): wzór, plakietka strony, opis źródła i pasek licz
   expect(screen.getByTestId('slot-widoku')).toBeTruthy();
   expect(screen.getByTestId('wzor-strona').props.children).toBe('Page 2 of 6');
   expect(screen.getByTestId('wzor-zrodlo').props.children).toBe('PDF · 6 pages');
-  expect(screen.getByTestId('licznik-wartosc').props.children).toBe('47');
+  expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('47'); // p3b: liczba w komórkach (Liczba), wartość w etykiecie jednego elementu
   expect(screen.getByTestId('licznik-teraz-rzad').props.children).toBe('Now working row 48');
   fireEvent.press(screen.getByTestId('licznik-plus'));
   fireEvent.press(screen.getByTestId('licznik-minus'));
@@ -61,7 +61,7 @@ describe('P2-5 / F-09 / BR-LIC-012: linia „Now working row n” w liczniku prz
     expect(screen.getByTestId(kontener)).toBeTruthy();
     expect(screen.queryByTestId('licznik-teraz-rzad')).toBeNull();
     expect(screen.queryByText(/Now working row/)).toBeNull();
-    expect(screen.getByTestId('licznik-wartosc').props.children).toBe('48');
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('48');
     expect(screen.getByTestId('licznik-plus')).toBeTruthy();
     expect(screen.getByRole('button', { name: /^\+1 row/ })).toBeTruthy();
   });
@@ -100,7 +100,7 @@ test('układ „obok” (telefon poziomo W3, iPad poziomo W4b): kolumna licznika
 test('P-262 (b), design-spec W3: w kolumnie liczba w rozmiarze paska wzoru (liczbaPaskaWzoru; dawniej 64 pt), blok liczby się nie kurczy; kurczy się tylko +1 (jawna podstawa 0 — przebieg 119: blok 0 pt)', () => {
   render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 874, wysokosc: 402 }) })} t={t} widok={widok} {...wywolania()} />);
   const plaski = (id: string) => StyleSheet.flatten(screen.getByTestId(id).props.style);
-  expect(plaski('licznik-wartosc')).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt, lineHeight: Math.round(tokeny.typografia.liczbaPaskaWzoru.pt * tokeny.typografia.liczbaPaskaWzoru.interlinia) });
+  expect(plaski('licznik-wartosc-cyfra-0')).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt, lineHeight: Math.round(tokeny.typografia.liczbaPaskaWzoru.pt * tokeny.typografia.liczbaPaskaWzoru.interlinia) });
   expect(plaski('licznik-wartosc').flexShrink ?? 0).toBe(0);
   expect(plaski('wzor-liczba-blok')).toMatchObject({ flexShrink: 0 });
   expect(plaski('licznik-plus')).toMatchObject({ flexGrow: 1, flexShrink: 1, flexBasis: 0 });
@@ -108,7 +108,7 @@ test('P-262 (b), design-spec W3: w kolumnie liczba w rozmiarze paska wzoru (licz
 
 test('pasek licznika (pionowo): liczba w rozmiarze paska wzoru z tokenów (liczbaPaskaWzoru 28 pt; dawniej 40 pt, W1a)', () => {
   render(<PrzegladarkaWzoru stan={stan()} t={t} widok={widok} {...wywolania()} />);
-  expect(StyleSheet.flatten(screen.getByTestId('licznik-wartosc').props.style)).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt });
+  expect(StyleSheet.flatten(screen.getByTestId('licznik-wartosc-cyfra-0').props.style)).toMatchObject({ fontSize: tokeny.typografia.liczbaPaskaWzoru.pt });
 });
 
 test('iPhone: zakreślacz włącza tryb (selected), pasek narzędzi: gumka, cofnij, Done; liczba zakreśleń jako tekst (scenariusz 47)', () => {

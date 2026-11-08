@@ -238,7 +238,7 @@ describe('M1-111 (07-jakosc-513): polityka komunikatów zapisu rysunku — jeden
     expect(alert).toHaveBeenCalledTimes(1);
     await rysunek(0); // udany zapis zdejmuje blokadę alertu rysunku (M1-110) — ostrzeżenie o miejscu i tak jest raz na otwarcie ekranu (DEC-31 b)
     for (let i = 0; i < 2; i++) await act(async () => { fireEvent.press(ekran.getByTestId('licznik-plus')); await new Promise((r) => setTimeout(r, 100)); });
-    expect(ekran.getByTestId('licznik-wartosc').props.children).toBe('7');
+    expect(ekran.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('7'); // p3b: liczba w komórkach (Liczba)
     expect(alert).toHaveBeenCalledTimes(1);
     await act(async () => { fireEvent.press(ekran.getByTestId('wzor-przelacz')); });
     await act(async () => { fireEvent.press(ekran.getByRole('menuitem', { name: 'Edging' })); await new Promise((r) => setTimeout(r, 100)); });
