@@ -7,7 +7,7 @@
 name: Jakość · iOS
 on:
   push:
-    branches: [main, claude/jolly-thompson-paz6d8]
+    branches: [main, claude/jolly-thompson-paz6d8, claude/youthful-pasteur-kx83sn]
     paths:
       - 'app/**'
       - 'src/**'

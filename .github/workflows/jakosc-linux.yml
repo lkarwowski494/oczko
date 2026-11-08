@@ -3,7 +3,7 @@
 name: Jakość · Linux
 on:
   push:
-    branches: [main, claude/jolly-thompson-paz6d8]
+    branches: [main, claude/jolly-thompson-paz6d8, claude/youthful-pasteur-kx83sn]
   pull_request:
 permissions:
   contents: read
