@@ -90,7 +90,8 @@ describe('arkusz włóczki', () => {
     fireEvent.press(screen.getByRole('button', { name: 'Weight category, 4 · medium' }));
     fireEvent.press(screen.getByRole('radio', { name: 'Not set' }));
     fireEvent.changeText(screen.getByTestId('zapas-dlugosc'), '0');
-    expect(screen.getByRole('alert')).toHaveProperty('props.children', '! Enter a number above 0.');
+    expect(screen.getByRole('alert')).toHaveProperty('props.accessibilityLabel', 'Enter a number above 0.'); // M3 p4b: znak „!” w kółku (ukryty przed VoiceOver), zdanie osobno
+    expect(screen.getByText('Enter a number above 0.')).toBeTruthy();
     expect(screen.getByTestId('formularz-zapisz').props.accessibilityState).toMatchObject({ disabled: true });
   });
 });

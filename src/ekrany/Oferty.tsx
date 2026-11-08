@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import type { Produkt } from '../domena/porty';
 import { LIMIT_DNI_W_MIESIACU } from '../konfiguracja';
-import { Arkusz, Komunikat, Przycisk, Tresc } from './Arkusz';
+import { Arkusz, Komunikat, Przycisk, Tresc, ZnacznikRadio } from './Arkusz';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, ROZMIAR_SYMBOLU_TRESCI, typografia, typografiaDzianiny, useKolory } from './motyw';
 import { IkonaDnia } from './IkonaDnia';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
@@ -63,8 +63,6 @@ function LiniaKomunikatu({ rodzaj, t }: { rodzaj: Exclude<KomunikatOfert, null>;
 
 // Kafle „co daje zakup” (P-558, P-563 (11)(12), raport 02 `02-monetyzacja-2026-11-08`): tylko to, co Pro faktycznie zmienia (limit dni, `src/domena/limit.ts:70`), albo jawnie to, co zostaje bez Pro.
 // Kafel „rodzina” tylko przy Family Sharing (ujawnienie 7). Ikona kafla 1 własna (nie kalendarz zakładki Historia, 02-monetyzacja-004), pozostałe SF Symbols.
-// Brak tokenu rozmiaru znacznika radio planu (makieta: 28 pt kolumna, 26 pt kółko) — składane z odstępów, do zgłoszenia 04.
-const ZNACZNIK = odstep.xxl + odstep.xs;
 const LICZBA_DNI_W_ILUSTRACJI = 30; // ilustracja „każdy dzień” (nie dane): pełny miesiąc dni dzierganych; kolumny: 15, przy dużym tekście 10 (ekrany.html `.of-mies`)
 type Kafel = { id: string; tytul: Klucz; opis: Klucz; symbol: NazwaSymbolu | null; tylkoRodzina?: true };
 const KAFLE: readonly Kafel[] = [
@@ -96,8 +94,6 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
     kafelOpis: { ...typografiaDzianiny.mala, color: k.tekst2 },
     sekcja: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
     plan: { minHeight: cel.plus, padding: odstep.m, borderRadius: promien.kafel, borderWidth: 2, backgroundColor: k.powierzchnia, flexDirection: duzyTekst ? 'column' : 'row', gap: odstep.m, alignItems: duzyTekst ? 'flex-start' : 'center' },
-    znacznik: { width: ZNACZNIK, height: ZNACZNIK, borderRadius: ZNACZNIK / 2, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
-    znacznikWybrany: { borderWidth: 0, backgroundColor: k.przycisk },
     planTekst: { flex: 1, gap: odstep.xs },
     cena: { ...typografiaDzianiny.tytul, color: k.tekst },
     podpis: { ...typografiaDzianiny.mala, color: k.tekst2 },
@@ -109,7 +105,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
       <>
         {s.komunikat && <LiniaKomunikatu rodzaj={s.komunikat} t={t} />}
         {plan && (s.oczekujacy || s.komunikat === 'czeka'
-          ? <Przycisk tekst={t('oferty.czeka_przycisk')} onPress={() => undefined} rodzaj="glowny" wylaczony testID="oferty-kup" />
+          ? <Przycisk tekst={t('oferty.czeka_przycisk')} onPress={() => undefined} rodzaj="glowny" wylaczony symbolPrzed="hourglass" testID="oferty-kup" />
           : <Przycisk tekst={t('oferty.kup', { plan: opisPlanu(plan, t).nazwa })} onPress={() => naKup(plan.id)} rodzaj="glowny" testID="oferty-kup" />)}
         {trwaSubskrypcja(s.aktywne) && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
         <View style={st.wierszTekstowych}>
@@ -155,9 +151,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
                   onPress={() => wybierz(p.id)} testID={TESTID[p.okres]}
                   style={[st.plan, { borderColor: zaznaczony ? k.akcentTekst : 'transparent' }]}>
                   {/* Zaznaczenie nie tylko kolorem: wypełniony znacznik z ptaszkiem (design-spec „Stany”). */}
-                  <View style={[st.znacznik, zaznaczony && st.znacznikWybrany]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                    {zaznaczony && <SymbolSf nazwa="checkmark" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />}
-                  </View>
+                  <ZnacznikRadio wybrany={zaznaczony} />
                   <View style={st.planTekst}>
                     <Text style={[typografiaDzianiny.tresc, { color: k.tekst, fontWeight: '700' }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{o.nazwa}</Text>
                     {/* Cena ze sklepu największym elementem planu, także przy AX5 (MS-02, KP-09; 3.1.2 strona subskrypcji Apple). */}

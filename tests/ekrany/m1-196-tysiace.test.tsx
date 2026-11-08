@@ -43,7 +43,8 @@ describe('podpowiedź pod polem długości i wagi (DEC-45 a)', () => {
       podpowiedz={(x) => podpowiedzPolaMotka(x, j)} formatuj={String} naZapisz={jest.fn()} naAnuluj={jest.fn()} />);
     fireEvent.changeText(screen.getByTestId('zapas-nazwa'), 'Fjord');
     fireEvent.changeText(screen.getByTestId('zapas-dlugosc'), '1,094');
-    expect(screen.getByRole('alert')).toHaveProperty('props.children', '! Write it as 1094.');
+    expect(screen.getByRole('alert')).toHaveProperty('props.accessibilityLabel', 'Write it as 1094.'); // M3 p4b: znak „!” w kółku (ukryty przed VoiceOver), zdanie osobno
+    expect(screen.getByText('Write it as 1094.')).toBeTruthy();
     expect(screen.queryByText(/= .* m$/)).toBeNull();
     expect(screen.getByTestId('formularz-zapisz').props.accessibilityState?.disabled).toBe(true);
   });
