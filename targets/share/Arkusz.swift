@@ -51,13 +51,13 @@ struct ArkuszUdostepnij: View {
         }
       }
     }
-    .tint(Color("grafit"))
+    .tint(Color("tekst"))
   }
 
   private func ostrzezenie(_ tytul: String, _ opis: String) -> some View {
     VStack(alignment: .leading, spacing: 8) {
       Label(tytul, systemImage: "exclamationmark.circle").font(.headline) // ikona „!”, nigdy sam kolor
-      Text(opis).foregroundStyle(Color("olowek"))
+      Text(opis).foregroundStyle(Color("tekst2"))
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding()
@@ -72,7 +72,7 @@ struct ArkuszUdostepnij: View {
         ForEach(Array(model.zalaczniki.enumerated()), id: \.offset) { _, z in
           VStack(alignment: .leading) {
             Text(z.nazwa).lineLimit(2)
-            Text(rodzajTekst(z.rodzaj)).font(.footnote).foregroundStyle(Color("olowek"))
+            Text(rodzajTekst(z.rodzaj)).font(.footnote).foregroundStyle(Color("tekst2"))
           }
         }
         if maAdres {
@@ -92,7 +92,7 @@ struct ArkuszUdostepnij: View {
         } header: { Text(Teksty.t(kluczNaglowkaListy(jakoFilm: model.jakoFilm), JEZYK)) } footer: { Text(podpis(projekty)) }
         .accessibilityElement(children: .contain)
       } else {
-        Section { Text(Teksty.t("udostepnij.bez_migawki", JEZYK)).foregroundStyle(Color("olowek")) }
+        Section { Text(Teksty.t("udostepnij.bez_migawki", JEZYK)).foregroundStyle(Color("tekst2")) }
       }
     }
   }
@@ -104,8 +104,8 @@ struct ArkuszUdostepnij: View {
   private func radio(_ tytul: String, _ opis: String?, zaznaczony: Bool) -> some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(tytul).foregroundStyle(Color("grafit"))
-        if let opis { Text(opis).font(.footnote).foregroundStyle(Color("olowek")) }
+        Text(tytul).foregroundStyle(Color("tekst"))
+        if let opis { Text(opis).font(.footnote).foregroundStyle(Color("tekst2")) }
       }
       Spacer()
       if zaznaczony { Image(systemName: "checkmark").accessibilityHidden(true) }

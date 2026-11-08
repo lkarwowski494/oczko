@@ -187,12 +187,12 @@ struct PasZegarka: View {
     VStack(spacing: 2) {
       Text(Teksty.t("przypomnienie", jezyk, p))
         .font(.footnote.weight(.semibold)).lineLimit(2).truncationMode(.tail).multilineTextAlignment(.center)
-        .foregroundStyle(Color("tekstNaZakreslaczu"))
+        .foregroundStyle(Color("tekst"))
         .padding(.horizontal, 6).padding(.vertical, 2)
-        .background(RoundedRectangle(cornerRadius: 4).fill(Color("zakreslacz")))
-        .overlay(alignment: .leading) { Rectangle().fill(Color("zakreslaczKrawedz")).frame(width: 2) }
+        .background(RoundedRectangle(cornerRadius: 4).fill(Color("powierzchnia")))
+        .overlay(alignment: .leading) { Rectangle().fill(Color("akcent")).frame(width: 2) }
         .accessibilityLabel(Teksty.t("przypomnienie_a11y", jezyk, p))
-      if pas.wiecej > 0 { Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, jezyk)).font(.footnote).foregroundStyle(Color("olowek")) }
+      if pas.wiecej > 0 { Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, jezyk)).font(.footnote).foregroundStyle(Color("tekst2")) }
     }
   }
 }
@@ -218,47 +218,47 @@ struct EkranZegarka: View {
     let j = model.jezyk
     if let s = model.skrzynka.pokazywany {
       VStack(spacing: 6) {
-        Text(s.nazwa).font(.footnote).foregroundStyle(Color("olowek")).lineLimit(1)
+        Text(s.nazwa).font(.footnote).foregroundStyle(Color("tekst2")).lineLimit(1)
         if s.zablokowany {
-          Text(String(s.wartosc)).font(.system(size: 52, weight: .semibold).monospacedDigit()).foregroundStyle(Color("grafit"))
-          Text(Teksty.tl("zrobione", s.wartosc, j)).font(.footnote).foregroundStyle(Color("olowek"))
-          Text(Teksty.t("zablokowany", j)).font(.headline).foregroundStyle(Color("grafit"))
-          Text(Teksty.t("zablokowany_jak_zegarek", j)).font(.footnote).foregroundStyle(Color("olowek")).multilineTextAlignment(.center)
+          Text(String(s.wartosc)).font(.system(size: 52, weight: .semibold).monospacedDigit()).foregroundStyle(Color("tekst"))
+          Text(Teksty.tl("zrobione", s.wartosc, j)).font(.footnote).foregroundStyle(Color("tekst2"))
+          Text(Teksty.t("zablokowany", j)).font(.headline).foregroundStyle(Color("tekst"))
+          Text(Teksty.t("zablokowany_jak_zegarek", j)).font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
         } else if model.limit || !s.dzienDozwolony {
           let l = tekstyLimitu(s, j)
-          Text(String(s.wartosc)).font(.system(size: 52, weight: .semibold).monospacedDigit()).foregroundStyle(Color("grafit"))
-          Text(Teksty.tl("zrobione", s.wartosc, j)).font(.footnote).foregroundStyle(Color("olowek"))
+          Text(String(s.wartosc)).font(.system(size: 52, weight: .semibold).monospacedDigit()).foregroundStyle(Color("tekst"))
+          Text(Teksty.tl("zrobione", s.wartosc, j)).font(.footnote).foregroundStyle(Color("tekst2"))
           Text(Teksty.t("limit", j, ["miesiac": l.miesiac]) + " " + Teksty.t("limit_wznowienie", j, ["data": l.data]))
-            .font(.footnote).foregroundStyle(Color("olowek")).multilineTextAlignment(.center)
+            .font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
         } else {
           Text(String(s.znaczenie == .w_trakcie ? s.wartosc + 1 : s.wartosc))
-            .font(.system(size: model.niezapisano == nil ? 52 : 40, weight: .semibold).monospacedDigit()).foregroundStyle(Color("grafit"))
+            .font(.system(size: model.niezapisano == nil ? 52 : 40, weight: .semibold).monospacedDigit()).foregroundStyle(Color("tekst"))
           if let r = model.niezapisano {
             Text(r == .plus ? Teksty.t("nie_dodano", j, ["n": String(rzadWRobocie(s))]) : Teksty.t("nie_usunieto", j, ["n": String(s.wartosc)]))
-              .font(.headline).foregroundStyle(Color("grafit"))
-            Text(Teksty.t("blad_zapisu_zegarek", j)).font(.footnote).foregroundStyle(Color("olowek")).multilineTextAlignment(.center)
+              .font(.headline).foregroundStyle(Color("tekst"))
+            Text(Teksty.t("blad_zapisu_zegarek", j)).font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
           } else {
             if let pas = pasPrzypomnienia(s) { PasZegarka(pas: pas, jezyk: j) }
-            Text(Teksty.t("teraz", j, ["n": String(rzadWRobocie(s))])).font(.footnote).foregroundStyle(Color("olowek"))
+            Text(Teksty.t("teraz", j, ["n": String(rzadWRobocie(s))])).font(.footnote).foregroundStyle(Color("tekst2"))
             // P-199 Q6a: linia, gdy najstarsza pozycja kolejki czeka ≥ ZEGAREK_PONOWIENIE_MS (nie z zasięgu WCSession — migotałaby);
             // odświeżanie co minutę, bo próg mija bez zdarzenia.
             TimelineView(.periodic(from: .now, by: 60)) { kontekst in
               if let n = model.skrzynka.niewyslane(teraz: Int64((kontekst.date.timeIntervalSince1970 * 1000).rounded(.down))) {
-                Text(Teksty.tl("bez_telefonu", n, j)).font(.footnote).foregroundStyle(Color("olowek")).multilineTextAlignment(.center)
+                Text(Teksty.tl("bez_telefonu", n, j)).font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
               }
             }
           }
           HStack(spacing: 8) {
             Button { model.stuknij(.minus) } label: { Image(systemName: "minus") }.accessibilityLabel(Teksty.t("minus_a11y", j))
             Button { model.stuknij(.plus) } label: { Text(Teksty.t("plus", j)).lineLimit(1) }
-              .accessibilityLabel(Teksty.t("plus_a11y", j, ["n": String(rzadWRobocie(s))])).tint(Color("przyciskTlo"))
+              .accessibilityLabel(Teksty.t("plus_a11y", j, ["n": String(rzadWRobocie(s))])).tint(Color("przycisk"))
           }
         }
       }
       .contentShape(Rectangle())
       .onTapGesture { if s.zablokowany { model.stuknietoZablokowany() } }
     } else {
-      Text(Teksty.t("otworz_iphone", j)).font(.footnote).foregroundStyle(Color("olowek")).multilineTextAlignment(.center)
+      Text(Teksty.t("otworz_iphone", j)).font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
     }
   }
 }
