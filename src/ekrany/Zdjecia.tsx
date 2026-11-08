@@ -94,7 +94,7 @@ export function PodgladZdjec(p: {
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    naglowek: { ...typografia.drobny, color: k.olowek }, // jak nagłówki sekcji ekranu projektu (Projekt.tsx), 04-studio-projektowe-012, H-1c (13 pt)
+    naglowek: { ...typografia.instrukcja, color: k.tekst }, // jak nagłówki grup ekranu projektu (Projekt.tsx): 17 pt / 700 / tekst (`projekt.naglowekGrupy`, M3 p4b)
     rzad: { gap: odstep.s, alignItems: 'center' },
     miniatura: { width: MINIATURA, height: MINIATURA, borderRadius: promien.pole },
     kafel: { minWidth: MINIATURA, minHeight: MINIATURA, padding: odstep.s, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },

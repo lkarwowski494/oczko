@@ -106,7 +106,7 @@ export function ArkuszNazwyWzoru(p: { t: Tlumacz; nazwa: string; naZapisz(nazwa:
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    naglowek: { ...typografia.drobny, color: k.olowek, marginTop: odstep.l, marginBottom: odstep.s }, // nagłówek sekcji ekranu projektu: 13 pt jak Projekt.tsx, H-1c
+    naglowek: { ...typografia.instrukcja, color: k.tekst, marginTop: odstep.l, marginBottom: odstep.s }, // nagłówek grupy ekranu projektu: 17 pt / 700 / tekst jak Projekt.tsx (`projekt.naglowekGrupy`, M3 p4b)
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
     wiersz: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, paddingVertical: odstep.s, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszPoziomy: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },

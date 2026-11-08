@@ -1,3 +1,4 @@
+// M3 p4b: wartość wyglądu nagłówka grupy zastąpiona decyzją 04 (`projekt.naglowekGrupy`: 17 pt / 700 / tekst); sens testu (Photos = Parts) bez zmian; wykaz: docs/programista/m3-p4b-zastapione-testy.md.
 // 04-studio-projektowe-012 (P2, aneks 2026-11-02): nagłówek sekcji „Photos” był półgruby (fontWeight 700), a „Parts”, „Time”, „Note” i „Pattern” nie.
 // Wzorzec `docs/design/fix10-2026-11-01/partia8.html:75` (`.naglowek-grupy`: 13 pt, kolor `olowek`, bez pogrubienia): jeden styl nagłówka sekcji ekranu projektu.
 // Dane z prawdziwej bazy (node:sqlite) przez model odczytu i kompozycję, ekran z prawdziwego t() en, w obu motywach.
@@ -32,6 +33,6 @@ test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: „Photo
     zdjecia={<GrupaZdjec t={j.t} miniatury={[]} naWybierz={jest.fn()} naOtworz={jest.fn()} />} />);
   const czesci = stylTekstu('Parts');
   const zdjecia = stylTekstu('Photos');
-  expect(czesci.fontWeight).toBeUndefined(); // wzorzec: bez pogrubienia (zabezpieczenie przed zmianą punktu odniesienia)
+  expect(czesci.fontWeight).toBe('700'); // M3 p4b: `projekt.naglowekGrupy` (17 pt / 700 / tekst) zamiast 13 pt bez pogrubienia (zabezpieczenie przed zmianą punktu odniesienia)
   expect({ ...zdjecia, marginTop: undefined }).toEqual({ ...czesci, marginTop: undefined });
 });
