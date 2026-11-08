@@ -43,6 +43,17 @@ OK   4.49:1 (min 3) jasny: miniatura: igła/karta (grafika) #A39A92 na #3A332E
 OK   9.54:1 (min 1) jasny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A332E na #E6E1DA
 OK   10.99:1 (min 4.5) jasny: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A332E
 OK   7.98:1 (min 3) jasny: limit na karcie: ikona klepsydry (UI) #D6CEC6 na #3A332E
+OK   6.71:1 (min 4.5) jasny: menu projektu: Usuń projekt… (tekst) #A3261C na #F6F4F1
+OK   6.71:1 (min 3) jasny: edycja projektu: znak usunięcia (UI) #A3261C na #F6F4F1
+OK   6.03:1 (min 3) jasny: projekt: obwódka kropki włóczki (grafika) #5A5048 na #E6E1DA
+OK   7.15:1 (min 4.5) jasny: arkusz: Dodaj nieaktywny #5A5048 na #F6F4F1
+OK   5.39:1 (min 4.5) jasny: arkusz: Anuluj, Zapisz, Wyczyść #8A5A12 na #F6F4F1
+OK   7.15:1 (min 3) jasny: arkusz: obrys pola (UI) #5A5048 na #F6F4F1
+OK   5.39:1 (min 3) jasny: arkusz: obrys pola z fokusem (UI) #8A5A12 na #F6F4F1
+OK   9.54:1 (min 3) jasny: arkusz: znacznik wybranej opcji/tło listy (UI) #3A332E na #E6E1DA
+OK   6.03:1 (min 3) jasny: arkusz: kółko niewybranej opcji/tło listy (UI) #5A5048 na #E6E1DA
+OK   5.39:1 (min 3) jasny: licznik: rama biegnącego stopera (UI) #8A5A12 na #F6F4F1
+OK   9.29:1 (min 3) jasny: kafelek ikony wiersza 32 pt (UI) #3A332E na #F0DDB6
 OK   15.20:1 (min 4.5) jasny: baner Cofnąć?: tekst #221D1A na #F6F4F1
 OK   5.39:1 (min 4.5) jasny: baner Cofnąć?: przycisk tekstowy Cofnij #8A5A12 na #F6F4F1
 OK   5.39:1 (min 3) jasny: baner Cofnąć?: rama przycisku i ikona (UI) #8A5A12 na #F6F4F1
@@ -91,6 +102,17 @@ OK   4.08:1 (min 3) ciemny: miniatura: igła/karta (grafika) #9C918A na #3A322D
 OK   1.27:1 (min 1) ciemny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A322D na #26211E
 OK   11.11:1 (min 4.5) ciemny: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A322D
 OK   7.69:1 (min 3) ciemny: limit na karcie: ikona klepsydry (UI) #D3C9BF na #3A322D
+OK   8.17:1 (min 4.5) ciemny: menu projektu: Usuń projekt… (tekst) #F2B8B5 na #312B27
+OK   8.17:1 (min 3) ciemny: edycja projektu: znak usunięcia (UI) #F2B8B5 na #312B27
+OK   8.54:1 (min 3) ciemny: projekt: obwódka kropki włóczki (grafika) #C7BCB2 na #26211E
+OK   7.48:1 (min 4.5) ciemny: arkusz: Dodaj nieaktywny #C7BCB2 na #312B27
+OK   9.30:1 (min 4.5) ciemny: arkusz: Anuluj, Zapisz, Wyczyść #F0CF8A na #312B27
+OK   7.48:1 (min 3) ciemny: arkusz: obrys pola (UI) #C7BCB2 na #312B27
+OK   9.30:1 (min 3) ciemny: arkusz: obrys pola z fokusem (UI) #F0CF8A na #312B27
+OK   10.61:1 (min 3) ciemny: arkusz: znacznik wybranej opcji/tło listy (UI) #F0CF8A na #26211E
+OK   8.54:1 (min 3) ciemny: arkusz: kółko niewybranej opcji/tło listy (UI) #C7BCB2 na #26211E
+OK   9.30:1 (min 3) ciemny: licznik: rama biegnącego stopera (UI) #F0CF8A na #312B27
+OK   6.64:1 (min 3) ciemny: kafelek ikony wiersza 32 pt (UI) #F0CF8A na #4A413A
 OK   11.98:1 (min 4.5) ciemny: baner Cofnąć?: tekst #F1EDE9 na #312B27
 OK   9.30:1 (min 4.5) ciemny: baner Cofnąć?: przycisk tekstowy Cofnij #F0CF8A na #312B27
 OK   9.30:1 (min 3) ciemny: baner Cofnąć?: rama przycisku i ikona (UI) #F0CF8A na #312B27
@@ -139,6 +161,17 @@ OK   4.49:1 (min 3) jasny zwiększony: miniatura: igła/karta (grafika) #A39A92 
 OK   9.54:1 (min 1) jasny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A332E na #E6E1DA
 OK   10.99:1 (min 4.5) jasny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A332E
 OK   9.83:1 (min 3) jasny zwiększony: limit na karcie: ikona klepsydry (UI) #EAE4DD na #3A332E
+OK   6.71:1 (min 4.5) jasny zwiększony: menu projektu: Usuń projekt… (tekst) #A3261C na #F6F4F1
+OK   6.71:1 (min 3) jasny zwiększony: edycja projektu: znak usunięcia (UI) #A3261C na #F6F4F1
+OK   8.96:1 (min 3) jasny zwiększony: projekt: obwódka kropki włóczki (grafika) #3F3731 na #E6E1DA
+OK   10.61:1 (min 4.5) jasny zwiększony: arkusz: Dodaj nieaktywny #3F3731 na #F6F4F1
+OK   7.71:1 (min 4.5) jasny zwiększony: arkusz: Anuluj, Zapisz, Wyczyść #6B450C na #F6F4F1
+OK   10.61:1 (min 3) jasny zwiększony: arkusz: obrys pola (UI) #3F3731 na #F6F4F1
+OK   7.71:1 (min 3) jasny zwiększony: arkusz: obrys pola z fokusem (UI) #6B450C na #F6F4F1
+OK   9.54:1 (min 3) jasny zwiększony: arkusz: znacznik wybranej opcji/tło listy (UI) #3A332E na #E6E1DA
+OK   8.96:1 (min 3) jasny zwiększony: arkusz: kółko niewybranej opcji/tło listy (UI) #3F3731 na #E6E1DA
+OK   7.71:1 (min 3) jasny zwiększony: licznik: rama biegnącego stopera (UI) #6B450C na #F6F4F1
+OK   9.29:1 (min 3) jasny zwiększony: kafelek ikony wiersza 32 pt (UI) #3A332E na #F0DDB6
 OK   15.20:1 (min 4.5) jasny zwiększony: baner Cofnąć?: tekst #221D1A na #F6F4F1
 OK   7.71:1 (min 4.5) jasny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij #6B450C na #F6F4F1
 OK   7.71:1 (min 3) jasny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI) #6B450C na #F6F4F1
@@ -187,6 +220,17 @@ OK   4.08:1 (min 3) ciemny zwiększony: miniatura: igła/karta (grafika) #9C918A
 OK   1.27:1 (min 1) ciemny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A322D na #26211E
 OK   11.11:1 (min 4.5) ciemny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A322D
 OK   10.13:1 (min 3) ciemny zwiększony: limit na karcie: ikona klepsydry (UI) #ECE6DF na #3A322D
+OK   8.17:1 (min 4.5) ciemny zwiększony: menu projektu: Usuń projekt… (tekst) #F2B8B5 na #312B27
+OK   8.17:1 (min 3) ciemny zwiększony: edycja projektu: znak usunięcia (UI) #F2B8B5 na #312B27
+OK   11.55:1 (min 3) ciemny zwiększony: projekt: obwódka kropki włóczki (grafika) #E3DAD2 na #26211E
+OK   10.11:1 (min 4.5) ciemny zwiększony: arkusz: Dodaj nieaktywny #E3DAD2 na #312B27
+OK   10.62:1 (min 4.5) ciemny zwiększony: arkusz: Anuluj, Zapisz, Wyczyść #F8DEA6 na #312B27
+OK   10.11:1 (min 3) ciemny zwiększony: arkusz: obrys pola (UI) #E3DAD2 na #312B27
+OK   10.62:1 (min 3) ciemny zwiększony: arkusz: obrys pola z fokusem (UI) #F8DEA6 na #312B27
+OK   10.61:1 (min 3) ciemny zwiększony: arkusz: znacznik wybranej opcji/tło listy (UI) #F0CF8A na #26211E
+OK   11.55:1 (min 3) ciemny zwiększony: arkusz: kółko niewybranej opcji/tło listy (UI) #E3DAD2 na #26211E
+OK   10.62:1 (min 3) ciemny zwiększony: licznik: rama biegnącego stopera (UI) #F8DEA6 na #312B27
+OK   6.64:1 (min 3) ciemny zwiększony: kafelek ikony wiersza 32 pt (UI) #F0CF8A na #4A413A
 OK   11.98:1 (min 4.5) ciemny zwiększony: baner Cofnąć?: tekst #F1EDE9 na #312B27
 OK   10.62:1 (min 4.5) ciemny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij #F8DEA6 na #312B27
 OK   10.62:1 (min 3) ciemny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI) #F8DEA6 na #312B27
@@ -201,6 +245,12 @@ OK   10.87:1 (min 4.5) systemCzarny: akcentTekst/kartaStack #F0CF8A na #1E2024
 OK   10.87:1 (min 3) systemCzarny: przycisk/kartaStack (UI) #F0CF8A na #1E2024
 OK   14.01:1 (min 3) systemCzarny: znak kresek/kartaStack (grafika) #F1EDE9 na #1E2024
 OK   11.12:1 (min 4.5) systemCzarny: przyciskTekst/przycisk #221D1A na #F0CF8A
+OK   11.98:1 (min 4.5) systemCzarny: tekst/pasPrzypomnienia #F1EDE9 na #312B27
+OK   7.48:1 (min 4.5) systemCzarny: tekst2/pasPrzypomnienia #C7BCB2 na #312B27
+OK   9.30:1 (min 4.5) systemCzarny: akcentTekst/pasPrzypomnienia #F0CF8A na #312B27
+OK   1.51:1 (min 1) systemCzarny: pasPrzypomnienia/tlo — pas odróżnia kształt i tekst na nim (informacyjnie) #312B27 na #000000
+OK   14.00:1 (min 4.5) podgląd zdjęcia: akcja akcentTekst/tlo #F0CF8A na #000000
+OK   11.26:1 (min 4.5) podgląd zdjęcia: licznik tekst2/tlo #C7BCB2 na #000000
 OK   16.68:1 (min 3) wzor: znacznik/strona (grafika) #221D1A na #FFFFFF
 OK   14.78:1 (min 4.5) wzor: etykietaTekst/etykietaTlo #F3F1EC na #221D1A
 OK   16.68:1 (min 3) wzor: etykietaTlo/strona (UI) #221D1A na #FFFFFF

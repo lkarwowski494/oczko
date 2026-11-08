@@ -1,4 +1,4 @@
-INFO wielkości tekstu (px): 11, 13, 15, 16, 17, 20, 22, 26, 28, 34, 56, 104; kolory tekstu: 8
+INFO wielkości tekstu (px): 11, 13, 15, 16, 17, 20, 22, 26, 28, 34, 56, 104; kolory tekstu: 12
 UWAGA p „Nabierz 56 oczek na drut”: interlinia 1.45 poza 1,20–1,45
 UWAGA p „Zmień druty na 4,5 mm i ”: interlinia 1.45 poza 1,20–1,45
 UWAGA p „Rzędy 41–46: dżersej bez”: interlinia 1.45 poza 1,20–1,45
@@ -8,5 +8,5 @@ UWAGA p „Rzędy 72–96: dżersej bez”: interlinia 1.45 poza 1,20–1,45
 UWAGA p „Strona 3”: interlinia 1.45 poza 1,20–1,45
 UWAGA odstępy poza jednostką 4 px: 1, 2, 6, 18, 34
 UWAGA 12 wielkości tekstu: sprawdź hierarchię (punkt wyjścia NN/g: 3)
-UWAGA 8 kolorów tekstu: sprawdź warianty kontrastu (NN/g: najwyżej 3)
+UWAGA 12 kolorów tekstu: sprawdź warianty kontrastu (NN/g: najwyżej 3)
 OK

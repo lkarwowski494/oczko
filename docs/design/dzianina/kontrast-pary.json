@@ -224,6 +224,61 @@
   "#3A332E",
   3
  ],
+ "jasny: menu projektu: Usuń projekt… (tekst)": [
+  "#A3261C",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: edycja projektu: znak usunięcia (UI)": [
+  "#A3261C",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: projekt: obwódka kropki włóczki (grafika)": [
+  "#5A5048",
+  "#E6E1DA",
+  3
+ ],
+ "jasny: arkusz: Dodaj nieaktywny": [
+  "#5A5048",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: arkusz: Anuluj, Zapisz, Wyczyść": [
+  "#8A5A12",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: arkusz: obrys pola (UI)": [
+  "#5A5048",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: arkusz: obrys pola z fokusem (UI)": [
+  "#8A5A12",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: arkusz: znacznik wybranej opcji/tło listy (UI)": [
+  "#3A332E",
+  "#E6E1DA",
+  3
+ ],
+ "jasny: arkusz: kółko niewybranej opcji/tło listy (UI)": [
+  "#5A5048",
+  "#E6E1DA",
+  3
+ ],
+ "jasny: licznik: rama biegnącego stopera (UI)": [
+  "#8A5A12",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: kafelek ikony wiersza 32 pt (UI)": [
+  "#3A332E",
+  "#F0DDB6",
+  3
+ ],
  "jasny: baner Cofnąć?: tekst": [
   "#221D1A",
   "#F6F4F1",
@@ -462,6 +517,61 @@
  "ciemny: limit na karcie: ikona klepsydry (UI)": [
   "#D3C9BF",
   "#3A322D",
+  3
+ ],
+ "ciemny: menu projektu: Usuń projekt… (tekst)": [
+  "#F2B8B5",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: edycja projektu: znak usunięcia (UI)": [
+  "#F2B8B5",
+  "#312B27",
+  3
+ ],
+ "ciemny: projekt: obwódka kropki włóczki (grafika)": [
+  "#C7BCB2",
+  "#26211E",
+  3
+ ],
+ "ciemny: arkusz: Dodaj nieaktywny": [
+  "#C7BCB2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: arkusz: Anuluj, Zapisz, Wyczyść": [
+  "#F0CF8A",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: arkusz: obrys pola (UI)": [
+  "#C7BCB2",
+  "#312B27",
+  3
+ ],
+ "ciemny: arkusz: obrys pola z fokusem (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
+ ],
+ "ciemny: arkusz: znacznik wybranej opcji/tło listy (UI)": [
+  "#F0CF8A",
+  "#26211E",
+  3
+ ],
+ "ciemny: arkusz: kółko niewybranej opcji/tło listy (UI)": [
+  "#C7BCB2",
+  "#26211E",
+  3
+ ],
+ "ciemny: licznik: rama biegnącego stopera (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
+ ],
+ "ciemny: kafelek ikony wiersza 32 pt (UI)": [
+  "#F0CF8A",
+  "#4A413A",
   3
  ],
  "ciemny: baner Cofnąć?: tekst": [
@@ -704,6 +814,61 @@
   "#3A332E",
   3
  ],
+ "jasny zwiększony: menu projektu: Usuń projekt… (tekst)": [
+  "#A3261C",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: edycja projektu: znak usunięcia (UI)": [
+  "#A3261C",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: projekt: obwódka kropki włóczki (grafika)": [
+  "#3F3731",
+  "#E6E1DA",
+  3
+ ],
+ "jasny zwiększony: arkusz: Dodaj nieaktywny": [
+  "#3F3731",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: arkusz: Anuluj, Zapisz, Wyczyść": [
+  "#6B450C",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: arkusz: obrys pola (UI)": [
+  "#3F3731",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: arkusz: obrys pola z fokusem (UI)": [
+  "#6B450C",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: arkusz: znacznik wybranej opcji/tło listy (UI)": [
+  "#3A332E",
+  "#E6E1DA",
+  3
+ ],
+ "jasny zwiększony: arkusz: kółko niewybranej opcji/tło listy (UI)": [
+  "#3F3731",
+  "#E6E1DA",
+  3
+ ],
+ "jasny zwiększony: licznik: rama biegnącego stopera (UI)": [
+  "#6B450C",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: kafelek ikony wiersza 32 pt (UI)": [
+  "#3A332E",
+  "#F0DDB6",
+  3
+ ],
  "jasny zwiększony: baner Cofnąć?: tekst": [
   "#221D1A",
   "#F6F4F1",
@@ -944,6 +1109,61 @@
   "#3A322D",
   3
  ],
+ "ciemny zwiększony: menu projektu: Usuń projekt… (tekst)": [
+  "#F2B8B5",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: edycja projektu: znak usunięcia (UI)": [
+  "#F2B8B5",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: projekt: obwódka kropki włóczki (grafika)": [
+  "#E3DAD2",
+  "#26211E",
+  3
+ ],
+ "ciemny zwiększony: arkusz: Dodaj nieaktywny": [
+  "#E3DAD2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: arkusz: Anuluj, Zapisz, Wyczyść": [
+  "#F8DEA6",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: arkusz: obrys pola (UI)": [
+  "#E3DAD2",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: arkusz: obrys pola z fokusem (UI)": [
+  "#F8DEA6",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: arkusz: znacznik wybranej opcji/tło listy (UI)": [
+  "#F0CF8A",
+  "#26211E",
+  3
+ ],
+ "ciemny zwiększony: arkusz: kółko niewybranej opcji/tło listy (UI)": [
+  "#E3DAD2",
+  "#26211E",
+  3
+ ],
+ "ciemny zwiększony: licznik: rama biegnącego stopera (UI)": [
+  "#F8DEA6",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: kafelek ikony wiersza 32 pt (UI)": [
+  "#F0CF8A",
+  "#4A413A",
+  3
+ ],
  "ciemny zwiększony: baner Cofnąć?: tekst": [
   "#F1EDE9",
   "#312B27",
@@ -1012,6 +1232,36 @@
  "systemCzarny: przyciskTekst/przycisk": [
   "#221D1A",
   "#F0CF8A",
+  4.5
+ ],
+ "systemCzarny: tekst/pasPrzypomnienia": [
+  "#F1EDE9",
+  "#312B27",
+  4.5
+ ],
+ "systemCzarny: tekst2/pasPrzypomnienia": [
+  "#C7BCB2",
+  "#312B27",
+  4.5
+ ],
+ "systemCzarny: akcentTekst/pasPrzypomnienia": [
+  "#F0CF8A",
+  "#312B27",
+  4.5
+ ],
+ "systemCzarny: pasPrzypomnienia/tlo — pas odróżnia kształt i tekst na nim (informacyjnie)": [
+  "#312B27",
+  "#000000",
+  1
+ ],
+ "podgląd zdjęcia: akcja akcentTekst/tlo": [
+  "#F0CF8A",
+  "#000000",
+  4.5
+ ],
+ "podgląd zdjęcia: licznik tekst2/tlo": [
+  "#C7BCB2",
+  "#000000",
   4.5
  ],
  "wzor: znacznik/strona (grafika)": [
