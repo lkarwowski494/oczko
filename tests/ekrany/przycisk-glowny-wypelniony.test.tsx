@@ -84,18 +84,18 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     expect(screen.getByTestId('licznik-stoper')).toHaveStyle({ backgroundColor: k.akcent });
   });
 
-  test('wybrany dzień w Historii = przycisk główny (design-spec: „wybrany dzień = przycisk główny”)', () => {
+  test('Historia (M3 p5): dzień z robótką = kwadrat `akcent` z obwódką `akcentTekst`, wybrany dzień = obwódka `tekst`', () => {
     const widok = {
-      dniRobotki: ['2026-10-22'], ukonczoneDnia: [], dzien: [{ projektId: 'p1', nazwa: 'Sweater', rzedy: 5, czasMs: null }],
+      dniRobotki: ['2026-10-22', '2026-10-23'], ukonczoneDnia: [], dzien: [{ projektId: 'p1', nazwa: 'Sweater', rzedy: 5, czasMs: null }],
       tydzien: { od: '2026-10-19', do: '2026-10-25', rzedy: 5, czasMs: null, ukonczone: 0, poprzednie: { rzedy: 0 } },
-      miesiac: { rzedy: 5, czasMs: null, ukonczone: 0, dni: 1 }, pierwsze: false,
+      miesiac: { rzedy: 5, czasMs: null, ukonczone: 0, dni: 2 }, pierwsze: false,
     };
     const j = { t, jezyk: () => 'en', zegar24h: () => true };
     render(<HistoriaDni stan={stanHistorii(widok, { j, miesiac: '2026-10', wybrany: '2026-10-22', dzis: '2026-10-26' })} t={t}
       naWybierz={jest.fn()} naPoprzedni={jest.fn()} naNastepny={jest.fn()} naProjekt={jest.fn()} />);
-    const dzien = screen.getByTestId('historia-dzien-2026-10-22');
-    const kolo = dzien.findAll((n) => typeof n.type === 'string' && n.props.style && JSON.stringify(RN.StyleSheet.flatten(n.props.style)).includes(k.przycisk))[0];
-    expect(kolo).toBeTruthy();
-    expect(RN.StyleSheet.flatten(kolo!.props.style)).toMatchObject({ backgroundColor: k.przycisk });
+    const kwadrat = (id: string) => screen.getByTestId(id).findAll((n) => typeof n.type === 'string' && n.props.style && RN.StyleSheet.flatten(n.props.style).backgroundColor !== undefined && RN.StyleSheet.flatten(n.props.style).borderWidth !== undefined)[0];
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-22')!.props.style)).toMatchObject({ backgroundColor: k.akcent, borderColor: k.tekst }); // wybrany
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-23')!.props.style)).toMatchObject({ backgroundColor: k.akcent, borderColor: k.akcentTekst }); // dziergany, niewybrany
+    expect(RN.StyleSheet.flatten(kwadrat('historia-dzien-2026-10-24')!.props.style)).toMatchObject({ backgroundColor: k.dzienPusty }); // bez robótki
   });
 });

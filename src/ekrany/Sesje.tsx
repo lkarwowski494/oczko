@@ -67,14 +67,14 @@ export function Sesje({ stan: s, t, naKorekta, naWstecz }: PropsSesji): React.Re
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.l },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    naglowek: { ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.m }, // `.naglowek-grupy`: 13 pt (sesje-historia.html), H-2
-    podpis: { ...typografia.podpis, color: k.olowek },
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    tytul: { ...typografia.tytul, color: k.tekst },
+    naglowek: { ...typografia.drobny, color: k.tekst2, paddingHorizontal: odstep.m }, // `.naglowek-grupy`: 13 pt (sesje-historia.html), H-2
+    podpis: { ...typografia.podpis, color: k.tekst2 },
+    grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     wiersz: { minHeight: cel.minimum, paddingHorizontal: odstep.l, paddingVertical: odstep.s, justifyContent: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszGora: { flexDirection: 'row', justifyContent: 'space-between' },
-    tekst: { ...typografia.tresc, color: k.grafit },
+    tekst: { ...typografia.tresc, color: k.tekst },
   });
 }

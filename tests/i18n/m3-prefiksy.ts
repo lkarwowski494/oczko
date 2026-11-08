@@ -5,6 +5,7 @@
 export const PREFIKSY_M3: readonly string[] = [
   'dzis.', 'zakladki.', // p2
   'licznik.akcja_', 'licznik.projekt_wejscie', 'licznik.menu_wiecej_a11y', 'licznik.dzianina_a11y', // p3a
+  'historia.kafel_', // p5 (kafelki podsumowania miesiąca; nie cały prefiks `historia.` — to też arkusz zmian licznika)
 ];
 /** Klucz należy do partii M3 (dozwolony w liście oczekujących do fali 09, P-578). */
 export const kluczM3 = (klucz: string): boolean => PREFIKSY_M3.some((p) => klucz.startsWith(p));
