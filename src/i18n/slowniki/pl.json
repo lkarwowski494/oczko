@@ -268,7 +268,13 @@
     "dni_one": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego ({{miesiac}})",
     "dni_few": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych ({{miesiac}})",
     "dni_many": "Zostało {{zostalo}} z {{limit}} darmowych dni robótkowych ({{miesiac}})",
-    "dni_other": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego ({{miesiac}})"
+    "dni_other": "Zostało {{zostalo}} z {{limit}} darmowego dnia robótkowego ({{miesiac}})",
+    "menu_a11y": "Więcej: {{nazwa}}",
+    "kosz_do_one": ": {{count}} element, do {{data}}.",
+    "kosz_do_few": ": {{count}} elementy, do {{data}}.",
+    "kosz_do_many": ": {{count}} elementów, do {{data}}.",
+    "kosz_do_other": ": {{count}} elementu, do {{data}}.",
+    "kosz_pokaz": "Pokaż"
   },
   "historia": {
     "pusto": "Brak zmian.",

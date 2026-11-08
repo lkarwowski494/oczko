@@ -24,7 +24,8 @@ export type ProjektNaEkranie = {
   /** Linia terminu na liście (BR-DNI-005/006): cel RD-15 i rzędy zrobione dziś; `null` bez terminu albo bez celów części. */
   dzis: { cel: CelDnia; zrobione: number } | null;
 };
-export type WidokProjektow = { wToku: ProjektNaEkranie[]; ukonczone: ProjektNaEkranie[]; dni: { zostalo: number; limit: number; dzis: string } | null; kosz: number };
+export type WidokProjektow = { wToku: ProjektNaEkranie[]; ukonczone: ProjektNaEkranie[]; dni: { zostalo: number; limit: number; dzis: string } | null; kosz: number;
+  /** Dzień RRRR-MM-DD, do którego najwcześniej usunięty element kosza można przywrócić (stopka „Ostatnio usunięte”, M3 p4); `null` przy pustym koszu. */ koszDo?: string | null };
 
 export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
   return operacjaZapisu(z, 'widokProjektow', async (tx, teraz, chwila) => {
@@ -66,7 +67,8 @@ export function widokProjektow(z: Zaleznosci): Promise<Wynik<WidokProjektow>> {
     const wToku = [...l.wToku].sort((a, b) => (kolejnosc.get(a.id) ?? Infinity) - (kolejnosc.get(b.id) ?? Infinity));
     const pro = z.pro();
     const zaw = mozeZaczacDzien({ dni: await dniLimituMiesiaca(tx, dzis.slice(0, 7)), dzis, teraz, ostatniPlus: await ostatniPlus(tx, dodajDni(dzis, -2)), pro });
+    const kosz = await elementyKosza(tx, chwila.strefa, chwila.ms); // od najdawniej usuniętego: pierwszy ma najkrótszy termin
     return { ok: true, wartosc: { wToku: await poKolei(wToku), ukonczone: await poKolei(l.ukonczone), dni: pro ? null : { zostalo: zaw.zostalo, limit: LIMIT_DNI_W_MIESIACU, dzis },
-      kosz: (await elementyKosza(tx, chwila.strefa, chwila.ms)).length } };
+      kosz: kosz.length, koszDo: kosz[0]?.doDnia ?? null } };
   });
 }
