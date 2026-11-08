@@ -17,7 +17,7 @@ export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.
   | 'flag'
   // M3 p7 (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): ikony wierszy Ustawień (ZM-07) i kafli Oczko Pro; wybór 08, do zgłoszenia 04 (design-spec nie nazywa ich).
   | 'sparkles' | 'iphone.radiowaves.left.and.right' | 'square.and.arrow.down' | 'trash' | 'icloud' | 'questionmark.circle' | 'exclamationmark.bubble' | 'star' | 'hand.raised' | 'book' | 'globe'
-  | 'applewatch' | 'person.2' | 'checkmark.shield' | 'checkmark' | 'hourglass' | 'info.circle'
+  | 'applewatch' | 'person.2' | 'checkmark.shield' | 'checkmark' | 'hourglass' | 'info.circle' | 'creditcard'
   | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {
