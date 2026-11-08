@@ -40,10 +40,13 @@ export const PRZEZROCZYSTE = new Set(['waitForAnimationToEnd', 'takeScreenshot',
 const LANCUCHY: Record<string, string[]> = { tapOn: ['eraseText', 'inputText'], doubleTapOn: ['eraseText', 'inputText'], eraseText: ['inputText'], inputText: ['inputText'], stopApp: ['launchApp'], pressKey: ['launchApp'] };
 
 /** testID elementów, których stuknięcie zmienia wartość licznika (P-091 9a: scenariusz z asercją wartości nie jest ponawiany). */
-export const ID_ZMIANY_LICZNIKA = ['licznik-plus', 'licznik-minus', 'baner-serii-cofnij'];
+// 07-e2e (ZM-18, 2026-11-08): „+1” karty na „Dziś” (`dzis-plus`) to to samo zdarzenie co +1 licznika (NFR-PIE-001, ER-68) — ta sama reguła P-091 (9a).
+export const ID_ZMIANY_LICZNIKA = ['licznik-plus', 'licznik-minus', 'baner-serii-cofnij', 'dzis-plus'];
 /** Teksty (etykiety VoiceOver z design-spec), których stuknięcie zmienia wartość licznika. */
 export const TEKST_ZMIANY_LICZNIKA = [/^\\?\+1 row/, /^−1 row/, /^Undo \d+ rows?$/];
 export const ID_WARTOSCI = 'licznik-wartosc';
+/** Wartość licznika na karcie „Dziś” (ZM-18): po `dzis-plus` pierwsza asercja to wartość karty albo licznika. */
+export const ID_WARTOSCI_KARTY = 'dzis-wartosc';
 
 export type Selektor = string | { [k: string]: unknown };
 export type Polecenie = string | Record<string, unknown>;
@@ -135,7 +138,7 @@ const zmieniaLicznik = (nazwa: string, arg: any) => {
   if (typeof arg.id === 'string') return ID_ZMIANY_LICZNIKA.includes(arg.id);
   return typeof arg.text === 'string' && TEKST_ZMIANY_LICZNIKA.some(r => r.test(arg.text));
 };
-const asercjaWartosci = (nazwa: string, arg: any) => nazwa === 'assertVisible' && typeof arg === 'object' && arg?.id === ID_WARTOSCI && typeof arg.text === 'string';
+const asercjaWartosci = (nazwa: string, arg: any) => nazwa === 'assertVisible' && typeof arg === 'object' && (arg?.id === ID_WARTOSCI || arg?.id === ID_WARTOSCI_KARTY) && typeof arg.text === 'string';
 
 /** Czy scenariusz (z podprzepływami) sprawdza wartość licznika — wtedy musi mieć tag `stan-licznika` (P-091 9a: bez ponowień). */
 export function sprawdzaWartoscLicznika(s: Scenariusz, wczytajPlik: (p: string) => Scenariusz = wczytaj, stos: string[] = []): boolean {

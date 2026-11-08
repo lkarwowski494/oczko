@@ -1,13 +1,14 @@
-# Podprzepływ: czysta instalacja (clearState) z wstrzykniętym zegarem (Z07-18) i bez sieci.
+# Podprzepływ: czysta instalacja (clearState) z wstrzykniętym zegarem (Z07-18) i bez sieci, zakończona na ekranie licznika.
+# Po ZM-18 (P-563 (4a)) pierwszy ekran to „Dziś”; pełny licznik jednym stuknięciem „Otwórz licznik ›” na karcie „Pierwszy licznik” (testID `dzis-kontynuuj`, NFR-PIE-001 próg (3)).
+# Jedyne miejsce zmiany startu dla scenariuszy, które pracują na liczniku (07-e2e, 2026-11-08): reszta kroków scenariusza bez zmian.
 # Parametr (env runFlow): TERAZ — czas lokalny ISO bez strefy, np. "2026-11-02T20:00:00"; zegar biegnie dalej od tej chwili (kontrakt: e2e/README.md).
 appId: com.apps4brew.knitting
-name: "podprzepływ: czysta instalacja z zegarem"
+name: "podprzepływ: czysta instalacja z zegarem, przez „Dziś” do licznika"
 ---
-- launchApp:
-    clearState: true
-    arguments:
-      oczkoE2eTeraz: ${TERAZ}
-      oczkoE2eSiec: "brak"
-- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 } # górna część ekranu — czytelna także w orientacji z poprzedniego scenariusza
-- setOrientation: PORTRAIT # orientacja symulatora przeżywa scenariusz, który padł w poziomie (przebieg 40446976426: 9 kaskadowych porażek po 23 — drzewo przycięte do wysokości poziomej, +1 poza nim)
+- runFlow:
+    file: start-czysty-dzis.yaml
+    env:
+      TERAZ: ${TERAZ}
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
