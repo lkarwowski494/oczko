@@ -13,7 +13,7 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSU
  */
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
-  const kolor = p.kolor ?? k.grafit;
+  const kolor = p.kolor ?? k.tekst;
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
@@ -25,7 +25,7 @@ export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; t
 /** Przycisk paska z symbolem SF; `podpis` = widoczny tekst obok symbolu (DEC-05 a: „Tools”), etykieta VoiceOver bez zmian. */
 export function PrzyciskSymbolu(p: { symbol: NazwaSymbolu; etykieta: string; onPress(): void; testID?: string; podpis?: string; kolor?: string; rozmiar?: number }): React.ReactElement {
   const k = useKolory();
-  const kolor = p.kolor ?? k.grafit;
+  const kolor = p.kolor ?? k.tekst;
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta} onPress={p.onPress} style={[st.symbol, p.podpis ? st.zPodpisem : null]} testID={p.testID}>
       <SymbolSf nazwa={p.symbol} rozmiar={p.rozmiar ?? ROZMIAR_SYMBOLU} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />

@@ -111,13 +111,13 @@ export function Przycisk(p: { tekst: string; etykieta?: string; podpowiedz?: str
   const r = p.rodzaj ?? 'drugi';
   // Na stałym czarnym tle (M1-089, design-spec „Tło StanWczytywania”, `czarne`): wypełnienie, obrys i tekst z `systemCzarny`, nie z motywu.
   // Tekstowy na czerni: tylko kolor tekstu (bez wypełnienia), jak „Close” w stanie błędu podglądu zdjęć (M1-094).
-  const czarny = p.naCzarnym && r !== 'tekstowy' ? { backgroundColor: systemCzarny.przyciskTlo, borderColor: systemCzarny.przyciskObrys } : null;
+  const czarny = p.naCzarnym && r !== 'tekstowy' ? { backgroundColor: systemCzarny.przycisk, borderColor: systemCzarny.przycisk } : null;
   return (
     <Pressable accessibilityRole={p.rola ?? 'button'} accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony || p.rozwiniety !== undefined ? { ...(p.wylaczony ? { disabled: true } : {}), ...(p.rozwiniety !== undefined ? { expanded: p.rozwiniety } : {}) } : undefined}
       style={[r === 'glowny' ? st.glowny : r === 'niszczacy' ? st.niszczacy : r === 'drugi' ? st.drugi : st.tekstowy, czarny, p.wylaczony && st.wylaczony]}>
       {p.symbol
-        ? <SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />/* M1-146: sam symbol (rozwinięcie wpisu historii), `tekst` zostaje etykietą VoiceOver */
+        ? <SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.tekst} maxSkala={MAX_SKALA_TYTULOWA} />/* M1-146: sam symbol (rozwinięcie wpisu historii), `tekst` zostaje etykietą VoiceOver */
         : <Text style={[r === 'glowny' ? st.glownyTekst : r === 'niszczacy' ? st.niszczacyTekst : st.drugiTekst, p.naCzarnym && { color: systemCzarny.przyciskTekst }, p.wylaczony && st.wylaczonyTekst]}>{p.tekst}</Text>}
     </Pressable>
   );
@@ -132,7 +132,7 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
       <TextInput accessibilityLabel={p.etykieta} value={p.wartosc} onChangeText={p.naZmiane} testID={p.testID} style={st.wejscie}
         keyboardType={p.dziesietne ? 'decimal-pad' : p.liczbowe ? 'number-pad' : 'default'} returnKeyType={p.liczbowe || p.dziesietne || p.wielowierszowe ? undefined : 'done'}
         onSubmitEditing={p.naKoniec} onFocus={p.naFokus} multiline={p.wielowierszowe} textAlignVertical={p.wielowierszowe ? 'top' : undefined}
-        autoCorrect={false} placeholderTextColor={k.olowek} />
+        autoCorrect={false} placeholderTextColor={k.tekst2} />
     </View>
   );
 }
@@ -185,44 +185,44 @@ export function useZglosZmiane(naZmiane: ((zmieniony: boolean) => void) | undefi
 // `przyciskGlowny` (20) to strefa +1, `przyciskDrugi` (14) — przycisk z obrysem w rzędzie wyboru.
 export function style(k: Kolory) {
   return StyleSheet.create({
-    arkusz: { flex: 1, backgroundColor: k.arkusz },
+    arkusz: { flex: 1, backgroundColor: k.powierzchnia },
     tresc: { padding: odstep.xl, gap: odstep.m },
-    tytul: { ...typografia.tytul, color: k.grafit },
+    tytul: { ...typografia.tytul, color: k.tekst },
     naglowekDecyzji: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: odstep.s },
     rosnie: { flexShrink: 1, flexGrow: 1 },
     zamknij: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    zamknijZnak: { ...typografia.tresc, color: k.grafit },
+    zamknijZnak: { ...typografia.tresc, color: k.tekst },
     naglowek: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: odstep.s, minHeight: cel.minimum, paddingHorizontal: odstep.l, paddingTop: odstep.s },
-    naglowekTytul: { ...typografia.tresc, color: k.grafit, fontWeight: '700', flexGrow: 1, flexShrink: 1, flexBasis: 'auto', textAlign: 'center' },
+    naglowekTytul: { ...typografia.tresc, color: k.tekst, fontWeight: '700', flexGrow: 1, flexShrink: 1, flexBasis: 'auto', textAlign: 'center' },
     naglowekDuzy: { paddingHorizontal: odstep.l, paddingTop: odstep.s, rowGap: odstep.xs },
     akcjeDuzy: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum },
-    naglowekTytulOsobny: { ...typografia.tresc, color: k.grafit, fontWeight: '700', alignSelf: 'stretch', textAlign: 'center' },
+    naglowekTytulOsobny: { ...typografia.tresc, color: k.tekst, fontWeight: '700', alignSelf: 'stretch', textAlign: 'center' },
     akcja: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },
-    anuluj: { ...typografia.tresc, color: k.grafit },
-    zapisz: { ...typografia.tresc, color: k.grafit, fontWeight: '600' },
+    anuluj: { ...typografia.tresc, color: k.tekst },
+    zapisz: { ...typografia.tresc, color: k.tekst, fontWeight: '600' },
     przyciski: { padding: odstep.l, gap: odstep.s, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
-    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    glowny: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przycisk, borderWidth: 2, borderColor: k.przycisk, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     glownyTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst },
-    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.przyciskNiszczacyTlo, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
-    niszczacyTekst: { ...typografia.przyciskPelny, color: k.przyciskNiszczacyTekst },
-    drugi: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    niszczacy: { minHeight: cel.minimum, borderRadius: promien.przyciskPelny, backgroundColor: k.niszczacy, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
+    niszczacyTekst: { ...typografia.przyciskPelny, color: k.niszczacyTekst },
+    drugi: { minHeight: cel.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     tekstowy: { minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
-    drugiTekst: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
+    drugiTekst: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
     pole: { gap: odstep.xs },
-    wylaczony: { backgroundColor: k.przyciskNieaktywnyTlo, borderColor: k.przyciskNieaktywnyTlo }, // design-spec R1 (bez obrysu)
+    wylaczony: { backgroundColor: k.przyciskNieaktywny, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama }, // Dzianina: przerywana rama, nie sam kolor (design-spec „Kolory”)
     wylaczonyTekst: { color: k.przyciskNieaktywnyTekst },
     wybor: { gap: odstep.s },
     opcja: { minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia, padding: odstep.m, justifyContent: 'center' },
-    opcjaWybrana: { borderColor: k.drugiPrzyciskObrys },
+    opcjaWybrana: { borderColor: k.tekst2 },
     // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
-    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru`, `promien.poleWyboru`, `typografia.znakWyboru`
+    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru` (= `cele.minimum`), `promien.poleWyboru` (= `promienie.plus`), `typografia.znakWyboru`
     // (M1-audytor-generalny-145; wcześniej zastępcze z M1-050); znak ✓ najwyżej ×1,6 (`MAX_SKALA_ZNAKU_WYBORU`) w FormularzeProjektu.tsx.
     wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
-    poleWyboru: { ...typografia.znakWyboru, color: k.grafit, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.drugiPrzyciskObrys, borderRadius: promien.poleWyboru, overflow: 'hidden' },
-    poleWyboruZaznaczone: { backgroundColor: k.przyciskTlo, color: k.przyciskTekst },
-    wejscie: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, paddingHorizontal: odstep.m },
-    podpis: { ...typografia.podpis, color: k.olowek },
-    zwykly: { ...typografia.tresc, color: k.grafit },
-    blad: { ...typografia.tresc, color: k.blad },
+    poleWyboru: { ...typografia.znakWyboru, color: k.tekst, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.tekst2, borderRadius: promien.poleWyboru, overflow: 'hidden' },
+    poleWyboruZaznaczone: { backgroundColor: k.przycisk, color: k.przyciskTekst },
+    wejscie: { ...typografia.tresc, color: k.tekst, minHeight: cel.minimum, borderRadius: promien.pole, borderWidth: 2, borderColor: k.tekst2, paddingHorizontal: odstep.m },
+    podpis: { ...typografia.podpis, color: k.tekst2 },
+    zwykly: { ...typografia.tresc, color: k.tekst },
+    blad: { ...typografia.tresc, color: k.tekst },
   });
 }

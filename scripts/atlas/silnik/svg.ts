@@ -3,18 +3,18 @@
 import { odleglosc, probkuj, z2, type Bez, type P } from './geometria.ts';
 import type { Rysunek } from './typy.ts';
 
-/** Role kolorów rysunku; wartości wyłącznie z tokenów 04 (docs/design/tokeny.json). */
+/** Role kolorów rysunku; wartości wyłącznie z tokenów 04 (docs/design/tokeny.json, system Dzianina: kolory.<motyw>.rysunek*, M3-S3-02). */
 export interface Paleta {
-  tlo: string; // papier
-  nitka: string; // grafit
-  wyroznienie: string; // zakreślacz
-  drut: string; // ołówek: drut, strzałka (narzędzie i ruch odróżnione od nitki)
+  tlo: string; // rysunekTlo
+  nitka: string; // rysunekNitka
+  wyroznienie: string; // rysunekWyroznienie (zakreślacz)
+  drut: string; // rysunekDrut: drut, strzałka (narzędzie i ruch odróżnione od nitki)
 }
 
-/** Paleta z tokenów: kolor.<motyw>.{papier, grafit, zakreslacz, olowek}. */
-export function paletaZTokenow(tokeny: { kolor: Record<string, Record<string, string>> }, motyw: 'jasny' | 'ciemny'): Paleta {
-  const k = tokeny.kolor[motyw];
-  return { tlo: k.papier, nitka: k.grafit, wyroznienie: k.zakreslacz, drut: k.olowek };
+/** Paleta z tokenów Dzianiny: kolory.<motyw>.{rysunekTlo, rysunekNitka, rysunekWyroznienie, rysunekDrut} (wyróżnienie to zakreślacz pod nitką). */
+export function paletaZTokenow(tokeny: { kolory: Record<string, Record<string, string>> }, motyw: 'jasny' | 'ciemny'): Paleta {
+  const k = tokeny.kolory[motyw];
+  return { tlo: k.rysunekTlo, nitka: k.rysunekNitka, wyroznienie: k.rysunekWyroznienie, drut: k.rysunekDrut };
 }
 
 /** Glify cyfr własne (P-192 (4)): łamane na siatce 2 × 4, bez fontu i bez <text>. */

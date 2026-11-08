@@ -81,7 +81,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-foreground.png",
         "monochromeImage": "./assets/android-monochrome.png",
-        "backgroundColor": "#FCFCFA"
+        "backgroundColor": "#3A332E"
       }
     },
     "web": {
@@ -91,16 +91,16 @@
       "expo-router",
       "@bacons/apple-targets",
       "./plugins/icloud-tlo",
-      ["expo-font", { "ios": { "fonts": ["./assets/fonts/LibreFranklin-Bold.ttf"] } }],
+      ["expo-font", { "ios": { "fonts": ["./assets/fonts/BreeSerif.ttf"] } }],
       "expo-iap",
       [
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",
-          "backgroundColor": "#FCFCFA",
+          "backgroundColor": "#E6E1DA",
           "dark": {
             "image": "./assets/splash-icon-dark.png",
-            "backgroundColor": "#1B1C1F"
+            "backgroundColor": "#26211E"
           }
         }
       ],
