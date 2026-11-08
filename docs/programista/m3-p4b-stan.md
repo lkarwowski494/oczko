@@ -1,4 +1,21 @@
-# M3 p4b: stan partii (sekcje kawałków)
+# M3 p4b: stan partii (podsumowanie i sekcje kawałków)
+
+2026-11-08 · rola 08 (build) · gałąź `claude/kopia-08-p4b-2026-11-08` (start @ f0e619e3, HEAD zgodny) · koordynator session_01T66VBx6UXGtzFfAZDeBpip · polecenie: oczko-warsztat `koordynacja/role-2026-11-08/08-p4b.md` @ d5553bf. Decyzje: P-597 (1a), P-598 (kropka włóczki (a): NIE wdrożona).
+Kawałki A, B, C wykonały kolejno trzy podagenty (sonnet); wynik sprawdził koordynator roli 08 (git log, pełny verify).
+
+## Wynik komend (po wszystkich kawałkach)
+- Start: `npx jest` 527 zestawów, 5472 testy zielone.
+- Koniec: `npm run verify` kod 0, **534 zestawy, 5586 testów** (+7 zestawów, +114 testów); `npm run jakosc:kontrole` kod 0. `tabela-08` odświeżona.
+- Poprawki po kawałkach: `Arkusz.tsx` przekroczył limit 20 KB (kontrola granic) → `ZnacznikRadio.tsx` i `Komunikat.tsx` wydzielone (re-eksport z `Arkusz.tsx`, importy bez zmian); znak „!” bez `marginTop: 1` (kontrola literałów wymiarów; różnica ≤ 1 pt, brak tokenu).
+
+## Nie wdrożono / odstępstwa od makiety (zbiorczo)
+Kropka włóczki (P-598 (a)); „‹ Projekty” w `akcentTekst` (test 033: jeden wygląd „wstecz”); cień i pozycje 48 pt menu projektu (brak tokenów, jest 44); „Ukończony {data}” pod tytułem (brak klucza, do 09); `Jednostki` w `Zapas.tsx` mają własny stary znacznik radio; aliasy starych ról w `motyw.ts` usunięte tylko nieużywane, reszta: lista w sekcji kawałka C.
+Zgłoszenia do 04: tokeny menu (cień, szerokość, wysokość pozycji), wysokość wiersza listy (44 vs 52/48), grubość obrysu „!”, podziałka wierszy, `symbolKafelka`/`symbolKafelkaAx5`, promień 12 kolumn dzianiny.
+Nowe testID dla 07 (e2e/ nie edytowane): `zdjecie-zamknij`, `znacznik-radio`, `komunikat-znak`, `projekt-menu-lista`, `projekt-czesc`, `projekt-licznik`, `projekt-licznik-wiersz`, `projekt-miniatura`, `kafelek-ikony`, `symbol-druty`, `symbol-dzien`.
+Nie sprawdzono: urządzenie, zrzuty (brak macOS/Expo web), 320/430 pt, AX5 na ekranie, VoiceOver, nazwy SF Symbols na iOS 18, `actool` dla targets. Przegląd subagentem ścieżek wrażliwych: nie dotyczy (bez migracji, danych, importu/eksportu, zakupów; zmiana `targets/*/expo-target.config.js` to kolor z tokenu, wartość ta sama #312B27).
+
+## Propozycja wpisu do docs/decyzje.md (robi koordynator)
+„P-5xx · M3 p4b (rola 08): ekrany Projekt, formularze, zdjęcie i pozycje otwarte z makiet 04 (M3-MAK-01–04) wdrożone na tokenach Dzianiny; Wybor → lista z `ZnacznikRadio` 28 pt; Przycisk dostał `symbolPrzed` (wyjątek P-598); stoper biegnący = rama 2 pt `akcentTekst`; kolumny dzianiny z tokenów; pas blokady z `systemCzarny.pasPrzypomnienia`. Kropka włóczki czeka (P-598 (a)). Odrzucone: zmiana domyślnego wyglądu „wstecz” w `Pasek.tsx` (psuje test 033, decyzja 04).”
 
 Wzorzec stanu: `m3-p7-stan.md`. Wykaz zastąpionych testów: `m3-p4b-zastapione-testy.md`.
 
