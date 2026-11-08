@@ -38,7 +38,7 @@ const SDK_AWARII = /^(@sentry\/|sentry-|@bugsnag\/|bugsnag|@datadog\/|@react-nat
 // BR-ZAK-002, KP-11, NFR-KOS-001: bez analityki, reklam i śledzenia (koszt 0 zł, brak sieci poza Apple).
 const SDK_SLEDZENIA = /^(@react-native-firebase\/(analytics|app)|firebase|@segment\/|mixpanel|@amplitude\/|amplitude|react-native-appsflyer|react-native-adjust|react-native-branch|react-native-google-mobile-ads|expo-ads-|react-native-fbsdk|@datadog\/|posthog|expo-tracking-transparency|@sentry\/)/;
 const DZWIEK = /^(expo-av|expo-audio|react-native-sound|react-native-track-player)$/; // BR-LIC-005: haptyka bez dźwięku (moduly.md, port Haptyka)
-const PRZYPIETE = ['expo-iap', '@bacons/apple-targets', '@testing-library/react-native', 'eslint', '@typescript-eslint/parser', 'yaml'];
+const PRZYPIETE = ['expo-iap', '@bacons/apple-targets', '@testing-library/react-native', 'eslint', '@typescript-eslint/parser', 'yaml', 'react-native-svg'];
 
 function pliki(katalog) {
   const wynik = [];
