@@ -2,7 +2,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Historia } from '../../src/ekrany/Historia';
-import { MenuProjektu } from '../../src/ekrany/MenuProjektu';
+import { MenuCel, MenuProjektu } from '../../src/ekrany/MenuProjektu';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { przycisk, tEn } from './pomoc';
 
@@ -67,10 +67,18 @@ describe('Historia i menu projektu', () => {
     const w = menu();
     render(<MenuProjektu stan={{ projekt: 'Harbor Sweater', zablokowany: false, wartosc: 15 }} t={t} {...w} />);
     fireEvent.press(przycisk('Name project and part', 'button'));
-    fireEvent.press(przycisk('Set a goal for this part', 'button'));
-    fireEvent.press(przycisk('Add a reminder (“every N rows”)', 'button'));
     fireEvent.press(przycisk('Enter the row number', 'button'));
     fireEvent.press(przycisk('Mark project as finished', 'button'));
-    expect([w.naNazwa, w.naCel, w.naPrzypomnienie, w.naWpisz, w.naUkoncz].map((f) => f.mock.calls.length)).toEqual([1, 1, 1, 1, 1]);
+    expect([w.naNazwa, w.naWpisz, w.naUkoncz].map((f) => f.mock.calls.length)).toEqual([1, 1, 1]);
+  });
+
+  // M3 p3a (P-581 a): cel i przypomnienie w arkuszu akcji „Cel”, nie w •••.
+  test('BR-PRJ-006 [arkusz „Cel”]: pozycje wołają swoje formularze', () => {
+    const w = menu();
+    render(<MenuCel stan={{ projekt: 'Harbor Sweater', przypomnienia: 0 }} t={t} {...w} />);
+    fireEvent.press(przycisk('Set a goal for this part', 'button'));
+    fireEvent.press(przycisk('Add a reminder (“every N rows”)', 'button'));
+    fireEvent.press(przycisk('Set a repeat length', 'button'));
+    expect([w.naCel, w.naPrzypomnienie, w.naPowtorzenie].map((f) => f.mock.calls.length)).toEqual([1, 1, 1]);
   });
 });

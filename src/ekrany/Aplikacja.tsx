@@ -163,7 +163,7 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
   );
 }
 
-export type PropsEkranuLicznika = Pick<PropsAplikacji, 't' | 'oglos' | 'dzialania' | 'stoper' | 'sprawdzStopera'> & {
+export type PropsEkranuLicznika = Pick<PropsAplikacji, 't' | 'oglos' | 'dzialania' | 'stoper' | 'sprawdzStopera' | 'jezyk'> & {
   uslugi: Pick<UslugiAplikacji, 'start' | 'dodajRzad'>;
   porty: { haptyka: Haptyka };
   /** R-020 po p2: korzeń („Dziś”) scala dziennik raz; licznik na wierzchu czyta stan po scaleniu (`kompozycja.poScaleniu`). Zwraca odpięcie. */
@@ -200,9 +200,12 @@ export function EkranLicznika(p: PropsEkranuLicznika): React.ReactElement {
       naHistorie={d.naHistorie ?? nic}
       naMenu={d.naMenu ?? nic}
       naNastepnaCzesc={d.naNastepnaCzesc ?? nic}
-      naProjekty={d.naProjekty}
+      jezyk={p.jezyk}
+      naWstecz={d.naWstecz}
       naProjekt={d.naProjekt}
       naWzor={d.naWzor}
+      naNotatka={d.naNotatka}
+      naCel={d.naCel}
       stoper={p.stoper}
       sprawdzStopera={p.sprawdzStopera}
       naKonflikt={d.naKonflikt}

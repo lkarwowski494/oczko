@@ -35,7 +35,7 @@ describe.each(PRZYPADKI)('M1-018 %s, %i rzędów → „%s”', (jezyk, n, forma
   test('licznik bez celu, znaczenie „skonczone”: podpis pod liczbą', () => {
     render(<Licznik stan={stanLicznika({ skonczone: n, dziergany: n + 1, znaczenie: 'skonczone', cel: null })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
     const wiersz = within(screen.getByTestId('licznik-wartosc-wiersz'));
-    expect(screen.getByTestId('licznik-wartosc').props.children).toBe(String(n));
+    expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe(String(n));
     expect(wiersz.getByText(forma)).toBeTruthy();
     for (const f of inneFormy()) expect(wiersz.queryByText(f)).toBeNull();
   });

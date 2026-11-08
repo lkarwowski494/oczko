@@ -1,11 +1,11 @@
-// Stoper sesji na liczniku (F-21, U-4; design-spec „Stoper, sesje i Historia”, P-191 P1a–P3a; makiety sesje-historia `licznik-stoper*`).
-// Bez sesji: ikona w pasku (start jednym stuknięciem). Trwa: kapsuła (tokeny przycisku głównego) z czasem liczonym od znacznika przez
-// komponent czasu, nie przez stan ekranu. Wstrzymana: kapsuła z obrysem i symbolem pauzy, czas stoi. Stuknięcie w kapsułę: menu.
+// Stoper sesji na liczniku (F-21, U-4; design-spec „Stoper, sesje i Historia”, P-191 P1a–P3a; M3 p3a, P-586 2a: czwarta akcja w rzędzie pod liczbą).
+// Bez sesji: akcja „Stoper” (start jednym stuknięciem). Trwa: ta sama komórka w kolorze akcentu, ikona i czas liczony od znacznika przez
+// komponent czasu, nie przez stan ekranu. Wstrzymana: komórka zwykła z symbolem pauzy, czas stoi. Stuknięcie w komórkę w trakcie sesji: menu.
 // Odstępstwo nazwane (jak R8, P-191): menu i alert „inny projekt” jako widoki w ekranie, nie systemowy arkusz akcji / Alert.
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { cel, MAX_SKALA_KAPSULY, MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
-import { SymbolSf } from './SymbolSf';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { cel, PROG_KATEGORII_DOSTEPNOSCI, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { AkcjaLicznika } from './LicznikAkcje';
 import { Przycisk } from './Arkusz';
 import type { Tlumacz } from './wspolne';
 
@@ -46,22 +46,15 @@ export function Stoper(p: PropsStopera): React.ReactElement {
   const czas = useCzas(s, p.teraz);
   const [menu, ustawMenu] = useState(false);
   const wybierz = (f: () => void) => () => { ustawMenu(false); f(); };
+  const duzy = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   return (
-    <View>
+    <View style={[duzy ? st.korzenAx : st.korzen, menu || p.inny ? st.nad : null]}>
       {s.rodzaj === 'brak' ? (
-        <Pressable accessibilityRole="button" accessibilityLabel={t('stoper.start_a11y')} onPress={p.naStart} style={st.ikona} testID="licznik-stoper">
-          <SymbolSf nazwa="stopwatch" rozmiar={ROZMIAR_SYMBOLU} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
-        </Pressable>
+        <AkcjaLicznika symbol="stopwatch" podpis={t('licznik.akcja_stoper')} etykieta={t('stoper.start_a11y')} onPress={p.naStart} testID="licznik-stoper" duzyTekst={duzy} />
       ) : (
-        <Pressable accessibilityRole="button" testID="licznik-stoper"
-          accessibilityLabel={t(s.rodzaj === 'trwa' ? 'stoper.trwa_a11y' : 'stoper.wstrzymana_a11y', { czas })}
-          onPress={() => ustawMenu((m) => !m)} style={[st.kapsula, s.rodzaj === 'wstrzymana' && st.kapsulaPauza]}>
-          <View style={st.kapsulaWiersz}>
-            {/* kapsuła 17 pt 700 (design-spec:528): stoper w trwającej, pause.fill (wypełniony = stan) we wstrzymanej */}
-            <SymbolSf nazwa={s.rodzaj === 'trwa' ? 'stopwatch' : 'pause.fill'} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={s.rodzaj === 'wstrzymana' ? k.grafit : k.przyciskTekst} maxSkala={MAX_SKALA_KAPSULY} waga="bold" />
-            <Text style={[st.kapsulaTekst, s.rodzaj === 'wstrzymana' && st.kapsulaTekstPauza]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>{czas}</Text>
-          </View>
-        </Pressable>
+        // Czas w komórce to ten sam tekst, który czyta etykieta; trwa = akcent, wstrzymana = komórka zwykła z pauzą (stan nie tylko kolorem: symbol i etykieta).
+        <AkcjaLicznika symbol={s.rodzaj === 'trwa' ? 'stopwatch' : 'pause.fill'} podpis={czas} etykieta={t(s.rodzaj === 'trwa' ? 'stoper.trwa_a11y' : 'stoper.wstrzymana_a11y', { czas })}
+          onPress={() => ustawMenu((m) => !m)} podkreslona={s.rodzaj === 'trwa'} cyfryTabelaryczne testID="licznik-stoper" duzyTekst={duzy} />
       )}
       {menu && s.rodzaj !== 'brak' && (
         <View style={st.menu} testID="licznik-stoper-menu">
@@ -86,14 +79,10 @@ export function Stoper(p: PropsStopera): React.ReactElement {
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    ikonaTekst: { ...typografia.instrukcja, color: k.grafit },
-    kapsula: { minHeight: cel.minimum, borderRadius: promien.przyciskGlowny, backgroundColor: k.przyciskTlo, borderWidth: 2, borderColor: k.przyciskObrys, justifyContent: 'center', paddingHorizontal: odstep.m },
-    kapsulaPauza: { backgroundColor: k.papier, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
-    kapsulaWiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },
-    kapsulaTekst: { ...typografia.przyciskPelny, color: k.przyciskTekst, fontVariant: ['tabular-nums'] },
-    kapsulaTekstPauza: { color: k.grafit },
-    menu: { position: 'absolute', top: cel.minimum + odstep.xs, right: 0, minWidth: 240, zIndex: 10, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },
+    korzen: { flex: 1 },
+    korzenAx: { alignSelf: 'stretch' },
+    nad: { zIndex: 10 }, // menu i alert „inny projekt” nad sąsiednimi akcjami (widoki w ekranie, nie systemowy arkusz — odstępstwo R8)
+    menu: { position: 'absolute', top: '100%', marginTop: odstep.xs, right: 0, minWidth: 240, zIndex: 10, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },
     naglowek: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m },
     pogrubiony: { color: k.grafit, fontWeight: '700' },
   });

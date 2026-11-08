@@ -34,7 +34,7 @@ describe('Licznik: limit dni', () => {
     expect(w.naOferty).toHaveBeenCalledTimes(1);
     // BR-ZAK-006/S1 „Oraz historia, menu projektu … działają” (ekrany.html:149 aria-label="History", "Project options")
     fireEvent.press(przycisk('History', 'button'));
-    fireEvent.press(screen.getByRole('button', { name: /^Project options/ }));
+    fireEvent.press(screen.getByRole('button', { name: /^Counter options/ }));
     expect(w.naHistorie).toHaveBeenCalledTimes(1);
     expect(w.naMenu).toHaveBeenCalledTimes(1);
   });

@@ -7,7 +7,7 @@ import { render, screen, within } from '@testing-library/react-native';
 import { ukladOkna } from '../../src/domena/uklad';
 import { PrzegladarkaWzoru, type StanPrzegladarki } from '../../src/ekrany/WzorPrzegladarka';
 import { Stoper } from '../../src/ekrany/Stoper';
-import { ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY } from '../../src/ekrany/motyw';
+import { ROZMIAR_SYMBOLU_AKCJI, ROZMIAR_SYMBOLU_AKCJI_AX } from '../../src/ekrany/LicznikAkcje';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { tEn } from './pomoc';
 
@@ -74,18 +74,19 @@ describe('stoper: symbole SF', () => {
     pokaz({ rodzaj: 'wstrzymana', czasMs: 600_000, startGodzina: '19:52' });
     expect(symbol(screen.getByTestId('licznik-stoper'))).toBe('pause.fill');
   });
-  test('skala symbolu: ikona w pasku najwyżej ×1,8, kapsuła ×1,6; bez powiększenia — rozmiar bazowy z tokenów', () => {
+  // M3 p3a: symbol stopera to symbol akcji pod liczbą (24 pt w rzędzie, 40 pt w liście AX) ze skalą najwyżej ×1,8 (MAX_SKALA_TYTULOWA) w każdym stanie; kapsuły z paska nie ma.
+  test('skala symbolu: akcja w rzędzie 24 pt, w liście AX 40 pt × najwyżej 1,8 — także przy trwającej sesji', () => {
     const symbolSize = () => screen.getByTestId('symbol-stopwatch', UKRYTE).props.size;
     mockSkala = 3;
     pokaz({ rodzaj: 'brak' });
-    expect(symbolSize()).toBe(Math.round(ROZMIAR_SYMBOLU * 1.8));
+    expect(symbolSize()).toBe(Math.round(ROZMIAR_SYMBOLU_AKCJI_AX * 1.8));
     screen.unmount();
     pokaz({ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' });
-    expect(symbolSize()).toBe(Math.round(ROZMIAR_SYMBOLU_KAPSULY * 1.6));
+    expect(symbolSize()).toBe(Math.round(ROZMIAR_SYMBOLU_AKCJI_AX * 1.8));
     screen.unmount();
     mockSkala = 1;
     pokaz({ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' });
-    expect(symbolSize()).toBe(17);
+    expect(symbolSize()).toBe(ROZMIAR_SYMBOLU_AKCJI);
   });
 });
 

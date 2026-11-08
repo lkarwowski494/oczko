@@ -41,11 +41,11 @@ describe('033: bez glifów Unicode jako ikon', () => {
 
 describe('033: symbole SF w paskach', () => {
   test('licznik: wzór = doc.text, historia = clock.arrow.circlepath (inny kształt niż stoper), menu = ellipsis', () => {
-    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naProjekty={jest.fn()} naWzor={jest.fn()} />);
+    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naWstecz={jest.fn()} naWzor={jest.fn()} />);
     expect(symbol('licznik-wzor')).toBe('doc.text');
     expect(symbol('licznik-historia')).toBe('clock.arrow.circlepath');
     expect(symbol('licznik-menu')).toBe('ellipsis');
-    expect(screen.getByRole('button', { name: t('licznik.historia') })).toBe(screen.getByTestId('licznik-historia'));
+    expect(screen.getByRole('button', { name: t('licznik.akcja_historia') })).toBe(screen.getByTestId('licznik-historia')); // M3 p3a: akcja pod liczbą, podpis „History”
   });
   test('karta ukończenia: „Share” = square.and.arrow.up, etykieta „Share”', () => {
     render(<Ukonczenie stan={{ nazwa: 'Harbor', okres: 'Oct 1 – Oct 21', dni: 21, rzedy: 640, czas: '18 h', czesci: 4, wloczka: [], zdjecie: null }} t={t} oglos={jest.fn()} system={atrapaSystemu()}
@@ -83,10 +83,10 @@ describe('036 (DEC-05 a): pasek listy projektów — symbole o jednoznacznym ksz
 
 describe('033: jeden wygląd „wstecz”', () => {
   const tekstWstecz = (id: string) => within(screen.getByTestId(id)).getByText(/^(Back|Projects)$/);
-  test('licznik („Projects”), projekt i kosz („Back”): symbol chevron.backward i ten sam styl tekstu, bez podkreślenia i bez pogrubienia', () => {
-    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naProjekty={jest.fn()} />);
-    expect(symbol('nav-projekty')).toBe('chevron.backward');
-    const licznik = plaski(tekstWstecz('nav-projekty').props.style);
+  test('licznik, projekt i kosz („Back”; na liczniku `nav-wstecz` zamiast „Projects”, P-583): symbol chevron.backward i ten sam styl tekstu, bez podkreślenia i bez pogrubienia', () => {
+    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} naWstecz={jest.fn()} />);
+    expect(symbol('nav-wstecz')).toBe('chevron.backward');
+    const licznik = plaski(tekstWstecz('nav-wstecz').props.style);
     screen.unmount();
     render(<Projekt stan={{ nazwa: 'Harbor', notatka: '', miejsceWzoru: null, ostatniaZmiana: 'June 2', czesci: [], postep: { rodzaj: 'brak-celow' } }} t={t} naOtworzCzesc={jest.fn()} naWstecz={jest.fn()} />);
     expect(symbol('nav-wstecz')).toBe('chevron.backward');
@@ -103,13 +103,18 @@ describe('033: jeden wygląd „wstecz”', () => {
   });
 });
 
-describe('036 (DEC-05 a): menu ••• licznika w dwóch grupach (to-be 04, U12)', () => {
-  const ids = (grupa: string) => screen.getByTestId(grupa).findAll((n: { props: { testID?: unknown }; type: unknown }) => typeof n.props.testID === 'string' && typeof n.type === 'string' && /^menu-(?!grupa)/.test(n.props.testID)).map((n) => n.props.testID as string);
-  test('grupa 1: ustawienia liczenia; grupa 2: ukończenie, znaczenie, blokada, a „Reset to 0…” na końcu, z dala od „Mark project as finished”', () => {
-    render(<MenuProjektu stan={{ projekt: 'Harbor', zablokowany: false, wartosc: 3, maWzor: true, przypomnienia: 0 }} t={t} naNazwa={jest.fn()} naCel={jest.fn()} naPrzypomnienie={jest.fn()}
-      naPowtorzenie={jest.fn()} naWpisz={jest.fn()} naZablokuj={jest.fn()} naOdblokuj={jest.fn()} naZeruj={jest.fn()} naUkoncz={jest.fn()} naWzor={jest.fn()} naZnaczenie={jest.fn()} naZamknij={jest.fn()} />);
-    expect([...new Set(ids('menu-grupa-liczenie'))]).toEqual(['menu-nazwa', 'menu-cel', 'menu-wzor', 'menu-przypomnienie', 'menu-powtorzenie', 'menu-wpisz-wartosc']);
-    expect([...new Set(ids('menu-grupa-projekt'))]).toEqual(['menu-ukoncz', 'menu-znaczenie', 'menu-zablokuj', 'menu-zeruj']);
+// M3 p3a (ZM-05, P-581, P-586): grupy •••: korekta (nazwa, numer rzędu, znaczenie, „Reset to 0…” na końcu) i stan (blokada, ukończenie) — bez testID grup (menu-grupa-* nie istnieją);
+// cel, przypomnienie i powtórzenie są w arkuszu „Cel”, wzór w akcji pod liczbą. Pełny zestaw: tests/ekrany/menu-licznika-m3.test.tsx.
+describe('036 (DEC-05 a → M3 p3a): menu ••• licznika w dwóch grupach (to-be 04, U12)', () => {
+  const przodkowie = (id: string) => { const l: unknown[] = []; for (let n = screen.getByTestId(id) as { parent: unknown }; n; n = n.parent as { parent: unknown }) l.unshift(n); return l; };
+  const wspolny = (a: string, b: string) => { const x = przodkowie(a), y = przodkowie(b); let i = 0; while (i < x.length && i < y.length && x[i] === y[i]) i++; return i; };
+  test('grupa 1: nazwa, numer rzędu, znaczenie, „Reset to 0…” na końcu; grupa 2: blokada i ukończenie, z dala od „Reset to 0…”', () => {
+    render(<MenuProjektu stan={{ projekt: 'Harbor', zablokowany: false, wartosc: 3 }} t={t} naNazwa={jest.fn()} naWpisz={jest.fn()} naZablokuj={jest.fn()} naOdblokuj={jest.fn()} naZeruj={jest.fn()} naUkoncz={jest.fn()} naZnaczenie={jest.fn()} naZamknij={jest.fn()} />);
+    expect(screen.queryByTestId('menu-grupa-liczenie')).toBeNull();
+    expect(screen.queryByTestId('menu-grupa-projekt')).toBeNull();
+    expect(wspolny('menu-nazwa', 'menu-zeruj')).toBeGreaterThan(wspolny('menu-nazwa', 'menu-zablokuj'));
+    expect(wspolny('menu-wpisz-wartosc', 'menu-znaczenie')).toBe(wspolny('menu-nazwa', 'menu-zeruj'));
+    expect(wspolny('menu-zablokuj', 'menu-ukoncz')).toBeGreaterThan(wspolny('menu-zeruj', 'menu-zablokuj'));
   });
 });
 

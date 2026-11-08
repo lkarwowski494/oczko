@@ -75,7 +75,7 @@ describe('504: brak miejsca na ekranie awaryjnym', () => {
 
 describe('506: „Reset to 0…” przy zablokowanym liczniku', () => {
   const menu = (zablokowany: boolean, naZeruj = jest.fn()) => {
-    const p: PropsMenuProjektu = { stan: { projekt: 'Harbor', zablokowany, wartosc: 3 }, t, naNazwa: jest.fn(), naCel: jest.fn(), naPrzypomnienie: jest.fn(), naPowtorzenie: jest.fn(),
+    const p: PropsMenuProjektu = { stan: { projekt: 'Harbor', zablokowany, wartosc: 3 }, t, naNazwa: jest.fn(),
       naWpisz: jest.fn(), naZablokuj: jest.fn(), naOdblokuj: jest.fn(), naZeruj, naUkoncz: jest.fn(), naZamknij: jest.fn() };
     render(<MenuProjektu {...p} />);
   };

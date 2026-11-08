@@ -65,7 +65,20 @@
     "seria_blokada_other": "Added {{count}} rows from the lock screen at {{godzina}}. Undo?",
     "seria_zegarek_one": "Added {{count}} row on your watch at {{godzina}}. Undo?",
     "seria_zegarek_other": "Added {{count}} rows on your watch at {{godzina}}. Undo?",
-    "wpisz_blad_format": "Enter a whole number, 0 or more, for example {{przyklad}}."
+    "wpisz_blad_format": "Enter a whole number, 0 or more, for example {{przyklad}}.",
+    "akcja_notatka": "Note",
+    "akcja_wzor": "Pattern",
+    "akcja_cel": "Goal",
+    "akcja_cel_a11y": "Goal, reminder, repeat",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "History",
+    "projekt_wejscie": "Project ›",
+    "projekt_wejscie_a11y": "Project: {{projekt}}",
+    "menu_wiecej_a11y": "Counter options: name, row number, lock, finish",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} row done, {{sesja}} this session",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rows done, {{sesja}} this session",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session"
   },
   "limit": {
     "zawczasu_one": "No free crafting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",

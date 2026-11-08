@@ -50,6 +50,7 @@ export type WynikPlus = WynikEkranu<{
 
 export type PropsLicznika = {
   stan: StanEkranuLicznika;
+  jezyk?: string;                      // kod języka aplikacji: liczba bez komórek stałej szerokości w językach z krojem systemowym (`Liczba`)
   t: Tlumacz;
   oglos: Oglos;                        // ogłoszenie dopiero po wyniku ok (R-148)
   haptyka: Haptyka;
@@ -62,10 +63,12 @@ export type PropsLicznika = {
   naHistorie(): void;
   naMenu(): void;                      // menu ••• projektu
   naNastepnaCzesc(): void;             // BR-LIC-011/S1 (U-11)
-  naProjekty?(): void;                 // „Projects” w pasku nawigacji (powrót do listy, F-50)
-  naWzor?(): void;                     // ikona „Pattern” — tylko gdy projekt ma ≥ 1 wzór (P-220 W2a, P-046); partia 6
-  naProjekt?(): void;                  // nazwa projektu nad tytułem części otwiera ekran projektu (design-spec „Ekran projektu”, partia 5)
-  /** Stoper sesji (P-191 P1a): pierwszy z prawej grupy paska, przed Historią; działa przy limicie i blokadzie (P2a). Składa kompozycja. */
+  naWstecz?(): void;                   // „‹ Wstecz” (`nav-wstecz`, P-583): do ekranu, z którego przyszedł licznik (Dziś, Projekty, Projekt); zakładki na liczniku ukryte
+  naWzor?(): void;                     // akcja „Wzór” (P-580): zawsze w rzędzie; bez wzoru dotychczasowe dodanie wzoru (menu źródeł: p3b)
+  naNotatka?(): void;                  // akcja „Notatka” (ZM-04): arkusz notatki projektu, bez ekranu projektu (scenariusz 57: 4 → 2 stuknięcia)
+  naCel?(): void;                      // akcja „Cel” (P-581 a): arkusz z celem części, przypomnieniem i powtórzeniem
+  naProjekt?(): void;                  // „Projekt ›” nad nazwą otwiera ekran projektu (`licznik-projekt-wejscie`, P-580 a)
+  /** Stoper sesji (P-191 P1a; P-586 2a): komponent kompozycji w rzędzie akcji (4. miejsce); działa przy limicie i blokadzie (P2a). Bez niego akcja jest nieaktywna. */
   stoper?: React.ReactNode;
   /** Linia „zapomniany stoper” (P-191 P5a) pod kreskami sesji; składa kompozycja. */
   sprawdzStopera?: React.ReactNode;

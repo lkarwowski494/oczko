@@ -19,7 +19,7 @@ const mockLicznik = {
   uslugi: { dodajRzad: () => { mockStan.projekt = 'p1'; return Promise.resolve({ ok: true, wartosc: undefined }); } }, dzialania: {},
 };
 jest.mock('../../src/kompozycja/Kontekst', () => ({
-  useAplikacja: () => ({ kontener: { z: {}, dostep: { stan: () => ({ poziom: 'darmowy' }) }, j: { t: (k: string) => k } }, licznik: mockLicznik, preferencje: {} }),
+  useAplikacja: () => ({ kontener: { z: {}, dostep: { stan: () => ({ poziom: 'darmowy' }) }, j: { t: (k: string) => k, jezyk: () => 'en' } }, licznik: mockLicznik, preferencje: {} }),
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports

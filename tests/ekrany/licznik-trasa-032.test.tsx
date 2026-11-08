@@ -46,11 +46,11 @@ async function trasa(seed: Parameters<typeof wykonaj>[1]) {
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, aplikacjaAktywna: () => true });
   expect((await k.przygotuj()).ok).toBe(true);
   await k.otworz('l1'); // zapamiętuje „ostatnie miejsce”: trasa „/” startuje na tym liczniku (BR-PRJ-011)
-  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
+  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t, jezyk: i.jezyk }, porty: { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka } }, licznik: k, preferencje: {} };
   render(<EkranLicznika />);
   return { s, k, haptyka, zdarzenie: (linie: ZdarzenieWejsciowe[]) => { s.dziennik.linie.push(...linie); odbior?.(linie); } };
 }
-const liczba = () => screen.getByTestId('licznik-wartosc').children.join('');
+const liczba = () => screen.getByTestId('licznik-wartosc').props.accessibilityLabel as string;
 
 /** Domyka asynchroniczne aktualizacje stanu trasy po zapisie (efekty po +1) wewnątrz `act` — repozytorium nie dopuszcza ostrzeżeń act (BR-TEST-018). Nie jest asercją czasu. */
 const ustabilizuj = () => act(async () => { await new Promise((r) => setTimeout(r, 40)); });

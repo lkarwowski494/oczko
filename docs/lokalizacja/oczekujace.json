@@ -1,5 +1,5 @@
 {
-  "powod": "M3 p2 (2026-11-08): klucze „Dziś” i zakładek tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
+  "powod": "M3 p2+p3a (2026-11-08): klucze „Dziś”, zakładek i licznika tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -38,6 +38,17 @@
     "dzis.tydzien_pusty",
     "dzis.tytul",
     "dzis.wybierz_projekt",
+    "licznik.akcja_cel",
+    "licznik.akcja_cel_a11y",
+    "licznik.akcja_historia",
+    "licznik.akcja_notatka",
+    "licznik.akcja_stoper",
+    "licznik.akcja_wzor",
+    "licznik.dzianina_a11y",
+    "licznik.dzianina_a11y_cel",
+    "licznik.menu_wiecej_a11y",
+    "licznik.projekt_wejscie",
+    "licznik.projekt_wejscie_a11y",
     "zakladki.dzis",
     "zakladki.historia",
     "zakladki.narzedzia",
@@ -100,6 +111,39 @@
       "pl"
     ],
     "dzis.wybierz_projekt": [
+      "pl"
+    ],
+    "licznik.akcja_cel": [
+      "pl"
+    ],
+    "licznik.akcja_cel_a11y": [
+      "pl"
+    ],
+    "licznik.akcja_historia": [
+      "pl"
+    ],
+    "licznik.akcja_notatka": [
+      "pl"
+    ],
+    "licznik.akcja_stoper": [
+      "pl"
+    ],
+    "licznik.akcja_wzor": [
+      "pl"
+    ],
+    "licznik.dzianina_a11y": [
+      "pl"
+    ],
+    "licznik.dzianina_a11y_cel": [
+      "pl"
+    ],
+    "licznik.menu_wiecej_a11y": [
+      "pl"
+    ],
+    "licznik.projekt_wejscie": [
+      "pl"
+    ],
+    "licznik.projekt_wejscie_a11y": [
       "pl"
     ],
     "zakladki.dzis": [

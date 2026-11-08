@@ -8,7 +8,6 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { oglos } from '../src/kompozycja/system';
 import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
 import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
-import { listaWzorow } from '../src/przypadki-uzycia/wzor';
 import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
 export default function EkranLicznikaTrasa(): React.ReactElement {
@@ -34,8 +33,6 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
   // Pierwszy +1 na świeżej instalacji tworzy projekt roboczy bez zmiany `wersja` → odczyt także po +1, ale tylko bez projektu (P-262 (c), scenariusz 38).
   const plusyBezProjektu = projektId === null ? plusy : -1;
   useEffect(() => { void licznik.widok().then((w) => ustawProjekt(w ? w.projektId : null)); }, [wersja, licznik, plusyBezProjektu]);
-  const [maWzor, ustawMaWzor] = useState(false); // ikona „Pattern” tylko z wzorem (P-220 W2a)
-  useFocusEffect(useCallback(() => { if (projektId) void listaWzorow(kontener.z, { projektId }).then((l) => ustawMaWzor(l.ok && l.wartosc.length > 0)); else ustawMaWzor(false); }, [projektId, kontener]));
   // Partia z iCloud (partia 7): stan ekranu blokady i licznik od nowa (np. linia konfliktu, P-220 I1a).
   useEffect(() => kontener.icloud?.naPartie(() => { void licznik.poZmianie().then(() => ustawWersje(licznik.wersja())); }), [kontener, licznik]);
   // M1-063 (MON-05): Pro nadane albo zdjęte poza ekranem ofert — kompozycja przeliczyła limit dni → ekran od nowa.
@@ -61,7 +58,11 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
         oglos={oglos}
         t={kontener.j.t}
         poScaleniu={licznik.poScaleniu}
-        dzialania={{ ...licznik.dzialania, naProjekty: () => router.navigate('/projekty'), naHistorie: () => router.push('/historia'), naWzor: maWzor ? () => router.push('/wzor') : undefined, naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
+        jezyk={kontener.j.jezyk()}
+        dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
+          // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor pokazuje dodanie wzoru; menu źródeł p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
+          naWzor: () => router.push('/wzor'), naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
+          naNotatka: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'notatka', projekt: w.projektId } }); }),
           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),
           naNastepnaCzesc: () => void naNastepnaCzesc(), naKonflikt: () => router.push('/konflikt') }}
         stoper={projektId ? (

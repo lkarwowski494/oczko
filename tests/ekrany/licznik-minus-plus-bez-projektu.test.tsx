@@ -30,7 +30,7 @@ async function start(straznikOknoS?: number) {
 function ekran(k: KompozycjaLicznika, t: Tlumacz, wersja = 0) {
   return <EkranLicznika key={wersja} porty={{ haptyka: atrapaHaptyki() }} uslugi={k.uslugi} dzialania={k.dzialania} oglos={jest.fn()} t={t} />;
 }
-const liczba = () => screen.getByTestId('licznik-wartosc').children.join('');
+const liczba = () => screen.getByTestId('licznik-wartosc').props.accessibilityLabel as string;
 const czekajNa = (n: string) => waitFor(() => expect(liczba()).toBe(n));
 const stukPlus = async (n: string) => { fireEvent.press(await screen.findByTestId('licznik-plus')); await czekajNa(n); };
 async function projektyWBazie(s: Awaited<ReturnType<typeof start>>['s']): Promise<number> {

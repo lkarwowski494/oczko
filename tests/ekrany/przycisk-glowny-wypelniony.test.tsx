@@ -51,9 +51,12 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     expect(screen.getByTestId('p')).toHaveStyle({ backgroundColor: k.przyciskNieaktywny, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama });
   });
 
-  test('„+1 row” na liczniku', () => {
+  // M3 p3a (makieta `licznik`, `.wielki`): „+1” licznika to duży przycisk w kolorze `akcent` z tekstem `naAkcencie` (jak okrągłe „+1” karty „Dziś”), nie `przycisk`; bez obrysu.
+  test('„+1 row” na liczniku: wypełnienie `akcent`, tekst `naAkcencie`, bez obrysu', () => {
     render(<Licznik stan={stanLicznika()} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
-    wypelniony(screen.getByTestId('licznik-plus'), k);
+    expect(screen.getByTestId('licznik-plus')).toHaveStyle({ backgroundColor: k.akcent });
+    expect(RN.StyleSheet.flatten(screen.getByTestId('licznik-plus').props.style).borderWidth).toBeUndefined();
+    expect(screen.getByText('+1 row')).toHaveStyle({ color: k.naAkcencie });
   });
 
   test('„+1 row” w pasku licznika pod wzorem', () => {
@@ -69,11 +72,12 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     wypelniony(screen.getByRole('button', { name: /^\+1 row/ }), k);
   });
 
-  test('kapsuła stopera w trakcie sesji (tokeny przycisku głównego, design-spec)', () => {
+  // M3 p3a (P-586 2a): trwająca sesja stopera to akcja pod liczbą w kolorze `akcent` (stan niesie też symbol i etykieta VoiceOver); wygląd biegnącego stopera [DO USTALENIA 04].
+  test('akcja stopera w trakcie sesji: wypełnienie `akcent`', () => {
     const T = 1_000_000_000_000;
     const f = { naStart: jest.fn(), naWstrzymaj: jest.fn(), naWznow: jest.fn(), naZatrzymaj: jest.fn(), naInnyPotwierdz: jest.fn(), naInnyAnuluj: jest.fn() };
     render(<Stoper stan={{ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' }} inny={null} t={t} teraz={() => T + 65_000} {...f} />);
-    wypelniony(screen.getByTestId('licznik-stoper'), k);
+    expect(screen.getByTestId('licznik-stoper')).toHaveStyle({ backgroundColor: k.akcent });
   });
 
   test('wybrany dzień w Historii = przycisk główny (design-spec: „wybrany dzień = przycisk główny”)', () => {

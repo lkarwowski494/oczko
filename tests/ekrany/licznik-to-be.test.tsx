@@ -1,12 +1,12 @@
 // Testy przed kodem p3a (rola 07 cz. 2, 2026-11-08): kontrakt testID licznika TO BE — docs/design/testid.md M3-TESTID-02 (ZM-04, ZM-05),
 // P-580 (a) „Projekt ›” = `licznik-projekt-wejscie`, `licznik-projekt` zostaje na nazwie; P-581 (a) akcja „Cel”; P-583 powrót `nav-wstecz`.
 // Wyrocznia: kontrakt testID (decyzje z ID), nie kod. Tylko id i kolejność akcji — bez wartości wyglądu (polecenie 07-menu). Wzorzec renderu: tests/ekrany/licznik-ax5.test.tsx.
-// Czerwień na 767add4e: „Unable to find an element with testID …” / asercja obecności `nav-projekty` (pasek AS IS). 08 przenosi do tests/ekrany w commicie p3a.
+// Czerwień na 767add4e: „Unable to find an element with testID …” / asercja obecności `nav-projekty` (pasek AS IS). Przeniesiony z tests/akceptacja/ekrany w commicie p3a (08), zielony.
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import { Licznik } from '../../../src/ekrany/Licznik';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import { atrapaHaptyki, stanLicznika, tEn, wywolaniaLicznika } from '../../ekrany/pomoc';
+import { Licznik } from '../../src/ekrany/Licznik';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { atrapaHaptyki, stanLicznika, tEn, wywolaniaLicznika } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
