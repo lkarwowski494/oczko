@@ -1,5 +1,6 @@
 // M3 p5 (P-563, design-spec „Układ”: dni kalendarza ≥ 44 pt także przy 320 pt, siatka na pełną szerokość; makieta `historia-390-*-ax5`: przy AX5 siatka zostaje).
-// Komórka dnia to cel dotyku: szerokość i wysokość ≥ `cel.minimum`, siedem kolumn mieści się w szerokości ekranu (nie w szerokości ekranu pomniejszonej o marginesy).
+// Deklaracja stylu komórki dnia: szerokość (liczba) i minHeight ≥ `cel.minimum`, siedem kolumn w szerokości ekranu (nie pomniejszonej o marginesy).
+// To nie dowód celu dotyku (JAK-13: ten sprawdza audyt na urządzeniu), tylko strażnik, że siatka nie wraca do szerokości w procentach wewnątrz karty.
 import React from 'react';
 import * as RN from 'react-native';
 import { render, screen } from '@testing-library/react-native';
@@ -32,7 +33,7 @@ const styl = (id: string) => RN.StyleSheet.flatten(screen.getByTestId(id).props.
 describe.each([[320, 1, '320 pt'], [320, 3.1, '320 pt, AX5'], [390, 1, '390 pt']])('komórka dnia kalendarza: szerokość %i, skala %f (%s)', (szerokosc, skala) => {
   beforeEach(() => { mockSzerokosc = szerokosc; mockSkala = skala; });
 
-  test('szerokość komórki to liczba ≥ 44 pt, a siedem komórek mieści się w szerokości ekranu', () => {
+  test('styl komórki: width liczbowy ≥ cel.minimum (deklaracja), siedem komórek wypełnia szerokość ekranu', () => {
     pokaz();
     const s = styl('historia-dzien-2026-10-22');
     expect(typeof s.width).toBe('number');
@@ -41,7 +42,7 @@ describe.each([[320, 1, '320 pt'], [320, 3.1, '320 pt, AX5'], [390, 1, '390 pt']
     expect((s.width as number) * 7).toBeGreaterThan(szerokosc - 7); // siatka na pełną szerokość, nie wąska karta
   });
 
-  test('wysokość komórki ≥ 44 pt, także komórki pustej przed 1. dniem', () => {
+  test('styl komórki: minHeight ≥ cel.minimum (deklaracja), komórka pusta przed 1. dniem ma tę samą szerokość', () => {
     pokaz();
     expect(styl('historia-dzien-2026-10-22').minHeight).toBeGreaterThanOrEqual(cel.minimum);
     const puste = screen.getAllByTestId('historia-pusta-komorka', { includeHiddenElements: true });

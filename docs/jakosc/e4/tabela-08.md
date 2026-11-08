@@ -177,6 +177,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-nie-gasnie-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-013, P-284 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze-projektu.test.tsx` | zielony (główny zestaw) | 12 | BR-LIC-011/S1, P-126, P-307, RD-11, RD-19 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/formularze.test.tsx` | zielony (główny zestaw) | 8 | BR-LIC-007/S3, BR-LIC-010/S1, BR-LIC-010/S2, BR-LIC-017, BR-LIC-017/S7, BR-PRJ-013/S3, P-191, P-360, RD-12, RD-13 | `src/ekrany/Formularze`<br>`src/ekrany/wspolne` | ER-43, Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-dni-komorka-320.test.tsx` | zielony (główny zestaw) | 2 | P-563 | `src/ekrany/HistoriaDni`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-dni.test.tsx` | zielony (główny zestaw) | 4 | BR-DNI-001, BR-DNI-003, P-191 | `src/ekrany/HistoriaDni`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | ER-55, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-menu.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-003, BR-LIC-003/S1, BR-LIC-004, BR-LIC-017/S6, BR-PRJ-006, P-581, R-007 | `src/ekrany/Historia`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-rozwin.test.tsx` | zielony (główny zestaw) | 8 | P-330, P-360 | `src/ekrany/Historia`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -373,4 +374,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 369; zależnych od poprawek: 229.
+Razem plików testów: 370; zależnych od poprawek: 230.
