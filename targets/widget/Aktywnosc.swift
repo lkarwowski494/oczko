@@ -10,8 +10,8 @@ struct OczkoAktywnosc: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: OczkoAtrybuty.self) { kontekst in
       WidokAktywnosci(a: kontekst.state)
-        .activityBackgroundTint(Color("papier"))
-        .activitySystemActionForegroundColor(Color("grafit"))
+        .activityBackgroundTint(Color("tlo"))
+        .activitySystemActionForegroundColor(Color("tekst"))
     } dynamicIsland: { kontekst in
       DynamicIsland {
         DynamicIslandExpandedRegion(.leading) { Text(kontekst.state.stan.nazwa).font(.headline).lineLimit(1) }
@@ -79,13 +79,13 @@ struct SmartStack: View {
     let s = a.stan, j = a.jezyk, n = String(rzadWRobocie(s))
     VStack(alignment: .leading, spacing: 4) {
       HStack(alignment: .firstTextBaseline, spacing: 4) {
-        Image(systemName: "number").font(.system(size: 13)).foregroundStyle(Color("grafit")).accessibilityHidden(true) // znak kresek: zasób jak w compact (zgłoszenie partii 4)
-        Liczba(stan: s).font(.system(size: 30, weight: .bold).monospacedDigit()).foregroundStyle(Color("grafit")).fixedSize().layoutPriority(3)
-        Text(s.nazwa).font(.system(size: 13)).foregroundStyle(Color("olowek")).lineLimit(1).truncationMode(.tail).layoutPriority(1)
+        Image(systemName: "number").font(.system(size: 13)).foregroundStyle(Color("tekst")).accessibilityHidden(true) // znak kresek: zasób jak w compact (zgłoszenie partii 4)
+        Liczba(stan: s).font(.system(size: 30, weight: .bold).monospacedDigit()).foregroundStyle(Color("tekst")).fixedSize().layoutPriority(3)
+        Text(s.nazwa).font(.system(size: 13)).foregroundStyle(Color("tekst2")).lineLimit(1).truncationMode(.tail).layoutPriority(1)
         Spacer(minLength: 0)
         if let start = s.sesjaStartMs {
           Text(timerInterval: Date(timeIntervalSince1970: TimeInterval(start) / 1000)...Date.distantFuture, countsDown: false)
-            .font(.system(size: 13).monospacedDigit()).foregroundStyle(Color("olowek")).lineLimit(1).layoutPriority(0)
+            .font(.system(size: 13).monospacedDigit()).foregroundStyle(Color("tekst2")).lineLimit(1).layoutPriority(0)
         }
       }
       Group {
@@ -95,15 +95,15 @@ struct SmartStack: View {
           Text(Teksty.t("wstrzymane", j))
         } else if let pas = pasPrzypomnienia(s) {
           Text(Teksty.t("przypomnienie_krotkie", j, ["n": String(pas.rzad), "tekst": pas.tekst]))
-            .foregroundStyle(Color("tekstNaZakreslaczu"))
+            .foregroundStyle(Color("tekst"))
             .padding(.horizontal, 4)
-            .background(RoundedRectangle(cornerRadius: 3).fill(Color("zakreslacz")))
+            .background(RoundedRectangle(cornerRadius: 3).fill(Color("powierzchnia")))
             .accessibilityLabel(Teksty.t("przypomnienie_a11y", j, ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)]))
         } else {
           Text(Teksty.t("teraz", j, ["n": n]))
         }
       }
-      .font(.system(size: 15, weight: .semibold)).foregroundStyle(Color("grafit")).lineLimit(1).truncationMode(.tail).layoutPriority(4)
+      .font(.system(size: 15, weight: .semibold)).foregroundStyle(Color("tekst")).lineLimit(1).truncationMode(.tail).layoutPriority(4)
     }
     .padding(.horizontal, 8)
     .accessibilityElement(children: .ignore) // karta jako jeden element (design-spec „VoiceOver”); brak przycisków w Smart Stack
@@ -116,16 +116,15 @@ struct SmartStack: View {
 struct Pas: View {
   let pas: PasPrzypomnienia
   let jezyk: String?
-  let wyspa: Bool // rozwinięta Dynamic Island: kolory systemCzarny.zakreslacz* (tło wyspy zawsze czarne)
+  let wyspa: Bool // rozwinięta Dynamic Island: barwy wyspa* (systemCzarny, tło wyspy zawsze czarne)
   var body: some View {
     let p: [String: String] = ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)]
-    let k = wyspa ? "wyspa" : ""
     Text(Teksty.t("przypomnienie", jezyk, p))
       .font(.footnote.weight(.semibold)).lineLimit(2).truncationMode(.tail)
-      .foregroundStyle(Color(k + "tekstNaZakreslaczu"))
+      .foregroundStyle(Color(wyspa ? "wyspaTekst" : "tekst"))
       .padding(.horizontal, 6).padding(.vertical, 2)
-      .background(RoundedRectangle(cornerRadius: 4).fill(Color(k + "zakreslacz")))
-      .overlay(alignment: .leading) { Rectangle().fill(Color(k + "zakreslaczKrawedz")).frame(width: 2) }
+      .background(RoundedRectangle(cornerRadius: 4).fill(Color(wyspa ? "wyspaPowierzchnia" : "powierzchnia")))
+      .overlay(alignment: .leading) { Rectangle().fill(Color(wyspa ? "wyspaAkcent" : "akcent")).frame(width: 2) }
       .accessibilityLabel(Teksty.t("przypomnienie_a11y", jezyk, p))
   }
 }
@@ -163,24 +162,24 @@ struct Opis: View {
     let s = a.stan, j = a.jezyk, n = String(rzadWRobocie(s))
     VStack(alignment: .leading, spacing: 2) {
       if s.zablokowany {
-        Text(Teksty.t("zablokowany", j)).font(.subheadline.weight(.semibold)).foregroundStyle(Color("grafit"))
-        Text(Teksty.t("zablokowany_jak", j)).font(.footnote).foregroundStyle(Color("olowek"))
+        Text(Teksty.t("zablokowany", j)).font(.subheadline.weight(.semibold)).foregroundStyle(Color("tekst"))
+        Text(Teksty.t("zablokowany_jak", j)).font(.footnote).foregroundStyle(Color("tekst2"))
       } else if !s.dzienDozwolony {
         let l = tekstyLimitu(s, j)
-        Text(Teksty.t("wstrzymane", j)).font(.subheadline.weight(.semibold)).foregroundStyle(Color("grafit"))
-        Text(Teksty.t("zachowane", j)).font(.footnote).foregroundStyle(Color("olowek"))
+        Text(Teksty.t("wstrzymane", j)).font(.subheadline.weight(.semibold)).foregroundStyle(Color("tekst"))
+        Text(Teksty.t("zachowane", j)).font(.footnote).foregroundStyle(Color("tekst2"))
         Label(Teksty.t("limit", j, ["miesiac": l.miesiac]) + " " + Teksty.t("limit_wznowienie", j, ["data": l.data]), systemImage: "info.circle")
-          .font(.footnote).foregroundStyle(Color("olowek"))
+          .font(.footnote).foregroundStyle(Color("tekst2"))
       } else if let u = a.uwaga {
-        Text(Teksty.t("nie_dodano", j, ["n": n])).font(.subheadline.weight(.semibold)).foregroundStyle(Color("grafit"))
-        Text(Teksty.t(u == .odblokuj ? "odblokuj" : "blad_zapisu", j)).font(.footnote).foregroundStyle(Color("olowek"))
+        Text(Teksty.t("nie_dodano", j, ["n": n])).font(.subheadline.weight(.semibold)).foregroundStyle(Color("tekst"))
+        Text(Teksty.t(u == .odblokuj ? "odblokuj" : "blad_zapisu", j)).font(.footnote).foregroundStyle(Color("tekst2"))
       } else {
-        Text(Teksty.t("teraz", j, ["n": n])).font(.subheadline).foregroundStyle(Color("grafit"))
+        Text(Teksty.t("teraz", j, ["n": n])).font(.subheadline).foregroundStyle(Color("tekst"))
         // Kilka przypomnień w rzędzie: cicha linia „+N more” w miejscu podpisu (P-158 (1.1a)); w wyspie pod „Now row”.
         if let pas = pasPrzypomnienia(s), pas.wiecej > 0 {
-          Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, j)).font(.footnote).foregroundStyle(Color("olowek"))
+          Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, j)).font(.footnote).foregroundStyle(Color("tekst2"))
         } else if zPodpisem {
-          Text(Teksty.t("podpis_plus", j, ["n": n])).font(.footnote).foregroundStyle(Color("olowek"))
+          Text(Teksty.t("podpis_plus", j, ["n": n])).font(.footnote).foregroundStyle(Color("tekst2"))
         }
       }
     }
@@ -196,7 +195,7 @@ struct Przycisk: View {
       Button(intent: OczkoStuknij(rodzaj: "plus")) { Text(Teksty.t("plus", a.jezyk)).font(.headline).frame(minWidth: 96, minHeight: 60) }
         .accessibilityLabel(etykietaPlus(a))
         .buttonStyle(.borderedProminent)
-        .tint(Color("przyciskTlo"))
+        .tint(Color("przycisk"))
         .foregroundStyle(Color("przyciskTekst"))
     }
   }
@@ -208,15 +207,15 @@ struct EkranBlokady: View {
     let s = a.stan
     VStack(alignment: .leading, spacing: 8) {
       HStack(alignment: .firstTextBaseline) {
-        Text(s.nazwa).font(.headline).foregroundStyle(Color("grafit")).lineLimit(1)
+        Text(s.nazwa).font(.headline).foregroundStyle(Color("tekst")).lineLimit(1)
         Spacer()
         if let start = s.sesjaStartMs {
           Text(timerInterval: Date(timeIntervalSince1970: TimeInterval(start) / 1000)...Date.distantFuture, countsDown: false)
-            .font(.subheadline.monospacedDigit()).foregroundStyle(Color("olowek")).multilineTextAlignment(.trailing)
+            .font(.subheadline.monospacedDigit()).foregroundStyle(Color("tekst2")).multilineTextAlignment(.trailing)
         }
       }
       HStack(alignment: .center, spacing: 12) {
-        Liczba(stan: s).font(.system(size: 48, weight: .semibold).monospacedDigit()).foregroundStyle(Color("grafit"))
+        Liczba(stan: s).font(.system(size: 48, weight: .semibold).monospacedDigit()).foregroundStyle(Color("tekst"))
         Opis(a: a, zPodpisem: true)
         Spacer(minLength: 0)
         Przycisk(a: a)
