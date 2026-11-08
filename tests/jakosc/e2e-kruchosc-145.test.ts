@@ -25,8 +25,22 @@ const jestSeria = (k: Krok) => k.nazwa === 'tapOn' && idy(k).includes('licznik-p
 const OKNO_E2E = '15';
 
 describe('E2-145-3a · restart.yaml przekazuje okno strażnika z parametru OKNO', () => {
+  // 07-e2e (ZM-18, 2026-11-08): launchApp restartu leży w restart-dzis.yaml (zimny start na „Dziś”); restart.yaml przekazuje mu OKNO i TERAZ.
   const restart = wczytaj(path.join(KAT, 'subflows/restart.yaml'));
-  const start = [...kroki(restart.polecenia)].find((k) => k.nazwa === 'launchApp');
+  const restartDzis = wczytaj(path.join(KAT, 'subflows/restart-dzis.yaml'));
+  const start = [...kroki(restartDzis.polecenia)].find((k) => k.nazwa === 'launchApp');
+  const doDzis = [...kroki(restart.polecenia)].find((k) => k.nazwa === 'runFlow' && String(k.arg?.file ?? '').endsWith('restart-dzis.yaml'));
+  const env = doDzis?.arg?.env as Record<string, string> | undefined;
+  const ocenWyr = (w: string | undefined, e: Record<string, string>): unknown => {
+    const m = /^\$\{(.*)\}$/s.exec(String(w));
+    expect(m).not.toBeNull();
+    return wyrazenie(m![1], { env: e, output: {}, maestro: {} });
+  };
+  test('restart.yaml woła restart-dzis.yaml z TERAZ i OKNO (brak OKNO → okno z konfiguracji, z OKNO → jego wartość)', () => {
+    expect(env?.TERAZ).toBe('${TERAZ}');
+    expect(Number(ocenWyr(env?.OKNO, { TERAZ: 'x' }))).toBe(STRAZNIK_OKNO_S);
+    expect(String(ocenWyr(env?.OKNO, { TERAZ: 'x', OKNO: OKNO_E2E }))).toBe(OKNO_E2E);
+  });
   const wartosc = start?.arg?.arguments?.oczkoE2eOknoStraznika as string | undefined;
   const ocen = (env: Record<string, string>): unknown => {
     const m = /^\$\{(.*)\}$/s.exec(String(wartosc));

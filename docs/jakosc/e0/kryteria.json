@@ -1048,7 +1048,7 @@
   "sprawdzalne": "tak",
   "wyrocznia": "NFR-PIE-001; Z-01",
   "poziom_sugerowany": "E2E-symulator",
-  "uwagi": "świeża instalacja; także offline i z datą 1. i ostatniego dnia miesiąca (NFR-PIE-001 metoda)",
+  "uwagi": "ZM-18/ER-68: pierwszy ekran „Dziś” z kartą „Pierwszy licznik” 0 i „+1”, nic nad „+1” karty; świeża instalacja; także offline i z datą 1. i ostatniego dnia miesiąca (NFR-PIE-001 metoda)",
   "plik": "docs/brd/wymagania-licznik.md:8",
   "rodzaj": "BR"
  },
@@ -1061,7 +1061,7 @@
   "sprawdzalne": "tak",
   "wyrocznia": "NFR-PIE-001; L-01, Z-01",
   "poziom_sugerowany": "E2E-symulator",
-  "uwagi": "liczba stuknięć = 1, adapter sieci „brak połączenia”",
+  "uwagi": "ZM-18/ER-68: 1 stuknięcie w „+1” karty, karta 1 bez zmiany ekranu, ten sam zapis co +1 licznika (test równoważności); adapter sieci „brak połączenia”",
   "plik": "docs/brd/wymagania-licznik.md:12",
   "rodzaj": "BR"
  },
@@ -2450,9 +2450,9 @@
   "modul": "przekrojowe (NFR)",
   "tytul": "Pierwsze liczenie bez przeszkód",
   "sprawdzalne": "tak",
-  "wyrocznia": "1 stuknięcie, 0 ekranów; L-01, Z-01",
+  "wyrocznia": "1 stuknięcie w „+1” karty „Dziś”, 0 ekranów; L-01, Z-01",
   "poziom_sugerowany": "E2E-symulator",
-  "uwagi": "z datą 1. i ostatniego dnia miesiąca",
+  "uwagi": "ZM-18/ER-68: 0 ekranów przed „Dziś” i nad „+1” karty; drugi przebieg: zimny start → „Dziś” → „+1” karty → n+1 bez zmiany ekranu, pełny licznik 1 stuknięciem; z datą 1. i ostatniego dnia miesiąca",
   "plik": "docs/brd/wymagania.md:89",
   "rodzaj": "NFR"
  },
