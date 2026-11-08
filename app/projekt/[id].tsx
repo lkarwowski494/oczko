@@ -92,7 +92,7 @@ export default function EkranProjektu(): React.ReactElement {
   const ch = z.zegar.teraz();
   const stan = { ...stanProjektu(w, { j, terazMs: ch.ms, strefa: ch.strefa }), czas: stanCzasu(sesje, j) };
   const doDnia = () => { const d = dzienLokalny(ch.ms, ch.strefa); return d.ok ? krotkaData(dodajDni(d.wartosc, KOSZ_DNI), j.jezyk()) : ''; };
-  const otworzLicznik = (licznikId: string) => void licznik.otworz(licznikId).then(() => router.navigate('/'));
+  const otworzLicznik = (licznikId: string) => void licznik.otworz(licznikId).then(() => router.navigate('/licznik'));
   const formularz = (rodzaj: string, extra: Record<string, string> = {}) => router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj, projekt: w.id, ...extra } });
   const potwierdz = (tytul: string, opis: string, przycisk: string, f: () => Promise<void>, destrukcyjny = true) =>
     Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: destrukcyjny ? 'destructive' : 'default', onPress: () => void f() }]);

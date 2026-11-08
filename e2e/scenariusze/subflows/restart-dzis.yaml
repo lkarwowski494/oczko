@@ -1,0 +1,16 @@
+# Podprzepływ (ZM-18, P-563 (4a), ER-69, ER-70): zabicie procesu i zimny start na tych samych danych z zegarem TERAZ (bez sieci) — zatrzymuje się na „Dziś”.
+# Zimny start zawsze na „Dziś”; okno „Uczciwe zasady” nigdy nad „Dziś” (karta z „+1”; dzianina/design-spec.md:73, BR-ZAK-006 ER-70) — sprawdzane przy każdym restarcie.
+# Parametr opcjonalny OKNO: okno strażnika serii (RD-17) w sekundach, argument E2E `oczkoE2eOknoStraznika` (E2E-A4, P-358; P-489, #145).
+# Brak parametru → "2" = STRAZNIK_OKNO_S (okno z konfiguracji; pilnuje tego tests/jakosc/e2e-kruchosc-145.test.ts).
+appId: com.apps4brew.knitting
+name: "podprzepływ: restart na tych samych danych, ekran „Dziś”"
+---
+- stopApp
+- launchApp:
+    clearState: false
+    arguments:
+      oczkoE2eTeraz: ${TERAZ}
+      oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "${typeof OKNO === 'undefined' ? '2' : OKNO}"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- assertNotVisible: { id: "okno-uczciwe-zasady" }

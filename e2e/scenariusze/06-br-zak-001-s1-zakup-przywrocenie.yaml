@@ -18,9 +18,7 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 # --- Ustawienia: licznik darmowych dni i wejście do ofert (KP-13) ---
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-dni-darmowe", text: "4 of 5 free crafting days left in November" }
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
@@ -64,8 +62,6 @@ tags:
     env:
       TERAZ: "2026-11-10T19:50:00"
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - assertNotVisible: { id: "ustawienia-dni-darmowe" }

@@ -24,7 +24,7 @@ test('`licznik.blad_zapisu` występuje w kodzie tylko na liczniku i pasku liczni
     .filter((p) => /['"]licznik\.blad_zapisu['"]/.test(readFileSync(p, 'utf8')))
     .map((p) => p.slice(KORZEN.length + 1))
     .sort();
-  expect(trafienia).toEqual(['src/ekrany/Licznik.tsx', 'src/ekrany/WzorLicznik.tsx']);
+  expect(trafienia).toEqual(['src/ekrany/Dzis.tsx', 'src/ekrany/Licznik.tsx', 'src/ekrany/WzorLicznik.tsx']); // M3 p2: „+1” karty „Dziś” = to samo zdarzenie co +1 licznika (ZM-18, ER-68)
 });
 
 test('formularz projektu: nieudany zapis pokazuje tytuł „Couldn’t save your changes” i wspólny opis, arkusz zostaje z wpisaną nazwą', async () => {

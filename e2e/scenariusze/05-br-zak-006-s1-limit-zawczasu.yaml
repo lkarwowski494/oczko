@@ -20,11 +20,20 @@ tags:
 - runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-04T20:00:00", WARTOSC: "3" } }
 - runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-05T20:00:00", WARTOSC: "4" } }
 - runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-06T20:00:00", WARTOSC: "5" } }
-# --- szósty dzień: limit zawczasu, przed pierwszym stuknięciem ---
+# --- szósty dzień: limit zawczasu na karcie „Dziś” (ER-70, dzis-limit-*, M3-S3-06): karta bez „+1”, komunikat i odnośnik Pro w komunikacie, „Kontynuuj ›” działa ---
 - runFlow:
-    file: subflows/restart.yaml
+    file: subflows/restart-dzis.yaml
     env:
       TERAZ: "2026-11-07T20:00:00"
+- assertVisible: { id: "limit-zawczasu" }
+- assertVisible: { id: "dzis-wartosc", text: "5" }
+- assertNotVisible: { id: "dzis-plus" }
+- assertVisible: { id: "limit-oferta-link", text: "Oczko Pro removes the limit" }
+- assertVisible: { id: "dzis-dni-darmowe", text: ".*0 of 5.*" }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 05-limit-na-karcie
+- tapOn: { id: "dzis-kontynuuj" }
+# --- licznik na limicie, przed pierwszym stuknięciem ---
 - assertVisible: { id: "limit-zawczasu", text: "No free crafting days left in November\\. Counting is paused until .*Your 5 rows and everything else are kept\\." }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
 - assertNotVisible: { id: "licznik-plus" }

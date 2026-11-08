@@ -45,6 +45,6 @@ describe('poUsunieciu', () => {
     await usunProjekt(s.z, { projektId: 'p2' });
     await k.poUsunieciu('p2');
     expect(k.biezacy()).toBeNull();
-    expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'lista' } });
+    expect(await k.przygotuj()).toEqual({ ok: true, wartosc: { cel: 'dzis', miejsce: 'lista' } });
   });
 });

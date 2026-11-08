@@ -24,9 +24,7 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 # --- SHA-256 pary .db + -wal przed awariami, bez checkpointu (panel diagnostyki E2E, tylko EXPO_PUBLIC_E2E=1); WAL musi być niepusty ---
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - extendedWaitUntil: { visible: { id: "e2e-sha-bazy" }, timeout: 20000 }
 - assertVisible: { id: "e2e-wal-bajty", text: "[1-9][0-9]*" }
 - copyTextFrom: { id: "e2e-sha-bazy" }

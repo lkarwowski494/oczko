@@ -12,7 +12,7 @@ const idy = (k: Krok): string[] => {
   const id = typeof k.arg === 'object' && k.arg ? (k.arg.id ?? k.arg.element?.id ?? k.arg.visible?.id ?? k.arg.when?.visible?.id ?? k.arg.when?.notVisible?.id) : undefined;
   return typeof id === 'string' ? id.split('|') : [];
 };
-const jestRestartem = (k: Krok) => k.nazwa === 'runFlow' && String(k.arg?.file ?? '').endsWith('restart.yaml');
+const jestRestartem = (k: Krok) => k.nazwa === 'runFlow' && /restart(-dzis)?\.yaml$/.test(String(k.arg?.file ?? '')); // 07-e2e (ZM-18): restart-dzis.yaml = zimny start na „Dziś”
 const plik = (n: string) => fs.readdirSync(KAT).find((f) => f.startsWith(`${n}-`)) as string;
 const LISTA = ['projekty-lista', 'projekty-kosz', 'projekty-dni-darmowe'];
 

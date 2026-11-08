@@ -121,6 +121,15 @@ describe('pułapki: każda reguła czerwienieje na złym scenariuszu', () => {
     expect(p.filter(x => /w bloku retry/.test(x)).length).toBe(1);
     expect(problemyLicznika(zYaml('/x/t.yaml', 'appId: x\n---\n- tapOn: "\\\\+1 row.*"\n- assertVisible: "Undo"\n')).length).toBe(1); /* także po etykiecie VoiceOver */
   });
+  test('ZM-18: „+1” karty „Dziś” (dzis-plus) — bez asercji wartości i w retry to błąd; asercja wartości karty spełnia regułę i wymaga tagu stan-licznika', () => {
+    const zle = zYaml('/x/k.yaml', 'appId: x\n---\n- tapOn: { id: "dzis-plus" }\n- assertVisible: { id: "dzis-karta" }\n- retry:\n    maxRetries: 1\n    commands:\n      - tapOn: { id: "dzis-plus" }\n      - assertVisible: { id: "dzis-wartosc", text: "2" }\n');
+    const p = problemyLicznika(zle);
+    expect(p.filter(x => /pierwsza asercja nie sprawdza wartości/.test(x)).length).toBe(1);
+    expect(p.filter(x => /w bloku retry/.test(x)).length).toBe(1);
+    const dobre = zYaml('/x/d.yaml', 'appId: x\n---\n- tapOn: { id: "dzis-plus" }\n- assertVisible: { id: "dzis-wartosc", text: "1" }\n');
+    expect(problemyLicznika(dobre)).toEqual([]);
+    expect(sprawdzaWartoscLicznika(dobre)).toBe(true);
+  });
   test('tag stan-licznika: asercja wartości wykryta także przez podprzepływ', () => {
     const glowny = zYaml('/x/g.yaml', 'appId: x\n---\n- runFlow: sub.yaml\n');
     const sub = zYaml('/x/sub.yaml', 'appId: x\n---\n- assertVisible: { id: "licznik-wartosc", text: "1" }\n');

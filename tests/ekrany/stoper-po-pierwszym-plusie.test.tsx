@@ -7,14 +7,14 @@ import type { Aplikacja as KontekstAplikacji } from '../../src/kompozycja/Kontek
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
 jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));
-jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: jest.fn(() => null) }));
+jest.mock('../../src/ekrany/Aplikacja', () => ({ EkranLicznika: jest.fn(() => null) })); // M3 p2: trasa /licznik rysuje EkranLicznika (dawniej Aplikacja na „/”)
 jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));
 jest.mock('../../src/przypadki-uzycia/informacje-pro', () => ({ pokazacOknoUczciweZasady: () => Promise.resolve({ ok: true, wartosc: false }) }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
 const mockStan = { projekt: null as string | null, widoki: 0 };
 const mockLicznik = {
-  przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'licznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, // 07-jakosc-005: nowy członek interfejsu kompozycji (app/index.tsx)
+  przygotuj: () => Promise.resolve({ ok: true, wartosc: { cel: 'licznik' } }), wersja: () => 0, biezacy: () => null, poZegarku: () => () => undefined, poDostepie: () => () => undefined, poScaleniu: () => () => undefined, // 07-jakosc-005; poScaleniu: M3 p2: nowy członek interfejsu kompozycji (app/index.tsx)
   widok: () => { mockStan.widoki += 1; return Promise.resolve(mockStan.projekt ? { projektId: mockStan.projekt } : null); },
   uslugi: { dodajRzad: () => { mockStan.projekt = 'p1'; return Promise.resolve({ ok: true, wartosc: undefined }); } }, dzialania: {},
 };
@@ -23,9 +23,9 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { Aplikacja } = require('../../src/ekrany/Aplikacja') as { Aplikacja: jest.Mock };
+const { EkranLicznika: Aplikacja } = require('../../src/ekrany/Aplikacja') as { EkranLicznika: jest.Mock };
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/licznik') as { default: React.ComponentType }).default;
 type Props = { stoper: React.ReactNode; uslugi: { dodajRzad(): Promise<unknown> } };
 const ostatnie = () => Aplikacja.mock.calls[Aplikacja.mock.calls.length - 1][0] as Props;
 

@@ -1939,7 +1939,7 @@
   },
   {
    "id": "O-05",
-   "scenariusz": "R-120: aplikacja otwiera się na ekranie licznika: nie tam, okno czeka na inny ekran",
+   "scenariusz": "R-120: aplikacja otwiera się na „Dziś” (ZM-18, P-563 (4a); dawniej ekran licznika): nie tam, okno czeka na inny ekran (nigdy nad „+1” karty, ER-70)",
    "wejscie": {
     "dni": [
      {

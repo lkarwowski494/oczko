@@ -877,5 +877,32 @@
     "yd_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Jardy (yards).",
     "g_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Gramy.",
     "oz_nazwa": "Etykieta VoiceOver przycisku wyboru jednostki pola w arkuszu włóczki (przełącznik obok pola długości albo wagi; widoczny napis to symbol). Pełna nazwa jednostki w mianowniku liczby mnogiej, nie skrót (VoiceOver czyta skrót jako litery; M1-audytor-generalny-052). Uncje (ounces)."
+  },
+  "dzis": {
+    "tytul": "Duży tytuł ekranu startowego „Dziś” (M3 p2, ZM-01); krój tytułowy.",
+    "pierwszy_tytul": "Tytuł karty przy świeżej instalacji (licznik bez projektu, dzis-pierwszy).",
+    "pierwszy_opis": "Opis karty „Pierwszy licznik”: co robi +1; projekt nazywa się później (BR-LIC-001/S1).",
+    "otworz_licznik": "Przycisk karty przy świeżej instalacji, prowadzi do pełnego licznika (ze strzałką ›).",
+    "kontynuuj": "Przycisk karty „Kontynuuj ›”: wraca do licznika albo strony wzoru, gdzie skończyła się praca (P-563 4a).",
+    "wybierz_projekt": "Przycisk karty bez ostatniego miejsca → zakładka Projekty (P-564, P-565).",
+    "bez_miejsca_tytul": "Tytuł karty, gdy nie wiadomo, gdzie skończyła się praca, a projekty są (dzis-bez-miejsca).",
+    "bez_miejsca": "Zdanie karty bez ostatniego miejsca; {{count}} = projekty w toku; „Dziś” = nazwa ekranu. Formy liczby mnogiej.",
+    "czesc_rzad": "Podpis karty: część i rząd w robocie, bez celu części (przecinek zamiast kropki środkowej z makiety — kropka tylko w kluczach z listy 04, test 034).",
+    "czesc_rzad_cel": "Podpis karty: część, rząd w robocie {{n}} i cel części {{cel}}.",
+    "gotowe": "Podpis pod liczbą na karcie: rzędy skończone ({{count}}). Formy liczby mnogiej.",
+    "dzianina_a11y": "VoiceOver rysunku dzianiny bez celu części: część, rzędy gotowe ({{count}}), rzędy dziś. Formy liczby mnogiej.",
+    "dzianina_a11y_cel": "VoiceOver rysunku dzianiny z celem części: {{count}} gotowe z {{cel}}, rzędy dziś. Formy liczby mnogiej.",
+    "co_dalej": "Wiersz „co dalej” pod kartą: za ile rzędów ({{count}}) przypomnienie {{tekst}}, które z ilu. Formy liczby mnogiej.",
+    "co_dalej_teraz": "Wiersz „co dalej”, gdy przypomnienie wypada w rzędzie w robocie.",
+    "ten_tydzien": "Nagłówek paska tygodnia na „Dziś”.",
+    "tydzien_pusty": "Pusty tydzień przy pierwszym użyciu (jak pusty miesiąc Historii).",
+    "dzien_dziergany_a11y": "VoiceOver dnia tygodnia z robótką; {{etykieta}} = data dnia.",
+    "kafel_wloczka": "Kafel „Dziś” prowadzący do zakładki Narzędzia (zapas włóczki, druty)."
+  },
+  "zakladki": {
+    "dzis": "Podpis zakładki „Dziś” w pasku zakładek (WD-1); krótko, ×1,6.",
+    "projekty": "Podpis zakładki Projekty.",
+    "narzedzia": "Podpis zakładki Narzędzia.",
+    "historia": "Podpis zakładki Historia (kalendarz dni, ER-71)."
   }
 }

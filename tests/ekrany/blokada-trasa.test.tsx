@@ -31,7 +31,7 @@ const mockApp: { biezaca: unknown } = { biezaca: null };
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.biezaca }));
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/licznik') as { default: React.ComponentType }).default;
 const EkranMenu = (require('../../app/menu') as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 

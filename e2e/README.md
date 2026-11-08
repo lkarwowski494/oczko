@@ -54,10 +54,20 @@ Argumenty startu (`launchApp: arguments:`; na iOS Maestro przekazuje je jako arg
 ## testID (propozycja 07 dla 08; zmiana nazwy = zmiana scenariuszy)
 Wiersze `projekt-*`, `kosz-*`, `co-dalej-*`, `projekty-kosz`, `projekty-ostatnia-praca`, `licznik-nastepna-czesc`, `menu-znaczenie` i `formularz-*` arkuszy projektu dopisała rola 08 w partii 5 według propozycji 04 fix-5 („Dla 08”, P-183) — do przeglądu 07. Potwierdzenia usuwania to alerty systemowe (bez testID; scenariusz stuka w tekst przycisku). Wiersze grup B i D (`licznik-stoper`, `stoper-*`, `sesje-*`, `historia-*`, `narzedzia-*`, `probka-*`, `projekt-sesje`, `projekt-zdjecia`, `projekt-probka`, `zapas-filtr`, `zdjecie-usun`, `karta-udostepnij`) dopisała rola 07 z „Dla 08” 04 fix-6 (P-191, P-205); usunięte `menu-sesja`, `sesja-trwa`, `sesja-zakoncz`, `menu-zdjecia`, `zdjecia-licznik`, `nav-zapas` (zastąpione przez 04 fix-6; F07-17). Id `nav-narzedzia`, `zapas-dlugosc`, `zapas-jednostka-yd`, `zapas-przeliczone` (spoza listy 04) koordynator przyjął jako kontrakt 07 (2026-10-26, po zamknięciu 04 fix-6); wdraża 08. Wiersze `licznik-wzor`, `wzor-dodaj-film`, `wzor-przelacz`, `wzor-menu`, `wzor-obroc`, `wzor-usun`, `wzor-gumka`, `wzor-pioro`, `wzor-cofnij-rysunek`, `wzor-link-pole`, `wzor-film-wiersz`, `wzor-czeka-siec` — z „Dla 07” 04 fix-7 (grupa W, `docs/design/fix7-2026-10-26.md`), dopisane przed listą w design-spec (nazwany wyjątek 04). Tak samo grupy R i I (`udostepnij-*`, `skrzynka*`, `icloud-*`, `licznik-konflikt`, `usun-z-icloud`; „Dla 07 (grupy R i I)”, P-229).
 
+Wiersze `dzis-*`, `nav-dzis` i rozszerzone znaczenie `nav-projekty`, `nav-narzedzia`, `nav-historia`, `limit-zawczasu`, `limit-oferta-link` dopisała rola 07 przed p2 (07-e2e, 2026-11-08; ZM-18, P-563 (4a), P-565): `docs/design/testid.md` nie miał propozycji testID „Dziś”, nazwy do potwierdzenia przez 04 (zmiana nazwy = zmiana scenariuszy). Start scenariuszy: `subflows/start-czysty.yaml` i `restart.yaml` przechodzą przez „Dziś” do licznika (jedno miejsce zmiany), `start-czysty-dzis.yaml` i `restart-dzis.yaml` zatrzymują się na „Dziś”.
+
 Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`; „—” = tekst ustala 04 (Z07-05), scenariusz używa tylko id. Kolumna ostatnia: klawiatura pola (`liczbowa`, `tekstowa`) albo puste.
 
 | id | ekran | element | tekst / etykieta | klawiatura |
 |---|---|---|---|---|
+| `dzis-karta` | „Dziś” (ZM-18, p2) | karta K-B: „Pierwszy licznik” (świeża instalacja), „Kontynuuj” (ostatni licznik) albo karta bez ostatniego miejsca (`dzis-bez-miejsca-*`) | — (04, Z07-05) | |
+| `dzis-projekt` | „Dziś” | nazwa projektu na karcie „Kontynuuj” (jak `licznik-projekt`; brak na „Pierwszy licznik”) | „Harbor” | |
+| `dzis-wartosc` | „Dziś” | liczba rzędów skończonych na karcie (ta sama wartość co `licznik-wartosc`); po `dzis-plus` pierwsza asercja (reguła 4) | „0”, „47” | |
+| `dzis-plus` | „Dziś” | „+1” karty — to samo zdarzenie co `licznik-plus` (zapis, wibracja, strażnik limitu i serii; NFR-PIE-001, ER-68); brak przy limicie zawczasu | — (04) | |
+| `dzis-kontynuuj` | „Dziś” | „Kontynuuj ›” (karta „Kontynuuj”) i „Otwórz licznik ›” (karta „Pierwszy licznik”) — jedno stuknięcie do pełnego licznika albo strony wzoru w tym samym powiększeniu (P-563 (4a)) | — (04) | |
+| `dzis-wybierz-projekt` | „Dziś” | „Wybierz projekt ›” na karcie bez ostatniego miejsca (projekty są) → zakładka Projekty (P-564, P-565) | — (04) | |
+| `dzis-dni-darmowe` | „Dziś” | linia wolnych dni (tylko bez Pro), bez odnośnika „Oczko Pro” (P-563 (10a), ER-70) | „0 of 5 free crafting days left in November” (klucz jak `projekty-dni-darmowe` — [DO USTALENIA] 04) | |
+| `nav-dzis` | pasek zakładek (p2) | zakładka „Dziś” | — (04) | |
 | `licznik-plus` | licznik | przycisk +1 (strefa ≥ 168 pt) | „+1 row…”, z instrukcją: „+1 row, when row 12 is done. Row 12: decrease at both ends” | |
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
 | `licznik-wartosc` | licznik | duża liczba rzędów skończonych (sam numer, z separatorem tysięcy regionu) | „47” | |
@@ -69,13 +79,13 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `licznik-menu` | licznik | menu ••• | „Project options: name, goal, reminder, lock, finish” | |
 | `licznik-historia` | licznik | przycisk historii | „History” | |
 | `kreski-podpis` | licznik | podpis nad kreskami sesji | „Marks this session: 14 rows since 19:52” (godzina w formacie regionu; P-176) | |
-| `baner-serii` | licznik | baner strażnika RD-17 | „Added 3 rows in 1 s. Undo?” | |
-| `baner-serii-cofnij` | licznik | przycisk w banerze | „Undo 3 rows” | |
+| `baner-serii` | licznik; „Dziś” pod kartą (`dzis-cofnac-*`) | baner strażnika RD-17 | „Added 3 rows in 1 s. Undo?” | |
+| `baner-serii-cofnij` | licznik; „Dziś” | przycisk w banerze | „Undo 3 rows” | |
 | `pasek-blokady-odblokuj` | licznik | „Unlock” w pasku „Counter locked · Unlock” | „Unlock” | |
 | `blad-zapisu` | licznik | komunikat błędu zapisu | „Couldn’t save that row. It’s still on screen; try again.” | |
 | `blad-sieci` | dowolny | jakikolwiek komunikat o braku sieci (nie powinien istnieć) | — | |
-| `limit-zawczasu` | licznik | komunikat zamiast +1/−1 | „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
-| `limit-oferta-link` | licznik | odnośnik pod liczbą | „Oczko Pro removes the limit” | |
+| `limit-zawczasu` | licznik; karta „Dziś” (zamiast `dzis-plus`, ER-70, `dzis-limit-*`) | komunikat zamiast +1/−1 | „No free crafting days left in {month}. Counting is paused until {date}. Your {n} rows and everything else are kept.” | |
+| `limit-oferta-link` | licznik; komunikat limitu na karcie „Dziś” (jedyny odnośnik Pro na „Dziś”, P-565) | odnośnik pod liczbą | „Oczko Pro removes the limit” | |
 | `arkusz-zamknij` | arkusze (historia, menu) | przycisk zamknięcia arkusza | „Close” | |
 | `historia-lista` | historia | lista zmian z godziną | — | |
 | `historia-cofnij-ostatnia` | historia | „Undo” przy ostatniej zmianie (P-091 3a) | „Undo” | |
@@ -128,9 +138,9 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-zdjecia` | ekran projektu | grupa „Photos” (P-191 P9a) | „Photos” | |
 | `zdjecie-usun` | podgląd zdjęcia | Delete photo (alert z potwierdzeniem, bez kosza) | „Delete photo” | |
 | `karta-udostepnij` | karta ukończenia | Share: obraz 1080 × 1350 bez EXIF/GPS (P-191 P10a) | „Share” | |
-| `nav-projekty` | licznik | powrót do listy projektów | „Projects” | |
-| `nav-ustawienia` | lista projektów | wejście do Ustawień | — | |
-| `nav-narzedzia` | lista projektów | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26 (design-spec nie podaje id wejścia) | „Tools” | |
+| `nav-projekty` | licznik; pasek zakładek (p2) | powrót z licznika do listy projektów (do p3a) i zakładka „Projekty” (ZM-18: to samo znaczenie — wejście do listy projektów) | „Projects” | |
+| `nav-ustawienia` | „Dziś” (zębatka `gearshape`; P-571, P-554, to-be WD-1) | jedyne wejście do Ustawień — bez drugiego miejsca w zakładce Projekty; scenariusze wchodzą przez `subflows/otworz-ustawienia.yaml` (pilnuje `tests/jakosc/e2e-otworz-ustawienia.test.ts`) | „Settings” | |
+| `nav-narzedzia` | lista projektów; pasek zakładek (p2) | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26; po p2 zakładka „Narzędzia” (to samo znaczenie, ZM-18) | „Tools” | |
 | `nav-wstecz` | ekrany wtórne | systemowy „Back” | „Back” | |
 | `projekty-lista` | lista projektów | lista | „Projects” | |
 | `projekty-wiersz` | lista projektów | wiersz projektu (powtarzalny, `index`) | nazwa · część · rząd | |
@@ -263,7 +273,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `icloud-konflikt-wybor-0` | arkusz konfliktu | pierwszy wybór wersji (kolejność nie jest kontraktem — scenariusz łączy id `…-0` i `…-1` alternatywą z etykietą; P-250) | etykieta VoiceOver `dane.konflikt_a11y`: „Keep {n} rows from {urządzenie}, {godzina}” | |
 | `icloud-konflikt-wybor-1` | arkusz konfliktu | drugi wybór wersji (jak wyżej) | jak wyżej | |
 | `usun-z-icloud` | arkusz „Delete all data” | przełącznik „Also delete from iCloud” | „Also delete from iCloud” | |
-| `nav-historia` | lista projektów | wejście do „History” (kalendarz dni; F-59) | „History” | |
+| `nav-historia` | lista projektów; pasek zakładek (p2) | wejście do „History” (kalendarz dni; F-59); po p2 zakładka „Historia” (to samo znaczenie, ZM-18, ER-71) | „History” | |
 | `historia` | History | kontener ekranu (ScrollView) | — | |
 | `historia-dzien-2026-11-03` | History | komórka dnia 3 XI 2026 (wzorzec `historia-dzien-RRRR-MM-DD`; rola przycisku, `selected`; etykieta „Nov 3 · 3 rows” tylko dla dnia wybranego z pracą, inne dni: „Nov 4”; scen. 64) | „Nov 3 · 3 rows” | |
 | `historia-dzien-2026-11-04` | History | komórka dnia 4 XI 2026 (dzień bez pracy; scen. 64) | „Nov 4” | |

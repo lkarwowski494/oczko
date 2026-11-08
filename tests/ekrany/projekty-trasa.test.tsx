@@ -11,13 +11,13 @@ const mockAplikacja: { kontener?: unknown; licznik?: unknown } = {};
 jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const R = require('react') as typeof import('react');
-  return { useRouter: () => ({ push: jest.fn(), back: jest.fn(), replace: jest.fn(), canGoBack: () => true }), useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]) };
+  return { useRouter: () => ({ push: jest.fn(), back: jest.fn(), replace: jest.fn(), navigate: jest.fn(), canGoBack: () => true }) /* navigate: zakładka → /licznik (M3 p2) */, useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]) };
 });
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/SkrzynkaNaEkranie', () => ({ SkrzynkaNaEkranie: () => null }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranProjektow = (require('../../app/projekty') as { default: React.ComponentType }).default;
+const EkranProjektow = (require('../../app/(zakladki)/projekty') as { default: React.ComponentType }).default;
 
 async function otworz(instrukcje: Parameters<typeof wykonaj>[1], teraz = T0 + 60 * DOBA) {
   const s = await przygotuj();

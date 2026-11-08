@@ -21,9 +21,7 @@ tags:
 - assertVisible: { id: "menu-nazwa" }
 - tapOn: { id: "arkusz-zamknij" }
 - assertVisible: { id: "licznik-plus" }
-- tapOn: { id: "nav-projekty" }
-- assertVisible: { id: "projekty-lista" }
-- tapOn: { id: "nav-ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }

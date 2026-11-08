@@ -104,7 +104,7 @@ beforeEach(() => {
 type Przypadek = { trasa: string; plik: string; przedrostek: string; odczyt: string; params?: Record<string, string>; dane?: [string, unknown[]][]; awarie?: Awaria[]; wyjscie?: string };
 const PRZYPADKI: Przypadek[] = [
   { trasa: '/sesje', plik: '../../app/sesje', przedrostek: 'sesje', odczyt: 'sesjeProjektu', params: { projekt: 'p1' } },
-  { trasa: '/dni', plik: '../../app/dni', przedrostek: 'dni', odczyt: 'widokHistorii' },
+  { trasa: '/dni', plik: '../../app/(zakladki)/dni', przedrostek: 'dni', odczyt: 'widokHistorii' },
   { trasa: '/ukonczenie', plik: '../../app/ukonczenie', przedrostek: 'ukonczenie', odczyt: 'kartaUkonczenia', params: { projekt: 'p1' } },
   { trasa: '/sesja-korekta', plik: '../../app/sesja-korekta', przedrostek: 'sesja-korekta', odczyt: 'sesjeProjektu', params: { sesja: 's1', projekt: 'p1' }, dane: [["INSERT INTO sesja (id, projekt_id, stan, start_ms, koniec_ms, strefa, dzien) VALUES ('s1', 'p1', 'zakonczona', ?, ?, 'Europe/Warsaw', ?)", [T0, T0 + 3_600_000, new Date(T0).toISOString().slice(0, 10)]]] },
   { trasa: '/drut', plik: '../../app/drut', przedrostek: 'drut', odczyt: 'narzedzia', params: { id: 'n1' } },
@@ -123,8 +123,8 @@ const PRZYPADKI: Przypadek[] = [
   // nie pustym zapasem ani „0” na Narzędziach do następnego wejścia.
   { trasa: '/zapas', plik: '../../app/zapas', przedrostek: 'zapas', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
   { trasa: '/druty', plik: '../../app/druty', przedrostek: 'druty', odczyt: 'narzedzia', wyjscie: 'Back' },
-  { trasa: '/narzedzia (włóczki)', plik: '../../app/narzedzia', przedrostek: 'narzedzia', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
-  { trasa: '/narzedzia (druty)', plik: '../../app/narzedzia', przedrostek: 'narzedzia', odczyt: 'narzedzia', wyjscie: 'Back' },
+  { trasa: '/narzedzia (włóczki)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
+  { trasa: '/narzedzia (druty)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'narzedzia', wyjscie: 'Back' },
   { trasa: '/historia', plik: '../../app/historia', przedrostek: 'historia', odczyt: 'historiaLicznika', wyjscie: 'Close' },
 ];
 const ZESTAW = PRZYPADKI.flatMap((p) => (p.awarie ?? ['wynik', 'wyjatek']).map((a): [string, Awaria, string, Przypadek] => [p.trasa, a, p.przedrostek, p]));
@@ -162,7 +162,7 @@ describe('M1-007: start aplikacji — odrzucona obietnica startu daje ekran awar
     const t = await tEn();
     naAwarie.mockClear();
     mockAplikacja = { kontener: { z: {}, j: { t, jezyk: () => 'en-US', zegar24h: () => false }, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) } }, licznik: { ...LICZNIK_BAZA, przygotuj }, preferencje: {}, naAwarie };
-    await zamontuj(trasa('../../app/index'));
+    await zamontuj(trasa('../../app/(zakladki)/index'));
   }
   test('M1-007: „/” — `przygotuj()` zwraca { ok: false } → ekran awaryjny (korzeń, `naAwarie`) [kontrola: tak było i zostaje]', async () => {
     await ekranLicznika(async () => ({ ok: false, powod: 'zapis' }));

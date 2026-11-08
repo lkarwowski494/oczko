@@ -16,6 +16,7 @@ tags:
 - launchApp: { stopApp: false }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "dzis-karta" } # ZM-18: „Dziś” tylko przy zimnym starcie; powrót z innej aplikacji zostaje na tym samym ekranie
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "2" }

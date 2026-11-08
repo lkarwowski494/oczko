@@ -2,11 +2,11 @@
 // odświeżane przy każdym wejściu na ekran.
 import React, { useCallback, useState } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { Narzedzia } from '../src/ekrany/Narzedzia';
-import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
-import { StanWczytywania } from '../src/ekrany/StanWczytywania';
-import { narzedzia, zapasZDetalami } from '../src/przypadki-uzycia/zapas';
+import { Narzedzia } from '../../src/ekrany/Narzedzia';
+import { useAplikacja } from '../../src/kompozycja/Kontekst';
+import { Bezpieczny } from '../../src/kompozycja/Bezpieczny';
+import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
+import { narzedzia, zapasZDetalami } from '../../src/przypadki-uzycia/zapas';
 
 export default function EkranNarzedzi(): React.ReactElement {
   const { kontener } = useAplikacja();

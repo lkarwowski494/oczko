@@ -1,5 +1,5 @@
 // M1-audytor-generalny-059 (GEN-02, DEV-15; F-10, BR-LIC-013; P-284 (2), U11): ekran nie gaśnie tylko z licznikiem albo wzorem na wierzchu.
-// Trasa „/” (app/index.tsx) zostaje zamontowana pod listą projektów, Ustawieniami i Narzędziami (`router.push`), więc blokada wygaszania
+// M3 p2: korzeń cyklu życia to trasa „/” = „Dziś” (app/(zakladki)/index.tsx), licznik na „/licznik” nad nim. Dawniej trasa „/” (licznik) zostawała zamontowana pod listą projektów, Ustawieniami i Narzędziami (`router.push`), więc blokada wygaszania
 // włączona przy zamontowaniu trwała na tych ekranach, a opcję „Keep screen on while counting” czytano raz przy starcie.
 // Wyrocznia: tekst opcji `ustawienia.ekran_nie_gasnie_opis` („The screen stays on while the counter is open”), U11 („Na wzorze ekran nie gaśnie;
 // poza wzorem i licznikiem gaśnie normalnie”), design-spec W1a („Ekran nie gaśnie, jak licznik”). Trasa prawdziwa na prawdziwej bazie;
@@ -17,7 +17,7 @@ import { atrapaHaptyki } from './pomoc';
 
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
-const mockSciezka = { v: '/' };
+const mockSciezka = { v: '/licznik' }; // M3 p2: licznik na trasie /licznik nad korzeniem „Dziś” (blokada w korzeniu, U11)
 jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useFocusEffect: () => undefined, usePathname: () => mockSciezka.v }));
 jest.mock('../../src/kompozycja/system', () => {
   const p = jest.requireActual('./pomoc') as typeof import('./pomoc');
@@ -33,7 +33,7 @@ const mockApp: { biezaca: unknown } = { biezaca: null };
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.biezaca }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranLicznika = (require('../../app/index') as { default: React.ComponentType }).default;
+const EkranLicznika = (require('../../app/(zakladki)/index') /* korzeń „Dziś” z blokadą wygaszania (M3 p2) */ as { default: React.ComponentType }).default;
 
 const TAG = 'oczko-licznik';
 const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
@@ -50,9 +50,9 @@ async function trasa(opcja: { v: boolean }) {
   expect((await k.przygotuj()).ok).toBe(true);
   await k.otworz('l1');
   const ekran: jest.Mocked<EkranAktywny> = { wlacz: jest.fn(), wylacz: jest.fn() };
-  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t }, porty: { sklep, ekranAktywny: ekran, haptyka: atrapaHaptyki() } }, licznik: k, preferencje: {} };
+  mockApp.biezaca = { kontener: { z: s.z, j: { t: i.t, jezyk: i.jezyk }, porty: { sklep, ekranAktywny: ekran, haptyka: atrapaHaptyki() } }, licznik: k, preferencje: {} };
   const r = render(<EkranLicznika />);
-  await screen.findByTestId('licznik-plus');
+  await screen.findByTestId('dzis-plus'); // M3 p2: korzeń „Dziś” (cykl życia i blokada) pod trasą licznika
   await waitFor(() => expect(ekran.wlacz).toHaveBeenCalledWith(TAG));
   /** Nawigacja: inna trasa na wierzchu stosu, licznik zostaje zamontowany pod spodem (jak `router.push`). */
   const idz = async (sciezka: string) => {
@@ -68,7 +68,7 @@ async function trasa(opcja: { v: boolean }) {
   };
   return { ekran, idz, wlaczony, tlo };
 }
-beforeEach(() => { mockSciezka.v = '/'; mockRouter.push.mockClear(); });
+beforeEach(() => { mockSciezka.v = '/licznik'; mockRouter.push.mockClear(); });
 
 describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu', () => {
   test('licznik → lista projektów: tag oczko-licznik wyłączony; powrót na licznik: włączony ponownie', async () => {
@@ -77,7 +77,7 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     await u.idz('/projekty');
     expect(u.ekran.wylacz).toHaveBeenCalledWith(TAG);
     expect(u.wlaczony()).toBe(0);
-    await u.idz('/');
+    await u.idz('/licznik');
     expect(u.ekran.wlacz).toHaveBeenCalledTimes(2);
     expect(u.wlaczony()).toBe(1);
   });
@@ -86,7 +86,7 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     const u = await trasa({ v: true });
     await u.idz('/ustawienia');
     expect(u.wlaczony()).toBe(0);
-    await u.idz('/');
+    await u.idz('/licznik');
     await u.idz('/narzedzia');
     expect(u.wlaczony()).toBe(0);
   });
@@ -107,12 +107,12 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     const u = await trasa(opcja);
     await u.idz('/ustawienia');
     opcja.v = false; // przełącznik „Keep screen on while counting” zapisuje preferencję (ADR-0029)
-    await u.idz('/');
+    await u.idz('/licznik');
     expect(u.ekran.wlacz).toHaveBeenCalledTimes(1); // tylko wejście przy starcie
     expect(u.wlaczony()).toBe(0);
     await u.idz('/ustawienia');
     opcja.v = true;
-    await u.idz('/');
+    await u.idz('/licznik');
     expect(u.wlaczony()).toBe(1);
   });
 
@@ -135,7 +135,7 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     await u.tlo('active');
     expect(u.ekran.wlacz).toHaveBeenCalledTimes(1); // tylko wejście przy starcie
     expect(u.wlaczony()).toBe(0);
-    await u.idz('/');
+    await u.idz('/licznik');
     expect(u.wlaczony()).toBe(1);
   });
 });

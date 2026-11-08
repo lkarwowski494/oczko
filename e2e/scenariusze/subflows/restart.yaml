@@ -1,17 +1,18 @@
-# Podprzepływ: zabicie procesu i start na tych samych danych z zegarem TERAZ (bez sieci).
-# Parametr opcjonalny OKNO: okno strażnika serii (RD-17) w sekundach, argument E2E `oczkoE2eOknoStraznika` (E2E-A4, P-358; 10 i 29: P-489, #145 — seria 3 stuknięć trwała 7 s).
-# Brak parametru → "2" = STRAZNIK_OKNO_S (okno z konfiguracji; pilnuje tego tests/jakosc/e2e-kruchosc-145.test.ts), więc pozostałe scenariusze są bez zmian.
+# Podprzepływ: zabicie procesu i start na tych samych danych z zegarem TERAZ (bez sieci), zakończony w miejscu pracy.
+# Po ZM-18 (P-563 (4a)) zimny start zawsze na „Dziś”; „Kontynuuj ›” wraca do projektu, części i licznika albo do strony wzoru w tym samym powiększeniu,
+# a karta bez ostatniego miejsca (projekty są) ma „Wybierz projekt ›” → zakładka Projekty (dzis-bez-miejsca-*, P-564, P-565).
+# Jedyne miejsce zmiany restartu dla scenariuszy, które po restarcie pracują w miejscu pracy (07-e2e, 2026-11-08): reszta kroków bez zmian.
+# Parametr opcjonalny OKNO: okno strażnika serii (RD-17) w sekundach — przekazywany do restart-dzis.yaml (domyślnie "2", tests/jakosc/e2e-kruchosc-145.test.ts).
 appId: com.apps4brew.knitting
-name: "podprzepływ: restart na tych samych danych"
+name: "podprzepływ: restart na tych samych danych, przez „Dziś” do miejsca pracy"
 ---
-- stopApp
-- launchApp:
-    clearState: false
-    arguments:
-      oczkoE2eTeraz: ${TERAZ}
-      oczkoE2eSiec: "brak"
-      oczkoE2eOknoStraznika: "${typeof OKNO === 'undefined' ? '2' : OKNO}"
-# P-089 (3a): jednorazowe okno „Uczciwe zasady” po pierwszym dniu z robótką (tylko darmowa) — zamykane głównym przyciskiem; sprawdza je 07-p-089-3a-uczciwe-zasady.yaml
+- runFlow:
+    file: restart-dzis.yaml
+    env:
+      TERAZ: ${TERAZ}
+      OKNO: "${typeof OKNO === 'undefined' ? '2' : OKNO}"
+- tapOn: { id: "dzis-kontynuuj|dzis-wybierz-projekt" }
+# P-089 (3a): jednorazowe okno „Uczciwe zasady” — po zmianie startu nad zakładką Projekty („Wybierz projekt ›”), nigdy nad licznikiem; sprawdza je 07-p-089-3a-uczciwe-zasady.yaml
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|licznik-plus|limit-zawczasu|projekty-lista" }, timeout: 60000 }
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
 - extendedWaitUntil: { visible: { id: "licznik-plus|limit-zawczasu|projekty-lista" }, timeout: 60000 }

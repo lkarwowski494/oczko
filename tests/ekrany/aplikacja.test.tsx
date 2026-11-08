@@ -26,7 +26,7 @@ function pokaz(ekranWlaczony = false) {
 }
 
 describe('Aplikacja', () => {
-  test('NFR-PIE-001 / BR-LIC-001/S1: pierwszy ekran to licznik, 0 ekranów przed nim, pierwszy rząd jednym stuknięciem', async () => {
+  test('NFR-PIE-001 / BR-LIC-001/S1 (po ER-68, M3 p2): pierwszy ekran „Dziś”, 0 ekranów przed nim, pierwszy rząd jednym stuknięciem w „+1” karty', async () => {
     const { uslugi } = pokaz();
     // ekrany.html:102 aria-label="+1 row" (licznik-start)
     const plus = await znajdzPrzycisk('+1 row', 'button');
