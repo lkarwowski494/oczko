@@ -6,7 +6,10 @@ Stan: zatwierdzony (P-554: system, 6 ekranów i ikona bez poprawek), przekazanie
 | Co | Plik |
 |---|---|
 | Tokeny (moduł motywu, propozycja) | `tokeny.json` → `tokeny.css` (makiety) skryptem `../narzedzia/dzianina-tokeny.mjs` |
-| Tabela kontrastu (128 par: jasny, ciemny, oba „Zwiększ kontrast”, w tym 28 par ofert P-557; kod 0) | `kontrast-tabela.txt` (z `kontrast-pary.json`, `../narzedzia/kontrast.mjs`) |
+| Tabela kontrastu (203 pary: jasny, ciemny, oba „Zwiększ kontrast”, `systemCzarny`; w tym oferty P-557 i tokeny M3-S3-02/06; kod 0) | `kontrast-tabela.txt` (z `kontrast-pary.json`, `../narzedzia/kontrast.mjs`) |
+| Mapa starego `../tokeny.json` (183 pozycje) na tokeny Dzianiny (M3-S3-01) | `mapa-tokenow.md` (kontrola `../narzedzia/mapa-tokenow.mjs`) |
+| Pokrycie Bree Serif dla 35 języków (CLDR 46, M3-S3-04) | `pokrycie-bree.txt` (`../narzedzia/pokrycie-kroju.py`) |
+| Kontrakt testID po podmianie `../design-spec.md` (M3-S3-05) | `../testid.md` |
 | Makieta 6 ekranów TO BE + oferty (P-557, stany: typowy i „czeka na zatwierdzenie”) | `ekrany.html` (ikony zastępcze `ikony.js`) |
 | Zrzuty wzorcowe (linia bazowa SP-13): 6 ekranów × jasny/ciemny × domyślny/AX5 × 390 pt = 24, plus arkusz DE (4), plus oferty 2 stany × 4 = 8 (P-557) | `wzorce-zrzuty/` (`../narzedzia/dzianina-zrzuty.mjs`, filtr `--ekrany=oferty,oferty-czeka`) |
 | Pomiar warsztatu 390 pt (0 błędów) | `warsztat-390.txt` |
@@ -23,15 +26,19 @@ Kawałek dzianiny dżersejowej rośnie od nabrania (dół) do celu części (prz
 - `przycisk` — przycisk główny poza kartą, **wypełniony w obu motywach** (jasny: grafit z jasnym tekstem; ciemny: miód z ciemnym tekstem).
 - `niszczacy` — czerwień tylko dla działań nieodwracalnych (nie występuje w motywie poza nimi).
 - `zakreslacz` `#F6E04A` — tylko na stronie wzoru (rzecz z dziedziny, nie barwa motywu).
-- „Zwiększ kontrast”: warianty `jasnyZwiekszony`/`ciemnyZwiekszony` (tekst drugi, akcent tekstu, linie, zakładki).
+- „Zwiększ kontrast”: warianty `jasnyZwiekszony`/`ciemnyZwiekszony` (tekst drugi, akcent tekstu, linie, zakładki), tekst i rama przycisku nieaktywnego, drut rysunku).
+- `przyciskNieaktywny` / `…Tekst` / `…Rama` — przycisk wyłączony: tło powierzchni, tekst drugi, **przerywana rama** i ikona stanu (np. klepsydra), nigdy sam kolor (jak `oferty-czeka-*`).
+- `rysunek*` — paleta rysunków atlasu technik (`Paleta` w silniku atlasu: tło, nitka, wyróżnienie, drut); wyróżnienie to zakreślacz pod nitką.
+- `systemCzarny` — Dynamic Island, Smart Stack, zegarek: barwy motywu ciemnego na czarnym tle systemu; znak kresek (`znakKresek`) w kolorze `systemCzarny.tekst`.
+- Błąd (np. „Nie zapisałam rzędu…”): tekst w kolorze `tekst` z ikoną „!” i `role=alert`, bez czerwieni — czerwień (`niszczacy`) tylko dla działań nieodwracalnych (mapa: stary `blad`).
 
 ## Typografia
-- Tytuły, nazwy projektów i liczby: **Bree Serif** (OFL, `../fonty/BreeSerif.ttf` + `breeserif-OFL.txt`), cyfry tabelaryczne (`fontVariant: ['tabular-nums']` — sprawdzić na urządzeniu, czy krój je ma [DO USTALENIA 08]). Pismo bez pokrycia (cyrylica, greka, CJK): krój systemowy. Bree ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany. Nie przycinać pliku (Reserved Font Name „Bree”).
+- Tytuły, nazwy projektów i liczby: **Bree Serif** (OFL, `../fonty/BreeSerif.ttf` + `breeserif-OFL.txt`). Bree nie ma cyfr tabelarycznych (brak cechy `tnum`, szerokości cyfr 454–536 na 1000 jednostek), więc **każda cyfra liczby stoi w komórce szerokości najszerszej cyfry, wyśrodkowana** (`typografia.cyfry.komorkaEm` 0,536 × rozmiar; P-563 (2a), M3-S3-03): liczba nie przesuwa się przy +1; dotyczy `liczbaKarty`, `liczbaLicznika`, `liczbaPaskaWzoru`, `liczbaPodsumowania`; znaki inne niż cyfry bez komórki. Języki z krojem systemowym według pokrycia pliku (`kroje.tytul.jezykiSystemowe`, `pokrycie-bree.txt`, M3-S3-04): **bg, el, ja, ko, ru, sr, uk, vi, zh-Hant** (cyrylica, greka — plik ma z niej tylko Δ Ω μ π — CJK, wietnamski: brak m.in. „ạ”, „ơ”, „ư”); tam tytuły i liczby krojem systemowym z `tabular-nums`. Pozostałe 26 z 35 języków w Bree (nl: z głównego zbioru CLDR brak tylko akcentowanego „íj́” do zapisu akcentu wyrazowego, poza tekstami interfejsu — nazwany wyjątek). Bree ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany. Nie przycinać pliku (Reserved Font Name „Bree”; P-563 (9)).
 - Treść: krój systemowy (SF Pro), Dynamic Type do AX5. Skala i granice: `typografia` w tokenach (liczba licznika ×0,5–×1,3; „+1” ×1,4; zakładki ×1,6).
 - AX5: układy przechodzą w pionowy stos (karta: dzianina nad opisem; licznik: akcje jako lista; tydzień 4+3; kafle 1 kolumna; −1 pod +1 na pełną szerokość). Zrzuty `*-ax5.png`.
 
 ## Odstępy, promienie, cele, ruch, haptyka
-Jednostka 4 pt (`odstepy`). Promienie wg hierarchii: karta 22 > kafel 18 > przycisk 14 > pole/dzień 10; „+1” okrągłe. Cele ≥ 44 pt; „+1” karty 72 pt (AX5 100); „+1” licznika ≥ 168 pt wysokości w zasięgu kciuka; dni kalendarza ≥ 44 pt także przy 320 pt (siatka na pełną szerokość, 320 / 7 = 45,7 pt). Ruch tylko przy „+1” i zmianie ekranu (`ruch`). Haptyka (`haptyka`): rząd — lekkie stuknięcie; przypomnienie — ostrzeżenie (inne niż rząd, F-48); cel części — sukces; cofnięcie — miękkie. Dźwięk: brak domyślnie.
+Jednostka 4 pt (`odstepy`). Promienie wg hierarchii: karta 22 > kafel 18 > przycisk 14 > pole/dzień 10; „+1” okrągłe. Cele ≥ 44 pt; „+1” karty 72 pt (AX5 100); „+1” licznika ≥ 168 pt wysokości w zasięgu kciuka; dni kalendarza ≥ 44 pt także przy 320 pt (siatka na pełną szerokość, 320 / 7 = 45,7 pt). Ruch tylko przy „+1” i zmianie ekranu (`ruch`). Haptyka (`haptyka`): rząd — lekkie stuknięcie; przypomnienie — ostrzeżenie (inne niż rząd, F-48); cel części — sukces; cofnięcie — miękkie. Błąd zapisu — błąd systemowy (`bladZapisu`); start stopera — lekkie stuknięcie. Zegarek: `haptykaZegarek` (WKHapticType: przypomnienie `notification`, błąd zapisu `retry`, blokada `failure`). Dźwięk: brak domyślnie.
 
 ## Komponenty
 | Systemowe (bez zmian zachowania) | Własne |

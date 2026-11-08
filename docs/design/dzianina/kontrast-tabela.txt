@@ -30,6 +30,22 @@ OK   7.15:1 (min 4.5) jasny: oferty: tekst przycisku wyłączonego #5A5048 na #F
 OK   10.43:1 (min 3) jasny: oferty: przycisk główny/pasek (UI) #3A332E na #EEEBE6
 OK   4.97:1 (min 4.5) jasny: oferty: Przywróć zakupy, Nie teraz/pasek #8A5A12 na #EEEBE6
 OK   14.03:1 (min 4.5) jasny: oferty: komunikat/pasek #221D1A na #EEEBE6
+OK   7.15:1 (min 4.5) jasny: przycisk nieaktywny: tekst #5A5048 na #F6F4F1
+OK   7.15:1 (min 3) jasny: przycisk nieaktywny: rama przerywana (UI) #5A5048 na #F6F4F1
+OK   6.60:1 (min 3) jasny: przycisk nieaktywny: rama/pasek (UI) #5A5048 na #EEEBE6
+OK   15.20:1 (min 3) jasny: atlas: nitka/tło (grafika) #221D1A na #F6F4F1
+OK   7.15:1 (min 3) jasny: atlas: drut, strzałka/tło (grafika) #5A5048 na #F6F4F1
+OK   12.46:1 (min 3) jasny: atlas: nitka/wyróżnienie (grafika) #221D1A na #F6E04A
+OK   5.86:1 (min 3) jasny: atlas: drut/wyróżnienie (grafika) #5A5048 na #F6E04A
+OK   1.22:1 (min 1) jasny: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie) #F6E04A na #F6F4F1
+OK   3.88:1 (min 3) jasny: miniatura: dzianina/karta (grafika) #C08425 na #3A332E
+OK   4.49:1 (min 3) jasny: miniatura: igła/karta (grafika) #A39A92 na #3A332E
+OK   9.54:1 (min 1) jasny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A332E na #E6E1DA
+OK   10.99:1 (min 4.5) jasny: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A332E
+OK   7.98:1 (min 3) jasny: limit na karcie: ikona klepsydry (UI) #D6CEC6 na #3A332E
+OK   15.20:1 (min 4.5) jasny: baner Cofnąć?: tekst #221D1A na #F6F4F1
+OK   5.39:1 (min 4.5) jasny: baner Cofnąć?: przycisk tekstowy Cofnij #8A5A12 na #F6F4F1
+OK   5.39:1 (min 3) jasny: baner Cofnąć?: rama przycisku i ikona (UI) #8A5A12 na #F6F4F1
 OK   13.67:1 (min 4.5) ciemny: tekst/tlo #F1EDE9 na #26211E
 OK   8.54:1 (min 4.5) ciemny: tekst2/tlo #C7BCB2 na #26211E
 OK   11.98:1 (min 4.5) ciemny: tekst/powierzchnia #F1EDE9 na #312B27
@@ -62,6 +78,22 @@ OK   7.48:1 (min 4.5) ciemny: oferty: tekst przycisku wyłączonego #C7BCB2 na #
 OK   11.52:1 (min 3) ciemny: oferty: przycisk główny/pasek (UI) #F0CF8A na #1E1A17
 OK   11.52:1 (min 4.5) ciemny: oferty: Przywróć zakupy, Nie teraz/pasek #F0CF8A na #1E1A17
 OK   14.84:1 (min 4.5) ciemny: oferty: komunikat/pasek #F1EDE9 na #1E1A17
+OK   7.48:1 (min 4.5) ciemny: przycisk nieaktywny: tekst #C7BCB2 na #312B27
+OK   7.48:1 (min 3) ciemny: przycisk nieaktywny: rama przerywana (UI) #C7BCB2 na #312B27
+OK   9.27:1 (min 3) ciemny: przycisk nieaktywny: rama/pasek (UI) #C7BCB2 na #1E1A17
+OK   11.98:1 (min 3) ciemny: atlas: nitka/tło (grafika) #F1EDE9 na #312B27
+OK   7.48:1 (min 3) ciemny: atlas: drut, strzałka/tło (grafika) #C7BCB2 na #312B27
+OK   7.35:1 (min 3) ciemny: atlas: nitka/wyróżnienie (grafika) #F1EDE9 na #5C4A1E
+OK   4.59:1 (min 3) ciemny: atlas: drut/wyróżnienie (grafika) #C7BCB2 na #5C4A1E
+OK   1.63:1 (min 1) ciemny: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie) #5C4A1E na #312B27
+OK   4.82:1 (min 3) ciemny: miniatura: dzianina/karta (grafika) #CF9636 na #3A322D
+OK   4.08:1 (min 3) ciemny: miniatura: igła/karta (grafika) #9C918A na #3A322D
+OK   1.27:1 (min 1) ciemny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A322D na #26211E
+OK   11.11:1 (min 4.5) ciemny: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A322D
+OK   7.69:1 (min 3) ciemny: limit na karcie: ikona klepsydry (UI) #D3C9BF na #3A322D
+OK   11.98:1 (min 4.5) ciemny: baner Cofnąć?: tekst #F1EDE9 na #312B27
+OK   9.30:1 (min 4.5) ciemny: baner Cofnąć?: przycisk tekstowy Cofnij #F0CF8A na #312B27
+OK   9.30:1 (min 3) ciemny: baner Cofnąć?: rama przycisku i ikona (UI) #F0CF8A na #312B27
 OK   12.83:1 (min 4.5) jasny zwiększony: tekst/tlo #221D1A na #E6E1DA
 OK   8.96:1 (min 4.5) jasny zwiększony: tekst2/tlo #3F3731 na #E6E1DA
 OK   15.20:1 (min 4.5) jasny zwiększony: tekst/powierzchnia #221D1A na #F6F4F1
@@ -94,6 +126,22 @@ OK   10.61:1 (min 4.5) jasny zwiększony: oferty: tekst przycisku wyłączonego 
 OK   10.43:1 (min 3) jasny zwiększony: oferty: przycisk główny/pasek (UI) #3A332E na #EEEBE6
 OK   7.12:1 (min 4.5) jasny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek #6B450C na #EEEBE6
 OK   14.03:1 (min 4.5) jasny zwiększony: oferty: komunikat/pasek #221D1A na #EEEBE6
+OK   10.61:1 (min 4.5) jasny zwiększony: przycisk nieaktywny: tekst #3F3731 na #F6F4F1
+OK   10.61:1 (min 3) jasny zwiększony: przycisk nieaktywny: rama przerywana (UI) #3F3731 na #F6F4F1
+OK   9.80:1 (min 3) jasny zwiększony: przycisk nieaktywny: rama/pasek (UI) #3F3731 na #EEEBE6
+OK   15.20:1 (min 3) jasny zwiększony: atlas: nitka/tło (grafika) #221D1A na #F6F4F1
+OK   10.61:1 (min 3) jasny zwiększony: atlas: drut, strzałka/tło (grafika) #3F3731 na #F6F4F1
+OK   12.46:1 (min 3) jasny zwiększony: atlas: nitka/wyróżnienie (grafika) #221D1A na #F6E04A
+OK   8.70:1 (min 3) jasny zwiększony: atlas: drut/wyróżnienie (grafika) #3F3731 na #F6E04A
+OK   1.22:1 (min 1) jasny zwiększony: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie) #F6E04A na #F6F4F1
+OK   3.88:1 (min 3) jasny zwiększony: miniatura: dzianina/karta (grafika) #C08425 na #3A332E
+OK   4.49:1 (min 3) jasny zwiększony: miniatura: igła/karta (grafika) #A39A92 na #3A332E
+OK   9.54:1 (min 1) jasny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A332E na #E6E1DA
+OK   10.99:1 (min 4.5) jasny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A332E
+OK   9.83:1 (min 3) jasny zwiększony: limit na karcie: ikona klepsydry (UI) #EAE4DD na #3A332E
+OK   15.20:1 (min 4.5) jasny zwiększony: baner Cofnąć?: tekst #221D1A na #F6F4F1
+OK   7.71:1 (min 4.5) jasny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij #6B450C na #F6F4F1
+OK   7.71:1 (min 3) jasny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI) #6B450C na #F6F4F1
 OK   13.67:1 (min 4.5) ciemny zwiększony: tekst/tlo #F1EDE9 na #26211E
 OK   11.55:1 (min 4.5) ciemny zwiększony: tekst2/tlo #E3DAD2 na #26211E
 OK   11.98:1 (min 4.5) ciemny zwiększony: tekst/powierzchnia #F1EDE9 na #312B27
@@ -126,3 +174,30 @@ OK   10.11:1 (min 4.5) ciemny zwiększony: oferty: tekst przycisku wyłączonego
 OK   11.52:1 (min 3) ciemny zwiększony: oferty: przycisk główny/pasek (UI) #F0CF8A na #1E1A17
 OK   13.16:1 (min 4.5) ciemny zwiększony: oferty: Przywróć zakupy, Nie teraz/pasek #F8DEA6 na #1E1A17
 OK   14.84:1 (min 4.5) ciemny zwiększony: oferty: komunikat/pasek #F1EDE9 na #1E1A17
+OK   10.11:1 (min 4.5) ciemny zwiększony: przycisk nieaktywny: tekst #E3DAD2 na #312B27
+OK   10.11:1 (min 3) ciemny zwiększony: przycisk nieaktywny: rama przerywana (UI) #E3DAD2 na #312B27
+OK   12.53:1 (min 3) ciemny zwiększony: przycisk nieaktywny: rama/pasek (UI) #E3DAD2 na #1E1A17
+OK   11.98:1 (min 3) ciemny zwiększony: atlas: nitka/tło (grafika) #F1EDE9 na #312B27
+OK   10.11:1 (min 3) ciemny zwiększony: atlas: drut, strzałka/tło (grafika) #E3DAD2 na #312B27
+OK   7.35:1 (min 3) ciemny zwiększony: atlas: nitka/wyróżnienie (grafika) #F1EDE9 na #5C4A1E
+OK   6.21:1 (min 3) ciemny zwiększony: atlas: drut/wyróżnienie (grafika) #E3DAD2 na #5C4A1E
+OK   1.63:1 (min 1) ciemny zwiększony: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie) #5C4A1E na #312B27
+OK   4.82:1 (min 3) ciemny zwiększony: miniatura: dzianina/karta (grafika) #CF9636 na #3A322D
+OK   4.08:1 (min 3) ciemny zwiększony: miniatura: igła/karta (grafika) #9C918A na #3A322D
+OK   1.27:1 (min 1) ciemny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie) #3A322D na #26211E
+OK   11.11:1 (min 4.5) ciemny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro #F3F1EC na #3A322D
+OK   10.13:1 (min 3) ciemny zwiększony: limit na karcie: ikona klepsydry (UI) #ECE6DF na #3A322D
+OK   11.98:1 (min 4.5) ciemny zwiększony: baner Cofnąć?: tekst #F1EDE9 na #312B27
+OK   10.62:1 (min 4.5) ciemny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij #F8DEA6 na #312B27
+OK   10.62:1 (min 3) ciemny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI) #F8DEA6 na #312B27
+OK   18.03:1 (min 4.5) systemCzarny: tekst/tlo #F1EDE9 na #000000
+OK   11.26:1 (min 4.5) systemCzarny: tekst2/tlo #C7BCB2 na #000000
+OK   14.00:1 (min 4.5) systemCzarny: akcentTekst/tlo #F0CF8A na #000000
+OK   14.00:1 (min 3) systemCzarny: przycisk/tlo (UI) #F0CF8A na #000000
+OK   18.03:1 (min 3) systemCzarny: znak kresek/tlo (grafika) #F1EDE9 na #000000
+OK   14.01:1 (min 4.5) systemCzarny: tekst/kartaStack #F1EDE9 na #1E2024
+OK   8.75:1 (min 4.5) systemCzarny: tekst2/kartaStack #C7BCB2 na #1E2024
+OK   10.87:1 (min 4.5) systemCzarny: akcentTekst/kartaStack #F0CF8A na #1E2024
+OK   10.87:1 (min 3) systemCzarny: przycisk/kartaStack (UI) #F0CF8A na #1E2024
+OK   14.01:1 (min 3) systemCzarny: znak kresek/kartaStack (grafika) #F1EDE9 na #1E2024
+OK   11.12:1 (min 4.5) systemCzarny: przyciskTekst/przycisk #221D1A na #F0CF8A
