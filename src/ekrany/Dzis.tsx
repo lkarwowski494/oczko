@@ -48,8 +48,8 @@ const KAFLE: { k: KafelDzis; symbol: NazwaSymbolu; klucz: Klucz }[] = [
   { k: 'wloczka', symbol: 'scribble.variable', klucz: 'dzis.kafel_wloczka' },
   { k: 'probka', symbol: 'square.grid.3x3', klucz: 'probka.tytul' },
 ];
-/** Kolumna dzianiny na karcie: makieta dzis-390 ok. 112 pt (1,5 × „+1” karty) — tokenu brak, zgłoszenie do 04 (p2). */
-const KOLUMNA_DZIANINY = cel.plus * 1.5;
+/** Kolumna dzianiny na karcie (M3-MAK-03, P-554): 112 × min. 216, AX5 min. 120, promień 12 — token `dzianina.kolumnaKarty` (zastępuje 1,5 × „+1” karty z p2). */
+const KOLUMNA_KARTY = tokeny.dzianina.kolumnaKarty;
 
 export function Dzis(p: PropsDzis): React.ReactElement {
   const { stan: s, t, dane } = p;
@@ -225,8 +225,8 @@ function style(k: Kolory, jezyk?: string) {
     karta: { backgroundColor: k.karta, borderRadius: promien.karta, padding: odstep.l, gap: odstep.l },
     kartaWiersz: { flexDirection: 'row' },
     kartaKolumna: { flexDirection: 'column' },
-    dzianina: { width: KOLUMNA_DZIANINY, alignSelf: 'stretch', minHeight: cel.plus * 2, borderRadius: promien.pole, overflow: 'hidden' },
-    dzianinaAx: { alignSelf: 'stretch', height: cel.plus * 2, borderRadius: promien.pole, overflow: 'hidden' },
+    dzianina: { width: KOLUMNA_KARTY.szerokosc, alignSelf: 'stretch', minHeight: KOLUMNA_KARTY.minWysokosc, borderRadius: KOLUMNA_KARTY.promien, overflow: 'hidden' },
+    dzianinaAx: { alignSelf: 'stretch', minHeight: KOLUMNA_KARTY.ax5MinWysokosc, borderRadius: KOLUMNA_KARTY.promien, overflow: 'hidden' },
     kartaTytul: { ...ty.tytul, ...bree, color: k.kartaTekst },
     kartaPodpis: { ...ty.tresc2, color: k.kartaTekst2 },
     kartaTresc: { ...ty.tresc, color: k.kartaTekst },

@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { LiniaKonfliktu } from './IcloudKonflikt';
 import type { WzorzecHaptyki } from '../domena/porty';
-import { cel as rozmiary, MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
+import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import { Dzianina } from './Dzianina';
 import { Liczba } from './Liczba';
@@ -101,7 +101,9 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const cyfry = String(liczba).length;
   const krojLiczby = cyfry >= 6 ? tokeny.typografia.liczbaPaskaWzoru : cyfry >= 4 ? tokeny.typografia.liczbaKarty : tokeny.typografia.liczbaLicznika;
   const stylLiczby = cyfry >= 6 ? st.liczbaMala : cyfry >= 4 ? st.liczbaKarty : st.liczba;
-  const wymiarDzianiny = duzyTekst ? { w: Math.max(0, okno.width - 2 * odstep.xl), h: rozmiary.plus * 1.5 } : { w: rozmiary.plus, h: rozmiary.plusLicznik * 1.5 };
+  // Kolumna dzianiny z tokenu `dzianina.kolumnaLicznika` (M3-MAK-03, P-554): 64 × 260, AX5 pas o wysokości 96 na pełną szerokość (zastępuje 72 × 252 z p3a).
+  const kolumnaLicznika = tokeny.dzianina.kolumnaLicznika;
+  const wymiarDzianiny = duzyTekst ? { w: Math.max(0, okno.width - 2 * odstep.xl), h: kolumnaLicznika.ax5Wysokosc } : { w: kolumnaLicznika.szerokosc, h: kolumnaLicznika.wysokosc };
 
   const dzianina = (
     <View style={duzyTekst ? st.dzianinaAx : st.dzianina}>

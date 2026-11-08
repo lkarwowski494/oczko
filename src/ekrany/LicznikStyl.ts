@@ -1,5 +1,6 @@
 // Style ekranu licznika — wydzielone z Licznik.tsx (P-268, plan-prac 1.6); wartości tylko z modułu motywu (tokeny 04).
 import { StyleSheet } from 'react-native';
+import tokeny from '../../docs/design/tokeny.json';
 import { cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, type Kolory } from './motyw';
 
 export type Style = ReturnType<typeof style>;
@@ -21,8 +22,8 @@ export function style(k: Kolory) {
     // Układ M3 p3a (makieta `licznik`, `.licz-g`): dzianina i liczba obok siebie; AX: pas dzianiny nad liczbą.
     glowna: { flexDirection: 'row', gap: odstep.l },
     glownaAx: { flexDirection: 'column', gap: odstep.l },
-    dzianina: { borderRadius: promien.pole, overflow: 'hidden', alignSelf: 'flex-start' },
-    dzianinaAx: { borderRadius: promien.pole, overflow: 'hidden', alignSelf: 'stretch' },
+    dzianina: { borderRadius: tokeny.dzianina.kolumnaLicznika.promien, overflow: 'hidden', alignSelf: 'flex-start' }, // token `dzianina.kolumnaLicznika` (M3-MAK-03)
+    dzianinaAx: { borderRadius: tokeny.dzianina.kolumnaLicznika.promien, overflow: 'hidden', alignSelf: 'stretch' },
     kolumnaLiczby: { flex: 1, gap: odstep.s },
     liczba: { ...typografia.liczba, color: k.tekst },
     liczbaKarty: { ...typografiaDzianiny.liczbaKarty, color: k.tekst },
