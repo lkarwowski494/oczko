@@ -20,6 +20,8 @@ export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.
   | 'applewatch' | 'person.2' | 'checkmark.shield' | 'checkmark' | 'hourglass' | 'info.circle' | 'creditcard'
   // M3 p4 (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): pole szukania na liście Projekty (makieta `projekty`: lupa).
   | 'magnifyingglass'
+  // M3 p4b (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): „Ekran nie gaśnie” w Ustawieniach (decyzja 04 M3-MAK-03: `sun.max` znaczy zakładkę Dziś).
+  | 'iphone'
   | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {

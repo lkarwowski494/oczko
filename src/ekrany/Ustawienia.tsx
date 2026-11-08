@@ -6,8 +6,10 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, useWindowDimensions, View } from 'react-native';
 import { Przycisk } from './Arkusz';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, ROZMIAR_SYMBOLU_TRESCI, typografia, useKolory } from './motyw';
-import { StrzalkaWiersza, SymbolSf, type NazwaSymbolu } from './SymbolSf';
+import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, typografia, useKolory } from './motyw';
+import { StrzalkaWiersza, type NazwaSymbolu } from './SymbolSf';
+import { KafelekIkony } from './KafelekIkony';
+import { IkonaDnia } from './IkonaDnia';
 import type { System, Tlumacz } from './wspolne';
 import { trwaSubskrypcja, type AktywnePro } from './Oferty';
 import type { DniNaLiscie } from './ListaProjektow';
@@ -38,11 +40,9 @@ export type PropsUstawien = {
   naZrodla?(): void;
 };
 
-// Brak tokenu rozmiaru kafelka ikony wiersza (przy kaflach „Dziś” cel.minimum = 44 pt jest za duży dla wiersza listy) — składany z odstępów, do zgłoszenia 04.
-const IKONA_WIERSZA = odstep.xxl + odstep.s;
 /** Wiersz listy grupowanej (ZM-07): ikona (kafelek `ikonaTlo`), podpis od lewej, wartość po prawej, strzałka tylko przy przejściu (`strzalka`). `przelacznik`: wiersz z przełącznikiem zamiast stuknięcia. */
 type PropsWiersza = {
-  symbol: NazwaSymbolu; tekst: string; testID: string;
+  symbol: NazwaSymbolu | 'dzien'; tekst: string; testID: string;
   wartosc?: string; wartoscTestID?: string; etykieta?: string; strzalka?: boolean; rola?: 'button' | 'link'; onPress?(): void;
   przelacznik?: { wartosc: boolean; naZmiane(w: boolean): void };
 };
@@ -51,13 +51,12 @@ function Wiersz(p: PropsWiersza): React.ReactElement {
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const st = StyleSheet.create({
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, paddingHorizontal: odstep.m, paddingVertical: odstep.xs },
-    ikona: { width: IKONA_WIERSZA, height: IKONA_WIERSZA, borderRadius: promien.pole, backgroundColor: k.ikonaTlo, alignItems: 'center', justifyContent: 'center' },
     tekst: { ...typografia.tresc, color: k.tekst, flex: duzyTekst ? undefined : 1, flexShrink: 1 },
     wartosc: { ...typografia.tresc, color: k.tekst2, flexShrink: 1, textAlign: 'right' },
   });
   const zawartosc = (
     <>
-      <View style={st.ikona}><SymbolSf nazwa={p.symbol} rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.ikona} maxSkala={MAX_SKALA_TYTULOWA} /></View>
+      {p.symbol === 'dzien' ? <KafelekIkony rysunek={IkonaDnia} testID="symbol-dzien" /> : <KafelekIkony symbol={p.symbol} />}
       <Text style={st.tekst} importantForAccessibility={p.przelacznik ? 'no' : undefined} accessibilityElementsHidden={p.przelacznik ? true : undefined}>{p.tekst}</Text>
       {p.wartosc !== undefined && <Text style={st.wartosc} testID={p.wartoscTestID}>{p.wartosc}</Text>}
       {p.strzalka && <StrzalkaWiersza />}
@@ -93,7 +92,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       <Text style={{ ...typografia.tytul, color: k.tekst }} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('ustawienia.tytul')}</Text>
       <View style={st.grupa} testID="ustawienia-grupa">
         {/* F-63 (07-jakosc-031): stan Pro jako wartość wiersza; VoiceOver czyta „Oczko Pro, On” */}
-        <Wiersz symbol="sparkles" tekst={t('ustawienia.oczko_pro')} etykieta={s.pro ? `${t('ustawienia.oczko_pro')}, ${t('ustawienia.pro_wlaczone')}` : undefined}
+        <Wiersz symbol="dzien" tekst={t('ustawienia.oczko_pro')} etykieta={s.pro ? `${t('ustawienia.oczko_pro')}, ${t('ustawienia.pro_wlaczone')}` : undefined}
           wartosc={s.pro ? t('ustawienia.pro_wlaczone') : undefined} wartoscTestID="ustawienia-pro" strzalka onPress={naOferty} testID="ustawienia-oczko-pro" />
         {trwaSubskrypcja(s.pro) && <Wiersz symbol="creditcard" tekst={t('oferty.zarzadzaj')} onPress={() => system.zarzadzajSubskrypcja()} testID="ustawienia-subskrypcja" />}
         {s.dni && <Text style={st.podpis} testID="ustawienia-dni-darmowe">{t('projekty.dni', { count: s.dni.limit, zostalo: s.dni.zostalo, limit: s.dni.limit, miesiac: s.dni.miesiac })}</Text>}
@@ -103,7 +102,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
         <Wiersz symbol="iphone.radiowaves.left.and.right" tekst={t('ustawienia.wibracje')} testID="ustawienia-wibracje" przelacznik={{ wartosc: s.wibracje, naZmiane: naWibracje }} />
         {preferencje && (
           <>
-            <Wiersz symbol="sun.max" tekst={t('ustawienia.ekran_nie_gasnie')} testID="ustawienia-ekran-nie-gasnie" przelacznik={{ wartosc: preferencje.ekranNieGasnie, naZmiane: preferencje.naEkranNieGasnie }} />
+            <Wiersz symbol="iphone" tekst={t('ustawienia.ekran_nie_gasnie')} testID="ustawienia-ekran-nie-gasnie" przelacznik={{ wartosc: preferencje.ekranNieGasnie, naZmiane: preferencje.naEkranNieGasnie }} />
             <Wiersz symbol="ruler" tekst={t('ustawienia.uklad_miar')} wartosc={t(`ustawienia.miary_${preferencje.ukladMiar}`)} strzalka onPress={preferencje.naMiary} testID="ustawienia-miary" />
             <Text style={st.podpis}>{t('ustawienia.ekran_nie_gasnie_opis')}</Text>
           </>

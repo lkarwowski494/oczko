@@ -9,6 +9,8 @@ import type { Tlumacz } from './wspolne';
 import type { StanProbki, WejscieProbki } from '../kompozycja/probka';
 import { Wstecz } from './Pasek';
 import { StrzalkaWiersza } from './SymbolSf';
+import { KafelekIkony } from './KafelekIkony';
+import { IkonaDruty } from './IkonaDruty';
 
 export type PropsWloczki = {
   stan: { nazwa: string; pielegnacja: { tekst: string | null; zdjecie: string | null } }; // bez symboli pielęgnacji (OG-13, OP-11)
@@ -27,11 +29,12 @@ export function Wloczka({ stan, t }: PropsWloczki): React.ReactElement {
 }
 
 /** Wiersz grupy ze wskaźnikiem przejścia (`chevron.forward`, M1-146; wejście do ekranu); `wartosc` po prawej (liczba pozycji). */
-export function WierszGrupy(p: { tekst: string; opis?: string; wartosc?: string; onPress(): void; testID?: string; ostatni?: boolean }): React.ReactElement {
+export function WierszGrupy(p: { tekst: string; opis?: string; wartosc?: string; onPress(): void; testID?: string; ostatni?: boolean; ikona?: React.ReactElement }): React.ReactElement {
   const st = style(useKolory());
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={[p.tekst, p.opis, p.wartosc].filter(Boolean).join(', ')}
       onPress={p.onPress} testID={p.testID} style={[st.wiersz, p.ostatni && st.wierszOstatni]}>
+      {p.ikona}
       <View style={st.wierszTekst}>
         <Text style={st.nazwa}>{p.tekst}</Text>
         {p.opis ? <Text style={st.opis}>{p.opis}</Text> : null}
@@ -52,12 +55,12 @@ export function Narzedzia({ stan: s, t, naWloczki, naDruty, naProbke, naWstecz, 
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('narzedzia.tytul')}</Text>
       <Text style={st.naglowekGrupy} accessibilityRole="header">{t('narzedzia.zapas')}</Text>
       <View style={st.grupa}>
-        <WierszGrupy tekst={t('narzedzia.wloczki')} wartosc={String(s.wloczki)} onPress={naWloczki} testID="narzedzia-wloczki" />
-        <WierszGrupy tekst={t('narzedzia.druty')} wartosc={String(s.druty)} onPress={naDruty} testID="narzedzia-druty" ostatni />
+        <WierszGrupy ikona={<KafelekIkony symbol="scribble.variable" />} tekst={t('narzedzia.wloczki')} wartosc={String(s.wloczki)} onPress={naWloczki} testID="narzedzia-wloczki" />
+        <WierszGrupy ikona={<KafelekIkony rysunek={IkonaDruty} testID="symbol-druty" />} tekst={t('narzedzia.druty')} wartosc={String(s.druty)} onPress={naDruty} testID="narzedzia-druty" ostatni />
       </View>
       <Text style={st.naglowekGrupy} accessibilityRole="header">{t('narzedzia.obliczenia')}</Text>
       <View style={st.grupa}>
-        <WierszGrupy tekst={t('narzedzia.probka')} opis={t('narzedzia.probka_opis')} onPress={naProbke} testID="narzedzia-probka" ostatni />
+        <WierszGrupy ikona={<KafelekIkony symbol="square.grid.3x3" />} tekst={t('narzedzia.probka')} opis={t('narzedzia.probka_opis')} onPress={naProbke} testID="narzedzia-probka" ostatni />
       </View>
     </ScrollView>
   );

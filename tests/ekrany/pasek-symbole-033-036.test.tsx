@@ -142,7 +142,7 @@ describe('146: ⊖ ▾ ▸ › nie są glifami ikon', () => {
   });
   test('wiersz grupy w Tools: wskaźnik przejścia = chevron.forward w `olowek`, ukryty przed VoiceOver', () => {
     render(<Narzedzia stan={{ wloczki: 7, druty: 9 }} t={t} naWloczki={jest.fn()} naDruty={jest.fn()} naProbke={jest.fn()} />);
-    const s = within(screen.getByTestId('narzedzia-wloczki')).getByTestId(/^symbol-/, UKRYTE);
+    const s = within(screen.getByTestId('narzedzia-wloczki')).getByTestId('symbol-chevron.forward', UKRYTE); // M3 p4b: wiersz ma też kafelek ikony (inny symbol)
     expect(s.props.name).toBe('chevron.forward');
     expect(s.props.tintColor).toBe(kolorJasny.olowek);
     expect(s.props.accessibilityElementsHidden).toBe(true);

@@ -2,7 +2,9 @@
 // Wybór działa od razu (kompozycja zapisuje i wraca); miary zmieniają wyświetlanie i wpisywanie, dane zostają w mm i g.
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny, useKolory, type Kolory } from './motyw';
+import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, MAX_SKALA_ZNAKU_WYBORU, odstep, promien, ROZMIAR_SYMBOLU_TRESCI, typografiaDzianiny, useKolory, type Kolory } from './motyw';
+import { SymbolSf } from './SymbolSf';
+import tokeny from '../../docs/design/tokeny.json';
 import type { PreferencjaMiar } from '../domena/preferencje';
 import type { Tlumacz } from './wspolne';
 import { Wstecz } from './Pasek';
@@ -10,7 +12,8 @@ import { Wstecz } from './Pasek';
 export type PropsWyboruMiar = { t: Tlumacz; wybrany: PreferencjaMiar; naWybierz(p: PreferencjaMiar): void; naWstecz?(): void; jezyk?: string };
 
 export function WyborMiar({ t, wybrany, naWybierz, naWstecz, jezyk }: PropsWyboruMiar): React.ReactElement {
-  const st = style(useKolory(), jezyk);
+  const k = useKolory();
+  const st = style(k, jezyk);
   const opcje: { p: PreferencjaMiar; nazwa: string; opis: string | null }[] = [
     { p: 'auto', nazwa: t('ustawienia.miary_auto'), opis: null },
     { p: 'metric', nazwa: t('ustawienia.miary_metric'), opis: t('ustawienia.miary_metric_opis') },
@@ -29,7 +32,7 @@ export function WyborMiar({ t, wybrany, naWybierz, naWstecz, jezyk }: PropsWybor
                 <Text style={st.nazwa}>{o.nazwa}</Text>
                 {o.opis && <Text style={st.opisWiersza}>{o.opis}</Text>}
               </View>
-              {w && <Text style={st.znak} importantForAccessibility="no" accessibilityElementsHidden>✓</Text>}
+              {w && <SymbolSf nazwa={tokeny.znaczniki.wyboruListy.symbol as 'checkmark'} rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k[tokeny.znaczniki.wyboruListy.kolor as 'akcentTekst']} maxSkala={MAX_SKALA_ZNAKU_WYBORU} />}
             </Pressable>
           );
         })}
@@ -49,7 +52,6 @@ function style(k: Kolory, jezyk?: string) {
     wiersz: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum, paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     nazwa: { ...typografiaDzianiny.tresc, color: k.tekst },
     opisWiersza: { ...typografiaDzianiny.tresc2, color: k.tekst2 },
-    znak: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
     opis: { ...typografiaDzianiny.tresc2, color: k.tekst2, paddingHorizontal: odstep.m },
   });
 }
