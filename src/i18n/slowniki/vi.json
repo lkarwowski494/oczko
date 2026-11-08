@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "Vạch của phiên này: {{count}} mũi từ {{godzina}}",
     "seria_blokada_other": "Đã thêm {{count}} hàng từ màn hình khóa lúc {{godzina}}. Hoàn tác?",
     "seria_zegarek_other": "Đã thêm {{count}} hàng trên đồng hồ lúc {{godzina}}. Hoàn tác?",
-    "wpisz_blad_format": "Nhập số nguyên từ 0 trở lên, ví dụ {{przyklad}}."
+    "wpisz_blad_format": "Nhập số nguyên từ 0 trở lên, ví dụ {{przyklad}}.",
+    "akcja_notatka": "Ghi chú",
+    "akcja_wzor": "Mẫu",
+    "akcja_cel": "Mục tiêu",
+    "akcja_cel_a11y": "Mục tiêu, nhắc nhở, lặp lại",
+    "akcja_stoper": "Bấm giờ",
+    "akcja_historia": "Lịch sử",
+    "projekt_wejscie": "Dự án ›",
+    "projekt_wejscie_a11y": "Dự án: {{projekt}}",
+    "menu_wiecej_a11y": "Tùy chọn bộ đếm: tên, số hàng, khóa, hoàn thành",
+    "dzianina_a11y_other": "{{czesc}}: đã xong {{count}} hàng, {{sesja}} trong phiên này",
+    "dzianina_a11y_cel_other": "{{czesc}}: đã xong {{count}} trên {{cel}} hàng, {{sesja}} trong phiên này"
   },
   "limit": {
     "zawczasu_other": "Hết ngày đan móc miễn phí trong {{miesiac}}. Việc đếm tạm dừng đến {{data}}. {{count}} hàng của bạn và mọi thứ khác vẫn được giữ nguyên.",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "Hoàn thành {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Hoàn thành {{data}}",
     "ukonczono_a11y": "{{nazwa}}, hoàn thành {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, hoàn thành {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, hoàn thành {{data}}",
+    "menu_a11y": "Thêm: {{nazwa}}",
+    "kosz_do_other": ": {{count}} mục, đến {{data}}.",
+    "kosz_pokaz": "Xem"
   },
   "historia": {
     "pusto": "Chưa có thay đổi nào.",
@@ -189,7 +203,10 @@
     "wpisz": "Nhập số đúng",
     "wpis_rozwin_a11y": "Chi tiết về {{wpis}}",
     "wpis_rozwin_podpowiedz": "Hiển thị cách thay đổi mục này.",
-    "wpis_a11y": "{{od}} thành {{do}} lúc {{czas}}"
+    "wpis_a11y": "{{od}} thành {{do}} lúc {{czas}}",
+    "kafel_dni_other": "ngày đan móc",
+    "kafel_rzedy_other": "hàng",
+    "kafel_czas": "thời gian phiên"
   },
   "menu": {
     "nazwa": "Đặt tên dự án và phần",
@@ -414,7 +431,15 @@
     "blad_zakupu": "Giao dịch mua không thành công. Hãy kiểm tra kết nối và thử lại.",
     "przywracanie_nic": "Không tìm thấy giao dịch mua Oczko Pro cho Apple ID này. Nếu bạn đã mua bằng Apple ID khác, hãy đăng nhập Apple ID đó trong Cài đặt và thử lại.",
     "przywracanie_blad": "Không khôi phục được giao dịch mua. Hãy kiểm tra kết nối và thử lại.",
-    "pro_wlaczone": "Oczko Pro đã bật."
+    "pro_wlaczone": "Oczko Pro đã bật.",
+    "kafel_dzien_tytul": "Mọi ngày đan móc",
+    "kafel_dzien_opis": "Đếm bất cứ khi nào bạn đan móc, không giới hạn hàng tháng.",
+    "kafel_urzadzenia_tytul": "Không giới hạn trên mọi thiết bị",
+    "kafel_urzadzenia_opis": "iPhone, iPad và Apple Watch.",
+    "kafel_rodzina_tytul": "Cho gia đình bạn",
+    "kafel_rodzina_opis": "Bạn có thể chia sẻ với gia đình qua Chia Sẻ Trong Gia Đình.",
+    "kafel_dane_tytul": "Dữ liệu vẫn là của bạn",
+    "kafel_dane_opis": "Dự án, mẫu và lịch sử vẫn còn, dù có Pro hay không."
   },
   "uczciwe": {
     "tytul": "Ngày đan móc đầu tiên của bạn đã xong",
@@ -876,5 +901,32 @@
     "yd_nazwa": "Yard",
     "g_nazwa": "Gam",
     "oz_nazwa": "Aoxơ"
+  },
+  "dzis": {
+    "tytul": "Hôm nay",
+    "pierwszy_tytul": "Bộ đếm đầu tiên",
+    "pierwszy_opis": "Chạm +1 sau mỗi hàng đã xong. Bạn có thể đặt tên dự án sau.",
+    "otworz_licznik": "Mở bộ đếm",
+    "kontynuuj": "Tiếp tục",
+    "wybierz_projekt": "Chọn dự án",
+    "bez_miejsca_tytul": "Dự án của bạn ở đây",
+    "bez_miejsca_other": "{{count}} dự án đang thực hiện. Chọn một dự án, Hôm nay sẽ mở nó ở chỗ bạn dừng.",
+    "czesc_rzad": "{{czesc}}, hàng {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, hàng {{n}} trên {{cel}}",
+    "gotowe_other": "hàng đã xong",
+    "dzianina_a11y_other": "{{czesc}}: đã xong {{count}} hàng, hôm nay {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: đã xong {{count}} trên {{cel}} hàng, hôm nay {{dzis}}",
+    "co_dalej_other": "Sau {{count}} hàng: {{tekst}} ({{ktory}} trên {{razy}})",
+    "co_dalej_teraz": "Hàng này: {{tekst}} ({{ktory}} trên {{razy}})",
+    "ten_tydzien": "Tuần này",
+    "tydzien_pusty": "Tại đây bạn sẽ thấy những ngày bạn đan.",
+    "dzien_dziergany_a11y": "{{etykieta}}, ngày đan móc",
+    "kafel_wloczka": "Len và que đan"
+  },
+  "zakladki": {
+    "dzis": "Hôm nay",
+    "projekty": "Dự án",
+    "narzedzia": "Công cụ",
+    "historia": "Lịch sử"
   }
 }

@@ -65,7 +65,20 @@
     "seria_blokada_other": "{{count}} Reihen um {{godzina}} über den Sperrbildschirm hinzugefügt. Rückgängig machen?",
     "seria_zegarek_one": "{{count}} Reihe um {{godzina}} auf deiner Uhr hinzugefügt. Rückgängig machen?",
     "seria_zegarek_other": "{{count}} Reihen um {{godzina}} auf deiner Uhr hinzugefügt. Rückgängig machen?",
-    "wpisz_blad_format": "Gib eine ganze Zahl ab 0 ein, zum Beispiel {{przyklad}}."
+    "wpisz_blad_format": "Gib eine ganze Zahl ab 0 ein, zum Beispiel {{przyklad}}.",
+    "akcja_notatka": "Notiz",
+    "akcja_wzor": "Anleitung",
+    "akcja_cel": "Ziel",
+    "akcja_cel_a11y": "Ziel, Erinnerung, Rapport",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Verlauf",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Zähleroptionen: Name, Reihennummer, Sperre, Abschließen",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} Reihe fertig, {{sesja}} in dieser Sitzung",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} Reihen fertig, {{sesja}} in dieser Sitzung",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} von {{cel}} Reihen fertig, {{sesja}} in dieser Sitzung",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} von {{cel}} Reihen fertig, {{sesja}} in dieser Sitzung"
   },
   "limit": {
     "zawczasu_one": "Keine freien Handarbeitstage mehr im {{miesiac}}. Zählen pausiert bis {{data}}. Deine {{count}} Reihe und alles andere bleiben erhalten.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Fertig am {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Fertig am {{data}}",
     "ukonczono_a11y": "{{nazwa}}, fertig am {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, fertig am {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, fertig am {{data}}",
+    "menu_a11y": "Mehr: {{nazwa}}",
+    "kosz_do_one": ": {{count}} Element, bis {{data}}.",
+    "kosz_do_other": ": {{count}} Elemente, bis {{data}}.",
+    "kosz_pokaz": "Anzeigen"
   },
   "historia": {
     "pusto": "Noch keine Änderungen.",
@@ -217,7 +234,12 @@
     "wpisz": "Richtige Zahl eingeben",
     "wpis_rozwin_a11y": "Mehr zu {{wpis}}",
     "wpis_rozwin_podpowiedz": "Zeigt, wie du diesen Eintrag änderst.",
-    "wpis_a11y": "{{od}} auf {{do}} um {{czas}}"
+    "wpis_a11y": "{{od}} auf {{do}} um {{czas}}",
+    "kafel_dni_one": "Handarbeitstag",
+    "kafel_dni_other": "Handarbeitstage",
+    "kafel_rzedy_one": "Reihe",
+    "kafel_rzedy_other": "Reihen",
+    "kafel_czas": "Sitzungsdauer"
   },
   "menu": {
     "nazwa": "Projekt und Teil benennen",
@@ -468,7 +490,15 @@
     "blad_zakupu": "Der Kauf hat nicht geklappt. Prüfe deine Verbindung und versuche es erneut.",
     "przywracanie_nic": "Kein Kauf von Oczko Pro für diese Apple-ID gefunden. Wenn du mit einer anderen Apple-ID gekauft hast, melde dich in den Einstellungen damit an und versuche es erneut.",
     "przywracanie_blad": "Käufe konnten nicht wiederhergestellt werden. Prüfe deine Verbindung und versuche es erneut.",
-    "pro_wlaczone": "Oczko Pro ist aktiv."
+    "pro_wlaczone": "Oczko Pro ist aktiv.",
+    "kafel_dzien_tytul": "Jeder Handarbeitstag",
+    "kafel_dzien_opis": "Zähle, wann immer du strickst oder häkelst, ohne Monatslimit.",
+    "kafel_urzadzenia_tytul": "Kein Limit auf jedem Gerät",
+    "kafel_urzadzenia_opis": "iPhone, iPad und Apple Watch.",
+    "kafel_rodzina_tytul": "Für deine Familie",
+    "kafel_rodzina_opis": "Du kannst es über die Familienfreigabe mit deiner Familie teilen.",
+    "kafel_dane_tytul": "Deine Daten gehören dir",
+    "kafel_dane_opis": "Projekte, Anleitungen und Verlauf bleiben, mit Pro oder ohne."
   },
   "uczciwe": {
     "tytul": "Dein erster Handarbeitstag ist geschafft",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Yards",
     "g_nazwa": "Gramm",
     "oz_nazwa": "Unzen"
+  },
+  "dzis": {
+    "tytul": "Heute",
+    "pierwszy_tytul": "Erster Reihenzähler",
+    "pierwszy_opis": "Tippe nach jeder fertigen Reihe auf +1. Den Projektnamen kannst du später festlegen.",
+    "otworz_licznik": "Zähler öffnen",
+    "kontynuuj": "Weiter",
+    "wybierz_projekt": "Projekt wählen",
+    "bez_miejsca_tytul": "Deine Projekte sind hier",
+    "bez_miejsca_one": "{{count}} Projekt in Arbeit. Wähle eins, und Heute öffnet es dort, wo du aufgehört hast.",
+    "bez_miejsca_other": "{{count}} Projekte in Arbeit. Wähle eins, und Heute öffnet es dort, wo du aufgehört hast.",
+    "czesc_rzad": "{{czesc}}, Reihe {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, Reihe {{n}} von {{cel}}",
+    "gotowe_one": "Reihe fertig",
+    "gotowe_other": "Reihen fertig",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} Reihe fertig, heute {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} Reihen fertig, heute {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} von {{cel}} Reihen fertig, heute {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} von {{cel}} Reihen fertig, heute {{dzis}}",
+    "co_dalej_one": "In {{count}} Reihe: {{tekst}} ({{ktory}} von {{razy}})",
+    "co_dalej_other": "In {{count}} Reihen: {{tekst}} ({{ktory}} von {{razy}})",
+    "co_dalej_teraz": "Diese Reihe: {{tekst}} ({{ktory}} von {{razy}})",
+    "ten_tydzien": "Diese Woche",
+    "tydzien_pusty": "Hier siehst du die Tage, an denen du strickst.",
+    "dzien_dziergany_a11y": "{{etykieta}}, Handarbeitstag",
+    "kafel_wloczka": "Garn und Nadeln"
+  },
+  "zakladki": {
+    "dzis": "Heute",
+    "projekty": "Projekte",
+    "narzedzia": "Werkzeuge",
+    "historia": "Verlauf"
   }
 }

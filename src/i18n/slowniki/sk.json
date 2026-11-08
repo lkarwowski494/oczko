@@ -95,7 +95,24 @@
     "seria_zegarek_few": "O {{godzina}} ste na hodinkách pridali {{count}} riadky. Vrátiť späť?",
     "seria_zegarek_many": "O {{godzina}} ste na hodinkách pridali {{count}} riadka. Vrátiť späť?",
     "seria_zegarek_other": "O {{godzina}} ste na hodinkách pridali {{count}} riadkov. Vrátiť späť?",
-    "wpisz_blad_format": "Zadajte celé číslo, 0 alebo viac, napríklad {{przyklad}}."
+    "wpisz_blad_format": "Zadajte celé číslo, 0 alebo viac, napríklad {{przyklad}}.",
+    "akcja_notatka": "Poznámka",
+    "akcja_wzor": "Návod",
+    "akcja_cel": "Cieľ",
+    "akcja_cel_a11y": "Cieľ, pripomienka, opakovanie",
+    "akcja_stoper": "Stopky",
+    "akcja_historia": "História",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Možnosti počítadla: názov, číslo riadka, zámok, dokončenie",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} riadok hotový, {{sesja}} v tejto relácii",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} riadky hotové, {{sesja}} v tejto relácii",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} riadka hotového, {{sesja}} v tejto relácii",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} riadkov hotových, {{sesja}} v tejto relácii",
+    "dzianina_a11y_cel_one": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, {{sesja}} v tejto relácii",
+    "dzianina_a11y_cel_few": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, {{sesja}} v tejto relácii",
+    "dzianina_a11y_cel_many": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, {{sesja}} v tejto relácii",
+    "dzianina_a11y_cel_other": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, {{sesja}} v tejto relácii"
   },
   "limit": {
     "zawczasu_one": "Na {{miesiac}} už nezostali bezplatné tvorivé dni. Počítanie je pozastavené do {{data}}. Zachované: {{count}} riadok a všetko ostatné.",
@@ -251,7 +268,13 @@
     "ukonczono_wiersz": "Dokončený {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Dokončený {{data}}",
     "ukonczono_a11y": "{{nazwa}}, dokončený {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, dokončený {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, dokončený {{data}}",
+    "menu_a11y": "Viac: {{nazwa}}",
+    "kosz_do_one": ": {{count}} položka, do {{data}}.",
+    "kosz_do_few": ": {{count}} položky, do {{data}}.",
+    "kosz_do_many": ": {{count}} položky, do {{data}}.",
+    "kosz_do_other": ": {{count}} položiek, do {{data}}.",
+    "kosz_pokaz": "Zobraziť"
   },
   "historia": {
     "pusto": "Zatiaľ žiadne zmeny.",
@@ -273,7 +296,16 @@
     "wpisz": "Zadať správne číslo",
     "wpis_rozwin_a11y": "Viac o zázname {{wpis}}",
     "wpis_rozwin_podpowiedz": "Ukáže, ako tento záznam zmeniť.",
-    "wpis_a11y": "z {{od}} na {{do}} o {{czas}}"
+    "wpis_a11y": "z {{od}} na {{do}} o {{czas}}",
+    "kafel_dni_one": "deň s ručnou prácou",
+    "kafel_dni_few": "dni s ručnou prácou",
+    "kafel_dni_many": "dňa s ručnou prácou",
+    "kafel_dni_other": "dní s ručnou prácou",
+    "kafel_rzedy_one": "riadok",
+    "kafel_rzedy_few": "riadky",
+    "kafel_rzedy_many": "riadka",
+    "kafel_rzedy_other": "riadkov",
+    "kafel_czas": "čas relácií"
   },
   "menu": {
     "nazwa": "Pomenovať projekt a časť",
@@ -576,7 +608,15 @@
     "blad_zakupu": "Nákup sa nepodaril. Skontrolujte pripojenie a skúste to znova.",
     "przywracanie_nic": "Pre toto Apple ID sa nenašiel žiadny nákup Oczko Pro. Ak ste ho kúpili s iným Apple ID, prihláste sa s ním v Nastaveniach a skúste to znova.",
     "przywracanie_blad": "Nákupy sa nepodarilo obnoviť. Skontrolujte pripojenie a skúste to znova.",
-    "pro_wlaczone": "Oczko Pro je zapnuté."
+    "pro_wlaczone": "Oczko Pro je zapnuté.",
+    "kafel_dzien_tytul": "Každý deň s ručnou prácou",
+    "kafel_dzien_opis": "Počítajte, kedykoľvek pletiete alebo háčkujete, bez mesačného limitu.",
+    "kafel_urzadzenia_tytul": "Bez limitu na každom zariadení",
+    "kafel_urzadzenia_opis": "iPhone, iPad a Apple Watch.",
+    "kafel_rodzina_tytul": "Pre vašu rodinu",
+    "kafel_rodzina_opis": "Môžete ho zdieľať s rodinou cez Rodinné zdieľanie.",
+    "kafel_dane_tytul": "Vaše údaje zostanú vaše",
+    "kafel_dane_opis": "Projekty, návody a história zostanú, s Pro aj bez neho."
   },
   "uczciwe": {
     "tytul": "Váš prvý tvorivý deň je hotový",
@@ -1134,5 +1174,47 @@
     "yd_nazwa": "Yardy",
     "g_nazwa": "Gramy",
     "oz_nazwa": "Unce"
+  },
+  "dzis": {
+    "tytul": "Dnes",
+    "pierwszy_tytul": "Prvé počítadlo",
+    "pierwszy_opis": "Po každom dokončenom riadku ťuknite na +1. Projekt môžete pomenovať neskôr.",
+    "otworz_licznik": "Otvoriť počítadlo",
+    "kontynuuj": "Pokračovať",
+    "wybierz_projekt": "Vybrať projekt",
+    "bez_miejsca_tytul": "Tu sú vaše projekty",
+    "bez_miejsca_one": "{{count}} rozpracovaný projekt. Vyberte jeden a Dnes ho otvorí tam, kde ste skončili.",
+    "bez_miejsca_few": "{{count}} rozpracované projekty. Vyberte jeden a Dnes ho otvorí tam, kde ste skončili.",
+    "bez_miejsca_many": "{{count}} rozpracovaného projektu. Vyberte jeden a Dnes ho otvorí tam, kde ste skončili.",
+    "bez_miejsca_other": "{{count}} rozpracovaných projektov. Vyberte jeden a Dnes ho otvorí tam, kde ste skončili.",
+    "czesc_rzad": "{{czesc}}, riadok {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, riadok {{n}} z {{cel}}",
+    "gotowe_one": "riadok hotový",
+    "gotowe_few": "riadky hotové",
+    "gotowe_many": "riadka hotového",
+    "gotowe_other": "riadkov hotových",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} riadok hotový, dnes {{dzis}}",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} riadky hotové, dnes {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} riadka hotového, dnes {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} riadkov hotových, dnes {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, dnes {{dzis}}",
+    "dzianina_a11y_cel_few": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, dnes {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, dnes {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: hotovo {{count}} z {{cel}} riadkov, dnes {{dzis}}",
+    "co_dalej_one": "O {{count}} riadok: {{tekst}} ({{ktory}} z {{razy}})",
+    "co_dalej_few": "O {{count}} riadky: {{tekst}} ({{ktory}} z {{razy}})",
+    "co_dalej_many": "O {{count}} riadka: {{tekst}} ({{ktory}} z {{razy}})",
+    "co_dalej_other": "O {{count}} riadkov: {{tekst}} ({{ktory}} z {{razy}})",
+    "co_dalej_teraz": "V tomto riadku: {{tekst}} ({{ktory}} z {{razy}})",
+    "ten_tydzien": "Tento týždeň",
+    "tydzien_pusty": "Tu uvidíte dni, keď ste pletali.",
+    "dzien_dziergany_a11y": "{{etykieta}}, deň s ručnou prácou",
+    "kafel_wloczka": "Priadza a ihlice"
+  },
+  "zakladki": {
+    "dzis": "Dnes",
+    "projekty": "Projekty",
+    "narzedzia": "Nástroje",
+    "historia": "História"
   }
 }

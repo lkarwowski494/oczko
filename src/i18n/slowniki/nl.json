@@ -65,7 +65,20 @@
     "seria_blokada_other": "{{count}} rijen toegevoegd via het toegangsscherm om {{godzina}}. Ongedaan maken?",
     "seria_zegarek_one": "{{count}} rij toegevoegd op je horloge om {{godzina}}. Ongedaan maken?",
     "seria_zegarek_other": "{{count}} rijen toegevoegd op je horloge om {{godzina}}. Ongedaan maken?",
-    "wpisz_blad_format": "Voer een heel getal in, 0 of meer, bijvoorbeeld {{przyklad}}."
+    "wpisz_blad_format": "Voer een heel getal in, 0 of meer, bijvoorbeeld {{przyklad}}.",
+    "akcja_notatka": "Notitie",
+    "akcja_wzor": "Patroon",
+    "akcja_cel": "Doel",
+    "akcja_cel_a11y": "Doel, herinnering, herhaling",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Historie",
+    "projekt_wejscie": "Project ›",
+    "projekt_wejscie_a11y": "Project: {{projekt}}",
+    "menu_wiecej_a11y": "Opties voor teller: naam, rijnummer, vergrendelen, afronden",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rij klaar, {{sesja}} in deze sessie",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rijen klaar, {{sesja}} in deze sessie",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} van {{cel}} rijen klaar, {{sesja}} in deze sessie",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} van {{cel}} rijen klaar, {{sesja}} in deze sessie"
   },
   "limit": {
     "zawczasu_one": "Geen gratis handwerkdagen meer in {{miesiac}}. Tellen is gepauzeerd tot {{data}}. Je {{count}} rij en al het andere blijven bewaard.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Afgerond op {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Afgerond op {{data}}",
     "ukonczono_a11y": "{{nazwa}}, afgerond op {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, afgerond op {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, afgerond op {{data}}",
+    "menu_a11y": "Meer: {{nazwa}}",
+    "kosz_do_one": ": {{count}} item, tot {{data}}.",
+    "kosz_do_other": ": {{count}} items, tot {{data}}.",
+    "kosz_pokaz": "Tonen"
   },
   "historia": {
     "pusto": "Nog geen wijzigingen.",
@@ -217,7 +234,12 @@
     "wpisz": "Voer het juiste getal in",
     "wpis_rozwin_a11y": "Meer over {{wpis}}",
     "wpis_rozwin_podpowiedz": "Toont hoe je dit item kunt wijzigen.",
-    "wpis_a11y": "{{od}} naar {{do}} om {{czas}}"
+    "wpis_a11y": "{{od}} naar {{do}} om {{czas}}",
+    "kafel_dni_one": "handwerkdag",
+    "kafel_dni_other": "handwerkdagen",
+    "kafel_rzedy_one": "rij",
+    "kafel_rzedy_other": "rijen",
+    "kafel_czas": "sessietijd"
   },
   "menu": {
     "nazwa": "Geef project en deel een naam",
@@ -468,7 +490,15 @@
     "blad_zakupu": "De aankoop is niet gelukt. Controleer je verbinding en probeer het opnieuw.",
     "przywracanie_nic": "Geen aankoop van Oczko Pro gevonden voor deze Apple ID. Als je het met een andere Apple ID hebt gekocht, log dan met die Apple ID in bij Instellingen en probeer het opnieuw.",
     "przywracanie_blad": "Kon aankopen niet herstellen. Controleer je verbinding en probeer het opnieuw.",
-    "pro_wlaczone": "Oczko Pro staat aan."
+    "pro_wlaczone": "Oczko Pro staat aan.",
+    "kafel_dzien_tytul": "Elke handwerkdag",
+    "kafel_dzien_opis": "Tel wanneer je breit of haakt, zonder maandlimiet.",
+    "kafel_urzadzenia_tytul": "Geen limiet, op elk apparaat",
+    "kafel_urzadzenia_opis": "iPhone, iPad en Apple Watch.",
+    "kafel_rodzina_tytul": "Voor je gezin",
+    "kafel_rodzina_opis": "Je kunt het met je gezin delen via Delen met gezin.",
+    "kafel_dane_tytul": "Je gegevens blijven van jou",
+    "kafel_dane_opis": "Projecten, patronen en historie blijven, met of zonder Pro."
   },
   "uczciwe": {
     "tytul": "Je eerste handwerkdag zit erop",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Yards",
     "g_nazwa": "Gram",
     "oz_nazwa": "Ounce"
+  },
+  "dzis": {
+    "tytul": "Vandaag",
+    "pierwszy_tytul": "Eerste rijenteller",
+    "pierwszy_opis": "Tik na elke afgeronde rij op +1. De projectnaam geef je later.",
+    "otworz_licznik": "Teller openen",
+    "kontynuuj": "Doorgaan",
+    "wybierz_projekt": "Kies een project",
+    "bez_miejsca_tytul": "Je projecten staan hier",
+    "bez_miejsca_one": "{{count}} project bezig. Kies er een en Vandaag opent het waar je gebleven was.",
+    "bez_miejsca_other": "{{count}} projecten bezig. Kies er een en Vandaag opent het waar je gebleven was.",
+    "czesc_rzad": "{{czesc}}, rij {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rij {{n}} van {{cel}}",
+    "gotowe_one": "rij klaar",
+    "gotowe_other": "rijen klaar",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rij klaar, vandaag {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rijen klaar, vandaag {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} van {{cel}} rijen klaar, vandaag {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} van {{cel}} rijen klaar, vandaag {{dzis}}",
+    "co_dalej_one": "Over {{count}} rij: {{tekst}} ({{ktory}} van {{razy}})",
+    "co_dalej_other": "Over {{count}} rijen: {{tekst}} ({{ktory}} van {{razy}})",
+    "co_dalej_teraz": "Deze rij: {{tekst}} ({{ktory}} van {{razy}})",
+    "ten_tydzien": "Deze week",
+    "tydzien_pusty": "Hier zie je de dagen waarop je breit.",
+    "dzien_dziergany_a11y": "{{etykieta}}, handwerkdag",
+    "kafel_wloczka": "Garen en breinaalden"
+  },
+  "zakladki": {
+    "dzis": "Vandaag",
+    "projekty": "Projecten",
+    "narzedzia": "Tools",
+    "historia": "Historie"
   }
 }

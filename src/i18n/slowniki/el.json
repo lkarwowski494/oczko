@@ -65,7 +65,20 @@
     "seria_blokada_other": "Προστέθηκαν {{count}} σειρές από την οθόνη κλειδώματος στις {{godzina}}. Αναίρεση;",
     "seria_zegarek_one": "Προστέθηκε {{count}} σειρά από το ρολόι σας στις {{godzina}}. Αναίρεση;",
     "seria_zegarek_other": "Προστέθηκαν {{count}} σειρές από το ρολόι σας στις {{godzina}}. Αναίρεση;",
-    "wpisz_blad_format": "Εισαγάγετε έναν ακέραιο αριθμό, 0 ή μεγαλύτερο, για παράδειγμα {{przyklad}}."
+    "wpisz_blad_format": "Εισαγάγετε έναν ακέραιο αριθμό, 0 ή μεγαλύτερο, για παράδειγμα {{przyklad}}.",
+    "akcja_notatka": "Σημείωση",
+    "akcja_wzor": "Πατρόν",
+    "akcja_cel": "Στόχος",
+    "akcja_cel_a11y": "Στόχος, υπενθύμιση, επανάληψη",
+    "akcja_stoper": "Χρονόμετρο",
+    "akcja_historia": "Ιστορικό",
+    "projekt_wejscie": "Έργο ›",
+    "projekt_wejscie_a11y": "Έργο: {{projekt}}",
+    "menu_wiecej_a11y": "Επιλογές μετρητή: όνομα, αριθμός σειράς, κλείδωμα, ολοκλήρωση",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} σειρά ολοκληρώθηκε, {{sesja}} σε αυτή τη συνεδρία",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} σειρές ολοκληρώθηκαν, {{sesja}} σε αυτή τη συνεδρία",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} από {{cel}} σειρές ολοκληρώθηκαν, {{sesja}} σε αυτή τη συνεδρία",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} από {{cel}} σειρές ολοκληρώθηκαν, {{sesja}} σε αυτή τη συνεδρία"
   },
   "limit": {
     "zawczasu_one": "Δεν απομένουν δωρεάν ημέρες χειροτεχνίας ({{miesiac}}). Η καταμέτρηση είναι σε παύση έως {{data}}. Η {{count}} σειρά σας και όλα τα άλλα διατηρούνται.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Ολοκληρώθηκε στις {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Ολοκληρώθηκε στις {{data}}",
     "ukonczono_a11y": "{{nazwa}}, ολοκληρώθηκε στις {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, ολοκληρώθηκε στις {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, ολοκληρώθηκε στις {{data}}",
+    "menu_a11y": "Περισσότερα: {{nazwa}}",
+    "kosz_do_one": ": {{count}} στοιχείο, έως {{data}}.",
+    "kosz_do_other": ": {{count}} στοιχεία, έως {{data}}.",
+    "kosz_pokaz": "Εμφάνιση"
   },
   "historia": {
     "pusto": "Δεν υπάρχουν ακόμη αλλαγές.",
@@ -217,7 +234,12 @@
     "wpisz": "Εισαγωγή σωστού αριθμού",
     "wpis_rozwin_a11y": "Περισσότερα για {{wpis}}",
     "wpis_rozwin_podpowiedz": "Δείχνει πώς να αλλάξετε αυτή την καταχώριση.",
-    "wpis_a11y": "{{od}} σε {{do}} στις {{czas}}"
+    "wpis_a11y": "{{od}} σε {{do}} στις {{czas}}",
+    "kafel_dni_one": "ημέρα χειροτεχνίας",
+    "kafel_dni_other": "ημέρες χειροτεχνίας",
+    "kafel_rzedy_one": "σειρά",
+    "kafel_rzedy_other": "σειρές",
+    "kafel_czas": "χρόνος συνεδριών"
   },
   "menu": {
     "nazwa": "Ονομάστε το έργο και το κομμάτι",
@@ -468,7 +490,15 @@
     "blad_zakupu": "Η αγορά δεν ολοκληρώθηκε. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.",
     "przywracanie_nic": "Δεν βρέθηκε αγορά του Oczko Pro για αυτό το Apple ID. Αν το αγοράσατε με άλλο Apple ID, συνδεθείτε με αυτό στις Ρυθμίσεις και δοκιμάστε ξανά.",
     "przywracanie_blad": "Δεν ήταν δυνατή η επαναφορά των αγορών. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.",
-    "pro_wlaczone": "Το Oczko Pro είναι ενεργό."
+    "pro_wlaczone": "Το Oczko Pro είναι ενεργό.",
+    "kafel_dzien_tytul": "Κάθε ημέρα χειροτεχνίας",
+    "kafel_dzien_opis": "Μέτρα όποτε πλέκεις ή κάνεις βελονάκι, χωρίς μηνιαίο όριο.",
+    "kafel_urzadzenia_tytul": "Χωρίς όριο σε κάθε συσκευή",
+    "kafel_urzadzenia_opis": "iPhone, iPad και Apple Watch.",
+    "kafel_rodzina_tytul": "Για την οικογένειά σου",
+    "kafel_rodzina_opis": "Μπορείς να το μοιραστείς με την οικογένειά σου μέσω της Οικογενειακής κοινής χρήσης.",
+    "kafel_dane_tytul": "Τα δεδομένα σου μένουν δικά σου",
+    "kafel_dane_opis": "Τα έργα, τα πατρόν και το ιστορικό μένουν, με Pro ή χωρίς."
   },
   "uczciwe": {
     "tytul": "Η πρώτη σας ημέρα χειροτεχνίας ολοκληρώθηκε",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Γιάρδες",
     "g_nazwa": "Γραμμάρια",
     "oz_nazwa": "Ουγγιές"
+  },
+  "dzis": {
+    "tytul": "Σήμερα",
+    "pierwszy_tytul": "Πρώτος μετρητής",
+    "pierwszy_opis": "Πάτα +1 μετά από κάθε ολοκληρωμένη σειρά. Το όνομα του έργου μπορείς να το δώσεις αργότερα.",
+    "otworz_licznik": "Άνοιγμα μετρητή",
+    "kontynuuj": "Συνέχεια",
+    "wybierz_projekt": "Επίλεξε έργο",
+    "bez_miejsca_tytul": "Τα έργα σου είναι εδώ",
+    "bez_miejsca_one": "{{count}} έργο σε εξέλιξη. Επίλεξε ένα και το Σήμερα θα το ανοίξει εκεί που σταμάτησες.",
+    "bez_miejsca_other": "{{count}} έργα σε εξέλιξη. Επίλεξε ένα και το Σήμερα θα το ανοίξει εκεί που σταμάτησες.",
+    "czesc_rzad": "{{czesc}}, σειρά {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, σειρά {{n}} από {{cel}}",
+    "gotowe_one": "σειρά ολοκληρώθηκε",
+    "gotowe_other": "σειρές ολοκληρώθηκαν",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} σειρά ολοκληρώθηκε, σήμερα {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} σειρές ολοκληρώθηκαν, σήμερα {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} από {{cel}} σειρές ολοκληρώθηκαν, σήμερα {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} από {{cel}} σειρές ολοκληρώθηκαν, σήμερα {{dzis}}",
+    "co_dalej_one": "Σε {{count}} σειρά: {{tekst}} ({{ktory}} από {{razy}})",
+    "co_dalej_other": "Σε {{count}} σειρές: {{tekst}} ({{ktory}} από {{razy}})",
+    "co_dalej_teraz": "Αυτή η σειρά: {{tekst}} ({{ktory}} από {{razy}})",
+    "ten_tydzien": "Αυτή την εβδομάδα",
+    "tydzien_pusty": "Εδώ θα βλέπεις τις ημέρες που πλέκεις.",
+    "dzien_dziergany_a11y": "{{etykieta}}, ημέρα χειροτεχνίας",
+    "kafel_wloczka": "Νήμα και βελόνες"
+  },
+  "zakladki": {
+    "dzis": "Σήμερα",
+    "projekty": "Έργα",
+    "narzedzia": "Εργαλεία",
+    "historia": "Ιστορικό"
   }
 }

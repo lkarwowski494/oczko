@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "本次記錄：{{godzina}} 起共 {{count}} 針",
     "seria_blokada_other": "已於 {{godzina}} 從鎖定畫面增加 {{count}} 段。要還原嗎？",
     "seria_zegarek_other": "已於 {{godzina}} 從手錶增加 {{count}} 段。要還原嗎？",
-    "wpisz_blad_format": "請輸入 0 或以上的整數，例如 {{przyklad}}。"
+    "wpisz_blad_format": "請輸入 0 或以上的整數，例如 {{przyklad}}。",
+    "akcja_notatka": "筆記",
+    "akcja_wzor": "織法",
+    "akcja_cel": "目標",
+    "akcja_cel_a11y": "目標、提醒、重複",
+    "akcja_stoper": "計時器",
+    "akcja_historia": "歷史記錄",
+    "projekt_wejscie": "專案 ›",
+    "projekt_wejscie_a11y": "專案：{{projekt}}",
+    "menu_wiecej_a11y": "計數器選項：名稱、段數、鎖定、完成",
+    "dzianina_a11y_other": "{{czesc}}：已完成 {{count}} 段，本次工作階段 {{sesja}} 段",
+    "dzianina_a11y_cel_other": "{{czesc}}：已完成 {{cel}} 段中的 {{count}} 段，本次工作階段 {{sesja}} 段"
   },
   "limit": {
     "zawczasu_other": "{{miesiac}}已沒有免費手作日。暫停計數至 {{data}}。你的 {{count}} 段和其他內容都會保留。",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "完成於 {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "完成於 {{data}}",
     "ukonczono_a11y": "{{nazwa}}，完成於 {{data}}，{{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}，完成於 {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}，完成於 {{data}}",
+    "menu_a11y": "更多：{{nazwa}}",
+    "kosz_do_other": "：{{count}} 個項目，保留至 {{data}}。",
+    "kosz_pokaz": "顯示"
   },
   "historia": {
     "pusto": "尚無變更。",
@@ -189,7 +203,10 @@
     "wpisz": "輸入正確的數字",
     "wpis_rozwin_a11y": "關於 {{wpis}} 的更多資訊",
     "wpis_rozwin_podpowiedz": "顯示如何更改這筆記錄。",
-    "wpis_a11y": "於 {{czas}} 從 {{od}} 變為 {{do}}"
+    "wpis_a11y": "於 {{czas}} 從 {{od}} 變為 {{do}}",
+    "kafel_dni_other": "編織日",
+    "kafel_rzedy_other": "段",
+    "kafel_czas": "工作階段時間"
   },
   "menu": {
     "nazwa": "為專案與織片命名",
@@ -414,7 +431,15 @@
     "blad_zakupu": "購買未完成。請檢查網路連線後再試一次。",
     "przywracanie_nic": "找不到此 Apple ID 的 Oczko Pro 購買項目。若你是用其他 Apple ID 購買，請在「設定」中登入該帳號後再試一次。",
     "przywracanie_blad": "無法回復購買項目。請檢查網路連線後再試一次。",
-    "pro_wlaczone": "Oczko Pro 已開啟。"
+    "pro_wlaczone": "Oczko Pro 已開啟。",
+    "kafel_dzien_tytul": "每個編織日",
+    "kafel_dzien_opis": "只要編織就能計數，沒有每月上限。",
+    "kafel_urzadzenia_tytul": "任何裝置都沒有限制",
+    "kafel_urzadzenia_opis": "iPhone、iPad 與 Apple Watch。",
+    "kafel_rodzina_tytul": "給你的家人",
+    "kafel_rodzina_opis": "你可以透過「家人共享」與家人共享。",
+    "kafel_dane_tytul": "你的資料仍屬於你",
+    "kafel_dane_opis": "無論有沒有 Pro，專案、織法與歷史記錄都會保留。"
   },
   "uczciwe": {
     "tytul": "你的第一個手作日完成了",
@@ -876,5 +901,32 @@
     "yd_nazwa": "碼",
     "g_nazwa": "克",
     "oz_nazwa": "盎司"
+  },
+  "dzis": {
+    "tytul": "今天",
+    "pierwszy_tytul": "第一個計數器",
+    "pierwszy_opis": "每完成一段就點一下 +1。專案名稱之後再取也可以。",
+    "otworz_licznik": "開啟計數器",
+    "kontynuuj": "繼續",
+    "wybierz_projekt": "選擇專案",
+    "bez_miejsca_tytul": "你的專案在這裡",
+    "bez_miejsca_other": "進行中的專案有 {{count}} 個。選一個，「今天」會從你停下的地方開啟。",
+    "czesc_rzad": "{{czesc}}，第 {{n}} 段",
+    "czesc_rzad_cel": "{{czesc}}，第 {{n}} 段，共 {{cel}} 段",
+    "gotowe_other": "段已完成",
+    "dzianina_a11y_other": "{{czesc}}：已完成 {{count}} 段，今天 {{dzis}} 段",
+    "dzianina_a11y_cel_other": "{{czesc}}：已完成 {{cel}} 段中的 {{count}} 段，今天 {{dzis}} 段",
+    "co_dalej_other": "{{count}} 段後：{{tekst}}（{{razy}} 次中的第 {{ktory}} 次）",
+    "co_dalej_teraz": "這一段：{{tekst}}（{{razy}} 次中的第 {{ktory}} 次）",
+    "ten_tydzien": "本週",
+    "tydzien_pusty": "這裡會顯示你編織的日子。",
+    "dzien_dziergany_a11y": "{{etykieta}}，編織日",
+    "kafel_wloczka": "毛線與棒針"
+  },
+  "zakladki": {
+    "dzis": "今天",
+    "projekty": "專案",
+    "narzedzia": "工具",
+    "historia": "歷史記錄"
   }
 }

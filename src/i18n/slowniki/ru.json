@@ -95,7 +95,24 @@
     "seria_zegarek_few": "Добавлено {{count}} ряда с часов в {{godzina}}. Отменить?",
     "seria_zegarek_many": "Добавлено {{count}} рядов с часов в {{godzina}}. Отменить?",
     "seria_zegarek_other": "Добавлено {{count}} ряда с часов в {{godzina}}. Отменить?",
-    "wpisz_blad_format": "Введите целое число не меньше 0, например {{przyklad}}."
+    "wpisz_blad_format": "Введите целое число не меньше 0, например {{przyklad}}.",
+    "akcja_notatka": "Заметка",
+    "akcja_wzor": "Описание",
+    "akcja_cel": "Цель",
+    "akcja_cel_a11y": "Цель, напоминание, раппорт",
+    "akcja_stoper": "Таймер",
+    "akcja_historia": "История",
+    "projekt_wejscie": "Проект ›",
+    "projekt_wejscie_a11y": "Проект: {{projekt}}",
+    "menu_wiecej_a11y": "Параметры счётчика: название, номер ряда, блокировка, завершение",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ряд готов, {{sesja}} за эту сессию",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} ряда готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} рядов готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} ряда готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} из {{cel}} рядов готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} из {{cel}} рядов готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} из {{cel}} рядов готово, {{sesja}} за эту сессию",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} из {{cel}} рядов готово, {{sesja}} за эту сессию"
   },
   "limit": {
     "zawczasu_one": "Бесплатные дни рукоделия на {{miesiac}} закончились. Счёт приостановлен до {{data}}. Ваш {{count}} ряд и всё остальное сохранены.",
@@ -251,7 +268,13 @@
     "ukonczono_wiersz": "Завершён {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Завершён {{data}}",
     "ukonczono_a11y": "{{nazwa}}, завершён {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завершён {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, завершён {{data}}",
+    "menu_a11y": "Ещё: {{nazwa}}",
+    "kosz_do_one": ": {{count}} элемент, до {{data}}.",
+    "kosz_do_few": ": {{count}} элемента, до {{data}}.",
+    "kosz_do_many": ": {{count}} элементов, до {{data}}.",
+    "kosz_do_other": ": {{count}} элемента, до {{data}}.",
+    "kosz_pokaz": "Показать"
   },
   "historia": {
     "pusto": "Изменений пока нет.",
@@ -273,7 +296,16 @@
     "wpisz": "Ввести верное число",
     "wpis_rozwin_a11y": "Подробнее: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Показывает, как изменить эту запись.",
-    "wpis_a11y": "с {{od}} на {{do}} в {{czas}}"
+    "wpis_a11y": "с {{od}} на {{do}} в {{czas}}",
+    "kafel_dni_one": "день вязания",
+    "kafel_dni_few": "дня вязания",
+    "kafel_dni_many": "дней вязания",
+    "kafel_dni_other": "дня вязания",
+    "kafel_rzedy_one": "ряд",
+    "kafel_rzedy_few": "ряда",
+    "kafel_rzedy_many": "рядов",
+    "kafel_rzedy_other": "ряда",
+    "kafel_czas": "время сессий"
   },
   "menu": {
     "nazwa": "Назовите проект и деталь",
@@ -576,7 +608,15 @@
     "blad_zakupu": "Покупка не прошла. Проверьте подключение и попробуйте ещё раз.",
     "przywracanie_nic": "Покупка Oczko Pro для этого Apple ID не найдена. Если вы покупали её с другим Apple ID, войдите в него в «Настройках» и попробуйте ещё раз.",
     "przywracanie_blad": "Не удалось восстановить покупки. Проверьте подключение и попробуйте ещё раз.",
-    "pro_wlaczone": "Oczko Pro включён."
+    "pro_wlaczone": "Oczko Pro включён.",
+    "kafel_dzien_tytul": "Каждый день вязания",
+    "kafel_dzien_opis": "Считайте, когда вяжете, без лимита в месяц.",
+    "kafel_urzadzenia_tytul": "Без лимита на любом устройстве",
+    "kafel_urzadzenia_opis": "iPhone, iPad и Apple Watch.",
+    "kafel_rodzina_tytul": "Для семьи",
+    "kafel_rodzina_opis": "Вы можете поделиться Pro с семьёй через «Семейный доступ».",
+    "kafel_dane_tytul": "Данные остаются у вас",
+    "kafel_dane_opis": "Проекты, описания и история остаются — с Pro или без него."
   },
   "uczciwe": {
     "tytul": "Ваш первый день рукоделия завершён",
@@ -1134,5 +1174,47 @@
     "yd_nazwa": "Ярды",
     "g_nazwa": "Граммы",
     "oz_nazwa": "Унции"
+  },
+  "dzis": {
+    "tytul": "Сегодня",
+    "pierwszy_tytul": "Первый счётчик",
+    "pierwszy_opis": "Нажимайте +1 после каждого готового ряда. Название проекта можно задать позже.",
+    "otworz_licznik": "Открыть счётчик",
+    "kontynuuj": "Продолжить",
+    "wybierz_projekt": "Выбрать проект",
+    "bez_miejsca_tytul": "Ваши проекты здесь",
+    "bez_miejsca_one": "{{count}} проект в работе. Выберите один, и «Сегодня» откроет его там, где вы остановились.",
+    "bez_miejsca_few": "{{count}} проекта в работе. Выберите один, и «Сегодня» откроет его там, где вы остановились.",
+    "bez_miejsca_many": "{{count}} проектов в работе. Выберите один, и «Сегодня» откроет его там, где вы остановились.",
+    "bez_miejsca_other": "{{count}} проекта в работе. Выберите один, и «Сегодня» откроет его там, где вы остановились.",
+    "czesc_rzad": "{{czesc}}, ряд {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, ряд {{n}} из {{cel}}",
+    "gotowe_one": "ряд готов",
+    "gotowe_few": "ряда готово",
+    "gotowe_many": "рядов готово",
+    "gotowe_other": "ряда готово",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} ряд готов, сегодня {{dzis}}",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} ряда готово, сегодня {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} рядов готово, сегодня {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} ряда готово, сегодня {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} из {{cel}} рядов готово, сегодня {{dzis}}",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} из {{cel}} рядов готово, сегодня {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} из {{cel}} рядов готово, сегодня {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} из {{cel}} рядов готово, сегодня {{dzis}}",
+    "co_dalej_one": "Через {{count}} ряд: {{tekst}} ({{ktory}} из {{razy}})",
+    "co_dalej_few": "Через {{count}} ряда: {{tekst}} ({{ktory}} из {{razy}})",
+    "co_dalej_many": "Через {{count}} рядов: {{tekst}} ({{ktory}} из {{razy}})",
+    "co_dalej_other": "Через {{count}} ряда: {{tekst}} ({{ktory}} из {{razy}})",
+    "co_dalej_teraz": "В этом ряду: {{tekst}} ({{ktory}} из {{razy}})",
+    "ten_tydzien": "На этой неделе",
+    "tydzien_pusty": "Здесь появятся дни, когда вы вяжете.",
+    "dzien_dziergany_a11y": "{{etykieta}}, день вязания",
+    "kafel_wloczka": "Пряжа и спицы"
+  },
+  "zakladki": {
+    "dzis": "Сегодня",
+    "projekty": "Проекты",
+    "narzedzia": "Инструменты",
+    "historia": "История"
   }
 }

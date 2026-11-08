@@ -65,7 +65,20 @@
     "seria_blokada_other": "Lukustuskuvalt lisati kell {{godzina}} {{count}} rida. Kas võtta tagasi?",
     "seria_zegarek_one": "Kellast lisati kell {{godzina}} {{count}} rida. Kas võtta tagasi?",
     "seria_zegarek_other": "Kellast lisati kell {{godzina}} {{count}} rida. Kas võtta tagasi?",
-    "wpisz_blad_format": "Sisesta täisarv, 0 või suurem, näiteks {{przyklad}}."
+    "wpisz_blad_format": "Sisesta täisarv, 0 või suurem, näiteks {{przyklad}}.",
+    "akcja_notatka": "Märge",
+    "akcja_wzor": "Juhend",
+    "akcja_cel": "Siht",
+    "akcja_cel_a11y": "Siht, meeldetuletus, mustrikord",
+    "akcja_stoper": "Taimer",
+    "akcja_historia": "Ajalugu",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Loenduri valikud: nimi, reanumber, lukk, lõpetamine",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rida valmis, {{sesja}} selles sessioonis",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rida valmis, {{sesja}} selles sessioonis",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} / {{cel}} rida valmis, {{sesja}} selles sessioonis",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} / {{cel}} rida valmis, {{sesja}} selles sessioonis"
   },
   "limit": {
     "zawczasu_one": "Tasuta käsitööpäevi ({{miesiac}}) pole enam alles. Loendamine on peatatud kuni {{data}}. Sinu {{count}} rida ja kõik muu jääb alles.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Lõpetatud {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Lõpetatud {{data}}",
     "ukonczono_a11y": "{{nazwa}}, lõpetatud {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, lõpetatud {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, lõpetatud {{data}}",
+    "menu_a11y": "Veel: {{nazwa}}",
+    "kosz_do_one": ": {{count}} üksus, kuni {{data}}.",
+    "kosz_do_other": ": {{count}} üksust, kuni {{data}}.",
+    "kosz_pokaz": "Näita"
   },
   "historia": {
     "pusto": "Muudatusi veel pole.",
@@ -217,7 +234,12 @@
     "wpisz": "Sisesta õige arv",
     "wpis_rozwin_a11y": "Lisateave: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Näitab, kuidas seda kirjet muuta.",
-    "wpis_a11y": "{{od}} asemel {{do}}, kell {{czas}}"
+    "wpis_a11y": "{{od}} asemel {{do}}, kell {{czas}}",
+    "kafel_dni_one": "käsitööpäev",
+    "kafel_dni_other": "käsitööpäeva",
+    "kafel_rzedy_one": "rida",
+    "kafel_rzedy_other": "rida",
+    "kafel_czas": "sessiooniaeg"
   },
   "menu": {
     "nazwa": "Pane projektile ja tükile nimi",
@@ -468,7 +490,15 @@
     "blad_zakupu": "Ost ei õnnestunud. Kontrolli ühendust ja proovi uuesti.",
     "przywracanie_nic": "Selle Apple ID jaoks ei leitud Oczko Pro ostu. Kui ostsid selle teise Apple ID-ga, logi sellega rakenduses Seaded sisse ja proovi uuesti.",
     "przywracanie_blad": "Oste ei saanud taastada. Kontrolli ühendust ja proovi uuesti.",
-    "pro_wlaczone": "Oczko Pro on sees."
+    "pro_wlaczone": "Oczko Pro on sees.",
+    "kafel_dzien_tytul": "Iga käsitööpäev",
+    "kafel_dzien_opis": "Loe, kui kudud või heegeldad, ilma kuupiiranguta.",
+    "kafel_urzadzenia_tytul": "Piiranguta igas seadmes",
+    "kafel_urzadzenia_opis": "iPhone, iPad ja Apple Watch.",
+    "kafel_rodzina_tytul": "Sinu perele",
+    "kafel_rodzina_opis": "Saad seda perega jagada funktsiooni Family Sharing abil.",
+    "kafel_dane_tytul": "Sinu andmed jäävad sinule",
+    "kafel_dane_opis": "Projektid, juhendid ja ajalugu jäävad alles, olgu Pro olemas või mitte."
   },
   "uczciwe": {
     "tytul": "Sinu esimene käsitööpäev on tehtud",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Jardid",
     "g_nazwa": "Grammid",
     "oz_nazwa": "Untsid"
+  },
+  "dzis": {
+    "tytul": "Täna",
+    "pierwszy_tytul": "Esimene loendur",
+    "pierwszy_opis": "Puuduta +1 pärast iga valmis rida. Projektile saad nime anda hiljem.",
+    "otworz_licznik": "Ava loendur",
+    "kontynuuj": "Jätka",
+    "wybierz_projekt": "Vali projekt",
+    "bez_miejsca_tytul": "Sinu projektid on siin",
+    "bez_miejsca_one": "{{count}} projekt pooleli. Vali üks ja Täna avab selle kohast, kus pooleli jäid.",
+    "bez_miejsca_other": "{{count}} projekti pooleli. Vali üks ja Täna avab selle kohast, kus pooleli jäid.",
+    "czesc_rzad": "{{czesc}}, rida {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rida {{n}} / {{cel}}",
+    "gotowe_one": "rida valmis",
+    "gotowe_other": "rida valmis",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rida valmis, täna {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rida valmis, täna {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} / {{cel}} rida valmis, täna {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} / {{cel}} rida valmis, täna {{dzis}}",
+    "co_dalej_one": "{{count}} rea pärast: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_other": "{{count}} rea pärast: {{tekst}} ({{ktory}} / {{razy}})",
+    "co_dalej_teraz": "Selles reas: {{tekst}} ({{ktory}} / {{razy}})",
+    "ten_tydzien": "See nädal",
+    "tydzien_pusty": "Siin näed päevi, mil kudusid või heegeldasid.",
+    "dzien_dziergany_a11y": "{{etykieta}}, käsitööpäev",
+    "kafel_wloczka": "Lõng ja vardad"
+  },
+  "zakladki": {
+    "dzis": "Täna",
+    "projekty": "Projektid",
+    "narzedzia": "Tööriistad",
+    "historia": "Ajalugu"
   }
 }

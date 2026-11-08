@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "Tanda sesi ini: {{count}} tusuk sejak {{godzina}}",
     "seria_blokada_other": "{{count}} baris ditambahkan dari layar kunci pukul {{godzina}}. Urungkan?",
     "seria_zegarek_other": "{{count}} baris ditambahkan dari jam tangan Anda pukul {{godzina}}. Urungkan?",
-    "wpisz_blad_format": "Masukkan bilangan bulat, 0 atau lebih, misalnya {{przyklad}}."
+    "wpisz_blad_format": "Masukkan bilangan bulat, 0 atau lebih, misalnya {{przyklad}}.",
+    "akcja_notatka": "Catatan",
+    "akcja_wzor": "Pola",
+    "akcja_cel": "Target",
+    "akcja_cel_a11y": "Target, pengingat, pengulangan",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Riwayat",
+    "projekt_wejscie": "Proyek ›",
+    "projekt_wejscie_a11y": "Proyek: {{projekt}}",
+    "menu_wiecej_a11y": "Opsi penghitung: nama, nomor baris, kunci, selesai",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} baris selesai, {{sesja}} di sesi ini",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} dari {{cel}} baris selesai, {{sesja}} di sesi ini"
   },
   "limit": {
     "zawczasu_other": "Hari berkarya gratis di {{miesiac}} sudah habis. Penghitungan dijeda hingga {{data}}. {{count}} baris Anda dan semua data lain tetap tersimpan.",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "Selesai {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Selesai {{data}}",
     "ukonczono_a11y": "{{nazwa}}, selesai {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, selesai {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, selesai {{data}}",
+    "menu_a11y": "Lainnya: {{nazwa}}",
+    "kosz_do_other": ": {{count}} item, hingga {{data}}.",
+    "kosz_pokaz": "Tampilkan"
   },
   "historia": {
     "pusto": "Belum ada perubahan.",
@@ -189,7 +203,10 @@
     "wpisz": "Masukkan angka yang benar",
     "wpis_rozwin_a11y": "Selengkapnya tentang {{wpis}}",
     "wpis_rozwin_podpowiedz": "Menampilkan cara mengubah entri ini.",
-    "wpis_a11y": "{{od}} menjadi {{do}} pukul {{czas}}"
+    "wpis_a11y": "{{od}} menjadi {{do}} pukul {{czas}}",
+    "kafel_dni_other": "hari merajut",
+    "kafel_rzedy_other": "baris",
+    "kafel_czas": "waktu sesi"
   },
   "menu": {
     "nazwa": "Beri nama proyek dan bagian",
@@ -414,7 +431,15 @@
     "blad_zakupu": "Pembelian tidak berhasil. Periksa koneksi Anda dan coba lagi.",
     "przywracanie_nic": "Tidak ditemukan pembelian Oczko Pro untuk Apple ID ini. Jika Anda membelinya dengan Apple ID lain, masuk dengan Apple ID tersebut di Pengaturan dan coba lagi.",
     "przywracanie_blad": "Tidak dapat memulihkan pembelian. Periksa koneksi Anda dan coba lagi.",
-    "pro_wlaczone": "Oczko Pro aktif."
+    "pro_wlaczone": "Oczko Pro aktif.",
+    "kafel_dzien_tytul": "Setiap hari merajut",
+    "kafel_dzien_opis": "Hitung kapan pun Anda merajut, tanpa batas bulanan.",
+    "kafel_urzadzenia_tytul": "Tanpa batas di perangkat mana pun",
+    "kafel_urzadzenia_opis": "iPhone, iPad, dan Apple Watch.",
+    "kafel_rodzina_tytul": "Untuk keluarga",
+    "kafel_rodzina_opis": "Anda dapat membagikannya ke keluarga lewat Keluarga Berbagi.",
+    "kafel_dane_tytul": "Data tetap milik Anda",
+    "kafel_dane_opis": "Proyek, pola, dan riwayat tetap ada, dengan atau tanpa Pro."
   },
   "uczciwe": {
     "tytul": "Hari berkarya pertama Anda selesai",
@@ -876,5 +901,32 @@
     "yd_nazwa": "Yard",
     "g_nazwa": "Gram",
     "oz_nazwa": "Ounce"
+  },
+  "dzis": {
+    "tytul": "Hari Ini",
+    "pierwszy_tytul": "Penghitung pertama",
+    "pierwszy_opis": "Ketuk +1 setelah setiap baris selesai. Nama proyek bisa diberikan nanti.",
+    "otworz_licznik": "Buka penghitung",
+    "kontynuuj": "Lanjutkan",
+    "wybierz_projekt": "Pilih proyek",
+    "bez_miejsca_tytul": "Proyek Anda ada di sini",
+    "bez_miejsca_other": "{{count}} proyek sedang berjalan. Pilih satu, dan Hari Ini akan membukanya di tempat Anda berhenti.",
+    "czesc_rzad": "{{czesc}}, baris {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, baris {{n}} dari {{cel}}",
+    "gotowe_other": "baris selesai",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} baris selesai, hari ini {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} dari {{cel}} baris selesai, hari ini {{dzis}}",
+    "co_dalej_other": "Dalam {{count}} baris: {{tekst}} ({{ktory}} dari {{razy}})",
+    "co_dalej_teraz": "Baris ini: {{tekst}} ({{ktory}} dari {{razy}})",
+    "ten_tydzien": "Minggu Ini",
+    "tydzien_pusty": "Di sini Anda akan melihat hari-hari Anda merajut.",
+    "dzien_dziergany_a11y": "{{etykieta}}, hari merajut",
+    "kafel_wloczka": "Benang dan jarum"
+  },
+  "zakladki": {
+    "dzis": "Hari Ini",
+    "projekty": "Proyek",
+    "narzedzia": "Alat",
+    "historia": "Riwayat"
   }
 }

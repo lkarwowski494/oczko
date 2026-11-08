@@ -65,7 +65,20 @@
     "seria_blokada_other": "{{count}} varv lades till från låsskärmen kl. {{godzina}}. Ångra?",
     "seria_zegarek_one": "{{count}} varv lades till på din klocka kl. {{godzina}}. Ångra?",
     "seria_zegarek_other": "{{count}} varv lades till på din klocka kl. {{godzina}}. Ångra?",
-    "wpisz_blad_format": "Ange ett heltal, 0 eller större, till exempel {{przyklad}}."
+    "wpisz_blad_format": "Ange ett heltal, 0 eller större, till exempel {{przyklad}}.",
+    "akcja_notatka": "Anteckning",
+    "akcja_wzor": "Mönster",
+    "akcja_cel": "Mål",
+    "akcja_cel_a11y": "Mål, påminnelse, rapport",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Historik",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Alternativ för räknaren: namn, varvnummer, lås, avsluta",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} varv klart, {{sesja}} i den här sessionen",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} varv klara, {{sesja}} i den här sessionen",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} av {{cel}} varv klara, {{sesja}} i den här sessionen",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} av {{cel}} varv klara, {{sesja}} i den här sessionen"
   },
   "limit": {
     "zawczasu_one": "Inga gratis hantverksdagar kvar i {{miesiac}}. Räkningen är pausad till {{data}}. Ditt {{count}} varv och allt annat finns kvar.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Färdigt {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Färdigt {{data}}",
     "ukonczono_a11y": "{{nazwa}}, färdigt {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, färdigt {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, färdigt {{data}}",
+    "menu_a11y": "Mer: {{nazwa}}",
+    "kosz_do_one": ": {{count}} objekt, till {{data}}.",
+    "kosz_do_other": ": {{count}} objekt, till {{data}}.",
+    "kosz_pokaz": "Visa"
   },
   "historia": {
     "pusto": "Inga ändringar ännu.",
@@ -217,7 +234,12 @@
     "wpisz": "Ange rätt antal",
     "wpis_rozwin_a11y": "Mer om {{wpis}}",
     "wpis_rozwin_podpowiedz": "Visar hur du ändrar posten.",
-    "wpis_a11y": "{{od}} till {{do}} kl. {{czas}}"
+    "wpis_a11y": "{{od}} till {{do}} kl. {{czas}}",
+    "kafel_dni_one": "handarbetsdag",
+    "kafel_dni_other": "handarbetsdagar",
+    "kafel_rzedy_one": "varv",
+    "kafel_rzedy_other": "varv",
+    "kafel_czas": "sessionstid"
   },
   "menu": {
     "nazwa": "Namnge projekt och del",
@@ -468,7 +490,15 @@
     "blad_zakupu": "Köpet gick inte igenom. Kontrollera anslutningen och försök igen.",
     "przywracanie_nic": "Inget köp av Oczko Pro hittades för detta Apple-ID. Om du köpte det med ett annat Apple-ID loggar du in med det i Inställningar och försöker igen.",
     "przywracanie_blad": "Kunde inte återställa köp. Kontrollera anslutningen och försök igen.",
-    "pro_wlaczone": "Oczko Pro är på."
+    "pro_wlaczone": "Oczko Pro är på.",
+    "kafel_dzien_tytul": "Varje handarbetsdag",
+    "kafel_dzien_opis": "Räkna varje gång du stickar eller virkar, utan månadsgräns.",
+    "kafel_urzadzenia_tytul": "Ingen gräns på någon enhet",
+    "kafel_urzadzenia_opis": "iPhone, iPad och Apple Watch.",
+    "kafel_rodzina_tytul": "För din familj",
+    "kafel_rodzina_opis": "Du kan dela det med din familj via Familjedelning.",
+    "kafel_dane_tytul": "Dina data är dina",
+    "kafel_dane_opis": "Projekt, mönster och historik finns kvar, med eller utan Pro."
   },
   "uczciwe": {
     "tytul": "Din första hantverksdag är klar",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Yard",
     "g_nazwa": "Gram",
     "oz_nazwa": "Uns"
+  },
+  "dzis": {
+    "tytul": "Idag",
+    "pierwszy_tytul": "Första varvräknaren",
+    "pierwszy_opis": "Tryck på +1 efter varje färdigt varv. Du kan namnge projektet senare.",
+    "otworz_licznik": "Öppna varvräknaren",
+    "kontynuuj": "Fortsätt",
+    "wybierz_projekt": "Välj ett projekt",
+    "bez_miejsca_tytul": "Dina projekt finns här",
+    "bez_miejsca_one": "{{count}} projekt pågår. Välj ett, så öppnar Idag det där du slutade.",
+    "bez_miejsca_other": "{{count}} projekt pågår. Välj ett, så öppnar Idag det där du slutade.",
+    "czesc_rzad": "{{czesc}}, varv {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, varv {{n}} av {{cel}}",
+    "gotowe_one": "varv klart",
+    "gotowe_other": "varv klara",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} varv klart, idag {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} varv klara, idag {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} av {{cel}} varv klara, idag {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} av {{cel}} varv klara, idag {{dzis}}",
+    "co_dalej_one": "Om {{count}} varv: {{tekst}} ({{ktory}} av {{razy}})",
+    "co_dalej_other": "Om {{count}} varv: {{tekst}} ({{ktory}} av {{razy}})",
+    "co_dalej_teraz": "Det här varvet: {{tekst}} ({{ktory}} av {{razy}})",
+    "ten_tydzien": "Den här veckan",
+    "tydzien_pusty": "Här ser du de dagar du stickar.",
+    "dzien_dziergany_a11y": "{{etykieta}}, handarbetsdag",
+    "kafel_wloczka": "Garn och stickor"
+  },
+  "zakladki": {
+    "dzis": "Idag",
+    "projekty": "Projekt",
+    "narzedzia": "Verktyg",
+    "historia": "Historik"
   }
 }

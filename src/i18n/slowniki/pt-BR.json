@@ -80,7 +80,22 @@
     "seria_zegarek_one": "{{count}} carreira adicionada no seu relógio às {{godzina}}. Desfazer?",
     "seria_zegarek_many": "{{count}} carreiras adicionadas no seu relógio às {{godzina}}. Desfazer?",
     "seria_zegarek_other": "{{count}} carreiras adicionadas no seu relógio às {{godzina}}. Desfazer?",
-    "wpisz_blad_format": "Digite um número inteiro, 0 ou maior, por exemplo {{przyklad}}."
+    "wpisz_blad_format": "Digite um número inteiro, 0 ou maior, por exemplo {{przyklad}}.",
+    "akcja_notatka": "Nota",
+    "akcja_wzor": "Receita",
+    "akcja_cel": "Meta",
+    "akcja_cel_a11y": "Meta, lembrete, repetição",
+    "akcja_stoper": "Timer",
+    "akcja_historia": "Histórico",
+    "projekt_wejscie": "Projeto ›",
+    "projekt_wejscie_a11y": "Projeto: {{projekt}}",
+    "menu_wiecej_a11y": "Opções do contador: nome, número da carreira, bloqueio, conclusão",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} carreira concluída, {{sesja}} nesta sessão",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} de carreiras concluídas, {{sesja}} nesta sessão",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} carreiras concluídas, {{sesja}} nesta sessão",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, {{sesja}} nesta sessão",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, {{sesja}} nesta sessão",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, {{sesja}} nesta sessão"
   },
   "limit": {
     "zawczasu_one": "Sem dias de artesanato grátis em {{miesiac}}. A contagem fica em pausa até {{data}}. Sua {{count}} carreira e todo o resto ficam guardados.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Concluído em {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Concluído em {{data}}",
     "ukonczono_a11y": "{{nazwa}}, concluído em {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, concluído em {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, concluído em {{data}}",
+    "menu_a11y": "Mais: {{nazwa}}",
+    "kosz_do_one": ": {{count}} item, até {{data}}.",
+    "kosz_do_many": ": {{count}} de itens, até {{data}}.",
+    "kosz_do_other": ": {{count}} itens, até {{data}}.",
+    "kosz_pokaz": "Mostrar"
   },
   "historia": {
     "pusto": "Nenhuma alteração ainda.",
@@ -245,7 +265,14 @@
     "wpisz": "Digitar o número certo",
     "wpis_rozwin_a11y": "Mais sobre {{wpis}}",
     "wpis_rozwin_podpowiedz": "Mostra como alterar este registro.",
-    "wpis_a11y": "{{od}} para {{do}} às {{czas}}"
+    "wpis_a11y": "{{od}} para {{do}} às {{czas}}",
+    "kafel_dni_one": "dia de tecer",
+    "kafel_dni_many": "dias de tecer",
+    "kafel_dni_other": "dias de tecer",
+    "kafel_rzedy_one": "carreira",
+    "kafel_rzedy_many": "carreiras",
+    "kafel_rzedy_other": "carreiras",
+    "kafel_czas": "tempo de sessão"
   },
   "menu": {
     "nazwa": "Dê um nome ao projeto e à parte",
@@ -522,7 +549,15 @@
     "blad_zakupu": "A compra não foi concluída. Verifique sua conexão e tente de novo.",
     "przywracanie_nic": "Nenhuma compra do Oczko Pro encontrada para este Apple ID. Se você comprou com outro Apple ID, entre com ele em Ajustes e tente de novo.",
     "przywracanie_blad": "Não foi possível restaurar as compras. Verifique sua conexão e tente de novo.",
-    "pro_wlaczone": "O Oczko Pro está ativo."
+    "pro_wlaczone": "O Oczko Pro está ativo.",
+    "kafel_dzien_tytul": "Todo dia de tecer",
+    "kafel_dzien_opis": "Conte sempre que tecer, sem limite mensal.",
+    "kafel_urzadzenia_tytul": "Sem limite em qualquer aparelho",
+    "kafel_urzadzenia_opis": "iPhone, iPad e Apple Watch.",
+    "kafel_rodzina_tytul": "Para sua família",
+    "kafel_rodzina_opis": "Você pode compartilhar com sua família pelo Compartilhamento Familiar.",
+    "kafel_dane_tytul": "Seus dados continuam seus",
+    "kafel_dane_opis": "Projetos, receitas e histórico ficam, com o Pro ou sem."
   },
   "uczciwe": {
     "tytul": "Seu primeiro dia de artesanato está concluído",
@@ -1048,5 +1083,42 @@
     "yd_nazwa": "Jardas",
     "g_nazwa": "Gramas",
     "oz_nazwa": "Onças"
+  },
+  "dzis": {
+    "tytul": "Hoje",
+    "pierwszy_tytul": "Primeiro contador",
+    "pierwszy_opis": "Toque em +1 após cada carreira concluída. Você pode dar um nome ao projeto depois.",
+    "otworz_licznik": "Abrir contador",
+    "kontynuuj": "Continuar",
+    "wybierz_projekt": "Escolha um projeto",
+    "bez_miejsca_tytul": "Seus projetos estão aqui",
+    "bez_miejsca_one": "{{count}} projeto em andamento. Escolha um, e o Hoje o abrirá de onde você parou.",
+    "bez_miejsca_many": "{{count}} de projetos em andamento. Escolha um, e o Hoje o abrirá de onde você parou.",
+    "bez_miejsca_other": "{{count}} projetos em andamento. Escolha um, e o Hoje o abrirá de onde você parou.",
+    "czesc_rzad": "{{czesc}}, carreira {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, carreira {{n}} de {{cel}}",
+    "gotowe_one": "carreira concluída",
+    "gotowe_many": "carreiras concluídas",
+    "gotowe_other": "carreiras concluídas",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} carreira concluída, hoje {{dzis}}",
+    "dzianina_a11y_many": "{{czesc}}: {{count}} de carreiras concluídas, hoje {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} carreiras concluídas, hoje {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, hoje {{dzis}}",
+    "dzianina_a11y_cel_many": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, hoje {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} de {{cel}} carreiras concluídas, hoje {{dzis}}",
+    "co_dalej_one": "Em {{count}} carreira: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_many": "Em {{count}} de carreiras: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_other": "Em {{count}} carreiras: {{tekst}} ({{ktory}} de {{razy}})",
+    "co_dalej_teraz": "Nesta carreira: {{tekst}} ({{ktory}} de {{razy}})",
+    "ten_tydzien": "Esta semana",
+    "tydzien_pusty": "Aqui você verá os dias em que teceu.",
+    "dzien_dziergany_a11y": "{{etykieta}}, dia de tecer",
+    "kafel_wloczka": "Fios e agulhas"
+  },
+  "zakladki": {
+    "dzis": "Hoje",
+    "projekty": "Projetos",
+    "narzedzia": "Ferramentas",
+    "historia": "Histórico"
   }
 }

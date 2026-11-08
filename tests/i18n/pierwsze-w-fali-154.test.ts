@@ -8,7 +8,6 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { JEZYKI_FALI, ZAKRES_FALI, brakiPrzekladu, teksty } from './fala-2026-11-03';
-import { kluczM3 } from './m3-prefiksy';
 
 const KORZEN = join(__dirname, '..', '..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -46,12 +45,8 @@ test('pierwsze_w_fali ⊆ klucze, posortowane, bez powtórzeń (lista się nie s
 test('po fali: bramka --wydanie nie pada z powodu listy oczekujących; jedyne możliwe błędy to kontrola (a) treści krytycznej (DEC-11 a, osobny krok 09)', () => {
   const r = spawnSync(process.execPath, ['scripts/sprawdz-i18n.mjs', 'src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json',
     '--krytyczne', 'docs/lokalizacja/krytyczne.json', '--przeglad', 'docs/lokalizacja/przeglad-krytyczne.json', '--wydanie'], { cwd: KORZEN, encoding: 'utf8' });
+  expect(r.stdout).not.toMatch(/oczekujace\.json niepusta/);
   const bledy = r.stdout.split('\n').filter((w) => w.startsWith('BŁĄD'));
-  // Wyjątek nazwany M3 (P-578; redesign „Dzianina”, P-559; polecenie 08 p2 pkt 5; prefiksy: ./m3-prefiksy.ts): nowe klucze partii tylko en i pl, 33 języki falą 09 po ostatniej partii.
-  // Do fali lista może zawierać WYŁĄCZNIE klucze M3 i wtedy bramka --wydanie MUSI paść z powodu listy (wydanie bez fali zablokowane); po fali — jak wyżej.
-  const m3 = OCZ.klucze.length > 0;
-  if (m3) expect(OCZ.klucze.filter((k) => !kluczM3(k))).toEqual([]);
-  if (m3) expect(r.stdout).toMatch(/oczekujace\.json niepusta/); else expect(r.stdout).not.toMatch(/oczekujace\.json niepusta/);
-  expect(bledy.filter((w) => !/kontrola \(a\) treści krytycznej/.test(w) && !(m3 && /oczekujace\.json niepusta/.test(w)))).toEqual([]);
+  expect(bledy.filter((w) => !/kontrola \(a\) treści krytycznej/.test(w))).toEqual([]);
   expect(r.status).toBe(bledy.length ? 1 : 0);
 });

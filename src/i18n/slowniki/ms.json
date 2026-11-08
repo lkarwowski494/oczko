@@ -50,7 +50,18 @@
     "znaczniki_sesji_oczka_other": "Tanda sesi ini: {{count}} gelungan sejak {{godzina}}",
     "seria_blokada_other": "{{count}} baris ditambah dari skrin kunci pada {{godzina}}. Buat asal?",
     "seria_zegarek_other": "{{count}} baris ditambah pada jam tangan anda pada {{godzina}}. Buat asal?",
-    "wpisz_blad_format": "Masukkan nombor bulat, 0 atau lebih, contohnya {{przyklad}}."
+    "wpisz_blad_format": "Masukkan nombor bulat, 0 atau lebih, contohnya {{przyklad}}.",
+    "akcja_notatka": "Nota",
+    "akcja_wzor": "Corak",
+    "akcja_cel": "Sasaran",
+    "akcja_cel_a11y": "Sasaran, peringatan, ulangan",
+    "akcja_stoper": "Pemasa",
+    "akcja_historia": "Sejarah",
+    "projekt_wejscie": "Projek ›",
+    "projekt_wejscie_a11y": "Projek: {{projekt}}",
+    "menu_wiecej_a11y": "Pilihan pembilang: nama, nombor baris, kunci, selesai",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} baris siap, {{sesja}} dalam sesi ini",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} daripada {{cel}} baris siap, {{sesja}} dalam sesi ini"
   },
   "limit": {
     "zawczasu_other": "Tiada hari berkraf percuma lagi pada {{miesiac}}. Pengiraan dijeda sehingga {{data}}. {{count}} baris anda dan semua yang lain disimpan.",
@@ -173,7 +184,10 @@
     "ukonczono_wiersz": "Selesai {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Selesai {{data}}",
     "ukonczono_a11y": "{{nazwa}}, selesai {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, selesai {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, selesai {{data}}",
+    "menu_a11y": "Lagi: {{nazwa}}",
+    "kosz_do_other": ": {{count}} item, hingga {{data}}.",
+    "kosz_pokaz": "Tunjuk"
   },
   "historia": {
     "pusto": "Belum ada perubahan.",
@@ -189,7 +203,10 @@
     "wpisz": "Masukkan nombor yang betul",
     "wpis_rozwin_a11y": "Lagi tentang {{wpis}}",
     "wpis_rozwin_podpowiedz": "Menunjukkan cara mengubah entri ini.",
-    "wpis_a11y": "{{od}} kepada {{do}} pada {{czas}}"
+    "wpis_a11y": "{{od}} kepada {{do}} pada {{czas}}",
+    "kafel_dni_other": "hari mengait",
+    "kafel_rzedy_other": "baris",
+    "kafel_czas": "masa sesi"
   },
   "menu": {
     "nazwa": "Namakan projek dan bahagian",
@@ -414,7 +431,15 @@
     "blad_zakupu": "Pembelian tidak berjaya. Semak sambungan anda dan cuba lagi.",
     "przywracanie_nic": "Tiada pembelian Oczko Pro ditemui untuk Apple ID ini. Jika anda membelinya dengan Apple ID lain, daftar masuk dengan Apple ID itu dalam Seting dan cuba lagi.",
     "przywracanie_blad": "Tidak dapat memulihkan pembelian. Semak sambungan anda dan cuba lagi.",
-    "pro_wlaczone": "Oczko Pro kini aktif."
+    "pro_wlaczone": "Oczko Pro kini aktif.",
+    "kafel_dzien_tytul": "Setiap hari mengait",
+    "kafel_dzien_opis": "Kira bila-bila masa anda mengait, tanpa had bulanan.",
+    "kafel_urzadzenia_tytul": "Tiada had pada mana-mana peranti",
+    "kafel_urzadzenia_opis": "iPhone, iPad dan Apple Watch.",
+    "kafel_rodzina_tytul": "Untuk keluarga anda",
+    "kafel_rodzina_opis": "Anda boleh berkongsi dengan keluarga anda melalui “Family Sharing”.",
+    "kafel_dane_tytul": "Data anda kekal milik anda",
+    "kafel_dane_opis": "Projek, corak dan sejarah kekal, dengan atau tanpa Pro."
   },
   "uczciwe": {
     "tytul": "Hari berkraf pertama anda selesai",
@@ -876,5 +901,32 @@
     "yd_nazwa": "Ela",
     "g_nazwa": "Gram",
     "oz_nazwa": "Auns"
+  },
+  "dzis": {
+    "tytul": "Hari Ini",
+    "pierwszy_tytul": "Pembilang pertama",
+    "pierwszy_opis": "Ketik +1 selepas setiap baris siap. Anda boleh menamakan projek kemudian.",
+    "otworz_licznik": "Buka pembilang",
+    "kontynuuj": "Teruskan",
+    "wybierz_projekt": "Pilih projek",
+    "bez_miejsca_tytul": "Projek anda ada di sini",
+    "bez_miejsca_other": "{{count}} projek sedang berjalan. Pilih satu, dan Hari Ini akan membukanya di tempat anda berhenti.",
+    "czesc_rzad": "{{czesc}}, baris {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, baris {{n}} daripada {{cel}}",
+    "gotowe_other": "baris siap",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} baris siap, hari ini {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} daripada {{cel}} baris siap, hari ini {{dzis}}",
+    "co_dalej_other": "Dalam {{count}} baris: {{tekst}} ({{ktory}} daripada {{razy}})",
+    "co_dalej_teraz": "Baris ini: {{tekst}} ({{ktory}} daripada {{razy}})",
+    "ten_tydzien": "Minggu Ini",
+    "tydzien_pusty": "Di sini anda akan melihat hari-hari anda mengait.",
+    "dzien_dziergany_a11y": "{{etykieta}}, hari mengait",
+    "kafel_wloczka": "Benang dan jarum"
+  },
+  "zakladki": {
+    "dzis": "Hari Ini",
+    "projekty": "Projek",
+    "narzedzia": "Alat",
+    "historia": "Sejarah"
   }
 }

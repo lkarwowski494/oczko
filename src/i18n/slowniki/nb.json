@@ -65,7 +65,20 @@
     "seria_blokada_other": "La til {{count}} rader fra låseskjermen kl. {{godzina}}. Angre?",
     "seria_zegarek_one": "La til {{count}} rad på klokken din kl. {{godzina}}. Angre?",
     "seria_zegarek_other": "La til {{count}} rader på klokken din kl. {{godzina}}. Angre?",
-    "wpisz_blad_format": "Skriv inn et helt tall, 0 eller mer, for eksempel {{przyklad}}."
+    "wpisz_blad_format": "Skriv inn et helt tall, 0 eller mer, for eksempel {{przyklad}}.",
+    "akcja_notatka": "Notat",
+    "akcja_wzor": "Oppskrift",
+    "akcja_cel": "Mål",
+    "akcja_cel_a11y": "Mål, påminnelse, rapport",
+    "akcja_stoper": "Tidtaker",
+    "akcja_historia": "Historikk",
+    "projekt_wejscie": "Prosjekt ›",
+    "projekt_wejscie_a11y": "Prosjekt: {{projekt}}",
+    "menu_wiecej_a11y": "Telleralternativer: navn, radnummer, lås, fullfør",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rad ferdig, {{sesja}} i denne økten",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rader ferdige, {{sesja}} i denne økten",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} av {{cel}} rader ferdige, {{sesja}} i denne økten",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} av {{cel}} rader ferdige, {{sesja}} i denne økten"
   },
   "limit": {
     "zawczasu_one": "Ingen gratis håndarbeidsdager igjen i {{miesiac}}. Tellingen er satt på pause til {{data}}. Din {{count}} rad og alt annet er bevart.",
@@ -199,7 +212,11 @@
     "ukonczono_wiersz": "Fullført {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Fullført {{data}}",
     "ukonczono_a11y": "{{nazwa}}, fullført {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, fullført {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, fullført {{data}}",
+    "menu_a11y": "Mer: {{nazwa}}",
+    "kosz_do_one": ": {{count}} element, til {{data}}.",
+    "kosz_do_other": ": {{count}} elementer, til {{data}}.",
+    "kosz_pokaz": "Vis"
   },
   "historia": {
     "pusto": "Ingen endringer ennå.",
@@ -217,7 +234,12 @@
     "wpisz": "Skriv inn riktig tall",
     "wpis_rozwin_a11y": "Mer om {{wpis}}",
     "wpis_rozwin_podpowiedz": "Viser hvordan du endrer denne oppføringen.",
-    "wpis_a11y": "{{od}} til {{do}} kl. {{czas}}"
+    "wpis_a11y": "{{od}} til {{do}} kl. {{czas}}",
+    "kafel_dni_one": "håndarbeidsdag",
+    "kafel_dni_other": "håndarbeidsdager",
+    "kafel_rzedy_one": "rad",
+    "kafel_rzedy_other": "rader",
+    "kafel_czas": "økttid"
   },
   "menu": {
     "nazwa": "Gi prosjektet og delen navn",
@@ -468,7 +490,15 @@
     "blad_zakupu": "Kjøpet gikk ikke gjennom. Sjekk tilkoblingen og prøv igjen.",
     "przywracanie_nic": "Fant ikke noe kjøp av Oczko Pro for denne Apple-ID-en. Hvis du kjøpte det med en annen Apple-ID, logg på med den i Innstillinger og prøv igjen.",
     "przywracanie_blad": "Kunne ikke gjenopprette kjøp. Sjekk tilkoblingen og prøv igjen.",
-    "pro_wlaczone": "Oczko Pro er på."
+    "pro_wlaczone": "Oczko Pro er på.",
+    "kafel_dzien_tytul": "Hver håndarbeidsdag",
+    "kafel_dzien_opis": "Tell hver gang du strikker eller hekler, uten månedsgrense.",
+    "kafel_urzadzenia_tytul": "Ingen grense på noen enhet",
+    "kafel_urzadzenia_opis": "iPhone, iPad og Apple Watch.",
+    "kafel_rodzina_tytul": "For familien din",
+    "kafel_rodzina_opis": "Du kan dele det med familien din via Familiedeling.",
+    "kafel_dane_tytul": "Dataene dine forblir dine",
+    "kafel_dane_opis": "Prosjekter, oppskrifter og historikk beholdes, med eller uten Pro."
   },
   "uczciwe": {
     "tytul": "Din første håndarbeidsdag er ferdig",
@@ -962,5 +992,37 @@
     "yd_nazwa": "Yard",
     "g_nazwa": "Gram",
     "oz_nazwa": "Unser"
+  },
+  "dzis": {
+    "tytul": "I dag",
+    "pierwszy_tytul": "Første radteller",
+    "pierwszy_opis": "Trykk på +1 etter hver ferdige rad. Du kan gi prosjektet navn senere.",
+    "otworz_licznik": "Åpne radteller",
+    "kontynuuj": "Fortsett",
+    "wybierz_projekt": "Velg et prosjekt",
+    "bez_miejsca_tytul": "Prosjektene dine er her",
+    "bez_miejsca_one": "{{count}} prosjekt pågår. Velg ett, så åpner I dag det der du slapp.",
+    "bez_miejsca_other": "{{count}} prosjekter pågår. Velg ett, så åpner I dag det der du slapp.",
+    "czesc_rzad": "{{czesc}}, rad {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rad {{n}} av {{cel}}",
+    "gotowe_one": "rad ferdig",
+    "gotowe_other": "rader ferdige",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rad ferdig, i dag {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} rader ferdige, i dag {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} av {{cel}} rader ferdige, i dag {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} av {{cel}} rader ferdige, i dag {{dzis}}",
+    "co_dalej_one": "Om {{count}} rad: {{tekst}} ({{ktory}} av {{razy}})",
+    "co_dalej_other": "Om {{count}} rader: {{tekst}} ({{ktory}} av {{razy}})",
+    "co_dalej_teraz": "Denne raden: {{tekst}} ({{ktory}} av {{razy}})",
+    "ten_tydzien": "Denne uken",
+    "tydzien_pusty": "Her ser du dagene du strikker.",
+    "dzien_dziergany_a11y": "{{etykieta}}, håndarbeidsdag",
+    "kafel_wloczka": "Garn og strikkepinner"
+  },
+  "zakladki": {
+    "dzis": "I dag",
+    "projekty": "Prosjekter",
+    "narzedzia": "Verktøy",
+    "historia": "Historikk"
   }
 }

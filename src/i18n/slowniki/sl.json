@@ -95,7 +95,24 @@
     "seria_zegarek_two": "Na uri sta bili ob {{godzina}} dodani {{count}} vrsti. Razveljavim?",
     "seria_zegarek_few": "Na uri so bile ob {{godzina}} dodane {{count}} vrste. Razveljavim?",
     "seria_zegarek_other": "Na uri je bilo ob {{godzina}} dodanih {{count}} vrst. Razveljavim?",
-    "wpisz_blad_format": "Vnesite celo število, 0 ali več, na primer {{przyklad}}."
+    "wpisz_blad_format": "Vnesite celo število, 0 ali več, na primer {{przyklad}}.",
+    "akcja_notatka": "Opomba",
+    "akcja_wzor": "Navodila",
+    "akcja_cel": "Cilj",
+    "akcja_cel_a11y": "Cilj, opomnik, ponovitev",
+    "akcja_stoper": "Štoparica",
+    "akcja_historia": "Zgodovina",
+    "projekt_wejscie": "Projekt ›",
+    "projekt_wejscie_a11y": "Projekt: {{projekt}}",
+    "menu_wiecej_a11y": "Možnosti števca: ime, številka vrstice, zaklep, dokončanje",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} dokončana vrstica, {{sesja}} v tej seji",
+    "dzianina_a11y_two": "{{czesc}}: {{count}} dokončani vrstici, {{sesja}} v tej seji",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} dokončane vrstice, {{sesja}} v tej seji",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} dokončanih vrstic, {{sesja}} v tej seji",
+    "dzianina_a11y_cel_one": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, {{sesja}} v tej seji",
+    "dzianina_a11y_cel_two": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, {{sesja}} v tej seji",
+    "dzianina_a11y_cel_few": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, {{sesja}} v tej seji",
+    "dzianina_a11y_cel_other": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, {{sesja}} v tej seji"
   },
   "limit": {
     "zawczasu_one": "Brezplačnih ustvarjalnih dni za {{miesiac}} ni več. Štetje je ustavljeno do {{data}}. Ohranjena: {{count}} vrsta in vse drugo.",
@@ -251,7 +268,13 @@
     "ukonczono_wiersz": "Končano {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Končano {{data}}",
     "ukonczono_a11y": "{{nazwa}}, končano {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, končano {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, končano {{data}}",
+    "menu_a11y": "Več: {{nazwa}}",
+    "kosz_do_one": ": {{count}} element, do {{data}}.",
+    "kosz_do_two": ": {{count}} elementa, do {{data}}.",
+    "kosz_do_few": ": {{count}} elementi, do {{data}}.",
+    "kosz_do_other": ": {{count}} elementov, do {{data}}.",
+    "kosz_pokaz": "Prikaži"
   },
   "historia": {
     "pusto": "Še ni sprememb.",
@@ -273,7 +296,16 @@
     "wpisz": "Vnesi pravo število",
     "wpis_rozwin_a11y": "Več o vnosu {{wpis}}",
     "wpis_rozwin_podpowiedz": "Prikaže, kako spremenite ta vnos.",
-    "wpis_a11y": "{{od}} na {{do}} ob {{czas}}"
+    "wpis_a11y": "{{od}} na {{do}} ob {{czas}}",
+    "kafel_dni_one": "dan z ročnim delom",
+    "kafel_dni_two": "dneva z ročnim delom",
+    "kafel_dni_few": "dnevi z ročnim delom",
+    "kafel_dni_other": "dni z ročnim delom",
+    "kafel_rzedy_one": "vrstica",
+    "kafel_rzedy_two": "vrstici",
+    "kafel_rzedy_few": "vrstice",
+    "kafel_rzedy_other": "vrstic",
+    "kafel_czas": "čas sej"
   },
   "menu": {
     "nazwa": "Poimenuj projekt in del",
@@ -576,7 +608,15 @@
     "blad_zakupu": "Nakup ni uspel. Preverite povezavo in poskusite znova.",
     "przywracanie_nic": "Za ta Apple ID ni bilo najdenega nakupa Oczko Pro. Če ste ga kupili z drugim Apple ID-jem, se z njim prijavite v Nastavitvah in poskusite znova.",
     "przywracanie_blad": "Nakupov ni bilo mogoče obnoviti. Preverite povezavo in poskusite znova.",
-    "pro_wlaczone": "Oczko Pro je vklopljen."
+    "pro_wlaczone": "Oczko Pro je vklopljen.",
+    "kafel_dzien_tytul": "Vsak dan z ročnim delom",
+    "kafel_dzien_opis": "Štejte, kadar koli pletete ali kvačkate, brez mesečne omejitve.",
+    "kafel_urzadzenia_tytul": "Brez omejitve na vsaki napravi",
+    "kafel_urzadzenia_opis": "iPhone, iPad in Apple Watch.",
+    "kafel_rodzina_tytul": "Za vašo družino",
+    "kafel_rodzina_opis": "Z drugimi člani družine ga lahko delite prek funkcije »Family Sharing«.",
+    "kafel_dane_tytul": "Vaši podatki ostanejo vaši",
+    "kafel_dane_opis": "Projekti, navodila in zgodovina ostanejo, s Pro ali brez njega."
   },
   "uczciwe": {
     "tytul": "Vaš prvi ustvarjalni dan je opravljen",
@@ -1134,5 +1174,47 @@
     "yd_nazwa": "Jardi",
     "g_nazwa": "Grami",
     "oz_nazwa": "Unče"
+  },
+  "dzis": {
+    "tytul": "Danes",
+    "pierwszy_tytul": "Prvi števec",
+    "pierwszy_opis": "Po vsaki končani vrstici tapnite +1. Projekt lahko poimenujete pozneje.",
+    "otworz_licznik": "Odpri števec",
+    "kontynuuj": "Nadaljuj",
+    "wybierz_projekt": "Izberi projekt",
+    "bez_miejsca_tytul": "Tukaj so vaši projekti",
+    "bez_miejsca_one": "{{count}} projekt v teku. Izberite enega in Danes ga bo odprl tam, kjer ste končali.",
+    "bez_miejsca_two": "{{count}} projekta v teku. Izberite enega in Danes ga bo odprl tam, kjer ste končali.",
+    "bez_miejsca_few": "{{count}} projekti v teku. Izberite enega in Danes ga bo odprl tam, kjer ste končali.",
+    "bez_miejsca_other": "{{count}} projektov v teku. Izberite enega in Danes ga bo odprl tam, kjer ste končali.",
+    "czesc_rzad": "{{czesc}}, vrstica {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, vrstica {{n}} od {{cel}}",
+    "gotowe_one": "končana vrstica",
+    "gotowe_two": "končani vrstici",
+    "gotowe_few": "končane vrstice",
+    "gotowe_other": "končanih vrstic",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} dokončana vrstica, danes {{dzis}}",
+    "dzianina_a11y_two": "{{czesc}}: {{count}} dokončani vrstici, danes {{dzis}}",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} dokončane vrstice, danes {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} dokončanih vrstic, danes {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, danes {{dzis}}",
+    "dzianina_a11y_cel_two": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, danes {{dzis}}",
+    "dzianina_a11y_cel_few": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, danes {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: dokončano {{count}} od {{cel}} vrstic, danes {{dzis}}",
+    "co_dalej_one": "Čez {{count}} vrstico: {{tekst}} ({{ktory}} od {{razy}})",
+    "co_dalej_two": "Čez {{count}} vrstici: {{tekst}} ({{ktory}} od {{razy}})",
+    "co_dalej_few": "Čez {{count}} vrstice: {{tekst}} ({{ktory}} od {{razy}})",
+    "co_dalej_other": "Čez {{count}} vrstic: {{tekst}} ({{ktory}} od {{razy}})",
+    "co_dalej_teraz": "V tej vrstici: {{tekst}} ({{ktory}} od {{razy}})",
+    "ten_tydzien": "Ta teden",
+    "tydzien_pusty": "Tukaj boste videli dneve, ko ste pletli.",
+    "dzien_dziergany_a11y": "{{etykieta}}, dan z ročnim delom",
+    "kafel_wloczka": "Preja in pletilke"
+  },
+  "zakladki": {
+    "dzis": "Danes",
+    "projekty": "Projekti",
+    "narzedzia": "Orodja",
+    "historia": "Zgodovina"
   }
 }

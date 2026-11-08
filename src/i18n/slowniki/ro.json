@@ -80,7 +80,22 @@
     "seria_zegarek_one": "S-a adăugat {{count}} rând de pe ceas la {{godzina}}. Anulați?",
     "seria_zegarek_few": "S-au adăugat {{count}} rânduri de pe ceas la {{godzina}}. Anulați?",
     "seria_zegarek_other": "S-au adăugat {{count}} de rânduri de pe ceas la {{godzina}}. Anulați?",
-    "wpisz_blad_format": "Introduceți un număr întreg, 0 sau mai mare, de exemplu {{przyklad}}."
+    "wpisz_blad_format": "Introduceți un număr întreg, 0 sau mai mare, de exemplu {{przyklad}}.",
+    "akcja_notatka": "Notiță",
+    "akcja_wzor": "Model",
+    "akcja_cel": "Țintă",
+    "akcja_cel_a11y": "Țintă, memento, raport",
+    "akcja_stoper": "Cronometru",
+    "akcja_historia": "Istoric",
+    "projekt_wejscie": "Proiect ›",
+    "projekt_wejscie_a11y": "Proiect: {{projekt}}",
+    "menu_wiecej_a11y": "Opțiuni numărător: nume, număr de rând, blocare, finalizare",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rând terminat, {{sesja}} în această sesiune",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} rânduri terminate, {{sesja}} în această sesiune",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} de rânduri terminate, {{sesja}} în această sesiune",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, {{sesja}} în această sesiune",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, {{sesja}} în această sesiune",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, {{sesja}} în această sesiune"
   },
   "limit": {
     "zawczasu_one": "Nu mai ai zile de lucru gratuite în {{miesiac}}. Numărarea e oprită până la {{data}}. Rândul tău ({{count}}) și restul se păstrează.",
@@ -225,7 +240,12 @@
     "ukonczono_wiersz": "Terminat pe {{data}} · {{czas}}",
     "ukonczono_bez_czasu": "Terminat pe {{data}}",
     "ukonczono_a11y": "{{nazwa}}, terminat pe {{data}}, {{czas}}",
-    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminat pe {{data}}"
+    "ukonczono_bez_czasu_a11y": "{{nazwa}}, terminat pe {{data}}",
+    "menu_a11y": "Mai multe: {{nazwa}}",
+    "kosz_do_one": ": {{count}} element, până la {{data}}.",
+    "kosz_do_few": ": {{count}} elemente, până la {{data}}.",
+    "kosz_do_other": ": {{count}} de elemente, până la {{data}}.",
+    "kosz_pokaz": "Afișează"
   },
   "historia": {
     "pusto": "Nicio modificare încă.",
@@ -245,7 +265,14 @@
     "wpisz": "Introduceți numărul corect",
     "wpis_rozwin_a11y": "Mai multe despre {{wpis}}",
     "wpis_rozwin_podpowiedz": "Arată cum se modifică această intrare.",
-    "wpis_a11y": "{{od}} la {{do}}, ora {{czas}}"
+    "wpis_a11y": "{{od}} la {{do}}, ora {{czas}}",
+    "kafel_dni_one": "zi de împletit",
+    "kafel_dni_few": "zile de împletit",
+    "kafel_dni_other": "de zile de împletit",
+    "kafel_rzedy_one": "rând",
+    "kafel_rzedy_few": "rânduri",
+    "kafel_rzedy_other": "de rânduri",
+    "kafel_czas": "timp în sesiuni"
   },
   "menu": {
     "nazwa": "Denumește proiectul și piesa",
@@ -522,7 +549,15 @@
     "blad_zakupu": "Achiziția nu s-a efectuat. Verificați conexiunea și încercați din nou.",
     "przywracanie_nic": "Nu s-a găsit nicio achiziție Oczko Pro pentru acest ID Apple. Dacă l-ați cumpărat cu alt ID Apple, conectați-vă cu acela în Configurări și încercați din nou.",
     "przywracanie_blad": "Achizițiile nu au putut fi restaurate. Verificați conexiunea și încercați din nou.",
-    "pro_wlaczone": "Oczko Pro este activat."
+    "pro_wlaczone": "Oczko Pro este activat.",
+    "kafel_dzien_tytul": "Fiecare zi de împletit",
+    "kafel_dzien_opis": "Numără oricând împletești, fără limită lunară.",
+    "kafel_urzadzenia_tytul": "Fără limită, pe orice dispozitiv",
+    "kafel_urzadzenia_opis": "iPhone, iPad și Apple Watch.",
+    "kafel_rodzina_tytul": "Pentru familie",
+    "kafel_rodzina_opis": "Îl poți partaja cu familia prin Partajare familială.",
+    "kafel_dane_tytul": "Datele rămân ale tale",
+    "kafel_dane_opis": "Proiectele, modelele și istoricul rămân, cu sau fără Pro."
   },
   "uczciwe": {
     "tytul": "Prima ta zi de lucru s-a terminat",
@@ -1048,5 +1083,42 @@
     "yd_nazwa": "Iarzi",
     "g_nazwa": "Grame",
     "oz_nazwa": "Uncii"
+  },
+  "dzis": {
+    "tytul": "Astăzi",
+    "pierwszy_tytul": "Primul numărător",
+    "pierwszy_opis": "Apasă +1 după fiecare rând terminat. Proiectul îl poți numi mai târziu.",
+    "otworz_licznik": "Deschide numărătorul",
+    "kontynuuj": "Continuă",
+    "wybierz_projekt": "Alege un proiect",
+    "bez_miejsca_tytul": "Proiectele tale sunt aici",
+    "bez_miejsca_one": "{{count}} proiect în lucru. Alege-l, iar Astăzi îl va deschide acolo unde te-ai oprit.",
+    "bez_miejsca_few": "{{count}} proiecte în lucru. Alege unul, iar Astăzi îl va deschide acolo unde te-ai oprit.",
+    "bez_miejsca_other": "{{count}} de proiecte în lucru. Alege unul, iar Astăzi îl va deschide acolo unde te-ai oprit.",
+    "czesc_rzad": "{{czesc}}, rândul {{n}}",
+    "czesc_rzad_cel": "{{czesc}}, rândul {{n}} din {{cel}}",
+    "gotowe_one": "rând terminat",
+    "gotowe_few": "rânduri terminate",
+    "gotowe_other": "de rânduri terminate",
+    "dzianina_a11y_one": "{{czesc}}: {{count}} rând terminat, azi {{dzis}}",
+    "dzianina_a11y_few": "{{czesc}}: {{count}} rânduri terminate, azi {{dzis}}",
+    "dzianina_a11y_other": "{{czesc}}: {{count}} de rânduri terminate, azi {{dzis}}",
+    "dzianina_a11y_cel_one": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, azi {{dzis}}",
+    "dzianina_a11y_cel_few": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, azi {{dzis}}",
+    "dzianina_a11y_cel_other": "{{czesc}}: {{count}} din {{cel}} rânduri terminate, azi {{dzis}}",
+    "co_dalej_one": "Peste {{count}} rând: {{tekst}} ({{ktory}} din {{razy}})",
+    "co_dalej_few": "Peste {{count}} rânduri: {{tekst}} ({{ktory}} din {{razy}})",
+    "co_dalej_other": "Peste {{count}} de rânduri: {{tekst}} ({{ktory}} din {{razy}})",
+    "co_dalej_teraz": "Acest rând: {{tekst}} ({{ktory}} din {{razy}})",
+    "ten_tydzien": "Săptămâna aceasta",
+    "tydzien_pusty": "Aici vei vedea zilele în care împletești.",
+    "dzien_dziergany_a11y": "{{etykieta}}, zi de împletit",
+    "kafel_wloczka": "Fire și andrele"
+  },
+  "zakladki": {
+    "dzis": "Astăzi",
+    "projekty": "Proiecte",
+    "narzedzia": "Instrumente",
+    "historia": "Istoric"
   }
 }
