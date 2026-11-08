@@ -11,13 +11,13 @@ Nowe/zmienione testy napisane przed kodem, uruchomione na bazie partii (tokeny i
 - Po implementacji `tests/dzianina`: 4 zestawy, 72 testy zielone.
 
 ## Zrobione (commity `[M3 p1] …`)
-1. abcd11d zależność `react-native-svg` 15.15.4 (+ PRZYPIETE, wiersz ADR-0016).
+abcd11d zależność react-native-svg 15.15.4 · 4d58677 podmiana systemu + atlas · 15344b3 motyw, komponenty wspólne, krój, ikona, Dzianina, Liczba · cbca02a przeniesienie nowych testów do katalogów tabeli 07→08 · 0a7616e, d1279e6, b9f8a27 testy starego systemu → Dzianina (wykaz: `m3-p1-zastapione-testy.md`) · ostatni: tabela-08 + stan.
 
-## W toku / do zrobienia (kolejność)
-- podmiana systemu: stary `design-spec.md`/`tokeny.json`/`ikona/` → `docs/design/archiwum/2026-11-08-kreski/`; Dzianina na miejsce (zrobione lokalnie, niezacommitowane)
-- `motyw.ts` na tokeny Dzianiny z aliasami z mapy (zrobione lokalnie), komponenty wspólne `Arkusz`, `Formularze`, `Pasek`, `SymbolSf`, `StanWczytywania` (przycisk wypełniony, nieaktywny z ramą przerywaną, bez obrysu)
-- krój Bree (zrobione lokalnie: assets/fonts, app.json), ikona i splash (assets + app.json tła), haptyka (adapter + testy), atlas (3 skrypty + 3 testy), `e2e-kontrakt-04`, pozostałe testy czytające stary system
-- `npm run verify`, `jakosc:kontrole`, raport do koordynatora (≤ 15 linii) z listą zastąpionych testów
+## Dowody (koniec partii)
+`npm run verify` kod 0: 502 zestawy, **5289 testów** (baza 5216); `jakosc:kontrole` w ramach verify kod 0 (i18n:kod bez błędów); atlas `generuj.mjs --check` i `waliduj.mjs` 0 błędów. Nie sprawdzono: urządzenie (VoiceOver, haptyka, cyfry w komórkach, SF Symbols), E2E iOS (koordynator), zrzuty (brak Expo web).
+
+## Do zrobienia przez następne partie / 04
+Wpięcie `Liczba`/`Dzianina`/`typografiaDzianiny`/`krojTytulowy(język)` w ekrany (p2–p7); haptyka (adapter bez zmian do p3a); ikona wyboru zamiast ✓ (p4); usunięcie aliasów starych nazw ról.
 
 ## Decyzje własne partii / odstępstwa (do raportu)
 - Aliasy starych nazw ról w `motyw.ts` (papier, grafit…) wg `mapa-tokenow.md`: ekrany p2–p8 niezmienione w p1; `blad` → `niszczacy` (pozostałe użycia to działania usuwające), `tekstNaZakreslaczu` → `naAkcencie` (odstępstwo od mapy: żółć zakreślacza w obu motywach).
