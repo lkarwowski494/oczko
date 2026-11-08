@@ -468,7 +468,6 @@
     "dozywotni_przy_subskrypcji": "Your subscription keeps renewing until you cancel it.",
     "bez_pro_one": "Without Pro: {{limit}} crafting day every month, and all your projects and data, always.",
     "bez_pro_other": "Without Pro: {{limit}} crafting days every month, and all your projects and data, always.",
-    "rodzina": "Shared with your family through Family Sharing.",
     "kup": "Continue with {{plan}}",
     "przywroc": "Restore purchases",
     "polityka": "Privacy Policy",
@@ -482,7 +481,15 @@
     "blad_zakupu": "The purchase didn’t go through. Check your connection and try again.",
     "przywracanie_nic": "No Oczko Pro purchase found for this Apple ID. If you bought it with another Apple ID, sign in with that one in Settings and try again.",
     "przywracanie_blad": "Couldn’t restore purchases. Check your connection and try again.",
-    "pro_wlaczone": "Oczko Pro is on."
+    "pro_wlaczone": "Oczko Pro is on.",
+    "kafel_dzien_tytul": "Every crafting day",
+    "kafel_dzien_opis": "Count whenever you craft, with no monthly limit.",
+    "kafel_urzadzenia_tytul": "No limit on any device",
+    "kafel_urzadzenia_opis": "iPhone, iPad, and Apple Watch.",
+    "kafel_rodzina_tytul": "For your family",
+    "kafel_rodzina_opis": "You can share it with your family through Family Sharing.",
+    "kafel_dane_tytul": "Your data stays yours",
+    "kafel_dane_opis": "Projects, patterns, and history stay, with Pro or without."
   },
   "uczciwe": {
     "tytul": "Your first crafting day is done",

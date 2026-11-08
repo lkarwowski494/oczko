@@ -1,5 +1,5 @@
 {
-  "powod": "M3 p2+p3a (2026-11-08): klucze „Dziś”, zakładek i licznika tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
+  "powod": "M3 p2+p3a+p7 (2026-11-08): klucze „Dziś”, zakładek, licznika i Oczko Pro (kafle) tylko en i pl; 33 języki falą 09 po ostatniej partii M3 (P-559). Wcześniej: fala 2026-11-03 (P-473, P-474, P-481) — lista była pusta.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -49,6 +49,14 @@
     "licznik.menu_wiecej_a11y",
     "licznik.projekt_wejscie",
     "licznik.projekt_wejscie_a11y",
+    "oferty.kafel_dane_opis",
+    "oferty.kafel_dane_tytul",
+    "oferty.kafel_dzien_opis",
+    "oferty.kafel_dzien_tytul",
+    "oferty.kafel_rodzina_opis",
+    "oferty.kafel_rodzina_tytul",
+    "oferty.kafel_urzadzenia_opis",
+    "oferty.kafel_urzadzenia_tytul",
     "zakladki.dzis",
     "zakladki.historia",
     "zakladki.narzedzia",
@@ -144,6 +152,30 @@
       "pl"
     ],
     "licznik.projekt_wejscie_a11y": [
+      "pl"
+    ],
+    "oferty.kafel_dane_opis": [
+      "pl"
+    ],
+    "oferty.kafel_dane_tytul": [
+      "pl"
+    ],
+    "oferty.kafel_dzien_opis": [
+      "pl"
+    ],
+    "oferty.kafel_dzien_tytul": [
+      "pl"
+    ],
+    "oferty.kafel_rodzina_opis": [
+      "pl"
+    ],
+    "oferty.kafel_rodzina_tytul": [
+      "pl"
+    ],
+    "oferty.kafel_urzadzenia_opis": [
+      "pl"
+    ],
+    "oferty.kafel_urzadzenia_tytul": [
       "pl"
     ],
     "zakladki.dzis": [
