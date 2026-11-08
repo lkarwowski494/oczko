@@ -275,7 +275,7 @@ export function style(k: Kolory) {
     zwykly: { ...typografia.tresc, color: k.tekst },
     blad: { ...typografia.tresc, color: kolor(k, ark.blad.kolor) },
     bladWiersz: { flexDirection: 'row', alignItems: 'flex-start', columnGap: odstep.s },
-    bladZnak: { borderWidth: 2, borderColor: kolor(k, ark.blad.znakObrys), alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+    bladZnak: { borderWidth: 2, borderColor: kolor(k, ark.blad.znakObrys), alignItems: 'center', justifyContent: 'center' },
     bladZnakTekst: { ...typografiaDzianiny.mala, fontWeight: '800', color: kolor(k, ark.blad.kolor) },
   });
 }
