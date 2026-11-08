@@ -201,3 +201,6 @@ OK   10.87:1 (min 4.5) systemCzarny: akcentTekst/kartaStack #F0CF8A na #1E2024
 OK   10.87:1 (min 3) systemCzarny: przycisk/kartaStack (UI) #F0CF8A na #1E2024
 OK   14.01:1 (min 3) systemCzarny: znak kresek/kartaStack (grafika) #F1EDE9 na #1E2024
 OK   11.12:1 (min 4.5) systemCzarny: przyciskTekst/przycisk #221D1A na #F0CF8A
+OK   16.68:1 (min 3) wzor: znacznik/strona (grafika) #221D1A na #FFFFFF
+OK   14.78:1 (min 4.5) wzor: etykietaTekst/etykietaTlo #F3F1EC na #221D1A
+OK   16.68:1 (min 3) wzor: etykietaTlo/strona (UI) #221D1A na #FFFFFF

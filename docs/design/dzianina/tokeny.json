@@ -53,9 +53,9 @@
     "zakladka": { "kroj": "tresc", "pt": 11, "waga": 600, "maxSkala": 1.6 }
   },
   "odstepy": { "jednostka": 4, "xs": 4, "s": 8, "m": 12, "l": 16, "xl": 20, "xxl": 24 },
-  "promienie": { "_hierarchia": "karta > kafel > przycisk > próbka dnia; okrągłe +1 = połowa boku", "karta": 22, "kafel": 18, "przycisk": 14, "pole": 10, "dzien": 10, "plus": "50%" },
-  "cele": { "minimum": 44, "plus": 72, "plusLicznik": 168, "dzienKalendarza": 44 },
-  "ruch": { "rzadOczek": 180, "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
+  "promienie": { "_hierarchia": "karta > kafel > przycisk > próbka dnia; okrągłe +1 = połowa boku", "karta": 22, "kafel": 18, "przycisk": 14, "pole": 10, "dzien": 10, "plus": "50%", "plusLicznik": 26, "lista": 16 },
+  "cele": { "minimum": 44, "plus": 72, "plusLicznik": 168, "minus": 72, "odstepMinusPlus": 12, "paskaWzoru": { "wysokosc": 52, "minSzerokosc": 64 }, "dzienKalendarza": 44 },
+  "ruch": { "rzadOczek": 180, "krzywa": "easeOut", "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
   "haptyka": { "rzad": "impactLight", "przypomnienie": "notificationWarning", "celCzesci": "notificationSuccess", "cofniecie": "impactSoft", "blokada": "selection", "bladZapisu": "notificationError", "stoperStart": "impactLight" },
   "haptykaZegarek": { "_opis": "watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, przeniesione 1:1 z ../tokeny.json, P-142, ADR-0030). Klucze jak w „haptyka”; zwykły rząd na zegarku bez zmian (decyzja 08 przy celu watch).", "bladZapisu": "retry", "blokada": "failure", "przypomnienie": "notification" },
   "miniatura": {
@@ -66,5 +66,6 @@
     "wyspa": { "_gdzie": "Dynamic Island compact i rozwinięta", "wysokosc": 18, "szerokosc": 19.5, "kreska": 2.0, "maxSkala": 1.2 },
     "smartStack": { "_gdzie": "Smart Stack zegarka i CarPlay", "wysokosc": 13, "szerokosc": 14, "kreska": 1.5, "maxSkala": 1.15 },
     "kolorSystemCzarny": "systemCzarny.tekst", "kolorJasny": "jasny.tekst", "kolorCiemny": "ciemny.tekst" },
+  "wzor": { "_opis": "Strona wzoru w oryginalnych kolorach pliku w obu motywach (ZM-10, P-563 (8a)), więc znacznik rzędu i zakreślenie mają barwy stałe (przeniesione z ../tokeny.json „kolor.wzor”, tusz Dzianiny zamiast grafitu; BR-WZR-003).", "strona": "#FFFFFF", "znacznik": "#221D1A", "znacznikTlo": "#221D1A14", "etykietaTlo": "#221D1A", "etykietaTekst": "#F3F1EC", "zakreslaczPromien": 2 },
   "rysunek": { "_opis": "Paleta rysunków atlasu technik (scripts/atlas/silnik/svg.ts:6, interfejs Paleta): tlo ← kolory.<motyw>.rysunekTlo, nitka ← rysunekNitka, wyroznienie ← rysunekWyroznienie, drut ← rysunekDrut; „Zwiększ kontrast” podmienia rysunekDrut. Wyróżnienie to zakreślacz pod nitką (jak na stronie wzoru); odróżnia go kształt pola, nie kontrast do tła." }
 }

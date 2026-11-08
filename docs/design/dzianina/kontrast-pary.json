@@ -1013,5 +1013,20 @@
   "#221D1A",
   "#F0CF8A",
   4.5
+ ],
+ "wzor: znacznik/strona (grafika)": [
+  "#221D1A",
+  "#FFFFFF",
+  3
+ ],
+ "wzor: etykietaTekst/etykietaTlo": [
+  "#F3F1EC",
+  "#221D1A",
+  4.5
+ ],
+ "wzor: etykietaTlo/strona (UI)": [
+  "#221D1A",
+  "#FFFFFF",
+  3
  ]
 }

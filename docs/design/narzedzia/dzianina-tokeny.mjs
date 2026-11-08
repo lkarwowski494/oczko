@@ -47,5 +47,8 @@ for (const tlo of ['tlo', 'kartaStack']) {
   pary[`systemCzarny: znak kresek/${tlo} (grafika)`] = [sc.tekst, sc[tlo], 3];
 }
 pary['systemCzarny: przyciskTekst/przycisk'] = [sc.przyciskTekst, sc.przycisk, 4.5];
+// strona wzoru (stałe, oba motywy): znacznik rzędu na białej stronie, etykieta znacznika
+pary['wzor: znacznik/strona (grafika)'] = [t.wzor.znacznik, t.wzor.strona, 3]; pary['wzor: etykietaTekst/etykietaTlo'] = [t.wzor.etykietaTekst, t.wzor.etykietaTlo, 4.5];
+pary['wzor: etykietaTlo/strona (UI)'] = [t.wzor.etykietaTlo, t.wzor.strona, 3];
 writeFileSync(join(kat, 'kontrast-pary.json'), JSON.stringify(pary, null, 1));
 console.log(`tokeny.css + kontrast-pary.json: ${Object.keys(pary).length} par`);
