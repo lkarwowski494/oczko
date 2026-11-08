@@ -43,7 +43,7 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite (stan poprzedniej wersji); de
 - Zero utraty danych: migracja w transakcji, test na kopii bazy poprzedniej wersji (wyjątek nazwany P-070: dane 0.1.0 bez migracji, stary plik nietknięty).
 - Testy przed kodem; wygląd tylko z systemu w `docs/design/`.
 - CI macOS (`macos-26`): awaria przed pierwszym scenariuszem albo „not acquired by Runner” to maszyna — jedno ponowienie ręczne, potem szukaj przyczyny; scenariuszy z asercją wartości licznika nie ponawiamy (P-091 9a, 10a, jak Trening).
-- Gałąź robocza przebudowy: `claude/jolly-thompson-paz6d8`; scalenie z `main` tylko za zgodą właściciela.
+- Gałąź robocza przebudowy (od P-559, 8.11): `claude/youthful-pasteur-kx83sn` (integracja redesignu „Dzianina”); `claude/jolly-thompson-paz6d8` i `claude/m3-redesign-2026-11-05` bez dalszych zapisów; scalenie z `main` tylko za zgodą właściciela.
 - Hierarchia źródeł: rachunek → normy (CYC, ISO) → podręczniki → organizacje → przewodniki → fora tylko jako wskazówka (P-017, rola 01 E0).
 - BRD: `docs/brd/` (01), dzielony; wektory reguł `tests/wektory/brd.json` generuje tylko rola 01.
 
