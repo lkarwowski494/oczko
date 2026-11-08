@@ -26,6 +26,9 @@ const IKONY = {
   dane: '<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.3-4.6"/>',
   ptaszek: '<path d="M6 12.5l4 4 8-9"/>',
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor" stroke="none"/>',
+  // M3-S3-08: dzień dziergany (kafel 1 ofert) — kwadrat dzianiny z oczkami „V”, jak dzień w kalendarzu; inny niż kalendarz zakładki Historia.
+  dzien: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M6.5 8l2 3 2-3M10.5 8l2 3 2-3M14.5 8l2 3 2-3M6.5 13l2 3 2-3M10.5 13l2 3 2-3M14.5 13l2 3 2-3"/>',
+  zamknij: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   klepsydra: '<path d="M7 3.5h10M7 20.5h10M8 3.5c0 4 4 5.5 4 8.5s-4 4.5-4 8.5M16 3.5c0 4-4 5.5-4 8.5s4 4.5 4 8.5"/>',
 };
 document.querySelectorAll('[data-ik]').forEach((el) => {

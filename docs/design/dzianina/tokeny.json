@@ -11,7 +11,9 @@
       "pasek": "#EEEBE6", "pasekLinia": "#CFC8BF", "zakladka": "#625850", "zakladkaWybrana": "#8A5A12",
       "dzienPusty": "#D6D0C8", "igla": "#A39A92",
       "niszczacy": "#A3261C", "niszczacyTekst": "#FFFFFF",
-      "zakreslacz": "#F6E04A", "wzorRama": "#D9D3CB"
+      "zakreslacz": "#F6E04A", "wzorRama": "#D9D3CB",
+      "przyciskNieaktywny": "#F6F4F1", "przyciskNieaktywnyTekst": "#5A5048", "przyciskNieaktywnyRama": "#5A5048",
+      "rysunekTlo": "#F6F4F1", "rysunekNitka": "#221D1A", "rysunekWyroznienie": "#F6E04A", "rysunekDrut": "#5A5048"
     },
     "ciemny": {
       "tlo": "#26211E", "powierzchnia": "#312B27", "linia": "#3D3530",
@@ -23,20 +25,27 @@
       "pasek": "#1E1A17", "pasekLinia": "#3D3530", "zakladka": "#B5A99E", "zakladkaWybrana": "#F0CF8A",
       "dzienPusty": "#40382F", "igla": "#9C918A",
       "niszczacy": "#F2B8B5", "niszczacyTekst": "#4A0E0A",
-      "zakreslacz": "#F6E04A", "wzorRama": "#1E1A17"
+      "zakreslacz": "#F6E04A", "wzorRama": "#1E1A17",
+      "przyciskNieaktywny": "#312B27", "przyciskNieaktywnyTekst": "#C7BCB2", "przyciskNieaktywnyRama": "#C7BCB2",
+      "rysunekTlo": "#312B27", "rysunekNitka": "#F1EDE9", "rysunekWyroznienie": "#5C4A1E", "rysunekDrut": "#C7BCB2"
     },
-    "jasnyZwiekszony": { "tekst2": "#3F3731", "akcentTekst": "#6B450C", "linia": "#9C9288", "zakladka": "#3F3731", "kartaTekst2": "#EAE4DD" },
-    "ciemnyZwiekszony": { "tekst2": "#E3DAD2", "akcentTekst": "#F8DEA6", "linia": "#6A5F57", "zakladka": "#E3DAD2", "kartaTekst2": "#ECE6DF" }
+    "jasnyZwiekszony": { "tekst2": "#3F3731", "akcentTekst": "#6B450C", "linia": "#9C9288", "zakladka": "#3F3731", "kartaTekst2": "#EAE4DD", "przyciskNieaktywnyTekst": "#3F3731", "przyciskNieaktywnyRama": "#3F3731", "rysunekDrut": "#3F3731" },
+    "ciemnyZwiekszony": { "tekst2": "#E3DAD2", "akcentTekst": "#F8DEA6", "linia": "#6A5F57", "zakladka": "#E3DAD2", "kartaTekst2": "#ECE6DF", "przyciskNieaktywnyTekst": "#E3DAD2", "przyciskNieaktywnyRama": "#E3DAD2", "rysunekDrut": "#E3DAD2" },
+    "systemCzarny": { "_opis": "Dynamic Island, Smart Stack i zegarek (tło systemowe czarne; HIG Live Activities): wartości z motywu ciemnego Dzianiny. kartaStack = karta Smart Stack rysowana przez system, przybliżenie do pomiaru [DO USTALENIA na urządzeniu] (przeniesione z ../tokeny.json).", "tlo": "#000000", "kartaStack": "#1E2024", "tekst": "#F1EDE9", "tekst2": "#C7BCB2", "akcent": "#CF9636", "akcentTekst": "#F0CF8A", "przycisk": "#F0CF8A", "przyciskTekst": "#221D1A" }
   },
   "kroje": {
-    "tytul": { "rodzina": "Bree Serif", "plik": "docs/design/fonty/BreeSerif.ttf", "licencja": "docs/design/fonty/breeserif-OFL.txt", "uwagi": "łacina z polskimi znakami; cyrylica, greka, CJK: krój systemowy; Bree Serif ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany (jest już gruby)" },
+    "tytul": { "rodzina": "Bree Serif", "plik": "docs/design/fonty/BreeSerif.ttf", "licencja": "docs/design/fonty/breeserif-OFL.txt", "uwagi": "Bree Serif ma jedną odmianę — przy „Pogrubionym tekście” bez zmiany (jest już gruby); bez przycinania pliku (P-563 (9))",
+      "jezykiSystemowe": ["bg", "el", "ja", "ko", "ru", "sr", "uk", "vi", "zh-Hant"], "_jezyki": "M3-S3-04: języki, których główny zbiór liter CLDR 46 nie mieści się w pliku (pokrycie-bree.txt; z greki plik ma tylko Δ Ω μ π) — tam tytuły i liczby krojem systemowym; pozostałe 26 z 35 w Bree. Znak spoza pliku w treści użytkownika (np. nazwa projektu cyrylicą): systemowe zastępowanie glifów iOS [DO USTALENIA 08: sprawdzić na urządzeniu]." },
     "tresc": { "rodzina": "systemowy (SF Pro)", "uwagi": "Dynamic Type do AX5" }
   },
   "typografia": {
     "duzyTytul": { "kroj": "tytul", "pt": 34, "interlinia": 1.12, "styl": "largeTitle" },
     "tytul": { "kroj": "tytul", "pt": 22, "interlinia": 1.2, "styl": "title2" },
-    "liczbaKarty": { "kroj": "tytul", "pt": 56, "interlinia": 1.0, "cyfry": "tabular-nums", "maxSkala": 1.6 },
-    "liczbaLicznika": { "kroj": "tytul", "pt": 104, "interlinia": 1.0, "cyfry": "tabular-nums", "maxSkala": 1.3, "minSkala": 0.5 },
+    "cyfry": { "_opis": "M3-S3-03, P-563 (2a): Bree Serif nie ma cyfr tabelarycznych (brak cechy tnum; szerokości 0–9: 454–536 jednostek na 1000). Każda cyfra liczby w krojach „tytul” stoi w komórce o szerokości najszerszej cyfry, wyśrodkowana; znaki inne niż cyfry (spacja, dwukropek, „h”) bez komórki. Przy krojach systemowych (jezykiSystemowe) zamiast komórek tabular-nums.", "komorkaEm": 0.536, "wyrownanie": "srodek" },
+    "liczbaKarty": { "kroj": "tytul", "pt": 56, "interlinia": 1.0, "cyfry": "komorka", "maxSkala": 1.6 },
+    "liczbaLicznika": { "kroj": "tytul", "pt": 104, "interlinia": 1.0, "cyfry": "komorka", "maxSkala": 1.3, "minSkala": 0.5 },
+    "liczbaPaskaWzoru": { "kroj": "tytul", "pt": 28, "interlinia": 1.0, "cyfry": "komorka", "maxSkala": 1.4 },
+    "liczbaPodsumowania": { "kroj": "tytul", "pt": 28, "interlinia": 1.0, "cyfry": "komorka", "maxSkala": 1.6 },
     "przyciskPlus": { "kroj": "tresc", "pt": 26, "waga": 800, "maxSkala": 1.4 },
     "tresc": { "kroj": "tresc", "pt": 17, "interlinia": 1.3, "styl": "body" },
     "tresc2": { "kroj": "tresc", "pt": 15, "interlinia": 1.3, "styl": "subheadline" },
@@ -44,8 +53,19 @@
     "zakladka": { "kroj": "tresc", "pt": 11, "waga": 600, "maxSkala": 1.6 }
   },
   "odstepy": { "jednostka": 4, "xs": 4, "s": 8, "m": 12, "l": 16, "xl": 20, "xxl": 24 },
-  "promienie": { "_hierarchia": "karta > kafel > przycisk > próbka dnia; okrągłe +1 = połowa boku", "karta": 22, "kafel": 18, "przycisk": 14, "pole": 10, "dzien": 10, "plus": "50%" },
-  "cele": { "minimum": 44, "plus": 72, "plusLicznik": 168, "dzienKalendarza": 44 },
-  "ruch": { "rzadOczek": 180, "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
-  "haptyka": { "rzad": "impactLight", "przypomnienie": "notificationWarning", "celCzesci": "notificationSuccess", "cofniecie": "impactSoft", "blokada": "selection" }
+  "promienie": { "_hierarchia": "karta > kafel > przycisk > próbka dnia; okrągłe +1 = połowa boku", "karta": 22, "kafel": 18, "przycisk": 14, "pole": 10, "dzien": 10, "plus": "50%", "plusLicznik": 26, "lista": 16 },
+  "cele": { "minimum": 44, "plus": 72, "plusLicznik": 168, "minus": 72, "odstepMinusPlus": 12, "paskaWzoru": { "wysokosc": 52, "minSzerokosc": 64 }, "dzienKalendarza": 44 },
+  "ruch": { "rzadOczek": 180, "krzywa": "easeOut", "przejscie": 250, "ograniczRuch": "bez przesunięć; zmiana stanu natychmiast albo przenikanie 100 ms" },
+  "haptyka": { "rzad": "impactLight", "przypomnienie": "notificationWarning", "celCzesci": "notificationSuccess", "cofniecie": "impactSoft", "blokada": "selection", "bladZapisu": "notificationError", "stoperStart": "impactLight" },
+  "haptykaZegarek": { "_opis": "watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, przeniesione 1:1 z ../tokeny.json, P-142, ADR-0030). Klucze jak w „haptyka”; zwykły rząd na zegarku bez zmian (decyzja 08 przy celu watch).", "bladZapisu": "retry", "blokada": "failure", "przypomnienie": "notification" },
+  "miniatura": {
+    "dzianina": { "_gdzie": "wiersz projektu na liście Projekty (projekty-*): kolumna karty z dzianiną do postępu części i igłą u góry; przy AX5 ukryta (zrzut projekty-*-ax5)", "szerokosc": 40, "wysokosc": 56, "promien": 8, "wciecie": 4, "promienDzianiny": 3, "tlo": "karta", "dzianina": "akcent", "igla": "igla", "dostepnosc": "ukryta (aria-hidden); postęp niesie tekst wiersza" },
+    "stronaWzoru": { "_gdzie": "pierwsza strona wzoru w wierszu (przeniesione z ../tokeny.json, audyt 04 2.1): strona = papier, bez promienia, obrys kolorem linia", "szerokosc": 44, "proporcja": 1.3, "promien": 0, "obrys": "linia" }
+  },
+  "znakKresek": { "_opis": "Znak kresek z ikony (NZ-08-P4-04, P-158 (2a)): obraz szablonowy, kolor nadaje kod, accessibilityHidden. Geometria i rozmiary przeniesione 1:1 z ../tokeny.json; plik SVG kopiuje p1 razem z ikoną (dzianina/ikona/ ma te same kreski).", "plik": "ikona/znak-kresek.svg", "viewBox": "204 224 618 570", "proporcja": 1.084, "gruboscKreskiWJednostkach": 64,
+    "wyspa": { "_gdzie": "Dynamic Island compact i rozwinięta", "wysokosc": 18, "szerokosc": 19.5, "kreska": 2.0, "maxSkala": 1.2 },
+    "smartStack": { "_gdzie": "Smart Stack zegarka i CarPlay", "wysokosc": 13, "szerokosc": 14, "kreska": 1.5, "maxSkala": 1.15 },
+    "kolorSystemCzarny": "systemCzarny.tekst", "kolorJasny": "jasny.tekst", "kolorCiemny": "ciemny.tekst" },
+  "wzor": { "_opis": "Strona wzoru w oryginalnych kolorach pliku w obu motywach (ZM-10, P-563 (8a)), więc znacznik rzędu i zakreślenie mają barwy stałe (przeniesione z ../tokeny.json „kolor.wzor”, tusz Dzianiny zamiast grafitu; BR-WZR-003).", "strona": "#FFFFFF", "znacznik": "#221D1A", "znacznikTlo": "#221D1A14", "etykietaTlo": "#221D1A", "etykietaTekst": "#F3F1EC", "zakreslaczPromien": 2 },
+  "rysunek": { "_opis": "Paleta rysunków atlasu technik (scripts/atlas/silnik/svg.ts:6, interfejs Paleta): tlo ← kolory.<motyw>.rysunekTlo, nitka ← rysunekNitka, wyroznienie ← rysunekWyroznienie, drut ← rysunekDrut; „Zwiększ kontrast” podmienia rysunekDrut. Wyróżnienie to zakreślacz pod nitką (jak na stronie wzoru); odróżnia go kształt pola, nie kontrast do tła." }
 }

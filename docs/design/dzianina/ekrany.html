@@ -17,6 +17,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
 .t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
 .cyfry { font-variant-numeric: tabular-nums; }
+.cyf { display: inline-block; width: 0.536em; text-align: center; } /* M3-S3-03: komórka cyfry Bree = typografia.cyfry.komorkaEm */
 .ik { display: inline-flex; width: 1em; height: 1em; flex: none; } .ik svg { width: 100%; height: 100%; }
 .ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; }
 .status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
@@ -150,6 +151,20 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .duzy .of-wt { flex-direction: column; align-items: stretch; } .duzy .of-wt a { justify-content: center; }
 .duzy .of-mies { grid-template-columns: repeat(10, 1fr); }
 .of-kafel, .of-plan, .of-kup, .of-wt a { overflow-wrap: anywhere; hyphens: auto; } .of-plan > * { min-width: 0; }
+
+/* M3-S3-06: stany p2 na „Dziś” i miejsce okna „Uczciwe zasady” */
+.lim { grid-column: 2; display: flex; gap: 8px; align-items: flex-start; color: var(--kartaTekst); }
+.lim .ik { color: var(--kartaTekst2); font-size: 20px; margin-top: 1px; } .lim a { color: var(--kartaTekst); font-weight: 700; text-decoration: underline; display: inline-block; min-height: 44px; padding-top: 12px; }
+.baner { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); }
+.baner .ik { color: var(--akcentTekst); font-size: 22px; } .baner p { flex: 1; min-width: 0; color: var(--tekst); }
+.baner a { flex-basis: 100%; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; }
+.zaslona { position: absolute; inset: 0; background: #0007; }
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; padding: 8px 20px 36px; display: flex; flex-direction: column; gap: 12px; }
+.arkusz .uch { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); align-self: center; }
+.arkusz .zam { align-self: flex-end; margin: -4px -8px -8px 0; }
+.arkusz .gl { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; margin-top: 4px; }
+.arkusz .dr { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--akcentTekst); font-weight: 700; }
+.duzy .lim { grid-column: 1; } .duzy .baner .ik { font-size: 34px; }
 </style></head>
 <body>
 
@@ -171,7 +186,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
       <a class="kafel"><span class="it"><i data-ik="nowy"></i></span><span data-de="Neues Projekt">Nowy projekt</span></a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span><span data-de="Anleitung hinzufügen">Dodaj wzór</span></a>
       <a class="kafel"><span class="it"><i data-ik="druty"></i></span><span data-de="Garn und Nadeln">Włóczka i druty</span></a><a class="kafel"><span class="it"><i data-ik="probka"></i></span><span data-de="Maschenprobe">Próbka</span></a>
     </div>
-    <p class="t-pod wolne"><span data-de="Noch 3 von 5 kostenlosen Stricktagen im November.">Zostały 3 z 5 darmowych dni robótkowych w listopadzie.</span> <a>Oczko Pro</a></p>
+    <p class="t-pod wolne"><span data-de="Noch 3 von 5 kostenlosen Stricktagen im November.">Zostały 3 z 5 darmowych dni robótkowych w listopadzie.</span></p>
   </div>
   <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i><span data-de="Heute">Dziś</span></a><a><i data-ik="projekty"></i><span data-de="Projekte">Projekty</span></a><a><i data-ik="narzedzia"></i><span data-de="Werkzeuge">Narzędzia</span></a><a><i data-ik="historia"></i><span data-de="Verlauf">Historia</span></a></nav>
 </main>
@@ -194,7 +209,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
       <a class="kafel"><span class="it"><i data-ik="nowy"></i></span>Nowy projekt</a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span>Dodaj wzór</a>
       <a class="kafel"><span class="it"><i data-ik="druty"></i></span>Włóczka i druty</a><a class="kafel"><span class="it"><i data-ik="probka"></i></span>Próbka</a>
     </div>
-    <p class="t-pod wolne">5 darmowych dni robótkowych w każdym miesiącu. <a>Oczko Pro</a></p>
+    <p class="t-pod wolne">5 darmowych dni robótkowych w każdym miesiącu.</p>
   </div>
   <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
 </main>
@@ -291,9 +306,9 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
       <div class="of-mies" aria-hidden="true"></div>
     </section>
     <div class="of-kafle t-pod">
-      <div class="of-kafel"><span class="it"><i data-ik="historia"></i></span><b>Każdy dzień robótkowy<small>Liczysz, kiedy dziergasz, bez limitu w miesiącu.</small></b></div>
-      <div class="of-kafel"><span class="it"><i data-ik="zegarek"></i></span><b>iPhone i Apple Watch<small>Pro działa wszędzie, gdzie liczysz rzędy.</small></b></div>
-      <div class="of-kafel"><span class="it"><i data-ik="rodzina"></i></span><b>Dla rodziny<small>Udostępnione rodzinie w ramach Udostępniania rodzinnego.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="dzien"></i></span><b>Każdy dzień robótkowy<small>Liczysz, kiedy dziergasz, bez limitu w miesiącu.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="zegarek"></i></span><b>Bez limitu na każdym urządzeniu<small>iPhone, iPad i Apple Watch.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="rodzina"></i></span><b>Dla rodziny<small>Możesz podzielić się z rodziną przez Chmurę rodzinną.</small></b></div>
       <div class="of-kafel"><span class="it"><i data-ik="dane"></i></span><b>Dane zawsze twoje<small>Projekty, wzory i historia zostają, z Pro i bez.</small></b></div>
     </div>
     <p class="t-tresc sekcja" style="margin-bottom:-8px">Plany</p>
@@ -319,6 +334,30 @@ document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.r
   document.querySelector('[data-ekran="oferty"]').after(c); }
 </script>
 
+<script>
+// M3-S3-06 (ZM-18, wynik 03 @ be963401): stany p2. Teksty [PRZYKŁAD] — klucze i przekład robi 09; wygląd wyłącznie z tokenów.
+{ const dzis = document.querySelector('[data-ekran="dzis"]');
+  // (a) Nowy dzień ponad limit, zawczasu (F-63, BR-ZAK-006): komunikat na miejscu „+1” karty, odnośnik Oczko Pro pod nim (poza strefą +1), „Kontynuuj” działa.
+  const a = dzis.cloneNode(true); a.dataset.ekran = 'dzis-limit'; a.setAttribute('aria-label', 'Dziś, brak darmowych dni');
+  a.querySelector('.plus').remove();
+  a.querySelector('.lr').insertAdjacentHTML('afterend', '<p class="lim t-pod" role="status"><i data-ik="klepsydra"></i><span>Nie masz już darmowych dni robótkowych w listopadzie. Liczenie wraca 1 grudnia. Twoje 42 rzędy i wszystko inne zostają.<br><a>Oczko Pro znosi limit</a></span></p>');
+  a.querySelector('.wolne').innerHTML = 'Zostało 0 z 5 darmowych dni robótkowych w listopadzie.';
+  a.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  // (b) Strażnik serii (F-47, RD-17): baner „Cofnąć?” pod kartą — karta i „+1” nie przesuwają się; baner nie znika po czasie, znika przy kolejnym zwykłym +1.
+  const b = dzis.cloneNode(true); b.dataset.ekran = 'dzis-cofnac'; b.setAttribute('aria-label', 'Dziś, seria stuknięć');
+  b.querySelector('.liczba').firstChild.textContent = '45'; b.querySelector('svg[data-dz]').dataset.dz = '45,96,17,47';
+  b.querySelector('.czesc').textContent = 'Rękaw lewy · rząd 46 z 96';
+  b.querySelector('.dz').setAttribute('aria-label', 'Rękaw lewy: 45 z 96 rzędów, dziś 17, następne ujmowanie w rzędzie 47');
+  b.querySelector('.karta').insertAdjacentHTML('afterend', '<div class="baner" role="status"><i data-ik="historiaZmian"></i><p class="t-tresc">Dodano 3 rzędy w 1 sekundę. Cofnąć?</p><a class="t-tresc">Cofnij 3 rzędy</a></div>');
+  b.querySelector('.wiersz p').innerHTML = 'Za 1 rząd: <b>ujmowanie</b> (5 z 8)';
+  b.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  dzis.after(a, b);
+  // (c) Okno „Uczciwe zasady” (KP-16, ZM-05) po zmianie startu: nigdy nad „Dziś” (karta z „+1”), licznikiem ani wzorem; arkusz nad pierwszą dozwoloną zakładką (tu: Projekty).
+  const pr = document.querySelector('[data-ekran="projekty"]'); const c = pr.cloneNode(true); c.dataset.ekran = 'projekty-uczciwe'; c.setAttribute('aria-label', 'Projekty z oknem Uczciwe zasady');
+  c.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="arkusz" role="dialog" aria-modal="true" aria-labelledby="uz-t"><span class="uch"></span><span class="pik zam" aria-label="Zamknij"><i data-ik="zamknij"></i></span><h2 class="t-tytul br" id="uz-t">Twój pierwszy dzień robótkowy za tobą</h2><p class="t-tresc">Wszystko w Oczku działa od pierwszego dnia, bez konta i bez reklam.</p><p class="t-tresc">Licz rzędy za darmo przez 5 dni w każdym miesiącu, jak długo chcesz. Twoje projekty i dane zawsze zostają twoje.</p><p class="t-tresc">Chcesz więcej dni? Oczko Pro znosi limit, w subskrypcji albo jednym zakupem.</p><a class="gl t-tresc">Licz dalej</a><a class="dr t-tresc">Zobacz Oczko Pro</a></section>');
+  pr.after(c);
+}
+</script>
 <script src="ikony.js"></script>
 <script>
 // Element firmowy „dzianina” (jak w kierunki/dzianina.html): wysokość = rzędy gotowe / cel; jaśniejszy pas = dziś; igła = bieżący rząd;
@@ -342,6 +381,12 @@ const kal = document.getElementById('kal'); let h = ['pn', 'wt', 'śr', 'cz', 'p
 for (let i = 0; i < 6; i++) h += '<i class="p" aria-hidden="true"></i>';
 for (let d = 1; d <= 30; d++) h += `<i class="${[2, 3, 5].includes(d) ? 'z' : ''} ${d === 5 ? 'dzis' : ''} ${d > 5 ? 'p' : ''}">${d}</i>`;
 kal.innerHTML = h;
+// M3-S3-03: każda cyfra liczby w komórce szerokości najszerszej cyfry (Bree bez tnum); tylko liczby w krojach tytułowych, nie ceny.
+document.querySelectorAll('.liczba, .licz-num, .pasek-wz .r b, .podsum b').forEach((el) => {
+  for (const n of [...el.childNodes].filter((x) => x.nodeType === 3)) {
+    const f = document.createElement('span'); f.innerHTML = n.textContent.replace(/[0-9]/g, (c) => `<span class="cyf">${c}</span>`); n.replaceWith(...f.childNodes);
+  }
+});
 // Arkusz najdłuższego języka: <html lang="de"> podmienia teksty z data-de.
 if (document.documentElement.lang === 'de') document.querySelectorAll('[data-de]').forEach((e) => { e.textContent = e.dataset.de; });
 </script>

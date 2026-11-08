@@ -159,6 +159,86 @@
   "#EEEBE6",
   4.5
  ],
+ "jasny: przycisk nieaktywny: tekst": [
+  "#5A5048",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: przycisk nieaktywny: rama przerywana (UI)": [
+  "#5A5048",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: przycisk nieaktywny: rama/pasek (UI)": [
+  "#5A5048",
+  "#EEEBE6",
+  3
+ ],
+ "jasny: atlas: nitka/tło (grafika)": [
+  "#221D1A",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: atlas: drut, strzałka/tło (grafika)": [
+  "#5A5048",
+  "#F6F4F1",
+  3
+ ],
+ "jasny: atlas: nitka/wyróżnienie (grafika)": [
+  "#221D1A",
+  "#F6E04A",
+  3
+ ],
+ "jasny: atlas: drut/wyróżnienie (grafika)": [
+  "#5A5048",
+  "#F6E04A",
+  3
+ ],
+ "jasny: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie)": [
+  "#F6E04A",
+  "#F6F4F1",
+  1
+ ],
+ "jasny: miniatura: dzianina/karta (grafika)": [
+  "#C08425",
+  "#3A332E",
+  3
+ ],
+ "jasny: miniatura: igła/karta (grafika)": [
+  "#A39A92",
+  "#3A332E",
+  3
+ ],
+ "jasny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie)": [
+  "#3A332E",
+  "#E6E1DA",
+  1
+ ],
+ "jasny: limit na karcie: komunikat i odnośnik Oczko Pro": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny: limit na karcie: ikona klepsydry (UI)": [
+  "#D6CEC6",
+  "#3A332E",
+  3
+ ],
+ "jasny: baner Cofnąć?: tekst": [
+  "#221D1A",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: baner Cofnąć?: przycisk tekstowy Cofnij": [
+  "#8A5A12",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny: baner Cofnąć?: rama przycisku i ikona (UI)": [
+  "#8A5A12",
+  "#F6F4F1",
+  3
+ ],
  "ciemny: tekst/tlo": [
   "#F1EDE9",
   "#26211E",
@@ -318,6 +398,86 @@
   "#F1EDE9",
   "#1E1A17",
   4.5
+ ],
+ "ciemny: przycisk nieaktywny: tekst": [
+  "#C7BCB2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: przycisk nieaktywny: rama przerywana (UI)": [
+  "#C7BCB2",
+  "#312B27",
+  3
+ ],
+ "ciemny: przycisk nieaktywny: rama/pasek (UI)": [
+  "#C7BCB2",
+  "#1E1A17",
+  3
+ ],
+ "ciemny: atlas: nitka/tło (grafika)": [
+  "#F1EDE9",
+  "#312B27",
+  3
+ ],
+ "ciemny: atlas: drut, strzałka/tło (grafika)": [
+  "#C7BCB2",
+  "#312B27",
+  3
+ ],
+ "ciemny: atlas: nitka/wyróżnienie (grafika)": [
+  "#F1EDE9",
+  "#5C4A1E",
+  3
+ ],
+ "ciemny: atlas: drut/wyróżnienie (grafika)": [
+  "#C7BCB2",
+  "#5C4A1E",
+  3
+ ],
+ "ciemny: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie)": [
+  "#5C4A1E",
+  "#312B27",
+  1
+ ],
+ "ciemny: miniatura: dzianina/karta (grafika)": [
+  "#CF9636",
+  "#3A322D",
+  3
+ ],
+ "ciemny: miniatura: igła/karta (grafika)": [
+  "#9C918A",
+  "#3A322D",
+  3
+ ],
+ "ciemny: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie)": [
+  "#3A322D",
+  "#26211E",
+  1
+ ],
+ "ciemny: limit na karcie: komunikat i odnośnik Oczko Pro": [
+  "#F3F1EC",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny: limit na karcie: ikona klepsydry (UI)": [
+  "#D3C9BF",
+  "#3A322D",
+  3
+ ],
+ "ciemny: baner Cofnąć?: tekst": [
+  "#F1EDE9",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: baner Cofnąć?: przycisk tekstowy Cofnij": [
+  "#F0CF8A",
+  "#312B27",
+  4.5
+ ],
+ "ciemny: baner Cofnąć?: rama przycisku i ikona (UI)": [
+  "#F0CF8A",
+  "#312B27",
+  3
  ],
  "jasny zwiększony: tekst/tlo": [
   "#221D1A",
@@ -479,6 +639,86 @@
   "#EEEBE6",
   4.5
  ],
+ "jasny zwiększony: przycisk nieaktywny: tekst": [
+  "#3F3731",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: przycisk nieaktywny: rama przerywana (UI)": [
+  "#3F3731",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: przycisk nieaktywny: rama/pasek (UI)": [
+  "#3F3731",
+  "#EEEBE6",
+  3
+ ],
+ "jasny zwiększony: atlas: nitka/tło (grafika)": [
+  "#221D1A",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: atlas: drut, strzałka/tło (grafika)": [
+  "#3F3731",
+  "#F6F4F1",
+  3
+ ],
+ "jasny zwiększony: atlas: nitka/wyróżnienie (grafika)": [
+  "#221D1A",
+  "#F6E04A",
+  3
+ ],
+ "jasny zwiększony: atlas: drut/wyróżnienie (grafika)": [
+  "#3F3731",
+  "#F6E04A",
+  3
+ ],
+ "jasny zwiększony: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie)": [
+  "#F6E04A",
+  "#F6F4F1",
+  1
+ ],
+ "jasny zwiększony: miniatura: dzianina/karta (grafika)": [
+  "#C08425",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: miniatura: igła/karta (grafika)": [
+  "#A39A92",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie)": [
+  "#3A332E",
+  "#E6E1DA",
+  1
+ ],
+ "jasny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro": [
+  "#F3F1EC",
+  "#3A332E",
+  4.5
+ ],
+ "jasny zwiększony: limit na karcie: ikona klepsydry (UI)": [
+  "#EAE4DD",
+  "#3A332E",
+  3
+ ],
+ "jasny zwiększony: baner Cofnąć?: tekst": [
+  "#221D1A",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij": [
+  "#6B450C",
+  "#F6F4F1",
+  4.5
+ ],
+ "jasny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI)": [
+  "#6B450C",
+  "#F6F4F1",
+  3
+ ],
  "ciemny zwiększony: tekst/tlo": [
   "#F1EDE9",
   "#26211E",
@@ -638,5 +878,155 @@
   "#F1EDE9",
   "#1E1A17",
   4.5
+ ],
+ "ciemny zwiększony: przycisk nieaktywny: tekst": [
+  "#E3DAD2",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: przycisk nieaktywny: rama przerywana (UI)": [
+  "#E3DAD2",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: przycisk nieaktywny: rama/pasek (UI)": [
+  "#E3DAD2",
+  "#1E1A17",
+  3
+ ],
+ "ciemny zwiększony: atlas: nitka/tło (grafika)": [
+  "#F1EDE9",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: atlas: drut, strzałka/tło (grafika)": [
+  "#E3DAD2",
+  "#312B27",
+  3
+ ],
+ "ciemny zwiększony: atlas: nitka/wyróżnienie (grafika)": [
+  "#F1EDE9",
+  "#5C4A1E",
+  3
+ ],
+ "ciemny zwiększony: atlas: drut/wyróżnienie (grafika)": [
+  "#E3DAD2",
+  "#5C4A1E",
+  3
+ ],
+ "ciemny zwiększony: atlas: wyróżnienie/tło — pole odróżnia kształt i nitka na nim (informacyjnie)": [
+  "#5C4A1E",
+  "#312B27",
+  1
+ ],
+ "ciemny zwiększony: miniatura: dzianina/karta (grafika)": [
+  "#CF9636",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: miniatura: igła/karta (grafika)": [
+  "#9C918A",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: miniatura: karta/tło — górę skali niesie igła na karcie (para igła/karta), wartość tekst wiersza (informacyjnie)": [
+  "#3A322D",
+  "#26211E",
+  1
+ ],
+ "ciemny zwiększony: limit na karcie: komunikat i odnośnik Oczko Pro": [
+  "#F3F1EC",
+  "#3A322D",
+  4.5
+ ],
+ "ciemny zwiększony: limit na karcie: ikona klepsydry (UI)": [
+  "#ECE6DF",
+  "#3A322D",
+  3
+ ],
+ "ciemny zwiększony: baner Cofnąć?: tekst": [
+  "#F1EDE9",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: baner Cofnąć?: przycisk tekstowy Cofnij": [
+  "#F8DEA6",
+  "#312B27",
+  4.5
+ ],
+ "ciemny zwiększony: baner Cofnąć?: rama przycisku i ikona (UI)": [
+  "#F8DEA6",
+  "#312B27",
+  3
+ ],
+ "systemCzarny: tekst/tlo": [
+  "#F1EDE9",
+  "#000000",
+  4.5
+ ],
+ "systemCzarny: tekst2/tlo": [
+  "#C7BCB2",
+  "#000000",
+  4.5
+ ],
+ "systemCzarny: akcentTekst/tlo": [
+  "#F0CF8A",
+  "#000000",
+  4.5
+ ],
+ "systemCzarny: przycisk/tlo (UI)": [
+  "#F0CF8A",
+  "#000000",
+  3
+ ],
+ "systemCzarny: znak kresek/tlo (grafika)": [
+  "#F1EDE9",
+  "#000000",
+  3
+ ],
+ "systemCzarny: tekst/kartaStack": [
+  "#F1EDE9",
+  "#1E2024",
+  4.5
+ ],
+ "systemCzarny: tekst2/kartaStack": [
+  "#C7BCB2",
+  "#1E2024",
+  4.5
+ ],
+ "systemCzarny: akcentTekst/kartaStack": [
+  "#F0CF8A",
+  "#1E2024",
+  4.5
+ ],
+ "systemCzarny: przycisk/kartaStack (UI)": [
+  "#F0CF8A",
+  "#1E2024",
+  3
+ ],
+ "systemCzarny: znak kresek/kartaStack (grafika)": [
+  "#F1EDE9",
+  "#1E2024",
+  3
+ ],
+ "systemCzarny: przyciskTekst/przycisk": [
+  "#221D1A",
+  "#F0CF8A",
+  4.5
+ ],
+ "wzor: znacznik/strona (grafika)": [
+  "#221D1A",
+  "#FFFFFF",
+  3
+ ],
+ "wzor: etykietaTekst/etykietaTlo": [
+  "#F3F1EC",
+  "#221D1A",
+  4.5
+ ],
+ "wzor: etykietaTlo/strona (UI)": [
+  "#221D1A",
+  "#FFFFFF",
+  3
  ]
 }
