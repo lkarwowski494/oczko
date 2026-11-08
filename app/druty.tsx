@@ -23,7 +23,7 @@ export default function EkranDrutow(): React.ReactElement {
   if (!stan) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="druty" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   return (
     <Bezpieczny>
-      <ListaDrutow t={kontener.j.t} stan={stan} naDodaj={() => router.push('/drut')} naOtworz={(id) => router.push({ pathname: '/drut', params: { id } })} naWstecz={() => router.back()} />
+      <ListaDrutow t={kontener.j.t} stan={stan} naDodaj={() => router.push('/drut')} naOtworz={(id) => router.push({ pathname: '/drut', params: { id } })} naWstecz={() => router.back()} jezyk={kontener.j.jezyk()} />
     </Bezpieczny>
   );
 }

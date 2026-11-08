@@ -231,6 +231,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/motyw-kontrast.test.tsx` | zielony (główny zestaw) | 3 | P-553 | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/naglowki-p2-4.test.tsx` | zielony (główny zestaw) | 3 | P-368, P-553 | `src/ekrany/HistoriaDni`<br>`src/ekrany/Narzedzia`<br>`src/ekrany/Stoper`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia`<br>`src/przypadki-uzycia/historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/naglowki-sekcji-13-reszta.test.tsx` | zielony (główny zestaw) | 6 | P-361 | `src/ekrany/ListaProjektow`<br>`src/ekrany/Narzedzia`<br>`src/ekrany/Sesje`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/WzorSkrzynka`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/narzedzia-kroj-m3.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Miary`<br>`src/ekrany/Narzedzia`<br>`src/ekrany/Zapas`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka`<br>`src/kompozycja/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/narzedzia-probka.test.tsx` | zielony (główny zestaw) | 5 | BR-KAL-001, BR-KAL-001/S1, BR-KAL-003, BR-KAL-003/S1, P-075, P-191, R-131, RD-01 | `src/ekrany/Narzedzia`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka` | ER-62, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/narzedzia-wstecz-trasa.test.tsx` | zielony (główny zestaw) | 3 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/narzedzia-wzor.test.tsx` | zielony (główny zestaw) | 3 | BR-KAL-003, BR-WZR-007/S4, BR-ZAP-001/S2, P-046, P-075, P-191, R-131 | `src/ekrany/Narzedzia`<br>`src/ekrany/Wzor`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka` | Z07-05, Z07-22 |
@@ -378,4 +379,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 374; zależnych od poprawek: 232.
+Razem plików testów: 375; zależnych od poprawek: 233.

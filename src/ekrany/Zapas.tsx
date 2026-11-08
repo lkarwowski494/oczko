@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, useZglosZmiane } from './Arkusz';
 import { useZapis, type Zapis } from './FormularzeProjektu';
 import { WierszGrupy, style as styleNarzedzi } from './Narzedzia';
-import { cel, MAX_SKALA_TYTULOWA, odstep, promien, ROZMIAR_SYMBOLU, typografia, useKolory, type Kolory } from './motyw';
+import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, odstep, promien, ROZMIAR_SYMBOLU, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
 import { krokMotkow } from '../domena/zapas';
 import type { FiltrZapasu, StanDrutow, StanZapasu } from '../kompozycja/zapas';
@@ -17,8 +17,8 @@ import { StrzalkaWiersza, SymbolSf } from './SymbolSf';
 const NAZWY_KATEGORII = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 
 /** Pasek ekranu listy: tytuł i „+” (makieta: „‹ Tools … ＋”). Powrót: „‹ Back” (`nav-wstecz`) nad paskiem, jak „Recently deleted” (M1-016). */
-function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: string }): React.ReactElement {
-  const st = style(useKolory());
+function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: string; jezyk?: string }): React.ReactElement {
+  const st = style(useKolory(), p.jezyk);
   return (
     <View style={st.naglowek}>
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tytul}</Text>
@@ -31,9 +31,9 @@ function Naglowek(p: { tytul: string; dodaj: string; naDodaj(): void; testID: st
 
 export type PropsZapasu = {
   t: Tlumacz; stan: StanZapasu; zapytanie: string; filtr: FiltrZapasu;
-  naSzukaj(z: string): void; naFiltr(f: FiltrZapasu): void; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void;
+  naSzukaj(z: string): void; naFiltr(f: FiltrZapasu): void; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void; jezyk?: string;
 };
-export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj, naOtworz, naWstecz }: PropsZapasu): React.ReactElement {
+export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj, naOtworz, naWstecz, jezyk }: PropsZapasu): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   const sn = styleNarzedzi(k);
@@ -41,7 +41,7 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} keyboardShouldPersistTaps="handled" testID="zapas-lista">
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
-      <Naglowek tytul={t('narzedzia.wloczki')} dodaj={t('zapas.dodaj')} naDodaj={naDodaj} testID="zapas-dodaj" />
+      <Naglowek tytul={t('narzedzia.wloczki')} dodaj={t('zapas.dodaj')} naDodaj={naDodaj} testID="zapas-dodaj" jezyk={jezyk} />
       {pustyZapas ? (
         <View style={st.pusto}>
           <Text style={sn.opis}>{s.pusto?.tekst}</Text>
@@ -51,7 +51,7 @@ export function Zapas({ t, stan: s, zapytanie, filtr, naSzukaj, naFiltr, naDodaj
         </View>
       ) : (
         <>
-          <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.olowek} value={zapytanie}
+          <TextInput placeholder={t('projekty.szukaj')} accessibilityLabel={t('projekty.szukaj')} placeholderTextColor={k.tekst2} value={zapytanie}
             onChangeText={naSzukaj} style={st.szukaj} autoCorrect={false} returnKeyType="search" testID="zapas-szukaj" />
           <View accessibilityRole="radiogroup" accessibilityLabel={t('zapas.filtr_a11y')} style={st.chipy} testID="zapas-filtr">
             {s.chipy.map((c) => (
@@ -195,14 +195,14 @@ export function FormularzWloczki(p: PropsFormularzaWloczki): React.ReactElement 
   );
 }
 
-export type PropsListyDrutow = { t: Tlumacz; stan: StanDrutow; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void };
-export function ListaDrutow({ t, stan: s, naDodaj, naOtworz, naWstecz }: PropsListyDrutow): React.ReactElement {
+export type PropsListyDrutow = { t: Tlumacz; stan: StanDrutow; naDodaj(): void; naOtworz(id: string): void; naWstecz?(): void; jezyk?: string };
+export function ListaDrutow({ t, stan: s, naDodaj, naOtworz, naWstecz, jezyk }: PropsListyDrutow): React.ReactElement {
   const k = useKolory();
   const sn = styleNarzedzi(k);
   return (
     <ScrollView style={sn.ekran} contentContainerStyle={sn.tresc} testID="druty-lista">
       {naWstecz && <Wstecz tekst={t('wspolne.wstecz')} onPress={naWstecz} />}
-      <Naglowek tytul={t('narzedzia.druty')} dodaj={t('druty.dodaj')} naDodaj={naDodaj} testID="druty-dodaj" />
+      <Naglowek tytul={t('narzedzia.druty')} dodaj={t('druty.dodaj')} naDodaj={naDodaj} testID="druty-dodaj" jezyk={jezyk} />
       {s.grupy.length === 0 ? <Text style={sn.opis}>{t('druty.pusto')}</Text> : (
         <>
           {s.grupy.map((g) => (
@@ -252,27 +252,28 @@ export function FormularzDrutu(p: {
   );
 }
 
-function style(k: Kolory) {
+function style(k: Kolory, jezyk?: string) {
+  const bree = jezyk === undefined ? {} : { fontFamily: krojTytulowy(jezyk) }; // języki z krojem systemowym (M3-S3-04)
   return StyleSheet.create({
     naglowek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.m },
-    tytul: { ...typografia.tytul, color: k.grafit, flex: 1 },
+    tytul: { ...typografiaDzianiny.duzyTytul, ...bree, color: k.tekst, flex: 1 },
     plus: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
-    plusZnak: { color: k.grafit },
-    szukaj: { ...typografia.tresc, color: k.grafit, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.papierGrupa, paddingHorizontal: odstep.m },
+    plusZnak: { color: k.tekst },
+    szukaj: { ...typografiaDzianiny.tresc, color: k.tekst, minHeight: cel.minimum, borderRadius: promien.pole, backgroundColor: k.powierzchnia, paddingHorizontal: odstep.m },
     chipy: { flexDirection: 'row', flexWrap: 'wrap', gap: odstep.s },
     chip: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.m, borderRadius: promien.pole, borderWidth: 2, borderColor: k.linia },
-    chipWybrany: { borderColor: k.drugiPrzyciskObrys, backgroundColor: k.papierGrupa },
-    chipTekst: { ...typografia.podpis, color: k.grafit },
+    chipWybrany: { borderColor: k.tekst2, backgroundColor: k.powierzchnia },
+    chipTekst: { ...typografiaDzianiny.tresc2, color: k.tekst },
     chipTekstWybrany: { fontWeight: '700' },
     pusto: { gap: odstep.m, alignItems: 'flex-start' },
-    przycisk: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
-    przyciskTekst: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
+    przycisk: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderRadius: promien.przycisk, borderWidth: 2, borderColor: k.tekst2 },
+    przyciskTekst: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
     wierszPola: { minHeight: cel.minimum, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.m },
-    etykieta: { ...typografia.podpis, color: k.olowek },
-    wartosc: { ...typografia.tresc, color: k.grafit },
+    etykieta: { ...typografiaDzianiny.tresc2, color: k.tekst2 },
+    wartosc: { ...typografiaDzianiny.tresc, color: k.tekst },
     krokowiec: { flexDirection: 'row', alignItems: 'center', gap: odstep.s },
-    krok: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys },
-    znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    wartoscKroku: { ...typografia.tresc, color: k.grafit, minWidth: cel.przyciskMinus, textAlign: 'center' }, // 72 pt = `cel.przyciskMinus` (M1-140, 04-studio-projektowe-528)
+    krok: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przycisk, borderWidth: 2, borderColor: k.tekst2 },
+    znak: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
+    wartoscKroku: { ...typografiaDzianiny.tresc, color: k.tekst, minWidth: cel.minus, textAlign: 'center' }, // 72 pt = `cel.minus` (M1-140, 04-studio-projektowe-528)
   });
 }

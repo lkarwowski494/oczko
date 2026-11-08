@@ -23,7 +23,7 @@ export default function EkranNarzedzi(): React.ReactElement {
   if (!stan) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="narzedzia" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   return (
     <Bezpieczny>
-      <Narzedzia stan={stan} t={kontener.j.t} naWloczki={() => router.push('/zapas')} naDruty={() => router.push('/druty')} naProbke={() => router.push('/probka')} naWstecz={() => router.back()} />
+      <Narzedzia stan={stan} t={kontener.j.t} naWloczki={() => router.push('/zapas')} naDruty={() => router.push('/druty')} naProbke={() => router.push('/probka')} naWstecz={() => router.back()} jezyk={kontener.j.jezyk()} />
     </Bezpieczny>
   );
 }
