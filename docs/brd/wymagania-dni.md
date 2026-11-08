@@ -1,7 +1,7 @@
 # Wymagania: dni i postęp (DNI)
 Stan: rola 01, tryb fix (2026-10-22) · Moduł z ER-11 i ER-12 (P-043, P-044, P-046, P-047); prefiks `KAL` należy do obliczeń. Przepływy w `wymagania.md`, reguły w `reguly.md`.
 
-Miejsce tych funkcji na ekranach ustala rola 04: na ekranie licznika nic z tego modułu, dopóki użytkownik sam czegoś nie ustawi (P-046); kalendarz, dzień i podsumowanie okresu to jeden widok w historii albo projekcie, nie osobna zakładka (P-046).
+Miejsce tych funkcji na ekranach ustala rola 04: na ekranie licznika nic z tego modułu, dopóki użytkownik sam czegoś nie ustawi (P-046); kalendarz, dzień i podsumowanie okresu to jeden widok w zakładce Historia (P-549, ZM-18; wcześniej „w historii albo projekcie, nie osobna zakładka”, P-046), a „Dziś” pokazuje z tego modułu najwyżej zachęty z danych aplikacji, np. pasek tygodnia (P-549; ER-71).
 
 **Dzień z robótką** (P-195 Q3b, ER-55): dzień (RD-16), w którym była praca w rzędach według RD-15 (zmiany +1 i −1 bez cofniętych i bez wpisań) **albo** sesja stopera trwająca co najmniej 1 minutę po korekcie (BR-PRJ-013), liczona w dniu startu sesji (BR-DNI-002, ER-44). Próg 1 minuty wynika z pokazywania czasu w pełnych minutach, nie z wiedzy dziedzinowej. Pojęcie obowiązuje kalendarz (BR-DNI-001), średni czas dnia w RD-18 i „ostatnią pracę” (BR-PRJ-016); dzień limitu (BR-ZAK-005, P-059) się nie zmienia — sesja stopera nie zużywa dnia limitu (P-191 P2a).
 

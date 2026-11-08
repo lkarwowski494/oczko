@@ -8,11 +8,11 @@ Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`; dowody
   - Scenariusz: Pierwsze uruchomienie
     - Zakładając, że aplikacja jest uruchomiona pierwszy raz
     - Gdy otwiera się pierwszy ekran
-    - Wtedy jest nim licznik z wartością 0, bez powitania, quizu, prośby o uprawnienie, konto, nazwę projektu, wzór ani zakup (NFR-PIE-001, ER-14)
+    - Wtedy jest nim „Dziś” z kartą „Pierwszy licznik” z wartością 0 i przyciskiem „+1”, bez powitania, quizu, prośby o uprawnienie, konto, nazwę projektu, wzór, zakup, wybór języka ani okna „Uczciwe zasady”, a nic nie zasłania „+1” karty (NFR-PIE-001, ER-14, ZM-18, ER-68)
   - Scenariusz: Pierwszy rząd jednym stuknięciem
     - Zakładając, że aplikacja jest uruchomiona pierwszy raz, bez sieci
-    - Gdy użytkownik stuka raz w przycisk dodawania
-    - Wtedy licznik pokazuje 1
+    - Gdy użytkownik stuka raz w „+1” karty „Pierwszy licznik” na „Dziś”
+    - Wtedy karta pokazuje 1 bez zmiany ekranu, a rząd jest zapisany jak +1 na ekranie licznika: trwale (NFR-DAN-002), z wibracją i przez strażnika limitu (BR-ZAK-005; ZM-18, ER-68)
   - Scenariusz: Nazwanie później
     - Zakładając, że użytkownik policzył 12 rzędów w liczniku bez nazwy
     - Gdy nadaje mu nazwę projektu

@@ -368,8 +368,8 @@ Model i ceny: P-057 (2026-10-22, model V4; ER-26): cała aplikacja darmowa od pi
 - Kryteria akceptacji:
   - Scenariusz: Limit widoczny przed pierwszym rzędem dnia
     - Zakładając, że użytkownik bez Pro zużył 5 z 5 darmowych dni w listopadzie, dziś jest 8 listopada, dziś nie dodał rzędu, a ostatni rząd dodał ponad 60 minut temu
-    - Gdy otwiera licznik projektu
-    - Wtedy zamiast przycisków +1 i −1 widzi komunikat, że darmowe dni w listopadzie się skończyły i liczenie wraca 1 grudnia, a jego rzędy i wszystkie dane zostają; odnośnik do Pro leży poza miejscem przycisku +1, a ekranu zakupu nie ma
+    - Gdy otwiera aplikację („Dziś”) albo licznik projektu
+    - Wtedy zamiast przycisków +1 i −1 (na karcie „Dziś” zamiast jej „+1”, ZM-18, ER-70) widzi komunikat, że darmowe dni w listopadzie się skończyły i liczenie wraca 1 grudnia, a jego rzędy i wszystkie dane zostają; odnośnik do Pro leży poza miejscem przycisku +1, a ekranu zakupu nie ma
     - Oraz historia, menu projektu, wzór i eksport działają, a −1, zerowanie i cofnięcie zmiany z historii są dostępne z historii albo menu projektu, bo to korekty, nie start dnia (P-067 (1a), (2a), ER-30)
   - Scenariusz: Praca po północy bez przerwy (L-04)
     - Zakładając, że użytkownik zużył 5 z 5 dni i dodał rząd o 23:50
@@ -382,12 +382,12 @@ Model i ceny: P-057 (2026-10-22, model V4; ER-26): cała aplikacja darmowa od pi
     - Oraz po zamknięciu komunikatu licznik pokazuje niezmienioną wartość i komunikat z pierwszego scenariusza zamiast przycisków
   - Scenariusz: Bez oferty w trakcie pracy
     - Zakładając, że użytkownik ma darmowe dni albo pracuje w rozpoczętym dniu
-    - Gdy liczy rzędy, otwiera projekty, wzór i kalendarz
-    - Wtedy nie widzi ekranu zakupu ani oferty Pro poza jednorazowym oknem „Uczciwe zasady” (scenariusze niżej), które nigdy nie pojawia się na ekranie licznika; ekran zakupu otwiera tylko z Ustawień albo odnośnikiem z tego okna (ER-46)
+    - Gdy liczy rzędy (także „+1” karty na „Dziś”), otwiera „Dziś”, projekty, wzór i kalendarz
+    - Wtedy nie widzi ekranu zakupu ani oferty Pro (na „Dziś” także odnośnika „Oczko Pro”, P-563 (10a)) poza jednorazowym oknem „Uczciwe zasady” (scenariusze niżej), które nigdy nie pojawia się na ekranie licznika ani nad „+1” karty na „Dziś” (ER-70); ekran zakupu otwiera tylko z Ustawień albo odnośnikiem z tego okna (ER-46)
   - Scenariusz: Licznik dni
     - Zakładając, że użytkownik bez Pro zużył 2 z 5 dni w listopadzie
-    - Gdy otwiera listę projektów albo Ustawienia
-    - Wtedy widzi, że zostały 3 z 5 darmowych dni w listopadzie, a ekran licznika nie pokazuje liczby dni (P-046)
+    - Gdy otwiera „Dziś”, listę projektów albo Ustawienia
+    - Wtedy widzi (na „Dziś” w linii wolnych dni, P-563 (10a), ER-70), że zostały 3 z 5 darmowych dni w listopadzie, a ekran licznika nie pokazuje liczby dni (P-046)
   - Scenariusz: Ostatni darmowy dzień
     - Zakładając, że użytkownik bez Pro zużył 4 z 5 dni w listopadzie
     - Gdy otwiera licznik
@@ -398,13 +398,13 @@ Model i ceny: P-057 (2026-10-22, model V4; ER-26): cała aplikacja darmowa od pi
     - Wtedy widzi stan Pro i „Zarządzaj subskrypcją”, które otwiera systemowe zarządzanie subskrypcją (KP-14), a ekran zakupu nie oferuje tej samej subskrypcji (KP-03)
   - Scenariusz: Okno „Uczciwe zasady” po pierwszym ukończonym dniu (ER-46)
     - Zakładając, że użytkownik bez Pro (sklep potwierdził brak Pro) dodał rzędy 3 listopada i nie widział jeszcze okna „Uczciwe zasady”
-    - Gdy 4 listopada pierwszy raz otwiera aplikację na liście projektów
+    - Gdy 4 listopada pierwszy raz otwiera listę projektów (zakładka Projekty; miejsce okna po zmianie startu ustala 04, nigdy nad „+1”, ZM-18, ER-70)
     - Wtedy raz widzi okno „Uczciwe zasady” z trzema krótkimi zdaniami: wszystkie funkcje działają od pierwszego dnia, w wersji darmowej jest 5 dni z robótką w miesiącu, Pro zdejmuje limit (subskrypcja albo zakup jednorazowy), bez kwot i bez listy planów (O-01)
     - Oraz przycisk główny zamyka okno, a odnośnik „Zobacz plany Pro ›” zamyka okno i otwiera ekran zakupu z cenami ze sklepu (P-089 (1), (3a))
   - Scenariusz: Okno nie na ekranie licznika (ER-46)
-    - Zakładając warunki z poprzedniego scenariusza, ale aplikacja otwiera się 4 listopada na liczniku projektu (powrót do miejsca, BR-PRJ-011)
-    - Gdy użytkownik liczy rzędy, a potem przechodzi na listę projektów
-    - Wtedy na liczniku nie ma okna (O-05), a okno pojawia się dopiero na liście projektów
+    - Zakładając warunki z poprzedniego scenariusza, ale aplikacja otwiera się 4 listopada na „Dziś” (zimny start, P-563 (4a)), a użytkownik wraca jednym stuknięciem „Kontynuuj ›” do licznika projektu (BR-PRJ-011)
+    - Gdy użytkownik liczy rzędy „+1” karty na „Dziś” i na liczniku, a potem przechodzi na listę projektów
+    - Wtedy ani na „Dziś”, ani na liczniku nie ma okna (O-05; nic nie zasłania „+1” karty, NFR-PIE-001), a okno pojawia się dopiero na liście projektów (ZM-18, ER-70)
   - Scenariusz: Okno tylko raz (ER-46)
     - Zakładając, że użytkownik zamknął okno „Uczciwe zasady” przyciskiem głównym, odnośnikiem albo gestem zamknięcia
     - Gdy w kolejnych dniach otwiera aplikację, także po przywróceniu własnej kopii zapasowej na nowym telefonie

@@ -121,8 +121,8 @@ Stan: STOP E3 · Aktualizacja: 2026-10-21 · Przepływy w `wymagania.md`.
 - Kryteria akceptacji:
   - Scenariusz: Start po zamknięciu aplikacji
     - Zakładając, że użytkownik pracował w projekcie „Sweter”, część „rękaw lewy”, licznik rzędów, wzór na stronie 3 w powiększeniu 200%, a system zamknął aplikację
-    - Gdy użytkownik uruchamia aplikację
-    - Wtedy widzi ten sam projekt, część i licznik oraz wzór na stronie 3 w powiększeniu 200%, bez ponownego wybierania
+    - Gdy użytkownik uruchamia aplikację i stuka raz „Kontynuuj ›” na karcie „Kontynuuj”
+    - Wtedy pierwszym ekranem jest „Dziś” z kartą tego samego projektu, części i licznika (zimny start zawsze na „Dziś”, P-563 (4a)), po „Kontynuuj ›” widzi ten licznik, a wzór otwarty z niego jest na stronie 3 w powiększeniu 200%, bez ponownego wybierania (ZM-18, ER-69)
   - Scenariusz: Powrót z innej aplikacji
     - Zakładając, że wzór jest otwarty na stronie 3, a użytkownik przechodzi do przeglądarki
     - Gdy wraca do Oczka
