@@ -3,9 +3,14 @@
 // Komponent `AkcjaLicznika` dzieli ze stoperem (Stoper.tsx): ten sam wygląd komórki, w trakcie sesji zamiast podpisu stoi czas.
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import tokeny from '../../docs/design/tokeny.json';
 import { cel, MAX_SKALA_KAPSULY, MAX_SKALA_TYTULOWA, odstep, promien, typografiaDzianiny as ty, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz } from './wspolne';
+
+/** Stan „biegnie” stopera (M3-MAK-03, P-586 (2a), token `stoper.biegnie`): tło, rama, symbol i czas z nazw ról kolorów w tokenie, nie z wypełnienia `akcent`. */
+const biegnie = tokeny.stoper.biegnie;
+const rola = (k: Kolory, nazwa: string): string => k[nazwa as keyof Kolory];
 
 /** Rozmiary symbolu akcji: 24 pt w rzędzie, 40 pt w liście AX (makieta `.akcje a .ik`, `.duzy .akcje a .ik`) — wymiary rysunkowe z makiety, nie dziedzinowe. */
 export const ROZMIAR_SYMBOLU_AKCJI = 24, ROZMIAR_SYMBOLU_AKCJI_AX = 40;
@@ -19,7 +24,7 @@ export type PropsAkcji = {
   testID: string;
   wylaczony?: boolean;
   duzyTekst: boolean;
-  /** Sesja stopera trwa: komórka w kolorze akcentu (stan niesie też symbol i nazwa dla VoiceOver, nie sam kolor) — tylko dla `Stoper`. */
+  /** Sesja stopera trwa: komórka z ramą `akcentTekst` (token `stoper.biegnie`; stan niesie też symbol i nazwa dla VoiceOver, nie sam kolor) — tylko dla `Stoper`. */
   podkreslona?: boolean;
   /** Podpis to czas (stoper): cyfry tabelaryczne, żeby upływ sekund nie przesuwał tekstu. */
   cyfryTabelaryczne?: boolean;
@@ -31,8 +36,8 @@ export function AkcjaLicznika(p: PropsAkcji): React.ReactElement {
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.podpis} accessibilityState={p.wylaczony ? { disabled: true } : undefined}
       disabled={p.wylaczony || !p.onPress} onPress={p.onPress} style={[st.akcja, p.duzyTekst ? st.akcjaAx : null, p.podkreslona ? st.akcjaAktywna : null, p.wylaczony ? st.akcjaWylaczona : null]} testID={p.testID}>
-      <SymbolSf nazwa={p.symbol} rozmiar={p.duzyTekst ? ROZMIAR_SYMBOLU_AKCJI_AX : ROZMIAR_SYMBOLU_AKCJI} kolor={p.podkreslona ? k.naAkcencie : k.ikona} maxSkala={MAX_SKALA_TYTULOWA} />
-      <Text style={[st.podpis, p.cyfryTabelaryczne ? { fontVariant: ['tabular-nums'] } : null, p.podkreslona ? { color: k.naAkcencie } : null]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} numberOfLines={p.duzyTekst ? undefined : 1} adjustsFontSizeToFit={!p.duzyTekst} accessible={false}>{p.podpis}</Text>
+      <SymbolSf nazwa={p.symbol} rozmiar={p.duzyTekst ? ROZMIAR_SYMBOLU_AKCJI_AX : ROZMIAR_SYMBOLU_AKCJI} kolor={p.podkreslona ? rola(k, biegnie.ikona) : k.ikona} maxSkala={MAX_SKALA_TYTULOWA} />
+      <Text style={[st.podpis, p.cyfryTabelaryczne ? { fontVariant: ['tabular-nums'] } : null, p.podkreslona ? st.czasBiegnie : null]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} numberOfLines={p.duzyTekst ? undefined : 1} adjustsFontSizeToFit={!p.duzyTekst} accessible={false}>{p.podpis}</Text>
     </Pressable>
   );
 }
@@ -68,8 +73,9 @@ function styl(k: Kolory) {
     listaAx: { flexDirection: 'column', gap: odstep.s },
     akcja: { flex: 1, minWidth: cel.paskaWzoru.minSzerokosc, minHeight: cel.paskaWzoru.minSzerokosc, alignItems: 'center', justifyContent: 'center', gap: odstep.xs, paddingVertical: odstep.s, paddingHorizontal: odstep.xs, borderRadius: promien.przycisk, backgroundColor: k.powierzchnia },
     akcjaAx: { flexDirection: 'row', justifyContent: 'flex-start', alignSelf: 'stretch', gap: odstep.m, paddingHorizontal: odstep.l },
-    akcjaAktywna: { backgroundColor: k.akcent },
+    akcjaAktywna: { backgroundColor: rola(k, biegnie.tlo), borderWidth: biegnie.gruboscRamy, borderColor: rola(k, biegnie.rama) },
     akcjaWylaczona: { opacity: 0.5 },
     podpis: { ...ty.mala, fontWeight: '600', color: k.tekst },
+    czasBiegnie: { fontWeight: String(biegnie.wagaCzasu) as '700', color: rola(k, biegnie.czas), fontVariant: [biegnie.cyfry] as ['tabular-nums'] },
   });
 }

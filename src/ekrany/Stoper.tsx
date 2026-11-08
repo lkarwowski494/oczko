@@ -1,5 +1,5 @@
 // Stoper sesji na liczniku (F-21, U-4; design-spec „Stoper, sesje i Historia”, P-191 P1a–P3a; M3 p3a, P-586 2a: czwarta akcja w rzędzie pod liczbą).
-// Bez sesji: akcja „Stoper” (start jednym stuknięciem). Trwa: ta sama komórka w kolorze akcentu, ikona i czas liczony od znacznika przez
+// Bez sesji: akcja „Stoper” (start jednym stuknięciem). Trwa: ta sama komórka z ramą `akcentTekst` (token `stoper.biegnie`), ikona i czas liczony od znacznika przez
 // komponent czasu, nie przez stan ekranu. Wstrzymana: komórka zwykła z symbolem pauzy, czas stoi. Stuknięcie w komórkę w trakcie sesji: menu.
 // Odstępstwo nazwane (jak R8, P-191): menu i alert „inny projekt” jako widoki w ekranie, nie systemowy arkusz akcji / Alert.
 import React, { useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ export function Stoper(p: PropsStopera): React.ReactElement {
       {s.rodzaj === 'brak' ? (
         <AkcjaLicznika symbol="stopwatch" podpis={t('licznik.akcja_stoper')} etykieta={t('stoper.start_a11y')} onPress={p.naStart} testID="licznik-stoper" duzyTekst={duzy} />
       ) : (
-        // Czas w komórce to ten sam tekst, który czyta etykieta; trwa = akcent, wstrzymana = komórka zwykła z pauzą (stan nie tylko kolorem: symbol i etykieta).
+        // Czas w komórce to ten sam tekst, który czyta etykieta; trwa = rama akcentTekst, wstrzymana = komórka zwykła z pauzą (stan nie tylko kolorem: symbol i etykieta).
         <AkcjaLicznika symbol={s.rodzaj === 'trwa' ? 'stopwatch' : 'pause.fill'} podpis={czas} etykieta={t(s.rodzaj === 'trwa' ? 'stoper.trwa_a11y' : 'stoper.wstrzymana_a11y', { czas })}
           onPress={() => ustawMenu((m) => !m)} podkreslona={s.rodzaj === 'trwa'} cyfryTabelaryczne testID="licznik-stoper" duzyTekst={duzy} />
       )}

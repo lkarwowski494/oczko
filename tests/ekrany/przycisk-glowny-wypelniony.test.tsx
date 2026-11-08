@@ -76,12 +76,13 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
     expect(screen.getByText('+1 row')).toHaveStyle({ color: k.naAkcencie });
   });
 
-  // M3 p3a (P-586 2a): trwająca sesja stopera to akcja pod liczbą w kolorze `akcent` (stan niesie też symbol i etykieta VoiceOver); wygląd biegnącego stopera [DO USTALENIA 04].
-  test('akcja stopera w trakcie sesji: wypełnienie `akcent`', () => {
+  // M3 p4b (token `stoper.biegnie`, M3-MAK-03): trwająca sesja stopera to akcja pod liczbą z tłem `powierzchnia` i ramą 2 pt `akcentTekst` — nie wypełnienie `akcent`
+  // (stan niesie też symbol i etykieta VoiceOver); zastępuje wypełnienie `akcent` ze stanu p3a.
+  test('akcja stopera w trakcie sesji: tło `powierzchnia` z ramą `akcentTekst`, nie wypełnienie `akcent`', () => {
     const T = 1_000_000_000_000;
     const f = { naStart: jest.fn(), naWstrzymaj: jest.fn(), naWznow: jest.fn(), naZatrzymaj: jest.fn(), naInnyPotwierdz: jest.fn(), naInnyAnuluj: jest.fn() };
     render(<Stoper stan={{ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' }} inny={null} t={t} teraz={() => T + 65_000} {...f} />);
-    expect(screen.getByTestId('licznik-stoper')).toHaveStyle({ backgroundColor: k.akcent });
+    expect(screen.getByTestId('licznik-stoper')).toHaveStyle({ backgroundColor: k.powierzchnia, borderWidth: tokeny.stoper.biegnie.gruboscRamy, borderColor: k.akcentTekst });
   });
 
   test('Historia (M3 p5): dzień z robótką = kwadrat `akcent` z obwódką `akcentTekst`, wybrany dzień = obwódka `tekst`', () => {

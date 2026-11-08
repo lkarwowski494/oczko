@@ -26,10 +26,11 @@ const etykieta = (tekst: string) => {
 
 // M3 p3a (P-586 2a): stoper to czwarta akcja w rzędzie pod liczbą — czas stoi zamiast podpisu „Timer”, w kroju podpisu akcji (systemowy 600, `typografia.mala.pt`, 13 pt) z cyframi
 // tabelarycznymi; zastępuje kapsułę 17 pt 700 z paska. Rozmiar czasu: wartość w makiecie `licznik` (`.akcje a`, t-mala) — czas biegnącego stopera nie ma osobnej makiety [DO USTALENIA 04].
-test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: czas w akcji trwającego stopera to krój podpisu akcji (systemowy 600, 13 pt) z cyframi tabelarycznymi', (_m, schemat) => {
+// M3 p4b (token `stoper.biegnie`, M3-MAK-03): czas biegnącego stopera 700 (wstrzymanego dalej 600, niżej).
+test.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s: czas w akcji trwającego stopera to krój podpisu akcji (systemowy 700, 13 pt) z cyframi tabelarycznymi', (_m, schemat) => {
   jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat);
   pokaz({ rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' });
-  expect(etykieta('1:05')).toMatchObject({ fontFamily: undefined, fontWeight: '600', fontSize: tokeny.typografia.mala.pt, fontVariant: ['tabular-nums'] });
+  expect(etykieta('1:05')).toMatchObject({ fontFamily: undefined, fontWeight: String(tokeny.stoper.biegnie.wagaCzasu), fontSize: tokeny.typografia.mala.pt, fontVariant: ['tabular-nums'] });
 });
 
 test('wstrzymana akcja ma ten sam rozmiar czasu (13 pt)', () => {
