@@ -3,7 +3,6 @@
 // nazwa barwy w katalogu zasobów = nazwa tokenu. Test: tests/wydanie/barwy-celow-tokeny.test.ts.
 const tokeny = require('../../docs/design/tokeny.json');
 const czarny = (n) => ({ light: tokeny.kolory.systemCzarny[n], dark: tokeny.kolory.systemCzarny[n] }); // zegarek: zawsze czarne tło systemu
-const ciemna = (n) => ({ light: tokeny.kolory.ciemny[n], dark: tokeny.kolory.ciemny[n] });
 
 /** @type {import('@bacons/apple-targets/app.plugin').Config} */
 module.exports = {
@@ -19,8 +18,8 @@ module.exports = {
     tekst: czarny('tekst'),
     tekst2: czarny('tekst2'),
     przycisk: czarny('przycisk'),
-    // pas przypomnienia (RD-13, P-158): znacznik `akcent` na `powierzchnia`, tekst `tekst`; systemCzarny nie ma tła pasa (zgłoszenie do 04)
+    // pas przypomnienia (RD-13, P-158): znacznik `akcent` na `powierzchnia`, tekst `tekst`; tło pasa = `systemCzarny.pasPrzypomnienia` (P-579, M3-MAK-04)
     akcent: czarny('akcent'),
-    powierzchnia: ciemna('powierzchnia'),
+    powierzchnia: czarny('pasPrzypomnienia'),
   },
 };

@@ -39,7 +39,7 @@ const OCZEKIWANE: Record<Cel, Record<string, Barwa>> = {
     przyciskTekst: zMotywow('przyciskTekst'),
     powierzchnia: zMotywow('powierzchnia'),
     akcent: zMotywow('akcent'),
-    wyspaPowierzchnia: dwa(ciemny.powierzchnia as string), // systemCzarny nie ma tła pasa; ciemny.powierzchnia (zgłoszenie do 04)
+    wyspaPowierzchnia: dwa(systemCzarny.pasPrzypomnienia as string), // P-579, M3-MAK-04: tło pasa na ekranie blokady = systemCzarny.pasPrzypomnienia
     wyspaTekst: dwa(systemCzarny.tekst as string),
     wyspaAkcent: dwa(systemCzarny.akcent as string),
   },
@@ -50,7 +50,7 @@ const OCZEKIWANE: Record<Cel, Record<string, Barwa>> = {
     tekst2: dwa(systemCzarny.tekst2 as string),
     przycisk: dwa(systemCzarny.przycisk as string),
     akcent: dwa(systemCzarny.akcent as string),
-    powierzchnia: dwa(ciemny.powierzchnia as string),
+    powierzchnia: dwa(systemCzarny.pasPrzypomnienia as string), // P-579: tło pasa na zegarku
   },
   share: {
     $accent: zMotywow('tekst'),

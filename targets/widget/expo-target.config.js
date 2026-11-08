@@ -3,8 +3,7 @@
 // nie przepisane. Nazwa barwy w katalogu zasobów = nazwa tokenu (mapa: docs/design/dzianina/mapa-tokenow.md). Test: tests/wydanie/barwy-celow-tokeny.test.ts.
 const tokeny = require('../../docs/design/tokeny.json');
 const kolor = (n) => ({ light: tokeny.kolory.jasny[n], dark: tokeny.kolory.ciemny[n] });
-const ciemna = (n) => ({ light: tokeny.kolory.ciemny[n], dark: tokeny.kolory.ciemny[n] }); // rozwinięta Dynamic Island: tło zawsze czarne
-const czarny = (n) => ({ light: tokeny.kolory.systemCzarny[n], dark: tokeny.kolory.systemCzarny[n] });
+const czarny = (n) => ({ light: tokeny.kolory.systemCzarny[n], dark: tokeny.kolory.systemCzarny[n] }); // rozwinięta Dynamic Island: tło zawsze czarne
 
 /** @type {import('@bacons/apple-targets/app.plugin').Config} */
 module.exports = {
@@ -24,8 +23,8 @@ module.exports = {
     // pas przypomnienia (RD-13, P-158): znacznik `akcent` na `powierzchnia`, tekst `tekst` (mapa-tokenow: zakreslacz → akcent)
     powierzchnia: kolor('powierzchnia'),
     akcent: kolor('akcent'),
-    // rozwinięta Dynamic Island: systemCzarny nie ma tła pasa, więc ciemna powierzchnia (zgłoszenie do 04)
-    wyspaPowierzchnia: ciemna('powierzchnia'),
+    // rozwinięta Dynamic Island: tło pasa = `systemCzarny.pasPrzypomnienia` (P-579, M3-MAK-04)
+    wyspaPowierzchnia: czarny('pasPrzypomnienia'),
     wyspaTekst: czarny('tekst'),
     wyspaAkcent: czarny('akcent'),
   },
