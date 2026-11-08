@@ -41,7 +41,7 @@ async function zamontuj(Ekran: React.ComponentType): Promise<void> {
 }
 
 const TRASY: [string, string, Record<string, string>][] = [
-  ['/narzedzia', '../../app/narzedzia', {}],
+  ['/narzedzia', '../../app/(zakladki)/narzedzia', {}],
   ['/zapas', '../../app/zapas', {}],
   ['/druty', '../../app/druty', {}],
   ['/probka', '../../app/probka', {}],
@@ -70,7 +70,8 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
   const POZA = new Set(['index', '_layout', '+native-intent']);
   const pliki = (kat: string): string[] => fs.readdirSync(kat, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? pliki(path.join(kat, e.name)) : e.name.endsWith('.tsx') ? [path.join(kat, e.name)] : []));
-  const push = pliki(APP).map((p) => path.relative(APP, p).replace(/\.tsx$/, '')).filter((n) => !ARKUSZE.has(n) && !POZA.has(n)).sort();
+  const pushPliki = pliki(APP).map((p) => path.relative(APP, p).replace(/\.tsx$/, '')).filter((n) => !ARKUSZE.has(n) && !POZA.has(n)).sort();
+  const push = pushPliki.map((n) => n.replace(/\([^)]+\)\//g, '')); // grupa tras „(…)/” nie zmienia adresu (expo-router)
 
   test('lista tras push i arkuszy nie jest pusta (pułapka na zmianę zapisu w _layout.tsx)', () => {
     expect(ARKUSZE.size).toBeGreaterThanOrEqual(10);
@@ -79,7 +80,7 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
   /** Znane trasy push bez przycisku powrotu — zgłoszone w M1-016, poza jego zakresem (do decyzji 04); lista ma się kurczyć, nie rosnąć. */
   const ZNANE_BEZ_PRZYCISKU: string[] = []; // M1-094 (04-studio-projektowe-501, DEC-26 a): lista projektów dostała „Back” — lista pusta, nowe trasy bez przycisku nie przejdą
   test('każda trasa push przekazuje ekranowi naWstecz z router.back() (przycisk „‹ Back”, nie tylko gest od krawędzi)', () => {
-    const bez = push.filter((n) => !/naWstecz=\{[^}]*router\.back\(\)/.test(fs.readFileSync(path.join(APP, `${n}.tsx`), 'utf8')));
+    const bez = pushPliki.filter((n) => !/naWstecz=\{[^}]*router\.back\(\)/.test(fs.readFileSync(path.join(APP, `${n}.tsx`), 'utf8')));
     expect(bez).toEqual(ZNANE_BEZ_PRZYCISKU);
   });
 });

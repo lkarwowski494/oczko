@@ -1,14 +1,14 @@
 // Trasa „/projekty”: lista projektów (F-50, F-54). Otwarcie projektu zapamiętuje jego pierwszy licznik (F-49) i wraca do licznika.
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect, useIsFocused, useRouter } from 'expo-router';
-import { ListaProjektow, type StanListyProjektow } from '../src/ekrany/ListaProjektow';
-import { StanWczytywania } from '../src/ekrany/StanWczytywania';
-import { useAplikacja } from '../src/kompozycja/Kontekst';
-import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
-import { projektyDoSkrzynki, stanListy } from '../src/kompozycja/projekty';
-import { pokazacOknoUczciweZasady } from '../src/przypadki-uzycia/informacje-pro';
-import { widokProjektow, type WidokProjektow } from '../src/przypadki-uzycia/widok-projektow';
-import { SkrzynkaNaEkranie } from '../src/kompozycja/SkrzynkaNaEkranie';
+import { ListaProjektow, type StanListyProjektow } from '../../src/ekrany/ListaProjektow';
+import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
+import { useAplikacja } from '../../src/kompozycja/Kontekst';
+import { Bezpieczny } from '../../src/kompozycja/Bezpieczny';
+import { projektyDoSkrzynki, stanListy } from '../../src/kompozycja/projekty';
+import { pokazacOknoUczciweZasady } from '../../src/przypadki-uzycia/informacje-pro';
+import { widokProjektow, type WidokProjektow } from '../../src/przypadki-uzycia/widok-projektow';
+import { SkrzynkaNaEkranie } from '../../src/kompozycja/SkrzynkaNaEkranie';
 
 export default function EkranProjektow(): React.ReactElement {
   const { kontener, licznik } = useAplikacja();

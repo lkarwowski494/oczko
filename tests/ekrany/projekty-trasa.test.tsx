@@ -17,7 +17,7 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApli
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/SkrzynkaNaEkranie', () => ({ SkrzynkaNaEkranie: () => null }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EkranProjektow = (require('../../app/projekty') as { default: React.ComponentType }).default;
+const EkranProjektow = (require('../../app/(zakladki)/projekty') as { default: React.ComponentType }).default;
 
 async function otworz(instrukcje: Parameters<typeof wykonaj>[1], teraz = T0 + 60 * DOBA) {
   const s = await przygotuj();
