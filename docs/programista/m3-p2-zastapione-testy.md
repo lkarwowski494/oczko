@@ -27,3 +27,12 @@
 
 ## C. Testy akceptacyjne 07 przeniesione do głównego zestawu (zielone)
 `tests/akceptacja/dane/start-dzis.test.ts` → `tests/dane/start-dzis.test.ts`; `tests/akceptacja/ekrany/dzis-start.test.tsx` → `tests/ekrany/dzis-start.test.tsx`; `tests/akceptacja/ekrany/start-dzis-wzor.test.tsx` → `tests/ekrany/start-dzis-wzor.test.tsx` (import `app/(zakladki)/index`). Zmienione tylko ścieżki importów.
+
+## D. Wyjątek nazwany P-578 (lista oczekujących do fali 09)
+
+| Plik | Stara asercja | Nowa asercja | Powód |
+|---|---|---|---|
+| `tests/i18n/pierwsze-w-fali-154.test.ts` „po fali: bramka --wydanie…” | `--wydanie` bez „oczekujace.json niepusta”; jedyne błędy: kontrola (a) | lista pusta → jak dotąd; lista niepusta → tylko klucze z `tests/i18n/m3-prefiksy.ts` (`kluczM3`) i `--wydanie` **musi** paść z powodu listy, innych błędów brak poza kontrolą (a) | P-578: klucze M3 tylko en i pl, 33 języki falą 09 (P-559, polecenie p2 pkt 5); wydanie bez fali dalej zablokowane |
+| `tests/i18n/krytyczne.test.ts` „prawdziwe słowniki: mapa zgodna…” (gałąź bez uwagi kontroli (a)) | `--wydanie` kod 0 | lista pusta → kod 0; lista niepusta → tylko klucze M3, kod 1 i jedyny błąd „oczekujace.json niepusta” | jw. |
+
+Stała prefiksów w jednym miejscu: `tests/i18n/m3-prefiksy.ts` (p2: `dzis.`, `zakladki.`; kolejne partie dopisują swoje) — usunąć po fali 09 (P-578).
