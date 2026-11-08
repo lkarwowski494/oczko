@@ -9,13 +9,13 @@ import { MAX_SKALA_KAPSULY, ROZMIAR_SYMBOLU, typografiaDzianiny, useKolory } fro
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
 import type { Klucz } from '../../src/i18n/typy';
 
-// Symbole: design-spec:48 (Dziś sun.max / calendar.day.timeline.left, Projekty square.stack, Narzędzia ruler, Historia calendar); zamrożony SymbolSf (p1)
-// nie zna części nazw — najbliższe istniejące do decyzji koordynatora (zgłoszenie p2).
+// Symbole z design-spec.md:48 (P-577): Dziś sun.max (z pary calendar.day.timeline.left / sun.max, [DO USTALENIA] okiem na urządzeniu), Projekty square.stack,
+// Narzędzia ruler, Historia calendar.
 const ZAKLADKI: { trasa: string; klucz: Klucz; symbol: NazwaSymbolu; testID: string }[] = [
-  { trasa: 'index', klucz: 'zakladki.dzis', symbol: 'calendar', testID: 'nav-dzis' },
-  { trasa: 'projekty', klucz: 'zakladki.projekty', symbol: 'bookmark', testID: 'nav-projekty' },
+  { trasa: 'index', klucz: 'zakladki.dzis', symbol: 'sun.max', testID: 'nav-dzis' },
+  { trasa: 'projekty', klucz: 'zakladki.projekty', symbol: 'square.stack', testID: 'nav-projekty' },
   { trasa: 'narzedzia', klucz: 'zakladki.narzedzia', symbol: 'ruler', testID: 'nav-narzedzia' },
-  { trasa: 'dni', klucz: 'zakladki.historia', symbol: 'clock.arrow.circlepath', testID: 'nav-historia' },
+  { trasa: 'dni', klucz: 'zakladki.historia', symbol: 'calendar', testID: 'nav-historia' },
 ];
 
 export default function Zakladki(): React.ReactElement {

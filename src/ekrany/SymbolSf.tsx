@@ -10,7 +10,10 @@ import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU_TRESCI, useKolory } from './motyw';
  *  M1-146 (04-studio-projektowe-531 opcja a): minus.circle.fill, chevron.down, chevron.right (iOS 13); chevron.forward przy wierszach list. */
 export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.tip' | 'note.text.badge.plus' | 'note.text' | 'eraser' | 'arrow.uturn.backward'
   | 'chevron.backward' | 'chevron.forward' | 'gearshape' | 'calendar' | 'ruler' | 'plus' | 'doc.text' | 'clock.arrow.circlepath' | 'ellipsis' | 'square.and.arrow.up' | 'xmark' | 'arrow.up.right' | 'bookmark'
-  | 'minus.circle.fill' | 'chevron.down' | 'chevron.right';
+  | 'minus.circle.fill' | 'chevron.down' | 'chevron.right'
+  // M3 p2, P-577 (nazwany wyjątek od zamrożenia p1, tylko typ): zakładki i kafle „Dziś” z design-spec.md:48 — Dziś sun.max (wybór koordynatora z pary
+  // calendar.day.timeline.left / sun.max [DO USTALENIA 08: okiem na urządzeniu]), Projekty square.stack, kafle plus.square, scribble.variable, square.grid.3x3.
+  | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {
   const { fontScale } = useWindowDimensions();

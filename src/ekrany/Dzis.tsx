@@ -41,13 +41,12 @@ export type PropsDzis = Pick<PropsLicznika, 't' | 'oglos' | 'haptyka' | 'naPlus'
   naKafel?(k: KafelDzis): void;
 };
 
-// Symbole kafli: design-spec:48 podaje plus.square, doc.text, scribble.variable, square.grid.3x3 — zamrożony SymbolSf (p1) zna tylko część; do decyzji
-// koordynatora najbliższe istniejące (zgłoszenie p2 do 04/koordynatora).
+// Symbole kafli z design-spec.md:48 (P-577): Nowy projekt plus.square, Dodaj wzór doc.text, Włóczka i druty scribble.variable [DO USTALENIA 04], Próbka square.grid.3x3.
 const KAFLE: { k: KafelDzis; symbol: NazwaSymbolu; klucz: Klucz }[] = [
-  { k: 'nowy-projekt', symbol: 'plus', klucz: 'projekty.nowy' },
+  { k: 'nowy-projekt', symbol: 'plus.square', klucz: 'projekty.nowy' },
   { k: 'dodaj-wzor', symbol: 'doc.text', klucz: 'wzor.dodaj' },
-  { k: 'wloczka', symbol: 'pencil.tip', klucz: 'dzis.kafel_wloczka' },
-  { k: 'probka', symbol: 'ruler', klucz: 'probka.tytul' },
+  { k: 'wloczka', symbol: 'scribble.variable', klucz: 'dzis.kafel_wloczka' },
+  { k: 'probka', symbol: 'square.grid.3x3', klucz: 'probka.tytul' },
 ];
 /** Kolumna dzianiny na karcie: makieta dzis-390 ok. 112 pt (1,5 × „+1” karty) — tokenu brak, zgłoszenie do 04 (p2). */
 const KOLUMNA_DZIANINY = cel.plus * 1.5;
