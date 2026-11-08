@@ -164,6 +164,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .arkusz .zam { align-self: flex-end; margin: -4px -8px -8px 0; }
 .arkusz .gl { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; margin-top: 4px; }
 .arkusz .dr { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--akcentTekst); font-weight: 700; }
+.karta-bm { grid-template-columns: minmax(0, 1fr); } .karta-bm .kont { grid-column: 1; }
 .duzy .lim { grid-column: 1; } .duzy .baner .ik { font-size: 34px; }
 </style></head>
 <body>
@@ -351,7 +352,15 @@ document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.r
   b.querySelector('.karta').insertAdjacentHTML('afterend', '<div class="baner" role="status"><i data-ik="historiaZmian"></i><p class="t-tresc">Dodano 3 rzędy w 1 sekundę. Cofnąć?</p><a class="t-tresc">Cofnij 3 rzędy</a></div>');
   b.querySelector('.wiersz p').innerHTML = 'Za 1 rząd: <b>ujmowanie</b> (5 z 8)';
   b.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
-  dzis.after(a, b);
+  // (d) Brak ostatniego miejsca, a projekty są (po imporcie albo synchronizacji na nowym urządzeniu; `ustawienie.ostatnie_miejsce` puste; opcja (a) roli 05):
+  // karta bez licznika, bez dzianiny i bez „+1” (nie ma czego liczyć ani pokazać — dzianina bez danych byłaby ozdobą); jedyna akcja prowadzi do zakładki Projekty.
+  const d = dzis.cloneNode(true); d.dataset.ekran = 'dzis-bez-miejsca'; d.setAttribute('aria-label', 'Dziś, bez ostatniego miejsca');
+  d.querySelector('.dz').remove(); d.querySelector('.karta').classList.add('karta-bm');
+  d.querySelector('.opis').innerHTML = '<h2 class="t-tytul br">Twoje projekty są tutaj</h2><p class="t-pod czesc">3 projekty w toku. Wybierz jeden, a „Dziś” będzie otwierać go od miejsca, w którym skończysz.</p>';
+  d.querySelector('.kont').innerHTML = 'Wybierz projekt <i data-ik="szewron" data-gr="2.4"></i>';
+  d.querySelector('.wiersz').remove();
+  d.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  dzis.after(a, b, d);
   // (c) Okno „Uczciwe zasady” (KP-16, ZM-05) po zmianie startu: nigdy nad „Dziś” (karta z „+1”), licznikiem ani wzorem; arkusz nad pierwszą dozwoloną zakładką (tu: Projekty).
   const pr = document.querySelector('[data-ekran="projekty"]'); const c = pr.cloneNode(true); c.dataset.ekran = 'projekty-uczciwe'; c.setAttribute('aria-label', 'Projekty z oknem Uczciwe zasady');
   c.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="arkusz" role="dialog" aria-modal="true" aria-labelledby="uz-t"><span class="uch"></span><span class="pik zam" aria-label="Zamknij"><i data-ik="zamknij"></i></span><h2 class="t-tytul br" id="uz-t">Twój pierwszy dzień robótkowy za tobą</h2><p class="t-tresc">Wszystko w Oczku działa od pierwszego dnia, bez konta i bez reklam.</p><p class="t-tresc">Licz rzędy za darmo przez 5 dni w każdym miesiącu, jak długo chcesz. Twoje projekty i dane zawsze zostają twoje.</p><p class="t-tresc">Chcesz więcej dni? Oczko Pro znosi limit, w subskrypcji albo jednym zakupem.</p><a class="gl t-tresc">Licz dalej</a><a class="dr t-tresc">Zobacz Oczko Pro</a></section>');
