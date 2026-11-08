@@ -1,7 +1,7 @@
 // Ekran „History” (F-59; BR-DNI-001–003; P-191 P6a; makiety sesje-historia `historia*`): kalendarz od poniedziałku z kreską dnia z robótką,
 // wybrany dzień z projektami, tydzień wybranego dnia i miesiąc; pierwsze użycie bez ponagleń. Model z kompozycji (stanHistorii).
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, within } from '@testing-library/react-native';
 import { HistoriaDni } from '../../src/ekrany/HistoriaDni';
 import { stanHistorii } from '../../src/kompozycja/historia';
 import type { WidokHistorii } from '../../src/przypadki-uzycia/historia';
@@ -40,7 +40,8 @@ test('kalendarz: tytuł, miesiąc, strzałki, kolumny od poniedziałku, 1.10 w c
 
 test('dzień: projekty z rzędami albo samym czasem (ER-55); stuknięcie otwiera projekt; tydzień i miesiąc', () => {
   const f = pokaz();
-  expect(screen.getAllByText('5 rows')).toHaveLength(2); // wiersz dnia i miesiąc bez sesji
+  expect(screen.getAllByText('5 rows')).toHaveLength(1); // wiersz dnia; miesiąc to kafelek (M3 p5 cz. 2): liczba „5” nad etykietą „rows”
+  expect(within(screen.getByTestId('historia-kafel-rzedy')).getByText('5')).toBeTruthy();
   expect(screen.getByText('40 min')).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: /Scarf/ }));
   expect(f.naProjekt).toHaveBeenCalledWith('p2');
@@ -49,7 +50,8 @@ test('dzień: projekty z rzędami albo samym czasem (ER-55); stuknięcie otwiera
   expect(screen.getByText('Previous week: 12 rows')).toBeTruthy();
   expect(screen.getByText('October')).toBeTruthy();
   expect(screen.getByText('1 project finished')).toBeTruthy();
-  expect(screen.getByText('2 crafting days')).toBeTruthy();
+  expect(within(screen.getByTestId('historia-kafel-dni')).getByText('2')).toBeTruthy(); // było linią „2 crafting days” (M3 p5 cz. 2: kafelek)
+  expect(within(screen.getByTestId('historia-kafel-dni')).getByText('crafting days')).toBeTruthy();
   expect(screen.getAllByText('Time shows here when you use the stopwatch.')).toHaveLength(1); // miesiąc bez sesji (BR-DNI-003 S3)
 });
 

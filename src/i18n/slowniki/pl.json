@@ -290,7 +290,16 @@
     "wpisz": "Wpisz właściwą liczbę",
     "wpis_rozwin_a11y": "Więcej o: {{wpis}}",
     "wpis_rozwin_podpowiedz": "Pokazuje, jak zmienić ten wpis.",
-    "wpis_a11y": "z {{od}} na {{do}} o {{czas}}"
+    "wpis_a11y": "z {{od}} na {{do}} o {{czas}}",
+    "kafel_dni_one": "dzień z robótką",
+    "kafel_dni_few": "dni z robótką",
+    "kafel_dni_many": "dni z robótką",
+    "kafel_dni_other": "dnia z robótką",
+    "kafel_rzedy_one": "rząd",
+    "kafel_rzedy_few": "rzędy",
+    "kafel_rzedy_many": "rzędów",
+    "kafel_rzedy_other": "rzędu",
+    "kafel_czas": "czas sesji"
   },
   "menu": {
     "nazwa": "Nazwij projekt i część",

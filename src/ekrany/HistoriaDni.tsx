@@ -4,14 +4,16 @@
 // tydzień wybranego dnia i miesiąc, w kartach. Bez serii i ponagleń (BR-DNI-001 S5).
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU_KAPSULY, promien, typografia, useKolory, type Kolory } from './motyw';
+import { cel, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, ROZMIAR_SYMBOLU_KAPSULY, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import type { Tlumacz } from './wspolne';
-import { PrzyciskSymbolu, Wstecz } from './Pasek';
+import { Wstecz } from './Pasek';
+import { SymbolSf } from './SymbolSf';
 
-export type KomorkaDnia = { dzien: string; numer: number; robotka: boolean; dzis: boolean; a11y: string };
+export type KomorkaDnia = { dzien: string; numer: number; robotka: boolean; dzis: boolean; przyszly: boolean; a11y: string };
+export type KafelekMiesiaca = { id: 'dni' | 'rzedy' | 'czas'; wartosc: string; etykieta: string };
 export type BlokHistorii = { naglowek: string; linie: string[]; bezStopera: boolean };
 export type StanHistorii = {
-  miesiac: string; skroty: string[]; puste: number; komorki: KomorkaDnia[]; wybrany: string; naglowekDnia: string;
+  miesiac: string; poprzedniNazwa: string; nastepnyNazwa: string; kafle: KafelekMiesiaca[]; skroty: string[]; puste: number; komorki: KomorkaDnia[]; wybrany: string; naglowekDnia: string;
   projekty: { id: string; nazwa: string; linia: string }[]; ukonczoneDnia?: string[]; tydzien: BlokHistorii; miesiacBlok: BlokHistorii; pierwsze: boolean;
 };
 export type PropsHistorii = { stan: StanHistorii; t: Tlumacz; naWybierz(dzien: string): void; naPoprzedni(): void; naNastepny(): void; naProjekt(id: string): void; naWstecz?(): void };
@@ -20,6 +22,7 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
   const k = useKolory();
   // Szerokość komórki: siedem kolumn na pełną szerokość ekranu (treść ma po bokach `odstep.l`, siatka je zabiera ujemnym marginesem). Do pierwszego pomiaru — szerokość okna.
   const okno = useWindowDimensions().width;
+  const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const [trescSzer, ustawTrescSzer] = useState<number | null>(null);
   const komorka = Math.floor((trescSzer === null ? okno : trescSzer + 2 * odstep.l) / 7);
   const st = style(k, komorka);
@@ -38,11 +41,15 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dni.tytul')}</Text>
       <View style={st.kalendarz} onLayout={(e) => ustawTrescSzer(e.nativeEvent.layout.width)}>
         <View style={st.wierszMiesiaca}>
-          <Text style={[st.tekst, st.pogrubiony]}>{s.miesiac}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <PrzyciskSymbolu symbol="chevron.backward" etykieta={t('dni.poprzedni_miesiac_a11y')} onPress={naPoprzedni} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} />
-            <PrzyciskSymbolu symbol="chevron.forward" etykieta={t('dni.nastepny_miesiac_a11y')} onPress={naNastepny} rozmiar={ROZMIAR_SYMBOLU_KAPSULY} />
-          </View>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('dni.poprzedni_miesiac_a11y')} onPress={naPoprzedni} style={st.sasiad}>
+            <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
+            <Text style={st.sasiadTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.poprzedniNazwa}</Text>
+          </Pressable>
+          <Text style={st.miesiac} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.miesiac}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('dni.nastepny_miesiac_a11y')} onPress={naNastepny} style={st.sasiad}>
+            <Text style={st.sasiadTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.nastepnyNazwa}</Text>
+            <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={k.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
+          </Pressable>
         </View>
         <View style={st.siatka} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           {s.skroty.map((x, i) => <Text key={`${x}${i}`} style={[st.komorka, st.podpis, { textAlign: 'center' }]}>{x}</Text>)}
@@ -54,8 +61,8 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
             return (
               <Pressable key={d.dzien} accessibilityRole="button" accessibilityLabel={d.a11y} accessibilityState={{ selected: wybrany }}
                 onPress={() => naWybierz(d.dzien)} style={st.komorka} testID={`historia-dzien-${d.dzien}`}>
-                <View style={[st.kwadrat, d.robotka && st.dziergany, wybrany && st.wybrany]}>
-                  <Text style={[st.tekst, d.robotka && { color: k.naAkcencie }, d.dzis && st.dzis]}>{d.numer}</Text>
+                <View style={[st.kwadrat, d.robotka && st.dziergany, d.przyszly && st.przyszly, wybrany && st.wybrany]}>
+                  <Text style={[st.tekst, d.robotka && { color: k.naAkcencie }, d.przyszly && { color: k.tekst2 }, d.dzis && st.dzis]}>{d.numer}</Text>
                 </View>
               </Pressable>
             );
@@ -77,7 +84,19 @@ export function HistoriaDni({ stan: s, t, naWybierz, naPoprzedni, naNastepny, na
         </View>
       </View>
       {blok(s.tydzien, 'historia-tydzien')}
-      {blok(s.miesiacBlok, 'historia-miesiac')}
+      <View style={st.blok} testID="historia-miesiac">
+        <Text style={st.naglowekBloku} accessibilityRole="header">{s.miesiacBlok.naglowek}</Text>
+        <View style={duzyTekst ? st.kafleAx : st.kafle}>
+          {s.kafle.map((x) => (
+            <View key={x.id} style={st.kafelek} accessible accessibilityLabel={`${x.wartosc} ${x.etykieta}`} testID={`historia-kafel-${x.id}`}>
+              <Text style={st.kafelekWartosc} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{x.wartosc}</Text>
+              <Text style={st.podpis}>{x.etykieta}</Text>
+            </View>
+          ))}
+        </View>
+        {s.miesiacBlok.linie.map((l) => <Text key={l} style={st.tekst}>{l}</Text>)}
+        {s.miesiacBlok.bezStopera && <Text style={st.podpis}>{t('dni.bez_stopera')}</Text>}
+      </View>
     </ScrollView>
   );
 }
@@ -90,13 +109,21 @@ function style(k: Kolory, komorka: number) {
     kalendarz: { gap: odstep.xs },
     karta: { borderRadius: promien.przycisk, backgroundColor: k.powierzchnia, padding: odstep.l, gap: odstep.xs },
     wierszMiesiaca: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' },
+    miesiac: { ...typografiaDzianiny.tytul, color: k.tekst },
+    sasiad: { flexDirection: 'row', alignItems: 'center', gap: odstep.xs, minHeight: cel.minimum },
+    sasiadTekst: { ...typografia.tresc, color: k.akcentTekst },
     // Siatka na pełną szerokość ekranu: ujemny margines zabiera boczne `odstep.l` treści, komórka = szerokość ekranu / 7 (≥ 44 pt od 308 pt).
     siatka: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -odstep.l, width: komorka * 7, alignSelf: 'center' },
     komorka: { width: komorka, minHeight: cel.minimum, padding: odstep.xs / 2, alignItems: 'stretch', justifyContent: 'center' },
     kwadrat: { flex: 1, borderRadius: promien.dzien, backgroundColor: k.dzienPusty, borderWidth: 2, borderColor: k.dzienPusty, alignItems: 'center', justifyContent: 'center' },
     dziergany: { backgroundColor: k.akcent, borderColor: k.akcentTekst },
+    przyszly: { backgroundColor: 'transparent', borderColor: 'transparent' }, // dzień po dzisiejszym (makieta `.kal i.p`): bez tła, tekst `tekst2`
     wybrany: { borderColor: k.tekst },
     dzis: { fontWeight: '700', textDecorationLine: 'underline' },
+    kafle: { flexDirection: 'row', flexWrap: 'wrap', gap: odstep.m },
+    kafleAx: { gap: odstep.m },
+    kafelek: { flexGrow: 1, flexBasis: '45%', backgroundColor: k.powierzchnia, borderRadius: promien.kafel, padding: odstep.l, gap: odstep.xs },
+    kafelekWartosc: { ...typografiaDzianiny.liczbaPodsumowania, color: k.tekst },
     blok: { gap: odstep.xs },
     naglowekBloku: { ...typografia.tresc, fontWeight: '700', color: k.tekst, marginTop: odstep.xl - odstep.l },
     tekst: { ...typografia.tresc, color: k.tekst },

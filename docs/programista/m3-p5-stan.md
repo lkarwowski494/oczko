@@ -18,12 +18,15 @@ Urządzenie i symulator (brak macOS), zrzuty (brak Expo web), E2E iOS (uruchamia
 
 ## Odstępstwa od makiety (do 04)
 1. Dzień dziergany bez faktury oczek „V” (jak „Ten tydzień” na „Dziś”, p2): 30 wzorów SVG w kalendarzu; wariant: miniatura dzianiny w komórce [DO USTALENIA 04].
-2. Brak podsumowania w trzech liczbach (3 / 38 / 2 h 40 w kafelkach): zostają linie tekstu tygodnia i miesiąca (`dni.*`, asercje testów 07); wariant liczbowy wymaga nowych kluczy i zmiany asercji (decyzja koordynatora).
-3. Wiersz „miesiąc” z makiety (strzałki z nazwami sąsiednich miesięcy „październik / grudzień”) nie wdrożony: zostają przyciski strzałek z etykietami `dni.*_a11y` i tytuł miesiąca; wyłączona strzałka „grudzień” w bieżącym miesiącu — brak (zmiana zachowania).
-4. Dni przyszłe nie wyszarzone (stan nie niesie „dziś” poza flagą `dzis` komórki).
+2. (cz. 2, zrobione) kafelki miesiąca, nazwy sąsiednich miesięcy, dni przyszłe wyszarzone — patrz niżej. Nadal brak: wyłączonej strzałki „następny” po bieżącym miesiącu z makiety (opacity .35; zmiana zachowania, nie zlecona) i kafelka czasu bez sesji (celowo: brak zostaje brakiem, nota `dni.bez_stopera`).
 5. Ekrany Sesje i korekta sesji: makiety Dzianiny brak; wygląd z tokenów (grupa `powierzchnia`, wiersz ≥ 44 pt); nagłówki grup 13 pt `tekst2` zostają (test `naglowki-sekcji-13-reszta`), co różni się od nagłówków 17 pt/700 w Historii — spójność do 04.
 6. Arkusz korekty (`KorektaSesji` w `Formularze.tsx`) bez zmian kodu: używa `Arkusz` z p1.
 
 ## Dowody
 `npm run verify` kod 0: 518 zestawów, 5391 testów (typecheck, typecheck:testy, lint, `jakosc:kontrole` w tym `tabela-08` odświeżona i i18n). Pierwszy przebieg padł na `tabela-08` (nowy plik testu) i na regule JAK-13 (`dokumenty-jakosci` 046: nazwa testu z „44 pt”); poprawione: regeneracja tabeli, nazwy testów jako deklaracja stylu.
 Test nowy: `historia-dni-komorka-320` (6). Zmienione: `przycisk-glowny-wypelniony` (1 test × 2 motywy), `naglowki-p2-4` (b), `bez-literalow-wymiarow` (lista wyjątków) — `m3-p5-zastapione-testy.md`.
+
+## Część 2 (P-590 (a), tej samej sesji)
+Kafelki podsumowania miesiąca (`historia-kafel-dni|rzedy|czas`, liczba Bree nad etykietą; z istniejącego odczytu `miesiac`, bez nowego zapytania), strzałki z nazwami sąsiednich miesięcy z Intl (etykiety VoiceOver i wywołania bez zmian), dni po dzisiejszym bez tła z tekstem `tekst2` (wybór dnia przyszłego nadal działa). Klucze `historia.kafel_dni|rzedy|czas` (en, pl; plural), `en.kontekst.json`, `oczekujace.json`, prefiks `historia.kafel_` w `m3-prefiksy.ts` (węższy niż `historia.` — ten prefiks ma też arkusz zmian licznika). Kafelek czasu tylko przy sesjach. Linie miesiąca „rzędy · czas” i „dni robótkowe” zastąpione kafelkami; klucz `dni.dni_robotki` nieużywany w kodzie (do usunięcia w fali 09).
+`npm run verify` kod 0: 519 zestawów, 5401 testów. Test przed kodem: `historia-dni-czesc-2` (8 czerwonych, po kodzie 10/10); zmieniona asercja `historia-dni` (wykaz).
+Nie sprawdzono: układ wiersza miesiąca przy 320 pt (tytuł + dwie nazwy mogą się zawinąć — `flexWrap`), AX5 kafelki w jednej kolumnie, zrzuty.

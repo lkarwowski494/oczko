@@ -230,7 +230,12 @@
     "wpisz": "Enter the right number",
     "wpis_rozwin_a11y": "More about {{wpis}}",
     "wpis_rozwin_podpowiedz": "Shows how to change this entry.",
-    "wpis_a11y": "{{od}} to {{do}} at {{czas}}"
+    "wpis_a11y": "{{od}} to {{do}} at {{czas}}",
+    "kafel_dni_one": "crafting day",
+    "kafel_dni_other": "crafting days",
+    "kafel_rzedy_one": "row",
+    "kafel_rzedy_other": "rows",
+    "kafel_czas": "session time"
   },
   "menu": {
     "nazwa": "Name project and part",
