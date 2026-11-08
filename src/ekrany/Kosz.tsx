@@ -44,15 +44,15 @@ export function Kosz({ stan: s, t, naPrzywroc, naWstecz }: PropsKosza): React.Re
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.l },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    tytul: { ...typografia.tytul, color: k.tekst },
+    grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum, padding: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszTekst: { flex: 1 },
-    nazwa: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    opis: { ...typografia.podpis, color: k.olowek },
+    nazwa: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
+    opis: { ...typografia.podpis, color: k.tekst2 },
     przycisk: { minHeight: cel.minimum, minWidth: cel.minimum, justifyContent: 'center' },
-    przyciskTekst: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
+    przyciskTekst: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
   });
 }

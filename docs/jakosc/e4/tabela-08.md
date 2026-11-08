@@ -222,6 +222,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-092-etykiety-planow.test.tsx` | zielony (główny zestaw) | 2 | KP-03 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-196-tysiace.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-017 | `src/ekrany/Zapas`<br>`src/ekrany/wspolne`<br>`src/i18n/format`<br>`src/kompozycja/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m2-036-hak-bez-szerokosci.test.tsx` | zielony (główny zestaw) | 2 | P-461 | `src/ekrany/Narzedzia`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p7-oferty.test.tsx` | zielony (główny zestaw) | 10 | KP-09, P-054, P-495, P-536, P-557, P-558, P-561, P-563 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/adresy` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p7-ustawienia.test.tsx` | zielony (główny zestaw) | 7 | — | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-ax5.test.tsx` | zielony (główny zestaw) | 3 | NFR-DOS-002, P-277, P-287, P-553 | `src/ekrany/Arkusz`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-licznika-m3.test.tsx` | zielony (główny zestaw) | 11 | BR-LIC-017/S6, P-581, P-586 | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/menu-oczka.test.tsx` | zielony (główny zestaw) | 5 | P-360, P-361, P-581 | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -241,7 +243,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/odrzuc-zmiany-formularz.test.tsx` | zielony (główny zestaw) | 16 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-powrot-z-okna.test.tsx` | zielony (główny zestaw) | 4 | KP-13 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-trasa.test.tsx` | zielony (główny zestaw) | 9 | KP-07, P-330 | `src/domena/porty` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty.test.tsx` | zielony (główny zestaw) | 14 | KP-03, KP-04, KP-08, KP-09, KP-14, P-054, P-065, P-089, P-403, R-118, R-124 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty.test.tsx` | zielony (główny zestaw) | 14 | KP-03, KP-04, KP-08, KP-09, KP-14, P-054, P-065, P-089, P-403, P-563, R-118, R-124 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/p202-stan-danych-korekta.test.tsx` | zielony (główny zestaw) | 1 | BR-DAN-011/S3, BR-PRJ-013/S4, P-193, P-195, P-202 | `src/ekrany/StanDanych`<br>`src/ekrany/wspolne` | ER-52, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pasek-symbole-033-036.test.tsx` | zielony (główny zestaw) | 12 | P-581, P-583, P-586 | `src/ekrany/Kosz`<br>`src/ekrany/Licznik`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/Narzedzia`<br>`src/ekrany/Projekt`<br>`src/ekrany/Ukonczenie`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pasek-wstecz-cel-532.test.tsx` | zielony (główny zestaw) | 2 | P-436 | `src/ekrany/Pasek`<br>`src/ekrany/motyw` | — |
@@ -304,7 +306,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-010, BR-DAN-012/S3, BR-LIC-020/S3, BR-ZAK-004, BR-ZAK-004/S1, BR-ZAK-006/S5, BR-ZAK-006/S7, KP-13 | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-co-zostaje.test.tsx` | zielony (główny zestaw) | 4 | P-426, P-427 | `src/ekrany/UsunWszystko`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/konfiguracja` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | KP-05, P-328, P-427 | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-DAN-009, KP-05, P-328, P-427, P-573 | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-tresc.test.tsx` | zielony (główny zestaw) | 3 | P-328, P-330, P-427, P-469, P-474 | `src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wloczki-projektu-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-ZAP-002, P-330 | `src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-sygnal.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-009/S4, RD-13 | `src/kompozycja/system` | — |
@@ -379,4 +381,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 375; zależnych od poprawek: 233.
+Razem plików testów: 377; zależnych od poprawek: 235.

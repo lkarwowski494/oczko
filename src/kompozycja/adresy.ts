@@ -9,5 +9,5 @@ export const ADRESY = {
 } as const;
 /** Adres kontaktu na ekranie „Report a problem” (M1-audytor-generalny-057): ten sam co mailto na stronie wsparcia i w polityce (site/support.html, site/privacy.html; test zglos-kontakt-057). */
 export const ADRES_WSPARCIA = 'support@apps4brew.com';
-/** Family Sharing (P-038): kierunek „włączamy”, włączenie w App Store Connect przy konfiguracji — do tego czasu zdanie o rodzinie się nie pokazuje (P-089 (2)). */
-export const FAMILY_SHARING = false;
+/** Family Sharing (P-038): włączone w App Store Connect dla trzech produktów (P-495, P-536), więc kafel „Dla rodziny” na ekranie Oczko Pro się pokazuje (P-561, 02-monetyzacja-002). Flaga zostaje na wypadek produktu bez Family Sharing (P-089 (2)). */
+export const FAMILY_SHARING = true;

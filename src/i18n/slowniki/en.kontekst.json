@@ -415,7 +415,6 @@
     "raz": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "dozywotni_przy_subskrypcji": "Podpis pod planem dożywotnim, tylko gdy osoba ma aktywną subskrypcję (KP-03, M1-014, P-403): zakup dożywotniego nie anuluje subskrypcji, osoba musi ją anulować sama (obok przycisk „Manage subscription”). Do akceptacji 04.",
     "bez_pro": "Tekst z ekrany.html roli 04 (ekran ofert). {{limit}} = LIMIT_DNI_W_MIESIACU. Liczba mnoga (P-307): formy CLDR wg `count` podanego przy wywołaniu; liczba stoi w kluczu liczby mnogiej, nie obok niego.",
-    "rodzina": "Tekst z ekrany.html roli 04 (ekran ofert). Tylko gdy Family Sharing włączone (P-089 (2)).",
     "kup": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "przywroc": "Tekst z ekrany.html roli 04 (ekran ofert).",
     "polityka": "Tekst z ekrany.html roli 04 (ekran ofert).",
@@ -429,7 +428,15 @@
     "blad_zakupu": "Linia błędu na ekranie ofert, gdy zakup się nie powiódł (błąd sklepu lub sieci). Anulowanie przez użytkowniczkę nie daje żadnego komunikatu. Znak „!” + tekst, role=alert. Bez kodów technicznych i bez przeprosin.",
     "przywracanie_nic": "Linia informacji po „Restore purchases”, gdy sklep nie zwrócił zakupu Oczko Pro dla bieżącego Apple ID. Nie błąd. „Settings” = ustawienia systemu iOS (konto Apple ID).",
     "przywracanie_blad": "Linia błędu po „Restore purchases”, gdy samo przywracanie się nie powiodło (sieć, sklep). Znak „!” + tekst, role=alert.",
-    "pro_wlaczone": "Jednorazowa linia na ekranie ofert po zatwierdzeniu zakupu poza aplikacją (Ask to Buy / rodzinna zgoda): Pro jest już włączone. Krótkie zdanie oznajmujące, jak „Oczko Pro is on.”; ok. 20 znaków. Tekst roboczy 08 wg P-330 (klucz `ustawienia.pro_wlaczone` to tylko „On” wiersza Ustawień) — do akceptacji 04."
+    "pro_wlaczone": "Jednorazowa linia na ekranie ofert po zatwierdzeniu zakupu poza aplikacją (Ask to Buy / rodzinna zgoda): Pro jest już włączone. Krótkie zdanie oznajmujące, jak „Oczko Pro is on.”; ok. 20 znaków. Tekst roboczy 08 wg P-330 (klucz `ustawienia.pro_wlaczone` to tylko „On” wiersza Ustawień) — do akceptacji 04.",
+    "kafel_dzien_tytul": "Nazwa kafla 1 ekranu Oczko Pro (P-557, P-563). Pro zdejmuje limit dni w miesiącu. „Crafting day” = dzień, w którym osoba coś dziergała; jak w `oferty.bez_pro`. Ok. 20 znaków.",
+    "kafel_dzien_opis": "Opis kafla 1 ekranu Oczko Pro: korzyść to brak limitu dni w miesiącu (nie nowa funkcja). Zwrot „kiedy dziergasz” obejmuje też szydełkowanie. Jedno zdanie, ok. 50 znaków.",
+    "kafel_urzadzenia_tytul": "Nazwa kafla 2 ekranu Oczko Pro (P-563 (11), 02-monetyzacja-001): mówi o LIMICIE, nie o urządzeniach jako funkcji Pro — zegarek, iPad i ekran blokady działają też bez Pro. Nie przekładaj tak, by urządzenia wyglądały na płatną funkcję. Ok. 30 znaków.",
+    "kafel_urzadzenia_opis": "Opis kafla 2: lista urządzeń Apple, na których limit znika. Nazwy własne urządzeń Apple zostają bez przekładu (jak w lokalizacji Apple).",
+    "kafel_rodzina_tytul": "Nazwa kafla 3 ekranu Oczko Pro, tylko gdy Family Sharing jest włączone (`FAMILY_SHARING`, P-561, ujawnienie 7). Ok. 15 znaków.",
+    "kafel_rodzina_opis": "Opis kafla 3 (P-563 (12), 02-monetyzacja-003): zdanie o możliwości, nie o stanie. „Family Sharing” w każdym języku to nazwa funkcji z ustawień iPhone’a w tym języku (po polsku „Chmura rodzinna”), nie przekład dosłowny.",
+    "kafel_dane_tytul": "Nazwa kafla 4 ekranu Oczko Pro: dane zostają bez Pro i z Pro (ten kafel mówi, co NIE jest za zakupem). Ok. 20 znaków.",
+    "kafel_dane_opis": "Opis kafla 4: projekty, wzory i historia nie zależą od Pro. Jedno zdanie, ok. 50 znaków."
   },
   "uczciwe": {
     "tytul": "Tekst z design-spec roli 04. „Crafting day” = dzień z policzonym rzędem, dla drutów i szydełka (P-302).",

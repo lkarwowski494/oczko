@@ -44,13 +44,13 @@ export function WyborJezyka({ t, wybrany, naWybierz, naUstawieniaIos, naWstecz }
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    ekran: { flex: 1, backgroundColor: k.papier },
+    ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { padding: odstep.l, gap: odstep.l },
-    tytul: { ...typografia.tytul, color: k.grafit },
-    grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
+    tytul: { ...typografia.tytul, color: k.tekst },
+    grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
     wiersz: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: cel.minimum, paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
-    nazwa: { ...typografia.tresc, color: k.grafit }, // krój systemowy: Libre Franklin nie ma greki i CJK (P-064)
-    znak: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },
-    opis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.m },
+    nazwa: { ...typografia.tresc, color: k.tekst }, // krój systemowy: Libre Franklin nie ma greki i CJK (P-064)
+    znak: { ...typografia.tresc, color: k.tekst, fontWeight: '700' },
+    opis: { ...typografia.podpis, color: k.tekst2, paddingHorizontal: odstep.m },
   });
 }

@@ -46,7 +46,7 @@ const KATALOGI_KODU = ['src/ekrany', 'src/kompozycja'];
 const WYJATKI_KROPKI_W_KODZIE: Record<string, number> = {
   'src/ekrany/Historia.tsx': 2,     // wiersz serii i dopisek „undone” w wierszu historii
   'src/ekrany/ObrazKarty.tsx': 1,   // podpis karty ukończenia: włóczki · części
-  'src/ekrany/Oferty.tsx': 2,       // wiersz oferty: nazwa · cena (widoczny i etykieta VoiceOver)
+  'src/ekrany/Oferty.tsx': 1,       // etykieta VoiceOver wiersza oferty: nazwa · cena (M3 p7: widoczna nazwa, cena i podpis w osobnych liniach, bez sklejania)
   'src/ekrany/Ukonczenie.tsx': 1,   // podsumowanie: czas · części · dni
   'src/ekrany/Zapas.tsx': 1,        // wiersz wyboru kategorii: numer · nazwa
   'src/kompozycja/zapas.ts': 1,     // wiersz włóczki: kategoria · motki

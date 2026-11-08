@@ -585,7 +585,6 @@
     "odnawianie_rok": "Odnawia się co rok, dopóki nie anulujesz w ustawieniach Apple ID.",
     "raz": "Płacisz raz. Nic się nie odnawia.",
     "dozywotni_przy_subskrypcji": "Twoja subskrypcja odnawia się, dopóki jej nie anulujesz.",
-    "rodzina": "Udostępnione rodzinie w ramach Udostępniania rodzinnego.",
     "kup": "Kontynuuj: {{plan}}",
     "przywroc": "Przywróć zakupy",
     "polityka": "Polityka prywatności",
@@ -603,7 +602,15 @@
     "bez_pro_one": "Bez Pro: {{limit}} dzień robótkowy co miesiąc oraz wszystkie twoje projekty i dane, zawsze.",
     "bez_pro_few": "Bez Pro: {{limit}} dni robótkowe co miesiąc oraz wszystkie twoje projekty i dane, zawsze.",
     "bez_pro_many": "Bez Pro: {{limit}} dni robótkowych co miesiąc oraz wszystkie twoje projekty i dane, zawsze.",
-    "bez_pro_other": "Bez Pro: {{limit}} dnia robótkowego co miesiąc oraz wszystkie twoje projekty i dane, zawsze."
+    "bez_pro_other": "Bez Pro: {{limit}} dnia robótkowego co miesiąc oraz wszystkie twoje projekty i dane, zawsze.",
+    "kafel_dzien_tytul": "Każdy dzień robótkowy",
+    "kafel_dzien_opis": "Liczysz, kiedy dziergasz, bez limitu w miesiącu.",
+    "kafel_urzadzenia_tytul": "Bez limitu na każdym urządzeniu",
+    "kafel_urzadzenia_opis": "iPhone, iPad i Apple Watch.",
+    "kafel_rodzina_tytul": "Dla rodziny",
+    "kafel_rodzina_opis": "Możesz podzielić się z rodziną przez Chmurę rodzinną.",
+    "kafel_dane_tytul": "Dane zawsze twoje",
+    "kafel_dane_opis": "Projekty, wzory i historia zostają, z Pro i bez."
   },
   "uczciwe": {
     "tytul": "Twój pierwszy dzień robótkowy za tobą",
