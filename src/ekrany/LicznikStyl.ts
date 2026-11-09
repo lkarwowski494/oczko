@@ -11,7 +11,10 @@ export function style(k: Kolory) {
     paskaPrawa: { flexDirection: 'row', gap: odstep.s, flexShrink: 0 }, // ikony zostają w pasku przy AX5 (makieta fix-8 `.nav .ikony`, P-287)
     blokada: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.l, backgroundColor: k.papierGrupa, minHeight: rozmiary.minimum },
     blokadaPrzycisk: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.s },
-    srodek: { paddingHorizontal: odstep.xl, gap: odstep.m, paddingBottom: odstep.sekcja },
+    przewijana: { flex: 1 },
+    srodek: { paddingHorizontal: odstep.xl, gap: odstep.m, paddingBottom: odstep.sekcja }, // paddingBottom do pierwszego pomiaru strefy (016)
+    // 016 + LIC-04 (tokeny `licznik.strefa`): strefa „akcje + −1/+1” nałożona u dołu na przewijaną treść, tło `tlo`.
+    strefa: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: k.papier },
     tytul: { ...typografia.tytul, color: k.grafit },
     instrukcja: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },

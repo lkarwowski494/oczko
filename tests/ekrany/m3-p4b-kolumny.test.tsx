@@ -76,8 +76,13 @@ describe('Licznik: kolumna z dzianina.kolumnaLicznika', () => {
     expect(kolumna.borderRadius).toBe(kl.promien);
   });
 
-  test('AX5: dzianina jako pas na pełną szerokość o wysokości 96, promień 12', () => {
+  // Zastąpiony jawnie (fix E5, 016, P-613; docs/programista/m3-fix-e5-zastapione-testy.md): pas 96 zostaje dla AX1–AX2, od AX3 kolumna dzianiny ukryta (`licznik.ax3ax5`).
+  test('AX1: dzianina jako pas na pełną szerokość o wysokości 96, promień 12; od AX3 (AX5) bez dzianiny', () => {
     mockSkala = AX5;
+    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+    expect(screen.queryByTestId('licznik-dzianina')).toBeNull();
+    screen.unmount();
+    mockSkala = 1.786;
     const { dzianina, kolumna } = pokazLicznik();
     expect(dzianina.height).toBe(kl.ax5Wysokosc);
     expect(dzianina.width).toBeGreaterThan(kl.szerokosc);

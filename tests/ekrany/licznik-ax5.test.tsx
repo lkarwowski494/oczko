@@ -24,12 +24,13 @@ const kolejnosc = (ids: string[]) => {
 };
 
 // M3 p3a: kolejność AX z makiety `licznik-390-*-ax5` (Dzianina): nazwa projektu i część, pas dzianiny, liczba — zastępuje wariant (d) P-275 „liczba nad nazwami” (system Kreski).
-test('AX5 (kategoria dostępności): nazwa projektu nad liczbą, potem „Now working”; podpis +1 tylko w etykiecie VoiceOver', () => {
+// Zastąpiony jawnie (fix E5, 016, P-613; docs/programista/m3-fix-e5-zastapione-testy.md): od AX3 liczba pod paskiem nawigacji, nad nazwą projektu (`licznik.ax3ax5`).
+test('AX5 (kategoria dostępności): liczba i „Now working” nad nazwą projektu; podpis +1 tylko w etykiecie VoiceOver', () => {
   skala(3.571);
   rysuj();
   const [projekt, liczba, teraz] = kolejnosc(['licznik-projekt', 'licznik-wartosc', 'licznik-teraz-rzad']);
   expect(liczba).toBeGreaterThanOrEqual(0);
-  expect(projekt < liczba && liczba < teraz).toBe(true);
+  expect(liczba < teraz && teraz < projekt).toBe(true);
   expect(screen.queryByText('tap when row 2 is done')).toBeNull();
   expect(screen.getByRole('button', { name: '+1 row, when row 2 is done' })).toBeTruthy();
 });

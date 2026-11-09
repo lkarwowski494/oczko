@@ -122,6 +122,9 @@ export const MAX_SKALA_KAPSULY = ty.zakladka.maxSkala;
 export const MAX_SKALA_ZNAKU_WYBORU = ty.zakladka.maxSkala;
 /** Pierwsza kategoria dostępności Dynamic Type (AX1) w mnożniku RN; od niej układ licznika „liczba nad nazwami” (04 fix-8 wariant (d), P-275). */
 export const PROG_KATEGORII_DOSTEPNOSCI = 1.786;
+/** AX3 (UIContentSizeCategoryAccessibilityExtraLarge) w mnożniku RN: 2,643 (react-native React/CoreModules/RCTAccessibilityManager.mm:269);
+ *  od niego układy `licznik.ax3ax5` i `kartaDzis.ax3ax5` (fix E5, P-614 (2), P-613). */
+export const PROG_AX3 = 2.643;
 
 /**
  * „Zwiększ kontrast” z systemu: `AccessibilityInfo.isDarkerSystemColorsEnabled` i zdarzenie `darkerSystemColorsChanged` (iOS, UIAccessibilityDarkerSystemColorsEnabled;

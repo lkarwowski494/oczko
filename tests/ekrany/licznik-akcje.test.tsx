@@ -110,15 +110,17 @@ describe('układ: zwykły i AX5', () => {
     expect(screen.getByTestId('licznik-notatka')).toHaveTextContent('Sleeve 2 cm shorter');
   });
 
-  test('AX5: akcje jako lista pod notatką, „+1” nad „−1” na pełną szerokość, nazwa i część nad dzianiną i liczbą', () => {
+  // Zastąpiony jawnie (fix E5, 016, P-613; docs/programista/m3-fix-e5-zastapione-testy.md): od AX3 liczba pierwsza w treści, bez dzianiny (`licznik.ax3ax5`).
+  test('AX5: akcje jako lista pod notatką, „+1” nad „−1” na pełną szerokość, liczba nad nazwą, bez dzianiny', () => {
     mockSkala = 3.571;
     rysuj({ notatka: 'Sleeve 2 cm shorter' });
     expect(stylu('licznik-akcje').flexDirection).toBe('column');
     expect(stylu('licznik-przyciski').flexDirection).toBe('column');
     const [plus, minus] = kolejnosc(['licznik-plus', 'licznik-minus']);
     expect(plus < minus).toBe(true);
-    const [projekt, dzianina, liczba, notatka, akcje] = kolejnosc(['licznik-projekt', 'licznik-dzianina', 'licznik-wartosc', 'licznik-notatka', 'licznik-akcje']);
-    expect(projekt < dzianina && dzianina < liczba && liczba < notatka && notatka < akcje).toBe(true);
+    const [projekt, liczba, notatka, akcje] = kolejnosc(['licznik-projekt', 'licznik-wartosc', 'licznik-notatka', 'licznik-akcje']);
+    expect(liczba < projekt && projekt < notatka && notatka < akcje).toBe(true);
+    expect(screen.queryByTestId('licznik-dzianina')).toBeNull();
     expect(screen.getByRole('button', { name: '+1 row, when row 2 is done' })).toBeTruthy(); // podpis +1 tylko w etykiecie (P-275)
   });
 });
