@@ -252,7 +252,7 @@ function style(k: Kolory, jezyk?: string) {
     dzien: { flex: 1, alignItems: 'center', gap: odstep.xs },
     dzienAx: { width: '22%', alignItems: 'center', gap: odstep.xs }, // AX5: tydzień 4 + 3 (design-spec „Typografia”)
     kwadrat: { alignSelf: 'stretch', aspectRatio: 1, minHeight: cel.minimum, borderRadius: promien.dzien, backgroundColor: k.dzienPusty },
-    dziergany: { backgroundColor: k.akcent },
+    dziergany: { backgroundColor: k.akcent, borderWidth: 2, borderColor: k.akcentTekst }, // P-590 / P-614 (6): kolor + obwódka + data, bez faktury (makieta `.tydz i.z`)
     dzis: { borderWidth: 2, borderColor: k.tekst },
     skrot: { ...ty.mala, color: k.tekst2 },
     kafle: { flexDirection: 'row', flexWrap: 'wrap', gap: odstep.l },
