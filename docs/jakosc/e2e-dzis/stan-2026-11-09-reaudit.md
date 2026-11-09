@@ -27,4 +27,4 @@ Przegląd pozostałych scenariuszy (`grep` tekstów paska „Back/Projects/Today
 240 (`src/kompozycja/licznik.ts:175`, `app/(zakladki)/index.tsx:52`), 023 (linia konfliktu na górze treści licznika), 017 (`src/ekrany/Pasek.tsx:26`: `accessibilityLabel={p.etykieta ?? tekst}` — ma być „Back”, widoczny tytuł bez zmian).
 
 ## Kontrole
-`npx jest tests/jakosc` 60/60, 768/768; `npm run verify` — wynik w raporcie do koordynatora.
+`npx jest tests/jakosc` 60/60, 768/768 (na 93cad4c); `npm run verify` kod 0: 555/555 zestawów, 6872/6872 (drzewo przed ostatnią zmianą komentarza w 33 i tym plikiem; `tests/jakosc` powtórzone po nich).
