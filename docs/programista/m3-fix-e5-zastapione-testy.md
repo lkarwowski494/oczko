@@ -19,3 +19,5 @@ Każdy wiersz: test zapisywał zachowanie, które zatwierdzona poprawka 04 świa
 | `tests/domena/wzor/uklad-rysik.test.ts` „iPad poziomo 1180 × 820 …” | kolumna 340 pt (W4b: zawsze obok) | 280 pt (`cele.paskaWzoru.kolumna.szerokosc`), obok tylko przy oknie ≥ 1000 pt | 015 (P-614 (3) A) |
 | `tests/ekrany/wzor-przegladarka.test.tsx` „układ „obok” … kolumna licznika o szerokości z ukladOkna” | `width: 340` | `width: 280` | 015 (P-614 (3) A) |
 | `tests/ekrany/narzedzia-wstecz-trasa.test.tsx` M1-016 „/narzedzia: przycisk Back …” i „trwała kontrola” | Narzędzia i Historia (korzenie zakładek) z „Back” (`nav-wstecz`) | korzenie zakładek bez „wstecz”; Narzędzia i Historia w `POZA`; kontrola odwrotna w `m3-fix-e5-006.test.tsx` | 006 (P-614 (1) A) |
+| `tests/ekrany/menu-licznika-m3.test.tsx` „korekta (…), potem stan (…), na końcu zerowanie” | zerowanie ostatnie w grupie korekty, przed blokadą | zerowanie we własnej grupie po ukończeniu | 009 (P-614 (4), zadania-08 poz. 9) |
+| `tests/ekrany/menu-licznika-m3.test.tsx` „trzy grupy: korekta, stan, zerowanie …” | dwie grupy (zerowanie w korekcie) | trzy grupy; testID grup kontraktu nadal brak | 009 (P-614 (4)) |
