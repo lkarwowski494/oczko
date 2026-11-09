@@ -117,6 +117,14 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
 
   const l = useStanLicznika(uslugi, p.dzialania, ustawStan);
   useEffect(() => porty.sklep.obserwuj(nic), [porty.sklep]); // KP-07: nasłuch transakcji od startu
+  // M1-audytor-generalny-240: powrót na „Dziś” (licznik albo wzór zdjęty ze stosu) → stan licznika z kompozycji. +1/−1 na liczniku nie zmienia `wersja`,
+  // więc bez tego karta zostawała przy stanie sprzed wejścia na licznik (bez przemontowania — licznik pod spodem zachowuje swój stan).
+  const dzisPoprzednio = useRef(p.dzisNaWierzchu ?? false);
+  useEffect(() => {
+    const teraz = p.dzisNaWierzchu ?? false;
+    if (teraz && !dzisPoprzednio.current) void l.odswiez();
+    dzisPoprzednio.current = teraz;
+  }, [p.dzisNaWierzchu]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     let zywy = true;
     void uslugi.start().then((s) => {

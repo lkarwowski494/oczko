@@ -1,6 +1,6 @@
-// M3 fix E5, poz. 17 (07-p3, P-617 A): po powrocie z licznika gestem „Dziś” pokazywało 0 zamiast 1 (przebieg 3 iOS). Ten test NIE odtwarza błędu:
-// komponent `Aplikacja` („Dziś” pod licznikiem) pokazuje nowy stan po +1 także bez powrotu na wierzch — przed poprawką i po niej zielony.
-// Zostaje jako kontrola regresji warstwy JS; przyczyna jest w warstwie natywnej (pełnoekranowy gest iOS 26), którą A wyłącza — potwierdzi E2E przebiegu 4.
+// M3 fix E5, poz. 17 (07-p3, P-617 A) i M1-audytor-generalny-240 (02-monetyzacja-701, P-627): po powrocie z licznika „Dziś” pokazywało 0 zamiast 1 (przebieg 3 iOS).
+// Obiekt `porty` jest STAŁY jak `kontener.porty` w aplikacji (sonda B reaudytu M1) — poprzednia wersja tworzyła nowy `ekranAktywny` przy każdym renderze,
+// więc efekt startu `Aplikacja` czytał stan ponownie i test był fałszywie zielony. Powrót = „Dziś” znów na wierzchu (`dzisNaWierzchu` false → true).
 // Prawdziwa baza (node:sqlite) i kompozycja; atrapy tylko na granicy platformy.
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react-native';
@@ -18,7 +18,7 @@ const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: un
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 
-test('poz. 17: +1 na liczniku nad „Dziś”, potem powrót („Dziś” na wierzchu) → karta pokazuje 1, nie 0', async () => {
+test('240 / poz. 17: +1 na liczniku nad „Dziś”, potem powrót („Dziś” na wierzchu) przy stałych portach → karta pokazuje 1, nie 0', async () => {
   const s = await przygotuj();
   const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 0)]);
@@ -27,8 +27,9 @@ test('poz. 17: +1 na liczniku nad „Dziś”, potem powrót („Dziś” na wie
   await k.otworz('l1');
   const cykl = atrapaCyklu().cykl;
   const system = atrapaSystemu();
+  const porty = { sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka: atrapaHaptyki() }; // jeden obiekt na cały test, jak kontener.porty
   const ekran = (dzisNaWierzchu: boolean) => (
-    <Aplikacja porty={{ sklep, ekranAktywny: { wlacz: jest.fn(), wylacz: jest.fn() }, haptyka: atrapaHaptyki() }} uslugi={k.uslugi} dzialania={k.dzialania} cykl={cykl} system={system} oglos={jest.fn()} t={i.t}
+    <Aplikacja porty={porty} uslugi={k.uslugi} dzialania={k.dzialania} cykl={cykl} system={system} oglos={jest.fn()} t={i.t}
       naWierzchu={false} dzisNaWierzchu={dzisNaWierzchu} />
   );
   const r = render(ekran(true));
