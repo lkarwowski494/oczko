@@ -94,7 +94,8 @@ function style(k: Kolory) {
     limit: { alignSelf: 'stretch' },
     podpis: { ...typografia.podpis, color: k.tekst, textAlign: 'center' },
     // Pasek (ekran `wzor` makiety): tło `pasek`, linia `pasekLinia` (kolory z tokenów, nie papier); jeden rząd −1 / rząd / +1, od AX1 kolumna: liczba nad przyciskami.
-    pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s, backgroundColor: k.pasek },
+    // M3-IPAD-01 (P-605): `alignSelf: stretch` + `width: 100%` — pasek nie zwija się do zawartości, gdy rodzic centruje (iPad); inaczej blok liczby (podstawa 0) ma 0 pt, „+1” 64 pt.
+    pasekLicznika: { alignSelf: 'stretch', width: '100%', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s, backgroundColor: k.pasek },
     pasekAx: { flexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap' },
     liczbaBlok: { flexShrink: 1, flexGrow: 1, flexBasis: 0, alignItems: 'center' },
     liczbaBlokAx: { alignItems: 'center', alignSelf: 'stretch' },
