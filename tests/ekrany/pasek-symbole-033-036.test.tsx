@@ -108,13 +108,14 @@ describe('033: jeden wygląd „wstecz”', () => {
 describe('036 (DEC-05 a → M3 p3a): menu ••• licznika w dwóch grupach (to-be 04, U12)', () => {
   const przodkowie = (id: string) => { const l: unknown[] = []; for (let n = screen.getByTestId(id) as { parent: unknown }; n; n = n.parent as { parent: unknown }) l.unshift(n); return l; };
   const wspolny = (a: string, b: string) => { const x = przodkowie(a), y = przodkowie(b); let i = 0; while (i < x.length && i < y.length && x[i] === y[i]) i++; return i; };
-  test('grupa 1: nazwa, numer rzędu, znaczenie, „Reset to 0…” na końcu; grupa 2: blokada i ukończenie, z dala od „Reset to 0…”', () => {
+  test('grupa 1: nazwa, numer rzędu, znaczenie; grupa 2: blokada i ukończenie; grupa 3: „Reset to 0…” (009)', () => {
     render(<MenuProjektu stan={{ projekt: 'Harbor', zablokowany: false, wartosc: 3 }} t={t} naNazwa={jest.fn()} naWpisz={jest.fn()} naZablokuj={jest.fn()} naOdblokuj={jest.fn()} naZeruj={jest.fn()} naUkoncz={jest.fn()} naZnaczenie={jest.fn()} naZamknij={jest.fn()} />);
     expect(screen.queryByTestId('menu-grupa-liczenie')).toBeNull();
     expect(screen.queryByTestId('menu-grupa-projekt')).toBeNull();
-    expect(wspolny('menu-nazwa', 'menu-zeruj')).toBeGreaterThan(wspolny('menu-nazwa', 'menu-zablokuj'));
-    expect(wspolny('menu-wpisz-wartosc', 'menu-znaczenie')).toBe(wspolny('menu-nazwa', 'menu-zeruj'));
-    expect(wspolny('menu-zablokuj', 'menu-ukoncz')).toBeGreaterThan(wspolny('menu-zeruj', 'menu-zablokuj'));
+    // Zastąpione jawnie (009, P-614 (4)): trzy grupy — [nazwa, numer, znaczenie] [blokada, ukończenie] [„Reset to 0…”].
+    expect(wspolny('menu-nazwa', 'menu-znaczenie')).toBeGreaterThan(wspolny('menu-nazwa', 'menu-zablokuj'));
+    expect(wspolny('menu-wpisz-wartosc', 'menu-znaczenie')).toBe(wspolny('menu-nazwa', 'menu-znaczenie'));
+    expect(wspolny('menu-zablokuj', 'menu-ukoncz')).toBeGreaterThan(wspolny('menu-ukoncz', 'menu-zeruj'));
   });
 });
 

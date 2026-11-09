@@ -7,6 +7,7 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, R
 import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from './wspolne';
 import { SymbolSf } from './SymbolSf';
+import { MenuPlywajace, PozycjaMenu } from './MenuLista';
 
 export type Miniatura = { id: string; uri: string };
 const MINIATURA = tokeny.projekt.zdjecie.miniatura; // 014: token `projekt.zdjecie.miniatura`
@@ -35,25 +36,18 @@ export function GrupaZdjec(p: {
         </Pressable>
       </ScrollView>
       {zrodlo && (
-        <View style={st.menu}>
+        <>
           {p.panelE2e}
-          <Pozycja tekst={t('zdjecia.zrob')} onPress={wybierz('aparat')} />
-          <Pozycja tekst={t('zdjecia.wybierz')} onPress={wybierz('biblioteka')} />
-          <Pozycja tekst={t('wspolne.anuluj')} onPress={() => ustawZrodlo(false)} />
-        </View>
+          <MenuPlywajace testID="zdjecia-zrodlo-lista">{/* 009: lista pływająca `menu.plywajace` (250, 44, cień) */}
+            <PozycjaMenu tekst={t('zdjecia.zrob')} onPress={wybierz('aparat')} plywajace />
+            <PozycjaMenu tekst={t('zdjecia.wybierz')} onPress={wybierz('biblioteka')} plywajace />
+            <PozycjaMenu tekst={t('wspolne.anuluj')} onPress={() => ustawZrodlo(false)} plywajace />
+          </MenuPlywajace>
+        </>
       )}
     </View>
   );
 }
-function Pozycja(p: { tekst: string; onPress(): void }): React.ReactElement {
-  const st = style(useKolory());
-  return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.tekst} onPress={p.onPress} style={st.pozycja}>
-      <Text style={st.tekst}>{p.tekst}</Text>
-    </Pressable>
-  );
-}
-
 /** Podgląd na czarnym tle (P-191 P9a): przesunięcie w bok między zdjęciami; alternatywa — miniatury na ekranie projektu. */
 export function PodgladZdjec(p: {
   t: Tlumacz; zdjecia: Miniatura[]; poczatek: number; naZamknij(): void; naUsun(id: string): void; naUdostepnij(id: string): void;
@@ -108,8 +102,6 @@ function style(k: Kolory) {
     kafel: { minWidth: MINIATURA, minHeight: MINIATURA, padding: odstep.s, borderRadius: promien.pole, backgroundColor: k.powierzchnia, alignItems: 'center', justifyContent: 'center', rowGap: odstep.xs },
     plus: { ...typografia.tytul, color: k.ikona },
     kafelTekst: { ...typografia.podpis, color: k.tekst, fontWeight: '600', textAlign: 'center' },
-    menu: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, overflow: 'hidden' },
-    pozycja: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     tekst: { ...typografia.tresc, color: k.tekst },
     // Podgląd: czarne tło (makieta `zdjecie-podglad`) — tokeny kolor.systemCzarny, bez nowych kolorów.
     podglad: { flex: 1, backgroundColor: systemCzarny.tlo },

@@ -8,6 +8,7 @@ import { Projekt } from '../../src/ekrany/Projekt';
 import { alertBleduZapisu } from '../../src/ekrany/blad-zapisu';
 import { GrupaZdjec, type Miniatura } from '../../src/ekrany/Zdjecia';
 import { zaleznosciObrazu } from '../../src/kompozycja/obrazy-aplikacji';
+import { useTytulTrasy } from '../../src/kompozycja/wstecz-trasa';
 import { zdjecieBezMetadanych } from '../../src/kompozycja/zdjecie-bez-metadanych';
 import { usunPlik } from '../../src/dane/pliki/system';
 import { GrupaWzorow } from '../../src/ekrany/WzorGrupa';
@@ -46,6 +47,7 @@ export default function EkranProjektu(): React.ReactElement {
   const [blad, ustawBlad] = useState(false); // E2-137-A1: pierwszy odczyt się nie udał (wyjątek albo wynik inny niż „brak projektu”) — błąd z ponowieniem zamiast pustej planszy
   const [start] = useState(() => performance.now()); // E2-137-A1, build E2E: czas od zamontowania ekranu do pierwszych danych (panel `e2e-pomiar-ladowania`)
   const [ladowanieMs, ustawLadowanieMs] = useState<number | null>(null);
+  useTytulTrasy('projekt/[id]', String(id), w ? w.nazwa : null); // 006: nazwa projektu jako „wstecz” następnego ekranu (gdy mieści się w ok. 1/3 paska)
   const [edycja, ustawEdycje] = useState(false);
   const [sesje, ustawSesje] = useState<SesjaNaEkranie[]>([]); // grupa „Time” (P-191 P4a)
   const [miniatury, ustawMiniatury] = useState<Miniatura[]>([]); // grupa „Photos” (P-191 P9a)

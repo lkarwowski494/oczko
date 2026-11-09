@@ -42,7 +42,7 @@ describe('502: stan błędu wczytania z wyjściem', () => {
     fireEvent.press(zamknij);
     expect(naWyjdz).toHaveBeenCalledTimes(1);
   });
-  test('trwała kontrola: każda trasa z app/ rysująca StanWczytywania podaje wyjście z router.back()', () => {
+  test('trwała kontrola: każda trasa stosu z app/ rysująca StanWczytywania podaje wyjście z router.back(); korzenie zakładek bez wyjścia (006)', () => {
     const APP = path.join(__dirname, '..', '..', 'app');
     const pliki = (k: string): string[] => fs.readdirSync(k, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? pliki(path.join(k, e.name)) : e.name.endsWith('.tsx') ? [path.join(k, e.name)] : []));
     const uzycia = pliki(APP).flatMap((p) => [...fs.readFileSync(p, 'utf8').matchAll(/<StanWczytywania\b[\s\S]*?\/>/g)].map((m) => ({ plik: path.relative(APP, p), kod: m[0] })));
@@ -51,7 +51,11 @@ describe('502: stan błędu wczytania z wyjściem', () => {
     // kontrola dotyczy użyć, które mogą pokazać błąd; liczba stałych użyć jest przypięta, żeby wyjątek nie rósł po cichu.
     const stale = uzycia.filter((u) => /\bstan="ladowanie"/.test(u.kod));
     expect(stale.map((u) => u.plik)).toEqual(['(zakladki)/index.tsx']); // M3 p2: korzeń „/” = „Dziś” w grupie zakładek (start danych przeniesiony z licznika)
-    expect(uzycia.filter((u) => !stale.includes(u)).filter((u) => !/wyjscie=\{\{ rodzaj: '(wstecz|zamknij)', naWyjdz: \(\) => router\.back\(\) \}\}/.test(u.kod)).map((u) => u.plik)).toEqual([]);
+    // 006 (P-614 (1), 08c): korzenie zakładek bez „wstecz” — błąd bez wyjścia (zostaje „Try again” i pasek zakładek); lista przypięta.
+    const korzenie = uzycia.filter((u) => !stale.includes(u) && u.plik.startsWith('(zakladki)/'));
+    expect(korzenie.map((u) => u.plik).sort()).toEqual(['(zakladki)/dni.tsx', '(zakladki)/narzedzia.tsx', '(zakladki)/projekty.tsx']);
+    expect(korzenie.filter((u) => /wyjscie=/.test(u.kod)).map((u) => u.plik)).toEqual([]);
+    expect(uzycia.filter((u) => !stale.includes(u) && !korzenie.includes(u)).filter((u) => !/wyjscie=\{\{ rodzaj: '(wstecz|zamknij)', naWyjdz: \(\) => router\.back\(\) \}\}/.test(u.kod)).map((u) => u.plik)).toEqual([]);
   });
 });
 
