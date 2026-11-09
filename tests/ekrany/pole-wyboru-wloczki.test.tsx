@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { StyleSheet } from 'react-native';
 import { render, screen, within } from '@testing-library/react-native';
 import { FormularzWloczekProjektu } from '../../src/ekrany/FormularzeProjektu';
-import { cel, kolorJasny, MAX_SKALA_ZNAKU_WYBORU, promien } from '../../src/ekrany/motyw';
+import { kolorJasny, MAX_SKALA_TYTULOWA } from '../../src/ekrany/motyw';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { tEn } from './pomoc';
 
@@ -22,38 +22,31 @@ test('FormularzeProjektu.tsx: żadnej liczby wpisanej w style (wartości z modu�
   expect(trafienia).toEqual([]);
 });
 
-test('pole wyboru włóczki wg wzorca 04: obrys drugiPrzyciskObrys, rozmiar z tokenów; zaznaczone wypełnione przyciskTlo ze znakiem ✓ w przyciskTekst', () => {
-  render(<FormularzWloczekProjektu t={t} zapas={[{ id: 'y1', nazwa: 'Merino', motki: 3 }, { id: 'y2', nazwa: 'Alpaka', motki: 0 }]} poczatkowe={['y1']}
-    naZapisz={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} naAnuluj={jest.fn()} naDodajWloczke={jest.fn()} />);
-  const pole = (id: string) => StyleSheet.flatten(within(screen.getByTestId(`wloczka-wybor-${id}`)).getAllByText(/.*/, { includeHiddenElements: true })[0].props.style);
-  const zaznaczone = pole('y1');
-  const puste = pole('y2');
-  for (const s of [zaznaczone, puste]) {
-    expect(s).toMatchObject({ width: cel.poleWyboru, borderWidth: 2, borderColor: kolorJasny.drugiPrzyciskObrys, textAlign: 'center' });
-  }
-  expect(zaznaczone).toMatchObject({ backgroundColor: kolorJasny.przyciskTlo, color: kolorJasny.przyciskTekst });
+// Zmienione jawnie w 011 (P-619 wariant B, `docs/programista/m3-fix-e5-zastapione-testy.md`): było koło `cel.poleWyboru` 44 (`promienie.plus`) ze znakiem „✓” w Text;
+// jest komponent `PoleWyboru` — kwadrat `znaczniki.radio` 28 z promieniem `promienie.pole`, zaznaczone `przycisk` + symbol SF `checkmark` w `przyciskTekst`.
+const pokaz = (zapas: { id: string; nazwa: string; motki: number }[]) => render(<FormularzWloczekProjektu t={t} zapas={zapas} poczatkowe={['y1']}
+  naZapisz={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} naAnuluj={jest.fn()} naDodajWloczke={jest.fn()} />);
+const pole = (id: string) => within(screen.getByTestId(`wloczka-wybor-${id}`)).getByTestId('pole-wyboru', { includeHiddenElements: true });
+
+test('pole wyboru włóczki (011): obrys tekst2, rozmiar z tokenów; zaznaczone wypełnione przycisk z checkmark w przyciskTekst', () => {
+  pokaz([{ id: 'y1', nazwa: 'Merino', motki: 3 }, { id: 'y2', nazwa: 'Alpaka', motki: 0 }]);
+  const zaznaczone = StyleSheet.flatten(pole('y1').props.style);
+  const puste = StyleSheet.flatten(pole('y2').props.style);
+  expect(puste).toMatchObject({ borderWidth: 2, borderColor: kolorJasny.tekst2 });
+  expect(zaznaczone).toMatchObject({ backgroundColor: kolorJasny.przycisk });
   expect(puste.backgroundColor).toBeUndefined();
-  expect(within(screen.getByTestId('wloczka-wybor-y1')).getByText('✓', { includeHiddenElements: true })).toBeTruthy();
+  const znak = pole('y1').findAll((n) => n.props.nazwa === 'checkmark')[0];
+  expect(znak?.props.kolor).toBe(kolorJasny.przyciskTekst);
+  expect(within(screen.getByTestId('wloczka-wybor-y1')).queryByText('✓', { includeHiddenElements: true })).toBeNull();
 });
 
-// M1-audytor-generalny-145 (04-studio-projektowe-529, opcja a): pole wyboru brało tokeny zastępcze (`odstep.xxl`, `promien.pole` 10, `instrukcja` 20 pt),
-// a znak ✓ rósł bez granicy (przy AX5 ok. 71 pt w polu 28 pt, ucięty). Wzorzec `.pole-wyboru` (partia8.html:208): 28 × 28, promień 8, 700 18 pt;
-// granica skali znaku ×1,6 jak kapsuła stopera (design-spec:529). Tokeny `cel.poleWyboru`, `promien.poleWyboru`, `typografia.znakWyboru`.
-// P-553 (Dzianina, mapa-tokenow.md): `cel.poleWyboru` = `cele.minimum` (44 pt: celem jest cały wiersz), `promien.poleWyboru` = `promienie.plus` (50%, znacznik okrągły),
-// znak wyboru = `typografia.tresc` (17 pt) w wadze 700 krojem systemowym (nie Libre Franklin), skala najwyżej ×1,6 = `typografia.zakladka.maxSkala`.
-test('145: pole wyboru z własnych tokenów (cele.minimum, promienie.plus, znak 700 w rozmiarze treści) i znak ✓ najwyżej ×1,6 z tokenów', () => {
-  const tokeny = JSON.parse(readFileSync(join(__dirname, '../../docs/design/tokeny.json'), 'utf8')) as {
-    cele: Record<string, number>; promienie: Record<string, number | string>; typografia: Record<string, Record<string, number | string>>;
-  };
-  expect(cel.poleWyboru).toBe(tokeny.cele.minimum);
-  expect(promien.poleWyboru).toBe(tokeny.promienie.plus);
-  expect(MAX_SKALA_ZNAKU_WYBORU).toBe(tokeny.typografia.zakladka.maxSkala);
-  render(<FormularzWloczekProjektu t={t} zapas={[{ id: 'y1', nazwa: 'Merino', motki: 3 }]} poczatkowe={['y1']}
-    naZapisz={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} naAnuluj={jest.fn()} naDodajWloczke={jest.fn()} />);
-  const znak = within(screen.getByTestId('wloczka-wybor-y1')).getByText('✓', { includeHiddenElements: true });
-  expect(StyleSheet.flatten(znak.props.style)).toMatchObject({
-    width: tokeny.cele.minimum, minHeight: tokeny.cele.minimum, borderRadius: tokeny.promienie.plus, fontSize: tokeny.typografia.tresc.pt, fontWeight: '700',
-  });
-  expect(StyleSheet.flatten(znak.props.style).fontFamily).toBeUndefined(); // krój systemowy, nie tytułowy (Dzianina: Bree Serif tylko tytuły i liczby)
-  expect(znak.props.maxFontSizeMultiplier).toBe(tokeny.typografia.zakladka.maxSkala);
+// M1-audytor-generalny-145: znak wyboru nie rośnie bez granicy — symbol `checkmark` ma `maxSkala` jak `ZnacznikRadio` (MAX_SKALA_TYTULOWA), pole 28 (AX1+ 40) z tokenów.
+test('145 (011): pole wyboru z tokenów znaczniki.radio i promienie.pole; symbol z granicą skali', () => {
+  const tokeny = JSON.parse(readFileSync(join(__dirname, '../../docs/design/tokeny.json'), 'utf8')) as { znaczniki: Record<string, number | string>; promienie: Record<string, number | string> };
+  pokaz([{ id: 'y1', nazwa: 'Merino', motki: 3 }]);
+  const s = StyleSheet.flatten(pole('y1').props.style);
+  expect([tokeny.znaczniki.radio, tokeny.znaczniki.radioAx5]).toContain(s.width);
+  expect(s.height).toBe(s.width);
+  expect(s.borderRadius).toBe(tokeny.promienie.pole);
+  expect(pole('y1').findAll((n) => n.props.nazwa === 'checkmark')[0]?.props.maxSkala).toBe(MAX_SKALA_TYTULOWA);
 });
