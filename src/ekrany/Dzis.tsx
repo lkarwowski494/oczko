@@ -122,12 +122,12 @@ export function Dzis(p: PropsDzis): React.ReactElement {
         </Text>
         <View style={st.liczbaIPlus}>
           <View>
-            <Liczba wartosc={String(liczba)} styl={st.liczba} pt={tokeny.typografia.liczbaKarty.pt} jezyk={p.jezyk} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID="dzis-wartosc" />
+            <Liczba wartosc={String(liczba)} styl={st.liczba} pt={tokeny.typografia.liczbaKarty.pt} jezyk={p.jezyk} maxFontSizeMultiplier={tokeny.typografia.liczbaKarty.maxSkala} testID="dzis-wartosc" />
             <Text style={st.kartaPodpis}>{oczka ? t('licznik.jednostka_oczka', { count: liczba }) : pierwszy ? t('licznik.jednostka', { count: liczba }) : t('dzis.gotowe', { count: liczba })}</Text>
           </View>
           {!zawczasu && (
             <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={() => void plus()} style={st.plus} testID="dzis-plus">
-              <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
+              <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
             </Pressable>
           )}
         </View>

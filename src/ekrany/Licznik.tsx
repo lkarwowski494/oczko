@@ -230,7 +230,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           {/* AX5 (makieta `.duzy .dol`): kolumna, „+1” nad „−1” na pełną szerokość; zwykle „−1” z lewej, „+1” zajmuje resztę rzędu */}
           {!duzyTekst && minusPrzycisk()}
           <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={plus} style={duzyTekst ? st.plusAx : st.plus} testID="licznik-plus">
-            <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>
+            <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>{/* 005: limit z tokenu */}
             {!start && !duzyTekst && <Text style={st.plusPodpis}>{oczka ? t('licznik.podpis_plus_oczka') : t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
           </Pressable>
           {duzyTekst && minusPrzycisk()}
