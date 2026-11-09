@@ -55,5 +55,24 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 - Dla 07 (E2E z `nav-wstecz` / „Back”): `33-br-prj-001-s1` linia 69 `assertVisible: "Back"` na liczniku po utworzeniu projektu — teraz etykieta = tytuł poprzedniego ekranu (prawdopodobnie „Projects”) — do zmiany przez 07. Scenariusze z `nav-wstecz` (testID bez zmian): 05, 06, 08, 16, 18, 20, 32, 33, 36, 40, 41, 46, 52, 59, 61, 64, 66, 67, subflows/otworz-ustawienia. Menu •••: `menu-zeruj` teraz w trzeciej grupie (po „ukończ”) — scenariusze przewijające do niego sprawdzić przy AX.
 - Czego nie sprawdzono: wygląd na urządzeniu (cień, szerokość 250, etykiety „wstecz” w stosie expo-router), zrzuty przed/po — brak symulatora.
 
+## Pętla po reaudytach (08d, 9.11, P-627) — gałąź `claude/kopia-08d-e5-2026-11-09` od c3a4ed83, polecenie warsztat `koordynacja/role-2026-11-09/08d-fix.md` (odczyt @ 619e76a)
+| # | ID | Commit | Test (przed → po) |
+|---|---|---|---|
+| 1 | M1-240 (P1) | de4e974 | `m3-fix-e5-dzis-powrot` ze stałym `porty` (sonda B): ✕ „0” → ✓; nowy `m3-fix-reaudit-240-dzis-fokus` (trasa, `rzedyDzis` + „Ten tydzień”): ✕ → ✓ |
+| 2 | 002 (P1) | ae8f152 | `m3-fix-reaudit-002-arkusz`: 1 ✕ (nagłówek w ScrollView) + 1 ✓ → 2 ✓ |
+| 3 | 023 (P1) | e1eecf4 | `m3-fix-reaudit-023-konflikt`: 4 ✕ (zwykły, AX1, AX3, AX5) → 4 ✓ |
+| 4 | 017 (P2) | d02497f | `m3-fix-e5-006-etykiety:53` zmieniony jawnie (wyjątek nazwany P-627): ✕ „Today” → ✓ „Back” |
+| 5 | 021 | 8c906d0 (struktura), ed7d511 | `m3-fix-reaudit-021-wciecie`: 2 ✕ (x 0) + 1 ✓ → 3 ✓ |
+| 6 | 011 tokeny | b352bff | `m3-fix-reaudit-011-pole-tokeny` (tokeny podmienione w atrapie): 2 ✕ → 2 ✓ |
+| 7 | M1-241 (P2) | 1a3c4eb | `kroj-bree`: SHA-256 wydania + rekordy name 13/14: 2 ✕ → ✓ (7/7) |
+| 8 | 022 (en) | 24981a3 | `m3-fix-reaudit-022-timer`: ✕ → ✓; 3 testy ekranów z tekstem en zaktualizowane jawnie |
+
+- Dowód: `npm run verify` kod 0 (561 zestawów, 6879/6879), `npm run jakosc:kontrole` kod 0 (po 01c31a0, tabela-08 odświeżona). Start sesji: 555/6864, kod 0.
+- 240: `Aplikacja` odświeża stan licznika (`dzialania.odswiez`) przy przejściu `dzisNaWierzchu` false → true (sygnał z `usePathname`), trasa „/” czyta `wczytajDzis` ponownie przy każdym fokusie (`useFocusEffect` → licznik `fokus`). Bez przemontowania (`key={wersja}` bez zmian). E2E (07): `dzis-kontynuuj` → `licznik-plus` → `nav-wstecz` → `dzis-wartosc` „1” — nie dodane (07 równolegle).
+- 241: plik z `https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/breeserif/BreeSerif-Regular.ttf` (46 572 B, odczyt 9.11); `fc-scan`: rodzina „Bree Serif”, PostScript `BreeSerif-Regular` jak dotąd; charset identyczny ze starym plikiem (pokrycie i `jezykiSystemowe` bez zmian). Podmieniony też `docs/design/fonty/BreeSerif.ttf` (test równości plików). `breeserif-OFL.txt` bez zmian — różni się od `OFL.txt` wydania tylko łamaniem wiersza i http/https.
+- 002: odstępy nagłówka jak dotąd w treści (padding xl, odstęp m) — do oceny 04 na zrzucie.
+- 021: test pisany przed kodem miał błędne założenie wymiarów okna (domyślne Jest = pas AX); poprawiony atrapą 390/1 przed zielenią, czerwień z właściwego powodu potwierdzona ponownie (x 0 zamiast 6).
+- Czego nie sprawdzono: wygląd na urządzeniu i zrzuty przed/po (brak symulatora) — 002 (06), 023 (49), 017 (VoiceOver), 021; powrót z licznika gestem na iOS (przebieg 5).
+
 ## Następny krok (nowa sesja)
 Pozycje 1–16 zadań 08 zrobione (17: P-617 A). Zostaje: przypomnienie w kolumnie iPada (015), E2E 33 „Back” (07), zrzuty i reaudyt 04 na przebiegu iOS. `app/wzor.tsx` 20 478 B — przed zmianą wydzielić.
