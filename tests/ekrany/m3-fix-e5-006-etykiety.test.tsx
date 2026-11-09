@@ -47,10 +47,11 @@ describe('Wstecz: tekst z kontekstu, „Back” bez niego', () => {
     expect(screen.getByTestId('nav-wstecz').props.accessibilityLabel).toBe('Back');
     expect(screen.getByText('Back')).toBeTruthy();
   });
-  test('z dostawcą: tytuł poprzedniego ekranu w tekście i etykiecie', () => {
+  // Zmiana jawna, wyjątek nazwany P-627 (04-studio-projektowe-017 A): VoiceOver czyta systemowe „Back” (bez fali tłumaczeń); było: etykieta = tytuł.
+  test('z dostawcą: tytuł poprzedniego ekranu w widocznym tekście, etykieta VoiceOver „Back” (017, P-627 A)', () => {
     render(<KontekstWstecz.Provider value={() => 'Today'}><Wstecz tekst="Back" onPress={jest.fn()} /></KontekstWstecz.Provider>);
     expect(screen.getByText('Today')).toBeTruthy();
-    expect(screen.getByTestId('nav-wstecz').props.accessibilityLabel).toBe('Today');
+    expect(screen.getByTestId('nav-wstecz').props.accessibilityLabel).toBe('Back');
   });
   test('dostawca bez tytułu (null) → „Back”; jawna etykieta (pasek wzoru) wygrywa', () => {
     render(<KontekstWstecz.Provider value={() => null}><Wstecz tekst="Back" onPress={jest.fn()} /></KontekstWstecz.Provider>);

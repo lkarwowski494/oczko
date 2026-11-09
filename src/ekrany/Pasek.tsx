@@ -22,8 +22,9 @@ export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; t
   const kolor = p.kolor ?? k.akcentTekst;
   const useTytulPoprzedniego = useContext(KontekstWstecz);
   const tekst = useTytulPoprzedniego() ?? p.tekst;
+  // 017 (P-627 A): VoiceOver czyta „Back” (`p.tekst`, jak systemowy przycisk); widoczny tekst = tytuł poprzedniego ekranu. „Back to {ekran}” — 1.0.1 (017 B).
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
       {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{tekst}</Text>}
     </Pressable>
