@@ -22,6 +22,7 @@ export function style(k: Kolory) {
     podpis: { ...typografia.podpis, color: k.olowek },
     pogrubiony: { fontWeight: '700' },
     link: { textDecorationLine: 'underline' },
+    ofertaLink: { minHeight: rozmiary.minimum, justifyContent: 'center', alignSelf: 'flex-start' }, // 013: cel dotyku ≥ 44 pt (wzór Dzis.tsx)
     // Układ M3 p3a (makieta `licznik`, `.licz-g`): dzianina i liczba obok siebie; AX: pas dzianiny nad liczbą.
     glowna: { flexDirection: 'row', gap: odstep.l },
     glownaAx: { flexDirection: 'column', gap: odstep.l },

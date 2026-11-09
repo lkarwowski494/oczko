@@ -14,6 +14,11 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const plasko = (s: unknown) => (StyleSheet.flatten(s as never) ?? {}) as Record<string, unknown>;
 
+test('013: limit-oferta-link ma minHeight ≥ cele.minimum', () => {
+  render(<Licznik stan={stanLicznika({ cel: 96, skonczone: 61, dziergany: 62, limit: { rodzaj: 'zawczasu' }, miesiac: { nazwa: 'November', wznowienie: 'December 1', rzedyDanych: 61 } })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+  expect(Number(plasko(screen.getByTestId('limit-oferta-link').props.style).minHeight)).toBeGreaterThanOrEqual(tokeny.cele.minimum);
+});
+
 test('012: stoper wyłączony — rama przerywana w kolorze przyciskNieaktywnyRama, disabled w dostępności, bez samego przyciemnienia', () => {
   render(<AkcjaLicznika symbol="stopwatch" podpis="Timer" wylaczony testID="licznik-stoper" duzyTekst={false} />);
   const a = screen.getByTestId('licznik-stoper');

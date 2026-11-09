@@ -178,7 +178,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         {s.celDnia && <Text style={st.podpis}>{t('licznik.cel_dnia', { count: s.celDnia.rzedy })}</Text>}
         {s.limit.rodzaj === 'ostatni-darmowy' && <Text style={st.podpis}>{t('licznik.ostatni_darmowy', { miesiac: s.miesiac.nazwa })}</Text>}
         {zawczasu && (
-          <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} testID="limit-oferta-link">
+          <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} style={st.ofertaLink} testID="limit-oferta-link">
             <Text style={[st.tresc, st.link]}>{t('limit.pro_link')}</Text>
           </Pressable>
         )}
