@@ -333,9 +333,18 @@ jobs:
           # Jedna zmienna przypięcia (DS-07, zasada wspólna 21; 07-jakosc-005): zmiana wersji = commit. 2.12.1 = wersja z przebiegów #139/#140.
           # Pusta = błąd (nie „najnowsza”); zainstalowana ≠ przypięta = błąd. Kontrola: sprawdz-workflowy.mjs (MAESTRO-WERSJA), tests/jakosc/ci-maestro-wersja.test.ts.
           MAESTRO_VERSION: '2.12.1'
+          # P-626 d (07-reaudit 9.11): paczka przypiętej wersji wprost z GitHub Releases z ponawianiem, bez skryptu get.maestro.mobile.dev (ten pobiera
+          # jednym `curl --fail` bez ponowień — przebieg 4, run 42578327316: 504 z release-assets.githubusercontent.com zatrzymał 3 z 4 części przed 1. scenariuszem).
+          # SHA-256 maestro.zip cli-2.12.1 (pobrany 9.11.2026 z adresu niżej); zmiana wersji = commit obu wartości. Kontrola: MAESTRO-POBRANIE, ci-maestro-wersja.test.ts.
+          MAESTRO_ZIP_SHA256: '54dbb0716425626604973cbb374c585ca30272375d9ce15177a1152765ddd9d7'
         run: |
           [ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta — wersja Maestro musi być przypięta (DS-07, zasada wspólna 21)"; exit 1; }
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          zip="$RUNNER_TEMP/maestro.zip"
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 20 --connect-timeout 30 -o "$zip" "https://github.com/mobile-dev-inc/maestro/releases/download/cli-$MAESTRO_VERSION/maestro.zip"
+          printf '%s  %s\n' "$MAESTRO_ZIP_SHA256" "$zip" | shasum -a 256 -c - || { echo "::error::maestro.zip $MAESTRO_VERSION ma inny SHA-256 niż przypięty (MAESTRO_ZIP_SHA256)"; exit 1; }
+          rm -rf "$RUNNER_TEMP/maestro-zip" "$HOME/.maestro" && mkdir -p "$HOME/.maestro"
+          unzip -q "$zip" -d "$RUNNER_TEMP/maestro-zip"
+          cp -R "$RUNNER_TEMP/maestro-zip/maestro/." "$HOME/.maestro/"
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
           v=$("$HOME/.maestro/bin/maestro" --version)
           echo "Maestro: $v (przypięta $MAESTRO_VERSION)" | tee -a "$GITHUB_STEP_SUMMARY"

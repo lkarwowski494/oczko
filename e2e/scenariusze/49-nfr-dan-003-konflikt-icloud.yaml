@@ -1,5 +1,6 @@
 # NFR-DAN-003 (docs/brd/wymagania.md:81) i BR-DAN-002/S2 „Konflikt”: druga wersja licznika z iCloud (atrapa: +5, „iPad (test)”, minuta wcześniej)
-# → linia konfliktu pod liczbą, nic nie wybrane po cichu; „Choose” → arkusz z dwiema wersjami → wybór wersji z iPada → licznik ma tę wartość.
+# → linia konfliktu na górze treści licznika (P-627 023: nad liczbą, poza stałą strefą „−1 / +1”, bez przewijania), nic nie wybrane po cichu;
+# „Choose” → arkusz z dwiema wersjami → wybór wersji z iPada → licznik ma DOKŁADNIE tę wartość (6), nie +1 (przebieg 4: „Choose” trafiło w „+1”).
 # Lokalnie 1 (jedno +1), zdalnie 1 + 5 = 6 (kontrakt atrapy). Pakiet pełny.
 appId: com.apps4brew.knitting
 name: "NFR-DAN-003 · Konflikt iCloud: obie wersje widoczne, wybór „Keep 6 rows from iPad (test)”"
@@ -38,6 +39,9 @@ tags:
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-konflikt" }, timeout: 60000 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
+# 023 (P-627): linia nad liczbą i nad „+1” — bez przewijania; pod stałą strefą stuknięcie w „Choose” trafiało w „+1” (przebieg 4, 49 step „Choose”)
+- assertVisible: { id: "licznik-konflikt", above: { id: "licznik-wartosc" } }
+- assertVisible: { id: "licznik-konflikt-wybierz", above: { id: "licznik-plus" } }
 - assertVisible: "Two versions of this counter"
 - takeScreenshot: 49-konflikt
 # P-250: przyciski wyboru wystawiają tylko etykietę VoiceOver dane.konflikt_a11y („Keep 6 rows from iPad (test), 19:39”) — stukanie po testID,
@@ -47,5 +51,7 @@ tags:
 - assertVisible: { id: "icloud-konflikt-wybor-0|icloud-konflikt-wybor-1", text: "Keep 1 rows? from .*" }
 - takeScreenshot: 49-wybor
 - tapOn: { id: "icloud-konflikt-wybor-0|icloud-konflikt-wybor-1", text: "Keep 6 rows from iPad \\(test\\).*" }
+# wartość wybranej wersji, nie lokalna 1 ani 1 + przypadkowe +1 (2) czy 6 + 1 (7)
 - assertVisible: { id: "licznik-wartosc", text: "6" }
 - assertNotVisible: { id: "licznik-konflikt" }
+- takeScreenshot: 49-po-wyborze
