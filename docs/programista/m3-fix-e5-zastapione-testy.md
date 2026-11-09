@@ -10,3 +10,4 @@ Każdy wiersz: test zapisywał zachowanie, które zatwierdzona poprawka 04 świa
 | `tests/ekrany/tytuly-limit-skali.test.tsx` „205: etykiety −1 i +1 paska … (×1,4 i ×1,4 z tokenu przyciskPlus)” | „+1” ×1,8 (`MAX_SKALA_TYTULOWA`) | „+1” ×`typografia.przyciskPlus.maxSkala` (1,4) | 005 (P-614) |
 | `tests/ekrany/wzor-pasek-dzianina.test.tsx` (pasek, asercja „+1”) | „+1” ×1,8 | „+1” ×1,4 z tokenu | 005 (P-614) |
 | `tests/ekrany/liczba-cyfry.test.tsx` „komponent: każda cyfra w komórce o tej samej szerokości…” | szerokość = komorkaEm × pt | szerokość = komorkaEm × pt × fontScale okna (bez limitu, komponent bez maxFontSizeMultiplier) | 003 (P-614) |
+| `tests/ekrany/licznik-ax5.test.tsx` „P-277: krój tytułowy … „+1” i „−1” najwyżej ×1,4” | „+1 row” ×1,8 | ×1,4 (`przyciskPlus.maxSkala`) | 005 (P-614) |

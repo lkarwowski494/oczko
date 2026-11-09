@@ -47,10 +47,11 @@ test('AX1 (1,786) to już kategoria dostępności; XXXL (1,353) jeszcze nie — 
   expect(screen.getByText('tap when row 2 is done')).toBeTruthy();
 });
 
-test('P-277: krój tytułowy (+1, nazwa części, „Now working”) najwyżej ×1,8, „−1” najwyżej ×1,4; liczba bez zmian (×1,3)', () => {
+// Zastąpiony jawnie (fix E5, 005, P-614; docs/programista/m3-fix-e5-zastapione-testy.md): „+1” ×1,4 z tokenu `przyciskPlus.maxSkala` zamiast kroju tytułowego ×1,8.
+test('P-277: krój tytułowy (nazwa części, „Now working”) najwyżej ×1,8, „+1” i „−1” najwyżej ×1,4; liczba bez zmian (×1,3)', () => {
   rysuj();
   expect([MAX_SKALA_TYTULOWA, MAX_SKALA_MINUSA]).toEqual([1.8, 1.4]);
-  expect(screen.getByText('+1 row').props.maxFontSizeMultiplier).toBe(1.8);
+  expect(screen.getByText('+1 row').props.maxFontSizeMultiplier).toBe(1.4);
   expect(screen.getByText('−1').props.maxFontSizeMultiplier).toBe(1.4);
   expect(screen.getByText('Harbor').props.maxFontSizeMultiplier).toBe(1.8); // M3: tytuł to nazwa projektu
   expect(screen.getByTestId('licznik-teraz-rzad').props.maxFontSizeMultiplier).toBe(1.8);
