@@ -66,7 +66,13 @@ tags:
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - assertVisible: { id: "licznik-projekt", text: "Vest" }
-- assertVisible: "Back"
+# U-5: licznik PIERWSZEJ części — podpis pod tytułem to nazwa części „Back” (Licznik.tsx: `st.podpis`, element tekstowy bez testID).
+# 07-reaudit (P-625, P-627 017): przycisk „wstecz” nie jest już tekstem „Back” na pasku — widoczny tytuł poprzedniego ekranu (tu „Projects”:
+# formularz zamyka się `dismissTo('/licznik')`, pod spodem zakładka Projekty), a etykieta VoiceOver przycisku to „Back”. Element `nav-wstecz` ma tekst
+# = accessibilityLabel (`src/ekrany/Pasek.tsx:26`), więc pasek sprawdza id + etykieta (czerwone do poprawki 017, 08), a nazwę części — tekst „Back”
+# pod tytułem (`below`), żeby nie dopasować przycisku.
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- assertVisible: { text: "Back", below: { id: "licznik-projekt" } }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - tapOn: { id: "licznik-projekt-wejscie" }
