@@ -70,7 +70,7 @@
     "akcja_wzor": "Tarif",
     "akcja_cel": "Hedef",
     "akcja_cel_a11y": "Hedef, hatırlatıcı, tekrar",
-    "akcja_stoper": "Süre",
+    "akcja_stoper": "Zamanlayıcı",
     "akcja_historia": "Geçmiş",
     "projekt_wejscie": "Proje ›",
     "projekt_wejscie_a11y": "Proje: {{projekt}}",
