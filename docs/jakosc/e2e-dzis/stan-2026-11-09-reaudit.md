@@ -28,3 +28,16 @@ Przegląd pozostałych scenariuszy (`grep` tekstów paska „Back/Projects/Today
 
 ## Kontrole
 `npx jest tests/jakosc` 60/60, 768/768 (na 93cad4c); `npm run verify` kod 0: 555/555 zestawów, 6872/6872 (drzewo przed ostatnią zmianą komentarza w 33 i tym plikiem; `tests/jakosc` powtórzone po nich).
+
+## 6. Czerwone attempt 2 przebiegu 4 (run 42578327316, dc3ccfdc = bez 08c i 08d)
+Źródła: artefakty `e2e-czesc-2-iphone` (13665506244), `e2e-czesc-3-iphone` (13664144943): commands.json, hierarchia i zrzut kroku, device-simulator.log. Kod pętli porównany z `claude/kopia-08d-e5-2026-11-09` @ 30e52a3.
+
+| Scen. | Krok | Przyczyna (dowód) | Klasa | Po 08c/08d | Zmiana |
+|---|---|---|---|---|---|
+| 16 | step-068 `nav-wstecz` | Narzędzia = korzeń zakładki bez „wstecz” (hierarchia: „Tools”, kafle, pasek zakładek, brak `nav-wstecz`) | e2e (nieaktualny) | 08c utrwala (korzenie bez „wstecz”) | `assertNotVisible nav-wstecz` na korzeniu, potem `nav-projekty` |
+| 32 | step-049 `projekty-lista` | Ustawienia z zębatki „Dziś” (P-583) → „wstecz” wraca na „Dziś” (hierarchia: `dzis-karta`, `nav-ustawienia`) | e2e (nieaktualny, jak 08/66) | bez zmian | `dzis-karta`, potem `nav-projekty` |
+| 34 | step-081 | „Next part” [217,554][329,598] pod `licznik-akcje` [16,576][386,640]; Maestro uznaje przycięty element za widoczny, stuknięcie w strefę | e2e (LIC-04 przewija treść nad strefę, scenariusz nie przewijał) | 08d bez zmian w tym miejscu | `scrollUntilVisible … centerElement: true` przed stuknięciem |
+| 30 AX5 | step-057/058 | „Pattern” pod stałą strefą „+1” (zrzut `30-ax5-akcje-pod-liczba`: nad „+1” tylko „Note”); stuknięcie dodało rząd (12345 → 12347 na zrzucie step-058), ekran wzoru się nie otworzył | e2e (jw.) | `app/wzor.tsx` ScrollView już w dc3ccfdc; 08d bez zmian | `centerElement: true` dla `licznik-wzor` |
+| 17 | step-060 | po „Test photo” panel „recode running · photo running” po ok. 100 s (kroki 56–60), miniatury brak; ten sam przepływ w 42 w tym przebiegu zielony; 17 zielony w przebiegu 3; ścieżka zdjęć bez zmian funkcjonalnych 169d2b24→dc3ccfdc (tylko token rozmiaru miniatury) | niestabilny / wydajność przekodowania (znane: 17–41 s w #137/#142, `docs/jakosc/stan.md:5`) — nierozstrzygnięte | bez zmian | brak; tag `stan-licznika` = bez ponowienia (P-091 9a) |
+
+Uwaga dla 04/1.0.1 (nie blokuje TestFlight): elementy na końcu treści licznika (Next part, akcje przy AX5) wchodzą pod stałą strefę i wymagają przewinięcia — zgodne z LIC-04, ale stuknięcie w widoczną połowę trafia w strefę.

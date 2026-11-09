@@ -29,6 +29,9 @@ tags:
 - tapOn: { id: "oferty-nie-teraz" }
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - tapOn: { id: "nav-wstecz" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś” (przebieg 4 attempt 2, step-049; jak 08 i 66); do listy przez zakładkę
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - tapOn: { id: "projekty-wiersz", index: 0 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }

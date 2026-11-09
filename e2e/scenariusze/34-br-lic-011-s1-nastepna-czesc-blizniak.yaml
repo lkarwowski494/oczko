@@ -34,6 +34,9 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "40" }
 - assertVisible: { id: "licznik-nastepna-czesc" }
 - takeScreenshot: 34-cel-osiagniety
+# LIC-04 (P-613): treść przewija się nad stałą strefę akcji i „−1 / +1”; „Next part” [217,554–598] wchodzi pod `licznik-akcje` od y 576
+# (przebieg 4 attempt 2, step-081: stuknięcie w środek trafiło w strefę) — Maestro uznaje przycięty element za widoczny, więc wyśrodkowanie przed stuknięciem
+- scrollUntilVisible: { element: { id: "licznik-nastepna-czesc" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "licznik-nastepna-czesc" }
 - assertVisible: { id: "co-dalej-druga", text: "A second Back.*Same goal, 40 rows.*" }
 - assertVisible: { id: "co-dalej-nowa" }
