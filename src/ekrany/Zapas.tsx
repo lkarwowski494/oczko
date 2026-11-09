@@ -13,6 +13,7 @@ import type { FiltrZapasu, StanDrutow, StanZapasu } from '../kompozycja/zapas';
 import type { FormularzWloczki as DaneWloczki, RodzajNarzedzia } from '../przypadki-uzycia/zapas';
 import { Wstecz } from './Pasek';
 import { StrzalkaWiersza, SymbolSf } from './SymbolSf';
+import { ZnacznikRadio } from './ZnacznikRadio';
 
 const NAZWY_KATEGORII = ['kategoria.nazwa_0', 'kategoria.nazwa_1', 'kategoria.nazwa_2', 'kategoria.nazwa_3', 'kategoria.nazwa_4', 'kategoria.nazwa_5', 'kategoria.nazwa_6', 'kategoria.nazwa_7'] as const;
 
@@ -101,8 +102,9 @@ function Jednostki(p: { t: Tlumacz; opcje: [Jednostka, Jednostka]; wybrana: Jedn
     <View accessibilityRole="radiogroup" style={st.chipy}>
       {p.opcje.map((j) => (
         <Pressable key={j} accessibilityRole="radio" accessibilityLabel={p.t(`jednostka.${j}_nazwa`)} accessibilityState={{ selected: j === p.wybrana }} onPress={() => p.naWybor(j)}
-          style={[st.chip, j === p.wybrana && st.chipWybrany]} testID={`zapas-jednostka-${j}`}>
-          <Text style={[st.chipTekst, j === p.wybrana && st.chipTekstWybrany]}>{symbolJednostki(p.t, j)}</Text>
+          style={st.opcjaRadio} testID={`zapas-jednostka-${j}`}>
+          <ZnacznikRadio wybrany={j === p.wybrana} />{/* 011 (P-614): jeden wygląd wyboru jednej opcji — ZnacznikRadio (znaczniki.radio) */}
+          <Text style={st.chipTekst}>{symbolJednostki(p.t, j)}</Text>
         </Pressable>
       ))}
     </View>
@@ -265,6 +267,7 @@ function style(k: Kolory, jezyk?: string) {
     chipWybrany: { borderColor: k.tekst2, backgroundColor: k.powierzchnia },
     chipTekst: { ...typografiaDzianiny.tresc2, color: k.tekst },
     chipTekstWybrany: { fontWeight: '700' },
+    opcjaRadio: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, minHeight: cel.minimum, paddingRight: odstep.m }, // 011: cel dotyku = cały wiersz opcji
     pusto: { gap: odstep.m, alignItems: 'flex-start' },
     przycisk: { minHeight: cel.minimum, justifyContent: 'center', paddingHorizontal: odstep.l, borderRadius: promien.przycisk, borderWidth: 2, borderColor: k.tekst2 },
     przyciskTekst: { ...typografiaDzianiny.tresc, color: k.tekst, fontWeight: '700' },
