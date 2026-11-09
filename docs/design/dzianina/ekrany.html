@@ -51,7 +51,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .tydz { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
 .tydz div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); }
 .tydz i { width: 100%; max-width: 44px; min-height: 44px; aspect-ratio: 1; border-radius: 10px; background: var(--dzienPusty); display: block; }
-.tydz i.z, .kal i.z { background: var(--akcent) var(--faktura); box-shadow: inset 0 0 0 2px var(--akcentTekst); }
+.tydz i.z, .kal i.z { background: var(--akcent); box-shadow: inset 0 0 0 2px var(--akcentTekst); } /* P-614 (6): bez faktury — kolor + obwódka + data */
 .tydz i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; } .tydz b { color: var(--tekst); }
 .kafle { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
 .kafel { background: var(--powierzchnia); border-radius: 18px; padding: 16px; min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; font-weight: 600; }
@@ -76,7 +76,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 /* projekty */
 .szukaj { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--powierzchnia); color: var(--tekst2); min-height: 44px; }
 .lista { background: var(--powierzchnia); border-radius: 16px; overflow: hidden; }
-.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px; min-height: 72px; }
+.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px; min-height: 44px; } /* P-614 (5): lista.minWysokoscWiersza 44, wysokość z treści */
 .lista > div + div { border-top: 1px solid var(--linia); }
 .lista .pr { width: 40px; height: 48px; border-radius: 8px; background: var(--karta); position: relative; overflow: hidden; flex: none; }
 .lista .pr i { position: absolute; left: 4px; right: 4px; bottom: 4px; background: var(--akcent) var(--faktura); border-radius: 3px; }
@@ -175,10 +175,10 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .kropka { width: 14px; height: 14px; border-radius: 7px; flex: none; box-shadow: inset 0 0 0 1.5px var(--tekst2); align-self: center; }
 .pr-gl .pod2 { color: var(--tekst2); }
 .pr-tresc { display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 40px; }
-.lista > div.pr-cz { min-height: 72px; } .lista .wc { padding-left: 68px; min-height: 52px; }
+.lista > div.pr-cz { min-height: 44px; } .lista .wc { padding-left: 68px; min-height: 44px; }
 .lista .wc .tx { font-size: calc(17px * var(--dt-tresc)); }
 .lista .sz { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.6)); flex: none; }
-.lista .war { color: var(--tekst2); text-align: right; } .lista > div.wg { min-height: 52px; padding-right: 12px; }
+.lista .war { color: var(--tekst2); text-align: right; } .lista > div.wg { min-height: 44px; padding-right: 12px; }
 .lista .usun { color: var(--niszczacy); font-size: 24px; flex: none; width: 28px; }
 .zdj { display: flex; gap: 8px; overflow: hidden; }
 .zdj .f { width: 88px; height: 88px; border-radius: 10px; flex: none; background: var(--wl) var(--faktura); background-size: 20px 18px; }
@@ -188,7 +188,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .strona-min i { height: 2px; background: #C9C4BD; display: block; } .strona-min i.zk { background: var(--zakreslacz); height: 4px; }
 .pr-stopka { color: var(--tekst2); }
 .pr-menu { position: absolute; right: 12px; top: 96px; width: 250px; background: var(--powierzchnia); border-radius: 16px; box-shadow: 0 8px 28px #0005; overflow: hidden; z-index: 2; }
-.pr-menu a { display: flex; align-items: center; min-height: 48px; padding: 0 16px; } .pr-menu a + a { border-top: 1px solid var(--linia); } .pr-menu a.nisz { color: var(--niszczacy); }
+.pr-menu a { display: flex; align-items: center; min-height: 44px; padding: 0 16px; } /* P-614 (4): menu.wysokoscPozycji 44 */ .pr-menu a + a { border-top: 1px solid var(--linia); } .pr-menu a.nisz { color: var(--niszczacy); }
 .gotowe { color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
 .duzy .lista .wc { padding-left: 16px; } .duzy .lista > div.wg { flex-wrap: wrap; } .duzy .lista .war { flex-basis: 100%; text-align: left; order: 3; }
 .duzy .zdj { flex-wrap: wrap; } .duzy .pr-gl h1 { align-items: flex-start; } .duzy .kropka { margin-top: 0.4em; align-self: flex-start; }
@@ -210,7 +210,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .f-pod { color: var(--tekst2); }
 .alert { display: flex; gap: 8px; align-items: flex-start; } .alert .zn { width: 22px; height: 22px; border-radius: 11px; border: 2px solid var(--tekst); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex: none; margin-top: 1px; }
 .radio { display: flex; flex-direction: column; border-radius: 16px; background: var(--tlo); overflow: hidden; }
-.radio a { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 16px; } .radio a + a { border-top: 1px solid var(--linia); }
+.radio a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 16px; } .radio a + a { border-top: 1px solid var(--linia); }
 .radio .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); flex: none; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .radio a[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
 .tekstowy { align-self: flex-start; color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; }
@@ -230,6 +230,29 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .akcje a.biegnie .ik { color: var(--akcentTekst); } .akcje a.biegnie span { font-weight: 700; font-variant-numeric: tabular-nums; }
 .kik { width: 32px; height: 32px; border-radius: 8px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: none; }
 .duzy .kik { width: 44px; height: 44px; font-size: 30px; border-radius: 10px; }
+
+/* fix E5 (2026-11-09, P-614, P-613): 004 karta „Dziś” przy AX3–AX5 — liczba i „+1” na górze karty, dzianina niskim pasem; 016 + LIC-04 licznik ze stałą strefą
+   (rząd akcji + −1/+1) nałożoną na przewijaną treść, dolny odstęp treści = zmierzona wysokość strefy (skrypt niżej, jak onLayout); 009 arkusz menu jako lista grupowana. */
+.duzy .karta { display: flex; flex-direction: column; gap: 12px; } .duzy .karta .opis { display: contents; }
+.duzy .karta .lr { order: -1; margin-top: 0; flex-wrap: nowrap; align-items: flex-start; } .duzy .karta .lim { order: -1; }
+.duzy .karta .liczba { min-width: 0; } .duzy .karta .dz { order: 2; min-height: 48px; } .duzy .karta .kont { order: 3; }
+.lz { height: 844px; overflow: hidden; }
+.lz .przew { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding-bottom: var(--strefa, 300px); }
+.lz .przew > * { flex: none; } .lz .przew.koniec { justify-content: flex-end; }
+.lz .strefa { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); }
+.lz .strefa .dol { margin-top: 0; } .lz .przew .akcje { display: none; }
+.lz .cel-ok { margin: 12px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.lz .drugi { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; padding: 8px 16px; }
+.lz .sesja { margin: 12px 16px 0; color: var(--tekst2); }
+.duzy .lz .przew .akcje { display: grid; } .duzy .lz .strefa .akcje { display: none; }
+.duzy .lz .licz-g { display: contents; } .duzy .lz .licz-g .dz { display: none; } /* od AX3 kolumna ukryta; dane niesie liczba i opis (jak miniatura Projektów, P-597) */
+.duzy .lz .num { order: -2; padding: 0 16px; } .duzy .lz .gl { order: -1; margin-top: 12px; }
+.duzy .lz .gl h1 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } /* tytuł ≤ 2 wiersze, pełny w etykiecie nagłówka */
+.ark-m { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); border-radius: 14px 14px 0 0; padding: 0 16px 36px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 -8px 28px #0005; }
+.ark-m .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 52px; gap: 8px; }
+.ark-m .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; } .ark-m .ng h2 { text-align: center; font-weight: 700; font-size: calc(17px * var(--dt-tytul)); }
+.ark-m > * { flex: none; } .ark-m .lista { margin-bottom: 12px; } .ark-m .lista > div { padding: 8px 16px; }
+.duzy .ark-m { top: 58px; overflow: hidden; } .duzy .ark-m .ng { grid-template-columns: 1fr; } .duzy .ark-m .ng h2 { text-align: left; }
 </style></head>
 <body>
 
@@ -280,23 +303,32 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 </main>
 
 <!-- 3. Licznik (ZM-04): pasek zakładek ukryty -->
-<main class="ekran" data-ekran="licznik" aria-label="Licznik">
+<main class="ekran lz" data-ekran="licznik" aria-label="Licznik">
   <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
   <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span data-de="Heute">Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
-  <div style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center" data-de="Projekt ›">Projekt ›</a>
+  <div class="przew">
+  <div class="gl" style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center" data-de="Projekt ›">Projekt ›</a>
     <h1 class="t-duzy br">Sweter Mgła</h1><p class="t-pod" style="color:var(--tekst2)" data-de="Linker Ärmel · Ziel 96 Reihen">Rękaw lewy · cel 96 rzędów</p></div>
   <div class="licz-g">
     <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
-    <div><p class="licz-num br cyfry">42<small data-de="Reihen fertig · jetzt Reihe 43">rzędy gotowe · teraz rząd 43</small></p>
+    <div class="num"><p class="licz-num br cyfry">42<small data-de="Reihen fertig · jetzt Reihe 43">rzędy gotowe · teraz rząd 43</small></p>
       <p class="t-pod" style="margin-top:12px"><span style="color:var(--akcentTekst);font-weight:700" data-de="In 4 Reihen:">Za 4 rzędy:</span> <span data-de="Abnahme (5 von 8)">ujmowanie (5 z 8)</span></p></div>
   </div>
   <div class="notatka t-pod"><i data-ik="notatka"></i><p data-de="Ärmel 2 cm kürzer als in der Anleitung.">Rękaw o 2 cm krótszy niż we wzorze.</p></div>
+  <!-- AX3–AX5: rząd akcji jako lista w przewijanej treści (jak kod, duzyTekst) -->
+  <div class="akcje t-mala">
+    <a><i data-ik="notatka"></i><span data-de="Notiz">Notatka</span></a><a><i data-ik="wzor"></i><span data-de="Anleitung">Wzór</span></a><a><i data-ik="cel"></i><span data-de="Ziel">Cel</span></a><a><i data-ik="stoper"></i><span data-de="Stoppuhr">Stoper</span></a><a><i data-ik="historiaZmian"></i><span data-de="Verlauf">Historia</span></a>
+  </div>
+  </div>
+  <!-- stała strefa (P-609 LIC-03 A): rząd akcji + −1/+1; treść wyżej ma dolny odstęp = wysokość strefy (016, LIC-04) -->
+  <div class="strefa">
   <div class="akcje t-mala">
     <a><i data-ik="notatka"></i><span data-de="Notiz">Notatka</span></a><a><i data-ik="wzor"></i><span data-de="Anleitung">Wzór</span></a><a><i data-ik="cel"></i><span data-de="Ziel">Cel</span></a><a><i data-ik="stoper"></i><span data-de="Stoppuhr">Stoper</span></a><a><i data-ik="historiaZmian"></i><span data-de="Verlauf">Historia</span></a>
   </div>
   <div class="dol">
     <a class="minus" aria-label="Odejmij rząd">−1</a>
     <a class="wielki" aria-label="Dodaj rząd, skończony rząd 43"><b class="cyfry">+1</b><span class="t-pod" data-de="Reihe 43 fertig">rząd 43 skończony</span></a>
+  </div>
   </div>
 </main>
 
@@ -553,10 +585,35 @@ document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.r
   pr.after(m, e, u);
   // M3-MAK-03: biegnący stoper (P-586 (2a), stan p3a) — ta sama komórka akcji, czas zamiast podpisu; „aktywny” = rama akcentTekst (jak wybrany plan ofert), nie wypełnienie akcentem.
   const lz = document.querySelector('[data-ekran="licznik"]'); const s = lz.cloneNode(true); s.dataset.ekran = 'licznik-stoper'; s.setAttribute('aria-label', 'Licznik, stoper biegnie');
-  const st = s.querySelectorAll('.akcje a')[3]; st.classList.add('biegnie'); st.setAttribute('aria-label', 'Stoper, 12 minut 48 sekund, biegnie'); st.querySelector('span').textContent = '12:48';
+  s.querySelectorAll('.akcje').forEach((r) => { const st = r.querySelectorAll('a')[3]; st.classList.add('biegnie'); st.setAttribute('aria-label', 'Stoper, 12 minut 48 sekund, biegnie'); st.querySelector('span').textContent = '12:48'; });
   s.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
   lz.after(s);
 }
+</script>
+<script>
+// fix E5 (2026-11-09): stany licznika do 016 + LIC-04 i 009. Teksty z pl.json (klucze w zadania-08.md); [PRZYKŁAD] dane.
+{ const lz = document.querySelector('[data-ekran="licznik"]');
+  // (a) LIC-04: cel części osiągnięty, treść przewinięta do końca — „Następna część” i podpis sesji leżą nad rzędem akcji, nie pod nim (dolny odstęp = strefa).
+  const c = lz.cloneNode(true); c.dataset.ekran = 'licznik-cel'; c.setAttribute('aria-label', 'Licznik, cel części osiągnięty, przewinięte do końca');
+  c.querySelector('.przew').classList.add('koniec');
+  c.querySelector('.licz-num').firstChild.textContent = '96'; c.querySelector('.licz-num small').textContent = 'z 96 rzędów';
+  c.querySelector('svg[data-dz]').dataset.dz = '96,96,14,0'; c.querySelector('.licz-g .dz').setAttribute('aria-label', 'Rękaw lewy: 96 z 96 rzędów, dziś 14');
+  c.querySelector('.num .t-pod').remove();
+  c.querySelector('.notatka').insertAdjacentHTML('beforebegin', '<div class="cel-ok"><p class="t-tresc"><b>Cel osiągnięty</b></p><a class="drugi t-tresc" data-testid="licznik-nastepna-czesc">Następna część</a></div><p class="t-mala sesja" data-testid="kreski-podpis">Kreski w tej sesji: 14 rzędów od 18:20</p>');
+  c.querySelector('.wielki').setAttribute('aria-label', 'Dodaj rząd, skończony rząd 97'); c.querySelector('.wielki span').textContent = 'rząd 97 skończony';
+  c.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  // (b) 009: menu ••• licznika jako arkusz z listą grupowaną (P-586 (1a)): pozycje 44 pt, podziałka linia, bez obrysów przycisków; Anuluj lewy górny róg.
+  const m = lz.cloneNode(true); m.dataset.ekran = 'licznik-menu'; m.setAttribute('aria-label', 'Licznik, menu opcji');
+  m.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="ark-m t-tresc" role="dialog" aria-modal="true" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>'
+    + '<div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div></div>'
+    + '<div class="lista"><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>'
+    + '<div class="lista"><div>Wyzeruj do 0…</div></div></section>');
+  m.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  lz.after(c, m);
+}
+// Dolny odstęp przewijanej treści = zmierzona wysokość stałej strefy (w aplikacji: onLayout strefy → contentContainerStyle.paddingBottom).
+const zmierzStrefe = () => document.querySelectorAll('.lz').forEach((e) => e.style.setProperty('--strefa', e.querySelector('.strefa').offsetHeight + 'px'));
+new ResizeObserver(zmierzStrefe).observe(document.body); document.querySelectorAll('.lz .strefa').forEach((z) => new ResizeObserver(zmierzStrefe).observe(z));
 </script>
 <script src="ikony.js"></script>
 <script>
