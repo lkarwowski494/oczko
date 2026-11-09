@@ -41,13 +41,6 @@ test('024: karta liczby jak `.nr` — tło pasek, promień karta 22, wyśrodkowa
   expect(plasko(screen.getByTestId('wzor-kolumna-licznika').props.style).backgroundColor).toBe(K.wzorRama);
 });
 
-test('024 diagnoza poza buildem E2E (P-238): brak tekstu e2e-ramki-kolumny i brak onLayout na kolumnie (przypadek E2E: e2e-ramki-kolumny.test.tsx)', () => {
-  mockOkno = { width: 1194, height: 834 };
-  pokaz();
-  expect(screen.queryByTestId('e2e-ramki-kolumny')).toBeNull();
-  expect(screen.getByTestId('wzor-kolumna-licznika').props.onLayout).toBeUndefined();
-});
-
 // 024 runda 2 ramek (run 42686026279, scen. 44, okno 1366×1024): wypełniacz `flex: 1` dostał 992 pt w kolumnie 972 pt, para −1/„+1” od y = 1144 — poza
 // ekranem („Element not found: licznik-plus”). Para dociśnięta do dołu automatycznym marginesem (tylko wolne miejsce), bez rosnącego widoku nad nią.
 test('024: kolumna iPada bez rosnącego wypełniacza nad parą; para u dołu przez marginTop auto', () => {

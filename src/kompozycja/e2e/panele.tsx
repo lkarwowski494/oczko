@@ -20,8 +20,6 @@ import { PanelPomiaruOperacji } from './pomiar-operacji';
 export { koniecOperacji, poczatekOperacji, zmierzOperacje } from './pomiar-operacji';
 // Hak F-64 (e2e-ocena-stan): system.ts liczy wywołania prośby o ocenę i zapamiętuje ostatnio otwarty adres.
 export { zapamietajAdres, zliczajProsby } from './ocena-stan';
-// Diagnoza 024 (P-629): ramki kolumny licznika wzoru na iPadzie (`WzorLicznik.tsx`, scenariusz 44).
-export { TekstRamek, useRamkiE2e } from './ramki';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {

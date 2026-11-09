@@ -6,7 +6,6 @@ import { Liczba } from './Liczba';
 import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, PROG_KATEGORII_DOSTEPNOSCI, cel, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from './wspolne';
-import { paneleE2e } from '../platforma/tryb-e2e';
 
 /** M1-audytor-generalny-203 (SYS-01): `limit` i `zablokowany` to nie błąd zapisu — tekst jak na liczniku (`skutekPlus`), `true` = błąd zapisu. */
 export type BladPaska = boolean | 'limit' | 'zablokowany';
@@ -37,12 +36,8 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   const ipad = obok && okno.width >= PW.kolumnaOdSzerokosci && okno.width > okno.height;
   const krojLiczby = ipad ? tokeny.typografia.liczbaKarty : tokeny.typografia.liczbaPaskaWzoru;
   const celCzesci = p.licznik.cel ?? null;
-  // 024 diagnoza (P-629): tylko build E2E — ramki kolumny do `e2e-ramki-kolumny` (scen. 44). `paneleE2e` jest stałą procesu, więc hak wołany zawsze albo nigdy;
-  // nie zależy od `obok` (obrót zmienia `obok` → „Rendered more hooks”, run 42678725514). Mierzy tylko kolumnę; zmiana `obok` zeruje pomiary.
-  const ramki = paneleE2e ? paneleE2e.useRamkiE2e(RAMKI_KOLUMNY, okno, obok ? 'kolumna' : 'pasek') : null;
-  const z = (n: string) => (obok ? ramki?.zmierz[n] : undefined);
   const blok = (
-    <View style={ipad ? st.kartaLiczbyIpad : obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok" onLayout={z('blok')}>
+    <View style={ipad ? st.kartaLiczbyIpad : obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok">
       <Liczba wartosc={String(p.licznik.liczba)} styl={ipad ? st.liczbaIpad : st.liczba} pt={krojLiczby.pt} jezyk={p.jezyk} maxFontSizeMultiplier={krojLiczby.maxSkala} testID="licznik-wartosc" />
       {p.licznik.znaczenie !== 'w_trakcie'
         ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
@@ -65,22 +60,21 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
     </>
   );
   const minus = (
-    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={[st.minus, ipad && st.minusIpad]} testID="licznik-minus" onLayout={z('minus')}>
+    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={[st.minus, ipad && st.minusIpad]} testID="licznik-minus">
       <Text style={st.minusTekst} maxFontSizeMultiplier={MAX_SKALA_MINUSA}>{t('licznik.minus')}</Text>
     </Pressable>
   );
   const plus = (
-    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: p.licznik.dziergany })} onPress={p.naPlus} style={[st.plus, obok ? st.plusKolumna : st.plusPasek, ipad && st.plusIpad]} testID="licznik-plus" onLayout={z('plus')}>
+    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: p.licznik.dziergany })} onPress={p.naPlus} style={[st.plus, obok ? st.plusKolumna : st.plusPasek, ipad && st.plusIpad]} testID="licznik-plus">
       <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{t('licznik.plus')}</Text>{/* M1-205: limity jak Licznik.tsx (P-277) */}
     </Pressable>
   );
   if (obok) {
     return (
-      <View style={[st.kolumna, ipad && st.kolumnaIpad, { width: p.szerokoscKolumny ?? undefined }]} testID="wzor-kolumna-licznika" onLayout={z('kolumna')}>
+      <View style={[st.kolumna, ipad && st.kolumnaIpad, { width: p.szerokoscKolumny ?? undefined }]} testID="wzor-kolumna-licznika">
         {blok}
         {komunikaty}
-        <View style={ipad ? st.przyciskiIpad : st.przyciskiKolumna} testID="wzor-kolumna-przyciski" onLayout={z('przyciski')}>{minus}{plus}</View>
-        {ramki && paneleE2e && <paneleE2e.TekstRamek tekst={ramki.tekst} />}
+        <View style={ipad ? st.przyciskiIpad : st.przyciskiKolumna} testID="wzor-kolumna-przyciski">{minus}{plus}</View>
       </View>
     );
   }
@@ -98,7 +92,6 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
 }
 
 const PW = tokeny.cele.paskaWzoru;
-const RAMKI_KOLUMNY = ['kolumna', 'blok', 'przyciski', 'minus', 'plus'] as const; // 024 diagnoza (build E2E)
 
 function style(k: Kolory) {
   return StyleSheet.create({

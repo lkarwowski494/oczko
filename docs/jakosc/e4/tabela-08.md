@@ -172,7 +172,6 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-ladowania.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-operacji.test.tsx` | zielony (główny zestaw) | 5 | — | `src/kompozycja/e2e/pomiar-operacji` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-plus.test.tsx` | zielony (główny zestaw) | 2 | NFR-WYD-001, P-255, P-456 | `src/kompozycja/e2e/panele` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-ramki-kolumny.test.tsx` | zielony (główny zestaw) | 3 | P-238, P-629 | `src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zdjecie.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/e2e-zdjecie` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 2 | BR-LIC-015/S2, P-287 | `src/domena/porty`<br>`src/kompozycja/e2e/panele` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-awaryjny-kopia.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/wspolne` | Z07-22 |
@@ -245,7 +244,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-011-pole-tokeny.test.tsx` | zielony (główny zestaw) | 2 | P-627 | `src/ekrany/ZnacznikRadio`<br>`src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-021-wciecie.test.tsx` | zielony (główny zestaw) | 3 | P-627 | `src/ekrany/Dzianina`<br>`src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-023-konflikt.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 4 | P-238 | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-240-dzis-fokus.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-aliasy.test.ts` | zielony (główny zestaw) | 4 | — | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-arkusz-zdjecie.test.tsx` | zielony (główny zestaw) | 24 | P-598 | `src/domena/porty`<br>`src/ekrany/Arkusz`<br>`src/ekrany/Oferty`<br>`src/ekrany/Zdjecia`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -414,4 +413,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 410; zależnych od poprawek: 261.
+Razem plików testów: 409; zależnych od poprawek: 260.
