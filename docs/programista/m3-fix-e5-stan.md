@@ -18,22 +18,22 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245. Polecenie: warsztat `koord
 | 10 | 010 | zrobione (Projekty; Projekt już 17/700) | a165ff5 | ✕ → ✓ |
 | 5 | 004 | zrobione | c4fbd60 | `m3-fix-e5-dzis-ax3.test.tsx` 3 ✕ + 1 ✓ (AX1 bez zmian) → 4 ✓ |
 | 7 | 007 + 008 | zrobione (jeden commit: wspólne słowniki) | 2cbd134 | `m3-fix-e5-etykiety.test.tsx` 3 ✕ + 1 ✓ (nazwany projekt bez zmian) → 4 ✓; trasa 007 w `m3-fix-e5-wzor-ax5.test.tsx` ✕ („Back to Counter from Nov 10”) → ✓ |
-| 1 | 001 | STOP: brak tokenu `dzianina.tloKolumnyKarty` | — | — |
+| 1 | 001 | rozstrzygnięte P-619 (token z makiety), do zrobienia | — | — |
 | 6, 9, 12 | 006, 009, 015 | do zrobienia (nowa sesja, P-324) | — | — |
 
-## Otwarte pytania do koordynatora
-- 001: wartość tokenu `dzianina.tloKolumnyKarty` (makieta `.dz` #00000026) — 04.
-- 011: wymiar pola wyboru (kwadrat 28) i promień — brak tokenu (`znaczniki` ma tylko `radio`) — 04.
-- Rozbieżność: `cele._plusAx5` pisze „AX3 (accessibilityMedium)”; accessibilityMedium to AX1 (RN 1,786), AX3 = accessibilityExtraLarge 2,643 (`RCTAccessibilityManager.mm:269`). Kod: `PROG_AX3 = 2.643`.
+## STOP-y rozstrzygnięte przez koordynatora (P-619, 9.11 06:17) — do wykonania w nowej sesji
+- 001: 08 dopisuje token `dzianina.tloKolumnyKarty` = #00000026 (źródło `docs/design/dzianina/ekrany.html:38` `.dz`, oba motywy) w `dzianina/tokeny.json` i `docs/design/tokeny.json` z adnotacją „wartość z makiety, P-619” (wyjątek nazwany); kontrast.mjs kod 0; 001 w całości.
+- 011 pole wyboru: wariant B — `znaczniki.radio` (28) + `promienie.pole` jako zastępcze, adnotacja w kodzie i tu; 04 oceni przy reaudycie.
+- Dla 04: rozbieżność nazwy — `cele._plusAx5` pisze „AX3 (accessibilityMedium)”; accessibilityMedium to AX1 (RN 1,786), AX3 = accessibilityExtraLarge 2,643 (`RCTAccessibilityManager.mm:269`). Kod: `PROG_AX3 = 2.643` (przyjęte, P-619).
 
 ## Nowe klucze (en, pl; 33 języki falą 09 — `docs/lokalizacja/oczekujace.json`, `przetlumaczone_czesciowo: pl`)
 `wzor.wstecz_licznik` („Back to counter” / „Wróć do licznika”), `licznik.dzianina_a11y_przyp`, `licznik.dzianina_a11y_cel_przyp`, `dzis.dzianina_a11y_przyp`, `dzis.dzianina_a11y_cel_przyp` (en: „…, next {{przypomnienie}} at row {{n}}”; pl: „…, następne: {{przypomnienie}} w rzędzie {{n}}”). Teksty pl i en napisane przez 08 według wzoru istniejących kluczy — do akceptacji 04/09.
 
 ## Odstępstwa i uwagi
-- Limit rozmiaru pliku 20 KB (`granice.mjs`): `WzorPrzegladarka.tsx` 20 450 B, `Dzis.tsx` 20 192 B — następna zmiana w tych plikach wymaga wydzielenia (np. menu/arkusze do osobnego pliku).
+- Limit rozmiaru pliku 20 KB (`granice.mjs`): `WzorPrzegladarka.tsx` 20 450 B, `Dzis.tsx` 20 192 B, `app/wzor.tsx` 20 459 B — następna zmiana w tych plikach wymaga wydzielenia (np. menu/arkusze do osobnego pliku).
 - P-590: przy dniu dzierganym, który jest też „dziś”, obwódka `tekst` (dziś) zastępuje `akcentTekst` — makieta ma obrys na zewnątrz (`outline-offset`), RN tego nie ma.
 - 012: rama przerywana także przy AX (padding jak rama biegnącego stopera).
 - Czego nie sprawdzono: układ na urządzeniu (strefa licznika, AX3+ karta i licznik, gest wstecz, iPad) — potwierdzi przebieg 4 iOS (E2E 03, 30, 34, 49, 57, 44).
 
 ## Następny krok (nowa sesja)
-006 („Wstecz”: `akcentTekst`, tytuł poprzedniego ekranu, korzenie bez „wstecz”; test 033 jawnie, P-614 (1)), 009 (menu `menu.*`), 015 (kolumna wzoru na iPadzie); 001 i pole wyboru 011 po dopisaniu tokenów przez 04.
+001 i pole wyboru 011 wg P-619, potem 006 („Wstecz”: `akcentTekst`, tytuł poprzedniego ekranu, korzenie bez „wstecz”; test 033 jawnie, P-614 (1)), 009 (menu `menu.*`), 015 (kolumna wzoru na iPadzie).
