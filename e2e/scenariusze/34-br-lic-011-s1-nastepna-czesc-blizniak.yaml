@@ -37,6 +37,15 @@ tags:
 # LIC-04 (P-613): treść przewija się nad stałą strefę akcji i „−1 / +1”; „Next part” [217,554–598] wchodzi pod `licznik-akcje` od y 576
 # (przebieg 4 attempt 2, step-081: stuknięcie w środek trafiło w strefę) — Maestro uznaje przycięty element za widoczny, więc wyśrodkowanie przed stuknięciem
 - scrollUntilVisible: { element: { id: "licznik-nastepna-czesc" }, direction: DOWN, timeout: 30000, centerElement: true }
+# M3 build 2 (przebieg 5, run 42601620032, zrzut licznik-nastepna-czesc-34): przy [554–598] i strefie od y 576 centerElement nie przesunął przycisku
+# (Maestro uznał przycięty element za widoczny), stuknięcie trafiło w stoper. Treść ma u dołu odstęp = wysokość strefy + odstęp `l`
+# (Licznik.tsx: paddingBottom), więc po przewinięciu do końca każdy element treści leży nad strefą. Dwa przeciągnięcia w górę w treści
+# (start 55 % — nad strefą akcji od ok. 66 % wysokości) przewijają do końca niezależnie od wysokości ekranu. Auto-przewinięcie produktowe: 04, 1.0.1.
+- swipe: { start: "50%, 55%", end: "50%, 15%", duration: 400 }
+- assertVisible: { id: "licznik-nastepna-czesc" }
+- swipe: { start: "50%, 55%", end: "50%, 15%", duration: 400 }
+- assertVisible: { id: "licznik-nastepna-czesc" }
+- takeScreenshot: 34-przed-nastepna-czesc
 - tapOn: { id: "licznik-nastepna-czesc" }
 - assertVisible: { id: "co-dalej-druga", text: "A second Back.*Same goal, 40 rows.*" }
 - assertVisible: { id: "co-dalej-nowa" }
