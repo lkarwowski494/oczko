@@ -40,12 +40,18 @@ describe('„Dziś”: kolumna karty z dzianina.kolumnaKarty', () => {
     expect(styl(kolumna)).toMatchObject({ width: kk.szerokosc, minHeight: kk.minWysokosc, borderRadius: kk.promien });
   });
 
-  test('AX5: karta w kolumnie, kolumna dzianiny min. 120, promień 12 (bez stałej szerokości, na pełną szerokość)', () => {
-    mockSkala = AX5;
+  // Zastąpiony jawnie (fix E5, 004, P-614 (2) A; docs/programista/m3-fix-e5-zastapione-testy.md): min. 120 zostaje dla AX1–AX2; od AX3 pas 48 (`kartaDzis.ax3ax5.dzianinaWysokosc`).
+  test('AX1: karta w kolumnie, kolumna dzianiny min. 120, promień 12 (na pełną szerokość); AX5: pas 48', () => {
+    mockSkala = 1.786;
     const kolumna = pokazDzis();
     const s = styl(kolumna);
     expect({ minHeight: s.minHeight, borderRadius: s.borderRadius, alignSelf: s.alignSelf }).toEqual({ minHeight: kk.ax5MinWysokosc, borderRadius: kk.promien, alignSelf: 'stretch' });
     expect(s.width).toBeUndefined();
+    screen.unmount();
+    mockSkala = AX5;
+    pokazDzis();
+    const pas = styl(screen.getByTestId('dzis-karta').findAll((n) => typeof n.props.onLayout === 'function')[0]); // od AX3 kolumna dzianiny nie jest pierwszym dzieckiem
+    expect({ height: pas.height, borderRadius: pas.borderRadius, alignSelf: pas.alignSelf }).toEqual({ height: tokeny.kartaDzis.ax3ax5.dzianinaWysokosc, borderRadius: kk.promien, alignSelf: 'stretch' });
   });
 
   test('dzianina dostaje wymiar zmierzony z kolumny (112 × 216), nie iloczyn cele.plus', () => {

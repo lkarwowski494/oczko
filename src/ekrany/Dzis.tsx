@@ -11,7 +11,7 @@ import { Liczba } from './Liczba';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
 import { style as stylLicznika } from './LicznikStyl';
 import type { PropsLicznika, StanEkranuLicznika } from './LicznikTypy';
-import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU_TRESCI, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, typografiaDzianiny as ty, useKolory, type Kolory } from './motyw';
+import { cel, krojTytulowy, MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU_TRESCI, odstep, PROG_AX3, PROG_KATEGORII_DOSTEPNOSCI, promien, typografiaDzianiny as ty, useKolory, type Kolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import { PrzyciskSymbolu } from './Pasek';
 import { skutekPlus, type KomunikatPlus } from './po-plusie';
@@ -56,7 +56,9 @@ export function Dzis(p: PropsDzis): React.ReactElement {
   const k = useKolory();
   const st = style(k, p.jezyk);
   const stL = stylLicznika(k);
-  const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
+  const skalaTekstu = useWindowDimensions().fontScale;
+  const duzyTekst = skalaTekstu >= PROG_KATEGORII_DOSTEPNOSCI;
+  const ax3 = skalaTekstu >= PROG_AX3; // 004: układ `kartaDzis.ax3ax5`
   const [komunikat, ustawKomunikat] = useState<KomunikatPlus>(null);
   const [arkuszLimitu, ustawArkuszLimitu] = useState<number | null>(null);
   const [kolumna, ustawKolumne] = useState<{ w: number; h: number } | null>(null);
@@ -96,6 +98,41 @@ export function Dzis(p: PropsDzis): React.ReactElement {
       <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskNaKarcieTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />
     </Pressable>
   );
+  const elDzianina = kolumna && (
+          <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={dane?.rzedyDzis ?? 0} przypomnienie={dane?.coDalej ? s.skonczone + dane.coDalej.za + 1 : null}
+            szerokosc={kolumna.w} wysokosc={kolumna.h} testID="dzis-dzianina"
+            etykieta={s.cel !== null
+              ? t('dzis.dzianina_a11y_cel', { czesc, count: s.skonczone, cel: s.cel, dzis: dane?.rzedyDzis ?? 0 })
+              : t('dzis.dzianina_a11y', { czesc, count: s.skonczone, dzis: dane?.rzedyDzis ?? 0 })} />
+        );
+  const elTytul = (<Text style={st.kartaTytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID={pierwszy ? undefined : 'dzis-projekt'}>
+          {pierwszy ? t('dzis.pierwszy_tytul') : s.projekt}
+        </Text>);
+  const elPodpis = (<Text style={st.kartaPodpis}>
+          {pierwszy ? t('dzis.pierwszy_opis') : s.cel !== null ? t('dzis.czesc_rzad_cel', { czesc, n: nrRobocza, cel: s.cel }) : t('dzis.czesc_rzad', { czesc, n: nrRobocza })}
+        </Text>);
+  const elLiczba = (<View>
+            <Liczba wartosc={String(liczba)} styl={st.liczba} pt={tokeny.typografia.liczbaKarty.pt} jezyk={p.jezyk} maxFontSizeMultiplier={tokeny.typografia.liczbaKarty.maxSkala} testID="dzis-wartosc" />
+            <Text style={st.kartaPodpis}>{oczka ? t('licznik.jednostka_oczka', { count: liczba }) : pierwszy ? t('licznik.jednostka', { count: liczba }) : t('dzis.gotowe', { count: liczba })}</Text>
+          </View>);
+  const elPlus = !zawczasu && (
+            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={() => void plus()} style={ax3 ? st.plusAx3 : st.plus} testID="dzis-plus">
+              <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
+            </Pressable>
+          );
+  const elLimit = zawczasu && (
+          <View accessibilityRole="summary" style={st.limit}>
+            <Text style={st.kartaTresc} testID="limit-zawczasu">{t('limit.zawczasu', { count: s.miesiac.rzedyDanych, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>
+            <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} style={st.link} testID="limit-oferta-link">
+              <Text style={[st.kartaTresc, st.podkreslony]}>{t('limit.pro_link')}</Text>
+            </Pressable>
+          </View>
+        );
+  const elKomunikat = komunikat && (
+          <Text style={st.kartaTresc} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>
+            {t(komunikat === 'zablokowany' ? 'licznik.zablokowany_stukniecie' : 'licznik.blad_zapisu')}
+          </Text>
+        );
   const karta = bezMiejsca ? (
     <View style={[st.karta, st.kartaKolumna]} testID="dzis-karta">
       <Text style={st.kartaTytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dzis.bez_miejsca_tytul')}</Text>
@@ -103,50 +140,34 @@ export function Dzis(p: PropsDzis): React.ReactElement {
       {przyciskKarty(t('dzis.wybierz_projekt'), 'dzis-wybierz-projekt', p.naWybierzProjekt)}
     </View>
   ) : (
+    // 004 (P-614 (2) A, `kartaDzis.ax3ax5`): od AX3 karta to stos — liczba z „+1” (cele.plusAx5) na górze, tytuł, część, dzianina pasem 48 pt, „Kontynuuj”;
+    // przy limicie komunikat stoi na miejscu „+1”. Poniżej AX3 układ bez zmian.
+    ax3 ? (
+      <View style={[st.karta, st.kartaKolumna]} testID="dzis-karta">
+        <View style={[st.liczbaIPlus, st.liczbaIPlusAx3]}>{elLiczba}{elPlus}</View>
+        {elLimit}{elTytul}{elPodpis}
+        <View style={st.dzianinaAx3} onLayout={naKolumne}>{elDzianina}</View>
+        {elKomunikat}
+        {przyciskKarty(pierwszy ? t('dzis.otworz_licznik') : t('dzis.kontynuuj'), 'dzis-kontynuuj', p.naKontynuuj)}
+      </View>
+    ) : (
     <View style={[st.karta, duzyTekst ? st.kartaKolumna : st.kartaWiersz]} testID="dzis-karta">
       <View style={duzyTekst ? st.dzianinaAx : st.dzianina} onLayout={naKolumne}>
-        {kolumna && (
-          <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={dane?.rzedyDzis ?? 0} przypomnienie={dane?.coDalej ? s.skonczone + dane.coDalej.za + 1 : null}
-            szerokosc={kolumna.w} wysokosc={kolumna.h} testID="dzis-dzianina"
-            etykieta={s.cel !== null
-              ? t('dzis.dzianina_a11y_cel', { czesc, count: s.skonczone, cel: s.cel, dzis: dane?.rzedyDzis ?? 0 })
-              : t('dzis.dzianina_a11y', { czesc, count: s.skonczone, dzis: dane?.rzedyDzis ?? 0 })} />
-        )}
+        {elDzianina}
       </View>
       <View style={st.opis}>
-        <Text style={st.kartaTytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID={pierwszy ? undefined : 'dzis-projekt'}>
-          {pierwszy ? t('dzis.pierwszy_tytul') : s.projekt}
-        </Text>
-        <Text style={st.kartaPodpis}>
-          {pierwszy ? t('dzis.pierwszy_opis') : s.cel !== null ? t('dzis.czesc_rzad_cel', { czesc, n: nrRobocza, cel: s.cel }) : t('dzis.czesc_rzad', { czesc, n: nrRobocza })}
-        </Text>
+        {elTytul}
+        {elPodpis}
         <View style={st.liczbaIPlus}>
-          <View>
-            <Liczba wartosc={String(liczba)} styl={st.liczba} pt={tokeny.typografia.liczbaKarty.pt} jezyk={p.jezyk} maxFontSizeMultiplier={tokeny.typografia.liczbaKarty.maxSkala} testID="dzis-wartosc" />
-            <Text style={st.kartaPodpis}>{oczka ? t('licznik.jednostka_oczka', { count: liczba }) : pierwszy ? t('licznik.jednostka', { count: liczba }) : t('dzis.gotowe', { count: liczba })}</Text>
-          </View>
-          {!zawczasu && (
-            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={() => void plus()} style={st.plus} testID="dzis-plus">
-              <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
-            </Pressable>
-          )}
+          {elLiczba}
+          {elPlus}
         </View>
-        {zawczasu && (
-          <View accessibilityRole="summary" style={st.limit}>
-            <Text style={st.kartaTresc} testID="limit-zawczasu">{t('limit.zawczasu', { count: s.miesiac.rzedyDanych, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>
-            <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} style={st.link} testID="limit-oferta-link">
-              <Text style={[st.kartaTresc, st.podkreslony]}>{t('limit.pro_link')}</Text>
-            </Pressable>
-          </View>
-        )}
-        {komunikat && (
-          <Text style={st.kartaTresc} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>
-            {t(komunikat === 'zablokowany' ? 'licznik.zablokowany_stukniecie' : 'licznik.blad_zapisu')}
-          </Text>
-        )}
+        {elLimit}
+        {elKomunikat}
         {przyciskKarty(pierwszy ? t('dzis.otworz_licznik') : t('dzis.kontynuuj'), 'dzis-kontynuuj', p.naKontynuuj)}
       </View>
     </View>
+    )
   );
 
   return (
@@ -233,6 +254,9 @@ function style(k: Kolory, jezyk?: string) {
     liczbaIPlus: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: odstep.m },
     liczba: { ...ty.liczbaKarty, ...bree, color: k.kartaTekst },
     plus: { width: cel.plus, height: cel.plus, borderRadius: cel.plus / 2, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center' },
+    plusAx3: { width: cel.plusAx5, height: cel.plusAx5, borderRadius: cel.plusAx5 / 2, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center' },
+    liczbaIPlusAx3: { alignItems: 'flex-start' },
+    dzianinaAx3: { alignSelf: 'stretch', height: tokeny.kartaDzis.ax3ax5.dzianinaWysokosc, borderRadius: KOLUMNA_KARTY.promien, overflow: 'hidden' },
     plusTekst: { ...ty.przyciskPlus, color: k.naAkcencie },
     limit: { gap: odstep.s },
     link: { minHeight: cel.minimum, justifyContent: 'center' },
