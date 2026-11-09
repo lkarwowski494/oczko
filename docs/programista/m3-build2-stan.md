@@ -13,8 +13,9 @@ Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run
 | 1 · AX5-wzór, opcja A (właściciel, 9.11) | zrobione, przyjęte; wysokość wzoru potwierdzi E2E 30 | f2fadde (strukturalny: `src/ekrany/WzorTytul.tsx`), 61adee2 (zachowanie) | `tests/ekrany/m3-build2-ax5-wzor.test.tsx` (fontScale 3,571): czerwony (`maxFontSizeMultiplier` undefined zamiast 1,8) → zielony; `wzor-zrodlo` w jednej linii, karta wskazówki z limitem 1,8 |
 | 2 · 024 diagnoza (instrumentacja) | zrobione; przebieg 42678725514 (`[e2e-ipad]`, e6bd782) | 3bc778d | `tests/ekrany/e2e-ramki-kolumny.test.tsx`: czerwony (brak `e2e-ramki-kolumny`) → zielony; poza E2E brak tekstu i `onLayout` (`tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx`, ostatni test) |
 | 2 · 024 runda 1 ramek (sesja 08f, polecenie 08f-024) | ramek brak: scen. 44 padł po obrocie (aplikacja zamknięta) — błąd instrumentacji, poprawiony | c26cccc | `tests/ekrany/e2e-ramki-kolumny.test.tsx` (2 nowe): czerwone („Rendered more hooks…”, device-simulator.log run 42678725514 19:26:09) → zielone; verify kod 0, 565 / 6899 |
+| 3 · 024 usunięcie instrumentacji (P-636) | zrobione; **czeka na przebieg 7 `[e2e-pelny] [e2e-ciemny]` na integracji** (pełne 44 bez instrumentacji + ponowienie po awarii maszyny + 30 AX5); czerwone 44/30 → diagnoza 08 (zrzut i hierarchia kroku błędu; ramki: `git revert` usunięcia) | 12e6468 | verify kod 0: 564 / 6896 (−4 testy instrumentacji) |
 | 2 · 024 runda 2 ramek | run 42686026279: `kolumna 1086,0,280,972; blok 16,16,248,112; wypelniacz 16,140,248,992; przyciski 16,1144,248,200` — wypełniacz `flex: 1` zepchnął parę pod ekran | — | — |
-| 2 · 024 poprawka (opcja A) | **czeka na `[e2e-ipad]`** (zielony 44 → zad. 3: usunięcie instrumentacji) | 693273b | `m3-fix-reaudit-024-ipad-kolumna.test.tsx` (wypełniacz, marginTop auto): czerwony → zielony; verify kod 0, 565 / 6900 |
+| 2 · 024 poprawka (opcja A, P-635) | zrobione: run 42703618279 — 44 poziomo zielone (kroki 35–44, `przyciski 16,756,248,200`, dół 956 = 972 − 16), koniec scenariusza: `DeviceUnreachableException` (maszyna) | 693273b | `m3-fix-reaudit-024-ipad-kolumna.test.tsx` (wypełniacz, marginTop auto): czerwony → zielony; verify kod 0, 565 / 6900 |
 
 ## 024 — przekazanie
 
@@ -50,4 +51,4 @@ Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run
 - Odstępstwo: `WzorLicznik.tsx` importuje `paneleE2e` z `src/platforma/tryb-e2e.ts` (dotąd tylko `app/` i `src/kompozycja/`) — przekazanie propsami wymagałoby wydzielenia z `app/wzor.tsx` (20 478 B); `granice.mjs src` bez naruszeń. Znika z instrumentacją.
 - Nowe znaleziska (nie naprawiane, tryb fix): tytuł-przełącznik ▾ przy ≥ 2 wzorach bez limitu skali (`src/ekrany/WzorTytul.tsx:20`, wariant jednego wzoru ma 1,8) — P2; karty nad wzorem bez limitu skali — podgląd Worda (`src/ekrany/WzorPrzegladarka.tsx:160`) i pasek notatki bez znacznika (`:166–167`) mogą przy AX5 zabrać wzorowi wysokość jak wskazówka — brzegowe, nieodtworzone, do 04.
 
-Następny krok (nowa sesja 08): ramki z run 42678725514 → poprawka 024 wg planu wyżej.
+Następny krok: wynik przebiegu 7 od koordynatora; zielone 44 i 30 → raport końcowy 08f-024; czerwone → diagnoza.
