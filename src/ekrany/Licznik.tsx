@@ -201,7 +201,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           <Text style={st.tresc} testID="licznik-powtorzenie">{t('licznik.powtorzenie', { nazwa: s.powtorzenie.nazwa, numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}</Text>
         )}
         {s.notatka && (
-          <View style={st.notatka} testID="licznik-notatka">
+          <View style={st.notatka} testID="licznik-notatka" accessible accessibilityLabel={s.notatka}>{/* 07-p3: jeden element VoiceOver, etykieta = treść (docs/design/testid.md) */}
             <SymbolSf nazwa="note.text" rozmiar={odstep.xl} kolor={k.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
             <Text style={[st.tresc, st.notatkaTekst]}>{s.notatka}</Text>
           </View>

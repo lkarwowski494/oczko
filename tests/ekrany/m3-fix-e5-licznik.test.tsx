@@ -96,3 +96,11 @@ test('016 poniżej AX3 (AX1, AX2): układ bez zmian — dzianina jest, tytuł be
     r.unmount();
   }
 });
+
+// 07-p3 (a11y, kontrakt docs/design/testid.md `licznik-notatka`): notatka to jeden element VoiceOver z etykietą = treść notatki.
+test('07-p3: licznik-notatka jest elementem dostępności z etykietą = treść notatki', () => {
+  rysuj({ notatka: 'Sleeve 2 cm shorter' });
+  const n = screen.getByTestId('licznik-notatka');
+  expect(n.props.accessible).toBe(true);
+  expect(n.props.accessibilityLabel).toBe('Sleeve 2 cm shorter');
+});
