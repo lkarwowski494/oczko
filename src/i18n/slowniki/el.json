@@ -192,8 +192,8 @@
     "brak_wynikow": "Δεν υπάρχει έργο με όνομα “{{zapytanie}}”.",
     "w_toku": "Σε εξέλιξη",
     "ukonczone": "Ολοκληρωμένα",
-    "dni_one": "{{miesiac}}: υπόλοιπο {{zostalo}} από {{limit}} δωρεάν ημέρα πλεξίματος",
-    "dni_other": "{{miesiac}}: υπόλοιπο {{zostalo}} από {{limit}} δωρεάν ημέρες πλεξίματος",
+    "dni_one": "{{miesiac}}: υπόλοιπο {{zostalo}} από {{limit}} δωρεάν ημέρα χειροτεχνίας",
+    "dni_other": "{{miesiac}}: υπόλοιπο {{zostalo}} από {{limit}} δωρεάν ημέρες χειροτεχνίας",
     "tytul": "Έργα",
     "nazwa_robocza": "Μετρητής από {{data}}",
     "ostatnia_praca_dzis": "τελευταία εργασία σήμερα",
@@ -342,8 +342,8 @@
     "jednostka_other": "σειρές",
     "czesci_one": "{{count}} κομμάτι",
     "czesci_other": "{{count}} κομμάτια",
-    "dni_one": "{{count}} ημέρα",
-    "dni_other": "{{count}} ημέρες",
+    "dni_one": "{{count}} ημέρα χειροτεχνίας",
+    "dni_other": "{{count}} ημέρες χειροτεχνίας",
     "zdjecie": "Φωτογραφία του {{nazwa}}",
     "czas_h": "{{h}} ώρ.",
     "czas_hmin": "{{h}} ώρ. {{min}} λεπ.",
@@ -776,8 +776,8 @@
   "karta": {
     "stopka": "Μετρήθηκε στο Oczko",
     "czas": "χρόνος χειροτεχνίας",
-    "dni_podpis_one": "ημέρα πλεξίματος",
-    "dni_podpis_other": "ημέρες πλεξίματος",
+    "dni_podpis_one": "ημέρα χειροτεχνίας",
+    "dni_podpis_other": "ημέρες χειροτεχνίας",
     "obraz_a11y": "Κάρτα για {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {

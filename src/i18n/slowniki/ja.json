@@ -37,7 +37,7 @@
     "blizniak": "対のパーツ、{{rzad}}段目：{{tresc}}",
     "blizniak_oba": "対のパーツ、{{rzad}}段目：{{notatka}}、{{przypomnienie}}",
     "znaczniki_sesji_other": "今回の記録：{{godzina}}から{{count}}段",
-    "ostatni_darmowy": "{{miesiac}}の無料の編み日はあと1日です",
+    "ostatni_darmowy": "{{miesiac}}の無料の編み物の日はあと1日です",
     "cel_dnia_other": "今日の目標：{{count}}段",
     "calosc_other": "{{czesc}}の合計：{{count}}段",
     "wzor_a11y": "編み図",
@@ -64,14 +64,14 @@
     "dzianina_a11y_cel_other": "{{czesc}}：{{cel}}段中{{count}}段完了、このセッションで{{sesja}}段"
   },
   "limit": {
-    "zawczasu_other": "{{miesiac}}の無料の編み日は残っていません。{{data}}までカウントは一時停止です。{{count}}段とすべてのデータは保存されています。",
+    "zawczasu_other": "{{miesiac}}の無料の編み物の日は残っていません。{{data}}までカウントは一時停止です。{{count}}段とすべてのデータは保存されています。",
     "pro_link": "Oczko Proで上限をなくせます",
     "nie_dodano": "{{n}}段目は追加されませんでした",
-    "arkusz_dni_other": "{{miesiac}}の無料の手芸日{{limit}}日分を使い切りました。手芸日は、その日の最初の1段から始まります。{{data}}に戻ります。",
+    "arkusz_dni_other": "{{miesiac}}の無料の編み物の日{{limit}}日分を使い切りました。編み物の日は、その日の最初の1段から始まります。{{data}}に戻ります。",
     "arkusz_zachowane_other": "失われるものはありません。{{count}}段、プロジェクト、履歴、書き出しはそのまま残ります。",
     "arkusz_pro": "Oczko Proで毎月の上限をなくせます。",
     "zobacz_pro": "Oczko Proを見る",
-    "ogloszenie": "{{n}}段目は追加されませんでした。{{miesiac}}の無料の編み日を使い切りました。失われるものはありません。"
+    "ogloszenie": "{{n}}段目は追加されませんでした。{{miesiac}}の無料の編み物の日を使い切りました。失われるものはありません。"
   },
   "ustawienia": {
     "tytul": "設定",
@@ -118,7 +118,7 @@
     "zrobione_other": "{{count}}段完了",
     "wstrzymane": "カウント一時停止中",
     "zachowane": "段数は保存されています。",
-    "limit": "{{miesiac}}の無料の編み日は残っていません。",
+    "limit": "{{miesiac}}の無料の編み物の日は残っていません。",
     "limit_wznowienie": "{{data}}にカウントを再開できます。",
     "nie_dodano": "{{n}}段目は追加されませんでした",
     "odblokuj": "カウントするにはiPhoneのロックを解除してください。",
@@ -169,7 +169,7 @@
     "brak_wynikow": "「{{zapytanie}}」というプロジェクトはありません。",
     "w_toku": "進行中",
     "ukonczone": "完成",
-    "dni_other": "{{miesiac}}の無料の制作日：{{limit}}日中 残り{{zostalo}}日",
+    "dni_other": "{{miesiac}}の無料の編み物の日：{{limit}}日中 残り{{zostalo}}日",
     "tytul": "プロジェクト",
     "nazwa_robocza": "{{data}}のカウンター",
     "ostatnia_praca_dzis": "今日編みました",
@@ -303,7 +303,7 @@
     "okres": "完成 · {{okres}}",
     "jednostka_other": "段",
     "czesci_other": "{{count}}パーツ",
-    "dni_other": "編んだ日 {{count}}日",
+    "dni_other": "編み物の日 {{count}}日",
     "zdjecie": "{{nazwa}}の写真",
     "czas_h": "{{h}}時間",
     "czas_hmin": "{{h}}時間{{min}}分",
@@ -396,7 +396,7 @@
     "tydzien_biezacy": "今週",
     "tydzien_poprzedni_other": "先週：{{count}}段",
     "ukonczono_other": "完成したプロジェクト {{count}}件",
-    "dni_robotki_other": "編んだ日 {{count}}日",
+    "dni_robotki_other": "編み物の日 {{count}}日",
     "rzedy_czas": "{{rzedy}} · {{czas}}",
     "suma_czas": "{{rzedy}} · {{czas}}",
     "pusto_dzien": "この日はカウントがありません。",
@@ -417,7 +417,7 @@
     "odnawianie_rok": "Apple IDの設定で解約するまで、毎年自動更新されます。",
     "raz": "1回のお支払いのみ。更新はありません。",
     "dozywotni_przy_subskrypcji": "サブスクリプションは、解約するまで自動更新されます。",
-    "bez_pro_other": "Proなし：毎月{{limit}}日の手芸日。すべてのプロジェクトとデータはいつでも使えます。",
+    "bez_pro_other": "Proなし：毎月{{limit}}日分の編み物の日。すべてのプロジェクトとデータはいつでも使えます。",
     "kup": "{{plan}}で続ける",
     "przywroc": "購入を復元",
     "polityka": "プライバシーポリシー",
@@ -442,7 +442,7 @@
     "kafel_dane_opis": "Proの有無にかかわらず、プロジェクト、編み図、履歴はそのまま残ります。"
   },
   "uczciwe": {
-    "tytul": "最初の編み日が終わりました",
+    "tytul": "最初の編み物の日が終わりました",
     "wszystko": "Oczkoのすべての機能は初日から使えます。アカウントも広告もありません。",
     "darmowe_other": "毎月{{count}}日間は、期間を気にせず無料で段をカウントできます。プロジェクトとデータは常にあなたのものです。",
     "pro": "もっと日数が必要ですか？Oczko Proなら、サブスクリプションまたは買い切りで上限がなくなります。",
@@ -694,7 +694,7 @@
   "karta": {
     "stopka": "Oczkoでカウント",
     "czas": "編んだ時間",
-    "dni_podpis_other": "制作日数",
+    "dni_podpis_other": "編み物の日",
     "obraz_a11y": "{{nazwa}}のカード：{{szczegoly}}"
   },
   "wzor": {

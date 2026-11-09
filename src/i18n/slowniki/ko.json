@@ -37,7 +37,7 @@
     "blizniak": "짝 파트, {{rzad}}단: {{tresc}}",
     "blizniak_oba": "짝 파트 {{rzad}}단: {{notatka}}, {{przypomnienie}}",
     "znaczniki_sesji_other": "이번 세션 기록: {{godzina}}부터 {{count}}단",
-    "ostatni_darmowy": "{{miesiac}}에 무료 작업일 1일 남음",
+    "ostatni_darmowy": "{{miesiac}}에 무료 뜨개한 날 1일 남음",
     "cel_dnia_other": "오늘의 목표: {{count}}단",
     "calosc_other": "{{czesc}} 합계: {{count}}단",
     "wzor_a11y": "도안",
@@ -64,14 +64,14 @@
     "dzianina_a11y_cel_other": "{{czesc}}: {{cel}}단 중 {{count}}단 완료, 이번 세션 {{sesja}}단"
   },
   "limit": {
-    "zawczasu_other": "{{miesiac}}의 무료 작업일을 모두 사용했습니다. {{data}}까지 카운트가 일시 중지됩니다. 기록된 {{count}}단과 나머지 모든 데이터는 그대로 보존됩니다.",
+    "zawczasu_other": "{{miesiac}}의 무료 뜨개한 날을 모두 사용했습니다. {{data}}까지 카운트가 일시 중지됩니다. 기록된 {{count}}단과 나머지 모든 데이터는 그대로 보존됩니다.",
     "pro_link": "Oczko Pro로 제한 해제",
     "nie_dodano": "{{n}}단이 추가되지 않았습니다",
-    "arkusz_dni_other": "{{miesiac}}의 무료 작업일 {{limit}}일을 모두 사용했습니다. 작업일은 그날 첫 단을 기록할 때 시작되며, {{data}}에 다시 채워집니다.",
+    "arkusz_dni_other": "{{miesiac}}의 무료 뜨개한 날 {{limit}}일을 모두 사용했습니다. 뜨개한 날은 그날 첫 단을 기록할 때 시작되며, {{data}}에 다시 채워집니다.",
     "arkusz_zachowane_other": "잃는 것은 없습니다. {{count}}단, 프로젝트, 기록, 내보내기는 모두 그대로입니다.",
     "arkusz_pro": "Oczko Pro로 월간 제한을 해제하세요.",
     "zobacz_pro": "Oczko Pro 보기",
-    "ogloszenie": "{{n}}단이 추가되지 않았습니다. {{miesiac}}의 무료 작업일을 모두 사용했습니다. 잃는 것은 없습니다."
+    "ogloszenie": "{{n}}단이 추가되지 않았습니다. {{miesiac}}의 무료 뜨개한 날을 모두 사용했습니다. 잃는 것은 없습니다."
   },
   "ustawienia": {
     "tytul": "설정",
@@ -118,7 +118,7 @@
     "zrobione_other": "{{count}}단 완료",
     "wstrzymane": "카운트 일시 중지",
     "zachowane": "단 기록은 보존됩니다.",
-    "limit": "{{miesiac}}의 무료 작업일이 남지 않았습니다.",
+    "limit": "{{miesiac}}의 무료 뜨개한 날이 남지 않았습니다.",
     "limit_wznowienie": "{{data}}에 카운트가 재개됩니다.",
     "nie_dodano": "{{n}}단이 추가되지 않았습니다",
     "odblokuj": "카운트하려면 iPhone 잠금을 해제하세요.",
@@ -169,7 +169,7 @@
     "brak_wynikow": "“{{zapytanie}}” 프로젝트가 없습니다.",
     "w_toku": "진행 중",
     "ukonczone": "완료",
-    "dni_other": "{{miesiac}}: 무료 작업일 {{limit}}일 중 {{zostalo}}일 남음",
+    "dni_other": "{{miesiac}}: 무료 뜨개한 날 {{limit}}일 중 {{zostalo}}일 남음",
     "tytul": "프로젝트",
     "nazwa_robocza": "{{data}}의 카운터",
     "ostatnia_praca_dzis": "오늘 작업함",
@@ -303,7 +303,7 @@
     "okres": "완료 · {{okres}}",
     "jednostka_other": "단",
     "czesci_other": "파트 {{count}}개",
-    "dni_other": "작업 {{count}}일",
+    "dni_other": "뜨개한 날 {{count}}일",
     "zdjecie": "{{nazwa}} 사진",
     "czas_h": "{{h}}시간",
     "czas_hmin": "{{h}}시간 {{min}}분",
@@ -396,7 +396,7 @@
     "tydzien_biezacy": "이번 주",
     "tydzien_poprzedni_other": "지난주: {{count}}단",
     "ukonczono_other": "완료한 프로젝트 {{count}}개",
-    "dni_robotki_other": "작업일 {{count}}일",
+    "dni_robotki_other": "뜨개한 날 {{count}}일",
     "rzedy_czas": "{{rzedy}} · {{czas}}",
     "suma_czas": "{{rzedy}} · {{czas}}",
     "pusto_dzien": "이날은 센 기록이 없습니다.",
@@ -417,7 +417,7 @@
     "odnawianie_rok": "Apple ID 설정에서 취소할 때까지 매년 갱신됩니다.",
     "raz": "한 번만 결제합니다. 갱신되지 않습니다.",
     "dozywotni_przy_subskrypcji": "구독은 직접 취소할 때까지 계속 갱신됩니다.",
-    "bez_pro_other": "Pro 없이도: 매달 작업일 {{limit}}일, 그리고 모든 프로젝트와 데이터를 항상 이용할 수 있습니다.",
+    "bez_pro_other": "Pro 없이도: 매달 뜨개한 날 {{limit}}일, 그리고 모든 프로젝트와 데이터를 항상 이용할 수 있습니다.",
     "kup": "계속하기: {{plan}}",
     "przywroc": "구입 항목 복원",
     "polityka": "개인정보 처리방침",
@@ -442,7 +442,7 @@
     "kafel_dane_opis": "Pro 여부와 관계없이 프로젝트, 도안, 기록은 그대로 남습니다."
   },
   "uczciwe": {
-    "tytul": "첫 작업일을 마쳤습니다",
+    "tytul": "첫 뜨개한 날을 마쳤습니다",
     "wszystko": "Oczko의 모든 기능은 첫날부터 계정도 광고도 없이 작동합니다.",
     "darmowe_other": "매월 {{count}}일은 기간 제한 없이 무료로 단을 셀 수 있습니다. 프로젝트와 데이터는 언제나 여러분의 것입니다.",
     "pro": "더 많은 날이 필요하신가요? Oczko Pro는 구독 또는 일회성 구입으로 제한을 해제합니다.",
@@ -694,7 +694,7 @@
   "karta": {
     "stopka": "Oczko로 센 기록",
     "czas": "작업 시간",
-    "dni_podpis_other": "작업일",
+    "dni_podpis_other": "뜨개한 날",
     "obraz_a11y": "{{nazwa}} 카드: {{szczegoly}}"
   },
   "wzor": {
