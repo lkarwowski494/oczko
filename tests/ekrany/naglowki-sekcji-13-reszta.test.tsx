@@ -31,11 +31,12 @@ test('wzorzec ma 13 pt (rola mala w tokenach Dzianiny, dawniej drobny), a podpis
 describe.each([['jasny', 'light'], ['ciemny', 'dark']] as const)('motyw %s', (_m, schemat) => {
   beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue(schemat); });
 
-  test('ListaProjektow: „In progress” i „Finished” — 13 pt, kolor olowek', () => {
+  // Zastąpiony jawnie (fix E5, 010, P-614 (5); docs/programista/m3-fix-e5-zastapione-testy.md): nagłówek grupy Projektów = `lista.naglowekGrupy` 17 pt / 700 / `tekst`.
+  test('ListaProjektow: „In progress” i „Finished” — lista.naglowekGrupy (17 pt, kolor tekst)', () => {
     const wiersz = { id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today' };
     render(<ListaProjektow stan={{ wToku: [wiersz], ukonczone: [{ ...wiersz, id: 'p2', nazwa: 'Scarf' }], zapytanie: '', dni: { zostalo: 3, limit: 5, miesiac: 'November' } }} t={t} naSzukaj={jest.fn()} naOtworz={jest.fn()} naNowy={jest.fn()} />);
-    expect([rozmiar('In progress'), rozmiar('Finished')]).toEqual([MALA, MALA]);
-    expect(kolor('In progress')).toBe(olowek(schemat));
+    expect([rozmiar('In progress'), rozmiar('Finished')]).toEqual([tokeny.lista.naglowekGrupy.pt, tokeny.lista.naglowekGrupy.pt]);
+    expect(kolor('In progress')).toBe(tokeny.kolory[schemat === 'dark' ? 'ciemny' : 'jasny'].tekst);
   });
 
   test('Sesje: nagłówki dni — 13 pt', () => {
