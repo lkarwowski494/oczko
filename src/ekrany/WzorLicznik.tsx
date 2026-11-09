@@ -94,8 +94,7 @@ function style(k: Kolory) {
     limit: { alignSelf: 'stretch' },
     podpis: { ...typografia.podpis, color: k.tekst, textAlign: 'center' },
     // Pasek (ekran `wzor` makiety): tło `pasek`, linia `pasekLinia` (kolory z tokenów, nie papier); jeden rząd −1 / rząd / +1, od AX1 kolumna: liczba nad przyciskami.
-    // M3-IPAD-01 (P-605): `alignSelf: stretch` + `width: 100%` — pasek nie zwija się do zawartości, gdy rodzic centruje (iPad); inaczej blok liczby (podstawa 0) ma 0 pt, „+1” 64 pt.
-    pasekLicznika: { alignSelf: 'stretch', width: '100%', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s, backgroundColor: k.pasek },
+    pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s, backgroundColor: k.pasek },
     pasekAx: { flexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap' },
     liczbaBlok: { flexShrink: 1, flexGrow: 1, flexBasis: 0, alignItems: 'center' },
     liczbaBlokAx: { alignItems: 'center', alignSelf: 'stretch' },
@@ -104,7 +103,8 @@ function style(k: Kolory) {
     // poza kolumną (P-262 (b), przebieg 119, scen. 23 i 44; przyczyna w Yoga nieodtworzona poza urządzeniem).
     liczbaBlokKolumna: { flexShrink: 0 },
     kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.pasekLinia, padding: odstep.l, gap: odstep.m, backgroundColor: k.pasek },
-    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'stretch' },
+    // M3-IPAD-01 (P-605): `width: 100%` — grupa leży w pasku-wierszu z zawijaniem; bez szerokości zwija się do zawartości i blok liczby (podstawa 0) ma 0 pt, „+1” 64 pt.
+    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'stretch', width: '100%' },
     przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
     minus: { minWidth: cel.przyciskMinusPaska, minHeight: cel.przyciskPlusPaskaWysokosc, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.tekst },

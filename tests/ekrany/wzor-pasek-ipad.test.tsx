@@ -1,7 +1,7 @@
 // M3-IPAD-01 (P-605): pasek wzoru −1 / liczba / +1 na iPadzie (przebieg 2 iOS, scenariusz 44, zrzut ipad-wzor-pasek.png).
-// Przyczyna: pasek bez jawnej szerokości zwija się do zawartości, gdy rodzic centruje elementy (iPad); wtedy blok liczby (flexBasis 0) ma 0 pt,
-// „+1” tylko minWidth 64 pt, a liczba nachodzi na przyciski. Układ Yoga odtworzony poza urządzeniem (`yoga-layout` 3.1.0, poza repo): z `alignSelf: stretch` + `width: 100%`
-// pasek ma pełną szerokość okna przy 1366/1024/390/320 pt, a blok liczby ≥ 72 pt — niezależnie od `alignItems` rodzica. Jest nie układa elementów, więc test sprawdza styl, który to gwarantuje.
+// Przyczyna: grupa `przyciski` (−1 / liczba / +1) leży w pasku-wierszu z zawijaniem i nie ma szerokości: zwija się do zawartości, więc blok liczby (flexBasis 0) ma 0 pt,
+// „+1” tylko minWidth 64 pt, a liczba nachodzi na przyciski. Układ Yoga odtworzony poza urządzeniem (`yoga-layout` 3.1.0, poza repo): z `width: 100%` na grupie
+// blok liczby ma 424/107/72 pt przy oknie 1024/390/320 pt (bez poprawki 0 pt przy każdej szerokości). Jest nie układa elementów, więc test sprawdza styl, który to gwarantuje.
 // Zachowanie, testID i układ od AX1 (04-003) bez zmian.
 import React from 'react';
 import * as RN from 'react-native';
@@ -26,17 +26,18 @@ const pasek = (obok = false) => render(
 );
 
 // 1366 i 1024: iPad 13" i 11" (pionowo i poziomo okno pełne), 390: iPhone, 320: wąskie okno (Split View).
-describe('pasek wzoru: szerokość nie zależy od rodzica (M3-IPAD-01)', () => {
-  test.each([1366, 1024, 390, 320])('okno %s pt: pasek rozciągnięty na całą szerokość (alignSelf stretch, width 100%) — nie zwija się do zawartości', (szerokosc) => {
+describe('pasek wzoru: grupa −1 / liczba / +1 ma pełną szerokość paska (M3-IPAD-01)', () => {
+  test.each([1366, 1024, 390, 320])('okno %s pt: grupa przycisków na całą szerokość paska (width 100%) — nie zwija się do zawartości', (szerokosc) => {
     mockSzerokosc = szerokosc;
     pasek();
-    expect(plaski('wzor-pasek-licznika')).toMatchObject({ alignSelf: 'stretch', width: '100%' });
+    expect(plaski('wzor-pasek-przyciski')).toMatchObject({ flexDirection: 'row', width: '100%' });
   });
   test.each([1366, 320])('okno %s pt, od AX1 (kolumna: liczba nad przyciskami): ta sama pełna szerokość', (szerokosc) => {
     mockSzerokosc = szerokosc;
     mockSkala = PROG_KATEGORII_DOSTEPNOSCI;
     pasek();
-    expect(plaski('wzor-pasek-licznika')).toMatchObject({ flexDirection: 'column', alignSelf: 'stretch', width: '100%' });
+    expect(plaski('wzor-pasek-licznika')).toMatchObject({ flexDirection: 'column' });
+    expect(plaski('wzor-pasek-przyciski')).toMatchObject({ flexDirection: 'row', width: '100%' });
   });
   test.each([1366, 390, 320])('okno %s pt: liczba i „+1” dzielą wolne miejsce (blok i „+1” rosną od podstawy 0), „−1” ma stałą szerokość', (szerokosc) => {
     mockSzerokosc = szerokosc;
