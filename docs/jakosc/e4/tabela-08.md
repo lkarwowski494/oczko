@@ -227,6 +227,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-cele.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik`<br>`src/ekrany/LicznikAkcje`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-dzis-powrot.test.tsx` | zielony (główny zestaw) | 1 | P-617 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-licznik.test.tsx` | zielony (główny zestaw) | 8 | P-613, P-614, P-615 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-listy-dni.test.tsx` | zielony (główny zestaw) | 2 | P-590, P-614 | `src/ekrany/Dzis`<br>`src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-skala.test.tsx` | zielony (główny zestaw) | 5 | P-614 | `src/ekrany/Dzis`<br>`src/ekrany/Liczba`<br>`src/ekrany/Licznik`<br>`src/ekrany/WzorLicznik`<br>`src/ekrany/liczba`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-wybor.test.tsx` | zielony (główny zestaw) | 2 | P-614 | `src/ekrany/WzorMenu`<br>`src/ekrany/Zapas`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-wzor-ax5.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
@@ -398,4 +399,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 394; zależnych od poprawek: 250.
+Razem plików testów: 395; zależnych od poprawek: 251.
