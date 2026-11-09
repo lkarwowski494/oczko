@@ -52,7 +52,7 @@ describe('(1) kafelki podsumowania miesiąca', () => {
   test('bez sesji: brak kafelka czasu (brak zostaje brakiem), pod kafelkami nota o stoperze', () => {
     pokaz();
     expect(screen.queryByTestId('historia-kafel-czas')).toBeNull();
-    expect(within(screen.getByTestId('historia-miesiac')).getByText('Time shows here when you use the stopwatch.')).toBeTruthy();
+    expect(within(screen.getByTestId('historia-miesiac')).getByText('Time shows here when you use the timer.')).toBeTruthy();
   });
 
   test('miesiąc bez robótki: kafelki „0” (zero jest wartością, nie brakiem)', () => {

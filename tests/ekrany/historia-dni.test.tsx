@@ -52,7 +52,7 @@ test('dzień: projekty z rzędami albo samym czasem (ER-55); stuknięcie otwiera
   expect(screen.getByText('1 project finished')).toBeTruthy();
   expect(within(screen.getByTestId('historia-kafel-dni')).getByText('2')).toBeTruthy(); // było linią „2 crafting days” (M3 p5 cz. 2: kafelek)
   expect(within(screen.getByTestId('historia-kafel-dni')).getByText('crafting days')).toBeTruthy();
-  expect(screen.getAllByText('Time shows here when you use the stopwatch.')).toHaveLength(1); // miesiąc bez sesji (BR-DNI-003 S3)
+  expect(screen.getAllByText('Time shows here when you use the timer.')).toHaveLength(1); // miesiąc bez sesji (BR-DNI-003 S3)
 });
 
 test('dzień bez robótki: „Nothing counted on this day.”; bieżący tydzień: „This week”; pierwsze użycie: zachęta bez ponagleń', () => {
