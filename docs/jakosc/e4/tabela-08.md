@@ -223,6 +223,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-092-etykiety-planow.test.tsx` | zielony (główny zestaw) | 2 | KP-03 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m1-196-tysiace.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-017 | `src/ekrany/Zapas`<br>`src/ekrany/wspolne`<br>`src/i18n/format`<br>`src/kompozycja/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m2-036-hak-bez-szerokosci.test.tsx` | zielony (główny zestaw) | 2 | P-461 | `src/ekrany/Narzedzia`<br>`src/ekrany/wspolne`<br>`src/kompozycja/probka` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-build2-ax5-wzor.test.tsx` | zielony (główny zestaw) | 2 | P-630 | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-001.test.tsx` | zielony (główny zestaw) | 5 | P-619 | `src/ekrany/Dzis`<br>`src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-006-etykiety.test.tsx` | zielony (główny zestaw) | 9 | P-614, P-627 | `src/ekrany/Pasek`<br>`src/kompozycja/wstecz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-e5-006.test.tsx` | zielony (główny zestaw) | 3 | P-614 | `src/ekrany/Pasek`<br>`src/ekrany/motyw` | — |
@@ -243,7 +244,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-011-pole-tokeny.test.tsx` | zielony (główny zestaw) | 2 | P-627 | `src/ekrany/ZnacznikRadio`<br>`src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-021-wciecie.test.tsx` | zielony (główny zestaw) | 3 | P-627 | `src/ekrany/Dzianina`<br>`src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-023-konflikt.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-240-dzis-fokus.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-aliasy.test.ts` | zielony (główny zestaw) | 4 | — | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-arkusz-zdjecie.test.tsx` | zielony (główny zestaw) | 24 | P-598 | `src/domena/porty`<br>`src/ekrany/Arkusz`<br>`src/ekrany/Oferty`<br>`src/ekrany/Zdjecia`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -412,4 +413,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 408; zależnych od poprawek: 259.
+Razem plików testów: 409; zależnych od poprawek: 260.
