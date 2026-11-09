@@ -35,6 +35,8 @@ export function style(k: Kolory) {
     linijka: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s },
     baner: { gap: odstep.s, padding: odstep.m, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     zakreslacz: { backgroundColor: k.zakreslacz, borderLeftWidth: 3, borderLeftColor: k.zakreslaczKrawedz, borderRadius: promien.zakreslacz, padding: odstep.m },
+    // M3-LIC-03: rząd akcji stoi nad stałą strefą „−1 / +1” (makieta: akcje tuż nad `.dol`, margines 16 pt), nie w przewijanej treści; zIndex — menu stopera nad strefą.
+    akcjeStrefa: { paddingHorizontal: odstep.l, paddingTop: odstep.s, zIndex: 10 },
     przyciski: { flexDirection: 'row', alignItems: 'flex-end', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     przyciskiAx: { flexDirection: 'column', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     minus: { width: rozmiary.przyciskMinus, height: rozmiary.przyciskMinus, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },

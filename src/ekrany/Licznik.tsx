@@ -120,6 +120,9 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     </View>
   );
 
+  // M3-LIC-03: od AX1 lista akcji płynie z treścią (makieta `.duzy`); zwykle rząd stoi nad strefą „−1 / +1”, żeby długi tytuł go nie przycinał.
+  const rzadAkcji = <RzadAkcji t={t} duzyTekst={duzyTekst} oczka={oczka} naNotatka={p.naNotatka} naWzor={p.naWzor} naCel={p.naCel} naHistorie={p.naHistorie} stoper={p.stoper} />;
+
   return (
     <View style={st.ekran} onMagicTap={() => void plus()}>{/* Magic Tap = +1, ta sama ścieżka co przycisk (design-spec:88, P-284) */}
       <View style={st.pasek}>
@@ -200,7 +203,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
             ? t('licznik.blizniak_oba', { rzad: s.blizniak.rzad, notatka: s.blizniak.notatka, przypomnienie: s.blizniak.przypomnienie }) // M1-144: zdanie stanu z przecinkiem ze słownika, bez „ · ”
             : t('licznik.blizniak', { rzad: s.blizniak.rzad, tresc: s.blizniak.notatka || s.blizniak.przypomnienie || '' })}</Text>
         )}
-        <RzadAkcji t={t} duzyTekst={duzyTekst} oczka={oczka} naNotatka={p.naNotatka} naWzor={p.naWzor} naCel={p.naCel} naHistorie={p.naHistorie} stoper={p.stoper} />
+        {duzyTekst && rzadAkcji}
       </ScrollView>
       {/* M1-004: komunikat w stałym miejscu nad przyciskami, poza przewijaną treścią (dawniej ostatnie dziecko ScrollView, pod notatką i kreskami) */}
       {komunikat && (
@@ -208,6 +211,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           {t(komunikat === 'zablokowany' ? 'licznik.zablokowany_stukniecie' : 'licznik.blad_zapisu')}
         </Text>
       )}
+      {!duzyTekst && <View style={st.akcjeStrefa}>{rzadAkcji}</View>}
       {zawczasu ? (
         <View style={st.komunikatLimitu} accessibilityRole="summary">
           <Text style={st.tresc} testID="limit-zawczasu">{t('limit.zawczasu', { count: s.miesiac.rzedyDanych, miesiac: s.miesiac.nazwa, data: s.miesiac.wznowienie })}</Text>
