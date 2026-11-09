@@ -8,7 +8,7 @@ import { LiniaKonfliktu } from './IcloudKonflikt';
 import type { WzorzecHaptyki } from '../domena/porty';
 import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_AX3, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
-import { Dzianina } from './Dzianina';
+import { Dzianina, WCIECIE_DZIANINY } from './Dzianina';
 import { Liczba } from './Liczba';
 import { RzadAkcji } from './LicznikAkcje';
 import { SymbolSf } from './SymbolSf';
@@ -111,7 +111,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const zp = s.przypomnienie ? { przypomnienie: s.przypomnienie.tekst, n: nrRobocza } : null; // 008: przypomnienie w etykiecie dzianiny (`*_przyp`)
   const dzianina = (
     <View style={duzyTekst ? st.dzianinaAx : st.dzianina}>
-      <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina"
+      <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina" wciecie={WCIECIE_DZIANINY}
         etykieta={s.cel !== null
           ? (zp ? t('licznik.dzianina_a11y_cel_przyp', { ...a8, count: s.skonczone, cel: s.cel, ...zp }) : t('licznik.dzianina_a11y_cel', { ...a8, count: s.skonczone, cel: s.cel }))
           : (zp ? t('licznik.dzianina_a11y_przyp', { ...a8, count: s.skonczone, ...zp }) : t('licznik.dzianina_a11y', { ...a8, count: s.skonczone }))} />
