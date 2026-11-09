@@ -60,13 +60,13 @@ export function bledyMenu(l: Krok[]): string[] {
   return out;
 }
 
-/** Menu systemowe nie ma „Close”: po otwarciu ••• / „Cel” pierwsze stuknięcie nie może być `arkusz-zamknij` (zamyka `subflows/zamknij-menu.yaml`). */
+/** Jedno miejsce zmiany sposobu zamknięcia menu ••• / „Cel”: po otwarciu pierwsze stuknięcie nie może być wprost `arkusz-zamknij`, tylko `subflows/zamknij-menu.yaml` (od P-586 (a) to on stuka „Cancel” arkusza). */
 export function bledyZamkniecia(l: Krok[]): string[] {
   const out: string[] = [];
   l.forEach((k, i) => {
     if (!stuka(k, 'licznik-menu') && !stuka(k, 'licznik-cel')) return;
     const nast = l.slice(i + 1).find((x) => x.nazwa === 'tapOn' || x.nazwa === 'runFlow');
-    if (nast && stuka(nast, 'arkusz-zamknij')) out.push(`krok ${i}: menu systemowe zamknięte przez arkusz-zamknij (ZM-05: brak „Close”)`);
+    if (nast && stuka(nast, 'arkusz-zamknij')) out.push(`krok ${i}: menu zamknięte wprost przez arkusz-zamknij zamiast subflows/zamknij-menu.yaml (jedno miejsce zmiany)`);
   });
   return out;
 }
@@ -101,15 +101,17 @@ describe('07 cz. 2 · scenariusze na kontrakt licznika TO BE (M3-TESTID-02)', ()
   test('menu „Cel” (`licznik-cel`) przed `menu-cel`/`menu-przypomnienie`/`menu-powtorzenie`; ••• (`licznik-menu`) przed pozycjami korekty i stanu', () => {
     expect(wszystkie.flatMap((f) => bledyMenu(lista(f)).map((b) => `${f}: ${b}`))).toEqual([]);
   });
-  test('menu systemowe zamyka `subflows/zamknij-menu.yaml`, nie `arkusz-zamknij`', () => {
+  test('menu ••• / „Cel” zamyka `subflows/zamknij-menu.yaml`, nie bezpośrednie `arkusz-zamknij`', () => {
     expect(wszystkie.flatMap((f) => bledyZamkniecia(lista(f)).map((b) => `${f}: ${b}`))).toEqual([]);
   });
   test('z licznika do listy: `nav-wstecz`, potem zakładka `nav-projekty` (P-583)', () => {
     expect(wszystkie.flatMap((f) => bledyPowrotu(lista(f)).map((b) => `${f}: ${b}`))).toEqual([]);
   });
-  test('„Projekt ›” to `licznik-projekt-wejscie` (P-580 a): w `licznik-projekt` (nazwa) stuka tylko zamknięcie menu', () => {
+  test('„Projekt ›” to `licznik-projekt-wejscie` (P-580 a); w `licznik-projekt` (sama nazwa) nikt nie stuka; menu zamyka „Cancel” arkusza (P-586 a)', () => {
     const stukniecia = wszystkie.flatMap((f) => lista(f).filter((k) => stuka(k, 'licznik-projekt')).map(() => f));
-    expect(stukniecia).toEqual(['subflows/zamknij-menu.yaml']);
+    // Przebieg 3 (run 42556852569), 32 step-029 i 12 step-033: menu to arkusz na cały ekran, `licznik-projekt` pod nim nie istnieje.
+    expect(stukniecia).toEqual([]);
+    expect(lista('subflows/zamknij-menu.yaml').some((k) => stuka(k, 'arkusz-zamknij'))).toBe(true);
     expect(wszystkie.filter((f) => lista(f).some((k) => stuka(k, 'licznik-projekt-wejscie'))).length).toBeGreaterThan(10);
   });
   test('scenariusz 57 (notatka) otwiera arkusz akcją `licznik-akcja-notatka`, bez ekranu projektu', () => {
@@ -139,7 +141,7 @@ describe('pułapki: każda reguła czerwienieje na krokach AS IS', () => {
     expect(bledyMenu([t('licznik-cel'), a('menu-wpisz-wartosc')])).toHaveLength(1);
     expect(bledyMenu([t('licznik-cel'), a('menu-przypomnienie'), t('licznik-menu'), a('menu-nazwa')])).toEqual([]);
   });
-  test('zamknięcie menu przez arkusz-zamknij (AS IS: scenariusze 12 i 32)', () => {
+  test('zamknięcie menu wprost przez arkusz-zamknij, z pominięciem podprzepływu', () => {
     expect(bledyZamkniecia([t('licznik-menu'), a('menu-nazwa'), t('arkusz-zamknij'), a('licznik-plus')])).toHaveLength(1);
     expect(bledyZamkniecia([t('licznik-menu'), a('menu-nazwa'), { nazwa: 'runFlow', arg: 'subflows/zamknij-menu.yaml' }])).toEqual([]);
   });

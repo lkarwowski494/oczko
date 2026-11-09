@@ -43,7 +43,7 @@ tags:
 - tapOn: { id: "licznik-menu" }
 - assertVisible: { id: "menu-nazwa" }
 - assertNotVisible: "Oczko Pro.*"
-- runFlow: subflows/zamknij-menu.yaml # ZM-05: menu systemowe nie ma „Close”
+- runFlow: subflows/zamknij-menu.yaml # P-586 (a): menu to arkusz, zamyka „Cancel” w podprzepływie
 - runFlow: subflows/nazwij-projekt.yaml
 - assertNotVisible: "Oczko Pro.*"
 - assertNotVisible: { id: "oferty-ekran" }

@@ -1,10 +1,10 @@
-# Podprzepływ (ZM-05, P-581 a; docs/design/testid.md:140): menu systemowe licznika (••• `licznik-menu` i „Cel” `licznik-cel`, UIMenu) nie ma przycisku „Close” —
-# zamyka je stuknięcie obok menu. Jedno miejsce zmiany sposobu zamknięcia. Cel stuknięcia: tytuł z nazwą projektu (`licznik-projekt`) — po P-580 (a) to sam tekst
-# bez akcji (wejściem do projektu jest `licznik-projekt-wejscie`), więc stuknięcie, jeśli przejdzie pod menu, nie zmienia ekranu.
-# [DO USTALENIA, pierwszy przebieg iOS po p3a] czy XCUITest widzi tytuł pod otwartym menu; jeśli nie — tu `tapOn: { point: … }` poza menu (decyzja 07 po zrzucie).
+# Podprzepływ: zamknięcie menu licznika (••• `licznik-menu` i „Cel” `licznik-cel`). Jedno miejsce zmiany sposobu zamknięcia.
+# Od P-586 (a) oba menu to własny arkusz na trasie `app/menu.tsx` z przyciskiem „Cancel” `arkusz-zamknij` (src/ekrany/MenuProjektu.tsx:26, :66),
+# nie UIMenu. Arkusz zajmuje cały ekran, więc stuknięcie „obok” (dawniej w `licznik-projekt`) nie ma celu: przebieg 3 (run 42556852569)
+# 32 step-029 i 12 step-033 — hierarchia zawiera tylko pozycje `menu-*` i `arkusz-zamknij` [16,814][386,858], `licznik-projekt` nie istnieje.
 appId: com.apps4brew.knitting
-name: "podprzepływ: zamknij menu systemowe licznika stuknięciem obok"
+name: "podprzepływ: zamknij menu licznika przyciskiem Cancel arkusza"
 ---
-- tapOn: { id: "licznik-projekt" }
+- tapOn: { id: "arkusz-zamknij" }
 - assertNotVisible: { id: "menu-wpisz-wartosc|menu-nazwa|menu-cel" }
 - assertVisible: { id: "licznik-plus" }
