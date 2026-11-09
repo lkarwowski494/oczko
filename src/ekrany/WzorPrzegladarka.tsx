@@ -158,8 +158,8 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
         </View>
       )}
       {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text">{t('wzor.word_podglad')}</Text>}
-      {s.wskazowka && !bezWskazowki && !ustawiam && !tryb && notatka !== 'pasek' && podpowiedz !== 'widac' && (
-        <Text style={[st.tresc, st.informacja]} testID="wzor-wskazowka-znacznika" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{t('wzor.wskazowka_znacznika')}</Text>
+      {s.wskazowka && !bezWskazowki && !ustawiam && !tryb && notatka !== 'pasek' && podpowiedz !== 'widac' && ( // AX5-wzór (P-630 A): limit skali 1,8
+        <Text style={[st.tresc, st.informacja]} testID="wzor-wskazowka-znacznika" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{t('wzor.wskazowka_znacznika')}</Text>
       )}
       {notatka === 'pasek' && (
         <View style={st.informacja} accessibilityRole="summary">

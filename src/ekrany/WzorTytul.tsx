@@ -22,7 +22,8 @@ export function TytulWzoru(p: PropsTytuluWzoru): React.ReactElement {
           </View>
         </Pressable>
       ) : <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{p.nazwa}</Text>}
-      <Text style={st.podpis} testID="wzor-zrodlo">{p.opis}</Text>
+      {/* AX5-wzór (P-630, opcja A właściciela): podpis źródła z limitem skali tytułów paska, jedna linia pod tytułem — przy AX5 bez limitu łamał się na 4 linie i zabierał wzorowi wysokość */}
+      <Text style={st.podpis} testID="wzor-zrodlo" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{p.opis}</Text>
     </View>
   );
 }
