@@ -48,7 +48,9 @@ tags:
 # M1-audytor-generalny-205 (04-studio-projektowe-003, SP-07): pasek licznika pod wzorem przy AX5 — „−1” i „+1” mają limity skali jak licznik
 # (×1,4 i ×1,8); zrzut do oceny 04 (liczba, −1 i +1 widoczne, strona wzoru zajmuje co najmniej połowę wysokości). Rząd akcji i ekran dodawania przy AX5 bywają dłuższe niż ekran.
 # ZM-04 (P-580): „Wzór” to akcja pod liczbą (`licznik-wzor`, ten sam id w układzie zwykłym i AX5); przy AX5 rząd akcji leży pod notatką, poniżej pierwszego ekranu (testid.md:158)
-- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+# przebieg 4 attempt 2 (step-057): bez wyśrodkowania „Pattern” leżał pod stałą strefą „+1” (zrzut 30-ax5-akcje-pod-liczba: nad „+1” tylko „Note”),
+# Maestro uznał go za widoczny, a stuknięcie dodało rząd; lista akcji przewija się nad strefę (LIC-04), więc wyśrodkowanie
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000, centerElement: true }
 - assertVisible: { id: "licznik-wzor" }
 - takeScreenshot: 30-ax5-akcje-pod-liczba
 - tapOn: { id: "licznik-wzor" }
