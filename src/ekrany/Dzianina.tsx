@@ -28,6 +28,9 @@ export type PropsDzianiny = {
   glowka?: boolean;
 };
 
+/** 001 (P-619), 021 (P-627): margines boczny dzianiny na karcie „Dziś” i na liczniku — 6 jedn. (makieta `ekrany.html:629`, wartość rysunkowa). */
+export const WCIECIE_DZIANINY = 6;
+
 /** Promień główki igły i jej odsunięcie od prawego brzegu (jednostki rysunku, makieta `ekrany.html:632`). */
 const GLOWKA = { r: 3.6, odBrzegu: 3 };
 

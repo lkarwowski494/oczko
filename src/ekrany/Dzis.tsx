@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View, useWindowDimensions, type LayoutChangeEvent } from 'react-native';
 import type { WzorzecHaptyki } from '../domena/porty';
 import type { Klucz } from '../i18n/typy';
-import { Dzianina } from './Dzianina';
+import { Dzianina, WCIECIE_DZIANINY } from './Dzianina';
 import { Liczba } from './Liczba';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
 import { style as stylLicznika } from './LicznikStyl';
@@ -18,8 +18,6 @@ import { PrzyciskSymbolu } from './Pasek';
 import { skutekPlus, type KomunikatPlus } from './po-plusie';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 
-/** 001 (P-619): na karcie tło kolumny = nakładka `dzianina.tloKolumnyKarty` (makieta `ekrany.html:38`), dzianina z marginesem 6 jedn. (`ekrany.html:629`, wartość rysunkowa). */
-const WCIECIE_DZIANINY = 6;
 
 export type MiejsceDzis = 'licznik' | 'wzor' | 'lista';
 export type DzienTygodnia = { dzien: string; skrot: string; dziergany: boolean; dzis: boolean; a11y: string };
