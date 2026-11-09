@@ -4,6 +4,7 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { Dzianina } from './Dzianina';
 import { cel, MAX_SKALA_TYTULOWA, miniatura, odstep, PROG_KATEGORII_DOSTEPNOSCI, promien, ROZMIAR_SYMBOLU_TRESCI, typografia, useKolory, type Kolory } from './motyw';
+import tokeny from '../../docs/design/tokeny.json';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import { SymbolSf } from './SymbolSf';
 import type { Tlumacz } from './wspolne';
@@ -38,8 +39,9 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI; // przy dużym tekście miniatura ukryta (tokeny miniatura.dzianina, zrzut projekty-*-ax5)
   const pusto = s.wToku.length === 0 && s.ukonczone.length === 0;
   const sekcja = (naglowek: string, wiersze: WierszProjektu[], testID?: string) => wiersze.length > 0 && (
-    <View style={st.grupa} testID={testID}>
-      <Text style={st.naglowek} accessibilityRole="header">{naglowek}</Text>
+    <View style={st.sekcja} testID={testID}>
+      <Text style={st.naglowek} accessibilityRole="header">{naglowek}</Text>{/* 010: nagłówek nad grupą, poza kontenerem (lista.naglowekGrupy) */}
+      <View style={st.grupa}>
       {wiersze.map((w) => (
         <View key={w.id} style={st.wiersz}>
         <Pressable accessibilityRole="button" accessibilityLabel={w.etykieta} onPress={() => naOtworz(w.id)} style={st.wierszOtworz} testID="projekty-wiersz">
@@ -60,6 +62,7 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
         {naMenuWiersza && <PrzyciskSymbolu symbol="ellipsis" etykieta={t('projekty.menu_a11y', { nazwa: w.nazwa })} onPress={() => naMenuWiersza(w.id)} testID="projekty-wiersz-menu" kolor={k.tekst2} />}
         </View>
       ))}
+      </View>
     </View>
   );
   return (
@@ -112,7 +115,8 @@ function style(k: Kolory) {
     miniatura: { width: miniatura.dzianina.szerokosc, height: miniatura.dzianina.wysokosc, borderRadius: miniatura.dzianina.promien, backgroundColor: k.karta, padding: miniatura.dzianina.wciecie, flex: 0 },
     wierszOtworz: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
     grupa: { borderRadius: promien.grupa, backgroundColor: k.papierGrupa, overflow: 'hidden' },
-    naglowek: { ...typografia.drobny, color: k.olowek, paddingHorizontal: odstep.l, paddingTop: odstep.m }, // `.naglowek-grupy`: 13 pt (ekrany.html), H-2
+    sekcja: { gap: tokeny.lista.naglowekGrupy.odstepDoGrupy },
+    naglowek: { ...typografia.instrukcja, color: k.tekst }, // 010 (P-614 (5)): `lista.naglowekGrupy` 17 pt / 700 / `tekst`, nad grupą
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, minHeight: cel.minimum, paddingVertical: odstep.m, paddingLeft: odstep.l, paddingRight: odstep.s, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
     wierszTekst: { flex: 1 },
     nazwa: { ...typografia.tresc, color: k.grafit, fontWeight: '700' },

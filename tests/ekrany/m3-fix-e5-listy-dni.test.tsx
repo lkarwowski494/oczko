@@ -3,6 +3,7 @@
 import React from 'react';
 import * as RN from 'react-native';
 import { render, screen } from '@testing-library/react-native';
+import { ListaProjektow, type StanListyProjektow } from '../../src/ekrany/ListaProjektow';
 import { Dzis, type DaneDzis } from '../../src/ekrany/Dzis';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import tokeny from '../../docs/design/tokeny.json';
@@ -13,6 +14,17 @@ beforeAll(async () => { t = await tEn(); });
 beforeEach(() => { jest.spyOn(RN, 'useColorScheme').mockReturnValue('light'); });
 afterEach(() => jest.restoreAllMocks());
 const plasko = (s: unknown) => (RN.StyleSheet.flatten(s as never) ?? {}) as Record<string, unknown>;
+
+test('010: nagłówek grupy „In progress” 17/700/tekst, poza kontenerem grupy (przodek bez tła grupy)', () => {
+  const s: StanListyProjektow = { wToku: [{ id: 'p1', nazwa: 'Harbor Sweater', opis: 'Left sleeve · row 47 of 96 · today' }], ukonczone: [], zapytanie: '', dni: { zostalo: 3, limit: 5, miesiac: 'November' } };
+  render(<ListaProjektow stan={s} t={t} naSzukaj={jest.fn()} naOtworz={jest.fn()} naNowy={jest.fn()} />);
+  const naglowek = screen.UNSAFE_root.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.children === t('projekty.w_toku'))[0];
+  expect(naglowek).toBeTruthy();
+  const st = plasko(naglowek?.props.style);
+  const ng = tokeny.lista.naglowekGrupy;
+  expect([st.fontSize, st.fontWeight, st.color]).toEqual([ng.pt, String(ng.waga), tokeny.kolory.jasny[ng.kolor as 'tekst']]);
+  for (let n = naglowek?.parent ?? null; n; n = n.parent) expect(plasko(n.props.style).backgroundColor).not.toBe(tokeny.kolory.jasny.powierzchnia);
+});
 
 test('13 (P-590): dzień dziergany w tygodniu „Dziś” — tło akcent, obwódka akcentTekst, bez faktury (Pattern)', () => {
   const dane: DaneDzis = { data: 'Thursday, November 5', pustyTydzien: false, dni: null, wToku: 3, miejsce: 'licznik', rzedyDzis: 4, coDalej: null,
