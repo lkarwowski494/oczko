@@ -16,7 +16,14 @@ tags:
       oczkoE2eTeraz: "2026-11-10T12:00:00"
       oczkoE2eSiec: "brak"
       oczkoE2eSzerokoscOkna: "375"
-- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+# P-571: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument szerokości okna) — przebieg 42544112861 step-004
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- takeScreenshot: 46-waskie-dzis
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
 - takeScreenshot: 46-waskie-licznik
 - runFlow: subflows/projekt-roboczy.yaml
 - runFlow: subflows/otworz-wzor-pdf.yaml
