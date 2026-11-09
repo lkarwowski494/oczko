@@ -75,6 +75,9 @@ tags:
 - assertVisible: "Nothing counted on this day."
 - assertNotVisible: "Harbor, [0-9]+ rows?"
 # --- poprzedni miesiąc i z powrotem ---
+# P-608 G3 (hipoteza: cz. 1 iPhone przebiegu 42544112861 bez artefaktu, log „Element not found: Previous month”): po przewinięciu do historia-miesiac nagłówek
+# kalendarza z „Previous month” (HistoriaDni.tsx:44) jest nad górną krawędzią i poza hierarchią iOS (jak E2-139-S5) — przewinięcie w górę przed stuknięciem
+- scrollUntilVisible: { element: { text: "Previous month" }, direction: UP, timeout: 30000 }
 - tapOn: "Previous month"
 - assertVisible: "October 2026"
 - tapOn: "Next month"

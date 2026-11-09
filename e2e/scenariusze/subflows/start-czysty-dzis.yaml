@@ -11,4 +11,6 @@ name: "podprzepływ: czysta instalacja z zegarem, ekran „Dziś”"
       oczkoE2eSiec: "brak"
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 } # karta jest w górnej części ekranu — czytelna także w orientacji z poprzedniego scenariusza
 - setOrientation: PORTRAIT # orientacja symulatora przeżywa scenariusz, który padł w poziomie (przebieg 40446976426)
+# P-608 G3: przy AX5 (30, przebieg 42544112861 step-012) „+1” karty leży pod tytułem i opisem, poza pierwszym ekranem — przewinięcie zamiast samej asercji (przy zwykłym tekście bez ruchu)
+- scrollUntilVisible: { element: { id: "dzis-plus" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "dzis-plus" }

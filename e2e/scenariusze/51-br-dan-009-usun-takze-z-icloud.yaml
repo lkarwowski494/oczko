@@ -10,8 +10,12 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-10T19:30:00"
       oczkoE2eIcloud: "wlaczony"
-- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 } # górna część ekranu — czytelna także przy orientacji z poprzedniego scenariusza
-- setOrientation: PORTRAIT # jak start-czysty (przebieg 40446976426)
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument iCloud) — przebieg 42544112861 cz. 1 iPhone, krok po launchApp
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
 - runFlow: subflows/otworz-stan-danych.yaml
 - tapOn: { id: "icloud-przelacznik" }

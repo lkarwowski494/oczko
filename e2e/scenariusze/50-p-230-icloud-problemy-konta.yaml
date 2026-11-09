@@ -10,8 +10,12 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-10T19:30:00"
       oczkoE2eIcloud: "brak-konta"
-- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 } # górna część ekranu — czytelna także przy orientacji z poprzedniego scenariusza
-- setOrientation: PORTRAIT # jak start-czysty (przebieg 40446976426)
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument iCloud) — przebieg 42544112861 cz. 2 step-004
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
 - runFlow: { file: subflows/otworz-stan-danych-ze-zrzutem.yaml, env: { ZRZUT: "50-ustawienia-przed-data-and-sync" } }
 - tapOn: { id: "icloud-przelacznik" }
@@ -26,6 +30,8 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-10T19:40:00"
       oczkoE2eIcloud: "brak-miejsca"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 } # czysta instalacja na „Dziś” (P-608 G1)
+- tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
 - runFlow: subflows/otworz-stan-danych.yaml
 - tapOn: { id: "icloud-przelacznik" }

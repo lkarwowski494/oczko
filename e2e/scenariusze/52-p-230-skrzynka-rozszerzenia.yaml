@@ -20,6 +20,9 @@ tags:
     arguments:
       oczkoE2eTeraz: "2026-11-10T12:10:00"
       oczkoE2eSkrzynka: "pdf"
+# zimny start na „Dziś” (ZM-18); „Kontynuuj ›” do licznika, dalej bez zmian (P-608 G1, przebieg 42544112861 cz. 1 iPhone)
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
 - assertNotVisible: { id: "skrzynka" }
 - tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty

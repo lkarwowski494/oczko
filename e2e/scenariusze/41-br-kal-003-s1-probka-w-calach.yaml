@@ -38,6 +38,12 @@ tags:
     commands:
       # P-489 3c (#145): po wpisie w „probka-oczka” klawiatura dziesiętna zasłaniała pole szerokości; hideKeyboard odpada (klawiatura liczbowa iOS nie ma akcji schowania),
       # więc wyśrodkowanie pola w ScrollView (automaticallyAdjustKeyboardInsets) przed stuknięciem
+      # P-608 G3: przebieg 42544112861 (oba podejścia): pole y 578–622 pod klawiaturą, scrollUntilVisible kończy się bez przewinięcia (Maestro nie widzi klawiatury),
+      # stuknięcie trafia w klawiaturę, a „10” ląduje w probka-oczka (zrzut step-049). Najpierw chowamy klawiaturę stuknięciem w zwykły tekst
+      # (ScrollView keyboardShouldPersistTaps="handled", Narzedzia.tsx:93 — stuknięcie poza kontrolką zamyka klawiaturę).
+      - tapOn: { text: "The standard way to give gauge is .*" }
+      - waitForAnimationToEnd
+      - assertVisible: { id: "probka-oczka", text: "20" } # stuknięcie w tekst nie zmieniło pola oczek
       - scrollUntilVisible: { element: { id: "probka-szerokosc" }, direction: DOWN, timeout: 30000, centerElement: true }
       - tapOn: { id: "probka-szerokosc" }
       - waitForAnimationToEnd

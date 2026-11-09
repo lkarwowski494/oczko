@@ -39,7 +39,7 @@ tags:
 - tapOn: { id: "oferty-kup" }
 - extendedWaitUntil: { visible: { id: "oferty-stan-pro" }, timeout: 20000 }
 - takeScreenshot: 06-po-zakupie
-- tapOn: { id: "oferty-zamknij" }
+- tapOn: { id: "oferty-nie-teraz" } # P-608 G3: po przewinięciu arkusza „Close” (oferty-zamknij) leży w hierarchii nad górną krawędzią arkusza (y 27–71, pasek stanu; przebieg 42544112861 maestro.log) i stuknięcie przewija do góry zamiast zamknąć; „Not now” to ten sam naZamknij (Oferty.tsx:113) w stałym pasku przycisków
 - assertVisible: { id: "ustawienia-oczko-pro" }
 - assertNotVisible: { id: "ustawienia-dni-darmowe" }
 # --- wygaśnięcie dostępu panelem sztucznego sklepu, potem „Restore purchases” przywraca Pro ---
@@ -54,10 +54,13 @@ tags:
 - tapOn: { id: "oferty-przywroc" }
 - extendedWaitUntil: { visible: { id: "oferty-stan-pro" }, timeout: 20000 }
 - takeScreenshot: 06-po-przywroceniu
-- tapOn: { id: "oferty-zamknij" }
+- tapOn: { id: "oferty-nie-teraz" } # jak wyżej (P-608 G3)
 - assertNotVisible: { id: "ustawienia-dni-darmowe" }
 - tapOn: { id: "nav-wstecz" }
-- assertVisible: { id: "projekty-lista" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś”; do listy przez zakładkę Projekty — przebieg 42544112861 (66 step-063: „Today” po „wstecz”), P-608 G3
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
 - assertNotVisible: { id: "projekty-dni-darmowe" }
 - tapOn: { id: "projekty-wiersz", index: 0 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }

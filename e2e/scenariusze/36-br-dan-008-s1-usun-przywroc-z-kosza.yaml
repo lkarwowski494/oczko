@@ -30,8 +30,9 @@ tags:
 - assertNotVisible: "Harbor.*last worked.*"
 - assertVisible: { id: "projekty-kosz" }
 # --- 29 dni później (P-026: 30 dni w koszu) ---
-- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-30T19:30:00" } }
-- tapOn: { id: "nav-projekty", optional: true }
+# zimny start na „Dziś”; „Kontynuuj ›” prowadzi do ostatniego licznika (przebieg 42544112861 step-076: „Counter” 0), więc do listy zakładką z „Dziś” (P-608 G1)
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-30T19:30:00" } }
+- tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)

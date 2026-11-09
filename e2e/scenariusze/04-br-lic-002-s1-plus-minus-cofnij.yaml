@@ -21,8 +21,12 @@ tags:
       oczkoE2eTeraz: "2026-11-10T19:30:00"
       oczkoE2eSiec: "brak"
       oczkoE2eOknoStraznika: "6"
-- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 60000 }
-- setOrientation: PORTRAIT
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument okna strażnika) — przebieg 42544112861 cz. 1 iPhone, krok po launchApp
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
 # --- granica zera: −1 przy 0 zostaje 0 (BR-LIC-002/S3) ---
 - tapOn: { id: "licznik-minus" }

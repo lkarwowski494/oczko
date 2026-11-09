@@ -96,7 +96,10 @@ tags:
 # E2-138-S1: po imporcie ekran Ustawień jest przewinięty w dół (zrzut kroku 89 przebiegu 138) — „Back” leży nad ekranem i nie ma go w hierarchii
 - scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "nav-wstecz" }
-- assertVisible: { id: "projekty-lista" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś”; do listy przez zakładkę Projekty — przebieg 42544112861 (66 step-063: „Today” po „wstecz”), P-608 G3
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
 - assertVisible: "Harbor"
 - tapOn: "Harbor"
 - assertVisible: { id: "licznik-wartosc", text: "2" }

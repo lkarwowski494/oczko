@@ -17,7 +17,9 @@ tags:
 - swipe: { start: "50%, 99%", end: "50%, 55%", duration: 400 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - swipe: { start: "20%, 98%", end: "80%, 98%", duration: 300 }
-- assertVisible: { id: "licznik-wartosc", text: "1" }
+# P-608 G3: przebieg 42544112861 step-024 — po poziomym geście przy wskaźniku Home zrzut pokazał „Today” (prawdopodobnie migawka przełącznika aplikacji), a hierarchia licznik z 1;
+# asercja natychmiast po geście trafiła w animację systemu. Czekamy, aż licznik wróci na wierzch — dodatkowy rząd nadal daje czerwień (wartość 2 ≠ 1).
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
 - takeScreenshot: 14-po-gestach
 # --- zwykłe stuknięcie nadal działa ---
 - runFlow: subflows/odstep.yaml

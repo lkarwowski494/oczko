@@ -33,7 +33,10 @@ tags:
 - assertVisible: { id: "e2e-pliki-stan", text: "Saved: 1 file" }
 # --- zmiana po eksporcie: licznik 3 (baza niepusta i inna niż plik) ---
 - tapOn: { id: "nav-wstecz" }
-- assertVisible: { id: "projekty-lista" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś”; do listy przez zakładkę Projekty — przebieg 42544112861 (66 step-063: „Today” po „wstecz”), P-608 G3
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
 - tapOn: "Harbor.*"
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - runFlow: subflows/odstep.yaml
@@ -65,7 +68,10 @@ tags:
 # NOC-1 (P-393, M1): po przewinięciu do `import-wynik` ekran Ustawień jest w dole — „Back” leży nad ekranem i nie ma go w hierarchii iOS (jak scenariusz 08, E2-138-S1)
 - scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "nav-wstecz" }
-- assertVisible: { id: "projekty-lista" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś”; do listy przez zakładkę Projekty — przebieg 42544112861 (66 step-063: „Today” po „wstecz”), P-608 G3
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
 - assertVisible: { id: "projekty-wiersz", index: 0 }
 - assertNotVisible: { id: "projekty-wiersz", index: 1 }
 - tapOn: "Harbor.*"

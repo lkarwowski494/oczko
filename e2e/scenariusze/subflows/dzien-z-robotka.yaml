@@ -3,14 +3,11 @@
 appId: com.apps4brew.knitting
 name: "podprzepływ: dzień z robótką"
 ---
-- launchApp:
-    clearState: false
-    arguments:
-      oczkoE2eTeraz: ${TERAZ}
-      oczkoE2eSiec: "brak"
-# P-089 (3a): jednorazowe okno „Uczciwe zasady” po pierwszym dniu z robótką (tylko darmowa) — zamykane głównym przyciskiem; sprawdza je 07-p-089-3a-uczciwe-zasady.yaml
-- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|licznik-plus|limit-zawczasu|projekty-lista" }, timeout: 60000 }
-- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+# Zimny start ląduje na „Dziś” (ZM-18, P-563 (4a)): restart przez restart.yaml („Kontynuuj ›” do licznika, okno „Uczciwe zasady” zamykane tam) — przebieg 42544112861: 05 step-021, KP-10 step-028 czekały na licznik po launchApp (P-608 G1)
+- runFlow:
+    file: restart.yaml
+    env:
+      TERAZ: ${TERAZ}
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "${WARTOSC}" }

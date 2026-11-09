@@ -9,6 +9,7 @@ name: "podprzepływ: czysta instalacja z zegarem, przez „Dziś” do licznika"
     file: start-czysty-dzis.yaml
     env:
       TERAZ: ${TERAZ}
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 } # AX5: przycisk pod „+1” karty (P-608 G3)
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
