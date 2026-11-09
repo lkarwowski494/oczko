@@ -1,12 +1,17 @@
 /* M3 p1 (P-553, P-563 (9), M3-S3-04; zastępuje kroj-tytulowy.test.ts kroju Libre Franklin): krój tytułowy Bree Serif (OFL, Reserved Font Name „Bree”) jako plik STATYCZNY
- * bez przycinania (ten sam plik co docs/design/fonty/BreeSerif.ttf), ładowany natywnie pluginem expo-font; `KROJ_TYTULOWY` = rodzina z tokenów.
+ * bez przycinania — wydanie google/fonts (241; ten sam plik co docs/design/fonty/BreeSerif.ttf), ładowany natywnie pluginem expo-font; `KROJ_TYTULOWY` = rodzina z tokenów.
  * Zachowanie z poprzedniego testu: plik statyczny (bez fvar), nazwa rodziny = KROJ_TYTULOWY, plugin w app.json, licencja obok, treść krojem systemowym. */
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { KROJ_TYTULOWY, typografia } from '../../src/ekrany/motyw';
 
 const KORZEN = path.join(__dirname, '..', '..');
 const PLIK = 'assets/fonts/BreeSerif.ttf';
+/** M1-audytor-generalny-241 (05-architekt-701, P-627): plik = wydanie google/fonts bez zmian (pełny, z rekordami name 7–14 i tekstem OFL), nie wersja przetworzona
+ * przez usługę Google Fonts (podzbiór 396/416 glifów, bez tekstu licencji). Źródło (odczyt 2026-11-09):
+ * https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/breeserif/BreeSerif-Regular.ttf (46 572 B). */
+const SHA256_WYDANIA = 'fd080582d70112ef479ba4ddd72407f9a4fcbcec4caa7d29de259b13eeb5f431';
 
 /** Minimalny odczyt sfnt: tablice (tag → offset), usWeightClass z OS/2 i napisy z tablicy `name` (Windows/Unicode BMP, UTF-16BE). */
 function odczytaj(buf: Buffer): { tablice: string[]; waga: number; nazwy: Record<number, string> } {
@@ -34,6 +39,16 @@ test('plik kroju jest statyczny (bez fvar), waga 400, rodzina = KROJ_TYTULOWY, s
   expect(f.nazwy[1]).toBe(KROJ_TYTULOWY);
   expect(f.nazwy[2]).toBe('Regular');
   expect(f.nazwy[6]).toBe('BreeSerif-Regular');
+});
+
+test('241: plik kroju = wydanie google/fonts (SHA-256 zapisana ze źródłem URL@commit)', () => {
+  expect(crypto.createHash('sha256').update(fs.readFileSync(path.join(KORZEN, PLIK))).digest('hex')).toBe(SHA256_WYDANIA);
+});
+
+test('241: plik niesie tekst licencji OFL w rekordach name (13 opis licencji, 14 adres)', () => {
+  const f = odczytaj(fs.readFileSync(path.join(KORZEN, PLIK)));
+  expect(f.nazwy[13]).toContain('SIL Open Font License');
+  expect(f.nazwy[14]).toMatch(/scripts\.sil\.org\/OFL/);
 });
 
 test('plik w aplikacji = plik projektu bez przycinania (te same bajty co docs/design/fonty/BreeSerif.ttf; Reserved Font Name zabrania zmiany nazwy po zmianie pliku)', () => {

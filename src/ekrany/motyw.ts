@@ -66,7 +66,8 @@ const PALETY: Record<'jasny' | 'ciemny' | 'jasnyKontrast' | 'ciemnyKontrast', Ko
 export const kolorJasny = PALETY.jasny;
 
 /**
- * Krój tytułowy (P-553, P-563 (9)): Bree Serif, plik STATYCZNY `assets/fonts/BreeSerif.ttf` bez przycinania (OFL, Reserved Font Name „Bree”; ten sam plik co docs/design/fonty),
+ * Krój tytułowy (P-553, P-563 (9)): Bree Serif, plik STATYCZNY `assets/fonts/BreeSerif.ttf` = wydanie google/fonts `ofl/breeserif/BreeSerif-Regular.ttf` bez zmian
+ * (pełny, z tekstem OFL w rekordach name; M1-audytor-generalny-241, SHA-256 w tests/ekrany/kroj-bree.test.ts; Reserved Font Name „Bree”; ten sam plik co docs/design/fonty),
  * ładowany natywnie pluginem expo-font (app.json). Jedna odmiana — przy „Pogrubionym tekście” bez zmiany. Pokrycie: łacina (w tym polskie znaki) tak; cyrylica, wietnamski, CJK nie, z greki tylko
  * Δ Ω μ π — dla języków z `kroje.tytul.jezykiSystemowe` tytuły i liczby krojem systemowym (`krojTytulowy`); znak spoza pliku w treści użytkownika dopełnia iOS krojem systemowym
  * [DO SPRAWDZENIA na urządzeniu: zrzut nazwy projektu cyrylicą, 04].
