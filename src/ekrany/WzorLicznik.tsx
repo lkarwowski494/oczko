@@ -37,9 +37,10 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   const ipad = obok && okno.width >= PW.kolumnaOdSzerokosci && okno.width > okno.height;
   const krojLiczby = ipad ? tokeny.typografia.liczbaKarty : tokeny.typografia.liczbaPaskaWzoru;
   const celCzesci = p.licznik.cel ?? null;
-  // 024 diagnoza (P-629): tylko build E2E — ramki kolumny do `e2e-ramki-kolumny` (scen. 44). `paneleE2e` jest stałą procesu, więc hak wołany zawsze albo nigdy.
-  const ramki = paneleE2e && obok ? paneleE2e.useRamkiE2e(RAMKI_KOLUMNY, okno) : null;
-  const z = (n: string) => ramki?.zmierz[n];
+  // 024 diagnoza (P-629): tylko build E2E — ramki kolumny do `e2e-ramki-kolumny` (scen. 44). `paneleE2e` jest stałą procesu, więc hak wołany zawsze albo nigdy;
+  // nie zależy od `obok` (obrót zmienia `obok` → „Rendered more hooks”, run 42678725514). Mierzy tylko kolumnę; zmiana `obok` zeruje pomiary.
+  const ramki = paneleE2e ? paneleE2e.useRamkiE2e(RAMKI_KOLUMNY, okno, obok ? 'kolumna' : 'pasek') : null;
+  const z = (n: string) => (obok ? ramki?.zmierz[n] : undefined);
   const blok = (
     <View style={ipad ? st.kartaLiczbyIpad : obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok" onLayout={z('blok')}>
       <Liczba wartosc={String(p.licznik.liczba)} styl={ipad ? st.liczbaIpad : st.liczba} pt={krojLiczby.pt} jezyk={p.jezyk} maxFontSizeMultiplier={krojLiczby.maxSkala} testID="licznik-wartosc" />

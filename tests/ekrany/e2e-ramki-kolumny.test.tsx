@@ -34,3 +34,28 @@ test('024 build E2E: e2e-ramki-kolumny podaje ramki kolumny, karty liczby, wype�
   expect(screen.getByTestId('e2e-ramki-kolumny').props.children).toBe(
     'kolumna 914,0,280,760; blok 16,16,248,180; wypelniacz 16,212,248,0; przyciski 16,212,248,200; minus 0,128,72,72; plus 88,0,160,201; okno 1194x834 fs 1');
 });
+
+// 024 runda 1 (run 42678725514, scen. 44, device-simulator.log 19:26:09): po obrocie pion → poziom `obok` zmienia się z false na true; hak ramek wołany
+// tylko przy `obok` dawał „Rendered more hooks than during the previous render” w LicznikWzoru i zamykał aplikację przed odczytem ramek.
+const elementy = (obok: boolean) => <LicznikWzoru t={t} licznik={{ liczba: 0, dziergany: 1, znaczenie: 'skonczone', cel: null }} obok={obok}
+  szerokoscKolumny={obok ? PW.kolumna.szerokosc : null} blad={false} naPlus={jest.fn()} naMinus={jest.fn()} />;
+
+test('024 build E2E: obrót pion → poziom → pion (obok false → true → false) nie zmienia liczby haków LicznikWzoru', () => {
+  const r = render(elementy(false));
+  expect(() => r.rerender(elementy(true))).not.toThrow();
+  expect(screen.getByTestId('e2e-ramki-kolumny').props.children).toBe(
+    'kolumna -; blok -; wypelniacz -; przyciski -; minus -; plus -; okno 1194x834 fs 1');
+  expect(() => r.rerender(elementy(false))).not.toThrow();
+  expect(screen.queryByTestId('e2e-ramki-kolumny')).toBeNull();
+});
+
+test('024 build E2E: ramki tylko z bieżącej kolumny — pomiary z paska i z wcześniejszej kolumny nie przechodzą przez obrót', () => {
+  const r = render(elementy(true));
+  uklad('wzor-kolumna-licznika', 914, 0, 280, 760);
+  uklad('licznik-plus', 88, 0, 160, 200);
+  r.rerender(elementy(false));
+  uklad('licznik-minus', 16, 8, 72, 64); // pasek pod wzorem: nie mierzony
+  r.rerender(elementy(true));
+  expect(screen.getByTestId('e2e-ramki-kolumny').props.children).toBe(
+    'kolumna -; blok -; wypelniacz -; przyciski -; minus -; plus -; okno 1194x834 fs 1');
+});

@@ -172,7 +172,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-ladowania.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-operacji.test.tsx` | zielony (główny zestaw) | 5 | — | `src/kompozycja/e2e/pomiar-operacji` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-plus.test.tsx` | zielony (główny zestaw) | 2 | NFR-WYD-001, P-255, P-456 | `src/kompozycja/e2e/panele` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-ramki-kolumny.test.tsx` | zielony (główny zestaw) | 1 | P-238, P-629 | `src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-ramki-kolumny.test.tsx` | zielony (główny zestaw) | 3 | P-238, P-629 | `src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zdjecie.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/e2e-zdjecie` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 2 | BR-LIC-015/S2, P-287 | `src/domena/porty`<br>`src/kompozycja/e2e/panele` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-awaryjny-kopia.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/wspolne` | Z07-22 |

@@ -6,14 +6,18 @@ import { Text, View, type LayoutChangeEvent } from 'react-native';
 
 export type RamkiE2e = { zmierz: Readonly<Record<string, (e: LayoutChangeEvent) => void>>; tekst: string };
 
-/** Hak: `zmierz[nazwa]` do `onLayout`; `tekst` w kolejności `nazwy`, brak pomiaru = „-”, na końcu okno i skala tekstu. */
-export function useRamkiE2e(nazwy: readonly string[], okno: { width: number; height: number; fontScale: number }): RamkiE2e {
-  const [ramki, ustaw] = useState<Readonly<Record<string, string>>>({});
+/** Hak: `zmierz[nazwa]` do `onLayout`; `tekst` w kolejności `nazwy`, brak pomiaru = „-”, na końcu okno i skala tekstu.
+ *  Wołany przy każdym renderze (liczba haków stała; obrót zmienia tylko `uklad`, 024 run 42678725514). Zmiana `uklad` zeruje pomiary, żeby ramki
+ *  z poprzedniego ułożenia nie udawały bieżącego (wzorzec React „informacja z poprzedniego renderu”: setState w trakcie renderu). */
+export function useRamkiE2e(nazwy: readonly string[], okno: { width: number; height: number; fontScale: number }, uklad: string): RamkiE2e {
+  const [stan, ustaw] = useState<{ uklad: string; ramki: Readonly<Record<string, string>> }>({ uklad, ramki: {} });
+  if (stan.uklad !== uklad) ustaw({ uklad, ramki: {} });
+  const ramki = stan.uklad === uklad ? stan.ramki : {};
   const klucz = nazwy.join('|');
   const zmierz = useMemo(() => Object.fromEntries(klucz.split('|').map((n) => [n, (e: LayoutChangeEvent) => {
     const { x, y, width, height } = e.nativeEvent.layout;
     const r = [x, y, width, height].map((v) => Math.round(v)).join(',');
-    ustaw((s) => (s[n] === r ? s : { ...s, [n]: r }));
+    ustaw((s) => (s.ramki[n] === r ? s : { ...s, ramki: { ...s.ramki, [n]: r } }));
   }])), [klucz]);
   const tekst = `${nazwy.map((n) => `${n} ${ramki[n] ?? '-'}`).join('; ')}; okno ${Math.round(okno.width)}x${Math.round(okno.height)} fs ${okno.fontScale}`;
   return { zmierz, tekst };
