@@ -382,7 +382,7 @@
     "czesci_many": "{{count}} parties",
     "czesci_other": "{{count}} parties",
     "dni_one": "{{count}} jour d’ouvrage",
-    "dni_many": "{{count}} jours d’ouvrage",
+    "dni_many": "{{count}} de jours d’ouvrage",
     "dni_other": "{{count}} jours d’ouvrage",
     "zdjecie": "Photo de {{nazwa}}",
     "czas_h": "{{h}} h",

@@ -417,7 +417,7 @@
     "odnawianie_rok": "Apple IDの設定で解約するまで、毎年自動更新されます。",
     "raz": "1回のお支払いのみ。更新はありません。",
     "dozywotni_przy_subskrypcji": "サブスクリプションは、解約するまで自動更新されます。",
-    "bez_pro_other": "Proなし：毎月{{limit}}日の編み物の日。すべてのプロジェクトとデータはいつでも使えます。",
+    "bez_pro_other": "Proなし：毎月{{limit}}日分の編み物の日。すべてのプロジェクトとデータはいつでも使えます。",
     "kup": "{{plan}}で続ける",
     "przywroc": "購入を復元",
     "polityka": "プライバシーポリシー",

@@ -4,7 +4,7 @@ Plik generowany z `docs/lokalizacja/slownik-terminow.json` (jedno źródło); ni
 
 Termin zalecany = słowo, którego używają wzory i producenci włóczek w danym kraju (nie dosłowny przekład z en ani z pl), z przeczytanego źródła według hierarchii P-017 (normy → podręczniki → organizacje i producenci → przewodniki; fora i Wikipedia tylko wskazówka). Nazwy producentów, sklepów i autorów w cytatach i uwagach zastąpiono „[nazwa]” albo ID źródła (repo publiczne; pełne dane w rejestrze prywatnym). Brak źródła = pewność niska i [DO SPRAWDZENIA], nie zgadujemy. „zakazane” = kalki i fałszywi przyjaciele z powodem; wzorzec to wyrażenie regularne (bez wielkości liter, Unicode). Źródłem tekstów jest en-US (P-075); pułapki US/UK (szydełko, bind off/cast off, gauge/tension) rozstrzyga znaczenie US. Pojedyncze terminy ze słownika producenta S-DRP tylko jako fakty z ID (P-104, P-106).
 
-Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 447). Pewność: **wysoka** — termin dosłownie w przeczytanym źródle szczebla 1–3, w tym znaczeniu (cytat); nadal bez przeglądu rodzimego użytkownika; **srednia** — źródło szczebla 4, termin tylko pośrednio w źródle szczebla 1–3, cytat niesprawdzony dosłownie albo termin produktu (brzmienie 04); **niska** — bez przeczytanego źródła: [DO SPRAWDZENIA] u rodzimego użytkownika albo w źródle.
+Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 422, niska 449). Pewność: **wysoka** — termin dosłownie w przeczytanym źródle szczebla 1–3, w tym znaczeniu (cytat); nadal bez przeglądu rodzimego użytkownika; **srednia** — źródło szczebla 4, termin tylko pośrednio w źródle szczebla 1–3, cytat niesprawdzony dosłownie albo termin produktu (brzmienie 04); **niska** — bez przeczytanego źródła: [DO SPRAWDZENIA] u rodzimego użytkownika albo w źródle.
 
 ## Pojęcia
 
@@ -61,7 +61,7 @@ Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 4
 | pojęcie | en | pl | bg | cs | da | de | el | es | es-419 |
 |---|---|---|---|---|---|---|---|---|---|
 | `robotka` | knitting ~ | robótka ~ | плетене ~ | pletení a háčkování ~ | strik og hækling ~ | Stricken und Häkeln ~ | πλέξιμο ~ | tejer ~ | tejer ~ |
-| `dzien_robotki` | crafting day ~ | dzień robótkowy ~ | ден за ръкоделие ~ | den tvoření ~ | håndarbejdsdag ~ | Handarbeitstag ~ | ημέρα χειροτεχνίας ~ | día de labor ~ | día de labor ~ |
+| `dzien_robotki` | crafting day ~ | dzień robótkowy ~ | ден за ръкоделие ~ | den tvoření ~ | håndarbejdsdag ~ | Handarbeitstag ~ | ημέρα χειροτεχνίας ~ | día de manualidades ? | día de manualidades ? |
 | `dziergac_na_drutach` | knit ✓ | robić na drutach ~ | плетене на две куки ~ | plést ✓ | strikke ✓ | stricken ✓ | πλέκω με βελόνες ~ | tejer (con agujas) ~ | tejer (con agujas) ~ |
 | `szydelkowac` | crochet ✓ | szydełkować ~ | плетене на една кука ~ | háčkovat ✓ | hækle ✓ | häkeln ✓ | πλέκω με βελονάκι ~ | hacer ganchillo ~ | tejer a crochet ? |
 | `rzad` | row ✓ | rząd ✓ | ред ~ | řada ✓ | række ✓ | Reihe ✓ | σειρά ~ | vuelta ✓ | vuelta ~ |
@@ -109,7 +109,7 @@ Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 4
 | pojęcie | et | fi | fr | hr | hu | id | it | ja | ko |
 |---|---|---|---|---|---|---|---|---|---|
 | `robotka` | kudumine ja heegeldamine ~ | neulominen ja virkkaus ~ | ouvrage ✓ | pletenje i kukičanje ~ | kötés-horgolás ? | merajut ✓ | lavoro ✓ | 編み物 ✓ | 뜨개 ✓ |
-| `dzien_robotki` | käsitööpäev ~ | käsityöpäivä ~ | jour d’ouvrage ~ | dan ručnog rada ~ | alkotónap ~ | hari berkarya ~ | giorno creativo ~ | 編み物の日 ~ | 작업일 ? |
+| `dzien_robotki` | käsitööpäev ~ | käsityöpäivä ~ | jour d’ouvrage ~ | dan ručnog rada ~ | alkotónap ~ | hari berkarya ~ | giorno creativo ~ | 編み物の日 ~ | 뜨개한 날 ? |
 | `dziergac_na_drutach` | kuduma ✓ | neuloa ✓ | tricoter ✓ | plesti ✓ | kötni ? | merajut dengan jarum ? | lavorare a maglia ✓ | 棒針編み（棒針で編む） ✓ | 대바늘뜨기 ~ |
 | `szydelkowac` | heegeldama ✓ | virkata ✓ | crocheter ✓ | kukičati ✓ | horgolni ? | merajut (dengan hakpen) ✓ | lavorare all’uncinetto ~ | かぎ針編み（かぎ針で編む） ✓ | 코바늘뜨기 ✓ |
 | `rzad` | rida ✓ | kerros ✓ | rang ✓ | red ~ | sor ? | baris ✓ | ferro ✓ | 段 ✓ | 단 ✓ |
@@ -157,7 +157,7 @@ Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 4
 | pojęcie | lt | lv | ms | nb | nl | pt | pt-BR | ro | ru |
 |---|---|---|---|---|---|---|---|---|---|
 | `robotka` | mezgimas ir nėrimas ~ | adīšana un tamborēšana ~ | mengait ✓ | strikking og hekling ~ | breien en haken ~ | trabalho ✓ | tecer ~ | împletire ✓ | вязание ✓ |
-| `dzien_robotki` | rankdarbio diena ~ | rokdarbu diena ~ | hari berkraf ~ | håndarbeidsdag ~ | handwerkdag ~ | dia de lavores ~ | dia de artesanato ~ | zi de lucru manual ? | день рукоделия ~ |
+| `dzien_robotki` | rankdarbio diena ~ | rokdarbu diena ~ | hari berkraf ~ | håndarbeidsdag ~ | handwerkdag ~ | dia de lavores ~ | dia de artesanato ~ | zi de lucru de mână ? | день рукоделия ~ |
 | `dziergac_na_drutach` | megzti virbalais ✓ | adīt ~ | mengait (dengan jarum kait) ✓ | strikke ✓ | breien ✓ | tricotar ✓ | tricotar ✓ | a tricota ✓ | вязать спицами ✓ |
 | `szydelkowac` | nerti vąšeliu ✓ | tamborēt ~ | mengait krusye ~ | hekle ✓ | haken ✓ | fazer crochet ~ | fazer crochê ~ | a croșeta ✓ | вязать крючком ✓ |
 | `rzad` | eilė ✓ | rinda ~ | baris ✓ | rad ~ | rij ✓ | carreira ✓ | carreira ✓ | rând ✓ | ряд ✓ |
@@ -205,7 +205,7 @@ Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 4
 | pojęcie | sk | sl | sr | sv | tr | uk | vi | zh-Hant |
 |---|---|---|---|---|---|---|---|---|
 | `robotka` | pletenie a háčkovanie ~ | pletenje in kvačkanje ~ | плетење и хеклање ? | stickning och virkning ~ | örgü ✓ | в'язання ✓ | đan móc ? | 編織 ✓ |
-| `dzien_robotki` | tvorivý deň ~ | ustvarjalni dan ~ | дан ручног рада ? | hantverksdag ~ | el işi günü ~ | день рукоділля ~ | ngày đan móc ~ | 手作日 ~ |
+| `dzien_robotki` | tvorivý deň ~ | ustvarjalni dan ~ | дан ручног рада ? | handarbetsdag ~ | el işi günü ~ | день рукоділля ~ | ngày đan móc ~ | 手作日 ~ |
 | `dziergac_na_drutach` | pliesť ✓ | plesti ✓ | плести ~ | sticka ✓ | şişle örmek ~ | в'язати спицями ✓ | đan ~ | 棒針編織 ✓ |
 | `szydelkowac` | háčkovať ✓ | kvačkati ✓ | хеклати ~ | virka ✓ | tığla örmek ~ | в'язати гачком ✓ | móc ~ | 鉤針編織 ✓ |
 | `rzad` | riadok ~ | vrsta ✓ | ред ~ | varv ✓ | sıra ~ | ряд ✓ | hàng ~ | 段 ✓ |
@@ -265,9 +265,29 @@ Pojęć: 45 · języków: 35 · wpisów: 1575 (wysoka 704, średnia 424, niska 4
 | `robotka` | ru | `трикотаж` | trikotaż = dzianina/wyroby (zwykle maszynowe), nie hobby |
 | `robotka` | zh-Hant | `钩\|针\|编\|织\|线` | znaki uproszczone (Chiny kontynentalne); zh-Hant (TW/HK) pisze 鉤 針 編 織 線 |
 | `robotka` | zh-Hant | `針織` | 針織 = dzianie/dzianina (też przemysłowe: NAER „hand knitting 手工針織”, MOE 針織品 = wyroby dziane); nie obejmuje szydełka [DO SPRAWDZENIA] |
+| `dzien_robotki` | bg | `плетене` | tylko druty/stara nazwa z fali P-601 (001); jednostka limitu = „ден за ръкоделие” |
+| `dzien_robotki` | cs | `ruční prací` | stara nazwa z fali P-601 (001); jednostka limitu = „den tvoření” |
+| `dzien_robotki` | el | `πλεξίματος` | stara nazwa z fali P-601 (001); jednostka limitu = „ημέρα χειροτεχνίας” |
+| `dzien_robotki` | es | `día[s]? de (?:labor\|tejer\|tejido)` | „día de labor” = día laborable (dzień roboczy); „tejer/tejido” tylko druty (stare nazwy z fali P-601, 001; przegląd AI 2026-11-09) |
+| `dzien_robotki` | es-419 | `día[s]? de (?:labor\|tejer\|tejido)` | „día de labor” = día laborable (dzień roboczy); „tejer/tejido” tylko druty (stare nazwy z fali P-601, 001; przegląd AI 2026-11-09) |
+| `dzien_robotki` | hr | `dan[a]? s radom\|dana? rada` | stare nazwy z fali P-601 (001); jednostka limitu = „dan ručnog rada” |
+| `dzien_robotki` | id | `hari merajut` | stara nazwa z fali P-601 (001); jednostka limitu = „hari berkarya” |
 | `dzien_robotki` | it | `\bgiorn[io] di lavoro` | „giorni di lavoro” = dni robocze (pn.–pt.), nie jednostka limitu |
-| `dzien_robotki` | ro | `\bzile? de lucru(?! manual)` | „zile de lucru” = dni robocze (pn.–pt.), nie jednostka limitu |
-| `dzien_robotki` | sr | `\bдан(?:а\|и)? рада` | „дана рада” = dni robocze, nie jednostka limitu; „ручни рад” = robótka |
+| `dzien_robotki` | ja | `編み日\|手芸日\|制作日\|編んだ日` | stare nazwy z fali P-601 (001); jednostka limitu = „編み物の日” |
+| `dzien_robotki` | ko | `작업일` | „작업일” = dzień roboczy (stara nazwa z fali P-601, 001; przegląd AI 2026-11-09) |
+| `dzien_robotki` | ms | `hari mengait` | stara nazwa z fali P-601 (001); jednostka limitu = „hari berkraf” |
+| `dzien_robotki` | pt | `trabalho (?:manual\|gratuito)\|dias? de trabalho` | stare nazwy z fali P-601 (001) |
+| `dzien_robotki` | pt-BR | `de criação\|de tecer` | stare nazwy z fali P-601 (001) |
+| `dzien_robotki` | ro | `\bzile? de lucru(?! de mână)` | „zile de lucru” = dni robocze (pn.–pt.), nie jednostka limitu |
+| `dzien_robotki` | ro | `de împletit` | stara nazwa z fali P-601: tylko druty (001) |
+| `dzien_robotki` | ru | `вязани` | stara nazwa z fali P-601 (001); jednostka limitu = „день рукоделия” |
+| `dzien_robotki` | sk | `ručnou prácou` | stara nazwa z fali P-601 (001); jednostka limitu = „tvorivý deň” |
+| `dzien_robotki` | sl | `ročnim delom` | stara nazwa z fali P-601 (001); jednostka limitu = „ustvarjalni dan” |
+| `dzien_robotki` | sr | `(?<!\p{L})дан(?:а\|и)? рада` | „дана рада” = dni robocze, nie jednostka limitu; „ручног рада” = robótka (stara nazwa z fali P-601, 001) |
+| `dzien_robotki` | sv | `hantverk` | „hantverk” = rzemiosło zawodowe (stara nazwa z fali P-601, 001; przegląd AI 2026-11-09) |
+| `dzien_robotki` | tr | `örgü gün` | stara nazwa z fali P-601: tylko druty (001) |
+| `dzien_robotki` | uk | `в['’]язання\|дн\S* роботи` | stara nazwa z fali P-601 (001); jednostka limitu = „день рукоділля” |
+| `dzien_robotki` | zh-Hant | `編織日` | stara nazwa z fali P-601 (001); jednostka limitu = „手作日” |
 | `dziergac_na_drutach` | cs | `štrik` | potoczny germanizm „štrikovat”; wzory i słowniki używają „plést” [DO SPRAWDZENIA] |
 | `dziergac_na_drutach` | de | `\bwirk(en\|t\|e)\b` | wirken = dzianie maszynowe/tkanie dzianiny przemysłowej, nie ręczne robienie na drutach [DO SPRAWDZENIA] |
 | `dziergac_na_drutach` | et | `varrasta` | Käsitööteaduse oskussõnad: „varrastama — väldi” |
@@ -859,8 +879,8 @@ Symbol z kolumny „symbol” (CLDR „short”); przykład dla 5 pokazuje też 
 - **da** (11): licznik („rækketæller”), powtorzenie („rapport”), znacznik_rzedu („markering”), blokowanie („spænde ud”), zapas („garnlager”), grubosc_wloczki („garntykkelse”), masa_motka („vægt pr. nøgle (g)”), metraz („løbelængde”), etykieta_wloczki („banderole”), wloczka_lace („lacegarn”), sciagacz („rib”)
 - **de** (5): powtorzenie („Rapport”), znacznik_rzedu („Markierung”), zapas („Garnvorrat”), grubosc_wloczki („Garnstärke”), wloczka_lace („Lacegarn”)
 - **el** (20): licznik („μετρητής σειρών”), czesc („κομμάτι”), schemat („διάγραμμα”), probka („δείγμα”), gestosc („πυκνότητα πλεξίματος”), blokowanie („μπλοκάρισμα”), motek („κουβάρι”), zapas („απόθεμα νημάτων”), grubosc_wloczki („πάχος νήματος”), masa_motka („βάρος κουβαριού (γρ.)”), metraz („μήκος (μ.)”), etykieta_wloczki („ετικέτα”), wloczka_lace („νήμα lace”), druty_z_zylka („κυκλικές βελόνες”), rozmiar_drutu („νούμερο βελόνας (mm)”), lancuszek („αλυσίδα”), oczko_zamykajace_szyd („τυφλό γαϊτανάκι”), oczko_scisle („κοντό ξυλάκι”), polslupek („μισό ψηλό ξυλάκι”), slupek („ψηλό ξυλάκι”)
-- **es** (8): licznik („cuentavueltas”), znacznik_rzedu („marcador de vuelta”), blokowanie („bloquear”), zapas („reserva de lanas”), masa_motka („peso (del ovillo)”), metraz („metros por ovillo”), etykieta_wloczki („etiqueta”), druty_z_zylka („agujas circulares”)
-- **es-419** (14): szydelkowac („tejer a crochet”), licznik („cuentavueltas”), znacznik_rzedu („marcador de vuelta”), blokowanie („bloquear”), motek („madeja”), zapas („reserva de lanas”), masa_motka („peso (del ovillo)”), metraz („metros por ovillo”), etykieta_wloczki („etiqueta”), druty_z_zylka („agujas circulares”), narzut („lazada”), scieg_francuski („punto santa clara”), lancuszek („cadena”), oczko_zamykajace_szyd („punto deslizado”)
+- **es** (9): dzien_robotki („día de manualidades”), licznik („cuentavueltas”), znacznik_rzedu („marcador de vuelta”), blokowanie („bloquear”), zapas („reserva de lanas”), masa_motka („peso (del ovillo)”), metraz („metros por ovillo”), etykieta_wloczki („etiqueta”), druty_z_zylka („agujas circulares”)
+- **es-419** (15): dzien_robotki („día de manualidades”), szydelkowac („tejer a crochet”), licznik („cuentavueltas”), znacznik_rzedu („marcador de vuelta”), blokowanie („bloquear”), motek („madeja”), zapas („reserva de lanas”), masa_motka („peso (del ovillo)”), metraz („metros por ovillo”), etykieta_wloczki („etiqueta”), druty_z_zylka („agujas circulares”), narzut („lazada”), scieg_francuski („punto santa clara”), lancuszek („cadena”), oczko_zamykajace_szyd („punto deslizado”)
 - **et** (8): licznik („ridade loendur”), znacznik_rzedu („märkija (silmusemärkija)”), zapas („lõngavaru”), grubosc_wloczki („lõnga jämedus”), masa_motka („toki kaal”), metraz („lõnga pikkus tokis”), etykieta_wloczki („lõngasilt (banderoll)”), wloczka_lace („pitslõng (kategooria 0)”)
 - **fi** (7): czesc („osa”), zapas („lankavarasto”), etykieta_wloczki („vyöte”), wloczka_lace („lace-lanka”), scieg_francuski („ainaoikeinneule”), polslupek („puolipylväs”), slupek („pylväs”)
 - **fr** (6): licznik („compteur de rangs”), znacznik_rzedu („repère (de rang)”), blokowanie („blocage”), zapas („stock de fils”), masa_motka („poids (de la pelote)”), metraz („métrage”)
@@ -869,7 +889,7 @@ Symbol z kolumny „symbol” (CLDR „short”); przykład dla 5 pokazuje też 
 - **id** (24): dziergac_na_drutach („merajut dengan jarum”), scieg („pola tusuk”), scieg_dzersejowy („stockinette”), licznik („penghitung baris”), czesc („bagian”), probka („sampel rajutan”), gestosc („gauge (kerapatan rajutan)”), blokowanie („blocking”), zapas („stok benang”), grubosc_wloczki („ketebalan benang”), metraz („panjang benang (m)”), wloczka_lace („benang lace”), druty („jarum rajut”), druty_z_zylka („jarum rajut sirkular”), oczko_prawe („tusuk knit”), oczko_lewe („tusuk purl”), nabieranie_oczek („cast on”), zamykanie_oczek („bind off”), ujmowanie („pengurangan tusuk”), dodawanie („penambahan tusuk”), narzut („yarn over”), dwa_razem_na_prawo („k2tog (2 tusuk knit bersamaan)”), scieg_francuski („garter stitch”), sciagacz („rib”)
 - **it** (5): znacznik_rzedu („segnariga”), blokowanie („bloccaggio”), zapas („scorta di filati”), grubosc_wloczki („spessore del filato”), wloczka_lace („lace (filato per pizzo)”)
 - **ja** (3): licznik („段数カウンター”), czesc („パーツ”), znacznik_rzedu („マーカー”)
-- **ko** (8): dzien_robotki („작업일”), licznik („카운터”), czesc („파트”), blokowanie („블로킹”), zapas („보유 실”), etykieta_wloczki („라벨”), wloczka_lace („레이스실”), dwa_razem_na_prawo („왼코 겹치기”)
+- **ko** (8): dzien_robotki („뜨개한 날”), licznik („카운터”), czesc („파트”), blokowanie („블로킹”), zapas („보유 실”), etykieta_wloczki („라벨”), wloczka_lace („레이스실”), dwa_razem_na_prawo („왼코 겹치기”)
 - **lt** (14): scieg_dzersejowy („lygus mezgimas (lygusis raštas)”), czesc („detalė”), powtorzenie („raporto kartojimas (raportas)”), probka („bandinys (mezgimo pavyzdys)”), zapas („siūlų atsargos”), etykieta_wloczki („etiketė”), wloczka_lace („nėriniams skirti siūlai (0 kategorija)”), scieg_francuski („keliaraštis (visos akys geros)”), sciagacz („rantai (rantinis raštas)”), lancuszek („oro akis (oro akių grandinėlė)”), oczko_zamykajace_szyd („jungiamoji akis”), oczko_scisle („stulpelis be apvijos (US sc)”), polslupek („pusstulpis su apvija”), slupek („stulpelis su apvija (US dc)”)
 - **lv** (27): okrazenie („aplis (adīt pa apli)”), licznik („rindu skaitītājs”), czesc („detaļa”), powtorzenie („raksta atkārtojums (raports)”), wzor („apraksts”), znacznik_rzedu („marķieris”), probka („paraugs”), gestosc („adīšanas blīvums”), blokowanie („blokēšana (mitrā apstrāde)”), zapas („dziju krājums”), grubosc_wloczki („[nazwa] biezums”), wloczka_lace („mežģīņu dzija (0. kategorija)”), oczko_prawe („labiskais valdziņš”), oczko_lewe („kreiliskais valdziņš”), nabieranie_oczek („valdziņu uzmešana”), zamykanie_oczek („valdziņu nodarīšana (nobeigšana)”), ujmowanie („valdziņu sarukums (noraukšana)”), dodawanie („valdziņu piemešana”), narzut („apmetiens”), dwa_razem_na_prawo („2 valdziņi kopā labiski”), scieg_francuski („rievu adījums (abpusēji labiski)”), sciagacz („valnītis (ribu adījums)”), lancuszek („gaisa valdziņš (ķēdīte)”), oczko_zamykajace_szyd („ievilktais valdziņš”), oczko_scisle („īsais stabiņš (US sc)”), polslupek („pusstabiņš”), slupek („garais stabiņš (US dc)”)
 - **ms** (24): okrazenie („pusingan”), scieg_dzersejowy („jahit stokin”), licznik („pembilang baris”), czesc („bahagian”), powtorzenie („ulangan”), wzor („corak”), schemat („rajah corak”), znacznik_rzedu („penanda”), blokowanie („blocking”), zapas („simpanan benang”), grubosc_wloczki („ketebalan benang”), masa_motka („berat segegelung (g)”), metraz („panjang benang (m)”), etykieta_wloczki („label benang”), wloczka_lace („benang lace”), druty_z_zylka („jarum kait bulat”), rozmiar_drutu („saiz jarum (mm)”), nabieranie_oczek („mula mata kait”), ujmowanie („kurangkan mata kait”), dodawanie („tambah mata kait”), narzut („lilit benang”), dwa_razem_na_prawo („kait dua bersama”), oczko_scisle („[DO SPRAWDZENIA]”), polslupek („separuh sekali belit”)
@@ -877,7 +897,7 @@ Symbol z kolumny „symbol” (CLDR „short”); przykład dla 5 pokazuje też 
 - **nl** (8): licznik („toerenteller”), zapas („garenvoorraad”), grubosc_wloczki („garendikte”), etykieta_wloczki („banderol”), wloczka_lace („lacegaren”), dodawanie („meerderen”), sciagacz („boordsteek”), polslupek („half stokje”)
 - **pt** (9): okrazenie („volta”), licznik („contador de carreiras”), czesc („parte”), schemat („gráfico”), znacznik_rzedu („marcador de carreira”), blokowanie („blocar”), zapas („fios em casa (stash)”), masa_motka („peso (g)”), oczko_zamykajace_szyd („ponto baixíssimo”)
 - **pt-BR** (16): okrazenie („volta”), licznik („contador de carreiras”), czesc („parte”), znacznik_rzedu („marcador de carreira”), probka („amostra”), gestosc („amostra”), blokowanie („blocagem”), zapas („estoque de fios”), grubosc_wloczki („espessura do fio”), masa_motka („peso (g)”), metraz („metragem”), etykieta_wloczki („etiqueta”), wloczka_lace („fio lace”), druty_z_zylka („agulha circular”), rozmiar_drutu („número da agulha”), sciagacz („ponto sanfona”)
-- **ro** (11): dzien_robotki („zi de lucru manual”), licznik („numărător de rânduri”), czesc („piesă”), wzor („model”), znacznik_rzedu („marcaj”), blokowanie („călcare (prin cârpă umedă)”), zapas („stoc de fire”), masa_motka („greutatea ghemului (g)”), metraz („lungimea firului (m)”), wloczka_lace („fir foarte subțire (lace)”), polslupek („[DO SPRAWDZENIA]”)
+- **ro** (11): dzien_robotki („zi de lucru de mână”), licznik („numărător de rânduri”), czesc („piesă”), wzor („model”), znacznik_rzedu („marcaj”), blokowanie („călcare (prin cârpă umedă)”), zapas („stoc de fire”), masa_motka („greutatea ghemului (g)”), metraz („lungimea firului (m)”), wloczka_lace („fir foarte subțire (lace)”), polslupek („[DO SPRAWDZENIA]”)
 - **ru** (7): licznik („счётчик рядов”), blokowanie („блокировка (влажно-тепловая обработка)”), zapas („запас пряжи”), grubosc_wloczki („толщина пряжи”), masa_motka („вес мотка”), etykieta_wloczki („этикетка (пряжи)”), wloczka_lace („пряжа для кружевного вязания (категория 0)”)
 - **sk** (9): scieg_dzersejowy („lícový džerzej”), licznik („počítadlo riadkov”), blokowanie („blokovanie”), zapas („zásoba priadze”), grubosc_wloczki („hrúbka priadze”), masa_motka („hmotnosť klbka (g)”), metraz („návin (dĺžka)”), etykieta_wloczki („etiketa”), wloczka_lace („čipková priadza (lace)”)
 - **sl** (12): okrazenie („krog”), schemat („shema”), znacznik_rzedu („označevalec”), gestosc („gostota pletenja”), blokowanie („blokiranje”), zapas („zaloga preje”), grubosc_wloczki („debelina preje”), masa_motka („teža klobčiča”), metraz („dolžina preje (metraža)”), wloczka_lace („čipkasta preja (lace)”), scieg_francuski („vse desno (kodrasti vzorec)”), oczko_zamykajace_szyd („vezna petlja”)
