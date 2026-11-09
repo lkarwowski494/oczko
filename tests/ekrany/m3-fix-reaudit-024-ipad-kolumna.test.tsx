@@ -40,3 +40,10 @@ test('024: karta liczby jak `.nr` — tło pasek, promień karta 22, wyśrodkowa
   expect(blok).toMatchObject({ backgroundColor: K.pasek, borderRadius: tokeny.promienie.karta, alignItems: 'center' });
   expect(plasko(screen.getByTestId('wzor-kolumna-licznika').props.style).backgroundColor).toBe(K.wzorRama);
 });
+
+test('024 diagnoza poza buildem E2E (P-238): brak tekstu e2e-ramki-kolumny i brak onLayout na kolumnie (przypadek E2E: e2e-ramki-kolumny.test.tsx)', () => {
+  mockOkno = { width: 1194, height: 834 };
+  pokaz();
+  expect(screen.queryByTestId('e2e-ramki-kolumny')).toBeNull();
+  expect(screen.getByTestId('wzor-kolumna-licznika').props.onLayout).toBeUndefined();
+});

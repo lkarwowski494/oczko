@@ -16,6 +16,12 @@ tags:
 - runFlow: subflows/otworz-wzor-pdf.yaml
 - setOrientation: LANDSCAPE_LEFT
 - assertVisible: { id: "wzor-widok" }
+# 024 diagnoza (P-629, przebieg 5: kolumna bez −1/+1): ramki kolumny z urządzenia (build E2E, `src/kompozycja/e2e/ramki.tsx`) — zrzut, odczyt do logu
+# Maestro i hierarchii kroku; „x,y,w,h” względem rodzica, na końcu okno i skala tekstu. Usunąć po poprawce 024 i zielonym 44.
+- takeScreenshot: 44-ipad-poziomo-ramki
+- assertVisible: { id: "e2e-ramki-kolumny" }
+- copyTextFrom: { id: "e2e-ramki-kolumny" }
+- evalScript: ${console.log('e2e-ramki-kolumny ' + maestro.copiedText)}
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - assertVisible: { id: "wzor-widok" }
