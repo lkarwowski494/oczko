@@ -204,7 +204,7 @@
     "wpis_rozwin_a11y": "{{wpis}} 자세히 보기",
     "wpis_rozwin_podpowiedz": "이 기록을 변경하는 방법을 표시합니다.",
     "wpis_a11y": "{{czas}}에 {{od}}에서 {{do}}까지",
-    "kafel_dni_other": "뜨개한 날",
+    "kafel_dni_other": "작업일",
     "kafel_rzedy_other": "단",
     "kafel_czas": "세션 시간"
   },
@@ -303,7 +303,7 @@
     "okres": "완료 · {{okres}}",
     "jednostka_other": "단",
     "czesci_other": "파트 {{count}}개",
-    "dni_other": "작업 {{count}}일",
+    "dni_other": "작업일 {{count}}일",
     "zdjecie": "{{nazwa}} 사진",
     "czas_h": "{{h}}시간",
     "czas_hmin": "{{h}}시간 {{min}}분",
@@ -432,7 +432,7 @@
     "przywracanie_nic": "이 Apple ID로 구입한 Oczko Pro가 없습니다. 다른 Apple ID로 구입했다면 설정에서 해당 Apple ID로 로그인한 후 다시 시도하세요.",
     "przywracanie_blad": "구입 내역을 복원하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.",
     "pro_wlaczone": "Oczko Pro가 켜졌습니다.",
-    "kafel_dzien_tytul": "모든 뜨개한 날",
+    "kafel_dzien_tytul": "모든 작업일",
     "kafel_dzien_opis": "뜨개하는 날이면 언제든, 월 제한 없이 세어 보세요.",
     "kafel_urzadzenia_tytul": "모든 기기에서 제한 없음",
     "kafel_urzadzenia_opis": "iPhone, iPad, Apple Watch.",
@@ -920,7 +920,7 @@
     "co_dalej_teraz": "이번 단: {{tekst}} ({{ktory}}/{{razy}})",
     "ten_tydzien": "이번 주",
     "tydzien_pusty": "뜨개한 날이 여기에 표시됩니다.",
-    "dzien_dziergany_a11y": "{{etykieta}}, 뜨개한 날",
+    "dzien_dziergany_a11y": "{{etykieta}}, 작업일",
     "kafel_wloczka": "실과 바늘"
   },
   "zakladki": {

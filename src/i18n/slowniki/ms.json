@@ -169,7 +169,7 @@
     "brak_wynikow": "Tiada projek bernama “{{zapytanie}}”.",
     "w_toku": "Sedang dikerjakan",
     "ukonczone": "Siap",
-    "dni_other": "Baki {{zostalo}} daripada {{limit}} hari mengait percuma pada {{miesiac}}",
+    "dni_other": "Baki {{zostalo}} daripada {{limit}} hari berkraf percuma pada {{miesiac}}",
     "tytul": "Projek",
     "nazwa_robocza": "Pembilang dari {{data}}",
     "ostatnia_praca_dzis": "terakhir dikerjakan hari ini",
@@ -204,7 +204,7 @@
     "wpis_rozwin_a11y": "Lagi tentang {{wpis}}",
     "wpis_rozwin_podpowiedz": "Menunjukkan cara mengubah entri ini.",
     "wpis_a11y": "{{od}} kepada {{do}} pada {{czas}}",
-    "kafel_dni_other": "hari mengait",
+    "kafel_dni_other": "hari berkraf",
     "kafel_rzedy_other": "baris",
     "kafel_czas": "masa sesi"
   },
@@ -432,7 +432,7 @@
     "przywracanie_nic": "Tiada pembelian Oczko Pro ditemui untuk Apple ID ini. Jika anda membelinya dengan Apple ID lain, daftar masuk dengan Apple ID itu dalam Seting dan cuba lagi.",
     "przywracanie_blad": "Tidak dapat memulihkan pembelian. Semak sambungan anda dan cuba lagi.",
     "pro_wlaczone": "Oczko Pro kini aktif.",
-    "kafel_dzien_tytul": "Setiap hari mengait",
+    "kafel_dzien_tytul": "Setiap hari berkraf",
     "kafel_dzien_opis": "Kira bila-bila masa anda mengait, tanpa had bulanan.",
     "kafel_urzadzenia_tytul": "Tiada had pada mana-mana peranti",
     "kafel_urzadzenia_opis": "iPhone, iPad dan Apple Watch.",
@@ -694,7 +694,7 @@
   "karta": {
     "stopka": "Dikira dalam Oczko",
     "czas": "masa berkraf",
-    "dni_podpis_other": "hari mengait",
+    "dni_podpis_other": "hari berkraf",
     "obraz_a11y": "Kad untuk {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {
@@ -920,7 +920,7 @@
     "co_dalej_teraz": "Baris ini: {{tekst}} ({{ktory}} daripada {{razy}})",
     "ten_tydzien": "Minggu Ini",
     "tydzien_pusty": "Di sini anda akan melihat hari-hari anda mengait.",
-    "dzien_dziergany_a11y": "{{etykieta}}, hari mengait",
+    "dzien_dziergany_a11y": "{{etykieta}}, hari berkraf",
     "kafel_wloczka": "Benang dan jarum"
   },
   "zakladki": {

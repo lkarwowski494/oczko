@@ -1601,6 +1601,280 @@
    }
   },
   {
+   "id": "dzien_robotki",
+   "grupa": "czynnosc",
+   "en": "crafting day (unit of the free monthly limit: a day with at least one row)",
+   "pl": "dzień robótkowy / dzień z robótką (jednostka darmowego limitu miesięcznego)",
+   "znaczenie": "jednostka płatnego limitu: dzień kalendarzowy, w którym użytkownik dodał co najmniej jeden rząd albo okrążenie; ta sama nazwa na ekranach Dziś, Projekty, Historia, Oczko Pro i w arkuszu limitu (zasada roli 09 nr 4). Pole „rdzen” = fragment (małe litery), który musi występować w każdej formie fleksyjnej terminu w każdym kluczu, którego źródło en zawiera „crafting day” (test tests/i18n/dzien-robotki-001.test.ts). NIE: pojęcie „robotka” (czynność ogólnie), NIE: dni robocze.",
+   "wykrywaj": "\\bcrafting days?\\b",
+   "gdzie": "interfejs src/i18n (klucze z wzorca wykrywaj; 14 kluczy: limit.*, projekty.dni, dni.dni_robotki, historia.kafel_dni, ukonczenie.dni, oferty.*, uczciwe.tytul, karta.dni_podpis, dzis.dzien_dziergany_a11y)",
+   "jezyki": {
+    "en": {
+     "zalecany": "crafting day",
+     "rdzen": "crafting day",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "źródło tekstów (P-075, P-302): „crafting day” = dzień, w którym użytkownik zrobił co najmniej jeden rząd/okrążenie; jednostka płatnego limitu"
+    },
+    "pl": {
+     "zalecany": "dzień robótkowy",
+     "rdzen": "robótk",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "bg": {
+     "zalecany": "ден за ръкоделие",
+     "rdzen": "ръкодели",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "cs": {
+     "zalecany": "den tvoření",
+     "rdzen": "tvoření",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "da": {
+     "zalecany": "håndarbejdsdag",
+     "rdzen": "håndarbejdsdag",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "de": {
+     "zalecany": "Handarbeitstag",
+     "rdzen": "handarbeitstag",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "el": {
+     "zalecany": "ημέρα χειροτεχνίας",
+     "rdzen": "χειροτεχν",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "es": {
+     "zalecany": "día de labor",
+     "rdzen": "labor",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "es-419": {
+     "zalecany": "día de labor",
+     "rdzen": "labor",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "et": {
+     "zalecany": "käsitööpäev",
+     "rdzen": "käsitööpäe",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "fi": {
+     "zalecany": "käsityöpäivä",
+     "rdzen": "käsityöpäiv",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "fr": {
+     "zalecany": "jour d’ouvrage",
+     "rdzen": "ouvrage",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "hr": {
+     "zalecany": "dan ručnog rada",
+     "rdzen": "ručnog rada",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "hu": {
+     "zalecany": "alkotónap",
+     "rdzen": "alkotónap",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "id": {
+     "zalecany": "hari berkarya",
+     "rdzen": "berkarya",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "it": {
+     "zalecany": "giorno creativo",
+     "rdzen": "creativ",
+     "zakazane": [
+      {
+       "wzorzec": "\\bgiorn[io] di lavoro",
+       "powod": "„giorni di lavoro” = dni robocze (pn.–pt.), nie jednostka limitu"
+      }
+     ],
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "ja": {
+     "zalecany": "編み物の日",
+     "rdzen": "編み物の日",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "ko": {
+     "zalecany": "작업일",
+     "rdzen": "작업일",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "uwaga": "wybór dominującej formy z kluczy limitu fali P-601, bez przeczytanego źródła; do sprawdzenia przez rodzimego użytkownika"
+    },
+    "lt": {
+     "zalecany": "rankdarbio diena",
+     "rdzen": "rankdarbio dien",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "lv": {
+     "zalecany": "rokdarbu diena",
+     "rdzen": "rokdarbu dien",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "ms": {
+     "zalecany": "hari berkraf",
+     "rdzen": "berkraf",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "nb": {
+     "zalecany": "håndarbeidsdag",
+     "rdzen": "håndarbeidsdag",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "nl": {
+     "zalecany": "handwerkdag",
+     "rdzen": "handwerkdag",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "pt": {
+     "zalecany": "dia de lavores",
+     "rdzen": "lavores",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "pt-BR": {
+     "zalecany": "dia de artesanato",
+     "rdzen": "artesanato",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "ro": {
+     "zalecany": "zi de lucru manual",
+     "rdzen": "lucru manual",
+     "zakazane": [
+      {
+       "wzorzec": "\\bzile? de lucru(?! manual)",
+       "powod": "„zile de lucru” = dni robocze (pn.–pt.), nie jednostka limitu"
+      }
+     ],
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "uwaga": "wybór dominującej formy z kluczy limitu fali P-601, bez przeczytanego źródła; do sprawdzenia przez rodzimego użytkownika"
+    },
+    "ru": {
+     "zalecany": "день рукоделия",
+     "rdzen": "рукодели",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "sk": {
+     "zalecany": "tvorivý deň",
+     "rdzen": "tvoriv",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "sl": {
+     "zalecany": "ustvarjalni dan",
+     "rdzen": "ustvarjaln",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "sr": {
+     "zalecany": "дан ручног рада",
+     "rdzen": "ручног рада",
+     "zakazane": [
+      {
+       "wzorzec": "\\bдан(?:а|и)? рада",
+       "powod": "„дана рада” = dni robocze, nie jednostka limitu; „ручни рад” = robótka"
+      }
+     ],
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "uwaga": "wybór dominującej formy z kluczy limitu fali P-601, bez przeczytanego źródła; do sprawdzenia przez rodzimego użytkownika"
+    },
+    "sv": {
+     "zalecany": "hantverksdag",
+     "rdzen": "hantverksdag",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "tr": {
+     "zalecany": "el işi günü",
+     "rdzen": "el işi",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "uk": {
+     "zalecany": "день рукоділля",
+     "rdzen": "рукоділл",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "vi": {
+     "zalecany": "ngày đan móc",
+     "rdzen": "đan móc",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    },
+    "zh-Hant": {
+     "zalecany": "手作日",
+     "rdzen": "手作日",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "forma dominująca w kluczach limitu fali P-601 (arkusz limitu, Projekty, Oferty); termin produktu (brzmienie 04), bez przeglądu rodzimego"
+    }
+   }
+  },
+  {
    "id": "dziergac_na_drutach",
    "grupa": "czynnosc",
    "en": "knit (on needles)",

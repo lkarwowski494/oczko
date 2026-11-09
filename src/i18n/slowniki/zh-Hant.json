@@ -169,7 +169,7 @@
     "brak_wynikow": "沒有名為「{{zapytanie}}」的專案。",
     "w_toku": "進行中",
     "ukonczone": "已完成",
-    "dni_other": "{{miesiac}}：免費編織日還剩 {{zostalo}} 天（共 {{limit}} 天）",
+    "dni_other": "{{miesiac}}：免費手作日還剩 {{zostalo}} 天（共 {{limit}} 天）",
     "tytul": "專案",
     "nazwa_robocza": "{{data}}的計數器",
     "ostatnia_praca_dzis": "上次作業：今天",
@@ -204,7 +204,7 @@
     "wpis_rozwin_a11y": "關於 {{wpis}} 的更多資訊",
     "wpis_rozwin_podpowiedz": "顯示如何更改這筆記錄。",
     "wpis_a11y": "於 {{czas}} 從 {{od}} 變為 {{do}}",
-    "kafel_dni_other": "編織日",
+    "kafel_dni_other": "手作日",
     "kafel_rzedy_other": "段",
     "kafel_czas": "工作階段時間"
   },
@@ -432,7 +432,7 @@
     "przywracanie_nic": "找不到此 Apple ID 的 Oczko Pro 購買項目。若你是用其他 Apple ID 購買，請在「設定」中登入該帳號後再試一次。",
     "przywracanie_blad": "無法回復購買項目。請檢查網路連線後再試一次。",
     "pro_wlaczone": "Oczko Pro 已開啟。",
-    "kafel_dzien_tytul": "每個編織日",
+    "kafel_dzien_tytul": "每個手作日",
     "kafel_dzien_opis": "只要編織就能計數，沒有每月上限。",
     "kafel_urzadzenia_tytul": "任何裝置都沒有限制",
     "kafel_urzadzenia_opis": "iPhone、iPad 與 Apple Watch。",
@@ -694,7 +694,7 @@
   "karta": {
     "stopka": "用 Oczko 計數",
     "czas": "作業時間",
-    "dni_podpis_other": "編織日",
+    "dni_podpis_other": "手作日",
     "obraz_a11y": "{{nazwa}}的卡片：{{szczegoly}}"
   },
   "wzor": {
@@ -920,7 +920,7 @@
     "co_dalej_teraz": "這一段：{{tekst}}（{{razy}} 次中的第 {{ktory}} 次）",
     "ten_tydzien": "本週",
     "tydzien_pusty": "這裡會顯示你編織的日子。",
-    "dzien_dziergany_a11y": "{{etykieta}}，編織日",
+    "dzien_dziergany_a11y": "{{etykieta}}，手作日",
     "kafel_wloczka": "毛線與棒針"
   },
   "zakladki": {

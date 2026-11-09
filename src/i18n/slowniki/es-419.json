@@ -215,9 +215,9 @@
     "brak_wynikow": "No hay ningún proyecto llamado “{{zapytanie}}”.",
     "w_toku": "En curso",
     "ukonczone": "Terminados",
-    "dni_one": "{{zostalo}} de {{limit}} día gratis de tejido restante en {{miesiac}}",
-    "dni_many": "{{zostalo}} de {{limit}} días gratis de tejido restantes en {{miesiac}}",
-    "dni_other": "{{zostalo}} de {{limit}} días gratis de tejido restantes en {{miesiac}}",
+    "dni_one": "{{zostalo}} de {{limit}} día de labor gratis restante en {{miesiac}}",
+    "dni_many": "{{zostalo}} de {{limit}} días de labor gratis restantes en {{miesiac}}",
+    "dni_other": "{{zostalo}} de {{limit}} días de labor gratis restantes en {{miesiac}}",
     "tytul": "Proyectos",
     "nazwa_robocza": "Cuentavueltas del {{data}}",
     "ostatnia_praca_dzis": "última vuelta hoy",
@@ -858,9 +858,9 @@
   "karta": {
     "stopka": "Contado en Oczko",
     "czas": "tiempo de labor",
-    "dni_podpis_one": "día de tejido",
-    "dni_podpis_many": "días de tejido",
-    "dni_podpis_other": "días de tejido",
+    "dni_podpis_one": "día de labor",
+    "dni_podpis_many": "días de labor",
+    "dni_podpis_other": "días de labor",
     "obraz_a11y": "Tarjeta de {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {
