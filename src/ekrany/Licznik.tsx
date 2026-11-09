@@ -150,6 +150,8 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
       {/* 016 + LIC-04 (P-613, tokeny `licznik.strefa`): strefa leży na treści, a treść kończy się odstępem = zmierzona wysokość strefy + odstepy.l,
           więc ostatnie elementy (Następna część, podpis sesji, konflikt, notatka) przewijają się nad rząd akcji. */}
       <ScrollView style={st.przewijana} contentContainerStyle={[st.srodek, wysokoscStrefy !== null && { paddingBottom: wysokoscStrefy + odstep.l }]}>
+        {/* 04-studio-projektowe-023 (P-627 A): konflikt iCloud pierwszy w treści, w każdym rozmiarze tekstu — wybór wersji bez przewijania. */}
+        {s.konflikt && <LiniaKonfliktu k={s.konflikt} t={t} oglos={p.oglos} na={p.naKonflikt} />}
         {ax3 && wierszLiczby}
         {s.projekt !== null && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.projekt_wejscie_a11y', { projekt: s.projekt })} onPress={p.naProjekt} disabled={!p.naProjekt} style={st.wejscieProjektu} testID="licznik-projekt-wejscie">
@@ -175,7 +177,6 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
             {wierszLiczby}
           </View>
         )}
-        {s.konflikt && <LiniaKonfliktu k={s.konflikt} t={t} oglos={p.oglos} na={p.naKonflikt} />}
         {start && <Text style={st.tresc}>{t('licznik.podpowiedz_start')}</Text>}
         {s.cel !== null && <LinijkaCelu s={s} t={t} st={st} naNastepnaCzesc={p.naNastepnaCzesc} />}
         {s.calosc && <Text style={st.podpis} testID="licznik-calosc">{s.calosc.czesc === null ? t('projekt.calosc', { count: s.calosc.rzedy }) : t('licznik.calosc', { czesc: s.calosc.czesc, count: s.calosc.rzedy })}</Text>}
