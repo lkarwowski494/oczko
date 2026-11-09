@@ -41,6 +41,10 @@ Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run
 
 **Uwaga od koordynatora:** na integracji zmiana nazwy `src/ekrany/liczba.ts` → `liczbaKomorki.ts` (kolizja wielkości liter z `Liczba.tsx`, TS1261 na macOS) — nie dodawaj importów `./liczba`. Push na tę gałąź nie uruchamia `jakosc-ios.yml` (gałąź spoza listy `push`); przebieg tylko `workflow_dispatch` przez koordynatora.
 
+**024 — przodkowie kolumny (pytanie koordynatora, 9.11):** `Bezpieczny` (`SafeAreaView` flex 1 → `kolumna-tresci` flex 1, `src/kompozycja/Bezpieczny.tsx`) → `ekran` flex 1 + row (`src/ekrany/WzorPrzegladarka.tsx:225`) → kolumna. Brak ScrollView (`<ScrollView` w `WzorPrzegladarka.tsx`: 0 trafień; ScrollView w `app/wzor.tsx:169` tylko w menu źródeł). Skąd 992 pt (= okno 1024 − 2 × 16), skoro kolumna ma 972 — `[DO USTALENIA]`; poprawka A nie zależy od tej przyczyny.
+
+**Instrumentacja — rekomendacja: usunąć po zielonym 44** (P-635 zostawia wybór 08). Za: znika odstępstwo importu `paneleE2e` w `WzorLicznik.tsx`, scen. 44 wraca do kroków z BRD (4 kroki diagnozy mniej), panele E2E (P-238) służą sterowaniu testem, nie diagnozie; ramki zostają w historii (3bc778d, c26cccc) i dają się przywrócić `git revert` przy kolejnej wadzie układu. Przeciw: następna wada kolumny wymaga ponownego dodania (ok. 1 przebieg).
+
 ## Odstępstwa i znaleziska
 
 - Odstępstwo: `WzorLicznik.tsx` importuje `paneleE2e` z `src/platforma/tryb-e2e.ts` (dotąd tylko `app/` i `src/kompozycja/`) — przekazanie propsami wymagałoby wydzielenia z `app/wzor.tsx` (20 478 B); `granice.mjs src` bez naruszeń. Znika z instrumentacją.
