@@ -127,7 +127,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
           </View>
           {!zawczasu && (
             <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={() => void plus()} style={st.plus} testID="dzis-plus">
-              <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>
+              <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
             </Pressable>
           )}
         </View>
