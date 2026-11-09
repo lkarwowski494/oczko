@@ -10,9 +10,10 @@ import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
 import { LicznikWzoru, type BladPaska, type PropsLicznikaWzoru } from './WzorLicznik';
+import { TytulWzoru } from './WzorTytul';
 import { GlifZnacznika, PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
-import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
@@ -129,17 +130,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     <View style={st.pasek}>
       <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={s.czesc === null ? t('wzor.wstecz_licznik') : t('wzor.wstecz_a11y', { czesc: s.czesc })}
         onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
-      <View style={st.tytulPaska}>
-        {s.wzory.length >= 2 || czekajace.length > 0 ? (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: s.nazwa })} onPress={() => ustawMenu('wzory')} style={st.przelacz} testID="wzor-przelacz">
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs }}>{/* M1-146: chevron.down zamiast glifu ▾ */}
-              <Text style={[st.tytul, { flexShrink: 1 }]} numberOfLines={2}>{s.nazwa}</Text>
-              <SymbolSf nazwa="chevron.down" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
-            </View>
-          </Pressable>
-        ) : <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{s.nazwa}</Text>}
-        <Text style={st.podpis} testID="wzor-zrodlo">{s.opis}</Text>
-      </View>
+      <TytulWzoru t={t} nazwa={s.nazwa} opis={s.opis} przelacza={s.wzory.length >= 2 || czekajace.length > 0} naPrzelacz={() => ustawMenu('wzory')} />
       <View style={st.grupa}>
         {!s.word && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} onPress={zaznacz} style={st.ikona} testID="wzor-zaznacz">
@@ -259,11 +250,8 @@ function style(k: Kolory) {
     pasek: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.s, minHeight: rozmiary.minimum, flexWrap: 'wrap' },
     pasekNarzedzi: { flexDirection: 'row', gap: odstep.s, paddingHorizontal: odstep.l, minHeight: rozmiary.minimum, alignItems: 'center' },
     grupa: { flexDirection: 'row', alignItems: 'center' },
-    tytulPaska: { flex: 1, minWidth: 120 },
-    przelacz: { minHeight: rozmiary.minimum, justifyContent: 'center' }, // cel dotyku przełącznika wzorów w tytule (M1-175, SP-06; TT-16)
     ikona: { minWidth: rozmiary.minimum, minHeight: rozmiary.minimum, alignItems: 'center', justifyContent: 'center', borderRadius: promien.przyciskDrugi },
     wybrane: { backgroundColor: k.papierGrupa, borderWidth: 2, borderColor: k.przyciskObrys, borderRadius: promien.pole }, // stan wybranego narzędzia niesie kształt, nie kolor (10 C, P-360)
-    tytul: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },
     podpis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l },
     pogrubiony: { fontWeight: '700' },
