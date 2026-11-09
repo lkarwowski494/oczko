@@ -245,7 +245,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-011-pole-tokeny.test.tsx` | zielony (główny zestaw) | 2 | P-627 | `src/ekrany/ZnacznikRadio`<br>`src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-021-wciecie.test.tsx` | zielony (główny zestaw) | 3 | P-627 | `src/ekrany/Dzianina`<br>`src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-023-konflikt.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Licznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 3 | P-238 | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx` | zielony (główny zestaw) | 4 | P-238 | `src/ekrany/WzorLicznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-fix-reaudit-240-dzis-fokus.test.tsx` | zielony (główny zestaw) | 1 | P-627 | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-aliasy.test.ts` | zielony (główny zestaw) | 4 | — | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/m3-p4b-arkusz-zdjecie.test.tsx` | zielony (główny zestaw) | 24 | P-598 | `src/domena/porty`<br>`src/ekrany/Arkusz`<br>`src/ekrany/Oferty`<br>`src/ekrany/Zdjecia`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
