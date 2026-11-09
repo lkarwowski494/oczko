@@ -1,0 +1,54 @@
+# M3 build 2 — stan roli 08 i przekazanie 024 (2026-11-09)
+
+Polecenie: `oczko-warsztat` `koordynacja/role-2026-11-09/08e-build2.md` @ 5e5fe60 (P-629, P-630). Gałąź `claude/kopia-08-build2-2026-11-09` (baza b4518bbf, ostatni kod 61adee2).
+Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez trailerów (P-507). Koordynator: session_01T66VBx6UXGtzFfAZDeBpip.
+Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run verify` (61adee2): kod 0 — 565 zestawów / 6897 testów (z `jakosc:kontrole`).
+
+## Zrobione
+
+| Zad. | Stan | Commit | Test przed → po |
+|---|---|---|---|
+| 3 · e2e 64 („…use the timer.”) | zrobione (koordynator: cherry-pick na integrację) | 8729b94 | `tests/jakosc/e2e-zdania-en.test.ts`: czerwony (64: zdanie spoza słownika en) → zielony; trwała kontrola zdań en w `assertVisible` |
+| 4 · e2e 34 („Next part” pod strefą akcji) | zrobione, dowód na urządzeniu (cherry-pick na integrację) | 8433acb | interpreter nie liczy geometrii; kontrole scenariuszy zielone. Dwa `swipe` w treści (start 55 %) do końca przewijania — `paddingBottom` treści = strefa + odstęp (`src/ekrany/Licznik.tsx:152`) |
+| 1 · AX5-wzór, opcja A (właściciel, 9.11) | zrobione, przyjęte; wysokość wzoru potwierdzi E2E 30 | f2fadde (strukturalny: `src/ekrany/WzorTytul.tsx`), 61adee2 (zachowanie) | `tests/ekrany/m3-build2-ax5-wzor.test.tsx` (fontScale 3,571): czerwony (`maxFontSizeMultiplier` undefined zamiast 1,8) → zielony; `wzor-zrodlo` w jednej linii, karta wskazówki z limitem 1,8 |
+| 2 · 024 diagnoza (instrumentacja) | zrobione; przebieg 42678725514 (`[e2e-ipad]`, e6bd782) | 3bc778d | `tests/ekrany/e2e-ramki-kolumny.test.tsx`: czerwony (brak `e2e-ramki-kolumny`) → zielony; poza E2E brak tekstu i `onLayout` (`tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx`, ostatni test) |
+| 2 · 024 runda 1 ramek (sesja 08f, polecenie 08f-024) | ramek brak: scen. 44 padł po obrocie (aplikacja zamknięta) — błąd instrumentacji, poprawiony | c26cccc | `tests/ekrany/e2e-ramki-kolumny.test.tsx` (2 nowe): czerwone („Rendered more hooks…”, device-simulator.log run 42678725514 19:26:09) → zielone; verify kod 0, 565 / 6899 |
+| 3 · 024 usunięcie instrumentacji (P-636) | zrobione; **czeka na przebieg 7 `[e2e-pelny] [e2e-ciemny]` na integracji** (pełne 44 bez instrumentacji + ponowienie po awarii maszyny + 30 AX5); czerwone 44/30 → diagnoza 08 (zrzut i hierarchia kroku błędu; ramki: `git revert` usunięcia) | 12e6468 | verify kod 0: 564 / 6896 (−4 testy instrumentacji) |
+| 2 · 024 runda 2 ramek | run 42686026279: `kolumna 1086,0,280,972; blok 16,16,248,112; wypelniacz 16,140,248,992; przyciski 16,1144,248,200` — wypełniacz `flex: 1` zepchnął parę pod ekran | — | — |
+| 2 · 024 poprawka (opcja A, P-635) | zrobione: run 42703618279 — 44 poziomo zielone (kroki 35–44, `przyciski 16,756,248,200`, dół 956 = 972 − 16), koniec scenariusza: `DeviceUnreachableException` (maszyna) | 693273b | `m3-fix-reaudit-024-ipad-kolumna.test.tsx` (wypełniacz, marginTop auto): czerwony → zielony; verify kod 0, 565 / 6900 |
+
+## 024 — przekazanie
+
+**Wada (przebieg 5, run 42601620032, scen. 44, zrzut `oczko-warsztat` `redesign/M3-2026-11-05/zrzuty/p5/ipad-poziomo-WADA-024.png`):** iPad poziomo, kolumna `wzor-kolumna-licznika` (`src/ekrany/WzorLicznik.tsx`, gałąź `if (obok)`) pokazuje kartę liczby i „Now working row 1”, ale w hierarchii nie ma `wzor-kolumna-przyciski` ani −1/+1. Jest nie odtwarza (brak Yoga); test struktury i jawnych rozmiarów: `m3-fix-reaudit-024-ipad-kolumna.test.tsx`.
+
+**Instrumentacja (tylko build E2E, P-238):**
+- `src/kompozycja/e2e/ramki.tsx` — hak `useRamkiE2e(nazwy, okno)` i `TekstRamek` (testID `e2e-ramki-kolumny`, absolutnie na górze kolumny, bez stuknięć); eksport w `src/kompozycja/e2e/panele.tsx`.
+- `src/ekrany/WzorLicznik.tsx` — import `paneleE2e` z `src/platforma/tryb-e2e.ts`, stała `RAMKI_KOLUMNY`, `onLayout={z('…')}` na kolumnie, bloku liczby, wypełniaczu (testID `wzor-kolumna-wypelniacz`), parze przycisków, −1, „+1”.
+- `e2e/scenariusze/44-br-wzr-005-s2-ipad-poziomo-pionowo.yaml` — przed pierwszym „+1”: `takeScreenshot 44-ipad-poziomo-ramki`, `assertVisible e2e-ramki-kolumny`, `copyTextFrom`, `evalScript console.log`.
+- `e2e/README.md` — wiersz `e2e-ramki-kolumny`.
+
+**Format tekstu:** `kolumna x,y,w,h; blok …; wypelniacz …; przyciski …; minus …; plus …; okno WxH fs S` — `onLayout` (pt, zaokrąglone) **względem rodzica**: kolumna względem kontenera ekranu wzoru, blok/wypełniacz/przyciski względem kolumny, minus/plus względem pary; „-” = brak zdarzenia `onLayout` (widok niezmierzony, np. nie zamontowany).
+
+**Gdzie czytać (run 42678725514):** `gh api repos/lkarwowski494/oczko/actions/runs/42678725514/artifacts` → artefakt `e2e-czesc-1-ipad`: (1) log Maestro — linia z `e2e-ramki-kolumny kolumna …` (z `console.log`); (2) zrzut `44-ipad-poziomo-ramki.png`; (3) hierarchia `screen-hierarchy/step-*.json` kroku `assertVisible e2e-ramki-kolumny` — tekst elementu i ramki `wzor-kolumna-*`. Jeśli `assertVisible e2e-ramki-kolumny` padł, tekst jest w hierarchii kroku błędu (albo brak — wtedy sama kolumna nie ma wysokości/jest poza ekranem: patrz ramki w hierarchii).
+
+**Jak interpretować (hipotezy do potwierdzenia ramkami, nie zgadywać):**
+- `kolumna` y + h > `okno` H → kolumna wyższa niż ekran, para pod dolną krawędzią (np. rodzic bez ograniczenia wysokości) — poprawka w kontenerze/kolumnie (`flex: 1`/`maxHeight`).
+- `przyciski` / `minus` / `plus` = „-” → para nie zamontowana albo bez układu — sprawdzić warunki renderu.
+- `przyciski` h = 0 albo w ≈ 0 → para ściśnięta (flexShrink/flexBasis) mimo `flexShrink: 0`.
+- `wypelniacz` h duże i `przyciski` y ≥ H kolumny → wypełniacz zabiera miejsce parze.
+- Porównaj z wymiarami z tokenów: kolumna `tokeny.cele.paskaWzoru.kolumna.szerokosc`, „+1” `plusWysokosc` 200 (168–240).
+
+**Plan poprawki:** (1) test czerwony z właściwego powodu odtwarzający mechanizm wskazany ramkami (struktura/style w Jest; geometria tylko na urządzeniu); (2) minimalna poprawka w `WzorLicznik.tsx`; (3) `npm run verify` kod 0 (po nowym teście regeneruj `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/tabela-08.md`); (4) push, SHA do koordynatora → przebieg `[e2e-ipad]`; (5) po zielonym 44 **usuń instrumentację** osobnym commitem: `ramki.tsx`, eksport w `panele.tsx`, import `paneleE2e` + `RAMKI_KOLUMNY` + `onLayout` w `WzorLicznik.tsx` (testID wypełniacza może zostać), 4 kroki w scen. 44, wiersz README, test `e2e-ramki-kolumny.test.tsx` i ostatni test w `m3-fix-reaudit-024-ipad-kolumna.test.tsx`; `verify` kod 0.
+
+**Uwaga od koordynatora:** na integracji zmiana nazwy `src/ekrany/liczba.ts` → `liczbaKomorki.ts` (kolizja wielkości liter z `Liczba.tsx`, TS1261 na macOS) — nie dodawaj importów `./liczba`. Push na tę gałąź nie uruchamia `jakosc-ios.yml` (gałąź spoza listy `push`); przebieg tylko `workflow_dispatch` przez koordynatora.
+
+**024 — przodkowie kolumny (pytanie koordynatora, 9.11):** `Bezpieczny` (`SafeAreaView` flex 1 → `kolumna-tresci` flex 1, `src/kompozycja/Bezpieczny.tsx`) → `ekran` flex 1 + row (`src/ekrany/WzorPrzegladarka.tsx:225`) → kolumna. Brak ScrollView (`<ScrollView` w `WzorPrzegladarka.tsx`: 0 trafień; ScrollView w `app/wzor.tsx:169` tylko w menu źródeł). Skąd 992 pt (= okno 1024 − 2 × 16), skoro kolumna ma 972 — `[DO USTALENIA]`; poprawka A nie zależy od tej przyczyny.
+
+**Instrumentacja — rekomendacja: usunąć po zielonym 44** (P-635 zostawia wybór 08). Za: znika odstępstwo importu `paneleE2e` w `WzorLicznik.tsx`, scen. 44 wraca do kroków z BRD (4 kroki diagnozy mniej), panele E2E (P-238) służą sterowaniu testem, nie diagnozie; ramki zostają w historii (3bc778d, c26cccc) i dają się przywrócić `git revert` przy kolejnej wadzie układu. Przeciw: następna wada kolumny wymaga ponownego dodania (ok. 1 przebieg).
+
+## Odstępstwa i znaleziska
+
+- Odstępstwo: `WzorLicznik.tsx` importuje `paneleE2e` z `src/platforma/tryb-e2e.ts` (dotąd tylko `app/` i `src/kompozycja/`) — przekazanie propsami wymagałoby wydzielenia z `app/wzor.tsx` (20 478 B); `granice.mjs src` bez naruszeń. Znika z instrumentacją.
+- Nowe znaleziska (nie naprawiane, tryb fix): tytuł-przełącznik ▾ przy ≥ 2 wzorach bez limitu skali (`src/ekrany/WzorTytul.tsx:20`, wariant jednego wzoru ma 1,8) — P2; karty nad wzorem bez limitu skali — podgląd Worda (`src/ekrany/WzorPrzegladarka.tsx:160`) i pasek notatki bez znacznika (`:166–167`) mogą przy AX5 zabrać wzorowi wysokość jak wskazówka — brzegowe, nieodtworzone, do 04.
+
+Następny krok: wynik przebiegu 7 od koordynatora; zielone 44 i 30 → raport końcowy 08f-024; czerwone → diagnoza.

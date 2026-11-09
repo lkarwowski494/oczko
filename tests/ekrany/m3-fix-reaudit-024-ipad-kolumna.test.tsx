@@ -40,3 +40,18 @@ test('024: karta liczby jak `.nr` — tło pasek, promień karta 22, wyśrodkowa
   expect(blok).toMatchObject({ backgroundColor: K.pasek, borderRadius: tokeny.promienie.karta, alignItems: 'center' });
   expect(plasko(screen.getByTestId('wzor-kolumna-licznika').props.style).backgroundColor).toBe(K.wzorRama);
 });
+
+// 024 runda 2 ramek (run 42686026279, scen. 44, okno 1366×1024): wypełniacz `flex: 1` dostał 992 pt w kolumnie 972 pt, para −1/„+1” od y = 1144 — poza
+// ekranem („Element not found: licznik-plus”). Para dociśnięta do dołu automatycznym marginesem (tylko wolne miejsce), bez rosnącego widoku nad nią.
+test('024: kolumna iPada bez rosnącego wypełniacza nad parą; para u dołu przez marginTop auto', () => {
+  mockOkno = { width: 1366, height: 1024 };
+  pokaz();
+  expect(screen.queryByTestId('wzor-kolumna-wypelniacz')).toBeNull();
+  const kolumna = screen.getByTestId('wzor-kolumna-licznika');
+  const dzieci = React.Children.toArray(kolumna.props.children).filter(React.isValidElement) as React.ReactElement<{ style?: unknown; testID?: string }>[];
+  for (const d of dzieci) {
+    const s = plasko(d.props.style);
+    expect([d.props.testID, s.flex ?? 0, s.flexGrow ?? 0]).toEqual([d.props.testID, 0, 0]);
+  }
+  expect(plasko(screen.getByTestId('wzor-kolumna-przyciski').props.style).marginTop).toBe('auto');
+});

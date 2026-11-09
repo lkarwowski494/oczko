@@ -20,7 +20,7 @@ const WYJATKI: Record<string, string> = {
   // M1-audytor-generalny-140 (04-studio-projektowe-528, decyzja 04 z 2026-11-03): 132 → token `cel.przyciskPlusPaskaSzerokosc`, 640 → stała `KOLUMNA_TRESCI_MAKS`;
   // pięć pozostałych to wyjątki 04 — geometria rysunku albo lokalna podłoga układu, nie wartość systemu (token tylko dla wartości, która wraca w kilku miejscach).
   'src/ekrany/Stoper.tsx:minWidth:240': 'podłoga szerokości menu stopera rysowanego w aplikacji zamiast „menu systemowego” z design-spec.md:530 (makieta `fix6-2026-10-26/sesje-historia.html:133` `.menu-ios`: min(280, szerokość − 24)); wartość 08 przyjęta przez 04 tymczasowo, do decyzji o menu stopera jako widoku (P-215 (3), P-373 — otwarte dla 04); znika z menu systemowym, nie staje się tokenem',
-  'src/ekrany/WzorPrzegladarka.tsx:minWidth:120': 'tytuł paska wzoru (design-spec.md:671 „tytuł = nazwa wzoru”) ma co najmniej 120 pt (ok. 10 znaków Libre Franklin 20 pt, dwa wiersze), zanim ikony narzędzi przejdą do drugiego rzędu (`pasek` z flexWrap); lokalna podłoga układu tego paska, nie wymiar systemu',
+  'src/ekrany/WzorTytul.tsx:minWidth:120': 'tytuł paska wzoru (wydzielony z WzorPrzegladarka.tsx, P-364) (design-spec.md:671 „tytuł = nazwa wzoru”) ma co najmniej 120 pt (ok. 10 znaków Libre Franklin 20 pt, dwa wiersze), zanim ikony narzędzi przejdą do drugiego rzędu (`pasek` z flexWrap); lokalna podłoga układu tego paska, nie wymiar systemu',
   'src/ekrany/WzorZnacznik.tsx:minWidth:36': 'liczba krokowca rzędu znacznika (design-spec.md:182 „krokowiec w pasku”) między − i + ma stałą podłogę szerokości 36 pt (trzy cyfry treści 17 pt pogrubionej), żeby przyciski nie skakały przy 9 → 10 → 100; lokalna podłoga, nie wymiar systemu',
 };
 
