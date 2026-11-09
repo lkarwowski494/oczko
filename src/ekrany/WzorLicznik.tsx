@@ -103,7 +103,8 @@ function style(k: Kolory) {
     // poza kolumną (P-262 (b), przebieg 119, scen. 23 i 44; przyczyna w Yoga nieodtworzona poza urządzeniem).
     liczbaBlokKolumna: { flexShrink: 0 },
     kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.pasekLinia, padding: odstep.l, gap: odstep.m, backgroundColor: k.pasek },
-    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'stretch' },
+    // M3-IPAD-01 (P-605): `width: 100%` — grupa leży w pasku-wierszu z zawijaniem; bez szerokości zwija się do zawartości i blok liczby (podstawa 0) ma 0 pt, „+1” 64 pt.
+    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'stretch', width: '100%' },
     przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
     minus: { minWidth: cel.przyciskMinusPaska, minHeight: cel.przyciskPlusPaskaWysokosc, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.tekst },
