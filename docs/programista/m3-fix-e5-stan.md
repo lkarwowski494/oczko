@@ -1,6 +1,6 @@
 # M3 fix E5 — stan roli 08 (2026-11-09, P-614, P-615, P-617)
 
-Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245. Polecenie: warsztat `koordynacja/role-2026-11-09/08-fix-e5.md` @ 43c5745. Testy zastąpione: `m3-fix-e5-zastapione-testy.md`.
+Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/kopia-08b-e5-2026-11-09` od f953aef9, polecenie warsztat `koordynacja/role-2026-11-09/08b-fix-e5.md` @ b43c03f. Polecenie: warsztat `koordynacja/role-2026-11-09/08-fix-e5.md` @ 43c5745. Testy zastąpione: `m3-fix-e5-zastapione-testy.md`.
 
 ## Pozycje `zadania-08.md`
 | # | ID | Stan | Commit | Test (przed → po) |
@@ -12,14 +12,15 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245. Polecenie: warsztat `koord
 | 3 | 003 | zrobione | 9a3d67b | `m3-fix-e5-skala.test.tsx` 003: 2 ✕ → ✓ |
 | 4 | 005 | zrobione | 9ad31c7, c2a709e | 005: 6 ✕ → ✓ |
 | 8 | 012, 013 | zrobione | fe2179b, c314191 | `m3-fix-e5-cele.test.tsx` ✕ → ✓ |
-| 8 | 011 | częściowo: radio jednostek + `checkmark`; pole wyboru 28 czeka na token | 26a5bbb | `m3-fix-e5-wybor.test.tsx` 2 ✕ → ✓ |
+| 8 | 011 | zrobione: radio jednostek + `checkmark` (26a5bbb); pole wyboru `PoleWyboru` 28 + `promienie.pole` zastępczo (P-619 B) | 26a5bbb, de45630 | `m3-fix-e5-wybor.test.tsx` 2 ✕ → ✓; pole: 4 ✕ → 6 ✓ |
 | 11 | 014 | zrobione | ddd3eb7, ef9a0bc | `m3-fix-e5-014.test.tsx` 5 ✕ + 1 ✓ (miniatura: ta sama liczba) → 6 ✓ |
 | 13 | P-590 | zrobione | ea96dfb | ✕ → ✓ |
 | 10 | 010 | zrobione (Projekty; Projekt już 17/700) | a165ff5 | ✕ → ✓ |
 | 5 | 004 | zrobione | c4fbd60 | `m3-fix-e5-dzis-ax3.test.tsx` 3 ✕ + 1 ✓ (AX1 bez zmian) → 4 ✓ |
 | 7 | 007 + 008 | zrobione (jeden commit: wspólne słowniki) | 2cbd134 | `m3-fix-e5-etykiety.test.tsx` 3 ✕ + 1 ✓ (nazwany projekt bez zmian) → 4 ✓; trasa 007 w `m3-fix-e5-wzor-ax5.test.tsx` ✕ („Back to Counter from Nov 10”) → ✓ |
-| 1 | 001 | rozstrzygnięte P-619 (token z makiety), do zrobienia | — | — |
-| 6, 9, 12 | 006, 009, 015 | do zrobienia (nowa sesja, P-324) | — | — |
+| 1 | 001 | zrobione (token `dzianina.tloKolumnyKarty` w obu plikach, P-619; nabranie 8, igła z główką, marginesy 6 na karcie) | dac17ae (struktura: `DzisStyl.ts`), 56dcf4c | `m3-fix-e5-001.test.tsx` 4 ✕ + 1 ✓ → 5 ✓ |
+| 12 | 015 | zrobione (iPad regular: obok tylko ≥ 1000 pt i szersze niż wyższe, kolumna 280, liczba `liczbaKarty` + „of {cel}”, −1 72 obok „+1” 168–240; pasek „+1” ≤ 480, zestaw wyśrodkowany); przypomnienie w kolumnie — nie zrobione | 161f6a8 | `m3-fix-e5-015.test.tsx` 5 ✕ + 3 ✓ → 8 ✓ |
+| 9, 6 | 009, 006 | do zrobienia (termin 70 min sesji 08b minął) | — | — |
 
 ## STOP-y rozstrzygnięte przez koordynatora (P-619, 9.11 06:17) — do wykonania w nowej sesji
 - 001: 08 dopisuje token `dzianina.tloKolumnyKarty` = #00000026 (źródło `docs/design/dzianina/ekrany.html:38` `.dz`, oba motywy) w `dzianina/tokeny.json` i `docs/design/tokeny.json` z adnotacją „wartość z makiety, P-619” (wyjątek nazwany); kontrast.mjs kod 0; 001 w całości.
@@ -35,5 +36,13 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245. Polecenie: warsztat `koord
 - 012: rama przerywana także przy AX (padding jak rama biegnącego stopera).
 - Czego nie sprawdzono: układ na urządzeniu (strefa licznika, AX3+ karta i licznik, gest wstecz, iPad) — potwierdzi przebieg 4 iOS (E2E 03, 30, 34, 49, 57, 44).
 
+## Część 2 (08b, 9.11) — odstępstwa i uwagi
+- 015 zakres: reguła ≥ 1000 pt tylko dla klasy regular (iPad); telefon poziomo (compact) zostaje „obok” (W3) — odczyt 08 „015 = iPad”, do potwierdzenia przez koordynatora (opcja B: reguła globalna, telefon poziomo → pasek).
+- 015: przypomnienie w kolumnie iPada (makieta `.nota`) nie zrobione — brak danych przypomnienia w propsach paska; wymaga przekazania z `app/wzor.tsx`.
+- `app/wzor.tsx` 20 478 B (limit 20 480): dopisane 19 B (`cel: lw.czesc.cel`) bez wcześniejszego wydzielenia — odstępstwo od polecenia (termin); następna zmiana wymaga wydzielenia.
+- 001: tło nakładki #00000026 nie ma pary w `kontrast-pary.json` (element graficzny, nie tekst); kontrast.mjs kod 0, 256/256. Licznik bez marginesu 6 (makieta też rysuje x=6 na liczniku) — poza zakresem 001, do oceny 04.
+- 001: miniatura listy bez główki igły (`glowka={false}`), jak makieta `.lista .pr`.
+- Czego nie sprawdzono: wygląd na urządzeniu i zrzuty przed/po (brak symulatora; przebieg 4 iOS: E2E `dzis-pierwszy`, 44 poziomo).
+
 ## Następny krok (nowa sesja)
-001 i pole wyboru 011 wg P-619, potem 006 („Wstecz”: `akcentTekst`, tytuł poprzedniego ekranu, korzenie bez „wstecz”; test 033 jawnie, P-614 (1)), 009 (menu `menu.*`), 015 (kolumna wzoru na iPadzie).
+009 (menu = lista grupowana `menu.*`, pozycje 44, bez obrysów), potem 006 („wstecz” chevron + tytuł poprzedniego ekranu, `akcentTekst`, bez „wstecz” na korzeniach zakładek; test 033 jawnie, P-614 (1)); `WzorPrzegladarka.tsx` (20 429 B) i `app/wzor.tsx` (20 478 B) — najpierw wydzielić.
