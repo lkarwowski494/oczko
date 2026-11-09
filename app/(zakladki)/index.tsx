@@ -24,6 +24,7 @@ export default function EkranDzis(): React.ReactElement {
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [dane, ustawDane] = useState<DaneDzis | null>(null);
   const [plusy, ustawPlusy] = useState(0);
+  const [fokus, ustawFokus] = useState(0); // M1-audytor-generalny-240: każdy powrót na „Dziś” czyta dane ponownie (+1 na liczniku nie zmienia `wersja`)
   const uslugi = useMemo(() => ({
     ...licznik.uslugi,
     dodajRzad: async () => {
@@ -49,14 +50,14 @@ export default function EkranDzis(): React.ReactElement {
   useEffect(() => kontener.icloud?.naPartie(() => { void licznik.poZmianie().then(() => ustawWersje(licznik.wersja())); }), [kontener, licznik]);
   useEffect(() => licznik.poDostepie(() => ustawWersje(licznik.wersja())), [licznik]);
   useEffect(() => licznik.poZegarku(() => ustawWersje(licznik.wersja())), [licznik]);
-  useFocusEffect(useCallback(() => { ustawWersje(licznik.wersja()); }, [licznik]));
+  useFocusEffect(useCallback(() => { ustawWersje(licznik.wersja()); ustawFokus((n) => n + 1); }, [licznik]));
   // Dane spoza karty (tydzień, wolne dni, miejsce, „co dalej”) — tylko istniejące odczyty; błąd odczytu = karta bez tych części (dane null), licznik działa.
   useEffect(() => {
     if (!gotowe) return;
     let zywy = true;
     void wczytajDzis(kontener, licznik).then((d) => { if (zywy) ustawDane(d); }, () => undefined);
     return () => { zywy = false; };
-  }, [gotowe, wersja, plusy, kontener, licznik]);
+  }, [gotowe, wersja, plusy, fokus, kontener, licznik]);
   async function naKontynuuj(): Promise<void> {
     const m = await licznik.miejsce();
     if (m.ok && m.wartosc === 'lista') { router.navigate('/projekty'); return; }

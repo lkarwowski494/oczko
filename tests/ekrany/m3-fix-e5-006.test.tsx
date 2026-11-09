@@ -23,3 +23,9 @@ test.each(['dni', 'narzedzia', 'index', 'projekty'])('006 korzeń zakładki app/
   const zrodlo = readFileSync(join(__dirname, '../../app/(zakladki)', `${plik}.tsx`), 'utf8');
   expect(zrodlo).not.toMatch(/naWstecz/);
 });
+
+// Część 3 (08c, znalezisko części 2): stan wczytywania/błędu korzenia zakładki też bez „wstecz” — na korzeniu nie ma dokąd wracać; zostaje „Try again”.
+test.each(['dni', 'narzedzia', 'index', 'projekty'])('006 korzeń zakładki app/(zakladki)/%s.tsx: StanWczytywania bez wyjścia „wstecz”', (plik) => {
+  const zrodlo = readFileSync(join(__dirname, '../../app/(zakladki)', `${plik}.tsx`), 'utf8');
+  expect(zrodlo).not.toMatch(/rodzaj:\s*'wstecz'/);
+});

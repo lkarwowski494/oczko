@@ -8,7 +8,7 @@ import { LiniaKonfliktu } from './IcloudKonflikt';
 import type { WzorzecHaptyki } from '../domena/porty';
 import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_AX3, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
-import { Dzianina } from './Dzianina';
+import { Dzianina, WCIECIE_DZIANINY } from './Dzianina';
 import { Liczba } from './Liczba';
 import { RzadAkcji } from './LicznikAkcje';
 import { SymbolSf } from './SymbolSf';
@@ -111,7 +111,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const zp = s.przypomnienie ? { przypomnienie: s.przypomnienie.tekst, n: nrRobocza } : null; // 008: przypomnienie w etykiecie dzianiny (`*_przyp`)
   const dzianina = (
     <View style={duzyTekst ? st.dzianinaAx : st.dzianina}>
-      <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina"
+      <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina" wciecie={WCIECIE_DZIANINY}
         etykieta={s.cel !== null
           ? (zp ? t('licznik.dzianina_a11y_cel_przyp', { ...a8, count: s.skonczone, cel: s.cel, ...zp }) : t('licznik.dzianina_a11y_cel', { ...a8, count: s.skonczone, cel: s.cel }))
           : (zp ? t('licznik.dzianina_a11y_przyp', { ...a8, count: s.skonczone, ...zp }) : t('licznik.dzianina_a11y', { ...a8, count: s.skonczone }))} />
@@ -150,6 +150,8 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
       {/* 016 + LIC-04 (P-613, tokeny `licznik.strefa`): strefa leży na treści, a treść kończy się odstępem = zmierzona wysokość strefy + odstepy.l,
           więc ostatnie elementy (Następna część, podpis sesji, konflikt, notatka) przewijają się nad rząd akcji. */}
       <ScrollView style={st.przewijana} contentContainerStyle={[st.srodek, wysokoscStrefy !== null && { paddingBottom: wysokoscStrefy + odstep.l }]}>
+        {/* 04-studio-projektowe-023 (P-627 A): konflikt iCloud pierwszy w treści, w każdym rozmiarze tekstu — wybór wersji bez przewijania. */}
+        {s.konflikt && <LiniaKonfliktu k={s.konflikt} t={t} oglos={p.oglos} na={p.naKonflikt} />}
         {ax3 && wierszLiczby}
         {s.projekt !== null && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.projekt_wejscie_a11y', { projekt: s.projekt })} onPress={p.naProjekt} disabled={!p.naProjekt} style={st.wejscieProjektu} testID="licznik-projekt-wejscie">
@@ -175,7 +177,6 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
             {wierszLiczby}
           </View>
         )}
-        {s.konflikt && <LiniaKonfliktu k={s.konflikt} t={t} oglos={p.oglos} na={p.naKonflikt} />}
         {start && <Text style={st.tresc}>{t('licznik.podpowiedz_start')}</Text>}
         {s.cel !== null && <LinijkaCelu s={s} t={t} st={st} naNastepnaCzesc={p.naNastepnaCzesc} />}
         {s.calosc && <Text style={st.podpis} testID="licznik-calosc">{s.calosc.czesc === null ? t('projekt.calosc', { count: s.calosc.rzedy }) : t('licznik.calosc', { czesc: s.calosc.czesc, count: s.calosc.rzedy })}</Text>}

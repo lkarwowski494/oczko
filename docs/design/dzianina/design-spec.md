@@ -136,3 +136,10 @@ Makiety: `ekrany.html` (`dzis-*-ax5`, `licznik-*`, nowe `licznik-cel`, `licznik-
 - **006 „wstecz”** (`wstecz`): `chevron.backward` + nazwa poprzedniego ekranu (ten sam klucz co jego tytuł) w `akcentTekst`, 400; gdy nazwa się nie mieści (dłuższa niż ok. 1/3 szerokości paska) — „Back”, jak system; korzenie zakładek (Dziś, Projekty, Narzędzia, Historia) bez „wstecz”; wyjątek nazwany: pasek wzoru sama strzałka, etykieta „Back to {część}” albo „Back to counter” (007). Lista ekranów w `zadania-08.md`.
 - **014**: hierarchia promieni wyżej (`promienie.minus` 18, `promienie.ikonaKafla` 12); linia zakreśleń wzoru w roli `mala` 13 pt; „Ukończony {data}” = istniejący klucz `projekty.ukonczono_bez_czasu` (P-614 (7)); miniatura zdjęcia z `projekt.zdjecie.miniatura`; „Zamknij” notatek wzoru w prawym górnym rogu.
 - **P-590**: dzień dziergany bez faktury (tydzień i kalendarz). Czego nie sprawdzono: urządzenie, 320/430 pt nowych stanów, iPad 13″ (1376 pt) — reguła progu go obejmuje.
+
+## Reaudyt E5 (2026-11-09, P-627): poprawki 04 w `docs/design/`
+Raport: warsztat `04-studio/2026-11-09-reaudit/04-studio-projektowe-reaudit-2026-11-09.md`.
+- **019 (N1)**: wzorce `oferty`, `oferty-czeka`, `zdjecie`, `formularz-czesc`, `wzor` (20 plików) zregenerowane z `ekrany.html`; po regeneracji `dzianina-zrzuty.mjs` daje 96/96 plików identycznych z `wzorce-zrzuty/`. Przyczyna: wzorce starsze niż wspólny CSS fixu E5, nie wersja Chromium (renderer deterministyczny).
+- **020**: próg AX3 = `UIContentSizeCategoryAccessibilityExtraLarge` (RN `fontScale` 2,643; AccessibilityMedium 1,786 to AX1) — poprawiony opis `cele._plusAx5`.
+- **011 pole wyboru** (P-619 (2) B przyjęte, P-627): własne tokeny `znaczniki.poleWyboru` 28, `poleWyboruAx5` 40, `poleWyboruPromien` 10 (wartości bez zmian względem wdrożenia zastępczego `znaczniki.radio` + `promienie.pole`); 08 przełącza `PoleWyboru` na te nazwy.
+- **018 (1.0.1)**: reguła „nazwa ≤ 1/3 paska” ma liczyć znaki CJK (Han, Hiragana, Katakana, Hangul) jako 1,0 em, nie 0,55 em.

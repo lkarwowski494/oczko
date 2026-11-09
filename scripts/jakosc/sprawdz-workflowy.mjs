@@ -16,6 +16,8 @@
 // Wersje narzędzi (zasada wspólna 21, DS-07; 07-jakosc-005):
 //  MAESTRO-WERSJA: krok z instalatorem get.maestro.mobile.dev ma `MAESTRO_VERSION` z dokładną wersją (nie `${{ vars.* }}`, która bywa pusta),
 //  pada przy pustej zmiennej (`exit 1`, bez `unset`) i porównuje `maestro --version` z przypiętą.
+//  MAESTRO-POBRANIE (P-626 d, 07-reaudit 9.11.2026): paczka `maestro.zip` z GitHub Releases przez `curl --retry … --retry-all-errors` (504 z Releases
+//  zatrzymał 3 z 4 części przebiegu 4), z `MAESTRO_ZIP_SHA256` (64 znaki hex) sprawdzonym `shasum -a 256 -c`; skrypt get.maestro.mobile.dev pobiera bez ponowień.
 // Wyjątki nazwane: scripts/jakosc/wyjatki.json („workflowy”). Użycie: node scripts/jakosc/sprawdz-workflowy.mjs [--katalog <korzeń>]
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -32,6 +34,8 @@ export const ASC_TYLKO_ODCZYT = [
 export const API_PRZEKLAD = [
   { plik: '.github/workflows/przeklad-tlumaczen.yml', zadanie: 'przeklad', sekret: 'ANTHROPIC_API_KEY', dlaczego: 'przekład fali 09 przez Message Batches, limit 6 USD na przebieg (P-144), tylko workflow_dispatch (P-474)' },
 ];
+/** Krok instalujący Maestro: skrypt get.maestro.mobile.dev albo paczka z wydań mobile-dev-inc/maestro. */
+const INSTALACJA_MAESTRO = /get\.maestro\.mobile\.dev|mobile-dev-inc\/maestro\/releases/;
 const TRYB_ZAPISU = /\b(apply|zapis|upload|wyslij|push)\b/i;
 const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
 
@@ -58,8 +62,12 @@ export function sprawdzWorkflowy(korzen) {
       if (job?.['timeout-minutes'] === undefined) zgl('TIMEOUT', `zadanie ${id} bez timeout-minutes`);
       for (const [i, krok] of (job?.steps ?? []).entries()) {
         if (typeof krok?.run === 'string' && DANE_ZDARZEN.test(krok.run)) zgl('DANE-ZDARZEN-W-RUN', `zadanie ${id}, krok ${i + 1}: dane zdarzenia wprost w run: (przekaż przez env)`);
-        if (typeof krok?.run === 'string' && krok.run.includes('get.maestro.mobile.dev')) {
+        if (typeof krok?.run === 'string' && INSTALACJA_MAESTRO.test(krok.run)) {
           const v = krok.env?.MAESTRO_VERSION ?? job?.env?.MAESTRO_VERSION ?? wf?.env?.MAESTRO_VERSION;
+          const sha = krok.env?.MAESTRO_ZIP_SHA256 ?? job?.env?.MAESTRO_ZIP_SHA256 ?? wf?.env?.MAESTRO_ZIP_SHA256;
+          const pobranie = krok.run.split('\n').find((l) => /\bcurl\b.*maestro\.zip/.test(l)) ?? '';
+          if (krok.run.includes('get.maestro.mobile.dev') || !/--retry \d+/.test(pobranie) || !pobranie.includes('--retry-all-errors')) zgl('MAESTRO-POBRANIE', `zadanie ${id}, krok ${i + 1}: maestro.zip bez curl --retry N --retry-all-errors (albo przez get.maestro.mobile.dev, który nie ponawia; P-626 d)`);
+          if (typeof sha !== 'string' || !/^[0-9a-f]{64}$/.test(sha) || !/shasum -a 256 -c/.test(krok.run)) zgl('MAESTRO-POBRANIE', `zadanie ${id}, krok ${i + 1}: brak MAESTRO_ZIP_SHA256 (64 hex) sprawdzanego przez shasum -a 256 -c`);
           if (typeof v !== 'string' || !/^\d+\.\d+\.\d+$/.test(v)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: MAESTRO_VERSION nie jest dokładną wersją (${v ?? 'brak'}); pusta = najnowsza bez commita`);
           if (!/\[ -n "\$MAESTRO_VERSION" \] \|\| \{[^}]*exit 1/.test(krok.run) || /unset MAESTRO_VERSION/.test(krok.run)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: pusta MAESTRO_VERSION nie kończy kroku błędem`);
           if (!/--version[\s\S]*grep -q\w* "\$MAESTRO_VERSION"/.test(krok.run)) zgl('MAESTRO-WERSJA', `zadanie ${id}, krok ${i + 1}: brak porównania maestro --version z MAESTRO_VERSION`);

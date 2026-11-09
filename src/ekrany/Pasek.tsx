@@ -1,7 +1,7 @@
 // Wspólne elementy paska (M1-audytor-generalny-033 i 036; design-spec „Aneks M2 partia 3a”): jeden wygląd „wstecz” na każdym ekranie
 // i przyciski z symbolem SF zamiast glifów Unicode. Symbol jest dekoracyjny (etykieta VoiceOver na przycisku), waga symbolu jak tekst obok
 // (HIG Typography: „precise weight matching between symbols and adjacent text”), skala z tekstem najwyżej ×1,8 jak dotychczasowe ikony paska.
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY, typografia, useKolory } from './motyw';
@@ -11,13 +11,22 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSU
  * odmianą w kolorze `akcentTekst` (006, P-614 (1) A; makieta `ekrany.html:30`), bez podkreślenia i bez pogrubienia — jak systemowy przycisk wstecz. `tylkoSymbol`: pasek wzoru (sama strzałka,
  * etykieta „Back to {część}”). testID domyślnie `nav-wstecz`.
  */
+/**
+ * 006 (P-614 (1)): hak etykiety „wstecz” — tytuł poprzedniego ekranu w stosie albo null („Back” z propsa `tekst`). Dostawca: korzeń nawigacji
+ * (`src/kompozycja/wstecz-trasa.ts`, expo-router); bez dostawcy (testy, ekrany poza stosem) — `tekst`. Wartość kontekstu jest stała, więc wywołanie haka ma stałą kolejność.
+ */
+export const KontekstWstecz = createContext<() => string | null>(() => null);
+
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
   const kolor = p.kolor ?? k.akcentTekst;
+  const useTytulPoprzedniego = useContext(KontekstWstecz);
+  const tekst = useTytulPoprzedniego() ?? p.tekst;
+  // 017 (P-627 A): VoiceOver czyta „Back” (`p.tekst`, jak systemowy przycisk); widoczny tekst = tytuł poprzedniego ekranu. „Back to {ekran}” — 1.0.1 (017 B).
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
-      {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.tekst}</Text>}
+      {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{tekst}</Text>}
     </Pressable>
   );
 }

@@ -37,7 +37,7 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   const krojLiczby = ipad ? tokeny.typografia.liczbaKarty : tokeny.typografia.liczbaPaskaWzoru;
   const celCzesci = p.licznik.cel ?? null;
   const blok = (
-    <View style={obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok">
+    <View style={ipad ? st.kartaLiczbyIpad : obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok">
       <Liczba wartosc={String(p.licznik.liczba)} styl={ipad ? st.liczbaIpad : st.liczba} pt={krojLiczby.pt} jezyk={p.jezyk} maxFontSizeMultiplier={krojLiczby.maxSkala} testID="licznik-wartosc" />
       {p.licznik.znaczenie !== 'w_trakcie'
         ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
@@ -71,7 +71,7 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   );
   if (obok) {
     return (
-      <View style={[st.kolumna, { width: p.szerokoscKolumny ?? undefined }]} testID="wzor-kolumna-licznika">
+      <View style={[st.kolumna, ipad && st.kolumnaIpad, { width: p.szerokoscKolumny ?? undefined }]} testID="wzor-kolumna-licznika">
         {blok}
         {komunikaty}
         {ipad && <View style={st.wypelniacz} />}
@@ -124,8 +124,12 @@ function style(k: Kolory) {
     podpis2: { ...typografia.podpis, color: k.tekst2, textAlign: 'center' },
     wypelniacz: { flex: 1 },
     plusPasek: { maxWidth: PW.plusMaxSzerokosc },
-    przyciskiIpad: { flexDirection: 'row', alignItems: 'flex-end', gap: odstep.m },
+    przyciskiIpad: { flexDirection: 'row', alignItems: 'flex-end', gap: odstep.m, flexShrink: 0 },
     minusIpad: { width: cel.przyciskMinus, minHeight: cel.przyciskMinus, borderRadius: promien.minus },
-    plusIpad: { minHeight: PW.kolumna.plusMinWysokosc, maxHeight: PW.kolumna.plusMaxWysokosc, flexBasis: 'auto', alignSelf: 'stretch' },
+    // 024 (P-627, regresja 015): na urządzeniu para −1/„+1” nie pojawiła się w kolumnie (scen. 44) — rozmiary jawne, bez rozciągania: „+1” `plusWysokosc` 200
+    // (w granicach 168–240), para się nie kurczy; karta liczby `.nr` (tło `pasek`, promień `karta`), kolumna bez tła — rama wzoru jak makieta `ipad.html:21–25`.
+    plusIpad: { minHeight: PW.kolumna.plusMinWysokosc, maxHeight: PW.kolumna.plusMaxWysokosc, height: PW.kolumna.plusWysokosc, flexBasis: 'auto', alignSelf: 'flex-end' },
+    kolumnaIpad: { backgroundColor: k.wzorRama, borderLeftWidth: 0 },
+    kartaLiczbyIpad: { flexShrink: 0, backgroundColor: k.pasek, borderRadius: promien.karta, padding: odstep.l, alignItems: 'center', gap: odstep.xs },
   });
 }

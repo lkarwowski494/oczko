@@ -249,20 +249,35 @@ describe('sprawdz-workflowy.mjs (ADR-0014, kontrola 05-9)', () => {
   });
   // 044 (07-jakosc-005, DS-07, zasada wspólna 21): instalacja Maestro tylko z przypiętą wersją, z błędem przy pustej i porównaniem z zainstalowaną.
   const MAESTRO = (env: string, run: string) => `on: push\npermissions:\n  contents: read\njobs:\n  e2e:\n    runs-on: macos-26\n    timeout-minutes: 10\n    steps:\n      - name: Maestro\n${env}        run: |\n${run.split('\n').map((l) => `          ${l}`).join('\n')}\n`;
-  const RUN_DOBRY = '[ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta"; exit 1; }\ncurl -fsSL "https://get.maestro.mobile.dev" | bash\nv=$(maestro --version)\nprintf \'%s\\n\' "$v" | grep -qF "$MAESTRO_VERSION" || exit 1';
-  test('044 instalacja Maestro z przypiętą wersją, strażnikiem pustej i porównaniem przechodzi', () => {
-    const w = uruchom(WORKFLOWY, wf('a.yml', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY)));
+  // P-626 d (07-reaudit 9.11): paczka z Releases z ponawianiem i SHA-256 zamiast skryptu get.maestro.mobile.dev (pobiera bez ponowień).
+  const ADRES_ZIP = 'https://github.com/mobile-dev-inc/maestro/releases/download/cli-$MAESTRO_VERSION/maestro.zip';
+  const POBRANIE_DOBRE = `curl -fsSL --retry 5 --retry-all-errors --retry-delay 20 -o "$zip" "${ADRES_ZIP}"\nprintf '%s  %s\\n' "$MAESTRO_ZIP_SHA256" "$zip" | shasum -a 256 -c - || exit 1\nunzip -q "$zip" -d "$HOME/.maestro"`;
+  const RUN_DOBRY = `[ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta"; exit 1; }\n${POBRANIE_DOBRE}\nv=$(maestro --version)\nprintf '%s\\n' "$v" | grep -qF "$MAESTRO_VERSION" || exit 1`;
+  const ENV_DOBRY = `        env:\n          MAESTRO_VERSION: '2.12.1'\n          MAESTRO_ZIP_SHA256: '${'a'.repeat(64)}'\n`;
+  test('044 instalacja Maestro z przypiętą wersją, strażnikiem pustej, porównaniem, ponawianiem i SHA-256 przechodzi', () => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', MAESTRO(ENV_DOBRY, RUN_DOBRY)));
     expect(w.stdout).toContain('naruszeń 0');
   });
   test.each([
-    ['zmienna repo (bywa pusta)', MAESTRO('        env:\n          MAESTRO_VERSION: ${{ vars.MAESTRO_VERSION }}\n', RUN_DOBRY)],
-    ['brak zmiennej', MAESTRO('', RUN_DOBRY)],
-    ['cichy zjazd do najnowszej (unset)', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY.replace(/^\[[^\n]*/, '[ -n "$MAESTRO_VERSION" ] || unset MAESTRO_VERSION'))],
-    ['bez porównania wersji', MAESTRO("        env:\n          MAESTRO_VERSION: '2.12.1'\n", RUN_DOBRY.replace(/\nv=.*$/s, ''))],
+    ['zmienna repo (bywa pusta)', MAESTRO(ENV_DOBRY.replace("'2.12.1'", '${{ vars.MAESTRO_VERSION }}'), RUN_DOBRY)],
+    ['brak zmiennej', MAESTRO(ENV_DOBRY.replace(/^.*MAESTRO_VERSION.*\n/m, ''), RUN_DOBRY)],
+    ['cichy zjazd do najnowszej (unset)', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace(/^\[[^\n]*/, '[ -n "$MAESTRO_VERSION" ] || unset MAESTRO_VERSION'))],
+    ['bez porównania wersji', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace(/\nv=.*$/s, ''))],
   ])('044 pułapka MAESTRO-WERSJA: %s pada', (_n, tekst) => {
     const w = uruchom(WORKFLOWY, wf('a.yml', tekst));
     expect(w.status).toBe(1);
     expect(w.stdout).toContain('MAESTRO-WERSJA');
+  });
+  test.each([
+    ['skrypt get.maestro.mobile.dev (bez ponowień; stan przed P-626 d)', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace(POBRANIE_DOBRE, 'curl -fsSL "https://get.maestro.mobile.dev" | bash'))],
+    ['curl bez --retry', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace('--retry 5 ', ''))],
+    ['curl bez --retry-all-errors (504 nie jest ponawiany)', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace('--retry-all-errors ', ''))],
+    ['brak MAESTRO_ZIP_SHA256', MAESTRO(ENV_DOBRY.replace(/^.*MAESTRO_ZIP_SHA256.*\n/m, ''), RUN_DOBRY)],
+    ['SHA-256 nie sprawdzany', MAESTRO(ENV_DOBRY, RUN_DOBRY.replace(/\nprintf '%s  %s.*$/m, ''))],
+  ])('P-626 d pułapka MAESTRO-POBRANIE: %s pada', (_n, tekst) => {
+    const w = uruchom(WORKFLOWY, wf('a.yml', tekst));
+    expect(w.status).toBe(1);
+    expect(w.stdout).toContain('MAESTRO-POBRANIE');
   });
   test('R-173 brak workflowów to błąd, nie zaliczenie', () => {
     expect(uruchom(WORKFLOWY, repo({})).status).toBe(1);
