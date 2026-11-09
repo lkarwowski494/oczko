@@ -29,7 +29,7 @@ export default function EkranHistoriiDni(): React.ReactElement {
     ustawBlad(false);
   }, [kontener, wybor, dzis]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!stan) return <Bezpieczny><StanWczytywania wyjscie={{ rodzaj: 'wstecz', naWyjdz: () => router.back() }} stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="dni" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
+  if (!stan) return <Bezpieczny><StanWczytywania stan={blad ? 'blad' : 'ladowanie'} t={kontener.j.t} przedrostek="dni" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></Bezpieczny>;
   const miesiac = (o: number) => { const m = przesun(wybor.miesiac, o); ustawWybor({ miesiac: m, dzien: m === dzis.slice(0, 7) ? dzis : `${m}-01` }); };
   return (
     <Bezpieczny>

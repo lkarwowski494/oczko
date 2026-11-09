@@ -10,6 +10,8 @@ import { EkranAwaryjny } from '../src/kompozycja/EkranAwaryjny';
 import { powodAwaryjny, rozpocznijStart, zapiszEtap, zapiszWyjscieDoTla } from '../src/kompozycja/start-aplikacji';
 import { tAwaryjny } from '../src/kompozycja/jezyk-awaryjny';
 import { DostawcaAplikacji, type Aplikacja } from '../src/kompozycja/Kontekst';
+import { useTytulPoprzedniego } from '../src/kompozycja/wstecz-trasa';
+import { KontekstWstecz } from '../src/ekrany/Pasek';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { utworzKontener } from '../src/kompozycja/kontener';
 import { kompozycjaLicznika } from '../src/kompozycja/licznik';
@@ -115,6 +117,8 @@ export default function Korzen(): React.ReactElement {
   const a = faza.a;
   return (
     <DostawcaAplikacji wartosc={a}>
+      {/* 006 (P-614 (1)): „wstecz” = tytuł poprzedniego ekranu w stosie (hak wywoływany w `Wstecz` każdego ekranu) */}
+      <KontekstWstecz.Provider value={useTytulPoprzedniego}>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: k.papier }, orientation: orientacjaEkranu('inny', IPAD) }}>
         {/* M3 p2 (WD-1): zakładki Dziś/Projekty/Narzędzia/Historia na dole stosu; licznik pełnoekranowo nad nimi, bez paska zakładek. */}
         <Stack.Screen name="(zakladki)" />
@@ -138,6 +142,7 @@ export default function Korzen(): React.ReactElement {
         <Stack.Screen name="drut" options={{ presentation: 'modal' }} />
         <Stack.Screen name="zdjecie" options={{ presentation: 'fullScreenModal' }} />
       </Stack>
+      </KontekstWstecz.Provider>
     </DostawcaAplikacji>
   );
 }

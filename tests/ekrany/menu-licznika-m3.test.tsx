@@ -24,20 +24,21 @@ const przodkowie = (id: string) => { const l: unknown[] = []; for (let n = scree
 /** Głębokość najniższego wspólnego przodka dwóch pozycji: im głębiej, tym bliżej siebie (ta sama grupa). */
 const wspolny = (a: string, b: string) => { const x = przodkowie(a), y = przodkowie(b); let i = 0; while (i < x.length && i < y.length && x[i] === y[i]) i++; return i; };
 
-describe('menu •••: 6 pozycji w 2 grupach', () => {
-  test('korekta (nazwa, numer rzędu, znaczenie liczby, zerowanie ostatnie), potem stan (blokada, ukończenie)', () => {
+describe('menu •••: 6 pozycji w 3 grupach', () => {
+  // Zastąpiony jawnie (009, P-614 (4), zadania-08 poz. 9; `docs/programista/m3-fix-e5-zastapione-testy.md`): zerowanie we własnej, trzeciej grupie na końcu.
+  test('korekta (nazwa, numer rzędu, znaczenie liczby), potem stan (blokada, ukończenie), na końcu zerowanie', () => {
     menu();
-    const poz = kolejnosc(['menu-nazwa', 'menu-wpisz-wartosc', 'menu-znaczenie', 'menu-zeruj', 'menu-zablokuj', 'menu-ukoncz']);
+    const poz = kolejnosc(['menu-nazwa', 'menu-wpisz-wartosc', 'menu-znaczenie', 'menu-zablokuj', 'menu-ukoncz', 'menu-zeruj']);
     expect(poz.every((p) => p >= 0)).toBe(true);
     expect([...poz].sort((a, b) => a - b)).toEqual(poz);
   });
 
-  test('dwie grupy: korekta oddzielona od stanu (wspólny przodek wewnątrz grupy głębszy niż między grupami); bez testID grup', () => {
+  // Zastąpiony jawnie (009, P-614 (4)): trzy grupy zamiast dwóch; testID grup kontraktu (`menu-grupa-liczenie`, `menu-grupa-projekt`) nadal nie istnieją.
+  test('trzy grupy: korekta, stan, zerowanie (wspólny przodek wewnątrz grupy głębszy niż między grupami); bez testID grup kontraktu', () => {
     menu();
-    const wGrupie = [wspolny('menu-nazwa', 'menu-zeruj'), wspolny('menu-zablokuj', 'menu-ukoncz')];
-    const miedzy = wspolny('menu-nazwa', 'menu-zablokuj');
-    expect(wGrupie[0]).toBeGreaterThan(miedzy);
-    expect(wGrupie[1]).toBeGreaterThan(miedzy);
+    const wGrupie = [wspolny('menu-nazwa', 'menu-znaczenie'), wspolny('menu-zablokuj', 'menu-ukoncz')];
+    expect(wGrupie[0]).toBeGreaterThan(wspolny('menu-nazwa', 'menu-zablokuj'));
+    expect(wGrupie[1]).toBeGreaterThan(wspolny('menu-ukoncz', 'menu-zeruj'));
     expect(screen.queryByTestId('menu-grupa-liczenie')).toBeNull();
     expect(screen.queryByTestId('menu-grupa-projekt')).toBeNull();
   });

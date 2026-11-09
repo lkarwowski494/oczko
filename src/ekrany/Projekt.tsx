@@ -11,6 +11,7 @@ import { cel, MAX_SKALA_TYTULOWA, miniatura, odstep, promien, PROG_KATEGORII_DOS
 import { StrzalkaWiersza, SymbolSf } from './SymbolSf';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
 import type { Tlumacz } from './wspolne';
+import { MenuPlywajace, PozycjaMenu } from './MenuLista';
 
 export type LicznikProjektu = { id: string; nazwa: string; opis: string }; // opis sformatowany: „12 rows”, „18 stitches”
 export type CzescProjektu = {
@@ -62,9 +63,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
   const wgId = new Map(s.czesci.map((c) => [c.id, c]));
   const wybierz = (f?: () => void) => () => { ustawMenu(null); f?.(); };
   const pozycja = (tekst: string, f: (() => void) | undefined, testID: string, destrukcyjna = false) => (
-    <Pressable key={testID} accessibilityRole="button" onPress={wybierz(f)} style={st.pozycjaMenu} testID={testID}>
-      <Text style={[st.tekst, destrukcyjna && { color: k.niszczacy }]}>{tekst}</Text>
-    </Pressable>
+    <PozycjaMenu key={testID} tekst={tekst} onPress={wybierz(f)} testID={testID} niszczacy={destrukcyjna} plywajace />
   );
   const usun = (nazwa: string, f: () => void, testID: string) => p.edycja && (
     <Pressable accessibilityRole="button" accessibilityLabel={t('usun.a11y', { nazwa })} onPress={f} style={st.usun} testID={testID}>
@@ -125,7 +124,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
             )}
           </View>
           {/* Menu „+” i •••: pływająca lista pod paskiem, przy prawej krawędzi (makieta `projekt-menu`); natywne UIMenu — backlog jak P-586 (1a) */}
-          {wyborPozycji && <View style={st.menuLista} testID="projekt-menu-lista">{wyborPozycji}</View>}
+          {wyborPozycji && <MenuPlywajace polozenie={st.menuLista} testID="projekt-menu-lista">{wyborPozycji}</MenuPlywajace>}
         </View>
       )}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.nazwa}</Text>
@@ -274,9 +273,7 @@ function style(k: Kolory) {
     wartoscEtykieta: { flex: 1, justifyContent: 'center' },
     wartosc: { ...typografia.tresc, color: k.tekst2, flexShrink: 1, textAlign: 'right' },
     wartoscPod: { textAlign: 'left' },
-    // Menu „+” i •••: pływająca lista pod paskiem (makieta `.pr-menu`: powierzchnia, promień lista); brak tokenów szerokości, cienia i wysokości 48 pt pozycji — zgłoszenie do 04.
-    menuLista: { position: 'absolute', top: '100%', right: 0, backgroundColor: k.powierzchnia, borderRadius: promien.lista, overflow: 'hidden', zIndex: 2 },
-    pozycjaMenu: { paddingVertical: odstep.m, paddingHorizontal: odstep.l, minHeight: cel.minimum, justifyContent: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: k.linia },
+    menuLista: { position: 'absolute', top: '100%', right: 0 }, // menu „+” i •••: pod paskiem przy prawej krawędzi; wygląd `menu.plywajace` (MenuLista, 009)
     usun: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     tekst: { ...typografia.tresc, color: k.tekst },
     pogrubiony: { fontWeight: '700' },
