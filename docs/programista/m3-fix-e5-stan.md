@@ -20,8 +20,8 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 | 7 | 007 + 008 | zrobione (jeden commit: wspólne słowniki) | 2cbd134 | `m3-fix-e5-etykiety.test.tsx` 3 ✕ + 1 ✓ (nazwany projekt bez zmian) → 4 ✓; trasa 007 w `m3-fix-e5-wzor-ax5.test.tsx` ✕ („Back to Counter from Nov 10”) → ✓ |
 | 1 | 001 | zrobione (token `dzianina.tloKolumnyKarty` w obu plikach, P-619; nabranie 8, igła z główką, marginesy 6 na karcie) | dac17ae (struktura: `DzisStyl.ts`), 56dcf4c | `m3-fix-e5-001.test.tsx` 4 ✕ + 1 ✓ → 5 ✓ |
 | 12 | 015 | zrobione (iPad regular: obok tylko ≥ 1000 pt i szersze niż wyższe, kolumna 280, liczba `liczbaKarty` + „of {cel}”, −1 72 obok „+1” 168–240; pasek „+1” ≤ 480, zestaw wyśrodkowany); przypomnienie w kolumnie — nie zrobione | 161f6a8 | `m3-fix-e5-015.test.tsx` 5 ✕ + 3 ✓ → 8 ✓ |
-| 6 | 006 | częściowo: `Wstecz` domyślnie `akcentTekst`; korzenie zakładek Narzędzia i Historia bez „wstecz”; etykieta = tytuł poprzedniego ekranu — do zrobienia | bd53c2f | `m3-fix-e5-006.test.tsx` 3 ✕ + 2 ✓ → 5 ✓ |
-| 9 | 009 | do zrobienia | — | — |
+| 6 | 006 | zrobione: `Wstecz` `akcentTekst` (bd53c2f); etykieta = tytuł poprzedniego ekranu (aed8992); stan wczytywania/błędu korzeni zakładek bez „wstecz” (edb1ebc) | bd53c2f, aed8992, edb1ebc, 9c367af | `m3-fix-e5-006.test.tsx` 5 ✓ + 3 ✕ → 9 ✓; `m3-fix-e5-006-etykiety.test.tsx` 2 ✕ (brak `KontekstWstecz`) → 9 ✓ |
+| 9 | 009 | zrobione (arkusz menu ••• i „Cel”: `ArkuszMenu`/`GrupaMenu`/`PozycjaMenu`; menu pływające projektu i źródła zdjęcia: `MenuPlywajace`) | cb545da, 9c367af | `m3-fix-e5-009.test.tsx` 9 ✕ + 1 ✓ → 10 ✓ |
 
 ## STOP-y rozstrzygnięte przez koordynatora (P-619, 9.11 06:17) — do wykonania w nowej sesji
 - 001: 08 dopisuje token `dzianina.tloKolumnyKarty` = #00000026 (źródło `docs/design/dzianina/ekrany.html:38` `.dz`, oba motywy) w `dzianina/tokeny.json` i `docs/design/tokeny.json` z adnotacją „wartość z makiety, P-619” (wyjątek nazwany); kontrast.mjs kod 0; 001 w całości.
@@ -46,6 +46,14 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 - 001: tło nakładki #00000026 nie ma pary w `kontrast-pary.json` (element graficzny, nie tekst); kontrast.mjs kod 0, 256/256. Licznik bez marginesu 6 (makieta też rysuje x=6 na liczniku) — poza zakresem 001, do oceny 04.
 - 001: miniatura listy bez główki igły (`glowka={false}`), jak makieta `.lista .pr`.
 - Czego nie sprawdzono: wygląd na urządzeniu i zrzuty przed/po (brak symulatora; przebieg 4 iOS: E2E `dzis-pierwszy`, 44 poziomo).
+
+## Część 3 (08c, 9.11) — gałąź `claude/kopia-08c-e5-2026-11-09` od dc3ccfdc, polecenie warsztat `koordynacja/role-2026-11-09/08c-fix-e5.md` @ 6e6911c
+- verify kod 0 (555 zestawów, 6864/6864), `jakosc:kontrole` kod 0 (9c367af). Commity cb545da i aed8992 przeszły testy celowane i typecheck, pełny zestaw dopiero na 9c367af (3 testy zastąpione jawnie, rejestr bez `useRoute`).
+- 009: cień menu pływającego `boxShadow` (CSS z tokenu, RN 0.86 nowa architektura) — bez przeliczania rozmycia na `shadowRadius`; „Wyzeruj do 0…” kolorem `tekst` (makieta bez `.nisz`; potwierdzenie w arkuszu); źródło zdjęcia zostaje w przepływie pod miniaturami (250 pt, od AX3 pełna szerokość), nie absolutnie. Tytuł arkusza menu `tresc` 700 (był `tytul`).
+- 006 etykiety: `KontekstWstecz` (Pasek.tsx) + hak `useTytulPoprzedniego` (`src/kompozycja/wstecz-trasa.ts`) w korzeniu stosu — zamiast propu `tekstWstecz` w 14 ekranach (mniejszy diff, ekrany bez zmian). Tytuł dynamiczny tylko projektu (`useTytulTrasy` w `app/projekt/[id].tsx`); licznik jako poprzedni ekran → „Back” (brak rejestracji). „ok. 1/3 paska” = szacunek: znaki × 0,55 em × 17 pt × min(skala, 1,8) ≤ (okno − 32)/3 — [OCENA 08, do potwierdzenia 04]. Bez nowych kluczy i18n.
+- 3 (korzenie zakładek): także `projekty.tsx` (to samo wystąpienie co dni/narzedzia).
+- Dla 07 (E2E z `nav-wstecz` / „Back”): `33-br-prj-001-s1` linia 69 `assertVisible: "Back"` na liczniku po utworzeniu projektu — teraz etykieta = tytuł poprzedniego ekranu (prawdopodobnie „Projects”) — do zmiany przez 07. Scenariusze z `nav-wstecz` (testID bez zmian): 05, 06, 08, 16, 18, 20, 32, 33, 36, 40, 41, 46, 52, 59, 61, 64, 66, 67, subflows/otworz-ustawienia. Menu •••: `menu-zeruj` teraz w trzeciej grupie (po „ukończ”) — scenariusze przewijające do niego sprawdzić przy AX.
+- Czego nie sprawdzono: wygląd na urządzeniu (cień, szerokość 250, etykiety „wstecz” w stosie expo-router), zrzuty przed/po — brak symulatora.
 
 ## Następny krok (nowa sesja)
 009 (menu = lista grupowana `menu.*`, pozycje 44, bez obrysów), potem 006 — etykiety „wstecz” = tytuł poprzedniego ekranu (plan wyżej). `WzorPrzegladarka.tsx` (20 429 B) i `app/wzor.tsx` (20 478 B) — przed zmianą wydzielić.
