@@ -98,16 +98,18 @@ function ArkuszDecyzji(p: { tytul: string; children: React.ReactNode; przyciski?
   }, [p.zmierz]);
   return (
     <View style={st.arkusz} testID={p.testID}>
+      {/* 04-studio-projektowe-002 (P-627): z `zamknij` nagłówek (tytuł + ✕) nad przewijaną treścią, jak `ArkuszMenu` — ✕ w zasięgu po przewinięciu. */}
+      {p.zamknij && (
+        <View style={[st.naglowekDecyzji, st.naglowekDecyzjiNad]} testID="arkusz-naglowek-decyzji">
+          <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
+            <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.zamknijZnak.color} maxSkala={MAX_SKALA_TYTULOWA} />
+          </Pressable>
+        </View>
+      )}
       {/* P2-6 (04, Aneks P2 poz. 9): przy AX5 lista akcji nie mieści się — przycięty ostatni wiersz jest wskazówką przewijania; bez wskaźnika, cienia i przyciągania do wiersza (Trening S18). */}
-      <ScrollView contentContainerStyle={st.tresc} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        {p.zamknij ? (
-          <View style={st.naglowekDecyzji} testID="arkusz-naglowek-decyzji">
-            <Text style={[st.tytul, st.rosnie]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>
-            <Pressable accessibilityRole="button" accessibilityLabel={p.zamknij.etykieta} onPress={p.zamknij.naZamknij} style={st.zamknij} testID={p.zamknij.testID}>
-              <SymbolSf nazwa="xmark" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={st.zamknijZnak.color} maxSkala={MAX_SKALA_TYTULOWA} />
-            </Pressable>
-          </View>
-        ) : <Text style={st.tytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>}
+      <ScrollView contentContainerStyle={[st.tresc, p.zamknij && st.trescPodNaglowkiem]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        {!p.zamknij && <Text style={st.tytul} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityRole="header">{p.tytul}</Text>}
         {p.children}
       </ScrollView>
       <View ref={pasek} style={[st.przyciski, { paddingBottom: odstep.l + nadKlawiatura }]} testID="arkusz-przyciski">{p.przyciski}</View>
@@ -194,6 +196,8 @@ export function style(k: Kolory) {
     tresc: { padding: odstep.xl, gap: odstep.m },
     tytul: { ...typografia.tytul, color: k.tekst },
     naglowekDecyzji: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: odstep.s },
+    naglowekDecyzjiNad: { paddingHorizontal: odstep.xl, paddingTop: odstep.xl, paddingBottom: odstep.m }, // odstępy jak dotąd w treści (padding xl, gap m)
+    trescPodNaglowkiem: { paddingTop: 0 },
     rosnie: { flexShrink: 1, flexGrow: 1 },
     zamknij: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
     zamknijZnak: { ...typografia.tresc, color: k.tekst },
