@@ -13,3 +13,4 @@ Każdy wiersz: test zapisywał zachowanie, które zatwierdzona poprawka 04 świa
 | `tests/ekrany/licznik-ax5.test.tsx` „P-277: krój tytułowy … „+1” i „−1” najwyżej ×1,4” | „+1 row” ×1,8 | ×1,4 (`przyciskPlus.maxSkala`) | 005 (P-614) |
 | `tests/ekrany/naglowki-sekcji-13-reszta.test.tsx` „ListaProjektow: „In progress” i „Finished” — lista.naglowekGrupy” | 13 pt, `olowek` (H-2) | 17 pt, `tekst` (`lista.naglowekGrupy`) | 010 (P-614 (5); design-spec Fix E5: „zastępuje”) |
 | `tests/ekrany/m3-p4b-kolumny.test.tsx` „AX1: karta w kolumnie, kolumna dzianiny min. 120 …; AX5: pas 48” | AX5: kolumna min. 120 | AX1: min. 120; AX5: pas 48 (`kartaDzis.ax3ax5`) | 004 (P-614 (2) A) |
+| `tests/ekrany/dzianina-geometria.test.ts` „0 rzędów = sama igła z nabranymi oczkami …” | igła na dole (y = dół dzianiny) | pas nabrania 8 jedn. nad dołem, igła na nabraniu (`geometria.nabranie`) | 001 (P-619; makieta `ekrany.html:629–631`) |

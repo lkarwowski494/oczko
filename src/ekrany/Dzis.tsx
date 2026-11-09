@@ -18,6 +18,9 @@ import { PrzyciskSymbolu } from './Pasek';
 import { skutekPlus, type KomunikatPlus } from './po-plusie';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 
+/** 001 (P-619): na karcie tło kolumny = nakładka `dzianina.tloKolumnyKarty` (makieta `ekrany.html:38`), dzianina z marginesem 6 jedn. (`ekrany.html:629`, wartość rysunkowa). */
+const WCIECIE_DZIANINY = 6;
+
 export type MiejsceDzis = 'licznik' | 'wzor' | 'lista';
 export type DzienTygodnia = { dzien: string; skrot: string; dziergany: boolean; dzis: boolean; a11y: string };
 /** Dane „Dziś” spoza stanu licznika (odczyty `widokHistorii`, `widokProjektow`, `widok` licznika), sformatowane w kompozycji. */
@@ -101,7 +104,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
   const zp = dane?.coDalej ? { przypomnienie: dane.coDalej.tekst, n: s.skonczone + dane.coDalej.za + 1 } : null; // 008 (`*_przyp`)
   const elDzianina = kolumna && (
           <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={dane?.rzedyDzis ?? 0} przypomnienie={dane?.coDalej ? s.skonczone + dane.coDalej.za + 1 : null}
-            szerokosc={kolumna.w} wysokosc={kolumna.h} testID="dzis-dzianina"
+            szerokosc={kolumna.w} wysokosc={kolumna.h} testID="dzis-dzianina" tlo={tokeny.dzianina.tloKolumnyKarty} wciecie={WCIECIE_DZIANINY}
             etykieta={s.cel !== null
               ? (zp ? t('dzis.dzianina_a11y_cel_przyp', { ...a8, count: k8, cel: s.cel, ...zp }) : t('dzis.dzianina_a11y_cel', { ...a8, count: k8, cel: s.cel }))
               : (zp ? t('dzis.dzianina_a11y_przyp', { ...a8, count: k8, ...zp }) : t('dzis.dzianina_a11y', { ...a8, count: k8 }))} />

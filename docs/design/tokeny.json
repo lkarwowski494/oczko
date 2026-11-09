@@ -61,6 +61,7 @@
   "haptykaZegarek": { "_opis": "watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, przeniesione 1:1 z ../tokeny.json, P-142, ADR-0030). Klucze jak w „haptyka”; zwykły rząd na zegarku bez zmian (decyzja 08 przy celu watch).", "bladZapisu": "retry", "blokada": "failure", "przypomnienie": "notification" },
   "dzianina": { "_opis": "M3-MAK-03 (2026-11-08): kolumny elementu firmowego z zatwierdzonej makiety (P-554, linia bazowa SP-13), zamiast 1,5 × cele.plus (p2) i 72 × 252 (p3a). Kolumna licznika węższa niż „+1”, żeby liczba 104 pt (3 cyfry w komórkach 0,536 em) miała miejsce przy 320 pt.",
     "kolumnaKarty": { "szerokosc": 112, "minWysokosc": 216, "ax5MinWysokosc": 120, "promien": 12 },
+    "tloKolumnyKarty": "#00000026", "_tloKolumnyKarty": "001 (P-619, 2026-11-09): tło kolumny dzianiny na karcie „Dziś” = nakładka z makiety (ekrany.html:38 `.dz`), oba motywy; wartość z makiety, wyjątek nazwany P-619 — 04 oceni przy reaudycie. Licznik i miniatura: tło `karta`.",
     "kolumnaLicznika": { "szerokosc": 64, "wysokosc": 260, "ax5Wysokosc": 96, "promien": 12 } },
   "znaczniki": { "_opis": "M3-MAK-03/04: wymiary małych elementów (p7 składała je z odstep). Cel dotykowy daje cały wiersz (≥ cele.minimum), nie znacznik.",
     "radio": 28, "radioAx5": 40, "radioPromien": "50%", "_radio": "plany Oczko Pro i Wybor w arkuszach (jeden język wyboru: kółko z obwódką tekst2; wybrane wypełnione przycisk + ptaszek przyciskTekst)",

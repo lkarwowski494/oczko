@@ -48,7 +48,7 @@ export function ListaProjektow({ stan: s, t, naSzukaj, naOtworz, naNowy, naUstaw
           {w.dzianina && !duzyTekst && (
             <View style={st.miniatura} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" testID="projekty-miniatura">
               <Dzianina gotowe={w.dzianina.gotowe} cel={w.dzianina.cel} dzis={0} przypomnienie={null} szerokosc={miniatura.dzianina.szerokosc - 2 * miniatura.dzianina.wciecie}
-                wysokosc={miniatura.dzianina.wysokosc - 2 * miniatura.dzianina.wciecie} etykieta="" />
+                wysokosc={miniatura.dzianina.wysokosc - 2 * miniatura.dzianina.wciecie} etykieta="" glowka={false} />
             </View>
           )}
           <View style={st.wierszTekst}>

@@ -7,6 +7,8 @@
 export const OKNO_BEZ_CELU = 96;
 /** Margines rysunku nad linią celu i pod nabraniem, jako ułamek wysokości (miejsce na ząbek i igłę); wartość rysunkowa, nie dziedzinowa. */
 const MARGINES_UL = 0.06;
+/** Pas nabranych oczek przy 0 rzędach (001, P-619): 8 jednostek rysunku jak makieta `docs/design/dzianina/ekrany.html:629`; wartość rysunkowa, nie dziedzinowa. */
+export const NABRANIE_WYSOKOSC = 8;
 
 export interface WejscieDzianiny {
   readonly gotowe: number;
@@ -22,6 +24,8 @@ export interface GeometriaDzianiny {
   readonly pasDzis: { readonly y: number; readonly h: number } | null;
   readonly liniaCelu: { readonly y: number } | null;
   readonly igla: { readonly y: number };
+  /** Przy 0 rzędach pas nabranych oczek nad dolnym marginesem (spec: „0 rzędów → sama igła z nabranymi oczkami”), inaczej `null`. */
+  readonly nabranie: { readonly y: number; readonly h: number } | null;
   readonly zabek: { readonly y: number } | null;
 }
 
@@ -40,12 +44,14 @@ export function geometriaDzianiny(w: WejscieDzianiny): GeometriaDzianiny {
   const y = dol - h;
   const dzis = Math.min(nieujemna(w.dzis), gotowe);
   const hDzis = wRzedach(dzis);
+  const nabranie = gotowe === 0 ? { y: dol - NABRANIE_WYSOKOSC, h: NABRANIE_WYSOKOSC } : null;
   const p = w.przypomnienie !== null && Number.isFinite(w.przypomnienie) ? w.przypomnienie : null;
   return {
     dzianina: { y, h },
     pasDzis: hDzis > 0 ? { y, h: Math.min(hDzis, h) } : null,
     liniaCelu: cel === null ? null : { y: gora },
-    igla: { y },
+    igla: { y: nabranie ? nabranie.y : y },
+    nabranie,
     zabek: p !== null && p > gotowe && p <= okno ? { y: dol - wRzedach(p) } : null,
   };
 }
