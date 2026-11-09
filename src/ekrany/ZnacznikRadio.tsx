@@ -24,16 +24,16 @@ export function ZnacznikRadio({ wybrany }: { wybrany: boolean }): React.ReactEle
 
 
 /**
- * Pole wyboru wielu opcji (011, P-619 wariant B): kwadrat `znaczniki.radio` 28 pt (od AX1 `radioAx5` 40) z promieniem `promienie.pole` — tokeny zastępcze, bo system nie ma
- * osobnego tokenu pola wyboru (04 oceni przy reaudycie). Ten sam język co `ZnacznikRadio`: puste z obwódką `tekst2`, zaznaczone wypełnione `przycisk` z `checkmark`
- * w `przyciskTekst`. Dekoracyjne: stan niesie `accessibilityState.checked` wiersza.
+ * Pole wyboru wielu opcji (011, P-619 B przyjęte P-627): kwadrat `znaczniki.poleWyboru` 28 pt (od AX1 `poleWyboruAx5` 40) z promieniem `znaczniki.poleWyboruPromien` 10 —
+ * własne tokeny 04 (wartości jak dotychczasowe zastępcze). Ten sam język co `ZnacznikRadio`: puste z obwódką `tekst2`, zaznaczone wypełnione `przycisk` z `checkmark`
+ * w `przyciskTekst`; kształt odróżnia je od koła radia. Dekoracyjne: stan niesie `accessibilityState.checked` wiersza.
  */
 export function PoleWyboru({ zaznaczone }: { zaznaczone: boolean }): React.ReactElement {
   const k = useKolory();
-  const r = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI ? znaczniki.radioAx5 : znaczniki.radio;
+  const r = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI ? znaczniki.poleWyboruAx5 : znaczniki.poleWyboru;
   return (
     <View testID="pole-wyboru" accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-      style={[{ width: r, height: r, borderRadius: tokeny.promienie.pole, alignItems: 'center', justifyContent: 'center' }, zaznaczone ? { backgroundColor: k.przycisk } : { borderWidth: 2, borderColor: k.tekst2 }]}>
+      style={[{ width: r, height: r, borderRadius: znaczniki.poleWyboruPromien, alignItems: 'center', justifyContent: 'center' }, zaznaczone ? { backgroundColor: k.przycisk } : { borderWidth: 2, borderColor: k.tekst2 }]}>
       {zaznaczone && <SymbolSf nazwa="checkmark" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />}
     </View>
   );
