@@ -24049,6 +24049,529 @@
      "uwaga": "長針 = US dc / UK tr. 長長針 = US tr (S-ESL-TW: „SKILL 3 中長針、長長針”)."
     }
    }
+  },
+  {
+   "id": "stoper",
+   "grupa": "licznik",
+   "en": "stopwatch (session timer that counts up: start, pause, stop; the source labels it \"timer\")",
+   "pl": "stoper (pomiar czasu sesji w górę)",
+   "znaczenie": "narzędzie mierzące czas sesji pracy nad robótką w górę: start, pauza, zatrzymanie; ekran Licznik, Dziś, Projekty (czas z stoperem). NIE: minutnik/timer odliczający w dół (countdown); w językach, które mają dwa słowa, używamy słowa na stoper (P-618 b, 9.11.2026).",
+   "wykrywaj": "\\btimers?\\b|\\bstopwatch\\b",
+   "gdzie": "interfejs src/i18n (klucze z wzorca wykrywaj)",
+   "jezyki": {
+    "en": {
+     "zalecany": "stopwatch",
+     "warianty": [
+      "timer (w etykietach źródła: skrót myślowy)"
+     ],
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "uwaga": "Źródło en używa „timer” w licznik.akcja_stoper i stoper.* oraz „stopwatch” w dni.czas i projekt.czas_brak; narzędzie liczy w górę (stoper), nie odlicza (minutnik). Nazwa en do decyzji (zob. raport fali E5)."
+    },
+    "pl": {
+     "zalecany": "stoper",
+     "pewnosc": "srednia",
+     "status": "potwierdzony",
+     "zakazane": [
+      {
+       "wzorzec": "minutnik|timer",
+       "powod": "minutnik = odliczanie w dół; narzędzie liczy w górę (P-618 b)"
+      }
+     ],
+     "uwaga": "termin produktu zgodny z kartą „Stoper” w aplikacji Zegar"
+    },
+    "bg": {
+     "zalecany": "хронометър",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "таймер|таймър",
+       "powod": "минутник/таймер (обратно броене), не хронометър"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Часовник на български: „Хронометър“; вече е използвано в projekt.czas_brak/dni.czas. Заменено „таймер“ в 15 ключа (+ akcja)."
+    },
+    "cs": {
+     "zalecany": "stopky",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "časovač|minutk|timer",
+       "powod": "minutník/časovač (odpočet), ne stopky"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Bez zmian: cs już używa „stopky“."
+    },
+    "da": {
+     "zalecany": "stopur",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "sessionstimer|timeren|(stop|start|genoptag|pause)\\s+timer|nedtælling",
+       "powod": "timer = nedtælling (minutnik), nie stopur"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. W da „timer” to też liczba mnoga od „time” (godzina); wzorzec zawężony do połączeń z nazwą narzędzia, żeby nie łapać „{{count}} timer” = godziny."
+    },
+    "de": {
+     "zalecany": "Stoppuhr",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer|countdown",
+       "powod": "Timer = Countdown (minutnik), nie Stoppuhr"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Zakaz bez \\b, bo występuje w złożeniach (Sitzungstimer); użyto „Sitzungs-Stoppuhr” z łącznikiem (trzy s)."
+    },
+    "el": {
+     "zalecany": "χρονόμετρο",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "χρονοδιακόπτ|τάιμερ|αντίστροφη",
+       "powod": "χρονοδιακόπτης/τάιμερ (odliczanie), nie χρονόμετρο"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Bez zmian: el używa „χρονόμετρο” (Apple Ρολόι: Χρονόμετρο = stoper, Χρονοδιακόπτης = minutnik)."
+    },
+    "es": {
+     "zalecany": "cronómetro",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "temporizador",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "minutero",
+       "powod": "minutnik"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "anglicyzm: minutnik"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple: Cronómetro (stopwatch) vs Temporizador (timer)."
+    },
+    "es-419": {
+     "zalecany": "cronómetro",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "temporizador|\\btimer\\b|minutero|cuenta regresiva",
+       "powod": "temporizador (odliczanie), nie cronómetro"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Bez zmian: es-419 używa „cronómetro” (Apple Reloj: Cronómetro vs Temporizador)."
+    },
+    "et": {
+     "zalecany": "stopper",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "taimer",
+       "powod": "taimer = minutnik/timer, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Kell et: Stopper."
+    },
+    "fi": {
+     "zalecany": "sekuntikello",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "ajastin",
+       "powod": "ajastin = minutnik/timer, nie stoper"
+      },
+      {
+       "wzorzec": "ajastus",
+       "powod": "timing/minutnik"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Kello fi: Sekuntikello."
+    },
+    "fr": {
+     "zalecany": "chronomètre",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "minuteur",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "anglicyzm: minutnik"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple: Chronomètre vs Minuteur."
+    },
+    "hr": {
+     "zalecany": "štoperica",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "tajmer",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "mjera[čc]\\s+vremena",
+       "powod": "Apple: Mjerač vremena = minutnik"
+      },
+      {
+       "wzorzec": "odbrojava",
+       "powod": "odliczanie"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Zegar hr: Štoperica (stopwatch) vs Mjerač vremena (timer)."
+    },
+    "hu": {
+     "zalecany": "stopper",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "időzít",
+       "powod": "időzítő = minutnik/timer, nem stopper"
+      },
+      {
+       "wzorzec": "visszaszámlál",
+       "powod": "odliczanie"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Óra hu: Stopper."
+    },
+    "id": {
+     "zalecany": "Stopwatch",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "pengatur waktu",
+       "powod": "minutnik/timer, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. „Stopwatch” jest też nazwą karty w aplikacji Zegar Apple w języku indonezyjskim; „Timer” to minutnik."
+    },
+    "it": {
+     "zalecany": "Cronometro",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik (conto alla rovescia), nie stoper"
+      },
+      {
+       "wzorzec": "conto alla rovescia",
+       "powod": "odliczanie, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Cronometro = stopwatch (karta Cronometro w Orologio Apple)."
+    },
+    "ja": {
+     "zalecany": "ストップウォッチ",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "タイマー",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. ストップウォッチ = karta Stopwatch w aplikacji Zegar Apple; w projekt.czas_brak i dni.czas już użyte."
+    },
+    "ko": {
+     "zalecany": "스톱워치",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "타이머",
+       "powod": "minutnik (odliczanie), nie stoper"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. 스톱워치 = Stopwatch w Zegarze Apple; już użyte w projekt.czas_brak i dni.czas."
+    },
+    "lt": {
+     "zalecany": "Chronometras",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "laikmat",
+       "powod": "minutnik/timer, nie stoper"
+      },
+      {
+       "wzorzec": "taimer",
+       "powod": "timer, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Chronometras = stopwatch."
+    },
+    "lv": {
+     "zalecany": "Sekundometrs",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "taimer",
+       "powod": "minutnik/timer, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Sekundometrs = stopwatch (już w projekt.czas_brak i dni.czas). Apple lv w Zegarze może używać „Hronometrs” — niepewne."
+    },
+    "ms": {
+     "zalecany": "jam randik",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "pemasa",
+       "powod": "minutnik/timer (pengira detik turun), bukan stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Jam (Clock) ms: tab Stopwatch = Jam Randik, Timer = Pemasa."
+    },
+    "nb": {
+     "zalecany": "stoppeklokke",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "tidtak",
+       "powod": "tidtaker = timer/tidtaker, ikke stoppeklokke"
+      },
+      {
+       "wzorzec": "nedtelling",
+       "powod": "minutnik (odliczanie), nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Klokke nb: fanen heter Stoppeklokke. Wzorca \"timer\" nie używam: w nb \"timer\" = godziny (\"{{count}} timer\")."
+    },
+    "nl": {
+     "zalecany": "stopwatch",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik (aftellen), geen stopwatch"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Klok nl: tabblad Stopwatch; Timer is het aftellen."
+    },
+    "pt": {
+     "zalecany": "cronómetro",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer\\b",
+       "powod": "minutnik (contagem decrescente), não cronómetro"
+      },
+      {
+       "wzorzec": "temporizador",
+       "powod": "minutnik/odliczanie, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Cronómetro = Stopwatch no iOS pt-PT."
+    },
+    "pt-BR": {
+     "zalecany": "cronômetro",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer\\b",
+       "powod": "minutnik (contagem regressiva), não cronômetro"
+      },
+      {
+       "wzorzec": "temporizador",
+       "powod": "minutnik/odliczanie, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Cronômetro = Stopwatch na iOS pt-BR; Timer = Timer/Temporizador."
+    },
+    "ro": {
+     "zalecany": "cronometru",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "temporizator",
+       "powod": "minutnik (numărătoare inversă), nu cronometru"
+      },
+      {
+       "wzorzec": "\\btimer",
+       "powod": "minutnik/timer, nu cronometru"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple Ceas ro: fila Cronometru; Temporizator = timer."
+    },
+    "ru": {
+     "zalecany": "Секундомер",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "таймер",
+       "powod": "таймер/минутник (обратный отсчёт), не секундомер"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. секундомер = карточка «Секундомер» в приложении «Часы» Apple"
+    },
+    "sk": {
+     "zalecany": "stopky",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "časovač",
+       "powod": "časovač/minútka (odpočítavanie), nie stopky"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "minútka (odpočítavanie), nie stopky"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. stopky = karta Stopky v aplikácii Hodiny od Apple"
+    },
+    "sl": {
+     "zalecany": "štoparica",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "časovnik",
+       "powod": "časovnik/minutnik (odštevanje), ne štoparica"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik (odštevanje), ne štoparica"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. štoparica = zavihek Štoparica v aplikaciji Ura"
+    },
+    "sr": {
+     "zalecany": "штоперица",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "тајмер",
+       "powod": "тајмер/мерач за одбројавање, не штоперица"
+      },
+      {
+       "wzorzec": "tajmer",
+       "powod": "тајмер (latinica), не штоперица"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple sr: Štoperica (Sat); katalog je ćirilica"
+    },
+    "sv": {
+     "zalecany": "stoppur",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "timer",
+       "powod": "timer (nedräkning), inte stoppur; även i sammansättningar som sessionstimer"
+      },
+      {
+       "wzorzec": "minutur",
+       "powod": "minutur (nedräkning), inte stoppur"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. stoppur = fliken Stoppur i Apples Klocka"
+    },
+    "tr": {
+     "zalecany": "kronometre",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "zamanlay[ıi]c[ıi]",
+       "powod": "zamanlayıcı = minutnik/timer (geri sayım), kronometre değil"
+      },
+      {
+       "wzorzec": "timer",
+       "powod": "minutnik (geri sayım), kronometre değil"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. kronometre = Apple Saat uygulamasındaki Kronometre sekmesi"
+    },
+    "uk": {
+     "zalecany": "Секундомір",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "таймер",
+       "powod": "таймер (відлік), не секундомір"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Секундомір = Apple Годинник (Stopwatch); projekt.czas_brak, dni.czas i dni.bez_stopera już mają секундомір i nie zmieniono ich."
+    },
+    "vi": {
+     "zalecany": "bấm giờ",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "hẹn giờ",
+       "powod": "hẹn giờ = timer/minutnik, nie stoper"
+      },
+      {
+       "wzorzec": "đếm ngược",
+       "powod": "odliczanie, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple (Đồng hồ): Stopwatch = „Bấm giờ”, Timer = „Hẹn giờ”. Nazwa akcji „Bấm giờ” zostaje; samo „đồng hồ” (zegar) rozszerzone do „đồng hồ bấm giờ”.",
+     "warianty": [
+      "đồng hồ bấm giờ"
+     ]
+    },
+    "zh-Hant": {
+     "zalecany": "碼錶",
+     "pewnosc": "niska",
+     "status": "[DO SPRAWDZENIA]",
+     "zakazane": [
+      {
+       "wzorzec": "計時",
+       "powod": "計時/計時器 = timer lub ogólne „mierzenie czasu”, nie nazwa stopera"
+      },
+      {
+       "wzorzec": "倒數",
+       "powod": "odliczanie, nie stoper"
+      }
+     ],
+     "uwaga": "P-618 b (09 fala E5, 2026-11-09): nazwa = słowo na stoper (liczenie w górę), nie na minutnik. Z wiedzy modelu, bez przeczytanego źródła; do sprawdzenia w glosariuszu Apple (karta Stopwatch aplikacji Zegar) albo u rodzimego użytkownika. Apple zh-Hant (Taiwan): Stopwatch = 碼錶 (też 馬錶), Timer = 計時器. projekt.czas_brak, dni.czas, dni.bez_stopera już używają 碼錶."
+    }
+   }
   }
  ],
  "kategorie_cyc": {
