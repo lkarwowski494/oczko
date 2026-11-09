@@ -43,12 +43,16 @@ tags:
 # --- lista: dwa projekty, oryginał nietknięty ---
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 20000 }
-- runFlow: # P-583: z licznika do listy przez „wstecz” i zakładkę (licznik nie ma już wejścia do listy)
-    when: { visible: { id: "licznik-plus" } }
+# P-583: „wstecz” wraca do ekranu źródłowego, a stos po projekt-roboczy i dodaj-czesc-cel jest głębszy: drugie „wstecz” z licznika
+# dało ekran projektu „Harbor”, nie pasek zakładek (przebieg 42544112861 step-107). Wstecz aż do ekranu z paskiem zakładek, potem zakładka Projekty (P-608 G3).
+- repeat:
+    while: { notVisible: { id: "nav-projekty" } }
+    times: 5
     commands:
       - tapOn: { id: "nav-wstecz" }
-      - extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
-- tapOn: { id: "nav-projekty", optional: true }
+      - assertVisible: { id: "nav-wstecz|nav-projekty" } # kolejny ekran stosu albo ekran z paskiem zakładek
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: { id: "projekty-wiersz", index: 1 }
 - assertNotVisible: { id: "projekty-wiersz", index: 2 }
