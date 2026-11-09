@@ -12,7 +12,8 @@ Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run
 | 4 · e2e 34 („Next part” pod strefą akcji) | zrobione, dowód na urządzeniu (cherry-pick na integrację) | 8433acb | interpreter nie liczy geometrii; kontrole scenariuszy zielone. Dwa `swipe` w treści (start 55 %) do końca przewijania — `paddingBottom` treści = strefa + odstęp (`src/ekrany/Licznik.tsx:152`) |
 | 1 · AX5-wzór, opcja A (właściciel, 9.11) | zrobione, przyjęte; wysokość wzoru potwierdzi E2E 30 | f2fadde (strukturalny: `src/ekrany/WzorTytul.tsx`), 61adee2 (zachowanie) | `tests/ekrany/m3-build2-ax5-wzor.test.tsx` (fontScale 3,571): czerwony (`maxFontSizeMultiplier` undefined zamiast 1,8) → zielony; `wzor-zrodlo` w jednej linii, karta wskazówki z limitem 1,8 |
 | 2 · 024 diagnoza (instrumentacja) | zrobione; przebieg 42678725514 (`[e2e-ipad]`, e6bd782) | 3bc778d | `tests/ekrany/e2e-ramki-kolumny.test.tsx`: czerwony (brak `e2e-ramki-kolumny`) → zielony; poza E2E brak tekstu i `onLayout` (`tests/ekrany/m3-fix-reaudit-024-ipad-kolumna.test.tsx`, ostatni test) |
-| 2 · 024 poprawka | **do nowej sesji 08** | — | — |
+| 2 · 024 runda 1 ramek (sesja 08f, polecenie 08f-024) | ramek brak: scen. 44 padł po obrocie (aplikacja zamknięta) — błąd instrumentacji, poprawiony | c26cccc | `tests/ekrany/e2e-ramki-kolumny.test.tsx` (2 nowe): czerwone („Rendered more hooks…”, device-simulator.log run 42678725514 19:26:09) → zielone; verify kod 0, 565 / 6899 |
+| 2 · 024 poprawka | **czeka na rundę 2 ramek** (`[e2e-ipad]` na c26cccc lub nowszym) | — | — |
 
 ## 024 — przekazanie
 
