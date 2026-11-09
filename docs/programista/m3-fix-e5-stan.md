@@ -56,4 +56,4 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 - Czego nie sprawdzono: wygląd na urządzeniu (cień, szerokość 250, etykiety „wstecz” w stosie expo-router), zrzuty przed/po — brak symulatora.
 
 ## Następny krok (nowa sesja)
-009 (menu = lista grupowana `menu.*`, pozycje 44, bez obrysów), potem 006 — etykiety „wstecz” = tytuł poprzedniego ekranu (plan wyżej). `WzorPrzegladarka.tsx` (20 429 B) i `app/wzor.tsx` (20 478 B) — przed zmianą wydzielić.
+Pozycje 1–16 zadań 08 zrobione (17: P-617 A). Zostaje: przypomnienie w kolumnie iPada (015), E2E 33 „Back” (07), zrzuty i reaudyt 04 na przebiegu iOS. `app/wzor.tsx` 20 478 B — przed zmianą wydzielić.
