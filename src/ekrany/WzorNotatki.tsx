@@ -63,7 +63,7 @@ export function ArkuszNotatekWzoru(p: PropsArkuszaNotatek): React.ReactElement |
           </View>
         ) : (
           <View>
-            {naglowek(przycisk(t('wspolne.zamknij'), 'wzor-notatka-zamknij', zamknij), t('wzor.notatki_tytul', { strona: chip.strona + 1 }), <View style={st.przyciskNaglowka} />)}
+            {naglowek(<View style={st.przyciskNaglowka} />, t('wzor.notatki_tytul', { strona: chip.strona + 1 }), przycisk(t('wspolne.zamknij'), 'wzor-notatka-zamknij', zamknij))}{/* 014: „Zamknij” prawy górny róg (słownik) */}
             {chip.notatki.map((n) => (
               <Pressable key={n.id} accessibilityRole="button" accessibilityLabel={t('wzor.notatka_chip', { n: chip.rzadWzoru, tekst: n.tekst })} style={st.pozycja} testID={`wzor-notatka-wiersz-${n.id}`} onPress={() => ustawWybrana(n.id)}>
                 <Text style={st.tresc} numberOfLines={2}>{t('wzor.notatka_chip', { n: chip.rzadWzoru, tekst: n.tekst })}</Text>

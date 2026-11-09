@@ -259,6 +259,6 @@ function style(k: Kolory, jezyk?: string) {
     kafleAx: { gap: odstep.l },
     kafel: { width: '47%', flexGrow: 1, minHeight: cel.plus * 2, backgroundColor: k.powierzchnia, borderRadius: promien.kafel, padding: odstep.l, gap: odstep.m, justifyContent: 'space-between' },
     kafelAx: { backgroundColor: k.powierzchnia, borderRadius: promien.kafel, padding: odstep.l, gap: odstep.m },
-    ikona: { width: cel.minimum, height: cel.minimum, borderRadius: promien.przycisk, backgroundColor: k.ikonaTlo, alignItems: 'center', justifyContent: 'center' },
+    ikona: { width: cel.minimum, height: cel.minimum, borderRadius: tokeny.promienie.ikonaKafla, backgroundColor: k.ikonaTlo, alignItems: 'center', justifyContent: 'center' },
   });
 }
