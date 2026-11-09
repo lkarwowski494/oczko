@@ -4,7 +4,7 @@
 // Jest nie układa elementów: test sprawdza style gwarantujące układ (jak wzor-pasek-ipad.test.tsx); sam układ potwierdza skrypt Yoga (docs/programista/m3-fix-licznik-stan.md).
 import React from 'react';
 import * as RN from 'react-native';
-import { render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Licznik } from '../../src/ekrany/Licznik';
 import { Stoper, type PropsStopera } from '../../src/ekrany/Stoper';
 import type { StanEkranuLicznika } from '../../src/ekrany/Licznik';
@@ -105,12 +105,25 @@ describe('M3-LIC-02: rząd akcji — równe kolumny z zawijaniem (makieta `.akcj
     });
 });
 
+describe('M3-LIC-03 (stuknięcia): akcje reagują na stuknięcie', () => {
+  test('stuknięcie w „Wzór” i „Historia” wywołuje wywołania zwrotne (rząd poza przewijaną treścią)', () => {
+    const w = wywolaniaLicznika();
+    const naWzor = jest.fn();
+    render(<Licznik stan={stanLicznika({ projekt: DLUGI_TYTUL, czesc: 'Left sleeve', skonczone: 2, dziergany: 3 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...w} naWzor={naWzor} />);
+    fireEvent.press(screen.getByTestId('licznik-wzor'));
+    fireEvent.press(screen.getByTestId('licznik-historia'));
+    expect([naWzor.mock.calls.length, w.naHistorie.mock.calls.length]).toEqual([1, 1]);
+  });
+});
+
 describe('M3-LIC-03: rząd akcji nie jest przycinany przez stałą strefę „−1 / +1”', () => {
   test('zwykły rozmiar: rząd stoi nad strefą poza przewijaną treścią — także przy tytule w 2 wierszach', () => {
     rysuj({ projekt: DLUGI_TYTUL });
     expect(screen.getByText(DLUGI_TYTUL)).toBeTruthy();
     expect(wScrollView('licznik-akcje')).toBe(false);
     expect(wScrollView('licznik-przyciski')).toBe(false);
+    // Stuknięcie trafia w akcję: żaden z celów nie leży w przewijanej treści (jej dolna krawędź przycinała rząd i środek komórki trafiał w strefę „−1 / +1”).
+    for (const id of ['licznik-akcja-notatka', 'licznik-wzor', 'licznik-cel', 'licznik-stoper', 'licznik-historia']) expect({ id, wScrollView: wScrollView(id) }).toEqual({ id, wScrollView: false });
     const wszystkie = screen.UNSAFE_root.findAll((n) => typeof n.props.testID === 'string' && typeof n.type === 'string').map((n) => n.props.testID as string);
     expect(wszystkie.indexOf('licznik-akcje')).toBeGreaterThan(wszystkie.indexOf('licznik-wartosc'));
     expect(wszystkie.indexOf('licznik-akcje')).toBeLessThan(wszystkie.indexOf('licznik-przyciski'));
