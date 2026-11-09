@@ -16,7 +16,10 @@ tags:
 - runFlow: subflows/odstep.yaml
 - swipe: { start: "50%, 99%", end: "50%, 55%", duration: 400 }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
-- swipe: { start: "20%, 98%", end: "80%, 98%", duration: 300 }
+# 07-p3: przebieg 3 (run 42556852569) step-026 — przeciągnięcie w prawo (20% → 80%) na iOS 26 to systemowe „wstecz” całym ekranem
+# (react-native-screens 4.26 `fullScreenSwipeEnabled`: „defaults to … `true` for iOS >= 26”, node_modules/react-native-screens/src/types.tsx:185):
+# ten sam proces (PID 51531 w device-simulator.log) wrócił na „Dziś”. Kierunek w lewo nie jest gestem „wstecz”, a nadal sprawdza dolną krawędź nad +1.
+- swipe: { start: "80%, 98%", end: "20%, 98%", duration: 300 }
 # P-608 G3: przebieg 42544112861 step-024 — po poziomym geście przy wskaźniku Home zrzut pokazał „Today” (prawdopodobnie migawka przełącznika aplikacji), a hierarchia licznik z 1;
 # asercja natychmiast po geście trafiła w animację systemu. Czekamy, aż licznik wróci na wierzch — dodatkowy rząd nadal daje czerwień (wartość 2 ≠ 1).
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
