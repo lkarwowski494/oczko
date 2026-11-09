@@ -69,6 +69,9 @@ tags:
 - assertTrue: ${maestro.copiedText == output.shaPrzed}
 # --- „Spróbuj normalnie”: zwykły start, dane na miejscu ---
 - tapOn: { id: "awaryjny-sprobuj-normalnie" }
+# zwykły start ląduje na „Dziś” (ZM-18); „Kontynuuj ›” do licznika z danymi (P-608 G1, przebieg 42544112861 cz. 1 iPhone)
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
 - assertVisible: { id: "licznik-wartosc", text: "2" }
 - assertNotVisible: { id: "tryb-awaryjny" }
