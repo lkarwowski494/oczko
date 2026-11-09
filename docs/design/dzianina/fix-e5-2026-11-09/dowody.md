@@ -14,3 +14,5 @@ Gałąź `claude/kopia-04-fix-e5-2026-11-09` od 8ec4a579. Zmiany tylko w `docs/d
 Arkusze: `przed-po.png`, `przeglad.png`. Kontrast: `node ../narzedzia/kontrast.mjs kontrast-pary.json` → kod 0 (256 par, bez nowych barw). Zrzuty wzorcowe: `node ../narzedzia/dzianina-zrzuty.mjs ekrany.html wzorce-zrzuty` kod 0 (96 plików, w tym 8 nowych). Ekrany niezmienione w tym fixie (oferty, oferty-czeka, zdjęcie, wzór, formularz-część) przywrócone z HEAD: obecny renderer daje różnice pikseli także tam, gdzie makieta się nie zmieniła — nowe znalezisko niżej.
 
 Nowe znaleziska (nie naprawiane): (N1) linia bazowa `wzorce-zrzuty/` nie jest odtwarzalna bit w bit — ponowny render niezmienionych ekranów różni się (np. `zdjecie-390-jasny` ok. 20 tys. pikseli o różnicy > 40); do sprawdzenia, czy to wersja Chromium, czy wcześniejsza zmiana makiety bez regeneracji. P2, brzegowe.
+
+Reaudyt (9.11, P-627): N1 rozstrzygnięte — renderer deterministyczny, 20 wzorców 5 ekranów zregenerowanych (96/96 identycznych); szczegóły w design-spec „Reaudyt E5”.
