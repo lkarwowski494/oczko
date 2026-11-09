@@ -211,7 +211,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       )}
       <PasekZnacznika t={t} znacznik={p.znacznik ?? null} ustawianie={ustawianie} razemStron={p.razemStron ?? 0} naGotowe={() => ustawUstawianie(false)} naKrok={(d) => p.naKrokRzaduZnacznika?.(d)}
         naZmienKierunek={() => ustawPytanie('zmien')} naNastepnaStrona={() => { ustawUstawianie(true); p.naNastepnaStrona?.(); }} naPrzestaw={() => ustawUstawianie(true)} />
-      {!s.word && <Text style={st.podpisMaly} testID="wzor-zakreslenia">{t('wzor.zakreslenia', { count: s.zakreslenia })}</Text>}
+      {!s.word && <Text style={[st.podpis, typografiaDzianiny.mala]} testID="wzor-zakreslenia">{t('wzor.zakreslenia', { count: s.zakreslenia })}</Text>}
       {tryb && !ipad && <Text style={st.podpis}>{t('wzor.zakreslacz_podpowiedz')}</Text>}
       <View style={[st.strona, ipad && !obok && st.stronaIpad]} testID="wzor-widok">
         {p.widok}
@@ -266,7 +266,6 @@ function style(k: Kolory) {
     tytul: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },
     podpis: { ...typografia.podpis, color: k.olowek, paddingHorizontal: odstep.l },
-    podpisMaly: { ...typografiaDzianiny.mala, color: k.olowek, paddingHorizontal: odstep.l }, // 014: linia zakreśleń w roli `mala`
     pogrubiony: { fontWeight: '700' },
     informacja: { padding: odstep.m, marginHorizontal: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },
     strona: { flex: 1, backgroundColor: k.wzorRama },
