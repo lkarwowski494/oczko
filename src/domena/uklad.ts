@@ -6,7 +6,9 @@ import type { Orientacja } from './porty';
 
 export const KOLUMNA_TRESCI_MAKS = 640; // pt
 const REGULAR_MIN = 600; // pt
-const KOLUMNA_IPAD = 340; // pt
+/** 015 (P-614 (3) A): kolumna licznika iPada 280 pt i próg 1000 pt szerokości okna — tokeny `cele.paskaWzoru.kolumna.szerokosc`, `kolumnaOdSzerokosci` (domena bez importu tokenów; zgodność sprawdza test 015). */
+export const KOLUMNA_IPAD = 280; // pt
+export const KOLUMNA_IPAD_OD_SZEROKOSCI = 1000; // pt
 const KOLUMNA_TELEFON = { udzial: 0.34, min: 220, maks: 360 } as const;
 
 export type Uklad = {
@@ -21,7 +23,8 @@ export function ukladOkna(o: { szerokosc: number; wysokosc: number }): Uklad {
   const s = Number.isFinite(o.szerokosc) && o.szerokosc > 0 ? o.szerokosc : 0;
   const w = Number.isFinite(o.wysokosc) && o.wysokosc > 0 ? o.wysokosc : 0;
   const klasa = s >= REGULAR_MIN && w >= REGULAR_MIN ? 'regular' : 'compact';
-  const obok = s > w;
+  // 015: iPad (regular) — kolumna tylko w oknie ≥ 1000 pt i szerszym niż wyższe, węższe okna → pasek; telefon poziomo (compact) bez zmian (W3).
+  const obok = s > w && (klasa === 'compact' || s >= KOLUMNA_IPAD_OD_SZEROKOSCI);
   const kolumnaLicznika = !obok ? null
     : klasa === 'regular' ? KOLUMNA_IPAD
     : Math.round(Math.min(KOLUMNA_TELEFON.maks, Math.max(KOLUMNA_TELEFON.min, s * KOLUMNA_TELEFON.udzial)));

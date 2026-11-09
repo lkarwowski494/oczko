@@ -92,7 +92,7 @@ describe('P2-5 / F-09 / BR-LIC-012: linia „Now working row n” w liczniku prz
 test('układ „obok” (telefon poziomo W3, iPad poziomo W4b): kolumna licznika o szerokości z ukladOkna, wzór nadal widoczny', () => {
   render(<PrzegladarkaWzoru stan={stan({ uklad: ukladOkna({ szerokosc: 1180, wysokosc: 820 }) })} t={t} widok={widok} {...wywolania()} />);
   const kolumna = screen.getByTestId('wzor-kolumna-licznika');
-  expect(kolumna.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ width: 340 })]));
+  expect(kolumna.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ width: 280 })])); // 015: było 340 (zastąpione jawnie, P-614 (3) A)
   expect(screen.getByTestId('wzor-widok')).toBeTruthy();
 });
 

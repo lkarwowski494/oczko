@@ -13,7 +13,8 @@ describe('ukladOkna', () => {
     ['iPhone SE poziomo 568 × 320 (W3: min. 220)', 568, 320, { klasa: 'compact', wzor: 'obok', kolumnaLicznika: 220, tresc: 568 }],
     ['duży iPhone poziomo 956 × 440 (W3: maks. 360)', 1100, 440, { klasa: 'compact', wzor: 'obok', kolumnaLicznika: 360, tresc: 1100 }],
     ['iPad pionowo 820 × 1180 (W4b: wzór na szerokość, pasek)', 820, 1180, { klasa: 'regular', wzor: 'pasek', kolumnaLicznika: null, tresc: KOLUMNA_TRESCI_MAKS }],
-    ['iPad poziomo 1180 × 820 (W4b: zawsze obok, 340)', 1180, 820, { klasa: 'regular', wzor: 'obok', kolumnaLicznika: 340, tresc: KOLUMNA_TRESCI_MAKS }],
+    // Zmienione jawnie w 015 (P-614 (3) A, m3-fix-e5-zastapione-testy.md): było 340 pt; kolumna iPada = cele.paskaWzoru.kolumna.szerokosc.
+    ['iPad poziomo 1180 × 820 (015: okno ≥ 1000, obok, 280)', 1180, 820, { klasa: 'regular', wzor: 'obok', kolumnaLicznika: 280, tresc: KOLUMNA_TRESCI_MAKS }],
     ['iPad wąskie okno 375 × 1180 (układ telefonu)', 375, 1180, { klasa: 'compact', wzor: 'pasek', kolumnaLicznika: null, tresc: 375 }],
     ['iPad pół ekranu 590 × 820', 590, 820, { klasa: 'compact', wzor: 'pasek', kolumnaLicznika: null, tresc: 590 }],
     ['iPad Split View 2/3 w poziomie 778 × 820', 778, 820, { klasa: 'regular', wzor: 'pasek', kolumnaLicznika: null, tresc: KOLUMNA_TRESCI_MAKS }],

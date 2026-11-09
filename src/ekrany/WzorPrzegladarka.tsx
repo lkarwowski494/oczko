@@ -9,7 +9,7 @@ import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
-import { LicznikWzoru, type BladPaska } from './WzorLicznik';
+import { LicznikWzoru, type BladPaska, type PropsLicznikaWzoru } from './WzorLicznik';
 import { GlifZnacznika, PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
@@ -30,7 +30,7 @@ export type StanPrzegladarki = {
   word: boolean;                                  // podgląd zastępczy Worda: bez znacznika i rysowania (W11)
   wskazowka?: boolean;                            // M1-131: pierwsze otwarcie — linia `wzor.wskazowka_znacznika` (decyzja i flaga: trasa)
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
-  licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
+  licznik: PropsLicznikaWzoru['licznik']; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
   jezyk?: string;
 };
