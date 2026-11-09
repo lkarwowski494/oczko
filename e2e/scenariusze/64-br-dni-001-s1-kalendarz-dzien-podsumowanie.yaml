@@ -59,7 +59,7 @@ tags:
 - scrollUntilVisible: { element: { id: "historia-miesiac" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { text: "5 rows", index: 1 } # dwa bloki: tydzień i listopad
 - assertVisible: "2 crafting days"
-- assertVisible: { text: "Time shows here when you use the stopwatch.", index: 1 }
+- assertVisible: { text: "Time shows here when you use the timer.", index: 1 } # P-627 (022): en „timer”, nie „stopwatch” (kontrola e2e-zdania-en.test.ts)
 - assertNotVisible: ".*\\b0 (h|hr|hrs|hours?)\\b.*"
 - takeScreenshot: 64-tydzien-i-miesiac
 # --- wtorek 3 XI: 3 rzędy w Harbor (cofnięte +1/−1 roboczego projektu nie liczą się) ---
