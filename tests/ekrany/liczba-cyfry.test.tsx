@@ -4,7 +4,7 @@ import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import tokeny from '../../docs/design/tokeny.json';
-import { komorkiLiczby, szerokoscKomorki } from '../../src/ekrany/liczba';
+import { komorkiLiczby, szerokoscKomorki } from '../../src/ekrany/liczbaKomorki';
 import { Liczba } from '../../src/ekrany/Liczba';
 import { krojTytulowy, typografiaDzianiny as typografia } from '../../src/ekrany/motyw';
 
