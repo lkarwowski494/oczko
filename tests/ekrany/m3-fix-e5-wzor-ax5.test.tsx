@@ -33,6 +33,6 @@ test('07-p3 AX5: menu źródeł wzoru (projekt bez wzoru) leży w ScrollView —
   const ostatnie = dodaj[dodaj.length - 1];
   let n = ostatnie?.parent ?? null;
   let wScrollView = false;
-  for (; n; n = n.parent) if (n.type === RN.ScrollView || n.type === 'RCTScrollView') wScrollView = true;
+  for (; n; n = n.parent) if (n.type === RN.ScrollView || (typeof n.type === 'string' && String(n.type) === 'RCTScrollView')) wScrollView = true;
   expect(wScrollView).toBe(true);
 });
