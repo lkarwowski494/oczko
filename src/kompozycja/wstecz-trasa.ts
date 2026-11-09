@@ -4,19 +4,19 @@ import { useEffect } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useNavigation, useRoute } from 'expo-router';
 import { useAplikacja } from './Kontekst';
-import { miesciSieWPasku, tytulPoprzedniej, type TrasaStosu } from './wstecz';
+import { kluczTytuluDynamicznego, miesciSieWPasku, tytulPoprzedniej, type TrasaStosu } from './wstecz';
 import { MAX_SKALA_TYTULOWA, odstep, typografia } from '../ekrany/motyw';
 
 const tytulyTras = new Map<string, string>();
 
-/** Trasa z tytułem z danych (nazwa projektu) zgłasza go pod swoim kluczem; po zamknięciu trasy wpis znika. */
-export function useTytulTrasy(tytul: string | null): void {
-  const { key } = useRoute();
+/** Trasa z tytułem z danych (nazwa projektu) zgłasza go pod kluczem `kluczTytuluDynamicznego(nazwa trasy, id)`; po zamknięciu trasy wpis znika. */
+export function useTytulTrasy(trasa: string, id: string, tytul: string | null): void {
+  const klucz = kluczTytuluDynamicznego(trasa, id);
   useEffect(() => {
     if (tytul === null) return undefined;
-    tytulyTras.set(key, tytul);
-    return () => { tytulyTras.delete(key); };
-  }, [key, tytul]);
+    tytulyTras.set(klucz, tytul);
+    return () => { tytulyTras.delete(klucz); };
+  }, [klucz, tytul]);
 }
 
 /** Hak dla `KontekstWstecz.Provider`: tytuł poprzedniego ekranu, jeśli mieści się w ok. 1/3 paska; inaczej null („Back”). */

@@ -2,7 +2,7 @@
 // Część 3 (08c): czysta funkcja trasa poprzednia → klucz tytułu + `Wstecz` czyta etykietę z kontekstu (hak w kompozycji, expo-router).
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import { miesciSieWPasku, tytulPoprzedniej, type TrasaStosu } from '../../src/kompozycja/wstecz';
+import { kluczTytuluDynamicznego, miesciSieWPasku, tytulPoprzedniej, type TrasaStosu } from '../../src/kompozycja/wstecz';
 import { KontekstWstecz, Wstecz } from '../../src/ekrany/Pasek';
 
 const zakladki = (z?: string): TrasaStosu => ({ key: 'z-1', name: '(zakladki)', ...(z ? { state: { index: 0, routes: [{ name: z }] } } : {}) });
@@ -19,8 +19,8 @@ describe('tytulPoprzedniej', () => {
     expect(tytulPoprzedniej([zakladki('narzedzia'), { key: 'u', name: 'ustawienia' }, { key: 'j', name: 'jezyk' }], 'j', BRAK)).toEqual({ klucz: 'ustawienia.tytul' });
   });
   test('tytuł dynamiczny z rejestru (projekt → licznik: nazwa projektu)', () => {
-    const r = new Map([['p', 'Vest']]);
-    expect(tytulPoprzedniej([zakladki('projekty'), { key: 'p', name: 'projekt/[id]' }, { key: 'l', name: 'licznik' }], 'l', r)).toEqual({ tekst: 'Vest' });
+    const r = new Map([[kluczTytuluDynamicznego('projekt/[id]', 'p1'), 'Vest']]);
+    expect(tytulPoprzedniej([zakladki('projekty'), { key: 'p', name: 'projekt/[id]', params: { id: 'p1' } }, { key: 'l', name: 'licznik' }], 'l', r)).toEqual({ tekst: 'Vest' });
   });
   test('brak poprzedniej albo trasa bez tytułu (arkusz) → null („Back”)', () => {
     expect(tytulPoprzedniej([{ key: 'l', name: 'licznik' }], 'l', BRAK)).toBeNull();

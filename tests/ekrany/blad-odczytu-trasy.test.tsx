@@ -123,8 +123,8 @@ const PRZYPADKI: Przypadek[] = [
   // nie pustym zapasem ani „0” na Narzędziach do następnego wejścia.
   { trasa: '/zapas', plik: '../../app/zapas', przedrostek: 'zapas', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
   { trasa: '/druty', plik: '../../app/druty', przedrostek: 'druty', odczyt: 'narzedzia', wyjscie: 'Back' },
-  { trasa: '/narzedzia (włóczki)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'zapasZDetalami', wyjscie: 'Back' },
-  { trasa: '/narzedzia (druty)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'narzedzia', wyjscie: 'Back' },
+  { trasa: '/narzedzia (włóczki)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'zapasZDetalami' }, // 006 (08c): korzeń zakładki bez „Back”
+  { trasa: '/narzedzia (druty)', plik: '../../app/(zakladki)/narzedzia', przedrostek: 'narzedzia', odczyt: 'narzedzia' }, // 006 (08c): korzeń zakładki bez „Back”
   { trasa: '/historia', plik: '../../app/historia', przedrostek: 'historia', odczyt: 'historiaLicznika', wyjscie: 'Close' },
 ];
 const ZESTAW = PRZYPADKI.flatMap((p) => (p.awarie ?? ['wynik', 'wyjatek']).map((a): [string, Awaria, string, Przypadek] => [p.trasa, a, p.przedrostek, p]));
