@@ -98,12 +98,14 @@ export function Dzis(p: PropsDzis): React.ReactElement {
       <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskNaKarcieTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />
     </Pressable>
   );
+  const a8 = { czesc, count: s.skonczone, dzis: dane?.rzedyDzis ?? 0 };
+  const zp = dane?.coDalej ? { przypomnienie: dane.coDalej.tekst, n: s.skonczone + dane.coDalej.za + 1 } : null; // 008 (`*_przyp`)
   const elDzianina = kolumna && (
           <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={dane?.rzedyDzis ?? 0} przypomnienie={dane?.coDalej ? s.skonczone + dane.coDalej.za + 1 : null}
             szerokosc={kolumna.w} wysokosc={kolumna.h} testID="dzis-dzianina"
             etykieta={s.cel !== null
-              ? t('dzis.dzianina_a11y_cel', { czesc, count: s.skonczone, cel: s.cel, dzis: dane?.rzedyDzis ?? 0 })
-              : t('dzis.dzianina_a11y', { czesc, count: s.skonczone, dzis: dane?.rzedyDzis ?? 0 })} />
+              ? (zp ? t('dzis.dzianina_a11y_cel_przyp', { ...a8, cel: s.cel, ...zp }) : t('dzis.dzianina_a11y_cel', { ...a8, cel: s.cel }))
+              : (zp ? t('dzis.dzianina_a11y_przyp', { ...a8, ...zp }) : t('dzis.dzianina_a11y', a8))} />
         );
   const elTytul = (<Text style={st.kartaTytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID={pierwszy ? undefined : 'dzis-projekt'}>
           {pierwszy ? t('dzis.pierwszy_tytul') : s.projekt}

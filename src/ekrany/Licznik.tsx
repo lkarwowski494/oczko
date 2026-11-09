@@ -107,10 +107,14 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const kolumnaLicznika = tokeny.dzianina.kolumnaLicznika;
   const wymiarDzianiny = duzyTekst ? { w: Math.max(0, okno.width - 2 * odstep.xl), h: kolumnaLicznika.ax5Wysokosc } : { w: kolumnaLicznika.szerokosc, h: kolumnaLicznika.wysokosc };
 
+  const a8 = { czesc: nazwaCzesci, count: s.skonczone, sesja: sesjaRzedy };
+  const zp = s.przypomnienie ? { przypomnienie: s.przypomnienie.tekst, n: nrRobocza } : null; // 008: przypomnienie w etykiecie dzianiny (`*_przyp`)
   const dzianina = (
     <View style={duzyTekst ? st.dzianinaAx : st.dzianina}>
       <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina"
-        etykieta={s.cel !== null ? t('licznik.dzianina_a11y_cel', { czesc: nazwaCzesci, count: s.skonczone, cel: s.cel, sesja: sesjaRzedy }) : t('licznik.dzianina_a11y', { czesc: nazwaCzesci, count: s.skonczone, sesja: sesjaRzedy })} />
+        etykieta={s.cel !== null
+          ? (zp ? t('licznik.dzianina_a11y_cel_przyp', { ...a8, cel: s.cel, ...zp }) : t('licznik.dzianina_a11y_cel', { ...a8, cel: s.cel }))
+          : (zp ? t('licznik.dzianina_a11y_przyp', { ...a8, ...zp }) : t('licznik.dzianina_a11y', a8))} />
     </View>
   );
   const wierszLiczby = (

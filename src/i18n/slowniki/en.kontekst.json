@@ -61,7 +61,9 @@
     "projekt_wejscie_a11y": "Nazwa dla VoiceOver odnośnika „Projekt ›”; {{projekt}} = nazwa projektu użytkownika.",
     "menu_wiecej_a11y": "Nazwa dla VoiceOver przycisku ••• na liczniku: wymienia pozycje arkusza (nazwa, numer rzędu, blokada, zakończenie; zerowanie i znaczenie liczby pomijamy).",
     "dzianina_a11y": "VoiceOver rysunku dzianiny na liczniku bez celu części: część, rzędy gotowe ({{count}}), rzędy w tej sesji. Formy liczby mnogiej.",
-    "dzianina_a11y_cel": "VoiceOver rysunku dzianiny na liczniku z celem części: {{count}} gotowe z {{cel}}, rzędy w tej sesji. Formy liczby mnogiej."
+    "dzianina_a11y_cel": "VoiceOver rysunku dzianiny na liczniku z celem części: {{count}} gotowe z {{cel}}, rzędy w tej sesji. Formy liczby mnogiej.",
+    "dzianina_a11y_przyp": "VoiceOver rysunku dzianiny na liczniku, gdy bieżący rząd ma przypomnienie: jak dzianina_a11y plus „następne {przypomnienie} w rzędzie {n}” (008). Formy liczby mnogiej.",
+    "dzianina_a11y_cel_przyp": "Jak dzianina_a11y_cel plus przypomnienie bieżącego rzędu i jego numer (008). Formy liczby mnogiej."
   },
   "limit": {
     "zawczasu": "Komunikat zamiast przycisków +1 i −1 po wyczerpaniu darmowych dni (BR-ZAK-006, design-spec „Limit dni”). {{miesiac}} = nazwa miesiąca w języku aplikacji, {{data}} = data wznowienia w formacie języka, {{count}} = liczba rzędów zachowanych w projekcie. Ton: spokojnie, bez straszenia; nie wolno użyć „unlock”, „upgrade”. Ok. 110 znaków. {{miesiac}} = nazwa miesiąca z kalendarza języka aplikacji w mianowniku (pl „listopad”, ru „ноябрь”) — mianownik, nie po przyimku: nie stawiaj jej po słowie, które wymaga innego przypadku (pl „w listopad” jest błędem); użyj dwukropka, nawiasu albo konstrukcji z mianownikiem (M1-audytor-generalny-054).",
@@ -814,7 +816,8 @@
     "wyjdz_zostan": "Przycisk anulujący w pytaniu `wzor.wyjdz_tytul`: zostaje na ekranie wzoru. Krótko, jedno słowo, jeśli język pozwala.",
     "wyjdz_potwierdz": "Przycisk niszczący (czerwony) w pytaniu `wzor.wyjdz_tytul`: wychodzi ze wzoru, choć ostatnie zakreślenia i rysunki nie są zapisane. Etykieta nazywa skutek (wyjście bez zapisu), nie samą nawigację („Back”).",
     "miejsce_tytul": "Nagłówek ostrzeżenia przy otwarciu wzoru, gdy wolnego miejsca na urządzeniu jest mniej niż próg (dziś 50 MB, `RYSUNEK_MIEJSCE_MIN_MB`). Ostrzeżenie przed działaniem, nie komunikat błędu: jeszcze nic się nie udało. „almost full” = pamięć urządzenia (nie iCloud). Druga linia `wzor.miejsce_opis`, przycisk `wspolne.ok`.",
-    "miejsce_opis": "Druga linia ostrzeżenia `wzor.miejsce_tytul`: skutek (nowe zakreślenia i rysunki mogą się nie zapisać) i działanie (zwolnić miejsce przed rysowaniem). „Highlights and drawings” jak w `wzor.usun_opis` i `wzor.blad_rysunku`. Bez liczby megabajtów (próg może się zmienić)."
+    "miejsce_opis": "Druga linia ostrzeżenia `wzor.miejsce_tytul`: skutek (nowe zakreślenia i rysunki mogą się nie zapisać) i działanie (zwolnić miejsce przed rysowaniem). „Highlights and drawings” jak w `wzor.usun_opis` i `wzor.blad_rysunku`. Bez liczby megabajtów (próg może się zmienić).",
+    "wstecz_licznik": "Etykieta VoiceOver strzałki „wstecz” paska wzoru w projekcie roboczym (bez nazwy, tylko licznik): wraca na licznik (007). Krótko, bez daty."
   },
   "udostepnij": {
     "tytul": "Arkusz „Udostępnij do Oczka” (rozszerzenie, ADR-0011, P-220 R1a; fix NZ-P217-04): tytuł arkusza w rozszerzeniu (środek nagłówka). „Oczko” to nazwa aplikacji, bez tłumaczenia.",
@@ -921,7 +924,9 @@
     "ten_tydzien": "Nagłówek paska tygodnia na „Dziś”.",
     "tydzien_pusty": "Pusty tydzień przy pierwszym użyciu (jak pusty miesiąc Historii).",
     "dzien_dziergany_a11y": "VoiceOver dnia tygodnia z robótką; {{etykieta}} = data dnia.",
-    "kafel_wloczka": "Kafel „Dziś” prowadzący do zakładki Narzędzia (zapas włóczki, druty)."
+    "kafel_wloczka": "Kafel „Dziś” prowadzący do zakładki Narzędzia (zapas włóczki, druty).",
+    "dzianina_a11y_przyp": "VoiceOver dzianiny karty „Dziś”, gdy jest „co dalej”: jak dzianina_a11y plus treść najbliższego przypomnienia i numer jego rzędu (008). Formy liczby mnogiej.",
+    "dzianina_a11y_cel_przyp": "Jak dzianina_a11y_cel karty „Dziś” plus najbliższe przypomnienie i numer rzędu (008). Formy liczby mnogiej."
   },
   "zakladki": {
     "dzis": "Podpis zakładki „Dziś” w pasku zakładek (WD-1); krótko, ×1,6.",

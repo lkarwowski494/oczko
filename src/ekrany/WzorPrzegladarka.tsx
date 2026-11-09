@@ -20,7 +20,7 @@ import { PrzyciskSymbolu, Wstecz } from './Pasek';
 export type StanPrzegladarki = {
   nazwa: string;
   opis: string;                                   // `wzor.wiersz_opis` („PDF · 6 pages”), testID `wzor-zrodlo`
-  czesc: string;                                  // część licznika: „‹” wraca do niej (`wzor.wstecz_a11y`)
+  czesc: string | null; // null = projekt roboczy (007)
   wzory: { wzorId: string; nazwa: string }[];     // wzory projektu (W9b); ≥ 2 → tytuł przełącza
   oczekujace?: { id: string; nazwa: string }[];   // strony WWW projektu czekające na sieć: wiersze w liście ▾, a ▾ jest też przy jednym wzorze (poz. 12 C)
   wzorId: string;
@@ -127,7 +127,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     </View>
   ) : (
     <View style={st.pasek}>
-      <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={t('wzor.wstecz_a11y', { czesc: s.czesc })}
+      <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={s.czesc === null ? t('wzor.wstecz_licznik') : t('wzor.wstecz_a11y', { czesc: s.czesc })}
         onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
