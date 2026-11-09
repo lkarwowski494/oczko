@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { cel, PROG_KATEGORII_DOSTEPNOSCI, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
-import { AkcjaLicznika } from './LicznikAkcje';
+import { AkcjaLicznika, KOMORKA_AKCJI } from './LicznikAkcje';
 import { Przycisk } from './Arkusz';
 import type { Tlumacz } from './wspolne';
 
@@ -79,7 +79,7 @@ export function Stoper(p: PropsStopera): React.ReactElement {
 
 function style(k: Kolory) {
   return StyleSheet.create({
-    korzen: { flex: 1 },
+    korzen: { ...KOMORKA_AKCJI }, // M3-LIC-02: korzeń komórki w rzędzie akcji ma wymiar jak sąsiednie komórki (dawniej flex: 1 bez podstawy zwijał się do 0 i „Historia” nachodziła)
     korzenAx: { alignSelf: 'stretch' },
     nad: { zIndex: 10 }, // menu i alert „inny projekt” nad sąsiednimi akcjami (widoki w ekranie, nie systemowy arkusz — odstępstwo R8)
     menu: { position: 'absolute', top: '100%', marginTop: odstep.xs, right: 0, minWidth: 240, zIndex: 10, borderRadius: promien.grupa, backgroundColor: k.papierGrupa, padding: odstep.s, gap: odstep.xs },

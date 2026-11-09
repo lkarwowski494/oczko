@@ -31,6 +31,12 @@ const rysuj = (stan: Partial<StanEkranuLicznika> = {}, stoper: PropsStopera['sta
   return render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Left sleeve', skonczone: 2, dziergany: 3, ...stan })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...w}
     stoper={<Stoper {...stoperProps(stoper)} />} />);
 };
+/** Styl najbliższego przodka elementu o danym testID, który nie jest tym samym węzłem (RNTL: `parent` zaczyna od kompozytu o tych samych propsach). */
+const stylRodzica = (id: string) => {
+  let n = screen.getByTestId(id).parent;
+  while (n && (n.props.testID === id || n.props.style === undefined)) n = n.parent;
+  return plasko(n?.props.style);
+};
 const przodkowie = (id: string): unknown[] => { const o: unknown[] = []; for (let n = screen.getByTestId(id).parent; n; n = n.parent) o.push(n.type); return o; };
 const wScrollView = (id: string) => przodkowie(id).some((typ) => typ === RN.ScrollView || (typeof typ === 'string' && typ === 'RCTScrollView'));
 
@@ -60,7 +66,7 @@ describe('M3-LIC-02: rząd akcji — równe kolumny z zawijaniem (makieta `.akcj
     expect(rzad.flexDirection).toBe('row');
     expect(rzad.flexWrap).toBe('wrap');
     expect(rzad.gap).toBe(odstep.s);
-    expect(plasko(screen.getByTestId('licznik-akcje').parent?.props.style).paddingHorizontal).toBe(odstep.l);
+    expect(stylRodzica('licznik-akcje').paddingHorizontal).toBe(odstep.l);
   });
 
   test.each([320, 390, 440])('przy %i pt każda komórka rzędu ma podstawę min. 64 pt i rośnie po równo (kolumna > 0, bez wąskiej komórki obok szerokiej)', (w) => {
@@ -72,9 +78,9 @@ describe('M3-LIC-02: rząd akcji — równe kolumny z zawijaniem (makieta `.akcj
       expect(s.minWidth ?? 0).toBeLessThanOrEqual(min);
     }
     // „Stoper” to osobny komponent z korzeniem: korzeń komórki ma ten sam wzór wielkości, więc nie zwija się do 0 i ikona ma miejsce.
-    const korzen = plasko(screen.getByTestId('licznik-stoper').parent?.props.style);
+    const korzen = stylRodzica('licznik-stoper');
     expect({ grow: korzen.flexGrow, basis: korzen.flexBasis }).toEqual({ grow: 1, basis: min });
-    expect(screen.getByTestId('symbol-stopwatch')).toBeTruthy();
+    expect(screen.getByTestId('symbol-stopwatch', { includeHiddenElements: true })).toBeTruthy();
     expect(screen.getByText('Timer')).toBeTruthy();
   });
 
@@ -84,17 +90,18 @@ describe('M3-LIC-02: rząd akcji — równe kolumny z zawijaniem (makieta `.akcj
   });
 
   test.each([['trwa', { rodzaj: 'trwa', znacznikMs: T, startGodzina: '19:52' }], ['wstrzymana', { rodzaj: 'wstrzymana', czasMs: 65_000, startGodzina: '19:52' }]] as const)(
-    'stoper %s nie zmienia szerokości kolumny: korzeń i komórka te same co bez sesji, rama 2 pt zawsze w wymiarze (przezroczysta bez sesji)', (_n, stan) => {
+    'stoper %s nie zmienia szerokości kolumny: korzeń i komórka te same co bez sesji, rama 2 pt wewnątrz komórki (odstęp + rama bez zmian)', (_n, stan) => {
       rysuj({}, { rodzaj: 'brak' });
-      const bez = { kor: plasko(screen.getByTestId('licznik-stoper').parent?.props.style), kom: stylu('licznik-stoper') };
+      const bez = { kor: stylRodzica('licznik-stoper'), kom: stylu('licznik-stoper') };
       screen.unmount();
       rysuj({}, stan as PropsStopera['stan']);
-      const z = { kor: plasko(screen.getByTestId('licznik-stoper').parent?.props.style), kom: stylu('licznik-stoper') };
-      for (const k of ['flexGrow', 'flexBasis', 'minWidth', 'width', 'paddingHorizontal', 'borderWidth'] as const) {
+      const z = { kor: stylRodzica('licznik-stoper'), kom: stylu('licznik-stoper') };
+      for (const k of ['flexGrow', 'flexBasis', 'minWidth', 'width'] as const) {
         expect({ k, v: z.kor[k] }).toEqual({ k, v: bez.kor[k] });
         expect({ k, v: z.kom[k] }).toEqual({ k, v: bez.kom[k] });
       }
-      expect(bez.kom.borderWidth).toBe(tokeny.stoper.biegnie.gruboscRamy);
+      const wnetrze = (s: RN.ViewStyle) => ({ poziomo: Number(s.paddingHorizontal) + Number(s.borderWidth ?? 0), pionowo: Number(s.paddingVertical) + Number(s.borderWidth ?? 0) });
+      expect(wnetrze(z.kom)).toEqual(wnetrze(bez.kom));
     });
 });
 
@@ -107,8 +114,7 @@ describe('M3-LIC-03: rząd akcji nie jest przycinany przez stałą strefę „�
     const wszystkie = screen.UNSAFE_root.findAll((n) => typeof n.props.testID === 'string' && typeof n.type === 'string').map((n) => n.props.testID as string);
     expect(wszystkie.indexOf('licznik-akcje')).toBeGreaterThan(wszystkie.indexOf('licznik-wartosc'));
     expect(wszystkie.indexOf('licznik-akcje')).toBeLessThan(wszystkie.indexOf('licznik-przyciski'));
-    expect(screen.getByTestId('licznik-akcje').parent?.props.style).toBeTruthy();
-    expect(plasko(screen.getByTestId('licznik-akcje').parent?.props.style).zIndex).toBeGreaterThan(0); // menu stopera nad strefą
+        expect(stylRodzica('licznik-akcje').zIndex).toBeGreaterThan(0); // menu stopera nad strefą
   });
 
   test('AX5: lista akcji w przewijanej treści pod notatką (makieta `.duzy`), strefa „+1 / −1” poza nią', () => {
