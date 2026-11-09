@@ -36,8 +36,9 @@ export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; wzory: { wzorId: stri
   return (
     <Menu st={p.st} zamknij={p.zamknij}>
       {p.wzory.map((x) => (
-        <Pressable key={x.wzorId} accessibilityRole="menuitem" accessibilityLabel={x.nazwa} accessibilityState={{ selected: x.wzorId === p.wzorId }} onPress={() => p.naWybor(x.wzorId)} style={p.st.pozycja}>
-          <Text style={p.st.tresc}>{`${x.wzorId === p.wzorId ? '✓ ' : ''}${x.nazwa}`}</Text>
+        <Pressable key={x.wzorId} accessibilityRole="menuitem" accessibilityLabel={x.nazwa} accessibilityState={{ selected: x.wzorId === p.wzorId }} onPress={() => p.naWybor(x.wzorId)} style={[p.st.pozycja, w.wiersz]}>
+          <Text style={[p.st.tresc, w.rosnie]}>{x.nazwa}</Text>
+          {x.wzorId === p.wzorId && <SymbolSf nazwa="checkmark" rozmiar={ROZMIAR_SYMBOLU} kolor={k.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />}{/* 011: znaczniki.wyboruListy */}
         </Pressable>
       ))}
       {p.oczekujace.map((o) => (

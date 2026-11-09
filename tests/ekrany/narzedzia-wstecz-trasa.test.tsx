@@ -41,7 +41,7 @@ async function zamontuj(Ekran: React.ComponentType): Promise<void> {
 }
 
 const TRASY: [string, string, Record<string, string>][] = [
-  ['/narzedzia', '../../app/(zakladki)/narzedzia', {}],
+  // 006 (P-614 (1) A): '/narzedzia' usunięte jawnie — korzeń zakładki bez „wstecz” (m3-fix-e5-zastapione-testy.md; kontrola: m3-fix-e5-006.test.tsx).
   ['/zapas', '../../app/zapas', {}],
   ['/druty', '../../app/druty', {}],
   ['/probka', '../../app/probka', {}],
@@ -68,9 +68,9 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
   const ARKUSZE = new Set([...uklad.matchAll(/<Stack\.Screen name="([^"]+)" options=\{\{[^}]*presentation: '(?:modal|fullScreenModal|formSheet)'/g)].map((m) => m[1]));
   /** Poza kontrolą z nazwy: licznik (pierwszy ekran, korzeń stosu), układ i przekierowanie intencji (nie ekrany). */
   const POZA = new Set(['index', '_layout', '+native-intent',
-    // M3 p2 (WD-1): korzenie zakładek Dziś i Projekty (bez „Back”; Narzędzia i Historia zachowują „Back” — e2e 16, M1-016) i układ grupy; licznik wraca
-    // „‹ Projects” (`nav-projekty`, router.navigate do zakładki) do p3a („Projekt ›”).
-    '(zakladki)/_layout', '(zakladki)/index', '(zakladki)/projekty', 'licznik']);
+    // M3 p2 (WD-1): korzenie zakładek i układ grupy; 006 (P-614 (1) A): także Narzędzia i Historia bez „Back” (zmienione jawnie, było: zachowują „Back”);
+    // licznik wraca „‹ Projects” (`nav-projekty`, router.navigate do zakładki) do p3a („Projekt ›”).
+    '(zakladki)/_layout', '(zakladki)/index', '(zakladki)/projekty', '(zakladki)/narzedzia', '(zakladki)/dni', 'licznik']);
   const pliki = (kat: string): string[] => fs.readdirSync(kat, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? pliki(path.join(kat, e.name)) : e.name.endsWith('.tsx') ? [path.join(kat, e.name)] : []));
   const pushPliki = pliki(APP).map((p) => path.relative(APP, p).replace(/\.tsx$/, '')).filter((n) => !ARKUSZE.has(n) && !POZA.has(n)).sort();
@@ -78,7 +78,7 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
 
   test('lista tras push i arkuszy nie jest pusta (pułapka na zmianę zapisu w _layout.tsx)', () => {
     expect(ARKUSZE.size).toBeGreaterThanOrEqual(10);
-    expect(push).toEqual(expect.arrayContaining(['narzedzia', 'zapas', 'druty', 'probka', 'ustawienia']));
+    expect(push).toEqual(expect.arrayContaining(['zapas', 'druty', 'probka', 'ustawienia'])); // 006: 'narzedzia' to korzeń zakładki (było na liście)
   });
   /** Znane trasy push bez przycisku powrotu — zgłoszone w M1-016, poza jego zakresem (do decyzji 04); lista ma się kurczyć, nie rosnąć. */
   const ZNANE_BEZ_PRZYCISKU: string[] = []; // M1-094 (04-studio-projektowe-501, DEC-26 a): lista projektów dostała „Back” — lista pusta, nowe trasy bez przycisku nie przejdą
@@ -86,4 +86,23 @@ describe('M1-016: trwała kontrola — każda trasa push z app/ ma powrót przyc
     const bez = pushPliki.filter((n) => !/naWstecz=\{[^}]*router\.back\(\)/.test(fs.readFileSync(path.join(APP, `${n}.tsx`), 'utf8')));
     expect(bez).toEqual(ZNANE_BEZ_PRZYCISKU);
   });
+});
+
+// M3 fix E5, poz. 17 (P-617 A): na liczniku wyłączony pełnoekranowy gest „wstecz” iOS 26; zostaje gest od lewej krawędzi.
+// Źródło: react-native-screens 4.26.2 `src/types.tsx:182-189` — `fullScreenSwipeEnabled`: „For iOS 26 and up, native `interactiveContentPopGestureRecognizer`
+// is used, and this prop controls whether it should be enabled or not. When not set, it defaults to `false` on iOS < 26 and `true` for iOS >= 26.”
+// Opcja ekranu expo-router `fullScreenGestureEnabled` → `fullScreenSwipeEnabled` (expo-router build/react-navigation/native-stack/views/NativeStackView.native.js:210).
+// `gestureEnabled` (gest od krawędzi) zostaje domyślny (true). Kontrola źródła jak narzedzia-wstecz-trasa.test.tsx (Jest nie uruchamia natywnego stosu).
+const ekranLicznika = fs.readFileSync(path.join(__dirname, '../../app/_layout.tsx'), 'utf8').match(/<Stack\.Screen name="licznik"[^>]*\/>/)?.[0] ?? '';
+
+test('P-617 A: ekran „licznik” ma fullScreenGestureEnabled: false, bez wyłączania gestu od krawędzi', () => {
+  expect(ekranLicznika).toMatch(/fullScreenGestureEnabled: false/);
+  expect(ekranLicznika).not.toMatch(/[^n]gestureEnabled: false/);
+});
+
+test('P-617 A: zainstalowana wersja react-native-screens ma opisaną opcję (inna wersja → sprawdź źródło od nowa)', () => {
+  const typy = fs.readFileSync(require.resolve('react-native-screens/src/types.tsx'), 'utf8');
+  expect(typy).toContain('For iOS 26 and up, native `interactiveContentPopGestureRecognizer` is used, and this prop controls whether it should');
+  const widok = fs.readFileSync(require.resolve('expo-router/build/react-navigation/native-stack/views/NativeStackView.native.js'), 'utf8');
+  expect(widok).toContain('fullScreenSwipeEnabled: fullScreenGestureEnabled');
 });

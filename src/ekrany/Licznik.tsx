@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { LiniaKonfliktu } from './IcloudKonflikt';
 import type { WzorzecHaptyki } from '../domena/porty';
-import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
+import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, odstep, PROG_AX3, PROG_KATEGORII_DOSTEPNOSCI, typografiaDzianiny, useKolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import { Dzianina } from './Dzianina';
 import { Liczba } from './Liczba';
@@ -38,6 +38,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const st = style(k);
   const [komunikat, ustawKomunikat] = useState<Komunikat>(null);
   const [arkuszLimitu, ustawArkuszLimitu] = useState<number | null>(null); // numer rzędu, który nie został dodany
+  const [wysokoscStrefy, ustawWysokoscStrefy] = useState<number | null>(null); // 016/LIC-04: zmierzona strefa „akcje + −1/+1” (onLayout)
   const zamontowany = useRef(true);
   useEffect(() => () => { zamontowany.current = false; }, []);
 
@@ -86,6 +87,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   // nazwa i część, dzianina jako pas, liczba, notatka, akcje jako lista, „+1” nad „−1” na pełną szerokość.
   const okno = useWindowDimensions();
   const duzyTekst = okno.fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
+  const ax3 = okno.fontScale >= PROG_AX3; // 016 (`licznik.ax3ax5`): liczba pod paskiem, tytuł najwyżej 2 wiersze, bez kolumny dzianiny
   const zawczasu = s.limit.rodzaj === 'zawczasu';
   const etykietaPlus = oczka
     ? t('licznik.plus_a11y_oczka')
@@ -105,10 +107,14 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const kolumnaLicznika = tokeny.dzianina.kolumnaLicznika;
   const wymiarDzianiny = duzyTekst ? { w: Math.max(0, okno.width - 2 * odstep.xl), h: kolumnaLicznika.ax5Wysokosc } : { w: kolumnaLicznika.szerokosc, h: kolumnaLicznika.wysokosc };
 
+  const a8 = { czesc: nazwaCzesci, sesja: sesjaRzedy };
+  const zp = s.przypomnienie ? { przypomnienie: s.przypomnienie.tekst, n: nrRobocza } : null; // 008: przypomnienie w etykiecie dzianiny (`*_przyp`)
   const dzianina = (
     <View style={duzyTekst ? st.dzianinaAx : st.dzianina}>
       <Dzianina gotowe={s.skonczone} cel={s.cel} dzis={sesjaRzedy} przypomnienie={s.przypomnienie ? nrRobocza : null} szerokosc={wymiarDzianiny.w} wysokosc={wymiarDzianiny.h} testID="licznik-dzianina"
-        etykieta={s.cel !== null ? t('licznik.dzianina_a11y_cel', { czesc: nazwaCzesci, count: s.skonczone, cel: s.cel, sesja: sesjaRzedy }) : t('licznik.dzianina_a11y', { czesc: nazwaCzesci, count: s.skonczone, sesja: sesjaRzedy })} />
+        etykieta={s.cel !== null
+          ? (zp ? t('licznik.dzianina_a11y_cel_przyp', { ...a8, count: s.skonczone, cel: s.cel, ...zp }) : t('licznik.dzianina_a11y_cel', { ...a8, count: s.skonczone, cel: s.cel }))
+          : (zp ? t('licznik.dzianina_a11y_przyp', { ...a8, count: s.skonczone, ...zp }) : t('licznik.dzianina_a11y', { ...a8, count: s.skonczone }))} />
     </View>
   );
   const wierszLiczby = (
@@ -141,13 +147,17 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </Pressable>
         </View>
       )}
-      <ScrollView contentContainerStyle={st.srodek}>
+      {/* 016 + LIC-04 (P-613, tokeny `licznik.strefa`): strefa leży na treści, a treść kończy się odstępem = zmierzona wysokość strefy + odstepy.l,
+          więc ostatnie elementy (Następna część, podpis sesji, konflikt, notatka) przewijają się nad rząd akcji. */}
+      <ScrollView style={st.przewijana} contentContainerStyle={[st.srodek, wysokoscStrefy !== null && { paddingBottom: wysokoscStrefy + odstep.l }]}>
+        {ax3 && wierszLiczby}
         {s.projekt !== null && (
           <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.projekt_wejscie_a11y', { projekt: s.projekt })} onPress={p.naProjekt} disabled={!p.naProjekt} style={st.wejscieProjektu} testID="licznik-projekt-wejscie">
             <Text style={st.wejscieTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessible={false}>{t('licznik.projekt_wejscie')}</Text>
           </Pressable>
         )}
-        <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID={s.projekt !== null ? 'licznik-projekt' : undefined}>{s.projekt ?? nazwaCzesci}</Text>
+        <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} testID={s.projekt !== null ? 'licznik-projekt' : undefined}
+          numberOfLines={ax3 ? tokeny.licznik.ax3ax5.tytulMaxWierszy : undefined} accessibilityLabel={ax3 ? (s.projekt ?? nazwaCzesci) : undefined}>{s.projekt ?? nazwaCzesci}</Text>
         {s.projekt !== null && <Text style={st.podpis}>{nazwaCzesci}</Text>}
         {baner?.rodzaj === 'seria' && (
           <View style={st.baner}>
@@ -159,10 +169,12 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </View>
         )}
         {baner?.rodzaj === 'cofnieto' && <Text style={[st.tresc, st.baner]}>{t('licznik.cofnieto', { count: baner.n, wartosc: baner.wartosc })}</Text>}
-        <View style={duzyTekst ? st.glownaAx : st.glowna}>
-          {dzianina}
-          {wierszLiczby}
-        </View>
+        {!ax3 && (
+          <View style={duzyTekst ? st.glownaAx : st.glowna}>
+            {dzianina}
+            {wierszLiczby}
+          </View>
+        )}
         {s.konflikt && <LiniaKonfliktu k={s.konflikt} t={t} oglos={p.oglos} na={p.naKonflikt} />}
         {start && <Text style={st.tresc}>{t('licznik.podpowiedz_start')}</Text>}
         {s.cel !== null && <LinijkaCelu s={s} t={t} st={st} naNastepnaCzesc={p.naNastepnaCzesc} />}
@@ -170,7 +182,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         {s.celDnia && <Text style={st.podpis}>{t('licznik.cel_dnia', { count: s.celDnia.rzedy })}</Text>}
         {s.limit.rodzaj === 'ostatni-darmowy' && <Text style={st.podpis}>{t('licznik.ostatni_darmowy', { miesiac: s.miesiac.nazwa })}</Text>}
         {zawczasu && (
-          <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} testID="limit-oferta-link">
+          <Pressable accessibilityRole="link" accessibilityLabel={t('limit.pro_link')} onPress={p.naOferty} style={st.ofertaLink} testID="limit-oferta-link">
             <Text style={[st.tresc, st.link]}>{t('limit.pro_link')}</Text>
           </Pressable>
         )}
@@ -193,7 +205,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           <Text style={st.tresc} testID="licznik-powtorzenie">{t('licznik.powtorzenie', { nazwa: s.powtorzenie.nazwa, numer: s.powtorzenie.numer, rzad: s.powtorzenie.rzadW, dlugosc: s.powtorzenie.dlugosc })}</Text>
         )}
         {s.notatka && (
-          <View style={st.notatka} testID="licznik-notatka">
+          <View style={st.notatka} testID="licznik-notatka" accessible accessibilityLabel={s.notatka}>{/* 07-p3: jeden element VoiceOver, etykieta = treść (docs/design/testid.md) */}
             <SymbolSf nazwa="note.text" rozmiar={odstep.xl} kolor={k.akcentTekst} maxSkala={MAX_SKALA_TYTULOWA} />
             <Text style={[st.tresc, st.notatkaTekst]}>{s.notatka}</Text>
           </View>
@@ -205,6 +217,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         )}
         {duzyTekst && rzadAkcji}
       </ScrollView>
+      <View style={st.strefa} onLayout={(e) => ustawWysokoscStrefy(e.nativeEvent.layout.height)}>
       {/* M1-004: komunikat w stałym miejscu nad przyciskami, poza przewijaną treścią (dawniej ostatnie dziecko ScrollView, pod notatką i kreskami) */}
       {komunikat && (
         <Text style={[st.tresc, st.komunikat]} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>
@@ -221,12 +234,13 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           {/* AX5 (makieta `.duzy .dol`): kolumna, „+1” nad „−1” na pełną szerokość; zwykle „−1” z lewej, „+1” zajmuje resztę rzędu */}
           {!duzyTekst && minusPrzycisk()}
           <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={plus} style={duzyTekst ? st.plusAx : st.plus} testID="licznik-plus">
-            <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>
+            <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>{/* 005: limit z tokenu */}
             {!start && !duzyTekst && <Text style={st.plusPodpis}>{oczka ? t('licznik.podpis_plus_oczka') : t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
           </Pressable>
           {duzyTekst && minusPrzycisk()}
         </View>
       )}
+      </View>
       {arkuszLimitu !== null && (
         <ArkuszLimitu n={arkuszLimitu} s={s} t={t} st={st} naOferty={() => { ustawArkuszLimitu(null); p.naOferty(); }} naZamknij={() => ustawArkuszLimitu(null)} />
       )}

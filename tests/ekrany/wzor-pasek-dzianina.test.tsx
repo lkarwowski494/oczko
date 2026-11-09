@@ -73,7 +73,7 @@ describe('pasek wzoru: granica przy AX1–AX5 (04-003)', () => {
     expect(plaski('licznik-minus').minHeight ?? plaski('licznik-minus').height).toBeGreaterThanOrEqual(tokeny.cele.minimum);
     expect(plaski('licznik-plus').minHeight).toBeGreaterThanOrEqual(tokeny.cele.minimum);
     expect(screen.getByText(t('licznik.minus')).props.maxFontSizeMultiplier).toBe(MAX_SKALA_MINUSA);
-    expect(screen.getByText(t('licznik.plus')).props.maxFontSizeMultiplier).toBe(MAX_SKALA_TYTULOWA);
+    expect(screen.getByText(t('licznik.plus')).props.maxFontSizeMultiplier).toBe(tokeny.typografia.przyciskPlus.maxSkala); // zastąpione jawnie: 005 (P-614)
   });
   test('etykiety VoiceOver przycisków przy AX bez zmian (zachowanie): „−1 row” i „+1 row, when row 44 is done”', () => {
     mockSkala = 3.571;

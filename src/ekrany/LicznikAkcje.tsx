@@ -38,7 +38,7 @@ export function AkcjaLicznika(p: PropsAkcji): React.ReactElement {
   const st = styl(k);
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.podpis} accessibilityState={p.wylaczony ? { disabled: true } : undefined}
-      disabled={p.wylaczony || !p.onPress} onPress={p.onPress} style={[st.akcja, p.duzyTekst ? st.akcjaAx : null, p.podkreslona ? st.akcjaAktywna : null, p.podkreslona && p.duzyTekst ? st.akcjaAktywnaAx : null, p.wylaczony ? st.akcjaWylaczona : null]} testID={p.testID}>
+      disabled={p.wylaczony || !p.onPress} onPress={p.onPress} style={[st.akcja, p.duzyTekst ? st.akcjaAx : null, p.podkreslona ? st.akcjaAktywna : null, p.podkreslona && p.duzyTekst ? st.akcjaAktywnaAx : null, p.wylaczony ? st.akcjaWylaczona : null, p.wylaczony && p.duzyTekst ? st.akcjaAktywnaAx : null]} testID={p.testID}>
       <SymbolSf nazwa={p.symbol} rozmiar={p.duzyTekst ? ROZMIAR_SYMBOLU_AKCJI_AX : ROZMIAR_SYMBOLU_AKCJI} kolor={p.podkreslona ? rola(k, biegnie.ikona) : k.ikona} maxSkala={MAX_SKALA_TYTULOWA} />
       <Text style={[st.podpis, p.cyfryTabelaryczne ? { fontVariant: ['tabular-nums'] } : null, p.podkreslona ? st.czasBiegnie : null]} maxFontSizeMultiplier={MAX_SKALA_KAPSULY} numberOfLines={p.duzyTekst ? undefined : 1} adjustsFontSizeToFit={!p.duzyTekst} accessible={false}>{p.podpis}</Text>
     </Pressable>
@@ -79,7 +79,8 @@ function styl(k: Kolory) {
     // Rama 2 pt wchodzi do wnętrza komórki: odstęp wewnętrzny maleje o jej grubość, więc biegnący stoper nie zmienia szerokości kolumny ani miejsca na podpis (M3-LIC-02).
     akcjaAktywna: { backgroundColor: rola(k, biegnie.tlo), borderWidth: biegnie.gruboscRamy, borderColor: rola(k, biegnie.rama), paddingHorizontal: odstep.xs - biegnie.gruboscRamy, paddingVertical: odstep.s - biegnie.gruboscRamy },
     akcjaAktywnaAx: { paddingHorizontal: odstep.l - biegnie.gruboscRamy },
-    akcjaWylaczona: { opacity: 0.5 },
+    // 012 (P-614): wyłączona akcja = przerywana rama `przyciskNieaktywnyRama` (design-spec Dzianina „Kolory”: nigdy sam kolor); grubość jak rama biegnącego stopera, wewnątrz komórki.
+    akcjaWylaczona: { borderWidth: biegnie.gruboscRamy, borderStyle: 'dashed', borderColor: k.przyciskNieaktywnyRama, paddingHorizontal: odstep.xs - biegnie.gruboscRamy, paddingVertical: odstep.s - biegnie.gruboscRamy },
     podpis: { ...ty.mala, fontWeight: '600', color: k.tekst },
     czasBiegnie: { fontWeight: String(biegnie.wagaCzasu) as '700', color: rola(k, biegnie.czas), fontVariant: [biegnie.cyfry] as ['tabular-nums'] },
   });

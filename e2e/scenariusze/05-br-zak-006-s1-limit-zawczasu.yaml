@@ -29,7 +29,10 @@ tags:
 - assertVisible: { id: "dzis-wartosc", text: "5" }
 - assertNotVisible: { id: "dzis-plus" }
 - assertVisible: { id: "limit-oferta-link", text: "Oczko Pro removes the limit" }
+# linia wolnych dni leży pod kaflami (src/ekrany/Dzis.tsx:207), poza pierwszym ekranem — przebieg 3 step-111: brak w hierarchii
+- scrollUntilVisible: { element: { id: "dzis-dni-darmowe" } }
 - assertVisible: { id: "dzis-dni-darmowe", text: ".*0 of 5.*" }
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: UP }
 - assertNotVisible: { id: "oferty-ekran" }
 - takeScreenshot: 05-limit-na-karcie
 - tapOn: { id: "dzis-kontynuuj" }

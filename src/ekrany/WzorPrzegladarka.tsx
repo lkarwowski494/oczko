@@ -9,10 +9,10 @@ import type { ChipNotatki } from '../domena/znacznik-wzoru';
 import { ArkuszNotatekWzoru } from './WzorNotatki';
 import { pytajOdrzucZmiany } from './pytanie-odrzucenia';
 import { Menu, MenuWzorow, Pozycja } from './WzorMenu';
-import { LicznikWzoru, type BladPaska } from './WzorLicznik';
+import { LicznikWzoru, type BladPaska, type PropsLicznikaWzoru } from './WzorLicznik';
 import { GlifZnacznika, PasekZnacznika, PytanieKierunku, type StanZnacznika } from './WzorZnacznik';
 import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
-import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_TRESCI, cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
 import { PrzyciskSymbolu, Wstecz } from './Pasek';
@@ -20,7 +20,7 @@ import { PrzyciskSymbolu, Wstecz } from './Pasek';
 export type StanPrzegladarki = {
   nazwa: string;
   opis: string;                                   // `wzor.wiersz_opis` („PDF · 6 pages”), testID `wzor-zrodlo`
-  czesc: string;                                  // część licznika: „‹” wraca do niej (`wzor.wstecz_a11y`)
+  czesc: string | null; // null = projekt roboczy (007)
   wzory: { wzorId: string; nazwa: string }[];     // wzory projektu (W9b); ≥ 2 → tytuł przełącza
   oczekujace?: { id: string; nazwa: string }[];   // strony WWW projektu czekające na sieć: wiersze w liście ▾, a ▾ jest też przy jednym wzorze (poz. 12 C)
   wzorId: string;
@@ -30,7 +30,7 @@ export type StanPrzegladarki = {
   word: boolean;                                  // podgląd zastępczy Worda: bez znacznika i rysowania (W11)
   wskazowka?: boolean;                            // M1-131: pierwsze otwarcie — linia `wzor.wskazowka_znacznika` (decyzja i flaga: trasa)
   kierunek?: 1 | -1 | null;                       // kierunek rzędów zapisany w znaczniku; null = pierwsze ustawienie pyta (P-126 (3a))
-  licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' }; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
+  licznik: PropsLicznikaWzoru['licznik']; // znaczenie liczby (F-09): w trakcie = liczba jest rzędem, bez linii „Now working row n”
   uklad: Uklad;
   jezyk?: string;
 };
@@ -127,7 +127,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
     </View>
   ) : (
     <View style={st.pasek}>
-      <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={t('wzor.wstecz_a11y', { czesc: s.czesc })}
+      <Wstecz tylkoSymbol tekst={t('wspolne.wstecz')} etykieta={s.czesc === null ? t('wzor.wstecz_licznik') : t('wzor.wstecz_a11y', { czesc: s.czesc })}
         onPress={() => { if (nowaZTekstem) pytajOdrzucZmiany(t, 'nowy', p.naWstecz); else p.naWstecz(); }} />
       <View style={st.tytulPaska}>
         {s.wzory.length >= 2 || czekajace.length > 0 ? (
@@ -211,7 +211,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       )}
       <PasekZnacznika t={t} znacznik={p.znacznik ?? null} ustawianie={ustawianie} razemStron={p.razemStron ?? 0} naGotowe={() => ustawUstawianie(false)} naKrok={(d) => p.naKrokRzaduZnacznika?.(d)}
         naZmienKierunek={() => ustawPytanie('zmien')} naNastepnaStrona={() => { ustawUstawianie(true); p.naNastepnaStrona?.(); }} naPrzestaw={() => ustawUstawianie(true)} />
-      {!s.word && <Text style={st.podpis} testID="wzor-zakreslenia">{t('wzor.zakreslenia', { count: s.zakreslenia })}</Text>}
+      {!s.word && <Text style={[st.podpis, typografiaDzianiny.mala]} testID="wzor-zakreslenia">{t('wzor.zakreslenia', { count: s.zakreslenia })}</Text>}
       {tryb && !ipad && <Text style={st.podpis}>{t('wzor.zakreslacz_podpowiedz')}</Text>}
       <View style={[st.strona, ipad && !obok && st.stronaIpad]} testID="wzor-widok">
         {p.widok}

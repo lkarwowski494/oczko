@@ -1,7 +1,7 @@
 // Liczba w komórkach stałej szerokości (M3-S3-03): licznik, liczba karty, pasek wzoru, podsumowanie — liczba nie przesuwa się przy +1. Jeden element dla VoiceOver (etykieta = liczba).
 // Języki z krojem systemowym (kroje.tytul.jezykiSystemowe): bez komórek, krój systemowy z `tabular-nums` (design-spec „Typografia”).
 import React from 'react';
-import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions, type StyleProp, type TextStyle } from 'react-native';
 import { komorkiLiczby, szerokoscKomorki } from './liczba';
 import { krojTytulowy } from './motyw';
 
@@ -18,6 +18,7 @@ export type PropsLiczby = {
 };
 
 export function Liczba({ wartosc, styl, pt, jezyk, maxFontSizeMultiplier, testID }: PropsLiczby): React.ReactElement {
+  const skalaSystemu = useWindowDimensions().fontScale; // 003: komórka rośnie z krojem (przed warunkiem — kolejność hooków stała)
   const systemowy = jezyk !== undefined && krojTytulowy(jezyk) === undefined;
   if (systemowy) {
     return (
@@ -26,7 +27,7 @@ export function Liczba({ wartosc, styl, pt, jezyk, maxFontSizeMultiplier, testID
       </View>
     );
   }
-  const szer = szerokoscKomorki(pt);
+  const szer = szerokoscKomorki(pt, skalaSystemu, maxFontSizeMultiplier);
   return (
     <View accessible accessibilityRole="text" accessibilityLabel={wartosc} style={st.rzad} testID={testID}>
       {komorkiLiczby(wartosc).map((c, i) => (

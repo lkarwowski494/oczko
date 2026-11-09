@@ -2,10 +2,10 @@
  "opis": "Wektory projekty.dni (zostalo ∈ {0, 1, 2, 5}, limit = 5, miesiac = M) po fali przekładu 2026-11-03; generuje scripts/i18n/wektory-projekty-dni.mjs. Blokada regresji po drugim przeglądzie AI (P-486), przed przeglądem rodzimym.",
  "jezyki": {
   "bg": [
-   "Оставащи безплатни дни за плетене през M: 0 от 5",
-   "Оставащи безплатни дни за плетене през M: 1 от 5",
-   "Оставащи безплатни дни за плетене през M: 2 от 5",
-   "Оставащи безплатни дни за плетене през M: 5 от 5"
+   "Оставащи безплатни дни за ръкоделие през M: 0 от 5",
+   "Оставащи безплатни дни за ръкоделие през M: 1 от 5",
+   "Оставащи безплатни дни за ръкоделие през M: 2 от 5",
+   "Оставащи безплатни дни за ръкоделие през M: 5 от 5"
   ],
   "da": [
    "0 af 5 gratis håndarbejdsdage tilbage i M",
@@ -20,22 +20,22 @@
    "M: noch 5 von 5 kostenlosen Handarbeitstagen"
   ],
   "el": [
-   "M: υπόλοιπο 0 από 5 δωρεάν ημέρες πλεξίματος",
-   "M: υπόλοιπο 1 από 5 δωρεάν ημέρες πλεξίματος",
-   "M: υπόλοιπο 2 από 5 δωρεάν ημέρες πλεξίματος",
-   "M: υπόλοιπο 5 από 5 δωρεάν ημέρες πλεξίματος"
+   "M: υπόλοιπο 0 από 5 δωρεάν ημέρες χειροτεχνίας",
+   "M: υπόλοιπο 1 από 5 δωρεάν ημέρες χειροτεχνίας",
+   "M: υπόλοιπο 2 από 5 δωρεάν ημέρες χειροτεχνίας",
+   "M: υπόλοιπο 5 από 5 δωρεάν ημέρες χειροτεχνίας"
   ],
   "es-419": [
-   "0 de 5 días gratis de tejido restantes en M",
-   "1 de 5 días gratis de tejido restantes en M",
-   "2 de 5 días gratis de tejido restantes en M",
-   "5 de 5 días gratis de tejido restantes en M"
+   "0 de 5 días de manualidades gratis restantes en M",
+   "1 de 5 días de manualidades gratis restantes en M",
+   "2 de 5 días de manualidades gratis restantes en M",
+   "5 de 5 días de manualidades gratis restantes en M"
   ],
   "es": [
-   "Días de tejer gratis en M: 0 de 5 disponibles",
-   "Días de tejer gratis en M: 1 de 5 disponibles",
-   "Días de tejer gratis en M: 2 de 5 disponibles",
-   "Días de tejer gratis en M: 5 de 5 disponibles"
+   "Días de manualidades gratis en M: 0 de 5 disponibles",
+   "Días de manualidades gratis en M: 1 de 5 disponibles",
+   "Días de manualidades gratis en M: 2 de 5 disponibles",
+   "Días de manualidades gratis en M: 5 de 5 disponibles"
   ],
   "et": [
    "M: tasuta käsitööpäevi alles 0/5",
@@ -68,28 +68,28 @@
    "M: 5 ingyenes alkotónapból 5 maradt"
   ],
   "id": [
-   "Tersisa 0 dari 5 hari merajut gratis di bulan M",
-   "Tersisa 1 dari 5 hari merajut gratis di bulan M",
-   "Tersisa 2 dari 5 hari merajut gratis di bulan M",
-   "Tersisa 5 dari 5 hari merajut gratis di bulan M"
+   "Tersisa 0 dari 5 hari berkarya gratis di bulan M",
+   "Tersisa 1 dari 5 hari berkarya gratis di bulan M",
+   "Tersisa 2 dari 5 hari berkarya gratis di bulan M",
+   "Tersisa 5 dari 5 hari berkarya gratis di bulan M"
   ],
   "it": [
-   "0 su 5 giorni di lavoro gratuiti disponibili in M",
-   "1 su 5 giorni di lavoro gratuiti disponibili in M",
-   "2 su 5 giorni di lavoro gratuiti disponibili in M",
-   "5 su 5 giorni di lavoro gratuiti disponibili in M"
+   "0 su 5 giorni creativi gratuiti disponibili in M",
+   "1 su 5 giorni creativi gratuiti disponibili in M",
+   "2 su 5 giorni creativi gratuiti disponibili in M",
+   "5 su 5 giorni creativi gratuiti disponibili in M"
   ],
   "ja": [
-   "Mの無料の制作日：5日中 残り0日",
-   "Mの無料の制作日：5日中 残り1日",
-   "Mの無料の制作日：5日中 残り2日",
-   "Mの無料の制作日：5日中 残り5日"
+   "Mの無料の編み物の日：5日中 残り0日",
+   "Mの無料の編み物の日：5日中 残り1日",
+   "Mの無料の編み物の日：5日中 残り2日",
+   "Mの無料の編み物の日：5日中 残り5日"
   ],
   "ko": [
-   "M: 무료 작업일 5일 중 0일 남음",
-   "M: 무료 작업일 5일 중 1일 남음",
-   "M: 무료 작업일 5일 중 2일 남음",
-   "M: 무료 작업일 5일 중 5일 남음"
+   "M: 무료 뜨개한 날 5일 중 0일 남음",
+   "M: 무료 뜨개한 날 5일 중 1일 남음",
+   "M: 무료 뜨개한 날 5일 중 2일 남음",
+   "M: 무료 뜨개한 날 5일 중 5일 남음"
   ],
   "lv": [
    "Atlikums: 0 no 5 bezmaksas rokdarbu dienām (M)",
@@ -98,10 +98,10 @@
    "Atlikums: 5 no 5 bezmaksas rokdarbu dienām (M)"
   ],
   "ms": [
-   "Baki 0 daripada 5 hari mengait percuma pada M",
-   "Baki 1 daripada 5 hari mengait percuma pada M",
-   "Baki 2 daripada 5 hari mengait percuma pada M",
-   "Baki 5 daripada 5 hari mengait percuma pada M"
+   "Baki 0 daripada 5 hari berkraf percuma pada M",
+   "Baki 1 daripada 5 hari berkraf percuma pada M",
+   "Baki 2 daripada 5 hari berkraf percuma pada M",
+   "Baki 5 daripada 5 hari berkraf percuma pada M"
   ],
   "nb": [
    "0 av 5 gratis håndarbeidsdager igjen i M",
@@ -116,22 +116,22 @@
    "M: nog 5 van 5 gratis handwerkdagen"
   ],
   "pt-BR": [
-   "Dias de criação gratuitos restantes em M: 0 de 5",
-   "Dias de criação gratuitos restantes em M: 1 de 5",
-   "Dias de criação gratuitos restantes em M: 2 de 5",
-   "Dias de criação gratuitos restantes em M: 5 de 5"
+   "Dias de artesanato grátis restantes em M: 0 de 5",
+   "Dias de artesanato grátis restantes em M: 1 de 5",
+   "Dias de artesanato grátis restantes em M: 2 de 5",
+   "Dias de artesanato grátis restantes em M: 5 de 5"
   ],
   "pt": [
-   "M: 0 de 5 dias de trabalho gratuitos disponíveis",
-   "M: 1 de 5 dias de trabalho gratuitos disponíveis",
-   "M: 2 de 5 dias de trabalho gratuitos disponíveis",
-   "M: 5 de 5 dias de trabalho gratuitos disponíveis"
+   "M: 0 de 5 dias de lavores gratuitos disponíveis",
+   "M: 1 de 5 dias de lavores gratuitos disponíveis",
+   "M: 2 de 5 dias de lavores gratuitos disponíveis",
+   "M: 5 de 5 dias de lavores gratuitos disponíveis"
   ],
   "ro": [
-   "Mai aveți 0 din 5 zile de lucru gratuite în M",
-   "Mai aveți 1 din 5 zile de lucru gratuite în M",
-   "Mai aveți 2 din 5 zile de lucru gratuite în M",
-   "Mai aveți 5 din 5 zile de lucru gratuite în M"
+   "Mai ai 0 din 5 zile de lucru de mână gratuite în M",
+   "Mai ai 1 din 5 zile de lucru de mână gratuite în M",
+   "Mai ai 2 din 5 zile de lucru de mână gratuite în M",
+   "Mai ai 5 din 5 zile de lucru de mână gratuite în M"
   ],
   "sk": [
    "M: k dispozícii 0 z 5 bezplatných tvorivých dní",
@@ -146,10 +146,10 @@
    "M: še 5 od 5 brezplačnih ustvarjalnih dni"
   ],
   "sr": [
-   "M: још 0 од 5 бесплатних дана рада",
-   "M: још 1 од 5 бесплатних дана рада",
-   "M: још 2 од 5 бесплатних дана рада",
-   "M: још 5 од 5 бесплатних дана рада"
+   "M: још 0 од 5 бесплатних дана ручног рада",
+   "M: још 1 од 5 бесплатних дана ручног рада",
+   "M: још 2 од 5 бесплатних дана ручног рада",
+   "M: још 5 од 5 бесплатних дана ручног рада"
   ],
   "sv": [
    "0 av 5 gratis handarbetsdagar kvar i M",
@@ -158,16 +158,16 @@
    "5 av 5 gratis handarbetsdagar kvar i M"
   ],
   "tr": [
-   "M: 5 ücretsiz örgü gününden 0 kaldı",
-   "M: 5 ücretsiz örgü gününden 1 kaldı",
-   "M: 5 ücretsiz örgü gününden 2 kaldı",
-   "M: 5 ücretsiz örgü gününden 5 kaldı"
+   "M: 5 ücretsiz el işi gününden 0 kaldı",
+   "M: 5 ücretsiz el işi gününden 1 kaldı",
+   "M: 5 ücretsiz el işi gününden 2 kaldı",
+   "M: 5 ücretsiz el işi gününden 5 kaldı"
   ],
   "uk": [
-   "Залишилося 0 з 5 безплатних днів в'язання (M)",
-   "Залишилося 1 з 5 безплатних днів в'язання (M)",
-   "Залишилося 2 з 5 безплатних днів в'язання (M)",
-   "Залишилося 5 з 5 безплатних днів в'язання (M)"
+   "Залишилося 0 з 5 безплатних днів рукоділля (M)",
+   "Залишилося 1 з 5 безплатних днів рукоділля (M)",
+   "Залишилося 2 з 5 безплатних днів рукоділля (M)",
+   "Залишилося 5 з 5 безплатних днів рукоділля (M)"
   ],
   "vi": [
    "Còn 0 trong số 5 ngày đan móc miễn phí của M",
@@ -176,10 +176,10 @@
    "Còn 5 trong số 5 ngày đan móc miễn phí của M"
   ],
   "zh-Hant": [
-   "M：免費編織日還剩 0 天（共 5 天）",
-   "M：免費編織日還剩 1 天（共 5 天）",
-   "M：免費編織日還剩 2 天（共 5 天）",
-   "M：免費編織日還剩 5 天（共 5 天）"
+   "M：免費手作日還剩 0 天（共 5 天）",
+   "M：免費手作日還剩 1 天（共 5 天）",
+   "M：免費手作日還剩 2 天（共 5 天）",
+   "M：免費手作日還剩 5 天（共 5 天）"
   ]
  }
 }

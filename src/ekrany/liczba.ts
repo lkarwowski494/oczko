@@ -2,9 +2,11 @@
 // więc każda cyfra stoi w komórce o szerokości najszerszej cyfry (`typografia.cyfry.komorkaEm` × rozmiar), wyśrodkowana. Znaki inne niż cyfry (spacja, przecinek, „h”) bez komórki.
 import tokeny from '../../docs/design/tokeny.json';
 
-/** Szerokość komórki cyfry w pt dla rozmiaru kroju `pt` (tokeny `typografia.cyfry.komorkaEm`). */
-export function szerokoscKomorki(pt: number): number {
-  return tokeny.typografia.cyfry.komorkaEm * pt;
+/** Szerokość komórki cyfry w pt dla rozmiaru kroju `pt` (tokeny `typografia.cyfry.komorkaEm`) przy skali Dynamic Type `skalaSystemu`
+ *  (RN `fontScale`) obciętej do `maxSkala` roli — jak sam krój z `maxFontSizeMultiplier` (003, P-614). */
+export function szerokoscKomorki(pt: number, skalaSystemu = 1, maxSkala?: number): number {
+  const skala = maxSkala === undefined ? skalaSystemu : Math.min(skalaSystemu, maxSkala);
+  return tokeny.typografia.cyfry.komorkaEm * pt * skala;
 }
 
 const CYFRA = /^\p{Nd}$/u;

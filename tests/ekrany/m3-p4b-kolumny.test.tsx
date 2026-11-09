@@ -40,12 +40,18 @@ describe('„Dziś”: kolumna karty z dzianina.kolumnaKarty', () => {
     expect(styl(kolumna)).toMatchObject({ width: kk.szerokosc, minHeight: kk.minWysokosc, borderRadius: kk.promien });
   });
 
-  test('AX5: karta w kolumnie, kolumna dzianiny min. 120, promień 12 (bez stałej szerokości, na pełną szerokość)', () => {
-    mockSkala = AX5;
+  // Zastąpiony jawnie (fix E5, 004, P-614 (2) A; docs/programista/m3-fix-e5-zastapione-testy.md): min. 120 zostaje dla AX1–AX2; od AX3 pas 48 (`kartaDzis.ax3ax5.dzianinaWysokosc`).
+  test('AX1: karta w kolumnie, kolumna dzianiny min. 120, promień 12 (na pełną szerokość); AX5: pas 48', () => {
+    mockSkala = 1.786;
     const kolumna = pokazDzis();
     const s = styl(kolumna);
     expect({ minHeight: s.minHeight, borderRadius: s.borderRadius, alignSelf: s.alignSelf }).toEqual({ minHeight: kk.ax5MinWysokosc, borderRadius: kk.promien, alignSelf: 'stretch' });
     expect(s.width).toBeUndefined();
+    screen.unmount();
+    mockSkala = AX5;
+    pokazDzis();
+    const pas = styl(screen.getByTestId('dzis-karta').findAll((n) => typeof n.props.onLayout === 'function')[0]); // od AX3 kolumna dzianiny nie jest pierwszym dzieckiem
+    expect({ height: pas.height, borderRadius: pas.borderRadius, alignSelf: pas.alignSelf }).toEqual({ height: tokeny.kartaDzis.ax3ax5.dzianinaWysokosc, borderRadius: kk.promien, alignSelf: 'stretch' });
   });
 
   test('dzianina dostaje wymiar zmierzony z kolumny (112 × 216), nie iloczyn cele.plus', () => {
@@ -76,8 +82,13 @@ describe('Licznik: kolumna z dzianina.kolumnaLicznika', () => {
     expect(kolumna.borderRadius).toBe(kl.promien);
   });
 
-  test('AX5: dzianina jako pas na pełną szerokość o wysokości 96, promień 12', () => {
+  // Zastąpiony jawnie (fix E5, 016, P-613; docs/programista/m3-fix-e5-zastapione-testy.md): pas 96 zostaje dla AX1–AX2, od AX3 kolumna dzianiny ukryta (`licznik.ax3ax5`).
+  test('AX1: dzianina jako pas na pełną szerokość o wysokości 96, promień 12; od AX3 (AX5) bez dzianiny', () => {
     mockSkala = AX5;
+    render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Back', skonczone: 1, dziergany: 2 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);
+    expect(screen.queryByTestId('licznik-dzianina')).toBeNull();
+    screen.unmount();
+    mockSkala = 1.786;
     const { dzianina, kolumna } = pokazLicznik();
     expect(dzianina.height).toBe(kl.ax5Wysokosc);
     expect(dzianina.width).toBeGreaterThan(kl.szerokosc);

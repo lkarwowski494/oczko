@@ -24,12 +24,13 @@ const kolejnosc = (ids: string[]) => {
 };
 
 // M3 p3a: kolejność AX z makiety `licznik-390-*-ax5` (Dzianina): nazwa projektu i część, pas dzianiny, liczba — zastępuje wariant (d) P-275 „liczba nad nazwami” (system Kreski).
-test('AX5 (kategoria dostępności): nazwa projektu nad liczbą, potem „Now working”; podpis +1 tylko w etykiecie VoiceOver', () => {
+// Zastąpiony jawnie (fix E5, 016, P-613; docs/programista/m3-fix-e5-zastapione-testy.md): od AX3 liczba pod paskiem nawigacji, nad nazwą projektu (`licznik.ax3ax5`).
+test('AX5 (kategoria dostępności): liczba i „Now working” nad nazwą projektu; podpis +1 tylko w etykiecie VoiceOver', () => {
   skala(3.571);
   rysuj();
   const [projekt, liczba, teraz] = kolejnosc(['licznik-projekt', 'licznik-wartosc', 'licznik-teraz-rzad']);
   expect(liczba).toBeGreaterThanOrEqual(0);
-  expect(projekt < liczba && liczba < teraz).toBe(true);
+  expect(liczba < teraz && teraz < projekt).toBe(true);
   expect(screen.queryByText('tap when row 2 is done')).toBeNull();
   expect(screen.getByRole('button', { name: '+1 row, when row 2 is done' })).toBeTruthy();
 });
@@ -46,10 +47,11 @@ test('AX1 (1,786) to już kategoria dostępności; XXXL (1,353) jeszcze nie — 
   expect(screen.getByText('tap when row 2 is done')).toBeTruthy();
 });
 
-test('P-277: krój tytułowy (+1, nazwa części, „Now working”) najwyżej ×1,8, „−1” najwyżej ×1,4; liczba bez zmian (×1,3)', () => {
+// Zastąpiony jawnie (fix E5, 005, P-614; docs/programista/m3-fix-e5-zastapione-testy.md): „+1” ×1,4 z tokenu `przyciskPlus.maxSkala` zamiast kroju tytułowego ×1,8.
+test('P-277: krój tytułowy (nazwa części, „Now working”) najwyżej ×1,8, „+1” i „−1” najwyżej ×1,4; liczba bez zmian (×1,3)', () => {
   rysuj();
   expect([MAX_SKALA_TYTULOWA, MAX_SKALA_MINUSA]).toEqual([1.8, 1.4]);
-  expect(screen.getByText('+1 row').props.maxFontSizeMultiplier).toBe(1.8);
+  expect(screen.getByText('+1 row').props.maxFontSizeMultiplier).toBe(1.4);
   expect(screen.getByText('−1').props.maxFontSizeMultiplier).toBe(1.4);
   expect(screen.getByText('Harbor').props.maxFontSizeMultiplier).toBe(1.8); // M3: tytuł to nazwa projektu
   expect(screen.getByTestId('licznik-teraz-rzad').props.maxFontSizeMultiplier).toBe(1.8);

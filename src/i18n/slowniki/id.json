@@ -169,7 +169,7 @@
     "brak_wynikow": "Tidak ada proyek bernama “{{zapytanie}}”.",
     "w_toku": "Sedang berjalan",
     "ukonczone": "Selesai",
-    "dni_other": "Tersisa {{zostalo}} dari {{limit}} hari merajut gratis di bulan {{miesiac}}",
+    "dni_other": "Tersisa {{zostalo}} dari {{limit}} hari berkarya gratis di bulan {{miesiac}}",
     "tytul": "Proyek",
     "nazwa_robocza": "Penghitung dari {{data}}",
     "ostatnia_praca_dzis": "terakhir dikerjakan hari ini",
@@ -204,7 +204,7 @@
     "wpis_rozwin_a11y": "Selengkapnya tentang {{wpis}}",
     "wpis_rozwin_podpowiedz": "Menampilkan cara mengubah entri ini.",
     "wpis_a11y": "{{od}} menjadi {{do}} pukul {{czas}}",
-    "kafel_dni_other": "hari merajut",
+    "kafel_dni_other": "hari berkarya",
     "kafel_rzedy_other": "baris",
     "kafel_czas": "waktu sesi"
   },
@@ -432,7 +432,7 @@
     "przywracanie_nic": "Tidak ditemukan pembelian Oczko Pro untuk Apple ID ini. Jika Anda membelinya dengan Apple ID lain, masuk dengan Apple ID tersebut di Pengaturan dan coba lagi.",
     "przywracanie_blad": "Tidak dapat memulihkan pembelian. Periksa koneksi Anda dan coba lagi.",
     "pro_wlaczone": "Oczko Pro aktif.",
-    "kafel_dzien_tytul": "Setiap hari merajut",
+    "kafel_dzien_tytul": "Setiap hari berkarya",
     "kafel_dzien_opis": "Hitung kapan pun Anda merajut, tanpa batas bulanan.",
     "kafel_urzadzenia_tytul": "Tanpa batas di perangkat mana pun",
     "kafel_urzadzenia_opis": "iPhone, iPad, dan Apple Watch.",
@@ -694,7 +694,7 @@
   "karta": {
     "stopka": "Dihitung di Oczko",
     "czas": "waktu berkarya",
-    "dni_podpis_other": "hari merajut",
+    "dni_podpis_other": "hari berkarya",
     "obraz_a11y": "Kartu untuk {{nazwa}}: {{szczegoly}}"
   },
   "wzor": {
@@ -920,7 +920,7 @@
     "co_dalej_teraz": "Baris ini: {{tekst}} ({{ktory}} dari {{razy}})",
     "ten_tydzien": "Minggu Ini",
     "tydzien_pusty": "Di sini Anda akan melihat hari-hari Anda merajut.",
-    "dzien_dziergany_a11y": "{{etykieta}}, hari merajut",
+    "dzien_dziergany_a11y": "{{etykieta}}, hari berkarya",
     "kafel_wloczka": "Benang dan jarum"
   },
   "zakladki": {

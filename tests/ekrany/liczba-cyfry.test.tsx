@@ -1,7 +1,7 @@
 // M3 p1 (P-563 (2a), M3-S3-03): Bree Serif nie ma cyfr tabelarycznych, więc każda cyfra liczby stoi w komórce szerokości najszerszej cyfry (typografia.cyfry.komorkaEm × rozmiar),
 // wyśrodkowana; znaki inne niż cyfry bez komórki. Języki z krojem systemowym (kroje.tytul.jezykiSystemowe): bez komórek, tabular-nums.
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import tokeny from '../../docs/design/tokeny.json';
 import { komorkiLiczby, szerokoscKomorki } from '../../src/ekrany/liczba';
@@ -27,7 +27,9 @@ describe('M3-S3-03: komórki cyfr', () => {
     render(<Liczba wartosc="1087" styl={typografia.liczbaLicznika} pt={T.typografia.liczbaLicznika.pt} testID="liczba" />);
     const kom = screen.getAllByTestId(/^liczba-cyfra-/);
     expect(kom).toHaveLength(4);
-    for (const k of kom) expect(k.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ width: szerokoscKomorki(T.typografia.liczbaLicznika.pt), textAlign: 'center' })]));
+    // Zastąpione jawnie (fix E5, 003, P-614): szerokość przy skali okna (atrapa RN: Dimensions.fontScale), bez limitu — komponent bez maxFontSizeMultiplier.
+    const skala = Dimensions.get('window').fontScale;
+    for (const k of kom) expect(k.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ width: szerokoscKomorki(T.typografia.liczbaLicznika.pt, skala), textAlign: 'center' })]));
     expect(screen.getByLabelText('1087')).toBeTruthy();
     expect(screen.getByTestId('liczba').props.accessible).toBe(true);
   });

@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, Text } from 'react-native';
 import { Arkusz, Komunikat, KomunikatZapisu, Pole, Przycisk, Tresc, Wybor, liczbaZPola, style as styleArkusza, useZglosZmiane } from './Arkusz';
-import { cel, MAX_SKALA_ZNAKU_WYBORU, odstep, useKolory } from './motyw';
+import { cel, odstep, useKolory } from './motyw';
+import { PoleWyboru } from './ZnacznikRadio';
 import { formatujLiczbe, parsujLiczbe } from '../i18n/format';
 import { MM_NARZEDZIA_MIEJSCA } from '../konfiguracja';
 import type { Tlumacz, WynikEkranu } from './wspolne';
@@ -232,7 +233,7 @@ export function FormularzWloczekProjektu(p: {
         return (
           <Pressable key={x.id} accessibilityRole="checkbox" accessibilityState={{ checked: zazn }} accessibilityLabel={t('formularz.wloczka_wiersz_a11y', { nazwa: x.nazwa, count: x.motki })}
             onPress={() => przelacz(x.id)} style={st.wierszWyboru} testID={`wloczka-wybor-${x.id}`}>
-            <Text style={[st.poleWyboru, zazn && st.poleWyboruZaznaczone]} maxFontSizeMultiplier={MAX_SKALA_ZNAKU_WYBORU} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{zazn ? '✓' : ' '}</Text>
+            <PoleWyboru zaznaczone={zazn} />
             <Text style={{ flex: 1, color: k.grafit }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{x.nazwa}{'\n'}{t('ukonczenie.w_zapasie', { count: x.motki })}</Text>
           </Pressable>
         );

@@ -118,7 +118,8 @@ export default function Korzen(): React.ReactElement {
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: k.papier }, orientation: orientacjaEkranu('inny', IPAD) }}>
         {/* M3 p2 (WD-1): zakładki Dziś/Projekty/Narzędzia/Historia na dole stosu; licznik pełnoekranowo nad nimi, bez paska zakładek. */}
         <Stack.Screen name="(zakladki)" />
-        <Stack.Screen name="licznik" />
+        {/* P-617 A: bez pełnoekranowego gestu „wstecz” iOS 26 (stukanie i przesuwanie po liczniku); gest od lewej krawędzi zostaje (react-native-screens 4.26.2 types.tsx:182-189). */}
+        <Stack.Screen name="licznik" options={{ fullScreenGestureEnabled: false }} />
         {/* Orientacja deklarowana w nawigacji (P-221 Q3a, P-259 A): obrót tylko poza maską — start w pionie bez żądania obrotu (P-258). */}
         <Stack.Screen name="wzor" options={{ orientation: orientacjaEkranu('wzor', IPAD) }} />
         {/* Arkusze systemowe (design-spec „Komponenty”): historia, menu •••, formularze, karta ukończenia. */}

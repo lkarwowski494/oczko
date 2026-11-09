@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 09 dla M3 „Dzianina” (2026-11-08, P-600; wyjątek P-578 wygasł): 48 baz kluczy partii M3 przetłumaczonych w 33 językach (pl i en wcześniej); lista pusta. Wcześniej: fala 2026-11-03 (P-473, P-474, P-481). Historia powodów: git log tego pliku.",
+  "powod": "M3 fix E5 (2026-11-09, P-614, P-615): 5 baz kluczy (007, 008) tylko en i pl; 33 języki falą 09. Wcześniej: fala 09 M3 (P-600) — lista była pusta. Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -18,9 +18,32 @@
     "P-481",
     "P-559",
     "P-578",
-    "P-600"
+    "P-600",
+    "P-615"
   ],
-  "klucze": [],
+  "klucze": [
+    "dzis.dzianina_a11y_cel_przyp",
+    "dzis.dzianina_a11y_przyp",
+    "licznik.dzianina_a11y_cel_przyp",
+    "licznik.dzianina_a11y_przyp",
+    "wzor.wstecz_licznik"
+  ],
   "pierwsze_w_fali": [],
-  "przetlumaczone_czesciowo": {}
+  "przetlumaczone_czesciowo": {
+    "dzis.dzianina_a11y_cel_przyp": [
+      "pl"
+    ],
+    "dzis.dzianina_a11y_przyp": [
+      "pl"
+    ],
+    "licznik.dzianina_a11y_cel_przyp": [
+      "pl"
+    ],
+    "licznik.dzianina_a11y_przyp": [
+      "pl"
+    ],
+    "wzor.wstecz_licznik": [
+      "pl"
+    ]
+  }
 }

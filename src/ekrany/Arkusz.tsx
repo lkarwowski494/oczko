@@ -224,12 +224,8 @@ export function style(k: Kolory) {
     opcja: { minHeight: cel.minimum, flexDirection: 'row', alignItems: 'center', columnGap: odstep.m, paddingVertical: odstep.s, paddingHorizontal: odstep.l },
     opcjaPodzialka: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.linia },
     opcjaTekst: { flex: 1, flexShrink: 1 },
-    // Pole wyboru (checkbox) w wierszu listy wyboru, wzorzec 04 `.pole-wyboru` (fix10-2026-11-01/partia8.html:208–209; design-spec „Partia 8” 001):
-    // kwadrat 28 pt z obrysem `m-obrys`, zaznaczone wypełnione `p-tlo` ze znakiem `p-tekst`. Tokeny `cel.poleWyboru` (= `cele.minimum`), `promien.poleWyboru` (= `promienie.plus`), `typografia.znakWyboru`
-    // (M1-audytor-generalny-145; wcześniej zastępcze z M1-050); znak ✓ najwyżej ×1,6 (`MAX_SKALA_ZNAKU_WYBORU`) w FormularzeProjektu.tsx.
+    // Pole wyboru (checkbox) w wierszu listy wyboru: komponent `PoleWyboru` (ZnacznikRadio.tsx; 011, P-619) — kwadrat `znaczniki.radio`, promień `promienie.pole`.
     wierszWyboru: { flexDirection: 'row', alignItems: 'center', gap: odstep.m, minHeight: cel.minimum },
-    poleWyboru: { ...typografia.znakWyboru, color: k.tekst, width: cel.poleWyboru, minHeight: cel.poleWyboru, textAlign: 'center', borderWidth: 2, borderColor: k.tekst2, borderRadius: promien.poleWyboru, overflow: 'hidden' },
-    poleWyboruZaznaczone: { backgroundColor: k.przycisk, color: k.przyciskTekst },
     wejscie: { ...typografia.tresc, color: k.tekst, minHeight: ark.pole.minWysokosc, borderRadius: promien.pole, borderWidth: ark.pole.grubosc, borderColor: kolor(k, ark.pole.obrys), paddingHorizontal: odstep.m },
     wejscieFokus: { borderColor: kolor(k, ark.pole.obrysFokus) },
     podpis: { ...typografia.podpis, color: k.tekst2 },

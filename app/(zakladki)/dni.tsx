@@ -33,7 +33,7 @@ export default function EkranHistoriiDni(): React.ReactElement {
   const miesiac = (o: number) => { const m = przesun(wybor.miesiac, o); ustawWybor({ miesiac: m, dzien: m === dzis.slice(0, 7) ? dzis : `${m}-01` }); };
   return (
     <Bezpieczny>
-      <HistoriaDni stan={stan} t={kontener.j.t} naWstecz={() => router.back()}
+      <HistoriaDni stan={stan} t={kontener.j.t}
         naWybierz={(d) => ustawWybor((w) => ({ ...w, dzien: d }))} naPoprzedni={() => miesiac(-1)} naNastepny={() => miesiac(1)}
         naProjekt={(id) => router.push({ pathname: '/projekt/[id]', params: { id } })} />
     </Bezpieczny>

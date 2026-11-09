@@ -11,7 +11,10 @@ export function style(k: Kolory) {
     paskaPrawa: { flexDirection: 'row', gap: odstep.s, flexShrink: 0 }, // ikony zostają w pasku przy AX5 (makieta fix-8 `.nav .ikony`, P-287)
     blokada: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: odstep.l, backgroundColor: k.papierGrupa, minHeight: rozmiary.minimum },
     blokadaPrzycisk: { minHeight: rozmiary.minimum, justifyContent: 'center', paddingHorizontal: odstep.s },
-    srodek: { paddingHorizontal: odstep.xl, gap: odstep.m, paddingBottom: odstep.sekcja },
+    przewijana: { flex: 1 },
+    srodek: { paddingHorizontal: odstep.xl, gap: odstep.m, paddingBottom: odstep.sekcja }, // paddingBottom do pierwszego pomiaru strefy (016)
+    // 016 + LIC-04 (tokeny `licznik.strefa`): strefa „akcje + −1/+1” nałożona u dołu na przewijaną treść, tło `tlo`.
+    strefa: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: k.papier },
     tytul: { ...typografia.tytul, color: k.grafit },
     instrukcja: { ...typografia.instrukcja, color: k.grafit },
     tresc: { ...typografia.tresc, color: k.grafit },
@@ -19,6 +22,7 @@ export function style(k: Kolory) {
     podpis: { ...typografia.podpis, color: k.olowek },
     pogrubiony: { fontWeight: '700' },
     link: { textDecorationLine: 'underline' },
+    ofertaLink: { minHeight: rozmiary.minimum, justifyContent: 'center', alignSelf: 'flex-start' }, // 013: cel dotyku ≥ 44 pt (wzór Dzis.tsx)
     // Układ M3 p3a (makieta `licznik`, `.licz-g`): dzianina i liczba obok siebie; AX: pas dzianiny nad liczbą.
     glowna: { flexDirection: 'row', gap: odstep.l },
     glownaAx: { flexDirection: 'column', gap: odstep.l },
@@ -39,13 +43,13 @@ export function style(k: Kolory) {
     akcjeStrefa: { paddingHorizontal: odstep.l, paddingTop: odstep.s, zIndex: 10 },
     przyciski: { flexDirection: 'row', alignItems: 'flex-end', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     przyciskiAx: { flexDirection: 'column', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
-    minus: { width: rozmiary.przyciskMinus, height: rozmiary.przyciskMinus, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
+    minus: { width: rozmiary.przyciskMinus, height: rozmiary.przyciskMinus, borderRadius: tokeny.promienie.minus, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.grafit },
     plus: { flex: 1, minHeight: rozmiary.przyciskPlusWysokosc, borderRadius: promien.przyciskGlowny, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusAx: { alignSelf: 'stretch', minHeight: rozmiary.plus, borderRadius: promien.przyciskGlowny, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusTekst: { ...typografia.przycisk, color: k.naAkcencie },
     plusPodpis: { ...typografia.podpis, color: k.naAkcencie },
-    minusAx: { alignSelf: 'stretch', minHeight: rozmiary.przyciskMinus, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
+    minusAx: { alignSelf: 'stretch', minHeight: rozmiary.przyciskMinus, borderRadius: tokeny.promienie.minus, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
     drugiPrzycisk: { minHeight: rozmiary.minimum, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center', paddingHorizontal: odstep.l },
     komunikat: { paddingHorizontal: odstep.xl }, // M1-004: komunikat nad przyciskami, w linii z treścią `srodek`
     komunikatLimitu: { padding: odstep.l, margin: odstep.l, borderRadius: promien.grupa, backgroundColor: k.papierGrupa },

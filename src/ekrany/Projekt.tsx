@@ -129,6 +129,7 @@ export function Projekt(p: PropsProjektu): React.ReactElement {
         </View>
       )}
       <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{s.nazwa}</Text>
+      {s.ukonczony && s.daty && <Text style={st.podpis}>{t('projekty.ukonczono_bez_czasu', { data: s.daty.koniec })}</Text>}{/* 014, P-614 (7) */}
       {s.postep.rodzaj === 'procent' ? (
         <View>
           <Text style={st.tekst} testID="projekt-postep">{t('projekt.postep', { procent: s.postep.wartosc })}</Text>

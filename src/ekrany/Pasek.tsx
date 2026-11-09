@@ -8,12 +8,12 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSU
 
 /**
  * „Wstecz” (słownik studia; HIG: przycisk obok gestu od krawędzi): `chevron.backward` + nazwa celu albo „Back”, treść 17 pt zwykłą
- * odmianą w kolorze `grafit`, bez podkreślenia i bez pogrubienia — jak systemowy przycisk wstecz. `tylkoSymbol`: pasek wzoru (sama strzałka,
+ * odmianą w kolorze `akcentTekst` (006, P-614 (1) A; makieta `ekrany.html:30`), bez podkreślenia i bez pogrubienia — jak systemowy przycisk wstecz. `tylkoSymbol`: pasek wzoru (sama strzałka,
  * etykieta „Back to {część}”). testID domyślnie `nav-wstecz`.
  */
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
-  const kolor = p.kolor ?? k.tekst;
+  const kolor = p.kolor ?? k.akcentTekst;
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />

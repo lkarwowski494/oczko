@@ -3,7 +3,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Liczba } from './Liczba';
-import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, PROG_KATEGORII_DOSTEPNOSCI, cel, odstep, promien, typografia, useKolory, type Kolory } from './motyw';
+import { MAX_SKALA_MINUSA, MAX_SKALA_TYTULOWA, PROG_KATEGORII_DOSTEPNOSCI, cel, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from './wspolne';
 
@@ -12,7 +12,7 @@ export type BladPaska = boolean | 'limit' | 'zablokowany';
 
 export type PropsLicznikaWzoru = {
   t: Tlumacz;
-  licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie' };
+  licznik: { liczba: number; dziergany: number; znaczenie: 'skonczone' | 'w_trakcie'; cel?: number | null }; // cel części: „of {cel}” w kolumnie iPada (015)
   obok: boolean;                       // kolumna obok wzoru (W3, W4b) zamiast paska pod wzorem
   szerokoscKolumny?: number | null;    // pt, tylko przy `obok`
   blad: BladPaska;                     // wynik +1/−1 nie-ok: alert pod liczbą (true = błąd zapisu)
@@ -30,14 +30,19 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   const k = useKolory();
   const st = style(k);
   // Granica Dynamic Type (design-spec „Wzór”, pasek −1 / rząd / +1): od AX1 liczba stoi nad rzędem −1 / +1 (04-003, jak próg licznika).
-  const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI && !obok;
-  const krojLiczby = tokeny.typografia.liczbaPaskaWzoru;
+  const okno = useWindowDimensions();
+  const duzyTekst = okno.fontScale >= PROG_KATEGORII_DOSTEPNOSCI && !obok;
+  // 015 (P-614 (3) A, `ipad.html`): kolumna iPada (okno ≥ kolumnaOdSzerokosci, szersze niż wyższe) — liczba `liczbaKarty`, −1 obok „+1” 168–240 pt.
+  const ipad = obok && okno.width >= PW.kolumnaOdSzerokosci && okno.width > okno.height;
+  const krojLiczby = ipad ? tokeny.typografia.liczbaKarty : tokeny.typografia.liczbaPaskaWzoru;
+  const celCzesci = p.licznik.cel ?? null;
   const blok = (
     <View style={obok ? st.liczbaBlokKolumna : duzyTekst ? st.liczbaBlokAx : st.liczbaBlok} testID="wzor-liczba-blok">
-      <Liczba wartosc={String(p.licznik.liczba)} styl={st.liczba} pt={krojLiczby.pt} jezyk={p.jezyk} maxFontSizeMultiplier={krojLiczby.maxSkala} testID="licznik-wartosc" />
+      <Liczba wartosc={String(p.licznik.liczba)} styl={ipad ? st.liczbaIpad : st.liczba} pt={krojLiczby.pt} jezyk={p.jezyk} maxFontSizeMultiplier={krojLiczby.maxSkala} testID="licznik-wartosc" />
       {p.licznik.znaczenie !== 'w_trakcie'
         ? <Text style={st.podpis} testID="licznik-teraz-rzad">{t('licznik.teraz', { n: p.licznik.dziergany })}</Text>
         : <Text style={st.podpis} testID="licznik-podpis">{t('licznik.jednostka_w_trakcie')}</Text>}{/* P2-5b, P-373: jak Licznik.tsx */}
+      {ipad && celCzesci !== null && <Text style={st.podpis2} testID="licznik-z-celu">{t('licznik.z_celu', { cel: celCzesci })}</Text>}
     </View>
   );
   const komunikaty = (
@@ -55,13 +60,13 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
     </>
   );
   const minus = (
-    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={st.minus} testID="licznik-minus">
+    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.minus_a11y')} onPress={p.naMinus} style={[st.minus, ipad && st.minusIpad]} testID="licznik-minus">
       <Text style={st.minusTekst} maxFontSizeMultiplier={MAX_SKALA_MINUSA}>{t('licznik.minus')}</Text>
     </Pressable>
   );
   const plus = (
-    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: p.licznik.dziergany })} onPress={p.naPlus} style={[st.plus, obok && st.plusKolumna]} testID="licznik-plus">
-      <Text style={st.plusTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('licznik.plus')}</Text>{/* M1-205: limity jak Licznik.tsx (P-277) */}
+    <Pressable accessibilityRole="button" accessibilityLabel={t('licznik.plus_a11y', { n: p.licznik.dziergany })} onPress={p.naPlus} style={[st.plus, obok ? st.plusKolumna : st.plusPasek, ipad && st.plusIpad]} testID="licznik-plus">
+      <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{t('licznik.plus')}</Text>{/* M1-205: limity jak Licznik.tsx (P-277) */}
     </Pressable>
   );
   if (obok) {
@@ -69,7 +74,8 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
       <View style={[st.kolumna, { width: p.szerokoscKolumny ?? undefined }]} testID="wzor-kolumna-licznika">
         {blok}
         {komunikaty}
-        <View style={st.przyciskiKolumna}>{minus}{plus}</View>
+        {ipad && <View style={st.wypelniacz} />}
+        <View style={ipad ? st.przyciskiIpad : st.przyciskiKolumna} testID="wzor-kolumna-przyciski">{minus}{plus}</View>
       </View>
     );
   }
@@ -86,6 +92,8 @@ export function LicznikWzoru(p: PropsLicznikaWzoru): React.ReactElement {
   );
 }
 
+const PW = tokeny.cele.paskaWzoru;
+
 function style(k: Kolory) {
   return StyleSheet.create({
     tresc: { ...typografia.tresc, color: k.tekst },
@@ -94,7 +102,7 @@ function style(k: Kolory) {
     limit: { alignSelf: 'stretch' },
     podpis: { ...typografia.podpis, color: k.tekst, textAlign: 'center' },
     // Pasek (ekran `wzor` makiety): tło `pasek`, linia `pasekLinia` (kolory z tokenów, nie papier); jeden rząd −1 / rząd / +1, od AX1 kolumna: liczba nad przyciskami.
-    pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: odstep.s, backgroundColor: k.pasek },
+    pasekLicznika: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: k.pasekLinia, paddingHorizontal: odstep.l, paddingVertical: odstep.s, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: odstep.s, backgroundColor: k.pasek },
     pasekAx: { flexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap' },
     liczbaBlok: { flexShrink: 1, flexGrow: 1, flexBasis: 0, alignItems: 'center' },
     liczbaBlokAx: { alignItems: 'center', alignSelf: 'stretch' },
@@ -104,12 +112,20 @@ function style(k: Kolory) {
     liczbaBlokKolumna: { flexShrink: 0 },
     kolumna: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: k.pasekLinia, padding: odstep.l, gap: odstep.m, backgroundColor: k.pasek },
     // M3-IPAD-01 (P-605): `width: 100%` — grupa leży w pasku-wierszu z zawijaniem; bez szerokości zwija się do zawartości i blok liczby (podstawa 0) ma 0 pt, „+1” 64 pt.
-    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'stretch', width: '100%' },
+    przyciski: { flexDirection: 'row', alignItems: 'center', gap: odstep.s, alignSelf: 'center', width: '100%', maxWidth: PW.plusMaxSzerokosc + 2 * cel.przyciskMinus + 2 * odstep.s },
     przyciskiKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column-reverse', gap: odstep.m },
     minus: { minWidth: cel.przyciskMinusPaska, minHeight: cel.przyciskPlusPaskaWysokosc, borderRadius: promien.przyciskDrugi, borderWidth: 2, borderColor: k.tekst2, alignItems: 'center', justifyContent: 'center' },
     minusTekst: { ...typografia.przycisk, color: k.tekst },
     plus: { minHeight: cel.przyciskPlusPaskaWysokosc, minWidth: cel.przyciskPlusPaskaSzerokosc, flexGrow: 1, flexShrink: 1, flexBasis: 0, borderRadius: promien.przyciskGlowny, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusKolumna: { flexGrow: 1, flexShrink: 1, flexBasis: 0 },
     plusTekst: { ...typografia.przycisk, color: k.naAkcencie },
+    // 015 (`cele.paskaWzoru`, `ipad.html`): pasek — „+1” najwyżej 480 pt, zestaw −1 / rząd / +1 wyśrodkowany (480 + 2 × 72 + 2 odstępy); kolumna iPada — −1 72 obok „+1” 168–240.
+    liczbaIpad: { ...typografiaDzianiny.liczbaKarty, color: k.tekst },
+    podpis2: { ...typografia.podpis, color: k.tekst2, textAlign: 'center' },
+    wypelniacz: { flex: 1 },
+    plusPasek: { maxWidth: PW.plusMaxSzerokosc },
+    przyciskiIpad: { flexDirection: 'row', alignItems: 'flex-end', gap: odstep.m },
+    minusIpad: { width: cel.przyciskMinus, minHeight: cel.przyciskMinus, borderRadius: promien.minus },
+    plusIpad: { minHeight: PW.kolumna.plusMinWysokosc, maxHeight: PW.kolumna.plusMaxWysokosc, flexBasis: 'auto', alignSelf: 'stretch' },
   });
 }

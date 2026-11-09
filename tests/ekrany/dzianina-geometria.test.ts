@@ -11,11 +11,19 @@ describe('geometriaDzianiny', () => {
     expect(c.dzianina.h).toBeCloseTo(a.dzianina.h * 3, 6);
     expect(b.dzianina.y + b.dzianina.h).toBeCloseTo(a.dzianina.y + a.dzianina.h, 6); // dół stały (nabranie)
   });
-  test('0 rzędów = sama igła z nabranymi oczkami: dzianina ma wysokość 0, igła stoi na dole, bez pasa „dziś”', () => {
+  // Zmienione jawnie w 001 (P-619, `docs/programista/m3-fix-e5-zastapione-testy.md`): było „igła stoi na dole” (y = dół dzianiny); makieta `ekrany.html:629–631`
+  // rysuje przy 0 rzędach pas nabranych oczek 8 jedn. i igłę nad nim.
+  test('0 rzędów = sama igła z nabranymi oczkami: dzianina ma wysokość 0, pas nabrania 8 nad dołem, igła na nabraniu, bez pasa „dziś”', () => {
     const r = g({ gotowe: 0, dzis: 0 });
     expect(r.dzianina.h).toBe(0);
     expect(r.pasDzis).toBeNull();
-    expect(r.igla.y).toBeCloseTo(r.dzianina.y + r.dzianina.h, 6);
+    expect(r.nabranie).toEqual({ y: r.dzianina.y - 8, h: 8 });
+    expect(r.igla.y).toBeCloseTo(r.dzianina.y - 8, 6);
+  });
+  test('001: przy rzędach > 0 bez pasa nabrania, igła na górnym brzegu dzianiny', () => {
+    const r = g({ gotowe: 1, dzis: 1 });
+    expect(r.nabranie).toBeNull();
+    expect(r.igla.y).toBeCloseTo(r.dzianina.y, 6);
   });
   test('jaśniejszy pas u góry = rzędy dziś, nie większy niż dzianina', () => {
     const r = g({ gotowe: 48, dzis: 12 });

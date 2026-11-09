@@ -4,11 +4,12 @@
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { cel, MAX_SKALA_TYTULOWA, odstep, promien, PROG_KATEGORII_DOSTEPNOSCI, ROZMIAR_SYMBOLU_TRESCI, systemCzarny, typografia, useKolory, type Kolory } from './motyw';
+import tokeny from '../../docs/design/tokeny.json';
 import type { Tlumacz } from './wspolne';
 import { SymbolSf } from './SymbolSf';
 
 export type Miniatura = { id: string; uri: string };
-const MINIATURA = 88; // pt (design-spec „Zdjęcia”)
+const MINIATURA = tokeny.projekt.zdjecie.miniatura; // 014: token `projekt.zdjecie.miniatura`
 
 export function GrupaZdjec(p: {
   t: Tlumacz; miniatury: Miniatura[]; naWybierz(z: 'aparat' | 'biblioteka'): void; naOtworz(i: number): void; panelE2e?: React.ReactNode;
