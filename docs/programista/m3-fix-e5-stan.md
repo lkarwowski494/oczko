@@ -20,7 +20,8 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 | 7 | 007 + 008 | zrobione (jeden commit: wspólne słowniki) | 2cbd134 | `m3-fix-e5-etykiety.test.tsx` 3 ✕ + 1 ✓ (nazwany projekt bez zmian) → 4 ✓; trasa 007 w `m3-fix-e5-wzor-ax5.test.tsx` ✕ („Back to Counter from Nov 10”) → ✓ |
 | 1 | 001 | zrobione (token `dzianina.tloKolumnyKarty` w obu plikach, P-619; nabranie 8, igła z główką, marginesy 6 na karcie) | dac17ae (struktura: `DzisStyl.ts`), 56dcf4c | `m3-fix-e5-001.test.tsx` 4 ✕ + 1 ✓ → 5 ✓ |
 | 12 | 015 | zrobione (iPad regular: obok tylko ≥ 1000 pt i szersze niż wyższe, kolumna 280, liczba `liczbaKarty` + „of {cel}”, −1 72 obok „+1” 168–240; pasek „+1” ≤ 480, zestaw wyśrodkowany); przypomnienie w kolumnie — nie zrobione | 161f6a8 | `m3-fix-e5-015.test.tsx` 5 ✕ + 3 ✓ → 8 ✓ |
-| 9, 6 | 009, 006 | do zrobienia (termin 70 min sesji 08b minął) | — | — |
+| 6 | 006 | częściowo: `Wstecz` domyślnie `akcentTekst`; korzenie zakładek Narzędzia i Historia bez „wstecz”; etykieta = tytuł poprzedniego ekranu — do zrobienia | bd53c2f | `m3-fix-e5-006.test.tsx` 3 ✕ + 2 ✓ → 5 ✓ |
+| 9 | 009 | do zrobienia | — | — |
 
 ## STOP-y rozstrzygnięte przez koordynatora (P-619, 9.11 06:17) — do wykonania w nowej sesji
 - 001: 08 dopisuje token `dzianina.tloKolumnyKarty` = #00000026 (źródło `docs/design/dzianina/ekrany.html:38` `.dz`, oba motywy) w `dzianina/tokeny.json` i `docs/design/tokeny.json` z adnotacją „wartość z makiety, P-619” (wyjątek nazwany); kontrast.mjs kod 0; 001 w całości.
@@ -37,7 +38,9 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 - Czego nie sprawdzono: układ na urządzeniu (strefa licznika, AX3+ karta i licznik, gest wstecz, iPad) — potwierdzi przebieg 4 iOS (E2E 03, 30, 34, 49, 57, 44).
 
 ## Część 2 (08b, 9.11) — odstępstwa i uwagi
-- 015 zakres: reguła ≥ 1000 pt tylko dla klasy regular (iPad); telefon poziomo (compact) zostaje „obok” (W3) — odczyt 08 „015 = iPad”, do potwierdzenia przez koordynatora (opcja B: reguła globalna, telefon poziomo → pasek).
+- 015 zakres: reguła ≥ 1000 pt tylko dla klasy regular (iPad); telefon poziomo (compact) zostaje „obok” (W3) — potwierdzone przez koordynatora (P-623, A).
+- 006: wyjątki nazwane — pasek wzoru sama strzałka (007); `StanWczytywania` na czerni zachowuje `systemCzarny.tekst`. Nowe znalezisko: stan wczytywania/błędu na korzeniach zakładek (`dni.tsx:32`, `narzedzia.tsx:23`) nadal ma „wstecz” (`wyjscie: 'wstecz'`) — do decyzji 04.
+- 006 etykiety (plan): czysta funkcja nazwa trasy poprzedniej w stosie → klucz tytułu (zakładki: `zakladki.*`), hak w `src/kompozycja` (expo-router `useNavigation().getState()`), prop `tekstWstecz` ekranów; nazwa projektu → „Back”, gdy dłuższa niż ok. 1/3 paska.
 - 015: przypomnienie w kolumnie iPada (makieta `.nota`) nie zrobione — brak danych przypomnienia w propsach paska; wymaga przekazania z `app/wzor.tsx`.
 - `app/wzor.tsx` 20 478 B (limit 20 480): dopisane 19 B (`cel: lw.czesc.cel`) bez wcześniejszego wydzielenia — odstępstwo od polecenia (termin); następna zmiana wymaga wydzielenia.
 - 001: tło nakładki #00000026 nie ma pary w `kontrast-pary.json` (element graficzny, nie tekst); kontrast.mjs kod 0, 256/256. Licznik bez marginesu 6 (makieta też rysuje x=6 na liczniku) — poza zakresem 001, do oceny 04.
@@ -45,4 +48,4 @@ Gałąź `claude/kopia-08-e5-2026-11-09` od 92611245; część 2 (08b) `claude/k
 - Czego nie sprawdzono: wygląd na urządzeniu i zrzuty przed/po (brak symulatora; przebieg 4 iOS: E2E `dzis-pierwszy`, 44 poziomo).
 
 ## Następny krok (nowa sesja)
-009 (menu = lista grupowana `menu.*`, pozycje 44, bez obrysów), potem 006 („wstecz” chevron + tytuł poprzedniego ekranu, `akcentTekst`, bez „wstecz” na korzeniach zakładek; test 033 jawnie, P-614 (1)); `WzorPrzegladarka.tsx` (20 429 B) i `app/wzor.tsx` (20 478 B) — najpierw wydzielić.
+009 (menu = lista grupowana `menu.*`, pozycje 44, bez obrysów), potem 006 — etykiety „wstecz” = tytuł poprzedniego ekranu (plan wyżej). `WzorPrzegladarka.tsx` (20 429 B) i `app/wzor.tsx` (20 478 B) — przed zmianą wydzielić.
