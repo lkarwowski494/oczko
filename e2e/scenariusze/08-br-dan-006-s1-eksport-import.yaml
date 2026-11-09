@@ -37,6 +37,8 @@ tags:
 - tapOn: { id: "e2e-pliki-zachowaj-eksport" }
 - assertVisible: { id: "e2e-pliki-stan", text: "Saved: 1 file" }
 # --- usunięcie wszystkich danych (BR-DAN-009/S1), potem import ---
+# Przebieg 42533508618 (step-052): po przewinięciu w górę do panelu E2E wiersz leży przycięty dolną krawędzią listy, stuknięcie trafiało poza niego — najpierw przewinięcie do środka ekranu (jak scen. 51)
+- scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" }, direction: DOWN, timeout: 30000, centerElement: true }
 - tapOn: { id: "ustawienia-usun-wszystko" }
 - assertVisible: { id: "potwierdz-usun-wszystko" }
 - tapOn: { id: "potwierdz-usun-wszystko" }
