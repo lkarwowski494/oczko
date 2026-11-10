@@ -94,7 +94,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
 - Poprzednik session_01T66VBvxBBKLAkeEUNSEf4n: brak (usunięte 05:26). `list_triggers` z tego konta 05:36: żadnych przypomnień Oczka poprzedników.
-- **Aktywny koordynator (session_01T66VBygrH2FB6wWhFKzzSm):** trig_01UwNknNRjmboizkEJWGfZsx „Koordynator Oczko: linia 14:00” 10.11 · trig_0122evF6graXKJbMiuk3zZyt „linia 05:00” 11.11 · trig_0139kDsikcGcQnyCqwKwHvXw „Koordynator Oczko: kontrola” 07:00 (jedna naraz). Poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
+- **Aktywny koordynator (session_01T66VBygrH2FB6wWhFKzzSm):** trig_01UwNknNRjmboizkEJWGfZsx „Koordynator Oczko: linia 14:00” 10.11 · trig_0122evF6graXKJbMiuk3zZyt „linia 05:00” 11.11 · „Koordynator Oczko: kontrola” 07:45 (jedna naraz; ID w wyniku send_later, nazwa stała). Poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
@@ -146,3 +146,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 06:51 | M9 | **scalenie ff** m2 → integracja: `git push origin 86021db:claude/youthful-pasteur-kx83sn` (58284a8..86021db; `merge-base --is-ancestor` OK; ls-remote = 86021db); „Jakość · Linux” run 42771354514 in_progress | kontrola 07:00: wynik Linux |
 | 10.11 06:53 | M9 | A2 (9,76 USD, 30%) i D (3,21 USD, 20%) zarchiwizowane po odczycie kosztu | sesja E (10), sesja 04 |
 | 10.11 06:55 | E | start session_01T66VBzsdhe1m1utdtWneFy (rola 10 build), polecenie @ b290344, KO-017; dane do polecenia zebrał subagent Explore (244/245 = K/backlog-1-0-1.json:426, :440; `asc-zrzuty.yml` tylko wgrywa, workflowu generującego brak; plan `docs/wydanie/metadane/zrzuty-plan.md`) — niesprawdzone przeze mnie u źródła; „Jakość · Linux” run 42771354514 in_progress (06:55) | kontrola 07:00 |
+| 10.11 07:00 | kontrola | „Jakość · Linux” run 42771354514 nadal in_progress (07:00); koordynator: kontekst 23% (229 836 / 1 000 000), 5,62 USD; `list_triggers` pominięte (wyjątek nazwany: wynik obejmuje całe konto, ok. 2% okna; kontrola zastępcza: przypomnienia tworzone pojedynczo, ostatni pełny odczyt 06:37 bez duplikatów) | kontrola 07:45: wynik Linux, E |
