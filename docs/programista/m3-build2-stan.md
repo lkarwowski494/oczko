@@ -52,3 +52,10 @@ Stan wyjściowy: `jest --ci` 562 zestawy / 6890 testów, kod 0. Ostatni `npm run
 - Nowe znaleziska (nie naprawiane, tryb fix): tytuł-przełącznik ▾ przy ≥ 2 wzorach bez limitu skali (`src/ekrany/WzorTytul.tsx:20`, wariant jednego wzoru ma 1,8) — P2; karty nad wzorem bez limitu skali — podgląd Worda (`src/ekrany/WzorPrzegladarka.tsx:160`) i pasek notatki bez znacznika (`:166–167`) mogą przy AX5 zabrać wzorowi wysokość jak wskazówka — brzegowe, nieodtworzone, do 04.
 
 Następny krok: wynik przebiegu 7 od koordynatora; zielone 44 i 30 → raport końcowy 08f-024; czerwone → diagnoza.
+
+## Przebieg 7 (run 42712789199, integracja 77a12072) — odczyt 08f, 10.11 ok. 00:40 UTC
+
+- iPad: 44 SUCCESS w całości (50 kroków, poziomo +1 → 1, pion +1 → 2, bez instrumentacji), 46 i 47 SUCCESS — **024 potwierdzone**.
+- iPhone cz. 3: 30 (AX5) SUCCESS; czerwone 06 i 28. Cz. 1: wszystkie SUCCESS (w tym 33, 49, 64). Cz. 2 (03, 16, 32, 34): w toku przy odczycie — `[DO USTALENIA]`.
+- **06** (krok 53 `scrollUntilVisible e2e-sklep-wygas`): przycisk panelu E2E jest w hierarchii, ale na [0,833][402,874], pod `oferty-ekran` [0,62][402,833] i pod przyklejonym `arkusz-przyciski` [0,756][402,833], czyli poza przewijaną treścią; przewijanie go nie odsłoni. Wada kodu (umieszczenie panelu E2E na ekranie ofert), nie maszyna — ponowienie nie pomoże. Do nowej sesji 08: test czerwony (panel E2E w przewijanej treści albo nad strefą przycisków), poprawka w trasie ofert.
+- **28** (krok 72 `assertVisible projekty-lista`): na ekranie systemowy arkusz oceny „Enjoying Oczko?” z „Not Now”; opcjonalne stuknięcie „Not Now” (kroki 69–70) było przed pojawieniem się arkusza (WARNED). Wyścig z oknem systemowym, nie układ aplikacji — jedno ponowienie; jeśli powtórzy się, to krok scenariusza czekający na arkusz (rola 07).
