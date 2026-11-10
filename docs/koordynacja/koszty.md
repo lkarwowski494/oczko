@@ -21,6 +21,7 @@
 | session_01T66VBxbRK32NjWj1jbd7ER | G: 08 fix (kod buildu 3) | 10 (STOP 13) | 4,80 | 34 | 10.11 08:58 → 08:58 → 4eac4af ok. 09:03 → verify hooka 09:26 (wg sesji) → nieprzyjęte (recenzja I) | odpowiedź koordynatora na PYTANIE i18n: 1 min | zarchiwizowana 09:30; szacunek ×0,48 |
 | session_01T66VBy3eeXpsL31qf2TLYe | H: 09 build (6 kluczy × 34) | 5 (STOP 6,5) | 3,91 | 22 | 10.11 09:28 → 09:28 → 5db0155 09:39 (verify hooka wg sesji) → przyjęte formalnie 09:41 | — | zarchiwizowana 09:41; szacunek ×0,78 |
 | session_01T66VByjqMZp13ZcqHKwEHH | I: 08 audit (recenzja buildu 3) | 12 (STOP 15,6) | — (otwarta) | — | 10.11 09:28 → 09:28 → … | — | |
+| session_01T66VBwQhN8XbJaX6yEYMhP | G2: 08 fix (I-001, I-002, scalenie E) | 6 (STOP 7,8) | — (otwarta) | — | 10.11 09:42 → 09:42 → … | — | |
 | session_01T66VBvdJcbv9Zfh1QVujsz | J: 10 audit (recenzja zrzutów sklepu) | 6 (STOP 7,8) | — (otwarta) | — | 10.11 09:34 → 09:34 → … | — | |
 | session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | 8,12 (odczyt 09:31) | 27 | 10.11 08:36 → 09:34 przekazanie | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
 
