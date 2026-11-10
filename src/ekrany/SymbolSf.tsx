@@ -24,6 +24,8 @@ export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.
   | 'iphone'
   // M1-245 (P-661, fix11 „Specyfikacja dla 08”): wiersz „Open source licenses” w Ustawieniach — znak praw autorskich (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577).
   | 'c.circle'
+  // KO-027 (P-685, spec 04 przewodnik §1, §2.4): „Help” → koło ratunkowe (iOS 14); szewron rozwiniętego wiersza przewodnika (iOS 13) — nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577.
+  | 'lifepreserver' | 'chevron.up'
   | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {

@@ -50,7 +50,7 @@ describe('treść przewodnika = tresc.json roli 04 (P-685–P-689)', () => {
     expect(KROKI.map((k) => [k.trasa, k.zapas ?? null])).toEqual(TRESC.kroki.map((k) => [k.trasa, k.zapas ?? null]));
     expect(FUNKCJE.map((f) => [f.id, f.trasa, f.zapas ?? null])).toEqual(TRESC.grupy.flatMap((g) => g.funkcje.map((f) => [f.id, f.trasa, f.zapas ?? null])));
     const plik = (t: string) => (t === '/' ? 'app/(zakladki)/index.tsx' : ['/projekty', '/dni'].includes(t) ? `app/(zakladki)${t}.tsx` : `app${t}.tsx`);
-    const trasy = [...KROKI.flatMap((k) => [k.trasa, k.zapas]), ...FUNKCJE.flatMap((f) => [f.trasa, f.zapas])].filter((t): t is string => typeof t === 'string');
+    const trasy: string[] = [...KROKI.flatMap((k) => [k.trasa, k.zapas]), ...FUNKCJE.flatMap((f) => [f.trasa, f.zapas])].flatMap((t) => (typeof t === 'string' ? [t] : []));
     for (const t of new Set(trasy)) expect({ t, plik: existsSync(join(KORZEN, plik(t))) }).toEqual({ t, plik: true });
     expect(FUNKCJE.filter((f) => f.trasa === null).map((f) => f.id)).toEqual(['zegarek']);
     expect(FUNKCJE.find((f) => f.id === 'pro')?.trasa).toBe('/ustawienia'); // zakup tylko z komunikatu limitu i z Ustawień (ER-70, BR-ZAK-006)

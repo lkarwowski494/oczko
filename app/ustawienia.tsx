@@ -19,6 +19,8 @@ import { systemAplikacji } from '../src/kompozycja/system';
 import { E2E, paneleE2e } from '../src/platforma/tryb-e2e';
 import { udostepnijPlik, wybierzArchiwum } from '../src/platforma/system-plikow-uzytkownika';
 import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
+import { przeczytanePrzewodnika } from '../src/przypadki-uzycia/przewodnik';
+import { postep as postepPrzewodnika } from '../src/domena/przewodnik';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
 import { nazwaPliku, usunPlik } from '../src/dane/pliki/system';
@@ -43,11 +45,13 @@ export default function EkranUstawien(): React.ReactElement {
   const [dane, ustawDane] = useState<Dane>(null);
   const [ostatniEksport, ustawOstatni] = useState<string | null>(null);
   const [icloudWlaczona, ustawIcloud] = useState(false); // partia 7: „Replace” przy włączonej synchronizacji najpierw prosi o wyłączenie
+  const [przeczytanychPrzewodnika, ustawPrzeczytanychPrzewodnika] = useState(0); // liczba, nie obiekt: ta sama wartość nie renderuje ekranu ponownie
   const wybor = useRef<((t: TrybImportu | 'anuluj') => void) | null>(null);
   const { import: plikImportu } = useLocalSearchParams<{ import?: string }>(); // plik `.oczko` otwarty z Plików (ADR-0004, +native-intent)
 
   useFocusEffect(useCallback(() => {
     const koniec = kontener.dostep.naZmiane(ustawDostep);
+    void przeczytanePrzewodnika(z).then((w) => { if (w.ok) ustawPrzeczytanychPrzewodnika(postepPrzewodnika(w.wartosc).n); }); // P-685: wartość wiersza „Guide”, po powrocie z przewodnika świeża
     if (kontener.icloud) void stanBazy(z.baza).then((s) => ustawIcloud(s.wlaczona));
     void widokProjektow(z).then((w) => {
       const ch = z.zegar.teraz();
@@ -141,6 +145,7 @@ export default function EkranUstawien(): React.ReactElement {
         adresy={{ polityka: ADRESY.polityka, wsparcie: ADRESY.wsparcie, recenzja: ADRESY.recenzja }}
         naOferty={() => router.push('/oferty')}
         naWstecz={() => router.back()}
+        przewodnik={{ postep: { n: przeczytanychPrzewodnika, m: postepPrzewodnika([]).m }, naPrzewodnik: () => router.push('/przewodnik') }}
         naWibracje={(w) => void zapiszPreferencje({ wibracje: w })}
         preferencje={{ ekranNieGasnie: pref.ekranNieGasnie, ukladMiar: pref.ukladMiar, naEkranNieGasnie: (w) => void zapiszPreferencje({ ekranNieGasnie: w }), naMiary: () => router.push('/miary') }}
         naZglosProblem={() => router.push('/zglos')}

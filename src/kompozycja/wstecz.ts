@@ -9,7 +9,7 @@ export type TrasaStosu = { readonly key: string; readonly name: string; readonly
 /** Duże tytuły ekranów stosu (klucze jak w nagłówkach ekranów `src/ekrany/*`). Brak wpisu → „Back”. */
 export const KLUCZ_TYTULU_TRASY: Readonly<Record<string, Klucz>> = {
   ustawienia: 'ustawienia.tytul', kosz: 'kosz.tytul', sesje: 'sesje.tytul', miary: 'ustawienia.uklad_miar', jezyk: 'ustawienia.jezyk',
-  zrodla: 'ustawienia.zrodla_wiedzy', licencje: 'ustawienia.licencje', zapas: 'narzedzia.wloczki', druty: 'narzedzia.druty', probka: 'probka.tytul',
+  zrodla: 'ustawienia.zrodla_wiedzy', licencje: 'ustawienia.licencje', przewodnik: 'przewodnik.tytul', zapas: 'narzedzia.wloczki', druty: 'narzedzia.druty', probka: 'probka.tytul',
 };
 /** Zakładki (`app/(zakladki)/_layout.tsx`): trasa → klucz tytułu; grupa bez stanu zagnieżdżonego = pierwsza zakładka („Dziś”). */
 export const KLUCZ_ZAKLADKI: Readonly<Record<string, Klucz>> = { index: 'zakladki.dzis', projekty: 'zakladki.projekty', narzedzia: 'zakladki.narzedzia', dni: 'zakladki.historia' };

@@ -46,7 +46,7 @@ export type PropsAplikacji = {
   /** „Dziś” (M3 p2): dane spoza stanu licznika (tydzień, wolne dni, miejsce pracy) i przejścia; bez nich karta z samego stanu licznika. */
   dane?: DaneDzis | null;
   jezyk?: string;
-  dzis?: { naKontynuuj?(): void; naWybierzProjekt?(): void; naUstawienia?(): void; naKafel?(k: KafelDzis): void };
+  dzis?: { naKontynuuj?(): void; naWybierzProjekt?(): void; naUstawienia?(): void; naPrzewodnik?(): void; naKafel?(k: KafelDzis): void };
 };
 
 /** Stan licznika na ekranie i działania, które go zmieniają — wspólne dla „Dziś” i trasy licznika (jeden przypadek użycia `dodajRzad`, ZM-18). */
@@ -166,6 +166,7 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
       naKontynuuj={z.naKontynuuj ?? nic}
       naWybierzProjekt={z.naWybierzProjekt ?? nic}
       naUstawienia={z.naUstawienia}
+      naPrzewodnik={z.naPrzewodnik}
       naKafel={z.naKafel}
     />
   );

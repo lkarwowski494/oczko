@@ -12,6 +12,9 @@ export function style(k: Kolory, jezyk?: string) {
     ekran: { flex: 1, backgroundColor: k.tlo },
     tresc: { paddingHorizontal: odstep.l, paddingBottom: odstep.sekcja, gap: odstep.xl },
     naglowek: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: odstep.m },
+    // P-685 (spec 04 przewodnik §1): „Guide” z podpisem przed zębatką; od AX3 symbole w osobnym wierszu nad tytułem (przy 320 pt i AX5 wypadały poza ekran)
+    przyciskiPaska: { flexDirection: 'row', alignItems: 'center' },
+    przyciskiPaskaAx3: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', paddingTop: odstep.m },
     tytul: { ...ty.duzyTytul, ...bree, color: k.tekst },
     podpis: { ...ty.tresc2, color: k.tekst2 },
     opis: { flex: 1, gap: odstep.xs },

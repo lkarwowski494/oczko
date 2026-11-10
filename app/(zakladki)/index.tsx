@@ -93,7 +93,7 @@ export default function EkranDzis(): React.ReactElement {
         jezyk={kontener.j.jezyk()}
         dane={dane}
         dzialania={{ ...licznik.dzialania, naOferty: () => router.push('/oferty') }}
-        dzis={{ naKontynuuj: () => void naKontynuuj(), naWybierzProjekt: () => router.navigate('/projekty'), naUstawienia: () => router.push('/ustawienia'), naKafel }}
+        dzis={{ naKontynuuj: () => void naKontynuuj(), naWybierzProjekt: () => router.navigate('/projekty'), naUstawienia: () => router.push('/ustawienia'), naPrzewodnik: () => router.push('/przewodnik'), naKafel }}
       />
     </Bezpieczny>
   );

@@ -40,6 +40,7 @@ export type PropsDzis = Pick<PropsLicznika, 't' | 'oglos' | 'haptyka' | 'naPlus'
   naKontynuuj(): void;                 // „Kontynuuj ›” / „Otwórz licznik ›” (P-563 (4a))
   naWybierzProjekt(): void;            // „Wybierz projekt ›” → zakładka Projekty (P-564, P-565)
   naUstawienia?(): void;               // zębatka — jedyne wejście do Ustawień (P-571)
+  naPrzewodnik?(): void;               // „Guide” z podpisem przed zębatką (P-685, KO-027)
   naKafel?(k: KafelDzis): void;
 };
 
@@ -172,15 +173,23 @@ export function Dzis(p: PropsDzis): React.ReactElement {
     )
   );
 
+  const przyciskiPaska = (p.naPrzewodnik || p.naUstawienia) && (
+    <View style={ax3 ? st.przyciskiPaskaAx3 : st.przyciskiPaska}>
+      {p.naPrzewodnik && <PrzyciskSymbolu symbol="questionmark.circle" etykieta={t('przewodnik.tytul')} podpis={t('przewodnik.tytul')} onPress={p.naPrzewodnik} testID="nav-przewodnik" />}
+      {p.naUstawienia && <PrzyciskSymbolu symbol="gearshape" etykieta={t('ustawienia.tytul')} onPress={p.naUstawienia} testID="nav-ustawienia" />}
+    </View>
+  );
+
   return (
     <View style={st.ekran}>
       <ScrollView contentContainerStyle={st.tresc}>
+        {ax3 && przyciskiPaska}
         <View style={st.naglowek}>
           <View style={st.opis}>
             <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('dzis.tytul')}</Text>
             {dane && <Text style={st.podpis}>{dane.data}</Text>}
           </View>
-          {p.naUstawienia && <PrzyciskSymbolu symbol="gearshape" etykieta={t('ustawienia.tytul')} onPress={p.naUstawienia} testID="nav-ustawienia" />}
+          {!ax3 && przyciskiPaska}
         </View>
         {karta}
         {/* Baner strażnika serii pod kartą (dzis-cofnac-*, F-47, RD-17): karta i „+1” się nie przesuwają */}

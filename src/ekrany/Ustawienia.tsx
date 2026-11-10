@@ -40,6 +40,8 @@ export type PropsUstawien = {
   naZrodla?(): void;
   /** M1-245 (P-661): ekran „Open source licenses”; wiersz stoi bezpośrednio pod „About our content”. */
   naLicencje?(): void;
+  /** Przewodnik po funkcjach (P-685, KO-027): wiersz bezpośrednio nad „Help”, wartość = postęp przeczytanych („3 of 42”). */
+  przewodnik?: { postep: { n: number; m: number }; naPrzewodnik(): void };
 };
 
 /** Wiersz listy grupowanej (ZM-07): ikona (kafelek `ikonaTlo`), podpis od lewej, wartość po prawej, strzałka tylko przy przejściu (`strzalka`). `przelacznik`: wiersz z przełącznikiem zamiast stuknięcia. */
@@ -79,7 +81,7 @@ function Wiersz(p: PropsWiersza): React.ReactElement {
   );
 }
 
-export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, naLicencje, preferencje }: PropsUstawien): React.ReactElement {
+export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, naLicencje, preferencje, przewodnik }: PropsUstawien): React.ReactElement {
   const k = useKolory();
   const st = StyleSheet.create({
     grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, padding: odstep.xs, gap: odstep.xs },
@@ -120,7 +122,9 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {wynikDanych}
       <View style={st.grupa} testID="ustawienia-grupa">
         <Wiersz symbol="icloud" tekst={t('ustawienia.stan_danych')} strzalka onPress={naStanDanych} testID="ustawienia-stan-danych" />
-        <Wiersz symbol="questionmark.circle" tekst={t('ustawienia.pomoc')} rola="link" onPress={() => system.otworzAdres(adresy.wsparcie)} testID="ustawienia-pomoc" />
+        {przewodnik && <Wiersz symbol="questionmark.circle" tekst={t('przewodnik.tytul')} wartosc={t('przewodnik.postep_wiersza', przewodnik.postep)} strzalka onPress={przewodnik.naPrzewodnik} testID="ustawienia-przewodnik" />}
+        {/* P-685: „Help” (strona wsparcia) dostaje `lifepreserver` — `questionmark.circle` znaczy teraz przewodnik (jeden symbol = jedno znaczenie, jak P-577) */}
+        <Wiersz symbol="lifepreserver" tekst={t('ustawienia.pomoc')} rola="link" onPress={() => system.otworzAdres(adresy.wsparcie)} testID="ustawienia-pomoc" />
         <Wiersz symbol="exclamationmark.bubble" tekst={t('ustawienia.zglos')} strzalka onPress={naZglosProblem} testID="ustawienia-zglos" />
         <Wiersz symbol="star" tekst={t('ustawienia.ocen')} onPress={() => system.otworzAdres(adresy.recenzja)} testID="ustawienia-ocen" />
         <Wiersz symbol="hand.raised" tekst={t('ustawienia.polityka')} rola="link" onPress={() => system.otworzAdres(adresy.polityka)} testID="ustawienia-polityka" />
