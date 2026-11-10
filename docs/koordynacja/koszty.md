@@ -31,5 +31,7 @@
 | M session_01T66VC127fsqqLHDTHoS8mi | 08 fix (opus), diagnoza e2e | 10 | 6,80 | 25 | 10.11 12:50 → 12:51 → 13:05 → — ([skip ci]) → 13:07 | 0 (diagnoza 10 min od startu) | 1 subagent 212 tys. tokenów |
 
 | session_01T66VBzxND6Wvoct7mrNBqJ | 08 fix TF-B3-01 (N, opus) | 8 | 1,34 | 12,7 | 15:13 → 15:14 → 15:2x → ci.yml 15:31 → 15:33 | 7 min (ci.yml); recenzja subagenta równolegle | DIAGNOZA 15:17, PRZEKAZANIE 15:26; ff integracji 15:33 |
+| session_01T66VBwJWnyDdMABbE9BGC4 | 04 build zawężony (O, przewodnik, opus) | 8 | 8,92 | 36 | 15:52 polecenie → 17:21 start (czekało na odpowiedź właściciela) → 17:36 → (docs, bez CI) → 17:42 | ok. 90 min — odpowiedź właściciela na AskUserQuestion | kontekst 36% ponad limit 30% (WG-05); koszt ponad pułap, poniżej STOP |
+| session_01T66VBxhDabqriZxJMgbRsB | koordynator M9 (05:35, fable) | — | 10,49 | 32 | 10.11 05:31 → 06:38 | — | zarchiwizowany 17:47 na polecenie właściciela |
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
 Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45, bez 93,85 USD sesji wielodniowej); największa strata ok. 2 h 25 min — awaria symulatora w e2e cz. 2 iphone, ponowienie ręczne → WG-07; drugie: kolejka/przebieg pełnego e2e ok. 2 h na kandydata (WG-01). Koordynator (6) session_01T66VByx9Gr7xm8SB8GYS1D: 7,49 USD (odczyt 14:01, model od ok. 12:45 claude-opus-5-5 słowami właściciela — `/model`).
