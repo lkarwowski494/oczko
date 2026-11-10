@@ -139,7 +139,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
 - Poprzednik session_01T66VBvxBBKLAkeEUNSEf4n: brak (usunięte 05:26). `list_triggers` z tego konta 05:36: żadnych przypomnień Oczka poprzedników.
-- **Aktywne (session_01T66VByx9Gr7xm8SB8GYS1D):** „Koordynator Oczko: kontrola” 14:40 (13:12 zadziałała 13:21) · trig_018Ev6e2w9TQWCVNdSeVzvVM „linia 14:00” 10.11 · trig_01PNcLnwZvJCqobcqWUApQo5 „linia 05:00” 11.11.
+- **Aktywne (session_01T66VByx9Gr7xm8SB8GYS1D):** „Koordynator Oczko: kontrola” 14:40 (13:12 zadziałała 13:21) · trig_01T6sMDbQWGJvuuCEfVZvbwu „linia 14:00” 11.11 (10.11 wysłana) · trig_01PNcLnwZvJCqobcqWUApQo5 „linia 05:00” 11.11.
 - Historia przekazania 11:18: Poprzednik session_01T66VBwXXdrAfk53WkdwZsz: linia 14:00 i linia 05:00 usunięte 11:18, kontrola 11:13 zadziałała; zostaje trig_01SFx1sjZbEXDooWogC7PJRP „kontrola przekazania” 11:49 (jego; sprząta sam).
 - Poprzednik session_01T66VBzCiPMuAiXva784rCV: trig_01JBbVSwSve9ddmYm8XGsmeU „kontrola przekazania” 10:00 (jego; sprząta sam); kontrola, linia 14:00 i linia 05:00 usunięte 09:34 (`list_triggers` enabled 09:31: z Oczka tylko ta jedna pozycja poprzednika).
 - Poprzednik session_01T66VBygrH2FB6wWhFKzzSm: trig_01MFw1qdhHQdECMdYwmtbxM6 „kontrola przekazania” 09:04 (jego; sprząta sam); jego kontrola i linie usunięte 08:33 (potwierdzone w `list_events`). Wcześniejszy poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
