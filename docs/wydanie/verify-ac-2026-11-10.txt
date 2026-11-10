@@ -1,0 +1,26 @@
+# npm run verify · 2026-11-10 · sesja AC (rola 10 fix) · Linux, Node v22.23.4 · HEAD przed tym wpisem be1982d
+# Pełny wynik skrócony do nagłówka (kroki) i ogona: kod wyjścia i liczby zestawów/testów z ostatnich linii.
+
+> oczko@1.0.0 verify
+> npm run typecheck && npm run typecheck:testy && npm run lint && npm run jakosc:kontrole && npm test
+[… 590 zestawów PASS, FAIL: 0 …]
+PASS iOS tests/wydanie/luki-p349.test.ts
+PASS iOS tests/wydanie/eula-w-opisie.test.ts
+PASS iOS tests/wydanie/termin-limitu.test.ts
+PASS iOS tests/wydanie/manifest-app-json.test.ts
+PASS iOS tests/wydanie/notatka-zgodnosc-208.test.ts
+PASS iOS tests/wydanie/hermesc-sciezka.test.ts
+PASS iOS tests/wydanie/m1-195-inwentarz-plikow.test.ts
+PASS iOS tests/wydanie/kroki-wlasciciela.test.ts
+PASS iOS tests/wydanie/m3-p4b-pas-blokady.test.ts
+PASS iOS tests/wydanie/polityka-import-strony.test.ts
+PASS iOS tests/wydanie/notatka-start-dzis.test.ts
+PASS iOS tests/wydanie/ikona-zegarka.test.ts
+PASS iOS tests/wydanie/ramki-sklepu.test.ts (15.821 s)
+
+Test Suites: 590 passed, 590 total
+Tests:       7182 passed, 7182 total
+Snapshots:   0 total
+Time:        155.372 s
+Ran all test suites.
+KOD_WYJSCIA 0
