@@ -156,7 +156,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
 - Pula A2: P-644…P-652 (P-643 zajęty przez 303).
-- KO następny: **KO-027**. Pula L (07): P-674…P-676. Pula M (08): P-677…P-680. Pula N (08): P-681…P-684. Pula H (09): P-673…P-676. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
+- KO następny: **KO-028**. Pula O (04): P-685…P-689. Pula L (07): P-674…P-676. Pula M (08): P-677…P-680. Pula N (08): P-681…P-684. Pula H (09): P-673…P-676. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -264,4 +264,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 15:30 | N, recenzja | Recenzja niezależna (subagent, odczyt) 7defd5f: **TAK**, 0 P0–P2; asercja bajtkodu bez zmian (`licencja-ofl-w-pakiecie.test.ts:27-30`), wybór darwin→osx-bin / linux→linux64-bin, poza tym jawny Error (`hermesc-sciezka.ts:7-14`), bez cichego pominięcia; osx-bin = Mach-O universal x86_64+arm64, 0755; jest 8/8 na Linuksie (macOS niesprawdzony). P3: test „prawdziwa paczka” zakłada linux64-bin poza darwin (bez znaczenia). `ci.yml` run 42844321730 na 7defd5f in_progress | kontrola 15:32: ci.yml → ff integracji |
 | 10.11 15:33 | N, integracja | `ci.yml` 42844321730 na 7defd5f: **success** (15:31, `actions_get`). **N przyjęta** (commit, autor, ci.yml, recenzja TAK; macOS niesprawdzony — potwierdzi testflight.yml). **ff integracji** 87ade5a → 7defd5f (push 15:33, ls-remote = 7defd5f). N: 1,34 USD, kontekst 12,7% → archiwizacja. P-681, P-682 do weta (`docs/decyzje.md` na integracji) | „Jakość · iOS” (pełne e2e, push) na 7defd5f; kontrola 15:45 (start przebiegu) |
 | 10.11 15:47 | CI | Push 7defd5f na integrację **nie uruchomił** „Jakość · iOS”: filtr `paths` w `jakosc-ios.yml:10-28` nie obejmuje `tests/wydanie/**` ani `docs/**`. Bramka `scripts/wydanie/testflight.mjs:92` szuka przebiegu po `head_sha` (każde zdarzenie) → `workflow_dispatch` jakosc-ios.yml na integracji, `znacznik`="[e2e-pelny] [e2e-ciemny]" → run 42847955454 queued 15:47 na 7defd5f. Kod aplikacji = 87ade5a (zielony attempt 2), ale bramka wymaga przebiegu na dokładnie tym SHA. Maszyny macOS 14–23 UTC rzadkie (P-187) | kontrola 17:48; zielony → testflight.yml (KO-026) + prośba o Approve |
+| 10.11 15:52 | właściciel, O | Prośba właściciela: przewodnik po funkcjach → KO-027 (build 4, przed 1.0). Polecenie `polecenia/O.md`, prompt 04 build w warsztacie @ 51d4546; start O (04, docs) | ROZPOZNANIE O; kontrola 17:48 (iOS 42847955454) |
 

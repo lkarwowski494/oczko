@@ -1,0 +1,20 @@
+# Sesja O: projekt przewodnika po funkcjach (rola 04, docs) — Oczko
+Koordynator: session_01T66VBxVpUibJWazJrYfgRm (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; po wiadomości o zmianie koordynatora pisz do nowego). Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
+
+1. Rola: 04-studio-projektowe w trybie build, **zawężonym do jednej funkcji**. Prompt roli: prywatne repo `lkarwowski494/oczko-warsztat` (add_repo, odczyt), plik `koordynacja/polecenia/O-04-studio-build-2026-11-10.md` @ 51d4546 — przeczytaj w całości. Gdy add_repo zostanie odrzucony, nie ponawiaj i pracuj z samego polecenia (KO-022). Wyjątki nazwane: bez bramki opłacalności; system wizualny już istnieje (`docs/design/`), więc etapy E1–E3 (świat dziedziny, kierunki, system) pomijasz. Projektujesz tylko w ramach istniejącego systemu. STOP-y roli zamieniasz na raport do koordynatora.
+2. Decyzja właściciela (10.11 ok. 15:50 UTC, AskUserQuestion, dosłownie): „Obok zębatki i w ustawieniach przydałoby się coś jak przewodnik po funkcjach - coś w stylu pierwsze kroki do nowego projektu w kilku punktach i pełna bibiolteka wszystkich funkcji”, termin: „Build 4, przed 1.0”. Analogia: Trening `app/guide.tsx`, `lib/guide.ts`, wejście z `app/(tabs)/more.tsx` (decyzja Treningu z 08.10.2026, wariant A: rozwijane tematy, kroki, przycisk „Pokaż” otwiera ekran, odznaczenie przeczytanych). Repo `lkarwowski494/trening` jest publiczne, sklonuj je z `--depth 1`.
+3. Start: oczko `claude/youthful-pasteur-kx83sn` @ 7defd5f (kandydat buildu 3). Twoja gałąź: `claude/o-przewodnik-2026-11-10` od 7defd5f. **Tylko `docs/`**, bez kodu. Na integrację nic nie wypychasz.
+4. Zadania:
+   1. Rozpoznanie (≤ 8 linii w raporcie): gdzie dokładnie jest „zębatka”, czyli na których ekranach i w którym pliku; jak wygląda ekran Ustawień; gdzie jest pełna lista funkcji 1.0 (kontrakt zakresu `docs/scope-contract.md`, BRD, lista testu `docs/wydanie/test-urzadzenia-build3.md` na `origin/claude/l-test-telefon-2026-11-10`). Jak przewodnik rozwiązuje Trening (pliki, linie).
+   2. Specyfikacja w `docs/design/przewodnik-2026-11-10.md`:
+      - wejścia: ikona obok zębatki (glif z systemu, rozmiar celu, etykieta dostępności) oraz wiersz w Ustawieniach;
+      - ekran z dwiema sekcjami: „Pierwsze kroki” (3–6 kroków od pustej aplikacji do pierwszego projektu i pierwszego rzędu) i „Biblioteka funkcji” (wszystkie funkcje 1.0 w grupach; przy każdej nazwa z interfejsu, 1–2 zdania i „Pokaż” do ekranu);
+      - stan przeczytania, tryb ciemny, Dynamic Type, VoiceOver, iPad;
+      - testID dla e2e oraz klucze i18n z tekstem en i pl. Nazwy funkcji w tekstach są wartościami istniejących kluczy (jak w `tests/wydanie/notatka-nazwy.test.ts`);
+      - co pomijasz w 1.0 i dlaczego (zasada wspólna 18: bez kombajnu).
+   3. Makieta: render w ramach systemu (moduł render-i-krytyka), jasny i ciemny, iPhone. Zrzuty do `docs/design/przewodnik-2026-11-10/`.
+   4. Kryterium „gotowe”: specyfikacja i zrzuty na gałęzi; każda funkcja z biblioteki ma ekran docelowy (plik trasy) albo uzasadnienie braku; klucze policzone. Commit z `[skip ci]` (tylko docs).
+5. Zakazy: nie scalasz do integracji ani `main`, nie zmieniasz kodu ani workflowów, nie wyzwalasz workflowów, nie tworzysz i nie archiwizujesz sesji, nie piszesz na `koordynacja`, nigdy --no-verify ani force-push, nie pytasz właściciela (bez AskUserQuestion). Najwyżej 1 subagent naraz.
+6. Decyzje: tryb „analogia” (najpierw `lkarwowski494/trening`, `repo:plik:linia`, wpis do weta w `docs/decyzje.md`); numery P-685…P-689.
+7. Kontekst i koszt: limit 30% okna (stan w `docs/design/przewodnik-stan.md`, push, PRZEKAZANIE). Pułap 8 USD; STOP 10,5. Tożsamość: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By i bez identyfikatorów modeli (P-507).
+8. Raporty (≤ 10 linii, send_message): ROZPOZNANIE (po zadaniu 1, kontynuuj bez czekania); PRZEKAZANIE: SHA, pliki, liczba funkcji i kluczy, decyzje do weta, otwarte, szacunek pracy 08 (kod) i 09 (34 języki).
