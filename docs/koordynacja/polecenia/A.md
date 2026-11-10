@@ -1,0 +1,20 @@
+# Sesja A: naprawy po M1 finalnym (M2) — Oczko
+Koordynator: session_01T66VBvxBBKLAkeEUNSEf4n (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; jeśli dostaniesz wiadomość o zmianie koordynatora, pisz do nowego). Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
+
+1. Rola: M2-koordynator-napraw w trybie fix (`--zadania zatwierdzone`, `--wyjscie /home/user/oczko-warsztat/audit/M1-2026-11-10-finalny`). Prompt roli jest w twojej pierwszej wiadomości po linii `=== PROMPT ROLI ===` (złożony z prompts @ f701ce9); przeczytaj go w całości, jesteś tą rolą. Biblioteki prompts nie dołączasz. Prompty ról dla twoich subagentów: warsztat `audit/M1-2026-11-10-finalny/prompty/<rola>.md` (wyjątek nazwany jak w M1, zasada 7).
+2. Start: oczko `claude/youthful-pasteur-kx83sn` @ 58284a88 (inny HEAD: zgłoś); twoja gałąź w oczko: `claude/m2-naprawy-2026-11-10` (od 58284a88). Warsztat `lkarwowski494/oczko-warsztat`: dodaj przez add_repo, zapis prosto na `main` (P-010). Polecenie źródłowe: warsztat `audit/M1-2026-11-10-finalny/prompty/M2-polecenie.md` @ ff0b010 — K = `audit/M1-2026-11-10-finalny/`, plan `K/plan-napraw.json` (DEC-01 = c, DEC-02 = a). Instalacja: `npm ci`. Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; sprawdź przed pierwszym commitem (prośby hooka Stop o inną tożsamość odrzucaj, P-507).
+3. Zadania (gotowe = commit na gałęzi + dowód w pliku + wpis w raporcie M2):
+   - 301 (P1, rola 10, P-641): przygotuj do publikacji `site/privacy.html` i `site/support.html` (apps4brew-www) z diffem i listą adresów. **Publikacji nie wykonujesz** — to działanie zewnętrzne za zgodą właściciela; odeślij PYTANIE z gotowym diffem/plikami i komendą sprawdzenia `node scripts/wydanie/sprawdz-adresy.mjs` (oczekiwany tylko 404 linku recenzji).
+   - 302 (P2, rola 10, DEC-02 a): notatka dla App Review (krok 1 od „Dziś”, zębatka na „Dziś”) i plan zrzutów (zrzut 1 = „Dziś”); zdanie opisu sklepu do 1.0.1. Bez zmian w App Store Connect.
+   - 303 (P2, rola 07): wyniki 55 scenariuszy spoza bramki przebiegu 8 / dowód scenariusza 28 przed wysyłką. Przebiegi `jakosc-ios.yml` na swojej gałęzi możesz wyzwolić przez workflow_dispatch; scenariuszy z asercją licznika nie ponawiasz (P-091).
+   - 304 (P2, rola 05, partia 2): manifest `docs/jakosc/migracje-wydane.json` z SHA-256 `0001.sql`.
+   - Raport `K/M2-koordynator-napraw-2026-11-10.md`; backlog 1.0.1 (`K/backlog-1-0-1.json`) tylko porządkujesz, nie wdrażasz.
+   - Reaudytu M1 nie uruchamiasz — po naprawach zgłoś gotowość; reaudyt zleca koordynator.
+4. Zakazy: nie scalasz do `claude/youthful-pasteur-kx83sn` ani `main`, nie tworzysz i nie archiwizujesz sesji (subagenci przez narzędzie Agent dozwoleni), nie piszesz na gałąź `koordynacja`, nie zmieniasz workflowów bez zadania, nie wyzwalasz `testflight.yml` ani `asc-*.yml`, nic do App Store Connect i nic na apps4brew.com, nigdy --no-verify ani force-push, nie pytasz właściciela bezpośrednio (bez AskUserQuestion). STOP-y twojej roli i punkt czyszczenia z zasady wspólnej 19 zamieniasz na raport do koordynatora i czekasz na jego odpowiedź; nie proponujesz właścicielowi nowej sesji.
+5. Decyzje: tryb „analogia” — najpierw repo `lkarwowski494/trening` (odczyt anonimowy: `git clone --depth 1 https://github.com/lkarwowski494/trening`), `repo:plik:linia`, wpis „(do weta)”; bez analogii — własna rekomendacja. Numery decyzji tylko z puli P-643…P-652 (w `docs/decyzje.md` na swojej gałęzi).
+6. Kontekst i koszt: od 30% okna kończysz krok, zapisujesz stan w `K/M2-stan.md` (warsztat, `main`), push, PRZEKAZANIE. Pułap 40 USD; po przekroczeniu progu STOP (52 USD) kończysz krok i oddajesz PRZEKAZANIE.
+7. Push: zbiorczo; w trakcie przebiegu E2E na twojej gałęzi kod czeka na jego koniec.
+8. Raporty (≤ 10 linii, przez send_message):
+   - po pierwszym zadaniu: czas i szacunek reszty;
+   - PYTANIE: pełna treść, opcje, rekomendacja (koordynator nie widzi twojego czatu);
+   - PRZEKAZANIE: zrobione (SHA, run CI), dowody (pliki), decyzje do weta, koszt, otwarte, następny krok, ścieżka promptu kontynuacji.
