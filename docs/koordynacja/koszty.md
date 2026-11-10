@@ -45,3 +45,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | W | 08 audit (recenzja V, opus) | 3 | 2,62 | 19 | 19:53 → 19:53 → raport 20:04 → `ci.yml` success 75242ba → przyjęte 20:05 | — | TAK, P3 1 |
 | Y | 10 build (lista 1.0, sonnet) | 5 | 2,63 | 30 | 20:33 → 20:33 → 20:45 → `ci.yml` 20:51 → scalone 20:51 | — | dopisek właściciela w 2. commicie |
 | X | 07 build (lista testu build 4, opus) | 6 | 5,12 | 25 | 20:33 → 20:33 → 20:51 → — (docs) → przyjęte 20:55 | — | add_repo warsztat odrzucony (KO-022) |
+| Z | 07 audit (MVP w 1.0, opus) | 10 | 8,84 | 23 | 21:05 → 21:21 → raport 21:37 → — (raport, odczyt) → przyjęte 21:40 | — | 51 funkcji: 44/5/1/1/0; ponad szacunek ok. 60 min — w czasie |
