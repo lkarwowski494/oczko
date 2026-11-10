@@ -148,6 +148,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zdjecie-usun` | podgląd zdjęcia | Delete photo (alert z potwierdzeniem, bez kosza) | „Delete photo” | |
 | `karta-udostepnij` | karta ukończenia | Share: obraz 1080 × 1350 bez EXIF/GPS (P-191 P10a) | „Share” | |
 | `nav-projekty` | pasek zakładek (p2) | zakładka „Projekty” (ZM-18); na liczniku od p3a nie ma wejścia do listy — scenariusz wraca `nav-wstecz`, potem zakładka (P-583) | „Projects” | |
+| `nav-przewodnik` | „Dziś” (symbol `questionmark.circle` z widocznym podpisem, przed zębatką; P-685, spec 04 przewodnik §1, §6) | wejście do przewodnika; tylko na „Dziś”, jak zębatka (P-571); scen. 69, 70 | „Guide” (etykieta = podpis) | |
 | `nav-ustawienia` | „Dziś” (zębatka `gearshape`; P-571, P-554, to-be WD-1) | jedyne wejście do Ustawień — bez drugiego miejsca w zakładce Projekty; scenariusze wchodzą przez `subflows/otworz-ustawienia.yaml` (pilnuje `tests/jakosc/e2e-otworz-ustawienia.test.ts`) | „Settings” | |
 | `nav-narzedzia` | lista projektów; pasek zakładek (p2) | wejście do „Tools” (zapas, druty, kalkulator; P-191 P7a) — kontrakt 07, przyjęty przez koordynatora 2026-10-26; po p2 zakładka „Narzędzia” (to samo znaczenie, ZM-18) | „Tools” | |
 | `nav-wstecz` | ekrany wtórne; licznik (P-583: „‹ Dziś” / „‹ Projekty” — wstecz do ekranu źródłowego) | systemowy „Back” | „Back” | |
@@ -202,6 +203,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
+| `ustawienia-przewodnik` | Ustawienia (P-685, spec 04 przewodnik §1) | wiersz „Guide” bezpośrednio nad „Help”, wartość „{n} of 42” (accessibilityValue, bez testID wartości); scen. 70 | „Guide” | |
 | `ustawienia-pomoc` | Ustawienia | wiersz „Help” (link do strony wsparcia z FAQ; DEC-22 a, M1-audytor-generalny-061) | „Help” | |
 | `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
 | `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |
@@ -343,6 +345,15 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `projekt-ladowanie` | ekran projektu (08 P, E2-137-A1) | stan do końca pierwszego odczytu; podprzepływ `dodaj-czesc-cel` czyta go opcjonalnie w ścieżce `opoznienie-ekran-projektu` | „Loading…” | |
 | `projekt-blad` | ekran projektu | stan błędu odczytu | „Couldn’t load this.” | |
 | `projekt-ponow` | ekran projektu (stan błędu) | „Try again” | „Try again” | |
+| `przewodnik` | przewodnik (`app/przewodnik.tsx`, P-686) | ScrollView ekranu; „Back” = `nav-wstecz` | — | |
+| `przewodnik-krok-1` | przewodnik, „First steps” | krok 1 z 6 (wzorzec `przewodnik-krok-{1..6}`, spec §6); zawsze rozwinięty, na górze (§11 (3)) | — | |
+| `przewodnik-krok-1-pokaz` | przewodnik, krok 1 | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`) | „Show: Step 1 of 6” | |
+| `przewodnik-postep` | przewodnik, „Feature library” | licznik przeczytanych (P-688) | „Read: {n} of 42” | |
+| `przewodnik-f-cel` | przewodnik, grupa `licznik` | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); stuknięcie rozwija i oznacza przeczytaną (P-688); scen. 69 | „{nazwa}, {grupa}, read|not read” | |
+| `przewodnik-f-cel-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`) | — | |
+| `przewodnik-f-cel-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`; P-687: licznik ostatniego miejsca pracy, bez niego „/”) | „Show: {nazwa}” | |
+| `przewodnik-f-kontynuuj` | przewodnik, grupa `dzis` | wiersz funkcji „Kontynuuj” (pierwsza funkcja biblioteki); scen. 70 (stan przeczytania) | „{nazwa}, Today, read|not read” | |
+| `przewodnik-f-kontynuuj-opis` | przewodnik, wiersz rozwinięty | opis funkcji | — | |
 | `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy pisany w kodzie (2 strony tekstu Helvetica) | bez `t()` | |
 | `e2e-wzor-pdf-skan` | dodanie wzoru (build E2E) | prawdziwy wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, strategia §4; P-439; scen. 21) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |
@@ -410,6 +421,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | BR-DAN-006/S3 „Replace” (F-32) | `66-br-dan-006-s3-zastap-kopia-przed.yaml` (informacyjnie) |
 | BR-LIC-012/S1 w pasku pod wzorem (F-09, P2-5b) | `67-br-lic-012-s1-podpis-w-pasku-wzoru.yaml` (informacyjnie) |
 | BR-ZAK-004/S1 (F-36, zadanie 002: wiersz „Privacy Policy” w Ustawieniach, tylko widoczność i zrzut) | `68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml` (informacyjnie) |
+| P-687 „Pokaż” i P-685 wejście z „Dziś” (przewodnik, spec 04 §11 (1)–(3)) | `69-p-687-przewodnik-z-dzis-pokaz.yaml` (informacyjnie) |
+| P-688 stan przeczytania i P-685 wejście z Ustawień (przewodnik) | `70-p-688-przewodnik-z-ustawien-przeczytane.yaml` (informacyjnie) |
 | (przepływy pakietu podstawowego spoza poziomu E2E) BR-LIC-002/S1–S3, BR-LIC-019/S1, BR-LIC-003/S2 · BR-ZAK-006/S1, KP-13 · BR-ZAK-001/S1, PR-09 · P-089 (3a) · BR-DAN-005/S1, BR-DAN-006/S1, P-113 Q2a (bez karty) · ADR-0019 | `04`, `05`, `06`, `07`, `08`, `09` |
 
 Kryteria „tylko-urządzenie” (18, `kryteria.json`) nie mają scenariusza — lista telefonu (strategia §8, TT-01–TT-09) albo „Nie sprawdzono”.
