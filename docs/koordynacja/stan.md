@@ -109,7 +109,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
 - Pula A2: P-644…P-652 (P-643 zajęty przez 303).
-- KO następny: **KO-020**. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
+- KO następny: **KO-021**. Pula H (09): P-673…P-676. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -171,3 +171,6 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 08:57 | kontrola | E2: 23% kontekstu (234 361), 2,73 USD, gałąź @ 992aec2 (wypchnięte), wg statusu commit 18cf1f9 lokalnie i czeka na przebieg macOS; F: **28%** (279 592), 5,89 USD, gałęzi na origin jeszcze brak — wg statusu push z verify w tle, potem PRZEKAZANIE; koordynator: 22% (222 339), 5,67 USD — przekazanie E6 po odbiorze F i starcie G albo przy 30% | kontrola 09:20: PRZEKAZANIE F → polecenie G; run zrzutów E2 |
 | 10.11 08:57 | F | PRZEKAZANIE: 738b0d6 (`docs/design/fix11-2026-11-10.md` 24 KB + makiety, `design-spec.md`, `testid.md`, `decyzje.md`); P-661 licencje jak Trening (wszystkie pakiety npm + natywne + krój; wiersz „Open source licenses” w Ustawieniach), P-662/P-663 limit ×1,8, **P-664 „Next part” przeniesiony do stałej strefy licznika** (auto-przewinięcie odrzucone); wg F żaden z 7 ekranów planu zrzutów nie zmienia się przy domyślnym tekście; 6 nowych kluczy i18n (en + oczekujące); odbiór: `git log 86021db..738b0d6` 1 commit, autor zgodny, zmiany tylko w `docs/` | G |
 | 10.11 08:58 | G | start session_01T66VBxbRK32NjWj1jbd7ER (08 fix, sonnet-5-5), polecenie @ f28b195; F zarchiwizowana 09:00 (6,13 USD, 28%) | kontrola 09:20 (G po ok. 20 min — WG-05; E2 run zrzutów) |
+| 10.11 09:00 | G | plan E0 (4 × D, kolejność B3-02, B3-01, B3-03, M1-245); baza 738b0d6: 569 zestawów / 6941 zielone wg sesji | — |
+| 10.11 09:06 | G | B3-02 4eac4af, B3-01 3927cd5 (limit także na 2 przyciskach paska notatki — interpretacja szeroka, do recenzji), B3-03 4d77afc (testID `licznik-strefa`, ogłoszenie „Goal reached” przy zdarzeniu `cel-czesci`; e2e 34 bez scroll/swipe; ryzyko: dwa kolejne ogłoszenia VoiceOver na iOS) — lokalnie, bez pusha; wg sesji testy czerwone → zielone | M1-245 |
+| 10.11 09:08 | G | PYTANIE: 6 kluczy na liście oczekujących zaczerwieni `sprawdz-i18n --wydanie` w kontroli .ipa → **KO-020**: bez wyjątku w bramce, po G sesja H (rola 09) tłumaczy 6 × 34 na tej samej gałęzi, dopiero potem recenzja/scalenie/build 3 | kontrola 09:20 |
