@@ -40,3 +40,5 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | R | 07 build (e2e przewodnika + lista L, opus) | 8 | 5,86 | 28 | 18:12 → 18:13 → 18:28 → `ci.yml` w toku → — | — | pytanie KO-029 |
 | S | 09 build (2013 tekstów, sonnet) | 7 | 9,33 | 27 | 18:12 → 18:13 → 18:52 → `ci.yml` w toku → — | — | ponad STOP; 14 subagentów sonnet wbrew limitowi 1 (WG-06) |
 | T | 08 fix (scalenie R, Q-001, Q-003, wartoscTestID, słownik, spec 640; sonnet) | 8 | 2,30 | 23 | 18:58 → 18:59 → ok. 19:14 → `ci.yml` 42886016326 w toku → (U) | ok. 17 min — PRZEKAZANIE wysłane dopiero na prośbę 19:31 | pod pułapem |
+| U | 08 audit (recenzja R+T, opus) | 5 | 4,00 | 22 | 19:31 → 19:31 → raport 19:40 → — → NIE (001) | — | werdykt NIE; P2 001 |
+| V | 08 fix (001 nawigacja, 002 spec; sonnet) | 4 | 1,23 | 19 | 19:41 → 19:41 → ok. 19:48 → `ci.yml` 42889541804 w toku → (W) | — | pod pułapem |
