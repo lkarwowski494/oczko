@@ -13,5 +13,8 @@ name: "Zrzuty sklepu · 05 lista projektów"
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 - assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
 - tapOn: { id: "nav-projekty" }
+# P-089 (3a): jednorazowe okno „Uczciwe zasady” nad zakładką Projekty (run 42777145130: zrzut porażki sceny 05); zamykane jak w 00-przygotuj
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
 - extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
 - assertVisible: { id: "projekty-dni-darmowe" }

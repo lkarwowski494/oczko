@@ -16,7 +16,8 @@ case "$URZ" in
   ipad)   ROZMIAR="ipad-13"; ORIENT_WZOR="LANDSCAPE_LEFT" ;;   # plan: wzór obok licznika na iPadzie poziomo
   *) echo "::error::nieznane urządzenie: $URZ"; exit 2 ;;
 esac
-SCENY="01-dzis 02-licznik 03-wzor 04-zakreslenie 05-projekty 06-historia 07-kalendarz"
+# Kolejność ma znaczenie: „Kontynuuj ›” wraca do ostatniego miejsca pracy; po scenie 03 to strona wzoru (run 42777145130), więc 06 (licznik) idzie przed 03, a 04 działa z obu miejsc
+SCENY="01-dzis 02-licznik 06-historia 03-wzor 04-zakreslenie 05-projekty 07-kalendarz"
 WARUNKOWE=" 03-wzor 04-zakreslenie "
 mkdir -p "$OUT/$ROZMIAR/$JEZYK" "$LOGI"
 NIEUDANE="$LOGI/nieudane-$URZ.txt"; : > "$NIEUDANE"
@@ -52,6 +53,10 @@ for scena in $SCENY; do
       if [[ "$WARUNKOWE" == *" $scena "* && "$OG07" != "true" ]]; then CEL="$OUT/warunek-og07/$ROZMIAR/$JEZYK"; else CEL="$OUT/$ROZMIAR/$JEZYK"; fi
       mkdir -p "$CEL"
       if xcrun simctl io "$UDID" screenshot --type=png "$CEL/$scena.png" >/dev/null 2>&1 && [ -s "$CEL/$scena.png" ]; then
+        # simctl zapisuje bufor pionowy urządzenia: po LANDSCAPE_LEFT treść leży bokiem (run 42777145130: ipad 03-wzor.png 2064x2752, tekst obrócony o 90° w prawo) → obrót o 90° w lewo
+        if [ "$ORIENT_WZOR" = "LANDSCAPE_LEFT" ] && [[ " 03-wzor 04-zakreslenie " == *" $scena "* ]]; then
+          sips -r 270 "$CEL/$scena.png" >/dev/null 2>&1 || echo "::warning::$scena: obrót zrzutu poziomego nie powiódł się"
+        fi
         echo "zrzut $URZ $scena: $(pomiar "$CEL/$scena.png"), $(wc -c < "$CEL/$scena.png" | tr -d ' ') B → ${CEL#"$OUT"/}"
         ok=1; break
       fi

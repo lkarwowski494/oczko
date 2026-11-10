@@ -135,4 +135,28 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   test('sceny nie wciskają +1 na ekranie licznika (panel pomiaru E2E „p95 … ms” zostałby w kadrze)', () => {
     for (const f of pliki.filter((x) => /^0[1-7]/.test(x))) expect({ f, plus: /id:\s*"licznik-plus"\s*\}\s*$/m.test(czytaj(`${KAT}/${f}`)) && /tapOn:\s*\{\s*id:\s*"licznik-plus"/.test(czytaj(`${KAT}/${f}`)) }).toEqual({ f, plus: false });
   });
+  // Run 42777145130 (iPhone i iPad, te same porażki): zrzuty porażek pokazały stronę wzoru po „Kontynuuj ›” (04, 06) i okno „Uczciwe zasady” nad Projektami (05, 07).
+  test('05 i 07 zamykają jednorazowe okno „Uczciwe zasady” przed czekaniem na listę projektów', () => {
+    for (const f of ['05-projekty.yaml', '07-kalendarz.yaml']) {
+      const t = czytaj(`${KAT}/${f}`);
+      expect(t.indexOf('okno-uczciwe-zasady|projekty-lista')).toBeGreaterThan(-1);
+      expect(t.indexOf('uczciwe-zasady-zamknij')).toBeGreaterThan(t.indexOf('okno-uczciwe-zasady|projekty-lista'));
+      expect(t.indexOf('uczciwe-zasady-zamknij')).toBeLessThan(t.lastIndexOf('projekty-lista|projekty-dni-darmowe'));
+    }
+  });
+
+  test('04 działa po restarcie na stronie wzoru i na liczniku; 06 (licznik) idzie w skrypcie przed 03 (po 03 „Kontynuuj ›” prowadzi do wzoru)', () => {
+    const t04 = czytaj(`${KAT}/04-zakreslenie.yaml`);
+    expect(t04).toMatch(/when:\s*\{\s*notVisible:\s*\{\s*id:\s*"wzor-widok"/);
+    const sceny = /^SCENY="([^"]+)"/m.exec(czytaj('scripts/ci/zrzuty-sklepu.sh'))![1].split(' ');
+    expect(sceny.indexOf('06-historia')).toBeLessThan(sceny.indexOf('03-wzor'));
+    expect(sceny.indexOf('04-zakreslenie')).toBeGreaterThan(sceny.indexOf('03-wzor'));
+  });
+  test('iPad poziomo: zrzut z simctl (bufor pionowy, treść bokiem) jest obracany o 90° w lewo dla scen 03 i 04', () => {
+    const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
+    expect(sh).toMatch(/ORIENT_WZOR" = "LANDSCAPE_LEFT" \]\] ?&&|ORIENT_WZOR" = "LANDSCAPE_LEFT" \]/);
+    expect(sh).toContain('sips -r 270 "$CEL/$scena.png"');
+    expect(sh.indexOf('sips -r 270')).toBeGreaterThan(sh.indexOf('simctl io "$UDID" screenshot'));
+    expect(sh.indexOf('sips -r 270')).toBeLessThan(sh.indexOf('pomiar "$CEL/$scena.png"'));
+  });
 });
