@@ -13,7 +13,7 @@ import { Liczba } from './Liczba';
 import { RzadAkcji } from './LicznikAkcje';
 import { SymbolSf } from './SymbolSf';
 import { ArkuszLimitu } from './LicznikArkuszLimitu';
-import { LinijkaCelu } from './LicznikCel';
+import { LinijkaCelu, PrzyciskNastepnejCzesci, celOsiagniety } from './LicznikCel';
 import { style } from './LicznikStyl';
 import type { PropsLicznika, StanEkranuLicznika } from './LicznikTypy';
 import type { Tlumacz } from './wspolne';
@@ -72,6 +72,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     if (sk.komunikat === 'limit') ustawArkuszLimitu(nrRobocza); else ustawKomunikat(sk.komunikat);
     if (sk.haptyka) zagraj(sk.haptyka);
     if (sk.ogloszenie) p.oglos(sk.ogloszenie);
+    if (w.ok && w.wartosc.zdarzenia.includes('cel-czesci')) p.oglos(t('licznik.cel_osiagniety')); // B3-03 (P-664): „+1” osiągające cel; fokus się nie przenosi
   }
   async function minus() {
     if (s.zablokowany) { ustawKomunikat('zablokowany'); zagraj('blokadaStukniecie'); return; }
@@ -178,7 +179,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
           </View>
         )}
         {start && <Text style={st.tresc}>{t('licznik.podpowiedz_start')}</Text>}
-        {s.cel !== null && <LinijkaCelu s={s} t={t} st={st} naNastepnaCzesc={p.naNastepnaCzesc} />}
+        {s.cel !== null && <LinijkaCelu s={s} t={t} st={st} />}
         {s.calosc && <Text style={st.podpis} testID="licznik-calosc">{s.calosc.czesc === null ? t('projekt.calosc', { count: s.calosc.rzedy }) : t('licznik.calosc', { czesc: s.calosc.czesc, count: s.calosc.rzedy })}</Text>}
         {s.celDnia && <Text style={st.podpis}>{t('licznik.cel_dnia', { count: s.celDnia.rzedy })}</Text>}
         {s.limit.rodzaj === 'ostatni-darmowy' && <Text style={st.podpis}>{t('licznik.ostatni_darmowy', { miesiac: s.miesiac.nazwa })}</Text>}
@@ -218,7 +219,8 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         )}
         {duzyTekst && rzadAkcji}
       </ScrollView>
-      <View style={st.strefa} onLayout={(e) => ustawWysokoscStrefy(e.nativeEvent.layout.height)}>
+      <View style={st.strefa} onLayout={(e) => ustawWysokoscStrefy(e.nativeEvent.layout.height)} testID="licznik-strefa">
+      {celOsiagniety(s) && <PrzyciskNastepnejCzesci t={t} st={st} duzyTekst={duzyTekst} naNastepnaCzesc={p.naNastepnaCzesc} />}
       {/* M1-004: komunikat w stałym miejscu nad przyciskami, poza przewijaną treścią (dawniej ostatnie dziecko ScrollView, pod notatką i kreskami) */}
       {komunikat && (
         <Text style={[st.tresc, st.komunikat]} accessibilityRole="alert" accessibilityLiveRegion="assertive" testID={komunikat === 'blad_zapisu' ? 'blad-zapisu' : undefined}>

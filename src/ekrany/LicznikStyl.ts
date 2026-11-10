@@ -41,6 +41,9 @@ export function style(k: Kolory) {
     zakreslacz: { backgroundColor: k.zakreslacz, borderLeftWidth: 3, borderLeftColor: k.zakreslaczKrawedz, borderRadius: promien.zakreslacz, padding: odstep.m },
     // M3-LIC-03: rząd akcji stoi nad stałą strefą „−1 / +1” (makieta: akcje tuż nad `.dol`, margines 16 pt), nie w przewijanej treści; zIndex — menu stopera nad strefą.
     akcjeStrefa: { paddingHorizontal: odstep.l, paddingTop: odstep.s, zIndex: 10 },
+    // B3-03 (P-664): „Next part” w strefie, pełna szerokość z marginesami 16; do następnego elementu 16 (odstepy.l): zwykle 8 + paddingTop akcjeStrefa 8, od AX3 padding przyciskiAx 16.
+    nastepnaCzescStrefa: { paddingHorizontal: odstep.l, paddingTop: odstep.s, paddingBottom: odstep.s },
+    nastepnaCzescStrefaAx: { paddingHorizontal: odstep.l, paddingTop: odstep.s },
     przyciski: { flexDirection: 'row', alignItems: 'flex-end', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     przyciskiAx: { flexDirection: 'column', gap: rozmiary.odstepMinusPlus, padding: odstep.l },
     minus: { width: rozmiary.przyciskMinus, height: rozmiary.przyciskMinus, borderRadius: tokeny.promienie.minus, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },
