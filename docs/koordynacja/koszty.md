@@ -11,6 +11,6 @@
 | session_01T66VBvxBBKLAkeEUNSEf4n | koordynator M9 | — | — | — | od 10.11 05:10 | — | |
 | session_01T66VBygxDoZxuZKDNHHXc8 | A2: M2 naprawy (302, 304, raport) | 34 (STOP 44) | — | — | 10.11 05:38 → 05:38 → … | — | następca A |
 | session_01T66VBxhDabqriZxJMgbRsB | koordynator M9 (fable-5-2) | — | 1,88 (odczyt 05:37, przed E0) | 14 | od 10.11 05:35 | — | |
-| session_01T66VBxU3pNDFL8RzCfKmf9 | B: 10 fix, publikacja 301 | 6 (STOP 8) | — | — | 10.11 05:44 → 05:44 → … | odpowiedź właściciela 05:23→05:42 (w tym wstrzymanie) | |
+| session_01T66VBxU3pNDFL8RzCfKmf9 | B: 10 fix, publikacja 301 | 6 (STOP 8) | 0,21 | 9 | 10.11 05:44 → 05:44 → brak commita → zarchiwizowana 05:46 | odpowiedź właściciela 05:23→05:42 (w tym wstrzymanie) | |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
