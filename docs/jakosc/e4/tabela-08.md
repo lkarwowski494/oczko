@@ -305,7 +305,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-dzianina-p4.test.tsx` | zielony (główny zestaw) | 9 | — | `src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekty`<br>`src/przypadki-uzycia/widok-projektow` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przewodnik-okablowanie.test.tsx` | zielony (główny zestaw) | 4 | — | `src/domena/przewodnik`<br>`src/ekrany/Dzis`<br>`src/ekrany/motyw`<br>`src/przypadki-uzycia/przewodnik` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przewodnik.test.tsx` | zielony (główny zestaw) | 8 | P-685, P-688, P-691 | `src/domena/przewodnik`<br>`src/ekrany/Dzis`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/przypadki-uzycia/przewodnik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przewodnik-stos.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/przewodnik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przewodnik.test.tsx` | zielony (główny zestaw) | 9 | P-685, P-688, P-691 | `src/domena/przewodnik`<br>`src/ekrany/Dzis`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/przypadki-uzycia/przewodnik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-glowny-wypelniony.test.tsx` | zielony (główny zestaw) | 7 | P-547, P-553 | `src/domena/uklad`<br>`src/ekrany/Arkusz`<br>`src/ekrany/HistoriaDni`<br>`src/ekrany/Licznik`<br>`src/ekrany/Stoper`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy-rozmiar.test.tsx` | zielony (główny zestaw) | 2 | P-361, P-553 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275, P-553 | `src/ekrany/Arkusz` | — |
@@ -425,4 +426,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 421; zależnych od poprawek: 269.
+Razem plików testów: 422; zależnych od poprawek: 269.

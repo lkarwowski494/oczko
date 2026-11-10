@@ -99,6 +99,9 @@ export function przeczytaneZZapisu(v: unknown): string[] {
 export const dodajPrzeczytana = (lista: readonly string[], id: string): string[] => (ID_FUNKCJI.has(id) && !lista.includes(id) ? [...lista, id] : [...lista]);
 export const postep = (przeczytane: readonly string[]): { n: number; m: number } => ({ n: przeczytane.filter((id) => ID_FUNKCJI.has(id)).length, m: FUNKCJE.length });
 
+/** Parametr trasy `/przewodnik?z=ustawienia`: przewodnik otwarto z Ustawień, więc „Pokaż” funkcji Ustawień wraca do trasy niżej na stosie (KO-031, P-708). */
+export const WEJSCIE_Z_USTAWIEN = 'ustawienia';
+
 /** Zakładki (`app/(zakladki)`): „Pokaż” zamyka stos i przechodzi do zakładki, bez drugiego zestawu zakładek (Trening `app/guide.tsx:21`). */
 const ZAKLADKI = ['/', '/projekty', '/dni'] as const;
 type Zakladka = (typeof ZAKLADKI)[number];

@@ -20,7 +20,7 @@ import { E2E, paneleE2e } from '../src/platforma/tryb-e2e';
 import { udostepnijPlik, wybierzArchiwum } from '../src/platforma/system-plikow-uzytkownika';
 import { eksportuj, importuj } from '../src/przypadki-uzycia/archiwum';
 import { przeczytanePrzewodnika } from '../src/przypadki-uzycia/przewodnik';
-import { postep as postepPrzewodnika } from '../src/domena/przewodnik';
+import { postep as postepPrzewodnika, WEJSCIE_Z_USTAWIEN } from '../src/domena/przewodnik';
 import { widokProjektow } from '../src/przypadki-uzycia/widok-projektow';
 import { stanBazy } from '../src/dane/repozytoria/icloud';
 import { nazwaPliku, usunPlik } from '../src/dane/pliki/system';
@@ -145,7 +145,7 @@ export default function EkranUstawien(): React.ReactElement {
         adresy={{ polityka: ADRESY.polityka, wsparcie: ADRESY.wsparcie, recenzja: ADRESY.recenzja }}
         naOferty={() => router.push('/oferty')}
         naWstecz={() => router.back()}
-        przewodnik={{ postep: { n: przeczytanychPrzewodnika, m: postepPrzewodnika([]).m }, naPrzewodnik: () => router.push('/przewodnik') }}
+        przewodnik={{ postep: { n: przeczytanychPrzewodnika, m: postepPrzewodnika([]).m }, naPrzewodnik: () => router.push({ pathname: '/przewodnik', params: { z: WEJSCIE_Z_USTAWIEN } }) }}
         naWibracje={(w) => void zapiszPreferencje({ wibracje: w })}
         preferencje={{ ekranNieGasnie: pref.ekranNieGasnie, ukladMiar: pref.ukladMiar, naEkranNieGasnie: (w) => void zapiszPreferencje({ ekranNieGasnie: w }), naMiary: () => router.push('/miary') }}
         naZglosProblem={() => router.push('/zglos')}

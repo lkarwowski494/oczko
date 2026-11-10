@@ -14,7 +14,8 @@ import { wykonaj } from '../dane/pomocnicze/srodowisko';
 import { atrapaHaptyki, atrapaSystemu, plusOk, stanLicznika, tEn } from './pomoc';
 
 const mockRouter = { back: jest.fn(), push: jest.fn(), navigate: jest.fn(), dismissAll: jest.fn(), dismissTo: jest.fn(), canDismiss: jest.fn(() => true) };
-jest.mock('expo-router', () => ({ useRouter: () => mockRouter }));
+let mockParametry: Record<string, string> = {}; // parametry trasy `/przewodnik`: `z=ustawienia` ustawia wiersz „Guide” w Ustawieniach (08-programista-001)
+jest.mock('expo-router', () => ({ useRouter: () => mockRouter, useLocalSearchParams: () => mockParametry }));
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -31,7 +32,7 @@ async function start(o: { zLicznikiem: boolean }) {
   await screen.findByTestId('przewodnik');
   return { s };
 }
-beforeEach(() => { for (const f of [mockRouter.back, mockRouter.push, mockRouter.navigate, mockRouter.dismissAll, mockRouter.dismissTo]) f.mockClear(); });
+beforeEach(() => { mockParametry = {}; for (const f of [mockRouter.back, mockRouter.push, mockRouter.navigate, mockRouter.dismissAll, mockRouter.dismissTo]) f.mockClear(); });
 
 describe('ekran /przewodnik', () => {
   test('tytuł, wstęp, 6 kroków z „Show”, 9 grup z nagłówkami, 42 wiersze zwinięte, postęp 0 z 42', async () => {
@@ -92,6 +93,7 @@ describe('ekran /przewodnik', () => {
   });
 
   test('Apple Watch bez „Show”; opis Pro z limitem z konfiguracji; Oczko Pro prowadzi do Ustawień, nie do ofert', async () => {
+    mockParametry = { z: 'ustawienia' }; // przewodnik otwarty z Ustawień
     await start({ zLicznikiem: false });
     fireEvent.press(screen.getByTestId('przewodnik-f-zegarek'));
     expect(await screen.findByTestId('przewodnik-f-zegarek-opis')).toBeTruthy();
@@ -102,7 +104,8 @@ describe('ekran /przewodnik', () => {
     await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenLastCalledWith('/ustawienia'));
   });
 
-  test('Q-001: „Show” funkcji Ustawień wraca do istniejącej trasy /ustawienia (dismissTo), nie kładzie na stos drugiej kopii', async () => {
+  test('Q-001: „Show” funkcji Ustawień wraca do istniejącej trasy /ustawienia (dismissTo) przy wejściu z Ustawień, nie kładzie na stos drugiej kopii', async () => {
+    mockParametry = { z: 'ustawienia' };
     await start({ zLicznikiem: false });
     for (const id of ['wibracje', 'ekran', 'eksport', 'usun', 'pro']) {
       fireEvent.press(screen.getByTestId(`przewodnik-f-${id}`));
@@ -115,6 +118,19 @@ describe('ekran /przewodnik', () => {
     fireEvent.press(await screen.findByTestId('przewodnik-f-jednostki-pokaz'));
     await waitFor(() => expect(mockRouter.push).toHaveBeenLastCalledWith('/miary'));
     expect(mockRouter.dismissTo).toHaveBeenCalledTimes(5);
+  });
+});
+
+describe('08-programista-001 (KO-031): bez wejścia z Ustawień „Show” funkcji Ustawień to push', () => {
+  test('„Today” i każde inne wejście (brak `z`): push /ustawienia, bez dismissTo; stan stosu: przewodnik-stos.test.tsx', async () => {
+    await start({ zLicznikiem: false });
+    for (const id of ['wibracje', 'ekran', 'eksport', 'usun', 'pro']) {
+      fireEvent.press(screen.getByTestId(`przewodnik-f-${id}`));
+      fireEvent.press(await screen.findByTestId(`przewodnik-f-${id}-pokaz`));
+      await waitFor(() => expect(mockRouter.push).toHaveBeenLastCalledWith('/ustawienia'));
+    }
+    expect(mockRouter.push).toHaveBeenCalledTimes(5);
+    expect(mockRouter.dismissTo).not.toHaveBeenCalled();
   });
 });
 
