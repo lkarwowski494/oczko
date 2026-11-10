@@ -1,10 +1,10 @@
-INFO nazwy w cudzysłowach: 64 (en + pl), sprawdzone
+INFO nazwy w cudzysłowach: 60 (en + pl), sprawdzone
 INFO trasy docelowe: / → app/(zakladki)/index.tsx; /licznik → app/licznik.tsx; /wzor → app/wzor.tsx; /projekty → app/(zakladki)/projekty.tsx; /projekt/[id] → app/projekt/[id].tsx; /kosz → app/kosz.tsx; /zapas → app/zapas.tsx; /druty → app/druty.tsx; /probka → app/probka.tsx; /dni → app/(zakladki)/dni.tsx; /ustawienia → app/ustawienia.tsx; /miary → app/miary.tsx; /stan-danych → app/stan-danych.tsx; /jezyk → app/jezyk.tsx; /zglos → app/zglos.tsx; /zrodla → app/zrodla.tsx
 INFO funkcje bez trasy (z uzasadnieniem): zegarek — aplikacja na zegarku, poza nawigacją iPhone’a
 INFO kontrakt zakresu: 51 funkcji MVP; w przewodniku 49; pominięte z powodem 2
 INFO grupy: 9; funkcje w bibliotece: 42; kroki: 6
 INFO nowe klucze: 61 (stałe 13 + kroki 6 + opisy funkcji 42); nazwy funkcji i grup z istniejących kluczy: 46
-INFO teksty do tłumaczenia (rola 09): 61 × 34 języki = 2074; znaki en: 3625, pl: 3652
+INFO teksty do tłumaczenia (rola 09): 61 × 34 języki = 2074; znaki en: 3583, pl: 3624
 INFO najdłuższy tekst: funkcja przypomnienia, 131 znaków
 INFO zapisano tresc.js (limit w makiecie: 5 [PRZYKŁAD])
 INFO zapisano klucze.md

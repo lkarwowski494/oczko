@@ -13,10 +13,11 @@ Decyzja właściciela (10.11 ok. 15:50 UTC, dosłownie): „Obok zębatki i w us
 | Makieta (4 ekrany) | `przewodnik-2026-11-10/przewodnik.html` (dane z `tresc.js`) |
 | Zrzuty 390 pt: 4 ekrany × jasny/ciemny × domyślny/AX5 (16) + en jasny dla 2 ekranów przewodnika (makiety „Dziś” i Ustawień są tylko po polsku) + arkusz | `przewodnik-2026-11-10/zrzuty/` (`narzedzia/przewodnik-zrzuty.mjs`) |
 | Pomiar warsztatu 390 pt (0 błędów) i obraz mrużenia | `przewodnik-2026-11-10/warsztat-390.txt`, `przewodnik-mruzenie-390.png` |
+| Zrzuty 320 pt (te same warianty, kontrola przepełnienia) | `przewodnik-2026-11-10/zrzuty-320/` |
 | Pary przed/po krytyki | `przewodnik-2026-11-10/przed-po/` |
 
 ## 1. Wejścia (P-685)
-- **„Dziś”, pasek** (`src/ekrany/Dzis.tsx:183`): nowy `PrzyciskSymbolu` **przed** zębatką (zębatka zostaje skrajna). Symbol `questionmark.circle` (iOS 13), rozmiar i kolor jak zębatka (`ROZMIAR_SYMBOLU`, `tekst`, limit skali `MAX_SKALA_TYTULOWA`), cel 44 × 44 pt (`cel.minimum`, styl `symbol` w `Pasek.tsx`), etykieta VoiceOver `przewodnik.tytul` („Przewodnik” / „Guide”), rola przycisku, testID `nav-przewodnik`. Tylko na „Dziś” — jak zębatka (P-571). Bez plakietki nieprzeczytanych. Zrzut: `zrzuty/dzis-przewodnik-*`.
+- **„Dziś”, pasek** (`src/ekrany/Dzis.tsx:183`): nowy `PrzyciskSymbolu` **przed** zębatką (zębatka zostaje skrajna). Symbol `questionmark.circle` (iOS 13) **z widocznym podpisem** `przewodnik.tytul` (właściwość `podpis`, jak „Narzędzia” DEC-05 a, `src/ekrany/ListaProjektow.tsx:75–76`, dotąd „jedyny symbol z widocznym podpisem” — przewodnik jest drugim; wymaganie właściciela „To ma być intuicyjne”, 10.11), rozmiar i kolor jak zębatka (`ROZMIAR_SYMBOLU`, `tekst`, limit skali `MAX_SKALA_TYTULOWA`), cel 44 × 44 pt (`cel.minimum`, styl `symbol` w `Pasek.tsx`), etykieta VoiceOver `przewodnik.tytul` („Przewodnik” / „Guide”), rola przycisku, testID `nav-przewodnik`. Tylko na „Dziś” — jak zębatka (P-571). Od AX3 symbole paska przechodzą do osobnego wiersza nad tytułem „Dziś” (podpis zostaje; przy 320 pt i AX5 inaczej wypadały poza ekran — `przed-po/ax5-320-dzis-*`). Bez plakietki nieprzeczytanych. Zrzut: `zrzuty/dzis-przewodnik-*`.
 - **Ustawienia** (`src/ekrany/Ustawienia.tsx:121–129`): wiersz „Przewodnik” w grupie z „Pomoc”, **bezpośrednio nad „Pomoc”**; kafelek ikony `questionmark.circle`, wartość `przewodnik.postep_wiersza` („3 z 42”, `tekst2`, `accessibilityValue`), strzałka, testID `ustawienia-przewodnik`. Zrzut: `zrzuty/ustawienia-przewodnik-*`.
 - **„Pomoc”** (link WWW wsparcia) zmienia symbol z `questionmark.circle` na `lifepreserver` (iOS 14): jeden symbol = jedno znaczenie (zasada studia 6; tak samo P-577 dla `sun.max`).
 
@@ -82,8 +83,25 @@ Kontrakt zakresu: 51 funkcji MVP; 49 ma miejsce w krokach albo w bibliotece (lis
 3. Dwie funkcje „Historia” (licznika i zakładki) — rozróżnia je grupa i etykieta VoiceOver z grupą w nagłówku; zostawione, bo obie nazwy są w interfejsie (nowa nazwa byłaby drugą nazwą tej samej funkcji).
 4. Pomiar warsztatu (`warsztat-390.txt`): 0 błędów; ostrzeżenia dotyczą całej strony makiety (4 ekrany, w tym uproszczona karta „Dziś” i pasek zakładek) — sam ekran przewodnika ma 4 wielkości (34, 22, 17, 15) i 3 kolory tekstu (`tekst`, `tekst2`, `akcentTekst`); odstęp 2 px to przerwa tekst–symbol w łączu (jak `nav` w `dzianina/ekrany.html`).
 
+## 11. Intuicyjność (wymaganie właściciela 10.11 ok. 17:25 UTC: „To ma być intuicyjne.”)
+| Kryterium | Jak spełnione | Sprawdzenie | Wynik na makiecie |
+|---|---|---|---|
+| (1) Wejście widać bez szukania; ikona z podpisem albo etykietą zrozumiałą bez wiedzy o aplikacji | „? Przewodnik” z widocznym podpisem w pasku „Dziś” — ekranu, od którego zawsze startuje aplikacja (P-563 (4a)), bez przewijania; drugie wejście: wiersz „Przewodnik” w Ustawieniach; etykieta VoiceOver = podpis | zrzuty `dzis-przewodnik-*` (390 i 320 pt, AX5); E2E 07: `nav-przewodnik` widoczny bez przewijania na świeżej instalacji | spełnione (320 pt AX5 po poprawce) |
+| (2) Od otwarcia przewodnika do właściwego ekranu najwyżej 2 stuknięcia | krok: 1 stuknięcie („Pokaż”); funkcja: 2 (rozwiń, „Pokaż”); jedyny wyjątek bez ekranu: Apple Watch (aplikacja zegarka) | E2E 07: `przewodnik-f-cel` → `przewodnik-f-cel-pokaz` → `licznik-*` | spełnione |
+| (3) „Pierwsze kroki” od razu na górze i rozwinięte; biblioteka niżej, w grupach nazwanych słowami użytkownika | kroki pierwsze pod tytułem, zawsze widoczne (bez zwijania); grupy noszą nazwy, które osoba widzi w aplikacji: zakładki (Dziś, Projekty, Narzędzia, Historia), tytuły ekranów (Licznik, Wzór, Ustawienia, Oczko Pro), powierzchnie systemu (Apple Watch i ekran blokady) — żadnej nazwy modułu z kodu | zrzut `przewodnik-kroki-*`; kontrola: nazwa każdej grupy jest kluczem interfejsu | spełnione |
+| (4) Zdania krótkie, w każdym kroku jedna czynność, nazwy z interfejsu | po dopisku: krok 2 bez „Otwórz licznik” (to robi „Pokaż”), krok 5 tylko „Kontynuuj”; zdania kroków ≤ 13 słów (pl i en), opisy ≤ 18 słów w zdaniu i 1–2 zdania; nazwy w cudzysłowach = wartości kluczy interfejsu (kontrola kod 0) | `kontrola.txt`; pomiar słów w zdaniach (pl: 13/4, 6/4, 8/6, 11/6, 7/7, 11) | spełnione |
+| (5) Bez samouczka nakładkowego, który blokuje ekran | przewodnik to zwykły ekran; nic nie pojawia się samo; NFR-PIE-001: 0 ekranów przed pierwszym „+1” | Trening ma tak samo: przewodnik jako ekran (`trening:app/guide.tsx:14`), „Pierwsze kroki” jako karta na ekranie głównym tylko dla nowej osoby (`trening:components/Dashboard.tsx:106`), podpowiedzi na ekranach i karuzela odrzucone (`trening:docs/18-archiwum-do-11.10.md:139`) | spełnione |
+
+**Ścieżka nowej osoby: pusta aplikacja → pierwszy rząd → pierwszy projekt (liczenie stuknięć).** Ekrany spoza tej makiety według zatwierdzonych makiet Dzianiny (`dzianina/ekrany.html`: `dzis-pierwszy`, `licznik`, `formularz-*`) i przepływów z listy testu buildu 3 (T-03, T-20); wpisanie nazwy nie jest liczone jako stuknięcie.
+| Ścieżka | Stuknięcia do pierwszego rzędu | Do pierwszego projektu (nazwa zapisana) |
+|---|---|---|
+| A. Bez przewodnika: „+1” na karcie „Pierwszy licznik” → „Otwórz licznik” → ••• → „Nazwij projekt i część” → nazwa → „Zapisz” | **1** | **5** |
+| B. Z przewodnikiem, krok po kroku: „Przewodnik” → krok 1 „Pokaż” (wraca na „Dziś”) → „+1” → „Przewodnik” → krok 2 „Pokaż” (licznik) → ••• → „Nazwij projekt i część” → „Zapisz” | **3** | **8** |
+| C. Projekt najpierw: „Projekty” → „Nowy projekt” → nazwa → „Dodaj” → część na ekranie projektu → „+1 rząd” | **5** | **3** |
+Wniosek: przewodnik nie jest potrzebny do pierwszego rzędu (ścieżka A, 1 stuknięcie) i dodaje 3 stuknięcia osobie, która chce iść krokami (B). Krok 1 „Pokaż” otwarty z „Dziś” tylko zamyka przewodnik — świadomie: ten sam przycisk działa z Ustawień. Przejście poznawcze z 3–5 osobami (bez instrukcji: „załóż projekt i policz rząd”, potem „znajdź, jak ustawić przypomnienie”) — krok właściciela po wdrożeniu, wynik do roli 03 (kolumna „Intuicyjność” kontraktu).
+
 ## Czego nie sprawdzono
-Urządzenie (SF Symbols `questionmark.circle` i `lifepreserver` obok zębatki, Dynamic Type na żywo, VoiceOver), 320 i 430 pt, iPad, najdłuższy język (DE — teksty powstaną w roli 09), przejście poznawcze z 3–5 osobami. Makieta „Dziś” ma uproszczoną kartę (bez rysunku dzianiny) — ocenia się tylko pasek z dwoma symbolami.
+Urządzenie (SF Symbols `questionmark.circle` i `lifepreserver` obok zębatki, Dynamic Type na żywo, VoiceOver), 430 pt (320 pt sprawdzone na makiecie), iPad, najdłuższy język (DE — teksty powstaną w roli 09), przejście poznawcze z 3–5 osobami. Makieta „Dziś” ma uproszczoną kartę (bez rysunku dzianiny) — ocenia się tylko pasek z dwoma symbolami.
 
 ## Szacunek pracy [OCENA agenta, nie pomiar]
 - **08 (kod):** ekran `app/przewodnik.tsx` + komponent, dane przewodnika z kluczami, zapis przeczytanych, 2 wejścia, zmiana symbolu „Pomoc”, test nazw i testy ekranu — ok. 2–3 h pracy agenta, jedna partia; czekanie: verify i CI.

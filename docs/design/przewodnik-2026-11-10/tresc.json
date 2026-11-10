@@ -18,10 +18,10 @@
   },
   "kroki": [
     { "id": "1", "trasa": "/", "F": ["F-01"], "en": "On “Today”, tap “+1” on the “First counter” card after each finished row. Nothing to set up first.", "pl": "Na ekranie „Dziś” stuknij „+1” na karcie „Pierwszy licznik” po każdym skończonym rzędzie. Nic nie trzeba zakładać." },
-    { "id": "2", "trasa": "/licznik", "zapas": "/", "F": ["F-14"], "en": "Tap “Open counter”, then ••• → “Name project and part”. The counter becomes your project.", "pl": "Stuknij „Otwórz licznik”, potem ••• → „Nazwij projekt i część”. Licznik staje się projektem." },
+    { "id": "2", "trasa": "/licznik", "zapas": "/", "F": ["F-14"], "en": "On the counter: ••• → “Name project and part”. The counter becomes your project.", "pl": "Na liczniku: ••• → „Nazwij projekt i część”. Licznik staje się projektem." },
     { "id": "3", "trasa": "/licznik", "zapas": "/", "F": ["F-08"], "en": "On the counter: “Goal” → “Set a goal for this part”. The knitting next to the number grows towards the goal.", "pl": "Na liczniku: „Cel” → „Ustaw cel dla tej części”. Dzianina obok liczby rośnie do celu." },
     { "id": "4", "trasa": "/wzor", "zapas": "/", "F": ["F-24", "F-25"], "en": "“Pattern” → “Add pattern”: a PDF or Word file, photos or a web page. The counter stays on the same screen.", "pl": "„Wzór” → „Dodaj wzór”: plik PDF lub Word, zdjęcia albo strona WWW. Licznik zostaje na tym samym ekranie." },
-    { "id": "5", "trasa": "/", "F": ["F-18", "F-49"], "en": "Next time, “Today” shows where you stopped: “+1” on the card counts a row, “Continue” opens the counter.", "pl": "Następnym razem „Dziś” pokazuje miejsce ostatniej pracy: „+1” na karcie liczy rząd, „Kontynuuj” otwiera licznik." },
+    { "id": "5", "trasa": "/", "F": ["F-18", "F-49"], "en": "Next time, tap “Continue” on “Today”. The counter opens where you stopped.", "pl": "Następnym razem stuknij „Kontynuuj” na ekranie „Dziś”. Licznik otworzy się w miejscu ostatniej pracy." },
     { "id": "6", "trasa": "/projekty", "F": ["F-14"], "en": "Another project: “Projects” → “New project”, with parts now or later.", "pl": "Kolejny projekt: „Projekty” → „Nowy projekt”, z częściami od razu albo później." }
   ],
   "grupy": [
@@ -30,7 +30,7 @@
       { "id": "tydzien", "nazwaKlucz": "dzis.ten_tydzien", "trasa": "/", "F": ["F-59"], "en": "The days you knitted this week, at a glance.", "pl": "Dni dziergania w tym tygodniu, na jedno spojrzenie." }
     ] },
     { "id": "licznik", "nazwaKlucz": "licznik.tytul_roboczy", "funkcje": [
-      { "id": "plus", "nazwaKlucz": "licznik.plus", "trasa": "/licznik", "zapas": "/", "F": ["F-01", "F-47"], "en": "Tap “+1 row” after each row; “−1” takes one back. Many quick taps in a row? Oczko offers to undo them.", "pl": "„+1 rząd” po każdym rzędzie, „−1” cofa jeden. Seria szybkich stuknięć? Oczko zaproponuje ich cofnięcie." },
+      { "id": "plus", "nazwaKlucz": "licznik.plus", "trasa": "/licznik", "zapas": "/", "F": ["F-01", "F-47"], "en": "Tap “+1 row” after each row; “−1” takes one back. After many quick taps, Oczko offers to undo them.", "pl": "„+1 rząd” po każdym rzędzie, „−1” cofa jeden. Po serii szybkich stuknięć Oczko zaproponuje ich cofnięcie." },
       { "id": "historia-licznika", "nazwaKlucz": "licznik.akcja_historia", "trasa": "/licznik", "zapas": "/", "F": ["F-02"], "en": "Every change with its time and value; undo a change from there.", "pl": "Każda zmiana z godziną i wartością; stamtąd cofniesz zmianę." },
       { "id": "wpisz", "nazwaKlucz": "menu.wpisz", "trasa": "/licznik", "zapas": "/", "F": ["F-45"], "en": "In the ••• menu: type the row number, or “Reset to 0…”.", "pl": "W menu •••: wpisz numer rzędu albo „Wyzeruj do 0…”." },
       { "id": "blokada", "nazwaKlucz": "menu.zablokuj", "trasa": "/licznik", "zapas": "/", "F": ["F-03"], "en": "The counter ignores taps, e.g. in a bag. Unlock it at the top of the screen.", "pl": "Licznik ignoruje stuknięcia, np. w torbie. Odblokujesz go u góry ekranu." },

@@ -27,6 +27,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .naglowek .data { color: var(--tekst2); margin-top: 4px; }
 .symbole { display: flex; gap: 0; flex: none; margin-right: -10px; }
 .pik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: calc(24px * min(var(--dt-tytul), 1.8)); color: var(--tekst); flex: none; position: relative; }
+.pik.zpodpisem { width: auto; gap: 4px; padding: 0 4px; font-size: calc(17px * min(var(--dt-tytul), 1.8)); } .pik.zpodpisem .ik { font-size: calc(24px * min(var(--dt-tytul), 1.8)); } /* DEC-05 a: symbol z podpisem (Pasek.tsx zPodpisem: gap xs, padding xs, typografia.tresc) */
 .pik.cel::after { content: ""; position: absolute; inset: 0; outline: 1px dashed #d0021b; outline-offset: -1px; } /* tylko na zrzucie celu: obrys 44×44 */
 .tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
 .zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
@@ -72,6 +73,7 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .adn { position: absolute; right: 8px; bottom: 92px; font: 600 11px/1.3 "Source Sans 3"; color: var(--tekst2); background: var(--powierzchnia); padding: 4px 8px; border-radius: 6px; opacity: .9; }
 body.duzy .wstep, body.duzy .fn-r p, body.duzy .krok .zd p { overflow-wrap: anywhere; }
 body.duzy .ust { flex-wrap: wrap; } body.duzy .ust .w { flex-basis: 100%; padding-left: calc(44px + 12px); }
+body.duzy .naglowek { flex-direction: column-reverse; align-items: stretch; } body.duzy .symbole { align-self: flex-end; } /* od AX3: symbole w osobnym wierszu nad tytułem, podpis zostaje (nic nie ucięte przy 320 pt) */
 body.duzy .karta { grid-template-columns: 1fr; } body.duzy .karta .dz { min-height: 120px; }
 </style></head><body>
 
@@ -81,7 +83,7 @@ body.duzy .karta { grid-template-columns: 1fr; } body.duzy .karta .dz { min-heig
   <div class="naglowek">
     <div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">wtorek, 10 listopada</p></div>
     <div class="symbole">
-      <span class="pik" role="button" aria-label="Przewodnik" data-testid="nav-przewodnik"><i data-ikw="pytajnik"></i></span>
+      <span class="pik zpodpisem t-tresc" role="button" aria-label="Przewodnik" data-testid="nav-przewodnik"><i data-ikw="pytajnik"></i><span>Przewodnik</span></span>
       <span class="pik" role="button" aria-label="Ustawienia" data-testid="nav-ustawienia"><i data-ikw="zebatka"></i></span>
     </div>
   </div>

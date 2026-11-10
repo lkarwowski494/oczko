@@ -5,7 +5,7 @@ Aktualizacja: 2026-11-10 · gałąź `claude/o-przewodnik-2026-11-10` (od 7defd5
 |---|---|---|
 | 1 Rozpoznanie | zrobione, raport do koordynatora | zębatka `src/ekrany/Dzis.tsx:183`; Ustawienia `src/ekrany/Ustawienia.tsx:91–140`; Trening `app/guide.tsx`, `lib/guide.ts` |
 | 2 Specyfikacja | zrobione | `przewodnik-2026-11-10.md`, `przewodnik-2026-11-10/klucze.md`; P-685–P-689 |
-| 3 Makieta i zrzuty | zrobione (390 pt, jasny/ciemny, domyślny/AX5, en dla 2 ekranów) | `przewodnik-2026-11-10/zrzuty/` (19 + arkusz), `przed-po/`, `warsztat-390.txt` (0 błędów) |
+| 3 Makieta i zrzuty | zrobione (390 i 320 pt, jasny/ciemny, domyślny/AX5, en dla 2 ekranów); dopisek „Intuicyjność” — spec §11 | `przewodnik-2026-11-10/zrzuty/` (19 + arkusz), `przed-po/`, `warsztat-390.txt` (0 błędów) |
 | 4 Kryterium „gotowe” | kontrola kod 0: 42 funkcje, każda z plikiem trasy poza Apple Watch (uzasadnione); 61 nowych kluczy | `przewodnik-2026-11-10/kontrola.txt` |
 
 Następny krok: decyzje do weta (koordynator) → rola 08 (kod, partia przewodnika) → 07 (E2E) → 09 (2074 teksty). Otwarte: [DO USTALENIA 05] miejsce zapisu przeczytanych; [DO USTALENIA 08] `/licznik` i `/wzor` bez ostatniego miejsca, szerokość kolumny na iPadzie.

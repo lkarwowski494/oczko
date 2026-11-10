@@ -76,8 +76,8 @@ window.PRZEWODNIK = {
   },
   {
    "id": "2",
-   "en": "Tap “Open counter”, then ••• → “Name project and part”. The counter becomes your project.",
-   "pl": "Stuknij „Otwórz licznik”, potem ••• → „Nazwij projekt i część”. Licznik staje się projektem.",
+   "en": "On the counter: ••• → “Name project and part”. The counter becomes your project.",
+   "pl": "Na liczniku: ••• → „Nazwij projekt i część”. Licznik staje się projektem.",
    "trasa": "/licznik"
   },
   {
@@ -94,8 +94,8 @@ window.PRZEWODNIK = {
   },
   {
    "id": "5",
-   "en": "Next time, “Today” shows where you stopped: “+1” on the card counts a row, “Continue” opens the counter.",
-   "pl": "Następnym razem „Dziś” pokazuje miejsce ostatniej pracy: „+1” na karcie liczy rząd, „Kontynuuj” otwiera licznik.",
+   "en": "Next time, tap “Continue” on “Today”. The counter opens where you stopped.",
+   "pl": "Następnym razem stuknij „Kontynuuj” na ekranie „Dziś”. Licznik otworzy się w miejscu ostatniej pracy.",
    "trasa": "/"
   },
   {
@@ -138,8 +138,8 @@ window.PRZEWODNIK = {
      "id": "plus",
      "en": "+1 row",
      "pl": "+1 rząd",
-     "opisEn": "Tap “+1 row” after each row; “−1” takes one back. Many quick taps in a row? Oczko offers to undo them.",
-     "opisPl": "„+1 rząd” po każdym rzędzie, „−1” cofa jeden. Seria szybkich stuknięć? Oczko zaproponuje ich cofnięcie.",
+     "opisEn": "Tap “+1 row” after each row; “−1” takes one back. After many quick taps, Oczko offers to undo them.",
+     "opisPl": "„+1 rząd” po każdym rzędzie, „−1” cofa jeden. Po serii szybkich stuknięć Oczko zaproponuje ich cofnięcie.",
      "trasa": "/licznik"
     },
     {
