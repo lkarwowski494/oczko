@@ -90,3 +90,10 @@ Wykonawca: sesja 09 (kopia `claude/kopia-09-2026-10-30`). Bez API (P-309 zastęp
 - **Metoda (bez API):** 6 subagentów sonnet (5–6 języków), walidacja skryptem (parametry, kategorie CLDR), drugi przegląd AI: 3 subagenci w świeżym kontekście: 14 uwag, przyjęte 13 (et „sessioon” ×6, fi ×1, zh-Hant „工作階段” ×6), odrzucona 1 (lv „Hronometrs” — reviewer sam uznał „sekundometrs” za poprawne; do rodzimego).
 - **Dowód:** `npm run i18n:kod` kod 0 (błędy 0); `slownik.mjs --slowniki` błędy 0; `npx jest tests/i18n tests/adaptery/teksty-natywne.test.ts` 1746 zielonych; tabele Swift bez zmian (klucze poza sekcją `aktywnosc`). SHA en.json 5603568b3108, en.kontekst.json 672414a8e3f9.
 - **Nie sprawdzono:** przegląd rodzimy; zrzuty 320 pt dla nowych etykiet VoiceOver (nie są widoczne na ekranie); długość „Sessiestopwatch”, „セッションストップウォッチ”.
+
+
+## Fala 5: klucze ekranu licencji M1-245 (09, 2026-11-10, KO-020, P-673; gałąź `claude/build3-2026-11-10`)
+- **Zakres:** 6 baz kluczy z `oczekujace.json` (`ustawienia.licencje`, `licencje.wstep`, `licencje.grupa_kroje`, `licencje.grupa_licencje`, `licencje.grupa_natywne`, `licencje.grupa_pakiety`) × 34 języki (33 + pl) = 204 teksty; `oczekujace.json` pusty, wyjątek P-668 zdjęty (testy jak w 738b0d6).
+- **Metoda (bez API):** `przeklad-agenci.mjs przygotuj` → 6 subagentów sonnet (5–6 języków; wskazówka terminologiczna z Treningu `lib/locales` @ 2e4b0f8), `przyjmij` 34/34 × 6, `przeklad-zastosuj-delta.mjs`; drugi przegląd AI: `przeglad` → 3 subagenci w świeżym kontekście: 3 poprawki przyjęte (nb 2, fi 1), 0 odrzuconych.
+- **Termin „open source”:** we wszystkich 34 językach bez źródła Apple; do rodzimego przeglądu. SHA en.json `493685775d27…`, en.kontekst.json `cf4bf842f83a…`.
+- **Nie sprawdzono:** przegląd rodzimy; długość nagłówków przy 320 pt/AX5; rodzaj nazwy „Oczko” w hr, sr, et.

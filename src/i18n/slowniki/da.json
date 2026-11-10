@@ -111,6 +111,7 @@
     "ocen": "Bedøm Oczko",
     "polityka": "Privatlivspolitik",
     "zrodla_wiedzy": "Om vores oplysninger",
+    "licencje": "Open source-licenser",
     "stan_danych": "Data og synkronisering",
     "eksport": "Eksportér alle data",
     "import": "Importér en sikkerhedskopi",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Tabellerne og tipsene i Oczko er skrevet med vores egne ord, baseret på branchestandarder og vejledning fra håndarbejdsorganisationer.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko er bygget med open source-software. Tryk på en licens for at læse hele teksten.",
+    "grupa_kroje": "Skrifttyper",
+    "grupa_licencje": "Licenstekster",
+    "grupa_natywne": "iOS-biblioteker uden for npm",
+    "grupa_pakiety": "npm-pakker"
   },
   "stoper": {
     "start_a11y": "Start sessionsstopur",

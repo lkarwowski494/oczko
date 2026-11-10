@@ -894,6 +894,12 @@
   "icloud.do_ustawien": "Prejsť na Údaje a synchronizácia",
   "icloud.usun_z_icloud": "Odstrániť aj z iCloudu",
   "icloud.usun_z_icloud_opis": "Vaše ostatné zariadenia o tieto projekty prídu pri ďalšej synchronizácii.",
-  "icloud.usun_zostaje": "Údaje v iCloude a na vašich ostatných zariadeniach zostanú."
+  "icloud.usun_zostaje": "Údaje v iCloude a na vašich ostatných zariadeniach zostanú.",
+  "ustawienia.licencje": "Licencie open source",
+  "licencje.wstep": "Oczko je vytvorené so softvérom open source. Ťuknutím na licenciu zobrazíte jej celý text.",
+  "licencje.grupa_kroje": "Písma",
+  "licencje.grupa_licencje": "Texty licencií",
+  "licencje.grupa_natywne": "Knižnice iOS mimo npm",
+  "licencje.grupa_pakiety": "Balíky npm"
  }
 }

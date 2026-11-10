@@ -155,6 +155,7 @@
     "ocen": "Įvertinti Oczko",
     "polityka": "Privatumo politika",
     "zrodla_wiedzy": "Apie mūsų informaciją",
+    "licencje": "Atvirojo kodo licencijos",
     "stan_danych": "Duomenys ir sinchronizavimas",
     "eksport": "Eksportuoti visus duomenis",
     "import": "Importuoti atsarginę kopiją",
@@ -784,6 +785,13 @@
   "zrodla": {
     "zdanie": "Oczko lentelės ir patarimai parašyti mūsų pačių žodžiais, remiantis pramonės standartais ir rankdarbių organizacijų rekomendacijomis.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko sukurta naudojant atvirojo kodo programinę įrangą. Bakstelėkite licenciją, kad perskaitytumėte visą tekstą.",
+    "grupa_kroje": "Šriftai",
+    "grupa_licencje": "Licencijų tekstai",
+    "grupa_natywne": "iOS bibliotekos ne iš npm",
+    "grupa_pakiety": "npm paketai"
   },
   "stoper": {
     "start_a11y": "Pradėti seanso chronometrą",

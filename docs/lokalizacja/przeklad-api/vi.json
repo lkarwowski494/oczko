@@ -678,6 +678,12 @@
   "probka.kategoria_otwarta_other": "Nhóm {{n}}, {{nazwa}}: tối đa {{max}} mũi trên 4 in, đan bằng mũi đan trơn.",
   "probka.kategoria_powyzej_other": "Mật độ mũi này vượt nhóm 0, nhóm này tối đa {{max}} mũi trên 4 in.",
   "icloud.konflikt_wiersze_other": "{{count}} hàng",
-  "icloud.konflikt_opis": "{{lokalna}} ở đây, {{zdalna}} từ {{urzadzenie}}. Hãy chọn bản khớp với phần bạn đã làm."
+  "icloud.konflikt_opis": "{{lokalna}} ở đây, {{zdalna}} từ {{urzadzenie}}. Hãy chọn bản khớp với phần bạn đã làm.",
+  "ustawienia.licencje": "Giấy phép mã nguồn mở",
+  "licencje.wstep": "Oczko được xây dựng bằng phần mềm mã nguồn mở. Chạm vào giấy phép để đọc toàn văn.",
+  "licencje.grupa_kroje": "Phông chữ",
+  "licencje.grupa_licencje": "Nội dung giấy phép",
+  "licencje.grupa_natywne": "Thư viện iOS ngoài npm",
+  "licencje.grupa_pakiety": "Gói npm"
  }
 }

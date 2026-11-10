@@ -155,6 +155,7 @@
     "ocen": "Oceni Oczko",
     "polityka": "Pravilnik o zasebnosti",
     "zrodla_wiedzy": "O naših informacijah",
+    "licencje": "Licence odprte kode",
     "stan_danych": "Podatki in sinhronizacija",
     "eksport": "Izvozi vse podatke",
     "import": "Uvozi varnostno kopijo",
@@ -784,6 +785,13 @@
   "zrodla": {
     "zdanie": "Preglednice in nasveti v Oczku so napisani z našimi besedami, na podlagi industrijskih standardov in smernic obrtnih organizacij.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Pri izdelavi aplikacije Oczko je bila uporabljena odprtokodna programska oprema. Tapnite licenco, da preberete celotno besedilo.",
+    "grupa_kroje": "Pisave",
+    "grupa_licencje": "Besedila licenc",
+    "grupa_natywne": "Knjižnice iOS zunaj npm",
+    "grupa_pakiety": "Paketi npm"
   },
   "stoper": {
     "start_a11y": "Zaženi štoparico seje",

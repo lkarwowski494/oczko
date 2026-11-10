@@ -111,6 +111,7 @@
     "ocen": "Hinda Oczkot",
     "polityka": "Privaatsuspoliitika",
     "zrodla_wiedzy": "Meie teabe kohta",
+    "licencje": "Avatud lähtekoodi litsentsid",
     "stan_danych": "Andmed ja sünkroonimine",
     "eksport": "Ekspordi kõik andmed",
     "import": "Impordi varukoopia",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Oczko tabelid ja nõuanded on kirjutatud meie enda sõnadega, tuginedes valdkonna standarditele ja käsitööorganisatsioonide juhistele.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko on loodud avatud lähtekoodiga tarkvara abil. Litsentsi täistekstiga tutvumiseks puuduta seda.",
+    "grupa_kroje": "Kirjatüübid",
+    "grupa_licencje": "Litsentsitekstid",
+    "grupa_natywne": "iOS-i teegid väljaspool npm-i",
+    "grupa_pakiety": "npm-paketid"
   },
   "stoper": {
     "start_a11y": "Käivita sessiooni stopper",

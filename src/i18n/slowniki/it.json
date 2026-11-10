@@ -133,6 +133,7 @@
     "ocen": "Valuta Oczko",
     "polityka": "Informativa sulla privacy",
     "zrodla_wiedzy": "Le nostre fonti",
+    "licencje": "Licenze open source",
     "stan_danych": "Dati e sincronizzazione",
     "eksport": "Esporta tutti i dati",
     "import": "Importa un backup",
@@ -712,6 +713,13 @@
   "zrodla": {
     "zdanie": "Le tabelle e i consigli in Oczko sono scritti con parole nostre, in base a standard del settore e a indicazioni di organizzazioni di artigianato.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko è realizzata con software open source. Tocca una licenza per leggerne il testo completo.",
+    "grupa_kroje": "Font",
+    "grupa_licencje": "Testi delle licenze",
+    "grupa_natywne": "Librerie iOS esterne a npm",
+    "grupa_pakiety": "Pacchetti npm"
   },
   "stoper": {
     "start_a11y": "Avvia cronometro",

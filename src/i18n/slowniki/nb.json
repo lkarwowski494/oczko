@@ -111,6 +111,7 @@
     "ocen": "Vurder Oczko",
     "polityka": "Personvernerklæring",
     "zrodla_wiedzy": "Om informasjonen vår",
+    "licencje": "Lisenser for åpen kildekode",
     "stan_danych": "Data og synkronisering",
     "eksport": "Eksporter alle data",
     "import": "Importer en sikkerhetskopi",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Tabellene og tipsene i Oczko er skrevet med våre egne ord, basert på bransjestandarder og veiledning fra håndarbeidsorganisasjoner.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko er laget med programvare med åpen kildekode. Trykk på en lisens for å lese hele teksten.",
+    "grupa_kroje": "Skrifttyper",
+    "grupa_licencje": "Lisenstekster",
+    "grupa_natywne": "iOS-biblioteker utenfor npm",
+    "grupa_pakiety": "npm-pakker"
   },
   "stoper": {
     "start_a11y": "Start øktstoppeklokke",

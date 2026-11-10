@@ -89,6 +89,7 @@
     "ocen": "Oczkoを評価",
     "polityka": "プライバシーポリシー",
     "zrodla_wiedzy": "情報の出どころについて",
+    "licencje": "オープンソースライセンス",
     "stan_danych": "データと同期",
     "eksport": "すべてのデータを書き出す",
     "import": "バックアップを読み込む",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Oczkoの表やヒントは、業界標準と手芸団体のガイダンスをもとに、独自の言葉で書かれています。",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko はオープンソースソフトウェアで作られています。ライセンスをタップすると全文を読めます。",
+    "grupa_kroje": "フォント",
+    "grupa_licencje": "ライセンス本文",
+    "grupa_natywne": "npm 以外の iOS ライブラリ",
+    "grupa_pakiety": "npm パッケージ"
   },
   "stoper": {
     "start_a11y": "セッションストップウォッチを開始",

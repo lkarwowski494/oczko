@@ -678,6 +678,12 @@
   "icloud.do_ustawien": "Buka Data dan sinkronisasi",
   "icloud.usun_z_icloud": "Hapus juga dari iCloud",
   "icloud.usun_z_icloud_opis": "Perangkat Anda yang lain kehilangan proyek ini saat disinkronkan berikutnya.",
-  "icloud.usun_zostaje": "Data di iCloud dan di perangkat Anda yang lain tetap ada."
+  "icloud.usun_zostaje": "Data di iCloud dan di perangkat Anda yang lain tetap ada.",
+  "ustawienia.licencje": "Lisensi sumber terbuka",
+  "licencje.wstep": "Oczko dibuat dengan perangkat lunak sumber terbuka. Ketuk lisensi untuk membaca teks lengkapnya.",
+  "licencje.grupa_kroje": "Font",
+  "licencje.grupa_licencje": "Teks lisensi",
+  "licencje.grupa_natywne": "Pustaka iOS di luar npm",
+  "licencje.grupa_pakiety": "Paket npm"
  }
 }

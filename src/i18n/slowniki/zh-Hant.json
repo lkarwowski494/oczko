@@ -89,6 +89,7 @@
     "ocen": "為 Oczko 評分",
     "polityka": "隱私權政策",
     "zrodla_wiedzy": "關於我們的資訊",
+    "licencje": "開放原始碼授權",
     "stan_danych": "資料與同步",
     "eksport": "匯出所有資料",
     "import": "匯入備份",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Oczko 中的表格與小提示皆以我們自己的話寫成，依據業界標準與手作組織的指引。",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko 是使用開放原始碼軟體打造的。點一下授權即可閱讀完整內容。",
+    "grupa_kroje": "字體",
+    "grupa_licencje": "授權全文",
+    "grupa_natywne": "npm 以外的 iOS 程式庫",
+    "grupa_pakiety": "npm 套件"
   },
   "stoper": {
     "start_a11y": "開始工作階段碼錶",

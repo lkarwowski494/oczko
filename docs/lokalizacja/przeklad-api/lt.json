@@ -894,6 +894,12 @@
   "icloud.do_ustawien": "Eiti į skiltį „Duomenys ir sinchronizavimas“",
   "icloud.usun_z_icloud": "Taip pat ištrinti iš iCloud",
   "icloud.usun_z_icloud_opis": "Jūsų kiti įrenginiai praras šiuos projektus kitą kartą sinchronizuodami.",
-  "icloud.usun_zostaje": "Duomenys iCloud ir kituose jūsų įrenginiuose lieka."
+  "icloud.usun_zostaje": "Duomenys iCloud ir kituose jūsų įrenginiuose lieka.",
+  "ustawienia.licencje": "Atvirojo kodo licencijos",
+  "licencje.wstep": "Oczko sukurta naudojant atvirojo kodo programinę įrangą. Bakstelėkite licenciją, kad perskaitytumėte visą tekstą.",
+  "licencje.grupa_kroje": "Šriftai",
+  "licencje.grupa_licencje": "Licencijų tekstai",
+  "licencje.grupa_natywne": "iOS bibliotekos ne iš npm",
+  "licencje.grupa_pakiety": "npm paketai"
  }
 }

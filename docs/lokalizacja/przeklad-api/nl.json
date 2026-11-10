@@ -750,6 +750,12 @@
   "probka.kategoria_powyzej_other": "Deze stekenverhouding ligt boven categorie 0, die tot {{max}} steken per 4 in gaat.",
   "icloud.konflikt_wiersze_one": "{{count}} rij",
   "icloud.konflikt_wiersze_other": "{{count}} rijen",
-  "icloud.konflikt_opis": "{{lokalna}} hier, {{zdalna}} van {{urzadzenie}}. Kies degene die bij jouw werk past."
+  "icloud.konflikt_opis": "{{lokalna}} hier, {{zdalna}} van {{urzadzenie}}. Kies degene die bij jouw werk past.",
+  "ustawienia.licencje": "Opensourcelicenties",
+  "licencje.wstep": "Oczko is gebouwd met opensourcesoftware. Tik op een licentie om de volledige tekst te lezen.",
+  "licencje.grupa_kroje": "Lettertypen",
+  "licencje.grupa_licencje": "Licentieteksten",
+  "licencje.grupa_natywne": "iOS-bibliotheken buiten npm",
+  "licencje.grupa_pakiety": "npm-pakketten"
  }
 }

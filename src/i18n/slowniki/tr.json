@@ -111,6 +111,7 @@
     "ocen": "Oczko’yu puanla",
     "polityka": "Gizlilik Politikası",
     "zrodla_wiedzy": "Bilgilerimiz hakkında",
+    "licencje": "Açık kaynak lisansları",
     "stan_danych": "Veri ve eşitleme",
     "eksport": "Tüm verileri dışa aktar",
     "import": "Yedek içe aktar",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Oczko’daki tablolar ve ipuçları, sektör standartlarına ve el işi kuruluşlarının yönlendirmelerine dayanarak kendi sözlerimizle yazılmıştır.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko, açık kaynak yazılımlarla geliştirilmiştir. Tam metnini okumak için bir lisansa dokunun.",
+    "grupa_kroje": "Yazı tipleri",
+    "grupa_licencje": "Lisans metinleri",
+    "grupa_natywne": "npm dışındaki iOS kütüphaneleri",
+    "grupa_pakiety": "npm paketleri"
   },
   "stoper": {
     "start_a11y": "Oturum kronometresini başlat",

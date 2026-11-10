@@ -750,6 +750,12 @@
   "probka.kategoria_powyzej_other": "Diese Maschenprobe liegt über Kategorie 0, die bis {{max}} Maschen pro 4 in reicht.",
   "icloud.konflikt_wiersze_one": "{{count}} Reihe",
   "icloud.konflikt_wiersze_other": "{{count}} Reihen",
-  "icloud.konflikt_opis": "{{lokalna}} hier, {{zdalna}} von {{urzadzenie}}. Wähle die, die zu deiner Arbeit passt."
+  "icloud.konflikt_opis": "{{lokalna}} hier, {{zdalna}} von {{urzadzenie}}. Wähle die, die zu deiner Arbeit passt.",
+  "ustawienia.licencje": "Open-Source-Lizenzen",
+  "licencje.wstep": "Oczko wurde mit Open-Source-Software entwickelt. Tippe auf eine Lizenz, um den vollständigen Text zu lesen.",
+  "licencje.grupa_kroje": "Schriften",
+  "licencje.grupa_licencje": "Lizenztexte",
+  "licencje.grupa_natywne": "iOS-Bibliotheken außerhalb von npm",
+  "licencje.grupa_pakiety": "npm-Pakete"
  }
 }

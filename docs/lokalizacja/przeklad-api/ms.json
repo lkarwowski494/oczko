@@ -678,6 +678,12 @@
   "icloud.do_ustawien": "Pergi ke Data dan segerak",
   "icloud.usun_z_icloud": "Padam juga daripada iCloud",
   "icloud.usun_z_icloud_opis": "Peranti anda yang lain kehilangan projek ini pada kali seterusnya ia menyegerak.",
-  "icloud.usun_zostaje": "Data dalam iCloud dan pada peranti anda yang lain kekal."
+  "icloud.usun_zostaje": "Data dalam iCloud dan pada peranti anda yang lain kekal.",
+  "ustawienia.licencje": "Lesen sumber terbuka",
+  "licencje.wstep": "Oczko dibina dengan perisian sumber terbuka. Ketik lesen untuk membaca teks penuhnya.",
+  "licencje.grupa_kroje": "Fon",
+  "licencje.grupa_licencje": "Teks lesen",
+  "licencje.grupa_natywne": "Pustaka iOS di luar npm",
+  "licencje.grupa_pakiety": "Pakej npm"
  }
 }

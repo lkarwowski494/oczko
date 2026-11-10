@@ -750,6 +750,12 @@
   "probka.kategoria_powyzej_other": "Denne strikkefasthed ligger over kategori 0, som går op til {{max}} masker pr. 4 in.",
   "icloud.konflikt_wiersze_one": "{{count}} række",
   "icloud.konflikt_wiersze_other": "{{count}} rækker",
-  "icloud.konflikt_opis": "{{lokalna}} her, {{zdalna}} fra {{urzadzenie}}. Vælg den, der passer til dit arbejde."
+  "icloud.konflikt_opis": "{{lokalna}} her, {{zdalna}} fra {{urzadzenie}}. Vælg den, der passer til dit arbejde.",
+  "ustawienia.licencje": "Open source-licenser",
+  "licencje.wstep": "Oczko er bygget med open source-software. Tryk på en licens for at læse hele teksten.",
+  "licencje.grupa_kroje": "Skrifttyper",
+  "licencje.grupa_licencje": "Licenstekster",
+  "licencje.grupa_natywne": "iOS-biblioteker uden for npm",
+  "licencje.grupa_pakiety": "npm-pakker"
  }
 }

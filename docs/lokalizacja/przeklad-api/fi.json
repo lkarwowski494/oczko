@@ -750,6 +750,12 @@
   "probka.kategoria_powyzej_other": "Tämä tiheys ylittää luokan 0, jonka yläraja on {{max}} silmukkaa / 4 in.",
   "icloud.konflikt_wiersze_one": "{{count}} kerros",
   "icloud.konflikt_wiersze_other": "{{count}} kerrosta",
-  "icloud.konflikt_opis": "{{lokalna}} täällä, {{zdalna}} laitteelta {{urzadzenie}}. Valitse se, joka vastaa työtäsi."
+  "icloud.konflikt_opis": "{{lokalna}} täällä, {{zdalna}} laitteelta {{urzadzenie}}. Valitse se, joka vastaa työtäsi.",
+  "ustawienia.licencje": "Avoimen lähdekoodin lisenssit",
+  "licencje.wstep": "Oczko on rakennettu avoimen lähdekoodin ohjelmistoilla. Napauta lisenssiä nähdäksesi sen koko tekstin.",
+  "licencje.grupa_kroje": "Fontit",
+  "licencje.grupa_licencje": "Lisenssitekstit",
+  "licencje.grupa_natywne": "npm:n ulkopuoliset iOS-kirjastot",
+  "licencje.grupa_pakiety": "npm-paketit"
  }
 }

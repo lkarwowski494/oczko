@@ -822,6 +822,12 @@
   "icloud.konflikt_wiersze_one": "{{count}} rang",
   "icloud.konflikt_wiersze_many": "{{count}} de rangs",
   "icloud.konflikt_wiersze_other": "{{count}} rangs",
-  "icloud.konflikt_opis": "{{lokalna}} ici, {{zdalna}} depuis {{urzadzenie}}. Choisissez celle qui correspond à votre travail."
+  "icloud.konflikt_opis": "{{lokalna}} ici, {{zdalna}} depuis {{urzadzenie}}. Choisissez celle qui correspond à votre travail.",
+  "ustawienia.licencje": "Licences open source",
+  "licencje.wstep": "Oczko est conçu avec des logiciels open source. Touchez une licence pour lire son texte intégral.",
+  "licencje.grupa_kroje": "Polices",
+  "licencje.grupa_licencje": "Textes des licences",
+  "licencje.grupa_natywne": "Bibliothèques iOS hors npm",
+  "licencje.grupa_pakiety": "Paquets npm"
  }
 }

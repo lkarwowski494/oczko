@@ -750,6 +750,12 @@
   "probka.kategoria_powyzej_other": "Den här masktätheten ligger över kategori 0, som går upp till {{max}} maskor per 4 in.",
   "icloud.konflikt_wiersze_one": "{{count}} varv",
   "icloud.konflikt_wiersze_other": "{{count}} varv",
-  "icloud.konflikt_opis": "{{lokalna}} här, {{zdalna}} från {{urzadzenie}}. Välj den som stämmer med ditt arbete."
+  "icloud.konflikt_opis": "{{lokalna}} här, {{zdalna}} från {{urzadzenie}}. Välj den som stämmer med ditt arbete.",
+  "ustawienia.licencje": "Licenser för öppen källkod",
+  "licencje.wstep": "Oczko är byggt med programvara med öppen källkod. Tryck på en licens för att läsa hela texten.",
+  "licencje.grupa_kroje": "Typsnitt",
+  "licencje.grupa_licencje": "Licenstexter",
+  "licencje.grupa_natywne": "iOS-bibliotek utanför npm",
+  "licencje.grupa_pakiety": "npm-paket"
  }
 }

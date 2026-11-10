@@ -750,6 +750,12 @@
   "icloud.do_ustawien": "Ava Andmed ja sünkroonimine",
   "icloud.usun_z_icloud": "Kustuta ka iCloudist",
   "icloud.usun_z_icloud_opis": "Sinu teised seadmed kaotavad need projektid järgmisel sünkroonimisel.",
-  "icloud.usun_zostaje": "Andmed iCloudis ja su teistel seadmetel jäävad alles."
+  "icloud.usun_zostaje": "Andmed iCloudis ja su teistel seadmetel jäävad alles.",
+  "ustawienia.licencje": "Avatud lähtekoodi litsentsid",
+  "licencje.wstep": "Oczko on loodud avatud lähtekoodiga tarkvara abil. Litsentsi täistekstiga tutvumiseks puuduta seda.",
+  "licencje.grupa_kroje": "Kirjatüübid",
+  "licencje.grupa_licencje": "Litsentsitekstid",
+  "licencje.grupa_natywne": "iOS-i teegid väljaspool npm-i",
+  "licencje.grupa_pakiety": "npm-paketid"
  }
 }

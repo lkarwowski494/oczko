@@ -133,6 +133,7 @@
     "ocen": "Оцени Oczko",
     "polityka": "Политика приватности",
     "zrodla_wiedzy": "О нашим подацима",
+    "licencje": "Лиценце отвореног кода",
     "stan_danych": "Подаци и синхронизација",
     "eksport": "Извези све податке",
     "import": "Увези резервну копију",
@@ -712,6 +713,13 @@
   "zrodla": {
     "zdanie": "Табеле и савети у Oczko написани су нашим речима, на основу индустријских стандарда и смерница занатских организација.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko је направљен помоћу софтвера отвореног кода. Додирните лиценцу за приказ целог текста.",
+    "grupa_kroje": "Фонтови",
+    "grupa_licencje": "Текстови лиценци",
+    "grupa_natywne": "iOS библиотеке ван npm-а",
+    "grupa_pakiety": "npm пакети"
   },
   "stoper": {
     "start_a11y": "Покрени штоперицу сесије",

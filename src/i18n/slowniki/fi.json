@@ -111,6 +111,7 @@
     "ocen": "Arvioi Oczko",
     "polityka": "Tietosuojakäytäntö",
     "zrodla_wiedzy": "Tietolähteemme",
+    "licencje": "Avoimen lähdekoodin lisenssit",
     "stan_danych": "Tiedot ja synkronointi",
     "eksport": "Vie kaikki tiedot",
     "import": "Tuo varmuuskopio",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Oczkon taulukot ja vinkit on kirjoitettu omin sanoin alan standardien ja käsityöjärjestöjen ohjeiden pohjalta.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko on rakennettu avoimen lähdekoodin ohjelmistoilla. Napauta lisenssiä nähdäksesi sen koko tekstin.",
+    "grupa_kroje": "Fontit",
+    "grupa_licencje": "Lisenssitekstit",
+    "grupa_natywne": "npm:n ulkopuoliset iOS-kirjastot",
+    "grupa_pakiety": "npm-paketit"
   },
   "stoper": {
     "start_a11y": "Aloita istunnon sekuntikello",

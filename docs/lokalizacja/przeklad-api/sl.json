@@ -894,6 +894,12 @@
   "icloud.do_ustawien": "Pojdi na Podatki in sinhronizacija",
   "icloud.usun_z_icloud": "Izbriši tudi iz iClouda",
   "icloud.usun_z_icloud_opis": "Vaše druge naprave bodo ob naslednji sinhronizaciji izgubile te projekte.",
-  "icloud.usun_zostaje": "Podatki v iCloudu in v vaših drugih napravah ostanejo."
+  "icloud.usun_zostaje": "Podatki v iCloudu in v vaših drugih napravah ostanejo.",
+  "ustawienia.licencje": "Licence odprte kode",
+  "licencje.wstep": "Pri izdelavi aplikacije Oczko je bila uporabljena odprtokodna programska oprema. Tapnite licenco, da preberete celotno besedilo.",
+  "licencje.grupa_kroje": "Pisave",
+  "licencje.grupa_licencje": "Besedila licenc",
+  "licencje.grupa_natywne": "Knjižnice iOS zunaj npm",
+  "licencje.grupa_pakiety": "Paketi npm"
  }
 }

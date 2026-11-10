@@ -155,6 +155,7 @@
     "ocen": "Ohodnotiť Oczko",
     "polityka": "Zásady ochrany osobných údajov",
     "zrodla_wiedzy": "O našich informáciách",
+    "licencje": "Licencie open source",
     "stan_danych": "Údaje a synchronizácia",
     "eksport": "Exportovať všetky údaje",
     "import": "Importovať zálohu",
@@ -784,6 +785,13 @@
   "zrodla": {
     "zdanie": "Tabuľky a tipy v Oczku sú napísané našimi vlastnými slovami na základe odvetvových noriem a usmernení remeselných organizácií.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko je vytvorené so softvérom open source. Ťuknutím na licenciu zobrazíte jej celý text.",
+    "grupa_kroje": "Písma",
+    "grupa_licencje": "Texty licencií",
+    "grupa_natywne": "Knižnice iOS mimo npm",
+    "grupa_pakiety": "Balíky npm"
   },
   "stoper": {
     "start_a11y": "Spustiť stopky",

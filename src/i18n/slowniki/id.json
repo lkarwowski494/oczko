@@ -89,6 +89,7 @@
     "ocen": "Beri nilai Oczko",
     "polityka": "Kebijakan Privasi",
     "zrodla_wiedzy": "Tentang informasi kami",
+    "licencje": "Lisensi sumber terbuka",
     "stan_danych": "Data dan sinkronisasi",
     "eksport": "Ekspor semua data",
     "import": "Impor cadangan",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Tabel dan tips di Oczko ditulis dengan kata-kata kami sendiri, berdasarkan standar industri dan panduan organisasi kerajinan.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko dibuat dengan perangkat lunak sumber terbuka. Ketuk lisensi untuk membaca teks lengkapnya.",
+    "grupa_kroje": "Font",
+    "grupa_licencje": "Teks lisensi",
+    "grupa_natywne": "Pustaka iOS di luar npm",
+    "grupa_pakiety": "Paket npm"
   },
   "stoper": {
     "start_a11y": "Mulai stopwatch sesi",

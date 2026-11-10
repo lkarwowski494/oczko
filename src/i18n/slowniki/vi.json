@@ -89,6 +89,7 @@
     "ocen": "Đánh giá Oczko",
     "polityka": "Chính sách quyền riêng tư",
     "zrodla_wiedzy": "Về thông tin của chúng tôi",
+    "licencje": "Giấy phép mã nguồn mở",
     "stan_danych": "Dữ liệu và đồng bộ",
     "eksport": "Xuất toàn bộ dữ liệu",
     "import": "Nhập bản sao lưu",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Các bảng và mẹo trong Oczko được viết bằng lời của chúng tôi, dựa trên tiêu chuẩn ngành và hướng dẫn từ các tổ chức thủ công.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko được xây dựng bằng phần mềm mã nguồn mở. Chạm vào giấy phép để đọc toàn văn.",
+    "grupa_kroje": "Phông chữ",
+    "grupa_licencje": "Nội dung giấy phép",
+    "grupa_natywne": "Thư viện iOS ngoài npm",
+    "grupa_pakiety": "Gói npm"
   },
   "stoper": {
     "start_a11y": "Bắt đầu bấm giờ phiên",

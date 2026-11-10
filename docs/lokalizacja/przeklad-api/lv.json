@@ -822,6 +822,12 @@
   "icloud.do_ustawien": "Doties uz Dati un sinhronizācija",
   "icloud.usun_z_icloud": "Dzēst arī no iCloud",
   "icloud.usun_z_icloud_opis": "Jūsu citas ierīces zaudē šos projektus nākamajā sinhronizācijā.",
-  "icloud.usun_zostaje": "Dati pakalpojumā iCloud un jūsu citās ierīcēs paliek."
+  "icloud.usun_zostaje": "Dati pakalpojumā iCloud un jūsu citās ierīcēs paliek.",
+  "ustawienia.licencje": "Atvērtā koda licences",
+  "licencje.wstep": "Oczko izstrādē ir izmantota atvērtā koda programmatūra. Pieskarieties licencei, lai izlasītu tās pilno tekstu.",
+  "licencje.grupa_kroje": "Fonti",
+  "licencje.grupa_licencje": "Licenču teksti",
+  "licencje.grupa_natywne": "iOS bibliotēkas ārpus npm",
+  "licencje.grupa_pakiety": "npm pakotnes"
  }
 }

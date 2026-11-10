@@ -894,6 +894,12 @@
   "icloud.do_ustawien": "Перейти до розділу «Дані та синхронізація»",
   "icloud.usun_z_icloud": "Також видалити з iCloud",
   "icloud.usun_z_icloud_opis": "Ваші інші пристрої втратять ці проєкти під час наступної синхронізації.",
-  "icloud.usun_zostaje": "Дані в iCloud та на ваших інших пристроях залишаються."
+  "icloud.usun_zostaje": "Дані в iCloud та на ваших інших пристроях залишаються.",
+  "ustawienia.licencje": "Ліцензії відкритого коду",
+  "licencje.wstep": "Oczko створено з використанням програмного забезпечення з відкритим кодом. Торкніться ліцензії, щоб прочитати її повний текст.",
+  "licencje.grupa_kroje": "Шрифти",
+  "licencje.grupa_licencje": "Тексти ліцензій",
+  "licencje.grupa_natywne": "Бібліотеки iOS поза npm",
+  "licencje.grupa_pakiety": "Пакети npm"
  }
 }

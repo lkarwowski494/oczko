@@ -750,6 +750,12 @@
   "icloud.do_ustawien": "Veri ve eşitleme ekranına git",
   "icloud.usun_z_icloud": "iCloud’dan da sil",
   "icloud.usun_z_icloud_opis": "Diğer cihazlarınız bir sonraki eşitlemede bu projeleri kaybeder.",
-  "icloud.usun_zostaje": "iCloud’daki ve diğer cihazlarınızdaki veriler kalır."
+  "icloud.usun_zostaje": "iCloud’daki ve diğer cihazlarınızdaki veriler kalır.",
+  "ustawienia.licencje": "Açık kaynak lisansları",
+  "licencje.wstep": "Oczko, açık kaynak yazılımlarla geliştirilmiştir. Tam metnini okumak için bir lisansa dokunun.",
+  "licencje.grupa_kroje": "Yazı tipleri",
+  "licencje.grupa_licencje": "Lisans metinleri",
+  "licencje.grupa_natywne": "npm dışındaki iOS kütüphaneleri",
+  "licencje.grupa_pakiety": "npm paketleri"
  }
 }

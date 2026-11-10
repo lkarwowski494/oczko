@@ -750,6 +750,12 @@
   "icloud.do_ustawien": "Ugrás az Adatok és szinkronizálás részhez",
   "icloud.usun_z_icloud": "Törlés az iCloudból is",
   "icloud.usun_z_icloud_opis": "A többi eszközöd a következő szinkronizáláskor elveszíti ezeket a projekteket.",
-  "icloud.usun_zostaje": "Az iCloudban és a többi eszközödön lévő adatok megmaradnak."
+  "icloud.usun_zostaje": "Az iCloudban és a többi eszközödön lévő adatok megmaradnak.",
+  "ustawienia.licencje": "Nyílt forráskódú licencek",
+  "licencje.wstep": "Az Oczko nyílt forráskódú szoftverekkel készült. Koppintson egy licencre a teljes szöveg megtekintéséhez.",
+  "licencje.grupa_kroje": "Betűtípusok",
+  "licencje.grupa_licencje": "Licencszövegek",
+  "licencje.grupa_natywne": "iOS-könyvtárak az npm-en kívül",
+  "licencje.grupa_pakiety": "npm-csomagok"
  }
 }

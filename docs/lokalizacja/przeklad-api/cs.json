@@ -894,6 +894,12 @@
   "icloud.do_ustawien": "Přejít na Data a synchronizace",
   "icloud.usun_z_icloud": "Smazat také z iCloudu",
   "icloud.usun_z_icloud_opis": "Vaše ostatní zařízení o tyto projekty přijdou při příští synchronizaci.",
-  "icloud.usun_zostaje": "Data v iCloudu a ve vašich ostatních zařízeních zůstanou."
+  "icloud.usun_zostaje": "Data v iCloudu a ve vašich ostatních zařízeních zůstanou.",
+  "ustawienia.licencje": "Licence open source",
+  "licencje.wstep": "Aplikace Oczko je vytvořena pomocí softwaru open source. Klepnutím na licenci zobrazíte její úplné znění.",
+  "licencje.grupa_kroje": "Písma",
+  "licencje.grupa_licencje": "Texty licencí",
+  "licencje.grupa_natywne": "Knihovny iOS mimo npm",
+  "licencje.grupa_pakiety": "Balíčky npm"
  }
 }

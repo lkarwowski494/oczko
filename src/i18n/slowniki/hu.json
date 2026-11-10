@@ -111,6 +111,7 @@
     "ocen": "Oczko értékelése",
     "polityka": "Adatvédelmi irányelvek",
     "zrodla_wiedzy": "Az adatainkról",
+    "licencje": "Nyílt forráskódú licencek",
     "stan_danych": "Adatok és szinkronizálás",
     "eksport": "Minden adat exportálása",
     "import": "Biztonsági mentés importálása",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Az Oczko táblázatai és tippjei saját szavainkkal íródtak, iparági szabványok és kézműves szervezetek útmutatásai alapján.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Az Oczko nyílt forráskódú szoftverekkel készült. Koppintson egy licencre a teljes szöveg megtekintéséhez.",
+    "grupa_kroje": "Betűtípusok",
+    "grupa_licencje": "Licencszövegek",
+    "grupa_natywne": "iOS-könyvtárak az npm-en kívül",
+    "grupa_pakiety": "npm-csomagok"
   },
   "stoper": {
     "start_a11y": "Munkamenet-stopper indítása",

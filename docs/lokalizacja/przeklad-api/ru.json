@@ -894,6 +894,12 @@
   "icloud.konflikt_wiersze_few": "{{count}} ряда",
   "icloud.konflikt_wiersze_many": "{{count}} рядов",
   "icloud.konflikt_wiersze_other": "{{count}} ряда",
-  "icloud.konflikt_opis": "{{lokalna}} здесь, {{zdalna}} с {{urzadzenie}}. Выберите тот вариант, который соответствует вашей работе."
+  "icloud.konflikt_opis": "{{lokalna}} здесь, {{zdalna}} с {{urzadzenie}}. Выберите тот вариант, который соответствует вашей работе.",
+  "ustawienia.licencje": "Лицензии открытого ПО",
+  "licencje.wstep": "Oczko создано с использованием программ с открытым исходным кодом. Коснитесь лицензии, чтобы прочитать её полный текст.",
+  "licencje.grupa_kroje": "Шрифты",
+  "licencje.grupa_licencje": "Тексты лицензий",
+  "licencje.grupa_natywne": "Библиотеки iOS вне npm",
+  "licencje.grupa_pakiety": "Пакеты npm"
  }
 }

@@ -750,6 +750,12 @@
   "icloud.do_ustawien": "Към Данни и синхронизация",
   "icloud.usun_z_icloud": "Изтрий и от iCloud",
   "icloud.usun_z_icloud_opis": "Другите ви устройства губят тези проекти при следващата синхронизация.",
-  "icloud.usun_zostaje": "Данните в iCloud и на другите ви устройства остават."
+  "icloud.usun_zostaje": "Данните в iCloud и на другите ви устройства остават.",
+  "ustawienia.licencje": "Лицензи с отворен код",
+  "licencje.wstep": "Oczko е създадено със софтуер с отворен код. Докоснете лиценз, за да прочетете пълния му текст.",
+  "licencje.grupa_kroje": "Шрифтове",
+  "licencje.grupa_licencje": "Текстове на лицензите",
+  "licencje.grupa_natywne": "Библиотеки за iOS извън npm",
+  "licencje.grupa_pakiety": "npm пакети"
  }
 }

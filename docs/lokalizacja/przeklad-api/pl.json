@@ -894,6 +894,12 @@
   "icloud.konflikt_wiersze_few": "{{count}} rzędy",
   "icloud.konflikt_wiersze_many": "{{count}} rzędów",
   "icloud.konflikt_wiersze_other": "{{count}} rzędu",
-  "icloud.konflikt_opis": "{{lokalna}} tutaj, {{zdalna}} z {{urzadzenie}}. Wybierz wersję, która zgadza się z twoją pracą."
+  "icloud.konflikt_opis": "{{lokalna}} tutaj, {{zdalna}} z {{urzadzenie}}. Wybierz wersję, która zgadza się z twoją pracą.",
+  "ustawienia.licencje": "Licencje open source",
+  "licencje.wstep": "Oczko powstało z użyciem oprogramowania open source. Dotknij licencji, by przeczytać jej pełny tekst.",
+  "licencje.grupa_kroje": "Kroje pisma",
+  "licencje.grupa_licencje": "Teksty licencji",
+  "licencje.grupa_natywne": "Biblioteki iOS spoza npm",
+  "licencje.grupa_pakiety": "Pakiety npm"
  }
 }

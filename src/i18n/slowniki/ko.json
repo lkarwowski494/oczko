@@ -89,6 +89,7 @@
     "ocen": "Oczko 평가하기",
     "polityka": "개인정보 처리방침",
     "zrodla_wiedzy": "우리의 정보에 대해",
+    "licencje": "오픈 소스 라이선스",
     "stan_danych": "데이터 및 동기화",
     "eksport": "모든 데이터 내보내기",
     "import": "백업 가져오기",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Oczko의 표와 팁은 업계 표준과 공예 단체의 안내를 바탕으로 우리가 직접 쓴 것입니다.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko는 오픈 소스 소프트웨어로 만들어졌습니다. 라이선스를 탭하여 전체 내용을 읽으세요.",
+    "grupa_kroje": "서체",
+    "grupa_licencje": "라이선스 전문",
+    "grupa_natywne": "npm 외 iOS 라이브러리",
+    "grupa_pakiety": "npm 패키지"
   },
   "stoper": {
     "start_a11y": "세션 스톱워치 시작",

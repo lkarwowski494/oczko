@@ -822,6 +822,12 @@
   "icloud.do_ustawien": "Ir para Dados e sincronização",
   "icloud.usun_z_icloud": "Apagar também do iCloud",
   "icloud.usun_z_icloud_opis": "Os seus outros dispositivos perdem estes projetos na próxima sincronização.",
-  "icloud.usun_zostaje": "Os dados no iCloud e nos outros dispositivos ficam."
+  "icloud.usun_zostaje": "Os dados no iCloud e nos outros dispositivos ficam.",
+  "ustawienia.licencje": "Licenças de código aberto",
+  "licencje.wstep": "O Oczko foi criado com software de código aberto. Toque numa licença para ler o texto completo.",
+  "licencje.grupa_kroje": "Tipos de letra",
+  "licencje.grupa_licencje": "Textos das licenças",
+  "licencje.grupa_natywne": "Bibliotecas iOS fora do npm",
+  "licencje.grupa_pakiety": "Pacotes npm"
  }
 }

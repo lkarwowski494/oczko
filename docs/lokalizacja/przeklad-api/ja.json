@@ -678,6 +678,12 @@
   "probka.kategoria_otwarta_other": "カテゴリー{{n}}、{{nazwa}}：4 inあたり{{max}}目まで、メリヤス編み。",
   "probka.kategoria_powyzej_other": "このゲージはカテゴリー0を上回っています。カテゴリー0は4 inあたり{{max}}目までです。",
   "icloud.konflikt_wiersze_other": "{{count}}段",
-  "icloud.konflikt_opis": "ここは{{lokalna}}、{{urzadzenie}}は{{zdalna}}です。作業内容に合う方を選んでください。"
+  "icloud.konflikt_opis": "ここは{{lokalna}}、{{urzadzenie}}は{{zdalna}}です。作業内容に合う方を選んでください。",
+  "ustawienia.licencje": "オープンソースライセンス",
+  "licencje.wstep": "Oczko はオープンソースソフトウェアで作られています。ライセンスをタップすると全文を読めます。",
+  "licencje.grupa_kroje": "フォント",
+  "licencje.grupa_licencje": "ライセンス本文",
+  "licencje.grupa_natywne": "npm 以外の iOS ライブラリ",
+  "licencje.grupa_pakiety": "npm パッケージ"
  }
 }

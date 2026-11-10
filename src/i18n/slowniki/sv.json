@@ -111,6 +111,7 @@
     "ocen": "Betygsätt Oczko",
     "polityka": "Integritetspolicy",
     "zrodla_wiedzy": "Om vår information",
+    "licencje": "Licenser för öppen källkod",
     "stan_danych": "Data och synk",
     "eksport": "Exportera alla data",
     "import": "Importera en säkerhetskopia",
@@ -640,6 +641,13 @@
   "zrodla": {
     "zdanie": "Tabellerna och tipsen i Oczko är skrivna med egna ord, utifrån branschstandarder och vägledning från hantverksorganisationer.",
     "linia_standardow": "Source: Craft Yarn Council's www.YarnStandards.com"
+  },
+  "licencje": {
+    "wstep": "Oczko är byggt med programvara med öppen källkod. Tryck på en licens för att läsa hela texten.",
+    "grupa_kroje": "Typsnitt",
+    "grupa_licencje": "Licenstexter",
+    "grupa_natywne": "iOS-bibliotek utanför npm",
+    "grupa_pakiety": "npm-paket"
   },
   "stoper": {
     "start_a11y": "Starta stoppur för sessionen",

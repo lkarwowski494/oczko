@@ -822,6 +822,12 @@
   "icloud.do_ustawien": "Mergi la Date și sincronizare",
   "icloud.usun_z_icloud": "Șterge și din iCloud",
   "icloud.usun_z_icloud_opis": "Celelalte dispozitive pierd aceste proiecte la următoarea sincronizare.",
-  "icloud.usun_zostaje": "Datele din iCloud și de pe celelalte dispozitive rămân."
+  "icloud.usun_zostaje": "Datele din iCloud și de pe celelalte dispozitive rămân.",
+  "ustawienia.licencje": "Licențe open source",
+  "licencje.wstep": "Oczko este construit cu software open source. Atingeți o licență pentru a citi textul complet.",
+  "licencje.grupa_kroje": "Fonturi",
+  "licencje.grupa_licencje": "Texte ale licențelor",
+  "licencje.grupa_natywne": "Biblioteci iOS din afara npm",
+  "licencje.grupa_pakiety": "Pachete npm"
  }
 }

@@ -678,6 +678,12 @@
   "icloud.do_ustawien": "前往資料與同步",
   "icloud.usun_z_icloud": "同時從 iCloud 刪除",
   "icloud.usun_z_icloud_opis": "你其他裝置下次同步時，會失去這些專案。",
-  "icloud.usun_zostaje": "iCloud 與你其他裝置上的資料會保留。"
+  "icloud.usun_zostaje": "iCloud 與你其他裝置上的資料會保留。",
+  "ustawienia.licencje": "開放原始碼授權",
+  "licencje.wstep": "Oczko 是使用開放原始碼軟體打造的。點一下授權即可閱讀完整內容。",
+  "licencje.grupa_kroje": "字體",
+  "licencje.grupa_licencje": "授權全文",
+  "licencje.grupa_natywne": "npm 以外的 iOS 程式庫",
+  "licencje.grupa_pakiety": "npm 套件"
  }
 }

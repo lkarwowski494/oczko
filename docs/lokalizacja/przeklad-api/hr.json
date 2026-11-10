@@ -822,6 +822,12 @@
   "icloud.do_ustawien": "Idi na Podaci i sinkronizacija",
   "icloud.usun_z_icloud": "Izbriši i iz iClouda",
   "icloud.usun_z_icloud_opis": "Tvoji drugi uređaji gube ove projekte pri sljedećoj sinkronizaciji.",
-  "icloud.usun_zostaje": "Podaci u iCloudu i na tvojim drugim uređajima ostaju."
+  "icloud.usun_zostaje": "Podaci u iCloudu i na tvojim drugim uređajima ostaju.",
+  "ustawienia.licencje": "Licencije otvorenog koda",
+  "licencje.wstep": "Oczko je izrađen pomoću softvera otvorenog koda. Dodirnite licenciju za prikaz cijelog teksta.",
+  "licencje.grupa_kroje": "Fontovi",
+  "licencje.grupa_licencje": "Tekstovi licencija",
+  "licencje.grupa_natywne": "iOS biblioteke izvan npm-a",
+  "licencje.grupa_pakiety": "npm paketi"
  }
 }

@@ -822,6 +822,12 @@
   "icloud.konflikt_wiersze_one": "{{count}} vuelta",
   "icloud.konflikt_wiersze_many": "{{count}} de vueltas",
   "icloud.konflikt_wiersze_other": "{{count}} vueltas",
-  "icloud.konflikt_opis": "{{lokalna}} aquí, {{zdalna}} de {{urzadzenie}}. Elige la opción que coincida con tu trabajo."
+  "icloud.konflikt_opis": "{{lokalna}} aquí, {{zdalna}} de {{urzadzenie}}. Elige la opción que coincida con tu trabajo.",
+  "ustawienia.licencje": "Licencias de código abierto",
+  "licencje.wstep": "Oczko se ha creado con software de código abierto. Toca una licencia para leer su texto completo.",
+  "licencje.grupa_kroje": "Tipografías",
+  "licencje.grupa_licencje": "Textos de licencia",
+  "licencje.grupa_natywne": "Bibliotecas de iOS ajenas a npm",
+  "licencje.grupa_pakiety": "Paquetes npm"
  }
 }

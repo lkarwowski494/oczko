@@ -750,6 +750,12 @@
   "icloud.do_ustawien": "Μετάβαση στα Δεδομένα και συγχρονισμός",
   "icloud.usun_z_icloud": "Διαγραφή και από το iCloud",
   "icloud.usun_z_icloud_opis": "Οι άλλες συσκευές σας χάνουν αυτά τα έργα στον επόμενο συγχρονισμό.",
-  "icloud.usun_zostaje": "Τα δεδομένα στο iCloud και στις άλλες συσκευές σας παραμένουν."
+  "icloud.usun_zostaje": "Τα δεδομένα στο iCloud και στις άλλες συσκευές σας παραμένουν.",
+  "ustawienia.licencje": "Άδειες ανοιχτού κώδικα",
+  "licencje.wstep": "Το Oczko δημιουργήθηκε με λογισμικό ανοιχτού κώδικα. Πατήστε μια άδεια για να διαβάσετε το πλήρες κείμενό της.",
+  "licencje.grupa_kroje": "Γραμματοσειρές",
+  "licencje.grupa_licencje": "Κείμενα αδειών",
+  "licencje.grupa_natywne": "Βιβλιοθήκες iOS εκτός npm",
+  "licencje.grupa_pakiety": "Πακέτα npm"
  }
 }
