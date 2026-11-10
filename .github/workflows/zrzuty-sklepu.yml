@@ -10,7 +10,7 @@
 name: Zrzuty sklepu
 on:
   push:
-    branches: [claude/e-zrzuty-sklepu-2026-11-10]
+    branches: [claude/e-zrzuty-sklepu-2026-11-10, claude/youthful-pasteur-kx83sn]   # druga: integracja (od P-559), tu powstanie kandydat buildu 3; plik workflowu musi tam trafić ze scaleniem gałęzi E (koordynator)
   workflow_dispatch:
     inputs:
       aplikacja_z_przebiegu:

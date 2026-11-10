@@ -28,6 +28,7 @@ describe('workflow zrzuty-sklepu.yml', () => {
     const on = wyzwalacze(tekst) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(Object.keys(on)).toEqual(expect.arrayContaining(['push', 'workflow_dispatch']));
     expect(on.push.branches).toContain('claude/e-zrzuty-sklepu-2026-11-10');
+    expect(on.push.branches).toContain('claude/youthful-pasteur-kx83sn'); // build 3: powtórka zrzutów na gałęzi integracji (sklep.md §3e)
     expect(tekst).toContain('[zrzuty-sklepu]');
     expect(tekst).toMatch(/\[zrzuty-app:/); // ponowne użycie aplikacji z poprzedniego przebiegu tego workflowu
     expect(tekst).toMatch(/\[og07-ok\]/);
