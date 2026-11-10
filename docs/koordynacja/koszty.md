@@ -36,3 +36,4 @@
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
 Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45, bez 93,85 USD sesji wielodniowej); największa strata ok. 2 h 25 min — awaria symulatora w e2e cz. 2 iphone, ponowienie ręczne → WG-07; drugie: kolejka/przebieg pełnego e2e ok. 2 h na kandydata (WG-01). Koordynator (6) session_01T66VByx9Gr7xm8SB8GYS1D: 7,49 USD (odczyt 14:01, model od ok. 12:45 claude-opus-5-5 słowami właściciela — `/model`).
 | P | 08 build (przewodnik, opus) | 10 | 12,02 | 34 | 17:40 → 17:41 → ok. 18:05 → `ci.yml` 18:11 w toku → (Q) | — | ponad pułap, pod STOP; 1 subagent sonnet |
+| Q | 08 audit (recenzja przewodnika, opus) | 6 | 4,35 | 25 | 18:12 → 18:13 → raport 18:22 → przyjęte 18:23 | — | TAK; verify 0 |
