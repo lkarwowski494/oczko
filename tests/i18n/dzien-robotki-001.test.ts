@@ -37,8 +37,9 @@ test('glosariusz ma pojęcie dzien_robotki z rdzeniem dla każdego języka słow
   }
 });
 
-test('źródło en: 14 baz kluczy z „crafting day” (limit, Dziś, Projekty, Historia, Oczko Pro, arkusz, VoiceOver); lista zmienia się tylko świadomie', () => {
-  expect(bazyEn).toHaveLength(14);
+test('źródło en: 15 baz kluczy z „crafting day” (limit, Dziś, Projekty, Historia, Oczko Pro, arkusz, VoiceOver, przewodnik); lista zmienia się tylko świadomie', () => {
+  expect(bazyEn).toHaveLength(15); // P-692 (KO-027): + `przewodnik.f_pro` (opis Oczko Pro w przewodniku po funkcjach, ta sama jednostka limitu)
+  expect(bazyEn).toContain('przewodnik.f_pro');
 });
 
 describe.each(jezyki)('%s: jedna nazwa jednostki limitu', (j) => {

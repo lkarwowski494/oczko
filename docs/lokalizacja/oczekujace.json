@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 09 build 3 (2026-11-10, KO-020, P-668): 6 kluczy ekranu licencji (M1-245) przetłumaczonych w 34 językach (en wcześniej); lista pusta. Wcześniej: fala 09 E5 (2026-11-09, P-618 b, P-620); fala 09 M3 (P-600). Historia powodów: git log tego pliku.",
+  "powod": "Przewodnik po funkcjach (2026-11-10, KO-027, P-692, wzór P-661): 61 kluczy przewodnik.* w en i pl, 33 języki czekają na falę 09 buildu 4. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668): 6 kluczy ekranu licencji (M1-245) przetłumaczonych w 34 językach; lista pusta. Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -22,9 +22,256 @@
     "P-600",
     "P-615",
     "P-661",
-    "P-668"
+    "P-668",
+    "P-692"
   ],
-  "klucze": [],
+  "klucze": [
+    "przewodnik.biblioteka",
+    "przewodnik.f_blokada",
+    "przewodnik.f_cel",
+    "przewodnik.f_dane",
+    "przewodnik.f_dodaj_licznik",
+    "przewodnik.f_dodaj_wzor",
+    "przewodnik.f_druty",
+    "przewodnik.f_ekran",
+    "przewodnik.f_ekran_blokady",
+    "przewodnik.f_eksport",
+    "przewodnik.f_film",
+    "przewodnik.f_historia_licznika",
+    "przewodnik.f_jednostki",
+    "przewodnik.f_jezyk",
+    "przewodnik.f_kalendarz",
+    "przewodnik.f_kontynuuj",
+    "przewodnik.f_kosz",
+    "przewodnik.f_notatka",
+    "przewodnik.f_nowy",
+    "przewodnik.f_plus",
+    "przewodnik.f_powtorzenie",
+    "przewodnik.f_pro",
+    "przewodnik.f_probka",
+    "przewodnik.f_przypomnienia",
+    "przewodnik.f_sesje",
+    "przewodnik.f_stoper",
+    "przewodnik.f_szczegoly",
+    "przewodnik.f_szukaj",
+    "przewodnik.f_taki_sam",
+    "przewodnik.f_termin",
+    "przewodnik.f_tydzien",
+    "przewodnik.f_ukoncz",
+    "przewodnik.f_usun",
+    "przewodnik.f_wibracje",
+    "przewodnik.f_wloczki",
+    "przewodnik.f_wpisz",
+    "przewodnik.f_zakreslacz",
+    "przewodnik.f_zdjecia",
+    "przewodnik.f_zegarek",
+    "przewodnik.f_zglos",
+    "przewodnik.f_znaczenie",
+    "przewodnik.f_znacznik",
+    "przewodnik.f_zrodla",
+    "przewodnik.grupa_poza",
+    "przewodnik.krok_1",
+    "przewodnik.krok_2",
+    "przewodnik.krok_3",
+    "przewodnik.krok_4",
+    "przewodnik.krok_5",
+    "przewodnik.krok_6",
+    "przewodnik.krok_a11y",
+    "przewodnik.nazwa_ekran_blokady",
+    "przewodnik.nieprzeczytana",
+    "przewodnik.pierwsze_kroki",
+    "przewodnik.pokaz",
+    "przewodnik.pokaz_a11y",
+    "przewodnik.postep_wiersza",
+    "przewodnik.przeczytana",
+    "przewodnik.przeczytane",
+    "przewodnik.tytul",
+    "przewodnik.wstep"
+  ],
   "pierwsze_w_fali": [],
-  "przetlumaczone_czesciowo": {}
+  "przetlumaczone_czesciowo": {
+    "przewodnik.biblioteka": [
+      "pl"
+    ],
+    "przewodnik.f_blokada": [
+      "pl"
+    ],
+    "przewodnik.f_cel": [
+      "pl"
+    ],
+    "przewodnik.f_dane": [
+      "pl"
+    ],
+    "przewodnik.f_dodaj_licznik": [
+      "pl"
+    ],
+    "przewodnik.f_dodaj_wzor": [
+      "pl"
+    ],
+    "przewodnik.f_druty": [
+      "pl"
+    ],
+    "przewodnik.f_ekran": [
+      "pl"
+    ],
+    "przewodnik.f_ekran_blokady": [
+      "pl"
+    ],
+    "przewodnik.f_eksport": [
+      "pl"
+    ],
+    "przewodnik.f_film": [
+      "pl"
+    ],
+    "przewodnik.f_historia_licznika": [
+      "pl"
+    ],
+    "przewodnik.f_jednostki": [
+      "pl"
+    ],
+    "przewodnik.f_jezyk": [
+      "pl"
+    ],
+    "przewodnik.f_kalendarz": [
+      "pl"
+    ],
+    "przewodnik.f_kontynuuj": [
+      "pl"
+    ],
+    "przewodnik.f_kosz": [
+      "pl"
+    ],
+    "przewodnik.f_notatka": [
+      "pl"
+    ],
+    "przewodnik.f_nowy": [
+      "pl"
+    ],
+    "przewodnik.f_plus": [
+      "pl"
+    ],
+    "przewodnik.f_powtorzenie": [
+      "pl"
+    ],
+    "przewodnik.f_pro": [
+      "pl"
+    ],
+    "przewodnik.f_probka": [
+      "pl"
+    ],
+    "przewodnik.f_przypomnienia": [
+      "pl"
+    ],
+    "przewodnik.f_sesje": [
+      "pl"
+    ],
+    "przewodnik.f_stoper": [
+      "pl"
+    ],
+    "przewodnik.f_szczegoly": [
+      "pl"
+    ],
+    "przewodnik.f_szukaj": [
+      "pl"
+    ],
+    "przewodnik.f_taki_sam": [
+      "pl"
+    ],
+    "przewodnik.f_termin": [
+      "pl"
+    ],
+    "przewodnik.f_tydzien": [
+      "pl"
+    ],
+    "przewodnik.f_ukoncz": [
+      "pl"
+    ],
+    "przewodnik.f_usun": [
+      "pl"
+    ],
+    "przewodnik.f_wibracje": [
+      "pl"
+    ],
+    "przewodnik.f_wloczki": [
+      "pl"
+    ],
+    "przewodnik.f_wpisz": [
+      "pl"
+    ],
+    "przewodnik.f_zakreslacz": [
+      "pl"
+    ],
+    "przewodnik.f_zdjecia": [
+      "pl"
+    ],
+    "przewodnik.f_zegarek": [
+      "pl"
+    ],
+    "przewodnik.f_zglos": [
+      "pl"
+    ],
+    "przewodnik.f_znaczenie": [
+      "pl"
+    ],
+    "przewodnik.f_znacznik": [
+      "pl"
+    ],
+    "przewodnik.f_zrodla": [
+      "pl"
+    ],
+    "przewodnik.grupa_poza": [
+      "pl"
+    ],
+    "przewodnik.krok_1": [
+      "pl"
+    ],
+    "przewodnik.krok_2": [
+      "pl"
+    ],
+    "przewodnik.krok_3": [
+      "pl"
+    ],
+    "przewodnik.krok_4": [
+      "pl"
+    ],
+    "przewodnik.krok_5": [
+      "pl"
+    ],
+    "przewodnik.krok_6": [
+      "pl"
+    ],
+    "przewodnik.krok_a11y": [
+      "pl"
+    ],
+    "przewodnik.nazwa_ekran_blokady": [
+      "pl"
+    ],
+    "przewodnik.nieprzeczytana": [
+      "pl"
+    ],
+    "przewodnik.pierwsze_kroki": [
+      "pl"
+    ],
+    "przewodnik.pokaz": [
+      "pl"
+    ],
+    "przewodnik.pokaz_a11y": [
+      "pl"
+    ],
+    "przewodnik.postep_wiersza": [
+      "pl"
+    ],
+    "przewodnik.przeczytana": [
+      "pl"
+    ],
+    "przewodnik.przeczytane": [
+      "pl"
+    ],
+    "przewodnik.tytul": [
+      "pl"
+    ],
+    "przewodnik.wstep": [
+      "pl"
+    ]
+  }
 }

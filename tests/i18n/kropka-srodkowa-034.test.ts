@@ -30,7 +30,9 @@ test('034: „ · ” tylko w kluczach z listy decyzji 04 (metadane w wierszach)
 });
 
 test('034: „→” tylko w wierszu historii licznika', () => {
-  expect(wpisy.filter(([, v]) => v.includes('→')).map(([k]) => k).sort()).toEqual(['historia.wpis', 'historia.wpis_opis']);
+  expect(wpisy.filter(([k, v]) => v.includes('→') && !k.startsWith('przewodnik.')).map(([k]) => k).sort()).toEqual(['historia.wpis', 'historia.wpis_opis']);
+  // P-693 (KO-027, analogia Trening `lib/guide.ts`: „Więcej → Kopia zapasowa”): w przewodniku „→” to droga do pozycji (••• → „nazwa”), każda strzałka ze spacjami przed nazwą (w cudzysłowie albo nazwą systemową, np. „Share → Oczko”).
+  for (const [k, v] of wpisy.filter(([k2, v2]) => k2.startsWith('przewodnik.') && v2.includes('→'))) expect({ k, droga: v.split('→').length - 1 === (v.match(/ → [“A-Z]/g) ?? []).length }).toEqual({ k, droga: true });
 });
 
 test('034: linia powtórzenia na liczniku to jedno zdanie z nazwą powtórzenia w kluczu, nie sklejone w kodzie', () => {
