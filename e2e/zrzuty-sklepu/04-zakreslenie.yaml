@@ -25,4 +25,4 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 - setOrientation: ${ORIENT_WZOR}
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: true }
-- assertVisible: { id: "wzor-zakreslenia" } # bez tekstu „1 highlight”: sceny biegną w wielu językach (KO-032), asercje tylko po id i danych fikcyjnych
+- assertVisible: { id: "wzor-zakreslenia", text: ".*1.*" } # 10-wydanie-004: licznik z cyfrą 1 w każdym języku (słowniki wzor.zakreslenia_<forma dla 1> = „{{count}} …”); bez zakreślenia licznik to 0 i scena czerwona

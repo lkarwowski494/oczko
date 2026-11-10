@@ -176,7 +176,7 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
     for (const f of pliki.filter((x) => /^0[1-7]-/.test(x))) {
       const t = czytaj(`${KAT}/${f}`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
       const teksty = [...t.matchAll(/text:\s*"([^"]*)"/g)].map((m) => m[1]);
-      expect({ f, obce: teksty.filter((x) => !/^(Harbor Sweater|47|\.\*next: 3 knit, then cable\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
+      expect({ f, obce: teksty.filter((x) => !/^(Harbor Sweater|47|\.\*next: 3 knit, then cable\.\*|\.\*1\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
       expect({ f, tapNaTekst: /tapOn:\s*"/.test(t) }).toEqual({ f, tapNaTekst: false });
     }
     const j = czytaj(`${KAT}/00-jezyk.yaml`);
@@ -229,6 +229,20 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
     const sceny = /^SCENY="([^"]+)"/m.exec(czytaj('scripts/ci/zrzuty-sklepu.sh'))![1].split(' ');
     expect(sceny.indexOf('06-historia')).toBeLessThan(sceny.indexOf('03-wzor'));
     expect(sceny.indexOf('04-zakreslenie')).toBeGreaterThan(sceny.indexOf('03-wzor'));
+  });
+  // 10-wydanie-004 (recenzja AB): po zmianie na wiele języków asercja „1 highlight” została zastąpiona samym id, więc scena 04 przechodziła także bez zakreślenia na wzorze,
+  // a podpis zrzutu mówi „Highlight and write on the pattern”. Tańsza kontrola w zamian (zasada wspólna 7): licznik zakreśleń musi zawierać cyfrę 1 — we wszystkich językach sklepu.
+  test('04: licznik zakreśleń (wzor-zakreslenia) ma twardą asercję z cyfrą 1, niezależną od języka; cyfra jest w formie liczby pojedynczej każdego słownika', () => {
+    const t04 = czytaj(`${KAT}/04-zakreslenie.yaml`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
+    expect(t04).toMatch(/assertVisible:\s*\{\s*id:\s*"wzor-zakreslenia",\s*text:\s*"\.\*1\.\*"\s*\}/);
+    const kat = path.join(KORZEN, 'src/i18n/slowniki');
+    const jezyki = fs.readdirSync(kat).filter((f) => /^[A-Za-z0-9-]+\.json$/.test(f)).map((f) => f.replace('.json', ''));
+    expect(jezyki.length).toBeGreaterThanOrEqual(29);
+    for (const j of jezyki) {
+      const d = JSON.parse(fs.readFileSync(path.join(kat, `${j}.json`), 'utf8'));
+      const kategoria = new Intl.PluralRules(j === 'es-419' ? 'es' : j).select(1); // klucz wielokrotny i18next dla count = 1
+      expect({ j, forma: String(d.wzor?.[`zakreslenia_${kategoria}`] ?? '').includes('{{count}}') }).toEqual({ j, forma: true });
+    }
   });
   test('iPad poziomo: zrzut z simctl (bufor pionowy, treść bokiem) jest obracany o 90° w lewo dla scen 03 i 04', () => {
     const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
