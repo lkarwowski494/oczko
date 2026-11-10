@@ -2,13 +2,14 @@
 // moduł src/domena/licencje.generated.ts (importowany przez ekran licencji) kompilowany hermesc do bajtkodu, tak jak bundle w .ipa, i przeszukany tym samym wzorcem,
 // który stosuje scripts/wydanie/kontrola-ipa.sh (grep na main.jsbundle). Kontrola na prawdziwym .ipa działa tylko na macOS w CI.
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { sciezkaHermesc } from './hermesc-sciezka';
 
 const KORZEN = join(__dirname, '../..');
 const WZORCE = ['Reserved Font Names "Bree" and "Bree Serif"', 'SIL OPEN FONT LICENSE Version 1.1'];
-const HERMESC = ['linux64-bin', 'osx-bin'].map((d) => join(KORZEN, 'node_modules/hermes-compiler/hermesc', d, 'hermesc')).find((p) => existsSync(p));
+const HERMESC = sciezkaHermesc(KORZEN, process.platform);
 
 test('kontrola-ipa.sh szuka w main.jsbundle tych samych wzorców noty i licencji OFL', () => {
   const skrypt = readFileSync(join(KORZEN, 'scripts/wydanie/kontrola-ipa.sh'), 'utf8');
