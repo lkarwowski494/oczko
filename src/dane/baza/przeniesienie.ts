@@ -10,7 +10,7 @@ import { tekst, wiersze } from '../repozytoria/wiersze';
 const TABELE = ['plik', 'projekt', 'czesc', 'licznik', 'zdarzenie', 'notatka_rzedu', 'przypomnienie', 'sesja', 'wzor', 'rysunek', 'wloczka', 'narzedzie',
   'projekt_wloczka', 'zdjecie', 'obliczenie', 'dzien_limitu', 'poczekalnia', 'ustawienie'] as const;
 /** Klucze stanu urządzenia: przy imporcie pomijane (dane.md „Klucze tabeli ustawienie”). */
-const KLUCZE_URZADZENIA = "('ostatnie_miejsce', 'ostatni_start_ms', 'icloud_uzytkownik', 'ostatnia_prosba_o_ocene', 'jezyk', 'zegarek_ostatnia_partia_ms', 'wibracje', 'ekran_nie_gasnie', 'uklad_miar', 'icloud_ostatnia_udana_ms')";
+const KLUCZE_URZADZENIA = "('ostatnie_miejsce', 'ostatni_start_ms', 'icloud_uzytkownik', 'ostatnia_prosba_o_ocene', 'jezyk', 'zegarek_ostatnia_partia_ms', 'wibracje', 'ekran_nie_gasnie', 'uklad_miar', 'icloud_ostatnia_udana_ms', 'przewodnik_przeczytane')";
 
 async function kolumny(tx: PortBazy, tabela: string): Promise<string[]> {
   return (await wiersze(tx.all(`SELECT name FROM pragma_table_info('${tabela}')`), 'kolumny')).map((r) => tekst(r, 'name'));

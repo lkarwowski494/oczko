@@ -3,7 +3,7 @@ import type { PortBazy } from '../../domena/porty';
 import { tekst, wiersze } from './wiersze';
 import { preferencjeZUstawien, type Preferencje } from '../../domena/preferencje';
 
-export type KluczUstawienia = 'okno_uczciwe_zasady_widziane' | 'ostatnie_miejsce' | 'ostatni_start_ms' | 'icloud_uzytkownik' | 'ostatnia_prosba_o_ocene' | 'jezyk' | 'zegarek_ostatnia_partia_ms' | 'wibracje' | 'ekran_nie_gasnie' | 'uklad_miar' | 'icloud_ostatnia_udana_ms' | 'wskazowka_znacznika_widziana';
+export type KluczUstawienia = 'okno_uczciwe_zasady_widziane' | 'ostatnie_miejsce' | 'ostatni_start_ms' | 'icloud_uzytkownik' | 'ostatnia_prosba_o_ocene' | 'jezyk' | 'zegarek_ostatnia_partia_ms' | 'wibracje' | 'ekran_nie_gasnie' | 'uklad_miar' | 'icloud_ostatnia_udana_ms' | 'wskazowka_znacznika_widziana' | 'przewodnik_przeczytane';
 
 export async function odczytajUstawienie(tx: PortBazy, klucz: KluczUstawienia): Promise<unknown> {
   const [w] = await wiersze(tx.all('SELECT wartosc FROM ustawienie WHERE klucz = ?', [klucz]), 'ustawienie');
