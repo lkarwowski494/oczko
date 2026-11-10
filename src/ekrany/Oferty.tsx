@@ -28,6 +28,7 @@ export type PropsOfert = {
   naZarzadzaj(): void;                             // showManageSubscriptions (KP-14)
   naOtworzAdres(url: string): void;
   naZamknij(): void;
+  panelE2e?: React.ReactNode;                      // build E2E (P-238): na końcu przewijanej treści, nie pod paskiem przycisków (scenariusz 06)
 };
 
 const KOLEJNOSC: Produkt['okres'][] = ['miesiac', 'rok', 'dozywotni'];
@@ -72,7 +73,7 @@ const KAFLE: readonly Kafel[] = [
   { id: 'dane', tytul: 'oferty.kafel_dane_tytul', opis: 'oferty.kafel_dane_opis', symbol: 'checkmark.shield' },
 ];
 
-export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naOtworzAdres, naZamknij }: PropsOfert): React.ReactElement {
+export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naOtworzAdres, naZamknij, panelE2e }: PropsOfert): React.ReactElement {
   const k = useKolory();
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   // KP-03: aktywna subskrypcja nie jest oferowana ponownie; dożywotni — brak planów.
@@ -172,6 +173,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
         <Przycisk tekst={t('oferty.polityka')} onPress={() => naOtworzAdres(adresy.polityka)} rodzaj="tekstowy" rola="link" />
         <Przycisk tekst={t('oferty.warunki')} onPress={() => naOtworzAdres(adresy.warunki)} rodzaj="tekstowy" rola="link" />
       </View>
+      {panelE2e}
     </Arkusz>
   );
 }

@@ -271,6 +271,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/obraz-karty-098.test.tsx` | zielony (główny zestaw) | 5 | — | `src/ekrany/ObrazKarty`<br>`src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne`<br>`src/i18n/format`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/obraz-karty.test.tsx` | zielony (główny zestaw) | 4 | BR-PRJ-015, P-191, P-219 | `src/ekrany/ObrazKarty`<br>`src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/odrzuc-zmiany-formularz.test.tsx` | zielony (główny zestaw) | 16 | — | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-panel-e2e.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Oferty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-powrot-z-okna.test.tsx` | zielony (główny zestaw) | 4 | KP-13 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty-trasa.test.tsx` | zielony (główny zestaw) | 9 | KP-07, P-330 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/oferty.test.tsx` | zielony (główny zestaw) | 14 | KP-03, KP-04, KP-08, KP-09, KP-14, P-054, P-065, P-089, P-403, P-563, R-118, R-124 | `src/domena/porty`<br>`src/ekrany/Oferty`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
@@ -413,4 +414,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 409; zależnych od poprawek: 260.
+Razem plików testów: 410; zależnych od poprawek: 261.
