@@ -89,6 +89,7 @@
     "ocen": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. Nazwa robocza 07 (BR-DAN-012/S3).",
     "polityka": "Jak w ofertach (design-spec.md:68).",
     "zrodla_wiedzy": "Tekst z design-spec roli 04.",
+    "licencje": "Wiersz w Ustawieniach i tytuł ekranu z licencjami bibliotek i kroju (M1-245, P-661). „Open source” zostaje po angielsku, jeśli tak mówi się w języku docelowym.",
     "stan_danych": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. F-58.",
     "eksport": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
     "import": "Tekst roboczy 08 (Z07-05: ekran bez makiety 04) — do zatwierdzenia przez 04. BR-DAN-006.",
@@ -568,6 +569,13 @@
   "zrodla": {
     "zdanie": "Jedno ogólne zdanie ekranu „Źródła wiedzy” (P-108 (4)). Tekst z design-spec roli 04.",
     "linia_standardow": "Linia źródła wymagana warunkami użycia organizacji standardów (BR-KAL-008, P-112 (2)), dosłownie z BRD. Nie tłumaczyć: we wszystkich językach zostaje cała linia po angielsku, także słowo „Source:” (formuła dawcy; README 06, P-085, DEC-21 a)."
+  },
+  "licencje": {
+    "wstep": "Jedno zdanie pod tytułem ekranu licencji (M1-245, P-661). „Oczko” to nazwa aplikacji, nie tłumaczyć.",
+    "grupa_kroje": "Nagłówek grupy: kroje pisma dołączone do aplikacji. Treści licencji, nazw pakietów, identyfikatorów SPDX i not o prawach autorskich nie tłumaczymy.",
+    "grupa_licencje": "Nagłówek grupy: pełne treści licencji (MIT, Apache-2.0…) do rozwinięcia stuknięciem.",
+    "grupa_natywne": "Nagłówek grupy: biblioteki natywne iOS wkompilowane w aplikację, spoza menedżera pakietów npm.",
+    "grupa_pakiety": "Nagłówek grupy: pakiety JavaScript (npm) z licencją i notą o prawach autorskich."
   },
   "stoper": {
     "start_a11y": "Stoper sesji na liczniku (F-21, P-191 P1a): etykieta VoiceOver ikony stopera w pasku nawigacji, gdy nie ma sesji. Jedno stuknięcie zaczyna sesję. Ok. 20 znaków.",

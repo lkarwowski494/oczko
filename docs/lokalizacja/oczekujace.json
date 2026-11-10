@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 09 E5 (2026-11-09, P-618 b, P-620): 5 baz kluczy (007, 008) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 M3 (P-600). Historia powodów: git log tego pliku.",
+  "powod": "M1-245 (2026-11-10, P-661, wzór P-461): 6 kluczy ekranu „Open source licenses” tylko w en, 34 języki czekają na kolejną falę 09. Wcześniej: Fala 09 E5 (2026-11-09, P-618 b, P-620): 5 baz kluczy (007, 008) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 M3 (P-600). Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -13,15 +13,24 @@
     "P-438",
     "P-441",
     "P-445",
+    "P-461",
     "P-473",
     "P-474",
     "P-481",
     "P-559",
     "P-578",
     "P-600",
-    "P-615"
+    "P-615",
+    "P-661"
   ],
-  "klucze": [],
+  "klucze": [
+    "licencje.grupa_kroje",
+    "licencje.grupa_licencje",
+    "licencje.grupa_natywne",
+    "licencje.grupa_pakiety",
+    "licencje.wstep",
+    "ustawienia.licencje"
+  ],
   "pierwsze_w_fali": [],
   "przetlumaczone_czesciowo": {}
 }
