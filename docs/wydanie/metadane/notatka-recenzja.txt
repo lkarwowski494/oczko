@@ -5,7 +5,7 @@ How Oczko differs from a plain tally counter: the counter sits next to the user'
 
 Main flow
 1. Open the app: it starts on "Today" with the current project card. Tap "+1" on the card (on a fresh install the card is titled "First counter"): the row count goes up with a vibration. Tap "Continue" ("Open counter" on a fresh install) to open the counter, where "+1 row" does the same, "−1" takes one back and "History" lists every change with its time.
-2. Projects: "New project" (name, optional parts). The project menu has "Add pattern…" with "Choose file (PDF or Word)", "Scan pages" (camera) and "Web page link…".
+2. Projects: "New project" (name, optional parts). To add a pattern, open the project and tap "Add pattern" below its patterns (the "Add pattern" tile on "Today" leads there too), then "Choose file (PDF or Word)", "Scan pages" (camera) or "Web page link…".
 3. Open the pattern: tap and hold on a line to mark the current row; "Highlighter" draws with a finger (iPad: Apple Pencil).
 4. Share to Oczko: in Safari, Files or Photos tap Share, then Oczko, then pick a project.
 5. Settings (the gear icon at the top of "Today"): "Export all data", "Import a backup", "Delete all data", "Report a problem" (shows a preview, the user sends it through the share sheet).
@@ -23,7 +23,7 @@ Non-obvious features
 - Lock Screen / Dynamic Island: a Live Activity shows the active counter with a +1 button while the user counts.
 - The iCloud (CloudKit) entitlement is used only by optional iCloud sync with the user's own private iCloud database. In this build the iCloud sync switch is hidden (it will be enabled in an update after device testing), so the app does not use the network for sync and declares no background modes. The app shows no push alerts and does not ask for notification permission.
 - Apple Watch app: shows the same counter; optional.
-- "Add pattern…" > "Web page link…": the app loads the address the user enters in an off-screen web view, once, without cookies, and saves the page as a PDF pattern. Any address can be entered, so the age rating answers Unrestricted Web Access: Yes (16+).
+- "Add pattern" > "Web page link…": the app loads the address the user enters in an off-screen web view, once, without cookies, and saves the page as a PDF pattern. Any address can be entered, so the age rating answers Unrestricted Web Access: Yes (16+).
 
 Data
 Nothing is sent to the developer. Data stays on the device unless the user turns on iCloud sync or exports a backup. When the user shares a web page link, Oczko downloads that page once to save it as a pattern. App Privacy: Data Not Collected. No tracking.
