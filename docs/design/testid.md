@@ -157,3 +157,14 @@ Dziś `licznik-projekt` jest jednocześnie nazwą (11 asercji tekstu) i wejście
 ### Dla 07 i 08 (p3a)
 - AX5: te same id; lista akcji leży pod notatką i może być poza ekranem — przed stuknięciem w akcję `scrollUntilVisible` (jak reguła 10); scenariusz 30 (duży tekst) przechodzi z `menu-wzor` na `licznik-wzor`.
 - Pozostałe id licznika (`licznik-plus`, `licznik-minus`, `licznik-wartosc`, `licznik-powtorzenie`, `kreski-podpis`, banery) poza zakresem tego zadania — bez zmian. `licznik-teraz-rzad` („Now working row 48”) na makiecie łączy się z podpisem liczby („rzędy gotowe · teraz rząd 43”) — 8 użyć; nowe znalezisko do kontroli 07 w cz. 2 (id zostaje, tekst asercji się zmieni).
+
+## fix11 (2026-11-10, build 3; `fix11-2026-11-10.md`, P-661, P-664)
+| testID | Element | Tekst (en) | Stan |
+|---|---|---|---|
+| `ustawienia-licencje` | wiersz Ustawień pod `ustawienia-zrodla` (ta sama grupa), symbol `c.circle` | `ustawienia.licencje` — Open source licenses | nowy (M1-245) |
+| `licencje-lista` | przewijana lista ekranu licencji | tytuł ekranu = `ustawienia.licencje` | nowy |
+| `licencje-kroj-bree-serif` | wiersz kroju w grupie „Fonts”, rozwijany | Bree Serif (bez tłumaczenia) | nowy |
+| `licencje-licencja-{SPDX}` | wiersz treści licencji, rozwijany (np. `licencje-licencja-MIT`) | identyfikator SPDX (bez tłumaczenia) | nowy |
+| `licencje-tekst` | rozwinięty tekst licencji (jeden naraz) | treść pliku licencji (bez tłumaczenia) | nowy |
+| `licznik-strefa` | kontener stałej strefy licznika (nałożony na treść, P-613) | — | nowy, jeśli brak (B3-03) |
+| `licznik-nastepna-czesc` | przenosi się z przewijanej treści do `licznik-strefa`, pierwszy element | `licznik.nastepna_czesc` — Next part | zmiana miejsca (B3-03), id bez zmian |

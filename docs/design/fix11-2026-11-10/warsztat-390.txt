@@ -1,0 +1,3 @@
+INFO wielkości tekstu (px): 13, 15, 16, 17, 34; kolory tekstu: 3
+UWAGA odstępy poza jednostką 4 px: 2
+OK

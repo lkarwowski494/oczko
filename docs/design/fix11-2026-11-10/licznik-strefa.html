@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Oczko — B3-03 „Next part” w stałej strefie (fix11)</title>
+<link rel="stylesheet" href="../dzianina/tokeny.css">
+<!-- fix11 2026-11-10, B3-03. Ekran licznika w stanie „cel części osiągnięty”, iPhone 402×874 jak w E2E 34 (step-081).
+     „przed”: geometria z hierarchii E2E (licznik-nastepna-czesc [217,554][329,598], licznik-akcje [16,576][386,640]) — przybliżenie, dzianina uproszczona.
+     „po”: „Next part” w stałej strefie nad rzędem akcji (od AX3: nad −1/+1). Kolory z tokeny.css, treść zastępczo Source Sans 3, ikony pominięte. -->
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Bree Serif"; src: url(../fonty/BreeSerif.ttf); }
+:root { --w: 402px; --dt-tytul: 1; --dt-tresc: 1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.br { font-family: "Bree Serif", serif; }
+.ekran { width: var(--w); height: 874px; overflow: hidden; background: var(--tlo); color: var(--tekst); position: relative; }
+.status { height: 54px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
+.nav { min-height: 44px; display: flex; align-items: center; padding: 0 16px; color: var(--akcentTekst); font-size: calc(17px * min(var(--dt-tresc), 1.8)); }
+.tresc { padding: 8px 16px 0; display: flex; flex-direction: column; gap: 12px; }
+.tytul { font-size: calc(22px * min(var(--dt-tytul), 1.8)); line-height: 1.2; }
+.czesc { color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.g { display: grid; grid-template-columns: 64px 1fr; gap: 16px; }
+.dz { height: 260px; border-radius: 12px; background: var(--karta); position: relative; overflow: hidden; }
+.dz::after { content: ""; position: absolute; left: 6px; right: 6px; bottom: 6px; top: 6px; border-radius: 8px; background: var(--akcent); }
+.num { font-size: calc(104px * min(var(--dt-tytul), 1.3)); line-height: 1; }
+.num small { display: block; font-family: "Source Sans 3"; font-size: calc(17px * var(--dt-tresc)); color: var(--tekst2); }
+.t17 { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.drugi { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; padding: 8px 16px; font-size: calc(17px * min(var(--dt-tresc), 1.8)); }
+.notatka { padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); }
+.strefa { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); padding: 0 16px 34px; display: flex; flex-direction: column; gap: 12px; }
+.akcje { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.akcje a { min-height: 64px; border-radius: 14px; background: var(--powierzchnia); display: flex; align-items: end; justify-content: center; padding: 8px 2px; font-weight: 600; font-size: calc(13px * min(var(--dt-tresc), 1.6)); }
+.dol { display: flex; gap: 12px; }
+.minus { width: 72px; border-radius: 18px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; }
+.wielki { flex: 1; min-height: 168px; border-radius: 26px; background: var(--akcent); color: var(--naAkcencie); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; }
+.strefa > .drugi { margin-bottom: 4px; } /* 12 + 4 = odstepy.l między grupami */
+.wielki b { font-size: calc(34px * min(var(--dt-tytul), 1.4)); }
+.ax .dol { flex-direction: column-reverse; } .ax .minus { width: auto; min-height: 72px; } .ax .akcje { display: none; }
+.zaslona { position: absolute; left: 0; right: 0; outline: 2px dashed var(--niszczacy); pointer-events: none; }
+.podpis { position: absolute; top: 60px; right: 12px; font: 600 12px sans-serif; background: var(--tekst); color: var(--tlo); padding: 2px 6px; border-radius: 4px; }
+</style></head>
+<body>
+<!-- PRZED: „Next part” na końcu treści, dolna połowa pod stałą strefą (stuknięcie w środek trafia w rząd akcji) -->
+<div class="ekran" data-ekran="przed">
+  <div class="status"><span>9:41</span><span>▭</span></div>
+  <div class="nav">‹ Today</div>
+  <div class="tresc">
+    <p class="tytul br">Twin socks</p>
+    <p class="czesc">Sock 1 · goal 3 rows</p>
+    <div class="g"><div class="dz"></div><p class="num br">3<small>of 3 rows</small></p></div>
+    <p class="t17"><b>Goal reached</b></p>
+    <a class="drugi" data-testid="licznik-nastepna-czesc" style="position:absolute;left:217px;top:554px;width:112px">Next part</a>
+    <p class="notatka t17">[PRZYKŁAD] note</p>
+  </div>
+  <div class="strefa" data-testid="licznik-strefa" style="padding-bottom:54px">
+    <div class="akcje" data-testid="licznik-akcje"><a>Note</a><a>Pattern</a><a>Goal</a><a>Timer</a><a>History</a></div>
+    <div class="dol" data-testid="licznik-przyciski"><a class="minus">−1</a><a class="wielki"><b>+1</b><span>row 4 done</span></a></div>
+  </div>
+  <span class="podpis">przed</span>
+</div>
+
+<!-- PO: „Next part” w stałej strefie, nad rzędem akcji; z treści znika -->
+<div class="ekran" data-ekran="po">
+  <div class="status"><span>9:41</span><span>▭</span></div>
+  <div class="nav">‹ Today</div>
+  <div class="tresc">
+    <p class="tytul br">Twin socks</p>
+    <p class="czesc">Sock 1 · goal 3 rows</p>
+    <div class="g"><div class="dz"></div><p class="num br">3<small>of 3 rows</small></p></div>
+    <p class="t17"><b>Goal reached</b></p>
+    <p class="notatka t17">[PRZYKŁAD] note</p>
+  </div>
+  <div class="strefa" data-testid="licznik-strefa">
+    <a class="drugi" data-testid="licznik-nastepna-czesc">Next part</a>
+    <div class="akcje" data-testid="licznik-akcje"><a>Note</a><a>Pattern</a><a>Goal</a><a>Timer</a><a>History</a></div>
+    <div class="dol" data-testid="licznik-przyciski"><a class="minus">−1</a><a class="wielki"><b>+1</b><span>row 4 done</span></a></div>
+  </div>
+  <span class="podpis">po</span>
+</div>
+</body></html>
