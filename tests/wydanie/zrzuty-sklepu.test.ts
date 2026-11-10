@@ -113,6 +113,21 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(kroki[ramki].run).toMatch(/brak surowych zrzutów/); // pusty wynik zrzutów nie zaciemnia przyczyny czerwonego przebiegu drugim błędem
   });
 
+  // 10-wydanie-005 (recenzja AB): grupa na poziomie workflowu obejmowała KAŻDY push na integrację, więc zwykły push anulował OCZEKUJĄCY przebieg ze znacznikiem [zrzuty-sklepu]
+  // (GitHub: „any existing pending job or workflow in the same concurrency group will be canceled”, docs.github.com …/control-workflow-concurrency, odczyt 10.11.2026).
+  test('concurrency: bez grupy na poziomie workflowu i na zadaniu plan; grupy tylko na zadaniach macOS, przebieg bez znacznika dostaje grupę własną (run_id), więc niczego nie anuluje', () => {
+    expect(wf.concurrency).toBeUndefined();
+    expect(wf.jobs.plan.concurrency).toBeUndefined();
+    expect(wf.jobs.zbierz.concurrency).toBeUndefined();
+    for (const id of ['build', 'zrzuty']) {
+      const c = wf.jobs[id].concurrency;
+      expect({ id, grupa: typeof c?.group === 'string' }).toEqual({ id, grupa: true });
+      expect(c.group).toContain("needs.plan.outputs.uruchom == 'true' && github.ref || github.run_id"); // bez znacznika: grupa unikalna dla przebiegu
+      expect(c['cancel-in-progress']).toBe(false);
+    }
+    expect(wf.jobs.zrzuty.concurrency.group).toMatch(/matrix\.urzadzenie.*matrix\.nr/); // gałęzie macierzy nie mogą dzielić grupy (jedna biegnie, reszta czeka, nadmiar anulowany)
+  });
+
   test('zrzut zakupu dla App Review: artefakt zrzut-zakupu z zadania z zakup=true, scena 99-zakup, skrypt robi go po angielsku', () => {
     const w = (wf.jobs.zrzuty.steps ?? []).find((k: any) => k.with?.name === 'zrzut-zakupu'); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(w).toBeDefined();

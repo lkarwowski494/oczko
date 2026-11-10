@@ -57,9 +57,8 @@ on:
 permissions:
   contents: read
   actions: read
-concurrency:
-  group: zrzuty-sklepu-${{ github.ref }}
-  cancel-in-progress: false
+# 10-wydanie-005: BEZ grupy na poziomie workflowu — startuje na KAŻDY push na integrację, a oczekujący przebieg w grupie jest anulowany przez następny (zwykły push anulowałby przebieg ze znacznikiem
+# [zrzuty-sklepu] czekający na maszyny macOS). Grupy mają tylko zadania macOS (build, zrzuty); przebieg bez znacznika (zadanie plan: uruchom=false) dostaje grupę z run_id, więc niczego nie anuluje.
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -157,6 +156,9 @@ jobs:
   build:
     needs: plan
     if: needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.app_run == '' && needs.plan.outputs.zadania != '0'
+    concurrency:
+      group: zrzuty-sklepu-build-${{ needs.plan.outputs.uruchom == 'true' && github.ref || github.run_id }}
+      cancel-in-progress: false
     runs-on: macos-26
     timeout-minutes: 90
     steps:
@@ -241,6 +243,10 @@ jobs:
     name: 'zrzuty (${{ matrix.urzadzenie }} ${{ matrix.nr }}: ${{ matrix.jezyki }})'
     needs: [plan, build]
     if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.zadania != '0' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    # grupa na gałąź macierzy (urządzenie × nr): wspólna grupa wszystkich gałęzi puściłaby jedną naraz i anulowała oczekujące
+    concurrency:
+      group: zrzuty-sklepu-${{ needs.plan.outputs.uruchom == 'true' && github.ref || github.run_id }}-${{ matrix.urzadzenie }}-${{ matrix.nr }}
+      cancel-in-progress: false
     runs-on: macos-26
     # ≈ 8 min danych fikcyjnych + ≈ 30 min na język (pomiar: przebieg 42784539154, 34 min na 7 scen); do 5 języków na zadanie → ≈ 2,5 h; limit zadania w Actions 6 h
     timeout-minutes: 330
