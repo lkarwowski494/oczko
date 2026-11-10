@@ -32,6 +32,8 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(tekst).toContain('[zrzuty-sklepu]');
     expect(tekst).toMatch(/\[zrzuty-app:/); // ponowne użycie aplikacji z poprzedniego przebiegu tego workflowu
     expect(tekst).toMatch(/\[og07-ok\]/);
+    for (const z of ['[zrzuty-jezyki:', '[zrzuty-zadan:', '[zrzuty-urzadzenia:']) expect(tekst).toContain(z); // KO-032: języki, podział na zadania i urządzenia też z commita
+    expect(Object.keys((on.workflow_dispatch as any).inputs)).toEqual(expect.arrayContaining(['jezyki', 'zadan', 'urzadzenia', 'aplikacja_z_przebiegu', 'og07'])); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
 
   test('bez sekretów, bez środowiska release, bez zapisu do ASC (zakazy roli 10)', () => {
@@ -67,8 +69,11 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(maestro.env.MAESTRO_ZIP_SHA256).toBe(wzor.env.MAESTRO_ZIP_SHA256);
   });
 
-  test('zrzuty: macierz iphone + ipad, urządzenia 6.9″ (1320×2868) i iPad 13″ (2064×2752)', () => {
-    expect(wf.jobs.zrzuty.strategy.matrix.urzadzenie).toEqual(['iphone', 'ipad']);
+  test('zrzuty: macierz z zadania plan (urządzenie × porcja języków), najwyżej 3 naraz, urządzenia 6.9″ (1320×2868) i iPad 13″ (2064×2752)', () => {
+    expect(wf.jobs.zrzuty.strategy.matrix.include).toContain('fromJSON(needs.plan.outputs.matrix)');
+    expect(wf.jobs.zrzuty.strategy['max-parallel']).toBe(3);
+    expect(wf.jobs.zrzuty['timeout-minutes']).toBeGreaterThanOrEqual(240); // ≈ 30 min na język, do 5 języków w zadaniu
+    expect(tekst).toContain('scripts/ci/zrzuty-jezyki.mjs');
     expect(tekst).toMatch(/iPhone 17 Pro Max/);
     expect(tekst).toMatch(/iPad (Pro|Air) 13-inch/);
   });
@@ -84,11 +89,28 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(tekst + sk).toMatch(/ipad-13/);
   });
 
-  test('zbierz: kanał alfa usunięty i sprawdzony, wymiary sprawdzone', () => {
+  test('zbierz: kanał alfa usunięty, wymiary i komplet sprawdzone skryptami, ramki i podpisy nałożone, artefakty surowy i końcowy', () => {
     const run = (wf.jobs.zbierz.steps ?? []).map((k: any) => k.run ?? '').join('\n'); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(run).toMatch(/-alpha off/);
-    expect(run).toMatch(/1320x2868|1320 ?× ?2868/);
-    expect(run).toMatch(/2064x2752|2064 ?× ?2752/);
+    expect(run).toContain('scripts/ci/wymiary-asc.mjs');
+    expect(run).toContain('scripts/ci/komplet-zrzutow.mjs');
+    expect(run).toContain('scripts/ci/ramki-sklepu.sh');
+    expect(run).toContain('fonts-noto-cjk');
+    const nazwy = (wf.jobs.zbierz.steps ?? []).filter((k: any) => k.uses?.startsWith('actions/upload-artifact')).map((k: any) => k.with.name); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(nazwy).toEqual(expect.arrayContaining(['sklep-zrzuty-surowe', 'sklep-zrzuty-ramki']));
+    const sk = czytaj('scripts/ci/wymiary-asc.mjs');
+    expect(sk).toMatch(/1320, 2868/);
+    expect(sk).toMatch(/2064, 2752/);
+  });
+  test('zrzut zakupu dla App Review: artefakt zrzut-zakupu z zadania z zakup=true, scena 99-zakup, skrypt robi go po angielsku', () => {
+    const w = (wf.jobs.zrzuty.steps ?? []).find((k: any) => k.with?.name === 'zrzut-zakupu'); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(w).toBeDefined();
+    expect(String(w.if)).toContain('matrix.zakup');
+    const sh = czytaj(SKRYPT);
+    expect(sh).toContain('99-zakup');
+    expect(sh).toContain('99-zakup-ceny.png');
+    expect(czytaj(`${KAT}/99-zakup.yaml`)).toMatch(/oferty-plan-dozywotni/);
+    expect(tekst).toMatch(/EXPO_PUBLIC_STORE_FAKE: '1'/); // atrapa sklepu w buildzie zrzutów (ceny z sklep-sztuczny.ts)
   });
 
   test('warunek OG-07: zrzuty 3 i 4 (wzór) idą do katalogu warunkowego, dopóki nie ma znacznika [og07-ok]', () => {
@@ -100,15 +122,31 @@ describe('workflow zrzuty-sklepu.yml', () => {
 
 describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   const pliki = fs.existsSync(path.join(KORZEN, KAT)) ? fs.readdirSync(path.join(KORZEN, KAT)).filter((f) => f.endsWith('.yaml')).sort() : [];
-  const NAZWY = ['00-przygotuj', '01-dzis', '02-licznik', '03-wzor', '04-zakreslenie', '05-projekty', '06-historia', '07-kalendarz'];
+  const NAZWY = ['00-jezyk', '00-przygotuj', '01-dzis', '02-licznik', '03-wzor', '04-zakreslenie', '05-projekty', '06-historia', '07-kalendarz', '99-zakup'];
 
-  test('jest przygotowanie danych i siedem scen w kolejności z planu', () => {
+  test('jest wybór języka, przygotowanie danych, siedem scen w kolejności z planu i scena zakupu', () => {
     expect(pliki.map((f) => f.replace(/\.yaml$/, ''))).toEqual(NAZWY);
   });
 
   test('skrypt ma listę scen zgodną z plikami', () => {
     const sk = czytaj(SKRYPT);
-    for (const n of NAZWY.slice(1)) expect(sk).toContain(n);
+    for (const n of NAZWY) expect(sk).toContain(n);
+  });
+
+  test('wiele języków (KO-032): sceny 01–07 nie zakładają żadnego napisu interfejsu — tylko id i dane fikcyjne; język wybiera 00-jezyk przez jezyk-<kod>', () => {
+    for (const f of pliki.filter((x) => /^0[1-7]-/.test(x))) {
+      const t = czytaj(`${KAT}/${f}`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
+      const teksty = [...t.matchAll(/text:\s*"([^"]*)"/g)].map((m) => m[1]);
+      expect({ f, obce: teksty.filter((x) => !/^(Harbor Sweater|47|\.\*next: 3 knit, then cable\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
+      expect({ f, tapNaTekst: /tapOn:\s*"/.test(t) }).toEqual({ f, tapNaTekst: false });
+    }
+    const j = czytaj(`${KAT}/00-jezyk.yaml`);
+    expect(j).toContain('id: "jezyk-${JEZYK}"');
+    expect(j).toContain('ustawienia-jezyk');
+    const sk = czytaj(SKRYPT);
+    expect(sk).toContain('-e "JEZYK=$JEZYK_BIEZACY"');
+    expect(sk).toMatch(/for JEZ in \$\{JEZYKI\/\/,\/ \}/);
+    expect(sk).toContain('mkdir -p "$OUT/$ROZMIAR/$JEZ"');
   });
 
   const kod = ['app', 'src'].flatMap(function skan(k: string): string[] {
@@ -123,7 +161,7 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   test.each(pliki)('%s: każdy id: z selektora istnieje w kodzie aplikacji albo w README testID', (plik) => {
     const t = czytaj(`${KAT}/${plik}`);
     const idy = new Set([...t.matchAll(/id:\s*"([^"]+)"/g)].flatMap((m) => m[1].split('|')).map((id) => id.replace(/-\d{4}-\d{2}-\d{2}$/, '-'))); // historia-dzien-RRRR-MM-DD: wzorzec
-    const brak = [...idy].filter((id) => !/^e2e-/.test(id) && !kod.includes(`'${id}'`) && !kod.includes(`"${id}"`) && !kod.includes(`\`${id}`) && !readme.includes(`\`${id}\``));
+    const brak = [...idy].filter((id) => !/^e2e-/.test(id) && !(id.includes('${') ? kod.includes(`\`${id.slice(0, id.indexOf('${'))}`) : kod.includes(`'${id}'`) || kod.includes(`"${id}"`) || kod.includes(`\`${id}`) || readme.includes(`\`${id}\``))); // id z parametrem (jezyk-${JEZYK}): prefiks jako szablon w kodzie (jezyk-${o.p})
     expect(brak).toEqual([]);
   });
 

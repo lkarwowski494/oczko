@@ -1,0 +1,23 @@
+# Zrzut ekranu zakupu dla App Review (rola 10, KO-032, 2026-11-10): ekran ofert „Oczko Pro” z cenami i planami w buildzie z atrapą sklepu (EXPO_PUBLIC_STORE_FAKE=1 w kroku buildu
+# zrzuty-sklepu.yml; ceny z src/platforma/sklep-sztuczny.ts:6 = ceny z docs/monetyzacja.md: 0,99 / 6,99 / 14,99 USD). Jak Trening: trening:.maestro/21-subskrypcja.yaml:57
+# (`99-zakup-ceny.png`, jeden plik dla wszystkich produktów, wgrywa ręcznie właściciel przy produktach w App Store Connect; trening:docs/48:118, Z-24). To NIE jest zrzut strony produktu
+# w sklepie (cena na zrzutach strony = 2.3.7), tylko zrzut do przeglądu zakupów: ekran wygląda jak w aplikacji w sklepie, tylko ceny są z atrapy.
+# Droga jak w scenariuszu 06 (Ustawienia → „Oczko Pro”); plany pod kartą (P-596), więc przewinięcie tak, by wszystkie trzy plany i przycisk zakupu były w kadrze.
+# Nie wciska „Kup” (zakup na atrapie zmieniłby stan na „Masz Pro”). Język: angielski (skrypt wybiera go przez 00-jezyk przed tą sceną).
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 99 zakup dla App Review (ekran ofert z cenami i planami)"
+---
+- runFlow:
+    file: ../scenariusze/subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-10T09:41:00"
+- runFlow: ../scenariusze/subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-oczko-pro" } }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- assertVisible: { id: "oferty-ekran" }
+- scrollUntilVisible: { element: { id: "oferty-plan-roczny" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month.*" }
+- assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year.*" }
+- assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once.*" }
+- assertVisible: { id: "oferty-kup" }
+- assertNotVisible: { id: "oferty-stan-pro" }

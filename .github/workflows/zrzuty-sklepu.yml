@@ -1,11 +1,15 @@
-# Zrzuty sklepu (App Store Connect) z symulatora: iPhone 17 Pro Max (6.9″, 1320 × 2868) i iPad Pro 13″ (2064 × 2752), 7 ekranów, język en, tryb jasny.
+# Zrzuty sklepu (App Store Connect) z symulatora: iPhone 17 Pro Max (6.9″, 1320 × 2868) i iPad Pro 13″ (2064 × 2752), 7 ekranów, tryb jasny, OSOBNY ZESTAW NA KAŻDĄ LOKALIZACJĘ,
+# z ramkami i podpisami jak w Treningu (KO-032, 10.11.2026: „Ma być jak w Treningu”; trening:.github/workflows/store-screenshots.yml, zadania zrzuty → ramki) i zrzutem zakupu dla App Review.
 # Rola 10-wydanie, zadanie E-2 (2026-11-10); plan i opcja A: docs/wydanie/metadane/zrzuty-plan.md; wzór: Trening `store-screenshots.yml` (zadania dane → build → zrzuty → ramki).
-# Wyjście: artefakt `sklep-zrzuty-ramki` zgodny z kontraktem `asc-zrzuty.yml` / sklep.md §3b: `6.9/en/NN-*.png`, `ipad-13/en/NN-*.png`, PNG bez alfy.
-# BEZ ramek i podpisów: kadry i podpisy projektuje rola 04 (zrzuty-plan.md), tu surowe zrzuty aplikacji (2.3.3). Zrzuty wzoru (03, 04) czekają w `warunek-og07/` do znacznika [og07-ok].
+# Wyjście: artefakt `sklep-zrzuty-ramki` zgodny z kontraktem `asc-zrzuty.yml` / sklep.md §3b: `6.9/<język>/NN-*.png`, `ipad-13/<język>/NN-*.png`, PNG bez alfy, z ramką i podpisem
+# (scripts/ci/ramki-sklepu.sh, podpisy: docs/wydanie/metadane/podpisy-zrzutow.json; język bez podpisów dostaje tylko surowe zrzuty w artefakcie `sklep-zrzuty-surowe`);
+# artefakt `zrzut-zakupu` (99-zakup-ceny.png, ekran ofert z atrapą sklepu) — do ręcznego wgrania przez właściciela przy produktach. Zrzuty wzoru (03, 04) czekają w `warunek-og07/` do znacznika [og07-ok].
 # Bez sekretów i bez środowiska `release`; niczego nie wysyła do App Store Connect (to robi dopiero `asc-zrzuty.yml` z `main`, za zgodą właściciela).
 # Wyzwalacze: (1) push na gałąź roboczą ze znacznikiem [zrzuty-sklepu] w komunikacie commita (workflow_dispatch nowego pliku działa dopiero z `main`);
 # [zrzuty-app:<numer przebiegu>] = użyj aplikacji z wcześniejszego przebiegu TEGO workflowu (artefakt `zrzuty-sklepu-app`, 3 dni) zamiast budować od nowa (~40 min);
-# [og07-ok] = zrzuty wzoru idą do kompletu; (2) workflow_dispatch (po scaleniu do `main`) z tymi samymi wejściami.
+# [og07-ok] = zrzuty wzoru idą do kompletu; [zrzuty-jezyki:en,pl] albo [zrzuty-jezyki:all] = języki aplikacji (domyślnie en,pl; all = 29 z lokalizacją sklepu);
+# [zrzuty-zadan:N] = na ile zadań dzielić języki na urządzenie (domyślnie 6, najwyżej 8); [zrzuty-urzadzenia:iphone] = tylko iPhone (domyślnie iphone,ipad);
+# (2) workflow_dispatch (po scaleniu do `main`) z tymi samymi wejściami. Czas: ≈ 30 min na język i urządzenie (7 scen po ≈ 4 min), naraz najwyżej 3 zadania macOS.
 # Maszyn macOS zwykle brak ok. 14:00–23:00 UTC; awaria przed pierwszym scenariuszem albo „not acquired by Runner” = jedno ponowienie ręczne (P-091, CLAUDE.md).
 name: Zrzuty sklepu
 on:
@@ -23,6 +27,21 @@ on:
         required: false
         type: boolean
         default: false
+      jezyki:
+        description: 'Języki aplikacji po przecinku (np. "en,pl,de") albo "all" (29 języków z lokalizacją sklepu); język bez podpisów w podpisy-zrzutow.json dostaje tylko surowe zrzuty'
+        required: false
+        type: string
+        default: 'en,pl'
+      zadan:
+        description: 'Na ile zadań podzielić języki na urządzenie (1–8). Naraz biegną najwyżej 3 zadania macOS; ≈ 30 min na język'
+        required: false
+        type: string
+        default: '6'
+      urzadzenia:
+        description: 'Urządzenia po przecinku: iphone, ipad'
+        required: false
+        type: string
+        default: 'iphone,ipad'
 permissions:
   contents: read
   actions: read
@@ -37,26 +56,47 @@ jobs:
       uruchom: ${{ steps.wejscie.outputs.uruchom }}
       app_run: ${{ steps.wejscie.outputs.app_run }}
       og07: ${{ steps.wejscie.outputs.og07 }}
+      matrix: ${{ steps.wejscie.outputs.matrix }}
+      jezyki: ${{ steps.wejscie.outputs.jezyki }}
     steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
       - id: wejscie
         env:
           ZDARZENIE: ${{ github.event_name }}
           KOMUNIKAT: ${{ github.event.head_commit.message }}
           WE_APP: ${{ inputs.aplikacja_z_przebiegu }}
           WE_OG07: ${{ inputs.og07 }}
+          WE_JEZYKI: ${{ inputs.jezyki }}
+          WE_ZADAN: ${{ inputs.zadan }}
+          WE_URZADZENIA: ${{ inputs.urzadzenia }}
         run: |
-          uruchom=false; app=""; og07=false
+          uruchom=false; app=""; og07=false; jez="en,pl"; zadan=6; urz="iphone,ipad"
           # znaczniki tylko z PIERWSZEJ linii komunikatu: treść commitu może je opisywać (przebieg 1: opis „[og07-ok]” w treści włączył OG-07)
           KOMUNIKAT=$(printf '%s\n' "$KOMUNIKAT" | head -1)
           if [ "$ZDARZENIE" = workflow_dispatch ]; then
             uruchom=true; app="$WE_APP"; [ "$WE_OG07" = true ] && og07=true
+            jez="${WE_JEZYKI:-en,pl}"; zadan="${WE_ZADAN:-6}"; urz="${WE_URZADZENIA:-iphone,ipad}"
           else
             case "$KOMUNIKAT" in *'[zrzuty-sklepu]'*) uruchom=true ;; esac
             app=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-app:\([0-9][0-9]*\)\].*/\1/p' | head -1)
             case "$KOMUNIKAT" in *'[og07-ok]'*) og07=true ;; esac
+            w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-jezyki:\([A-Za-z0-9,-]*\)\].*/\1/p' | head -1); [ -z "$w" ] || jez="$w"
+            w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-zadan:\([0-9]*\)\].*/\1/p' | head -1); [ -z "$w" ] || zadan="$w"
+            w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-urzadzenia:\([a-z,]*\)\].*/\1/p' | head -1); [ -z "$w" ] || urz="$w"
           fi
-          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"; } >> "$GITHUB_OUTPUT"
-          echo "uruchom=$uruchom, aplikacja z przebiegu: ${app:-(budowa)}, OG-07: $og07" | tee -a "$GITHUB_STEP_SUMMARY"
+          # Zadanie zrzuty i tak jest pomijane (uruchom=false), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
+          matrix='{"jezyki":["en"],"matrix":[{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false}]}'
+          # Wejścia z wejść ręcznych idą przez env i walidację w skrypcie planu (nieznany język, język bez lokalizacji sklepu, złe urządzenie = czerwony plan)
+          if [ "$uruchom" = true ]; then matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$jez" "$zadan" "$urz"); fi
+          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"
+            echo "matrix=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.stringify(JSON.parse(require("fs").readFileSync(0,"utf8")).matrix))')"
+            echo "jezyki=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).jezyki.join(","))')"; } >> "$GITHUB_OUTPUT"
+          echo "uruchom=$uruchom, aplikacja z przebiegu: ${app:-(budowa)}, OG-07: $og07, języki: $jez, zadań: $zadan, urządzenia: $urz" | tee -a "$GITHUB_STEP_SUMMARY"
   build:
     needs: plan
     if: needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.app_run == ''
@@ -141,15 +181,17 @@ jobs:
           path: ios/xcodebuild.log
           retention-days: 3
   zrzuty:
-    name: zrzuty (${{ matrix.urzadzenie }})
+    name: 'zrzuty (${{ matrix.urzadzenie }} ${{ matrix.nr }}: ${{ matrix.jezyki }})'
     needs: [plan, build]
     if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: macos-26
-    timeout-minutes: 90
+    # ≈ 8 min danych fikcyjnych + ≈ 30 min na język (pomiar: przebieg 42784539154, 34 min na 7 scen); do 5 języków na zadanie → ≈ 2,5 h; limit zadania w Actions 6 h
+    timeout-minutes: 330
     strategy:
       fail-fast: false
+      max-parallel: 3 # jak Trening: 2 maszyny macOS z 5 zostają dla E2E i buildu
       matrix:
-        urzadzenie: [iphone, ipad]
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -221,66 +263,84 @@ jobs:
           MAESTRO_CLI_NO_ANALYTICS: '1'
           OG07: ${{ needs.plan.outputs.og07 }}
           URZADZENIE: ${{ matrix.urzadzenie }}
-        run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$URZADZENIE" "zrzuty-surowe" "dzienniki" "$OG07" en
+          JEZYKI: ${{ matrix.jezyki }}
+          ZAKUP: ${{ matrix.zakup }}
+        run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$URZADZENIE" "zrzuty-surowe" "dzienniki" "$OG07" "$JEZYKI" "$ZAKUP" "zrzut-zakupu"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zrzuty-surowe-${{ matrix.urzadzenie }}
+          name: zrzuty-surowe-${{ matrix.urzadzenie }}-${{ matrix.nr }}
           retention-days: 7
           if-no-files-found: ignore
           path: zrzuty-surowe
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.zakup
+        with:
+          name: zrzut-zakupu
+          retention-days: 14
+          if-no-files-found: ignore
+          path: zrzut-zakupu
       - name: Spakowanie dzienników (Maestro zapisuje katalogi z „:” w nazwie, których upload-artifact nie przyjmuje)
         if: always()
         run: '[ -d dzienniki ] && zip -qry dzienniki.zip dzienniki || true'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zrzuty-dzienniki-${{ matrix.urzadzenie }}
+          name: zrzuty-dzienniki-${{ matrix.urzadzenie }}-${{ matrix.nr }}
           retention-days: 3
           if-no-files-found: ignore
           path: dzienniki.zip
   zbierz:
-    name: komplet (bez alfy, wymiary)
+    name: komplet (bez alfy, wymiary, ramki i podpisy)
     needs: [plan, zrzuty]
     if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && needs.zrzuty.result != 'skipped' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
       - uses: actions/download-artifact@v4
         with:
           pattern: zrzuty-surowe-*
           path: surowe
           merge-multiple: true
-      - name: ImageMagick
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick >/dev/null
-      - name: Kanał alfa precz, wymiary i komplet (iPhone 6.9″ = 1320x2868, iPad 13″ = 2064x2752 albo poziomo 2752x2064)
+      - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick fonts-noto-core fonts-noto-cjk >/dev/null
+      - name: Kanał alfa precz (surowe zrzuty simctl są RGB; spłaszczenie na wszelki wypadek)
         run: |
           set -uo pipefail
-          mkdir -p sklep-zrzuty-ramki; bledy=0
-          { echo "### Zrzuty sklepu (bez ramek i podpisów — kadry projektuje rola 04)"; echo "| plik | wymiar | kanały | bajty |"; echo "|---|---|---|---|"; } >> "$GITHUB_STEP_SUMMARY"
+          mkdir -p sklep-zrzuty-surowe
           while IFS= read -r f; do
-            rel="${f#surowe/}"; cel="sklep-zrzuty-ramki/$rel"; mkdir -p "$(dirname "$cel")"
-            convert "$f" -alpha off -define png:color-type=2 "$cel"
-            wym=$(identify -format '%wx%h' "$cel"); kan=$(identify -format '%[channels]' "$cel")
-            echo "| $rel | $wym | $kan | $(wc -c < "$cel" | tr -d ' ') |" >> "$GITHUB_STEP_SUMMARY"
-            case "$kan" in *a) echo "::error::$rel nadal ma kanał alfa ($kan)"; bledy=$((bledy + 1)) ;; esac
-            case "$rel" in
-              *6.9/*) [ "$wym" = 1320x2868 ] || { echo "::error::$rel: wymiar $wym ≠ 1320x2868"; bledy=$((bledy + 1)); } ;;
-              *ipad-13/*) [ "$wym" = 2064x2752 ] || [ "$wym" = 2752x2064 ] || { echo "::error::$rel: wymiar $wym ≠ 2064x2752 (ani poziomo)"; bledy=$((bledy + 1)); } ;;
-              *) echo "::error::$rel: nieznany katalog"; bledy=$((bledy + 1)) ;;
-            esac
+            rel="${f#surowe/}"; mkdir -p "$(dirname "sklep-zrzuty-surowe/$rel")"
+            convert "$f" -alpha off -depth 8 -define png:color-type=2 "sklep-zrzuty-surowe/$rel"
           done < <(find surowe -name '*.png' | sort)
-          # komplet: sceny 01, 02, 05, 06, 07 zawsze w <rozmiar>/en/; 03 i 04 w <rozmiar>/en/ (OG-07 spełniony) albo w warunek-og07/<rozmiar>/en/
-          for r in 6.9 ipad-13; do
-            for n in 01-dzis 02-licznik 05-projekty 06-historia 07-kalendarz; do
-              [ -f "sklep-zrzuty-ramki/$r/en/$n.png" ] || { echo "::error::brak $r/en/$n.png"; bledy=$((bledy + 1)); }
-            done
-            for n in 03-wzor 04-zakreslenie; do
-              [ -f "sklep-zrzuty-ramki/$r/en/$n.png" ] || [ -f "sklep-zrzuty-ramki/warunek-og07/$r/en/$n.png" ] || { echo "::error::brak $r/en/$n.png (ani w warunek-og07)"; bledy=$((bledy + 1)); }
-            done
-          done
-          echo "Pliki: $(find sklep-zrzuty-ramki -name '*.png' | wc -l | tr -d ' '), błędy: $bledy" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Surowe zrzuty: $(find sklep-zrzuty-surowe -name '*.png' | wc -l | tr -d ' ') plików" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: 'Komplet zrzutów i wymiary (iPhone 6.9″ = 1320x2868, iPad 13″ = 2064x2752 albo poziomo 2752x2064; bez alfy; najwyżej 10 na klasę): wymiary-asc.mjs, komplet-zrzutow.mjs'
+        env:
+          JEZYKI: ${{ needs.plan.outputs.jezyki }}
+          URZADZENIA: ${{ join(fromJSON(needs.plan.outputs.matrix).*.urzadzenie, ',') }}
+        run: |
+          set -uo pipefail; bledy=0
+          node scripts/ci/wymiary-asc.mjs sklep-zrzuty-surowe | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
+          node scripts/ci/komplet-zrzutow.mjs sklep-zrzuty-surowe "$JEZYKI" "$URZADZENIA" | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
           [ "$bledy" -eq 0 ]
+      - name: Ramki i podpisy (jak Trening, scripts/ci/ramki-sklepu.sh; język bez podpisów pominięty z ostrzeżeniem)
+        run: |
+          set -o pipefail
+          bash scripts/ci/ramki-sklepu.sh sklep-zrzuty-surowe sklep-zrzuty-ramki docs/wydanie/metadane/podpisy-zrzutow.json | tee -a "$GITHUB_STEP_SUMMARY"
+          node scripts/ci/wymiary-asc.mjs sklep-zrzuty-ramki | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Języki z ramkami: $(find sklep-zrzuty-ramki -mindepth 2 -maxdepth 2 -type d ! -path '*warunek-og07*' -exec basename {} \; | sort -u | paste -sd, -)" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sklep-zrzuty-surowe
+          retention-days: 14
+          if-no-files-found: ignore
+          path: sklep-zrzuty-surowe
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,0 +1,17 @@
+# Zrzuty sklepu (rola 10, KO-032, 2026-11-10): język aplikacji dla kolejnej serii scen — wybór w Ustawieniach (testID `jezyk-<kod>`, src/ekrany/Jezyk.tsx:33), trwały po restarcie
+# (scenariusz e2e/scenariusze/39-p-190-jezyk-trwaly.yaml), więc sceny 01–07 i 99 po nim biegną w tym języku bez zmian w kodzie aplikacji. Dane fikcyjne z 00-przygotuj.yaml zostają
+# (clearState: false). Parametr (maestro -e): JEZYK — kod języka aplikacji, np. "pl", "es-419", "zh-Hant" (jak katalogi artefaktu zrzutów i `JEZYKI` w src/i18n/jezyki.ts).
+# Asercje tylko po id: po zmianie języka żaden napis interfejsu nie jest znany z góry.
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 00 język aplikacji ${JEZYK}"
+---
+- runFlow:
+    file: ../scenariusze/subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-10T09:41:00"
+- runFlow: ../scenariusze/subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
+- tapOn: { id: "ustawienia-jezyk" }
+- scrollUntilVisible: { element: { id: "jezyk-${JEZYK}" }, timeout: 60000 }
+- tapOn: { id: "jezyk-${JEZYK}" }
+- assertVisible: { id: "ustawienia" } # wybór działa od razu i wraca do Ustawień (przebieg 40457386369, scenariusz 39)
