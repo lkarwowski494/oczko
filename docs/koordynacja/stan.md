@@ -14,13 +14,13 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (10.11 06:40 UTC) — PRZEKAZANIE koordynatora (kontekst poprzednika ok. 29%)
-- Gałąź napraw `claude/m2-naprawy-2026-11-10` @ **86021db** (pętla 1: 27e2ac1, ac77b39, 4c3ccdd, 5af3342 — zweryfikowane reaudytem C; pętla 2: 93cef54 = 324, 86021db = 323 — autor OK, 5 plików, **niesprawdzone**: CI i recenzja niezależna).
-- `ci.yml` wyzwolony 06:36 na 86021db (run ID odczytać: `actions_list` list_workflow_runs ci.yml, branch m2). Poprzedni run 42766087745 na 5af3342 = failure (324).
-- Kolejność dla następcy: (1) wynik ci.yml na 86021db; (2) recenzja niezależna pętli 2 (323, 324) — mała sesja D: M1 reaudit pętla 2, prompt roli warsztat `koordynacja/polecenia/C-M1-reaudit-2026-11-10.md` @ c8703cc, wzór polecenia `polecenia/C.md`, zakres tylko 5af3342..86021db, pułap ok. 8 USD; (3) po zielonym CI i reaudycie: scalenie m2 → integracja `claude/youthful-pasteur-kx83sn` (58284a88; proste, bez konfliktu oczekiwane; push na integrację uruchamia „Jakość · Linux”) — KO-011 spełnione (build 2 = 1111 VALID); (4) archiwizacja A2 po odczycie kosztu; (5) dalej plan 24 h: sesja roli 10 (zrzuty sklepu `asc-zrzuty`, 244, 245, `docs/wydanie/sklep.md:22`), mała sesja 04 (1.0.1 wg P-642), lista „tylko telefon” dla właściciela (zaproponowana 06:30, bez odpowiedzi).
-- Do właściciela po reaudycie pętli 2: wkleić `docs/wydanie/metadane/notatka-recenzja.txt` (3544 B) w App Store Connect → App Review Information → Notes.
+## Teraz (10.11 06:41 UTC)
+- Gałąź napraw `claude/m2-naprawy-2026-11-10` @ **86021db**: `ci.yml` run 42769467527 = **success** (06:38; na dokładnie tym SHA). Pętla 1 zweryfikowana reaudytem C; pętla 2 (93cef54 = 324, 86021db = 323): autor OK, CI zielone, **recenzja niezależna w toku = sesja D** (start 06:38, polecenie `polecenia/D.md` @ 6fd724b, pułap 8 / STOP 10,4 USD).
+- Po PRZEKAZANIU D z werdyktem „scalenie TAK”: scalenie ff m2 → integracja `claude/youthful-pasteur-kx83sn` (58284a88 jest przodkiem 86021db; push na integrację uruchamia „Jakość · Linux”), potem archiwizacja A2 (29% kontekstu — nowych zadań nie dostaje; ewentualne poprawki po D → nowa sesja ze stanu w plikach) i D.
+- Dalej plan 24 h: sesja roli 10 (zrzuty sklepu `asc-zrzuty`, 244, 245, `docs/wydanie/sklep.md:22`), mała sesja 04 (1.0.1 wg P-642), lista „tylko telefon” dla właściciela (zaproponowana 06:30, bez odpowiedzi).
+- Do właściciela po werdykcie D: wkleić `docs/wydanie/metadane/notatka-recenzja.txt` (3544 B) w App Store Connect → App Review Information → Notes.
 - WG-04: sesje podrzędne nie dostają add_repo z zapisem do innych repo (apps4brew-www); oczko-warsztat przechodzi.
-- Limit tygodniowy konta: `rate_limit_info.status` = allowed_warning (06:25).
+- Limit tygodniowy konta: `rate_limit_info.status` = allowed_warning (06:37, także u A2).
 
 ## WZNOWIENIE (10.11 05:35 UTC)
 Słowa właściciela (sesja session_01T66VBxhDabqriZxJMgbRsB, `/apps4brew [oczko]`): „Odpal role koordynatora M9”; na pytanie o start: „Uruchom, mandat bez zmian (zalecane)”; potem „dalej”. Mandat bez zmian.
@@ -54,7 +54,8 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 |---|---|---|---|---|---|---|
 | A (nieosiągalna z tego konta; zastąpiona przez A2) | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
 | C (zarchiwizowana 06:25, 13,79 USD, kontekst 22%; raport warsztat 564cbd5) | session_01T66VBwZkpjZzMRtFv5FgXW | M1-audytor-generalny reaudit (301–304, baza 58284a88) | oczko m2 @ 5af3342 tylko odczyt; warsztat K | 0 | 0 | start 06:05 (opus-5-5); polecenie `polecenia/C.md` @ 579fbd1e; prompt roli warsztat c8703cc; pułap 25 / STOP 32 USD |
-| A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport) | claude/m2-naprawy-2026-11-10 @ 5af3342 | 25 | 6,64 | PRZEKAZANIE 06:04, bezczynna; **niesprawdzone do końca**: commity i autor OK (4 commity, 9 plików, 0 Co-Authored-By), CI `ci.yml` run 42766087745 na 5af3342 w toku, recenzja niezależna = sesja C; archiwizacja po zielonym CI i reaudycie (może być potrzebna do poprawek); start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
+| A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport; pętla 2: 323, 324) | claude/m2-naprawy-2026-11-10 @ 86021db | 29 (293 401 / 1 000 000, 06:38) | 9,48 (06:38) | PRZEKAZANIE pętli 2 06:34, bezczynna, powiadomiona o zmianie koordynatora 06:38; commity i autor OK (6 commitów od 58284a88, 0 Co-Authored-By), `ci.yml` run 42769467527 na 86021db = success; pętla 1 zrecenzowana (C), pętla 2 **recenzja w toku (D)**; nowych zadań nie dostaje (29%); archiwizacja po werdykcie D; start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
+| D | session_01T66VBzzRjKwYyvTLy9scsA | M1-audytor-generalny reaudit pętla 2 (323, 324; zakres 5af3342..86021db) | oczko m2 @ 86021db tylko odczyt; warsztat K | 0 (start) | 0 (start) | start 06:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/D.md` @ 6fd724b; prompt roli warsztat c8703cc; pułap 8 / STOP 10,4 USD |
 | B (zarchiwizowana 05:46, 0,21 USD, nic nie zmieniła) | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
@@ -91,13 +92,13 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
 - Poprzednik session_01T66VBvxBBKLAkeEUNSEf4n: brak (usunięte 05:26). `list_triggers` z tego konta 05:36: żadnych przypomnień Oczka poprzedników.
-- **Aktywny koordynator (session_01T66VBygrH2FB6wWhFKzzSm):** trig_01UwNknNRjmboizkEJWGfZsx „Koordynator Oczko: linia 14:00” 10.11 · trig_0122evF6graXKJbMiuk3zZyt „linia 05:00” 11.11 · kontrola: patrz dziennik (jedna naraz). Poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
+- **Aktywny koordynator (session_01T66VBygrH2FB6wWhFKzzSm):** trig_01UwNknNRjmboizkEJWGfZsx „Koordynator Oczko: linia 14:00” 10.11 · trig_0122evF6graXKJbMiuk3zZyt „linia 05:00” 11.11 · trig_0139kDsikcGcQnyCqwKwHvXw „Koordynator Oczko: kontrola” 07:00 (jedna naraz). Poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
 - Pula A2: P-644…P-652 (P-643 zajęty przez 303).
-- KO następny: **KO-014**.
+- KO następny: **KO-017**.
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -135,3 +136,6 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 06:36 | M9 | `ci.yml` wyzwolony na 86021db; odbiór częściowy (autor OK, 0 Co-Authored-By); koszt koordynatora 8,00 USD (06:25), kontekst 27% → przekazanie E6 | następca |
 | 10.11 06:41 | M9 | przekazane do session_01T66VBygrH2FB6wWhFKzzSm (fable-5-2, env_0166…, auto; prompt roli warsztat ff0b010); przypomnienia poprzednika usunięte (kontrola, linia 14:00, linia 05:00), zostaje „kontrola przekazania” ok. 07:10 | następca: E6 p. 5, własne przypomnienia w tym linia 14:00 |
 | 10.11 06:39 | M9 (session_01T66VBygrH2FB6wWhFKzzSm) | przejęcie wg E6 p. 5: prompt M9 warsztat `koordynacja/m9/m9-prompt-2026-11-10.md` = złożony z prompts @ f701ce9 (`cmp` identyczne, sha256 c3b30ef9…); stan @ 42cba24; add_repo warsztat (push) i prompts przyjęte, trening odczyt anonimowy; `list_triggers`: brak duplikatów Oczka, własne linie 14:00 i 05:00 utworzone; pętla 2 na m2: 2 commity 5af3342..86021db, autor zgodny, 0 Co-Authored-By, 5 plików; integracja 58284a88 jest przodkiem 86021db; `ci.yml` run 42769467527 na 86021db in_progress (06:37) | wynik CI, sesja D (reaudyt pętli 2) |
+| 10.11 06:38 | M9 | A2 i poprzednik powiadomieni (PRZEJĄŁEM @ c09aa65); `list_events` poprzednika (kinds user, 15 najnowszych): po przekazaniu tylko wyniki jego narzędzi, żadnych wiadomości sesji ani właściciela; A2 `get_session`: 29% kontekstu, 9,48 USD | D |
+| 10.11 06:38 | D | start session_01T66VBzzRjKwYyvTLy9scsA (reaudyt pętli 2), polecenie @ 6fd724b; kontrola 07:00 | PRZEKAZANIE D |
+| 10.11 06:40 | CI | `ci.yml` run 42769467527 na 86021db: **success** (06:34:56 → 06:38:19; `actions_get`) — 324 potwierdzone przez CI | werdykt D → scalenie z integracją |

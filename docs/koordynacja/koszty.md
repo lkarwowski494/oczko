@@ -9,9 +9,11 @@
 | session_01T66VBx6UXGtzFfAZDeBpip | koordynator (bez M9) | — | 93,85 (od 8.11 16:00, odczyt 10.11 05:12) | 30 | — | — | przekazanie 10.11 |
 | session_01T66VBzyDZ56SkwWzV5t1ZR | A: M2 naprawy | 40 (STOP 52) | 5,56 (wstrzymana) | 26 | 10.11 05:13 → 05:13 → 27e2ac1 ok. 05:28 → CI brak → — | wstrzymanie właściciela 05:25 | 303 gotowe; 301 czeka na publikację; 302, 304 nierozpoczęte |
 | session_01T66VBvxBBKLAkeEUNSEf4n | koordynator M9 | — | — | — | od 10.11 05:10 | — | |
-| session_01T66VBygxDoZxuZKDNHHXc8 | A2: M2 naprawy (302, 304, raport) | 34 (STOP 44) | 6,64 (06:05, otwarta) | 25 | 10.11 05:38 → 05:38 → ac77b39 → CI run 42766087745 w toku → … | — | następca A |
+| session_01T66VBygxDoZxuZKDNHHXc8 | A2: M2 naprawy (302, 304, raport; pętla 2: 323, 324) | 34 (STOP 44) | 9,48 (06:38, otwarta) | 29 | 10.11 05:38 → 05:38 → ac77b39 → CI run 42766087745 failure 06:10 (324) → pętla 2 86021db 06:34 → CI run 42769467527 success 06:38 → … | odbiór: recenzja pętli 2 (D) od 06:38 | następca A |
 | session_01T66VBxhDabqriZxJMgbRsB | koordynator M9 (fable-5-2) | — | 8,00 (odczyt 06:25; przekazanie ok. 06:40) | 29 | od 10.11 05:35 | — | |
 | session_01T66VBxU3pNDFL8RzCfKmf9 | B: 10 fix, publikacja 301 | 6 (STOP 8) | 0,21 | 9 | 10.11 05:44 → 05:44 → brak commita → zarchiwizowana 05:46 | odpowiedź właściciela 05:23→05:42 (w tym wstrzymanie) | |
 | session_01T66VBwZkpjZzMRtFv5FgXW | C: M1 reaudit 301–304 | 25 (STOP 32) | 13,79 | 22 | 10.11 06:05 → 06:05 → raport 564cbd5 06:23 → przyjęte 06:25 | — | |
+| session_01T66VBzzRjKwYyvTLy9scsA | D: M1 reaudit pętla 2 (323, 324) | 8 (STOP 10,4) | — (otwarta) | — | 10.11 06:38 → 06:38 → … | — | |
+| session_01T66VBygrH2FB6wWhFKzzSm | koordynator M9 (fable-5-2) | — | — | — | od 10.11 06:36 | — | następca session_01T66VBxhDabqriZxJMgbRsB |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
