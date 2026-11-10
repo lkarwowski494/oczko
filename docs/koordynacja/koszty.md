@@ -22,6 +22,7 @@
 | session_01T66VBy3eeXpsL31qf2TLYe | H: 09 build (6 kluczy × 34) | 5 (STOP 6,5) | 3,91 | 22 | 10.11 09:28 → 09:28 → 5db0155 09:39 (verify hooka wg sesji) → przyjęte formalnie 09:41 | — | zarchiwizowana 09:41; szacunek ×0,78 |
 | session_01T66VByjqMZp13ZcqHKwEHH | I: 08 audit (recenzja buildu 3) | 12 (STOP 15,6) | 6,18 | 28 | 10.11 09:28 → 09:28 → raport ba13e62 09:40 → przyjęte 09:42 | — | zarchiwizowana 09:46; szacunek ×0,51 |
 | session_01T66VBwQhN8XbJaX6yEYMhP | G2: 08 fix (I-001, I-002, scalenie E) | 6 (STOP 7,8) | — (otwarta) | — | 10.11 09:42 → 09:42 → … | — | |
+| session_01T66VBzbohJZEBjcoX9Qb7q | K: 08 audit (recenzja poprawek G2) | 5 (STOP 6,5) | — (otwarta) | — | 10.11 10:06 → 10:06 → … | — | |
 | session_01T66VBvdJcbv9Zfh1QVujsz | J: 10 audit (recenzja zrzutów sklepu) | 6 (STOP 7,8) | 3,86 | 23 | 10.11 09:34 → 09:34 → werdykt 09:42 → raport w warsztacie 40f3064 09:45 → przyjęte 09:43 | add_repo odrzucony: ok. 2 min + przeniesienie raportu 3 min (WG-03) | zarchiwizowana 09:46; szacunek ×0,64 |
 | session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | 8,12 (odczyt 09:31) | 27 | 10.11 08:36 → 09:34 przekazanie | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
 
