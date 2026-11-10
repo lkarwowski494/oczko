@@ -113,6 +113,19 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(tekst).toMatch(/EXPO_PUBLIC_STORE_FAKE: '1'/); // atrapa sklepu w buildzie zrzutów (ceny z sklep-sztuczny.ts)
   });
 
+  // 10-wydanie-001 (recenzja AB, 10.11.2026): build zrzutów ma atrapę sklepu, więc ekran ofert kończy się panelem „Test store: expire access” (src/ekrany/Oferty.tsx, panelE2e);
+  // zrzut dla App Review nie może go zawierać. Kodu aplikacji nie zmieniamy (P-238) — scena sprawdza brak panelu w kadrze po ostatnim przewinięciu, a zrzut robi skrypt zaraz po scenie.
+  test('99-zakup: po ostatnim przewinięciu scena sprawdza, że panel atrapy sklepu (e2e-sklep-wygas) nie jest w kadrze', () => {
+    const wiersze = czytaj(`${KAT}/99-zakup.yaml`).split('\n').filter((l) => !l.trim().startsWith('#'));
+    const nr = (re: RegExp) => wiersze.findIndex((l) => re.test(l));
+    const guard = nr(/^- assertNotVisible:\s*\{\s*id:\s*"e2e-sklep-wygas"\s*\}/);
+    expect(guard).toBeGreaterThan(-1);
+    const ostatniRuch = Math.max(...wiersze.map((l, i) => (/^- (scrollUntilVisible|scroll|swipe)\b/.test(l) ? i : -1)));
+    expect(guard).toBeGreaterThan(ostatniRuch); // przewinięcie po sprawdzeniu mogłoby panel wciągnąć do kadru
+    expect(guard).toBeGreaterThan(nr(/id:\s*"oferty-plan-dozywotni"/)); // plany są sprawdzone w tym samym kadrze
+    expect(czytaj('src/kompozycja/e2e/panele.tsx')).toContain('testID="e2e-sklep-wygas"'); // id istnieje w kodzie (selektory e2e-* są zwolnione z kontroli id w tym pliku)
+  });
+
   test('warunek OG-07: zrzuty 3 i 4 (wzór) idą do katalogu warunkowego, dopóki nie ma znacznika [og07-ok]', () => {
     const sk = czytaj(SKRYPT) + tekst;
     expect(sk).toMatch(/warunek-og07/);

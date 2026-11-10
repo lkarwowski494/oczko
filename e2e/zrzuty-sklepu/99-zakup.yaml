@@ -3,6 +3,9 @@
 # (`99-zakup-ceny.png`, jeden plik dla wszystkich produktów, wgrywa ręcznie właściciel przy produktach w App Store Connect; trening:docs/48:118, Z-24). To NIE jest zrzut strony produktu
 # w sklepie (cena na zrzutach strony = 2.3.7), tylko zrzut do przeglądu zakupów: ekran wygląda jak w aplikacji w sklepie, tylko ceny są z atrapy.
 # Droga jak w scenariuszu 06 (Ustawienia → „Oczko Pro”); plany pod kartą (P-596), więc przewinięcie tak, by wszystkie trzy plany i przycisk zakupu były w kadrze.
+# 10-wydanie-001: build zrzutów ma atrapę sklepu, więc na końcu przewijanej treści leży panel „Test store: expire access” (Oferty.tsx, panelE2e; id e2e-sklep-wygas), którego w kadrze dla
+# App Review nie może być. Po wyśrodkowaniu planu rocznego panel ma ok. 25 pt w kadrze, więc treść jest cofnięta w dół o ok. 10% wysokości ekranu (pomiar geometrii: pierwszy przebieg C1,
+# nie symulator w tej sesji), a `assertNotVisible` pilnuje wyniku: panel w kadrze = scena czerwona, zrzut nie powstaje (kodu aplikacji nie zmieniamy, P-238).
 # Nie wciska „Kup” (zakup na atrapie zmieniłby stan na „Masz Pro”). Język: angielski (skrypt wybiera go przez 00-jezyk przed tą sceną).
 appId: com.apps4brew.knitting
 name: "Zrzuty sklepu · 99 zakup dla App Review (ekran ofert z cenami i planami)"
@@ -16,8 +19,10 @@ name: "Zrzuty sklepu · 99 zakup dla App Review (ekran ofert z cenami i planami)
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
 - scrollUntilVisible: { element: { id: "oferty-plan-roczny" }, direction: DOWN, timeout: 30000, centerElement: true }
+- swipe: { start: "50%,45%", end: "50%,55%", duration: 800 } # treść w dół o ok. 95 pt (wolno, bez rozpędu); po tym panel atrapy sklepu jest poniżej kadru
 - assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month.*" }
 - assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year.*" }
 - assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once.*" }
 - assertVisible: { id: "oferty-kup" }
 - assertNotVisible: { id: "oferty-stan-pro" }
+- assertNotVisible: { id: "e2e-sklep-wygas" } # 10-wydanie-001: bez panelu atrapy sklepu w kadrze (musi być po ostatnim przewinięciu)
