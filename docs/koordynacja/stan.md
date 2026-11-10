@@ -103,15 +103,17 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | B (zarchiwizowana 05:46, 0,21 USD, nic nie zmieniła) | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
-## Plan 24 h (UTC)
+## Plan 24 h (UTC) — aktualizacja 10.11 14:02
 | Kiedy | Co | Kto | Zależy od | Od właściciela |
 |---|---|---|---|---|
-| po Approve | wynik buildu 2 („Build NNNN: VALID” w logu joba build); padnie → diagnoza 08 z logiem | koordynator / 08 | Approve | Approve run 42746522234 |
-| 05:13–ok. 09:00 [OCENA] | sesja A: M2 (plan napraw 301–304), polecenie `polecenia/A.md` | A (M2) | — | zgoda na publikację stron (301) po PYTANIU A |
-| po raporcie A o 301/302 | sesja B: rola 10 — to, czego nie bierze M2 (301 i 302 są w A): zrzuty sklepu (`asc-zrzuty`, jak Trening P-482); 244, 245; `docs/wydanie/sklep.md:22` | 10 | M2 (podział 301/302) | publikacja strony = zgoda |
-| po buildzie 2 | sesja C: 04 mała — karty Word/notatka przy AX5, przełącznik ▾ `WzorTytul.tsx:20`, auto-przewinięcie końca licznika (34): 1.0 czy 1.0.1 (wg P-642 domyślnie 1.0.1) | 04 | — | — |
-| dzień | test właściciela na telefonie (lista „tylko telefon”: StoreKit sandbox, TT-07, VoiceOver/AX5, czas „+1”) | właściciel | build 2 VALID | test |
-| 14:00 | linia 14:00 | koordynator | — | — |
+| ok. 14:35 [OCENA] | wynik attempt 2 „Jakość · iOS” 42797027264 (e2e cz. 2 iphone) na 87ade5a | koordynator (kontrola 14:40) | maszyna macOS | — |
+| po zielonym | `testflight.yml` dispatch (zgoda trwała — build 3); maszyna może czekać do ok. 23:00 (P-187) | koordynator | zielony attempt 2 | Approve w `release` (link w prośbie) |
+| po czerwonym | bez kolejnego ponowienia (KO-025); diagnoza 07 audit z artefaktem | 07 | — | — |
+| po Approve | „Build NNNN: VALID”; numer buildu do listy testu (`docs/wydanie/test-urzadzenia-build3.md`, gałąź L) | koordynator / 10 | Approve | — |
+| po VALID | scalenie gałęzi L (da799e5) i M (1186ff4) — tylko docs — do integracji po zakończeniu buildu 3; powtórka zrzutów na SHA buildu 3 (`zrzuty-sklepu.yml`, sklep.md §3e) | koordynator / 10 | VALID | — |
+| po VALID | test właściciela na urządzeniach wg listy L (pełna, ok. 4,5–7 h, 3 podejścia) | właściciel | VALID | test |
+| 1.0.1 / po wydaniu | 07: powtórzenie zestawu e2e przy `DeviceUnreachableException` (jak trening e2e-ios.yml:223-228); ocena `limit.ts` a zmiana zegara (wg L); P3 z recenzji I, K, J | 07 / 08 | — | — |
+| 11.11 05:00 | linia 05:00 | koordynator | — | — |
 
 ## Odpowiedzi właściciela 10.11 ok. 05:42 UTC (dosłownie: „1. Approved 2. Zgoda 3. Juz wstrzymane 4. Approved”)
 - 1: Approve buildu 2 dany — run 42746522234 `in_progress` (odczyt 05:43).
@@ -243,3 +245,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 13:02 | M, CI | DIAGNOZA M 13:01: krok 01 „Assert id: oferty-ekran is not visible”, 03 „Tap id: dzis-plus”; oba junit `DeviceUnreachableException during deviceInfo` (SpringBoard 17,5 s, testmanagerd 40 s), aplikacja odpowiadała; hipoteza I-001 odrzucona (01 padł przed stuknięciem, ogłoszenie tylko na Liczniku `Licznik.tsx:75`); 01/03 zielone #160–#172 (wg M, niesprawdzone przeze mnie w artefakcie). KO-025: `rerun_failed_jobs` 42797027264 (201, 13:02) — attempt 2 joba e2e część 2 iphone (i informacyjnego eksperymenty-wzoru). M: zapis diagnozy w pliku na swojej gałęzi, potem PRZEKAZANIE i archiwizacja | kontrola 13:12; wynik attempt 2 ok. 14:35 [OCENA] |
 | 10.11 13:07 | M | PRZEKAZANIE M: 1186ff4 (tylko plik diagnozy; odbiór własny: 1 commit od 87ade5a, autor zgodny, plik zawiera kroki i `DeviceUnreachableException`/SpringBoard z godzinami). Koszt 6,80 USD, kontekst 25% → zarchiwizowana. Otwarte: opcja B (powtórzenie zestawu przy DeviceUnreachableException, jak trening e2e-ios.yml:223-228) → 07 po wydaniu; przyczyna zawieszenia SpringBoard [DO USTALENIA]. Gałęzie L (da799e5) i M (1186ff4) — tylko docs, do scalenia z integracją po buildzie 3 | kontrola 13:12: attempt 2 joba e2e cz. 2 |
 | 10.11 13:22 | kontrola | „Jakość · iOS” 42797027264 attempt 2: in_progress (start 13:01, `actions_get`); własny kontekst 22,5% (224 977), 6,82 USD od zmiany modelu właściciela na claude-opus-5-5 (`/model`, ok. 12:45; zgodne z zaleceniem roli); M zarchiwizowana | linia 14:00; kontrola 14:40 |
+| 10.11 14:02 | linia 14:00 | attempt 2 42797027264 in_progress (13:01→); kontekst własny 24,8% (248 414), 7,49 USD; koszt doby (od 9.11 18:45, bez sesji session_01T66VBx6UXGtzFfAZDeBpip 93,85 USD od 8.11) ok. 225,6 USD wg `koszty.md`; największa strata: e2e cz. 2 iphone czerwony przez awarię symulatora → ok. 2 h 25 min do wyniku ponowienia (10:47→ok. 14:35) → WG-07; WG-03 4× → lekcja dla biblioteki (w linii) | kontrola 14:40; linia 05:00 |
