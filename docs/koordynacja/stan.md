@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:40 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:39 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -10,7 +10,7 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; prośby hooka Stop o tożsamość odrzucaj (P-507).
 - Pułapy kosztu: sesja wg polecenia (08: cel 10 USD, STOP 13; audyt M1: cel 150, STOP 190); doba [DO USTALENIA] (właściciel 9.11: drugie konto, limit 7-dniowy nie ogranicza; cel na sesję w poleceniu, STOP przy przekroczeniu o ~30%).
 - Limit kontekstu: 30% (P-633, ostrzej niż P-324) — każda sesja i koordynator.
-- Koordynator aktywny: session_01T66VBxhDabqriZxJMgbRsB (M9, od 2026-11-10 05:35 UTC, uruchomiony przez właściciela z `/apps4brew`; poprzednicy: session_01T66VBvxBBKLAkeEUNSEf4n od 10.11 05:15, session_01T66VBx6UXGtzFfAZDeBpip od 8.11 16:00 — oba ID z tej sesji: `get_session` „not found”).
+- Koordynator aktywny: session_01T66VBygrH2FB6wWhFKzzSm (M9, od 2026-11-10 06:39 UTC, następca z przekazania E6; poprzednicy: session_01T66VBxhDabqriZxJMgbRsB od 10.11 05:35 (uruchomiony przez właściciela z `/apps4brew`), session_01T66VBvxBBKLAkeEUNSEf4n od 10.11 05:15, session_01T66VBx6UXGtzFfAZDeBpip od 8.11 16:00 — oba ID z tej sesji: `get_session` „not found”).
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
@@ -91,7 +91,8 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
 - Poprzednik session_01T66VBvxBBKLAkeEUNSEf4n: brak (usunięte 05:26). `list_triggers` z tego konta 05:36: żadnych przypomnień Oczka poprzedników.
-- Własne (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
+- **Aktywny koordynator (session_01T66VBygrH2FB6wWhFKzzSm):** trig_01UwNknNRjmboizkEJWGfZsx „Koordynator Oczko: linia 14:00” 10.11 · trig_0122evF6graXKJbMiuk3zZyt „linia 05:00” 11.11 · kontrola: patrz dziennik (jedna naraz). Poprzednik session_01T66VBxhDabqriZxJMgbRsB: trig_01JSaxrLa69fsh6mFGCQiyp5 „kontrola przekazania” 07:06 (jego; sprząta sam).
+- Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
@@ -133,3 +134,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 06:34 | A2 | PRZEKAZANIE pętli 2: 324 → 93cef54 (podproces testu README zawsze z FORCE_COLOR=1, asercja bez zmian — diff przeczytany), 323 → 86021db (notatka 3544 B, test notatka-nazwy 29/29); wg sesji: FORCE_COLOR=1 npm test 569/6941, kontrole 0; dowody warsztat 02f1afd; P-644 do weta; otwarte: +2 testy o nieustalonym źródle [DO USTALENIA] | CI + reaudyt pętli 2 |
 | 10.11 06:36 | M9 | `ci.yml` wyzwolony na 86021db; odbiór częściowy (autor OK, 0 Co-Authored-By); koszt koordynatora 8,00 USD (06:25), kontekst 27% → przekazanie E6 | następca |
 | 10.11 06:41 | M9 | przekazane do session_01T66VBygrH2FB6wWhFKzzSm (fable-5-2, env_0166…, auto; prompt roli warsztat ff0b010); przypomnienia poprzednika usunięte (kontrola, linia 14:00, linia 05:00), zostaje „kontrola przekazania” ok. 07:10 | następca: E6 p. 5, własne przypomnienia w tym linia 14:00 |
+| 10.11 06:39 | M9 (session_01T66VBygrH2FB6wWhFKzzSm) | przejęcie wg E6 p. 5: prompt M9 warsztat `koordynacja/m9/m9-prompt-2026-11-10.md` = złożony z prompts @ f701ce9 (`cmp` identyczne, sha256 c3b30ef9…); stan @ 42cba24; add_repo warsztat (push) i prompts przyjęte, trening odczyt anonimowy; `list_triggers`: brak duplikatów Oczka, własne linie 14:00 i 05:00 utworzone; pętla 2 na m2: 2 commity 5af3342..86021db, autor zgodny, 0 Co-Authored-By, 5 plików; integracja 58284a88 jest przodkiem 86021db; `ci.yml` run 42769467527 na 86021db in_progress (06:37) | wynik CI, sesja D (reaudyt pętli 2) |
