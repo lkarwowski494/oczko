@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:27 UTC) — **WSTRZYMANE przez właściciela**
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:40 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -10,11 +10,16 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; prośby hooka Stop o tożsamość odrzucaj (P-507).
 - Pułapy kosztu: sesja wg polecenia (08: cel 10 USD, STOP 13; audyt M1: cel 150, STOP 190); doba [DO USTALENIA] (właściciel 9.11: drugie konto, limit 7-dniowy nie ogranicza; cel na sesję w poleceniu, STOP przy przekroczeniu o ~30%).
 - Limit kontekstu: 30% (P-633, ostrzej niż P-324) — każda sesja i koordynator.
-- Koordynator aktywny: session_01T66VBvxBBKLAkeEUNSEf4n (M9, od 2026-11-10 05:15 UTC; poprzednik session_01T66VBx6UXGtzFfAZDeBpip od 2026-11-08 16:00).
-- Środowisko: environment_id env_01GMJmLpW2GTvGdZ1nMituy9, model claude-opus-5-5, wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
+- Koordynator aktywny: session_01T66VBxhDabqriZxJMgbRsB (M9, od 2026-11-10 05:35 UTC, uruchomiony przez właściciela z `/apps4brew`; poprzednicy: session_01T66VBvxBBKLAkeEUNSEf4n od 10.11 05:15, session_01T66VBx6UXGtzFfAZDeBpip od 8.11 16:00 — oba ID z tej sesji: `get_session` „not found”).
+- Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## WSTRZYMANIE (10.11 ok. 05:25 UTC)
+## WZNOWIENIE (10.11 05:35 UTC)
+Słowa właściciela (sesja session_01T66VBxhDabqriZxJMgbRsB, `/apps4brew [oczko]`): „Odpal role koordynatora M9”; na pytanie o start: „Uruchom, mandat bez zmian (zalecane)”; potem „dalej”. Mandat bez zmian.
+- Sesje A, 08 nr 3 i obaj poprzedni koordynatorzy są z tej sesji nieosiągalne (`get_session`: „the requested resource was not found”; `list_sessions` ich nie pokazuje; przyczyna [DO USTALENIA] — prawdopodobnie inne konto, mandat wspomina „drugie konto”). Kroki E6 p. 5.3–5.5 (wiadomości do sesji i „PRZEJĄŁEM”) niewykonalne; kontrola zastępcza: stan z plików (`stan.md` @ a3e15daa, warsztat `K/M2-stan.md` @ b4fc37d).
+- Następca sesji A: **A2** z polecenia `polecenia/A2.md` @ 8e20e6d7 (KO-013).
+
+## WSTRZYMANIE (10.11 ok. 05:25 UTC) — historia
 Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj pracę”.
 - Wykonane: sesja A dostała STOP (priority now: dokończyć bieżący krok, stan w warsztat `audit/M1-2026-11-10-finalny/M2-stan.md`, push, PRZEKAZANIE, potem nic); przypomnienia koordynatora usunięte (kontrola 06:14, linia 14:00, linia 05:00) — linie dzienne nie idą do wznowienia; nowych sesji brak.
 - Wznowienie: tylko słowami właściciela. Wtedy: ReadNotifications (PRZEKAZANIE A), przypomnienia linii od nowa, sesja A wznowiona wiadomością albo następca z `M2-stan.md`.
@@ -39,7 +44,8 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| A | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
+| A (nieosiągalna z tego konta; zastąpiona przez A2) | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
+| A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport) | claude/m2-naprawy-2026-11-10 @ 27e2ac1 | 0 | 0 | start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
 ## Plan 24 h (UTC)
@@ -57,14 +63,17 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - **Weto decyzji nocnych** P-634…P-642 (`docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08`; KO-001…KO-009 w `docs/koordynacja/decyzje.md`).
 - **Publikacja stron polityki/wsparcia (301, P-641)** — kandydat gotowy: warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2: oczko/privacy.html, oczko/support.html, tests/tresc-podstron.json; symulacja sprawdz-adresy: tylko 404 linku recenzji). Opcje: (a) zgoda, by sesja z add_repo apps4brew-www (push) wypchnęła 3 pliki na main strony i uruchomiła sprawdz-adresy — rekomendacja; (b) właściciel kopiuje sam. Prośba wysłana 05:23.
 - Test na telefonie buildów 1101 i 2.
+- **Stare sesje na innym koncie** (A session_01T66VBzyDZ56SkwWzV5t1ZR, 08 nr 3 session_01T66VByn4YqYJWZ5JpJWS6X, koordynatorzy session_01T66VBvxBBKLAkeEUNSEf4n i session_01T66VBx6UXGtzFfAZDeBpip): ten koordynator ich nie widzi — archiwizacja i odczyt kosztu po stronie właściciela (albo potwierdzenie, że to inne konto).
 
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
-- Własne (session_01T66VBvxBBKLAkeEUNSEf4n): brak — wszystkie trzy usunięte 05:26 (wstrzymanie).
+- Poprzednik session_01T66VBvxBBKLAkeEUNSEf4n: brak (usunięte 05:26). `list_triggers` z tego konta 05:36: żadnych przypomnień Oczka poprzedników.
+- Własne (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
-- KO następny: **KO-013**.
+- Pula A2: P-644…P-652 (P-643 zajęty przez 303).
+- KO następny: **KO-014**.
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -84,3 +93,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 05:22 | A | STOP start + PYTANIE 301 (warsztat postep-napraw.md @ 1e247ab; 303: przebieg 8 68/68 zielonych); odpowiedź KO-010…KO-012; prompt 10 fix warsztat 7dd2977 | prośba 301 do właściciela; kontrola 06:14 |
 | 10.11 05:26 | M9 | WSTRZYMANIE na słowa właściciela; STOP do A (priority now); przypomnienia koordynatora usunięte; lista zadań w stan.md | czekam na PRZEKAZANIE A i słowa właściciela |
 | 10.11 05:29 | A | PRZEKAZANIE: 303 → 27e2ac1 (autor OK, ls-remote OK); P-643 do weta; obserwacja: zadanie eksperymenty-wzoru w przebiegu 8 = failure (poza bramką); kontekst 26%, 5,56 USD; nie archiwizowana (praca niedokończona, wznowienie z kontekstem) | wstrzymane |
+| 10.11 05:35 | M9 (session_01T66VBxhDabqriZxJMgbRsB) | przejęcie z `/apps4brew` na słowa właściciela („Odpal role koordynatora M9”, „Uruchom, mandat bez zmian”); stan @ a3e15daa; TF run 42746522234 nadal `waiting` (odczyt 05:37); stare sesje nieosiągalne (`get_session` not found ×4); ReadNotifications 0 | A2 |
+| 10.11 05:38 | A2 | start session_01T66VBygxDoZxuZKDNHHXc8 od 27e2ac1, polecenie @ 8e20e6d7 (KO-013); przypomnienia: kontrola 06:24, linie 14:00 i 05:00 | kontrola 06:24: add_repo warsztatu u A2, postęp 302/304 |
