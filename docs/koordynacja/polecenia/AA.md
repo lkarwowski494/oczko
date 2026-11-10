@@ -1,5 +1,5 @@
 # Sesja AA: zrzuty sklepu z ramkami i podpisami jak w Treningu (rola 10 build) — Oczko
-Koordynator: <ID koordynatora z wiadomości startowej>. Raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; po wiadomości o zmianie koordynatora piszesz do nowego. Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
+Koordynator: session_01T66VBzbScQrZbywfTvaNTg. Raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; po wiadomości o zmianie koordynatora piszesz do nowego. Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
 
 Kontekst (KO-032): właściciel (słowa przekazane przez koordynatora Piekarza 10.11 ok. 21:35 UTC): „Ma byc jak w treningu. przekaz tez do oczka.” Zrzuty sklepu Oczka mają być jak w Treningu: ramki urządzenia i podpisy, osobny zestaw na każdą lokalizację, zrzut zakupu dla App Review (scena Maestro z atrapą sklepu; wgrywa właściciel przy produktach). Oczko na e270a07 ma tylko surowe zrzuty en (`scripts/ci/zrzuty-sklepu.sh`, bez ramek i podpisów). Build 4 (e270a07) bez wpływu: aplikacji nie zmieniasz.
 
