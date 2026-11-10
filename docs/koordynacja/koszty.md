@@ -14,7 +14,8 @@
 | session_01T66VBxU3pNDFL8RzCfKmf9 | B: 10 fix, publikacja 301 | 6 (STOP 8) | 0,21 | 9 | 10.11 05:44 → 05:44 → brak commita → zarchiwizowana 05:46 | odpowiedź właściciela 05:23→05:42 (w tym wstrzymanie) | |
 | session_01T66VBwZkpjZzMRtFv5FgXW | C: M1 reaudit 301–304 | 25 (STOP 32) | 13,79 | 22 | 10.11 06:05 → 06:05 → raport 564cbd5 06:23 → przyjęte 06:25 | — | |
 | session_01T66VBzzRjKwYyvTLy9scsA | D: M1 reaudit pętla 2 (323, 324) | 8 (STOP 10,4) | 3,21 | 20 | 10.11 06:38 → 06:38 → raport d4f7b38 06:51 → przyjęte 06:51 | — | zarchiwizowana 06:53; szacunek ×0,40 |
-| session_01T66VBzsdhe1m1utdtWneFy | E: 10 build (zrzuty sklepu, 244, 326) | 15 (STOP 19,5) | — (otwarta) | — | 10.11 06:55 → 06:55 → … | — | |
+| session_01T66VBzsdhe1m1utdtWneFy | E: 10 build (zrzuty sklepu, 244, 326) | 15 (STOP 19,5) | 5,87 | 40 | 10.11 06:55 → 06:55 → 9aa3b90 ok. 07:02 → CI brak → przekazanie 07:51 (nieprzyjęte) | przebieg zrzutów 1: 18 min build + awaria kroku Maestro (stracony przebieg, błąd konfiguracji) | zarchiwizowana 07:52; następca E2 |
+| session_01T66VBvchQHYc2grKLK3LzA | E2: 10 build (zrzuty — dokończenie) | 10 (STOP 13) | — (otwarta) | — | 10.11 07:51 → 07:51 → … | — | |
 | session_01T66VBygrH2FB6wWhFKzzSm | koordynator M9 (fable-5-2) | — | — | — | od 10.11 06:36 | — | następca session_01T66VBxhDabqriZxJMgbRsB |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
