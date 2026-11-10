@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:26 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:30 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -118,3 +118,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 06:10 | CI | `ci.yml` run 42766087745 na 5af3342: **failure** — 1 test z 6910 (`tests/jakosc/readme.test.ts:116` pod FORCE_COLOR=1 z ci.yml:23; wg C ten sam błąd na 58284a88) → znalezisko 324 | naprawa w pętli 2 |
 | 10.11 06:23 | C | PRZEKAZANIE reaudytu: 301–304 zweryfikowane, regresji brak, komendy na 5af3342 kod 0 (test 568/6910); nowe 323 (P2, notatka+FAQ), 324 (P2, CI czerwone), 325 (P3); werdykt „gotowe z zastrzeżeniami”, scalenie z integracją TAK; raport warsztat 564cbd5 (autor OK); koszt 13,79 USD; zarchiwizowana | KO-016 |
 | 10.11 06:25 | M9 → A2 | pętla 2: DEC-03 = b, 323 (notatka) i 324 zatwierdzone, 325 → 1.0.1 (KO-016); limit tygodniowy konta: `rate_limit_info.status` = allowed_warning (odczyt 06:25) | PRZEKAZANIE A2 → ci.yml → scalenie z integracją |
+| 10.11 06:28 | kontrola | **Build 2 TestFlight = 1111: VALID** (run 42746522234 success; zadania bramka/build/tag success; linia logu joba build 06:10:39 UTC „Build 1111: VALID”, odczyt subagentem); KO-011 spełnione (Approve dany) → 304 może wejść do integracji po zielonym CI | test właściciela na telefonie (1101 i 1111); kontrola ok. 07:10 |
