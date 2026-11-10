@@ -19,6 +19,8 @@ export const MAX_ZADAN = 8;
 /** Pomiar przebiegu 42784539154: ≈ 4,9 min na scenę (34 min na 7 scen) + ≈ 8 min danych; 35 scen (5 języków) ≈ 3 h przy limicie zadania 330 min (`timeout-minutes` w workflowie). */
 export const MAX_SCEN_NA_ZADANIE = 35;
 const SCEN_NA_JEZYK = 7;
+/** Najwyżej tyle języków w zadaniu przebiegu zwykłego (= MAX_SCEN_NA_ZADANIE / SCEN_NA_JEZYK; P-718 „po ≤ 5 języków”); więcej = błąd planu (kod 2), nie cichy podział po swojemu. */
+export const MAX_JEZYKOW_NA_ZADANIE = MAX_SCEN_NA_ZADANIE / SCEN_NA_JEZYK;
 
 /** Lista języków: puste → en; „all” → wszystkie z lokalizacją sklepu (en pierwszy, potem pl, reszta jak w SHOT_LOCALES); inaczej kody; nieznany kod albo język bez lokalizacji sklepu → błąd. */
 export function jezyki(tekst) {
@@ -56,6 +58,11 @@ export function plan(tekstJezykow, zadan, urzadzenia = 'iphone,ipad', opcje = {}
   if (!urz.length || zle.length) throw new Error(`nieznane urządzenie: ${zle.join(', ') || '(puste)'} (dozwolone: ${URZADZENIA.join(', ')})`);
   if (opcje.poprzednie) return planUzupelnienia(lista, zadan, urz, opcje);
   const czesci = chunki(lista, zadan);
+  const najwiecej = Math.max(...czesci.map((c) => c.length));
+  if (najwiecej > MAX_JEZYKOW_NA_ZADANIE) {
+    const potrzeba = Math.ceil(lista.length / MAX_JEZYKOW_NA_ZADANIE);
+    throw new Error(`${najwiecej} języków na zadanie > ${MAX_JEZYKOW_NA_ZADANIE} (limit czasu zadania 330 min, ≈ 30 min na język): ustaw zadan ≥ ${potrzeba}${potrzeba > MAX_ZADAN ? ` (najwyżej ${MAX_ZADAN} — zawęź języki albo rób partiami)` : ''}`);
+  }
   const matrix = urz.flatMap((u) => czesci.map((c, i) => ({ urzadzenie: u, jezyki: c.join(','), nr: i + 1, zakup: u === 'iphone' && i === 0 })));
   return { jezyki: lista, matrix, zadania: matrix.length };
 }

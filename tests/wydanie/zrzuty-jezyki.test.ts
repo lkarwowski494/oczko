@@ -34,6 +34,16 @@ describe('zrzuty-jezyki.mjs', () => {
     }
     expect(p.matrix.filter((m: any) => m.zakup)).toHaveLength(1); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
+  // 10-wydanie-006 (recenzja AB): `all` w jednym zadaniu = 29 języków ≈ 878 min przy limicie zadania 330 min (timeout-minutes w workflowie); dokumenty obiecują „≤ 5 języków na zadanie” (P-718).
+  test('limit 5 języków na zadanie: `all` w 1–5 zadaniach = kod 2 z komunikatem (zasada 21: głośno, bez cichej zmiany wejścia), w 6 i więcej zadaniach plan przechodzi', () => {
+    for (const z of ['1', '2', '5']) { const r = plan('all', z); expect({ z, kod: r.status }).toEqual({ z, kod: 2 }); expect(r.stderr).toMatch(/BŁĄD.*> 5.*zadan/); }
+    for (const z of ['6', '7', '8', '99']) {
+      const p = JSON.parse(plan('all', z, 'iphone').stdout);
+      expect(Math.max(...p.matrix.map((m: any) => m.jezyki.split(',').length))).toBeLessThanOrEqual(5); // eslint-disable-line @typescript-eslint/no-explicit-any
+    }
+    expect(plan('en,pl,de,fr,it', '1', 'iphone').status).toBe(0); // dokładnie 5 w jednym zadaniu
+    expect(plan('en,pl,de,fr,it,es', '1', 'iphone').status).toBe(2);
+  });
   test('tylko iPhone; błędne wejście = kod 2 z komunikatem (język bez lokalizacji sklepu, nieznany język, nieznane urządzenie)', () => {
     expect(JSON.parse(plan('en', '1', 'iphone').stdout).matrix).toHaveLength(1);
     for (const [j, u] of [['bg', 'iphone'], ['xx', 'iphone'], ['en', 'watch'], ['en;rm -rf', 'iphone']]) {
