@@ -268,3 +268,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 15:52 | właściciel, O | Prośba właściciela: przewodnik po funkcjach → KO-027 (build 4, przed 1.0). Polecenie `polecenia/O.md`, prompt 04 build w warsztacie @ 51d4546; start O (04, docs) | ROZPOZNANIE O; kontrola 17:48 (iOS 42847955454) |
 | 10.11 17:21 | O | Start O session_01T66VBwJWnyDdMABbE9BGC4 (opus-5-5, env_0166…, auto; outcome claude/o-przewodnik-2026-11-10); odpowiedź właściciela na pytanie dotarła ok. 17:20 | ROZPOZNANIE O; kontrola 17:48 |
 
+| 10.11 17:26 | właściciel, O | Wymaganie właściciela, dosłownie: „To ma być intuicyjne.” → przekazane O jako sekcja „Intuicyjność” z kryteriami: wejście widoczne i podpisane; ≤ 2 stuknięcia do ekranu; „Pierwsze kroki” na górze rozwinięte; krótkie kroki nazwami z UI; bez nakładki blokującej; ścieżka nowej osoby z liczbą stuknięć w PRZEKAZANIU | ROZPOZNANIE O; kontrola 17:48 |
