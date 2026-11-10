@@ -13,7 +13,7 @@ export type PowodEkranu =
 export type WynikEkranu<T> = { ok: true; wartosc: T } | { ok: false; powod: PowodEkranu };
 
 /** Ogłoszenie VoiceOver (`AccessibilityInfo.announceForAccessibility`), wstrzyknięte, żeby test widział kolejność (R-148). */
-export type Oglos = (tekst: string) => void;
+export type Oglos = (tekst: string, opcje?: { readonly queue?: boolean }) => void; // queue: kolejka po trwającym ogłoszeniu (I-001); iOS, gdzie indziej zwykłe ogłoszenie
 
 /** Cykl życia aplikacji (`AppState`), wstrzyknięty (R-010, R-020, R-091). */
 export type StanCyklu = 'active' | 'background' | 'inactive';

@@ -72,7 +72,7 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
     if (sk.komunikat === 'limit') ustawArkuszLimitu(nrRobocza); else ustawKomunikat(sk.komunikat);
     if (sk.haptyka) zagraj(sk.haptyka);
     if (sk.ogloszenie) p.oglos(sk.ogloszenie);
-    if (w.ok && w.wartosc.zdarzenia.includes('cel-czesci')) p.oglos(t('licznik.cel_osiagniety')); // B3-03 (P-664): „+1” osiągające cel; fokus się nie przenosi
+    if (w.ok && w.wartosc.zdarzenia.includes('cel-czesci')) p.oglos(t('licznik.cel_osiagniety'), { queue: true }); // B3-03 (P-664): „+1” osiągające cel; fokus się nie przenosi; I-001: w kolejce, żeby nie przerwać ogłoszenia rzędu
   }
   async function minus() {
     if (s.zablokowany) { ustawKomunikat('zablokowany'); zagraj('blokadaStukniecie'); return; }

@@ -13,7 +13,11 @@ export const cyklAplikacji: CyklAplikacji = {
     return () => s.remove();
   },
 };
-export const oglos: Oglos = (tekst) => AccessibilityInfo.announceForAccessibility(tekst);
+// I-001: z `queue: true` ogłoszenie czeka za trwającym (iOS); React Native na Androidzie wywołuje wtedy zwykłe ogłoszenie
+// (react-native 0.86.3, AccessibilityInfo.js:493-509), więc zachowanie poza iOS się nie zmienia.
+export const oglos: Oglos = (tekst, opcje) => (opcje?.queue === true
+  ? AccessibilityInfo.announceForAccessibilityWithOptions(tekst, { queue: true })
+  : AccessibilityInfo.announceForAccessibility(tekst));
 const nic = () => undefined;
 export const systemAplikacji: System = {
   otworzAdres: (url) => { paneleE2e?.zapamietajAdres(url); void Linking.openURL(url).catch(nic); }, // hak E2E F-64: tylko w buildzie E2E
