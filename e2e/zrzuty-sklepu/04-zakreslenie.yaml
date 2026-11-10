@@ -1,0 +1,28 @@
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
+# Scena: restart na danych z 00-przygotuj.yaml, nawigacja bez +1; zrzut robi scripts/ci/zrzuty-sklepu.sh (simctl io screenshot, natywne piksele).
+---
+- stopApp
+- launchApp:
+    clearState: false
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T09:41:00"
+      oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- assertNotVisible: { id: "okno-uczciwe-zasady" }
+- assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- assertVisible: { id: "licznik-wartosc", text: "47" }
+# „Kontynuuj ›” wraca do ostatniego miejsca pracy: po scenie 03 to strona wzoru (run 42777145130: zrzut porażki sceny 04), po 02 licznik — obie drogi dają wzór
+- runFlow:
+    when: { notVisible: { id: "wzor-widok" } }
+    commands:
+      - scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+      - tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- setOrientation: ${ORIENT_WZOR}
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }

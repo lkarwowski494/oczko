@@ -1,0 +1,16 @@
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 01 ekran „Dziś” z kartą projektu"
+# Scena: restart na danych z 00-przygotuj.yaml, nawigacja bez +1; zrzut robi scripts/ci/zrzuty-sklepu.sh (simctl io screenshot, natywne piksele).
+---
+- stopApp
+- launchApp:
+    clearState: false
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T09:41:00"
+      oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- assertNotVisible: { id: "okno-uczciwe-zasady" }
+- assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
+- assertVisible: { id: "dzis-kontynuuj" }
+- assertVisible: { id: "dzis-wartosc", text: "47" }

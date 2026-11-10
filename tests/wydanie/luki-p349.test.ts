@@ -30,7 +30,7 @@ describe('Content Rights (P-349 (1))', () => {
     expect(wiersz).toContain(DATA);
     expect(wiersz).toMatch(/Apps that contain, show, or access third-party content must have all the necessary rights/);
     expect(wiersz).toMatch(/\*\*Yes\*\*/);
-    expect(wiersz).toMatch(/Libre Franklin/);
+    expect(wiersz).toMatch(/Bree Serif/); // krój w pakiecie od P-553 (backlog 244); Libre Franklin usunięty
     expect(wiersz).toMatch(/OFL/);
     expect(wiersz).toMatch(/importowan/);
     expect(wiersz).toMatch(/docs\/48-zgloszenie-1-0\.md/); // Trening: gdzie szukano (P-315)
