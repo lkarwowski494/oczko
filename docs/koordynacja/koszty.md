@@ -47,3 +47,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | X | 07 build (lista testu build 4, opus) | 6 | 5,12 | 25 | 20:33 → 20:33 → 20:51 → — (docs) → przyjęte 20:55 | — | add_repo warsztat odrzucony (KO-022) |
 | Z | 07 audit (MVP w 1.0, opus) | 10 | 10,69 (ponad pułap 10, pod STOP 13) | 27 | 21:05 → 21:21 → raport 21:37 → — (raport, odczyt) → przyjęte 21:40 | — | 51 funkcji: 44/5/1/1/0; ponad szacunek ok. 60 min — w czasie |
 | AA | 10 build (sonnet) | 10 | 4,19 | 35 | 22:18 → 22:19 → ok. 22:26 → (ci.yml 22:43, w toku) → (po AB) | — | ponad 30 proc. kontekstu |
+| AB | 10 audit (opus) | 6 | 5,67 | 28 | 22:43 → 22:44 → raport 22:55 → — → przyjęte 22:58 | — | autor commitu w warsztacie „Claude” |
