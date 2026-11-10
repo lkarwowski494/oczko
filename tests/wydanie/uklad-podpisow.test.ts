@@ -100,9 +100,9 @@ describe('plik podpisów (docs/wydanie/metadane/podpisy-zrzutow.json)', () => {
     for (const l of jezykiAplikacji.filter((x) => x !== 'en' && x !== 'pl')) expect({ l, n: Object.keys(podpisy[l]).length }).toEqual({ l, n: 0 });
   });
 
-  test('podpisy bez cen, bez „free”, bez nazw marek i cudzych aplikacji (2.3.7), bez Apple Pencil w podpisie', () => {
+  test('podpisy bez cen, bez „free”, bez Apple Pencil w podpisie (2.3.7; nazwy konkurencji w repo pilnuje scripts/jakosc/marki.mjs)', () => {
     for (const [l, p] of Object.entries(podpisy)) for (const [k, t] of Object.entries(p)) {
-      expect({ l, k, zle: /\$|€|zł|USD|\bfree\b|\bdarmow|Ravelry|Pencil|knitCompanion|Trening/i.test(t) }).toEqual({ l, k, zle: false });
+      expect({ l, k, zle: /\$|€|zł|USD|\bfree\b|\bdarmow|Pencil|Trening/i.test(t) }).toEqual({ l, k, zle: false });
     }
   });
 
