@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:30 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:40 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -13,6 +13,14 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Koordynator aktywny: session_01T66VBxhDabqriZxJMgbRsB (M9, od 2026-11-10 05:35 UTC, uruchomiony przez właściciela z `/apps4brew`; poprzednicy: session_01T66VBvxBBKLAkeEUNSEf4n od 10.11 05:15, session_01T66VBx6UXGtzFfAZDeBpip od 8.11 16:00 — oba ID z tej sesji: `get_session` „not found”).
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
+
+## Teraz (10.11 06:40 UTC) — PRZEKAZANIE koordynatora (kontekst poprzednika ok. 29%)
+- Gałąź napraw `claude/m2-naprawy-2026-11-10` @ **86021db** (pętla 1: 27e2ac1, ac77b39, 4c3ccdd, 5af3342 — zweryfikowane reaudytem C; pętla 2: 93cef54 = 324, 86021db = 323 — autor OK, 5 plików, **niesprawdzone**: CI i recenzja niezależna).
+- `ci.yml` wyzwolony 06:36 na 86021db (run ID odczytać: `actions_list` list_workflow_runs ci.yml, branch m2). Poprzedni run 42766087745 na 5af3342 = failure (324).
+- Kolejność dla następcy: (1) wynik ci.yml na 86021db; (2) recenzja niezależna pętli 2 (323, 324) — mała sesja D: M1 reaudit pętla 2, prompt roli warsztat `koordynacja/polecenia/C-M1-reaudit-2026-11-10.md` @ c8703cc, wzór polecenia `polecenia/C.md`, zakres tylko 5af3342..86021db, pułap ok. 8 USD; (3) po zielonym CI i reaudycie: scalenie m2 → integracja `claude/youthful-pasteur-kx83sn` (58284a88; proste, bez konfliktu oczekiwane; push na integrację uruchamia „Jakość · Linux”) — KO-011 spełnione (build 2 = 1111 VALID); (4) archiwizacja A2 po odczycie kosztu; (5) dalej plan 24 h: sesja roli 10 (zrzuty sklepu `asc-zrzuty`, 244, 245, `docs/wydanie/sklep.md:22`), mała sesja 04 (1.0.1 wg P-642), lista „tylko telefon” dla właściciela (zaproponowana 06:30, bez odpowiedzi).
+- Do właściciela po reaudycie pętli 2: wkleić `docs/wydanie/metadane/notatka-recenzja.txt` (3544 B) w App Store Connect → App Review Information → Notes.
+- WG-04: sesje podrzędne nie dostają add_repo z zapisem do innych repo (apps4brew-www); oczko-warsztat przechodzi.
+- Limit tygodniowy konta: `rate_limit_info.status` = allowed_warning (06:25).
 
 ## WZNOWIENIE (10.11 05:35 UTC)
 Słowa właściciela (sesja session_01T66VBxhDabqriZxJMgbRsB, `/apps4brew [oczko]`): „Odpal role koordynatora M9”; na pytanie o start: „Uruchom, mandat bez zmian (zalecane)”; potem „dalej”. Mandat bez zmian.
@@ -67,6 +75,9 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - 4: decyzje P-634…P-643 i KO-001…KO-013 przyjęte.
 
 ## Czeka na właściciela — nowe (po reaudycie C potwierdzić treść)
+- **Test na telefonie buildów 1101 i 1111** (build 2 = 1111 VALID 06:10; zgłoszone właścicielowi 06:30).
+- Weto: KO-014, KO-015, KO-016 i P-644 (m2, 86021db). Opcja właściciela: FAQ wsparcia już teraz (druga publikacja apps4brew-www, wymaga zgody) zamiast w 1.0.1.
+- Model koordynatora: sesje koordynatora działają na claude-fable-5-2 (wyjątek z 05:35); zalecenie roli to opus — zmiana tylko słowami właściciela.
 - Wklejenie `docs/wydanie/metadane/notatka-recenzja.txt` (gałąź m2, 4c3ccdd) w App Store Connect → App Review Information → Notes — dopiero po reaudycie i ocenie znaleziska M2-001 (rozbieżność „Add pattern…” vs „Add pattern”).
 - Scalenie `claude/m2-naprawy-2026-11-10` do integracji: koordynator po zielonym CI i reaudycie (KO-011: po Approve buildu 2 — Approve dany 05:42).
 
@@ -119,3 +130,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 06:23 | C | PRZEKAZANIE reaudytu: 301–304 zweryfikowane, regresji brak, komendy na 5af3342 kod 0 (test 568/6910); nowe 323 (P2, notatka+FAQ), 324 (P2, CI czerwone), 325 (P3); werdykt „gotowe z zastrzeżeniami”, scalenie z integracją TAK; raport warsztat 564cbd5 (autor OK); koszt 13,79 USD; zarchiwizowana | KO-016 |
 | 10.11 06:25 | M9 → A2 | pętla 2: DEC-03 = b, 323 (notatka) i 324 zatwierdzone, 325 → 1.0.1 (KO-016); limit tygodniowy konta: `rate_limit_info.status` = allowed_warning (odczyt 06:25) | PRZEKAZANIE A2 → ci.yml → scalenie z integracją |
 | 10.11 06:28 | kontrola | **Build 2 TestFlight = 1111: VALID** (run 42746522234 success; zadania bramka/build/tag success; linia logu joba build 06:10:39 UTC „Build 1111: VALID”, odczyt subagentem); KO-011 spełnione (Approve dany) → 304 może wejść do integracji po zielonym CI | test właściciela na telefonie (1101 i 1111); kontrola ok. 07:10 |
+| 10.11 06:34 | A2 | PRZEKAZANIE pętli 2: 324 → 93cef54 (podproces testu README zawsze z FORCE_COLOR=1, asercja bez zmian — diff przeczytany), 323 → 86021db (notatka 3544 B, test notatka-nazwy 29/29); wg sesji: FORCE_COLOR=1 npm test 569/6941, kontrole 0; dowody warsztat 02f1afd; P-644 do weta; otwarte: +2 testy o nieustalonym źródle [DO USTALENIA] | CI + reaudyt pętli 2 |
+| 10.11 06:36 | M9 | `ci.yml` wyzwolony na 86021db; odbiór częściowy (autor OK, 0 Co-Authored-By); koszt koordynatora 8,00 USD (06:25), kontekst 27% → przekazanie E6 | następca |
