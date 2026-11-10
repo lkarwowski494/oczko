@@ -1,0 +1,199 @@
+# Zrzuty sklepu (rola 10, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md). Dane WYŁĄCZNIE fikcyjne (2.3.9): projekty „Harbor Sweater”, „Moss Socks”,
+# „Cable Hat”, „Baby Blanket”; wzór = testowy PDF z buildu E2E (panel e2e-wzor-pdf, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = 10 XI 2026.
+# Nigdy +1 na ekranie licznika w scenach (panel pomiaru E2E „p95 … ms” zostałby w kadrze); tu +1 jest, bo po restarcie panel znika (stan w pamięci widoku).
+# Kolejność ma znaczenie: ostatnio pracowano w „Harbor Sweater”, więc „Kontynuuj ›” prowadzi do niego (restart.yaml).
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, notatka, trzy dni pracy)"
+---
+# --- 3 XI: cztery projekty, „Harbor Sweater” ostatni; trzy rzędy ---
+- runFlow:
+    file: ../scenariusze/subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-03T19:30:00"
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "projekty-nowy" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 30
+      - inputText: "M"
+      - inputText: "o"
+      - inputText: "s"
+      - inputText: "s"
+      - inputText: " "
+      - inputText: "S"
+      - inputText: "o"
+      - inputText: "c"
+      - inputText: "k"
+      - inputText: "s"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Moss Socks" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Moss Socks" }
+- runFlow:
+    file: ../scenariusze/subflows/wpisz-wartosc.yaml
+    env:
+      WARTOSC: "24"
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "projekty-nowy" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 30
+      - inputText: "C"
+      - inputText: "a"
+      - inputText: "b"
+      - inputText: "l"
+      - inputText: "e"
+      - inputText: " "
+      - inputText: "H"
+      - inputText: "a"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Cable Hat" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Cable Hat" }
+- runFlow:
+    file: ../scenariusze/subflows/wpisz-wartosc.yaml
+    env:
+      WARTOSC: "9"
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "projekty-nowy" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 30
+      - inputText: "B"
+      - inputText: "a"
+      - inputText: "b"
+      - inputText: "y"
+      - inputText: " "
+      - inputText: "B"
+      - inputText: "l"
+      - inputText: "a"
+      - inputText: "n"
+      - inputText: "k"
+      - inputText: "e"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Baby Blanket" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Baby Blanket" }
+- runFlow:
+    file: ../scenariusze/subflows/wpisz-wartosc.yaml
+    env:
+      WARTOSC: "61"
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
+- tapOn: { id: "projekty-nowy" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 30
+      - inputText: "H"
+      - inputText: "a"
+      - inputText: "r"
+      - inputText: "b"
+      - inputText: "o"
+      - inputText: "r"
+      - inputText: " "
+      - inputText: "S"
+      - inputText: "w"
+      - inputText: "e"
+      - inputText: "a"
+      - inputText: "t"
+      - inputText: "e"
+      - inputText: "r"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Harbor Sweater" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Harbor Sweater" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: ../scenariusze/subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: ../scenariusze/subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+# --- 5 XI: dwa rzędy więcej ---
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "2026-11-05T19:30:00" } }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- runFlow: ../scenariusze/subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+# --- 9 XI: rząd 47, notatka, wzór z znacznikiem i zakreśleniem ---
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "2026-11-09T19:30:00" } }
+- runFlow:
+    file: ../scenariusze/subflows/wpisz-wartosc.yaml
+    env:
+      WARTOSC: "47"
+- scrollUntilVisible: { element: { id: "licznik-akcja-notatka" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "licznik-akcja-notatka" }
+- assertVisible: { id: "formularz-notatka" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-notatka" }
+      - waitForAnimationToEnd
+      - eraseText: 60
+      - inputText: "next: 3 knit, then cable"
+      - assertVisible: { id: "formularz-notatka", text: "next: 3 knit, then cable" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- runFlow: ../scenariusze/subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "wzor-zaznacz" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-rzad", text: "48" }
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 40%", end: "80%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+# wyjście z wzoru do licznika: ostatnie miejsce pracy = licznik „Harbor Sweater”
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "47" }

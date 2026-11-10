@@ -1,0 +1,289 @@
+# Zrzuty sklepu (App Store Connect) z symulatora: iPhone 17 Pro Max (6.9″, 1320 × 2868) i iPad Pro 13″ (2064 × 2752), 7 ekranów, język en, tryb jasny.
+# Rola 10-wydanie, zadanie E-2 (2026-11-10); plan i opcja A: docs/wydanie/metadane/zrzuty-plan.md; wzór: Trening `store-screenshots.yml` (zadania dane → build → zrzuty → ramki).
+# Wyjście: artefakt `sklep-zrzuty-ramki` zgodny z kontraktem `asc-zrzuty.yml` / sklep.md §3b: `6.9/en/NN-*.png`, `ipad-13/en/NN-*.png`, PNG bez alfy.
+# BEZ ramek i podpisów: kadry i podpisy projektuje rola 04 (zrzuty-plan.md), tu surowe zrzuty aplikacji (2.3.3). Zrzuty wzoru (03, 04) czekają w `warunek-og07/` do znacznika [og07-ok].
+# Bez sekretów i bez środowiska `release`; niczego nie wysyła do App Store Connect (to robi dopiero `asc-zrzuty.yml` z `main`, za zgodą właściciela).
+# Wyzwalacze: (1) push na gałąź roboczą ze znacznikiem [zrzuty-sklepu] w komunikacie commita (workflow_dispatch nowego pliku działa dopiero z `main`);
+# [zrzuty-app:<numer przebiegu>] = użyj aplikacji z wcześniejszego przebiegu TEGO workflowu (artefakt `zrzuty-sklepu-app`, 3 dni) zamiast budować od nowa (~40 min);
+# [og07-ok] = zrzuty wzoru idą do kompletu; (2) workflow_dispatch (po scaleniu do `main`) z tymi samymi wejściami.
+# Maszyn macOS zwykle brak ok. 14:00–23:00 UTC; awaria przed pierwszym scenariuszem albo „not acquired by Runner” = jedno ponowienie ręczne (P-091, CLAUDE.md).
+name: Zrzuty sklepu
+on:
+  push:
+    branches: [claude/e-zrzuty-sklepu-2026-11-10]
+  workflow_dispatch:
+    inputs:
+      aplikacja_z_przebiegu:
+        description: 'Numer przebiegu TEGO workflowu z gotową aplikacją (artefakt zrzuty-sklepu-app, 3 dni); pusty = zbuduj od nowa (~40 min)'
+        required: false
+        type: string
+        default: ''
+      og07:
+        description: 'Warunek OG-07 spełniony: zrzuty wzoru (03, 04) trafiają do kompletu (jeśli nie: katalog warunek-og07)'
+        required: false
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: zrzuty-sklepu-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      uruchom: ${{ steps.wejscie.outputs.uruchom }}
+      app_run: ${{ steps.wejscie.outputs.app_run }}
+      og07: ${{ steps.wejscie.outputs.og07 }}
+    steps:
+      - id: wejscie
+        env:
+          ZDARZENIE: ${{ github.event_name }}
+          KOMUNIKAT: ${{ github.event.head_commit.message }}
+          WE_APP: ${{ inputs.aplikacja_z_przebiegu }}
+          WE_OG07: ${{ inputs.og07 }}
+        run: |
+          uruchom=false; app=""; og07=false
+          if [ "$ZDARZENIE" = workflow_dispatch ]; then
+            uruchom=true; app="$WE_APP"; [ "$WE_OG07" = true ] && og07=true
+          else
+            case "$KOMUNIKAT" in *'[zrzuty-sklepu]'*) uruchom=true ;; esac
+            app=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-app:\([0-9][0-9]*\)\].*/\1/p' | head -1)
+            case "$KOMUNIKAT" in *'[og07-ok]'*) og07=true ;; esac
+          fi
+          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"; } >> "$GITHUB_OUTPUT"
+          echo "uruchom=$uruchom, aplikacja z przebiegu: ${app:-(budowa)}, OG-07: $og07" | tee -a "$GITHUB_STEP_SUMMARY"
+  build:
+    needs: plan
+    if: needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.app_run == ''
+    runs-on: macos-26
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Intencja w celu aplikacji (_shared/Stuknij.swift; P-180)
+        # @bacons/apple-targets dodaje targets/widget/_shared/* do celu aplikacji zbiorem wyjątków grupy synchronizowanej; bez tego
+        # +1 z Live Activity nie ma intencji w procesie aplikacji. Test kontroli: tests/jakosc/czlonkostwo-celu.test.ts.
+        run: |
+          set -o pipefail # domyślny bash -e bez pipefail: kod skryptu zginąłby w potoku do tee
+          node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350; Trening L-021, jak verify:native)
+        # Cel zegarka bez ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon: brak CFBundleIconName, App Store Connect odrzuca wysyłkę (build 1026 w Treningu). Test: tests/jakosc/ikona-zegarka-prebuild.test.ts.
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: pods
+        run: cd ios && pod install 2>&1 | tee pod-install.log
+      - name: Cele natywne podłączone (ADR-0006, ADR-0007; 08 partia 3)
+        # Moduł z wyższym minimum niż aplikacja jest po cichu pomijany („was not linked”) — build zostaje zielony bez modułu.
+        run: |
+          set -e
+          if grep -q 'was not linked' ios/pod-install.log; then grep 'was not linked' ios/pod-install.log; echo "::error::moduł Expo niepodłączony"; exit 1; fi
+          grep -q 'IPHONEOS_DEPLOYMENT_TARGET = 18.0' ios/*.xcodeproj/project.pbxproj || { echo "::error::IPHONEOS_DEPLOYMENT_TARGET ≠ 18.0 (ADR-0006)"; exit 1; }
+          for p in OczkoDziennikPlus OczkoCzasWTle; do grep -q "$p" ios/Podfile.lock || { echo "::error::brak poda $p"; exit 1; }; done
+      - name: Platforma iOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Build (Release, symulator, bez podpisu)
+        env:
+          # Przełączniki testowe TYLKO w tym buildzie (strażnik: scripts/jakosc/sprawdz-workflowy.mjs, kontrole-repo.mjs; e2e/README.md): E2E daje wstrzyknięty zegar
+          # (oczkoE2eTeraz) i testowy PDF (panel e2e-wzor-pdf) — bez nich nie da się ułożyć powtarzalnych danych fikcyjnych ani wzoru na CI.
+          EXPO_PUBLIC_E2E: '1'
+          EXPO_PUBLIC_STORE_FAKE: '1'
+          EXPO_PUBLIC_ICLOUD_FAKE: '1' # atrapa silnika iCloud (P-230, moduly.md „Atrapa silnika w E2E”); kontrola ATRAPA-ICLOUD
+          # BEZ EXPO_PUBLIC_WATCH_FAKE (zrzuty-sklepu.test.ts): panel „Watch state: none” (e2e-zegarek-stan) leży na ekranie licznika i zostałby w kadrze sklepu.
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcworkspace | head -1); SCHEME="${WS%.xcworkspace}"
+          echo "Workspace $WS, schemat $SCHEME" | tee -a "$GITHUB_STEP_SUMMARY"
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee xcodebuild.log | xcbeautify
+          ls -d build/Build/Products/Release-iphonesimulator/*.app
+          APP=$(ls -d build/Build/Products/Release-iphonesimulator/*.app | head -1)
+          # Widżet osadzony i z kodem Live Activity; intencja i moduł w aplikacji (nazwy typów Swift w metadanych binarek)
+          test -d "$APP/PlugIns/OczkoWidget.appex"
+          # Do pliku, nie potokiem: grep -q kończy wcześnie, strings dostaje SIGPIPE i przy pipefail krok pada (przebieg 40262653714)
+          strings -a "$APP/PlugIns/OczkoWidget.appex/OczkoWidget" > "$RUNNER_TEMP/widget.txt"
+          strings -a "$APP/$(basename "$APP" .app)" > "$RUNNER_TEMP/aplikacja.txt"
+          grep -q OczkoAktywnosc "$RUNNER_TEMP/widget.txt" || { echo "::error::widżet bez OczkoAktywnosc"; exit 1; }
+          grep -q OczkoStuknij "$RUNNER_TEMP/aplikacja.txt" || { echo "::error::aplikacja bez intencji OczkoStuknij"; exit 1; }
+          grep -q IntencjaEkranuBlokady "$RUNNER_TEMP/aplikacja.txt" || { echo "::error::aplikacja bez modułu OczkoDziennikPlus"; exit 1; }
+          echo "Cele natywne: widżet, intencja i moduł w binarkach" >> "$GITHUB_STEP_SUMMARY"
+      - name: "Zapis aplikacji (do ponownego użycia przez [zrzuty-app:<numer przebiegu>])"
+        run: |
+          cd ios/build/Build/Products/Release-iphonesimulator
+          APP=$(ls -d *.app | head -1); zip -qry "$GITHUB_WORKSPACE/zrzuty-sklepu-app.zip" "$APP"
+          echo "Aplikacja: $APP ($(du -sh "$APP" | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zrzuty-sklepu-app
+          path: zrzuty-sklepu-app.zip
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: xcodebuild-log
+          path: ios/xcodebuild.log
+          retention-days: 3
+  zrzuty:
+    name: zrzuty (${{ matrix.urzadzenie }})
+    needs: [plan, build]
+    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    runs-on: macos-26
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        urzadzenie: [iphone, ipad]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.app_run != ''
+        with:
+          name: zrzuty-sklepu-app
+          run-id: ${{ needs.plan.outputs.app_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.app_run == ''
+        with:
+          name: zrzuty-sklepu-app
+      - name: Symulator (iPhone 17 Pro Max 6.9″ albo iPad Pro 13″)
+        env:
+          URZADZENIE: ${{ matrix.urzadzenie }}
+        run: |
+          mkdir -p app-sim && unzip -q zrzuty-sklepu-app.zip -d app-sim
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
+          LIST=$(xcrun simctl list devices available | awk -v h="-- iOS $SDK --" '$0 == h { f = 1; next } /^-- / { f = 0 } f')
+          [ -n "$LIST" ] || LIST=$(xcrun simctl list devices available)
+          DEV=""
+          if [ "$URZADZENIE" = ipad ]; then WZORY=("iPad Pro 13-inch" "iPad Air 13-inch"); else WZORY=("iPhone 17 Pro Max \(" "iPhone 16 Pro Max \("); fi
+          for pat in "${WZORY[@]}"; do
+            DEV=$(printf '%s\n' "$LIST" | node .github/scripts/jakosc/sim-wybor.mjs "$pat" || true)
+            [ -n "$DEV" ] && break
+          done
+          [ -n "$DEV" ] || { echo "::error::Brak symulatora ($URZADZENIE)"; printf '%s\n' "$LIST" | grep -E 'iPhone|iPad' | sed -E 's/\([0-9A-F-]{36}\)//'; exit 1; }
+          echo "Symulator ($URZADZENIE): $(xcrun simctl list devices available | grep -F "$DEV" | sed -E 's/\([0-9A-F-]{36}\)//') (iOS $SDK)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "SIM=$DEV" >> "$GITHUB_ENV"
+          xcrun simctl boot "$DEV" || true
+          xcrun simctl bootstatus "$DEV" -b
+          xcrun simctl ui "$DEV" appearance light || true
+          xcrun simctl install "$DEV" app-sim/*.app
+      - name: Maestro
+        if: steps.plan.outputs.any == 'true'
+        env:
+          # Jedna zmienna przypięcia (DS-07, zasada wspólna 21; 07-jakosc-005): zmiana wersji = commit. 2.12.1 = wersja z przebiegów #139/#140.
+          # Pusta = błąd (nie „najnowsza”); zainstalowana ≠ przypięta = błąd. Kontrola: sprawdz-workflowy.mjs (MAESTRO-WERSJA), tests/jakosc/ci-maestro-wersja.test.ts.
+          MAESTRO_VERSION: '2.12.1'
+          # P-626 d (07-reaudit 9.11): paczka przypiętej wersji wprost z GitHub Releases z ponawianiem, bez skryptu get.maestro.mobile.dev (ten pobiera
+          # jednym `curl --fail` bez ponowień — przebieg 4, run 42578327316: 504 z release-assets.githubusercontent.com zatrzymał 3 z 4 części przed 1. scenariuszem).
+          # SHA-256 maestro.zip cli-2.12.1 (pobrany 9.11.2026 z adresu niżej); zmiana wersji = commit obu wartości. Kontrola: MAESTRO-POBRANIE, ci-maestro-wersja.test.ts.
+          MAESTRO_ZIP_SHA256: '54dbb0716425626604973cbb374c585ca30272375d9ce15177a1152765ddd9d7'
+        run: |
+          [ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta — wersja Maestro musi być przypięta (DS-07, zasada wspólna 21)"; exit 1; }
+          zip="$RUNNER_TEMP/maestro.zip"
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 20 --connect-timeout 30 -o "$zip" "https://github.com/mobile-dev-inc/maestro/releases/download/cli-$MAESTRO_VERSION/maestro.zip"
+          printf '%s  %s\n' "$MAESTRO_ZIP_SHA256" "$zip" | shasum -a 256 -c - || { echo "::error::maestro.zip $MAESTRO_VERSION ma inny SHA-256 niż przypięty (MAESTRO_ZIP_SHA256)"; exit 1; }
+          rm -rf "$RUNNER_TEMP/maestro-zip" "$HOME/.maestro" && mkdir -p "$HOME/.maestro"
+          unzip -q "$zip" -d "$RUNNER_TEMP/maestro-zip"
+          cp -R "$RUNNER_TEMP/maestro-zip/maestro/." "$HOME/.maestro/"
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          v=$("$HOME/.maestro/bin/maestro" --version)
+          echo "Maestro: $v (przypięta $MAESTRO_VERSION)" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$v" | grep -qF "$MAESTRO_VERSION" || { echo "::error::zainstalowano Maestro $v, przypięta jest $MAESTRO_VERSION"; exit 1; }
+      - name: Zrzuty
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '480000' # Trening: świeży symulator potrzebuje więcej czasu na sterownik XCTest
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+          OG07: ${{ needs.plan.outputs.og07 }}
+          URZADZENIE: ${{ matrix.urzadzenie }}
+        run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$URZADZENIE" "zrzuty-surowe" "dzienniki" "$OG07" en
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zrzuty-surowe-${{ matrix.urzadzenie }}
+          retention-days: 7
+          if-no-files-found: ignore
+          path: zrzuty-surowe
+      - name: Spakowanie dzienników (Maestro zapisuje katalogi z „:” w nazwie, których upload-artifact nie przyjmuje)
+        if: always()
+        run: '[ -d dzienniki ] && zip -qry dzienniki.zip dzienniki || true'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zrzuty-dzienniki-${{ matrix.urzadzenie }}
+          retention-days: 3
+          if-no-files-found: ignore
+          path: dzienniki.zip
+  zbierz:
+    name: komplet (bez alfy, wymiary)
+    needs: [plan, zrzuty]
+    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && needs.zrzuty.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: zrzuty-surowe-*
+          path: surowe
+          merge-multiple: true
+      - name: ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick >/dev/null
+      - name: Kanał alfa precz, wymiary i komplet (iPhone 6.9″ = 1320x2868, iPad 13″ = 2064x2752 albo poziomo 2752x2064)
+        run: |
+          set -uo pipefail
+          mkdir -p sklep-zrzuty-ramki; bledy=0
+          { echo "### Zrzuty sklepu (bez ramek i podpisów — kadry projektuje rola 04)"; echo "| plik | wymiar | kanały | bajty |"; echo "|---|---|---|---|"; } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r f; do
+            rel="${f#surowe/}"; cel="sklep-zrzuty-ramki/$rel"; mkdir -p "$(dirname "$cel")"
+            convert "$f" -alpha off -define png:color-type=2 "$cel"
+            wym=$(identify -format '%wx%h' "$cel"); kan=$(identify -format '%[channels]' "$cel")
+            echo "| $rel | $wym | $kan | $(wc -c < "$cel" | tr -d ' ') |" >> "$GITHUB_STEP_SUMMARY"
+            case "$kan" in *a) echo "::error::$rel nadal ma kanał alfa ($kan)"; bledy=$((bledy + 1)) ;; esac
+            case "$rel" in
+              *6.9/*) [ "$wym" = 1320x2868 ] || { echo "::error::$rel: wymiar $wym ≠ 1320x2868"; bledy=$((bledy + 1)); } ;;
+              *ipad-13/*) [ "$wym" = 2064x2752 ] || [ "$wym" = 2752x2064 ] || { echo "::error::$rel: wymiar $wym ≠ 2064x2752 (ani poziomo)"; bledy=$((bledy + 1)); } ;;
+              *) echo "::error::$rel: nieznany katalog"; bledy=$((bledy + 1)) ;;
+            esac
+          done < <(find surowe -name '*.png' | sort)
+          # komplet: sceny 01, 02, 05, 06, 07 zawsze w <rozmiar>/en/; 03 i 04 w <rozmiar>/en/ (OG-07 spełniony) albo w warunek-og07/<rozmiar>/en/
+          for r in 6.9 ipad-13; do
+            for n in 01-dzis 02-licznik 05-projekty 06-historia 07-kalendarz; do
+              [ -f "sklep-zrzuty-ramki/$r/en/$n.png" ] || { echo "::error::brak $r/en/$n.png"; bledy=$((bledy + 1)); }
+            done
+            for n in 03-wzor 04-zakreslenie; do
+              [ -f "sklep-zrzuty-ramki/$r/en/$n.png" ] || [ -f "sklep-zrzuty-ramki/warunek-og07/$r/en/$n.png" ] || { echo "::error::brak $r/en/$n.png (ani w warunek-og07)"; bledy=$((bledy + 1)); }
+            done
+          done
+          echo "Pliki: $(find sklep-zrzuty-ramki -name '*.png' | wc -l | tr -d ' '), błędy: $bledy" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$bledy" -eq 0 ]
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sklep-zrzuty-ramki
+          retention-days: 14
+          if-no-files-found: ignore
+          path: sklep-zrzuty-ramki
