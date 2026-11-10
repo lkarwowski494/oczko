@@ -49,3 +49,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AA | 10 build (sonnet) | 10 | 4,19 | 35 | 22:18 → 22:19 → ok. 22:26 → (ci.yml 22:43, w toku) → (po AB) | — | ponad 30 proc. kontekstu |
 | AB | 10 audit (opus) | 6 | 5,67 | 28 | 22:43 → 22:44 → raport 22:55 → — → przyjęte 22:58 | — | autor commitu w warsztacie „Claude” |
 | AC | 10 fix (sonnet) | 6 | 4,54 | 35 | 22:57 → 22:57 → (zbiorczo) 23:21 → (ci.yml 23:23) → (po AD) | — | ponad 30 proc. kontekstu |
+| AD | 10 audit (opus) | 5 | 5,87 (ponad pułap, pod STOP) | 29 | 23:22 → 23:22 → raport 23:37 → — → przyjęte 23:40 | — | P1 009 potwierdzone CI |
