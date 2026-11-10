@@ -99,6 +99,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/projekt-kopia-nazwa.test.ts` | zielony (główny zestaw) | 2 | — | `src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/projekt-kosz.test.ts` | zielony (główny zestaw) | 22 | BR-DAN-008/S1, BR-DAN-008/S2, BR-DAN-008/S3, BR-DAN-008/S4, BR-DAN-009/S1, BR-PRJ-001/S1, BR-PRJ-002/S2, BR-PRJ-006/S1, BR-PRJ-007, BR-PRJ-007/S1, BR-PRJ-012/S1, BR-PRJ-012/S2, BR-PRJ-013/S2, BR-PRJ-014, BR-PRJ-014/S1, BR-PRJ-014/S3, BR-PRJ-016/S1, KP-15, P-026, P-047, P-072, P-110, P-118, P-120, P-125, P-137, P-199, R-054 | `src/dane/baza/adapter-node`<br>`src/dane/migracje/migruj`<br>`src/dane/repozytoria/projekty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/kosz`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/start`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/prosba-o-ocene-zapis.test.ts` | zielony (główny zestaw) | 3 | P-156 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/przypadki-uzycia/ocena`<br>`src/przypadki-uzycia/start` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/przewodnik-przeczytane.test.ts` | zielony (główny zestaw) | 4 | P-688, P-690 | `src/przypadki-uzycia/archiwum`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/przewodnik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/przy-tle.test.ts` | zielony (główny zestaw) | 1 | R-091 | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/przypomnienia-edycja.test.ts` | zielony (główny zestaw) | 5 | BR-LIC-009, P-330 | `src/przypadki-uzycia/czesc`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/widok-licznika` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/scal-dzien-limitu-pro.test.ts` | zielony (główny zestaw) | 3 | — | `src/dane/baza/przeniesienie` | — |
@@ -303,6 +304,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekt-zdjecie-pomiar.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/blad-zapisu`<br>`src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-dzianina-p4.test.tsx` | zielony (główny zestaw) | 9 | — | `src/ekrany/ListaProjektow`<br>`src/ekrany/wspolne`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekty`<br>`src/przypadki-uzycia/widok-projektow` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/projekty-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-006/S1, BR-PRJ-016/S2 | `src/kompozycja/licznik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przewodnik.test.tsx` | zielony (główny zestaw) | 7 | P-685, P-688, P-691 | `src/domena/przewodnik`<br>`src/ekrany/Dzis`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/przypadki-uzycia/przewodnik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-glowny-wypelniony.test.tsx` | zielony (główny zestaw) | 7 | P-547, P-553 | `src/domena/uklad`<br>`src/ekrany/Arkusz`<br>`src/ekrany/HistoriaDni`<br>`src/ekrany/Licznik`<br>`src/ekrany/Stoper`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne`<br>`src/kompozycja/historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy-rozmiar.test.tsx` | zielony (główny zestaw) | 2 | P-361, P-553 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-niszczacy.test.tsx` | zielony (główny zestaw) | 2 | P-268, P-275, P-553 | `src/ekrany/Arkusz` | — |
@@ -411,6 +413,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/licencje-natywne-expo.test.ts` | zielony (główny zestaw) | 2 | — | `src/domena/licencje.generated` | — |
 | 9 ? | `tests/domena/posiedzenie/posiedzenie.test.ts` | zielony (główny zestaw) | 10 | P-126 | `src/domena/posiedzenie`<br>`src/konfiguracja` | — |
 | 9 ? | `tests/domena/prosba-o-ocene.test.ts` | zielony (główny zestaw) | 2 | P-150, P-156 | `src/domena/ocena`<br>`src/domena/zaslepka` | — |
+| 9 ? | `tests/domena/przewodnik-tresc.test.ts` | zielony (główny zestaw) | 11 | BR-ZAK-006, P-685, P-687, P-689, P-690 | `src/domena/przewodnik`<br>`src/konfiguracja` | ER-70 |
 | 9 ? | `tests/domena/rodzaj-pliku.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/rodzaj-pliku` | — |
 | 9 ? | `tests/domena/stan-ekranu.test.ts` | zielony (główny zestaw) | 7 | P-111, P-129, P-131, P-135, R-028 | `src/domena/zegarek`<br>`src/konfiguracja` | Z07-12, Z07-22 |
 | 9 ? | `tests/domena/straznik-startu.test.ts` | zielony (główny zestaw) | 8 | P-080 | `src/konfiguracja`<br>`src/niezawodnosc/start` | — |
@@ -421,4 +424,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 417; zależnych od poprawek: 266.
+Razem plików testów: 420; zależnych od poprawek: 269.
