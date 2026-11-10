@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:15 UTC; 05:14 sesja A)
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:27 UTC) — **WSTRZYMANE przez właściciela**
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -14,16 +14,32 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Środowisko: environment_id env_01GMJmLpW2GTvGdZ1nMituy9, model claude-opus-5-5, wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz
-- Build 2 TestFlight run 42746522234 (58284a88) — bramka zielona, **czeka na Approve właściciela** (linia 05:00 wysłana 05:13 z linkiem).
-- Sesja A (M2, naprawy 301–304) wystartowała 05:13: session_01T66VBzyDZ56SkwWzV5t1ZR, gałąź `claude/m2-naprawy-2026-11-10` @ 58284a88. 301 = przygotowanie publikacji stron (publikacja za zgodą właściciela).
-- 08 nr 3 bezczynna (archiwizacja po VALID buildu 2).
-- Następny krok: kontrola 06:14 UTC.
+## WSTRZYMANIE (10.11 ok. 05:25 UTC)
+Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj pracę”.
+- Wykonane: sesja A dostała STOP (priority now: dokończyć bieżący krok, stan w warsztat `audit/M1-2026-11-10-finalny/M2-stan.md`, push, PRZEKAZANIE, potem nic); przypomnienia koordynatora usunięte (kontrola 06:14, linia 14:00, linia 05:00) — linie dzienne nie idą do wznowienia; nowych sesji brak.
+- Wznowienie: tylko słowami właściciela. Wtedy: ReadNotifications (PRZEKAZANIE A), przypomnienia linii od nowa, sesja A wznowiona wiadomością albo następca z `M2-stan.md`.
+
+## Zadania i stan (na 05:27 UTC)
+| # | Zadanie | Kto | Stan | Dowód / miejsce | Następny krok |
+|---|---|---|---|---|---|
+| 1 | Build 2 TestFlight (58284a88) | właściciel | **czeka na Approve** (run `waiting` od 03:00) | https://github.com/lkarwowski494/oczko/actions/runs/42746522234 | Approve w `release` → wynik „Build NNNN: VALID” w logu joba build |
+| 2 | 301 strony polityki/wsparcia (P1, P-641) | A (M2) / właściciel | kandydat gotowy; **czeka na zgodę na publikację** (opcje a/b w „Czeka na właściciela”) | warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2) | zgoda → publikacja → `node scripts/wydanie/sprawdz-adresy.mjs` |
+| 3 | 302 notatka App Review + plan zrzutów (P2, DEC-02 a) | A (subagent 10 fix) | zaplanowane, wstrzymane (stan w M2-stan.md po PRZEKAZANIU) | prompt warsztat `koordynacja/polecenia/A-10-wydanie-fix-2026-11-10.md` @ 7dd2977 | po wznowieniu |
+| 4 | 303 wyniki 55 scenariuszy / dowód 28 (P2) | A | odczyt gotowy: przebieg 8 (42732022664) 68/68 zielonych; commit wyników wstrzymany | warsztat `audit/M1-2026-11-10-finalny/dowody/M2/303-wyniki-przebiegu-42732022664.txt` | commit `docs/wydanie/wyniki-e2e/…` + P-643 |
+| 5 | 304 manifest migracji (P2) | A | zaplanowane (KO-011: commit na gałęzi A, scalenie po Approve) | — | po wznowieniu |
+| 6 | Reaudyt M1 po naprawach | koordynator | nie rozpoczęte | — | po 301–304 |
+| 7 | Sesja B: rola 10 — zrzuty sklepu (`asc-zrzuty`), 244, 245, `docs/wydanie/sklep.md:22` | — | nie rozpoczęte | plan 24 h | po raporcie A |
+| 8 | Sesja C: rola 04 mała (karty Word/notatka AX5, przełącznik ▾ `WzorTytul.tsx:20`, auto-przewinięcie końca licznika) — 1.0.1 wg P-642 | — | nie rozpoczęte | plan 24 h | po buildzie 2 |
+| 9 | Test na telefonie buildów 1101 i 2 (StoreKit sandbox, TT-07, VoiceOver/AX5, czas „+1”) | właściciel | czeka (build 2 po VALID) | — | — |
+| 10 | Weto decyzji P-634…P-642, KO-001…KO-012 | właściciel | czeka | `docs/koordynacja/decyzje.md`; `docs/decyzje.md` na `claude/kopia-koordynator-2026-11-08` | — |
+| 11 | Archiwizacja 08 nr 3 (session_01T66VByn4YqYJWZ5JpJWS6X, 2,66 USD, praca przyjęta) | koordynator | czeka na VALID buildu 2 | — | — |
+| 12 | Archiwizacja poprzedniego koordynatora session_01T66VBx6UXGtzFfAZDeBpip | poprzednik sam (po PRZEJĄŁEM) | do sprawdzenia | — | jeśli nie zarchiwizowany: prośba do właściciela |
+| 13 | `/effort medium` w sesji koordynatora (narzędzie nie pokazuje wysiłku) | właściciel | czeka | — | — |
 
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| A | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
+| A | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | STOP 05:26 (wstrzymanie); start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
 ## Plan 24 h (UTC)
@@ -44,7 +60,7 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 
 ## Przypomnienia
 - Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
-- Własne (session_01T66VBvxBBKLAkeEUNSEf4n): trig_01DRbyhYPrRhkKBm9MisBLRq „Koordynator Oczko: linia 14:00” 10.11 14:00 · trig_01GP5128Ws6T7X2rPUiQziKs „Koordynator Oczko: linia 05:00” 11.11 05:00 · trig_017FCWqNfJeHnukinnCbmSnY „Koordynator Oczko: kontrola” 06:14.
+- Własne (session_01T66VBvxBBKLAkeEUNSEf4n): brak — wszystkie trzy usunięte 05:26 (wstrzymanie).
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
@@ -66,3 +82,4 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 | 10.11 05:15 | M9 (session_01T66VBvxBBKLAkeEUNSEf4n) | przejęcie wg E6 p. 5; prompt M9 warsztat ff0b010 (nagłówek zgodny); add_repo warsztat/prompts przyjęte (WG-03 nie wystąpiło), trening odczyt anonimowy; TF run 42746522234 status `waiting` (Approve) | linia 05:00, sesja A (M2) |
 | 10.11 05:13 | M9 | linia 05:00 (spóźniona) w czacie z linkiem do Approve; 08 nr 3 i poprzednik powiadomieni (PRZEJĄŁEM @ 2294747); sesja A (M2) session_01T66VBzyDZ56SkwWzV5t1ZR od 58284a88; WG-03 nie wystąpiło (add_repo prompts przyjęte 05:11) | kontrola 06:14 |
 | 10.11 05:22 | A | STOP start + PYTANIE 301 (warsztat postep-napraw.md @ 1e247ab; 303: przebieg 8 68/68 zielonych); odpowiedź KO-010…KO-012; prompt 10 fix warsztat 7dd2977 | prośba 301 do właściciela; kontrola 06:14 |
+| 10.11 05:26 | M9 | WSTRZYMANIE na słowa właściciela; STOP do A (priority now); przypomnienia koordynatora usunięte; lista zadań w stan.md | czekam na PRZEKAZANIE A i słowa właściciela |
