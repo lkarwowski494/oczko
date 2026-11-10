@@ -157,20 +157,21 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           {narzedzie('zakreslacz', 'wzor.zakreslacz', 'wzor-zakreslacz', 'highlighter')}{narzedzie('pioro', 'wzor.pioro', 'wzor-pioro', 'pencil.tip')}{narzedzie('gumka', 'wzor.gumka', 'wzor-gumka', 'eraser')}{cofnij}
         </View>
       )}
-      {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text">{t('wzor.word_podglad')}</Text>}
+      {s.word && <Text style={[st.tresc, st.informacja]} accessibilityRole="text" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('wzor.word_podglad')}</Text>}
       {s.wskazowka && !bezWskazowki && !ustawiam && !tryb && notatka !== 'pasek' && podpowiedz !== 'widac' && ( // AX5-wzór (P-630 A): limit skali 1,8
         <Text style={[st.tresc, st.informacja]} testID="wzor-wskazowka-znacznika" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">{t('wzor.wskazowka_znacznika')}</Text>
       )}
+      {/* B3-01 (P-662): teksty paska z tym samym limitem ×1,8 co wskazówka (P-632 A) */}
       {notatka === 'pasek' && (
         <View style={st.informacja} accessibilityRole="summary">
-          <Text style={st.tresc}>{t('wzor.notatka_bez_znacznika')}</Text>
-          <Text style={st.podpis}>{t('wzor.notatka_zaznacz')}</Text>
+          <Text style={st.tresc} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('wzor.notatka_bez_znacznika')}</Text>
+          <Text style={st.podpis} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('wzor.notatka_zaznacz')}</Text>
           <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.zaznacz_rzad')} testID="wzor-notatka-zaznacz" style={st.pozycja}
             onPress={() => { ustawNotatke('brak'); ustawNotatkaPo(true); zaznacz(); }}>
-            <Text style={[st.tresc, st.pogrubiony]}>{t('wzor.zaznacz_rzad')}</Text>
+            <Text style={[st.tresc, st.pogrubiony]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('wzor.zaznacz_rzad')}</Text>
           </Pressable>
           <Pressable accessibilityRole="button" accessibilityLabel={t('wspolne.anuluj')} onPress={() => ustawNotatke('brak')} style={st.pozycja}>
-            <Text style={st.tresc}>{t('wspolne.anuluj')}</Text>
+            <Text style={st.tresc} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{t('wspolne.anuluj')}</Text>
           </Pressable>
         </View>
       )}
