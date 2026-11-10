@@ -23,8 +23,8 @@ Rola 08 build, KO-027; specyfikacja 04: `docs/design/przewodnik-2026-11-10.md`. 
 ## Otwarte
 - Urządzenie (właściciel): symbole `questionmark.circle` i `lifepreserver`, Dynamic Type AX3–AX5 (pasek nad tytułem), VoiceOver, iPad.
 - 07: scenariusze E2E według §6 (testID gotowe).
-- 04: spec §3 nie opisuje wyjątku „Pokaż” → Ustawienia (`dismissTo`, P-704); „ok. 70 znaków” w §5 przy kolumnie 640 pt to ok. 66 (P-694) — nie zmieniane (KO-030 dopuszcza tylko szerokość).
-- 07: scenariusz 70 z twardą asercją `ustawienia-przewodnik-wartosc` (P-705) i `dismissTo` na stosie (P-704) — pierwszy przebieg na macOS (build 4).
+- 04: spec §3 nie opisuje wyjątku „Pokaż” → Ustawienia (`dismissTo` tylko z wejścia z Ustawień, P-708); „ok. 70 znaków” w §5 przy kolumnie 640 pt to ok. 66 (P-694) — nie zmieniane (KO-030 dopuszcza tylko szerokość).
+- 07: scenariusz 70 z twardą asercją `ustawienia-przewodnik-wartosc` (P-705) i `dismissTo` na stosie (P-704, korekta P-708) — pierwszy przebieg na macOS (build 4).
 - Poza zakresem T (nie robione): Q-002 (krój tytułów, 1.0.1), przegląd rodzimy tłumaczeń.
 - Zauważone, poza zakresem: przy 320 pt w uprzęży web „+1” karty „Dziś” wystaje poza ekran (układ karty, nie paska; do sprawdzenia na urządzeniu — w web inne kroje).
 
@@ -33,3 +33,10 @@ Rola 08 build, KO-027; specyfikacja 04: `docs/design/przewodnik-2026-11-10.md`. 
 - Scalono R (E2E 69–70, znacznik „Jakość · iOS”, a1ebb8a); decyzje P-696, P-697, P-700 bez zmian.
 - Q-001 (P-704): „Pokaż” funkcji Ustawień z przewodnika → `dismissTo('/ustawienia')`. Q-003 (P-707): test okablowania postępu i paska od AX3. R-70 (P-705): `ustawienia-przewodnik-wartosc`, twarda asercja „1 of 42”. S-slownik (P-706): pl `krok_3` „Robótka obok liczby rośnie do celu.”. KO-030: kolumna iPad 640 pt w spec §5, P-693 przyjęte.
 - Bez zmian, poza zakresem: Q-002 (krój tytułów przewodnika, 1.0.1; `src/ekrany/Przewodnik.tsx:20,22,29` bez `krojTytulowy(jezyk)`).
+
+## Stan po sesji V (gałąź `claude/t-przewodnik-2026-11-10`, start 068eaa2; rola 08 fix, KO-031 i KO-030)
+- 08-programista-001 (P2, opcja a, P-708 „do weta”): `app/ustawienia.tsx` otwiera przewodnik z `z=ustawienia` (`WEJSCIE_Z_USTAWIEN`, `src/domena/przewodnik.ts`); `app/przewodnik.tsx` robi `dismissTo('/ustawienia')` tylko z tym parametrem, w pozostałych wejściach (w tym „Dziś”) `push`. Poprzednia wersja (P-704) zastępowała przewodnik ekranem Ustawień także po wejściu z „Dziś”.
+- Test na stanie stosu: `tests/ekrany/przewodnik-stos.test.tsx` (3 testy; reduktor `StackRouter` expo-router 57.0.27, akcje PUSH i POP_TO, prawdziwe trasy `app/ustawienia` i `app/przewodnik`). Na 068eaa2 czerwony (wejście z „Dziś”: oczekiwano `(zakladki) > przewodnik > ustawienia`, jest `(zakladki) > ustawienia`), po poprawce zielony. `przewodnik.test.tsx`: Q-001 i test Oczko Pro z parametrem `z=ustawienia`, nowy test `push` bez parametru.
+- 08-programista-002 (P3): w spec 04 §5 znacznik `[DO USTALENIA 08]` przy 640 pt zastąpiony „rozstrzygnięte P-694, KO-030”; poza tym dokumenty 04 bez zmian.
+- Maestro 69 i 70: bez zmian. 69 wchodzi z „Dziś” i nie stuka „Pokaż” funkcji Ustawień; 70 wchodzi z Ustawień (`ustawienia-przewodnik`), a przejście `nav-wstecz` → `ustawienia` działa jak dotąd (`push` z parametrem, „Wstecz” cofa o jeden ekran). Żaden krok nie dotyka gałęzi `dismissTo`.
+- Otwarte (bez zmian): stos na urządzeniu i parametr `z` przez prawdziwy `linkTo` — dopiero przebieg iOS (build 4); Q-002; przegląd rodzimy tłumaczeń; wejście „Dziś” w teście stosu odtworzone wywołaniem `router.push('/przewodnik')` (`app/(zakladki)/index.tsx:96`), nie renderem trasy „Dziś”.
