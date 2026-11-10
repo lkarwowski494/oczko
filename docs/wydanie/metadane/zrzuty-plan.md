@@ -1,3 +1,5 @@
+> **Zmiana 2026-11-10 (KO-032, P-717–P-720):** zrzuty dostają ramkę i podpis jak w Treningu, powstaje osobny zestaw na każdą lokalizację i zrzut zakupu dla App Review; opis: `docs/wydanie/zrzuty-ramki.md`. Zapis niżej „kadry i podpisy projektuje 04” zastąpiony decyzją właściciela; wygląd ramki z tokenów systemu 04 do weta.
+
 # Plan zrzutów — App Store (rola 10, E2, 2026-10-30; zrzuty wykonane 2026-11-10 w workflowie `zrzuty-sklepu.yml`, stan i uwagi na końcu pliku)
 Czeka na koniec audytu 04 (plan-prac 2.1) i zamrożenie en (2.2). Kadry i podpisy projektuje 04; fakty w podpisach tylko z `en.md`. Reguły: App Store Connect Help „Screenshot specifications” (odczyt 18.10.2026, **przeczytać ponownie w dniu wykonania**): do 10 na klasę, PNG/JPEG, bez kanału alfa; strona jest niespójna co do wymaganej klasy iPhone’a, więc robimy bezpieczny nadzbiór. Treść: aplikacja w użyciu (2.3.3), dane fikcyjne (2.3.9), płatne funkcje oznaczone (2.3.2).
 
