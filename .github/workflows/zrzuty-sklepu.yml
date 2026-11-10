@@ -46,6 +46,8 @@ jobs:
           WE_OG07: ${{ inputs.og07 }}
         run: |
           uruchom=false; app=""; og07=false
+          # znaczniki tylko z PIERWSZEJ linii komunikatu: treść commitu może je opisywać (przebieg 1: opis „[og07-ok]” w treści włączył OG-07)
+          KOMUNIKAT=$(printf '%s\n' "$KOMUNIKAT" | head -1)
           if [ "$ZDARZENIE" = workflow_dispatch ]; then
             uruchom=true; app="$WE_APP"; [ "$WE_OG07" = true ] && og07=true
           else
@@ -193,7 +195,6 @@ jobs:
           xcrun simctl ui "$DEV" appearance light || true
           xcrun simctl install "$DEV" app-sim/*.app
       - name: Maestro
-        if: steps.plan.outputs.any == 'true'
         env:
           # Jedna zmienna przypięcia (DS-07, zasada wspólna 21; 07-jakosc-005): zmiana wersji = commit. 2.12.1 = wersja z przebiegów #139/#140.
           # Pusta = błąd (nie „najnowsza”); zainstalowana ≠ przypięta = błąd. Kontrola: sprawdz-workflowy.mjs (MAESTRO-WERSJA), tests/jakosc/ci-maestro-wersja.test.ts.

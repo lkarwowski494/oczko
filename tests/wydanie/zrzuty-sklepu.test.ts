@@ -57,6 +57,7 @@ describe('workflow zrzuty-sklepu.yml', () => {
   test('Xcode przez select-xcode.sh, Maestro przypięty (wersja + SHA-256 + ponowienia), jak w jakosc-ios.yml', () => {
     expect(tekst).toContain('.github/scripts/jakosc/select-xcode.sh 26');
     const maestro = (wf.jobs?.zrzuty?.steps ?? []).find((k: any) => k.name === 'Maestro'); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(maestro?.if).toBeUndefined(); // krok skopiowany z jakosc-ios.yml miał `if: steps.plan…` — tu zawsze fałszywy (przebieg 1: „maestro: command not found”)
     expect(maestro?.env?.MAESTRO_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
     expect(maestro?.env?.MAESTRO_ZIP_SHA256).toMatch(/^[0-9a-f]{64}$/);
     const jakosc = parse(czytaj('.github/workflows/jakosc-ios.yml'));
