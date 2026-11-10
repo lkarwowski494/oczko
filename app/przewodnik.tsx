@@ -1,6 +1,6 @@
 // Trasa „/przewodnik” (KO-027, P-686): przewodnik po funkcjach z „Dziś” (symbol z podpisem obok zębatki) i z Ustawień; wypchnięty na stos, bez zakładek.
 // Przeczytane z `ustawienie.przewodnik_przeczytane` (P-688, P-690); „Pokaż” (P-687, P-691): zakładka → zamknięcie stosu i przejście (Trening `app/guide.tsx:21`),
-// inny ekran → push (wstecz wraca do przewodnika); licznik, wzór i projekt z ostatniego miejsca pracy, bez niego trasa zapasowa z treści 04.
+// inny ekran → push (wstecz wraca do przewodnika), Ustawienia → dismissTo (Q-001); licznik, wzór i projekt z ostatniego miejsca pracy, bez niego trasa zapasowa z treści 04.
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -37,6 +37,7 @@ export default function EkranPrzewodnika(): React.ReactElement {
       if (router.canDismiss()) router.dismissAll();
       router.navigate(cel.sciezka);
     } else if (cel.sciezka === '/projekt/[id]' && cel.id !== undefined) router.push({ pathname: cel.sciezka, params: { id: cel.id } });
+    else if (cel.sciezka === '/ustawienia') router.dismissTo(cel.sciezka); // Q-001: przewodnik z Ustawień → wraca do istniejącej trasy, bez drugiej kopii na stosie (z „Dziś” stos jej nie ma, więc trafia na stos)
     else router.push(cel.sciezka);
   }
 

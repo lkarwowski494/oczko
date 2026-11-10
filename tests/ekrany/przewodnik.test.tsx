@@ -13,7 +13,7 @@ import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { wykonaj } from '../dane/pomocnicze/srodowisko';
 import { atrapaHaptyki, atrapaSystemu, plusOk, stanLicznika, tEn } from './pomoc';
 
-const mockRouter = { back: jest.fn(), push: jest.fn(), navigate: jest.fn(), dismissAll: jest.fn(), canDismiss: jest.fn(() => true) };
+const mockRouter = { back: jest.fn(), push: jest.fn(), navigate: jest.fn(), dismissAll: jest.fn(), dismissTo: jest.fn(), canDismiss: jest.fn(() => true) };
 jest.mock('expo-router', () => ({ useRouter: () => mockRouter }));
 let mockAplikacja: unknown;
 jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockAplikacja }));
@@ -31,7 +31,7 @@ async function start(o: { zLicznikiem: boolean }) {
   await screen.findByTestId('przewodnik');
   return { s };
 }
-beforeEach(() => { for (const f of [mockRouter.back, mockRouter.push, mockRouter.navigate, mockRouter.dismissAll]) f.mockClear(); });
+beforeEach(() => { for (const f of [mockRouter.back, mockRouter.push, mockRouter.navigate, mockRouter.dismissAll, mockRouter.dismissTo]) f.mockClear(); });
 
 describe('ekran /przewodnik', () => {
   test('tytuł, wstęp, 6 kroków z „Show”, 9 grup z nagłówkami, 42 wiersze zwinięte, postęp 0 z 42', async () => {
@@ -99,7 +99,22 @@ describe('ekran /przewodnik', () => {
     fireEvent.press(screen.getByTestId('przewodnik-f-pro'));
     expect(await screen.findByTestId('przewodnik-f-pro-opis')).toHaveTextContent(/free crafting days a month: 5;/);
     fireEvent.press(screen.getByTestId('przewodnik-f-pro-pokaz'));
-    await waitFor(() => expect(mockRouter.push).toHaveBeenLastCalledWith('/ustawienia'));
+    await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenLastCalledWith('/ustawienia'));
+  });
+
+  test('Q-001: „Show” funkcji Ustawień wraca do istniejącej trasy /ustawienia (dismissTo), nie kładzie na stos drugiej kopii', async () => {
+    await start({ zLicznikiem: false });
+    for (const id of ['wibracje', 'ekran', 'eksport', 'usun', 'pro']) {
+      fireEvent.press(screen.getByTestId(`przewodnik-f-${id}`));
+      fireEvent.press(await screen.findByTestId(`przewodnik-f-${id}-pokaz`));
+      await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenLastCalledWith('/ustawienia'));
+    }
+    expect(mockRouter.dismissTo).toHaveBeenCalledTimes(5);
+    expect(mockRouter.push).not.toHaveBeenCalled();
+    fireEvent.press(screen.getByTestId('przewodnik-f-jednostki')); // inne ekrany Ustawień zostają pchane (wstecz wraca do przewodnika)
+    fireEvent.press(await screen.findByTestId('przewodnik-f-jednostki-pokaz'));
+    await waitFor(() => expect(mockRouter.push).toHaveBeenLastCalledWith('/miary'));
+    expect(mockRouter.dismissTo).toHaveBeenCalledTimes(5);
   });
 });
 
