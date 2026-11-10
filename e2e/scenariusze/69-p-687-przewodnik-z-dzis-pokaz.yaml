@@ -1,0 +1,49 @@
+# P-687 „Pokaż” i P-685 wejście z „Dziś” (spec 04 `docs/design/przewodnik-2026-11-10.md` §1, §3, §6, §11; kod: `src/ekrany/Dzis.tsx:178`, `src/ekrany/Przewodnik.tsx`, `app/przewodnik.tsx`).
+# Intuicyjność §11: (1) „Guide” z podpisem obok zębatki, bez przewijania; (3) „Pierwsze kroki” na górze, rozwinięte (krok 1 z „Pokaż” widoczny bez przewijania);
+# (2) od przewodnika do ekranu funkcji 2 stuknięcia: `przewodnik-f-cel` (rozwiń) → `przewodnik-f-cel-pokaz` → licznik ostatniego miejsca pracy z akcją „Cel” (`licznik-cel`).
+# Licznik wymaga miejsca pracy: bez pierwszego +1 `celPokaz` daje trasę zapasową „/” (src/domena/przewodnik.ts:114) — dlatego projekt roboczy przed wejściem.
+# „Pokaż” do ekranu spoza zakładek = push: „Back” wraca do przewodnika (§3). Analogia: Trening `.maestro/38-pomoc-powiadomienia.yaml:12-31` (temat → „Show” → ekran → „Back”).
+# Jasny i ciemny: ten sam plik, wygląd ustawia przebieg (`[e2e-ciemny]`, tests/jakosc/e2e-ciemny.test.ts). Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "P-687 · Przewodnik z „Dziś” (P-685): wejście z podpisem obok zębatki, „Pierwsze kroki” na górze, funkcja „Cel” → „Pokaż” → licznik i wstecz do przewodnika"
+tags:
+  - P-687
+  - P-685
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "nav-wstecz" } # P-583: z licznika wstecz do ekranu źródłowego („Dziś”)
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+# §11 (1): wejście widoczne bez przewijania, z podpisem „Guide” (etykieta = podpis), obok zębatki
+- assertVisible: { id: "nav-przewodnik", text: "Guide" }
+- assertVisible: { id: "nav-ustawienia" }
+- takeScreenshot: 69-dzis-wejscie-przewodnik
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+# §11 (3): „Pierwsze kroki” pierwsze pod tytułem i rozwinięte — krok 1 z „Pokaż” bez przewijania
+- assertVisible: "First steps"
+- assertVisible: { id: "przewodnik-krok-1" }
+- assertVisible: { id: "przewodnik-krok-1-pokaz" }
+- takeScreenshot: 69-przewodnik-pierwsze-kroki
+# §11 (2): stuknięcie 1 — rozwinięcie funkcji „Cel” (grupa „Licznik”)
+- scrollUntilVisible: { element: { id: "przewodnik-f-cel" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-cel" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-cel-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-cel-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "przewodnik-f-cel-pokaz" }
+- takeScreenshot: 69-przewodnik-cel-rozwiniety
+# §11 (2): stuknięcie 2 — „Pokaż” otwiera licznik ostatniego miejsca pracy (projekt roboczy, wartość 0), na nim akcja „Cel”
+- tapOn: { id: "przewodnik-f-cel-pokaz" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- assertVisible: { id: "licznik-cel" }
+- takeScreenshot: 69-licznik-z-pokaz
+# §3: ekran spoza zakładek otwarty przez push — „Back” wraca do przewodnika
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- takeScreenshot: 69-powrot-do-przewodnika

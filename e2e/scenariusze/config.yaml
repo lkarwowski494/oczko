@@ -70,3 +70,5 @@ flows:
   - 66-br-dan-006-s3-zastap-kopia-przed.yaml
   - 67-br-lic-012-s1-podpis-w-pasku-wzoru.yaml
   - 68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml
+  - 69-p-687-przewodnik-z-dzis-pokaz.yaml
+  - 70-p-688-przewodnik-z-ustawien-przeczytane.yaml

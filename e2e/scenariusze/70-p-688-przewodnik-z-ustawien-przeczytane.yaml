@@ -1,0 +1,66 @@
+# P-688 stan przeczytania i P-685 wejście z Ustawień (spec 04 `docs/design/przewodnik-2026-11-10.md` §1, §4, §6, §11; kod: `src/ekrany/Ustawienia.tsx:125`,
+# `app/ustawienia.tsx:54` (odświeżenie wartości wiersza po powrocie), `app/przewodnik.tsx` (zapis przy pierwszym rozwinięciu)).
+# Świeża instalacja: „Guide” widoczny na „Dziś” bez przewijania (§11 (1)); w Ustawieniach wiersz „Guide” bezpośrednio nad „Help”; rozwinięcie funkcji „Kontynuuj”
+# oznacza ją jako przeczytaną (licznik „Read: 1 of 42”, etykieta wiersza „…, read”); oznaczenie zostaje po powrocie do Ustawień, po ponownym wejściu i po zimnym starcie.
+# Wartość wiersza Ustawień („1 of 42”, accessibilityValue bez testID) sprawdzana tylko opcjonalnie + zrzut: Maestro iOS dopasowuje `text` do etykiety, a wartości
+# dostępności nie mamy potwierdzonej [DO USTALENIA: pierwszy przebieg; testID wartości — pytanie do koordynatora, R]. Twarde asercje na `przewodnik-postep` i etykiecie.
+# Analogia: Trening `.maestro/38-pomoc-powiadomienia.yaml:16-40` („Read: 0 of 10” → temat → „…, read” → licznik po restarcie).
+# Jasny i ciemny: ten sam plik, wygląd ustawia przebieg (`[e2e-ciemny]`). Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie"
+tags:
+  - P-688
+  - P-685
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- assertVisible: { id: "nav-przewodnik", text: "Guide" } # §11 (1) na świeżej instalacji
+- takeScreenshot: 70-dzis-swieza-instalacja
+- runFlow: subflows/otworz-ustawienia.yaml
+# §1: wiersz „Guide” w grupie z „Help”, bezpośrednio nad nim
+- scrollUntilVisible: { element: { id: "ustawienia-pomoc" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-przewodnik", text: "Guide" }
+- assertVisible: { id: "ustawienia-pomoc", below: { id: "ustawienia-przewodnik" } }
+- assertVisible: { id: "ustawienia-przewodnik", text: ".*0 of 42.*", optional: true }
+- takeScreenshot: 70-ustawienia-wiersz-0
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertVisible: { id: "przewodnik-krok-1-pokaz" } # §11 (3): „Pierwsze kroki” na górze, rozwinięte
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-postep", text: "Read: 0 of 42" }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "przewodnik-f-kontynuuj", text: ".*, not read" }
+# §4: pierwsze rozwinięcie oznacza funkcję jako przeczytaną (zapis lokalny `ustawienie.przewodnik_przeczytane`)
+- tapOn: { id: "przewodnik-f-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-kontynuuj-opis" }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-kontynuuj", text: ".*, read" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: UP, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "przewodnik-postep", text: "Read: 1 of 42" }, timeout: 10000 }
+- takeScreenshot: 70-przewodnik-przeczytana-1
+# Powrót do Ustawień: wartość wiersza świeża (useFocusEffect)
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-przewodnik", text: ".*1 of 42.*", optional: true }
+- takeScreenshot: 70-ustawienia-wiersz-1
+# Ponowne wejście: oznaczenie zostało
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-postep", text: "Read: 1 of 42" }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "przewodnik-f-kontynuuj", text: ".*, read" }
+- takeScreenshot: 70-przewodnik-po-powrocie
+# Zimny start na tych samych danych: oznaczenie trwałe; wejście z „Dziś”
+- runFlow:
+    file: subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:35:00"
+- assertVisible: { id: "nav-przewodnik", text: "Guide" }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-postep", text: "Read: 1 of 42" }
+- takeScreenshot: 70-przewodnik-po-restarcie
