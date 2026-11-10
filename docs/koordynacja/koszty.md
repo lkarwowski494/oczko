@@ -42,3 +42,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | T | 08 fix (scalenie R, Q-001, Q-003, wartoscTestID, słownik, spec 640; sonnet) | 8 | 2,30 | 23 | 18:58 → 18:59 → ok. 19:14 → `ci.yml` 42886016326 w toku → (U) | ok. 17 min — PRZEKAZANIE wysłane dopiero na prośbę 19:31 | pod pułapem |
 | U | 08 audit (recenzja R+T, opus) | 5 | 4,00 | 22 | 19:31 → 19:31 → raport 19:40 → — → NIE (001) | — | werdykt NIE; P2 001 |
 | V | 08 fix (001 nawigacja, 002 spec; sonnet) | 4 | 1,23 | 19 | 19:41 → 19:41 → ok. 19:48 → `ci.yml` 42889541804 w toku → (W) | — | pod pułapem |
+| W | 08 audit (recenzja V, opus) | 3 | 2,62 | 19 | 19:53 → 19:53 → raport 20:04 → `ci.yml` success 75242ba → przyjęte 20:05 | — | TAK, P3 1 |
