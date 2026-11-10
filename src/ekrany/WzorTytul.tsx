@@ -17,8 +17,9 @@ export function TytulWzoru(p: PropsTytuluWzoru): React.ReactElement {
       {p.przelacza ? (
         <Pressable accessibilityRole="button" accessibilityLabel={t('wzor.przelacz_a11y', { nazwa: p.nazwa })} onPress={p.naPrzelacz} style={st.przelacz} testID="wzor-przelacz">
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: odstep.xs }}>{/* M1-146: chevron.down zamiast glifu ▾ */}
-            <Text style={[st.tytul, { flexShrink: 1 }]} numberOfLines={2}>{p.nazwa}</Text>
-            <SymbolSf nazwa="chevron.down" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} />
+            {/* B3-02 (P-663): ten sam limit ×1,8 co gałąź bez ▾; ▾ (też ×1,8) nigdy nie jest kurczony ani wypychany */}
+            <Text style={[st.tytul, { flexShrink: 1 }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{p.nazwa}</Text>
+            <View style={{ flexShrink: 0 }}><SymbolSf nazwa="chevron.down" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.grafit} maxSkala={MAX_SKALA_TYTULOWA} /></View>
           </View>
         </Pressable>
       ) : <Text style={st.tytul} accessibilityRole="header" maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={2}>{p.nazwa}</Text>}
