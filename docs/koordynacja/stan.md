@@ -39,7 +39,7 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 ## Czeka na właściciela
 - **Approve buildu 2:** https://github.com/lkarwowski494/oczko/actions/runs/42746522234 (Review deployments → `release` → Approve).
 - **Weto decyzji nocnych** P-634…P-642 (`docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08`; KO-001…KO-009 w `docs/koordynacja/decyzje.md`).
-- Publikacja stron polityki/wsparcia (P-641) — działanie zewnętrzne: zgoda właściciela.
+- **Publikacja stron polityki/wsparcia (301, P-641)** — kandydat gotowy: warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2: oczko/privacy.html, oczko/support.html, tests/tresc-podstron.json; symulacja sprawdz-adresy: tylko 404 linku recenzji). Opcje: (a) zgoda, by sesja z add_repo apps4brew-www (push) wypchnęła 3 pliki na main strony i uruchomiła sprawdz-adresy — rekomendacja; (b) właściciel kopiuje sam. Prośba wysłana 05:23.
 - Test na telefonie buildów 1101 i 2.
 
 ## Przypomnienia
@@ -48,7 +48,7 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
-- KO następny: **KO-010**.
+- KO następny: **KO-013**.
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -65,3 +65,4 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 | 10.11 05:10 | koord. | migracja na M9: stan.md na `koordynacja` | przekazanie |
 | 10.11 05:15 | M9 (session_01T66VBvxBBKLAkeEUNSEf4n) | przejęcie wg E6 p. 5; prompt M9 warsztat ff0b010 (nagłówek zgodny); add_repo warsztat/prompts przyjęte (WG-03 nie wystąpiło), trening odczyt anonimowy; TF run 42746522234 status `waiting` (Approve) | linia 05:00, sesja A (M2) |
 | 10.11 05:13 | M9 | linia 05:00 (spóźniona) w czacie z linkiem do Approve; 08 nr 3 i poprzednik powiadomieni (PRZEJĄŁEM @ 2294747); sesja A (M2) session_01T66VBzyDZ56SkwWzV5t1ZR od 58284a88; WG-03 nie wystąpiło (add_repo prompts przyjęte 05:11) | kontrola 06:14 |
+| 10.11 05:22 | A | STOP start + PYTANIE 301 (warsztat postep-napraw.md @ 1e247ab; 303: przebieg 8 68/68 zielonych); odpowiedź KO-010…KO-012; prompt 10 fix warsztat 7dd2977 | prośba 301 do właściciela; kontrola 06:14 |
