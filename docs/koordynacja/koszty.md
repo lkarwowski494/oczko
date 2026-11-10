@@ -17,5 +17,7 @@
 | session_01T66VBzsdhe1m1utdtWneFy | E: 10 build (zrzuty sklepu, 244, 326) | 15 (STOP 19,5) | 5,87 | 40 | 10.11 06:55 → 06:55 → 9aa3b90 ok. 07:02 → CI brak → przekazanie 07:51 (nieprzyjęte) | przebieg zrzutów 1: 18 min build + awaria kroku Maestro (stracony przebieg, błąd konfiguracji) | zarchiwizowana 07:52; następca E2 |
 | session_01T66VBvchQHYc2grKLK3LzA | E2: 10 build (zrzuty — dokończenie) | 10 (STOP 13) | — (otwarta) | — | 10.11 07:51 → 07:51 → … | — | |
 | session_01T66VBygrH2FB6wWhFKzzSm | koordynator M9 (fable-5-2) | — | — | — | od 10.11 06:36 | — | następca session_01T66VBxhDabqriZxJMgbRsB |
+| session_01T66VBydAGZjc8FP2V9yPwi | F: 04 fix (projekt buildu 3) | 8 (STOP 10,4) | — (otwarta) | — | 10.11 08:40 → 08:40 → … | — | |
+| session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | — | — | od 10.11 08:36 | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
