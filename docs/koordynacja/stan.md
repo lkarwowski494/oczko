@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:40 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:46 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -46,6 +46,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 |---|---|---|---|---|---|---|
 | A (nieosiągalna z tego konta; zastąpiona przez A2) | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
 | A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport) | claude/m2-naprawy-2026-11-10 @ 27e2ac1 | 0 | 0 | start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
+| B | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
 ## Plan 24 h (UTC)
@@ -58,7 +59,13 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | dzień | test właściciela na telefonie (lista „tylko telefon”: StoreKit sandbox, TT-07, VoiceOver/AX5, czas „+1”) | właściciel | build 2 VALID | test |
 | 14:00 | linia 14:00 | koordynator | — | — |
 
-## Czeka na właściciela
+## Odpowiedzi właściciela 10.11 ok. 05:42 UTC (dosłownie: „1. Approved 2. Zgoda 3. Juz wstrzymane 4. Approved”)
+- 1: Approve buildu 2 dany — run 42746522234 `in_progress` (odczyt 05:43).
+- 2: zgoda na publikację 301 w wariancie (a): sesja z dostępem do apps4brew-www wypycha 3 pliki na `main` strony i uruchamia sprawdz-adresy → sesja B.
+- 3: stare sesje (A, 08 nr 3, poprzedni koordynatorzy) „już wstrzymane” — sprawa zamknięta po stronie koordynatora; koszt końcowy tych sesji nieodczytany.
+- 4: decyzje P-634…P-643 i KO-001…KO-013 przyjęte.
+
+## Czeka na właściciela (pozycje sprzed 05:42 poniżej są załatwione odpowiedziami wyżej, poza testem na telefonie)
 - **Approve buildu 2:** https://github.com/lkarwowski494/oczko/actions/runs/42746522234 (Review deployments → `release` → Approve).
 - **Weto decyzji nocnych** P-634…P-642 (`docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08`; KO-001…KO-009 w `docs/koordynacja/decyzje.md`).
 - **Publikacja stron polityki/wsparcia (301, P-641)** — kandydat gotowy: warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2: oczko/privacy.html, oczko/support.html, tests/tresc-podstron.json; symulacja sprawdz-adresy: tylko 404 linku recenzji). Opcje: (a) zgoda, by sesja z add_repo apps4brew-www (push) wypchnęła 3 pliki na main strony i uruchomiła sprawdz-adresy — rekomendacja; (b) właściciel kopiuje sam. Prośba wysłana 05:23.
@@ -95,3 +102,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 05:29 | A | PRZEKAZANIE: 303 → 27e2ac1 (autor OK, ls-remote OK); P-643 do weta; obserwacja: zadanie eksperymenty-wzoru w przebiegu 8 = failure (poza bramką); kontekst 26%, 5,56 USD; nie archiwizowana (praca niedokończona, wznowienie z kontekstem) | wstrzymane |
 | 10.11 05:35 | M9 (session_01T66VBxhDabqriZxJMgbRsB) | przejęcie z `/apps4brew` na słowa właściciela („Odpal role koordynatora M9”, „Uruchom, mandat bez zmian”); stan @ a3e15daa; TF run 42746522234 nadal `waiting` (odczyt 05:37); stare sesje nieosiągalne (`get_session` not found ×4); ReadNotifications 0 | A2 |
 | 10.11 05:38 | A2 | start session_01T66VBygxDoZxuZKDNHHXc8 od 27e2ac1, polecenie @ 8e20e6d7 (KO-013); przypomnienia: kontrola 06:24, linie 14:00 i 05:00 | kontrola 06:24: add_repo warsztatu u A2, postęp 302/304 |
+| 10.11 05:42 | właściciel | „1. Approved 2. Zgoda 3. Juz wstrzymane 4. Approved”; TF run 42746522234 in_progress (05:43) | B |
+| 10.11 05:44 | B | start session_01T66VBxU3pNDFL8RzCfKmf9 (publikacja 301), polecenie @ 28f7a7c5; A2 powiadomiona (301 domyka po PRZEKAZANIU B) | kontrola 06:24: wynik TF build 2, B, A2 |
