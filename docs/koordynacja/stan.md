@@ -23,9 +23,9 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | # | Zadanie | Kto | Stan | Dowód / miejsce | Następny krok |
 |---|---|---|---|---|---|
 | 1 | Build 2 TestFlight (58284a88) | właściciel | **czeka na Approve** (run `waiting` od 03:00) | https://github.com/lkarwowski494/oczko/actions/runs/42746522234 | Approve w `release` → wynik „Build NNNN: VALID” w logu joba build |
-| 2 | 301 strony polityki/wsparcia (P1, P-641) | A (M2) / właściciel | kandydat gotowy; **czeka na zgodę na publikację** (opcje a/b w „Czeka na właściciela”) | warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2) | zgoda → publikacja → `node scripts/wydanie/sprawdz-adresy.mjs` |
-| 3 | 302 notatka App Review + plan zrzutów (P2, DEC-02 a) | A (subagent 10 fix) | zaplanowane, wstrzymane (stan w M2-stan.md po PRZEKAZANIU) | prompt warsztat `koordynacja/polecenia/A-10-wydanie-fix-2026-11-10.md` @ 7dd2977 | po wznowieniu |
-| 4 | 303 wyniki 55 scenariuszy / dowód 28 (P2) | A | odczyt gotowy: przebieg 8 (42732022664) 68/68 zielonych; commit wyników wstrzymany | warsztat `audit/M1-2026-11-10-finalny/dowody/M2/303-wyniki-przebiegu-42732022664.txt` | commit `docs/wydanie/wyniki-e2e/…` + P-643 |
+| 2 | 301 strony polityki/wsparcia (P1, P-641) | A (M2) / właściciel | kandydat gotowy (przed publikacją sprawdzić, czy main apps4brew-www nadal = ce8cad2); **czeka na zgodę na publikację** (opcje a/b w „Czeka na właściciela”) | warsztat `audit/M1-2026-11-10-finalny/naprawy/301-apps4brew-www/` (diff na apps4brew-www ce8cad2) | zgoda → publikacja → `node scripts/wydanie/sprawdz-adresy.mjs` |
+| 3 | 302 notatka App Review + plan zrzutów (P2, DEC-02 a) | A (subagent 10 fix) | nierozpoczęte, wstrzymane | prompt warsztat `koordynacja/polecenia/A-10-wydanie-fix-2026-11-10.md` @ 7dd2977 | po wznowieniu |
+| 4 | 303 wyniki 55 scenariuszy / dowód 28 (P2) | A | **zrobione, niesprawdzone przez koordynatora** (commit i autor sprawdzone; CI na 27e2ac1 brak — push nie wyzwala; verify tylko z hooka pre-push A; recenzja niezależna brak) | oczko `claude/m2-naprawy-2026-11-10` @ 27e2ac1 (3 pliki, +80: `docs/wydanie/wyniki-e2e/42732022664.md`, dziennik, P-643); dowody warsztat b4fc37d `K/dowody/M2/303-*` | przy wznowieniu: CI/verify na 27e2ac1 + recenzja |
 | 5 | 304 manifest migracji (P2) | A | zaplanowane (KO-011: commit na gałęzi A, scalenie po Approve) | — | po wznowieniu |
 | 6 | Reaudyt M1 po naprawach | koordynator | nie rozpoczęte | — | po 301–304 |
 | 7 | Sesja B: rola 10 — zrzuty sklepu (`asc-zrzuty`), 244, 245, `docs/wydanie/sklep.md:22` | — | nie rozpoczęte | plan 24 h | po raporcie A |
@@ -39,7 +39,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| A | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | STOP 05:26 (wstrzymanie); start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
+| A | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
 ## Plan 24 h (UTC)
@@ -83,3 +83,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 05:13 | M9 | linia 05:00 (spóźniona) w czacie z linkiem do Approve; 08 nr 3 i poprzednik powiadomieni (PRZEJĄŁEM @ 2294747); sesja A (M2) session_01T66VBzyDZ56SkwWzV5t1ZR od 58284a88; WG-03 nie wystąpiło (add_repo prompts przyjęte 05:11) | kontrola 06:14 |
 | 10.11 05:22 | A | STOP start + PYTANIE 301 (warsztat postep-napraw.md @ 1e247ab; 303: przebieg 8 68/68 zielonych); odpowiedź KO-010…KO-012; prompt 10 fix warsztat 7dd2977 | prośba 301 do właściciela; kontrola 06:14 |
 | 10.11 05:26 | M9 | WSTRZYMANIE na słowa właściciela; STOP do A (priority now); przypomnienia koordynatora usunięte; lista zadań w stan.md | czekam na PRZEKAZANIE A i słowa właściciela |
+| 10.11 05:29 | A | PRZEKAZANIE: 303 → 27e2ac1 (autor OK, ls-remote OK); P-643 do weta; obserwacja: zadanie eksperymenty-wzoru w przebiegu 8 = failure (poza bramką); kontekst 26%, 5,56 USD; nie archiwizowana (praca niedokończona, wznowienie z kontekstem) | wstrzymane |
