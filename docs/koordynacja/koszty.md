@@ -27,5 +27,6 @@
 | session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | 8,12 (odczyt 09:31) | 27 | 10.11 08:36 → 09:34 przekazanie | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
 
 | session_01T66VBwXXdrAfk53WkdwZsz | koordynator M9 (fable-5-2) | — | 10,11 (odczyt 11:16) | 31 | 10.11 09:33 → 11:22 przekazanie | — | następca session_01T66VBzCiPMuAiXva784rCV |
+| L session_01T66VByaAC5LWxutR7guajC | 07 build (opus), dokument | 8 | 14,67 | 29 | 10.11 11:36 → 11:37 → ok. 11:50 → — (docs, [skip ci]) → 12:00 | 0 | 6 subagentów ok. 860 tys. tokenów; próg STOP 10,5 przekroczony bez sygnału (sesja nie zna kosztu) |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
