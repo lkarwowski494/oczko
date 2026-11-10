@@ -22,6 +22,8 @@ export type NazwaSymbolu = 'stopwatch' | 'pause.fill' | 'highlighter' | 'pencil.
   | 'magnifyingglass'
   // M3 p4b (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577): „Ekran nie gaśnie” w Ustawieniach (decyzja 04 M3-MAK-03: `sun.max` znaczy zakładkę Dziś).
   | 'iphone'
+  // M1-245 (P-661, fix11 „Specyfikacja dla 08”): wiersz „Open source licenses” w Ustawieniach — znak praw autorskich (nazwany wyjątek od zamrożenia p1, tylko typ, jak P-577).
+  | 'c.circle'
   | 'sun.max' | 'square.stack' | 'plus.square' | 'scribble.variable' | 'square.grid.3x3';
 
 export function SymbolSf(p: { nazwa: NazwaSymbolu; rozmiar: number; kolor: ColorValue; maxSkala: number; waga?: 'regular' | 'bold' }): React.ReactElement {

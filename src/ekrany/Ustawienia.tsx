@@ -38,6 +38,8 @@ export type PropsUstawien = {
   /** Język aplikacji (F-36) i jakość przekładu (BR-DAN-010): wartość = preferencja, jezyk = bieżący język tekstów. */
   jezyk?: { stan: { wartosc: PreferencjaJezyka; jezyk: string }; naJezyk(): void; naZglosTlumaczenie(): void };
   naZrodla?(): void;
+  /** M1-245 (P-661): ekran „Open source licenses”; wiersz stoi bezpośrednio pod „About our content”. */
+  naLicencje?(): void;
 };
 
 /** Wiersz listy grupowanej (ZM-07): ikona (kafelek `ikonaTlo`), podpis od lewej, wartość po prawej, strzałka tylko przy przejściu (`strzalka`). `przelacznik`: wiersz z przełącznikiem zamiast stuknięcia. */
@@ -77,7 +79,7 @@ function Wiersz(p: PropsWiersza): React.ReactElement {
   );
 }
 
-export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, preferencje }: PropsUstawien): React.ReactElement {
+export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, naZglosProblem, naStanDanych, dane, wynikDanych, panelE2e, naWstecz, jezyk, naZrodla, naLicencje, preferencje }: PropsUstawien): React.ReactElement {
   const k = useKolory();
   const st = StyleSheet.create({
     grupa: { borderRadius: promien.lista, backgroundColor: k.powierzchnia, padding: odstep.xs, gap: odstep.xs },
@@ -123,6 +125,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
         <Wiersz symbol="star" tekst={t('ustawienia.ocen')} onPress={() => system.otworzAdres(adresy.recenzja)} testID="ustawienia-ocen" />
         <Wiersz symbol="hand.raised" tekst={t('ustawienia.polityka')} rola="link" onPress={() => system.otworzAdres(adresy.polityka)} testID="ustawienia-polityka" />
         {naZrodla && <Wiersz symbol="book" tekst={t('ustawienia.zrodla_wiedzy')} strzalka onPress={naZrodla} testID="ustawienia-zrodla" />}
+        {naLicencje && <Wiersz symbol="c.circle" tekst={t('ustawienia.licencje')} strzalka onPress={naLicencje} testID="ustawienia-licencje" />}
       </View>
       {jezyk && (
         <View style={st.grupa} testID="ustawienia-grupa">

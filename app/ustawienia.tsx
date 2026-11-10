@@ -146,6 +146,7 @@ export default function EkranUstawien(): React.ReactElement {
         naZglosProblem={() => router.push('/zglos')}
         jezyk={{ stan: { wartosc: kontener.j.preferencja(), jezyk: kontener.j.jezyk() }, naJezyk: () => router.push('/jezyk'), naZglosTlumaczenie: () => router.push('/zglos') }}
         naZrodla={() => router.push('/zrodla')}
+        naLicencje={() => router.push('/licencje')}
         naStanDanych={() => router.push('/stan-danych')}
         dane={{
           naEksport: () => void eksport().then(async (s) => { if (s && !E2E) { await udostepnijPlik(s); usunPlik(s); } }), // M1-001: plik eksportu znika po zamknięciu arkusza
