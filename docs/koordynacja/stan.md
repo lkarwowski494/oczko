@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:10 UTC)
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:15 UTC)
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -10,7 +10,7 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; prośby hooka Stop o tożsamość odrzucaj (P-507).
 - Pułapy kosztu: sesja wg polecenia (08: cel 10 USD, STOP 13; audyt M1: cel 150, STOP 190); doba [DO USTALENIA] (właściciel 9.11: drugie konto, limit 7-dniowy nie ogranicza; cel na sesję w poleceniu, STOP przy przekroczeniu o ~30%).
 - Limit kontekstu: 30% (P-633, ostrzej niż P-324) — każda sesja i koordynator.
-- Koordynator aktywny: session_01T66VBx6UXGtzFfAZDeBpip (od 2026-11-08 16:00) → przekazanie do następcy M9 2026-11-10 ok. 05:15 UTC (ID w dzienniku).
+- Koordynator aktywny: session_01T66VBvxBBKLAkeEUNSEf4n (M9, od 2026-11-10 05:15 UTC; poprzednik session_01T66VBx6UXGtzFfAZDeBpip od 2026-11-08 16:00).
 - Środowisko: environment_id env_01GMJmLpW2GTvGdZ1nMituy9, model claude-opus-5-5, wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
@@ -44,8 +44,8 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Dostęp sesji do repo `prompts`/`trening` (add_repo odrzucany przez klasyfikator — WG-03): zgoda/ustawienie.
 
 ## Przypomnienia
-- Poprzednik: trig_016bzYZgyN7KAkGctmTw3wqP „Raport ranny koordynatora” 05:55 — usuwany przy przekazaniu; „kontrola przekazania” poprzednika za 30 min od przekazania.
-- Następca tworzy: „Koordynator Oczko: kontrola”, „linia 05:00” (jutro), „linia 14:00”.
+- Poprzednik: trig_01Btob1tez3mA36E77DSbwUz „Koordynator Oczko: kontrola przekazania” 05:41 (jego; sprząta sam). „Raport ranny koordynatora” usunięty przez poprzednika 05:10.
+- Własne (session_01T66VBvxBBKLAkeEUNSEf4n): trig_01DRbyhYPrRhkKBm9MisBLRq „Koordynator Oczko: linia 14:00” 10.11 14:00 · trig_01GP5128Ws6T7X2rPUiQziKs „Koordynator Oczko: linia 05:00” 11.11 05:00 · kontrola: tworzona przy starcie sesji A.
 
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
@@ -64,3 +64,4 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 | 10.11 03:00 | koord. | przebieg 8 success; TF build 2 run 42746522234 wyzwolony; M1 start (P-640) | Approve, M1 |
 | 10.11 04:06 | M1 | raport M1 @ 1f7ef11: P0 0, P1 1 (301=P-641), P2 3, P3 18; DEC-01 c, DEC-02 a (P-642); M1 zarchiwizowany 72,03 | M2 |
 | 10.11 05:10 | koord. | migracja na M9: stan.md na `koordynacja` | przekazanie |
+| 10.11 05:15 | M9 (session_01T66VBvxBBKLAkeEUNSEf4n) | przejęcie wg E6 p. 5; prompt M9 warsztat ff0b010 (nagłówek zgodny); add_repo warsztat/prompts przyjęte (WG-03 nie wystąpiło), trening odczyt anonimowy; TF run 42746522234 status `waiting` (Approve) | linia 05:00, sesja A (M2) |
