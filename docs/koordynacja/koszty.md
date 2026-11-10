@@ -15,12 +15,15 @@
 | session_01T66VBwZkpjZzMRtFv5FgXW | C: M1 reaudit 301–304 | 25 (STOP 32) | 13,79 | 22 | 10.11 06:05 → 06:05 → raport 564cbd5 06:23 → przyjęte 06:25 | — | |
 | session_01T66VBzzRjKwYyvTLy9scsA | D: M1 reaudit pętla 2 (323, 324) | 8 (STOP 10,4) | 3,21 | 20 | 10.11 06:38 → 06:38 → raport d4f7b38 06:51 → przyjęte 06:51 | — | zarchiwizowana 06:53; szacunek ×0,40 |
 | session_01T66VBzsdhe1m1utdtWneFy | E: 10 build (zrzuty sklepu, 244, 326) | 15 (STOP 19,5) | 5,87 | 40 | 10.11 06:55 → 06:55 → 9aa3b90 ok. 07:02 → CI brak → przekazanie 07:51 (nieprzyjęte) | przebieg zrzutów 1: 18 min build + awaria kroku Maestro (stracony przebieg, błąd konfiguracji) | zarchiwizowana 07:52; następca E2 |
-| session_01T66VBvchQHYc2grKLK3LzA | E2: 10 build (zrzuty — dokończenie) | 10 (STOP 13) | — (otwarta) | — | 10.11 07:51 → 07:51 → … | — | |
+| session_01T66VBvchQHYc2grKLK3LzA | E2: 10 build (zrzuty — dokończenie) | 10 (STOP 13) | 4,01 (odczyt 09:32) | 27 | 10.11 07:51 → 07:51 → 992aec2 ok. 08:37 → run zrzutów zielony 09:19 (wg sesji) → PRZEKAZANIE 09:27 (nieprzyjęte: recenzja J, `ci.yml`) | przebieg zrzutów 1 czerwony (sceny 04–07), naprawczy ok. 40 min | szacunek ×0,40 |
 | session_01T66VBygrH2FB6wWhFKzzSm | koordynator M9 (fable-5-2) | — | — | — | od 10.11 06:36 | — | następca session_01T66VBxhDabqriZxJMgbRsB |
 | session_01T66VBydAGZjc8FP2V9yPwi | F: 04 fix (projekt buildu 3) | 8 (STOP 10,4) | 6,13 | 28 | 10.11 08:40 → 08:40 → 738b0d6 ok. 08:55 → verify hooka (wg sesji) → przyjęte 08:58 | — | zarchiwizowana 09:00; szacunek ×0,77 |
 | session_01T66VBxbRK32NjWj1jbd7ER | G: 08 fix (kod buildu 3) | 10 (STOP 13) | 4,80 | 34 | 10.11 08:58 → 08:58 → 4eac4af ok. 09:03 → verify hooka 09:26 (wg sesji) → nieprzyjęte (recenzja I) | odpowiedź koordynatora na PYTANIE i18n: 1 min | zarchiwizowana 09:30; szacunek ×0,48 |
 | session_01T66VBy3eeXpsL31qf2TLYe | H: 09 build (6 kluczy × 34) | 5 (STOP 6,5) | — (otwarta) | — | 10.11 09:28 → 09:28 → … | — | |
 | session_01T66VByjqMZp13ZcqHKwEHH | I: 08 audit (recenzja buildu 3) | 12 (STOP 15,6) | — (otwarta) | — | 10.11 09:28 → 09:28 → … | — | |
+| session_01T66VBvdJcbv9Zfh1QVujsz | J: 10 audit (recenzja zrzutów sklepu) | 6 (STOP 7,8) | — (otwarta) | — | 10.11 09:34 → 09:34 → … | — | |
 | session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | 8,12 (odczyt 09:31) | 27 | 10.11 08:36 → 09:34 przekazanie | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
+
+| session_01T66VBwXXdrAfk53WkdwZsz | koordynator M9 (fable-5-2) | — | — | — | od 10.11 09:33 | — | następca session_01T66VBzCiPMuAiXva784rCV |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
