@@ -104,3 +104,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 05:38 | A2 | start session_01T66VBygxDoZxuZKDNHHXc8 od 27e2ac1, polecenie @ 8e20e6d7 (KO-013); przypomnienia: kontrola 06:24, linie 14:00 i 05:00 | kontrola 06:24: add_repo warsztatu u A2, postęp 302/304 |
 | 10.11 05:42 | właściciel | „1. Approved 2. Zgoda 3. Juz wstrzymane 4. Approved”; TF run 42746522234 in_progress (05:43) | B |
 | 10.11 05:44 | B | start session_01T66VBxU3pNDFL8RzCfKmf9 (publikacja 301), polecenie @ 28f7a7c5; A2 powiadomiona (301 domyka po PRZEKAZANIU B) | kontrola 06:24: wynik TF build 2, B, A2 |
+| 10.11 05:44 | B | PYTANIE: add_repo apps4brew-www (push) odrzucone przez klasyfikator trybu auto („Access Added As A Means”); nic nie zmienione | decyzja KO-015 |
+| 10.11 05:47 | M9 | add_repo apps4brew-www w sesji koordynatora przyjęte; klon main = ce8cad2 (zgodne z kandydatem); publikację 301 wykonuje subagent koordynatora (sonnet) wg kroków z `polecenia/B.md`; B dostała polecenie zakończenia | wynik subagenta → A2 (dziennik, `--ustaw`); archiwizacja B po odczycie kosztu |
