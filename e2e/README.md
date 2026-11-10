@@ -203,7 +203,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |
 | `ustawienia-eksport` | Ustawienia | eksport wszystkich danych | — | |
-| `ustawienia-przewodnik` | Ustawienia (P-685, spec 04 przewodnik §1) | wiersz „Guide” bezpośrednio nad „Help”, wartość „{n} of 42” (accessibilityValue, bez testID wartości); scen. 70 | „Guide” | |
+| `ustawienia-przewodnik` | Ustawienia (P-685, spec 04 przewodnik §1) | wiersz „Guide” bezpośrednio nad „Help”, wartość „{n} of 42” (osobny testID `ustawienia-przewodnik-wartosc`, R-70); scen. 70 | „Guide” | |
+| `ustawienia-przewodnik-wartosc` | Ustawienia, wiersz „Guide” (R-70) | tekst wartości wiersza: „{n} of 42” (twarda asercja scen. 70) | „{n} of 42” | |
 | `ustawienia-pomoc` | Ustawienia | wiersz „Help” (link do strony wsparcia z FAQ; DEC-22 a, M1-audytor-generalny-061) | „Help” | |
 | `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
 | `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |

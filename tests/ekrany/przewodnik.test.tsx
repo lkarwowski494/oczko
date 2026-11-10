@@ -145,6 +145,7 @@ describe('wejścia (P-685)', () => {
     const wiersz = screen.getByTestId('ustawienia-przewodnik');
     expect(wiersz).toHaveTextContent(/Guide/);
     expect(wiersz).toHaveTextContent(/3 of 42/);
+    expect(screen.getByTestId('ustawienia-przewodnik-wartosc')).toHaveTextContent(/^3 of 42$/); // R-70: wartość wiersza ma własny testID (twarda asercja w scenariuszu E2E 70)
     expect(within(wiersz).getByTestId('symbol-questionmark.circle', { includeHiddenElements: true })).toBeTruthy();
     expect(within(screen.getByTestId('ustawienia-pomoc')).getByTestId('symbol-lifepreserver', { includeHiddenElements: true })).toBeTruthy();
     expect(within(screen.getByTestId('ustawienia-pomoc')).queryByTestId('symbol-questionmark.circle', { includeHiddenElements: true })).toBeNull();

@@ -122,7 +122,7 @@ export function Ustawienia({ stan: s, t, system, adresy, naOferty, naWibracje, n
       {wynikDanych}
       <View style={st.grupa} testID="ustawienia-grupa">
         <Wiersz symbol="icloud" tekst={t('ustawienia.stan_danych')} strzalka onPress={naStanDanych} testID="ustawienia-stan-danych" />
-        {przewodnik && <Wiersz symbol="questionmark.circle" tekst={t('przewodnik.tytul')} wartosc={t('przewodnik.postep_wiersza', przewodnik.postep)} strzalka onPress={przewodnik.naPrzewodnik} testID="ustawienia-przewodnik" />}
+        {przewodnik && <Wiersz symbol="questionmark.circle" tekst={t('przewodnik.tytul')} wartosc={t('przewodnik.postep_wiersza', przewodnik.postep)} strzalka wartoscTestID="ustawienia-przewodnik-wartosc" onPress={przewodnik.naPrzewodnik} testID="ustawienia-przewodnik" />}
         {/* P-685: „Help” (strona wsparcia) dostaje `lifepreserver` — `questionmark.circle` znaczy teraz przewodnik (jeden symbol = jedno znaczenie, jak P-577) */}
         <Wiersz symbol="lifepreserver" tekst={t('ustawienia.pomoc')} rola="link" onPress={() => system.otworzAdres(adresy.wsparcie)} testID="ustawienia-pomoc" />
         <Wiersz symbol="exclamationmark.bubble" tekst={t('ustawienia.zglos')} strzalka onPress={naZglosProblem} testID="ustawienia-zglos" />
