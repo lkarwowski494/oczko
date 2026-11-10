@@ -10,7 +10,8 @@ const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.a
 export const DOZWOLONE = new Set(['MIT', 'ISC', '0BSD', 'BSD-2-Clause', 'BSD-3-Clause', 'Apache-2.0', 'BSL-1.0', 'OFL-1.1', 'CC0-1.0', 'CC-BY-4.0', 'Unlicense', 'BlueOak-1.0.0', 'Python-2.0', 'blessing']);
 export const WYJATKI = [{ licencja: 'MPL-2.0', pakiet: /^lightningcss(-[\w-]+)?$/, powod: 'narzędzie budowania CSS (expo), poza pakietem iOS; do potwierdzenia przez 05' }];
 
-export function sprawdzLicencje(korzen) {
+/** Graf zależności produkcyjnych z package-lock.json (jak Node: najbliższy node_modules w górę, bez dev). Zwraca { P, widziane: Map<klucz, wpis> } albo null bez locka (M1-245: wspólne dla kontroli i generatora). */
+export function grafProdukcyjny(korzen) {
   const lockPlik = join(korzen, 'package-lock.json');
   if (!existsSync(lockPlik)) return null;
   const P = JSON.parse(readFileSync(lockPlik, 'utf8')).packages ?? {};
@@ -36,6 +37,13 @@ export function sprawdzLicencje(korzen) {
       if (r && !widziane.has(r)) kolejka.push(r);
     }
   }
+  return { P, widziane };
+}
+
+export function sprawdzLicencje(korzen) {
+  const graf = grafProdukcyjny(korzen);
+  if (!graf) return null;
+  const { widziane } = graf;
   const naruszenia = [], wyjatki = [];
   for (const [k, e] of widziane) {
     const nazwa = k.slice(k.lastIndexOf('node_modules/') + 'node_modules/'.length);
