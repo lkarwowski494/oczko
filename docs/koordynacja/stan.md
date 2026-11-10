@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 11:25 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 15:16 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -15,7 +15,14 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (10.11 11:25 UTC) — koordynator session_01T66VByx9Gr7xm8SB8GYS1D
+## Teraz (10.11 15:16 UTC) — PRZEKAZANIE koordynatora session_01T66VByx9Gr7xm8SB8GYS1D (kontekst ok. 28%, ok. 9,5 USD)
+- **Build 3 nie powstał.** `testflight.yml` run 42836695619 na 87ade5a (dispatch 14:41 ze zgodą trwałą — build 3; bramka zielona; Approve właściciela dany ok. 14:50) padł w jobie `build` (macos-26) w kroku 7 „Testy (pełne npm run verify)” (`testflight.yml:98-101`): 1 test z 7020 — `tests/wydanie/licencja-ofl-w-pakiecie.test.ts:28`, `hermesc` nie wystartował (`kod: null`); hipoteza: linia 11 wybiera `linux64-bin` przed `osx-bin` (wg subagenta, niesprawdzone). Podpis, archiwum i wysyłka nie ruszyły.
+- **Trwa sesja N** session_01T66VBzxND6Wvoct7mrNBqJ (08 fix TF-B3-01, opus), polecenie `polecenia/N.md` @ 3f24b9a + korekta wiadomością 15:15 (ostatni commit z `[e2e-pelny] [e2e-ciemny]`, bez `[skip ci]`); gałąź `claude/n-hermesc-2026-11-10` od 87ade5a. Pierwsza kontrola N po 20 min (WG-05).
+- **Następca — kroki:** PRZEKAZANIE N → odbiór (commit, autor, test czerwony→zielony, verify, diff tylko test/skrypt) + recenzja niezależna krótka (08 audit, 1 subagent albo sesja) → `ci.yml` na SHA N → ff integracji 87ade5a → SHA N → „Jakość · iOS” (pełne e2e, ok. 2–2,5 h; maszyny macOS zwykle brak 14–23 UTC) → zielony → `testflight.yml` dispatch (KO-026: zgoda trwała — build 3 nadal obowiązuje, bo build 3 nie powstał; do weta) → prośba o **nowy Approve** z linkiem → VALID → numer buildu do listy testu (gałąź L) i prośba o test.
+- Gałęzie tylko z docs do scalenia po buildzie 3: L `claude/l-test-telefon-2026-11-10` @ da799e5, M `claude/m-e2e-build3-2026-11-10` @ 1186ff4.
+- Właściciel (10.11): test na telefonie tylko na buildzie 3, pełna lista (L). Model koordynatora: właściciel przełączył na claude-opus-5-5 (`/model`, ok. 12:45) — następca startuje na opus.
+
+## Historia: Teraz 11:25 UTC — koordynator session_01T66VByx9Gr7xm8SB8GYS1D
 - Przejęcie z E6 wykonane (stan @ 647d77c, prompt M9 z warsztatu `koordynacja/m9/m9-prompt-2026-11-10.md`, sha256 c3b30ef9… sprawdzony; warsztat @ 59f3de6, prompts @ f701ce9). Szczegóły stanu i instrukcja kroków: sekcja „Historia: Teraz 11:22” niżej — obowiązuje bez zmian.
 - Trwa tylko „Jakość · iOS” run 42797027264 na 87ade5a (`actions_get` 11:21: status „queued” = w toku, attempt 1); sesji podrzędnych nie ma; na integrację nic nie wypychać do końca buildu 3.
 - Następny krok: kontrola 12:00 UTC (`actions_get`); success → ls-remote = 87ade5a → `testflight.yml` (zgoda trwała — build 3) → prośba o Approve; czerwone e2e → diagnoza sesją z run ID.
@@ -85,6 +92,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| N (aktywna od 15:14) | session_01T66VBzxND6Wvoct7mrNBqJ | 08-programista fix TF-B3-01 (opus) | claude/n-hermesc-2026-11-10 od 87ade5a | 0 | 0 | w toku; polecenie `polecenia/N.md` @ 3f24b9a; prompt w warsztacie @ fc52f2f; pułap 8, STOP 10,5 |
 | M (zarchiwizowana 13:06, 6,80 USD, kontekst 25%) | session_01T66VC127fsqqLHDTHoS8mi | 08-programista fix E2E-B3-01 (opus; diagnoza) | claude/m-e2e-build3-2026-11-10 @ 1186ff4 | 25 | 6,80 | przyjęta: diagnoza `docs/programista/build3-e2e-stan.md` (1 plik +49, autor zgodny, 0 Co-Authored-By; verify hooka 0 wg sesji); kod bez zmian |
 | L (zarchiwizowana 11:59, 14,67 USD — ponad próg STOP 10,5; kontekst 29%) | session_01T66VByaAC5LWxutR7guajC | 07-jakosc build (pełna lista testu właściciela, build 3; dokument), opus | claude/l-test-telefon-2026-11-10 @ da799e5 | 29 | 14,67 | przyjęta (dokument; gałąź nie scalona — scalenie do integracji po buildzie 3) |
 | A (nieosiągalna z tego konta; zastąpiona przez A2) | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
@@ -148,7 +156,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Pule numerów decyzji
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
 - Pula A2: P-644…P-652 (P-643 zajęty przez 303).
-- KO następny: **KO-026**. Pula L (07): P-674…P-676. Pula M (08): P-677…P-680. Pula H (09): P-673…P-676. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
+- KO następny: **KO-027**. Pula L (07): P-674…P-676. Pula M (08): P-677…P-680. Pula N (08): P-681…P-684. Pula H (09): P-673…P-676. Pula F (04): P-661…P-665; pula G (08): P-666…P-672. Pula E: P-653…P-660 (pula B niewykorzystana).
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -248,3 +256,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 14:02 | linia 14:00 | attempt 2 42797027264 in_progress (13:01→); kontekst własny 24,8% (248 414), 7,49 USD; koszt doby (od 9.11 18:45, bez sesji session_01T66VBx6UXGtzFfAZDeBpip 93,85 USD od 8.11) ok. 225,6 USD wg `koszty.md`; największa strata: e2e cz. 2 iphone czerwony przez awarię symulatora → ok. 2 h 25 min do wyniku ponowienia (10:47→ok. 14:35) → WG-07; WG-03 4× → lekcja dla biblioteki (w linii) | kontrola 14:40; linia 05:00 |
 | 10.11 14:42 | CI, build 3 | „Jakość · iOS” 42797027264 attempt 2: **success** (koniec 14:37, `actions_get`); ls-remote integracji = 87ade5a; **`testflight.yml` dispatch** (zgoda trwała — build 3; ref claude/youthful-pasteur-kx83sn, bez_wysylki=false, pomin_bramke_e2e=false, powod="") → run 42836695619 in_progress 14:41:47 na 87ade5a; prośba o Approve do właściciela 14:42 (https://github.com/lkarwowski494/oczko/actions/runs/42836695619); zgoda trwała — build 3 **wykorzystana** | kontrola ok. 15:07: Approve → VALID |
 | 10.11 14:51 | właściciel | „Gotowe” — Approve buildu 3 (run 42836695619) wg właściciela; `actions_get`: in_progress, updated 14:50:27 (status nie jest „waiting”, zgodne z Approve; nie potwierdzone wpisem deploymentu) | kontrola 15:08: przebieg → VALID |
+| 10.11 15:16 | build 3, N, koordynator | `testflight.yml` 42836695619: **failure** 14:57 (bramka success; `build` padł na verify: `licencja-ofl-w-pakiecie.test.ts:28`, hermesc `kod: null`; wg subagenta). Start N session_01T66VBzxND6Wvoct7mrNBqJ (TF-B3-01) 15:14; KO-026. Własny kontekst 27,2% (272 293 o 15:12) → E6 | przekazanie koordynatora |
