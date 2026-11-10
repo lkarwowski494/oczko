@@ -1,6 +1,8 @@
 # Rola 10 (wydanie) — plik stanu
 Aktualizacja: 2026-11-10 (sesja Y: lista 1.0; sesja E2; wpis pierwszy poniżej, wpis sesji E pod nim) · poprzednio 2026-11-03 (P-501) · tryb build · prompt `prompts@97ec212` (`10-wydanie --tryb build`; polecenie luk: oczko-warsztat `koordynacja/role-2026-11-01/10-luki-p349.md` @3e8ab28)
 
+Stan kroków do wydania 1.0 prowadzi `docs/wydanie/lista-1-0.md` (stałe, jedyne źródło; zasada utrzymania na górze pliku).
+
 ## Stan · 2026-11-10 (sesja Y: lista kroków do wydania 1.0; gałąź `claude/y-lista-1-0-2026-11-10` od 75242ba; nic nie wysłano do ASC, żadnego workflowu nie uruchomiono)
 - **Zrobione:** `docs/wydanie/lista-1-0.md` (grupy A–F, 20 kroków właściciela ≈ 1 h 55 min – 3 h 10 min [OCENA], 12 kroków sesji/koordynatora; stan każdego z dowodem albo **[DO USTALENIA]**); decyzje P-714–P-716 do weta; `sklep.md` §5 poz. 1 i §5a wiersz 2.1 poprawione (wersja 1.0.0 i brak zaślepek na 75242ba). Dowody: `app.json:5`, `src/kompozycja/adresy.ts:8`, brak `FILL`/`TODO` w `notatka-recenzja.txt`, sha256 `0001.sql` zgodny z `migracje-wydane.json:13`, `node scripts/wydanie/sprawdz-adresy.mjs` (polityka, wsparcie, EULA 200; link recenzji 404 do publikacji), `npm ci` kod 0, `npm run jakosc:kontrole` kod 0.
 - **[DO USTALENIA] (sprawdza właściciel w ASC):** build 4 w TestFlight; lokalizacje produktów pl i reszty; zrzuty recenzji 3 produktów; Billing Grace Period; Copyright; opcja wydania „Manually”; lokalizacje bez własnych zrzutów (dziedziczenie `en`). Po stronie K: werdykt 07 dla SHA buildu 4, OG-07, plan aktualizacji (3.1.2(a)), zdanie o integracjach w opisie (2.5.1).

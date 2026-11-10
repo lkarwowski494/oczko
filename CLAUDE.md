@@ -31,7 +31,7 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite (stan poprzedniej wersji); de
 - atlas technik 1.1 (05: architektura, kontrakt, silnik rysunków; 06: treść): `docs/atlas/` (README.md), `scripts/atlas/`
 - stan i plan partii roli 08: `docs/programista/` (08); kopia liczb treści w domenie: `node scripts/domena/generuj-parametry.mjs`
 - wzrost (kanały, pozycjonowanie, ASO, pomiar): `docs/wzrost.md`, `docs/wzrost/` (11); szkice i dane zmierzone: `oczko-warsztat/11-wzrost/`
-- wydanie (sekrety, TestFlight, App Store Connect, dziennik zgód): `docs/wydanie/` (10); adres strony: `docs/wydanie/adres-strony.json`
+- wydanie (sekrety, TestFlight, App Store Connect, dziennik zgód): `docs/wydanie/` (10); lista kroków do 1.0: `docs/wydanie/lista-1-0.md`; adres strony: `docs/wydanie/adres-strony.json`
 - materiały prywatne (wywiad, dane App Store Connect, raporty audytu): `oczko-warsztat`, nie to repo
 
 ## Zasady

@@ -1,5 +1,7 @@
 # Lista kroków do wydania 1.0 (rola 10 · build · 2026-11-10)
 
+**Zasada utrzymania (koordynator, na słowa właściciela 2026-11-10: „Zrob plik z lista krokow do wydania 1.0 zeby nie zbierac tego za kazdym razem.”).** Ten plik jest stałym, jedynym źródłem stanu wydania 1.0. Punkt odhacza ten, kto go wykonał lub sprawdził (sesja albo koordynator), w tym samym commicie co zmiana, z datą i dowodem (komenda z kodem, `plik:linia`, numer decyzji z przebiegiem). Nowy krok dopisuje się tutaj, nie w innych plikach. Właściciel nie odhacza w pliku: jego wykonanie potwierdza słowami koordynator albo sesja, z datą.
+
 Baza: `claude/t-przewodnik-2026-11-10` @ 75242ba (kandydat 1.0 = build 4: integracja 7defd5f + przewodnik). Każde „zrobione” ma dowód (`plik:linia`, numer decyzji z przebiegiem albo komenda z 2026-11-10); czego z repo nie da się stwierdzić, to **[DO USTALENIA]** z jednym zdaniem, jak właściciel to sprawdzi. Niczego nie wysłano do App Store Connect i nie uruchomiono workflowu (ta sesja tylko czyta i pisze dokument). Zgoda właściciela = osobne, wyraźne słowa na to jedno działanie (zasada roli 10 nr 2; zapis w `dziennik.md`).
 
 ## Podsumowanie

@@ -250,6 +250,7 @@ Uwaga: `asc-zrzuty.yml` i `asc-metadane.yml` wgrywają do wersji w stanie edytow
 - **Dostępność:** nadal bez deklaracji; po audycie 04 (2.1) wolno deklarować tylko to, co przejdzie wspólne zadania.
 
 ## 5. Lista przed wysyłką do App Store (szkielet; dowody przy wysyłce)
+Stan wszystkich kroków do wydania 1.0 (w tym tej listy) prowadzi `docs/wydanie/lista-1-0.md`; nowe kroki dopisuje się tam.
 1. Build = SHA z werdyktu 07 (brak raportu 07 → nic nie wysyłam). Wersja w `app.json:5`: `1.0.0` (stan 75242ba, 2026-11-10; zrobione). Numer z workflow (D3a). Pełna lista kroków do wydania ze stanem: `docs/wydanie/lista-1-0.md`.
 2. `sprawdz-wydanie.mjs` z kodem 0:
    - `metadane`: OK dla nazw, opisy po przeglądzie zakresu;
