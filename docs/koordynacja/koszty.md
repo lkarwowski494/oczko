@@ -26,6 +26,6 @@
 | session_01T66VBvdJcbv9Zfh1QVujsz | J: 10 audit (recenzja zrzutów sklepu) | 6 (STOP 7,8) | 3,86 | 23 | 10.11 09:34 → 09:34 → werdykt 09:42 → raport w warsztacie 40f3064 09:45 → przyjęte 09:43 | add_repo odrzucony: ok. 2 min + przeniesienie raportu 3 min (WG-03) | zarchiwizowana 09:46; szacunek ×0,64 |
 | session_01T66VBzCiPMuAiXva784rCV | koordynator M9 (fable-5-2) | — | 8,12 (odczyt 09:31) | 27 | 10.11 08:36 → 09:34 przekazanie | — | następca session_01T66VBygrH2FB6wWhFKzzSm |
 
-| session_01T66VBwXXdrAfk53WkdwZsz | koordynator M9 (fable-5-2) | — | — | — | od 10.11 09:33 | — | następca session_01T66VBzCiPMuAiXva784rCV |
+| session_01T66VBwXXdrAfk53WkdwZsz | koordynator M9 (fable-5-2) | — | 10,11 (odczyt 11:16) | 31 | 10.11 09:33 → 11:22 przekazanie | — | następca session_01T66VBzCiPMuAiXva784rCV |
 
 Mnożnik szacunku: [DO USTALENIA] (za mało sesji M9).
