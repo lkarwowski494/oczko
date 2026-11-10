@@ -2,7 +2,7 @@
 // Języki z krojem systemowym (kroje.tytul.jezykiSystemowe): bez komórek, krój systemowy z `tabular-nums` (design-spec „Typografia”).
 import React from 'react';
 import { StyleSheet, Text, View, useWindowDimensions, type StyleProp, type TextStyle } from 'react-native';
-import { komorkiLiczby, szerokoscKomorki } from './liczba';
+import { komorkiLiczby, szerokoscKomorki } from './liczbaKomorki';
 import { krojTytulowy } from './motyw';
 
 export type PropsLiczby = {

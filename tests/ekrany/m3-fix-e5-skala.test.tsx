@@ -6,7 +6,7 @@ import { Dzis, type DaneDzis } from '../../src/ekrany/Dzis';
 import { Licznik } from '../../src/ekrany/Licznik';
 import { LicznikWzoru } from '../../src/ekrany/WzorLicznik';
 import { Liczba } from '../../src/ekrany/Liczba';
-import { szerokoscKomorki } from '../../src/ekrany/liczba';
+import { szerokoscKomorki } from '../../src/ekrany/liczbaKomorki';
 import { typografiaDzianiny } from '../../src/ekrany/motyw';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import tokeny from '../../docs/design/tokeny.json';
