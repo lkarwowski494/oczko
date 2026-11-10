@@ -128,6 +128,18 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(wf.jobs.zrzuty.concurrency.group).toMatch(/matrix\.urzadzenie.*matrix\.nr/); // gałęzie macierzy nie mogą dzielić grupy (jedna biegnie, reszta czeka, nadmiar anulowany)
   });
 
+  // 10-wydanie-007 (recenzja AB): wygląd podpisów zależy od wersji ImageMagicka i czcionek Noto z obrazu ubuntu-latest; bez wypisania wersji zmiana między przebiegami nie zostawia śladu (zasada wspólna 21).
+  test('zbierz: wersje ImageMagicka i pakietów czcionek (fonts-noto-core, fonts-noto-cjk) trafiają do podsumowania zadania zaraz po instalacji', () => {
+    const kroki = wf.jobs.zbierz.steps ?? [];
+    const i = kroki.findIndex((k: any) => /apt-get install .*imagemagick/.test(k.run ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(i).toBeGreaterThan(-1);
+    const run: string = kroki[i].run;
+    expect(run).toMatch(/convert -version/);
+    expect(run).toMatch(/dpkg-query -W[^\n]*fonts-noto-core[^\n]*fonts-noto-cjk/);
+    expect(run).toMatch(/GITHUB_STEP_SUMMARY/);
+    expect(run).toMatch(/set -o pipefail|set -e/); // porażka instalacji nie ginie w potoku do tee
+  });
+
   test('zrzut zakupu dla App Review: artefakt zrzut-zakupu z zadania z zakup=true, scena 99-zakup, skrypt robi go po angielsku', () => {
     const w = (wf.jobs.zrzuty.steps ?? []).find((k: any) => k.with?.name === 'zrzut-zakupu'); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(w).toBeDefined();

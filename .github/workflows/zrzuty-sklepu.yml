@@ -392,7 +392,11 @@ jobs:
           node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ"
           node scripts/ci/zrzuty-uzupelnij.mjs nalozenie poprzednie surowe "$OG07" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick fonts-noto-core fonts-noto-cjk >/dev/null
+        # 10-wydanie-007: wersje narzędzi do podsumowania (wygląd podpisów zależy od ImageMagicka i czcionek Noto z obrazu runnera; zasada wspólna 21)
+        run: |
+          set -eo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick fonts-noto-core fonts-noto-cjk >/dev/null
+          { echo "ImageMagick: $(convert -version | head -1)"; dpkg-query -W -f='czcionki: ${Package} ${Version}\n' fonts-noto-core fonts-noto-cjk; } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Kanał alfa precz (surowe zrzuty simctl są RGB; spłaszczenie na wszelki wypadek)
         run: |
           set -uo pipefail
