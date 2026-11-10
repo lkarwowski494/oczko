@@ -25,7 +25,7 @@ Wersja 2026-11-10, rola 07 (tryb build, sesja L koordynatora). **98 kroków**: 9
 - Krok, którego nie da się wykonać: „T-xx nie sprawdzono — powód”.
 - Wyślij koordynatorowi jedną wiadomością listę „T-01 tak, T-02 nie dotyczy, …”. Zrzuty tylko do prywatnego repo `oczko-warsztat` albo w wiadomości, nie do tego repo (mogą pokazywać Twoje dane).
 - **Język:** kroki podają napisy aplikacji po angielsku, dosłownie w cudzysłowie. Jeśli telefon jest po polsku, Oczko startuje po polsku — w T-05 przełączysz je na angielski. Ustawienia iOS i okna systemowe zostają w Twoim języku; w krokach w Ustawieniach iOS nazwy są po polsku.
-- **„Settings” w Oczku** to ikona zębatki w prawym górnym rogu ekranów „Today” i „Projects” (`src/ekrany/Dzis.tsx:183`), nie zakładka.
+- **„Settings” w Oczku** to ikona zębatki w prawym górnym rogu ekranu „Today” — tylko tam (`src/ekrany/Dzis.tsx:183`, testID `nav-ustawienia`; zakładka „Projects” nie ma zębatki: `app/(zakladki)/projekty.tsx` nie podaje `naUstawienia`, P-571; sprawdzone w kodzie kandydata 7defd5f), nie zakładka.
 - **Jeśli po T-02 masz już dane z wcześniejszego buildu,** liczby w krokach czytaj jako zmianę (np. „1 → 4 → 3” = +3, potem −1), a T-70 jako „o jeden dzień mniej niż przed T-70”.
 - Kolumna „Automat”: „e2e NN” = ten sam przepływ sprawdza też scenariusz `e2e/scenariusze/NN-…yaml` na symulatorze (na Twoim telefonie sprawdzasz prawdziwe urządzenie); „tylko urządzenie” = żaden automat tego nie sprawdza. „atrapa” / „zastępczy” = automat sprawdza wersję udawaną (sztuczny sklep, sztuczny zegarek, plik wstrzyknięty zamiast arkusza udostępniania).
 
