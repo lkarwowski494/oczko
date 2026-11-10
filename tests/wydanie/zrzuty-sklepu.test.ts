@@ -102,6 +102,17 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(sk).toMatch(/1320, 2868/);
     expect(sk).toMatch(/2064, 2752/);
   });
+  // 10-wydanie-002 (recenzja AB): jedna brakująca scena w jednym języku kończyła krok „komplet” czerwono i pomijała ramki dla WSZYSTKICH języków (≈ 10 h przebiegu `all` bez wyniku).
+  test('zbierz: ramki i podpisy powstają także przy czerwonym komplecie (if: always()), a brak surowych zrzutów nie jest błędem tego kroku', () => {
+    const kroki = wf.jobs.zbierz.steps ?? [];
+    const komplet = kroki.findIndex((k: any) => /Komplet zrzutów/.test(k.name ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const ramki = kroki.findIndex((k: any) => /^Ramki i podpisy/.test(k.name ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(komplet).toBeGreaterThan(-1);
+    expect(ramki).toBeGreaterThan(komplet);
+    expect(String(kroki[ramki].if)).toMatch(/always\(\)/);
+    expect(kroki[ramki].run).toMatch(/brak surowych zrzutów/); // pusty wynik zrzutów nie zaciemnia przyczyny czerwonego przebiegu drugim błędem
+  });
+
   test('zrzut zakupu dla App Review: artefakt zrzut-zakupu z zadania z zakup=true, scena 99-zakup, skrypt robi go po angielsku', () => {
     const w = (wf.jobs.zrzuty.steps ?? []).find((k: any) => k.with?.name === 'zrzut-zakupu'); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(w).toBeDefined();

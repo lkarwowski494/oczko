@@ -329,8 +329,12 @@ jobs:
           node scripts/ci/komplet-zrzutow.mjs sklep-zrzuty-surowe "$JEZYKI" "$URZADZENIA" | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
           [ "$bledy" -eq 0 ]
       - name: Ramki i podpisy (jak Trening, scripts/ci/ramki-sklepu.sh; język bez podpisów pominięty z ostrzeżeniem)
+        # 10-wydanie-002: always() — czerwony komplet (brak jednej sceny w jednym języku) nie odbiera ramek pozostałym językom; przebieg zostaje czerwony z kroku „komplet”,
+        # a niepełny zestaw trafia do artefaktu `sklep-zrzuty-ramki` do świadomej oceny (uzupełnienie brakujących scen: wejście uzupelnij_z_przebiegu).
+        if: always()
         run: |
           set -o pipefail
+          if [ -z "$(find sklep-zrzuty-surowe -name '*.png' 2>/dev/null | head -1)" ]; then echo "::warning::brak surowych zrzutów — bez ramek" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
           bash scripts/ci/ramki-sklepu.sh sklep-zrzuty-surowe sklep-zrzuty-ramki docs/wydanie/metadane/podpisy-zrzutow.json | tee -a "$GITHUB_STEP_SUMMARY"
           node scripts/ci/wymiary-asc.mjs sklep-zrzuty-ramki | tee -a "$GITHUB_STEP_SUMMARY"
           echo "Języki z ramkami: $(find sklep-zrzuty-ramki -mindepth 2 -maxdepth 2 -type d ! -path '*warunek-og07*' -exec basename {} \; | sort -u | paste -sd, -)" | tee -a "$GITHUB_STEP_SUMMARY"
