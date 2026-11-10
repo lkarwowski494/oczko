@@ -1,5 +1,5 @@
 {
-  "_opis": "M1-245 (P-661, 2026-11-10): biblioteki natywne spoza npm, które React Native kompiluje do binarki iOS (podspec w node_modules/react-native/third-party-podspecs i SocketRocket z scripts/cocoapods/helpers.rb) — lista i notki jak w Treningu (scripts/licenses-native.json, SEC2-06, ta sama wersja react-native 0.86.3); wersja jest sprawdzana z podspec przez scripts/jakosc/licencje-generuj.mjs. Licencja (SPDX) i notki o prawach autorskich — z pliku licencji projektu w tej wersji (adres url); treść licencji spoza npm — scripts/jakosc/licencje-natywne/<SPDX>.txt. ios/ powstaje w CI (CNG, ADR-0007), więc lista jest stała i porównywana z podspec. fast_float ma trzy licencje do wyboru (Apache-2.0 OR BSL-1.0 OR MIT) — wybrana MIT. glog: druga notka w COPYING dotyczy gettimeofday tylko dla Windows (src/utilities.cc v0.3.5, #ifdef OS_WINDOWS) — poza binarką iOS. folly: plik LICENSE bez notki — notka z nagłówków źródeł (np. folly/String.cpp). Kroje (lista fonts): pliki w assets/fonts z licencją OFL-1.1 w pliku obok (dołączana do aplikacji jako tekst, warunek 2 OFL).",
+  "_opis": "M1-245 (P-661, 2026-11-10): biblioteki natywne spoza npm, które React Native kompiluje do binarki iOS (podspec w node_modules/react-native/third-party-podspecs i SocketRocket z scripts/cocoapods/helpers.rb) — lista i notki jak w Treningu (scripts/licenses-native.json, SEC2-06, ta sama wersja react-native 0.86.3); wersja jest sprawdzana z podspec przez scripts/jakosc/licencje-generuj.mjs. Licencja (SPDX) i notki o prawach autorskich — z pliku licencji projektu w tej wersji (adres url); treść licencji spoza npm — scripts/jakosc/licencje-natywne/<SPDX>.txt. ios/ powstaje w CI (CNG, ADR-0007), więc lista jest stała i porównywana z podspec. fast_float ma trzy licencje do wyboru (Apache-2.0 OR BSL-1.0 OR MIT) — wybrana MIT. glog: druga notka w COPYING dotyczy gettimeofday tylko dla Windows (src/utilities.cc v0.3.5, #ifdef OS_WINDOWS) — poza binarką iOS. folly: plik LICENSE bez notki — notka z nagłówków źródeł (np. folly/String.cpp). Kroje (lista fonts): pliki w assets/fonts z licencją OFL-1.1 w pliku obok (dołączana do aplikacji jako tekst, warunek 2 OFL). I-002 (2026-11-10): pody ciągnięte przez moduły Expo, nie przez React Native — openiap (expo-iap), SDWebImage i SDWebImageWebPCoder (prekompilowane xcframeworki expo-image-manipulator, wersje `exact` w jego spm.config.json) oraz libwebp (statycznie w SDWebImageWebPCoder; wersja z WebPGetDecoderVersion() w binarium: 0x010100 = 1.1.0). Pole zrodloWersji wskazuje, skąd wzięto wersję; generator nie porównuje jej z podspec (kontrola modułów Expo: 1.0.1), zgodność pilnuje tests/domena/licencje-natywne-expo.test.ts.",
   "pods": [
     {
       "pod": "RCT-Folly",
@@ -68,6 +68,50 @@
         "Copyright (c) 2016-present, Facebook, Inc."
       ],
       "url": "https://github.com/facebookincubator/SocketRocket/blob/0.7.1/LICENSE"
+    },
+    {
+      "pod": "openiap",
+      "name": "openiap",
+      "version": "3.6.0",
+      "license": "MIT",
+      "copyright": [
+        "Copyright (c) 2025 hyo.dev"
+      ],
+      "url": "https://github.com/hyodotdev/openiap/blob/3.6.0/LICENSE",
+      "zrodloWersji": "node_modules/expo-iap/openiap-versions.json (apple)"
+    },
+    {
+      "pod": "SDWebImage",
+      "name": "SDWebImage",
+      "version": "5.21.1",
+      "license": "MIT",
+      "copyright": [
+        "Copyright (c) 2009-2020 Olivier Poitrey rs@dailymotion.com"
+      ],
+      "url": "https://github.com/SDWebImage/SDWebImage/blob/5.21.1/LICENSE",
+      "zrodloWersji": "node_modules/expo-image-manipulator/spm.config.json (exact)"
+    },
+    {
+      "pod": "SDWebImageWebPCoder",
+      "name": "SDWebImageWebPCoder",
+      "version": "0.14.6",
+      "license": "MIT",
+      "copyright": [
+        "Copyright (c) 2018 Bogdan Poplauschi"
+      ],
+      "url": "https://github.com/SDWebImage/SDWebImageWebPCoder/blob/0.14.6/LICENSE",
+      "zrodloWersji": "node_modules/expo-image-manipulator/spm.config.json (exact)"
+    },
+    {
+      "pod": "libwebp",
+      "name": "libwebp",
+      "version": "1.1.0",
+      "license": "BSD-3-Clause",
+      "copyright": [
+        "Copyright (c) 2010, Google Inc. All rights reserved."
+      ],
+      "url": "https://github.com/webmproject/libwebp/blob/v1.1.0/COPYING",
+      "zrodloWersji": "WebPGetDecoderVersion() w SDWebImageWebPCoder.xcframework (0x010100)"
     }
   ],
   "fonts": [

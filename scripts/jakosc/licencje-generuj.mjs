@@ -77,7 +77,7 @@ export function zbuduj(korzen) {
   const wersjaPoda = (pod) => (pod === 'RCT-Folly' ? /@@folly_config = \{\s*:version => '([^']+)'/.exec(pomocnik)?.[1]
     : pod === 'SocketRocket' ? /@@socket_rocket_config = \{\s*:version => '([^']+)'/.exec(pomocnik)?.[1]
     : existsSync(join(RN, 'third-party-podspecs', `${pod}.podspec`)) ? /spec\.version\s*=\s*['"]([^'"]+)['"]/.exec(readFileSync(join(RN, 'third-party-podspecs', `${pod}.podspec`), 'utf8'))?.[1] : undefined);
-  for (const p of opis.pods) if (wersjaPoda(p.pod) !== p.version) bledy.push(`${p.pod}: lista ${p.version}, podspec ${wersjaPoda(p.pod) ?? 'brak'}`);
+  for (const p of opis.pods) if (!p.zrodloWersji && wersjaPoda(p.pod) !== p.version) bledy.push(`${p.pod}: lista ${p.version}, podspec ${wersjaPoda(p.pod) ?? 'brak'}`);
   for (const f of readdirSync(join(RN, 'third-party-podspecs')).filter((x) => x.endsWith('.podspec') && x !== 'ReactNativeDependencies.podspec')) {
     if (!opis.pods.some((p) => `${p.pod}.podspec` === f)) bledy.push(`${f}: podspec React Native bez wpisu w scripts/jakosc/licencje-natywne.json`);
   }

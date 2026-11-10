@@ -189,6 +189,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-rozwin.test.tsx` | zielony (główny zestaw) | 8 | P-330, P-360 | `src/ekrany/Historia`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-trasa.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-003, BR-LIC-003/S2, BR-LIC-003/S4 | `src/ekrany/Historia` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/historia-ukonczenia.test.tsx` | zielony (główny zestaw) | 2 | BR-DNI-001/S4, BR-DNI-003/S2, BR-PRJ-013, P-043 | `src/kompozycja/licznik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/i-001-ogloszenie-celu-kolejka.test.tsx` | zielony (główny zestaw) | 4 | — | `src/ekrany/Licznik`<br>`src/ekrany/wspolne`<br>`src/kompozycja/system` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-konflikt.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/IcloudKonflikt`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-licznik.test.tsx` | zielony (główny zestaw) | 2 | P-046, P-220 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/icloud-stan-danych.test.tsx` | zielony (główny zestaw) | 14 | BR-DAN-002/S3, BR-DAN-009, P-220, P-229, P-242, P-266 | `src/ekrany/StanDanych`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/UsunWszystko`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -407,6 +408,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
 | 9 ? | `tests/domena/icloud/wektory-swift.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie`<br>`src/domena/porty` | Z07-22 |
 | 9 ? | `tests/domena/licencje-dane.test.ts` | zielony (główny zestaw) | 3 | P-661 | `src/domena/licencje.generated` | — |
+| 9 ? | `tests/domena/licencje-natywne-expo.test.ts` | zielony (główny zestaw) | 2 | — | `src/domena/licencje.generated` | — |
 | 9 ? | `tests/domena/posiedzenie/posiedzenie.test.ts` | zielony (główny zestaw) | 10 | P-126 | `src/domena/posiedzenie`<br>`src/konfiguracja` | — |
 | 9 ? | `tests/domena/prosba-o-ocene.test.ts` | zielony (główny zestaw) | 2 | P-150, P-156 | `src/domena/ocena`<br>`src/domena/zaslepka` | — |
 | 9 ? | `tests/domena/rodzaj-pliku.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/rodzaj-pliku` | — |
@@ -419,4 +421,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 415; zależnych od poprawek: 265.
+Razem plików testów: 417; zależnych od poprawek: 266.

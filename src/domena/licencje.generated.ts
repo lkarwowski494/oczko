@@ -589,6 +589,10 @@ export const NATYWNE_IOS: readonly WpisLicencji[] = [
   ["fast_float","8.0.0","MIT",["Copyright (c) 2021 The fast_float authors"]],
   ["boost","1.84.0","BSL-1.0",[]],
   ["SocketRocket","0.7.1","BSD-3-Clause",["Copyright (c) 2016-present, Facebook, Inc."]],
+  ["openiap","3.6.0","MIT",["Copyright (c) 2025 hyo.dev"]],
+  ["SDWebImage","5.21.1","MIT",["Copyright (c) 2009-2020 Olivier Poitrey rs@dailymotion.com"]],
+  ["SDWebImageWebPCoder","0.14.6","MIT",["Copyright (c) 2018 Bogdan Poplauschi"]],
+  ["libwebp","1.1.0","BSD-3-Clause",["Copyright (c) 2010, Google Inc. All rights reserved."]],
 ];
 
 /** Kroje dołączone do aplikacji: pełny tekst licencji razem z notą (OFL-1.1, warunek 2). */
