@@ -9,6 +9,8 @@
 # [zrzuty-app:<numer przebiegu>] = użyj aplikacji z wcześniejszego przebiegu TEGO workflowu (artefakt `zrzuty-sklepu-app`, 3 dni) zamiast budować od nowa (~40 min);
 # [og07-ok] = zrzuty wzoru idą do kompletu; [zrzuty-jezyki:en,pl] albo [zrzuty-jezyki:all] = języki aplikacji (domyślnie en,pl; all = 29 z lokalizacją sklepu);
 # [zrzuty-zadan:N] = na ile zadań dzielić języki na urządzenie (domyślnie 6, najwyżej 8); [zrzuty-urzadzenia:iphone] = tylko iPhone (domyślnie iphone,ipad);
+# 10-wydanie-002 (uzupełnienie, jak trening:.github/workflows/store-screenshots.yml:37-44): [zrzuty-uzupelnij:<numer przebiegu>] = weź gotowe zrzuty z artefaktu `sklep-zrzuty-surowe` TEGO workflowu (14 dni)
+# i zrób tylko brakujące sceny; [zrzuty-powtorz:ja/04-zakreslenie,…] = te sceny od nowa mimo gotowego pliku (`en/99-zakup` = zrzut zakupu od nowa); wynik = komplet (zadanie „zbierz” nakłada nowe na poprzednie).
 # (2) workflow_dispatch (po scaleniu do `main`) z tymi samymi wejściami. Czas: ≈ 30 min na język i urządzenie (7 scen po ≈ 4 min), naraz najwyżej 3 zadania macOS.
 # Maszyn macOS zwykle brak ok. 14:00–23:00 UTC; awaria przed pierwszym scenariuszem albo „not acquired by Runner” = jedno ponowienie ręczne (P-091, CLAUDE.md).
 name: Zrzuty sklepu
@@ -42,6 +44,16 @@ on:
         required: false
         type: string
         default: 'iphone,ipad'
+      uzupelnij_z_przebiegu:
+        description: 'Numer przebiegu TEGO workflowu, z którego bierzemy gotowe zrzuty (artefakt sklep-zrzuty-surowe, 14 dni): robimy tylko brakujące sceny, wynik = komplet dla języków z wejścia jezyki. Pusty = wszystko od nowa'
+        required: false
+        type: string
+        default: ''
+      powtorz:
+        description: 'Przy uzupelnij_z_przebiegu: sceny do zrobienia od nowa mimo gotowego pliku (po przecinku, język/NN-scena, np. "ja/04-zakreslenie"); "en/99-zakup" = zrzut zakupu od nowa; pusty = żadne'
+        required: false
+        type: string
+        default: ''
 permissions:
   contents: read
   actions: read
@@ -56,8 +68,12 @@ jobs:
       uruchom: ${{ steps.wejscie.outputs.uruchom }}
       app_run: ${{ steps.wejscie.outputs.app_run }}
       og07: ${{ steps.wejscie.outputs.og07 }}
-      matrix: ${{ steps.wejscie.outputs.matrix }}
-      jezyki: ${{ steps.wejscie.outputs.jezyki }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      jezyki: ${{ steps.plan.outputs.jezyki }}
+      zadania: ${{ steps.plan.outputs.zadania }}
+      urz: ${{ steps.wejscie.outputs.urz }}
+      uzup: ${{ steps.wejscie.outputs.uzup }}
+      powtorz: ${{ steps.wejscie.outputs.powtorz }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -74,13 +90,15 @@ jobs:
           WE_JEZYKI: ${{ inputs.jezyki }}
           WE_ZADAN: ${{ inputs.zadan }}
           WE_URZADZENIA: ${{ inputs.urzadzenia }}
+          WE_UZUP: ${{ inputs.uzupelnij_z_przebiegu }}
+          WE_POWTORZ: ${{ inputs.powtorz }}
         run: |
-          uruchom=false; app=""; og07=false; jez="en,pl"; zadan=6; urz="iphone,ipad"
+          uruchom=false; app=""; og07=false; jez="en,pl"; zadan=6; urz="iphone,ipad"; uzup=""; powt=""
           # znaczniki tylko z PIERWSZEJ linii komunikatu: treść commitu może je opisywać (przebieg 1: opis „[og07-ok]” w treści włączył OG-07)
           KOMUNIKAT=$(printf '%s\n' "$KOMUNIKAT" | head -1)
           if [ "$ZDARZENIE" = workflow_dispatch ]; then
             uruchom=true; app="$WE_APP"; [ "$WE_OG07" = true ] && og07=true
-            jez="${WE_JEZYKI:-en,pl}"; zadan="${WE_ZADAN:-6}"; urz="${WE_URZADZENIA:-iphone,ipad}"
+            jez="${WE_JEZYKI:-en,pl}"; zadan="${WE_ZADAN:-6}"; urz="${WE_URZADZENIA:-iphone,ipad}"; uzup="$WE_UZUP"; powt="$WE_POWTORZ"
           else
             case "$KOMUNIKAT" in *'[zrzuty-sklepu]'*) uruchom=true ;; esac
             app=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-app:\([0-9][0-9]*\)\].*/\1/p' | head -1)
@@ -88,18 +106,57 @@ jobs:
             w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-jezyki:\([A-Za-z0-9,-]*\)\].*/\1/p' | head -1); [ -z "$w" ] || jez="$w"
             w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-zadan:\([0-9]*\)\].*/\1/p' | head -1); [ -z "$w" ] || zadan="$w"
             w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-urzadzenia:\([a-z,]*\)\].*/\1/p' | head -1); [ -z "$w" ] || urz="$w"
+            uzup=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-uzupelnij:\([0-9][0-9]*\)\].*/\1/p' | head -1)
+            powt=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-powtorz:\([A-Za-z0-9,/-]*\)\].*/\1/p' | head -1)
           fi
-          # Zadanie zrzuty i tak jest pomijane (uruchom=false), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
-          matrix='{"jezyki":["en"],"matrix":[{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false}]}'
+          # Wejścia ręczne trafiają do $GITHUB_OUTPUT i do skryptów: tylko dozwolone znaki (nowa linia w wejściu nie dopisze cudzego wyjścia); sens (język, scena) sprawdza skrypt planu (kod 2)
+          for par in "numer przebiegu aplikacji:$app:*[!0-9]*" "uzupelnij_z_przebiegu:$uzup:*[!0-9]*" "jezyki:$jez:*[!A-Za-z0-9,-]*" "zadan:$zadan:*[!0-9]*" "urzadzenia:$urz:*[!a-z,]*" "powtorz:$powt:*[!A-Za-z0-9,/-]*"; do
+            nazwa="${par%%:*}"; reszta="${par#*:}"; wartosc="${reszta%:*}"; wzor="${reszta##*:}"
+            case "$wartosc" in $wzor) echo "::error::wejście $nazwa ma niedozwolone znaki"; exit 2 ;; esac
+          done
+          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"; echo "jez=$jez"; echo "zadan=$zadan"; echo "urz=$urz"; echo "uzup=$uzup"; echo "powtorz=$powt"; } >> "$GITHUB_OUTPUT"
+      - name: Poprzednie surowe zrzuty (tylko przy uzupełnieniu; artefakt sklep-zrzuty-surowe poprzedniego przebiegu — już po nałożeniu jego własnych uzupełnień, więc kolejne uzupełnienia się łańcuchują)
+        if: steps.wejscie.outputs.uruchom == 'true' && steps.wejscie.outputs.uzup != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: sklep-zrzuty-surowe
+          path: poprzednie
+          run-id: ${{ steps.wejscie.outputs.uzup }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - id: plan
+        env:
+          URUCHOM: ${{ steps.wejscie.outputs.uruchom }}
+          APP: ${{ steps.wejscie.outputs.app_run }}
+          OG07: ${{ steps.wejscie.outputs.og07 }}
+          JEZ: ${{ steps.wejscie.outputs.jez }}
+          ZADAN: ${{ steps.wejscie.outputs.zadan }}
+          URZ: ${{ steps.wejscie.outputs.urz }}
+          UZUP: ${{ steps.wejscie.outputs.uzup }}
+          POWTORZ: ${{ steps.wejscie.outputs.powtorz }}
+        run: |
+          # Zadanie zrzuty i tak jest pomijane (uruchom=false albo zadania=0), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
+          zastepcza='[{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false}]'
+          matrix='{"jezyki":["en"],"matrix":[],"zadania":0}'
           # Wejścia z wejść ręcznych idą przez env i walidację w skrypcie planu (nieznany język, język bez lokalizacji sklepu, złe urządzenie = czerwony plan)
-          if [ "$uruchom" = true ]; then matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$jez" "$zadan" "$urz"); fi
-          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"
-            echo "matrix=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.stringify(JSON.parse(require("fs").readFileSync(0,"utf8")).matrix))')"
+          if [ "$URUCHOM" = true ]; then
+            poprzednie=""
+            if [ -n "$UZUP" ]; then
+              # brak zrzutów w pobranym artefakcie = czerwony plan; inaczej uzupełnienie po cichu zrobiłoby WSZYSTKO od nowa (≈ 10 h)
+              [ -n "$(find poprzednie -name '*.png' 2>/dev/null | head -1)" ] || { echo "::error::przebieg $UZUP: artefakt sklep-zrzuty-surowe bez zrzutów (zły numer albo wygasł po 14 dniach)"; exit 1; }
+              node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ" | tee -a "$GITHUB_STEP_SUMMARY"
+              poprzednie=poprzednie
+            fi
+            matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
+          fi
+          zadania=$(printf '%s' "$matrix" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).zadania))')
+          { echo "zadania=$zadania"
+            if [ "$zadania" = 0 ]; then echo "matrix=$zastepcza"; else echo "matrix=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.stringify(JSON.parse(require("fs").readFileSync(0,"utf8")).matrix))')"; fi
             echo "jezyki=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).jezyki.join(","))')"; } >> "$GITHUB_OUTPUT"
-          echo "uruchom=$uruchom, aplikacja z przebiegu: ${app:-(budowa)}, OG-07: $og07, języki: $jez, zadań: $zadan, urządzenia: $urz" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "uruchom=$URUCHOM, aplikacja z przebiegu: ${APP:-(budowa)}, OG-07: $OG07, języki: $JEZ, zadań: $ZADAN, urządzenia: $URZ, uzupełnienie z przebiegu: ${UZUP:-(brak)}, zadań macOS: $zadania" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$URUCHOM" != true ] || [ -z "$UZUP" ] || printf '%s' "$matrix" | node -e 'for (const m of JSON.parse(require("fs").readFileSync(0,"utf8")).matrix) console.log(`  ${m.urzadzenie} #${m.nr}: ${m.jezyki || "(tylko zakup)"} → ${m.sceny || "-"}`)' | tee -a "$GITHUB_STEP_SUMMARY"
   build:
     needs: plan
-    if: needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.app_run == ''
+    if: needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.app_run == '' && needs.plan.outputs.zadania != '0'
     runs-on: macos-26
     timeout-minutes: 90
     steps:
@@ -183,7 +240,7 @@ jobs:
   zrzuty:
     name: 'zrzuty (${{ matrix.urzadzenie }} ${{ matrix.nr }}: ${{ matrix.jezyki }})'
     needs: [plan, build]
-    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && needs.plan.outputs.zadania != '0' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: macos-26
     # ≈ 8 min danych fikcyjnych + ≈ 30 min na język (pomiar: przebieg 42784539154, 34 min na 7 scen); do 5 języków na zadanie → ≈ 2,5 h; limit zadania w Actions 6 h
     timeout-minutes: 330
@@ -265,6 +322,7 @@ jobs:
           URZADZENIE: ${{ matrix.urzadzenie }}
           JEZYKI: ${{ matrix.jezyki }}
           ZAKUP: ${{ matrix.zakup }}
+          SCENY_PLAN: ${{ matrix.sceny }} # uzupełnienie: "język=scena,scena;…" (pusta = wszystkie sceny)
         run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$URZADZENIE" "zrzuty-surowe" "dzienniki" "$OG07" "$JEZYKI" "$ZAKUP" "zrzut-zakupu"
       - uses: actions/upload-artifact@v4
         if: always()
@@ -293,7 +351,8 @@ jobs:
   zbierz:
     name: komplet (bez alfy, wymiary, ramki i podpisy)
     needs: [plan, zrzuty]
-    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && needs.zrzuty.result != 'skipped' }}
+    # zadania = 0: uzupełnienie bez brakujących scen — macOS niepotrzebny, a komplet składa się z poprzednich zrzutów
+    if: ${{ !cancelled() && needs.plan.outputs.uruchom == 'true' && (needs.zrzuty.result != 'skipped' || needs.plan.outputs.zadania == '0') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -304,10 +363,28 @@ jobs:
         with:
           node-version: 22
       - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.zadania != '0'
         with:
           pattern: zrzuty-surowe-*
           path: surowe
           merge-multiple: true
+      - name: Poprzednie surowe zrzuty (tylko przy uzupełnieniu)
+        if: needs.plan.outputs.uzup != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: sklep-zrzuty-surowe
+          path: poprzednie
+          run-id: ${{ needs.plan.outputs.uzup }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Nałożenie poprzednich zrzutów na nowe (powtórki usunięte; nowe nie są nadpisywane; przy OG-07 sceny wzoru do kompletu)
+        if: needs.plan.outputs.uzup != ''
+        env:
+          POWTORZ: ${{ needs.plan.outputs.powtorz }}
+          OG07: ${{ needs.plan.outputs.og07 }}
+        run: |
+          mkdir -p surowe
+          node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ"
+          node scripts/ci/zrzuty-uzupelnij.mjs nalozenie poprzednie surowe "$OG07" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
         run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick fonts-noto-core fonts-noto-cjk >/dev/null
       - name: Kanał alfa precz (surowe zrzuty simctl są RGB; spłaszczenie na wszelki wypadek)
@@ -322,11 +399,13 @@ jobs:
       - name: 'Komplet zrzutów i wymiary (iPhone 6.9″ = 1320x2868, iPad 13″ = 2064x2752 albo poziomo 2752x2064; bez alfy; najwyżej 10 na klasę): wymiary-asc.mjs, komplet-zrzutow.mjs'
         env:
           JEZYKI: ${{ needs.plan.outputs.jezyki }}
-          URZADZENIA: ${{ join(fromJSON(needs.plan.outputs.matrix).*.urzadzenie, ',') }}
+          URZADZENIA: ${{ needs.plan.outputs.urz }} # z wejścia, nie z macierzy: przy uzupełnieniu urządzenie bez braków nie ma zadań, a komplet sprawdzamy dla wszystkich
+          RUN_ID: ${{ github.run_id }}
         run: |
           set -uo pipefail; bledy=0
           node scripts/ci/wymiary-asc.mjs sklep-zrzuty-surowe | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
           node scripts/ci/komplet-zrzutow.mjs sklep-zrzuty-surowe "$JEZYKI" "$URZADZENIA" | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
+          if [ "$bledy" -ne 0 ]; then echo "Brakujące sceny można dorobić bez powtarzania całości: uzupelnij_z_przebiegu=$RUN_ID (albo znacznik [zrzuty-uzupelnij:$RUN_ID] w commicie)." | tee -a "$GITHUB_STEP_SUMMARY"; fi
           [ "$bledy" -eq 0 ]
       - name: Ramki i podpisy (jak Trening, scripts/ci/ramki-sklepu.sh; język bez podpisów pominięty z ostrzeżeniem)
         # 10-wydanie-002: always() — czerwony komplet (brak jednej sceny w jednym języku) nie odbiera ramek pozostałym językom; przebieg zostaje czerwony z kroku „komplet”,

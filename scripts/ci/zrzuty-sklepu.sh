@@ -11,6 +11,8 @@
 # Jeden język może paść (00-jezyk albo scena) bez zatrzymywania reszty; przebieg zbiorczy jest wtedy czerwony (lista w `nieudane-<urządzenie>.txt`).
 # Ostatni argument `zakup=true` (tylko iPhone, jedno zadanie): po językach wraca na angielski i robi zrzut ekranu zakupu dla App Review (99-zakup.yaml, atrapa sklepu) do <katalog_zakupu>/99-zakup-ceny.png
 # (jak Trening: trening:.maestro/21-subskrypcja.yaml:57; plik wgrywa ręcznie właściciel przy produktach, sklep.md §3e).
+# 10-wydanie-002 (uzupełnienie przebiegu, analogia trening:scripts/ci/store-screenshots.sh:10-12 zmienna UZUPELNIJ): zmienna SCENY_PLAN = "<język>=<scena>,<scena>;<język>=…" (z macierzy planu,
+# scripts/ci/zrzuty-jezyki.mjs) — język robi tylko wymienione sceny (kolejność jak w SCENY), język bez wpisu jest pomijany; pusta = wszystkie sceny wszystkich języków (przebieg zwykły).
 # W logu tylko nazwy plików i liczby (repo publiczne).
 # Użycie: bash scripts/ci/zrzuty-sklepu.sh <UDID> <iphone|ipad> <katalog_zrzutów> <katalog_dzienników> <og07: true|false> [języki po przecinku, domyślnie en] [zakup: true|false] [katalog_zakupu]
 set -uo pipefail
@@ -26,6 +28,15 @@ SCENY="01-dzis 02-licznik 06-historia 03-wzor 04-zakreslenie 05-projekty 07-kale
 WARUNKOWE=" 03-wzor 04-zakreslenie "
 mkdir -p "$LOGI"
 NIEUDANE="$LOGI/nieudane-$URZ.txt"; : > "$NIEUDANE"
+
+SCENY_PLAN="${SCENY_PLAN:-}"
+sceny_jezyka() {   # $1 = język → sceny do zrobienia (w kolejności z SCENY); bez SCENY_PLAN wszystkie
+  [ -n "$SCENY_PLAN" ] || { echo "$SCENY"; return; }
+  local wpis w="" s wynik=""
+  while IFS= read -r wpis; do [ "${wpis%%=*}" = "$1" ] && w="${wpis#*=}"; done <<< "${SCENY_PLAN//;/$'\n'}"
+  for s in $SCENY; do [[ ",$w," == *",$s,"* ]] && wynik="$wynik $s"; done
+  echo "${wynik# }"
+}
 
 JEZYK_BIEZACY="start"   # w nazwie katalogu dziennika: kolejne języki nie nadpisują sobie logów
 maestro_run() {   # $1 = nazwa scenariusza (bez .yaml), $2 = próba
@@ -57,7 +68,9 @@ fi
 # --- sceny, język po języku ---
 for JEZ in ${JEZYKI//,/ }; do
   JEZYK_BIEZACY="$JEZ"
-  echo "== język $JEZ ($URZ)"
+  TE_SCENY=$(sceny_jezyka "$JEZ")
+  [ -n "$TE_SCENY" ] || { echo "== język $JEZ ($URZ): nic do zrobienia (plan uzupełnienia)"; continue; }
+  echo "== język $JEZ ($URZ): $TE_SCENY"
   mkdir -p "$OUT/$ROZMIAR/$JEZ"
   jez_ok=0
   for proba in 1 2; do
@@ -65,7 +78,7 @@ for JEZ in ${JEZYKI//,/ }; do
     echo "::warning::00-jezyk $JEZ: próba $proba nieudana"; tail -12 "$LOGI/$URZ-$JEZ-00-jezyk-$proba/maestro.log" | sed 's/^/    /'
   done
   [ "$jez_ok" = 1 ] || { echo "$JEZ/00-jezyk" >> "$NIEUDANE"; continue; }
-  for scena in $SCENY; do
+  for scena in $TE_SCENY; do
     ok=0
     for proba in 1 2; do
       if maestro_run "$scena" "$proba"; then
