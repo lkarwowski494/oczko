@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-10 05:46 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-10 06:06 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -45,7 +45,8 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
 | A (nieosiągalna z tego konta; zastąpiona przez A2) | session_01T66VBzyDZ56SkwWzV5t1ZR | M2-koordynator-napraw fix (zatwierdzone) | claude/m2-naprawy-2026-11-10 @ 58284a88 | 0 | 0 | PRZEKAZANIE 05:29 (wstrzymana, bezczynna; kontekst 26%, koszt 5,56 USD; stan warsztat `K/M2-stan.md` @ b4fc37d); STOP 05:26; start 05:13; polecenie `polecenia/A.md` @ 0ac104f; prompt roli warsztat `koordynacja/polecenia/A-M2-rola-2026-11-10.md` @ 88d8146 (wyjątek nazwany: 64 KB, wskazany z SHA zamiast wklejenia); pułap 40 / STOP 52 USD |
-| A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport) | claude/m2-naprawy-2026-11-10 @ 27e2ac1 | 0 | 0 | start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
+| C | session_01T66VBwZkpjZzMRtFv5FgXW | M1-audytor-generalny reaudit (301–304, baza 58284a88) | oczko m2 @ 5af3342 tylko odczyt; warsztat K | 0 | 0 | start 06:05 (opus-5-5); polecenie `polecenia/C.md` @ 579fbd1e; prompt roli warsztat c8703cc; pułap 25 / STOP 32 USD |
+| A2 | session_01T66VBygxDoZxuZKDNHHXc8 | M2-koordynator-napraw fix (wznowienie: 302, 304, raport) | claude/m2-naprawy-2026-11-10 @ 5af3342 | 25 | 6,64 | PRZEKAZANIE 06:04, bezczynna; **niesprawdzone do końca**: commity i autor OK (4 commity, 9 plików, 0 Co-Authored-By), CI `ci.yml` run 42766087745 na 5af3342 w toku, recenzja niezależna = sesja C; archiwizacja po zielonym CI i reaudycie (może być potrzebna do poprawek); start 05:38 (opus-5-5, env_0166…, auto); polecenie `polecenia/A2.md` @ 8e20e6d7; prompt roli warsztat 88d8146; pułap 34 / STOP 44 USD |
 | B (zarchiwizowana 05:46, 0,21 USD, nic nie zmieniła) | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
@@ -64,6 +65,10 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - 2: zgoda na publikację 301 w wariancie (a): sesja z dostępem do apps4brew-www wypycha 3 pliki na `main` strony i uruchamia sprawdz-adresy → sesja B.
 - 3: stare sesje (A, 08 nr 3, poprzedni koordynatorzy) „już wstrzymane” — sprawa zamknięta po stronie koordynatora; koszt końcowy tych sesji nieodczytany.
 - 4: decyzje P-634…P-643 i KO-001…KO-013 przyjęte.
+
+## Czeka na właściciela — nowe (po reaudycie C potwierdzić treść)
+- Wklejenie `docs/wydanie/metadane/notatka-recenzja.txt` (gałąź m2, 4c3ccdd) w App Store Connect → App Review Information → Notes — dopiero po reaudycie i ocenie znaleziska M2-001 (rozbieżność „Add pattern…” vs „Add pattern”).
+- Scalenie `claude/m2-naprawy-2026-11-10` do integracji: koordynator po zielonym CI i reaudycie (KO-011: po Approve buildu 2 — Approve dany 05:42).
 
 ## Czeka na właściciela (pozycje sprzed 05:42 poniżej są załatwione odpowiedziami wyżej, poza testem na telefonie)
 - **Approve buildu 2:** https://github.com/lkarwowski494/oczko/actions/runs/42746522234 (Review deployments → `release` → Approve).
@@ -108,3 +113,5 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 10.11 05:47 | M9 | add_repo apps4brew-www w sesji koordynatora przyjęte; klon main = ce8cad2 (zgodne z kandydatem); publikację 301 wykonuje subagent koordynatora (sonnet) wg kroków z `polecenia/B.md`; B dostała polecenie zakończenia | wynik subagenta → A2 (dziennik, `--ustaw`); archiwizacja B po odczycie kosztu |
 | 10.11 05:46 | A2 | raport: 304 → ac77b39 lokalnie (niewypchnięte; test 567/6903 wg sesji — niesprawdzone), reszta ok. 1–1,5 h | PRZEKAZANIE A2 |
 | 10.11 05:50 | M9 (subagent) | **301 opublikowane**: apps4brew-www main 4bb65a0 (autor OK, 3 pliki; sprawdzone ls-remote i `git show --stat`), testy strony 62/0 kod 0, strona 200, sprawdz-adresy kod 1 = tylko 404 recenzji; dowody warsztat 95c8e8ba `K/dowody/M2/301-*`; B zarchiwizowana; A2 powiadomiona | A2 domyka 301 w planie i dzienniku wydania |
+| 10.11 06:04 | A2 | PRZEKAZANIE: 301 (dziennik 5af3342, publikacja 4bb65a0), 302 → 4c3ccdd, 303 → 27e2ac1, 304 → ac77b39; raport warsztat 3c76fa9 `K/M2-koordynator-napraw-2026-11-10.md`; wg sesji: komendy końcowe 0, test 568/6910; nowe znaleziska M2-001…003; koszt 6,64 USD, kontekst 25% (get_session) | CI + reaudyt |
+| 10.11 06:05 | M9 | odbiór częściowy: `git log 58284a88..5af3342` 4 commity, autor zgodny; `ci.yml` wyzwolony → run 42766087745 (in_progress); sesja C (reaudyt) start; TF run 42746522234 nadal in_progress (06:05) | kontrola 06:24 |
