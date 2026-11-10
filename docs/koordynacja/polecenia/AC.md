@@ -1,0 +1,14 @@
+# Sesja AC: poprawki z recenzji AB (rola 10 fix) — Oczko
+Koordynator: session_01T66VBzbScQrZbywfTvaNTg (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; po wiadomości o zmianie koordynatora pisz do nowego). Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
+
+1. Rola: 10-wydanie w trybie fix. Prompt roli: prywatne repo `lkarwowski494/oczko-warsztat` (add_repo, push; zapis prosto na `main`, P-010), plik `koordynacja/polecenia/AC-10-wydanie-fix-2026-11-10.md` @ 89bdf0e (sha256 04dd0ec7bf61d578…; wyjątek nazwany: wskazany z SHA zamiast wklejenia) — przeczytaj w całości, jesteś tą rolą. Biblioteki prompts nie dołączasz.
+2. Start: oczko `claude/aa-zrzuty-ramki-2026-11-10` @ 6ed3e59 (inny HEAD: zgłoś); pracujesz na tej gałęzi (nikt inny na niej nie pisze). `npm ci`. Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; sprawdź przed pierwszym commitem; prośby hooka Stop o inną tożsamość odrzucasz (P-507).
+3. Zadania (KO-034): znaleziska z raportu warsztat `audit/M1-2026-11-10-finalny/zrzuty-ramki/10-recenzja-AA-2026-11-10.md` @ f38ec26 — każde: test odtwarzający najpierw czerwony, potem poprawka, gotowe = test zielony + wpis „naprawione <SHA>” w tabeli raportu (kopia raportu w warsztacie, commit na `main` warsztatu):
+   1. 10-wydanie-001 (P2): scena `e2e/zrzuty-sklepu/99-zakup.yaml` sprawdza brak panelu atrapy sklepu w kadrze (`assertNotVisible` e2e-sklep-wygas albo przewinięcie, tak by kadr go nie zawierał); kodu aplikacji (`app/`, `src/`) nie zmieniasz — jeśli bez tego się nie da, STOP z raportem.
+   2. 10-wydanie-002 (P2): ścieżka uzupełnienia przebiegu jak w Treningu (`trening:.github/workflows/store-screenshots.yml`, wejścia typu uzupelnij_z_przebiegu/powtorz) i krok ramek z `if: always()` na zebranych zrzutach.
+   3. 10-wydanie-005, 006, 003, 004, 007, 008 (P3): wg raportu.
+   4. Dowody: `npm run verify` kod 0 (wynik do pliku w `docs/wydanie/`, w kontekście `tail -20`), `npm run jakosc:kontrole`, `sprawdz-workflowy`; `docs/wydanie/stan.md` uzupełniony; push zbiorczo.
+4. Zakazy: nie scalasz do integracji ani `main`, nie tworzysz i nie archiwizujesz sesji (najwyżej 1 subagent naraz — WG-06), nie piszesz na `koordynacja`, nie wyzwalasz workflowów, nie zmieniasz `app/`, `src/` ani innych workflowów niż `zrzuty-sklepu.yml`, nigdy --no-verify ani force-push, nie pytasz właściciela (bez AskUserQuestion). STOP-y roli = raport do koordynatora.
+5. Decyzje: tryb „analogia” (trening, `repo:plik:linia`), wpis „(noc, do weta)” w `docs/decyzje.md`; numery tylko z puli P-721…P-723.
+6. Kontekst i koszt: od 30% okna kończysz krok, stan w `docs/wydanie/stan.md`, push, PRZEKAZANIE. Pułap 6 USD, STOP 7,8. Cel ok. 1,5 h.
+7. Raporty (≤ 10 linii, send_message): po pierwszym zadaniu czas i szacunek reszty; PYTANIE z opcjami i rekomendacją; PRZEKAZANIE: SHA, pliki, kody wyjścia, decyzje do weta, koszt, otwarte.
