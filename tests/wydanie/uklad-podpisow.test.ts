@@ -17,6 +17,17 @@ const run = (kod: string) => {
 const FAKE = `const measure = t => { const ls = t.split('\\n'); const w = l => [...l].reduce((s, c) => s + (/[\\u3000-\\u9fff\\uac00-\\ud7af\\uff00-\\uffef]/.test(c) ? 100 : 55), 0); return { w: Math.max(...ls.map(w)), h: 120 * ls.length }; };`;
 const plik = JSON.parse(fs.readFileSync(path.join(korzen, 'docs/wydanie/metadane/podpisy-zrzutow.json'), 'utf8'));
 const podpisy = plik.podpisy as Record<string, Record<string, string>>;
+/** Błędy pliku podpisów: język ma albo komplet podpisów (wszystkie ekrany, każdy ≤ maxZnakow), albo żaden (czeka na przekład 09). */
+function bledyPodpisow(p: Record<string, Record<string, string>>, ekrany: string[], max: number) {
+  const w: { l: string; blad: string }[] = [];
+  for (const [l, t] of Object.entries(p)) {
+    const n = Object.keys(t).length;
+    if (n === 0) continue;
+    if (n !== ekrany.length || ekrany.some((k) => !(k in t))) { w.push({ l, blad: `niepełny komplet (${n} z ${ekrany.length})` }); continue; }
+    for (const k of ekrany) if ([...t[k]].length > max) w.push({ l, blad: `${k} dłuższy niż ${max} znaków` });
+  }
+  return w;
+}
 const NO_LINE_START = /^[、。，．,.!?！？:：;；)）\]」』…・ーァィゥェォッャュョヮ]/u;
 // Pole podpisu na iPhonie 6.9″: 86% × 15% zrzutu (ramki-sklepu.sh) = 1135 × 430 px.
 const POLE = '1135, 430';
@@ -91,13 +102,30 @@ describe('plik podpisów (docs/wydanie/metadane/podpisy-zrzutow.json)', () => {
     expect(Object.keys(plik.status).sort()).toEqual([...jezykiAplikacji].sort());
   });
 
-  test('en i pl: komplet 7 podpisów, najwyżej maxZnakow, oznaczone [DO AKCEPTACJI]; reszta pusta do przekładu (rola 09)', () => {
+  test('en i pl: komplet 7 podpisów, najwyżej maxZnakow, oznaczone [DO AKCEPTACJI]; pozostałe języki: komplet albo nic (przekład 09)', () => {
     for (const l of ['en', 'pl']) {
       expect(Object.keys(podpisy[l])).toEqual(plik.ekrany);
       for (const t of Object.values(podpisy[l])) expect([...t].length).toBeLessThanOrEqual(plik.maxZnakow);
       expect(plik.status[l]).toContain('[DO AKCEPTACJI]');
     }
-    for (const l of jezykiAplikacji.filter((x) => x !== 'en' && x !== 'pl')) expect({ l, n: Object.keys(podpisy[l]).length }).toEqual({ l, n: 0 });
+    // 10-wydanie-008: wcześniej „reszta pusta” (== 0 podpisów), więc przekład 09 dla JEDNEGO języka zaczerwieniłby ten test; teraz język ma albo komplet, albo nic.
+    expect(bledyPodpisow(podpisy, plik.ekrany, plik.maxZnakow)).toEqual([]);
+  });
+
+  test('10-wydanie-008: walidator podpisów przyjmuje język z kompletem 7 podpisów (przekład 09) i odrzuca niepełny albo za długi', () => {
+    const komplet = Object.fromEntries(plik.ekrany.map((k: string) => [k, 'Krótki podpis']));
+    expect(bledyPodpisow({ ...podpisy, de: komplet }, plik.ekrany, plik.maxZnakow)).toEqual([]);
+    expect(bledyPodpisow({ ...podpisy, de: { '01-dzis': 'x' } }, plik.ekrany, plik.maxZnakow)).toEqual([{ l: 'de', blad: 'niepełny komplet (1 z 7)' }]);
+    expect(bledyPodpisow({ ...podpisy, de: { ...komplet, '01-dzis': 'x'.repeat(plik.maxZnakow + 1) } }, plik.ekrany, plik.maxZnakow)).toEqual([{ l: 'de', blad: `01-dzis dłuższy niż ${plik.maxZnakow} znaków` }]);
+  });
+
+  test('10-wydanie-008: dokumenty podają 27 języków do przekładu podpisów (29 ze sklepową lokalizacją bez en i pl), nie 33 (35 języków aplikacji bez en i pl)', () => {
+    const czytaj = (p: string) => fs.readFileSync(path.join(korzen, p), 'utf8');
+    for (const p of ['docs/wydanie/lista-1-0.md', 'docs/wydanie/zrzuty-ramki.md', 'docs/wydanie/metadane/podpisy-zrzutow.json']) {
+      expect({ p, stare: /\b33 (języki|języków|poza en)/.test(czytaj(p)) }).toEqual({ p, stare: false });
+    }
+    expect(czytaj('docs/wydanie/lista-1-0.md')).toMatch(/C6 · Przekład podpisów na (pozostałe )?27 języków/);
+    expect(czytaj('docs/wydanie/zrzuty-ramki.md')).toMatch(/przekład 27 języków/);
   });
 
   test('podpisy bez cen, bez „free”, bez Apple Pencil w podpisie (2.3.7; nazwy konkurencji w repo pilnuje scripts/jakosc/marki.mjs)', () => {
