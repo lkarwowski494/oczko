@@ -14,6 +14,7 @@ Stan: zatwierdzony (P-554: system, 6 ekranów i ikona bez poprawek), przekazanie
 | Zrzuty wzorcowe (linia bazowa SP-13): 6 ekranów × jasny/ciemny × domyślny/AX5 × 390 pt = 24, plus arkusz DE (4), plus oferty 2 stany × 4 = 8 (P-557), plus stany p2 (M3-S3-06): `dzis-limit`, `dzis-cofnac`, `projekty-uczciwe`, `dzis-bez-miejsca` × 4 = 16; plus M3-MAK (2026-11-08): `projekt`, `projekt-menu`, `projekt-edycja`, `projekt-ukonczony`, `formularz-czesc`, `formularz-narzedzie`, `zdjecie`, `narzedzia`, `licznik-stoper` × 4 = 36; razem 88. Pary przed/po poprawek M3-S3-03/06/07/08: `dzianina/fix-mapa-2026-11-08/` | `dzianina/wzorce-zrzuty/` (`narzedzia/dzianina-zrzuty.mjs`, filtr `--ekrany=oferty,oferty-czeka`) |
 | Pomiar warsztatu 390 pt (0 błędów) | `dzianina/warsztat-390.txt` |
 | Ikona (kreski w barwach Dzianiny) | `ikona/` (warstwy SVG, PNG, `arkusz.png`) |
+| Przewodnik po funkcjach (wejścia obok zębatki i w Ustawieniach, ekran, klucze; P-685–P-689, 2026-11-10) | `przewodnik-2026-11-10.md` (makieta, zrzuty, `klucze.md` w `przewodnik-2026-11-10/`) |
 | Kierunek, warianty tła, kroje (historia wyboru) | `kierunki/dzianina.html`, `porownanie.png`, `tla.png`, `kroje.png`, `01-swiat.md` |
 
 ## Element firmowy: dzianina części

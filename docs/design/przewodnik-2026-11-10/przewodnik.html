@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko — przewodnik po funkcjach (makieta)</title>
+<link rel="stylesheet" href="../dzianina/tokeny.css">
+<!-- Rola 04, sesja O, 2026-11-10 (P-685–P-689). System „Dzianina” bez nowych tokenów: kolory z tokeny.css, wymiary z tokeny.json (lista, znaczniki, cele).
+     Treść z tresc.js (generowany z tresc.json skryptem narzedzia/przewodnik-kontrola.mjs --js). Dane projektu na „Dziś”: [PRZYKŁAD].
+     Treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3. Ikony zastępcze (na iOS SF Symbols: questionmark.circle, gearshape, chevron.down/up, checkmark, lifepreserver). -->
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Bree Serif"; src: url(../fonty/BreeSerif.ttf); }
+:root { --w: 390px; --dt-tytul: 1; --dt-tresc: 1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.br { font-family: "Bree Serif", serif; font-weight: 400; }
+.t-duzy { font-size: calc(34px * var(--dt-tytul)); line-height: 1.12; }
+.t-tytul { font-size: calc(22px * var(--dt-tytul)); line-height: 1.2; }
+.t-tresc { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.t-pod { font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
+.ik { display: inline-flex; width: 1em; height: 1em; flex: none; } .ik svg { width: 100%; height: 100%; }
+.ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; }
+.status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
+.status .bat { width: 26px; height: 12px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; }
+.status .bat::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }
+/* pasek „Dziś”: tytuł i data od początku, symbole na końcu (Dzis.tsx:178–184); przewodnik PRZED zębatką, zębatka zostaje skrajna */
+.naglowek { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 16px 0; gap: 12px; }
+.naglowek .data { color: var(--tekst2); margin-top: 4px; }
+.symbole { display: flex; gap: 0; flex: none; margin-right: -10px; }
+.pik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: calc(24px * min(var(--dt-tytul), 1.8)); color: var(--tekst); flex: none; position: relative; }
+.pik.cel::after { content: ""; position: absolute; inset: 0; outline: 1px dashed #d0021b; outline-offset: -1px; } /* tylko na zrzucie celu: obrys 44×44 */
+.tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
+.zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.zakladki a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--zakladka); font-weight: 600; text-align: center; min-height: 44px; }
+.zakladki a .ik { font-size: 26px; } .zakladki a.wybrana { color: var(--zakladkaWybrana); }
+.karta { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 112px 1fr; gap: 16px; }
+.karta .dz { border-radius: 12px; background: #00000026; min-height: 216px; position: relative; }
+.karta .dz::after { content: ""; position: absolute; left: 0; right: 0; bottom: 18px; height: 3px; background: var(--igla); }
+.karta .opis { display: flex; flex-direction: column; gap: 8px; }
+.karta .opis .czesc { color: var(--kartaTekst2); }
+.plus { width: 72px; height: 72px; border-radius: 36px; background: var(--akcent); color: var(--naAkcencie); font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; margin-top: auto; }
+.kont { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 14px; background: var(--przyciskNaKarcie); color: var(--przyciskNaKarcieTekst); font-weight: 700; }
+/* nawigacja ekranu wypchniętego */
+.nav { display: flex; align-items: center; padding: 0 8px; min-height: 44px; }
+.nav a { display: inline-flex; align-items: center; gap: 2px; color: var(--akcentTekst); min-height: 44px; padding: 0 8px; }
+.nav .ik { font-size: 22px; }
+.tytul-ekranu { padding: 4px 16px 0; }
+.wstep { color: var(--tekst2); padding: 4px 16px 0; }
+/* sekcje i grupy: sekcja = Bree 22 (tytul), grupa = lista.naglowekGrupy 17/700/tekst */
+.sekcja { padding: 0 16px; display: flex; flex-direction: column; gap: 4px; }
+.sekcja .postep { color: var(--tekst2); }
+.nag-grupy { font-weight: 700; padding: 0 16px; margin-bottom: -12px; }
+.lista { margin: 0 16px; background: var(--powierzchnia); border-radius: 16px; overflow: hidden; }
+.lista > * + * { border-top: 1px solid var(--linia); }
+/* krok: numer (Bree, aria-hidden) + zdanie + „Pokaż” pod zdaniem */
+.krok { display: grid; grid-template-columns: calc(24px * min(var(--dt-tytul), 1.8)) 1fr; gap: 12px; padding: 12px 16px; }
+.krok .nr { color: var(--tekst2); font-size: calc(22px * min(var(--dt-tytul), 1.8)); line-height: 1.1; text-align: center; }
+.krok .zd { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.pokaz { min-height: 44px; margin: -8px 0 -12px -8px; padding: 0 8px; display: inline-flex; align-items: center; gap: 2px; font-weight: 700; color: var(--akcentTekst); } /* przycisk tekstowy (design-spec: akcja poboczna = akcentTekst 700), cel 44 pt */
+.pokaz .ik { font-size: .9em; }
+/* funkcja: wiersz zwinięty ≥ 44 pt (lista.minWysokoscWiersza) z ptaszkiem przeczytania i szewronem; rozwinięty: opis + „Pokaż” */
+.fn-w { display: flex; align-items: center; gap: 8px; padding: 12px 16px; min-height: 48px; }
+.fn-w .n { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; hyphens: auto; } /* AX5: długie jedno słowo („Przypomnienia”) dzieli się, szewron zostaje w wierszu */
+.fn-w .pt { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.8)); }
+.fn-w .sz { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.8)); }
+.fn-r { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; border-top: none !important; }
+.fn-r p { color: var(--tekst); }
+/* Ustawienia: wiersz listy z kafelkiem ikony 32 pt (znaczniki.kafelekIkonyWiersza, promień 8) */
+.ust { display: flex; align-items: center; gap: 12px; padding: 8px 16px; min-height: 52px; }
+.ust .kaf { width: calc(32px * min(var(--dt-tresc), 1.375)); height: calc(32px * min(var(--dt-tresc), 1.375)); border-radius: 8px; background: var(--ikonaTlo); color: var(--ikona); display: inline-flex; align-items: center; justify-content: center; font-size: calc(20px * min(var(--dt-tresc), 1.375)); flex: none; }
+.ust .n { flex: 1; } .ust .w { color: var(--tekst2); } .ust .sz { color: var(--tekst2); }
+.ust.nowy { box-shadow: inset 4px 0 0 var(--akcent); } /* znacznik makiety: nowy wiersz (nie w aplikacji) */
+.adn { position: absolute; right: 8px; bottom: 92px; font: 600 11px/1.3 "Source Sans 3"; color: var(--tekst2); background: var(--powierzchnia); padding: 4px 8px; border-radius: 6px; opacity: .9; }
+body.duzy .wstep, body.duzy .fn-r p, body.duzy .krok .zd p { overflow-wrap: anywhere; }
+body.duzy .ust { flex-wrap: wrap; } body.duzy .ust .w { flex-basis: 100%; padding-left: calc(44px + 12px); }
+body.duzy .karta { grid-template-columns: 1fr; } body.duzy .karta .dz { min-height: 120px; }
+</style></head><body>
+
+<!-- 1. „Dziś”: ikona przewodnika obok zębatki -->
+<main class="ekran" data-ekran="dzis-przewodnik">
+  <div class="status"><span>9:41</span><span class="bat"></span></div>
+  <div class="naglowek">
+    <div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">wtorek, 10 listopada</p></div>
+    <div class="symbole">
+      <span class="pik" role="button" aria-label="Przewodnik" data-testid="nav-przewodnik"><i data-ikw="pytajnik"></i></span>
+      <span class="pik" role="button" aria-label="Ustawienia" data-testid="nav-ustawienia"><i data-ikw="zebatka"></i></span>
+    </div>
+  </div>
+  <div class="tresc">
+    <div class="karta">
+      <div class="dz" aria-hidden="true"></div>
+      <div class="opis"><span class="t-tytul br">Pierwszy licznik</span><span class="t-pod czesc">Stuknij +1 po każdym skończonym rzędzie.</span><span class="plus">+1</span></div>
+      <a class="kont t-tresc">Otwórz licznik</a>
+    </div>
+    <p class="t-tresc" style="font-weight:700">Ten tydzień</p>
+    <p class="t-tresc" style="color:var(--tekst2)">Tu zobaczysz dni, w które dziergasz.</p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ikw="dzis"></i>Dziś</a><a><i data-ikw="projekty"></i>Projekty</a><a><i data-ikw="narzedzia"></i>Narzędzia</a><a><i data-ikw="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 2. Przewodnik, góra: pierwsze kroki -->
+<main class="ekran" data-ekran="przewodnik-kroki">
+  <div class="status"><span>9:41</span><span class="bat"></span></div>
+  <div class="nav"><a class="t-tresc"><i data-ikw="wstecz"></i>Dziś</a></div>
+  <div class="tresc" id="kroki" style="padding:0 0 32px; gap:16px"></div>
+</main>
+
+<!-- 3. Przewodnik, biblioteka: grupa „Licznik” z rozwiniętą funkcją, przeczytane z ptaszkiem -->
+<main class="ekran" data-ekran="przewodnik-biblioteka">
+  <div class="status"><span>9:41</span><span class="bat"></span></div>
+  <div class="nav"><a class="t-tresc"><i data-ikw="wstecz"></i>Dziś</a></div>
+  <div class="tresc" id="biblioteka" style="padding:8px 0 32px; gap:16px"></div>
+</main>
+
+<!-- 4. Ustawienia: wiersz „Przewodnik” nad „Pomoc” -->
+<main class="ekran" data-ekran="ustawienia-przewodnik">
+  <div class="status"><span>9:41</span><span class="bat"></span></div>
+  <div class="nav"><a class="t-tresc"><i data-ikw="wstecz"></i>Dziś</a></div>
+  <div class="tresc" style="padding:4px 0 32px; gap:16px">
+    <h1 class="t-tytul br tytul-ekranu">Ustawienia</h1>
+    <p class="nag-grupy t-tresc">Liczenie</p>
+    <div class="lista t-tresc">
+      <div class="ust"><span class="kaf"><i data-ikw="wibracje"></i></span><span class="n">Wibracje</span></div>
+      <div class="ust"><span class="kaf"><i data-ikw="iphone"></i></span><span class="n">Nie gaś ekranu podczas liczenia</span></div>
+    </div>
+    <div class="lista t-tresc">
+      <div class="ust"><span class="kaf"><i data-ikw="chmura"></i></span><span class="n">Dane i synchronizacja</span><span class="sz"><i data-ikw="szewron"></i></span></div>
+      <div class="ust nowy" data-testid="ustawienia-przewodnik"><span class="kaf"><i data-ikw="pytajnik"></i></span><span class="n">Przewodnik</span><span class="w">3 z 42</span><span class="sz"><i data-ikw="szewron"></i></span></div>
+      <div class="ust"><span class="kaf"><i data-ikw="kolo"></i></span><span class="n">Pomoc</span><span class="sz"><i data-ikw="link"></i></span></div>
+      <div class="ust"><span class="kaf"><i data-ikw="dymek"></i></span><span class="n">Zgłoś problem</span><span class="sz"><i data-ikw="szewron"></i></span></div>
+      <div class="ust"><span class="kaf"><i data-ikw="gwiazda"></i></span><span class="n">Oceń Oczko</span></div>
+    </div>
+  </div>
+  <span class="adn">pasek akcentu po lewej = nowy wiersz (tylko makieta); „Pomoc”: lifepreserver zamiast questionmark.circle</span>
+</main>
+
+<script src="tresc.js"></script>
+<script>
+const P = window.PRZEWODNIK, J = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'pl';
+const st = (k) => P.stale[k][J];
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+// kroki
+const kroki = document.getElementById('kroki');
+kroki.innerHTML = `<h1 class="t-duzy br tytul-ekranu">${st('przewodnik.tytul')}</h1>
+<p class="t-pod wstep">${esc(st('przewodnik.wstep'))}</p>
+<div class="sekcja"><h2 class="t-tytul br">${st('przewodnik.pierwsze_kroki')}</h2></div>
+<div class="lista t-tresc">${P.kroki.map((k) => `<div class="krok" data-testid="przewodnik-krok-${k.id}"><span class="nr br" aria-hidden="true">${k.id}</span><div class="zd"><p>${esc(k[J])}</p><a class="pokaz" data-testid="przewodnik-krok-${k.id}-pokaz">${st('przewodnik.pokaz')}<i data-ikw="szewron"></i></a></div></div>`).join('')}</div>
+<div class="sekcja"><h2 class="t-tytul br">${st('przewodnik.biblioteka')}</h2><p class="t-pod postep" data-testid="przewodnik-postep">${st('przewodnik.przeczytane').replace('{{n}}', '3').replace('{{m}}', String(P.grupy.reduce((s, g) => s + g.funkcje.length, 0)))}</p></div>
+<p class="nag-grupy t-tresc">${P.grupy[0][J]}</p>
+<div class="lista t-tresc">${P.grupy[0].funkcje.map((f, i) => wiersz(f, i === 0, false)).join('')}</div>`;
+function wiersz(f, przeczytana, rozwinieta) {
+  return `<div class="fn-w" data-testid="przewodnik-f-${f.id}"><span class="n">${esc(f[J])}</span>${przeczytana ? '<span class="pt"><i data-ikw="ptaszek"></i></span>' : ''}<span class="sz"><i data-ikw="${rozwinieta ? 'gora' : 'dol'}"></i></span></div>`
+    + (rozwinieta ? `<div class="fn-r"><p data-testid="przewodnik-f-${f.id}-opis">${esc(J === 'en' ? f.opisEn : f.opisPl)}</p><a class="pokaz" data-testid="przewodnik-f-${f.id}-pokaz">${st('przewodnik.pokaz')}<i data-ikw="szewron"></i></a></div>` : '');
+}
+// biblioteka: Licznik (rozwinięty „cel”, przeczytane: plus, historia-licznika, cel) i początek Projektów
+const g1 = P.grupy.find((g) => g.id === 'licznik'), g2 = P.grupy.find((g) => g.id === 'projekty');
+const czytane = new Set(['plus', 'historia-licznika', 'cel']);
+document.getElementById('biblioteka').innerHTML = `<p class="nag-grupy t-tresc">${g1[J]}</p>
+<div class="lista t-tresc">${g1.funkcje.map((f) => wiersz(f, czytane.has(f.id), f.id === 'cel')).join('')}</div>
+<p class="nag-grupy t-tresc">${g2[J]}</p>
+<div class="lista t-tresc">${g2.funkcje.slice(0, 4).map((f) => wiersz(f, false, false)).join('')}</div>`;
+// ikony zastępcze (kreska 1.8 na siatce 24 jak dzianina/ikony.js)
+const IK = {
+  pytajnik: '<circle cx="12" cy="12" r="9"/><path d="M9.4 9.3a2.7 2.7 0 0 1 5.2 1c0 1.8-2.6 2.3-2.6 4"/><circle cx="12" cy="17.6" r=".6" fill="currentColor"/>',
+  zebatka: '<path d="M10.3 3h3.4l.5 2.4 1.7.9 2.2-1.1 2.4 2.4-1.1 2.2.9 1.7 2.4.5v3.4l-2.4.5-.9 1.7 1.1 2.2-2.4 2.4-2.2-1.1-1.7.9-.5 2.4h-3.4l-.5-2.4-1.7-.9-2.2 1.1-2.4-2.4 1.1-2.2-.9-1.7L3 13.7v-3.4l2.4-.5.9-1.7-1.1-2.2 2.4-2.4 2.2 1.1 1.7-.9z"/><circle cx="12" cy="12" r="3.2"/>',
+  dzis: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  projekty: '<rect x="4" y="8" width="16" height="12.5" rx="2.5"/><path d="M6.5 5h11M9 2.5h6"/>',
+  narzedzia: '<path d="M4 19.5L19.5 4"/><path d="M6.5 17l1.5 1.5M9 14.5l1.5 1.5M11.5 12l1.5 1.5M14 9.5l1.5 1.5"/>',
+  historia: '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/>',
+  wstecz: '<path d="M15 5l-7 7 7 7"/>', szewron: '<path d="M9 5l7 7-7 7"/>', dol: '<path d="M5 9l7 7 7-7"/>', gora: '<path d="M5 15l7-7 7 7"/>',
+  ptaszek: '<path d="M4.5 12.5l5 5 10-11"/>', link: '<path d="M8 16L16 8M9 8h7v7"/>',
+  kolo: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/>',
+  wibracje: '<rect x="8" y="4" width="8" height="16" rx="2"/><path d="M4.5 9v6M19.5 9v6"/>', iphone: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 5h3"/>',
+  chmura: '<path d="M7 18.5h10a4 4 0 0 0 .4-8 5.5 5.5 0 0 0-10.6 1.2A3.5 3.5 0 0 0 7 18.5z"/>', dymek: '<path d="M4 5.5h16v10H10l-4 3.5v-3.5H4z"/><path d="M12 8v3.5M12 13.3v.2"/>',
+  gwiazda: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/>',
+};
+document.querySelectorAll('[data-ikw]').forEach((el) => { el.classList.add('ik'); el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IK[el.dataset.ikw] || ''}</svg>`; });
+</script>
+</body></html>

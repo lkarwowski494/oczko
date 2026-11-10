@@ -1,0 +1,95 @@
+{
+  "_opis": "Przewodnik po funkcjach (rola 04, sesja O, 2026-11-10; P-685–P-689). Jedno źródło treści specyfikacji, makiety i kontroli (narzedzia/przewodnik-kontrola.mjs). Nazwy w cudzysłowach drukarskich (en “…”, pl „…”) są wartościami istniejących kluczy używanych w app/ albo src/ (jak tests/wydanie/notatka-nazwy.test.ts) albo literałami z listy `literaly`. Trasy: ścieżki expo-router; plik trasy sprawdza kontrola. Teksty en i pl są propozycją 04; 34 pozostałe języki — rola 09.",
+  "literaly": ["+1", "•••", "−1", "Apple Watch", "Apple Pencil"],
+  "klucze_stale": {
+    "przewodnik.tytul": { "en": "Guide", "pl": "Przewodnik", "_gdzie": "tytuł ekranu, etykieta ikony na „Dziś”, wiersz w Ustawieniach" },
+    "przewodnik.wstep": { "en": "First steps and every feature. “Show” opens the screen.", "pl": "Pierwsze kroki i wszystkie funkcje. „Pokaż” otwiera opisany ekran.", "_gdzie": "pod tytułem, tresc2/tekst2" },
+    "przewodnik.pierwsze_kroki": { "en": "First steps", "pl": "Pierwsze kroki", "_gdzie": "nagłówek sekcji" },
+    "przewodnik.biblioteka": { "en": "Feature library", "pl": "Biblioteka funkcji", "_gdzie": "nagłówek sekcji" },
+    "przewodnik.przeczytane": { "en": "Read: {{n}} of {{m}}", "pl": "Przeczytane: {{n}} z {{m}}", "_gdzie": "pod nagłówkiem biblioteki" },
+    "przewodnik.postep_wiersza": { "en": "{{n}} of {{m}}", "pl": "{{n}} z {{m}}", "_gdzie": "wartość wiersza w Ustawieniach" },
+    "przewodnik.pokaz": { "en": "Show", "pl": "Pokaż", "_gdzie": "przycisk przy kroku i rozwiniętej funkcji" },
+    "przewodnik.pokaz_a11y": { "en": "Show: {{nazwa}}", "pl": "Pokaż: {{nazwa}}", "_gdzie": "etykieta VoiceOver przycisku" },
+    "przewodnik.krok_a11y": { "en": "Step {{n}} of {{m}}", "pl": "Krok {{n}} z {{m}}", "_gdzie": "początek etykiety VoiceOver kroku (numer jest ukryty)" },
+    "przewodnik.przeczytana": { "en": "read", "pl": "przeczytane", "_gdzie": "stan wiersza funkcji dla VoiceOver" },
+    "przewodnik.nieprzeczytana": { "en": "not read", "pl": "nieprzeczytane", "_gdzie": "stan wiersza funkcji dla VoiceOver" },
+    "przewodnik.grupa_poza": { "en": "Apple Watch and Lock Screen", "pl": "Apple Watch i ekran blokady", "_gdzie": "nagłówek ostatniej grupy (powierzchnie systemu, bez nazwy w interfejsie)" },
+    "przewodnik.nazwa_ekran_blokady": { "en": "Lock Screen", "pl": "Ekran blokady", "_gdzie": "nazwa funkcji (powierzchnia systemu; termin Apple)" }
+  },
+  "kroki": [
+    { "id": "1", "trasa": "/", "F": ["F-01"], "en": "On “Today”, tap “+1” on the “First counter” card after each finished row. Nothing to set up first.", "pl": "Na ekranie „Dziś” stuknij „+1” na karcie „Pierwszy licznik” po każdym skończonym rzędzie. Nic nie trzeba zakładać." },
+    { "id": "2", "trasa": "/licznik", "zapas": "/", "F": ["F-14"], "en": "Tap “Open counter”, then ••• → “Name project and part”. The counter becomes your project.", "pl": "Stuknij „Otwórz licznik”, potem ••• → „Nazwij projekt i część”. Licznik staje się projektem." },
+    { "id": "3", "trasa": "/licznik", "zapas": "/", "F": ["F-08"], "en": "On the counter: “Goal” → “Set a goal for this part”. The knitting next to the number grows towards the goal.", "pl": "Na liczniku: „Cel” → „Ustaw cel dla tej części”. Dzianina obok liczby rośnie do celu." },
+    { "id": "4", "trasa": "/wzor", "zapas": "/", "F": ["F-24", "F-25"], "en": "“Pattern” → “Add pattern”: a PDF or Word file, photos or a web page. The counter stays on the same screen.", "pl": "„Wzór” → „Dodaj wzór”: plik PDF lub Word, zdjęcia albo strona WWW. Licznik zostaje na tym samym ekranie." },
+    { "id": "5", "trasa": "/", "F": ["F-18", "F-49"], "en": "Next time, “Today” shows where you stopped: “+1” on the card counts a row, “Continue” opens the counter.", "pl": "Następnym razem „Dziś” pokazuje miejsce ostatniej pracy: „+1” na karcie liczy rząd, „Kontynuuj” otwiera licznik." },
+    { "id": "6", "trasa": "/projekty", "F": ["F-14"], "en": "Another project: “Projects” → “New project”, with parts now or later.", "pl": "Kolejny projekt: „Projekty” → „Nowy projekt”, z częściami od razu albo później." }
+  ],
+  "grupy": [
+    { "id": "dzis", "nazwaKlucz": "zakladki.dzis", "funkcje": [
+      { "id": "kontynuuj", "nazwaKlucz": "dzis.kontynuuj", "trasa": "/", "F": ["F-01", "F-18", "F-49"], "en": "“+1” on the card counts a row without opening the counter. “Continue” opens the counter where you stopped.", "pl": "„+1” na karcie liczy rząd bez otwierania licznika. „Kontynuuj” otwiera licznik w miejscu ostatniej pracy." },
+      { "id": "tydzien", "nazwaKlucz": "dzis.ten_tydzien", "trasa": "/", "F": ["F-59"], "en": "The days you knitted this week, at a glance.", "pl": "Dni dziergania w tym tygodniu, na jedno spojrzenie." }
+    ] },
+    { "id": "licznik", "nazwaKlucz": "licznik.tytul_roboczy", "funkcje": [
+      { "id": "plus", "nazwaKlucz": "licznik.plus", "trasa": "/licznik", "zapas": "/", "F": ["F-01", "F-47"], "en": "Tap “+1 row” after each row; “−1” takes one back. Many quick taps in a row? Oczko offers to undo them.", "pl": "„+1 rząd” po każdym rzędzie, „−1” cofa jeden. Seria szybkich stuknięć? Oczko zaproponuje ich cofnięcie." },
+      { "id": "historia-licznika", "nazwaKlucz": "licznik.akcja_historia", "trasa": "/licznik", "zapas": "/", "F": ["F-02"], "en": "Every change with its time and value; undo a change from there.", "pl": "Każda zmiana z godziną i wartością; stamtąd cofniesz zmianę." },
+      { "id": "wpisz", "nazwaKlucz": "menu.wpisz", "trasa": "/licznik", "zapas": "/", "F": ["F-45"], "en": "In the ••• menu: type the row number, or “Reset to 0…”.", "pl": "W menu •••: wpisz numer rzędu albo „Wyzeruj do 0…”." },
+      { "id": "blokada", "nazwaKlucz": "menu.zablokuj", "trasa": "/licznik", "zapas": "/", "F": ["F-03"], "en": "The counter ignores taps, e.g. in a bag. Unlock it at the top of the screen.", "pl": "Licznik ignoruje stuknięcia, np. w torbie. Odblokujesz go u góry ekranu." },
+      { "id": "znaczenie", "nazwaKlucz": "menu.znaczenie", "trasa": "/licznik", "zapas": "/", "F": ["F-09"], "en": "Choose whether the big number shows “Rows finished” or “The row I’m on”.", "pl": "Wybierz, czy duża liczba to „Skończone rzędy”, czy „Rząd, nad którym pracuję”." },
+      { "id": "cel", "nazwaKlucz": "menu.cel", "trasa": "/licznik", "zapas": "/", "F": ["F-08", "F-52"], "en": "Rows in this part. At the goal: “Next part”, or “What’s next?” for a second matching part.", "pl": "Rzędy w tej części. Po celu: „Następna część” albo „Co dalej?” — na przykład druga taka sama część." },
+      { "id": "przypomnienia", "nazwaKlucz": "przyp.tytul", "trasa": "/licznik", "zapas": "/", "F": ["F-06", "F-48"], "en": "A reminder every few rows, a set number of times; you see the list of rows before saving. Reminder rows vibrate differently.", "pl": "Przypomnienie co kilka rzędów, określoną liczbę razy; listę rzędów widać przed zapisem. W rzędzie przypomnienia wibracja jest inna." },
+      { "id": "powtorzenie", "nazwaKlucz": "menu.powtorzenie", "trasa": "/licznik", "zapas": "/", "F": ["F-05"], "en": "Counts repeats of a pattern section together with the rows.", "pl": "Liczy powtórzenia fragmentu wzoru razem z rzędami." },
+      { "id": "notatka", "nazwaKlucz": "licznik.akcja_notatka", "trasa": "/licznik", "zapas": "/", "F": ["F-15"], "en": "A note shown next to the counter.", "pl": "Notatka widoczna przy liczniku." },
+      { "id": "stoper", "nazwaKlucz": "licznik.akcja_stoper", "trasa": "/licznik", "zapas": "/", "F": ["F-21"], "en": "Session time starts at once and adds up in the project, under “Sessions”.", "pl": "Czas sesji rusza od razu i sumuje się w projekcie, w wierszu „Sesje”." },
+      { "id": "dodaj-licznik", "nazwaKlucz": "projekt.dodaj_licznik", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-04", "F-46"], "en": "A second counter in a part, e.g. for stitches or ribbing; a total counter sits above them.", "pl": "Drugi licznik w części, np. oczek albo ściągacza; nad nimi licznik całości." }
+    ] },
+    { "id": "projekty", "nazwaKlucz": "zakladki.projekty", "funkcje": [
+      { "id": "nowy", "nazwaKlucz": "projekty.nowy", "trasa": "/projekty", "F": ["F-14"], "en": "Name and parts now or later. Your first counter becomes a project by itself.", "pl": "Nazwa i części od razu albo później. Pierwszy licznik sam staje się projektem." },
+      { "id": "szukaj", "nazwaKlucz": "projekty.szukaj", "trasa": "/projekty", "F": ["F-50", "F-54"], "en": "“In progress” by last work, “Finished” apart; search by name.", "pl": "„W toku” według ostatniej pracy, „Ukończone” osobno; szukaj po nazwie." },
+      { "id": "taki-sam", "nazwaKlucz": "projekt.zrob_taka_sama", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-20"], "en": "A new project with the same parts and counters, starting from 0.", "pl": "Nowy projekt z tymi samymi częściami i licznikami od zera." },
+      { "id": "termin", "nazwaKlucz": "projekt.termin", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-61", "F-60"], "en": "A finish date gives a daily goal in rows; progress in percent comes from part goals.", "pl": "Data zakończenia daje cel rzędów na dziś; postęp w procentach wynika z celów części." },
+      { "id": "zdjecia", "nazwaKlucz": "zdjecia.naglowek", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-16"], "en": "Photos of your work, kept in the project.", "pl": "Zdjęcia robótki zapisane w projekcie." },
+      { "id": "szczegoly", "nazwaKlucz": "projekt.szczegoly", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-17"], "en": "Needles or hook in mm and US sizes, yarn from your stash, swatch.", "pl": "Druty lub szydełko w mm i rozmiarach US, włóczka z zapasu, próbka." },
+      { "id": "sesje", "nazwaKlucz": "projekt.sesje", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-51"], "en": "Time from timer sessions; you can fix when a session ended.", "pl": "Czas z sesji stopera; poprawisz godzinę końca sesji." },
+      { "id": "ukoncz", "nazwaKlucz": "menu.ukoncz", "trasa": "/projekt/[id]", "zapas": "/projekty", "F": ["F-19", "F-53", "F-64"], "en": "The project moves to “Finished” with a card to share. “Resume project” brings it back.", "pl": "Projekt trafia do „Ukończone” z kartą do udostępnienia. „Wznów projekt” go przywraca." },
+      { "id": "kosz", "nazwaKlucz": "projekty.kosz", "trasa": "/kosz", "F": ["F-33"], "en": "A deleted project, part or counter can be restored for 30 days.", "pl": "Usunięty projekt, część albo licznik przywrócisz przez 30 dni." }
+    ] },
+    { "id": "wzor", "nazwaKlucz": "projekt.wzor", "funkcje": [
+      { "id": "dodaj-wzor", "nazwaKlucz": "wzor.dodaj", "trasa": "/wzor", "zapas": "/", "F": ["F-24", "F-55"], "en": "From a PDF or Word file, photos, scanned pages or a web page. From another app: Share → Oczko.", "pl": "Z pliku PDF lub Word, zdjęć, skanu stron albo strony WWW. Z innej aplikacji: Udostępnij → Oczko." },
+      { "id": "znacznik", "nazwaKlucz": "wzor.zaznacz_rzad", "trasa": "/wzor", "zapas": "/", "F": ["F-25", "F-26"], "en": "Marks the row you’re on in the pattern; the counter is on the same screen.", "pl": "Oznacza bieżący rząd we wzorze; licznik jest na tym samym ekranie." },
+      { "id": "zakreslacz", "nazwaKlucz": "wzor.zakreslacz", "trasa": "/wzor", "zapas": "/", "F": ["F-56", "F-28"], "en": "Highlighter, pen and notes next to a row — with your finger, or Apple Pencil on iPad.", "pl": "Zakreślacz, pióro i notatki przy rzędzie — palcem albo Apple Pencil na iPadzie." },
+      { "id": "film", "nazwaKlucz": "wzor.dodaj_film", "trasa": "/wzor", "zapas": "/", "F": ["F-55"], "en": "A link to a video tutorial, kept with the pattern.", "pl": "Link do filmu instruktażowego przy wzorze." }
+    ] },
+    { "id": "narzedzia", "nazwaKlucz": "zakladki.narzedzia", "funkcje": [
+      { "id": "wloczki", "nazwaKlucz": "narzedzia.wloczki", "trasa": "/zapas", "F": ["F-37"], "en": "Your yarn stash: skeins, length, weight and a label photo.", "pl": "Zapas włóczek: motki, długość, waga i zdjęcie etykiety." },
+      { "id": "druty", "nazwaKlucz": "narzedzia.druty", "trasa": "/druty", "F": ["F-37"], "en": "The needles and hooks you own, by size.", "pl": "Twoje druty i szydełka według rozmiaru." },
+      { "id": "probka", "nazwaKlucz": "narzedzia.probka", "trasa": "/probka", "F": ["F-38"], "en": "Stitches for the width you want, from your swatch.", "pl": "Liczba oczek na wybraną szerokość z twojej próbki." }
+    ] },
+    { "id": "historia", "nazwaKlucz": "zakladki.historia", "funkcje": [
+      { "id": "kalendarz", "nazwaKlucz": "zakladki.historia", "trasa": "/dni", "F": ["F-59"], "en": "A calendar of knitting days; a day or a period shows rows and time.", "pl": "Kalendarz dni dziergania; dzień albo okres pokazuje rzędy i czas." }
+    ] },
+    { "id": "ustawienia", "nazwaKlucz": "ustawienia.tytul", "funkcje": [
+      { "id": "wibracje", "nazwaKlucz": "ustawienia.wibracje", "trasa": "/ustawienia", "F": ["F-01"], "en": "Vibration on each row, on or off.", "pl": "Wibracja przy każdym rzędzie — włączona albo wyłączona." },
+      { "id": "ekran", "nazwaKlucz": "ustawienia.ekran_nie_gasnie", "trasa": "/ustawienia", "F": ["F-10"], "en": "The screen stays on while you count.", "pl": "Ekran nie gaśnie, gdy liczysz." },
+      { "id": "jednostki", "nazwaKlucz": "ustawienia.uklad_miar", "trasa": "/miary", "F": ["F-38"], "en": "Metric, imperial or automatic units for sizes and lengths.", "pl": "Jednostki metryczne, imperialne albo automatyczne dla rozmiarów i długości." },
+      { "id": "dane", "nazwaKlucz": "ustawienia.stan_danych", "trasa": "/stan-danych", "F": ["F-27", "F-58"], "en": "iCloud sync on or off, and whether everything is saved.", "pl": "Synchronizacja iCloud i stan zapisu danych." },
+      { "id": "eksport", "nazwaKlucz": "ustawienia.eksport", "trasa": "/ustawienia", "F": ["F-32"], "en": "A file with all your data; “Import a backup” brings it back, e.g. on a new phone.", "pl": "Plik ze wszystkimi danymi; „Importuj kopię zapasową” przywraca je, np. na nowym telefonie." },
+      { "id": "usun", "nazwaKlucz": "ustawienia.usun_wszystko", "trasa": "/ustawienia", "F": ["F-34"], "en": "Deletes all projects and counters after you confirm.", "pl": "Usuwa wszystkie projekty i liczniki po potwierdzeniu." },
+      { "id": "jezyk", "nazwaKlucz": "ustawienia.jezyk", "trasa": "/jezyk", "F": [], "en": "Oczko’s language, separate from the phone’s.", "pl": "Język Oczka, niezależnie od języka telefonu." },
+      { "id": "zglos", "nazwaKlucz": "zglos.tytul", "trasa": "/zglos", "F": ["F-57"], "en": "A report with app and device details, which you review before sending.", "pl": "Raport z danymi aplikacji i urządzenia, który przejrzysz przed wysłaniem." },
+      { "id": "zrodla", "nazwaKlucz": "ustawienia.zrodla_wiedzy", "trasa": "/zrodla", "F": [], "en": "Where the knitting information in Oczko comes from.", "pl": "Skąd pochodzą informacje o dzierganiu w Oczku." }
+    ] },
+    { "id": "pro", "nazwaKlucz": "oferty.tytul", "funkcje": [
+      { "id": "pro", "nazwaKlucz": "oferty.tytul", "trasa": "/ustawienia", "F": ["F-35", "F-63"], "en": "Without Pro, free crafting days a month: {{limit}}; your rows are kept. Oczko Pro removes the limit.", "pl": "Bez Pro limit darmowych dni robótkowych w miesiącu: {{limit}}; rzędy zostają. Oczko Pro znosi limit.", "_parametry": { "limit": "LIMIT_DNI_W_MIESIACU (src/konfiguracja)" } }
+    ] },
+    { "id": "poza", "nazwaKlucz": "przewodnik.grupa_poza", "funkcje": [
+      { "id": "zegarek", "nazwaLiteral": "Apple Watch", "trasa": null, "bezTrasy": "aplikacja na zegarku, poza nawigacją iPhone’a", "F": ["F-12"], "en": "Count rows on your watch: “+1 row” and the current row. Open Oczko on Apple Watch.", "pl": "Licz rzędy na zegarku: „+1 rząd” i bieżący rząd. Otwórz Oczko na Apple Watch." },
+      { "id": "ekran-blokady", "nazwaKlucz": "przewodnik.nazwa_ekran_blokady", "trasa": "/licznik", "zapas": "/", "F": ["F-11"], "en": "While you count, the Lock Screen shows the row, “+1 row” and the session time.", "pl": "W czasie liczenia ekran blokady pokazuje rząd, „+1 rząd” i czas sesji." }
+    ] }
+  ],
+  "pominiete": [
+    { "F": "F-31", "powod": "trwały zapis to własność aplikacji, nie czynność; nie ma czego pokazać" },
+    { "F": "F-36", "powod": "bez reklam i śledzenia — obietnica, nie funkcja; „Polityka prywatności” jest w Ustawieniach (link WWW)" },
+    { "F": "F-13, F-22, F-29, F-39, F-40, F-42, F-44, F-62", "powod": "PÓŹNIEJ w kontrakcie zakresu — nie ma ich w 1.0" },
+    { "F": "F-23, F-30, F-41, F-43", "powod": "NIE w kontrakcie zakresu" }
+  ]
+}
