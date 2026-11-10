@@ -110,8 +110,9 @@ describe('README.md: bez odznak, bez liczb testów, bez znaków towarowych osób
     for (const n of jawne) expect({ n, trafienie: new RegExp(`\\b${n}\\b`, 'i').test(README) }).toEqual({ n, trafienie: false });
     const kod = `import { wczytajSkroty, trafienia } from ${JSON.stringify(join(root, 'scripts/jakosc/marki.mjs'))};
       import { readFileSync } from 'node:fs';
-      console.log(trafienia(readFileSync(${JSON.stringify(join(root, 'README.md'))}, 'utf8'), wczytajSkroty(${JSON.stringify(root)})));`;
-    const wyn = spawnSync(process.execPath, ['--input-type=module', '-e', kod], { encoding: 'utf8' });
+      console.log(String(trafienia(readFileSync(${JSON.stringify(join(root, 'README.md'))}, 'utf8'), wczytajSkroty(${JSON.stringify(root)}))));`;
+    // M1-audytor-generalny-324 (07-jakosc-501): podproces zawsze z FORCE_COLOR=1 jak w ci.yml — wynik nie zależy od środowiska uruchomienia.
+    const wyn = spawnSync(process.execPath, ['--input-type=module', '-e', kod], { encoding: 'utf8', env: { ...process.env, FORCE_COLOR: '1' } });
     expect(wyn.status).toBe(0);
     expect(wyn.stdout.trim()).toBe('0');
   });
