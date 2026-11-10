@@ -50,19 +50,18 @@ export default function EkranOfert(): React.ReactElement {
   }
   const wygas = 'wygas' in sklep && typeof sklep.wygas === 'function' ? (sklep.wygas as () => void) : null;
   return (
-    <>
-      <Oferty
-        stan={{ produkty, aktywne: dostep.aktywne, familySharing: FAMILY_SHARING, komunikat: komunikat ?? (oczekujacy ? 'czeka' : null), oczekujacy }}
-        t={kontener.j.t}
-        adresy={{ polityka: ADRESY.polityka, warunki: ADRESY.warunki }}
-        naKup={(id) => void kup(id)}
-        naPrzywroc={() => void przywroc()}
-        naZarzadzaj={() => systemAplikacji.zarzadzajSubskrypcja()}
-        naOtworzAdres={(u) => systemAplikacji.otworzAdres(u)}
-        // E2-137-A2 (scen. 07): oferty otwarte z okna „Uczciwe zasady” (`replace`, modal na modal) kończą jawnie na liście projektów, nie przez `back()` po zamianie modalu.
-        naZamknij={() => (skad === 'uczciwe-zasady' ? router.dismissTo('/projekty') : router.back())}
-      />
-      {paneleE2e && wygas && <paneleE2e.PanelSklepu naWygas={() => { wygas(); void poZmianie(); }} /> /* build E2E (P-238) */}
-    </>
+    <Oferty
+      stan={{ produkty, aktywne: dostep.aktywne, familySharing: FAMILY_SHARING, komunikat: komunikat ?? (oczekujacy ? 'czeka' : null), oczekujacy }}
+      t={kontener.j.t}
+      adresy={{ polityka: ADRESY.polityka, warunki: ADRESY.warunki }}
+      naKup={(id) => void kup(id)}
+      naPrzywroc={() => void przywroc()}
+      naZarzadzaj={() => systemAplikacji.zarzadzajSubskrypcja()}
+      naOtworzAdres={(u) => systemAplikacji.otworzAdres(u)}
+      // E2-137-A2 (scen. 07): oferty otwarte z okna „Uczciwe zasady” (`replace`, modal na modal) kończą jawnie na liście projektów, nie przez `back()` po zamianie modalu.
+      naZamknij={() => (skad === 'uczciwe-zasady' ? router.dismissTo('/projekty') : router.back())}
+      // build E2E (P-238): w przewijanej treści arkusza; jako rodzeństwo arkusza leżał pod paskiem przycisków (scen. 06, przebieg 7)
+      panelE2e={paneleE2e && wygas ? <paneleE2e.PanelSklepu naWygas={() => { wygas(); void poZmianie(); }} /> : undefined}
+    />
   );
 }
