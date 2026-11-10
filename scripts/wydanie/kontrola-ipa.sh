@@ -60,6 +60,12 @@ node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --oczekujace docs/lo
 # Hermes i brak modułów deweloperskich.
 B="$APP/main.jsbundle"
 if [ ! -s "$B" ]; then blad "brak main.jsbundle"; elif LC_ALL=C grep -qI . "$B"; then blad "main.jsbundle jest tekstem JS, nie bajtkodem Hermesa"; fi
+# M1-245 (P-661): tekst licencji OFL kroju Bree Serif jest w pakiecie JS (OFL warunek 2: nota i licencja przy kopii kroju). Bajtkod Hermesa trzyma napisy jako tekst;
+# tests/wydanie/licencja-ofl-w-pakiecie.test.ts sprawdza ten sam wzorzec na bajtkodzie z hermesc.
+if [ -s "$B" ]; then
+  LC_ALL=C grep -aqF 'Reserved Font Names "Bree" and "Bree Serif"' "$B" && LC_ALL=C grep -aqF 'SIL OPEN FONT LICENSE Version 1.1' "$B" \
+    || blad "main.jsbundle bez noty i licencji OFL kroju Bree Serif (ekran licencji, M1-245)"
+fi
 # JAK-15 (P-237): bez śladów trybu testowego (napisy paneli E2E, testID e2e-, klucze oczkoE2e*, nazwy przełączników EXPO_PUBLIC_*).
 [ -s "$B" ] && { node scripts/wydanie/slady-testowe.mjs "$B" || bledy=$((bledy + 1)); }
 find "$APP" -iname '*DevLauncher*' -o -iname '*DevMenu*' | grep -q . && blad "w buildzie są moduły deweloperskie (DevLauncher/DevMenu)"
