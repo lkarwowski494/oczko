@@ -19,7 +19,7 @@
 | `przewodnik.nazwa_ekran_blokady` | Lock Screen | Ekran blokady | nazwa funkcji (powierzchnia systemu; termin Apple) |
 | `przewodnik.krok_1` | On “Today”, tap “+1” on the “First counter” card after each finished row. Nothing to set up first. | Na ekranie „Dziś” stuknij „+1” na karcie „Pierwszy licznik” po każdym skończonym rzędzie. Nic nie trzeba zakładać. | `/` |
 | `przewodnik.krok_2` | On the counter: ••• → “Name project and part”. The counter becomes your project. | Na liczniku: ••• → „Nazwij projekt i część”. Licznik staje się projektem. | `/licznik` (bez miejsca: `/`) |
-| `przewodnik.krok_3` | On the counter: “Goal” → “Set a goal for this part”. The knitting next to the number grows towards the goal. | Na liczniku: „Cel” → „Ustaw cel dla tej części”. Dzianina obok liczby rośnie do celu. | `/licznik` (bez miejsca: `/`) |
+| `przewodnik.krok_3` | On the counter: “Goal” → “Set a goal for this part”. The knitting next to the number grows towards the goal. | Na liczniku: „Cel” → „Ustaw cel dla tej części”. Robótka obok liczby rośnie do celu. | `/licznik` (bez miejsca: `/`) |
 | `przewodnik.krok_4` | “Pattern” → “Add pattern”: a PDF or Word file, photos or a web page. The counter stays on the same screen. | „Wzór” → „Dodaj wzór”: plik PDF lub Word, zdjęcia albo strona WWW. Licznik zostaje na tym samym ekranie. | `/wzor` (bez miejsca: `/`) |
 | `przewodnik.krok_5` | Next time, tap “Continue” on “Today”. The counter opens where you stopped. | Następnym razem stuknij „Kontynuuj” na ekranie „Dziś”. Licznik otworzy się w miejscu ostatniej pracy. | `/` |
 | `przewodnik.krok_6` | Another project: “Projects” → “New project”, with parts now or later. | Kolejny projekt: „Projekty” → „Nowy projekt”, z częściami od razu albo później. | `/projekty` |

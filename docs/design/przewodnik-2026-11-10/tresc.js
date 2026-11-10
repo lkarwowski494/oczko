@@ -83,7 +83,7 @@ window.PRZEWODNIK = {
   {
    "id": "3",
    "en": "On the counter: “Goal” → “Set a goal for this part”. The knitting next to the number grows towards the goal.",
-   "pl": "Na liczniku: „Cel” → „Ustaw cel dla tej części”. Dzianina obok liczby rośnie do celu.",
+   "pl": "Na liczniku: „Cel” → „Ustaw cel dla tej części”. Robótka obok liczby rośnie do celu.",
    "trasa": "/licznik"
   },
   {
