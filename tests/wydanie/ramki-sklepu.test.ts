@@ -1,6 +1,5 @@
 /* Ramki i podpisy na zrzutach sklepu (scripts/ci/ramki-sklepu.sh, scripts/ci/wymiary-asc.mjs; rola 10-wydanie, KO-032, 2026-11-10).
- * Wzór: trening:scripts/ci/store-frames.sh. Test uruchamia skrypt naprawdę na sztucznych PNG w wymiarach ASC (ImageMagick; bez niego część „działa” jest pominięta — w CI
- * workflowu ramki i tak biegną na ubuntu z ImageMagick). Dlaczego: ramki wychodzą z macierzy macOS po godzinach, a błąd w skrypcie widać dopiero w artefakcie. */
+ * Wzór: trening:scripts/ci/store-frames.sh. Test uruchamia skrypt naprawdę na sztucznych PNG w wymiarach ASC (ImageMagick; bez niego część „działa” jest pominięta lokalnie, w CI brak = porażka). Dlaczego: ramki wychodzą z macierzy macOS po godzinach, a błąd w skrypcie widać dopiero w artefakcie. */
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -31,6 +30,15 @@ describe('ramki-sklepu.sh: kontrakt (statycznie)', () => {
   });
 });
 
+// 10-wydanie-003: w CI brak ImageMagicka to porażka z komunikatem, nie ciche pominięcie (zasada wspólna 21); lokalnie pominięcie zostaje (test: ramki-imagemagick-ci.test.ts).
+const wCi = !!process.env.CI && !['', '0', 'false'].includes(process.env.CI.toLowerCase());
+if (!maConvert && wCi) {
+  describe('ramki-sklepu.sh: ImageMagick w CI', () => {
+    test('`convert` jest dostępny (bez niego kontrola ramek nie biegnie: zainstaluj imagemagick w kroku CI)', () => {
+      throw new Error('brak ImageMagick (`convert`) na maszynie CI: część „działa na PNG w wymiarach App Store Connect” nie zostałaby uruchomiona; zainstaluj pakiet imagemagick w workflow');
+    });
+  });
+}
 (maConvert ? describe : describe.skip)('ramki-sklepu.sh: działa na PNG w wymiarach App Store Connect', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ramki-'));
   const we = path.join(tmp, 'we'); const wy = path.join(tmp, 'wy');
