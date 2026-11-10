@@ -4,15 +4,15 @@ Account: none needed. There is no sign-in, so there are no demo credentials.
 How Oczko differs from a plain tally counter: the counter sits next to the user's own pattern (PDF, Word file, scan or saved web page) on one screen, with a marker on the current row. Every change goes into a history with its time, and a burst of stray taps can be undone with one tap. Everything works without an account, and data stays on the device.
 
 Main flow
-1. Open the app. Tap "+1 row" on the counter: the row count goes up with a vibration. "−1" takes one back. "History" lists every change with its time.
+1. Open the app: it starts on "Today" with the current project card. Tap "+1" on the card (on a fresh install the card is titled "First counter"): the row count goes up with a vibration. Tap "Continue" ("Open counter" on a fresh install) to open the counter, where "+1 row" does the same, "−1" takes one back and "History" lists every change with its time.
 2. Projects: "New project" (name, optional parts). The project menu has "Add pattern…" with "Choose file (PDF or Word)", "Scan pages" (camera) and "Web page link…".
 3. Open the pattern: tap and hold on a line to mark the current row; "Highlighter" draws with a finger (iPad: Apple Pencil).
 4. Share to Oczko: in Safari, Files or Photos tap Share, then Oczko, then pick a project.
-5. Settings: "Export all data", "Import a backup", "Delete all data", "Report a problem" (shows a preview, the user sends it through the share sheet).
+5. Settings (the gear icon at the top of "Today"): "Export all data", "Import a backup", "Delete all data", "Report a problem" (shows a preview, the user sends it through the share sheet).
 
 New in this version: first release; every feature above is new.
 
-In-App Purchases (open Settings, then "Oczko Pro")
+In-App Purchases (on "Today" tap the gear icon for Settings, then "Oczko Pro")
 - Free use is limited to 5 crafting days per calendar month. A crafting day starts with the first row counted that day. Work in progress is never interrupted.
 - "Oczko Pro" removes the limit: Monthly and Yearly auto-renewing subscriptions, and a Lifetime non-consumable. Subscriptions have no introductory offer.
 - "Restore purchases" is on the same screen; "Manage subscription" appears there after subscribing. You can buy without waiting for the limit.

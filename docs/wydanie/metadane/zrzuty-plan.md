@@ -9,15 +9,16 @@ Czeka na koniec audytu 04 (plan-prac 2.1) i zamrożenie en (2.2). Kadry i podpis
 | Apple Watch | [DO USTALENIA] | cel zegarka jest w 1.0, ale „nie sprawdzono” na urządzeniu (P-290); bez zrzutów zegarka do czasu testu; potwierdzić wymóg przy pierwszej wysyłce | warunkowo |
 Język zrzutów: en (napisy w obrazie osobno dla języka albo świadomie z en — decyzja po 2.3). Tryb jasny; ciemny jako drugi komplet tylko, jeśli 04 uzna za wartość.
 
-## Lista ekranów (6 na klasę; kolejność = ważność, pierwsze dwa pokazują główną pracę)
+## Lista ekranów (7 na klasę; kolejność = ważność; zrzut 1 to ekran widoczny po starcie, zrzut 2 główna praca)
 | # | Ekran × stan | iPhone | iPad | Twierdzenie w podpisie (dowód w `en.md`) | Dane fikcyjne |
 |---|---|---|---|---|---|
-| 1 | Licznik w trakcie: duży numer rzędu, +1/−1, notatka obok | tak | tak | one tap adds a row; picks up where you stopped | projekt „Harbor Sweater”, rząd w środku |
-| 2 | Wzór PDF obok licznika, znacznik bieżącego rzędu | tak (pion) | tak (poziom) | your pattern next to the counter | **warunek OG-07** (weryfikacja patentowa w kodzie, etap 4): bez niej zrzut 2 i 4 odpadają |
-| 3 | Zakreślanie i notatki na wzorze (iPad: Apple Pencil) | tak | tak | highlight and write on the pattern | j.w. |
-| 4 | Lista projektów (w toku, „last worked”, dni limitu) | tak | tak | all your projects, free 5 crafting days a month | 4–5 projektów, nie nazwy marek |
-| 5 | Historia zmian z cofnięciem | tak | tak | every change with its time | z projektu z poz. 1 |
-| 6 | Kalendarz dni / karta ukończenia projektu | tak | tak | your crafting days | dni w jednym miesiącu |
+| 1 | „Dziś” z kartą projektu: duży numer rzędu, „+1”, „Kontynuuj ›”, linia wolnych dni (ekran po każdym starcie, P-563) | tak | tak | one tap adds a row; your crafting days | projekt „Harbor Sweater”, rząd w środku |
+| 2 | Licznik w trakcie po „Kontynuuj”: duży numer rzędu, +1/−1, notatka obok | tak | tak | one tap adds a row; your note next to the counter | j.w. |
+| 3 | Wzór PDF obok licznika, znacznik bieżącego rzędu | tak (pion) | tak (poziom) | your pattern next to the counter | **warunek OG-07** (weryfikacja patentowa w kodzie, etap 4): bez niej zrzut 3 i 4 odpadają |
+| 4 | Zakreślanie i notatki na wzorze (iPad: Apple Pencil) | tak | tak | highlight and write on the pattern | j.w. |
+| 5 | Lista projektów (w toku, „last worked”, dni limitu) | tak | tak | all your projects, free 5 crafting days a month | 4–5 projektów, nie nazwy marek |
+| 6 | Historia zmian z cofnięciem | tak | tak | every change with its time | z projektu z poz. 1 |
+| 7 | Kalendarz dni / karta ukończenia projektu | tak | tak | your crafting days | dni w jednym miesiącu |
 Nie robię zrzutu ekranu ofert Oczko Pro jako głównego (reklama zakupu bez zastrzeżeń ryzykuje 2.3.2); jeśli 04 zechce, z oznaczeniem „in-app purchase”. Bez ekranów: iCloud (do ZM-06), ekran blokady, zegarek (do 07 i testu).
 
 ## Skąd zrzuty — opcje
