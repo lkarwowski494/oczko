@@ -151,16 +151,43 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(tekst).toMatch(/EXPO_PUBLIC_STORE_FAKE: '1'/); // atrapa sklepu w buildzie zrzutów (ceny z sklep-sztuczny.ts)
   });
 
-  // 10-wydanie-001 (recenzja AB, 10.11.2026): build zrzutów ma atrapę sklepu, więc ekran ofert kończy się panelem „Test store: expire access” (src/ekrany/Oferty.tsx, panelE2e);
-  // zrzut dla App Review nie może go zawierać. Kodu aplikacji nie zmieniamy (P-238) — scena sprawdza brak panelu w kadrze po ostatnim przewinięciu, a zrzut robi skrypt zaraz po scenie.
-  test('99-zakup: po ostatnim przewinięciu scena sprawdza, że panel atrapy sklepu (e2e-sklep-wygas) nie jest w kadrze', () => {
-    const wiersze = czytaj(`${KAT}/99-zakup.yaml`).split('\n').filter((l) => !l.trim().startsWith('#'));
-    const nr = (re: RegExp) => wiersze.findIndex((l) => re.test(l));
-    const guard = nr(/^- assertNotVisible:\s*\{\s*id:\s*"e2e-sklep-wygas"\s*\}/);
-    expect(guard).toBeGreaterThan(-1);
-    const ostatniRuch = Math.max(...wiersze.map((l, i) => (/^- (scrollUntilVisible|scroll|swipe)\b/.test(l) ? i : -1)));
-    expect(guard).toBeGreaterThan(ostatniRuch); // przewinięcie po sprawdzeniu mogłoby panel wciągnąć do kadru
-    expect(guard).toBeGreaterThan(nr(/id:\s*"oferty-plan-dozywotni"/)); // plany są sprawdzone w tym samym kadrze
+  // 10-wydanie-001 (recenzja AB) + 10-wydanie-010 (recenzja AD, 10.11.2026): build zrzutów ma atrapę sklepu, więc ekran ofert kończy się panelem „Test store: expire access” (src/ekrany/Oferty.tsx, panelE2e);
+  // zrzut dla App Review nie może go zawierać. Maestro 2.12.1 liczy widoczność względem EKRANU, nie przewijanego widoku, więc panel pod paskiem przycisków jest dla niego „widoczny”: zwykłe
+  // `assertNotVisible` jest czerwone przy każdym przebiegu (010). Scena sprawdza więc geometrię względem przycisku „Kup” (selektor `above`), a plany z `above` też (plan pod paskiem przechodził).
+  // Zachowanie w geometrii: tests/wydanie/zakup-kadr-model.test.ts. Kodu aplikacji nie zmieniamy (P-238).
+  test('99-zakup: panel atrapy (e2e-sklep-wygas) pilnowany geometrią względem „Kup”, nie samym assertNotVisible; pętla cofa treść małymi krokami; plany i zdanie pod nimi nad „Kup”', () => {
+    const [, ...reszta] = czytaj(`${KAT}/99-zakup.yaml`).split(/^---$/m);
+    const kroki: any[] = YAML.parse(reszta.join('---')); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const nazwa = (k: any) => Object.keys(k)[0]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const dotyczyPanelu = (sel: any) => sel?.id === 'e2e-sklep-wygas'; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const nad = (sel: any) => sel?.above?.id === 'oferty-kup'; // eslint-disable-line @typescript-eslint/no-explicit-any
+    // 010: żadnego `assertNotVisible` panelu bez `above` (liczone względem ekranu = fałszywa czerwień pod paskiem przycisków)
+    const goleNotVisible = kroki.filter((k) => nazwa(k) === 'assertNotVisible' && dotyczyPanelu(k.assertNotVisible) && !nad(k.assertNotVisible));
+    expect(goleNotVisible).toEqual([]);
+    const iStraznik = kroki.findIndex((k) => nazwa(k) === 'assertNotVisible' && dotyczyPanelu(k.assertNotVisible) && nad(k.assertNotVisible));
+    expect(iStraznik).toBeGreaterThan(-1);
+    const ostatniRuch = Math.max(...kroki.map((k, i) => (['scrollUntilVisible', 'scroll', 'swipe', 'repeat'].includes(nazwa(k)) ? i : -1)));
+    expect(iStraznik).toBeGreaterThan(ostatniRuch); // przewinięcie po sprawdzeniu mogłoby panel wciągnąć do kadru
+    // pętla: dopóki panel jest nad „Kup” (w widoku przewijanym), treść idzie w dół o najwyżej 10% ekranu; ograniczona liczba obrotów
+    const iPetli = kroki.findIndex((k) => nazwa(k) === 'repeat');
+    expect(iPetli).toBeGreaterThan(-1);
+    expect(iPetli).toBeLessThan(iStraznik);
+    const petla = kroki[iPetli].repeat;
+    expect(dotyczyPanelu(petla.while?.visible) && nad(petla.while.visible)).toBe(true);
+    expect(petla.times).toBeGreaterThanOrEqual(1);
+    expect(petla.times).toBeLessThanOrEqual(20);
+    expect(petla.commands.map(nazwa)).toEqual(['swipe']);
+    const y = (p: string) => Number(String(p).split(',')[1].replace('%', ''));
+    const { start, end } = petla.commands[0].swipe;
+    expect(y(end)).toBeGreaterThan(y(start)); // palec w dół: treść w dół, panel odsuwa się pod pasek
+    expect(y(end) - y(start)).toBeLessThanOrEqual(10);
+    // plany (010: assertVisible liczy ekran) i zdanie pod nimi leżą nad „Kup”
+    for (const id of ['oferty-plan-miesieczny', 'oferty-plan-roczny', 'oferty-plan-dozywotni']) {
+      const k = kroki.find((x, i) => nazwa(x) === 'assertVisible' && x.assertVisible.id === id && i > iPetli);
+      expect(k).toBeDefined();
+      expect(nad(k.assertVisible)).toBe(true);
+    }
+    expect(kroki.some((k, i) => nazwa(k) === 'assertVisible' && /^Without Pro/.test(String(k.assertVisible.text ?? '')) && nad(k.assertVisible) && i > iPetli)).toBe(true);
     expect(czytaj('src/kompozycja/e2e/panele.tsx')).toContain('testID="e2e-sklep-wygas"'); // id istnieje w kodzie (selektory e2e-* są zwolnione z kontroli id w tym pliku)
   });
 

@@ -3,9 +3,14 @@
 # (`99-zakup-ceny.png`, jeden plik dla wszystkich produktów, wgrywa ręcznie właściciel przy produktach w App Store Connect; trening:docs/48:118, Z-24). To NIE jest zrzut strony produktu
 # w sklepie (cena na zrzutach strony = 2.3.7), tylko zrzut do przeglądu zakupów: ekran wygląda jak w aplikacji w sklepie, tylko ceny są z atrapy.
 # Droga jak w scenariuszu 06 (Ustawienia → „Oczko Pro”); plany pod kartą (P-596), więc przewinięcie tak, by wszystkie trzy plany i przycisk zakupu były w kadrze.
-# 10-wydanie-001: build zrzutów ma atrapę sklepu, więc na końcu przewijanej treści leży panel „Test store: expire access” (Oferty.tsx, panelE2e; id e2e-sklep-wygas), którego w kadrze dla
-# App Review nie może być. Po wyśrodkowaniu planu rocznego panel ma ok. 25 pt w kadrze, więc treść jest cofnięta w dół o ok. 10% wysokości ekranu (pomiar geometrii: pierwszy przebieg C1,
-# nie symulator w tej sesji), a `assertNotVisible` pilnuje wyniku: panel w kadrze = scena czerwona, zrzut nie powstaje (kodu aplikacji nie zmieniamy, P-238).
+# 10-wydanie-001 + 10-wydanie-010: build zrzutów ma atrapę sklepu, więc na końcu przewijanej treści leży panel „Test store: expire access” (Oferty.tsx, panelE2e; id e2e-sklep-wygas),
+# którego w kadrze dla App Review nie może być. Maestro 2.12.1 liczy widoczność względem EKRANU urządzenia, nie przewijanego widoku (ViewHierarchy.kt filterOutOfBounds, UiElement.kt
+# getVisiblePercentage; audit/…/dowody/AD-maestro-widocznosc.txt): panel pod paskiem przycisków (arkusz-przyciski, ≥ 128 pt) jest dla Maestro „widoczny”, choć ScrollView go przycina, więc
+# zwykłe `assertNotVisible` jest czerwone przy każdym przebiegu (010). Dlatego scena sprawdza GEOMETRIĘ względem przycisku „Kup” (oferty-kup, stoi na górze paska): `above` porównuje górne krawędzie
+# (Filters.kt: it.bounds.y < other.bounds.y). Panel „nad” przyciskiem = jest w widoku przewijanym, czyli w kadrze; panel „pod” nim albo poza ekranem = przycięty, nie ma go na zrzucie.
+# Pętla `repeat … while` cofa treść w dół małymi krokami (ok. 5% ekranu), aż panel zejdzie pod pasek; pomiar geometrii bez symulatora niemożliwy, więc zamiast stałego przesunięcia (wersja 001:
+# 10%, przy ok. 128 pt paska panel wciąż w ekranie) pętla sama znajduje położenie, a asercje po niej pilnują wyniku: panel nie jest nad „Kup”, a trzy plany i zdanie pod nimi („Without Pro: …”,
+# czyli plan dożywotni cały) leżą nad „Kup”. Kodu aplikacji nie zmieniamy (P-238). Geometrię potwierdzi pierwszy przebieg C1 (zrzut `99-zakup-ceny.png` do obejrzenia).
 # Nie wciska „Kup” (zakup na atrapie zmieniłby stan na „Masz Pro”). Język: angielski (skrypt wybiera go przez 00-jezyk przed tą sceną).
 appId: com.apps4brew.knitting
 name: "Zrzuty sklepu · 99 zakup dla App Review (ekran ofert z cenami i planami)"
@@ -19,10 +24,15 @@ name: "Zrzuty sklepu · 99 zakup dla App Review (ekran ofert z cenami i planami)
 - tapOn: { id: "ustawienia-oczko-pro" }
 - assertVisible: { id: "oferty-ekran" }
 - scrollUntilVisible: { element: { id: "oferty-plan-roczny" }, direction: DOWN, timeout: 30000, centerElement: true }
-- swipe: { start: "50%,45%", end: "50%,55%", duration: 800 } # treść w dół o ok. 95 pt (wolno, bez rozpędu); po tym panel atrapy sklepu jest poniżej kadru
-- assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month.*" }
-- assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year.*" }
-- assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once.*" }
+- repeat:
+    while: { visible: { id: "e2e-sklep-wygas", above: { id: "oferty-kup" } } } # panel nadal w widoku przewijanym (nad paskiem przycisków)
+    times: 12 # zapas: kilka kroków wystarcza; po 12 asercja niżej daje czytelną czerwień zamiast pętli bez końca
+    commands:
+      - swipe: { start: "50%,46%", end: "50%,51%", duration: 800 } # treść w dół o ok. 5% ekranu (wolno, bez rozpędu)
+- assertVisible: { id: "oferty-plan-miesieczny", text: "Monthly · .+ / month.*", above: { id: "oferty-kup" } }
+- assertVisible: { id: "oferty-plan-roczny", text: "Yearly · .+ / year.*", above: { id: "oferty-kup" } }
+- assertVisible: { id: "oferty-plan-dozywotni", text: "Lifetime · .+ once.*", above: { id: "oferty-kup" } }
+- assertVisible: { text: "Without Pro: .*", above: { id: "oferty-kup" } } # zdanie pod planami w widoku: plan dożywotni nie jest przycięty przez pasek przycisków (010)
 - assertVisible: { id: "oferty-kup" }
 - assertNotVisible: { id: "oferty-stan-pro" }
-- assertNotVisible: { id: "e2e-sklep-wygas" } # 10-wydanie-001: bez panelu atrapy sklepu w kadrze (musi być po ostatnim przewinięciu)
+- assertNotVisible: { id: "e2e-sklep-wygas", above: { id: "oferty-kup" } } # 001/010: panelu atrapy nie ma w kadrze (pod paskiem przycisków albo poza ekranem); po ostatnim ruchu
