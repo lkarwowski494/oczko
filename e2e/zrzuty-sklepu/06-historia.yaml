@@ -11,7 +11,7 @@ name: "Zrzuty sklepu · 06 historia zmian licznika z cofnięciem"
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
 - setOrientation: PORTRAIT
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
-- assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
+- assertVisible: { id: "dzis-projekt", text: "${PROJ_GLOWNY}" }
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
 - assertVisible: { id: "licznik-wartosc", text: "47" }

@@ -1,5 +1,6 @@
+# Dane (nazwy projektów, notatka, wzór) z zmiennych -e z e2e/zrzuty-sklepu/dane/<klucz>.json przez scripts/ci/zrzuty-dane.mjs (013: dane w języku zestawu).
 # Zrzuty sklepu (rola 10, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md). Dane WYŁĄCZNIE fikcyjne (2.3.9): projekty „Harbor Sweater”, „Moss Socks”,
-# „Cable Hat”, „Baby Blanket”; wzór = testowy PDF z buildu E2E (panel e2e-wzor-pdf, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = ZRZUTY_TERAZ (10 XI 2026, 9:41; jedna stała w scripts/ci/zrzuty-sklepu.sh, ta sama w pasku stanu symulatora).
+# „Cable Hat”, „Baby Blanket”; wzór = PDF z treścią z buildu E2E (panel e2e-wzor-sklep-<język danych>, src/kompozycja/e2e/wzor-sklepu.ts, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = ZRZUTY_TERAZ (10 XI 2026, 9:41; jedna stała w scripts/ci/zrzuty-sklepu.sh, ta sama w pasku stanu symulatora).
 # Nigdy +1 na ekranie licznika w scenach (panel pomiaru E2E „p95 … ms” zostałby w kadrze); tu +1 jest, bo po restarcie panel znika (stan w pamięci widoku).
 # Kolejność ma znaczenie: ostatnio pracowano w „Harbor Sweater”, więc „Kontynuuj ›” prowadzi do niego (restart.yaml).
 appId: com.apps4brew.knitting
@@ -22,22 +23,13 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
       - tapOn: { id: "formularz-nazwa-projektu" }
       - waitForAnimationToEnd
       - eraseText: 30
-      - inputText: "M"
-      - inputText: "o"
-      - inputText: "s"
-      - inputText: "s"
-      - inputText: " "
-      - inputText: "S"
-      - inputText: "o"
-      - inputText: "c"
-      - inputText: "k"
-      - inputText: "s"
-      - assertVisible: { id: "formularz-nazwa-projektu", text: "Moss Socks" }
+      - inputText: ${PROJ_2}
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "${PROJ_2}" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- assertVisible: { id: "licznik-projekt", text: "Moss Socks" }
+- assertVisible: { id: "licznik-projekt", text: "${PROJ_2}" }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:
@@ -56,21 +48,13 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
       - tapOn: { id: "formularz-nazwa-projektu" }
       - waitForAnimationToEnd
       - eraseText: 30
-      - inputText: "C"
-      - inputText: "a"
-      - inputText: "b"
-      - inputText: "l"
-      - inputText: "e"
-      - inputText: " "
-      - inputText: "H"
-      - inputText: "a"
-      - inputText: "t"
-      - assertVisible: { id: "formularz-nazwa-projektu", text: "Cable Hat" }
+      - inputText: ${PROJ_3}
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "${PROJ_3}" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- assertVisible: { id: "licznik-projekt", text: "Cable Hat" }
+- assertVisible: { id: "licznik-projekt", text: "${PROJ_3}" }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:
@@ -89,24 +73,13 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
       - tapOn: { id: "formularz-nazwa-projektu" }
       - waitForAnimationToEnd
       - eraseText: 30
-      - inputText: "B"
-      - inputText: "a"
-      - inputText: "b"
-      - inputText: "y"
-      - inputText: " "
-      - inputText: "B"
-      - inputText: "l"
-      - inputText: "a"
-      - inputText: "n"
-      - inputText: "k"
-      - inputText: "e"
-      - inputText: "t"
-      - assertVisible: { id: "formularz-nazwa-projektu", text: "Baby Blanket" }
+      - inputText: ${PROJ_4}
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "${PROJ_4}" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- assertVisible: { id: "licznik-projekt", text: "Baby Blanket" }
+- assertVisible: { id: "licznik-projekt", text: "${PROJ_4}" }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:
@@ -125,26 +98,13 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
       - tapOn: { id: "formularz-nazwa-projektu" }
       - waitForAnimationToEnd
       - eraseText: 30
-      - inputText: "H"
-      - inputText: "a"
-      - inputText: "r"
-      - inputText: "b"
-      - inputText: "o"
-      - inputText: "r"
-      - inputText: " "
-      - inputText: "S"
-      - inputText: "w"
-      - inputText: "e"
-      - inputText: "a"
-      - inputText: "t"
-      - inputText: "e"
-      - inputText: "r"
-      - assertVisible: { id: "formularz-nazwa-projektu", text: "Harbor Sweater" }
+      - inputText: ${PROJ_GLOWNY}
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "${PROJ_GLOWNY}" }
 - pressKey: Enter
 - assertVisible: { id: "formularz-zapisz" }
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- assertVisible: { id: "licznik-projekt", text: "Harbor Sweater" }
+- assertVisible: { id: "licznik-projekt", text: "${PROJ_GLOWNY}" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - runFlow: ../scenariusze/subflows/odstep.yaml
@@ -182,11 +142,16 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
       - tapOn: { id: "formularz-notatka" }
       - waitForAnimationToEnd
       - eraseText: 60
-      - inputText: "next: 3 knit, then cable"
-      - assertVisible: { id: "formularz-notatka", text: "next: 3 knit, then cable" }
+      - inputText: ${NOTATKA}
+      - assertVisible: { id: "formularz-notatka", text: "${NOTATKA}" }
 - tapOn: { id: "formularz-zapisz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- runFlow: ../scenariusze/subflows/otworz-wzor-pdf.yaml
+# 014: wzór z treścią z panelu E2E zrzutów (e2e-wzor-sklep-<klucz danych>) zamiast „Test pattern”; reszta jak subflow otworz-wzor-pdf
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-sklep-${DANE_KLUCZ}" }
+- tapOn: { id: "e2e-wzor-sklep-${DANE_KLUCZ}" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-kierunek" }
 - tapOn: "Down, like written steps"

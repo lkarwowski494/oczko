@@ -11,6 +11,6 @@ name: "Zrzuty sklepu · 01 ekran „Dziś” z kartą projektu"
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
 - setOrientation: PORTRAIT
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
-- assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
+- assertVisible: { id: "dzis-projekt", text: "${PROJ_GLOWNY}" }
 - assertVisible: { id: "dzis-kontynuuj" }
 - assertVisible: { id: "dzis-wartosc", text: "47" }

@@ -215,7 +215,7 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
     for (const f of pliki.filter((x) => /^0[1-7]-/.test(x))) {
       const t = czytaj(`${KAT}/${f}`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
       const teksty = [...t.matchAll(/text:\s*"([^"]*)"/g)].map((m) => m[1]);
-      expect({ f, obce: teksty.filter((x) => !/^(Harbor Sweater|47|\.\*next: 3 knit, then cable\.\*|\.\*1\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
+      expect({ f, obce: teksty.filter((x) => !/^(\$\{PROJ_GLOWNY\}|47|\.\*\$\{NOTATKA\}\.\*|\.\*2\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
       expect({ f, tapNaTekst: /tapOn:\s*"/.test(t) }).toEqual({ f, tapNaTekst: false });
     }
     const j = czytaj(`${KAT}/00-jezyk.yaml`);
@@ -273,13 +273,13 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   // a podpis zrzutu mówi „Highlight and write on the pattern”. Tańsza kontrola w zamian (zasada wspólna 7): licznik zakreśleń musi zawierać cyfrę 1 — we wszystkich językach sklepu.
   test('04: licznik zakreśleń (wzor-zakreslenia) ma twardą asercję z cyfrą 1, niezależną od języka; cyfra jest w formie liczby pojedynczej każdego słownika', () => {
     const t04 = czytaj(`${KAT}/04-zakreslenie.yaml`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
-    expect(t04).toMatch(/assertVisible:\s*\{\s*id:\s*"wzor-zakreslenia",\s*text:\s*"\.\*1\.\*"\s*\}/);
+    expect(t04).toMatch(/assertVisible:\s*\{\s*id:\s*"wzor-zakreslenia",\s*text:\s*"\.\*2\.\*"\s*\}/); // 014: scena 04 ma drugie zakreślenie (pierwsze z fikstury), więc licznik = 2
     const kat = path.join(KORZEN, 'src/i18n/slowniki');
     const jezyki = fs.readdirSync(kat).filter((f) => /^[A-Za-z0-9-]+\.json$/.test(f)).map((f) => f.replace('.json', ''));
     expect(jezyki.length).toBeGreaterThanOrEqual(29);
     for (const j of jezyki) {
       const d = JSON.parse(fs.readFileSync(path.join(kat, `${j}.json`), 'utf8'));
-      const kategoria = new Intl.PluralRules(j === 'es-419' ? 'es' : j).select(1); // klucz wielokrotny i18next dla count = 1
+      const kategoria = new Intl.PluralRules(j === 'es-419' ? 'es' : j).select(2); // klucz wielokrotny i18next dla count = 2 (014: licznik zakreśleń w scenie 04 = 2)
       expect({ j, forma: String(d.wzor?.[`zakreslenia_${kategoria}`] ?? '').includes('{{count}}') }).toEqual({ j, forma: true });
     }
   });

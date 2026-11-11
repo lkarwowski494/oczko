@@ -103,3 +103,74 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
     expect(od9.slice(0, od9.indexOf('licznik-akcja-notatka'))).toMatch(/tapOn: \{ id: "licznik-plus" \}/);
   });
 });
+
+describe('10-wydanie-013: dane w kadrze w języku zestawu (dane per język, jak trening:scripts/ci/store-screenshots.sh:17,60)', () => {
+  const KAT = 'e2e/zrzuty-sklepu';
+  const dane = (k: string) => JSON.parse(czytaj(`${KAT}/dane/${k}.json`)) as Record<string, string | boolean>;
+  const FRAZY_EN = [/knit across/i, /Test pattern/i, /then cable/i, /\bPM\b/, /\bAM\b/];
+  test('dane en i pl mają te same klucze; pl bez fraz angielskich z listy (knit across, Test pattern, then cable, PM, AM) i bez nazw z zestawu en', () => {
+    const en = dane('en'); const pl = dane('pl');
+    expect(Object.keys(pl).sort()).toEqual(Object.keys(en).sort());
+    const tekst = JSON.stringify(pl);
+    for (const f of FRAZY_EN) expect([String(f), f.test(tekst)]).toEqual([String(f), false]);
+    for (const nazwa of ['Harbor', 'Moss Socks', 'Cable Hat', 'Baby Blanket']) expect(tekst).not.toContain(nazwa);
+    expect(pl.godziny24).toBe(true); expect(en.godziny24).toBe(false);
+    expect(String(pl.region)).toMatch(/^pl_PL$/); expect(String(en.region)).toMatch(/^en_US$/);
+  });
+  test('pola wpisywane w aplikacji są ASCII bez znaków wyrażeń regularnych (Maestro dopasowuje tekst jako regex; inputText znaków spoza ASCII na iOS niesprawdzony)', () => {
+    for (const k of ['en', 'pl']) for (const [nazwa, w] of Object.entries(dane(k))) {
+      if (!/^(PROJ_|NOTATKA)/.test(nazwa)) continue;
+      expect([k, nazwa, /^[\x20-\x7e]+$/.test(String(w))]).toEqual([k, nazwa, true]);
+      expect([k, nazwa, /[.*+?^${}()|[\]\\]/.test(String(w))]).toEqual([k, nazwa, false]);
+    }
+  });
+  test('sceny i fikstura nie mają wpisanych na sztywno angielskich danych: biorą je ze zmiennych (${PROJ_GLOWNY}, ${NOTATKA}, …)', () => {
+    for (const f of fs.readdirSync(path.join(korzen, KAT)).filter((x) => x.endsWith('.yaml'))) {
+      const kod = czytaj(`${KAT}/${f}`).split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');
+      for (const s of ['Harbor Sweater', 'Moss Socks', 'Cable Hat', 'Baby Blanket', 'next: 3 knit', 'e2e-wzor-pdf"']) expect([f, kod.includes(s)]).toEqual([f, false]);
+    }
+    expect(czytaj(`${KAT}/00-przygotuj.yaml`)).toMatch(/\$\{PROJ_GLOWNY\}[\s\S]*\$\{NOTATKA\}/);
+    expect(czytaj(`${KAT}/02-licznik.yaml`)).toContain('${NOTATKA}');
+    expect(czytaj(`${KAT}/01-dzis.yaml`)).toContain('${PROJ_GLOWNY}');
+  });
+  test('zrzuty-dane.mjs: klucz danych języka; brak danych = jawny powrót do en (kod 3 i komunikat), nie ciche', () => {
+    const k = (j: string) => spawnSync('node', ['scripts/ci/zrzuty-dane.mjs', 'klucz', j], { encoding: 'utf8', cwd: korzen });
+    expect(k('pl').stdout.trim()).toBe('pl'); expect(k('pl').status).toBe(0);
+    expect(k('en').stdout.trim()).toBe('en'); expect(k('en').status).toBe(0);
+    const de = k('de-DE'); expect(de.stdout.trim()).toBe('en'); expect(de.status).toBe(3); expect(de.stderr).toMatch(/brak danych języka de-DE/);
+    const env = spawnSync('node', ['scripts/ci/zrzuty-dane.mjs', 'env', 'pl'], { encoding: 'utf8', cwd: korzen }).stdout;
+    expect(env).toMatch(/^PROJ_GLOWNY=Czapka z warkoczem$/m); expect(env).toMatch(/^DANE_KLUCZ=pl$/m);
+  });
+  test('skrypt: dane per język (re-przygotowanie przy zmianie klucza), jawny powrót do en, 24 h i region z danych, brak zapisu stałych angielskich', () => {
+    const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
+    expect(sh).toContain('zrzuty-dane.mjs'); expect(sh).toMatch(/brak danych języka|zrzuty-dane\.mjs" klucz/);
+    expect(sh).toMatch(/AppleICUForce24HourTime/); expect(sh).toMatch(/AppleLocale/); expect(sh).toMatch(/DANE_AKTUALNE/);
+  });
+});
+
+describe('10-wydanie-014: kadry 03 i 04 — wzór z treścią, 04 różny od 03', () => {
+  const KAT = 'e2e/zrzuty-sklepu';
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { pdfWzoruSklepu, WZORY_SKLEPU } = require('../../src/kompozycja/e2e/wzor-sklepu') as typeof import('../../src/kompozycja/e2e/wzor-sklepu');
+  test.each(['en', 'pl'] as const)('PDF wzoru (%s): poprawna struktura (xref), bez „Test pattern”, tytuł i ≥ 12 wierszy tekstu', (k) => {
+    const pdf = pdfWzoruSklepu(k);
+    expect(pdf.startsWith('%PDF-')).toBe(true); expect(pdf).not.toMatch(/Test pattern/i); expect(WZORY_SKLEPU[k].nazwa).not.toMatch(/Test pattern/i);
+    expect((pdf.match(/ Tj ET/g) ?? []).length).toBeGreaterThanOrEqual(13);
+    const xref = Number(/startxref\n(\d+)/.exec(pdf)?.[1]); expect(pdf.slice(xref, xref + 4)).toBe('xref');
+    for (const m of pdf.matchAll(/(\d{10}) 00000 n/g)) expect(pdf.slice(Number(m[1]), Number(m[1]) + 12)).toMatch(/^\d+ 0 obj/);
+    expect(/[^\x00-\x7f]/.test(pdf)).toBe(false); // czysty ASCII: polskie litery tylko jako kody z /Differences
+  });
+  test('wzór pl ma polskie litery (kody z Differences), wzór en nie ma polskich fraz', () => {
+    expect(pdfWzoruSklepu('pl')).toMatch(/\/Differences \[128 \/Aogonek/); expect(pdfWzoruSklepu('pl')).toMatch(/\\2\d\d/);
+    expect(JSON.stringify(WZORY_SKLEPU.pl)).toMatch(/oczka prawe/); expect(JSON.stringify(WZORY_SKLEPU.en)).not.toMatch(/oczk|rząd/i);
+  });
+  test('panel E2E ma przyciski e2e-wzor-sklep-<język>, a fikstura używa ich zamiast e2e-wzor-pdf', () => {
+    const panele = czytaj('src/kompozycja/e2e/panele.tsx');
+    expect(panele).toContain('e2e-wzor-sklep-${k}'); expect(panele).toContain("['en', 'pl'] as const");
+    expect(czytaj(`${KAT}/00-przygotuj.yaml`)).toContain('e2e-wzor-sklep-${DANE_KLUCZ}');
+  });
+  test('scena 04 różni się od 03: drugie zakreślenie na wzorze (licznik zakreśleń ≥ 2) przy aktywnym zakreślaczu', () => {
+    const s04 = czytaj(`${KAT}/04-zakreslenie.yaml`); const s03 = czytaj(`${KAT}/03-wzor.yaml`);
+    expect(s04).toMatch(/swipe:/); expect(s04).toMatch(/wzor-zakreslenia", text: "\.\*2\.\*"/); expect(s03).not.toMatch(/swipe:/);
+  });
+});

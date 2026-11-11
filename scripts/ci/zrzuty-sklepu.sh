@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# 013 (sesja AH): dane fikcyjne per język (e2e/zrzuty-sklepu/dane/<klucz>.json przez scripts/ci/zrzuty-dane.mjs; wzór trening:scripts/ci/store-screenshots.sh:17,60). 00-przygotuj biegnie dla klucza danych języka
+# (en | pl | …), a przy zmianie klucza między językami — od nowa (clearState); język bez własnych danych dostaje dane en z ostrzeżeniem (jawny powrót, docs/wydanie/zrzuty-ramki.md). Region i format godziny: ustaw_region.
 # Zrzuty sklepu z symulatora (zrzuty-sklepu.yml; rola 10-wydanie, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md, opcja A).
 # Kolejność: (1) pasek stanu jak w materiałach Apple (9:41 z datą z ZRZUTY_TERAZ, pełna bateria), tryb jasny; (2) scenariusz 00-przygotuj.yaml wprowadza dane FIKCYJNE
 # (e2e/zrzuty-sklepu); (3) każda scena 01…07 to osobny scenariusz Maestro (restart na tych samych danych + nawigacja, bez +1 na liczniku),
@@ -41,10 +43,11 @@ sceny_jezyka() {   # $1 = język → sceny do zrobienia (w kolejności z SCENY);
   echo "${wynik# }"
 }
 
+DANE_ARGS=(); DANE_AKTUALNE=""   # 013: zmienne -e z danych języka (nazwy projektów, notatka, klucz wzoru) i klucz danych, na których stoi aplikacja teraz
 JEZYK_BIEZACY="start"   # w nazwie katalogu dziennika: kolejne języki nie nadpisują sobie logów
 maestro_run() {   # $1 = nazwa scenariusza (bez .yaml), $2 = próba
-  local log="$LOGI/$URZ-$JEZYK_BIEZACY-$1-$2"; mkdir -p "$log"
-  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" --test-output-dir "$log" > "$log/maestro.log" 2>&1
+  local log="$LOGI/$URZ-$JEZYK_BIEZACY${ETYKIETA_DANYCH:+-$ETYKIETA_DANYCH}-$1-$2"; mkdir -p "$log"
+  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" ${DANE_ARGS[@]+"${DANE_ARGS[@]}"} --test-output-dir "$log" > "$log/maestro.log" 2>&1
 }
 zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot, obrót zrzutu poziomego iPada
   sleep 4   # PDF i animacje przejścia kończą się po asercji; bez tego zrzut łapie stan pośredni
@@ -55,18 +58,38 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
 }
 
 # --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
-xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null 2>&1 \
-  || echo "::warning::Nie udało się ustawić paska stanu (zrzuty będą miały godzinę z maszyny)"
+pasek_stanu() {
+  xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null 2>&1 \
+    || echo "::warning::Nie udało się ustawić paska stanu (zrzuty będą miały godzinę z maszyny)"
+}
+pasek_stanu
 xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
 
-# --- dane fikcyjne (dwie próby; scenariusz zaczyna od clearState, więc powtórka jest bezpieczna) ---
-if ! maestro_run 00-przygotuj 1; then
-  echo "::warning::00-przygotuj: próba 1 nieudana — ponawiam"; tail -15 "$LOGI/$URZ-start-00-przygotuj-1/maestro.log" | sed 's/^/    /'
-  if ! maestro_run 00-przygotuj 2; then
-    echo "::error::00-przygotuj nieudane dwukrotnie — brak danych do zrzutów"; tail -25 "$LOGI/$URZ-start-00-przygotuj-2/maestro.log" | sed 's/^/    /'
-    echo "00-przygotuj" >> "$NIEUDANE"; exit 1
+# --- region i format godziny symulatora z danych języka (013: pl = 24 h bez AM/PM także na pasku stanu; en = en_US, 12 h) ---
+ustaw_region() {   # $1 = klucz danych
+  local reg g24; reg=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" region); g24=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" godziny24)
+  xcrun simctl spawn "$UDID" defaults write -g AppleLocale "$reg" >/dev/null 2>&1 || echo "::warning::region symulatora ($reg) nie ustawiony"
+  xcrun simctl spawn "$UDID" defaults write -g AppleICUForce24HourTime -bool "$g24" >/dev/null 2>&1 || echo "::warning::format godziny symulatora (24 h = $g24) nie ustawiony"
+  xcrun simctl spawn "$UDID" launchctl kickstart -k system/com.apple.SpringBoard >/dev/null 2>&1 || true   # pasek stanu czyta ustawienia po restarcie SpringBoard
+  sleep 6; pasek_stanu
+  echo "region symulatora: $reg, 24 h: $g24 (dane: $1)"
+}
+
+# --- dane fikcyjne w języku zestawu (013; dwie próby; scenariusz zaczyna od clearState, więc powtórka jest bezpieczna) ---
+przygotuj_dane() {   # $1 = klucz danych → 00-przygotuj z danymi tego klucza; kod 1 = dwie porażki
+  local wiersz
+  DANE_ARGS=(); while IFS= read -r wiersz; do [ -n "$wiersz" ] && DANE_ARGS+=(-e "$wiersz"); done < <(node "$SKRYPTY/zrzuty-dane.mjs" env "$1")
+  ustaw_region "$1"
+  JEZYK_BIEZACY="start"; ETYKIETA_DANYCH="$1"   # dziennik 00-przygotuj w katalogu z kluczem danych: kolejne klucze nie nadpisują sobie logów
+  if ! maestro_run 00-przygotuj 1; then
+    echo "::warning::00-przygotuj ($1): próba 1 nieudana — ponawiam"; tail -15 "$LOGI/$URZ-start-$1-00-przygotuj-1/maestro.log" | sed 's/^/    /'
+    if ! maestro_run 00-przygotuj 2; then
+      echo "::error::00-przygotuj ($1) nieudane dwukrotnie — brak danych do zrzutów"; tail -25 "$LOGI/$URZ-start-$1-00-przygotuj-2/maestro.log" | sed 's/^/    /'
+      ETYKIETA_DANYCH=""; return 1
+    fi
   fi
-fi
+  ETYKIETA_DANYCH=""; DANE_AKTUALNE="$1"
+}
 
 # --- sceny, język po języku ---
 for JEZ in ${JEZYKI//,/ }; do
@@ -75,6 +98,9 @@ for JEZ in ${JEZYKI//,/ }; do
   [ -n "$TE_SCENY" ] || { echo "== język $JEZ ($URZ): nic do zrobienia (plan uzupełnienia)"; continue; }
   echo "== język $JEZ ($URZ): $TE_SCENY"
   mkdir -p "$OUT/$ROZMIAR/$JEZ"
+  KLUCZ=$(node "$SKRYPTY/zrzuty-dane.mjs" klucz "$JEZ" 2>"$LOGI/dane-$JEZ.txt"); [ $? -ne 3 ] || echo "::warning::$(cat "$LOGI/dane-$JEZ.txt")"
+  if [ "$KLUCZ" != "$DANE_AKTUALNE" ]; then przygotuj_dane "$KLUCZ" || { echo "$JEZ/00-przygotuj" >> "$NIEUDANE"; DANE_AKTUALNE=""; continue; }; fi
+  JEZYK_BIEZACY="$JEZ"
   jez_ok=0
   for proba in 1 2; do
     if maestro_run 00-jezyk "$proba"; then jez_ok=1; break; fi
@@ -103,6 +129,9 @@ for JEZ in ${JEZYKI//,/ }; do
     [ "$ok" = 1 ] || echo "$JEZ/$scena" >> "$NIEUDANE"
   done
 done
+
+# zadanie „tylko zakup” (pusta lista języków): dane en jak dotąd (00-przygotuj przed 00-jezyk i 99-zakup)
+if [ -z "$DANE_AKTUALNE" ] && [ -z "${JEZYKI// /}" ] && [ "$ZAKUP" = "true" ]; then przygotuj_dane en || { echo "en/00-przygotuj" >> "$NIEUDANE"; echo "Zrzuty: 0 plików; nieudane: 1"; exit 1; }; fi
 
 # --- zrzut zakupu dla App Review (po angielsku, atrapa sklepu; jedno zadanie iPhone’a) ---
 if [ "$ZAKUP" = "true" ] && [ "$URZ" = "iphone" ]; then

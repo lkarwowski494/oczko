@@ -10,6 +10,7 @@ import { polacz, zapiszTekst } from '../../dane/pliki/system';
 import { plikiE2e } from '../e2e-pliki';
 import { zdjecieTestowe } from '../e2e-zdjecie';
 import { pdfTestowy } from './skrzynka';
+import { pdfWzoruSklepu, WZORY_SKLEPU, type KluczWzoru } from './wzor-sklepu';
 import type { ZrodloDodania } from '../../przypadki-uzycia/wzor';
 import type { StanZegarka, Zegarek } from '../../domena/porty';
 import { ADRES_STRONY_TESTOWEJ, pdfSkanuTestowy, wordTestowy } from './pliki-wzoru';
@@ -104,6 +105,13 @@ export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: s
         onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfTestowyPlik(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } })}>
         <Text>Test pattern (PDF)</Text>
       </Pressable>
+      {/* 10-wydanie-014 (zrzuty sklepu, sesja AH): wzór z treścią (nazwa i wiersze w języku zestawu zrzutów) zamiast „Test pattern”; scenariusz e2e/zrzuty-sklepu/00-przygotuj.yaml */}
+      {(['en', 'pl'] as const).map((k) => (
+        <Pressable key={k} accessibilityRole="button" testID={`e2e-wzor-sklep-${k}`} style={{ padding: 12 }}
+          onPress={() => p.naDodaj({ nazwa: WZORY_SKLEPU[k].nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfWzoruSklepuPlik(p.katalogTymczasowy, k), `${WZORY_SKLEPU[k].nazwa}.pdf`, 'application/pdf') } })}>
+          <Text>{`Store pattern (${k})`}</Text>
+        </Pressable>
+      ))}
       {/* P-439 (07-jakosc-002): prawdziwy wycinek skanu z OCR z tests/dane/wzory (scenariusz 21) */}
       <Pressable accessibilityRole="button" testID="e2e-wzor-pdf-skan" style={{ padding: 12 }}
         onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfSkanuTestowy(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } })}>
@@ -130,6 +138,11 @@ export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: s
       ))}
     </View>
   );
+}
+function pdfWzoruSklepuPlik(katalog: string, klucz: KluczWzoru): string {
+  const sciezka = polacz(katalog, `e2e-wzor-sklep-${klucz}-${Date.now()}.pdf`);
+  zapiszTekst(sciezka, pdfWzoruSklepu(klucz));
+  return sciezka;
 }
 function pdfTestowyPlik(katalog: string): string {
   const sciezka = polacz(katalog, `e2e-wzor-${Date.now()}.pdf`);

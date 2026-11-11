@@ -11,7 +11,7 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
 - setOrientation: PORTRAIT
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
-- assertVisible: { id: "dzis-projekt", text: "Harbor Sweater" }
+- assertVisible: { id: "dzis-projekt", text: "${PROJ_GLOWNY}" }
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
 - assertVisible: { id: "licznik-wartosc", text: "47" }
@@ -25,4 +25,6 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 - setOrientation: ${ORIENT_WZOR}
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: true }
-- assertVisible: { id: "wzor-zakreslenia", text: ".*1.*" } # 10-wydanie-004: licznik z cyfrą 1 w każdym języku (słowniki wzor.zakreslenia_<forma dla 1> = „{{count}} …”); bez zakreślenia licznik to 0 i scena czerwona
+# 014: kadr 04 różni się od 03 — zakreślacz włączony i DRUGIE zakreślenie (pierwsze z fikstury) przez wiersze wzoru niżej na stronie (pozycje % ekranu; strona PDF z wzor-sklepu.ts ma tekst w górnych ~70% strony)
+- swipe: { start: "20%, 48%", end: "80%, 48%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: ".*2.*" } # licznik z cyfrą 2 w każdym języku (słowniki wzor.zakreslenia_<forma dla 2> = „{{count}} …”); pierwsze zakreślenie z 00-przygotuj + to
