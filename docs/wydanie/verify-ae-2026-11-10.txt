@@ -1,0 +1,55 @@
+# npm run verify — sesja AE (rola 10 fix), 2026-11-10, Linux, Node 22; oczko claude/aa-zrzuty-ramki-2026-11-10 od 8254520 + poprawki 009, 010, 011 (jeszcze bez commitu w chwili przebiegu)
+
+## A. Maszyna Z ImageMagickiem (convert 6.9.12), bez CI: `npm run verify`, kod 0; ostatnie 20 linii
+PASS iOS tests/niezawodnosc/m1-058-ramki-tylko-stos.test.ts
+PASS iOS tests/dane/dostep-pro.test.ts
+PASS iOS tests/narzedzia/haptyka-zegarka-spojnosc.test.ts
+PASS iOS tests/wydanie/kroki-wlasciciela.test.ts
+PASS iOS tests/domena/dni/chwila-o-porze.test.ts
+PASS iOS tests/wydanie/ikona-zegarka.test.ts
+PASS iOS tests/wydanie/notatka-start-dzis.test.ts
+PASS iOS tests/domena/wzor/rd21.test.ts
+PASS iOS tests/wydanie/polityka-import-strony.test.ts
+PASS iOS tests/wydanie/hermesc-sciezka.test.ts
+PASS iOS tests/wydanie/notatka-zgodnosc-208.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/wydanie/manifest-app-json.test.ts
+PASS iOS tests/wydanie/ramki-sklepu.test.ts (13.709 s)
+Test Suites: 591 passed, 591 total
+Tests:       7197 passed, 7197 total
+Snapshots:   0 total
+Time:        155.943 s, estimated 157 s
+Ran all test suites.
+KOD WYJŚCIA: 0
+
+## B. Maszyna BEZ ImageMagicka, `CI=true npm run verify`, kod 0 (metoda: PATH z kopią /usr/bin bez convert, identify, compare, composite, mogrify, montage, magick + node/npm/npx; `command -v convert` → brak); komunikat o pominięciu (wiersz z wyniku Jesta):
+POMINIĘTE: część „ramki-sklepu.sh działa na PNG w wymiarach App Store Connect” (brak ImageMagick `convert` na tej maszynie; kontrola biegnie w zadaniu `zbierz` workflowu zrzuty-sklepu.yml, gdzie OCZKO_WYMAGAJ_IMAGEMAGICK=1 wymusza ImageMagick; lokalnie: zainstaluj imagemagick i ustaw tę zmienną, by sprawdzić ramki)
+ostatnie 20 linii:
+PASS iOS tests/niezawodnosc/l029-start-po-instalacji.test.ts
+PASS iOS tests/adaptery/identyfikatory.test.ts
+PASS iOS tests/niezawodnosc/m1-058-ramki-tylko-stos.test.ts
+PASS iOS tests/ekrany/e2e-zdjecie.test.ts
+PASS iOS tests/dane/sha-pary-bazy.test.ts
+PASS iOS tests/jakosc/wersja-wydania.test.ts
+PASS iOS tests/narzedzia/intencja-migawka.test.ts
+PASS iOS tests/jakosc/m2-039-regula-konwersji.test.ts
+PASS iOS tests/i18n/m3-fix-reaudit-022-timer.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/domena/dni/chwila-o-porze.test.ts
+PASS iOS tests/narzedzia/kanaly-p3c2.test.ts
+PASS iOS tests/wydanie/manifest-app-json.test.ts
+PASS iOS tests/dane/instrukcje-wyzwalacze.test.ts
+Test Suites: 591 passed, 591 total
+Tests:       5 skipped, 7193 passed, 7198 total
+Snapshots:   0 total
+Time:        143.911 s, estimated 144 s
+Ran all test suites.
+KOD WYJŚCIA: 0
+
+## C. Zmienna OCZKO_WYMAGAJ_IMAGEMAGICK=1 bez convert → test czerwony (kod 1)
+== Zmienna wymagająca, PATH bez convert (oczekiwane: kod 1, komunikat o ImageMagick)
+  ramki-sklepu.sh: ImageMagick wymagany (krok testów ramek w zrzuty-sklepu.yml)
+  ● ramki-sklepu.sh: ImageMagick wymagany (krok testów ramek w zrzuty-sklepu.yml) › `convert` jest dostępny (bez niego kontrola ramek nie biegnie: zainstaluj imagemagick przed tym krokiem)
+    brak ImageMagick (`convert`) przy OCZKO_WYMAGAJ_IMAGEMAGICK=1: część „działa na PNG w wymiarach App Store Connect” nie zostałaby uruchomiona; zainstaluj pakiet imagemagick w workflow prze
+kod: 1
+## D. Ta sama zmienna z convert: Tests: 7 passed, kod 0
