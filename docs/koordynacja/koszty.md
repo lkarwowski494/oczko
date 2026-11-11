@@ -54,3 +54,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AF | 10 audit (opus) | 5 | 2,16 | 17 | 00:05 → 00:06 → raport 00:17 → — → przyjęte 00:20 | — | add_repo warsztatu odrzucony (WG-11) |
 | AG | 10 audit (opus) | 4 | 2,10 | 19 | 11:30 → 11:31 → raport 11:36 → — → przyjęte 11:39 | 120 min od C1 success 10:57 do startu (przekazanie koordynatora; budżet kontekstu poprzednika) | prompt roli w 2 częściach (WG-11) |
 | AH | 10 fix (sonnet) | 6 | 3,41 | 28 | 11:39 → 11:40 → b213d37 ok. 11:50 → (C2 43017044972 w toku) → przyjęte co do formy 12:04 | — | ponad limit 25 proc. kontekstu (WG-10, 3. raz) |
+| AI | 08 fix (sonnet) | 5 | 3,15 | 27 | 13:46 → 13:47 → 1983b13 ok. 14:03 → (C3 43035080611 w toku) → — | — | ponad limit 25 proc.; prompt wkleił subagent (WG-12) |
