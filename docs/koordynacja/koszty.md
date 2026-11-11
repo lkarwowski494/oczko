@@ -56,3 +56,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AH | 10 fix (sonnet) | 6 | 3,41 | 28 | 11:39 → 11:40 → b213d37 ok. 11:50 → (C2 43017044972 w toku) → przyjęte co do formy 12:04 | — | ponad limit 25 proc. kontekstu (WG-10, 3. raz) |
 | AI | 08 fix (sonnet) | 5 | 3,15 | 27 | 13:46 → 13:47 → 1983b13 ok. 14:03 → (C3 43035080611 w toku) → — | — | ponad limit 25 proc.; prompt wkleił subagent (WG-12) |
 | AJ | 08 fix (sonnet) | 5 | 2,45 | 20,5 | 16:41 → 16:42 → 3395618 (ok. 16:55) → C4 43064894031 w toku → przyjęcie po AK i C4 | diagnoza 3 min; czekanie na decyzję A/B ok. 1 min | KO-039/040; C3 attempt 3 zielony niezależnie (awaria DNS przejściowa) |
+| AK | 10 audit (opus) | 5 | 3,17 | 23 | 17:08 → 17:10 → (bez commitów) → — → raport 17:15 | 0 | TAK, 4×P2 |
