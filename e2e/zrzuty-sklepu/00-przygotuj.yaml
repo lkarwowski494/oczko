@@ -158,12 +158,17 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - assertVisible: { id: "wzor-znacznik-rzad", text: "48" }
 - tapOn: { id: "wzor-znacznik-gotowe" }
 - assertNotVisible: { id: "wzor-znacznik-pasek" }
+# 019: zakreślenia to pociągnięcia w układzie STRONY, więc pierwsze zakreślenie powstaje w orientacji kadrów 03 i 04 (ORIENT_WZOR: iPad poziomo, iPhone pionowo); w pionie wypadało
+# poza poziomym kadrem 04 (licznik „2”, na zrzucie jedno zakreślenie). Wysokość swipe'u różni się od swipe'u sceny 04 (tests/wydanie/zrzuty-zakreslenia.test.ts).
+- setOrientation: ${ORIENT_WZOR}
+- extendedWaitUntil: { visible: { id: "wzor-zakreslacz" }, timeout: 30000 }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: true }
 - swipe: { start: "20%, 40%", end: "80%, 40%", duration: 800 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: false }
+- setOrientation: PORTRAIT
 # wyjście z wzoru do licznika: ostatnie miejsce pracy = licznik projektu głównego
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }

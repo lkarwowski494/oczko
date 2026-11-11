@@ -217,7 +217,7 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
     for (const f of pliki.filter((x) => /^0[1-7]-/.test(x))) {
       const t = czytaj(`${KAT}/${f}`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
       const teksty = [...t.matchAll(/text:\s*"([^"]*)"/g)].map((m) => m[1]);
-      expect({ f, obce: teksty.filter((x) => !/^(\$\{PROJ_GLOWNY\}|47|\.\*\$\{NOTATKA\}\.\*|\.\*2\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
+      expect({ f, obce: teksty.filter((x) => !/^(\$\{PROJ_GLOWNY\}|47|\.\*\$\{NOTATKA\}\.\*|\.\*[12]\.\*)$/.test(x)) }).toEqual({ f, obce: [] });
       expect({ f, tapNaTekst: /tapOn:\s*"/.test(t) }).toEqual({ f, tapNaTekst: false });
     }
     const j = czytaj(`${KAT}/00-jezyk.yaml`);
