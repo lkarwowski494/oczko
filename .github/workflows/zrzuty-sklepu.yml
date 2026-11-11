@@ -394,10 +394,8 @@ jobs:
           node scripts/ci/zrzuty-uzupelnij.mjs nalozenie poprzednie surowe "$OG07" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
         # 10-wydanie-007: wersje narzędzi do podsumowania (wygląd podpisów zależy od ImageMagicka i czcionek Noto z obrazu runnera; zasada wspólna 21)
-        run: |
-          set -eo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick fonts-noto-core fonts-noto-cjk >/dev/null
-          { echo "ImageMagick: $(convert -version | head -1)"; dpkg-query -W -f='czcionki: ${Package} ${Version}\n' fonts-noto-core fonts-noto-cjk; } | tee -a "$GITHUB_STEP_SUMMARY"
+        # KO-039/KO-040 (2026-11-11): ten sam zestaw pakietów, ale z preflightem DNS mirrora, ograniczonymi czasami i ponowieniami oraz jawnym ::error:: (przebieg 43035080611 stał tu ok. 23 min przy braku DNS azure.archive.ubuntu.com); test: tests/wydanie/instalacja-narzedzi-zrzutow.test.ts
+        run: bash scripts/ci/zainstaluj-narzedzia-zrzutow.sh
       - name: 'Test ramek i podpisów na sztucznych PNG (ImageMagick wymagany przez OCZKO_WYMAGAJ_IMAGEMAGICK=1; w npm run verify na CI ta część jest pominięta głośno, KO-035)'
         # 10-wydanie-009: kontrola, że ramki-sklepu.sh działa naprawdę, biegnie tu, po instalacji ImageMagicka i przed krokiem ramek (jak Trening: ImageMagick tylko w workflowie zrzutów).
         env:
