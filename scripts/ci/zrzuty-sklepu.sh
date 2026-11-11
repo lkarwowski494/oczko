@@ -14,9 +14,10 @@
 # 10-wydanie-002 (uzupełnienie przebiegu, analogia trening:scripts/ci/store-screenshots.sh:10-12 zmienna UZUPELNIJ): zmienna SCENY_PLAN = "<język>=<scena>,<scena>;<język>=…" (z macierzy planu,
 # scripts/ci/zrzuty-jezyki.mjs) — język robi tylko wymienione sceny (kolejność jak w SCENY), język bez wpisu jest pomijany; pusta = wszystkie sceny wszystkich języków (przebieg zwykły).
 # W logu tylko nazwy plików i liczby (repo publiczne).
+# 10-wydanie-011: JEZYKI bez wartości (argument nieobecny) = en; PUSTY argument = brak języków (wpis planu „tylko zakup”: zrzut zakupu bez ponawiania siedmiu scen en).
 # Użycie: bash scripts/ci/zrzuty-sklepu.sh <UDID> <iphone|ipad> <katalog_zrzutów> <katalog_dzienników> <og07: true|false> [języki po przecinku, domyślnie en] [zakup: true|false] [katalog_zakupu]
 set -uo pipefail
-UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6:-en}"; ZAKUP="${7:-false}"; ZAKUP_OUT="${8:-zrzut-zakupu}"
+UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; ZAKUP="${7:-false}"; ZAKUP_OUT="${8:-zrzut-zakupu}"
 FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"
 case "$URZ" in
   iphone) ROZMIAR="6.9"; ORIENT_WZOR="PORTRAIT" ;;

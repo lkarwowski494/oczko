@@ -121,7 +121,7 @@ describe('zrzuty-uzupelnij.mjs nalozenie (zadanie zbierz: nowe zrzuty na poprzed
 
 describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące sceny)', () => {
   /** Skrypt na atrapach (maestro zapisuje nazwy scenariuszy, xcrun zapisuje plik zrzutu, sips zwraca rozmiar). */
-  function uruchom(sceny: string, jezyki: string) {
+  function uruchom(sceny: string, jezyki: string, zakup = false) {
     const d = nowyKat(); const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
     const stub = (n: string, body: string) => { fs.writeFileSync(path.join(bin, n), `#!/bin/bash\n${body}\n`); fs.chmodSync(path.join(bin, n), 0o755); };
     stub('sleep', 'exit 0');
@@ -129,10 +129,10 @@ describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące scen
     stub('sips', 'echo "  pixelWidth: 1320"; echo "  pixelHeight: 2868"; exit 0');
     stub('maestro', `echo "$4 $(printf '%s ' "\${@:5}" | grep -o 'JEZYK=[A-Za-z0-9-]*')" >> "${d}/maestro.txt"; exit 0`);
     const env: NodeJS.ProcessEnv = { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: sceny };
-    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log'), 'false', jezyki], { encoding: 'utf8', env });
+    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log'), 'false', jezyki, zakup ? 'true' : 'false', path.join(d, 'zakup')], { encoding: 'utf8', env });
     const uruchomione = fs.existsSync(path.join(d, 'maestro.txt')) ? fs.readFileSync(path.join(d, 'maestro.txt'), 'utf8').trim().split('\n').map((l) => `${path.basename(l.split(' ')[0]).replace('.yaml', '')}:${(/JEZYK=(\S+)/.exec(l) ?? [])[1]}`) : [];
     const pliki = fs.existsSync(path.join(d, 'out')) ? (fs.readdirSync(path.join(d, 'out'), { recursive: true }) as string[]).filter((f) => f.endsWith('.png')).sort() : [];
-    return { r, uruchomione, pliki };
+    return { r, uruchomione, pliki, zakupPlik: fs.existsSync(path.join(d, 'zakup/99-zakup-ceny.png')) };
   }
   test('plan wskazuje scenę wzoru i jedną zwykłą: robi tylko je (w kolejności skryptu), język bez wpisu planu jest pomijany bez 00-jezyk', () => {
     const { r, uruchomione, pliki } = uruchom('pl=04-zakreslenie,01-dzis', 'en,pl');
@@ -145,6 +145,22 @@ describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące scen
     expect(r.status).toBe(0);
     expect(uruchomione.filter((x) => /^0[1-7]-/.test(x))).toHaveLength(7);
     expect(pliki).toHaveLength(7);
+  });
+  // 10-wydanie-011 (recenzja AD, 10.11.2026): wpis planu „tylko zakup” ma `jezyki: ''` i `sceny: ''` (zrzuty-jezyki.mjs, planUzupelnienia); skrypt zamieniał pusty argument języków na `en`
+  // (`${6:-en}`), a pusty SCENY_PLAN znaczy „wszystkie sceny”, więc uzupełnienie samego zakupu robiło od nowa 7 scen `en` (≈ 35 min macOS i ryzyko nowej porażki). Pusty argument = brak języków.
+  test('zadanie „tylko zakup” (pusty argument języków, zakup=true): tylko 00-przygotuj, 00-jezyk (en) i 99-zakup, bez siedmiu scen en', () => {
+    const { r, uruchomione, pliki, zakupPlik } = uruchom('', '', true);
+    expect(r.status).toBe(0);
+    expect(uruchomione).toEqual(['00-przygotuj:start', '00-jezyk:en', '99-zakup:en']);
+    expect(pliki).toEqual([]); // żadnego zrzutu stron produktu
+    expect(zakupPlik).toBe(true); // zrzut zakupu powstał
+  });
+  test('bez argumentu języków (wywołanie ręczne) domyślnie en, jak dotąd', () => {
+    const d = nowyKat(); const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
+    for (const [n, body] of [['sleep', 'exit 0'], ['xcrun', 'if [ "$2" = io ]; then echo x > "$6"; fi; exit 0'], ['sips', 'echo "  pixelWidth: 1320"; echo "  pixelHeight: 2868"; exit 0'], ['maestro', `echo "$4" >> "${d}/maestro.txt"; exit 0`]]) { fs.writeFileSync(path.join(bin, n), `#!/bin/bash\n${body}\n`); fs.chmodSync(path.join(bin, n), 0o755); }
+    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log')], { encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: '' } });
+    expect(r.status).toBe(0);
+    expect(fs.readFileSync(path.join(d, 'maestro.txt'), 'utf8').trim().split('\n').filter((l) => /\/0[1-7]-/.test(l))).toHaveLength(7);
   });
 });
 
