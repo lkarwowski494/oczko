@@ -51,6 +51,7 @@ Wzór: Trening (`trening:scripts/ci/store-screenshots.sh:17,60` — dane pokazow
 
 ## Propozycje do akceptacji właściciela (C5)
 - Podpis PL 01: dziś „Otwiera się tam, gdzie była przerwa” (`podpisy-zrzutow.json`, bez zmiany w tej sesji, WYD-06 do sprawdzenia z AG). **Propozycja do C5:** „Wracasz tam, gdzie była przerwa”.
+- Podpis 04 (en „Highlight and write on the pattern”, pl „Zakreślaj i notuj na wzorze”): kadr 04 nie pokazuje notatki wzoru (KO-037: kodu aplikacji i testID w menu wzoru nie ruszamy). **Propozycja do C5:** podpis zgodny z kadrem (zakreślanie bez notatki), np. EN „Mark rows as you go” / PL „Zakreślaj kolejne rzędy” — brzmienie zatwierdza 04/właściciel; obecnego podpisu nie zmieniono.
 
 ## Otwarte (`[DO USTALENIA]`)
 1. Akceptacja podpisów en i pl przez właściciela (C5); przekład 27 języków (C6, rola 09).
