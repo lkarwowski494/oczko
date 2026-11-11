@@ -301,7 +301,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
-- **Pula AJ (08): P-737…P-739. Następny wolny: P-740; KO następny: KO-040.**
+- **Pula AJ (08): P-737…P-739. Następny wolny: P-740; KO następny: KO-041.**
 - Pula AI (08): P-734…P-736.
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
 - Pula A2: P-644…P-652 (P-643 zajęty przez 303).
@@ -510,3 +510,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 11.11 16:45 | M9 | **przejęcie** przez session_01T66VBz2e9NE6YwNpWmMbzx (E6 p. 5): prompt M9 c3b30ef9 zgodny; mandat bez zmian; sesji podrzędnych brak | AJ |
 | 11.11 16:50 | AJ, M9 | KO-039; polecenie `polecenia/AJ.md` (komplet attempt 2 = job 130640933235, krok 8 16:05–16:28) | start AJ |
 | 11.11 16:43 | AJ, M9 | (godziny 16:45/16:50 wyżej to szacunek — faktycznie ok. 16:40–16:42) **AJ wystartowana** session_01T66VBzchXBM6hRTpXmSAk7 (sonnet, auto, env_0166…; PENDING bez błędu); PRZEJĄŁEM wysłane poprzednikowi; `list_events` poprzednika: brak wiadomości od sesji i właściciela po przekazaniu; linie 05:00 i 14:00 12.11 utworzone | kontrola 17:38 |
+| 11.11 16:45 | AJ, C3, M9 | AJ diagnoza: awaria DNS mirrora runnera — job 130640933235 log:262 „Temporary failure resolving 'azure.archive.ubuntu.com'”, apt bez limitu prób (update 3 min + install 20 min, exit 100); attempt 1 identycznie; `.github/` bez zmian od C1. KO-040: opcja A (preflight DNS + fallback na archive.ubuntu.com + retry, ten sam zestaw). C3 attempt 3 „komplet” (rerun_failed_jobs, 201) — sprawdzenie trwałości awarii | kontrola 17:38 |
