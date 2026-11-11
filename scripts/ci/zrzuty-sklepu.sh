@@ -58,15 +58,15 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
 }
 
 # --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
-# Run 43017044972: forma ISO bez strefy („2026-11-10T09:41:00”) została odrzucona. `simctl status_bar --time` przyjmuje „ISO date string”; forma z przesunięciem strefy to wariant z pełną datą i strefą
-# (np. 2007-01-09T09:41:00+00:00), którego ta wersja skryptu używa — przesunięcie jest z `date` maszyny (symulator ma jej strefę), więc godzina na pasku zostaje 09:41. Czy `simctl` na runnerze go przyjmuje,
-# pokaże log: stderr simctl idzie do ::warning:: (10-wydanie-018; wcześniej był wyrzucany do /dev/null), a po udanym override log ma odczyt `status_bar list`.
+# Run 43017044972: forma ISO bez strefy („2026-11-10T09:41:00”) została odrzucona. Job 130695677975 (018): forma z przesunięciem „…T09:41:00+00:00” też odrzucona (simctl code=22).
+# Teraz forma UTC „…T09:41:00Z” (018, decyzja koordynatora AN, KO-043: opcja a); runner GitHub ma strefę UTC, więc godzina na pasku zostaje 09:41 — przy innej strefie maszyny
+# wynik pokaże odczyt `status_bar list` w logu (NIESPRAWDZONE na runnerze: zob. docs/programista/zrzuty-018-019-an.md). Stderr simctl idzie do ::warning:: (nie do /dev/null),
+# a po udanym override log ma odczyt `status_bar list`. Gdyby i „Z” została odrzucona: opcja (b) (sama godzina HH:MM bez daty) to osobna decyzja, nie ta zmiana.
 # 10-wydanie-018: gdy ISO odrzucone, powrót do samej godziny HH:MM jest GŁOŚNY (zasada 21) i komunikat mówi prawdę: godzina z danych, a data na pasku iPada zostaje data maszyny (iPhone daty na pasku nie pokazuje).
 pasek_stanu() {
   local reszta=(--dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100)
-  local off iso blad
-  off="$(date -j -f "%Y-%m-%dT%H:%M:%S" "$ZRZUTY_TERAZ" +%z 2>/dev/null || date -d "$ZRZUTY_TERAZ" +%z 2>/dev/null)"; [[ "$off" =~ ^[+-][0-9]{4}$ ]] || off="+0000"
-  iso="${ZRZUTY_TERAZ}${off:0:3}:${off:3:2}"
+  local iso blad
+  iso="${ZRZUTY_TERAZ}Z"
   if blad="$(xcrun simctl status_bar "$UDID" override --time "$iso" "${reszta[@]}" 2>&1)"; then
     echo "pasek stanu: ustawiony z $iso; odczyt simctl: $(xcrun simctl status_bar "$UDID" list 2>&1 | grep -i 'time\|date' | head -3 | tr '\n' ' ')"
     return 0

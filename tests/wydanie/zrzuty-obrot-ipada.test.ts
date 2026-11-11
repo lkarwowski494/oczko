@@ -58,7 +58,7 @@ pasek_stanu`;
       return r.stdout;
     };
     expect(wywolaj('NIGDY')).not.toContain('::warning::');
-    expect(wywolaj('2026')).toMatch(/^::warning::Pasek stanu: forma ISO \(2026-11-10T09:41:00[+-]\d\d:\d\d\) odrzucona[^\n]*ustawiam samą godzinę 09:41/);
+    expect(wywolaj('2026')).toMatch(/^::warning::Pasek stanu: forma ISO \(2026-11-10T09:41:00Z\) odrzucona[^\n]*ustawiam samą godzinę 09:41/);
     expect(wywolaj('2026')).not.toMatch(/Nie udało się/);
     expect(wywolaj('').match(/::warning::/g)).toHaveLength(2);
   });

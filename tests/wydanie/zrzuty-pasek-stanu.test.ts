@@ -29,11 +29,12 @@ ${wywolanie}`;
 const czasy = (w: Wynik) => w.xcrun.filter((l) => l.includes('status_bar') && l.includes('override'));
 
 describe('10-wydanie-018: pasek stanu iPada — data z danych sceny, uczciwe komunikaty', () => {
-  test('ISO z przesunięciem strefy (HH:MM) trafia do `status_bar override --time`, bez ostrzeżeń, z odczytem `status_bar list` w logu', () => {
+  test('ISO w UTC (…T09:41:00Z, 018 po przebiegu 130695677975: simctl odrzucił +00:00, code=22) trafia do `status_bar override --time`, bez ostrzeżeń, z odczytem `status_bar list` w logu', () => {
     const w = uruchom(['pasek_stanu'], 'pasek_stanu');
     expect(w.status).toBe(0);
     const [pierwsze] = czasy(w);
-    expect(pierwsze).toMatch(/--time 2026-11-10T09:41:00(?:[+-]\d\d:\d\d)\s/);
+    expect(pierwsze).toMatch(/--time 2026-11-10T09:41:00Z\s/);
+    expect(funkcja('pasek_stanu')).not.toMatch(/%z|[+-]\$\{|off:/); // bez przesunięcia strefy z `date`
     expect(w.out).not.toContain('::warning::');
     expect(w.xcrun.some((l) => /status_bar U list/.test(l))).toBe(true);
   });

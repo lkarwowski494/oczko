@@ -81,8 +81,8 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
   const sceny = fs.readdirSync(path.join(korzen, KAT)).filter((f) => f.endsWith('.yaml'));
   test('stała ZRZUTY_TERAZ (ISO) jest zdefiniowana raz w skrypcie, trafia do pasku stanu simctl i do scenariuszy przez -e', () => {
     expect(sh.match(/^ZRZUTY_TERAZ="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/gm)).toHaveLength(1);
-    // 018: forma ISO z przesunięciem strefy zbudowana ze stałej (sama stała bez strefy została odrzucona przez simctl, run 43017044972)
-    expect(sh).toMatch(/iso="\$\{ZRZUTY_TERAZ\}\$\{off:0:3\}:\$\{off:3:2\}"/);
+    // 018: forma ISO w UTC zbudowana ze stałej (bez strefy odrzucona: run 43017044972; z +00:00 odrzucona: job 130695677975, code=22)
+    expect(sh).toMatch(/iso="\$\{ZRZUTY_TERAZ\}Z"/);
     expect(sh).toMatch(/status_bar "\$UDID" override --time "\$iso"/);
     expect(sh).toMatch(/-e "ZRZUTY_TERAZ=\$ZRZUTY_TERAZ"/);
     expect(sh).not.toMatch(/--time "9:41"/);
