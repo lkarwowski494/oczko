@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-11 05:02 UTC) — wznowione 05:35 UTC słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-11 06:25 UTC) — wznowione 05:35 UTC słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -195,12 +195,16 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Plan 24 h (UTC) — aktualizacja 11.11 05:02
 | Kiedy | Co | Kto | Zależy od | Od właściciela |
 |---|---|---|---|---|
-| gdy właściciel kliknie | Approve `testflight.yml` 42918979133 (build 4, e270a07; `waiting` od 23:00) | właściciel | — | **Approve w `release`** |
+| ~~gdy właściciel kliknie~~ | Approve buildu 4 — **dany ok. 06:20**; TF 42918979133 in_progress | — | — | — |
 | po Approve (ok. 30–60 min [OCENA]; macOS zwykle brak 14:00–23:00) | „VALID”, numer buildu (oczekiwany 1141 [OCENA]) do `docs/wydanie/test-urzadzenia-build4.md` (X 896246d), A1 w `lista-1-0.md` | koordynator + sesja docs | Approve | — |
 | po wysyłce buildu 4 | scalenie X 896246d + gałąź AA @ f2a6752 (przyjęta 00:20) do integracji jednym pushem; „Jakość · iOS” na wyniku | koordynator (proste) albo sesja (konflikt) | wysyłka buildu 4 | — |
 | po zielonym „Jakość · iOS” | pierwszy przebieg zrzutów C1 (commit `[zrzuty-sklepu] [zrzuty-jezyki:en,pl]`); obejrzeć `99-zakup-ceny.png` (010 warunkowo) | 10 build | scalenie | podpisy en/pl C5 |
 | po VALID | test właściciela na urządzeniach (build 4, lista X) | właściciel | VALID | test |
 | 11.11 14:00 | linia 14:00 + przegląd przepływu | koordynator | — | — |
+
+## Odpowiedzi właściciela 11.11 ok. 06:20 UTC (dosłownie: „Build 4 approved, weto brak”)
+- Approve buildu 4 dany — `testflight.yml` 42918979133 `in_progress` (odczyt 06:24).
+- Weto brak: KO-032…KO-035 przyjęte (`decyzje.md`); P-717…P-726 (gałąź AA, `docs/decyzje.md`) przyjęte — znacznik „(noc, do weta)” zmienia sesja przy najbliższej zmianie docs (po scaleniu AA).
 
 ## Odpowiedzi właściciela 10.11 ok. 05:42 UTC (dosłownie: „1. Approved 2. Zgoda 3. Juz wstrzymane 4. Approved”)
 - 1: Approve buildu 2 dany — run 42746522234 `in_progress` (odczyt 05:43).
@@ -421,3 +425,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 11.11 00:06 | AE, AF, CI | PRZEKAZANIE AE 00:04: f2a6752 (4 commity od 8254520; autor OK, 0 Co-Authored-By, zmienione: `zrzuty-sklepu.yml`, `scripts/ci/zrzuty-sklepu.sh`, `e2e/zrzuty-sklepu/99-zakup.yaml`, `tests/wydanie/*`, docs — `app/`/`src/`/`ci.yml` bez zmian, sprawdzone `git diff --stat`); verify 0 (7197 testów) wg AE, plik `docs/wydanie/verify-ae-2026-11-10.txt`; P-724…P-726 do weta; warsztat 00392ab (autor OK). Niesprawdzone: geometria 010 (macOS). `ci.yml` 42928540438 dispatch na f2a6752. Start AF session_01T66VBvnJcScRCqmjLdtCij (opus). AE zarchiwizowana (3,63 USD, kontekst 30% > 25% — WG-10 trwa) | kontrola 00:20 (ci.yml, AF) |
 | 11.11 00:20 | AF, CI | `ci.yml` 42928540438 **success** na f2a6752 (00:11). PRZEKAZANIE AF 00:17: TAK, P0–P3 0; 009/011 TAK, 010 TAK warunkowo do C1; verify 0 (7197) i CI=true bez convert 0 (5 pominiętych, głośno) wg AF. AF nie dodała warsztatu (`add_repo` odrzucony przez klasyfikator — WG-11) i pracowała bez promptu roli AB (wyjątek nazwany; kontrola zastępcza: lista w `polecenia/AF.md`, dowody plik:linia, CI na SHA). Raport przesłany send_message, zapisany przez koordynatora w warsztacie b3937f0. **Gałąź AA przyjęta @ f2a6752.** AF zarchiwizowana (2,16 USD). Kontrola 00:20 usunięta | scalenie X + AA po wysyłce buildu 4 (po Approve); linia 05:00 |
 | 11.11 05:02 | M9 | Linia 05:00: TF 42918979133 nadal `waiting` (Approve); poprzednik session_01T66VBzbScQrZbywfTvaNTg zarchiwizowany (7,69 USD); koordynator 3,05 USD, kontekst 20,8%; plan 24 h odświeżony | Approve właściciela; linia 14:00 |
+| 11.11 06:25 | właściciel, TF | „Build 4 approved, weto brak”: TF 42918979133 in_progress (06:24); KO-032…KO-035 i P-717…P-726 przyjęte | kontrola 07:00: VALID → numer buildu + A1, scalenie X + AA |
