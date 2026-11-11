@@ -34,13 +34,17 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
     expect(s04.filter((l) => /wzor-zakreslenia/.test(l) && /\.\*[12]\.\*/.test(l))).toEqual([]);
   });
 
-  test('019 (AN, KO-043): scena 04 wyłącza zakreślacz po drugim swipe i przed końcem (zrzut robi skrypt po scenie), a licznik nadal pokazuje 2', () => {
+  // 019 (AO, KO-044; P-749): opcja 1 z P-746 (wyłączenie zakreślacza przed zrzutem) obalona przebiegiem 43090241469 (04=1 pas we wszystkich parach); przyczyna była
+  // w aplikacji (P-748, tests/adaptery/widok-wzoru-odswiezenie-plotna.test.ts), więc scena bez obejścia: zakreślacz zostaje włączony do zrzutu (kadr jak w 014),
+  // a zrzut Maestro zaraz po swipe zostaje w dziennikach (stan płótna przed zrzutem sklepu; rozróżnia „nie pojawiło się” od „znikło później”).
+  test('019 (AO, KO-044): scena 04 bez wyłączania zakreślacza po swipe — zakreślacz włączony do końca sceny, licznik 2, zrzut diagnostyczny zaraz po swipe', () => {
     const swipe = idx(s04, SWIPE);
-    const wylacz = idx(s04, /tapOn:.*wzor-zakreslacz/, swipe);
-    const nieaktywny = idx(s04, /assertVisible:.*wzor-zakreslacz.*selected:\s*false/, wylacz);
-    const licznik = idx(s04, /assertVisible:.*wzor-zakreslenia.*text:\s*'\^\\D\*2\\D\*\$'/, nieaktywny);
-    expect(swipe).toBeLessThan(wylacz); expect(wylacz).toBeLessThan(nieaktywny); expect(nieaktywny).toBeLessThan(licznik);
-    expect(s04.slice(licznik + 1).filter((l) => /tapOn:.*wzor-zakreslacz|selected:\s*true/.test(l))).toEqual([]); // zakreślacz zostaje wyłączony do końca sceny
+    const licznik = idx(s04, /assertVisible:.*wzor-zakreslenia.*text:\s*'\^\\D\*2\\D\*\$'/, swipe);
+    const zrzut = idx(s04, /takeScreenshot:\s*04-po-swipe/, swipe);
+    expect(licznik).toBeLessThan(zrzut);
+    const wlaczony = idx(s04, /assertVisible:.*wzor-zakreslacz.*selected:\s*true/, zrzut);
+    expect(zrzut).toBeLessThan(wlaczony);
+    expect(s04.slice(swipe + 1).filter((l) => /tapOn:.*wzor-zakreslacz|selected:\s*false/.test(l))).toEqual([]); // po swipe nic nie wyłącza narzędzia
   });
 
   test('swipe fikstury i swipe sceny 04 są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), w poziomie', () => {

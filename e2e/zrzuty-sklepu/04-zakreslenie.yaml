@@ -30,9 +30,8 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 - assertVisible: { id: "wzor-zakreslenia", text: '^\D*1\D*$' } # P3 (KO-043): ściśle cyfra 1, bez innych cyfr (poprzedni wzorzec z kropką-gwiazdką po obu stronach pasował też do „12”, „21”)
 - swipe: { start: "20%, 48%", end: "80%, 48%", duration: 800 }
 - assertVisible: { id: "wzor-zakreslenia", text: '^\D*2\D*$' } # licznik z cyfrą 2 w każdym języku (słowniki wzor.zakreslenia_<forma dla 2> = „{{count}} …”); pierwsze zakreślenie z 00-przygotuj + to
-# 019 (AN, KO-043; hipoteza AM, do potwierdzenia przebiegiem C6): w artefakcie przebiegu 43070136577 kadr 04 ma licznik „2”, a na stronie jedno żółte zakreślenie (z fikstury);
-# pociągnięcie zrobione przy włączonym zakreślaczu nie było narysowane w chwili zrzutu. Fikstura wyłącza zakreślacz po swipe'ie, scena 04 nie wyłączała — więc wyłączamy go tu przed końcem sceny
-# (zrzut robi skrypt po scenie). Opis i to, co potwierdzi C6: docs/programista/zrzuty-018-019-an.md.
-- tapOn: { id: "wzor-zakreslacz" }
-- assertVisible: { id: "wzor-zakreslacz", selected: false }
-- assertVisible: { id: "wzor-zakreslenia", text: '^\D*2\D*$' } # wyłączenie narzędzia nie zmienia liczby zakreśleń
+# 019 (AO, KO-044; P-748, P-749): opcja 1 z P-746 (wyłączenie zakreślacza przed zrzutem) obalona w przebiegu 43090241469 — przyczyna była w aplikacji
+# (pociągnięcie na płótnie z rysunkiem wczytanym z pliku nie było rysowane; poprawka w WidokWzoru.swift). Scena bez obejścia: zakreślacz zostaje włączony do zrzutu.
+# Zrzut Maestro zaraz po swipe (dzienniki, nie komplet sklepu) pokazuje stan płótna przed zrzutem skryptu. Opis: docs/programista/zrzuty-018-019-an.md (sekcja AO).
+- takeScreenshot: 04-po-swipe
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
