@@ -58,8 +58,12 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
 }
 
 # --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
+# Run 43017044972: forma ISO dała „Nie udało się ustawić paska stanu” (godzina maszyny w kadrze); C1 miał „9:41”. Powrót do samej godziny HH:MM z tej samej stałej jest GŁOŚNY (ostrzeżenie w logu, kadr bez daty), nie cichy zjazd (zasada 21).
 pasek_stanu() {
-  xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null 2>&1 \
+  local reszta=(--dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100)
+  if xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" "${reszta[@]}" >/dev/null 2>&1; then return 0; fi
+  echo "::warning::Pasek stanu: forma ISO ($ZRZUTY_TERAZ) odrzucona — ustawiam samą godzinę ${ZRZUTY_TERAZ:11:5} (kadr bez daty na pasku iPada)"
+  xcrun simctl status_bar "$UDID" override --time "${ZRZUTY_TERAZ:11:5}" "${reszta[@]}" >/dev/null 2>&1 \
     || echo "::warning::Nie udało się ustawić paska stanu (zrzuty będą miały godzinę z maszyny)"
 }
 pasek_stanu
@@ -70,8 +74,13 @@ ustaw_region() {   # $1 = klucz danych
   local reg g24; reg=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" region); g24=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" godziny24)
   xcrun simctl spawn "$UDID" defaults write -g AppleLocale "$reg" >/dev/null 2>&1 || echo "::warning::region symulatora ($reg) nie ustawiony"
   xcrun simctl spawn "$UDID" defaults write -g AppleICUForce24HourTime -bool "$g24" >/dev/null 2>&1 || echo "::warning::format godziny symulatora (24 h = $g24) nie ustawiony"
-  xcrun simctl spawn "$UDID" launchctl kickstart -k system/com.apple.SpringBoard >/dev/null 2>&1 || true   # pasek stanu czyta ustawienia po restarcie SpringBoard
-  sleep 6; pasek_stanu
+  # Ustawienia regionu czyta pasek stanu po restarcie interfejsu. Run 43017044972: `launchctl kickstart -k SpringBoard` zostawiał iPada bez obrotu do poziomu (sceny 03 i 04: „Device orientation is 3”,
+  # ale brak „Did set interfaceOrientation[3]”). Dlatego pełny rozruch symulatora, czyli stan jak po starcie jobu (tam obrót działa, C1 42992359897); dane aplikacji i instalacja zostają.
+  xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
+  xcrun simctl boot "$UDID" >/dev/null 2>&1 || echo "::warning::ponowny rozruch symulatora nie powiódł się (boot)"
+  xcrun simctl bootstatus "$UDID" -b >/dev/null 2>&1 || echo "::warning::bootstatus symulatora nie zakończył się powodzeniem"
+  xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
+  pasek_stanu
   echo "region symulatora: $reg, 24 h: $g24 (dane: $1)"
 }
 
