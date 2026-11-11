@@ -48,3 +48,29 @@ opisObrazy('10-wydanie-017: spłaszczenie kanału alfa i kontrola pliku zakupu',
     expect(sh).toMatch(/SKRYPTY=.*scripts\/ci|SKRYPTY="\$\(cd "\$\(dirname "\$0"\)"/);
   });
 });
+
+opisObrazy('10-wydanie-012: ramka iPada nie ucina paska stanu w narożnikach', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ah012-'));
+  const we = path.join(tmp, 'we'); const wy = path.join(tmp, 'wy');
+  // Pasek stanu iPada (pionowo i poziomo): czas z lewej i bateria z prawej zaczynają się ok. 40 px od krawędzi i 14 px od góry zrzutu (wymiary z run 42992359897: „9” przy ramce w pionie, w poziomie widać tylko „41 AM”).
+  // Biały znacznik 6×6 px w tym miejscu na czarnym zrzucie: po nałożeniu ramki ma zostać biały (a nie kolor obwódki albo tła).
+  const ZNACZNIKI: Array<[number, number]> = [[40, 14], [-41, 14]]; // ujemne x liczone od prawej krawędzi
+  const KLASY: Array<[string, number, number]> = [['ipad-13/en/01-dzis.png', 2064, 2752], ['ipad-13/en/03-wzor.png', 2752, 2064]];
+  beforeAll(() => {
+    for (const [rel, w, h] of KLASY) {
+      const p = path.join(we, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
+      const rys = ZNACZNIKI.map(([x, y]) => { const x0 = x < 0 ? w + x : x; return `rectangle ${x0},${y} ${x0 + 5},${y + 5}`; }).join(' ');
+      expect(uruchom('convert', ['-size', `${w}x${h}`, 'xc:black', '-fill', 'white', '-draw', rys, '-alpha', 'off', p]).status).toBe(0);
+    }
+    expect(uruchom('bash', ['scripts/ci/ramki-sklepu.sh', we, wy]).status).toBe(0);
+  });
+  test.each(KLASY)('%s: znaczniki paska stanu zostają w kadrze (biały piksel po ramce)', (rel, w, h) => {
+    const SW = Math.floor(w * 78 / 100); const SH = Math.floor(h * 78 / 100); const X = Math.floor((w - SW) / 2); const TOP = Math.floor(h * 19 / 100);
+    for (const [x, y] of ZNACZNIKI) {
+      const x0 = x < 0 ? w + x : x;
+      const ox = X + Math.floor((x0 + 3) * SW / w); const oy = TOP + Math.floor((y + 3) * SH / h);
+      const kolor = uruchom('convert', [path.join(wy, rel), '-format', `%[pixel:p{${ox},${oy}}]`, 'info:']).stdout.trim();
+      expect([rel, x, kolor]).toEqual([rel, x, expect.stringMatching(/^(white|srgb\((2[45]\d|25[0-5]),(2[45]\d|25[0-5]),(2[45]\d|25[0-5])\)|#F[0-9A-F]{5})$/i)]);
+    }
+  });
+});

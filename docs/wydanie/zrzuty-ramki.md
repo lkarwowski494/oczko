@@ -20,7 +20,7 @@ Zlecenie: KO-032 (słowa właściciela przekazane przez koordynatora Piekarza 10
 Źródło: https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/ — „You must include at least one screenshot and can upload up to 10 screenshots per device size”; „Images can’t include alpha channels or transparencies.” iPhone z Dynamic Island (duży): 1260×2736, 1290×2796, **1320×2868** (pion; poziom odwrotnie). iPad 13″: **2064×2752**, 2048×2732 (pion; poziom odwrotnie). Wyjście ramek ma wymiar identyczny z wejściem, więc zgodny z klasą; sprawdza to `wymiary-asc.mjs`.
 
 ## Wygląd ramki (P-717; do weta wyglądu w kroku C4 listy 1.0)
-Tło `karta` #3A332E, podpis `kartaTekst` #F3F1EC, obwódka `akcent` #C08425 (tryb jasny tokenów); podpis u góry (pole 86% × 15%), zrzut 78% z zaokrągleniem 7%, bez obudów Apple, PNG RGB 8-bit. Krój: Bree Serif; Noto Sans Bold dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK Bold dla ja, ko, zh-Hant. Zmiana kolorów = zmiana nazw tokenów w polu `ramka` pliku podpisów, bez nowych scen.
+Tło `karta` #3A332E, podpis `kartaTekst` #F3F1EC, obwódka `akcent` #C08425 (tryb jasny tokenów); podpis u góry (pole 86% × 15%), zrzut 78% z zaokrągleniem 7% (iPad 1,5%: 10-wydanie-012, róg ucinał pasek stanu), bez obudów Apple, PNG RGB 8-bit. Krój: Bree Serif; Noto Sans Bold dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK Bold dla ja, ko, zh-Hant. Zmiana kolorów = zmiana nazw tokenów w polu `ramka` pliku podpisów, bez nowych scen.
 
 ## Jak odtworzyć lokalnie (bez macOS)
 Surowe PNG z ostatniego zielonego przebiegu zrzutów (run 42784539154, artefakt `sklep-zrzuty-ramki` 13751726063, ważny do 24.11.2026; layout `6.9/en/`, `ipad-13/en/`, `warunek-og07/…`) albo własne w układzie `<klasa>/<język>/NN-<ekran>.png`:

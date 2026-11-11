@@ -7,7 +7,7 @@
 # Wejście: <katalog_zrzutów>/[warunek-og07/]<klasa>/<język>/NN-<ekran>.png (surowe zrzuty z zrzuty-sklepu.sh). Wyjście: ten sam układ w <katalog_wyjściowy>,
 # obraz o TYM SAMYM rozmiarze co zrzut (rozmiary wymagane przez App Store Connect bez zmian), RGB bez kanału alfa („Images can’t include alpha channels or transparencies”).
 # Układ obrazu: tło (token `ramka.tlo`), podpis u góry (`ramka.tekst`, czcionka marki; pole 86% szerokości × 15% wysokości), zrzut pomniejszony do 78% z zaokrągleniem 7%
-# i obwódką (`ramka.obwodka`). Ramka własna, bez obudów urządzeń Apple (wytyczne Apple Marketing Resources: tylko obudowy dostarczone przez Apple, bez modyfikacji).
+# i obwódką (`ramka.obwodka`); promień zaokrąglenia 7% (iPad 1,5%, 10-wydanie-012). Ramka własna, bez obudów urządzeń Apple (wytyczne Apple Marketing Resources: tylko obudowy dostarczone przez Apple, bez modyfikacji).
 # Język bez podpisów jest pomijany z ostrzeżeniem (surowe zrzuty zostają w artefakcie surowym). Narzędzia: ImageMagick 6 (`convert`, `identify`), node.
 # Czcionki poza Bree (kroj.systemowy: bg, el, nl, ru, sr, uk, vi → Noto Sans Bold z fonts-noto-core; kroj.cjk: ja, ko, zh-Hant → Noto Sans CJK Bold z fonts-noto-cjk).
 # Użycie: bash scripts/ci/ramki-sklepu.sh <katalog_zrzutów> <katalog_wyjściowy> [plik_podpisów] [plik_tokenów]
@@ -31,6 +31,9 @@ while IFS= read -r dir; do
   if [[ "$CJK_LANGS" == *" $lang "* ]]; then FONT="$FONT_CJK"; elif [[ "$SYS_LANGS" == *" $lang "* ]]; then FONT="$FONT_SYS"; else FONT="$FONT_BREE"; fi
   [ -f "$FONT" ] || { echo "::error::brak czcionki $FONT dla języka $lang (apt: fonts-noto-core, fonts-noto-cjk)"; exit 1; }
   mkdir -p "$OUT/$rel"
+  # 10-wydanie-012 (sesja AH): promień zaokrąglenia w promilach szerokości zrzutu po pomniejszeniu; iPhone 7% (jak dotąd), iPad 1,5% — przy 7% róg ucinał pasek stanu iPada
+  # (pion: „9” przy ramce, poziom: tylko „41 AM”, bateria ucięta; ipad-13/{en,pl}/* i warunek-og07/ipad-13/*), a pasek iPada zaczyna się ok. 40 px od lewej i 14 px od góry zrzutu.
+  if [[ "$rel" == *ipad* ]]; then RPM=15; else RPM=70; fi
   # Jeden rozmiar czcionki i podział wierszy dla języka w tym katalogu (uklad-podpisow.mjs); pole podpisu = 86% szerokości × 15% wysokości, dla NAJMNIEJSZEGO zrzutu w katalogu.
   FW=999999; FH=999999
   for shot in "$dir"/*.png; do
@@ -44,7 +47,7 @@ while IFS= read -r dir; do
     text=$(node -e 'const p=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).podpisy[process.argv[2]]; process.stdout.write(p==null?"":p)' "$TMP/plan.json" "$sc")
     [ -n "$text" ] || { echo "::warning::Brak podpisu: $lang/$sc — pomijam"; continue; }
     read -r W H < <(identify -format '%w %h\n' "$shot")
-    SW=$(( W * 78 / 100 )); SH=$(( H * 78 / 100 )); R=$(( SW * 7 / 100 )); B=$(( W / 120 + 2 ))
+    SW=$(( W * 78 / 100 )); SH=$(( H * 78 / 100 )); R=$(( SW * RPM / 1000 )); B=$(( W / 120 + 2 ))
     CAPH=$(( H * 15 / 100 )); TOP=$(( H * 19 / 100 )); X=$(( (W - SW) / 2 ))
     convert "$shot" -alpha off -resize "${SW}x${SH}!" "$TMP/s.png"
     convert -size "${SW}x${SH}" xc:black -fill white -draw "roundrectangle 0,0,$((SW - 1)),$((SH - 1)),$R,$R" "$TMP/m.png"
