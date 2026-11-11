@@ -8,7 +8,7 @@ name: "Zrzuty sklepu · 00 język aplikacji ${JEZYK}"
 - runFlow:
     file: ../scenariusze/subflows/restart-dzis.yaml
     env:
-      TERAZ: "2026-11-10T09:41:00"
+      TERAZ: ${ZRZUTY_TERAZ}
 - runFlow: ../scenariusze/subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
 - tapOn: { id: "ustawienia-jezyk" }

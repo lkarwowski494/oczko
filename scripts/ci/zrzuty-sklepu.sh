@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Zrzuty sklepu z symulatora (zrzuty-sklepu.yml; rola 10-wydanie, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md, opcja A).
-# Kolejność: (1) pasek stanu jak w materiałach Apple (9:41, pełna bateria), tryb jasny; (2) scenariusz 00-przygotuj.yaml wprowadza dane FIKCYJNE
+# Kolejność: (1) pasek stanu jak w materiałach Apple (9:41 z datą z ZRZUTY_TERAZ, pełna bateria), tryb jasny; (2) scenariusz 00-przygotuj.yaml wprowadza dane FIKCYJNE
 # (e2e/zrzuty-sklepu); (3) każda scena 01…07 to osobny scenariusz Maestro (restart na tych samych danych + nawigacja, bez +1 na liczniku),
 # po nim `xcrun simctl io screenshot` — natywne piksele urządzenia (iPhone 17 Pro Max 1320 × 2868, iPad Pro 13″ 2064 × 2752), bez ramki Maestro.
 # Nieudana scena jest powtarzana raz; po drugiej porażce zapisana w `nieudane-<urządzenie>.txt` i pomijana (reszta idzie dalej, przebieg zbiorczy jest czerwony).
@@ -18,6 +18,8 @@
 # Użycie: bash scripts/ci/zrzuty-sklepu.sh <UDID> <iphone|ipad> <katalog_zrzutów> <katalog_dzienników> <og07: true|false> [języki po przecinku, domyślnie en] [zakup: true|false] [katalog_zakupu]
 set -uo pipefail
 UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; ZAKUP="${7:-false}"; ZAKUP_OUT="${8:-zrzut-zakupu}"
+# 10-wydanie-016: JEDNA stała „teraz” dla kadrów — zegar aplikacji w scenach (-e ZRZUTY_TERAZ → launchApp oczkoE2eTeraz) i pasek stanu symulatora (--time ISO: godzina i, na iPadzie, data) są z niej
+ZRZUTY_TERAZ="2026-11-10T09:41:00"
 FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"; SKRYPTY="$(cd "$(dirname "$0")" && pwd)"
 case "$URZ" in
   iphone) ROZMIAR="6.9"; ORIENT_WZOR="PORTRAIT" ;;
@@ -42,7 +44,7 @@ sceny_jezyka() {   # $1 = język → sceny do zrobienia (w kolejności z SCENY);
 JEZYK_BIEZACY="start"   # w nazwie katalogu dziennika: kolejne języki nie nadpisują sobie logów
 maestro_run() {   # $1 = nazwa scenariusza (bez .yaml), $2 = próba
   local log="$LOGI/$URZ-$JEZYK_BIEZACY-$1-$2"; mkdir -p "$log"
-  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" --test-output-dir "$log" > "$log/maestro.log" 2>&1
+  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" --test-output-dir "$log" > "$log/maestro.log" 2>&1
 }
 zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot, obrót zrzutu poziomego iPada
   sleep 4   # PDF i animacje przejścia kończą się po asercji; bez tego zrzut łapie stan pośredni
@@ -52,8 +54,8 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
   local w h; w=$(sips -g pixelWidth "$1" | awk '/pixelWidth/ {print $2}'); h=$(sips -g pixelHeight "$1" | awk '/pixelHeight/ {print $2}'); echo "${w}x${h}"
 }
 
-# --- pasek stanu i wygląd ---
-xcrun simctl status_bar "$UDID" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null 2>&1 \
+# --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
+xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null 2>&1 \
   || echo "::warning::Nie udało się ustawić paska stanu (zrzuty będą miały godzinę z maszyny)"
 xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
 

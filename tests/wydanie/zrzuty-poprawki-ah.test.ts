@@ -74,3 +74,32 @@ opisObrazy('10-wydanie-012: ramka iPada nie ucina paska stanu w narożnikach', (
     }
   });
 });
+
+describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar fikstury = pasek stanu)', () => {
+  const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
+  const KAT = 'e2e/zrzuty-sklepu';
+  const sceny = fs.readdirSync(path.join(korzen, KAT)).filter((f) => f.endsWith('.yaml'));
+  test('stała ZRZUTY_TERAZ (ISO) jest zdefiniowana raz w skrypcie, trafia do pasku stanu simctl i do scenariuszy przez -e', () => {
+    expect(sh.match(/^ZRZUTY_TERAZ="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/gm)).toHaveLength(1);
+    expect(sh).toMatch(/status_bar "\$UDID" override --time "\$ZRZUTY_TERAZ"/);
+    expect(sh).toMatch(/-e "ZRZUTY_TERAZ=\$ZRZUTY_TERAZ"/);
+    expect(sh).not.toMatch(/--time "9:41"/);
+  });
+  test('scenariusze nie mają wpisanej na sztywno daty „dziś”: używają ${ZRZUTY_TERAZ}', () => {
+    for (const f of sceny) {
+      const t = czytaj(`${KAT}/${f}`);
+      const kod = t.split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');
+      expect([f, /2026-11-10T09:41/.test(kod)]).toEqual([f, false]);
+      if (f !== '00-przygotuj.yaml' && f !== '99-zakup.yaml' && f !== '00-jezyk.yaml') expect([f, kod]).toEqual([f, expect.stringContaining('${ZRZUTY_TERAZ}')]);
+    }
+  });
+  test('fikstura: godziny sesji rosną razem z datą (Historia czyta się chronologicznie), a 9 XI jest dniem pracy (+1), więc „This week” nie jest pusty', () => {
+    const t = czytaj(`${KAT}/00-przygotuj.yaml`);
+    const czasy = [...t.matchAll(/TERAZ: "(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})"/g)].map((m) => `${m[1]}T${m[2]}`);
+    expect(czasy.length).toBeGreaterThanOrEqual(3);
+    const dzienna = (z: string) => z.slice(11);
+    for (let i = 1; i < czasy.length; i++) { expect(czasy[i] > czasy[i - 1]).toBe(true); expect(dzienna(czasy[i]) > dzienna(czasy[i - 1])).toBe(true); }
+    const od9 = t.slice(t.indexOf('2026-11-09T'));
+    expect(od9.slice(0, od9.indexOf('licznik-akcja-notatka'))).toMatch(/tapOn: \{ id: "licznik-plus" \}/);
+  });
+});
