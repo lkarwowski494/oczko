@@ -34,6 +34,15 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
     expect(s04.filter((l) => /wzor-zakreslenia/.test(l) && /\.\*[12]\.\*/.test(l))).toEqual([]);
   });
 
+  test('019 (AN, KO-043): scena 04 wyłącza zakreślacz po drugim swipe i przed końcem (zrzut robi skrypt po scenie), a licznik nadal pokazuje 2', () => {
+    const swipe = idx(s04, SWIPE);
+    const wylacz = idx(s04, /tapOn:.*wzor-zakreslacz/, swipe);
+    const nieaktywny = idx(s04, /assertVisible:.*wzor-zakreslacz.*selected:\s*false/, wylacz);
+    const licznik = idx(s04, /assertVisible:.*wzor-zakreslenia.*text:\s*'\^\\D\*2\\D\*\$'/, nieaktywny);
+    expect(swipe).toBeLessThan(wylacz); expect(wylacz).toBeLessThan(nieaktywny); expect(nieaktywny).toBeLessThan(licznik);
+    expect(s04.slice(licznik + 1).filter((l) => /tapOn:.*wzor-zakreslacz|selected:\s*true/.test(l))).toEqual([]); // zakreślacz zostaje wyłączony do końca sceny
+  });
+
   test('swipe fikstury i swipe sceny 04 są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), w poziomie', () => {
     const f = SWIPE.exec(przyg.find((l) => SWIPE.test(l)) ?? ''); const s = SWIPE.exec(s04.find((l) => SWIPE.test(l)) ?? '');
     expect(f).not.toBeNull(); expect(s).not.toBeNull();
