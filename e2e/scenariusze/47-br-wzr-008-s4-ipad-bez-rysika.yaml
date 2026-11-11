@@ -24,3 +24,11 @@ tags:
 # BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1 w 26; E2-138-S3: ten sam błąd był w 47)
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+# 10-wydanie-019 (AO, KO-044, P-748): wzór z zakreśleniem wczytanym z pliku + nowe pociągnięcie. Przed poprawką kreska była liczona i zapisana, ale niewidoczna
+# do ponownego otwarcia. Maestro nie sprawdzi widoczności kreski (brak testID na pociągnięcie): licznik 2 + zrzut po odczekaniu do obejrzenia w artefakcie.
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 55%", end: "70%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: 47-ipad-drugie-zakreslenie

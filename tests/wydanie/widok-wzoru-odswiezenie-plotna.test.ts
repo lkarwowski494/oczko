@@ -83,3 +83,23 @@ describe('10-wydanie-019 (AO): pociągnięcie użytkownika widoczne na płótnie
     expect(swift).toMatch(/nakladki = \[:\]; rysunki = \[:\]; historia = \[:\]; doZapisu = \[\]; doOdswiezenia = \[\]; wUzyciu = \[\]/);
   });
 });
+
+// KO-044 (koordynator, 2026-11-11): przypadek w E2E „Jakość · iOS” — wzór z zakreśleniem wczytanym z pliku (po restarcie) + nowe pociągnięcie.
+// Maestro nie ma asercji widoczności kreski (brak testID na pociągnięcie), a kontrola pikseli w tym workflow wymagałaby zmiany workflowu (zakaz sesji AO):
+// asercja licznika 2 + zrzut po odczekaniu (H5: kreska znikająca po czasie) do obejrzenia w artefakcie e2e-czesc-*-ipad.
+describe('10-wydanie-019 (AO): scen. 47 rysuje drugie pociągnięcie na wzorze wczytanym po restarcie', () => {
+  const s47 = readFileSync(join(__dirname, '../../e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml'), 'utf8')
+    .split('\n').filter((l) => !l.trimStart().startsWith('#'));
+  const i = (re: RegExp, od = 0) => s47.findIndex((l, n) => n >= od && re.test(l));
+  test('po restarcie i asercji „1 highlight”: zakreślacz, swipe na innej wysokości, „2 highlights”, odczekanie i zrzut', () => {
+    const restart = i(/subflows\/restart\.yaml/);
+    const jeden = i(/wzor-zakreslenia.*"1 highlight"/, restart);
+    const narzedzie = i(/tapOn:.*wzor-zakreslacz/, jeden);
+    const swipe = i(/swipe:.*"30%, 55%".*"70%, 55%"/, narzedzie);
+    const dwa = i(/wzor-zakreslenia.*"2 highlights"/, swipe);
+    const czekaj = i(/waitForAnimationToEnd/, dwa);
+    const zrzut = i(/takeScreenshot:\s*47-ipad-drugie-zakreslenie/, czekaj);
+    expect([restart, jeden, narzedzie, swipe, dwa, czekaj, zrzut].every((n) => n >= 0)).toBe(true);
+    expect(restart < jeden && jeden < narzedzie && narzedzie < swipe && swipe < dwa && dwa < czekaj && czekaj < zrzut).toBe(true);
+  });
+});
