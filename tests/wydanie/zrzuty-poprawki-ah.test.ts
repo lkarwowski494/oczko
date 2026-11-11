@@ -173,6 +173,6 @@ describe('10-wydanie-014: kadry 03 i 04 — wzór z treścią, 04 różny od 03'
   });
   test('scena 04 różni się od 03: drugie zakreślenie na wzorze (licznik zakreśleń ≥ 2) przy aktywnym zakreślaczu', () => {
     const s04 = czytaj(`${KAT}/04-zakreslenie.yaml`); const s03 = czytaj(`${KAT}/03-wzor.yaml`);
-    expect(s04).toMatch(/swipe:/); expect(s04).toMatch(/wzor-zakreslenia", text: "\.\*2\.\*"/); expect(s03).not.toMatch(/swipe:/);
+    expect(s04).toMatch(/swipe:/); expect(s04).toMatch(/wzor-zakreslenia", text: '\^\\D\*2\\D\*\$'/); expect(s03).not.toMatch(/swipe:/);
   });
 });

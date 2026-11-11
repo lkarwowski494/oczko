@@ -275,7 +275,7 @@ describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   // a podpis zrzutu mówi „Highlight and write on the pattern”. Tańsza kontrola w zamian (zasada wspólna 7): licznik zakreśleń musi zawierać cyfrę 1 — we wszystkich językach sklepu.
   test('04: licznik zakreśleń (wzor-zakreslenia) ma twardą asercję z cyfrą 1, niezależną od języka; cyfra jest w formie liczby pojedynczej każdego słownika', () => {
     const t04 = czytaj(`${KAT}/04-zakreslenie.yaml`).split('\n').filter((l) => !l.trim().startsWith('#')).join('\n');
-    expect(t04).toMatch(/assertVisible:\s*\{\s*id:\s*"wzor-zakreslenia",\s*text:\s*"\.\*2\.\*"\s*\}/); // 014: scena 04 ma drugie zakreślenie (pierwsze z fikstury), więc licznik = 2
+    expect(t04).toMatch(/assertVisible:\s*\{\s*id:\s*"wzor-zakreslenia",\s*text:\s*'\^\\D\*2\\D\*\$'\s*\}/); // 014: scena 04 ma drugie zakreślenie (pierwsze z fikstury), więc licznik = 2
     const kat = path.join(KORZEN, 'src/i18n/slowniki');
     const jezyki = fs.readdirSync(kat).filter((f) => /^[A-Za-z0-9-]+\.json$/.test(f)).map((f) => f.replace('.json', ''));
     expect(jezyki.length).toBeGreaterThanOrEqual(29);

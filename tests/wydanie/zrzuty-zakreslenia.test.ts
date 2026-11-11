@@ -26,11 +26,12 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
     expect(powrot).toBeLessThan(idx(przyg, /tapOn:.*nav-wstecz/, swipe));
   });
 
-  test('scena 04 przed swipe sprawdza, że fikstura zostawiła jedno zakreślenie (licznik z cyfrą 1 w każdym języku), a po nim dwa', () => {
+  test('scena 04 przed swipe sprawdza, że fikstura zostawiła jedno zakreślenie (licznik z cyfrą 1 w każdym języku), a po nim dwa; asercje ścisłe (P3: `.*1.*` pasowało też do „12”, „21”)', () => {
     const swipe = idx(s04, SWIPE);
-    const przed = idx(s04, /assertVisible:.*wzor-zakreslenia.*\.\*1\.\*/);
-    const po = idx(s04, /assertVisible:.*wzor-zakreslenia.*\.\*2\.\*/, swipe);
+    const przed = idx(s04, /assertVisible:.*wzor-zakreslenia.*text:\s*'\^\\D\*1\\D\*\$'/);
+    const po = idx(s04, /assertVisible:.*wzor-zakreslenia.*text:\s*'\^\\D\*2\\D\*\$'/, swipe);
     expect(przed).toBeLessThan(swipe); expect(swipe).toBeLessThan(po);
+    expect(s04.filter((l) => /wzor-zakreslenia/.test(l) && /\.\*[12]\.\*/.test(l))).toEqual([]);
   });
 
   test('swipe fikstury i swipe sceny 04 są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), w poziomie', () => {
