@@ -14,7 +14,8 @@ const PAKIETY = ['imagemagick', 'fonts-noto-core', 'fonts-noto-cjk'];
 
 interface Wynik { status: number | null; out: string; aptWywolania: string[]; mirrors: string }
 
-function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean; installPadaRazy?: number } = {}): Wynik {
+// updateOstrzega: 'ubuntu' (mirror Ubuntu z przebiegu 43035080611), 'ubuntu2' (security.ubuntu.com), 'inne' (źródło spoza Ubuntu, np. packages.microsoft.com), 'oba', 'sama-ogolna' (tylko „Some index files…” bez linii „Failed to fetch”); true = 'ubuntu'
+function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean | 'ubuntu' | 'ubuntu2' | 'inne' | 'oba' | 'sama-ogolna'; installPadaRazy?: number } = {}): Wynik {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'oczko-apt-'));
   const bin = path.join(dir, 'bin');
   fs.mkdirSync(bin);
@@ -29,7 +30,12 @@ function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean; installP
   atrapa('apt-get', [
     'echo "$*" >> "$STUB_LOG"',
     'if [[ " $* " == *" update "* ]]; then',
-    '  [ -n "$STUB_UPDATE_OSTRZEGA" ] && echo "W: Failed to fetch mirror+file:/etc/apt/apt-mirrors.txt/dists/noble/InRelease  Temporary failure resolving \'azure.archive.ubuntu.com\'" && echo "W: Some index files failed to download. They have been ignored, or old ones used instead."',
+    '  case "$STUB_UPDATE_OSTRZEGA" in',
+    '    ubuntu|oba) echo "W: Failed to fetch mirror+file:/etc/apt/apt-mirrors.txt/dists/noble/InRelease  Temporary failure resolving \'azure.archive.ubuntu.com\'" ;;&',
+    '    ubuntu2) echo "W: Failed to fetch http://security.ubuntu.com/ubuntu/dists/noble-security/InRelease  Temporary failure resolving \'security.ubuntu.com\'" ;;&',
+    '    inne|oba) echo "W: Failed to fetch https://packages.microsoft.com/ubuntu/24.04/prod/dists/noble/InRelease  Could not resolve host: packages.microsoft.com" ;;&',
+    '    ubuntu|ubuntu2|inne|oba|sama-ogolna) echo "W: Some index files failed to download. They have been ignored, or old ones used instead." ;;',
+    '  esac',
     '  exit 0',
     'fi',
     'n=$(grep -c -e "--download-only" "$STUB_LOG")',
@@ -47,7 +53,7 @@ function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean; installP
       PATH: `${bin}:${process.env.PATH ?? ''}`,
       STUB_LOG: log,
       STUB_DNS_PADA: (opcje.dnsPada ?? []).join(' '),
-      STUB_UPDATE_OSTRZEGA: opcje.updateOstrzega ? '1' : '',
+      STUB_UPDATE_OSTRZEGA: opcje.updateOstrzega === true ? 'ubuntu' : (opcje.updateOstrzega || ''),
       STUB_INSTALL_PADA: String(opcje.installPadaRazy ?? 0),
       OCZKO_APT_MIRRORS: mirrors,
       OCZKO_APT_SOURCES: sources,
@@ -106,6 +112,40 @@ if (!linux) console.warn(`POMINIĘTE: część „zainstaluj-narzedzia-zrzutow.s
     expect(ile(w, 'update')).toBe(3);
     expect(pobrania(w)).toBe(0);
     expect(instalacje(w)).toBe(0);
+  });
+
+  // 10-wydanie-021 (sesja AL, KO-041; recenzja AK): „Failed to fetch” z KAŻDEGO źródła zatrzymywało zadanie, także gdy padło źródło spoza Ubuntu (np. packages.microsoft.com), od którego pakiety zestawu nie zależą.
+  test('10-wydanie-021: „Failed to fetch” tylko ze źródła spoza Ubuntu: ostrzeżenie ::warning:: z nazwą hosta, bez ::error::, jedna próba update i instalacja', () => {
+    const w = uruchom({ updateOstrzega: 'inne' });
+    expect(w.status).toBe(0);
+    expect(w.out).toContain('::warning::');
+    expect(w.out).toMatch(/::warning::[^\n]*packages\.microsoft\.com/);
+    expect(w.out).not.toContain('::error::');
+    expect(ile(w, 'update')).toBe(1);
+    expect(pobrania(w)).toBe(1);
+    expect(instalacje(w)).toBe(1);
+  });
+
+  test('10-wydanie-021: „Failed to fetch” z mirrora Ubuntu i z innego źródła naraz: nadal błąd (3 próby, ::error::), ostrzeżenie tylko dla innego źródła', () => {
+    const w = uruchom({ updateOstrzega: 'oba' });
+    expect(w.status).not.toBe(0);
+    expect(w.out).toContain('::error::');
+    expect(ile(w, 'update')).toBe(3);
+    expect(instalacje(w)).toBe(0);
+  });
+
+  test('10-wydanie-021: host security.ubuntu.com to źródło Ubuntu: błąd', () => {
+    const w = uruchom({ updateOstrzega: 'ubuntu2' });
+    expect(w.status).not.toBe(0);
+    expect(w.out).toContain('::error::');
+    expect(instalacje(w)).toBe(0);
+  });
+
+  test('10-wydanie-021: „Some index files failed to download” bez linii z adresem: nie wiadomo, które źródło, więc błąd (ostrożnie)', () => {
+    const w = uruchom({ updateOstrzega: 'sama-ogolna' });
+    expect(w.status).not.toBe(0);
+    expect(w.out).toContain('::error::');
+    expect(ile(w, 'update')).toBe(3);
   });
 
   test('pobranie pada raz, drugie podejście przechodzi: kod 0, dwa pobrania i jedna instalacja', () => {
