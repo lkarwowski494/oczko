@@ -303,7 +303,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
-- **Pula AL (08): P-740…P-743. Następny wolny: P-744; KO następny: KO-042.
+- **Pula AL (08): P-740…P-743. Następny wolny: P-744; KO następny: KO-043.
 - Pula AJ (08): P-737…P-739 (P-737 użyty).**
 - Pula AI (08): P-734…P-736.
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
@@ -518,3 +518,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 11.11 17:10 | AK, M9 | **AK wystartowana** session_01T66VBytTn88pjm7hDpbKPr (opus, auto; PENDING bez błędu); prośba o potwierdzenie kompletności promptu | kontrola 17:38 |
 | 11.11 17:18 | AK, M9 | AK prompt kompletny (17:10). **AK raport 17:15: TAK**, 0 P0/P1, 4×P2 (018 data paska iPada, 019 kadr 04 jedno zakreślenie, 020 en projekt/wzór niespójne, 021 filtr „Failed to fetch”); verify 0 (7231) wg sesji; zrzuty att. 3: wymiary i alfa OK. Raport warsztat `koordynacja/raporty/2026-11-11-AK-10-wydanie-audit.md` @ c33b769. AK zarchiwizowana (3,17 USD). KO-041: AL (08 fix) na 018–021 przed C5 i scaleniem. Luka P-736 w docs/decyzje.md — do opisu | start AL; C4 w toku |
 | 11.11 17:20 | AL, M9 | **AL wystartowana** session_01T66VBvwQYMRe9gtf4iam87 (sonnet; PENDING bez błędu); prośba o potwierdzenie promptu | kontrola 17:38 (AL, C4) |
+| 11.11 17:30 | AL, M9 | AL raport 1: 020 (9dfc5e5), 021 (c6152db) zrobione lokalnie; Trening `store-screenshots.sh:26` `--time "9:41"` bez daty; warsztat dla AL niedostępny (działa z polecenia). PYTANIE 019 → KO-042 opcja A (scenariusz 87241cf, kontrola zastępcza: obejrzenie 04 w C5) | kontrola 17:38 |
