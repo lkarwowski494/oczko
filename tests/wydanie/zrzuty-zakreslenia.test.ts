@@ -35,7 +35,7 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
   });
 
   // 019 (AO, KO-044; P-749): opcja 1 z P-746 (wyłączenie zakreślacza przed zrzutem) obalona przebiegiem 43090241469 (04=1 pas we wszystkich parach); przyczyna była
-  // w aplikacji (P-748, tests/adaptery/widok-wzoru-odswiezenie-plotna.test.ts), więc scena bez obejścia: zakreślacz zostaje włączony do zrzutu (kadr jak w 014),
+  // w aplikacji (P-748, tests/wydanie/widok-wzoru-odswiezenie-plotna.test.ts), więc scena bez obejścia: zakreślacz zostaje włączony do zrzutu (kadr jak w 014),
   // a zrzut Maestro zaraz po swipe zostaje w dziennikach (stan płótna przed zrzutem sklepu; rozróżnia „nie pojawiło się” od „znikło później”).
   test('019 (AO, KO-044): scena 04 bez wyłączania zakreślacza po swipe — zakreślacz włączony do końca sceny, licznik 2, zrzut diagnostyczny zaraz po swipe', () => {
     const swipe = idx(s04, SWIPE);

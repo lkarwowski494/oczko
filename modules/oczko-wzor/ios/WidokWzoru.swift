@@ -411,6 +411,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     guard let s = v.document?.index(for: page), let n = o as? NakladkaStrony else { return }
     rysunki[s] = n.plotno.drawing
     nakladki[s] = nil
+    wUzyciu.remove(s); doOdswiezenia.remove(s) // 019: przerwane pociągnięcie nie blokuje odświeżania strony po powrocie (przegląd AO, P1)
   }
 
   private func zastosujNarzedzie(_ c: PKCanvasView) {
@@ -448,7 +449,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private func odswiezPlotna() {
     for s in doOdswiezenia where !wUzyciu.contains(s) {
       doOdswiezenia.remove(s)
-      guard let k = nakladki[s], let r = rysunki[s] else { continue }
+      // Tylko gdy płótno ma te same kreski co dane: kreska jeszcze niezatwierdzona w danych nigdy nie zostaje nadpisana starszym rysunkiem (przegląd AO, P0).
+      guard let k = nakladki[s], let r = rysunki[s], takieSame(k.plotno.drawing, r) else { continue }
       zKodu = true
       k.plotno.drawing = r
       zKodu = false
@@ -463,7 +465,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   func canvasViewDidEndUsingTool(_ c: PKCanvasView) {
     wUzyciu.remove(c.tag)
-    zaplanujOdswiezenie(c.tag)
+    // Koniec narzędzia może przyjść przed zatwierdzeniem kreski w c.drawing: planuje tylko stronę, która już czeka (zmiana jest w danych).
+    if doOdswiezenia.contains(c.tag) { zaplanujOdswiezenie(c.tag) }
   }
   private func zaplanujZapis(_ s: Int) {
     doZapisu.insert(s)

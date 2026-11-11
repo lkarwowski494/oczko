@@ -51,7 +51,22 @@ describe('10-wydanie-019 (AO): pociągnięcie użytkownika widoczne na płótnie
     const koniec = cialo(/func canvasViewDidEndUsingTool\(_ c: PKCanvasView\) \{/);
     expect(poczatek).toMatch(/wUzyciu\.insert\(c\.tag\)/);
     expect(koniec).toMatch(/wUzyciu\.remove\(c\.tag\)/);
-    expect(koniec).toMatch(/zaplanujOdswiezenie\(c\.tag\)/);
+    // Przegląd AO (P0, pewność ~35%): koniec narzędzia może przyjść przed zatwierdzeniem kreski w c.drawing — planuje więc tylko stronę, która już czeka
+    // (zmiana jest w danych), nigdy nowej.
+    expect(koniec).toMatch(/if doOdswiezenia\.contains\(c\.tag\) \{ zaplanujOdswiezenie\(c\.tag\) \}/);
+  });
+
+  test('przegląd AO (P0): przypisanie tylko, gdy płótno ma te same kreski co dane — nigdy nie nadpisuje płótna z kreską nowszą niż dane', () => {
+    const straz = odswiez.search(/takieSame\(k\.plotno\.drawing, r\)/);
+    const przypisanie = odswiez.search(/k\.plotno\.drawing = r\b/);
+    expect([straz >= 0, przypisanie >= 0]).toEqual([true, true]);
+    expect(straz).toBeLessThan(przypisanie);
+  });
+
+  test('przegląd AO (P1): koniec wyświetlania nakładki zdejmuje stronę z „w użyciu” i z oczekujących (przerwane pociągnięcie nie blokuje odświeżania na zawsze)', () => {
+    const koniecNakladki = cialo(/func pdfView\(_ v: PDFView, willEndDisplayingOverlayView o: UIView, for page: PDFPage\) \{/);
+    expect(koniecNakladki).toMatch(/wUzyciu\.remove\(s\)/);
+    expect(koniecNakladki).toMatch(/doOdswiezenia\.remove\(s\)/);
   });
 
   test('zgłoszenie zmiany bez zmiany kresek (echo przypisania kodem, gdyby PencilKit zgłosił je poza zKodu) nie trafia do historii ani do odświeżenia — bez pętli', () => {
