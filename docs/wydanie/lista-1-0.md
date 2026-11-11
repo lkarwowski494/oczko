@@ -8,7 +8,7 @@ Baza: `claude/t-przewodnik-2026-11-10` @ 75242ba (kandydat 1.0 = build 4: integr
 
 1. **Kroków właściciela: 21** (zgoda na działanie zewnętrzne: A1, D1, E1a, E14, F2–F3, F6, F4 przy każdej odpowiedzi; E13 warunkowo; C5 to akceptacja tekstów podpisów zrzutów bez działania zewnętrznego); kroków sesji i koordynatora: 14 (A2, A5, B4, B6, B7, C1, C2, C3, C6, C7, D3, E13, E17, F1).
 2. **Czas właściciela: ok. 1 h 55 min – 3 h 10 min** [OCENA], z czego test na iPhonie (A3) 30–70 min i test po akceptacji (F5) 15–20 min; osobno czekanie na Apple (recenzja zwykle do 48 h, F4) i na maszyny macOS (C1).
-3. **Najbliższy krok:** A1 → A3 — build 4 w TestFlight i test właściciela 11.11 (stan A1 **[DO USTALENIA]**: dowodu buildu 4 w repo nie ma).
+3. **Najbliższy krok:** A3 — test właściciela na buildzie 4 (1141, VALID 11.11 06:46 UTC; A1 zrobione).
 4. **Blokuje wysyłkę:** (a) wynik testu i werdykt 07 dla SHA buildu 4 (A2–A4); (b) zrzuty z buildu 4 z ramkami i podpisami, akceptacja podpisów en i pl, decyzja OG-07 (C1–C7); (c) scalenie do `main` za zgodą (D1); (d) braki w ASC: lokalizacje i zrzuty recenzji produktów (E1), Billing Grace i Copyright do potwierdzenia (E3, E7), ponowne wklejenie notatki (E6).
 5. **Repo gotowe od strony 1.0:** wersja 1.0.0, zaślepki usunięte, manifest migracji zgodny (B1–B3, B5); jedyne znalezisko „Add pattern…” (B4) jedzie do 1.0.1 i nie wymaga nowego buildu; `jakosc:kontrole` kod 0.
 
@@ -18,7 +18,7 @@ Skróty: **W** właściciel · **K** koordynator · **S** sesja roli (10, 07, 08
 
 ## A. Build 4 i test właściciela
 
-- [ ] **A1 · Build 4 w TestFlight z SHA kandydata.** Kto: K uruchamia `testflight.yml`, W zatwierdza środowisko `release` · zgoda W: **tak, na ten build** · [Actions: testflight](https://github.com/lkarwowski494/oczko/actions/workflows/testflight.yml) · czas W: 2 min · stan: **[DO USTALENIA]** — w repo nie ma dowodu przebiegu buildu 4 (`dziennik.md` kończy się na buildzie 2, 58284a88). Sprawdzenie: App Store Connect → Oczko → TestFlight → iOS → lista buildów 1.0.0.
+- [x] **A1 · Build 4 w TestFlight z SHA kandydata.** Kto: K uruchamia `testflight.yml`, W zatwierdza środowisko `release` · zgoda W: **tak, na ten build** · [Actions: testflight](https://github.com/lkarwowski494/oczko/actions/workflows/testflight.yml) · czas W: 2 min · stan: **zrobione 11.11** — build **1141** z e270a07, `testflight.yml` run 42918979133 success (krok „processingState VALID” 06:46 UTC), tag `v1.0.0-b1141`; Approve właściciela 11.11 ok. 06:20 UTC („Build 4 approved”). Wpis w `dziennik.md` — A5.
 - [ ] **A2 · Werdykt 07 dla SHA buildu 4 i UWAGI `kontrola-ipa.sh`** (m.in. licencja OFL w paczce: `app/licencje.tsx` i `assets/fonts/breeserif-OFL.txt` istnieją na 75242ba; że trafiły do `.ipa`, pokaże kontrola) . Kto: S (07) · zgoda: nie · czas W: 0 · stan: **[DO USTALENIA]** — werdykt jest w dzienniku tylko dla buildu 2 (P-643). Sprawdzenie: K podaje raport 07 dla tego SHA.
 - [ ] **A3 · Test na iPhonie.** Kto: W · zgoda: nie · zakres: `docs/wydanie/test-urzadzenia-build4.md` (pisze sesja X; **na 75242ba pliku jeszcze nie ma**, sprawdzone `ls`) · czas W: 30–70 min (górna granica = część obowiązkowa planu 07, `testflight-lista.md` D; według `fakty-wlasciciela.md` testujesz tylko to, co zmieniło się od ostatniego testu, więc zwykle krócej) · stan: do zrobienia (11.11).
 - [ ] **A4 · Wynik testu do K.** Kto: W → K · zgoda: nie · czas W: 3 min (numer punktu przy wadzie) · stan: do zrobienia. Wada kodu = poprawka 08 → nowy SHA → werdykt 07 → wraca do A1 (zmiana po kandydacie wraca do 07, zasada roli 10 nr 7).

@@ -23,7 +23,7 @@ Skróty: `zakres:17` = `docs/scope-contract.md:17`; `tf:24` = `docs/jakosc/testf
 
 ### Instalacja buildu 4 z TestFlight
 - [ ] iPhone: otwórz **TestFlight** → „Oczko”.
-- [ ] Sprawdź numer: pod nazwą wersja **1.0.0 ([NUMER BUILDU 4 — uzupełnia koordynator])**.
+- [ ] Sprawdź numer: pod nazwą wersja **1.0.0 (1141)**.
 - [ ] Jeśli to nie ten numer: „Previous Builds” (Poprzednie buildy) → wybierz właściwy.
 - [ ] **Najpierw T-01 i T-02** (zapis stanu, zrzut) — dopiero potem „Install”/„Update”. Nie usuwaj aplikacji przed T-02.
 - [ ] iPad (przed sekcją 13): TestFlight na iPadzie, to samo Apple ID → „Oczko” → ten sam numer → „Install”.
@@ -735,7 +735,7 @@ W buildzie 35 lokalizacji (`app.json:56`); automat sprawdza ekrany tylko po angi
 Wymagania pozafunkcyjne: NFR-PIE-001 T-03, T-133 · NFR-DAN-001 T-02 · NFR-DAN-002 T-60 · NFR-OFF-001 T-43, T-51, T-73 · NFR-DOS-001 T-85–T-87 · NFR-DOS-002 T-90, T-91 · NFR-WYD-001 T-110 · NFR-ZEG-001 T-105, T-106 · NFR-UKL-001 T-95, T-96 · NFR-JEZ-001 T-120–T-122 · NFR-PRY-001 T-63, T-136.
 
 ## Otwarte `[DO USTALENIA]` i znaleziska przy pisaniu listy
-- Numer buildu 4 w TestFlight — pole `[NUMER BUILDU 4 — uzupełnia koordynator]` na górze.
+- Numer buildu 4 w TestFlight — pole `1141` na górze.
 - Próg czasu startu aplikacji na telefonie — w repo brak; T-110 tylko zapisuje pomiar.
 - Zachowanie aplikacji po ręcznej zmianie daty systemowej (T-71): w `src/domena/limit.ts` nie ma ochrony przed zmianą zegara; wynik T-71 to też obserwacja, nie tylko test limitu.
 - Rozjazd nazwy: dokumenty mówią „About our content” (`decyzje.md:641`, `design/fix11-2026-11-10.md`), interfejs pokazuje „About our information” (`src/i18n/slowniki/en.json:113`) — do roli 04.
