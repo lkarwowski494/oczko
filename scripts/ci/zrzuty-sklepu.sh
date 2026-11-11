@@ -18,7 +18,7 @@
 # Użycie: bash scripts/ci/zrzuty-sklepu.sh <UDID> <iphone|ipad> <katalog_zrzutów> <katalog_dzienników> <og07: true|false> [języki po przecinku, domyślnie en] [zakup: true|false] [katalog_zakupu]
 set -uo pipefail
 UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; ZAKUP="${7:-false}"; ZAKUP_OUT="${8:-zrzut-zakupu}"
-FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"
+FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"; SKRYPTY="$(cd "$(dirname "$0")" && pwd)"
 case "$URZ" in
   iphone) ROZMIAR="6.9"; ORIENT_WZOR="PORTRAIT" ;;
   ipad)   ROZMIAR="ipad-13"; ORIENT_WZOR="LANDSCAPE_LEFT" ;;   # plan: wzór obok licznika na iPadzie poziomo
@@ -107,7 +107,14 @@ if [ "$ZAKUP" = "true" ] && [ "$URZ" = "iphone" ]; then
   JEZYK_BIEZACY="en"; mkdir -p "$ZAKUP_OUT"; ok=0
   for proba in 1 2; do
     if maestro_run 00-jezyk "z$proba" && maestro_run 99-zakup "$proba"; then
-      if zrob_zrzut 99-zakup "$ZAKUP_OUT/99-zakup-ceny.png"; then echo "zakup: $(pomiar "$ZAKUP_OUT/99-zakup-ceny.png"), $(wc -c < "$ZAKUP_OUT/99-zakup-ceny.png" | tr -d ' ') B → 99-zakup-ceny.png"; ok=1; break; fi
+      if zrob_zrzut 99-zakup "$ZAKUP_OUT/99-zakup-ceny.png"; then
+        # 10-wydanie-017: simctl zapisuje RGBA (alfa 255), App Store Connect odrzuca alfę → spłaszczenie (node, runner macOS nie ma ImageMagicka) i kontrola wymiaru i alfy gotowego pliku
+        if node "$SKRYPTY/splaszcz-png.mjs" "$ZAKUP_OUT/99-zakup-ceny.png" "$ZAKUP_OUT/.rgb.png" >/dev/null && mv "$ZAKUP_OUT/.rgb.png" "$ZAKUP_OUT/99-zakup-ceny.png" \
+           && node "$SKRYPTY/wymiary-asc.mjs" --plik "$ZAKUP_OUT/99-zakup-ceny.png"; then
+          echo "zakup: $(pomiar "$ZAKUP_OUT/99-zakup-ceny.png"), $(wc -c < "$ZAKUP_OUT/99-zakup-ceny.png" | tr -d ' ') B → 99-zakup-ceny.png"; ok=1; break
+        fi
+        echo "::warning::99-zakup: zrzut po spłaszczeniu nie przeszedł kontroli wymiaru i alfy (próba $proba)"; rm -f "$ZAKUP_OUT/.rgb.png"
+      fi
     fi
     echo "::warning::99-zakup: próba $proba nieudana"; tail -12 "$LOGI/$URZ-en-99-zakup-$proba/maestro.log" 2>/dev/null | sed 's/^/    /'
   done

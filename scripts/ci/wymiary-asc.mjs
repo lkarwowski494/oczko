@@ -55,7 +55,23 @@ export function kontroluj(katalog) {
   return bledy;
 }
 
+/** Pojedynczy plik poza układem klas (zrzut zakupu dla App Review, 10-wydanie-017): wymiar z klasy iPhone’a 6.9, brak alfy, niepusty. */
+export function kontrolujPlik(plik, klasa = '6.9') {
+  const bledy = [];
+  let info;
+  try { info = pngInfo(readFileSync(plik)); } catch (e) { return [`${plik}: ${e.message}`]; }
+  if (!WYMIARY[klasa].some(([w, h]) => w === info.width && h === info.height)) bledy.push(`${plik}: wymiar ${info.width}×${info.height} spoza listy klasy ${klasa}`);
+  if (info.alpha) bledy.push(`${plik}: kanał alfa albo przezroczystość (App Store Connect odrzuca)`);
+  return bledy;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  if (process.argv[2] === '--plik') {
+    const b = process.argv[3] ? kontrolujPlik(process.argv[3], process.argv[4] ?? '6.9') : ['użycie: node scripts/ci/wymiary-asc.mjs --plik <plik.png> [klasa]'];
+    for (const w of b) console.log(`BŁĄD ${w}`);
+    console.log(b.length ? `BŁĘDY: ${b.length}` : 'OK (1 plik)');
+    process.exit(b.length ? 1 : 0);
+  }
   const kat = process.argv[2];
   if (!kat) { console.error('użycie: node scripts/ci/wymiary-asc.mjs <katalog>'); process.exit(2); }
   const bledy = kontroluj(kat);
