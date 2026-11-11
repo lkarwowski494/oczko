@@ -226,6 +226,8 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var rysunki: [Int: PKDrawing] = [:]         // bieżący rysunek każdej strony (wczytany albo narysowany)
   private var historia: [Int: [PKDrawing]] = [:]      // cofanie ostatniej kreski na stronie
   private var doZapisu = Set<Int>()
+  private var doOdswiezenia = Set<Int>()               // 10-wydanie-019: strony, których płótno dostanie rysunek z danych (odswiezPlotna)
+  private var wUzyciu = Set<Int>()                    // strony, na których trwa pociągnięcie (od canvasViewDidBeginUsingTool do ...End)
   /// M1-084 (DEC-31 a): rysunki czekające na zapis do pliku — wspólne dla widoków, więc nieudany zapis przy zamknięciu ekranu albo zmianie wzoru
   /// nie ginie z widokiem; następna próba (kreska, zmiana strony, tło, otwarcie wzoru) zapisuje je pod ich wzorId. Tylko wątek główny (UIView).
   private static let kolejka = KolejkaRysunkow()
@@ -320,7 +322,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
       doKolejki()
       let (zKolejki, oproznijPo) = propsy.otworzWzor(nowy, kolejka: Self.kolejka) // M1-109: rysunki z kolejki przed jej zapisem
       plik = plikPdf
-      nakladki = [:]; rysunki = [:]; historia = [:]; doZapisu = []
+      nakladki = [:]; rysunki = [:]; historia = [:]; doZapisu = []; doOdswiezenia = []; wUzyciu = []
       rysikZgloszony = false
       pdf.document = PDFDocument(url: URL(fileURLWithPath: plikPdf))
       czekajNaPodwojneStukniecie() // M1-131: rozpoznawacze PDFView po wczytaniu dokumentu
@@ -429,9 +431,39 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   func canvasViewDrawingDidChange(_ c: PKCanvasView) {
     guard !zKodu else { return }
     let s = c.tag
+    if let poprzedni = rysunki[s], takieSame(poprzedni, c.drawing) { return } // 019: echo przypisania z odswiezPlotna — bez wpisu w historii i bez pętli
     historia[s, default: []].append(rysunki[s] ?? PKDrawing())
     rysunki[s] = c.drawing
     zaplanujZapis(s)
+    zaplanujOdswiezenie(s)
+  }
+  /// 10-wydanie-019 (AO, P-748): pociągnięcie narysowane na płótnie z rysunkiem wczytanym z pliku trafiało do danych (licznik rósł), ale nie było
+  /// widoczne do ponownego otwarcia wzoru (zrzuty-sklepu 43035080611, 43090241469; na pustym płótnie widoczne — Jakość · iOS 42899408194, scen. 47).
+  /// Rysunek przypisany kodem wyświetla się zawsze, więc po zmianie użytkownika wyświetlane płótno strony dostaje rysunek z danych — w następnym
+  /// obiegu pętli i nie w trakcie pociągnięcia (rysik pisze kreski szybko po sobie). Kreski, cofanie i zapis bez zmian: `rysunki[s]` jest już aktualny.
+  private func zaplanujOdswiezenie(_ s: Int) {
+    doOdswiezenia.insert(s)
+    DispatchQueue.main.async { [weak self] in self?.odswiezPlotna() }
+  }
+  private func odswiezPlotna() {
+    for s in doOdswiezenia where !wUzyciu.contains(s) {
+      doOdswiezenia.remove(s)
+      guard let k = nakladki[s], let r = rysunki[s] else { continue }
+      zKodu = true
+      k.plotno.drawing = r
+      zKodu = false
+    }
+  }
+  /// Te same kreski: pióro i zakreślacz dodają kreskę, gumka wektorowa usuwa całe kreski, więc zmiana użytkownika zmienia liczbę kresek albo ich obrys.
+  private func takieSame(_ a: PKDrawing, _ b: PKDrawing) -> Bool {
+    a.strokes.count == b.strokes.count && a.bounds == b.bounds
+  }
+  func canvasViewDidBeginUsingTool(_ c: PKCanvasView) {
+    wUzyciu.insert(c.tag)
+  }
+  func canvasViewDidEndUsingTool(_ c: PKCanvasView) {
+    wUzyciu.remove(c.tag)
+    zaplanujOdswiezenie(c.tag)
   }
   private func zaplanujZapis(_ s: Int) {
     doZapisu.insert(s)
