@@ -311,6 +311,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- Pula AN (08): P-744…P-747. Następny wolny: P-748.
 - **Pula AL (08): P-740…P-743. Następny wolny: P-744; KO następny: KO-044.
 - Pula AJ (08): P-737…P-739 (P-737 użyty).**
 - Pula AI (08): P-734…P-736.
