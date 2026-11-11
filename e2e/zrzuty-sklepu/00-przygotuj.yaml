@@ -1,8 +1,8 @@
 # Dane (nazwy projektów, notatka, wzór) z zmiennych -e z e2e/zrzuty-sklepu/dane/<klucz>.json przez scripts/ci/zrzuty-dane.mjs (013: dane w języku zestawu).
-# Zrzuty sklepu (rola 10, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md). Dane WYŁĄCZNIE fikcyjne (2.3.9): projekty „Harbor Sweater”, „Moss Socks”,
-# „Cable Hat”, „Baby Blanket”; wzór = PDF z treścią z buildu E2E (panel e2e-wzor-sklep-<język danych>, src/kompozycja/e2e/wzor-sklepu.ts, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = ZRZUTY_TERAZ (10 XI 2026, 9:41; jedna stała w scripts/ci/zrzuty-sklepu.sh, ta sama w pasku stanu symulatora).
+# Zrzuty sklepu (rola 10, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md). Dane WYŁĄCZNIE fikcyjne (2.3.9): projekty (en) „Cable Hat” (główny, jak wzór), „Moss Socks”,
+# „Harbor Sweater”, „Baby Blanket”; 020: nazwa projektu głównego = nazwa wzoru w każdym języku (tests/wydanie/zrzuty-dane-spojnosc.test.ts); wzór = PDF z treścią z buildu E2E (panel e2e-wzor-sklep-<język danych>, src/kompozycja/e2e/wzor-sklepu.ts, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = ZRZUTY_TERAZ (10 XI 2026, 9:41; jedna stała w scripts/ci/zrzuty-sklepu.sh, ta sama w pasku stanu symulatora).
 # Nigdy +1 na ekranie licznika w scenach (panel pomiaru E2E „p95 … ms” zostałby w kadrze); tu +1 jest, bo po restarcie panel znika (stan w pamięci widoku).
-# Kolejność ma znaczenie: ostatnio pracowano w „Harbor Sweater”, więc „Kontynuuj ›” prowadzi do niego (restart.yaml).
+# Kolejność ma znaczenie: ostatnio pracowano w projekcie głównym (${PROJ_GLOWNY}), więc „Kontynuuj ›” prowadzi do niego (restart.yaml).
 appId: com.apps4brew.knitting
 name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, notatka, trzy dni pracy)"
 ---
@@ -164,7 +164,7 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: false }
-# wyjście z wzoru do licznika: ostatnie miejsce pracy = licznik „Harbor Sweater”
+# wyjście z wzoru do licznika: ostatnie miejsce pracy = licznik projektu głównego
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
 - assertVisible: { id: "licznik-wartosc", text: "47" }
