@@ -59,7 +59,7 @@ describe('workflowy: ImageMagick i zmienna wymagania tylko w zrzutach sklepu (KO
     const kroki = (wf('.github/workflows/zrzuty-sklepu.yml') as any).jobs.zbierz.steps ?? []; // eslint-disable-line @typescript-eslint/no-explicit-any
     const idx = (re: RegExp) => kroki.findIndex((k: any) => re.test(k.run ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
     const iNpm = idx(/^npm ci\b/);
-    const iIm = idx(/apt-get install .*imagemagick/);
+    const iIm = idx(/zainstaluj-narzedzia-zrzutow\.sh/); // instalacja ImageMagicka jest w skrypcie wołanym z kroku (KO-040)
     const iTest = idx(/jest[^\n]*tests\/wydanie\/ramki-sklepu\.test\.ts/);
     const iRamki = idx(/scripts\/ci\/ramki-sklepu\.sh/);
     expect(iNpm).toBeGreaterThan(-1);

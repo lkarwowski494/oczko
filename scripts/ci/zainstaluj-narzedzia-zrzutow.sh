@@ -16,7 +16,7 @@ PLIK_SOURCES="${OCZKO_APT_SOURCES:-/etc/apt/sources.list.d/ubuntu.sources}"
 ZWLOKA_S="${OCZKO_APT_ZWLOKA_S:-5}"
 PROBY=3
 LIMIT_UPDATE_S=120   # na próbę; wartości z przebiegu: update bez limitu trwał 3 min 23 s, install 20 min
-LIMIT_INSTALL_S=300
+LIMIT_INSTALL_S=300  # pobranie pakietów
 APT_OPCJE=(-o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20)
 
 if [ "$(id -u)" -eq 0 ] && ! command -v sudo >/dev/null 2>&1; then SUDO=(); else SUDO=(sudo); fi
@@ -40,12 +40,15 @@ zainstaluj() {
   cat "$wynik"
   if [ "$kod" -ne 0 ] || grep -qE "Failed to fetch|Some index files failed to download" "$wynik"; then rm -f "$wynik"; echo "apt-get update: niepowodzenie (kod $kod albo „Failed to fetch” w wyniku)"; return 1; fi
   rm -f "$wynik"
-  timeout "$LIMIT_INSTALL_S" "${SUDO[@]}" apt-get "${APT_OPCJE[@]}" install -y -qq "${PAKIETY[@]}" >/dev/null || { echo "apt-get install: niepowodzenie"; return 1; }
+  # Limit czasu tylko na pobieranie: SIGTERM w trakcie dpkg zostawiłby blokadę i ponowienia nie miałyby szans. Właściwa instalacja idzie z pamięci podręcznej, bez limitu.
+  timeout "$LIMIT_INSTALL_S" "${SUDO[@]}" apt-get "${APT_OPCJE[@]}" install --download-only -y -qq "${PAKIETY[@]}" >/dev/null || { echo "apt-get install --download-only: niepowodzenie"; return 1; }
+  "${SUDO[@]}" apt-get "${APT_OPCJE[@]}" install -y -qq "${PAKIETY[@]}" >/dev/null || { echo "apt-get install: niepowodzenie"; return 1; }
 }
 
 for proba in $(seq 1 "$PROBY"); do
   if zainstaluj; then
-    { echo "ImageMagick: $(convert -version | head -1)"; dpkg-query -W -f='czcionki: ${Package} ${Version}\n' fonts-noto-core fonts-noto-cjk; } | tee -a "${GITHUB_STEP_SUMMARY:-/dev/null}"
+    # pipefail: porażka convert/dpkg-query nie ginie w potoku do tee (jak w poprzednim kroku `set -eo pipefail`)
+    { echo "ImageMagick: $(convert -version | head -1)"; dpkg-query -W -f='czcionki: ${Package} ${Version}\n' fonts-noto-core fonts-noto-cjk; } | tee -a "${GITHUB_STEP_SUMMARY:-/dev/null}" || blad "po instalacji brak convert albo pakietów czcionek (podsumowanie wersji nie powstało)"
     exit 0
   fi
   [ "$proba" -lt "$PROBY" ] && { echo "::warning::próba $proba z $PROBY nieudana; ponawiam za ${ZWLOKA_S} s"; sleep "$ZWLOKA_S"; }

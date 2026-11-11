@@ -10,6 +10,7 @@ import { YAML } from '../jakosc/maestro-runner';
 
 const KORZEN = path.join(__dirname, '..', '..');
 const czytaj = (p: string) => fs.readFileSync(path.join(KORZEN, p), 'utf8');
+const skryptInstalacji = czytaj('scripts/ci/zainstaluj-narzedzia-zrzutow.sh'); // KO-040: instalacja ImageMagicka i czcionek jest w skrypcie wołanym z kroku „ImageMagick i czcionki”
 const SCIEZKA_WF = '.github/workflows/zrzuty-sklepu.yml';
 const SKRYPT = 'scripts/ci/zrzuty-sklepu.sh';
 const KAT = 'e2e/zrzuty-sklepu';
@@ -95,7 +96,7 @@ describe('workflow zrzuty-sklepu.yml', () => {
     expect(run).toContain('scripts/ci/wymiary-asc.mjs');
     expect(run).toContain('scripts/ci/komplet-zrzutow.mjs');
     expect(run).toContain('scripts/ci/ramki-sklepu.sh');
-    expect(run).toContain('fonts-noto-cjk');
+    expect(run + skryptInstalacji).toContain('fonts-noto-cjk'); // pakiety są w skrypcie wołanym z kroku (KO-040)
     const nazwy = (wf.jobs.zbierz.steps ?? []).filter((k: any) => k.uses?.startsWith('actions/upload-artifact')).map((k: any) => k.with.name); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(nazwy).toEqual(expect.arrayContaining(['sklep-zrzuty-surowe', 'sklep-zrzuty-ramki']));
     const sk = czytaj('scripts/ci/wymiary-asc.mjs');
@@ -131,13 +132,14 @@ describe('workflow zrzuty-sklepu.yml', () => {
   // 10-wydanie-007 (recenzja AB): wygląd podpisów zależy od wersji ImageMagicka i czcionek Noto z obrazu ubuntu-latest; bez wypisania wersji zmiana między przebiegami nie zostawia śladu (zasada wspólna 21).
   test('zbierz: wersje ImageMagicka i pakietów czcionek (fonts-noto-core, fonts-noto-cjk) trafiają do podsumowania zadania zaraz po instalacji', () => {
     const kroki = wf.jobs.zbierz.steps ?? [];
-    const i = kroki.findIndex((k: any) => /apt-get install .*imagemagick/.test(k.run ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
-    expect(i).toBeGreaterThan(-1);
-    const run: string = kroki[i].run;
+    const i = kroki.findIndex((k: any) => /zainstaluj-narzedzia-zrzutow\.sh/.test(k.run ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(i).toBeGreaterThan(-1); // krok instalacji woła skrypt (KO-040); treść sprawdzamy w skrypcie
+    const run: string = skryptInstalacji;
+    expect(run).toMatch(/apt-get[^\n]*install[^\n]*"\$\{PAKIETY\[@\]\}"/);
     expect(run).toMatch(/convert -version/);
     expect(run).toMatch(/dpkg-query -W[^\n]*fonts-noto-core[^\n]*fonts-noto-cjk/);
     expect(run).toMatch(/GITHUB_STEP_SUMMARY/);
-    expect(run).toMatch(/set -o pipefail|set -e/); // porażka instalacji nie ginie w potoku do tee
+    expect(run).toMatch(/set -[a-z]*o pipefail|set -e/); // porażka instalacji nie ginie w potoku do tee
   });
 
   test('zrzut zakupu dla App Review: artefakt zrzut-zakupu z zadania z zakup=true, scena 99-zakup, skrypt robi go po angielsku', () => {

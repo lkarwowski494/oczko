@@ -32,8 +32,8 @@ function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean; installP
     '  [ -n "$STUB_UPDATE_OSTRZEGA" ] && echo "W: Failed to fetch mirror+file:/etc/apt/apt-mirrors.txt/dists/noble/InRelease  Temporary failure resolving \'azure.archive.ubuntu.com\'" && echo "W: Some index files failed to download. They have been ignored, or old ones used instead."',
     '  exit 0',
     'fi',
-    'n=$(grep -c " install " "$STUB_LOG")',
-    'if [ "$n" -le "${STUB_INSTALL_PADA:-0}" ]; then echo "E: Failed to fetch https://security.ubuntu.com/x.deb  Temporary failure resolving \'azure.archive.ubuntu.com\'"; exit 100; fi',
+    'n=$(grep -c -e "--download-only" "$STUB_LOG")',
+    'if [[ " $* " == *" --download-only "* ]] && [ "$n" -le "${STUB_INSTALL_PADA:-0}" ]; then echo "E: Failed to fetch https://security.ubuntu.com/x.deb  Temporary failure resolving \'azure.archive.ubuntu.com\'"; exit 100; fi',
     'exit 0',
   ].join('\n'));
   atrapa('convert', 'echo "Version: ImageMagick 6.9.12-98 (atrapa)"');
@@ -59,12 +59,18 @@ function uruchom(opcje: { dnsPada?: string[]; updateOstrzega?: boolean; installP
   return { status: r.status, out: `${r.stdout ?? ''}${r.stderr ?? ''}`, aptWywolania: apt, mirrors: fs.readFileSync(mirrors, 'utf8') };
 }
 const ile = (w: Wynik, slowo: string) => w.aptWywolania.filter((l) => ` ${l} `.includes(` ${slowo} `)).length;
+// `install` składa się z pobrania pod limitem czasu (`--download-only`) i właściwej instalacji z pamięci podręcznej bez limitu: przerwanie dpkg w pół kroku zostawia blokadę (przegląd ścieżki wrażliwej, P1).
+const pobrania = (w: Wynik) => w.aptWywolania.filter((l) => ` ${l} `.includes(' install ') && l.includes('--download-only')).length;
+const instalacje = (w: Wynik) => w.aptWywolania.filter((l) => ` ${l} `.includes(' install ') && !l.includes('--download-only')).length;
+// Atrapy używają GNU `timeout` i `sed -i`; skrypt biegnie tylko na ubuntu-latest, a `npm run verify` w testflight.yml także na macos-26 (bez GNU `timeout`): poza Linuksem część z atrapami jest pominięta GŁOŚNO.
+const linux = process.platform === 'linux';
+if (!linux) console.warn(`POMINIĘTE: część „zainstaluj-narzedzia-zrzutow.sh na atrapach apt-get” (platforma ${process.platform}; skrypt jest dla ubuntu-latest, kontrola biegnie w jakosc-linux.yml i ci.yml)`);
 
-describe('zainstaluj-narzedzia-zrzutow.sh: instalacja z jawną awarią zamiast 23 minut ciszy', () => {
+(linux ? describe : describe.skip)('zainstaluj-narzedzia-zrzutow.sh: instalacja z jawną awarią zamiast 23 minut ciszy', () => {
   test('DNS działa: ten sam zestaw pakietów, ograniczone czasy i ponowienia apt, mirror bez zmian, bez ostrzeżeń', () => {
     const w = uruchom();
     expect(w.status).toBe(0);
-    const install = w.aptWywolania.find((l) => ` ${l} `.includes(' install ')) ?? '';
+    const install = w.aptWywolania.find((l) => ` ${l} `.includes(' install ') && !l.includes('--download-only')) ?? '';
     for (const p of PAKIETY) expect(install).toContain(p);
     expect(install).toContain('Acquire::Retries=3');
     expect(install).toMatch(/Acquire::https?::Timeout=\d+/);
@@ -80,7 +86,8 @@ describe('zainstaluj-narzedzia-zrzutow.sh: instalacja z jawną awarią zamiast 2
     expect(w.out).toContain('archive.ubuntu.com');
     expect(w.mirrors).not.toContain('azure.archive.ubuntu.com');
     expect(w.mirrors).toContain('archive.ubuntu.com');
-    expect(ile(w, 'install')).toBe(1);
+    expect(pobrania(w)).toBe(1);
+    expect(instalacje(w)).toBe(1);
   });
 
   test('brak DNS dla obu mirrorów: jawny ::error:: i kod ≠ 0 od razu, bez wywołania apt-get', () => {
@@ -97,21 +104,34 @@ describe('zainstaluj-narzedzia-zrzutow.sh: instalacja z jawną awarią zamiast 2
     expect(w.status).not.toBeNull();
     expect(w.out).toContain('::error::');
     expect(ile(w, 'update')).toBe(3);
-    expect(ile(w, 'install')).toBe(0);
+    expect(pobrania(w)).toBe(0);
+    expect(instalacje(w)).toBe(0);
   });
 
-  test('install pada raz, drugie podejście przechodzi: kod 0, dwa wywołania install', () => {
+  test('pobranie pada raz, drugie podejście przechodzi: kod 0, dwa pobrania i jedna instalacja', () => {
     const w = uruchom({ installPadaRazy: 1 });
     expect(w.status).toBe(0);
-    expect(ile(w, 'install')).toBe(2);
+    expect(pobrania(w)).toBe(2);
+    expect(instalacje(w)).toBe(1);
   });
 
-  test('install pada za każdym razem: kod ≠ 0 po 3 próbach i jawny ::error::', () => {
+  test('pobranie pada za każdym razem: kod ≠ 0 po 3 próbach i jawny ::error::, bez właściwej instalacji', () => {
     const w = uruchom({ installPadaRazy: 99 });
     expect(w.status).not.toBe(0);
     expect(w.status).not.toBeNull();
     expect(w.out).toContain('::error::');
-    expect(ile(w, 'install')).toBe(3);
+    expect(pobrania(w)).toBe(3);
+    expect(instalacje(w)).toBe(0);
+  });
+});
+
+describe('zainstaluj-narzedzia-zrzutow.sh: kontrakt statyczny (każda platforma)', () => {
+  const sh = fs.existsSync(SKRYPT) ? fs.readFileSync(SKRYPT, 'utf8') : '';
+  test('limit czasu obejmuje tylko pobieranie: `timeout` nie owija właściwej instalacji (SIGTERM w dpkg zostawia blokadę)', () => {
+    expect(sh).not.toBe('');
+    const zTimeoutem = sh.split('\n').filter((l) => /^\s*timeout\b/.test(l) && /\binstall\b/.test(l));
+    expect(zTimeoutem.length).toBeGreaterThan(0);
+    for (const l of zTimeoutem) expect(l).toContain('--download-only');
   });
 });
 
