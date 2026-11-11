@@ -1,0 +1,75 @@
+# npm run verify (env -u NODE_PATH), sesja AO, 2026-11-11, na 7ad1fd4 (kod: 5f9160d..7ad1fd4; ten commit dodaje tylko dokumenty)
+OK   migracja 1 na pustej bazie, user_version = 1
+OK   ponowne uruchomienie migracji niczego nie zmienia
+OK   PRAGMA integrity_check = ok (pusta)
+OK   PRAGMA foreign_keys = 1 poza transakcją
+OK   PRAGMA foreign_keys = 1 wewnątrz transakcji zapisu
+OK   PRAGMA foreign_key_check pusty (z danymi)
+OK   UPSERT projektu: nazwa zmieniona, części 2 i zdarzenia 2 zachowane
+OK   kontrola: INSERT OR REPLACE kasuje zdarzenia kaskadą (0), ROLLBACK przywraca 2 — dlatego UPSERT
+OK   CHECK: nieznany rodzaj zdarzenia odrzucony
+OK   CHECK: wpisanie bez wartości odrzucone
+OK   CHECK: długość powtórzenia 0 odrzucona (RD-12-W5)
+OK   CHECK: ukończony bez ukonczono_ms odrzucony
+OK   UNIQUE: druga otwarta sesja odrzucona
+OK   RESTRICT: plik używany przez wzór nie da się usunąć
+OK   kaskada usunięcia projektu; pliki (sprzątanie osobno), włóczka i dzień limitu zostają
+OK   po kaskadzie: foreign_key_check pusty, integrity_check ok
+OK   stany = CHECK: projekt.stan = {w_toku, ukonczony}
+OK   stany = CHECK: projekt.narzedzie = {druty, szydelko}
+OK   stany = CHECK: licznik.rodzaj = {rzedy, oczka}
+OK   stany = CHECK: licznik.znaczenie = {skonczone, w_trakcie}
+OK   stany = CHECK: zdarzenie.rodzaj = {plus, minus, wpisanie, zerowanie, cofniecie, rozstrzygniecie}
+OK   stany = CHECK: zdarzenie.zrodlo = {aplikacja, ekran_blokady, zegarek, synchronizacja, import}
+OK   stany = CHECK: zdarzenie.urzadzenie_rodzaj = {iphone, ipad}
+OK   stany = CHECK: sesja.stan = {trwa, wstrzymana, zakonczona}
+OK   stany = CHECK: wzor.zrodlo = {pdf, obraz, www, word}
+OK   stany = CHECK: narzedzie.rodzaj = {druty, szydelko, inne}
+OK   stany = CHECK: obliczenie.rodzaj = {oczka_z_probki, jednostki, grubosc}
+OK   stany = CHECK: poczekalnia.rodzaj_rekordu = {zdarzenie, encja}
+OK   stany = CHECK: poczekalnia.powod = {brak_rodzica, brak_encji, nowsza_wersja}
+OK   stany = CHECK: poczekalnia.zrodlo = {synchronizacja, import, ekran_blokady, zegarek}
+OK   CHECK → stany.json: każda lista tekstowa CHECK ma wpis (wszystkie)
+OK   PRAGMA integrity_check = ok
+OK   PRAGMA foreign_key_check pusty
+OK   PRAGMA foreign_keys = 1 wewnątrz transakcji zapisu
+OK   dane.md: blok „zapis-dnia-limitu.sql” istnieje
+OK   dzień limitu: bez Pro, potem z Pro → pro = 1, start i zdarzenie z wcześniejszego zapisu
+OK   dzień limitu: wcześniejszy start z innego urządzenia bez Pro → pro zostaje 1, start = najwcześniejszy, jeden wiersz (L-20, L-23)
+OK   CHECK: kategoria grubości 8 odrzucona
+OK   kategoria 0 i NULL przyjęte
+OK   poczekalnia: kolumny id, rodzaj_rekordu, dane, powod, zrodlo, przyszlo_ms, proby
+OK   poczekalnia bez kluczy obcych (rekord bez rodzica nie odrzuca partii)
+OK   poczekalnia: zdarzenie bez licznika przyjęte, dane niebędące JSON odrzucone
+OK   sesja.do_korekty ∈ {0, 1} (zapomniany stoper, druga otwarta sesja przy scaleniu)
+OK   zmiana_icloud: nowy wpis objete = 0; CHECK odrzuca wyslano_nr > nr i objete = 2
+OK   baza w wersji 2 odrzucona przez aplikację w wersji 1, bez zmian
+OK   migracja łamiąca CHECK wycofana w całości (wersja, dane i schemat bez zmian)
+OK   plan „lista projektów w toku” używa projekt_lista: [SEARCH projekt USING INDEX projekt_lista (stan=?)] · p95 0.030 ms (Linux, nie iPhone)
+OK   plan „historia licznika (50 ostatnich)” używa zdarzenie_licznik_czas: [SEARCH zdarzenie USING INDEX zdarzenie_licznik_czas (licznik_id=?)] · p95 0.145 ms (Linux, nie iPhone)
+OK   plan „kalendarz miesiąca (dni z robótką)” używa zdarzenie_dzien: [SEARCH zdarzenie USING COVERING INDEX zdarzenie_dzien (dzien>? AND dzien<?)] · p95 0.290 ms (Linux, nie iPhone)
+OK   plan „dzień: projekty i rzędy” używa zdarzenie_dzien: [SEARCH z USING COVERING INDEX zdarzenie_dzien (dzien=?) | SEARCH l USING INDEX sqlite_autoindex_licznik_1 (id=?) | SEARCH c USING INDEX sqlite_autoindex_czesc_1 (id=?) | USE TEMP B-TREE FOR GROUP BY] · p95 0.071 ms (Linux, nie iPhone)
+OK   plan „zapas: filtr kategorii (BR-ZAP-004)” używa wloczka_kategoria: [SEARCH wloczka USING INDEX wloczka_kategoria (kategoria=?)] · p95 0.055 ms (Linux, nie iPhone)
+OK   plan „dni limitu w miesiącu” używa sqlite_autoindex_dzien_limitu_1: [SEARCH dzien_limitu USING INDEX sqlite_autoindex_dzien_limitu_1 (dzien>? AND dzien<?)] · p95 0.007 ms (Linux, nie iPhone)
+OK: 51 typów, 70 linii deklaracji zgodnych
+OK   alias: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '@/dane/repo'
+OK   dobre: kod 0, oczekiwano kod 0 — OK: 4 plików, bez naruszeń
+OK   domain: kod 1, oczekiwano PUSTO — PUSTO brak katalogu domeny src/domena
+OK   ekran-do-danych: kod 1, oczekiwano EKRANY — EKRANY ekrany/Licznik.tsx importuje '../dane/repozytoria/projekty' z dane/ (moduly.md: ekrany → przypadki użycia)
+OK   export-z: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '../dane/repo'
+OK   import-dynamiczny: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '../dane/repo'
+OK   import-wyrazenie: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts: import z wyrażenia (nie da się sprawdzić granicy)
+OK   katalog-ios: kod 1, oczekiwano IOS — IOS katalog ios/ w repo (ADR-0007: tylko expo prebuild)
+OK   konfiguracja-importuje: kod 1, oczekiwano KONFIGURACJA — KONFIGURACJA konfiguracja.ts importuje './dane/repo' (konfiguracja.ts niczego nie importuje)
+OK   pusty: kod 1, oczekiwano PUSTO — PUSTO /home/user/oczko/docs/architektura/narzedzia/granice-test/obejscia/pusty/src: 0 plików źródłowych
+OK   require: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje 'expo-sqlite'
+OK   sqlite-poza-baza: kod 1, oczekiwano SQLITE — SQLITE dane/repozytoria/projekty.ts importuje 'expo-sqlite' poza dane/baza (ADR-0002)
+OK   swift-sqlite: kod 1, oczekiwano SWIFT — SWIFT targets/widget/Intencja.swift: import SQLite3 (ADR-0008)
+OK   tunel-konfiguracja: kod 1, oczekiwano DOMENA — SQLITE dane/konfiguracja.ts importuje 'expo-sqlite' poza dane/baza (ADR-0002)
+OK: 275 plików, bez naruszeń
+OK: 35 plików, bez naruszeń
+zgodność brd.json: OK (199 wektorów, bez strat zapisu, schemat spełniony)
+plików testów: 422, zależnych od poprawek: 269, błędów: 0
+Test Suites: 599 passed, 599 total
+Tests:       7271 passed, 7271 total
+verify kod 0

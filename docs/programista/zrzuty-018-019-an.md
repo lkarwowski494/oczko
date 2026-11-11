@@ -40,3 +40,41 @@ Zakres: tylko `e2e/zrzuty-sklepu/`, `scripts/ci/`, `tests/wydanie/`, krok „kom
 
 ## Wynik komend
 Pełna bramka `npm run verify` i przegląd ścieżki wrażliwej (workflow): zob. raport PRZEKAZANIE do koordynatora.
+
+## AO — 019: przyczyna w aplikacji (sesja AO, 2026-11-11, KO-044; decyzje P-748…P-751)
+Start @ 2b97f07 (zgodny). Opcja 1 z P-746 obalona przez C6 (`zrzuty-sklepu.yml` 43090241469, job „komplet” 130828800785: `04=1, 03=1` w 4 parach).
+
+**Przyczyna (a), defekt aplikacji P1; pewność średnia.** Porównanie artefaktów (obejrzane):
+| Przebieg | Kadr | Licznik | Widoczne pasy | Warunki |
+|---|---|---|---|---|
+| 43035080611 (przed P-741) | `warunek-og07/ipad-13/en/04-zakreslenie.png` | 2 | 1 (fikstura, z pliku) | fikstura w pionie, scena poziomo |
+| 43090241469 (C6) | iPad en 04 | 2 | 1 (fikstura, 40%) | obie poziomo |
+| 43090241469 (C6) | `warunek-og07/6.9/en/04-zakreslenie.png` | 2 | 1 (fikstura) | iPhone, **bez obrotu** |
+| Jakość · iOS 42899408194, scen. 47 | `47-ipad-zakreslenie.png` | 1 | 1 (świeży swipe) | puste płótno |
+
+Wnioski: obrót wykluczony (iPhone). Syntetyczny swipe Maestro rysuje widoczną kreskę na pustym płótnie (47), więc „artefakt gestu” (b) słabnie. Pas z danych jest zawsze widoczny (rysunek przypisany kodem przy tworzeniu nakładki), świeże pociągnięcie na płótnie z wczytanym rysunkiem nie jest, choć jest w danych: `canvasViewDrawingDidChange` ustawia `rysunki[s] = c.drawing`, z tego liczy się licznik i idzie zapis. Dla użytkownika: na wzorze z zakreśleniami nowe zakreślenie nie pojawia się do ponownego otwarcia. Mechanizm wewnątrz PencilKit nieustalony: H4 = płótno z wczytanym rysunkiem, H5 = kreska znika po czasie (w scen. 47 zrzut jest zaraz po swipe).
+
+**Poprawka (P-748):** `WidokWzoru.swift`: `zaplanujOdswiezenie`/`odswiezPlotna` po każdej zmianie użytkownika przypisują wyświetlanemu płótnu rysunek z danych, w następnym obiegu pętli i nie w trakcie pociągnięcia (`canvasViewDidBegin/EndUsingTool`). Przypisanie następuje tylko wtedy, gdy płótno ma te same kreski co dane, a echo bez zmiany kresek jest pomijane. Przegląd subagenta: P0 i P1 naprawione testem przed kodem (88ebdd4). Koszt: jedno przerysowanie strony po każdej kresce.
+**Scena 04 (P-749):** bez obejścia: zakreślacz włączony do zrzutu (kadr z 014), `takeScreenshot: 04-po-swipe` w dziennikach (`zrzuty-dzienniki-*`).
+
+| Commit | Co | Test przed → po |
+|---|---|---|
+| 5f9160d | poprawka Swift + test statyczny | 4/4 czerwone (potem 1/5 dla echa) → 5/5 |
+| f7e7cfd | scena 04 bez obejścia, zrzut diagnostyczny | 1 czerwony → `tests/wydanie` 565/565 |
+| 0f7e434 | przeniesienie testu do `tests/wydanie` (kontrola tabeli 08), strukturalne | — |
+| 88ebdd4 | poprawki z przeglądu (P0, P1) | 3 czerwone → 7/7 |
+| 7ad1fd4 | E2E scen. 47: drugie pociągnięcie na wzorze wczytanym po restarcie (KO-044), licznik 2 + zrzut `47-ipad-drugie-zakreslenie` po odczekaniu | 1 czerwony → 8/8 |
+
+Pełna bramka: `docs/programista/zrzuty-018-019-ao-verify.txt`.
+
+### Co potwierdzi C7 (P-751: nowy build, `uzupelnij_z_przebiegu=43090241469`, `powtorz=en/03-wzor,en/04-zakreslenie,pl/03-wzor,pl/04-zakreslenie`)
+1. Build zielony: kompilacja Swift, niesprawdzona w Linuksie.
+2. Job „komplet”: `03=1, 04=2 pasów` we wszystkich 4 parach (P-745, progi bez zmian).
+3. Kadr 04: dwa pasy (40% i 48%) i podświetlony zakreślacz; `04-po-swipe.png` w dziennikach z dwoma pasami.
+4. Gdy nadal `04=1`: `04-po-swipe.png` rozróżni „kreska nie pojawiła się” od „znikła po czasie”; wtedy STOP i decyzja koordynatora, bez trzeciej poprawki w ciemno.
+
+**Build 4 (1141):** defekt obecny (P-748); objaw w teście właściciela to znany 019, nie nowy błąd.
+**Na urządzeniu (krok właściciela, rozszerzenie U2 w `docs/jakosc/testflight-na-urzadzeniu.md`, do roli 07):** zakreśl, zamknij i otwórz wzór, zakreśl ponownie. Nowa kreska ma być widoczna od razu, bez przerwanych kresek przy szybkim pisaniu piórem.
+
+## AO — 018 (sprawdzenie)
+simctl odrzucił także `2026-11-10T09:41:00Z` („Invalid, non-ISO date/time string”, code=22; joby 130796899562, 130811471544), po czym ustawił samą godzinę 09:41 z datą maszyny. Bez zmiany kodu; rekomendacja: opcja (b) z P-744 (P-750).
