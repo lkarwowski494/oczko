@@ -400,7 +400,7 @@ jobs:
         # 10-wydanie-009: kontrola, że ramki-sklepu.sh działa naprawdę, biegnie tu, po instalacji ImageMagicka i przed krokiem ramek (jak Trening: ImageMagick tylko w workflowie zrzutów).
         env:
           OCZKO_WYMAGAJ_IMAGEMAGICK: '1'
-        run: npx jest tests/wydanie/ramki-sklepu.test.ts --ci --runInBand
+        run: npx jest tests/wydanie/ramki-sklepu.test.ts tests/wydanie/kontrola-zakreslen.test.ts --ci --runInBand
       - name: Kanał alfa precz (surowe zrzuty simctl są RGB; spłaszczenie na wszelki wypadek)
         run: |
           set -uo pipefail
@@ -419,6 +419,8 @@ jobs:
           set -uo pipefail; bledy=0
           node scripts/ci/wymiary-asc.mjs sklep-zrzuty-surowe | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
           node scripts/ci/komplet-zrzutow.mjs sklep-zrzuty-surowe "$JEZYKI" "$URZADZENIA" | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
+          # 10-wydanie-019 (KO-043): kadr 04 musi mieć więcej żółtych pasów zakreślenia niż 03 (ImageMagick, piksele); porażka = czerwony job z nazwą pliku
+          node scripts/ci/kontrola-zakreslen.mjs sklep-zrzuty-surowe | tee -a "$GITHUB_STEP_SUMMARY" || bledy=1
           if [ "$bledy" -ne 0 ]; then echo "Brakujące sceny można dorobić bez powtarzania całości: uzupelnij_z_przebiegu=$RUN_ID (albo znacznik [zrzuty-uzupelnij:$RUN_ID] w commicie)." | tee -a "$GITHUB_STEP_SUMMARY"; fi
           [ "$bledy" -eq 0 ]
       - name: Ramki i podpisy (jak Trening, scripts/ci/ramki-sklepu.sh; język bez podpisów pominięty z ostrzeżeniem)
