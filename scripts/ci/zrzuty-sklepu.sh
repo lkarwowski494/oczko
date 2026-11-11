@@ -58,30 +58,56 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
 }
 
 # --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
-# Run 43017044972: forma ISO dała „Nie udało się ustawić paska stanu” (godzina maszyny w kadrze); C1 miał „9:41”. Powrót do samej godziny HH:MM z tej samej stałej jest GŁOŚNY (ostrzeżenie w logu, kadr bez daty), nie cichy zjazd (zasada 21).
+# Run 43017044972: forma ISO bez strefy („2026-11-10T09:41:00”) została odrzucona. `simctl status_bar --time` przyjmuje „ISO date string”; forma z przesunięciem strefy to wariant z pełną datą i strefą
+# (np. 2007-01-09T09:41:00+00:00), którego ta wersja skryptu używa — przesunięcie jest z `date` maszyny (symulator ma jej strefę), więc godzina na pasku zostaje 09:41. Czy `simctl` na runnerze go przyjmuje,
+# pokaże log: stderr simctl idzie do ::warning:: (10-wydanie-018; wcześniej był wyrzucany do /dev/null), a po udanym override log ma odczyt `status_bar list`.
+# 10-wydanie-018: gdy ISO odrzucone, powrót do samej godziny HH:MM jest GŁOŚNY (zasada 21) i komunikat mówi prawdę: godzina z danych, a data na pasku iPada zostaje data maszyny (iPhone daty na pasku nie pokazuje).
 pasek_stanu() {
   local reszta=(--dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100)
-  if xcrun simctl status_bar "$UDID" override --time "$ZRZUTY_TERAZ" "${reszta[@]}" >/dev/null 2>&1; then return 0; fi
-  echo "::warning::Pasek stanu: forma ISO ($ZRZUTY_TERAZ) odrzucona — ustawiam samą godzinę ${ZRZUTY_TERAZ:11:5} (kadr bez daty na pasku iPada)"
-  xcrun simctl status_bar "$UDID" override --time "${ZRZUTY_TERAZ:11:5}" "${reszta[@]}" >/dev/null 2>&1 \
-    || echo "::warning::Nie udało się ustawić paska stanu (zrzuty będą miały godzinę z maszyny)"
+  local off iso blad
+  off="$(date -j -f "%Y-%m-%dT%H:%M:%S" "$ZRZUTY_TERAZ" +%z 2>/dev/null || date -d "$ZRZUTY_TERAZ" +%z 2>/dev/null)"; [[ "$off" =~ ^[+-][0-9]{4}$ ]] || off="+0000"
+  iso="${ZRZUTY_TERAZ}${off:0:3}:${off:3:2}"
+  if blad="$(xcrun simctl status_bar "$UDID" override --time "$iso" "${reszta[@]}" 2>&1)"; then
+    echo "pasek stanu: ustawiony z $iso; odczyt simctl: $(xcrun simctl status_bar "$UDID" list 2>&1 | grep -i 'time\|date' | head -3 | tr '\n' ' ')"
+    return 0
+  fi
+  echo "::warning::Pasek stanu: forma ISO ($iso) odrzucona przez simctl (${blad:0:300}) — ustawiam samą godzinę ${ZRZUTY_TERAZ:11:5}; na pasku iPada zostanie data maszyny, nie z danych sceny"
+  if ! blad="$(xcrun simctl status_bar "$UDID" override --time "${ZRZUTY_TERAZ:11:5}" "${reszta[@]}" 2>&1)"; then
+    echo "::warning::Nie udało się ustawić paska stanu (simctl: ${blad:0:300}); zrzuty będą miały godzinę i datę z maszyny"
+  fi
 }
 pasek_stanu
 xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
 
 # --- region i format godziny symulatora z danych języka (013: pl = 24 h bez AM/PM także na pasku stanu; en = en_US, 12 h) ---
-ustaw_region() {   # $1 = klucz danych
-  local reg g24; reg=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" region); g24=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" godziny24)
-  xcrun simctl spawn "$UDID" defaults write -g AppleLocale "$reg" >/dev/null 2>&1 || echo "::warning::region symulatora ($reg) nie ustawiony"
-  xcrun simctl spawn "$UDID" defaults write -g AppleICUForce24HourTime -bool "$g24" >/dev/null 2>&1 || echo "::warning::format godziny symulatora (24 h = $g24) nie ustawiony"
-  # Ustawienia regionu czyta pasek stanu po restarcie interfejsu. Run 43017044972: `launchctl kickstart -k SpringBoard` zostawiał iPada bez obrotu do poziomu (sceny 03 i 04: „Device orientation is 3”,
+restart_symulatora() {   # pełny rozruch symulatora: shutdown, boot, czekanie na bootstatus, wygląd jasny, pasek stanu
+  # Run 43017044972: `launchctl kickstart -k SpringBoard` zostawiał iPada bez obrotu do poziomu (sceny 03 i 04: „Device orientation is 3”,
   # ale brak „Did set interfaceOrientation[3]”). Dlatego pełny rozruch symulatora, czyli stan jak po starcie jobu (tam obrót działa, C1 42992359897); dane aplikacji i instalacja zostają.
   xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
   xcrun simctl boot "$UDID" >/dev/null 2>&1 || echo "::warning::ponowny rozruch symulatora nie powiódł się (boot)"
   xcrun simctl bootstatus "$UDID" -b >/dev/null 2>&1 || echo "::warning::bootstatus symulatora nie zakończył się powodzeniem"
   xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
   pasek_stanu
-  echo "region symulatora: $reg, 24 h: $g24 (dane: $1)"
+}
+ustaw_region() {   # $1 = klucz danych; język systemu = en, bo scenariusz 00-przygotuj ma teksty angielskie (język danych ustawia ustaw_jezyk_systemu po fikturze)
+  local reg g24; reg=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" region); g24=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" godziny24)
+  xcrun simctl spawn "$UDID" defaults write -g AppleLocale "$reg" >/dev/null 2>&1 || echo "::warning::region symulatora ($reg) nie ustawiony"
+  xcrun simctl spawn "$UDID" defaults write -g AppleICUForce24HourTime -bool "$g24" >/dev/null 2>&1 || echo "::warning::format godziny symulatora (24 h = $g24) nie ustawiony"
+  xcrun simctl spawn "$UDID" defaults write -g AppleLanguages -array en >/dev/null 2>&1 || echo "::warning::język systemu symulatora (en) nie ustawiony"
+  # Ustawienia regionu i języka czyta pasek stanu po restarcie interfejsu.
+  restart_symulatora
+  echo "region symulatora: $reg, 24 h: $g24, język systemu: en (dane: $1)"
+}
+# 10-wydanie-018: po fikturze (00-przygotuj bez zmian, po angielsku) język systemu = język danych (pole „jezyk” w dane/<klucz>.json), żeby pasek stanu iPada pokazywał datę w języku zestawu
+# (przebieg 43035080611: w zestawie pl pasek miał „Wed 11 Nov”, po angielsku). Sceny 01–07 asertują po id, język aplikacji wybiera 00-jezyk w Ustawieniach, więc zmiana języka systemu im nie szkodzi.
+ustaw_jezyk_systemu() {   # $1 = klucz danych
+  local jez; jez=$(node "$SKRYPTY/zrzuty-dane.mjs" pole "$1" jezyk)
+  if [ -z "$jez" ] || [ "$jez" = "en" ]; then return 0; fi   # język systemu to już en (ustaw_region)
+  if ! xcrun simctl spawn "$UDID" defaults write -g AppleLanguages -array "$jez" >/dev/null 2>&1; then
+    echo "::warning::język systemu symulatora ($jez) nie ustawiony: pasek stanu iPada będzie miał datę po angielsku"; return 0
+  fi
+  restart_symulatora
+  echo "język systemu symulatora: $jez (dane: $1)"
 }
 
 # --- dane fikcyjne w języku zestawu (013; dwie próby; scenariusz zaczyna od clearState, więc powtórka jest bezpieczna) ---
@@ -108,7 +134,10 @@ for JEZ in ${JEZYKI//,/ }; do
   echo "== język $JEZ ($URZ): $TE_SCENY"
   mkdir -p "$OUT/$ROZMIAR/$JEZ"
   KLUCZ=$(node "$SKRYPTY/zrzuty-dane.mjs" klucz "$JEZ" 2>"$LOGI/dane-$JEZ.txt"); [ $? -ne 3 ] || echo "::warning::$(cat "$LOGI/dane-$JEZ.txt")"
-  if [ "$KLUCZ" != "$DANE_AKTUALNE" ]; then przygotuj_dane "$KLUCZ" || { echo "$JEZ/00-przygotuj" >> "$NIEUDANE"; DANE_AKTUALNE=""; continue; }; fi
+  if [ "$KLUCZ" != "$DANE_AKTUALNE" ]; then
+    przygotuj_dane "$KLUCZ" || { echo "$JEZ/00-przygotuj" >> "$NIEUDANE"; DANE_AKTUALNE=""; continue; }
+    ustaw_jezyk_systemu "$KLUCZ"
+  fi
   JEZYK_BIEZACY="$JEZ"
   jez_ok=0
   for proba in 1 2; do

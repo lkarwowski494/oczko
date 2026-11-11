@@ -1,6 +1,7 @@
 {
   "region": "pl_PL",
   "godziny24": true,
+  "jezyk": "pl",
   "PROJ_GLOWNY": "Czapka z warkoczem",
   "PROJ_2": "Skarpety w paski",
   "PROJ_3": "Szal z alpaki",

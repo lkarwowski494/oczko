@@ -27,17 +27,20 @@ describe('zrzuty sklepu: region symulatora nie psuje obrotu iPada (sceny 03, 04)
     expect(kod).not.toMatch(/kickstart/);
     expect(kod).not.toMatch(/com\.apple\.SpringBoard/);
   });
-  test('ustaw_region stosuje region przez ponowny rozruch symulatora (stan jak po starcie jobu: shutdown, boot, czekanie na bootstatus), potem wygląd jasny i pasek stanu', () => {
-    const f = bezKomentarzy(funkcja('ustaw_region'));
+  test('ustaw_region zapisuje region i format godziny, potem woła restart_symulatora, który robi pełny rozruch (shutdown, boot, czekanie na bootstatus), wygląd jasny i pasek stanu', () => {
+    const r = bezKomentarzy(funkcja('ustaw_region'));
+    expect(r.search(/defaults write -g AppleICUForce24HourTime/)).toBeGreaterThanOrEqual(0);
+    expect(r.search(/defaults write -g AppleICUForce24HourTime/)).toBeLessThan(r.search(/\brestart_symulatora\b/));
+    const f = bezKomentarzy(funkcja('restart_symulatora'));
     const i = (re: RegExp): number => f.search(re);
-    const [defaults, shutdown, boot, status, jasny, pasek] = [i(/defaults write -g AppleICUForce24HourTime/), i(/simctl shutdown "\$UDID"/), i(/simctl boot "\$UDID"/), i(/simctl bootstatus "\$UDID" -b/), i(/simctl ui "\$UDID" appearance light/), i(/\bpasek_stanu\b/)];
-    for (const [nazwa, poz] of Object.entries({ defaults, shutdown, boot, status, jasny, pasek })) expect([nazwa, poz >= 0]).toEqual([nazwa, true]);
-    expect(defaults).toBeLessThan(shutdown); expect(shutdown).toBeLessThan(boot); expect(boot).toBeLessThan(status);
+    const [shutdown, boot, status, jasny, pasek] = [i(/simctl shutdown "\$UDID"/), i(/simctl boot "\$UDID"/), i(/simctl bootstatus "\$UDID" -b/), i(/simctl ui "\$UDID" appearance light/), i(/\bpasek_stanu\b/)];
+    for (const [nazwa, poz] of Object.entries({ shutdown, boot, status, jasny, pasek })) expect([nazwa, poz >= 0]).toEqual([nazwa, true]);
+    expect(shutdown).toBeLessThan(boot); expect(boot).toBeLessThan(status);
     expect(status).toBeLessThan(jasny); expect(jasny).toBeLessThan(pasek);
   });
   test('pasek stanu: powrót do godziny HH:MM z ZRZUTY_TERAZ jest głośny (::warning:: przed drugą próbą), a nieudana druga próba daje osobne ostrzeżenie; brak cichego zjazdu', () => {
     const f = funkcja('pasek_stanu');
-    const iso = f.indexOf('override --time "$ZRZUTY_TERAZ"');
+    const iso = f.indexOf('override --time "$iso"');
     const ostrz1 = f.indexOf('::warning::Pasek stanu: forma ISO');
     const hhmm = f.indexOf('override --time "${ZRZUTY_TERAZ:11:5}"');
     const ostrz2 = f.indexOf('::warning::Nie udało się ustawić paska stanu');
@@ -54,8 +57,8 @@ pasek_stanu`;
       expect(r.status).toBe(0);
       return r.stdout;
     };
-    expect(wywolaj('NIGDY')).toBe('');
-    expect(wywolaj('2026')).toMatch(/^::warning::Pasek stanu: forma ISO \(2026-11-10T09:41:00\) odrzucona — ustawiam samą godzinę 09:41/);
+    expect(wywolaj('NIGDY')).not.toContain('::warning::');
+    expect(wywolaj('2026')).toMatch(/^::warning::Pasek stanu: forma ISO \(2026-11-10T09:41:00[+-]\d\d:\d\d\) odrzucona[^\n]*ustawiam samą godzinę 09:41/);
     expect(wywolaj('2026')).not.toMatch(/Nie udało się/);
     expect(wywolaj('').match(/::warning::/g)).toHaveLength(2);
   });
