@@ -311,7 +311,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
-- **Pula AL (08): P-740…P-743. Następny wolny: P-744; KO następny: KO-043.
+- **Pula AL (08): P-740…P-743. Następny wolny: P-744; KO następny: KO-044.
 - Pula AJ (08): P-737…P-739 (P-737 użyty).**
 - Pula AI (08): P-734…P-736.
 - `docs/decyzje.md` aplikacji: następny wolny **P-643** (ostatni P-642 na kopii zapasowej). Pule dla sesji: A (M2) P-643…P-652; B (10) P-653…P-660; C (04) P-661…P-665.
@@ -533,3 +533,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 11.11 19:15 | M9 | przekazane do session_01T66VBwsVfpEaSobJZ4b8VQ (opus-5-5, env_0166…, auto; start RUNNING bez błędu — get_session); własne linie usunięte (trig_01845aTP… 05:00, trig_01ET9WKR… 14:00 12.11); „kontrola przekazania” trig_014GQwj1voycGhvU511XRdF8 19:44; koordynator 19,3 USD, kontekst 39% | następca: E6 p. 5, AM |
 | 11.11 19:16 | M9 | **przejęcie** przez session_01T66VBwsVfpEaSobJZ4b8VQ (prompt M9 sha256 c3b30ef9… zgodny; add_repo warsztat push, prompts odczyt — OK; trening klon --depth 1); linie 05:00/14:00 12.11 utworzone; sesji podrzędnych aktywnych brak | PRZEJĄŁEM; start AM |
 | 11.11 19:21 | AM, M9 | PRZEJĄŁEM wysłane poprzednikowi (stan @ 9483a04). **AM wystartowana** session_01T66VBvkxFKdmGPqaywr4zC (opus-5-5, auto, env_0166…; PENDING bez błędu — get_session); prompt 10-wydanie audit 64 357 B + linia KONIEC, wklejony przez subagenta (wiadomość 64 698 B, sha256 12ff7cac…); AM ma potwierdzić KONIEC i ostatni nagłówek | kontrola ok. 20:05 |
+| 11.11 19:28 | AM, M9 | **AM raport 19:24:** prompt kompletny (KONIEC + ostatni nagłówek potwierdzone); verify 0 (597 zestawów, 7252) wg sesji; **NIE dla „018/019 naprawione”**: P1 019 — kadr 04 (4 pliki) licznik 2, widoczne 1 zakreślenie; P2 018 — simctl odrzuca ISO z offsetem (job 130695677975), data paska z maszyny (część językowa działa); P3 asercje `.*1.*`; 020/021 OK; wymiary/alfa OK. AM zarchiwizowana (3,44 USD). **KO-043:** ff 19cbcc4..04652fb do `claude/youthful-pasteur-kx83sn` (autor 16/16 OK, 0 Co-Authored-By — sprawdzone), 018/019 otwarte; **ci.yml workflow_dispatch** (204). Właściciel 19:2x: „Dodaj wzór przenosi do Projekty” — odpowiedź: zgodne z P-593 bez bieżącego projektu; pytanie, czy miał projekt; rekomendacja: komunikat na Projekty (04) | kontrola 20:04: ci.yml; polecenie AN (08 fix 018/019) |
