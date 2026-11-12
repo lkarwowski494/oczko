@@ -1,0 +1,32 @@
+# Artefakt 13939050530 (run 43194659175, job 131120448387, 562dfc4), e2e-out/wyniki.txt
+czerwony 01-nfr-pie-001-pierwsze-liczenie
+zielony 02-br-lic-001-s1-pierwsze-uruchomienie
+zielony 04-br-lic-002-s1-plus-minus-cofnij
+zielony 05-br-zak-006-s1-limit-zawczasu
+zielony 09-adr-0019-start-awaryjny
+zielony 10-nfr-dan-002-kazda-zmiana-trwala
+zielony 36-br-dan-008-s1-usun-przywroc-z-kosza
+
+# junit e2e-out/01-nfr-pie-001-pierwsze-liczenie.xml (pierwsze 12 linii, ścieżki bez zmian)
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 17 - iOS 26.5 - 23C8F95C-765D-46A9-AE82-0BEE2921C8D7" tests="1" failures="1" time="148.237" timestamp="2026-11-12T10:33:41">
+    <testcase id="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" name="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" classname="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" file="e2e-czesc/01-nfr-pie-001-pierwsze-liczenie.yaml" time="147.925" timestamp="2026-11-12T10:33:41" status="ERROR">
+      <properties>
+        <property name="tags" value="NFR-PIE-001, podstawowy, stan-licznika"/>
+      </properties>
+      <failure>maestro.DeviceUnreachableException: Device became unreachable during deviceInfo
+	at maestro.drivers.IOSDriver.runDeviceCall(IOSDriver.kt:658)
+	at maestro.drivers.IOSDriver.deviceInfo$lambda$6(IOSDriver.kt:116)
+	at maestro.utils.Metrics.measured(Metrics.kt:48)
+	at maestro.drivers.IOSDriver.deviceInfo(IOSDriver.kt:115)
+
+# Log joba 131120448387 (MCP get_job_logs, ogon 250 linii), wybrane wiersze
+2026-11-12T10:28:14.5289490Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+2026-11-12T10:28:40.3364770Z 	Finished
+2026-11-12T10:30:34.7481330Z 2.12.1 (przypięta 2.12.1)
+2026-11-12T10:36:09.5156480Z [Failed] NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca (2m 28s)
+2026-11-12T10:37:27.4667820Z maestro-failures: brak nieudanych kroków w e2e-out/01-nfr-pie-001-pierwsze-liczenie
+2026-11-12T10:44:30.7879090Z [Passed] BR-LIC-002/S1–S3 + BR-LIC-019/S1 · +1, −1, granica zera, seria i Undo, cofnięcie z historii (2m 22s)
+2026-11-12T11:01:52.2980970Z [Passed] NFR-DAN-002 · Każda zmiana licznika przeżywa zabicie procesu (+1, −1, wpisanie, Undo serii) (5m 10s)
+2026-11-12T11:06:44.9274350Z ##[error]Process completed with exit code 1.

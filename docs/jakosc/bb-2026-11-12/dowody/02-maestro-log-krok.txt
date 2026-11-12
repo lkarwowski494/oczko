@@ -1,0 +1,16 @@
+# maestro.log scenariusza 01 (run 43194659175), od zrzutu 01-dzis-start-1-dnia do końca pliku; cut -c1-260
+40:10:34:44.416 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot 01-dzis-start-1-dnia RUNNING
+41:10:34:44.430 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+42:10:34:44.433 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+43:10:34:44.592 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot 01-dzis-start-1-dnia COMPLETED
+44:10:34:44.593 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: dzis-plus RUNNING
+45:10:34:44.872 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={accessibilityText=+1 row, title=, value=, text=, hintText=, resource-id=dzis-plus, bounds=[298,268][370,340], enabled=true, focused=false, selecte
+46:10:34:45.122 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via trusted pre-wait hierarchy (null settle, no recent scroll)
+47:10:34:45.141 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Try tapping at (334, 304) using hierarchy based logic for wait
+48:10:34:45.147 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to byte array
+49:10:34:45.148 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+
+# commands.json: status kroków 15–17 (indeks od 0)
+14 assertConditionCommand {"condition": {"notVisible": {"idRegex": "limit-oferta-link", "optional": false}}, "optional": false} COMPLETED
+15 takeScreenshotCommand {"path": "01-dzis-start-1-dnia", "optional": false} COMPLETED
+16 tapOnElement {"selector": {"idRegex": "dzis-plus", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, RUNNING
