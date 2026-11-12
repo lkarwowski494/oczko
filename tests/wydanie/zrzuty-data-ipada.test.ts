@@ -185,3 +185,23 @@ describe('zrzuty-sklepu.yml: plan ustala dzień raz, zadania i „zbierz” dost
     expect(kod.indexOf('zrzuty-uzupelnij.mjs znacznik')).toBeLessThan(kod.lastIndexOf('name: sklep-zrzuty-surowe')); // ostatnie wystąpienie = upload artefaktu (wcześniejsze: pobranie źródła w planie)
   });
 });
+
+/* 10-wydanie-022 … -026 (AU, 2026-11-12, KO-050; recenzja AS): poprawki workflowu zrzutów po audycie. Wynik na runnerze macOS: niesprawdzone (potwierdzi pierwszy przebieg zrzutów na kandydacie, C1). */
+import { YAML } from '../jakosc/maestro-runner';
+
+describe('10-wydanie-024: każdy potok `zrzuty-uzupelnij.mjs … | tee` w workflowie pilnuje kodu wyjścia skryptu', () => {
+  test('po każdym takim potoku PIPESTATUS[0] albo krok ma `set -o pipefail`', () => {
+    const wf = YAML.parse(fs.readFileSync(path.join(korzen, '.github/workflows/zrzuty-sklepu.yml'), 'utf8'));
+    const zle: string[] = []; let potokow = 0;
+    for (const [job, j] of Object.entries<any>(wf.jobs)) for (const k of j.steps ?? []) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      const linie = String(k.run ?? '').split('\n'); const pipefail = /set -[a-z]*o pipefail|set -o pipefail/.test(String(k.run ?? '')) || /pwsh|powershell/.test(String(k.shell ?? '')) === false && /pipefail/.test(String(k.shell ?? ''));
+      linie.forEach((l, i) => {
+        if (!/zrzuty-uzupelnij\.mjs[^|]*\|\s*tee/.test(l)) return;
+        potokow++;
+        if (!pipefail && !/PIPESTATUS\[0\]/.test(linie[i + 1] ?? '')) zle.push(`${job}/${k.name}: ${l.trim().slice(0, 80)}`);
+      });
+    }
+    expect(potokow).toBeGreaterThanOrEqual(4); // powtorz, data (plan), nalozenie (zbierz), znacznik
+    expect(zle).toEqual([]);
+  });
+});
