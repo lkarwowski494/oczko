@@ -77,7 +77,8 @@ export function powtorz(katalog, lista) {
 /** Dzień przebiegu w formie RRRR-MM-DD (prawdziwa data kalendarzowa) albo błąd. */
 export function sprawdzDzien(d) {
   const t = String(d ?? '');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(t) || new Date(`${t}T00:00:00Z`).toISOString().slice(0, 10) !== t) throw new Error(`zły dzień przebiegu: „${t}” (wzór RRRR-MM-DD, prawdziwa data)`);
+  const chwila = new Date(`${t}T00:00:00Z`); // 10-wydanie-026: „2026-13-01” daje Invalid Date (toISOString rzuciłby RangeError bez naszego komunikatu)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(t) || Number.isNaN(chwila.getTime()) || chwila.toISOString().slice(0, 10) !== t) throw new Error(`zły dzień przebiegu: „${t}” (wzór RRRR-MM-DD, prawdziwa data)`);
   return t;
 }
 /** Znacznik dat przebiegu źródłowego; brak katalogu, pliku albo zły JSON = null (data nieznana). */

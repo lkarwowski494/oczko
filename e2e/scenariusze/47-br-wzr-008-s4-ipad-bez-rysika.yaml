@@ -32,7 +32,7 @@ tags:
 - assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: 47-ipad-drugie-zakreslenie
-# 10-wydanie-019 (AQ, KO-046, recenzja AP P2): dwa pociągnięcia jedno po drugim, BEZ czekania i bez asercji między nimi (drugie zaczyna się, zanim widok zdąży zatwierdzić pierwsze).
+# 10-wydanie-019 (AQ, KO-046, recenzja AP P2): dwa pociągnięcia jedno po drugim, BEZ czekania między nimi (drugie zaczyna się, zanim widok zdąży zatwierdzić pierwsze).
 # Wykrywa wyścig odświeżenia płótna po `canvasViewDidEndUsingTool` z szybkim drugim pociągnięciem (WidokWzoru.swift): licznik 4 = 1 z pliku + 1 (wyżej) + 2 szybkie;
 # gdyby drugie szybkie pociągnięcie zginęło, licznik zostałby 3. Widoczność kresek: zrzut do obejrzenia w artefakcie e2e-czesc-*-ipad (kontrola pikseli wymagałaby zmiany workflowu).
 # Między pociągnięciami tylko szybka asercja stanu narzędzia (reguła strategii §3.8: asercja po każdej akcji zmieniającej stan), bez waitForAnimationToEnd ani czekania.

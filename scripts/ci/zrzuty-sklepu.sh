@@ -58,6 +58,7 @@ data_maszyny() { date -u +%F; }   # data na pasku iPada (runner GitHub ma stref�
 DATA_ZRZUTU=""
 zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot (data maszyny w tej chwili → DATA_ZRZUTU), obrót zrzutu poziomego iPada
   sleep 4   # PDF i animacje przejścia kończą się po asercji; bez tego zrzut łapie stan pośredni
+  DATA_ZRZUTU=""   # 10-wydanie-026: nieudany simctl przy istniejącym, niepustym pliku nie zostawia daty poprzedniej sceny
   xcrun simctl io "$UDID" screenshot --type=png "$2" >/dev/null 2>&1 && DATA_ZRZUTU="$(data_maszyny)"; [ -s "$2" ]
 }
 data_zrzutu_zgodna() {   # $1 = data maszyny w chwili zrzutu; iPad: musi być dniem przebiegu (pasek pokazuje datę maszyny, wszystkie sceny iPada mają mieć jedną); iPhone: pasek bez daty
