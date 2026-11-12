@@ -1,0 +1,11 @@
+$ npx jest tests/wydanie/zrzuty-data-ipada.test.ts tests/wydanie/zrzuty-poprawki-ah.test.ts tests/wydanie/zrzuty-uzupelnij.test.ts  (@19cba67)
+PASS iOS tests/wydanie/zrzuty-data-ipada.test.ts (5.297 s)
+PASS iOS tests/wydanie/zrzuty-uzupelnij.test.ts (5.564 s)
+PASS iOS tests/wydanie/zrzuty-poprawki-ah.test.ts (9.899 s)
+
+Test Suites: 3 passed, 3 total
+Tests:       75 passed, 75 total
+Snapshots:   0 total
+Time:        10.981 s
+Ran all test suites matching /tests\/wydanie\/zrzuty-data-ipada.test.ts|tests\/wydanie\/zrzuty-poprawki-ah.test.ts|tests\/wydanie\/zrzuty-uzupelnij.test.ts/i.
+kod 0

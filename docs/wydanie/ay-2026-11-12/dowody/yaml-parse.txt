@@ -1,0 +1,33 @@
+$ node all.cjs e2e   (biblioteka yaml z node_modules; wszystkie pliki .yaml w e2e) @19cba67
+BŁĄD e2e/zrzuty-sklepu/00-przygotuj.yaml Unexpected flow-map-start at node end at line 117, column 73:
+plików 101, z błędem 1
+kod 1
+
+$ js-yaml / yaml: 00-przygotuj.yaml @19cba67 i @3d9ca08
+js-yaml ERR missed comma between flow collection entries at line 117, column 73:
+yaml ERR Unexpected flow-map-start at node end at line 117, column 73:
+js-yaml OK [
+  '"TERAZ":"2026-11-03T18:00:00"',
+  '"TERAZ":"2026-11-05T19:30:00"',
+  '"TERAZ":"2026-11-09T20:00:00"'
+]
+yaml OK [
+  '"TERAZ":"2026-11-03T18:00:00"',
+  '"TERAZ":"2026-11-05T19:30:00"',
+  '"TERAZ":"2026-11-09T20:00:00"'
+]
+
+$ python3 PyYAML (rodzina SnakeYAML) @19cba67
+ERR while parsing a flow mapping |   in "e2e/zrzuty-sklepu/00-przygotuj.yaml", line 117, column 63 | expected ',' or '}', but got '{' |   in "e2e/zrzuty-sklepu/00-przygotuj.yaml", line 117, column 73
+kod 0
+$ sonda: cudzysłów wokół ${ZRZUTY_SESJA_2/3} w kopii (scratchpad), parsowanie
+js-yaml OK [
+  '"TERAZ":"${ZRZUTY_SESJA_1',
+  '"TERAZ":"${ZRZUTY_SESJA_2',
+  '"TERAZ":"${ZRZUTY_SESJA_3'
+]
+yaml OK [
+  '"TERAZ":"${ZRZUTY_SESJA_1',
+  '"TERAZ":"${ZRZUTY_SESJA_2',
+  '"TERAZ":"${ZRZUTY_SESJA_3'
+]

@@ -1,0 +1,124 @@
+$ nowe testy z 19cba67 na kodzie 3d9ca08
+  ● zrzuty-uzupelnij.mjs znacznik: plik dat kompletu (artefakt sklep-zrzuty-surowe) › przebieg z iPadem: dzienIpada = dzień przebiegu, teraz = stała zegara aplikacji
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      82 |     expect(znacznik('-', '2026-11-12', 'iphone,ipad', wyj).status).toBe(0);
+    > 83 |     expect(odczyt(wyj)).toEqual({ teraz: '2026-11-12T09:41:00', dzienIpada: '2026-11-12' }); // 023: zegar aplikacji = dzień przebiegu 9:41
+  ● zrzuty-jezyki.mjs: plan niesie jedną datę zegara i jeden dzień przebiegu do każdego zadania zrzutów › z ZRZUTY_DZIEN: każdy wpis macierzy (iPhone i iPad) ma dzien = ZRZUTY_DZIEN i teraz = ten dzień o 9:41 (023: jedna prawda w kadrze iPada)
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+       98 |     expect(p.matrix.length).toBeGreaterThanOrEqual(2);
+    >  99 |     for (const m of p.matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-12T09:41:00', dzien: '2026-11-12' });
+  ● zrzuty-jezyki.mjs: plan niesie jedną datę zegara i jeden dzień przebiegu do każdego zadania zrzutów › uzupełnienie: wpisy też niosą teraz i dzien (także wpis „tylko zakup”)
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      104 |     expect(r.status).toBe(0);
+    > 105 |     for (const m of JSON.parse(r.stdout).matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-11T09:41:00', dzien: '2026-11-11' });
+      108 |     expect(plan('en', 'iphone', { ZRZUTY_DZIEN: 'dziś' }).status).toBe(2);
+  ● 10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu) › dzień przebiegu czwartek 2026-11-12: sesje −7, −5 i −1 dnia (18:00, 19:30, 20:00), kalendarz = dzień drugiej sesji
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 0
+    Received: 2
+    > 196 |     expect(r.status).toBe(0);
+      197 |     expect(r.stdout.trim().split('\n')).toEqual(['ZRZUTY_SESJA_1=2026-11-05T18:00:00', 'ZRZUTY_SESJA_2=2026-11-07T19:30:00', 'ZRZUTY_SESJA_3=2026-11-11T20:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-07']);
+  ● 10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu) › poniedziałek (−1 = poprzedni tydzień, „This week” pusty) i dzień miesiąca < 8 (−7 i −5 w poprzednim miesiącu, kalendarz bez dni pracy) → kod 2 z powodem, bez cichych kadrów
+    expect(received).toMatch(expected)
+    Expected pattern: /poniedzia/
+    Received string:  "BŁĄD: użycie w nagłówku pliku
+    > 201 |       const r = dni(dzien); expect({ dzien, kod: r.status }).toEqual({ dzien, kod: 2 }); expect(r.stderr).toMatch(powod);
+      203 |     expect(dni('2026-11-08').status).toBe(0); // niedziela, 8. dnia: najmniejszy dozwolony dzień miesiąca; −7 = 1 XI
+  ● 10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu) › plan odrzuca niedozwolony dzień przed kolejką macOS (zrzuty-jezyki.mjs, kod 2), dozwolony niesie teraz o dniu = dzien
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2
+    Received: 0
+    > 207 |     expect(plan('2026-11-16').status).toBe(2);
+      208 |     for (const m of JSON.parse(plan('2026-11-13').stdout).matrix) expect(m.teraz.slice(0, 10)).toBe(m.dzien);
+  ● 10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu) › fikstura nie ma bezwzględnych dat dni pracy: 00-przygotuj używa ${ZRZUTY_SESJA_1..3}, 07-kalendarz ${ZRZUTY_DZIEN_KAL}
+    expect(received).not.toMatch(expected)
+    Expected pattern: not /2026-\d{2}-\d{2}/
+    Received string:      "appId: com.apps4brew.knitting
+    > 213 |     expect(przyg).not.toMatch(/2026-\d{2}-\d{2}/);
+      214 |     for (const n of [1, 2, 3]) expect([n, przyg.includes(`\${ZRZUTY_SESJA_${n}}`)]).toEqual([n, true]);
+      216 |     expect(kal).not.toMatch(/2026-\d{2}-\d{2}/);
+  ● 10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu) › zrzuty-sklepu.sh liczy dni z dnia przebiegu (node … dni) i przekazuje je do scenariuszy przez -e (próba na atrapach maestro, prawdziwy node)
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      226 |     expect(r.status).toBe(0);
+    > 228 |     for (const e of ['ZRZUTY_SESJA_1=2026-11-05T18:00:00', 'ZRZUTY_SESJA_2=2026-11-07T19:30:00', 'ZRZUTY_SESJA_3=2026-11-11T20:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-07']) expect([e, wiersz.includes(`-e ${e}`)]).toEqual([e, true]);
+  ● 10-wydanie-022: zadanie iPada kończy się na starcie, gdy data maszyny ≠ dzień przebiegu (przed 00-przygotuj) › iPad, data maszyny 2026-11-13 ≠ dzień 2026-11-12: kod 1, komunikat o dniu przebiegu, żaden scenariusz Maestro nie ruszył
+    expect(received).toBe(expected) // Object.is equality
+    Expected: false
+    Received: true
+      244 |     expect(r.status).toBe(1);
+      245 |     expect(`${r.stdout}${r.stderr}`).toMatch(/dzień przebiegu \(2026-11-12\)/);
+    > 246 |     expect(maestro).toBe(false);
+      249 |     expect(ipad('2026-11-12').maestro).toBe(true);
+  ● 10-wydanie-022: zadanie iPada kończy się na starcie, gdy data maszyny ≠ dzień przebiegu (przed 00-przygotuj) › opis wejścia `urzadzenia` w workflowie mówi, żeby iPad skończył przed 00:00 UTC (data paska), i wskazuje kontrolę na starcie
+    expect(received).toMatch(expected)
+    Expected pattern: /przed 00:00 UTC/
+    Received string:  "Urządzenia po przecinku: iphone, ipad"
+    > 256 |     expect(opis).toMatch(/przed 00:00 UTC/);
+  ● 10-wydanie-024: każdy potok `zrzuty-uzupelnij.mjs … | tee` w workflowie pilnuje kodu wyjścia skryptu › po każdym takim potoku PIPESTATUS[0] albo krok ma `set -o pipefail`
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 3
+      272 |     expect(potokow).toBeGreaterThanOrEqual(4); // powtorz, data (plan), nalozenie (zbierz), znacznik
+    > 273 |     expect(zle).toEqual([]);
+  ● 10-wydanie-025: powtórka jednej sceny pary 03/04 usuwa obie (para pochodzi z jednego buildu) › powtorz en/04-zakreslenie usuwa też en/03-wzor (klasy i katalog warunkowy), sceny innego języka i inne sceny zostają
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      282 |     expect(r.status).toBe(0);
+    > 283 |     for (const k of ['6.9', 'ipad-13']) expect([k, jest(d, `warunek-og07/${k}/${j}/${s}.png`) || jest(d, `${k}/${j}/${s}.png`)]).toEqual([k, false]);
+      284 |     expect(jest(d, 'warunek-og07/6.9/pl/03-wzor.png')).toBe(true);
+      285 |     expect(jest(d, '6.9/en/01-dzis.png')).toBe(true);
+      286 |     expect(r.stdout).toContain(`${s}.png`);
+  ● 10-wydanie-025: powtórka jednej sceny pary 03/04 usuwa obie (para pochodzi z jednego buildu) › powtorz en/03-wzor usuwa też en/04-zakreslenie (klasy i katalog warunkowy), sceny innego języka i inne sceny zostają
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      282 |     expect(r.status).toBe(0);
+    > 283 |     for (const k of ['6.9', 'ipad-13']) expect([k, jest(d, `warunek-og07/${k}/${j}/${s}.png`) || jest(d, `${k}/${j}/${s}.png`)]).toEqual([k, false]);
+      284 |     expect(jest(d, 'warunek-og07/6.9/pl/03-wzor.png')).toBe(true);
+      285 |     expect(jest(d, '6.9/en/01-dzis.png')).toBe(true);
+      286 |     expect(r.stdout).toContain(`${s}.png`);
+  ● 10-wydanie-026: drobne › sprawdzDzien: zły dzień kalendarzowy (2026-13-01, 2026-02-30) → komunikat „zły dzień przebiegu”, nie RangeError z toISOString
+    expect(received).toMatch(expected)
+    Expected pattern: /zły dzień przebiegu/
+    Received string:  "BŁĄD: Invalid time value
+      294 |       expect({ zly, kod: r.status }).toEqual({ zly, kod: 2 });
+    > 295 |       expect(r.stderr).toMatch(/zły dzień przebiegu/); expect(r.stderr).not.toMatch(/RangeError|Invalid time value/);
+  ● 10-wydanie-026: drobne › zrzuty-sklepu.sh: DATA_ZRZUTU czyszczone przed simctl (nieudany simctl przy istniejącym pliku nie zostawia daty poprzedniej sceny)
+    expect(received).toBeGreaterThan(expected)
+    Expected: > -1
+    Received:   -1
+    > 301 |     expect(f.indexOf('DATA_ZRZUTU=""')).toBeGreaterThan(-1);
+      302 |     expect(f.indexOf('DATA_ZRZUTU=""')).toBeLessThan(f.indexOf('simctl io'));
+  ● 10-wydanie-026: drobne › scenariusz 47: komentarz o dwóch szybkich pociągnięciach nie przeczy sam sobie (nie ma „bez asercji między nimi” obok „tylko szybka asercja”)
+    expect(received).not.toMatch(expected)
+    Expected pattern: not /bez asercji między nimi/
+    Received string:      "# BR-WZR-008/S4 „iPad bez rysika” (docs/brd/wymagania-projekt.md:347, P-218 Q2a), część palcem: zakreślacz włączony, przeciągnięcie palcem
+      306 |     expect(t).toMatch(/Między pociągnięciami tylko szybka asercja/);
+    > 307 |     expect(t).not.toMatch(/bez asercji między nimi/);
+  ● zrzuty-uzupelnij.mjs powtorz (wejście powtorz: ekrany robione od nowa mimo gotowego pliku) › usuwa wskazaną parę język/scena z każdej klasy i z katalogu warunkowego OG-07, resztę zostawia
+    expect(received).toBe(expected) // Object.is equality
+    Expected: false
+    Received: true
+      35 |     for (const f of ['warunek-og07/6.9/en/04-zakreslenie.png', 'ipad-13/pl/04-zakreslenie.png', 'warunek-og07/ipad-13/pl/04-zakreslenie.png']) expect(fs.existsSync(path.join(d, f))).toBe(false);
+      36 |     expect(fs.existsSync(path.join(d, '6.9/en/01-dzis.png'))).toBe(true);
+    > 37 |     expect(fs.existsSync(path.join(d, 'warunek-og07/6.9/en/03-wzor.png'))).toBe(false); // 10-wydanie-025: partner pary 03/04 idzie razem z podaną sceną (jeden build); szczegóły: zrzuty-data-ipada.test.ts
+      38 |     expect(r.stdout).toMatch(/usunięte z uzupełnienia/);
+  ● zrzuty-jezyki.mjs: plan uzupełnienia z poprzedniego przebiegu › powtorz: usunięte pliki wracają do planu; en/99-zakup włącza zakup w pierwszym zadaniu iPhone’a, a gdy iPhone nie ma braków — w osobnym zadaniu bez języków
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "en=03-wzor,04-zakreslenie;pl=04-zakreslenie,06-historia"
+    Received: "en=04-zakreslenie;pl=04-zakreslenie,06-historia"
+      83 |     expect(p.matrix.map((m: any) => [m.jezyki, m.zakup])).toEqual([['en,pl', true]]); // eslint-disable-line @typescript-eslint/no-explicit-any
+    > 84 |     expect(p.matrix[0].sceny).toBe(`en=03-wzor,04-zakreslenie;pl=04-zakreslenie,06-historia`); // 025: powtórka 04 usuwa też 03 (para z jednego buildu)
+      87 |     expect(p.matrix).toEqual([{ urzadzenie: 'iphone', jezyki: '', nr: 1, zakup: true, sceny: '' }]);
+kod 1
+Test Suites: 3 failed, 3 total
+Tests:       20 failed, 55 passed, 75 total

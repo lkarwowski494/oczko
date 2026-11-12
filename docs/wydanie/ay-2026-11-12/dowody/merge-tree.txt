@@ -1,0 +1,5 @@
+0e325c4da5910b1786940fafbc7e796dffbba635
+docs/decyzje.md
+
+Auto-merging docs/decyzje.md
+CONFLICT (content): Merge conflict in docs/decyzje.md
