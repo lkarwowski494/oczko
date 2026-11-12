@@ -1,0 +1,10 @@
+$ (928e1767) npx jest --ci tests/jakosc/e2e-awaria-maszyny.test.ts tests/jakosc/maestro-failures-przerwany.test.ts
+PASS iOS tests/jakosc/maestro-failures-przerwany.test.ts
+PASS iOS tests/jakosc/e2e-awaria-maszyny.test.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       17 passed, 17 total
+Snapshots:   0 total
+Time:        4.297 s
+Ran all test suites matching /tests\/jakosc\/e2e-awaria-maszyny.test.ts|tests\/jakosc\/maestro-failures-przerwany.test.ts/i.
+kod wyjścia: 0
