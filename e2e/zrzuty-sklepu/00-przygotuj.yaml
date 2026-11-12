@@ -1,16 +1,16 @@
 # Dane (nazwy projektów, notatka, wzór) z zmiennych -e z e2e/zrzuty-sklepu/dane/<klucz>.json przez scripts/ci/zrzuty-dane.mjs (013: dane w języku zestawu).
 # Zrzuty sklepu (rola 10, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md). Dane WYŁĄCZNIE fikcyjne (2.3.9): projekty (en) „Cable Hat” (główny, jak wzór), „Moss Socks”,
-# „Harbor Sweater”, „Baby Blanket”; 020: nazwa projektu głównego = nazwa wzoru w każdym języku (tests/wydanie/zrzuty-dane-spojnosc.test.ts); wzór = PDF z treścią z buildu E2E (panel e2e-wzor-sklep-<język danych>, src/kompozycja/e2e/wzor-sklepu.ts, bez okna Plików); dni pracy 3, 5 i 9 XI 2026, „dziś” w scenach = ZRZUTY_TERAZ (10 XI 2026, 9:41; jedna stała w scripts/ci/zrzuty-uzupelnij.mjs, niesiona przez plan do każdego zadania; godzina ta sama na pasku stanu symulatora, data paska iPada to data maszyny — tests/wydanie/zrzuty-data-ipada.test.ts).
+# „Harbor Sweater”, „Baby Blanket”; 020: nazwa projektu głównego = nazwa wzoru w każdym języku (tests/wydanie/zrzuty-dane-spojnosc.test.ts); wzór = PDF z treścią z buildu E2E (panel e2e-wzor-sklep-<język danych>, src/kompozycja/e2e/wzor-sklepu.ts, bez okna Plików); dni pracy −7, −5 i −1 dnia względem dnia przebiegu (ZRZUTY_SESJA_1..3 z `zrzuty-uzupelnij.mjs dni`, 10-wydanie-023), „dziś” w scenach = ZRZUTY_TERAZ (dzień przebiegu, 9:41; niesiony przez plan do każdego zadania; ta sama godzina na pasku stanu, a data paska iPada to data maszyny = dzień przebiegu — tests/wydanie/zrzuty-data-ipada.test.ts).
 # Nigdy +1 na ekranie licznika w scenach (panel pomiaru E2E „p95 … ms” zostałby w kadrze); tu +1 jest, bo po restarcie panel znika (stan w pamięci widoku).
 # Kolejność ma znaczenie: ostatnio pracowano w projekcie głównym (${PROJ_GLOWNY}), więc „Kontynuuj ›” prowadzi do niego (restart.yaml).
 appId: com.apps4brew.knitting
 name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, notatka, trzy dni pracy)"
 ---
-# --- 3 XI: cztery projekty, „Harbor Sweater” ostatni; trzy rzędy ---
+# --- sesja 1 (−7 dni): cztery projekty, „Harbor Sweater” ostatni; trzy rzędy ---
 - runFlow:
     file: ../scenariusze/subflows/start-czysty-dzis.yaml
     env:
-      TERAZ: "2026-11-03T18:00:00"
+      TERAZ: ${ZRZUTY_SESJA_1}
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
 - tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
@@ -113,17 +113,17 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - runFlow: ../scenariusze/subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
-# --- 5 XI: dwa rzędy więcej ---
-- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "2026-11-05T19:30:00" } }
+# --- sesja 2 (−5 dni): dwa rzędy więcej ---
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: ${ZRZUTY_SESJA_2} } }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - runFlow: ../scenariusze/subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
-# --- 9 XI (poniedziałek tygodnia „dziś”): rząd 45 wpisany, dwa stuknięcia do 47 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
-# Godziny sesji rosną razem z datą (3 XI 18:00, 5 XI 19:30, 9 XI 20:00), więc Historia (od najnowszego, sama godzina bez daty) czyta się chronologicznie (016).
-- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "2026-11-09T20:00:00" } }
+# --- sesja 3 (−1 dnia, w tygodniu „dziś”): rząd 45 wpisany, dwa stuknięcia do 47 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
+# Godziny sesji rosną razem z datą (−7 dni 18:00, −5 dni 19:30, −1 dnia 20:00), więc Historia (od najnowszego, sama godzina bez daty) czyta się chronologicznie (016).
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: ${ZRZUTY_SESJA_3} } }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:

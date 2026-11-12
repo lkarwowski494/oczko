@@ -28,6 +28,12 @@ UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; 
 [[ "$ZRZUTY_TERAZ" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$ ]] || { echo "::error::ZRZUTY_TERAZ ma zły format: $ZRZUTY_TERAZ"; exit 2; }
 [[ "$ZRZUTY_DZIEN" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "::error::ZRZUTY_DZIEN ma zły format: $ZRZUTY_DZIEN"; exit 2; }
 FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"; SKRYPTY="$(cd "$(dirname "$0")" && pwd)"
+# 10-wydanie-023 (AU, KO-050 opcja a): dni pracy fikstury (00-przygotuj.yaml, 07-kalendarz.yaml) liczone od dnia przebiegu (−7, −5, −1 dnia), żeby treść kadru miała tę samą datę co pasek iPada (data maszyny);
+# scripts/ci/zrzuty-uzupelnij.mjs dni (plan już odrzucił poniedziałek i dni 1–7 miesiąca). Brak wyniku = głośny błąd (zasada 21), bez cichych dat.
+DNI_ARGS_PRACY=()
+DNI_WYJSCIE="$(node "$SKRYPTY/zrzuty-uzupelnij.mjs" dni "$ZRZUTY_DZIEN" 2>&1)" || { echo "::error::dni pracy fikstury z dnia przebiegu $ZRZUTY_DZIEN: $DNI_WYJSCIE"; exit 2; }
+while IFS= read -r wiersz; do [ -n "$wiersz" ] && DNI_ARGS_PRACY+=(-e "$wiersz"); done <<< "$DNI_WYJSCIE"
+[ "${#DNI_ARGS_PRACY[@]}" -eq 8 ] || { echo "::error::dni pracy fikstury: oczekiwano 4 zmiennych (ZRZUTY_SESJA_1..3, ZRZUTY_DZIEN_KAL), jest ${#DNI_ARGS_PRACY[@]}/2"; exit 2; }
 case "$URZ" in
   iphone) ROZMIAR="6.9"; ORIENT_WZOR="PORTRAIT" ;;
   ipad)   ROZMIAR="ipad-13"; ORIENT_WZOR="LANDSCAPE_LEFT" ;;   # plan: wzór obok licznika na iPadzie poziomo
@@ -52,7 +58,7 @@ DANE_ARGS=(); DANE_AKTUALNE=""   # 013: zmienne -e z danych języka (nazwy proje
 JEZYK_BIEZACY="start"   # w nazwie katalogu dziennika: kolejne języki nie nadpisują sobie logów
 maestro_run() {   # $1 = nazwa scenariusza (bez .yaml), $2 = próba
   local log="$LOGI/$URZ-$JEZYK_BIEZACY${ETYKIETA_DANYCH:+-$ETYKIETA_DANYCH}-$1-$2"; mkdir -p "$log"
-  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" ${DANE_ARGS[@]+"${DANE_ARGS[@]}"} --test-output-dir "$log" > "$log/maestro.log" 2>&1
+  maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" "${DNI_ARGS_PRACY[@]}" ${DANE_ARGS[@]+"${DANE_ARGS[@]}"} --test-output-dir "$log" > "$log/maestro.log" 2>&1
 }
 data_maszyny() { date -u +%F; }   # data na pasku iPada (runner GitHub ma strefę UTC; NIESPRAWDZONE na runnerze: strefa symulatora)
 DATA_ZRZUTU=""

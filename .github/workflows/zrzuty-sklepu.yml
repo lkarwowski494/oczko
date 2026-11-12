@@ -136,7 +136,7 @@ jobs:
         run: |
           # Zadanie zrzuty i tak jest pomijane (uruchom=false albo zadania=0), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
           # AQ (KO-046): dzień przebiegu = data maszyny UTC, którą pasek iPada pokazuje na zrzutach; ustalany RAZ tu i niesiony w macierzy do każdego zadania zrzutów (matrix.dzien),
-          # a „zbierz” zapisuje go w zrzuty-daty.json. ZRZUTY_TERAZ (zegar aplikacji) jest stałą planu (zrzuty-uzupelnij.mjs) i też idzie w macierzy (matrix.teraz).
+          # a „zbierz” zapisuje go w zrzuty-daty.json. ZRZUTY_TERAZ (zegar aplikacji) = ten dzień o 9:41 (023: treść kadru ma datę paska iPada) i też idzie w macierzy (matrix.teraz).
           dzien="$(date -u +%F)"
           zastepcza='[{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false}]'
           matrix='{"jezyki":["en"],"matrix":[],"zadania":0}'

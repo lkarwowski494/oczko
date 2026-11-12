@@ -9,6 +9,7 @@
 //   node scripts/ci/zrzuty-uzupelnij.mjs powtorz   <katalog_poprzednich> "<lista: język/NN-scena[,…]; en/99-zakup = powtórka zrzutu zakupu>"
 //   node scripts/ci/zrzuty-uzupelnij.mjs nalozenie <katalog_poprzednich> <katalog_surowych> <og07: true|false>   (poprzednie uzupełniają braki, nowe nie są nadpisywane)
 //   node scripts/ci/zrzuty-uzupelnij.mjs data      <katalog_poprzednich> <dzień RRRR-MM-DD> <języki|all> <urządzenia>   (AQ, KO-046: inna data paska iPada w źródle → zestaw iPada do powtórzenia)
+//   node scripts/ci/zrzuty-uzupelnij.mjs dni      <dzień RRRR-MM-DD>   (023: ZRZUTY_SESJA_1..3 i ZRZUTY_DZIEN_KAL = dni pracy fikstury względem dnia przebiegu; poniedziałek i dni 1–7 miesiąca = kod 2)
 //   node scripts/ci/zrzuty-uzupelnij.mjs znacznik  <katalog_poprzednich|-> <dzień RRRR-MM-DD> <urządzenia> <plik_wyjściowy>   (zrzuty-daty.json do artefaktu surowych zrzutów)
 // Błąd wejścia = kod 2.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
@@ -16,9 +17,22 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { KLASY, WARUNKOWE, ZAWSZE } from './komplet-zrzutow.mjs';
 
-/** Zegar APLIKACJI w kadrach (treść, np. „wtorek, 10 listopada”). Stała, bo fikstura (00-przygotuj.yaml: sesje 3, 5 i 9 XI) jest bezwzględna względem „dziś”: ruchomy zegar zepsułby Historię, kalendarz i „This week”.
- *  Ustala ją plan (zrzuty-jezyki.mjs) i niesie w macierzy do każdego zadania zrzutów; scripts/ci/zrzuty-sklepu.sh nie ma własnej kopii (AQ, KO-046). */
-export const ZRZUTY_TERAZ = '2026-11-10T09:41:00';
+/** Godzina zegara APLIKACJI w kadrach i na pasku stanu symulatora („9:41” jak w materiałach Apple). */
+export const ZRZUTY_GODZINA = '09:41:00';
+/** Zegar APLIKACJI w kadrach (treść, np. „czwartek, 12 listopada”) = dzień przebiegu o 9:41 (10-wydanie-023, AU, KO-050 opcja a): pasek iPada pokazuje datę maszyny, więc treść ma tę samą datę.
+ *  Ustala go plan (zrzuty-jezyki.mjs) i niesie w macierzy (`matrix.teraz`) do każdego zadania zrzutów; scripts/ci/zrzuty-sklepu.sh nie ma własnej kopii. */
+export const terazDnia = (dzien) => `${sprawdzDzien(dzien)}T${ZRZUTY_GODZINA}`;
+/** Dni pracy fikstury (00-przygotuj.yaml, 07-kalendarz.yaml) liczone od dnia przebiegu: −7, −5 i −1 dnia (18:00, 19:30, 20:00; godziny rosną razem z datą, więc Historia czyta się chronologicznie),
+ *  `kalendarz` = dzień drugiej sesji (scena 07 go zaznacza). Dwa dni przebiegu dają kadry bez dni pracy w widoku „This week” albo w kalendarzu bieżącego miesiąca, więc plan je odrzuca głośno (przed kolejką macOS):
+ *  poniedziałek (−1 = niedziela poprzedniego tygodnia; tydzień zaczyna się w poniedziałek, RD-20 `poczatekTygodnia`) i dzień miesiąca < 8 (−7 i −5 wypadają w poprzednim miesiącu). */
+export function dniPracy(dzien) {
+  const d = sprawdzDzien(dzien);
+  const [r, m, dd] = d.split('-').map(Number);
+  const przed = (n) => new Date(Date.UTC(r, m - 1, dd - n)).toISOString().slice(0, 10);
+  if (dd < 8) throw new Error(`dzień przebiegu ${d} jest w pierwszych 7 dniach miesiąca: dni pracy fikstury (−7 i −5 dnia) wypadłyby w poprzednim miesiącu i kalendarz w kadrze byłby bez dni pracy — uruchom zrzuty od 8. dnia miesiąca (UTC)`);
+  if (new Date(Date.UTC(r, m - 1, dd)).getUTCDay() === 1) throw new Error(`dzień przebiegu ${d} to poniedziałek (UTC): dzień pracy −1 wypadłby w poprzednim tygodniu i „This week” w kadrach byłby pusty — uruchom zrzuty od wtorku do niedzieli (UTC)`);
+  return { sesje: [[7, '18:00:00'], [5, '19:30:00'], [1, '20:00:00']].map(([n, g]) => `${przed(n)}T${g}`), kalendarz: przed(5) };
+}
 /** Plik w artefakcie `sklep-zrzuty-surowe`: jakich dat dotyczy zestaw. `dzienIpada` = data MASZYNY, którą pasek iPada pokazuje na zrzutach (simctl nie przyjmuje ISO, więc daty paska nie ustawimy). */
 export const PLIK_DAT = 'zrzuty-daty.json';
 export const SCENY = [...ZAWSZE, ...WARUNKOWE].sort();
@@ -118,7 +132,7 @@ export function dataIpada(katalog, dzien, urzadzenia, jezyki) {
 /** Zawartość `zrzuty-daty.json` nowego kompletu: iPad w przebiegu → jego dzień; bez iPada zostaje data ze źródła (zrzuty iPada ze źródła zostały) albo null. */
 export function znacznik(zrodlo, dzien, urzadzenia) {
   const d = sprawdzDzien(dzien);
-  return { teraz: ZRZUTY_TERAZ, dzienIpada: urzadzenia.includes('ipad') ? d : (zrodlo ? czytajDaty(zrodlo)?.dzienIpada ?? null : null) };
+  return { teraz: terazDnia(d), dzienIpada: urzadzenia.includes('ipad') ? d : (zrodlo ? czytajDaty(zrodlo)?.dzienIpada ?? null : null) };
 }
 
 function pliki(kat) {
@@ -156,6 +170,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     } else if (cmd === 'data') {
       const [dzien, jezyki, urz] = [b, c, process.argv[6]];
       console.log(dataIpada(a, dzien, String(urz ?? '').split(',').filter(Boolean), String(jezyki ?? '').split(',').map((x) => x.trim()).filter(Boolean)).komunikat);
+    } else if (cmd === 'dni') {
+      const w = dniPracy(a); // dni pracy fikstury z dnia przebiegu; zadanie macOS przekazuje je scenariuszom przez -e (10-wydanie-023)
+      console.log([...w.sesje.map((x, i) => `ZRZUTY_SESJA_${i + 1}=${x}`), `ZRZUTY_DZIEN_KAL=${w.kalendarz}`].join('\n'));
     } else if (cmd === 'znacznik') {
       const [urz, wyjscie] = [c, process.argv[6]];
       if (!wyjscie) throw new Error('użycie: znacznik <poprzednie|-> <dzień> <urządzenia> <plik>');
