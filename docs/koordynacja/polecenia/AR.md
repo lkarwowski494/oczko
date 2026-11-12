@@ -1,0 +1,14 @@
+# Sesja AR: diagnoza czerwonego „Jakość · iOS” 43139118664 na 2929462 — Oczko
+Koordynator: ID z `stan.md` („Koordynator aktywny”, teraz session_01T66VBwsVfpEaSobJZ4b8VQ) — raport, pytania i PRZEKAZANIE tylko przez send_message do niego. Gałąź stanu: `koordynacja` (tylko do odczytu).
+
+1. Rola: 07-jakosc w trybie audit (prompt po `=== PROMPT ROLI ===`, praca od `=== KONIEC PROMPTU ROLI ===`; w pierwszym raporcie potwierdź linię KONIEC i ostatni nagłówek `##`). Biblioteki prompts nie dołączasz.
+2. Start: gałąź `claude/aq-zrzuty-018-2026-11-12` @ 2929462 (inny HEAD: zgłoś). `npm ci`. Bez zmian kodu i testów (diagnoza); raport możesz zapisać w `docs/jakosc/` na tej gałęzi (tożsamość według CLAUDE.md). **Push:** hak `pre-push` uruchamia pełne `npm run verify` (~10 min) — push w tle bez limitu czasu, nigdy --no-verify (WG-14).
+3. Fakty od koordynatora (sprawdź sam): „Jakość · iOS” 43139118664 (workflow_dispatch, [e2e-pelny]) na 2929462 — failure w 2 z 8 jobów: (a) `eksperymenty-wzoru` 130921519295: `EksperymentyTests.swift:34-35 testW1WordNaPdf` „brak PDF” (tekst, tabela, obraz; 182 s); (b) `e2e (część 2, iphone)` 130930897956: `01-nfr-pie-001-pierwsze-liczenie.yaml` (stan-licznika: bez ponowienia) — `Assertion is false: "2", id: licznik-wartosc is visible`, potem `nav-wstecz` nie znaleziony (krok 36/36). Diff 281852f..2929462 nie zmienia `app/ src/ modules/`; w `e2e/` tylko scen. 47 (+10) i `zrzuty-sklepu/00-przygotuj.yaml` (1 linia). Ten sam pakiet na 281852f (43121094246) był zielony. Scenariusz NFR-PIE-001 dotyczy „1. i ostatniego dnia miesiąca” — dziś 12.11 UTC.
+4. Zadania:
+   1. Dla (a) i (b) osobno: przyczyna z dowodem (log, artefakty Maestro/xcresult, `plik:linia`) i klasyfikacja: regresja z 281852f..2929462 / niestabilność istniejąca (podaj wcześniejsze wystąpienia w historii przebiegów, jeśli są) / zależność od daty lub maszyny. Zasada CLAUDE.md: scenariuszy z asercją wartości licznika nie ponawiamy (P-091 10a) — nie rekomenduj ponowienia jako naprawy.
+   2. Sprawdź, czy scen. 47 (iPad, dwa szybkie pociągnięcia → „4 highlights”, P2 z AP/AQ, P-754) przeszła w tym przebiegu — wynik z dowodem.
+   3. Rekomendacja: co naprawić, kto (rola, zakres plików), test czerwony przed; czy gałąź AQ można scalić niezależnie od (a)/(b) (jeśli nie jest ich przyczyną) i jaka kontrola zastępcza.
+5. Zakazy: nie zmieniasz kodu, testów ani workflowów; nie wyzwalasz workflowów; nie scalasz; nie tworzysz i nie archiwizujesz sesji; nie piszesz na `koordynacja`; bez AskUserQuestion; nigdy --no-verify ani force-push.
+6. Decyzje: tryb analogia (najpierw `lkarwowski494/trening`, `repo:plik:linia`, wpis do weta). Pula: P-756…P-757 (tylko jeśli zapisujesz decyzję).
+7. Od 30% okna PRZEKAZANIE. Pułap 5 USD, STOP 6,5 USD.
+8. Raport ≤ 12 linii przez send_message: KONIEC potwierdzony, (a) i (b): przyczyna + klasyfikacja + dowód, scen. 47 wynik, rekomendacja, koszt.
