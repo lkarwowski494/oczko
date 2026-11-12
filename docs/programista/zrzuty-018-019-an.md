@@ -107,5 +107,5 @@ Dwie osobne daty (dowód z AP: pasek iPada 01–07 „Śr. 11 lis”, 03/04 „C
 `kontrola-zakreslen.mjs`: zero par 03/04 (brak katalogu, pusty zestaw, tylko inne sceny) = `BŁĄD … brak par 03/04` i kod 1 zamiast notatki i kodu 0. Zawsze, nie tylko przy OG-07: sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który kontrola też przeszukuje), więc zero par znaczy, że kontrola nic nie sprawdziła. Starszy test oczekujący kodu 0 zaostrzony.
 
 ### Przegląd ścieżki wrażliwej (workflow)
-Zob. raport PRZEKAZANIE do koordynatora (subagent z samym diffem, bez mojego rozumowania).
+Subagent (sam diff `281852f..HEAD` dla `.github scripts`, zasady 10–14, bez mojego rozumowania) zwrócił 2 × P1, oba potwierdzone i naprawione testem przed kodem w 59c0586: (1) krok `plan` bez pipefail (domyślne `bash -e`) gubił kod 2 z `data|powtorz|znacznik` w `| tee` → po potokach `PIPESTATUS[0]`; (2) po północy UTC zadanie iPada robiło dalej odrzucane zrzuty → pierwsza niezgodna data kończy zadanie (`exit 1`, scena w nieudanych; ponowienie zadania dostaje ten sam dzień z planu, więc komunikat każe zrobić nowy przebieg). Drugiego przeglądu nie ma.
 Pełna bramka: `docs/programista/zrzuty-018-aq-verify.txt`.
