@@ -1,0 +1,17 @@
+$ (worktree @ f8914bb1) node: limit 40 + dosłowna zgodność 8 poprawek; bash scripts/ci/ramki-sklepu.sh we3 wy3 (hu hr uk de ms ru ko); npx jest uklad-podpisow ramki-sklepu
+OK hu 06-historia
+OK hr 04-zakreslenie
+OK hr 06-historia
+OK uk 06-historia
+OK de 02-licznik
+OK ms 06-historia
+OK ru 06-historia
+OK ko 06-historia
+max znaków 40
+EXIT 0
+Ramki: 49 plików
+EXIT 0
+PASS iOS tests/wydanie/uklad-podpisow.test.ts
+PASS iOS tests/wydanie/ramki-sklepu.test.ts (17.509 s)
+Tests:       18 passed, 18 total
+EXIT 0

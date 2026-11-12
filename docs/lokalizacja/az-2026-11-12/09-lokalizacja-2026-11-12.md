@@ -4,13 +4,13 @@ Prompt roli: przeczytany do linii `=== KONIEC PROMPTU ROLI ===`; ostatni nagłó
 Wyjątek nazwany (polecenie AZ): raport leży w `docs/lokalizacja/az-2026-11-12/` i jest commitowany na gałąź AZ (tryb audit domyślnie nie commituje); pliki podpisów i kod nietknięte.
 
 ## Podsumowanie
-Recenzja niezależna sesji AW (P-771, P-772): 27 języków × 7 podpisów zrzutów sklepu. Komplet, limit 40 znaków, glify i układ w 2 wierszach potwierdzone na żywo (render 189 ramek, kod 0). Terminy ekranów zgodne ze słownikami aplikacji we wszystkich 27 językach. Brak P0 i P1. Znalazłem 3 znaleziska P2 (9 podpisów w 8 językach): idiom „z czasem” czytany jako „kiedyś / z biegiem czasu” albo „czasami” (ru, uk, hr, hu, ms), dwuznaczne słowo zmieniające sens (de „Tipp”, hr „po uputama”), koreański 06 sugerujący cofnięcie wszystkiego naraz (twierdzenie spoza `en.md`). Zmiana testu ramek de → bg nie osłabia kontroli. **Werdykt scalenia: TAK** (P2 do poprawy przed wgraniem `asc-zrzuty`, zgodnie z warunkiem P-771).
+Recenzja niezależna sesji AW (P-771, P-772): 27 języków × 7 podpisów zrzutów sklepu. Komplet, limit 40 znaków, glify i układ w 2 wierszach potwierdzone na żywo (render 189 ramek, kod 0). Terminy ekranów zgodne ze słownikami aplikacji we wszystkich 27 językach. Brak P0 i P1. Znalazłem 3 znaleziska P2 (8 podpisów w 7 językach): idiom „z czasem” czytany jako „kiedyś / z biegiem czasu” albo „czasami” (ru, uk, hr, hu, ms), dwuznaczne słowo zmieniające sens (de „Tipp”, hr „po uputama”), koreański 06 sugerujący cofnięcie wszystkiego naraz (twierdzenie spoza `en.md`). Zmiana testu ramek de → bg nie osłabia kontroli. **Werdykt scalenia: TAK** (P2 do poprawy przed wgraniem `asc-zrzuty`, zgodnie z warunkiem P-771).
 
 | ID | Poziom | Rodzaj | Tytuł | Status |
 |---|---|---|---|---|
-| 09-lokalizacja-001 | P2 | D | Podpis 06 w ru, uk, hr, hu, ms czyta się jako „z czasem / czasami”, a nie „z godziną” | otwarte |
-| 09-lokalizacja-002 | P2 | D | de 02 „Ein Tipp” (= wskazówka) i hr 04 „po uputama” (= według instrukcji) zmieniają sens | otwarte |
-| 09-lokalizacja-003 | P2 | D | ko 06 „모든 변경을 … 한 번에 실행 취소” daje się czytać jako cofnięcie wszystkich zmian naraz | otwarte |
+| 09-lokalizacja-001 | P2 | D | Podpis 06 w ru, uk, hr, hu, ms czyta się jako „z czasem / czasami”, a nie „z godziną” | zweryfikowane (f8914bb1) |
+| 09-lokalizacja-002 | P2 | D | de 02 „Ein Tipp” (= wskazówka) i hr 04 „po uputama” (= według instrukcji) zmieniają sens | zweryfikowane (f8914bb1) |
+| 09-lokalizacja-003 | P2 | D | ko 06 „모든 변경을 … 한 번에 실행 취소” daje się czytać jako cofnięcie wszystkich zmian naraz | zweryfikowane (f8914bb1) |
 
 ### Tabela języków (zadanie 1)
 Kryteria: poprawność, zgodność z en/pl, brak nowych twierdzeń względem `docs/wydanie/metadane/en.md`, terminy z `src/i18n/slowniki/<język>.json` (licznik, wzór, historia, cofnij, projekty, dni robótkowe, rząd), ≤ 40 znaków.
@@ -45,12 +45,17 @@ Kryteria: poprawność, zgodność z en/pl, brak nowych twierdzeń względem `do
 | ko | poprawka | 06: `변경마다 시간 기록, 탭 한 번으로 실행 취소` (25) |
 | zh-Hant | OK | (07: podział wiersza „你的 / 手作日一覽無遺”, układ: rola 10) |
 
-Razem: 9 poprawek w 8 językach (hr 2; hu, uk, de, ms, ru, ko po 1); 19 języków OK. To drugi przegląd AI w świeżym kontekście (próbka n = 189, wszystkie podpisy), nie przegląd rodzimego użytkownika języka.
+Razem: 8 poprawek w 7 językach (hr 2; hu, uk, de, ms, ru, ko po 1); 20 języków OK. (Korekta 2026-11-12: pierwsza wersja raportu podawała błędnie „9 w 8” i „19 OK” — błąd liczenia; tabela była od początku pełna, nl 06 jest tylko w „Do sprawdzenia”.) To drugi przegląd AI w świeżym kontekście (próbka n = 189, wszystkie podpisy), nie przegląd rodzimego użytkownika języka.
 
 ### Zmiana testu ramek de → bg (zadanie 2)
 Nie osłabia kontroli. Zmienił się tylko język fikstury bez podpisów; asercje bez zmian (`tests/wydanie/ramki-sklepu.test.ts:73`, `tests/wydanie/ramki-sklepu.test.ts:79`). Dowód konieczności: przy podpisach @ acf31b1 skrypt dla de nie ostrzega i robi ramkę, dla bg ostrzega i pomija (dowody/ramki-de-bg.txt).
 
 bg pozostaje językiem bez lokalizacji sklepu, czego pilnuje osobny test (`tests/wydanie/zrzuty-jezyki.test.ts:27`, „for (const x of ['bg', 'sl', 'sr', 'lt', 'lv', 'et']) expect(p.jezyki).not.toContain(x);”). Gdyby bg dostał kiedyś podpisy, test padnie głośno, nie przejdzie po cichu. Oba testy zielone z ImageMagickiem: 18/18 (dowody/jest-podpisy-ramki.txt).
+
+### Aneks: poprawki AW @ f8914bb1 (od acf31b18), 2026-11-12
+- Rozbieżność „9 w 8” vs tabela „8 w 7”: błąd liczenia w raporcie AZ. 9. pozycji nie ma; nl 06 to pytanie z „Do sprawdzenia” (propozycja `Elke wijziging met tijd, ongedaan maken`), nie poprawka.
+- acf31b18..f8914bb1 zmienia 8 podpisów (`docs/wydanie/metadane/podpisy-zrzutow.json`) i `docs/lokalizacja/aw-stan.md`; wszystkie 8 dosłownie równe tekstom z tabeli, najdłuższy podpis 40 znaków, render 49 ramek (hu, hr, uk, de, ms, ru, ko) kod 0, jest 18/18 (dowody/f8914bb-poprawki.txt, zrzuty/poprawki-f8914bb.png).
+- Znaleziska 09-lokalizacja-001, -002, -003: naprawione-do-weryfikacji → zweryfikowane. **Werdykt scalenia f8914bb1: TAK**, P0 0, P1 0, P2 0 (pozycje „Do sprawdzenia” bez zmian, do przeglądu człowieka z P-772).
 
 ## Linia bazowa i założenia
 Zakres zawężony poleceniem AZ do podpisów zrzutów sklepu i jednego testu, więc linia bazowa dotyczy tego obszaru. Najlepszy w klasie podpis zrzutu: w każdym języku brzmi jak napisany w nim, używa tych samych terminów co interfejs (sklep i aplikacja się nie rozjeżdżają), niczego nie obiecuje ponad tekst bazowy i mieści się w ramce bez braków glifów.
@@ -110,7 +115,7 @@ Soczewki: użytkownik drugiego rynku (czy podpis mówi to, co en) — źródło 
 - Kroki w aplikacji: strona produktu w App Store danego kraju, zrzut 06.
 - Opcje: poprawić 5 podpisów tekstami z tabeli (koszt: minuty) — albo zostawić do przeglądu człowieka (ryzyko, że trafią do sklepu). Rekomendacja: poprawić teraz.
 - Test akceptacyjny: podpisy 06 = teksty z tabeli języków; `uklad-podpisow.test.ts` zielony.
-- Status: otwarte
+- Status: zweryfikowane (f8914bb1)
 
 ### 09-lokalizacja-002 · de 02 „Ein Tipp” (= wskazówka) i hr 04 „po uputama” (= według instrukcji) zmieniają sens
 - Pozycja listy kontrolnej: LOK-11
@@ -124,7 +129,7 @@ Soczewki: użytkownik drugiego rynku (czy podpis mówi to, co en) — źródło 
 - Kroki w aplikacji: strona produktu de (zrzut 02), hr (zrzut 04).
 - Opcje: poprawki z tabeli — albo pytanie do rodzimego użytkownika języka. Rekomendacja: poprawić teraz, przegląd człowieka i tak przed wgraniem.
 - Test akceptacyjny: de 02 = `Einmal tippen, eine Reihe mehr`, hr 04 = `Označavajte i pišite izravno na uputama`.
-- Status: otwarte
+- Status: zweryfikowane (f8914bb1)
 
 ### 09-lokalizacja-003 · ko 06 daje się czytać jako cofnięcie wszystkich zmian naraz
 - Pozycja listy kontrolnej: LOK-11
@@ -138,7 +143,7 @@ Soczewki: użytkownik drugiego rynku (czy podpis mówi to, co en) — źródło 
 - Kroki w aplikacji: strona produktu ko, zrzut 06.
 - Opcje: `변경마다 시간 기록, 탭 한 번으로 실행 취소` — albo pytanie do rodzimego użytkownika języka. Rekomendacja: poprawka.
 - Test akceptacyjny: ko 06 = tekst z tabeli.
-- Status: otwarte
+- Status: zweryfikowane (f8914bb1)
 
 ## Do sprawdzenia (pewność ≤ 80%)
 Pytania do człowieka znającego język (albo do przeglądu z P-772):
@@ -157,7 +162,7 @@ Pytania do człowieka znającego język (albo do przeglądu z P-772):
 - Fikstura bg w teście ramek jest pilnowana osobnym testem planu zrzutów.
 
 ## Decyzje dla właściciela
-Brak decyzji po stronie właściciela (P-087: decyduje koordynator). Dla koordynatora: (a) przyjąć 9 poprawek z tabeli przed wgraniem `asc-zrzuty` — rekomendacja; albo (b) scalić bez zmian i dać je przeglądowi człowieka z P-772 (ryzyko: idiomy z 001 przejdą, jeśli przegląd będzie pobieżny). Uwaga procesowa: przed AW status języków wymagał przekładu „po akceptacji en przez właściciela”; en ma nadal `[DO AKCEPTACJI]`, więc zmiana en oznacza powtórkę 27 × 7.
+Brak decyzji po stronie właściciela (P-087: decyduje koordynator). Dla koordynatora: (a) przyjąć 8 poprawek z tabeli przed wgraniem `asc-zrzuty` — rekomendacja; albo (b) scalić bez zmian i dać je przeglądowi człowieka z P-772 (ryzyko: idiomy z 001 przejdą, jeśli przegląd będzie pobieżny). Uwaga procesowa: przed AW status języków wymagał przekładu „po akceptacji en przez właściciela”; en ma nadal `[DO AKCEPTACJI]`, więc zmiana en oznacza powtórkę 27 × 7.
 
 ## Proponowane polecenie naprawy
 `node tools/assemble.mjs 09-lokalizacja --tryb fix --zadania 09-lokalizacja-001,09-lokalizacja-002,09-lokalizacja-003`
