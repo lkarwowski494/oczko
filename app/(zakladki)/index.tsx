@@ -58,15 +58,17 @@ export default function EkranDzis(): React.ReactElement {
     void wczytajDzis(kontener, licznik).then((d) => { if (zywy) ustawDane(d); }, () => undefined);
     return () => { zywy = false; };
   }, [gotowe, wersja, plusy, fokus, kontener, licznik]);
+  // 07-jakosc-001: wyjątek odczytu miejsca = jak błąd odczytu (`m.ok` fałsz): domyślnie licznik, nigdy cisza po stuknięciu.
+  const miejsceAlboBlad = (): ReturnType<typeof licznik.miejsce> => licznik.miejsce().catch(() => ({ ok: false as const, powod: 'zapis' as const }));
   async function naKontynuuj(): Promise<void> {
-    const m = await licznik.miejsce();
+    const m = await miejsceAlboBlad();
     if (m.ok && m.wartosc === 'lista') { router.navigate('/projekty'); return; }
     router.push('/licznik');
     if (m.ok && m.wartosc === 'wzor') router.push('/wzor'); // praca skończyła się na wzorze: licznik pod spodem, „wstecz” wraca na licznik (07-jakosc-006)
   }
   // P-588: „Dodaj wzór” → menu źródeł bieżącego projektu (trasa „/wzor” z `zrodla`, licznik pod spodem, „wstecz” wraca na licznik); bez bieżącego projektu → Projekty.
   async function naDodajWzor(): Promise<void> {
-    const m = await licznik.miejsce();
+    const m = await miejsceAlboBlad();
     if (!licznik.biezacy() || (m.ok && m.wartosc === 'lista')) { router.navigate('/projekty'); return; }
     router.push('/licznik');
     router.push({ pathname: '/wzor', params: { zrodla: '1' } });
