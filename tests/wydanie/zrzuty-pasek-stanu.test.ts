@@ -1,4 +1,4 @@
-/* 10-wydanie-018 (sesja AL, 2026-11-11, KO-041; recenzja AK, przebieg 43035080611): pasek stanu iPada pokazywał datę maszyny („Wed 11 Nov”) zamiast daty z danych sceny
+/* 10-wydanie-018 (sesja AL, 2026-11-11, KO-041; recenzja AK, przebieg 43035080611; zmiana AQ 2026-11-12, KO-046): pasek stanu iPada pokazywał datę maszyny („Wed 11 Nov”) zamiast daty z danych sceny
  * („Tue 10 Nov” / po polsku), w zestawie pl po angielsku; stderr `simctl status_bar` szedł do /dev/null, a komunikat „kadr bez daty na pasku iPada” był nieprawdziwy (data maszyny zostaje).
  * Linux nie uruchomi simctl: test uruchamia funkcje skryptu z atrapą `xcrun`; właściwy dowód (co przyjmuje simctl na runnerze) to log następnego przebiegu — zob. komentarz przy pasek_stanu. */
 import * as fs from 'fs';
@@ -28,34 +28,33 @@ ${wywolanie}`;
 }
 const czasy = (w: Wynik) => w.xcrun.filter((l) => l.includes('status_bar') && l.includes('override'));
 
-describe('10-wydanie-018: pasek stanu iPada — data z danych sceny, uczciwe komunikaty', () => {
-  test('ISO w UTC (…T09:41:00Z, 018 po przebiegu 130695677975: simctl odrzucił +00:00, code=22) trafia do `status_bar override --time`, bez ostrzeżeń, z odczytem `status_bar list` w logu', () => {
+describe('10-wydanie-018: pasek stanu — tylko godzina „9:41” jak Trening (AQ, KO-046), uczciwe komunikaty', () => {
+  // AQ (opcja b z P-744, rekomendacja P-750): simctl na runnerze odrzucił każdą formę ISO (`+00:00`, `Z`; joby 130695677975, 130796899562, 130811471544: code=22),
+  // więc pasek dostaje samą godzinę jak trening:scripts/ci/store-screenshots.sh:26 (`--time "9:41"`). Data na pasku iPada to data maszyny (spójność dat: zrzuty-data-ipada.test.ts).
+  test('jedyny override ma `--time 9:41` (bez próby ISO, bez zera wiodącego jak w Treningu), bez ostrzeżeń, z odczytem `status_bar list` w logu', () => {
     const w = uruchom(['pasek_stanu'], 'pasek_stanu');
     expect(w.status).toBe(0);
-    const [pierwsze] = czasy(w);
-    expect(pierwsze).toMatch(/--time 2026-11-10T09:41:00Z\s/);
-    expect(funkcja('pasek_stanu')).not.toMatch(/%z|[+-]\$\{|off:/); // bez przesunięcia strefy z `date`
+    expect(czasy(w)).toHaveLength(1);
+    expect(czasy(w)[0]).toMatch(/--time 9:41\s/);
+    expect(w.xcrun.join('\n')).not.toMatch(/\d{4}-\d{2}-\d{2}T|\+00:00|09:41/); // żadnej formy ISO ani HH:MM z zerem
     expect(w.out).not.toContain('::warning::');
     expect(w.xcrun.some((l) => /status_bar U list/.test(l))).toBe(true);
   });
 
-  test('ISO odrzucone: stderr simctl jest w ostrzeżeniu (nie znika w /dev/null), drugi override ma samą godzinę, a komunikat nie twierdzi „kadr bez daty”', () => {
-    const w = uruchom(['pasek_stanu'], 'pasek_stanu', '--time 2026');
-    expect(w.status).toBe(0);
-    expect(w.out).toMatch(/::warning::[^\n]*Invalid time format \(atrapa\)/);
-    expect(czasy(w)).toHaveLength(2);
-    expect(czasy(w)[1]).toMatch(/--time 09:41\s/);
-    expect(w.out).toContain('data maszyny');
-    expect(w.out).not.toContain('kadr bez daty');
+  test('godzina pochodzi z ZRZUTY_TERAZ (jedno źródło): 14:05 → `--time 14:05`, 09:41 → `9:41`', () => {
+    const w = uruchom(['pasek_stanu'], 'ZRZUTY_TERAZ="2026-11-12T14:05:00"; pasek_stanu');
+    expect(czasy(w)[0]).toMatch(/--time 14:05\s/);
   });
 
-  test('oba override odrzucone: drugie ostrzeżenie też niesie stderr simctl i mówi, że godzina i data są z maszyny', () => {
+  test('simctl odrzuca override: ostrzeżenie niesie stderr simctl i mówi, że godzina i data są z maszyny; bez drugiej próby i bez cichego zjazdu', () => {
     const w = uruchom(['pasek_stanu'], 'pasek_stanu', '--time');
     expect(w.status).toBe(0);
     const ostrz = w.out.split('\n').filter((l) => l.startsWith('::warning::'));
-    expect(ostrz).toHaveLength(2);
-    expect(ostrz[1]).toMatch(/Invalid time format \(atrapa\)/);
-    expect(ostrz[1]).toMatch(/godzin[ęa] i dat[ęa] z maszyny/);
+    expect(ostrz).toHaveLength(1);
+    expect(ostrz[0]).toMatch(/Invalid time format \(atrapa\)/);
+    expect(ostrz[0]).toMatch(/godzin[ęa] i dat[ęa] z maszyny/);
+    expect(czasy(w)).toHaveLength(1);
+    expect(w.out).not.toContain('kadr bez daty');
   });
 
   test('język systemu = język danych: pl → defaults write AppleLanguages pl, potem pełny rozruch symulatora i pasek stanu; en → bez zmian i bez rozruchu', () => {

@@ -38,16 +38,13 @@ describe('zrzuty sklepu: region symulatora nie psuje obrotu iPada (sceny 03, 04)
     expect(shutdown).toBeLessThan(boot); expect(boot).toBeLessThan(status);
     expect(status).toBeLessThan(jasny); expect(jasny).toBeLessThan(pasek);
   });
-  test('pasek stanu: powrót do godziny HH:MM z ZRZUTY_TERAZ jest głośny (::warning:: przed drugą próbą), a nieudana druga próba daje osobne ostrzeżenie; brak cichego zjazdu', () => {
-    const f = funkcja('pasek_stanu');
-    const iso = f.indexOf('override --time "$iso"');
-    const ostrz1 = f.indexOf('::warning::Pasek stanu: forma ISO');
-    const hhmm = f.indexOf('override --time "${ZRZUTY_TERAZ:11:5}"');
-    const ostrz2 = f.indexOf('::warning::Nie udało się ustawić paska stanu');
-    for (const [n, p] of Object.entries({ iso, ostrz1, hhmm, ostrz2 })) expect([n, p >= 0]).toEqual([n, true]);
-    expect(iso).toBeLessThan(ostrz1); expect(ostrz1).toBeLessThan(hhmm); expect(hhmm).toBeLessThan(ostrz2);
+  test('pasek stanu (AQ, KO-046): jeden override `--time` z godziną, a porażka simctl jest głośna (::warning:: ze stderr); brak formy ISO i brak cichego zjazdu', () => {
+    const f = bezKomentarzy(funkcja('pasek_stanu'));
+    expect(f).not.toMatch(/\$iso|\$\{ZRZUTY_TERAZ\}Z|%z/);
+    expect(f.match(/status_bar "\$UDID" override --time /g)).toHaveLength(1);
+    expect(f.indexOf('override --time')).toBeLessThan(f.indexOf('::warning::Nie udało się ustawić paska stanu'));
   });
-  test('pasek_stanu (uruchomiony z atrapą xcrun): ISO ok → bez ostrzeżenia; ISO odrzucone → ostrzeżenie i HH:MM; oba odrzucone → dwa ostrzeżenia', () => {
+  test('pasek_stanu (uruchomiony z atrapą xcrun): override ok → bez ostrzeżenia; override odrzucony → jedno ostrzeżenie i kod 0', () => {
     const wywolaj = (odrzuca: string): string => {
       const skrypt = `set -uo pipefail; UDID=U; ZRZUTY_TERAZ="2026-11-10T09:41:00"
 xcrun() { case "$*" in *"--time ${odrzuca}"*) return 1;; esac; return 0; }
@@ -58,9 +55,7 @@ pasek_stanu`;
       return r.stdout;
     };
     expect(wywolaj('NIGDY')).not.toContain('::warning::');
-    expect(wywolaj('2026')).toMatch(/^::warning::Pasek stanu: forma ISO \(2026-11-10T09:41:00Z\) odrzucona[^\n]*ustawiam samą godzinę 09:41/);
-    expect(wywolaj('2026')).not.toMatch(/Nie udało się/);
-    expect(wywolaj('').match(/::warning::/g)).toHaveLength(2);
+    expect(wywolaj('').match(/::warning::/g)).toHaveLength(1);
   });
   test('zestaw nie jest zmniejszony: iPad i obie orientacje zostają (ORIENT_WZOR iPada poziomo)', () => {
     expect(sh).toMatch(/ipad\)\s+ROZMIAR="ipad-13"; ORIENT_WZOR="LANDSCAPE_LEFT"/);

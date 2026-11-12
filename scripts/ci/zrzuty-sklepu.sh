@@ -2,7 +2,7 @@
 # 013 (sesja AH): dane fikcyjne per język (e2e/zrzuty-sklepu/dane/<klucz>.json przez scripts/ci/zrzuty-dane.mjs; wzór trening:scripts/ci/store-screenshots.sh:17,60). 00-przygotuj biegnie dla klucza danych języka
 # (en | pl | …), a przy zmianie klucza między językami — od nowa (clearState); język bez własnych danych dostaje dane en z ostrzeżeniem (jawny powrót, docs/wydanie/zrzuty-ramki.md). Region i format godziny: ustaw_region.
 # Zrzuty sklepu z symulatora (zrzuty-sklepu.yml; rola 10-wydanie, zadanie E-2; plan: docs/wydanie/metadane/zrzuty-plan.md, opcja A).
-# Kolejność: (1) pasek stanu jak w materiałach Apple (9:41 z datą z ZRZUTY_TERAZ, pełna bateria), tryb jasny; (2) scenariusz 00-przygotuj.yaml wprowadza dane FIKCYJNE
+# Kolejność: (1) pasek stanu jak w materiałach Apple (9:41, pełna bateria; data na pasku iPada = data maszyny), tryb jasny; (2) scenariusz 00-przygotuj.yaml wprowadza dane FIKCYJNE
 # (e2e/zrzuty-sklepu); (3) każda scena 01…07 to osobny scenariusz Maestro (restart na tych samych danych + nawigacja, bez +1 na liczniku),
 # po nim `xcrun simctl io screenshot` — natywne piksele urządzenia (iPhone 17 Pro Max 1320 × 2868, iPad Pro 13″ 2064 × 2752), bez ramki Maestro.
 # Nieudana scena jest powtarzana raz; po drugiej porażce zapisana w `nieudane-<urządzenie>.txt` i pomijana (reszta idzie dalej, przebieg zbiorczy jest czerwony).
@@ -57,24 +57,19 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
   local w h; w=$(sips -g pixelWidth "$1" | awk '/pixelWidth/ {print $2}'); h=$(sips -g pixelHeight "$1" | awk '/pixelHeight/ {print $2}'); echo "${w}x${h}"
 }
 
-# --- pasek stanu i wygląd (stała ZRZUTY_TERAZ: ISO ustawia też datę paska, np. „Tue Nov 10” na iPadzie; bez niej wychodziła data maszyny, 016) ---
-# Run 43017044972: forma ISO bez strefy („2026-11-10T09:41:00”) została odrzucona. Job 130695677975 (018): forma z przesunięciem „…T09:41:00+00:00” też odrzucona (simctl code=22).
-# Teraz forma UTC „…T09:41:00Z” (018, decyzja koordynatora AN, KO-043: opcja a); runner GitHub ma strefę UTC, więc godzina na pasku zostaje 09:41 — przy innej strefie maszyny
-# wynik pokaże odczyt `status_bar list` w logu (NIESPRAWDZONE na runnerze: zob. docs/programista/zrzuty-018-019-an.md). Stderr simctl idzie do ::warning:: (nie do /dev/null),
-# a po udanym override log ma odczyt `status_bar list`. Gdyby i „Z” została odrzucona: opcja (b) (sama godzina HH:MM bez daty) to osobna decyzja, nie ta zmiana.
-# 10-wydanie-018: gdy ISO odrzucone, powrót do samej godziny HH:MM jest GŁOŚNY (zasada 21) i komunikat mówi prawdę: godzina z danych, a data na pasku iPada zostaje data maszyny (iPhone daty na pasku nie pokazuje).
+# --- pasek stanu i wygląd: sama godzina z ZRZUTY_TERAZ („9:41”), jak trening:scripts/ci/store-screenshots.sh:26 (`--time "9:41"`) ---
+# AQ (KO-046, opcja b z P-744; rekomendacja P-750): simctl na runnerze odrzucił każdą formę ISO — bez strefy (run 43017044972), `+00:00` (job 130695677975), `Z` (joby 130796899562, 130811471544): code=22,
+# a po odrzuceniu i tak ustawiał samą godzinę. Dlatego bez prób ISO. Data na pasku iPada to data MASZYNY w chwili zrzutu (iPhone daty na pasku nie pokazuje); spójność dat kompletu
+# zapewnia plan (ZRZUTY_TERAZ z dnia przebiegu, uzupełnienie iPada: scripts/ci/zrzuty-uzupelnij.mjs data) i kontrola daty zrzutu iPada niżej. Stderr simctl idzie do ::warning::, a po udanym override log ma odczyt `status_bar list`.
 pasek_stanu() {
   local reszta=(--dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100)
-  local iso blad
-  iso="${ZRZUTY_TERAZ}Z"
-  if blad="$(xcrun simctl status_bar "$UDID" override --time "$iso" "${reszta[@]}" 2>&1)"; then
-    echo "pasek stanu: ustawiony z $iso; odczyt simctl: $(xcrun simctl status_bar "$UDID" list 2>&1 | grep -i 'time\|date' | head -3 | tr '\n' ' ')"
+  local godzina blad
+  godzina="$((10#${ZRZUTY_TERAZ:11:2})):${ZRZUTY_TERAZ:14:2}"   # „9:41”: godzina bez zera wiodącego jak w Treningu
+  if blad="$(xcrun simctl status_bar "$UDID" override --time "$godzina" "${reszta[@]}" 2>&1)"; then
+    echo "pasek stanu: ustawiony (--time $godzina); odczyt simctl: $(xcrun simctl status_bar "$UDID" list 2>&1 | grep -i 'time\|date' | head -3 | tr '\n' ' ')"
     return 0
   fi
-  echo "::warning::Pasek stanu: forma ISO ($iso) odrzucona przez simctl (${blad:0:300}) — ustawiam samą godzinę ${ZRZUTY_TERAZ:11:5}; na pasku iPada zostanie data maszyny, nie z danych sceny"
-  if ! blad="$(xcrun simctl status_bar "$UDID" override --time "${ZRZUTY_TERAZ:11:5}" "${reszta[@]}" 2>&1)"; then
-    echo "::warning::Nie udało się ustawić paska stanu (simctl: ${blad:0:300}); zrzuty będą miały godzinę i datę z maszyny"
-  fi
+  echo "::warning::Nie udało się ustawić paska stanu (simctl: ${blad:0:300}); zrzuty będą miały godzinę i datę z maszyny"
 }
 pasek_stanu
 xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
