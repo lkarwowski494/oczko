@@ -71,3 +71,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AT | 08 fix (07-001…003) | — | 2,01 | 20 | 08:16 → 09:31 | — | archiwizacja 09:52 |
 | BA | 08 fix (04-001) | 8 | 1,14 | 16 | 08:44 → 08:58 | — | archiwizacja 09:52 |
 | AX | 08 audit (recenzja AT, delta 003, scalenie kandydata) | — | 8,33 | 31 | 08:33 → 09:48 (kandydat 562dfc4) | — | archiwizacja 09:56 (ponad 30% — bez dalszej pracy) |
+| M9 …wtoK6… (koordynator 18) | M9 | 10 | 12,91 | 35 | 08:58 → 09:50 | — | archiwizacja 09:58 przez następcę (wyjątek: lineage 8/8); …vgNA… (17) już zarchiwizowana, 18,13 USD |
