@@ -85,6 +85,15 @@ pasek_stanu() {
   fi
   echo "::warning::Nie udało się ustawić paska stanu (simctl: ${blad:0:300}); zrzuty będą miały godzinę i datę z maszyny"
 }
+# 10-wydanie-022 (AU, KO-050 opcja a): zadanie iPada startuje tylko w dniu przebiegu. Plan ustala dzień przed kolejką macOS i buildem (≈ 26 min), więc przebieg uruchomiony wieczorem UTC albo czekający na maszynę
+# w oknie 14–23 UTC zaczyna iPada po północy; bez tej kontroli każdy zestaw padałby dopiero po 00-przygotuj i pierwszej scenie (data_zrzutu_zgodna), po kilkunastu minutach pracy macOS.
+if [ "$URZ" = ipad ]; then
+  DATA_START="$(data_maszyny)"
+  if [ "$DATA_START" != "$ZRZUTY_DZIEN" ]; then
+    echo "::error::zadanie iPada nie startuje: data maszyny ($DATA_START) ≠ dzień przebiegu ($ZRZUTY_DZIEN) — przebieg przeszedł przez północ UTC w kolejce, więc pasek iPada pokazałby inną datę niż treść kadrów; uruchom zrzuty iPada w nowym przebiegu tak, by skończyły się przed 00:00 UTC (≈ 30 min na język)"
+    exit 1
+  fi
+fi
 pasek_stanu
 xcrun simctl ui "$UDID" appearance light >/dev/null 2>&1 || true
 

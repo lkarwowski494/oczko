@@ -189,6 +189,34 @@ describe('zrzuty-sklepu.yml: plan ustala dzień raz, zadania i „zbierz” dost
 /* 10-wydanie-022 … -026 (AU, 2026-11-12, KO-050; recenzja AS): poprawki workflowu zrzutów po audycie. Wynik na runnerze macOS: niesprawdzone (potwierdzi pierwszy przebieg zrzutów na kandydacie, C1). */
 import { YAML } from '../jakosc/maestro-runner';
 
+describe('10-wydanie-022: zadanie iPada kończy się na starcie, gdy data maszyny ≠ dzień przebiegu (przed 00-przygotuj)', () => {
+  function ipad(dzienMaszyny: string, urz = 'ipad') {
+    const d = nowyKat(); const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
+    const stub = (n: string, body: string) => { fs.writeFileSync(path.join(bin, n), `#!/bin/bash\n${body}\n`); fs.chmodSync(path.join(bin, n), 0o755); };
+    stub('date', `echo ${dzienMaszyny}`); stub('sleep', 'exit 0'); stub('xcrun', 'if [ "$2" = io ]; then echo x > "$6"; fi; exit 0'); stub('sips', 'echo "  pixelWidth: 2064"; echo "  pixelHeight: 2752"');
+    stub('node', `case "$1" in *zrzuty-uzupelnij.mjs) exec "${process.execPath}" "$@";; *zrzuty-dane.mjs) case "$2" in klucz) echo en;; env) echo DANE_KLUCZ=en;; pole) echo en_US;; esac;; esac; exit 0`);
+    stub('maestro', `echo "$*" >> "${d}/maestro.txt"; exit 0`);
+    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', urz, path.join(d, 'out'), path.join(d, 'log'), 'false', 'en'], { encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: 'en=01-dzis', ZRZUTY_TERAZ: '2026-11-12T09:41:00', ZRZUTY_DZIEN: '2026-11-12' } });
+    return { r, maestro: fs.existsSync(path.join(d, 'maestro.txt')) };
+  }
+  test('iPad, data maszyny 2026-11-13 ≠ dzień 2026-11-12: kod 1, komunikat o dniu przebiegu, żaden scenariusz Maestro nie ruszył', () => {
+    const { r, maestro } = ipad('2026-11-13');
+    expect(r.status).toBe(1);
+    expect(`${r.stdout}${r.stderr}`).toMatch(/dzień przebiegu \(2026-11-12\)/);
+    expect(maestro).toBe(false);
+  });
+  test('iPad, ta sama data: zadanie idzie dalej; iPhone przy innej dacie nie jest sprawdzany (pasek bez daty)', () => {
+    expect(ipad('2026-11-12').maestro).toBe(true);
+    const { r, maestro } = ipad('2026-11-13', 'iphone');
+    expect([r.status, maestro]).toEqual([0, true]);
+  });
+  test('opis wejścia `urzadzenia` w workflowie mówi, żeby iPad skończył przed 00:00 UTC (data paska), i wskazuje kontrolę na starcie', () => {
+    const wf = YAML.parse(fs.readFileSync(path.join(korzen, '.github/workflows/zrzuty-sklepu.yml'), 'utf8'));
+    const opis: string = wf.on.workflow_dispatch.inputs.urzadzenia.description;
+    expect(opis).toMatch(/przed 00:00 UTC/);
+  });
+});
+
 describe('10-wydanie-024: każdy potok `zrzuty-uzupelnij.mjs … | tee` w workflowie pilnuje kodu wyjścia skryptu', () => {
   test('po każdym takim potoku PIPESTATUS[0] albo krok ma `set -o pipefail`', () => {
     const wf = YAML.parse(fs.readFileSync(path.join(korzen, '.github/workflows/zrzuty-sklepu.yml'), 'utf8'));
