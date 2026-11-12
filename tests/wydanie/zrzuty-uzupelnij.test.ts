@@ -34,7 +34,7 @@ describe('zrzuty-uzupelnij.mjs powtorz (wejście powtorz: ekrany robione od nowa
     expect(r.status).toBe(0);
     for (const f of ['warunek-og07/6.9/en/04-zakreslenie.png', 'ipad-13/pl/04-zakreslenie.png', 'warunek-og07/ipad-13/pl/04-zakreslenie.png']) expect(fs.existsSync(path.join(d, f))).toBe(false);
     expect(fs.existsSync(path.join(d, '6.9/en/01-dzis.png'))).toBe(true);
-    expect(fs.existsSync(path.join(d, 'warunek-og07/6.9/en/03-wzor.png'))).toBe(true);
+    expect(fs.existsSync(path.join(d, 'warunek-og07/6.9/en/03-wzor.png'))).toBe(false); // 10-wydanie-025: partner pary 03/04 idzie razem z podaną sceną (jeden build); szczegóły: zrzuty-data-ipada.test.ts
     expect(r.stdout).toMatch(/usunięte z uzupełnienia/);
   });
   test('pusta lista, brak katalogu i wpis en/99-zakup (zrzut zakupu to nie plik w komplecie) niczego nie usuwają', () => {
@@ -81,7 +81,7 @@ describe('zrzuty-jezyki.mjs: plan uzupełnienia z poprzedniego przebiegu', () =>
     const d = poprzednie(); node([modul('zrzuty-uzupelnij.mjs'), 'powtorz', d, 'en/04-zakreslenie']);
     let p = JSON.parse(plan('en,pl', '6', 'iphone', d, 'en/04-zakreslenie,en/99-zakup').stdout);
     expect(p.matrix.map((m: any) => [m.jezyki, m.zakup])).toEqual([['en,pl', true]]); // eslint-disable-line @typescript-eslint/no-explicit-any
-    expect(p.matrix[0].sceny).toBe(`en=04-zakreslenie;pl=04-zakreslenie,06-historia`);
+    expect(p.matrix[0].sceny).toBe(`en=03-wzor,04-zakreslenie;pl=04-zakreslenie,06-historia`); // 025: powtórka 04 usuwa też 03 (para z jednego buildu)
     const k = nowyKat(); for (const s of SCENY) plik(k, `6.9/en/${s}.png`);
     p = JSON.parse(plan('en', '6', 'iphone', k, 'en/99-zakup').stdout);
     expect(p.matrix).toEqual([{ urzadzenie: 'iphone', jezyki: '', nr: 1, zakup: true, sceny: '' }]);

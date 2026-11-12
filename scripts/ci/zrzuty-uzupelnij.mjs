@@ -24,6 +24,7 @@ export const PLIK_DAT = 'zrzuty-daty.json';
 export const SCENY = [...ZAWSZE, ...WARUNKOWE].sort();
 export const ZAKUP = '99-zakup';
 export const KATALOG_WARUNKOWY = 'warunek-og07';
+const PARA_WZORU = { '03-wzor': '04-zakreslenie', '04-zakreslenie': '03-wzor' };
 const WPIS = /^([A-Za-z]{2,3}(?:-[A-Za-z0-9]+)?)\/(\d{2}-[a-z]+)$/;
 
 /** Lista „język/scena[,…]” → { pary: [{ jezyk, scena }], zakup }. Zły wpis albo nieznana scena = błąd (zasada: nie cicho pomijać). `en/99-zakup` to zrzut zakupu (tylko po angielsku), nie plik kompletu. */
@@ -52,7 +53,13 @@ export function brakujace(katalog, urzadzenie, jezyk) {
 
 /** Usuwa z katalogu poprzednich wskazane pary (we wszystkich klasach i w katalogu warunkowym), więc plan liczy je jako brakujące; zwraca usunięte ścieżki względne. */
 export function powtorz(katalog, lista) {
-  const { pary } = parsujPowtorz(lista);
+  const { pary: podane } = parsujPowtorz(lista);
+  // 10-wydanie-025: sceny wzoru 03 i 04 to para z jednego buildu (kontrola zakreśleń porównuje 04 z 03) — powtórka jednej usuwa obie
+  const pary = [...podane];
+  for (const { jezyk, scena } of podane) {
+    const partner = PARA_WZORU[scena];
+    if (partner && !pary.some((p) => p.jezyk === jezyk && p.scena === partner)) pary.push({ jezyk, scena: partner });
+  }
   const usuniete = [];
   if (!pary.length || !existsSync(katalog)) return usuniete;
   for (const { jezyk, scena } of pary) {
