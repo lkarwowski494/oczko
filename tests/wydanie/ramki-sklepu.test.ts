@@ -60,7 +60,7 @@ if (!maConvert && !wymagaConvert) {
     sztuczny('6.9/en/01-dzis.png', 1320, 2868);
     sztuczny('6.9/en/02-licznik.png', 1320, 2868);
     sztuczny('6.9/pl/06-historia.png', 1320, 2868);
-    sztuczny('6.9/de/01-dzis.png', 1320, 2868); // język bez podpisów → pominięty
+    sztuczny('6.9/bg/01-dzis.png', 1320, 2868); // język bez podpisów → pominięty
     sztuczny('ipad-13/en/05-projekty.png', 2064, 2752);
     sztuczny('warunek-og07/ipad-13/en/03-wzor.png', 2752, 2064); // poziomo, katalog warunkowy
     wynik = spawnSync('bash', [SKRYPT, we, wy], { encoding: 'utf8', cwd: korzen, timeout: 240000 });
@@ -70,13 +70,13 @@ if (!maConvert && !wymagaConvert) {
   test('kod wyjścia 0; ostrzeżenie o języku bez podpisów', () => {
     expect(wynik.status).toBe(0);
     expect(String(wynik.stdout)).toMatch(/Ramki: 5 plików/);
-    expect(String(wynik.stdout)).toMatch(/Brak podpisów dla języka de/);
+    expect(String(wynik.stdout)).toMatch(/Brak podpisów dla języka bg/);
   });
   test('wymiary wyjścia = wymiary wejścia, RGB bez alfy, układ katalogów zachowany (także warunek-og07)', () => {
     expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(/^1320x2868 srgb$/);
     expect(wymiar(path.join(wy, 'ipad-13/en/05-projekty.png'))).toMatch(/^2064x2752 srgb$/);
     expect(wymiar(path.join(wy, 'warunek-og07/ipad-13/en/03-wzor.png'))).toMatch(/^2752x2064 srgb$/);
-    expect(fs.existsSync(path.join(wy, '6.9/de/01-dzis.png'))).toBe(false);
+    expect(fs.existsSync(path.join(wy, '6.9/bg/01-dzis.png'))).toBe(false);
   });
   test('wymiary-asc.mjs: wynik zgodny z App Store Connect (kod 0); zła klasa i alfa wykrywane (kod 1)', () => {
     expect(jest('node', [WYMIARY, wy])).toBe(true);
