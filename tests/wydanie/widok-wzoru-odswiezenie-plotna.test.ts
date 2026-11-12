@@ -103,3 +103,30 @@ describe('10-wydanie-019 (AO): scen. 47 rysuje drugie pociągnięcie na wzorze w
     expect(restart < jeden && jeden < narzedzie && narzedzie < swipe && swipe < dwa && dwa < czekaj && czekaj < zrzut).toBe(true);
   });
 });
+
+// AQ (2026-11-12, KO-046; recenzja AP, P2, pewność średnia): `canvasViewDidEndUsingTool` ponownie planuje odświeżenie strony, która „już czeka” (`doOdswiezenia`). Przy dwóch szybkich
+// pociągnięciach wpis po pierwszym może przeżyć do końca drugiego (odświeżenie pominięte, bo `wUzyciu` zawiera stronę), a płótno przypisane z `rysunki[s]` zanim drugie pociągnięcie
+// trafi do `c.drawing` mogłoby je zgubić. Dokumentacja Apple nie podaje kolejności ani opóźnienia callbacków (EndUsingTool vs DrawingDidChange; odczyt 12.11.2026,
+// developer.apple.com/tutorials/data/documentation/pencilkit/pkcanvasviewdelegate/…), a Swift nie kompiluje się w Linuksie, więc defektu nie da się potwierdzić kodem: zamiast zmiany
+// logiki ręcznie bez możliwości uruchomienia — tani wykrywacz w E2E: dwa swipe'y jeden po drugim BEZ czekania, licznik zgodny z liczbą pociągnięć i zrzut do obejrzenia.
+describe('10-wydanie-019 (AQ, P2): scen. 47 rysuje dwa szybkie pociągnięcia jedno po drugim na wzorze z zakreśleniami', () => {
+  const s47 = readFileSync(join(__dirname, '../../e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml'), 'utf8')
+    .split('\n').filter((l) => !l.trimStart().startsWith('#'));
+  const i = (re: RegExp, od = 0) => s47.findIndex((l, n) => n >= od && re.test(l));
+  test('po zrzucie drugiego zakreślenia: dwa swipe\'y jeden po drugim (między nimi tylko szybka asercja narzędzia, bez czekania), „4 highlights” (1 z pliku + 1 + 2 szybkie), odczekanie i zrzut', () => {
+    const poprzedni = i(/takeScreenshot:\s*47-ipad-drugie-zakreslenie/);
+    const a = i(/swipe:.*"30%, 62%".*"70%, 62%"/, poprzedni);
+    const b = i(/swipe:.*"30%, 68%".*"70%, 68%"/, poprzedni);
+    expect([poprzedni, a, b].every((n) => n >= 0)).toBe(true);
+    expect(s47.slice(a + 1, b)).toEqual([expect.stringMatching(/assertVisible:.*wzor-zakreslacz.*selected: true/)]); // reguła §3.8: asercja po swipe; żadnego czekania ani drugiego kroku między pociągnięciami
+    expect(s47.slice(a, b).join('\n')).not.toMatch(/waitFor|extendedWait|sleep/i);
+    const cztery = i(/wzor-zakreslenia.*"4 highlights"/, b);
+    const czekaj = i(/waitForAnimationToEnd/, cztery);
+    const zrzut = i(/takeScreenshot:\s*47-ipad-szybkie-zakreslenia/, czekaj);
+    expect([cztery, czekaj, zrzut].every((n) => n >= 0)).toBe(true);
+    expect(b < cztery && cztery < czekaj && czekaj < zrzut).toBe(true);
+  });
+  test('Swift bez zmiany logiki odświeżania w AQ: nadal tylko strona, która już czeka (sekcja AQ w docs/programista/zrzuty-018-019-an.md)', () => {
+    expect(cialo(/func canvasViewDidEndUsingTool\(_ c: PKCanvasView\) \{/)).toMatch(/if doOdswiezenia\.contains\(c\.tag\) \{ zaplanujOdswiezenie\(c\.tag\) \}/);
+  });
+});
