@@ -1,0 +1,12 @@
+$ (worktree bd97f939) npx jest --ci tests/jakosc/e2e-word-czas-limit.test.ts
+PASS iOS tests/jakosc/e2e-word-czas-limit.test.ts
+  ✓ limit konwersji w aplikacji to 60 s (podstawa progu scenariuszy) (4 ms)
+  ✓ 25-br-wzr-007-s2-plik-word.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji (2 ms)
+  ✓ 53-p-282-word-tabela-obraz.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.773 s, estimated 2 s
+Ran all test suites matching /tests\/jakosc\/e2e-word-czas-limit.test.ts/i.
+kod wyjścia: 0

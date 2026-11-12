@@ -1,0 +1,56 @@
+$ (worktree 2f224a8 + test z bd97f939) npx jest --ci tests/jakosc/e2e-word-czas-limit.test.ts
+FAIL iOS tests/jakosc/e2e-word-czas-limit.test.ts
+  ✓ limit konwersji w aplikacji to 60 s (podstawa progu scenariuszy) (7 ms)
+  ✕ 25-br-wzr-007-s2-plik-word.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji (8 ms)
+  ✕ 53-p-282-word-tabela-obraz.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji (2 ms)
+
+  ● 25-br-wzr-007-s2-plik-word.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "nr": 21,
+    -   "wiekszeNizLimit": true,
+    +   "wiekszeNizLimit": false,
+      }
+
+      25 |   const po = czasy(plik).filter((c) => !c.poRestarcie);
+      26 |   expect(po.length).toBeGreaterThan(0);
+    > 27 |   for (const c of po) expect({ nr: c.nr, wiekszeNizLimit: c.ms > LIMIT_APLIKACJI_MS }).toEqual({ nr: c.nr, wiekszeNizLimit: true });
+         |                                                                                        ^
+      28 | });
+      29 |
+
+      at toEqual (tests/jakosc/e2e-word-czas-limit.test.ts:27:88)
+
+  ● 53-p-282-word-tabela-obraz.yaml: oczekiwanie na wzor-widok po imporcie Worda > limit aplikacji
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "nr": 23,
+    -   "wiekszeNizLimit": true,
+    +   "wiekszeNizLimit": false,
+      }
+
+      25 |   const po = czasy(plik).filter((c) => !c.poRestarcie);
+      26 |   expect(po.length).toBeGreaterThan(0);
+    > 27 |   for (const c of po) expect({ nr: c.nr, wiekszeNizLimit: c.ms > LIMIT_APLIKACJI_MS }).toEqual({ nr: c.nr, wiekszeNizLimit: true });
+         |                                                                                        ^
+      28 | });
+      29 |
+
+      at toEqual (tests/jakosc/e2e-word-czas-limit.test.ts:27:88)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 1 passed, 3 total
+Snapshots:   0 total
+Time:        3.281 s
+Ran all test suites matching /tests\/jakosc\/e2e-word-czas-limit.test.ts/i.
+kod wyjścia: 1
