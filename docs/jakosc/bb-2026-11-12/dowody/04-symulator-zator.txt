@@ -1,0 +1,39 @@
+# device-simulator.log (run 43194659175), okno 10:34:44–10:36:10 (150 022 linii); wybrane linie
+## stuknięcie: testmanagerd → backboardd → aplikacja
+2026-11-12 10:34:46.369022+0000  localhost testmanagerd[10464]: [com.apple.dt.xctest:Default] Synthesizing event: 
+2026-11-12 10:34:46.884385+0000  localhost testmanagerd[10464]: [com.apple.dt.xctest:Default] Waiting up to 5.0s for TouchEventsCompleted to confirm 
+2026-11-12 10:34:48.182587+0000  localhost backboardd[2985]: [com.apple.BackBoard:TouchEvents] touch down without previous range event: 2
+2026-11-12 10:34:48.182705+0000  localhost backboardd[2985]: [com.apple.BackBoard:TouchEvents] contact 2 presence: touching
+2026-11-12 10:34:51.888064+0000  localhost testmanagerd[10464]: [com.apple.dt.xctest:Default] Timed out after waiting 5.0s for TouchEventsCompleted, event will be implicitly confirmed with no error ot
+2026-11-12 10:34:51.937829+0000  localhost testmanagerd[10464]: [com.apple.dt.xctest:Default] Requesting screenshot.
+2026-11-12 10:35:03.694792+0000  localhost backboardd[2985]: [com.apple.BackBoard:TouchEvents] touchstats 1063658000000-<main> events starting 16.8656s ago: [
+2026-11-12 10:35:03.698060+0000  localhost backboardd[2985]: [com.apple.BackBoard:TouchEvents] contact 2 presence: none
+2026-11-12 10:35:07.463787+0000  localhost backboardd[2985]: [com.apple.BackBoard:TouchEvents] touchstats 1063658000000-<main> events starting 3.76699s ago: [
+2026-11-12 10:35:13.719866+0000  localhost Oczko[12591]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1
+2026-11-12 10:35:13.759697+0000  localhost Oczko[12591]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1
+2026-11-12 10:35:54.865161+0000  localhost testmanagerd[10464]: [com.apple.dt.xctest:Default] Requesting screenshot.
+
+## liczba linii na sekundę (wszystkie procesy), mm:ss=liczba
+34:44=5236 34:45=3892 34:46=4402 34:47=5300 34:48=3921 34:49=5304 34:50=4949 34:51=4831 34:52=4231 34:53=6420 34:54=7832 34:55=6008 34:56=5082 34:57=6610 34:58=
+6291 34:59=5227 35:00=3582 35:01=3527 35:02=3678 35:03=4148 35:04=3862 35:05=4893 35:06=4077 35:07=5149 35:08=1793 35:09=6 35:10=68 35:11=11 35:12=74 35:13=88 3
+5:14=115 35:15=36 35:16=65 35:17=24 35:18=87 35:19=27 35:20=47 35:21=8 35:22=65 35:23=41 35:24=140 35:25=613 35:26=125 35:27=117 35:28=51 35:29=11 35:30=2 35:31
+=17 35:32=6 35:34=47 35:35=5 35:36=103 35:37=44 35:38=18 35:39=91 35:40=80 35:41=43 35:42=41 35:43=34 35:44=52 35:45=41 35:46=44 35:47=13 35:48=22 35:49=17 35:5
+0=20 35:51=243 35:52=981 35:53=326 35:54=2129 35:55=3558 35:56=2167 35:57=1625 35:58=1750 35:59=1540 36:00=1632 36:01=1548 36:02=1463 36:03=1417 36:04=1269 36:0
+5=1416 36:06=1417 36:07=1802 36:08=935 
+
+## procesy z największą liczbą linii
+ 102289 apsd
+   4858 nsurlsessiond
+   4849 mobileassetd
+   2425 identityservicesd
+   2005 trustd
+
+## awarie aplikacji w oknie (crash|jetsam|EXC_|SIGKILL|ReportCrash z Oczko)
+0
+
+## zapytania XCTest do aplikacji tuż przed stuknięciem
+2026-11-12 10:34:44.206616+0000  localhost Oczko[12591]: (XCTAutomationSupport) [com.apple.dt.xctest:Default] Captured accessibility snapshot data in 0.02s
+2026-11-12 10:34:44.629407+0000  localhost Oczko[12591]: (XCTAutomationSupport) [com.apple.dt.xctest:Default] Captured accessibility snapshot data in 0.02s
+
+## aplikacja po otrzymaniu zdarzenia (ActivityKit)
+2026-11-12 10:35:54.514361+0000  localhost Oczko[12591]: (ActivityKit) [com.apple.activitykit:activityClient] Requesting an activity: ["Attributes type: Attributes type: 

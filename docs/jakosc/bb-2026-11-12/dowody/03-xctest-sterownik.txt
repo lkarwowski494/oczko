@@ -1,0 +1,41 @@
+# xctest_runner_2026-11-12_103224.log (run 43194659175), linie 10:34:44–10:36:08 bez wierszy 't ='
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:23C8F95C-765D-46A9-AE82-0BEE2921C8D7, OS:26.5, 2026-11-12 10:33:27.615344+0000 maestro-driver-iosUITests-Runner[10514:36550] [Default] Running tests...
+2026-11-12 10:37:25.179 xcodebuild[9132:32808] [MT] IDETestOperationsObserverDebug: 253.302 elapsed -- Testing started completed.
+2026-11-12 10:37:25.179 xcodebuild[9132:32808] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-12 10:37:25.179 xcodebuild[9132:32808] [MT] IDETestOperationsObserverDebug: 253.302 sec, +253.302 sec -- end
+2026-11-12 10:37:28.588 xcodebuild[9132:32808] [MT] IDEResultKit: Warning: While writing a result bundle to /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/maestro_xctestrunner_xcodebuild_output5784755742555633334/Logs/
+2026-11-12 10:37:28.597 xcodebuild[9132:32808] [MT] IDETesting: Result bundle saving failed with error: Error Domain=IDEFoundationErrorDomain Code=12 "The result bundle could not be saved due to multiple errors: failed t
+Failing tests:
+** TEST EXECUTE FAILED **
+ 0.00s Tear Down
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testMainThreadBusyIsClassifiedAsTimeout]' passed (0.003 seconds).
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testTimeoutMessageWithWrongDomainStaysInternal]' started.
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testTimeoutMessageWithWrongDomainStaysInternal]' passed (0.005 seconds).
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testUIQueryTimeoutIsClassifiedAsTimeout]' started.
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testUIQueryTimeoutIsClassifiedAsTimeout]' passed (0.017 seconds).
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testUnrelatedXCTFutureErrorStaysInternal]' started.
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testUnrelatedXCTFutureErrorStaysInternal]' passed (0.061 seconds).
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testXCTFutureCode1000WithUnrelatedMessageStaysInternal]' started.
+Test Case '-[maestro_driver_iosUITests.SwipeRouteHandlerV2ClassificationTests testXCTFutureCode1000WithUnrelatedMessageStaysInternal]' passed (0.005 seconds).
+Test Suite 'SwipeRouteHandlerV2ClassificationTests' passed at 2026-11-12 10:33:40.190.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.108 (0.117) seconds
+Test Suite 'maestro_driver_iosUITests' started at 2026-11-12 10:33:40.192.
+Test Case '-[maestro_driver_iosUITests.maestro_driver_iosUITests testHttpServer]' started.
+2026-11-12 10:34:44.021798+0000 maestro-driver-iosUITests-Runner[10514:36550] [ViewHierarchyHandler] Successfully retrieved element hierarchy.
+2026-11-12 10:34:44.022028+0000 maestro-driver-iosUITests-Runner[10514:36550] Foreground app is not springboard skipping auto tapping on permissions
+2026-11-12 10:34:44.022202+0000 maestro-driver-iosUITests-Runner[10514:36550] [ViewHierarchyHandler] Fetch status bar hierarchy - start
+2026-11-12 10:34:44.129809+0000 maestro-driver-iosUITests-Runner[10514:36550] Fetch status bar hierarchy - duration 0.10752999782562256
+2026-11-12 10:34:44.129915+0000 maestro-driver-iosUITests-Runner[10514:36550] [ViewHierarchyHandler] Fetch Safari WebView hierarchy - start
+2026-11-12 10:34:44.130567+0000 maestro-driver-iosUITests-Runner[10514:36550] Fetch Safari WebView hierarchy - duration 0.0006279945373535156
+2026-11-12 10:34:44.154667+0000 maestro-driver-iosUITests-Runner[10514:36550] [Done] View hierarchy snapshot for Application 'com.apps4brew.knitting' 
+2026-11-12 10:34:44.163631+0000 maestro-driver-iosUITests-Runner[10514:37193] [FlyingFox] <127.0.0.1> request: POST /deviceInfo
+2026-11-12 10:34:44.167638+0000 maestro-driver-iosUITests-Runner[10514:36550] Detected running apps: ["com.apps4brew.knitting"]
+2026-11-12 10:34:44.169180+0000 maestro-driver-iosUITests-Runner[10514:36550] Returning cached screen size
+2026-11-12 10:34:44.169284+0000 maestro-driver-iosUITests-Runner[10514:36550] Device orientation is 1
+2026-11-12 10:34:44.174907+0000 maestro-driver-iosUITests-Runner[10514:37306] [FlyingFox] <127.0.0.1> request: POST /viewHierarchy
+2026-11-12 10:34:44.178674+0000 maestro-driver-iosUITests-Runner[10514:36550] Detected running apps: ["com.apps4brew.knitting"]
+2026-11-12 10:34:44.179363+0000 maestro-driver-iosUITests-Runner[10514:36550] [Start] View hierarchy snapshot for Application 'com.apps4brew.knitting'
+2026-11-12 10:34:44.179447+0000 maestro-driver-iosUITests-Runner[10514:36550] [ViewHierarchyHandler] Starting getHierarchyWithFallback for element.
+2026-11-12 10:34:44.264722+0000 maestro-driver-iosUITests-Runner[10514:36550] [ViewHierarchyHandler] Successfully retrieved element hierarchy.
+2026-11-12 10:34:44.264922+0000 maestro-driver-iosUITests-Runner[10514:36550] Foreground app is not springboard skipping auto tapping on permissions
