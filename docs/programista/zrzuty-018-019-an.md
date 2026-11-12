@@ -78,3 +78,34 @@ Pełna bramka: `docs/programista/zrzuty-018-019-ao-verify.txt`.
 
 ## AO — 018 (sprawdzenie)
 simctl odrzucił także `2026-11-10T09:41:00Z` („Invalid, non-ISO date/time string”, code=22; joby 130796899562, 130811471544), po czym ustawił samą godzinę 09:41 z datą maszyny. Bez zmiany kodu; rekomendacja: opcja (b) z P-744 (P-750).
+
+## AQ — 018 (pasek i daty kompletu), P2 (wyścig odświeżenia płótna), P3 (sesja AQ, 2026-11-12, KO-046; decyzje P-752…P-755)
+Rola 08-programista, tryb fix · gałąź `claude/aq-zrzuty-018-2026-11-12` (start @ 281852f, zgodny z poleceniem) · stan wyjściowy: `npx jest tests/wydanie` 527/527, kod 0 (przed zmianami). Zakres: `scripts/ci/`, `tests/wydanie/`, krok „plan/zrzuty/zbierz” w `.github/workflows/zrzuty-sklepu.yml` (tylko zadanie 2), `e2e/`, dokumenty. Bez zmian w `src/ app/ modules/`.
+
+| Zadanie | ID | Commit | Test przed → po |
+|---|---|---|---|
+| 4 | P3 kontrola zakreśleń | c88b779 | 1 czerwony (`OK (0 par)`) → 11/11 |
+| 1 | 10-wydanie-018 (b) pasek | 114ce16 | 6 czerwonych (ISO w override, dwa ostrzeżenia) → 75/75 w 4 plikach zrzutów |
+| 2 | 10-wydanie-018 (d) daty kompletu | bb46956 | 17 z 18 nowych czerwonych → `tests/wydanie` 592/592 |
+| 3 | P2 wyścig odświeżenia (wykrywacz E2E) | 39cf65d | 1 czerwony (brak kroków w scen. 47) → 10/10; `tests/jakosc` zielone |
+
+### 018 — pasek stanu (zadanie 1; P-752)
+`pasek_stanu()`: jeden `xcrun simctl status_bar … override --time "9:41"` (godzina z `ZRZUTY_TERAZ`, bez zera wiodącego), jak `trening:scripts/ci/store-screenshots.sh:26` (przeczytane w klonie Treningu 12.11.2026). Bez prób ISO (simctl odrzucił bez strefy, `+00:00` i `Z`: run 43017044972, joby 130695677975, 130796899562, 130811471544). Zostają: `::warning::` z stderr simctl przy błędzie i odczyt `status_bar list` po sukcesie. **Skutek znany z góry:** data na pasku iPada to data maszyny, nie data sceny.
+
+### 018 — spójność dat w komplecie (zadanie 2; P-753)
+Dwie osobne daty (dowód z AP: pasek iPada 01–07 „Śr. 11 lis”, 03/04 „Czw. 12 lis”, treść 01-dzis „wtorek, 10 listopada”):
+- **Zegar aplikacji** `ZRZUTY_TERAZ` (treść kadrów) zostaje **stałą** 2026-11-10T09:41:00: fikstura `00-przygotuj.yaml` ma sesje 3, 5 i 9 XI jako daty bezwzględne względem „dziś” (Historia, kalendarz, „This week”), ruchomy zegar by ją zepsuł. Stała mieszka teraz w planie (`ZRZUTY_TERAZ` w `scripts/ci/zrzuty-uzupelnij.mjs`), plan niesie ją w macierzy (`matrix.teraz`) do każdego zadania zrzutów; skrypt nie ma własnej kopii i bez zmiennej staje głośno.
+- **Dzień przebiegu** (`date -u +%F`, raz w zadaniu `plan`) = data maszyny, którą pasek iPada pokazuje; idzie w macierzy (`matrix.dzien`). Zrzut iPada zrobiony w innym dniu (przebieg przekroczył północ UTC) jest usuwany i liczony jako nieudany (`data_zrzutu_zgodna`, czerwony job, bez ponawiania).
+- **Uzupełnienie:** `zrzuty-uzupelnij.mjs data` (w planie i ponownie w „zbierz”, bo źródło jest pobierane świeżo) usuwa z poprzednich CAŁY zestaw iPada, gdy `dzienIpada` ze znacznika `zrzuty-daty.json` jest inny albo nieznany (źródło sprzed AQ). Plan liczy go wtedy jako brakujący i robi od nowa. Język iPada ze źródła spoza listy przebiegu = czerwony plan (inaczej zniknąłby z kompletu); przebieg bez iPada zostawia iPada ze źródła. „zbierz” zapisuje `zrzuty-daty.json` (`teraz`, `dzienIpada`) w artefakcie `sklep-zrzuty-surowe` po ramkach.
+- **Ograniczenia (nazwane):** treść kadrów (np. „wtorek, 10 listopada”) nadal różni się od daty na pasku iPada (11/12 XI…): sama data paska nie da się ustawić (simctl). iPhone daty na pasku nie pokazuje. Niesprawdzone na runnerze: strefa symulatora = UTC (`date -u` vs data na pasku), działanie `data` na prawdziwym artefakcie (testy na sztucznych katalogach). Pierwsze uzupełnienie ze źródła sprzed AQ (np. 43090241469) powtórzy cały zestaw iPada (brak znacznika): zamierzone, nie błąd. Przejście zadań macOS przez północ UTC jest teraz głośne, nie ciche.
+
+### P2 — odświeżenie po `canvasViewDidEndUsingTool` (zadanie 3; P-754)
+**Analiza (kod `WidokWzoru.swift`, stan z 281852f):** `canvasViewDrawingDidChange` wpisuje `rysunki[s]` i planuje odświeżenie (`doOdswiezenia`); `odswiezPlotna` w następnym obiegu pętli pomija strony `wUzyciu`; `canvasViewDidEndUsingTool` zdejmuje stronę z `wUzyciu` i ponownie planuje odświeżenie, gdy strona jest już w `doOdswiezenia`. Sekwencja ryzyka: P1 kończy się, P2 zaczyna się (strona w użyciu), dopiero potem przychodzi `DrawingDidChange` dla P1 → wpis w `doOdswiezenia` jest pominięty (w użyciu) i **przeżywa**; koniec P2 planuje odświeżenie z tego wpisu, a jeśli P2 nie jest jeszcze w `c.drawing`, płótno ma te same kreski co `rysunki[s]` (strażnik `takieSame` przechodzi) i dostaje przypisany rysunek bez P2; późniejsze `DrawingDidChange` P2 jest wtedy echem (`takieSame`) i odrzuca się → pociągnięcie zginęłoby także z danych. **Nie da się tego potwierdzić kodem:** dokumentacja Apple opisuje callbacki jednym zdaniem każdy i nie podaje kolejności ani opóźnienia `EndUsingTool` względem `DrawingDidChange` (developer.apple.com/tutorials/data/documentation/pencilkit/pkcanvasviewdelegate/…, odczyt 12.11.2026), a opóźnienie zatwierdzenia P1 dłuższe niż przerwa do P2 jest założeniem. Swift nie kompiluje się w Linuksie. **Ocena:** brzegowy (wymaga opóźnionego zatwierdzenia i bardzo szybkiego drugiego pociągnięcia), skutek: utrata jednego zakreślenia (dane użytkownika) → nie ignorujemy, ale nie zmieniamy logiki zapisu w ciemno.
+**Zrobione:** scen. 47 po dotychczasowych krokach: dwa swipe'y jeden po drugim (między nimi jedna szybka asercja stanu narzędzia, wymagana regułą strategii §3.8; bez `waitForAnimationToEnd`), `4 highlights` (1 z pliku + 1 + 2 szybkie; spec polecenia mówił „3” przy jednym pociągnięciu na starcie, tu są dwa wcześniejsze), odczekanie i zrzut `47-ipad-szybkie-zakreslenia`. Kontroli pikseli nie dodano (wymagałaby zmiany workflowu „Jakość · iOS”, poza zakresem AQ). **Co potwierdzi C-run „Jakość · iOS”:** scen. 47 zielona z `4 highlights`; zrzut w artefakcie `e2e-czesc-*-ipad` z czterema pasami. Gdy licznik zostanie 3 albo na zrzucie zabraknie kreski: defekt potwierdzony, poprawka w `WidokWzoru.swift` (kandydat: licznik pociągnięć rozpoczętych bez zatwierdzenia i odświeżenie tylko przy zerze; do zaprojektowania z testem na urządzeniu) i decyzja koordynatora.
+
+### P3 — kontrola zakreśleń (zadanie 4; P-755)
+`kontrola-zakreslen.mjs`: zero par 03/04 (brak katalogu, pusty zestaw, tylko inne sceny) = `BŁĄD … brak par 03/04` i kod 1 zamiast notatki i kodu 0. Zawsze, nie tylko przy OG-07: sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który kontrola też przeszukuje), więc zero par znaczy, że kontrola nic nie sprawdziła. Starszy test oczekujący kodu 0 zaostrzony.
+
+### Przegląd ścieżki wrażliwej (workflow)
+Zob. raport PRZEKAZANIE do koordynatora (subagent z samym diffem, bez mojego rozumowania).
+Pełna bramka: `docs/programista/zrzuty-018-aq-verify.txt`.
