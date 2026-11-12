@@ -406,6 +406,7 @@ jobs:
           node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ"
           node scripts/ci/zrzuty-uzupelnij.mjs data poprzednie "$DZIEN" "$JEZYKI" "$URZADZENIA" # ta sama decyzja co w planie (świeże pobranie źródła): zestaw iPada z inną datą paska nie wchodzi do kompletu
           node scripts/ci/zrzuty-uzupelnij.mjs nalozenie poprzednie surowe "$OG07" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1 # 10-wydanie-024: krok bez pipefail (domyślne bash -e): kod 2 skryptu nie ginie w potoku do tee
       - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
         # 10-wydanie-007: wersje narzędzi do podsumowania (wygląd podpisów zależy od ImageMagicka i czcionek Noto z obrazu runnera; zasada wspólna 21)
         # KO-039/KO-040 (2026-11-11): ten sam zestaw pakietów, ale z preflightem DNS mirrora, ograniczonymi czasami i ponowieniami oraz jawnym ::error:: (przebieg 43035080611 stał tu ok. 23 min przy braku DNS azure.archive.ubuntu.com); test: tests/wydanie/instalacja-narzedzi-zrzutow.test.ts
