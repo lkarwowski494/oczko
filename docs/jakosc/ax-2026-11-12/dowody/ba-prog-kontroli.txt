@@ -1,0 +1,10 @@
+# Próg kontroli pikseli zrzutów vs alfa (rachunek; jestZolty z scripts/ci/kontrola-zakreslen.mjs:23 @ 7c68f44a: r>=230 && g>=210 && b<=190 && r-b>=50)
+alfa 0.45: pas 251,241,174 żółty=true
+alfa 0.4: pas 251,243,183 żółty=true
+alfa 0.36: pas 252,244,190 żółty=true
+alfa 0.35: pas 252,244,192 żółty=false
+alfa 0.34: pas 252,244,193 żółty=false
+alfa 0.3: pas 252,246,201 żółty=false
+alfa 0.25: pas 253,247,210 żółty=false
+efektywna z tła pasa 04 (B): 0.757  z tekstu 04 (R): 0.553
+kod wyjścia: 0

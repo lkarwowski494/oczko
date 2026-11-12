@@ -1,0 +1,36 @@
+$ git merge-tree --write-tree --name-only 625350a 2f224a8
+8544182ce04fe324f34deb81973d30778570e374
+docs/decyzje.md
+
+Auto-merging docs/decyzje.md
+CONFLICT (content): Merge conflict in docs/decyzje.md
+kod wyjścia: 1
+$ git merge-tree --write-tree --name-only 625350a 7c68f44a
+c8994302dd63a7e7b17b1c8fc3465ac2d698a3b8
+docs/decyzje.md
+
+Auto-merging docs/decyzje.md
+CONFLICT (content): Merge conflict in docs/decyzje.md
+kod wyjścia: 1
+$ git merge-tree --write-tree --name-only 625350a origin/claude/au-zrzuty-2026-11-12
+32ce6b2e256ff126ca530197e4c0c493e0f0a94c
+docs/decyzje.md
+
+Auto-merging docs/decyzje.md
+CONFLICT (content): Merge conflict in docs/decyzje.md
+kod wyjścia: 1
+$ git diff --name-only 3d9ca08 7c68f44a
+.github/workflows/zrzuty-sklepu.yml
+docs/decyzje.md
+docs/wydanie/metadane/zrzuty-plan.md
+docs/wydanie/stan.md
+e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml
+e2e/zrzuty-sklepu/00-przygotuj.yaml
+e2e/zrzuty-sklepu/07-kalendarz.yaml
+scripts/ci/zrzuty-jezyki.mjs
+scripts/ci/zrzuty-sklepu.sh
+scripts/ci/zrzuty-uzupelnij.mjs
+tests/wydanie/e2e-yaml-skladnia.test.ts
+tests/wydanie/zrzuty-data-ipada.test.ts
+tests/wydanie/zrzuty-poprawki-ah.test.ts
+tests/wydanie/zrzuty-uzupelnij.test.ts

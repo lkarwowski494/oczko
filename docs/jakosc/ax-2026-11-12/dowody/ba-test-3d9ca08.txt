@@ -1,0 +1,64 @@
+$ (worktree 3d9ca08 + test z 625350a) npx jest --ci tests/dzianina/zakreslacz-kontrast.test.ts
+FAIL iOS tests/dzianina/zakreslacz-kontrast.test.ts
+  04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru
+    ✕ token wzor.zakreslaczAlfa istnieje, jest liczbą z (0, 0,45] (23 ms)
+    ✕ tekst pod pasem ≥ 4,5:1 do tła pasa (czarny tekst, żółć z alfą z tokenu, biała strona) (3 ms)
+    ✕ widok natywny rysuje zakreślacz z tą samą alfą (stała w Swift = token) (2 ms)
+    ✓ pas dalej odróżnia się od białej strony (≥ 1,1:1) (1 ms)
+
+  ● 04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru › token wzor.zakreslaczAlfa istnieje, jest liczbą z (0, 0,45]
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "number"
+    Received: "undefined"
+
+      30 | describe('04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru', () => {
+      31 |   test('token wzor.zakreslaczAlfa istnieje, jest liczbą z (0, 0,45]', () => {
+    > 32 |     expect(typeof alfa).toBe('number');
+         |                         ^
+      33 |     expect(alfa as number).toBeGreaterThan(0);
+      34 |     expect(alfa as number).toBeLessThanOrEqual(MAX_ALFA);
+      35 |   });
+
+      at Object.toBe (tests/dzianina/zakreslacz-kontrast.test.ts:32:25)
+
+  ● 04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru › tekst pod pasem ≥ 4,5:1 do tła pasa (czarny tekst, żółć z alfą z tokenu, biała strona)
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 4.5
+    Received:    1
+
+      37 |     const a = typeof alfa === 'number' ? alfa : 1; // brak tokenu = pełne krycie, czyli stan sprzed poprawki
+      38 |     const wynik = kontrast(nad(zakreslacz, a, CZARNY), nad(zakreslacz, a, strona));
+    > 39 |     expect(wynik).toBeGreaterThanOrEqual(PODLOGA);
+         |                   ^
+      40 |   });
+      41 |   test('widok natywny rysuje zakreślacz z tą samą alfą (stała w Swift = token)', () => {
+      42 |     const swift = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+
+      at Object.toBeGreaterThanOrEqual (tests/dzianina/zakreslacz-kontrast.test.ts:39:19)
+
+  ● 04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru › widok natywny rysuje zakreślacz z tą samą alfą (stała w Swift = token)
+
+    expect(received).not.toBeNull()
+
+    Received: null
+
+      42 |     const swift = readFileSync(join(KORZEN, 'modules/oczko-wzor/ios/WidokWzoru.swift'), 'utf8');
+      43 |     const m = swift.match(/ZAKRESLACZ_ALFA\s*(?::\s*CGFloat)?\s*=\s*([0-9.]+)/);
+    > 44 |     expect(m).not.toBeNull();
+         |                   ^
+      45 |     expect(Number(m?.[1])).toBe(alfa);
+      46 |     expect(swift).toMatch(/PKInkingTool\(\.marker, color: KOLOR_ZAKRESLACZA,/);
+      47 |     expect(swift).toMatch(/KOLOR_ZAKRESLACZA\s*=\s*kolor\(0xF6E04A, alfa: ZAKRESLACZ_ALFA\)/);
+
+      at Object.toBeNull (tests/dzianina/zakreslacz-kontrast.test.ts:44:19)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 1 passed, 4 total
+Snapshots:   0 total
+Time:        5.301 s
+Ran all test suites matching /tests\/dzianina\/zakreslacz-kontrast.test.ts/i.
+kod wyjścia: 1

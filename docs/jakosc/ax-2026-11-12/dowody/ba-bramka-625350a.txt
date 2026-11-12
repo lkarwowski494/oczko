@@ -1,0 +1,34 @@
+$ npm run typecheck  (worktree 625350a)
+
+> oczko@1.0.0 typecheck
+> tsc --noEmit
+
+kod wyjścia: 0
+$ npm run typecheck:testy  (worktree 625350a)
+
+> oczko@1.0.0 typecheck:testy
+> tsc -p tsconfig.testy.json
+
+kod wyjścia: 0
+$ npm run lint  (worktree 625350a)
+
+> oczko@1.0.0 lint
+> eslint src/dane
+
+kod wyjścia: 0
+$ npm run jakosc:kontrole  (worktree 625350a)
+UWAGA kod app/(zakladki)/_layout.tsx:39 t(z.klucz): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/historia.tsx:34 t(OPIS[x.rodzaj as keyof typeof OPIS]): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/projekt/[id].tsx:151 t(RODZ[x.zrodlo as keyof typeof RODZ] ?? 'wzor.rodzaj_pdf'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/ustawienia.tsx:128 t(dane.miejsce ? 'wspolne.blad_zapisu_opis' : 'dane.blad'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/wzor.tsx:194 t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'): klucz dynamiczny, sprawdź listę wartości
+błędy: 0, uwagi: 1350; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+kod wyjścia: 0
+$ npx jest --ci  (worktree 625350a)
+
+Test Suites: 601 passed, 601 total
+Tests:       7298 passed, 7298 total
+Snapshots:   0 total
+Time:        211.635 s
+Ran all test suites.
+kod wyjścia: 0

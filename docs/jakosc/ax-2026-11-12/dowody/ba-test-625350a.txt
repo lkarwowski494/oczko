@@ -1,0 +1,14 @@
+$ (worktree 625350a) npx jest --ci tests/dzianina/zakreslacz-kontrast.test.ts
+PASS iOS tests/dzianina/zakreslacz-kontrast.test.ts
+  04-studio-projektowe-001: zakreślacz nie obniża czytelności tekstu wzoru
+    ✓ token wzor.zakreslaczAlfa istnieje, jest liczbą z (0, 0,45] (8 ms)
+    ✓ tekst pod pasem ≥ 4,5:1 do tła pasa (czarny tekst, żółć z alfą z tokenu, biała strona) (2 ms)
+    ✓ widok natywny rysuje zakreślacz z tą samą alfą (stała w Swift = token) (2 ms)
+    ✓ pas dalej odróżnia się od białej strony (≥ 1,1:1)
+
+Test Suites: 1 passed, 1 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        2.558 s
+Ran all test suites matching /tests\/dzianina\/zakreslacz-kontrast.test.ts/i.
+kod wyjścia: 0
