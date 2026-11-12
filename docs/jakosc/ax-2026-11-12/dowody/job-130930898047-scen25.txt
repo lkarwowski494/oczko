@@ -1,0 +1,14 @@
+# źródło: job 130930898047 (run 43139118664), log pobrany przez GitHub MCP get_job_logs 2026-11-12; linie 798-810 pliku logu
+2026-11-12T03:17:03.2418180Z [Failed] BR-WZR-007/S2 · Wzór z pliku Word: wierny render (P-071 5a), odczyt po restarcie (1m 54s) (Assertion is false: id: wzor-widok is visible)
+2026-11-12T03:17:03.3053600Z 
+2026-11-12T03:17:03.3057730Z 1/1 Flow Failed
+2026-11-12T03:17:03.3059510Z 
+2026-11-12T03:17:11.1511290Z === 2026-11-12_031413/BR-WZR-007_S2 · Wzór z pliku Word: wierny render (P-071 5a), odczyt po restarcie/commands.json — krok 33/33
+2026-11-12T03:17:11.1515000Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"idRegex": "licznik-wzor", "optional": false}}, "optional": false}}
+2026-11-12T03:17:11.1519290Z   COMPLETED: {"tapOnElement": {"selector": {"idRegex": "licznik-wzor", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, "longPress": false, "optional": false}}
+2026-11-12T03:17:11.1522390Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"idRegex": "e2e-wzor-word", "optional": false}}, "optional": false}}
+2026-11-12T03:17:11.1526160Z   COMPLETED: {"tapOnElement": {"selector": {"idRegex": "e2e-wzor-word", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, "longPress": false, "optional": false}}
+2026-11-12T03:17:11.1534300Z   FAILED: {"assertConditionCommand": {"condition": {"visible": {"idRegex": "wzor-widok", "optional": false}}, "timeout": "30000", "optional": false}}
+2026-11-12T03:17:11.1535930Z   błąd: Assertion is false: id: wzor-widok is visible
+2026-11-12T03:17:11.1542910Z   teksty na ekranie: (brak hierarchii w wyniku)
+2026-11-12T03:17:11.1545500Z   zrzut: 2026-11-12_031413/BR-WZR-007_S2 · Wzór z pliku Word: wierny render (P-071 5a), odczyt po restarcie/screenshots/step-033-assertCondition-wzor-widok.png

@@ -1,0 +1,116 @@
+$ (worktree 3d9ca08 + test z 2f224a8) npx jest --ci tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx
+(node:742) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL iOS tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx (6.065 s)
+  ✕ 07-jakosc-001: „Kontynuuj ›”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza (1217 ms)
+  ✕ 07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza (511 ms)
+
+  ● 07-jakosc-001: „Kontynuuj ›”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza
+
+    baza zajęta
+
+      49 | test('07-jakosc-001: „Kontynuuj ›”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza', async () => {
+      50 |   const k = await start();
+    > 51 |   k.miejsce = () => Promise.reject(new Error('baza zajęta'));
+         |                                    ^
+      52 |   await act(async () => { mockDzis?.naKontynuuj(); });
+      53 |   await wciaz();
+      54 |   expect(cisza()).toBe(false);
+
+      at Object.k.miejsce (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:51:36)
+      at miejsce (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:62:29)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:66:4)
+      at apply (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:61:29)
+      at Object.naKontynuuj (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:96:41)
+      at naKontynuuj (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:52:37)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:31:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at Object.<anonymous> (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:52:12)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● 07-jakosc-001: „Kontynuuj ›”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      52 |   await act(async () => { mockDzis?.naKontynuuj(); });
+      53 |   await wciaz();
+    > 54 |   expect(cisza()).toBe(false);
+         |                   ^
+      55 | });
+      56 | test('07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza', async () => {
+      57 |   const k = await start();
+
+      at Object.toBe (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:54:19)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● 07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza
+
+    baza zajęta
+
+      56 | test('07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza', async () => {
+      57 |   const k = await start();
+    > 58 |   k.miejsce = () => Promise.reject(new Error('baza zajęta'));
+         |                                    ^
+      59 |   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); });
+      60 |   await wciaz();
+      61 |   expect(cisza()).toBe(false);
+
+      at Object.k.miejsce (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:58:36)
+      at miejsce (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:69:29)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:73:4)
+      at apply (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:68:29)
+      at Object.naDodajWzor [as naKafel] (/tmp/claude-0/-home-user-oczko/4d30a818-66c0-5bc1-9d40-50d6dcb5e859/scratchpad/wt-base/app/(zakladki)../../../../../../index.tsx:76:39)
+      at naKafel (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:59:37)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:31:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at Object.<anonymous> (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:59:12)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● 07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      59 |   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); });
+      60 |   await wciaz();
+    > 61 |   expect(cisza()).toBe(false);
+         |                   ^
+      62 | });
+      63 |
+
+      at Object.toBe (tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx:61:19)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 2 total
+Snapshots:   0 total
+Time:        6.947 s
+Ran all test suites matching /tests\/ekrany\/dzis-kontynuuj-blad-miejsca.test.tsx/i.
+kod wyjścia: 1

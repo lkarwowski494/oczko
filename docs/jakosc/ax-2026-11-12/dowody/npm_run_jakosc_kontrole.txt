@@ -1,0 +1,27 @@
+$ npm run jakosc:kontrole  (HEAD 2f224a89)
+UWAGA kod src/ekrany/ZglosProblem.tsx:17 t(ETYKIETA[d.pole]): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/ekrany/blad-zapisu.ts:23 t(tytul): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/ekrany/blad-zapisu.ts:23 t(opis): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/ekrany/pytanie-odrzucenia.ts:10 t(opis === 'nowy' ? 'wspolne.odrzuc_opis_nowy' : 'wspolne.odrzuc_opis_zmiany'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/jezyk-awaryjny.ts:14 t(k): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/kontener.ts:112 t(k): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/probka.ts:61 t(w.jednostka === 'cm' ? 'probka.z_danych_cm' : 'probka.z_danych_in'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/probka.ts:74 t(NAZWY[n] ?? 'kategoria.nazwa_0'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/projekt.ts:36 t(rodzaj === 'oczka' ? 'formularz.rodzaj_oczka' : 'formularz.rodzaj_rzedy'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/projekt.ts:61 t(n.rodzaj === 'druty' ? 'druty.igly' : n.rodzaj === 'szydelko' ? 'druty.szydelka' : 'druty.inne'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/projekt.ts:91 t(w.narzedzie === 'szydelko' ? 'projekt.szydelko' : 'projekt.druty'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/projekt.ts:95 t(w.probka.naCm === 10 ? 'projekt.probka_wartosc' : 'projekt.probka_wartosc_in'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/sesje.ts:28 t(nastepny ? 'sesje.wiersz_nastepny_dzien' : 'sesje.wiersz'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/wstecz-trasa.ts:32 t(t.klucz): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/wzor-dodawanie.ts:23 t(z.rodzaj === 'skan' ? 'wzor.nazwa_skan' : 'wzor.nazwa_zdjecia'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/wzor-dodawanie.ts:40 t(z.rodzaj === 'adres' ? 'wzor.rodzaj_strona' : z.rodzaj === 'word' ? 'wzor.rodzaj_word' : 'wzor.rodzaj_pdf'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/zapas.ts:55 t(`jednostka.${jednostka}`): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod src/kompozycja/zapas.ts:110 t(g.klucz): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/(zakladki)/_layout.tsx:38 t(z.klucz): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/(zakladki)/_layout.tsx:39 t(z.klucz): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/historia.tsx:34 t(OPIS[x.rodzaj as keyof typeof OPIS]): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/projekt/[id].tsx:151 t(RODZ[x.zrodlo as keyof typeof RODZ] ?? 'wzor.rodzaj_pdf'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/ustawienia.tsx:128 t(dane.miejsce ? 'wspolne.blad_zapisu_opis' : 'dane.blad'): klucz dynamiczny, sprawdź listę wartości
+UWAGA kod app/wzor.tsx:194 t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'): klucz dynamiczny, sprawdź listę wartości
+błędy: 0, uwagi: 1350; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+kod wyjścia: 0

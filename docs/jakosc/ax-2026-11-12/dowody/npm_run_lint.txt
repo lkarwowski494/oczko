@@ -1,0 +1,6 @@
+$ npm run lint  (HEAD 2f224a89)
+
+> oczko@1.0.0 lint
+> eslint src/dane
+
+kod wyjścia: 0

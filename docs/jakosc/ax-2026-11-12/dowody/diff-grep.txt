@@ -1,0 +1,9 @@
+$ git diff 3d9ca08 2f224a8 | grep -nE "BEGIN .*PRIVATE|sk-|AIza|api_?key|\.skip\(|\.only\(|xit\(|xdescribe\(|it\.todo|expect\(true\)|#[0-9a-fA-F]{6}|rgb\(|fontSize|fontFamily"
+kod wyjścia grep: 1 (1 = brak trafień)
+$ git diff --name-only 3d9ca08 2f224a8
+app/(zakladki)/index.tsx
+docs/decyzje.md
+docs/jakosc/at-2026-11-12/diagnoza-003.md
+docs/jakosc/e4/tabela-08.md
+e2e/scenariusze/70-p-688-przewodnik-z-ustawien-przeczytane.yaml
+tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx

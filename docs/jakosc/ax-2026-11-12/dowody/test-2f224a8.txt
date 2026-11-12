@@ -1,0 +1,13 @@
+$ (2f224a8) npx jest --ci tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx
+(node:810) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS iOS tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx (5.742 s)
+  ✓ 07-jakosc-001: „Kontynuuj ›”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza (1107 ms)
+  ✓ 07-jakosc-001: „Dodaj wzór”, gdy odczyt miejsca odrzuca → licznik albo komunikat, nie cisza (505 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        6.55 s
+Ran all test suites matching /tests\/ekrany\/dzis-kontynuuj-blad-miejsca.test.tsx/i.
+kod wyjścia: 0

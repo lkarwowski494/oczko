@@ -1,0 +1,6 @@
+$ node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md
+plików testów: 423, zależnych od poprawek: 269, błędów: 0
+kod wyjścia: 0
+$ node docs/jakosc/narzedzia/tabela-08.mjs --wynik <scratchpad>/tabela-08-regen.md && diff docs/jakosc/e4/tabela-08.md <regen>
+plików testów: 423, zależnych od poprawek: 269, błędów: 0
+kod wyjścia diff: 0

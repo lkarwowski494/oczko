@@ -1,0 +1,6 @@
+$ npm run typecheck:testy  (HEAD 2f224a89)
+
+> oczko@1.0.0 typecheck:testy
+> tsc -p tsconfig.testy.json
+
+kod wyjścia: 0

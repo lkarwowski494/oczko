@@ -1,0 +1,27 @@
+$ npx jest --ci  (HEAD 2f224a89)
+PASS iOS tests/dane/widok-licznika-p5.test.ts
+PASS iOS tests/ekrany/stoper-sprawdz.test.tsx
+PASS iOS tests/jakosc/wersja-wydania.test.ts
+PASS iOS tests/dane/migracje-kopia.test.ts
+PASS iOS tests/i18n/parsuj-calkowita.test.ts
+PASS iOS tests/dane/kompozycja-po-scaleniu.test.ts
+PASS iOS tests/narzedzia/intencja-migawka.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/ekrany/e2e-zdjecie.test.ts
+PASS iOS tests/dane/sha-pary-bazy.test.ts
+PASS iOS tests/i18n/preferencja.test.ts
+PASS iOS tests/jakosc/bez-wersalikow.test.ts
+PASS iOS tests/ekrany/e2e-panel-wzoru-word.test.tsx
+PASS iOS tests/narzedzia/licznik-wektorow.test.ts
+PASS iOS tests/adaptery/identyfikatory.test.ts
+PASS iOS tests/i18n/nazwy-jezykow.test.ts
+PASS iOS tests/ekrany/miary.test.ts
+PASS iOS tests/i18n/m3-fix-reaudit-022-timer.test.ts
+PASS iOS tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx
+
+Test Suites: 601 passed, 601 total
+Tests:       7296 passed, 7296 total
+Snapshots:   0 total
+Time:        197.281 s
+Ran all test suites.
+kod wyjścia: 0

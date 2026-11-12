@@ -1,0 +1,6 @@
+$ npm run typecheck  (HEAD 2f224a89)
+
+> oczko@1.0.0 typecheck
+> tsc --noEmit
+
+kod wyjścia: 0
