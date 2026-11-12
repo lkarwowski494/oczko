@@ -19,5 +19,5 @@ name: "Zrzuty sklepu · 07 kalendarz dni pracy"
 - extendedWaitUntil: { visible: { id: "projekty-lista|projekty-dni-darmowe" }, timeout: 30000 }
 - tapOn: { id: "nav-historia" }
 - assertVisible: { id: "historia-kalendarz" }
-- tapOn: { id: "historia-dzien-2026-11-05" }
-- assertVisible: { id: "historia-dzien-2026-11-05", selected: true }
+- tapOn: { id: "historia-dzien-${ZRZUTY_DZIEN_KAL}" } # dzień drugiej sesji fikstury (−5 dni od dnia przebiegu; 10-wydanie-023)
+- assertVisible: { id: "historia-dzien-${ZRZUTY_DZIEN_KAL}", selected: true }

@@ -8,6 +8,12 @@ import { spawnSync } from 'child_process';
 
 const korzen = path.join(__dirname, '..', '..');
 const czytaj = (p: string) => fs.readFileSync(path.join(korzen, p), 'utf8');
+/** Dni pracy fikstury z `zrzuty-uzupelnij.mjs dni` (Jest nie ładuje ESM, więc proces potomny). */
+const dniPracyDla = (dzien: string) => {
+  const r = spawnSync(process.execPath, [path.join(korzen, 'scripts/ci/zrzuty-uzupelnij.mjs'), 'dni', dzien], { encoding: 'utf8' });
+  const w = Object.fromEntries(r.stdout.trim().split('\n').map((l) => l.split('=')));
+  return { sesje: [w.ZRZUTY_SESJA_1, w.ZRZUTY_SESJA_2, w.ZRZUTY_SESJA_3] as string[], kalendarz: w.ZRZUTY_DZIEN_KAL as string };
+};
 const uruchom = (cmd: string, args: string[]) => spawnSync(cmd, args, { encoding: 'utf8', cwd: korzen });
 const maConvert = uruchom('convert', ['-version']).status === 0;
 const ZMIENNA = 'OCZKO_WYMAGAJ_IMAGEMAGICK';
@@ -79,9 +85,10 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
   const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
   const KAT = 'e2e/zrzuty-sklepu';
   const sceny = fs.readdirSync(path.join(korzen, KAT)).filter((f) => f.endsWith('.yaml'));
-  test('stała ZRZUTY_TERAZ (ISO) jest zdefiniowana raz — w planie (zrzuty-uzupelnij.mjs, AQ), nie w skrypcie — i trafia do godziny paska simctl oraz do scenariuszy przez -e', () => {
+  test('godzina zegara (ISO) jest zdefiniowana raz — w planie (zrzuty-uzupelnij.mjs, AQ; od 10-wydanie-023 dzień = dzień przebiegu), nie w skrypcie — i trafia do godziny paska simctl oraz do scenariuszy przez -e', () => {
     const uzup = czytaj('scripts/ci/zrzuty-uzupelnij.mjs');
-    expect(uzup.match(/^export const ZRZUTY_TERAZ = '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}';/gm)).toHaveLength(1);
+    expect(uzup.match(/^export const ZRZUTY_GODZINA = '\d{2}:\d{2}:\d{2}';/gm)).toHaveLength(1);
+    expect(uzup).not.toMatch(/^export const ZRZUTY_TERAZ = /m);
     expect(sh).not.toMatch(/^ZRZUTY_TERAZ="\d{4}/m);
     // 018 (AQ, KO-046): simctl odrzucił każdą formę ISO (bez strefy: run 43017044972; `+00:00`: 130695677975; `Z`: 130796899562 — code=22), więc pasek ma samą godzinę z ZRZUTY_TERAZ jak trening:scripts/ci/store-screenshots.sh:26
     expect(sh).not.toMatch(/iso="|override --time "\$iso"/);
@@ -96,13 +103,16 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
       if (f !== '00-przygotuj.yaml' && f !== '99-zakup.yaml' && f !== '00-jezyk.yaml') expect([f, kod]).toEqual([f, expect.stringContaining('${ZRZUTY_TERAZ}')]);
     }
   });
-  test('fikstura: godziny sesji rosną razem z datą (Historia czyta się chronologicznie), a 9 XI jest dniem pracy (+1), więc „This week” nie jest pusty', () => {
+  test('fikstura: godziny sesji rosną razem z datą (Historia czyta się chronologicznie), a ostatni dzień pracy (−1 dnia) jest +1, więc „This week” nie jest pusty', () => {
     const t = czytaj(`${KAT}/00-przygotuj.yaml`);
-    const czasy = [...t.matchAll(/TERAZ: "(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})"/g)].map((m) => `${m[1]}T${m[2]}`);
-    expect(czasy.length).toBeGreaterThanOrEqual(3);
+    // 023: sesje to ${ZRZUTY_SESJA_n} z `zrzuty-uzupelnij.mjs dni` (−7, −5, −1 dnia; 18:00, 19:30, 20:00); kolejność użycia w scenariuszu 1, 2, 3
+    expect([...t.matchAll(/TERAZ: \$\{ZRZUTY_SESJA_(\d)\}/g)].map((m) => m[1])).toEqual(['1', '2', '3']);
+    const w = dniPracyDla('2026-11-12');
+    const czasy = w.sesje;
+    expect(czasy.length).toBe(3);
     const dzienna = (z: string) => z.slice(11);
     for (let i = 1; i < czasy.length; i++) { expect(czasy[i] > czasy[i - 1]).toBe(true); expect(dzienna(czasy[i]) > dzienna(czasy[i - 1])).toBe(true); }
-    const od9 = t.slice(t.indexOf('2026-11-09T'));
+    const od9 = t.slice(t.indexOf('${ZRZUTY_SESJA_3}'));
     expect(od9.slice(0, od9.indexOf('licznik-akcja-notatka'))).toMatch(/tapOn: \{ id: "licznik-plus" \}/);
   });
 });

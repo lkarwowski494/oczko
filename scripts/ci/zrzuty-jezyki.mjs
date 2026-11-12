@@ -12,7 +12,7 @@
 // Użycie: node scripts/ci/zrzuty-jezyki.mjs "<jezyki|all>" <zadan> [urządzenia] [katalog_poprzednich] [powtorz]
 import { fileURLToPath } from 'node:url';
 import { SHOT_LOCALES } from '../asc/zrzuty.mjs';
-import { brakujace, parsujPowtorz, sprawdzDzien, ZRZUTY_TERAZ } from './zrzuty-uzupelnij.mjs';
+import { brakujace, dniPracy, parsujPowtorz, sprawdzDzien, terazDnia } from './zrzuty-uzupelnij.mjs';
 
 export const JEZYKI_SKLEPU = Object.entries(SHOT_LOCALES).filter(([, lok]) => lok.length > 0).map(([k]) => k);
 export const URZADZENIA = ['iphone', 'ipad'];
@@ -52,12 +52,13 @@ export function chunkiWazone(lista, n, waga) {
   return kosze.map((x) => x.jezyki.sort());
 }
 
-/** AQ (KO-046): z `opcje.dzien` każdy wpis macierzy niesie `teraz` (zegar aplikacji, jedna stała) i `dzien` (dzień przebiegu = data maszyny na pasku iPada) — jedna wartość dla wszystkich zadań zrzutów. */
+/** AQ (KO-046): z `opcje.dzien` każdy wpis macierzy niesie `teraz` (zegar aplikacji = dzień przebiegu o 9:41) i `dzien` (dzień przebiegu = data maszyny na pasku iPada) — jedna wartość dla wszystkich zadań zrzutów. */
 export function plan(tekstJezykow, zadan, urzadzenia = 'iphone,ipad', opcje = {}) {
   const wynik = planBazowy(tekstJezykow, zadan, urzadzenia, opcje);
   if (opcje.dzien === undefined) return wynik;
   const dzien = sprawdzDzien(opcje.dzien);
-  return { ...wynik, matrix: wynik.matrix.map((m) => ({ ...m, teraz: ZRZUTY_TERAZ, dzien })) };
+  dniPracy(dzien); // 023: dzień, od którego fikstura nie da sensownych kadrów (poniedziałek, 1–7 dzień miesiąca), odrzucamy w planie, przed kolejką macOS
+  return { ...wynik, matrix: wynik.matrix.map((m) => ({ ...m, teraz: terazDnia(dzien), dzien })) };
 }
 
 function planBazowy(tekstJezykow, zadan, urzadzenia, opcje) {

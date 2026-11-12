@@ -80,7 +80,7 @@ describe('zrzuty-uzupelnij.mjs znacznik: plik dat kompletu (artefakt sklep-zrzut
   test('przebieg z iPadem: dzienIpada = dzień przebiegu, teraz = stała zegara aplikacji', () => {
     const wyj = path.join(nowyKat(), 'zrzuty-daty.json');
     expect(znacznik('-', '2026-11-12', 'iphone,ipad', wyj).status).toBe(0);
-    expect(odczyt(wyj)).toEqual({ teraz: '2026-11-10T09:41:00', dzienIpada: '2026-11-12' });
+    expect(odczyt(wyj)).toEqual({ teraz: '2026-11-12T09:41:00', dzienIpada: '2026-11-12' }); // 023: zegar aplikacji = dzień przebiegu 9:41
   });
   test('przebieg bez iPada: dzienIpada dziedziczone ze źródła (zrzuty iPada ze źródła zostały), a bez źródła null', () => {
     const wyj = path.join(nowyKat(), 'zrzuty-daty.json');
@@ -93,16 +93,16 @@ describe('zrzuty-uzupelnij.mjs znacznik: plik dat kompletu (artefakt sklep-zrzut
 
 describe('zrzuty-jezyki.mjs: plan niesie jedną datę zegara i jeden dzień przebiegu do każdego zadania zrzutów', () => {
   const plan = (jez: string, urz: string, env: Record<string, string>) => node([modul('zrzuty-jezyki.mjs'), jez, '2', urz], env);
-  test('z ZRZUTY_DZIEN: każdy wpis macierzy (iPhone i iPad) ma teraz = 2026-11-10T09:41:00 i dzien = ZRZUTY_DZIEN', () => {
+  test('z ZRZUTY_DZIEN: każdy wpis macierzy (iPhone i iPad) ma dzien = ZRZUTY_DZIEN i teraz = ten dzień o 9:41 (023: jedna prawda w kadrze iPada)', () => {
     const p = JSON.parse(plan('en,pl', 'iphone,ipad', { ZRZUTY_DZIEN: '2026-11-12' }).stdout);
     expect(p.matrix.length).toBeGreaterThanOrEqual(2);
-    for (const m of p.matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-10T09:41:00', dzien: '2026-11-12' });
+    for (const m of p.matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-12T09:41:00', dzien: '2026-11-12' });
   });
   test('uzupełnienie: wpisy też niosą teraz i dzien (także wpis „tylko zakup”)', () => {
     const d = zrodlo(); fs.rmSync(path.join(d, '6.9/en/05-projekty.png'));
     const r = node([modul('zrzuty-jezyki.mjs'), 'en', '1', 'iphone,ipad', d, 'en/99-zakup'], { ZRZUTY_DZIEN: '2026-11-11' });
     expect(r.status).toBe(0);
-    for (const m of JSON.parse(r.stdout).matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-10T09:41:00', dzien: '2026-11-11' });
+    for (const m of JSON.parse(r.stdout).matrix) expect({ teraz: m.teraz, dzien: m.dzien }).toEqual({ teraz: '2026-11-11T09:41:00', dzien: '2026-11-11' });
   });
   test('zły ZRZUTY_DZIEN → kod 2 (nie cichy brak pola)', () => {
     expect(plan('en', 'iphone', { ZRZUTY_DZIEN: 'dziś' }).status).toBe(2);
@@ -188,6 +188,46 @@ describe('zrzuty-sklepu.yml: plan ustala dzień raz, zadania i „zbierz” dost
 
 /* 10-wydanie-022 … -026 (AU, 2026-11-12, KO-050; recenzja AS): poprawki workflowu zrzutów po audycie. Wynik na runnerze macOS: niesprawdzone (potwierdzi pierwszy przebieg zrzutów na kandydacie, C1). */
 import { YAML } from '../jakosc/maestro-runner';
+
+describe('10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (fikstura względna od dnia przebiegu)', () => {
+  const dni = (dzien: string) => node([modul('zrzuty-uzupelnij.mjs'), 'dni', dzien]);
+  test('dzień przebiegu czwartek 2026-11-12: sesje −7, −5 i −1 dnia (18:00, 19:30, 20:00), kalendarz = dzień drugiej sesji', () => {
+    const r = dni('2026-11-12');
+    expect(r.status).toBe(0);
+    expect(r.stdout.trim().split('\n')).toEqual(['ZRZUTY_SESJA_1=2026-11-05T18:00:00', 'ZRZUTY_SESJA_2=2026-11-07T19:30:00', 'ZRZUTY_SESJA_3=2026-11-11T20:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-07']);
+  });
+  test('poniedziałek (−1 = poprzedni tydzień, „This week” pusty) i dzień miesiąca < 8 (−7 i −5 w poprzednim miesiącu, kalendarz bez dni pracy) → kod 2 z powodem, bez cichych kadrów', () => {
+    for (const [dzien, powod] of [['2026-11-16', /poniedzia/], ['2026-12-03', /miesi/], ['2026-11-07', /miesi/]] as const) {
+      const r = dni(dzien); expect({ dzien, kod: r.status }).toEqual({ dzien, kod: 2 }); expect(r.stderr).toMatch(powod);
+    }
+    expect(dni('2026-11-08').status).toBe(0); // niedziela, 8. dnia: najmniejszy dozwolony dzień miesiąca; −7 = 1 XI
+  });
+  test('plan odrzuca niedozwolony dzień przed kolejką macOS (zrzuty-jezyki.mjs, kod 2), dozwolony niesie teraz o dniu = dzien', () => {
+    const plan = (dzien: string) => node([modul('zrzuty-jezyki.mjs'), 'en', '2', 'iphone,ipad'], { ZRZUTY_DZIEN: dzien });
+    expect(plan('2026-11-16').status).toBe(2);
+    for (const m of JSON.parse(plan('2026-11-13').stdout).matrix) expect(m.teraz.slice(0, 10)).toBe(m.dzien);
+  });
+  test('fikstura nie ma bezwzględnych dat dni pracy: 00-przygotuj używa ${ZRZUTY_SESJA_1..3}, 07-kalendarz ${ZRZUTY_DZIEN_KAL}', () => {
+    const kod = (f: string) => fs.readFileSync(path.join(korzen, 'e2e/zrzuty-sklepu', f), 'utf8').split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');
+    const przyg = kod('00-przygotuj.yaml');
+    expect(przyg).not.toMatch(/2026-\d{2}-\d{2}/);
+    for (const n of [1, 2, 3]) expect([n, przyg.includes(`\${ZRZUTY_SESJA_${n}}`)]).toEqual([n, true]);
+    const kal = kod('07-kalendarz.yaml');
+    expect(kal).not.toMatch(/2026-\d{2}-\d{2}/);
+    expect(kal).toContain('historia-dzien-${ZRZUTY_DZIEN_KAL}');
+  });
+  test('zrzuty-sklepu.sh liczy dni z dnia przebiegu (node … dni) i przekazuje je do scenariuszy przez -e (próba na atrapach maestro, prawdziwy node)', () => {
+    const d = nowyKat(); const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
+    const stub = (n: string, body: string) => { fs.writeFileSync(path.join(bin, n), `#!/bin/bash\n${body}\n`); fs.chmodSync(path.join(bin, n), 0o755); };
+    stub('sleep', 'exit 0'); stub('xcrun', 'if [ "$2" = io ]; then echo x > "$6"; fi; exit 0'); stub('sips', 'echo "  pixelWidth: 1320"; echo "  pixelHeight: 2868"');
+    stub('node', `case "$1" in *zrzuty-uzupelnij.mjs) exec "${process.execPath}" "$@";; *zrzuty-dane.mjs) case "$2" in klucz) echo en;; env) echo DANE_KLUCZ=en;; pole) echo en_US;; esac;; esac; exit 0`);
+    stub('maestro', `echo "$*" >> "${d}/maestro.txt"; exit 0`);
+    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log'), 'false', 'en'], { encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: 'en=01-dzis', ZRZUTY_TERAZ: '2026-11-12T09:41:00', ZRZUTY_DZIEN: '2026-11-12' } });
+    expect(r.status).toBe(0);
+    const wiersz = fs.readFileSync(path.join(d, 'maestro.txt'), 'utf8').split('\n').find((l) => /00-przygotuj/.test(l)) ?? '';
+    for (const e of ['ZRZUTY_SESJA_1=2026-11-05T18:00:00', 'ZRZUTY_SESJA_2=2026-11-07T19:30:00', 'ZRZUTY_SESJA_3=2026-11-11T20:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-07']) expect([e, wiersz.includes(`-e ${e}`)]).toEqual([e, true]);
+  });
+});
 
 describe('10-wydanie-022: zadanie iPada kończy się na starcie, gdy data maszyny ≠ dzień przebiegu (przed 00-przygotuj)', () => {
   function ipad(dzienMaszyny: string, urz = 'ipad') {
