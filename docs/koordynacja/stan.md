@@ -268,6 +268,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| BD | session_01T66VBzSvQY1dxK63GvmMBt | 07-jakosc fix (07-jakosc-001 JAK-05, -002 JAK-17; KO-054) | claude/bd-e2e-sterownik-2026-11-12 @ 562dfc4 | — | — | start 14:05 (opus-5-5, env_0166…); polecenie `polecenia/BD.md` @ 08d5fd4; prompt wkleił subagent (70 435 zn.); pułap 5 / STOP 6,5; pula P-781…P-783; po PRZEKAZANIU: recenzja niezależna (08 audit) |
 | BC (zarchiwizowana 13:26, 4,87 USD — ponad STOP 3,9; kontekst 25%; wynik ba55eea przyjęty) | session_01T66VBzvsv1SqyUaKRviyvh | 07-jakosc build (lista testu buildu 5 = 1151, docs) | claude/bc-test-build5-2026-11-12 @ 562dfc4 | — | — | start 13:12 (opus-5-5, env_0166…); polecenie `polecenia/BC.md` @ b6bf6b0; prompt wkleił subagent (68 861 zn.); pułap 3 / STOP 3,9; pula P-779…P-780 |
 | BB (zarchiwizowana 11:36, 5,95 USD — ponad pułap 5, pod STOP; kontekst 29%) | session_01T66VBvrufqaR4yjsyjFr3G | 07-jakosc audit (diagnoza e2e cz. 2 iphone, run 43194659175) | claude/bb-diagnoza-e2e-2026-11-12 @ 562dfc4 | — | — | start 11:20 (opus-5-5, high, env_0166…); polecenie `polecenia/BB.md` @ cd2ccaf; prompt 07 audit wkleił subagent (77 487 zn.; kompletność potwierdza BB linią KONIEC); pułap 5 / STOP 6,5; pula P-776…P-778 |
 | BA | session_01T66VBx5XUzRDTk4bPpACD2 | 08-programista fix (04-001 kontrast pod zakreślaczem, opcja B) | claude/ba-zakreslacz-2026-11-12 @ 3d9ca08 | — | — | start 08:47 (sonnet-5-5, medium); polecenie `polecenia/BA.md` @ 5598e6e; pułap 8 / STOP 10,4; pula P-773…P-775 |
@@ -387,6 +388,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BD (07): P-781…P-783. Następny wolny: P-784; KO następny: KO-055.**
 - **Pula BC (07): P-779…P-780. Następny wolny: P-781; KO następny: KO-054.**
 - **Pula BB (07): P-776…P-778. Następny wolny: P-779; KO następny: KO-053.**
 - **Pula BA (08): P-773…P-775. Następny wolny: P-776; KO następny: KO-053.**
@@ -686,3 +688,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 12.11 13:26 | M9, BC | BC @ ba55eea (autor właściciel, 0 Co-Authored-By, tylko docs: decyzje.md +2, lista-1-0.md A1b, test-urzadzenia-build5.md 808 linii, 25× „Z-0” — sprawdzone; verify z haka kod 0 wg BC): 121 kroków, sekcja 1a Z-01…Z-06; P-779, P-780 do weta; znalezisko: e2e nie stuka „Continue”/„Add pattern” (backlog 07); `check:i18n` brak skryptu (CLAUDE.md nieaktualne → 08 docs). **Koszt 4,87 USD wobec szacunku sesji 1,5 — sesja przekroczyła STOP 3,9 bez zgłoszenia** (WG: samoocena kosztu przez sesje zawodzi; kontrola zastępcza: get_session w kontroli). Scalenie do integracji: zbiorczo z raportem BB (reset autora) przy następnej partii | link do listy dla właściciela; linia 14:00 |
 | 12.11 13:56 | M9 | Linia 14:00 wysłana; WG-07 3. raz → propozycja lekcji; koszt 05:00–14:00 ok. 108 USD (sesje 12.11 z koszty.md + koordynatorzy) | test właściciela na 1151; odpowiedzi na linię |
 | 12.11 13:58 | właściciel, M9 | Właściciel na linię 14:00: „Zgodnie z rekomendacją” → (a) zmiana kontroli JAK-05 (mandat, KO-054); lekcja dla biblioteki do zgłoszenia | polecenie BD (07 fix) |
+| 12.11 14:05 | M9, BD | Start BD (07 fix JAK-05/JAK-17, KO-054) | raport BD → recenzja 08 audit → scalenie zbiorcze BB+BC+BD → Jakość · iOS |
