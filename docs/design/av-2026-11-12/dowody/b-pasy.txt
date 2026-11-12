@@ -1,0 +1,82 @@
+# pasy.py: pasy żółte (r>200, g>180, b<170, r-b>70) szersze niż 12% kadru; wysokość, zakres x, średni kolor w środku pasa
+$ python3 pasy.py surowe/warunek-og07/*/*/0[34]*.png
+6.9/en/03-wzor.png 1320 x 2868 | y1100-1132 h=33px x258-1046 kolor~#F7E775
+6.9/en/04-zakreslenie.png 1320 x 2868 | y1130-1162 h=33px x258-1046 kolor~#F7E775; y1368-1379 h=12px x247-1058 kolor~#F6E04E
+6.9/pl/03-wzor.png 1320 x 2868 | y1115-1147 h=33px x258-1052 kolor~#F7E775
+6.9/pl/04-zakreslenie.png 1320 x 2868 | y1145-1177 h=33px x258-1052 kolor~#F7E775; y1368-1379 h=12px x247-1061 kolor~#F6E04D
+ipad-13/en/03-wzor.png 2752 x 2064 | y797-851 h=55px x541-2177 kolor~#F7E775
+ipad-13/en/04-zakreslenie.png 2752 x 2064 | y797-851 h=55px x541-2177 kolor~#F7E775; y980-999 h=20px x522-2177 kolor~#F5E04C
+ipad-13/pl/03-wzor.png 2752 x 2064 | y797-851 h=55px x541-2177 kolor~#F7E775
+ipad-13/pl/04-zakreslenie.png 2752 x 2064 | y797-851 h=55px x541-2177 kolor~#F7E775; y979-999 h=21px x522-2177 kolor~#F5E04C
+kod: 0
+
+# „Jakość · iOS” 43139118664, artefakt e2e-czesc-1-ipad (13910608281), scen. 47 takeScreenshot
+$ python3 pasy.py 47-ipad-zakreslenie.png 47-ipad-drugie-zakreslenie.png 47-ipad-szybkie-zakreslenia.png
+s47/47-ipad-zakreslenie.png 2048 x 2732 | y1076-1107 h=32px x609-1426 kolor~#F7E774
+s47/47-ipad-drugie-zakreslenie.png 2048 x 2732 | y1076-1107 h=32px x609-1426 kolor~#F7E774; y1496-1507 h=12px x598-1432 kolor~#F6E04D
+s47/47-ipad-szybkie-zakreslenia.png 2048 x 2732 | y1076-1107 h=32px x609-1426 kolor~#F7E774; y1496-1507 h=12px x598-1432 kolor~#F6E04D; y1676-1707 h=32px x609-1414 kolor~#F7E774; y1840-1871 h=32px x608-1414 kolor~#F8E774
+kod: 0
+
+# linie.py: wiersze tekstu strony wzoru (piksele < 90 w szarości), kadr 03 en
+$ python3 linie.py ipad-13/en/03-wzor.png 300 1500
+481-548 (srodek 514, 24.9% wys.)
+687-725 (srodek 706, 34.2% wys.)
+728-735 (srodek 731, 35.4% wys.)
+829-866 (srodek 847, 41.1% wys.)
+970-1014 (srodek 992, 48.1% wys.)
+1111-1155 (srodek 1133, 54.9% wys.)
+1252-1290 (srodek 1271, 61.6% wys.)
+1394-1438 (srodek 1416, 68.6% wys.)
+$ python3 linie.py 6.9/en/03-wzor.png 200 1000
+713-752 (srodek 732, 25.5% wys.)
+836-858 (srodek 847, 29.5% wys.)
+921-943 (srodek 932, 32.5% wys.)
+1006-1028 (srodek 1017, 35.5% wys.)
+1092-1114 (srodek 1103, 38.5% wys.)
+1177-1199 (srodek 1188, 41.4% wys.)
+1262-1284 (srodek 1273, 44.4% wys.)
+1347-1369 (srodek 1358, 47.4% wys.)
+1432-1460 (srodek 1446, 50.4% wys.)
+1517-1539 (srodek 1528, 53.3% wys.)
+kod: 0
+
+# skrypty pomiaru
+--- pasy.py
+import sys
+from PIL import Image
+for f in sys.argv[1:]:
+    im=Image.open(f).convert('RGB'); w,h=im.size; px=im.load()
+    rows=[]
+    for y in range(h):
+        n=0; cols=[]
+        for x in range(0,w,2):
+            r,g,b=px[x,y]
+            if r>200 and g>180 and b<170 and r-b>70: n+=1
+        rows.append(n*2)
+    # bands: rows with > 15% width yellow
+    bands=[];start=None
+    for y,n in enumerate(rows):
+        on=n>w*0.12
+        if on and start is None: start=y
+        if not on and start is not None: bands.append((start,y-1)); start=None
+    out=[]
+    for a,b in bands:
+        # sample colour at middle row, mean of yellow pixels
+        y=(a+b)//2; s=[px[x,y] for x in range(w) if px[x,y][0]>200 and px[x,y][2]<170]
+        m=tuple(sum(c[i] for c in s)//len(s) for i in range(3))
+        xs=[x for x in range(w) if px[x,y][0]>200 and px[x,y][2]<170]
+        out.append(f"y{a}-{b} h={b-a+1}px x{min(xs)}-{max(xs)} kolor~#{m[0]:02X}{m[1]:02X}{m[2]:02X}")
+    print(f, w,'x',h, '|', '; '.join(out))
+--- linie.py
+import sys
+from PIL import Image
+f,x0,x1=sys.argv[1],int(sys.argv[2]),int(sys.argv[3])
+im=Image.open(f).convert('L'); w,h=im.size; px=im.load()
+on=False;s=0;out=[]
+for y in range(h):
+    d=sum(1 for x in range(x0,x1,2) if px[x,y]<90)
+    if d>2 and not on: on=True;s=y
+    if d<=2 and on:
+        on=False
+        if y-s>6: out.append((s,y-1))
+for a,b in out: print(f"{a}-{b} (srodek {(a+b)//2}, {100*(a+b)/2/h:.1f}% wys.)")

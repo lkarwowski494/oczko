@@ -1,0 +1,80 @@
+$ gh api repos/lkarwowski494/oczko/actions/runs/43139114751 --jq "[.head_sha,.conclusion,.created_at]"
+29294625fdea0566d88627f74bb20e87ce582db0	success	2026-11-12T02:06:50Z
+kod: 0
+$ gh api …/runs/43139114751/artifacts (id, nazwa, bajty)
+13919316788	sklep-zrzuty-surowe	5634505
+13919012612	sklep-zrzuty-ramki	9466665
+13918807327	zrzuty-surowe-iphone-2	1815135
+13918313684	zrzuty-dzienniki-iphone-2	67228071
+13917715459	zrzuty-dzienniki-iphone-2	12209762
+13914306915	zrzuty-surowe-ipad-2	1822932
+13914067236	zrzuty-dzienniki-ipad-2	75263156
+13912540492	zrzuty-surowe-iphone-1	1681429
+13912262540	zrzuty-dzienniki-ipad-1	52968060
+13912058252	zrzuty-surowe-ipad-1	1681500
+13911732641	zrzuty-dzienniki-iphone-1	82818806
+13911602692	zrzut-zakupu	162912
+13910111990	zrzuty-sklepu-app	28294446
+kod: 0
+$ (cd art && file $(find surowe ramki zakup -name "*.png" | sort))
+ramki/6.9/en/01-dzis.png:                          PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/en/02-licznik.png:                       PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/en/05-projekty.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/en/06-historia.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/en/07-kalendarz.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/pl/01-dzis.png:                          PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/pl/02-licznik.png:                       PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/pl/05-projekty.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/pl/06-historia.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/6.9/pl/07-kalendarz.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/en/01-dzis.png:                      PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/en/02-licznik.png:                   PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/en/05-projekty.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/en/06-historia.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/en/07-kalendarz.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/pl/01-dzis.png:                      PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/pl/02-licznik.png:                   PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/pl/05-projekty.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/pl/06-historia.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/ipad-13/pl/07-kalendarz.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/6.9/en/03-wzor.png:             PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/6.9/en/04-zakreslenie.png:      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/6.9/pl/03-wzor.png:             PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/6.9/pl/04-zakreslenie.png:      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/ipad-13/en/03-wzor.png:         PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/ipad-13/en/04-zakreslenie.png:  PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/ipad-13/pl/03-wzor.png:         PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+ramki/warunek-og07/ipad-13/pl/04-zakreslenie.png:  PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+surowe/6.9/en/01-dzis.png:                         PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/en/02-licznik.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/en/05-projekty.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/en/06-historia.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/en/07-kalendarz.png:                    PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/pl/01-dzis.png:                         PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/pl/02-licznik.png:                      PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/pl/05-projekty.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/pl/06-historia.png:                     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/6.9/pl/07-kalendarz.png:                    PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/en/01-dzis.png:                     PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/en/02-licznik.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/en/05-projekty.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/en/06-historia.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/en/07-kalendarz.png:                PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/pl/01-dzis.png:                     PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/pl/02-licznik.png:                  PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/pl/05-projekty.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/pl/06-historia.png:                 PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/ipad-13/pl/07-kalendarz.png:                PNG image data, 2064 x 2752, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/6.9/en/03-wzor.png:            PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/6.9/en/04-zakreslenie.png:     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/6.9/pl/03-wzor.png:            PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/6.9/pl/04-zakreslenie.png:     PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/ipad-13/en/03-wzor.png:        PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/ipad-13/en/04-zakreslenie.png: PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/ipad-13/pl/03-wzor.png:        PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+surowe/warunek-og07/ipad-13/pl/04-zakreslenie.png: PNG image data, 2752 x 2064, 8-bit/color RGB, non-interlaced
+zakup/99-zakup-ceny.png:                           PNG image data, 1320 x 2868, 8-bit/color RGB, non-interlaced
+kod: 0
+$ cat surowe/zrzuty-daty.json
+{"teraz":"2026-11-10T09:41:00","dzienIpada":"2026-11-12"}
+

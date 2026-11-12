@@ -1,0 +1,2 @@
+?? docs/design/av-2026-11-12/
+(wynik `git status --porcelain` przed commitem; kod 0)

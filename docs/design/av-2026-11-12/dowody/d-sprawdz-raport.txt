@@ -1,0 +1,5 @@
+$ node sprawdz-raport.mjs docs/design/av-2026-11-12/04-studio-projektowe-2026-11-12.md . docs/design/av-2026-11-12 --rola 04-studio-projektowe
+OK: odwołania, cytaty, pliki dowodów i sekrety sprawdzone; format raportu 04-studio-projektowe
+kod: 0
+
+# skrypt: kopia z promptu roli (sekcja „Kontrola dowodów i sekretów”), w scratchpadzie sesji
