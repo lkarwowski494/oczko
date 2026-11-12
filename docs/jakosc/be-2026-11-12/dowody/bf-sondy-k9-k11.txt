@@ -1,0 +1,6 @@
+$ (worktree 928e1767) node scripts/ci/e2e-awaria-maszyny.mjs K9/K10/K11.xml — K9: junit-device-unreachable.xml z treścią <failure> w CDATA; K10: + <system-out>log</system-out>; K11: + <system-out/> przed <properties>
+K10.xml → maestro.DeviceUnreachableException: Device became unreachable during deviceInfo
+kod 0
+K11.xml → maestro.DeviceUnreachableException: Device became unreachable during deviceInfo
+kod 0
+K9.xml → kod 1

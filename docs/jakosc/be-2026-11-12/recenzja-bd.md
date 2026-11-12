@@ -6,9 +6,10 @@ Commit: 7e86bfa1 (zakres `562dfc4..7e86bfa1`, 11 plików) · Tryb: audit (recenz
 
 | ID | Poziom | Rodzaj | Tytuł | Status |
 |---|---|---|---|---|
-| 08-programista-001 | P2 | D | Pełny pakiet: awaria w drugiej połowie części + pełne 2. podejście przekracza limit kroku; wtedy część nie ma wpisu w podsumowaniu | otwarte |
-| 08-programista-002 | P3 | D | Status „w-ponowieniu” z 1. podejścia znika z podsumowania po powtórzeniu zestawu | otwarte |
-| 08-programista-003 | P3 | D | Wzorzec „deviceInfo failed” łapie też treść porażki asercji z tymi słowami; CDATA w `<system-out>` też | otwarte |
+| 08-programista-001 | P2 | D | Pełny pakiet: awaria w drugiej połowie części + pełne 2. podejście przekracza limit kroku; wtedy część nie ma wpisu w podsumowaniu | zweryfikowane (BF 928e1767) |
+| 08-programista-002 | P3 | D | Status „w-ponowieniu” z 1. podejścia znika z podsumowania po powtórzeniu zestawu | zweryfikowane (BF 928e1767) |
+| 08-programista-003 | P3 | D | Wzorzec „deviceInfo failed” łapie też treść porażki asercji z tymi słowami; CDATA w `<system-out>` też | zweryfikowane (BF 928e1767) |
+| 08-programista-004 | P3 | D | Awaria maszyny w CDATA wewnątrz `<failure>` nierozpoznana (delta BF; fail-closed, teoretyczny) | otwarte |
 
 ## Linia bazowa i założenia
 - Wzorzec: Trening e2e-ios.yml, linie 223–228 @2d97581 (przeczytany, `dowody/trening-e2e-ios-213-228.txt`): przy „iOS driver not ready in time|deviceInfo failed” w **całym logu** Maestro jedno powtórzenie zestawu, `rm -rf e2e-out` (wyniki 1. podejścia odrzucone), strażnik czasu na podejście (`guard`, alarm). Oczko jest węższe i ostrzejsze niż wzorzec: klasyfikuje tylko treść `<failure>/<error>` junit scenariusza, zachowuje porażki 1. podejścia i nie ponawia ich; nie ma strażnika czasu na podejście (patrz 001).
@@ -103,3 +104,30 @@ Brak — wszystkie trzy poprawki mieszczą się w zgodzie KO-054 i należą do k
 
 ## Proponowane polecenie naprawy
 `node tools/assemble.mjs 07-jakosc --tryb fix --zadania 08-programista-001,08-programista-002,08-programista-003` (właściciel kroku CI: rola 07; dla 001 tylko opcja b)
+
+## Delta BF (ac0ba37e..928e1767, recenzja poprawek 001–003)
+Zakres: 4 commity (4867c6cf, 740a5289, 07a485ac, 928e1767), 7 plików; numery linii niżej dotyczą 928e1767 (gałąź `claude/bf-e2e-poprawki-2026-11-12`), nie tej gałęzi.
+
+**Werdykt: TAK.** Mieści się w KO-054, a 001–003 są naprawione.
+- Zgoda KO-054: żadna asercja nie jest ponawiana ani ukrywana. Status „w-ponowieniu” (asercja + ponowienie P-091 9a) wchodzi teraz do listy pomijanych i nie biegnie trzeci raz (jakosc-ios.yml l. 393). Nie dolicza się też do bramki, tak jak przed zmianą. Limity, plan i lista scenariuszy bez zmian: grep diffu zwraca kod 1 (`dowody/bf-zakres-delty.txt`). Powtórzenie nadal najwyżej raz.
+- 001 naprawione (opcja b, P-786). Nagłówek części (l. 388), przyczyna awarii i wyniki 1. podejścia (l. 396) trafiają do podsumowania przed 2. podejściem. Test z udawanym przerwaniem kroku (SIGTERM do powłoki) ma te wpisy, choć blok końcowy się nie wykonał. Bez awarii podsumowanie wygląda jak przed zmianą: nagłówek raz, potem wyniki.
+- 002 naprawione (P-787). Sonda S1 na 928e1767: 02 uruchomiony 2× zamiast 3×, w wyniku końcowym „w-ponowieniu 02 (1. podejście, …)” (`dowody/bf-928-sondy.txt`).
+- 003 naprawione (P-788). Klasyfikator usuwa CDATA i `<system-out>`/`<system-err>` i pomija treść zaczynającą się od „Assertion is false” (e2e-awaria-maszyny.mjs l. 18–19). Sondy K1–K8 na 928e1767: K2 i K7 dają teraz kod 1. Pozostałe bez zmian: K1, K3, K4, K6 i K8 kod 1, K5 (`<error>` z wzorcem) kod 0.
+- Testy: na ac0ba37e z testem i fiksturami z 928e1767 padają 4 z 14 nowych testów, kod 1. Powód właściwy, asercje zachowania: podsumowanie puste po przerwaniu, 02 uruchomiony 3×, K2 i K7 kod 0 (`dowody/bf-ac0-e2e.txt`). Na 928e1767 oba pliki testów przechodzą, 17/17, kod 0 (`dowody/bf-928-testy.txt`). Sondy: kod 0 (`dowody/bf-928-sondy.txt`).
+- Ryzyko limitu (pkt 4.3) bez zmian co do liczb (`dowody/rachunek-limitu.txt`). Przekroczenie nie gubi już jednak śladu części w podsumowaniu.
+
+### 08-programista-004 · Awaria maszyny zapisana w CDATA wewnątrz `<failure>` nie jest rozpoznawana (powtórzenia nie ma, krok czerwony)
+- Pozycja listy kontrolnej: DEV-09
+- Poziom: P3
+- Realność: teoretyczny. Prawdziwy junit z #182 (fikstura `junit-device-unreachable.xml`) ma zwykły tekst bez CDATA; czy Maestro 2.12.1 kiedykolwiek pisze `<failure>` w CDATA — nie sprawdzono. · Pewność: wysoka (zachowanie)
+- Rodzaj: D
+- Dowód: sonda K9 (`dowody/bf-sondy-k9-k11.txt`): prawdziwa treść DeviceUnreachableException owinięta w `<![CDATA[…]]>` w `<failure>` daje kod 1. Przyczyna: `bezLogow` usuwa każdą sekcję CDATA, także w `<failure>`. K10 i K11 (prawdziwa awaria z `<system-out>`) dają kod 0, poprawnie.
+- Mechanizm: wynik jest bezpieczny, bo błąd działa w stronę czerwieni. Wraca wtedy jednak sytuacja sprzed JAK-05: ręczne ponowienie joba.
+- Powraca: nie
+- Wzorzec lub źródło: P-788.
+- Kroki w aplikacji: brak dziś.
+- Opcje: (a) usuwać CDATA tylko w `<system-out>`/`<system-err>`, a w `<failure>`/`<error>` je rozpakowywać. To jedna zmiana wyrażenia i przypadek K9 w teście. (b) Zostawić, bo junit Maestro nie używa CDATA (zgodne z fiksturą #182). Rekomendacja: (b) teraz, a (a) przy najbliższej zmianie klasyfikatora.
+- Test akceptacyjny: K9 daje kod 0, K2 nadal kod 1.
+- Status: otwarte
+
+Do sprawdzenia (delta): czy GitHub zapisuje `GITHUB_STEP_SUMMARY` kroku przerwanego przez `timeout-minutes`. Test BF symuluje przerwanie w bashu; dokumentacji GitHub nie czytałem w tej sesji.

@@ -1,0 +1,11 @@
+$ git diff ac0ba37e..928e1767 -- .github/workflows/jakosc-ios.yml scripts/ci/e2e-czesci.mjs e2e/ | grep -nE "^[-+].*(timeout-minutes|timeout_min|czesci\.json|PONAWIALNE:|BRAMKA:)"
+kod wyjścia grep: 1 (1 = brak zmian limitów, planu i listy scenariuszy)
+$ git diff --stat ac0ba37e..928e1767
+ .github/workflows/jakosc-ios.yml                   | 14 +++++---
+ docs/decyzje.md                                    |  3 ++
+ scripts/ci/e2e-awaria-maszyny.mjs                  |  8 ++++-
+ tests/jakosc/dane/e2e-awaria-maszyny/README.md     |  4 ++-
+ .../junit-k2-cdata-system-out.xml                  | 11 +++++++
+ .../junit-k7-asercja-deviceinfo.xml                | 11 +++++++
+ tests/jakosc/e2e-awaria-maszyny.test.ts            | 37 +++++++++++++++++++---
+ 7 files changed, 77 insertions(+), 11 deletions(-)
