@@ -20,8 +20,13 @@
 # Użycie: bash scripts/ci/zrzuty-sklepu.sh <UDID> <iphone|ipad> <katalog_zrzutów> <katalog_dzienników> <og07: true|false> [języki po przecinku, domyślnie en] [zakup: true|false] [katalog_zakupu]
 set -uo pipefail
 UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; ZAKUP="${7:-false}"; ZAKUP_OUT="${8:-zrzut-zakupu}"
-# 10-wydanie-016: JEDNA stała „teraz” dla kadrów — zegar aplikacji w scenach (-e ZRZUTY_TERAZ → launchApp oczkoE2eTeraz) i pasek stanu symulatora (--time ISO: godzina i, na iPadzie, data) są z niej
-ZRZUTY_TERAZ="2026-11-10T09:41:00"
+# 10-wydanie-016 / AQ (KO-046): daty pochodzą z PLANU (zrzuty-sklepu.yml, zadanie plan → macierz), nie z tego skryptu; brak = głośny błąd (zasada 21), bez cichej stałej.
+#  ZRZUTY_TERAZ = zegar APLIKACJI w kadrach (-e ZRZUTY_TERAZ → launchApp oczkoE2eTeraz; stała z scripts/ci/zrzuty-uzupelnij.mjs, fikstura liczy dni względem niej);
+#  ZRZUTY_DZIEN = dzień przebiegu (data maszyny UTC z planu): na pasku iPada widać datę maszyny, więc zrzut iPada zrobiony w innym dniu jest odrzucany (data_zrzutu_zgodna).
+: "${ZRZUTY_TERAZ:?brak ZRZUTY_TERAZ (zegar aplikacji w kadrach, np. 2026-11-10T09:41:00): ustala go plan (matrix.teraz)}"
+: "${ZRZUTY_DZIEN:?brak ZRZUTY_DZIEN (dzień przebiegu RRRR-MM-DD, data maszyny UTC): ustala go plan (matrix.dzien)}"
+[[ "$ZRZUTY_TERAZ" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$ ]] || { echo "::error::ZRZUTY_TERAZ ma zły format: $ZRZUTY_TERAZ"; exit 2; }
+[[ "$ZRZUTY_DZIEN" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "::error::ZRZUTY_DZIEN ma zły format: $ZRZUTY_DZIEN"; exit 2; }
 FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"; SKRYPTY="$(cd "$(dirname "$0")" && pwd)"
 case "$URZ" in
   iphone) ROZMIAR="6.9"; ORIENT_WZOR="PORTRAIT" ;;
@@ -49,9 +54,17 @@ maestro_run() {   # $1 = nazwa scenariusza (bez .yaml), $2 = próba
   local log="$LOGI/$URZ-$JEZYK_BIEZACY${ETYKIETA_DANYCH:+-$ETYKIETA_DANYCH}-$1-$2"; mkdir -p "$log"
   maestro --device "$UDID" test "$FLOWS/$1.yaml" -e "ORIENT_WZOR=$ORIENT_WZOR" -e "JEZYK=$JEZYK_BIEZACY" -e "ZRZUTY_TERAZ=$ZRZUTY_TERAZ" ${DANE_ARGS[@]+"${DANE_ARGS[@]}"} --test-output-dir "$log" > "$log/maestro.log" 2>&1
 }
-zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot, obrót zrzutu poziomego iPada
+data_maszyny() { date -u +%F; }   # data na pasku iPada (runner GitHub ma strefę UTC; NIESPRAWDZONE na runnerze: strefa symulatora)
+DATA_ZRZUTU=""
+zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot (data maszyny w tej chwili → DATA_ZRZUTU), obrót zrzutu poziomego iPada
   sleep 4   # PDF i animacje przejścia kończą się po asercji; bez tego zrzut łapie stan pośredni
-  xcrun simctl io "$UDID" screenshot --type=png "$2" >/dev/null 2>&1 && [ -s "$2" ]
+  xcrun simctl io "$UDID" screenshot --type=png "$2" >/dev/null 2>&1 && DATA_ZRZUTU="$(data_maszyny)"; [ -s "$2" ]
+}
+data_zrzutu_zgodna() {   # $1 = data maszyny w chwili zrzutu; iPad: musi być dniem przebiegu (pasek pokazuje datę maszyny, wszystkie sceny iPada mają mieć jedną); iPhone: pasek bez daty
+  [ "${URZ:-}" = ipad ] || return 0
+  [ "$1" = "$ZRZUTY_DZIEN" ] && return 0
+  echo "::error::data maszyny w chwili zrzutu ($1) ≠ dzień przebiegu ($ZRZUTY_DZIEN): pasek iPada pokazałby inną datę niż reszta zestawu (przebieg przekroczył północ UTC) — zrzut odrzucony; powtórz zestaw iPada w nowym przebiegu"
+  return 1
 }
 pomiar() {   # $1 = plik PNG → „SZERxWYS”
   local w h; w=$(sips -g pixelWidth "$1" | awk '/pixelWidth/ {print $2}'); h=$(sips -g pixelHeight "$1" | awk '/pixelHeight/ {print $2}'); echo "${w}x${h}"
@@ -60,7 +73,7 @@ pomiar() {   # $1 = plik PNG → „SZERxWYS”
 # --- pasek stanu i wygląd: sama godzina z ZRZUTY_TERAZ („9:41”), jak trening:scripts/ci/store-screenshots.sh:26 (`--time "9:41"`) ---
 # AQ (KO-046, opcja b z P-744; rekomendacja P-750): simctl na runnerze odrzucił każdą formę ISO — bez strefy (run 43017044972), `+00:00` (job 130695677975), `Z` (joby 130796899562, 130811471544): code=22,
 # a po odrzuceniu i tak ustawiał samą godzinę. Dlatego bez prób ISO. Data na pasku iPada to data MASZYNY w chwili zrzutu (iPhone daty na pasku nie pokazuje); spójność dat kompletu
-# zapewnia plan (ZRZUTY_TERAZ z dnia przebiegu, uzupełnienie iPada: scripts/ci/zrzuty-uzupelnij.mjs data) i kontrola daty zrzutu iPada niżej. Stderr simctl idzie do ::warning::, a po udanym override log ma odczyt `status_bar list`.
+# zapewniają plan (ZRZUTY_DZIEN, jedna wartość dla zadań), uzupełnienie (scripts/ci/zrzuty-uzupelnij.mjs data) i kontrola daty zrzutu iPada (data_zrzutu_zgodna). Stderr simctl idzie do ::warning::, a po udanym override log ma odczyt `status_bar list`.
 pasek_stanu() {
   local reszta=(--dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100)
   local godzina blad
@@ -147,6 +160,8 @@ for JEZ in ${JEZYKI//,/ }; do
         if [[ "$WARUNKOWE" == *" $scena "* && "$OG07" != "true" ]]; then CEL="$OUT/warunek-og07/$ROZMIAR/$JEZ"; else CEL="$OUT/$ROZMIAR/$JEZ"; fi
         mkdir -p "$CEL"
         if zrob_zrzut "$scena" "$CEL/$scena.png"; then
+          # AQ (KO-046): data na pasku iPada = data maszyny; po północy UTC reszta zestawu ma inną datę — plik usuwamy (uzupełnienie zrobi go od nowa razem z całym zestawem iPada), bez ponawiania w tym samym przebiegu
+          if ! data_zrzutu_zgodna "$DATA_ZRZUTU"; then rm -f "$CEL/$scena.png"; break; fi
           # simctl zapisuje bufor pionowy urządzenia: po LANDSCAPE_LEFT treść leży bokiem (run 42777145130: ipad 03-wzor.png 2064x2752, tekst obrócony o 90° w prawo) → obrót o 90° w lewo
           if [ "$ORIENT_WZOR" = "LANDSCAPE_LEFT" ] && [[ " 03-wzor 04-zakreslenie " == *" $scena "* ]]; then
             sips -r 270 "$CEL/$scena.png" >/dev/null 2>&1 || echo "::warning::$JEZ/$scena: obrót zrzutu poziomego nie powiódł się"

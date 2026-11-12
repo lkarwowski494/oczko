@@ -73,6 +73,7 @@ jobs:
       urz: ${{ steps.wejscie.outputs.urz }}
       uzup: ${{ steps.wejscie.outputs.uzup }}
       powtorz: ${{ steps.wejscie.outputs.powtorz }}
+      dzien: ${{ steps.plan.outputs.dzien }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -134,6 +135,9 @@ jobs:
           POWTORZ: ${{ steps.wejscie.outputs.powtorz }}
         run: |
           # Zadanie zrzuty i tak jest pomijane (uruchom=false albo zadania=0), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
+          # AQ (KO-046): dzień przebiegu = data maszyny UTC, którą pasek iPada pokazuje na zrzutach; ustalany RAZ tu i niesiony w macierzy do każdego zadania zrzutów (matrix.dzien),
+          # a „zbierz” zapisuje go w zrzuty-daty.json. ZRZUTY_TERAZ (zegar aplikacji) jest stałą planu (zrzuty-uzupelnij.mjs) i też idzie w macierzy (matrix.teraz).
+          dzien="$(date -u +%F)"
           zastepcza='[{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false}]'
           matrix='{"jezyki":["en"],"matrix":[],"zadania":0}'
           # Wejścia z wejść ręcznych idą przez env i walidację w skrypcie planu (nieznany język, język bez lokalizacji sklepu, złe urządzenie = czerwony plan)
@@ -143,12 +147,14 @@ jobs:
               # brak zrzutów w pobranym artefakcie = czerwony plan; inaczej uzupełnienie po cichu zrobiłoby WSZYSTKO od nowa (≈ 10 h)
               [ -n "$(find poprzednie -name '*.png' 2>/dev/null | head -1)" ] || { echo "::error::przebieg $UZUP: artefakt sklep-zrzuty-surowe bez zrzutów (zły numer albo wygasł po 14 dniach)"; exit 1; }
               node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ" | tee -a "$GITHUB_STEP_SUMMARY"
+              # inna albo nieznana data paska iPada w źródle → cały zestaw iPada do powtórzenia (jedna data na pasku we wszystkich scenach iPada); język spoza listy = czerwony plan
+              node scripts/ci/zrzuty-uzupelnij.mjs data poprzednie "$dzien" "$JEZ" "$URZ" | tee -a "$GITHUB_STEP_SUMMARY"
               poprzednie=poprzednie
             fi
-            matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
+            matrix=$(ZRZUTY_DZIEN="$dzien" node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
           fi
           zadania=$(printf '%s' "$matrix" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).zadania))')
-          { echo "zadania=$zadania"
+          { echo "zadania=$zadania"; echo "dzien=$dzien"
             if [ "$zadania" = 0 ]; then echo "matrix=$zastepcza"; else echo "matrix=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.stringify(JSON.parse(require("fs").readFileSync(0,"utf8")).matrix))')"; fi
             echo "jezyki=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).jezyki.join(","))')"; } >> "$GITHUB_OUTPUT"
           echo "uruchom=$URUCHOM, aplikacja z przebiegu: ${APP:-(budowa)}, OG-07: $OG07, języki: $JEZ, zadań: $ZADAN, urządzenia: $URZ, uzupełnienie z przebiegu: ${UZUP:-(brak)}, zadań macOS: $zadania" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -329,6 +335,8 @@ jobs:
           JEZYKI: ${{ matrix.jezyki }}
           ZAKUP: ${{ matrix.zakup }}
           SCENY_PLAN: ${{ matrix.sceny }} # uzupełnienie: "język=scena,scena;…" (pusta = wszystkie sceny)
+          ZRZUTY_TERAZ: ${{ matrix.teraz }} # AQ (KO-046): zegar aplikacji i dzień przebiegu z jednego planu dla wszystkich zadań zrzutów (skrypt bez nich staje głośno)
+          ZRZUTY_DZIEN: ${{ matrix.dzien }}
         run: bash scripts/ci/zrzuty-sklepu.sh "$SIM" "$URZADZENIE" "zrzuty-surowe" "dzienniki" "$OG07" "$JEZYKI" "$ZAKUP" "zrzut-zakupu"
       - uses: actions/upload-artifact@v4
         if: always()
@@ -388,9 +396,13 @@ jobs:
         env:
           POWTORZ: ${{ needs.plan.outputs.powtorz }}
           OG07: ${{ needs.plan.outputs.og07 }}
+          DZIEN: ${{ needs.plan.outputs.dzien }}
+          JEZYKI: ${{ needs.plan.outputs.jezyki }}
+          URZADZENIA: ${{ needs.plan.outputs.urz }}
         run: |
           mkdir -p surowe
           node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ"
+          node scripts/ci/zrzuty-uzupelnij.mjs data poprzednie "$DZIEN" "$JEZYKI" "$URZADZENIA" # ta sama decyzja co w planie (świeże pobranie źródła): zestaw iPada z inną datą paska nie wchodzi do kompletu
           node scripts/ci/zrzuty-uzupelnij.mjs nalozenie poprzednie surowe "$OG07" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: ImageMagick i czcionki (Noto Sans dla bg, el, nl, ru, sr, uk, vi; Noto Sans CJK dla ja, ko, zh-Hant)
         # 10-wydanie-007: wersje narzędzi do podsumowania (wygląd podpisów zależy od ImageMagicka i czcionek Noto z obrazu runnera; zasada wspólna 21)
@@ -433,6 +445,16 @@ jobs:
           bash scripts/ci/ramki-sklepu.sh sklep-zrzuty-surowe sklep-zrzuty-ramki docs/wydanie/metadane/podpisy-zrzutow.json | tee -a "$GITHUB_STEP_SUMMARY"
           node scripts/ci/wymiary-asc.mjs sklep-zrzuty-ramki | tee -a "$GITHUB_STEP_SUMMARY"
           echo "Języki z ramkami: $(find sklep-zrzuty-ramki -mindepth 2 -maxdepth 2 -type d ! -path '*warunek-og07*' -exec basename {} \; | sort -u | paste -sd, -)" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Znacznik dat kompletu (zrzuty-daty.json, zegar aplikacji i dzień paska iPada; następne uzupełnienie porównuje z nim dzień swojego przebiegu)
+        if: always()
+        env:
+          DZIEN: ${{ needs.plan.outputs.dzien }}
+          URZADZENIA: ${{ needs.plan.outputs.urz }}
+          UZUP: ${{ needs.plan.outputs.uzup }}
+        run: |
+          mkdir -p sklep-zrzuty-surowe
+          zrodlo=-; [ -z "$UZUP" ] || zrodlo=poprzednie # bez uzupełnienia nie ma źródła
+          node scripts/ci/zrzuty-uzupelnij.mjs znacznik "$zrodlo" "$DZIEN" "$URZADZENIA" sklep-zrzuty-surowe/zrzuty-daty.json | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

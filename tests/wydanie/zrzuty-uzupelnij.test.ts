@@ -129,7 +129,7 @@ describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące scen
     stub('sips', 'echo "  pixelWidth: 1320"; echo "  pixelHeight: 2868"; exit 0');
     stub('node', 'case "$1" in *splaszcz-png.mjs) cp "$2" "$3";; *zrzuty-dane.mjs) case "$2" in klucz) echo en;; env) echo DANE_KLUCZ=en;; pole) echo en_US;; esac;; esac; exit 0'); // 10-wydanie-017: atrapa zrzutu to tekst „x”, nie PNG — spłaszczenie i kontrola pliku zakupu mają własny test (zrzuty-poprawki-ah.test.ts)
     stub('maestro', `echo "$4 $(printf '%s ' "\${@:5}" | grep -o 'JEZYK=[A-Za-z0-9-]*')" >> "${d}/maestro.txt"; exit 0`);
-    const env: NodeJS.ProcessEnv = { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: sceny };
+    const env: NodeJS.ProcessEnv = { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: sceny, ZRZUTY_TERAZ: '2026-11-10T09:41:00', ZRZUTY_DZIEN: '2026-11-12' }; // AQ: daty z planu (matrix.teraz/dzien)
     const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log'), 'false', jezyki, zakup ? 'true' : 'false', path.join(d, 'zakup')], { encoding: 'utf8', env });
     const uruchomione = fs.existsSync(path.join(d, 'maestro.txt')) ? fs.readFileSync(path.join(d, 'maestro.txt'), 'utf8').trim().split('\n').map((l) => `${path.basename(l.split(' ')[0]).replace('.yaml', '')}:${(/JEZYK=(\S+)/.exec(l) ?? [])[1]}`) : [];
     const pliki = fs.existsSync(path.join(d, 'out')) ? (fs.readdirSync(path.join(d, 'out'), { recursive: true }) as string[]).filter((f) => f.endsWith('.png')).sort() : [];
@@ -159,7 +159,7 @@ describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące scen
   test('bez argumentu języków (wywołanie ręczne) domyślnie en, jak dotąd', () => {
     const d = nowyKat(); const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
     for (const [n, body] of [['sleep', 'exit 0'], ['xcrun', 'if [ "$2" = io ]; then echo x > "$6"; fi; exit 0'], ['sips', 'echo "  pixelWidth: 1320"; echo "  pixelHeight: 2868"; exit 0'], ['node', 'case "$1" in *splaszcz-png.mjs) cp "$2" "$3";; *zrzuty-dane.mjs) case "$2" in klucz) echo en;; env) echo DANE_KLUCZ=en;; pole) echo en_US;; esac;; esac; exit 0'], ['maestro', `echo "$4" >> "${d}/maestro.txt"; exit 0`]]) { fs.writeFileSync(path.join(bin, n), `#!/bin/bash\n${body}\n`); fs.chmodSync(path.join(bin, n), 0o755); }
-    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log')], { encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: '' } });
+    const r = spawnSync('bash', [modul('zrzuty-sklepu.sh'), 'UDID', 'iphone', path.join(d, 'out'), path.join(d, 'log')], { encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SCENY_PLAN: '', ZRZUTY_TERAZ: '2026-11-10T09:41:00', ZRZUTY_DZIEN: '2026-11-12' } });
     expect(r.status).toBe(0);
     expect(fs.readFileSync(path.join(d, 'maestro.txt'), 'utf8').trim().split('\n').filter((l) => /\/0[1-7]-/.test(l))).toHaveLength(7);
   });

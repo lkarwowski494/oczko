@@ -79,8 +79,10 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
   const sh = czytaj('scripts/ci/zrzuty-sklepu.sh');
   const KAT = 'e2e/zrzuty-sklepu';
   const sceny = fs.readdirSync(path.join(korzen, KAT)).filter((f) => f.endsWith('.yaml'));
-  test('stała ZRZUTY_TERAZ (ISO) jest zdefiniowana raz w skrypcie, trafia do pasku stanu simctl i do scenariuszy przez -e', () => {
-    expect(sh.match(/^ZRZUTY_TERAZ="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/gm)).toHaveLength(1);
+  test('stała ZRZUTY_TERAZ (ISO) jest zdefiniowana raz — w planie (zrzuty-uzupelnij.mjs, AQ), nie w skrypcie — i trafia do godziny paska simctl oraz do scenariuszy przez -e', () => {
+    const uzup = czytaj('scripts/ci/zrzuty-uzupelnij.mjs');
+    expect(uzup.match(/^export const ZRZUTY_TERAZ = '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}';/gm)).toHaveLength(1);
+    expect(sh).not.toMatch(/^ZRZUTY_TERAZ="\d{4}/m);
     // 018 (AQ, KO-046): simctl odrzucił każdą formę ISO (bez strefy: run 43017044972; `+00:00`: 130695677975; `Z`: 130796899562 — code=22), więc pasek ma samą godzinę z ZRZUTY_TERAZ jak trening:scripts/ci/store-screenshots.sh:26
     expect(sh).not.toMatch(/iso="|override --time "\$iso"/);
     expect(sh).toMatch(/status_bar "\$UDID" override --time "\$godzina"/);
