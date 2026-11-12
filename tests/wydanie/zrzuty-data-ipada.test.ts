@@ -205,3 +205,16 @@ describe('10-wydanie-024: każdy potok `zrzuty-uzupelnij.mjs … | tee` w workfl
     expect(zle).toEqual([]);
   });
 });
+
+describe('10-wydanie-025: powtórka jednej sceny pary 03/04 usuwa obie (para pochodzi z jednego buildu)', () => {
+  const pow = (kat: string, lista: string) => node([modul('zrzuty-uzupelnij.mjs'), 'powtorz', kat, lista]);
+  test.each([['en/04-zakreslenie', 'en/03-wzor'], ['en/03-wzor', 'en/04-zakreslenie']])('powtorz %s usuwa też %s (klasy i katalog warunkowy), sceny innego języka i inne sceny zostają', (podana, partner) => {
+    const d = zrodlo(); const [j, s] = partner.split('/');
+    const r = pow(d, podana);
+    expect(r.status).toBe(0);
+    for (const k of ['6.9', 'ipad-13']) expect([k, jest(d, `warunek-og07/${k}/${j}/${s}.png`) || jest(d, `${k}/${j}/${s}.png`)]).toEqual([k, false]);
+    expect(jest(d, 'warunek-og07/6.9/pl/03-wzor.png')).toBe(true);
+    expect(jest(d, '6.9/en/01-dzis.png')).toBe(true);
+    expect(r.stdout).toContain(`${s}.png`);
+  });
+});
