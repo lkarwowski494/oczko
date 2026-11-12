@@ -106,7 +106,7 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
   test('fikstura: godziny sesji rosną razem z datą (Historia czyta się chronologicznie), a ostatni dzień pracy (−1 dnia) jest +1, więc „This week” nie jest pusty', () => {
     const t = czytaj(`${KAT}/00-przygotuj.yaml`);
     // 023: sesje to ${ZRZUTY_SESJA_n} z `zrzuty-uzupelnij.mjs dni` (−7, −5, −1 dnia; 18:00, 19:30, 20:00); kolejność użycia w scenariuszu 1, 2, 3
-    expect([...t.matchAll(/TERAZ: \$\{ZRZUTY_SESJA_(\d)\}/g)].map((m) => m[1])).toEqual(['1', '2', '3']);
+    expect([...t.matchAll(/TERAZ: "?\$\{ZRZUTY_SESJA_(\d)\}"?/g)].map((m) => m[1])).toEqual(['1', '2', '3']);
     const w = dniPracyDla('2026-11-12');
     const czasy = w.sesje;
     expect(czasy.length).toBe(3);

@@ -114,7 +114,7 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
 # --- sesja 2 (−5 dni): dwa rzędy więcej ---
-- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: ${ZRZUTY_SESJA_2} } }
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "${ZRZUTY_SESJA_2}" } }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "4" }
@@ -123,7 +123,7 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - assertVisible: { id: "licznik-wartosc", text: "5" }
 # --- sesja 3 (−1 dnia, w tygodniu „dziś”): rząd 45 wpisany, dwa stuknięcia do 47 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
 # Godziny sesji rosną razem z datą (−7 dni 18:00, −5 dni 19:30, −1 dnia 20:00), więc Historia (od najnowszego, sama godzina bez daty) czyta się chronologicznie (016).
-- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: ${ZRZUTY_SESJA_3} } }
+- runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "${ZRZUTY_SESJA_3}" } }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:
