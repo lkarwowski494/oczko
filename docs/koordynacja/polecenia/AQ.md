@@ -1,0 +1,16 @@
+# Sesja AQ: 018 data paska iPada + P2/P3 z recenzji AP — Oczko
+Koordynator: ID z `stan.md` („Koordynator aktywny”, teraz session_01T66VBwsVfpEaSobJZ4b8VQ) — raport, pytania i PRZEKAZANIE tylko przez send_message do niego. Gałąź stanu: `koordynacja` (tylko do odczytu).
+
+1. Rola: 08-programista w trybie fix (prompt po `=== PROMPT ROLI ===`, praca od `=== KONIEC PROMPTU ROLI ===`; w pierwszym raporcie potwierdź linię KONIEC i ostatni nagłówek `##`). Biblioteki prompts nie dołączasz.
+2. Start: nowa gałąź `claude/aq-zrzuty-018-2026-11-12` od `claude/youthful-pasteur-kx83sn` @ 281852f (inny HEAD: zgłoś). `npm ci`. Tożsamość commitów według CLAUDE.md (bez Co-Authored-By), sprawdź przed pierwszym commitem.
+3. Zadania (z recenzji AP 12.11 01:32, KO-046):
+   1. **018 (P2) opcja (b):** pasek stanu tylko `--time "9:41"` jak `trening:scripts/ci/store-screenshots.sh:26`, bez prób ISO (simctl odrzucił `+00:00` i `Z`: joby 130695677975, 130796899562, 130811471544); ostrzeżenie przy błędzie simctl i odczyt `status_bar list` zostają. Test skryptu czerwony przed.
+   2. **018 (P2) opcja (d):** spójność dat w komplecie: `ZRZUTY_TERAZ` ustalane raz (job `plan`) i przekazywane wszystkim jobom zrzutów; uzupełnienie (`uzupelnij_z_przebiegu`) dla iPada powtarza cały zestaw iPada, gdy data przebiegu źródłowego jest inna (albo inna metoda z dowodem, że sceny jednej klasy mają jedną datę). Dowód z AP: iPad 01–07 „Śr. 11 lis”, 03/04 „Czw. 12 lis”, `01-dzis` w treści „wtorek, 10 listopada”. Zmiana `zrzuty-sklepu.yml` w zakresie tego zadania dozwolona. Test czerwony przed.
+   3. **P2 (pewność średnia):** `modules/oczko-wzor/ios/WidokWzoru.swift:466-470` — odświeżenie po `canvasViewDidEndUsingTool` może wyprzedzić zatwierdzenie szybkiego drugiego pociągnięcia (strażnik `:453`). Przeanalizuj; dodaj scenę E2E (2 swipe'y bez czekania → licznik 3; zrzut do kontroli pikseli, jeśli tanio bez zmian workflowu). Jeśli defekt potwierdzony kodem — poprawka z testem; jeśli nie — uzasadnienie w opisie.
+   4. **P3:** `scripts/ci/kontrola-zakreslen.mjs:89` — brak par 03/04 przy włączonym OG-07 ma być błędem (nie cichy kod 0); test czerwony przed.
+   5. Opis w `docs/programista/` (sekcja AQ) i decyzje do `docs/decyzje.md` z puli z odnośnikiem KO-046.
+4. Zakazy: nie scalasz do integracji ani `main`, nie tworzysz i nie archiwizujesz sesji, nie piszesz na `koordynacja`, nie wyzwalasz workflowów (C8 i „Jakość · iOS” wyzwala koordynator), workflowy zmieniasz tylko w zakresie zadania 2, progów P-745 nie zmieniasz, nigdy --no-verify ani force-push, bez AskUserQuestion. P3 wyglądu (cieńszy drugi pas, pozycja między wierszami) — nie ruszasz (rola 04). STOP-y roli i punkt czyszczenia → raport do koordynatora.
+5. Decyzje: tryb analogia (najpierw `lkarwowski494/trening`, `repo:plik:linia`, wpis do weta). Pula: P-752…P-755.
+6. Od 30% okna PRZEKAZANIE. Pułap 8 USD, STOP 10,4 USD.
+7. **Push:** hak `pre-push` uruchamia pełne `npm run verify` (~10 min, bez wyjścia na ekran) — push w tle bez limitu czasu, nigdy --no-verify (WG-14). Push zbiorczo na koniec.
+8. PRZEKAZANIE ≤ 10 linii: SHA, commity per zadanie, verify z kodem wyjścia i plikiem dowodu, decyzje, tryb C8 (pełny — AP: przed wysyłką pełny przebieg na SHA kandydata, WYD-02), niesprawdzone na runnerze, koszt.
