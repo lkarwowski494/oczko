@@ -40,7 +40,7 @@ on:
         type: string
         default: '6'
       urzadzenia:
-        description: 'Urządzenia po przecinku: iphone, ipad'
+        description: 'Urządzenia po przecinku: iphone, ipad. Zadanie iPada startuje tylko w dniu przebiegu (data paska = data maszyny): uruchamiaj tak, by iPad skończył przed 00:00 UTC (kolejka macOS po ok. 22:00 UTC kończy się wyjściem na starcie); zrzuty nie startują w poniedziałek ani w dniach 1–7 miesiąca (UTC)'
         required: false
         type: string
         default: 'iphone,ipad'
