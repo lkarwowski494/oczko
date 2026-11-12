@@ -358,21 +358,46 @@ jobs:
           PONAWIALNE: ${{ steps.plan.outputs.ponawialne }}
           BRAMKA: ${{ steps.plan.outputs.bramka }}
         run: |
-          mkdir -p e2e-out; porazki=0; : > e2e-out/wyniki.txt
-          for f in e2e-czesc/[0-9][0-9]-*.yaml; do
-            n=$(basename "$f" .yaml)
-            if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
-            if [[ " $PONAWIALNE " == *" $n.yaml "* ]] && maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.ponowienie.xml" --test-output-dir "e2e-out/$n.ponowienie"; then
-              echo "w-ponowieniu $n" >> e2e-out/wyniki.txt # P-091 9a: liczony osobno, nie jako zaliczenie bez śladu
-            elif [[ " $BRAMKA " == *" $n.yaml "* ]]; then
-              echo "czerwony $n" >> e2e-out/wyniki.txt; porazki=$((porazki + 1))
-              python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
-            else
-              echo "czerwony-informacyjnie $n" >> e2e-out/wyniki.txt # poza pakietem podstawowym (F07-15)
-              python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+          # 07-jakosc-001 (KO-054, P-781): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs) przerywa je
+          # i powtarza RAZ cały zestaw części od zera — także scenariusze z tagiem stan-licznika (asercja licznika się nie wykonała). Porażka asercji
+          # nadal bez ponowienia (P-091 9a/10a); awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
+          przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
+            mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
+            for f in e2e-czesc/[0-9][0-9]-*.yaml; do
+              n=$(basename "$f" .yaml)
+              if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
+              if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml"); then
+                awaria="$n: $przyczyna"; echo "awaria-maszyny $n" >> e2e-out/wyniki.txt
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+                return 0
+              fi
+              if [[ " $PONAWIALNE " == *" $n.yaml "* ]] && maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.ponowienie.xml" --test-output-dir "e2e-out/$n.ponowienie"; then
+                echo "w-ponowieniu $n" >> e2e-out/wyniki.txt # P-091 9a: liczony osobno, nie jako zaliczenie bez śladu
+              elif [[ " $BRAMKA " == *" $n.yaml "* ]]; then
+                echo "czerwony $n" >> e2e-out/wyniki.txt; porazki=$((porazki + 1))
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+              else
+                echo "czerwony-informacyjnie $n" >> e2e-out/wyniki.txt # poza pakietem podstawowym (F07-15)
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+              fi
+            done
+          }
+          przebieg 1; awaria1="$awaria"
+          if [ -n "$awaria1" ]; then
+            echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
+            mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
+            przebieg 2
+          fi
+          {
+            echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})"
+            if [ -n "$awaria1" ]; then
+              n1=${awaria1%%:*}
+              echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
+              echo "- wynik 2. podejścia dla $n1: $(grep -E " $n1\$" e2e-out/wyniki.txt || echo "brak wyniku $n1")"
+              echo "- wyniki 2. podejścia (rozstrzygają):"
             fi
-          done
-          { echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})"; sort e2e-out/wyniki.txt | sed 's/^/- /'; } >> "$GITHUB_STEP_SUMMARY"
+            sort e2e-out/wyniki.txt | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"
           exit $porazki
       - name: Scenariusze w osobnym kroku (duży tekst AX5)
         # `!cancelled()`: krok biegnie także po czerwonym kroku „Scenariusze” (przebieg #137 część 2: 07 czerwony → 30 pominięty); wynik zadania i tak zależy od obu kroków (E2-137-S2)
