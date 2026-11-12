@@ -360,11 +360,13 @@ jobs:
         run: |
           # 07-jakosc-001 (KO-054, P-781): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs) przerywa je
           # i powtarza RAZ cały zestaw części od zera — także scenariusze z tagiem stan-licznika (asercja licznika się nie wykonała). Porażka asercji
-          # nadal bez ponowienia (P-091 9a/10a); awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
+          # nadal bez ponowienia (P-091 9a/10a): scenariusz czerwony w 1. podejściu przed awarią zachowuje wynik i nie biegnie w 2. (P-782 (4));
+          # awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
           przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
             mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
             for f in e2e-czesc/[0-9][0-9]-*.yaml; do
               n=$(basename "$f" .yaml)
+              [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (porażka, nie maszyna) — bez ponowienia
               if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
               if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml"); then
                 awaria="$n: $przyczyna"; echo "awaria-maszyny $n" >> e2e-out/wyniki.txt
@@ -382,11 +384,14 @@ jobs:
               fi
             done
           }
-          przebieg 1; awaria1="$awaria"
+          POMIN=""; przebieg 1; awaria1="$awaria"; porazki1=$porazki
           if [ -n "$awaria1" ]; then
             echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
             mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
+            POMIN=$(awk '$1 ~ /^czerwony/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
             przebieg 2
+            porazki=$((porazki + porazki1))
+            awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
           fi
           {
             echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})"

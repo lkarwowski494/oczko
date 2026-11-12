@@ -76,6 +76,16 @@ describe('07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie cał
     expect(r.podsumowanie).toContain(`czerwony ${S01}`);
   });
 
+  test('porażka asercji w 01, potem awaria sterownika w 02 (przegląd ścieżki wrażliwej, P1) → 01 bez ponowienia i czerwony w wyniku końcowym', () => {
+    const r = uruchom({ [S01]: ['asercja', 'zielony'], [S02]: ['awaria', 'zielony'] }, ENV);
+    expect(r.wywolania.filter((n) => n === S01)).toHaveLength(1); // asercja nie dostaje drugiego podejścia (P-091 9a)
+    expect(r.wywolania.filter((n) => n === S02)).toHaveLength(2);
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toMatch(/powtórzenie zestawu/i);
+    expect(r.podsumowanie).toMatch(new RegExp(`czerwony ${S01}[^\\n]*1\\. podejści`));
+    expect(r.podsumowanie).toContain(`zielony ${S02}`);
+  });
+
   test('awaria sterownika w ponawialnym 02 → powtórzenie zestawu (nie pojedyncze ponowienie 02 w 1. podejściu)', () => {
     const r = uruchom({ [S02]: ['awaria', 'zielony'] }, ENV);
     expect(r.wywolania).toEqual([S01, S02, S01, S02]);
