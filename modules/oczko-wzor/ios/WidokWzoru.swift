@@ -36,10 +36,11 @@ final class ChipPrzycisk: UIButton {
   }
 }
 
-private func kolor(_ hex: UInt32) -> UIColor {
-  UIColor(red: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255, blue: CGFloat(hex & 0xFF) / 255, alpha: 1)
+private func kolor(_ hex: UInt32, alfa: CGFloat = 1) -> UIColor {
+  UIColor(red: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255, blue: CGFloat(hex & 0xFF) / 255, alpha: alfa)
 }
-private let KOLOR_ZAKRESLACZA = kolor(0xF6E04A) // tokeny.json kolor.zakreslacz
+private let ZAKRESLACZ_ALFA: CGFloat = 0.45 // tokeny.json wzor.zakreslaczAlfa: tekst pod pasem ≥ 4,5:1 (04-studio-projektowe-001); test tests/dzianina/zakreslacz-kontrast.test.ts
+private let KOLOR_ZAKRESLACZA = kolor(0xF6E04A, alfa: ZAKRESLACZ_ALFA) // tokeny.json kolor.zakreslacz
 private let KOLOR_GRAFIT = kolor(0x26282C)      // tokeny.json kolor.wzor.znacznik
 
 /// Wykrywa pierwsze dotknięcie rysikiem w dowolnym miejscu widoku (P-218 Q2a); nigdy nie rozpoznaje gestu, nie blokuje dotyków.

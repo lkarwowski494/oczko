@@ -26,7 +26,7 @@ Kawałek dzianiny dżersejowej rośnie od nabrania (dół) do celu części (prz
 - `karta` — ciepły grafit karty „Kontynuuj” i kolumny dzianiny.
 - `przycisk` — przycisk główny poza kartą, **wypełniony w obu motywach** (jasny: grafit z jasnym tekstem; ciemny: miód z ciemnym tekstem).
 - `niszczacy` — czerwień tylko dla działań nieodwracalnych (nie występuje w motywie poza nimi).
-- `zakreslacz` `#F6E04A` — tylko na stronie wzoru (rzecz z dziedziny, nie barwa motywu).
+- `zakreslacz` `#F6E04A` — tylko na stronie wzoru (rzecz z dziedziny, nie barwa motywu); rysowany nad tekstem z krytością `wzor.zakreslaczAlfa` = 0,45 (tekst pod pasem ≥ 4,5:1, 04-studio-projektowe-001, P-773).
 - „Zwiększ kontrast”: warianty `jasnyZwiekszony`/`ciemnyZwiekszony` (tekst drugi, akcent tekstu, linie, zakładki), tekst i rama przycisku nieaktywnego, drut rysunku).
 - `przyciskNieaktywny` / `…Tekst` / `…Rama` — przycisk wyłączony: tło powierzchni, tekst drugi, **przerywana rama** i ikona stanu (np. klepsydra), nigdy sam kolor (jak `oferty-czeka-*`).
 - `rysunek*` — paleta rysunków atlasu technik (`Paleta` w silniku atlasu: tło, nitka, wyróżnienie, drut); wyróżnienie to zakreślacz pod nitką.
