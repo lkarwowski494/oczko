@@ -1,0 +1,21 @@
+$ (7e86bfa1) npx jest --ci tests/jakosc/e2e-awaria-maszyny.test.ts
+PASS iOS tests/jakosc/e2e-awaria-maszyny.test.ts
+  07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054)
+    ✓ awaria sterownika w 01 (stan-licznika, bramka) → zestaw powtórzony raz od zera, rozstrzyga 2. podejście; powtórzenie wykazane osobno (183 ms)
+    ✓ porażka asercji w 01 (stan-licznika) → bez ponowienia, krok czerwony (P-091 9a bez zmian) (134 ms)
+    ✓ druga awaria sterownika w 2. podejściu → czerwony, bez trzeciego podejścia (182 ms)
+    ✓ porażka asercji w 01, potem awaria sterownika w 02 (przegląd ścieżki wrażliwej, P1) → 01 bez ponowienia i czerwony w wyniku końcowym (224 ms)
+    ✓ awaria sterownika w ponawialnym 02 → powtórzenie zestawu (nie pojedyncze ponowienie 02 w 1. podejściu) (230 ms)
+  07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs)
+    ✓ junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu (40 ms)
+    ✓ junit z porażką asercji → nie maszyna (kod 1) (38 ms)
+    ✓ brak pliku junit → nie maszyna (kod 1; bez junit nie ma dowodu awarii sterownika) (35 ms)
+    ✓ wzorzec awarii tylko w nazwie testu, porażka asercji w <failure> → nie maszyna (47 ms)
+    ✓ „iOS driver not ready in time” i „deviceInfo failed” (wzorce Treningu, e2e-ios.yml:223; treść komunikatu złożona) → awaria maszyny (94 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        3.877 s
+Ran all test suites matching /tests\/jakosc\/e2e-awaria-maszyny.test.ts/i.
+kod wyjścia: 0

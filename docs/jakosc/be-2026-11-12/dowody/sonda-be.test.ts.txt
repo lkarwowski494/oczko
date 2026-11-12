@@ -1,0 +1,77 @@
+/* 07-jakosc-001 (JAK-05, P1; KO-054, P-781): awaria sterownika XCTest / symulatora w junit części E2E (np. DeviceUnreachableException,
+ * „Jakość · iOS” #142, #173, #182) → krok „Scenariusze” powtarza RAZ cały zestaw tej części od zera, także gdy część ma scenariusze
+ * z tagiem `stan-licznika` (asercja licznika się nie wykonała). Porażka asercji nadal bez ponowienia (P-091 9a/10a). Druga awaria = czerwony.
+ * Analogia: trening `.github/workflows/e2e-ios.yml:223-228` (@2d97581). Krok workflowu uruchamiany w bashu z udawanym `maestro`, które
+ * zapisuje junit z fikstur `tests/jakosc/dane/e2e-awaria-maszyny/` (wycinki prawdziwych plików, opis w README.md tamże). */
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { spawnSync } from 'child_process';
+import { parse, yamlKroki } from './jakosc-ios-pomoc';
+
+const KORZEN = path.join(__dirname, '..', '..');
+const FIKSTURY = path.join(__dirname, 'dane', 'e2e-awaria-maszyny');
+const KLASYFIKATOR = path.join(KORZEN, 'scripts', 'ci', 'e2e-awaria-maszyny.mjs');
+const wf = parse(fs.readFileSync(path.join(KORZEN, '.github/workflows/jakosc-ios.yml'), 'utf8'));
+const krokScenariusze = () => { const k = yamlKroki(wf, 'e2e').find((x) => /^Scenariusze$/.test(x.name ?? '')); if (!k?.run) throw new Error('brak kroku Scenariusze'); return k.run; };
+
+type Wynik = 'zielony' | 'awaria' | 'asercja';
+const S01 = '01-nfr-pie-001-pierwsze-liczenie', S02 = '02-br-lic-001-s1-pierwsze-uruchomienie', S03 = '03-br-lic-001-s2-pierwszy-rzad';
+
+/** Krok „Scenariusze” jak w GitHub (bash -e); `plan[scenariusz]` = wyniki kolejnych wywołań maestro dla tego scenariusza (ostatni się powtarza). */
+function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>) {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-awaria-'));
+  fs.mkdirSync(path.join(d, 'e2e-czesc'));
+  for (const f of [S01, S02, S03]) fs.writeFileSync(path.join(d, 'e2e-czesc', `${f}.yaml`), 'appId: x\n---\n- launchApp\n');
+  fs.symlinkSync(path.join(KORZEN, 'scripts'), path.join(d, 'scripts'));
+  const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
+  fs.writeFileSync(path.join(bin, 'maestro'), [
+    '#!/bin/bash',
+    'out=""; prev=""; n=""',
+    'for a in "$@"; do case "$a" in *.yaml) n=$(basename "$a" .yaml);; esac; [ "$prev" = --output ] && out="$a"; prev="$a"; done',
+    'echo "$n" >> "$WYWOLANIA"; k=$(grep -cx "$n" "$WYWOLANIA")',
+    'w=$(node -e \'const p=JSON.parse(process.env.PLAN)[process.argv[1]]||[];console.log(p[Math.min(Number(process.argv[2]),p.length)-1]||"zielony")\' "$n" "$k")',
+    'case "$w" in',
+    '  awaria) cp "$FIKSTURY/junit-device-unreachable.xml" "$out"; exit 1;;',
+    '  asercja) cp "$FIKSTURY/junit-asercja.xml" "$out"; exit 1;;',
+    '  *) echo "<testsuites/>" > "$out"; exit 0;;',
+    'esac', ''].join('\n'), { mode: 0o755 });
+  fs.writeFileSync(path.join(bin, 'python3'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
+  const skrypt = path.join(d, 'krok.sh'), podsumowanie = path.join(d, 'summary.md'), wywolania = path.join(d, 'wywolania.txt');
+  fs.writeFileSync(podsumowanie, ''); fs.writeFileSync(wywolania, '');
+  fs.writeFileSync(skrypt, krokScenariusze().replace(/\$\{\{ matrix\.czesc \}\}/g, '2').replace(/\$\{\{ matrix\.urzadzenie \}\}/g, 'iphone'));
+  const r = spawnSync('bash', ['-e', skrypt], { cwd: d, encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SIM: 'sim', GITHUB_STEP_SUMMARY: podsumowanie, WYWOLANIA: wywolania, FIKSTURY, PLAN: JSON.stringify(plan), ...env } });
+  return { kod: r.status, wyjscie: r.stdout + r.stderr, podsumowanie: fs.readFileSync(podsumowanie, 'utf8'), wywolania: fs.readFileSync(wywolania, 'utf8').split('\n').filter(Boolean), d };
+}
+
+// Część 2 bramki jak w #182: 01 ma tag stan-licznika (poza PONAWIALNE), 02 jest ponawialny; oba w bramce.
+const ENV = { PONAWIALNE: `${S02}.yaml`, BRAMKA: `${S01}.yaml ${S02}.yaml ${S03}.yaml` };
+
+
+describe('BE sondy', () => {
+  test('S1: ponawialny 02 asercja→zielony w ponowieniu (1. podejście), potem awaria w 03 → czy ślad „w-ponowieniu” 02 jest w podsumowaniu', () => {
+    const r = uruchom({ [S02]: ['asercja', 'zielony', 'zielony'], [S03]: ['awaria', 'zielony'] }, ENV);
+    console.log('S1 wywołania', JSON.stringify(r.wywolania), 'kod', r.kod, '\n' + r.podsumowanie);
+    console.log('S1 podejscie-1/wyniki.txt:\n' + fs.readFileSync(path.join(r.d, 'e2e-out', 'podejscie-1', 'wyniki.txt'), 'utf8'));
+  });
+  test('S2: awaria w 01 i asercja 03 w 2. podejściu → czerwony', () => {
+    const r = uruchom({ [S01]: ['awaria', 'zielony'], [S03]: ['asercja'] }, ENV);
+    console.log('S2 wywołania', JSON.stringify(r.wywolania), 'kod', r.kod, '\n' + r.podsumowanie);
+  });
+});
+const klas = (tresc: string) => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'be-klas-')); const p = path.join(d, 'j.xml'); fs.writeFileSync(p, tresc); const r = spawnSync('node', [KLASYFIKATOR, p], { encoding: 'utf8' }); return `${r.status} ${r.stdout.trim()}`; };
+const ASER = fs.readFileSync(path.join(FIKSTURY, 'junit-asercja.xml'), 'utf8');
+test('K: klasyfikator — szerokość wzorców', () => {
+  const przypadki: Record<string, string> = {
+    'K1 wzorzec w <system-out> (tekst), asercja w <failure>': ASER.replace('</testcase>', '<system-out>maestro.DeviceUnreachableException deviceInfo failed</system-out></testcase>'),
+    'K2 wzorzec w <system-out> CDATA z surowym <failure>': ASER.replace('</testcase>', '<system-out><![CDATA[<failure>DeviceUnreachableException</failure>]]></system-out></testcase>'),
+    'K3 wzorzec tylko w atrybucie message=, treść asercji': ASER.replace('<failure>', '<failure message="DeviceUnreachableException">'),
+    'K4 samozamykający <failure message="DeviceUnreachableException"/>': ASER.replace(/<failure>[^<]*<\/failure>/, '<failure message="DeviceUnreachableException"/>'),
+    'K5 <error> z wzorcem': ASER.replace(/<failure>[^<]*<\/failure>/, '<error>maestro.DeviceUnreachableException: x</error>'),
+    'K6 wzorzec w nazwie pliku scenariusza (file=)': ASER.replace('file="e2e-czesc/', 'file="e2e-czesc/deviceInfo failed-'),
+    'K7 asercja na tekście „deviceInfo failed” w treści <failure>': ASER.replace(/Assertion is false[^<]*/, 'Assertion is false: "deviceInfo failed" is visible'),
+    'K8 encja &lt;failure&gt; w system-out': ASER.replace('</testcase>', '<system-out>&lt;failure&gt;DeviceUnreachableException&lt;/failure&gt;</system-out></testcase>'),
+  };
+  const wyniki = Object.entries(przypadki).map(([k, v]) => `${k} → ${klas(v)}`);
+  console.log(wyniki.join('\n'));
+});

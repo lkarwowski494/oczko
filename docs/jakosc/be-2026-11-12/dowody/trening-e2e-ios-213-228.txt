@@ -1,0 +1,18 @@
+$ git show 2d97581:.github/workflows/e2e-ios.yml | sed -n 213,228p  (repo lkarwowski494/trening)
+          DIR=.maestro-czesc
+          # Jedno powtórzenie TYLKO, gdy sterownik XCTest nie wystartował (awaria maszyny przed pierwszym scenariuszem — CLAUDE.md);
+          # błąd w scenariuszu nie jest powtarzany.
+          set +e
+          # Strażnik czasu (04.10.2026, run 37229659437: po błędzie sterownika Maestro wisiał 68 min do limitu zadania): 40 min na podejście
+          # (06.10.2026: 10 scenariuszy zamiast 7 — przebieg 56 z 7 scenariuszami trwał ~21 min; 13.10.2026: 40 min → 100 min — 21 scenariuszy trwało ~58 min, doszły długie 31, 32, 35);
+          # Maestro w osobnej grupie procesów — po czasie TERM/KILL całej grupy (java uruchamiana przez skrypt maestro trzymałaby potok do tee).
+          guard() { perl -e '$t=shift; $p=fork; if(!$p){setpgrp(0,0); exec @ARGV; exit 127} $SIG{ALRM}=sub{kill "TERM",-$p; sleep 5; kill "KILL",-$p; exit 124}; alarm $t; waitpid($p,0); exit($? & 127 ? 128 + ($? & 127) : $? >> 8)' "${MAESTRO_ALARM:-6000}" "$@"; }
+          guard maestro --device "$SIM" test "$DIR" --exclude-tags=aktualizacja --format junit --output e2e-out/report.xml --test-output-dir e2e-out 2>&1 | tee /tmp/maestro-1.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ] && grep -qE "iOS driver not ready in time|deviceInfo failed" /tmp/maestro-1.log; then
+            echo "::warning::Sterownik XCTest nie wystartował — jedno powtórzenie (awaria maszyny, nie scenariusza)"
+            rm -rf e2e-out && mkdir -p e2e-out
+            guard maestro --device "$SIM" test "$DIR" --exclude-tags=aktualizacja --format junit --output e2e-out/report.xml --test-output-dir e2e-out
+            rc=$?
+          fi
+kod wyjścia: 0

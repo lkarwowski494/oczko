@@ -1,0 +1,13 @@
+$ (7e86bfa1) npx jest --ci tests/jakosc/maestro-failures-przerwany.test.ts
+PASS iOS tests/jakosc/maestro-failures-przerwany.test.ts
+  07-jakosc-002 · maestro-failures.py: krok przerwany awarią sterownika
+    ✓ krok RUNNING + junit z DeviceUnreachableException (#182) → nazwa przerwanego kroku i przyczyna, bez „brak nieudanych kroków” (40 ms)
+    ✓ krok RUNNING bez pliku junit → nazwa przerwanego kroku i informacja o braku junit (32 ms)
+    ✓ regresja: krok FAILED nadal wypisany z błędem; same COMPLETED bez junit → „brak nieudanych kroków” (76 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        1.307 s
+Ran all test suites matching /tests\/jakosc\/maestro-failures-przerwany.test.ts/i.
+kod wyjścia: 0
