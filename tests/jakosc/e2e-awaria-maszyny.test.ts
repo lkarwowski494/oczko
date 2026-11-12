@@ -95,6 +95,18 @@ describe('07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie cał
   });
 });
 
+describe('08-programista-001 (recenzja BE) · ślad 1. podejścia w podsumowaniu', () => {
+  test('08-programista-001: 2. podejście przerwane limitem kroku → podsumowanie i tak ma powtórzenie, przyczynę i wyniki 1. podejścia (zapisane przed 2. podejściem)', () => {
+    const r = uruchom({ [S02]: ['awaria', 'limit'] }, ENV);
+    expect(r.sygnal).toBe('SIGTERM'); // krok przerwany w 2. podejściu, blok końcowy się nie wykonał
+    expect(r.wywolania).toEqual([S01, S02, S01, S02]);
+    expect(r.podsumowanie).toMatch(new RegExp(`powtórzenie zestawu[^\\n]*${S02}[^\\n]*DeviceUnreachableException`, 'i'));
+    const p1 = r.podsumowanie.split(/wyniki 1\. podejścia/)[1] ?? '';
+    expect(p1).toContain(`zielony ${S01}`);
+    expect(p1).toContain(`awaria-maszyny ${S02}`);
+  });
+});
+
 describe('07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs)', () => {
   const klasyfikuj = (plik: string) => spawnSync('node', [KLASYFIKATOR, plik], { encoding: 'utf8' });
   test('junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu', () => {

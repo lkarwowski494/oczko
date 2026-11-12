@@ -385,19 +385,23 @@ jobs:
             done
           }
           POMIN=""; przebieg 1; awaria1="$awaria"; porazki1=$porazki
+          echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$awaria1" ]; then
             echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
             mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
             POMIN=$(awk '$1 ~ /^czerwony/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
+            { # 08-programista-001 (P-786): ślad 1. podejścia w podsumowaniu PRZED 2. podejściem — przekroczenie limitu kroku w 2. podejściu go nie gubi
+              echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
+              echo "- wyniki 1. podejścia (przed powtórzeniem):"
+              sort e2e-out/podejscie-1/wyniki.txt | sed 's/^/  - /'
+            } >> "$GITHUB_STEP_SUMMARY"
             przebieg 2
             porazki=$((porazki + porazki1))
             awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
           fi
           {
-            echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})"
             if [ -n "$awaria1" ]; then
               n1=${awaria1%%:*}
-              echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
               echo "- wynik 2. podejścia dla $n1: $(grep -E " $n1\$" e2e-out/wyniki.txt || echo "brak wyniku $n1")"
               echo "- wyniki 2. podejścia (rozstrzygają):"
             fi
