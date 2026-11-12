@@ -147,8 +147,10 @@ jobs:
               # brak zrzutów w pobranym artefakcie = czerwony plan; inaczej uzupełnienie po cichu zrobiłoby WSZYSTKO od nowa (≈ 10 h)
               [ -n "$(find poprzednie -name '*.png' 2>/dev/null | head -1)" ] || { echo "::error::przebieg $UZUP: artefakt sklep-zrzuty-surowe bez zrzutów (zły numer albo wygasł po 14 dniach)"; exit 1; }
               node scripts/ci/zrzuty-uzupelnij.mjs powtorz poprzednie "$POWTORZ" | tee -a "$GITHUB_STEP_SUMMARY"
+              [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1 # krok bez pipefail (domyślne bash -e): kod 2 skryptu nie ginie w potoku do tee
               # inna albo nieznana data paska iPada w źródle → cały zestaw iPada do powtórzenia (jedna data na pasku we wszystkich scenach iPada); język spoza listy = czerwony plan
               node scripts/ci/zrzuty-uzupelnij.mjs data poprzednie "$dzien" "$JEZ" "$URZ" | tee -a "$GITHUB_STEP_SUMMARY"
+              [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1
               poprzednie=poprzednie
             fi
             matrix=$(ZRZUTY_DZIEN="$dzien" node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
@@ -455,6 +457,7 @@ jobs:
           mkdir -p sklep-zrzuty-surowe
           zrodlo=-; [ -z "$UZUP" ] || zrodlo=poprzednie # bez uzupełnienia nie ma źródła
           node scripts/ci/zrzuty-uzupelnij.mjs znacznik "$zrodlo" "$DZIEN" "$URZADZENIA" sklep-zrzuty-surowe/zrzuty-daty.json | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:

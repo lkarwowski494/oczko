@@ -63,7 +63,7 @@ zrob_zrzut() {   # $1 = scena, $2 = plik docelowy PNG; sleep, simctl screenshot 
 data_zrzutu_zgodna() {   # $1 = data maszyny w chwili zrzutu; iPad: musi być dniem przebiegu (pasek pokazuje datę maszyny, wszystkie sceny iPada mają mieć jedną); iPhone: pasek bez daty
   [ "${URZ:-}" = ipad ] || return 0
   [ "$1" = "$ZRZUTY_DZIEN" ] && return 0
-  echo "::error::data maszyny w chwili zrzutu ($1) ≠ dzień przebiegu ($ZRZUTY_DZIEN): pasek iPada pokazałby inną datę niż reszta zestawu (przebieg przekroczył północ UTC) — zrzut odrzucony; powtórz zestaw iPada w nowym przebiegu"
+  echo "::error::data maszyny w chwili zrzutu ($1) ≠ dzień przebiegu ($ZRZUTY_DZIEN): pasek iPada pokazałby inną datę niż reszta zestawu (przebieg przekroczył północ UTC) — zrzut odrzucony; powtórz zestaw iPada w nowym przebiegu, nie ponawiaj tego zadania (dostanie ten sam dzień z planu)"
   return 1
 }
 pomiar() {   # $1 = plik PNG → „SZERxWYS”
@@ -161,7 +161,11 @@ for JEZ in ${JEZYKI//,/ }; do
         mkdir -p "$CEL"
         if zrob_zrzut "$scena" "$CEL/$scena.png"; then
           # AQ (KO-046): data na pasku iPada = data maszyny; po północy UTC reszta zestawu ma inną datę — plik usuwamy (uzupełnienie zrobi go od nowa razem z całym zestawem iPada), bez ponawiania w tym samym przebiegu
-          if ! data_zrzutu_zgodna "$DATA_ZRZUTU"; then rm -f "$CEL/$scena.png"; break; fi
+          if ! data_zrzutu_zgodna "$DATA_ZRZUTU"; then
+            rm -f "$CEL/$scena.png"; echo "$JEZ/$scena" >> "$NIEUDANE"
+            echo "::error::zadanie iPada przerwane po pierwszej niezgodnej dacie ($JEZ/$scena): dalsze zrzuty też byłyby odrzucone (data maszyny nie wraca); zestaw iPada trzeba powtórzyć w NOWYM przebiegu"
+            exit 1   # bez pracy macOS na zrzuty do skasowania (przegląd AQ, zasada 13); artefakty i dzienniki wysyła krok z if: always()
+          fi
           # simctl zapisuje bufor pionowy urządzenia: po LANDSCAPE_LEFT treść leży bokiem (run 42777145130: ipad 03-wzor.png 2064x2752, tekst obrócony o 90° w prawo) → obrót o 90° w lewo
           if [ "$ORIENT_WZOR" = "LANDSCAPE_LEFT" ] && [[ " 03-wzor 04-zakreslenie " == *" $scena "* ]]; then
             sips -r 270 "$CEL/$scena.png" >/dev/null 2>&1 || echo "::warning::$JEZ/$scena: obrót zrzutu poziomego nie powiódł się"

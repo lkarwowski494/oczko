@@ -138,6 +138,14 @@ data_zrzutu_zgodna "$(data_maszyny)"; echo "kod=$?"`], { encoding: 'utf8', cwd: 
   test('iPhone: bez kontroli (pasek nie pokazuje daty)', () => {
     expect(uruchom('iphone', '2026-11-13').stdout).toContain('kod=0');
   });
+  test('przegląd AQ (P1): pierwsza niezgodność daty iPada przerywa zadanie (exit 1, scena w nieudanych) — reszta płatnego macOS nie pracuje na zrzuty do skasowania', () => {
+    const petla = bezKomentarzy(sh.slice(sh.indexOf('for JEZ in')));
+    const blok = petla.slice(petla.indexOf('if ! data_zrzutu_zgodna'), petla.indexOf('if ! data_zrzutu_zgodna') + 400);
+    expect(blok).toMatch(/rm -f "\$CEL\/\$scena\.png"/);
+    expect(blok).toMatch(/echo "\$JEZ\/\$scena" >> "\$NIEUDANE"/);
+    expect(blok).toMatch(/exit 1/);
+    expect(funkcja('data_zrzutu_zgodna')).toMatch(/nowym przebiegu[^\n]*nie ponawiaj/); // ponowienie zadania dostaje ten sam dzień z planu
+  });
   test('pętla scen: zrzut z niezgodną datą jest usuwany i liczony jako nieudany scena (czerwony przebieg), bez ponawiania', () => {
     const petla = bezKomentarzy(sh.slice(sh.indexOf('for JEZ in')));
     expect(petla).toMatch(/data_zrzutu_zgodna "\$DATA_ZRZUTU"/);
@@ -154,6 +162,11 @@ describe('zrzuty-sklepu.yml: plan ustala dzień raz, zadania i „zbierz” dost
     expect(kod.match(/date -u \+%F/g)).toHaveLength(1);
     expect(kod).toMatch(/dzien: \$\{\{ steps\.plan\.outputs\.dzien \}\}/);
     expect(kod).toMatch(/ZRZUTY_DZIEN="\$dzien" node scripts\/ci\/zrzuty-jezyki\.mjs/);
+  });
+  test('przegląd AQ (P1): krok bez pipefail (domyślne `bash -e`): kod wyjścia `powtorz`/`data`/`znacznik` przed `| tee` nie ginie — PIPESTATUS[0] sprawdzany', () => {
+    for (const polecenie of ['zrzuty-uzupelnij.mjs powtorz poprzednie "\\$POWTORZ" \\| tee', 'zrzuty-uzupelnij.mjs data poprzednie "\\$dzien" "\\$JEZ" "\\$URZ" \\| tee', 'zrzuty-uzupelnij.mjs znacznik "\\$zrodlo" "\\$DZIEN" "\\$URZADZENIA" sklep-zrzuty-surowe/zrzuty-daty.json \\| tee']) {
+      expect([polecenie, new RegExp(`${polecenie}[^\\n]*\\n\\s*\\[ "\\$\\{PIPESTATUS\\[0\\]\\}" -eq 0 \\] \\|\\| exit 1`).test(kod)]).toEqual([polecenie, true]);
+    }
   });
   test('zadanie zrzutów: ZRZUTY_TERAZ i ZRZUTY_DZIEN z macierzy (jeden plan na wszystkie zadania)', () => {
     expect(kod).toMatch(/ZRZUTY_TERAZ: \$\{\{ matrix\.teraz \}\}/);
