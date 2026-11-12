@@ -15,14 +15,14 @@ const KLASYFIKATOR = path.join(KORZEN, 'scripts', 'ci', 'e2e-awaria-maszyny.mjs'
 const wf = parse(fs.readFileSync(path.join(KORZEN, '.github/workflows/jakosc-ios.yml'), 'utf8'));
 const krokScenariusze = () => { const k = yamlKroki(wf, 'e2e').find((x) => /^Scenariusze$/.test(x.name ?? '')); if (!k?.run) throw new Error('brak kroku Scenariusze'); return k.run; };
 
-type Wynik = 'zielony' | 'awaria' | 'asercja';
-const S01 = '01-nfr-pie-001-pierwsze-liczenie', S02 = '02-br-lic-001-s1-pierwsze-uruchomienie';
+type Wynik = 'zielony' | 'awaria' | 'asercja' | 'limit'; // limit: GitHub przerywa krok (timeout-minutes) w trakcie scenariusza — TERM do powłoki kroku
+const S01 = '01-nfr-pie-001-pierwsze-liczenie', S02 = '02-br-lic-001-s1-pierwsze-uruchomienie', S03 = '03-br-lic-001-s2-pierwszy-rzad';
 
 /** Krok „Scenariusze” jak w GitHub (bash -e); `plan[scenariusz]` = wyniki kolejnych wywołań maestro dla tego scenariusza (ostatni się powtarza). */
-function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>) {
+function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>, scenariusze = [S01, S02]) {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-awaria-'));
   fs.mkdirSync(path.join(d, 'e2e-czesc'));
-  for (const f of [S01, S02]) fs.writeFileSync(path.join(d, 'e2e-czesc', `${f}.yaml`), 'appId: x\n---\n- launchApp\n');
+  for (const f of scenariusze) fs.writeFileSync(path.join(d, 'e2e-czesc', `${f}.yaml`), 'appId: x\n---\n- launchApp\n');
   fs.symlinkSync(path.join(KORZEN, 'scripts'), path.join(d, 'scripts'));
   const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
   fs.writeFileSync(path.join(bin, 'maestro'), [
@@ -34,6 +34,7 @@ function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>) {
     'case "$w" in',
     '  awaria) cp "$FIKSTURY/junit-device-unreachable.xml" "$out"; exit 1;;',
     '  asercja) cp "$FIKSTURY/junit-asercja.xml" "$out"; exit 1;;',
+    '  limit) kill -TERM $PPID; exit 1;;',
     '  *) echo "<testsuites/>" > "$out"; exit 0;;',
     'esac', ''].join('\n'), { mode: 0o755 });
   fs.writeFileSync(path.join(bin, 'python3'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
@@ -41,7 +42,7 @@ function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>) {
   fs.writeFileSync(podsumowanie, ''); fs.writeFileSync(wywolania, '');
   fs.writeFileSync(skrypt, krokScenariusze().replace(/\$\{\{ matrix\.czesc \}\}/g, '2').replace(/\$\{\{ matrix\.urzadzenie \}\}/g, 'iphone'));
   const r = spawnSync('bash', ['-e', skrypt], { cwd: d, encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SIM: 'sim', GITHUB_STEP_SUMMARY: podsumowanie, WYWOLANIA: wywolania, FIKSTURY, PLAN: JSON.stringify(plan), ...env } });
-  return { kod: r.status, wyjscie: r.stdout + r.stderr, podsumowanie: fs.readFileSync(podsumowanie, 'utf8'), wywolania: fs.readFileSync(wywolania, 'utf8').split('\n').filter(Boolean), d };
+  return { kod: r.status, sygnal: r.signal, wyjscie: r.stdout + r.stderr, podsumowanie: fs.readFileSync(podsumowanie, 'utf8'), wywolania: fs.readFileSync(wywolania, 'utf8').split('\n').filter(Boolean), d };
 }
 
 // Część 2 bramki jak w #182: 01 ma tag stan-licznika (poza PONAWIALNE), 02 jest ponawialny; oba w bramce.
@@ -112,6 +113,12 @@ describe('07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs
     const plik = path.join(d, 'j.xml');
     fs.writeFileSync(plik, fs.readFileSync(path.join(FIKSTURY, 'junit-asercja.xml'), 'utf8').replace(/name="NFR-PIE-001/g, 'name="deviceInfo failed DeviceUnreachableException NFR-PIE-001'));
     expect(klasyfikuj(plik).status).toBe(1);
+  });
+  test('08-programista-003 (sonda K2): wzorzec w <system-out> w sekcji CDATA z surowym <failure>, asercja w <failure> → nie maszyna (kod 1)', () => {
+    expect(klasyfikuj(path.join(FIKSTURY, 'junit-k2-cdata-system-out.xml')).status).toBe(1);
+  });
+  test('08-programista-003 (sonda K7): porażka asercji na tekście „deviceInfo failed” → nie maszyna (kod 1)', () => {
+    expect(klasyfikuj(path.join(FIKSTURY, 'junit-k7-asercja-deviceinfo.xml')).status).toBe(1);
   });
   test('„iOS driver not ready in time” i „deviceInfo failed” (wzorce Treningu, e2e-ios.yml:223; treść komunikatu złożona) → awaria maszyny', () => {
     const d = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-klas-'));

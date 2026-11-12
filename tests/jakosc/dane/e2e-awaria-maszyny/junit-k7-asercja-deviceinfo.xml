@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 17 - iOS 26.5 - &lt;UUID&gt;" tests="1" failures="1" time="202.000" timestamp="2026-11-12T02:39:17">
+    <testcase id="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" name="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" classname="NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca" file="e2e-czesc/01-nfr-pie-001-pierwsze-liczenie.yaml" time="202.000" timestamp="2026-11-12T02:39:17" status="FAILED">
+      <properties>
+        <property name="tags" value="NFR-PIE-001, podstawowy, stan-licznika"/>
+      </properties>
+      <failure>Assertion is false: "deviceInfo failed" is visible</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

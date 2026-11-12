@@ -13,10 +13,16 @@ export const WZORCE_AWARII_MASZYNY = [/DeviceUnreachableException/, /iOS driver 
 const ENCJE = { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'" };
 const odkoduj = (s) => s.replace(/&(lt|gt|amp|quot|apos);/g, (_, e) => ENCJE[e]);
 
+// 08-programista-003 (recenzja BE, P3): sekcje CDATA i <system-out>/<system-err> usuwane przed szukaniem elementów — surowe „<failure>” w logu
+// to nie element junit (sonda K2); treść porażki asercji Maestro („Assertion is false: …”) to porażka scenariusza, nawet gdy cytuje wzorzec (sonda K7).
+const bezLogow = (s) => s.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '').replace(/<(system-out|system-err)\b[^>]*?(?:\/>|>[\s\S]*?<\/\1>)/g, '');
+const PORAZKA_ASERCJI = /^Assertion is false\b/;
+
 /** Przyczyna awarii maszyny (pierwsza niepusta linia treści <failure>/<error> z wzorcem) albo null. */
 export function awariaMaszyny(junit) {
-  for (const m of junit.matchAll(/<(failure|error)\b[^>]*?(?:\/>|>([\s\S]*?)<\/\1>)/g)) {
+  for (const m of bezLogow(junit).matchAll(/<(failure|error)\b[^>]*?(?:\/>|>([\s\S]*?)<\/\1>)/g)) {
     const tresc = odkoduj(m[2] ?? '');
+    if (PORAZKA_ASERCJI.test(tresc.trim())) continue;
     if (!WZORCE_AWARII_MASZYNY.some((w) => w.test(tresc))) continue;
     const linia = tresc.split('\n').map((l) => l.trim()).find((l) => WZORCE_AWARII_MASZYNY.some((w) => w.test(l))) ?? tresc.trim().split('\n')[0];
     return linia.slice(0, 300);
