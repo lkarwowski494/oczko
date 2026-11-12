@@ -60,3 +60,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AL | 08 fix (sonnet) | 5 | nieznany | ? | 17:18 → 17:19 → 9dfc5e5 (ok. 17:23) → C5 43070136577 w toku → — | odpowiedź na PYTANIE 019 ok. 1 min | 4×P2 AK |
 | AO | 08 fix (opus, KO-044) | 8 | 12,36 | 34,6 | 22:31 → 22:31 → (lokalnie 23:0x) → C7 43121089904 + Jakość iOS 43121094246 w toku (23:36) → odbiór po C7 i recenzji AP | push 23:18→23:35 (~17 min + ~4 USD): hak pre-push (pełne verify ~10 min) przerywany własnym `timeout 90/120` → WG-14 | **ponad STOP 10,4 USD** (zadanie skończone, PRZEKAZANIE 23:29); diagnoza (a) defekt aplikacji P1 |
 | AP | 10 audit (opus) | 6 | 3,76 | 22,2 | 01:23 → 01:26 → (bez commitów) → C7 43121089904 + iOS 43121094246 success → raport 01:32 | 0 | TAK; 019 naprawione; 018 (b)+(d) |
+| AQ | 08 fix (sonnet) | 8 | 4,66 | 32 | 01:37 → 01:37 → … → 2929462 (02:06) → C8 + iOS w toku (02:08) → odbiór po AR | 0 | KONIEC potwierdzony; ponad 30% (32) |
