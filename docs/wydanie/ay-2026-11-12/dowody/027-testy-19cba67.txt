@@ -1,0 +1,24 @@
+$ npx jest tests/wydanie/e2e-yaml-skladnia.test.ts tests/wydanie/zrzuty-poprawki-ah.test.ts tests/wydanie/zrzuty-data-ipada.test.ts tests/wydanie/zrzuty-uzupelnij.test.ts  (kod @19cba67; test składni z 7c68f44a)
+      17 |   test('00-przygotuj.yaml: TERAZ trzech sesji po parsowaniu = ${ZRZUTY_SESJA_1..3} (w tej kolejności)', () => {
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 118, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 120, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 123, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 126, column 56:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 132, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 135, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 136, column 65:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 136, column 82:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 146, column 49:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 148, column 55:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 150, column 56:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 150, column 73:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 154, column 53:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 158, column 44:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 164, column 58:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 166, column 41:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 167, column 29:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 167, column 46:",
+    +   "e2e/zrzuty-sklepu/00-przygotuj.yaml: Unexpected comma token in YAML stream: \",\" at line 168, column 42:",
+kod 1
+Test Suites: 1 failed, 3 passed, 4 total
+Tests:       2 failed, 75 passed, 77 total

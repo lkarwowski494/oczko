@@ -1,0 +1,6 @@
+edb2e2e4d02acb5dd93d14fd4b90f0eaaf7784c4
+docs/decyzje.md
+
+Auto-merging docs/decyzje.md
+CONFLICT (content): Merge conflict in docs/decyzje.md
+merge-tree kod 1

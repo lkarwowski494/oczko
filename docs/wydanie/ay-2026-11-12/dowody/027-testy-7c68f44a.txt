@@ -1,0 +1,4 @@
+$ npx jest tests/wydanie/e2e-yaml-skladnia.test.ts tests/wydanie/zrzuty-poprawki-ah.test.ts tests/wydanie/zrzuty-data-ipada.test.ts tests/wydanie/zrzuty-uzupelnij.test.ts  (kod @7c68f44a; test składni z 7c68f44a)
+Test Suites: 4 passed, 4 total
+Tests:       77 passed, 77 total
+kod 0
