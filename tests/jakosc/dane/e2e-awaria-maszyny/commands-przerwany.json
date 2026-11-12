@@ -1,0 +1,5 @@
+[
+  {"command": {"assertConditionCommand": {"condition": {"notVisible": {"idRegex": "limit-oferta-link", "optional": false}}, "optional": false}}, "metadata": {"status": "COMPLETED"}},
+  {"command": {"takeScreenshotCommand": {"path": "01-dzis-start-1-dnia", "optional": false}}, "metadata": {"status": "COMPLETED"}},
+  {"command": {"tapOnElement": {"selector": {"idRegex": "dzis-plus", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, "longPress": false, "optional": false}}, "metadata": {"status": "RUNNING"}}
+]

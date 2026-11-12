@@ -3,9 +3,11 @@
 
 Artefakty przebiegu (zrzuty) nie zawsze da się pobrać, a log jest zawsze. Czyta pliki commands-*.json z katalogu
 --test-output-dir Maestro. Ciągi w formacie UUID (np. identyfikator symulatora) są maskowane. Zawsze kończy się kodem 0.
+07-jakosc-002: krok w stanie RUNNING (przerwany, np. awarią sterownika XCTest) też jest wypisywany, z przyczyną z junit
+(<katalog>.xml obok katalogu, jak w jakosc-ios.yml), zamiast „brak nieudanych kroków”.
 Użycie: python3 scripts/ci/maestro-failures.py e2e-out [plik-z-listą-zrzutów]
 """
-import glob, json, os, re, sys
+import glob, html, json, os, re, sys
 
 UUID = re.compile(r'[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}')
 TEXT_KEYS = ('text', 'accessibilityText', 'hintText', 'title', 'value', 'resource-id')
@@ -23,6 +25,14 @@ def texts(o, out):
         for v in o: texts(v, out)
     return out
 
+def junit_cause(d):
+    p = d.rstrip('/' + os.sep) + '.xml'
+    if not os.path.isfile(p): return 'brak pliku ' + os.path.basename(p)
+    m = re.search(r'<(failure|error)\b[^>]*>([\s\S]*?)</\1>', open(p, encoding='utf-8', errors='replace').read())
+    if not m: return 'brak <failure> w ' + os.path.basename(p)
+    t = html.unescape(m.group(2)).strip().splitlines()
+    return mask(t[0].strip())[:500] if t else '(pusty <failure>)'
+
 def main(d, screens_out=None):
     if not os.path.isdir(d): print(f'maestro-failures: brak katalogu {d}'); return
     found = 0; screens = []
@@ -32,8 +42,17 @@ def main(d, screens_out=None):
         if not isinstance(cmds, list): continue
         for i, c in enumerate(cmds):
             meta = c.get('metadata') or {}
-            if meta.get('status') != 'FAILED': continue
+            status = meta.get('status')
+            if status not in ('FAILED', 'RUNNING'): continue
             found += 1
+            if status == 'RUNNING':  # 07-jakosc-002: krok nie zakończył się (awaria sterownika) — nazwa kroku i przyczyna z junit
+                print(f'=== {os.path.relpath(f, d)} — krok {i + 1}/{len(cmds)} przerwany (RUNNING, krok się nie zakończył)')
+                for p in cmds[max(0, i - PREV):i]:
+                    pm = p.get('metadata') or {}
+                    print(f'  {pm.get("status")}: {short(p.get("command"))}')
+                print(f'  PRZERWANY: {short(c.get("command"), 400)}')
+                print('  przyczyna (junit): ' + junit_cause(d))
+                continue
             print(f'=== {os.path.relpath(f, d)} — krok {i + 1}/{len(cmds)}')
             for p in cmds[max(0, i - PREV):i]:
                 pm = p.get('metadata') or {}
