@@ -95,7 +95,7 @@ describe('07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie cał
   });
 });
 
-describe('08-programista-001 (recenzja BE) · ślad 1. podejścia w podsumowaniu', () => {
+describe('08-programista-001/002 (recenzja BE) · ślad 1. podejścia w podsumowaniu', () => {
   test('08-programista-001: 2. podejście przerwane limitem kroku → podsumowanie i tak ma powtórzenie, przyczynę i wyniki 1. podejścia (zapisane przed 2. podejściem)', () => {
     const r = uruchom({ [S02]: ['awaria', 'limit'] }, ENV);
     expect(r.sygnal).toBe('SIGTERM'); // krok przerwany w 2. podejściu, blok końcowy się nie wykonał
@@ -104,6 +104,14 @@ describe('08-programista-001 (recenzja BE) · ślad 1. podejścia w podsumowaniu
     const p1 = r.podsumowanie.split(/wyniki 1\. podejścia/)[1] ?? '';
     expect(p1).toContain(`zielony ${S01}`);
     expect(p1).toContain(`awaria-maszyny ${S02}`);
+  });
+
+  test('08-programista-002: ponawialny 02 zielony w ponowieniu w 1. podejściu, potem awaria w 03 → 02 bez trzeciego uruchomienia, „w-ponowieniu” zostaje w wyniku końcowym', () => {
+    const r = uruchom({ [S02]: ['asercja', 'zielony', 'zielony'], [S03]: ['awaria', 'zielony'] }, { ...ENV, BRAMKA: `${S01}.yaml ${S02}.yaml ${S03}.yaml` }, [S01, S02, S03]);
+    expect(r.wywolania.filter((n) => n === S02)).toHaveLength(2); // 1. podejście: uruchomienie + ponowienie P-091 9a; bez trzeciego w 2. podejściu
+    expect(r.wywolania.filter((n) => n === S03)).toHaveLength(2);
+    expect(r.kod).toBe(0);
+    expect(r.podsumowanie).toMatch(new RegExp(`wyniki 2\\. podejścia[\\s\\S]*w-ponowieniu ${S02}[^\\n]*1\\. podejści`));
   });
 });
 

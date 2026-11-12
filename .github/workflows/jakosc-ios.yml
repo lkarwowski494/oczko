@@ -389,7 +389,8 @@ jobs:
           if [ -n "$awaria1" ]; then
             echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
             mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
-            POMIN=$(awk '$1 ~ /^czerwony/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
+            # 08-programista-002 (P-787): „w-ponowieniu” to porażka asercji + ponowienie P-091 9a — w 2. podejściu nie biegnie trzeci raz, wynik zostaje
+            POMIN=$(awk '$1 ~ /^(czerwony|w-ponowieniu)/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
             { # 08-programista-001 (P-786): ślad 1. podejścia w podsumowaniu PRZED 2. podejściem — przekroczenie limitu kroku w 2. podejściu go nie gubi
               echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
               echo "- wyniki 1. podejścia (przed powtórzeniem):"
@@ -397,7 +398,8 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
             przebieg 2
             porazki=$((porazki + porazki1))
-            awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
+            awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }
+                 $1 == "w-ponowieniu" { print $1, $2, "(1. podejście, porażka asercji i zielone ponowienie — bez trzeciego uruchomienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
           fi
           {
             if [ -n "$awaria1" ]; then
