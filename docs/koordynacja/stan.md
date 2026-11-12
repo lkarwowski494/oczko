@@ -262,6 +262,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| BB | session_01T66VBvrufqaR4yjsyjFr3G | 07-jakosc audit (diagnoza e2e cz. 2 iphone, run 43194659175) | claude/bb-diagnoza-e2e-2026-11-12 @ 562dfc4 | — | — | start 11:20 (opus-5-5, high, env_0166…); polecenie `polecenia/BB.md` @ cd2ccaf; prompt 07 audit wkleił subagent (77 487 zn.; kompletność potwierdza BB linią KONIEC); pułap 5 / STOP 6,5; pula P-776…P-778 |
 | BA | session_01T66VBx5XUzRDTk4bPpACD2 | 08-programista fix (04-001 kontrast pod zakreślaczem, opcja B) | claude/ba-zakreslacz-2026-11-12 @ 3d9ca08 | — | — | start 08:47 (sonnet-5-5, medium); polecenie `polecenia/BA.md` @ 5598e6e; pułap 8 / STOP 10,4; pula P-773…P-775 |
 | AZ | session_01T66VBwCGmBo6GGuTm4DGiV | 09-lokalizacja audit (recenzja AW) | claude/az-recenzja-aw-2026-11-12 @ acf31b1 | — | — | start 08:43 (opus-5-5, medium); polecenie `polecenia/AZ.md` @ 7e31e11; pułap 5 / STOP 6,5 |
 | AY | session_01T66VBxFP4FMoA4yghBYfGV | 10-wydanie audit (recenzja AU) | claude/ay-recenzja-au-2026-11-12 @ 19cba67 | — | — | start 08:41 (opus-5-5, medium); polecenie `polecenia/AY.md` @ b8729fc; pułap 6 / STOP 7,8 |
@@ -379,6 +380,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BB (07): P-776…P-778. Następny wolny: P-779; KO następny: KO-053.**
 - **Pula BA (08): P-773…P-775. Następny wolny: P-776; KO następny: KO-053.**
 - **Pule 12.11 08:20: AT P-759…P-762, AU P-763…P-766, AV P-767…P-770, AW P-771…P-772. Następny wolny: P-773; KO następny: KO-052.**
 - Pule AO P-748…P-751 (użyte), AP P-752…P-754 (nieużyte; AQ wzięła P-752…P-755), AR P-756…P-757 (nieużyte), **AS P-756…P-758 (przydzielona w poleceniu AS, przed startem). Następny wolny: P-759; KO następny: KO-049.**
@@ -666,3 +668,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 12.11 09:56 | M9 | Przejęcie przez session_01T66VBvz4Y1nNUQf6tdtfdo (lineage 0/8, rola z assemble @ prompts b5992db). Przypomnienia własne utworzone, poprzednika usunięte; iOS 43194659175 queued, Zrzuty sklepu success na 562dfc4; AX zarchiwizowana (31%, 8,33 USD); poprzednicy …wtoK6… i …vgNA… do archiwizacji (wyjątek z promptu) | kontrola 10:52: wynik iOS → build 5 |
 | 12.11 09:58 | M9 | PRZEJĄŁEM wysłane do …wtoK6…; …wtoK6… zarchiwizowana (12,91 USD, kontekst 35%); …vgNA… już zarchiwizowana (18,13 USD). Sesji podrzędnych aktywnych: brak | kontrola 10:52 |
 | 12.11 10:53 | M9 | Kontrola: iOS 43194659175 in_progress — zegarek, swift, build, eksperymenty-wzoru, e2e cz. 1 ipad, cz. 3 iphone success; cz. 2 iphone (od 10:24) i cz. 1 iphone (od 10:29) w toku. Linux 43194659213 success. Integracja = 562dfc4 | kontrola ok. 11:13 |
+| 12.11 11:20 | M9, BB | **Jakość · iOS 43194659175 failure** na 562dfc4 (11:07): e2e cz. 2 iphone (job 131120448387) krok 11 „Scenariusze”; pozostałe 7 jobów success, Linux success. Bez ponowienia (porażka w scenariuszach, nie maszyna przed 1. scen.). Build 5 wstrzymany. Start BB (07 audit, diagnoza) | raport BB → poprawka 08 fix → ponowny iOS → build 5 |
