@@ -18,8 +18,8 @@ jest.mock('expo-router', () => ({
     (require('react') as typeof React).useEffect(f, []);
   },
 }));
-let mockDzis: { naKafel(k: KafelDzis): void } | null = null;
-jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: (p: { dzis: { naKafel(k: KafelDzis): void } }) => { mockDzis = p.dzis; return null; } }));
+let mockDzis: { naKafel(k: KafelDzis): void; naKontynuuj(): void } | null = null;
+jest.mock('../../src/ekrany/Aplikacja', () => ({ Aplikacja: (p: { dzis: { naKafel(k: KafelDzis): void; naKontynuuj(): void } }) => { mockDzis = p.dzis; return null; } }));
 jest.mock('../../src/kompozycja/StoperLicznika', () => ({ StoperLicznika: () => null, SprawdzStopera: () => null }));
 jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }: { children: React.ReactNode }) => children }));
 jest.mock('../../src/kompozycja/system', () => ({ cyklAplikacji: {}, oglos: jest.fn(), systemAplikacji: {} }));
