@@ -262,6 +262,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| BC | session_01T66VBzvsv1SqyUaKRviyvh | 07-jakosc build (lista testu buildu 5 = 1151, docs) | claude/bc-test-build5-2026-11-12 @ 562dfc4 | — | — | start 13:12 (opus-5-5, env_0166…); polecenie `polecenia/BC.md` @ b6bf6b0; prompt wkleił subagent (68 861 zn.); pułap 3 / STOP 3,9; pula P-779…P-780 |
 | BB (zarchiwizowana 11:36, 5,95 USD — ponad pułap 5, pod STOP; kontekst 29%) | session_01T66VBvrufqaR4yjsyjFr3G | 07-jakosc audit (diagnoza e2e cz. 2 iphone, run 43194659175) | claude/bb-diagnoza-e2e-2026-11-12 @ 562dfc4 | — | — | start 11:20 (opus-5-5, high, env_0166…); polecenie `polecenia/BB.md` @ cd2ccaf; prompt 07 audit wkleił subagent (77 487 zn.; kompletność potwierdza BB linią KONIEC); pułap 5 / STOP 6,5; pula P-776…P-778 |
 | BA | session_01T66VBx5XUzRDTk4bPpACD2 | 08-programista fix (04-001 kontrast pod zakreślaczem, opcja B) | claude/ba-zakreslacz-2026-11-12 @ 3d9ca08 | — | — | start 08:47 (sonnet-5-5, medium); polecenie `polecenia/BA.md` @ 5598e6e; pułap 8 / STOP 10,4; pula P-773…P-775 |
 | AZ | session_01T66VBwCGmBo6GGuTm4DGiV | 09-lokalizacja audit (recenzja AW) | claude/az-recenzja-aw-2026-11-12 @ acf31b1 | — | — | start 08:43 (opus-5-5, medium); polecenie `polecenia/AZ.md` @ 7e31e11; pułap 5 / STOP 6,5 |
@@ -380,6 +381,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BC (07): P-779…P-780. Następny wolny: P-781; KO następny: KO-054.**
 - **Pula BB (07): P-776…P-778. Następny wolny: P-779; KO następny: KO-053.**
 - **Pula BA (08): P-773…P-775. Następny wolny: P-776; KO następny: KO-053.**
 - **Pule 12.11 08:20: AT P-759…P-762, AU P-763…P-766, AV P-767…P-770, AW P-771…P-772. Następny wolny: P-773; KO następny: KO-052.**
@@ -674,3 +676,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 12.11 12:22 | M9 | **Jakość · iOS 43194659175 success** (attempt 2: e2e cz. 2 iphone success 11:39–12:06; wszystkie 8 jobów success) na 562dfc4 = czubek integracji (ls-remote 12:21). **testflight.yml build 5 wyzwolony** (zgoda w mandacie): run 43217124167 (#15) na 562dfc4, bez_wysylki=false, pomin_bramke_e2e=false, powod="". Prośba o Approve w `release` do właściciela | Approve → VALID → numer buildu → test właściciela; potem 07 fix JAK-05 |
 | 12.11 12:24 | właściciel, M9 | Właściciel w czacie: „Approved” (build 5). Sprawdzone: run 43217124167 bramka success 12:21, job build in_progress od 12:23:57 | kontrola 12:52: numer buildu, VALID |
 | 12.11 12:53 | M9 | Build 5 run 43217124167: job build w kroku 26 „Wysyłka do App Store Connect” (kroki 1–25 success) | kontrola 13:08: VALID, numer |
+| 12.11 13:12 | M9, BC | **Build 5 = 1151** (run 43217124167 success 13:04: build w tym krok 27 VALID, tag v1.0.0-b1151 — log joba tag `NUMER: 1151`). Numer przekazany właścicielowi. Start BC (lista `test-urzadzenia-build5.md`) | raport BC → przyjęcie → link listy właścicielowi; linia 14:00 |
