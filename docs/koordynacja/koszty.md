@@ -63,3 +63,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AQ | 08 fix (sonnet) | 8 | 4,66 | 32 | 01:37 → 01:37 → … → 2929462 (02:06) → C8 + iOS w toku (02:08) → odbiór po AR | 0 | KONIEC potwierdzony; ponad 30% (32) |
 | AR | 07 audit (opus) | 5 | 6,84 | 29,8 | 04:31 → 04:32 → 54127b5 (04:43) → — → raport 04:44 | 0 | **próg STOP** (pobieranie logów/artefaktów); **zły autor** 54127b5 „Claude <noreply@anthropic.com>” |
 | AS | 10 audit (opus) | 6 | 5,10 | 26 | 05:52 → 05:57 → 06:08 (raport d11483d) → iOS w toku → 06:13 przyjęte | 0 min (polecenie gotowe przed końcem C8) | sesja zgłosiła „ok. 3 USD” — szacunek sesji 1,7× za nisko |
+| AV | 04 audit (opus/high) | 6 | 6,15 | 28 | 08:20 → 08:24 → 08:40 (raport e4f75e5) → — (docs, verify 0 wg sesji) → 08:48 przyjęte | 0 | w pułapie +2,5%; raport przyjęty (autor OK, tylko docs/design/av-2026-11-12/) |
