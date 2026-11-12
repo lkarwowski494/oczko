@@ -1,0 +1,70 @@
+# artefakty 43139114751: sklep-zrzuty-surowe (13919316788, 05:48 UTC, attempt 2), sklep-zrzuty-ramki (13919012612); pobrane MCP actions_get download 12.11.2026
+$ cat surowe/zrzuty-daty.json
+{"teraz":"2026-11-10T09:41:00","dzienIpada":"2026-11-12"}
+$ identify -format "%wx%h %[channels] %[type]" (każdy plik)
+ramki/6.9/en/01-dzis.png 1320x2868 srgb TrueColor
+ramki/6.9/en/02-licznik.png 1320x2868 srgb TrueColor
+ramki/6.9/en/05-projekty.png 1320x2868 srgb TrueColor
+ramki/6.9/en/06-historia.png 1320x2868 srgb TrueColor
+ramki/6.9/en/07-kalendarz.png 1320x2868 srgb TrueColor
+ramki/6.9/pl/01-dzis.png 1320x2868 srgb TrueColor
+ramki/6.9/pl/02-licznik.png 1320x2868 srgb TrueColor
+ramki/6.9/pl/05-projekty.png 1320x2868 srgb TrueColor
+ramki/6.9/pl/06-historia.png 1320x2868 srgb TrueColor
+ramki/6.9/pl/07-kalendarz.png 1320x2868 srgb TrueColor
+ramki/ipad-13/en/01-dzis.png 2064x2752 srgb TrueColor
+ramki/ipad-13/en/02-licznik.png 2064x2752 srgb TrueColor
+ramki/ipad-13/en/05-projekty.png 2064x2752 srgb TrueColor
+ramki/ipad-13/en/06-historia.png 2064x2752 srgb TrueColor
+ramki/ipad-13/en/07-kalendarz.png 2064x2752 srgb TrueColor
+ramki/ipad-13/pl/01-dzis.png 2064x2752 srgb TrueColor
+ramki/ipad-13/pl/02-licznik.png 2064x2752 srgb TrueColor
+ramki/ipad-13/pl/05-projekty.png 2064x2752 srgb TrueColor
+ramki/ipad-13/pl/06-historia.png 2064x2752 srgb TrueColor
+ramki/ipad-13/pl/07-kalendarz.png 2064x2752 srgb TrueColor
+ramki/warunek-og07/6.9/en/03-wzor.png 1320x2868 srgb TrueColor
+ramki/warunek-og07/6.9/en/04-zakreslenie.png 1320x2868 srgb TrueColor
+ramki/warunek-og07/6.9/pl/03-wzor.png 1320x2868 srgb TrueColor
+ramki/warunek-og07/6.9/pl/04-zakreslenie.png 1320x2868 srgb TrueColor
+ramki/warunek-og07/ipad-13/en/03-wzor.png 2752x2064 srgb TrueColor
+ramki/warunek-og07/ipad-13/en/04-zakreslenie.png 2752x2064 srgb TrueColor
+ramki/warunek-og07/ipad-13/pl/03-wzor.png 2752x2064 srgb TrueColor
+ramki/warunek-og07/ipad-13/pl/04-zakreslenie.png 2752x2064 srgb TrueColor
+surowe/6.9/en/01-dzis.png 1320x2868 srgb TrueColor
+surowe/6.9/en/02-licznik.png 1320x2868 srgb TrueColor
+surowe/6.9/en/05-projekty.png 1320x2868 srgb TrueColor
+surowe/6.9/en/06-historia.png 1320x2868 srgb TrueColor
+surowe/6.9/en/07-kalendarz.png 1320x2868 srgb TrueColor
+surowe/6.9/pl/01-dzis.png 1320x2868 srgb TrueColor
+surowe/6.9/pl/02-licznik.png 1320x2868 srgb TrueColor
+surowe/6.9/pl/05-projekty.png 1320x2868 srgb TrueColor
+surowe/6.9/pl/06-historia.png 1320x2868 srgb TrueColor
+surowe/6.9/pl/07-kalendarz.png 1320x2868 srgb TrueColor
+surowe/ipad-13/en/01-dzis.png 2064x2752 srgb TrueColor
+surowe/ipad-13/en/02-licznik.png 2064x2752 srgb TrueColor
+surowe/ipad-13/en/05-projekty.png 2064x2752 srgb TrueColor
+surowe/ipad-13/en/06-historia.png 2064x2752 srgb TrueColor
+surowe/ipad-13/en/07-kalendarz.png 2064x2752 srgb TrueColor
+surowe/ipad-13/pl/01-dzis.png 2064x2752 srgb TrueColor
+surowe/ipad-13/pl/02-licznik.png 2064x2752 srgb TrueColor
+surowe/ipad-13/pl/05-projekty.png 2064x2752 srgb TrueColor
+surowe/ipad-13/pl/06-historia.png 2064x2752 srgb TrueColor
+surowe/ipad-13/pl/07-kalendarz.png 2064x2752 srgb TrueColor
+surowe/warunek-og07/6.9/en/03-wzor.png 1320x2868 srgb TrueColor
+surowe/warunek-og07/6.9/en/04-zakreslenie.png 1320x2868 srgb TrueColor
+surowe/warunek-og07/6.9/pl/03-wzor.png 1320x2868 srgb TrueColor
+surowe/warunek-og07/6.9/pl/04-zakreslenie.png 1320x2868 srgb TrueColor
+surowe/warunek-og07/ipad-13/en/03-wzor.png 2752x2064 srgb TrueColor
+surowe/warunek-og07/ipad-13/en/04-zakreslenie.png 2752x2064 srgb TrueColor
+surowe/warunek-og07/ipad-13/pl/03-wzor.png 2752x2064 srgb TrueColor
+surowe/warunek-og07/ipad-13/pl/04-zakreslenie.png 2752x2064 srgb TrueColor
+$ node scripts/ci/kontrola-zakreslen.mjs surowe
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+OK 6.9/pl: 03=1, 04=2 pasów zakreślenia
+OK ipad-13/en: 03=1, 04=2 pasów zakreślenia
+OK ipad-13/pl: 03=1, 04=2 pasów zakreślenia
+Kontrola zakreśleń: OK (4 par)
+kod 0
+
+# obejrzane okiem (zrzuty/ipad-paski.png, wycinki 0-60 px): iPad en wszystkie 14 kadrów „9:41 AM  Thu Nov 12”, iPad pl „09:41  Czw. 12 lis”; iPhone en „9:41”, pl „09:41” (format regionu pl), bez daty.
+# kadr 04: dwa żółte pasy widoczne w 6.9/en, 6.9/pl, ipad-13/en, ipad-13/pl (obejrzane po zmniejszeniu); ipad-13/en/01-dzis: pasek „Thu Nov 12”, nagłówek treści „Tuesday, November 10”.
