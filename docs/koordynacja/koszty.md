@@ -74,3 +74,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | M9 …wtoK6… (koordynator 18) | M9 | 10 | 12,91 | 35 | 08:58 → 09:50 | — | archiwizacja 09:58 przez następcę (wyjątek: lineage 8/8); …vgNA… (17) już zarchiwizowana, 18,13 USD |
 | BB | 07 audit (diagnoza e2e) | 5 | 5,95 | 29 | 11:17 → 11:32 raport → 11:36 przyjęte | — | ponad pułap o 19% (high effort, logi CI) |
 | BC | 07 build (lista testu buildu 5) | 3 | 4,87 | 25 | 13:12 → 13:24 raport → 13:26 przyjęte | — | ponad STOP; sesja szacowała 1,5 (prompt 69 tys. zn. + verify) |
+| BD | 07 fix (JAK-05/JAK-17) | 5 | 6,46 | 24 | 14:05 → 14:09 start → 14:17 1. commit (lokalny) → 14:25 PRZEKAZANIE → ci.yml 43237109275 success 14:29 → 14:45 przyjęte (recenzja BE TAK) | 16 min: recenzja niezależna | tuż pod STOP 6,5; przegląd ścieżki wrażliwej subagentem wykrył P1 przed recenzją |
