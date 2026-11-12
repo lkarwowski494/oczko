@@ -113,7 +113,7 @@
       "03-wzor": "A leírás közvetlenül a számláló mellett",
       "04-zakreslenie": "Emelj ki és jegyzetelj a leíráson",
       "05-projekty": "Minden projekted egy helyen",
-      "06-historia": "Minden módosítás idővel, visszavonható",
+      "06-historia": "Minden módosítás ideje, visszavonható",
       "07-kalendarz": "Az alkotónapjaid a naptárban"
     },
     "ro": {
@@ -130,9 +130,9 @@
       "01-dzis": "Nastavite točno gdje ste stali",
       "02-licznik": "Jedan dodir dodaje red",
       "03-wzor": "Upute odmah pokraj brojača",
-      "04-zakreslenie": "Označavajte i pišite po uputama",
+      "04-zakreslenie": "Označavajte i pišite izravno na uputama",
       "05-projekty": "Svi vaši projekti na jednom mjestu",
-      "06-historia": "Svaka promjena s vremenom i poništavanje",
+      "06-historia": "Vrijeme svake promjene i poništavanje",
       "07-kalendarz": "Vaši dani ručnog rada u kalendaru"
     },
     "sl": {},
@@ -146,7 +146,7 @@
       "03-wzor": "Опис поруч із лічильником",
       "04-zakreslenie": "Виділяйте й пишіть просто на описі",
       "05-projekty": "Усі ваші проєкти в одному місці",
-      "06-historia": "Кожна зміна з часом і відміна дотиком",
+      "06-historia": "Час кожної зміни й відміна дотиком",
       "07-kalendarz": "Ваші дні рукоділля в календарі"
     },
     "es": {
@@ -187,7 +187,7 @@
     },
     "de": {
       "01-dzis": "Weiter genau dort, wo du aufgehört hast",
-      "02-licznik": "Ein Tipp zählt eine Reihe dazu",
+      "02-licznik": "Einmal tippen, eine Reihe mehr",
       "03-wzor": "Die Anleitung direkt neben dem Zähler",
       "04-zakreslenie": "Markieren und schreiben in der Anleitung",
       "05-projekty": "Alle deine Projekte an einem Ort",
@@ -290,7 +290,7 @@
       "03-wzor": "Corak anda di sebelah pembilang",
       "04-zakreslenie": "Serlahkan dan tulis pada corak",
       "05-projekty": "Semua projek anda di satu tempat",
-      "06-historia": "Setiap perubahan ada masa dan buat asal",
+      "06-historia": "Masa setiap perubahan dan buat asal",
       "07-kalendarz": "Hari berkraf anda dalam kalendar"
     },
     "vi": {
@@ -308,7 +308,7 @@
       "03-wzor": "Описание рядом со счётчиком",
       "04-zakreslenie": "Выделяйте и пишите прямо в описании",
       "05-projekty": "Все ваши проекты в одном месте",
-      "06-historia": "Каждое изменение со временем и отмена",
+      "06-historia": "Время каждого изменения и отмена",
       "07-kalendarz": "Ваши дни рукоделия в календаре"
     },
     "ja": {
@@ -326,7 +326,7 @@
       "03-wzor": "도안을 카운터 바로 옆에",
       "04-zakreslenie": "도안에 형광펜과 메모를",
       "05-projekty": "모든 프로젝트를 한곳에",
-      "06-historia": "모든 변경을 시간과 함께, 한 번에 실행 취소",
+      "06-historia": "변경마다 시간 기록, 탭 한 번으로 실행 취소",
       "07-kalendarz": "뜨개한 날을 달력으로 한눈에"
     },
     "zh-Hant": {
