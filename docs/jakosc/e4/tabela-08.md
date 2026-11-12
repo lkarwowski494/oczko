@@ -166,6 +166,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina-geometria.test.ts` | zielony (główny zestaw) | 8 | P-619 | `src/ekrany/dzianina-geometria` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina.test.tsx` | zielony (główny zestaw) | 4 | — | `src/ekrany/Dzianina` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kafel-dodaj-wzor.test.tsx` | zielony (główny zestaw) | 3 | P-588 | `src/ekrany/Dzis` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-plus-etykieta.test.tsx` | zielony (główny zestaw) | 4 | P-606 | `src/ekrany/Dzis`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-rownowaznosc-plus.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-001/S2, BR-ZAK-006, KP-10, RD-17 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | ER-68, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-stany.test.tsx` | zielony (główny zestaw) | 5 | P-563, P-564, P-565, P-571 | `src/ekrany/Dzis`<br>`src/ekrany/wspolne` | ER-70, Z07-22 |
@@ -426,4 +427,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 422; zależnych od poprawek: 269.
+Razem plików testów: 423; zależnych od poprawek: 269.
