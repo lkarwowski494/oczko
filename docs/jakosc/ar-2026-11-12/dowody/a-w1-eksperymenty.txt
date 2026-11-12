@@ -1,0 +1,31 @@
+# źródło: job 130921519295 (run 43139118664, 2929462), artefakt 13909142916 eksperymenty-wzoru.log; komenda: grep -nE 'testW1|EksperymentyTests.swift:3[45]|TEST FAILED'
+549:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1PustaStronaNaKoncu]' started.
+551:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1PustaStronaNaKoncu]' passed (0.083 seconds).
+552:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1StronaBezSieciToBrakSieci]' started.
+565:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1StronaBezSieciToBrakSieci]' passed (61.425 seconds).
+566:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf]' started.
+579:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Optional(true)") - tekst: ["powod": przekroczono_czas, "ok": 0]
+580:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - tekst: brak PDF
+587:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Optional(true)") - tabela: ["powod": przekroczono_czas, "ok": 0]
+588:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - tabela: brak PDF
+597:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Optional(true)") - obraz: ["ok": 0, "powod": przekroczono_czas]
+598:/Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - obraz: brak PDF
+599:Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf]' failed (182.768 seconds).
+623:	EksperymentyTests.testW1WordNaPdf()
+624:	EksperymentyTests.testW1WordNaPdf()
+625:	EksperymentyTests.testW1WordNaPdf()
+626:	EksperymentyTests.testW1WordNaPdf()
+627:	EksperymentyTests.testW1WordNaPdf()
+628:	EksperymentyTests.testW1WordNaPdf()
+630:** TEST FAILED **
+
+# porównanie: job 130861439124 (run 43121094246, 281852f), log zadania; grep EksperymentyTests.swift:3[45] + liczność powodów
+2026-11-11T23:40:54.9353910Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Op
+2026-11-11T23:40:54.9454670Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - tekst: brak PDF
+2026-11-11T23:41:56.1706290Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Op
+2026-11-11T23:41:56.1825630Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - tabela: brak PDF
+2026-11-11T23:42:55.6375570Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:34: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Op
+2026-11-11T23:42:55.6379080Z /Users/runner/work/oczko/oczko/modules/oczko-wzor/TestyOknaMaszyn/Testy/EksperymentyTests.swift:35: error: -[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf] : failed - obraz: brak PDF
+2026-11-11T23:42:55.6383250Z Test Case '-[OczkoWzorEksperymenty.EksperymentyTests testW1WordNaPdf]' failed (181.560 seconds).
+      1 powod": brak_sieci
+      6 powod": przekroczono_czas
