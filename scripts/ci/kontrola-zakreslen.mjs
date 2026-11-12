@@ -86,7 +86,8 @@ export function sprawdz(katalog, wczytaj = wczytajRgb) {
     if (b > a) linie.push(`OK ${etykieta}: 03=${a}, 04=${b} pasów zakreślenia`);
     else { linie.push(`BŁĄD ${po}: 04=${b} pasów zakreślenia, 03=${a} — kadr 04 musi mieć więcej niż 03 (licznik w interfejsie nie dowodzi widoczności pociągnięcia)`); bledy++; }
   }
-  if (pary.size === 0) linie.push('brak par 03/04 do sprawdzenia (np. warunek OG-07 niespełniony)');
+  // AQ (P3, KO-046): zero par = kontrola nic nie sprawdziła, więc to błąd, nie notatka. Sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który też przeszukujemy).
+  if (pary.size === 0) { linie.push(`BŁĄD ${katalog}: brak par 03/04 do sprawdzenia — kontrola nic nie sprawdziła (brak katalogu, pusty zestaw albo sceny 03/04 nie powstały; komplet-zrzutow.mjs wskaże braki)`); bledy++; }
   return { linie, bledy, sprawdzone };
 }
 

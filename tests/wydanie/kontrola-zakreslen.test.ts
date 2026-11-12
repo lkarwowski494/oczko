@@ -109,14 +109,25 @@ if (!maConvert && !wymagaConvert) {
     expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png/);
     expect(r.status).toBe(1);
   });
-  test('brak jednej ze scen pary (komplet-zrzutow.mjs zgłasza to osobno) → pominięcie z komunikatem, bez błędu tej kontroli; brak par w ogóle → kod 0 z notatką', () => {
+  test('brak jednej ze scen pary (komplet-zrzutow.mjs zgłasza to osobno) → pominięcie z komunikatem, bez błędu tej kontroli', () => {
     zrzut('ipad-13/en/03-wzor.png', 1);
-    let r = uruchom();
+    const r = uruchom();
     expect(r.stdout).toMatch(/POMINIĘTO ipad-13\/en/);
     expect(r.status).toBe(0);
-    r = spawnSync('node', [SKRYPT, path.join(kat, 'nie-ma')], { encoding: 'utf8', cwd: korzen });
-    expect(r.stdout).toMatch(/brak par/i);
-    expect(r.status).toBe(0);
+  });
+  // AQ, P3 (recenzja AP, KO-046): kontrola, która nie znalazła żadnej pary, nic nie sprawdziła — kod 0 z notatką wyglądał jak sukces (zasada 21: kontrola, którą można pominąć po cichu, nie jest kontrolą).
+  // Sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który kontrola też przeszukuje), więc zero par = błąd niezależnie od OG-07.
+  test('brak par 03/04 w katalogu (puste, nieistniejące, tylko inne sceny) → BŁĄD i kod 1, nie cichy kod 0', () => {
+    for (const katalog of [path.join(kat, 'nie-ma'), kat]) {
+      const r = spawnSync('node', [SKRYPT, katalog], { encoding: 'utf8', cwd: korzen });
+      expect(r.stdout).toMatch(/BŁĄD[^\n]*brak par 03\/04/);
+      expect(r.stdout).not.toMatch(/Kontrola zakreśleń: OK/);
+      expect(r.status).toBe(1);
+    }
+    zrzut('ipad-13/en/01-dzis.png', 0);
+    const r = uruchom();
+    expect(r.stdout).toMatch(/BŁĄD[^\n]*brak par 03\/04/);
+    expect(r.status).toBe(1);
   });
 });
 
