@@ -1,0 +1,26 @@
+$ git rev-parse HEAD; git diff --stat=200 281852f..2929462
+54127b56f451f7372ea43849b1cae919c5aee260
+ .github/workflows/zrzuty-sklepu.yml                   |  29 ++++++++++++++++++++--
+ docs/decyzje.md                                       |   4 +++
+ docs/programista/zrzuty-018-019-an.md                 |  31 +++++++++++++++++++++++
+ docs/programista/zrzuty-018-aq-verify.txt             |   9 +++++++
+ e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml |  10 ++++++++
+ e2e/zrzuty-sklepu/00-przygotuj.yaml                   |   2 +-
+ scripts/ci/kontrola-zakreslen.mjs                     |   3 ++-
+ scripts/ci/zrzuty-jezyki.mjs                          |  13 ++++++++--
+ scripts/ci/zrzuty-sklepu.sh                           |  52 +++++++++++++++++++++++++--------------
+ scripts/ci/zrzuty-uzupelnij.mjs                       |  63 ++++++++++++++++++++++++++++++++++++++++++++++-
+ tests/wydanie/kontrola-zakreslen.test.ts              |  21 ++++++++++++----
+ tests/wydanie/widok-wzoru-odswiezenie-plotna.test.ts  |  27 ++++++++++++++++++++
+ tests/wydanie/zrzuty-data-ipada.test.ts               | 187 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/wydanie/zrzuty-obrot-ipada.test.ts              |  19 ++++++--------
+ tests/wydanie/zrzuty-pasek-stanu.test.ts              |  35 +++++++++++++-------------
+ tests/wydanie/zrzuty-poprawki-ah.test.ts              |  13 +++++-----
+ tests/wydanie/zrzuty-uzupelnij.test.ts                |   4 +--
+ 17 files changed, 453 insertions(+), 69 deletions(-)
+kod 0
+
+$ git diff --stat 281852f..2929462 -- app src modules
+kod 0 (puste = brak zmian kodu aplikacji)
+$ git diff --stat 2929462..54127b5 -- . ":!docs/jakosc/ar-2026-11-12"
+kod 0 (puste = 54127b5 to tylko raport AR)

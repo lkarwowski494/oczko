@@ -1,0 +1,17 @@
+# zadania przebiegu 43139114751 (MCP list_workflow_jobs filter=all): plan 02:06 UTC; zrzuty ipad 1: en 02:50–03:22 (attempt 1); ipad 2: pl 03:23–04:01 (attempt 1); iphone 1: en 02:36–03:13 (attempt 1); iphone 2: pl attempt 1 cancelled 05:05, attempt 2 05:05–05:45 success; komplet attempt 2 05:45–05:48 success; build attempt 2 = kopia attempt 1 (te same znaczniki czasu); wszystko 2026-11-12 UTC
+# artefakt zrzuty-surowe-iphone-2: jeden (13918807327, 05:44, attempt 2); zrzuty-sklepu-app jeden (13910111990, 02:36)
+$ grep (log zip przebiegu, attempt 2: komplet + iphone 2)
+2026-11-12T05:47:06.1251498Z Surowe zrzuty: 28 plików
+2026-11-12T05:47:06.1307822Z [36;1m# 10-wydanie-019 (KO-043): kadr 04 musi mieć więcej żółtych pasów zakreślenia niż 03 (ImageMagick, piksele); porażk
+2026-11-12T05:47:08.7007038Z OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+2026-11-12T05:47:08.7008896Z OK 6.9/pl: 03=1, 04=2 pasów zakreślenia
+2026-11-12T05:47:08.7009535Z OK ipad-13/en: 03=1, 04=2 pasów zakreślenia
+2026-11-12T05:47:08.7009997Z OK ipad-13/pl: 03=1, 04=2 pasów zakreślenia
+2026-11-12T05:47:08.7010663Z Kontrola zakreśleń: OK (4 par)
+2026-11-12T05:47:59.0145831Z   DZIEN: 2026-11-12
+2026-11-12T05:47:59.0501070Z Znacznik dat: sklep-zrzuty-surowe/zrzuty-daty.json
+2026-11-12T05:10:50.7646610Z   ZRZUTY_TERAZ: 2026-11-10T09:41:00
+2026-11-12T05:10:50.7648000Z   ZRZUTY_DZIEN: 2026-11-12
+2026-11-12T05:12:29.9960150Z pasek stanu: ustawiony (--time 9:41); odczyt simctl: Time: 9:41  
+2026-11-12T05:13:38.5783350Z pasek stanu: ustawiony (--time 9:41); odczyt simctl: Time: 09:41 
+2026-11-12T05:27:17.3449490Z pasek stanu: ustawiony (--time 9:41); odczyt simctl: Time: 09:41 
