@@ -40,6 +40,8 @@ tags:
 - extendedWaitUntil: { visible: { id: "przewodnik-postep", text: "Read: 1 of 42" }, timeout: 10000 }
 - takeScreenshot: 70-przewodnik-przeczytana-1
 # Powrót do Ustawień: wartość wiersza świeża (useFocusEffect)
+# 07-jakosc-002: „Back” jest pierwszym dzieckiem ScrollView przewodnika (Przewodnik.tsx:74-75) — po przewinięciu do postępu bywa poza ekranem
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
 - scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
