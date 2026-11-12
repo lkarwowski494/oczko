@@ -1,0 +1,3 @@
+$ fc-query --format='%{charset}' docs/design/fonty/BreeSerif.ttf > charset.txt; node glify.mjs charset.txt znaki.json  (znaki z podpisów języków spoza kroj.systemowy i kroj.cjk)
+znaków sprawdzonych: 95, bez glifu: 0
+EXIT 0

@@ -1,0 +1,20 @@
+$ bash scripts/ci/ramki-sklepu.sh we2 wy2   (we2/6.9/{de,bg}/01-dzis.png, podpisy @ acf31b1)
+::warning::Brak podpisów dla języka bg (6.9/bg) — bez ramek (surowe zrzuty w artefakcie surowym)
+Ramki: 1 plików
+EXIT 0
+
+$ grep -c bg docs/wydanie/metadane/*.store.json; ls docs/wydanie/metadane | grep -c "^bg"
+0
+
+$ sed -n 20,30p tests/wydanie/zrzuty-jezyki.test.ts
+      { urzadzenie: 'iphone', jezyki: 'en', nr: 1, zakup: true }, { urzadzenie: 'iphone', jezyki: 'pl', nr: 2, zakup: false },
+      { urzadzenie: 'ipad', jezyki: 'en', nr: 1, zakup: false }, { urzadzenie: 'ipad', jezyki: 'pl', nr: 2, zakup: false },
+    ]);
+  });
+  test('all = 29 języków z lokalizacją sklepu (bez bg, sl, sr, lt, lv, et), każdy dokładnie raz w każdym urządzeniu, zadań nie więcej niż 8', () => {
+    const p = JSON.parse(plan('all', '99').stdout);
+    expect(p.jezyki).toHaveLength(29);
+    for (const x of ['bg', 'sl', 'sr', 'lt', 'lv', 'et']) expect(p.jezyki).not.toContain(x);
+    expect(p.jezyki.slice(0, 2)).toEqual(['en', 'pl']);
+    for (const u of ['iphone', 'ipad']) {
+      const zad = p.matrix.filter((m: any) => m.urzadzenie === u); // eslint-disable-line @typescript-eslint/no-explicit-any

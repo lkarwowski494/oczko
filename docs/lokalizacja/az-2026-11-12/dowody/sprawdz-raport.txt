@@ -1,0 +1,3 @@
+$ node sprawdz-raport.mjs docs/lokalizacja/az-2026-11-12/09-lokalizacja-2026-11-12.md . --rola 09-lokalizacja
+OK: odwołania, cytaty, pliki dowodów i sekrety sprawdzone; format raportu 09-lokalizacja
+EXIT 0

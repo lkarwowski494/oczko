@@ -1,0 +1,3 @@
+$ bash scripts/ci/ramki-sklepu.sh we wy  (27 języków × 7 sztucznych PNG 1320x2868; Noto z apt: fonts-noto-core, fonts-noto-cjk)
+Ramki: 189 plików
+EXIT 0
