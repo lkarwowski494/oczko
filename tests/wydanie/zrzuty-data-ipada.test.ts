@@ -218,3 +218,24 @@ describe('10-wydanie-025: powtórka jednej sceny pary 03/04 usuwa obie (para poc
     expect(r.stdout).toContain(`${s}.png`);
   });
 });
+
+describe('10-wydanie-026: drobne', () => {
+  test('sprawdzDzien: zły dzień kalendarzowy (2026-13-01, 2026-02-30) → komunikat „zły dzień przebiegu”, nie RangeError z toISOString', () => {
+    for (const zly of ['2026-13-01', '2026-02-30', '2026-00-10']) {
+      const r = data(nowyKat(), zly);
+      expect({ zly, kod: r.status }).toEqual({ zly, kod: 2 });
+      expect(r.stderr).toMatch(/zły dzień przebiegu/); expect(r.stderr).not.toMatch(/RangeError|Invalid time value/);
+    }
+  });
+  test('zrzuty-sklepu.sh: DATA_ZRZUTU czyszczone przed simctl (nieudany simctl przy istniejącym pliku nie zostawia daty poprzedniej sceny)', () => {
+    const sh = fs.readFileSync(path.join(korzen, 'scripts/ci/zrzuty-sklepu.sh'), 'utf8');
+    const f = /^zrob_zrzut\(\) \{[\s\S]*?^\}/m.exec(sh)?.[0] ?? '';
+    expect(f.indexOf('DATA_ZRZUTU=""')).toBeGreaterThan(-1);
+    expect(f.indexOf('DATA_ZRZUTU=""')).toBeLessThan(f.indexOf('simctl io'));
+  });
+  test('scenariusz 47: komentarz o dwóch szybkich pociągnięciach nie przeczy sam sobie (nie ma „bez asercji między nimi” obok „tylko szybka asercja”)', () => {
+    const t = fs.readFileSync(path.join(korzen, 'e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml'), 'utf8');
+    expect(t).toMatch(/Między pociągnięciami tylko szybka asercja/);
+    expect(t).not.toMatch(/bez asercji między nimi/);
+  });
+});
