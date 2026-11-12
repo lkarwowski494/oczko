@@ -66,3 +66,7 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AV | 04 audit (opus/high) | 6 | 6,15 | 28 | 08:20 → 08:24 → 08:40 (raport e4f75e5) → — (docs, verify 0 wg sesji) → 08:48 przyjęte | 0 | w pułapie +2,5%; raport przyjęty (autor OK, tylko docs/design/av-2026-11-12/) |
 | AU | 10 fix (022–027) | — | 5,98 | 35 | 08:20 → … → przyjęte 09:14 | recenzja AY 2 rundy | archiwizacja 09:14 |
 | AY | 10 audit (recenzja AU ×2) | 6 | 7,55 | 27 | 08:41 → TAK 09:11 | — | archiwizacja 09:27 |
+| AZ | 09 audit (recenzja AW ×2) | 5 | 6,20 | 26 | 08:43 → TAK 09:37 | przerwa limitu ok. 30 min | archiwizacja 09:52 |
+| AW | 09 build (podpisy C6 + P2) | — | 2,49 | 23 | 08:27 → 09:30 | czekanie na recenzję (limit) | archiwizacja 09:52 |
+| AT | 08 fix (07-001…003) | — | 2,01 | 20 | 08:16 → 09:31 | — | archiwizacja 09:52 |
+| BA | 08 fix (04-001) | 8 | 1,14 | 16 | 08:44 → 08:58 | — | archiwizacja 09:52 |
