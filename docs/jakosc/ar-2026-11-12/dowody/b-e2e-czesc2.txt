@@ -1,0 +1,146 @@
+# źródło: job 130930897956 (run 43139118664, 2929462) log zadania; sed -n 268,293p (plan części) i 515-533 (01), 666-690 (70)
+2026-11-12T02:32:08.7360220Z Pakiet: pelny. Część 2/3: 23 scenariuszy (waga ok. 53 min; bez ponowień P-091 9a: 20)
+2026-11-12T02:32:08.7379120Z   01-nfr-pie-001-pierwsze-liczenie.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7396540Z   04-br-lic-002-s1-plus-minus-cofnij.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7399370Z   05-br-zak-006-s1-limit-zawczasu.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7400300Z   10-nfr-dan-002-kazda-zmiana-trwala.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7401360Z   13-kp-10-zakup-tylko-po-dzialaniu.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7402280Z   14-br-lic-004-s4-gest-od-krawedzi.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7403020Z   16-br-zap-004-s2-zapas-bez-zasiegu.yaml (informacyjnie)
+2026-11-12T02:32:08.7404050Z   19-br-prj-011-s2-powrot-z-innej-aplikacji.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7405040Z   20-br-prj-016-s2-powrot-po-przerwie.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7411050Z   32-nfr-sys-001-nowy-ios.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7411960Z   33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7412800Z   36-br-dan-008-s1-usun-przywroc-z-kosza.yaml (stan-licznika: bez ponowienia)
+2026-11-12T02:32:08.7413710Z   37-p-191-stoper-start-pauza-stop.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7414630Z   38-br-prj-013-s1-korekta-sesji.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7415360Z   40-br-zap-001-s1-wloczka-w-jardach.yaml (informacyjnie)
+2026-11-12T02:32:08.7416160Z   43-br-prj-015-s2-udostepnienie-karty.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7416960Z   57-br-prj-002-s1-notatka-przy-liczniku.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7418040Z   59-br-dni-004-s1-postep-w-procentach.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7420130Z   62-br-wzr-003-s1-znacznik-idzie-z-licznikiem.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7421080Z   63-br-dan-010-s1-zglos-problem-podglad.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7422110Z   66-br-dan-006-s3-zastap-kopia-przed.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7423330Z   68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+2026-11-12T02:32:08.7424410Z   70-p-688-przewodnik-z-ustawien-przeczytane.yaml (informacyjnie)
+2026-11-12T02:32:08.7581320Z ##[group]Run bash .github/scripts/jakosc/select-xcode.sh 26
+2026-11-12T02:32:08.7581850Z [36;1mbash .github/scripts/jakosc/select-xcode.sh 26[0m
+...
+2026-11-12T02:36:12.2929050Z   MAESTRO_CLI_NO_ANALYTICS: 1
+2026-11-12T02:36:12.2929790Z   PONAWIALNE: 16-br-zap-004-s2-zapas-bez-zasiegu.yaml 40-br-zap-001-s1-wloczka-w-jardach.yaml 70-p-688-przewodnik-z-ustawien-przeczytane.yaml
+2026-11-12T02:36:12.2931260Z   BRAMKA: 01-nfr-pie-001-pierwsze-liczenie.yaml 04-br-lic-002-s1-plus-minus-cofnij.yaml 05-br-zak-006-s1-limit-zawczasu.yaml 10-nfr-dan-002-kazda-zmiana-trwala.yaml 33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml 36-br-dan-008-s1-usun-przywroc-z-kosza.yaml
+2026-11-12T02:36:12.2932110Z ##[endgroup]
+2026-11-12T02:39:17.2429460Z 
+2026-11-12T02:39:17.2437250Z Waiting for flows to complete...
+2026-11-12T02:42:38.9341190Z [Failed] NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca (3m 22s) (Assertion is false: "2", id: licznik-wartosc is visible)
+2026-11-12T02:42:38.9343070Z 
+2026-11-12T02:42:38.9435920Z 1/1 Flow Failed
+2026-11-12T02:42:38.9558160Z 
+2026-11-12T02:42:46.6786040Z === 2026-11-12_023614/NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca/commands.json — krok 36/36
+2026-11-12T02:42:46.6788120Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"textRegex": "2", "idRegex": "dzis-wartosc", "optional": false}}, "optional": false}}
+2026-11-12T02:42:46.6790710Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"idRegex": "dzis-karta", "optional": false}}, "optional": false}}
+2026-11-12T02:42:46.6792790Z   COMPLETED: {"assertConditionCommand": {"condition": {"notVisible": {"idRegex": "licznik-plus", "optional": false}}, "optional": false}}
+2026-11-12T02:42:46.6802850Z   COMPLETED: {"tapOnElement": {"selector": {"idRegex": "dzis-kontynuuj", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, "longPress": false, "optional": false}}
+2026-11-12T02:42:46.6804070Z   FAILED: {"assertConditionCommand": {"condition": {"visible": {"textRegex": "2", "idRegex": "licznik-wartosc", "optional": false}}, "optional": false}}
+2026-11-12T02:42:46.6805320Z   błąd: Assertion is false: "2", id: licznik-wartosc is visible
+2026-11-12T02:42:46.6806020Z   teksty na ekranie: (brak hierarchii w wyniku)
+2026-11-12T02:42:46.6808800Z   zrzut: 2026-11-12_023614/NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca/screenshots/step-036-assertCondition-2.png
+...
+2026-11-12T03:49:15.5548960Z 1/1 Flow Passed in 1m 16s
+2026-11-12T03:49:15.5552100Z 
+2026-11-12T03:49:48.4809870Z 
+2026-11-12T03:49:48.4812620Z Waiting for flows to complete...
+2026-11-12T03:51:13.2405680Z [Failed] P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie (1m 25s) (Element not found: Id matching regex: nav-wstecz)
+2026-11-12T03:51:13.2475020Z 
+2026-11-12T03:51:13.2476140Z 1/1 Flow Failed
+2026-11-12T03:51:13.2477980Z 
+2026-11-12T03:51:57.7815750Z 
+2026-11-12T03:51:57.7947170Z Waiting for flows to complete...
+2026-11-12T03:53:33.7413460Z [Failed] P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie (1m 36s) (Element not found: Id matching regex: nav-wstecz)
+2026-11-12T03:53:33.7426430Z 
+2026-11-12T03:53:33.7427660Z 1/1 Flow Failed
+2026-11-12T03:53:33.7442840Z 
+2026-11-12T03:53:39.2472810Z === 2026-11-12_034922/P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie/commands.json — krok 39/39
+2026-11-12T03:53:39.2476730Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"textRegex": ".*, read", "idRegex": "przewodnik-f-kontynuuj", "optional": false}}, "timeout": "10000", "optional": false}}
+2026-11-12T03:53:39.2479330Z   COMPLETED: {"scrollUntilVisible": {"selector": {"idRegex": "przewodnik-postep", "optional": false}, "direction": "UP", "scrollDuration": "40", "visibilityPercentage": 100, "timeout": "30000", "centerElement": fa
+2026-11-12T03:53:39.2482370Z   COMPLETED: {"assertConditionCommand": {"condition": {"visible": {"textRegex": "Read: 1 of 42", "idRegex": "przewodnik-postep", "optional": false}}, "timeout": "10000", "optional": false}}
+2026-11-12T03:53:39.2483700Z   COMPLETED: {"takeScreenshotCommand": {"path": "70-przewodnik-przeczytana-1", "optional": false}}
+2026-11-12T03:53:39.2485100Z   FAILED: {"tapOnElement": {"selector": {"idRegex": "nav-wstecz", "optional": false}, "retryIfNoChange": false, "waitUntilVisible": false, "longPress": false, "optional": false}}
+2026-11-12T03:53:39.2486540Z   błąd: Element not found: Id matching regex: nav-wstecz
+2026-11-12T03:53:39.2487420Z   teksty na ekranie: (brak hierarchii w wyniku)
+2026-11-12T03:53:39.2488680Z   zrzut: 2026-11-12_034922/P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie/screenshots/step-039-tapOnElement-nav-wstecz.png
+2026-11-12T03:53:39.3826340Z ##[error]Process completed with exit code 1.
+2026-11-12T03:53:39.5034960Z ##[group]Run [ -d e2e-out ] && zip -qry e2e-out.zip e2e-out || true
+
+# maestro.log scenariusza 01 (artefakt 13914221151 e2e-out.zip), wiersze 83-109
+02:42:04.118 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: dzis-plus RUNNING
+02:42:04.392 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={accessibilityText=+1 row, when row 2 is done, title=, value=, text=, hintText=, resource-id=dzis-plus, bounds=[298,254][370,326], enabled=true, focused=false, selected=false, checked=false}, children=[], clickable=null,
+02:42:04.695 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via trusted pre-wait hierarchy (null settle, no recent scroll)
+02:42:04.697 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Try tapping at (334, 290) using hierarchy based logic for wait
+02:42:04.698 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to byte array
+02:42:04.698 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+02:42:06.112 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Something have changed in the UI judging by view hierarchy. Proceed.
+02:42:06.128 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: dzis-plus COMPLETED
+02:42:06.132 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that "2", id: dzis-wartosc is visible RUNNING
+02:42:06.485 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that "2", id: dzis-wartosc is visible COMPLETED
+02:42:06.485 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: dzis-karta is visible RUNNING
+02:42:06.731 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: dzis-karta is visible COMPLETED
+02:42:06.731 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: licznik-plus is not visible RUNNING
+02:42:07.586 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: licznik-plus is not visible COMPLETED
+02:42:07.587 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: dzis-kontynuuj RUNNING
+02:42:07.872 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={accessibilityText=Continue, title=, value=, text=, hintText=, resource-id=dzis-kontynuuj, bounds=[160,332][370,378], enabled=true, focused=false, selected=false, checked=false}, children=[TreeNode(attributes={accessibil
+02:42:08.206 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via trusted pre-wait hierarchy (null settle, no recent scroll)
+02:42:08.208 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Try tapping at (265, 355) using hierarchy based logic for wait
+02:42:08.209 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to byte array
+02:42:08.209 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+02:42:09.106 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Something have changed in the UI judging by view hierarchy. Proceed.
+02:42:09.107 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: dzis-kontynuuj COMPLETED
+02:42:09.107 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that "2", id: licznik-wartosc is visible RUNNING
+02:42:26.624 [ERROR] maestro.orchestra.Orchestra.executeCommands: [Command execution] CommandFailed: Assertion is false: "2", id: licznik-wartosc is visible
+02:42:27.135 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+02:42:27.136 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+02:42:27.295 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that "2", id: licznik-wartosc is visible FAILED
+
+# device-xctest.log: wysłany dotyk
+1126:2026-11-12 02:42:08.457120+0000 maestro-driver-iosUITests-Runner[10748:52138] [FlyingFox] <127.0.0.1> request: POST /touch
+1127:2026-11-12 02:42:08.461207+0000 maestro-driver-iosUITests-Runner[10748:39561] Detected running apps: ["com.apps4brew.knitting"]
+1129:2026-11-12 02:42:08.463895+0000 maestro-driver-iosUITests-Runner[10748:39561] Returning cached screen size
+1131:2026-11-12 02:42:08.465186+0000 maestro-driver-iosUITests-Runner[10748:39561] Tapping 265.0, 355.0
+1133:2026-11-12 02:42:08.798100+0000 maestro-driver-iosUITests-Runner[10748:39561] Tapping took 0.33153605461120605
+
+# device-simulator.log: zdarzenia dotyku w procesie Oczko (02:42:08)
+2026-11-12 02:42:08.481810+0000  localhost Oczko[17088]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1
+2026-11-12 02:42:08.481840+0000  localhost Oczko[17088]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x109618800>; contextId: 0xED2DD940
+2026-11-12 02:42:08.698625+0000  localhost Oczko[17088]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1
+2026-11-12 02:42:08.698660+0000  localhost Oczko[17088]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x109618800>; contextId: 0xED2DD940
+
+# hierarchia ekranu w kroku 36 (screen-hierarchy/step-036-assertCondition-2.json): ekran Dziś, dzis-wartosc=2, brak licznik-wartosc
+nav-przewodnik=Guide
+nav-ustawienia=Settings
+dzis-karta=
+dzis-dzianina=Counter: 2 rows done, today 2
+dzis-projekt=Counter from Nov 1 at 12:05 AM
+dzis-wartosc=2
+dzis-wartosc-cyfra-0=2
+dzis-plus=+1 row, when row 3 is done
+dzis-kontynuuj=Continue
+dzis-kafel-nowy-projekt=New project
+dzis-kafel-dodaj-wzor=Add pattern
+dzis-kafel-wloczka=Yarn and needles
+dzis-kafel-probka=Swatch
+dzis-dni-darmowe=4 of 5 free crafting days left in November
+nav-dzis=Today
+nav-projekty=Projects
+nav-narzedzia=Tools
+nav-historia=History
+licznik-wartosc obecny: False
+
+# maestro.log scenariusza 01, wiersze 44-51: pierwsze +1 (02:41:19.6) — zmiana UI wykryta dopiero po 14,2 s (02:41:33.8)
+02:41:18.910 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: dzis-plus RUNNING
+02:41:19.232 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={accessibilityText=+1 row, title=, value=, text=, hintText=, resource-id=dzis-plus, bounds
+02:41:19.567 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via trusted pre-wait hierarchy (null settle, no recent scroll)
+02:41:19.576 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Try tapping at (334, 304) using hierarchy based logic for wait
+02:41:19.580 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to byte array
+02:41:19.580 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+02:41:33.778 [ INFO] maestro.Maestro.screenshotBasedTap-ogj28Uc: Something have changed in the UI judging by view hierarchy. Proceed.
+02:41:33.781 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: dzis-plus COMPLETED

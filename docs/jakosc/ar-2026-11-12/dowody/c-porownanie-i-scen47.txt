@@ -1,0 +1,30 @@
+# porównanie na 281852f: job 130869915903 (run 43121094246) log zadania; grep wyniki 01 i 70
+2026-11-12T00:13:02.2573900Z [Passed] NFR-PIE-001 · Pierwsze liczenie z „Dziś”: 1 stuknięcie w +1 karty, 0 ekranów, offline, 1. i ostatni dzień miesiąca (6m 59s)
+2026-11-12T01:08:15.1645880Z [Failed] P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie (1m 11s) (Element not found: Id matching regex: nav-wstecz)
+2026-11-12T01:09:51.0903910Z [Failed] P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help”, rozwinięcie oznacza przeczytane, oznaczenie zostaje po powrocie i restarcie (1m 8s) (Element not found: Id matching regex: nav-wstecz)
+
+# scen. 47 na 2929462: job 130930897964 (e2e część 1, ipad) log zadania
+275:2026-11-12T02:32:05.3192910Z   47-br-wzr-008-s4-ipad-bez-rysika.yaml (stan-licznika: bez ponowienia) (informacyjnie)
+516:2026-11-12T02:40:49.8250820Z [Passed] BR-WZR-005/S2 · iPad poziomo i pionowo: wzór i nowa wartość licznika widoczne razem (2m 56s)
+522:2026-11-12T02:44:39.6126150Z [Passed] BR-WZR-005/S4 · Wąskie okno iPada (375 pt): wzór i licznik, zrzuty NFR-UKL-001 (2m 17s)
+528:2026-11-12T02:49:12.9693120Z [Passed] BR-WZR-008/S4 · iPad bez rysika: zakreślenie palcem zostaje po restarcie (3m 16s)
+
+# kontrola zastępcza W1 (kwarantanna.md:7): scen. 25 i 53, część 3 iPhone
+## 2929462: job 130930898047
+2026-11-12T03:17:03.2418180Z [Failed] BR-WZR-007/S2 · Wzór z pliku Word: wierny render (P-071 5a), odczyt po restarcie (1m 54s) (Assertion is false: id: wzor-widok is visible)
+2026-11-12T03:25:15.4981350Z [Failed] P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat (2m 14s) (No visible element found: id: jezyk-pl)
+2026-11-12T03:28:41.5035390Z [Failed] P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat (2m 32s) (No visible element found: id: jezyk-pl)
+2026-11-12T03:31:55.6659850Z [Failed] P-191 · Zdjęcie projektu: podgląd, Delete photo z potwierdzeniem, miniatury nie ma (2m 27s) (Assertion is false: id: zdjecia-miniatura is visible)
+2026-11-12T03:46:28.8023730Z [Passed] P-282 · Word z panelu E2E: tekst, tabela, obraz — widok, źródło, strona 1 i ostatnia (3m 20s)
+## 281852f: job 130869915847
+2026-11-12T00:36:28.4617330Z [Passed] BR-WZR-007/S2 · Wzór z pliku Word: wierny render (P-071 5a), odczyt po restarcie (1m 55s)
+2026-11-12T00:46:46.5830230Z [Failed] P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat (2m 36s) (No visible element found: id: jezyk-pl)
+2026-11-12T00:50:45.5440520Z [Failed] P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat (2m 59s) (No visible element found: id: jezyk-pl)
+2026-11-12T00:53:42.2562030Z [Passed] P-191 · Zdjęcie projektu: podgląd, Delete photo z potwierdzeniem, miniatury nie ma (1m 48s)
+2026-11-12T01:06:07.4585040Z [Failed] P-282 · Word z panelu E2E: tekst, tabela, obraz — widok, źródło, strona 1 i ostatnia (2m 56s) (Assertion is false: id: wzor-widok is visible)
+
+# liczba [Passed]/[Failed] (z ponowieniami) na 2929462 wg logów zadań
+e2e1.txt: passed 22 failed 0
+e2e2.txt: passed 21 failed 3
+e2e3.txt: passed 19 failed 4
+ipad1.txt: passed 3 failed 0
