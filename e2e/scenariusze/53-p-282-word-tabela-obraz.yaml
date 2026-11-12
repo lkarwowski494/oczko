@@ -20,7 +20,7 @@ tags:
 - tapOn: { id: "licznik-wzor" }
 - assertVisible: { id: "e2e-wzor-word" }
 - tapOn: { id: "e2e-wzor-word" }
-- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
 - assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
 - takeScreenshot: 53-tekst-strona-1
 - runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-tekst" } }
@@ -35,7 +35,7 @@ tags:
 - tapOn: { id: "licznik-wzor" }
 - assertVisible: { id: "e2e-wzor-word-tabela" }
 - tapOn: { id: "e2e-wzor-word-tabela" }
-- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
 - assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
 - takeScreenshot: 53-tabela-strona-1
 - runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-tabela" } }
@@ -50,7 +50,7 @@ tags:
 - tapOn: { id: "licznik-wzor" }
 - assertVisible: { id: "e2e-wzor-word-obraz" }
 - tapOn: { id: "e2e-wzor-word-obraz" }
-- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
 - assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
 - takeScreenshot: 53-obraz-strona-1
 - runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-obraz" } }
