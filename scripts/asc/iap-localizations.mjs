@@ -111,7 +111,11 @@ export const RODZAJE = {
 const ROBOCZA = 'PREPARE_FOR_SUBMISSION';
 const W_RECENZJI = new Set(['READY_FOR_REVIEW', 'WAITING_FOR_REVIEW', 'IN_REVIEW']);
 const patchAttrs = (t, w) => (t.hasDescription ? { name: w.name, description: w.description } : t.appName ? { name: w.name, customAppName: w.customAppName } : { name: w.name });
-const createAttrs = (t, locale, w) => ({ locale, name: w.name, ...(t.hasDescription ? { description: w.description } : {}), ...(t.appName ? { customAppName: w.customAppName } : {}) });
+// BL (przegląd BH): atrybuty bez wartości (null — tak GET Apple opisuje niewypełnione pole — i undefined) NIE trafiają do ciała POST. Apple: w *LocalizationV2CreateRequest wymagane są tylko
+// `name` i `locale`; `description` i `customAppName` są opcjonalne (odczyt 2026-11-13: developer.apple.com/tutorials/data/documentation/appstoreconnectapi/…v2createrequest/data-data.dictionary/attributes-data.dictionary.json).
+// Brak `name` w kopii zatrzymuje wcześniej `nieprzenosne` (bez nowej wersji), więc tu `name` jest zawsze tekstem.
+const bezPustych = o => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== null && v !== undefined));
+const createAttrs = (t, locale, w) => bezPustych({ locale, name: w.name, ...(t.hasDescription ? { description: w.description } : {}), ...(t.appName ? { customAppName: w.customAppName } : {}) });
 
 /** Znajduje obiekty w App Store Connect. Cel: obiekt rodzica (id, rodzaj) — wersje i lokalizacje czyta `wczytajWersje`. */
 export async function discover(client, log) {
