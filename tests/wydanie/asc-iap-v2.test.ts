@@ -242,3 +242,23 @@ describe('10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje 
     }
   });
 });
+
+// 10-wydanie-002: komunikat odmowy wycofanego endpointu podaje ścieżkę (nazwa zasobu), a maskuje tylko identyfikatory.
+describe('10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów', () => {
+  const komunikat = (m: string, p: string): string => JSON.parse(execFileSync('node', ['--input-type=module', '-e', `import * as I from ${JSON.stringify(join(root, 'scripts/asc/iap-localizations.mjs'))};
+    const c = I.makeClient({ fetchFn: async () => ({ ok: true, status: 200, json: async () => ({ data: [] }) }), token: 't' });
+    try { await c.call(process.argv[1], process.argv[2], {}); process.stdout.write(JSON.stringify('')); } catch (e) { process.stdout.write(JSON.stringify(e.message)); }`, m, p], { encoding: 'utf8' }));
+  test.each([
+    ['POST', '/v1/subscriptionLocalizations', 'POST /v1/subscriptionLocalizations '],
+    ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+    ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+  ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+  test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+    const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+    expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+    expect(a).not.toContain('ABC123456');
+    const b = komunikat('PATCH', '/v1/subscriptionLocalizations/0a1b2c3d-1111-2222-3333-444455556666');
+    expect(b).toContain('/v1/subscriptionLocalizations/{id} ');
+    expect(b).not.toContain('0a1b2c3d');
+  });
+});

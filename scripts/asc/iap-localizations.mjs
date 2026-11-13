@@ -55,8 +55,9 @@ export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r
     const url = path.startsWith('http') ? path : API + path;
     // Token nigdy nie opuszcza api.appstoreconnect.apple.com (np. `links.next` z podstawionej odpowiedzi); przegląd bezpieczeństwa 2026-11-03.
     if (!url.startsWith(API + '/')) throw new Error('Adres spoza API App Store Connect — odmowa');
+    // 10-wydanie-002 (BI): maska tylko dla segmentów z cyfrą lub myślnikiem (identyfikatory); nazwy zasobów (same litery) zostają w komunikacie.
     const wyc = wycofany(new URL(url).pathname); // KO-056: zasoby wycofane przez Apple nie są wołane (zastępstwo: model wersji v2)
-    if (wyc) throw new Error(`Wycofany endpoint ${method} ${new URL(url).pathname.replace(/\/[0-9A-Za-z_-]{6,}/g, '/{id}')} — odmowa (zastępstwo: ${wyc.zastepstwo})`);
+    if (wyc) throw new Error(`Wycofany endpoint ${method} ${new URL(url).pathname.replace(/\/(?=[A-Za-z_]*[\d-])[0-9A-Za-z_-]{6,}/g, '/{id}')} — odmowa (zastępstwo: ${wyc.zastepstwo})`);
     for (let attempt = 0; ; attempt++) {
       const res = await fetchFn(url, { method, headers: { Authorization: `Bearer ${typeof token === 'function' ? token() : token}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
       if (res.status === 429 && attempt < 3) { await sleep(2000 * (attempt + 1)); continue; }

@@ -1,0 +1,124 @@
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  skrypt nie woła wycofanych endpointów v1 (inwentarz.md)
+    ○ skipped dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+    ○ skipped apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+  dry-run: niczego nie zapisuje, plan wskazuje nową wersję
+    ○ skipped zero żądań innych niż GET, stan bez zmian
+    ○ skipped log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0
+  apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej
+    ○ skipped nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza
+    ○ skipped grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description
+    ○ skipped po przebiegu wersja robocza ma komplet zgodny z danymi
+  apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej
+    ○ skipped nowa wersja pusta (Apple nie dziedziczy)
+    ○ skipped nowa wersja dziedziczy lokalizacje poprzedniej
+  idempotencja: drugi apply = 0 zmian (także bez nowej wersji)
+    ○ skipped Apple nie dziedziczy
+    ○ skipped Apple dziedziczy
+    ○ skipped zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu)
+  wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje
+    ○ skipped kod 1, zero zapisów, problem wymienia stan
+  brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji
+    ○ skipped produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet
+  klient: tylko GET/POST/PATCH i brak wycofanych ścieżek
+    ○ skipped DELETE odrzucony
+    ○ skipped POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint)
+    ○ skipped POST /v2/inAppPurchaseLocalizations → dozwolone
+    ○ skipped GET /v1/subscriptionVersions/V1/localizations → dozwolone
+    ○ skipped POST /v1/subscriptionGroupVersions → dozwolone
+  kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*
+    ○ skipped repo: 0 naruszeń
+    ○ skipped plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku
+    ○ skipped plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta)
+  nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu
+    ○ skipped scripts/asc/iap-localizations.mjs
+    ○ skipped .github/workflows/asc-iap-localizations.yml
+  10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji
+    ○ skipped apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+    ○ skipped apply, Apple dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+    ○ skipped dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego
+    ○ skipped przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run
+  10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów
+    ✕ POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę (62 ms)
+    ✕ POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę (65 ms)
+    ✕ GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę (51 ms)
+    ✕ identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje (52 ms)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "POST /v1/subscriptionLocalizations "
+    Received string:    "Wycofany endpoint POST /v1/{id} — odmowa (zastępstwo: /v2/<…>Localizations z relacją `version`)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "POST /v1/inAppPurchaseSubmissions "
+    Received string:    "Wycofany endpoint POST /v1/{id} — odmowa (zastępstwo: /v1/reviewSubmissions + /v1/reviewSubmissionItems z wersją)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations "
+    Received string:    "Wycofany endpoint GET /v1/{id}/G1/{id} — odmowa (zastępstwo: /v1/subscriptionGroupVersions/{id}/localizations)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "PATCH /v1/subscriptionLocalizations/{id} "
+    Received string:    "Wycofany endpoint PATCH /v1/{id}/{id} — odmowa (zastępstwo: /v2/<…>Localizations z relacją `version`)"
+
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+    > 258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+          |               ^
+      259 |     expect(a).not.toContain('ABC123456');
+      260 |     const b = komunikat('PATCH', '/v1/subscriptionLocalizations/0a1b2c3d-1111-2222-3333-444455556666');
+      261 |     expect(b).toContain('/v1/subscriptionLocalizations/{id} ');
+
+      at Object.toContain (tests/wydanie/asc-iap-v2.test.ts:258:15)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 33 skipped, 37 total
+Snapshots:   0 total
+Time:        1.755 s, estimated 3 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts/i with tests matching "10-wydanie-002".
