@@ -8,7 +8,7 @@ Wyjątek nazwany: tryb audit nie zmienia plików śledzonych, ale polecenie koor
 
 **Werdykt: TAK** (do scalenia i przebiegu właściciela według `docs/wydanie/asc-v2/przebieg-wlasciciela.md`), z jedną poprawką zalecaną przed pierwszym `apply` na produktach już zatwierdzonych (10-wydanie-001, dziś teoretyczna).
 
-Każda ścieżka, typ zasobu, relacja `version`, atrybut i stan wersji użyte przez skrypt i atrapę zgadzają się z dokumentacją Apple odczytaną dziś (surowy JSON stron i schematów, `dowody/apple-schematy.txt`, `dowody/apple-cytaty.txt`). Dry-run nie wykonuje zapisów (kod i test), apply nigdy nie usuwa (klient dopuszcza tylko GET/POST/PATCH, atrapa przerywa test przy DELETE), wersja w recenzji nie jest ruszana (sprawdzone dla READY_FOR_REVIEW, WAITING_FOR_REVIEW, IN_REVIEW). Testy: 26 z 36 czerwonych na `2ed5215a` z właściwego powodu, 36 z 36 zielonych na `de5497bc`; `npm run verify` — wynik w sekcji „Kontrola dowodów”.
+Każda ścieżka, typ zasobu, relacja `version`, atrybut i stan wersji użyte przez skrypt i atrapę zgadzają się z dokumentacją Apple odczytaną dziś (surowy JSON stron i schematów, `dowody/apple-schematy.txt`, `dowody/apple-cytaty.txt`). Dry-run nie wykonuje zapisów (kod i test), apply nigdy nie usuwa (klient dopuszcza tylko GET/POST/PATCH, atrapa przerywa test przy DELETE), wersja w recenzji nie jest ruszana (sprawdzone dla READY_FOR_REVIEW, WAITING_FOR_REVIEW, IN_REVIEW). Testy: 26 z 36 czerwonych na `2ed5215a` z właściwego powodu, 36 z 36 zielonych na `de5497bc`; `npm run verify` na `de5497bc`: kod 0 (607 zestawów, 7365 testów).
 
 | ID | Poziom | Rodzaj | Tytuł | Status |
 |---|---|---|---|---|
@@ -51,7 +51,7 @@ Założenia BG oznaczone `[DO USTALENIA]` (dziedziczenie lokalizacji przez nową
 - `node sprawdz-raport.mjs docs/wydanie/bh-2026-11-13/recenzja-bg.md . --rola 10-wydanie` (kopia skryptu w scratchpadzie): wynik w `dowody/sprawdz-raport.txt`.
 - Testy na `de5497bc`: `npx jest tests/wydanie/asc-iap-v2.test.ts tests/wydanie/iap-nazwa-aplikacji.test.ts` → 36 passed, **KOD 0** (`dowody/testy-de5497bc.txt`).
 - Testy na `2ed5215a` (worktree, testy z `de5497bc`): 26 failed, 10 passed, **KOD 1** (`dowody/testy-2ed5215a.txt`). Powody czerwieni: stary skrypt woła `…/subscriptionGroupLocalizations` v1 itd. → atrapa 404, zero zapisów v2 („Expected length: 4, Received length: 0”), odmowy klienta nie ma, brak pliku `kontrola-wycofane.mjs`, brak nagłówka KO-056. Zielone na starym (10) to niezmienniki zachowane: dry-run bez zapisów, odmowa DELETE, dozwolone ścieżki v2, test braku nazwy po stronie planu — zgodnie z oczekiwaniem.
-- `npm run verify` na `de5497bc`: `dowody/verify-de5497bc.txt` (kod na końcu pliku).
+- `npm run verify` na `de5497bc`: Test Suites 607 passed, Tests 7365 passed, **KOD 0** (`dowody/verify-de5497bc.txt`).
 - Sekrety: raport i dowody nie zawierają kluczy, tokenów ani identyfikatorów klucza (atrapa używa `TOKEN-TESTOWY`).
 
 ## Stosowalność listy kontrolnej
