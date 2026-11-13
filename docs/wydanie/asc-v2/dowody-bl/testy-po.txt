@@ -1,0 +1,68 @@
+PASS iOS tests/wydanie/asc-iap-v2.test.ts
+  skrypt nie woła wycofanych endpointów v1 (inwentarz.md)
+    ✓ dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2 (67 ms)
+    ✓ apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2 (56 ms)
+  dry-run: niczego nie zapisuje, plan wskazuje nową wersję
+    ✓ zero żądań innych niż GET, stan bez zmian (1 ms)
+    ✓ log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0 (1 ms)
+  apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej
+    ✓ nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza (1 ms)
+    ✓ grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description (1 ms)
+    ✓ po przebiegu wersja robocza ma komplet zgodny z danymi (9 ms)
+  apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej
+    ✓ nowa wersja pusta (Apple nie dziedziczy) (71 ms)
+    ✓ nowa wersja dziedziczy lokalizacje poprzedniej (67 ms)
+  kopia lokalizacji do nowej wersji: POST bez atrybutów null/undefined (BL)
+    ✓ lokalizacja obca z polami null jest kopiowana, a ciało POST nie ma kluczy bez wartości (grupa, subskrypcje, zakup) (72 ms)
+    ✓ pola wypełnione w starej wersji zostają w kopii (tylko null/undefined są pomijane) (71 ms)
+  idempotencja: drugi apply = 0 zmian (także bez nowej wersji)
+    ✓ Apple nie dziedziczy (76 ms)
+    ✓ Apple dziedziczy (77 ms)
+    ✓ zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu) (50 ms)
+  wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje
+    ✓ kod 1, zero zapisów, problem wymienia stan
+  brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji
+    ✓ produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet (54 ms)
+  klient: tylko GET/POST/PATCH i brak wycofanych ścieżek
+    ✓ DELETE odrzucony (62 ms)
+    ✓ POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint) (53 ms)
+    ✓ PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint) (47 ms)
+    ✓ POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint) (44 ms)
+    ✓ GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint) (51 ms)
+    ✓ GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint) (41 ms)
+    ✓ POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint) (41 ms)
+    ✓ POST /v2/inAppPurchaseLocalizations → dozwolone (42 ms)
+    ✓ GET /v1/subscriptionVersions/V1/localizations → dozwolone (54 ms)
+    ✓ POST /v1/subscriptionGroupVersions → dozwolone (51 ms)
+  kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*
+    ✓ repo: 0 naruszeń (51 ms)
+    ✓ plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku (45 ms)
+    ✓ plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta) (40 ms)
+  nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu
+    ✓ scripts/asc/iap-localizations.mjs (1 ms)
+    ✓ .github/workflows/asc-iap-localizations.yml
+  10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji
+    ✓ apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (65 ms)
+    ✓ apply, Apple dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (70 ms)
+    ✓ dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego (55 ms)
+    ✓ przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run (115 ms)
+  10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów
+    ✓ POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę (47 ms)
+    ✓ POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę (61 ms)
+    ✓ GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę (47 ms)
+    ✓ identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje (86 ms)
+  10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, po odrzuceniu powstaje nowa wersja robocza
+    ✓ READY_FOR_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan (51 ms)
+    ✓ IN_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan (54 ms)
+    ✓ REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0 (69 ms)
+    ✓ DEVELOPER_REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0 (53 ms)
+    ✓ P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED) (7 ms)
+  10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji
+    ✓ zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple (1 ms)
+    ✓ zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple
+
+Test Suites: 1 passed, 1 total
+Tests:       46 passed, 46 total
+Snapshots:   0 total
+Time:        3.162 s, estimated 4 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts/i.

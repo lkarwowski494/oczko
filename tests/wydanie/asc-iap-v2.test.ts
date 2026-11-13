@@ -129,6 +129,35 @@ describe('apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — sk
   });
 });
 
+// BL (przegląd BH, uwaga ≤ 80%): kopia lokalizacji ze starej wersji przekazywała atrybuty 1:1, także `null` (GET Apple zwraca `description: null`, `customAppName: null`
+// dla pól niewypełnionych). Apple: w *V2CreateRequest wymagane są tylko `name` i `locale`; `customAppName` (grupa) i `description` (subskrypcja, zakup) są opcjonalne
+// (https://developer.apple.com/tutorials/data/documentation/appstoreconnectapi/{subscriptiongrouplocalizationv2createrequest,subscriptionlocalizationv2createrequest,
+// inapppurchaselocalizationv2createrequest}/data-data.dictionary/attributes-data.dictionary.json, odczyt 2026-11-13: `required: true` tylko przy name i locale).
+// Czy POST przyjmie `null`, dokumentacja nie mówi — tania kontrola: nie wysyłać kluczy bez wartości.
+describe('kopia lokalizacji do nowej wersji: POST bez atrybutów null/undefined (BL)', () => {
+  const OBCA_NULL: any = { locale: 'fr-FR', name: 'Obca lokalizacja', description: null, customAppName: null };
+  test('lokalizacja obca z polami null jest kopiowana, a ciało POST nie ma kluczy bez wartości (grupa, subskrypcje, zakup)', () => {
+    const w = uruchom({ stan: zatwierdzone((k) => [...STARE(k), OBCA_NULL]), dziedziczy: false, kroki: [{ apply: true }] });
+    const k = w.kroki[0];
+    expect(k.code).toBe(0);
+    const posty = zapisyDo(k, /^POST \/v2\/[A-Za-z]+Localizations$/);
+    const kopie = posty.filter((z) => z.a?.locale === 'fr-FR');
+    expect(kopie).toHaveLength(4); // grupa + 2 subskrypcje + zakup
+    for (const z of posty) {
+      expect(Object.entries(z.a ?? {}).filter(([, v]) => v === null || v === undefined)).toEqual([]);
+      expect(typeof z.a?.name).toBe('string'); // `name` i `locale` zostają (jedyne wymagane pola)
+      expect(typeof z.a?.locale).toBe('string');
+    }
+    expect(kopie.map((z) => Object.keys(z.a!).sort().join(','))).toEqual(['locale,name', 'locale,name', 'locale,name', 'locale,name']);
+  });
+  test('pola wypełnione w starej wersji zostają w kopii (tylko null/undefined są pomijane)', () => {
+    const obca: any = { locale: 'fr-FR', name: 'Obca', description: 'Opis obcy', customAppName: 'Nazwa obca' };
+    const w = uruchom({ stan: zatwierdzone((k) => [...STARE(k), obca]), dziedziczy: false, kroki: [{ apply: true }] });
+    const kopie = zapisyDo(w.kroki[0], /^POST \/v2\/[A-Za-z]+Localizations$/).filter((z) => z.a?.locale === 'fr-FR');
+    expect(kopie.map((z) => Object.keys(z.a!).sort().join(',')).sort()).toEqual(['customAppName,locale,name', 'description,locale,name', 'description,locale,name', 'description,locale,name']);
+  });
+});
+
 describe('idempotencja: drugi apply = 0 zmian (także bez nowej wersji)', () => {
   test.each([['Apple nie dziedziczy', false], ['Apple dziedziczy', true]])('%s', (_n, dziedziczy) => {
     const w = uruchom({ stan: zatwierdzone(STARE), dziedziczy, kroki: [{ apply: true }, { apply: true }, { apply: false }] });

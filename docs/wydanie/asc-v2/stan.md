@@ -4,3 +4,8 @@ Aktualizacja: 2026-11-13 · rola 10-wydanie, tryb fix · gałąź `claude/bi-asc
 - Nie sprawdzone: prawdziwy App Store Connect; przegląd subagenta ścieżek wrażliwych (do koordynatora).
 - Decyzje do weta: P-794 (nowa); dopisek do P-789 (003). P-795 niewykorzystane.
 - Następny krok: scalenie (zgoda właściciela) i dry-run według `przebieg-wlasciciela.md`; status „zweryfikowane” po reaudit.
+
+## BL (2026-11-13): kopia lokalizacji bez atrybutów null
+- `createAttrs` w `scripts/asc/iap-localizations.mjs` pomija `null`/`undefined` (grupa, subskrypcja, zakup). Apple: w `*LocalizationV2CreateRequest` wymagane tylko `name` i `locale` (odczyt 2026-11-13).
+- Dowody: `dowody-bl/testy-przed-1dfcf7ca.txt` (1 czerwony z 46), `dowody-bl/testy-po.txt` (46/46), `dowody-bl/verify.txt` (kod 0, 607 zestawów, 7382 testy; było 7380).
+- Nie sprawdzono: prawdziwy App Store Connect (czy POST przyjmował `null`, nadal nieznane; teraz nie jest wysyłany).
