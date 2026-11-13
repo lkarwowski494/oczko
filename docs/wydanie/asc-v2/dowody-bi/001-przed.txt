@@ -1,0 +1,160 @@
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  skrypt nie woła wycofanych endpointów v1 (inwentarz.md)
+    ○ skipped dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+    ○ skipped apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+  dry-run: niczego nie zapisuje, plan wskazuje nową wersję
+    ○ skipped zero żądań innych niż GET, stan bez zmian
+    ○ skipped log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0
+  apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej
+    ○ skipped nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza
+    ○ skipped grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description
+    ○ skipped po przebiegu wersja robocza ma komplet zgodny z danymi
+  apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej
+    ○ skipped nowa wersja pusta (Apple nie dziedziczy)
+    ○ skipped nowa wersja dziedziczy lokalizacje poprzedniej
+  idempotencja: drugi apply = 0 zmian (także bez nowej wersji)
+    ○ skipped Apple nie dziedziczy
+    ○ skipped Apple dziedziczy
+    ○ skipped zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu)
+  wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje
+    ○ skipped kod 1, zero zapisów, problem wymienia stan
+  brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji
+    ○ skipped produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet
+  klient: tylko GET/POST/PATCH i brak wycofanych ścieżek
+    ○ skipped DELETE odrzucony
+    ○ skipped POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint)
+    ○ skipped POST /v2/inAppPurchaseLocalizations → dozwolone
+    ○ skipped GET /v1/subscriptionVersions/V1/localizations → dozwolone
+    ○ skipped POST /v1/subscriptionGroupVersions → dozwolone
+  kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*
+    ○ skipped repo: 0 naruszeń
+    ○ skipped plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku
+    ○ skipped plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta)
+  nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu
+    ○ skipped scripts/asc/iap-localizations.mjs
+    ○ skipped .github/workflows/asc-iap-localizations.yml
+  10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji
+    ✕ apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (54 ms)
+    ✓ apply, Apple dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (48 ms)
+    ✕ dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego (45 ms)
+    ✕ przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run (51 ms)
+
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+
+    expect(received).toMatchObject(expected)
+
+    Matcher error: received value must be a non-null object
+
+    Received has value: undefined
+
+      215 |       const nowa = o.wersje.find((x) => x.state === 'PREPARE_FOR_SUBMISSION')!; const stara = o.wersje.find((x) => x.n === 1)!;
+      216 |       const mapa = Object.fromEntries(nowa.lok.map((l) => [l.locale, l]));
+    > 217 |       expect(mapa['pl']).toMatchObject({ ...PL(klucz) });
+          |                          ^
+      218 |       if (klucz === 'group') expect(mapa['ja']).toMatchObject({ ...JA(klucz) });
+      219 |       expect(stara.lok.map((l) => l.locale).sort()).toEqual(['de-DE', 'en-US', 'pl', ...(klucz === 'group' ? ['ja'] : [])].sort()); // wersja zatwierdzona nietknięta
+      220 |     }
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:217:26)
+
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 4
+    Received length: 0
+    Received array:  []
+
+      226 |     expect(k.zapisy).toEqual([]);
+      227 |     const przen = k.log.filter((l) => /przenie/i.test(l));
+    > 228 |     expect(przen).toHaveLength(4); // po jednej linii na obiekt
+          |                   ^
+      229 |     expect(przen.filter((l) => /\bpl\b/.test(l))).toHaveLength(4);
+      230 |     expect(przen.filter((l) => /\bja\b/.test(l))).toHaveLength(1);
+      231 |   });
+
+      at Object.toHaveLength (tests/wydanie/asc-iap-v2.test.ts:228:19)
+
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 54
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionGroupVersions",
+    +     "rel": Object {
+    +       "subscriptionGroup": Object {
+    +         "data": Object {
+    +           "id": "G1",
+    +           "type": "subscriptionGroups",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionVersions",
+    +     "rel": Object {
+    +       "subscription": Object {
+    +         "data": Object {
+    +           "id": "S1",
+    +           "type": "subscriptions",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionVersions",
+    +     "rel": Object {
+    +       "subscription": Object {
+    +         "data": Object {
+    +           "id": "S2",
+    +           "type": "subscriptions",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/inAppPurchaseVersions",
+    +     "rel": Object {
+    +       "inAppPurchase": Object {
+    +         "data": Object {
+    +           "id": "I1",
+    +           "type": "inAppPurchases",
+    +         },
+    +       },
+    +     },
+    +   },
+    + ]
+
+      236 |       const k = w.kroki[0];
+      237 |       expect(k.code).toBe(1);
+    > 238 |       expect(zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/)).toEqual([]);
+          |                                                             ^
+      239 |       expect(k.zapisy).toEqual([]);
+      240 |       expect(k.problems.join('\n')).toMatch(/nie można przenieść/i);
+      241 |       expect(Object.values(w.stan).every((o) => o.wersje.length === 1)).toBe(true);
+
+      at Object.toEqual (tests/wydanie/asc-iap-v2.test.ts:238:61)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 29 skipped, 1 passed, 33 total
+Snapshots:   0 total
+Time:        3.031 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts/i with tests matching "10-wydanie-001".

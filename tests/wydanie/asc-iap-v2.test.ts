@@ -46,8 +46,8 @@ const KLUCZE = ['group', 'monthly', 'yearly', 'lifetime'];
 /** Stan: każdy produkt ma jedną zatwierdzoną wersję (v1) z lokalizacjami z `fabryka`. */
 const zatwierdzone = (fabryka: (k: string) => Lok[], state = 'APPROVED'): Stan => Object.fromEntries(KLUCZE.map((k) => [k, [wersja(`${k}-V1`, 1, state, fabryka(k))]]));
 
-function uruchom(sc: { stan: Stan; kroki: { apply?: boolean }[]; dziedziczy?: boolean }): Wynik {
-  const wejscie = { obiekty: obiekty(sc.stan), dziedziczy: sc.dziedziczy ?? false, data: DATA, appNames: APP_NAMES, kroki: sc.kroki };
+function uruchom(sc: { stan: Stan; kroki: { apply?: boolean }[]; dziedziczy?: boolean; data?: any; appNames?: Record<string, string> }): Wynik {
+  const wejscie = { obiekty: obiekty(sc.stan), dziedziczy: sc.dziedziczy ?? false, data: sc.data ?? DATA, appNames: sc.appNames ?? APP_NAMES, kroki: sc.kroki };
   return JSON.parse(execFileSync('node', [DRIVER, JSON.stringify(wejscie)], { encoding: 'utf8', maxBuffer: 1 << 26 }));
 }
 const WYCOFANE = /^(GET|POST|PATCH) (\/v1\/(subscriptionGroupLocalizations|subscriptionLocalizations|inAppPurchaseLocalizations|inAppPurchaseImages|subscriptionImages|inAppPurchaseSubmissions|subscriptionSubmissions|subscriptionGroupSubmissions)(\/|$)|\/v1\/subscriptionGroups\/[^/]+\/subscriptionGroupLocalizations|\/v1\/subscriptions\/[^/]+\/subscriptionLocalizations|\/v2\/inAppPurchases\/[^/]+\/inAppPurchaseLocalizations)/;
@@ -193,5 +193,52 @@ describe('nagłówek skryptu i workflowu: źródło Apple z adresem i datą odcz
   test.each(['scripts/asc/iap-localizations.mjs', '.github/workflows/asc-iap-localizations.yml'])('%s', (f) => {
     const t = readFileSync(join(root, f), 'utf8').split('\n').slice(0, 30).join('\n');
     expect(t).toMatch(/migrating-in-app-purchase-metadata-to-v2/); expect(t).toMatch(/2026-11-13/); expect(t).toMatch(/KO-056/);
+  });
+});
+
+/*
+ * Poprawki znalezisk recenzji BH (sesja BI, 2026-11-13; docs/wydanie/bh-2026-11-13/recenzja-bg.md). Testy najpierw czerwone na 347614dc.
+ */
+
+// 10-wydanie-001: nowa wersja bez dziedziczenia nie może zgubić lokalizacji, których skrypt nie zapisuje (język `czeka`, błąd planu) — zasada „nigdy nie usuwa”.
+describe('10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji', () => {
+  // `pl` czeka na tłumaczenie (P-422), `ja` nie ma nazwy aplikacji w APP_NAMES (błąd planu tylko dla grupy).
+  const DATA_CZEKA = { tlumaczenia: { ...DATA.tlumaczenia,
+    pl: { ascLocale: 'pl', czeka: 'tłumaczenie', group: { name: 'Oczko Pro' }, monthly: { name: 'pl m', description: 'pl m d' }, yearly: { name: 'pl y', description: 'pl y d' }, lifetime: { name: 'pl l', description: 'pl l d' } },
+    ja: { ascLocale: 'ja', group: { name: 'Oczko Pro' }, monthly: { name: 'ja m', description: 'ja m d' }, yearly: { name: 'ja y', description: 'ja y d' }, lifetime: { name: 'ja l', description: 'ja l d' } } } };
+  const PL = (k: string): Lok => ({ locale: 'pl', name: `pl stary ${k}`, ...(k === 'group' ? { customAppName: 'Oczko pl' } : { description: `pl opis ${k}` }) });
+  const JA = (k: string): Lok => ({ locale: 'ja', name: `ja stary ${k}`, ...(k === 'group' ? { customAppName: 'Oczko ja' } : { description: `ja opis ${k}` }) });
+  const stan = () => zatwierdzone((k) => [...STARE(k), PL(k), ...(k === 'group' ? [JA(k)] : [])]);
+  test.each([['Apple nie dziedziczy', false], ['Apple dziedziczy', true]])('apply, %s: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie', (_n, dziedziczy) => {
+    const w = uruchom({ stan: stan(), dziedziczy, data: DATA_CZEKA, kroki: [{ apply: true }] });
+    for (const [klucz, o] of Object.entries(w.stan)) {
+      const nowa = o.wersje.find((x) => x.state === 'PREPARE_FOR_SUBMISSION')!; const stara = o.wersje.find((x) => x.n === 1)!;
+      const mapa = Object.fromEntries(nowa.lok.map((l) => [l.locale, l]));
+      expect(mapa['pl']).toMatchObject({ ...PL(klucz) });
+      if (klucz === 'group') expect(mapa['ja']).toMatchObject({ ...JA(klucz) });
+      expect(stara.lok.map((l) => l.locale).sort()).toEqual(['de-DE', 'en-US', 'pl', ...(klucz === 'group' ? ['ja'] : [])].sort()); // wersja zatwierdzona nietknięta
+    }
+    expect(w.kroki[0].problems.join('\n')).not.toMatch(/przenie/i);
+  });
+  test('dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego', () => {
+    const w = uruchom({ stan: stan(), data: DATA_CZEKA, kroki: [{ apply: false }] });
+    const k = w.kroki[0];
+    expect(k.zapisy).toEqual([]);
+    const przen = k.log.filter((l) => /przenie/i.test(l));
+    expect(przen).toHaveLength(4); // po jednej linii na obiekt
+    expect(przen.filter((l) => /\bpl\b/.test(l))).toHaveLength(4);
+    expect(przen.filter((l) => /\bja\b/.test(l))).toHaveLength(1);
+  });
+  test('przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run', () => {
+    const zepsuta: Lok = { locale: 'pl' }; // brak `name` — POST lokalizacji v2 wymaga name
+    for (const apply of [true, false]) {
+      const w = uruchom({ stan: zatwierdzone((k) => [...STARE(k), zepsuta]), data: DATA_CZEKA, kroki: [{ apply }] });
+      const k = w.kroki[0];
+      expect(k.code).toBe(1);
+      expect(zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/)).toEqual([]);
+      expect(k.zapisy).toEqual([]);
+      expect(k.problems.join('\n')).toMatch(/nie można przenieść/i);
+      expect(Object.values(w.stan).every((o) => o.wersje.length === 1)).toBe(true);
+    }
   });
 });

@@ -150,6 +150,12 @@ export async function wczytajWersje(client, t) {
   return { wersje, robocza, biezaca, existing, wRecenzji: wersje.filter(v => W_RECENZJI.has(v.state)) };
 }
 
+/** Lokalizacje starej wersji (kody), których plan NIE zapisuje (brak akcji utwórz/zaktualizuj/pomiń „bez zmian”): obce, `czeka`, błąd planu. Po utworzeniu nowej wersji bez dziedziczenia zniknęłyby (10-wydanie-001). */
+export function lokalizacjeDoPrzeniesienia(plan, existing) {
+  const zapisywane = new Set(plan.items.filter(i => i.locale && ['utwórz', 'zaktualizuj', 'pomiń'].includes(i.action)).map(i => i.locale));
+  return [...existing.keys()].filter(l => !zapisywane.has(l));
+}
+
 /** Główny przebieg. Zwraca { code, counts } (code 1 przy brakujących obiektach, wersji w recenzji z innymi tekstami lub błędach zapisu). */
 export async function run({ client, data, apply = false, log = console.log, appNames = {} }) {
   const { targets, problems } = await discover(client, log);
@@ -170,20 +176,31 @@ export async function run({ client, data, apply = false, log = console.log, appN
         const w = v.wRecenzji[0]; zapis = false;
         problems.push(`${t.label}: wersja ${w.n} w stanie ${w.state} (w recenzji, tylko do odczytu) — teksty różnią się od pliku; nie tworzę kolejnej wersji (poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect)`);
         log(`  [wersja w recenzji: ${w.state}] zapis zablokowany`);
-      } else if (!apply) log('  [nowa wersja zostanie utworzona; plan względem ostatniej wersji — po utworzeniu odczyt lokalizacji nowej wersji może go zmienić]');
-      else {
-        try {
-          const nowa = await client.call('POST', R.tworzWersje, { data: { type: R.wersjeType, relationships: { [R.relacja]: { data: { type: R.rodzicType, id: t.parentId } } } } });
-          wersjaId = nowa?.data?.id; if (!wersjaId) throw new Error('odpowiedź bez id wersji');
-          counts.wersje++; log(`  nowa wersja → utworzona (stan ${ROBOCZA})`);
-          const stare = v.existing; const obceStare = plan.extra; // lokalizacje poprzedniej wersji i obce wśród nich; nowa wersja może je dziedziczyć albo być pusta
-          const nowaMapa = toMap(await client.list(R.lokWersji(wersjaId)));
-          plan = planuj(nowaMapa);
-          for (const l of obceStare) { // obca lokalizacja z poprzedniej wersji znika z nowej, jeśli Apple jej nie dziedziczy: kopia (nigdy nie usuwa)
-            if (nowaMapa.has(l)) continue;
-            plan.items.push({ key: t.key, lang: '(obca)', locale: l, action: 'utwórz', want: stare.get(l), reason: 'kopia z poprzedniej wersji, poza plikiem źródłowym' });
-          }
-        } catch (e) { counts.błędy++; zapis = false; problems.push(`${t.label}: tworzenie wersji — ${e.message}`); }
+      } else {
+        // 10-wydanie-001 (BI): lokalizacje starej wersji, których plan nie zapisuje (obca, `czeka`, błąd planu), przechodzą do nowej wersji — zawsze, bo Apple może jej nie dziedziczyć.
+        const doPrzeniesienia = lokalizacjeDoPrzeniesienia(plan, v.existing);
+        const nieprzenosne = doPrzeniesienia.filter(l => !v.existing.get(l)?.name);
+        log(`  [do przeniesienia do nowej wersji (kopia; nic nie jest usuwane): ${doPrzeniesienia.length ? doPrzeniesienia.join(', ') : 'brak'}]`);
+        if (nieprzenosne.length) {
+          zapis = false;
+          problems.push(`${t.label}: nie można przenieść lokalizacji ${nieprzenosne.join(', ')} do nowej wersji (brak nazwy w starej wersji; POST lokalizacji wymaga \`name\`) — nie tworzę nowej wersji (uzupełnij lokalizację w App Store Connect albo usuń ją tam ręcznie)`);
+        } else if (!apply) log('  [nowa wersja zostanie utworzona; plan względem ostatniej wersji — po utworzeniu odczyt lokalizacji nowej wersji może go zmienić]');
+        else {
+          try {
+            const nowa = await client.call('POST', R.tworzWersje, { data: { type: R.wersjeType, relationships: { [R.relacja]: { data: { type: R.rodzicType, id: t.parentId } } } } });
+            wersjaId = nowa?.data?.id; if (!wersjaId) throw new Error('odpowiedź bez id wersji');
+            counts.wersje++; log(`  nowa wersja → utworzona (stan ${ROBOCZA})`);
+            const stare = v.existing; const stareDoKopii = doPrzeniesienia; // lokalizacje poprzedniej wersji bez zapisu w planie; nowa wersja może je dziedziczyć albo być pusta
+            const nowaMapa = toMap(await client.list(R.lokWersji(wersjaId)));
+            const planStary = plan;
+            plan = planuj(nowaMapa);
+            for (const l of stareDoKopii) { // lokalizacja z poprzedniej wersji znika z nowej, jeśli Apple jej nie dziedziczy: kopia (nigdy nie usuwa)
+              if (nowaMapa.has(l)) continue;
+              const it = planStary.items.find(i => i.locale === l);
+              plan.items.push({ key: t.key, lang: it ? `${it.lang} (kopia)` : '(obca)', locale: l, action: 'utwórz', want: stare.get(l), reason: `kopia z poprzedniej wersji, ${it ? `plan: ${it.action}` : 'poza plikiem źródłowym'}` });
+            }
+          } catch (e) { counts.błędy++; zapis = false; problems.push(`${t.label}: tworzenie wersji — ${e.message}`); }
+        }
       }
     }
     if (plan.extra.length) log(`  [obce, nietykane] ${plan.extra.join(', ')}`);
