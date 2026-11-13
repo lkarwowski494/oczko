@@ -291,3 +291,16 @@ describe('10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, p
     expect(wiersz).toMatch(/REJECTED/); expect(wiersz).toMatch(/DEVELOPER_REJECTED/); expect(wiersz).toMatch(/nową wersję/i);
   });
 });
+
+// 10-wydanie-004: przebieg właściciela mówi wprost, że teksty z apply nie są widoczne w sklepie przed recenzją wersji.
+describe('10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji', () => {
+  const przebieg = readFileSync(join(root, 'docs/wydanie/asc-v2/przebieg-wlasciciela.md'), 'utf8');
+  test('zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple', () => {
+    expect(przebieg).toMatch(/dopiero po (zatwierdzeniu|recenzji)[^.\n]*Apple|dopiero po recenzji Apple/i);
+    expect(przebieg).toMatch(/nie są widoczne w sklepie/i);
+  });
+  test('zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple', () => {
+    expect(przebieg).toMatch(/wersj[ąaię] grupy[^.\n]*osobno|osobno[^.\n]*wersj[ąaię] grupy/i);
+    expect(przebieg).toMatch(/migrating-in-app-purchase-metadata-to-v2/);
+  });
+});
