@@ -20,7 +20,11 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (13.11 01:00 UTC) — koordynator session_01T66VBvyWJ5c8v567JYTo5a
+## Teraz (13.11 05:00 UTC) — PRZEKAZANIE koordynatora session_01T66VBvyWJ5c8v567JYTo5a (kontekst 29,1%, 11,97 USD)
+- Kandydat **2ed5215a** (integracja; iOS 43245531497 success). Linia 05:00 wysłana z pytaniem o **zgodę na build 6** (parametry jak build 5, ref integracja, warunek: zielony iOS na tym SHA — spełniony). Bez słów „zgoda na build 6” nie wyzwalać. Odpowiedź właściciela może trafić do mnie — przekażę dosłownie.
+- Sesji podrzędnych aktywnych: brak. Plan 24 h: sekcja „Plan 24 h — aktualizacja 13.11 04:55”. Następca tworzy: linia 14:00 13.11, linia 05:00 14.11 (moje usuwam po starcie następcy).
+
+## Historia: Teraz (13.11 01:00 UTC) — koordynator session_01T66VBvyWJ5c8v567JYTo5a
 - **KANDYDAT 2ed5215a: „Jakość · iOS” 43245531497 success** (attempt 2, 00:35; bramka: wszystkie joby poza INFORMACYJNE success; eksperymenty-wzoru failure informacyjny — W1). Linux 43245531487 i Zrzuty 43245531082 success. **Build 6: brak zgody** — pytanie w linii 05:00 (parametry jak build 5, ref = integracja @ 2ed5215a). Uwaga: e2e cz. 3 iphone i cz. 1 ipad mają kroki Scenariusze `skipped` (1 min) — tak samo na 562dfc4 (attempt 1, 10:23–10:24), czyli wzorzec istniejący, nie nowy [przyczyna DO USTALENIA: prawdopodobnie puste części w pakiecie push — sprawdzić przy najbliższej sesji 07].
 - Sesji podrzędnych aktywnych: brak. Następne: linia 05:00; wynik testu buildu 5 od właściciela → znaleziska do sesji; kolejka (sekcja „Teraz 13:56”, punkty 2–5, 7–8).
 
