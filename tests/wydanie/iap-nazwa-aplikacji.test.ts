@@ -34,25 +34,26 @@ describe('plan lokalizacji grupy: customAppName z nazwy.store.json', () => {
   });
 });
 
-describe('zapis (atrapa API): POST i PATCH lokalizacji grupy niosą customAppName; brak nazwy → kod 1', () => {
+describe('zapis (atrapa API, model wersji v2 — KO-056): POST i PATCH lokalizacji grupy niosą customAppName; brak nazwy → kod 1', () => {
   const kod = `import * as I from ${MOD};
     const { data, appNames } = JSON.parse(process.argv[1]); const calls = [];
     const r = (b) => ({ ok: true, status: 200, json: async () => b });
     const fetchFn = async (url, init = {}) => { const u = new URL(url), p = u.pathname, m = init.method || 'GET'; calls.push({ m, p, body: init.body ? JSON.parse(init.body) : null });
       if (p === '/v1/apps') return r({ data: [{ id: 'A1' }] });
       if (p === '/v1/apps/A1/subscriptionGroups') return r({ data: [{ id: 'G1', attributes: { referenceName: 'Oczko Pro' } }] });
-      if (p === '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations') return r({ data: [{ id: 'L1', attributes: { locale: 'en-US', name: 'Oczko Pro', customAppName: null } }] });
+      if (p === '/v1/subscriptionGroups/G1/versions') return r({ data: [{ id: 'V1', attributes: { version: 1, state: 'PREPARE_FOR_SUBMISSION' } }] });
+      if (p === '/v1/subscriptionGroupVersions/V1/localizations') return r({ data: [{ id: 'L1', attributes: { locale: 'en-US', name: 'Oczko Pro', customAppName: null } }] });
       if (p === '/v1/subscriptionGroups/G1/subscriptions') return r({ data: [] });
       if (p === '/v1/apps/A1/inAppPurchasesV2') return r({ data: [] });
       return r({ data: { id: 'N' } }); };
     const logs = []; const w = await I.run({ client: I.makeClient({ fetchFn, token: 't' }), data, apply: true, log: (x) => logs.push(String(x)), appNames });
-    process.stdout.write(JSON.stringify({ code: w.code, zapisy: calls.filter(c => c.m !== 'GET').map(c => ({ m: c.m, p: c.p, a: c.body.data.attributes })), logs }));`;
+    process.stdout.write(JSON.stringify({ code: w.code, zapisy: calls.filter(c => c.m !== 'GET').map(c => ({ m: c.m, p: c.p, a: c.body.data.attributes, rel: c.body.data.relationships ?? null })), logs }));`;
   const data = { tlumaczenia: { en: { ascLocale: 'en-US', group: { name: 'Oczko Pro' } }, de: { ascLocale: 'de-DE', group: { name: 'Oczko Pro' } } } };
-  test('en-US: PATCH z customAppName; de-DE: POST z locale, name i customAppName', () => {
+  test('en-US: PATCH z customAppName; de-DE: POST z locale, name i customAppName, relacja `version` = wersja robocza', () => {
     const w = node(kod, JSON.stringify({ data, appNames: { 'en-US': 'Oczko: Row Counter', 'de-DE': 'Masche: Reihenzähler' } }));
     expect(w.zapisy).toEqual([
-      { m: 'PATCH', p: '/v1/subscriptionGroupLocalizations/L1', a: { name: 'Oczko Pro', customAppName: 'Oczko: Row Counter' } },
-      { m: 'POST', p: '/v1/subscriptionGroupLocalizations', a: { locale: 'de-DE', name: 'Oczko Pro', customAppName: 'Masche: Reihenzähler' } },
+      { m: 'PATCH', p: '/v2/subscriptionGroupLocalizations/L1', a: { name: 'Oczko Pro', customAppName: 'Oczko: Row Counter' }, rel: null },
+      { m: 'POST', p: '/v2/subscriptionGroupLocalizations', a: { locale: 'de-DE', name: 'Oczko Pro', customAppName: 'Masche: Reihenzähler' }, rel: { version: { data: { type: 'subscriptionGroupVersions', id: 'V1' } } } },
     ]);
   });
   test('brak nazwy dla de-DE → nic nie zapisuje dla de-DE, kod 1', () => {

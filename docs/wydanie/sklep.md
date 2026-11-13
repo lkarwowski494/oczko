@@ -117,7 +117,7 @@ Koordynator (P-320, właściciel 2026-11-01): wszystko, co powstaje z gotowej ap
 |---|---|---|---|---|
 | `asc-metadane.yml` | `scripts/asc/metadane.mjs` | `docs/wydanie/metadane/*.store.json` | `podglad` | `zapis`; wejście `tylko` (np. `en-US`) = jedna lokalizacja |
 | `asc-produkty.yml` (P-467; **pierwszy**) | `scripts/asc/produkty.mjs` | `metadane/produkty.store.json` (+ `docs/monetyzacja.md` „Produkty”) | `dry-run` (zadanie `plan`, bez środowiska) | `apply` (zadanie `apply`, `environment: release`); wejście `family_sharing` |
-| `asc-iap-localizations.yml` (po `asc-produkty`) | `scripts/asc/iap-localizations.mjs` | `metadane/produkty.store.json` | `dry-run` | `apply` (wszystkie lokalizacje z pliku, także en-US; pl czeka na P-422 — P-467) |
+| `asc-iap-localizations.yml` (po `asc-produkty`) | `scripts/asc/iap-localizations.mjs` | `metadane/produkty.store.json` | `dry-run` | `apply` (wszystkie lokalizacje z pliku, także en-US; pl czeka na P-422 — P-467; od KO-056/P-789 przez model wersji v2, może założyć wersję roboczą produktu: `docs/wydanie/asc-v2/`) |
 | `asc-zrzuty.yml` | `scripts/asc/zrzuty.mjs` | artefakt zrzutów: `<6.9|6.3>/<język>/NN-*.png`, `ipad-13/<język>/NN-*.png` | `dry-run` | `apply` |
 | `asc-kontrola.yml` | narzędzie studia (SHA jak Trening) | `docs/wydanie/asc-kontrola.json`, `asc-kontrola-oczekiwane.json` (generowany) | tylko odczyt | — |
 

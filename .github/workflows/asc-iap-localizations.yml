@@ -1,6 +1,10 @@
+# KO-056 (sesja BG, 2026-11-13; P-789): skrypt zapisuje przez zasoby v2 modelu wersji (lokalizacja należy do wersji produktu), bo zasoby v1 (lokalizacje, obrazy, *Submissions)
+# Apple wycofał. Źródło, odczyt 2026-11-13: https://developer.apple.com/tutorials/data/documentation/appstoreconnectapi/migrating-in-app-purchase-metadata-to-v2.json
+# („Each deprecated v1 endpoint has a v2 equivalent that targets a version”). Apply może UTWORZYĆ wersję roboczą produktu (POST …Versions, stan PREPARE_FOR_SUBMISSION); niczego
+# nie wysyła do recenzji i nie usuwa. Przebieg na koncie właściciela: docs/wydanie/asc-v2/przebieg-wlasciciela.md (zawsze najpierw dry-run).
 # Lokalizacje produktów zakupu w App Store Connect przez API (grupa „Oczko Pro”, oczko.pro.monthly/yearly/lifetime). Przeniesione z Treningu (P-315, P-316 (4);
 # wzór: asc-iap-localizations.yml, 2e4b0f8; skrypt scripts/asc/iap-localizations.mjs, teksty docs/wydanie/metadane/produkty.store.json). Tylko ręcznie.
-# dry-run (domyślny): plan bez zmian; apply: utwórz brakujące i zaktualizuj różniące się (nigdy nie usuwa; nie zmienia lokalizacji wpisanej przez właściciela: en-US).
+# dry-run (domyślny): plan bez zmian; apply: utwórz brakujące i zaktualizuj różniące się, w razie potrzeby w nowej wersji roboczej (nigdy nie usuwa; nie zmienia lokalizacji wpisanej przez właściciela: en-US).
 # Wymaga istniejących produktów: najpierw workflow asc-produkty (P-467; zastąpił ręczny krok B2). Sekrety środowiska `release`: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8.
 # Różnice względem Treningu (nazwane): (1) jedno zadanie w środowisku `release` zamiast pary „podgląd bez środowiska” + „zapis w release” — sekrety
 # Oczka są sekretami ŚRODOWISKA (strażnik scripts/jakosc/sprawdz-workflowy.mjs: SEKRET-BEZ-SRODOWISKA, ADR-0014), więc zadanie bez środowiska ich nie widzi;
