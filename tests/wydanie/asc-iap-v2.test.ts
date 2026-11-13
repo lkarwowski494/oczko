@@ -262,3 +262,32 @@ describe('10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżk�
     expect(b).not.toContain('0a1b2c3d');
   });
 });
+
+// 10-wydanie-003: stany wersji produktu poza WAITING_FOR_REVIEW (enum InAppPurchaseVersion/SubscriptionVersion/SubscriptionGroupVersion `state`, odczyt Apple 2026-11-13).
+describe('10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, po odrzuceniu powstaje nowa wersja robocza', () => {
+  test.each(['READY_FOR_REVIEW', 'IN_REVIEW'])('%s z innymi tekstami: kod 1, zero zapisów, problem wymienia stan', (state) => {
+    const w = uruchom({ stan: zatwierdzone(STARE, state), kroki: [{ apply: true }] });
+    expect(w.kroki[0].code).toBe(1);
+    expect(w.kroki[0].zapisy).toEqual([]);
+    expect(w.kroki[0].problems.join('\n')).toMatch(new RegExp(state));
+    expect(Object.values(w.stan).every((o) => o.wersje.length === 1)).toBe(true);
+  });
+  test.each(['REJECTED', 'DEVELOPER_REJECTED'])('%s z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0', (state) => {
+    const w = uruchom({ stan: zatwierdzone(STARE, state), kroki: [{ apply: true }] });
+    const k = w.kroki[0];
+    expect(k.code).toBe(0);
+    expect(zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/)).toHaveLength(4);
+    for (const [klucz, o] of Object.entries(w.stan)) {
+      expect(o.wersje).toHaveLength(2);
+      expect(o.wersje.find((x) => x.n === 1)!.state).toBe(state);
+      expect(o.wersje.find((x) => x.n === 1)!.lok.map((l) => l.name).every((n) => /stare/.test(n))).toBe(true);
+      const robocza = o.wersje.find((x) => x.state === 'PREPARE_FOR_SUBMISSION')!;
+      expect(robocza.lok.map((l) => l.locale).sort()).toEqual(['de-DE', 'en-US']);
+      expect(robocza.lok.find((l) => l.locale === 'en-US')).toMatchObject(ZGODNE(klucz)[0]);
+    }
+  });
+  test('P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED)', () => {
+    const wiersz = readFileSync(join(root, 'docs/decyzje.md'), 'utf8').split('\n').find((l) => l.startsWith('| P-789 |'))!;
+    expect(wiersz).toMatch(/REJECTED/); expect(wiersz).toMatch(/DEVELOPER_REJECTED/); expect(wiersz).toMatch(/nową wersję/i);
+  });
+});
