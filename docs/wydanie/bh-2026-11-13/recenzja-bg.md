@@ -154,3 +154,28 @@ Brak nowych. P-789…P-791 (BG) — recenzja nie znajduje podstaw do weta. Pula 
 
 ## Proponowane polecenie naprawy
 `node tools/assemble.mjs 10-wydanie --tryb fix --zadania 10-wydanie-001,10-wydanie-002,10-wydanie-003,10-wydanie-004`
+
+## Delta BI (poprawki 10-wydanie-001…004, sprawdzenie 2026-11-13)
+
+Przedmiot: `git diff 347614dc..0e08fabc` (gałąź `claude/bi-asc-v2-poprawki-2026-11-13`, 6 commitów; kod: `scripts/asc/iap-localizations.mjs` +48/−23, testy `tests/wydanie/asc-iap-v2.test.ts` +113, docs: P-794 nowa, dopisek P-789, `przebieg-wlasciciela.md` +1 akapit). Kodu BI nie zmieniałem. Numery wierszy poniżej dotyczą pliku na `0e08fabc` (na tej gałęzi plik jest w wersji `347614dc`).
+
+**Werdykt delty: TAK.** Wszystkie cztery znaleziska naprawione; nowych znalezisk P0–P3 brak; jedna pozycja do sprawdzenia (niżej).
+
+| Sprawdzenie | Wynik | Dowód |
+|---|---|---|
+| Testy z `0e08fabc` na kodzie `347614dc` | 10 failed, 41 passed (51), **KOD 1** | `dowody/delta-bi-testy-wt-347.txt` |
+| Te same testy na `0e08fabc` | 51 passed, **KOD 0** | `dowody/delta-bi-testy-wt-bi.txt` |
+| `npm run verify` na `0e08fabc` (worktree) | 607 zestawów, 7380 testów, **KOD 0** | `dowody/delta-bi-verify.txt` |
+| Sonda kopii lokalizacji z polami null | kopia wysyła `null` (niżej) | `dowody/delta-bi-sonda.txt` |
+
+Powody czerwieni na `347614dc` (właściwe): 001 — w nowej wersji brak `pl` (czeka) i `ja` (błąd planu) („Received has value: undefined”), brak wiersza „do przeniesienia” w dry-run, brak blokady przy lokalizacji bez `name`; 002 — komunikat `POST /v1/{id}` zamiast ścieżki; 003 — P-789 bez opisu REJECTED (testy stanów READY_FOR_REVIEW/IN_REVIEW/REJECTED zielone już na `347614dc`, bo zachowanie było poprawne, brakowało tylko kontroli — zgodnie z moim opisem 003); 004 — brak zdań w przebiegu właściciela.
+
+Ocena poprawek:
+- **10-wydanie-001 — naprawione.** `lokalizacjeDoPrzeniesienia` (wiersz 155) bierze każdą lokalizację starej wersji bez akcji utwórz/zaktualizuj/pomiń: obce, `czeka`, błąd planu. Kopia tylko przez POST v2 i tylko gdy nowa wersja jej nie ma (`nowaMapa.has(l)` → pomija), więc nic nie jest nadpisywane ani usuwane; wersja zatwierdzona zostaje nietknięta (test). Gdy lokalizacji nie da się przenieść (brak `name`, wymaganego przez `…LocalizationV2CreateRequest`), wersja nie powstaje i jest PROBLEM, kod 1 — także w dry-run (wiersze 182–187). Wybór (a) z wariantem (b) dla przypadku niemożliwego zgodny z moją rekomendacją; P-794 opisuje go z odrzuconymi opcjami.
+- **10-wydanie-002 — naprawione.** Maska `/(?=[A-Za-z_]*[\d-])…/` (wiersz 60) zamienia tylko segmenty z cyfrą lub myślnikiem; nazwy zasobów zostają, identyfikatory (cyfry, UUID) dalej maskowane — test obu przypadków.
+- **10-wydanie-003 — naprawione.** Testy READY_FOR_REVIEW i IN_REVIEW (kod 1, zero zapisów, stan bez zmian) oraz REJECTED/DEVELOPER_REJECTED (nowa wersja, odrzucona nietknięta); dopisek P-789 z `[DO USTALENIA]` dla zachowania Apple.
+- **10-wydanie-004 — naprawione.** Akapit „Kiedy teksty są w sklepie” w przebiegu właściciela z cytatami Apple zgodnymi z moim odczytem (`dowody/apple-cytaty.txt`) i uczciwym `[DO USTALENIA]` dla wniosku.
+
+Ścieżki wrażliwe po zmianie: dry-run dalej bez zapisów (nowa gałąź tworzy wersję tylko w `else` po `!apply`; zapis lokalizacji nadal pod `if (apply && zapis && wersjaId …)`, wiersz 210; testy dry-run z `zapisy = []`); metody klienta bez zmian (GET/POST/PATCH, DELETE odrzucany); wersja w recenzji nadal blokuje zapis przed nową logiką (blok `wRecenzji` przed `else`).
+
+Do sprawdzenia (pewność ≤ 80%, bez numeru znaleziska): kopia lokalizacji ze starej wersji przekazuje atrybuty 1:1, także `null` — sonda: `{"locale":"pl","name":"pl","customAppName":null}` dla grupy i `"description":null` dla subskrypcji/IAP. Schemat Apple ma `customAppName` i `description` jako opcjonalne `string`; czy POST v2 przyjmie `null`, dokumentacja nie mówi. `customAppName: null` jest realny (opcja „Use App Name”; tak wyglądała lokalizacja en-US w starym teście). Gdyby Apple odrzucił `null`, skutkiem jest błąd zapisu (kod 1) w już utworzonej wersji roboczej, bez usunięć; właściciel zobaczy to w apply. Mechanizm istniał już u BG dla lokalizacji obcych; atrapa przyjmuje `null` bez sprawdzenia. Tania kontrola na przyszłość: pomijać atrybuty `null`/`undefined` w `createAttrs` przy kopii.

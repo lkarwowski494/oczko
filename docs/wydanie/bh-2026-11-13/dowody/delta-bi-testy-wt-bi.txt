@@ -1,0 +1,10 @@
+$ (wt-bi; testy z 0e08fabc) npx jest tests/wydanie/asc-iap-v2.test.ts tests/wydanie/iap-nazwa-aplikacji.test.ts
+PASS iOS tests/wydanie/iap-nazwa-aplikacji.test.ts
+PASS iOS tests/wydanie/asc-iap-v2.test.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       51 passed, 51 total
+Snapshots:   0 total
+Time:        3.767 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts|tests\/wydanie\/iap-nazwa-aplikacji.test.ts/i.
+KOD 0

@@ -1,0 +1,7 @@
+$ node sonda-bi.mjs (na kodzie 0e08fabc)
+kod 0 []
+/v2/subscriptionGroupLocalizations {"locale":"pl","name":"pl","customAppName":null}
+/v2/subscriptionLocalizations {"locale":"pl","name":"pl","description":null}
+/v2/subscriptionLocalizations {"locale":"pl","name":"pl","description":null}
+/v2/inAppPurchaseLocalizations {"locale":"pl","name":"pl","description":null}
+KOD 0
