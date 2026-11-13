@@ -1,0 +1,12 @@
+// Sonda BH/delta BI: kopia lokalizacji starej wersji z polami null (customAppName/description) — co idzie w POST v2
+import { utworzAtrape, wersja } from '../wt-bi/tests/wydanie/asc-iap-v2-atrapa.mjs';
+import * as I from '../wt-bi/scripts/asc/iap-localizations.mjs';
+const T = { group: { name: 'G' }, monthly: { name: 'M', description: 'D' }, yearly: { name: 'Y', description: 'D' }, lifetime: { name: 'L', description: 'D' } };
+const data = { tlumaczenia: { en: { ascLocale: 'en-US', ...T }, pl: { ascLocale: 'pl', czeka: 'P-422', ...T } } };
+const appNames = { 'en-US': 'App' };
+const st = (k, id) => [wersja(id + '-V1', 1, 'APPROVED', [{ locale: 'en-US', name: 'stare', ...(k === 'group' ? { customAppName: 'App' } : { description: 'D' }) }, { locale: 'pl', name: 'pl', ...(k === 'group' ? { customAppName: null } : { description: null }) }])];
+const ob = { group: { rodzaj: 'group', id: 'G1', wersje: st('group', 'G1') }, monthly: { rodzaj: 'sub', id: 'S1', productId: 'oczko.pro.monthly', wersje: st('m', 'S1') }, yearly: { rodzaj: 'sub', id: 'S2', productId: 'oczko.pro.yearly', wersje: st('y', 'S2') }, lifetime: { rodzaj: 'iap', id: 'I1', productId: 'oczko.pro.lifetime', wersje: st('l', 'I1') } };
+const a = utworzAtrape({ obiekty: ob });
+const w = await I.run({ client: I.makeClient({ fetchFn: a.fetchFn, token: 't', sleep: async () => {} }), data, apply: true, appNames, log: () => {} });
+console.log('kod', w.code, w.problems);
+for (const c of a.calls.filter(c => c.m === 'POST' && /Localizations$/.test(c.p) && c.body.data.attributes.locale === 'pl')) console.log(c.p, JSON.stringify(c.body.data.attributes));
