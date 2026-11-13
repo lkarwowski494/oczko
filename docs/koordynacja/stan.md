@@ -338,7 +338,15 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | B (zarchiwizowana 05:46, 0,21 USD, nic nie zmieniła) | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
-## Plan 24 h (UTC) — aktualizacja 11.11 05:02
+## Plan 24 h (UTC) — aktualizacja 13.11 04:55
+| Kiedy | Co | Kto | Zależy od | Od właściciela |
+|---|---|---|---|---|
+| po słowach | `testflight.yml` build 6 na 2ed5215a (parametry jak build 5), potem Approve w `release` | M9 | „zgoda na build 6” | zgoda + Approve |
+| po teście buildu 5 | znaleziska z testu właściciela → sesje 08/04 fix | M9 → sesje | wynik testu (`docs/wydanie/test-urzadzenia-build5.md`) | wynik testu |
+| dziś | kolejka bez blokady: 08 fix P2 AX -001…-004; 10 fix 04-004/04-005; 07: e2e cz. 3 iphone / cz. 1 ipad „Scenariusze skipped” — wyjaśnić; backlog 07 „Continue”/„Add pattern” | sesje (kod: jedna naraz na gałęzi) | brak | nic |
+| 13.11 13:54 | linia 14:00 + przegląd przepływu (WG: push integracji 15:13 poza oknem macOS → 8 h kolejki) | M9 | — | — |
+
+## Historia: Plan 24 h (UTC) — aktualizacja 11.11 05:02
 | Kiedy | Co | Kto | Zależy od | Od właściciela |
 |---|---|---|---|---|
 | ~~gdy właściciel kliknie~~ | Approve buildu 4 — **dany ok. 06:20**; TF 42918979133 in_progress | — | — | — |
@@ -718,3 +726,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 12.11 23:31 | M9 | **Jakość · iOS 43245531497 attempt 1 failure** na 2ed5215a: build i eksperymenty-wzoru `cancelled` bez runnera (runner_name pusty, 0 kroków; 15:13→15:47/15:51), e2e skipped; zegarek-ikona i swift-test success. Maszyna, nie kod (CLAUDE.md: „not acquired by Runner” = maszyna) → **jedno ponowienie ręczne: rerun_failed_jobs 23:31 (201)**; drugi brak maszyny = diagnoza 07, bez kolejnego ponowienia. WG: przebieg iOS w oknie 14–23 UTC traci ok. 8 h (push integracji 15:13 — kolejka bez maszyn) | kontrola 00:32 |
 | 13.11 00:33 | M9 | iOS 43245531497 attempt 2 (maszyny są): build success 00:01, e2e cz. 2 iphone, cz. 3 iphone, cz. 1 ipad success; **eksperymenty-wzoru failure** (krok 5 W1–W3 xcodebuild, exit 65; job 131570392883) — informacyjny (`continue-on-error` jakosc-ios.yml:85 @ 2ed5215a, `INFORMACYJNE` testflight.mjs:30), znana niestabilność W1 (12.11 04:32 AR) — nie blokuje; cz. 1 iphone w toku od 00:01 | kontrola 00:59 |
 | 13.11 01:00 | M9 | **Jakość · iOS 43245531497 success** (attempt 2, zakończony 00:35) na 2ed5215a = czubek integracji. **Kandydat 2ed5215a.** e2e cz. 1 iphone success 00:35, cz. 2 iphone success; cz. 3 iphone i cz. 1 ipad: Scenariusze skipped (jak na 562dfc4 — wzorzec istniejący). Build 6: brak zgody → linia 05:00. Kontrol brak (nic nie trwa) | linia 05:00 |
+| 13.11 04:56 | M9 | Linia 05:00 wysłana (pytanie o build 6; do weta KO-055, P-776/P-781…P-783/P-786…P-788; koszt 24 h ok. 137 USD [OCENA]). Integracja = 2ed5215a (ls-remote). Linia 05:00 14.11: trig_015XsWhWj9dvqFhsCbRQYp59. Kontekst koordynatora 29,1% → przekazanie (E6) | odpowiedź właściciela; następca |
