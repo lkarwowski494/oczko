@@ -1,0 +1,9 @@
+PASS iOS tests/wydanie/iap-nazwa-aplikacji.test.ts
+PASS iOS tests/wydanie/asc-iap-v2.test.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       36 passed, 36 total
+Snapshots:   0 total
+Time:        3.192 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts|tests\/wydanie\/iap-nazwa-aplikacji.test.ts/i.
+KOD 0

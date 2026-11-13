@@ -1,0 +1,661 @@
+$ (worktree 2ed5215a + testy z de5497bc) npx jest tests/wydanie/asc-iap-v2.test.ts tests/wydanie/iap-nazwa-aplikacji.test.ts
+FAIL iOS tests/wydanie/iap-nazwa-aplikacji.test.ts
+  ● zapis (atrapa API, model wersji v2 — KO-056): POST i PATCH lokalizacji grupy niosą customAppName; brak nazwy → kod 1 › en-US: PATCH z customAppName; de-DE: POST z locale, name i customAppName, relacja `version` = wersja robocza
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 28
+    + Received  +  1
+
+    - Array [
+    -   Object {
+    -     "a": Object {
+    -       "customAppName": "Oczko: Row Counter",
+    -       "name": "Oczko Pro",
+    -     },
+    -     "m": "PATCH",
+    -     "p": "/v2/subscriptionGroupLocalizations/L1",
+    -     "rel": null,
+    -   },
+    -   Object {
+    -     "a": Object {
+    -       "customAppName": "Masche: Reihenzähler",
+    -       "locale": "de-DE",
+    -       "name": "Oczko Pro",
+    -     },
+    -     "m": "POST",
+    -     "p": "/v2/subscriptionGroupLocalizations",
+    -     "rel": Object {
+    -       "version": Object {
+    -         "data": Object {
+    -           "id": "V1",
+    -           "type": "subscriptionGroupVersions",
+    -         },
+    -       },
+    -     },
+    -   },
+    - ]
+    + Array []
+
+      52 |   test('en-US: PATCH z customAppName; de-DE: POST z locale, name i customAppName, relacja `version` = wersja robocza', () => {
+      53 |     const w = node(kod, JSON.stringify({ data, appNames: { 'en-US': 'Oczko: Row Counter', 'de-DE': 'Masche: Reihenzähler' } }));
+    > 54 |     expect(w.zapisy).toEqual([
+         |                      ^
+      55 |       { m: 'PATCH', p: '/v2/subscriptionGroupLocalizations/L1', a: { name: 'Oczko Pro', customAppName: 'Oczko: Row Counter' }, rel: null },
+      56 |       { m: 'POST', p: '/v2/subscriptionGroupLocalizations', a: { locale: 'de-DE', name: 'Oczko Pro', customAppName: 'Masche: Reihenzähler' }, rel: { version: { data: { type: 'subscriptionGroupVersions', id: 'V1' } } } },
+      57 |     ]);
+
+      at Object.toEqual (tests/wydanie/iap-nazwa-aplikacji.test.ts:54:22)
+
+  ● zapis (atrapa API, model wersji v2 — KO-056): POST i PATCH lokalizacji grupy niosą customAppName; brak nazwy → kod 1 › brak nazwy dla de-DE → nic nie zapisuje dla de-DE, kod 1
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Array [
+    -   "en-US",
+    - ]
+    + Array []
+
+      59 |   test('brak nazwy dla de-DE → nic nie zapisuje dla de-DE, kod 1', () => {
+      60 |     const w = node(kod, JSON.stringify({ data, appNames: { 'en-US': 'Oczko: Row Counter' } }));
+    > 61 |     expect(w.code).toBe(1); expect(w.zapisy.map((z: any) => z.a.locale ?? 'en-US')).toEqual(['en-US']);
+         |                                                                                     ^
+      62 |     expect(w.logs.join('\n')).toMatch(/de → de-DE: błąd/);
+      63 |   });
+      64 | });
+
+      at Object.toEqual (tests/wydanie/iap-nazwa-aplikacji.test.ts:61:85)
+
+node:internal/modules/cjs/loader:1433
+  throw err;
+  ^
+
+Error: Cannot find module '<worktree-2ed5215a>/scripts/asc/kontrola-wycofane.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+    at Function._load (node:internal/modules/cjs/loader:1216:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.23.4
+node:internal/modules/cjs/loader:1433
+  throw err;
+  ^
+
+Error: Cannot find module '<worktree-2ed5215a>/scripts/asc/kontrola-wycofane.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+    at Function._load (node:internal/modules/cjs/loader:1216:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.23.4
+node:internal/modules/cjs/loader:1433
+  throw err;
+  ^
+
+Error: Cannot find module '<worktree-2ed5215a>/scripts/asc/kontrola-wycofane.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+    at Function._load (node:internal/modules/cjs/loader:1216:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.23.4
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  ● skrypt nie woła wycofanych endpointów v1 (inwentarz.md) › dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "GET /v1/subscriptionGroups/{id}/subscriptionGroupLocalizations",
+    + ]
+
+      57 |   test.each([['dry-run', false], ['apply', true]])('%s na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2', (_n, apply) => {
+      58 |     const w = uruchom({ stan: zatwierdzone(STARE), kroki: [{ apply }] });
+    > 59 |     expect(w.calls.filter((c) => WYCOFANE.test(c))).toEqual([]);
+         |                                                     ^
+      60 |     expect(w.nieznane).toEqual([]);
+      61 |   });
+      62 | });
+
+      at toEqual (tests/wydanie/asc-iap-v2.test.ts:59:53)
+
+  ● skrypt nie woła wycofanych endpointów v1 (inwentarz.md) › apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "GET /v1/subscriptionGroups/{id}/subscriptionGroupLocalizations",
+    + ]
+
+      57 |   test.each([['dry-run', false], ['apply', true]])('%s na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2', (_n, apply) => {
+      58 |     const w = uruchom({ stan: zatwierdzone(STARE), kroki: [{ apply }] });
+    > 59 |     expect(w.calls.filter((c) => WYCOFANE.test(c))).toEqual([]);
+         |                                                     ^
+      60 |     expect(w.nieznane).toEqual([]);
+      61 |   });
+      62 | });
+
+      at toEqual (tests/wydanie/asc-iap-v2.test.ts:59:53)
+
+  ● dry-run: niczego nie zapisuje, plan wskazuje nową wersję › log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      70 |   });
+      71 |   test('log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0', () => {
+    > 72 |     expect(k.code).toBe(0);
+         |                    ^
+      73 |     expect(k.log.filter((l) => /nowa wersja/i.test(l))).toHaveLength(4);
+      74 |   });
+      75 | });
+
+      at Object.toBe (tests/wydanie/asc-iap-v2.test.ts:72:20)
+
+  ● apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej › nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 4
+    Received length: 0
+    Received array:  []
+
+      82 |     expect(zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/)).toEqual([]);
+      83 |     const posty = zapisyDo(k, /^POST \/v2\//);
+    > 84 |     expect(posty).toHaveLength(4); // de-DE w każdym z 4 obiektów
+         |                   ^
+      85 |     expect(posty.map((z) => z.rel.version.data.id).sort()).toEqual(KLUCZE.map((x) => `${x}-V2`).sort());
+      86 |     expect(zapisyDo(k, /^PATCH \/v2\//)).toHaveLength(4); // en-US w każdym z 4 obiektów
+      87 |     expect(w.kroki[0].code).toBe(0);
+
+      at Object.toHaveLength (tests/wydanie/asc-iap-v2.test.ts:84:19)
+
+  ● apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej › grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: ArrayContaining [["PATCH", {"customAppName": "Oczko: Row Counter", "name": "Oczko Pro"}], ["POST", {"customAppName": "Masche: Reihenzähler", "locale": "de-DE", "name": "Oczko Pro"}]]
+    Received: []
+
+      89 |   test('grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description', () => {
+      90 |     const g = k.zapisy.filter((z) => /subscriptionGroupLocalizations/.test(z.p));
+    > 91 |     expect(g.map((z) => [z.m, z.a])).toEqual(expect.arrayContaining([
+         |                                      ^
+      92 |       ['PATCH', { name: 'Oczko Pro', customAppName: 'Oczko: Row Counter' }],
+      93 |       ['POST', { locale: 'de-DE', name: 'Oczko Pro', customAppName: 'Masche: Reihenzähler' }],
+      94 |     ]));
+
+      at Object.toEqual (tests/wydanie/asc-iap-v2.test.ts:91:38)
+
+  ● apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej › po przebiegu wersja robocza ma komplet zgodny z danymi
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 7
+    + Received  + 1
+
+      Array [
+        Object {
+    -     "customAppName": "Masche: Reihenzähler",
+    -     "id": undefined,
+    -     "locale": "de-DE",
+    -     "name": "Oczko Pro",
+    -   },
+    -   Object {
+    -     "customAppName": "Oczko: Row Counter",
+    +     "customAppName": "",
+          "id": undefined,
+          "locale": "en-US",
+          "name": "Oczko Pro",
+        },
+      ]
+
+       99 |     for (const [klucz, o] of Object.entries(w.stan)) {
+      100 |       const robocza = o.wersje.find((x) => x.state === 'PREPARE_FOR_SUBMISSION')!;
+    > 101 |       expect(robocza.lok.map((l) => ({ ...l, id: undefined })).sort((a, b) => a.locale.localeCompare(b.locale))).toEqual(ZGODNE(klucz).map((l) => ({ ...l, id: undefined })).sort((a, b) => a.locale.localeCompare(b.locale)));
+          |                                                                                                                  ^
+      102 |     }
+      103 |   });
+      104 | });
+
+      at Object.toEqual (tests/wydanie/asc-iap-v2.test.ts:101:114)
+
+  ● apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej › nowa wersja pusta (Apple nie dziedziczy)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      109 |     const w = uruchom({ stan, dziedziczy, kroki: [{ apply: true }] });
+      110 |     const k = w.kroki[0];
+    > 111 |     expect(k.code).toBe(0);
+          |                    ^
+      112 |     // po jednej nowej wersji na obiekt, z właściwą relacją rodzica
+      113 |     const wersje = zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/);
+      114 |     expect(wersje.map((z) => z.p).sort()).toEqual(['/v1/inAppPurchaseVersions', '/v1/subscriptionGroupVersions', '/v1/subscriptionVersions', '/v1/subscriptionVersions']);
+
+      at toBe (tests/wydanie/asc-iap-v2.test.ts:111:20)
+
+  ● apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej › nowa wersja dziedziczy lokalizacje poprzedniej
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      109 |     const w = uruchom({ stan, dziedziczy, kroki: [{ apply: true }] });
+      110 |     const k = w.kroki[0];
+    > 111 |     expect(k.code).toBe(0);
+          |                    ^
+      112 |     // po jednej nowej wersji na obiekt, z właściwą relacją rodzica
+      113 |     const wersje = zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/);
+      114 |     expect(wersje.map((z) => z.p).sort()).toEqual(['/v1/inAppPurchaseVersions', '/v1/subscriptionGroupVersions', '/v1/subscriptionVersions', '/v1/subscriptionVersions']);
+
+      at toBe (tests/wydanie/asc-iap-v2.test.ts:111:20)
+
+  ● idempotencja: drugi apply = 0 zmian (także bez nowej wersji) › Apple nie dziedziczy
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      133 |   test.each([['Apple nie dziedziczy', false], ['Apple dziedziczy', true]])('%s', (_n, dziedziczy) => {
+      134 |     const w = uruchom({ stan: zatwierdzone(STARE), dziedziczy, kroki: [{ apply: true }, { apply: true }, { apply: false }] });
+    > 135 |     expect(w.kroki[0].zapisy.length).toBeGreaterThan(0);
+          |                                      ^
+      136 |     for (const k of w.kroki.slice(1)) { expect(k.zapisy).toEqual([]); expect(k.code).toBe(0); expect(k.counts['utwórz']).toBe(0); expect(k.counts['zaktualizuj']).toBe(0); }
+      137 |     expect(Object.values(w.stan).every((o) => o.wersje.length === 2)).toBe(true);
+      138 |   });
+
+      at toBeGreaterThan (tests/wydanie/asc-iap-v2.test.ts:135:38)
+
+  ● idempotencja: drugi apply = 0 zmian (także bez nowej wersji) › Apple dziedziczy
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      133 |   test.each([['Apple nie dziedziczy', false], ['Apple dziedziczy', true]])('%s', (_n, dziedziczy) => {
+      134 |     const w = uruchom({ stan: zatwierdzone(STARE), dziedziczy, kroki: [{ apply: true }, { apply: true }, { apply: false }] });
+    > 135 |     expect(w.kroki[0].zapisy.length).toBeGreaterThan(0);
+          |                                      ^
+      136 |     for (const k of w.kroki.slice(1)) { expect(k.zapisy).toEqual([]); expect(k.code).toBe(0); expect(k.counts['utwórz']).toBe(0); expect(k.counts['zaktualizuj']).toBe(0); }
+      137 |     expect(Object.values(w.stan).every((o) => o.wersje.length === 2)).toBe(true);
+      138 |   });
+
+      at toBeGreaterThan (tests/wydanie/asc-iap-v2.test.ts:135:38)
+
+  ● idempotencja: drugi apply = 0 zmian (także bez nowej wersji) › zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      139 |   test('zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu)', () => {
+      140 |     const w = uruchom({ stan: zatwierdzone(ZGODNE), kroki: [{ apply: true }] });
+    > 141 |     expect(w.kroki[0].zapisy).toEqual([]); expect(w.kroki[0].code).toBe(0);
+          |                                                                    ^
+      142 |     expect(Object.values(w.stan).every((o) => o.wersje.length === 1)).toBe(true);
+      143 |   });
+      144 | });
+
+      at Object.toBe (tests/wydanie/asc-iap-v2.test.ts:141:68)
+
+  ● wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje › kod 1, zero zapisów, problem wymienia stan
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /WAITING_FOR_REVIEW/
+    Received string:  "GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → 404 (E404: ścieżka spoza modelu v2)"
+
+      148 |   test('kod 1, zero zapisów, problem wymienia stan', () => {
+      149 |     expect(w.kroki[0].code).toBe(1); expect(w.kroki[0].zapisy).toEqual([]);
+    > 150 |     expect(w.kroki[0].problems.join('\n')).toMatch(/WAITING_FOR_REVIEW/);
+          |                                            ^
+      151 |   });
+      152 | });
+      153 |
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:150:44)
+
+  ● brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji › produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      155 |   test('produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet', () => {
+      156 |     const w = uruchom({ stan: { group: [], monthly: [], yearly: [], lifetime: [] }, kroki: [{ apply: true }] });
+    > 157 |     expect(w.kroki[0].code).toBe(0);
+          |                             ^
+      158 |     expect(Object.values(w.stan).every((o) => o.wersje.length === 1 && o.wersje[0].lok.length === 2)).toBe(true);
+      159 |   });
+      160 | });
+
+      at Object.toBe (tests/wydanie/asc-iap-v2.test.ts:157:29)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● klient: tylko GET/POST/PATCH i brak wycofanych ścieżek › POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint)
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+    -   "msg": StringMatching /wycofan/i,
+    -   "ok": false,
+    +   "ok": true,
+      }
+
+      168 |     ['POST', '/v1/inAppPurchaseLocalizations'], ['PATCH', '/v1/subscriptionLocalizations/ABC123456'], ['POST', '/v1/subscriptionGroupLocalizations'],
+      169 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations'], ['GET', '/v2/inAppPurchases/I1/inAppPurchaseLocalizations'], ['POST', '/v1/subscriptionSubmissions'],
+    > 170 |   ])('%s %s → odmowa (wycofany endpoint)', (m, p) => expect(kod(m, p)).toMatchObject({ ok: false, msg: expect.stringMatching(/wycofan/i) }));
+          |                                                                        ^
+      171 |   test.each([['POST', '/v2/inAppPurchaseLocalizations'], ['GET', '/v1/subscriptionVersions/V1/localizations'], ['POST', '/v1/subscriptionGroupVersions']])('%s %s → dozwolone', (m, p) => expect(kod(m, p).ok).toBe(true));
+      172 | });
+      173 |
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:170:72)
+
+  ● kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-* › repo: 0 naruszeń
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "kod": 0,
+    +   "kod": 1,
+      }
+
+      174 | describe('kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*', () => {
+      175 |   const uruchomKontrole = (katalog: string) => { try { return { kod: 0, out: execFileSync('node', [KONTROLA, '--katalog', katalog], { encoding: 'utf8' }) }; } catch (e: any) { return { kod: e.status as number, out: String(e.stdout) }; } };
+    > 176 |   test('repo: 0 naruszeń', () => expect(uruchomKontrole(root)).toMatchObject({ kod: 0 }));
+          |                                                                ^
+      177 |   test('plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku', () => {
+      178 |     const k = mkdtempSync(join(tmpdir(), 'asc-wycofane-')); mkdirSync(join(k, 'scripts/asc'), { recursive: true }); mkdirSync(join(k, '.github/workflows'), { recursive: true });
+      179 |     writeFileSync(join(k, 'scripts/asc/zly.mjs'), "await c.call('POST', '/v1/subscriptionLocalizations', {});\n");
+
+      at Object.toMatchObject (tests/wydanie/asc-iap-v2.test.ts:176:64)
+
+  ● kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-* › plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /scripts\/asc\/zly\.mjs:1/
+    Received string:  ""
+
+      180 |     writeFileSync(join(k, '.github/workflows/asc-zly.yml'), 'run: curl -X POST https://api.appstoreconnect.apple.com/v1/inAppPurchaseSubmissions\n');
+      181 |     const w = uruchomKontrole(k); expect(w.kod).toBe(1);
+    > 182 |     expect(w.out).toMatch(/scripts\/asc\/zly\.mjs:1/); expect(w.out).toMatch(/asc-zly\.yml:1/);
+          |                   ^
+      183 |   });
+      184 |   test('plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta)', () => {
+      185 |     const k = mkdtempSync(join(tmpdir(), 'asc-wycofane-')); mkdirSync(join(k, 'scripts/asc'), { recursive: true });
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:182:19)
+
+  ● kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-* › plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      185 |     const k = mkdtempSync(join(tmpdir(), 'asc-wycofane-')); mkdirSync(join(k, 'scripts/asc'), { recursive: true });
+      186 |     writeFileSync(join(k, 'scripts/asc/dobry.mjs'), "await c.call('POST', '/v2/subscriptionLocalizations', {});\nawait c.call('POST', '/v1/subscriptionVersions', {});\n");
+    > 187 |     expect(uruchomKontrole(k).kod).toBe(0);
+          |                                    ^
+      188 |     expect(readdirSync(join(root, 'scripts/asc')).filter((f) => f.endsWith('.mjs')).length).toBeGreaterThan(3);
+      189 |   });
+      190 | });
+
+      at Object.toBe (tests/wydanie/asc-iap-v2.test.ts:187:36)
+
+  ● nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu › scripts/asc/iap-localizations.mjs
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /migrating-in-app-purchase-metadata-to-v2/
+    Received string:  "// Dopisanie lokalizacji produktów zakupu (grupa subskrypcji + 2 subskrypcje + zakup jednorazowy) w App Store Connect przez API.
+    // Przeniesione z Treningu (P-315, P-316 (4); wzór: scripts/asc/iap-localizations.mjs tamtego repo, 2e4b0f8), dostosowane do Oczka (rola 10, 2026-11-01).
+    // Źródło tekstów: docs/wydanie/metadane/produkty.store.json (jedno źródło prawdy). Grupa subskrypcji jest znajdowana po nazwie referencyjnej
+    // („Oczko Pro”, docs/monetyzacja.md „Produkty”). Produkty zakłada wcześniej workflow asc-produkty (scripts/asc/produkty.mjs, P-467) — ten skrypt uruchamiaj PO nim.
+    //   node scripts/asc/iap-localizations.mjs            → plan bez zmian (--dry-run, domyślnie)
+    //   node scripts/asc/iap-localizations.mjs --apply    → tworzy brakujące i aktualizuje różniące się
+    // Zasady: NIGDY nie usuwa (klient dopuszcza tylko GET, POST, PATCH); wszystkie lokalizacje (także en-US i pl) z pliku źródłowego zapisuje skrypt (P-467: koniec wyjątku
+    // właściciela); język z polem `czeka` (pl: P-422) jest tylko pokazany w planie, bez zapisu;
+    // repozytorium jest publiczne — w logu tylko liczby, kody lokalizacji i nazwy produktów, nigdy identyfikatory klucza, tokeny ani odpowiedzi API.
+    // Dane logowania z zmiennych środowiskowych: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (plik .p8).
+    // Grupa subskrypcji (P-517): `customAppName` = pełna nazwa aplikacji z docs/wydanie/metadane/nazwy.store.json (apple.info[<ascLocale>].title; jedno źródło prawdy, P-174) —
+    // bez niego opcja „Use App Name” pokazuje nazwę z języka podstawowego (pl) we wszystkich lokalizacjach. Brak nazwy dla lokalizacji = błąd planu.
+    // Limit długości customAppName: Apple go NIE podaje (odczyt 2026-11-03: https://developer.apple.com/tutorials/data/documentation/appstoreconnectapi/subscriptiongrouplocalization/attributes-data.dictionary.json
+    // — `customAppName: string`, bez maxLength; tak samo w SubscriptionGroupLocalizationCreateRequest/UpdateRequest; pomoc ASC „Auto-renewable subscription information”, wiersz
+    // App Name Display Options — bez limitu). Założenie nazwane: nazwy pochodzą z pola Name (≤ 30 znaków, test tests/wydanie/iap-nazwa-aplikacji.test.ts) — potwierdzi pierwszy zapis.
+    import { createPrivateKey, sign as cryptoSign } from 'node:crypto';
+    import { readFileSync } from 'node:fs';
+    import { fileURLToPath } from 'node:url';·
+    export const BUNDLE_ID = 'com.apps4brew.knitting';
+    export const SUBSCRIPTION_GROUP_NAME = 'Oczko Pro';
+    export const PRODUCTS = {
+      monthly: { productId: 'oczko.pro.monthly', kind: 'subscription' },
+      yearly: { productId: 'oczko.pro.yearly', kind: 'subscription' },
+      lifetime: { productId: 'oczko.pro.lifetime', kind: 'iap' },
+    };
+    export const API = 'https://api.appstoreconnect.apple.com';
+    const ALLOWED_METHODS = new Set(['GET', 'POST', 'PATCH']);·
+    const b64u = b => Buffer.from(b).toString('base64url');"
+
+      193 |   test.each(['scripts/asc/iap-localizations.mjs', '.github/workflows/asc-iap-localizations.yml'])('%s', (f) => {
+      194 |     const t = readFileSync(join(root, f), 'utf8').split('\n').slice(0, 30).join('\n');
+    > 195 |     expect(t).toMatch(/migrating-in-app-purchase-metadata-to-v2/); expect(t).toMatch(/2026-11-13/); expect(t).toMatch(/KO-056/);
+          |               ^
+      196 |   });
+      197 | });
+      198 |
+
+      at toMatch (tests/wydanie/asc-iap-v2.test.ts:195:15)
+
+  ● nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu › .github/workflows/asc-iap-localizations.yml
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /migrating-in-app-purchase-metadata-to-v2/
+    Received string:  "# Lokalizacje produktów zakupu w App Store Connect przez API (grupa „Oczko Pro”, oczko.pro.monthly/yearly/lifetime). Przeniesione z Treningu (P-315, P-316 (4);
+    # wzór: asc-iap-localizations.yml, 2e4b0f8; skrypt scripts/asc/iap-localizations.mjs, teksty docs/wydanie/metadane/produkty.store.json). Tylko ręcznie.
+    # dry-run (domyślny): plan bez zmian; apply: utwórz brakujące i zaktualizuj różniące się (nigdy nie usuwa; nie zmienia lokalizacji wpisanej przez właściciela: en-US).
+    # Wymaga istniejących produktów: najpierw workflow asc-produkty (P-467; zastąpił ręczny krok B2). Sekrety środowiska `release`: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8.
+    # Różnice względem Treningu (nazwane): (1) jedno zadanie w środowisku `release` zamiast pary „podgląd bez środowiska” + „zapis w release” — sekrety
+    # Oczka są sekretami ŚRODOWISKA (strażnik scripts/jakosc/sprawdz-workflowy.mjs: SEKRET-BEZ-SRODOWISKA, ADR-0014), więc zadanie bez środowiska ich nie widzi;
+    # zatwierdzenie właściciela jest jedno na przebieg i obejmuje podgląd oraz zapis. (2) Działa dopiero po scaleniu do `main`: workflow_dispatch
+    # działa tylko z plikiem na gałęzi domyślnej (GitHub, „Events that trigger workflows”, odczyt 2026-11-01; P-319) — `main` nie ma tego pliku do czasu scalenia.
+    name: ASC lokalizacje produktów zakupu
+    on:
+      workflow_dispatch:
+        inputs:
+          tryb:
+            description: 'dry-run = tylko plan; apply = utwórz brakujące i zaktualizuj różniące się (nigdy nie usuwa)'
+            type: choice
+            options: [dry-run, apply]
+            default: dry-run
+    permissions:
+      contents: read
+    concurrency:
+      group: asc-iap-localizations
+      cancel-in-progress: false
+    jobs:
+      lokalizacje:
+        runs-on: ubuntu-latest
+        environment: release
+        timeout-minutes: 15
+        steps:
+          - uses: actions/checkout@v5
+            with:"
+
+      193 |   test.each(['scripts/asc/iap-localizations.mjs', '.github/workflows/asc-iap-localizations.yml'])('%s', (f) => {
+      194 |     const t = readFileSync(join(root, f), 'utf8').split('\n').slice(0, 30).join('\n');
+    > 195 |     expect(t).toMatch(/migrating-in-app-purchase-metadata-to-v2/); expect(t).toMatch(/2026-11-13/); expect(t).toMatch(/KO-056/);
+          |               ^
+      196 |   });
+      197 | });
+      198 |
+
+      at toMatch (tests/wydanie/asc-iap-v2.test.ts:195:15)
+
+Test Suites: 2 failed, 2 total
+Tests:       26 failed, 10 passed, 36 total
+Snapshots:   0 total
+Time:        3.228 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts|tests\/wydanie\/iap-nazwa-aplikacji.test.ts/i.
+KOD 1

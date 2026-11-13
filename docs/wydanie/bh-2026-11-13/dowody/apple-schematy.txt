@@ -1,0 +1,184 @@
+# Schematy i endpointy (node dump.mjs na surowym JSON), 2026-11-13
+== inapppurchaseversion/attributes-data.dictionary
+   version integer  [] 
+   state string  [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]] 
+== subscriptionversion/attributes-data.dictionary
+   version integer  [] 
+   state string  [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]] 
+== subscriptiongroupversion/attributes-data.dictionary
+   version integer  [] 
+   state string  [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]] 
+== post-v1-inapppurchaseversions
+  ENDPOINT POST https://api.appstoreconnect.apple.com/v1/inAppPurchaseVersions
+  BODY 
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 422 undefined ErrorResponse
+  RESP 201 Created InAppPurchaseVersionResponse
+  RESP 409 Conflict ErrorResponse
+  RESP 429 undefined ErrorResponse
+== post-v1-subscriptionversions
+  ENDPOINT POST https://api.appstoreconnect.apple.com/v1/subscriptionVersions
+  BODY 
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 422 undefined ErrorResponse
+  RESP 201 Created SubscriptionVersionResponse
+  RESP 409 Conflict ErrorResponse
+  RESP 429 undefined ErrorResponse
+== post-v1-subscriptiongroupversions
+  ENDPOINT POST https://api.appstoreconnect.apple.com/v1/subscriptionGroupVersions
+  BODY 
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 422 undefined ErrorResponse
+  RESP 201 Created SubscriptionGroupVersionResponse
+  RESP 409 Conflict ErrorResponse
+  RESP 429 undefined ErrorResponse
+== get-v2-inapppurchases-_id_-versions
+  ENDPOINT GET https://api.appstoreconnect.apple.com/v2/inAppPurchases/{id}/versions
+  PARAM id string []
+  PARAM filter[state] [string] [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]]
+  PARAM limit integer ["200"]
+  PARAM limit[images] integer ["50"]
+  PARAM limit[localizations] integer ["50"]
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 404 Not Found ErrorResponse
+  RESP 200 OK InAppPurchaseVersionsResponse
+  RESP 429 undefined ErrorResponse
+== get-v1-subscriptions-_id_-versions
+  ENDPOINT GET https://api.appstoreconnect.apple.com/v1/subscriptions/{id}/versions
+  PARAM id string []
+  PARAM filter[state] [string] [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]]
+  PARAM limit integer ["200"]
+  PARAM limit[images] integer ["50"]
+  PARAM limit[localizations] integer ["50"]
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 404 Not Found ErrorResponse
+  RESP 200 OK SubscriptionVersionsResponse
+  RESP 429 undefined ErrorResponse
+== get-v1-subscriptiongroups-_id_-versions
+  ENDPOINT GET https://api.appstoreconnect.apple.com/v1/subscriptionGroups/{id}/versions
+  PARAM id string []
+  PARAM filter[state] [string] [["PREPARE_FOR_SUBMISSION","READY_FOR_REVIEW","WAITING_FOR_REVIEW","IN_REVIEW","ACCEPTED","APPROVED","REPLACED_WITH_NEW_VERSION","REJECTED","DEVELOPER_REJECTED"]]
+  PARAM limit integer ["200"]
+  PARAM limit[localizations] integer ["50"]
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 404 Not Found ErrorResponse
+  RESP 200 OK SubscriptionGroupVersionsResponse
+  RESP 429 undefined ErrorResponse
+== patch-v2-subscriptiongrouplocalizations-_id_
+  ENDPOINT PATCH https://api.appstoreconnect.apple.com/v2/subscriptionGroupLocalizations/{id}
+  PARAM id string []
+  BODY 
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 404 Not Found ErrorResponse
+  RESP 422 undefined ErrorResponse
+  RESP 200 OK SubscriptionGroupLocalizationV2Response
+  RESP 409 Conflict ErrorResponse
+  RESP 429 undefined ErrorResponse
+== post-v2-subscriptiongrouplocalizations
+  ENDPOINT POST https://api.appstoreconnect.apple.com/v2/subscriptionGroupLocalizations
+  BODY 
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 422 undefined ErrorResponse
+  RESP 201 Created SubscriptionGroupLocalizationV2Response
+  RESP 409 Conflict ErrorResponse
+  RESP 429 undefined ErrorResponse
+== get-v1-subscriptiongroupversions-_id_-localizations
+  ENDPOINT GET https://api.appstoreconnect.apple.com/v1/subscriptionGroupVersions/{id}/localizations
+  PARAM id string []
+  PARAM limit integer ["200"]
+  RESP 400 Bad Request ErrorResponse
+  RESP 401 Unauthorized ErrorResponse
+  RESP 403 Forbidden ErrorResponse
+  RESP 404 Not Found ErrorResponse
+  RESP 200 OK SubscriptionGroupLocalizationsV2Response
+  RESP 429 undefined ErrorResponse
+== inapppurchaselocalizationv2createrequest/data-data.dictionary/attributes-data.dictionary
+   name string REQ [] 
+   locale string REQ [] 
+   description string  [] 
+== inapppurchaselocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary
+   version InAppPurchaseLocalizationV2CreateRequest.Data.Relationships.Version REQ [] 
+== inapppurchaselocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary/version-data.dictionary/data-data.dictionary
+   id string REQ [] 
+   type string REQ [["inAppPurchaseVersions"]] 
+== inapppurchaseversioncreaterequest/data-data.dictionary/relationships-data.dictionary
+   inAppPurchase InAppPurchaseVersionCreateRequest.Data.Relationships.InAppPurchase REQ [] 
+== subscriptiongrouplocalizationv2createrequest/data-data.dictionary/attributes-data.dictionary
+   name string REQ [] 
+   customAppName string  [] 
+   locale string REQ [] 
+== subscriptiongrouplocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary
+   version SubscriptionGroupLocalizationV2CreateRequest.Data.Relationships.Version REQ [] 
+== subscriptiongrouplocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary/version-data.dictionary/data-data.dictionary
+   id string REQ [] 
+   type string REQ [["subscriptionGroupVersions"]] 
+== subscriptiongroupversioncreaterequest/data-data.dictionary/relationships-data.dictionary
+   subscriptionGroup SubscriptionGroupVersionCreateRequest.Data.Relationships.SubscriptionGroup REQ [] 
+== subscriptionlocalizationv2createrequest/data-data.dictionary/attributes-data.dictionary
+   name string REQ [] 
+   locale string REQ [] 
+   description string  [] 
+== subscriptionlocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary
+   version SubscriptionLocalizationV2CreateRequest.Data.Relationships.Version REQ [] 
+== subscriptionlocalizationv2createrequest/data-data.dictionary/relationships-data.dictionary/version-data.dictionary/data-data.dictionary
+   id string REQ [] 
+   type string REQ [["subscriptionVersions"]] 
+== subscriptionversioncreaterequest/data-data.dictionary/relationships-data.dictionary
+   subscription SubscriptionVersionCreateRequest.Data.Relationships.Subscription REQ [] 
+== inapppurchaselocalizationv2updaterequest/data-data.dictionary/attributes-data.dictionary
+   name string  [] 
+   description string  [] 
+== subscriptiongrouplocalizationv2updaterequest/data-data.dictionary/attributes-data.dictionary
+   name string  [] 
+   customAppName string  [] 
+== subscriptionlocalizationv2updaterequest/data-data.dictionary/attributes-data.dictionary
+   name string  [] 
+   description string  [] 
+== subscriptiongrouplocalizationv2/attributes-data.dictionary
+   name string  [] 
+   customAppName string  [] 
+   locale string  [] 
+== subscriptionlocalizationv2/attributes-data.dictionary
+   name string  [] 
+   locale string  [] 
+   description string  [] 
+== inapppurchaselocalizationv2/attributes-data.dictionary
+   name string  [] 
+   locale string  [] 
+   description string  [] 
+== subscription-group-localizations (topicSections)
+   Create a subscription group localization | /documentation/appstoreconnectapi/post-v2-subscriptiongrouplocalizations
+   Read subscription group localization information | /documentation/appstoreconnectapi/get-v2-subscriptiongrouplocalizations-_id_
+   Modify a subscription group localization | /documentation/appstoreconnectapi/patch-v2-subscriptiongrouplocalizations-_id_
+   Delete a subscription group localization | /documentation/appstoreconnectapi/delete-v2-subscriptiongrouplocalizations-_id_
+== subscription-localizations (topicSections)
+   Create a subscription localization | /documentation/appstoreconnectapi/post-v2-subscriptionlocalizations
+   Read subscription localization information | /documentation/appstoreconnectapi/get-v2-subscriptionlocalizations-_id_
+   Modify a subscription localization | /documentation/appstoreconnectapi/patch-v2-subscriptionlocalizations-_id_
+   Delete a subscription localization | /documentation/appstoreconnectapi/delete-v2-subscriptionlocalizations-_id_
+== in-app-purchase-localizations (topicSections)
+   List localizations for an In-App Purchase version | /documentation/appstoreconnectapi/get-v1-inapppurchaseversions-_id_-localizations
+   Create an In-App Purchase localization | /documentation/appstoreconnectapi/post-v2-inapppurchaselocalizations
+   Read In-App Purchase localization information | /documentation/appstoreconnectapi/get-v2-inapppurchaselocalizations-_id_
+   Modify an In-App Purchase localization | /documentation/appstoreconnectapi/patch-v2-inapppurchaselocalizations-_id_
+   Delete an In-App Purchase localization | /documentation/appstoreconnectapi/delete-v2-inapppurchaselocalizations-_id_
+== post-v1-inapppurchaselocalizations deprecationSummary: This endpoint is deprecated. Use doc://com.apple.appstoreconnectapi/documentation/AppStoreConnectAPI/POST-v2-inAppPurchaseLocalizations instead.
+== patch-v1-subscriptionlocalizations-_id_ deprecationSummary: This endpoint is deprecated. Use doc://com.apple.appstoreconnectapi/documentation/AppStoreConnectAPI/PATCH-v2-subscriptionLocalizations-_id_ instead.
+== patch-v1-subscriptiongrouplocalizations-_id_ deprecationSummary: This endpoint is deprecated. Use doc://com.apple.appstoreconnectapi/documentation/AppStoreConnectAPI/PATCH-v2-subscriptionGroupLocalizations-_id_ instead.
+== get-v1-subscriptiongroups-_id_-subscriptiongrouplocalizations deprecationSummary: This relationship is deprecated. Use doc://com.apple.appstoreconnectapi/documentation/AppStoreConnectAPI/GET-v1-subscriptionGroupVersions-_id_-localizations instead.

@@ -1,0 +1,8 @@
+$ node <scratchpad>/sonda.mjs
+1) komunikat odmowy: Wycofany endpoint POST /v1/{id} — odmowa (zastępstwo: /v2/<…>Localizations z relacją `version`)
+2) kod 0 [] ; lokalizacje nowej wersji: en-US ; stara: en-US,pl
+3) REJECTED: kod 0, problemy: , zapisy: POST /v1/inAppPurchaseVersions; POST /v2/inAppPurchaseLocalizations
+3) DEVELOPER_REJECTED: kod 0, problemy: , zapisy: POST /v1/inAppPurchaseVersions; POST /v2/inAppPurchaseLocalizations
+3) READY_FOR_REVIEW: kod 1, problemy: oczko.pro.lifetime: wersja 1 w stanie READY_FOR_REVIEW (w recenzji, tylko do odczytu) — teksty różnią się od pliku; nie tworzę kolejnej wersji (poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect), zapisy: brak
+3) IN_REVIEW: kod 1, problemy: oczko.pro.lifetime: wersja 1 w stanie IN_REVIEW (w recenzji, tylko do odczytu) — teksty różnią się od pliku; nie tworzę kolejnej wersji (poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect), zapisy: brak
+KOD 0

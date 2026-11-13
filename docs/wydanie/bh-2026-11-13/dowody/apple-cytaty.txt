@@ -1,0 +1,33 @@
+# Cytaty dosłowne z surowego JSON dokumentacji Apple (odczyt 2026-11-13; adres: https://developer.apple.com/tutorials/data/documentation/appstoreconnectapi/<strona>.json; tekst wyciągnięty z DocC skryptem, pełny tekst nie jest kopiowany do repo)
+
+## migrating-in-app-purchase-metadata-to-v2
+5:Before 4.4.1, localizations and review images attached directly to an In-App Purchase, subscription, or subscription group. In 4.4.1, they attach to a version — a draft container that groups the metadata and images that go through App Review together. The pre-4.4.1 endpoints remain available for existing integrations, but new work uses the version-based path.
+9:Each deprecated v1 endpoint has a v2 equivalent that targets a version. The v1 endpoint keeps working; use it only for existing integrations that haven’t moved yet.
+30:Nested read endpoints on the parent product are also deprecated in the same window:
+99:The relationship key changes from `inAppPurchaseV2` (targeting the parent product) to `version` (targeting the draft version). The same shape applies to `POST /v2/inAppPurchaseImages`.
+158:Before 4.4.1, integrations tracked submission status by reading the parent product’s state. Now, track the version’s `state` field on `InAppPurchaseVersion`, `SubscriptionVersion`, or `SubscriptionGroupVersion`. The transitions are `PREPARE_FOR_SUBMISSION` → `READY_FOR_REVIEW` → `WAITING_FOR_REVIEW` → `IN_REVIEW` → `APPROVED` or `REJECTED`. Poll the version with `GET /v1/inAppPurchaseVersions/{id}` (or the equivalent for subscriptions and groups).
+
+## working-with-in-app-purchase-versions
+12:`PREPARE_FOR_SUBMISSION`: The version is open for editing. You can add, change, or remove localizations and images.
+22:`REJECTED` or `DEVELOPER_REJECTED`: App Review rejected the version, or you withdrew it.
+24:`REPLACED_WITH_NEW_VERSION`: A newer version supersedes this one.
+25:Versions are read-only after creation. To change a version’s contents, create a new version.
+44:The response returns the new version’s `id` and a `state` of `PREPARE_FOR_SUBMISSION`. Note the `id` — every subsequent step references it.
+109:To see every version on a parent In-App Purchase, use `GET /v2/inAppPurchases/{id}/versions` ([List the versions of an In-App Purchase]). The response includes each version’s state, so you can find the current draft, the most recently approved version, and any versions currently in review.
+
+## working-with-subscription-group-versions
+8:Group-level localizations submit to App Review with the subscriptions they belong to. Submit a subscription group version independently only when you change group-level localization without changing any subscription in the group.
+13:`PREPARE_FOR_SUBMISSION`: The version is open for editing. You can add, change, or remove localizations.
+23:`REJECTED` or `DEVELOPER_REJECTED`: App Review rejected the version, or you withdrew it.
+25:`REPLACED_WITH_NEW_VERSION`: A newer version supersedes this one.
+26:Versions are read-only after creation. To change a version’s contents, create a new version.
+45:The response returns the new version’s `id` and a `state` of `PREPARE_FOR_SUBMISSION`. Note the `id` — every subsequent step references it.
+72:To see every version on a parent subscription group, use `GET /v1/subscriptionGroups/{id}/versions` ([List the versions of a subscription group]). The response includes each version’s state, so you can find the current draft, the most recently approved version, and any versions currently in review.
+
+## working-with-subscription-versions
+12:`PREPARE_FOR_SUBMISSION`: The version is open for editing. You can add, change, or remove localizations and images.
+22:`REJECTED` or `DEVELOPER_REJECTED`: App Review rejected the version, or you withdrew it.
+24:`REPLACED_WITH_NEW_VERSION`: A newer version supersedes this one.
+25:Versions are read-only after creation. To change a version’s contents, create a new version.
+44:The response returns the new version’s `id` and a `state` of `PREPARE_FOR_SUBMISSION`. Note the `id` — every subsequent step references it.
+109:To see every version on a parent subscription, use `GET /v1/subscriptions/{id}/versions` ([List versions for a subscription]). The response includes each version’s state, so you can find the current draft, the most recently approved version, and any versions currently in review.

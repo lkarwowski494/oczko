@@ -1,0 +1,1 @@
+(przebieg w toku w chwili commitu 1; wynik dopisany w następnym commicie)

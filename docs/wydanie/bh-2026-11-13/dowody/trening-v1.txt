@@ -1,0 +1,11 @@
+$ git -C trening log -1; grep -nE "Localizations" scripts/asc/iap-localizations.mjs
+2d97581 Wed Nov 11 09:42:34 2026 +0000
+95:    const locs = await client.list(`/v1/subscriptionGroups/${group.id}/subscriptionGroupLocalizations`);
+97:      create: (locale, w) => ({ type: 'subscriptionGroupLocalizations', attributes: { locale, name: w.name }, relationships: { subscriptionGroup: { data: { type: 'subscriptionGroups', id: group.id } } } }),
+98:      createPath: '/v1/subscriptionGroupLocalizations', updatePath: id => `/v1/subscriptionGroupLocalizations/${id}`, updateType: 'subscriptionGroupLocalizations' });
+103:      const l = await client.list(`/v1/subscriptions/${s.id}/subscriptionLocalizations`);
+105:        create: (locale, w) => ({ type: 'subscriptionLocalizations', attributes: { locale, name: w.name, description: w.description }, relationships: { subscription: { data: { type: 'subscriptions', id: s.id } } } }),
+106:        createPath: '/v1/subscriptionLocalizations', updatePath: id => `/v1/subscriptionLocalizations/${id}`, updateType: 'subscriptionLocalizations' });
+114:      const l = await client.list(`/v2/inAppPurchases/${iap.id}/inAppPurchaseLocalizations`);
+116:        create: (locale, w) => ({ type: 'inAppPurchaseLocalizations', attributes: { locale, name: w.name, description: w.description }, relationships: { inAppPurchaseV2: { data: { type: 'inAppPurchases', id: iap.id } } } }),
+117:        createPath: '/v1/inAppPurchaseLocalizations', updatePath: id => `/v1/inAppPurchaseLocalizations/${id}`, updateType: 'inAppPurchaseLocalizations' });
