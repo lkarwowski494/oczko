@@ -351,10 +351,13 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | B (zarchiwizowana 05:46, 0,21 USD, nic nie zmieniła) | session_01T66VBxU3pNDFL8RzCfKmf9 | 10-wydanie fix (301: publikacja 3 plików w apps4brew-www za zgodą) | oczko m2 @ 27e2ac1 tylko odczyt; apps4brew-www main | 0 | 0 | start 05:44 (sonnet-5-5); polecenie `polecenia/B.md` @ 28f7a7c5; prompt roli warsztat a6c5115; pułap 6 / STOP 8 USD |
 | 08 nr 3 | session_01T66VByn4YqYJWZ5JpJWS6X | 08 fix (06) | claude/kopia-08-build2-2026-11-09 @ d58a77c (+ plik stanu) | 18 | 2,66 | przyjęta (scalona 58284a88, przebieg 8 zielony); bezczynna — zarchiwizować po VALID buildu 2 |
 
-## Plan 24 h (UTC) — aktualizacja 13.11 04:55
+## Plan 24 h (UTC) — aktualizacja 13.11 08:10
 | Kiedy | Co | Kto | Zależy od | Od właściciela |
 |---|---|---|---|---|
-| po słowach | `testflight.yml` build 6 na 2ed5215a (parametry jak build 5), potem Approve w `release` | M9 | „zgoda na build 6” | zgoda + Approve |
+| teraz | BI (poprawki BH) → ci.yml → delta BH → ff integracji (de5497bc+BH+BI) → przebiegi push (iOS w oknie macOS) | BI, BH, M9 | — | — |
+| dziś | werdykt 07 A2 dla 2ed5215a (build 6 = 1161 VALID) + odświeżenie `lista-1-0.md` pod build 6 (lista kroków właściciela z linkami); C1 zrzuty na SHA kandydata | sesje 07, 10 | — | — |
+| kiedy W ma czas | test buildu 1161 na iPhonie | właściciel | — | 30–70 min |
+| po scaleniu do main | asc-iap-localizations dry-run → apply (`docs/wydanie/asc-v2/przebieg-wlasciciela.md`) | M9 + W | D1 | Approve |
 | po teście buildu 5 | znaleziska z testu właściciela → sesje 08/04 fix | M9 → sesje | wynik testu (`docs/wydanie/test-urzadzenia-build5.md`) | wynik testu |
 | dziś | kolejka bez blokady: 08 fix P2 AX -001…-004; 10 fix 04-004/04-005; 07: e2e cz. 3 iphone / cz. 1 ipad „Scenariusze skipped” — wyjaśnić; backlog 07 „Continue”/„Add pattern” | sesje (kod: jedna naraz na gałęzi) | brak | nic |
 | 13.11 13:54 | linia 14:00 + przegląd przepływu (WG: push integracji 15:13 poza oknem macOS → 8 h kolejki) | M9 | — | — |
@@ -750,3 +753,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 13.11 07:13 | właściciel, M9 | Approve buildu 6 w `release` (właściciel: „Jest approved”); run 43383728558: bramka success, build in_progress (API 07:13) | kontrola 08:08: wynik, numer buildu, VALID |
 | 13.11 07:31 | M9, BG, BH | BG PRZEKAZANIE @ de5497bc (1 commit od 2ed5215a, autor/committer właściciel, 0 Co-Authored-By — sprawdzone; 14 plików +504/−36). Wg BG: testy 2ed5215a kod 1 (26/36 czerwone), de5497bc zielone; verify kod 0 (607/7365); P-789…P-791 do weta; otwarte: dziedziczenie lokalizacji między wersjami, data usunięcia v1 [DO USTALENIA]. Hak Stop chciał noreply@anthropic.com — odrzucone (P-507). **ci.yml 43386064372** wyzwolony przeze mnie. Polecenie BH @ 75665cf6; start BH (10 audit, opus) przez subagenta. BG zarchiwizowana | ci.yml + PRZEKAZANIE BH → scalenie do integracji |
 | 13.11 07:56 | M9, BH, BI | **Build 6 = 1161 VALID** (run 43383728558: bramka, build — krok „Przetworzenie przez Apple (processingState VALID)” success, tag v1.0.0-b1161 → 2ed5215a). **ci.yml 43386064372 success** na de5497bc. **BH TAK** @ 347614dc (autor właściciel ×2, tylko docs: raport + dowód verify): 0 P0/P1; 001 P2 (nowa wersja bez dziedziczenia gubi lokalizacje `czeka`/`błąd`), 002–004 P3; testy 2ed5215a 26/36 czerwone → de5497bc 36/36; verify kod 0 (wg BH). KO-057: poprawki przed scaleniem → polecenie BI @ 843494dd, start BI (10 fix, sonnet) przez subagenta. Hak Stop „Unverified” — tożsamość zostaje (P-507) | PRZEKAZANIE BI → delta BH → ff integracji |
+| 13.11 08:10 | M9 | Kontrola 08:08: build 6 = 1161 VALID (wcześniej); BI working (1,21 USD, 18,5%); BH bezczynna — czeka na deltę; kontekst koordynatora 24,9%. Kontrola 08:40 | PRZEKAZANIE BI |
