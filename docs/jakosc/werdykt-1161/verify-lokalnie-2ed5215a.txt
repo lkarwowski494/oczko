@@ -1,0 +1,16 @@
+# Lokalnie, worktree 2ed5215a (scratchpad), 2026-11-13; npm ci: kod 0
+$ env -u NODE_PATH npm run verify  (worktree 2ed5215a)
+# (…2364 linii; wybrane linie kontroli i końcówka)
+ADR: 34, błędy: 0
+plików testów: 423, zależnych od poprawek: 269, błędów: 0
+kontrola Swift: 0 błędów
+błędy: 0, uwagi: 1350; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+…
+PASS iOS tests/ekrany/miary.test.ts
+
+Test Suites: 606 passed, 606 total
+Tests:       7336 passed, 7336 total
+Snapshots:   0 total
+Time:        165.404 s
+Ran all test suites.
+kod 0

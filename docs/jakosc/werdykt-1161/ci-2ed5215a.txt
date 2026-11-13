@@ -1,0 +1,31 @@
+# Przebiegi CI na 2ed5215a76c5a6dc84289c94274e7cf0176dcfc2 (MCP GitHub actions_get / list_workflow_jobs / get_job_logs, odczyt 2026-11-13 ok. 08:30–08:45 UTC)
+
+## Jakość · Linux — run 43245531487, push, conclusion success
+- job verify 131277039171 success: npm ci; verify (typecheck, lint, kontrole repo i wektory, testy); kolejność losowa (JAK-05); strefy DS-09; ziarno fast-check
+- job akceptacja 131277039109 success: raport testów akceptacyjnych; i18n:kod
+
+## Jakość · iOS — run 43245531497, push, run_attempt 2, conclusion success
+- attempt 1 (12.11 15:13–15:52 UTC): build 131277040891 cancelled, eksperymenty-wzoru cancelled, e2e skipped (po buildzie); swift-test, zegarek-ikona success
+- attempt 2 (12.11 23:31 – 13.11 00:35 UTC):
+  - swift-test 131570396599 success (3 pakiety SwiftPM); zegarek-ikona 131570396108 success (ikona AppIcon w Info.plist zegarka)
+  - build 131570393303 success (Release, symulator, bez podpisu; krok 12 23:36–00:00)
+  - eksperymenty-wzoru 131570392883 failure, continue-on-error: true (.github/workflows/jakosc-ios.yml:85); jedyny czerwony testW1WordNaPdf („** TEST FAILED **”, exit 65) — znany wzorzec od #126 (docs/programista/partia-6.md:10, docs/przekazanie-koordynatora.md:53)
+  - e2e (część 1, iphone) 131584076444 success: krok „Scenariusze” 00:06–00:34; BRAMKA = 6 scenariuszy (03, 06, 07, 08, 11, 33); w logu 6 × „[Passed]”, bez „Awaria maszyny”
+  - e2e (część 2, iphone) 131584076375 success: krok „Scenariusze” 00:06–00:30; plan części 2 = 7 scenariuszy (01, 02, 04, 05, 09, 10, 36; odtworzone lokalnie `node scripts/ci/e2e-czesci.mjs czesc 2`); końcówka logu: 6 × „[Passed]” (02, 04, 05, 09, 10, 36), krok kończy się `exit $porazki` = 0
+  - e2e (część 3, iphone) 131584076393 success, kroki od „Xcode 26.x” skipped: log „Pakiet: podstawowy. Część 3/2: 0 scenariuszy”
+  - e2e (część 1, ipad) 131584076550 success (continue-on-error dla ipad, .github/workflows/jakosc-ios.yml:265), kroki skipped: log „Pakiet: ipad. Część 1/0: 0 scenariuszy” — scenariusze iPada tylko przy [e2e-pelny]/[e2e-ipad] (.github/workflows/jakosc-ios.yml:264)
+  - pakiet podstawowy = 13 scenariuszy z tagiem podstawowy (grep na 2ed5215a), e2e/czesci.json: czesci_podstawowy 2
+
+## TestFlight (testy wewnętrzne) — run 43383728558, workflow_dispatch, conclusion success (13.11 07:09–07:41 UTC)
+- bramka 131747214614 success: zielony „Jakość · iOS” na tym commicie
+- build 131747320662 success:
+  - krok 7 pełne npm run verify: „Test Suites: 606 passed, 606 total”, „Tests: 26 skipped, 7312 passed, 7338 total” (skip warunkowy: narzędzia zrzutów tylko Linux/ImageMagick — tests/wydanie/instalacja-narzedzi-zrzutow.test.ts:75, tests/wydanie/kontrola-zakreslen.test.ts:73, tests/wydanie/ramki-sklepu.test.ts:50)
+  - krok 8 reguły Swift: „Executed 53 tests, with 0 failures”
+  - krok 24 kontrola-ipa.sh: „Wynik: błędów 0, uwag 2” (wyciąg: kontrola-ipa-1161.txt)
+  - krok 26 wysyłka: „Export Succeeded” (ostrzeżenia: brak dSYM hermesvm.framework i OczkoUdostepnij.appex)
+  - krok 27: „Build 1161: VALID”
+- tag 131759360010 success (v1.0.0-b1161)
+
+## CI (ci.yml) — brak przebiegu na 2ed5215a
+- wyzwalacze: push na main, pull_request, workflow_dispatch (.github/workflows/ci.yml:3-7); jedyny krok testowy `npm run verify` (.github/workflows/ci.yml:40) = ten sam co Jakość · Linux verify (.github/workflows/jakosc-linux.yml:29) i krok 7 TestFlight
+- ostatni przebieg na gałęzi integracji: 43135242307 (281852f8, success)
