@@ -51,7 +51,7 @@ describe('moduł przekładu (scripts/i18n/przeklad-podpisy.mjs): zakres i żąda
     expect(r.ks).toMatch(/poprawki/); expect(r.ks).toMatch(/TYLKO/);
     expect(r.u).toContain(dane.podpisy.en['01-dzis']); expect(r.u).toMatch(/Projekte/);
     for (const x of ['A', 'B', 'C', 'D', 'E', 'F', 'G']) expect(r.u).toContain(`: ${x}`);
-    expect(r.u).not.toMatch(/Uwaga tłumacza|uwaga/i); // krytyk nie dostaje notatek tłumacza
+    expect(r.u).not.toMatch(/Uwaga tłumacza/); // krytyk nie dostaje notatek tłumacza (słownik terminów ma własne „uwaga:”, to nie notatka)
   });
 });
 
@@ -127,10 +127,10 @@ describe('odpowiedzi modelu: parsuj (przekład) i parsujKrytyka', () => {
 describe('szacunek, koszt i pełny przebieg na atrapie', () => {
   test('szacunek bez klucza: kod 0, 27 języków × dwa etapy, koszt > 0, limit 2 → 2; limit kosztu z workflowu (zgoda) → kod 3 bez --zgoda-koszt', () => {
     const wyj = mkdtempSync(join(tmpdir(), 'pp-'));
-    const r = run(`const logs = []; const kod = await m.main(['--szacuj', '--wyjscie', ${J(wyj)}], { env: {}, log: (x) => logs.push(String(x)) });
-      const k2 = await m.main(['--szacuj', '--limit', '2', '--wyjscie', ${J(wyj + '/2')}], { env: {}, log: () => {} });
-      const k3 = await m.main(['--szacuj', '--wyjscie', ${J(wyj + '/3')}], { env: { PRZEKLAD_LIMIT_USD: '0.0001' }, log: (x) => logs.push(String(x)) });
-      const k4 = await m.main(['--szacuj', '--etap', 'przeklad', '--wyjscie', ${J(wyj + '/4')}], { env: {}, log: () => {} }); console.log(JSON.stringify({ kod, k2, k3, k4, logs }))`);
+    const r = run(`const logs = []; const kod = await m.main(['--szacuj', '--wyjscie', ${JSON.stringify(wyj)}], { env: {}, log: (x) => logs.push(String(x)) });
+      const k2 = await m.main(['--szacuj', '--limit', '2', '--wyjscie', ${JSON.stringify(wyj + '/2')}], { env: {}, log: () => {} });
+      const k3 = await m.main(['--szacuj', '--wyjscie', ${JSON.stringify(wyj + '/3')}], { env: { PRZEKLAD_LIMIT_USD: '0.0001' }, log: (x) => logs.push(String(x)) });
+      const k4 = await m.main(['--szacuj', '--etap', 'przeklad', '--wyjscie', ${JSON.stringify(wyj + '/4')}], { env: {}, log: () => {} }); console.log(JSON.stringify({ kod, k2, k3, k4, logs }))`);
     expect(r.kod).toBe(0); expect(r.k2).toBe(0); expect(r.k3).toBe(3); expect(r.k4).toBe(0);
     expect(r.logs.join('\n')).toMatch(/27 języków/); expect(r.logs.join('\n')).toMatch(/STOP/);
     const s = JSON.parse(readFileSync(join(wyj, 'szacunek.json'), 'utf8')); expect(s.jezykow).toBe(27); expect(s.koszt_usd).toBeGreaterThan(0); expect(s.etapy).toEqual(['przeklad', 'krytyk']);
@@ -153,7 +153,7 @@ describe('szacunek, koszt i pełny przebieg na atrapie', () => {
   test('pełny przebieg: dwa batche (przekład, krytyk), Opus high, wynik <kod>.json z propozycją, krytykiem i wynikiem; klucz nie trafia do logu; plik danych w repo nietknięty', () => {
     const wyj = mkdtempSync(join(tmpdir(), 'pp-')), przed = read(PLIK);
     const r = run(`${atrapa()}
-      const logs = []; const kod = await m.main(['--wyjscie', ${J(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: (x) => logs.push(String(x)), spij: async () => {}, dzis: '2026-11-16' });
+      const logs = []; const kod = await m.main(['--wyjscie', ${JSON.stringify(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: (x) => logs.push(String(x)), spij: async () => {}, dzis: '2026-11-16' });
       console.log(JSON.stringify({ kod, logs, n1: zadane.filter((q) => q.batch === 1).length, n2: zadane.filter((q) => q.batch === 2).length, model: zadane[0].params.model, effort: zadane[0].params.output_config?.effort,
         modelK: zadane.at(-1).params.model, posty: calls.filter((c) => c.startsWith('POST /v1/messages/batches')).length, ids: zadane.map((q) => q.custom_id) }))`);
     expect(r.kod).toBe(0); expect(r.n1).toBe(27); expect(r.n2).toBe(27); expect(r.posty).toBe(2);
@@ -170,7 +170,7 @@ describe('szacunek, koszt i pełny przebieg na atrapie', () => {
   test('język z odrzuconym podpisem (za długi) nie idzie do krytyka, kod 1, raport wskazuje pole; pozostałe języki przechodzą', () => {
     const wyj = mkdtempSync(join(tmpdir(), 'pp-'));
     const r = run(`${atrapa('fi')}
-      const logs = []; const kod = await m.main(['--wyjscie', ${J(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: (x) => logs.push(String(x)), spij: async () => {}, dzis: '2026-11-16' });
+      const logs = []; const kod = await m.main(['--wyjscie', ${JSON.stringify(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: (x) => logs.push(String(x)), spij: async () => {}, dzis: '2026-11-16' });
       console.log(JSON.stringify({ kod, n2: zadane.filter((q) => q.batch === 2).map((q) => q.custom_id), logs }))`);
     expect(r.kod).toBe(1); expect(r.n2).toHaveLength(26); expect(r.n2).not.toContain('pk-fi'); expect(r.logs.join('\n')).toMatch(/fi/);
     const fi = JSON.parse(readFileSync(join(wyj, 'fi.json'), 'utf8'));
@@ -181,8 +181,8 @@ describe('szacunek, koszt i pełny przebieg na atrapie', () => {
     const wyj = mkdtempSync(join(tmpdir(), 'pp-')), kopia = mkdtempSync(join(tmpdir(), 'pp-repo-'));
     mkdirSync(join(kopia, 'docs/wydanie/metadane'), { recursive: true }); cpSync(join(ROOT, PLIK), join(kopia, PLIK));
     const r = run(`${atrapa()}
-      const logs = []; const kod = await m.main(['--wyjscie', ${J(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: () => {}, spij: async () => {}, dzis: '2026-11-16' });
-      const kp = m.przyjmij(['--raport', ${J(wyj)}, '--korzen', ${J(kopia)}], { log: (x) => logs.push(String(x)) }); console.log(JSON.stringify({ kod, kp, logs }))`);
+      const logs = []; const kod = await m.main(['--wyjscie', ${JSON.stringify(wyj)}], { fetchFn: fakeFetch, env: { ANTHROPIC_API_KEY: 'sk-ant-test-123' }, log: () => {}, spij: async () => {}, dzis: '2026-11-16' });
+      const kp = m.przyjmij(['--raport', ${JSON.stringify(wyj)}, '--korzen', ${JSON.stringify(kopia)}], { log: (x) => logs.push(String(x)) }); console.log(JSON.stringify({ kod, kp, logs }))`);
     expect(r.kod).toBe(0); expect(r.kp).toBe(0);
     const po = JSON.parse(readFileSync(join(kopia, PLIK), 'utf8'));
     expect(Object.keys(po.podpisy)).toEqual(Object.keys(dane.podpisy)); expect(Object.keys(po.status)).toEqual(Object.keys(dane.status));
@@ -204,7 +204,7 @@ describe('szacunek, koszt i pełny przebieg na atrapie', () => {
     writeFileSync(join(wyj, 'de.json'), JSON.stringify({ jezyk: 'de', blad: 'odpowiedź ucięta', propozycja: null, odrzucone: [], krytyk: null, wynik: null, meta }));
     writeFileSync(join(wyj, 'fr.json'), JSON.stringify({ jezyk: 'fr', blad: null, propozycja: pelny, odrzucone: [], krytyk: null, wynik: pelny, meta }));
     writeFileSync(join(wyj, 'it.json'), JSON.stringify({ jezyk: 'it', blad: null, propozycja: pelny, odrzucone: [], krytyk: { blad: null, poprawki: [], odrzucone: [] }, wynik: { ...pelny, '01-dzis': 'x'.repeat(41) }, meta }));
-    const r = run(`const l = []; const g = (a) => m.przyjmij(['--raport', ${J(wyj)}, '--korzen', ${J(kopia)}, ...a], { log: (x) => l.push(String(x)) });
+    const r = run(`const l = []; const g = (a) => m.przyjmij(['--raport', ${JSON.stringify(wyj)}, '--korzen', ${JSON.stringify(kopia)}, ...a], { log: (x) => l.push(String(x)) });
       console.log(JSON.stringify({ de: g(['de']), fr: g(['fr']), it: g(['it']), en: g(['en']), l }))`);
     expect(r).toMatchObject({ de: 1, fr: 1, it: 1, en: 2 });
     expect(r.l.join('\n')).toMatch(/de: odrzucony/); expect(r.l.join('\n')).toMatch(/fr: odrzucony.*krytyk/); expect(r.l.join('\n')).toMatch(/it: odrzucony.*41 znaków/);
