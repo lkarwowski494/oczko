@@ -1,6 +1,6 @@
 // KO-061 (BS 2026-11-15, decyzja właściciela „Obniż do watchOS 10”): zegarek właściciela ma watchOS 10.6.2 bez możliwości aktualizacji, a aplikacja zegarka
 // z minimum 11.0 nie pojawiała się w „Dostępne aplikacje” (docs/jakosc/zegarek-diagnoza-1161.md). Minimum zegarka = 10.0; iOS 18 bez zmian.
-// (a) Jedna wartość we wszystkich miejscach (config celu, kontrola .ipa, stała aplikacji, README, wzorzec projektu), (b) źródła zegarka bez API z watchOS 11 poza osłoną.
+// (a) Jedna wartość we wszystkich miejscach (config celu, kontrola .ipa, stała aplikacji, README, wzorzec projektu), (b) źródła zegarka bez znanych API z watchOS 11 poza osłoną (skan listy znanych nazw; dowodem zgodności API jest kompilacja celu z minimum 10.0, `jakosc-ios.yml`).
 // Wzór: Trening `scripts/verify-native.mjs:67` i `tests/watch-availability.test.ts` (analogia, P-087).
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -57,14 +57,42 @@ describe('skaner osłon watchOS 11 — przykłady', () => {
   });
 });
 
+// Recenzja BT 08-programista-001 (2026-11-15): lista skanera = tylko API sprawdzone w dokumentacji Apple (JSON developer.apple.com/tutorials/data/documentation/<ścieżka>.json,
+// metadata.platforms › watchOS › introducedAt, odczyt BS 2026-11-15). Ścieżka i wersja w tabeli; skaner nie zastępuje kompilacji z minimum 10.0 (jakosc-ios.yml), tylko ją uzupełnia.
+const OD_WATCHOS_11: ReadonlyArray<readonly [string, string]> = [
+  ['handGestureShortcut', 'swiftui/view/handgestureshortcut(_:isenabled:)'],
+  ['HandGestureShortcut', 'swiftui/handgestureshortcut'],
+  ['workoutEffortScore', 'healthkit/hkquantitytypeidentifier/workouteffortscore'],
+  ['estimatedWorkoutEffortScore', 'healthkit/hkquantitytypeidentifier/estimatedworkouteffortscore'],
+  ['onScrollGeometryChange', 'swiftui/view/onscrollgeometrychange(for:of:action:)'],
+  ['onScrollVisibilityChange', 'swiftui/view/onscrollvisibilitychange(threshold:_:)'],
+  ['ScrollPosition', 'swiftui/scrollposition'],
+  ['MeshGradient', 'swiftui/meshgradient'],
+  ['matchedTransitionSource', 'swiftui/view/matchedtransitionsource(id:in:)'],
+];
+// Z innych wersji niż 11.0 (Apple, ten sam odczyt): Previewable watchOS 10.0 (swiftui/previewable()), ControlWidget i RelevanceConfiguration watchOS 26.0 — nie są „od watchOS 11”.
+const NIE_OD_WATCHOS_11 = ['Previewable', 'ControlWidget', 'RelevanceConfiguration'] as const;
+
+describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+  test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+  });
+  test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+    expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  });
+  test.each(NIE_OD_WATCHOS_11.map((api) => [api] as const))('%s nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza', (api) => {
+    expect(nieoslonieteWatchOS11(`struct V { let x = ${api}() }`)).toEqual([]);
+  });
+});
+
 const plikiSwift = (d: string): string[] =>
   fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? plikiSwift(path.join(d, e.name)) : e.name.endsWith('.swift') ? [path.join(d, e.name)] : []));
 
-describe('źródła zegarka (targets/watch): 0 API z watchOS 11 poza osłoną', () => {
+describe('źródła zegarka (targets/watch): skaner znanych API z watchOS 11 (lista wyżej) nie znajduje użyć poza osłoną; bramą zgodności jest kompilacja z minimum 10.0', () => {
   const korzen = path.join(KORZEN, 'targets', 'watch');
   const pliki = plikiSwift(korzen);
-  test('są pliki Swift do sprawdzenia (inaczej skan nic nie pilnuje): 13 w ocenie BR z 2026-11-15', () => {
-    expect(pliki.length).toBeGreaterThanOrEqual(13);
+  test('są pliki Swift do sprawdzenia (inaczej skan nic nie pilnuje): 14 w targets/watch na 2026-11-15 (git ls-files)', () => {
+    expect(pliki.length).toBeGreaterThanOrEqual(14);
     expect(API_WATCHOS_11.length).toBeGreaterThan(0);
   });
   test.each(pliki.map((f) => [path.relative(korzen, f), f] as const))('%s: każde API z watchOS 11 jest osłonięte', (_nazwa, f) => {
