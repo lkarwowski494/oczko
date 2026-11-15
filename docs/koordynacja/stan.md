@@ -470,7 +470,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - 4: decyzje P-634…P-643 i KO-001…KO-013 przyjęte.
 
 ## Czeka na właściciela
-- (15.11 15:20) Pytanie po „nie chce mi sie tego testowac…”: (1, rekomendacja) sesja 07 dzieli 121 kroków na: pokryte e2e / do zaprogramowania / tylko urządzenie, dopisuje scenariusze + automatyczny przegląd zrzutów ekranów; właścicielowi zostaje krótka lista fizyczna; (2) bez zmian — test ręczny wg instrukcji. Czekam na słowa. — nowe (po reaudycie C potwierdzić treść)
+- ~~(15.11 15:20) Pytanie po „nie chce mi sie tego testowac…”~~ ROZSTRZYGNIĘTE 17:35 (KO-064): (1, rekomendacja) sesja 07 dzieli 121 kroków na: pokryte e2e / do zaprogramowania / tylko urządzenie, dopisuje scenariusze + automatyczny przegląd zrzutów ekranów; właścicielowi zostaje krótka lista fizyczna; (2) bez zmian — test ręczny wg instrukcji. Czekam na słowa. — nowe (po reaudycie C potwierdzić treść)
 - **ZMIANA (właściciel 10.11 ok. 11:40 UTC, dosłownie: „Po co mam testować stare buildu? Zrobię wszystko na kandydacie”):** testu buildów 1101 i 1111 nie będzie; jeden test na buildzie 3 — lista dla właściciela ma objąć wszystko od jego ostatniego testu na urządzeniu (nie tylko różnicę build 2 → 3).
 - ~~Test na telefonie buildów 1101 i 1111~~ (nieaktualne, patrz wyżej) (build 2 = 1111 VALID 06:10; zgłoszone właścicielowi 06:30).
 - Weto: KO-014, KO-015, KO-016 i P-644 (m2, 86021db). Opcja właściciela: FAQ wsparcia już teraz (druga publikacja apps4brew-www, wymaga zgody) zamiast w 1.0.1.
@@ -522,6 +522,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BX (07): P-834…P-838; BY (04): P-839…P-841. Następny wolny: P-842; KO następny: KO-065.**
 - **Pula BW (08): P-830…P-833. Następny wolny: P-834; KO następny: KO-064.**
 - **Pula BV (07): P-827…P-829. Następny wolny: P-830; KO następny: KO-064.**
 - **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. BQ (08): P-814…P-815; BR (07): P-816…P-818. BS (08): P-819…P-822; BO dodatkowo P-823…P-824. BT (08): P-825…P-826. Następny wolny: P-827; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
@@ -922,3 +923,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 15:03 | M9 | BV RAPORT → odbiór: a117ded0 (autor OK, docs) przyjęte; integracja 104f8764..a117ded0 fast-forward (push przez hak verify); BV zarchiwizowana (7,58 USD, 24%); kontrola 15:40 usunięta (nic nie trwa). Link instrukcji do właściciela | linia 05:00 16.11 |
 | 15.11 15:12 | M9 | Właściciel (test 1171): „po klinieciu dodaj wzor nie ma przycisku wstecz do menu glownego. Sprawdz tez inne ekrany. Gdzie znajde highlighter? Jak to jesyt ppoo poslku.” → odpowiedź: „Zakreślacz” (pl.json:1042), ikona w pasku otwartego wzoru (WzorPrzegladarka.tsx:145; nie dla Word). Polecenie BW (08 fix, powrót z ekranów, pula P-830…P-833, pułap 10) | start BW |
 | 15.11 15:20 | M9 | BW = session_01T66VBwFAdz88zvEmbgSi4Y (sonnet, start bez błędu). Właściciel: „nie chce mi sie tego testowac. Dlaczwgo nie mozesz przetestowac teg sam?” → opcje 1/2 w czacie (rekomendacja 1) | kontrola ok. 16:20 |
+| 15.11 17:40 | M9 | Właściciel (ok. 17:35, dosłownie): „Oczywiscie ale tutaj masz wiele testow \"przekliliwania\". Ja chce testowac jedynie to czego sam fizycznie nie jestes w stanie. Napisales swietna instrukcje testowa z przypadkami uzycia i to powienien byc oddzielny zestaw zautomatyzowanych po kazdym buildzie. Jedyne co musisz zrobic to updatowac plik i upewnic sie ze masz tam wszystkie przypadki uzycia jakie uzytkownik moze chciec zrobic. Do tego moze puscmy jakis audyt sama rola z prompts ktora bada przeplywy uzytkownikow zeby sprawdzic czy nie ma glupot?” → KO-064; polecenia BX (07 build: katalog PU + e2e po każdym buildzie + lista fizyczna; pula P-834…P-838, pułap 15) i BY (04 audit przepływów; pula P-839…P-841, pułap 15) | start BX, BY |
