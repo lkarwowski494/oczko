@@ -314,5 +314,6 @@ async function main([cmd, ...a]) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main(process.argv.slice(2)).then((k) => process.exit(k), (e) => { console.log(`::error::${e.message}`); process.exit(1); });
+  // exitCode zamiast process.exit(): przy wyjściu do potoku (CI, jest) exit() ucina niewypisane linie (178 błędów kontroli 2 gubiło „Kontrola 3”)
+  main(process.argv.slice(2)).then((k) => { process.exitCode = k; }, (e) => { console.log(`::error::${e.message}`); process.exitCode = 1; });
 }
