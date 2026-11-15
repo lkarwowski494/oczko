@@ -12,3 +12,6 @@ Testy czerwone 3a8d32b (`bo-bq-czerwone.txt`), naprawa 6875aa5, verify kod 0 (74
 
 ## KO-063 / P-823 (tap jak w aplikacji) — 2026-11-15
 Testy czerwone 4d48788 (`bo-tap-czerwone.txt`), zmiana 9fa82d6, verify kod 0 (7410 testów). Przebieg dowodowy limit=2 (run 43698042593, cs/da): koszt ≈ 0,077 USD, pełne 27 ≈ 1,0 USD. Następnie: ponowny limit=2 (wyzwala koordynator), dopatrzenie BQ, pełny przebieg; `przyjmij` dopiero po reaudycie BQ. Znaleziony defekt cs: „dotyk” → powinno być „klepnutí” (poprawić ręcznie tylko jeśli ponowny przebieg nadal tak da).
+
+## Zadanie 4 zakończone — 2026-11-15
+Pełny przebieg run 43699678893 (9696e2d) przyjęty w 1532aaa (P-824), przegląd: `bo-przeglad-podpisow.md`, koszt API 1,345 USD (razem ≈ 1,56 USD). verify kod 0 (7410 testów). Otwarte: przegląd człowieka według progu (status [DO PRZEGLĄDU]), akceptacja en/pl przez właściciela, rozbieżności słownika aplikacji (hu/ro/sk/ru/uk/ko/fr/it/nb/zh-Hant) do ról po stronie aplikacji.
