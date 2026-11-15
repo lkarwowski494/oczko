@@ -520,6 +520,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BW (08): P-830…P-833. Następny wolny: P-834; KO następny: KO-064.**
 - **Pula BV (07): P-827…P-829. Następny wolny: P-830; KO następny: KO-064.**
 - **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. BQ (08): P-814…P-815; BR (07): P-816…P-818. BS (08): P-819…P-822; BO dodatkowo P-823…P-824. BT (08): P-825…P-826. Następny wolny: P-827; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
 - **Pula BN (07): P-805…P-807. Następny wolny: P-808.** **Pula BM (09): P-802…P-804. Następny wolny: P-805; KO następny: KO-061.**
@@ -917,3 +918,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 14:32 | M9 | testflight 43720546910 **success** (bramka, build, tag): build 7 = 1.0.0 (1171), tag v1.0.0-b1171 @ 104f8764, wysłany 14:28. Polecenie BV (07 build, instrukcja testu 1171 jako artefakt; pula P-827…P-829, pułap 8) | start BV |
 | 15.11 14:41 | M9 | BV = session_01T66VBxtJ5DZRoY7ZoPibM8 (start bez błędu). Kontrola za 60 min | kontrola 15:41 |
 | 15.11 15:03 | M9 | BV RAPORT → odbiór: a117ded0 (autor OK, docs) przyjęte; integracja 104f8764..a117ded0 fast-forward (push przez hak verify); BV zarchiwizowana (7,58 USD, 24%); kontrola 15:40 usunięta (nic nie trwa). Link instrukcji do właściciela | linia 05:00 16.11 |
+| 15.11 15:12 | M9 | Właściciel (test 1171): „po klinieciu dodaj wzor nie ma przycisku wstecz do menu glownego. Sprawdz tez inne ekrany. Gdzie znajde highlighter? Jak to jesyt ppoo poslku.” → odpowiedź: „Zakreślacz” (pl.json:1042), ikona w pasku otwartego wzoru (WzorPrzegladarka.tsx:145; nie dla Word). Polecenie BW (08 fix, powrót z ekranów, pula P-830…P-833, pułap 10) | start BW |
