@@ -2,9 +2,13 @@
 // Kompilatora Swift na Linuksie nie ma, więc to prosty skan tekstu; dowodem końcowym jest kompilacja celu z minimum 10.0 w „Jakość · iOS”.
 // Użycie API z watchOS 11 musi stać w gałęzi `if #available(watchOS 11, *) { … }` albo w deklaracji z `@available(watchOS 11, *)`.
 
-/** API dostępne dopiero od watchOS 11 (lista z Treningu, `tests/watch-availability.test.ts:11`). Wąska celowo: rozszerzać przy każdym nowym użyciu API z nowszego systemu. */
+/** Znane API dostępne dopiero od watchOS 11.0: wersje z dokumentacji Apple (JSON developer.apple.com/tutorials/data/documentation/<ścieżka>.json, `metadata.platforms`), odczyt 2026-11-15;
+ * ścieżki w tabeli `OD_WATCHOS_11` w `zegarek-minimum-watchos.test.ts`. Baza: lista Treningu (`tests/watch-availability.test.ts:11`) bez `Previewable` (watchOS 10.0), `ControlWidget` i
+ * `RelevanceConfiguration` (watchOS 26.0) + API SwiftUI z recenzji BT (08-programista-001). To lista nazw, nie dane o dostępności: pewność daje kompilacja z minimum 10.0 (`jakosc-ios.yml`).
+ * Rozszerzać po sprawdzeniu wersji w dokumentacji Apple. */
 export const API_WATCHOS_11 = [
-  'handGestureShortcut', 'HandGestureShortcut', 'workoutEffortScore', 'estimatedWorkoutEffortScore', 'Previewable', 'ControlWidget', 'RelevanceConfiguration',
+  'handGestureShortcut', 'HandGestureShortcut', 'workoutEffortScore', 'estimatedWorkoutEffortScore',
+  'onScrollGeometryChange', 'onScrollVisibilityChange', 'ScrollPosition', 'MeshGradient', 'matchedTransitionSource',
 ] as const;
 
 const OSLONA = /(?:#available|@available)\s*\(\s*watchOS\s+(?:1[1-9]|[2-9]\d)\b/;

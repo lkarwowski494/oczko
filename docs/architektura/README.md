@@ -2,7 +2,7 @@
 Stan: zakończona, E0–E4 przyjęte (P-070–P-074). Krótko, z odnośnikami; szczegóły w plikach obok.
 
 ## 1. Cel i zakres
-- Obsługuje przepływy z [`docs/scope-contract.md`](../scope-contract.md) (PR-01–PR-11, PR-13 tylko wpisanie wartości, PR-14–PR-16 bez BR-DNI-007; 49 funkcji MVP) w modelu V4 (P-057) na iOS 18 / iPadOS 18 / watchOS 11, zegarek od 2026-11-15 watchOS 10.0 (P-070, P-819).
+- Obsługuje przepływy z [`docs/scope-contract.md`](../scope-contract.md) (PR-01–PR-11, PR-13 tylko wpisanie wartości, PR-14–PR-16 bez BR-DNI-007; 49 funkcji MVP) w modelu V4 (P-057) na iOS 18 / iPadOS 18 i zegarku z watchOS 10.0 (P-070, P-819; do 2026-11-15 minimum zegarka wynosiło watchOS 11).
 - Wszystko działa bez sieci (NFR-OFF-001); baza na urządzeniu jest źródłem prawdy; koszt stały 0 zł (NFR-KOS-001); brak serwera, konta, analityki i reklam.
 - **Świadomie poza zakresem:** funkcje PÓŹNIEJ (F-13 Siri, F-22, F-29, F-39, F-40, F-42, F-44 słownik, F-62) — bez tabel i zależności; Android (P-011); AI (ZAL-024); widżet ekranu głównego; migracja danych 0.1.0 (P-070 (2c), ADR-0015); raportowanie awarii (rola 12); manifest i formularz App Privacy (rola 10); wygląd i teksty (rola 04).
 
