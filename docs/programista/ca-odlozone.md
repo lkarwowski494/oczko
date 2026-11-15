@@ -13,7 +13,7 @@
 ## Wystąpienia mechanizmu BY-002 poza poprawką (surowa nazwa na ekranie)
 - Kosz („Recently deleted”): usunięta część z nazwą zapasową (data) pokazuje datę jako nazwę pozycji (`src/przypadki-uzycia/widok-kosza.ts`, `src/kompozycja/projekt.ts` `stanKosza`).
 - Formularz „What’s next?” (`co-dalej`): `czesc` i `projekt` z `src/przypadki-uzycia/czesc.ts:91` idą bez etykiety — przy projekcie roboczym pokazują surową datę (dotyczyło też stanu sprzed BY-002; nie regresja).
-- Realność: brzegowy (kosz i koniec ostatniej części projektu roboczego). Poprawka wymaga etykiety w modelu odczytu; do decyzji, czy dołożyć do kolejnej partii.
+- Realność: brzegowy (kosz i koniec ostatniej części projektu roboczego); stwierdzone czytaniem kodu, bez testu. Poprawka wymaga etykiety w modelu odczytu; do decyzji, czy dołożyć do kolejnej partii.
 
 ## „Do sprawdzenia” z audytu BY (pewność ≤ 80%, nikt nie sprawdzał)
 1. Kafel „Dodaj wzór” w projekcie z wzorami: menu dostaje pustą listę, stuknięcie w „Dodaj wzór” zwija menu (`app/wzor.tsx`, `WzorGrupa.tsx:61`).

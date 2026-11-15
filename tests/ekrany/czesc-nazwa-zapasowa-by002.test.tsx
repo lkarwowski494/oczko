@@ -29,7 +29,7 @@ const TERAZ = T0 + 2 * DOBA, STREFA = 'Europe/Warsaw', DATA = /\d{4}-\d{2}-\d{2}
 
 async function stanLicznikaZ(nazwaProjektu: string, nienazwany: boolean, nazwaCzesci: string) {
   const s = await przygotuj();
-  await wykonaj(s.baza, [projekt('p1', nazwaProjektu), ...(nienazwany ? [['UPDATE projekt SET nienazwany = 1 WHERE id = ?', ['p1']] as const] : []), czesc('c1', 'p1', nazwaCzesci, 1), ...licznik('l1', 'c1', 12, { kolejnosc: 0 }), ...licznik('l2', 'c1', 8, { kolejnosc: 1 })]);
+  await wykonaj(s.baza, [projekt('p1', nazwaProjektu), ...(nienazwany ? [['UPDATE projekt SET nienazwany = 1 WHERE id = ?', ['p1']] as [string, unknown[]]] : []), czesc('c1', 'p1', nazwaCzesci, 1), ...licznik('l1', 'c1', 12, { kolejnosc: 0 }), ...licznik('l2', 'c1', 8, { kolejnosc: 1 })]);
   const w = await widokLicznika(s.z, { licznikId: 'l1' });
   if (!w.ok) throw new Error(w.powod);
   return stanEkranu(w.wartosc, { j, dzis: '2026-10-24', terazMs: TERAZ, strefa: STREFA, baner: null, wibracje: true });
