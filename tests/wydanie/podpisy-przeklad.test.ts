@@ -344,3 +344,18 @@ describe('BQ 005: --limit niepoprawny → błąd konfiguracji', () => {
     expect(r).toEqual({ dwa: 2, '0': 2, '-1': 2, '1.5': 2, '2': 0 });
   });
 });
+
+/* ===== KO-063 / P-823: „tap” jak w aplikacji (przebieg dowodowy 43698042593: cs „dotyk” zamiast „klepnutí”, krytyk nie wyłapał); test czerwony najpierw ===== */
+describe('KO-063: słowo „tap” oddane jak w aplikacji (słownik w żądaniu przekładu i krytyka + reguła)', () => {
+  const zadania = (kod: string) => run(`const c = m.wczytajKontekst(); const p = JSON.parse(${J(dane.podpisy.en)}); const t = m.budujZadanie(${JSON.stringify(kod)}, c), k = m.budujKrytyka(${JSON.stringify(kod)}, c, p); console.log(JSON.stringify({ ts: t.system, tu: t.messages[0].content, ks: k.system, ku: k.messages[0].content }))`);
+  test('cs: oba żądania zawierają wiersze słownika aplikacji z „tap” (klepněte…, Klepnutím…), de: tippen…; ja: タップ', () => {
+    const cs = zadania('cs');
+    for (const u of [cs.tu, cs.ku]) { expect(u).toMatch(/tap when row/); expect(u).toMatch(/klepněte po dokončení/); expect(u).toMatch(/Klepnutím na řadu/); }
+    expect(zadania('de').tu).toMatch(/tippen, wenn Reihe/); expect(zadania('ja').tu).toMatch(/タップ/);
+  });
+  test('instrukcje (przekład i krytyk) mają regułę: „tap” tak jak w słowniku aplikacji, bez synonimu', () => {
+    const cs = zadania('cs');
+    expect(cs.ts).toMatch(/„tap”[^.]*słownik/); expect(cs.ts).toMatch(/synonim/);
+    expect(cs.ks).toMatch(/„tap”[^.]*słownik/);
+  });
+});
