@@ -119,6 +119,14 @@ test('plik większy niż WZOR_MAKS_MB → za_duze przed konwersją i zapisem (AD
   expect(await ile(s.baza, 'wzor')).toBe(0);
 });
 
+// PU-257: uszkodzony PDF (sprawdzPdf odrzuca) → powód `uszkodzony`, nic nie zapisane („Nic nie dodano.”).
+test('PU-257: uszkodzony PDF z Plików → uszkodzony, bez wiersza wzoru', async () => {
+  const { s, z } = await srodowisko({ sprawdz: { ok: false, powod: 'uszkodzony' } });
+  const p = plikWe(s.katalog, 'Zepsuty.pdf', PDF, 'application/pdf');
+  expect(await dodajWzor(z, { projektId: 'p1', nazwa: 'Zepsuty', zrodlo: { rodzaj: 'pdf', plik: p } })).toEqual({ ok: false, powod: 'uszkodzony' });
+  expect(await ile(s.baza, 'wzor')).toBe(0);
+});
+
 test('projekt w koszu → niedozwolone_przejscie, bez wzoru; nieistniejący projekt → bledne_dane; pusta nazwa → bledne_dane', async () => {
   const { s, z } = await srodowisko();
   const p = plikWe(s.katalog, 'a.pdf', PDF, 'application/pdf');

@@ -59,6 +59,14 @@ describe('Swatch', () => {
     fireEvent.press(screen.getByRole('radio', { name: 'per 4 in' }));
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '108.3 stitches'); // DEC-34 a (ER-62): wyliczona z 1 miejscem (pełna 108,268)
   });
+  // PU-254: szerokość 0 → „Enter a number above 0.” (komunikat ze znakiem, bez wyniku).
+  test('PU-254: szerokość 0 → „Enter a number above 0.”, bez wyniku', () => {
+    ekran('cm');
+    fireEvent.changeText(screen.getByTestId('probka-oczka'), '22');
+    fireEvent.changeText(screen.getByTestId('probka-szerokosc'), '0');
+    expect(screen.getByText('Enter a number above 0.')).toBeTruthy();
+    expect(screen.queryByTestId('probka-wynik-oczka')).toBeNull();
+  });
   // M1-133 (04-studio-projektowe-523, opcja b — bez nowego elementu): klawiatura dziesiętna nie ma Return, a wynik chował się pod nią.
   // Ekran odsuwa treść nad klawiaturę, przy wpisywaniu szerokości przewija pole na górę (wynik tuż pod nim), a klawiaturę chowa gest w dół.
   test('M1-133: przy wpisywaniu szerokości wynik nad klawiaturą — wcięcie od klawiatury, przewinięcie do pola szerokości, chowanie gestem', () => {

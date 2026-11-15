@@ -71,3 +71,15 @@ test('PU-250: 20 cyfr — komunikat o liczbie całkowitej, wartość bez zmian, 
   expect(screen.getByTestId('wpisz-wartosc-pole')).toBeTruthy();
   expect((await k.widok())?.wartosc).toBe(3);
 });
+// PU-266: zabicie aplikacji w trakcie edycji — wpisana, niezapisana wartość nie trafia do bazy; po ponownym otwarciu licznik ma wartość sprzed edycji, pole jest puste.
+test('PU-266: niezapisana wartość znika z ekranem (kill) — baza bez zmian, po ponownym otwarciu pole puste', async () => {
+  const { k } = await start(2);
+  fireEvent.changeText(screen.getByTestId('wpisz-wartosc-pole'), '99');
+  screen.unmount(); // zabicie aplikacji: stan ekranu ginie, nic nie zapisano
+  expect((await k.widok())?.wartosc).toBe(3);
+  render(<EkranFormularza />);
+  await act(async () => { await new Promise((r) => setTimeout(r, 100)); });
+  expect(screen.getByTestId('wpisz-wartosc-pole').props.value ?? '').not.toBe('99');
+  expect((await k.widok())?.wartosc).toBe(3);
+});
+

@@ -130,3 +130,20 @@ test('206 (przegląd): plik przychodzi w trakcie `przygotuj()` licznika → po s
   expect(mockRouter.push.mock.calls).toEqual([[{ pathname: '/ustawienia', params: { import: plik.sciezka } }]]);
   expect(wersjaPrzyOtwarciu).toEqual([WERSJA_SCHEMATU]);
 });
+
+// PU-267: import wybrany, ale bez „Merge”/„Replace” — wyjście z ekranu (albo zabicie aplikacji) zostawia dane bez zmian i bez `import-wynik`.
+test('PU-267: plik wybrany, bez „Merge with what’s here” / „Replace what’s here” → wyjście: liczności bazy bez zmian, brak import-wynik', async () => {
+  const { baza } = await swiezaInstalacja();
+  const plik = plikZeStaregoTelefonu();
+  render(<EkranLicznika />);
+  await odczekaj();
+  const przed = await licznosci(baza);
+  mockParametry.import = plik.sciezka;
+  const ust = render(<EkranUstawien />);
+  await waitFor(() => expect(screen.getByTestId('import-gotowy')).toBeTruthy());
+  expect(screen.queryByTestId('import-wynik')).toBeNull();
+  ust.unmount(); // „‹” albo zabicie aplikacji: żadna z dwóch decyzji nie została podjęta
+  await odczekaj();
+  expect(await licznosci(baza)).toEqual(przed);
+});
+
