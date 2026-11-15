@@ -6,6 +6,7 @@ import { Alert, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
+import { czescNaLiczniku } from '../src/domena/nazwa-czesci';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
@@ -41,7 +42,7 @@ export default function EkranWzoru(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
-  const powrot = useBezpiecznyPowrot(); // BY-001 (P3): bez drugiego powrotu po zamknięciu trasy
+  const powrot = useBezpiecznyPowrot();
   const navigation = useNavigation();
   const k = useKolory();
   const okno = useWindowDimensions();
@@ -191,7 +192,7 @@ export default function EkranWzoru(): React.ReactElement {
     <Bezpieczny pelnaSzerokosc>
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
-        stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.projekt.nienazwany ? null : lw.czesc.nazwa, /* 007 */
+        stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: czescNaLiczniku(lw.czesc.nazwa), /* 007 */
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie, cel: lw.czesc.cel }, uklad, jezyk: kontener.j.jezyk() }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}

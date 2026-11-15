@@ -1,6 +1,7 @@
 // Trasa „/formularz/[rodzaj]”: formularze menu ••• w arkuszu (prototyp.html:130–138). Po udanym zapisie: ekran blokady, przeładowanie licznika, powrót.
 // Partia 5: arkusze projektu (`nowy-projekt`, `czesc`, `licznik`, `notatka`, `narzedzie` z parametrem `projekt`), `znaczenie` (licznik bieżący)
 // i „What’s next?” (`co-dalej`, parametr `czesc`) — FormularzeProjektu.tsx, design-spec „Arkusze” (04 fix-5).
+import { czescNaLiczniku } from '../../src/domena/nazwa-czesci';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
@@ -14,7 +15,7 @@ import { miesiac } from '../../src/kompozycja/licznik';
 import { oglos } from '../../src/kompozycja/system';
 import { useOdrzucZmiany } from '../../src/kompozycja/odrzuc-zmiany';
 import { CoDalej, FormularzWloczekProjektu, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
-import { podgladRozmiaru } from '../../src/kompozycja/projekt';
+import { etykietaCzesci, podgladRozmiaru } from '../../src/kompozycja/projekt';
 import { dodajPrzypomnienie, nastepnaCzesc, nazwijCzesc, ustawCel, ustawPowtorzenie, ustawZnaczenie, usunPrzypomnienie, zmienPrzypomnienie, type NastepnaCzesc } from '../../src/przypadki-uzycia/czesc';
 import { dodajLicznik } from '../../src/przypadki-uzycia/licznik';
 import { dodajCzescPara, dodajCzescProjektu, nazwijProjekt, ustawDrut, ustawTermin, utworzProjekt, zapiszNotatke } from '../../src/przypadki-uzycia/projekt';
@@ -92,7 +93,7 @@ export default function EkranFormularza(): React.ReactElement {
       case 'czesc':
         return <FormularzCzesci t={t} naZmiane={zmiana} naAnuluj={anuluj} naZapisz={(c) => wProjekcie(() => dodajCzescProjektu(z, { projektId: wp.id, ...c }), otworz ? idLicznika : undefined)} />;
       case 'licznik':
-        return <FormularzLicznika t={t} naZmiane={zmiana} naAnuluj={anuluj} czesci={wp.czesci.map((c) => ({ id: c.id, nazwa: c.nazwa }))}
+        return <FormularzLicznika t={t} naZmiane={zmiana} naAnuluj={anuluj} czesci={wp.czesci.map((c) => ({ id: c.id, nazwa: etykietaCzesci(c.nazwa, t) }))}
           domyslnaCzesc={czescParam ?? (w && w.projektId === wp.id ? w.czescId : wp.czesci[0]?.id ?? '')}
           naZapisz={(l) => wProjekcie(() => dodajLicznik(z, { czescId: l.czescId, rodzaj: l.rodzaj, nazwa: l.nazwa }))} />;
       case 'notatka':
@@ -118,7 +119,7 @@ export default function EkranFormularza(): React.ReactElement {
   }
   switch (rodzaj) {
     case 'nazwa':
-      return <FormularzNazwy t={t} naZmiane={zmiana} naAnuluj={anuluj} stan={{ projekt: w.projekt.nienazwany ? '' : w.projekt.nazwa, czesc: w.projekt.nienazwany ? '' : w.czesc.nazwa }}
+      return <FormularzNazwy t={t} naZmiane={zmiana} naAnuluj={anuluj} stan={{ projekt: w.projekt.nienazwany ? '' : w.projekt.nazwa, czesc: czescNaLiczniku(w.czesc.nazwa) ?? '' }}
         naZapisz={(n) => zapisz(async () => {
           // Pusta nazwa projektu roboczego: zostaje nienazwany, nic nie znika (design-spec „Arkusz nazwy”).
           if (n.projekt) { const r = await nazwijProjekt(z, { projektId: w.projektId, nazwa: n.projekt }); if (!r.ok) return r; }
@@ -142,7 +143,7 @@ export default function EkranFormularza(): React.ReactElement {
           return { ok: true, wartosc: undefined };
         }} />;
     case 'powtorzenie':
-      return <FormularzPowtorzenia t={t} naZmiane={zmiana} naAnuluj={anuluj} stan={{ nazwa: w.nazwa || w.czesc.nazwa, dlugosc: w.powtorzenie?.dlugosc ?? null }}
+      return <FormularzPowtorzenia t={t} naZmiane={zmiana} naAnuluj={anuluj} stan={{ nazwa: w.nazwa || czescNaLiczniku(w.czesc.nazwa) || licznik.nazwaProjektu(w), dlugosc: w.powtorzenie?.dlugosc ?? null }}
         naZapisz={(p) => zapisz(() => ustawPowtorzenie(z, { licznikId: w.licznikId, dlugosc: p.dlugosc }))} />;
     case 'znaczenie':
       return <FormularzZnaczenia t={t} naZmiane={zmiana} naAnuluj={anuluj} wartosc={w.wartosc} znaczenie={w.znaczenie} naZapisz={(zn) => zapisz(() => ustawZnaczenie(z, { licznikId: w.licznikId, znaczenie: zn }))} />;

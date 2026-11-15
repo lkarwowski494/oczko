@@ -2,6 +2,7 @@
 // Bieżący licznik z `ostatnie_miejsce` (F-49); pierwszy +1 świeżej instalacji tworzy projekt roboczy (BR-LIC-001, NFR-PIE-001). Po każdym
 // zapisie: potwierdzenia zegarka, potem ekran blokady i zegarek (ADR-0008 (7), ADR-0009 pkt 3); Live Activity startuje po pierwszym +1 procesu.
 import type { Wynik } from '../domena/bledy';
+import { czescNaLiczniku } from '../domena/nazwa-czesci';
 import { formatujGodzine } from '../i18n/format';
 import type { BanerLicznika, StanEkranuLicznika, WynikPlus } from '../ekrany/Licznik';
 import type { DzialaniaLicznika, StanStartu, UslugiAplikacji } from '../ekrany/Aplikacja';
@@ -52,12 +53,12 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
   return {
     rodzaj: w.rodzaj,
     projekt: w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa,
-    czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
+    czesc: czescNaLiczniku(w.czesc.nazwa), // nazwa zapasowa części (data startu) nie jest pokazywana, także po nazwaniu projektu (BY-002; design-spec „Projekt roboczy”); nazwa wpisana — zawsze
     skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,
     celDnia: oczka || w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: oczka || w.calosc === null ? null : { czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1; projekt roboczy: nazwa części to data, więc jej nie pokazujemy (F-46)
+    calosc: oczka || w.calosc === null ? null : { czesc: czescNaLiczniku(w.czesc.nazwa), rzedy: w.calosc }, // BR-LIC-018/S1; nazwa zapasowa (data) nie jest pokazywana (F-46, BY-002)
     przypomnienie: oczka ? null : w.przypomnienie,
-    powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
+    powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || czescNaLiczniku(w.czesc.nazwa) || (w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa), ...w.powtorzenie },
     notatka: w.projekt.notatka || null,
     sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
     zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
