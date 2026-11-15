@@ -2,14 +2,15 @@
 // Bez wzoru: grupa „Add pattern” (W7a, subflow otworz-wzor-pdf). Widok strony = moduł natywny `oczko-wzor` (WidokWzoru); build bez modułu: pusta strona.
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, ScrollView, View, useWindowDimensions } from 'react-native';
+import { Alert, View, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
-import { ArkuszLinku, ArkuszNazwyWzoru, GrupaWzorow } from '../src/ekrany/WzorGrupa';
+import { ArkuszLinku, ArkuszNazwyWzoru } from '../src/ekrany/WzorGrupa';
+import { EkranZrodelWzoru } from '../src/ekrany/WzorZrodla';
 import { PrzegladarkaWzoru } from '../src/ekrany/WzorPrzegladarka';
 import type { WynikEkranu } from '../src/ekrany/wspolne';
 import type { Wynik } from '../src/domena/bledy';
@@ -17,7 +18,7 @@ import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { akcjeWzoru } from '../src/ekrany/WzorAkcje';
 import { pytajOdrzucZmiany } from '../src/ekrany/pytanie-odrzucenia';
 import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
-import { odstep, useKolory } from '../src/ekrany/motyw';
+import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
@@ -165,11 +166,8 @@ export default function EkranWzoru(): React.ReactElement {
   if (!widok) {
     return (
       <Bezpieczny>
-        {/* 07-p3 (AX5): menu źródeł ma przy AX5 ok. 2117 pt — w ScrollView, żeby ostatnie źródło było osiągalne */}
-        <ScrollView style={{ flex: 1, backgroundColor: k.papier }} contentContainerStyle={{ padding: odstep.l }}>
-          <GrupaWzorow wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} menuOtwarte t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
+        <EkranZrodelWzoru naWstecz={() => router.back()} wzory={[]} oczekujace={[...(importWToku ? [{ id: 'import', nazwa: importWToku, stan: 'import' as const }] : []), ...czekaSiec.filter((x) => x.projektId === lw.projektId).map((x) => ({ id: x.id, nazwa: x.nazwa, stan: 'siec' as const }))]} skaner={kontener.wzor.platforma.skanerDostepny()} menuOtwarte t={t} naOtworz={(w) => void wczytaj(w)} naDodaj={(z) => void dodaj(z)} naUsunOczekujacy={(zid) => void kontener.wzor.k.potwierdzBlad(zid)}
             panelE2e={paneleE2e ? <paneleE2e.PanelWzoru katalogTymczasowy={kontener.z.katalogi.tymczasowy} naDodaj={(w) => void dodaj({ rodzaj: 'gotowe', ...w })} /> : null} />
-        </ScrollView>
       </Bezpieczny>
     );
   }
