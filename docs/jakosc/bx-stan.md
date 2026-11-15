@@ -71,3 +71,4 @@ Koszt 31,04 USD > próg 26 USD (pomiar koordynatora), kontekst 30%. Stan na 8f0c
 - Zadanie 3 (K3-2): 93 tagi `PU-NNN` w 70 scenariuszach (107 PU klasy A, 14 miało tag); `kontrolaKatalogu` wymaga tagu PU (dokładne dopasowanie) w scenariuszu z Pokrycia, testy „BX6 K3-2” (czerwień `bx6-dowod-czerwony.txt`). Odnośniki plik:linia katalogu przeliczone skryptem różnic po wstawieniu tagów (raporty historyczne bez zmian). P-863.
 - Zadanie 4: PU-110, 113, 290, 291, 322 zostają do Maestro (P-864).
 - Do zrobienia po przebiegu iOS (wyzwala koordynator): 39 (potwierdzenie BX-010), nowe tagi `PU-NNN` nie zmieniają zachowania scenariuszy.
+- Zadanie 2 (recenzja BX5, 1 subagent): P1 0, P2 3, P3 17 — `bx-recenzja.md` „BX5 — recenzja”. PU-324 (P2) poprawione testem; otwarte P2: PU-171 (napis Ofert taki sam w pl i en), PU-310 (kafel „czas”); P3: 17 PU, bez zmiany klasy. Katalog bez zmian po recenzji (0 P1).

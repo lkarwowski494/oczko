@@ -248,3 +248,14 @@ Eksperymenty recenzenta (fikstury w katalogu tymczasowym, repo bez zmian). **Kon
 | K4-3 | P3 | kontrola 3 ocenia formę, nie treść uzasadnienia (świadoma decyzja) | bez zmian |
 | BX3 P2-6, 7, 10, 11, 13 | P2 | osiągalność ekranu (import w komentarzu, `import type`, barrel), linia `tests/` w bloku `test(` (częściowo domknięte przez K2-1), brak protokołu dla nieotagowanego buildu, `git show` z innym błędem, `powod` ze spacji | otwarte (nie zmieniają `src/`/`app/`; do kolejki) |
 Dowód: `docs/jakosc/bx4-dowod-czerwony.txt` (czerwone na kodzie c4de9604, potem zielone); `npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts tests/jakosc/przypadki-uzycia.test.ts tests/wydanie/potok-testflight.test.ts` → 80/80.
+
+## BX5 — recenzja (BX6, 2026-11-15; 1 subagent bez uzasadnień autora, zakres `git diff 672a22f9..7d034b0c -- tests docs/jakosc/przypadki-uzycia.md`; testów nie uruchamiał, ocena z czytania testów i `src/`)
+Przejrzane 87 PU „z testem” (PU-317 wskazuje 2 pliki): wszystkie `plik:linia` istnieją i są deklaracją `test(...)` właściwego PU; w zmienionych plikach brak `skip`/`todo`/`only`; testy dotykają prawdziwego `src/`/`app/` na prawdziwej bazie (`node:sqlite`), atrapy tylko na granicy platformy (router, haptyka, widok PDF, sklep/iCloud sztuczne, `expo-image-picker`). **P1: 0** (żaden PU nie wraca do „do zaprogramowania”), **P2: 3**, **P3: 17**.
+
+| ID | P | Znalezisko | Stan |
+|---|---|---|---|
+| PU-324 | P2 | `tests/ekrany/oferty-trasa.test.tsx:42`: „drugie stuknięcie nic nie wysyła” nieobjęte (tylko `disabled`) — potwierdzone przez BX6 czytaniem testu | **poprawione** (drugie stuknięcie + `sklep.kup` wołane 1×; zielone) |
+| PU-171 | P2 | `tests/ekrany/pu-jezyk-pl-171.test.tsx:41`: asercja Ofert `getAllByText('Oczko Pro')` — napis identyczny w `pl.json` i `en.json`, nie wykryje braku polskiego tłumaczenia | otwarte (wziąć napis Ofert różny w pl i en) |
+| PU-310 | P2 | `tests/ekrany/pu-historia-poprzedni-miesiac-310.test.tsx:27`: kafel „czas” z katalogu niesprawdzony (dane bez sesji; kafel warunkowy, `src/kompozycja/historia.ts:33`) | otwarte (dodać sesję w danych albo zawęzić opis PU) |
+| P3 | P3 | jedno ogniwo przez przypadek użycia/testID/atrapę routera zamiast przez ekran: PU-003 (`migruj` zamiast wejścia startowego), 007, 093 (mock `miniaturyWzorow`), 164, 183, 189, 271, 273, 279, 280, 286, 302, 304, 308, 309, 313, 320 — szczegóły w raporcie subagenta | otwarte (bez zmiany klasy) |
+Poza pytaniem: `tests/ekrany/przewodnik-stos.test.tsx` (PU-110, 113) — katalog ma „do zaprogramowania” (P-864). Raport z odnośnikami: tylko w sesji BX6 (plik roboczy w scratchpad, niepublikowany).

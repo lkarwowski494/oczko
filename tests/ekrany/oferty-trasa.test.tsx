@@ -40,12 +40,15 @@ beforeEach(() => { jest.clearAllMocks(); });
 
 // PU-324: linia „Waiting for approval…”, nieaktywny przycisk
 test('KP-07: zakup oczekujący (Ask to Buy) → linia „Waiting for approval…” i nieaktywny przycisk „Waiting for approval”', async () => {
-  await aplikacja({ kup: 'oczekujacy' });
+  const { sklep } = await aplikacja({ kup: 'oczekujacy' });
   render(<EkranOfert />);
   await kup();
   expect(await screen.findByText('Waiting for approval. Oczko Pro turns on as soon as it’s approved.')).toBeTruthy();
   expect(linie()).toEqual(['oferty-czeka']);
   expect(screen.getByRole('button', { name: 'Waiting for approval' }).props.accessibilityState).toMatchObject({ disabled: true });
+  // BX6 (recenzja BX5 P2, PU-324): drugie stuknięcie niczego nie wysyła do sklepu
+  await userEvent.press(screen.getByTestId('oferty-kup'));
+  expect(sklep.kup).toHaveBeenCalledTimes(1);
 });
 // PU-325: błąd zakupu → komunikat ze znakiem błędu
 test('KP-07: błąd zakupu → „The purchase didn’t go through…”', async () => {
