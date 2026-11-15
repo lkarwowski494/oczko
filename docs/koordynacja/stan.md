@@ -518,6 +518,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BV (07): P-827…P-829. Następny wolny: P-830; KO następny: KO-064.**
 - **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. BQ (08): P-814…P-815; BR (07): P-816…P-818. BS (08): P-819…P-822; BO dodatkowo P-823…P-824. BT (08): P-825…P-826. Następny wolny: P-827; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
 - **Pula BN (07): P-805…P-807. Następny wolny: P-808.** **Pula BM (09): P-802…P-804. Następny wolny: P-805; KO następny: KO-061.**
 - **Pule 13.11 08:40: BJ P-796…P-797, BK P-798…P-799, BL P-800…P-801. Następny wolny: P-802; KO następny: KO-058.**
@@ -911,3 +912,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 13:46 | M9 | Właściciel „Tak” (zgoda build 7, wpis w mandacie) → REST dispatch testflight.yml run 43720546910 (ref integracja, 104f8764, bez_wysylki=false); bramka success; build czeka na Approve `release`. Uwaga WG: push stanu z worktree w scratchpadzie pada na haku pre-push (brak node_modules) — push z /home/user/oczko refspec `<sha>:refs/heads/koordynacja` (3 min verify) | Approve właściciela; kontrola 14:30 |
 | 15.11 13:56 | M9 | Linia 14:00 wysłana. testflight 43720546910 nadal czeka na Approve `release`. Przegląd przepływu doby: największa strata — pełny e2e 104f8764 123 min (11:24–13:27; WG-01, pomiar dopisany), dalej oczekiwanie na Approve; push stanu przez hak verify ~3 min (WG-14) | Approve; kontrola 14:30 |
 | 15.11 13:58 | M9 | Właściciel „Gotowe” — Approve `release`; testflight 43720546910 zadanie build in_progress na maszynie (build 6 trwał ok. 32 min) | kontrola 14:30 |
+| 15.11 14:32 | M9 | testflight 43720546910 **success** (bramka, build, tag): build 7 = 1.0.0 (1171), tag v1.0.0-b1171 @ 104f8764, wysłany 14:28. Polecenie BV (07 build, instrukcja testu 1171 jako artefakt; pula P-827…P-829, pułap 8) | start BV |
