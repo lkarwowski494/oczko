@@ -80,3 +80,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BJ | 07 audit (opus) | 8 | 7,05 | 30,3 | 08:30 → 08:35 → 08:48 b482bd03 → 08:56 ci.yml → 09:33 | 37 min odbiór (CI 6 min + kontrola o 09:30) | werdykt 1161 GOTOWY Z UWAGAMI |
 | BK | 10 build (sonnet) | 4 | 1,82 | 25,4 | 08:30 → 08:37 → 08:48 80bbc396 → 08:55 ci.yml → 09:33 | 38 min odbiór (j.w.) | lista 1.0 pod build 6 |
 | BL | 10 fix (sonnet) | 3 | 0,94 | 16,3 | 08:30 → 08:40 → 08:51 e9966c88 → 08:56 ci.yml → 09:33 | 37 min odbiór (j.w.) | null w createAttrs |
+| BR (07 audit, opus) | diagnoza zegarka + ocena watchOS 10 + kandydaci build 7 | 6 | 6,08 | 31 | 08:50 → 08:53 → 08:58 → (docs) → 09:10 | — | przyjęte bez CI (tylko docs) |
