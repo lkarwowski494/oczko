@@ -3,7 +3,8 @@
 // Test: ekran Ustawień z prawdziwą bazą; „powrót” = ponowne wywołanie zapamiętanych funkcji ostrości (jak react-navigation po `router.back()`).
 import React from 'react';
 import { act, render, screen } from '@testing-library/react-native';
-import { przygotuj } from '../dane/pomocnicze/srodowisko';
+import { preferencje } from '../../src/kompozycja/preferencje';
+import { przygotuj, zArchiwum } from '../dane/pomocnicze/srodowisko';
 import { tEn } from './pomoc';
 
 const ostrosc: Array<() => void | (() => void)> = [];
@@ -28,17 +29,18 @@ const EkranUstawien = (require('../../app/ustawienia') as { default: React.Compo
 test('BX-008 / PU-234: powrót z /miary po wyborze „Imperial” → wiersz „Units” pokazuje „Imperial” (wcześniej zostawało „Automatic”)', async () => {
   const t = await tEn();
   const s = await przygotuj();
-  let stan = { wibracje: true, ekranNieGasnie: false, ukladMiar: 'auto' as 'auto' | 'metric' | 'imperial' };
+  const p = preferencje(); // prawdziwy magazyn: migawka zmienia się po COMMIT zapisu w bazie (ADR-0029), jak po wyborze w /miary
+  const z = zArchiwum(s.z);
   const kontener = {
-    z: { ...s.z }, j: { t, preferencja: () => 'auto', jezyk: () => 'en' }, icloud: null, katalogDanych: s.katalog,
+    z, j: { t, preferencja: () => 'auto', jezyk: () => 'en' }, icloud: null, katalogDanych: s.katalog,
     dostep: { stan: () => ({ aktywne: null, pro: false }), naZmiane: () => () => undefined },
   };
-  mockAplikacja = { kontener, licznik: { zresetuj: jest.fn(), poZmianie: jest.fn(async () => undefined) }, preferencje: { stan: () => stan, zapisz: jest.fn() } };
+  mockAplikacja = { kontener, licznik: { zresetuj: jest.fn(), poZmianie: jest.fn(async () => undefined) }, preferencje: { stan: p.stan, wczytaj: () => p.wczytaj(z), zapisz: (_z: unknown, zmiana: Parameters<typeof p.zapisz>[1]) => p.zapisz(z, zmiana) } };
   render(<EkranUstawien />);
   expect(await screen.findByTestId('ustawienia-miary')).toBeTruthy();
   expect(screen.getByText('Automatic')).toBeTruthy();
 
-  stan = { ...stan, ukladMiar: 'imperial' }; // trasa /miary zapisała wybór (migawka zmienia się po COMMIT) i zrobiła `router.back()`
+  expect((await p.zapisz(z, { ukladMiar: 'imperial' })).ok).toBe(true); // trasa /miary zapisała wybór i zrobiła `router.back()`
   await act(async () => { for (const f of ostrosc) f(); }); // ekran Ustawień znów w ostrości
 
   expect(screen.getByText('Imperial')).toBeTruthy();

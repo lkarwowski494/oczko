@@ -4,6 +4,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { widokWzoru } from '../../src/przypadki-uzycia/wzor-widok';
 import { czesc, licznik, plik, projekt, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
@@ -47,5 +48,7 @@ test('BX-002 / PU-067: wzór ze znacznikiem, „Add note” → „k2tog here”
   fireEvent.press(screen.getByRole('button', { name: 'Save' }));
   await waitFor(() => expect(mockWidok.notatki).toHaveLength(1));
   expect(mockWidok.notatki?.[0]?.etykieta).toBe('Row 46: k2tog here');
+  const wDanych = await widokWzoru(s.z, { wzorId: 'w1' }); // ten sam chip niesie widok danych, który trasa wczytuje po zapisie
+  expect(wDanych.ok && wDanych.wartosc.notatki.map((c) => c.notatki.map((n) => n.tekst))).toEqual([['k2tog here']]);
   expect((await s.baza.all('SELECT tekst FROM notatka_rzedu')).map((r) => (r as { tekst: string }).tekst)).toEqual(['k2tog here']);
 });

@@ -6,7 +6,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { render, screen, waitFor } from '@testing-library/react-native';
 import type { ReactTestInstance } from 'react-test-renderer';
-import tokeny from '../../docs/design/tokeny.json';
+import { systemCzarny } from '../../src/ekrany/motyw';
 import { tEn } from './pomoc';
 
 const WCIECIA = { top: 59, bottom: 34, left: 0, right: 0 }; // iPhone z Dynamic Island
@@ -56,7 +56,7 @@ test('BX-009 / PU-228: podgląd zdjęcia — „Close” i „Share” leżą po
   const zamknij = await screen.findByTestId('zdjecie-zamknij');
   expect(wcieciaNad(zamknij, 'paddingTop')).toBeGreaterThanOrEqual(WCIECIA.top);
   expect(wcieciaNad(screen.getByTestId('zdjecie-udostepnij'), 'paddingBottom')).toBeGreaterThanOrEqual(WCIECIA.bottom);
-  expect(screen.getByTestId('zdjecie-bezpieczny')).toHaveStyle({ backgroundColor: tokeny.kolory.systemCzarny.tlo });
+  expect(screen.getByTestId('zdjecie-bezpieczny')).toHaveStyle({ backgroundColor: systemCzarny.tlo });
 });
 
 test('BX-009: błąd odczytu zdjęć — „Close” także pod paskiem stanu', async () => {
