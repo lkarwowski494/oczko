@@ -104,3 +104,15 @@ Executed 6 tests, with 2 failures — testMiniaturaPierwszejStrony, testW1PustaS
 # run 43245531497 (2ed5215a, 12.11, próba 2), job 131570392883, ten sam krok: failure; Executed 6 tests, with 6 failures; 6 × testW1WordNaPdf („obraz: brak PDF” w :35)
 # w tym samym runie 43699331260: build, swift-test, zegarek-ikona, e2e iPad — success; e2e iPhone 1–3 w toku (odczyt ok. 10:12 UTC)
 # git diff --stat 761b9551..b7fc49de -- modules/oczko-wzor .github → pusto (BS nie dotyka modułu ani workflowów)
+
+## 14. Reaudyt 2026-11-15 ok. 11:00 UTC — commity BS c78858be, 1d236402, 7fabb180 (b7fc49de..7fabb180)
+# worktree 7fabb180: npx jest --ci tests/wydanie/zegarek-minimum-watchos.test.ts
+Tests:       39 passed, 39 total
+# kod wyjścia: 0
+# test z c78858be na skanerze z b7fc49de (czerwień przed poprawką):
+Tests:       9 failed, 30 passed, 39 total
+# kod wyjścia: 1; padają: 5 nowych API (wykrywanie), „lista = dokładnie 9 nazw”, 3 × „nie jest API od watchOS 11” (Previewable, ControlWidget, RelevanceConfiguration)
+# sonda z §5 na skanerze z 7fabb180 (kopia w scratchpadzie):
+Aplikacja.swift [{"line":17,"api":"handGestureShortcut"},{"line":18,"api":"onScrollGeometryChange"},{"line":19,"api":"MeshGradient"}]
+zgłoszeń: 3 (wcześniej 1); na oryginale targets/watch: zgłoszeń: 0
+# git diff --stat b7fc49de..7fabb180: ADR-0006, architektura/README.md, decyzje.md, watchos-dostepnosc.ts, zegarek-minimum-watchos.test.ts, 2 pliki dowodów BS; .github bez zmian
