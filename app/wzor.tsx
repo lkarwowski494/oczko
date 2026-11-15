@@ -2,10 +2,11 @@
 // Bez wzoru: grupa „Add pattern” (W7a, subflow otworz-wzor-pdf). Widok strony = moduł natywny `oczko-wzor` (WidokWzoru); build bez modułu: pusta strona.
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, View, useWindowDimensions } from 'react-native';
+import { Alert, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
+import { czescNaLiczniku } from '../src/domena/nazwa-czesci';
 import { ukladOkna } from '../src/domena/uklad';
 import { domyslnyRzadBazowy, gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, rzadPoPrzeniesieniu } from '../src/domena/znacznik-wzoru';
 import { narzedzieDlaKlasy, politykaPlotna, poDotyku, type Narzedzie } from '../src/domena/rysik';
@@ -21,6 +22,7 @@ import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { useBezpiecznyPowrot } from '../src/kompozycja/bezpieczny-powrot';
 import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { useWskazowkaZnacznika } from '../src/kompozycja/wskazowka-znacznika';
@@ -40,6 +42,7 @@ export default function EkranWzoru(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
+  const powrot = useBezpiecznyPowrot();
   const navigation = useNavigation();
   const k = useKolory();
   const okno = useWindowDimensions();
@@ -145,7 +148,7 @@ export default function EkranWzoru(): React.ReactElement {
 
   async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
     if (!lw) return;
-    await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: () => router.back(), ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
+    await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: powrot, ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
   }
   const bladLicznika = (r: WynikEkranu<unknown>) => bladPaskaLicznika(aplikacja, r, oglos); // M1-004 (po-zapisie.ts)
 
@@ -189,7 +192,7 @@ export default function EkranWzoru(): React.ReactElement {
     <Bezpieczny pelnaSzerokosc>
       {niezapisane !== null ? <Stack.Screen options={{ gestureEnabled: !niezapisane }} /> : null}
       <PrzegladarkaWzoru
-        stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: lw.projekt.nienazwany ? null : lw.czesc.nazwa, /* 007 */
+        stan={{ nazwa: widok.nazwa, opis: t('wzor.wiersz_opis', { rodzaj: t(RODZAJ[widok.zrodlo] ?? 'wzor.rodzaj_pdf'), strony: t('wzor.strony', { count: strony }) }), czesc: czescNaLiczniku(lw.czesc.nazwa), /* 007 */
           wzory, oczekujace, wzorId: widok.wzorId, strona, zakreslenia, narzedzie, word: plikPdf === null, wskazowka, kierunek: zn?.kierunek ?? null, licznik: { liczba, dziergany: lw.wartosc + 1, znaczenie: lw.znaczenie, cel: lw.czesc.cel }, uklad, jezyk: kontener.j.jezyk() }}
         t={t} widok={natywny}
         terminKosza={krotkaData(dodajDni(zw.zegar.teraz().dzien, KOSZ_DNI), kontener.j.jezyk())}

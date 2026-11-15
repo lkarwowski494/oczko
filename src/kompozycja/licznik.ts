@@ -2,6 +2,7 @@
 // Bieżący licznik z `ostatnie_miejsce` (F-49); pierwszy +1 świeżej instalacji tworzy projekt roboczy (BR-LIC-001, NFR-PIE-001). Po każdym
 // zapisie: potwierdzenia zegarka, potem ekran blokady i zegarek (ADR-0008 (7), ADR-0009 pkt 3); Live Activity startuje po pierwszym +1 procesu.
 import type { Wynik } from '../domena/bledy';
+import { czescNaLiczniku } from '../domena/nazwa-czesci';
 import { formatujGodzine } from '../i18n/format';
 import type { BanerLicznika, StanEkranuLicznika, WynikPlus } from '../ekrany/Licznik';
 import type { DzialaniaLicznika, StanStartu, UslugiAplikacji } from '../ekrany/Aplikacja';
@@ -19,57 +20,15 @@ import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
 
 export type ZaleznosciKompozycji = ZaleznosciStartu & ZaleznosciDziennika & ZaleznosciEkranuBlokady;
-export type Jezyk = { t: Tlumacz; jezyk(): string; zegar24h(): boolean };
-
-export const miesiac = (dzien: string, j: string, dzienMiesiaca = false) =>
-  new Intl.DateTimeFormat(j, { month: 'long', ...(dzienMiesiaca ? { day: 'numeric' } : {}), timeZone: 'UTC' })
-    .format(new Date(Date.UTC(Number(dzien.slice(0, 4)), Number(dzien.slice(5, 7)) - 1, Number(dzien.slice(8, 10)) || 1)));
-
-/** Etykieta projektu roboczego (design-spec „Projekt roboczy”, P-126 (1b)): data i godzina startu w formacie regionu, rok tylko gdy inny niż bieżący. */
-export function etykietaRobocza(utworzonoMs: number, terazMs: number, j: Jezyk, strefa: string): string {
-  const rok = (ms: number) => new Intl.DateTimeFormat('en-CA', { year: 'numeric', timeZone: strefa }).format(new Date(ms));
-  const data = new Intl.DateTimeFormat(j.jezyk(), {
-    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: !j.zegar24h(), timeZone: strefa,
-    ...(rok(utworzonoMs) !== rok(terazMs) ? { year: 'numeric' } : {}),
-  }).format(new Date(utworzonoMs));
-  return j.t('projekty.nazwa_robocza', { data });
-}
-
-/** Źródło serii w banerze: ekran blokady i zegarek mają własne zdania (S5); pozostałe źródła (aplikacja, synchronizacja, import) — zdanie z czasem trwania. */
-const zrodloBanera = (z: string): 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne' => (z === 'ekran_blokady' || z === 'zegarek' ? z : z === 'aplikacja' ? 'aplikacja' : 'inne');
-
-/** Stan ekranu z modelu odczytu; `null` = przed pierwszym +1 (licznik bez projektu z 0, NFR-PIE-001). */
-export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string; terazMs: number; strefa: string; baner: BanerLicznika; wibracje: boolean }): StanEkranuLicznika {
-  const { j } = o;
-  const mies = { nazwa: miesiac(o.dzis, j.jezyk()), wznowienie: miesiac(w ? w.wznowienie : o.dzis, j.jezyk(), true), rzedyDanych: w ? w.wartosc : 0 };
-  if (!w) {
-    return {
-      rodzaj: 'rzedy', projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
-      notatka: null, sesja: null, zablokowany: false, limit: { rodzaj: 'brak' }, miesiac: mies, baner: null, blizniak: null, wibracje: o.wibracje,
-    };
-  }
-  const oczka = w.rodzaj === 'oczka'; // licznik oczek nie ma celu (cel części jest w rzędach), celu dnia, przypomnień, powtórzeń, banera strażnika ani rzędu w robocie
-  return {
-    rodzaj: w.rodzaj,
-    projekt: w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa,
-    czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, // nazwa części roboczej to data startu: nie pokazywana (design-spec „Projekt roboczy”)
-    skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,
-    celDnia: oczka || w.celDnia === null ? null : { rzedy: w.celDnia },
-    calosc: oczka || w.calosc === null ? null : { czesc: w.projekt.nienazwany ? null : w.czesc.nazwa, rzedy: w.calosc }, // BR-LIC-018/S1; projekt roboczy: nazwa części to data, więc jej nie pokazujemy (F-46)
-    przypomnienie: oczka ? null : w.przypomnienie,
-    powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || w.czesc.nazwa, ...w.powtorzenie },
-    notatka: w.projekt.notatka || null,
-    sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
-    zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
-    baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy, zrodlo: zrodloBanera(w.seria.zrodlo), godzina: formatujGodzine(new Date(w.seria.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) } : null),
-    blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
-  };
-}
+import { etykietaRobocza, stanEkranu, type Jezyk } from './licznik-stan';
+export { miesiac, etykietaRobocza, stanEkranu, type Jezyk } from './licznik-stan';
 
 export type KompozycjaLicznika = {
   /** Start zawsze na „Dziś” (ZM-18, P-569); `miejsce`: cel „Kontynuuj ›”. */
   przygotuj(): Promise<Wynik<{ cel: 'dzis'; miejsce: MiejscePracy }>>;
   miejsce(): Promise<Wynik<MiejscePracy>>;
+  /** Kafel „Dodaj wzór” bez żadnego projektu zakłada projekt roboczy jak pierwsze „+1” (BY-003, KO-067); `true` = założono, `false` = są projekty albo bieżący licznik. */
+  zalozRoboczyGdyPusto(): Promise<Wynik<boolean>>;
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
   otworz(licznikId: string): Promise<void>;
@@ -112,6 +71,7 @@ export type OpcjeKompozycji = { wibracje(): boolean; dostep?: DostepLicznika; ap
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
   let licznikId: string | null = null;
+  let zakladanie: Promise<Wynik<boolean>> | null = null; // trwające zakładanie projektu roboczego z kafla „Dodaj wzór”
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
   let aktywnosc = false;
@@ -171,16 +131,26 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   const dostep = dostepLicznika(o.dostep, z.pro, () => k.poZmianie()); // M1-063, M1-064
   const ekranu = <T>(w: Wynik<T>): WynikEkranu<T> => (w.ok ? w : { ok: false, powod: w.powod === 'limit' || w.powod === 'zablokowany' || w.powod === 'bledne_dane' || w.powod === 'niedozwolone_przejscie' ? w.powod : 'zapis' });
 
+  /** Projekt roboczy z jedną częścią i licznikiem, ustawiony jako bieżący (BR-LIC-001/S2); wspólny dla pierwszego „+1” i kafla „Dodaj wzór” (BY-003). */
+  async function zalozRoboczy(): Promise<Wynik<{ projektId: string; czescId: string; licznikId: string }>> {
+    const n = await utworzSzybkiLicznik(z);
+    if (!n.ok) return n;
+    const id = n.wartosc.licznikId;
+    licznikId = id;
+    await zapamietajLicznik(z, { licznikId: id });
+    return n;
+  }
+
   /** +1 z ekranu (BR-LIC-001/S2: pierwsze tworzy projekt roboczy); przez `uslugi.dodajRzad`, które zapamiętuje zapis w toku (P-287). */
   async function plusZEkranu(): Promise<WynikPlus> {
-    if (!licznikId) { // pierwsze +1 bez projektu: projekt roboczy, potem zwykłe +1 (BR-LIC-001/S2)
-      const n = await utworzSzybkiLicznik(z);
+    let id = licznikId;
+    if (!id) { // pierwsze +1 bez projektu: projekt roboczy, potem zwykłe +1 (BR-LIC-001/S2)
+      const n = await zalozRoboczy();
       if (!n.ok) return ekranu(n);
-      licznikId = n.wartosc.licznikId;
-      await zapamietajLicznik(z, { licznikId });
+      id = n.wartosc.licznikId;
     }
     const przed = zrobioneDzis; // stan sprzed tego +1 (ekran czyta go przy starcie i po każdym +1)
-    const r = await dodajRzad(z, { licznikId });
+    const r = await dodajRzad(z, { licznikId: id });
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
     const { w } = await stan();
@@ -207,6 +177,14 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       return m.ok ? { ok: true, wartosc: { cel: 'dzis', miejsce: m.wartosc } } : m;
     },
     miejsce: () => miejscePracy(z, licznikId),
+    zalozRoboczyGdyPusto() { // BY-003 (KO-067): świeża instalacja → projekt roboczy; inaczej nic. Jedna wspólna obietnica: dwa stuknięcia naraz nie zakładają dwóch projektów
+      return (zakladanie ??= (async (): Promise<Wynik<boolean>> => {
+        if (licznikId) return { ok: true, wartosc: false };
+        try { if ((await z.baza.all('SELECT 1 AS jest FROM projekt WHERE usunieto_ms IS NULL LIMIT 1', [])).length > 0) return { ok: true, wartosc: false }; } catch { return { ok: false, powod: 'zapis' }; }
+        const n = await zalozRoboczy();
+        return n.ok ? { ok: true, wartosc: true } : n;
+      })().finally(() => { zakladanie = null; }));
+    },
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
     poDostepie: dostep.poDostepie,

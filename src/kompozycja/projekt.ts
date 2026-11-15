@@ -6,6 +6,7 @@ import type { PropsProjektu } from '../ekrany/Projekt';
 import type { Tlumacz } from '../ekrany/wspolne';
 import { KOSZ_DNI, MM_NARZEDZIA_MIEJSCA } from '../konfiguracja';
 import type { ElementKosza } from '../przypadki-uzycia/widok-kosza';
+import { jestNazwaZapasowaCzesci } from '../domena/nazwa-czesci';
 import { rozmiarUS } from '../domena/obliczenia/druty';
 import { dzienLokalny } from '../domena/postep';
 import { formatujLiczbe } from '../i18n/format';
@@ -68,8 +69,11 @@ function nazwaNarzedzia(n: ElementKosza['narzedzie'] | null, j: Jezyk): string {
  * rodzaju, „Whole piece” = `calosc` z modelu (`licznikCalosci`: ≥ 2 liczniki rzędów części, P-199 Q1a).
  * Licznik oczek: opis = sama liczba (klucz „{n} stitches” przyjdzie z partii licznika oczek, design-spec).
  */
+/** BY-002: nazwa zapasowa części (data startu) → „Part 1” z istniejącego klucza `formularz.nazwa_czesc_n` (zapasową dostaje tylko pierwsza część projektu roboczego); inna bez zmian. */
+export const etykietaCzesci = (nazwa: string, t: Tlumacz): string => (jestNazwaZapasowaCzesci(nazwa) ? t('formularz.nazwa_czesc_n', { n: 1 }) : nazwa);
 export function stanProjektu(w: WidokProjektu, o: { j: Jezyk; terazMs: number; strefa: string }): PropsProjektu['stan'] {
   const { j } = o, t = j.t, jezyk = j.jezyk();
+  const nazwaCzesci = (nazwa: string): string => etykietaCzesci(nazwa, t);
   const termin = w.terminDzien ? krotkaData(w.terminDzien, jezyk) : null;
   const linia = (): string | null => {
     if (!termin) return null;
@@ -96,7 +100,7 @@ export function stanProjektu(w: WidokProjektu, o: { j: Jezyk; terazMs: number; s
     },
     czesci: w.czesci.map((c) => {
       return {
-        id: c.id, nazwa: c.nazwa, rzedy: c.rzedy, cel: c.cel, paraZ: c.paraZ, paraNazwa: c.paraZ ? w.czesci.find((x) => x.id === c.paraZ)?.nazwa ?? null : null,
+        id: c.id, nazwa: nazwaCzesci(c.nazwa), rzedy: c.rzedy, cel: c.cel, paraZ: c.paraZ, paraNazwa: c.paraZ ? (() => { const n = w.czesci.find((x) => x.id === c.paraZ)?.nazwa; return n === undefined ? null : nazwaCzesci(n); })() : null,
         calosc: c.calosc,
         liczniki: c.liczniki.map((l) => ({
           id: l.id, nazwa: nazwaLicznika(l.nazwa, l.rodzaj, t),

@@ -161,11 +161,12 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blad-zapisu-trasy.test.tsx` | zielony (główny zestaw) | 9 | P-368, P-377 | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/bledy-js.test.ts` | zielony (główny zestaw) | 3 | P-194 | `src/kompozycja/bledy-js` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/blokada-trasa.test.tsx` | zielony (główny zestaw) | 1 | BR-LIC-004/S3 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/czesc-nazwa-zapasowa-by002.test.tsx` | zielony (główny zestaw) | 7 | — | `src/ekrany/Licznik`<br>`src/ekrany/Projekt`<br>`src/kompozycja/licznik`<br>`src/kompozycja/projekt`<br>`src/kompozycja/projekty`<br>`src/przypadki-uzycia/widok-licznika`<br>`src/przypadki-uzycia/widok-projektu` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dni-darmowe-liczba-mnoga.test.tsx` | zielony (główny zestaw) | 5 | P-307, P-412, P-474, P-486 | `src/ekrany/ListaProjektow`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/drut-rozmiar-3125-trasa.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/Zapas`<br>`src/kompozycja/preferencje`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-projektu`<br>`src/przypadki-uzycia/zaleznosci`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina-geometria.test.ts` | zielony (główny zestaw) | 8 | P-619 | `src/ekrany/dzianina-geometria` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina.test.tsx` | zielony (główny zestaw) | 4 | — | `src/ekrany/Dzianina` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kafel-dodaj-wzor.test.tsx` | zielony (główny zestaw) | 3 | P-588 | `src/ekrany/Dzis` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kafel-dodaj-wzor.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-001/S2, P-588, P-842 | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-plus-etykieta.test.tsx` | zielony (główny zestaw) | 4 | P-606 | `src/ekrany/Dzis`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-rownowaznosc-plus.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-001/S2, BR-ZAK-006, KP-10, RD-17 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | ER-68, Z07-22 |
@@ -355,6 +356,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wybor-testid.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-006/S1, BR-LIC-012/S1, BR-PRJ-004/S1, P-087, P-404 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-akcje-167.test.ts` | zielony (główny zestaw) | 6 | — | `src/ekrany/WzorAkcje`<br>`src/kompozycja/wzor-import-trasy` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodaj-wyjscie-by001.test.tsx` | zielony (główny zestaw) | 4 | — | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 4 | P-353 | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-gest-wstecz.test.tsx` | zielony (główny zestaw) | 4 | — | `src/kompozycja/preferencje` | — |
@@ -415,6 +417,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/icloud/wektory-swift.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie`<br>`src/domena/porty` | Z07-22 |
 | 9 ? | `tests/domena/licencje-dane.test.ts` | zielony (główny zestaw) | 3 | P-661 | `src/domena/licencje.generated` | — |
 | 9 ? | `tests/domena/licencje-natywne-expo.test.ts` | zielony (główny zestaw) | 2 | — | `src/domena/licencje.generated` | — |
+| 9 ? | `tests/domena/nazwa-czesci.test.ts` | zielony (główny zestaw) | 2 | RD-16 | `src/domena/nazwa-czesci` | — |
 | 9 ? | `tests/domena/posiedzenie/posiedzenie.test.ts` | zielony (główny zestaw) | 10 | P-126 | `src/domena/posiedzenie`<br>`src/konfiguracja` | — |
 | 9 ? | `tests/domena/prosba-o-ocene.test.ts` | zielony (główny zestaw) | 2 | P-150, P-156 | `src/domena/ocena`<br>`src/domena/zaslepka` | — |
 | 9 ? | `tests/domena/przewodnik-tresc.test.ts` | zielony (główny zestaw) | 11 | BR-ZAK-006, P-685, P-687, P-689, P-690 | `src/domena/przewodnik`<br>`src/konfiguracja` | ER-70 |
@@ -428,4 +431,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 424; zależnych od poprawek: 269.
+Razem plików testów: 427; zależnych od poprawek: 270.

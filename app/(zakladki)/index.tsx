@@ -69,7 +69,10 @@ export default function EkranDzis(): React.ReactElement {
   // P-588: „Dodaj wzór” → menu źródeł bieżącego projektu (trasa „/wzor” z `zrodla`, licznik pod spodem, „wstecz” wraca na licznik); bez bieżącego projektu → Projekty.
   async function naDodajWzor(): Promise<void> {
     const m = await miejsceAlboBlad();
-    if (!licznik.biezacy() || (m.ok && m.wartosc === 'lista')) { router.navigate('/projekty'); return; }
+    // BY-003 (KO-067, P-842): świeża instalacja — projekt roboczy jak po pierwszym „+1”, zamiast pustej listy „Projekty” (P-588 c); są projekty, ale żaden bieżący → Projekty.
+    const zalozony = await licznik.zalozRoboczyGdyPusto().catch(() => ({ ok: false as const }));
+    if (!zalozony.ok) { router.navigate('/projekty'); return; }
+    if (!licznik.biezacy() || (!zalozony.wartosc && m.ok && m.wartosc === 'lista')) { router.navigate('/projekty'); return; }
     router.push('/licznik');
     router.push({ pathname: '/wzor', params: { zrodla: '1' } });
   }

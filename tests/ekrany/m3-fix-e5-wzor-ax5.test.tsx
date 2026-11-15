@@ -42,7 +42,7 @@ test('007: trasa wzoru w projekcie roboczym → nav-wstecz „Back to counter”
   const { s, k, j } = await kompozycjaTestowa();
   const PDF = Buffer.from('%PDF-1.4\n1 0 obj << /Type /Catalog >> endobj\ntrailer << /Root 1 0 R >>\n%%EOF\n');
   const h = wlozPlik(s.magazyn, PDF, 'pdf');
-  await wykonaj(s.baza, [projekt('p1', 'Counter from Nov 10'), ['UPDATE projekt SET nienazwany = 1 WHERE id = ?', ['p1']], czesc('c1', 'p1', 'Counter from Nov 10'), ...licznik('l1', 'c1', 5), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h)]);
+  await wykonaj(s.baza, [projekt('p1', 'Counter from Nov 10'), ['UPDATE projekt SET nienazwany = 1 WHERE id = ?', ['p1']], czesc('c1', 'p1', '2026-11-10'), ...licznik('l1', 'c1', 5), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h)]);
   await k.otworz('l1');
   const grupa = katalogTymczasowy('oczko-grupa-');
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle, skrzynka: skrzynkaWKatalogu(grupa, () => s.zegar.teraz().ms), migawka: migawkaWKatalogu(grupa, () => s.zegar.teraz().ms), jezyk: () => 'en' };

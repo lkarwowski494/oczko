@@ -28,16 +28,17 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApli
 const Start = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 const PDF = Buffer.from('%PDF-1.4\n%%EOF\n');
 
-async function start(zProjektem: boolean, zWzorem = false) {
+async function start(zProjektem: boolean, zWzorem = false, otworz = true) {
   const { s, k, j } = await kompozycjaTestowa();
   const h = wlozPlik(s.magazyn, PDF, 'pdf');
   if (zProjektem) await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 3), ...(zWzorem ? [plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h)] : [])]);
-  if (zProjektem) await k.otworz('l1');
+  if (zProjektem && otworz) await k.otworz('l1');
   mockAplikacja = { kontener: { z: s.z, j, porty: {}, dostep: { stan: () => ({ poziom: 'darmowa' }) }, wzor: { k: {} } }, licznik: k, preferencje: {} };
   mockRouter.push.mockClear(); mockRouter.navigate.mockClear(); mockDzis = null;
   render(<Start />);
   await act(async () => { await new Promise((r) => setTimeout(r, 150)); });
   expect(mockDzis).not.toBeNull();
+  return s;
 }
 
 test('P-588: kafel „Dodaj wzór” z projektem → licznik, a nad nim trasa „/wzor” z menu źródeł (`zrodla`), nie „Kontynuuj ›”', async () => {
@@ -50,9 +51,29 @@ test('P-588: kafel „Dodaj wzór” w projekcie, który ma już wzór → to sa
   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 50)); });
   expect(mockRouter.push.mock.calls).toEqual([['/licznik'], [{ pathname: '/wzor', params: { zrodla: '1' } }]]);
 });
-test('P-588: kafel „Dodaj wzór” bez projektu → zakładka Projekty, bez trasy „/wzor”', async () => {
-  await start(false);
-  await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 50)); });
+// BY-003 (KO-067, P-842): P-588 (c) kierował świeżą instalację na pustą listę „Projekty”; teraz kafel zakłada projekt roboczy jak pierwsze „+1” (BR-LIC-001/S2) i otwiera menu źródeł.
+test('BY-003 (KO-067): kafel „Dodaj wzór” na świeżej instalacji (żadnego projektu) → projekt roboczy jak po pierwszym „+1”, licznik i menu źródeł, nie pusta lista Projekty', async () => {
+  const s = await start(false);
+  await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });
+  expect(mockRouter.navigate).not.toHaveBeenCalled();
+  expect(mockRouter.push.mock.calls).toEqual([['/licznik'], [{ pathname: '/wzor', params: { zrodla: '1' } }]]);
+  const p = await s.baza.all('SELECT nienazwany, (SELECT count(*) FROM czesc) AS czesci, (SELECT count(*) FROM licznik) AS liczniki, (SELECT count(*) FROM zdarzenie) AS zdarzenia FROM projekt', []);
+  expect(p).toEqual([{ nienazwany: 1, czesci: 1, liczniki: 1, zdarzenia: 0 }]); // jeden projekt roboczy, bez rzędu
+});
+test('BY-003: drugie stuknięcie kafla nie zakłada drugiego projektu', async () => {
+  const s = await start(false);
+  for (let i = 0; i < 2; i++) await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });
+  expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
+});
+test('BY-003: dwa stuknięcia kafla naraz (bez czekania) zakładają jeden projekt roboczy', async () => {
+  const s = await start(false);
+  await act(async () => { mockDzis?.naKafel('dodaj-wzor'); mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 200)); });
+  expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
+});
+test('BY-003: są projekty, ale żaden nie jest bieżący → zakładka Projekty (wybór projektu), bez zakładania nowego i bez trasy „/wzor”', async () => {
+  const s = await start(true, false, false);
+  await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });
   expect(mockRouter.navigate).toHaveBeenCalledWith('/projekty');
   expect(mockRouter.push.mock.calls.filter(([c]) => JSON.stringify(c).includes('wzor'))).toHaveLength(0);
+  expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
 });

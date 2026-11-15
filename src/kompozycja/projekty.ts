@@ -1,6 +1,7 @@
 // Kompozycja listy projektów (F-50, F-54, P-065 (2a)): etykieta projektu roboczego w bieżącym języku i wyszukiwanie po niej (design-spec
 // „Projekt roboczy”: w wyszukiwaniu ta sama etykieta). Opis wiersza: część i rząd dziergany — klucze „row 47 of 96 · today” z makiety
 // ekrany.html `projekty` nie są jeszcze w słowniku 04 (zgłoszenie 08 partia 4, 3A), więc opis używa istniejącego `licznik.teraz`.
+import { jestNazwaZapasowaCzesci } from '../domena/nazwa-czesci';
 import type { StanListyProjektow, WierszProjektu } from '../ekrany/ListaProjektow';
 import { widokProjektow, type ProjektNaEkranie, type WidokProjektow } from '../przypadki-uzycia/widok-projektow';
 import type { Zaleznosci } from '../przypadki-uzycia/zaleznosci';
@@ -25,8 +26,11 @@ export function stanListy(w: WidokProjektow, o: { zapytanie: string; j: Jezyk; t
   const wiersz = (p: ProjektNaEkranie, wToku: boolean): WierszProjektu => {
     const nazwa = p.nienazwany ? etykietaRobocza(p.utworzonoMs, o.terazMs, j, o.strefa) : p.nazwa;
     // Wiersz w toku: „{część} · row {n} of {cel}” (design-spec „Lista projektów”; n = liczba widoczna na liczniku); projekt roboczy bez nazwy części: „Now knitting row n”.
-    const opis = !p.licznik ? '' : p.nienazwany ? j.t('licznik.teraz', { n: p.licznik.wartosc + 1 })
-      : p.licznik.cel === null ? j.t('projekty.wiersz', { czesc: p.licznik.czesc, n: p.licznik.wartosc }) : j.t('projekty.wiersz_cel', { czesc: p.licznik.czesc, n: p.licznik.wartosc, cel: p.licznik.cel });
+    // BY-002: nazwa zapasowa części (data startu) nie jest nazwą — jak w projekcie roboczym „Now row n”; z celem „Part 1 · row n of cel” (pierwsza część, klucz formularz.nazwa_czesc_n).
+    const zapasowa = p.licznik !== null && jestNazwaZapasowaCzesci(p.licznik.czesc);
+    const opis = !p.licznik ? '' : p.nienazwany || (zapasowa && p.licznik.cel === null) ? j.t('licznik.teraz', { n: p.licznik.wartosc + 1 })
+      : p.licznik.cel === null ? j.t('projekty.wiersz', { czesc: p.licznik.czesc, n: p.licznik.wartosc })
+        : j.t('projekty.wiersz_cel', { czesc: zapasowa ? j.t('formularz.nazwa_czesc_n', { n: 1 }) : p.licznik.czesc, n: p.licznik.wartosc, cel: p.licznik.cel });
     // Miniatura dzianiny (M3 p4): rzędy licznika ostatniej pracy / cel części; ukończony — dzianina do linii celu; bez licznika brak miniatury (brak zostaje brakiem).
     const dzianina = !p.licznik ? undefined : !wToku && p.ukonczonoDzien ? { gotowe: p.licznik.wartosc, cel: p.licznik.wartosc } : { gotowe: p.licznik.wartosc, cel: p.licznik.cel };
     if (!wToku && p.ukonczonoDzien) { // lista ukończonych: „Finished {data} · {czas}” bez stopera sama data, nigdy „0 min” (BR-PRJ-006/S1, design-spec 027)

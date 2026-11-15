@@ -29,6 +29,11 @@ export function pokazAlertImportu(a: { tytul: string; opis: string } | null, t: 
   if (a) Alert.alert(a.tytul, a.opis || undefined, [{ text: t('wspolne.ok') }]);
 }
 
+/** Anulowany wybór źródła (systemowy wybieracz pliku albo zdjęć, skaner): z ekranu projektu („Add pattern”, `dodaj`) wracamy na projekt, z menu źródeł otwartego wprost zostajemy na menu. */
+function anulowano(c: KontekstDodania): void {
+  if (c.dodajParam) c.wstecz();
+}
+
 export async function dodajZrodlo(c: KontekstDodania, zrodlo: ZrodloDodaniaTrasy): Promise<void> {
   const { kontener, lw } = c;
   const zw = kontener.wzor.z;
@@ -42,7 +47,7 @@ export async function dodajZrodlo(c: KontekstDodania, zrodlo: ZrodloDodaniaTrasy
   } else if (zrodlo === 'link') { c.ustawLink(true); return; }
   else if (zrodlo === 'plik') {
     const p = await wybierzPlikWzoru();
-    if (!p) return;
+    if (!p) { anulowano(c); return; }
     const rodzaj = rodzajPliku(p.nazwa, p.typ); // jedna reguła rozszerzeń (ADR-0031 pkt 5): Word = .docx, .doc → „can’t add this type”
     if (rodzaj !== 'pdf' && rodzaj !== 'word') { pokaz(alertImportu('bledne_dane', p.nazwa, t)); return; }
     z = { rodzaj, plik: { id: p.nazwa, nazwa: p.nazwa, sciezka: p.sciezka, typ: p.typ } };
@@ -52,13 +57,14 @@ export async function dodajZrodlo(c: KontekstDodania, zrodlo: ZrodloDodaniaTrasy
     if (!s.ok) { // W11 :664: brak aparatu → „Open Settings” / „Cancel”
       const a = alertSkanu(s.powod, t);
       if (a?.ustawienia) Alert.alert(a.tytul, a.opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: t('zdjecia.otworz_ustawienia'), onPress: () => void Linking.openSettings() }]);
-      else pokaz(a);
+      else if (a) pokaz(a);
+      else anulowano(c); // skaner zamknięty bez wyniku: bez alertu
       return;
     }
     z = { rodzaj: 'obrazy', sciezki: s.wartosc.sciezki }; nazwa = nazwaDomyslna({ rodzaj: 'skan' }, t, data);
   } else {
     const s = await wybieraczZdjec().wybierzStrony();
-    if (s.rodzaj !== 'zdjecia') { if (s.rodzaj === 'blad') pokaz(alertImportu('zapis', '', t)); return; }
+    if (s.rodzaj !== 'zdjecia') { if (s.rodzaj === 'blad') pokaz(alertImportu('zapis', '', t)); else anulowano(c); return; }
     z = { rodzaj: 'obrazy', sciezki: s.sciezki }; nazwa = nazwaDomyslna({ rodzaj: 'zdjecia' }, t, data);
   }
   if (!z) return;
