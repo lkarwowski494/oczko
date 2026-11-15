@@ -1,0 +1,4 @@
+import { join } from 'node:path';
+const WT = process.argv[2]; const m = await import(join(WT, 'scripts/i18n/przeklad-podpisy.mjs'));
+const przyk = [['fr', 'Tout est pris en compte'], ['sv', 'Inget pris att betala'], ['ms', 'Siri projek anda'], ['de', 'Frag Siri nach Reihen'], ['cs', 'Bezplatný počítadlo řad'], ['sk', 'Bezplatná aplikácia'], ['fi', 'Maksuton laskuri'], ['sv', 'Kostnadsfri räknare'], ['nb', 'Kostnadsfri teller'], ['nl', 'Kosteloos tellen'], ['ja', '無償で使える'], ['pt', 'Sem preço escondido'], [null, 'Siri projek anda']];
+console.log(JSON.stringify(przyk.map(([j, v]) => ({ jezyk: j, tekst: v, problemy: m.sprawdzPodpis(v, { max: 40, jezyk: j }) })), null, 1));

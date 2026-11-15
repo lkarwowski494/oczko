@@ -1,0 +1,4 @@
+$ npx jest --ci tests/wydanie/podpisy-przeklad.test.ts tests/wydanie/produkty-przeklad.test.ts tests/wydanie/metadane-przeklad.test.ts tests/jakosc/przeklad-workflow.test.ts tests/jakosc/zwrotny-api.test.ts tests/wydanie/uklad-podpisow.test.ts (9fe3a63)
+Test Suites: 6 passed, 6 total
+Tests:       107 passed, 107 total
+kod 0

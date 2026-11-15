@@ -1,0 +1,91 @@
+$ node kontrole-reaudyt.mjs <worktree 9fe3a63>
+[
+ {
+  "jezyk": "fr",
+  "tekst": "Tout est pris en compte",
+  "problemy": []
+ },
+ {
+  "jezyk": "sv",
+  "tekst": "Inget pris att betala",
+  "problemy": [
+   "cena lub waluta: pris"
+  ]
+ },
+ {
+  "jezyk": "ms",
+  "tekst": "Siri projek anda",
+  "problemy": []
+ },
+ {
+  "jezyk": "de",
+  "tekst": "Frag Siri nach Reihen",
+  "problemy": [
+   "marka lub urządzenie: Siri"
+  ]
+ },
+ {
+  "jezyk": "cs",
+  "tekst": "Bezplatný počítadlo řad",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Bezplatn"
+  ]
+ },
+ {
+  "jezyk": "sk",
+  "tekst": "Bezplatná aplikácia",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Bezplatn"
+  ]
+ },
+ {
+  "jezyk": "fi",
+  "tekst": "Maksuton laskuri",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Maksuton"
+  ]
+ },
+ {
+  "jezyk": "sv",
+  "tekst": "Kostnadsfri räknare",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Kostnadsfri"
+  ]
+ },
+ {
+  "jezyk": "nb",
+  "tekst": "Kostnadsfri teller",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Kostnadsfri"
+  ]
+ },
+ {
+  "jezyk": "nl",
+  "tekst": "Kosteloos tellen",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: Kosteloos"
+  ]
+ },
+ {
+  "jezyk": "ja",
+  "tekst": "無償で使える",
+  "problemy": [
+   "„darmowe” i odpowiedniki niedozwolone: 無償"
+  ]
+ },
+ {
+  "jezyk": "pt",
+  "tekst": "Sem preço escondido",
+  "problemy": [
+   "cena lub waluta: preço"
+  ]
+ },
+ {
+  "jezyk": null,
+  "tekst": "Siri projek anda",
+  "problemy": [
+   "marka lub urządzenie: Siri"
+  ]
+ }
+]
+kod 0

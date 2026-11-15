@@ -1,0 +1,80 @@
+$ node sonda-reaudyt.mjs <worktree 9fe3a63>
+{
+ "szacuj": {
+  "kod": 0,
+  "wywolan_fetch": 0
+ },
+ "limit_bez_zgody": {
+  "kod": 3,
+  "posty": 0,
+  "liczTok": 2,
+  "log": "STOP: 0.14 USD > limit 0.0001 USD; ponów ze zgodą (--zgoda-koszt) po decyzji właściciela"
+ },
+ "limit_env_podniesienie": {
+  "kod": 0
+ },
+ "klucz": {
+  "kod": 1,
+  "w_logach": false,
+  "w_artefakcie": false,
+  "log": [
+   "BŁĄD: API POST /v1/messages/batches: HTTP 401 invalid x-api-key sk-ant-***"
+  ]
+ },
+ "wznow_start": {
+  "kod": 4,
+  "posty": 2,
+  "b1": "msgbatch_B1",
+  "b2": "msgbatch_B2",
+  "polecenie": "msgbatch_B1,msgbatch_B2",
+  "artefakt_ids": [
+   "batch-id-1.txt",
+   "batch-id-2.txt"
+  ]
+ },
+ "wznow_wg_komunikatu": {
+  "kod": 0,
+  "posty": 0,
+  "propozycja_e1": "API de 1 nowy",
+  "wynik_e1": "API de 1 nowy",
+  "batch2": "msgbatch_B2"
+ },
+ "wznow_sam_b2": {
+  "kod": 2,
+  "posty": 0,
+  "log": [
+   "BŁĄD: batch msgbatch_B2 zawiera wyniki etapu krytyk (pk-), a oczekiwano etapu przekład (pp-); --wznow przyjmuje identyfikatory po przecinku w kolejności etapów (przekład,krytyk)"
+  ]
+ },
+ "wznow_odwrocone": {
+  "kod": 2,
+  "posty": 0
+ },
+ "krytyk_odrzucona_poprawka": {
+  "kod_main": 1,
+  "przyjmij": 1,
+  "log": [
+   "de: odrzucony — krytyk zakwestionował podpis, a jego poprawka nie przeszła twardej kontroli: 02-licznik: 41 znaków > 40; ponów przebieg tego języka (--tylko de) albo popraw ręcznie z zapisem w decyzji",
+   "nic do przyjęcia"
+  ]
+ },
+ "krytyk_poprawka_taka_sama": {
+  "kod_main": 0,
+  "przyjmij": 0,
+  "log": [
+   "przyjęto 1"
+  ]
+ },
+ "etap_krytyk_status": {
+  "kod_main": 0,
+  "przyjmij": 0,
+  "status_cs": "przekład maszynowy z en (sesja AW, 2026-11-12, P-771), terminy z src/i18n/slowniki/cs.json; krytyk API (claude-opus-5-5, 2026-11-15); [DO PRZEGLĄDU] przegląd człowieka według progu"
+ },
+ "limit_niepoprawny": {
+  "kod": 2,
+  "log": [
+   "BŁĄD: --limit: dodatnia liczba całkowita, podano „dwa”"
+  ]
+ }
+}
+kod 0

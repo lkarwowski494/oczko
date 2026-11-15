@@ -2,15 +2,15 @@
 Commit: 6f17ac72 (gałąź `claude/bo-podpisy-api-2026-11-15`, zakres `761b9551..6f17ac72`) · Tryb: audit (recenzja niezależna BQ, rola 08) · Środowisko: Linux, Node 22, `npm ci` kod 0, bez sieci do API (atrapa fetch); workflowów nie wyzwalano. Raportu autora ani `docs/lokalizacja/bo-stan.md` nie czytano.
 
 ## Podsumowanie
-**Werdykt: GOTOWY Z UWAGAMI do przebiegu płatnego.** Bezpieczeństwo kosztu jest egzekwowane: szacunek i STOP przed jakimkolwiek POST batcha, `tylko_szacuj` nie wysyła nic, klucz nie trafia do logów ani artefaktu (sondy na atrapie API). Szacunek pełnego przebiegu: ≈ 1,90 USD (opus, high, przekład + krytyk, 27 języków). Uwagi dotyczą tego, co dzieje się **po** przebiegu: wznowienie po przekroczeniu czasu batcha krytyka nie ma poprawnej drogi (komunikat skryptu prowadzi na złą), odrzucona poprawka krytyka nie blokuje przyjęcia języka, a sam etap `krytyk` daje po przyjęciu fałszywy status „przekład API”. Przebieg `przeklad+krytyk` można uruchomić. Przed `przyjmij` trzeba naprawić 002 albo ręcznie przejrzeć języki z odrzuconymi poprawkami krytyka. Przy przekroczeniu czasu krytyka nie wolno wznawiać jego identyfikatorem (001).
+**Werdykt: GOTOWY Z UWAGAMI do przebiegu płatnego** (stan 6f17ac72; po reaudycie 9fe3a63: **GOTOWY**, 001–005 zamknięte — sekcja „Reaudyt” na końcu). Bezpieczeństwo kosztu jest egzekwowane: szacunek i STOP przed jakimkolwiek POST batcha, `tylko_szacuj` nie wysyła nic, klucz nie trafia do logów ani artefaktu (sondy na atrapie API). Szacunek pełnego przebiegu: ≈ 1,90 USD (opus, high, przekład + krytyk, 27 języków). Uwagi dotyczą tego, co dzieje się **po** przebiegu: wznowienie po przekroczeniu czasu batcha krytyka nie ma poprawnej drogi (komunikat skryptu prowadzi na złą), odrzucona poprawka krytyka nie blokuje przyjęcia języka, a sam etap `krytyk` daje po przyjęciu fałszywy status „przekład API”. Przebieg `przeklad+krytyk` można uruchomić. Przed `przyjmij` trzeba naprawić 002 albo ręcznie przejrzeć języki z odrzuconymi poprawkami krytyka. Przy przekroczeniu czasu krytyka nie wolno wznawiać jego identyfikatorem (001).
 
 | ID | Poziom | Rodzaj | Tytuł | Status |
 |---|---|---|---|---|
-| 08-programista-001 | P1 | D | Wznowienie po przekroczeniu czasu batcha krytyka: komunikat prowadzi na złą drogę, jedyna działająca dubluje płatny batch | otwarte |
-| 08-programista-002 | P1 | D | Poprawka krytyka odrzucona twardą kontrolą nie blokuje przyjęcia; zakwestionowany podpis trafia do pliku ze statusem „+ krytyk” | otwarte |
-| 08-programista-003 | P2 | D | Etap `krytyk` na obecnych podpisach (sesja AW, bez API) po przyjęciu dostaje status „przekład API (…) + krytyk” | otwarte |
-| 08-programista-004 | P3 | D | Kontrole słownikowe: fałszywe alarmy (fr „pris”, ms „siri”) odrzucają cały język; luki w „free” i cenie | otwarte |
-| 08-programista-005 | P3 | D | `--limit` z wartością nieliczbową znaczy „wszystkie 27 języków” | otwarte |
+| 08-programista-001 | P1 | D | Wznowienie po przekroczeniu czasu batcha krytyka: komunikat prowadzi na złą drogę, jedyna działająca dubluje płatny batch | zweryfikowane (9fe3a63) |
+| 08-programista-002 | P1 | D | Poprawka krytyka odrzucona twardą kontrolą nie blokuje przyjęcia; zakwestionowany podpis trafia do pliku ze statusem „+ krytyk” | zweryfikowane (9fe3a63) |
+| 08-programista-003 | P2 | D | Etap `krytyk` na obecnych podpisach (sesja AW, bez API) po przyjęciu dostaje status „przekład API (…) + krytyk” | zweryfikowane (9fe3a63) |
+| 08-programista-004 | P3 | D | Kontrole słownikowe: fałszywe alarmy (fr „pris”, ms „siri”) odrzucają cały język; luki w „free” i cenie | zweryfikowane (9fe3a63) |
+| 08-programista-005 | P3 | D | `--limit` z wartością nieliczbową znaczy „wszystkie 27 języków” | zweryfikowane (9fe3a63) |
 
 Poziomy według polecenia BQ (P1/P2/P3); P3 = szlif (w szablonie roli: P2).
 
@@ -160,3 +160,21 @@ Brak dla właściciela (P-087). Dla koordynatora: (1) czy przebieg płatny idzie
 
 ## Proponowane polecenie naprawy
 `node tools/assemble.mjs 08-programista --tryb fix --zadania 08-programista-001,08-programista-002,08-programista-003` (004 i 005 opcjonalnie w tej samej partii); wykonawca: rola 09 (autor BO) albo 08.
+
+## Reaudyt (wąski) — 9fe3a63, 2026-11-15
+Zakres: tylko poprawki BO do 001–005, diff `6f17ac72..9fe3a63` (kod 6875aa50, testy 3a8d32bc przed kodem). Odwołania w tej sekcji podaję jako „plik@9fe3a63 l. N”, bo linie dotyczą nowej wersji, a nie commita bazowego raportu. Dowody: sondy na atrapie API, `bq-dowody/sonda-reaudyt.txt` i `bq-dowody/kontrole-reaudyt.txt`; testy zakresu 107/107, kod 0 (`bq-dowody/jest-reaudyt.txt`).
+
+| ID | Status | Dowód |
+|---|---|---|
+| 08-programista-001 | ZAMKNIĘTE | `--wznow` przyjmuje „B1” albo „B1,B2” (przeklad-podpisy.mjs@9fe3a63 l. 232–242, 245). Przedrostek `pp-`/`pk-` jest sprawdzany, a batch innego etapu daje kod 2 (l. 227). Po przekroczeniu czasu krytyka komunikat podaje `--wznow B1,B2` (l. 271). Sonda: wznowienie według komunikatu daje 0 nowych POST, a wynik pochodzi z propozycji batcha 1. Sam B2 oraz odwrócona kolejność dają kod 2 i 0 POST. Oczekiwanie wynosi 80 min na etap (l. 217), czyli 2 × 80 < 180. `batch-id-*.txt` jest w artefakcie (przeklad-tlumaczen.yml@9fe3a63 l. 206), a workflow sprawdza format pary (l. 128) |
+| 08-programista-002 | ZAMKNIĘTE | Odrzucona poprawka blokuje przyjęcie (l. 337), z wyjątkiem poprawki „taka sama jak obecny” i duplikatu (l. 158). Sonda: poprawka 41 znaków daje `przyjmij` kod 1 i plik bez zmian; poprawka bez zmiany tekstu daje kod 0 |
+| 08-programista-003 | ZAMKNIĘTE | Sam etap krytyk zachowuje dotychczasowe pochodzenie i dopisuje „krytyk API” (l. 341). Sonda: status `cs` = „przekład maszynowy z en (sesja AW…) …; krytyk API (claude-opus-5-5, 2026-11-15); [DO PRZEGLĄDU]…” |
+| 08-programista-004 | ZAMKNIĘTE | „pris” jest sprawdzane tylko dla sv/da/nb (l. 63), „Siri” z granicą słowa i z wyjątkiem ms (l. 66), a lista „free” uzupełniona (l. 64). Wszystkie 13 przykładów z kontroli daje oczekiwany wynik |
+| 08-programista-005 | ZAMKNIĘTE | `--limit` przyjmuje tylko dodatnią liczbę całkowitą (l. 191). Sonda: „dwa” daje kod 2 |
+
+Nowe ryzyka w wznowieniu i `przyjmij` (żadne nie blokuje przebiegu płatnego):
+- **R1 (P3, teoretyczny):** kontrola wstępna etapu `krytyk` wywołuje `sprawdzKomplet` bez kodu języka (l. 251). Kontrole zależne od języka (ms „siri”, skand. „pris”) działają tam jak dawniej. Dziś podpisy `ms` nie zawierają „siri”. Później sprawdza się to ponownie z kodem języka w `przyjmij` (l. 334).
+- **R2 (P3, brzegowy):** `--etap krytyk --wznow B2`, gdzie B2 pochodzi z pełnego przebiegu, nadal przechodzi kontrolę przedrostka (`pk-`) i nakłada poprawki na podpisy z pliku zamiast na propozycję batcha 1. Komunikat skryptu już tam nie prowadzi, a status zachowuje pochodzenie. Tańsza kontrola: wystarczy zasada w runbooku „wznawiam tylko poleceniem z komunikatu”.
+- **Uwaga (nie znalezisko):** poprawka krytyka odrzucona za „nieznany ekran” albo „brak powodu” też blokuje cały język. To zachowanie zachowawcze, które może kosztować ponowny przebieg jednego języka przez `--tylko`.
+
+**Werdykt po reaudycie: GOTOWY do przebiegu płatnego** (uwagi R1 i R2 to P3 i nie wymagają naprawy przed przebiegiem).
