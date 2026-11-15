@@ -21,7 +21,15 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (13.11 14:02 UTC) — koordynator session_01T66VBvJLMR8LzM22mf9FF9 (przejęcie 14:00, lineage 4/8)
+## Teraz (15.11 07:55 UTC) — koordynator session_01T66VBvJLMR8LzM22mf9FF9 (kontekst 18,4%, 5,46 USD; lineage 4/8) — stan zapisany na prośbę właściciela
+- **Integracja `claude/youthful-pasteur-kx83sn` @ 761b9551** (bez zmian od 13.11 13:54): Jakość · Linux 43437832572 success, Zrzuty sklepu 43437832492 success; ostatni pełny e2e iOS 43396328570 success na 1dfcf7ca (te same wejścia binarki). `main` @ 52308cd7 (3.11).
+- **Kandydat 1.0 = build 1161 (2ed5215a): GOTOWY Z UWAGAMI** (`docs/jakosc/werdykt-build-1161.md`); U1 spełniony.
+- **Czeka na właściciela (WG-18, ok. 43 h):** U2 test 1161 na iPhonie (`docs/wydanie/test-urzadzenia-build5.md`); C4 ocena zrzutów + C5 akceptacja podpisów en/pl (artefakty run 43396191411); decyzja: 27 języków podpisów (maszynowe) do 1.0 czy dziedziczenie en → 1.0.1; potem D1 scalenie do `main` (`docs/wydanie/lista-1-0.md`, 18 kroków), po nim asc-iap-localizations dry-run → apply (Approve).
+- **Do weta:** KO-058, KO-059 (`docs/koordynacja/decyzje.md`), P-796…P-799 (propozycje BJ/BK w raportach). Bez zgody: build 7+, scalenie do main, przebiegi ASC.
+- Sesji podrzędnych aktywnych: brak. Kolejka bez blokady 1.0 (nieuruchomiona): 08 fix P2 AX -001…-004; 10 fix 04-004/04-005; 07 „Scenariusze skipped” cz. 3 iphone / cz. 1 ipad; backlog 07.
+- Przypomnienia: linia 14:00 15.11 (trig_01H8TpiUM6Xo63TMzW1zvuLR), linia 05:00 16.11 (trig_01JK6sx5TLMUAsnAUb9kpppp); kontroli brak (nic nie trwa).
+
+## Historia: Teraz (13.11 14:02 UTC) — koordynator session_01T66VBvJLMR8LzM22mf9FF9 (przejęcie 14:00, lineage 4/8)
 - Integracja @ 761b9551: Jakość · Linux 43437832572 success, Zrzuty sklepu 43437832492 success; Jakość · iOS push nie wystartował (filtr ścieżek; ostatni iOS: pełny e2e 43396328570 success na 1dfcf7ca). Nic nie trwa — bez kontroli, tylko linie dzienne.
 - Czeka na właściciela bez zmian (U2, C4/C5, decyzja 27 języków podpisów, potem D1). Sesji podrzędnych aktywnych: brak. Do weta: KO-058, KO-059, P-796…P-799.
 
@@ -801,3 +809,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 14.11 04:55 | M9 | Linia 05:00: bez zmian od 20:00 (integracja 761b9551, koordynacja f6a4f85; sesji brak). Czeka na właściciela: U2, C4/C5, decyzja 27 języków podpisów, D1. Linia 05:00 15.11 zaplanowana | linia 14:00 |
 | 14.11 13:56 | M9 | Linia 14:00 + przegląd przepływu: bez zmian (integracja 761b9551, main 52308cd7, sesji brak). Największa strata: oczekiwanie na kroki właściciela ok. 24,7 h → WG-18. Linia 14:00 15.11 zaplanowana | linia 05:00 15.11 |
 | 15.11 04:55 | M9 | Linia 05:00: bez zmian (integracja 761b9551, main 52308cd7, sesji brak); WG-18 trwa ok. 39,7 h. Linia 05:00 16.11 zaplanowana | linia 14:00 |
+| 15.11 07:55 | M9 | Na prośbę właściciela „Zapisz stan”: sekcja Teraz odświeżona (bez zmian w repo od 13.11 13:54; kontekst koordynatora 18,4%, 5,46 USD) | linia 14:00 |
