@@ -50,6 +50,7 @@ test('N-05-1: arkusz mówi o kopii w Plikach; potwierdzenie → kopia w Document
   expect(licznik.zresetuj).toHaveBeenCalledTimes(1);
 });
 
+// PU-317: alert „couldn’t save a copy”, nic nie usunięto
 test('N-05-1: nie da się zapisać kopii → alert „couldn’t save a copy”, nic nie usunięto, bez powrotu do listy', async () => {
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
   const { s, licznik } = await aplikacja(true);

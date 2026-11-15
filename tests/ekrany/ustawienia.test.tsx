@@ -18,6 +18,7 @@ function pokaz(stan: Partial<PropsUstawien['stan']> = {}) {
 }
 
 describe('Ustawienia', () => {
+  // PU-179: „Privacy Policy” i „Help” otwierają adresy z konfiguracji (dokładne adresy: tests/wydanie/adresy-179.test.ts)
   test('BR-ZAK-004/S1: odnośnik do polityki prywatności ją otwiera (nazwa jak design-spec.md:68)', () => {
     const { system } = pokaz();
     fireEvent.press(przycisk('Privacy Policy', 'link'));

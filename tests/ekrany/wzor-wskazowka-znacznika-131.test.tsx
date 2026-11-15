@@ -114,6 +114,7 @@ test('131 (4): Word w podglądzie zastępczym — bez wskazówki i bez zapisu fl
   expect(wskazowka()).toBeNull();
   expect(await flaga(s)).toBeUndefined();
 });
+// PU-131: przy czytniku ekranu brak wskazówki znacznika
 test('131 (4): VoiceOver włączony — bez wskazówki i bez zapisu flagi (do ustawienia służy „Mark row”)', async () => {
   czytnik.mockResolvedValue(true);
   const s = await przygotuj();

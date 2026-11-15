@@ -38,6 +38,7 @@ const linie = () => wszystkieLinie.filter((id) => screen.queryByTestId(id) !== n
 
 beforeEach(() => { jest.clearAllMocks(); });
 
+// PU-324: linia „Waiting for approval…”, nieaktywny przycisk
 test('KP-07: zakup oczekujący (Ask to Buy) → linia „Waiting for approval…” i nieaktywny przycisk „Waiting for approval”', async () => {
   await aplikacja({ kup: 'oczekujacy' });
   render(<EkranOfert />);
@@ -46,6 +47,7 @@ test('KP-07: zakup oczekujący (Ask to Buy) → linia „Waiting for approval…
   expect(linie()).toEqual(['oferty-czeka']);
   expect(screen.getByRole('button', { name: 'Waiting for approval' }).props.accessibilityState).toMatchObject({ disabled: true });
 });
+// PU-325: błąd zakupu → komunikat ze znakiem błędu
 test('KP-07: błąd zakupu → „The purchase didn’t go through…”', async () => {
   await aplikacja({ kup: 'blad' });
   render(<EkranOfert />);
@@ -53,6 +55,7 @@ test('KP-07: błąd zakupu → „The purchase didn’t go through…”', async
   expect(await screen.findByText(/The purchase didn’t go through\. Check your connection and try again\./)).toBeTruthy();
   expect(linie()).toEqual(['oferty-blad']);
 });
+// PU-325: anulowanie → bez komunikatu, „Kontynuuj” znów aktywne
 test('KP-07: zakup anulowany przez użytkowniczkę → bez komunikatu, bez sukcesu; sukces → bez komunikatu', async () => {
   const { sklep } = await aplikacja({ kup: 'anulowany' });
   render(<EkranOfert />);
@@ -87,6 +90,7 @@ test('KP-07: przywrócenie, które znalazło zakup → bez komunikatu o braku', 
   await waitFor(() => expect(sklep.przywroc).toHaveBeenCalledTimes(1));
   expect(linie()).toEqual([]);
 });
+// PU-324: po zatwierdzeniu „Oczko Pro is on.”
 test('P-330: po zatwierdzeniu poza aplikacją (Ask to Buy) pojawia się jednorazowo „Oczko Pro is on.”', async () => {
   const { wlacz } = await aplikacja({ kup: 'oczekujacy' });
   render(<EkranOfert />);

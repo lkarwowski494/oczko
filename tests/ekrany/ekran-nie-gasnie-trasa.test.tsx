@@ -71,6 +71,7 @@ async function trasa(opcja: { v: boolean }) {
 beforeEach(() => { mockSciezka.v = '/licznik'; mockRouter.push.mockClear(); });
 
 describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu', () => {
+  // PU-068: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu; wyłączona na liście
   test('licznik → lista projektów: tag oczko-licznik wyłączony; powrót na licznik: włączony ponownie', async () => {
     const u = await trasa({ v: true });
     expect(u.wlaczony()).toBe(1);
@@ -102,6 +103,7 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
     expect(u.wlaczony()).toBe(1);
   });
 
+  // PU-068: opcja „Nie gaś ekranu” wył./wł. steruje blokadą
   test('opcja wyłączona w Ustawieniach → po powrocie na licznik bez włączenia, bez ponownego uruchomienia; włączona z powrotem → włącza', async () => {
     const opcja = { v: true };
     const u = await trasa(opcja);
@@ -117,6 +119,7 @@ describe('M1-059: blokada wygaszania tylko z licznikiem albo wzorem na wierzchu'
   });
 
   // M1-audytor-generalny-139 (07-jakosc-521; F-10, BR-LIC-013, U11): po powrocie z tła blokada wraca tylko z licznikiem na wierzchu.
+  // PU-068: po powrocie z tła blokada znów włączona
   test('tło → pierwszy plan z licznikiem na wierzchu: tag wyłączony w tle i włączony ponownie po powrocie', async () => {
     const u = await trasa({ v: true });
     await u.tlo('background');

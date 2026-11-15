@@ -96,6 +96,7 @@ describe('kosz „Ostatnio usunięte” (F-33, P-026)', () => {
     expect(await ile(s.baza, 'zdarzenie', "licznik_id IN ('l1', 'l2')")).toBe(58);
   });
 
+  // PU-311: po 30 dniach projekt sprzątnięty, pliki bez odwołań usunięte, młodsze zostają
   test('ŚU-15 R-054 ADR-0001: sprzątanie usuwa tylko pliki bez odwołań — plik wzoru z aktywnego projektu i z projektu w koszu < 30 dni zostaje', async () => {
     const s = await przygotuj();
     const A = wlozPlik(s.magazyn, 'pdf A', 'pdf'), B = wlozPlik(s.magazyn, 'pdf B', 'pdf'), C = wlozPlik(s.magazyn, 'pdf C', 'pdf');
@@ -131,6 +132,7 @@ describe('ŚU-14 P-110 Q5a P-118 W2: sprzątanie kosza dopiero przy dwóch start
     expect(await ostatniStart(s)).toBe(String(s.zegar.teraz().ms));
   });
 
+  // PU-311: projekt znika z kosza po terminie (dwa starty)
   test('jednorazowy skok zegara w przód: start dzień po usunięciu, następny start „60 dni później” → zostaje; kolejny start po terminie → sprzątnięty', async () => {
     const s = await przygotuj();
     await wykonaj(s.baza, SWETER);

@@ -282,6 +282,7 @@ describe('rekordy z sieci: błędne, kolizja, zasoby', () => {
 });
 
 describe('konto (dane/icloud-konto): zmiana konta, polacz, nie_synchronizuj', () => {
+  // PU-314: konto_zmienione wstrzymuje wysyłkę; polacz wysyła wszystko, nie_synchronizuj wyłącza, dane lokalne bez zmian
   test('zmiana konta zatrzymuje wysyłkę; polacz wpisuje wszystko od nowa i wysyła; nie_synchronizuj wyłącza, dane zostają', async () => {
     const serwer = serwerIcloud();
     const a = await urzadzenie(serwer, 'iphone', 'a');

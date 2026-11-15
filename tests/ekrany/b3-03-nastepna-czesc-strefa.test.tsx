@@ -27,6 +27,7 @@ const rysuj = (stan: Partial<StanEkranuLicznika>, oglos = jest.fn(), w = wywolan
 const idy = (korzen: ReactTestInstance) => korzen.findAll((n) => typeof n.props.testID === 'string' && typeof n.type === 'string').map((n) => n.props.testID as string);
 const OSIAGNIETY = { skonczone: 3, dziergany: 4 };
 
+// PU-131: „Next part” pierwszy w strefie licznika (przed przyciskami), poza przewijaną treścią
 test.each([[1, 'licznik-akcje'], [2.643, 'licznik-przyciski'], [3.571, 'licznik-przyciski']])(
   'cel osiągnięty, fontScale %s: „Next part” jest w strefie przed %s i nie ma go w przewijanej treści',
   (skala, nastepny) => {
@@ -57,6 +58,7 @@ test('etykieta „Next part” z limitem skali tytułów, minHeight ≥ cele.min
 
 describe('ogłoszenie VoiceOver „Goal reached”', () => {
   const ogloszeniaCelu = (o: jest.Mock) => o.mock.calls.filter(([tekst]) => tekst === 'Goal reached');
+  // PU-131: ogłoszenie „Goal reached” po ogłoszeniu rzędu
   test('dokładnie raz przy „+1” osiągającym cel; ani przy kolejnym „+1” ponad cel', async () => {
     const wyniki = [plusOk(3, { zdarzenia: ['rzad', 'cel-czesci'] }), plusOk(4)];
     const { oglos } = rysuj({ skonczone: 2, dziergany: 3 }, jest.fn(), wywolania(async () => wyniki.shift() ?? plusOk(5)));

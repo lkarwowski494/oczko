@@ -93,6 +93,7 @@ describe('nazwy w cudzysłowach = wartości kluczy interfejsu w tym samym język
     const en = slownik('en');
     expect(KLUCZE_PRZEWODNIKA.flatMap((k) => cytaty(en.get(k) ?? '')).length).toBeGreaterThan(20);
   });
+  // PU-177: cytaty przewodnika = nazwy z menu w każdym języku
   test.each(JEZYKI)('%s: każdy cytat jest wartością klucza używanego w app/ albo src/ albo literałem', (j) => {
     const d = slownik(j);
     const wartosci = new Set([...d.entries()].filter(([k]) => !k.startsWith('przewodnik.') && uzywany(k.replace(/_(zero|one|two|few|many|other)$/, ''))).map(([, v]) => v));

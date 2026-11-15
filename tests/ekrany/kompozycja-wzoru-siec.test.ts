@@ -41,6 +41,7 @@ async function srodowisko(o: { grupa?: string } = {}) {
   return { s, grupa, k, z, stan, naPdf, wlaczSiec: () => { stan.siec = false; } };
 }
 
+// PU-076: bez sieci: zlecenie czeka, wiersz „czeka na sieć”
 test('K-17b: strona z aplikacji bez sieci → zlecenie „adres” w skrzynce z projektem, wiersz „czeka na sieć”, brak pustego wzoru', async () => {
   const { s, k, z } = await srodowisko();
   const zmiany = jest.fn();
@@ -66,6 +67,7 @@ test('K-17e: po restarcie aplikacji (nowa kompozycja na tej samej skrzynce) zlec
   expect(po.stan().czekaSiec).toEqual([expect.objectContaining({ adres: ADRES, projektId: 'p1' })]);
   expect(await ile(a.s.baza, 'wzor')).toBe(0);
 });
+// PU-076: po powrocie sieci wzór w projekcie
 test('K-17c: zdarzenie Siec → „jest” po SIEC_PONOWIENIE_MS przetwarza skrzynkę: wzór www w projekcie, skrzynka pusta, wiersz znika', async () => {
   const { s, k, z, wlaczSiec } = await srodowisko();
   const { siec, emit } = atrapaSieci();

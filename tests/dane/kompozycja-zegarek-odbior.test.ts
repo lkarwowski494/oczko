@@ -93,6 +93,7 @@ describe('K-05 zegarek przy otwartej aplikacji telefonu (ADR-0030)', () => {
     expect(u.k.wersja()).toBeGreaterThan(wersjaPrzed);
   });
 
+  // PU-158: partia 3 zmian z zegarka → +3, wszystkie potwierdzone
   test('K-05b: 3 zdarzenia w jednej pętli zdarzeń → najwyżej 2 przebiegi scalenia, wartość +3, wszystkie 3 id potwierdzone', async () => {
     const u = await uklad();
     const [a, b, c] = await stuknieciaZegarka(u.s, ['z1', 'z2', 'z3']);
@@ -118,6 +119,7 @@ describe('K-05 zegarek przy otwartej aplikacji telefonu (ADR-0030)', () => {
     expect(u.z.potwierdzone.flat()).toEqual(['z1']);
   });
 
+  // PU-158: ponowna dostawa tej samej partii nic nie dubluje
   test('K-05d: to samo stuknięcie dostarczone drugi raz (M-02) → licznik bez zmiany, id nadal potwierdzone', async () => {
     const u = await uklad();
     const [z1] = await stuknieciaZegarka(u.s, ['z1']);

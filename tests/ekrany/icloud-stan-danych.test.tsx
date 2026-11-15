@@ -21,9 +21,11 @@ const icloud = (z: Partial<Icloud> = {}): Icloud => ({
 const stan = (z: Partial<PropsStanuDanych['stan']> = {}): PropsStanuDanych['stan'] => ({ synchronizacja: 'wylaczona', ostatniaUdana: null, czekaNaSiec: false, zegarek: null, ...z });
 
 describe('Data and sync: przełącznik iCloud', () => {
+  // PU-097: „Dane i synchronizacja” bez synchronizacji — „iCloud sync is off.”, „Everything is saved on this device.”, brak przełącznika
   test('bez `icloud` (ZM-06: wiersz ukryty) — brak przełącznika, dane zapisane na telefonie', () => {
     render(<StanDanych stan={stan()} t={t} />);
     expect(screen.queryByTestId('icloud-przelacznik')).toBeNull();
+    expect(screen.getByText('iCloud sync is off.')).toBeTruthy(); // PU-097: stan synchronizacji jednym zdaniem
     expect(screen.getByText('Everything is saved on this device.')).toBeTruthy(); // M1-060: „this device” (iPad)
   });
   test('domyślnie wyłączony (BR-DAN-002/S3): przełącznik off z etykietą i podpisem; stuknięcie prosi o włączenie (alert w kompozycji)', () => {

@@ -44,6 +44,7 @@ test('N-05-1: kopię z usunięcia da się zaimportować (Replace) i dane wracaj�
   expect(await migawka(s.baza, POMIN)).toBe(migPrzed);
   expect(readdirSync(s.magazyn.katalog).sort()).toEqual(plikiPrzed);
 });
+// PU-317: błąd z etapem „kopia”, liczności bez zmian
 test('N-05-1: nie da się zapisać kopii → błąd z etapem „kopia”, nic nie usunięto (liczności, migawka i pliki bez zmian)', async () => {
   const s = await srodowisko((katalog) => { const plik = join(katalog, 'plik-zamiast-katalogu'); writeFileSync(plik, 'x'); return join(plik, 'Backup'); });
   const przed = await licznosci(s.baza);
