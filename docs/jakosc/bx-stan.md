@@ -24,8 +24,12 @@ Decyzje: P-837 (wariant (a): bramka czerwona, dopóki każdy B nie ma testu — 
 2. Scenariusz „zielony”: usuń tag `oczekujacy`, w katalogu B → A, „oczekujący: plik:linia” → „plik:linia” (linia asercji), popraw „Podsumowanie”, wagę z logu do `e2e/czesci.json`.
 3. „czerwony-informacyjnie”: zrzut kroku, klasyfikacja (aplikacja / scenariusz / maszyna); błąd aplikacji = znalezisko `BX-NNN` dla 08, scenariusz zostaje czerwony.
 
+## STOP koordynatora (15.11 ok. 19:30 UTC)
+Koszt 31,04 USD > próg 26 USD (pomiar koordynatora), kontekst 30%. Stan na 8f0c1424 (wypchnięty; verify w haku 7506/7506). „Jakość · iOS” na tej gałęzi wyzwolony przez koordynatora 19:24 (`workflow_dispatch`) — wynik nieodebrany. **Merge integracji `claude/youthful-pasteur-kx83sn` @ 06077b85 NIE zrobiony** (pierwszy krok następnej sesji: zwykły merge, bez rebase).
+
 ## Następny krok (07 build, start od tego pliku)
-1. Wynik przebiegu „Jakość · iOS” dla scenariuszy 71–84 → zdjęcie tagów albo znaleziska.
+0. `git merge origin/claude/youthful-pasteur-kx83sn` (06077b85 albo nowszy); `npm ci`; push z `NODE_OPTIONS=--max-old-space-size=3072` (pierwszy push bez niego: hak czerwony, przyczyna niepotwierdzona).
+1. Wynik przebiegu „Jakość · iOS” (19:24) dla scenariuszy 71–84 → zdjęcie tagów albo znaleziska.
 2. Scenariusze B: sekcja „Stany puste, błędy i przerwania”, potem reszta (178 „do zaprogramowania”; testy jednostkowe/komponentowe tam, gdzie Pokrycie tak mówi — test w `tests/` wymienia ID PU i wiersz przechodzi w A).
 3. P2 recenzji A: 10 pozycji F częściowo automatyzowalnych (PU-009, 010, 020, 049, 055, 062, 069, 095, 130, 140); kontrola K1 napisów przycisków (recenzja B) najpierw informacyjnie.
 4. Ponowna publikacja listy fizycznej (Artifact, 51 pozycji).
