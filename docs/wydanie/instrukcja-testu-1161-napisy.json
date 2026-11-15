@@ -631,6 +631,11 @@
    "zr": "karta.stopka"
   },
   {
+   "en": "2 skeins",
+   "pl": "2 motki",
+   "zr": "zapas.motki_few"
+  },
+  {
    "en": "Finished",
    "pl": "Ukończone",
    "zr": "projekty.ukonczone"
@@ -1089,10 +1094,6 @@
   [
    "Update",
    2
-  ],
-  [
-   "button",
-   1
   ],
   [
    "Previous Builds",

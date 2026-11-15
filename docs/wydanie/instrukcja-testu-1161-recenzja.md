@@ -78,3 +78,47 @@ Powód: właściciel nie ma Oczka na zegarku i ma na telefonie build 1061. Źró
 Niepotwierdzone, więc niewpisane na stronę: „Automatyczna instalacja aplikacji” (nie znalazłem strony Apple w czasie pracy), zegarek „odblokowany, na ładowarce, blisko telefonu” jako warunek instalacji (nie ma tego na przeczytanych stronach), polska nazwa sekcji „Information” w TestFlight.
 Rozjazd do roli 07 przy następnej liście: T-04 w liście źródłowej mówi o „przełączniku przy Oczko” w aplikacji Watch; aktualna strona Apple — o przycisku „Instaluj” w „Dostępne aplikacje”. Krok T-04 na stronie bez zmian (zakres), sposób z Apple w „Zanim zaczniesz”.
 Sprawdzenie numeru: w bloku instalacji liczba w nawiasie musi być 1161; inna (np. 1061, 1151) → najpierw T-01 i T-02, potem „Install”/„Update” 1161. Pomiar Chromium po zmianie: 320 i 390 px, oba motywy, wszystkie zakresy — `scrollWidth` = okno, konsola bez błędów.
+
+## Recenzja polskich napisów (2026-11-15)
+Rola 07-jakosc, recenzja niezależna, HEAD `8f2c4d6`. Plik pomocniczy autora `instrukcja-testu-1161-napisy.json` nie był używany: każdą parę sprawdzono wprost w `src/i18n/slowniki/en.json` i `pl.json` (oraz `locales/systemowe/en.json`/`pl.json`).
+
+### Metoda
+- Wyciąg danych: `node` — `JSON.parse` z `var DANE = {...}` strony; każda para to cytat „pl” zakończony tuż przed `⟦en⟧` albo `⟪…⟫` (parser cofa się po cudzysłowach z liczeniem zagnieżdżeń, bo napisy typu „Dodaj przypomnienie („co N rzędów”)” mają cudzysłów w środku). Wynik: **674 pary** we wszystkich 121 krokach i wstępach sekcji (671 `⟦en⟧` + 3 `⟪sprawdź na ekranie⟫`); żadnego `⟦…⟧` bez poprzedzającego cytatu.
+- Dopasowanie (skrypt node): słowniki spłaszczone do kluczy z kropkami; dla każdej pary szukam kluczy, których wartość en = napis en dokładnie albo jako szablon `{{…}}` (zmienne przechwycone z napisu; wieloznaczniki strony `…`, `N`, `{…}` traktowane jak dowolna wartość; skrót z „…” na końcu = prefiks). Dla klucza mnogiego biorę wariant pl według reguły CLDR z `src/i18n/plural.ts` (`one` = 1, `few` = 2–4 bez 12–14, `many` = reszta), z liczbą jak w kodzie (`count`; `probka.z_danych_cm` → `p`, `projekty.dni` → `limit`), i porównuję z napisem pl strony po podstawieniu zmiennych. Złożenia sprawdzane po częściach: strzałka + tytuł (`‹ Dziś`, `Pokaż ›`), etykieta VoiceOver łączona przecinkami (`Przewodnik.tsx:111`), „Pokaż: X” (`przewodnik.pokaz_a11y`), „Krok 1 z 6. …” (`przewodnik.krok_a11y` + `przewodnik.krok_1`).
+- Gdy pasowało kilka kluczy o różnych wartościach pl (16 napisów), wybór sprawdzony w kontekście kroku i w kodzie ekranu.
+- Napisy bez pary: z tekstu kroków, wstępów i bloku „Zanim zaczniesz” (część statyczna, `<span class="en">`) usunięte pary, potem lista wszystkich ciągów łacińskich ze słowami angielskimi i wszystkich cytatów „…” bez nawiasu — przejrzana ręcznie.
+- Sens treści: rekonstrukcja wersji angielskiej z bieżącej strony („pl” ⟦en⟧ → „en”) porównana pole po polu z DANE commita `bc49657` (ostatnia wersja przed polskimi napisami).
+- Playwright `chromium.launch()` bez opcji, fragment owinięty w `<!doctype html>` + `<meta name="viewport" content="width=device-width,initial-scale=1">`, okno 390×844; wszystkie „Szczegóły wyniku” rozwinięte; tryb pełny (podejścia 1–3), krótki, krótki w trybie ciemnym.
+
+### Sprawdzone kroki
+Obowiązkowe (14): T-11, T-24, T-25, T-32, T-53, T-55, T-70, T-71, T-72, T-130, G-01, G-20, Z-01, Z-06.
+Losowe (18; ziarno 20261115, mulberry32, Fisher–Yates na pozostałych 107 ID w kolejności strony, pierwsze 18): T-100, G-02, G-08, T-86, T-87, T-113, T-97, G-07, T-66, T-93, G-30, T-114, T-15, T-135, Z-05, T-04, T-111, T-14.
+Automatyczne dopasowanie objęło dodatkowo wszystkie pozostałe kroki (121/121).
+
+### Liczby
+| Zakres | Pary | Zgodne | Niezgodne | Oznaczone „sprawdź na ekranie” |
+|---|---|---|---|---|
+| Próbka 32 kroków | 281 | 281 (272 automatycznie + 9 ręcznie) | 0 | 0 |
+| Wszystkie kroki i wstępy | 674 | 671 (653 automatycznie + 18 ręcznie) | 0 | 3 (T-02 „Install”, „Update”; T-85 „button”) |
+
+Potwierdzone ręcznie (automat nie dopasował, bo krótki literał szablonu, fragment albo złożenie): T-15 `formularz.znaczenie_w_trakcie_opis`; T-25/T-107 `menu.przypomnienie`; T-25 „Rząd 8: decrease at both ends” `licznik.przypomnienie` (zmienna `tekst` po angielsku — to tekst wpisany przez testującego); T-57 „… · do …” `kosz.*`; G-02, G-06, G-11, G-21 „N z 42” `przewodnik.postep_wiersza`; T-70, T-137 „Zostało 4 z 5” — fragment `projekty.dni_many` (w pl „Zostało” stoi na początku zdania); T-71 `limit.zawczasu_*` (ten klucz ekran pokazuje w miejscu +1: `Licznik.tsx:233`, `Dzis.tsx:128`; nie `aktywnosc.limit`); T-72 „Kontynuuj: Miesięcznie” `oferty.kup` + `oferty.miesieczny` (`Oferty.tsx:37`, `:110`).
+Wybór klucza w kontekście — poprawny we wszystkich 16 niejednoznacznych napisach, m.in.: T-11 „Cofnij 4 rz.” = `licznik.cofnij_few` (przycisk banera serii, `Licznik.tsx:170`), nie `historia.cofnij_serie_few` „Cofnij 4 rzędy”; T-55, T-58 „Ukończone” = `projekty.ukonczone` (sekcja listy, `ListaProjektow.tsx:88`), nie `projekt.data_ukonczenia` „Ukończono” (etykieta daty); T-53 „Z 22 oczek…” = `probka.z_danych_cm_few` (22 → few), „110 oczek” = `*_many`; T-11 „Dodano 4 rzędy…” = `licznik.baner_seria_few`; Z-01 „1 zakreślenie”/„2 zakreślenia” = `wzor.zakreslenia_one/_few`; T-22 „Oczka” ⟦Stitches⟧ = `formularz.rodzaj_oczka`, T-23 „Rzędy” ⟦Rows⟧ = `formularz.rodzaj_rzedy`. Uprawnienie aparatu (T-35) = `locales/systemowe/pl.json` `NSCameraUsageDescription` znak w znak.
+
+Polskie napisy spoza pl.json (wymyślone tłumaczenie): **brak**. Cytaty bez nawiasu w G-25 (po polsku), G-26 (niemiecki, japoński) są wartościami `pl.json`, `de.json`, `ja.json`.
+Nazwy wpisywane przez testującego zostały po angielsku, zgodnie z regułą: Back, Front, **Stitches** jako nazwa licznika (T-22, T-57, wstęp sekcji 3) obok opcji „Liczy” → „Oczka” ⟦Stitches⟧, Ribbing, Sweater/Scarf/Scan/Watch/Highlight test, Test merino, „cast on 3 mm” (T-29, T-61), „decrease at both ends” (T-25, T-107).
+Sens treści: 121 kroków, te same ID i kolejność, 20 sekcji; po rekonstrukcji angielskiej wszystkie pola 121 kroków i wstępy sekcji są identyczne z `bc49657`, poza T-53, gdzie pogrubione „110 stitches” stało się parą **„110 oczek”** ⟦110 stitches⟧ (poprawnie).
+Przeglądarka (390 px): `scrollWidth` = 390 w trybie pełnym (podejścia 1, 2, 3), krótkim i krótkim ciemnym; żaden element nie wychodzi poza okno; konsola: 0 błędów i 0 ostrzeżeń; nieudanych żądań 0. Napisy angielskie: 489 + 120 + 62 = 671 elementów `.en` w krokach (podejścia 1–3), wszystkie widoczne, 13,6 px przy 17 px tekstu (0,8 em), w nawiasie („…”); w bloku statycznym 8 `.en`; surowych znaków `⟦⟧⟪⟫` w wyrenderowanym tekście 0; `[sprawdź na ekranie]` 2 + 1.
+
+### Znaleziska
+| ID kroku | Napis en | Napis na stronie | Oczekiwany pl (klucz) | Waga |
+|---|---|---|---|---|
+| T-55 (Powinno być, Szczegóły) | 2 skeins (w źródle bez cudzysłowu) | „W zapasie są 2 skeins” — po angielsku, bez pary i bez oznaczenia | „2 motki” ⟦2 skeins⟧ — `zapas.motki_few` (lista włóczek; T-50 ma już „3 motki” ⟦3 skeins⟧) | P2 |
+| Zanim zaczniesz → Jak zgłaszać wynik | Back, Today, Guide (przykład uwagi) | „Back wrócił na Today, nie do Guide” — po angielsku, bez oznaczenia | np. „Wstecz wróciło na Dziś, nie do Przewodnika” — `wspolne.wstecz` „Wstecz”, `dzis.tytul` „Dziś”, `przewodnik.tytul` „Przewodnik” | P2 |
+| T-85 (Powinno być) | button (VoiceOver) | „button” [sprawdź na ekranie] | „przycisk” — polski VoiceOver czyta rolę systemową, nie napis aplikacji; przy polskim telefonie testujący nie usłyszy „button”, a strona mówi, że oznaczenie dotyczy braku w plikach aplikacji | P2 |
+| T-02; Zanim zaczniesz → Instalacja, Oczko na zegarku | Install, Update, Previous Builds, Information (TestFlight) | „Install”/„Update”/„Previous Builds”/„Information” [sprawdź na ekranie] | polskie nazwy TestFlight (reguła: napisy iOS po polsku); w repo nie ma źródła, a recenzent nie mógł ich potwierdzić — oznaczenie jest uczciwym zastępstwem, ale warto wpisać polskie nazwy po pierwszym zrzucie z TestFlight | P2 |
+| Zanim zaczniesz → Co przygotować | Auto-Lock (iOS) | „Ekran i jasność → Automatyczna blokada” | „Autoblokada” — tak nazywa się ta pozycja w polskim iOS (według wiedzy recenzenta, nie z pliku w repo; do potwierdzenia na ekranie) | P2 |
+
+Bez wagi: blok „Oczko na zegarku” ma angielskie napisy w cudzysłowie angielskim (“My Watch”), reszta strony („…”); T-72 odsyła do „Czego nie testować”, a nagłówek bloku brzmi „Czego nie testujesz” (z listy źródłowej); T-90, T-91 „Większe rozmiary” (iOS) — polskiej nazwy systemowej nie potwierdziłem; T-57 „… · do …” to format wiersza w „Ostatnio usunięte” (`kosz.*`), a krok mówi o „oknie usuwania” (tam jest `usun.projekt_opis` „…do {{data}}”) — rozjazd odziedziczony ze źródła, para pl/en sama w sobie jest poprawna.
+
+### Werdykt
+**ZGODNA Z UWAGAMI** — wszystkie 671 par „pl” ⟦en⟧ (281/281 w próbce 32 kroków) to dosłowne wartości `pl.json` dla właściwego klucza i właściwej formy liczby mnogiej, bez wymyślonych tłumaczeń i bez zmiany sensu 121 kroków; zostało 5 drobnych znalezisk P2 (dwa angielskie napisy bez oznaczenia, polski VoiceOver i nazwy systemowe iOS/TestFlight), żadnego P1.
