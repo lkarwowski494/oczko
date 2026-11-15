@@ -99,3 +99,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX3 | 08 build (sonnet) | 12 | 4,96 | 33 | 19:40 → 19:41 → b0288f4 → (verify w haku; iOS na 8f0c1424 w toku) → PRZEKAZANIE c4de9604 20:17 | — | KO-071 i KO-072 wykonane; P-849 poprawiony, P-850 |
 | BX4 | 08 build (sonnet) | 12 | 5,40 | 35 | 20:28 → 20:29 → 41515183/672a22f9 → (verify w haku; iOS na 8f0c1424 w toku) → PRZEKAZANIE 20:54 | — | KO-073 (P-855), KO-074 (P-856); recenzja runda 2 P1 poprawione |
 | BX5 | 08 build (sonnet) | 12 | 24,32 (STOP przy 22,21) | 28 | 21:01 → 21:02 → 1c7bc379/7d034b0c → (verify w haku; iOS nie wyzwalany) → PRZEKAZANIE 21:45 | — | **STOP kosztowy przekroczony** (4 subagenty ok. 1,4 mln tokenów); 85 PU B → z testem; KO-075 |
+| FX | 08 fix (sonnet) | 10 | 3,60 | 29 | 22:27 → 22:28 → edcfb7cd/b075830b → (verify w haku; iOS po 43767704896) → PRZEKAZANIE 22:55 | — | BX-002/008/009/011/012 testem czerwonym najpierw; 0 subagentów |
