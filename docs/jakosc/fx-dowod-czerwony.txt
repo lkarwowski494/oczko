@@ -5,3 +5,10 @@ Komenda: NODE_OPTIONS=--max-old-space-size=3072 npx jest tests/ekrany/ustawienia
   tests/ekrany/ustawienia-powrot-miary-bx008.test.tsx:46    getByText('Imperial') — wiersz „Units” nadal „Automatic” po powrocie z /miary
   tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx:49         Expected length: 1, Received length: 0 — po „Save” brak chipu notatki na wzorze (notatka jest w bazie)
 Po poprawkach (te same pliki testów): 3 zestawy, 4 testy zielone.
+
+KO-077/KO-078 (ta sama sesja, po odbiorze edcfb7cd): testy napisane przed poprawką, uruchomione na kodzie sprzed niej (kod 1):
+  BX-011: tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx:67 — Expected length: 1, Received length: 0 (znacznik przeniesiony: notatka z rzędem schematu 6, brak chipu);
+          tests/ekrany/wzor-akcje-167.test.ts:48 i :54 — rzad 13 oczekiwane, wywołanie z rzędem schematu (5) i 0 przy `rzadNotatki: null`.
+  BX-012: tests/jakosc/bramka-przypadki-uzycia.test.ts, 4 padają (komentarz w bloku `tags:`, CRLF, `tags: [..]`, lista bez wcięcia: parser zwracał []); „podstawa”, „tag w komentarzu albo po ---” i „tylko zaostrzenie” (90 scenariuszy z repo) zielone przed i po.
+Po poprawkach: zielone (wzor-*: 14 testów; bramka-przypadki-uzycia + przypadki-uzycia: 74).
+

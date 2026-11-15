@@ -77,9 +77,26 @@ function trasy(root, kat = path.join(root, 'app'), prefiks = '') {
     return [`${prefiks}${e.name.replace(/\.tsx$/, '')}`];
   }).sort();
 }
+/**
+ * Tagi z nagłówka scenariusza Maestro (przed pierwszym `---`). BX-012 (KO-078): odporny na CRLF, linie komentarza i puste w bloku `tags:`,
+ * zapis w linii `tags: [a, "b"]` i listę bez wcięcia; komentarz po tagu (` # …`) jest odcinany, tag w linii komentarza się nie liczy.
+ * Tylko zaostrzenie względem wersji sprzed BX-012: wszystko, co ta wersja zwracała, zwraca też ta (test na scenariuszach z repo).
+ */
 export function tagiScenariusza(tekst) {
-  const blok = /^tags:\n((?:[ \t]+- .*\n?)*)/m.exec(tekst.split(/^---\s*$/m)[0]);
-  return blok ? blok[1].split('\n').map((l) => l.replace(/^[ \t]+- /, '').replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '')).filter(Boolean) : [];
+  const linie = tekst.replace(/\r\n?/g, '\n').split(/^---[ \t]*$/m)[0].split('\n');
+  const czysty = (x) => x.replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '');
+  const start = linie.findIndex((l) => /^tags:/.test(l));
+  if (start < 0) return [];
+  const wLinii = /^tags:[ \t]*\[(.*)\][ \t]*(?:#.*)?$/.exec(linie[start]);
+  if (wLinii) return wLinii[1].split(',').map(czysty).filter(Boolean);
+  const wynik = [];
+  for (const l of linie.slice(start + 1)) {
+    if (!l.trim() || /^[ \t]*#/.test(l)) continue; // pusta linia i komentarz nie kończą bloku
+    const pozycja = /^[ \t]*-[ \t]+(.*)$/.exec(l);
+    if (!pozycja) break; // następny klucz kończy blok
+    wynik.push(czysty(pozycja[1]));
+  }
+  return wynik.filter(Boolean);
 }
 const odnosniki = (p) => [...p.matchAll(/((?:e2e\/scenariusze|tests)\/[A-Za-z0-9_./-]+\.(?:yaml|tsx?|mjs)):(\d+)/g)].map((m) => ({ plik: m[1], linia: Number(m[2]) }));
 

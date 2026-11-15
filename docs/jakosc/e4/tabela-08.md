@@ -411,7 +411,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-sygnal.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-009/S4, RD-13 | `src/kompozycja/system` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wpisanie-trasa.test.tsx` | zielony (główny zestaw) | 7 | BR-LIC-017 | `src/konfiguracja` | ER-43 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wybor-testid.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-006/S1, BR-LIC-012/S1, BR-PRJ-004/S1, P-087, P-404 | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-akcje-167.test.ts` | zielony (główny zestaw) | 6 | — | `src/ekrany/WzorAkcje`<br>`src/kompozycja/wzor-import-trasy` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-akcje-167.test.ts` | zielony (główny zestaw) | 7 | — | `src/ekrany/WzorAkcje`<br>`src/kompozycja/wzor-import-trasy` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodaj-wyjscie-by001.test.tsx` | zielony (główny zestaw) | 4 | — | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-dodawanie.test.ts` | zielony (główny zestaw) | 4 | P-353 | `src/ekrany/wspolne`<br>`src/kompozycja/wzor-dodawanie` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-film.test.tsx` | zielony (główny zestaw) | 9 | P-218, P-276 | `src/ekrany/WzorFilm`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -419,7 +419,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-grupa.test.tsx` | zielony (główny zestaw) | 6 | P-218, P-220 | `src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-menu-zrodel-wstecz.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/WzorGrupa` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-arkusz.test.tsx` | zielony (główny zestaw) | 2 | P-360 | `src/domena/znacznik-wzoru`<br>`src/ekrany/WzorNotatki`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx` | zielony (główny zestaw) | 1 | RD-21 | `src/przypadki-uzycia/wzor-widok` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-003, RD-21 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatki-odrzuc.test.tsx` | zielony (główny zestaw) | 7 | BR-WZR-003 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-ostrzezenie-miejsca-113.test.ts` | zielony (główny zestaw) | 5 | — | `src/dane/pliki/system`<br>`src/kompozycja/wzor-rysunki`<br>`src/konfiguracja` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-dzianina.test.tsx` | zielony (główny zestaw) | 12 | P-614 | `src/domena/uklad`<br>`src/ekrany/WzorLicznik`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |

@@ -6,7 +6,7 @@
  *   3. protokół testu fizycznego poprzedniego wysłanego buildu (klasa F; wyjątek tylko 1171).
  * Przed App Review: protokół F dokładnie tego buildu, bez wyjątków (polecenie `recenzja <build>`). */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from './jakosc-ios-pomoc';
 
@@ -310,4 +310,41 @@ describe('BX4 P2/P3: numeracja PU powyżej 999, stronicowanie zadań przebiegu, 
     expect(b('ocenZestawu', j('bbb'), 1, 'bbb')).toEqual([]);
     expect(b('ocenZestawu', j('aaa'), 1)).toEqual([]);
   });
+});
+
+// BX-012 (KO-078; recenzja K3-2 FX): `tagiScenariusza` zasila kontrole `oczekujacy`, `ipad` i K3-2. Zwracał [] przy komentarzu w bloku `tags:`, przy CRLF, przy
+// zapisie `tags: [a, b]` i przy liście bez wcięcia — scenariusz `oczekujacy` przechodził wtedy jako klasa A. Czerwone przed poprawką; tylko zaostrzenie (ostatni test).
+describe('BX-012: tagiScenariusza — odporność na komentarz, CRLF, zapis w linii i listę bez wcięcia', () => {
+  const tagi = (t: string) => b('tagiScenariusza', t) as string[];
+  const plik = (tagiBlok: string, po = '- launchApp\n') => `appId: x\n${tagiBlok}\n---\n${po}`;
+  test('podstawa: lista z wcięciem, komentarz po tagu i cudzysłowy jak dotąd', () => {
+    expect(tagi(plik('tags:\n  - oczekujacy\n  - "PU-005" # uwaga\n  - \'ipad\''))).toEqual(['oczekujacy', 'PU-005', 'ipad']);
+  });
+  test('komentarz w bloku `tags:` (przed tagiem i między tagami) nie ucina listy', () => {
+    expect(tagi(plik('tags:\n  # w przygotowaniu\n  - oczekujacy\n  # - PU-005\n  - ipad'))).toEqual(['oczekujacy', 'ipad']);
+  });
+  test('CRLF: te same tagi co przy LF', () => {
+    expect(tagi(plik('tags:\n  - oczekujacy\n  - PU-005').replace(/\n/g, '\r\n'))).toEqual(['oczekujacy', 'PU-005']);
+  });
+  test('zapis w linii `tags: [a, "b"]` (także z komentarzem na końcu)', () => {
+    expect(tagi(plik('tags: [oczekujacy, "PU-005", ipad] # uwaga'))).toEqual(['oczekujacy', 'PU-005', 'ipad']);
+  });
+  test('lista bez wcięcia pod `tags:` i pusta linia w bloku', () => {
+    expect(tagi(plik('tags:\n- oczekujacy\n\n- PU-005'))).toEqual(['oczekujacy', 'PU-005']);
+  });
+  test('tag w komentarzu albo po `---` nie jest tagiem; kolejny klucz kończy blok', () => {
+    expect(tagi(plik('tags:\n  - ipad\nenv:\n  - PU-005', 'tags:\n  - PU-006\n'))).toEqual(['ipad']);
+    expect(tagi('# tags:\n#   - PU-005\nappId: x\n---\n- launchApp\n')).toEqual([]);
+  });
+  test('tylko zaostrzenie: dla każdego scenariusza z repo nowy wynik zawiera wszystko, co zwracała poprzednia wersja parsera', () => {
+    const stary = (t: string) => { const blok = /^tags:\n((?:[ \t]+- .*\n?)*)/m.exec(t.split(/^---\s*$/m)[0]!); return blok ? blok[1]!.split('\n').map((l) => l.replace(/^[ \t]+- /, '').replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '')).filter(Boolean) : []; };
+    const dir = join(root, 'e2e/scenariusze');
+    const pliki = (readdirSync(dir) as string[]).filter((f) => f.endsWith('.yaml'));
+    expect(pliki.length).toBeGreaterThan(80);
+    for (const f of pliki) {
+      const t = readFileSync(join(dir, f), 'utf8');
+      const nowe = tagi(t); // jedno wywołanie na plik (osobny proces Node)
+      expect({ f, brakuje: stary(t).filter((x) => !nowe.includes(x)) }).toEqual({ f, brakuje: [] });
+    }
+  }, 120000);
 });
