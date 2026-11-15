@@ -33,4 +33,14 @@ Test „bramki nie da się wyłączyć” (`tests/wydanie/potok-testflight.test.
 **B. Lista fizyczna:** `scripts/wydanie/test-fizyczny.mjs` już daje przy każdej pozycji „Tak / Nie / Pomiń” i pole uwagi; do zrobienia: przy „Pomiń” uwaga obowiązkowa (przycisk „Kopiuj wynik” wypisuje pozycje pominięte bez uzasadnienia i nie udaje kompletnego wyniku), a tekst wyniku w formacie protokołu (`PU-NNN | zrobione: …` / `pominięte: …`), żeby koordynator zapisał `docs/jakosc/test-fizyczny/<build>.md` bez przepisywania.
 
 ## Liczby i następny krok
-(uzupełniane na końcu sesji)
+- **Katalog (zadanie 1): 270 PU — A=95, B=134, F=41.** Każdy z 121 kroków instrukcji 1171 przypisany, każda z 33 tras `app/` ma PU w „Nawigacja”, każdy z 70 scenariuszy przypisany (`npx jest tests/jakosc/przypadki-uzycia.test.ts`: 13/13). Szkic napisał subagent (general-purpose) bez raportu końcowego; sprawdzony bramką i próbką 7 odnośników klasy A (linie istnieją i dotyczą wyniku). Bramka wykryła 1 błąd szkicu (PU-227 wskazywał sam podprzepływ) — poprawione. **Katalog nie przeszedł recenzji niezależnej** (zadanie 6) — trafność klas i odnośników A poza próbką to deklaracja szkicu.
+- **Klasa B (zadanie 2): 0 z 134 zaprogramowanych** — wszystkie mają „do zaprogramowania: <poziom> — <asercja>”. Nie zaczęte (limit kontekstu 30% i pułap kosztu).
+- **Lista fizyczna (zadanie 4):** `docs/wydanie/test-fizyczny.html` (generator `node scripts/wydanie/test-fizyczny.mjs`, kontrola `--check` w teście), 41 pozycji, ok. 123 min pracy właściciela (SZACUNEK z minut na kategorię w `MIN_KAT`, nie pomiar; bez czekania 8 dni na wygaśnięcie subskrypcji z PU-194). Artifact prywatny: https://claude.ai/artifact/1crnttArRWAKZ4K4n3EsA7
+- **Znane znalezisko:** PU-016 i PU-202 — brak powrotu z „Dodaj wzór” (naprawia BW); scenariusz nawigacji do napisania jako czerwony przed kodem.
+- **[DO USTALENIA] w katalogu:** 8 miejsc (`grep -n "DO USTALENIA" docs/jakosc/przypadki-uzycia.md`) — zachowania, których szkic nie potwierdził w kodzie.
+
+### Następny krok (nowa sesja 07-jakosc build, moduł e2e-mobilne; start od tego pliku)
+1. Recenzja niezależna katalogu subagentem bez uzasadnienia autora → `docs/jakosc/bx-recenzja.md` (P1/P2/P3; P1 poprawić): trafność klas F (czy symulator naprawdę nie da rady), odnośniki A poza próbką, luki ekranów `src/ekrany/` bez trasy.
+2. KO-065 A i B według projektu wyżej (testy przed kodem; decyzje P-837, P-838).
+3. Scenariusze klasy B: najpierw sekcja „Nawigacja” (wejście i powrót każdej trasy) i „Stany puste, błędy i przerwania”, tag `przypadki-uzycia` + `oczekujacy` + `PU-NNN`, plik `7N-pu-nnn-opis.yaml`, wpis w `config.yaml` i testID w `e2e/README.md` (pilnuje `tests/jakosc/maestro-scenariusze.test.ts`).
+4. Po przebiegu CI (wyzwala koordynator): zdjęcie tagów `oczekujacy` jak w sekcji wyżej; czas przebiegu z `list_workflow_jobs` do `e2e/czesci.json` i strategii §12.

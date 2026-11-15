@@ -27,7 +27,7 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite (stan poprzedniej wersji); de
 ## Dokumenty (źródło prawdy, rola)
 - `docs/decyzje.md`, `docs/zalozenia.md`, `docs/pomysl.md`, BRD `docs/brd/` (01)
 - `docs/monetyzacja.md` (02), kontrakt zakresu `docs/scope-contract.md` (03), projekt `docs/design/` (04)
-- ADR `docs/adr/` (05; 0018–0021: 12), strategia testów i definicja ukończenia `docs/jakosc/strategia.md` (07), niezawodność `docs/niezawodnosc/` (12), treści i rejestr twierdzeń: `oczko-warsztat` (06)
+- ADR `docs/adr/` (05; 0018–0021: 12), strategia testów i definicja ukończenia `docs/jakosc/strategia.md` (07), katalog przypadków użycia `docs/jakosc/przypadki-uzycia.md` (07; nowa funkcja albo zmiana przepływu = nowy/zmieniony PU + test, P-835), niezawodność `docs/niezawodnosc/` (12), treści i rejestr twierdzeń: `oczko-warsztat` (06)
 - atlas technik 1.1 (05: architektura, kontrakt, silnik rysunków; 06: treść): `docs/atlas/` (README.md), `scripts/atlas/`
 - stan i plan partii roli 08: `docs/programista/` (08); kopia liczb treści w domenie: `node scripts/domena/generuj-parametry.mjs`
 - wzrost (kanały, pozycjonowanie, ASO, pomiar): `docs/wzrost.md`, `docs/wzrost/` (11); szkice i dane zmierzone: `oczko-warsztat/11-wzrost/`
