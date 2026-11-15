@@ -1,0 +1,7 @@
+FX (08 fix, 2026-11-15): testy BX-002, BX-008, BX-009 uruchomione na kodzie sprzed poprawek (app/ustawienia.tsx z 89b9fe7f^, src/ekrany/WzorAkcje.ts z 6ff790e3^, app/zdjecie.tsx z HEAD^ przed commitem BX-009).
+Komenda: NODE_OPTIONS=--max-old-space-size=3072 npx jest tests/ekrany/ustawienia-powrot-miary-bx008 tests/ekrany/wzor-notatka-dodaj-bx002 tests/ekrany/zdjecie-bezpieczny-obszar-bx009 --ci   → kod 1, 4 padają z asercji zachowania:
+  tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx:57  Expected: >= 59, Received: 0   (stan wczytany: wcięcie nad „Close”)
+  tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx:66  Expected: >= 59, Received: 0   (błąd odczytu: wcięcie nad „Close”)
+  tests/ekrany/ustawienia-powrot-miary-bx008.test.tsx:46    getByText('Imperial') — wiersz „Units” nadal „Automatic” po powrocie z /miary
+  tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx:49         Expected length: 1, Received length: 0 — po „Save” brak chipu notatki na wzorze (notatka jest w bazie)
+Po poprawkach (te same pliki testów): 3 zestawy, 4 testy zielone.
