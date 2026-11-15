@@ -28,7 +28,7 @@ const KATEGORIE_F = ['TestFlight', 'zegarek', 'wibracje', 'aparat', 'Pencil', 'w
 
 // ---------- kontrola 1 ----------
 /** Każda część iPhone'a 1…czesci ma success (skipped i brak zadania to błędy). Zadania iPada i eksperymentów są informacyjne (P-225). */
-export function ocenZestawu(zadania, czesci) {
+export function ocenZestawu(zadania, czesci, sha) {
   const bledy = [];
   // BX3 P1-3: brak albo zła liczba części nie wyłącza kontroli po cichu (literówka w kluczu `czesci`, 0, NaN).
   if (!Number.isInteger(czesci) || czesci < 1) return [`e2e/czesci.json: „czesci” musi być liczbą całkowitą ≥ 1 (jest ${JSON.stringify(czesci)})`];
@@ -36,11 +36,17 @@ export function ocenZestawu(zadania, czesci) {
     const nazwa = `e2e (część ${n}, iphone)`;
     const z = zadania.filter((j) => j.name === nazwa);
     if (!z.length) bledy.push(`${nazwa}: brak zadania`);
+    // BX4 (K1-1): zadanie z przebiegu innego commita nie dowodzi niczego o budowanym SHA (gdy API podaje head_sha, a SHA budowanego jest znany)
+    else if (sha && z.some((j) => typeof j.head_sha === 'string' && j.head_sha !== sha)) bledy.push(`${nazwa}: zadanie z innego SHA (${z.map((j) => String(j.head_sha).slice(0, 8)).join(', ')}) niż budowany ${sha.slice(0, 8)}`);
     else if (!z.some((j) => j.conclusion === 'success')) bledy.push(`${nazwa}: ${z.map((j) => j.conclusion ?? j.status).join(', ')}`);
     // KO-071 (BX3 P1-4): część bez scenariuszy też kończy success (plan any=false) — wymagany krok „Scenariusze” = success w zadaniu, które przeszło.
     else if (!z.some((j) => j.conclusion === 'success' && Array.isArray(j.steps) && j.steps.some((k) => k.name === 'Scenariusze' && k.conclusion === 'success'))) bledy.push(`${nazwa}: krok „Scenariusze” nie jest success — scenariusze nie biegły (KO-071)`);
   }
   return bledy;
+}
+/** BX4 (K1-2, BX3 P2-14): API zwraca zadania stronami; mniej zebranych niż `total_count` to błąd, nie cicho niepełna lista. */
+export function kompletnoscZadan(total, zebrane) {
+  return Number.isInteger(total) && zebrane >= total ? [] : [`API zadań: total_count=${total}, zebrano ${zebrane} — lista niepełna`];
 }
 
 // ---------- kontrola 2 ----------
@@ -51,10 +57,10 @@ export function czytajKatalog(tekst) {
     if (l.trim() === NAGLOWEK) { naglowki++; continue; }
     if (sekcja === SEKCJA_EKRANOW) {
       const m = /^\| ([A-Z][A-Za-z]+) \| (.+) \|$/.exec(l.trim());
-      if (m && m[1] !== 'Komponent') ekranyBez.push({ komponent: m[1], pu: [...m[2].matchAll(/PU-\d{3}/g)].map((x) => x[0]) });
+      if (m && m[1] !== 'Komponent') ekranyBez.push({ komponent: m[1], pu: [...m[2].matchAll(/PU-\d{3,}/g)].map((x) => x[0]) });
       continue;
     }
-    if (!/^\| PU-\d{3} \|/.test(l)) continue;
+    if (!/^\| PU-\d{3,} \|/.test(l)) continue;
     const k = l.split('|').slice(1, -1).map((x) => x.trim());
     if (k.length !== 8) throw new Error(`${k[0]}: ${k.length} kolumn zamiast 8 (znak „|” w komórce?)`);
     const lista = (x) => (x === '—' ? [] : x.split(',').map((y) => y.trim()).filter(Boolean));
@@ -117,6 +123,21 @@ export function ekranyBezTrasy(root) {
   return bledy;
 }
 
+/** BX4 (recenzja runda 2, K2-1): odnośnik „plik:linia” do testu musi wskazywać plik, który uruchamia `npm test`, bez skip/todo, z PU-NNN (cały wyraz)
+ *  w pobliżu wskazanej linii (tytuł testu albo komentarz nad nim). Zwraca opis błędu albo null. */
+const SKIP = /\b(?:describe|it|test)\.(?:skip|todo)\b|\b(?:xit|xtest|xdescribe)\(/;
+const ODLEGLOSC_PU = 40;
+export function bladTestuPU(root, x, id) {
+  if (!/\.(?:test|spec)\.[jt]sx?$/.test(x.plik) || x.plik.startsWith('tests/akceptacja/')) return `${x.plik} nie jest plikiem uruchamianym przez npm test (*.test.ts[x]/*.spec.ts[x] poza tests/akceptacja/)`;
+  const linie = fs.readFileSync(path.join(root, x.plik), 'utf8').split('\n');
+  if (SKIP.test(linie.join('\n'))) return `${x.plik} zawiera skip/todo`;
+  const wyraz = new RegExp(`\\b${id}(?!\\d)`);
+  const gdzie = linie.flatMap((l, i) => (wyraz.test(l) ? [i + 1] : []));
+  if (!gdzie.length) return `${x.plik} nie wymienia ${id}`;
+  if (!gdzie.some((n) => Math.abs(n - x.linia) <= ODLEGLOSC_PU)) return `${x.plik}:${x.linia} leży dalej niż ${ODLEGLOSC_PU} linii od wzmianki o ${id}`;
+  return null;
+}
+
 /** Spójność katalogu z kodem (te same reguły co tests/jakosc/przypadki-uzycia.test.ts) + ekrany bez trasy; z wymagajTestowB — P-837 (a). */
 export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
   const bledy = [];
@@ -147,12 +168,13 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
     const o = odnosniki(p.pokrycie);
     if (p.klasa === 'A') {
       if (!o.length) { bledy.push(`${p.id}: klasa A bez plik:linia`); continue; }
-      if (!o.some((x) => x.plik.startsWith('tests/') || scenariusze.includes(x.plik.replace('e2e/scenariusze/', '')))) bledy.push(`${p.id}: tylko podprzepływ`);
+      // BX4 (K3-1, KO-072): klasa A = scenariusz E2E (Maestro) — odnośniki do tests/ są tylko dodatkiem
+      if (!o.some((x) => scenariusze.includes(x.plik.replace('e2e/scenariusze/', '')))) bledy.push(`${p.id}: klasa A wymaga scenariusza E2E (e2e/scenariusze/NN-….yaml, nie sam podprzepływ ani tests/)`);
       for (const x of o) {
         if (!istnieje(x)) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
         else if (x.plik.startsWith('e2e/scenariusze/subflows/')) continue;
         else if (x.plik.startsWith('e2e/') && tagi(path.basename(x.plik)).includes('oczekujacy')) bledy.push(`${p.id}: ${x.plik} ma tag oczekujacy (to klasa B)`);
-        else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) bledy.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+        else if (x.plik.startsWith('tests/')) { const e = bladTestuPU(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
       }
       // recenzja BX2 R-A-26: linia scenariusza to asercja (albo runFlow podprzepływu wskazanego obok); nie same scenariusze iPada (informacyjne, P-225)
       const yaml = o.filter((x) => x.plik.endsWith('.yaml') && istnieje(x));
@@ -170,10 +192,10 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
       }
       // KO-071: B „z testem” = test jednostkowy albo komponentowy w tests/ (plik:linia istnieje i wymienia PU) — liczy się jako test dla P-837, klasa zostaje B
       if (/^z testem: /.test(p.pokrycie)) {
-        if (!o.length || o.some((x) => !x.plik.startsWith('tests/'))) bledy.push(`${p.id}: „z testem:” wymaga odnośników plik:linia tylko w tests/`);
+        if (!o.some((x) => x.plik.startsWith('tests/'))) bledy.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ (odnośniki e2e/ tylko jako „częściowo:”)`);
         for (const x of o) {
           if (!istnieje(x)) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
-          else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) bledy.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+          else if (x.plik.startsWith('tests/')) { const e = bladTestuPU(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
         }
         continue;
       }
@@ -181,6 +203,8 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
       if (!oo.length) { bledy.push(`${p.id}: Pokrycie klasy B ani „do zaprogramowania: <poziom> — …”, ani „oczekujący: plik:linia”`); continue; }
       for (const x of oo) {
         if (!istnieje(x)) { bledy.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`); continue; }
+        // BX4 (K2-2, część tania): linia „oczekującego” to asercja, nie nagłówek YAML
+        if (!ASERCJA.test(fs.readFileSync(path.join(root, x.plik), 'utf8').split('\n')[x.linia - 1])) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie jest asercją`);
         const tt = tagi(path.basename(x.plik));
         for (const w of ['oczekujacy', 'przypadki-uzycia', p.id]) if (!tt.includes(w)) bledy.push(`${p.id}: ${x.plik} bez tagu ${w}`);
       }
@@ -205,7 +229,7 @@ export function kontrolaFunkcji(root, ids) {
   for (const k of wiersze) {
     if (k.length !== 4) { bledy.push(`Funkcje: wiersz „${k.join(' | ').slice(0, 50)}” nie ma 4 kolumn`); continue; }
     kody.push(k[2]);
-    const p = [...k[3].matchAll(/PU-\d{3}/g)].map((m) => m[0]);
+    const p = [...k[3].matchAll(/PU-\d{3,}/g)].map((m) => m[0]);
     if (!p.length) bledy.push(`Funkcje: „${k[1].slice(0, 50)}” bez PU`);
     for (const id of p) if (!ids.has(id)) bledy.push(`Funkcje: „${k[1].slice(0, 50)}” wskazuje nieistniejący ${id}`);
   }
@@ -224,7 +248,7 @@ const bezBlokowKodu = (tekst) => tekst.replace(/```[\s\S]*?(```|$)/g, '').replac
 /** Wiersze `| PU-NNN | <wynik> |` → [[id, wynik], …] w kolejności pliku (duplikaty zostają widoczne). */
 export function wierszeProtokolu(tekst) {
   const w = [];
-  for (const l of bezBlokowKodu(tekst).split('\n')) { const m = /^\| (PU-\d{3}) \|(.*)\|\s*$/.exec(l.trim()); if (m) w.push([m[1], m[2].trim()]); }
+  for (const l of bezBlokowKodu(tekst).split('\n')) { const m = /^\| (PU-\d{3,}) \|(.*)\|\s*$/.exec(l.trim()); if (m) w.push([m[1], m[2].trim()]); }
   return w;
 }
 /** Wiersze `| PU-NNN | <wynik> |` → { 'PU-NNN': '<wynik>' } (ostatni wygrywa; duplikaty wykrywa kontrolaProtokolu). */
@@ -315,9 +339,16 @@ async function main([cmd, ...a]) {
     let b;
     if (!env.PRZEBIEG || !env.GH_TOKEN || !env.GITHUB_REPOSITORY) b = ['brak PRZEBIEG, GH_TOKEN albo GITHUB_REPOSITORY (wynik zadania bramka)'];
     else {
-      const odp = await fetch(`https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/runs/${env.PRZEBIEG}/jobs?per_page=100`, { headers: { Authorization: `Bearer ${env.GH_TOKEN}`, Accept: 'application/vnd.github+json' } });
-      if (!odp.ok) b = [`API zadań przebiegu ${env.PRZEBIEG}: HTTP ${odp.status}`];
-      else b = ocenZestawu((await odp.json()).jobs ?? [], JSON.parse(fs.readFileSync(path.join(root, 'e2e/czesci.json'), 'utf8')).czesci);
+      // BX4 (K1-2): strony po 100 do `total_count`; SHA zadań porównywany z GITHUB_SHA (K1-1)
+      const zadania = []; let total; let blad = null;
+      for (let strona = 1; strona <= 10 && !blad; strona++) {
+        const odp = await fetch(`https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/runs/${env.PRZEBIEG}/jobs?per_page=100&page=${strona}`, { headers: { Authorization: `Bearer ${env.GH_TOKEN}`, Accept: 'application/vnd.github+json' } });
+        if (!odp.ok) { blad = [`API zadań przebiegu ${env.PRZEBIEG}: HTTP ${odp.status}`]; break; }
+        const dane = await odp.json();
+        total = dane.total_count; zadania.push(...(dane.jobs ?? []));
+        if ((dane.jobs ?? []).length === 0 || zadania.length >= total) break;
+      }
+      b = blad ?? [...kompletnoscZadan(total, zadania.length), ...ocenZestawu(zadania, JSON.parse(fs.readFileSync(path.join(root, 'e2e/czesci.json'), 'utf8')).czesci, env.GITHUB_SHA)];
     }
     wypisz(`Kontrola 1: zestaw PU w przebiegu „Jakość · iOS” #${env.PRZEBIEG || '?'}`, b);
     podsumowanie(`- Kontrola 1 (zestaw PU, przebieg ${env.PRZEBIEG || '?'}): ${b.length ? `czerwona (${b.length})` : 'zielona'}`);

@@ -228,3 +228,23 @@ Zakres: `scripts/jakosc/bramka-przypadki-uzycia.mjs`, zadanie `bramka-przypadki`
 - P2-14 `jobs?per_page=100` bez paginacji.
 
 **P3** data wyjątku tylko regexem (2026-99-99 przechodzi); `git tag -l` bierze pierwszy tag alfabetycznie; `kontrolaFunkcji` bez granicy po nazwie pliku i bez podkatalogów; `ocenBramke` (`testflight.mjs`) zwraca pierwszy zielony przebieg, nie wszystkie przebiegi SHA.
+
+
+## Kod bramki — runda 2 (BX4, 2026-11-15; subagent bez uzasadnień autora, zakres b35fdfaf..c4de9604 + skrypt, workflow, testy)
+Eksperymenty recenzenta (fikstury w katalogu tymczasowym, repo bez zmian). **Kontrola 1 nie jest do obejścia prostym wejściem:** krok o innej nazwie (wielkość liter, spacja, dopisek), `steps` z innego zadania (dwa zadania o tej samej nazwie nie łączą się — koniunkcja w obrębie jednego), krok z zadania iPada — wszystkie dają błąd. **Żaden PU klasy A nie jest bez scenariusza E2E** (0 z 93). Bramki w workflowie nie da się pominąć (brak `if`/`continue-on-error`, `build.needs` z obiema, `pomin_bramke_e2e` tylko kontrola 1).
+
+| ID | P | Znalezisko | Stan |
+|---|---|---|---|
+| K2-1 | P1 | „z testem:” spełnialne plikiem, który nie sprawdza PU: komentarz `// PU-NNN` + `describe.skip`, `it.todo`, plik poza jest (`tests/akceptacja/`, `.mjs`, bez `.test.`), PU jako podciąg (PU-0030) | **poprawione** (`bladTestuPU`; testy 7 czerwonych → zielone) |
+| K3-1 | P1 | klasa A dopuszczała odnośniki wyłącznie do `tests/` (bez E2E) wbrew KO-072 | **poprawione** (A wymaga scenariusza E2E) |
+| K2-2 | P1/decyzja | B „oczekujący” spełnia P-837 pustym scenariuszem (tag `oczekujacy` wyłącza go z bramki planu); linia nie była sprawdzana | **część tania poprawiona** (linia = asercja); **liczenie „oczekującego” jako testu — decyzja koordynatora** (P-854) |
+| K3-2 | P2 | klasa A nie jest związana tagiem `PU-NNN` scenariusza (0/93 scenariuszy ma tag) — wystarczy dowolna asercja zielonego scenariusza | otwarte (wymaga dopisania tagów do 93 scenariuszy albo mapy; do kolejki) |
+| K1-1 | P3 | kontrola 1 ufa wyjściu `bramka`, nie sprawdza SHA | **poprawione** (`head_sha` zadań = `GITHUB_SHA`, gdy API je podaje) |
+| K1-2 = BX3 P2-14 | P3 | `per_page=100` bez stronicowania | **poprawione** (strony do `total_count`, mniej = błąd) |
+| BX3 P2-12 | P2 | id `PU-\d{3}`: PU-1000 niewidoczny | **poprawione** (`\d{3,}`) |
+| K1-3 | P3 | brak testu, że krok „Scenariusze” nie ma `continue-on-error` ani innego `if` | otwarte |
+| K4-1 | P3 | test „POMIN=true → status 1” tautologiczny (kod 1 z dowolnej czerwonej kontroli) | otwarte |
+| K4-2 | P3 | logika kontroli katalogu zduplikowana w `tests/jakosc/przypadki-uzycia.test.ts` i skrypcie (dryf) | otwarte |
+| K4-3 | P3 | kontrola 3 ocenia formę, nie treść uzasadnienia (świadoma decyzja) | bez zmian |
+| BX3 P2-6, 7, 10, 11, 13 | P2 | osiągalność ekranu (import w komentarzu, `import type`, barrel), linia `tests/` w bloku `test(` (częściowo domknięte przez K2-1), brak protokołu dla nieotagowanego buildu, `git show` z innym błędem, `powod` ze spacji | otwarte (nie zmieniają `src/`/`app/`; do kolejki) |
+Dowód: `docs/jakosc/bx4-dowod-czerwony.txt` (czerwone na kodzie c4de9604, potem zielone); `npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts tests/jakosc/przypadki-uzycia.test.ts tests/wydanie/potok-testflight.test.ts` → 80/80.

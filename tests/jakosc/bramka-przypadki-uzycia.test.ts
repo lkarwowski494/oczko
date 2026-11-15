@@ -212,3 +212,74 @@ describe('BX3 P1-5: testy workflow chronią także zadanie build i krok skryptu'
   });
 });
 
+
+// BX4 (recenzja niezależna rundy 2 kodu bramki, c4de9604): „z testem:” i klasa A nie mogą być spełnione plikiem, który nie sprawdza PU,
+// ani odnośnikiem spoza E2E. Fikstury w katalogu tymczasowym: kopia drzew kodu + wiersz katalogu z podmienioną klasą i Pokryciem.
+describe('BX4 P1 (recenzja runda 2): „z testem:”, klasa A i „oczekujący” nie są spełnialne pozorem', () => {
+  const fs = jest.requireActual<typeof import('node:fs')>('node:fs');
+  const os = jest.requireActual<typeof import('node:os')>('node:os');
+  function fikstura(wiersz: { id: string; klasa: 'A' | 'B'; pokrycie: string }, pliki: Record<string, string>) {
+    const tmp = fs.mkdtempSync(join(os.tmpdir(), 'bramka-bx4-'));
+    for (const d of ['app', 'src/ekrany', 'src/przypadki-uzycia', 'e2e/scenariusze']) fs.cpSync(join(root, d), join(tmp, d), { recursive: true });
+    fs.mkdirSync(join(tmp, 'docs/jakosc'), { recursive: true });
+    const katalog = fs.readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8').split('\n').map((l) => {
+      if (!l.startsWith(`| ${wiersz.id} |`)) return l;
+      const k = l.split('|');
+      k[7] = ` ${wiersz.klasa} `; k[8] = ` ${wiersz.pokrycie} `;
+      return k.join('|');
+    }).join('\n');
+    fs.writeFileSync(join(tmp, 'docs/jakosc/przypadki-uzycia.md'), katalog);
+    for (const [p, tresc] of Object.entries(pliki)) { fs.mkdirSync(join(tmp, p, '..'), { recursive: true }); fs.writeFileSync(join(tmp, p), tresc); }
+    return (b('kontrolaKatalogu', tmp, { wymagajTestowB: true }) as string[]).filter((e) => e.startsWith(`${wiersz.id}:`));
+  }
+  const bTest = (plik: string, tresc: string) => fikstura({ id: 'PU-003', klasa: 'B', pokrycie: `z testem: ${plik}:2` }, { [plik]: tresc });
+  const DOBRY = "// PU-003\ntest('PU-003: migracja zachowuje liczności', () => { expect(1).toBe(1); });\n";
+
+  test('kontrola: prawdziwy test z PU w tytule i asercją → brak błędów PU-003', () => {
+    expect(bTest('tests/zz/dobry.test.ts', DOBRY)).toEqual([]);
+  });
+  test.each([
+    ['describe.skip', "// PU-003\ndescribe.skip('PU-003', () => { test('x', () => { expect(1).toBe(1); }); });\n"],
+    ['it.todo', "// PU-003\nit.todo('PU-003 migracja');\n"],
+    ['PU tylko w komentarzu, test o czymś innym (plik wymienia PU-003 bez sensu)', "// inne\ntest('coś innego', () => { expect(1).toBe(1); });\n" + '\n'.repeat(60) + '// PU-003\n'],
+    ['PU-003 tylko jako podciąg PU-0030', "// PU-0030\ntest('x', () => { expect(1).toBe(1); });\n"],
+  ])('P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — %s', (_n, tresc) => {
+    expect(bTest('tests/zz/zly.test.ts', tresc).length).toBeGreaterThan(0);
+  });
+  test.each([
+    ['plik w tests/akceptacja/ (poza npm test)', 'tests/akceptacja/zz.test.ts'],
+    ['plik .mjs (poza testMatch jest)', 'tests/zz/skrypt.test.mjs'],
+    ['plik bez .test. w nazwie', 'tests/zz/pomocnik.ts'],
+  ])('P1 K2-1: „z testem:” odrzuca %s', (_n, plik) => {
+    expect(bTest(plik, DOBRY).length).toBeGreaterThan(0);
+  });
+
+  test('P1 K3-1: klasa A z odnośnikiem tylko do tests/ (bez scenariusza E2E) → błąd; A to „przechodzi przez interfejs na urządzeniu”', () => {
+    const bledy = fikstura({ id: 'PU-017', klasa: 'A', pokrycie: 'tests/zz/a.test.ts:2' }, { 'tests/zz/a.test.ts': DOBRY.replace('PU-003', 'PU-017').replace('PU-003', 'PU-017') });
+    expect(bledy.some((e) => /klasa A wymaga scenariusza E2E/.test(e))).toBe(true);
+  });
+
+  test('P2 K2-2 (część tania): B „oczekujący” wskazujący linię, która nie jest asercją (np. nagłówek YAML) → błąd', () => {
+    const bledy = fikstura({ id: 'PU-198', klasa: 'B', pokrycie: 'oczekujący: e2e/scenariusze/71-pu-198-historia-dzien-projekt-wstecz.yaml:7' }, {});
+    expect(bledy.some((e) => /nie jest asercją/.test(e))).toBe(true);
+  });
+});
+
+// BX4: poprawki P2/P3 recenzji (BX3 P2-12, P2-14; runda 2 K1-1, K1-2) — czerwone przed kodem, patrz docs/jakosc/bx4-dowod-czerwony.txt.
+describe('BX4 P2/P3: numeracja PU powyżej 999, stronicowanie zadań przebiegu, SHA zadań', () => {
+  const wiersz = (id: string) => `| ${id} | Chcę coś zrobić. | Krok pierwszy i drugi. | Wynik jest widoczny. | — | licznik | F | F: TestFlight — instalacja z TestFlight na urządzeniu właściciela. |`;
+  test('P2-12: PU-1000 jest widoczny dla parsera katalogu (id nie tylko trzycyfrowe)', () => {
+    const k = b('czytajKatalog', ['## Licznik', '', '| PU | Cel użytkownika | Kroki | Oczekiwany wynik | Instrukcja | Ekrany | Klasa | Pokrycie |', wiersz('PU-999'), wiersz('PU-1000')].join('\n')) as { pu: { id: string }[] };
+    expect(k.pu.map((p) => p.id)).toEqual(['PU-999', 'PU-1000']);
+  });
+  test('K1-2 (P2-14): przebieg ma więcej zadań, niż zwróciły strony API (total_count > zebrane) → błąd, nie cicha niepełna lista', () => {
+    expect(b('kompletnoscZadan', 120, 100)).toEqual([expect.stringMatching(/120.*100/)]);
+    expect(b('kompletnoscZadan', 15, 15)).toEqual([]);
+  });
+  test('K1-1: zadanie z innego SHA niż budowany → błąd; zgodny SHA albo brak SHA do porównania → bez błędu', () => {
+    const j = (sha: string) => [{ name: 'e2e (część 1, iphone)', conclusion: 'success', head_sha: sha, steps: [{ name: 'Scenariusze', conclusion: 'success' }] }];
+    expect(b('ocenZestawu', j('aaa'), 1, 'bbb')).toEqual([expect.stringMatching(/SHA/)]);
+    expect(b('ocenZestawu', j('bbb'), 1, 'bbb')).toEqual([]);
+    expect(b('ocenZestawu', j('aaa'), 1)).toEqual([]);
+  });
+});

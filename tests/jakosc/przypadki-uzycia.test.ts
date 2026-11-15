@@ -138,10 +138,10 @@ describe('katalog przypadków użycia: pokrycie według klasy', () => {
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) continue;
       if (/^z testem: /.test(p.pokrycie)) { // KO-071: test jednostkowy/komponentowy w tests/, klasa zostaje B
         const t = odnosniki(p.pokrycie);
-        if (!t.length || t.some((x) => !x.plik.startsWith('tests/'))) zle.push(`${p.id}: „z testem:” wymaga odnośników plik:linia tylko w tests/`);
+        if (!t.some((x) => x.plik.startsWith('tests/'))) zle.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ (odnośniki e2e/ tylko jako „częściowo:”)`);
         for (const x of t) {
           if (!istnieje(x)) zle.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
-          else if (!fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+          else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
         }
         continue;
       }
