@@ -348,6 +348,9 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| BO | session_01T66VBvr9Y8BL2KfBZUftjw | 09 build (sonnet) — tryb podpisy + przekład 27 języków przez API (kontynuacja BM; KO-060) | claude/bo-podpisy-api-2026-11-15 od 761b9551 | — | — | start 08:22 (2. konto); polecenie BO.md @ 033c5a12; pula P-808…P-810; pułap 10, STOP 13; prompt roli różni się o 2 znaki (U+00A0/U+202F → spacje w przykładowym regexie, bez wpływu na zadanie) |
+| BP | session_01T66VBwRYy642qKQtvNG1EE | 07 build (opus) — instrukcja testu iPhone + Watch jako artefakt (kontynuacja BN) | claude/bp-instrukcja-testu-2026-11-15 od 761b9551 | — | — | start 08:22 (2. konto); polecenie BP.md @ 033c5a12; pula P-811…P-813; pułap 10, STOP 13; przekazane słowa właściciela „szczegółowa instrukcja krok po kroku” |
+| BM / BN | session_01T66VByZew6i7uSANb99r9b / session_01T66VBxe9mTmV76B8TBnVaK | (pierwsze konto) | @ 761b9551, bez commitów | — | — | stanęły: limit pierwszego konta (właściciel ok. 08:18: „Limit na amtym koncie sie skonczyl”); zastąpione przez BO/BP; niearchiwizowalne z tego konta |
 | BJ | session_01T66VBvnUn5wCEMCp1Vi7bk | 07 audit (opus) — werdykt A2 buildu 1161 | claude/bj-werdykt-1161-2026-11-13 @ b482bd03 | — | [DO USTALENIA] (<8 wg sesji) | PRZEKAZANIE 08:49: GOTOWY Z UWAGAMI (autor OK, 0 Co-Authored-By, 5 plików docs — sprawdzone); ci.yml dispatch 08:51; czeka na pełny katalog e2e (U1); od 08:45; pula P-796…P-797; pułap 8, STOP 10,4 |
 | BK | session_01T66VBznLhegoW3R5NB5QXX | 10 build (sonnet) — lista-1-0.md pod build 6, C1, dziennik A5 | claude/bk-lista-1-0-build6-2026-11-13 @ 80bbc396 | — | ok. 2 [wg sesji] | PRZEKAZANIE 08:48 (autor OK, 0 Co-Authored-By, 2 pliki docs — sprawdzone); ci.yml dispatch 08:49 → odbiór po zielonym; od 08:45; pula P-798…P-799; pułap 4, STOP 5,2 |
 | BL | session_01T66VBztJ8gkLwEDRsbm88E | 10 fix (sonnet, kod) — null w createAttrs kopii lokalizacji | claude/bl-asc-v2-null-2026-11-13 @ e9966c88 | <30 | <3 wg sesji | PRZEKAZANIE 08:52 (autor OK, 0 Co-Authored-By; diff 6 linii kodu + 2 testy przeczytany — recenzja koordynatora TAK); ci.yml dispatch 08:53; od 08:45; pula P-800…P-801; pułap 3, STOP 3,9 |
@@ -495,6 +498,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. Następny wolny: P-814; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
 - **Pula BN (07): P-805…P-807. Następny wolny: P-808.** **Pula BM (09): P-802…P-804. Następny wolny: P-805; KO następny: KO-061.**
 - **Pule 13.11 08:40: BJ P-796…P-797, BK P-798…P-799, BL P-800…P-801. Następny wolny: P-802; KO następny: KO-058.**
 - **Pula BD (07): P-781…P-783. Następny wolny: P-784; KO następny: KO-055.**
@@ -846,3 +850,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 08:25 | M9 | Właściciel 08:22: „Zaraz mi sie skonczy tu limit. Zapisz prace i pozwol mi przejsc na drugoie konto.” → stan zapisany, przypomnienia tej sesji usunięte, BM poinformowana (raporty też w bm-stan.md), prompt dla następcy w sekcji „Prompt … 15.11” | następca na drugim koncie |
 | 15.11 08:27 | M9 | BN = session_01T66VBxe9mTmV76B8TBnVaK (opus, start potwierdzony); wiadomość: raporty także w bn-stan.md | następca na drugim koncie |
 | 15.11 08:20 | M9 (nast., 2. konto) | Przejęcie przez session_01T66VBxsbue4wvNXCcRiSEi (stan @ aef7df86); przypomnienia własne (kontrola 09:15, 14:00, 05:00 16.11); BM/BN niewidoczne (send_message „not found”), gałęzie @ 761b9551; prompts b5992db, warsztat 1c59320 | kontrola 09:15 |
+| 15.11 08:24 | M9 | Właściciel: „Limit na amtym koncie sie skonczyl” → BM/BN zastąpione: polecenia BO/BP (033c5a12), sesje BO session_01T66VBvr9Y8BL2KfBZUftjw (09 sonnet), BP session_01T66VBwRYy642qKQtvNG1EE (07 opus), start bez błędu. Właściciel: „DO tego potrzebuje szczegolowej instrukcji krok po kroku co testowac na telefonie” → przekazane BP | kontrola 09:15 |
