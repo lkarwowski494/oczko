@@ -1,0 +1,1106 @@
+{
+ "uzyte": [
+  {
+   "en": "Projects",
+   "pl": "Projekty",
+   "zr": "projekty.tytul,zakladki.projekty"
+  },
+  {
+   "en": "Today",
+   "pl": "Dziś",
+   "zr": "dzis.tytul,zakladki.dzis"
+  },
+  {
+   "en": "First counter",
+   "pl": "Pierwszy licznik",
+   "zr": "dzis.pierwszy_tytul"
+  },
+  {
+   "en": "Tap +1 after each finished row. You can name the project later.",
+   "pl": "Stuknij +1 po każdym skończonym rzędzie. Projekt nazwiesz później.",
+   "zr": "dzis.pierwszy_opis"
+  },
+  {
+   "en": "Highlighter",
+   "pl": "Zakreślacz",
+   "zr": "wzor.zakreslacz"
+  },
+  {
+   "en": "Undo last stroke",
+   "pl": "Cofnij ostatnią kreskę",
+   "zr": "wzor.cofnij_rysunek"
+  },
+  {
+   "en": "1 highlight",
+   "pl": "1 zakreślenie",
+   "zr": "wzor.zakreslenia_one"
+  },
+  {
+   "en": "2 highlights",
+   "pl": "2 zakreślenia",
+   "zr": "wzor.zakreslenia_other"
+  },
+  {
+   "en": "4 highlights",
+   "pl": "4 zakreślenia",
+   "zr": "wzor.zakreslenia_other"
+  },
+  {
+   "en": "Continue",
+   "pl": "Kontynuuj",
+   "zr": "dzis.kontynuuj"
+  },
+  {
+   "en": "Add pattern",
+   "pl": "Dodaj wzór",
+   "zr": "wzor.dodaj"
+  },
+  {
+   "en": "Choose file (PDF or Word)",
+   "pl": "Wybierz plik (PDF lub Word)",
+   "zr": "wzor.z_pliku"
+  },
+  {
+   "en": "+1 row",
+   "pl": "+1 rząd",
+   "zr": "licznik.plus,aktywnosc.plus"
+  },
+  {
+   "en": "−1",
+   "pl": "−1",
+   "zr": "licznik.minus"
+  },
+  {
+   "en": "Now working row …",
+   "pl": "Teraz rząd …",
+   "zr": "licznik.teraz"
+  },
+  {
+   "en": "Undo 4 rows",
+   "pl": "Cofnij 4 rz.",
+   "zr": "licznik.cofnij_few"
+  },
+  {
+   "en": "Added 4 rows in … s. Undo?",
+   "pl": "Dodano 4 rzędy w … s. Cofnąć?",
+   "zr": "licznik.baner_seria_other,historia.seria_other"
+  },
+  {
+   "en": "History",
+   "pl": "Historia",
+   "zr": "licznik.historia,licznik.akcja_historia,dni.tytul,zakladki.historia"
+  },
+  {
+   "en": "Undo",
+   "pl": "Cofnij",
+   "zr": "wspolne.cofnij"
+  },
+  {
+   "en": "undone",
+   "pl": "cofnięto",
+   "zr": "historia.opis_cofniecie"
+  },
+  {
+   "en": "Enter the row number",
+   "pl": "Wpisz numer rzędu",
+   "zr": "menu.wpisz,formularz.wpisz_tytul"
+  },
+  {
+   "en": "Reset to 0…",
+   "pl": "Wyzeruj do 0…",
+   "zr": "menu.zeruj"
+  },
+  {
+   "en": "Reset to 0",
+   "pl": "Wyzeruj do 0",
+   "zr": "menu.zeruj_potwierdz"
+  },
+  {
+   "en": "Lock counter (ignore taps)",
+   "pl": "Zablokuj licznik (ignoruj stuknięcia)",
+   "zr": "menu.zablokuj"
+  },
+  {
+   "en": "Unlock",
+   "pl": "Odblokuj",
+   "zr": "licznik.odblokuj"
+  },
+  {
+   "en": "Counter locked",
+   "pl": "Licznik zablokowany",
+   "zr": "licznik.zablokowany,aktywnosc.zablokowany"
+  },
+  {
+   "en": "Counter is locked. Unlock it at the top.",
+   "pl": "Licznik jest zablokowany. Odblokuj go u góry.",
+   "zr": "licznik.zablokowany_stukniecie"
+  },
+  {
+   "en": "What the number shows",
+   "pl": "Co pokazuje liczba",
+   "zr": "menu.znaczenie"
+  },
+  {
+   "en": "The row I’m on",
+   "pl": "Rząd, nad którym pracuję",
+   "zr": "formularz.znaczenie_w_trakcie"
+  },
+  {
+   "en": "Rows finished",
+   "pl": "Skończone rzędy",
+   "zr": "formularz.znaczenie_skonczone"
+  },
+  {
+   "en": "11 means you’re working on row 11",
+   "pl": "Liczba 11 znaczy: pracujesz nad rzędem 11.",
+   "zr": "formularz.znaczenie_w_trakcie_opis"
+  },
+  {
+   "en": "Settings",
+   "pl": "Ustawienia",
+   "zr": "ustawienia.tytul"
+  },
+  {
+   "en": "Vibration",
+   "pl": "Wibracje",
+   "zr": "ustawienia.wibracje"
+  },
+  {
+   "en": "Name project and part",
+   "pl": "Nazwij projekt i część",
+   "zr": "menu.nazwa"
+  },
+  {
+   "en": "New project",
+   "pl": "Nowy projekt",
+   "zr": "projekty.nowy,formularz.nowy_tytul,udostepnij.nowy_projekt"
+  },
+  {
+   "en": "Add part",
+   "pl": "Dodaj część",
+   "zr": "formularz.czesc_tytul,projekt.dodaj_czesc"
+  },
+  {
+   "en": "Add part or counter",
+   "pl": "Dodaj część lub licznik",
+   "zr": "projekt.dodaj_a11y"
+  },
+  {
+   "en": "Add counter",
+   "pl": "Dodaj licznik",
+   "zr": "formularz.licznik_tytul,projekt.dodaj_licznik"
+  },
+  {
+   "en": "Name",
+   "pl": "Nazwa",
+   "zr": "formularz.nazwa_tytul,formularz.licznik_nazwa,zapas.pole_nazwa"
+  },
+  {
+   "en": "In part",
+   "pl": "W części",
+   "zr": "formularz.licznik_czesc"
+  },
+  {
+   "en": "Counts",
+   "pl": "Liczy",
+   "zr": "formularz.licznik_rodzaj"
+  },
+  {
+   "en": "Stitches",
+   "pl": "Oczka",
+   "zr": "formularz.rodzaj_oczka"
+  },
+  {
+   "en": "Rows",
+   "pl": "Rzędy",
+   "zr": "formularz.rodzaj_rzedy"
+  },
+  {
+   "en": "Goal",
+   "pl": "Cel",
+   "zr": "licznik.akcja_cel"
+  },
+  {
+   "en": "Set a repeat length",
+   "pl": "Ustaw długość powtórzenia",
+   "zr": "menu.powtorzenie"
+  },
+  {
+   "en": "Rows in one repeat",
+   "pl": "Rzędy w jednym powtórzeniu",
+   "zr": "formularz.powt_pole"
+  },
+  {
+   "en": "A repeat needs at least 1 row.",
+   "pl": "Powtórzenie ma co najmniej 1 rząd.",
+   "zr": "formularz.powt_blad"
+  },
+  {
+   "en": "…: repeat 1, row … of 8",
+   "pl": "…: powtórzenie 1, rząd … z 8",
+   "zr": "licznik.powtorzenie,dzis.czesc_rzad_cel"
+  },
+  {
+   "en": "Add a reminder (“every N rows”)",
+   "pl": "Dodaj przypomnienie („co N rzędów”)",
+   "zr": "menu.przypomnienie"
+  },
+  {
+   "en": "What to do",
+   "pl": "Co zrobić",
+   "zr": "formularz.przyp_tekst"
+  },
+  {
+   "en": "Starting on row",
+   "pl": "Zaczynając od rzędu",
+   "zr": "formularz.przyp_od"
+  },
+  {
+   "en": "Every … rows",
+   "pl": "Co … rzędów",
+   "zr": "formularz.przyp_co"
+  },
+  {
+   "en": "How many times",
+   "pl": "Ile razy",
+   "zr": "formularz.przyp_razy"
+  },
+  {
+   "en": "Save reminder",
+   "pl": "Zapisz przypomnienie",
+   "zr": "formularz.przyp_zapisz"
+  },
+  {
+   "en": "You’ll be reminded on rows: 8, 14, 20",
+   "pl": "Przypomnimy w rzędach: 8, 14, 20",
+   "zr": "formularz.przyp_podglad"
+  },
+  {
+   "en": "Row 8: decrease at both ends",
+   "pl": "Rząd 8: decrease at both ends",
+   "zr": "licznik.przypomnienie"
+  },
+  {
+   "en": "1 of 3, next on row 14",
+   "pl": "1 z 3, następny w rzędzie 14",
+   "zr": "licznik.przypomnienie_postep"
+  },
+  {
+   "en": "tap when row 8 is done",
+   "pl": "stuknij, gdy rząd 8 gotowy",
+   "zr": "licznik.podpis_plus,aktywnosc.podpis_plus"
+  },
+  {
+   "en": "Reminders",
+   "pl": "Przypomnienia",
+   "zr": "przyp.menu,przyp.tytul"
+  },
+  {
+   "en": "You’ll be reminded on rows: 8, 14, 20, 26",
+   "pl": "Przypomnimy w rzędach: 8, 14, 20, 26",
+   "zr": "formularz.przyp_podglad"
+  },
+  {
+   "en": "Set a goal for this part",
+   "pl": "Ustaw cel dla tej części",
+   "zr": "menu.cel"
+  },
+  {
+   "en": "Next part",
+   "pl": "Następna część",
+   "zr": "licznik.nastepna_czesc"
+  },
+  {
+   "en": "Goal reached",
+   "pl": "Cel osiągnięty",
+   "zr": "licznik.cel_osiagniety"
+  },
+  {
+   "en": "What’s next?",
+   "pl": "Co dalej?",
+   "zr": "czesc.co_dalej_tytul"
+  },
+  {
+   "en": "A second Front",
+   "pl": "Druga część jak Front",
+   "zr": "czesc.druga_taka_sama"
+  },
+  {
+   "en": "Project ›",
+   "pl": "Projekt ›",
+   "zr": "licznik.projekt_wejscie"
+  },
+  {
+   "en": "Note",
+   "pl": "Notatka",
+   "zr": "licznik.notatka,licznik.akcja_notatka,zapas.pole_notatka"
+  },
+  {
+   "en": "Needles or hook",
+   "pl": "Druty lub szydełko",
+   "zr": "formularz.narzedzie_tytul,projekt.narzedzie_wiersz"
+  },
+  {
+   "en": "Size in mm",
+   "pl": "Rozmiar w mm",
+   "zr": "formularz.narzedzie_mm"
+  },
+  {
+   "en": "Shows as: 4 mm (US 6)",
+   "pl": "Wyświetli się: 4 mm (US 6)",
+   "zr": "formularz.narzedzie_podglad,projekt.rozmiar_us"
+  },
+  {
+   "en": "4 mm (US 6)",
+   "pl": "4 mm (US 6)",
+   "zr": "projekt.rozmiar_us"
+  },
+  {
+   "en": "Make another like this",
+   "pl": "Zrób taki sam",
+   "zr": "projekt.zrob_taka_sama"
+  },
+  {
+   "en": "Done by",
+   "pl": "Gotowe do",
+   "zr": "formularz.termin_tytul,projekt.termin"
+  },
+  {
+   "en": "Today’s goal: N rows. It stays the same all day.",
+   "pl": "Cel na dziś: N rzędów. Zostaje taki przez cały dzień.",
+   "zr": "formularz.termin_podglad_many"
+  },
+  {
+   "en": "Done by …, today 0 of N rows",
+   "pl": "Do …, dziś 0 z N rzędów",
+   "zr": "projekt.termin_dzis_many"
+  },
+  {
+   "en": "In progress",
+   "pl": "W toku",
+   "zr": "projekty.w_toku"
+  },
+  {
+   "en": "Timer",
+   "pl": "Stoper",
+   "zr": "licznik.akcja_stoper"
+  },
+  {
+   "en": "Start",
+   "pl": "Start",
+   "zr": "formularz.sesja_start"
+  },
+  {
+   "en": "Pause timer",
+   "pl": "Wstrzymaj stoper",
+   "zr": "stoper.wstrzymaj"
+  },
+  {
+   "en": "Resume timer",
+   "pl": "Wznów stoper",
+   "zr": "stoper.wznow"
+  },
+  {
+   "en": "Stop timer",
+   "pl": "Zatrzymaj stoper",
+   "zr": "stoper.zatrzymaj"
+  },
+  {
+   "en": "Sessions",
+   "pl": "Sesje",
+   "zr": "projekt.sesje,sesje.tytul"
+  },
+  {
+   "en": "Edited",
+   "pl": "Poprawiona",
+   "zr": "sesje.skorygowana"
+  },
+  {
+   "en": "Search",
+   "pl": "Szukaj",
+   "zr": "projekty.szukaj"
+  },
+  {
+   "en": "Add photo",
+   "pl": "Dodaj zdjęcie",
+   "zr": "zdjecia.dodaj"
+  },
+  {
+   "en": "Take photo",
+   "pl": "Zrób zdjęcie",
+   "zr": "zdjecia.zrob"
+  },
+  {
+   "en": "Open Settings",
+   "pl": "Otwórz Ustawienia",
+   "zr": "zdjecia.otworz_ustawienia,icloud.ustawienia"
+  },
+  {
+   "en": "Choose from library",
+   "pl": "Wybierz z biblioteki",
+   "zr": "zdjecia.wybierz"
+  },
+  {
+   "en": "Oczko uses the camera only when you take a photo of a pattern, a project or a yarn label. Photos stay on your device.",
+   "pl": "Oczko używa aparatu tylko wtedy, gdy robisz zdjęcie wzoru, projektu lub metki włóczki. Zdjęcia zostają na urządzeniu.",
+   "zr": "locales/systemowe/pl.json NSCameraUsageDescription"
+  },
+  {
+   "en": "Oczko can’t use the camera",
+   "pl": "Oczko nie może użyć aparatu",
+   "zr": "zdjecia.brak_aparatu_tytul"
+  },
+  {
+   "en": "Delete pattern…",
+   "pl": "Usuń wzór…",
+   "zr": "wzor.usun"
+  },
+  {
+   "en": "Scan pages",
+   "pl": "Skanuj strony",
+   "zr": "wzor.skanuj"
+  },
+  {
+   "en": "Choose photos",
+   "pl": "Wybierz zdjęcia",
+   "zr": "wzor.ze_zdjec"
+  },
+  {
+   "en": "Web page link…",
+   "pl": "Link do strony WWW…",
+   "zr": "wzor.link_strony"
+  },
+  {
+   "en": "Save page",
+   "pl": "Zapisz stronę",
+   "zr": "wzor.zapisz_strone"
+  },
+  {
+   "en": "Add video link",
+   "pl": "Dodaj link do filmu",
+   "zr": "wzor.dodaj_film"
+  },
+  {
+   "en": "Video",
+   "pl": "Film",
+   "zr": "wzor.film_wiersz"
+  },
+  {
+   "en": "This video needs an internet connection. Oczko keeps only the link.",
+   "pl": "Ten film wymaga internetu. Oczko zachowuje tylko link.",
+   "zr": "narzedzia.film_bez_sieci"
+  },
+  {
+   "en": "Rotate page",
+   "pl": "Obróć stronę",
+   "zr": "wzor.obroc"
+  },
+  {
+   "en": "Tap a row to place your marker.",
+   "pl": "Stuknij rząd, aby postawić znacznik.",
+   "zr": "wzor.wskazowka_znacznika"
+  },
+  {
+   "en": "Mark row",
+   "pl": "Oznacz rząd",
+   "zr": "wzor.zaznacz_rzad"
+  },
+  {
+   "en": "Add note",
+   "pl": "Dodaj notatkę",
+   "zr": "wzor.dodaj_notatke"
+  },
+  {
+   "en": "Keep screen on while counting",
+   "pl": "Nie gaś ekranu podczas liczenia",
+   "zr": "ustawienia.ekran_nie_gasnie"
+  },
+  {
+   "en": "Tools",
+   "pl": "Narzędzia",
+   "zr": "narzedzia.tytul,zakladki.narzedzia"
+  },
+  {
+   "en": "Yarn",
+   "pl": "Włóczka",
+   "zr": "projekt.wloczka,narzedzia.wloczki"
+  },
+  {
+   "en": "Add yarn",
+   "pl": "Dodaj włóczkę",
+   "zr": "zapas.dodaj"
+  },
+  {
+   "en": "Skeins",
+   "pl": "Motki",
+   "zr": "zapas.pole_motki"
+  },
+  {
+   "en": "Length per skein",
+   "pl": "Długość nici w motku",
+   "zr": "zapas.pole_dlugosc"
+  },
+  {
+   "en": "3 skeins",
+   "pl": "3 motki",
+   "zr": "zapas.motki_other"
+  },
+  {
+   "en": "Needles and hooks",
+   "pl": "Druty i szydełka",
+   "zr": "narzedzia.druty"
+  },
+  {
+   "en": "Swatch calculator",
+   "pl": "Kalkulator próbki",
+   "zr": "narzedzia.probka"
+  },
+  {
+   "en": "Swatch stitches",
+   "pl": "Oczka w próbce",
+   "zr": "narzedzia.kalk_oczka"
+  },
+  {
+   "en": "Swatch width, cm",
+   "pl": "Szerokość próbki, cm",
+   "zr": "narzedzia.kalk_dlugosc_cm"
+  },
+  {
+   "en": "Width you want (same unit)",
+   "pl": "Szerokość docelowa (ta sama jednostka)",
+   "zr": "narzedzia.kalk_cel"
+  },
+  {
+   "en": "Calculate",
+   "pl": "Oblicz",
+   "zr": "narzedzia.oblicz"
+  },
+  {
+   "en": "Units",
+   "pl": "Jednostki",
+   "zr": "ustawienia.uklad_miar"
+  },
+  {
+   "en": "Imperial",
+   "pl": "Imperialne",
+   "zr": "ustawienia.miary_imperial"
+  },
+  {
+   "en": "Automatic",
+   "pl": "Automatycznie",
+   "zr": "ustawienia.miary_auto"
+  },
+  {
+   "en": "110 stitches",
+   "pl": "110 oczek",
+   "zr": "probka.oczka_wynik_many"
+  },
+  {
+   "en": "From 22 stitches per 10 cm and 50 cm.",
+   "pl": "Z 22 oczek na 10 cm i 50 cm.",
+   "zr": "probka.z_danych_cm_few"
+  },
+  {
+   "en": "Yarn for this project",
+   "pl": "Włóczka w tym projekcie",
+   "zr": "formularz.wloczka_tytul"
+  },
+  {
+   "en": "Mark project as finished",
+   "pl": "Oznacz projekt jako ukończony",
+   "zr": "menu.ukoncz"
+  },
+  {
+   "en": "Yarn used",
+   "pl": "Zużyta włóczka",
+   "zr": "ukonczenie.wloczka_naglowek"
+  },
+  {
+   "en": "Skeins of Test merino used",
+   "pl": "Zużyte motki: Test merino",
+   "zr": "ukonczenie.zuzycie_etykieta"
+  },
+  {
+   "en": "Share",
+   "pl": "Udostępnij",
+   "zr": "ukonczenie.udostepnij,zglos.udostepnij"
+  },
+  {
+   "en": "Counted in Oczko",
+   "pl": "Policzone w Oczku",
+   "zr": "karta.stopka"
+  },
+  {
+   "en": "Finished",
+   "pl": "Ukończone",
+   "zr": "projekty.ukonczone"
+  },
+  {
+   "en": "Delete project…",
+   "pl": "Usuń projekt…",
+   "zr": "projekt.usun"
+  },
+  {
+   "en": "Delete project",
+   "pl": "Usuń projekt",
+   "zr": "usun.projekt"
+  },
+  {
+   "en": "Edit parts and counters",
+   "pl": "Edytuj części i liczniki",
+   "zr": "projekt.edytuj"
+  },
+  {
+   "en": "Delete counter",
+   "pl": "Usuń licznik",
+   "zr": "usun.licznik"
+  },
+  {
+   "en": "Recently deleted",
+   "pl": "Ostatnio usunięte",
+   "zr": "projekty.kosz,kosz.tytul"
+  },
+  {
+   "en": "Show",
+   "pl": "Pokaż",
+   "zr": "projekty.kosz_pokaz,przewodnik.pokaz"
+  },
+  {
+   "en": "Restore",
+   "pl": "Przywróć",
+   "zr": "kosz.przywroc"
+  },
+  {
+   "en": "… · until …",
+   "pl": "… · do …",
+   "zr": "kosz.*"
+  },
+  {
+   "en": "Resume project",
+   "pl": "Wznów projekt",
+   "zr": "projekt.wznow"
+  },
+  {
+   "en": "Export all data",
+   "pl": "Eksportuj wszystkie dane",
+   "zr": "ustawienia.eksport"
+  },
+  {
+   "en": "Report a problem",
+   "pl": "Zgłoś problem",
+   "zr": "ustawienia.zglos,awaryjny.zglos,zglos.tytul"
+  },
+  {
+   "en": "Data and sync",
+   "pl": "Dane i synchronizacja",
+   "zr": "ustawienia.stan_danych,stan_danych.tytul"
+  },
+  {
+   "en": "iCloud sync is off.",
+   "pl": "Synchronizacja iCloud jest wyłączona.",
+   "zr": "stan_danych.wylaczona"
+  },
+  {
+   "en": "Everything is saved on this device.",
+   "pl": "Wszystko jest zapisane na tym urządzeniu.",
+   "zr": "stan_danych.zapisane"
+  },
+  {
+   "en": "Sync with iCloud",
+   "pl": "Synchronizuj z iCloud",
+   "zr": "icloud.przelacznik"
+  },
+  {
+   "en": "Open source licenses",
+   "pl": "Licencje open source",
+   "zr": "ustawienia.licencje"
+  },
+  {
+   "en": "Fonts",
+   "pl": "Kroje pisma",
+   "zr": "licencje.grupa_kroje"
+  },
+  {
+   "en": "npm packages",
+   "pl": "Pakiety npm",
+   "zr": "licencje.grupa_pakiety"
+  },
+  {
+   "en": "About our information",
+   "pl": "O naszych treściach",
+   "zr": "ustawienia.zrodla_wiedzy"
+  },
+  {
+   "en": "Guide",
+   "pl": "Przewodnik",
+   "zr": "przewodnik.tytul"
+  },
+  {
+   "en": "‹ Today",
+   "pl": "‹ Dziś",
+   "zr": "dzis.tytul"
+  },
+  {
+   "en": "First steps and every feature. “Show” opens the screen.",
+   "pl": "Pierwsze kroki i wszystkie funkcje. „Pokaż” otwiera opisany ekran.",
+   "zr": "przewodnik.wstep"
+  },
+  {
+   "en": "First steps",
+   "pl": "Pierwsze kroki",
+   "zr": "przewodnik.pierwsze_kroki"
+  },
+  {
+   "en": "Show ›",
+   "pl": "Pokaż ›",
+   "zr": "przewodnik (G-25: „Pokaż ›”)"
+  },
+  {
+   "en": "Feature library",
+   "pl": "Biblioteka funkcji",
+   "zr": "przewodnik.biblioteka"
+  },
+  {
+   "en": "Read: 0 of 42",
+   "pl": "Przeczytane: 0 z 42",
+   "zr": "przewodnik.przeczytane"
+  },
+  {
+   "en": "Counter",
+   "pl": "Licznik",
+   "zr": "licznik.tytul_roboczy"
+  },
+  {
+   "en": "Pattern",
+   "pl": "Wzór",
+   "zr": "licznik.wzor_a11y,licznik.akcja_wzor,menu.wzor,projekt.wzor,wzor.tytul,udostepnij.jako_wzor"
+  },
+  {
+   "en": "Oczko Pro",
+   "pl": "Oczko Pro",
+   "zr": "ustawienia.oczko_pro,oferty.tytul"
+  },
+  {
+   "en": "Apple Watch and Lock Screen",
+   "pl": "Apple Watch i ekran blokady",
+   "zr": "przewodnik.grupa_poza"
+  },
+  {
+   "en": "Rows in this part. At the goal: “Next part”, or “What’s next?” for a second matching part.",
+   "pl": "Rzędy w tej części. Po celu: „Następna część” albo „Co dalej?” — na przykład druga taka sama część.",
+   "zr": "przewodnik.f_cel"
+  },
+  {
+   "en": "Read: 1 of 42",
+   "pl": "Przeczytane: 1 z 42",
+   "zr": "przewodnik.przeczytane"
+  },
+  {
+   "en": "Set a goal…",
+   "pl": "Ustaw cel…",
+   "zr": "licznik cel"
+  },
+  {
+   "en": "Read: 2 of 42",
+   "pl": "Przeczytane: 2 z 42",
+   "zr": "przewodnik.przeczytane"
+  },
+  {
+   "en": "2 of 42",
+   "pl": "2 z 42",
+   "zr": "przewodnik.postep_wiersza"
+  },
+  {
+   "en": "‹ Guide",
+   "pl": "‹ Przewodnik",
+   "zr": "przewodnik.tytul"
+  },
+  {
+   "en": "iCloud sync on or off, and whether everything is saved.",
+   "pl": "Synchronizacja iCloud i stan zapisu danych.",
+   "zr": "przewodnik.f_dane"
+  },
+  {
+   "en": "Help",
+   "pl": "Pomoc",
+   "zr": "ustawienia.pomoc"
+  },
+  {
+   "en": "‹ Settings",
+   "pl": "‹ Ustawienia",
+   "zr": "ustawienia.tytul"
+  },
+  {
+   "en": "Read: … of 42",
+   "pl": "Przeczytane: … z 42",
+   "zr": "przewodnik.przeczytane"
+  },
+  {
+   "en": "8 of 42",
+   "pl": "8 z 42",
+   "zr": "przewodnik.postep_wiersza"
+  },
+  {
+   "en": "9 of 42",
+   "pl": "9 z 42",
+   "zr": "przewodnik.postep_wiersza"
+  },
+  {
+   "en": "Lock Screen",
+   "pl": "Ekran blokady",
+   "zr": "przewodnik.nazwa_ekran_blokady"
+  },
+  {
+   "en": "Count rows on your watch: “+1 row” and the current row. Open Oczko on Apple Watch.",
+   "pl": "Licz rzędy na zegarku: „+1 rząd” i bieżący rząd. Otwórz Oczko na Apple Watch.",
+   "zr": "przewodnik.f_zegarek"
+  },
+  {
+   "en": "On",
+   "pl": "Włączone",
+   "zr": "ustawienia.pro_wlaczone"
+  },
+  {
+   "en": "{x} of 5 free crafting days left in {bieżący miesiąc}",
+   "pl": "Zostało {x} z 5 darmowych dni robótkowych ({bieżący miesiąc})",
+   "zr": "projekty.dni_many"
+  },
+  {
+   "en": "4 of 5",
+   "pl": "Zostało 4 z 5",
+   "zr": "projekty.dni_many"
+  },
+  {
+   "en": "Your first crafting day is done",
+   "pl": "Twój pierwszy dzień robótkowy za tobą",
+   "zr": "uczciwe.tytul"
+  },
+  {
+   "en": "Keep counting",
+   "pl": "Licz dalej",
+   "zr": "uczciwe.dalej"
+  },
+  {
+   "en": "See Oczko Pro",
+   "pl": "Zobacz Oczko Pro",
+   "zr": "limit.zobacz_pro,uczciwe.plany"
+  },
+  {
+   "en": "No free crafting days left in {miesiąc}. Counting is paused until …",
+   "pl": "Darmowe dni robótkowe na {miesiąc} wykorzystane. Liczenie wstrzymane do …",
+   "zr": "limit.zawczasu_other"
+  },
+  {
+   "en": "Oczko Pro removes the limit",
+   "pl": "Oczko Pro znosi limit",
+   "zr": "limit.pro_link"
+  },
+  {
+   "en": "last worked … days ago",
+   "pl": "ostatnia praca … dni temu",
+   "zr": "projekty.ostatnia_praca_dni_many"
+  },
+  {
+   "en": "No free crafting days left…",
+   "pl": "Darmowe dni robótkowe na … wykorzystane…",
+   "zr": "limit.zawczasu_other"
+  },
+  {
+   "en": "Monthly",
+   "pl": "Miesięcznie",
+   "zr": "oferty.miesieczny"
+  },
+  {
+   "en": "Continue with Monthly",
+   "pl": "Kontynuuj: Miesięcznie",
+   "zr": "oferty.kup"
+  },
+  {
+   "en": "Yearly",
+   "pl": "Rocznie",
+   "zr": "oferty.roczny"
+  },
+  {
+   "en": "Lifetime",
+   "pl": "Dożywotnio",
+   "zr": "oferty.dozywotni"
+  },
+  {
+   "en": "You have Oczko Pro.",
+   "pl": "Masz Oczko Pro.",
+   "zr": "oferty.masz_pro"
+  },
+  {
+   "en": "Manage subscription",
+   "pl": "Zarządzaj subskrypcją",
+   "zr": "oferty.zarzadzaj"
+  },
+  {
+   "en": "Restore purchases",
+   "pl": "Przywróć zakupy",
+   "zr": "oferty.przywroc"
+  },
+  {
+   "en": "Privacy Policy",
+   "pl": "Polityka prywatności",
+   "zr": "ustawienia.polityka,oferty.polityka"
+  },
+  {
+   "en": "Terms of Use",
+   "pl": "Warunki użytkowania",
+   "zr": "oferty.warunki"
+  },
+  {
+   "en": "Added 3 rows from the lock screen at …. Undo?",
+   "pl": "Dodano 3 rzędy z ekranu blokady o …. Cofnąć?",
+   "zr": "licznik.seria_blokada_other"
+  },
+  {
+   "en": "Step 1 of 6. On “Today”, tap…",
+   "pl": "Krok 1 z 6. Na ekranie „Dziś” stuknij…",
+   "zr": "przewodnik.krok_a11y + przewodnik.krok_1"
+  },
+  {
+   "en": "Show: Step 1 of 6",
+   "pl": "Pokaż: Krok 1 z 6",
+   "zr": "przewodnik.pokaz_a11y + przewodnik.krok_a11y"
+  },
+  {
+   "en": "Set a goal for this part, Counter, not read",
+   "pl": "Ustaw cel dla tej części, Licznik, nieprzeczytane",
+   "zr": "przewodnik (nazwa + grupa + przewodnik.nieprzeczytana)"
+  },
+  {
+   "en": "read",
+   "pl": "przeczytane",
+   "zr": "przewodnik.przeczytana"
+  },
+  {
+   "en": "Show: Set a goal for this part",
+   "pl": "Pokaż: Ustaw cel dla tej części",
+   "zr": "przewodnik.pokaz_a11y"
+  },
+  {
+   "en": "Back",
+   "pl": "Wstecz",
+   "zr": "wspolne.wstecz"
+  },
+  {
+   "en": "not read",
+   "pl": "nieprzeczytane",
+   "zr": "przewodnik.nieprzeczytana"
+  },
+  {
+   "en": "… of 42",
+   "pl": "… z 42",
+   "zr": "przewodnik.postep_wiersza"
+  },
+  {
+   "en": "iPhone not nearby. 3 changes are saved on this watch.",
+   "pl": "iPhone poza zasięgiem. 3 zmiany są zapisane na zegarku.",
+   "zr": "aktywnosc.bez_telefonu_other"
+  },
+  {
+   "en": "Row 12: decrease at both ends · 1 of 8",
+   "pl": "Rząd 12: decrease at both ends · 1 z 8",
+   "zr": "aktywnosc.przypomnienie"
+  },
+  {
+   "en": "Save",
+   "pl": "Zapisz",
+   "zr": "wspolne.zapisz"
+  },
+  {
+   "en": "Enter a whole number, 0 or more.",
+   "pl": "Wpisz liczbę całkowitą, 0 lub więcej.",
+   "zr": "formularz.wpisz_blad"
+  },
+  {
+   "en": "Language",
+   "pl": "Język",
+   "zr": "ustawienia.jezyk"
+  },
+  {
+   "en": "Report a translation problem",
+   "pl": "Zgłoś problem z tłumaczeniem",
+   "zr": "ustawienia.zglos_tlumaczenie"
+  },
+  {
+   "en": "Same as phone",
+   "pl": "Jak w telefonie",
+   "zr": "ustawienia.jezyk_automatyczny"
+  },
+  {
+   "en": "Rate Oczko",
+   "pl": "Oceń Oczko",
+   "zr": "ustawienia.ocen"
+  },
+  {
+   "en": "Delete all data",
+   "pl": "Usuń wszystkie dane",
+   "zr": "ustawienia.usun_wszystko,ustawienia.usun_potwierdz"
+  },
+  {
+   "en": "Oczko first saves a copy in the Files app, in Oczko › Backup…",
+   "pl": "Najpierw Oczko zapisuje kopię w aplikacji Pliki, w Oczko › Backup…",
+   "zr": "ustawienia.usun_kopia"
+  },
+  {
+   "en": "Oczko Pro isn’t deleted…",
+   "pl": "Oczko Pro nie jest usuwane…",
+   "zr": "ustawienia.usun_pro"
+  },
+  {
+   "en": "Import a backup",
+   "pl": "Importuj kopię zapasową",
+   "zr": "ustawienia.import,dane.import_tytul"
+  },
+  {
+   "en": "Replace what’s here",
+   "pl": "Zastąp to, co jest",
+   "zr": "dane.zastap"
+  },
+  {
+   "en": "Merge with what’s here",
+   "pl": "Scal z tym, co jest",
+   "zr": "dane.scal"
+  },
+  {
+   "en": "Merged. …",
+   "pl": "Scalono. …",
+   "zr": "dane.zaimportowano"
+  },
+  {
+   "en": "0 of 42",
+   "pl": "0 z 42",
+   "zr": "przewodnik.postep_wiersza"
+  },
+  {
+   "en": "4 of 5 …",
+   "pl": "Zostało 4 z 5 …",
+   "zr": "projekty.dni_many"
+  }
+ ],
+ "flagi": [
+  [
+   "Install",
+   4
+  ],
+  [
+   "Update",
+   3
+  ],
+  [
+   "button",
+   1
+  ],
+  [
+   "Previous Builds",
+   1
+  ],
+  [
+   "Information",
+   1
+  ]
+ ]
+}
