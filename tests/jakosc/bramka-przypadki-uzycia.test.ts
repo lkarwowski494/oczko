@@ -26,11 +26,19 @@ const b = (fn: string, ...a: unknown[]) => wywolaj(MODUL, fn, ...a);
 describe('kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success)', () => {
   const czesci = 4;
   const zadania = (nadpis: Record<string, string> = {}) => [
-    ...[1, 2, 3, 4].map((n) => ({ name: `e2e (część ${n}, iphone)`, conclusion: 'success' })),
+    // KO-071: zadanie success niesie kroki jak odpowiedź API GitHuba; krok „Scenariusze” = success znaczy, że scenariusze naprawdę biegły
+    ...[1, 2, 3, 4].map((n) => ({ name: `e2e (część ${n}, iphone)`, conclusion: 'success', steps: [{ name: 'Instalacja', conclusion: 'success' }, { name: 'Scenariusze', conclusion: 'success' }] })),
     { name: 'e2e (część 1, ipad)', conclusion: 'failure' }, { name: 'eksperymenty-wzoru', conclusion: 'failure' },
   ].map((z) => ({ ...z, conclusion: nadpis[z.name] ?? z.conclusion }));
   test('wszystkie 4 części iPhone’a success → brak błędów (iPad i eksperymenty informacyjne nie liczą się)', () => {
     expect(b('ocenZestawu', zadania(), czesci)).toEqual([]);
+  });
+  test('KO-071 (BX3 P1-4): zadanie success bez udanego kroku „Scenariusze” (skipped, brak kroku, brak steps) → błąd', () => {
+    const z = (steps?: unknown) => zadania().map((j) => (j.name === 'e2e (część 2, iphone)' ? { ...j, steps } : j));
+    const oczekiwany = ['e2e (część 2, iphone): krok „Scenariusze” nie jest success — scenariusze nie biegły (KO-071)'];
+    expect(b('ocenZestawu', z([{ name: 'Scenariusze', conclusion: 'skipped' }]), czesci)).toEqual(oczekiwany);
+    expect(b('ocenZestawu', z([{ name: 'Instalacja', conclusion: 'success' }]), czesci)).toEqual(oczekiwany);
+    expect(b('ocenZestawu', z(undefined), czesci)).toEqual(oczekiwany);
   });
   test('część pominięta (skipped) to nie zielona — dziś ocenBramke w testflight.mjs przyjmuje skipped', () => {
     expect(b('ocenZestawu', zadania({ 'e2e (część 3, iphone)': 'skipped' }), czesci)).toEqual(['e2e (część 3, iphone): skipped']);

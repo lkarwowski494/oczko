@@ -28,3 +28,8 @@
     ✓ build i bramka nie mają if ani continue-on-error (obejście przez always() albo failure() zostawiłoby testy zielone)
     ✓ krok skryptu to dokładnie „node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka” (bez „|| true”, „; true”, przekierowań)
 Tests:       9 failed, 25 passed, 34 total
+Tests:       4 failed, 46 passed, 50 total
+  ● katalog przypadków użycia: pokrycie według klasy › klasa B: „do zaprogramowania: …” albo scenariusz z tagami oczekujacy, przypadki-uzycia i ID PU
+  ● kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success) › KO-071 (BX3 P1-4): zadanie success bez udanego kroku „Scenariusze” (skipped, brak kroku, brak steps) → błąd
+  ● kontrola 2: katalog spójny z kodem › na bieżącym repo bez wymogu testów B: brak błędów (to samo, co pilnuje przypadki-uzycia.test.ts, plus ekrany bez trasy)
+  ● skrypt bramki KO-065 (scripts/jakosc/bramka-przypadki-uzycia.mjs) na tym samym katalogu › `katalog` (kontrola 2 bez wymogu testów B: te reguły + ekrany src/ekrany bez trasy) kończy się kodem 0

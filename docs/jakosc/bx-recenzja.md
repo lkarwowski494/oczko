@@ -215,7 +215,7 @@ Zakres: `scripts/jakosc/bramka-przypadki-uzycia.mjs`, zadanie `bramka-przypadki`
 - P1-3 `czesci` z `e2e/czesci.json` niepoprawne (0, brak klucza) wyłączało kontrolę 1 po cichu → teraz błąd.
 - P1-5 testy workflow nie chroniły zadań `build`/`bramka` (`if: always()`, `continue-on-error`) ani kroku skryptu (`|| true`) → dopisane testy (zielone od razu: workflow jest poprawny; to ochrona przed regresją, czerwień nie dotyczy).
 
-**P1-4 otwarte (do decyzji koordynatora)** kontrola 1 czyta tylko `conclusion` zadania `e2e (część N, iphone)`; część bez scenariuszy kończy `success` bez symulatora (plan `any=false`, np. zły znacznik), więc zielony przebieg może nie uruchomić żadnego scenariusza. Propozycja: czytać `steps[]` zadań i wymagać kroku „Scenariusze” = success. Nie poprawione: wymaga znajomości `scripts/ci/e2e-czesci.mjs` i przebiegu na żywo (nie do sprawdzenia w Linuksie); skala zmiany > P1 tej sesji.
+**P1-4 poprawione (KO-071, P-850; fikstury JSON, test czerwony najpierw)** kontrola 1 czyta tylko `conclusion` zadania `e2e (część N, iphone)`; część bez scenariuszy kończy `success` bez symulatora (plan `any=false`, np. zły znacznik), więc zielony przebieg może nie uruchomić żadnego scenariusza. Propozycja: czytać `steps[]` zadań i wymagać kroku „Scenariusze” = success. Poprawka: kontrola 1 wymaga kroku „Scenariusze” = success w `steps[]`; liczba scenariuszy > 0 niesprawdzana (API jej nie podaje); weryfikacja na żywo przy następnym „Jakość · iOS”.
 
 **P2 (niepoprawione, do kolejki)**
 - P2-6 osiągalność ekranu: import tylko w komentarzu, `import type`, barrel `export *`, aliasy, podkatalogi `src/ekrany`, trasy `.ts` — fałszywie zielone.

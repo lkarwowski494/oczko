@@ -3,7 +3,7 @@
 Aktualizacja: 2026-11-15 (BX2). Gałąź: `claude/bx-katalog-e2e-2026-11-15`. Polecenia: `origin/koordynacja:docs/koordynacja/polecenia/BX.md` (zakres, słowa właściciela), `…/BX2.md` @ df7b1ccc (zadania 1–4, P-837 wariant (a)). Historia BX: `git log -- docs/jakosc/bx-stan.md`.
 
 ## Liczby (katalog `docs/jakosc/przypadki-uzycia.md`)
-- **338 PU: A=126, B=161, F=51** (BX3: +30 A w sekcji „Stany puste, błędy i przerwania” i +3 A: PU-016, 080, 315; P-849). B z testem (scenariusz `oczekujacy`): 16 (sekcja „Nawigacja”, scenariusze 71–84); B „do zaprogramowania”: 145 — tyle czerwieni bramkę KO-065 (kontrola 2, P-837 (a)).
+- **338 PU: A=93, B=194, F=51.** B „z testem” w `tests/` (KO-071: test komponentowy/jednostkowy, klasa zostaje B): 33 (sekcja „Stany puste…” 30 + PU-016, 080, 315; P-849); B z testem Maestro `oczekujacy`: 16 (71–84); B „do zaprogramowania”: 145 — tyle czerwieni bramkę KO-065 (kontrola 2, P-837 (a)).
 - Sekcja „## Funkcje”: 216 funkcji z kodu → PU (P-848); 69 funkcji bez PU dostało PU-271…PU-338 (57 B, 11 F). Sekcja „## Ekrany bez własnej trasy”: `Wzor` (martwy kod, znalezisko BX-001).
 - Lista fizyczna `docs/wydanie/test-fizyczny.html`: 51 pozycji, ok. 154 min (szacunek z `MIN_KAT`, nie pomiar). Artifact z BX (41 pozycji) nieaktualny — do ponownej publikacji.
 - `[DO USTALENIA]` w katalogu: 0 (8 rozstrzygniętych w kodzie, recenzja BX2 R-A-39…47).
@@ -35,6 +35,6 @@ Koszt 31,04 USD > próg 26 USD (pomiar koordynatora), kontekst 30%. Stan na 8f0c
 4. Ponowna publikacja listy fizycznej (Artifact, 51 pozycji).
 
 ## BX3 (08 build, 15.11) — stan
-- Merge integracji 06077b85 (9faaf74a; konflikt tylko `docs/decyzje.md`). Recenzja kodu bramki: `bx-recenzja.md` „Kod bramki”; P1-1…3,5 poprawione (czerwień `bx3-dowod-czerwony.txt`); **P1-4 otwarte** (kontrola 1 czyta tylko conclusion zadania).
-- „Stany puste, błędy i przerwania”: 30 B → A (P-849); nowe testy PU-250, 252, 254, 255, 257, 259, 266, 267, reszta to znaczniki PU przy istniejących testach. Sekcja nie ma już B „do zaprogramowania”.
+- Merge integracji 06077b85 (9faaf74a; konflikt tylko `docs/decyzje.md`). Recenzja kodu bramki: `bx-recenzja.md` „Kod bramki”; P1-1…3,5 poprawione (czerwień `bx3-dowod-czerwony.txt`); P1-4 poprawione (KO-071, P-850: krok „Scenariusze” = success).
+- „Stany puste, błędy i przerwania”: 30 B „do zaprogramowania” → B „z testem” (P-849 po KO-071); nowe testy PU-250, 252, 254, 255, 257, 259, 266, 267, reszta to znaczniki PU przy istniejących testach. Sekcja nie ma już B „do zaprogramowania”.
 - Następny krok: wynik „Jakość · iOS” 43752186631 → zdjęcie tagów `oczekujacy` (71–84); potem sekcje katalogu według „Pokrycia” (najtańszy poziom; testy w `tests/` z PU-ID w nazwie i komentarzu); P2 recenzji bramki.

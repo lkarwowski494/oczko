@@ -37,6 +37,8 @@ export function ocenZestawu(zadania, czesci) {
     const z = zadania.filter((j) => j.name === nazwa);
     if (!z.length) bledy.push(`${nazwa}: brak zadania`);
     else if (!z.some((j) => j.conclusion === 'success')) bledy.push(`${nazwa}: ${z.map((j) => j.conclusion ?? j.status).join(', ')}`);
+    // KO-071 (BX3 P1-4): część bez scenariuszy też kończy success (plan any=false) — wymagany krok „Scenariusze” = success w zadaniu, które przeszło.
+    else if (!z.some((j) => j.conclusion === 'success' && Array.isArray(j.steps) && j.steps.some((k) => k.name === 'Scenariusze' && k.conclusion === 'success'))) bledy.push(`${nazwa}: krok „Scenariusze” nie jest success — scenariusze nie biegły (KO-071)`);
   }
   return bledy;
 }
@@ -164,6 +166,15 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
     } else if (p.klasa === 'B') {
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) {
         if (wymagajTestowB) bledy.push(`${p.id}: klasa B bez testu („do zaprogramowania”, P-837)`);
+        continue;
+      }
+      // KO-071: B „z testem” = test jednostkowy albo komponentowy w tests/ (plik:linia istnieje i wymienia PU) — liczy się jako test dla P-837, klasa zostaje B
+      if (/^z testem: /.test(p.pokrycie)) {
+        if (!o.length || o.some((x) => !x.plik.startsWith('tests/'))) bledy.push(`${p.id}: „z testem:” wymaga odnośników plik:linia tylko w tests/`);
+        for (const x of o) {
+          if (!istnieje(x)) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
+          else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) bledy.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+        }
         continue;
       }
       const oo = /^oczekujący: /.test(p.pokrycie) ? o.filter((x) => x.plik.startsWith('e2e/')) : [];

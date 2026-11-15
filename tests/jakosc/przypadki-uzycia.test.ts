@@ -136,6 +136,15 @@ describe('katalog przypadków użycia: pokrycie według klasy', () => {
     for (const p of pu.filter((x) => x.klasa === 'B')) {
       const o = odnosniki(p.pokrycie).filter((x) => /^oczekujący: /.test(p.pokrycie) && x.plik.startsWith('e2e/'));
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) continue;
+      if (/^z testem: /.test(p.pokrycie)) { // KO-071: test jednostkowy/komponentowy w tests/, klasa zostaje B
+        const t = odnosniki(p.pokrycie);
+        if (!t.length || t.some((x) => !x.plik.startsWith('tests/'))) zle.push(`${p.id}: „z testem:” wymaga odnośników plik:linia tylko w tests/`);
+        for (const x of t) {
+          if (!istnieje(x)) zle.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
+          else if (!fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+        }
+        continue;
+      }
       if (!o.length) { zle.push(`${p.id}: Pokrycie nie zaczyna się od „do zaprogramowania: <poziom> — …” ani „oczekujący: plik:linia”`); continue; }
       for (const x of o) {
         if (!istnieje(x)) { zle.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`); continue; }
