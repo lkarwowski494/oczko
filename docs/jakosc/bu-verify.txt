@@ -1,0 +1,28 @@
+# BU: npm run verify na HEAD 0891e8b (integracja claude/youthful-pasteur-kx83sn po scaleniu BS + BO + BP), 2026-11-15, Linux, Node v22.23.4
+# komenda: npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test); kod wyjścia: 0
+# poniżej końcówka wyjścia (ostatnie 25 linii)
+PASS iOS tests/dane/widok-licznika-p5.test.ts
+PASS iOS tests/dane/migracje-kopia.test.ts
+PASS iOS tests/jakosc/wersja-wydania.test.ts
+PASS iOS tests/i18n/parsuj-calkowita.test.ts
+PASS iOS tests/narzedzia/intencja-migawka.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/ekrany/e2e-panel-wzoru-word.test.tsx
+PASS iOS tests/ekrany/e2e-zdjecie.test.ts
+PASS iOS tests/dane/sha-pary-bazy.test.ts
+PASS iOS tests/i18n/preferencja.test.ts
+PASS iOS tests/jakosc/bez-wersalikow.test.ts
+PASS iOS tests/narzedzia/licznik-wektorow.test.ts
+PASS iOS tests/i18n/nazwy-jezykow.test.ts
+PASS iOS tests/adaptery/identyfikatory.test.ts
+PASS iOS tests/i18n/m3-fix-reaudit-022-timer.test.ts
+PASS iOS tests/ekrany/miary.test.ts
+(node:11982) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS iOS tests/dane/kompozycja-po-scaleniu.test.ts
+Test Suites: 609 passed, 609 total
+Tests:       7449 passed, 7449 total
+Snapshots:   0 total
+Time:        200.81 s
+Ran all test suites.
+VERIFY_EXIT=0
