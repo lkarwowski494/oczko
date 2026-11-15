@@ -1,0 +1,43 @@
+$ node tap.mjs <worktree 9696e2d>
+{
+ "en_wiersze": "- tap when row {{n}} is done → tippen, wenn Reihe {{n}} fertig ist\n- Tap a row to place your marker. → Tippe auf eine Reihe, um deine Markierung zu setzen.\n- Lock counter (ignore taps) → Zähler sperren (Tippen ignorieren)\n- Tap “+1 row” after each row; “−1” takes one back. After many quick taps, Oczko offers to undo them. → Tippe nach jeder Reihe auf „+1 Reihe“; „−1“ nimmt eine zurück. Nach vielen schnellen Tipps bietet Oczko an, sie rückgängig zu machen.",
+ "wierszy_na_jezyk": {
+  "cs": 4,
+  "da": 4,
+  "de": 4,
+  "el": 4,
+  "es-419": 4,
+  "es": 4,
+  "fi": 4,
+  "fr": 4,
+  "hr": 4,
+  "hu": 4,
+  "id": 4,
+  "it": 4,
+  "ja": 4,
+  "ko": 4,
+  "ms": 4,
+  "nb": 4,
+  "nl": 4,
+  "pt-BR": 4,
+  "pt": 4,
+  "ro": 4,
+  "ru": 4,
+  "sk": 4,
+  "sv": 4,
+  "tr": 4,
+  "uk": 4,
+  "vi": 4,
+  "zh-Hant": 4
+ },
+ "jezykow_z_4": 27,
+ "de_tap_w_zadaniu": true
+}
+kod 0
+$ node scripts/i18n/przeklad-podpisy.mjs --szacuj (9696e2d)
+szacunek podpisów (Batch −50%, przybliżenie): 27 języków × etapy przeklad+krytyk (wysiłek high); wejście 106945, wyjście 171078; claude-opus-5-5 ≈ 1.925 USD, claude-sonnet-5-5 ≈ 0.962 USD
+kod 0
+$ npx jest --ci tests/wydanie/podpisy-przeklad.test.ts tests/wydanie/produkty-przeklad.test.ts (9696e2d)
+Test Suites: 2 passed, 2 total
+Tests:       39 passed, 39 total
+kod 0

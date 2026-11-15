@@ -1,0 +1,8 @@
+import { join } from 'node:path';
+const WT = process.argv[2]; const P = await import(join(WT, 'scripts/i18n/przeklad-podpisy.mjs')), Pr = await import(join(WT, 'scripts/i18n/przeklad-produkty.mjs'));
+const nowe = ['licznik.podpis_plus', 'wzor.wskazowka_znacznika', 'menu.zablokuj', 'przewodnik.f_plus'];
+const en = Pr.slownikPoKluczach('en', nowe, WT) || '(en nie ma pliku bazowego? sprawdzam pl)';
+const wynik = {}; let pelne = 0;
+for (const k of P.JEZYKI_PRZEKLADU) { const w = Pr.slownikPoKluczach(k, nowe, WT).split('\n').filter(Boolean); wynik[k] = w.length; if (w.length >= 4) pelne++; }
+const ctx = P.wczytajKontekst(WT); const z = P.budujZadanie('de', ctx).messages[0].content;
+console.log(JSON.stringify({ en_wiersze: Pr.slownikPoKluczach('de', nowe, WT), wierszy_na_jezyk: wynik, jezykow_z_4: pelne, de_tap_w_zadaniu: /tap/i.test(z) }, null, 1));

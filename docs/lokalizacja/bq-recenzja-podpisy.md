@@ -178,3 +178,6 @@ Nowe ryzyka w wznowieniu i `przyjmij` (żadne nie blokuje przebiegu płatnego):
 - **Uwaga (nie znalezisko):** poprawka krytyka odrzucona za „nieznany ekran” albo „brak powodu” też blokuje cały język. To zachowanie zachowawcze, które może kosztować ponowny przebieg jednego języka przez `--tylko`.
 
 **Werdykt po reaudycie: GOTOWY do przebiegu płatnego** (uwagi R1 i R2 to P3 i nie wymagają naprawy przed przebiegiem).
+
+### KO-063 („tap” jak w aplikacji) — 9696e2d
+**Werdykt: GOTOWY do przebiegu płatnego.** Zmiana dotyczy tylko żądań (4 klucze z „tap” w `KLUCZE`, reguła (3) przekładu i (2) krytyka); twarde kontrole, wznowienie i `przyjmij` są bez zmian (diff `9fe3a63..9696e2d`). Każdy z 27 języków dostaje w żądaniu 4 wiersze słownika z „tap”. Szacunek pełnego przebiegu rośnie z ≈ 1,902 do ≈ 1,925 USD. Testy 39/39, kod 0 (`bq-dowody/tap-reaudyt.txt`). Nowych ryzyk brak. Czy słowniki aplikacji same używają jednego słowa dla „tap”, to treść roli 06/09, poza zakresem tej recenzji.
