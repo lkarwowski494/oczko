@@ -142,8 +142,16 @@ describe('polecenie „czesc” (krok „Plan części” w jakosc-ios.yml)', ()
     expect(rs.flatMap(r => [...r.pliki, ...r.osobne]).sort()).toEqual(scenariusze(katalog).filter(f => !maTag(f, 'ipad')));
   });
 
-  test('domyślnie (bez PAKIET) pakiet podstawowy; nadmiarowa część kończy bez pracy (any=false)', () => {
-    const p = planPodst(); const rs = Array.from({ length: cfg.czesci }, (_, i) => run(i + 1));
+  test('P-834: domyślnie (bez PAKIET i bez znacznika) pakiet przypadków użycia = wszystkie scenariusze telefonu, jak pełny', () => {
+    const rs = Array.from({ length: cfg.czesci }, (_, i) => run(i + 1));
+    expect(rs.flatMap(r => [...r.pliki, ...r.osobne]).sort()).toEqual(scenariusze(katalog).filter(f => !maTag(f, 'ipad')));
+    expect(rs[0].log).toMatch(/^Pakiet: przypadki\./);
+    const pelny = plan().map(c => run(c.czesc, { PAKIET: 'pelny' }));
+    rs.forEach((r, i) => { expect(r.pliki).toEqual(pelny[i].pliki); expect(r.o.bramka).toBe(pelny[i].o.bramka); });
+  });
+
+  test('PAKIET=podstawowy (jawnie): dokładnie scenariusze z tagiem; nadmiarowa część kończy bez pracy (any=false)', () => {
+    const p = planPodst(); const rs = Array.from({ length: cfg.czesci }, (_, i) => run(i + 1, { PAKIET: 'podstawowy' }));
     expect(rs.flatMap(r => r.pliki).sort()).toEqual(wszystkieZ(p).sort());
     expect(rs.slice(cfg.czesci_podstawowy).every(r => r.o.any === 'false' && r.pliki.length === 0)).toBe(true);
     expect(rs[0].log).toMatch(/^Pakiet: podstawowy\./);
@@ -164,18 +172,38 @@ describe('polecenie „czesc” (krok „Plan części” w jakosc-ios.yml)', ()
     expect(rs.flatMap(r => r.o.bez_ponowien.split(' ').filter(Boolean)).sort()).toEqual(scenariusze(katalog).filter(f => /^(04|10)-/.test(f))); /* oba mają asercję wartości licznika */
   });
 
-  test('F07-15 (P-198 Q1a): wyjście bramka = scenariusze części z tagiem podstawowy — w pakiecie pełnym tylko one, w podstawowym wszystkie', () => {
+  test('F07-15 (P-198 Q1a) + P-834: wyjście bramka — przypadki/pełny: każdy scenariusz części poza tagiem oczekujacy (pakiet podstawowy w całości); podstawowy: wszystkie; ONLY: tag podstawowy', () => {
     const lista = (s: string) => s.split(' ').filter(Boolean).sort();
     const podst = scenariusze(katalog).filter(f => maTag(f, 'podstawowy'));
-    const pelny = plan().map(c => run(c.czesc, { PAKIET: 'pelny' }));
-    pelny.forEach(r => expect(lista(r.o.bramka)).toEqual([...r.pliki, ...r.osobne].filter(f => podst.includes(f)).sort()));
-    expect(pelny.flatMap(r => lista(r.o.bramka)).sort()).toEqual(podst);
-    const podstawowy = Array.from({ length: cfg.czesci }, (_, i) => run(i + 1));
+    const oczek = scenariusze(katalog).filter(f => maTag(f, 'oczekujacy'));
+    expect(podst.filter(f => oczek.includes(f))).toEqual([]); /* scenariusz bramki TestFlight nie może być oczekujący */
+    for (const env of [{ PAKIET: 'pelny' }, {}] as Record<string, string>[]) {
+      const rs = plan().map(c => run(c.czesc, env));
+      rs.forEach(r => expect(lista(r.o.bramka)).toEqual([...r.pliki, ...r.osobne].filter(f => !oczek.includes(f)).sort()));
+      expect(rs.flatMap(r => lista(r.o.bramka)).filter(f => podst.includes(f)).sort()).toEqual(podst);
+    }
+    const podstawowy = Array.from({ length: cfg.czesci }, (_, i) => run(i + 1, { PAKIET: 'podstawowy' }));
     podstawowy.forEach(r => expect(lista(r.o.bramka)).toEqual([...r.pliki, ...r.osobne].sort()));
+    expect(plan().flatMap(c => lista(run(c.czesc, { ONLY: '04 14' }).o.bramka))).toEqual(scenariusze(katalog).filter(f => /^04-/.test(f))); /* 14 bez tagu podstawowy */
     expect(podst.length).toBeGreaterThan(0);
   });
 
-  test('P-225 Q1a: tag ipad — poza pakietem podstawowym i pełnym; PAKIET=ipad daje tylko je na czesci_ipad maszynach; bez [e2e-pelny]/[e2e-ipad] w commicie część iPada nie pracuje', () => {
+  test('P-834: scenariusz z tagiem oczekujacy biegnie w pakiecie przypadków, ale poza bramką (katalog tymczasowy)', () => {
+    const d = tmp(); fs.cpSync(katalog, d, { recursive: true });
+    const f = scenariusze(d).find(x => !maTag(x, 'ipad', d) && !maTag(x, 'podstawowy', d) && !maTag(x, 'osobny-krok', d))!;
+    const t = fs.readFileSync(path.join(d, f), 'utf8'); expect(t).toMatch(/^tags:\n/m);
+    fs.writeFileSync(path.join(d, f), t.replace(/^tags:\n/m, 'tags:\n  - oczekujacy\n'));
+    const out = path.join(tmp(), 'czesc'); const gh = path.join(tmp(), 'out.txt');
+    const wyniki = Array.from({ length: cfg.czesci }, (_, i) => {
+      fs.writeFileSync(gh, ''); const log = node(['czesc', String(i + 1), '--out', out, '--dir', d], { GITHUB_OUTPUT: gh });
+      return { log, bramka: /^bramka=(.*)$/m.exec(fs.readFileSync(gh, 'utf8'))![1].split(' '), pliki: scenariusze(out) };
+    });
+    expect(wyniki.flatMap(w => w.pliki)).toContain(f);
+    expect(wyniki.flatMap(w => w.bramka)).not.toContain(f);
+    expect(wyniki.map(w => w.log).join('\n')).toMatch(new RegExp(`${f.replace(/[.]/g, '\\.')}.*\\(oczekujący: informacyjnie\\)`));
+  });
+
+  test('P-225 Q1a: tag ipad — poza pakietem podstawowym i pełnym; PAKIET=ipad daje tylko je na czesci_ipad maszynach; od P-834 przy każdym przebiegu (wcześniej tylko [e2e-pelny]/[e2e-ipad])', () => {
     const ipad = scenariusze(katalog).filter(f => maTag(f, 'ipad'));
     expect(ipad.length).toBeGreaterThan(0);
     const pelny = plan().map(c => run(c.czesc, { PAKIET: 'pelny' }));
@@ -185,7 +213,7 @@ describe('polecenie „czesc” (krok „Plan części” w jakosc-ios.yml)', ()
     expect([...r.pliki, ...r.osobne].sort()).toEqual(ipad);
     expect(r.o.bramka).toBe(''); /* iPad bez bramki do pierwszego zielonego (P-225 Q1a) */
     expect(run(1, { PAKIET: 'ipad', COMMIT_MSG: 'x [e2e-ipad]' }).o.any).toBe('true');
-    expect(run(1, { PAKIET: 'ipad', COMMIT_MSG: '08: zwykły push' }).o.any).toBe('false');
+    expect(run(1, { PAKIET: 'ipad', COMMIT_MSG: '08: zwykły push' }).o.any).toBe('true'); /* P-834 */
     expect(run(2, { PAKIET: 'ipad', COMMIT_MSG: '[e2e-pelny]' }).o.any).toBe('false');
   });
 

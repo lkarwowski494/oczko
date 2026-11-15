@@ -1,7 +1,9 @@
 # iOS roli 07 (docs/jakosc/strategia.md §5; wzór: Trening e2e-ios.yml @928d0ff, docs/jakosc/e0/trening-wzorzec.md). Bez sekretów i bez podpisu.
 # Aplikacja budowana RAZ (zadanie build, Release na symulator, CODE_SIGNING_ALLOWED=NO) → artefakt; scenariusze Maestro z e2e/scenariusze
-# w częściach (scripts/ci/e2e-czesci.mjs, LPT z wagami). Pakiet: podstawowy (tag `podstawowy`, bramka TestFlight) albo pełny, gdy treść commitu
-# zawiera „[e2e-pelny]” (DS-11a, P-092; po scaleniu do main pełny katalog nocą jak Trening). Ponowienie jednego nieudanego scenariusza tylko
+# w częściach (scripts/ci/e2e-czesci.mjs, LPT z wagami). Pakiet (P-834, sesja BX 2026-11-15, słowa właściciela 15.11: przypadki użycia jako
+# zestaw automatyczny po każdym buildzie): KAŻDY przebieg uruchamia katalog przypadków użycia (docs/jakosc/przypadki-uzycia.md = wszystkie
+# scenariusze telefonu + pakiet iPada); bramką jest każdy scenariusz telefonu poza tagiem `oczekujacy` (przed kodem albo przed pierwszym
+# zielonym przebiegiem w CI). „[e2e-pelny]” to ten sam zestaw (nazwa z DS-11a, P-092). Ponowienie jednego nieudanego scenariusza tylko
 # poza tagiem `stan-licznika` i wykazane osobno jako „w ponowieniu” (P-091 9a). Maszyna nieprzydzielona = ponowienie ręczne (P-091 10a, CLAUDE.md).
 # PIERWSZY PRZEBIEG INFORMACYJNY (zasada roli 07 nr 8): build sprawdza potok; scenariusze nowej wersji padają, dopóki 08 nie zbuduje ekranów z testID z e2e/README.md.
 name: Jakość · iOS
@@ -259,18 +261,20 @@ jobs:
     needs: build
     runs-on: macos-26
     # Pakiet podstawowy jest bramką od pierwszego zielonego przebiegu 40313538454 (P-180) — w KAŻDYM pakiecie: kroki liczą porażki tylko
-    # scenariuszy z wyjścia `bramka` (tag `podstawowy`), resztę pełnego pakietu wypisują jako „czerwony-informacyjnie” (F07-15, P-198 Q1a).
+    # scenariuszy z wyjścia `bramka` planu części, resztę wypisują jako „czerwony-informacyjnie” (F07-15, P-198 Q1a). Od P-834 `bramka` w pakiecie
+    # przypadków użycia i pełnym = wszystkie scenariusze części poza tagiem `oczekujacy` (wcześniej: tylko tag `podstawowy`).
     # Bez continue-on-error na zadaniu iPhone'a: przy „[e2e-pelny]” wyłączał też bramkę scenariuszy podstawowych (test tests/jakosc/e2e-bramka.test.ts).
-    # iPad (tag `ipad`, P-225 Q1a): informacyjnie do pierwszego zielonego przebiegu (zasada roli 07 nr 8); scenariusze tylko przy [e2e-pelny]/[e2e-ipad].
+    # iPad (tag `ipad`, P-225 Q1a): informacyjnie do pierwszego zielonego przebiegu (zasada roli 07 nr 8); od P-834 scenariusze przy każdym przebiegu.
     continue-on-error: ${{ matrix.urzadzenie == 'ipad' }}
     strategy:
       fail-fast: false
       matrix:
         urzadzenie: [iphone, ipad]
-        czesc: [1, 2, 3] # = "czesci" w e2e/czesci.json (pakiet podstawowy: 2; część 3 kończy się wtedy bez symulatora)
+        czesc: [1, 2, 3, 4] # = "czesci" w e2e/czesci.json (P-834: 4 maszyny dla katalogu przypadków użycia; nadmiarowa część kończy bez symulatora)
         exclude: # iPad: jedna maszyna (czesci_ipad w e2e/czesci.json)
           - { urzadzenie: ipad, czesc: 2 }
           - { urzadzenie: ipad, czesc: 3 }
+          - { urzadzenie: ipad, czesc: 4 }
     timeout-minutes: 150 # rozruch symulatora ~8 min + krok Maestro z limitem timeout_min z planu (30 + 4 × scenariusze części)
     steps:
       - uses: actions/checkout@v5
@@ -285,7 +289,7 @@ jobs:
         id: plan
         env:
           COMMIT_MSG: ${{ github.event.head_commit.message || inputs.znacznik }}
-          PAKIET: ${{ matrix.urzadzenie == 'ipad' && 'ipad' || '' }} # iPad: pakiet `ipad` (bez [e2e-pelny]/[e2e-ipad] w commicie część kończy bez pracy)
+          PAKIET: ${{ matrix.urzadzenie == 'ipad' && 'ipad' || '' }} # iPad: pakiet `ipad`; telefon: pusty = katalog przypadków użycia (P-834)
         run: node scripts/ci/e2e-czesci.mjs czesc "${{ matrix.czesc }}" --out e2e-czesc
       - name: Xcode 26.x
         if: steps.plan.outputs.any == 'true'

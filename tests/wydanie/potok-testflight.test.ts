@@ -88,9 +88,9 @@ function zadaniaJakosciIos(): { name: string; informacyjne: boolean }[] {
 describe('bramka na nazwach zadań z jakosc-ios.yml (M1-003, kontrakt)', () => {
   const zadania = zadaniaJakosciIos();
   const run = { id: 9, status: 'completed', conclusion: 'success' };
-  test('workflow ma zadania e2e iPhone 1–3, iPad 1 (informacyjnie) i eksperymenty-wzoru (informacyjnie)', () => {
+  test('workflow ma zadania e2e iPhone 1–4 (P-834: katalog przypadków użycia), iPad 1 (informacyjnie) i eksperymenty-wzoru (informacyjnie)', () => {
     expect(zadania.filter((z) => z.name.startsWith('e2e')).map((z) => `${z.name}${z.informacyjne ? ' [inf]' : ''}`).sort()).toEqual(
-      ['e2e (część 1, ipad) [inf]', 'e2e (część 1, iphone)', 'e2e (część 2, iphone)', 'e2e (część 3, iphone)']);
+      ['e2e (część 1, ipad) [inf]', 'e2e (część 1, iphone)', 'e2e (część 2, iphone)', 'e2e (część 3, iphone)', 'e2e (część 4, iphone)']);
     expect(zadania.find((z) => z.name === 'eksperymenty-wzoru')?.informacyjne).toBe(true);
   });
   test('wszystkie wymagane zielone, informacyjne (iPad, eksperymenty) z failure pod continue-on-error → ok', () => {
