@@ -1,0 +1,221 @@
+# BS poprawki po recenzji BT (001): nowe testy czerwone na b7fc49d, 2026-11-15
+# komenda: npx jest tests/wydanie/zegarek-minimum-watchos.test.ts
+FAIL iOS tests/wydanie/zegarek-minimum-watchos.test.ts
+  minimum watchOS 10.0 — jedna wartość w konfiguracji, kontroli .ipa, stałych, README i wzorcu projektu
+    ✓ cel zegarka: deploymentTarget w expo-target.config.js (5 ms)
+    ✓ kontrola .ipa: MIN_WATCH w scripts/wydanie/kontrola-ipa.sh (111 ms)
+    ✓ stała aplikacji: MIN_WATCHOS w src/konfiguracja.ts (2 ms)
+    ✓ README: „watchOS 10.0 i nowszy”
+    ✓ wzorzec projektu dla testów (tests/wydanie/dane/project.pbxproj): każde WATCHOS_DEPLOYMENT_TARGET = 10.0, co najmniej Debug i Release (2 ms)
+    ✓ iOS bez zmian: 18.0 w stałej, kontroli .ipa i app.json (decyzja dotyczy tylko zegarka) (3 ms)
+  skaner osłon watchOS 11 — przykłady
+    ✓ użycie w if #available(watchOS 11, *) jest osłonięte, także w zagnieżdżonym bloku (1 ms)
+    ✓ deklaracja z @available(watchOS 11, *) osłania całą zawartość (1 ms)
+    ✓ użycie bez osłony jest zgłaszane z numerem wiersza (1 ms)
+    ✓ gałąź else osłoniętego if oraz osłona na watchOS 10 nie są osłoną
+    ✓ komentarze i napisy nie są użyciem; osłona kończy się z blokiem (6 ms)
+  skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)
+    ✓ handGestureShortcut (swiftui/view/handgestureshortcut(_:isenabled:)) bez osłony jest wykrywane (1 ms)
+    ✓ HandGestureShortcut (swiftui/handgestureshortcut) bez osłony jest wykrywane
+    ✓ workoutEffortScore (healthkit/hkquantitytypeidentifier/workouteffortscore) bez osłony jest wykrywane
+    ✓ estimatedWorkoutEffortScore (healthkit/hkquantitytypeidentifier/estimatedworkouteffortscore) bez osłony jest wykrywane (1 ms)
+    ✕ onScrollGeometryChange (swiftui/view/onscrollgeometrychange(for:of:action:)) bez osłony jest wykrywane (3 ms)
+    ✕ onScrollVisibilityChange (swiftui/view/onscrollvisibilitychange(threshold:_:)) bez osłony jest wykrywane (1 ms)
+    ✕ ScrollPosition (swiftui/scrollposition) bez osłony jest wykrywane
+    ✕ MeshGradient (swiftui/meshgradient) bez osłony jest wykrywane
+    ✕ matchedTransitionSource (swiftui/view/matchedtransitionsource(id:in:)) bez osłony jest wykrywane
+    ✕ lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji) (1 ms)
+    ✕ Previewable nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza
+    ✕ ControlWidget nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza (1 ms)
+    ✕ RelevanceConfiguration nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza (1 ms)
+  źródła zegarka (targets/watch): skaner znanych API z watchOS 11 (lista wyżej) nie znajduje użyć poza osłoną; bramą zgodności jest kompilacja z minimum 10.0
+    ✓ są pliki Swift do sprawdzenia (inaczej skan nic nie pilnuje): 14 w targets/watch na 2026-11-15 (git ls-files) (1 ms)
+    ✓ Aplikacja.swift: każde API z watchOS 11 jest osłonięte (3 ms)
+    ✓ Teksty.swift: każde API z watchOS 11 jest osłonięte (4 ms)
+    ✓ Wspolne/Dostep.swift: każde API z watchOS 11 jest osłonięte (2 ms)
+    ✓ Wspolne/Dzien.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+    ✓ Wspolne/Dziennik.swift: każde API z watchOS 11 jest osłonięte (2 ms)
+    ✓ Wspolne/Haptyka.swift: każde API z watchOS 11 jest osłonięte
+    ✓ Wspolne/Intencja.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+    ✓ Wspolne/Json.swift: każde API z watchOS 11 jest osłonięte
+    ✓ Wspolne/Limit.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+    ✓ Wspolne/Przypomnienia.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+    ✓ Wspolne/Stale.swift: każde API z watchOS 11 jest osłonięte
+    ✓ Wspolne/Stan.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+    ✓ Wspolne/Zdarzenie.swift: każde API z watchOS 11 jest osłonięte (2 ms)
+    ✓ Wspolne/Zegarek.swift: każde API z watchOS 11 jest osłonięte (1 ms)
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › onScrollGeometryChange (swiftui/view/onscrollgeometrychange(for:of:action:)) bez osłony jest wykrywane
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 6
+    + Received  + 1
+    - Array [
+    -   Object {
+    -     "api": "onScrollGeometryChange",
+    -     "line": 2,
+    -   },
+    - ]
+    + Array []
+      76 | describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+      77 |   test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    > 78 |     expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+         |                                                                                                        ^
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+      81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › onScrollVisibilityChange (swiftui/view/onscrollvisibilitychange(threshold:_:)) bez osłony jest wykrywane
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 6
+    + Received  + 1
+    - Array [
+    -   Object {
+    -     "api": "onScrollVisibilityChange",
+    -     "line": 2,
+    -   },
+    - ]
+    + Array []
+      76 | describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+      77 |   test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    > 78 |     expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+         |                                                                                                        ^
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+      81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › ScrollPosition (swiftui/scrollposition) bez osłony jest wykrywane
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 6
+    + Received  + 1
+    - Array [
+    -   Object {
+    -     "api": "ScrollPosition",
+    -     "line": 2,
+    -   },
+    - ]
+    + Array []
+      76 | describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+      77 |   test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    > 78 |     expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+         |                                                                                                        ^
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+      81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › MeshGradient (swiftui/meshgradient) bez osłony jest wykrywane
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 6
+    + Received  + 1
+    - Array [
+    -   Object {
+    -     "api": "MeshGradient",
+    -     "line": 2,
+    -   },
+    - ]
+    + Array []
+      76 | describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+      77 |   test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    > 78 |     expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+         |                                                                                                        ^
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+      81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › matchedTransitionSource (swiftui/view/matchedtransitionsource(id:in:)) bez osłony jest wykrywane
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 6
+    + Received  + 1
+    - Array [
+    -   Object {
+    -     "api": "matchedTransitionSource",
+    -     "line": 2,
+    -   },
+    - ]
+    + Array []
+      76 | describe('skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15)', () => {
+      77 |   test.each(OD_WATCHOS_11.map(([api, sciezka]) => [api, sciezka] as const))('%s (%s) bez osłony jest wykrywane', (api) => {
+    > 78 |     expect(nieoslonieteWatchOS11(`struct V: View {\n var body: some View { Text("x").${api}(1) }\n}`)).toEqual([{ line: 2, api }]);
+         |                                                                                                        ^
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+      81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 5
+    + Received  + 3
+      Array [
+    +   "ControlWidget",
+        "HandGestureShortcut",
+    -   "MeshGradient",
+    -   "ScrollPosition",
+    +   "Previewable",
+    +   "RelevanceConfiguration",
+        "estimatedWorkoutEffortScore",
+        "handGestureShortcut",
+    -   "matchedTransitionSource",
+    -   "onScrollGeometryChange",
+    -   "onScrollVisibilityChange",
+        "workoutEffortScore",
+      ]
+      79 |   });
+      80 |   test('lista skanera = dokładnie te 9 nazw (zmiana listy wymaga zmiany tabeli z odczytem dokumentacji)', () => {
+    > 81 |     expect([...API_WATCHOS_11].sort()).toEqual(OD_WATCHOS_11.map(([api]) => api).sort());
+         |                                        ^
+      82 |   });
+      83 |   test.each(NIE_OD_WATCHOS_11.map((api) => [api] as const))('%s nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza', (api) => {
+      84 |     expect(nieoslonieteWatchOS11(`struct V { let x = ${api}() }`)).toEqual([]);
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › Previewable nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 6
+    - Array []
+    + Array [
+    +   Object {
+    +     "api": "Previewable",
+    +     "line": 1,
+    +   },
+    + ]
+      82 |   });
+      83 |   test.each(NIE_OD_WATCHOS_11.map((api) => [api] as const))('%s nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza', (api) => {
+    > 84 |     expect(nieoslonieteWatchOS11(`struct V { let x = ${api}() }`)).toEqual([]);
+         |                                                                    ^
+      85 |   });
+      86 | });
+      87 |
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › ControlWidget nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 6
+    - Array []
+    + Array [
+    +   Object {
+    +     "api": "ControlWidget",
+    +     "line": 1,
+    +   },
+    + ]
+      82 |   });
+      83 |   test.each(NIE_OD_WATCHOS_11.map((api) => [api] as const))('%s nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza', (api) => {
+    > 84 |     expect(nieoslonieteWatchOS11(`struct V { let x = ${api}() }`)).toEqual([]);
+         |                                                                    ^
+      85 |   });
+      86 | });
+      87 |
+  ● skaner: lista znanych API z watchOS 11 (dokumentacja Apple, odczyt 2026-11-15) › RelevanceConfiguration nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 6
+    - Array []
+    + Array [
+    +   Object {
+    +     "api": "RelevanceConfiguration",
+    +     "line": 1,
+    +   },
+    + ]
+      82 |   });
+      83 |   test.each(NIE_OD_WATCHOS_11.map((api) => [api] as const))('%s nie jest API od watchOS 11 (inna wersja w dokumentacji Apple) — skaner go nie zgłasza', (api) => {
+    > 84 |     expect(nieoslonieteWatchOS11(`struct V { let x = ${api}() }`)).toEqual([]);
+         |                                                                    ^
+      85 |   });
+      86 | });
+      87 |
+Test Suites: 1 failed, 1 total
+Tests:       9 failed, 30 passed, 39 total
+Snapshots:   0 total
+Time:        4.305 s
+Ran all test suites matching /tests\/wydanie\/zegarek-minimum-watchos.test.ts/i.
+# kod wyjścia: 1 (9 czerwonych z właściwego powodu: asercja listy; 5 nowych API niewykrytych, 3 spoza watchOS 11 zgłaszane, lista ≠ tabela)

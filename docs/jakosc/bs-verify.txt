@@ -1,0 +1,28 @@
+# BS: npm run verify na HEAD f8b57a8 (claude/bs-watchos10-2026-11-15), 2026-11-15, Linux, Node v22.23.4
+# komenda: npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test); kod wyjścia: 0
+# poniżej końcówka wyjścia (ostatnie 25 linii)
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/ekrany/e2e-zdjecie.test.ts
+PASS iOS tests/ekrany/e2e-panel-wzoru-skan.test.tsx
+PASS iOS tests/ekrany/e2e-panel-wzoru-word.test.tsx
+PASS iOS tests/dane/sha-pary-bazy.test.ts
+PASS iOS tests/i18n/preferencja.test.ts
+PASS iOS tests/jakosc/bez-wersalikow.test.ts
+PASS iOS tests/narzedzia/licznik-wektorow.test.ts
+PASS iOS tests/i18n/nazwy-jezykow.test.ts
+PASS iOS tests/i18n/m3-fix-reaudit-022-timer.test.ts
+PASS iOS tests/adaptery/identyfikatory.test.ts
+PASS iOS tests/ekrany/miary.test.ts
+PASS iOS tests/wydanie/barwy-celow-tokeny.test.ts
+PASS iOS tests/wydanie/zegarek-minimum-watchos.test.ts
+PASS iOS tests/jakosc/readme.test.ts
+PASS iOS tests/wydanie/ikona-zegarka.test.ts
+PASS iOS tests/wydanie/ikona-zegarka-pakiet.test.ts
+PASS iOS tests/wydanie/uklad-podpisow.test.ts
+
+Test Suites: 608 passed, 608 total
+Tests:       7408 passed, 7408 total
+Snapshots:   0 total
+Time:        178.42 s
+Ran all test suites.
+EXIT 0

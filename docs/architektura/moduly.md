@@ -487,7 +487,7 @@ Stany tej maszyny nie są w bazie (stan modułu natywnego), więc nie mają CHEC
 | `ODSTEP_PROSBY_DNI` (dni) | 14 | P-150 E2-1a, jak Trening (`REVIEW.MIN_GAP_DAYS`); HIG „Ratings and reviews”: „Consider allowing at least a week or two between requests” (`docs/wzrost.md`) |
 | `PROSB_NA_WERSJE` (prośby na wersję) | 1 | P-150 E2-1a, jak Trening; wartość > 1 wymaga licznika w kluczu `ostatnia_prosba_o_ocene` (zmiana kontraktu) |
 | `PARTIA_SYNCHRONIZACJI` (wiersze na transakcję) | 200 | [OCENA] roli 05: krótkie transakcje przy scalaniu iCloud i importu (E3 §1); do korekty po pomiarze |
-| `MIN_IOS` / `MIN_WATCHOS` | 18.0 / 11.0 | P-070, ADR-0006 |
+| `MIN_IOS` / `MIN_WATCHOS` | 18.0 / 10.0 | P-070, ADR-0006 (zegarek 10.0 od 2026-11-15, P-819) |
 | `PRODUKTY_PRO` (ID) | [DO USTALENIA] | P-038 (przy konfiguracji App Store Connect) |
 | `CENY` | z App Store (StoreKit), nie z kodu | P-057, KP-* |
 | Liczby obliczeń F-38, tabele drutów i szydełek RD-11/RD-19, kategorie grubości RD-10 | `docs/tresci/parametry.json` (rola 06) → kopia `src/domena/obliczenia/parametry.ts` | rejestr merytoryczny roli 06 (D-027); kopię tworzy `node scripts/domena/generuj-parametry.mjs` (ręcznie nie edytować), zgodność pilnuje `tests/domena/obliczenia/parametry-kopia.test.ts` w `verify` (P-118 S4) |

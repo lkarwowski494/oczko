@@ -35,7 +35,7 @@ Kontrole po `prebuild` nie wystarczą: sprawdzany jest artefakt, który idzie do
 - uprawnienia (`codesign -d --entitlements`) i ich wartości per pakiet zgodne z listą z `docs/architektura/prywatnosc.md` (iCloud/CloudKit, App Group tylko w rozszerzeniu udostępniania i aplikacji, ADR-0011; brak uprawnień nieużywanych);
 - `main.jsbundle` jest bajtkodem Hermesa i build nie zawiera `EXDevLauncher` ani innych modułów deweloperskich;
 - zegarek osadzony (`Watch/*.app`, `WKCompanionAppBundleIdentifier` = identyfikator aplikacji) i rozszerzenia obecne (`PlugIns/*.appex`: Live Activity, udostępnianie);
-- `MinimumOSVersion` = 18.0 (aplikacja, rozszerzenia) i 11.0 (zegarek), ADR-0006;
+- `MinimumOSVersion` = 18.0 (aplikacja, rozszerzenia) i 10.0 (zegarek; od 2026-11-15, wcześniej 11.0), ADR-0006, P-819;
 - `CFBundleVersion` równy we wszystkich pakietach, w formacie z rejestru Apple 21d, większy niż 1004 (TestFlight 0.1.0, P-070) i niż ostatni build w App Store Connect;
 - `PrivacyInfo.xcprivacy` w każdym pakiecie z kodem, kategorie zgodne z `prywatnosc.md` i `privacy-pliki-e3.txt`;
 - 35 katalogów `.lproj` (`CFBundleLocalizations` = lista języków, ADR-0017);

@@ -7,7 +7,7 @@ import PackageDescription
 // Uruchomienie: cd modules/oczko-reguly && swift test
 let package = Package(
   name: "OczkoReguly",
-  platforms: [.macOS(.v14)], // testy na macOS; iOS 18 / watchOS 11 ustawiają cele Xcode (ADR-0006)
+  platforms: [.macOS(.v14)], // testy na macOS; iOS 18 / watchOS 10 (zegarek, od 2026-11-15) ustawiają cele Xcode (ADR-0006)
   products: [
     .library(name: "OczkoReguly", targets: ["OczkoReguly"]),
     .library(name: "OczkoDziennik", targets: ["OczkoDziennik"]),

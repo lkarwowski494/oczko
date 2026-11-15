@@ -1,0 +1,11 @@
+# BS poprawki po recenzji BT: npm run verify na HEAD 1d23640 (lokalnie, bez pushu), 2026-11-15, Linux, Node v22.23.4
+# komenda: npm run verify; kod wyjścia: 0
+# końcówka wyjścia (ostatnie 8 linii)
+PASS iOS tests/wydanie/ikona-zegarka.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+
+Test Suites: 608 passed, 608 total
+Tests:       7421 passed, 7421 total
+Snapshots:   0 total
+Time:        155.986 s, estimated 169 s
+Ran all test suites.

@@ -9,7 +9,7 @@ Wejście: E0 (`e0-rozpoznanie.md`) przyjęte P-070. ADR w `docs/adr/` (format MA
 | [0003](../adr/0003-granice-modulow-i-stan-interfejsu.md) | domena w czystym TS z portami; stan UI w komponentach i kontekście, baza jedynym źródłem prawdy | **przyjęta** (P-071) |
 | [0004](../adr/0004-kopia-eksport-import.md) | archiwum `.oczko` (`VACUUM INTO` + pliki + manifest), import scal/zastąp, nowsza wersja odrzucona | **przyjęta** (P-071 (4a)) |
 | [0005](../adr/0005-synchronizacja-icloud-cloudkit-dziennik.md) | CloudKit prywatny przez `CKSyncEngine`, zdarzenia z rodzicami, konflikt pokazany | **przyjęta** (P-071) |
-| [0006](../adr/0006-minimalne-wersje-ios-18-watchos-11.md) | iOS 18 / watchOS 11 | **przyjęta** (P-070) |
+| [0006](../adr/0006-minimalne-wersje-ios-18-watchos-11.md) | iOS 18 / watchOS 11, zegarek 10.0 od 2026-11-15 | **przyjęta** (P-070), uzupełniona (P-819) |
 | [0007](../adr/0007-cele-natywne-apple-targets-i-moduly-expo.md) | cele Swift przez `@bacons/apple-targets`, mosty Expo Modules API; wspólne wektory Swift/TS | **przyjęta** (P-071) |
 | [0008](../adr/0008-plus-jeden-z-ekranu-blokady-dziennik.md) | `LiveActivityIntent` dopisuje do dziennika `.jsonl`, aplikacja scala; limit na ekranie blokady | **przyjęta** (P-071) |
 | [0009](../adr/0009-zegarek-transport-limit-pro.md) | `transferUserInfo` + kontekst; Pro z telefonu i StoreKit na zegarku (zamyka OP-22) | **przyjęta** (P-071) |
