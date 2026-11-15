@@ -888,3 +888,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 11:18 | M9 | BU = session_01T66VBxUWqJTvafuPrT66yb (sonnet, start bez błędu) | kontrola 11:20 |
 | 15.11 11:21 | M9 | Kontrola 11:20: punkty z przypomnienia wykonane wcześniej (BS/BT przyjęte, BU w toku) | kontrola 11:55 |
 | 15.11 11:27 | M9 | BU: integracja 761b9551..104f8764 (fast-forward, zawiera BS 7fabb180, BO 8985475b, BP 5bcf9fdc; autor OK; 740 wpisów P bez duplikatów; verify kod 0 wg sesji) — sprawdzone; BU zarchiwizowana (0,89 USD). Jakość·iOS 43699331260 na BS: **success** (pakiet podstawowy). Pełny e2e na kandydacie buildu 7: run 43708779405 ([e2e-pelny] [e2e-ciemny]; anuluje push-run 43708738466) | kontrola 13:20, linia 14:00 |
+| 15.11 13:22 | M9 | Kontrola 13:20: na 104f8764 Jakość·Linux 43708738493 success, Zrzuty sklepu 43708738483 success; pełny e2e 43708779405 in_progress (od 11:24) | linia 14:00, kontrola 14:30 |
