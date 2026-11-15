@@ -122,3 +122,44 @@ Bez wagi: blok „Oczko na zegarku” ma angielskie napisy w cudzysłowie angiel
 
 ### Werdykt
 **ZGODNA Z UWAGAMI** — wszystkie 671 par „pl” ⟦en⟧ (281/281 w próbce 32 kroków) to dosłowne wartości `pl.json` dla właściwego klucza i właściwej formy liczby mnogiej, bez wymyślonych tłumaczeń i bez zmiany sensu 121 kroków; zostało 5 drobnych znalezisk P2 (dwa angielskie napisy bez oznaczenia, polski VoiceOver i nazwy systemowe iOS/TestFlight), żadnego P1.
+
+## Recenzja: pierwszy test i poprawki P2 (2026-11-15)
+Rola 07-jakosc, druga runda. Sprawdzony stan pliku roboczego; w trakcie recenzji koordynator zacommitował go jako `d94f303` (strona na dysku = `d94f303`). Fakt: `docs/fakty-wlasciciela.md:17` — 1161 to pierwszy test Oczka na telefonie; na telefonie był build 1061, na zegarku nic.
+
+### Metoda
+- `node`: DANE z dysku porównane pole po polu z DANE z pierwszej rundy (zmienione: T-01, T-02, T-03, Z-01, Z-03, Z-06, T-55, T-70, T-85, tytuł i wstęp sekcji 1a); `git diff` części statycznej (zmieniony 1 wiersz: przykład uwagi).
+- Wyszukiwanie w całej stronie (DANE, HTML, JS) wzorcem `1141|1151|1061|build(u|zie)? [1-5]|zmian|zmieni|masz już|wcześniej|poprzedni|starsz|od buildu|nowe w|naprawi|poprawk|regres|z (Twoimi) danymi|swoje dane|pierwsz* test|śwież|nie dotyczy|krótk*`; każde trafienie przeczytane w kontekście.
+- Ponowne dopasowanie wszystkich par „pl” ⟦en⟧ do `en.json`/`pl.json` tym samym skryptem co w pierwszej rundzie.
+- Kroki aktualizacji z danymi porównane z listą źródłową `test-urzadzenia-build5.md` (wiersze 34, 81, 85, 107, 138, 466, 685, 719).
+- Playwright `chromium.launch()`, 390×844, fragment owinięty w szkielet z viewport: (a) pusty `localStorage`; (b) stary zapis `oczko-test-1161-v1` = `{tryb:'krotki', podejscie:1, build:'1161', odp:{T-01 tak + uwaga, T-02 pomiń + uwaga, Z-01 nie + uwaga}}` bez pola `wersja`; (c) zapis z `wersja: 2` i trybem krótkim; `scrollWidth` w podejściach 1–3 i trybie krótkim z rozwiniętymi „Szczegółami”; konsola.
+
+### Wyniki wymagań
+1. **Tryb pełny domyślny i zalecany — spełnione.** (a) Pusty `localStorage`: `tryb-pelny` `aria-pressed=true`, widoczne podejścia, 77 kroków podejścia 1. (b) Stary zapis z trybem krótkim bez `wersja`: strona otwiera się w trybie pełnym (podejście 1); odpowiedzi zachowane — T-01 „tak” z uwagą, T-02 „pomiń”, postęp „3 z 77 · 1 tak · 1 nie · 1 pominięte”; zapis zostaje nietknięty do pierwszej zmiany, potem jest zapisany z `tryb:'pelny', wersja:2` i tymi samymi `odp`. (c) Świadomie wybrany tryb krótki (`wersja: 2`) przetrwa przeładowanie. Przycisk „Pełny — zalecany”; po wybraniu „Krótki” opis: „Tryb krótki jest do kolejnych buildów, po pierwszym pełnym teście … Przy pierwszym teście wybierz tryb pełny.”
+2. **Brak założeń wcześniejszego testu — spełnione.** Nie ma już „1141”, „build 4”, „od buildu”, „zakup z wcześniejszego buildu”, „Jeśli po T-02 masz dane”. Zostały tylko trafienia neutralne: „1061” jako przykład złego numeru w bloku instalacji (fakt właściciela), warunki T-01/T-02 („wersja 1.0.0 (starszy build)”, „Jeśli jest 1.0.0 z Twoimi danymi”) z uwagą „nie dotyczy”, „poprawka” w Z-02 (o decyzji przed 1.0, nie o poprzednim teście), „zmiana/zmienia” w znaczeniu zwykłym (T-12, T-15, T-71 itd.), „wcześniej” w T-33 i T-49 (czynność w teście).
+3. **T-01/T-02 — spełnione z uwagą.** T-02: uwaga „**Nie dotyczy przy pierwszej instalacji** … zaznacz „Pomiń” z uwagą „nie dotyczy”” i to samo w „Kroki, które mogą nie dać się zrobić”; zgodne ze źródłem (wiersz 85: T-02 tylko z danymi z buildów 1–4, inaczej „nie dotyczy”). Usunięte zdania (T-03 „Jeśli po T-02 masz dane… T-133”, Z-03 „zakreślenia z buildu 1141 lub starszego”, Z-01 „w buildzie 1141…”, T-70 „Jeśli Pro już Włączone (zakup z wcześniejszego buildu)…”) to objaśnienia dla danych z poprzedniego buildu, nie sprawdzenia; nic z pierwszej instalacji nie zginęło: start bez okien i bez ekranu trybu awaryjnego sprawdza dalej T-03 i T-133 („nigdy ekran trybu awaryjnego”, „Przy pierwszej próbie sprawdź też T-03”), T-70 nadal ma „po świeżej instalacji „Zostało 4 z 5””, T-136 podsumowanie bez zmian.
+4. **Czas i podejścia — spełnione.** Przycisk: „121 kroków · 3 podejścia · ok. 5 h 27 min”; opis: „Cały test: 121 kroków, ok. 5 h 27 min samych kroków (z czytaniem i zrzutami realnie 7,5–8,5 h), w 3 podejściach: 1 — ok. 3 h 2 min, 2 — ok. 1 h 44 min, 3 — ok. 41 min. Podejścia możesz robić w różne dni; zaznaczenia zostają w tej przeglądarce.”; przyciski podejść 77/28/16 kroków z czasem.
+
+### Poprawki P2 z pierwszej rundy
+- T-55: „2 motki” ⟦2 skeins⟧ w „Powinno być” i „Szczegółach” = `zapas.motki_few` — **naniesione poprawnie**.
+- „Zanim zaczniesz → Jak zgłaszać wynik”: „np. Wstecz wróciło na ekran Dziś, a nie do Przewodnika.” — po polsku, nazwy zgodne z `wspolne.wstecz`, `dzis.tytul`, `przewodnik.tytul` — **naniesione**.
+- T-85: „nie samą nazwę typu elementu” zamiast „button” — **naniesione** (bez napisu do porównania, więc bez rozjazdu języka).
+- TestFlight („Install”, „Update”, „Previous Builds”, „Information” z „[sprawdź na ekranie]”) i „Automatyczna blokada” — bez zmian, zgodnie z decyzją koordynatora (brak źródła w repo); znaleziska z pierwszej rundy zostają otwarte jako P2 do pierwszego zrzutu z polskiego TestFlight/Ustawień.
+- Pary po poprawkach: 674 = 672 zgodne (654 automatycznie + 18 ręcznie, te same co w pierwszej rundzie) + 2 oznaczone (T-02 „Install”, „Update”); niezgodnych 0.
+
+### Liczby i przeglądarka
+121 kroków (te same ID i kolejność), 20 sekcji. Chromium 390 px: `scrollWidth` 390 w podejściach 1, 2, 3 i trybie krótkim; konsola 0 błędów i 0 ostrzeżeń.
+
+### Znaleziska
+| ID / miejsce | Co jest | Co powinno być | Waga |
+|---|---|---|---|
+| T-01 (Uwaga) | „To pierwszy test Oczka na telefonie, czyli świeża instalacja.” | Według `fakty-wlasciciela.md:17` na telefonie był build 1061, więc instalacja 1161 to „Update” na 1061, nie świeża instalacja. Proponuję: „To pierwszy test Oczka na telefonie. Jeśli jest build 1061 bez Twoich danych — zaktualizuj do 1161 (T-02 nie dotyczy); świeża instalacja jest w T-133.” Na wynik testu nie wpływa (T-03 i T-133 sprawdzają start). | P2 |
+| Wybierz zakres → przycisk „Krótki” | Na przycisku tylko „13 kroków · ok. 40 min”; zdanie „do kolejnych buildów, po pierwszym pełnym teście” pojawia się dopiero po wybraniu trybu krótkiego | Ta sama informacja na przycisku (np. „Krótki — do kolejnych buildów”), żeby przy pierwszym teście nie był kuszącym „40 min” obok „5 h 27 min” | P2 |
+| T-02, „Zanim zaczniesz” (TestFlight); „Co przygotować” („Automatyczna blokada”) | jak w pierwszej rundzie | jak w pierwszej rundzie — otwarte z decyzji koordynatora | P2 (bez zmian) |
+
+### Werdykt
+**ZGODNA Z UWAGAMI** — strona prowadzi pierwszy test w trybie pełnym (także po starym zapisie z trybem krótkim, z zachowanymi odpowiedziami), nie zakłada wcześniejszego testu, ma 121 kroków, łączny czas i podział na podejścia, a trzy poprawki P2 są naniesione poprawnie; nowe znaleziska to 2 × P2 (T-01 „świeża instalacja” przy buildzie 1061 na telefonie, opis trybu krótkiego dopiero po jego wybraniu), żadnego P1.
+
+### Naniesione po drugiej rundzie (autor)
+- T-01: uwaga bez „świeża instalacja” — „Zapisz, czy jakiś build Oczka już jest na telefonie i z jakim numerem (np. 1061); 1161 zainstalujesz na niego, bez usuwania.”
+- Przycisk „Krótki”: opis „do kolejnych buildów, po pierwszym pełnym teście · 13 kroków · ok. 40 min” widoczny bez wybierania.
+- Otwarte P2 bez zmian (brak źródła w repo): przyciski TestFlight z oznaczeniem „[sprawdź na ekranie]”, nazwa „Automatyczna blokada” z listy źródłowej.
