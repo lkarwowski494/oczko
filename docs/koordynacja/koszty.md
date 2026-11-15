@@ -90,3 +90,5 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BV | 07 build (opus) | 8 | 7,58 | 24 | 14:32 → 14:39 → ok. 14:55 → hak verify przy push → 15:03 | 0 | instrukcja 1171 jako artefakt |
 | BW | 08 fix (sonnet) | 10 | 4,03 | 29 | 15:12 → 17:34 → 17:51 → ci 18:00 → 18:05 | ok. 140 min: start sesji opóźniony (koordynator w trybie default/blokada) | powrót z „Dodaj wzór” |
 | BY | 04 audit (fable 5.2 zamiast opus) | 15 | 15,18 | 29 | 17:40 → 18:03 → 18:20 → — → 18:25 | 20 min: start odrzucony (koordynator poza auto) | ponad pułap o 1% |
+| BX | 07 build | 15→20 (KO-065) | 23,87 | 34 | 17:35 → 17:45 → 0e5343fd → (bez CI) → PRZEKAZANIE 18:30, archiwum 18:48 | — | model w praktyce fable (user_switched_model), permission default; ponad pułap 20, poniżej STOP 26 |
+| BZ | prompts (KO-066) | 15 | 17,17 | 31 | 18:05 → 18:11 → bc7f7a95 → (bez CI) → PRZEKAZANIE 18:37, archiwum 18:48 | — | ponad pułap 15, poniżej STOP 19,5; stopki Co-Authored-By |
