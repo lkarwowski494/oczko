@@ -138,12 +138,32 @@ article.krok[data-stan="pomin"] .id { background: var(--pomTlo); color: var(--po
       <div class="blok-tresc">
         <ol>
           <li>Na iPhonie otwórz <strong>TestFlight</strong> → „Oczko”.</li>
-          <li>Sprawdź numer pod nazwą: <strong>1.0.0 (1161)</strong>. Jeśli jest inny: „Previous Builds” (Poprzednie buildy) → wybierz 1161.</li>
+          <li>Sprawdź numer pod nazwą „Oczko”: liczba w nawiasie musi być <strong>1161</strong>, czyli „1.0.0 (1161)”. Jeśli widzisz inną liczbę (np. 1061 albo 1151), testujesz starszy build: najpierw zrób T-01 i T-02, potem zainstaluj 1161 przyciskiem „Install” albo „Update” (jeśli 1161 nie jest na górze: „Previous Builds” / Poprzednie buildy → 1161). Dopiero z 1161 zaczynaj pozostałe kroki.</li>
           <li><strong>Najpierw kroki T-01 i T-02</strong> (zapis stanu, zrzut) — dopiero potem „Install” albo „Update”. Nie usuwaj aplikacji przed T-02.</li>
           <li>iPad: TestFlight na iPadzie, to samo Apple ID → „Oczko” → 1161 → „Install”. Potrzebny przed Z-05 (oba tryby) i przed sekcją 13 (tryb pełny).</li>
-          <li>Apple Watch musi być sparowany z tym iPhonem; Oczko instaluje się na nim z iPhone'a w kroku T-04.</li>
+          <li>Apple Watch musi być sparowany z tym iPhonem; Oczko instaluje się na nim z iPhone'a (blok „Oczko na zegarku” niżej, krok T-04).</li>
           <li>Numer buildu, który faktycznie testujesz, wpisz w polu wyżej — trafi do wyniku.</li>
         </ol>
+      </div>
+    </details>
+
+    <details class="blok" open>
+      <summary>Oczko na zegarku</summary>
+      <div class="blok-tresc">
+        <p>Najpierw na iPhonie musi być Oczko w wersji 1161 (blok wyżej). Aplikacja zegarka jest częścią tego buildu. Zegarek potrzebuje watchOS 9 lub nowszego.</p>
+        <p><strong>Sposób 1 — z aplikacji Watch na iPhonie</strong> (napisy po polsku, w nawiasie po angielsku, jeśli iPhone jest po angielsku):</p>
+        <ol>
+          <li>Na iPhonie otwórz aplikację <strong>Watch</strong>.</li>
+          <li>Stuknij kartę „Mój zegarek” („My Watch”) na dole ekranu.</li>
+          <li>Stuknij „Aplikacje” („Apps”) i przewiń do sekcji „Dostępne aplikacje” („Available Apps”).</li>
+          <li>Przy „Oczko” stuknij „Instaluj” („Install”). Instalacja może potrwać do 5 minut.</li>
+        </ol>
+        <p><strong>Sposób 2 — z TestFlight</strong>, jeśli w sposobie 1 Oczka nie ma:</p>
+        <ol>
+          <li>Na iPhonie otwórz TestFlight → stuknij „Oczko”.</li>
+          <li>Na stronie szczegółów przewiń do informacji o aplikacji („Information”). Jeśli aplikacja zegarka jest dostępna i pasuje do Twojego zegarka, jest tam przycisk instalacji (albo aktualizacji czy otwarcia).</li>
+        </ol>
+        <p><strong>Sprawdzenie:</strong> na zegarku wciśnij koronę — na siatce aplikacji jest ikona Oczka. Jeśli Oczka nadal nie ma w żadnym sposobie, zanotuj to przy T-04 jako „nie” z opisem, co widzisz w aplikacji Watch i w TestFlight.</p>
       </div>
     </details>
 

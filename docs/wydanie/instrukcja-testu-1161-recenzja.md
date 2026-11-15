@@ -67,3 +67,14 @@ Uwagi do treści (4): Z-01, Z-02, Z-03, Z-05.
 - „Czego nie testujesz”: powód dla „Yearly”/„Lifetime” wpisany wprost (blok o zakupie jest ukryty w trybie krótkim); „Co przygotować”: PDF w Plikach iPhone'a, na iPadzie z Plików iPada albo przez Udostępnij (jak T-96).
 - Na prośbę koordynatora („każdy krok wykonalny bez zgadywania”): blok „Gesty i miejsca w iOS” (przełącznik aplikacji, ekran główny, Centrum sterowania, Centrum powiadomień, blokada, korona zegarka, Udostępnij). To pomoc w obsłudze iOS, nie nowe kroki testu.
 - Bez zmian: suma podejścia 2 liczona z kroków (94 min) — niezgodność 93 vs 94 jest w źródle.
+
+## Wersja 3 — „Oczko na zegarku” i sprawdzenie numeru buildu (koordynator, 2026-11-15 ok. 08:46 UTC)
+Powód: właściciel nie ma Oczka na zegarku i ma na telefonie build 1061. Źródła przeczytane 2026-11-15 (`curl` + tekst strony):
+- support.apple.com/pl-pl/109023 („Pobieranie aplikacji na Apple Watch”, data publikacji 21 września 2026): „Na iPhonie otwórz aplikację Watch. Stuknij kartę Mój zegarek. Stuknij opcję Aplikacje, a następnie przewiń do aplikacji, którą chcesz dodać. Aplikacje do zainstalowania znajdują się w sekcji Dostępne aplikacje. Aby dodać aplikację do zegarka, stuknij opcję Instaluj.” Angielskie napisy z support.apple.com/en-us/109023 (14 września 2026): „Tap the My Watch tab. Tap Apps … Available Apps section. … tap Install.” Uwaga: przycisk po polsku to „Instaluj”, nie „Zainstaluj”.
+- testflight.apple.com („Testing Apps with TestFlight”, sekcja Apple Watch): „If the app is an iOS app that includes an Apple Watch app, install the iOS app first, then go to the App Details page in the Information section. If the Apple Watch app is available and compatible with your watch, there will be a button to install, update, or open it.”; wymaganie „watchOS apps: Apple Watch running watchOS 9 or later”.
+- Aplikacja zegarka jest w buildzie 1161: `docs/jakosc/werdykt-1161/kontrola-ipa-1161.txt` (`/Watch/OczkoZegarek.app`, `com.apps4brew.knitting.watchkitapp`).
+- „Do 5 minut” — z kroku T-04 listy źródłowej.
+
+Niepotwierdzone, więc niewpisane na stronę: „Automatyczna instalacja aplikacji” (nie znalazłem strony Apple w czasie pracy), zegarek „odblokowany, na ładowarce, blisko telefonu” jako warunek instalacji (nie ma tego na przeczytanych stronach), polska nazwa sekcji „Information” w TestFlight.
+Rozjazd do roli 07 przy następnej liście: T-04 w liście źródłowej mówi o „przełączniku przy Oczko” w aplikacji Watch; aktualna strona Apple — o przycisku „Instaluj” w „Dostępne aplikacje”. Krok T-04 na stronie bez zmian (zakres), sposób z Apple w „Zanim zaczniesz”.
+Sprawdzenie numeru: w bloku instalacji liczba w nawiasie musi być 1161; inna (np. 1061, 1151) → najpierw T-01 i T-02, potem „Install”/„Update” 1161. Pomiar Chromium po zmianie: 320 i 390 px, oba motywy, wszystkie zakresy — `scrollWidth` = okno, konsola bez błędów.
