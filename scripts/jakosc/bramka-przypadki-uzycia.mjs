@@ -208,6 +208,8 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
         const tt = tagi(path.basename(x.plik));
         for (const w of ['oczekujacy', 'przypadki-uzycia', p.id]) if (!tt.includes(w)) bledy.push(`${p.id}: ${x.plik} bez tagu ${w}`);
       }
+      // P-855 (KO-073): scenariusz z tagiem oczekujacy nie biegnie (poza bramką Jakość iOS), więc niczego nie sprawdza — PU liczy się po zielonym przebiegu i zdjęciu tagu (klasa A)
+      if (wymagajTestowB) bledy.push(`${p.id}: klasa B „oczekujący” nie liczy się jako test (scenariusz z tagiem oczekujacy nie biegnie; do zielonego przebiegu na SHA i zdjęcia tagu, P-855)`);
     } else if (p.klasa === 'F') {
       const m = /^F: ([^—]+) — (.+)$/.exec(p.pokrycie);
       if (!m || !KATEGORIE_F.includes(m[1].trim()) || m[2].trim().length < 30) bledy.push(`${p.id}: Pokrycie klasy F nie jest „F: <kategoria> — <powód ≥ 30 znaków>”`);

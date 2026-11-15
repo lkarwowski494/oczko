@@ -32,6 +32,7 @@ describe('rysik: pencilOnly po pierwszym dotknięciu (P-218 Q2a)', () => {
     expect(politykaPlotna({ narzedzie: 'brak', tylkoRysik: false })).toBe('wylaczone');
     expect(politykaPlotna({ narzedzie: 'brak', tylkoRysik: true })).toBe('wylaczone');
   });
+  // PU-149: iPad, zakreślacz włączony → jeden palec rysuje (polityka płótna „dowolne”); dwa palce to natywny gest PencilKit (PU-339, klasa F)
   test('iPad bez rysika jak iPhone: wybrane narzędzie → palec rysuje (anyInput; BR-WZR-008 S4)', () => {
     for (const n of ['zakreslacz', 'pioro', 'gumka'] as const) expect(politykaPlotna({ narzedzie: n, tylkoRysik: false })).toBe('dowolne');
   });

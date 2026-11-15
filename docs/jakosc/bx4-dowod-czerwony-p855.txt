@@ -1,0 +1,6 @@
+# P-855: test czerwony na kodzie 41515183 (przed zmianą), potem zielony
+    ✕ P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID; bez wymogu testów B (katalog, verify) bez błędu (139 ms)
+    - Expected  - 18
+    + Received  +  1
+Tests:       1 failed, 48 skipped, 49 total
+    ✓ P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID (kontrola 2 z wymogiem testów B) (129 ms)

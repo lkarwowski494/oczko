@@ -9,7 +9,7 @@ Legenda klas:
 
 Napisy aplikacji: po polsku, z angielskim w ⟦⟧ (scenariusze biegną po angielsku, symulator en-US). Ekrany: klucze tras względem `app/` bez `.tsx`.
 
-Podsumowanie: A=93, B=194, F=51, razem 338.
+Podsumowanie: A=93, B=194, F=52, razem 339.
 
 ## Instalacja i pierwszy start
 
@@ -291,7 +291,8 @@ Podsumowanie: A=93, B=194, F=51, razem 338.
 | PU-146 | Chcę na pełnym ekranie iPada treść w czytelnej kolumnie i obrót wszędzie. | iPad pełny ekran → „Dziś”, „Ustawienia”, przewodnik → pion i poziom. | Treść w wyśrodkowanej kolumnie, nie od krawędzi do krawędzi; na iPadzie obraca się każdy ekran. | T-96, G-23 | (zakladki)/index, ustawienia, przewodnik | B | do zaprogramowania: Maestro iPad — `setOrientation` na każdym ekranie, zrzuty; komponentowy: maksymalna szerokość kolumny przy szerokości iPada |
 | PU-147 | Chcę na iPadzie korzystać z przewodnika osobno od iPhone'a. | iPad: „Dziś” → „Przewodnik” → „Licznik” → „+1 rząd” → „Pokaż ›” → „‹ Przewodnik”; „Ustawienia” → wiersz „Przewodnik”. | „Pokaż” otwiera licznik, „‹ Przewodnik” wraca; „Przeczytane” liczy się na iPadzie osobno (od 0). | G-23 | przewodnik, licznik, ustawienia | B | do zaprogramowania: Maestro iPad — świeży start: `przewodnik-postep` „Read: 0 of 42”, „Show” → `licznik-plus` → `nav-wstecz` → `przewodnik`; `ustawienia-przewodnik-wartosc` zgodna z przewodnikiem |
 | PU-148 | Chcę zakreślać na iPadzie palcem, cofać i nie tracić kresek. | iPad: „Zakreślacz” → rysuj → „Cofnij ostatnią kreskę” → w trakcie rysowania ekran główny i powrót → zabij aplikację → otwórz. | Rysunek palcem; cofnięcie działa; kreski zostają po powrocie z tła i po restarcie. | T-97 | wzor | B | do zaprogramowania: Maestro iPad — `wzor-cofnij-rysunek` zmniejsza `wzor-zakreslenia`, `pressKey: Home` + `launchApp` bez stopu → liczba bez zmian; częściowo: e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml:21; e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml:26 |
-| PU-149 | Chcę, żeby jeden palec rysował, a dwa przewijały. | iPad: zakreślacz włączony → jeden palec, potem dwa palce. | Jeden palec rysuje, dwa przewijają. | T-97, Z-05 | wzor | B | do zaprogramowania: komponentowy — `politykaPlotna` z zakreślaczem: dotyk jednym palcem → rysunek, dwoma → przewijanie (Maestro nie wykonuje gestów dwoma palcami) |
+| PU-149 | Chcę, żeby na iPadzie jeden palec rysował zakreślaczem. | iPad: zakreślacz włączony → jeden palec. | Jeden palec rysuje (polityka płótna „dowolne”); przewijanie dwoma palcami: PU-339. | T-97, Z-05 | wzor | B | z testem: tests/domena/wzor/uklad-rysik.test.ts:36 |
+| PU-339 | Chcę, żeby na iPadzie dwa palce przewijały wzór, a nie rysowały. | iPad: zakreślacz włączony → dwa palce na wzorze. | Dwa palce przewijają (nie zostawiają kreski), jeden palec nadal rysuje. | T-97, Z-05 | wzor | F | F: system iOS — natywny gest PencilKit (dwa palce), wielodotyk poza symulatorem i Maestro; logikę „jeden palec rysuje” sprawdza PU-149. |
 | PU-150 | Chcę postawić znacznik przytrzymaniem na iPadzie, także na obróconej stronie. | iPad: przytrzymaj palec na wierszu → ••• → „Obróć stronę” ⟦Rotate page⟧ → przytrzymaj. | Znacznik na wysokości palca w obu przypadkach. | T-98 | wzor | B | do zaprogramowania: Maestro iPad — `longPressOn` punktu strony → `wzor-znacznik-rzad`, `wzor-menu` → `wzor-obroc` → `longPressOn` → znacznik na tej samej wysokości |
 | PU-151 | Chcę mieć Pro na iPadzie bez ponownego zakupu. | iPad: „Ustawienia” → „Oczko Pro” → „Przywróć zakupy” ⟦Restore purchases⟧. | Pro włączone na iPadzie. | T-99 | oferty, ustawienia | F | F: sklep Apple — przywrócenie zakupu zrobionego na innym urządzeniu wymaga prawdziwego Apple ID i StoreKit. |
 | PU-152 | Chcę wiedzieć, że w 1.0 iPhone i iPad mają osobne dane. | Wartość licznika na iPhonie → na iPadzie +1 ×5 → iPhone. | Na iPhonie ta sama wartość, projektu z iPada nie ma; na iPadzie licznik 6. | T-100 | — | F | F: system iOS — dwa fizyczne urządzenia z tym samym kontem; symulator nie łączy dwóch urządzeń jednym Apple ID. |
@@ -704,7 +705,7 @@ Komponenty `src/ekrany/*.tsx` nieosiągalne importami z żadnej trasy `app/` (po
 | Z-02 | PU-009 |
 | Z-03 | PU-010 |
 | Z-04 | PU-011 |
-| Z-05 | PU-012, PU-013, PU-149 |
+| Z-05 | PU-012, PU-013, PU-149, PU-339 |
 | Z-06 | PU-014, PU-015, PU-016, PU-017, PU-195, PU-199, PU-202 |
 | T-10 | PU-014, PU-018, PU-020 |
 | T-11 | PU-021 |
@@ -787,7 +788,7 @@ Komponenty `src/ekrany/*.tsx` nieosiągalne importami z żadnej trasy `app/` (po
 | T-95 | PU-141, PU-142 |
 | T-96 | PU-143, PU-144, PU-145, PU-146 |
 | G-23 | PU-144, PU-145, PU-146, PU-147 |
-| T-97 | PU-148, PU-149 |
+| T-97 | PU-148, PU-149, PU-339 |
 | T-98 | PU-150 |
 | T-99 | PU-151 |
 | T-100 | PU-098, PU-152 |

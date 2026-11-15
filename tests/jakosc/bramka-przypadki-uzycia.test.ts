@@ -61,6 +61,13 @@ describe('kontrola 2: katalog spójny z kodem', () => {
     const bledy = b('kontrolaKatalogu', root, { wymagajTestowB: true }) as string[];
     expect(bledy.filter((x) => /klasa B bez testu/.test(x)).map((x) => x.slice(0, 6))).toEqual(doZaprogramowania);
   });
+  test('P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID (kontrola 2 z wymogiem testów B)', () => {
+    const katalog = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8');
+    const oczekujace = [...katalog.matchAll(/^\| (PU-\d{3,}) \|.*\| B \| oczekujący: /gm)].map((m) => m[1]);
+    expect(oczekujace.length).toBeGreaterThan(0);
+    const bledy = b('kontrolaKatalogu', root, { wymagajTestowB: true }) as string[];
+    expect(bledy.filter((x) => /oczekujący.*nie liczy się/.test(x)).map((x) => x.slice(0, 6))).toEqual(oczekujace);
+  });
   test('każdy komponent src/ekrany/*.tsx osiągalny importami z trasy app/ (poza _layout) albo w tabeli „Ekrany bez własnej trasy” z istniejącym PU', () => {
     expect(b('ekranyBezTrasy', root)).toEqual([]);
   });
