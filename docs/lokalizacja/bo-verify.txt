@@ -1,0 +1,9 @@
+# BO zadanie 2: npm run verify na HEAD 6a0523a (2026-11-15) — kod wyjścia 0
+# komenda: npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test)
+ADR: 34, błędy: 0
+błędy: 0, uwagi: 1350; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+Test Suites: 608 passed, 608 total
+Tests:       7399 passed, 7399 total
+Snapshots:   0 total
+Time:        152.701 s, estimated 185 s
+KOD_WYJSCIA=0
