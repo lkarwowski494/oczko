@@ -1,0 +1,21 @@
+$ git diff --numstat -- docs/wydanie/metadane/podpisy-zrzutow.json (po przyjmij de i cs w sondzie)
+9	9	docs/wydanie/metadane/podpisy-zrzutow.json
+-    "cs": "przekład maszynowy z en (sesja AW, 2026-11-12, P-771), terminy z src/i18n/slo
++    "cs": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przeglą
+-    "de": "przekład maszynowy z en (sesja AW, 2026-11-12, P-771), terminy z src/i18n/slo
++    "de": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przeglą
+-      "01-dzis": "Weiter genau dort, wo du aufgehört hast",
+-      "02-licznik": "Einmal tippen, eine Reihe mehr",
+-      "03-wzor": "Die Anleitung direkt neben dem Zähler",
+-      "04-zakreslenie": "Markieren und schreiben in der Anleitung",
+-      "05-projekty": "Alle deine Projekte an einem Ort",
+-      "06-historia": "Jede Änderung mit Uhrzeit und Rückgängig",
+-      "07-kalendarz": "Deine Handarbeitstage im Kalender"
++      "01-dzis": "API de 0 nowy",
++      "02-licznik": "API de 1 nowy",
++      "03-wzor": "API de 2 nowy",
++      "04-zakreslenie": "API de 3 nowy",
++      "05-projekty": "API de 4 nowy",
++      "06-historia": "API de 5 nowy",
++      "07-kalendarz": "API de 6 nowy"
+kod 0

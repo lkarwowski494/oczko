@@ -1,0 +1,86 @@
+$ node kontrole.mjs <worktree 6f17ac72>
+{
+ "jezyki": 27,
+ "lista": "cs,da,de,el,es-419,es,fi,fr,hr,hu,id,it,ja,ko,ms,nb,nl,pt-BR,pt,ro,ru,sk,sv,tr,uk,vi,zh-Hant",
+ "wyniki": {
+  "fr fałszywy alarm (pris = wzięty)": {
+   "tekst": "Repris là où vous l’avez pris",
+   "dlugosc_pkt": 29,
+   "problemy": [
+    "cena lub waluta: pris"
+   ]
+  },
+  "fr pris pojedynczo": {
+   "tekst": "Tout est pris en compte",
+   "dlugosc_pkt": 23,
+   "problemy": [
+    "cena lub waluta: pris"
+   ]
+  },
+  "ms siri = seria": {
+   "tekst": "Siri projek anda",
+   "dlugosc_pkt": 16,
+   "problemy": [
+    "marka lub urządzenie: Siri"
+   ]
+  },
+  "cs bezplatný": {
+   "tekst": "Bezplatný počítadlo řad",
+   "dlugosc_pkt": 23,
+   "problemy": []
+  },
+  "sk bezplatná": {
+   "tekst": "Bezplatná aplikácia",
+   "dlugosc_pkt": 19,
+   "problemy": []
+  },
+  "fi maksuton": {
+   "tekst": "Maksuton laskuri",
+   "dlugosc_pkt": 16,
+   "problemy": []
+  },
+  "sv kostnadsfri": {
+   "tekst": "Kostnadsfri räknare",
+   "dlugosc_pkt": 19,
+   "problemy": []
+  },
+  "nb kostnadsfri": {
+   "tekst": "Kostnadsfri teller",
+   "dlugosc_pkt": 18,
+   "problemy": []
+  },
+  "nl kosteloos": {
+   "tekst": "Kosteloos tellen",
+   "dlugosc_pkt": 16,
+   "problemy": []
+  },
+  "ja 無償": {
+   "tekst": "無償で使える",
+   "dlugosc_pkt": 6,
+   "problemy": []
+  },
+  "pt preço": {
+   "tekst": "Sem preço escondido",
+   "dlugosc_pkt": 19,
+   "problemy": []
+  },
+  "de gratis": {
+   "tekst": "Gratis Zähler",
+   "dlugosc_pkt": 13,
+   "problemy": [
+    "„darmowe” i odpowiedniki niedozwolone: Gratis"
+   ]
+  },
+  "emoji 40 pkt kodowych": {
+   "tekst": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa🧶",
+   "dlugosc_pkt": 40,
+   "problemy": []
+  },
+  "łączony akcent NFD": {
+   "tekst": "Café Café Café Café Café",
+   "dlugosc_pkt": 29,
+   "problemy": []
+  }
+ }
+}
+kod 0

@@ -1,0 +1,14 @@
+$ npx jest --ci tests/wydanie/podpisy-przeklad.test.ts tests/wydanie/produkty-przeklad.test.ts tests/wydanie/metadane-przeklad.test.ts tests/jakosc/przeklad-workflow.test.ts tests/jakosc/zwrotny-api.test.ts tests/wydanie/uklad-podpisow.test.ts
+PASS iOS tests/jakosc/zwrotny-api.test.ts
+PASS iOS tests/wydanie/metadane-przeklad.test.ts (5.915 s)
+PASS iOS tests/wydanie/produkty-przeklad.test.ts
+PASS iOS tests/jakosc/przeklad-workflow.test.ts
+PASS iOS tests/wydanie/uklad-podpisow.test.ts
+PASS iOS tests/wydanie/podpisy-przeklad.test.ts (8.985 s)
+
+Test Suites: 6 passed, 6 total
+Tests:       98 passed, 98 total
+Snapshots:   0 total
+Time:        9.675 s
+Ran all test suites matching /tests\/wydanie\/podpisy-przeklad.test.ts|tests\/wydanie\/produkty-przeklad.test.ts|tests\/wydanie\/metadane-przeklad.test.ts|tests\/jakosc\/przeklad-workflow.test.ts|tests\/jakosc\/zwrotny-api.test.ts|tests\/wydanie\/uklad-podpisow.test.ts/i.
+kod 0

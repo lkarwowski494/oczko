@@ -1,0 +1,5 @@
+$ npm test -- --ci (pełny zestaw, 6f17ac72)
+Test Suites: 608 passed, 608 total
+Tests:       7399 passed, 7399 total
+Snapshots:   0 total
+kod 0

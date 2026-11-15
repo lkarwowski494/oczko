@@ -1,0 +1,5 @@
+$ node scripts/i18n/przeklad-podpisy.mjs --szacuj --wyjscie <scratchpad>/szac (domyślnie: opus, high, przeklad+krytyk, 27 języków)
+szacunek podpisów (Batch −50%, przybliżenie): 27 języków × etapy przeklad+krytyk (wysiłek high); wejście 95376, wyjście 171078; claude-opus-5-5 ≈ 1.902 USD, claude-sonnet-5-5 ≈ 0.951 USD
+kod 0
+wejście 95376 wyjście 171078 USD 1.902
+teoretyczny pułap wyjścia (54 żądania × MAX_TOKENS 64000, opus, batch): 34.56 USD

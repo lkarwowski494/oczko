@@ -1,0 +1,7 @@
+// Porównanie slownikAplikacji przed (761b9551) i po (6f17ac72) dla każdego języka produktów.
+import { join } from 'node:path';
+const [stary, nowy] = process.argv.slice(2);
+const A = await import(join(stary, 'scripts/i18n/przeklad-produkty.mjs')), B = await import(join(nowy, 'scripts/i18n/przeklad-produkty.mjs'));
+let rozne = 0, n = 0; for (const k of A.JEZYKI_PRZEKLADU) { n++; if (A.slownikAplikacji(k, nowy) !== B.slownikAplikacji(k, nowy)) rozne++; }
+const ctxA = A.wczytajKontekst(nowy), ctxB = B.wczytajKontekst(nowy); let rz = 0; for (const k of A.JEZYKI_PRZEKLADU) if (JSON.stringify(A.budujZadanie(k, ctxA)) !== JSON.stringify(B.budujZadanie(k, ctxB))) rz++;
+console.log(JSON.stringify({ jezykow: n, rozne_slownik: rozne, rozne_zadanie: rz }));

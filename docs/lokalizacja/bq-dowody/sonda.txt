@@ -1,0 +1,92 @@
+$ node sonda.mjs <worktree 6f17ac72>
+{
+ "szacuj": {
+  "kod": 0,
+  "wywolan_fetch": 0
+ },
+ "limit_bez_zgody": {
+  "kod": 3,
+  "posty": 0,
+  "liczTok": 2,
+  "log": "STOP: 0.14 USD > limit 0.0001 USD; ponów ze zgodą (--zgoda-koszt) po decyzji właściciela"
+ },
+ "limit_env_podniesienie": {
+  "kod": 0
+ },
+ "klucz": {
+  "kod": 1,
+  "w_logach": false,
+  "w_artefakcie": false,
+  "log": [
+   "BŁĄD: API POST /v1/messages/batches: HTTP 401 invalid x-api-key sk-ant-***"
+  ]
+ },
+ "wznow_start": {
+  "kod": 4,
+  "posty": 2,
+  "b1": "msgbatch_B1",
+  "b2": "msgbatch_B2",
+  "ostatni": [
+   "BŁĄD: przekroczono czas oczekiwania (120 min); wyniki odbierzesz: --wznow msgbatch_B2",
+   "BŁĄD: przekroczono czas oczekiwania (120 min); wyniki odbierzesz: --wznow msgbatch_B2"
+  ]
+ },
+ "wznow_id_krytyka_etap_domyslny": {
+  "kod": 1,
+  "posty": 0,
+  "de_blad": null,
+  "de_odrzucone": [
+   {
+    "pole": "01-dzis",
+    "powod": "brak ekranu"
+   },
+   {
+    "pole": "02-licznik",
+    "powod": "brak ekranu"
+   }
+  ],
+  "log": [
+   "gotowe: 2 języków, 2 z błędem lub odrzuconymi podpisami (de, fr); 0 poprawek krytyka; z uwagą: —; wynik w s4a/"
+  ]
+ },
+ "wznow_id_przekladu": {
+  "kod": 0,
+  "posty_nowe": 1,
+  "uwaga": "posty_nowe=1 → drugi batch krytyka (b2 już opłacony)"
+ },
+ "wznow_id_krytyka_etap_krytyk": {
+  "kod": 0,
+  "posty": 0,
+  "propozycja_z": "Einmal tippen, eine Reihe mehr",
+  "wynik_e1": "Einmal tippen, eine Reihe mehr",
+  "plik_e1": "Einmal tippen, eine Reihe mehr"
+ },
+ "krytyk_odrzucona_poprawka": {
+  "kod_main": 0,
+  "odrzucone_krytyka": [
+   {
+    "pole": "02-licznik",
+    "powod": "41 znaków > 40"
+   }
+  ],
+  "wynik_e1": "API de 1 nowy",
+  "przyjmij": 0,
+  "log": [
+   "przyjęto 1"
+  ],
+  "status_de": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+  "podpis_de_e1": "API de 1 nowy"
+ },
+ "etap_krytyk_status": {
+  "kod_main": 0,
+  "przyjmij": 0,
+  "status_cs": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+  "podpis_cs_e0": "Navážete přesně tam, kde jste skončili",
+  "przed": "Navážete přesně tam, kde jste skončili"
+ },
+ "limit_niepoprawny": {
+  "kod": 0,
+  "jezykow": 27
+ }
+}
+kod 0

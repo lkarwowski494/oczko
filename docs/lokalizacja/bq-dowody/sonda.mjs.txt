@@ -1,0 +1,56 @@
+// Sonda BQ: atrapa API Anthropic (stan serwera trwały między wywołaniami main), bez sieci.
+import { readFileSync, readdirSync, rmSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+const WT = process.argv[2]; const m = await import(join(WT, 'scripts/i18n/przeklad-podpisy.mjs'));
+const KEY = 'sk-ant-atrapa';
+const batches = {}; let nb = 0; const calls = []; let zawieszony = new Set(); let tryb = {};
+const ctx = m.wczytajKontekst(WT); const E = ctx.ekrany;
+const odp = (k) => JSON.stringify(Object.fromEntries(E.map((e, i) => [e, `API ${k} ${i} nowy`])));
+const kryt = (k) => JSON.stringify({ poprawki: tryb.krytyk?.(k) ?? [] });
+const rr = (b, ok = true, status = 200) => ({ ok, status, json: async () => b, text: async () => (typeof b === 'string' ? b : JSON.stringify(b)) });
+const fetchFn = async (url, init = {}) => { const p = new URL(url).pathname, met = init.method || 'GET'; calls.push(met + ' ' + p);
+  if (JSON.stringify(init.headers ?? {}).includes(KEY) === false && url.startsWith('https://api.anthropic.com')) throw new Error('brak klucza w nagłówku');
+  if (p.endsWith('/count_tokens')) return rr({ input_tokens: 900 });
+  if (p.endsWith('/messages/batches') && met === 'POST') { const id = 'msgbatch_B' + (++nb); batches[id] = JSON.parse(init.body).requests; return rr({ id }); }
+  const ms = p.match(/\/v1\/messages\/batches\/(msgbatch_B\d+)$/); if (ms) return rr(zawieszony.has(ms[1]) ? { processing_status: 'in_progress', request_counts: { processing: 1 } } : { processing_status: 'ended', results_url: 'https://wyniki.test/' + ms[1] });
+  const mw = p.match(/^\/(msgbatch_B\d+)$/); if (mw) return rr(batches[mw[1]].map((q) => JSON.stringify({ custom_id: q.custom_id, result: { type: 'succeeded', message: { stop_reason: 'end_turn', content: [{ type: 'text', text: q.custom_id.startsWith('pk-') ? kryt(q.custom_id.slice(3)) : odp(q.custom_id.slice(3)) }], usage: { input_tokens: 900, output_tokens: 400 } } } })).join('\n'));
+  if (p.endsWith('/messages/batches') && met === 'GET') return rr({ data: [] });
+  throw new Error('nieznane ' + met + ' ' + p); };
+let przes = 0; const realNow = Date.now; Date.now = () => realNow() + przes; const spij = async (ms) => { przes += ms; };
+const run = async (name, argv, env = { ANTHROPIC_API_KEY: KEY }) => { const logs = []; const c0 = calls.length; const wyj = join(WT, name); if (existsSync(wyj)) rmSync(wyj, { recursive: true });
+  const kod = await m.main([...argv, '--wyjscie', name], { fetchFn, env, root: WT, log: (x) => logs.push(String(x)), spij, dzis: '2026-11-15' });
+  const nowe = calls.slice(c0); const r = {}; for (const f of existsSync(wyj) ? readdirSync(wyj) : []) r[f] = readFileSync(join(wyj, f), 'utf8');
+  return { kod, logs, posty: nowe.filter((c) => c === 'POST /v1/messages/batches').length, liczTok: nowe.filter((c) => c.endsWith('count_tokens')).length, wszystkie: nowe.length, pliki: r }; };
+const out = {};
+// 1. tylko szacuj z kluczem w env
+{ const r = await run('s1', ['--szacuj', '--tylko', 'de,fr']); out.szacuj = { kod: r.kod, wywolan_fetch: r.wszystkie }; }
+// 2. limit (PRZEKLAD_LIMIT_USD obniża) bez zgody i ze zgodą przy próbie podniesienia
+{ const r = await run('s2', ['--tylko', 'de,fr'], { ANTHROPIC_API_KEY: KEY, PRZEKLAD_LIMIT_USD: '0.0001' }); out.limit_bez_zgody = { kod: r.kod, posty: r.posty, liczTok: r.liczTok, log: r.logs.find((l) => l.startsWith('STOP')) };
+  const r2 = await run('s2b', ['--szacuj', '--tylko', 'de,fr'], { PRZEKLAD_LIMIT_USD: '1000' }); out.limit_env_podniesienie = { kod: r2.kod }; }
+// 3. klucz w artefakcie/logach przy błędzie HTTP z kluczem w treści
+{ const f0 = fetchFn; const r = await (async () => { const logs = []; const kod = await m.main(['--tylko', 'de', '--wyjscie', 's3'], { fetchFn: async (u, i) => (u.includes('/messages/batches') && i?.method === 'POST' ? rr({ error: { message: 'invalid x-api-key ' + KEY } }, false, 401) : f0(u, i)), env: { ANTHROPIC_API_KEY: KEY }, root: WT, log: (x) => logs.push(String(x)), spij }); return { kod, logs }; })();
+  const pliki = readdirSync(join(WT, 's3')).map((f) => readFileSync(join(WT, 's3', f), 'utf8')).join('\n');
+  out.klucz = { kod: r.kod, w_logach: r.logs.join('\n').includes(KEY), w_artefakcie: pliki.includes(KEY), log: r.logs.filter((l) => l.startsWith('BŁĄD')) }; }
+// 4. wznowienie: batch krytyka przekroczył czas
+{ zawieszony = new Set(['msgbatch_B' + (nb + 2)]); const b1 = 'msgbatch_B' + (nb + 1), b2 = 'msgbatch_B' + (nb + 2);
+  const r = await run('s4', ['--tylko', 'de,fr']); out.wznow_start = { kod: r.kod, posty: r.posty, b1, b2, ostatni: r.logs.slice(-2) };
+  zawieszony = new Set();
+  const a = await run('s4a', ['--tylko', 'de,fr', '--wznow', b2]); out.wznow_id_krytyka_etap_domyslny = { kod: a.kod, posty: a.posty, de_blad: JSON.parse(a.pliki['de.json']).blad, de_odrzucone: JSON.parse(a.pliki['de.json']).odrzucone.slice(0, 2), log: a.logs.slice(-1) };
+  const b = await run('s4b', ['--tylko', 'de,fr', '--wznow', b1]); out.wznow_id_przekladu = { kod: b.kod, posty_nowe: b.posty, uwaga: 'posty_nowe=1 → drugi batch krytyka (b2 już opłacony)' };
+  tryb.krytyk = (k) => (k === 'de' ? [{ ekran: E[0], tekst: 'Poprawka krytyka', powod: 'test' }] : []);
+  const c = await run('s4c', ['--tylko', 'de,fr', '--etap', 'krytyk', '--wznow', b2]); const de = JSON.parse(c.pliki['de.json']);
+  out.wznow_id_krytyka_etap_krytyk = { kod: c.kod, posty: c.posty, propozycja_z: de.propozycja[E[1]], wynik_e1: de.wynik?.[E[1]], plik_e1: ctx.dane.podpisy.de[E[1]] };
+  tryb.krytyk = undefined; }
+// 5. krytyk zgłasza błąd, jego poprawka odpada na twardej kontroli → język i tak przyjmowany z „+ krytyk”
+{ tryb.krytyk = (k) => (k === 'de' ? [{ ekran: E[1], tekst: 'x'.repeat(41), powod: 'sens odwrócony względem źródła' }] : []);
+  const r = await run('s5', ['--tylko', 'de']); const de = JSON.parse(r.pliki['de.json']);
+  const logs = []; const kp = m.przyjmij(['--raport', join(WT, 's5'), '--korzen', WT], { log: (x) => logs.push(x) });
+  const po = JSON.parse(readFileSync(join(WT, m.PLIK), 'utf8'));
+  out.krytyk_odrzucona_poprawka = { kod_main: r.kod, odrzucone_krytyka: de.krytyk.odrzucone, wynik_e1: de.wynik[E[1]], przyjmij: kp, log: logs, status_de: po.status.de, podpis_de_e1: po.podpisy.de[E[1]] };
+  tryb.krytyk = undefined; }
+// 6. etap krytyk na obecnych (nie-API) podpisach → status po przyjęciu
+{ const r = await run('s6', ['--tylko', 'cs', '--etap', 'krytyk']); const logs = []; const kp = m.przyjmij(['--raport', join(WT, 's6'), '--korzen', WT, 'cs'], { log: (x) => logs.push(x) });
+  const po = JSON.parse(readFileSync(join(WT, m.PLIK), 'utf8')); out.etap_krytyk_status = { kod_main: r.kod, przyjmij: kp, status_cs: po.status.cs, podpis_cs_e0: po.podpisy.cs[E[0]], przed: ctx.dane.podpisy.cs[E[0]] }; }
+// 7. --limit z niepoprawną wartością
+{ const r = await run('s7', ['--szacuj', '--limit', 'dwa']); out.limit_niepoprawny = { kod: r.kod, jezykow: JSON.parse(r.pliki['szacunek.json']).jezykow }; }
+console.log(JSON.stringify(out, null, 1));

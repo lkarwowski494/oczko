@@ -1,0 +1,3 @@
+$ node produkty-rownosc.mjs <worktree 761b9551> <worktree 6f17ac72>
+{"jezykow":33,"rozne_slownik":0,"rozne_zadanie":0}
+kod 0

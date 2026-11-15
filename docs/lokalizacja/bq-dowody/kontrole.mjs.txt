@@ -1,0 +1,5 @@
+import { join } from 'node:path';
+const WT = process.argv[2]; const m = await import(join(WT, 'scripts/i18n/przeklad-podpisy.mjs'));
+const przyk = { 'fr fałszywy alarm (pris = wzięty)': 'Repris là où vous l’avez pris', 'fr pris pojedynczo': 'Tout est pris en compte', 'ms siri = seria': 'Siri projek anda', 'cs bezplatný': 'Bezplatný počítadlo řad', 'sk bezplatná': 'Bezplatná aplikácia', 'fi maksuton': 'Maksuton laskuri', 'sv kostnadsfri': 'Kostnadsfri räknare', 'nb kostnadsfri': 'Kostnadsfri teller', 'nl kosteloos': 'Kosteloos tellen', 'ja 無償': '無償で使える', 'pt preço': 'Sem preço escondido', 'de gratis': 'Gratis Zähler', 'emoji 40 pkt kodowych': 'a'.repeat(39) + '🧶', 'łączony akcent NFD': 'Café '.repeat(5).trim() };
+const w = {}; for (const [k, v] of Object.entries(przyk)) w[k] = { tekst: v, dlugosc_pkt: [...v].length, problemy: m.sprawdzPodpis(v, { max: 40 }) };
+console.log(JSON.stringify({ jezyki: m.JEZYKI_PRZEKLADU.length, lista: m.JEZYKI_PRZEKLADU.join(','), wyniki: w }, null, 1));
