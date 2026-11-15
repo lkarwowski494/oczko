@@ -65,6 +65,11 @@ test('BY-003: drugie stuknięcie kafla nie zakłada drugiego projektu', async ()
   for (let i = 0; i < 2; i++) await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });
   expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
 });
+test('BY-003: dwa stuknięcia kafla naraz (bez czekania) zakładają jeden projekt roboczy', async () => {
+  const s = await start(false);
+  await act(async () => { mockDzis?.naKafel('dodaj-wzor'); mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 200)); });
+  expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
+});
 test('BY-003: są projekty, ale żaden nie jest bieżący → zakładka Projekty (wybór projektu), bez zakładania nowego i bez trasy „/wzor”', async () => {
   const s = await start(true, false, false);
   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });

@@ -71,6 +71,7 @@ export type OpcjeKompozycji = { wibracje(): boolean; dostep?: DostepLicznika; ap
 /** `przygotuj` uruchamia dane raz na proces (ADR-0019: błąd → ekran awaryjny, wołający); potem ekran licznika czyta przez `uslugi`. */
 export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKompozycji = { wibracje: () => true }): KompozycjaLicznika {
   let licznikId: string | null = null;
+  let zakladanie: Promise<Wynik<boolean>> | null = null; // trwające zakładanie projektu roboczego z kafla „Dodaj wzór”
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
   let aktywnosc = false;
@@ -176,14 +177,13 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       return m.ok ? { ok: true, wartosc: { cel: 'dzis', miejsce: m.wartosc } } : m;
     },
     miejsce: () => miejscePracy(z, licznikId),
-    async zalozRoboczyGdyPusto() { // BY-003 (KO-067): świeża instalacja — żadnego projektu poza koszem i żadnego bieżącego licznika → projekt roboczy; inaczej nic
-      if (licznikId) return { ok: true, wartosc: false };
-      try {
-        const [p] = await z.baza.all('SELECT 1 AS jest FROM projekt WHERE usunieto_ms IS NULL LIMIT 1', []);
-        if (p) return { ok: true, wartosc: false };
-      } catch { return { ok: false, powod: 'zapis' }; }
-      const n = await zalozRoboczy();
-      return n.ok ? { ok: true, wartosc: true } : n;
+    zalozRoboczyGdyPusto() { // BY-003 (KO-067): świeża instalacja → projekt roboczy; inaczej nic. Jedna wspólna obietnica: dwa stuknięcia naraz nie zakładają dwóch projektów
+      return (zakladanie ??= (async (): Promise<Wynik<boolean>> => {
+        if (licznikId) return { ok: true, wartosc: false };
+        try { if ((await z.baza.all('SELECT 1 AS jest FROM projekt WHERE usunieto_ms IS NULL LIMIT 1', [])).length > 0) return { ok: true, wartosc: false }; } catch { return { ok: false, powod: 'zapis' }; }
+        const n = await zalozRoboczy();
+        return n.ok ? { ok: true, wartosc: true } : n;
+      })().finally(() => { zakladanie = null; }));
     },
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
