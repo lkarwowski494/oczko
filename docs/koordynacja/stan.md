@@ -886,3 +886,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 10:56 | M9 | BS push @ 7fabb18 (poprawki BT; verify przez hak) → ci.yml dispatch, reaudyt BT. Do zamknięcia później: fakty-wlasciciela (watchOS 10.6.2), sztafeta.md | kontrola 11:20 |
 | 15.11 11:14 | M9 | ci.yml success na BS 7fabb180 (43706402422); BT reaudyt GOTOWY (ced8dcb3). BS (2,11 USD, 23%) i BT (6,13 USD, 32%; ponad pułap 5 — WG-19) **przyjęte** i zarchiwizowane. Próba scalenia lokalnie: BS bez konfliktu, BO i BP — konflikt tylko docs/decyzje.md → sesja BU. Jakość·iOS 43699331260 (pakiet podstawowy na b7fc49de) nadal w toku | start BU |
 | 15.11 11:18 | M9 | BU = session_01T66VBxUWqJTvafuPrT66yb (sonnet, start bez błędu) | kontrola 11:20 |
+| 15.11 11:21 | M9 | Kontrola 11:20: punkty z przypomnienia wykonane wcześniej (BS/BT przyjęte, BU w toku) | kontrola 11:55 |
