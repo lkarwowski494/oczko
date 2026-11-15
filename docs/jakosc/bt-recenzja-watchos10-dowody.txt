@@ -1,0 +1,92 @@
+# Dowody recenzji BT (08 audit) zmiany watchOS 10.0 — commit b7fc49de, 2026-11-15
+
+## 1. Testy BS na b7fc49de: npx jest --ci tests/wydanie/zegarek-minimum-watchos.test.ts tests/wydanie/ikona-zegarka-pakiet.test.ts
+Test Suites: 2 passed, 2 total
+Tests:       38 passed, 38 total
+# kod wyjścia: 0
+
+## 2. Ten sam test na 9631b8e4 (worktree w scratchpadzie): npx jest --ci tests/wydanie/zegarek-minimum-watchos.test.ts
+    ✕ cel zegarka: deploymentTarget w expo-target.config.js (6 ms)
+    ✕ kontrola .ipa: MIN_WATCH w scripts/wydanie/kontrola-ipa.sh (3 ms)
+    ✕ stała aplikacji: MIN_WATCHOS w src/konfiguracja.ts
+    ✕ README: „watchOS 10.0 i nowszy” (1 ms)
+    ✕ wzorzec projektu dla testów (tests/wydanie/dane/project.pbxproj): każde WATCHOS_DEPLOYMENT_TARGET = 10.0, co najmniej Debug i Release (2 ms)
+    Expected: "10.0"
+    Received: "11.0"
+    Expected: "10.0"
+    Received: "11.0"
+    Expected: "10.0"
+    Received: "11.0"
+Tests:       5 failed, 21 passed, 26 total
+# kod wyjścia: 1 (czerwony z właściwego powodu)
+
+## 3. npm run typecheck
+kod 0
+
+## 4. npm test -- --ci (pełny zestaw)
+Test Suites: 608 passed, 608 total
+Tests:       7408 passed, 7408 total
+kod 0
+
+## 5. Sonda skanera (kopia targets/watch i watchos-dostepnosc.ts w scratchpadzie, nie w repo)
+# wstawione po Aplikacja.swift:16:
+      .handGestureShortcut(.primaryAction) // SONDA-1 (na liście)
+      .onScrollGeometryChange(for: Double.self, of: { $0.contentOffset.y }) { _, _ in } // SONDA-2 (spoza listy, watchOS 11.0)
+      .background(MeshGradient(width: 2, height: 2, points: [], colors: [])) // SONDA-3 (spoza listy, watchOS 11.0)
+# node --experimental-strip-types sonda.ts ./watch
+Aplikacja.swift [{"line":17,"api":"handGestureShortcut"}]
+zgłoszeń: 1
+# kod wyjścia: 1
+# ten sam skaner na oryginale targets/watch @ b7fc49de
+zgłoszeń: 0
+# kod wyjścia: 0
+# przypadki brzegowe (krawedz.ts)
+A iOS-first: [{"line":1,"api":"handGestureShortcut"}]
+B guard: [{"line":3,"api":"handGestureShortcut"}]
+C 26-API pod osłoną 11: []
+
+## 6. Dostępność API w dokumentacji Apple (JSON developer.apple.com/tutorials/data/documentation/<ścieżka>.json, metadata.platforms watchOS introducedAt; odczyt 2026-11-15)
+swiftui/timelineview [{"introducedAt":"8.0","name":"watchOS"}]
+swiftui/timelineschedule/periodic(from:by:) [{"introducedAt":"8.0","name":"watchOS"}]
+swiftui/view/overlay(alignment:content:) [{"introducedAt":"8.0","name":"watchOS"}]
+swiftui/view/foregroundstyle(_:) [{"introducedAt":"8.0","name":"watchOS"}]
+swiftui/view/tint(_:)-93mfq [{"introducedAt":"9.0","name":"watchOS"}]
+swiftui/font/monospaceddigit() [{"introducedAt":"6.0","name":"watchOS"}]
+storekit/transaction/currententitlements [{"introducedAt":"8.0","name":"watchOS"}]
+swiftui/view/contentshape(_:eofill:) [{"introducedAt":"6.0","name":"watchOS"}]
+swiftui/environmentvalues/scenephase [{"introducedAt":"7.0","name":"watchOS"}]
+swiftui/view/handgestureshortcut(_:isenabled:) [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/previewable() [{"introducedAt":"10.0","name":"watchOS"}]
+widgetkit/relevanceconfiguration [{"introducedAt":"26.0","name":"watchOS"}]
+accessibility/accessibilitynotification/announcement [{"introducedAt":"10.0","name":"watchOS"}]
+swiftui/controlwidget [{"introducedAt":"26.0","name":"watchOS"}]
+healthkit/hkquantitytypeidentifier/workouteffortscore [{"introducedAt":"11.0","name":"watchOS"}]
+healthkit/hkquantitytypeidentifier/estimatedworkouteffortscore [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/handgestureshortcut [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/view/onchange(of:initial:_:)-8wgw9 [{"introducedAt":"10.0","name":"watchOS"}]
+swiftui/view/onscrollvisibilitychange(threshold:_:) [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/scrollposition [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/view/matchedtransitionsource(id:in:) [{"introducedAt":"11.0","name":"watchOS"}]
+swiftui/entry() [{"introducedAt":"6.0","name":"watchOS"}]
+
+## 7. Liczba plików Swift celu zegarka: git ls-files targets/watch | grep -c swift
+14
+# wc -l: 1237 linii
+
+## 8. Czas commitów BS (git log --format='%h %cI' 761b9551..b7fc49de)
+b7fc49de 2026-11-15T09:22:58+00:00
+f8b57a82 2026-11-15T09:19:06+00:00
+5d57160d 2026-11-15T09:17:36+00:00
+9631b8e4 2026-11-15T09:15:09+00:00
+
+## 9. Generator projektu: node_modules/@bacons/apple-targets 5.0.0, build/configuration-list.js:299
+        WATCHOS_DEPLOYMENT_TARGET: deploymentTarget !== null && deploymentTarget !== void 0 ? deploymentTarget : "9.4",
+
+## 10. Trening @ 2d97581 (raw.githubusercontent.com): targets/watch-app/expo-target.config.js:7
+  deploymentTarget: '10.0', // minimum watchOS 10 (decyzja 14.10.2026); podwójne stuknięcie (handGestureShortcut, watc
+
+## 11. Apple support.apple.com/pl-pl/109023 (curl, surowy HTML, 2026-11-15)
+Aplikacje do zainstalowania znajdują się w sekcji Dostępne aplikacje.
+Aby dodać aplikację do zegarka, stuknij opcję Instaluj.
+
+## 12. Workflow na gałęzi BS (MCP actions_list, odczyt): Jakość · iOS run 43699331260, head b7fc49de, status in_progress w chwili odczytu
