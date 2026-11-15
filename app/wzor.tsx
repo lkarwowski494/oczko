@@ -2,7 +2,7 @@
 // Bez wzoru: grupa „Add pattern” (W7a, subflow otworz-wzor-pdf). Widok strony = moduł natywny `oczko-wzor` (WidokWzoru); build bez modułu: pusta strona.
 // Pasek licznika woła te same usługi co licznik (+1/−1), więc znacznik idzie z licznikiem (BR-WZR-003). Ostatni wzór w `ostatnie_miejsce` (P-246).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, View, useWindowDimensions } from 'react-native';
+import { Alert, useWindowDimensions } from 'react-native';
 import { Stack, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { usePreventRemove } from 'expo-router/react-navigation';
 import type { UchwytWidokuWzoru } from '../modules/oczko-wzor';
@@ -21,6 +21,7 @@ import { widokNatywnyWzoru } from '../src/ekrany/WzorWidokNatywny';
 import { useKolory } from '../src/ekrany/motyw';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
+import { useBezpiecznyPowrot } from '../src/kompozycja/bezpieczny-powrot';
 import { bladPaskaLicznika, zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
 import { oglos } from '../src/kompozycja/system';
 import { useWskazowkaZnacznika } from '../src/kompozycja/wskazowka-znacznika';
@@ -40,6 +41,7 @@ export default function EkranWzoru(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
+  const powrot = useBezpiecznyPowrot(); // BY-001 (P3): bez drugiego powrotu po zamknięciu trasy
   const navigation = useNavigation();
   const k = useKolory();
   const okno = useWindowDimensions();
@@ -145,7 +147,7 @@ export default function EkranWzoru(): React.ReactElement {
 
   async function dodaj(zrodlo: ZrodloDodaniaTrasy): Promise<void> {
     if (!lw) return;
-    await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: () => router.back(), ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
+    await dodajZrodlo({ kontener, lw, dodajParam, wczytaj, wstecz: powrot, ustawImport, ustawLink, ustawLinkAdres }, zrodlo);
   }
   const bladLicznika = (r: WynikEkranu<unknown>) => bladPaskaLicznika(aplikacja, r, oglos); // M1-004 (po-zapisie.ts)
 
