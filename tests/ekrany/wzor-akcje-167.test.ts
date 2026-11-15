@@ -20,7 +20,7 @@ const OK = { ok: true, wartosc: undefined };
 const t = (k: string) => k;
 const zw = { zegar: { teraz: () => ({ dzien: '2026-11-03', ms: 0, strefa: 'UTC' }) } };
 
-function kontekst(o: { znacznik?: { rzad: number } | null; obroty?: number[]; strona?: { n: number; razem: number } | null } = {}) {
+function kontekst(o: { znacznik?: { rzad: number; rzadNotatki: number | null } | null; obroty?: number[]; strona?: { n: number; razem: number } | null } = {}) {
   const odswiezMigawke = jest.fn(async () => undefined);
   const wczytaj = jest.fn(async () => undefined);
   const c = {
@@ -40,11 +40,18 @@ beforeEach(() => {
 });
 
 describe('akcjeWzoru · nowa notatka (BR-WZR: notatka przy rzędzie znacznika)', () => {
-  test('ze znacznikiem: rząd znacznika, nie licznika', async () => {
-    const { c } = kontekst({ znacznik: { rzad: 5 } });
+  // BX-011 (zmiana testu z powodem: wcześniej „rząd znacznika”, czyli rząd SCHEMATU 5; `notatka_rzedu.rzad` to rząd licznika — `rzadNotatki` z widoku, `src/domena/znacznik-wzoru.ts`)
+  test('ze znacznikiem: rząd notatki z widoku (`rzadNotatki`), nie rząd schematu znacznika', async () => {
+    const { c } = kontekst({ znacznik: { rzad: 5, rzadNotatki: 13 } });
     akcjeWzoru(c).naNotatka('zmiana ściegu');
     await poObietnicach();
-    expect(mockDodajNotatke).toHaveBeenCalledWith(zw, { wzorId: 'w1', rzad: 5, tekst: 'zmiana ściegu' });
+    expect(mockDodajNotatke).toHaveBeenCalledWith(zw, { wzorId: 'w1', rzad: 13, tekst: 'zmiana ściegu' });
+  });
+  test('znacznik przed schematem (`rzadNotatki` null): rząd następny po wartości licznika', async () => {
+    const { c } = kontekst({ znacznik: { rzad: 0, rzadNotatki: null } });
+    akcjeWzoru(c).naNotatka('x');
+    await poObietnicach();
+    expect(mockDodajNotatke).toHaveBeenCalledWith(zw, { wzorId: 'w1', rzad: 13, tekst: 'x' });
   });
   test('bez znacznika: rząd następny po wartości licznika', async () => {
     const { c } = kontekst({ znacznik: null });

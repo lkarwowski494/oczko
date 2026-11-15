@@ -44,7 +44,7 @@ export type WidokWzoru = {
   obroty: Record<number, KatObrotu>;
   notatki: ChipNotatki[];                         // chipy notatek na stronie znacznika (F-56, P-330 2A)
   miejsce: PozycjaWzoru | null;                   // 07-jakosc-006: pozycja z `ostatnie_miejsce`, tylko dla ostatnio oglądanego wzoru
-  znacznik: { licznikId: string; strona: number; rzad: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1 } | null;
+  znacznik: { licznikId: string; strona: number; rzad: number; rzadNotatki: number | null; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1 } | null;
 };
 /** Model odczytu przeglądarki (moduly.md „Kontrakt partii 6”: widok natywny tylko rysuje wynik `polozenieZnacznika`). */
 /** `katalogOczekujacych` (M1-084): strona z plikiem oczekującym dostaje najnowszy taki plik zamiast rysunku z bazy. */
@@ -64,7 +64,7 @@ export function widokWzoru(z: ZaleznosciPlikow, w: { wzorId: string; katalogOcze
       const [l] = await wiersze(tx.all('SELECT wartosc FROM licznik WHERE id = ?', [zn.licznikId]), 'widokWzoru');
       const p = l ? polozenieZnacznika(zn, liczba(l, 'wartosc')) : null;
       if (p?.ok) notatki = chipyNotatek(zn, await notatkiWzoruZId(tx, w.wzorId));
-      if (p?.ok) znacznik = { licznikId: zn.licznikId, strona: p.wartosc.strona, rzad: p.wartosc.rzad, y: p.wartosc.y, wysokosc: zn.wysokoscRzedu, pozaStrona: p.wartosc.pozaStrona, przedSchematem: p.wartosc.przedSchematem, kierunek: zn.kierunek };
+      if (p?.ok) znacznik = { licznikId: zn.licznikId, strona: p.wartosc.strona, rzad: p.wartosc.rzad, rzadNotatki: p.wartosc.rzadNotatki, y: p.wartosc.y, wysokosc: zn.wysokoscRzedu, pozaStrona: p.wartosc.pozaStrona, przedSchematem: p.wartosc.przedSchematem, kierunek: zn.kierunek };
     }
     return { ok: true, wartosc: {
       wzorId: w.wzorId, projektId: tekst(r, 'projekt_id'), nazwa: tekst(r, 'nazwa'), zrodlo: tekst(r, 'zrodlo'),

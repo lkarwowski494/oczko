@@ -24,7 +24,7 @@ export function akcjeWzoru(c: KontekstAkcjiWzoru) {
   return {
     naZmienNotatke: async (id: string, nowa: string): Promise<boolean> => { const r = await zmienNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id, tekst: nowa }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; },
     naUsunNotatke: async (id: string): Promise<boolean> => { const r = await usunNotatkeWzoru(zw, { wzorId: widok.wzorId, notatkaId: id }); if (r.ok) await wczytaj(widok.wzorId); return r.ok; },
-    naNotatka: (tekst: string): void => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: widok.znacznik?.rzad ?? lw.wartosc + 1, tekst }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); }), // M1-006; BX-002: widok od razu z nową notatką (jak naZmienNotatke/naUsunNotatke)
+    naNotatka: (tekst: string): void => void dodajNotatkeWzoru(zw, { wzorId: widok.wzorId, rzad: widok.znacznik?.rzadNotatki ?? lw.wartosc + 1, tekst }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); }), // M1-006; BX-002: widok od razu z nową notatką (jak naZmienNotatke/naUsunNotatke)
     naObroc: (): void => void ustawObrot(zw, { wzorId: widok.wzorId, strona: strona ? strona.n - 1 : 0, kat: (((widok.obroty[strona ? strona.n - 1 : 0] ?? 0) + 90) % 360) as 0 | 90 | 180 | 270 }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(widok.wzorId); }), // M1-006
     // +1 z paska i Magic Tap (M1-audytor-generalny-203, SYS-01): obsługa wyniku jak na ekranie licznika, potem odczyt widoku.
     naPlus: async (): Promise<WynikEkranu<unknown>> => { const r = await aplikacja.licznik.uslugi.dodajRzad(); poPlusiePaska(aplikacja, r, { nrRobocza: lw.wartosc + 1, oczka: lw.rodzaj === 'oczka' }, oglos); await wczytaj(widok.wzorId); return r; },

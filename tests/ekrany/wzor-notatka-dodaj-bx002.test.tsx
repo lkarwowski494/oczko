@@ -25,13 +25,15 @@ const EkranWzoru = (require('../../app/wzor') as { default: React.ComponentType 
 
 const PDF = Buffer.from('%PDF-1.4\n1 0 obj << /Type /Catalog >> endobj\ntrailer << /Root 1 0 R >>\n%%EOF\n');
 // Licznik 45 (rząd w robocie 46), znacznik ustawiony po raz pierwszy: rząd schematu = rząd w robocie (`domyslnyRzadBazowy`, RD-21), strona 1, y 0,4, w górę.
-// (Znacznik przeniesiony na inny rząd schematu niż licznik+1: osobna wada — notatka dostaje rząd schematu, zob. `bx-stan.md` „FX”, BX-011.)
 const ZNACZNIK = JSON.stringify({ licznik_id: 'l1', strona: 1, y: 0.4, wysokosc_rzedu: 0.02, rzad_bazowy: 46, wartosc_przy_ustawieniu: 45, kierunek: -1 });
 
-async function start() {
+// Znacznik przeniesiony na rząd 6 schematu przy liczniku 45 (BR-WZR-003 S3: przeniesienie zachowuje rząd znacznika) — BX-011.
+const ZNACZNIK_PRZENIESIONY = JSON.stringify({ licznik_id: 'l1', strona: 1, y: 0.4, wysokosc_rzedu: 0.02, rzad_bazowy: 6, wartosc_przy_ustawieniu: 45, kierunek: -1 });
+
+async function start(znacznik: string = ZNACZNIK) {
   const { s, k, j } = await kompozycjaTestowa();
   const h = wlozPlik(s.magazyn, PDF, 'pdf');
-  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 45), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h, ZNACZNIK)]);
+  await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 45), plik(h, 'pdf', PDF.length), wzor('w1', 'p1', h, znacznik)]);
   await k.otworz('l1');
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
   mockAplikacja = { kontener: { z: s.z, j, wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, wklej: async () => null } } }, licznik: k };
@@ -51,4 +53,18 @@ test('BX-002 / PU-067: wzór ze znacznikiem, „Add note” → „k2tog here”
   const wDanych = await widokWzoru(s.z, { wzorId: 'w1' }); // ten sam chip niesie widok danych, który trasa wczytuje po zapisie
   expect(wDanych.ok && wDanych.wartosc.notatki.map((c) => c.notatki.map((n) => n.tekst))).toEqual([['k2tog here']]);
   expect((await s.baza.all('SELECT tekst FROM notatka_rzedu')).map((r) => (r as { tekst: string }).tekst)).toEqual(['k2tog here']);
+});
+
+// BX-011 (PU-067): `notatka_rzedu.rzad` to rząd LICZNIKA (rząd w robocie, `rzadNotatki` = licznik + 1, `src/domena/znacznik-wzoru.ts`), a nie rząd schematu znacznika.
+// `naNotatka` zapisywało rząd schematu: po przeniesieniu znacznika (schemat 6, licznik 45) notatka dostawała rząd 6, a chip jej nie pokazywał.
+test('BX-011 / PU-067: znacznik przeniesiony (rząd schematu 6, licznik 45) — notatka dostaje rząd licznika 46 i chip „Row 6: …” jest na wzorze', async () => {
+  const { s } = await start(ZNACZNIK_PRZENIESIONY);
+  render(<EkranWzoru />);
+  await waitFor(() => expect(mockWidok.notatki).toBeDefined());
+  fireEvent.press(screen.getByRole('button', { name: 'Add note' }));
+  fireEvent.changeText(await screen.findByTestId('wzor-notatka-pole'), 'k2tog here');
+  fireEvent.press(screen.getByRole('button', { name: 'Save' }));
+  await waitFor(() => expect(mockWidok.notatki).toHaveLength(1));
+  expect(mockWidok.notatki?.[0]?.etykieta).toBe('Row 6: k2tog here');
+  expect((await s.baza.all('SELECT rzad, tekst FROM notatka_rzedu')).map((r) => [(r as { rzad: number }).rzad, (r as { tekst: string }).tekst])).toEqual([[46, 'k2tog here']]);
 });
