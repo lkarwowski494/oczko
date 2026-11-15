@@ -90,3 +90,17 @@ Aplikacje do zainstalowania znajdują się w sekcji Dostępne aplikacje.
 Aby dodać aplikację do zegarka, stuknij opcję Instaluj.
 
 ## 12. Workflow na gałęzi BS (MCP actions_list, odczyt): Jakość · iOS run 43699331260, head b7fc49de, status in_progress w chwili odczytu
+
+## 13. Dodatek 2026-11-15 ok. 10:15 UTC — job „eksperymenty-wzoru” w „Jakość · iOS” (MCP get_job_logs, końcówka logu; actions_list jobów)
+# run 43699331260 (b7fc49de), job 132766770813, krok 5 „W1–W3 (xcodebuild test, symulator iPhone)”: failure, exit 65
+W1 tekst: wynik ["ok": 0, "powod": przekroczono_czas]
+EksperymentyTests.swift:34: error: -[…testW1WordNaPdf] : XCTAssertEqual failed: ("Optional(false)") is not equal to ("Optional(true)") - tekst: ["ok": 0, "powod": przekroczono_czas]
+EksperymentyTests.swift:35: error: -[…testW1WordNaPdf] : failed - tekst: brak PDF
+W1 tabela: strony 1, znaki 43   (ok)
+W1 obraz: strony 1, znaki 0     (ok według asercji; WebKit: „IDAT: CRC error”)
+(wcześniej w tym teście: WebProcessProxy::didBecomeUnresponsive 09:30:25Z)
+Executed 6 tests, with 2 failures — testMiniaturaPierwszejStrony, testW1PustaStronaNaKoncu, testW1StronaBezSieciToBrakSieci, testW2DuzyPdf, testW3PolitykaPoPierwszymRysiku: passed
+# run 43396328570 (1dfcf7ca, 13.11), job 131788179459, ten sam krok: failure; Executed 6 tests, with 6 failures; Failing tests: 6 × testW1WordNaPdf
+# run 43245531497 (2ed5215a, 12.11, próba 2), job 131570392883, ten sam krok: failure; Executed 6 tests, with 6 failures; 6 × testW1WordNaPdf („obraz: brak PDF” w :35)
+# w tym samym runie 43699331260: build, swift-test, zegarek-ikona, e2e iPad — success; e2e iPhone 1–3 w toku (odczyt ok. 10:12 UTC)
+# git diff --stat 761b9551..b7fc49de -- modules/oczko-wzor .github → pusto (BS nie dotyka modułu ani workflowów)
