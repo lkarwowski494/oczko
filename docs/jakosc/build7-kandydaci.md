@@ -18,7 +18,7 @@ Rola 07-jakosc · 2026-11-15 · sesja BR. Polecenie właściciela (15.11 ok. 10:
 | 9 | U5: brak dSYM `hermesvm.framework` i `OczkoUdostepnij.appex` | `docs/jakosc/werdykt-build-1161.md:52` | brzegowy (czytelność raportów awarii, nie użytkownik) | tak (ustawienia buildu) | rola 12; zmiana ustawień buildu bez testu = ryzyko dla eksportu | NIE — 1.0.1 z rolą 12 |
 | 10 | Opis „Data and sync” w przewodniku sugeruje przełącznik iCloud, którego w 1.0 nie ma | `docs/wydanie/test-urzadzenia-build5.md:794` | brzegowy (G-04: ocena właściciela) | tak (teksty) | 04 + 09: tekst w 35 językach | NIE, chyba że właściciel w G-04 uzna tekst za mylący — wtedy decyzja K |
 | 11 | B4: „Add pattern…” w `site/support.html` | `docs/wydanie/lista-1-0.md:60` | realny (instrukcja myląca) | nie (strona) | strona niezależna od buildu | NIE do buildu (1.0.1, DEC-03 b) |
-| 12 | B6: zdanie o zegarku w opisie sklepu (2.5.1) | `docs/wydanie/lista-1-0.md:61` | [DO USTALENIA] | nie (metadane) | `asc-metadane`, bez buildu | NIE do buildu; decyzja K po teście zegarka na buildzie 7 |
+| 12 | B6: zdanie o zegarku w opisie sklepu (2.5.1) | `docs/wydanie/lista-1-0.md:62` | [DO USTALENIA] | nie (metadane) | `asc-metadane`, bez buildu | NIE do buildu; decyzja K po teście zegarka na buildzie 7 |
 
 ## Lista TAK do buildu 7
 
