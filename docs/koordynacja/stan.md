@@ -564,6 +564,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BX5 (08): P-859…P-863. Następny wolny: P-864; KO następny: KO-075.**
 - **Pula BX4 (08): P-854…P-858. Następny wolny: P-859; KO następny: KO-073.**
 - **Pula BX3 (08): P-849…P-853. Następny wolny: P-854; KO następny: KO-071.**
 - **Pula BX2 (07): P-837…P-838 (z BX) + P-847…P-851. Następny wolny: P-852; KO następny: KO-069.**
@@ -991,3 +992,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 20:30 | M9 | BX3 przyjęta @ c4de9604 (KO-071/P-850, KO-072/P-849 wykonane; autor OK) i zarchiwizowana (4,96 USD, 33%). BX4 = session_01T66VBvtUvkxAB9LsUpyJ3s (start bez błędu). PRZEJĄŁEM do poprzednika @ 59c3f2fe | kontrola 20:50: iOS 43752186631 → BX4 |
 | 15.11 20:35 | M9 | Właściciel: plan na noc → „A” (tryb nocny, decyzje do weta, linia 05:00; mandat) | kontrola 20:50 |
 | 15.11 20:51 | BX4 | RAPORT @ 41515183 (verify w haku wg sesji): recenzja c4de9604 — P1 K2-1, K3-1, K2-2 poprawione testem czerwonym najpierw; 15 PU → B z testem (B z testem 48 / oczekujące 16 / do zaprogramowania 130); P-854. Odpowiedź: KO-073, KO-074. iOS 43752186631 nadal in_progress | kontrola 21:50 |
+| 15.11 20:58 | M9 | BX4 @ 672a22f9 (autor OK, 0 Co-Authored-By; verify w haku wg sesji): KO-073 (P-855), KO-074 (P-856, PU-339 F); 339 PU, B z testem 49/oczekujące 16/do zaprogramowania 129; 4,81 USD, 33% → PRZEKAZANIE. Polecenie BX5 (pula P-859…P-863) | start BX5, archiwum BX4 |
