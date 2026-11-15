@@ -856,11 +856,6 @@
    "zr": "przewodnik.f_zegarek"
   },
   {
-   "en": "On",
-   "pl": "Włączone",
-   "zr": "ustawienia.pro_wlaczone"
-  },
-  {
    "en": "{x} of 5 free crafting days left in {bieżący miesiąc}",
    "pl": "Zostało {x} z 5 darmowych dni robótkowych ({bieżący miesiąc})",
    "zr": "projekty.dni_many"
@@ -929,6 +924,11 @@
    "en": "You have Oczko Pro.",
    "pl": "Masz Oczko Pro.",
    "zr": "oferty.masz_pro"
+  },
+  {
+   "en": "On",
+   "pl": "Włączone",
+   "zr": "ustawienia.pro_wlaczone"
   },
   {
    "en": "Manage subscription",
@@ -1084,11 +1084,11 @@
  "flagi": [
   [
    "Install",
-   4
+   3
   ],
   [
    "Update",
-   3
+   2
   ],
   [
    "button",
