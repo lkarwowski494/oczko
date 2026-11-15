@@ -2,7 +2,7 @@
 Stan: zakończona, E0–E4 przyjęte (P-070–P-074). Krótko, z odnośnikami; szczegóły w plikach obok.
 
 ## 1. Cel i zakres
-- Obsługuje przepływy z [`docs/scope-contract.md`](../scope-contract.md) (PR-01–PR-11, PR-13 tylko wpisanie wartości, PR-14–PR-16 bez BR-DNI-007; 49 funkcji MVP) w modelu V4 (P-057) na iOS 18 / iPadOS 18 / watchOS 11 (P-070).
+- Obsługuje przepływy z [`docs/scope-contract.md`](../scope-contract.md) (PR-01–PR-11, PR-13 tylko wpisanie wartości, PR-14–PR-16 bez BR-DNI-007; 49 funkcji MVP) w modelu V4 (P-057) na iOS 18 / iPadOS 18 / watchOS 11, zegarek od 2026-11-15 watchOS 10.0 (P-070, P-819).
 - Wszystko działa bez sieci (NFR-OFF-001); baza na urządzeniu jest źródłem prawdy; koszt stały 0 zł (NFR-KOS-001); brak serwera, konta, analityki i reklam.
 - **Świadomie poza zakresem:** funkcje PÓŹNIEJ (F-13 Siri, F-22, F-29, F-39, F-40, F-42, F-44 słownik, F-62) — bez tabel i zależności; Android (P-011); AI (ZAL-024); widżet ekranu głównego; migracja danych 0.1.0 (P-070 (2c), ADR-0015); raportowanie awarii (rola 12); manifest i formularz App Privacy (rola 10); wygląd i teksty (rola 04).
 
@@ -69,7 +69,7 @@ flowchart LR
 | „Collected” dla CloudKit i archiwum; OP-25 („Zgłoś problem”) | 10 | App Privacy u źródła Apple |
 | Rola klucza ASC API, wariant podpisu w CI | 10 | dokumentacja Apple, próba w CI |
 | Biblioteka ZIP (strumieniowo, 400 MB) | 08 z 05 | próba na symulatorze (ADR-0016) |
-| Para watchOS 11 ↔ iOS 18 | 08 | dokumentacja watchOS przy celu zegarka (niekrytyczne, ADR-0006) |
+| Para watchOS ↔ iOS 18: zegarek 10.0 od 2026-11-15 (P-819) | 08 | dokumentacja watchOS przy celu zegarka (niekrytyczne, ADR-0006) |
 | Manifesty prywatności celów Swift | 08 / 10 | przy kodzie celów |
 | `PRODUKTY_PRO` (ID), Family Sharing | właściciel | P-038, konfiguracja App Store Connect |
 | Liczby obliczeń F-38, tabela drutów RD-11 | 06 | rejestr merytoryczny |
@@ -82,7 +82,7 @@ flowchart LR
 | [0003](../adr/0003-granice-modulow-i-stan-interfejsu.md) | domena w czystym TS, baza jedynym źródłem prawdy | P-071 |
 | [0004](../adr/0004-kopia-eksport-import.md) | archiwum `.oczko` z plikami, scal / zastąp | P-071 (4a) |
 | [0005](../adr/0005-synchronizacja-icloud-cloudkit-dziennik.md) | CloudKit `CKSyncEngine`, konflikt pokazany | P-071 |
-| [0006](../adr/0006-minimalne-wersje-ios-18-watchos-11.md) | iOS 18 / watchOS 11 | P-070 (1a) |
+| [0006](../adr/0006-minimalne-wersje-ios-18-watchos-11.md) | iOS 18 / watchOS 11, zegarek 10.0 od 2026-11-15 | P-070 (1a), P-819 |
 | [0007](../adr/0007-cele-natywne-apple-targets-i-moduly-expo.md) | cele Swift przez `@bacons/apple-targets` | P-071 |
 | [0008](../adr/0008-plus-jeden-z-ekranu-blokady-dziennik.md) | +1 z ekranu blokady przez dziennik | P-070 (3a), P-071 |
 | [0009](../adr/0009-zegarek-transport-limit-pro.md) | zegarek: kolejka + kontekst, Pro bez telefonu | P-071 |

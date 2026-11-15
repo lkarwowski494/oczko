@@ -108,9 +108,9 @@ Skróty: `zakres:17` = `docs/scope-contract.md:17`; `tf:24` = `docs/jakosc/testf
   - Wynik: Przed „Today” nie ma żadnego okna (powitania, zakupu, języka, zgody). Karta „First counter” z opisem „Tap +1 after each finished row. You can name the project later.” (na polskim telefonie — po polsku). Po stuknięciu licznik pokazuje **1**, telefon krótko wibruje.
   - Źródło: `brd/wymagania.md:89` (NFR-PIE-001); `brd/wymagania-licznik.md:4` (BR-LIC-001); `zakres:17` (F-01); `src/ekrany/Dzis.tsx:122` · automat: e2e 01, 02
 - [ ] **T-04** · iPhone + Watch · 5 min
-  - Zrób: Od razu po instalacji: na zegarku wciśnij koronę (siatka aplikacji). Na iPhonie otwórz aplikację Watch → przewiń do „Oczko”. Jeśli Oczka nie ma na zegarku, włącz instalację przełącznikiem przy „Oczko” i poczekaj do 5 min. Otwórz Oczko na zegarku.
+  - Zrób: Od razu po instalacji: na zegarku wciśnij koronę (siatka aplikacji). Jeśli Oczka tam nie ma, na iPhonie otwórz aplikację Watch → „Mój zegarek” → „Aplikacje” → przewiń do sekcji „Dostępne aplikacje” → przy „Oczko” stuknij **„Instaluj”** (nie przełącznik); albo w TestFlight przyciskiem instalacji na stronie „App Details” aplikacji (opis sesji BR; strony TestFlight sesja BS nie czytała). Poczekaj do 5 min. Otwórz Oczko na zegarku. Zegarek właściciela ma watchOS 10.6.2; minimum aplikacji zegarka od 2026-11-15 to watchOS 10.0 (P-819).
   - Wynik: Na siatce zegarka prawdziwa ikona Oczka (nie pusty krążek); aplikacja zegarka się otwiera i pokazuje licznik.
-  - Źródło: `tf:25` (TT-12); `jakosc/strategia.md:108` · automat: tylko urządzenie (CI tylko buduje zegarek)
+  - Źródło: `tf:25` (TT-12); `jakosc/strategia.md:108`; Apple, „Pobieranie aplikacji za pomocą telefonu iPhone połączonego w parę z zegarkiem Apple Watch” (support.apple.com/pl-pl/109023, odczyt 2026-11-15, surowy HTML: „Aplikacje do zainstalowania znajdują się w sekcji Dostępne aplikacje. Aby dodać aplikację do zegarka, stuknij opcję Instaluj.”) · automat: tylko urządzenie (CI tylko buduje zegarek)
 - [ ] **T-05** · iPhone · 1 min
   - Zrób: Jeśli Oczko jest po polsku: zębatka → „Język” → „English”. Jeśli już po angielsku — pomiń („nie dotyczy”).
   - Wynik: Wszystkie teksty Oczka po angielsku; wybór zostaje po zamknięciu aplikacji.
