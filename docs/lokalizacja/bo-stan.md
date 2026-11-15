@@ -6,3 +6,6 @@ Gałąź: `claude/bo-podpisy-api-2026-11-15` (od 761b9551). Zadania 1–2 zrobio
 - Szacunek lokalny (przybliżenie, Opus 5.5 high, 27 języków × 2 etapy): ≈ 1,90 USD; limit 30 USD. Założenie myślenia (1500 tokenów × mnożnik) do sprawdzenia próbą `limit=2`.
 - Decyzje do weta: P-808 (przekład+krytyk, przyjęcie tylko po krytyku), P-809 (twarde kontrole). P-810 wolne.
 - Zadania 3–4: koordynator wyzwala workflow (`tylko_szacuj=true`, potem płatny) z tej gałęzi i podaje run ID; potem pobrać artefakt `raport-podpisy`, przejrzeć jako tłumacz, `node scripts/i18n/przeklad-podpisy.mjs przyjmij --raport <katalog>`, testy, commit.
+
+## Naprawy po recenzji BQ (07346b98) — 2026-11-15
+Testy czerwone 3a8d32b (`bo-bq-czerwone.txt`), naprawa 6875aa5, verify kod 0 (7408 testów; `bo-verify.txt`). Decyzja P-810 (do weta). 001: `--wznow B1[,B2]`, prefiks etapu, 80 min/etap; 002: blokada przyjęcia; 003: status po etapie krytyk; 004: kontrole per język; 005: `--limit`. `przeklad-metadane.mjs` nietknięty (ten sam wzorzec :338/:352 — poza zakresem, zgłasza koordynator).
