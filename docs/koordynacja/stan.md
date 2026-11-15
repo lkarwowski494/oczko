@@ -568,6 +568,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula FX2 (08 fix): P-874…P-876 (FX wzięła P-871…P-873). Następny wolny: P-877; KO następny: KO-080.**
 - **Pula FX (08 fix): P-867…P-870. Następny wolny: P-871; KO następny: KO-077.**
 - **Pula BX6 (08): P-861…P-866. Następny wolny: P-867; KO następny: KO-077.**
 - **Pula BX5 (08): P-859…P-863. Następny wolny: P-864; KO następny: KO-075.**
@@ -1008,3 +1009,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 22:28 | M9 | FX = session_01T66VBwWJik2cXg6fPdKwQa (08 fix sonnet; prompt złożony `assemble.mjs 08-programista --tryb fix --moduly sqlite-expo --zadania BX-002,BX-008,BX-009` z prompts af4c0a8; zgodny bajt w bajt sha256 a512d754…) | kontrola 22:48 |
 | 15.11 22:50 | M9 | FX @ edcfb7cd (autor OK, 0 trailerów): BX-002, BX-008, BX-009 naprawione testem czerwonym najpierw (docs/jakosc/fx-dowod-czerwony.txt); src/app 3 pliki 13+/3− przeczytane; verify 675/7666 wg sesji; recenzja K3-2 P1 0. Nowe BX-011 (realny), BX-012 (bramka P2) → KO-077, KO-078 w FX | recenzja niezależna 4edb7448..HEAD; iOS po 43767704896 |
 | 15.11 23:00 | M9 | FX PRZEKAZANIE @ b075830b (autor OK, 0 trailerów, e2e bez zmian): KO-077/BX-011 (6a8a1508, src/przypadki-uzycia/wzor-widok.ts + WzorAkcje.ts), KO-078/BX-012 (bramka tagiScenariusza, 4 testy czerwone najpierw); verify 675/7675 wg sesji. Zarchiwizowana (3,60 USD, 29%). Recenzja niezależna 4edb7448..b075830b — subagent koordynatora | iOS na b075830b po 43767704896 |
+| 15.11 23:10 | M9 | Recenzja niezależna FX (subagent): P1 0, P2 2 (BX-013 bramka inline tags, BX-014 poziomo zdjęcia), P3 3; testy BX-002/008/009 padają na starych plikach (zależne od poprawek), 17/17 i 7/7 zielone. KO-079 → polecenie FX2 | start FX2 |
