@@ -94,3 +94,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BZ | prompts (KO-066) | 15 | 17,17 | 31 | 18:05 → 18:11 → bc7f7a95 → (bez CI) → PRZEKAZANIE 18:37, archiwum 18:48 | — | ponad pułap 15, poniżej STOP 19,5; stopki Co-Authored-By |
 | CA | 08 fix (sonnet) | 12 | 6,65 | 36 | 18:20 → 18:28 → cdc659f4 → CI 19:00 → przyjęte 19:12 | ok. 12 min: CI czekał na mój odbiór (wiadomość po przekazaniu koordynatora) | — |
 | CB | prompts (KO-066) | 10 | 7,22 | 23 | 18:46 → 18:48 → a168ffe → (bez CI) → przyjęte 19:12 | — | — |
+| BX2 | 07 build (opus) | 20 | 33,57 | 34 | 18:43 → 18:45 → 8f0c1424 → iOS w toku → PRZEKAZANIE 19:31 | — | STOP kosztowy 19:25 (31,04 > 26); 3 subagenty |
