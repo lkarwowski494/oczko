@@ -88,3 +88,5 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BT (08 audit, opus) | recenzja watchOS 10 + diagnoza eksperymenty-wzoru + reaudyt | 5 | 6,13 | 32 | 09:30 → 09:31 → 09:45 → — → 11:14 | — | ponad pułap (zadania dokładane, WG-19) |
 | BU (08 build, sonnet) | scalenie BS+BO+BP do integracji | 4 | 0,89 | 14 | 11:13 → 11:13 → 11:2x → e2e w toku → 11:27 | — | — |
 | BV | 07 build (opus) | 8 | 7,58 | 24 | 14:32 → 14:39 → ok. 14:55 → hak verify przy push → 15:03 | 0 | instrukcja 1171 jako artefakt |
+| BW | 08 fix (sonnet) | 10 | 4,03 | 29 | 15:12 → 17:34 → 17:51 → ci 18:00 → 18:05 | ok. 140 min: start sesji opóźniony (koordynator w trybie default/blokada) | powrót z „Dodaj wzór” |
+| BY | 04 audit (fable 5.2 zamiast opus) | 15 | 15,18 | 29 | 17:40 → 18:03 → 18:20 → — → 18:25 | 20 min: start odrzucony (koordynator poza auto) | ponad pułap o 1% |
