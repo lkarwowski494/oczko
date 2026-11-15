@@ -86,3 +86,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BQ (08 audit, opus) | recenzja + 2 reaudyty trybu podpisy | 5 | 5,98 | 27 | 08:45 → 08:48 → 08:59 → — → 09:32 | — | ponad pułap 5 (reaudyty dokładane, WG-19) |
 | BS (08 build, sonnet) | watchOS 10.0 + dokumenty + poprawki BT | 8 | 2,11 | 23 | 09:08 → 09:09 → 09:2x → CI 11:01 → 11:14 | ok. 60 min na Jakość·iOS (macOS) | — |
 | BT (08 audit, opus) | recenzja watchOS 10 + diagnoza eksperymenty-wzoru + reaudyt | 5 | 6,13 | 32 | 09:30 → 09:31 → 09:45 → — → 11:14 | — | ponad pułap (zadania dokładane, WG-19) |
+| BU (08 build, sonnet) | scalenie BS+BO+BP do integracji | 4 | 0,89 | 14 | 11:13 → 11:13 → 11:2x → e2e w toku → 11:27 | — | — |
