@@ -306,7 +306,9 @@ describe('BQ 002: poprawka krytyka odrzucona twardą kontrolą blokuje przyjęci
 describe('BQ 003: status po samym etapie krytyk nie twierdzi „przekład API”', () => {
   test('raport z etap=krytyk → status zachowuje poprzednie pochodzenie i dopisuje „krytyk API (<model>, <data>)”', () => {
     const wyj = mkdtempSync(join(tmpdir(), 'pp-')), kopia = mkdtempSync(join(tmpdir(), 'pp-repo-'));
-    mkdirSync(join(kopia, 'docs/wydanie/metadane'), { recursive: true }); cpSync(join(ROOT, PLIK), join(kopia, PLIK));
+    mkdirSync(join(kopia, 'docs/wydanie/metadane'), { recursive: true });
+    const STARY = 'przekład maszynowy z en (sesja AW, 2026-11-12, P-771), terminy z src/i18n/slowniki/cs.json; [DO PRZEGLĄDU] drugi przegląd AI i przegląd człowieka według progu (główny przepływ), bez treści krytycznej';
+    writeFileSync(join(kopia, PLIK), JSON.stringify({ ...dane, status: { ...dane.status, cs: STARY } }, null, 2)); // stan wejściowy wpisany do kopii: test nie zależy od bieżącego statusu w repozytorium
     const r = run(`const zadane = []; const rr = (b) => ({ ok: true, status: 200, json: async () => b, text: async () => (typeof b === 'string' ? b : JSON.stringify(b)) });
       const fakeFetch = async (url, init = {}) => { const p = new URL(url).pathname, met = init.method || 'GET';
         if (p.endsWith('/messages/batches') && met === 'POST') { zadane.push(...JSON.parse(init.body).requests); return rr({ id: 'msgbatch_B1' }); }
@@ -317,7 +319,7 @@ describe('BQ 003: status po samym etapie krytyk nie twierdzi „przekład API”
       const kp = m.przyjmij(['--raport', ${JSON.stringify(wyj)}, '--korzen', ${JSON.stringify(kopia)}], { log: (x) => logs.push(String(x)) }); console.log(JSON.stringify({ kod, kp }))`);
     expect(r).toEqual({ kod: 0, kp: 0 });
     const po = JSON.parse(readFileSync(join(kopia, PLIK), 'utf8'));
-    expect(po.status.cs).not.toMatch(/^przekład API/); expect(po.status.cs).toMatch(/sesja AW, 2026-11-12, P-771/);
+    expect(po.status.cs).not.toMatch(/^przekład API/); expect(po.status.cs).toMatch(/^przekład maszynowy z en \(sesja AW, 2026-11-12, P-771\)/);
     expect(po.status.cs).toMatch(/krytyk API \(claude-opus-5-5, 2026-11-16\)/); expect(po.status.cs).toMatch(/\[DO PRZEGLĄDU\] przegląd człowieka według progu$/);
     expect(po.podpisy.cs).toEqual(dane.podpisy.cs);
   });
