@@ -1,0 +1,44 @@
+# PU-200 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — licznik z listy „Projekty”; „‹” wraca na zakładkę „Projekty”, nie na „Dziś”.
+# testID z kodu: `nav-projekty` app/(zakladki)/_layout.tsx:16; `projekty-lista` src/ekrany/ListaProjektow.tsx:69; `projekty-wiersz` ListaProjektow.tsx:47
+# (otwarcie licznika `router.navigate('/licznik')` app/(zakladki)/projekty.tsx:84); `licznik-projekt`, `licznik-plus`, `licznik-wartosc` (e2e/README.md);
+# `nav-wstecz` licznika src/ekrany/Licznik.tsx:136 (`router.back()` app/licznik.tsx:62, P-583); `dzis-karta` src/ekrany/Dzis.tsx:140.
+# Okno „Uczciwe zasady” (P-089 (3a)) otwiera się tylko po minionym dniu z robótką — tu jeden dzień, ale krok opcjonalny jak w 64 zostaje (BR-ZAK-006/S9).
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 06-br-zak-001-s1-zakup-przywrocenie.yaml.
+appId: com.apps4brew.knitting
+name: "PU-200 · Licznik z listy „Projekty”: wiersz → licznik projektu → +1 → „‹” wraca na „Projekty”, nie na „Dziś”"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-200
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "nav-wstecz" } # P-583: licznik otwarty z „Dziś” — wstecz na „Dziś”, potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista" }, timeout: 30000 }
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 30000 }
+- assertVisible: { id: "projekty-wiersz", text: "Harbor.*" }
+- takeScreenshot: 72-projekty-lista
+# --- wiersz → licznik tego projektu ---
+- tapOn: { id: "projekty-wiersz", index: 0 }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- takeScreenshot: 72-licznik-z-listy
+# --- „‹”: zakładka Projekty, nie „Dziś” ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertNotVisible: { id: "dzis-karta" }
+- assertNotVisible: { id: "licznik-plus" }
+- assertVisible: { id: "projekty-wiersz", text: "Harbor.*" }
+- takeScreenshot: 72-powrot-na-projekty

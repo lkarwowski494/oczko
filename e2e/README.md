@@ -62,6 +62,8 @@ Licznik TO BE (07 cz. 2, 2026-11-08; ZM-04, ZM-05, P-580, P-581, P-583; kontrakt
 
 Wiersze M3 p4b i p7 (07-e2e-m3, 2026-11-08; P-596, P-599; stan partii `docs/programista/m3-p4b-stan.md`, `m3-p7-stan.md`): `zdjecie-zamknij`, `zdjecie-udostepnij` (istniał bez wiersza), `znacznik-radio`, `komunikat-znak`, `projekt-menu-lista`, `projekt-czesc`, `projekt-licznik`, `projekt-licznik-wiersz`, `projekt-miniatura`, `kafelek-ikony`, `symbol-druty`, `symbol-dzien`, `ustawienia-grupa`, `ustawienia-stan-danych`, `ustawienia-polityka`, `ustawienia-subskrypcja`, `ustawienia-wibracje(-wiersz)`, `ustawienia-ekran-nie-gasnie(-wiersz)`, `oferty-karta`, `oferty-miesiac(-dzien)`, `oferty-kafel-*`, `oferty-ikona-dzien` — nazwy z kodu 08 (zmiana nazwy = zmiana scenariuszy). Elementy ukryte przed VoiceOver (znaczniki, kafelki, miniatury) nie są celem `tapOn`; wybór sprawdza `selected: true` na wierszu, błąd — tekst komunikatu. Od p7 plany „Oczko Pro” leżą pod kartą i kafelkami: przed asercją planu `scrollUntilVisible` (reguła 10; 06, 07).
 
+Wiersze `dzis-kafel-dodaj-wzor`, `druty-lista`, `druty-dodaj`, `ustawienia-miary`, `miary*`, `ustawienia-zrodla`, `zrodla-wiedzy`, `ustawienia-licencje`, `licencje-lista`, `projekt-wloczka`, `wloczka-wybor`, `wloczka-pusto`, `wloczka-dodaj`, `historia-dzien-2026-11-05` dopisała rola 07 dla scenariuszy 71–84 katalogu przypadków użycia (sekcja „Nawigacja”, P-834) — nazwy z kodu 08 (plik:linia w wierszu; zmiana nazwy = zmiana scenariuszy).
+
 Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`; „—” = tekst ustala 04 (Z07-05), scenariusz używa tylko id. Kolumna ostatnia: klawiatura pola (`liczbowa`, `tekstowa`) albo puste.
 
 | id | ekran | element | tekst / etykieta | klawiatura |
@@ -73,6 +75,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `dzis-kontynuuj` | „Dziś” | „Kontynuuj ›” (karta „Kontynuuj”) i „Otwórz licznik ›” (karta „Pierwszy licznik”) — jedno stuknięcie do pełnego licznika albo strony wzoru w tym samym powiększeniu (P-563 (4a)) | — (04) | |
 | `dzis-wybierz-projekt` | „Dziś” | „Wybierz projekt ›” na karcie bez ostatniego miejsca (projekty są) → zakładka Projekty (P-564, P-565) | — (04) | |
 | `dzis-dni-darmowe` | „Dziś” | linia wolnych dni (tylko bez Pro), bez odnośnika „Oczko Pro” (P-563 (10a), ER-70) | „0 of 5 free crafting days left in November” (klucz jak `projekty-dni-darmowe` — [DO USTALENIA] 04) | |
+| `dzis-kafel-dodaj-wzor` | „Dziś” (kafle pod tygodniem) | kafel „Add pattern” — menu źródeł bieżącego projektu nad licznikiem, „Back” wraca na licznik (P-588, `src/ekrany/Dzis.tsx:232`, wzorzec `dzis-kafel-{nowy-projekt,dodaj-wzor,wloczka,probka}`; scen. 73, PU-202) | „Add pattern” | |
 | `nav-dzis` | pasek zakładek (p2) | zakładka „Dziś” | — (04) | |
 | `licznik-plus` | licznik | przycisk +1 (strefa ≥ 168 pt) | „+1 row…”, z instrukcją: „+1 row, when row 12 is done. Row 12: decrease at both ends” | |
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
@@ -136,6 +139,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `historia-miesiac` | History | blok miesiąca | — | |
 | `narzedzia-wloczki` | Tools | wiersz „Yarn” (04 fix-6 D, P-191 P7a) | „Yarn” | |
 | `narzedzia-druty` | Tools | wiersz „Needles and hooks” | — | |
+| `druty-lista` | Needles and hooks (`/druty`) | kontener ekranu (ScrollView; `src/ekrany/Zapas.tsx:205`); pusta lista: „No needles or hooks yet.”; „Back” = `nav-wstecz`; scen. 79 (PU-224) | — | |
+| `druty-dodaj` | Needles and hooks | „+” dodanie drutu albo szydełka → arkusz `/drut` (`Zapas.tsx:207`); scen. 79 (PU-225) | „Add needles or hook” | |
 | `narzedzia-probka` | Tools | kalkulator „Swatch calculator” | „Swatch calculator” | |
 | `probka-oczka` | Swatch | oczka w próbce (na 10 cm domyślnie przy układzie metrycznym) | „Stitches in your swatch” | liczbowa |
 | `probka-szerokosc` | Swatch | szerokość docelowa | „Width you want, cm” | liczbowa |
@@ -210,6 +215,15 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `ustawienia-pomoc` | Ustawienia | wiersz „Help” (link do strony wsparcia z FAQ; DEC-22 a, M1-audytor-generalny-061) | „Help” | |
 | `ustawienia-zglos` | Ustawienia | wiersz „Report a problem” (033-T1, wniosek 07-jakosc-033 B) | „Report a problem” | |
 | `ustawienia-ocen` | Ustawienia | wiersz „Rate Oczko” (033-T1, wniosek 07-jakosc-033 B) | „Rate Oczko” | |
+| `ustawienia-miary` | Ustawienia (ADR-0029) | wiersz „Units” → `/miary`; wartość „Automatic” / „Metric” / „Imperial” jako accessibilityValue (`src/ekrany/Ustawienia.tsx:110`; asercja `text` jak `ustawienia-jezyk`); scen. 83 (PU-234) | „Units” | |
+| `miary` | Units (`/miary`) | kontener ekranu (ScrollView, `src/ekrany/Miary.tsx:23`); „Back” = `nav-wstecz` | — | |
+| `miary-auto` | Units | opcja „Automatic” (radio, wzorzec `miary-{auto,metric,imperial}`, `Miary.tsx:30`); wybór zapisuje i wraca do Ustawień | „Automatic” | |
+| `miary-metric` | Units | opcja „Metric” (radio) | „Metric, mm, cm, g” | |
+| `miary-imperial` | Units | opcja „Imperial” (radio) | „Imperial, in, oz” | |
+| `ustawienia-zrodla` | Ustawienia | wiersz „About our information” → `/zrodla` (`Ustawienia.tsx:131`); scen. 84 (PU-236) | „About our information” | |
+| `zrodla-wiedzy` | About our information (`/zrodla`) | kontener ekranu (ScrollView, `src/ekrany/ZrodlaWiedzy.tsx:12`); „Back” = `nav-wstecz` | — | |
+| `ustawienia-licencje` | Ustawienia (M1-245, P-661) | wiersz „Open source licenses” → `/licencje`, bezpośrednio pod „About our information” (`Ustawienia.tsx:132`); scen. 84 (PU-235) | „Open source licenses” | |
+| `licencje-lista` | Open source licenses (`/licencje`) | kontener ekranu (FlatList z nagłówkiem: „Back” = `nav-wstecz`, tytuł, wstęp; `src/ekrany/Licencje.tsx:110`) | — | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |
 | `ustawienia-usun-wszystko` | Ustawienia | usunięcie wszystkich danych (BR-DAN-009) | — | |
 | `potwierdz-usun-wszystko` | arkusz „Delete all data” (trasa `/usun-wszystko`, P-268) | potwierdzenie usunięcia — w pasku przycisków arkusza, zawsze widoczny | — | |
@@ -242,6 +256,10 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zapas-lista` | zapas („Tools” → „Yarn”) | lista włóczek | — | |
 | `zapas-dodaj` | zapas | „+” dodanie włóczki (04 fix-6 D) | „Add yarn” | |
 | `zapas-nazwa` | formularz włóczki | pole nazwy | — | tekstowa |
+| `projekt-wloczka` | ekran projektu, „Details” | wiersz „Yarn” (wartość: „None”, nazwa włóczki albo liczba) → arkusz wyboru `/formularz/wloczki` (`src/ekrany/Projekt.tsx:224`); scen. 76 (PU-211) | „Yarn” | |
+| `wloczka-wybor` | arkusz „Yarn for this project” | kontener arkusza wyboru włóczek projektu (`src/ekrany/FormularzeProjektu.tsx:228`); wiersze włóczek mają id z uuid (`wloczka-wybor-<id>`, niestałe) — scenariusz po etykiecie „{nazwa}, N skeins in your stash” | — | |
+| `wloczka-pusto` | arkusz „Yarn for this project” | pusty zapas (`FormularzeProjektu.tsx:231`) | „No yarn in your stash yet. …” | |
+| `wloczka-dodaj` | arkusz „Yarn for this project” | „Add yarn” → arkusz włóczki `/wloczka`; po zapisie wybór odświeżony, nowa włóczka zaznaczona (`FormularzeProjektu.tsx:241`) | „Add yarn” | |
 | `zapas-szukaj` | zapas | wyszukiwarka | — | tekstowa |
 | `zapas-wynik` | zapas | wiersz wyniku | nazwa włóczki | |
 | `zapas-brak-wynikow` | zapas | pusty wynik | — | |
@@ -291,6 +309,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `historia` | History | kontener ekranu (ScrollView) | — | |
 | `historia-dzien-2026-11-03` | History | komórka dnia 3 XI 2026 (wzorzec `historia-dzien-RRRR-MM-DD`; rola przycisku, `selected`; etykieta „Nov 3 · 3 rows” tylko dla dnia wybranego z pracą, inne dni: „Nov 4”; scen. 64) | „Nov 3 · 3 rows” | |
 | `historia-dzien-2026-11-04` | History | komórka dnia 4 XI 2026 (dzień bez pracy; scen. 64) | „Nov 4” | |
+| `historia-dzien-2026-11-05` | History | komórka dnia 5 XI 2026 (wzorzec jak wyżej; dziś w scen. 71 — domyślnie wybrany, PU-198) | „Nov 5” | |
 | `ukonczenie-gotowe` | karta ukończenia | „Done” — zamknięcie karty = chwila systemowej prośby o ocenę (BR-DAN-012/S1; scen. 65) | „Done” | |
 | `dane-zastapiono` | import po „Replace” (Ustawienia) | kontener wyniku „Data replaced” (BR-DAN-006/S3; scen. 66) | „Data replaced” | |
 | `wzor-kierunek` | wzór | karta „Which way do rows go on this page?” przy pierwszym „Mark row” (P-126 3a; scen. 62) | „Which way do rows go on this page?” | |

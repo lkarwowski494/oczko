@@ -56,10 +56,10 @@ const { pu, naglowki, podsumowanie } = czytajKatalog(fs.readFileSync(KATALOG, 'u
 const poId = new Map(pu.map((p) => [p.id, p]));
 
 describe('katalog przypadków użycia: budowa', () => {
-  test('tabele mają ustalony nagłówek; ID PU-NNN unikalne i rosnące bez dziur; klasy A/B/F; podsumowanie zgodne z tabelami', () => {
+  test('tabele mają ustalony nagłówek; ID PU-NNN unikalne, bez dziur (zbiór PU-001…PU-N; nowe PU dopisuje się w swojej sekcji z kolejnym numerem, P-847); klasy A/B/F; podsumowanie zgodne z tabelami', () => {
     expect(naglowki).toBeGreaterThan(0);
     expect(pu.length).toBeGreaterThanOrEqual(121);
-    expect(pu.map((p) => p.id)).toEqual(pu.map((_, i) => `PU-${String(i + 1).padStart(3, '0')}`));
+    expect(pu.map((p) => p.id).sort()).toEqual(pu.map((_, i) => `PU-${String(i + 1).padStart(3, '0')}`));
     expect(pu.filter((p) => !['A', 'B', 'F'].includes(p.klasa)).map((p) => p.id)).toEqual([]);
     const licz = (k: string) => pu.filter((p) => p.klasa === k).length;
     expect(podsumowanie?.slice(1).map(Number)).toEqual([licz('A'), licz('B'), licz('F'), pu.length]);
@@ -111,6 +111,22 @@ describe('katalog przypadków użycia: pokrycie według klasy', () => {
         else if (x.plik.startsWith('e2e/') && tagi(path.basename(x.plik)).includes('oczekujacy')) zle.push(`${p.id}: ${x.plik} ma tag oczekujacy (to klasa B)`);
         else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
       }
+    }
+    expect(zle).toEqual([]);
+  });
+
+  test('klasa A (recenzja BX2 R-A-26): wskazana linia scenariusza to asercja (assert*, extendedWaitUntil, scrollUntilVisible, copyTextFrom) albo runFlow podprzepływu wskazanego w tym samym wierszu; nie same scenariusze iPada (pakiet informacyjny, P-225)', () => {
+    const zle: string[] = [];
+    const ASERCJA = /^\s*-?\s*(assert\w*|extendedWaitUntil|copyTextFrom|scrollUntilVisible)\b|^\s*(visible|notVisible):/;
+    for (const p of pu.filter((x) => x.klasa === 'A')) {
+      const o = odnosniki(p.pokrycie).filter((x) => x.plik.endsWith('.yaml'));
+      const maPodprzeplyw = o.some((x) => x.plik.includes('/subflows/'));
+      for (const x of o) {
+        const l = fs.readFileSync(path.join(root, x.plik), 'utf8').split('\n')[x.linia - 1] ?? '';
+        if (!ASERCJA.test(l) && !(maPodprzeplyw && /^\s*-\s*runFlow\b/.test(l))) zle.push(`${p.id}: ${x.plik}:${x.linia} nie jest asercją („${l.trim().slice(0, 40)}”)`);
+      }
+      const scen = o.filter((x) => !x.plik.includes('/subflows/')).map((x) => path.basename(x.plik));
+      if (scen.length && !o.some((x) => x.plik.startsWith('tests/')) && scen.every((f) => tagi(f).includes('ipad'))) zle.push(`${p.id}: tylko scenariusze z tagiem ipad (poza bramką)`);
     }
     expect(zle).toEqual([]);
   });

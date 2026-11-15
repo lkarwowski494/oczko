@@ -1,0 +1,86 @@
+# PU-209 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — „New project” z listy „Projekty”: „Cancel” bez wpisu wraca do listy bez nowego projektu,
+# z wpisem pyta „Discard changes?” z „Nothing will be added.”; „Save” otwiera licznik nowego projektu.
+# testID z kodu: `projekty-nowy` src/ekrany/ListaProjektow.tsx:77 (→ `/formularz/nowy-projekt` app/(zakladki)/projekty.tsx:86); pole `formularz-nazwa-projektu`
+# src/ekrany/FormularzeProjektu.tsx:34; „Cancel” `arkusz-zamknij` i „Save” `formularz-zapisz` src/ekrany/Arkusz.tsx:53, :58; pytanie z src/kompozycja/odrzuc-zmiany.ts:33
+# (opis „nowy” dla nowy-projekt, app/formularz/[rodzaj].tsx:27, :51; teksty en.json wspolne.odrzuc_tytul / odrzuc_opis_nowy / odrzuc_zmiany — alert systemowy bez testID);
+# `projekty-lista` ListaProjektow.tsx:69, `projekty-wiersz` :47; licznik nowego projektu `licznik-projekt`, `licznik-wartosc` (zapis `router.dismissTo('/licznik')` [rodzaj].tsx:68).
+# Klawiatura tekstowa: wpis w retry, chowanie pressKey Enter (e2e/README.md reguła 6). Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+# Częściowo: 18-br-prj-011-s1-start-po-zamknieciu.yaml.
+appId: com.apps4brew.knitting
+name: "PU-209 · „New project”: Cancel bez wpisu bez pytania, z wpisem „Discard changes?” i nic nie dodane; Save otwiera licznik nowego projektu"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-209
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "nav-wstecz" } # P-583: licznik otwarty z „Dziś” — wstecz na „Dziś”, potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 30000 }
+- assertVisible: { id: "projekty-wiersz", index: 0 }
+- assertNotVisible: { id: "projekty-wiersz", index: 1 } # jeden projekt: „Harbor”
+# --- 1. „New project” → „Cancel” bez wpisu: arkusz zamyka się od razu, lista bez nowego wiersza ---
+- tapOn: { id: "projekty-nowy" }
+- extendedWaitUntil: { visible: { id: "formularz-nazwa-projektu" }, timeout: 20000 }
+- takeScreenshot: 75-arkusz-nowy-projekt
+- tapOn: { id: "arkusz-zamknij" }
+- extendedWaitUntil: { notVisible: { id: "formularz-nazwa-projektu" }, timeout: 20000 }
+- assertNotVisible: "Discard changes\\?"
+- assertVisible: { id: "projekty-lista" }
+- assertVisible: { id: "projekty-wiersz", text: "Harbor.*" }
+- assertNotVisible: { id: "projekty-wiersz", index: 1 }
+- takeScreenshot: 75-lista-po-anuluj
+# --- 2. z wpisem „Vest” → „Cancel” → „Discard changes?” / „Nothing will be added.” → „Discard changes”: nic nie dodane ---
+- tapOn: { id: "projekty-nowy" }
+- extendedWaitUntil: { visible: { id: "formularz-nazwa-projektu" }, timeout: 20000 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "V"
+      - inputText: "e"
+      - inputText: "s"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Vest" }
+- pressKey: Enter
+- assertVisible: { id: "arkusz-zamknij" }
+- tapOn: { id: "arkusz-zamknij" }
+- extendedWaitUntil: { visible: "Discard changes\\?", timeout: 10000 }
+- assertVisible: "Nothing will be added\\."
+- takeScreenshot: 75-pytanie-odrzuc
+- tapOn: "Discard changes"
+- extendedWaitUntil: { notVisible: { id: "formularz-nazwa-projektu" }, timeout: 20000 }
+- assertVisible: { id: "projekty-lista" }
+- assertNotVisible: "Vest.*"
+- assertNotVisible: { id: "projekty-wiersz", index: 1 }
+- takeScreenshot: 75-lista-po-odrzuceniu
+# --- 3. z wpisem „Vest” → „Save”: licznik nowego projektu ---
+- tapOn: { id: "projekty-nowy" }
+- extendedWaitUntil: { visible: { id: "formularz-nazwa-projektu" }, timeout: 20000 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "V"
+      - inputText: "e"
+      - inputText: "s"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Vest" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Vest" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 75-licznik-nowego-projektu

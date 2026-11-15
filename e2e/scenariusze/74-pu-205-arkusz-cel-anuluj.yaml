@@ -1,0 +1,30 @@
+# PU-205 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — arkusz „Goal” licznika; „Cancel” wraca na licznik.
+# testID z kodu: `licznik-cel` src/ekrany/LicznikAkcje.tsx:66 (→ `/menu?arkusz=cel` app/licznik.tsx:64); arkusz `MenuCel` src/ekrany/MenuProjektu.tsx:66 z pozycjami
+# `menu-cel` :68 („Set a goal for this part”), `menu-przypomnienie` :73 („Add a reminder…”; „Reminders” `menu-przypomnienia` :70 tylko gdy są plany przypomnień),
+# `menu-powtorzenie` :74 („Set a repeat length”); „Cancel” `arkusz-zamknij` — przez subflows/zamknij-menu.yaml (jedno miejsce zmiany, tests/jakosc/e2e-licznik-to-be.test.ts).
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 55-br-lic-007-s1-powtorzenie.yaml.
+appId: com.apps4brew.knitting
+name: "PU-205 · Arkusz „Goal”: cel, przypomnienie i długość powtórzenia; „Cancel” wraca na licznik bez zmian"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-205
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- tapOn: { id: "licznik-cel" }
+- extendedWaitUntil: { visible: { id: "menu-powtorzenie" }, timeout: 20000 }
+- assertVisible: { id: "menu-cel", text: "Set a goal for this part" }
+- assertVisible: { id: "menu-przypomnienie" } # bez planów przypomnień: „Add a reminder…”, nie „Reminders”
+- assertVisible: { id: "menu-powtorzenie", text: "Set a repeat length" }
+- assertVisible: { id: "arkusz-zamknij" }
+- takeScreenshot: 74-arkusz-cel
+- runFlow: subflows/zamknij-menu.yaml
+- assertNotVisible: { id: "menu-powtorzenie" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 74-licznik-po-anuluj

@@ -1,0 +1,44 @@
+# PU-234 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”, T-53): wejście i powrót — „Units” w Ustawieniach: wybór zapisany i powrót do Ustawień; „‹” bez zmian.
+# testID z kodu: wiersz „Units” `ustawienia-miary` src/ekrany/Ustawienia.tsx:110 (wartość „Automatic”/„Metric”/„Imperial” jako accessibilityValue :78 → `/miary`
+# app/ustawienia.tsx:150); ekran `miary` src/ekrany/Miary.tsx:23, „Back” `nav-wstecz` Miary.tsx:24, opcje `miary-auto|metric|imperial` Miary.tsx:30 (etykieta
+# „Imperial, in, oz”); wybór zapisuje i wraca `router.back()` app/miary.tsx:19-22. Asercja wartości wiersza po `text` jak dla „Language” (39-p-190-jezyk-trwaly.yaml:18:
+# `ustawienia-jezyk` z accessibilityValue, ten sam komponent `Wiersz`). Symulator en-US: „Automatic” = calowe, więc wybór sprawdza wiersz, nie przeliczenia.
+# Ustawienia przez subflows/otworz-ustawienia.yaml. Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "PU-234 · „Units”: „Imperial” zapisany i powrót do Ustawień z „Imperial” w wierszu; „‹” bez zmian"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-234
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-miary" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-miary", text: ".*Automatic.*" }
+- takeScreenshot: 83-ustawienia-automatic
+# --- „Units” → „Imperial”: zapis i powrót do Ustawień ---
+- tapOn: { id: "ustawienia-miary" }
+- extendedWaitUntil: { visible: { id: "miary" }, timeout: 20000 }
+- assertVisible: { id: "miary-auto" }
+- assertVisible: { id: "miary-metric", text: "Metric, mm, cm, g" }
+- assertVisible: { id: "miary-imperial", text: "Imperial, in, oz" }
+- takeScreenshot: 83-miary
+- tapOn: { id: "miary-imperial" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "miary" }
+- scrollUntilVisible: { element: { id: "ustawienia-miary" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-miary", text: ".*Imperial.*" }
+- takeScreenshot: 83-ustawienia-imperial
+# --- „Units” → „‹”: Ustawienia bez zmiany ---
+- tapOn: { id: "ustawienia-miary" }
+- extendedWaitUntil: { visible: { id: "miary" }, timeout: 20000 }
+- assertVisible: { id: "miary-imperial" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "miary" }
+- scrollUntilVisible: { element: { id: "ustawienia-miary" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-miary", text: ".*Imperial.*" }
+- takeScreenshot: 83-ustawienia-bez-zmian

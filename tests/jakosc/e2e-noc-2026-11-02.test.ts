@@ -185,9 +185,10 @@ const wagi = (JSON.parse(fs.readFileSync(path.join(ROOT, 'e2e/czesci.json'), 'ut
 const planCzesci = (): { czesc: number; files: string[]; osobne: string[]; timeout_min: number }[] =>
   JSON.parse(execFileSync('node', [path.join(ROOT, 'scripts/ci/e2e-czesci.mjs'), 'plan'], { encoding: 'utf8', env: { ...process.env, ONLY: '', PAKIET: '', COMMIT_MSG: '' } }));
 describe('NOC-6 · wagi części E2E z pomiaru #140', () => {
-  test('pomiar obejmuje wszystkie scenariusze poza nowymi 67, 68, 69 i 70 (68: zadanie 002; 69, 70: przewodnik P-696 — bez pomiaru) i ma sensowne czasy', () => {
+  test('pomiar obejmuje wszystkie scenariusze poza nowymi 67, 68, 69 i 70 (68: zadanie 002; 69, 70: przewodnik P-696 — bez pomiaru) oraz 71–84 (przypadki użycia BX2, tag oczekujacy, P-836) i ma sensowne czasy', () => {
     const pliki = fs.readdirSync(KAT).filter((f) => /^\d\d-.*\.yaml$/.test(f));
-    expect(pliki.filter((f) => !pomiar.scenariusze[f])).toEqual([plik('67'), plik('68'), plik('69'), plik('70')]);
+    const bx2 = Array.from({ length: 14 }, (_, i) => plik(String(71 + i)));
+    expect(pliki.filter((f) => !pomiar.scenariusze[f])).toEqual([plik('67'), plik('68'), plik('69'), plik('70'), ...bx2]);
     for (const [f, r] of Object.entries(pomiar.scenariusze)) expect({ f, ok: r.s > 0 && r.s < 900 }).toEqual({ f, ok: true });
   });
   test('waga każdego scenariusza [Passed] równa się czasowi z dziennika #140', () => {

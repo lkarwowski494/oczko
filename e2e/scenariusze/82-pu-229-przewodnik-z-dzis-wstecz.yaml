@@ -1,0 +1,31 @@
+# PU-229 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”, G-01): wejście i powrót — przewodnik z „Dziś”; przewodnik nad zakładkami, „‹” wraca na „Dziś”.
+# testID z kodu: „Guide” `nav-przewodnik` src/ekrany/Dzis.tsx:178 (→ `router.push('/przewodnik')` app/(zakladki)/index.tsx:98); ekran `przewodnik` src/ekrany/Przewodnik.tsx:74,
+# „Back” `nav-wstecz` Przewodnik.tsx:75 (`router.back()` app/przewodnik.tsx:48); pasek zakładek `nav-dzis` app/(zakladki)/_layout.tsx:15 — niewidoczny nad przewodnikiem
+# (trasa w stosie głównym, nie zakładka); `dzis-karta` Dzis.tsx:140. Świeża instalacja: karta „Pierwszy licznik”.
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 69-p-687-przewodnik-z-dzis-pokaz.yaml.
+appId: com.apps4brew.knitting
+name: "PU-229 · Przewodnik z „Dziś”: „Guide” → przewodnik nad zakładkami → „‹” wraca na „Dziś”"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-229
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- assertVisible: { id: "nav-przewodnik", text: "Guide" }
+- assertVisible: { id: "nav-dzis" }
+- takeScreenshot: 82-dzis
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertVisible: { id: "przewodnik-krok-1" }
+- assertNotVisible: { id: "nav-dzis" } # przewodnik nad zakładkami: pasek zakładek zakryty
+- assertNotVisible: { id: "dzis-karta" }
+- takeScreenshot: 82-przewodnik
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertNotVisible: { id: "przewodnik" }
+- assertVisible: { id: "nav-dzis" }
+- assertVisible: { id: "nav-przewodnik" }
+- takeScreenshot: 82-powrot-na-dzis

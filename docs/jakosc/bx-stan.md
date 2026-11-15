@@ -1,50 +1,31 @@
-# Stan sesji BX (07-jakosc build, moduł e2e-mobilne) — katalog przypadków użycia jako zestaw e2e po każdym buildzie
+# Stan sesji BX/BX2 (07-jakosc build, moduł e2e-mobilne) — katalog przypadków użycia, bramka KO-065, scenariusze klasy B
 
-Aktualizacja: 2026-11-15. Gałąź: `claude/bx-katalog-e2e-2026-11-15` (start: integracja `claude/youthful-pasteur-kx83sn` @ a117ded0). Polecenie: `origin/koordynacja:docs/koordynacja/polecenia/BX.md` @ 42d20ce1.
+Aktualizacja: 2026-11-15 (BX2). Gałąź: `claude/bx-katalog-e2e-2026-11-15`. Polecenia: `origin/koordynacja:docs/koordynacja/polecenia/BX.md` (zakres, słowa właściciela), `…/BX2.md` @ df7b1ccc (zadania 1–4, P-837 wariant (a)). Historia BX: `git log -- docs/jakosc/bx-stan.md`.
 
-## Zadania polecenia (pkt 5)
-| Nr | Zadanie | Stan | Dowód / plik |
-|---|---|---|---|
-| 1 | Katalog `docs/jakosc/przypadki-uzycia.md` | patrz „Liczby” niżej | bramka `tests/jakosc/przypadki-uzycia.test.ts` |
-| 2 | Automatyzacja klasy B | patrz „Liczby” | scenariusze `e2e/scenariusze/7x-pu-*.yaml` z tagami `przypadki-uzycia`, `oczekujacy`, `PU-NNN` |
-| 3 | Uruchamianie po każdym buildzie | zrobione (lokalnie; przebieg CI wyzwala koordynator) | `scripts/ci/e2e-czesci.mjs` (pakiet domyślny `przypadki`), `jakosc-ios.yml` (macierz 4 części), `docs/jakosc/bx-dowod-czerwony.txt`, P-834 |
-| 4 | Lista fizyczna `docs/wydanie/test-fizyczny.html` | generator gotowy: `node scripts/wydanie/test-fizyczny.mjs` | publikacja Artifact — link w PRZEKAZANIU |
-| 5 | Zasada utrzymania w strategii | zrobione | `docs/jakosc/strategia.md` §6 (wiersz P-835) i §12 |
-| 6 | verify 0, recenzja niezależna | patrz niżej | `docs/jakosc/bx-verify.txt`, `docs/jakosc/bx-recenzja.md` |
+## Liczby (katalog `docs/jakosc/przypadki-uzycia.md`)
+- **338 PU: A=93, B=194, F=51.** B z testem (scenariusz `oczekujacy`): 16 (sekcja „Nawigacja”, scenariusze 71–84); B „do zaprogramowania”: 178 — tyle czerwieni bramkę KO-065 (kontrola 2, P-837 (a)).
+- Sekcja „## Funkcje”: 216 funkcji z kodu → PU (P-848); 69 funkcji bez PU dostało PU-271…PU-338 (57 B, 11 F). Sekcja „## Ekrany bez własnej trasy”: `Wzor` (martwy kod, znalezisko BX-001).
+- Lista fizyczna `docs/wydanie/test-fizyczny.html`: 51 pozycji, ok. 154 min (szacunek z `MIN_KAT`, nie pomiar). Artifact z BX (41 pozycji) nieaktualny — do ponownej publikacji.
+- `[DO USTALENIA]` w katalogu: 0 (8 rozstrzygniętych w kodzie, recenzja BX2 R-A-39…47).
 
-## Decyzje (pula P-834…P-838; wpisy w `docs/decyzje.md`, do weta)
-- P-834 pakiet domyślny = katalog przypadków użycia, bramka = wszystko poza `oczekujacy`, iPad przy każdym przebiegu, 4 części.
-- P-835 katalog `.md` jako źródło prawdy + bramka w verify + zasada utrzymania.
-- P-836 nowe scenariusze BX z tagiem `oczekujacy` do pierwszego zielonego przebiegu (wyjątek nazwany).
-- P-837, P-838: wolne.
+## Zrobione w BX2
+1. Recenzja niezależna (2 subagenty) → `docs/jakosc/bx-recenzja.md`: A 4×P1 / 19×P2 / 26×P3, B 69 funkcji bez PU. P1 poprawione (PU-180 F→B, PU-143/144 A→B, PU-202 opis); reguły „linia A to asercja”, „A nie tylko iPad”, sekcja „Funkcje” w `kontrolaKatalogu` i teście katalogu.
+2. KO-065: zadanie `bramka-przypadki` w `testflight.yml` (bez `continue-on-error`, `if:`, flagi; `build.needs: [bramka, bramka-przypadki]`), skrypt `scripts/jakosc/bramka-przypadki-uzycia.mjs` (`bramka`, `recenzja <build>`, `katalog`), testy `tests/jakosc/bramka-przypadki-uzycia.test.ts` (czerwień przed kodem `docs/jakosc/bx2-dowod-czerwony.txt`), protokół `docs/jakosc/test-fizyczny/<N>.md`, wyjątek 1171 `wyjatki.json` (P-838), lista fizyczna: „Pomiń” z obowiązkowym uzasadnieniem, „Kopiuj wynik” w formacie protokołu (`protokolWyniku`), `lista-1-0.md` F1a (przed App Review).
+3. Scenariusze B „Nawigacja”: 71–84 (PU-198, 200, 202, 205, 209, 211, 217, 219, 224, 225, 226, 228, 229, 234, 235, 236), tagi `przypadki-uzycia` + `oczekujacy` + `PU-NNN`, wagi szacowane w `e2e/czesci.json`, testID w `e2e/README.md`. Nie biegły na symulatorze (Linux).
+Decyzje: P-837 (wariant (a): bramka czerwona, dopóki każdy B nie ma testu — **nie (b)**, rekomendacja BX odrzucona, KO-068), P-838, P-847, P-848 — `docs/decyzje.md`, do weta.
 
-## Jak zdjąć tag `oczekujacy` (następna sesja 07 albo 08)
-1. Koordynator wyzwala „Jakość · iOS” na gałęzi (push ze zmianą w `e2e/**` albo `workflow_dispatch`, znacznik dowolny — katalog biegnie zawsze).
-2. Dla każdego scenariusza „zielony” w podsumowaniu części: usuń tag `oczekujacy`, w katalogu zmień klasę B → A i „oczekujący: plik:linia” → „plik:linia”, popraw linię „Podsumowanie”, wpisz wagę z logu do `e2e/czesci.json`.
-3. „czerwony-informacyjnie”: zrzut kroku, klasyfikacja (aplikacja / scenariusz / maszyna); błąd aplikacji = znalezisko dla 08, scenariusz zostaje czerwony.
+## Ryzyka scenariuszy 71–84 (do pierwszego przebiegu)
+- 83 (PU-234): `text` na `ustawienia-miary` czyta wartość dostępności wiersza — niepotwierdzone na iOS (wzór 39:18).
+- 76 (PU-211): dwa arkusze z `formularz-zapisz` w stosie — stuknięcie z tekstem.
+- PU-205: kod pokazuje „Add reminder…” albo „Reminders” zależnie od planów (`src/ekrany/MenuProjektu.tsx:69-73`); scenariusz sprawdza stan bez planów.
 
-## Rozszerzenie KO-065 (koordynator, 15.11 ok. 18:07 UTC; słowa właściciela ok. 18:05) — NIE ZACZĘTE, projekt dla następnej sesji
-Właściciel: osobna bramka, której nie da się pominąć; scenariusz zawiera też testy nieautomatyzowalne — wykonane po buildzie w TestFlight albo pominięte z obowiązkowym uzasadnieniem.
-**A. Zadanie `bramka-przypadki` w `testflight.yml`** (ubuntu, `needs: bramka`; `build` dostaje `needs: [bramka, bramka-przypadki]`; bez `continue-on-error`, bez własnej flagi pominięcia). Skrypt `scripts/jakosc/bramka-przypadki-uzycia.mjs` (testy przed kodem: `tests/jakosc/bramka-przypadki-uzycia.test.ts`), trzy kontrole:
-1. *Zielony zestaw PU na tym SHA:* w przebiegu „Jakość · iOS” z wyjścia `needs.bramka.outputs.przebieg` każde zadanie `e2e (część 1…czesci, iphone)` (`czesci` z `e2e/czesci.json`) ma `success` — nie `skipped` (dziś `ocenBramke` w `scripts/wydanie/testflight.mjs` wymaga tylko jednego zielonego). Przy `pomin_bramke_e2e` + `powod` (istniejąca ścieżka awaryjna) kontrola 1 jest pomijana z ostrzeżeniem; kontrole 2 i 3 biegną zawsze.
-2. *Katalog spójny z kodem:* to, co sprawdza `tests/jakosc/przypadki-uzycia.test.ts` (przenieść logikę do skryptu, test woła skrypt), plus: (a) każdy komponent `src/ekrany/*.tsx` jest osiągalny importami z trasy `app/` innej niż `_layout` (trasa ma PU w „Nawigacja”) albo stoi w tabeli katalogu `## Ekrany bez własnej trasy` (`| Komponent | PU |`, np. `TrybAwaryjny`, `Aplikacja`, arkusze) ze wskazaniem istniejącego PU; (b) **każdy PU klasy B ma istniejący test** — „do zaprogramowania” czerwieni bramkę. Decyzja do podjęcia (P-837): (a) ściśle od razu — TestFlight zablokowany, dopóki wszystkie B nie mają scenariusza; (b) nazwany dług z listą ID i terminem (np. plik `docs/jakosc/przypadki-uzycia-dlug.json`, test pilnuje, że lista tylko maleje). Rekomendacja BX: (b) z terminem „przed buildem następnym po tym, który przejdzie bramkę pierwszy raz” — zasada wspólna 7 (wyjątek nazwany, kontrola zastępcza: te przypadki zostają na liście fizycznej właściciela jako „do sprawdzenia ręcznie, bo automat jeszcze nie istnieje”).
-3. *Protokół testu fizycznego poprzedniego wysłanego buildu:* poprzedni build = najwyższy N z tagów `v*-b<N>` (tag powstaje po wysyłce; dziś najwyższy `v1.0.0-b1171`; w zadaniu potrzebne `git fetch --tags`). Plik `docs/jakosc/test-fizyczny/<N>.md`, tabela `| PU | Wynik |`, wynik `zrobione: <wynik>` albo `pominięte: <uzasadnienie>` (pusty tekst po dwukropku = czerwone). Wymagane ID = klasa F katalogu z tagu (`git show <tag>:docs/jakosc/przypadki-uzycia.md`), a gdy katalogu w tagu nie ma (1171 i starsze) — klasa F bieżącego katalogu. Brak pliku = czerwone. Wyjątek przejściowy tylko dla 1171: `docs/jakosc/test-fizyczny/wyjatki.json` `{ "1171": { "decyzja": "P-838", "data": "2026-11-15", "powod": "…" } }`; test pilnuje, że plik ma najwyżej ten jeden wpis.
-Test „bramki nie da się wyłączyć” (`tests/wydanie/potok-testflight.test.ts` albo nowy): zadanie istnieje, nie ma `continue-on-error` ani `if:`, `build.needs` zawiera oba zadania bramek, kroki 2 i 3 nie zależą od `inputs.pomin_bramke_e2e`, `bez_wysylki` ich nie omija.
-**B. Lista fizyczna:** `scripts/wydanie/test-fizyczny.mjs` już daje przy każdej pozycji „Tak / Nie / Pomiń” i pole uwagi; do zrobienia: przy „Pomiń” uwaga obowiązkowa (przycisk „Kopiuj wynik” wypisuje pozycje pominięte bez uzasadnienia i nie udaje kompletnego wyniku), a tekst wyniku w formacie protokołu (`PU-NNN | zrobione: …` / `pominięte: …`), żeby koordynator zapisał `docs/jakosc/test-fizyczny/<build>.md` bez przepisywania.
+## Jak zdjąć tag `oczekujacy`
+1. Koordynator wyzwala „Jakość · iOS” na gałęzi (push ze zmianą w `e2e/**` albo `workflow_dispatch`).
+2. Scenariusz „zielony”: usuń tag `oczekujacy`, w katalogu B → A, „oczekujący: plik:linia” → „plik:linia” (linia asercji), popraw „Podsumowanie”, wagę z logu do `e2e/czesci.json`.
+3. „czerwony-informacyjnie”: zrzut kroku, klasyfikacja (aplikacja / scenariusz / maszyna); błąd aplikacji = znalezisko `BX-NNN` dla 08, scenariusz zostaje czerwony.
 
-### Doprecyzowania koordynatora po PRZEKAZANIU (odebrane 15.11 18:23 UTC; NIE WYKONANE w BX)
-- **Właściciel ok. 18:12 („ten fizyczny test musi byc wykonany po buildzie”):** protokół F dotyczy buildu już zainstalowanego z TestFlight. Bramka `testflight.yml` dla buildu N wymaga protokołu F buildu N−1 (jak w kontroli 3 wyżej). **Dodatkowo przed wysyłką do App Review** wymagany protokół F dokładnie tego buildu, który idzie do recenzji: kontrola w workflowie albo skrypcie zgłoszenia roli 10, jeśli istnieje (sprawdzić `docs/wydanie/lista-1-0.md`, `scripts/wydanie/`); jeśli nie ma — test albo skrypt kontrolny i linia w `docs/wydanie/`.
-- **Właściciel ok. 18:16 (dosłownie):** „to nie ma byc tylko scenariusze wejscia i wyjscia. To ma byc pelna checklista przypadkow uzytkowania. Tak jakbys kazal mi przetetsowac wszystkie funkcje w aplikacji recznie zgodnie z tym jak beda one uzywane.” Kryterium kompletności katalogu: każda funkcja z kodu (ekrany, akcje, ustawienia, zegarek, iPad, import/eksport, zakupy) ma co najmniej jeden PU realnego użycia (cel od początku do końca, warianty, dane, błędy); wejście i powrót to tylko minimum skryptu kontrolnego. **Stan katalogu wobec tego kryterium:** 270 PU, z tego sekcja „Nawigacja” to 42, reszta (228) to przypadki funkcji w 21 sekcjach (najmniej: „Ekran blokady” 3, „Strony z linków” 4, „Narzędzia” 6, „Apple Watch” 6); **lista funkcji z kodu bez PU nie została policzona** — bramka sprawdza dziś kroki instrukcji, trasy i scenariusze, nie akcje ani ustawienia. Do zrobienia w recenzji: inwentarz funkcji z kodu (akcje menu, wiersze ustawień, rodzaje `formularz/[rodzaj]`, klucze `src/przypadki-uzycia/`, zegarek `targets/watch`) → funkcje bez PU → nowe PU; rozważyć kontrolę mechaniczną (np. każdy `testID` z `e2e/README.md` albo każdy plik `src/przypadki-uzycia/*.ts` wymieniony w co najmniej jednym PU).
-
-## Liczby i następny krok
-- **Katalog (zadanie 1): 270 PU — A=95, B=134, F=41.** Każdy z 121 kroków instrukcji 1171 przypisany, każda z 33 tras `app/` ma PU w „Nawigacja”, każdy z 70 scenariuszy przypisany (`npx jest tests/jakosc/przypadki-uzycia.test.ts`: 13/13). Szkic napisał subagent (general-purpose) bez raportu końcowego; sprawdzony bramką i próbką 7 odnośników klasy A (linie istnieją i dotyczą wyniku). Bramka wykryła 1 błąd szkicu (PU-227 wskazywał sam podprzepływ) — poprawione. **Katalog nie przeszedł recenzji niezależnej** (zadanie 6) — trafność klas i odnośników A poza próbką to deklaracja szkicu.
-- **Klasa B (zadanie 2): 0 z 134 zaprogramowanych** — wszystkie mają „do zaprogramowania: <poziom> — <asercja>”. Nie zaczęte (limit kontekstu 30% i pułap kosztu).
-- **Lista fizyczna (zadanie 4):** `docs/wydanie/test-fizyczny.html` (generator `node scripts/wydanie/test-fizyczny.mjs`, kontrola `--check` w teście), 41 pozycji, ok. 123 min pracy właściciela (SZACUNEK z minut na kategorię w `MIN_KAT`, nie pomiar; bez czekania 8 dni na wygaśnięcie subskrypcji z PU-194). Artifact prywatny: https://claude.ai/artifact/1crnttArRWAKZ4K4n3EsA7
-- **Znane znalezisko:** PU-016 i PU-202 — brak powrotu z „Dodaj wzór” (naprawia BW); scenariusz nawigacji do napisania jako czerwony przed kodem.
-- **[DO USTALENIA] w katalogu:** 8 miejsc (`grep -n "DO USTALENIA" docs/jakosc/przypadki-uzycia.md`) — zachowania, których szkic nie potwierdził w kodzie.
-
-### Następny krok (nowa sesja 07-jakosc build, moduł e2e-mobilne; start od tego pliku)
-1. Recenzja niezależna katalogu subagentem bez uzasadnienia autora → `docs/jakosc/bx-recenzja.md` (P1/P2/P3; P1 poprawić): trafność klas F (czy symulator naprawdę nie da rady), odnośniki A poza próbką, luki ekranów `src/ekrany/` bez trasy.
-2. KO-065 A i B według projektu wyżej (testy przed kodem; decyzje P-837, P-838).
-3. Scenariusze klasy B: najpierw sekcja „Nawigacja” (wejście i powrót każdej trasy) i „Stany puste, błędy i przerwania”, tag `przypadki-uzycia` + `oczekujacy` + `PU-NNN`, plik `7N-pu-nnn-opis.yaml`, wpis w `config.yaml` i testID w `e2e/README.md` (pilnuje `tests/jakosc/maestro-scenariusze.test.ts`).
-4. Po przebiegu CI (wyzwala koordynator): zdjęcie tagów `oczekujacy` jak w sekcji wyżej; czas przebiegu z `list_workflow_jobs` do `e2e/czesci.json` i strategii §12.
+## Następny krok (07 build, start od tego pliku)
+1. Wynik przebiegu „Jakość · iOS” dla scenariuszy 71–84 → zdjęcie tagów albo znaleziska.
+2. Scenariusze B: sekcja „Stany puste, błędy i przerwania”, potem reszta (178 „do zaprogramowania”; testy jednostkowe/komponentowe tam, gdzie Pokrycie tak mówi — test w `tests/` wymienia ID PU i wiersz przechodzi w A).
+3. P2 recenzji A: 10 pozycji F częściowo automatyzowalnych (PU-009, 010, 020, 049, 055, 062, 069, 095, 130, 140); kontrola K1 napisów przycisków (recenzja B) najpierw informacyjnie.
+4. Ponowna publikacja listy fizycznej (Artifact, 51 pozycji).

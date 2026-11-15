@@ -23,6 +23,7 @@ const KATALOG = 'docs/jakosc/przypadki-uzycia.md';
 const PROTOKOLY = 'docs/jakosc/test-fizyczny';
 const NAGLOWEK = '| PU | Cel użytkownika | Kroki | Oczekiwany wynik | Instrukcja | Ekrany | Klasa | Pokrycie |';
 const SEKCJA_EKRANOW = 'Ekrany bez własnej trasy';
+const ASERCJA = /^\s*-?\s*(assert\w*|extendedWaitUntil|copyTextFrom|scrollUntilVisible)\b|^\s*(visible|notVisible):/;
 const KATEGORIE_F = ['TestFlight', 'zegarek', 'wibracje', 'aparat', 'Pencil', 'wrażenie', 'ekran blokady', 'system iOS', 'sklep Apple', 'sieć prawdziwa', 'inne aplikacje'];
 
 // ---------- kontrola 1 ----------
@@ -125,7 +126,8 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
     return l !== undefined && l.trim() !== '' && !l.trim().startsWith('#') && !l.trim().startsWith('//');
   };
   if (!naglowki) bledy.push('katalog: brak tabeli z ustalonym nagłówkiem');
-  pu.forEach((p, i) => { if (p.id !== `PU-${String(i + 1).padStart(3, '0')}`) bledy.push(`${p.id}: numeracja (oczekiwano PU-${String(i + 1).padStart(3, '0')})`); });
+  const ids = pu.map((p) => p.id).sort(); // P-847: unikalne, zbiór PU-001…PU-N, kolejność w pliku według sekcji
+  ids.forEach((id, i) => { if (id !== `PU-${String(i + 1).padStart(3, '0')}`) bledy.push(`${id}: numeracja (oczekiwano PU-${String(i + 1).padStart(3, '0')}; duplikat albo dziura)`); });
   const licz = (k) => pu.filter((p) => p.klasa === k).length;
   if (podsumowanie?.slice(1).map(Number).join() !== [licz('A'), licz('B'), licz('F'), pu.length].join()) bledy.push('katalog: linia „Podsumowanie” niezgodna z tabelami');
   for (const p of pu) {
@@ -148,6 +150,15 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
         else if (x.plik.startsWith('e2e/') && tagi(path.basename(x.plik)).includes('oczekujacy')) bledy.push(`${p.id}: ${x.plik} ma tag oczekujacy (to klasa B)`);
         else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) bledy.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
       }
+      // recenzja BX2 R-A-26: linia scenariusza to asercja (albo runFlow podprzepływu wskazanego obok); nie same scenariusze iPada (informacyjne, P-225)
+      const yaml = o.filter((x) => x.plik.endsWith('.yaml') && istnieje(x));
+      const maPodprzeplyw = yaml.some((x) => x.plik.includes('/subflows/'));
+      for (const x of yaml) {
+        const l = fs.readFileSync(path.join(root, x.plik), 'utf8').split('\n')[x.linia - 1];
+        if (!ASERCJA.test(l) && !(maPodprzeplyw && /^\s*-\s*runFlow\b/.test(l))) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie jest asercją`);
+      }
+      const scen = yaml.filter((x) => !x.plik.includes('/subflows/')).map((x) => path.basename(x.plik));
+      if (scen.length && !o.some((x) => x.plik.startsWith('tests/')) && scen.every((f) => tagi(f).includes('ipad'))) bledy.push(`${p.id}: tylko scenariusze z tagiem ipad (poza bramką)`);
     } else if (p.klasa === 'B') {
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) {
         if (wymagajTestowB) bledy.push(`${p.id}: klasa B bez testu („do zaprogramowania”, P-837)`);
@@ -165,7 +176,29 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
       if (!m || !KATEGORIE_F.includes(m[1].trim()) || m[2].trim().length < 30) bledy.push(`${p.id}: Pokrycie klasy F nie jest „F: <kategoria> — <powód ≥ 30 znaków>”`);
     }
   }
-  return [...bledy, ...ekranyBezTrasy(root)];
+  return [...bledy, ...ekranyBezTrasy(root), ...kontrolaFunkcji(root, new Set(pu.map((p) => p.id)))];
+}
+
+/** Sekcja „## Funkcje” (kryterium właściciela 15.11 18:16, inwentarz BX2): każdy wiersz `| Grupa | Funkcja | `kod` | PU… |` ma istniejące PU,
+ *  a każdy plik src/przypadki-uzycia/*.ts (poza testami) jest wymieniony w kolumnie Kod — nowa funkcja domeny bez PU czerwieni verify. */
+export function kontrolaFunkcji(root, ids) {
+  const tekst = fs.readFileSync(path.join(root, KATALOG), 'utf8');
+  const i = tekst.indexOf('\n## Funkcje\n');
+  if (i < 0) return ['katalog: brak sekcji „## Funkcje” (inwentarz funkcji z kodu → PU)'];
+  const sekcja = tekst.slice(i + 1, tekst.indexOf('\n## ', i + 1) >>> 0);
+  const wiersze = sekcja.split('\n').filter((l) => /^\| (?!Grupa \||---)/.test(l)).map((l) => l.split('|').slice(1, -1).map((x) => x.trim()));
+  const bledy = [];
+  const kody = [];
+  for (const k of wiersze) {
+    if (k.length !== 4) { bledy.push(`Funkcje: wiersz „${k.join(' | ').slice(0, 50)}” nie ma 4 kolumn`); continue; }
+    kody.push(k[2]);
+    const p = [...k[3].matchAll(/PU-\d{3}/g)].map((m) => m[0]);
+    if (!p.length) bledy.push(`Funkcje: „${k[1].slice(0, 50)}” bez PU`);
+    for (const id of p) if (!ids.has(id)) bledy.push(`Funkcje: „${k[1].slice(0, 50)}” wskazuje nieistniejący ${id}`);
+  }
+  const pliki = fs.readdirSync(path.join(root, 'src/przypadki-uzycia')).filter((f) => f.endsWith('.ts') && !/\.test\.ts$/.test(f));
+  for (const f of pliki) if (!kody.some((k) => new RegExp(`(^|[\\s\`/,])${f.replace(/[.-]/g, '\\$&')}`).test(k))) bledy.push(`Funkcje: src/przypadki-uzycia/${f} bez wiersza (funkcja domeny bez PU)`);
+  return bledy;
 }
 
 // ---------- kontrola 3 ----------

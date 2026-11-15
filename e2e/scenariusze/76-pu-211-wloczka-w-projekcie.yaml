@@ -1,0 +1,60 @@
+# PU-211 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”, T-54): wejście i powrót — „Yarn for this project”: pusty zapas → „Add yarn” → zapis → wybór → „Save”.
+# Oczekiwane: po dodaniu włóczki wraca formularz wyboru z odświeżonym zapasem (nowa włóczka zaznaczona), po zapisie ekran projektu z tą włóczką.
+# testID z kodu: `licznik-projekt-wejscie` src/ekrany/Licznik.tsx:158; wiersz „Yarn” `projekt-wloczka` src/ekrany/Projekt.tsx:224 (→ `/formularz/wloczki` app/projekt/[id].tsx:175);
+# arkusz wyboru `wloczka-wybor` src/ekrany/FormularzeProjektu.tsx:228, `wloczka-pusto` :231, wiersz włóczki — etykieta „<nazwa>, N skeins in your stash” :234 (id z uuid,
+# niestały), „Add yarn” `wloczka-dodaj` :241 (→ `/wloczka` app/formularz/[rodzaj].tsx:75); odświeżenie zapasu po powrocie `useFocusEffect` [rodzaj].tsx:39-41, zaznaczenie nowej :222-225;
+# arkusz włóczki `zapas-nazwa` src/ekrany/Zapas.tsx:165, „Add” `formularz-zapisz` src/ekrany/Arkusz.tsx:58 (zapisz = wspolne.dodaj, Zapas.tsx:164).
+# Dwa arkusze w stosie mają `formularz-zapisz`: stuknięcie z `text` („Add” — arkusz włóczki, „Save” — arkusz wyboru), żeby nie trafić w arkusz pod spodem.
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "PU-211 · „Yarn for this project”: pusty zapas → „Add yarn” → zapis → nowa włóczka zaznaczona na liście wyboru → „Save” → projekt z włóczką"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-211
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-wloczka" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-wloczka", text: ".*None.*" }
+- tapOn: { id: "projekt-wloczka" }
+- extendedWaitUntil: { visible: { id: "wloczka-wybor" }, timeout: 20000 }
+- assertVisible: { id: "wloczka-pusto" }
+- assertVisible: { id: "wloczka-dodaj", text: "Add yarn" }
+- takeScreenshot: 76-wybor-pusty-zapas
+# --- „Add yarn” → arkusz włóczki → nazwa „Wool” → „Add” ---
+- tapOn: { id: "wloczka-dodaj" }
+- extendedWaitUntil: { visible: { id: "zapas-nazwa" }, timeout: 20000 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-nazwa" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "W"
+      - inputText: "o"
+      - inputText: "o"
+      - inputText: "l"
+      - assertVisible: { id: "zapas-nazwa", text: "Wool" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz", text: "Add" }
+- takeScreenshot: 76-arkusz-wloczki
+- tapOn: { id: "formularz-zapisz", text: "Add" }
+# --- powrót do arkusza wyboru: zapas odświeżony, nowa włóczka na liście ---
+- extendedWaitUntil: { notVisible: { id: "zapas-nazwa" }, timeout: 20000 }
+- assertVisible: { id: "wloczka-wybor" }
+- assertNotVisible: { id: "wloczka-pusto" }
+- assertVisible: "Wool, .* in your stash"
+- takeScreenshot: 76-wybor-z-nowa-wloczka
+- tapOn: { id: "formularz-zapisz", text: "Save" }
+# --- po zapisie: ekran projektu z włóczką ---
+- extendedWaitUntil: { notVisible: { id: "wloczka-wybor" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-wloczka" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-wloczka", text: ".*Wool.*" }
+- takeScreenshot: 76-projekt-z-wloczka

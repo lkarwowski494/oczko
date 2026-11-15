@@ -72,3 +72,17 @@ flows:
   - 68-br-zak-004-s1-polityka-prywatnosci-w-ustawieniach.yaml
   - 69-p-687-przewodnik-z-dzis-pokaz.yaml
   - 70-p-688-przewodnik-z-ustawien-przeczytane.yaml
+  - 71-pu-198-historia-dzien-projekt-wstecz.yaml
+  - 72-pu-200-licznik-z-listy-projektow-wstecz.yaml
+  - 73-pu-202-wzor-zrodla-wstecz.yaml
+  - 74-pu-205-arkusz-cel-anuluj.yaml
+  - 75-pu-209-nowy-projekt-zapisz-anuluj.yaml
+  - 76-pu-211-wloczka-w-projekcie.yaml
+  - 77-pu-217-usun-wszystko-anuluj-potwierdz.yaml
+  - 78-pu-219-sesje-wstecz.yaml
+  - 79-pu-224-pu-225-druty-i-arkusz-drutu.yaml
+  - 80-pu-226-kalkulator-probki-wstecz.yaml
+  - 81-pu-228-podglad-zdjecia-zamknij.yaml
+  - 82-pu-229-przewodnik-z-dzis-wstecz.yaml
+  - 83-pu-234-jednostki-wybor-i-wstecz.yaml
+  - 84-pu-235-pu-236-licencje-i-zrodla-wstecz.yaml

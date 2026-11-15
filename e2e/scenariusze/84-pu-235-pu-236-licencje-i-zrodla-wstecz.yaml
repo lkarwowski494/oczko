@@ -1,0 +1,46 @@
+# PU-235 i PU-236 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”, T-65, T-66): wejście i powrót — „Open source licenses” i „About our information” z Ustawień.
+# PU-235: wiersz → ekran licencji ze zdaniem wstępu (en.json licencje.wstep) → „‹” wraca do Ustawień. PU-236: wiersz → ekran źródeł z linią
+# „Source: Craft Yarn Council's www.YarnStandards.com” (en.json zrodla.linia_standardow) → „‹” wraca do Ustawień.
+# testID z kodu: `ustawienia-zrodla` src/ekrany/Ustawienia.tsx:131, `ustawienia-licencje` :132 (→ `/zrodla`, `/licencje` app/ustawienia.tsx:153-154); ekran licencji
+# `licencje-lista` src/ekrany/Licencje.tsx:110, wstęp :82, „Back” `nav-wstecz` :80 (`router.back()` app/licencje.tsx:10); ekran źródeł `zrodla-wiedzy`
+# src/ekrany/ZrodlaWiedzy.tsx:12, linia :16, „Back” `nav-wstecz` :13 (app/zrodla.tsx:10); `ustawienia` Ustawienia.tsx:93. Ustawienia przez subflows/otworz-ustawienia.yaml.
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "PU-235 · PU-236 · „Open source licenses” i „About our information” z Ustawień: ekran i „‹” do Ustawień"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-235
+  - PU-236
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/otworz-ustawienia.yaml
+# --- PU-235: „Open source licenses” ---
+- scrollUntilVisible: { element: { id: "ustawienia-licencje" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-licencje", text: "Open source licenses" }
+- tapOn: { id: "ustawienia-licencje" }
+- extendedWaitUntil: { visible: { id: "licencje-lista" }, timeout: 20000 }
+- assertVisible: "Oczko is built with open source software\\. Tap a license to read its full text\\."
+- takeScreenshot: 84-licencje
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "licencje-lista" }
+- scrollUntilVisible: { element: { id: "ustawienia-licencje" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-licencje" }
+- takeScreenshot: 84-ustawienia-po-licencjach
+# --- PU-236: „About our information” ---
+- scrollUntilVisible: { element: { id: "ustawienia-zrodla" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-zrodla", text: "About our information" }
+- tapOn: { id: "ustawienia-zrodla" }
+- extendedWaitUntil: { visible: { id: "zrodla-wiedzy" }, timeout: 20000 }
+- assertVisible: "Source: Craft Yarn Council's www\\.YarnStandards\\.com"
+- takeScreenshot: 84-zrodla
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "zrodla-wiedzy" }
+- scrollUntilVisible: { element: { id: "ustawienia-zrodla" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-zrodla" }
+- takeScreenshot: 84-ustawienia-po-zrodlach
