@@ -43,7 +43,7 @@ Skróty: `zakres:17` = `docs/scope-contract.md:17`; `tf:24` = `docs/jakosc/testf
   - `tekst.docx`, `tabela.docx`, `obraz.docx` z repo: `modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/` (GitHub → plik → „Download raw file” → Zapisz w Plikach);
   - nieobowiązkowo duży PDF 100–200 MB (do T-101; jeśli nie masz — T-101 pomiń);
   - nieobowiązkowo: wyślij sobie e-mail z załącznikiem PDF (do T-49).
-- Na iPhonie: Ustawienia → Ekran i jasność → Automatyczna blokada = **1 minuta** (do T-16; zaraz po T-16 przywróć swoje).
+- Na iPhonie: Ustawienia → Ekran i jasność → Autoblokada = **1 minuta** (do T-16; zaraz po T-16 przywróć swoje).
 - Druga osoba albo drugi telefon, który może do Ciebie zadzwonić (T-115). Bez tego T-115 = „nie sprawdzono”.
 
 ### Zakup Pro w TestFlight (bez konta Sandbox)
