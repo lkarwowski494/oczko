@@ -9,6 +9,7 @@ const licz = (w: Partial<WejscieProbki>, jezyk = 'en-US') =>
   stanProbki({ oczka: '', na: '10cm', szerokosc: '', jednostka: 'cm', ...w }, { t, jezyk: () => jezyk });
 
 describe('BR-KAL-001 (RD-01)', () => {
+  // PU-080 (katalog przypadków użycia): kalkulator próbki: 22 oczka / 10 cm, 50 cm → 110 oczek.
   test('S1: 22 o./10 cm, 50 cm → 110 oczek z danymi wejściowymi i uwagą o blokowaniu', () => {
     const s = licz({ oczka: '22', szerokosc: '50' });
     expect(s.wynik).toEqual({ liczba: '110 stitches', zDanych: 'From 22 stitches per 10 cm and 50 cm.', uwaga: t('probka.uwaga_oczka') });

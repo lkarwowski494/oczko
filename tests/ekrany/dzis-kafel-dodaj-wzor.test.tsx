@@ -41,6 +41,7 @@ async function start(zProjektem: boolean, zWzorem = false, otworz = true) {
   return s;
 }
 
+// PU-016 (katalog przypadków użycia): kafel „Dodaj wzór” otwiera licznik z menu źródeł.
 test('P-588: kafel „Dodaj wzór” z projektem → licznik, a nad nim trasa „/wzor” z menu źródeł (`zrodla`), nie „Kontynuuj ›”', async () => {
   await start(true);
   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 50)); });

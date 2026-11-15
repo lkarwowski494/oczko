@@ -36,6 +36,7 @@ async function start(o: { zWzorem: boolean; skaner?: boolean }) {
   render(<EkranWzoru />);
 }
 
+// PU-016 (katalog przypadków użycia): menu źródeł z „Dziś”: widoczne „Back” wraca.
 test('WL-1171-01: menu źródeł bez wzoru ma widoczne „Back” (nav-wstecz), które wraca z ekranu (router.back)', async () => {
   mockParametry = {};
   mockRouter.back.mockClear();

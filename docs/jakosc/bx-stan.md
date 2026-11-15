@@ -3,7 +3,7 @@
 Aktualizacja: 2026-11-15 (BX2). Gałąź: `claude/bx-katalog-e2e-2026-11-15`. Polecenia: `origin/koordynacja:docs/koordynacja/polecenia/BX.md` (zakres, słowa właściciela), `…/BX2.md` @ df7b1ccc (zadania 1–4, P-837 wariant (a)). Historia BX: `git log -- docs/jakosc/bx-stan.md`.
 
 ## Liczby (katalog `docs/jakosc/przypadki-uzycia.md`)
-- **338 PU: A=123, B=164, F=51** (BX3: +30 A w sekcji „Stany puste, błędy i przerwania”, P-849). B z testem (scenariusz `oczekujacy`): 16 (sekcja „Nawigacja”, scenariusze 71–84); B „do zaprogramowania”: 148 — tyle czerwieni bramkę KO-065 (kontrola 2, P-837 (a)).
+- **338 PU: A=126, B=161, F=51** (BX3: +30 A w sekcji „Stany puste, błędy i przerwania” i +3 A: PU-016, 080, 315; P-849). B z testem (scenariusz `oczekujacy`): 16 (sekcja „Nawigacja”, scenariusze 71–84); B „do zaprogramowania”: 145 — tyle czerwieni bramkę KO-065 (kontrola 2, P-837 (a)).
 - Sekcja „## Funkcje”: 216 funkcji z kodu → PU (P-848); 69 funkcji bez PU dostało PU-271…PU-338 (57 B, 11 F). Sekcja „## Ekrany bez własnej trasy”: `Wzor` (martwy kod, znalezisko BX-001).
 - Lista fizyczna `docs/wydanie/test-fizyczny.html`: 51 pozycji, ok. 154 min (szacunek z `MIN_KAT`, nie pomiar). Artifact z BX (41 pozycji) nieaktualny — do ponownej publikacji.
 - `[DO USTALENIA]` w katalogu: 0 (8 rozstrzygniętych w kodzie, recenzja BX2 R-A-39…47).
