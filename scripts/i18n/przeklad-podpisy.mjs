@@ -58,29 +58,33 @@ export function wczytajKontekst(root = KORZEN) {
 
 /* ---------- twarde kontrole (2.3.7: bez cen, marek i „free”) ---------- */
 const WALUTA = /[$€£¥₩₺₴₽₹₫]|(?<![\p{L}])(?:USD|EUR|PLN|GBP|CHF|SEK|NOK|DKK|CZK|HUF|RON|TRY|JPY|KRW|TWD|IDR|MYR|VND|RUB|UAH|BRL|MXN)(?![\p{L}])|\d\s?(?:zł|kr|Kč|Ft|lei|RM|Rp|円|원|元|грн|руб)(?![\p{L}])/iu;
-const CENA_SLOWO = /(?<![\p{L}\p{N}])(?:price|preis|prix|precio|prezzo|prijs|pris|hinta|cena|cenă|cijena|ár|fiyat|τιμή|harga|giá|цена|цін[аи]|ціна)(?![\p{L}])|価格|料金|가격|요금|價格|定價|定价/iu;
-const DARMOWE = /(?<![\p{L}\p{N}])(?:free(?![\p{L}])|gratis|gratuit|grátis|kostenlos|kostenfrei|umsonst|darmow|bezpłatn|zdarma|zadarmo|ingyen|безплат|безкошт|бесплат|besplat|brezplač|nemokam|bezmaks|tasuta|ilmai|ücretsiz|bedava|δωρεάν|percuma|cuma-cuma|miễn phí|gratuitement|sans frais)|無料|フリー|タダ|免費|免费|무료|공짜/iu;
-const MARKI = /iCloud|Apple Watch|Siri|Android/i;
+const CENA_SLOWO = /(?<![\p{L}\p{N}])(?:price|preis|prix|precio|preço|preco|prezzo|prijs|hinta|cena|cenă|cijena|ár|fiyat|τιμή|harga|giá|цена|цін[аи]|ціна)(?![\p{L}])|価格|料金|가격|요금|價格|定價|定价/iu;
+/** „pris” znaczy cenę tylko po skandynawsku; po francusku to „wzięty” (fałszywy alarm, BQ 004). */
+const CENA_SKAND = /(?<![\p{L}\p{N}])pris(?![\p{L}])/iu;
+const DARMOWE = /(?<![\p{L}\p{N}])(?:free(?![\p{L}])|gratis|gratuit|grátis|kostenlos|kostenfrei|umsonst|darmow|bezpłatn|zdarma|zadarmo|ingyen|безплат|безкошт|бесплат|besplat|brezplač|nemokam|bezmaks|tasuta|ilmai|ücretsiz|bedava|δωρεάν|percuma|cuma-cuma|miễn phí|gratuitement|sans frais|bezplatn|maksuton|kostnadsfri|kosteloos|tanpa biaya|bebas biaya|fără cost)|無料|無償|フリー|タダ|免費|免费|무료|무상|공짜/iu;
+const MARKI = /iCloud|Apple Watch|Android/i;
+const SIRI = /(?<![\p{L}\p{N}])Siri(?![\p{L}])/iu; // po malajsku „siri” = seria (BQ 004): kontrola poza ms
+const SKANDYNAWSKIE = new Set(['sv', 'da', 'nb']);
 
 /** Problemy jednego podpisu (pusta lista = poprawny). `max`: limit znaków (jak liczy Apple: punkty kodowe); `skroty`: haszowana lista marek repo (P-107). Cyfra w podpisie nie jest błędem. */
-export function sprawdzPodpis(v, { max = 40, skroty = null } = {}) {
+export function sprawdzPodpis(v, { max = 40, skroty = null, jezyk = null } = {}) {
   if (typeof v !== 'string' || !v.trim()) return ['puste'];
   const p = [];
   if (/[\r\n]/.test(v)) p.push('nowy wiersz w podpisie (składem zajmuje się ramka)');
   if (v !== v.trim()) p.push('spacje na brzegu');
   if (len(v) > max) p.push(`${len(v)} znaków > ${max}`);
   if (/[.。．]$/.test(v)) p.push('kropka na końcu');
-  const c = v.match(WALUTA) ?? v.match(CENA_SLOWO); if (c) p.push(`cena lub waluta: ${c[0].trim()}`);
+  const c = v.match(WALUTA) ?? v.match(CENA_SLOWO) ?? (SKANDYNAWSKIE.has(jezyk) ? v.match(CENA_SKAND) : null); if (c) p.push(`cena lub waluta: ${c[0].trim()}`);
   const f = v.match(DARMOWE); if (f) p.push(`„darmowe” i odpowiedniki niedozwolone: ${f[0]}`);
-  const m = v.match(MARKI); if (m) p.push(`marka lub urządzenie: ${m[0]}`);
+  const m = v.match(MARKI) ?? (jezyk === 'ms' ? null : v.match(SIRI)); if (m) p.push(`marka lub urządzenie: ${m[0]}`);
   if (skroty && trafienia(v, skroty) > 0) p.push('marka z listy repo (P-107): nazwa innej aplikacji lub firmy');
   return p;
 }
 /** Problemy kompletu podpisów języka: [{ pole, powod }]; każdy ekran z pliku, bez powtórzeń między ekranami. */
-export function sprawdzKomplet(podpisy, ctx) {
+export function sprawdzKomplet(podpisy, ctx, jezyk = null) {
   const w = [], widziane = new Map();
   for (const e of ctx.ekrany) {
-    const v = podpisy?.[e], pr = v === undefined ? ['brak ekranu'] : sprawdzPodpis(v, { max: ctx.max, skroty: ctx.skroty });
+    const v = podpisy?.[e], pr = v === undefined ? ['brak ekranu'] : sprawdzPodpis(v, { max: ctx.max, skroty: ctx.skroty, jezyk });
     if (typeof v === 'string' && widziane.has(v.trim())) pr.push(`taki sam jak ${widziane.get(v.trim())}`);
     if (typeof v === 'string' && v.trim()) widziane.set(v.trim(), e);
     if (pr.length) w.push({ pole: e, powod: pr.join('; ') });
@@ -135,23 +139,23 @@ const norm = (v) => (typeof v === 'string' ? v.normalize('NFC').trim().replace(/
 export function parsuj(tekst, kod, ctx) {
   const w = wydobadzObiekt(tekst);
   if (w.blad) return { blad: w.blad, propozycja: null, odrzucone: [], uwaga: '', jezyk: kod };
-  const p = Object.fromEntries(ctx.ekrany.map((e) => [e, norm(w.obj?.[e])])), odrzucone = sprawdzKomplet(p, ctx);
+  const p = Object.fromEntries(ctx.ekrany.map((e) => [e, norm(w.obj?.[e])])), odrzucone = sprawdzKomplet(p, ctx, kod);
   return { blad: null, propozycja: odrzucone.length ? null : p, odrzucone, uwaga: typeof w.obj?.uwaga === 'string' ? w.obj.uwaga.trim() : '', jezyk: kod };
 }
-/** Odpowiedź krytyka → { blad, poprawki: [{ekran, tekst, powod}], odrzucone: [{pole, powod}] }. Poprawka przechodzi te same kontrole co przekład, w kontekście już przyjętych poprawek. */
-export function parsujKrytyka(tekst, ctx, bylo) {
+/** Odpowiedź krytyka → { blad, poprawki: [{ekran, tekst, powod}], odrzucone: [{pole, powod, blokuje}] } (blokuje = false: poprawka bez znaczenia, np. taka sama jak obecny; reszta blokuje przyjęcie języka, BQ 002). Poprawka przechodzi te same kontrole co przekład, w kontekście już przyjętych poprawek. */
+export function parsujKrytyka(tekst, ctx, bylo, jezyk = null) {
   const w = wydobadzObiekt(tekst);
   if (w.blad) return { blad: w.blad, poprawki: [], odrzucone: [] };
   if (!Array.isArray(w.obj?.poprawki)) return { blad: 'brak pola „poprawki” (lista) w odpowiedzi', poprawki: [], odrzucone: [] };
   const poprawki = [], odrzucone = [], widziane = new Set(), biezace = { ...bylo };
   for (const e of w.obj.poprawki) {
-    const ekran = String(e?.ekran ?? ''), odrzuc = (powod) => odrzucone.push({ pole: ekran || '?', powod });
+    const ekran = String(e?.ekran ?? ''), odrzuc = (powod, blokuje = true) => odrzucone.push({ pole: ekran || '?', powod, blokuje });
     if (!ctx.ekrany.includes(ekran)) { odrzuc('nieznany ekran'); continue; }
     if (typeof e.powod !== 'string' || !e.powod.trim()) { odrzuc('brak powodu poprawki'); continue; }
-    if (widziane.has(ekran)) { odrzuc('duplikat ekranu (przyjęto pierwszą poprawkę)'); continue; }
-    const nowy = norm(e.tekst), pr = sprawdzPodpis(nowy, { max: ctx.max, skroty: ctx.skroty });
+    if (widziane.has(ekran)) { odrzuc('duplikat ekranu (przyjęto pierwszą poprawkę)', false); continue; }
+    const nowy = norm(e.tekst), pr = sprawdzPodpis(nowy, { max: ctx.max, skroty: ctx.skroty, jezyk });
     if (pr.length) { odrzuc(pr.join('; ')); continue; }
-    if (nowy === biezace[ekran]) { odrzuc('tekst taki sam jak obecny'); continue; }
+    if (nowy === biezace[ekran]) { odrzuc('tekst taki sam jak obecny', false); continue; }
     const inny = ctx.ekrany.find((x) => x !== ekran && biezace[x] === nowy); if (inny) { odrzuc(`taki sam jak podpis ekranu ${inny}`); continue; }
     widziane.add(ekran); biezace[ekran] = nowy; poprawki.push({ ekran, tekst: nowy, powod: e.powod.trim() });
   }
@@ -178,14 +182,14 @@ function wiersze(kody, ctx, wysilek, etapy) {
 const szacunek = (w, model, kody) => { const we = w.reduce((s, x) => s + x.we, 0), wy = w.reduce((s, x) => s + x.wy, 0); return { jezykow: kody.length, tokeny_we: we, tokeny_wy: wy, koszt_usd: kosztUsd(we, wy, model), koszt_wg_modelu: Object.fromEntries(Object.values(MODELE).map((m) => [m, kosztUsd(we, wy, m)])) }; };
 
 function argumenty(a) {
-  const o = { model: MODELE.opus, wysilek: 'high', etap: 'przeklad+krytyk', szacuj: false, limit: null, tylko: [], wyjscie: 'raport-podpisy', zgodaKoszt: false, wznow: null, czekajMin: 120 };
+  const o = { model: MODELE.opus, wysilek: 'high', etap: 'przeklad+krytyk', szacuj: false, limit: null, tylko: [], wyjscie: 'raport-podpisy', zgodaKoszt: false, wznow: null, czekajMin: CZEKAJ_MIN };
   const wart = (i, n) => { if (i + 1 >= a.length) throw new Error(`brak wartości dla ${n}`); return a[i + 1]; };
   for (let i = 0; i < a.length; i++) {
     const x = a[i];
     if (x === '--szacuj') o.szacuj = true; else if (x === '--zgoda-koszt') o.zgodaKoszt = true;
     else if (x === '--model') { const v = wart(i++, x); o.model = MODELE[v] ?? v; } else if (x === '--wysilek') o.wysilek = wart(i++, x); else if (x === '--etap') o.etap = wart(i++, x);
-    else if (x === '--limit') o.limit = Number(wart(i++, x)) || null; else if (x === '--tylko') o.tylko = wart(i++, x).split(',').map((s) => s.trim()).filter(Boolean);
-    else if (x === '--wyjscie') o.wyjscie = wart(i++, x); else if (x === '--wznow') o.wznow = wart(i++, x);
+    else if (x === '--limit') { const v = wart(i++, x); if (!/^[1-9]\d*$/.test(v)) throw new Error(`--limit: dodatnia liczba całkowita, podano „${v}”`); o.limit = Number(v); } else if (x === '--tylko') o.tylko = wart(i++, x).split(',').map((s) => s.trim()).filter(Boolean);
+    else if (x === '--wyjscie') o.wyjscie = wart(i++, x); else if (x === '--wznow') o.wznow = wart(i++, x); else if (x === '--czekaj-min') { const v = Number(wart(i++, x)); if (!(v >= 0)) throw new Error('--czekaj-min: liczba minut ≥ 0'); o.czekajMin = v; }
     else if (x === '--tryb') { if (wart(i++, x) !== 'podpisy') throw new Error('--tryb: ten skrypt obsługuje tylko podpisy'); } else if (x === '--zakres' || x === '--pomin') i++; // wspólne argumenty workflow; pl i en są poza przekładem z definicji
     else throw new Error(`nieznany argument: ${x}`);
   }
@@ -209,12 +213,36 @@ export function podsumowanieMd(raporty, meta) {
   return L.join('\n') + '\n';
 }
 
+/** Oczekiwanie na batch jednego etapu (minuty): dwa etapy muszą się zmieścić w `timeout-minutes` zadania (180; test pilnuje), inaczej GitHub zabije zadanie przed kodem 4 z poleceniem wznowienia. */
+export const CZEKAJ_MIN = 80;
 const zadanieBatch = (prefiks, kod, o, z) => ({ custom_id: `${prefiks}-${kod}`, params: { model: o.model, max_tokens: MAX_TOKENS, output_config: { effort: o.wysilek }, system: z.system, messages: z.messages } });
-const odczyty = (tekst) => Object.fromEntries(tekst.split('\n').filter(Boolean).map((l) => { const r = odczytajLinie(l); return [r.kod.replace(/^p[pk]-/, ''), r]; }));
+/** Odrzucone poprawki krytyka, które blokują przyjęcie języka (BQ 002). */
+export const blokujace = (r) => (r.krytyk?.odrzucone ?? []).filter((x) => x.blokuje !== false);
+const NAZWA_ETAPU = { pp: 'przekład (pp-)', pk: 'krytyk (pk-)' };
+/** Wyniki batcha etapu `prefiks` (pp = przekład, pk = krytyk); batch innego etapu to błąd konfiguracji (kod 2), nie ciche czytanie krytyka jako przekładu (BQ 001). */
+function odczyty(tekst, prefiks, id) {
+  const w = {};
+  for (const l of tekst.split('\n').filter(Boolean)) {
+    const r = odczytajLinie(l), m = String(r.kod).match(/^(p[pk])-(.*)$/);
+    if (!m || m[1] !== prefiks) throw Object.assign(new Error(`batch ${id} zawiera wyniki etapu ${NAZWA_ETAPU[m?.[1]] ?? 'nieznanego'}, a oczekiwano etapu ${NAZWA_ETAPU[prefiks]}; --wznow przyjmuje identyfikatory po przecinku w kolejności etapów (przekład,krytyk)`), { kodWyjscia: 2 });
+    w[m[2]] = r;
+  }
+  return w;
+}
+/** `--wznow` = „B1” (etap przekładu albo, przy --etap krytyk, etap krytyka) albo „B1,B2” (przekład, krytyk) — jeden identyfikator nigdy nie służy dwóm etapom (BQ 001). */
+function rozdzielWznow(wznow, etapy) {
+  if (!wznow) return [null, null];
+  const id = wznow.split(',').map((x) => x.trim());
+  if (id.some((x) => !/^msgbatch_[A-Za-z0-9]+$/.test(x))) throw new Error(`--wznow: oczekiwano msgbatch_… albo dwóch identyfikatorów po przecinku (przekład,krytyk), podano: ${wznow}`);
+  const oczekiwane = etapy.length;
+  if (id.length !== 1 && id.length !== oczekiwane) throw new Error(`--wznow: etap ${etapy.join('+')} przyjmuje ${oczekiwane === 2 ? '1 (przekład) albo 2 (przekład,krytyk)' : '1'} identyfikator(y), podano ${id.length}`);
+  return etapy.length === 1 ? (etapy[0] === 'przeklad' ? [id[0], null] : [null, id[0]]) : [id[0], id[1] ?? null];
+}
 
 export async function main(argv, { fetchFn = globalThis.fetch, env = process.env, root = KORZEN, log = console.log, spij, dzis = new Date().toISOString().slice(0, 10) } = {}) {
   let o; try { o = argumenty(argv); } catch (e) { log(`BŁĄD: ${e.message}`); return 2; }
   const ctx = wczytajKontekst(root), etapy = o.etap.split('+');
+  let wznow1, wznow2; try { [wznow1, wznow2] = rozdzielWznow(o.wznow, etapy); } catch (e) { log(`BŁĄD: ${e.message}`); return 2; }
   let kody = JEZYKI_PRZEKLADU.filter((k) => !o.tylko.length || o.tylko.includes(k)); if (o.limit) kody = kody.slice(0, o.limit);
   const wyj = resolve(root, o.wyjscie), klucz = env.ANTHROPIC_API_KEY;
   if (!o.szacuj && !klucz) { log('BŁĄD: brak ANTHROPIC_API_KEY (bez klucza tylko --szacuj)'); return 2; }
@@ -227,7 +255,7 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   mkdirSync(wyj, { recursive: true });
   const w = wiersze(kody, ctx, o.wysilek, etapy);
   const api = klucz && !o.szacuj ? klient(fetchFn, klucz) : null, zadania1 = etapy.includes('przeklad') ? kody.map((k) => ({ kod: k, z: budujZadanie(k, ctx) })) : [];
-  if (api && !o.wznow) for (const t of zadania1) w.find((x) => x.jezyk === t.kod && x.etap === 'przeklad').we = await api.liczTokeny(o.model, t.z);
+  if (api && !wznow1) for (const t of zadania1) w.find((x) => x.jezyk === t.kod && x.etap === 'przeklad').we = await api.liczTokeny(o.model, t.z);
   const s = szacunek(w, o.model, kody);
   writeFileSync(join(wyj, 'szacunek.json'), JSON.stringify({ tryb: 'podpisy', etapy, model: o.model, wysilek: o.wysilek, dokladne_we: !!api, zalozenie_myslenia_medium: MYSLENIE_PODPISY, ...s, wiersze: w }, null, 1) + '\n');
   log(`szacunek podpisów (Batch −${RABAT_BATCH * 100}%${api ? ', wejście przekładu zmierzone count_tokens' : ', przybliżenie'}): ${s.jezykow} języków × etapy ${etapy.join('+')} (wysiłek ${o.wysilek}); wejście ${s.tokeny_we}, wyjście ${s.tokeny_wy}; ${Object.entries(s.koszt_wg_modelu).map(([m, c]) => `${m} ≈ ${c.toFixed(3)} USD`).join(', ')}`);
@@ -237,14 +265,21 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   const meta = { model: o.model, wysilek: o.wysilek, etap: o.etap, data: dzis, batch1: null, batch2: null };
   const raporty = Object.fromEntries(kody.map((k) => [k, { jezyk: k, ascLocale: ASC_LOCALE[k], propozycja: obecne[k] ? kopiaMiejsca(obecne[k]) : null, odrzucone: [], uwaga: '', krytyk: null, wynik: null, blad: null, uzycie: {}, meta }]));
   const zapisz = (k) => writeFileSync(join(wyj, `${k}.json`), JSON.stringify(raporty[k], null, 1) + '\n');
-  let wznow = o.wznow;
-  const czekaj = async (id) => { try { return await czekajNaBatch(api, id, { czekajMin: o.czekajMin, interwalS: 60, log, spij }); } catch (e) { log(`BŁĄD: ${maskuj(e.message)}`); throw Object.assign(e, { kodWyjscia: e.kodWyjscia ?? 1 }); } };
+  const czekaj = async (id, etap) => {
+    try { return await czekajNaBatch(api, id, { czekajMin: o.czekajMin, interwalS: 60, log, spij }); } catch (e) {
+      if (e.kodWyjscia === 4) { // wznowienie krytyka wymaga identyfikatora przekładu: sam B2 czytałby krytyk jako przekład (BQ 001)
+        const polecenie = etap === 'krytyk' && etapy.includes('przeklad') ? `${meta.batch1},${id}` : id;
+        e = Object.assign(new Error(`przekroczono czas oczekiwania (${o.czekajMin} min) na batch ${id}; wznów (bez nowego płatnego batcha): --wznow ${polecenie}`), { kodWyjscia: 4 });
+      }
+      log(`BŁĄD: ${maskuj(e.message)}`); throw Object.assign(e, { kodWyjscia: e.kodWyjscia ?? 1 });
+    }
+  };
   try {
     if (etapy.includes('przeklad')) { // etap 1: przekład
-      let id = wznow; wznow = null;
+      let id = wznow1;
       if (!id) { id = (await api.utworz(zadania1.map((t) => zadanieBatch('pp', t.kod, o, t.z)))).id; writeFileSync(join(wyj, 'batch-id-1.txt'), id + '\n'); log(`wysłano batch przekładu ${id}`); }
       meta.batch1 = id;
-      const b = await czekaj(id), od = odczyty(await api.wyniki(b.results_url));
+      const b = await czekaj(id, 'przeklad'), od = odczyty(await api.wyniki(b.results_url), 'pp', id);
       for (const k of kody) {
         const r = od[k] ?? { blad: 'brak wyniku w batchu', tekst: null, uzycie: null }, rap = raporty[k];
         rap.uzycie.przeklad = r.uzycie;
@@ -256,16 +291,16 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
     if (etapy.includes('krytyk')) { // etap 2: krytyk w świeżym kontekście — tylko języki z kompletną propozycją
       const gotowe = kody.filter((k) => raporty[k].propozycja);
       if (gotowe.length) {
-        let id = wznow;
+        let id = wznow2;
         if (!id) { id = (await api.utworz(gotowe.map((k) => zadanieBatch('pk', k, o, budujKrytyka(k, ctx, raporty[k].propozycja))))).id; writeFileSync(join(wyj, 'batch-id-2.txt'), id + '\n'); log(`wysłano batch krytyka ${id}`); }
         meta.batch2 = id;
-        const b = await czekaj(id), od = odczyty(await api.wyniki(b.results_url));
+        const b = await czekaj(id, 'krytyk'), od = odczyty(await api.wyniki(b.results_url), 'pk', id);
         for (const k of gotowe) {
           const r = od[k] ?? { blad: 'brak wyniku w batchu', tekst: null, uzycie: null }, rap = raporty[k];
           rap.uzycie.krytyk = r.uzycie;
-          rap.krytyk = r.blad ? { blad: r.blad, poprawki: [], odrzucone: [] } : parsujKrytyka(r.tekst, ctx, rap.propozycja);
+          rap.krytyk = r.blad ? { blad: r.blad, poprawki: [], odrzucone: [] } : parsujKrytyka(r.tekst, ctx, rap.propozycja, k);
           if (!rap.krytyk.blad) {
-            const wynik = zastosuj(rap.propozycja, rap.krytyk.poprawki), pr = sprawdzKomplet(wynik, ctx);
+            const wynik = zastosuj(rap.propozycja, rap.krytyk.poprawki), pr = sprawdzKomplet(wynik, ctx, k);
             if (pr.length) rap.krytyk = { ...rap.krytyk, blad: `wynik po poprawkach niepoprawny: ${pr.map((x) => `${x.pole}: ${x.powod}`).join(' | ')}` }; else rap.wynik = wynik;
           }
           zapisz(k);
@@ -275,7 +310,7 @@ export async function main(argv, { fetchFn = globalThis.fetch, env = process.env
   } catch (e) { log(`BŁĄD: ${maskuj(e.message)}`); for (const k of kody) zapisz(k); return e.kodWyjscia ?? 1; }
   const lista = kody.map((k) => raporty[k]);
   writeFileSync(join(wyj, 'podsumowanie.md'), podsumowanieMd(lista, meta));
-  const zle = lista.filter((r) => r.blad || !r.propozycja || r.odrzucone.length || !r.wynik);
+  const zle = lista.filter((r) => r.blad || !r.propozycja || r.odrzucone.length || !r.wynik || blokujace(r).length);
   log(`gotowe: ${lista.length} języków, ${zle.length} z błędem lub odrzuconymi podpisami${zle.length ? ` (${zle.map((r) => r.jezyk).join(', ')})` : ''}; ${lista.reduce((n, r) => n + (r.krytyk?.poprawki?.length ?? 0), 0)} poprawek krytyka; z uwagą: ${lista.filter((r) => r.uwaga).map((r) => r.jezyk).join(', ') || '—'}; wynik w ${o.wyjscie}/`);
   return zle.length ? 1 : 0;
 }
@@ -296,12 +331,16 @@ export function przyjmij(argv, { log = console.log } = {}) {
   for (const k of kody) {
     const f = join(o.raport, `${k}.json`);
     if (!existsSync(f)) { log(`${k}: brak ${f}`); kod = 1; continue; }
-    const r = CZYTAJ(f), problemy = r.wynik ? sprawdzKomplet(r.wynik, ctx) : [], krytykOk = !!r.krytyk && !r.krytyk.blad;
+    const r = CZYTAJ(f), problemy = r.wynik ? sprawdzKomplet(r.wynik, ctx, k) : [], krytykOk = !!r.krytyk && !r.krytyk.blad, blok = blokujace(r);
     if (r.blad || !r.wynik || problemy.length) { log(`${k}: odrzucony — ${r.blad ?? (problemy.map((x) => `${x.pole}: ${x.powod}`).join(' | ') || 'brak wyniku')}`); kod = 1; continue; }
     if (!krytykOk && !o.bezKrytyka) { log(`${k}: odrzucony — brak udanego krytyka (${r.krytyk?.blad ?? 'etap krytyka nie był wykonany'}); --bez-krytyka tylko za zgodą koordynatora`); kod = 1; continue; }
+    if (blok.length) { log(`${k}: odrzucony — krytyk zakwestionował podpis, a jego poprawka nie przeszła twardej kontroli: ${blok.map((x) => `${x.pole}: ${x.powod}`).join(' | ')}; ponów przebieg tego języka (--tylko ${k}) albo popraw ręcznie z zapisem w decyzji`); kod = 1; continue; }
     const model = r.meta?.model ?? '?', data = r.meta?.data ?? new Date().toISOString().slice(0, 10);
     dane.podpisy[k] = Object.fromEntries(ctx.ekrany.map((e) => [e, r.wynik[e]]));
-    dane.status[k] = krytykOk ? `przekład API (${model}, ${data}) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu` : `przekład API (${model}, ${data}), bez krytyka; [DO PRZEGLĄDU] drugi przegląd AI i przegląd człowieka według progu`;
+    const poprzedni = String(dane.status[k] ?? '').replace(/;?\s*\[DO PRZEGLĄDU\].*$/s, '').trim();
+    dane.status[k] = r.meta?.etap === 'krytyk' && krytykOk // sam etap krytyk: podpisy nie pochodzą z tego przebiegu, status zachowuje pochodzenie (BQ 003)
+      ? `${poprzedni}; krytyk API (${model}, ${data}); [DO PRZEGLĄDU] przegląd człowieka według progu`
+      : krytykOk ? `przekład API (${model}, ${data}) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu` : `przekład API (${model}, ${data}), bez krytyka; [DO PRZEGLĄDU] drugi przegląd AI i przegląd człowieka według progu`;
     ile++;
   }
   if (!ile) { log('nic do przyjęcia'); return kod || 1; }
