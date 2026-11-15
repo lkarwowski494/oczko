@@ -501,7 +501,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
-- **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. BQ (08): P-814…P-815; BR (07): P-816…P-818. BS (08): P-819…P-822. Następny wolny: P-823; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
+- **Pula BO (09): P-808…P-810; BP (07): P-811…P-813. BQ (08): P-814…P-815; BR (07): P-816…P-818. BS (08): P-819…P-822; BO dodatkowo P-823…P-824. Następny wolny: P-825; KO następny: KO-061.** (Pule BM/BN niewykorzystane — nie przydzielać ponownie.)
 - **Pula BN (07): P-805…P-807. Następny wolny: P-808.** **Pula BM (09): P-802…P-804. Następny wolny: P-805; KO następny: KO-061.**
 - **Pule 13.11 08:40: BJ P-796…P-797, BK P-798…P-799, BL P-800…P-801. Następny wolny: P-802; KO następny: KO-058.**
 - **Pula BD (07): P-781…P-783. Następny wolny: P-784; KO następny: KO-055.**
@@ -867,3 +867,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 09:12 | M9 | BR zarchiwizowana (6,08 USD, kontekst 31%; przyjęte 52be19aa). BS startuje (subagent) | kontrola 09:15 |
 | 15.11 09:14 | M9 | BP v4 @ 5bcf9fdc (autor OK, tylko docs): napisy pl (217, recenzja 672/0), pełny test domyślny (121 kroków, ok. 5 h 27 min), T-02 nie dotyczy, fakt w fakty-wlasciciela.md; ci.yml dispatch na 5bcf9fdc → przyjęcie i archiwizacja po zielonym. Na build 7 nowa sesja docs: numer buildu 7 + polskie nazwy TestFlight ze zrzutu właściciela („Wersja”, „Poprzednie kompilacje”, „Uaktualnienia automatyczne”) + „Autoblokada” [DO USTALENIA] | kontrola 09:15 |
 | 15.11 09:15 | M9 | BS = session_01T66VBzQCSMCR7Xr1ApNxcg (sonnet, start bez błędu; wierność promptu roli niesprawdzona porównaniem) | kontrola 09:15 |
+| 15.11 09:17 | M9 | BO naprawy 001–005 @ 9fe3a632 (verify kod 0 wg sesji; 9 testów czerwonych najpierw). Szacunek 43695861434 success. Przebieg płatny dowodowy limit=2: run 43698042593 (≤ 30 USD, KO-060/P-481). BQ: reaudyt wąski. `przyjmij` po reaudycie | kontrola 09:15→ następna ok. 10:15 |
