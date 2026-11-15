@@ -369,6 +369,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | BR | session_01T66VBva5tydH5umSjwNfZQ | 07 audit (opus) — diagnoza: aplikacja zegarka nie w „Dostępne aplikacje” | claude/br-zegarek-diagnoza-2026-11-15 od 761b9551 | 31 | 6,08 | polecenie BR.md; pula P-816…P-818; pułap 6, STOP 7,8 |
 | BS | session_01T66VBzQCSMCR7Xr1ApNxcg | 08 build (sonnet) — zegarek watchOS 10.0 + dokumenty + T-04 (KO-061, KO-062) | claude/bs-watchos10-2026-11-15 @ b7fc49de | — | — | PRZEKAZANIE 09:27 (autor OK, 0 Co-Authored-By); jakosc-ios (pakiet podstawowy) dispatch 09:29; recenzja BT; P-819…P-822 do weta; polecenie BS.md; pula P-819…P-822; pułap 8, STOP 10,4 |
 | BT | session_01T66VBxkN5Xo1FvZYPAAHYK | 08 audit (opus) — recenzja niezależna BS | claude/bt-recenzja-watchos10-2026-11-15 od b7fc49de | — | — | polecenie BT.md; pula P-825…P-826; pułap 5, STOP 6,5 |
+| BW | session_01T66VBwFAdz88zvEmbgSi4Y | 08 fix (sonnet) WL-1171-01 — powrót z ekranów | claude/bw-powrot-2026-11-15 od a117ded0 | — | — | start 15:20 bez błędu; polecenie BW.md @ 2daa7451; pułap 10, STOP 13 |
 | BV | session_01T66VBxtJ5DZRoY7ZoPibM8 | 07 build (opus) — instrukcja testu 1171 jako artefakt | claude/bv-instrukcja-1171-2026-11-15 @ a117ded0 | 24 | 7,58 | **przyjęta i zarchiwizowana 15:02**: 2 commity autor OK, 0 Co-Authored-By, tylko docs (4 pliki); push przez hak verify (7449 testów); recenzja niezależna P1 2/P2 2 poprawione; artefakt https://claude.ai/artifact/NjN86wxoCZMrR9L7hKCYtg ; do weta P-827…P-829 |
 | BU | session_01T66VBxUWqJTvafuPrT66yb | 08 build (sonnet) — scalenie BS+BO+BP do integracji (konflikt docs/decyzje.md) | integracja @ 761b9551 | — | — | polecenie BU.md; pułap 4, STOP 5,2 |
 | BM / BN | session_01T66VByZew6i7uSANb99r9b / session_01T66VBxe9mTmV76B8TBnVaK | (pierwsze konto) | @ 761b9551, bez commitów | — | — | stanęły: limit pierwszego konta (właściciel ok. 08:18: „Limit na amtym koncie sie skonczyl”); zastąpione przez BO/BP; niearchiwizowalne z tego konta |
@@ -468,7 +469,8 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - 3: stare sesje (A, 08 nr 3, poprzedni koordynatorzy) „już wstrzymane” — sprawa zamknięta po stronie koordynatora; koszt końcowy tych sesji nieodczytany.
 - 4: decyzje P-634…P-643 i KO-001…KO-013 przyjęte.
 
-## Czeka na właściciela — nowe (po reaudycie C potwierdzić treść)
+## Czeka na właściciela
+- (15.11 15:20) Pytanie po „nie chce mi sie tego testowac…”: (1, rekomendacja) sesja 07 dzieli 121 kroków na: pokryte e2e / do zaprogramowania / tylko urządzenie, dopisuje scenariusze + automatyczny przegląd zrzutów ekranów; właścicielowi zostaje krótka lista fizyczna; (2) bez zmian — test ręczny wg instrukcji. Czekam na słowa. — nowe (po reaudycie C potwierdzić treść)
 - **ZMIANA (właściciel 10.11 ok. 11:40 UTC, dosłownie: „Po co mam testować stare buildu? Zrobię wszystko na kandydacie”):** testu buildów 1101 i 1111 nie będzie; jeden test na buildzie 3 — lista dla właściciela ma objąć wszystko od jego ostatniego testu na urządzeniu (nie tylko różnicę build 2 → 3).
 - ~~Test na telefonie buildów 1101 i 1111~~ (nieaktualne, patrz wyżej) (build 2 = 1111 VALID 06:10; zgłoszone właścicielowi 06:30).
 - Weto: KO-014, KO-015, KO-016 i P-644 (m2, 86021db). Opcja właściciela: FAQ wsparcia już teraz (druga publikacja apps4brew-www, wymaga zgody) zamiast w 1.0.1.
@@ -919,3 +921,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 14:41 | M9 | BV = session_01T66VBxtJ5DZRoY7ZoPibM8 (start bez błędu). Kontrola za 60 min | kontrola 15:41 |
 | 15.11 15:03 | M9 | BV RAPORT → odbiór: a117ded0 (autor OK, docs) przyjęte; integracja 104f8764..a117ded0 fast-forward (push przez hak verify); BV zarchiwizowana (7,58 USD, 24%); kontrola 15:40 usunięta (nic nie trwa). Link instrukcji do właściciela | linia 05:00 16.11 |
 | 15.11 15:12 | M9 | Właściciel (test 1171): „po klinieciu dodaj wzor nie ma przycisku wstecz do menu glownego. Sprawdz tez inne ekrany. Gdzie znajde highlighter? Jak to jesyt ppoo poslku.” → odpowiedź: „Zakreślacz” (pl.json:1042), ikona w pasku otwartego wzoru (WzorPrzegladarka.tsx:145; nie dla Word). Polecenie BW (08 fix, powrót z ekranów, pula P-830…P-833, pułap 10) | start BW |
+| 15.11 15:20 | M9 | BW = session_01T66VBwFAdz88zvEmbgSi4Y (sonnet, start bez błędu). Właściciel: „nie chce mi sie tego testowac. Dlaczwgo nie mozesz przetestowac teg sam?” → opcje 1/2 w czacie (rekomendacja 1) | kontrola ok. 16:20 |
