@@ -43,13 +43,15 @@ export function wczytajKontekst(root = KORZEN) {
 /* ---------- słownik aplikacji: jak aplikacja nazywa plany i dni robótkowe ---------- */
 const KLUCZE = ['oferty.tytul', 'oferty.miesieczny', 'oferty.roczny', 'oferty.dozywotni', 'oferty.raz', 'oferty.odnawianie_miesiac', 'oferty.odnawianie_rok', 'oferty.bez_pro',
   'karta.dni_podpis', 'dni.dni_robotki', 'aktywnosc.limit', 'licznik.ostatni_darmowy', 'limit.arkusz_pro'];
-export function slownikAplikacji(kod, root = KORZEN) {
+/** Wiersze „tekst w en → tekst w aplikacji” dla podanych baz kluczy (formy liczby mnogiej razem); wspólne dla produktów i podpisów zrzutów (BO). */
+export function slownikPoKluczach(kod, klucze, root = KORZEN) {
   const p = (k) => join(root, 'src/i18n/slowniki', `${k}.json`);
   if (!existsSync(p('en')) || !existsSync(p(kod))) return '';
   const en = splaszcz(CZYTAJ(p('en'))), lok = { ...(BAZA[kod] ? splaszcz(CZYTAJ(p(BAZA[kod]))) : {}), ...splaszcz(CZYTAJ(p(kod))) }, w = [];
-  for (const b of KLUCZE) for (const k of Object.keys(lok).filter((x) => x === b || new RegExp(`^${b.replace('.', '\\.')}_(zero|one|two|few|many|other)$`).test(x))) if (lok[k]) w.push(`- ${en[k] ?? `(${k})`} → ${lok[k]}`);
+  for (const b of klucze) for (const k of Object.keys(lok).filter((x) => x === b || new RegExp(`^${b.replace('.', '\\.')}_(zero|one|two|few|many|other)$`).test(x))) if (lok[k]) w.push(`- ${en[k] ?? `(${k})`} → ${lok[k]}`);
   return w.join('\n');
 }
+export const slownikAplikacji = (kod, root = KORZEN) => slownikPoKluczach(kod, KLUCZE, root);
 
 /* ---------- żądanie ---------- */
 export const SYSTEM = [
@@ -97,7 +99,7 @@ export function sprawdzPropozycje(p) {
   }
   return w;
 }
-function wydobadzObiekt(tekst) {
+export function wydobadzObiekt(tekst) {
   const s = String(tekst ?? '').trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
   const a = s.indexOf('{'), b = s.lastIndexOf('}');
   if (a < 0 || b <= a) return { blad: 'brak obiektu JSON w odpowiedzi' };

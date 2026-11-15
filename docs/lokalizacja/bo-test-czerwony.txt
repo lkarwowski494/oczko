@@ -1,0 +1,22 @@
+# BO zadanie 1: testy przed kodem — czerwone na 761b9551 (2026-11-15)
+# komenda: npx jest tests/wydanie/podpisy-przeklad.test.ts  (kod wyjścia 1)
+# przyczyna: brak scripts/i18n/przeklad-podpisy.mjs (ERR_MODULE_NOT_FOUND) i brak trybu podpisy w przeklad-tlumaczen.yml
+    ✕ języki do przekładu: 27 ze sklepową lokalizacją (bez en, pl i sześciu bez lokalizacji sklepu); zgodne z plikiem danych (37 ms)
+    ✕ żądanie przekładu (de): źródło en (nie pl), kontekst pliku i ekranów, słownik aplikacji i terminów, limit 40; bez treści prompt roli (32 ms)
+    ✕ żądanie krytyka: świeży kontekst — źródło en + OBECNY przekład + słowniki, inna instrukcja systemowa, bez notatek tłumacza (25 ms)
+    ✕ poprawne: niemiecki 38 znaków, japoński 40 znaków (liczone jak znaki, nie bajty); cyfra w podpisie nie jest błędem (25 ms)
+    ✕ odrzuca: za długi (41), pusty, wiersz w środku, spacje na brzegu, cena/waluta, „free” i odpowiedniki, Apple Watch/iCloud, kropka na końcu (33 ms)
+    ✕ marka z haszowanej listy repo (P-107): wstrzyknięty skrót nazwy odrzuca podpis, bez niego przechodzi (33 ms)
+    ✕ komplet: wszystkie 7 ekranów, bez powtórzeń w języku; wskazuje pole (34 ms)
+    ✕ parsuj: poprawna odpowiedź (także w bloku ```json i z polem uwaga) → propozycja 7 ekranów; kropka na końcu zdjęta (37 ms)
+    ✕ parsuj: odrzuca cały język przy jednym złym podpisie (za długi, brak ekranu, powtórzenie, cena); brak JSON → błąd (41 ms)
+    ✕ parsujKrytyka: przyjmuje poprawki z powodem; odrzuca nieznany ekran, brak powodu, ten sam tekst, za długi, cenę, duplikat ekranu, powtórzenie innego podpisu (28 ms)
+    ✕ parsujKrytyka: brak listy „poprawki” → błąd; pusta lista → brak poprawek; zastosuj nakłada poprawki na kopię, kolejność ekranów zachowana (37 ms)
+    ✕ szacunek bez klucza: kod 0, 27 języków × dwa etapy, koszt > 0, limit 2 → 2; limit kosztu z workflowu (zgoda) → kod 3 bez --zgoda-koszt (38 ms)
+    ✕ pełny przebieg: dwa batche (przekład, krytyk), Opus high, wynik <kod>.json z propozycją, krytykiem i wynikiem; klucz nie trafia do logu; plik danych w repo nietknięty (34 ms)
+    ✕ język z odrzuconym podpisem (za długi) nie idzie do krytyka, kod 1, raport wskazuje pole; pozostałe języki przechodzą (25 ms)
+    ✕ przyjęcie: kopia pliku — 27 języków z nowym tekstem i statusem „przekład API (<model>, <data>) + krytyk; [DO PRZEGLĄDU] …”; en, pl, 6 języków bez sklepu i reszta pliku bez zmian (34 ms)
+    ✕ przyjęcie odrzuca raport z błędem, bez krytyka, z za długim podpisem albo en/pl (kody 1/1/1/2) i nie zmienia pliku (39 ms)
+    ✕ tryb podpisy → scripts/i18n/przeklad-podpisy.mjs, artefakt raport-podpisy 7 dni; etap i tylko jak dla metadanych; klucz API nadal w jednym kroku (2 ms)
+Test Suites: 1 failed, 1 total
+Tests:       17 failed, 17 total

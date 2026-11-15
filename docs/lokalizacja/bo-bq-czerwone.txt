@@ -1,0 +1,19 @@
+# BO naprawy po recenzji BQ (001–005): testy czerwone na 6f17ac7 (2026-11-15)
+# komenda: npx jest tests/wydanie/podpisy-przeklad.test.ts (kod 1); 17 starych zielonych, 9 nowych czerwonych
+    ✕ przekroczenie czasu krytyka: komunikat podaje OBA identyfikatory (--wznow B1,B2); wznowienie nie wysyła nowego POST i nakłada krytyka na przekład z batcha 1 (1
+    ✕ identyfikator krytyka podany jako przekład (--wznow B2 przy przeklad+krytyk) → błąd konfiguracji z nazwą etapu, kod 2, bez POST; dwa identyfikatory przy eta
+    ✕ budżet czasu: 2 × oczekiwanie < timeout-minutes zadania (inaczej GitHub zabija zadanie przed kodem 4); artefakt zawiera batch-id-*.txt; --wznow z przecinkiem ty
+    ✕ poprawka za długa (41 znaków) → język NIE jest przyjęty (kod 1, plik bez zmian dla de, fr przyjęty); przebieg też zgłasza język (200 ms)
+    ✕ poprawka „taka sama jak obecny” i duplikat ekranu NIE blokują (łagodne); brak powodu blokuje (456 ms)
+    ✕ raport z etap=krytyk → status zachowuje poprzednie pochodzenie i dopisuje „krytyk API (<model>, <data>)” (133 ms)
+    ✕ fałszywe alarmy: fr „pris” (wzięty) i ms „siri” (seria) przechodzą; „pris” (cena) w sv/da/nb dalej odrzucone (54 ms)
+    ✕ luki: cs/sk bezplatný, fi maksuton, sv/nb kostnadsfri, nl kosteloos, ja 無償, pt preço — odrzucone (53 ms)
+    ✕ „dwa”, 0, -1, 1.5 → kod 2 (nie 27 języków); „2” działa (2956 ms)
+Tests:       9 failed, 17 passed, 26 total
+
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 4
+    Received: 2
+    > 248 |     expect(r.k1).toBe(4); expect(r.logs1.join('\n')).toMatch(/--wznow msgbatch_B1,msgbatch_B2/); expect(r.postyPo1).toBe(2);
+      249 |     expect(r.k2).toBe(0); expect(r.posty).toBe(2); // wznowienie bez nowego POST (żadnego drugiego płatnego batcha krytyka)
+      251 |     expect(de.propozycja['02-licznik']).toBe('T1 de'); expect(de.wynik['02-licznik']).toBe('Ein Tipp, eine Reihe mehr'); expect(de.meta.ba

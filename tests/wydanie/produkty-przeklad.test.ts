@@ -140,7 +140,7 @@ describe('moduł przekładu (scripts/i18n/przeklad-produkty.mjs)', () => {
 describe('workflow przeklad-tlumaczen.yml: tryb produkty (P-515) w istniejącym pliku (P-472)', () => {
   const wf = read('.github/workflows/przeklad-tlumaczen.yml');
   test('tryb produkty → scripts/i18n/przeklad-produkty.mjs, artefakt raport-produkty 7 dni; klucz API nadal w jednym kroku', () => {
-    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane, produkty\]/);
+    expect(wf).toMatch(/options: \[przeklad, przeglad, zwrotny, metadane, produkty, podpisy\]/);
     expect((wf.match(/SKRYPT=scripts\/i18n\/przeklad-produkty\.mjs; ZAKRES=-; WYJ=raport-produkty/g) ?? []).length).toBe(2);
     expect(wf).toMatch(/if: always\(\) && inputs\.tryb == 'produkty'[\s\S]*?name: raport-produkty[\s\S]*?retention-days: 7/);
     expect((wf.match(/secrets\.ANTHROPIC_API_KEY/g) ?? []).length).toBe(1);

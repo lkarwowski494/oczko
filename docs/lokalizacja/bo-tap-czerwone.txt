@@ -1,0 +1,7 @@
+# KO-063 / P-823: testy „tap” czerwone na 9fe3a63 (2026-11-15)
+# komenda: npx jest tests/wydanie/podpisy-przeklad.test.ts -t KO-063 (kod 1)
+    ✕ cs: oba żądania zawierają wiersze słownika aplikacji z „tap” (klepněte…, Klepnutím…), de: tippen…; ja: タップ (111 ms)
+    ✕ instrukcje (przekład i krytyk) mają regułę: „tap” tak jak w słowniku aplikacji, bez synonimu (112 ms)
+    Expected pattern: /tap when row/
+    Expected pattern: /„tap”[^.]*słownik/
+Tests:       2 failed, 26 skipped, 28 total
