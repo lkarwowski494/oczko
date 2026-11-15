@@ -3,7 +3,9 @@
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { PodgladZdjec, type Miniatura } from '../src/ekrany/Zdjecia';
+import { systemCzarny } from '../src/ekrany/motyw';
 import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
@@ -13,6 +15,11 @@ import { zaleznosciObrazu } from '../src/kompozycja/obrazy-aplikacji';
 import { zdjecieBezMetadanych } from '../src/kompozycja/zdjecie-bez-metadanych';
 import { usunPlik } from '../src/dane/pliki/system';
 import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
+
+/** BX-009 (PU-228): trasa pełnoekranowa odsuwa treść od paska stanu i wskaźnika Home jak `Bezpieczny`, ale na czerni podglądu (`systemCzarny.tlo`, bez nowego koloru). */
+function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
+  return <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: systemCzarny.tlo }} testID="zdjecie-bezpieczny">{children}</SafeAreaView>;
+}
 
 export default function EkranZdjecia(): React.ReactElement {
   const aplikacja = useAplikacja();
@@ -31,8 +38,9 @@ export default function EkranZdjecia(): React.ReactElement {
     ustawBlad(false);
   }, [z, projekt, router]);
   useFocusEffect(useCallback(() => { void wczytaj(); }, [wczytaj]));
-  if (!lista) return <StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="czarne" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="zdjecie" naPonow={() => { ustawBlad(false); void wczytaj(); }} />;
+  if (!lista) return <NaCzerni><StanWczytywania wyjscie={{ rodzaj: 'zamknij', naWyjdz: () => router.back() }} tlo="czarne" stan={blad ? 'blad' : 'ladowanie'} t={t} przedrostek="zdjecie" naPonow={() => { ustawBlad(false); void wczytaj(); }} /></NaCzerni>;
   return (
+    <NaCzerni>
     <PodgladZdjec t={t} zdjecia={lista} poczatek={Number(i ?? 0) || 0} naZamknij={() => router.back()}
       naUdostepnij={(id) => void (async () => {
         const sha = lista.find((x) => x.id === id)?.sha;
@@ -44,5 +52,6 @@ export default function EkranZdjecia(): React.ReactElement {
       })()}
       naUsun={(id) => void usunZdjecie(z, { zdjecieId: id }).then(async (r) => { if (zapisano(aplikacja, r)) await wczytaj(); })} // M1-006
       potwierdz={(tytul, opis, przycisk, f) => Alert.alert(tytul, opis, [{ text: t('wspolne.anuluj'), style: 'cancel' }, { text: przycisk, style: 'destructive', onPress: f }])} />
+    </NaCzerni>
   );
 }
