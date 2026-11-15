@@ -96,4 +96,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | CB | prompts (KO-066) | 10 | 7,22 | 23 | 18:46 → 18:48 → a168ffe → (bez CI) → przyjęte 19:12 | — | — |
 | BX2 | 07 build (opus) | 20 | 33,57 | 34 | 18:43 → 18:45 → 8f0c1424 → iOS w toku → PRZEKAZANIE 19:31 | — | STOP kosztowy 19:25 (31,04 > 26); 3 subagenty |
 | CC | prompts (R2-13, „1A2a”) | 4 | 1,27 | 13 | 20:06 → 20:07 → bd8e36d/7bc5ada → (bez CI; testy 332/0 wg sesji) → PR #32 20:13, archiwum ok. 20:12 | — | C-060 limity słowami właściciela w czacie CC |
-| BX3 | 08 build (sonnet) | 12 | 4,93 | 33 | 19:40 → 19:41 → b0288f4 → (verify w haku; iOS na 8f0c1424 w toku) → PRZEKAZANIE c4de9604 20:17 | — | KO-071 i KO-072 wykonane; P-849 poprawiony, P-850 |
+| BX3 | 08 build (sonnet) | 12 | 4,96 | 33 | 19:40 → 19:41 → b0288f4 → (verify w haku; iOS na 8f0c1424 w toku) → PRZEKAZANIE c4de9604 20:17 | — | KO-071 i KO-072 wykonane; P-849 poprawiony, P-850 |
