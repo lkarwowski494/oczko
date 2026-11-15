@@ -166,7 +166,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/drut-rozmiar-3125-trasa.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/Zapas`<br>`src/kompozycja/preferencje`<br>`src/kompozycja/projekt`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/widok-projektu`<br>`src/przypadki-uzycia/zaleznosci`<br>`src/przypadki-uzycia/zapas` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina-geometria.test.ts` | zielony (główny zestaw) | 8 | P-619 | `src/ekrany/dzianina-geometria` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzianina.test.tsx` | zielony (główny zestaw) | 4 | — | `src/ekrany/Dzianina` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kafel-dodaj-wzor.test.tsx` | zielony (główny zestaw) | 3 | P-588 | `src/ekrany/Dzis` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kafel-dodaj-wzor.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-001/S2, P-588, P-842 | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-kontynuuj-blad-miejsca.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Dzis` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-plus-etykieta.test.tsx` | zielony (główny zestaw) | 4 | P-606 | `src/ekrany/Dzis`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-rownowaznosc-plus.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-001/S2, BR-ZAK-006, KP-10, RD-17 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | ER-68, Z07-22 |

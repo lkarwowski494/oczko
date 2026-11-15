@@ -71,6 +71,8 @@ export type KompozycjaLicznika = {
   /** Start zawsze na „Dziś” (ZM-18, P-569); `miejsce`: cel „Kontynuuj ›”. */
   przygotuj(): Promise<Wynik<{ cel: 'dzis'; miejsce: MiejscePracy }>>;
   miejsce(): Promise<Wynik<MiejscePracy>>;
+  /** Kafel „Dodaj wzór” bez żadnego projektu zakłada projekt roboczy jak pierwsze „+1” (BY-003, KO-067); `true` = założono, `false` = są projekty albo bieżący licznik. */
+  zalozRoboczyGdyPusto(): Promise<Wynik<boolean>>;
   uslugi: UslugiAplikacji;
   dzialania: DzialaniaLicznika;
   otworz(licznikId: string): Promise<void>;
@@ -172,16 +174,26 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   const dostep = dostepLicznika(o.dostep, z.pro, () => k.poZmianie()); // M1-063, M1-064
   const ekranu = <T>(w: Wynik<T>): WynikEkranu<T> => (w.ok ? w : { ok: false, powod: w.powod === 'limit' || w.powod === 'zablokowany' || w.powod === 'bledne_dane' || w.powod === 'niedozwolone_przejscie' ? w.powod : 'zapis' });
 
+  /** Projekt roboczy z jedną częścią i licznikiem, ustawiony jako bieżący (BR-LIC-001/S2); wspólny dla pierwszego „+1” i kafla „Dodaj wzór” (BY-003). */
+  async function zalozRoboczy(): Promise<Wynik<{ projektId: string; czescId: string; licznikId: string }>> {
+    const n = await utworzSzybkiLicznik(z);
+    if (!n.ok) return n;
+    const id = n.wartosc.licznikId;
+    licznikId = id;
+    await zapamietajLicznik(z, { licznikId: id });
+    return n;
+  }
+
   /** +1 z ekranu (BR-LIC-001/S2: pierwsze tworzy projekt roboczy); przez `uslugi.dodajRzad`, które zapamiętuje zapis w toku (P-287). */
   async function plusZEkranu(): Promise<WynikPlus> {
-    if (!licznikId) { // pierwsze +1 bez projektu: projekt roboczy, potem zwykłe +1 (BR-LIC-001/S2)
-      const n = await utworzSzybkiLicznik(z);
+    let id = licznikId;
+    if (!id) { // pierwsze +1 bez projektu: projekt roboczy, potem zwykłe +1 (BR-LIC-001/S2)
+      const n = await zalozRoboczy();
       if (!n.ok) return ekranu(n);
-      licznikId = n.wartosc.licznikId;
-      await zapamietajLicznik(z, { licznikId });
+      id = n.wartosc.licznikId;
     }
     const przed = zrobioneDzis; // stan sprzed tego +1 (ekran czyta go przy starcie i po każdym +1)
-    const r = await dodajRzad(z, { licznikId });
+    const r = await dodajRzad(z, { licznikId: id });
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
     const { w } = await stan();
@@ -208,6 +220,15 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       return m.ok ? { ok: true, wartosc: { cel: 'dzis', miejsce: m.wartosc } } : m;
     },
     miejsce: () => miejscePracy(z, licznikId),
+    async zalozRoboczyGdyPusto() { // BY-003 (KO-067): świeża instalacja — żadnego projektu poza koszem i żadnego bieżącego licznika → projekt roboczy; inaczej nic
+      if (licznikId) return { ok: true, wartosc: false };
+      try {
+        const [p] = await z.baza.all('SELECT 1 AS jest FROM projekt WHERE usunieto_ms IS NULL LIMIT 1', []);
+        if (p) return { ok: true, wartosc: false };
+      } catch { return { ok: false, powod: 'zapis' }; }
+      const n = await zalozRoboczy();
+      return n.ok ? { ok: true, wartosc: true } : n;
+    },
     wersja: () => wersja,
     poZegarku: (f) => odbior?.nasluchuj(f) ?? (() => undefined),
     poDostepie: dostep.poDostepie,
