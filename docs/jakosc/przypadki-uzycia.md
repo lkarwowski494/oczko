@@ -391,6 +391,14 @@ Podsumowanie: A=95, B=134, F=41, razem 270.
 | PU-269 | Chcę ostrzeżenia, gdy zakreśleń nie udało się zapisać. | Błąd zapisu rysunku → „‹”. | „Wyjść z tego wzoru?” ⟦Leave this pattern?⟧ z „Zostań” ⟦Stay⟧ i „Wyjdź bez zapisu” ⟦Leave unsaved⟧. | — | wzor | B | do zaprogramowania: komponentowy — `wyjscieZWzoru` przy niezapisanych kreskach pyta alertem `wzor.wyjdz_tytul`, „Stay” zostawia wzór |
 | PU-270 | Chcę przy AX5 dosięgnąć ostatniego źródła wzoru. | AX5 → licznik → „Wzór” bez wzoru → przewiń menu źródeł. | Ostatnie źródło („Link do strony WWW…” ⟦Web page link…⟧) osiągalne przewinięciem. | — | wzor | B | do zaprogramowania: Maestro iPhone — `osobny-krok` AX5: `scrollUntilVisible` do „Web page link…” |
 
+## Ekrany bez własnej trasy
+
+Komponenty `src/ekrany/*.tsx` nieosiągalne importami z żadnej trasy `app/` (poza `_layout` i plikami „+”) — każdy z PU, który go dotyczy. Pilnuje `scripts/jakosc/bramka-przypadki-uzycia.mjs` (`ekranyBezTrasy`, kontrola 2 KO-065): nowy komponent bez trasy i bez wiersza tutaj czerwieni `npm run verify`; wiersz komponentu, który stał się osiągalny, też.
+
+| Komponent | PU |
+|---|---|
+| Wzor | PU-063, PU-064 — martwy kod: `LinkFilmu` z `src/ekrany/Wzor.tsx` używa tylko `tests/ekrany/narzedzia-wzor.test.tsx:7`; aplikacja pokazuje film przez `src/ekrany/WzorFilm.tsx`. Znalezisko BX-001 dla roli 08: usunąć plik i test albo podłączyć. |
+
 ## Indeks kroków instrukcji
 
 | Krok | PU |

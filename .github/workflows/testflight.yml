@@ -9,6 +9,7 @@
 # gałęzi środowiska `release` (sklep.md §1). Pewniejsza droga niż formularz: REST „Create a workflow dispatch event” z `ref` i `inputs`.
 # Bramka: zielony „Jakość · iOS” (pakiet podstawowy, każde zadanie success/skipped) na TYM SAMYM commicie; sam commit dokumentacji go nie
 # uruchamia. Ścieżka awaryjna (awaria maszyny, nie kodu): pomin_bramke_e2e + powod. Przebieg dowodowy bez wysyłki i bez tagu: bez_wysylki.
+# Druga bramka bez wyłącznika: bramka-przypadki (KO-065) — zestaw przypadków użycia, katalog i protokół testu fizycznego poprzedniego buildu.
 #
 # Sekrety środowiska `release` (Settings → Environments → release → Environment secrets) — nigdy w repo; instrukcja: docs/wydanie/sklep.md §1:
 #   ASC_KEY_ID     — identyfikator klucza API
@@ -70,8 +71,36 @@ jobs:
           fi
           node scripts/wydanie/testflight.mjs bramka "$GITHUB_REPOSITORY" "$GITHUB_SHA"
 
-  build:
+  # Bramka przypadków użycia (KO-065; P-837, P-838): nie ma przełącznika, warunku ani continue-on-error — pilnuje
+  # tests/jakosc/bramka-przypadki-uzycia.test.ts. Kontrola 1 (każda część e2e iPhone'a success w przebiegu z zadania bramka) jest
+  # pomijana tylko razem z bramką E2E (pomin_bramke_e2e + powod, awaria maszyny); kontrole 2 (katalog, każdy PU klasy B z testem)
+  # i 3 (protokół testu fizycznego poprzedniego wysłanego buildu, docs/jakosc/test-fizyczny/<N>.md) biegną zawsze, także przy bez_wysylki.
+  bramka-przypadki:
+    name: bramka przypadków użycia (zestaw PU, katalog, protokół testu fizycznego)
     needs: bramka
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # tagi v*-b<N> i katalog z tagu (git show) — kontrola 3
+          fetch-tags: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Trzy kontrole przypadków użycia
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRZEBIEG: ${{ needs.bramka.outputs.przebieg }}
+          POMIN: ${{ inputs.pomin_bramke_e2e }}
+        run: node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka
+
+  build:
+    needs: [bramka, bramka-przypadki]
     environment: release
     runs-on: macos-26
     timeout-minutes: 120

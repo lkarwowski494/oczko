@@ -33,6 +33,23 @@ export function przypadkiF(tekst) {
   return w;
 }
 
+/** Tekst wyniku w formacie protokołu `docs/jakosc/test-fizyczny/<build>.md` (KO-065 B; kontrola 3 w scripts/jakosc/bramka-przypadki-uzycia.mjs):
+ *  `| PU-NNN | zrobione: tak |`, `| PU-NNN | zrobione: NIE — uwaga |`, `| PU-NNN | pominięte: uzasadnienie |`. „Pomiń” bez uzasadnienia i brak
+ *  odpowiedzi dają pierwszy wiersz „NIEPEŁNY WYNIK — …” i wiersze, które kontrola 3 odrzuca — wynik nie udaje kompletnego. Ta sama funkcja
+ *  jest wstawiana do strony (toString), więc format ma jedno źródło. Pisana w ES5, bo biegnie też w Safari na telefonie. */
+export function protokolWyniku(kroki, odp, build, data) {
+  var wiersze = [], bezUzas = [], brak = [];
+  kroki.forEach(function (k) {
+    var o = odp[k.pu] || {}, u = String(o.u || '').replace(/\s+/g, ' ').replace(/\|/g, '/').trim();
+    if (!o.w) { brak.push(k.pu); wiersze.push('| ' + k.pu + ' | brak odpowiedzi |'); return; }
+    if (o.w === 'pomin') { if (!u) bezUzas.push(k.pu); wiersze.push('| ' + k.pu + ' | pominięte:' + (u ? ' ' + u : '') + ' |'); return; }
+    wiersze.push('| ' + k.pu + ' | zrobione: ' + (o.w === 'nie' ? 'NIE' : 'tak') + (u ? ' — ' + u : '') + ' |');
+  });
+  var w = [];
+  if (bezUzas.length || brak.length) w.push('NIEPEŁNY WYNIK — ' + [bezUzas.length ? '„Pomiń” bez uzasadnienia: ' + bezUzas.join(', ') : '', brak.length ? 'bez odpowiedzi: ' + brak.join(', ') : ''].filter(Boolean).join('; '));
+  w.push('Test fizyczny Oczka · build ' + (String(build || '').trim() || '?') + ' · ' + data, '| PU | Wynik |', '|---|---|');
+  return w.concat(wiersze).join('\n');
+}
 export function zbuduj() {
   const wzor = fs.readFileSync(WZOR, 'utf8');
   const koniecStylu = wzor.indexOf('</style>');
@@ -72,7 +89,7 @@ export function zbuduj() {
       <div class="blok-tresc">
         <ul>
           <li>Napisy Oczka są po polsku; angielski odpowiednik stoi w nawiasie.</li>
-          <li>Przy każdej pozycji zaznacz „Tak”, „Nie” albo „Pomiń”. W uwadze wpisz, co było inaczej.</li>
+          <li>Przy każdej pozycji zaznacz „Tak”, „Nie” albo „Pomiń”. W uwadze wpisz, co było inaczej. Przy „Pomiń” uzasadnienie jest obowiązkowe — bez niego wynik jest niepełny.</li>
           <li>Numer PU prowadzi do katalogu przypadków użycia (<code>docs/jakosc/przypadki-uzycia.md</code>); numer T, Z albo G to krok dotychczasowej instrukcji testu.</li>
           <li>Na końcu stuknij „Kopiuj wynik” i wklej wiadomość koordynatorowi.</li>
         </ul>
@@ -113,7 +130,7 @@ export function zbuduj() {
 <script>
 (function () {
   var DANE = ${JSON.stringify(dane)};
-  var KLUCZ = 'oczko-test-fizyczny', WYB = { tak: 'tak', nie: 'NIE', pomin: 'pominięte' };
+  var KLUCZ = 'oczko-test-fizyczny';
   var stan = { build: '', odp: {} };
   try { var z = JSON.parse(localStorage.getItem(KLUCZ) || 'null'); if (z && z.odp) stan = z; } catch (e) { }
   function zapisz() { try { localStorage.setItem(KLUCZ, JSON.stringify(stan)); } catch (e) { } }
@@ -121,6 +138,8 @@ export function zbuduj() {
   function fmt(t) { return esc(t).replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>').replace(/⟦([^⟧]*)⟧/g, '<span class="en">(„$1”)</span>'); }
   function urzKlasa(u) { return /iPad/.test(u) ? 'ipad' : /Watch/.test(u) ? 'watch' : ''; }
   function czas(min) { if (min < 60) return 'ok. ' + min + ' min'; var h = Math.floor(min / 60), m = min % 60; return 'ok. ' + h + ' h' + (m ? ' ' + m + ' min' : ''); }
+  function etykieta(pu, w) { return w === 'pomin' ? 'Uzasadnienie pominięcia (obowiązkowe)' : 'Uwaga do ' + pu; }
+  var protokolWyniku = ${protokolWyniku.toString()};
   function rysujKrok(k) {
     var o = stan.odp[k.pu] || {};
     var h = '<article class="krok" id="k-' + k.pu + '" data-id="' + k.pu + '"' + (o.w ? ' data-stan="' + o.w + '"' : '') + '>';
@@ -133,7 +152,7 @@ export function zbuduj() {
     h += '<details><summary>Dlaczego ręcznie</summary><p>' + fmt(k.powod) + '</p></details>';
     h += '<div class="odp" role="group" aria-label="Wynik ' + k.pu + '">';
     [['tak', 'Tak'], ['nie', 'Nie'], ['pomin', 'Pomiń']].forEach(function (p) { h += '<button type="button" data-w="' + p[0] + '" aria-pressed="' + (o.w === p[0]) + '">' + p[1] + '</button>'; });
-    h += '</div><div class="pole uwaga-pole"><label for="u-' + k.pu + '">Uwaga do ' + k.pu + '</label>';
+    h += '</div><div class="pole uwaga-pole"><label for="u-' + k.pu + '">' + etykieta(k.pu, o.w) + '</label>';
     h += '<textarea id="u-' + k.pu + '" rows="1" placeholder="co jest inaczej albo powód pominięcia">' + esc(o.u || '') + '</textarea></div>';
     return h + '</article>';
   }
@@ -159,24 +178,15 @@ export function zbuduj() {
     document.getElementById('wynik-opis').textContent = 'Zaznaczone ' + z + ' z ' + n + '. Wiadomość zawiera tylko numery pozycji, wynik i Twoje uwagi.';
   }
   function tekstWyniku() {
-    var czesci = [], brak = [];
-    DANE.kroki.forEach(function (k) {
-      var o = stan.odp[k.pu] || {};
-      if (!o.w) { brak.push(k.pu); return; }
-      var u = (o.u || '').replace(/\\s+/g, ' ').trim();
-      czesci.push(k.pu + ' ' + WYB[o.w] + (u ? ' — ' + u : ''));
-    });
     var d = new Date(), dz = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    var w = 'Test fizyczny Oczka · build ' + ((stan.build || '').trim() || '?') + ' · ' + dz + '\\n' + (czesci.length ? czesci.join('; ') : 'Brak zaznaczonych pozycji.');
-    if (brak.length) w += '\\nBez odpowiedzi (' + brak.length + '): ' + brak.join(', ');
-    return w;
+    return protokolWyniku(DANE.kroki, stan.odp, stan.build, dz);
   }
   function pokazTekst(t) { var ta = document.getElementById('tekst-wyniku'); ta.value = t; ta.hidden = false; document.getElementById('et-tekst').hidden = false; return ta; }
   function kopiuj() {
     var t = tekstWyniku(), kom = document.getElementById('komunikat');
     function zapas() { var ta = pokazTekst(t); ta.focus(); ta.select(); kom.textContent = 'Tekst jest zaznaczony poniżej — skopiuj go ręcznie.'; }
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { pokazTekst(t); kom.textContent = 'Skopiowano. Wklej wiadomość koordynatorowi.'; }, zapas);
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { pokazTekst(t); kom.textContent = /^NIEPEŁNY/.test(t) ? 'Skopiowano, ale wynik jest NIEPEŁNY — uzupełnij pozycje z pierwszej linii.' : 'Skopiowano. Wklej wiadomość koordynatorowi.'; }, zapas);
       else zapas();
     } catch (e) { zapas(); }
     document.getElementById('wynik').scrollIntoView({ block: 'start' });
@@ -188,6 +198,8 @@ export function zbuduj() {
     o.w = o.w === w ? '' : w;
     if (o.w) art.dataset.stan = o.w; else art.removeAttribute('data-stan');
     art.querySelectorAll('.odp button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.w === o.w)); });
+    art.querySelector('.uwaga-pole label').textContent = etykieta(id, o.w);
+    if (o.w === 'pomin' && !(o.u || '').trim()) art.querySelector('textarea').focus();
     zapisz(); postep();
   });
   lista.addEventListener('input', function (e) {

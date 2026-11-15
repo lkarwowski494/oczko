@@ -162,6 +162,13 @@ describe('lista fizyczna właściciela (docs/wydanie/test-fizyczny.html)', () =>
   });
 });
 
+describe('skrypt bramki KO-065 (scripts/jakosc/bramka-przypadki-uzycia.mjs) na tym samym katalogu', () => {
+  test('`katalog` (kontrola 2 bez wymogu testów B: te reguły + ekrany src/ekrany bez trasy) kończy się kodem 0', () => {
+    const r = spawnSync('node', [path.join(root, 'scripts/jakosc/bramka-przypadki-uzycia.mjs'), 'katalog'], { encoding: 'utf8' });
+    expect({ kod: r.status, wyjscie: (r.stdout + r.stderr).trim() }).toEqual({ kod: 0, wyjscie: 'Kontrola 2: zielona' });
+  });
+});
+
 describe('czytajKatalog (parser)', () => {
   test('wiersz z nadmiarowym „|” jest błędem, nie cichym przesunięciem kolumn', () => {
     expect(() => czytajKatalog(`## X\n${NAGLOWEK}\n| PU-001 | a | b | c | — | — | A | x | y |`)).toThrow(/kolumn/);

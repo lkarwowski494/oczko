@@ -1,0 +1,49 @@
+# Czerwień przed kodem — KO-065 (sesja BX2, 2026-11-15)
+Komenda: npx jest -i tests/jakosc/bramka-przypadki-uzycia.test.ts na zaślepce scripts/jakosc/bramka-przypadki-uzycia.mjs (każda funkcja rzuca NIEZAIMPLEMENTOWANE), zaślepce protokolWyniku w scripts/wydanie/test-fizyczny.mjs i testflight.yml bez zadania bramka-przypadki.
+Wynik: Tests: 23 failed, 23 total — każdy na znaczniku NIEZAIMPLEMENTOWANE albo asercji (żaden na imporcie, składni ani typie):
+- kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success) › wszystkie 4 części iPhone’a success → brak błędów (
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 1
+- kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success) › część pominięta (skipped) to nie zielona — dziś oce
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 1
+- kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success) › brak zadania części (np. macierz zmniejszona) → błą
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 1
+- kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success) › liczba części z e2e/czesci.json (nie stała w skrypc
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 1
+- kontrola 2: katalog spójny z kodem › na bieżącym repo bez wymogu testów B: brak błędów (to samo, co pilnuje przypadki-uzycia.test.ts, plus e
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 2
+- kontrola 2: katalog spójny z kodem › P-837 (a): każdy PU klasy B „do zaprogramowania” czerwieni bramkę — błąd z ID przypadku
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 2
+- kontrola 2: katalog spójny z kodem › każdy komponent src/ekrany/*.tsx osiągalny importami z trasy app/ (poza _layout) albo w tabeli „Ekrany 
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 2a
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › poprzedni build = najwyższy N z tagów v*-b<N> (porządek licz
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › protokół kompletny: zrobione albo pominięte z uzasadnieniem 
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › brak pliku protokołu → błąd ze ścieżką
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › „pominięte:” bez uzasadnienia, brak PU i zły format wyniku →
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › wyjątek P-838 zwalnia tylko build 1171; inny build bez pliku
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › plik wyjątków ma najwyżej jeden wpis: 1171 z decyzją P-838, 
+    NIEZAIMPLEMENTOWANE: KO-065 P-838
+- kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu › wymagane ID = klasa F katalogu
+    NIEZAIMPLEMENTOWANE: KO-065 kontrola 3
+- lista fizyczna: „Pomiń” z obowiązkowym uzasadnieniem, wynik w formacie protokołu › komplet: tekst wyniku to tabela protokołu, którą kontrola
+    NIEZAIMPLEMENTOWANE: KO-065 B
+- lista fizyczna: „Pomiń” z obowiązkowym uzasadnieniem, wynik w formacie protokołu › „Pomiń” bez uwagi i brak odpowiedzi: pierwszy wiersz NIEP
+    NIEZAIMPLEMENTOWANE: KO-065 B
+- lista fizyczna: „Pomiń” z obowiązkowym uzasadnieniem, wynik w formacie protokołu › strona wstawia tę samą funkcję (jedno źródło formatu) i o
+    Received string:    "<title>Test fizyczny Oczka</title>
+- bramki nie da się wyłączyć (testflight.yml) › zadanie istnieje na Linuksie, po bramce E2E, bez continue-on-error i bez if — na zadaniu i na 
+    Received: undefined
+- bramki nie da się wyłączyć (testflight.yml) › build wymaga obu bramek; tag (wysyłka) idzie po build
+    Received: "bramka"
+- bramki nie da się wyłączyć (testflight.yml) › skrypt biegnie poleceniem „bramka” z tagami wydań; bez_wysylki nie występuje, pomin_bramke_e2e
+    Received string:  ""
+- bramki nie da się wyłączyć (testflight.yml) › POMIN=true pomija tylko kontrolę 1: kontrole 2 i 3 biegną i bramka jest czerwona przy B bez te
+    Received string:  ""
+- przed App Review: protokół F dokładnie tego buildu (polecenie `recenzja`) › wyjątek P-838 nie działa przy recenzji: 1171 bez protokołu → kod
+    at Object.toEqual (tests/jakosc/bramka-przypadki-uzycia.test.ts:156:57)
+- przed App Review: protokół F dokładnie tego buildu (polecenie `recenzja`) › lista do 1.0 wymaga polecenia przed „Submit for Review” (F1/F3)
+    Received string:  "# Lista kroków do wydania 1.0 (rola 10 · build · odświeżona 2026-11-13 pod build 6)·
