@@ -3,12 +3,11 @@
 # (otwarcie licznika `router.navigate('/licznik')` app/(zakladki)/projekty.tsx:84); `licznik-projekt`, `licznik-plus`, `licznik-wartosc` (e2e/README.md);
 # `nav-wstecz` licznika src/ekrany/Licznik.tsx:136 (`router.back()` app/licznik.tsx:62, P-583); `dzis-karta` src/ekrany/Dzis.tsx:140.
 # Okno „Uczciwe zasady” (P-089 (3a)) otwiera się tylko po minionym dniu z robótką — tu jeden dzień, ale krok opcjonalny jak w 64 zostaje (BR-ZAK-006/S9).
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 06-br-zak-001-s1-zakup-przywrocenie.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 06-br-zak-001-s1-zakup-przywrocenie.yaml.
 appId: com.apps4brew.knitting
 name: "PU-200 · Licznik z listy „Projekty”: wiersz → licznik projektu → +1 → „‹” wraca na „Projekty”, nie na „Dziś”"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-200
   - stan-licznika
 ---

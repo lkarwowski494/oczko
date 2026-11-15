@@ -6,6 +6,7 @@ name: "NFR-DOS-001 · Etykiety VoiceOver na ekranie licznika, baneru, menu i his
 tags:
   - NFR-DOS-001
   - stan-licznika
+  - PU-025
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

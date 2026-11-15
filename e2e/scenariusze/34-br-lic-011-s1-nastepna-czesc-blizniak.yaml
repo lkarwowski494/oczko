@@ -7,6 +7,9 @@ tags:
   - BR-LIC-011-S1
   - BR-PRJ-014-S1
   - stan-licznika
+  - PU-037
+  - PU-210
+  - PU-227
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

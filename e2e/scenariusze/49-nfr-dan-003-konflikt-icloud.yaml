@@ -8,6 +8,8 @@ tags:
   - NFR-DAN-003
   - BR-DAN-002-S2
   - stan-licznika
+  - PU-099
+  - PU-218
 ---
 - launchApp:
     clearState: true

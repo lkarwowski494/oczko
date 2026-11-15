@@ -3,7 +3,7 @@
 # testID z kodu: `licznik-projekt-wejscie` src/ekrany/Licznik.tsx:158; grupa „Photos” `projekt-zdjecia` src/ekrany/Zdjecia.tsx:24, `zdjecia-dodaj` :33,
 # `zdjecia-miniatura` :29 (→ `/zdjecie`, fullScreenModal app/_layout.tsx:143, app/projekt/[id].tsx:137); podgląd: „Close” `zdjecie-zamknij` Zdjecia.tsx:67
 # (`router.back()` app/zdjecie.tsx:36), `zdjecie-usun` :86. Czarne tło podglądu — tylko zrzut. Samoczynny powrót po usunięciu ostatniego zdjęcia (app/zdjecie.tsx:29) sprawdza 42.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 42-p-191-zdjecie-usun.yaml.
+# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 42-p-191-zdjecie-usun.yaml. CZERWONY w przebiegu 43752186631 (krok 48/48: po „Close” nadal podgląd): BX-009 — przycisk „Close” pod paskiem stanu, trasa `/zdjecie` bez `Bezpieczny` (app/zdjecie.tsx:36, src/ekrany/Zdjecia.tsx:66); scenariusz bez zmian, tag zostaje do naprawy aplikacji.
 appId: com.apps4brew.knitting
 name: "PU-228 · Podgląd zdjęcia: miniatura → podgląd → „Close” wraca do projektu z miniaturą"
 tags:

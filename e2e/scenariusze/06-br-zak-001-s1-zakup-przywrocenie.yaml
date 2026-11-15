@@ -10,6 +10,9 @@ tags:
   - PR-09
   - podstawowy
   - stan-licznika
+  - PU-115
+  - PU-123
+  - PU-125
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

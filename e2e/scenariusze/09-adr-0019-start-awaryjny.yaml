@@ -13,6 +13,7 @@ tags:
   - R-086
   - podstawowy
   - stan-licznika
+  - PU-004
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

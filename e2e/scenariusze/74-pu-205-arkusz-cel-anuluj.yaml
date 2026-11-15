@@ -2,12 +2,11 @@
 # testID z kodu: `licznik-cel` src/ekrany/LicznikAkcje.tsx:66 (→ `/menu?arkusz=cel` app/licznik.tsx:64); arkusz `MenuCel` src/ekrany/MenuProjektu.tsx:66 z pozycjami
 # `menu-cel` :68 („Set a goal for this part”), `menu-przypomnienie` :73 („Add a reminder…”; „Reminders” `menu-przypomnienia` :70 tylko gdy są plany przypomnień),
 # `menu-powtorzenie` :74 („Set a repeat length”); „Cancel” `arkusz-zamknij` — przez subflows/zamknij-menu.yaml (jedno miejsce zmiany, tests/jakosc/e2e-licznik-to-be.test.ts).
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 55-br-lic-007-s1-powtorzenie.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 55-br-lic-007-s1-powtorzenie.yaml.
 appId: com.apps4brew.knitting
 name: "PU-205 · Arkusz „Goal”: cel, przypomnienie i długość powtórzenia; „Cancel” wraca na licznik bez zmian"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-205
   - stan-licznika
 ---

@@ -7,6 +7,8 @@ name: "BR-PRJ-015/S2 · Karta ukończenia: Share otwiera arkusz systemowy z obra
 tags:
   - BR-PRJ-015-S2
   - stan-licznika
+  - PU-083
+  - PU-212
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

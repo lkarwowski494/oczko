@@ -12,6 +12,10 @@ tags:
   - BR-LIC-003-S2
   - podstawowy
   - stan-licznika
+  - PU-018
+  - PU-019
+  - PU-021
+  - PU-203
 ---
 # Własny start zamiast subflows/start-czysty.yaml (te same kroki + oczkoE2eOknoStraznika): okno strażnika 6 s zamiast 2 s, bo czas 3 stuknięć Maestro zależy od maszyny
 # (#131: 2,45 s, #135: 4,18 s; E2E-A4, P-358). Tylko build E2E; domena z oknem 2 s ma testy jednostkowe, tu sprawdzamy podłączenie i pytanie o serię.

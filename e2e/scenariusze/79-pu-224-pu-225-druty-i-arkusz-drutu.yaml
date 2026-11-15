@@ -5,12 +5,11 @@
 # WierszGrupy :35); lista `druty-lista` src/ekrany/Zapas.tsx:205, „Back” `nav-wstecz` :206 (`router.back()` app/druty.tsx:26), „+” `druty-dodaj` :207 (→ `/drut`, modal
 # app/_layout.tsx:142); arkusz `formularz-rozmiar-mm` Zapas.tsx:247, „Cancel” `arkusz-zamknij` / „Add” `formularz-zapisz` src/ekrany/Arkusz.tsx:53, :58 (bez zmian — wyjście
 # bez pytania, src/kompozycja/odrzuc-zmiany.ts:33); wiersz drutu bez testID — etykieta = rozmiar (Zapas.tsx:215, Narzedzia.tsx:35). Teksty: en.json druty.pusto, narzedzia.druty.
-# Pole „Size in mm” liczbowe: bez hideKeyboard, zapis przyciskiem arkusza (e2e/README.md reguła 6). Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834).
+# Pole „Size in mm” liczbowe: bez hideKeyboard, zapis przyciskiem arkusza (e2e/README.md reguła 6). Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6).
 appId: com.apps4brew.knitting
 name: "PU-224 · PU-225 · „Needles and hooks”: lista i „‹” do „Tools”; arkusz drutu: Cancel bez zmian, zapis 4 mm → „4 mm (US 6)” na liście"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-224
   - PU-225
 ---

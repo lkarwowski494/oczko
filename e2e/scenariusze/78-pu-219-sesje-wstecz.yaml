@@ -3,12 +3,11 @@
 # testID z kodu: `licznik-projekt-wejscie` src/ekrany/Licznik.tsx:158; wiersz „Sessions” `projekt-sesje` src/ekrany/Projekt.tsx:198 (tylko gdy jest czas sesji, :191;
 # → `/sesje` app/projekt/[id].tsx:169); ekran `sesje` src/ekrany/Sesje.tsx:29, `sesje-lista` :33, „Back” `nav-wstecz` :30 (`router.back()` app/sesje.tsx:28);
 # po powrocie ekran projektu zostaje przewinięty do „Sessions” — `projekt-dodaj` (Projekt.tsx:120) w pasku nad treścią, stąd przewinięcie w górę.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 37-p-191-stoper-start-pauza-stop.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 37-p-191-stoper-start-pauza-stop.yaml.
 appId: com.apps4brew.knitting
 name: "PU-219 · „Sessions”: projekt → lista sesji → „‹” wraca do ekranu projektu"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-219
   - stan-licznika
 ---

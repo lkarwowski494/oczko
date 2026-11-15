@@ -4,6 +4,11 @@ appId: com.apps4brew.knitting
 name: "BR-ZAP-004/S2 · Zapas: dodanie włóczki i wyszukanie bez sieci"
 tags:
   - BR-ZAP-004-S2
+  - PU-078
+  - PU-196
+  - PU-197
+  - PU-222
+  - PU-223
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

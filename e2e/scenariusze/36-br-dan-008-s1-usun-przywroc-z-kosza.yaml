@@ -8,6 +8,8 @@ tags:
   - BR-DAN-008-S1
   - podstawowy
   - stan-licznika
+  - PU-087
+  - PU-221
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

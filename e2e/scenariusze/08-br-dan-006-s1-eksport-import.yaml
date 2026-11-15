@@ -11,6 +11,8 @@ tags:
   - P-113-Q2a
   - podstawowy
   - stan-licznika
+  - PU-094
+  - PU-185
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

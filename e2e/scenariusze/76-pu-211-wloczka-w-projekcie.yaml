@@ -5,12 +5,11 @@
 # niestały), „Add yarn” `wloczka-dodaj` :241 (→ `/wloczka` app/formularz/[rodzaj].tsx:75); odświeżenie zapasu po powrocie `useFocusEffect` [rodzaj].tsx:39-41, zaznaczenie nowej :222-225;
 # arkusz włóczki `zapas-nazwa` src/ekrany/Zapas.tsx:165, „Add” `formularz-zapisz` src/ekrany/Arkusz.tsx:58 (zapisz = wspolne.dodaj, Zapas.tsx:164).
 # Dwa arkusze w stosie mają `formularz-zapisz`: stuknięcie z `text` („Add” — arkusz włóczki, „Save” — arkusz wyboru), żeby nie trafić w arkusz pod spodem.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6).
 appId: com.apps4brew.knitting
 name: "PU-211 · „Yarn for this project”: pusty zapas → „Add yarn” → zapis → nowa włóczka zaznaczona na liście wyboru → „Save” → projekt z włóczką"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-211
   - stan-licznika
 ---

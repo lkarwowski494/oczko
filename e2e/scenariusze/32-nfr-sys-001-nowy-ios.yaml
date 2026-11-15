@@ -6,6 +6,8 @@ name: "NFR-SYS-001 · Dymny przebieg głównych ekranów (najstarszy i najnowszy
 tags:
   - NFR-SYS-001
   - stan-licznika
+  - PU-213
+  - PU-232
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

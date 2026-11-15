@@ -12,6 +12,8 @@ tags:
   - BR-DAN-012-S1
   - BR-DAN-012-S3
   - stan-licznika
+  - PU-085
+  - PU-181
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

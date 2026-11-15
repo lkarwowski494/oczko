@@ -4,6 +4,7 @@ appId: com.apps4brew.knitting
 name: "P-230 · iCloud: brak konta i brak miejsca — linia problemu, dane na telefonie"
 tags:
   - P-230
+  - PU-100
 ---
 - launchApp:
     clearState: true

@@ -12,6 +12,9 @@ tags:
   - BR-DNI-002-S1
   - BR-DNI-003-S1
   - stan-licznika
+  - PU-086
+  - PU-240
+  - PU-245
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

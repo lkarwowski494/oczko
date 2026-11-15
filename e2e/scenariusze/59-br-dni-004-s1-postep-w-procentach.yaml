@@ -7,6 +7,7 @@ name: "BR-DNI-004 · Postęp projektu w procentach: brak celów → informacja; 
 tags:
   - BR-DNI-004
   - stan-licznika
+  - PU-038
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

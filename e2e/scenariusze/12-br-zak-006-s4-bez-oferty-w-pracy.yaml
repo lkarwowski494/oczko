@@ -5,6 +5,8 @@ name: "BR-ZAK-006/S4 · Bez oferty w trakcie pracy: liczenie, historia, menu, na
 tags:
   - BR-ZAK-006-S4
   - stan-licznika
+  - PU-120
+  - PU-204
 ---
 # E2-139-S2: własny start zamiast subflows/start-czysty-dzis.yaml (te same kroki + oczkoE2eOknoStraznika, jak w 04, P-358): przy wolnej maszynie trzy stuknięcia Maestro
 # rozciągają się na > 2 s (cz. 3 #139: 2,105 s) i baner serii nie powstaje; okno 6 s + odstęp > 6 s (niżej) przed serią, żeby pierwsze +1 nie weszło do serii.

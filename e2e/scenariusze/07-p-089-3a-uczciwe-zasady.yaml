@@ -10,6 +10,8 @@ tags:
   - KP-10
   - podstawowy
   - stan-licznika
+  - PU-116
+  - PU-214
 ---
 # --- dzień 1: liczenie, okna nie ma ---
 - runFlow:

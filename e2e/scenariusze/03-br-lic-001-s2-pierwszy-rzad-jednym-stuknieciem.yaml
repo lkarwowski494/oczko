@@ -8,6 +8,9 @@ tags:
   - BR-LIC-001-S2
   - podstawowy
   - stan-licznika
+  - PU-014
+  - PU-195
+  - PU-199
 ---
 - runFlow:
     file: subflows/start-czysty-dzis.yaml

@@ -1,0 +1,8 @@
+BX6 — K3-2 (klasa A związana tagiem PU-NNN scenariusza). Dowód czerwonego testu przed kodem (kontrola w scripts/jakosc/bramka-przypadki-uzycia.mjs jeszcze nie istniała).
+Komenda: npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts -t "BX6 K3-2"   (HEAD 7d034b0c + same testy)
+  ✕ BX6 K3-2: klasa A, scenariusz z Pokrycia bez tagu PU-NNN → błąd „bez tagu PU-005”      (Expected: true, Received: false — brak kontroli)
+  ✓ BX6 K3-2: ten sam scenariusz z tagiem PU-005 → brak błędów tego PU                       (przechodzi trywialnie przed kodem)
+  ✕ BX6 K3-2: tag cudzego PU (PU-0050 jako podciąg) nie zalicza PU-005                        (Expected: true, Received: false — brak kontroli)
+  Tests: 2 failed, 49 skipped, 1 passed
+Po dodaniu kontroli (przed otagowaniem scenariuszy) test całego katalogu padł z błędami „… bez tagu PU-NNN (K3-2)” (m.in. PU-004, PU-005, PU-014, PU-015, PU-018 …; liczby nie zliczono),
+po dopisaniu 93 tagów `PU-NNN` do 70 scenariuszy (14 PU z sekcji „Nawigacja” miało tag): npx jest tests/jakosc → Test Suites: 70 passed, Tests: 898 passed.

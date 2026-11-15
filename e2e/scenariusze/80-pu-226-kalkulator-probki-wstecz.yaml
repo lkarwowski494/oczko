@@ -3,12 +3,11 @@
 # kalkulator: pole `probka-oczka` Narzedzia.tsx:98, „Back” `nav-wstecz` Narzedzia.tsx:94 (`router.back()` app/probka.tsx:56); z projektu: `licznik-projekt-wejscie`
 # src/ekrany/Licznik.tsx:158, wiersz „Swatch” `projekt-probka` src/ekrany/Projekt.tsx:225 (→ `/probka?projekt=…` app/projekt/[id].tsx:170), `projekt-dodaj` Projekt.tsx:120.
 # Linia „z projektu” (en.json probka.z_projektu) tylko przy wejściu z projektu — tu bez asercji tekstu, wystarczy pole i powrót.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 41-br-kal-003-s1-probka-w-calach.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 41-br-kal-003-s1-probka-w-calach.yaml.
 appId: com.apps4brew.knitting
 name: "PU-226 · Kalkulator próbki: z „Tools” i z „Swatch” ekranu projektu; „‹” wraca tam, skąd wszedł"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-226
   - stan-licznika
 ---

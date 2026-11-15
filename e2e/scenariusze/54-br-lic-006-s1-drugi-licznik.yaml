@@ -7,6 +7,8 @@ name: "BR-LIC-006/S1 · Drugi licznik: rzędy 20 i oczka 5 w jednym projekcie"
 tags:
   - BR-LIC-006-S1
   - stan-licznika
+  - PU-030
+  - PU-208
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

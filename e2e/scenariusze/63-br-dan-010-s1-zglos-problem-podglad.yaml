@@ -10,6 +10,8 @@ name: "BR-DAN-010/S1 · Report a problem: podgląd diagnostyki bez nazw projekt�
 tags:
   - BR-DAN-010-S1
   - stan-licznika
+  - PU-096
+  - PU-215
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

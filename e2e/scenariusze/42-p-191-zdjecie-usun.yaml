@@ -6,6 +6,8 @@ name: "P-191 · Zdjęcie projektu: podgląd, Delete photo z potwierdzeniem, mini
 tags:
   - P-191
   - stan-licznika
+  - PU-053
+  - PU-247
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

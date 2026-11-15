@@ -8,6 +8,8 @@ tags:
   - BR-LIC-007-S1
   - BR-LIC-008-S1
   - stan-licznika
+  - PU-032
+  - PU-262
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

@@ -10,6 +10,7 @@ name: "BR-PRJ-007/S1 · Make another like this: nowy projekt z częścią i cele
 tags:
   - BR-PRJ-007-S1
   - stan-licznika
+  - PU-042
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

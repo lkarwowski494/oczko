@@ -6,6 +6,7 @@ name: "P-191 · Stoper sesji: start, pauza, wznowienie, stop — sesja w „Sess
 tags:
   - P-191
   - stan-licznika
+  - PU-045
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

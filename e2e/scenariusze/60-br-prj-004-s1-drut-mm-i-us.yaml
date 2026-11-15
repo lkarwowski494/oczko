@@ -6,6 +6,8 @@ name: "BR-PRJ-004/S1 · Drut 4 mm → „4 mm (US 6)”, 3 mm → „3 mm” bez
 tags:
   - BR-PRJ-004-S1
   - stan-licznika
+  - PU-040
+  - PU-041
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

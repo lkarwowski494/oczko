@@ -6,6 +6,7 @@ tags:
   - BR-WZR-008-S1
   - wzor
   - stan-licznika
+  - PU-072
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

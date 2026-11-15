@@ -4,6 +4,8 @@ appId: com.apps4brew.knitting
 name: "BR-DAN-009 · Delete all data z „Also delete from iCloud”: strefa iCloud usunięta"
 tags:
   - BR-DAN-009
+  - PU-101
+  - PU-216
 ---
 - launchApp:
     clearState: true

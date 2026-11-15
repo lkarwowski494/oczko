@@ -4,12 +4,11 @@
 # (po usunięciu `router.dismissTo('/')` app/usun-wszystko.tsx:32 — „Dziś” w stanie pustym, P-573); `ustawienia` Ustawienia.tsx:93, `nav-wstecz` :94;
 # dane: `projekty-wiersz` src/ekrany/ListaProjektow.tsx:47, karta „Dziś” `dzis-karta` / `dzis-projekt` / `dzis-wartosc` src/ekrany/Dzis.tsx:111, :118
 # (karta „Pierwszy licznik” bez `dzis-projekt`). Ustawienia przez subflows/otworz-ustawienia.yaml (jedno miejsce zmiany).
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 08-br-dan-006-s1-eksport-import.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 08-br-dan-006-s1-eksport-import.yaml.
 appId: com.apps4brew.knitting
 name: "PU-217 · „Delete all data”: Cancel wraca do Ustawień, dane bez zmian; potwierdzenie — „Dziś” od zera"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-217
   - stan-licznika
 ---

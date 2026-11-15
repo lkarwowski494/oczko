@@ -270,6 +270,27 @@ describe('BX4 P1 (recenzja runda 2): „z testem:”, klasa A i „oczekujący�
     const bledy = fikstura({ id: 'PU-198', klasa: 'B', pokrycie: 'oczekujący: e2e/scenariusze/71-pu-198-historia-dzien-projekt-wstecz.yaml:7' }, {});
     expect(bledy.some((e) => /nie jest asercją/.test(e))).toBe(true);
   });
+
+  // BX6 K3-2 (recenzja BX4): klasa A była związana z dowolną asercją dowolnego zielonego scenariusza; teraz co najmniej jeden scenariusz E2E z Pokrycia niesie tag `PU-NNN` tego PU.
+  const SCEN_005 = 'e2e/scenariusze/02-br-lic-001-s1-pierwsze-uruchomienie.yaml';
+  const bezTagu = (id: string) => fs.readFileSync(join(root, SCEN_005), 'utf8').replace(new RegExp(`\\n  - ${id}\\n`), '\n');
+  const zTagiem = (id: string) => bezTagu('PU-005').replace(/(\ntags:\n(?:[ \t]+- .*\n)*)/, `$1  - ${id}\n`);
+  // linia asercji liczona z treści fikstury (wstawiony tag przesuwa linie o 1)
+  const pokrycieA = (tresc: string) => `${SCEN_005}:${tresc.split('\n').findIndex((l, n) => n > 6 && /^- assertVisible/.test(l)) + 1}`;
+  test('BX6 K3-2: klasa A, scenariusz z Pokrycia bez tagu PU-NNN → błąd „bez tagu PU-005”', () => {
+    const t = bezTagu('PU-005');
+    const bledy = fikstura({ id: 'PU-005', klasa: 'A', pokrycie: pokrycieA(t) }, { [SCEN_005]: t });
+    expect(bledy.some((e) => /bez tagu PU-005/.test(e))).toBe(true);
+  });
+  test('BX6 K3-2: ten sam scenariusz z tagiem PU-005 → brak błędów tego PU', () => {
+    const t = zTagiem('PU-005');
+    expect(fikstura({ id: 'PU-005', klasa: 'A', pokrycie: pokrycieA(t) }, { [SCEN_005]: t })).toEqual([]);
+  });
+  test('BX6 K3-2: tag cudzego PU (PU-0050 jako podciąg) nie zalicza PU-005', () => {
+    const t = zTagiem('PU-0050');
+    const bledy = fikstura({ id: 'PU-005', klasa: 'A', pokrycie: pokrycieA(t) }, { [SCEN_005]: t });
+    expect(bledy.some((e) => /bez tagu PU-005/.test(e))).toBe(true);
+  });
 });
 
 // BX4: poprawki P2/P3 recenzji (BX3 P2-12, P2-14; runda 2 K1-1, K1-2) — czerwone przed kodem, patrz docs/jakosc/bx4-dowod-czerwony.txt.

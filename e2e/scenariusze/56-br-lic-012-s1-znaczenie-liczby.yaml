@@ -6,6 +6,7 @@ name: "BR-LIC-012/S1 · Tryb „rząd w trakcie”: 12 skończonych → duża li
 tags:
   - BR-LIC-012-S1
   - stan-licznika
+  - PU-206
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

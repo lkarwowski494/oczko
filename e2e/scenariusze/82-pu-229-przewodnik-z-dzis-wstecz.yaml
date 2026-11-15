@@ -2,12 +2,11 @@
 # testID z kodu: „Guide” `nav-przewodnik` src/ekrany/Dzis.tsx:178 (→ `router.push('/przewodnik')` app/(zakladki)/index.tsx:98); ekran `przewodnik` src/ekrany/Przewodnik.tsx:74,
 # „Back” `nav-wstecz` Przewodnik.tsx:75 (`router.back()` app/przewodnik.tsx:48); pasek zakładek `nav-dzis` app/(zakladki)/_layout.tsx:15 — niewidoczny nad przewodnikiem
 # (trasa w stosie głównym, nie zakładka); `dzis-karta` Dzis.tsx:140. Świeża instalacja: karta „Pierwszy licznik”.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 69-p-687-przewodnik-z-dzis-pokaz.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 69-p-687-przewodnik-z-dzis-pokaz.yaml.
 appId: com.apps4brew.knitting
 name: "PU-229 · Przewodnik z „Dziś”: „Guide” → przewodnik nad zakładkami → „‹” wraca na „Dziś”"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-229
 ---
 - runFlow:

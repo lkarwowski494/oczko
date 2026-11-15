@@ -5,6 +5,7 @@ name: "KP-10 · Ekran zakupu tylko po działaniu: nie przy pierwszym starcie, li
 tags:
   - KP-10
   - stan-licznika
+  - PU-119
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

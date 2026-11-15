@@ -4,13 +4,12 @@
 # src/ekrany/FormularzeProjektu.tsx:34; „Cancel” `arkusz-zamknij` i „Save” `formularz-zapisz` src/ekrany/Arkusz.tsx:53, :58; pytanie z src/kompozycja/odrzuc-zmiany.ts:33
 # (opis „nowy” dla nowy-projekt, app/formularz/[rodzaj].tsx:27, :51; teksty en.json wspolne.odrzuc_tytul / odrzuc_opis_nowy / odrzuc_zmiany — alert systemowy bez testID);
 # `projekty-lista` ListaProjektow.tsx:69, `projekty-wiersz` :47; licznik nowego projektu `licznik-projekt`, `licznik-wartosc` (zapis `router.dismissTo('/licznik')` [rodzaj].tsx:68).
-# Klawiatura tekstowa: wpis w retry, chowanie pressKey Enter (e2e/README.md reguła 6). Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+# Klawiatura tekstowa: wpis w retry, chowanie pressKey Enter (e2e/README.md reguła 6). Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6).
 # Częściowo: 18-br-prj-011-s1-start-po-zamknieciu.yaml.
 appId: com.apps4brew.knitting
 name: "PU-209 · „New project”: Cancel bez wpisu bez pytania, z wpisem „Discard changes?” i nic nie dodane; Save otwiera licznik nowego projektu"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-209
   - stan-licznika
 ---

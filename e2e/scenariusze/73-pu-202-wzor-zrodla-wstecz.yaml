@@ -4,12 +4,11 @@
 # Menu źródeł: ekran `EkranZrodelWzoru` z „Back” (`nav-wstecz` src/ekrany/WzorZrodla.tsx:19, P-830, WL-1171-01; `router.back()` app/wzor.tsx:169),
 # grupa `wzor-dodaj` src/ekrany/WzorGrupa.tsx:61 z pozycją „Choose file (PDF or Word)” (en.json wzor.z_pliku, WzorGrupa.tsx:67).
 # Powrót: `licznik-plus`, `licznik-wartosc` z tą samą wartością (1); drugi „‹” z licznika — „Dziś” (`dzis-karta` Dzis.tsx:157).
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Analogia: 21-br-wzr-001-s1-pdf-z-plikow.yaml:24-27.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Analogia: 21-br-wzr-001-s1-pdf-z-plikow.yaml:26-29.
 appId: com.apps4brew.knitting
 name: "PU-202 · Menu źródeł „Add pattern” z licznika i z kafla „Dziś”: „‹” wraca na licznik bez zmian"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-202
   - stan-licznika
 ---

@@ -3,12 +3,11 @@
 # testID z kodu: `nav-historia` app/(zakladki)/_layout.tsx:18; `historia-kalendarz` src/ekrany/HistoriaDni.tsx:57; `historia-dzien-<data>` HistoriaDni.tsx:63
 # (selected = wybrany dzień); wiersz projektu dnia bez testID — etykieta „<nazwa>, <linia>” HistoriaDni.tsx:78 (en: dni.rzedy „1 row”); `projekt-dodaj` src/ekrany/Projekt.tsx:120;
 # `nav-wstecz` Projekt.tsx:110 (src/ekrany/Pasek.tsx:27); powrót `router.back()` app/projekt/[id].tsx:171, wybór dnia w stanie trasy app/(zakladki)/dni.tsx:21.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy. Częściowo: 64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml.
 appId: com.apps4brew.knitting
 name: "PU-198 · Historia: dzień 3 XI → projekt dnia → „‹” wraca do kalendarza z tym samym wybranym dniem"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-198
   - stan-licznika
 ---

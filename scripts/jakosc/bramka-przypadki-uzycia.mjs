@@ -185,6 +185,8 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
       }
       const scen = yaml.filter((x) => !x.plik.includes('/subflows/')).map((x) => path.basename(x.plik));
       if (scen.length && !o.some((x) => x.plik.startsWith('tests/')) && scen.every((f) => tagi(f).includes('ipad'))) bledy.push(`${p.id}: tylko scenariusze z tagiem ipad (poza bramką)`);
+      // BX6 (K3-2, recenzja BX4): klasa A jest związana z konkretnym scenariuszem — co najmniej jeden scenariusz E2E z Pokrycia niesie tag `PU-NNN` tego PU (dokładne dopasowanie: PU-0050 nie zalicza PU-005)
+      if (scen.length && !scen.some((f) => tagi(f).includes(p.id))) bledy.push(`${p.id}: scenariusze E2E z Pokrycia (${[...new Set(scen)].join(', ')}) bez tagu ${p.id} (K3-2)`);
     } else if (p.klasa === 'B') {
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) {
         if (wymagajTestowB) bledy.push(`${p.id}: klasa B bez testu („do zaprogramowania”, P-837)`);

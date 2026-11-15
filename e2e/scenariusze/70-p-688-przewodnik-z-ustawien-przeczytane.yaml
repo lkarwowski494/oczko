@@ -11,6 +11,9 @@ name: "P-688 · Przewodnik z Ustawień (P-685): wiersz „Guide” nad „Help�
 tags:
   - P-688
   - P-685
+  - PU-105
+  - PU-111
+  - PU-230
 ---
 - runFlow:
     file: subflows/start-czysty-dzis.yaml

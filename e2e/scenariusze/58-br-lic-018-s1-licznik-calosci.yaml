@@ -8,6 +8,7 @@ name: "BR-LIC-018/S1 · Dwie sekcje 20 i 5: +1 w drugiej → całość 26, pruci
 tags:
   - BR-LIC-018-S1
   - stan-licznika
+  - PU-031
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

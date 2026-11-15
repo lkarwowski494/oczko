@@ -4,6 +4,7 @@ appId: com.apps4brew.knitting
 name: "P-190 · Język Polski zapamiętany po restarcie; ‘Same as phone’ przywraca automat"
 tags:
   - P-190
+  - PU-233
 ---
 - runFlow:
     file: subflows/start-czysty.yaml
@@ -20,12 +21,15 @@ tags:
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:40:00" } }
 - runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
-- tapOn: { id: "ustawienia-jezyk" }
+- waitForAnimationToEnd # BX-010: po restarcie stuknięcie tuż po przewinięciu nie otwierało ekranu Język (przebieg 43752186631, 2×: zrzut kroku 61 = nadal Ustawienia); hipoteza: wytracanie ruchu pochłania stuknięcie
+- tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
+- extendedWaitUntil: { visible: { id: "jezyk" }, timeout: 20000 } # ekran Język otwarty, zanim zacznie się szukanie wiersza
 - scrollUntilVisible: { element: { id: "jezyk-pl" } }
 - assertVisible: { id: "jezyk-pl", text: "Polski, wybrano" } # etykieta ze słownika pl (jezyk.wybrany_a11y); przebieg 41361451580: „Polski, wybrano” zamiast „Polski, selected” (E2-K1)
 - scrollUntilVisible: { element: { id: "jezyk-auto" }, direction: UP }
 - tapOn: { id: "jezyk-auto" }
 - assertVisible: { id: "ustawienia" }
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
-- tapOn: { id: "ustawienia-jezyk" }
+- waitForAnimationToEnd # BX-010 (jak wyżej)
+- tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
 - assertVisible: { id: "jezyk-auto", text: "Same as phone, selected" }

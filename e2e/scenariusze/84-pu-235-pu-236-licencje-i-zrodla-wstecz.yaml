@@ -4,12 +4,11 @@
 # testID z kodu: `ustawienia-zrodla` src/ekrany/Ustawienia.tsx:131, `ustawienia-licencje` :132 (→ `/zrodla`, `/licencje` app/ustawienia.tsx:153-154); ekran licencji
 # `licencje-lista` src/ekrany/Licencje.tsx:110, wstęp :82, „Back” `nav-wstecz` :80 (`router.back()` app/licencje.tsx:10); ekran źródeł `zrodla-wiedzy`
 # src/ekrany/ZrodlaWiedzy.tsx:12, linia :16, „Back” `nav-wstecz` :13 (app/zrodla.tsx:10); `ustawienia` Ustawienia.tsx:93. Ustawienia przez subflows/otworz-ustawienia.yaml.
-# Informacyjnie do pierwszego zielonego przebiegu (tag oczekujacy, P-834); bez tagu podstawowy.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6).
 appId: com.apps4brew.knitting
 name: "PU-235 · PU-236 · „Open source licenses” i „About our information” z Ustawień: ekran i „‹” do Ustawień"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-235
   - PU-236
 ---

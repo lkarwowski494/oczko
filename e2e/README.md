@@ -204,6 +204,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wybor-narzedzie-druty` | arkusz narzędzia | opcja radia `Wybor` (NOC-4, jak wyżej) | „Needles” | |
 | `wybor-narzedzie-szydelko` | arkusz narzędzia | opcja radia `Wybor` (NOC-4, jak wyżej) | „Hook” | |
 | `ustawienia-jezyk` | Ustawienia | wiersz „Language” (F-36, P-190) | „Language” | |
+| `jezyk` | Language | kontener ekranu „Language” (ScrollView, `src/ekrany/Jezyk.tsx:24`); scen. 39 czeka na niego po stuknięciu wiersza (BX-010) | tytuł „Language” | |
 | `jezyk-auto` | Language | „Same as phone” (radio; etykieta z „, selected” przy wyborze) | „Same as phone” / „Same as phone, selected” | |
 | `jezyk-pl` | Language | wiersz języka (wzorzec `jezyk-<kod>`, nazwa własna języka; tu polski) | „Polski” / „Polski, selected” | |
 | `ustawienia` | Ustawienia | kontener ekranu (ScrollView) | — | |

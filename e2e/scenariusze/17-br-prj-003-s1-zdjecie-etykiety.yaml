@@ -6,6 +6,7 @@ name: "BR-PRJ-003/S1 · Zdjęcie etykiety w projekcie, widoczne po restarcie bez
 tags:
   - BR-PRJ-003-S1
   - stan-licznika
+  - PU-051
 ---
 - runFlow:
     file: subflows/start-czysty.yaml
