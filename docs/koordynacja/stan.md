@@ -567,6 +567,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BX6 (08): P-861…P-866. Następny wolny: P-867; KO następny: KO-077.**
 - **Pula BX5 (08): P-859…P-863. Następny wolny: P-864; KO następny: KO-075.**
 - **Pula BX4 (08): P-854…P-858. Następny wolny: P-859; KO następny: KO-073.**
 - **Pula BX3 (08): P-849…P-853. Następny wolny: P-854; KO następny: KO-071.**
@@ -998,3 +999,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 20:58 | M9 | BX4 @ 672a22f9 (autor OK, 0 Co-Authored-By; verify w haku wg sesji): KO-073 (P-855), KO-074 (P-856, PU-339 F); 339 PU, B z testem 49/oczekujące 16/do zaprogramowania 129; 4,81 USD, 33% → PRZEKAZANIE. Polecenie BX5 (pula P-859…P-863) | start BX5, archiwum BX4 |
 | 15.11 21:05 | M9 | BX5 = session_01T66VByxNfXXLjTVYtuA35t (prompt zgodny: sha256 f884fa76…, diff pusty). BX4 zarchiwizowana (5,40 USD, 35%) | kontrola 21:51 |
 | 15.11 21:50 | M9 | BX5 porcja 1 @ 1c7bc379 przyjęta jako stan pracy (autor OK; 85 PU B → z testem; P-859, P-860). iOS 43752186631 failure: P-190 bramkowy czerwony 2×, 81/83 czerwone informacyjnie, 12 tagów do zdjęcia (logi jobów sprawdzone). K3-2 odłożone do BX6 | iOS po pushu BX5; BX6 |
+| 15.11 21:55 | M9 | BX5 PRZEKAZANIE @ 7d034b0c (autor OK, src/app/e2e bez zmian; lista fizyczna `--check` 52 poz. wg sesji). **STOP kosztowy BX5: 22,21 USD przy STOP 15,6** — przerwana, wiadomość z wynikiem iOS przechodzi do BX6. KO-075 (kontrola kosztu co 20 min, max 2 subagenty), KO-076 (BX-002 sesja fix po BX6). Polecenie BX6 | start BX6 |
