@@ -9,7 +9,7 @@
 #   rozstrzyga docs/wydanie/sklep.md (lista przed wysyłką). Trening: scripts/ci/check-entitlements.sh, ensure-privacy-manifest.mjs.
 set -uo pipefail
 APP=${1:?ścieżka .app}; NUMER=${2:?numer}; OSTATNI=${3:-0}
-MIN_IOS=18.0; MIN_WATCH=11.0; POPRZEDNI_0_1_0=1004; DOZWOLONE_TLA="remote-notification" # ADR-0006, P-070, prywatnosc.md
+MIN_IOS=18.0; MIN_WATCH=10.0; POPRZEDNI_0_1_0=1004; DOZWOLONE_TLA="remote-notification" # ADR-0006 (zegarek 10.0 od 2026-11-15, P-819), P-070, prywatnosc.md
 bledy=0; uwagi=0
 blad() { echo "::error::kontrola .ipa: $*"; bledy=$((bledy + 1)); }
 uwaga() { echo "::warning::kontrola .ipa: $*"; uwagi=$((uwagi + 1)); }

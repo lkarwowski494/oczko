@@ -33,7 +33,7 @@ export const PARTIA_SYNCHRONIZACJI = 200; // wiersze na transakcję; [OCENA] rol
 export const POCZEKALNIA_DNI = 7; // dni; P-110 (Q1a): rekord z iCloud dłużej w poczekalni → „niepełna historia” w Data and sync, rekord zostaje
 export const ICLOUD_W_1_0 = false; // ZM-06 (P-218 Q5a, P-233): przełącznik iCloud w wydaniu dopiero po teście „rekord z telefonu widoczny na iPadzie”; zmienia koordynator
 export const MIN_IOS = '18.0'; // P-070, ADR-0006
-export const MIN_WATCHOS = '11.0'; // P-070, ADR-0006
+export const MIN_WATCHOS = '10.0'; // P-070, ADR-0006; zegarek 10.0 od 2026-11-15 (KO-061, P-819)
 export const PROG_NIEUDANYCH_STARTOW = 2; // P-080 (interpretacja do weta), ADR-0019
 export const KOPIE_RATUNKOWE_DNI = 30; // P-080, ADR-0020
 export const PROG_BRAK_MIEJSCA_OTWARCIA_B = 1_000_000; // B; [OCENA 12] (M1-157, 12-niezawodnosc-505 (a), ADR-0020 (4)): nieudane otwarcie bazy z powodem `zapis` przy znanym wolnym miejscu poniżej progu = `brak_miejsca` (SQLITE_IOERR przy powiększaniu `-shm`)

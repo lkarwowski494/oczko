@@ -10,7 +10,7 @@ module.exports = {
   name: 'OczkoZegarek',
   displayName: 'Oczko',
   bundleIdentifier: '.watchkitapp',
-  deploymentTarget: '11.0', // ADR-0006
+  deploymentTarget: '10.0', // ADR-0006, uzupełnienie 2026-11-15 (KO-061, P-819): zegarek watchOS 10.0; iOS 18 bez zmian
   icon: '../../assets/watch.png', // P-407: ikona zegarka z projektu 04 (Dzianina; design-spec „Ikona i ekran startowy”), 1088 × 1088, te same bajty co docs/design/ikona/watch.png
   frameworks: ['SwiftUI', 'WatchConnectivity', 'StoreKit', 'WatchKit'],
   colors: {

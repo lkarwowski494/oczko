@@ -14,7 +14,7 @@ Aplikacja dla osób, które dziergają na drutach i szydełkują. Licznik rzęd�
 
 ## Platformy
 
-Aplikacja dla iPhone, iPad i Apple Watch (iOS 18.0 i nowszy, watchOS 11.0 i nowszy).
+Aplikacja dla iPhone, iPad i Apple Watch (iOS 18.0 i nowszy, watchOS 10.0 i nowszy).
 
 ## Zakres wersji 1.0: 51 funkcji
 
