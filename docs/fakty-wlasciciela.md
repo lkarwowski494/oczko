@@ -14,3 +14,5 @@ Czytany na starcie każdej sesji (hak `SessionStart` w `.claude/settings.json`, 
 | Maszyny macOS w GitHub Actions zwykle brak ok. 14:00–23:00 UTC | P-187, P-307; Trening `docs/fakty-wlasciciela.md` |
 | Nie jest ekspertem dziedzinowym; rozstrzyga sprawy produktowe, nie merytoryczne | CLAUDE.md, zasada wspólna 1 |
 | Decyzje podejmuje koordynator (P-087); u właściciela: koszty, jego konta, scalenie do `main`, wysyłka do Apple | CLAUDE.md, P-087 |
+| Build 1161 to **pierwszy test Oczka na telefonie w ogóle** — wcześniej Oczka na urządzeniu nie testował („To pierwszy test na telefonie.”); na zegarku nie miał Oczka, na telefonie był build 1061. Pierwszy test = pełna lista; „tylko zmiany” dotyczy kolejnych buildów | właściciel do koordynatora, 2026-11-15 ok. 08:50 i 09:05 UTC (sesja BP) |
+| Telefon właściciela jest po polsku; instrukcje testu podają napisy Oczka po polsku (z `pl.json`), angielskie w nawiasie | właściciel do koordynatora, 2026-11-15 ok. 09:00 UTC (sesja BP) |
