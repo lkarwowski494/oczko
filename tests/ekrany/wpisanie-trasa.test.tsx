@@ -83,3 +83,17 @@ test('PU-266: niezapisana wartość znika z ekranem (kill) — baza bez zmian, p
   expect((await k.widok())?.wartosc).toBe(3);
 });
 
+// PU-163 (katalog przypadków użycia, „Wydajność, klawiatura, przerwania”): puste pole numeru rzędu → „Zapisz” daje komunikat o liczbie całkowitej (`licznik.wpisz_blad_format`),
+// arkusz zostaje otwarty, wartość licznika bez zmian; po wpisaniu 12 → „Zapisz” wartość zapisana, a arkusz się zamyka.
+test('PU-163: puste pole → komunikat o liczbie całkowitej, arkusz otwarty, wartość bez zmian; 12 → zapisane', async () => {
+  const { k } = await start(2);
+  await wpisz('');
+  expect(screen.getByRole('alert')).toBeTruthy();
+  expect(screen.getByText('Enter a whole number, 0 or more, for example 1,000.')).toBeTruthy();
+  expect(mockRouter.back).not.toHaveBeenCalled();
+  expect(screen.getByTestId('wpisz-wartosc-pole')).toBeTruthy();
+  expect((await k.widok())?.wartosc).toBe(3);
+  await wpisz('12');
+  await waitFor(() => expect(mockRouter.back).toHaveBeenCalled());
+  expect((await k.widok())?.wartosc).toBe(12);
+});

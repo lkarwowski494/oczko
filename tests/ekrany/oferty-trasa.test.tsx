@@ -67,6 +67,7 @@ test('KP-07: zakup anulowany przez użytkowniczkę → bez komunikatu, bez sukce
   await waitFor(() => expect(sklep.kup).toHaveBeenCalledTimes(2));
   expect(linie()).toEqual([]);
 });
+// PU-326: „Restore purchases” bez zakupu pokazuje „No Oczko Pro purchase found for this Apple ID…”, a przy błędzie sklepu „Couldn’t restore purchases…”.
 test('KP-07: przywrócenie nieudane → „Couldn’t restore purchases…”; bez zakupu → „No Oczko Pro purchase found…”; z zakupem → bez komunikatu', async () => {
   await aplikacja({ przywroc: { ok: false } });
   const a = render(<EkranOfert />);

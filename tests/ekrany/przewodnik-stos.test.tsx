@@ -5,7 +5,9 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { WEJSCIE_Z_USTAWIEN } from '../../src/domena/przewodnik';
+import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
+import { migawka, wykonaj } from '../dane/pomocnicze/srodowisko';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { StackRouter } = require('expo-router/build/react-navigation/routers/StackRouter') as { StackRouter: (o: object) => { getStateForAction: (s: Stos, a: object, o: object) => Stos | null } };
@@ -118,5 +120,54 @@ describe('08-programista-001: stos po „Show” funkcji Ustawień', () => {
     mockRouter.push('/przewodnik');
     await pokazFunkcje('jednostki');
     await waitFor(() => expect(widokStosu()).toBe('(zakladki) > przewodnik > miary'));
+  });
+});
+
+describe('PU-110 i PU-113: stos po „Show” (własne dane; kontekst pozostałych testów przywracany)', () => {
+  let zapisana: unknown;
+  beforeEach(() => { zapisana = mockAplikacja; });
+  afterEach(() => { mockAplikacja = zapisana; });
+
+  // PU-110: „Show” przy „Vibration” i „Oczko Pro” kładzie na stos Ustawienia (nigdy ofert), „Units” — ekran Jednostek; „Back” wraca do przewodnika; dane bez zmian, brak wyniku eksportu.
+  test('PU-110: „Show” przy Wibracjach i Oczko Pro otwiera Ustawienia (nie oferty), Jednostki otwierają „/miary”, powrót na przewodnik; dane bez zmian', async () => {
+    const { s, k, j } = await kompozycjaTestowa();
+    await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 3)]);
+    mockAplikacja = { kontener: { z: s.z, j: { ...j, preferencja: () => 'auto' as const }, icloud: null, katalogDanych: s.katalog, dostep: { stan: () => ({ aktywne: null, pro: false }), naZmiane: () => () => undefined } }, licznik: k, preferencje: { stan: () => ({ wibracje: true }), ustaw: jest.fn() } };
+    const przed = await migawka(s.baza, ['ustawienie']); // przewodnik zapisuje tylko „przeczytane” w `ustawienie`
+    const historia: string[] = [];
+    for (const [id, oczekiwany] of [['wibracje', '(zakladki) > przewodnik > ustawienia'], ['pro', '(zakladki) > przewodnik > ustawienia'], ['jednostki', '(zakladki) > przewodnik > miary']] as const) {
+      zacznij(['(zakladki)']);
+      mockRouter.push('/przewodnik'); // „Dziś” → Guide
+      await pokazFunkcje(id);
+      await waitFor(() => expect(widokStosu()).toBe(oczekiwany));
+      historia.push(widokStosu());
+      expect(screen.queryByTestId('eksport-wynik')).toBeNull();
+      mockRouter.back();
+      expect(widokStosu()).toBe('(zakladki) > przewodnik');
+      screen.unmount();
+    }
+    expect(historia.join(' ')).not.toMatch(/oferty/);
+    expect(await migawka(s.baza, ['ustawienie'])).toBe(przed);
+  });
+
+  // PU-113: „Apple Watch” rozwija opis bez „Show”; „Lock Screen” → „Show” otwiera licznik bieżącej pracy nad przewodnikiem, „Back” wraca do przewodnika.
+  test('PU-113: „Apple Watch” bez „Show”; „Lock Screen” → „Show” otwiera licznik nad przewodnikiem, powrót na przewodnik', async () => {
+    const { s, k, j } = await kompozycjaTestowa();
+    await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 3)]);
+    await k.otworz('l1');
+    mockAplikacja = { kontener: { z: s.z, j }, licznik: k };
+    zacznij(['(zakladki)']);
+    mockRouter.push('/przewodnik');
+    render(<EkranPrzewodnika />);
+    await screen.findByTestId('przewodnik');
+    expect(screen.getByRole('header', { name: 'Apple Watch and Lock Screen' })).toBeTruthy();
+    fireEvent.press(screen.getByTestId('przewodnik-f-zegarek'));
+    expect(await screen.findByTestId('przewodnik-f-zegarek-opis')).toHaveTextContent(/Count rows on your watch/);
+    expect(screen.queryByTestId('przewodnik-f-zegarek-pokaz')).toBeNull();
+    fireEvent.press(screen.getByTestId('przewodnik-f-ekran-blokady'));
+    fireEvent.press(await screen.findByTestId('przewodnik-f-ekran-blokady-pokaz'));
+    await waitFor(() => expect(widokStosu()).toBe('(zakladki) > przewodnik > licznik'));
+    mockRouter.back();
+    expect(widokStosu()).toBe('(zakladki) > przewodnik');
   });
 });

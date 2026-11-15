@@ -2,10 +2,13 @@
 // 07-jakosc-012 (KP-05) i N-05-1 (P-328, ADR-0028): usunięcie zawsze po kopii w Plikach; nieudana kopia = alert i dane nietknięte. 
 import React from 'react';
 import { Alert } from 'react-native';
-import { readdirSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { dostepPro } from '../../src/kompozycja/dostep';
+import { pamiecProWPliku } from '../../src/kompozycja/pliki-urzadzenia';
 import { preferencje } from '../../src/kompozycja/preferencje';
+import { sklepSztuczny } from '../../src/platforma/sklep-sztuczny';
 import { projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { licznosci, przygotuj, wykonaj, zArchiwum } from '../dane/pomocnicze/srodowisko';
 import { przycisk, tEn } from './pomoc';
@@ -72,4 +75,24 @@ test('07-jakosc-004 (ADR-0029 pkt 4, K-04g): po „Delete all data” migawka pr
   await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledWith('/'));
   expect(pref.stan()).toEqual({ wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' });
   expect(await z.baza.all('SELECT klucz FROM ustawienie WHERE klucz IN (\'wibracje\', \'ekran_nie_gasnie\', \'uklad_miar\')')).toEqual([]);
+});
+
+// PU-183 (katalog przypadków użycia, „Kopia, usunięcie, import”): okno mówi o kopii w Plikach i że Oczko Pro nie jest usuwane; po „Delete all data” baza pusta, a zakup Pro (pamięć uprawnień w pliku
+// obok bazy, poza bazą) zostaje i po ponownym starcie dostępu Pro nadal jest włączone („On” w Ustawieniach pochodzi z tego stanu dostępu).
+test('PU-183: okno z kopią i Pro; po usunięciu baza pusta, a Pro nadal włączone (pamięć uprawnień nietknięta)', async () => {
+  const { s } = await aplikacja();
+  const teraz = () => Date.UTC(2026, 9, 22);
+  const sklep = sklepSztuczny(teraz);
+  await sklep.kup('oczko.pro.yearly');
+  expect((await dostepPro(sklep, pamiecProWPliku(s.katalog), teraz).odswiez()).pro).toBe(true);
+  const plikPro = join(s.katalog, 'pamiec-pro.json');
+  const pamiecPrzed = readFileSync(plikPro, 'utf8');
+  render(<EkranUsunWszystko />);
+  expect(screen.getByText('Oczko first saves a copy in the Files app, in Oczko › Backup. Importing that file brings everything back.')).toBeTruthy();
+  expect(screen.getByText('Oczko Pro isn’t deleted. If it’s off afterwards, choose Restore purchases in Oczko Pro.')).toBeTruthy();
+  await userEvent.press(przycisk('Delete all data'));
+  await waitFor(() => expect(mockRouter.dismissTo).toHaveBeenCalledWith('/'));
+  expect(Object.entries(await licznosci(s.baza)).filter(([tabela, n]) => n > 0 && tabela !== 'synchronizacja')).toEqual([]); // tabela synchronizacja to wiersz stały (id = 1), po usunięciu wyłączony
+  expect(readFileSync(plikPro, 'utf8')).toBe(pamiecPrzed);
+  expect((await dostepPro(sklep, pamiecProWPliku(s.katalog), teraz).odswiez()).pro).toBe(true); // „Oczko Pro” dalej „On”
 });

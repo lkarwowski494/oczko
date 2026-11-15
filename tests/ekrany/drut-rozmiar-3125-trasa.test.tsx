@@ -128,3 +128,21 @@ describe('M1-124: 3,125 mm w koszu, na ekranie projektu i w podglądzie arkusza 
     expect(screen.getByText(`Shows as: ${tekst}`)).toBeTruthy();
   });
 });
+
+// PU-164 (katalog przypadków użycia, „Wydajność, klawiatura, przerwania”): rozmiar z przecinkiem z klawiatury („3,25”) w arkuszu narzędzia projektu — podgląd „Shows as: 3.25 mm”,
+// po „Save” narzędzie projektu ma rozmiar 3.25 mm (tekst wiersza `projekt-narzedzie` na ekranie projektu pochodzi z `stanProjektu(...).szczegoly.rozmiar`).
+describe('PU-164: rozmiar „3,25” z przecinkiem w arkuszu narzędzia projektu', () => {
+  test('PU-164: „3,25” → podgląd „Shows as: 3.25 mm” → „Save” → rozmiar narzędzia projektu „3.25 mm”', async () => {
+    const { z, j } = await zProjektem();
+    mockParams = { rodzaj: 'narzedzie', projekt: 'p1' };
+    await zamontuj(trasa('../../app/formularz/[rodzaj]'));
+    fireEvent.changeText(screen.getByTestId('formularz-rozmiar-mm'), '3,25');
+    expect(screen.getByText(/^Shows as: 3\.25 mm/)).toBeTruthy();
+    await act(async () => { fireEvent.press(screen.getByTestId('formularz-zapisz')); await new Promise((r) => setTimeout(r, 100)); });
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
+    const w = await widokProjektu(z, { projektId: 'p1' });
+    if (!w.ok) throw new Error(w.powod);
+    const ch = z.zegar.teraz();
+    expect(stanProjektu(w.wartosc, { j, terazMs: ch.ms, strefa: ch.strefa }).szczegoly?.rozmiar).toMatch(/^3\.25 mm/);
+  });
+});

@@ -71,6 +71,7 @@ test('BY-003: dwa stuknięcia kafla naraz (bez czekania) zakładają jeden proje
   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 200)); });
   expect(await s.baza.all('SELECT count(*) AS n FROM projekt', [])).toEqual([{ n: 1 }]);
 });
+// PU-017: są projekty, ale żaden nie jest bieżący → kafel „Add pattern” otwiera zakładkę „Projects” (po BY-003 świeża instalacja zakłada projekt roboczy: PU-016).
 test('BY-003: są projekty, ale żaden nie jest bieżący → zakładka Projekty (wybór projektu), bez zakładania nowego i bez trasy „/wzor”', async () => {
   const s = await start(true, false, false);
   await act(async () => { mockDzis?.naKafel('dodaj-wzor'); await new Promise((r) => setTimeout(r, 100)); });

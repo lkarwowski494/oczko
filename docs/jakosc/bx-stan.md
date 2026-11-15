@@ -45,3 +45,18 @@ Koszt 31,04 USD > próg 26 USD (pomiar koordynatora), kontekst 30%. Stan na 8f0c
 - Nie do poziomu poniżej symulatora (do decyzji, propozycja F/częściowo): PU-149 („dwa palce przewijają” to natywny PencilKit; testowalna jest tylko polityka płótna, `tests/domena/wzor/uklad-rysik.test.ts`).
 - Wynik „Jakość · iOS” 43752186631 dla scenariuszy 71–84: nieodebrany (koordynator poda wynik) — tagi `oczekujacy` bez zmian.
 - KO-073/P-855: B „oczekujący” nie zalicza PU (kontrola 2 czerwona dla 16 PU 71–84 do zdjęcia tagów po zielonym przebiegu). KO-074/P-856: PU-149 podzielony, nowy PU-339 (F). Katalog: 339 PU (A=93, B=194, F=52); B: z testem 49 (z PU-149), „oczekujący” 16, „do zaprogramowania” 129; lista fizyczna 52 pozycje (ponowna publikacja Artifact — niewykonana).
+
+## BX5 (08 build, 15.11) — stan
+- Start 672a22f9; baza testów 620 zestawów / 7572 testów, 0 padających. Porcja 1 (zadanie 2): **85 PU B „do zaprogramowania” → „z testem”** (P-859): 134 B z testem, 16 „oczekujący”, 44 „do zaprogramowania” (katalog 339 PU: A=93, B=194, F=52). Nowe testy: 51 plików `tests/ekrany/*.test.tsx` + `tests/dane/pu-migracja-003.test.ts` i dopiski w istniejących; każdy sprawdzony mutacją asercji (pada) w raportach podagentów. Test zalicza PU tylko, gdy pokrywa cały „Oczekiwany wynik”.
+- Zostają „do zaprogramowania” z powodem: Maestro/F bez odpowiednika w jest — gesty, obrót, restart procesu, zrzuty, okna systemowe, natywne widoki (PU-008, 011, 012, 052, 057, 066, 071, 104, 107–109, 112, 134, 135, 137–139, 143, 144, 146–148, 150, 153, 162, 165, 168, 170, 175, 180, 191, 288, 292, 296, 336, 333 Swift). Częściowo: PU-110, 113 (powrót modelowany mockiem), PU-290, 291, 322.
+- Poprawki opisu katalogu (P-860): PU-017, 273, 295, 302.
+- **Znaleziska** (kod albo opis wbrew kodowi; wiersze zostają „do zaprogramowania”):
+  - BX-002 (PU-067, aplikacja): po „Add note” → „Save” chip notatki nie pojawia się na wzorze do ponownego otwarcia (baza ma notatkę); `naNotatka` w `src/ekrany/WzorAkcje.ts:27` nie woła `wczytaj(widok.wzorId)` (jak `naZmienNotatke`/`naUsunNotatke`, linie 25–26). Realny, widoczny dla użytkownika; poprawka `src/` poza zakresem BX5.
+  - BX-003 (PU-334): opis oczekuje `"jezyk":"de"` w stanie zegarka; `StanZegarka = StanEkranuBlokady` (`src/domena/porty.ts:46–47`) nie ma pola `jezyk` (jest tylko w Live Activity, `modules/oczko-reguly/Sources/OczkoReguly/StanAktywnosci.swift:2,10`). Poprawić PU albo dopisać pole.
+  - BX-004 (PU-322, atrapa E2E): `e2e-sklep-wygas` (`src/platforma/sklep-sztuczny.ts:53–55`) wygasza także zakup dożywotni; opis PU („nie wyłącza Pro”) byłby fałszywy.
+  - BX-005 (PU-290): nagłówek listy wzorów „Patterns in …” (`wzor.przelacz_naglowek`) nie jest renderowany (`src/ekrany/WzorMenu.tsx:30`). Ekran albo opis do poprawy.
+  - BX-006 (PU-291): „nazwa w kroku Udostępnij” — migawka niesie tylko liczbę wzorów (`src/przypadki-uzycia/migawka.ts:17-20`). Opis do poprawy.
+  - BX-007 (PU-044): linia „Done by …, today 0 of N rows” jest na ekranie projektu, nie na karcie „Dziś”. Opis do poprawy.
+  - Drobne (bez BX): PU-026/033 nazywają arkusz „What the number shows”, aplikacja ma tytuł „The big number shows”.
+- Niezrobione w tej porcji: zadanie 1 (wynik „Jakość · iOS” run 43752186631 — koordynator nie podał wyniku, tagi `oczekujacy` bez zmian); zadanie 3 (P2 recenzji: K3-2 dopisuje tagi do `e2e/**` i wyzwoli „Jakość · iOS” — czeka na zgodę koordynatora; reszta po porcji); zadanie 4 (lista fizyczna).
+- Maestro (44 PU „do zaprogramowania” + 16 „oczekujących”) — dopiero po zielonym przebiegu A; wypis powyżej.

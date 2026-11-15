@@ -98,6 +98,7 @@ describe('Lista języków (design-spec „Ustawienia › Język”)', () => {
 });
 
 describe('Ekran „Źródła wiedzy” (BR-KAL-008)', () => {
+  // PU-103: ekran „About our information” pokazuje zdanie ogólne i dosłowną linię „Source: Craft Yarn Council's www.YarnStandards.com”, bez odnośników.
   test('jedno ogólne zdanie i linia źródła dosłownie z BR-KAL-008; bez odnośników', () => {
     render(<ZrodlaWiedzy t={t} />);
     expect(screen.getByRole('header', { name: 'About our information' })).toBeTruthy();
