@@ -78,6 +78,30 @@ function trasy(root, kat = path.join(root, 'app'), prefiks = '') {
   }).sort();
 }
 /**
+ * BX-013 (KO-079): lista w linii `[a, "b, c"]` — elementy dzielone przecinkiem tylko poza cudzysłowem, koniec na pierwszym `]` poza cudzysłowem,
+ * po nim tylko spacje albo komentarz (` # …`). Niedomknięta lista albo inny ogon → null (jak przy poprzednim parserze: brak tagów).
+ */
+function listaWLinii(tekst) {
+  if (!tekst.startsWith('[')) return null;
+  const wynik = [];
+  let el = '';
+  let cudzyslow = null;
+  for (let i = 1; i < tekst.length; i += 1) {
+    const c = tekst[i];
+    if (cudzyslow) {
+      if (c === cudzyslow) cudzyslow = null;
+      else el += c;
+    } else if (c === '"' || c === "'") cudzyslow = c;
+    else if (c === ',') { wynik.push(el); el = ''; }
+    else if (c === ']') {
+      if (!/^[ \t]*(?:#.*)?$/.test(tekst.slice(i + 1))) return null;
+      wynik.push(el);
+      return wynik.map((x) => x.trim()).filter(Boolean);
+    } else el += c;
+  }
+  return null;
+}
+/**
  * Tagi z nagłówka scenariusza Maestro (przed pierwszym `---`). BX-012 (KO-078): odporny na CRLF, linie komentarza i puste w bloku `tags:`,
  * zapis w linii `tags: [a, "b"]` i listę bez wcięcia; komentarz po tagu (` # …`) jest odcinany, tag w linii komentarza się nie liczy.
  * Tylko zaostrzenie względem wersji sprzed BX-012: wszystko, co ta wersja zwracała, zwraca też ta (test na scenariuszach z repo).
@@ -87,8 +111,8 @@ export function tagiScenariusza(tekst) {
   const czysty = (x) => x.replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '');
   const start = linie.findIndex((l) => /^tags:/.test(l));
   if (start < 0) return [];
-  const wLinii = /^tags:[ \t]*\[(.*)\][ \t]*(?:#.*)?$/.exec(linie[start]);
-  if (wLinii) return wLinii[1].split(',').map(czysty).filter(Boolean);
+  const wLinii = listaWLinii(linie[start].replace(/^tags:[ \t]*/, ''));
+  if (wLinii) return wLinii;
   const wynik = [];
   for (const l of linie.slice(start + 1)) {
     if (!l.trim() || /^[ \t]*#/.test(l)) continue; // pusta linia i komentarz nie kończą bloku

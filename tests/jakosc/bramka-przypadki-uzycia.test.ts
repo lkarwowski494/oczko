@@ -348,3 +348,24 @@ describe('BX-012: tagiScenariusza — odporność na komentarz, CRLF, zapis w li
     }
   }, 120000);
 });
+
+// BX-013 (KO-079; recenzja niezależna FX, KO-078 „tylko zaostrzenie” złamane): zapis w linii `tags: [..]` czytał zachłannie komentarz (`\[(.*)\]`)
+// i dzielił po przecinkach także w cudzysłowie — tag z komentarza albo z środka napisu zaliczał PU w K3-2, a poprzedni parser dawał [].
+describe('BX-013: tagiScenariusza — lista w linii kończy się na pierwszym `]` poza cudzysłowem, tag w komentarzu nie zalicza', () => {
+  const tagi = (t: string) => b('tagiScenariusza', t) as string[];
+  const plik = (tagiBlok: string) => `appId: x\n${tagiBlok}\n---\n- launchApp\n`;
+  test('komentarz po liście z własnymi nawiasami: `tags: [smoke] # dawniej [x, PU-005]` → tylko smoke', () => {
+    expect(tagi(plik('tags: [smoke] # dawniej [x, PU-005]'))).toEqual(['smoke']);
+  });
+  test('przecinek w cudzysłowie nie dzieli elementu: `tags: ["a, PU-005"]` jest jednym tagiem, nie zalicza PU-005', () => {
+    expect(tagi(plik('tags: ["a, PU-005"]'))).toEqual(['a, PU-005']);
+    expect(tagi(plik('tags: [\'a, PU-005\', ipad]'))).toEqual(['a, PU-005', 'ipad']);
+  });
+  test('`]` i `#` w cudzysłowie nie kończą listy ani nie zaczynają komentarza', () => {
+    expect(tagi(plik('tags: ["a]b", "c # d", PU-005]'))).toEqual(['a]b', 'c # d', 'PU-005']);
+  });
+  test('niedomknięta lista albo coś innego niż komentarz po `]` nie daje tagów', () => {
+    expect(tagi(plik('tags: [smoke, PU-005'))).toEqual([]);
+    expect(tagi(plik('tags: [smoke] PU-005'))).toEqual([]);
+  });
+});
