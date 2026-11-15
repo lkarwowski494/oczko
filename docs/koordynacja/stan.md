@@ -28,7 +28,8 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - **BX3** PRZEKAZANIE 20:17 @ c4de9604 (autor OK, 0 Co-Authored-By; verify w haku 7549 testów wg sesji): KO-071 (P-850) i KO-072 (33 PU z powrotem B „z testem:”, P-849 poprawiony) wykonane; katalog A=93, B=194 (33 z testem, 16 Maestro 71–84 oczekujące, 145 do zaprogramowania), F=51. 4,93 USD, 33%. Przyjęta jako stan pracy na gałęzi BX (bez scalenia; recenzja c4de9604 → BX4); zarchiwizowana 20:29 (4,96 USD).
 - **BX4** session_01T66VBvtUvkxAB9LsUpyJ3s (08 build sonnet, start 20:28; polecenie polecenia/BX4.md @ 59c3f2fe; prompt roli przepisany przez subagenta bez porównania z plikiem — niesprawdzone): recenzja niezależna c4de9604, tagi 71–84 po iOS, 145 B porcjami; pula P-854…P-858, pułap 12.
 - **BX4** zamknięta @ 672a22f9 i zarchiwizowana (5,40 USD, 35%). **BX5** session_01T66VByxNfXXLjTVYtuA35t (prompt zgodny bajt w bajt).
-- **Jakość · iOS 43752186631** na 8f0c1424 w toku (części iPhone); wynik → BX5.
+- **Jakość · iOS 43752186631** na 8f0c1424: failure (21:15). Bramkowy 39-p-190 czerwony 2× (`jezyk-pl` niewidoczny); 71–84: 12 zielonych, 81 PU-228 i 83 PU-234 czerwone (informacyjne). Maszyna wykluczona. → BX5: zdjęcie 12 tagów + 3 znaleziska.
+- **BX5** porcja 1 @ 1c7bc379: B z testem 134 / oczekujące 16 / do zaprogramowania 44; znaleziska BX-002 (realny błąd: src/ekrany/WzorAkcje.ts:27, notatka nie odświeża widoku — wymaga sesji fix z prawem do src/), BX-003…BX-007. K3-2 → BX6.
 - **CC** zarchiwizowana; **PR prompts #32** https://github.com/lkarwowski494/prompts/pull/32 (head 7bc5ada) — scala właściciel (Squash).
 - Build 8: bramka KO-065 czerwona do zaprogramowania 145 B (P-837/KO-068); zgoda właściciela na build 8 — brak.
 
@@ -996,3 +997,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 20:51 | BX4 | RAPORT @ 41515183 (verify w haku wg sesji): recenzja c4de9604 — P1 K2-1, K3-1, K2-2 poprawione testem czerwonym najpierw; 15 PU → B z testem (B z testem 48 / oczekujące 16 / do zaprogramowania 130); P-854. Odpowiedź: KO-073, KO-074. iOS 43752186631 nadal in_progress | kontrola 21:50 |
 | 15.11 20:58 | M9 | BX4 @ 672a22f9 (autor OK, 0 Co-Authored-By; verify w haku wg sesji): KO-073 (P-855), KO-074 (P-856, PU-339 F); 339 PU, B z testem 49/oczekujące 16/do zaprogramowania 129; 4,81 USD, 33% → PRZEKAZANIE. Polecenie BX5 (pula P-859…P-863) | start BX5, archiwum BX4 |
 | 15.11 21:05 | M9 | BX5 = session_01T66VByxNfXXLjTVYtuA35t (prompt zgodny: sha256 f884fa76…, diff pusty). BX4 zarchiwizowana (5,40 USD, 35%) | kontrola 21:51 |
+| 15.11 21:50 | M9 | BX5 porcja 1 @ 1c7bc379 przyjęta jako stan pracy (autor OK; 85 PU B → z testem; P-859, P-860). iOS 43752186631 failure: P-190 bramkowy czerwony 2×, 81/83 czerwone informacyjnie, 12 tagów do zdjęcia (logi jobów sprawdzone). K3-2 odłożone do BX6 | iOS po pushu BX5; BX6 |
