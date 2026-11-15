@@ -50,6 +50,7 @@ export default function EkranUstawien(): React.ReactElement {
   const { import: plikImportu } = useLocalSearchParams<{ import?: string }>(); // plik `.oczko` otwarty z Plików (ADR-0004, +native-intent)
 
   useFocusEffect(useCallback(() => {
+    ustawPref((stara) => { const nowa = preferencje.stan(); return stara.wibracje === nowa.wibracje && stara.ekranNieGasnie === nowa.ekranNieGasnie && stara.ukladMiar === nowa.ukladMiar ? stara : { ...nowa }; }); // BX-008: wartości zmienione na innej trasie (np. „Units” w /miary) są po powrocie świeże; bez zmiany ekran się nie renderuje ponownie
     const koniec = kontener.dostep.naZmiane(ustawDostep);
     void przeczytanePrzewodnika(z).then((w) => { if (w.ok) ustawPrzeczytanychPrzewodnika(postepPrzewodnika(w.wartosc).n); }); // P-685: wartość wiersza „Guide”, po powrocie z przewodnika świeża
     if (kontener.icloud) void stanBazy(z.baza).then((s) => ustawIcloud(s.wlaczona));
@@ -58,7 +59,7 @@ export default function EkranUstawien(): React.ReactElement {
       if (w.ok) ustawDni(stanListy(w.wartosc, { zapytanie: '', j: kontener.j, terazMs: ch.ms, strefa: ch.strefa }).dni);
     });
     return koniec;
-  }, [kontener, z]));
+  }, [kontener, z, preferencje]));
 
   /** ADR-0029: zapis w bazie przez kolejkę; migawka zmienia się po COMMIT, błąd = przełącznik wraca i alert `ustawienia.blad_zapisu`. */
   async function zapiszPreferencje(zmiana: Parameters<typeof preferencje.zapisz>[1]): Promise<void> {
