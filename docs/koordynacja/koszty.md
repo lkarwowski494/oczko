@@ -92,3 +92,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BY | 04 audit (fable 5.2 zamiast opus) | 15 | 15,18 | 29 | 17:40 → 18:03 → 18:20 → — → 18:25 | 20 min: start odrzucony (koordynator poza auto) | ponad pułap o 1% |
 | BX | 07 build | 15→20 (KO-065) | 23,87 | 34 | 17:35 → 17:45 → 0e5343fd → (bez CI) → PRZEKAZANIE 18:30, archiwum 18:48 | — | model w praktyce fable (user_switched_model), permission default; ponad pułap 20, poniżej STOP 26 |
 | BZ | prompts (KO-066) | 15 | 17,17 | 31 | 18:05 → 18:11 → bc7f7a95 → (bez CI) → PRZEKAZANIE 18:37, archiwum 18:48 | — | ponad pułap 15, poniżej STOP 19,5; stopki Co-Authored-By |
+| CA | 08 fix (sonnet) | 12 | 6,65 | 36 | 18:20 → 18:28 → cdc659f4 → CI 19:00 → przyjęte 19:12 | ok. 12 min: CI czekał na mój odbiór (wiadomość po przekazaniu koordynatora) | — |
