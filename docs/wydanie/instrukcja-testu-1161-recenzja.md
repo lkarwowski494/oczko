@@ -1,0 +1,69 @@
+# Recenzja strony „Test Oczka 1161” względem listy źródłowej
+
+- Data: 2026-11-15. Rola 07-jakosc, recenzja niezależna. Gałąź `claude/bp-instrukcja-testu-2026-11-15`, HEAD `3ca5bec`.
+- Porównano: `docs/wydanie/instrukcja-testu-1161.html` (strona) ze źródłem `docs/wydanie/test-urzadzenia-build5.md` (lista buildu 5, obowiązuje dla 1161: `docs/jakosc/werdykt-build-1161.md`, kod 1161 = kod 1151).
+- Metoda:
+  - `grep -cE '^\s*- \[ \] \*\*[TZG]-[0-9]+' docs/wydanie/test-urzadzenia-build5.md` → 121;
+  - skrypt node: wyciąga `var DANE = {...}` ze strony (`JSON.parse`), parsuje źródło (sekcja `### N.`, nagłówek kroku `urządzenie · min · temat`, punkty „Zrób/Wynik/Uwaga” bez „Źródło”), porównuje ID, kolejność, sekcję, urządzenie, minuty, czekanie, oznaczenie „dodatkowy”; dla każdego kroku sprawdza, czy każdy cytat `„…”` ze źródła występuje znak w znak na stronie (zrob + powinno + szczegoly + wpisz + uwaga) i odwrotnie, oraz różnice w liczbach; zestawienie obok siebie wszystkich 121 kroków przeczytane w całości;
+  - wzorce w treści kroków: rozszerzenia plików, `P-NNN`, `KO-`, `TT-`, `U\d`, `BR-/F-/ZM-`, `e2e`, `:linia`, backtick, SHA, numery buildów;
+  - Playwright/Chromium 390×844 (strona owinięta w szkielet z `<meta name="viewport" content="width=device-width,initial-scale=1">`): przewijanie poziome (`scrollWidth`), błędy konsoli, przyciski tak/nie/pomiń, `localStorage` po przeładowaniu, „Kopiuj wynik” (schowek) i „Pokaż tekst”, oba tryby i 3 podejścia; dodatkowo 320 px.
+
+## Werdykt
+**ZGODNA Z UWAGAMI** — wszystkie 121 kroków są na stronie we właściwej sekcji, trybie i podejściu, z tymi samymi urządzeniami, czasami, czynnościami, wartościami i napisami aplikacji; nie ma znalezisk P1, są 4 drobne przeinaczenia kontekstu „buildu poprzedniego/starszego”, przewijanie poziome na 390 px w podejściach 1 i 3 oraz uwagi formalne.
+
+## Liczby
+| Zakres | Źródło | Strona |
+|---|---|---|
+| Wszystkie kroki | 121 (118 + 3 dodatkowe) | 121; brak zgubionych, brak duplikatów, kolejność identyczna |
+| Kroki dodatkowe | T-49, T-101, T-137 | T-49 „dodatkowy”, T-101 „dodatkowy”, T-137 „dodatkowy, po ok. 8 dniach” (chip przy kroku, wyłączone z sumy czasu) |
+| Tryb krótki (wymaganie: T-01, T-02, 1a, T-136 + T-04 i sekcja 14) | — | 13: T-01, T-02, T-04, Z-01…Z-06, T-105, T-106, T-107, T-136; ok. 40 min (39 min kroków + 1 min przygotowania wzoru) |
+| Podejście 1 (sekcje 1–9 z 1a i 8a) | 182 min kroków | 77 kroków, ok. 3 h 2 min (182 min) |
+| Podejście 2 (sekcje 10–15) | „93 min kroków + 10 min czekania” | 28 kroków, ok. 1 h 44 min (94 + 10 = 104 min) |
+| Podejście 3 (sekcje 16–18) | 41 min | 16 kroków, ok. 41 min |
+| Cały tryb pełny | „316 min + 10 min czekania” | ok. 5 h 27 min (317 + 10) |
+
+Różnica 1 min w podejściu 2 to błąd rachunku w źródle (sekcje 10–15: 6 + 16 + 20 + 26 + 15 + 11 = 94 min bez T-101), nie strony.
+
+Urządzenie, minuty, czekanie (T-113: 1 + 10), sekcja: 121/121 zgodne (porównanie skryptem).
+
+## Znaleziska
+| ID kroku | Co w źródle (cytat) | Co na stronie (cytat) | Ocena | Waga |
+|---|---|---|---|---|
+| Z-01 (Szczegóły) | „(w buildzie 4 nowy pas było widać dopiero po ponownym otwarciu)” | „(w poprzednim buildzie nowy pas było widać dopiero po ponownym otwarciu)” | przeinaczone: dla 1161 poprzedni build to 1151, który już ma poprawkę (kod 1161 = 1151); błąd był w 1141. Na wynik kroku nie wpływa (to nawias kontekstowy) | P2 |
+| Z-03 (Szczegóły) | „Jeśli po T-02 masz zakreślenia zrobione w buildzie 4 lub starszym: tamte pasy zostają mocniej żółte” | „Jeśli po T-02 masz zakreślenia zrobione w starszym buildzie: tamte pasy zostają mocniej żółte” | przeinaczone: zakreślenia z 1151 mają już krycie 0,45 i nie będą mocniejsze; poprawnie „w buildzie 1141 lub starszym” | P2 |
+| Z-02 (temat), Z-05 (temat) | „krok **U2** (04-002)”, „(U2 na iPadzie)” | „czy oba pasy są równe (krok U2)”, „Z-01–Z-04 na iPadzie (U2 na iPadzie)” | kod wewnętrzny „U2” został w treści kroku (pozostałe kody U/TT strona usunęła) | P2 |
+| Tryb krótki (opis zakresu) | „Jeśli pełny test buildu 4 był zrobiony i koordynator tak zdecyduje, wystarczy wersja krótka” | „Wystarcza, jeśli pełny test poprzedniego buildu był zrobiony.” | przeinaczone: warunek dotyczy pełnego testu buildu 4 (1141), a poprzedni build to 1151, którego nikt nie testował w całości; brak też „koordynator zdecyduje” | P2 |
+| T-43, T-44, T-48 (Zrób); T-125 (Szczegóły) | adres w pogrubieniu | `**https://apps4brew.com/oczko/support.html**` (i privacy.html) jako niełamliwy ciąg | kosmetyczne w treści, ale skutek na stronie: przewijanie poziome na 390 px — podejście 1: `scrollWidth` 449 przy zwiniętych szczegółach; podejście 3: 452 po rozwinięciu „Szczegóły wyniku” T-125; na 320 px tak samo. Przyczyna potwierdzona: po dodaniu `overflow-wrap:anywhere` do `.krok li, .krok p` szerokość wraca do 390. Tryb krótki i podejście 2 bez przewijania | P2 |
+| Zanim zaczniesz → Napisy | (brak; wersja krótka w źródle: T-01, T-02, 1a, T-136, bez T-05) | „Tryb krótki nie ma kroku T-05: przełącz tak samo albo szukaj polskich odpowiedników napisów.” | dopisane, uzasadnione (bez tego właściciel z polskim telefonem nie znajdzie angielskich napisów) | P2 |
+| Zanim zaczniesz → Co przygotować | „Pliki w aplikacji Pliki na iPhonie … dowolny PDF wzoru” | „W aplikacji Pliki na iPhonie i iPadzie: dowolny PDF wzoru” | dopisane „i iPadzie”, wynika z Z-05 i T-96 | kosmetyczne |
+| Zanim zaczniesz → Czego nie testujesz | — | „Zakupu „Yearly” i „Lifetime” (powód w „Zakup Pro w TestFlight”)” | w trybie krótkim blok „Zakup Pro w TestFlight” jest ukryty (`data-tylko="pelny"`), więc odesłanie prowadzi do niewidocznego bloku | kosmetyczne |
+| T-16, T-22, T-49, T-107, G-21 (Zrób) | jeden akapit czynności | punkty po 177–197 znaków (T-16: dwa punkty z 3–4 czynnościami każdy; T-22, T-49, T-107, G-21: jeden punkt) | kosmetyczne: wymóg „krótkie punkty” niespełniony; czynności i kolejność zachowane | P2 |
+| T-02, T-32, T-45, T-55, T-61, G-06, T-72, G-30 (Powinno być) | pełny „Wynik” | „Powinno być” = pełny wynik, 3–4 zdania, 196–258 znaków, bez „Szczegółów” | kosmetyczne: wymóg „jedno–dwa zdania” niespełniony; treść zgodna ze źródłem | P2 |
+
+Wstępy sekcji (wszystkie zgodne co do sensu): sekcja 2 bez „(szybka seria to osobny przypadek, T-11)”, sekcja 11 bez „Wyłączenie tak samo” — skrócenia bez wpływu na wynik.
+
+Usunięcia zgodne z wymaganiami (nie liczone jako znaleziska): wszystkie „Źródło” i „automat”, ścieżki (`src/domena/ocena.ts:26` w T-55, `app/oferty.tsx:44-49` w T-74, `en.json:42` w T-24, `en.json:18` w T-25), kody U/TT (T-41, T-42, T-45, T-16, T-46, T-48, T-49, T-73, T-80, T-90, T-96, T-97, T-98, T-99, T-101, T-106, T-107, T-130, T-133, T-135), P-673 (T-120), P-700 (G-26), „Trening L-051” (T-91), „(defekt 019)”, „(04-001)”, „(07-jakosc-001)”, „(P-708…)”, „(nowe w buildzie 4)” w tematach, „(nowe w buildzie 3, bez zmian w 4)” (T-65), notatka o rozjeździe „About our content” (T-66; to uwaga dla roli 04, nie sprawdzenie), `[DO USTALENIA]` (T-110 → „progu nie ma — tylko zapis pomiaru”). „build 5” → „build 1161” (T-02, T-95), „build 1–4” → „starszy build” (T-01) — zgodne z wymaganiem 1161.
+
+## Sprawdzenia szczegółowe
+1. **Liczba i przydział:** 121 = 121, te same ID i kolejność; sekcja każdego kroku zgodna; podejścia 77 + 28 + 16 = 121; tryb krótki zgodny z wymaganiem koordynatora.
+2. **Treść kroków:** każdy cytat `„…”` ze źródła występuje znak w znak na stronie we wszystkich 121 krokach (jedyny brak: „About our content” w T-66 — usunięta notatka dokumentacyjna). Nowe cytaty na stronie to tematy ze źródła, wpisy „tak/nie” i skróty z wielokropkiem („No free crafting days left…” w „Powinno być” T-71; pełny napis jest w „Szczegółach”). Wszystkie liczby i nazwy projektów (Scarf test, Sweater test, Scan test, Watch test, Highlight test, Test merino, 10, 8, 6, 3, 437, 399.59, 22/10/50, 110, 3,25, 12/6/8, 30 s, 10 min, 7 dni) zachowane. Kolejność czynności w „Zrób” bez zmian. Gdzie „Powinno być” jest skrótem (T-03, Z-01, Z-03, Z-06, T-25, T-35, G-01–G-05, T-71, G-20, G-21, G-23, T-111, G-25, G-26, T-125), „Szczegóły wyniku” zawierają pełny wynik ze źródła, a skrót nie przeinacza sensu.
+3. **Zanim zaczniesz:** instalacja 1161, pliki, ustawienia iPhone'a (blokada 1 min), zegarek sparowany, zakup Pro, 3 podejścia z warunkami (T-70/T-71 przed T-72, 6 dni, T-137 po 8 dniach), zgłaszanie, kroki niewykonalne, „Czego nie testujesz” — zgodne ze źródłem, skrócone; dopisane tylko pozycje wymienione w tabeli i opis działania strony (zapis w przeglądarce, pole numeru buildu). Linki do `tekst.docx`, `tabela.docx`, `obraz.docx` wskazują commit `761b955`, na którym pliki istnieją (`git cat-file -e` → ok).
+4. **Ścieżki i kody w treści kroków:** brak ścieżek plików, numerów linii, `P-NNN`, `KO-`, `TT-`, SHA. Zostały: „U2” (Z-02, Z-05), adresy stron do wpisania (T-43, T-44, T-48, T-125 — dane testu, nie źródła), nazwy plików `.docx` (T-41, T-49 — pliki do wybrania).
+5. **Uruchomienie (Chromium, 390 px):** błędów i ostrzeżeń konsoli 0. Tak/nie/pomiń: `aria-pressed` i `data-stan` się zmieniają, licznik postępu „3 z 13 · 1 tak · 1 nie · 1 pominięte”, stan i uwagi w `localStorage` (`oczko-test-1161-v1`) przetrwały przeładowanie. „Kopiuj wynik” → komunikat „Skopiowano…”, schowek = jedna wiadomość: nagłówek z buildem, trybem/podejściem i datą, wyniki `T-01 tak; T-02 nie — …; T-04 nie sprawdzono — …` i lista „Bez odpowiedzi (N)”; „Pokaż tekst” daje ten sam tekst. W trybie pełnym wiadomość obejmuje tylko bieżące podejście. Przewijanie poziome: tryb krótki i podejście 2 — brak; podejście 1 i 3 — jest (tabela, wiersz T-43/T-44/T-48/T-125).
+
+## Kroki sprawdzone bez uwag (100)
+T-01, T-03, T-04, T-05, Z-04, Z-06, T-10, T-11, T-12, T-13, T-14, T-15, T-17, T-20, T-21, T-23, T-24, T-25, T-19, T-26, T-27, T-28, T-29, T-30, T-31, T-33, T-34, T-35, T-40, T-41, T-42, T-38, T-46, T-47, T-50, T-51, T-52, T-53, T-54, T-56, T-57, T-58, T-60, T-62, T-63, T-64, T-65, T-66, G-01, G-02, G-03, G-04, G-05, G-07, G-08, G-09, T-70, T-71, T-73, T-74, T-80, T-81, T-85, T-86, T-87, G-20, T-90, T-91, T-92, G-22, T-93, T-95, T-96, G-23, T-97, T-98, T-99, T-100, T-101, T-105, T-106, T-110, T-111, T-113, T-114, T-115, T-120, G-25, T-121, G-26, T-122, T-126, T-130, T-131, T-132, G-11, T-133, T-135, T-136, T-137
+
+Treść zgodna, uwagi tylko formalne (17): T-02, T-16, T-22, T-32, T-43, T-44, T-45, T-48, T-49, T-55, T-61, G-06, T-72, T-107, G-21, T-125, G-30.
+Uwagi do treści (4): Z-01, Z-02, Z-03, Z-05.
+
+## Naniesione po recenzji (autor, sesja BP, 2026-11-15)
+- Z-01, Z-03, Z-06: „poprzedni/starszy build” → „build 1141” (jak „build 4” w źródle).
+- Opis trybu krótkiego: „jeśli pełny test buildu 1141 był zrobiony i koordynator tak zdecyduje” (jak w źródle).
+- Tematy Z-02 i Z-05 bez kodu „U2”; generator odrzuca teraz każdy kod `U<liczba>` w treści.
+- `overflow-wrap: anywhere` w krokach i blokach „Zanim zaczniesz”: pomiar Chromium 320 i 390 px, jasny i ciemny, tryb krótki i podejścia 1–3 z rozwiniętymi „Szczegółami” — `scrollWidth` = szerokość okna, konsola bez błędów.
+- „Zrób” T-16, T-22, T-49, T-107, G-21 rozbite na krótsze punkty (te same czynności i kolejność; w T-49 strzałka „→ Oczko” zapisana jako „→ Udostępnij → Oczko”, jak w T-48).
+- „Powinno być” T-02, T-32, T-45, T-55, T-61, G-06, T-72, G-30 skrócone do 1–2 zdań; pełny wynik ze źródła w „Szczegóły wyniku”.
+- „Czego nie testujesz”: powód dla „Yearly”/„Lifetime” wpisany wprost (blok o zakupie jest ukryty w trybie krótkim); „Co przygotować”: PDF w Plikach iPhone'a, na iPadzie z Plików iPada albo przez Udostępnij (jak T-96).
+- Na prośbę koordynatora („każdy krok wykonalny bez zgadywania”): blok „Gesty i miejsca w iOS” (przełącznik aplikacji, ekran główny, Centrum sterowania, Centrum powiadomień, blokada, korona zegarka, Udostępnij). To pomoc w obsłudze iOS, nie nowe kroki testu.
+- Bez zmian: suma podejścia 2 liczona z kroków (94 min) — niezgodność 93 vs 94 jest w źródle.
