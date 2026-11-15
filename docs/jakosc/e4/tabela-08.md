@@ -315,8 +315,11 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-pelny-promien.test.tsx` | zielony (główny zestaw) | 2 | P-361 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-pelny-token.test.tsx` | zielony (główny zestaw) | 2 | P-553 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przypomnienia-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-009, P-330, P-581, P-586 | `src/przypadki-uzycia/widok-licznika` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-seria-zrodlo-127-335.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/Licznik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wibracje-027.test.tsx` | zielony (główny zestaw) | 2 | R-148 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/sesje.test.tsx` | zielony (główny zestaw) | 5 | BR-PRJ-013, BR-PRJ-013/S4, P-191, P-195 | `src/ekrany/Formularze`<br>`src/ekrany/Sesje`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/skrzynka-na-ekranie.test.tsx` | zielony (główny zestaw) | 5 | P-218, P-283, P-301 | `src/domena/porty`<br>`src/ekrany/wspolne`<br>`src/kompozycja/SkrzynkaNaEkranie`<br>`src/kompozycja/wzor` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-danych-konto-314.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/synchronizacja` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-danych-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-002, P-220, P-339 | `src/dane/repozytoria/icloud` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-wczytywania-przycisk.test.tsx` | zielony (główny zestaw) | 5 | P-553 | `src/ekrany/StanWczytywania` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/stan-wczytywania-tlo.test.tsx` | zielony (główny zestaw) | 11 | P-553 | `src/ekrany/StanWczytywania` | — |
@@ -431,4 +434,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 427; zależnych od poprawek: 270.
+Razem plików testów: 430; zależnych od poprawek: 272.

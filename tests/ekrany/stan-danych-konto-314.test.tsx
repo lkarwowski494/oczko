@@ -4,6 +4,7 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import { act, render, waitFor } from '@testing-library/react-native';
+import type { WidokSynchronizacji } from '../../src/przypadki-uzycia/synchronizacja';
 import { przygotuj } from '../dane/pomocnicze/srodowisko';
 import { tEn } from './pomoc';
 
@@ -23,7 +24,7 @@ async function start() {
   const t = await tEn();
   const s = await przygotuj();
   const sterownik = {
-    widok: () => ({ stan: 'konto_zmienione', przyczyna: null, status: null }), obserwuj: () => () => undefined,
+    widok: (): WidokSynchronizacji => ({ stan: 'konto_zmienione', przyczyna: null, status: null }), obserwuj: () => () => undefined,
     polacz: jest.fn(async () => undefined), nieSynchronizuj: jest.fn(async () => undefined),
   };
   mockAplikacja = {
