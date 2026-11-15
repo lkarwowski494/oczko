@@ -125,6 +125,12 @@ describe('Oferty', () => {
     expect(przycisk('Restore purchases', 'button')).toBeTruthy();
   });
 
+  // PU-259: komunikat o braku cen widoczny po tekście (poprzedni test R-118 sprawdzał tylko brak przycisków zakupu).
+  test('PU-259: bez cen ze sklepu — „Prices aren’t available right now. Check your connection.”', () => {
+    pokaz({ produkty: { rodzaj: 'brak-sieci' } });
+    expect(screen.getByText('Prices aren’t available right now. Check your connection.')).toBeTruthy();
+  });
+
   test('P-089 (2) → P-563 (12): informacja o Family Sharing tylko, gdy włączone — jako kafel „Dla rodziny”, nie zdanie przy „Bez Pro” (design-spec Dzianiny, wiersz oferty)', () => {
     pokaz({ familySharing: true });
     expect(screen.getByText(/You can share it with your family through Family Sharing\./)).toBeTruthy();

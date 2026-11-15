@@ -100,4 +100,35 @@ describe('Formularze', () => {
     expect(naZapisz).not.toHaveBeenCalled();
     expect(screen.getByRole('alert')).toBeTruthy();
   });
+
+  // PU-252: niepełne przypomnienie — komunikat z tekstem według pola, nic nie zapisane.
+  test('PU-252: puste „Starting on row” → „Enter the row to start on.”; „Every … rows” = 0 → „Fill in every number: 1 or more.”; zapis nie woła', () => {
+    const naZapisz = jest.fn(ok);
+    const podglad = jest.fn((_p: PlanPrzypomnieniaEkranu): WynikEkranu<number[]> => ({ ok: false, powod: 'bledne_dane' }));
+    render(<FormularzPrzypomnienia stan={{ tekst: '', od: null, co: null, razy: null }} t={t} podglad={podglad} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+    fireEvent.changeText(screen.getByLabelText('What to do'), 'decrease at both ends');
+    fireEvent.changeText(screen.getByLabelText('Every … rows'), '6');
+    fireEvent.changeText(screen.getByLabelText('How many times'), '5');
+    fireEvent.press(screen.getByRole('button', { name: /^Save reminder/ }));
+    expect(screen.getByText('Enter the row to start on.')).toBeTruthy();
+    fireEvent.changeText(screen.getByLabelText('Starting on row'), '6');
+    fireEvent.changeText(screen.getByLabelText('Every … rows'), '0');
+    fireEvent.press(screen.getByRole('button', { name: /^Save reminder/ }));
+    expect(screen.getByText('Fill in every number: 1 or more.')).toBeTruthy();
+    expect(naZapisz).not.toHaveBeenCalled();
+  });
+
+  // PU-255: tekst komunikatu i nieaktywny „Save” (poprzedni test BR-PRJ-013/S3 sprawdzał tylko rolę alert i brak zapisu).
+  test('PU-255: koniec przed startem — „The end must be after the start.” i „Save” nieaktywny', () => {
+    const naZapisz = jest.fn(ok);
+    const d = (h: number, m: number) => new Date(2026, 9, 22, h, m).getTime();
+    render(<KorektaSesji stan={{ startMs: d(20, 0), koniecMs: d(22, 10), terazMs: d(23, 0), przerwyMs: 0, doSprawdzenia: null, czasInnychMs: 0 }} t={t}
+      formatuj={{ dataGodzina: (ms) => String(ms), czas: (ms) => `${ms / 60_000} min` }} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
+    fireEvent.press(screen.getByTestId('formularz-sesja-koniec'));
+    fireEvent(screen.getByTestId('formularz-sesja-koniec-wybor'), 'onValueChange', { type: 'set', nativeEvent: {} }, new Date(2026, 9, 22, 19, 30));
+    expect(screen.getByText('The end must be after the start.')).toBeTruthy();
+    expect(screen.getByTestId('formularz-zapisz').props.accessibilityState).toMatchObject({ disabled: true });
+    fireEvent.press(screen.getByTestId('formularz-zapisz'));
+    expect(naZapisz).not.toHaveBeenCalled();
+  });
 });

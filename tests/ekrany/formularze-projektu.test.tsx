@@ -34,6 +34,7 @@ test('04-studio-projektowe-005: kilka pól części w nowym projekcie ma różne
   expect(screen.queryByLabelText('Part')).toBeNull();
 });
 
+// PU-251 (katalog przypadków użycia): zły cel części.
 test('część: pusta nazwa — „Add” nieaktywny; cel opcjonalny ≥ 1; 0 → komunikat bez zapisu', async () => {
   const naZapisz = ok();
   render(<FormularzCzesci t={t} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
@@ -87,6 +88,7 @@ test('znaczenie: dwa wybory radio z przykładami na bieżącej wartości; zapis 
   await waitFor(() => expect(naZapisz).toHaveBeenCalledWith('w_trakcie'));
 });
 
+// PU-253 (katalog przypadków użycia): zły rozmiar drutów.
 test('narzędzie: podgląd na żywo z numerem US (RD-11/RD-19), błąd przy 0, „Clear” zapisuje brak', async () => {
   const naZapisz = ok();
   const podglad = (mm: number, n: 'druty' | 'szydelko') => (n === 'druty' && mm === 4 ? '4 mm (US 6)' : n === 'szydelko' && mm === 6.5 ? '6.5 mm (US K-10 ½)' : `${mm} mm`);

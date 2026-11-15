@@ -51,6 +51,7 @@ describe('ekran „Recently deleted” (C3, BR-DAN-008)', () => {
     expect(screen.getAllByTestId('kosz-przywroc')).toHaveLength(2);
   });
 
+  // PU-242 (katalog przypadków użycia): pusty kosz.
   test('pusty kosz: zdanie „Nothing here…” bez listy', () => {
     render(<Kosz stan={kosz({ pozycje: [] })} t={t} naPrzywroc={jest.fn()} />);
     expect(screen.getByText('Nothing here. Deleted projects, parts, counters, patterns, yarn and needles stay here for 30 days.')).toBeTruthy();

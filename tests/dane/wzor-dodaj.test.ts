@@ -108,6 +108,7 @@ test.each(['', 'wzór na czapkę', 'ftp://example.org/a.pdf', 'javascript:alert(
   expect(k.wywolania).toEqual([]);
 });
 
+// PU-257 (katalog przypadków użycia): klasyfikacja błędów importu wzoru (za duży, zły adres, uszkodzony).
 test('plik większy niż WZOR_MAKS_MB → za_duze przed konwersją i zapisem (ADR-0011)', async () => {
   const { s, k, z } = await srodowisko();
   const sciezka = join(s.katalog, 'duzy.docx');

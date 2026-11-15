@@ -90,6 +90,7 @@ test('„Add video link” (W7a) → naDodaj', () => {
   expect(naDodaj).toHaveBeenCalledTimes(1);
 });
 
+// PU-256 (katalog przypadków użycia): zły link do filmu.
 test('arkusz „Video link”: nowy — pola puste, podpis; zły adres → wzor.link_blad, nic nie zapisane; dobry → adres i nazwa', () => {
   const naZapisz = jest.fn();
   render(<ArkuszFilmu t={t} poczatek={null} naZapisz={naZapisz} naAnuluj={jest.fn()} />);

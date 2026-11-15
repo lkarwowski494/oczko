@@ -80,6 +80,7 @@ beforeEach(() => {
 });
 afterEach(() => alert.mockRestore());
 
+// PU-269 (katalog przypadków użycia): niezapisane zakreślenia: „Leave this pattern?”.
 test('gest przy 2 stronach kresek tylko w pamięci: usunięcie zatrzymane, zapis na żądanie, pytanie „Leave this pattern?”; „Leave unsaved” kończy gest', async () => {
   await start();
   mockZapis.f.mockImplementation(async () => 2);

@@ -48,6 +48,7 @@ describe('lista zapasu', () => {
     expect(screen.getAllByTestId('zapas-wynik').map((w) => w.props.accessibilityLabel)).toEqual([expect.stringMatching(/^Sock yarn/)]);
     expect(screen.getByRole('radio', { name: 'Not set' }).props.accessibilityState).toMatchObject({ selected: true });
   });
+  // PU-243 (katalog przypadków użycia): pusty zapas włóczki.
   test('pusty zapas: tekst i przycisk „Add yarn” (zapas-pusty)', () => {
     const naDodaj = jest.fn();
     render(<ZapasTestowy lista={[]} naDodaj={naDodaj} />);
@@ -107,6 +108,7 @@ test('edycja bez zmiany pola długości zapisuje wartość z bazy, nie zaokrągl
 });
 
 describe('druty', () => {
+  // PU-244 (katalog przypadków użycia): puste druty i szydełka.
   test('lista w grupach z uwagą o milimetrach; pusta: druty.pusto', () => {
     const naOtworz = jest.fn();
     const r = render(<ListaDrutow t={t} stan={{ grupy: [{ naglowek: 'Needles', wiersze: [{ id: '1', rozmiar: '4 mm (US 6)', opis: 'circular, 80 cm' }] }] }} naDodaj={jest.fn()} naOtworz={naOtworz} />);

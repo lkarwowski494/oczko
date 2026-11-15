@@ -41,6 +41,7 @@ test('arkusz wyboru: lista zapasu z polami wyboru, zaznaczenie i Save zapisują 
   expect((await s.baza.all<{ wloczka_id: string }>('SELECT wloczka_id FROM projekt_wloczka WHERE projekt_id = ?', ['p1'])).map((x) => x.wloczka_id)).toEqual(['y1']);
 });
 
+// PU-248 (katalog przypadków użycia): pusty zapas przy przypisaniu włóczki.
 test('pusty zapas: tekst „No yarn in your stash yet…” i odnośnik „Add yarn” do /wloczka', async () => {
   const s = await przygotuj();
   await wykonaj(s.baza, baza.slice(0, 3));

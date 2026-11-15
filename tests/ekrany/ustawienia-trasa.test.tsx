@@ -96,6 +96,7 @@ test('07-jakosc-031 F-63: wiersz „Oczko Pro” pokazuje stan „On” przy akt
   expect(screen.queryByTestId('ustawienia-pro')).toBeNull();
 });
 
+// PU-258 (katalog przypadków użycia): plik spoza formatu .oczko.
 test('07-jakosc-031 F-32: obcy plik zamiast archiwum → alert „not recognized” (nie ogólny błąd), dane nietknięte, bez pytania o tryb', async () => {
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
   const { s } = await aplikacja();

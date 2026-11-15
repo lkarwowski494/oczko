@@ -47,6 +47,7 @@ describe('Swatch', () => {
     expect(screen.getByTestId('probka-wynik-oczka')).toHaveProperty('props.children', '50 stitches');
     expect(screen.getByTestId('probka-wynik-grubosc')).toBeTruthy();
   });
+  // PU-254 (katalog przypadków użycia): brak oczek próbki.
   test('przełączenie na 10 cm liczy od nowa; brak próbki przy szerokości → komunikat ze znakiem, bez wyniku (RD-01-W5)', () => {
     ekran('cm', 'Swatch of Harbor Sweater · saved with the project');
     expect(screen.getByText('Swatch of Harbor Sweater · saved with the project')).toBeTruthy();

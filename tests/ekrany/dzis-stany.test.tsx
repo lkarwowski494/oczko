@@ -40,6 +40,7 @@ test('typowy (dzis-390): karta z projektem, częścią, rzędem i celem, „Kont
   expect(p.naUstawienia).toHaveBeenCalledTimes(1);
 });
 
+// PU-249 (katalog przypadków użycia): pusty tydzień na „Dziś”.
 test('pierwszy (dzis-pierwszy-390): „First counter”, 0, „Open counter”, pusty tydzień z zaproszeniem, bez „co dalej” i bez nazwy projektu', () => {
   pokaz({ stan: stanLicznika({ projekt: null, czesc: null, skonczone: 0, dziergany: 1 }), dane: { ...DANE, tydzien: tydzien([]), pustyTydzien: true, coDalej: null, rzedyDzis: 0 } });
   expect(screen.getByText('First counter')).toBeTruthy();

@@ -55,6 +55,7 @@ describe('M1-004: ekran licznika', () => {
   // Treść przewijana pełna (notatka, przypomnienie, kreski) — dawniej komunikat stał pod nią, na końcu `ScrollView`.
   const PELNY = stanLicznika({ notatka: 'ujmowanie co 4 rzędy', przypomnienie: { tekst: 'dekolt', ktory: 1, razy: 3, nastepny: 52 }, sesja: { rzedy: 6, od: '14:05' } });
 
+  // PU-261 (katalog przypadków użycia): błąd zapisu +1 zostawia rząd na ekranie.
   test('M1-004: nieudany zapis +1 — haptyka `bladZapisu`, jedno ogłoszenie z tekstem komunikatu, komunikat poza ScrollView nad przyciskami', async () => {
     const { haptyka, oglos } = pokaz(PELNY, async () => ({ ok: false, powod: 'zapis' }));
     fireEvent.press(screen.getByTestId('licznik-plus'));

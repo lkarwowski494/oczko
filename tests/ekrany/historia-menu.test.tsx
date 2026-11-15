@@ -45,6 +45,7 @@ describe('Historia i menu projektu', () => {
     expect(naCofnij).toHaveBeenCalledWith('z9');
   });
 
+  // PU-241 (katalog przypadków użycia): pusta historia licznika.
   test('BR-LIC-003 [macierz 04: pusta historia]: „No changes yet.” i „Close” (prototyp.html:128)', () => {
     const naZamknij = jest.fn();
     render(<Historia stan={{ wpisy: [] }} t={t} naCofnij={jest.fn()} {...bezAkcji} naZamknij={naZamknij} />);

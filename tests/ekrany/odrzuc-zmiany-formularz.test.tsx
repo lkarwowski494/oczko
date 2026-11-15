@@ -74,6 +74,7 @@ describe('M1-020: notatka (istniejąca rzecz) — „Discard changes?” po zmia
     oczekujPytania(OPIS_ZMIANY);
     expect(mockRouter.back).not.toHaveBeenCalled();
   });
+  // PU-263 (katalog przypadków użycia): powrót do edycji po „Cancel”.
   test('„Back to editing” zostawia arkusz z wpisanym tekstem; „Discard changes” zamyka bez zapisu', async () => {
     const { s } = await otworz({ rodzaj: 'notatka', projekt: 'p1' });
     fireEvent.changeText(screen.getByTestId('formularz-notatka'), 'Merino 4 mm, 2 skeins left');
@@ -87,6 +88,7 @@ describe('M1-020: notatka (istniejąca rzecz) — „Discard changes?” po zmia
     const [r] = await s.baza.all<{ notatka: string }>("SELECT notatka FROM projekt WHERE id = 'p1'");
     expect(r?.notatka).toBe('Merino 4 mm');
   });
+  // PU-265 (katalog przypadków użycia): gest zamknięcia pyta jak „Cancel”.
   test('przesunięcie arkusza w dół po zmianie: usunięcie zatrzymane, to samo pytanie; „Discard changes” kończy gest', async () => {
     await otworz({ rodzaj: 'notatka', projekt: 'p1' });
     fireEvent.changeText(screen.getByTestId('formularz-notatka'), 'Merino 4 mm, 2 skeins left');
@@ -99,6 +101,7 @@ describe('M1-020: notatka (istniejąca rzecz) — „Discard changes?” po zmia
     act(() => odrzuc.onPress?.());
     expect(nawigacja.dispatch).toHaveBeenCalledWith(gest);
   });
+  // PU-264 (katalog przypadków użycia): zamknięcie bez zmian bez pytania.
   test('[kontrola] bez zmian: Cancel i przesunięcie w dół zamykają od razu, bez pytania', async () => {
     await otworz({ rodzaj: 'notatka', projekt: 'p1' });
     anuluj();

@@ -20,6 +20,7 @@ jest.mock('../../modules/oczko-wzor', () => ({ WidokWzoruNatywny: () => mockReac
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranWzoru = (require('../../app/wzor') as { default: React.ComponentType }).default;
 
+// PU-270 (katalog przypadków użycia): AX5: ostatnie źródło wzoru w ScrollView.
 test('07-p3 AX5: menu źródeł wzoru (projekt bez wzoru) leży w ScrollView — ostatnie źródło osiągalne przewinięciem', async () => {
   const { s, k, j } = await kompozycjaTestowa();
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 5)]);

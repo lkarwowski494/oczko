@@ -17,6 +17,7 @@ function pokaz(s: StanListyProjektow) {
 }
 
 describe('ListaProjektow', () => {
+  // PU-238 (katalog przypadków użycia): brak wyników wyszukiwania.
   test('BR-PRJ-012/S3: brak wyników dla „kamizelka”, po wyczyszczeniu lista wraca (design-spec.md:55)', () => {
     const { w, ponow } = pokaz(stan());
     // ekrany.html:180 pole „Search”
@@ -32,6 +33,7 @@ describe('ListaProjektow', () => {
     expect(screen.getByText('Harbor Sweater')).toBeTruthy();
   });
 
+  // PU-237 (katalog przypadków użycia): pusta lista projektów.
   test('BR-PRJ-012 [macierz 04: pusty]: jedno zaproszenie do działania (design-spec.md:55, :73)', () => {
     pokaz(stan({ wToku: [], ukonczone: [] }));
     expect(screen.getByText('No projects yet. Your first row starts one.')).toBeTruthy();

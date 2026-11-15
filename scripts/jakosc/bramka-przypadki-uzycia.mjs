@@ -30,6 +30,8 @@ const KATEGORIE_F = ['TestFlight', 'zegarek', 'wibracje', 'aparat', 'Pencil', 'w
 /** Każda część iPhone'a 1…czesci ma success (skipped i brak zadania to błędy). Zadania iPada i eksperymentów są informacyjne (P-225). */
 export function ocenZestawu(zadania, czesci) {
   const bledy = [];
+  // BX3 P1-3: brak albo zła liczba części nie wyłącza kontroli po cichu (literówka w kluczu `czesci`, 0, NaN).
+  if (!Number.isInteger(czesci) || czesci < 1) return [`e2e/czesci.json: „czesci” musi być liczbą całkowitą ≥ 1 (jest ${JSON.stringify(czesci)})`];
   for (let n = 1; n <= czesci; n++) {
     const nazwa = `e2e (część ${n}, iphone)`;
     const z = zadania.filter((j) => j.name === nazwa);
@@ -206,22 +208,39 @@ export function poprzedniBuild(tagi) {
   const n = tagi.map((t) => /^v[^\s]*-b(\d+)$/.exec(t)).filter(Boolean).map((m) => Number(m[1]));
   return n.length ? Math.max(...n) : null;
 }
-/** Wiersze `| PU-NNN | <wynik> |` → { 'PU-NNN': '<wynik>' }. */
-export function czytajProtokol(tekst) {
-  const w = {};
-  for (const l of tekst.split('\n')) { const m = /^\| (PU-\d{3}) \|(.*)\|\s*$/.exec(l.trim()); if (m) w[m[1]] = m[2].trim(); }
+/** Treść bez bloków kodu (```) i komentarzy HTML — wiersz tam nie jest wynikiem testu (BX3 P1-1). */
+const bezBlokowKodu = (tekst) => tekst.replace(/```[\s\S]*?(```|$)/g, '').replace(/<!--[\s\S]*?(-->|$)/g, '');
+/** Wiersze `| PU-NNN | <wynik> |` → [[id, wynik], …] w kolejności pliku (duplikaty zostają widoczne). */
+export function wierszeProtokolu(tekst) {
+  const w = [];
+  for (const l of bezBlokowKodu(tekst).split('\n')) { const m = /^\| (PU-\d{3}) \|(.*)\|\s*$/.exec(l.trim()); if (m) w.push([m[1], m[2].trim()]); }
   return w;
 }
+/** Wiersze `| PU-NNN | <wynik> |` → { 'PU-NNN': '<wynik>' } (ostatni wygrywa; duplikaty wykrywa kontrolaProtokolu). */
+export function czytajProtokol(tekst) {
+  return Object.fromEntries(wierszeProtokolu(tekst));
+}
+/** Znaki informacyjne uzasadnienia: litery i cyfry (znaki zerowej szerokości, spacje i interpunkcja nie liczą się). */
+const znaki = (x) => (x.match(/[\p{L}\p{N}]/gu) ?? []).length;
+const MIN_ZNAKOW_POMINIECIA = 8; // „brak iPada” (9) przechodzi; „x”, „n/a”, „-” nie. Treść uzasadnienia ocenia człowiek, bramka tylko wyklucza puste formy.
 export function kontrolaProtokolu({ build, wymagane, tekst, wyjatki = {} }) {
   if (tekst === null || tekst === undefined) return wyjatki[String(build)] ? [] : [`brak ${PROTOKOLY}/${build}.md`];
-  const w = czytajProtokol(tekst);
   const bledy = [];
+  if (!wymagane.length) bledy.push('brak PU klasy F w katalogu (pusty zbiór wymaganych — błąd katalogu albo parsowania, nie „nic do sprawdzenia”)');
+  const wiersze = wierszeProtokolu(tekst);
+  const licz = new Map();
+  for (const [id] of wiersze) licz.set(id, (licz.get(id) ?? 0) + 1);
+  for (const [id, n] of licz) if (n > 1) bledy.push(`${id}: ${n} wiersze w protokole (jeden wynik na PU)`);
+  const w = czytajProtokol(tekst);
   for (const id of wymagane) {
     const x = w[id];
     if (x === undefined) bledy.push(`${id}: brak w protokole`);
     else if (/^pominięte:\s*$/.test(x)) bledy.push(`${id}: „pominięte:” bez uzasadnienia`);
     else if (/^zrobione:\s*$/.test(x)) bledy.push(`${id}: „zrobione:” bez wyniku`);
     else if (!/^(zrobione|pominięte): \S/.test(x)) bledy.push(`${id}: wynik „${x}” nie jest „zrobione: …” ani „pominięte: …”`);
+    else if (/<[^>]*>/.test(x)) bledy.push(`${id}: wynik „${x}” zawiera niewypełniony znacznik <…>`);
+    else if (x.startsWith('pominięte:') && znaki(x.slice('pominięte:'.length)) < MIN_ZNAKOW_POMINIECIA) bledy.push(`${id}: uzasadnienie pominięcia za krótkie (min. ${MIN_ZNAKOW_POMINIECIA} liter lub cyfr)`);
+    else if (x.startsWith('zrobione:') && znaki(x.slice('zrobione:'.length)) < 2) bledy.push(`${id}: „zrobione:” bez wyniku (litery lub cyfry)`);
   }
   return bledy;
 }

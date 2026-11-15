@@ -135,6 +135,7 @@ async function zamontuj(Ekran: React.ComponentType): Promise<void> {
 }
 
 describe('M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”, nie pustą planszę', () => {
+  // PU-260 (katalog przypadków użycia): błąd odczytu historii i zapasu (trasy dni, historia, zapas, narzędzia).
   test.each(ZESTAW)('M1-007: %s, odczyt %s → „%s-blad” z „Try again”; ponowienie czyta od nowa', async (_nazwa, awaria, _przedrostek, p) => {
     await srodowisko(p.dane);
     mockParams = p.params ?? {};

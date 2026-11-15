@@ -69,6 +69,7 @@ function pytanie(opis: string) {
 }
 
 describe('arkusz notatki: edycja', () => {
+  // PU-268 (katalog przypadków użycia): notatka na wzorze: pytanie przy wyjściu.
   test('zmiana + Cancel → pytanie „Discard changes?”; „Back to editing” zostawia wpisany tekst', async () => {
     await edytuj('ujmowanie co 6 rzędów');
     fireEvent.press(screen.getByText('Cancel'));

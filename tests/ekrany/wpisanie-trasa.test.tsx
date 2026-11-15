@@ -60,3 +60,14 @@ test('024/ER-43: zapis niezgodny z regionem („1.5”) nie zmienia licznika i p
   expect(mockRouter.back).not.toHaveBeenCalled();
   expect((await k.widok())?.wartosc).toBe(3);
 });
+// PU-250 (katalog przypadków użycia, „Stany puste, błędy i przerwania”): liczba spoza liczb całkowitych bezpiecznych w JS (20 cyfr) daje ten sam komunikat
+// co pusty zapis, licznik zostaje bez zmian, arkusz zostaje otwarty.
+test('PU-250: 20 cyfr — komunikat o liczbie całkowitej, wartość bez zmian, arkusz otwarty', async () => {
+  const { k } = await start(2);
+  await wpisz('99999999999999999999');
+  expect(screen.getByRole('alert')).toBeTruthy();
+  expect(screen.getByText('Enter a whole number, 0 or more, for example 1,000.')).toBeTruthy();
+  expect(mockRouter.back).not.toHaveBeenCalled();
+  expect(screen.getByTestId('wpisz-wartosc-pole')).toBeTruthy();
+  expect((await k.widok())?.wartosc).toBe(3);
+});

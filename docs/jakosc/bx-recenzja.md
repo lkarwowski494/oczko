@@ -205,3 +205,26 @@ Do `tests/jakosc/przypadki-uzycia.test.ts` sprawdzono prototypami w scratchpadzi
 | K5. Pliki `src/przypadki-uzycia/*.ts` | Każda eksportowana funkcja (201 eksportów w 35 plikach) ma PU-ID w mapie `docs/jakosc/pu-mapa.json` albo jest na liście infrastruktury. | Dziś 100%, bo mapy nie ma. Po zbudowaniu mapy z tej recenzji zostaje ok. 14 funkcji bez PU (`usunPrzypomnienie`, `cofnijSerie` z historii, `zmienDateUkonczenia`, `ustawProbke`, `usunCzesc`/`przywrocCzesc`, `usunFilm`, `zmienNazweWzoru`, `przywrocWzor`, `zmienNotatkeWzoru`/`usunNotatkeWzoru`, `usun/przywroc Wloczke/Narzedzie`, `przelaczSesje`, `sesjaDoSprawdzenia`, `odrzucZlecenie`, `sprzatnijKosz`). | niskie, ale mapa wymaga ręcznej obsługi przy każdym nowym eksporcie | Wartościowa jako druga kontrola (domena bez UI, np. kosz po 30 dniach). Wymaga nowego pliku mapy i decyzji 07, czy dopuścić kolumnę albo plik. |
 
 **Rekomendacja.** Teraz dopisać do testu K1 razem z K1b. To regex po liniach z `onPress|onValueChange|text: t(`, słownik `en.json`, początek tekstu przed `{{`, dopasowanie w wierszach `| PU-` i jawna lista `WYJATKI_ETYKIET` z powodem (na start `zglos.plik`). Test najpierw czerwony z 27+12 brakami, zielony po dopisaniu proponowanych PU. Spełnia P-835, bo nowy przycisk bez PU od razu daje czerwony test. K4 dopisać jako tanią regresję. K5 zaplanować z mapą `pu-mapa.json`. K2 i K3 odrzucić, bo w obecnym formacie Pokrycia dają szum.
+
+## Kod bramki KO-065 (BX3, 2026-11-15; subagent bez uzasadnień autora, czytał tylko skrypt, workflow i testy)
+Zakres: `scripts/jakosc/bramka-przypadki-uzycia.mjs`, zadanie `bramka-przypadki` w `testflight.yml`, `tests/jakosc/bramka-przypadki-uzycia.test.ts`, `tests/wydanie/potok-testflight.test.ts`. Testy przed recenzją: 23/23 i 17/17. Workflow spełnia specyfikację (ubuntu, `needs: bramka`, bez `if`/`continue-on-error`, `build.needs` z obiema bramkami, `fetch-depth: 0` + tagi, `POMIN` pomija tylko kontrolę 1, wyjątek 1171 nie działa dla innego N ani w `recenzja`).
+
+**P1 (poprawione testem czerwonym najpierw; dowód `docs/jakosc/bx3-dowod-czerwony.txt`: 9 czerwonych)**
+- P1-1 protokół F przyjmował treść pozorną (`zrobione: <wynik>`, `pominięte: x`/`n/a`/`-`, znak zerowej szerokości, wiersze w bloku kodu i komentarzu HTML). Teraz: odrzucony znacznik `<…>`, pominięcie ≥ 8 liter/cyfr (Unicode), „zrobione:” ≥ 2, bloki ``` i `<!-- -->` ignorowane, duplikat PU = błąd. Granica: sensu uzasadnienia bramka nie ocenia (to człowiek).
+- P1-2 pusty zbiór klasy F dawał zielone („0 PU klasy F”) → teraz błąd.
+- P1-3 `czesci` z `e2e/czesci.json` niepoprawne (0, brak klucza) wyłączało kontrolę 1 po cichu → teraz błąd.
+- P1-5 testy workflow nie chroniły zadań `build`/`bramka` (`if: always()`, `continue-on-error`) ani kroku skryptu (`|| true`) → dopisane testy (zielone od razu: workflow jest poprawny; to ochrona przed regresją, czerwień nie dotyczy).
+
+**P1-4 otwarte (do decyzji koordynatora)** kontrola 1 czyta tylko `conclusion` zadania `e2e (część N, iphone)`; część bez scenariuszy kończy `success` bez symulatora (plan `any=false`, np. zły znacznik), więc zielony przebieg może nie uruchomić żadnego scenariusza. Propozycja: czytać `steps[]` zadań i wymagać kroku „Scenariusze” = success. Nie poprawione: wymaga znajomości `scripts/ci/e2e-czesci.mjs` i przebiegu na żywo (nie do sprawdzenia w Linuksie); skala zmiany > P1 tej sesji.
+
+**P2 (niepoprawione, do kolejki)**
+- P2-6 osiągalność ekranu: import tylko w komentarzu, `import type`, barrel `export *`, aliasy, podkatalogi `src/ekrany`, trasy `.ts` — fałszywie zielone.
+- P2-7 klasa A z `tests/…:linia`: nie sprawdza, że linia leży w `test(`/`it(` ani że nie jest `.skip`; PU w komentarzu wystarcza.
+- P2-8 klasa B „oczekujący”: asercja nie jest sprawdzana (linia 1 z `name:` wystarcza); scenariusz `oczekujacy` jest poza bramką Jakość iOS, więc „istnieje” ≠ „biegnie”.
+- P2-10 build wysłany, ale nieotagowany, nie wymaga protokołu; katalog z tagu o innej liczbie kolumn rzuca wyjątek zamiast błędu kontroli 3.
+- P2-11 `git show` z błędem innym niż „brak ścieżki” cicho przechodzi na katalog bieżący.
+- P2-12 id `PU-\d{3}`: PU-1000 niewidoczny dla parsera (dziś 338 PU).
+- P2-13 `powod` ze spacji przechodzi `[ -n "$POWOD" ]` (`testflight.yml:66-67`).
+- P2-14 `jobs?per_page=100` bez paginacji.
+
+**P3** data wyjątku tylko regexem (2026-99-99 przechodzi); `git tag -l` bierze pierwszy tag alfabetycznie; `kontrolaFunkcji` bez granicy po nazwie pliku i bez podkatalogów; `ocenBramke` (`testflight.mjs`) zwraca pierwszy zielony przebieg, nie wszystkie przebiegi SHA.

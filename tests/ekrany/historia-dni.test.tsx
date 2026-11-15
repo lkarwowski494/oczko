@@ -55,6 +55,7 @@ test('dzień: projekty z rzędami albo samym czasem (ER-55); stuknięcie otwiera
   expect(screen.getAllByText('Time shows here when you use the timer.')).toHaveLength(1); // miesiąc bez sesji (BR-DNI-003 S3)
 });
 
+// PU-239 (katalog przypadków użycia): pusty kalendarz.
 test('dzień bez robótki: „Nothing counted on this day.”; bieżący tydzień: „This week”; pierwsze użycie: zachęta bez ponagleń', () => {
   pokaz({ ...W, dzien: [], tydzien: { ...W.tydzien, od: '2026-10-26', do: '2026-11-01' }, pierwsze: true, dniRobotki: [] }, '2026-10-26');
   expect(screen.getByText('Nothing counted on this day.')).toBeTruthy();

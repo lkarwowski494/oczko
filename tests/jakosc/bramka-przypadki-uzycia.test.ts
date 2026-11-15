@@ -159,3 +159,48 @@ describe('przed App Review: protokół F dokładnie tego buildu (polecenie `rece
     expect(readFileSync(join(root, 'docs/wydanie/lista-1-0.md'), 'utf8')).toMatch(/node scripts\/jakosc\/bramka-przypadki-uzycia\.mjs recenzja <build>/);
   });
 });
+
+// Recenzja niezależna kodu bramki (BX3, docs/jakosc/bx-recenzja.md, „Kod bramki”): P1-1…P1-5. Testy napisane przed poprawkami (czerwień: docs/jakosc/bx3-dowod-czerwony.txt).
+describe('BX3 P1: bramka nie przyjmuje treści pozornej', () => {
+  const tabela = (...w: string[]) => `| PU | Wynik |\n|---|---|\n${w.join('\n')}\n`;
+  const kp = (tekst: string, wymagane = ['PU-001']) => b('kontrolaProtokolu', { build: 1181, wymagane, tekst, wyjatki: {} }) as string[];
+  test.each([
+    ['placeholder z szablonu', '| PU-001 | zrobione: <wynik> |'],
+    ['pominięcie jednym znakiem', '| PU-001 | pominięte: x |'],
+    ['pominięcie „n/a”', '| PU-001 | pominięte: n/a |'],
+    ['pominięcie myślnikiem', '| PU-001 | pominięte: - |'],
+    ['znak zerowej szerokości zamiast uzasadnienia', '| PU-001 | pominięte: \u200b |'],
+  ])('P1-1: %s → czerwone', (_n, wiersz) => {
+    expect(kp(tabela(wiersz)).length).toBeGreaterThan(0);
+  });
+  test('P1-1: wiersze w bloku kodu i w komentarzu HTML nie liczą się jako wyniki', () => {
+    expect(kp('```\n| PU-001 | zrobione: tak |\n```\n')).toEqual(['PU-001: brak w protokole']);
+    expect(kp('<!--\n| PU-001 | zrobione: tak |\n-->\n')).toEqual(['PU-001: brak w protokole']);
+  });
+  test('P1-1: ten sam PU dwa razy (ostatni wiersz wygrywał) → czerwone', () => {
+    expect(kp(tabela('| PU-001 | pominięte: |', '| PU-001 | zrobione: tak |')).length).toBeGreaterThan(0);
+  });
+  test('P1-2: pusty zbiór klasy F (błąd parsowania katalogu) → czerwone, nie „0 PU klasy F” zielone', () => {
+    expect(kp(tabela(), []).length).toBeGreaterThan(0);
+  });
+  test('P1-3: liczba części z e2e/czesci.json musi być całkowita ≥ 1; inaczej kontrola 1 czerwona', () => {
+    for (const czesci of [0, null, undefined, 'x', 2.5]) expect((b('ocenZestawu', [], czesci) as string[]).length).toBeGreaterThan(0);
+  });
+});
+
+describe('BX3 P1-5: testy workflow chronią także zadanie build i krok skryptu', () => {
+  const tekst = readFileSync(join(root, '.github/workflows/testflight.yml'), 'utf8');
+  const w = parse(tekst) as unknown as { jobs: Record<string, Record<string, unknown> & { steps?: { run?: string; if?: string; 'continue-on-error'?: unknown }[] }> };
+  test('build i bramka nie mają if ani continue-on-error (obejście przez always() albo failure() zostawiłoby testy zielone)', () => {
+    for (const z of ['build', 'bramka', 'bramka-przypadki']) {
+      expect(w.jobs[z].if).toBeUndefined();
+      expect(w.jobs[z]['continue-on-error']).toBeUndefined();
+    }
+    expect((w.jobs.build.steps ?? []).filter((s) => s['continue-on-error'] !== undefined && /xcodebuild|upload|testflight|altool/i.test(s.run ?? ''))).toEqual([]);
+  });
+  test('krok skryptu to dokładnie „node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka” (bez „|| true”, „; true”, przekierowań)', () => {
+    const kroki = (w.jobs['bramka-przypadki'].steps ?? []).filter((s) => /bramka-przypadki-uzycia/.test(s.run ?? ''));
+    expect(kroki.map((s) => (s.run ?? '').trim())).toEqual(['node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka']);
+  });
+});
+

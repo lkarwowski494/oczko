@@ -19,6 +19,7 @@ test.each([
   expect(a?.tytul).toBe(tytul);
   expect(a?.opis).toContain(opis);
 });
+// PU-257 (katalog przypadków użycia): teksty alertów importu wzoru.
 test('anulowano i brak_sieci → bez alertu; inny powód → błąd zapisu wzoru z aneksu 04 (nic po cichu; poprawki 04 D1, P-353 c)', () => {
   expect(alertImportu('anulowano', 'x', t)).toBeNull();
   expect(alertImportu('brak_sieci', 'x', t)).toBeNull();

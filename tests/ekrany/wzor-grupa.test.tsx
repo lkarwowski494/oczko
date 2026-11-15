@@ -9,6 +9,7 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const wywolania = () => ({ naOtworz: jest.fn(), naDodaj: jest.fn(), naUsunOczekujacy: jest.fn() });
 
+// PU-246 (katalog przypadków użycia): grupa „Dodaj wzór” bez wzoru.
 test('bez wzoru: nagłówek „Pattern”, „Add pattern” z podpisem; menu źródeł: plik, skan (gdy dostępny), zdjęcia, link', () => {
   const w = wywolania();
   const r = render(<GrupaWzorow wzory={[]} oczekujace={[]} skaner t={t} {...w} />);
@@ -44,6 +45,7 @@ test('W11: import w toku (status) i strona czekająca na sieć z ✕ (wzor-czeka
   expect(w.naUsunOczekujacy).toHaveBeenCalledWith('z1');
 });
 
+// PU-256 (katalog przypadków użycia): zły link do strony.
 test('arkusz linku strony: zły adres → zdanie pod polem, bez zapisu; dobry → naZapisz z adresem', () => {
   const naZapisz = jest.fn();
   render(<ArkuszLinku t={t} naZapisz={naZapisz} naAnuluj={jest.fn()} naWklej={async () => 'https://example.org/czapka'} />);

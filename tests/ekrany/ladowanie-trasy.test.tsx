@@ -81,6 +81,7 @@ describe('E2-137-A1 · lista projektów (app/projekty.tsx)', () => {
     await waitFor(() => expect(screen.getByTestId('projekty-lista')).toBeTruthy());
     expect(screen.queryByTestId('projekty-ladowanie')).toBeNull();
   });
+  // PU-260 (katalog przypadków użycia): błąd odczytu listy projektów.
   test('wyjątek odczytu: stan błędu „projekty-blad” z przyciskiem „Try again”; ponowienie wczytuje listę', async () => {
     await srodowisko();
     const p = psujacySie(prawdziwe.widokProjektow as Odczyt, 1);
@@ -116,6 +117,7 @@ describe('E2-137-A1 · ekran projektu (app/projekt/[id].tsx)', () => {
     expect(screen.queryByTestId('projekt-ladowanie')).toBeNull();
     expect(screen.queryByTestId('e2e-pomiar-ladowania')).toBeNull(); // poza buildem E2E panelu pomiaru nie ma
   });
+  // PU-260 (katalog przypadków użycia): błąd odczytu projektu.
   test('wyjątek odczytu: stan błędu „projekt-blad” z „Try again”; ponowienie otwiera ekran projektu', async () => {
     await srodowisko();
     const p = psujacySie(prawdziwe.widokProjektu as Odczyt, 1);
