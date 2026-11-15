@@ -16,9 +16,10 @@ import { zdjecieBezMetadanych } from '../src/kompozycja/zdjecie-bez-metadanych';
 import { usunPlik } from '../src/dane/pliki/system';
 import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
 
-/** BX-009 (PU-228): trasa pełnoekranowa odsuwa treść od paska stanu i wskaźnika Home jak `Bezpieczny`, ale na czerni podglądu (`systemCzarny.tlo`, bez nowego koloru). */
+/** BX-009 (PU-228): trasa pełnoekranowa odsuwa treść od paska stanu i wskaźnika Home jak `Bezpieczny`, ale na czerni podglądu (`systemCzarny.tlo`, bez nowego koloru).
+ *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
 function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
-  return <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: systemCzarny.tlo }} testID="zdjecie-bezpieczny">{children}</SafeAreaView>;
+  return <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: systemCzarny.tlo }} testID="zdjecie-bezpieczny">{children}</SafeAreaView>;
 }
 
 export default function EkranZdjecia(): React.ReactElement {
