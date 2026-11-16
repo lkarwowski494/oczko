@@ -201,7 +201,7 @@ Między pojedynczymi stuknięciami „+1 row” zostaw ok. 3 s, chyba że krok m
   - Źródło: `brd/wymagania-projekt.md:71` (BR-PRJ-007); `zakres:35` (F-20) · automat: e2e 61
 - [ ] **T-32** · iPhone · 2 min
   - Zrób: Projekt Sweater test → „Done by” → data **7 dni od dziś** → zapisz. Wróć na „Today”, potem „Projects”.
-  - Wynik: W formularzu „Today’s goal: N rows. It stays the same all day.” Na „Today” i w projekcie „Done by …, today 0 of N rows” (zapisz N). Na liście „In progress” Sweater test (z terminem) stoi **nad** projektami bez terminu.
+  - Wynik: W formularzu „Today’s goal: N rows. It stays the same all day.” Na liście „Projects” w wierszu Sweater test „Today: 0 of N rows”, w projekcie „Done by …, today 0 of N rows” (zapisz N); karta na „Today” celu dnia nie pokazuje (PU-044, CF-01). Na liście „In progress” Sweater test (z terminem) stoi **nad** projektami bez terminu.
   - Źródło: `brd/wymagania-dni.md:99` (BR-DNI-005), `:146-153` (BR-DNI-006); `zakres:72` (F-61) · automat: e2e 35
 - [ ] **T-33** · iPhone · 4 min
   - Zrób: Na liczniku Back stuknij „Timer” (stoper rusza od razu, osobnego „Start” nie ma). Stuknij „+1 row” 2 razy. „Pause timer”, „Resume timer”, „Stop timer”. Projekt → „Sessions” → otwórz sesję → zmień godzinę końca o 10 min wcześniej → zapisz.
