@@ -2,6 +2,7 @@
 # Kod: `wzor-zaznacz` → karta kierunku `wzor-kierunek` → pasek; „Add note” (`wzor.dodaj_notatke`, ikona bez testID — selektor po etykiecie) → arkusz z polem `wzor-notatka-pole`, „Save” (`wspolne.zapisz`);
 # chip rysuje widok natywny (`WzorWidokNatywny.tsx:55`, etykieta `wzor.notatka_chip` „Row {n}: {tekst}”) → stuknięcie otwiera arkusz `wzor-notatka-tresc`, `wzor-notatka-zamknij` (`WzorNotatki.tsx`).
 # Ograniczenia: BX-034 (`point`, jak 103); chip natywny — selektor po tekście (hipoteza: etykieta natywna jest w hierarchii Maestro iOS); „Save” przy klawiaturze (krok „Save” może być zasłonięty — do przebiegu iOS).
+# CH-02: „stuknij inny rząd” (`tapOn point`) przenosi pas, ale rząd zostaje 1 niezależnie od miejsca (`znacznik-wzoru.ts:71-72`) — asercja rzędu po stuknięciu nie dowodzi położenia (tylko zrzut 104-znacznik).
 appId: com.apps4brew.knitting
 name: "PU-067 · Notatka przy rzędzie: znacznik → „Add note” → „k2tog here” → „Row 1: k2tog here” także po ponownym otwarciu"
 tags:

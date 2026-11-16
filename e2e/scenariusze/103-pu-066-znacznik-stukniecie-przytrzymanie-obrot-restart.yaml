@@ -3,7 +3,9 @@
 # rząd `wzor-znacznik-rzad` (licznik 0 → rząd 1, `domyslnyRzadBazowy`), przeniesienie zachowuje rząd (`rzadPoPrzeniesieniu`, `znacznik-wzoru.ts:59`), `wzor-menu` → `wzor-obroc`.
 # Ograniczenia: (1) BX-034: `tapOn`/`longPressOn` z `point` (Maestro 2.12.1: TapOnPointV2Command); interpreter w repo ich nie modeluje. (2) BX-035 (hipoteza): wskazówka ma
 # `accessibilityElementsHidden` (czytnik ma ją pod „Mark row”) — jeśli Maestro iOS nie widzi elementów ukrytych przed dostępnością, pierwsza asercja będzie czerwona. (3) Położenie pasa „na wysokości palca”
-# i obrót strony rysuje widok natywny (`oczko-wzor`) — Maestro czyta tylko rząd; położenie i obrót: zrzuty 103-*.
+# i obrót strony rysuje widok natywny (`oczko-wzor`) — Maestro czyta tylko rząd; położenie i obrót: zrzuty 103-*. (4) CH-02: rząd „1” NIE zależy od miejsca stuknięcia (przeniesienie zachowuje rząd,
+# `znacznik-wzoru.ts:71-72`), a `wzor-zaznacz` przestawia pas na środek strony (`app/wzor.tsx:207`) — asercje rzędu po `wzor-zaznacz` nie dowodzą położenia „na miejscu”. Sprawdzają co innego:
+# znacznik z kierunkiem istnieje (bez karty `wzor-kierunek`) po obrocie, przytrzymaniu i restarcie. Położenie: tylko zrzuty (lista telefonu); przytrzymanie przy zamkniętym pasku nie otwiera paska.
 appId: com.apps4brew.knitting
 name: "PU-066 · Znacznik: wskazówka, stuknięcie, przytrzymanie, obrót strony i restart — rząd 1 zostaje"
 tags:
@@ -45,6 +47,7 @@ tags:
 - longPressOn: { point: "50%, 50%" }
 - assertNotVisible: { id: "wzor-kierunek" } # znacznik już jest: przytrzymanie przenosi pas, nie pyta o kierunek
 - tapOn: { id: "wzor-zaznacz" }
+- assertNotVisible: { id: "wzor-kierunek" } # CH-02: bez karty kierunku = znacznik przeżył obrót i przytrzymanie (utracony pytałby o kierunek)
 - assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
 - takeScreenshot: 103-obrocona-po-przytrzymaniu
 - tapOn: { id: "wzor-znacznik-gotowe" }
@@ -53,5 +56,6 @@ tags:
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - tapOn: { id: "wzor-zaznacz" }
+- assertNotVisible: { id: "wzor-kierunek" } # CH-02: bez karty kierunku = znacznik (z kierunkiem) przeżył restart
 - assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
 - takeScreenshot: 103-po-restarcie

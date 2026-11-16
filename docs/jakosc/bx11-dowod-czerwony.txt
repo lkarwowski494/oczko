@@ -19,3 +19,21 @@ FAIL iOS tests/ekrany/e2e-okno-stan.test.tsx
     Unable to find an element with testID: e2e-okno
 Test Suites: 2 failed, 1 passed, 3 total
 Tests:       7 failed, 2 passed, 9 total
+
+BX11 zad. 2 / CH-03 — czerwień przed kodem (nowe testy na starej funkcji naruszenia; 2026-11-16)
+$ npx jest tests/jakosc/pu-191-bez-sdk-reklam-i-sledzenia.test.ts --ci
+FAIL iOS tests/jakosc/pu-191-bez-sdk-reklam-i-sledzenia.test.ts
+    ✓ repo: każda bezpośrednia zależność jest na liście z ID decyzji, brak deklaracji śledzenia w app.json i Info.plist celów (4 ms)
+    ✕ wykrywa: react-native-fbads (Meta Audience Network) (5 ms)
+    ✕ wykrywa: expo-insights (analityka użycia EAS) (1 ms)
+    ✕ wykrywa: @microsoft/react-native-clarity (nagrywanie sesji)
+    ✕ wykrywa: NSPrivacyTracking: true w app.json
+    ✕ wykrywa: domeny śledzenia w privacyManifests (1 ms)
+    ✕ wykrywa: NSUserTrackingUsageDescription w Info.plist rozszerzenia
+    ✕ brak NSPrivacyTracking w app.json też jest naruszeniem (deklaracja ma być jawna: false) (1 ms)
+    ✕ zależność na liście bez ID decyzji w uzasadnieniu jest naruszeniem
+    ✕ zależność znana z listą i ID przechodzi; nazwa z „segment” w środku (kontrolka interfejsu) nie jest fałszywym alarmem (2 ms)
+    ✓ SDK reklam jest naruszeniem także wtedy, gdy ktoś dopisze je do listy (druga bariera: nazwy znanych SDK)
+    ✓ package.json i app.json nie zawierają SDK reklam, analityki, awarii, kont ani prośby ATT (4 ms)
+    ✓ pułapka: kontrola wykrywa SDK reklam, śledzenie, awarie, konta i prośbę ATT
+Tests:       9 failed, 4 passed, 13 total
