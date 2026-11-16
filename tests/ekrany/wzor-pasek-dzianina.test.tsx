@@ -103,7 +103,7 @@ describe('ZM-10: rama w barwie motywu, strona w oryginale', () => {
   const widok = <Text testID="slot-widoku">PDF</Text>;
   const przegladarka = () => render(
     <PrzegladarkaWzoru
-      stan={{ nazwa: 'Harbor chart', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1', strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
+      stan={{ nazwa: 'Harbor chart', projekt: 'Harbor', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1', strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
         licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }) }}
       t={t} widok={widok} naWstecz={jest.fn()} naPrzelacz={jest.fn()} naNarzedzie={jest.fn()} naCofnij={jest.fn()} naZaznaczRzad={jest.fn()} naObroc={jest.fn()} naZmienNazwe={jest.fn()} naUsun={jest.fn()}
       potwierdz={jest.fn()} naPlus={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} naMinus={jest.fn(async () => ({ ok: true as const, wartosc: undefined }))} />,

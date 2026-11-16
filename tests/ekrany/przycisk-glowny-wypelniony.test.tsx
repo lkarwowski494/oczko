@@ -65,7 +65,7 @@ describe.each(MOTYWY)('motyw %s', (_n, schemat, k) => {
       naZmienNazwe: jest.fn(), naUsun: jest.fn(), potwierdz: jest.fn(), naPlus: jest.fn(), naMinus: jest.fn(),
     };
     render(<PrzegladarkaWzoru stan={{
-      nazwa: 'Harbor chart', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
+      nazwa: 'Harbor chart', projekt: 'Harbor', opis: 'PDF · 6 pages', czesc: 'Back', wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
       strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false,
       licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }),
     }} t={t} widok={<RN.Text>PDF</RN.Text>} {...w} />);
