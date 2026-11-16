@@ -7,6 +7,9 @@ tags:
   - BR-WZR-005-S2
   - ipad
   - stan-licznika
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-143
 ---
 - runFlow:
     file: subflows/start-czysty.yaml
