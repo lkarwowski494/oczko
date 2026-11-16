@@ -324,6 +324,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-pelny-promien.test.tsx` | zielony (główny zestaw) | 2 | P-361 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przycisk-pelny-token.test.tsx` | zielony (główny zestaw) | 2 | P-553 | `src/ekrany/Arkusz` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/przypomnienia-trasa.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-009, P-330, P-581, P-586 | `src/przypadki-uzycia/widok-licznika` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-012-ipad-zakreslanie.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-147-ipad-przewodnik.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/domena/przewodnik`<br>`src/przypadki-uzycia/przewodnik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-aparat-odmowa-050.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-czesci-projektu-trasy.test.tsx` | zielony (główny zestaw) | 2 | RD-14 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-data-ukonczenia-285.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/porty` | Z07-22 |
@@ -338,6 +340,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-icloud-wylacz-312.test.tsx` | zielony (główny zestaw) | 1 | — | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/synchronizacja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-import-zastap-icloud-316.test.tsx` | zielony (główny zestaw) | 1 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-ipad-dzis-142.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/porty`<br>`src/ekrany/Aplikacja` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-ipad-uklad-wzoru-143-144.test.tsx` | zielony (główny zestaw) | 2 | — | `src/domena/uklad`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-jezyk-007.test.tsx` | zielony (główny zestaw) | 1 | — | `src/dane/repozytoria/ustawienia`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/przypadki-uzycia/jezyk` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-jezyk-auto-178.test.tsx` | zielony (główny zestaw) | 1 | — | `src/dane/repozytoria/ustawienia`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/przypadki-uzycia/jezyk` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-jezyk-pl-171.test.tsx` | zielony (główny zestaw) | 1 | — | `src/ekrany/Dzis`<br>`src/ekrany/Licznik`<br>`src/ekrany/Oferty`<br>`src/ekrany/Ustawienia`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/przypadki-uzycia/jezyk` | Z07-22 |
@@ -370,7 +373,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wibracje-027.test.tsx` | zielony (główny zestaw) | 2 | R-148 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wloczka-zdjecie-etykiety-289.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/preferencje` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-nazwa-migawka-291.test.ts` | zielony (główny zestaw) | 1 | — | `src/platforma/migawka`<br>`src/przypadki-uzycia/migawka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-przelacz-290.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/porty` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-przelacz-290.test.tsx` | zielony (główny zestaw) | 4 | — | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-trasa-293-294-295.test.tsx` | zielony (główny zestaw) | 3 | — | `src/dane/repozytoria/wzory` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-trasy-058-297-299.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/WzorGrupa`<br>`src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-wznowienie-092.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/porty` | Z07-22 |
@@ -499,4 +502,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 495; zależnych od poprawek: 306.
+Razem plików testów: 498; zależnych od poprawek: 308.
