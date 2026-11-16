@@ -101,6 +101,35 @@ final class ZegarekSkrzynkaTests: XCTestCase {
     XCTAssertEqual(s.oczekujace.map(\.id), ["z1"])
   }
 
+  /// PU-333 (FX5; X-ZG-02 w ujęciu użytkownika): skrzynka nieczytelna (błąd zapisu) → stuknięcie rzuca, a stan pokazywany, kolejka i plik zostają bez zmian;
+  /// przebieg `zapisNieudany` daje haptykę `bladZapisu` (+1 i −1), nigdy potwierdzenia. Po powrocie zapisu następne stuknięcie działa (komunikat znika).
+  func testPU333BladZapisuStanBezZmianHaptykaBladZapisu() throws {
+    let magazyn = MagazynTestowy(PlikSkrzynki(sciezka: sciezka))
+    var s = try SkrzynkaZegarka(magazyn: magazyn, kontekst: try StanEkranuBlokady.dekoduj(Repo.dane("tests/wspolne/stan-zegarka-typowy.json")))
+    _ = try s.stuknijNaZegarku(.plus, teraz: 1_794_340_800_000, strefa: "Europe/Warsaw", id: "z1", urzadzenie: "zegarek-test")
+    let stanPrzed = try XCTUnwrap(s.pokazywany)
+    let plikPrzed = FileManager.default.contents(atPath: sciezka)
+    magazyn.bladDopisz = true
+    var przebieg: PrzebiegStukniecia?
+    do {
+      _ = try s.stuknijNaZegarku(.plus, teraz: 1_794_340_860_000, strefa: "Europe/Warsaw", id: "z2", urzadzenie: "zegarek-test")
+      XCTFail("stuknięcie przy błędzie zapisu musi rzucić")
+    } catch {
+      przebieg = .zapisNieudany // model aplikacji zegarka: wyjątek skrzynki = nieudany zapis (komunikat „nie dodano rzędu n”)
+    }
+    XCTAssertEqual(s.pokazywany, stanPrzed, "liczba na zegarku bez zmian")
+    XCTAssertEqual(s.oczekujace.map(\.id), ["z1"])
+    XCTAssertEqual(FileManager.default.contents(atPath: sciezka), plikPrzed)
+    let nieudany = try XCTUnwrap(przebieg)
+    XCTAssertEqual(wzorzecHaptykiZegarka(.plus, nieudany), .bladZapisu)
+    XCTAssertEqual(wzorzecHaptykiZegarka(.minus, nieudany), .bladZapisu)
+    magazyn.bladDopisz = false
+    guard case .zapisz = try s.stuknijNaZegarku(.plus, teraz: 1_794_340_920_000, strefa: "Europe/Warsaw", id: "z3", urzadzenie: "zegarek-test") else {
+      return XCTFail("po powrocie zapisu stuknięcie ma się zapisać")
+    }
+    XCTAssertEqual(s.oczekujace.map(\.id), ["z1", "z3"])
+  }
+
   /// X-ZG-10: przepisanie przerwane przed `rename` — plik = stan sprzed usunięcia, plik tymczasowy sprzątany przy odczycie.
   func testPrzepisaniePrzerwane() throws {
     let plik = PlikSkrzynki(sciezka: sciezka)
