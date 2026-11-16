@@ -16,6 +16,7 @@ import type { StanZegarka, Zegarek } from '../../domena/porty';
 import { ADRES_STRONY_TESTOWEJ, pdfSkanuTestowy, wordTestowy } from './pliki-wzoru';
 import { PanelOceny } from './ocena-stan';
 import { PanelPomiaruOperacji } from './pomiar-operacji';
+import { zliczNacisniecie } from './nacisniecia-stan';
 
 // Pomiar czasu operacji (E2-137-A3/A4): aplikacja woła je przez `paneleE2e`, więc poza buildem E2E nie trafiają do bundla (P-238).
 export { koniecOperacji, poczatekOperacji, zmierzOperacje } from './pomiar-operacji';
@@ -25,6 +26,7 @@ export { zapamietajAdres, zliczajProsby } from './ocena-stan';
 export { PanelNawigacji, zerujNawigacje, zliczNawigacje } from './nawigacje-stan';
 // FX6b (P-909): wejścia „+1”/„−1” i zapisy licznika (panel `e2e-licznik-wejscia`) oraz zdarzenia zmiany tekstu w formularzu nazwy (panel `e2e-nazwa-wejscia`).
 export { diagnostykaLicznika, PanelLicznika, PanelNazwy, zerujWejscia, zliczWpisNazwy } from './wejscia-stan';
+export { opisNacisniec, PanelNacisniec, zerujNacisniecia, zliczNacisniecie } from './nacisniecia-stan';
 // CH-01 (BX11): proporcja okna aplikacji (panel `e2e-okno` w app/_layout.tsx; scenariusz 105, PU-071).
 export { opisOkna, PanelOkna } from './okno-stan';
 // BX15 (KO-121 b, BX-051): zapisane notatki rzędów na ekranie wzoru (panel `e2e-wzor-notatki` w app/wzor.tsx; scenariusze 102, 104).
@@ -73,7 +75,7 @@ export function PanelUstawien(p: { katalogDanych: string; ostatniEksport: string
 export function PanelZdjecia({ katalogTymczasowy, naPlik }: { katalogTymczasowy: string; naPlik(sciezka: string): void }): React.ReactElement {
   return (
     <View>
-      <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => naPlik(zdjecieTestowe(katalogTymczasowy))}>
+      <Pressable accessibilityRole="button" testID="e2e-zdjecie-testowe" onPress={() => { zliczNacisniecie('e2e-zdjecie-testowe'); naPlik(zdjecieTestowe(katalogTymczasowy)); }}>
         <Text>Test photo (EXIF GPS)</Text>
       </Pressable>
       <PanelPomiaruOperacji />
@@ -110,7 +112,7 @@ export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: s
   return (
     <View>
       <Pressable accessibilityRole="button" testID="e2e-wzor-pdf" style={{ padding: 12 }}
-        onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfTestowyPlik(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } })}>
+        onPress={() => { zliczNacisniecie('e2e-wzor-pdf'); p.naDodaj({ nazwa, zrodlo: { rodzaj: 'pdf', plik: plik(pdfTestowyPlik(p.katalogTymczasowy), `${nazwa}.pdf`, 'application/pdf') } }); }}>
         <Text>Test pattern (PDF)</Text>
       </Pressable>
       {/* 10-wydanie-014 (zrzuty sklepu, sesja AH): wzór z treścią (nazwa i wiersze w języku zestawu zrzutów) zamiast „Test pattern”; scenariusz e2e/zrzuty-sklepu/00-przygotuj.yaml */}

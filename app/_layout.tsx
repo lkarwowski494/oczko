@@ -11,7 +11,7 @@ import { powodAwaryjny, rozpocznijStart, zapiszEtap, zapiszWyjscieDoTla } from '
 import { tAwaryjny } from '../src/kompozycja/jezyk-awaryjny';
 import { DostawcaAplikacji, type Aplikacja } from '../src/kompozycja/Kontekst';
 import { useTytulPoprzedniego } from '../src/kompozycja/wstecz-trasa';
-import { KontekstWstecz } from '../src/ekrany/Pasek';
+import { KontekstNacisniec, KontekstWstecz } from '../src/ekrany/Pasek';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { utworzKontener } from '../src/kompozycja/kontener';
 import { kompozycjaLicznika } from '../src/kompozycja/licznik';
@@ -119,6 +119,8 @@ export default function Korzen(): React.ReactElement {
     <DostawcaAplikacji wartosc={a}>
       {/* 006 (P-614 (1)): „wstecz” = tytuł poprzedniego ekranu w stosie (hak wywoływany w `Wstecz` każdego ekranu) */}
       <KontekstWstecz.Provider value={useTytulPoprzedniego}>
+      {/* BX20 (KO-136): build E2E liczy przyjęte naciśnięcia celów scenariuszy 01, 03, 42, 45, 118 (panel `e2e-nacisniecia`); w wydaniu `paneleE2e` = null → hak null, `onPress` bez opakowania. */}
+      <KontekstNacisniec.Provider value={paneleE2e ? paneleE2e.zliczNacisniecie : null}>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: k.papier }, orientation: orientacjaEkranu('inny', IPAD) }}>
         {/* M3 p2 (WD-1): zakładki Dziś/Projekty/Narzędzia/Historia na dole stosu; licznik pełnoekranowo nad nimi, bez paska zakładek. */}
         <Stack.Screen name="(zakladki)" />
@@ -144,6 +146,8 @@ export default function Korzen(): React.ReactElement {
       </Stack>
       {/* CH-01 (BX11): build E2E pokazuje proporcję okna (scenariusz 105, PU-071); w wydaniu `paneleE2e` = null. */}
       {paneleE2e ? <paneleE2e.PanelOkna /> : null}
+      {paneleE2e ? <paneleE2e.PanelNacisniec /> : null}
+      </KontekstNacisniec.Provider>
       </KontekstWstecz.Provider>
     </DostawcaAplikacji>
   );

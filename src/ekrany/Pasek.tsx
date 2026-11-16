@@ -17,14 +17,22 @@ import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSU
  */
 export const KontekstWstecz = createContext<() => string | null>(() => null);
 
+/**
+ * BX20 (KO-136): hak diagnostyczny „przyjęto naciśnięcie celu” (id = testID). Wartość podaje korzeń nawigacji (app/_layout.tsx) wyłącznie w buildzie E2E (panel `e2e-nacisniecia`);
+ * poza nim `null` i `onPress` idzie bez opakowania. Używają go „Wstecz” i „Dziś” (src/kompozycja/e2e/nacisniecia-stan.tsx).
+ */
+export const KontekstNacisniec = createContext<((cel: string) => void) | null>(null);
+
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
   const kolor = p.kolor ?? k.akcentTekst;
   const useTytulPoprzedniego = useContext(KontekstWstecz);
+  const zglosNacisniecie = useContext(KontekstNacisniec);
   const tekst = useTytulPoprzedniego() ?? p.tekst;
+  const id = p.testID ?? 'nav-wstecz';
   // 017 (P-627 A): VoiceOver czyta „Back” (`p.tekst`, jak systemowy przycisk); widoczny tekst = tytuł poprzedniego ekranu. „Back to {ekran}” — 1.0.1 (017 B).
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={p.testID ?? 'nav-wstecz'}>
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={zglosNacisniecie ? () => { zglosNacisniecie(id); p.onPress(); } : p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={id}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
       {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{tekst}</Text>}
     </Pressable>

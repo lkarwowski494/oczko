@@ -1,0 +1,34 @@
+BX20 zad. 1 — czerwień przed kodem (zaślepki bez liczenia): npx jest tests/ekrany/e2e-nacisniecia-bx20
+  ● opis licznika naciśnięć (czysta funkcja) › brak naciśnięć: „taps accepted: none”
+    Expected: "taps accepted: none"
+    Received: ""
+  ● opis licznika naciśnięć (czysta funkcja) › kilka celów: w kolejności pierwszego naciśnięcia, z liczbą
+    Expected: "taps accepted: dzis-plus 2, nav-wstecz 1"
+    Received: ""
+  ● panel `e2e-nacisniecia` › zaczyna od „none”, każde `zliczNacisniecie(cel)` podnosi licznik tego celu o 1
+    Unable to find an element with testID: e2e-nacisniecia
+  ● panel `e2e-nacisniecia` › wersja do menu ma własny testID i ten sam stan
+    Unable to find an element with testID: e2e-nacisniecia-menu
+  ● panel `e2e-nacisniecia` › panel nie przechwytuje dotyku (`pointerEvents="none"`)
+    Unable to find an element with testID: e2e-nacisniecia
+  ● „Dziś” (scenariusze 01, 03, 118): naciśnięcia `dzis-plus` i `dzis-kontynuuj` › „+1” na karcie: licznik dzis-plus 1, a naPlus nadal wywołane raz
+    Unable to find an element with testID: e2e-nacisniecia
+  ● „Dziś” (scenariusze 01, 03, 118): naciśnięcia `dzis-plus` i `dzis-kontynuuj` › „+1” przy blokadzie ekranu też jest przyjętym naciśnięciem (onPress ruszył), naPlus nie
+    Unable to find an element with testID: e2e-nacisniecia
+  ● „Dziś” (scenariusze 01, 03, 118): naciśnięcia `dzis-plus` i `dzis-kontynuuj` › „Kontynuuj”: licznik dzis-kontynuuj 1 i naKontynuuj wywołane
+    Unable to find an element with testID: e2e-nacisniecia
+  ● „Wstecz” (scenariusz 118, `nav-wstecz`) › z hakiem: naciśnięcie liczone pod testID przycisku i przepuszczone
+    Unable to find an element with testID: e2e-nacisniecia
+  ● „Wstecz” (scenariusz 118, `nav-wstecz`) › z własnym testID licznik nosi ten testID
+    Unable to find an element with testID: e2e-nacisniecia
+  ● menu zdjęcia i wzoru (scenariusze 42, 45) › `e2e-zdjecie-testowe`: naciśnięcie liczone, naPlik wywołane, panel menu pokazuje licznik
+    Unable to find an element with testID: e2e-nacisniecia-menu
+  ● menu zdjęcia i wzoru (scenariusze 42, 45) › `e2e-wzor-pdf`: naciśnięcie liczone, naDodaj wywołane, panel menu pokazuje licznik
+    Unable to find an element with testID: e2e-nacisniecia-menu
+  ● korzeń nawigacji w buildzie E2E › ma panel `e2e-nacisniecia` i podaje ekranom hak: „wstecz” w stosie podnosi licznik
+    Unable to find an element with testID: e2e-nacisniecia
+Tests:       13 failed, 4 passed, 17 total
+
+ZIELONO po kodzie: npx jest tests/ekrany/e2e-nacisniecia-bx20
+Test Suites: 2 passed, 2 total
+Tests:       16 passed, 16 total
