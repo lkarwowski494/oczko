@@ -3,6 +3,7 @@ delete process.env.EXPO_PUBLIC_E2E;
 import React from 'react';
 import { AppState } from 'react-native';
 import { act, render, screen } from '@testing-library/react-native';
+import type { PaneleE2e } from '../../src/platforma/tryb-e2e';
 
 const mockRn = jest.requireActual<typeof import('react-native')>('react-native');
 const mockReact = React;
@@ -33,6 +34,13 @@ jest.mock('../../src/kompozycja/preferencje', () => ({ preferencje: () => ({ wcz
 const Korzen = (require('../../app/_layout') as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
+test('moduł paneli E2E (z `PanelOkna`) nie jest ładowany poza buildem E2E (`paneleE2e` = null)', () => {
+  jest.isolateModules(() => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { paneleE2e } = require('../../src/platforma/tryb-e2e') as { paneleE2e: PaneleE2e | null };
+    expect(paneleE2e).toBeNull();
+  });
+});
 test('poza buildem E2E: stos ekranów jest, panelu `e2e-okno` nie ma', async () => {
   Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true });
   render(<Korzen />);

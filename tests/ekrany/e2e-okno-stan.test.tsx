@@ -5,6 +5,7 @@ process.env.EXPO_PUBLIC_E2E = '1'; // panele E2E ładuje `src/platforma/tryb-e2e
 import React from 'react';
 import { AppState, Dimensions } from 'react-native';
 import { act, render, screen } from '@testing-library/react-native';
+import { opisOkna } from '../../src/kompozycja/e2e/okno-stan';
 
 const mockRn = jest.requireActual<typeof import('react-native')>('react-native');
 const mockReact = React;
@@ -41,6 +42,11 @@ const tekst = () => String(screen.getByTestId('e2e-okno').props.children);
 
 beforeEach(() => {
   Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true }); // start na pierwszym planie (ADR-0019)
+});
+
+describe('CH-01: opis okna (czysta funkcja panelu `e2e-okno`)', () => {
+  test.each([[390, 844, 'window: portrait (390 x 844)'], [844, 390, 'window: landscape (844 x 390)'], [600, 600, 'window: portrait (600 x 600)'], [390.4, 843.6, 'window: portrait (390 x 844)']])(
+    '%d x %d → „%s”', (w, h, oczekiwany) => { expect(opisOkna(w, h)).toBe(oczekiwany); });
 });
 
 describe('CH-01: panel `e2e-okno` w korzeniu nawigacji (build E2E)', () => {
