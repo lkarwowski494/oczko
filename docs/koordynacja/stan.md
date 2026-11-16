@@ -1260,3 +1260,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 15:05 | M9 (kontrola 15:03) | Zadania kontroli wykonane (KO-126…130). BX17 w toku: dodatek CN-03/04. Koordynator: 78,62 USD, kontekst 165,2 tys. / próg 224 000. Następna kontrola 15:26 (trig_01Wrb6acsTkRerfigMGVetaS) |
 | 16.11 15:10 | M9 | KO-131: BX17 7a738d8 przyjęte, zarchiwizowana; iOS 43893320145 na kandydacie 7a738d8 wyzwolony 15:09; kontrola 15:26 usunięta, następna 16:10 (trig_01F69m9Eg2ZJam9jh3cTtKPs) |
 | 16.11 16:15 | M9 (kontrola 16:10) | iOS 43893320145: build, swift-test, zegarek zielone; eksperymenty-wzoru czerwone (informacyjne); e2e 5 części w toku od 15:50, bez czerwieni. Następna kontrola 16:55 |
+| 16.11 16:57 | M9 (kontrola 16:55) | iOS 43893320145: iPad cz. 1 zielony 16:19; 4 części iPhone w toku (Scenariusze od 15:50–15:57), bez czerwieni. Następna kontrola 17:35 |
