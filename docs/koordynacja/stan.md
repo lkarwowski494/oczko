@@ -29,7 +29,8 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Gałęzie (ls-remote 05:53): nocna 7fbb5b94 · bx7 373a3123 · bx8 b5ef7efe · integracja 06077b85 — zgodne z przekazaniem.
 - Aktywna: BX8 session_01T66VBy6mBHn4mEWZhFpRMD (zawiadomiona o zmianie koordynatora). Przebiegi iOS: 43806685504 na 7fbb5b94 (koniec ok. 06:50) i drugi na 373a3123 (ID do odczytu, koniec ok. 07:30).
 - Plan: jak w sekcji „Historia: Teraz (16.11 05:55 UTC)” niżej, punkty (1)–(6).
-- KO następny: KO-089; P następny wolny: P-894.
+- KO następny: KO-090; P następny wolny: P-898. FX5 (KO-089) zlecona równolegle do BX8: polecenia/FX5.md.
+- iOS na 373a3123 = run **43810499611** (05:28:52, o 05:55 nadal `queued` — kolejka maszyn za 43806685504; koniec raczej ok. 09:00, nie 07:30).
 
 ## Historia: Teraz (16.11 05:55 UTC) — PRZEKAZANIE koordynatora session_01T66VBxLHEZaQH4GbFzu2PU (kontekst 28,7%, 16,4 USD po 55 min — WG: samo przejęcie zużyło ok. 22% okna)
 - **Właściciel 05:04 UTC: „Wariant a - bramka bez wyjątków.”** (pełny zapis w sekcji niżej). Build 8: BEZ zgody; pytać dopiero przy zielonym kandydacie.
@@ -611,6 +612,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula FX5 (08 fix): P-894…P-897; pula BX8: P-890…P-893. Następny wolny: P-898; KO następny: KO-090.**
 - **Pula BX7 (08 build): P-887…P-890; pula CD (08 audit): P-885…P-886. Następny wolny: P-891; KO następny: KO-086.**
 - **Pula FX4 (08 fix): P-881…P-884. Następny wolny: P-885; KO następny: KO-084.**
 - **Pula FX3 (08 fix): P-877…P-880. Następny wolny: P-881; KO następny: KO-082.**
@@ -1071,3 +1073,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 05:55 | M9 | Kontrola 05:50: BX8 prompt zgodny, gałąź @ b5ef7efe. Własny kontekst 28,7% (286,8 tys.), 16,38 USD → przekazanie E6 | następca |
 | 16.11 05:56 | M9 | Przekazane do session_01T66VBw2SfKb9bVmf3phpgK (create_session bez błędu, fable-5-2, env_01GMJ…). Własne linie 14:00 i 05:00 usunięte; zostaje trig_01JxXzSRESncYb82MEjRyGSz „kontrola przekazania” 06:17 (sprzątam sam). Po tym wpisie nie piszę na gałąź stanu | PRZEJĄŁEM od następcy |
 | 16.11 05:53 | M9 | Przejęcie przez session_01T66VBw2SfKb9bVmf3phpgK (lineage 5/8, fable-5-2, env_01GMJ…, auto) ze stanu @ 4129a5a4; prompts @ af4c0a8, warsztat dołączony (push) bez klonu; rola złożona `assemble.mjs M9-koordynator-sesji --tryb build` (przeczytany kontrakt i E0–E7). Przypomnienia własne (kontrola 06:08, linie 13:54 i 04:54). Gałęzie zgodne ze stanem (ls-remote). BX8 zawiadomiona (send_message delivered). Czat poprzednika 05:45–05:52 (list_events user, 22 zdarzenia): bez słów właściciela i bez wiadomości sesji | PRZEJĄŁEM; kontrola 06:08 |
+| 16.11 05:56 | M9 | iOS na 373a3123: run 43810499611 (workflow_dispatch 05:28:52) — o 05:55 `queued` (czeka na maszyny za 43806685504; oczekiwanie > 26 min, przyczyna: kolejka macOS). KO-089: FX5 (08 fix, sonnet) równolegle do BX8 na `claude/fx5-poprawki-2026-11-16` od 373a3123 — polecenie FX5.md; prompt 57 011 B (`--tryb fix --zadania BX-005,BX-006,BX-007,BX-024,BX-029,PU-333`) | start FX5 subagentem, sha256; kontrola 06:08 |
