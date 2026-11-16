@@ -128,3 +128,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX16 | 08 build (sonnet) | 4 (STOP 6) | nieodczytany | nieodczytany (po kompakcji) | 14:37 → bf133ae 14:53 → przyjęte 14:58 (KO-126) | — | get_session bez usage; zad. 1 niewykonane |
 | CN | 08 audit (sonnet) | 5 (STOP 7) | 4,33 | 51 (152,0 tys. po kompakcji) | 14:37 → 6b3d9ae 14:53 → 3060d7a 15:02 → przyjęte 15:04 | — | raport podał 3,19 USD i 72% (WG-23) |
 | BX17 | 08 build (sonnet) | 3 (STOP 5) | nieodczytany | nieodczytany | 14:56 → 6057d7e 15:04 → 7a738d8 15:08 → przyjęte 15:10 (KO-130, KO-131) | — | get_session bez usage |
+| BX18 | 08 build (sonnet) | 6 (8) | nieodczytany | nieodczytany | 17:39–18:08 | — | get_session bez usage |
