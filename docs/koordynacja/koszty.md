@@ -109,3 +109,5 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | FX5 | 08 fix (sonnet) | 8 | 3,21 | 28 | 05:58 → 06:00 → 4d8caced 06:07 → (iOS wyzwolony 06:22, wynik osobno) → stan pracy 06:22 | ok. 2 min: pytanie o tabela-08 (KO-090) | 5 zadań w 20 min; diagnoza opisów PU → odpowiedź właściciela po 6 min |
 | CE | 08 audit (opus) | 5 | 5,09 | 27 | 06:08 → 06:11 → 0c920ec3 06:24 → (verify w haku) → przyjęte 06:27 | — | recenzja BX7+BX8: P1 1, P2 4, P3 4; ponad pułap o 2%, poniżej STOP |
 | BX9 | 08 build (sonnet) | 8 | 3,50 | 30 | 06:08 → 06:10 → 20c791c8 ok. 06:20 → (iOS po scaleniu FX5) → stan pracy 06:30 | — | 5 PU (103–107) + klucz `point` w interpreterze; commit lokalny 54a04b22 (opisy PU-291/044) niewypchnięty — przepada, robi BX10 |
+| CF | 08 audit (opus) | 5 | 5,36 | 25 | 06:23 → 06:25 → dee774aa 06:37 → (verify w haku) → przyjęte 06:39 | — | recenzja FX5: bez P1, P2 2, P3 3; ponad pułap o 7%, poniżej STOP 6,5 |
+| CG | 07 fix (opus) | 5 | 3,20 | 19 | 06:31 → 06:34 → ed93c16a 06:37 → (verify w haku) → przyjęte 06:39 | — | 9 PU: warianty + gotowe pytanie do właściciela w 5 min |
