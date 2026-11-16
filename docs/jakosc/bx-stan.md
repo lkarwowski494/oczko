@@ -101,3 +101,14 @@ Koszt 31,04 USD > próg 26 USD (pomiar koordynatora), kontekst 30%. Stan na 8f0c
 - Diagnostyka B (KO-084): panel `e2e-nawigacje` tylko w buildzie E2E; „pattern presses: 0” po porażce = stuknięcie nie dotarło do `onPress` (hipotezy 1–2; „mounts” > 1 rozstrzyga 1), „presses: 1” = push wywołany i ekran nie powstał. Scenariusz 22 bez zmian (asercje nietknięte, bez dopisanego kroku odczytu): hierarchia kroku porażki zapisuje się w artefakcie i zawiera panel `e2e-nawigacje` (jak `e2e-zegarek-stan` w kroku 32 przebiegu 43788927541).
 - Zadanie 2: 81 zielony → tag zdjęty, PU-228 B → A (A=109, B=178, F=52). `e2e/czesci.json` bez zmian (przydział części zostaje jak w 43788927541 dla porównania diagnostyki 22).
 - Do potwierdzenia: nowy przebieg „Jakość · iOS” (wyzwala koordynator) na nowym SHA — odczyt `e2e-nawigacje` z hierarchii kroku porażki 22 (jeśli znów padnie); 81 w bramce.
+
+## BX7 (08-programista build, 2026-11-16; polecenie `origin/koordynacja:docs/koordynacja/polecenia/BX7.md` @ a1af41d9)
+Lista: 44 PU klasy B „do zaprogramowania” (skrypt `kontrolaKatalogu(root, { wymagajTestowB: true })` daje 44 komunikatów „klasa B bez testu”; `grep "^| PU-.*do zaprogramowania"` — 44; zgodne). Podział na 3 porcje według ekranu i wspólnego przygotowania stanu (scenariusze od numeru 85, tagi `oczekujacy`, `przypadki-uzycia`, `PU-NNN`):
+
+| Porcja | Zakres | PU (liczba) |
+|---|---|---|
+| 1 | przewodnik (`przewodnik-*`, wzór scen. 69, 70), „Dziś”/lista projektów, Ustawienia i oferty, licznik (gesty, stoper), klawiatura, zegarek-atrapa | 044, 052, 104, 107, 108, 109, 110, 112, 113, 165, 168, 170, 180, 322, 334 (15) |
+| 2 | wzór na iPhonie (zakreślenia, znaczniki, nazwy, przełączanie, kosz), zdjęcie, orientacja, start, brak reklam i śledzenia; PU-333 to test Swift (`jednostkowy`, nie Maestro) | 008, 011, 057, 066, 067, 071, 162, 191, 288, 290, 291, 292, 296, 333 (14) |
+| 3 | iPad (pakiet `ipad`: wzór, pióro, okno 375, przewodnik, kolumna) i wygląd (AX5, tryb ciemny, języki de/ja, zrzuty do porównania) | 012, 134, 135, 137, 138, 139, 143, 144, 146, 147, 148, 150, 153, 175, 336 (15) |
+
+Pułapki z lektury katalogu (przed pierwszą linią scenariusza): PU-134/135/137/139/175 wymagają porównania zrzutów ze wzorcami (`docs/design/wzorce-zrzuty/`) — do sprawdzenia, czy interpreter i Maestro mają taką asercję (porcja 3); PU-162 i PU-153 to pomiary czasu (grupa `pomiar`, bez progu); PU-333 jest Swiftem, nie scenariuszem.
