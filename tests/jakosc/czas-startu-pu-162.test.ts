@@ -44,7 +44,9 @@ describe('PU-162: czas startu z commands.json (wzór: koniec dzis-karta − pocz
     expect(r.kod).toBe(0);
     expect(r.out).toMatch(new RegExp(`\\| ${S30} \\| 29108 \\|`));
     expect(r.out).toMatch(new RegExp(`\\| ${S31} \\| 33200 \\|`));
-    expect(r.out).toMatch(/n = 2, mediana 31154 ms, maks 33200 ms/);
+    expect(r.out).toMatch(/\| 30-nfr-dos-002-duzy-tekst \| 29108 \| AX5 \|/);
+    expect(r.out).toMatch(/\| 31-nfr-wyd-001-reakcja-licznika \| 33200 \| czysty start \|/);
+    expect(r.out).toMatch(/Czyste starty \(clearState, bez AX5 i powtórek\): n = 1, mediana 33200 ms, maks 33200 ms/); // CM-01: AX5 poza statystyką
   });
 
   test('PU-162 opis: informacyjnie, bez progu, trend a nie czysty start (narzut Maestro)', () => {
@@ -128,7 +130,8 @@ describe('PU-162: czas startu z commands.json (wzór: koniec dzis-karta − pocz
     expect(r.out).toMatch(/\| 31-nfr-wyd-001-reakcja-licznika \| 33200 \|/);
     expect(r.out).toMatch(/\| podejscie-1\/31-nfr-wyd-001-reakcja-licznika \| 33200 \|/);
     expect(r.out).toMatch(/PU-162: brak danych \(40-zepsuty/);
-    expect(r.out).toMatch(/n = 3, mediana 33200 ms, maks 33200 ms/);
+    expect(r.out).toMatch(/\| podejscie-1\/31-nfr-wyd-001-reakcja-licznika \| 33200 \| powtórka \|/);
+    expect(r.out).toMatch(/Czyste starty \(clearState, bez AX5 i powtórek\): n = 1, mediana 33200 ms, maks 33200 ms/); // CM-01: powtórka i AX5 poza statystyką
   });
 
   test('PU-162 dwa launchApp i dwie asercje: liczy najbliższy launchApp przed pierwszą widocznością dzis-karta', () => {
@@ -142,6 +145,112 @@ describe('PU-162: czas startu z commands.json (wzór: koniec dzis-karta − pocz
   test('PU-162 nie zmienia plików wejściowych i nie sięga do sieci (tylko odczyt katalogu)', () => {
     const tekst = fs.readFileSync(SKRYPT, 'utf8');
     expect(tekst).not.toMatch(/writeFile|appendFile|unlink|rmSync|rename|fetch\(|https?:\/\/|child_process|\bnet\b|process\.env\.\w*(TOKEN|SECRET|KEY)/i);
+  });
+});
+
+// KO-116 (recenzja niezależna CM, `docs/jakosc/cm-recenzja-pu162.md`): CM-01…CM-04 (P3).
+describe('PU-162 CM-01: mediana i maks tylko z czystych startów; restart, AX5 i powtórki osobno nazwane', () => {
+  const zLaunch = (scen: string, zmien: (l: Record<string, unknown>) => void): Wpis[] => {
+    const w = odczytaj(scen);
+    const l = w.find(jestLaunch) as Wpis;
+    zmien(l.command.launchAppCommand as Record<string, unknown>);
+    return w;
+  };
+  const przesun = (w: Wpis[], ile: number): Wpis[] => w.map((e) => ({ ...e, metadata: { ...e.metadata, duration: e.metadata.duration === undefined ? undefined : (jestDzis(e) && !('runFlowCommand' in e.command) ? (e.metadata.duration as number) + ile : e.metadata.duration) } }));
+
+  test('PU-162 restart (launchApp bez clearState: true) ma rodzaj „restart” i nie wchodzi do mediany ani maks', () => {
+    const r = cmd(katalog({
+      [SC(S31)]: odczytaj(S31),
+      [SC('91-pu-290-restart')]: zLaunch(S31, (l) => { l.clearState = false; }),
+      [SC('92-bez-pola')]: zLaunch(S31, (l) => { delete l.clearState; }),
+    }));
+    expect(r.out).toMatch(/\| 91-pu-290-restart \| 33200 \| restart \|/);
+    expect(r.out).toMatch(/\| 92-bez-pola \| 33200 \| restart \|/); // brak pola clearState = domyślnie false w Maestro
+    expect(r.out).toMatch(/Czyste starty \(clearState, bez AX5 i powtórek\): n = 1, mediana 33200 ms, maks 33200 ms/);
+  });
+
+  test('PU-162 scenariusze AX5 (nazwa z „ax5” albo „duzy-tekst”) mają rodzaj „AX5”, także z clearState: true', () => {
+    const r = cmd(katalog({ [SC(S30)]: odczytaj(S30), [SC('111-pu-138-ax5-przewodnik')]: odczytaj(S30), [SC(S31)]: odczytaj(S31) }));
+    expect(r.out).toMatch(/\| 30-nfr-dos-002-duzy-tekst \| 29108 \| AX5 \|/);
+    expect(r.out).toMatch(/\| 111-pu-138-ax5-przewodnik \| 29108 \| AX5 \|/);
+    expect(r.out).toMatch(/n = 1, mediana 33200 ms, maks 33200 ms/);
+  });
+
+  test('PU-162 mediana i maks liczone tylko z czystych startów: powtórka, restart i AX5 o dużych wartościach ich nie zmieniają', () => {
+    const wolny = przesun(odczytaj(S31), 50000); // 83200 ms
+    const r = cmd(katalog({
+      [SC('10-czysty-a')]: odczytaj(S31),
+      [SC('11-czysty-b')]: odczytaj(S30),
+      ['podejscie-1/' + SC('11-czysty-b')]: wolny,
+      ['12.ponowienie/' + '2026-11-16_100216/x/commands.json']: wolny,
+      [SC('13-restart')]: ((): Wpis[] => { const w = przesun(odczytaj(S31), 50000); (w.find(jestLaunch) as Wpis).command = { launchAppCommand: { appId: 'x', clearState: false } }; return w; })(),
+      [SC('14-ax5-duzy-tekst')]: wolny,
+    }));
+    expect(r.out).toMatch(/Czyste starty \(clearState, bez AX5 i powtórek\): n = 2, mediana 31154 ms, maks 33200 ms/);
+    expect(r.out).not.toMatch(/maks 83200/);
+    expect(r.out).toMatch(/\| 12\.ponowienie \| 83200 \| powtórka \|/);
+  });
+
+  test('PU-162 brak czystych startów: linia „Czyste starty: brak”, bez mediany i maks', () => {
+    const r = cmd(katalog({ [SC(S30)]: odczytaj(S30) }));
+    expect(r.out).toMatch(/Czyste starty \(clearState, bez AX5 i powtórek\): brak/);
+    expect(r.out).not.toMatch(/n = \d+, mediana/);
+  });
+
+  test('PU-162 opis: wiersze nie-czyste nie są porównywalne z czystymi (mediana i maks tylko z czystych startów)', () => {
+    const t = cmd(FIKSTURY).out;
+    expect(t).toMatch(/restart/i);
+    expect(t).toMatch(/AX5/);
+    expect(t).toMatch(/powtórk/i);
+    expect(t).toMatch(/porównuj wiersz ze swoim wierszem/i);
+  });
+
+  test('PU-162 wszystkie scenariusze z tagiem osobny-krok (AX5) w e2e/scenariusze mają w nazwie „ax5” albo „duzy-tekst”', () => {
+    const dir = path.join(KORZEN, 'e2e', 'scenariusze');
+    const osobne = fs.readdirSync(dir).filter((f) => /^\d+-.*\.yaml$/.test(f) && /^\s*-\s*osobny-krok\s*$/m.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+    expect(osobne.length).toBeGreaterThan(0);
+    const r = cmd(katalog(Object.fromEntries(osobne.map((f) => [SC(f.replace(/\.yaml$/, '')), odczytaj(S31)]))));
+    for (const f of osobne) expect(r.out).toMatch(new RegExp(`\\| ${f.replace(/\.yaml$/, '')} \\| 33200 \\| AX5 \\|`));
+  });
+});
+
+describe('PU-162 CM-02: etykieta i status z pliku nie rozbijają tabeli ani nie wprowadzają HTML', () => {
+  test('PU-162 etykieta z „|”, „<” i „&” jest neutralizowana w wierszu tabeli', () => {
+    const r = cmd(katalog({ [SC('x|<b>y&z')]: odczytaj(S31) }));
+    expect(r.out).toMatch(/^\| x\\\|&lt;b>y&amp;z \| 33200 \| czysty start \|$/m);
+    expect(r.out).not.toMatch(/<b>/);
+    expect(r.out.split('\n').filter((l) => l.startsWith('| x')).every((l) => l.split(/(?<!\\)\|/).length === 5)).toBe(true); // 3 komórki + brzegi
+  });
+
+  test('PU-162 status asercji z „<” i „|” trafia do linii „brak danych” zneutralizowany i obcięty', () => {
+    const w = odczytaj(S31);
+    const i = w.findIndex((e) => jestDzis(e) && !('runFlowCommand' in e.command));
+    (w[i] as Wpis).metadata.status = '<img src=x onerror=1>|' + 'z'.repeat(200);
+    const r = cmd(katalog({ [SC('x<i>')]: w }));
+    expect(r.out).not.toMatch(/<img|<i>/);
+    expect(r.out).toMatch(/PU-162: brak danych \(x&lt;i>: asercja dzis-karta nie zakończona \(status &lt;img src=x onerror=1>\\\|z+/);
+    const linia = r.out.split('\n').find((l) => l.startsWith('PU-162: brak danych')) as string;
+    expect(linia.length).toBeLessThan(200);
+  });
+});
+
+describe('PU-162 CM-03: zewnętrzny try/catch CLI (wyjątek poza zbieraniem wyników → kod 0 i linia „brak danych”)', () => {
+  test('PU-162 wyjątek w odczycie katalogu (podmienione fs.readdirSync) → kod 0, linia „brak danych (błąd skryptu: …)”, bez śladu stosu', () => {
+    const wstep = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'czas-startu-wstep-')), 'wstep.cjs');
+    fs.writeFileSync(wstep, "require('fs').readdirSync = () => { throw new Error('EACCES: brak dostępu do katalogu (test)'); };\n");
+    const d = katalog({ [SC(S31)]: odczytaj(S31) });
+    const r = spawnSync('node', ['--require', wstep, SKRYPT, d], { encoding: 'utf8' });
+    expect(r.status).toBe(0);
+    expect(r.stdout).toMatch(/^PU-162: brak danych \(błąd skryptu: EACCES: brak dostępu do katalogu \(test\)\)$/m);
+    expect(r.stderr).not.toMatch(/at .*czas-startu/);
+  });
+});
+
+describe('PU-162 CM-04: katalog przypadków użycia mówi to samo co skrypt i fikstury — plik `commands.json`', () => {
+  test('PU-162 kolumna Pokrycie w katalogu nazywa plik commands.json (nie commands-*.json)', () => {
+    const wiersz = fs.readFileSync(path.join(KORZEN, 'docs', 'jakosc', 'przypadki-uzycia.md'), 'utf8').split('\n').find((l) => l.startsWith('| PU-162 |')) as string;
+    expect(wiersz).toMatch(/`commands\.json`/);
+    expect(wiersz).not.toMatch(/commands-\*\.json/);
   });
 });
 

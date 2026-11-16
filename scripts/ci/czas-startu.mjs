@@ -30,7 +30,7 @@ export function czasStartu(polecenia) {
   const f = polecenia.findIndex(widocznoscCelu);
   if (f < 0) return { powod: `brak asercji widoczności ${CEL}` };
   const cel = polecenia[f];
-  if (cel?.metadata?.status !== 'COMPLETED') return { powod: `asercja ${CEL} nie zakończona (status ${String(cel?.metadata?.status)})` };
+  if (cel?.metadata?.status !== 'COMPLETED') return { powod: `asercja ${CEL} nie zakończona (status ${String(cel?.metadata?.status).slice(0, 40)})` };
   let l = -1;
   for (let i = f - 1; i >= 0; i--) if (uruchomienie(polecenia[i])) { l = i; break; }
   if (l < 0) return { powod: `brak launchApp przed ${CEL}` };
@@ -38,7 +38,7 @@ export function czasStartu(polecenia) {
   if (!liczba(start) || !liczba(koniecPocz) || !liczba(trwanie)) return { powod: 'brak pól metadata.timestamp albo metadata.duration (liczby w ms)' };
   const ms = koniecPocz + trwanie - start;
   if (ms < 0) return { powod: 'niespójne znaczniki czasu (koniec przed początkiem)' };
-  return { ms };
+  return { ms, czysty: polecenia[l]?.command?.launchAppCommand?.clearState === true };
 }
 
 function pliki(katalog) { // rekurencyjnie, bez dowiązań, posortowane (wynik deterministyczny)
@@ -70,6 +70,20 @@ export function zbierz(katalog) {
   return wyniki;
 }
 
+// Rodzaj startu (CM-01): statystyka ma sens tylko dla startów o tej samej definicji. Powtórka = wiersz `podejscie-*/…` albo `….ponowienie` (dubluje scenariusz);
+// AX5 = scenariusz z osobnego kroku (rozmiar tekstu ustawia workflow, w commands.json go nie ma, więc rozpoznanie po nazwie: `ax5` albo `duzy-tekst`,
+// pilnuje tego test na tagu `osobny-krok`); restart = `launchApp` bez `clearState: true` (domyślnie false w Maestro); reszta = czysta instalacja.
+const POWTORKA = /(^|\/)podejscie-[^/]*\/|\.ponowienie$/;
+const AX5 = /(^|[-/])(ax5|duzy-tekst)([-.]|$)/;
+export const RODZAJ_CZYSTY = 'czysty start';
+export function rodzajStartu(w) {
+  if (POWTORKA.test(w.scenariusz)) return 'powtórka';
+  if (AX5.test(w.scenariusz)) return 'AX5';
+  return w.czysty ? RODZAJ_CZYSTY : 'restart';
+}
+// Markdown z danych z pliku (CM-02): `&` → `&amp;`, `<` → `&lt;`, `|` → `\|`, znaki nowej linii → spacja.
+export const md = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\|/g, '\\|').replace(/[\r\n]+/g, ' ');
+
 const mediana = (v) => { const s = [...v].sort((a, b) => a - b), m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2); };
 
 /** Linie markdown podsumowania; `wyniki` = zbierz(...) albo [] z `powodBrakuPlikow`. */
@@ -77,17 +91,19 @@ export function formatuj(wyniki, powodBrakuPlikow = 'brak plików commands.json'
   const naglowek = [
     '### PU-162: czas startu do „Dziś” (informacyjnie, bez progu)',
     'Czas od `launchApp` do widoczności `dzis-karta` z `commands.json` Maestro (KO-111). To trend między przebiegami, nie czysty czas startu aplikacji: wartość zawiera narzut Maestro i symulatora (uruchomienie przez XCTest, `clearState`, wstrzyknięty zegar). Bez progu; krok nie zmienia wyniku zadania.',
+    'Rodzaje startu: czysty start (`clearState: true`), restart (bez `clearState`), AX5 (osobny krok, duży tekst), powtórka (`podejscie-*` i `.ponowienie` dublują scenariusz). Mediana i maks z czystych startów; porównuj wiersz ze swoim wierszem z poprzedniego przebiegu, nie rodzaje między sobą.',
     '',
   ];
   const dobre = wyniki.filter((w) => w.ms !== undefined), zle = wyniki.filter((w) => w.ms === undefined);
   const linie = [...naglowek];
   if (dobre.length) {
-    linie.push('| Scenariusz | Czas startu [ms] |', '|---|---|', ...dobre.map((w) => `| ${w.scenariusz} | ${w.ms} |`), '');
-    const v = dobre.map((w) => w.ms);
-    linie.push(`n = ${v.length}, mediana ${mediana(v)} ms, maks ${Math.max(...v)} ms`);
+    linie.push('| Scenariusz | Czas startu [ms] | Rodzaj |', '|---|---|---|', ...dobre.map((w) => `| ${md(w.scenariusz)} | ${w.ms} | ${rodzajStartu(w)} |`), '');
+    const v = dobre.filter((w) => rodzajStartu(w) === RODZAJ_CZYSTY).map((w) => w.ms);
+    const nazwa = 'Czyste starty (clearState, bez AX5 i powtórek)';
+    linie.push(v.length ? `${nazwa}: n = ${v.length}, mediana ${mediana(v)} ms, maks ${Math.max(...v)} ms` : `${nazwa}: brak`);
   }
   if (!wyniki.length) linie.push(`PU-162: brak danych (${powodBrakuPlikow})`);
-  for (const w of zle) linie.push(`PU-162: brak danych (${w.scenariusz}: ${w.powod})`);
+  for (const w of zle) linie.push(`PU-162: brak danych (${md(w.scenariusz)}: ${md(w.powod)})`);
   return linie.join('\n') + '\n';
 }
 
