@@ -5,6 +5,8 @@ name: "podprzepływ: wzór PDF testowy otwarty"
 - scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - assertVisible: { id: "licznik-wzor" }
 - tapOn: { id: "licznik-wzor" }
+# BX15 (PU-135, przebieg 43851148385, scen. 121): przy AX5 menu „Add pattern” wychodzi poza ekran, a panel E2E to ostatnia pozycja menu (hierarchia iOS nie ma elementów spoza ekranu) — najpierw przewinięcie; przy zwykłym tekście element jest widoczny i krok kończy się od razu.
+- scrollUntilVisible: { element: { id: "e2e-wzor-pdf" }, direction: DOWN, timeout: 30000 }
 - assertVisible: { id: "e2e-wzor-pdf" }
 - tapOn: { id: "e2e-wzor-pdf" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
