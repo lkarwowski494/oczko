@@ -30,8 +30,7 @@ tags:
 - setOrientation: PORTRAIT
 - assertVisible: { id: "nav-dzis", below: { id: "dzis-karta" } }
 # --- „Ustawienia” ---
-- tapOn: { id: "nav-ustawienia" }
-- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml # P-571: Ustawienia tylko przez zębatkę „Dziś” (podprzepływ)
 - setOrientation: LANDSCAPE_LEFT
 - assertVisible: { id: "ustawienia-jezyk", below: { id: "nav-wstecz" } }
 - takeScreenshot: 105-ustawienia-poziomo

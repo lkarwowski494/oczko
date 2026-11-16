@@ -16,8 +16,7 @@ tags:
 - assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
 - assertNotVisible: { id: "awaryjny-zapisz-kopie" }
 - takeScreenshot: 106-dzis
-- tapOn: { id: "nav-ustawienia" }
-- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml # P-571: Ustawienia tylko przez zębatkę „Dziś” (podprzepływ)
 - assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
 - assertNotVisible: { id: "awaryjny-zapisz-kopie" }
 - takeScreenshot: 106-ustawienia
