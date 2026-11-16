@@ -46,3 +46,10 @@ Zielone: po dopisaniu „PU-146 ·”/„PU-150 ·” do tytułów czterech test
 Czerwone (struktura): po zmianie Pokrycia na „z testem: …” przed dopisaniem PU-147 do tytułu tests/dane/przewodnik-przeczytane.test.ts:37 → "Kontrola 2: CZERWONA (1)": PU-147: tests/dane/przewodnik-przeczytane.test.ts nie wymienia PU-147. Zielone po dopisaniu.
 Mutacje źródła (po każdej przywrócone): KOLUMNA_TRESCI_MAKS 640→700 (src/domena/uklad.ts) → 1 failed (test 1); `przeczytanePrzewodnika` zwraca stałą ['cel'] (src/przypadki-uzycia/przewodnik.ts) → test pada na „Read: 0 of 42”. Bez mutacji: 2 passed.
 Poza testem (częściowo, nazwane w Pokryciu): gest „‹” wstecz i faktyczne otwarcie licznika na iPadzie — scen. 115.
+
+== KO-105: PU-143 i PU-144 (nowy test komponentowy tests/ekrany/pu-ipad-uklad-wzoru-143-144.test.tsx), 2026-11-16 ==
+Test opiera się na prawdziwym `ukladOkna` i ekranie `PrzegladarkaWzoru` (slot za widok natywny). Czerwień = mutacje `src/domena/uklad.ts` (po każdej przywrócone):
+ mut1 `obok = false && …` (kolumna obok nigdy) → 2 failed: PU-143 1180 × 820, PU-144 1180 × 375;
+ mut2 `klasa` zawsze 'regular' → 2 failed: oba przypadki PU-144 (compact);
+ bez mutacji: 4 passed; katalog: Kontrola 2 zielona.
+Poza Jest (częściowo, nazwane w Pokryciu): obrót okna i „+1” w symulatorze iPada — scen. 44 i 46.
