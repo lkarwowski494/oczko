@@ -197,8 +197,10 @@ export type PropsFormularzaNazwy = {
   naZapisz(n: { projekt: string; czesc: string }): Promise<WynikEkranu<void>>;
   naAnuluj(): void;
   naZmiane?(zmieniony: boolean): void;
+  /** Diagnostyka buildu E2E (FX6b, P-909): zdarzenia zmiany tekstu pól i panel za polami; podaje je tylko trasa formularza w buildzie E2E, w wydaniu `undefined`. */
+  diagnostyka?: { wpis(pole: 'projekt' | 'czesc', tekst: string): void; panel: React.ReactNode };
 };
-export function FormularzNazwy({ stan, t, naZapisz, naAnuluj, naZmiane }: PropsFormularzaNazwy): React.ReactElement {
+export function FormularzNazwy({ stan, t, naZapisz, naAnuluj, naZmiane, diagnostyka }: PropsFormularzaNazwy): React.ReactElement {
   const [projekt, ustawProjekt] = useState(stan.projekt);
   const [czesc, ustawCzesc] = useState(stan.czesc);
   useZglosZmiane(naZmiane, projekt !== stan.projekt || czesc !== stan.czesc);
@@ -206,10 +208,11 @@ export function FormularzNazwy({ stan, t, naZapisz, naAnuluj, naZmiane }: PropsF
   const zapisz = () => void zapiszZ(() => naZapisz({ projekt: projekt.trim(), czesc: czesc.trim() }), () => ustawBlad(true));
   return (
     <Arkusz tytul={t('formularz.nazwa_tytul')} formularz={{ t, naZapisz: zapisz, naAnuluj }}>
-      <Pole etykieta={t('formularz.nazwa_czesc')} wartosc={czesc} naZmiane={ustawCzesc} />
-      <Pole etykieta={t('formularz.nazwa_projekt')} wartosc={projekt} naZmiane={ustawProjekt} testID="formularz-nazwa-projektu" />
+      <Pole etykieta={t('formularz.nazwa_czesc')} wartosc={czesc} naZmiane={(x) => { diagnostyka?.wpis('czesc', x); ustawCzesc(x); }} />
+      <Pole etykieta={t('formularz.nazwa_projekt')} wartosc={projekt} naZmiane={(x) => { diagnostyka?.wpis('projekt', x); ustawProjekt(x); }} testID="formularz-nazwa-projektu" />
       <Tresc podpis>{t('formularz.nazwa_opis')}</Tresc>
       {blad && <KomunikatZapisu t={t} />}
+      {diagnostyka?.panel}
     </Arkusz>
   );
 }

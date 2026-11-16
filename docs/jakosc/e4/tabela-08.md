@@ -182,6 +182,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-ladowania.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-operacji.test.tsx` | zielony (główny zestaw) | 5 | — | `src/kompozycja/e2e/pomiar-operacji` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-pomiar-plus.test.tsx` | zielony (główny zestaw) | 2 | NFR-WYD-001, P-255, P-456 | `src/kompozycja/e2e/panele` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-wejscia-stan-wydanie.test.tsx` | zielony (główny zestaw) | 2 | P-238, P-909 | `src/ekrany/Formularze` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-wejscia-stan.test.tsx` | zielony (główny zestaw) | 8 | P-909 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Formularze`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zdjecie.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/e2e-zdjecie` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-015/S2, P-287 | `src/domena/porty`<br>`src/kompozycja/e2e/panele`<br>`src/platforma/zegarek` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-awaryjny-kopia.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/wspolne` | Z07-22 |
@@ -222,6 +224,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-limit.test.tsx` | zielony (główny zestaw) | 7 | BR-ZAK-006, BR-ZAK-006/S1, BR-ZAK-006/S2, BR-ZAK-006/S3, BR-ZAK-006/S5, BR-ZAK-006/S6, KP-13, P-046, P-065 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-minus-plus-bez-projektu.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-002/S3, P-358 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-oczek.test.tsx` | zielony (główny zestaw) | 4 | BR-LIC-006 | `src/dane/repozytoria/dni`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-odswiezenie-kolejnosc.test.tsx` | zielony (główny zestaw) | 1 | P-909 | `src/ekrany/Aplikacja`<br>`src/ekrany/Licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-p5.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-011/S1, BR-LIC-018/S1, P-182, P-191, P-580 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-to-be.test.tsx` | zielony (główny zestaw) | 3 | P-580, P-581, P-583 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/licznik-trasa-032.test.tsx` | zielony (główny zestaw) | 7 | BR-LIC-002, BR-LIC-006, BR-LIC-012, BR-LIC-019, BR-LIC-020, BR-PRJ-011, RD-12, RD-15 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
@@ -494,4 +497,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 490; zależnych od poprawek: 303.
+Razem plików testów: 493; zależnych od poprawek: 306.

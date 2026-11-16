@@ -23,6 +23,8 @@ export { koniecOperacji, poczatekOperacji, zmierzOperacje } from './pomiar-opera
 export { zapamietajAdres, zliczajProsby } from './ocena-stan';
 // BX-019 (FX4): licznik naciśnięć „Wzór” i przemontowań ekranu licznika (panel `e2e-nawigacje`, app/licznik.tsx).
 export { PanelNawigacji, zerujNawigacje, zliczNawigacje } from './nawigacje-stan';
+// FX6b (P-909): wejścia „+1”/„−1” i zapisy licznika (panel `e2e-licznik-wejscia`) oraz zdarzenia zmiany tekstu w formularzu nazwy (panel `e2e-nazwa-wejscia`).
+export { diagnostykaLicznika, PanelLicznika, PanelNazwy, zerujWejscia, zliczWpisNazwy } from './wejscia-stan';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {
