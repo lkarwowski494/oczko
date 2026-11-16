@@ -568,6 +568,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula FX3 (08 fix): P-877…P-880. Następny wolny: P-881; KO następny: KO-082.**
 - **Pula FX2 (08 fix): P-874…P-876 (FX wzięła P-871…P-873). Następny wolny: P-877; KO następny: KO-080.**
 - **Pula FX (08 fix): P-867…P-870. Następny wolny: P-871; KO następny: KO-077.**
 - **Pula BX6 (08): P-861…P-866. Następny wolny: P-867; KO następny: KO-077.**
@@ -1011,3 +1012,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 15.11 23:00 | M9 | FX PRZEKAZANIE @ b075830b (autor OK, 0 trailerów, e2e bez zmian): KO-077/BX-011 (6a8a1508, src/przypadki-uzycia/wzor-widok.ts + WzorAkcje.ts), KO-078/BX-012 (bramka tagiScenariusza, 4 testy czerwone najpierw); verify 675/7675 wg sesji. Zarchiwizowana (3,60 USD, 29%). Recenzja niezależna 4edb7448..b075830b — subagent koordynatora | iOS na b075830b po 43767704896 |
 | 15.11 23:10 | M9 | Recenzja niezależna FX (subagent): P1 0, P2 2 (BX-013 bramka inline tags, BX-014 poziomo zdjęcia), P3 3; testy BX-002/008/009 padają na starych plikach (zależne od poprawek), 17/17 i 7/7 zielone. KO-079 → polecenie FX2 | start FX2 |
 | 15.11 23:20 | M9 | FX2 = session_01T66VByNCbzjgkTmkNx3bYY (prompt zgodny sha256 1a2bb291…) @ f562da5b (autor OK, 0 trailerów): BX-013 (tokenizer listaWLinii, 3 testy czerwone najpierw), BX-014 (edges top/bottom, test 750 vs 632); verify 676/7681 wg sesji; diff przeczytany. Zarchiwizowana (0,90 USD). KO-080: iOS 43767704896 anulowany, **43774048947 na f562da5b**; BX-015…017 do kolejki dnia | wynik iOS ok. 01:10 |
+| 16.11 01:35 | M9 | iOS 43774048947 na f562da5b: failure (01:25). Bramkowe czerwone: 39-p-190 (2×, krok 62 `jezyk`), 61-br-prj-007 (nowy, krok 119 „row 0, last worked today”); informacyjny 81 PU-228; 83 PU-234 zielony. Maszyna wykluczona (logi subagentem). KO-081 → polecenie FX3 | start FX3 |
