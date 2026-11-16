@@ -9,7 +9,7 @@ Legenda klas:
 
 Napisy aplikacji: po polsku, z angielskim w ⟦⟧ (scenariusze biegną po angielsku, symulator en-US). Ekrany: klucze tras względem `app/` bez `.tsx`.
 
-Podsumowanie: A=107, B=180, F=52, razem 339.
+Podsumowanie: A=108, B=179, F=52, razem 339.
 
 ## Instalacja i pierwszy start
 
@@ -417,7 +417,7 @@ Podsumowanie: A=107, B=180, F=52, razem 339.
 | PU-231 | Wejście i powrót: „Pokaż” z przewodnika na ekran nad nim. | Przewodnik → funkcja → „Pokaż ›” ⟦Show ›⟧ → „‹”. | Opisany ekran (licznik) nad przewodnikiem; „‹” wraca do przewodnika. | G-03 | przewodnik, licznik | A | e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:43; e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:45; e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:49 |
 | PU-232 | Wejście i powrót: „Ustawienia”. | „Dziś” → zębatka → „‹”. | Ustawienia; „‹” wraca na „Dziś”. | — | ustawienia, (zakladki)/index | A | e2e/scenariusze/subflows/otworz-ustawienia.yaml:16; e2e/scenariusze/32-nfr-sys-001-nowy-ios.yaml:35 |
 | PU-233 | Wejście i powrót: „Język”. | „Ustawienia” → „Język” ⟦Language⟧ → wybór języka albo „‹”. | Lista języków z zaznaczeniem; wybór od razu zmienia język i wraca do „Ustawienia”. | T-05 | jezyk, ustawienia | A | e2e/scenariusze/39-p-190-jezyk-trwaly.yaml:16; e2e/scenariusze/39-p-190-jezyk-trwaly.yaml:32 |
-| PU-234 | Wejście i powrót: „Jednostki”. | „Ustawienia” → „Jednostki” ⟦Units⟧ → wybór albo „‹”. | Wybór „Automatycznie” / „Metryczne” / „Imperialne” zapisany i powrót do „Ustawienia”; „‹” bez zmian. | T-53 | miary, ustawienia | B | oczekujący: e2e/scenariusze/83-pu-234-jednostki-wybor-i-wstecz.yaml:33; e2e/scenariusze/83-pu-234-jednostki-wybor-i-wstecz.yaml:43 |
+| PU-234 | Wejście i powrót: „Jednostki”. | „Ustawienia” → „Jednostki” ⟦Units⟧ → wybór albo „‹”. | Wybór „Automatycznie” / „Metryczne” / „Imperialne” zapisany i powrót do „Ustawienia”; „‹” bez zmian. | T-53 | miary, ustawienia | A | e2e/scenariusze/83-pu-234-jednostki-wybor-i-wstecz.yaml:32; e2e/scenariusze/83-pu-234-jednostki-wybor-i-wstecz.yaml:42 |
 | PU-235 | Wejście i powrót: „Licencje open source”. | „Ustawienia” → „Licencje open source” ⟦Open source licenses⟧ → „‹”. | Ekran licencji; „‹” wraca do „Ustawienia”. | T-65 | licencje, ustawienia | A | e2e/scenariusze/84-pu-235-pu-236-licencje-i-zrodla-wstecz.yaml:25; e2e/scenariusze/84-pu-235-pu-236-licencje-i-zrodla-wstecz.yaml:31 |
 | PU-236 | Wejście i powrót: „O naszych treściach”. | „Ustawienia” → „O naszych treściach” ⟦About our information⟧ → „‹”. | Ekran źródeł; „‹” wraca do „Ustawienia”. | T-66 | zrodla, ustawienia | A | e2e/scenariusze/84-pu-235-pu-236-licencje-i-zrodla-wstecz.yaml:38; e2e/scenariusze/84-pu-235-pu-236-licencje-i-zrodla-wstecz.yaml:44 |
 
