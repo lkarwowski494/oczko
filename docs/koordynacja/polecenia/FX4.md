@@ -1,0 +1,13 @@
+# Sesja FX4: diagnoza czerwonych bramkowych 22 i 45 w iOS 43788927541 (08 fix) — Oczko
+Koordynator: session_01T66VBwWi2Ff1kezfszSt3H (raporty i PRZEKAZANIE tylko przez send_message do tego ID). Gałąź stanu: `koordynacja` (tylko odczyt).
+
+1. Rola: 08-programista w trybie **fix** (prompt po linii `=== PROMPT ROLI ===`, przeczytaj w całości). Znaleziska zatwierdził koordynator (P-087; KO-083, do weta właściciela).
+2. Start: `claude/bx-katalog-e2e-2026-11-15` @ f3b3a8cb (inny HEAD: zgłoś; fast-forward, jeśli lokalnie starszy). `npm ci`; push z `NODE_OPTIONS=--max-old-space-size=3072`. Tożsamość: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By i Claude-Session (P-507).
+3. Wejście: przebieg „Jakość · iOS” **43788927541** na f3b3a8cb (koordynator: maszyna wykluczona; 39, 61, 81, 83 zielone). Artefakty ze zrzutami: `e2e-czesc-2-iphone`, `e2e-czesc-4-iphone`. Oba scenariusze były **zielone** w 43774048947 (f562da5b: 22 o 00:23, 45 o 00:21) i 22 w 43752186631. Zmiany f562da5b..f3b3a8cb: `app/zdjecie.tsx` (useSafeAreaInsets), e2e 39/61/83, `e2e/czesci.json` (waga 83: 123→86 — inny przydział scenariuszy do części, więc inna kolejność i stan symulatora).
+4. Zadania (przyczyna z dowodem: zrzut/hierarchia/plik:linia; potem test czerwony → poprawka → zielony; verify 0):
+   1. **BX-019** `22-br-wzr-002-s1-zdjecie-strony.yaml` (część 4, 03:30:49, krok 32/32 po stuknięciu `licznik-wzor`): „Assertion is false: id: e2e-wzor-zdjecie is visible”.
+   2. **BX-020** `45-br-wzr-005-s3-obrot-strona-licznik.yaml` (część 2, 03:34:31, krok 38/38): `scrollUntilVisible` id `wzor-strona` textRegex `.*[Pp]age 2 of .*` — „No visible element found”.
+   Dla każdego rozstrzygnij: (a) błąd aplikacji (regresja z f562da5b..f3b3a8cb albo wcześniejsza, ujawniona inną kolejnością), (b) zależność scenariusza od stanu po poprzednim scenariuszu w części (izolacja), (c) niestabilność. (a) → napraw w src/app; (b) → scenariusz ma sam ustawić stan (bez osłabiania asercji); (c) → opisz dowód, bez zmian w asercjach i bez dodawania ponowień do scenariuszy z asercją licznika (CLAUDE.md, P-091 10a).
+5. Zakazy: bez subagentów, bez scalania, bez workflowów (iOS wyzwala koordynator), bez --no-verify i force-push, bez pytań do właściciela, bez pisania na `koordynacja`; nie zmniejszasz zestawów, progów i limitów czasu; nie zmieniasz `e2e/czesci.json` ręcznie poza regeneracją z pomiaru. Nowe problemy → znaleziska w raporcie.
+6. Decyzje: pula P-881…P-884. Pułap 8 USD, STOP 10,4 USD (kosztu nie widzisz; na „STOP” kończysz).
+7. Raport (≤ 10 linii, send_message) po jednym pushu (albo bez pushu, gdy (c)): SHA, przyczyna z dowodem dla BX-019 i BX-020, test czerwony → zielony, verify; to jest też PRZEKAZANIE.

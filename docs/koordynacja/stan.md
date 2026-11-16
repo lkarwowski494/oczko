@@ -568,6 +568,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula FX4 (08 fix): P-881…P-884. Następny wolny: P-885; KO następny: KO-084.**
 - **Pula FX3 (08 fix): P-877…P-880. Następny wolny: P-881; KO następny: KO-082.**
 - **Pula FX2 (08 fix): P-874…P-876 (FX wzięła P-871…P-873). Następny wolny: P-877; KO następny: KO-080.**
 - **Pula FX (08 fix): P-867…P-870. Następny wolny: P-871; KO następny: KO-077.**
@@ -1015,3 +1016,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 01:35 | M9 | iOS 43774048947 na f562da5b: failure (01:25). Bramkowe czerwone: 39-p-190 (2×, krok 62 `jezyk`), 61-br-prj-007 (nowy, krok 119 „row 0, last worked today”); informacyjny 81 PU-228; 83 PU-234 zielony. Maszyna wykluczona (logi subagentem). KO-081 → polecenie FX3 | start FX3 |
 | 16.11 01:40 | M9 | FX3 = session_01T66VBy5PKjdK1bP2is6EyX (prompt zgodny sha256 e63be3bc…). BX-018 przyczyna: scenariusz 61 przestarzały po BY-002 (sprawdzone) → KO-082 zgoda na zmianę asercji | kontrola 02:01 |
 | 16.11 01:55 | M9 | FX3 PRZEKAZANIE @ f3b3a8cb (autor OK, 0 trailerów; app/zdjecie.tsx + e2e 39/61/83 + czesci.json; diff przeczytany): BX-018 asercja 61 (KO-082, grep 0 innych), BX-010 przyczyna w scenariuszu (środek wiersza Język poza ScrollView; `scroll` + interpreter testów), BX-009 natywny SafeAreaView w fullScreenModal daje 0 → useSafeAreaInsets; 83 PU-234 → A (A 108 / B 179 / F 52). Verify 677/7682 wg sesji. Zarchiwizowana (3,32 USD, 29%). Wyzwoliłem **iOS 43788927541 na f3b3a8cb** | wynik ok. 03:50 |
+| 16.11 04:25 | M9 | iOS 43788927541 na f3b3a8cb: failure (04:15). Zielone 39 (bramkowy), 61 (bramkowy), 81, 83; czerwone bramkowe 22-br-wzr-002 (część 4) i 45-br-wzr-005 (część 2) — oba zielone na f562da5b; maszyna wykluczona. KO-083 → FX4 | start FX4 |
