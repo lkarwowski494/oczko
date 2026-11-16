@@ -27,3 +27,26 @@ Nie ten sam podprzepływ i nie ten sam stan licznika po poprzednim scenariuszu (
 ## Czego nie sprawdzono
 - Wyników 64 i 69 w przebiegach 43810499611 (część 3 w toku o 06:42 UTC, doszła dopiero do początku scenariuszy) i 43814487099 (anulowany) — nieodczytane.
 - Przebiegu lokalnego (Linux bez Xcode).
+
+## Ścieżki dowodów (artefakt 14202224920 „e2e-czesc-3-iphone” → `e2e-out.zip` → `e2e-out/`)
+Skrót katalogu scenariusza: `<S>` = `<nr-nazwa>/<data_godzina>/<tytuł scenariusza>/`.
+- Scenariusz 64: `64-br-dni-001-s1-kalendarz-dzien-podsumowanie/2026-11-16_055904/…/` — `commands.json` (kroki 33–53: retry, `inputText`, asercje), `screenshots/step-034-retry.png`, `step-044-assertCondition-Harbor.png` (pole „H”), `step-054-assertCondition-Harbor.png` („HarborH”), `screen-hierarchy/step-044-…json`, `step-054-…json`, `logs/device-xctest.log` (06:01:06 stuknięcie w pole; 06:01:22 eraseText; 06:01:25–06:01:35 pierwszy inputText „H” 10,4 s; potem a, r, b, o, r), `logs/maestro.log` (06:02:06.892 próba 1 FAILED, 06:02:44.102 próba 2 FAILED). Plik zbiorczy: `e2e-out/64-br-dni-001-s1-kalendarz-dzien-podsumowanie.xml`.
+- Scenariusz 69: `69-p-687-przewodnik-z-dzis-pokaz/2026-11-16_061333/…/` — `commands.json` (krok 19 „+1” tapOnElement, 20 asercja „1”, 24 „−1” tapOnElement, 25 asercja „0” FAILED 17 941 ms), `screenshots/step-026-assertCondition-0.png`, `screen-hierarchy/step-026-assertCondition-0.json`, `logs/device-xctest.log` (`Tapping 243.0, 740.0` 06:15:12.357; `Tapping 52.0, 788.0` 06:15:18.450), `logs/device-simulator.log` (UIEvent do okna aplikacji: 06:15:12.376/.503 oraz 06:15:18.472/.586). Plik zbiorczy: `e2e-out/69-p-687-przewodnik-z-dzis-pokaz.xml`.
+- Statystyka czasu stuknięć (mediana ms / maks., liczone z `commands.json` wszystkich scenariuszy części 3): 64: 3105 / 4246; 69: 2010 / 3171; pozostałe 1543–3230 / 2129–8233.
+
+## Hipotezy wykluczone (z dowodem)
+- Nowy panel `e2e-nawigacje` zasłania „−1” albo przesuwa układ: wykluczone, panel y 486–519, „−1” y 752–824 (hierarchia 69); na formularzu 64 panelu nie ma.
+- Przemontowanie ekranu licznika w trakcie 69: wykluczone, „counter screen mounts: 1”.
+- Stuknięcie w złe miejsce: wykluczone, współrzędne = środek przycisków; UIEvent dotarł do okna aplikacji.
+- Awaria maszyny/sterownika (`DeviceUnreachableException`): brak w logu; sam symulator wolny (kroki 1,5–14 s).
+- Bramka czasowa „−1” po „+1” w kodzie: brak (`src/przypadki-uzycia/licznik.ts:74`, `src/kompozycja/licznik.ts:274`).
+- Zależność od poprzedniego scenariusza: wykluczona, oba zaczynają od `start-czysty` (clearState).
+- Reset pola/remont formularza w 64: brak w `Formularze.tsx:201`, `Arkusz.tsx:151`.
+- Niewykluczone: „−1” utknęło w aplikacji (kolejka zapisów, odczyt po zapisie, nieuporządkowane `odswiez()` w `src/ekrany/Aplikacja.tsx:55`) — logi nie niosą stanu JS; rozstrzyga diagnostyka niżej.
+
+## Plan diagnostyki (opcja 2, decyzja koordynatora; robi FX6b na tej samej gałęzi)
+- Nowy plik `src/kompozycja/e2e/minus-stan.tsx` (wzór: `nawigacje-stan.tsx`): stan w pamięci procesu `{ nacisniecia, ostatniWynik: 'ok'|'zablokowany'|'blad'|null, odswiezenia: number, ostatnieOdswiezenieSkonczone: number }`, `zliczMinus()` (przed `p.naMinus()`), `zapiszWynikMinus(w)`, `zliczOdswiezenie(numerWydania, numerZakonczenia)`, `PanelMinus` z `testID="e2e-minus"` i tekstem po angielsku jak pozostałe panele (bez `t()`), `zerujMinus()` dla testów.
+- Wpis w `src/kompozycja/e2e/panele.tsx` (eksport `PanelMinus`, `zliczMinus`, …), użycie w `app/licznik.tsx` obok `PanelNawigacji` (`paneleE2e ? <paneleE2e.PanelMinus /> : null`) i wywołania w `src/ekrany/Licznik.tsx` (`minus()`, linie 77–84) oraz `src/ekrany/Aplikacja.tsx` (`odswiez`, linie 55–59: numer wydania przy starcie i przy zastosowaniu wyniku) — tylko przez `paneleE2e?.…` (poza buildem E2E bez efektu).
+- Testy przed kodem: `tests/ekrany/e2e-minus-stan.test.tsx` (panel liczy naciśnięcia i wyniki; zero w stanie wyjściowym; poza buildem E2E brak panelu) oraz test uporządkowania `odswiez()` w `Aplikacja` (starsze wydanie kończące się później nie nadpisuje nowszego) — czerwony najpierw; jeżeli czerwony na obecnym kodzie, to defekt (a) i poprawka w `Aplikacja.tsx`.
+- Po zielonym `npm run verify` jeden push; scenariusze 64/69 bez zmian (diagnostyka tylko w aplikacji E2E; lista plików poza `e2e/` — zgodnie z KO-089/091).
+- Odrzucone: zmiana `nazwij-projekt.yaml` (opcja 3) — wspólny podprzepływ, bez zgody koordynatora.
