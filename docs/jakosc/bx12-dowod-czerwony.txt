@@ -57,3 +57,7 @@ Poza Jest (częściowo, nazwane w Pokryciu): obrót okna i „+1” w symulatorz
 == KO-105: PU-148 (nowy test trasy w tests/ekrany/pu-wzor-przelacz-290.test.tsx + PU-148 w tytule tests/dane/wzor-rysunki-odzysk.test.ts), 2026-11-16 ==
 Czerwień (mutacja app/wzor.tsx:112 — usunięte wywołanie `odzyskajRysunki` przy otwarciu wzoru; potem przywrócone): `npx jest tests/ekrany/pu-wzor-przelacz-290` → 1 failed (PU-148), 3 passed. Bez mutacji: 4 passed; z testami odzysku 27 passed; katalog: Kontrola 2 zielona.
 Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem i cofanie w widoku natywnym PencilKit (BX-041) — scen. 116.
+
+== KO-105: PU-012 (nowy test tests/ekrany/pu-012-ipad-zakreslanie.test.tsx), 2026-11-16 ==
+Czerwień (mutacja src/ekrany/WzorPrzegladarka.tsx:117 — „Cofnij” woła naCofnij dwa razy; potem przywrócone, git diff src/ pusty): 1 failed (oczekiwane 1 wywołanie). Bez mutacji: 1 passed.
+Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem w PencilKit, faktyczne zdjęcie ostatniego pasa, szybka para i restart — scen. 110.
