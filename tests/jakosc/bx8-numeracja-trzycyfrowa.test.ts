@@ -40,4 +40,19 @@ describe('KO-088 / BX-033: scenariusz o numerze trzycyfrowym', () => {
     const wf = fs.readFileSync(path.join(root, '.github/workflows/jakosc-ios.yml'), 'utf8');
     expect(wf.match(/\[0-9\]\[0-9\]-\*\.yaml/g) ?? []).toEqual([]);
   });
+
+  // CE-06 (P3, ce-recenzja-bx7-bx8.md): test wyżej jest tylko negatywny; inny zły glob (np. `[0-9][0-9]-[a-z]*.yaml`) by przeszedł. Tu glob z workflow rozwija prawdziwy bash na katalogu z plikami 05-, 100-, 109-.
+  test('pętle Maestro w jakosc-ios.yml łapią scenariusze 05-, 100- i 109- (rozwinięcie globu w bashu), nie łapią config.yaml (CE-06)', () => {
+    const wf = fs.readFileSync(path.join(root, '.github/workflows/jakosc-ios.yml'), 'utf8');
+    const globy = [...wf.matchAll(/for f in (e2e-czesc\/(?:osobne\/)?\[0-9\][^\s;]*-\*\.yaml); do/g)].map((m) => m[1] ?? '');
+    expect(globy.length).toBeGreaterThanOrEqual(2); // pętla części i pętla AX5 (osobne)
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bx10-glob-'));
+    try {
+      for (const k of ['e2e-czesc', 'e2e-czesc/osobne']) { fs.mkdirSync(path.join(d, k), { recursive: true }); for (const f of ['05-x.yaml', '100-x.yaml', '109-x.yaml', 'config.yaml']) fs.writeFileSync(path.join(d, k, f), ''); }
+      for (const glob of globy) {
+        const wynik = execFileSync('bash', ['-c', `shopt -s nullglob; for f in ${glob}; do echo "$f"; done`], { cwd: d, encoding: 'utf8' }).split('\n').filter(Boolean).map((x) => path.basename(x)).sort();
+        expect({ glob, wynik }).toEqual({ glob, wynik: ['05-x.yaml', '100-x.yaml', '109-x.yaml'] });
+      }
+    } finally { fs.rmSync(d, { recursive: true, force: true }); }
+  });
 });

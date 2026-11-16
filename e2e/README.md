@@ -422,12 +422,13 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `przewodnik-grupa-projekty` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
 | `przewodnik-grupa-ustawienia` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
 | `przewodnik-grupa-wzor` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-krok-7-pokaz` | przewodnik, „First steps” | NIE istnieje: kontrola, że kroków jest dokładnie 6 (scen. 85, PU-104; CE-09); asercja `assertNotVisible` | — | |
 | `przewodnik-krok-2-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
 | `przewodnik-krok-3-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
 | `przewodnik-krok-4-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
 | `przewodnik-krok-5-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
 | `przewodnik-krok-6-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
-| `ustawienia-pro` | Ustawienia, wiersz „Oczko Pro” | tekst wartości wiersza „On” — tylko przy aktywnym Pro (`src/ekrany/Ustawienia.tsx:100`, `wartoscTestID`); scen. 98 (PU-322), 89 (PU-110: brak bez zakupu) | „On” | |
+| `ustawienia-pro` | Ustawienia, wiersz „Oczko Pro” | tekst wartości wiersza „On” — tylko przy aktywnym Pro (`src/ekrany/Ustawienia.tsx:100`, `wartoscTestID`); scen. 94 (PU-322), 89 (PU-110: brak bez zakupu) | „On” | |
 | `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy pisany w kodzie (2 strony tekstu Helvetica) | bez `t()` | |
 | `e2e-wzor-pdf-skan` | dodanie wzoru (build E2E) | prawdziwy wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, strategia §4; P-439; scen. 21) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |

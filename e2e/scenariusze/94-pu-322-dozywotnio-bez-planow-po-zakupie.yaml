@@ -1,6 +1,6 @@
 # PU-322 (Pro, T-?): „Lifetime” kupione raz na sztucznym sklepie: plan „… once” z „Pay once. Nothing renews.”, po zakupie brak planów i brak „Manage subscription”, po restarcie Pro „On”.
 # Kod: plany `oferty-plan-*` i `oferty-stan-pro` (src/ekrany/Oferty.tsx), „Manage subscription” `ustawienia-subskrypcja` tylko przy trwającej subskrypcji (src/ekrany/Ustawienia.tsx:101, `trwaSubskrypcja`), wartość „On” `ustawienia-pro` (Ustawienia.tsx:100).
-# Nie sprawdzone (BX-025): zdanie PU „`e2e-sklep-wygas` nie wyłącza Pro” — scen. 06 (zielony, podstawowy) zakłada odwrotnie: po zakupie „Lifetime” i `e2e-sklep-wygas` znika `oferty-stan-pro`.
+# Poza scenariuszem (BX-025, CE-08): wiersza PU-322 w katalogu nie ma zdania o `e2e-sklep-wygas`; tło: scen. 06 (zielony, podstawowy) po zakupie „Lifetime” i `e2e-sklep-wygas` widzi zniknięcie `oferty-stan-pro` — rozstrzygnięcie atrapy sklepu czeka na decyzję.
 # Scenariusz sprawdza resztę wyniku. Wzór: scen. 06.
 appId: com.apps4brew.knitting
 name: "PU-322 · „Lifetime” na sztucznym sklepie: „Pay once. Nothing renews.”, po zakupie brak planów i „Manage subscription”, po restarcie Pro „On”"
