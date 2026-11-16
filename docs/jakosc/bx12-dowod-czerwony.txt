@@ -22,3 +22,13 @@ Zielone: `npx jest tests/jakosc` → 77 suites / 989 testów; katalog „Kontrol
 Scenariusz Maestro działa tylko w CI iOS (tu go nie uruchomię), więc czerwień regresji pokazuje rozumowanie z kodu, nie przebieg: `wzorDoOtwarcia` bez zapisanego wyboru bierze lista[0] posortowaną po nazwie NOCASE (`src/przypadki-uzycia/wzor.ts:148-153,172`) = PDF „Sleeve chart”; scenariusz przed restartem wybiera „Test pattern” (zdjęcie, drugi po nazwie) i po restarcie asertuje „Photo.*” — regresja `zapamietajWzor` otworzyłaby PDF i asercja padnie.
 Czerwone (struktura): po zmianie scenariusza `bramka-przypadki-uzycia.mjs katalog` → "Kontrola 2: CZERWONA (1)": PU-290 …91….yaml:87 „nie jest asercją” (stare numery linii); po poprawce numerów w pokryciu → zielona. `npx jest tests/jakosc` zielone.
 Zachowane: dowód, że zakreślenie PDF przeżyło restart (po restarcie przełączenie na „Sleeve chart” → „1 highlight”, linie 99-100).
+
+== CK-03 (test PU-191: ID decyzji, devDependencies, lockfile), 2026-11-16 ==
+Czerwone (przed zmianą `naruszenia`): `npx jest tests/jakosc/pu-191` → 4 failed / 14 passed: (a) wpis z ID P-999, (b) @sentry/react-native w devDependencies, (c) produkcyjny pakiet przechodni @sentry/core w lockfile, plugin ./plugins/moj-analytics w app.json.
+Zielone po zmianie: 18 passed; `npm run typecheck` czysto.
+Mutacje na plikach repo (po każdej przywrócone `git checkout`), test PU-191 pada za każdym razem:
+ (a) zależność `expo-nowy` + wpis „P-999 dopisane” na liście dozwolonych → 1 failed (test repo);
+ (b) `@sentry/react-native` w devDependencies → 3 failed;
+ (c1) plugin `./plugins/moj-analytics` w app.json → 3 failed;
+ (c2) `node_modules/@sentry/core` jako pakiet produkcyjny w package-lock.json → 2 failed.
+Ograniczenie (nazwane): kontrola (a) sprawdza, że ID ISTNIEJE w docs/decyzje.md; wpis z prawdziwym, ale nietrafionym ID (np. „P-913 dopisane”) przejdzie — pełna kontrola wymagałaby, by wiersz decyzji nazywał pakiet [DO USTALENIA: czy chcecie tego].

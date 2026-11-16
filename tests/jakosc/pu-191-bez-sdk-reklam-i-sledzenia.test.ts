@@ -7,8 +7,11 @@ import * as path from 'path';
 
 const root = path.join(__dirname, '..', '..');
 // Druga bariera (BX11, P-913): nazwy znanych SDK, błędne także wtedy, gdy ktoś dopisze je do listy dozwolonych. `segment` zawężone do SDK Segment (kontrolka „segmented-control” nie jest fałszywym alarmem).
-const ZAKAZANE = /(admob|google-mobile-ads|applovin|ironsource|unity-ads|react-native-ads|facebook|fbsdk|appsflyer|adjust|branch|amplitude|mixpanel|@segment\/|analytics-next|firebase|sentry|bugsnag|crashlytics|datadog|posthog|onesignal|tracking-transparency|apple-authentication|google-signin|auth0|expo-auth-session)/i;
+const ZAKAZANE = /(admob|google-mobile-ads|applovin|ironsource|unity-ads|react-native-ads|facebook|fbsdk|appsflyer|adjust|branch|amplitude|mixpanel|@segment\/|analytics-next|firebase|sentry|bugsnag|crashlytics|datadog|posthog|onesignal|analytics|telemetry|insights|clarity|tracking-transparency|apple-authentication|google-signin|auth0|expo-auth-session)/i;
 const ID_DECYZJI = /\b(?:P|D|KO)-\d{3,4}\b|\bADR-\d{4}\b/;
+const ID_DECYZJI_WSZYSTKIE = new RegExp(ID_DECYZJI.source, 'g');
+/** CK-03: opcjonalne sprawdzenia dodatkowe — `idIstnieje` (ID z wpisu listy jest w docs/decyzje.md), `lock` (package-lock.json: produkcyjne pakiety przechodnie przez drugą barierę). */
+export type Opcje = { idIstnieje?: (id: string) => boolean; lock?: { packages: Record<string, { dev?: boolean }> } };
 
 /**
  * Naruszenia PU-191 (BX11 / P-913). `dozwolone` = lista bezpośrednich zależności z ID decyzji (bez niej kontrola listy jest pominięta — stare wywołania), `plisty` = treść plików `Info.plist` z katalogów celów (targets/<cel>/Info.plist).
@@ -18,14 +21,27 @@ export function naruszenia(
   app: { expo?: { plugins?: unknown[]; ios?: { infoPlist?: Record<string, unknown>; privacyManifests?: { NSPrivacyTracking?: unknown; NSPrivacyTrackingDomains?: unknown } } } },
   plisty: Record<string, string> = {},
   dozwolone?: Record<string, string>,
+  opcje: Opcje = {},
 ): string[] {
   const out: string[] = [];
+  // CK-03 (b): Metro bundluje pakiet z devDependencies, jeśli kod go zaimportuje — druga bariera obejmuje je też.
+  for (const nazwa of Object.keys({ ...pkg.devDependencies })) if (ZAKAZANE.test(nazwa)) out.push(`devDependency „${nazwa}” (SDK reklam, śledzenia, awarii albo kont)`);
+  // CK-03 (c): produkcyjne pakiety z lockfile (także przechodnie; bez `dev: true`).
+  if (opcje.lock) {
+    const widziane = new Set<string>();
+    for (const [klucz, v] of Object.entries(opcje.lock.packages)) {
+      if (klucz === '' || v.dev === true) continue;
+      const nazwa = klucz.replace(/^.*node_modules\//, '');
+      if (ZAKAZANE.test(nazwa) && !widziane.has(nazwa)) { widziane.add(nazwa); out.push(`pakiet produkcyjny „${nazwa}” w package-lock.json (zależność przechodnia: SDK reklam, śledzenia, awarii albo kont)`); }
+    }
+  }
   for (const nazwa of Object.keys({ ...pkg.dependencies })) {
     if (ZAKAZANE.test(nazwa)) out.push(`zależność „${nazwa}” (SDK reklam, śledzenia, awarii albo kont)`);
     if (dozwolone === undefined) continue;
     const powod = dozwolone[nazwa];
     if (powod === undefined) out.push(`zależność „${nazwa}” spoza listy dozwolonych (tests/jakosc/pu-191-dozwolone-zaleznosci.json; wpis wymaga ID decyzji)`);
     else if (!ID_DECYZJI.test(powod)) out.push(`wpis „${nazwa}” na liście dozwolonych bez ID decyzji (P-nnn, D-nnn, KO-nnn albo ADR-nnnn)`);
+    else if (opcje.idIstnieje) for (const id of powod.match(ID_DECYZJI_WSZYSTKIE) ?? []) if (!opcje.idIstnieje(id)) out.push(`wpis „${nazwa}” na liście dozwolonych powołuje się na ${id}, którego nie ma w docs/decyzje.md`);
   }
   for (const p of app.expo?.plugins ?? []) { const n = Array.isArray(p) ? String(p[0]) : String(p); if (ZAKAZANE.test(n)) out.push(`plugin „${n}” w app.json`); }
   if (app.expo?.ios?.infoPlist && 'NSUserTrackingUsageDescription' in app.expo.ios.infoPlist) out.push('NSUserTrackingUsageDescription w app.json (prośba o śledzenie)');
@@ -80,6 +96,41 @@ describe('CH-03 · lista dozwolonych zależności i deklaracje śledzenia', () =
   });
   test('SDK reklam jest naruszeniem także wtedy, gdy ktoś dopisze je do listy (druga bariera: nazwy znanych SDK)', () => {
     expect(naruszenia({ dependencies: { ...czyste.dependencies, 'react-native-google-mobile-ads': '1' } }, appCzysta, {}, { ...ZNANE, 'react-native-google-mobile-ads': 'D-001 test' }).length).toBeGreaterThan(0);
+  });
+});
+
+// --- BX12 / CK-03 (P2, `docs/jakosc/ck-recenzja-scenariusze.md`): (a) ID decyzji z wpisu istnieje w docs/decyzje.md, (b) druga bariera obejmuje devDependencies (Metro bundluje je, gdy kod je zaimportuje),
+// (c) i produkcyjne pakiety z package-lock.json (zależności przechodnie); plugin o nazwie analityki w app.json też jest naruszeniem. Dowód czerwieni: docs/jakosc/bx12-dowod-czerwony.txt ---
+const decyzje = fs.readFileSync(path.join(root, 'docs', 'decyzje.md'), 'utf8');
+const idIstnieje = (id: string): boolean => new RegExp(`^\\|\\s*${id}\\s*\\|`, 'm').test(decyzje);
+const lock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8')) as { packages: Record<string, { dev?: boolean }> };
+const opcje = { idIstnieje, lock };
+const lockCzysty = { packages: { '': {}, 'node_modules/expo': {}, 'node_modules/jest': { dev: true } } };
+
+describe('CK-03 · luki listy PU-191 (ID decyzji, devDependencies, zależności przechodnie)', () => {
+  test('repo przechodzi z opcjami: ID istnieją w docs/decyzje.md, devDependencies i lockfile czyste', () => {
+    expect(Object.keys(lock.packages).length).toBeGreaterThan(100); // pusty lockfile to błąd testu, nie sukces
+    expect(naruszenia(pkg, app, plistyRepo(), dozwolone, opcje)).toEqual([]);
+  });
+  test('(a) wpis z ID, którego nie ma w docs/decyzje.md (P-999), jest naruszeniem; ID z decyzji przechodzi', () => {
+    expect(idIstnieje('P-913')).toBe(true);
+    expect(idIstnieje('P-999')).toBe(false);
+    const wynik = naruszenia(czyste, appCzysta, {}, { ...ZNANE, 'expo-sqlite': 'P-999 dopisane' }, opcje);
+    expect(wynik.length).toBe(1);
+    expect(wynik[0]).toMatch(/P-999/);
+  });
+  test('(b) SDK w devDependencies jest naruszeniem (druga bariera)', () => {
+    expect(naruszenia({ ...czyste, devDependencies: { '@sentry/react-native': '1' } }, appCzysta, {}, { ...ZNANE }, opcje).length).toBeGreaterThan(0);
+  });
+  test('(c) produkcyjny pakiet z lockfile (zależność przechodnia) pasujący do zakazanych jest naruszeniem; pakiet dev z lockfile nie', () => {
+    const lockZly = { packages: { ...lockCzysty.packages, 'node_modules/expo/node_modules/@sentry/core': {} } };
+    expect(naruszenia(czyste, appCzysta, {}, ZNANE, { idIstnieje: () => true, lock: lockZly }).length).toBe(1);
+    const lockDev = { packages: { ...lockCzysty.packages, 'node_modules/@sentry/core': { dev: true } } };
+    expect(naruszenia(czyste, appCzysta, {}, ZNANE, { idIstnieje: () => true, lock: lockDev })).toEqual([]);
+  });
+  test('plugin o nazwie analityki (np. ./plugins/moj-analytics) w app.json jest naruszeniem', () => {
+    const a = { expo: { plugins: ['./plugins/moj-analytics'], ios: appCzysta.expo.ios } };
+    expect(naruszenia(czyste, a, {}, ZNANE, { idIstnieje: () => true }).length).toBe(1);
   });
 });
 
