@@ -27,6 +27,8 @@ export { PanelNawigacji, zerujNawigacje, zliczNawigacje } from './nawigacje-stan
 export { diagnostykaLicznika, PanelLicznika, PanelNazwy, zerujWejscia, zliczWpisNazwy } from './wejscia-stan';
 // CH-01 (BX11): proporcja okna aplikacji (panel `e2e-okno` w app/_layout.tsx; scenariusz 105, PU-071).
 export { opisOkna, PanelOkna } from './okno-stan';
+// BX15 (KO-121 b, BX-051): zapisane notatki rzędów na ekranie wzoru (panel `e2e-wzor-notatki` w app/wzor.tsx; scenariusze 102, 104).
+export { opisNotatekWzoru, PanelNotatekWzoru } from './notatki-wzoru-stan';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {

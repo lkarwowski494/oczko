@@ -48,7 +48,7 @@ export default function EkranWzoru(): React.ReactElement {
   const okno = useWindowDimensions();
   const szerokosc = szerokoscOknaE2e() ?? okno.width;
   const uklad = ukladOkna({ szerokosc, wysokosc: okno.height });
-  const { id, dodaj: dodajParam, zrodla } = useLocalSearchParams<{ id?: string; dodaj?: string; zrodla?: string }>(); // `zrodla`: kafel „Dodaj wzór” na „Dziś” — menu źródeł także przy projekcie z wzorem (P-588)
+  const { id, dodaj: dodajParam, zrodla } = useLocalSearchParams<{ id?: string; dodaj?: string; zrodla?: string }>(); // `zrodla`: kafel „Dodaj wzór” na „Dziś” — menu źródeł (P-588)
   const { t } = kontener.j;
   const zw = kontener.wzor.z;
   const [lw, ustawLw] = useState<WidokLicznika | null>(null);
@@ -71,7 +71,7 @@ export default function EkranWzoru(): React.ReactElement {
   const [linkAdres, ustawLinkAdres] = useState(''); // adres wpisany w arkuszu linku; wraca do pola, gdy zlecenia „czeka na sieć” nie da się zapisać (ADR-0031 pkt 3)
   const [czekaSiec, ustawCzekaSiec] = useState(() => kontener.wzor.k.stan().czekaSiec); // strony WWW czekające na sieć (design-spec :660)
   useEffect(() => { const odswiez = () => ustawCzekaSiec(kontener.wzor.k.stan().czekaSiec); odswiez(); return kontener.wzor.k.naZmiane(odswiez); }, [kontener]);
-  // Poz. 12 C: gdy strona przestaje czekać (zapisała się po powrocie sieci albo użytkowniczka ją usunęła), lista wzorów otwartego wzoru się odświeża — nowy wzór pojawia się
+  // Poz. 12 C: gdy strona przestaje czekać (zapis po powrocie sieci albo usunięcie), lista wzorów się odświeża — nowy wzór pojawia się
   // w ▾ bez ogłoszenia. Otwarty wzór zostaje ten sam; bez otwartego wzoru (grupa na ekranie projektu) nic się nie przełącza.
   const otwartyWzor = useRef<string | undefined>(undefined);
   const liczbaCzekajacych = useRef(czekaSiec.length);
@@ -224,6 +224,7 @@ export default function EkranWzoru(): React.ReactElement {
         naOferty={() => router.push('/oferty')}
         naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
       />
+      {paneleE2e ? <paneleE2e.PanelNotatekWzoru chipy={chipy} /> : null}
     </Bezpieczny>
   );
 }

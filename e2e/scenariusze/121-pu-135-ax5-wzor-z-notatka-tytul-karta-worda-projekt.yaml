@@ -1,6 +1,6 @@
 # PU-135 (T-90), część 2 z 2 (część 1: scen. 120): przy AX5 wzór z notatką i tytułem z ▾, karta Worda („Word documents open as they are…”) i ekran projektu — przewijają się do ostatniego elementu, przyciski i teksty widoczne.
 # Rozmiar tekstu ustawia workflow przed scenariuszem (jak 30, 111), dlatego tag `osobny-krok` (e2e-czesci.mjs). Bez porównania zrzutów (słowa właściciela 16.11.2026, wariant B): ucięcia i nachodzenie to PU-341 (zrzuty 121-*).
-# Kod: tytuł z ▾ `wzor-przelacz` (WzorTytul.tsx:20, tylko przy ≥ 2 wzorach — drugi wzór dodaje „Add pattern” z ekranu projektu jak w 91); notatka: `wzor-zaznacz` → „Down, like written steps” → „Add note” → „Save” (jak 104; BX-034:
+# Kod: tytuł z ▾ `wzor-przelacz` (WzorTytul.tsx:20, tylko przy ≥ 2 wzorach — drugi wzór dodaje „Add pattern” z ekranu projektu jak w 91); notatka: `wzor-zaznacz` → „Down, like written steps” → „Add note” → „Save” (jak 104; BX-034: [BX15: chip nie jest w hierarchii XCUI (nakładka PDFKit, BX-051) — asercja po panelu E2E `e2e-wzor-notatki`.]
 # stuknięcie `point` w tym scenariuszu nie występuje — pas zostaje na rzędzie 1), chip „Row 1: k2tog here”; karta Worda `wzor.word_podglad` (WzorPrzegladarka.tsx:161, bez testID — selektor po tekście); ostatnie elementy projektu: `projekt-czas`/`projekt-notatka`.
 appId: com.apps4brew.knitting
 name: "PU-135 · AX5 (2/2): wzór z notatką i tytułem ▾, karta Worda, ekran projektu — przewinięcie do ostatniego elementu"
@@ -38,7 +38,7 @@ tags:
       - assertVisible: { id: "wzor-notatka-pole", text: "k2tog here" }
 - tapOn: "Save"
 - assertNotVisible: { id: "wzor-notatka-pole" }
-- assertVisible: "Row 1: k2tog here"
+- assertVisible: { id: "e2e-wzor-notatki", text: "notes: row 1: k2tog here" }
 - takeScreenshot: 121-wzor-z-notatka
 # --- drugi wzór (zdjęcie) → tytuł z ▾ ---
 - tapOn: { id: "nav-wstecz" }

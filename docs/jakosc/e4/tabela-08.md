@@ -440,6 +440,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatka-dodaj-bx002.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-003, RD-21 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatki-odrzuc.test.tsx` | zielony (główny zestaw) | 7 | BR-WZR-003 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-ostrzezenie-miejsca-113.test.ts` | zielony (główny zestaw) | 5 | — | `src/dane/pliki/system`<br>`src/kompozycja/wzor-rysunki`<br>`src/konfiguracja` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-panel-notatek-e2e-bx15.test.tsx` | zielony (główny zestaw) | 3 | BR-WZR-003, P-238 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-dzianina.test.tsx` | zielony (główny zestaw) | 12 | P-614 | `src/domena/uklad`<br>`src/ekrany/WzorLicznik`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-ipad.test.tsx` | zielony (główny zestaw) | 4 | P-605 | `src/ekrany/WzorLicznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-plus-203-204.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-020 | `src/ekrany/Licznik`<br>`src/kompozycja/preferencje` | Z07-22 |
@@ -508,4 +509,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 504; zależnych od poprawek: 309.
+Razem plików testów: 505; zależnych od poprawek: 309.
