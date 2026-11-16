@@ -174,6 +174,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-rownowaznosc-plus.test.tsx` | zielony (główny zestaw) | 5 | BR-LIC-001/S2, BR-ZAK-006, KP-10, RD-17 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | ER-68, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-stany.test.tsx` | zielony (główny zestaw) | 5 | P-563, P-564, P-565, P-571 | `src/ekrany/Dzis`<br>`src/ekrany/wspolne` | ER-70, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/dzis-start.test.tsx` | zielony (główny zestaw) | 3 | BR-LIC-001/S1, BR-LIC-001/S2, BR-ZAK-006/S1, NFR-PIE-001, P-563, R-148 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/Licznik`<br>`src/ekrany/wspolne` | ER-68, ER-70, Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-licznik-bez-diagnostyki-bx16-wydanie.test.tsx` | zielony (główny zestaw) | 2 | P-238 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-licznik-bez-diagnostyki-bx16.test.tsx` | zielony (główny zestaw) | 3 | NFR-WYD-001, P-936 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx` | zielony (główny zestaw) | 1 | P-238 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-nawigacje-stan-bx019.test.tsx` | zielony (główny zestaw) | 4 | P-238 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-ocena-stan.test.tsx` | zielony (główny zestaw) | 2 | P-238, P-377 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
@@ -484,6 +486,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/sklep-status.test.ts` | zielony (główny zestaw) | 2 | KP-13, P-135 | `src/domena/dostep`<br>`src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 7 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 6 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
+| 9 ? | `tests/adaptery/tryb-e2e-bez-diagnostyki-bx16.test.ts` | zielony (główny zestaw) | 4 | — | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-straznik.test.ts` | zielony (główny zestaw) | 6 | P-358, RD-17 | `src/konfiguracja`<br>`src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-360 | `src/domena/rysik` | — |
@@ -509,4 +512,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 505; zależnych od poprawek: 309.
+Razem plików testów: 508; zależnych od poprawek: 311.

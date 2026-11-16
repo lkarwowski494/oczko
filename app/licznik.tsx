@@ -8,12 +8,13 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { oglos } from '../src/kompozycja/system';
 import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
 import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
-import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
+import { bezDiagnostykiLicznika, paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
 export default function EkranLicznikaTrasa(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
+  const diagnostykaWejsc = paneleE2e && !bezDiagnostykiLicznika() ? paneleE2e : null; // BX16 (scen. 122): argument E2E wyłącza panel wejść i jego haki (pomiar bez pracy panelu)
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [plusy, ustawPlusy] = useState(0); // P-191 P5a: linia „zapomniany stoper” liczona od nowa po każdym udanym +1
   // Build E2E (P-255 (c), NFR-WYD-001): czas od stuknięcia +1 do drugiej klatki po zapisie (nowa wartość na ekranie); w wydaniu bez pomiaru.
@@ -58,7 +59,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
         oglos={oglos}
         t={kontener.j.t}
         poScaleniu={licznik.poScaleniu}
-        diagnostyka={paneleE2e?.diagnostykaLicznika /* FX6b (P-909): liczniki wejść „+1”/„−1” i zapisów, tylko build E2E */}
+        diagnostyka={diagnostykaWejsc?.diagnostykaLicznika /* FX6b (P-909): liczniki wejść „+1”/„−1” i zapisów, tylko build E2E; bez nich z oczkoE2eBezDiagnostykiLicznika=1 */}
         jezyk={kontener.j.jezyk()}
         dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
           // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor otwiera od razu menu źródeł, ZM-06 p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
@@ -78,7 +79,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
           {paneleE2e ? <paneleE2e.PanelPomiaru probkiMs={pomiar} /> : null /* slot pod kreskami: Licznik.tsx przy limicie 20 KB (U8) */}
           {paneleE2e && ZEGAREK_SZTUCZNY ? <paneleE2e.PanelZegarka /> : null /* scen. 15: stan udawanego zegarka */}
           {paneleE2e ? <paneleE2e.PanelNawigacji /> : null /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
-          {paneleE2e ? <paneleE2e.PanelLicznika /> : null /* FX6b (P-909): wejścia „+1”/„−1”, zapisy i wartość ze stanu (diagnostyka scen. 69) */}
+          {diagnostykaWejsc ? <diagnostykaWejsc.PanelLicznika /> : null /* FX6b (P-909): wejścia „+1”/„−1”, zapisy i wartość ze stanu (diagnostyka scen. 69) */}
         </>}
       />
     </Bezpieczny>

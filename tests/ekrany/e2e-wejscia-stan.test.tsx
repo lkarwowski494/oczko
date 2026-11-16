@@ -14,6 +14,8 @@ import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
 import { atrapaHaptyki, tEn } from './pomoc';
 
+// BX16: app/licznik.tsx czyta argument `oczkoE2eBezDiagnostykiLicznika` (Settings.get) przy renderze w buildzie E2E; w Jest nie ma natywnego SettingsManager — atrapa bez argumentów (zmiana tylko środowiska testu, asercje bez zmian).
+jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({ __esModule: true, default: { getConstants: () => ({ settings: {} }), setValues: () => undefined, deleteValues: () => undefined } }));
 jest.mock('../../src/kompozycja/start-aplikacji', () => ({ zapiszKamien: () => Promise.resolve(), powodAwaryjny: () => 'uszkodzony' }));
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
 jest.mock('expo-router', () => ({ usePathname: () => '/', useRouter: () => mockRouter, useFocusEffect: () => undefined }));

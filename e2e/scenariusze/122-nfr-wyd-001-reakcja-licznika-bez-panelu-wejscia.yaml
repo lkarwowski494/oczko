@@ -1,0 +1,56 @@
+# NFR-WYD-001 (scenariusz 31b, KO-121 (a), P-936, BX16): ten sam pomiar co 31 (p95 z 20 stuknięć), ale BEZ panelu wejść `e2e-licznik-wejscia` i bez diagnostyki ścieżki „+1”
+# (argument startu `oczkoE2eBezDiagnostykiLicznika=1`, tylko build E2E; w bundlu wydania go nie ma — tests/ekrany/e2e-licznik-bez-diagnostyki-bx16-wydanie.test.tsx).
+# Po co: panel wejść w 31 dopisuje 4 zatwierdzenia w oknie pomiaru (P-936) i może zawyżać p95; 122 pokazuje czas ścieżki bez tego narzutu.
+# Informacyjny (jak `pomiar`, P-374/P-367): odczyt `e2e-pomiar-plus` jest optional i bez progu; próg 100 ms pilnuje wyłącznie 31 (PU-161). Funkcjonalne asercje wartości licznika zostają.
+appId: com.apps4brew.knitting
+name: "NFR-WYD-001 · Reakcja licznika bez panelu wejść: p95 z 20 stuknięć, wynik informacyjny (P-936)"
+tags:
+  - NFR-WYD-001
+  - pomiar
+  - stan-licznika
+  - PU-161
+---
+# Własny start zamiast subflows/start-czysty.yaml (te same kroki + oczkoE2eBezDiagnostykiLicznika): wyłączenie panelu wejść i diagnostyki „+1” (KO-121 (a)).
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eBezDiagnostykiLicznika: "1"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- scrollUntilVisible: { element: { id: "dzis-plus" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "dzis-plus" }
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 90000 } # jak start-czysty.yaml (AX5, P-608 G3)
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+- runFlow:
+    file: subflows/pomiar-pieciu.yaml
+    env: { OD: "6" }
+- runFlow:
+    file: subflows/pomiar-pieciu.yaml
+    env: { OD: "11" }
+- runFlow:
+    file: subflows/pomiar-pieciu.yaml
+    env: { OD: "16" }
+- assertVisible: { id: "licznik-wartosc", text: "20" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "21" }
+# P-374/P-367: panel pomiaru nie jest twardą asercją — odczyt optional, bez progu; wynik z zrzutu i logu (liczba z regexem ogólnym, nie z budżetem 100 ms)
+- takeScreenshot: 122-pomiar
+- assertVisible: { id: "e2e-pomiar-plus", text: "p95 [0-9]+ ms, n = 20; first [0-9]+ ms", optional: true }

@@ -41,6 +41,11 @@ export function zegarAplikacji(teraz: () => number = Date.now): Zegar {
 export const siecWylaczona = (): boolean => argument('oczkoE2eSiec') === 'brak';
 /** `oczkoE2eAwariaStartu=przed-kamieniem` (ADR-0019): wymuszona awaria przed kamieniem milowym startu. */
 export const awariaStartu = (): boolean => argument('oczkoE2eAwariaStartu') === 'przed-kamieniem';
+/**
+ * `oczkoE2eBezDiagnostykiLicznika=1` (BX16, KO-121 (a), P-936; scenariusz 122): ekran licznika bez panelu `e2e-licznik-wejscia` i bez haków diagnostyki na ścieżce „+1”,
+ * żeby pomiar NFR-WYD-001 (okno: zapis + dwie klatki) nie niósł pracy panelu FX6b (4 zatwierdzenia na „+1”). Tylko build E2E (`argument()`); wartość inna niż „1” nic nie zmienia.
+ */
+export const bezDiagnostykiLicznika = (): boolean => argument('oczkoE2eBezDiagnostykiLicznika') === '1';
 /** `oczkoE2eIcloud` (P-230 Q1a): tryb atrapy iCloud (`wlaczony` | `wylaczony` | `brak-konta` | `brak-miejsca` | `konflikt`); działa tylko z atrapą (icloud.ts). */
 export const trybIcloudE2e = (): string | null => argument('oczkoE2eIcloud');
 /**
