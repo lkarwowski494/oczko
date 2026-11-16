@@ -57,8 +57,8 @@ tags:
 - assertVisible: { id: "projekty-lista" }
 - assertVisible: { id: "projekty-wiersz", index: 1 }
 - assertNotVisible: { id: "projekty-wiersz", index: 2 }
-# etykieta wiersza to „<projekt>, <część> · row N of cel” z WARTOŚCIĄ licznika (E2-141-S2): nowy projekt „row 0” (pierwsza część, bez celu), oryginał „row 2 of 40”
-- assertVisible: ".*row 0, last worked today.*"
+# etykieta wiersza to „<projekt>, <część> · row N of cel” z WARTOŚCIĄ licznika (E2-141-S2): nowy projekt „Now working row 1” (licznik 0, pierwsza część bez celu, BY-002), oryginał „row 2 of 40”
+- assertVisible: ".*Now working row 1, last worked today.*" # BY-002 (476abe53, KO-082; iOS 43774048947 krok 119: „Harbor 2, Now working row 1, last worked today”): część z nazwą zapasową bez celu → „Now working row N+1”
 - assertVisible: ".*row 2 of 40.*"
 - takeScreenshot: 61-lista-dwa-projekty
 - tapOn: ".*row 2 of 40.*"
