@@ -11,6 +11,7 @@ import { czasWTle, wykonaj } from '../dane/pomocnicze/srodowisko';
 import { preferencje } from '../../src/kompozycja/preferencje';
 import { wKolejce } from '../../src/przypadki-uzycia/kolejka';
 import { odroczona, tEn } from './pomoc';
+jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero')); // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), dismissTo: jest.fn(), canGoBack: () => true };
 let mockParams: Record<string, string> = {};

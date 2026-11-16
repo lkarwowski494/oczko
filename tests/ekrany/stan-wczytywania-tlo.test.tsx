@@ -12,6 +12,7 @@ import { act, render, screen } from '@testing-library/react-native';
 import tokeny from '../../docs/design/tokeny.json';
 import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
 import { tEn } from './pomoc';
+jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero')); // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), dismissTo: jest.fn(), canGoBack: () => true };
 jest.mock('expo-router', () => {

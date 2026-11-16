@@ -9,6 +9,7 @@ import { czesc, licznik, plik, projekt, zdjecie } from '../dane/pomocnicze/dane-
 import { T0, przygotuj, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 import type { Jezyk } from '../../src/kompozycja/licznik';
 import { tEn } from './pomoc';
+jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero')); // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
 
 const mockRouter = { push: jest.fn(), dismissTo: jest.fn(), back: jest.fn() };
 let mockParams: Record<string, string> = {};

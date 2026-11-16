@@ -11,6 +11,7 @@ import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
 import { T0, czasWTle, wykonaj } from '../dane/pomocnicze/srodowisko';
 import { preferencje } from '../../src/kompozycja/preferencje';
 import { tEn } from './pomoc';
+jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero')); // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
 
 type Awaria = 'wynik' | 'wyjatek';
 /** Psuty odczyt: nazwa funkcji przypadku użycia → rodzaj awarii (brak = prawdziwa funkcja). */
