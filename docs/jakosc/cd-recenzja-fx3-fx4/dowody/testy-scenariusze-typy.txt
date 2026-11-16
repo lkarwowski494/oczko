@@ -1,0 +1,8 @@
+$ npx jest --ci tests/jakosc/e2e-kontrakt-04.test.ts tests/jakosc/e2e-kruchosc-145.test.ts tests/jakosc/e2e-kruchosc-138.test.ts tests/jakosc/e2e-licznik-to-be.test.ts tests/jakosc/jakosc-ios-pomoc.ts tests/jakosc/e2e-okno-straznika.test.ts tests/jakosc/e2e-noc-2026-11-02.test.ts tests/jakosc/e2e-zdania-en.test.ts tests/jakosc/maestro-scenariusze.test.ts tests/jakosc/ci-xcode.contract.test.ts tests/jakosc/e2e-otworz-ustawienia.test.ts tests/jakosc/e2e-opoznienia-137.test.ts tests/jakosc/e2e-kruchosc-136.test.ts tests/jakosc/e2e-kruchosc-139.test.ts tests/jakosc/e2e-scenariusz-04-kontrola-a1.test.ts tests/jakosc/e2e-mapa-141.test.ts tests/jakosc/e2e-kruchosc.test.ts tests/jakosc/e2e-pomiar-374.test.ts tests/jakosc/e2e-kruchosc-137.test.ts tests/wydanie/e2e-yaml-skladnia.test.ts tests/wydanie/repo-wydanie.test.ts tests/wydanie/zrzuty-uzupelnij.test.ts tests/wydanie/zrzuty-data-ipada.test.ts tests/wydanie/zrzuty-sklepu.test.ts tests/wydanie/asc-metadane.test.ts tests/wydanie/zakup-kadr-model.test.ts tests/wydanie/asc-produkty.test.ts tests/wydanie/sprawdz-adresy.test.ts tests/wydanie/ramki-imagemagick-ci.test.ts 
+Test Suites: 28 passed, 28 total
+Tests:       438 passed, 438 total
+kod wyjścia: 0
+
+$ npm run typecheck && npm run typecheck:testy
+kod wyjścia typecheck: 0
+kod wyjścia typecheck:testy: 0

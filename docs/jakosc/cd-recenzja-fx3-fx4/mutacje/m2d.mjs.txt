@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='tests/ekrany/blad-odczytu-trasy.test.tsx'; let s=fs.readFileSync(f,'utf8');
+const a="jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero'));";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"// usunięte w sondzie"); fs.writeFileSync(f,s);

@@ -1,0 +1,52 @@
+ app/licznik.tsx | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+diff --git a/app/licznik.tsx b/app/licznik.tsx
+index a9a879d5..33afed4b 100644
+--- a/app/licznik.tsx
++++ b/app/licznik.tsx
+@@ -8,6 +8,7 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
+ import { oglos } from '../src/kompozycja/system';
+ import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
+ import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
++import { PanelNawigacji } from '../src/kompozycja/e2e/nawigacje-stan';
+ import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
+ 
+ export default function EkranLicznikaTrasa(): React.ReactElement {
+@@ -76,7 +77,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
+           ) : null}
+           {paneleE2e ? <paneleE2e.PanelPomiaru probkiMs={pomiar} /> : null /* slot pod kreskami: Licznik.tsx przy limicie 20 KB (U8) */}
+           {paneleE2e && ZEGAREK_SZTUCZNY ? <paneleE2e.PanelZegarka /> : null /* scen. 15: stan udawanego zegarka */}
+-          {paneleE2e ? <paneleE2e.PanelNawigacji /> : null /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
++          {<PanelNawigacji /> /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
+         </>}
+       />
+     </Bezpieczny>
+$ npx jest --ci tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+(node:825) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL iOS tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+  ✕ build bez E2E: brak panelu `e2e-nawigacje`, a stuknięcie „Wzór” wywołuje push('/wzor') jak dotąd (894 ms)
+
+  ● build bez E2E: brak panelu `e2e-nawigacje`, a stuknięcie „Wzór” wywołuje push('/wzor') jak dotąd
+
+    expect(received).toBeNull()
+
+    Received: {"_fiber": {"_debugHookTypes": null, "_debugInfo": null, "_debugNeedsRemount": false, "_debugOwner": [FiberNode], "_debugStack": [Error: react-stack-top-frame], "_debugTask": null, "actualDuration": 0, "actualStartTime": 1794805641587, "alternate": [FiberNode], "child": [FiberNode], "childLanes": 0, "deletions": null, "dependencies": null, "elementType": "Text", "flags": 0, "index": 0, "key": null, "lanes": 0, "memoizedProps": [Object], "memoizedState": null, "mode": 3, "pendingProps": [Object], "ref": null, "refCleanup": null, "return": [FiberNode], "selfBaseDuration": 0, "sibling": null, "stateNode": [Object], "subtreeFlags": 0, "tag": 5, "treeBaseDuration": 0, "type": "Text", "updateQueue": null}}
+
+      42 |   fireEvent.press(await screen.findByTestId('licznik-wzor'));
+      43 |   expect(mockRouter.push).toHaveBeenCalledWith('/wzor');
+    > 44 |   expect(screen.queryByTestId('e2e-nawigacje')).toBeNull();
+         |                                                 ^
+      45 | });
+      46 |
+
+      at Object.toBeNull (tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx:44:49)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        2.364 s
+Ran all test suites matching /tests\/ekrany\/e2e-nawigacje-stan-bx019-wydanie.test.tsx/i.
+kod wyjścia: 1

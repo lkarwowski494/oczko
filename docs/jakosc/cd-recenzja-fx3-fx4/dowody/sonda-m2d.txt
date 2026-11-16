@@ -1,0 +1,151 @@
+ tests/ekrany/blad-odczytu-trasy.test.tsx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/tests/ekrany/blad-odczytu-trasy.test.tsx b/tests/ekrany/blad-odczytu-trasy.test.tsx
+index 0625332a..c09e36ce 100644
+--- a/tests/ekrany/blad-odczytu-trasy.test.tsx
++++ b/tests/ekrany/blad-odczytu-trasy.test.tsx
+@@ -11,7 +11,7 @@ import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
+ import { T0, czasWTle, wykonaj } from '../dane/pomocnicze/srodowisko';
+ import { preferencje } from '../../src/kompozycja/preferencje';
+ import { tEn } from './pomoc';
+-jest.mock('react-native-safe-area-context', () => require('../narzedzia/safe-area-zero')); // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
++// usunięte w sondzie // BX-009: trasa /zdjecie czyta wcięcia hookiem (w aplikacji pod SafeAreaProvider korzenia)
+ 
+ type Awaria = 'wynik' | 'wyjatek';
+ /** Psuty odczyt: nazwa funkcji przypadku użycia → rodzaj awarii (brak = prawdziwa funkcja). */
+$ npx jest --ci tests/ekrany/blad-odczytu-trasy.test.tsx
+(node:1954) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL iOS tests/ekrany/blad-odczytu-trasy.test.tsx (14.798 s)
+  M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”, nie pustą planszę
+    ✓ M1-007: /sesje, odczyt wynik → „sesje-blad” z „Try again”; ponowienie czyta od nowa (704 ms)
+    ✓ M1-007: /sesje, odczyt wyjatek → „sesje-blad” z „Try again”; ponowienie czyta od nowa (261 ms)
+    ✓ M1-007: /dni, odczyt wynik → „dni-blad” z „Try again”; ponowienie czyta od nowa (377 ms)
+    ✓ M1-007: /dni, odczyt wyjatek → „dni-blad” z „Try again”; ponowienie czyta od nowa (259 ms)
+    ✓ M1-007: /ukonczenie, odczyt wynik → „ukonczenie-blad” z „Try again”; ponowienie czyta od nowa (500 ms)
+    ✓ M1-007: /ukonczenie, odczyt wyjatek → „ukonczenie-blad” z „Try again”; ponowienie czyta od nowa (253 ms)
+    ✓ M1-007: /sesja-korekta, odczyt wynik → „sesja-korekta-blad” z „Try again”; ponowienie czyta od nowa (522 ms)
+    ✓ M1-007: /sesja-korekta, odczyt wyjatek → „sesja-korekta-blad” z „Try again”; ponowienie czyta od nowa (256 ms)
+    ✓ M1-007: /drut, odczyt wynik → „drut-blad” z „Try again”; ponowienie czyta od nowa (816 ms)
+    ✓ M1-007: /drut, odczyt wyjatek → „drut-blad” z „Try again”; ponowienie czyta od nowa (258 ms)
+    ✓ M1-007: /zglos, odczyt wyjatek → „zglos-blad” z „Try again”; ponowienie czyta od nowa (317 ms)
+    ✕ M1-007: /zdjecie, odczyt wynik → „zdjecie-blad” z „Try again”; ponowienie czyta od nowa (233 ms)
+    ✕ M1-007: /zdjecie, odczyt wyjatek → „zdjecie-blad” z „Try again”; ponowienie czyta od nowa (39 ms)
+    ✓ M1-007: /menu, odczyt wynik → „menu-blad” z „Try again”; ponowienie czyta od nowa (452 ms)
+    ✓ M1-007: /menu, odczyt wyjatek → „menu-blad” z „Try again”; ponowienie czyta od nowa (250 ms)
+    ✓ M1-007: /konflikt, odczyt wynik → „konflikt-blad” z „Try again”; ponowienie czyta od nowa (269 ms)
+    ✓ M1-007: /konflikt, odczyt wyjatek → „konflikt-blad” z „Try again”; ponowienie czyta od nowa (250 ms)
+    ✓ M1-007: /kosz, odczyt wynik → „kosz-blad” z „Try again”; ponowienie czyta od nowa (338 ms)
+    ✓ M1-007: /kosz, odczyt wyjatek → „kosz-blad” z „Try again”; ponowienie czyta od nowa (243 ms)
+    ✓ M1-007: /probka, odczyt wynik → „probka-blad” z „Try again”; ponowienie czyta od nowa (464 ms)
+    ✓ M1-007: /probka, odczyt wyjatek → „probka-blad” z „Try again”; ponowienie czyta od nowa (257 ms)
+    ✓ M1-007: /wloczka, odczyt wynik → „wloczka-blad” z „Try again”; ponowienie czyta od nowa (369 ms)
+    ✓ M1-007: /wloczka, odczyt wyjatek → „wloczka-blad” z „Try again”; ponowienie czyta od nowa (259 ms)
+    ✓ M1-007: /wzor, odczyt wynik → „wzor-blad” z „Try again”; ponowienie czyta od nowa (856 ms)
+    ✓ M1-007: /wzor, odczyt wyjatek → „wzor-blad” z „Try again”; ponowienie czyta od nowa (254 ms)
+    ✓ M1-007: /formularz/notatka, odczyt wynik → „formularz-blad” z „Try again”; ponowienie czyta od nowa (383 ms)
+    ✓ M1-007: /formularz/notatka, odczyt wyjatek → „formularz-blad” z „Try again”; ponowienie czyta od nowa (255 ms)
+    ✓ M1-007: /formularz/nazwa, odczyt wynik → „formularz-blad” z „Try again”; ponowienie czyta od nowa (260 ms)
+    ✓ M1-007: /formularz/nazwa, odczyt wyjatek → „formularz-blad” z „Try again”; ponowienie czyta od nowa (253 ms)
+    ✓ M1-007: /zapas, odczyt wynik → „zapas-blad” z „Try again”; ponowienie czyta od nowa (291 ms)
+    ✓ M1-007: /zapas, odczyt wyjatek → „zapas-blad” z „Try again”; ponowienie czyta od nowa (268 ms)
+    ✓ M1-007: /druty, odczyt wynik → „druty-blad” z „Try again”; ponowienie czyta od nowa (292 ms)
+    ✓ M1-007: /druty, odczyt wyjatek → „druty-blad” z „Try again”; ponowienie czyta od nowa (253 ms)
+    ✓ M1-007: /narzedzia (włóczki), odczyt wynik → „narzedzia-blad” z „Try again”; ponowienie czyta od nowa (272 ms)
+    ✓ M1-007: /narzedzia (włóczki), odczyt wyjatek → „narzedzia-blad” z „Try again”; ponowienie czyta od nowa (248 ms)
+    ✓ M1-007: /narzedzia (druty), odczyt wynik → „narzedzia-blad” z „Try again”; ponowienie czyta od nowa (256 ms)
+    ✓ M1-007: /narzedzia (druty), odczyt wyjatek → „narzedzia-blad” z „Try again”; ponowienie czyta od nowa (259 ms)
+    ✓ M1-007: /historia, odczyt wynik → „historia-blad” z „Try again”; ponowienie czyta od nowa (302 ms)
+    ✓ M1-007: /historia, odczyt wyjatek → „historia-blad” z „Try again”; ponowienie czyta od nowa (260 ms)
+  M1-007: start aplikacji — odrzucona obietnica startu daje ekran awaryjny (ADR-0019), nie pustą planszę
+    ✓ M1-007: „/” — `przygotuj()` zwraca { ok: false } → ekran awaryjny (korzeń, `naAwarie`) [kontrola: tak było i zostaje] (366 ms)
+    ✓ M1-007: „/” — `przygotuj()` odrzuca obietnicę → ekran awaryjny (korzeń, `naAwarie`) zamiast pustej planszy (129 ms)
+    ✓ M1-007: korzeń — strażnik startu (`rozpocznijStart`) odrzuca obietnicę → ekran awaryjny z „Try normally” (259 ms)
+    ✓ M1-007: korzeń — po utworzeniu kontenera odczyt startu (`dostep.odswiez`) odrzuca obietnicę → ekran awaryjny (132 ms)
+
+  ● M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”, nie pustą planszę › M1-007: /zdjecie, odczyt wynik → „zdjecie-blad” z „Try again”; ponowienie czyta od nowa
+
+    No safe area value available. Make sure you are rendering `<SafeAreaProvider>` at the top of your app.
+
+      22 |  *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
+      23 | function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
+    > 24 |   const wciecia = useSafeAreaInsets();
+         |                                    ^
+      25 |   return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
+      26 | }
+      27 |
+
+      at useSafeAreaInsets (../../../../../../home/user/oczko/node_modules/react-native-safe-area-context/src/SafeAreaContext.tsx:152:11)
+      at NaCzerni (app/zdjecie.tsx:24:36)
+      at Object.react_stack_bottom_frame (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15670:20)
+      at renderWithHooks (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:4863:22)
+      at updateFunctionComponent (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7018:19)
+      at beginWork (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8499:18)
+      at runWithFiberInDEV (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at performUnitOfWork (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13224:22)
+      at workLoopSync (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13068:41)
+      at renderRootSync (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13049:11)
+      at performWorkOnRoot (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12253:39)
+      at performWorkOnRootViaSchedulerTask (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2908:7)
+      at flushActQueue (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:884:10)
+      at actImplementation (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at tests/ekrany/blad-odczytu-trasy.test.tsx:134:9
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/ekrany/blad-odczytu-trasy.test.tsx:133:24)
+      at zamontuj (tests/ekrany/blad-odczytu-trasy.test.tsx:144:11)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● M1-007: trasy — nieudany odczyt daje stan błędu z „Try again”, nie pustą planszę › M1-007: /zdjecie, odczyt wyjatek → „zdjecie-blad” z „Try again”; ponowienie czyta od nowa
+
+    No safe area value available. Make sure you are rendering `<SafeAreaProvider>` at the top of your app.
+
+      22 |  *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
+      23 | function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
+    > 24 |   const wciecia = useSafeAreaInsets();
+         |                                    ^
+      25 |   return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
+      26 | }
+      27 |
+
+      at useSafeAreaInsets (../../../../../../home/user/oczko/node_modules/react-native-safe-area-context/src/SafeAreaContext.tsx:152:11)
+      at NaCzerni (app/zdjecie.tsx:24:36)
+      at Object.react_stack_bottom_frame (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15670:20)
+      at renderWithHooks (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:4863:22)
+      at updateFunctionComponent (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7018:19)
+      at beginWork (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8499:18)
+      at runWithFiberInDEV (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at performUnitOfWork (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13224:22)
+      at workLoopSync (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13068:41)
+      at renderRootSync (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13049:11)
+      at performWorkOnRoot (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12253:39)
+      at performWorkOnRootViaSchedulerTask (../../../../../../home/user/oczko/node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2908:7)
+      at flushActQueue (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (../../../../../../home/user/oczko/node_modules/react/cjs/react.development.js:884:10)
+      at actImplementation (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (../../../../../../home/user/oczko/node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at tests/ekrany/blad-odczytu-trasy.test.tsx:134:9
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at ../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/ekrany/blad-odczytu-trasy.test.tsx:133:24)
+      at zamontuj (tests/ekrany/blad-odczytu-trasy.test.tsx:144:11)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 41 passed, 43 total
+Snapshots:   0 total
+Time:        15.181 s
+Ran all test suites matching /tests\/ekrany\/blad-odczytu-trasy.test.tsx/i.
+kod wyjścia: 1

@@ -1,0 +1,14 @@
+(node:667) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS iOS tests/ekrany/zdjecie-poziomo-bx014.test.tsx (8.486 s)
+PASS iOS tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx (8.549 s)
+PASS iOS tests/ekrany/e2e-nawigacje-stan-bx019.test.tsx (8.558 s)
+(node:669) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS iOS tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+
+Test Suites: 4 passed, 4 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        9.889 s
+Ran all test suites matching /tests\/ekrany\/e2e-nawigacje-stan-bx019-wydanie.test.tsx|tests\/ekrany\/e2e-nawigacje-stan-bx019.test.tsx|tests\/ekrany\/zdjecie-bezpieczny-obszar-bx009.test.tsx|tests\/ekrany\/zdjecie-poziomo-bx014.test.tsx/i.

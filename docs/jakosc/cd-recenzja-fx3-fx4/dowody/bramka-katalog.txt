@@ -1,0 +1,16 @@
+$ node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog
+Kontrola 2: zielona
+kod wyjścia: 0
+
+$ grep Podsumowanie + liczenie wierszy klas
+12:Podsumowanie: A=109, B=178, F=52, razem 339.
+A: 109
+B: 178
+F: 52
+B oczekujący: 0
+
+$ node -e kontrolaKatalogu('<kopia@7fbb5b94>',{wymagajTestowB:true})  (jak kontrola 2 trybu 'bramka')
+błędy: 44 ; B bez testu: 44 ; oczekujący: 0
+inne: 0
+
+kod wyjścia: 0

@@ -1,0 +1,6 @@
+$ node scripts/jakosc/slady-wydania.mjs  (worktree @7fbb5b94)
+🔍 [expo-iap] Config values: horizonAppId=undefined, pinnedStore=auto, amazonAppstoreKey=none, isVegaEnabled=false, isOnsideEnabled=false
+📦 [expo-iap] Using OpenIAP from CocoaPods
+/tmp/oczko-eksport-hlJ8Xe/_expo/static/js/ios/entry-718c14d401a343804996039f5856c4a4.hbc: bez śladów trybu testowego (12 wzorców)
+OK: build wydania bez śladów
+kod wyjścia: 0

@@ -1,0 +1,25 @@
+$ [mutacja m1d: bezwarunkowy import zliczNawigacje w app/licznik.tsx] node scripts/jakosc/slady-wydania.mjs
+diff --git a/app/licznik.tsx b/app/licznik.tsx
+index a9a879d5..478df750 100644
+--- a/app/licznik.tsx
++++ b/app/licznik.tsx
+@@ -8,6 +8,7 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
+ import { oglos } from '../src/kompozycja/system';
+ import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
+ import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
++import { zliczNawigacje } from '../src/kompozycja/e2e/nawigacje-stan';
+ import { paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
+ 
+ export default function EkranLicznikaTrasa(): React.ReactElement {
+@@ -61,7 +62,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
+         jezyk={kontener.j.jezyk()}
+         dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
+           // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor otwiera od razu menu źródeł, ZM-06 p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
+-          naWzor: () => { paneleE2e?.zliczNawigacje('/wzor'); router.push('/wzor'); }, naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
++          naWzor: () => { zliczNawigacje('/wzor'); router.push('/wzor'); }, naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
+           naNotatka: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'notatka', projekt: w.projektId } }); }),
+           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),
+           naNastepnaCzesc: () => void naNastepnaCzesc(), naKonflikt: () => router.push('/konflikt') }}
+::error::ślad trybu testowego w buildzie wydania: e2e- (1×; np. „rdErrorViewstawaria-e2e-nawigacjeBuang perubahan?anon_0_deactiva”)
+BŁĄD: ślady w buildzie wydania
+kod wyjścia: 1

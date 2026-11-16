@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='app/zdjecie.tsx'; let s=fs.readFileSync(f,'utf8');
+const a="paddingBottom: wciecia.bottom }}";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"paddingBottom: wciecia.bottom, paddingLeft: wciecia.left, paddingRight: wciecia.right }}"); fs.writeFileSync(f,s);

@@ -1,0 +1,18 @@
+$ npx jest --ci tests/ekrany/blad-odczytu-trasy.test.tsx tests/ekrany/blad-udostepnienia-trasy.test.tsx tests/ekrany/blad-zapisu-trasy.test.tsx tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx tests/ekrany/e2e-nawigacje-stan-bx019.test.tsx tests/ekrany/ladowanie-kolejka.test.tsx tests/ekrany/stan-wczytywania-tlo.test.tsx tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx tests/ekrany/zdjecie-poziomo-bx014.test.tsx tests/jakosc/bramka-przypadki-uzycia.test.ts tests/jakosc/e2e-39-jezyk-dolny-brzeg-bx010.test.ts tests/jakosc/e2e-czesci.test.ts tests/jakosc/przypadki-uzycia.test.ts tests/ekrany/czesc-nazwa-zapasowa-by002.test.tsx
+PASS iOS tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx
+PASS iOS tests/ekrany/zdjecie-poziomo-bx014.test.tsx
+PASS iOS tests/jakosc/bramka-przypadki-uzycia.test.ts (7.756 s)
+PASS iOS tests/jakosc/przypadki-uzycia.test.ts
+PASS iOS tests/ekrany/blad-zapisu-trasy.test.tsx
+PASS iOS tests/ekrany/blad-odczytu-trasy.test.tsx (13.208 s)
+PASS iOS tests/ekrany/stan-wczytywania-tlo.test.tsx
+PASS iOS tests/ekrany/czesc-nazwa-zapasowa-by002.test.tsx
+PASS iOS tests/ekrany/blad-udostepnienia-trasy.test.tsx
+PASS iOS tests/jakosc/e2e-39-jezyk-dolny-brzeg-bx010.test.ts
+PASS iOS tests/ekrany/e2e-nawigacje-stan-bx019.test.tsx
+PASS iOS tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+PASS iOS tests/ekrany/ladowanie-kolejka.test.tsx (7.348 s)
+PASS iOS tests/jakosc/e2e-czesci.test.ts (33.296 s)
+Test Suites: 14 passed, 14 total
+Tests:       212 passed, 212 total
+kod wyjścia: 0

@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml'; let s=fs.readFileSync(f,'utf8');
+const a="  - przypadki-uzycia\n";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"  - przypadki-uzycia\n  - oczekujacy\n"); fs.writeFileSync(f,s);

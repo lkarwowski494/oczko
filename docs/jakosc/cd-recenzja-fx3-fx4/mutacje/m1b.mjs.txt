@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='src/platforma/tryb-e2e.ts'; let s=fs.readFileSync(f,'utf8');
+const a="export const paneleE2e: PaneleE2e | null = process.env.EXPO_PUBLIC_E2E === '1' ?";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"export const paneleE2e: PaneleE2e | null = true ?"); fs.writeFileSync(f,s);

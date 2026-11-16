@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='app/licznik.tsx'; let s=fs.readFileSync(f,'utf8');
+const a="paneleE2e?.zliczNawigacje('/wzor'); router.push('/wzor');";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"paneleE2e?.zliczNawigacje('/wzor');"); fs.writeFileSync(f,s);

@@ -1,0 +1,51 @@
+ app/zdjecie.tsx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/app/zdjecie.tsx b/app/zdjecie.tsx
+index 6ca52b06..f88e1a87 100644
+--- a/app/zdjecie.tsx
++++ b/app/zdjecie.tsx
+@@ -22,7 +22,7 @@ import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
+  *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
+ function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
+   const wciecia = useSafeAreaInsets();
+-  return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
++  return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom, paddingLeft: wciecia.left, paddingRight: wciecia.right }} testID="zdjecie-bezpieczny">{children}</View>;
+ }
+ 
+ export default function EkranZdjecia(): React.ReactElement {
+$ npx jest --ci tests/ekrany/zdjecie-poziomo-bx014.test.tsx
+FAIL iOS tests/ekrany/zdjecie-poziomo-bx014.test.tsx
+  ✕ BX-014: poziomo z wcięciami bocznymi — szerokość strony zdjęcia = szerokość ScrollView (okno bez wcięć bocznych przodków), więc paginacja się zgadza (240 ms)
+  ✓ BX-014: kontrakt komponentu — `PodgladZdjec` liczy szerokość strony z szerokości okna (dlatego trasa nie może zwężać ScrollView wcięciami bocznymi) (54 ms)
+
+  ● BX-014: poziomo z wcięciami bocznymi — szerokość strony zdjęcia = szerokość ScrollView (okno bez wcięć bocznych przodków), więc paginacja się zgadza
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "szerScrollView": 750,
+    +   "szerScrollView": 632,
+        "szerStrony": 750,
+      }
+
+      58 |   for (const s of strony) {
+      59 |     const szerStrony = (StyleSheet.flatten(s.props.style as never) as { width: number }).width;
+    > 60 |     expect({ szerStrony, szerScrollView: okno - wcieciaBoczneNad(s) }).toEqual({ szerStrony, szerScrollView: szerStrony });
+         |                                                                        ^
+      61 |   }
+      62 | });
+      63 |
+
+      at Object.toEqual (tests/ekrany/zdjecie-poziomo-bx014.test.tsx:60:72)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        1.583 s, estimated 9 s
+Ran all test suites matching /tests\/ekrany\/zdjecie-poziomo-bx014.test.tsx/i.
+kod wyjścia: 1

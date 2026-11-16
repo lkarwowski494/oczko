@@ -1,0 +1,5 @@
+import fs from 'node:fs'; const f='app/licznik.tsx'; let s=fs.readFileSync(f,'utf8');
+const a="{paneleE2e ? <paneleE2e.PanelNawigacji /> : null";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"{<PanelNawigacji />").replace("import { paneleE2e,","import { PanelNawigacji } from '../src/kompozycja/e2e/nawigacje-stan';\nimport { paneleE2e,");
+fs.writeFileSync(f,s);

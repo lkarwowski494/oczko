@@ -1,0 +1,120 @@
+ e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+diff --git a/e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml b/e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml
+index 441ea25e..98921f25 100644
+--- a/e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml
++++ b/e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml
+@@ -8,6 +8,7 @@ appId: com.apps4brew.knitting
+ name: "PU-228 · Podgląd zdjęcia: miniatura → podgląd → „Close” wraca do projektu z miniaturą"
+ tags:
+   - przypadki-uzycia
++  - oczekujacy
+   - PU-228
+   - stan-licznika
+ ---
+$ npx jest --ci tests/jakosc/bramka-przypadki-uzycia.test.ts -t kontrola 2
+FAIL iOS tests/jakosc/bramka-przypadki-uzycia.test.ts
+  kontrola 1: zielony zestaw przypadków użycia na tym SHA (każda część iPhone’a success)
+    ○ skipped wszystkie 4 części iPhone’a success → brak błędów (iPad i eksperymenty informacyjne nie liczą się)
+    ○ skipped KO-071 (BX3 P1-4): zadanie success bez udanego kroku „Scenariusze” (skipped, brak kroku, brak steps) → błąd
+    ○ skipped część pominięta (skipped) to nie zielona — dziś ocenBramke w testflight.mjs przyjmuje skipped
+    ○ skipped brak zadania części (np. macierz zmniejszona) → błąd z nazwą
+    ○ skipped liczba części z e2e/czesci.json (nie stała w skrypcie)
+  kontrola 2: katalog spójny z kodem
+    ✕ na bieżącym repo bez wymogu testów B: brak błędów (to samo, co pilnuje przypadki-uzycia.test.ts, plus ekrany bez trasy) (155 ms)
+    ✓ P-837 (a): każdy PU klasy B „do zaprogramowania” czerwieni bramkę — błąd z ID przypadku (138 ms)
+    ✓ P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID (kontrola 2 z wymogiem testów B) (264 ms)
+    ✓ każdy komponent src/ekrany/*.tsx osiągalny importami z trasy app/ (poza _layout) albo w tabeli „Ekrany bez własnej trasy” z istniejącym PU (72 ms)
+  kontrola 3: protokół testu fizycznego (klasa F) poprzedniego wysłanego buildu
+    ○ skipped poprzedni build = najwyższy N z tagów v*-b<N> (porządek liczbowy, nie tekstowy); brak tagów → null
+    ○ skipped protokół kompletny: zrobione albo pominięte z uzasadnieniem → brak błędów
+    ○ skipped brak pliku protokołu → błąd ze ścieżką
+    ○ skipped „pominięte:” bez uzasadnienia, brak PU i zły format wyniku → błędy z ID
+    ○ skipped wyjątek P-838 zwalnia tylko build 1171; inny build bez pliku nadal czerwony
+    ○ skipped plik wyjątków ma najwyżej jeden wpis: 1171 z decyzją P-838, datą i powodem (lista nie rośnie)
+    ○ skipped wymagane ID = klasa F katalogu
+  lista fizyczna: „Pomiń” z obowiązkowym uzasadnieniem, wynik w formacie protokołu
+    ○ skipped komplet: tekst wyniku to tabela protokołu, którą kontrola 3 przyjmuje bez przepisywania
+    ○ skipped „Pomiń” bez uwagi i brak odpowiedzi: pierwszy wiersz NIEPEŁNY z ID, a wiersze tabeli są czerwone dla kontroli 3
+    ○ skipped strona wstawia tę samą funkcję (jedno źródło formatu) i oznacza uwagę przy „Pomiń” jako obowiązkową
+  bramki nie da się wyłączyć (testflight.yml)
+    ○ skipped zadanie istnieje na Linuksie, po bramce E2E, bez continue-on-error i bez if — na zadaniu i na krokach
+    ○ skipped build wymaga obu bramek; tag (wysyłka) idzie po build
+    ○ skipped skrypt biegnie poleceniem „bramka” z tagami wydań; bez_wysylki nie występuje, pomin_bramke_e2e tylko jako POMIN dla kontroli 1
+    ○ skipped POMIN=true pomija tylko kontrolę 1: kontrole 2 i 3 biegną i bramka jest czerwona przy B bez testu (P-837)
+  przed App Review: protokół F dokładnie tego buildu (polecenie `recenzja`)
+    ○ skipped wyjątek P-838 nie działa przy recenzji: 1171 bez protokołu → kod 1
+    ○ skipped lista do 1.0 wymaga polecenia przed „Submit for Review” (F1/F3)
+  BX3 P1: bramka nie przyjmuje treści pozornej
+    ○ skipped P1-1: placeholder z szablonu → czerwone
+    ○ skipped P1-1: pominięcie jednym znakiem → czerwone
+    ○ skipped P1-1: pominięcie „n/a” → czerwone
+    ○ skipped P1-1: pominięcie myślnikiem → czerwone
+    ○ skipped P1-1: znak zerowej szerokości zamiast uzasadnienia → czerwone
+    ○ skipped P1-1: wiersze w bloku kodu i w komentarzu HTML nie liczą się jako wyniki
+    ○ skipped P1-1: ten sam PU dwa razy (ostatni wiersz wygrywał) → czerwone
+    ○ skipped P1-2: pusty zbiór klasy F (błąd parsowania katalogu) → czerwone, nie „0 PU klasy F” zielone
+    ○ skipped P1-3: liczba części z e2e/czesci.json musi być całkowita ≥ 1; inaczej kontrola 1 czerwona
+  BX3 P1-5: testy workflow chronią także zadanie build i krok skryptu
+    ○ skipped build i bramka nie mają if ani continue-on-error (obejście przez always() albo failure() zostawiłoby testy zielone)
+    ○ skipped krok skryptu to dokładnie „node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka” (bez „|| true”, „; true”, przekierowań)
+  BX4 P1 (recenzja runda 2): „z testem:”, klasa A i „oczekujący” nie są spełnialne pozorem
+    ○ skipped kontrola: prawdziwy test z PU w tytule i asercją → brak błędów PU-003
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — describe.skip
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — it.todo
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU tylko w komentarzu, test o czymś innym (plik wymienia PU-003 bez sensu)
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU-003 tylko jako podciąg PU-0030
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik w tests/akceptacja/ (poza npm test)
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik .mjs (poza testMatch jest)
+    ○ skipped P1 K2-1: „z testem:” odrzuca plik bez .test. w nazwie
+    ○ skipped P1 K3-1: klasa A z odnośnikiem tylko do tests/ (bez scenariusza E2E) → błąd; A to „przechodzi przez interfejs na urządzeniu”
+    ○ skipped P2 K2-2 (część tania): B „oczekujący” wskazujący linię, która nie jest asercją (np. nagłówek YAML) → błąd
+    ○ skipped BX6 K3-2: klasa A, scenariusz z Pokrycia bez tagu PU-NNN → błąd „bez tagu PU-005”
+    ○ skipped BX6 K3-2: ten sam scenariusz z tagiem PU-005 → brak błędów tego PU
+    ○ skipped BX6 K3-2: tag cudzego PU (PU-0050 jako podciąg) nie zalicza PU-005
+  BX4 P2/P3: numeracja PU powyżej 999, stronicowanie zadań przebiegu, SHA zadań
+    ○ skipped P2-12: PU-1000 jest widoczny dla parsera katalogu (id nie tylko trzycyfrowe)
+    ○ skipped K1-2 (P2-14): przebieg ma więcej zadań, niż zwróciły strony API (total_count > zebrane) → błąd, nie cicha niepełna lista
+    ○ skipped K1-1: zadanie z innego SHA niż budowany → błąd; zgodny SHA albo brak SHA do porównania → bez błędu
+  BX-012: tagiScenariusza — odporność na komentarz, CRLF, zapis w linii i listę bez wcięcia
+    ○ skipped podstawa: lista z wcięciem, komentarz po tagu i cudzysłowy jak dotąd
+    ○ skipped komentarz w bloku `tags:` (przed tagiem i między tagami) nie ucina listy
+    ○ skipped CRLF: te same tagi co przy LF
+    ○ skipped zapis w linii `tags: [a, "b"]` (także z komentarzem na końcu)
+    ○ skipped lista bez wcięcia pod `tags:` i pusta linia w bloku
+    ○ skipped tag w komentarzu albo po `---` nie jest tagiem; kolejny klucz kończy blok
+    ○ skipped tylko zaostrzenie: dla każdego scenariusza z repo nowy wynik zawiera wszystko, co zwracała poprzednia wersja parsera
+  BX-013: tagiScenariusza — lista w linii kończy się na pierwszym `]` poza cudzysłowem, tag w komentarzu nie zalicza
+    ○ skipped komentarz po liście z własnymi nawiasami: `tags: [smoke] # dawniej [x, PU-005]` → tylko smoke
+    ○ skipped przecinek w cudzysłowie nie dzieli elementu: `tags: ["a, PU-005"]` jest jednym tagiem, nie zalicza PU-005
+    ○ skipped `]` i `#` w cudzysłowie nie kończą listy ani nie zaczynają komentarza
+    ○ skipped niedomknięta lista albo coś innego niż komentarz po `]` nie daje tagów
+
+  ● kontrola 2: katalog spójny z kodem › na bieżącym repo bez wymogu testów B: brak błędów (to samo, co pilnuje przypadki-uzycia.test.ts, plus ekrany bez trasy)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "PU-228: e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml ma tag oczekujacy (to klasa B)",
+    + ]
+
+      55 | describe('kontrola 2: katalog spójny z kodem', () => {
+      56 |   test('na bieżącym repo bez wymogu testów B: brak błędów (to samo, co pilnuje przypadki-uzycia.test.ts, plus ekrany bez trasy)', () => {
+    > 57 |     expect(b('kontrolaKatalogu', root, { wymagajTestowB: false })).toEqual([]);
+         |                                                                    ^
+      58 |   });
+      59 |   test('P-837 (a): każdy PU klasy B „do zaprogramowania” czerwieni bramkę — błąd z ID przypadku', () => {
+      60 |     const katalog = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8');
+
+      at Object.toEqual (tests/jakosc/bramka-przypadki-uzycia.test.ts:57:68)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 59 skipped, 3 passed, 63 total
+Snapshots:   0 total
+Time:        1.315 s, estimated 2 s
+Ran all test suites matching /tests\/jakosc\/bramka-przypadki-uzycia.test.ts/i with tests matching "kontrola 2".
+kod wyjścia: 1

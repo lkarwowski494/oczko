@@ -1,0 +1,44 @@
+ src/platforma/tryb-e2e.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/src/platforma/tryb-e2e.ts b/src/platforma/tryb-e2e.ts
+index 5c41df89..7ed14cb4 100644
+--- a/src/platforma/tryb-e2e.ts
++++ b/src/platforma/tryb-e2e.ts
+@@ -14,7 +14,7 @@ export const E2E = process.env.EXPO_PUBLIC_E2E === '1';
+  */
+ export type PaneleE2e = typeof import('../kompozycja/e2e/panele');
+ // eslint-disable-next-line @typescript-eslint/no-require-imports -- ładowanie warunkowe (P-238), jak expo-iap w sklep.ts
+-export const paneleE2e: PaneleE2e | null = process.env.EXPO_PUBLIC_E2E === '1' ? (require('../kompozycja/e2e/panele') as PaneleE2e) : null;
++export const paneleE2e: PaneleE2e | null = true ? (require('../kompozycja/e2e/panele') as PaneleE2e) : null;
+ /** Zlecenie testowe skrzynki importu (P-230 Q2a): moduł ładowany warunkowo jak panele (P-238). */
+ export type SkrzynkaE2e = typeof import('../kompozycja/e2e/skrzynka');
+ // eslint-disable-next-line @typescript-eslint/no-require-imports -- ładowanie warunkowe (P-238)
+$ npx jest --ci tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+(node:948) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL iOS tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx
+  ✕ build bez E2E: brak panelu `e2e-nawigacje`, a stuknięcie „Wzór” wywołuje push('/wzor') jak dotąd (986 ms)
+
+  ● build bez E2E: brak panelu `e2e-nawigacje`, a stuknięcie „Wzór” wywołuje push('/wzor') jak dotąd
+
+    expect(received).toBeNull()
+
+    Received: {"_fiber": {"_debugHookTypes": null, "_debugInfo": null, "_debugNeedsRemount": false, "_debugOwner": [FiberNode], "_debugStack": [Error: react-stack-top-frame], "_debugTask": null, "actualDuration": 0, "actualStartTime": 1794805644860, "alternate": [FiberNode], "child": [FiberNode], "childLanes": 0, "deletions": null, "dependencies": null, "elementType": "Text", "flags": 4, "index": 0, "key": null, "lanes": 0, "memoizedProps": [Object], "memoizedState": null, "mode": 3, "pendingProps": [Object], "ref": null, "refCleanup": null, "return": [FiberNode], "selfBaseDuration": 0, "sibling": null, "stateNode": [Object], "subtreeFlags": 4, "tag": 5, "treeBaseDuration": 0, "type": "Text", "updateQueue": null}}
+
+      42 |   fireEvent.press(await screen.findByTestId('licznik-wzor'));
+      43 |   expect(mockRouter.push).toHaveBeenCalledWith('/wzor');
+    > 44 |   expect(screen.queryByTestId('e2e-nawigacje')).toBeNull();
+         |                                                 ^
+      45 | });
+      46 |
+
+      at Object.toBeNull (tests/ekrany/e2e-nawigacje-stan-bx019-wydanie.test.tsx:44:49)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        2.517 s, estimated 3 s
+Ran all test suites matching /tests\/ekrany\/e2e-nawigacje-stan-bx019-wydanie.test.tsx/i.
+kod wyjścia: 1

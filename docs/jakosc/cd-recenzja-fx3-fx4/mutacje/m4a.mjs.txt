@@ -1,0 +1,4 @@
+import fs from 'node:fs'; const f='scripts/jakosc/bramka-przypadki-uzycia.mjs'; let s=fs.readFileSync(f,'utf8');
+const a="if (wymagajTestowB) bledy.push(`${p.id}: klasa B „oczekujący” nie liczy się";
+if(!s.includes(a)) process.exit(1);
+s=s.replace(a,"if (false) bledy.push(`${p.id}: klasa B „oczekujący” nie liczy się"); fs.writeFileSync(f,s);

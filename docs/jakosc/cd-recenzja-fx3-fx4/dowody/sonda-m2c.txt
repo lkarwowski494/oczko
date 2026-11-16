@@ -1,0 +1,63 @@
+ app/zdjecie.tsx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/app/zdjecie.tsx b/app/zdjecie.tsx
+index 6ca52b06..2874ca31 100644
+--- a/app/zdjecie.tsx
++++ b/app/zdjecie.tsx
+@@ -22,7 +22,7 @@ import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
+  *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
+ function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
+   const wciecia = useSafeAreaInsets();
+-  return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
++  return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
+ }
+ 
+ export default function EkranZdjecia(): React.ReactElement {
+$ npx jest --ci tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx
+FAIL iOS tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx
+  ✕ BX-009 / PU-228: podgląd zdjęcia — „Close” i „Share” leżą pod paskiem stanu i nad wskaźnikiem Home; tło zostaje czarne (238 ms)
+  ✕ BX-009: błąd odczytu zdjęć — „Close” także pod paskiem stanu (76 ms)
+
+  ● BX-009 / PU-228: podgląd zdjęcia — „Close” i „Share” leżą pod paskiem stanu i nad wskaźnikiem Home; tło zostaje czarne
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 59
+    Received:    0
+
+      58 |   render(<EkranZdjecia />);
+      59 |   const zamknij = await screen.findByTestId('zdjecie-zamknij');
+    > 60 |   expect(wcieciaNad(zamknij, 'paddingTop')).toBeGreaterThanOrEqual(WCIECIA.top);
+         |                                             ^
+      61 |   expect(wcieciaNad(screen.getByTestId('zdjecie-udostepnij'), 'paddingBottom')).toBeGreaterThanOrEqual(WCIECIA.bottom);
+      62 |   expect(screen.getByTestId('zdjecie-bezpieczny')).toHaveStyle({ backgroundColor: systemCzarny.tlo });
+      63 | });
+
+      at Object.toBeGreaterThanOrEqual (tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx:60:45)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● BX-009: błąd odczytu zdjęć — „Close” także pod paskiem stanu
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 59
+    Received:    0
+
+      67 |   render(<EkranZdjecia />);
+      68 |   await waitFor(() => expect(screen.getByTestId('zdjecie-blad')).toBeTruthy());
+    > 69 |   expect(wcieciaNad(screen.getByTestId('zdjecie-zamknij'), 'paddingTop')).toBeGreaterThanOrEqual(WCIECIA.top);
+         |                                                                           ^
+      70 | });
+      71 |
+
+      at Object.toBeGreaterThanOrEqual (tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx:69:75)
+      at asyncGeneratorStep (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../../../../../home/user/oczko/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 2 total
+Snapshots:   0 total
+Time:        1.676 s, estimated 2 s
+Ran all test suites matching /tests\/ekrany\/zdjecie-bezpieczny-obszar-bx009.test.tsx/i.
+kod wyjścia: 1
