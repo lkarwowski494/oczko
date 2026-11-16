@@ -1228,3 +1228,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 11:34 | M9 (kontrola 11:33) | iOS 43851148385: build zielony 10:43–11:14; e2e części 1–4 iPhone w toku od 11:14 (scenariusze od ok. 11:20), iPad część 1 od 11:20; BX13 po raporcie czeka na wyniki (koszt 3,94 USD); koordynator: koszt 61,17 USD, kontekst 102 368 |
 | 16.11 11:56 | M9 (kontrola 11:55) | iOS 43851148385: iPad część 1 zielona (11:20–11:51); części 1–4 iPhone w toku (krok „Scenariusze” od ok. 11:20); iPad 2–4 jeszcze nie ruszyły; BX13 czeka na wyniki |
 | 16.11 12:16 | właściciel → M9 | zasada KO-113: archiwizować na bieżąco sesje, które skończyły pracę; przegląd: 9 zarchiwizowanych, otwarta tylko BX13 (czeka na wynik iOS, zad. 4.2) |
+| 16.11 12:20 | M9 (kontrola 12:17) | iOS 43851148385 bez zmian: iPad część 1 zielona, iPhone 1–4 w kroku „Scenariusze” od ok. 11:20 (godzina), iPad 2–4 czekają na maszyny; sesje: otwarta tylko BX13 (KO-113) |
