@@ -61,3 +61,11 @@ Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem i cofanie w widoku na
 == KO-105: PU-012 (nowy test tests/ekrany/pu-012-ipad-zakreslanie.test.tsx), 2026-11-16 ==
 Czerwień (mutacja src/ekrany/WzorPrzegladarka.tsx:117 — „Cofnij” woła naCofnij dwa razy; potem przywrócone, git diff src/ pusty): 1 failed (oczekiwane 1 wywołanie). Bez mutacji: 1 passed.
 Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem w PencilKit, faktyczne zdjęcie ostatniego pasa, szybka para i restart — scen. 110.
+
+== PU-139 (nowe testy tests/ekrany/pu-139-motyw-ciemny{,-korzen,-przewodnik}.test.tsx), 2026-11-16 ==
+Baza: 5 + 3 + 1 testów zielonych. Czerwień (mutacje w kodzie, każda przywrócona; git status src/ app/ pusty):
+ app/_layout.tsx contentStyle → '#FFFFFF' : korzen 1 failed (stos ekranów);
+ src/kompozycja/Bezpieczny.tsx tło → '#FFFFFF' : korzen 1 failed;
+ src/ekrany/Przewodnik.tsx ekran → '#FFFFFF' : przewodnik 1 failed; szewron „Show ›” → '#FFFFFF' : przewodnik 1 failed;
+ src/ekrany/Ustawienia.tsx tło → '#FFFFFF' : ciemny 1 failed (z 5).
+Nie pokryte (częściowo, nazwane w Pokryciu): przełączenie wyglądu systemu, kontrast na zrzutach, PU-343. Oferty nie mają `Bezpieczny` — root arkusza to `powierzchnia` (zweryfikowane testem, nie zmiana kodu).
