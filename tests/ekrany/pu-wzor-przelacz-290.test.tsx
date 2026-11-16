@@ -3,7 +3,7 @@
 // Trasy „/wzor” i „/projekt/[id]” na prawdziwej bazie, prawdziwych przypadkach użycia i prawdziwym t() z en.json; widok strony PDF to atrapa modułu natywnego (Swift),
 // która zapisuje propsy (dokument z rysunkami). „Restart” to odmontowanie i ponowne zamontowanie trasy na tej samej bazie.
 import React from 'react';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { View } from 'react-native';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
@@ -131,4 +131,23 @@ test('PU-011 (BX-029): dwa pociągnięcia w odstępie ≤ 1 s — oba zapisane: 
   expect(mockWidok.dokument?.wzorId).toBe('w2');
   expect(mockWidok.dokument?.rysunki).toHaveLength(1);
   expect(readFileSync(String(mockWidok.dokument?.rysunki[0]?.plik).replace(/^file:\/\//, ''), 'utf8')).toBe('zakreslenia:4'); // po restarcie wszystkie 4
+});
+
+// PU-148 (KO-105, „iPad”: „nie tracić kresek”): kreska zapisana przy zamykaniu ekranu wzoru trafia do pliku oczekującego (zdarzenie nie ma już odbiorcy). Po ponownym otwarciu wzoru trasa odzyskuje plik:
+// rysunek strony jest w bazie, w dokumencie przekazanym widokowi, a plik oczekujący znika. Poza Jest (częściowo): sama kreska PencilKit palcem i cofanie w widoku natywnym (BX-041) — scenariusz 116 (oczekujący);
+// zapis i odzysk plików (kolejność, błędy zapisu): tests/dane/wzor-rysunki-odzysk.test.ts.
+test('PU-148 (część): plik oczekujący z kreską (zamknięcie ekranu przed zapisem) wraca przy ponownym otwarciu wzoru: rysunek w bazie i w widoku, plik zdjęty', async () => {
+  const s = await zasiej();
+  mockParams = {};
+  const k = join(s.z.katalogi.tymczasowy, 'rysunki-wzoru');
+  mkdirSync(k, { recursive: true });
+  const f = join(k, 'w2__0__kreska.pkdrawing');
+  writeFileSync(f, 'zakreslenia:7');
+  expect(await ile(s.baza, 'rysunek', "wzor_id = 'w2' AND strona = 0")).toBe(0); // przed otwarciem kreska jest tylko w pliku
+  await otworzWzor(); // „Page photo” (w2) — pierwszy po nazwie
+  expect(mockWidok.dokument?.wzorId).toBe('w2');
+  expect(mockWidok.dokument?.rysunki).toHaveLength(1); // odzysk wykonany przed pierwszym odczytem widoku
+  expect(readFileSync(String(mockWidok.dokument?.rysunki[0]?.plik).replace(/^file:\/\//, ''), 'utf8')).toBe('zakreslenia:7');
+  expect(await jeden(s.baza, "SELECT plik_sha256 FROM rysunek WHERE wzor_id = 'w2' AND strona = 0")).toEqual({ plik_sha256: sha256('zakreslenia:7') });
+  expect(existsSync(f)).toBe(false); // plik oczekujący zdjęty po zapisie
 });

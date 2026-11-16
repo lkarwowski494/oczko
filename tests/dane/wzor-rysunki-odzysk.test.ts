@@ -8,7 +8,7 @@ import { odzyskajRysunki, widokWzoru } from '../../src/przypadki-uzycia/wzor-wid
 import { plik, projekt, rysunek, wzor } from './pomocnicze/dane-wejsciowe';
 import { ile, jeden, licznosci, przygotuj, sha256, wlozPlik, wykonaj } from './pomocnicze/srodowisko';
 
-test('pliki oczekujące → rysunki stron we właściwych wzorach; pliki usunięte; obce i uszkodzone nazwy zostają', async () => {
+test('PU-148 · pliki oczekujące (kreski nieobsłużone przy zamknięciu ekranu) → rysunki stron we właściwych wzorach; pliki usunięte; obce i uszkodzone nazwy zostają', async () => {
   const s = await przygotuj();
   const h = wlozPlik(s.magazyn, Buffer.from('%PDF-1.4\n%%EOF\n'), 'pdf');
   await wykonaj(s.baza, [projekt('p1', 'Harbor'), plik(h, 'pdf', 15), wzor('w1', 'p1', h), wzor('w2', 'p1', h)]);
