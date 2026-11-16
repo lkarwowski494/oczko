@@ -1,0 +1,61 @@
+# PU-057 (T-41): trzy pliki Word z korpusu W1 (tekst, tabela, obraz) otwarte jako wzór kończą się na stronie z treścią, a nie na dodatkowej pustej: źródło „Word document · 1 page”,
+# a `wzor-strona` na ostatniej stronie „Page 1 of 1” (liczba stron = oczekiwana dla pliku).
+# Oczekiwana liczba stron: 1 dla każdego pliku. Podstawa: korpus (`modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/generuj-korpus.mjs`) to trzy minimalne dokumenty — 3 krótkie akapity, tabela 3 × 2,
+# jeden obraz 2 × 2 cale — a `soffice --headless --convert-to pdf` daje dla każdego z nich 1 stronę (pdfinfo, 2026-11-16; to inny silnik niż WKWebView, więc to oczekiwanie z rachunku, nie wynik iOS).
+# Czerwony byłby: dodatkowa pusta strona („Page 1 of 2”, „2 pages”) — dokładnie to, co wykrywa równość „1” zamiast odwołania wstecznego z 53 („N of N” z dowolnym N).
+# Co ten scenariusz nie dowodzi (częściowo): że ostatnia strona ma treść — Maestro nie czyta PDF; wyrocznią są zrzuty 119-*-ostatnia do oceny wzrokiem (jak 53) i test natywny EksperymentyTests.swift (obraz: strona nie jest pusta).
+# Każdy plik na czystej instalacji (OG-07: jeden dokument wzoru naraz), jak 53.
+appId: com.apps4brew.knitting
+name: "PU-057 · Word z korpusu W1 (tekst, tabela, obraz): 1 strona, ostatnia „Page 1 of 1”, bez dodatkowej pustej"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-057
+  - wzor
+  - stan-licznika
+---
+# --- tekst ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word" }
+- tapOn: { id: "e2e-wzor-word" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- takeScreenshot: 119-tekst-ostatnia
+# --- tabela ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-tabela" }
+- tapOn: { id: "e2e-wzor-word-tabela" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- takeScreenshot: 119-tabela-ostatnia
+# --- obraz ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-obraz" }
+- tapOn: { id: "e2e-wzor-word-obraz" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- takeScreenshot: 119-obraz-ostatnia
