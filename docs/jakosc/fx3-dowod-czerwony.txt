@@ -5,3 +5,10 @@ npx jest tests/jakosc/e2e-39-jezyk-dolny-brzeg-bx010.test.ts --ci  → FAIL (kod
   ✕ BX-010: stuknięcie wiersza „Język” po przewinięciu jest poprzedzone dodatkowym `scroll` (dolny brzeg ScrollView)
     Expected: "scroll"   Received: "scrollUntilVisible"
 Po poprawce: PASS (154 testy w e2e-kruchosc* + nowy).
+
+== BX-009 (podgląd zdjęcia, app/zdjecie.tsx) ==
+Dowód z iOS 43774048947 część 4, krok 48 (po poprawce 152fb307 z SafeAreaView): hierarchia `zdjecie-bezpieczny` [0,0][402,874], `zdjecie-zamknij` [341,0][386,44],
+ zdjęcie [0,44][402,830], dolny pasek [830,874] — wcięcia zerowe. Kod biblioteki: ios/Fabric/RNCSafeAreaViewComponentView.mm `findNearestProvider` (bez natywnego dostawcy zwraca siebie).
+npx jest tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx --ci  (atrapa: SafeAreaView = zero wcięć, hook = 59/34) → FAIL (kod 1), 2 testy:
+  Expected: >= 59   Received: 0   (wcieciaNad(zamknij, 'paddingTop'), oba testy)
+Po poprawce (View + useSafeAreaInsets): PASS; tests/ekrany/zdjecie-poziomo-bx014.test.tsx PASS (atrapa dostała hook).

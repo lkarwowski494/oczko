@@ -16,7 +16,7 @@ jest.mock('react-native-safe-area-context', () => {
   const wciecia = { top: 0, bottom: 21, left: 59, right: 59 } as const; // iPhone z wycięciem, poziomo
   const SafeAreaView = ({ edges, style, children, ...reszta }: { edges?: ('top' | 'bottom' | 'left' | 'right')[]; style?: import('react-native').StyleProp<import('react-native').ViewStyle>; children?: React.ReactNode }) =>
     R.createElement(View, { ...reszta, style: [style, ...(edges ?? []).map((e) => ({ ['padding' + e[0]!.toUpperCase() + e.slice(1)]: wciecia[e] }))] }, children);
-  return { SafeAreaView };
+  return { SafeAreaView, useSafeAreaInsets: () => wciecia }; // BX-009 (FX3): trasa czyta wcięcia hookiem, nie natywnym SafeAreaView — wcięcia boczne nadal nie mogą zwężać strony
 });
 
 const mockRouter = { push: jest.fn(), replace: jest.fn(), back: jest.fn() };

@@ -1,9 +1,9 @@
 // Trasa „/zdjecie?projekt=…&i=…”: podgląd zdjęć projektu na czarnym tle (P-191 P9a). Usunięcie po potwierdzeniu (alert systemowy, bez kosza);
 // po usunięciu ostatniego zdjęcia powrót do projektu. „Share”: kopia bez metadanych i GPS w katalogu tymczasowym (P-219 2A), arkusz systemowy.
 import React, { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PodgladZdjec, type Miniatura } from '../src/ekrany/Zdjecia';
 import { systemCzarny } from '../src/ekrany/motyw';
 import { alertBleduZapisu } from '../src/ekrany/blad-zapisu';
@@ -16,10 +16,13 @@ import { zdjecieBezMetadanych } from '../src/kompozycja/zdjecie-bez-metadanych';
 import { usunPlik } from '../src/dane/pliki/system';
 import { udostepnijPlik } from '../src/platforma/system-plikow-uzytkownika';
 
-/** BX-009 (PU-228): trasa pełnoekranowa odsuwa treść od paska stanu i wskaźnika Home jak `Bezpieczny`, ale na czerni podglądu (`systemCzarny.tlo`, bez nowego koloru).
+/** BX-009 (PU-228): trasa pełnoekranowa odsuwa treść od paska stanu i wskaźnika Home na czerni podglądu (`systemCzarny.tlo`, bez nowego koloru).
+ *  Wcięcia z hooka `useSafeAreaInsets` (kontekst JS korzenia), nie z natywnego `SafeAreaView`: ten czyta wcięcia z natywnego przodka-dostawcy, a ekran
+ *  `fullScreenModal` leży poza jego drzewem — dał zero (przebieg iOS 43774048947, scenariusz 81 krok 48: „Close” [341,0][386,44]).
  *  BX-014: tylko góra i dół — `PodgladZdjec` liczy szerokość strony z `useWindowDimensions().width`, więc wcięcia boczne (poziomo, wycięcie) zwężałyby ScrollView poniżej strony. */
 function NaCzerni({ children }: { children: React.ReactNode }): React.ReactElement {
-  return <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: systemCzarny.tlo }} testID="zdjecie-bezpieczny">{children}</SafeAreaView>;
+  const wciecia = useSafeAreaInsets();
+  return <View style={{ flex: 1, backgroundColor: systemCzarny.tlo, paddingTop: wciecia.top, paddingBottom: wciecia.bottom }} testID="zdjecie-bezpieczny">{children}</View>;
 }
 
 export default function EkranZdjecia(): React.ReactElement {
