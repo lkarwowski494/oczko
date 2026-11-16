@@ -465,7 +465,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zgloszenie-awaryjne.test.tsx` | zielony (główny zestaw) | 2 | P-194 | `src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne`<br>`src/kompozycja/zgloszenie-awaryjne` | Z07-22 |
 | 9 ? | `tests/adaptery/archiwum-skrot.test.ts` | zielony (główny zestaw) | 2 | P-130, R-067 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/dane/pliki/magazyn` | Z07-22 |
 | 9 ? | `tests/adaptery/czas-w-tle.test.ts` | zielony (główny zestaw) | 2 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/platforma/czas-w-tle`<br>`src/przypadki-uzycia/archiwum` | Z07-22 |
-| 9 ? | `tests/adaptery/e2e-pliki-wzoru.test.ts` | zielony (główny zestaw) | 4 | P-121, P-282, P-439 | `src/kompozycja/e2e/pliki-wzoru` | — |
+| 9 ? | `tests/adaptery/e2e-pliki-wzoru.test.ts` | zielony (główny zestaw) | 5 | P-121, P-282, P-439, P-907 | `src/kompozycja/e2e/pliki-wzoru` | — |
 | 9 ? | `tests/adaptery/haptyka-wzorce.test.ts` | zielony (główny zestaw) | 2 | P-135, P-552, P-553 | `src/platforma/haptyka` | — |
 | 9 ? | `tests/adaptery/icloud-platforma.test.ts` | zielony (główny zestaw) | 12 | P-230, P-242 | `src/domena/porty`<br>`src/platforma/icloud`<br>`src/platforma/icloud-atrapa`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/synchronizacja` | Z07-22 |
 | 9 ? | `tests/adaptery/identyfikatory.test.ts` | zielony (główny zestaw) | 1 | — | `src/platforma/identyfikatory` | — |
