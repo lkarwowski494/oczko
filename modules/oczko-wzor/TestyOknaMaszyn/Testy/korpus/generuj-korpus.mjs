@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Korpus eksperymentu W1 (moduly.md „Kontrakt partii 6”: render .docx w WKWebView → PDF; P-221 Q2a): trzy minimalne dokumenty Word (tekst, tabela,
-// obraz) zapisane jako ZIP bez kompresji (OOXML: [Content_Types].xml, _rels/.rels, word/document.xml, word/_rels, media). Treść własna, bez danych.
-// Użycie: node modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/generuj-korpus.mjs  → tekst.docx, tabela.docx, obraz.docx obok skryptu.
+// Korpus eksperymentu W1 (moduly.md „Kontrakt partii 6”: render .docx w WKWebView → PDF; P-221 Q2a): cztery minimalne dokumenty Word (tekst, tabela,
+// obraz oraz strony.docx: 3 strony z konstrukcji, PU-057/KO-092/P-907) zapisane jako ZIP bez kompresji (OOXML: [Content_Types].xml, _rels/.rels, word/document.xml, word/_rels, media). Treść własna, bez danych.
+// Użycie: node modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/generuj-korpus.mjs  → tekst.docx, tabela.docx, obraz.docx, strony.docx obok skryptu.
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { crc32 } from 'node:zlib';

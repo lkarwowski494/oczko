@@ -5,7 +5,7 @@
 # Hipoteza (BX-040): Maestro iOS rozróżnia pozycje menu po `selected`; jeśli nie, asercje :`selected` będą czerwone, reszta scenariusza nie zależy od niej. Klawiatura tekstowa: wpis w retry (e2e/README.md reguła 6).
 # Kolejność wierszy grupy: po nazwie bez wielkości liter (`listaWzorow`): „Sleeve chart”, „Test pattern”.
 appId: com.apps4brew.knitting
-name: "PU-290 · Dwa wzory: ▾ → „Patterns in Harbor” z ✓ przy bieżącym → PDF z zakreśleniem → restart otwiera PDF; grupa „Patterns” z dwoma wierszami"
+name: "PU-290 · Dwa wzory: ▾ → „Patterns in Harbor” z ✓ przy bieżącym → PDF z zakreśleniem → zdjęcie przed restartem → restart otwiera zdjęcie (ostatnio wybrane, nie pierwsze po nazwie); grupa „Patterns” z dwoma wierszami"
 tags:
   - przypadki-uzycia
   - oczekujacy
