@@ -1,0 +1,51 @@
+BX17 · PU-175 · dowód czerwony (mutacja na kopii słowników, repo nietknięte; 2026-11-16)
+Kopia: src/i18n/slowniki/*.json → katalog poza repo; mutacje: de.json bez klucza dzis.tytul; ja.json z pustym oferty.przywroc.
+
+$ OCZKO_SLOWNIKI_DIR=<kopia z mutacją> npx jest tests/i18n/pu-175-klucze-de-ja-ekrany.test.ts
+FAIL iOS tests/i18n/pu-175-klucze-de-ja-ekrany.test.ts
+  PU-175 · de i ja mają przekład każdego klucza ekranów języka, „Dziś”, licznika, przewodnika, Ustawień i „Oczko Pro”
+    ✓ źródło nie jest puste w żadnej przestrzeni (pusta lista to błąd testu, nie sukces) (3 ms)
+    ✕ PU-175: de — brak kluczy = brak (5 ms)
+    ✕ PU-175: ja — brak kluczy = brak (5 ms)
+    ✓ pułapka: kontrola widzi usunięty klucz i pusty przekład, a końcówki liczby mnogiej japońskiego (tylko other) nie są brakiem
+  ● PU-175 · de i ja mają przekład każdego klucza ekranów języka, „Dziś”, licznika, przewodnika, Ustawień i „Oczko Pro” › PU-175: de — brak kluczy = brak
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 3
+    - Array []
+    + Array [
+    +   "dzis.tytul",
+    + ]
+      34 |   });
+      35 |   test.each(['de', 'ja'])('PU-175: %s — brak kluczy = brak', (jezyk) => {
+    > 36 |     expect(brakujaceKlucze(en, czytaj(jezyk), PRZESTRZENIE)).toEqual([]);
+         |                                                              ^
+      37 |   });
+      38 |   test('pułapka: kontrola widzi usunięty klucz i pusty przekład, a końcówki liczby mnogiej japońskiego (tylko other) nie są brakiem', () => {
+      39 |     const zrodlo: Plaski = new Map<string, unknown>([['licznik.a', 'A'], ['licznik.seria_one', '1'], ['licznik.seria_other', 'n'], ['dzis.b', 'B'], ['inne.c', 'C']]);
+  ● PU-175 · de i ja mają przekład każdego klucza ekranów języka, „Dziś”, licznika, przewodnika, Ustawień i „Oczko Pro” › PU-175: ja — brak kluczy = brak
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 3
+    - Array []
+    + Array [
+    +   "oferty.przywroc",
+    + ]
+      34 |   });
+      35 |   test.each(['de', 'ja'])('PU-175: %s — brak kluczy = brak', (jezyk) => {
+    > 36 |     expect(brakujaceKlucze(en, czytaj(jezyk), PRZESTRZENIE)).toEqual([]);
+         |                                                              ^
+      37 |   });
+      38 |   test('pułapka: kontrola widzi usunięty klucz i pusty przekład, a końcówki liczby mnogiej japońskiego (tylko other) nie są brakiem', () => {
+      39 |     const zrodlo: Plaski = new Map<string, unknown>([['licznik.a', 'A'], ['licznik.seria_one', '1'], ['licznik.seria_other', 'n'], ['dzis.b', 'B'], ['inne.c', 'C']]);
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 2 passed, 4 total
+Snapshots:   0 total
+Time:        0.567 s, estimated 1 s
+
+--- po przywróceniu (bez zmiennej, prawdziwe słowniki) ---
+    ✓ źródło nie jest puste w żadnej przestrzeni (pusta lista to błąd testu, nie sukces) (4 ms)
+    ✓ PU-175: de — brak kluczy = brak (3 ms)
+    ✓ PU-175: ja — brak kluczy = brak (4 ms)
+    ✓ pułapka: kontrola widzi usunięty klucz i pusty przekład, a końcówki liczby mnogiej japońskiego (tylko other) nie są brakiem (1 ms)
+Tests:       4 passed, 4 total

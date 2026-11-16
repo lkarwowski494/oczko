@@ -303,3 +303,9 @@ Następca BX15. Dowód czerwony → zielony: `docs/jakosc/bx16-dowod-czerwony.tx
 - **Odstępstwo od polecenia (nazwane, P-941):** „poza bramką” przez tag `oczekujacy` jest niemożliwe przy PU-161 klasy A; wybrano odczyt optional (b). Zmiana workflowu/progów nie ruszana.
 - **Zad. 1 (P-938 wariant (b), klasa A→B dla PU-175, 180, 191) — wstrzymane:** sama zmiana kolumny Klasa daje czerwoną bramkę (kontrola 2: 3 błędy „Pokrycie klasy B ani …” — klasa B wymaga w Pokryciu prefiksu „z testem:” / „oczekujący:” / „do zaprogramowania:”, a zmiana Pokrycia jest poza zakresem polecenia). Pytanie wysłane do koordynatora z opcjami, brak odpowiedzi do chwili zapisu; katalog (klasy, Podsumowanie A=121, B=163, F=60) bez zmian.
 - **Niezweryfikowane do przebiegu iOS:** czy 122 przechodzi na CI i jaki p95 daje bez panelu wejść.
+
+## BX17 (08-programista build, 2026-11-16; polecenie koordynatora session_01T66VBzb4nxMxEGdBmHBUbV; gałąź `claude/bx15-2026-11-16` od bf133ae)
+Następca BX16. Decyzja: P-942 (rozstrzygnięcie P-938: wariant (b), KO-122, forma KO-125). Dowód czerwony: `docs/jakosc/bx17-dowod-czerwony.txt`.
+- **Zad. 1 — zrobione:** PU-175, PU-180, PU-191 w klasie B z Pokryciem „z testem: …; ” + dotychczasowa treść (odnośniki: `tests/i18n/pu-175-klucze-de-ja-ekrany.test.ts:35`, `tests/wydanie/adresy-179.test.ts:10`, `tests/jakosc/pu-191-bez-sdk-reklam-i-sledzenia.test.ts:137`). Podsumowanie A=118, B=166, F=60, razem 344; `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog` zielona; linia „B według pokrycia” z testem 148.
+- **Nowy test PU-175:** kompletność przekładów de/ja kluczy ekranów języka, „Dziś”, licznika, oferty, Ustawień i przewodnika (scenariusz 118 sprawdza 8 napisów). Mutacja na kopii słowników → 2 testy czerwone; na prawdziwych — zielone.
+- **Niezweryfikowane do przebiegu iOS:** nadal czy 122 przechodzi na CI i jaki p95 daje bez panelu wejść (BX16).
