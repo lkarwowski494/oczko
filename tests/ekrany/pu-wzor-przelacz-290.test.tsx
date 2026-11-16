@@ -55,7 +55,7 @@ test('PU-290 (część): ▾ → lista wzorów z ✓ → wybór „Sleeve chart�
   await otworzWzor(); // bez zapamiętanego wzoru: pierwszy z listy (po nazwie) — zdjęcie strony
   expect(mockWidok.dokument?.wzorId).toBe('w2');
   fireEvent.press(await screen.findByTestId('wzor-przelacz'));
-  // UWAGA: nagłówek „Patterns in Sweter” (klucz wzor.przelacz_naglowek) nie jest renderowany nigdzie w kodzie — bez asercji; zob. raport PU-290.
+  expect(screen.getByText('Patterns in Sweter')).toBeTruthy(); // BX-005: nagłówek menu `wzor.przelacz_naglowek` z nazwą projektu (design-spec Kreski :671, :958 „A”)
   expect(screen.getByRole('menuitem', { name: 'Page photo' }).props.accessibilityState).toMatchObject({ selected: true }); // ✓ przy bieżącym
   fireEvent.press(screen.getByRole('menuitem', { name: 'Sleeve chart' }));
   await waitFor(() => expect(mockWidok.dokument?.wzorId).toBe('w1'));
