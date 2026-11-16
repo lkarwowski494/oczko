@@ -107,3 +107,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX7 | 08 build (sonnet) | 12 | 3,69 | 32 | 05:03 → 05:07 → 373a3123 05:28 → iOS wyzwolony 05:31 → stan pracy 05:36 | ok. 10 min: zgoda KO-086 i push na osobną gałąź | 10 PU; 30% kontekstu po 10 min pracy |
 | BX8 | 08 build (sonnet) | 8 | 3,90 | 28 | 05:30 → 05:33 → c021aebc ok. 05:45 → (iOS wyzwolony 06:08, wynik osobno) → stan pracy 06:08 | — | 6 PU (97–102) + KO-088; 30% po ok. 30 min; 1 subagent |
 | FX5 | 08 fix (sonnet) | 8 | 3,21 | 28 | 05:58 → 06:00 → 4d8caced 06:07 → (iOS wyzwolony 06:22, wynik osobno) → stan pracy 06:22 | ok. 2 min: pytanie o tabela-08 (KO-090) | 5 zadań w 20 min; diagnoza opisów PU → odpowiedź właściciela po 6 min |
+| CE | 08 audit (opus) | 5 | 5,09 | 27 | 06:08 → 06:11 → 0c920ec3 06:24 → (verify w haku) → przyjęte 06:27 | — | recenzja BX7+BX8: P1 1, P2 4, P3 4; ponad pułap o 2%, poniżej STOP |
