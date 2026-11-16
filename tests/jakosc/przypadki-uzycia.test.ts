@@ -50,7 +50,7 @@ const tagi = (f: string): string[] => {
   const blok = /^tags:\n((?:[ \t]+- .*\n?)*)/m.exec(naglowek);
   return blok ? blok[1].split('\n').map((l) => l.replace(/^[ \t]+- /, '').replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '')).filter(Boolean) : [];
 };
-const odnosniki = (p: string) => [...p.matchAll(/((?:e2e\/scenariusze|tests)\/[A-Za-z0-9_./-]+\.(?:yaml|tsx?|mjs)):(\d+)/g)].map((m) => ({ plik: m[1], linia: Number(m[2]) }));
+const odnosniki = (p: string) => [...p.matchAll(/((?:e2e\/scenariusze|tests)\/[A-Za-z0-9_./-]+\.(?:yaml|tsx?|mjs)|[A-Za-z0-9_./-]+\.swift):(\d+)/g)].map((m) => ({ plik: m[1], linia: Number(m[2]) }));
 
 const { pu, naglowki, podsumowanie } = czytajKatalog(fs.readFileSync(KATALOG, 'utf8'));
 const poId = new Map(pu.map((p) => [p.id, p]));
@@ -136,12 +136,14 @@ describe('katalog przypadków użycia: pokrycie według klasy', () => {
     for (const p of pu.filter((x) => x.klasa === 'B')) {
       const o = odnosniki(p.pokrycie).filter((x) => /^oczekujący: /.test(p.pokrycie) && x.plik.startsWith('e2e/'));
       if (/^do zaprogramowania: (Maestro iPhone|Maestro iPad|jednostkowy|komponentowy) — .{10,}/.test(p.pokrycie)) continue;
-      if (/^z testem: /.test(p.pokrycie)) { // KO-071: test jednostkowy/komponentowy w tests/, klasa zostaje B
+      if (/^z testem: /.test(p.pokrycie)) { // KO-071: test jednostkowy/komponentowy w tests/, klasa zostaje B; P-906: albo test Swift pakietu modules/oczko-reguly/Tests/
         const t = odnosniki(p.pokrycie);
-        if (!t.some((x) => x.plik.startsWith('tests/'))) zle.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ (odnośniki e2e/ tylko jako „częściowo:”)`);
+        const PAKIET_SWIFT = 'modules/oczko-reguly/Tests/'; // szczegółowe warunki: bladTestuSwift w scripts/jakosc/bramka-przypadki-uzycia.mjs
+        if (!t.some((x) => x.plik.startsWith('tests/') || x.plik.startsWith(PAKIET_SWIFT))) zle.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ albo ${PAKIET_SWIFT} (odnośniki e2e/ tylko jako „częściowo:”)`);
         for (const x of t) {
           if (!istnieje(x)) zle.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
-          else if (x.plik.startsWith('tests/') && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
+          else if (x.plik.endsWith('.swift') && (!x.plik.startsWith(PAKIET_SWIFT) || x.plik.includes('..'))) zle.push(`${p.id}: ${x.plik} poza ${PAKIET_SWIFT} (P-906)`);
+          else if ((x.plik.startsWith('tests/') || x.plik.endsWith('.swift')) && !fs.readFileSync(path.join(root, x.plik), 'utf8').includes(p.id)) zle.push(`${p.id}: ${x.plik} nie wymienia ${p.id}`);
         }
         continue;
       }

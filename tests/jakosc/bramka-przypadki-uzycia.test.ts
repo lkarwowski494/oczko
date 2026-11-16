@@ -68,7 +68,7 @@ describe('kontrola 2: katalog spójny z kodem', () => {
   test('P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID (kontrola 2 z wymogiem testów B)', () => {
     const tmp = mkdtempSync(join(tmpdir(), 'oczko-p855-'));
     try {
-      for (const d of ['app', 'src', 'tests']) symlinkSync(join(root, d), join(tmp, d), 'dir');
+      for (const d of ['app', 'src', 'tests', 'modules']) symlinkSync(join(root, d), join(tmp, d), 'dir');
       cpSync(join(root, 'e2e/scenariusze'), join(tmp, 'e2e/scenariusze'), { recursive: true });
       mkdirSync(join(tmp, 'docs/jakosc'), { recursive: true });
       const scen81 = '81-pu-228-podglad-zdjecia-zamknij.yaml';
@@ -389,5 +389,97 @@ describe('BX-013: tagiScenariusza — lista w linii kończy się na pierwszym `]
   test('niedomknięta lista albo coś innego niż komentarz po `]` nie daje tagów', () => {
     expect(tagi(plik('tags: [smoke, PU-005'))).toEqual([]);
     expect(tagi(plik('tags: [smoke] PU-005'))).toEqual([]);
+  });
+});
+
+// CI-02 (P-906, KO-094; słowa właściciela 16.11.2026 ok. 07:00 UTC „Zgodnie z rekomendacja” = Pytanie 2 wariant A): „z testem:” przyjmuje też test Swift
+// pakietu modules/oczko-reguly (Tests/**/*.swift:linia), bo pakiet biegnie na ścieżce buildu (`swift test` w zadaniu build testflight.yml; jak Trening
+// testflight.yml w. 99). Warunki: plik w modules/oczko-reguly/Tests/ (bez `..` i dowiązań poza pakiet), klasa XCTestCase, bez XCTSkip i `#if false`,
+// w promieniu 40 linii od wskazanej linii `func test…()` uruchamiany przez XCTest i PU-NNN jako cały wyraz. Żadnego innego rozluźnienia.
+describe('CI-02 (P-906): „z testem:” przyjmuje test Swift pakietu modules/oczko-reguly, nic poza tym', () => {
+  const fs = jest.requireActual<typeof import('node:fs')>('node:fs');
+  const os = jest.requireActual<typeof import('node:os')>('node:os');
+  function fikstura(pokrycie: string, pliki: Record<string, string>, klasa: 'A' | 'B' = 'B', poPlikach?: (tmp: string) => void) {
+    const tmp = fs.mkdtempSync(join(os.tmpdir(), 'bramka-ci02-'));
+    for (const d of ['app', 'src/ekrany', 'src/przypadki-uzycia', 'e2e/scenariusze', 'modules/oczko-reguly']) fs.cpSync(join(root, d), join(tmp, d), { recursive: true });
+    fs.mkdirSync(join(tmp, 'docs/jakosc'), { recursive: true });
+    const katalog = fs.readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8').split('\n').map((l) => {
+      if (!l.startsWith('| PU-333 |')) return l;
+      const k = l.split('|');
+      k[7] = ` ${klasa} `; k[8] = ` ${pokrycie} `;
+      return k.join('|');
+    }).join('\n');
+    fs.writeFileSync(join(tmp, 'docs/jakosc/przypadki-uzycia.md'), katalog);
+    for (const [p, tresc] of Object.entries(pliki)) { fs.mkdirSync(join(tmp, p, '..'), { recursive: true }); fs.writeFileSync(join(tmp, p), tresc); }
+    poPlikach?.(tmp);
+    const wynik = (b('kontrolaKatalogu', tmp, { wymagajTestowB: true }) as string[]).filter((e) => e.startsWith('PU-333:'));
+    fs.rmSync(tmp, { recursive: true, force: true });
+    return wynik;
+  }
+  const PLIK = 'modules/oczko-reguly/Tests/OczkoRegulyTests/ZzCi02Tests.swift';
+  // linia 5 = `func test…`; PU-333 w komentarzu nad funkcją (linia 4)
+  const swift = (cialo = '    XCTAssertEqual(1 + 1, 2)', przed = '', nazwa = 'func testPU333Zz() throws') =>
+    `import XCTest\n\nfinal class ZzCi02Tests: XCTestCase {\n  /// PU-333: błąd zapisu — stan bez zmian\n  ${nazwa} {\n${cialo}\n  }\n${przed}}\n`;
+  const zTestem = (plik: string, linia: number) => `z testem: ${plik}:${linia}`;
+
+  test('przyjmuje poprawny odnośnik do testu Swift pakietu (func test… z PU-333 w promieniu 40 linii, bez XCTSkip)', () => {
+    expect(fikstura(zTestem(PLIK, 5), { [PLIK]: swift() })).toEqual([]);
+  });
+  test('odnośnik z prawdziwego katalogu: PU-333 → ZegarekSkrzynkaTests (P-906) przechodzi kontrolę 2 bez błędów tego PU', () => {
+    const wiersz = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8').split('\n').find((l) => l.startsWith('| PU-333 |')) ?? '';
+    const pokrycie = wiersz.split('|')[8].trim();
+    expect(pokrycie).toMatch(/^z testem: modules\/oczko-reguly\/Tests\/OczkoRegulyTests\/ZegarekSkrzynkaTests\.swift:\d+/);
+    expect(fikstura(pokrycie, {})).toEqual([]);
+  });
+  test.each([
+    ['XCTSkip w pliku', swift('    throw XCTSkip("później")')],
+    ['XCTSkipIf w pliku', swift('    try XCTSkipIf(true)')],
+    ['test wyłączony z kompilacji (#if false, numery linii bez zmian)', `${swift().replace('import XCTest\n\n', 'import XCTest\n#if false\n')}#endif\n`],
+    ['klasa nie dziedziczy po XCTestCase', swift().replace(': XCTestCase', '')],
+    ['brak PU-333 w promieniu 40 linii (wzmianka 60 linii dalej)', swift('    XCTAssertEqual(1 + 1, 2)', `${'\n'.repeat(60)}  // PU-333\n`).replace('/// PU-333: błąd', '/// błąd')],
+    ['PU-333 tylko jako podciąg PU-3330', swift().replace('PU-333:', 'PU-3330:')],
+    ['brak func test… w promieniu 40 linii (funkcja pomocnicza)', swift(undefined, undefined, 'func pomocnikPU333() throws')],
+    ['func test… z argumentem (XCTest go nie uruchamia)', swift(undefined, undefined, 'func testPU333(_ x: Int) throws')],
+    ['private func test… (XCTest go nie widzi)', swift(undefined, undefined, 'private func testPU333Zz() throws')],
+  ])('odrzuca: %s', (_n, tresc) => {
+    expect(fikstura(zTestem(PLIK, 5), { [PLIK]: tresc }).length).toBeGreaterThan(0);
+  });
+  test.each([
+    ['źródło pakietu (Sources/, nie Tests/)', 'modules/oczko-reguly/Sources/OczkoDziennik/ZzCi02Tests.swift'],
+    ['inny pakiet (eksperymenty W1–W3, tylko informacyjne)', 'modules/oczko-wzor/TestyOknaMaszyn/Testy/ZzCi02Tests.swift'],
+    ['cel aplikacji zegarka', 'targets/watch/ZzCi02Tests.swift'],
+    ['ścieżka z „..” wychodząca z Tests/', 'modules/oczko-reguly/Tests/../Sources/OczkoDziennik/ZzCi02Tests.swift'],
+  ])('odrzuca plik spoza katalogu testów pakietu: %s', (_n, plik) => {
+    const naDysku = plik.replace('Tests/../', '');
+    expect(fikstura(zTestem(plik, 5), { [naDysku]: swift() }).length).toBeGreaterThan(0);
+  });
+  test('poprawny odnośnik pakietu nie „przemyca” drugiego odnośnika Swift spoza pakietu (każdy odnośnik sprawdzany osobno)', () => {
+    const obcy = 'modules/oczko-reguly/Sources/OczkoDziennik/ZzCi02Tests.swift';
+    const bledy = fikstura(`z testem: ${PLIK}:5; ${obcy}:5`, { [PLIK]: swift(), [obcy]: swift() });
+    expect(bledy.some((e) => e.includes(obcy) && /nie jest plikiem testów pakietu|dowiązaniem/.test(e))).toBe(true);
+  });
+  test('odrzuca plik w Tests/ będący dowiązaniem do źródła poza Tests/ (realpath)', () => {
+    const cel = 'modules/oczko-reguly/Sources/OczkoDziennik/ZzCi02Tests.swift';
+    const bledy = fikstura(zTestem(PLIK, 5), { [cel]: swift() }, 'B', (tmp) => fs.symlinkSync(join(tmp, cel), join(tmp, PLIK)));
+    expect(bledy.some((e) => /dowiązaniem/.test(e))).toBe(true);
+  });
+  test('odrzuca nieistniejącą linię i nieistniejący plik', () => {
+    expect(fikstura(zTestem(PLIK, 999), { [PLIK]: swift() }).some((e) => /nie istnieje/.test(e))).toBe(true);
+    expect(fikstura(zTestem('modules/oczko-reguly/Tests/OczkoRegulyTests/BrakTakiego.swift', 5), {}).some((e) => /nie istnieje/.test(e))).toBe(true);
+  });
+  test('sam odnośnik Swift spoza pakietu nie zalicza „z testem:” (wymagany test w tests/ albo w pakiecie)', () => {
+    expect(fikstura(zTestem('targets/watch/ZzCi02Tests.swift', 5), { 'targets/watch/ZzCi02Tests.swift': swift() }).some((e) => /wymaga co najmniej jednego odnośnika/.test(e))).toBe(true);
+  });
+  test('warunek P-906: zadanie build w testflight.yml (needs bramka-przypadki) uruchamia `swift test` pakietu przed archiwizacją', () => {
+    const wf = parse(readFileSync(join(root, '.github/workflows/testflight.yml'), 'utf8')) as { jobs: Record<string, { needs?: string[]; steps: { name?: string; run?: string; if?: string; 'continue-on-error'?: unknown }[] }> };
+    const build = wf.jobs.build;
+    expect(build.needs).toContain('bramka-przypadki');
+    const kroki = build.steps;
+    const swiftTest = kroki.findIndex((k) => /^\s*cd modules\/oczko-reguly && swift test\s*$/.test(k.run ?? ''));
+    const archiwum = kroki.findIndex((k) => /xcodebuild[\s\S]*archive/.test(k.run ?? ''));
+    expect(swiftTest).toBeGreaterThanOrEqual(0);
+    expect(kroki[swiftTest].if).toBeUndefined();
+    expect(kroki[swiftTest]['continue-on-error']).toBeUndefined();
+    expect(archiwum).toBeGreaterThan(swiftTest);
   });
 });
