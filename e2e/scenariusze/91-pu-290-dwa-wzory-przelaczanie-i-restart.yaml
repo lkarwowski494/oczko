@@ -1,5 +1,5 @@
 # PU-290 (docs/jakosc/przypadki-uzycia.md, „Wzory”): projekt z wzorem PDF → „Add pattern” → zdjęcie strony → tytuł wzoru z ▾ → lista „Patterns in {projekt}” z ✓ przy bieżącym → wybór PDF → widok PDF z zakreśleniem →
-# restart → ostatnio wybrany wzór (PDF); ekran projektu ma grupę „Patterns” z dwoma wierszami. Nagłówek listy „Patterns in …” jest renderowany od BX-005 (FX5, `MenuWzorow` src/ekrany/WzorMenu.tsx:36, `wzor.przelacz_naglowek`).
+# restart → ostatnio wybrany wzór (zdjęcie „Test pattern”, drugi po nazwie — CK-02: bez zapamiętania otworzyłby się PDF „Sleeve chart”, pierwszy po nazwie); ekran projektu ma grupę „Patterns” z dwoma wierszami. Nagłówek listy „Patterns in …” jest renderowany od BX-005 (FX5, `MenuWzorow` src/ekrany/WzorMenu.tsx:36, `wzor.przelacz_naglowek`).
 # Kod: `e2e-wzor-pdf`/`e2e-wzor-zdjecie` (panel E2E w menu źródeł, src/kompozycja/e2e/panele.tsx:106,122; z ekranu projektu `wzor-dodaj` src/ekrany/WzorGrupa.tsx:61, `panelE2e`), `wzor-przelacz` (WzorTytul.tsx:20, tylko ≥ 2 wzory),
 # wiersze listy `menuitem` bez testID (selektor po nazwie; oba wzory E2E mają nazwę „Test pattern”, więc PDF przemianowany na „Sleeve chart” — jak 109), ✓ jako `accessibilityState.selected` (WzorMenu.tsx:40).
 # Hipoteza (BX-040): Maestro iOS rozróżnia pozycje menu po `selected`; jeśli nie, asercje :`selected` będą czerwone, reszta scenariusza nie zależy od niej. Klawiatura tekstowa: wpis w retry (e2e/README.md reguła 6).
@@ -81,9 +81,20 @@ tags:
 - extendedWaitUntil: { visible: { id: "wzor-zrodlo", text: "PDF.*" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - takeScreenshot: 91-pdf-po-wyborze
-# --- restart: otwiera się ostatnio wybrany wzór (PDF), z zakreśleniem ---
+# --- CK-02: przed restartem wracamy do wzoru, który NIE jest pierwszy po nazwie („Test pattern” stoi za „Sleeve chart”), by regresja zapamiętania wyboru dawała czerwień ---
+- tapOn: { id: "wzor-przelacz" }
+- assertVisible: "Patterns in Harbor"
+- tapOn: "Test pattern"
+- extendedWaitUntil: { visible: { id: "wzor-zrodlo", text: "Photo.*" }, timeout: 30000 }
+- takeScreenshot: 91-zdjecie-przed-restartem
+# --- restart: otwiera się ostatnio wybrany wzór (zdjęcie), nie pierwszy po nazwie (PDF „Sleeve chart”, który otworzyłby się bez zapamiętania, `wzorDoOtwarcia` → lista[0]) ---
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
-- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
-- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
 - takeScreenshot: 91-po-restarcie
+# --- zakreślenie PDF przeżyło restart: przełączenie na „Sleeve chart” pokazuje 1 zakreślenie ---
+- tapOn: { id: "wzor-przelacz" }
+- assertVisible: "Patterns in Harbor"
+- tapOn: "Sleeve chart"
+- extendedWaitUntil: { visible: { id: "wzor-zrodlo", text: "PDF.*" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }

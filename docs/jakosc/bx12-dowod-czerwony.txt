@@ -17,3 +17,8 @@ Czerwone 1: po dopisaniu kontroli w scen. 105 (przed poprawką numerów linii w 
 Czerwone 2: `npx jest tests/jakosc` → 4 testy czerwone: ch01-okno-w-scenariuszu-105 (6 obrotów → 7; asercja „portrait” po obrocie kontrolnym), maestro-scenariusze (po setOrientation PORTRAIT brak asercji; P-091 9a: scenariusz sprawdza wartość licznika bez tagu stan-licznika). Poprawki: asercja „portrait” po powrocie do pionu, tag stan-licznika, test CH-01 rozróżnia obrót kontrolny.
 Mutacja: usunięcie asercji „window: landscape” (linia 25) → ch01-okno-w-scenariuszu-105 czerwony (kontrola nie znaleziona); po przywróceniu zielony.
 Zielone: `npx jest tests/jakosc` → 77 suites / 989 testów; katalog „Kontrola 2: zielona”.
+
+== CK-02 (scen. 91, wybór wzoru przed restartem), 2026-11-16 ==
+Scenariusz Maestro działa tylko w CI iOS (tu go nie uruchomię), więc czerwień regresji pokazuje rozumowanie z kodu, nie przebieg: `wzorDoOtwarcia` bez zapisanego wyboru bierze lista[0] posortowaną po nazwie NOCASE (`src/przypadki-uzycia/wzor.ts:148-153,172`) = PDF „Sleeve chart”; scenariusz przed restartem wybiera „Test pattern” (zdjęcie, drugi po nazwie) i po restarcie asertuje „Photo.*” — regresja `zapamietajWzor` otworzyłaby PDF i asercja padnie.
+Czerwone (struktura): po zmianie scenariusza `bramka-przypadki-uzycia.mjs katalog` → "Kontrola 2: CZERWONA (1)": PU-290 …91….yaml:87 „nie jest asercją” (stare numery linii); po poprawce numerów w pokryciu → zielona. `npx jest tests/jakosc` zielone.
+Zachowane: dowód, że zakreślenie PDF przeżyło restart (po restarcie przełączenie na „Sleeve chart” → „1 highlight”, linie 99-100).
