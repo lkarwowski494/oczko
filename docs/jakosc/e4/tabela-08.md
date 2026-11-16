@@ -363,6 +363,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-voiceover-ekrany-132.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/dostep`<br>`src/platforma/sklep-sztuczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wibracje-027.test.tsx` | zielony (główny zestaw) | 2 | R-148 | `src/ekrany/Licznik`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wloczka-zdjecie-etykiety-289.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-nazwa-migawka-291.test.ts` | zielony (główny zestaw) | 1 | — | `src/platforma/migawka`<br>`src/przypadki-uzycia/migawka`<br>`src/przypadki-uzycia/wzor` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-przelacz-290.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-trasa-293-294-295.test.tsx` | zielony (główny zestaw) | 3 | — | `src/dane/repozytoria/wzory` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-wzor-trasy-058-297-299.test.tsx` | zielony (główny zestaw) | 3 | — | `src/ekrany/WzorGrupa`<br>`src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
@@ -492,4 +493,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 488; zależnych od poprawek: 301.
+Razem plików testów: 489; zależnych od poprawek: 302.

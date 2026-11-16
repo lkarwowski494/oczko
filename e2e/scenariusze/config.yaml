@@ -20,6 +20,8 @@ flows:
   - 105-pu-071-ekrany-poza-wzorem-zostaja-w-pionie.yaml
   - 106-pu-191-bez-kont-i-ekranu-awarii-na-glownych-ekranach.yaml
   - 107-pu-288-udostepnij-zdjecie-arkusz-systemowy-i-powrot.yaml
+  - 108-pu-044-cel-dnia-na-liscie-i-projekcie-projekt-z-terminem-wyzej.yaml
+  - 109-pu-291-zmien-nazwe-wzoru-tytul-grupa-pusta-nazwa.yaml
   - 11-br-dan-001-s1-baza-bez-sieci.yaml
   - 12-br-zak-006-s4-bez-oferty-w-pracy.yaml
   - 13-kp-10-zakup-tylko-po-dzialaniu.yaml

@@ -286,6 +286,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-pioro` | pasek rysowania (iPad) | pióro | „Pen” | |
 | `wzor-cofnij-rysunek` | pasek rysowania | cofnięcie ostatniej kreski | „Undo last stroke” | |
 | `wzor-link-pole` | arkusz „Web page” | pole adresu strony wzoru | „Link to the pattern page” | tekstowa |
+| `projekt-wzor` | ekran projektu, grupa wzorów (nagłówek „Pattern” przy jednym wzorze, „Patterns” od dwóch) | wiersz wzoru (powtarzalny, `index`): nazwa i opis; stuknięcie otwiera wzór (scen. 109, PU-291) | „{nazwa}, {opis}” | |
 | `wzor-miniatura` | ekran projektu, wiersz wzoru (`projekt-wzor`) | miniatura pierwszej strony; ukryta dla VoiceOver (partia 6 e779602) | — | |
 | `wzor-film-wiersz` | ekran projektu | wiersz „Video” | „Video, {nazwa}” | |
 | `wzor-film-menu` | ekran projektu | widoczny przycisk „•••” w wierszu „Video”: menu „Change link” / „Remove link” (porządek 04-studio-projektowe-006; „Remove link” pyta o potwierdzenie) | „Video link options” | |
