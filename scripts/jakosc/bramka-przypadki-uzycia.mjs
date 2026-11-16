@@ -7,7 +7,8 @@
 //       kontrola 1: w przebiegu PRZEBIEG każda część `e2e (część N, iphone)` (N = 1…czesci z e2e/czesci.json) ma success — skipped to nie zielony;
 //                   POMIN=true (awaria maszyny, ścieżka z powodem w zadaniu `bramka`) pomija TYLKO tę kontrolę, z ostrzeżeniem;
 //       kontrola 2: katalog docs/jakosc/przypadki-uzycia.md spójny z kodem (jak tests/jakosc/przypadki-uzycia.test.ts) + ekrany bez trasy
-//                   + każdy PU klasy B ma istniejący test („do zaprogramowania” = czerwone, P-837 (a));
+//                   + każdy PU klasy B ma istniejący test („do zaprogramowania” = czerwone, P-837 (a)); „z testem:” = test Jest w tests/
+//                   albo test Swift pakietu modules/oczko-reguly/Tests/ (P-906: `swift test` w zadaniu build testflight.yml);
 //       kontrola 3: protokół testu fizycznego poprzedniego wysłanego buildu (najwyższy tag v*-b<N>) w docs/jakosc/test-fizyczny/<N>.md —
 //                   każdy PU klasy F katalogu z tagu (albo bieżącego, gdy w tagu go nie ma) ma „zrobione: …” albo „pominięte: <uzasadnienie>”;
 //                   jedyny wyjątek: docs/jakosc/test-fizyczny/wyjatki.json (najwyżej wpis 1171, P-838).
@@ -122,7 +123,8 @@ export function tagiScenariusza(tekst) {
   }
   return wynik.filter(Boolean);
 }
-const odnosniki = (p) => [...p.matchAll(/((?:e2e\/scenariusze|tests)\/[A-Za-z0-9_./-]+\.(?:yaml|tsx?|mjs)):(\d+)/g)].map((m) => ({ plik: m[1], linia: Number(m[2]) }));
+// P-906: także dowolny `*.swift:linia` — przyjmuje go tylko bladTestuSwift (pakiet modules/oczko-reguly/Tests/), reszta daje błąd zamiast cichego pominięcia
+const odnosniki = (p) => [...p.matchAll(/((?:e2e\/scenariusze|tests)\/[A-Za-z0-9_./-]+\.(?:yaml|tsx?|mjs)|[A-Za-z0-9_./-]+\.swift):(\d+)/g)].map((m) => ({ plik: m[1], linia: Number(m[2]) }));
 
 /** Pliki osiągalne importami względnymi (statyczne, dynamiczne, require) od podanych plików startowych. */
 function osiagalne(start) {
@@ -179,6 +181,30 @@ export function bladTestuPU(root, x, id) {
   return null;
 }
 
+/** P-906 (KO-094, CI-02; słowa właściciela 16.11.2026 „Zgodnie z rekomendacja” = Pytanie 2 wariant A): test Swift pakietu modules/oczko-reguly liczy się
+ *  jako „z testem:”, bo pakiet biegnie na ścieżce buildu (`cd modules/oczko-reguly && swift test` w zadaniu build testflight.yml przed archiwizacją; jak Trening
+ *  testflight.yml w. 99). Warunki (tylko tyle, nic szerzej): plik `*.swift` w modules/oczko-reguly/Tests/ (ścieżka znormalizowana, po dowiązaniach nadal w Tests/),
+ *  klasa XCTestCase, bez XCTSkip i `#if false`/`#if 0`; w promieniu 40 linii od wskazanej linii PU-NNN (cały wyraz) i deklaracja testu uruchamianego przez XCTest
+ *  (`func test…()` bez argumentów, nie private/fileprivate/static/class). Zwraca opis błędu albo null. */
+export const PAKIET_SWIFT = 'modules/oczko-reguly/Tests/';
+const FUNC_TEST = /^\s*(?:@\w+(?:\([^)]*\))?\s+)*(?:(?:public|internal|open|final|override|nonisolated)\s+)*func\s+test\w*\s*\(\s*\)/;
+export function bladTestuSwift(root, x, id) {
+  if (path.posix.normalize(x.plik) !== x.plik || !x.plik.startsWith(PAKIET_SWIFT) || !x.plik.endsWith('.swift')) return `${x.plik} nie jest plikiem testów pakietu ${PAKIET_SWIFT} (P-906: tylko ten pakiet biegnie na ścieżce buildu)`;
+  const pelna = fs.realpathSync(path.join(root, x.plik));
+  if (!pelna.startsWith(fs.realpathSync(path.join(root, PAKIET_SWIFT)) + path.sep)) return `${x.plik} wskazuje (dowiązaniem) poza ${PAKIET_SWIFT}`;
+  const tekst = fs.readFileSync(pelna, 'utf8');
+  if (/\bXCTSkip/.test(tekst)) return `${x.plik} zawiera XCTSkip`;
+  if (/^\s*#if\s+(?:false|0)\b/m.test(tekst)) return `${x.plik} zawiera #if false (kod wyłączony z kompilacji)`;
+  if (!/:\s*XCTestCase\b/.test(tekst)) return `${x.plik} nie ma klasy XCTestCase`;
+  const linie = tekst.split('\n');
+  const wyraz = new RegExp(`\\b${id}(?!\\d)`);
+  const blisko = (re) => linie.some((l, i) => re.test(l) && Math.abs(i + 1 - x.linia) <= ODLEGLOSC_PU);
+  if (!linie.some((l) => wyraz.test(l))) return `${x.plik} nie wymienia ${id}`;
+  if (!blisko(wyraz)) return `${x.plik}:${x.linia} leży dalej niż ${ODLEGLOSC_PU} linii od wzmianki o ${id}`;
+  if (!blisko(FUNC_TEST)) return `${x.plik}:${x.linia} leży dalej niż ${ODLEGLOSC_PU} linii od testu XCTest (func test…() bez argumentów, nie private/static)`;
+  return null;
+}
+
 /** Spójność katalogu z kodem (te same reguły co tests/jakosc/przypadki-uzycia.test.ts) + ekrany bez trasy; z wymagajTestowB — P-837 (a). */
 export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
   const bledy = [];
@@ -216,6 +242,7 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
         else if (x.plik.startsWith('e2e/scenariusze/subflows/')) continue;
         else if (x.plik.startsWith('e2e/') && tagi(path.basename(x.plik)).includes('oczekujacy')) bledy.push(`${p.id}: ${x.plik} ma tag oczekujacy (to klasa B)`);
         else if (x.plik.startsWith('tests/')) { const e = bladTestuPU(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
+        else if (x.plik.endsWith('.swift')) { const e = bladTestuSwift(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
       }
       // recenzja BX2 R-A-26: linia scenariusza to asercja (albo runFlow podprzepływu wskazanego obok); nie same scenariusze iPada (informacyjne, P-225)
       const yaml = o.filter((x) => x.plik.endsWith('.yaml') && istnieje(x));
@@ -235,10 +262,11 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
       }
       // KO-071: B „z testem” = test jednostkowy albo komponentowy w tests/ (plik:linia istnieje i wymienia PU) — liczy się jako test dla P-837, klasa zostaje B
       if (/^z testem: /.test(p.pokrycie)) {
-        if (!o.some((x) => x.plik.startsWith('tests/'))) bledy.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ (odnośniki e2e/ tylko jako „częściowo:”)`);
+        if (!o.some((x) => x.plik.startsWith('tests/') || x.plik.startsWith(PAKIET_SWIFT))) bledy.push(`${p.id}: „z testem:” wymaga co najmniej jednego odnośnika plik:linia w tests/ albo ${PAKIET_SWIFT} (P-906; odnośniki e2e/ tylko jako „częściowo:”)`);
         for (const x of o) {
           if (!istnieje(x)) bledy.push(`${p.id}: ${x.plik}:${x.linia} nie istnieje`);
           else if (x.plik.startsWith('tests/')) { const e = bladTestuPU(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
+          else if (x.plik.endsWith('.swift')) { const e = bladTestuSwift(root, x, p.id); if (e) bledy.push(`${p.id}: ${e}`); }
         }
         continue;
       }
