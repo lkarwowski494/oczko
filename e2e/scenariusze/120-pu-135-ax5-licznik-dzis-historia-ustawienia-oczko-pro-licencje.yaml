@@ -1,0 +1,75 @@
+# PU-135 (T-90), część 1 z 2 (część 2: scen. 121 — wzór, karta Worda, projekt): przy AX5 (`accessibility-extra-extra-extra-large`) licznik z „Next part”, „Dziś”, „Historia”, „Ustawienia”, „Oczko Pro” i „Licencje open source”
+# przewijają się do ostatniego elementu, a przyciski i tytuły są widoczne. Rozmiar tekstu ustawia workflow przed scenariuszem (jak 30 i 111), dlatego tag `osobny-krok` (e2e-czesci.mjs).
+# Ostatnie elementy z kodu: licznik `licznik-wzor` (rząd akcji pod notatką; „Next part” w stałej strefie `licznik-strefa`, B3-03), „Dziś” `dzis-kafel-probka` (ostatni z 4 kafli, Dzis.tsx:48),
+# „Historia” `historia-miesiac` (blok miesiąca pod krawędzią, jak 64), „Ustawienia” `ustawienia-jezyk` (ostatni wiersz grupy), „Oczko Pro” `oferty-przywroc` + stały pasek (`oferty-nie-teraz`),
+# „Licencje” `licencje-kroj-bree-serif` (wiersz kroju w nagłówku FlatList — nazwy licencji mają wielkie litery, więc selektor id odpada; kolejne grupy i pakiety npm leżą o setki wierszy dalej — nie są sprawdzane).
+# Bez porównania zrzutów (słowa właściciela 16.11.2026, wariant B): ucięcia i nachodzenie tekstów to PU-341, oceniane na zrzutach 120-*. Cel części 2: „Next part” pojawia się po osiągnięciu celu (jak 34, ale cel 2).
+appId: com.apps4brew.knitting
+name: "PU-135 · AX5 (1/2): licznik z „Next part”, „Dziś”, „Historia”, „Ustawienia”, „Oczko Pro”, „Licencje” — przewinięcie do ostatniego elementu"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-135
+  - osobny-krok
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "2" } }
+# --- licznik z „Next part” ---
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "licznik-nastepna-czesc" }
+- assertVisible: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-minus" }
+- takeScreenshot: 120-licznik-nastepna-czesc
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+# --- „Dziś” ---
+- assertVisible: { id: "nav-przewodnik" }
+- assertVisible: { id: "nav-ustawienia" }
+- takeScreenshot: 120-dzis
+- scrollUntilVisible: { element: { id: "dzis-kafel-probka" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "dzis-kafel-probka" }
+# --- „Historia” ---
+- tapOn: { id: "nav-historia" }
+- extendedWaitUntil: { visible: { id: "historia-kalendarz" }, timeout: 20000 }
+- takeScreenshot: 120-historia
+- scrollUntilVisible: { element: { id: "historia-miesiac" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "historia-miesiac" }
+# --- „Ustawienia” ---
+- tapOn: { id: "nav-dzis" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertVisible: { id: "nav-wstecz" }
+- takeScreenshot: 120-ustawienia
+- scrollUntilVisible: { element: { id: "ustawienia-jezyk" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "ustawienia-jezyk" }
+# --- „Licencje open source” ---
+- scrollUntilVisible: { element: { id: "ustawienia-licencje" }, direction: UP, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-licencje" }
+- extendedWaitUntil: { visible: { id: "licencje-lista" }, timeout: 20000 }
+- assertVisible: { id: "nav-wstecz" }
+- takeScreenshot: 120-licencje
+- scrollUntilVisible: { element: { id: "licencje-kroj-bree-serif" }, direction: DOWN, timeout: 60000 }
+- assertVisible: { id: "licencje-kroj-bree-serif" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+# --- „Oczko Pro” ---
+- scrollUntilVisible: { element: { id: "ustawienia-oczko-pro" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 20000 }
+- assertVisible: { id: "oferty-nie-teraz" }
+- takeScreenshot: 120-oczko-pro
+- scrollUntilVisible: { element: { id: "oferty-przywroc" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "oferty-przywroc" }
+- tapOn: { id: "oferty-nie-teraz" } # stały pasek przycisków (P-608 G3, jak 06)
+- assertVisible: { id: "ustawienia-oczko-pro" }

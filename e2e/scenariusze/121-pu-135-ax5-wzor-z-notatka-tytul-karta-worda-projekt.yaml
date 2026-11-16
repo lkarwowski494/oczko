@@ -1,0 +1,78 @@
+# PU-135 (T-90), część 2 z 2 (część 1: scen. 120): przy AX5 wzór z notatką i tytułem z ▾, karta Worda („Word documents open as they are…”) i ekran projektu — przewijają się do ostatniego elementu, przyciski i teksty widoczne.
+# Rozmiar tekstu ustawia workflow przed scenariuszem (jak 30, 111), dlatego tag `osobny-krok` (e2e-czesci.mjs). Bez porównania zrzutów (słowa właściciela 16.11.2026, wariant B): ucięcia i nachodzenie to PU-341 (zrzuty 121-*).
+# Kod: tytuł z ▾ `wzor-przelacz` (WzorTytul.tsx:20, tylko przy ≥ 2 wzorach — drugi wzór dodaje „Add pattern” z ekranu projektu jak w 91); notatka: `wzor-zaznacz` → „Down, like written steps” → „Add note” → „Save” (jak 104; BX-034:
+# stuknięcie `point` w tym scenariuszu nie występuje — pas zostaje na rzędzie 1), chip „Row 1: k2tog here”; karta Worda `wzor.word_podglad` (WzorPrzegladarka.tsx:161, bez testID — selektor po tekście); ostatnie elementy projektu: `projekt-czas`/`projekt-notatka`.
+appId: com.apps4brew.knitting
+name: "PU-135 · AX5 (2/2): wzór z notatką i tytułem ▾, karta Worda, ekran projektu — przewinięcie do ostatniego elementu"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-135
+  - osobny-krok
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+# --- wzór z notatką ---
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
+- assertVisible: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-zaznacz" }
+- tapOn: { id: "wzor-zaznacz" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- tapOn: "Add note"
+- assertVisible: { id: "wzor-notatka-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wzor-notatka-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "k2tog here"
+      - assertVisible: { id: "wzor-notatka-pole", text: "k2tog here" }
+- tapOn: "Save"
+- assertNotVisible: { id: "wzor-notatka-pole" }
+- assertVisible: "Row 1: k2tog here"
+- takeScreenshot: 121-wzor-z-notatka
+# --- drugi wzór (zdjęcie) → tytuł z ▾ ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-projekt-wejscie" }, timeout: 20000 }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "wzor-dodaj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "wzor-dodaj" }
+- assertVisible: { id: "e2e-wzor-zdjecie" }
+- tapOn: { id: "e2e-wzor-zdjecie" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-przelacz" }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
+- takeScreenshot: 121-wzor-tytul-z-strzalka
+# --- ekran projektu: przewinięcie do ostatniego elementu ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-projekt-wejscie" }, timeout: 20000 }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: { id: "projekt-menu" }
+- takeScreenshot: 121-projekt
+- scrollUntilVisible: { element: { id: "projekt-notatka" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "projekt-notatka" }
+# --- karta Worda ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word" }
+- tapOn: { id: "e2e-wzor-word" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-zrodlo", text: "Word.*" }
+- assertVisible: ".*Word documents open as they are.*"
+- takeScreenshot: 121-karta-worda

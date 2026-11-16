@@ -32,6 +32,8 @@ flows:
   - 118-pu-175-jezyk-de-i-ja-tytuly-przyciski-przypomnienie-pro.yaml
   - 119-pu-057-word-bez-pustej-strony-na-koncu-trzy-pliki.yaml
   - 12-br-zak-006-s4-bez-oferty-w-pracy.yaml
+  - 120-pu-135-ax5-licznik-dzis-historia-ustawienia-oczko-pro-licencje.yaml
+  - 121-pu-135-ax5-wzor-z-notatka-tytul-karta-worda-projekt.yaml
   - 13-kp-10-zakup-tylko-po-dzialaniu.yaml
   - 14-br-lic-004-s4-gest-od-krawedzi.yaml
   - 15-br-lic-015-s2-przypomnienie-zegarek.yaml

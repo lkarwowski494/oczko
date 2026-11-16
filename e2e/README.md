@@ -76,6 +76,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `dzis-wybierz-projekt` | „Dziś” | „Wybierz projekt ›” na karcie bez ostatniego miejsca (projekty są) → zakładka Projekty (P-564, P-565) | — (04) | |
 | `dzis-dni-darmowe` | „Dziś” | linia wolnych dni (tylko bez Pro), bez odnośnika „Oczko Pro” (P-563 (10a), ER-70) | „0 of 5 free crafting days left in November” (klucz jak `projekty-dni-darmowe` — [DO USTALENIA] 04) | |
 | `dzis-kafel-dodaj-wzor` | „Dziś” (kafle pod tygodniem) | kafel „Add pattern” — menu źródeł bieżącego projektu nad licznikiem, „Back” wraca na licznik (P-588, `src/ekrany/Dzis.tsx:232`, wzorzec `dzis-kafel-{nowy-projekt,dodaj-wzor,wloczka,probka}`; scen. 73, PU-202) | „Add pattern” | |
+| `dzis-kafel-probka` | „Dziś” (kafle pod tygodniem) | kafel „Swatch” — ostatni z czterech kafli (`src/ekrany/Dzis.tsx:48,232`; scen. 120, PU-135) | tytuł z `probka.tytul` | |
 | `nav-dzis` | pasek zakładek (p2) | zakładka „Dziś” | — (04) | |
 | `licznik-plus` | licznik | przycisk +1 (strefa ≥ 168 pt) | „+1 row…”, z instrukcją: „+1 row, when row 12 is done. Row 12: decrease at both ends” | |
 | `licznik-minus` | licznik | przycisk −1 (72 × 72 pt) | „−1 row” | |
@@ -227,6 +228,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `zrodla-wiedzy` | About our information (`/zrodla`) | kontener ekranu (ScrollView, `src/ekrany/ZrodlaWiedzy.tsx:12`); „Back” = `nav-wstecz` | — | |
 | `ustawienia-licencje` | Ustawienia (M1-245, P-661) | wiersz „Open source licenses” → `/licencje`, bezpośrednio pod „About our information” (`Ustawienia.tsx:132`); scen. 84 (PU-235) | „Open source licenses” | |
 | `licencje-lista` | Open source licenses (`/licencje`) | kontener ekranu (FlatList z nagłówkiem: „Back” = `nav-wstecz`, tytuł, wstęp; `src/ekrany/Licencje.tsx:110`) | — | |
+| `licencje-kroj-bree-serif` | Open source licenses | wiersz rozwijany kroju „Bree Serif” w nagłówku listy (wzorzec `licencje-kroj-<id>`, `src/ekrany/Licencje.tsx:87`; scen. 120, PU-135) | „Bree Serif” | |
 | `ustawienia-import` | Ustawienia | import archiwum | — | |
 | `ustawienia-usun-wszystko` | Ustawienia | usunięcie wszystkich danych (BR-DAN-009) | — | |
 | `potwierdz-usun-wszystko` | arkusz „Delete all data” (trasa `/usun-wszystko`, P-268) | potwierdzenie usunięcia — w pasku przycisków arkusza, zawsze widoczny | — | |
