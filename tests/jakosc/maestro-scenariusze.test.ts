@@ -14,7 +14,7 @@ const KAT = path.join(root, 'e2e/scenariusze');
 const SUB = path.join(KAT, 'subflows');
 const README = fs.readFileSync(path.join(root, 'e2e/README.md'), 'utf8');
 const APP_ID = JSON.parse(fs.readFileSync(path.join(root, 'app.json'), 'utf8')).expo.ios.bundleIdentifier as string;
-const pliki = fs.readdirSync(KAT).filter(f => /^\d\d-.*\.yaml$/.test(f)).sort();
+const pliki = fs.readdirSync(KAT).filter(f => /^\d{2,}-.*\.yaml$/.test(f)).sort();
 const podpliki = fs.readdirSync(SUB).filter(f => f.endsWith('.yaml')).sort();
 const scen = pliki.map(f => wczytaj(path.join(KAT, f)));
 const subs = podpliki.map(f => wczytaj(path.join(SUB, f)));

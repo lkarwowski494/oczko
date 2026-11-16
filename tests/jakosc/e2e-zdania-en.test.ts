@@ -31,7 +31,7 @@ export function zdaniaScenariusza(s: Scenariusz): string[] {
 }
 export const bezSlownika = (zdania: string[]): string[] => zdania.filter(z => !WZORCE.some(r => r.test(z)));
 
-const scen = fs.readdirSync(KAT).filter(f => /^\d\d-.*\.yaml$/.test(f)).sort().map(f => wczytaj(path.join(KAT, f)));
+const scen = fs.readdirSync(KAT).filter(f => /^\d{2,}-.*\.yaml$/.test(f)).sort().map(f => wczytaj(path.join(KAT, f)));
 
 test('zdania en w asercjach scenariuszy istnieją w słowniku en (kontrola obejmuje co najmniej 8 zdań)', () => {
   const zdania = scen.flatMap(s => zdaniaScenariusza(s).map(z => ({ plik: path.basename(s.plik), z })));

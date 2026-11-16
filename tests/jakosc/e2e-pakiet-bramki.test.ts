@@ -9,7 +9,7 @@ import { execFileSync } from 'child_process';
 const root = path.join(__dirname, '..', '..');
 const katalog = path.join(root, 'e2e/scenariusze');
 const skrypt = path.join(root, 'scripts/ci/e2e-czesci.mjs');
-const scenariusze = () => fs.readdirSync(katalog).filter(f => /^\d\d-.*\.yaml$/.test(f)).sort();
+const scenariusze = () => fs.readdirSync(katalog).filter(f => /^\d{2,}-.*\.yaml$/.test(f)).sort();
 const tagi = (f: string): string[] => {
   const naglowek = fs.readFileSync(path.join(katalog, f), 'utf8').split(/^---$/m)[0];
   const blok = naglowek.match(/^tags:\n((?:[ \t]+- .*\n?)*)/m);
@@ -61,13 +61,13 @@ const WYJATKI: Record<string, string> = {
 
 describe('kontrakt pakietu bramki E2E (M1-audytor-generalny-047; 07-jakosc-008; DEC-08 a)', () => {
   test('DEC-08 (a): tag `podstawowy` mają dokładnie 01–11, 33 i 36 (13 scenariuszy)', () => {
-    const pakiet = scenariusze().filter(wPakiecie).map(f => f.slice(0, 2));
+    const pakiet = scenariusze().filter(wPakiecie).map(f => f.slice(0, f.indexOf('-')));
     expect(pakiet).toEqual(PAKIET_DEC08);
   });
 
   test('plan części (`e2e-czesci.mjs plan-podstawowy`, ten sam co `--plan`) ma w bramce 13 scenariuszy, w tym 10, 11 i 36', () => {
     const plan = JSON.parse(execFileSync('node', [skrypt, 'plan-podstawowy'], { encoding: 'utf8', env: { ...process.env, ONLY: '', PAKIET: '', COMMIT_MSG: '' } })) as { files: string[]; osobne: string[] }[];
-    const pliki = plan.flatMap(c => [...c.files, ...c.osobne]).map(f => f.slice(0, 2)).sort();
+    const pliki = plan.flatMap(c => [...c.files, ...c.osobne]).map(f => f.slice(0, f.indexOf('-'))).sort();
     expect(pliki).toEqual(PAKIET_DEC08);
   });
 

@@ -43,7 +43,7 @@ const krokiInstrukcji = (): string[] => {
   const linia = html.slice(i + 'var DANE = '.length, html.indexOf('\n', i)).replace(/;\s*$/, '');
   return (JSON.parse(linia) as { kroki: { id: string }[] }).kroki.map((k) => k.id);
 };
-const scenariusze = fs.readdirSync(SCEN).filter((f) => /^\d\d-.*\.yaml$/.test(f)).sort();
+const scenariusze = fs.readdirSync(SCEN).filter((f) => /^\d{2,}-.*\.yaml$/.test(f)).sort();
 /** Tagi z nagłówka scenariusza (pierwszy dokument YAML: blok `tags:` z pozycjami `  - tag`), bez parsera YAML — jak maTag w e2e-czesci.test.ts. */
 const tagi = (f: string): string[] => {
   const naglowek = fs.readFileSync(path.join(SCEN, f), 'utf8').split(/^---\s*$/m)[0];

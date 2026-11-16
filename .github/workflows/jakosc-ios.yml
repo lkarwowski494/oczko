@@ -368,7 +368,7 @@ jobs:
           # awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
           przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
             mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
-            for f in e2e-czesc/[0-9][0-9]-*.yaml; do
+            for f in e2e-czesc/[0-9][0-9]*-*.yaml; do
               n=$(basename "$f" .yaml)
               [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (porażka, nie maszyna) — bez ponowienia
               if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
@@ -422,7 +422,7 @@ jobs:
         run: |
           xcrun simctl ui "$SIM" content_size accessibility-extra-extra-extra-large
           mkdir -p e2e-out; porazki=0
-          for f in e2e-czesc/osobne/[0-9][0-9]-*.yaml; do
+          for f in e2e-czesc/osobne/[0-9][0-9]*-*.yaml; do
             n=$(basename "$f" .yaml)
             if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "- zielony $n (AX5)" >> "$GITHUB_STEP_SUMMARY"
             elif [[ " $BRAMKA " == *" $n.yaml "* ]]; then echo "- czerwony $n (AX5)" >> "$GITHUB_STEP_SUMMARY"; porazki=$((porazki + 1))

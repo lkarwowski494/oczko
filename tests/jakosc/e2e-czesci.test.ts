@@ -16,7 +16,7 @@ type Czesc = { czesc: number; files: string[]; osobne: string[]; waga_s: number;
 const node = (args: string[], env: Record<string, string> = {}) => execFileSync('node', [skrypt, ...args], { encoding: 'utf8', env: { ...process.env, ONLY: '', PAKIET: '', COMMIT_MSG: '', GITHUB_OUTPUT: '', ...env } });
 const plan = (dir = katalog, config = cfgPath): Czesc[] => JSON.parse(node(['plan', '--dir', dir, '--config', config]));
 const planPodst = (dir = katalog): Czesc[] => JSON.parse(node(['plan-podstawowy', '--dir', dir]));
-const scenariusze = (dir: string) => fs.readdirSync(dir).filter(f => /^\d\d-.*\.yaml$/.test(f)).sort();
+const scenariusze = (dir: string) => fs.readdirSync(dir).filter(f => /^\d{2,}-.*\.yaml$/.test(f)).sort();
 const naglowek = (f: string, dir = katalog) => fs.readFileSync(path.join(dir, f), 'utf8').split(/^---$/m)[0];
 const maTag = (f: string, tag: string, dir = katalog) => new RegExp(`^tags:\\n(?:\\s+- .*\\n)*?\\s+- ${tag}\\s*$`, 'm').test(naglowek(f, dir));
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-czesci-'));
@@ -71,7 +71,7 @@ describe('podział na części (pełny katalog)', () => {
   });
 
   test('config.yaml Maestro wymienia każdy scenariusz katalogu (inaczej lokalny przebieg go pomija)', () => {
-    const lista = [...fs.readFileSync(path.join(katalog, 'config.yaml'), 'utf8').matchAll(/^\s+- (\d\d-\S+\.yaml)\s*$/gm)].map(m => m[1]);
+    const lista = [...fs.readFileSync(path.join(katalog, 'config.yaml'), 'utf8').matchAll(/^\s+- (\d{2,}-\S+\.yaml)\s*$/gm)].map(m => m[1]);
     expect(lista).toEqual(scenariusze(katalog));
   });
 });

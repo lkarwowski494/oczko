@@ -184,7 +184,7 @@ export function kontrolaKatalogu(root, { wymagajTestowB = false } = {}) {
   const bledy = [];
   const { pu, naglowki, podsumowanie } = czytajKatalog(fs.readFileSync(path.join(root, KATALOG), 'utf8'));
   const SCEN = path.join(root, 'e2e/scenariusze');
-  const scenariusze = fs.readdirSync(SCEN).filter((f) => /^\d\d-.*\.yaml$/.test(f)).sort();
+  const scenariusze = fs.readdirSync(SCEN).filter((f) => /^\d{2,}-.*\.yaml$/.test(f)).sort();
   const tagi = (f) => tagiScenariusza(fs.readFileSync(path.join(SCEN, f), 'utf8'));
   const istnieje = (o) => {
     const p = path.join(root, o.plik); if (!fs.existsSync(p)) return false;

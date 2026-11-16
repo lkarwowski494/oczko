@@ -39,7 +39,7 @@ export function czytajKonfiguracje(plik) { return JSON.parse(fs.readFileSync(pli
 /** Pliki scenariuszy: NN-*.yaml w katalogu (bez config.yaml i podkatalogu subflows). Pusty katalog to błąd (strategia §3, zasada 2). */
 export function plikiScenariuszy(katalog) {
   if (!fs.existsSync(katalog)) throw new Error(`Brak katalogu scenariuszy: ${katalog}`);
-  const pliki = fs.readdirSync(katalog, { withFileTypes: true }).filter(e => e.isFile() && /^\d\d-[^/]*\.yaml$/.test(e.name)).map(e => e.name).sort();
+  const pliki = fs.readdirSync(katalog, { withFileTypes: true }).filter(e => e.isFile() && /^\d{2,}-[^/]*\.yaml$/.test(e.name)).map(e => e.name).sort();
   if (!pliki.length) throw new Error(`Katalog scenariuszy bez scenariuszy NN-*.yaml: ${katalog}`);
   return pliki;
 }

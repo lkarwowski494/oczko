@@ -9,7 +9,7 @@ import { kroki, wczytaj } from './maestro-runner';
 const KAT = path.join(__dirname, '..', '..', 'e2e/scenariusze');
 type Krok = { nazwa: string; arg: any };
 const pliki = (): string[] => [
-  ...fs.readdirSync(KAT).filter((f) => /^\d\d-.*\.yaml$/.test(f)), // jak maestro-scenariusze.test.ts:17 (config.yaml to nie scenariusz)
+  ...fs.readdirSync(KAT).filter((f) => /^\d{2,}-.*\.yaml$/.test(f)), // jak maestro-scenariusze.test.ts:17 (config.yaml to nie scenariusz)
   ...fs.readdirSync(path.join(KAT, 'subflows')).filter((f) => f.endsWith('.yaml')).map((f) => `subflows/${f}`),
 ];
 const lista = (plik: string): Krok[] => [...kroki(wczytaj(path.join(KAT, plik)).polecenia)].map(({ nazwa, arg }) => ({ nazwa, arg }));
