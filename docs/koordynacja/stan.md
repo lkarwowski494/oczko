@@ -1267,3 +1267,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 18:03 | M9 (kontrola 18:00) | sha promptu BX18: nierozstrzygnięte (do powtórzenia); czekam na raport (b) BX18; koszt M9 82,24 USD, kontekst 219 110 / próg 224 000 — kompakcja blisko |
 | 16.11 18:08 | M9 | KO-134: BX18 4fe940f przyjęte (autor noreply, 0 trailerów, rodzic 7a738d8, klasy PU bez zmian); BX18 zarchiwizowana; iOS jakosc-ios.yml wyzwolony na claude/bx15-2026-11-16 [e2e-pelny] |
 | 16.11 18:25 | M9 (kontrola 18:23) | iOS 43925652111 (#206, 4fe940f): swift-test i zegarek zielone, eksperymenty-wzoru cancelled (informacyjne), build w toku od 18:11; sha promptu BX18 nierozstrzygnięte, odstąpione; następna kontrola 19:05 (build ~45 min, cz. 1 później) |
+| 16.11 19:07 | M9 (kontrola 19:05) | iOS 43925652111: build zielony 18:35; 5 jobów e2e (iphone cz. 1–4, ipad cz. 1) w scenariuszach od 18:39–18:51, wyników brak; następna kontrola 19:47 |
