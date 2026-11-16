@@ -1,0 +1,89 @@
+# PU-290 (docs/jakosc/przypadki-uzycia.md, „Wzory”): projekt z wzorem PDF → „Add pattern” → zdjęcie strony → tytuł wzoru z ▾ → lista „Patterns in {projekt}” z ✓ przy bieżącym → wybór PDF → widok PDF z zakreśleniem →
+# restart → ostatnio wybrany wzór (PDF); ekran projektu ma grupę „Patterns” z dwoma wierszami. Nagłówek listy „Patterns in …” jest renderowany od BX-005 (FX5, `MenuWzorow` src/ekrany/WzorMenu.tsx:36, `wzor.przelacz_naglowek`).
+# Kod: `e2e-wzor-pdf`/`e2e-wzor-zdjecie` (panel E2E w menu źródeł, src/kompozycja/e2e/panele.tsx:106,122; z ekranu projektu `wzor-dodaj` src/ekrany/WzorGrupa.tsx:61, `panelE2e`), `wzor-przelacz` (WzorTytul.tsx:20, tylko ≥ 2 wzory),
+# wiersze listy `menuitem` bez testID (selektor po nazwie; oba wzory E2E mają nazwę „Test pattern”, więc PDF przemianowany na „Sleeve chart” — jak 109), ✓ jako `accessibilityState.selected` (WzorMenu.tsx:40).
+# Hipoteza (BX-040): Maestro iOS rozróżnia pozycje menu po `selected`; jeśli nie, asercje :`selected` będą czerwone, reszta scenariusza nie zależy od niej. Klawiatura tekstowa: wpis w retry (e2e/README.md reguła 6).
+# Kolejność wierszy grupy: po nazwie bez wielkości liter (`listaWzorow`): „Sleeve chart”, „Test pattern”.
+appId: com.apps4brew.knitting
+name: "PU-290 · Dwa wzory: ▾ → „Patterns in Harbor” z ✓ przy bieżącym → PDF z zakreśleniem → restart otwiera PDF; grupa „Patterns” z dwoma wierszami"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-290
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
+# --- PDF dostaje własną nazwę „Sleeve chart” (jak 109) ---
+- tapOn: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-zmien-nazwe" }
+- tapOn: { id: "wzor-zmien-nazwe" }
+- extendedWaitUntil: { visible: { id: "wzor-nazwa-pole" }, timeout: 20000 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wzor-nazwa-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "Sleeve chart"
+      - assertVisible: { id: "wzor-nazwa-pole", text: "Sleeve chart" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { notVisible: { id: "wzor-nazwa-pole" }, timeout: 20000 }
+- assertVisible: "Sleeve chart"
+# --- jedno zakreślenie na PDF (wzór 26: tryb zakreślacza włączony i wyłączony) ---
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 40%", end: "80%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+# --- ekran projektu → „Add pattern” → zdjęcie strony ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-projekt-wejscie" }, timeout: 20000 }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "wzor-dodaj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "wzor-dodaj" }
+- assertVisible: { id: "e2e-wzor-zdjecie" }
+- tapOn: { id: "e2e-wzor-zdjecie" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
+- takeScreenshot: 91-zdjecie-strony
+# --- ekran projektu: grupa „Patterns” z dwoma wierszami ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "projekt-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: "Patterns"
+- assertVisible: { id: "projekt-wzor", index: 0, text: "Sleeve chart.*" }
+- assertVisible: { id: "projekt-wzor", index: 1, text: "Test pattern.*" }
+- assertNotVisible: { id: "projekt-wzor", index: 2 }
+- takeScreenshot: 91-grupa-dwa-wzory
+# --- bieżący wzór: zdjęcie; tytuł z ▾ → lista „Patterns in Harbor” z ✓ przy bieżącym ---
+- tapOn: { id: "projekt-wzor", index: 1 }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
+- tapOn: { id: "wzor-przelacz" }
+- assertVisible: "Patterns in Harbor"
+- assertVisible: { text: "Test pattern", selected: true }
+- assertVisible: { text: "Sleeve chart", selected: false }
+- takeScreenshot: 91-lista-wzorow
+# --- wybór PDF: widok PDF z jego zakreśleniem ---
+- tapOn: "Sleeve chart"
+- extendedWaitUntil: { visible: { id: "wzor-zrodlo", text: "PDF.*" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 91-pdf-po-wyborze
+# --- restart: otwiera się ostatnio wybrany wzór (PDF), z zakreśleniem ---
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 91-po-restarcie

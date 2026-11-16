@@ -30,3 +30,10 @@ Tests:       1 failed, 2 passed, 3 total
 Snapshots:   0 total
 Time:        1.997 s
 Ran all test suites matching /tests\/jakosc\/bx10-uprawnienia-przy-starcie.test.ts/i.
+
+=== BX10 zad. 4 / BX-022: e2e-czesci.test.ts z prawdziwymi scenariuszami 90 i 91 (czerwony przed zmianą atrap na 9990/9991) ===
+  ● scenariusz bez wagi i katalogi brzegowe › NOWY scenariusz bez wagi trafia do dokładnie jednej części z wagą szacowaną z kroków (50 s + 1,86 s × krok)
+    Expected length: 2
+    Received length: 4
+    Received array:  ["90-nowy-bez-wagi.yaml", "90-pu-334-jezyk-wyslany-do-zegarka-niemiecki.yaml", "91-drugi.yaml", "91-pu-290-dwa-wzory-przelaczanie-i-restart.yaml"]
+Tests:       1 failed, 70 passed, 71 total

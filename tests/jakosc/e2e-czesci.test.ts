@@ -79,12 +79,12 @@ describe('podział na części (pełny katalog)', () => {
 describe('scenariusz bez wagi i katalogi brzegowe', () => {
   test('NOWY scenariusz bez wagi trafia do dokładnie jednej części z wagą szacowaną z kroków (50 s + 1,86 s × krok)', () => {
     const d = kopiaKatalogu();
-    fs.writeFileSync(path.join(d, '90-nowy-bez-wagi.yaml'), 'appId: x\nname: Nowy\n---\n- launchApp\n- extendedWaitUntil: { visible: "x", timeout: 1 }\n- tapOn: "a"\n- assertVisible: "b"\n');
-    fs.writeFileSync(path.join(d, '91-drugi.yaml'), 'appId: x\nname: Drugi\n---\n- launchApp\n- assertVisible: "b"\n- runFlow: subflows/odstep.yaml\n');
+    fs.writeFileSync(path.join(d, '9990-nowy-bez-wagi.yaml'), 'appId: x\nname: Nowy\n---\n- launchApp\n- extendedWaitUntil: { visible: "x", timeout: 1 }\n- tapOn: "a"\n- assertVisible: "b"\n');
+    fs.writeFileSync(path.join(d, '9991-drugi.yaml'), 'appId: x\nname: Drugi\n---\n- launchApp\n- assertVisible: "b"\n- runFlow: subflows/odstep.yaml\n');
     const p = plan(d); const all = wszystkieZ(p);
     expect([...all].sort()).toEqual(scenariusze(d).filter(f => !maTag(f, 'ipad', d)));
-    expect(all.filter(f => /^9[01]-/.test(f))).toHaveLength(2);
-    expect(Object.keys(cfg.wagi_s)).not.toContain('90-nowy-bez-wagi.yaml');
+    expect(all.filter(f => /^999[01]-/.test(f))).toHaveLength(2); // BX-022 (P-902): atrapy poza numeracją prawdziwych scenariuszy (90 i 91 to PU-334 i PU-290)
+    expect(Object.keys(cfg.wagi_s)).not.toContain('9990-nowy-bez-wagi.yaml');
     /* suma wag rośnie dokładnie o szacunki: 4 kroki → 57 s; 3 kroki + podprzepływ (1 krok) → 4 kroki → 57 s */
     const przed = plan().reduce((s, c) => s + c.waga_s, 0); const po = p.reduce((s, c) => s + c.waga_s, 0);
     expect(po - przed).toBe(Math.round(50 + 1.86 * 4) * 2);

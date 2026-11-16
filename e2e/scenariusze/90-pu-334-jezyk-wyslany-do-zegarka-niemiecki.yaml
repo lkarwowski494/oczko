@@ -1,0 +1,39 @@
+# PU-334 (docs/jakosc/przypadki-uzycia.md, „Zegarek”): język aplikacji „Deutsch” → +1 → stan wysłany do udawanego zegarka niesie język `de`.
+# Kod: panel `e2e-zegarek-stan` (build E2E, EXPO_PUBLIC_WATCH_FAKE=1) kończy opis stanu fragmentem ` · lang {kod}` (BX-024 naprawione w FX5, src/kompozycja/e2e/panele.tsx:`opisStanuZegarka`, wiersz README);
+# kod języka z tego samego źródła co 3. argument `zegarekWyslij` (src/platforma/zegarek.ts:16, src/kompozycja/kontener.ts). Wybór języka: Ustawienia → `ustawienia-jezyk` → `jezyk-de` (jak 39).
+# Poza Maestro (F): zegarek pokazuje teksty po niemiecku („+1 Reihe”), także po restarcie zegarka bez telefonu — odczyt na prawdziwym zegarku (Pokrycie PU-334).
+appId: com.apps4brew.knitting
+name: "PU-334 · Język „Deutsch” → +1: stan wysłany do zegarka ma „lang de”"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-334
+  - zegarek
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+# --- „Język” → „Deutsch” ---
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
+- tapOn: { id: "ustawienia-jezyk" }
+- assertVisible: { id: "jezyk-auto", text: "Same as phone, selected" }
+- scrollUntilVisible: { element: { id: "jezyk-de" } }
+- tapOn: { id: "jezyk-de" }
+- assertVisible: { id: "ustawienia-jezyk", text: ".*Deutsch.*" } # wybór działa od razu i wraca do Ustawień (jak 39)
+- takeScreenshot: 90-deutsch
+# --- wstecz do „Dziś”, „Kontynuuj” do licznika, +1 ---
+- tapOn: { id: "nav-wstecz" } # Ustawienia są w stosie głównym (bez paska zakładek): „Back” wraca na „Dziś”
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 } # AX5: przycisk pod „+1” karty
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- stan wysłany do udawanego zegarka niesie język aplikacji ---
+- assertVisible: { id: "e2e-zegarek-stan", text: ".*lang de.*" }
+- takeScreenshot: 90-stan-zegarka-lang-de

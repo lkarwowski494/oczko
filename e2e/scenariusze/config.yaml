@@ -101,6 +101,8 @@ flows:
   - 87-pu-108-przewodnik-kroki-zakladki.yaml
   - 88-pu-109-przewodnik-pokaz-kosz-wloczka-dane-kontynuuj.yaml
   - 89-pu-110-przewodnik-pokaz-ustawienia-bez-skutkow.yaml
+  - 90-pu-334-jezyk-wyslany-do-zegarka-niemiecki.yaml
+  - 91-pu-290-dwa-wzory-przelaczanie-i-restart.yaml
   - 92-pu-112-przewodnik-z-ustawien-pokaz-wraca-do-ustawien.yaml
   - 93-pu-113-przewodnik-zegarek-i-ekran-blokady.yaml
   - 94-pu-322-dozywotnio-bez-planow-po-zakupie.yaml
