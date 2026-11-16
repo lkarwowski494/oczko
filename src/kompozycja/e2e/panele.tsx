@@ -136,10 +136,10 @@ export function PanelWzoru(p: { katalogTymczasowy: string; naDodaj(w: { nazwa: s
         <Text>Test pattern (Word)</Text>
       </Pressable>
       {/* P-282 (W1-A): tabela i obraz z korpusu W1 — Word → PDF w aplikacji (WebKit z gospodarzem), scenariusz informacyjny 07 */}
-      {(['tabela', 'obraz'] as const).map((r) => (
+      {(['tabela', 'obraz', 'strony'] as const).map((r) => (
         <Pressable key={r} accessibilityRole="button" testID={`e2e-wzor-word-${r}`} style={{ padding: 12 }}
           onPress={() => p.naDodaj({ nazwa, zrodlo: { rodzaj: 'word', plik: plik(wordTestowy(p.katalogTymczasowy, r), `${nazwa}.docx`, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') } })}>
-          <Text>{`Test pattern (Word, ${r === 'tabela' ? 'table' : 'image'})`}</Text>
+          <Text>{`Test pattern (Word, ${r === 'tabela' ? 'table' : r === 'obraz' ? 'image' : '3 pages'})`}</Text>
         </Pressable>
       ))}
     </View>

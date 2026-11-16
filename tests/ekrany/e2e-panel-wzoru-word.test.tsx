@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { PanelWzoru } from '../../src/kompozycja/e2e/panele';
 
-test.each(['tabela', 'obraz'] as const)('e2e-wzor-word-%s → naDodaj(word) z plikiem korpusu W1', (r) => {
+test.each(['tabela', 'obraz', 'strony'] as const)('e2e-wzor-word-%s → naDodaj(word) z plikiem korpusu W1', (r) => {
   const naDodaj = jest.fn();
   render(<PanelWzoru katalogTymczasowy={mkdtempSync(join(tmpdir(), 'oczko-e2e-'))} naDodaj={naDodaj} />);
   fireEvent.press(screen.getByTestId(`e2e-wzor-word-${r}`));

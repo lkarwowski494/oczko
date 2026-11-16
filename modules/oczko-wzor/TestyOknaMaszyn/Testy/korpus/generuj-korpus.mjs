@@ -24,6 +24,7 @@ function zip(wpisy) {
 }
 const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"';
 const akapit = (t) => `<w:p><w:r><w:t xml:space="preserve">${t}</w:t></w:r></w:p>`;
+const akapitNaNowejStronie = (t) => `<w:p><w:r><w:br w:type="page"/><w:t xml:space="preserve">${t}</w:t></w:r></w:p>`;
 const dokument = (cialo) => `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${cialo}</w:body></w:document>`;
 const typy = (obraz) => `<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>${obraz ? '<Default Extension="png" ContentType="image/png"/>' : ''}<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`;
 const rels = '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
@@ -37,10 +38,12 @@ const pliki = {
   'tekst.docx': [dokument(akapit('Cast on 20 stitches.') + akapit('Row 1: knit across.') + akapit('Row 2: purl across.')), false],
   'tabela.docx': [dokument(akapit('Chart rows') + tabela), false],
   'obraz.docx': [dokument(obraz), true],
+  // PU-057 (KO-092, P-907): 3 strony z konstrukcji — 2 wymuszone podziały strony, każda strona z treścią; oczekiwane „Page 3 of 3” nie zależy od wyniku konwersji.
+  'strony.docx': [dokument(akapit('Page one: cast on 20 stitches.') + akapitNaNowejStronie('Page two: knit 10 rows.') + akapitNaNowejStronie('Page three: bind off loosely.')), false],
 };
 for (const [nazwa, [doc, zObrazem]] of Object.entries(pliki)) {
   const wpisy = [['[Content_Types].xml', typy(zObrazem)], ['_rels/.rels', rels], ['word/document.xml', doc], ['word/_rels/document.xml.rels', relsDok(zObrazem)]];
   if (zObrazem) wpisy.push(['word/media/wzor.png', PNG]);
   writeFileSync(join(import.meta.dirname, nazwa), zip(wpisy));
 }
-console.log('korpus W1: tekst.docx, tabela.docx, obraz.docx');
+console.log('korpus W1: tekst.docx, tabela.docx, obraz.docx, strony.docx');

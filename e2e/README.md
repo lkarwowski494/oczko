@@ -442,6 +442,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `e2e-wzor-word` | dodanie wzoru (build E2E) | plik .docx testowy | bez `t()` | |
 | `e2e-wzor-word-tabela` | dodanie wzoru (build E2E) | plik .docx z tabelą (korpus W1, P-282; scen. 53) | bez `t()` | |
 | `e2e-wzor-word-obraz` | dodanie wzoru (build E2E) | plik .docx z obrazem (korpus W1, P-282; scen. 53) | bez `t()` | |
+| `e2e-wzor-word-strony` | dodanie wzoru (build E2E) | plik .docx z trzema stronami rozdzielonymi wymuszonymi podziałami (korpus W1 `strony.docx`, PU-057, KO-092; scen. 119) | bez `t()` | |
 | `e2e-zdjecie-testowe` | dodanie zdjęcia (build E2E) | zdjęcie testowe (EXIF GPS celowo) | bez `t()` | |
 
 ## Kryterium → scenariusz
