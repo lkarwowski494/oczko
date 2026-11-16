@@ -1,0 +1,306 @@
+[
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "MAESTRO_DRIVER_STARTUP_TIMEOUT": "480000",
+     "MAESTRO_CLI_NO_ANALYTICS": "1",
+     "MAESTRO_FILENAME": "31-nfr-wyd-001-reakcja-licznika",
+     "MAESTRO_SHARD_ID": "1",
+     "MAESTRO_SHARD_INDEX": "0"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495799,
+   "duration": 10,
+   "sequenceNumber": 0,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "NFR-WYD-001 \u00b7 Reakcja licznika: p95 z 20 stukni\u0119\u0107 \u2264 100 ms (P-456)",
+     "tags": [
+      "NFR-WYD-001",
+      "pomiar",
+      "stan-licznika",
+      "PU-161"
+     ]
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495812,
+   "duration": 0,
+   "sequenceNumber": 1,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "runFlowCommand": {
+    "commands": [
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "licznik-wartosc",
+         "optional": false
+        }
+       },
+       "timeout": "30000",
+       "optional": false
+      }
+     },
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "licznik-plus",
+         "optional": false
+        }
+       },
+       "optional": false
+      }
+     }
+    ],
+    "sourceDescription": "subflows/start-czysty.yaml",
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, przez \u201eDzi\u015b\u201d do licznika"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495813,
+   "duration": 42578,
+   "sequenceNumber": 2,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "TERAZ": "2026-11-10T19:30:00"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495817,
+   "duration": 1,
+   "sequenceNumber": 3,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, przez \u201eDzi\u015b\u201d do licznika"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495819,
+   "duration": 0,
+   "sequenceNumber": 4,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "runFlowCommand": {
+    "commands": [
+     {
+      "launchAppCommand": {
+       "appId": "com.apps4brew.knitting",
+       "clearState": true,
+       "launchArguments": {
+        "oczkoE2eTeraz": "${TERAZ}",
+        "oczkoE2eSiec": "brak"
+       },
+       "optional": false
+      }
+     },
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "dzis-karta",
+         "optional": false
+        }
+       },
+       "timeout": "60000",
+       "optional": false
+      }
+     }
+    ],
+    "sourceDescription": "start-czysty-dzis.yaml",
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, ekran \u201eDzi\u015b\u201d"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495819,
+   "duration": 37611,
+   "sequenceNumber": 5,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "TERAZ": "${TERAZ}"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820495820,
+   "duration": 3010,
+   "sequenceNumber": 6,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, ekran \u201eDzi\u015b\u201d"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820498837,
+   "duration": 0,
+   "sequenceNumber": 7,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "launchAppCommand": {
+    "appId": "com.apps4brew.knitting",
+    "clearState": true,
+    "launchArguments": {
+     "oczkoE2eTeraz": "${TERAZ}",
+     "oczkoE2eSiec": "brak"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820498837,
+   "duration": 20208,
+   "sequenceNumber": 8,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "assertConditionCommand": {
+    "condition": {
+     "visible": {
+      "idRegex": "dzis-karta",
+      "optional": false
+     }
+    },
+    "timeout": "60000",
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820519052,
+   "duration": 12985,
+   "sequenceNumber": 9,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "setOrientationCommand": {
+    "orientation": "PORTRAIT",
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820532044,
+   "duration": 552,
+   "sequenceNumber": 10,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "scrollUntilVisible": {
+    "selector": {
+     "idRegex": "dzis-plus",
+     "optional": false
+    },
+    "direction": "DOWN",
+    "scrollDuration": "40",
+    "visibilityPercentage": 100,
+    "timeout": "30000",
+    "centerElement": false,
+    "originalSpeedValue": "40",
+    "optional": false,
+    "visibilityPercentageNormalized": 1.0
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820532597,
+   "duration": 466,
+   "sequenceNumber": 11,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "assertConditionCommand": {
+    "condition": {
+     "visible": {
+      "idRegex": "dzis-plus",
+      "optional": false
+     }
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794820533063,
+   "duration": 367,
+   "sequenceNumber": 12,
+   "depth": 2
+  }
+ }
+]

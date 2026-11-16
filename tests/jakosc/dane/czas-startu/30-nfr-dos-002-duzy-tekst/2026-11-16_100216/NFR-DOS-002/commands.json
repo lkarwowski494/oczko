@@ -1,0 +1,352 @@
+[
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "MAESTRO_FILENAME": "30-nfr-dos-002-duzy-tekst",
+     "MAESTRO_SHARD_ID": "1",
+     "MAESTRO_SHARD_INDEX": "0"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384198,
+   "duration": 7,
+   "sequenceNumber": 0,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "NFR-DOS-002 \u00b7 AX5: licznik, przyciski, arkusz i liczba 5-cyfrowa widoczne (zrzuty do por\u00f3wnania)",
+     "tags": [
+      "NFR-DOS-002",
+      "osobny-krok",
+      "stan-licznika"
+     ]
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384208,
+   "duration": 1,
+   "sequenceNumber": 1,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "runFlowCommand": {
+    "commands": [
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "licznik-wartosc",
+         "optional": false
+        }
+       },
+       "timeout": "30000",
+       "optional": false
+      }
+     },
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "licznik-plus",
+         "optional": false
+        }
+       },
+       "optional": false
+      }
+     }
+    ],
+    "sourceDescription": "subflows/start-czysty.yaml",
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, przez \u201eDzi\u015b\u201d do licznika"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "FAILED",
+   "timestamp": 1794823384209,
+   "duration": 64669,
+   "error": {
+    "message": "No visible element found: id: dzis-kontynuuj",
+    "debugMessage": "Could not find a visible element matching selector: id: dzis-kontynuuj\nTip: Try adjusting the following settings to improve detection:\n- `timeout`: current = 30000ms \u2192 Increase if you need more time to find the element\n- `speed`: current = 40 (0-100 scale) \u2192 Increase for faster scrolling if element is far away\n- `waitToSettleTimeoutMs`: current = Not defined \u2192 Set this value (e.g., 500ms) if your UI updates frequently between scrolls\n- `visibilityPercentage`: current = 100% \u2192 Lower this value if you want to detect partially visible elements\n- `centerElement`: current = false \u2192 Enable if you want the element to be centered after finding it\n"
+   },
+   "sequenceNumber": 2,
+   "depth": 0,
+   "artifacts": [
+    {
+     "type": "SCREENSHOT",
+     "path": "screenshots/step-003-runFlow.png"
+    }
+   ]
+  }
+ },
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "TERAZ": "2026-11-10T19:30:00"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384211,
+   "duration": 1,
+   "sequenceNumber": 3,
+   "depth": 0
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, przez \u201eDzi\u015b\u201d do licznika"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384212,
+   "duration": 0,
+   "sequenceNumber": 4,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "runFlowCommand": {
+    "commands": [
+     {
+      "launchAppCommand": {
+       "appId": "com.apps4brew.knitting",
+       "clearState": true,
+       "launchArguments": {
+        "oczkoE2eTeraz": "${TERAZ}",
+        "oczkoE2eSiec": "brak"
+       },
+       "optional": false
+      }
+     },
+     {
+      "assertConditionCommand": {
+       "condition": {
+        "visible": {
+         "idRegex": "dzis-karta",
+         "optional": false
+        }
+       },
+       "timeout": "60000",
+       "optional": false
+      }
+     }
+    ],
+    "sourceDescription": "start-czysty-dzis.yaml",
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, ekran \u201eDzi\u015b\u201d"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384212,
+   "duration": 32617,
+   "sequenceNumber": 5,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "defineVariablesCommand": {
+    "env": {
+     "TERAZ": "${TERAZ}"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823384214,
+   "duration": 2347,
+   "sequenceNumber": 6,
+   "depth": 1
+  }
+ },
+ {
+  "command": {
+   "applyConfigurationCommand": {
+    "config": {
+     "appId": "com.apps4brew.knitting",
+     "name": "podprzep\u0142yw: czysta instalacja z zegarem, ekran \u201eDzi\u015b\u201d"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823386571,
+   "duration": 0,
+   "sequenceNumber": 7,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "launchAppCommand": {
+    "appId": "com.apps4brew.knitting",
+    "clearState": true,
+    "launchArguments": {
+     "oczkoE2eTeraz": "${TERAZ}",
+     "oczkoE2eSiec": "brak"
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823386571,
+   "duration": 21161,
+   "sequenceNumber": 8,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "assertConditionCommand": {
+    "condition": {
+     "visible": {
+      "idRegex": "dzis-karta",
+      "optional": false
+     }
+    },
+    "timeout": "60000",
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823407828,
+   "duration": 7851,
+   "sequenceNumber": 9,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "setOrientationCommand": {
+    "orientation": "PORTRAIT",
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823415680,
+   "duration": 453,
+   "sequenceNumber": 10,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "scrollUntilVisible": {
+    "selector": {
+     "idRegex": "dzis-plus",
+     "optional": false
+    },
+    "direction": "DOWN",
+    "scrollDuration": "40",
+    "visibilityPercentage": 100,
+    "timeout": "30000",
+    "centerElement": false,
+    "originalSpeedValue": "40",
+    "optional": false,
+    "visibilityPercentageNormalized": 1.0
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823416133,
+   "duration": 407,
+   "sequenceNumber": 11,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "assertConditionCommand": {
+    "condition": {
+     "visible": {
+      "idRegex": "dzis-plus",
+      "optional": false
+     }
+    },
+    "optional": false
+   }
+  },
+  "metadata": {
+   "status": "COMPLETED",
+   "timestamp": 1794823416541,
+   "duration": 288,
+   "sequenceNumber": 12,
+   "depth": 2
+  }
+ },
+ {
+  "command": {
+   "scrollUntilVisible": {
+    "selector": {
+     "idRegex": "dzis-kontynuuj",
+     "optional": false
+    },
+    "direction": "DOWN",
+    "scrollDuration": "40",
+    "visibilityPercentage": 100,
+    "timeout": "30000",
+    "centerElement": false,
+    "originalSpeedValue": "40",
+    "optional": false,
+    "visibilityPercentageNormalized": 1.0
+   }
+  },
+  "metadata": {
+   "status": "FAILED",
+   "timestamp": 1794823416829,
+   "duration": 30982,
+   "error": {
+    "message": "No visible element found: id: dzis-kontynuuj",
+    "debugMessage": "Could not find a visible element matching selector: id: dzis-kontynuuj\nTip: Try adjusting the following settings to improve detection:\n- `timeout`: current = 30000ms \u2192 Increase if you need more time to find the element\n- `speed`: current = 40 (0-100 scale) \u2192 Increase for faster scrolling if element is far away\n- `waitToSettleTimeoutMs`: current = Not defined \u2192 Set this value (e.g., 500ms) if your UI updates frequently between scrolls\n- `visibilityPercentage`: current = 100% \u2192 Lower this value if you want to detect partially visible elements\n- `centerElement`: current = false \u2192 Enable if you want the element to be centered after finding it\n"
+   },
+   "sequenceNumber": 13,
+   "depth": 1,
+   "artifacts": [
+    {
+     "type": "SCREEN_HIERARCHY",
+     "path": "screen-hierarchy/step-014-scrollUntilVisible-dzis-kontynuuj.json"
+    },
+    {
+     "type": "SCREENSHOT",
+     "path": "screenshots/step-014-scrollUntilVisible-dzis-kontynuuj.png"
+    }
+   ]
+  }
+ }
+]
