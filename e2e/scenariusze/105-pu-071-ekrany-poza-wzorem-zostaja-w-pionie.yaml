@@ -1,0 +1,65 @@
+# PU-071 (T-46, T-93): licznik, „Dziś”, „Ustawienia”, „Projekty”, „Historia”, „Narzędzia” po obrocie telefonu poziomo zostają w pionie (iPhone).
+# Kod: orientacja ekranu per trasa (`app/_layout.tsx:122,128`, `orientacjaEkranu('inny', …)`, `src/domena/uklad.ts:35`) — poza `wzor` pion; asercja: elementy dolne (`licznik-plus`, `nav-dzis`) leżą pod elementem górnym
+# jak w pionie (`below`), a po powrocie do pionu nic się nie zmienia. Zrzuty 105-* do porównania z wzorcem pionowym (docs/design). Ograniczenie: Maestro nie czyta wymiarów okna —
+# układ „poziomy” poznaje po tym, że `below` przestaje być prawdą (hipoteza do przebiegu iOS).
+appId: com.apps4brew.knitting
+name: "PU-071 · Ekrany poza wzorem po obrocie poziomo zostają w pionie: licznik, Dziś, Ustawienia, Projekty, Historia, Narzędzia"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-071
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- assertVisible: { id: "licznik-plus" }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "licznik-plus", below: { id: "licznik-wartosc-wiersz" } }
+- takeScreenshot: 105-licznik-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "licznik-plus", below: { id: "licznik-wartosc-wiersz" } }
+# --- „Dziś” ---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "nav-dzis", below: { id: "dzis-karta" } }
+- takeScreenshot: 105-dzis-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "nav-dzis", below: { id: "dzis-karta" } }
+# --- „Ustawienia” ---
+- tapOn: { id: "nav-ustawienia" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "ustawienia-jezyk", below: { id: "nav-wstecz" } }
+- takeScreenshot: 105-ustawienia-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "ustawienia-jezyk", below: { id: "nav-wstecz" } }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+# --- „Projekty” ---
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "nav-dzis", below: { id: "projekty-lista" } }
+- takeScreenshot: 105-projekty-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "nav-dzis", below: { id: "projekty-lista" } }
+# --- „Historia” ---
+- tapOn: { id: "nav-historia" }
+- extendedWaitUntil: { visible: { id: "historia" }, timeout: 20000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "nav-dzis", below: { id: "historia" } }
+- takeScreenshot: 105-historia-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "nav-dzis", below: { id: "historia" } }
+# --- „Narzędzia” ---
+- tapOn: { id: "nav-narzedzia" }
+- extendedWaitUntil: { visible: { id: "narzedzia-wloczki" }, timeout: 20000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "nav-dzis", below: { id: "narzedzia-wloczki" } }
+- takeScreenshot: 105-narzedzia-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "nav-dzis", below: { id: "narzedzia-wloczki" } }

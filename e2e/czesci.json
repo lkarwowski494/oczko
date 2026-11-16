@@ -104,6 +104,11 @@
     "99-pu-052-bez-prosb-o-powiadomienia-sledzenie-biblioteke.yaml": 106,
     "100-pu-008-zakreslenie-widac-od-razu-cofnij-ostatnia-kreske.yaml": 130,
     "101-pu-296-gumka-zmazuje-jedno-zakreslenie.yaml": 120,
-    "102-pu-292-przywroc-usuniety-wzor-z-zakresleniami.yaml": 140
+    "102-pu-292-przywroc-usuniety-wzor-z-zakresleniami.yaml": 140,
+    "103-pu-066-znacznik-stukniecie-przytrzymanie-obrot-restart.yaml": 173,
+    "104-pu-067-notatka-przy-rzedzie.yaml": 149,
+    "105-pu-071-ekrany-poza-wzorem-zostaja-w-pionie.yaml": 158,
+    "106-pu-191-bez-kont-i-ekranu-awarii-na-glownych-ekranach.yaml": 108,
+    "107-pu-288-udostepnij-zdjecie-arkusz-systemowy-i-powrot.yaml": 134
   }
 }

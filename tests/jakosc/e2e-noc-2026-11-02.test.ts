@@ -188,7 +188,7 @@ describe('NOC-6 · wagi części E2E z pomiaru #140', () => {
   test('pomiar obejmuje wszystkie scenariusze poza nowymi 67, 68, 69 i 70 (68: zadanie 002; 69, 70: przewodnik P-696 — bez pomiaru) oraz 71–84 (przypadki użycia BX2, tag oczekujacy, P-836) i ma sensowne czasy', () => {
     const pliki = fs.readdirSync(KAT).filter((f) => /^\d{2,}-.*\.yaml$/.test(f));
     const bx2 = Array.from({ length: 14 }, (_, i) => plik(String(71 + i)));
-    const bx7 = ['85', '86', '87', '88', '89', '92', '93', '94', '95', '96', '97', '98', '99', '100', '101', '102'].map((n) => plik(n)); // KO-086, P-889: BX7 porcja 1 i BX8 (tag oczekujacy, bez pomiaru #140); numery 90–91 wolne (P-887)
+    const bx7 = ['85', '86', '87', '88', '89', '92', '93', '94', '95', '96', '97', '98', '99', '100', '101', '102', '103', '104', '105', '106', '107'].map((n) => plik(n)); // KO-086, P-889: BX7 porcja 1 i BX8 (tag oczekujacy, bez pomiaru #140); numery 90–91 wolne (P-887)
     expect(pliki.filter((f) => !pomiar.scenariusze[f])).toEqual([plik('67'), plik('68'), plik('69'), plik('70'), ...bx2, ...bx7].sort()); // sort(): kolejność leksykalna jak readdirSync (100 po 10, P-890)
     for (const [f, r] of Object.entries(pomiar.scenariusze)) expect({ f, ok: r.s > 0 && r.s < 900 }).toEqual({ f, ok: true });
   });

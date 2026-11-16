@@ -318,9 +318,14 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `wzor-znacznik-pasek` | wzór | pasek ustawiania znacznika rzędu (kierunek, krokowiec, „Done”; BR-WZR-003, F-26; scen. 62) | — | |
 | `wzor-znacznik-rzad` | wzór, pasek znacznika | numer rzędu schematu, na którym stoi znacznik (RD-21; scen. 62) | „12” | |
 | `wzor-znacznik-gotowe` | wzór, pasek znacznika | „Done” — zamknięcie paska | „Done” | |
+| `wzor-wskazowka-znacznika` | wzór | wskazówka pierwszego otwarcia (PDF/zdjęcie bez znacznika, bez VoiceOver; M1-131); ukryta przed VoiceOver (`accessibilityElementsHidden`) — czy widzi ją Maestro iOS, niepotwierdzone (BX-035; scen. 103) | „Tap a row to place your marker.” | |
+| `wzor-notatka-pole` | wzór, arkusz „Note” (po „Add note”) | pole nowej notatki przy znaczniku (BX9; scen. 104) | „Note” | tekstowa |
+| `wzor-notatka-tresc` | wzór, arkusz notatki rzędu (po stuknięciu chipu) | treść jednej notatki (scen. 104) | „k2tog here” | |
+| `wzor-notatka-zamknij` | wzór, arkusz notatki rzędu | „Close” arkusza notatki (scen. 104) | „Close” | |
+| `licznik-wartosc-wiersz` | licznik | wiersz z liczbą (`Licznik.tsx:122`); kotwica `below` dla `licznik-plus` w scen. 105 | — | |
 | `wprowadzenie` | — | ekran wprowadzenia (NIE może istnieć przed pierwszym +1) | — | |
 | `zdjecie-zamknij` | podgląd zdjęcia (p4b) | „Close” w prawym górnym rogu (makieta `zdjecie`); scenariusze nie zamykają podglądu (42 kończy usunięciem) | „Close” | |
-| `zdjecie-udostepnij` | podgląd zdjęcia | Share z symbolem `square.and.arrow.up` (arkusz systemowy — scenariusze go nie otwierają) | „Share” | |
+| `zdjecie-udostepnij` | podgląd zdjęcia | Share z symbolem `square.and.arrow.up` (arkusz systemowy; scen. 107 go otwiera i zamyka, selektor arkusza po tekstach pozycji — BX-039) | „Share” | |
 | `znacznik-radio` | arkusze z `Wybor`; plany „Oczko Pro” (p4b) | znacznik wyboru 28 pt (AX1+ 40), powtarzalny, ukryty przed VoiceOver — wybór sprawdza `selected: true` na wierszu (`oferty-plan-*`, „Needles”, „Stitches”) | — | |
 | `komunikat-znak` | komunikat błędu (próbka, formularze włóczki i narzędzia, oferty, Usuń wszystko; p4b) | kółko „!” przy zdaniu błędu, ukryte przed VoiceOver; zdanie = etykieta widoku z rolą alert (bez „!”) | — | |
 | `projekt-menu-lista` | ekran projektu (p4b) | pływająca lista menu „+” i ••• pod paskiem (pozycje `projekt-dodaj-*`, `projekt-edytuj`, `projekt-zrob-taka-sama`, `projekt-usun`, `projekt-wznow` bez zmian) | — | |
