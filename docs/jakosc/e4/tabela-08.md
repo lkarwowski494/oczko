@@ -329,6 +329,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-139-motyw-ciemny-przewodnik.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/przewodnik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-139-motyw-ciemny.test.tsx` | zielony (główny zestaw) | 5 | — | `src/domena/porty`<br>`src/domena/uklad`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/Licznik`<br>`src/ekrany/Oferty`<br>`src/ekrany/Ustawienia`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-147-ipad-przewodnik.test.tsx` | zielony (główny zestaw) | 2 | P-220 | `src/domena/przewodnik`<br>`src/przypadki-uzycia/przewodnik` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-336-pioro-wasko.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-aparat-odmowa-050.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/licznik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-czesci-projektu-trasy.test.tsx` | zielony (główny zestaw) | 2 | RD-14 | `src/domena/porty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/pu-data-ukonczenia-285.test.tsx` | zielony (główny zestaw) | 1 | — | `src/domena/porty` | Z07-22 |
@@ -505,4 +506,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 501; zależnych od poprawek: 309.
+Razem plików testów: 502; zależnych od poprawek: 309.
