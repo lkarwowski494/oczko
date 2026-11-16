@@ -15,7 +15,7 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 
 const stan = (z: Partial<StanPrzegladarki> = {}): StanPrzegladarki => ({
-  nazwa: 'Test pattern', opis: 'DOCX', czesc: null, wzory: [{ wzorId: 'w1', nazwa: 'Test pattern' }], wzorId: 'w1',
+  nazwa: 'Test pattern', projekt: 'Harbor', opis: 'DOCX', czesc: null, wzory: [{ wzorId: 'w1', nazwa: 'Test pattern' }], wzorId: 'w1',
   strona: { n: 1, razem: 1 }, zakreslenia: 0, narzedzie: 'brak', word: false, wskazowka: false, kierunek: null,
   licznik: { liczba: 12345, dziergany: 12346, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 402, wysokosc: 874 }), ...z,
 });

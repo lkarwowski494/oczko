@@ -86,7 +86,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
     dziennik: dziennikUrzadzenia(baza),
     migruj: (p) => migruj(p, { katalogKopii: s.kopie, teraz: () => zegar.teraz().ms }),
     liveActivity: liveActivity(id, undefined, jezyk),
-    zegarek: ZEGAREK_SZTUCZNY && paneleE2e ? paneleE2e.zegarekSztuczny : zegarek(undefined, jezyk), // udawany zegarek E2E (e2e/README.md:37)
+    zegarek: ZEGAREK_SZTUCZNY && paneleE2e ? paneleE2e.zegarekSztucznyZJezykiem(jezyk) : zegarek(undefined, jezyk), // udawany zegarek E2E (e2e/README.md:37)
   };
   // iCloud (partia 7): silnik (moduł Swift albo atrapa E2E) i sterownik na czas procesu; start po danych startu (kompozycja licznika).
   const plikIcloud = polacz(katalogDanych, 'icloud-atrapa.json');

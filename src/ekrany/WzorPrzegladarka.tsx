@@ -20,6 +20,7 @@ import { PrzyciskSymbolu, Wstecz } from './Pasek';
 
 export type StanPrzegladarki = {
   nazwa: string;
+  projekt: string;                                // nazwa projektu do nagłówka listy wzorów ▾ (`wzor.przelacz_naglowek`, BX-005)
   opis: string;                                   // `wzor.wiersz_opis` („PDF · 6 pages”), testID `wzor-zrodlo`
   czesc: string | null; // null = projekt roboczy (007)
   wzory: { wzorId: string; nazwa: string }[];     // wzory projektu (W9b); ≥ 2 → tytuł przełącza
@@ -236,7 +237,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
           }} />
         </Menu>
       )}
-      {menu === 'wzory' && <MenuWzorow st={st} t={t} wzory={s.wzory} oczekujace={czekajace} wzorId={s.wzorId} zamknij={() => ustawMenu('brak')} naWybor={(id) => { ustawMenu('brak'); if (id !== s.wzorId) p.naPrzelacz(id); }}
+      {menu === 'wzory' && <MenuWzorow st={st} t={t} projekt={s.projekt} wzory={s.wzory} oczekujace={czekajace} wzorId={s.wzorId} zamknij={() => ustawMenu('brak')} naWybor={(id) => { ustawMenu('brak'); if (id !== s.wzorId) p.naPrzelacz(id); }}
         naUsunOczekujacy={(id) => { if (s.wzory.length < 2 && czekajace.length <= 1) ustawMenu('brak'); p.naUsunOczekujacy?.(id); }} />}
     </View>
   );

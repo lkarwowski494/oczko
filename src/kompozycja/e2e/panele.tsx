@@ -176,20 +176,26 @@ export function PanelPomiaruLadowania({ ms }: { ms: number }): React.ReactElemen
  * Udawany zegarek (EXPO_PUBLIC_WATCH_FAKE=1, e2e/README.md:37; transferUserInfo nie działa w symulatorze, ADR-0009): `wyslijStan` zapamiętuje
  * ostatni stan dla panelu `e2e-zegarek-stan` (scen. 15, P-287). Bez zdarzeń z zegarka — te sprawdza urządzenie.
  */
-let ostatniStanZegarka: StanZegarka | null = null;
-const sluchaczeZegarka = new Set<(s: StanZegarka) => void>();
-export const zegarekSztuczny: Zegarek = {
-  async wyslijStan(s) { ostatniStanZegarka = s; for (const f of sluchaczeZegarka) f(s); },
-  potwierdz: () => undefined,
-  odbieraj: () => () => undefined,
-};
-export function opisStanuZegarka(s: StanZegarka): string {
+type WyslanyStanZegarka = { stan: StanZegarka; jezyk: string | null };
+let ostatniStanZegarka: WyslanyStanZegarka | null = null;
+const sluchaczeZegarka = new Set<(w: WyslanyStanZegarka) => void>();
+/** `jezyk`: to samo źródło co 3. argument `zegarekWyslij` (`src/platforma/zegarek.ts:16`); bez źródła null (BX-024, PU-334). */
+export function zegarekSztucznyZJezykiem(jezyk?: () => string): Zegarek {
+  return {
+    async wyslijStan(s) { const w = { stan: s, jezyk: jezyk ? jezyk() : null }; ostatniStanZegarka = w; for (const f of sluchaczeZegarka) f(w); },
+    potwierdz: () => undefined,
+    odbieraj: () => () => undefined,
+  };
+}
+export const zegarekSztuczny: Zegarek = zegarekSztucznyZJezykiem();
+/** `jezyk` undefined = bez fragmentu języka; null = brak źródła („lang none”, adapter wysyła wtedy null). */
+export function opisStanuZegarka(s: StanZegarka, jezyk?: string | null): string {
   const przyp = s.przypomnienia.map((p) => `from ${p.od} every ${p.co} ×${p.razy}: ${p.tekst}`).join('; ');
-  return `Watch state: ${s.nazwa} · ${s.wartosc} done · row ${s.wartosc + 1}${przyp ? ` · reminders: ${przyp}` : ''}`;
+  return `Watch state: ${s.nazwa} · ${s.wartosc} done · row ${s.wartosc + 1}${przyp ? ` · reminders: ${przyp}` : ''}${jezyk === undefined ? '' : ` · lang ${jezyk ?? 'none'}`}`;
 }
 /** Licznik (slot pod kreskami): ostatni stan wysłany do udawanego zegarka. */
 export function PanelZegarka(): React.ReactElement {
-  const [s, ustaw] = useState<StanZegarka | null>(ostatniStanZegarka);
+  const [s, ustaw] = useState<WyslanyStanZegarka | null>(ostatniStanZegarka);
   useEffect(() => { sluchaczeZegarka.add(ustaw); return () => { sluchaczeZegarka.delete(ustaw); }; }, []);
-  return <Text testID="e2e-zegarek-stan">{s ? opisStanuZegarka(s) : 'Watch state: none'}</Text>;
+  return <Text testID="e2e-zegarek-stan">{s ? opisStanuZegarka(s.stan, s.jezyk) : 'Watch state: none'}</Text>;
 }

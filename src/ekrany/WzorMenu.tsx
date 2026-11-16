@@ -27,14 +27,16 @@ export function Pozycja(p: { st: StyleMenu; tekst: string; id: string; niszczaca
  * Lista wzorów projektu (▾, W9b): ✓ przy bieżącym; stuknięcie wybiera wzór (przełączanie i zamknięcie menu robi wywołujący). Pod wzorami wiersze stron WWW
  * czekających na sieć z ✕ (aneks partii 8, poz. 12 C; `wzor.czeka_siec`): wiersz niczego nie przełącza, a po zapisie strony zamienia się we wzór.
  */
-export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; wzory: { wzorId: string; nazwa: string }[]; oczekujace: { id: string; nazwa: string }[]; wzorId: string; zamknij(): void; naWybor(wzorId: string): void; naUsunOczekujacy(id: string): void }) {
+export function MenuWzorow(p: { st: StyleMenu; t: Tlumacz; projekt: string; wzory: { wzorId: string; nazwa: string }[]; oczekujace: { id: string; nazwa: string }[]; wzorId: string; zamknij(): void; naWybor(wzorId: string): void; naUsunOczekujacy(id: string): void }) {
   const k = useKolory();
   const w = StyleSheet.create({
     wiersz: { flexDirection: 'row', alignItems: 'center', gap: odstep.s }, rosnie: { flex: 1 }, podpis: { ...typografia.podpis, color: k.olowek },
+    naglowek: { paddingHorizontal: odstep.l, paddingTop: odstep.s },
     ikona: { minWidth: cel.minimum, minHeight: cel.minimum, alignItems: 'center', justifyContent: 'center' },
   });
   return (
     <Menu st={p.st} zamknij={p.zamknij}>
+      <Text style={[w.podpis, w.naglowek]} accessibilityRole="header">{p.t('wzor.przelacz_naglowek', { projekt: p.projekt })}</Text>{/* BX-005: nagłówek listy (design-spec Kreski :671, :958 A; makieta fix7/wzor.html:387) */}
       {p.wzory.map((x) => (
         <Pressable key={x.wzorId} accessibilityRole="menuitem" accessibilityLabel={x.nazwa} accessibilityState={{ selected: x.wzorId === p.wzorId }} onPress={() => p.naWybor(x.wzorId)} style={[p.st.pozycja, w.wiersz]}>
           <Text style={[p.st.tresc, w.rosnie]}>{x.nazwa}</Text>

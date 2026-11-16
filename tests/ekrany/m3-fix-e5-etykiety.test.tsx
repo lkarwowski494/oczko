@@ -14,7 +14,7 @@ let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 const wywolania = () => ({ naWstecz: jest.fn(), naPrzelacz: jest.fn(), naNarzedzie: jest.fn(), naCofnij: jest.fn(), naZaznaczRzad: jest.fn(), naObroc: jest.fn(), naZmienNazwe: jest.fn(), naUsun: jest.fn(), naNotatka: jest.fn(),
   potwierdz: jest.fn(), naPlus: jest.fn(async () => ({ ok: true as const, wartosc: undefined })), naMinus: jest.fn(async () => ({ ok: true as const, wartosc: undefined })) });
-const stanWzoru = (czesc: string | null): StanPrzegladarki => ({ nazwa: 'Harbor chart', opis: 'PDF · 6 pages', czesc, wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
+const stanWzoru = (czesc: string | null): StanPrzegladarki => ({ nazwa: 'Harbor chart', projekt: 'Harbor', opis: 'PDF · 6 pages', czesc, wzory: [{ wzorId: 'w1', nazwa: 'Harbor chart' }], wzorId: 'w1',
   strona: { n: 2, razem: 6 }, zakreslenia: 0, narzedzie: 'brak', word: false, licznik: { liczba: 47, dziergany: 48, znaczenie: 'skonczone' }, uklad: ukladOkna({ szerokosc: 390, wysokosc: 844 }) });
 
 test('007: projekt roboczy (czesc = null) → „wstecz” wzoru „Back to counter”, bez cyfr daty', () => {

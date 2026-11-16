@@ -31,7 +31,7 @@ test('011: jednostki w formularzu włóczki — każda opcja ma ZnacznikRadio, w
 
 test('011: lista wzorów ▾ — bieżący wzór z symbolem checkmark, bez glifu „✓” w tekście', () => {
   const st = { menuTlo: {}, menu: {}, pozycja: {}, tresc: {}, niszczaca: {} };
-  render(<MenuWzorow st={st} t={t} wzory={[{ wzorId: 'w1', nazwa: 'Front' }, { wzorId: 'w2', nazwa: 'Back' }]} oczekujace={[]} wzorId="w1" zamknij={jest.fn()} naWybor={jest.fn()} naUsunOczekujacy={jest.fn()} />);
+  render(<MenuWzorow st={st} t={t} projekt="Harbor" wzory={[{ wzorId: 'w1', nazwa: 'Front' }, { wzorId: 'w2', nazwa: 'Back' }]} oczekujace={[]} wzorId="w1" zamknij={jest.fn()} naWybor={jest.fn()} naUsunOczekujacy={jest.fn()} />);
   expect(screen.queryByText(/✓/)).toBeNull();
   expect(screen.getByText('Front')).toBeTruthy();
   const symbole = screen.UNSAFE_root.findAll((n) => n.props.nazwa === 'checkmark');
