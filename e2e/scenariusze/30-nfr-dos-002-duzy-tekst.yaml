@@ -1,5 +1,5 @@
 # NFR-DOS-002 (docs/brd/wymagania.md:101): duży tekst. Próg [DO USTALENIA] OP-16; propozycja z kryterium: 0 obciętych i nakładających się tekstów przy AX5
-# na ekranach PR-01–06 wobec zrzutów wzorcowych (docs/design/wzorce-zrzuty/, DS-10: porównanie tylko na symulatorze, wzorce zmienia tylko 04).
+# na ekranach PR-01–06; sprawdzana jest widoczność elementów, bez porównania zrzutów (usunięte w CI-01); ucięcia i nachodzenie tekstu ocenia właściciel: PU-340 (F).
 # Rozmiar tekstu ustawia workflow przed tym scenariuszem (`xcrun simctl ui <sym> content_size accessibility-extra-extra-extra-large`) i przywraca po nim —
 # dlatego tag `osobny-krok` (e2e-czesci.mjs wydziela go z części do osobnego kroku). Wartość 12 345 (R-149, Z07-10): liczba niepocięta.
 appId: com.apps4brew.knitting
@@ -8,6 +8,9 @@ tags:
   - NFR-DOS-002
   - osobny-krok
   - stan-licznika
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-134
 ---
 - runFlow:
     file: subflows/start-czysty.yaml

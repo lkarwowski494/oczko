@@ -1,0 +1,13 @@
+BX12 — dowody czerwieni przed kodem (08-programista build, 2026-11-16)
+
+== PU-134 + CG-1 (scenariusz 30) ==
+1) Katalog: Pokrycie PU-134 zmienione na „oczekujący: …30-nfr-dos-002-duzy-tekst.yaml:20/26/48/64/65” przy scenariuszu BEZ tagów (stan sprzed poprawki):
+$ node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu oczekujacy
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu przypadki-uzycia
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu PU-134
+(+ „nie jest asercją” / „nie istnieje” dla przesunięcia o 3 linie tagów — przed dodaniem tagów numeracja starego pliku). Po dodaniu tagów: „Kontrola 2: zielona”.
+2) CG-1: tests/jakosc/bx12-cg1-scenariusze-bez-martwych-wzorcow.test.ts na starym nagłówku scenariusza 30:
+  ✕ CG-1: scenariusze nie odwołują się do nieistniejącego docs/design/wzorce-zrzuty/
+    - Array []   + Array [ "30-nfr-dos-002-duzy-tekst.yaml" ]
+Po poprawce komentarza: ✓ (1 test).
