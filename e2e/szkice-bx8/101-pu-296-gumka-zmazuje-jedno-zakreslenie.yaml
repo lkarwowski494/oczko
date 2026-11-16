@@ -1,0 +1,35 @@
+# PU-296: gumka zmazuje jedno zakreślenie bez cofania innych; „1 highlight” od razu i po restarcie, zostaje drugi pas.
+# Kod: `wzor-zakreslacz`, `wzor-gumka`, `wzor-zakreslenia`; wzór: scen. 26 (swipe w trybie narzędzia). Gumka przeciągnięta dokładnie po pierwszym pasie (ten sam pas y=35%).
+# Ograniczenie (BX-030, hipoteza): zasięg gumki to kreska, nie piksel — przeciągnięcie po całej szerokości pasa trafia w pierwszą kreskę; zrzut 101-po-gumce dokumentuje, który pas zniknął.
+appId: com.apps4brew.knitting
+name: "PU-296 · Gumka zmazuje pierwsze zakreślenie, drugie zostaje, także po restarcie"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-296
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 35%", end: "80%, 35%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- swipe: { start: "20%, 55%", end: "80%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- takeScreenshot: 101-dwa-pasy
+- tapOn: { id: "wzor-gumka" }
+- assertVisible: { id: "wzor-gumka", selected: true }
+- swipe: { start: "10%, 35%", end: "90%, 35%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 101-po-gumce
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 101-po-restarcie

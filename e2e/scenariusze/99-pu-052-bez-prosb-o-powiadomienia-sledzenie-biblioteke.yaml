@@ -1,5 +1,6 @@
 # PU-052 (T-35, T-136): cały przebieg (dodanie zdjęcia z biblioteki, liczenie, ustawienia) bez systemowej prośby o powiadomienia, śledzenie (ATT) i dostęp do biblioteki zdjęć.
-# Kod: ekran projektu → `zdjecia-dodaj` → arkusz systemowy „Choose from library” (README, wiersz `zdjecia-dodaj`); wybór zdjęć przez systemowy selektor nie wymaga zgody na całą bibliotekę.
+# Kod: ekran projektu → `zdjecia-dodaj` → arkusz „Add photo”; w buildzie E2E selektor biblioteki zastępuje `e2e-zdjecie-testowe` (src/kompozycja/e2e/panele.tsx:70), jak w scen. 81.
+# BX-032 (brzegowy, poziom testu): prośby o dostęp do biblioteki Maestro w buildzie E2E nie zobaczy (selektora systemowego tu nie ma); część „Would Like to Access Your Photos” wymaga testu fizycznego (F) albo sprawdzenia Info.plist/PHPicker — PU-052 zostaje „oczekujący” bez pełnego pokrycia.
 # Ograniczenie (BX-028, hipoteza): Maestro iOS widzi alerty systemowe po tekście (springboard) — niepotwierdzone; `assertNotVisible` z regex pada fałszywie na zielono, jeśli nie widzi alertów w ogóle. Zrzuty kroków dokumentują stan.
 appId: com.apps4brew.knitting
 name: "PU-052 · Brak systemowych próśb o powiadomienia, śledzenie i dostęp do biblioteki"
@@ -24,15 +25,16 @@ tags:
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "zdjecia-dodaj" }
-- extendedWaitUntil: { visible: "Choose from library", timeout: 20000 }
-- tapOn: "Choose from library"
+- assertVisible: { id: "e2e-zdjecie-testowe" } # build E2E podmienia systemowy selektor biblioteki (BX-032)
 - waitForAnimationToEnd
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
 - assertNotVisible: ".*Would Like to Access Your Photos.*"
 - assertNotVisible: ".*Would Like to Send You Notifications.*"
 - assertNotVisible: ".*Allow .* to track your activity.*"
 - takeScreenshot: 99-po-wyborze-z-biblioteki
-- tapOn: { text: "Cancel", optional: true } # zamknięcie systemowego selektora bez wyboru
-- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 30000 }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
 - runFlow: subflows/otworz-ustawienia.yaml
 - assertNotVisible: ".*Would Like to Send You Notifications.*"
 - assertNotVisible: ".*Allow .* to track your activity.*"
