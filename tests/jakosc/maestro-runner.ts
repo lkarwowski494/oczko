@@ -24,7 +24,7 @@ export const YAML: typeof import('yaml') = require(join(__dirname, '..', '..', '
 
 /** Polecenia znane interpreterowi (i używane w scenariuszach Oczka). */
 export const ZNANE_POLECENIA = new Set([
-  'launchApp', 'stopApp', 'tapOn', 'doubleTapOn', 'longPressOn', 'inputText', 'eraseText', 'pressKey', 'hideKeyboard', 'swipe', 'scrollUntilVisible',
+  'launchApp', 'stopApp', 'tapOn', 'doubleTapOn', 'longPressOn', 'inputText', 'eraseText', 'pressKey', 'hideKeyboard', 'swipe', 'scroll', 'scrollUntilVisible',
   'setOrientation', 'assertVisible', 'assertNotVisible', 'extendedWaitUntil', 'assertTrue', 'copyTextFrom', 'evalScript', 'retry', 'runFlow', 'repeat',
   'takeScreenshot', 'waitForAnimationToEnd',
 ]);
@@ -35,7 +35,7 @@ export const KLUCZE_SELEKTORA = new Set(['text', 'id', 'index', 'below', 'above'
 export const ZMIENIAJACE = new Set(['launchApp', 'stopApp', 'tapOn', 'doubleTapOn', 'longPressOn', 'inputText', 'eraseText', 'pressKey', 'hideKeyboard', 'swipe', 'setOrientation']);
 export const ASERCJE = new Set(['assertVisible', 'assertNotVisible', 'extendedWaitUntil', 'assertTrue']);
 /** Kroki przezroczyste dla reguły asercji (nie zmieniają stanu aplikacji ani niczego nie sprawdzają). */
-export const PRZEZROCZYSTE = new Set(['waitForAnimationToEnd', 'takeScreenshot', 'copyTextFrom', 'evalScript', 'scrollUntilVisible']);
+export const PRZEZROCZYSTE = new Set(['waitForAnimationToEnd', 'takeScreenshot', 'copyTextFrom', 'evalScript', 'scroll', 'scrollUntilVisible']);
 /** Dozwolone łańcuchy bez asercji pomiędzy: fokus pola → wpis, usunięcie → wpis, wpis po znaku, zabicie → start, tło → powrót. */
 const LANCUCHY: Record<string, string[]> = { tapOn: ['eraseText', 'inputText'], doubleTapOn: ['eraseText', 'inputText'], eraseText: ['inputText'], inputText: ['inputText'], stopApp: ['launchApp'], pressKey: ['launchApp'] };
 
@@ -270,6 +270,7 @@ export class Runner {
         const pkt = (s: string) => { const m = /^\s*(\d+(?:\.\d+)?)%\s*,\s*(\d+(?:\.\d+)?)%\s*$/.exec(String(s)); if (!m) this.blad(krok, `swipe: punkt „${s}” — interpreter zna tylko procenty ekranu`); return { x: +m[1], y: +m[2] }; };
         await this.ekran.przesun(pkt(arg.start), pkt(arg.end), Number(arg.duration ?? 400)); break;
       }
+      case 'scroll': await this.ekran.przewin('DOWN'); await this.ekran.odczekaj(500); break; // Maestro `scroll`: jedno przewinięcie w dół (BX-010, FX3)
       case 'scrollUntilVisible': {
         const ms = Number(arg.timeout ?? 20000);
         for (let t = 0; t <= ms; t += 500) { if (this.znajdz(sel(arg)).length) return; await this.ekran.przewin(String(arg.direction ?? 'DOWN')); await this.ekran.odczekaj(500); }

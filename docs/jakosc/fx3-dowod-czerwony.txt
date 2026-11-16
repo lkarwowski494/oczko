@@ -12,3 +12,7 @@ Dowód z iOS 43774048947 część 4, krok 48 (po poprawce 152fb307 z SafeAreaVie
 npx jest tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx --ci  (atrapa: SafeAreaView = zero wcięć, hook = 59/34) → FAIL (kod 1), 2 testy:
   Expected: >= 59   Received: 0   (wcieciaNad(zamknij, 'paddingTop'), oba testy)
 Po poprawce (View + useSafeAreaInsets): PASS; tests/ekrany/zdjecie-poziomo-bx014.test.tsx PASS (atrapa dostała hook).
+
+== BX-010 dokończenie (po poprawce scenariusza 39) ==
+npx jest tests/jakosc → 3 pliki FAIL (kod 1) przed dokończeniem: maestro-scenariusze („nieznane polecenie „scroll””, 2×), przypadki-uzycia i bramka-przypadki-uzycia (PU-233: 39:31 nie jest asercją — wstawione `scroll` przesunęły linie).
+Dokończenie: `scroll` w interpreterze testów (tests/jakosc/maestro-runner.ts), odnośniki katalogu 39:28→29, 31→32, 35→37. Po: 73 zestawy / 914 testów PASS.
