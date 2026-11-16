@@ -104,6 +104,12 @@ describe('pułapki: każda reguła czerwienieje na złym scenariuszu', () => {
     expect(p.some(x => /nieznany klucz selektora „leftOf”/.test(x))).toBe(true);
     expect(p.some(x => /id „Zle\(ID\)”/.test(x))).toBe(true);
   });
+  test('składnia swipe (BX-048): ułamkowy procent „0.5%” to „Parsing Failed” w Maestro — kontrola go wykrywa; całkowite procenty i „x, y” przechodzą', () => {
+    const ulamek = zYaml('/x/ulamek.yaml', 'appId: x\n---\n- swipe: { start: "50%, 0.5%", end: "50%, 60%", duration: 400 }\n- assertVisible: "a"\n');
+    expect(problemySkladni(ulamek).some(x => /swipe\.start: punkt „50%, 0\.5%”/.test(x))).toBe(true);
+    const ok = zYaml('/x/ok.yaml', 'appId: x\n---\n- swipe: { start: "50%, 1%", end: "50%, 60%" }\n- assertVisible: "a"\n- swipe: { start: "201, 4", end: "201, 500" }\n- assertVisible: "a"\n');
+    expect(problemySkladni(ok)).toEqual([]);
+  });
   test('asercja: dwa stuknięcia z rzędu i akcja na końcu listy bez asercji', () => {
     const p = problemyAsercji(zly);
     expect(p.some(x => /po „tapOn \{"id":"licznik-plus"\}” brak asercji \(następny krok: tapOn\)/.test(x))).toBe(true);

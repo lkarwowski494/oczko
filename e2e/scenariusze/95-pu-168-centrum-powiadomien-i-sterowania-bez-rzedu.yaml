@@ -16,14 +16,14 @@ tags:
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - runFlow: subflows/odstep.yaml
-- swipe: { start: "50%, 0.5%", end: "50%, 60%", duration: 400 } # Centrum powiadomień (środek górnej krawędzi)
+- swipe: { start: "50%, 1%", end: "50%, 60%", duration: 400 } # Centrum powiadomień (środek górnej krawędzi)
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
-- swipe: { start: "50%, 60%", end: "50%, 0.5%", duration: 400 } # zamknięcie
+- swipe: { start: "50%, 60%", end: "50%, 1%", duration: 400 } # zamknięcie
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
 - takeScreenshot: 95-po-centrum-powiadomien
-- swipe: { start: "95%, 0.5%", end: "95%, 60%", duration: 400 } # Centrum sterowania (prawy róg)
+- swipe: { start: "95%, 1%", end: "95%, 60%", duration: 400 } # Centrum sterowania (prawy róg)
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
-- swipe: { start: "95%, 60%", end: "95%, 0.5%", duration: 400 }
+- swipe: { start: "95%, 60%", end: "95%, 1%", duration: 400 }
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
 - takeScreenshot: 95-po-centrum-sterowania
 - runFlow: subflows/odstep.yaml

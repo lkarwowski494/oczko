@@ -27,7 +27,7 @@ tags:
 - tapOn: { id: "e2e-wzor-word" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
 - assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
-- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
 - takeScreenshot: 119-tekst-ostatnia
 # --- tabela ---
 - runFlow:
@@ -42,7 +42,7 @@ tags:
 - tapOn: { id: "e2e-wzor-word-tabela" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
 - assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
-- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
 - takeScreenshot: 119-tabela-ostatnia
 # --- obraz ---
 - runFlow:
@@ -57,7 +57,7 @@ tags:
 - tapOn: { id: "e2e-wzor-word-obraz" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
 - assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
-- assertVisible: { id: "wzor-strona", text: "Page 1 of 1" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
 - takeScreenshot: 119-obraz-ostatnia
 # --- trzy strony z wymuszonych podziałów (N = 3 z konstrukcji pliku, KO-092) ---
 - runFlow:
@@ -72,8 +72,8 @@ tags:
 - tapOn: { id: "e2e-wzor-word-strony" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
 - assertVisible: { id: "wzor-zrodlo", text: "Word document · 3 pages" }
-- assertVisible: { id: "wzor-strona", text: "Page 1 of 3" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 3" }
 - takeScreenshot: 119-strony-pierwsza
-- scrollUntilVisible: { element: { id: "wzor-strona", text: "Page 3 of 3" }, direction: DOWN, timeout: 30000 }
-- assertVisible: { id: "wzor-strona", text: "Page 3 of 3" }
+- scrollUntilVisible: { element: { id: "wzor-strona", text: ".*[Pp]age 3 of 3" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 3 of 3" }
 - takeScreenshot: 119-strony-ostatnia

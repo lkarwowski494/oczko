@@ -24,6 +24,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "przewodnik-f-zegarek-opis" }, timeout: 10000 }
 - assertNotVisible: { id: "przewodnik-f-zegarek-pokaz" }
 - takeScreenshot: 93-zegarek-opis
+- scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady" }, direction: DOWN, timeout: 30000 } # 100% widoczności, bez centerElement (przebieg 43851148385: [16,842][386,888] na ekranie 874 pt)
 - tapOn: { id: "przewodnik-f-ekran-blokady" }
 - extendedWaitUntil: { visible: { id: "przewodnik-f-ekran-blokady-opis" }, timeout: 10000 }
 - scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }

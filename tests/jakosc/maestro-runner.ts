@@ -100,6 +100,10 @@ export function problemySkladni(s: Scenariusz): string[] {
     if (!ZNANE_POLECENIA.has(k.nazwa)) { out.push(`${s.plik}: nieznane polecenie „${k.nazwa}”`); continue; }
     for (const sel of selektory(k.nazwa, k.arg)) if (typeof sel === 'object' && sel) for (const kl of Object.keys(sel)) if (!KLUCZE_SELEKTORA.has(kl)) out.push(`${s.plik}: ${k.nazwa}: nieznany klucz selektora „${kl}”`);
     if (k.nazwa !== 'runFlow' && k.arg && typeof k.arg === 'object' && !Array.isArray(k.arg)) for (const kl of Object.keys(k.arg)) if (!KLUCZE_SELEKTORA.has(kl) && !['clearState', 'arguments', 'permissions', 'stopApp', 'clearKeychain', 'maxRetries', 'commands', 'times', 'while'].includes(kl)) out.push(`${s.plik}: ${k.nazwa}: nieznana opcja „${kl}”`);
+    if (k.nazwa === 'swipe' && k.arg && typeof k.arg === 'object') for (const kl of ['start', 'end'] as const) { // BX-048: Maestro przyjmuje punkt „x%, y%” tylko z całkowitymi procentami (albo „x, y”); „0.5%” = „Parsing Failed” (przebieg 43851148385, scen. 95)
+      const v = (k.arg as Record<string, unknown>)[kl];
+      if (typeof v === 'string' && !/^\s*\d{1,3}%\s*,\s*\d{1,3}%\s*$/.test(v) && !/^\s*\d+\s*,\s*\d+\s*$/.test(v)) out.push(`${s.plik}: swipe.${kl}: punkt „${v}” — Maestro przyjmuje całkowite procenty („50%, 1%”) albo „x, y”`);
+    }
     for (const sel of selektory(k.nazwa, k.arg)) if (typeof sel === 'object' && typeof sel.id === 'string') for (const id of sel.id.split('|')) if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) out.push(`${s.plik}: id „${id}” poza alfabetem [a-z0-9-] (selektor id to wyrażenie regularne — Trening maestro-selectors.test.ts:9)`);
   }
   return out;
@@ -268,7 +272,7 @@ export class Runner {
       case 'pressKey': if (/^home$/i.test(String(arg))) { this.fokus = null; await this.ekran.tlo(); } else if (/^enter$/i.test(String(arg))) { await this.ekran.enter(); this.fokus = null; } else this.blad(krok, `Klawisz „${arg}” nieobsłużony.`); break;
       case 'hideKeyboard': { const kl = this.fokus?.klawiatura ?? ''; if (/number|decimal|phone|numeric|liczbowa/i.test(kl)) this.blad(krok, `Couldn't hide the keyboard (klawiatura „${kl}” nie ma akcji zamknięcia).`); this.fokus = null; break; }
       case 'swipe': {
-        const pkt = (s: string) => { const m = /^\s*(\d+(?:\.\d+)?)%\s*,\s*(\d+(?:\.\d+)?)%\s*$/.exec(String(s)); if (!m) this.blad(krok, `swipe: punkt „${s}” — interpreter zna tylko procenty ekranu`); return { x: +m[1], y: +m[2] }; };
+        const pkt = (s: string) => { const m = /^\s*(\d+)%\s*,\s*(\d+)%\s*$/.exec(String(s)); if (!m) this.blad(krok, `swipe: punkt „${s}” — interpreter zna tylko procenty ekranu`); return { x: +m[1], y: +m[2] }; };
         await this.ekran.przesun(pkt(arg.start), pkt(arg.end), Number(arg.duration ?? 400)); break;
       }
       case 'scroll': await this.ekran.przewin('DOWN'); await this.ekran.odczekaj(500); break; // Maestro `scroll`: jedno przewinięcie w dół (BX-010, FX3)

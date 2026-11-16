@@ -32,6 +32,8 @@ tags:
 - takeScreenshot: 77-ustawienia-po-anuluj
 # dane bez zmian: „Dziś” z kartą „Harbor”, projekt na liście
 - scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
+- swipe: { start: "50%, 30%", end: "50%, 70%", duration: 300 } # dopchnięcie do góry: Maestro uznaje „Back” za widoczny już pod górną krawędzią pola treści (przebieg 43851148385)
+- assertVisible: { id: "nav-wstecz" }
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
 - assertVisible: { id: "dzis-projekt", text: "Harbor" }

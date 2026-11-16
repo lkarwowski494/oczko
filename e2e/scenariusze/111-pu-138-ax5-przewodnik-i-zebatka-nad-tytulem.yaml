@@ -19,7 +19,7 @@ tags:
 - takeScreenshot: 111-dzis-ax5
 - tapOn: { id: "nav-przewodnik" }
 - extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
-- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: DOWN, timeout: 30000, centerElement: true }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: DOWN, timeout: 150000, centerElement: true } # AX5: lista ~19 ekranów, przebieg 43851148385 przewinął 3,5 z 14 tys. pt w 34 s
 - tapOn: { id: "przewodnik-f-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "przewodnik-f-kontynuuj-opis" }, timeout: 10000 }
 - assertVisible: { id: "przewodnik-f-kontynuuj-pokaz", below: { id: "przewodnik-f-kontynuuj-opis" } }

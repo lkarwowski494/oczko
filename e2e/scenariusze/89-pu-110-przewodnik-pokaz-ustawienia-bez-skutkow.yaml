@@ -47,6 +47,9 @@ tags:
 - extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
 - assertNotVisible: { id: "eksport-wynik" }
 - assertNotVisible: { id: "oferty-stan-pro" }
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 90000 } # „Back” leży w ScrollView przewodnika (Przewodnik.tsx:75), po „Show” lista stoi nisko
+- swipe: { start: "50%, 30%", end: "50%, 70%", duration: 300 } # dopchnięcie do góry: Maestro uznaje „Back” za widoczny już pod górną krawędzią pola treści (przebieg 43851148385)
+- assertVisible: { id: "nav-wstecz" }
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
 - runFlow: subflows/otworz-ustawienia.yaml
