@@ -16,7 +16,7 @@ Sesja FX5, gałąź `claude/fx5-poprawki-2026-11-16` od 373a3123. Koordynator: s
 - **PU-044** (zamiast „Na karcie „Dziś” „Do …, dziś 0 z N rzędów”; …”): „Na liście „Projekty” w wierszu projektu z terminem cel dnia („Today: 0 of N rows” ⟦Dziś: 0 z N rzędów⟧) , a na ekranie projektu „Do …, dziś 0 z N rzędów” ⟦Done by …, today 0 of N rows⟧; karta „Dziś” celu dnia nie pokazuje (scope-contract:9); w sekcji „W toku” projekt z terminem nad projektami bez terminu.” Kolumna „Droga”: „Po ustawieniu terminu → „Projekty” (wiersz projektu) → projekt.” Kolumna „Ekran”: `(zakladki)/projekty`, `projekt/[id]`.
   Uwaga: dokładny tekst en/pl wiersza listy i linii na ekranie projektu do potwierdzenia przez sesję BX przy pisaniu scenariusza (`projekty.dzis_*` vs. `projekt.*`); tu podany z `en.json:208`.
 
-## Zadania 2–5 (stan: wszystkie commity lokalne na `claude/fx5-poprawki-2026-11-16`; **push wstrzymany** — patrz „Blokada”)
+## Zadania 2–5 (commity na `claude/fx5-poprawki-2026-11-16`)
 
 | Zadanie | Commit | Test czerwony → zielony | Uwagi |
 |---|---|---|---|
@@ -34,9 +34,9 @@ Bramka (`scripts/jakosc/bramka-przypadki-uzycia.mjs:231-243`, `bladTestuPU:171-1
 Wzmianki o `PU-011` w pliku: linie 105 i 108; 125 mieści się w 40 liniach. Sprawdzić `npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts tests/jakosc/przypadki-uzycia.test.ts` po zmianie wiersza (kontrola 2 „B z testem”). Uwaga: numery linii przesuną się, jeśli ktoś edytuje plik testu przed scaleniem.
 Dla PU-333 bramka **nie przyjmuje** testu Swift jako „z testem:” (tylko `*.test.ts[x]`); wpis zostaje „do zaprogramowania: jednostkowy — Swift …” — bramki nie zmieniam, to sprawa decyzji (rola 07/koordynator).
 
-### Blokada: push
+### Plik generowany: tabela-08 (KO-090, opcja A)
 
-Hak pre-push zatrzymuje push, bo generator `node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md` kończy się kodem 1 po zmianie testów w `tests/ekrany` (liczba testów i importy `src` w wierszach `e2e-zegarek-stan.test.tsx` i `pu-wzor-przelacz-290.test.tsx`). Plik poza listą z p. 5 polecenia — pytanie do koordynatora wysłane (opcje A: regeneruję poleceniem z komunikatu hooka; B: regeneruje koordynator po scaleniu). Różnica po regeneracji: dokładnie dwa wiersze (185 i 366).
+Koordynator zezwolił (KO-090) regenerować `docs/jakosc/e4/tabela-08.md` wyłącznie generatorem: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/tabela-08.md` (kontrola: `--check`, kod 0). Zmieniły się dokładnie dwa wiersze (`e2e-zegarek-stan.test.tsx`: 2 → 6 testów, import `src/platforma/zegarek`; `pu-wzor-przelacz-290.test.tsx`: 2 → 3). Commit osobny (nie ten sam co testy — historia lokalna już była zapisana). Inne pliki generowane wymagane przez `verify`: dotąd brak.
 
 ## Decyzje do przeniesienia
 
