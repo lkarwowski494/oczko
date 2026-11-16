@@ -23,6 +23,12 @@ flows:
   - 108-pu-044-cel-dnia-na-liscie-i-projekcie-projekt-z-terminem-wyzej.yaml
   - 109-pu-291-zmien-nazwe-wzoru-tytul-grupa-pusta-nazwa.yaml
   - 11-br-dan-001-s1-baza-bez-sieci.yaml
+  - 110-pu-012-ipad-zakreslanie-jak-na-iphonie.yaml
+  - 111-pu-138-ax5-przewodnik-i-zebatka-nad-tytulem.yaml
+  - 114-pu-146-ipad-kazdy-ekran-sie-obraca.yaml
+  - 115-pu-147-ipad-przewodnik-pokaz-wstecz-i-przeczytane-od-zera.yaml
+  - 116-pu-148-ipad-zakreslenia-zostaja-po-tle-i-restarcie.yaml
+  - 117-pu-150-ipad-znacznik-przytrzymaniem-takze-na-obroconej-stronie.yaml
   - 12-br-zak-006-s4-bez-oferty-w-pracy.yaml
   - 13-kp-10-zakup-tylko-po-dzialaniu.yaml
   - 14-br-lic-004-s4-gest-od-krawedzi.yaml

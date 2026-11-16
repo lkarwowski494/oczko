@@ -1,0 +1,34 @@
+# PU-147 (G-23): przewodnik na iPadzie — świeży start „Read: 0 of 42”, krok „Show ›” otwiera licznik, „+1” działa, „‹” wraca do przewodnika; w Ustawieniach wiersz „Guide” pokazuje to samo „0 of 42”.
+# Wzór: scen. 86 (PU-107) i 70 (P-688); „Przeczytane liczy się osobno od 0” = świeża instalacja nie dziedziczy stanu z iPhone'a (dane lokalne, brak synchronizacji przeczytanych).
+appId: com.apps4brew.knitting
+name: "PU-147 · iPad: przewodnik od 0 z 42, „Show ›” → licznik → „+1” → wstecz do przewodnika, Ustawienia zgodne"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-147
+  - ipad
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-postep", text: "Read: 0 of 42" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-2-pokaz" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "przewodnik-krok-2-pokaz" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "0" }, timeout: 20000 }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- takeScreenshot: 115-licznik-z-przewodnika
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "licznik-plus" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik-wartosc" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-przewodnik-wartosc", text: "0 of 42" }
+- takeScreenshot: 115-ustawienia-przewodnik

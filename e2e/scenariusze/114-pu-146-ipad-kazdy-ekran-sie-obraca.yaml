@@ -1,0 +1,38 @@
+# PU-146 (T-96, G-23): na pełnym ekranie iPada „Dziś”, „Ustawienia” i przewodnik obracają się (pion i poziom); proporcję okna czyta panel `e2e-okno` (build E2E, CH-01/P-916).
+# Część „treść w wyśrodkowanej kolumnie, maks. 640 pt” nie ma selektora w Maestro (kolumna to układ, nie element): `tests/ekrany/bezpieczny-ipad.test.tsx` (komponentowy) + zrzuty 114-* do oceny.
+appId: com.apps4brew.knitting
+name: "PU-146 · iPad: „Dziś”, „Ustawienia” i przewodnik obracają się, pion i poziom"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-146
+  - ipad
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: landscape.*" }
+- assertVisible: { id: "dzis-karta" }
+- takeScreenshot: 114-dzis-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
+- runFlow: subflows/otworz-ustawienia.yaml
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: landscape.*" }
+- assertVisible: { id: "ustawienia-jezyk" }
+- takeScreenshot: 114-ustawienia-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: landscape.*" }
+- assertVisible: { id: "przewodnik" }
+- takeScreenshot: 114-przewodnik-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }

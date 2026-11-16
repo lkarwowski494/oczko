@@ -1,0 +1,36 @@
+# PU-150 (T-98): iPad — przytrzymanie na wierszu stawia znacznik (pierwszy raz pyta o kierunek), „Obróć stronę” z menu •••, przytrzymanie na obróconej stronie znowu działa (pasek z rzędem).
+# Ograniczenie jak 103 (CH-02): „na wysokości palca” rysuje widok natywny, Maestro czyta tylko rząd (zachowywany przy przeniesieniu) — położenie: zrzuty 117-*. Przytrzymanie przy zamkniętym pasku
+# nie otwiera paska (`WzorWidokNatywny.tsx:76-83`), więc skutek na obróconej stronie sprawdza `wzor-zaznacz` (znacznik istnieje, brak karty kierunku). BX-041.
+appId: com.apps4brew.knitting
+name: "PU-150 · iPad: znacznik przytrzymaniem na wzorze i na obróconej stronie — rząd 1 i brak ponownego pytania o kierunek"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-150
+  - ipad
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- longPressOn: { point: "50%, 40%" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- takeScreenshot: 117-po-przytrzymaniu
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+- tapOn: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-obroc" }
+- tapOn: { id: "wzor-obroc" }
+- assertNotVisible: { id: "wzor-obroc" }
+- longPressOn: { point: "50%, 50%" }
+- assertNotVisible: { id: "wzor-kierunek" }
+- takeScreenshot: 117-obrocona-po-przytrzymaniu
+- tapOn: { id: "wzor-zaznacz" }
+- assertNotVisible: { id: "wzor-kierunek" }
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }

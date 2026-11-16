@@ -1,0 +1,32 @@
+# PU-138 (G-21): przy AX5 „Guide” i zębatka stoją w osobnym wierszu NAD tytułem „Dziś”, w przewodniku „Show ›” leży pod zdaniem opisu, wartość „… of 42” w Ustawieniach jest w całości.
+# Rozmiar tekstu ustawia workflow przed scenariuszem (`simctl ui … content_size accessibility-extra-extra-extra-large`), dlatego tag `osobny-krok` (jak 30; e2e-czesci.mjs).
+# Hipotezy do przebiegu iOS (BX-042): (1) tytuł „Today” nie ma testID — `above: "Today"` może wskazać etykietę zakładki na dole („Today” jest też w pasku zakładek), wtedy asercja jest za słaba;
+# (2) „nieucięte” (przewodnik, wartość „0 of 42”) sprawdzają tylko zrzuty 111-* (Maestro nie czyta obciętego tekstu). Odpowiednik komponentowy: `tests/ekrany/pu-dzis-voiceover-129.test.tsx` (AX3).
+appId: com.apps4brew.knitting
+name: "PU-138 · AX5: „Guide” i zębatka nad tytułem „Dziś”, „Show ›” pod zdaniem, „… of 42” w całości"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-138
+  - osobny-krok
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- assertVisible: { id: "nav-przewodnik", above: "Today" }
+- assertVisible: { id: "nav-ustawienia", above: "Today" }
+- takeScreenshot: 111-dzis-ax5
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-kontynuuj-opis" }, timeout: 10000 }
+- assertVisible: { id: "przewodnik-f-kontynuuj-pokaz", below: { id: "przewodnik-f-kontynuuj-opis" } }
+- takeScreenshot: 111-przewodnik-rozwiniety-ax5
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik-wartosc" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "ustawienia-przewodnik-wartosc", text: "1 of 42" }
+- takeScreenshot: 111-ustawienia-przewodnik-ax5
