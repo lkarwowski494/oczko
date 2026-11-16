@@ -1,0 +1,7 @@
+FX3 (08 fix, 2026-11-16) — dowody czerwieni przed poprawką. Start f562da5b.
+
+== BX-010 (scenariusz 39, e2e/scenariusze/39-p-190-jezyk-trwaly.yaml) ==
+npx jest tests/jakosc/e2e-39-jezyk-dolny-brzeg-bx010.test.ts --ci  → FAIL (kod 1), na scenariuszu bez `scroll`:
+  ✕ BX-010: stuknięcie wiersza „Język” po przewinięciu jest poprzedzone dodatkowym `scroll` (dolny brzeg ScrollView)
+    Expected: "scroll"   Received: "scrollUntilVisible"
+Po poprawce: PASS (154 testy w e2e-kruchosc* + nowy).

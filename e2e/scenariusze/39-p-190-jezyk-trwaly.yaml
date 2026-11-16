@@ -21,7 +21,8 @@ tags:
 - runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:40:00" } }
 - runFlow: subflows/otworz-ustawienia.yaml
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
-- waitForAnimationToEnd # BX-010: po restarcie stuknięcie tuż po przewinięciu nie otwierało ekranu Język (przebieg 43752186631, 2×: zrzut kroku 61 = nadal Ustawienia); hipoteza: wytracanie ruchu pochłania stuknięcie
+- scroll # BX-010: scrollUntilVisible kończy, gdy ramka wiersza mieści się na ekranie, a środek wiersza leży jeszcze poza ScrollView (dolne wcięcie: ustawienia [0,62][402,840], wiersz [20,823][382,867], przebieg 43774048947 krok 62); jeszcze jedno przewinięcie do końca listy
+- waitForAnimationToEnd # BX-010: wytracanie ruchu po przewinięciu przed stuknięciem
 - tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
 - extendedWaitUntil: { visible: { id: "jezyk" }, timeout: 20000 } # ekran Język otwarty, zanim zacznie się szukanie wiersza
 - scrollUntilVisible: { element: { id: "jezyk-pl" } }
@@ -30,6 +31,7 @@ tags:
 - tapOn: { id: "jezyk-auto" }
 - assertVisible: { id: "ustawienia" }
 - scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
+- scroll # BX-010 (jak wyżej)
 - waitForAnimationToEnd # BX-010 (jak wyżej)
 - tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
 - assertVisible: { id: "jezyk-auto", text: "Same as phone, selected" }
