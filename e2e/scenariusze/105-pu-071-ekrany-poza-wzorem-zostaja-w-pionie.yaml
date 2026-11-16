@@ -1,7 +1,8 @@
 # PU-071 (T-46, T-93): licznik, „Dziś”, „Ustawienia”, „Projekty”, „Historia”, „Narzędzia” po obrocie telefonu poziomo zostają w pionie (iPhone).
-# Kod: orientacja ekranu per trasa (`app/_layout.tsx:122,128`, `orientacjaEkranu('inny', …)`, `src/domena/uklad.ts:35`) — poza `wzor` pion; asercja: elementy dolne (`licznik-plus`, `nav-dzis`) leżą pod elementem górnym
-# jak w pionie (`below`), a po powrocie do pionu nic się nie zmienia. Zrzuty 105-* do porównania z wzorcem pionowym (docs/design). Ograniczenie: Maestro nie czyta wymiarów okna —
-# układ „poziomy” poznaje po tym, że `below` przestaje być prawdą (hipoteza do przebiegu iOS).
+# Kod: orientacja ekranu per trasa (`app/_layout.tsx:122,128`, `orientacjaEkranu('inny', …)`, `src/domena/uklad.ts:35`) — poza `wzor` pion. Dowód wartości (CH-01, BX11): panel `e2e-okno` w korzeniu
+# nawigacji (build E2E) pokazuje proporcję okna z `useWindowDimensions` („window: portrait (…)” / „window: landscape (…)”); po każdym `setOrientation: LANDSCAPE_LEFT` scenariusz asertuje „portrait”,
+# więc pada, gdy któryś z ekranów da się obrócić. Asercje `below` zostają jako dodatkowa kontrola układu (prawdziwe w obu orientacjach, same orientacji nie dowodzą). Zrzuty 105-* do porównania z wzorcem
+# pionowym (docs/design). Ograniczenie: gdyby `setOrientation` nie obracał symulatora, okno też zostałoby pionowe (nie ma tu kontroli pozytywnej; obrót wzoru sprawdza scen. 103).
 appId: com.apps4brew.knitting
 name: "PU-071 · Ekrany poza wzorem po obrocie poziomo zostają w pionie: licznik, Dziś, Ustawienia, Projekty, Historia, Narzędzia"
 tags:
@@ -15,6 +16,7 @@ tags:
       TERAZ: "2026-11-16T12:00:00"
 - assertVisible: { id: "licznik-plus" }
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "licznik-plus", below: { id: "licznik-wartosc-wiersz" } }
 - takeScreenshot: 105-licznik-poziomo
 - setOrientation: PORTRAIT
@@ -25,6 +27,7 @@ tags:
     env:
       TERAZ: "2026-11-16T12:00:00"
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "nav-dzis", below: { id: "dzis-karta" } }
 - takeScreenshot: 105-dzis-poziomo
 - setOrientation: PORTRAIT
@@ -32,6 +35,7 @@ tags:
 # --- „Ustawienia” ---
 - runFlow: subflows/otworz-ustawienia.yaml # P-571: Ustawienia tylko przez zębatkę „Dziś” (podprzepływ)
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "ustawienia-jezyk", below: { id: "nav-wstecz" } }
 - takeScreenshot: 105-ustawienia-poziomo
 - setOrientation: PORTRAIT
@@ -42,6 +46,7 @@ tags:
 - tapOn: { id: "nav-projekty" }
 - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "nav-dzis", below: { id: "projekty-lista" } }
 - takeScreenshot: 105-projekty-poziomo
 - setOrientation: PORTRAIT
@@ -50,6 +55,7 @@ tags:
 - tapOn: { id: "nav-historia" }
 - extendedWaitUntil: { visible: { id: "historia" }, timeout: 20000 }
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "nav-dzis", below: { id: "historia" } }
 - takeScreenshot: 105-historia-poziomo
 - setOrientation: PORTRAIT
@@ -58,6 +64,7 @@ tags:
 - tapOn: { id: "nav-narzedzia" }
 - extendedWaitUntil: { visible: { id: "narzedzia-wloczki" }, timeout: 20000 }
 - setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "nav-dzis", below: { id: "narzedzia-wloczki" } }
 - takeScreenshot: 105-narzedzia-poziomo
 - setOrientation: PORTRAIT

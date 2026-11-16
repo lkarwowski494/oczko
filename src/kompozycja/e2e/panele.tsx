@@ -25,6 +25,8 @@ export { zapamietajAdres, zliczajProsby } from './ocena-stan';
 export { PanelNawigacji, zerujNawigacje, zliczNawigacje } from './nawigacje-stan';
 // FX6b (P-909): wejścia „+1”/„−1” i zapisy licznika (panel `e2e-licznik-wejscia`) oraz zdarzenia zmiany tekstu w formularzu nazwy (panel `e2e-nazwa-wejscia`).
 export { diagnostykaLicznika, PanelLicznika, PanelNazwy, zerujWejscia, zliczWpisNazwy } from './wejscia-stan';
+// CH-01 (BX11): proporcja okna aplikacji (panel `e2e-okno` w app/_layout.tsx; scenariusz 105, PU-071).
+export { opisOkna, PanelOkna } from './okno-stan';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {

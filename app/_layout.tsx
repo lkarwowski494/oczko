@@ -142,6 +142,8 @@ export default function Korzen(): React.ReactElement {
         <Stack.Screen name="drut" options={{ presentation: 'modal' }} />
         <Stack.Screen name="zdjecie" options={{ presentation: 'fullScreenModal' }} />
       </Stack>
+      {/* CH-01 (BX11): build E2E pokazuje proporcję okna (scenariusz 105, PU-071); w wydaniu `paneleE2e` = null. */}
+      {paneleE2e ? <paneleE2e.PanelOkna /> : null}
       </KontekstWstecz.Provider>
     </DostawcaAplikacji>
   );
