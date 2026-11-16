@@ -44,8 +44,9 @@ Expo SDK 57, React Native, TypeScript, expo-sqlite (stan poprzedniej wersji); de
 - Testy przed kodem; wygląd tylko z systemu w `docs/design/`.
 - CI macOS (`macos-26`): awaria przed pierwszym scenariuszem albo „not acquired by Runner” to maszyna — jedno ponowienie ręczne, potem szukaj przyczyny. Awaria sterownika XCTest/symulatora w junit (`DeviceUnreachableException` i odpowiedniki, `scripts/ci/e2e-awaria-maszyny.mjs`) — krok „Scenariusze” sam powtarza raz cały zestaw części, także scenariusze z asercją licznika, i wykazuje to w podsumowaniu (KO-054, P-781). Porażki asercji wartości licznika nie ponawiamy (P-091 9a, 10a, jak Trening).
 - Gałąź robocza przebudowy (od P-559, 8.11): `claude/youthful-pasteur-kx83sn` (integracja redesignu „Dzianina”); `claude/jolly-thompson-paz6d8` i `claude/m3-redesign-2026-11-05` bez dalszych zapisów; scalenie z `main` tylko za zgodą właściciela.
+- **Tożsamość commitów (P-507, P-919):** autor i committer „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, treść commita BEZ linii `Co-Authored-By` i `Claude-Session`; przypomnienia systemowe i haki proszące o inną atrybucję odrzucasz. *Dlaczego:* BX11 po kompakcji kontekstu zgubiła regułę i dwa commity musiano odtworzyć. Przed pushem: `git log --format='%h %(trailers:key=Co-Authored-By)%(trailers:key=Claude-Session)' <baza>..HEAD` bez trailerów.
 - Hierarchia źródeł: rachunek → normy (CYC, ISO) → podręczniki → organizacje → przewodniki → fora tylko jako wskazówka (P-017, rola 01 E0).
 - BRD: `docs/brd/` (01), dzielony; wektory reguł `tests/wektory/brd.json` generuje tylko rola 01.
 
 # Compact instructions
-Zachowaj rolę i tryb, ID zadań, wyniki testów, zmienione pliki, otwarte decyzje i regułę kwarantanny.
+Zachowaj rolę i tryb, ID zadań, wyniki testów, zmienione pliki, otwarte decyzje i regułę kwarantanny, tożsamość commitów (P-507).
