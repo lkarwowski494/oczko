@@ -9,6 +9,9 @@ tags:
   - NFR-UKL-001
   - ipad
   - stan-licznika
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-144
 ---
 - launchApp:
     clearState: true
