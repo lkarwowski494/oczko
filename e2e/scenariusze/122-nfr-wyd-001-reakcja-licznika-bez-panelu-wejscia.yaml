@@ -25,6 +25,7 @@ tags:
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
 - assertVisible: { id: "licznik-plus" }
+- tapOn: { id: "licznik-plus" } # BX18: licznik startuje od 0 (jak w 31) — pierwsze „+1” przed asercją „1”
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - runFlow: subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }

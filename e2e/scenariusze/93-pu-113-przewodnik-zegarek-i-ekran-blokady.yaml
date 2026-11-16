@@ -25,9 +25,13 @@ tags:
 - assertNotVisible: { id: "przewodnik-f-zegarek-pokaz" }
 - takeScreenshot: 93-zegarek-opis
 - scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady" }, direction: DOWN, timeout: 30000 } # 100% widoczności, bez centerElement (przebieg 43851148385: [16,842][386,888] na ekranie 874 pt)
+- swipe: { start: "50%, 75%", end: "50%, 50%", duration: 400 } # BX18: wiersz leży przy dolnej krawędzi ekranu (825–871 przy ramce listy do 840) — przeciągnięcie wprowadza go w ramkę, inaczej stuknięcie w środek (y 848) trafia poza listę (przebieg 43893320145)
+- assertVisible: { id: "przewodnik-f-ekran-blokady" }
 - tapOn: { id: "przewodnik-f-ekran-blokady" }
 - extendedWaitUntil: { visible: { id: "przewodnik-f-ekran-blokady-opis" }, timeout: 10000 }
-- scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady-pokaz" }, direction: DOWN, timeout: 30000 } # bez centerElement na końcu listy (KO-109, BX18)
+- swipe: { start: "50%, 75%", end: "50%, 50%", duration: 400 } # jak wyżej
+- assertVisible: { id: "przewodnik-f-ekran-blokady-pokaz" }
 - tapOn: { id: "przewodnik-f-ekran-blokady-pokaz" }
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "0" }, timeout: 20000 }
 - assertVisible: { id: "licznik-plus" }

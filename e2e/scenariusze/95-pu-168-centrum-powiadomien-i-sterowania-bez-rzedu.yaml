@@ -1,6 +1,7 @@
 # PU-168 (T-114): Centrum powiadomień i Centrum sterowania (gest od górnej krawędzi, środek i prawy róg) nie dodają rzędu; w dół i z powrotem.
 # Kod: licznik `licznik-plus`/`licznik-wartosc`; strażnik krawędzi — scen. 14 (gesty od dolnej krawędzi, PU-167). Tu krawędź górna: `swipe` Maestro z 0,5% wysokości.
 # Ograniczenie (BX-021): symulator iOS może nie otworzyć Centrum od `swipe` Maestro (gest systemowy z krawędzi); scenariusz sprawdza, że licznik się nie zmienił — tego wymaga PU („Żadne +1 nie zostało dodane”), nie samo otwarcie Centrum.
+# BX18 (przebieg 43893320145): Centrum sterowania OTWORZYŁO się — to osobny proces, więc dopóki jest otwarte, aplikacji nie ma w hierarchii XCUI (Centrum powiadomień ją zachowuje). Dlatego po otwarciu Centrum sterowania NIE czekamy na licznik; wartość „1” sprawdzamy po zamknięciu.
 appId: com.apps4brew.knitting
 name: "PU-168 · Gest od górnej krawędzi (Centrum powiadomień i sterowania) nie dodaje rzędu"
 tags:
@@ -17,13 +18,13 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "1" }
 - runFlow: subflows/odstep.yaml
 - swipe: { start: "50%, 1%", end: "50%, 60%", duration: 400 } # Centrum powiadomień (środek górnej krawędzi)
-- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 } # Centrum powiadomień zostawia aplikację w hierarchii
 - swipe: { start: "50%, 60%", end: "50%, 1%", duration: 400 } # zamknięcie
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
 - takeScreenshot: 95-po-centrum-powiadomien
 - swipe: { start: "95%, 1%", end: "95%, 60%", duration: 400 } # Centrum sterowania (prawy róg)
-- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
-- swipe: { start: "95%, 60%", end: "95%, 1%", duration: 400 }
+- assertNotVisible: { id: "licznik-wartosc", text: "2" } # prawda przy otwartym Centrum (aplikacji nie ma w hierarchii) i przy nieotwartym (licznik 1): żadne +1 nie doszło; bez czekania na aplikację
+- swipe: { start: "95%, 60%", end: "95%, 1%", duration: 400 } # zamknięcie
 - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
 - takeScreenshot: 95-po-centrum-sterowania
 - runFlow: subflows/odstep.yaml

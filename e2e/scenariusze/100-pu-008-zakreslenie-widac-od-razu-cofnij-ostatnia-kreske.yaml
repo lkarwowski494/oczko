@@ -1,6 +1,7 @@
 # PU-008 (Z-01): nowe zakreślenie widać od razu i można cofnąć tylko ostatnie; zapis przeżywa restart.
 # Kod: `wzor-zakreslacz`, `wzor-zakreslenia` („N highlight(s)”), `wzor-cofnij-rysunek` („Undo last stroke”), `nav-wstecz`, `licznik-wzor` — wzór kroków: scen. 26 (swipe w trybie zakreślacza, adnotacja na jednym dokumencie, OG-07).
-# Ograniczenie (BX-029, hipoteza): po powrocie z licznika tryb zakreślacza może być wyłączony — krok `when` stuka narzędzie tylko wtedy, gdy nie jest wybrane (niepotwierdzone na iOS).
+# BX18 (przebieg 43893320145): na iPhonie w trybie zakreślacza pasek nawigacji jest paskiem narzędzi z „Done” (WzorPrzegladarka.tsx:122-127) i nie ma `nav-wstecz` — przed powrotem tryb wyłączamy stuknięciem narzędzia.
+# Po powrocie z licznika tryb może być wyłączony — krok `when` stuka narzędzie tylko wtedy, gdy nie jest wybrane (BX-029).
 appId: com.apps4brew.knitting
 name: "PU-008 · Zakreślenie od razu, cofnięcie tylko ostatniej kreski, po restarcie 2 zakreślenia"
 tags:
@@ -22,6 +23,8 @@ tags:
 - swipe: { start: "20%, 35%", end: "80%, 35%", duration: 800 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 # --- zamknięcie i ponowne otwarcie wzoru, drugi pas od razu ---
+- tapOn: { id: "wzor-zakreslacz" } # BX18: wyłączenie trybu przywraca nawigację z `nav-wstecz`
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-wzor" }, timeout: 30000 }
 - scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5: akcja pod liczbą bywa poza ekranem

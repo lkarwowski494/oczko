@@ -309,3 +309,16 @@ Następca BX16. Decyzja: P-942 (rozstrzygnięcie P-938: wariant (b), KO-122, for
 - **Zad. 1 — zrobione:** PU-175, PU-180, PU-191 w klasie B z Pokryciem „z testem: …; ” + dotychczasowa treść (odnośniki: `tests/i18n/pu-175-klucze-de-ja-ekrany.test.ts:35`, `tests/wydanie/adresy-179.test.ts:10`, `tests/jakosc/pu-191-bez-sdk-reklam-i-sledzenia.test.ts:137`). Podsumowanie A=118, B=166, F=60, razem 344; `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog` zielona; linia „B według pokrycia” z testem 148.
 - **Nowy test PU-175:** kompletność przekładów de/ja kluczy ekranów języka, „Dziś”, licznika, oferty, Ustawień i przewodnika (scenariusz 118 sprawdza 8 napisów). Mutacja na kopii słowników → 2 testy czerwone; na prawdziwych — zielone.
 - **Niezweryfikowane do przebiegu iOS:** nadal czy 122 przechodzi na CI i jaki p95 daje bez panelu wejść (BX16).
+
+## BX18 (08-programista build, 2026-11-16; polecenie koordynatora session_01T66VBzb4nxMxEGdBmHBUbV; gałąź `claude/bx15-2026-11-16` od 7a738d84)
+Diagnoza czerwieni przebiegu iOS 43893320145 (części 2, 3, 4). Decyzja: P-943. Dowód czerwony: `docs/jakosc/bx18-dowod-czerwony.txt`.
+- **BX-055 · 100 (PU-008) — błąd scenariusza, naprawiony:** `WzorPrzegladarka.tsx:122-127` (pasek narzędzi z „Done” zamiast nawigacji w trybie zakreślacza); poprawka w `100-…yaml` (stuknięcie `wzor-zakreslacz` + asercja przed `nav-wstecz`). Nie regresja b686b61..7a738d8.
+- **BX-056 · 93 (PU-113) — błąd scenariusza, naprawiony:** wiersz 825–871 przy ramce 840, pomiar widoczności względem ekranu 874; swipe w górę + asercja przed obydwoma stuknięciami, bez `centerElement` (`93-…yaml:27-35`).
+- **BX-057 · 95 (PU-168) — błąd scenariusza, naprawiony:** Centrum sterowania otwiera się naprawdę i zabiera aplikację z hierarchii; po otwarciu `assertNotVisible licznik-wartosc "2"`, „1” po zamknięciu (`95-…yaml:24-28`); nagłówek BX-021 poprawiony (było: „może nie otworzyć”).
+- **BX-058 · 122 (PU-161, bramka) — błąd scenariusza, naprawiony:** brak `tapOn licznik-plus` przed asercją „1” (`122-…yaml:28`). 122 nigdy wcześniej nie biegł, więc **p95 bez panelu wejść wciąż niezmierzony** (czeka na przebieg po tej poprawce).
+- **31 (p95) — bez zmiany:** p95 151 ms z panelem w 43893320145 (162 i 170 ms w BX13); próg i asercja nietknięte; dwa warianty wysłane koordynatorowi (A rekomendowany), odpowiedzi brak.
+- **26 (część 2, bramka) i 118 (część 3, bramka) — maszyna/nierozstrzygnięte, tylko diagnoza:** w obu stuknięcie dotarło do aplikacji (log XCTest „send gesture actions”) bez skutku; kod na ścieżce bez zmian w b686b61..7a738d8; 118 zielone w 43851148385; 26 czeka 30 s na `wzor-widok` po `e2e-wzor-pdf`. Nic nie zmieniono. Jeśli powtórzy się w następnym przebiegu — szukać przyczyny (po jednym ponowieniu, zasada CI macOS).
+- **Poza zakresem, nieanalizowane:** czerwone informacyjnie 103, 105, 109; job `eksperymenty-wzoru` (W1–W3).
+- **Katalog (zasada 22):** tylko linki `plik:linia` w Pokryciu PU-008 (:46, :49), PU-113 (:25, :36), PU-161 (:54), PU-168 (:28, :32); klasy bez zmian.
+- **Niezweryfikowane do przebiegu iOS:** że 100, 93, 95 i 122 przechodzą na symulatorze (test sprawdza strukturę, nie zachowanie symulatora).
+
