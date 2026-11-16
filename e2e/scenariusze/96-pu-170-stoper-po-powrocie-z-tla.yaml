@@ -1,0 +1,29 @@
+# PU-170 (T-115): stoper sesji działa dalej po powrocie z tła; wartość licznika bez zmian.
+# Kod: stoper `licznik-stoper` (etykieta stanu: „Session timer, {czas}, running…”, scen. 37); tło: `pressKey: Home` + `launchApp: { stopApp: false }` (scen. 19, PU-…).
+# „Z rosnącym czasem” = czas w etykiecie po powrocie jest inny niż przed tłem; Maestro nie porówna dwóch odczytów w asercji (BX-021) — sprawdzamy stan „running” i wartość licznika; wzrost czasu na zrzutach 96-przed / 96-po.
+appId: com.apps4brew.knitting
+name: "PU-170 · Stoper po powrocie z tła nadal „running”, wartość licznika bez zmian"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-170
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 96-przed
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 96-po

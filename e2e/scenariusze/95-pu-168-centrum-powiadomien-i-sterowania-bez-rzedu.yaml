@@ -1,0 +1,31 @@
+# PU-168 (T-114): Centrum powiadomień i Centrum sterowania (gest od górnej krawędzi, środek i prawy róg) nie dodają rzędu; w dół i z powrotem.
+# Kod: licznik `licznik-plus`/`licznik-wartosc`; strażnik krawędzi — scen. 14 (gesty od dolnej krawędzi, PU-167). Tu krawędź górna: `swipe` Maestro z 0,5% wysokości.
+# Ograniczenie (BX-021): symulator iOS może nie otworzyć Centrum od `swipe` Maestro (gest systemowy z krawędzi); scenariusz sprawdza, że licznik się nie zmienił — tego wymaga PU („Żadne +1 nie zostało dodane”), nie samo otwarcie Centrum.
+appId: com.apps4brew.knitting
+name: "PU-168 · Gest od górnej krawędzi (Centrum powiadomień i sterowania) nie dodaje rzędu"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-168
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- swipe: { start: "50%, 0.5%", end: "50%, 60%", duration: 400 } # Centrum powiadomień (środek górnej krawędzi)
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- swipe: { start: "50%, 60%", end: "50%, 0.5%", duration: 400 } # zamknięcie
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- takeScreenshot: 95-po-centrum-powiadomien
+- swipe: { start: "95%, 0.5%", end: "95%, 60%", duration: 400 } # Centrum sterowania (prawy róg)
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- swipe: { start: "95%, 60%", end: "95%, 0.5%", duration: 400 }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- takeScreenshot: 95-po-centrum-sterowania
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }

@@ -93,3 +93,6 @@ flows:
   - 89-pu-110-przewodnik-pokaz-ustawienia-bez-skutkow.yaml
   - 92-pu-112-przewodnik-z-ustawien-pokaz-wraca-do-ustawien.yaml
   - 93-pu-113-przewodnik-zegarek-i-ekran-blokady.yaml
+  - 94-pu-322-dozywotnio-bez-planow-po-zakupie.yaml
+  - 95-pu-168-centrum-powiadomien-i-sterowania-bez-rzedu.yaml
+  - 96-pu-170-stoper-po-powrocie-z-tla.yaml
