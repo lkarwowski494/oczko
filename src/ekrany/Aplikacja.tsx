@@ -28,6 +28,16 @@ export type DzialaniaLicznika = Partial<Omit<PropsLicznika, 'stan' | 't' | 'oglo
   /** Stan licznika po zmianie z innego ekranu (np. odblokowanie, cofnięcie serii); kompozycja woła po COMMIT. */
   odswiez?(): Promise<StanEkranuLicznika>;
 };
+/**
+ * Diagnostyka buildu E2E (FX6b, P-909): licznik wywołań obsługi „+1”/„−1”, zapisów, wartości ze stanu i odczytów stanu. Podaje ją tylko trasa licznika w buildzie E2E
+ * (app/licznik.tsx przez `paneleE2e`); w wydaniu jest `undefined`, więc wywołania niczego nie robią.
+ */
+export type DiagnostykaLicznika = {
+  wejscie(akcja: 'plus' | 'minus'): void;
+  zapis(akcja: 'plus' | 'minus', ok: boolean): void;
+  stan(skonczone: number): void;
+  odswiezenie(zdarzenie: 'start' | 'zastosowane' | 'pominiete'): void;
+};
 export type PropsAplikacji = {
   porty: { sklep: Sklep; ekranAktywny: EkranAktywny; haptyka: Haptyka }; // DziennikPlus czyta przypadek użycia scalDziennik
   uslugi: UslugiAplikacji;
@@ -50,26 +60,42 @@ export type PropsAplikacji = {
 };
 
 /** Stan licznika na ekranie i działania, które go zmieniają — wspólne dla „Dziś” i trasy licznika (jeden przypadek użycia `dodajRzad`, ZM-18). */
-function useStanLicznika(uslugi: Pick<UslugiAplikacji, 'dodajRzad'>, dzialania: DzialaniaLicznika | undefined, ustawStan: React.Dispatch<React.SetStateAction<StanStartu | null>>) {
+function useStanLicznika(uslugi: Pick<UslugiAplikacji, 'dodajRzad'>, dzialania: DzialaniaLicznika | undefined, ustawStan: React.Dispatch<React.SetStateAction<StanStartu | null>>, diagnostyka?: DiagnostykaLicznika) {
   const d = dzialania ?? {};
+  // Numer ostatniej zmiany stanu licznika (wpis z +1/−1 albo początek odczytu): odczyt, który nie jest już najnowszy, kończy się po nowszej zmianie i nie nadpisuje jej starszą wartością
+  // (na wolnym telefonie odczyty kończą się w innej kolejności niż zaczęły; FX6b).
+  const wydanie = useRef(0);
   async function odswiez() {
     if (!d.odswiez) return;
+    const moje = ++wydanie.current;
+    diagnostyka?.odswiezenie('start');
     const l = await d.odswiez();
+    if (moje !== wydanie.current) { diagnostyka?.odswiezenie('pominiete'); return; }
+    diagnostyka?.odswiezenie('zastosowane');
+    diagnostyka?.stan(l.skonczone);
     ustawStan((s) => (s ? { ...s, licznik: l } : s));
   }
   // Działanie zmieniające licznik poza +1/−1 (cofnięcie serii, odblokowanie): po COMMIT pełny stan z kompozycji.
   const poDzialaniu = (f?: () => unknown) => async () => { await f?.(); await odswiez(); };
   async function naPlus(): Promise<WynikPlus> {
+    diagnostyka?.wejscie('plus');
     const w = await uslugi.dodajRzad();
+    diagnostyka?.zapis('plus', w.ok);
     if (w.ok) {
+      wydanie.current += 1;
+      diagnostyka?.stan(w.wartosc.skonczone);
       ustawStan((s) => (s ? { ...s, licznik: { ...s.licznik, skonczone: w.wartosc.skonczone, dziergany: w.wartosc.dziergany } } : s));
       await odswiez(); // baner serii, przypomnienie, kreski i projekt roboczy po pierwszym +1
     }
     return w;
   }
   async function naMinus() {
+    diagnostyka?.wejscie('minus');
     const w = d.naMinus ? await d.naMinus() : { ok: false as const, powod: 'niedozwolone_przejscie' as const };
+    diagnostyka?.zapis('minus', w.ok);
     if (w.ok) {
+      wydanie.current += 1;
+      diagnostyka?.stan(w.wartosc.skonczone);
       ustawStan((s) => (s ? { ...s, licznik: { ...s.licznik, skonczone: w.wartosc.skonczone, dziergany: w.wartosc.skonczone + 1 } } : s));
       await odswiez();
     }
@@ -173,6 +199,7 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
 }
 
 export type PropsEkranuLicznika = Pick<PropsAplikacji, 't' | 'oglos' | 'dzialania' | 'stoper' | 'sprawdzStopera' | 'jezyk'> & {
+  diagnostyka?: DiagnostykaLicznika; // FX6b: tylko build E2E
   uslugi: Pick<UslugiAplikacji, 'start' | 'dodajRzad'>;
   porty: { haptyka: Haptyka };
   /** R-020 po p2: korzeń („Dziś”) scala dziennik raz; licznik na wierzchu czyta stan po scaleniu (`kompozycja.poScaleniu`). Zwraca odpięcie. */
@@ -189,7 +216,7 @@ export function EkranLicznika(p: PropsEkranuLicznika): React.ReactElement {
     void uslugi.start().then((s) => { if (zywy) ustawStan(s); });
     return () => { zywy = false; };
   }, [uslugi]);
-  const l = useStanLicznika(uslugi, p.dzialania, ustawStan);
+  const l = useStanLicznika(uslugi, p.dzialania, ustawStan, p.diagnostyka);
   const odswiez = useRef(l.odswiez);
   odswiez.current = l.odswiez;
   useEffect(() => poScaleniu?.(() => void odswiez.current()), [poScaleniu]);
