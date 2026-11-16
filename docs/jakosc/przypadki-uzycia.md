@@ -9,7 +9,7 @@ Legenda klas:
 
 Napisy aplikacji: po polsku, z angielskim w ⟦⟧ (scenariusze biegną po angielsku, symulator en-US). Ekrany: klucze tras względem `app/` bez `.tsx`.
 
-Podsumowanie: A=108, B=179, F=52, razem 339.
+Podsumowanie: A=109, B=178, F=52, razem 339.
 
 ## Instalacja i pierwszy start
 
@@ -411,7 +411,7 @@ Podsumowanie: A=108, B=179, F=52, razem 339.
 | PU-225 | Wejście i powrót: drut lub szydełko (arkusz). | „Druty i szydełka” → „+” → „Anuluj” ⟦Cancel⟧ albo „Zapisz”. | Arkusz; „Anuluj” bez zmian wraca bez pytania, zapis wraca do listy z nową pozycją. | T-52 | drut, druty | A | e2e/scenariusze/79-pu-224-pu-225-druty-i-arkusz-drutu.yaml:44; e2e/scenariusze/79-pu-224-pu-225-druty-i-arkusz-drutu.yaml:61 |
 | PU-226 | Wejście i powrót: kalkulator próbki. | „Narzędzia” → „Kalkulator próbki” ⟦Swatch calculator⟧ (albo „Próbka” ⟦Swatch⟧ na ekranie projektu) → „‹”. | Kalkulator; „‹” wraca tam, skąd wszedł. | — | probka, (zakladki)/narzedzia, projekt/[id] | A | e2e/scenariusze/80-pu-226-kalkulator-probki-wstecz.yaml:31; e2e/scenariusze/80-pu-226-kalkulator-probki-wstecz.yaml:46 |
 | PU-227 | Wejście i powrót: ekran projektu. | Licznik → „Projekt ›” ⟦Project ›⟧ → „‹”. | Ekran projektu; „‹” wraca na licznik. | — | projekt/[id], licznik | A | e2e/scenariusze/34-br-lic-011-s1-nastepna-czesc-blizniak.yaml:19; e2e/scenariusze/subflows/dodaj-czesc-cel.yaml:16; e2e/scenariusze/subflows/dodaj-czesc-cel.yaml:49 |
-| PU-228 | Wejście i powrót: podgląd zdjęcia. | Projekt → miniatura zdjęcia → „Zamknij” ⟦Close⟧. | Podgląd na czarnym tle; „Zamknij” wraca do projektu; po usunięciu ostatniego zdjęcia powrót sam. | — | zdjecie, projekt/[id] | B | oczekujący: e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml:46 |
+| PU-228 | Wejście i powrót: podgląd zdjęcia. | Projekt → miniatura zdjęcia → „Zamknij” ⟦Close⟧. | Podgląd na czarnym tle; „Zamknij” wraca do projektu; po usunięciu ostatniego zdjęcia powrót sam. | — | zdjecie, projekt/[id] | A | e2e/scenariusze/81-pu-228-podglad-zdjecia-zamknij.yaml:45 |
 | PU-229 | Wejście i powrót: przewodnik z „Dziś”. | „Dziś” → „?” „Przewodnik” ⟦Guide⟧ → „‹ Dziś” ⟦‹ Today⟧. | Przewodnik nad zakładkami; „‹” wraca na „Dziś”. | G-01 | przewodnik, (zakladki)/index | A | e2e/scenariusze/82-pu-229-przewodnik-z-dzis-wstecz.yaml:26 |
 | PU-230 | Wejście i powrót: przewodnik z „Ustawienia”. | „Ustawienia” → „Przewodnik” ⟦Guide⟧ → „‹”. | Przewodnik; „‹” wraca do „Ustawienia” z odświeżoną wartością wiersza. | G-06 | przewodnik, ustawienia | A | e2e/scenariusze/70-p-688-przewodnik-z-ustawien-przeczytane.yaml:32; e2e/scenariusze/70-p-688-przewodnik-z-ustawien-przeczytane.yaml:49; e2e/scenariusze/70-p-688-przewodnik-z-ustawien-przeczytane.yaml:51 |
 | PU-231 | Wejście i powrót: „Pokaż” z przewodnika na ekran nad nim. | Przewodnik → funkcja → „Pokaż ›” ⟦Show ›⟧ → „‹”. | Opisany ekran (licznik) nad przewodnikiem; „‹” wraca do przewodnika. | G-03 | przewodnik, licznik | A | e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:43; e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:45; e2e/scenariusze/69-p-687-przewodnik-z-dzis-pokaz.yaml:49 |

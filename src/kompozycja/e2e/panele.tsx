@@ -21,6 +21,8 @@ import { PanelPomiaruOperacji } from './pomiar-operacji';
 export { koniecOperacji, poczatekOperacji, zmierzOperacje } from './pomiar-operacji';
 // Hak F-64 (e2e-ocena-stan): system.ts liczy wywołania prośby o ocenę i zapamiętuje ostatnio otwarty adres.
 export { zapamietajAdres, zliczajProsby } from './ocena-stan';
+// BX-019 (FX4): licznik naciśnięć „Wzór” i przemontowań ekranu licznika (panel `e2e-nawigacje`, app/licznik.tsx).
+export { PanelNawigacji, zerujNawigacje, zliczNawigacje } from './nawigacje-stan';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {

@@ -6,7 +6,8 @@
  *   3. protokół testu fizycznego poprzedniego wysłanego buildu (klasa F; wyjątek tylko 1171).
  * Przed App Review: protokół F dokładnie tego buildu, bez wyjątków (polecenie `recenzja <build>`). */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFileSync, readdirSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parse } from './jakosc-ios-pomoc';
 
@@ -61,12 +62,33 @@ describe('kontrola 2: katalog spójny z kodem', () => {
     const bledy = b('kontrolaKatalogu', root, { wymagajTestowB: true }) as string[];
     expect(bledy.filter((x) => /klasa B bez testu/.test(x)).map((x) => x.slice(0, 6))).toEqual(doZaprogramowania);
   });
+  // FX4 (P-883): po zdjęciu tagu z 81 (PU-228 → A) w prawdziwym katalogu nie ma już PU klasy B „oczekujący”, więc zasada P-855 nie ma na czym się sprawdzić.
+  // Układ testowy = kopia prawdziwego katalogu i scenariuszy (app/, src/, tests/ jako dowiązania), w której PU-228 wraca do B „oczekujący” z tagiem `oczekujacy` w scenariuszu 81.
+  // Zasada i asercje bez zmian: z wymogiem testów B każdy „oczekujący” czerwieni bramkę błędem z ID; bez wymogu — brak błędów.
   test('P-855 (KO-073): B „oczekujący” (scenariusz z tagiem oczekujacy nie biegnie) NIE zalicza PU dla P-837 — błąd z ID (kontrola 2 z wymogiem testów B)', () => {
-    const katalog = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8');
-    const oczekujace = [...katalog.matchAll(/^\| (PU-\d{3,}) \|.*\| B \| oczekujący: /gm)].map((m) => m[1]);
-    expect(oczekujace.length).toBeGreaterThan(0);
-    const bledy = b('kontrolaKatalogu', root, { wymagajTestowB: true }) as string[];
-    expect(bledy.filter((x) => /oczekujący.*nie liczy się/.test(x)).map((x) => x.slice(0, 6))).toEqual(oczekujace);
+    const tmp = mkdtempSync(join(tmpdir(), 'oczko-p855-'));
+    try {
+      for (const d of ['app', 'src', 'tests']) symlinkSync(join(root, d), join(tmp, d), 'dir');
+      cpSync(join(root, 'e2e/scenariusze'), join(tmp, 'e2e/scenariusze'), { recursive: true });
+      mkdirSync(join(tmp, 'docs/jakosc'), { recursive: true });
+      const scen81 = '81-pu-228-podglad-zdjecia-zamknij.yaml';
+      const poprzedni = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8');
+      const klasaA = ` | A | e2e/scenariusze/${scen81}:`;
+      expect(poprzedni).toContain(klasaA); // PU-228 jest dziś klasy A (FX4); gdyby zmieniło się to w katalogu, układ trzeba dostosować świadomie
+      const stare = [...poprzedni.matchAll(/^\| (PU-\d{3,}) \|.*\| B \| oczekujący: /gm)].map((m) => m[1]);
+      const podsumowanie = /^Podsumowanie: A=(\d+), B=(\d+), F=(\d+), razem (\d+)\.$/m.exec(poprzedni);
+      if (!podsumowanie) throw new Error('katalog bez linii „Podsumowanie”');
+      const [, a, bb, f, razem] = podsumowanie.map(Number);
+      const katalog = poprzedni.replace(klasaA, ` | B | oczekujący: e2e/scenariusze/${scen81}:`)
+        .replace(podsumowanie[0], `Podsumowanie: A=${a - 1}, B=${bb + 1}, F=${f}, razem ${razem}.`);
+      writeFileSync(join(tmp, 'docs/jakosc/przypadki-uzycia.md'), katalog);
+      const sciezka81 = join(tmp, 'e2e/scenariusze', scen81);
+      writeFileSync(sciezka81, readFileSync(sciezka81, 'utf8').replace('  - przypadki-uzycia\n', '  - przypadki-uzycia\n  - oczekujacy\n'));
+      const oczekujace = [...stare, 'PU-228'].sort();
+      expect(b('kontrolaKatalogu', tmp, { wymagajTestowB: false })).toEqual([]);
+      const bledy = b('kontrolaKatalogu', tmp, { wymagajTestowB: true }) as string[];
+      expect(bledy.filter((x) => /oczekujący.*nie liczy się/.test(x)).map((x) => x.slice(0, 6)).sort()).toEqual(oczekujace);
+    } finally { rmSync(tmp, { recursive: true, force: true }); }
   });
   test('każdy komponent src/ekrany/*.tsx osiągalny importami z trasy app/ (poza _layout) albo w tabeli „Ekrany bez własnej trasy” z istniejącym PU', () => {
     expect(b('ekranyBezTrasy', root)).toEqual([]);

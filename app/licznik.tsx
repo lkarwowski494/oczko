@@ -61,7 +61,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
         jezyk={kontener.j.jezyk()}
         dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
           // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor otwiera od razu menu źródeł, ZM-06 p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
-          naWzor: () => router.push('/wzor'), naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
+          naWzor: () => { paneleE2e?.zliczNawigacje('/wzor'); router.push('/wzor'); }, naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
           naNotatka: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'notatka', projekt: w.projektId } }); }),
           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),
           naNastepnaCzesc: () => void naNastepnaCzesc(), naKonflikt: () => router.push('/konflikt') }}
@@ -76,6 +76,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
           ) : null}
           {paneleE2e ? <paneleE2e.PanelPomiaru probkiMs={pomiar} /> : null /* slot pod kreskami: Licznik.tsx przy limicie 20 KB (U8) */}
           {paneleE2e && ZEGAREK_SZTUCZNY ? <paneleE2e.PanelZegarka /> : null /* scen. 15: stan udawanego zegarka */}
+          {paneleE2e ? <paneleE2e.PanelNawigacji /> : null /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
         </>}
       />
     </Bezpieczny>
