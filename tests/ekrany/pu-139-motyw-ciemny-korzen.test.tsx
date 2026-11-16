@@ -44,7 +44,7 @@ describe('PU-139 · tło korzenia w motywie ciemnym', () => {
   test('placeholder startu (przed kontenerem) stoi na ciemnym `tlo`', () => {
     mockStart.kontener = () => new Promise(() => undefined);
     render(<Korzen />);
-    const korzen = screen.toJSON() as { props: { style: unknown } };
+    const korzen = screen.toJSON() as unknown as { props: { style: unknown } };
     expect(StyleSheet.flatten(korzen.props.style as never)).toMatchObject({ flex: 1, backgroundColor: C.tlo });
     expect(C.tlo).not.toBe(tokeny.kolory.jasny.tlo); // ciemny token różni się od jasnego: test odróżnia motywy
   });
@@ -67,7 +67,7 @@ describe('PU-139 · tło korzenia w motywie ciemnym', () => {
 
   test('`Bezpieczny` (opakowanie tras Dziś, licznik, wzór, Ustawienia, przewodnik): obszar bezpieczny na ciemnym `tlo`', () => {
     render(<Bezpieczny><Text>treść</Text></Bezpieczny>);
-    const korzen = screen.toJSON() as { props: { style: unknown } };
+    const korzen = screen.toJSON() as unknown as { props: { style: unknown } };
     expect(StyleSheet.flatten(korzen.props.style as never)).toMatchObject({ flex: 1, backgroundColor: C.tlo });
   });
 });
