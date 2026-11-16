@@ -28,7 +28,9 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 - Przejęte ze stanu @ 08ab1906. Sprawdzone `git ls-remote` 04:58: `claude/bx-katalog-e2e-2026-11-15` @ 7fbb5b94, integracja @ 06077b85, `main` @ 52308cd7. **Jakość · iOS 43806685504 na 7fbb5b94: in_progress** (04:58), wynik ok. 06:50.
 - Sesji podrzędnych aktywnych: brak. Wiadomości w czacie poprzednika po 04:50 UTC (list_events, kinds user): brak słów właściciela; ostatnie jego słowa 04:40 „Status ?” i 04:44 „Ok dzięki, kiedy estymujesz nowy build ?” → pytanie A/B o termin builda 8 bez odpowiedzi, obowiązuje domyślna **A** (bramka bez wyjątków). Build 8: BEZ zgody.
 - Plan (bez zmian względem przekazania niżej): (1) 06:50 wynik iOS; (2) recenzja niezależna f562da5b..7fbb5b94 (FX3 + FX4, w tym `tests/jakosc/bramka-przypadki-uzycia.test.ts`); (3) sesja 08 build: 44 scenariusze Maestro porcjami po ok. 14, max 2 subagenty, kontrola kosztu co 20 min (KO-075); (4) po zielonym iOS i recenzji proste scalenie do integracji, CI na tym samym SHA.
-- KO następny: KO-085; P następny wolny: P-885.
+- **Właściciel 16.11 05:04 UTC (czat koordynatora session_01T66VBxLHEZaQH4GbFzu2PU; odpowiedź na pytanie poprzednika z 04:50 o termin builda 8: A — bramka bez wyjątków, build najwcześniej 17.11 rano / B — wyjątek jego słowami), dosłownie: „Wariant a - bramka bez wyjątków.”** → build 8 dopiero po zielonej bramce KO-065 (44 B zaprogramowane i zielone) i zielonym iOS; zgody na wyzwolenie builda 8 nadal BRAK (osobne pytanie, gdy kandydat będzie zielony).
+- KO-085: CD (recenzja FX3+FX4) i BX7 (44 B → Maestro, porcja 1) równolegle z przebiegiem iOS; BX7 pushuje po „PUSH WOLNY”. Polecenia CD.md @ ae04610c, BX7.md @ a1af41d9.
+- KO następny: KO-086; P następny wolny: P-891 (CD P-885…P-886, BX7 P-887…P-890).
 
 ## Historia: Teraz (16.11 05:00 UTC) — PRZEKAZANIE koordynatora session_01T66VBwWi2Ff1kezfszSt3H (kontekst ok. 39%, 37+ USD)
 - **Gałąź nocna** `claude/bx-katalog-e2e-2026-11-15` @ **7fbb5b94** (nie scalona; integracja `claude/youthful-pasteur-kx83sn` @ 06077b85 bez zmian). Autorzy wszystkich commitów nocy OK, 0 Co-Authored-By.
@@ -586,6 +588,7 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 - Usunięte przez poprzednika 06:35 (session_01T66VBxhDabqriZxJMgbRsB): trig_014gVMrvxMaMnyfntymgziqA „Koordynator Oczko: kontrola” 06:24 · trig_01H68hXYiYTrCFhwqxv9Fbvy „linia 14:00” 10.11 · trig_01Hkmxg7VYvKCcfi9YxdRpMN „linia 05:00” 11.11.
 
 ## Pule numerów decyzji
+- **Pula BX7 (08 build): P-887…P-890; pula CD (08 audit): P-885…P-886. Następny wolny: P-891; KO następny: KO-086.**
 - **Pula FX4 (08 fix): P-881…P-884. Następny wolny: P-885; KO następny: KO-084.**
 - **Pula FX3 (08 fix): P-877…P-880. Następny wolny: P-881; KO następny: KO-082.**
 - **Pula FX2 (08 fix): P-874…P-876 (FX wzięła P-871…P-873). Następny wolny: P-877; KO następny: KO-080.**
@@ -1038,3 +1041,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 04:40 | M9 | FX4 = session_01T66VBwYtjmzQnDVEYXQuVb (prompt zgodny sha256 d6299a3b…): BX-020 (c) degradacja symulatora; BX-019 nieustalone. KO-084: B (licznik nawigacji E2E) + 81 → A w tej samej sesji; potem iOS na nowym SHA | raport FX4, iOS |
 | 16.11 04:55 | M9 | FX4 @ 7fbb5b94 (autor OK, 0 trailerów; diff stat sprawdzony): panel e2e-nawigacje (tylko E2E), 81 PU-228 → A (A 109 / B 178), test P-855 na kopii katalogu; verify 679/7687 wg sesji. Zarchiwizowana (4,12 USD, 35%). **iOS 43806685504 na 7fbb5b94** wyzwolony 04:52. Właściciel 04:45 „Status?” i pytanie o termin builda 8 → odpowiedź: opcje A/B, domyślnie A. Sekcja Teraz = przekazanie | następca |
 | 16.11 05:05 | M9 | Przejęcie przez session_01T66VBxLHEZaQH4GbFzu2PU (lineage 4/8, fable-5-2, env_01GMJ…, auto) ze stanu @ 08ab1906; prompts @ af4c0a8, warsztat @ 1c59320; rola złożona `assemble.mjs M9-koordynator-sesji --tryb build`. Przypomnienia własne (kontrola 06:50, linie 13:54 i 04:54). Gałęzie zgodne ze stanem (ls-remote). iOS 43806685504 in_progress. Czat poprzednika po 04:50: bez słów właściciela → opcja A domyślna | PRZEJĄŁEM; kontrola 06:50 |
+| 16.11 05:04 | M9 | Właściciel (czat koordynatora): „Wariant a - bramka bez wyjątków.” → opcja A, build 8 po zielonej bramce, bez wyjątku; zgody na build 8 brak. KO-085; polecenia CD.md @ ae04610c i BX7.md @ a1af41d9; start sesji przez subagentów (prompty 61 586 B sha256 144fb22b…, 52 047 B sha256 95ff212e…) w toku | ID sesji, zgodność promptów; kontrola 06:50 |
