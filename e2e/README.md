@@ -208,6 +208,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `jezyk-auto` | Language | „Same as phone” (radio; etykieta z „, selected” przy wyborze) | „Same as phone” / „Same as phone, selected” | |
 | `jezyk-pl` | Language | wiersz języka (wzorzec `jezyk-<kod>`, nazwa własna języka; tu polski) | „Polski” / „Polski, selected” | |
 | `jezyk-de` | Language | wiersz języka niemieckiego (wzorzec `jezyk-<kod>`; scen. 90, PU-334) | „Deutsch” / „Deutsch, selected” | |
+| `jezyk-ja` | Language | wiersz języka japońskiego (wzorzec `jezyk-<kod>`; scen. 118, PU-175) | „日本語” / „日本語, selected” | |
 | `ustawienia` | Ustawienia | kontener ekranu (ScrollView) | — | |
 | `ustawienia-dni-darmowe` | Ustawienia | licznik dni (tylko bez Pro) | „4 of 5 free crafting days left in November” | |
 | `ustawienia-oczko-pro` | Ustawienia | wejście do ofert (KP-13) | „Oczko Pro” | |

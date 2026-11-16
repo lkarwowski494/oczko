@@ -69,3 +69,8 @@ Baza: 5 + 3 + 1 testów zielonych. Czerwień (mutacje w kodzie, każda przywróc
  src/ekrany/Przewodnik.tsx ekran → '#FFFFFF' : przewodnik 1 failed; szewron „Show ›” → '#FFFFFF' : przewodnik 1 failed;
  src/ekrany/Ustawienia.tsx tło → '#FFFFFF' : ciemny 1 failed (z 5).
 Nie pokryte (częściowo, nazwane w Pokryciu): przełączenie wyglądu systemu, kontrast na zrzutach, PU-343. Oferty nie mają `Bezpieczny` — root arkusza to `powierzchnia` (zweryfikowane testem, nie zmiana kodu).
+
+== PU-175 (nowy scenariusz Maestro 118; iOS-only, nie do uruchomienia tutaj), 2026-11-16 ==
+Czerwień przed zmianą: PU-175 w katalogu „do zaprogramowania” — brak scenariusza z tagiem PU-175; po zmianie „Kontrola 2” (bramka-przypadki-uzycia.mjs katalog) zielona, a odnośniki :95/:102/:109/:115/:132/:139/:146/:152 wskazują asercje (bramka sprawdza, że linie są asercjami i że scenariusz ma tagi oczekujacy, przypadki-uzycia, PU-175).
+Pierwsze uruchomienie na iOS (CI) dopiero zwiąże scenariusz z aplikacją; do tego czasu `oczekujący`, nie `z testem`. Poprawność tekstów: słowniki de.json/ja.json (dzis.tytul, przewodnik.tytul, oferty.przywroc, licznik.plus_a11y_instrukcja, licznik.przypomnienie) sprawdzone z pliku.
+Test pomocniczy: tests/jakosc/maestro-scenariusze.test.ts był czerwony („jezyk-ja” bez wiersza w e2e/README.md) — dopisany wiersz, test zielony.
