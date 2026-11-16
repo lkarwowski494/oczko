@@ -102,3 +102,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | FX | 08 fix (sonnet) | 10 | 3,60 | 29 | 22:27 → 22:28 → edcfb7cd/b075830b → (verify w haku; iOS po 43767704896) → PRZEKAZANIE 22:55 | — | BX-002/008/009/011/012 testem czerwonym najpierw; 0 subagentów |
 | FX2 | 08 fix (sonnet) | 5 | 0,90 | 16 | 23:05 → 23:06 → f562da5b → (verify w haku; iOS 43774048947) → raport 23:17 | — | BX-013, BX-014; diff bramki przeczytany przez koordynatora |
 | FX3 | 08 fix (sonnet) | 10 | 3,32 | 29 | 01:34 → 01:36 → f3b3a8cb → (verify w haku; iOS 43788927541) → PRZEKAZANIE 01:53 | — | BX-018 (scenariusz 61 po BY-002), BX-010 (scroll w 39), BX-009 (useSafeAreaInsets w fullScreenModal); 0 subagentów |
+| FX4 | 08 fix (sonnet) | 8 | 4,12 | 35 | 04:26 → 04:28 → (diagnoza bez pushu 04:32) → 7fbb5b94 04:52 → iOS 43806685504 | — | BX-020 (c) symulator; BX-019 nieustalone → panel e2e-nawigacje; 81 → A; 0 subagentów |
