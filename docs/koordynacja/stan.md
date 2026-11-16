@@ -1277,3 +1277,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 21:31 | M9 | KO-137: BX19 e525143 przyjęte (stan + plan), zarchiwizowana (2,17 USD, 42%); BX20 w tworzeniu (prompt 55 489 B, sha 81558fb8) |
 | 16.11 21:42 | M9 (kontrola 21:37) | prompt BX20 ZGODNE (81558fb8, 55 489 B; trzy strony zdarzeń wstecz — wcześniejsze „nierozstrzygnięte” BX18 wynikały z braku dojścia do najstarszej strony); BX20 w pracy; następna kontrola 22:12 |
 | 16.11 21:52 | M9 | KO-138: BX20 afb3a98 przyjęte, zarchiwizowana (3,29 USD, 68%); iOS jakosc-ios.yml wyzwolony na afb3a98 [e2e-pelny] |
+| 16.11 22:53 | M9 (kontrola 22:50) | iOS 43964020781 (#207, afb3a98): build zielony 22:19, swift-test i zegarek zielone, eksperymenty-wzoru czerwony (informacyjny); e2e cz. 1, 2, 4 iphone i cz. 1 ipad w scenariuszach, cz. 3 w kolejce; wyników brak; następna kontrola 23:42 |
