@@ -130,3 +130,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX17 | 08 build (sonnet) | 3 (STOP 5) | nieodczytany | nieodczytany | 14:56 → 6057d7e 15:04 → 7a738d8 15:08 → przyjęte 15:10 (KO-130, KO-131) | — | get_session bez usage |
 | BX18 | 08 build (sonnet) | 6 (8) | nieodczytany | nieodczytany | 17:39–18:08 | — | get_session bez usage |
 | BX19 | 08 build (sonnet) | 6 (8) | 2,17 USD | 42% (125 746) | 21:10–21:28 | — | odczyt przy archiwizacji |
+| BX20 | 08 build (sonnet) | 6 (8) | 3,29 USD | 68% (203 259) | 21:30–21:49 | — | odczyt przy archiwizacji; raport podał „nieodczytany” |
