@@ -124,3 +124,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX14 | 08 build (sonnet) | 5 (STOP 7) | 3,16 | 72 | 12:37 → … → 9614464a 12:52 → przyjęte 12:55 → poprawki CM 9b19690 13:21 → przyjęte 13:22 | — | PU-162 + CM-01…04; raport podał 2,24 USD (WG-23) |
 | CM | 08 audit (sonnet) | 4 (STOP 6) | 1,45 | 70 (208,7 tys.) | 12:57 → … → 1eb66a3 13:10 → przyjęte 13:13 | — | recenzja BX14: 0 P1/P2, 4 P3; raport podał kontekst 25–30% (WG-23) |
 | koordynator session_01T66VBzb4nxMxEGdBmHBUbV | M9 (fable→opus 5.5) | — | 72,24 (06:34–13:55) | 56 (166,6 tys. po kompakcji) | — | — | odczyt get_session 13:55; bez przekazania (KO-098: kompakcja zamiast przekazania) |
+| BX15 | 08 build (sonnet) | 6 (STOP 8) | nieodczytany | nieodczytany | 13:29 → … → 96409526 14:2x → przyjęte 14:33 (KO-123) | — | get_session po archiwizacji: used_tokens 0, brak usage; raport: kontekst wyczerpany (P-324) |
