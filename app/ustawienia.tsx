@@ -51,6 +51,7 @@ export default function EkranUstawien(): React.ReactElement {
 
   useFocusEffect(useCallback(() => {
     ustawPref((stara) => { const nowa = preferencje.stan(); return stara.wibracje === nowa.wibracje && stara.ekranNieGasnie === nowa.ekranNieGasnie && stara.ukladMiar === nowa.ukladMiar ? stara : { ...nowa }; }); // BX-008: wartości zmienione na innej trasie (np. „Units” w /miary) są po powrocie świeże; bez zmiany ekran się nie renderuje ponownie
+    ustawDostep(kontener.dostep.stan()); // BX-049 / KO-119: zakup na /oferty, gdy ekran był odsubskrybowany, jest po powrocie świeży (ten sam obiekt = bez ponownego renderu)
     const koniec = kontener.dostep.naZmiane(ustawDostep);
     void przeczytanePrzewodnika(z).then((w) => { if (w.ok) ustawPrzeczytanychPrzewodnika(postepPrzewodnika(w.wartosc).n); }); // P-685: wartość wiersza „Guide”, po powrocie z przewodnika świeża
     if (kontener.icloud) void stanBazy(z.baza).then((s) => ustawIcloud(s.wlaczona));
