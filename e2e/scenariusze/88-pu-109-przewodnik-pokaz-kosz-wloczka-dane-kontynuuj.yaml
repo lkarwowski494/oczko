@@ -1,0 +1,60 @@
+# PU-109 (G-03): „Show ›” z biblioteki: „Recently deleted” i „Yarn” nad przewodnikiem z „Back”; „Data and sync” jako arkusz (zamknięcie → przewodnik); „Continue” → „Today”, przewodnik zamknięty.
+# Kod: trasy `/kosz` (src/ekrany/Kosz.tsx), `/zapas` (`zapas-lista` Zapas.tsx:43), `/stan-danych` (arkusz, „Close” `arkusz-zamknij` StanDanych.tsx:59), „Continue” = trasa `/` (zakładka).
+# Pusty kosz nie ma `kosz-lista` (Kosz.tsx:25 tylko przy pozycjach) — ekran kosza poznajemy po tytule „Recently deleted”. „Pokaż nie otwiera menu •••”: `menu-nazwa` niewidoczne na „Today”.
+appId: com.apps4brew.knitting
+name: "PU-109 · Przewodnik, „Show ›”: kosz i włóczka z „Back”, „Data and sync” jako arkusz, „Continue” → „Today”"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-109
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+# --- „Recently deleted” (grupa Projekty) ---
+- scrollUntilVisible: { element: { id: "przewodnik-f-kosz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-kosz" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-kosz-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kosz-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-kosz-pokaz" }
+- extendedWaitUntil: { visible: "Recently deleted" , timeout: 20000 }
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- takeScreenshot: 88-kosz
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+# --- „Yarn” (grupa Tools) ---
+- scrollUntilVisible: { element: { id: "przewodnik-f-wloczki" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-wloczki" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-wloczki-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-wloczki-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-wloczki-pokaz" }
+- extendedWaitUntil: { visible: { id: "zapas-lista" }, timeout: 20000 }
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- takeScreenshot: 88-wloczka
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+# --- „Data and sync” (arkusz): zamknięcie wraca do przewodnika ---
+- scrollUntilVisible: { element: { id: "przewodnik-f-dane" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-dane" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-dane-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-dane-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-dane-pokaz" }
+- extendedWaitUntil: { visible: { id: "arkusz-zamknij" }, timeout: 20000 }
+- assertVisible: "Data and sync"
+- takeScreenshot: 88-dane-arkusz
+- tapOn: { id: "arkusz-zamknij" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "arkusz-zamknij" }
+# --- „Continue” → „Today” z zamkniętym przewodnikiem ---
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj" }, direction: UP, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-kontynuuj-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-kontynuuj-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-kontynuuj-pokaz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertNotVisible: { id: "przewodnik" }
+- assertNotVisible: { id: "menu-nazwa" }
+- takeScreenshot: 88-dzis

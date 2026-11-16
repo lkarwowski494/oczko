@@ -378,6 +378,49 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `przewodnik-f-cel-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`; P-687: licznik ostatniego miejsca pracy, bez niego „/”) | „Show: {nazwa}” | |
 | `przewodnik-f-kontynuuj` | przewodnik, grupa `dzis` | wiersz funkcji „Kontynuuj” (pierwsza funkcja biblioteki); scen. 70 (stan przeczytania) | „{nazwa}, Today, read|not read” | |
 | `przewodnik-f-kontynuuj-opis` | przewodnik, wiersz rozwinięty | opis funkcji | — | |
+| `przewodnik-grupa-dzis` | przewodnik, biblioteka | blok grupy funkcji (wzorzec `przewodnik-grupa-{id}`, id: dzis, licznik, projekty, wzor, narzedzia, historia, ustawienia, pro, poza; `src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104), 93 (PU-113) | — | |
+| `przewodnik-f-dane` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-dane-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-dane-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-ekran` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-ekran-blokady` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-ekran-blokady-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-ekran-blokady-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-ekran-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-ekran-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-jednostki` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-jednostki-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-jednostki-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-kontynuuj-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-kosz` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-kosz-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-kosz-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-pro` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-pro-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-pro-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-wibracje` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-wibracje-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-wibracje-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-wloczki` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-wloczki-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-wloczki-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-f-zegarek` | przewodnik, biblioteka | wiersz funkcji (wzorzec `przewodnik-f-{id}`, id z `src/domena/przewodnik.ts`); scen. 88–93 | nazwa funkcji | |
+| `przewodnik-f-zegarek-opis` | przewodnik, wiersz rozwinięty | opis funkcji (wzorzec `przewodnik-f-{id}-opis`, `Przewodnik.tsx:119`); scen. 88–93 | — | |
+| `przewodnik-f-zegarek-pokaz` | przewodnik, wiersz rozwinięty | „Show ›” funkcji (wzorzec `przewodnik-f-{id}-pokaz`, `Przewodnik.tsx:120`; funkcja „Apple Watch” bez trasy nie ma przycisku) | „Show ›” | |
+| `przewodnik-grupa-historia` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-licznik` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-narzedzia` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-poza` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-pro` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-projekty` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-ustawienia` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-grupa-wzor` | przewodnik, biblioteka | blok grupy funkcji (`src/ekrany/Przewodnik.tsx:102`); scen. 85 (PU-104) | — | |
+| `przewodnik-krok-2-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
+| `przewodnik-krok-3-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
+| `przewodnik-krok-4-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
+| `przewodnik-krok-5-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
+| `przewodnik-krok-6-pokaz` | przewodnik, „First steps” | „Show ›” kroku (wzorzec `przewodnik-krok-{n}-pokaz`, `Przewodnik.tsx:89`); scen. 85–87 (PU-104, 107, 108) | „Show ›” | |
+| `ustawienia-pro` | Ustawienia, wiersz „Oczko Pro” | tekst wartości wiersza „On” — tylko przy aktywnym Pro (`src/ekrany/Ustawienia.tsx:100`, `wartoscTestID`); scen. 98 (PU-322), 89 (PU-110: brak bez zakupu) | „On” | |
 | `e2e-wzor-pdf` | dodanie wzoru (build E2E) | plik PDF testowy pisany w kodzie (2 strony tekstu Helvetica) | bez `t()` | |
 | `e2e-wzor-pdf-skan` | dodanie wzoru (build E2E) | prawdziwy wycinek skanu z OCR `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, strategia §4; P-439; scen. 21) | bez `t()` | |
 | `e2e-wzor-zdjecie` | dodanie wzoru (build E2E) | zdjęcie strony testowe | bez `t()` | |

@@ -1,0 +1,34 @@
+# PU-108 (G-03): krok 6 „Show ›” → zakładka „Projects”, krok 1 → zakładka „Today”; przewodnik zamknięty, pasek zakładek widoczny, bez „Back”.
+# Kod: trasy kroków `/projekty` i `/` są zakładkami → app/przewodnik.tsx:34-36 (dismissAll + navigate). „Jeden pasek zakładek” (nie dwa) Maestro nie policzy:
+# assertVisible { id: nav-dzis } przechodzi też przy dwóch — sprawdza to brak `przewodnik` na stosie (assertNotVisible) i brak „Back” (BX-021, ograniczenie selektorów).
+# „Show ›” w przewodniku jest tylko na „Dziś” (P-685), więc po kroku 6 wracamy zakładką „Today”.
+appId: com.apps4brew.knitting
+name: "PU-108 · Przewodnik: krok 6 → „Projects”, krok 1 → „Today”, przewodnik zamknięty"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-108
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-6-pokaz" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "przewodnik-krok-6-pokaz" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertNotVisible: { id: "przewodnik" }
+- assertNotVisible: { id: "nav-wstecz" }
+- assertVisible: { id: "nav-projekty" }
+- takeScreenshot: 87-krok-6-projekty
+- tapOn: { id: "nav-dzis" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- tapOn: { id: "przewodnik-krok-1-pokaz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertNotVisible: { id: "przewodnik" }
+- assertNotVisible: { id: "nav-wstecz" }
+- assertVisible: { id: "nav-dzis" }
+- takeScreenshot: 87-krok-1-dzis

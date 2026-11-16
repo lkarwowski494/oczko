@@ -1,0 +1,44 @@
+# PU-112 (G-05): przewodnik otwarty z Ustawień (`?z=ustawienia`): „Show ›” przy „Keep screen on while counting” wraca do tych samych Ustawień (dismissTo, bez drugiej kopii), jedno „Back” → „Today”; „Units” nad przewodnikiem, „Back” → przewodnik.
+# Kod: app/przewodnik.tsx:39 (`dismissTo` tylko przy z=ustawienia, Q-001, KO-031), wiersz `ustawienia-przewodnik` src/ekrany/Ustawienia.tsx:125, funkcje `ekran` i `jednostki` (src/domena/przewodnik.ts).
+# „Bez drugiej kopii”: po jednym „Back” z Ustawień jest „Today” (`dzis-karta`) — druga kopia Ustawień wymagałaby drugiego „Back”. Widoczny napis „‹ Today” — BX-021 (etykieta „Back”).
+appId: com.apps4brew.knitting
+name: "PU-112 · Przewodnik z Ustawień: „Show ›” wraca do tych samych Ustawień (jedno „Back” → „Today”), „Units” nad przewodnikiem"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-112
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- scrollUntilVisible: { element: { id: "przewodnik-f-ekran" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-ekran" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-ekran-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-ekran-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-ekran-pokaz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "przewodnik" }
+- takeScreenshot: 92-ustawienia-po-pokaz
+- tapOn: { id: "nav-wstecz" } # jedno stuknięcie: „Today”, nie druga kopia Ustawień
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertNotVisible: { id: "ustawienia" }
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-jednostki" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-jednostki" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-jednostki-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-jednostki-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-jednostki-pokaz" }
+- extendedWaitUntil: { visible: { id: "miary" }, timeout: 20000 }
+- takeScreenshot: 92-jednostki
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "miary" }

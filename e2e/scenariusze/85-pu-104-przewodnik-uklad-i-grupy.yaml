@@ -1,0 +1,58 @@
+# PU-104 (docs/jakosc/przypadki-uzycia.md, „Przewodnik”, G-01): „Guide” na „Dziś” → przewodnik: układ, „Pierwsze kroki” (6 z „Show ›”), „Read: 0 of 42”, 9 grup.
+# testID z kodu: wejście `nav-przewodnik` src/ekrany/Dzis.tsx:178; ekran `przewodnik` src/ekrany/Przewodnik.tsx:74, „Back” :75, kroki `przewodnik-krok-{1..6}[-pokaz]` :85/:89,
+# postęp `przewodnik-postep` :98, grupy `przewodnik-grupa-{id}` :102 (id z src/domena/przewodnik.ts: dzis, licznik, projekty, wzor, narzedzia, historia, ustawienia, pro, poza).
+# Nie sprawdzone scenariuszem (BX-021): widoczny napis „‹ Today” przy „Back” — etykieta dostępności przycisku to „Back” (src/ekrany/Pasek.tsx:29), Maestro iOS widzi etykietę, nie tekst
+# dziecka; „bez wyszukiwania” — brak elementu bez testID nie ma selektora. Układ „?” przed zębatką: kolejność poziomą sprawdza scen. 69 (§11 (1)) i 82.
+appId: com.apps4brew.knitting
+name: "PU-104 · Przewodnik z „Dziś”: bez paska zakładek, „Back”, „First steps” z 6 krokami i „Show”, „Read: 0 of 42”, 9 grup"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-104
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- assertVisible: { id: "nav-przewodnik", text: "Guide" }
+- assertVisible: { id: "nav-ustawienia" }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "nav-dzis" } # przewodnik bez paska zakładek
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- assertVisible: "First steps"
+- takeScreenshot: 85-przewodnik-pierwsze-kroki
+- scrollUntilVisible: { element: { id: "przewodnik-krok-1-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-1-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-2-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-2-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-3-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-3-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-4-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-4-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-5-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-5-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-6-pokaz" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-krok-6-pokaz" }
+- scrollUntilVisible: { element: { id: "przewodnik-postep" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-postep", text: "Read: 0 of 42" }
+- takeScreenshot: 85-przewodnik-postep
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-dzis" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-dzis" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-licznik" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-licznik" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-projekty" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-projekty" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-wzor" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-narzedzia" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-narzedzia" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-historia" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-historia" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-ustawienia" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-ustawienia" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-pro" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-pro" }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-poza" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "przewodnik-grupa-poza" }
+- takeScreenshot: 85-przewodnik-ostatnia-grupa

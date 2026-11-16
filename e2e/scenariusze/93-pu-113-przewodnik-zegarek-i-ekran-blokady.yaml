@@ -1,0 +1,36 @@
+# PU-113 (G-06): grupa „Apple Watch and Lock Screen”: „Apple Watch” z opisem i bez „Show ›”; „Lock Screen” → „Show ›” otwiera licznik, „Back” wraca do przewodnika.
+# Kod: funkcje `zegarek` (trasa null → `<View style={st.bezPokaz}>`, Przewodnik.tsx:120) i `ekran-blokady` (trasa `/licznik`, zapas `/`; src/domena/przewodnik.ts); id wiersza `przewodnik-f-zegarek`, opis `…-opis`, brak `…-pokaz`.
+# Licznik wymaga miejsca pracy (inaczej zapas `/`): projekt roboczy przed przewodnikiem.
+appId: com.apps4brew.knitting
+name: "PU-113 · Przewodnik: „Apple Watch” z opisem bez „Show ›”, „Lock Screen” → „Show ›” → licznik → „Back” do przewodnika"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-113
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-poza" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "przewodnik-grupa-poza" }
+- tapOn: { id: "przewodnik-f-zegarek" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-zegarek-opis" }, timeout: 10000 }
+- assertNotVisible: { id: "przewodnik-f-zegarek-pokaz" }
+- takeScreenshot: 93-zegarek-opis
+- tapOn: { id: "przewodnik-f-ekran-blokady" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-ekran-blokady-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-ekran-blokady-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-ekran-blokady-pokaz" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "0" }, timeout: 20000 }
+- assertVisible: { id: "licznik-plus" }
+- takeScreenshot: 93-licznik
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "licznik-plus" }
