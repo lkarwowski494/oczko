@@ -18,7 +18,7 @@ tags:
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
 - tapOn: { id: "nav-przewodnik" }
 - extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
-- scrollUntilVisible: { element: { id: "przewodnik-grupa-poza" }, direction: DOWN, timeout: 30000, centerElement: true }
+- scrollUntilVisible: { element: { id: "przewodnik-grupa-poza" }, direction: DOWN, timeout: 30000 } # bez centerElement: grupa jest na końcu listy i nie da się jej wyśrodkować (przebieg 43828957399: widoczna w 100%, a przewijanie trwało 30 s; KO-109)
 - assertVisible: { id: "przewodnik-grupa-poza" }
 - tapOn: { id: "przewodnik-f-zegarek" }
 - extendedWaitUntil: { visible: { id: "przewodnik-f-zegarek-opis" }, timeout: 10000 }

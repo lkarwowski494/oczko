@@ -9,7 +9,6 @@ tags:
   - osobny-krok
   - stan-licznika
   - przypadki-uzycia
-  - oczekujacy
   - PU-134
 ---
 - runFlow:
