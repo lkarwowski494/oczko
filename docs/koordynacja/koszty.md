@@ -101,3 +101,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX5 | 08 build (sonnet) | 12 | 24,32 (STOP przy 22,21) | 28 | 21:01 → 21:02 → 1c7bc379/7d034b0c → (verify w haku; iOS nie wyzwalany) → PRZEKAZANIE 21:45 | — | **STOP kosztowy przekroczony** (4 subagenty ok. 1,4 mln tokenów); 85 PU B → z testem; KO-075 |
 | FX | 08 fix (sonnet) | 10 | 3,60 | 29 | 22:27 → 22:28 → edcfb7cd/b075830b → (verify w haku; iOS po 43767704896) → PRZEKAZANIE 22:55 | — | BX-002/008/009/011/012 testem czerwonym najpierw; 0 subagentów |
 | FX2 | 08 fix (sonnet) | 5 | 0,90 | 16 | 23:05 → 23:06 → f562da5b → (verify w haku; iOS 43774048947) → raport 23:17 | — | BX-013, BX-014; diff bramki przeczytany przez koordynatora |
+| FX3 | 08 fix (sonnet) | 10 | 3,32 | 29 | 01:34 → 01:36 → f3b3a8cb → (verify w haku; iOS 43788927541) → PRZEKAZANIE 01:53 | — | BX-018 (scenariusz 61 po BY-002), BX-010 (scroll w 39), BX-009 (useSafeAreaInsets w fullScreenModal); 0 subagentów |
