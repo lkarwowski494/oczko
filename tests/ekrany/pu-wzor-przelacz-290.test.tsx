@@ -1,13 +1,15 @@
-// PU-290 — CZĘŚCIOWO, nie zamykać wiersza katalogu, dopóki nagłówek listy „Patterns in …” nie jest renderowany (patrz niżej). Katalog „Wzory”: projekt z dwoma wzorami (zdjęcie strony i PDF) → tytuł wzoru z ▾ → lista „Patterns in …” z ✓ przy bieżącym → wybór PDF: widok PDF z jego
+// PU-290 — nagłówek listy „Patterns in …” renderowany od BX-005 (FX5, asercja niżej). Katalog „Wzory”: projekt z dwoma wzorami (zdjęcie strony i PDF) → tytuł wzoru z ▾ → lista „Patterns in …” z ✓ przy bieżącym → wybór PDF: widok PDF z jego
 // rysunkami (zakreśleniami) → restart: otwiera się ostatnio wybrany wzór → ekran projektu ma grupę „Patterns” z dwoma wierszami.
 // Trasy „/wzor” i „/projekt/[id]” na prawdziwej bazie, prawdziwych przypadkach użycia i prawdziwym t() z en.json; widok strony PDF to atrapa modułu natywnego (Swift),
 // która zapisuje propsy (dokument z rysunkami). „Restart” to odmontowanie i ponowne zamontowanie trasy na tej samej bazie.
 import React from 'react';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { View } from 'react-native';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { czesc, licznik, plik, projekt, rysunek, wzor } from '../dane/pomocnicze/dane-wejsciowe';
 import { kompozycjaTestowa } from '../dane/pomocnicze/kompozycja-licznika';
-import { T0, czasWTle, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
+import { T0, czasWTle, ile, jeden, sha256, wlozPlik, wykonaj } from '../dane/pomocnicze/srodowisko';
 import type { PortBazy } from '../../src/domena/porty';
 
 const mockRouter = { back: jest.fn(), replace: jest.fn(), push: jest.fn(), navigate: jest.fn(), canGoBack: () => true };
@@ -19,7 +21,8 @@ jest.mock('../../src/kompozycja/Bezpieczny', () => ({ Bezpieczny: ({ children }:
 jest.mock('../../src/kompozycja/SkrzynkaNaEkranie', () => ({ SkrzynkaNaEkranie: () => null }));
 jest.mock('../../src/kompozycja/system', () => ({ oglos: jest.fn(), systemAplikacji: {} }));
 jest.mock('../../src/kompozycja/miniatury', () => ({ miniaturyWzorow: async () => ({}) }));
-type PropsWidoku = { dokument?: { wzorId: string; rysunki: { strona: number; plik: string }[] } };
+type ZdarzenieRysunku = { nativeEvent: { wzorId: string; strona: number; plikTymczasowy: string; oczekujace?: number } };
+type PropsWidoku = { dokument?: { wzorId: string; rysunki: { strona: number; plik: string }[] }; onRysunek?: (e: ZdarzenieRysunku) => void; onZakreslenia?: (e: { nativeEvent: { liczba: number } }) => void };
 let mockWidok: PropsWidoku = {};
 const mockReact = React; // jest.mock podnosi fabrykę nad importy: odwołania muszą mieć prefiks mock
 const mockRn = { View };
@@ -45,6 +48,7 @@ async function zasiej() {
   const zw = { ...s.z, konwersja: { naPdf: jest.fn(), sprawdzPdf: jest.fn() }, czasWTle };
   mockAplikacja = { kontener: { z: s.z, j, dostep: { stan: () => ({ poziom: 'darmowa' }) }, porty: { haptyka: { zagraj: jest.fn() }, siec: { stan: () => 'jest', obserwuj: () => () => undefined } },
     wzor: { z: zw, k: { odswiezMigawke: async () => undefined, stan: () => ({ czekaSiec: [] }), naZmiane: () => () => undefined }, platforma: { skanerDostepny: () => false, miniatura: async () => null, wklej: async () => null } } }, licznik: k, preferencje: { stan: () => ({ wibracje: false }) } };
+  return s;
 }
 const otworzWzor = async () => { mockWidok = {}; render(<EkranWzoru />); await waitFor(() => expect(mockWidok.dokument).toBeDefined()); };
 
@@ -96,4 +100,35 @@ test('PU-291 (część): ••• → „Rename” → „Front chart” → ty
   await waitFor(() => expect(screen.getAllByTestId('projekt-wzor')).toHaveLength(2));
   expect(screen.getByText('Front chart')).toBeTruthy();
   expect(screen.queryByText('Page photo')).toBeNull();
+});
+
+// PU-011 / BX-029 (FX5): dwa szybkie zakreślenia jedno po drugim nie giną. Widok natywny wysyła przy każdym pociągnięciu CAŁY rysunek strony (`onRysunek`,
+// M1-084/105); zdarzenia przychodzą jedno za drugim (≤ 1 s, tu bez przerwy), a zapis strony idzie po kolei w kolejności wywołań (`zapiszRysunek`, kolejka klucza).
+// Oczekiwany wynik: oba pasy od razu (liczba „4 highlights” po dwóch zdarzeniach z licznikiem 3 → 4), po restarcie wszystkie 4 (w bazie rysunek z drugiego zdarzenia, nie z pierwszego).
+test('PU-011 (BX-029): dwa pociągnięcia w odstępie ≤ 1 s — oba zapisane: ostatni rysunek strony w bazie, licznik „4 highlights”, po restarcie wszystkie 4', async () => {
+  const s = await zasiej();
+  mockParams = {};
+  await otworzWzor(); // „Page photo” (zdjęcie strony), bez rysunku
+  const k = s.z.katalogi.tymczasowy;
+  mkdirSync(k, { recursive: true });
+  const f3 = join(k, 'w2__0__trzy.pkdrawing'), f4 = join(k, 'w2__0__cztery.pkdrawing');
+  writeFileSync(f3, 'zakreslenia:3');
+  writeFileSync(f4, 'zakreslenia:4');
+  const zdarzenie = (plikTymczasowy: string): ZdarzenieRysunku => ({ nativeEvent: { wzorId: 'w2', strona: 0, plikTymczasowy, oczekujace: 0 } });
+  await act(async () => { // oba pociągnięcia w jednej chwili: drugie przychodzi, zanim pierwszy zapis się skończy
+    mockWidok.onZakreslenia?.({ nativeEvent: { liczba: 3 } });
+    mockWidok.onRysunek?.(zdarzenie(f3));
+    mockWidok.onZakreslenia?.({ nativeEvent: { liczba: 4 } });
+    mockWidok.onRysunek?.(zdarzenie(f4));
+    await new Promise((x) => setTimeout(x, 200));
+  });
+  expect(screen.getByTestId('wzor-zakreslenia')).toHaveTextContent('4 highlights'); // oba pasy od razu
+  expect(await ile(s.baza, 'rysunek', "wzor_id = 'w2' AND strona = 0")).toBe(1); // jeden rysunek strony (cały, nie dwa kawałki)
+  expect(await jeden(s.baza, "SELECT plik_sha256 FROM rysunek WHERE wzor_id = 'w2' AND strona = 0")).toEqual({ plik_sha256: sha256('zakreslenia:4') }); // ostatni, nie pierwszy
+  expect(await ile(s.baza, 'plik', `sha256 = '${sha256('zakreslenia:3')}'`)).toBe(0); // pierwszy plik nie zostaje jako sierota
+  screen.unmount(); // „zabij aplikację → otwórz wzór”
+  await otworzWzor();
+  expect(mockWidok.dokument?.wzorId).toBe('w2');
+  expect(mockWidok.dokument?.rysunki).toHaveLength(1);
+  expect(readFileSync(String(mockWidok.dokument?.rysunki[0]?.plik).replace(/^file:\/\//, ''), 'utf8')).toBe('zakreslenia:4'); // po restarcie wszystkie 4
 });
