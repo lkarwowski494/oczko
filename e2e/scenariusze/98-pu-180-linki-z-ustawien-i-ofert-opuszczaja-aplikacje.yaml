@@ -1,0 +1,50 @@
+# PU-180 (T-125): stuknięcie linku z Ustawień i z „Oczko Pro” opuszcza aplikację (Safari na pierwszym planie); powrót bez utraty stanu.
+# Kod: `ustawienia-pomoc`, `ustawienia-polityka` (rola link; `system.otworzAdres`, src/ekrany/Ustawienia.tsx:127-130), w ofertach „Privacy Policy” i „Terms of Use” bez testID (src/ekrany/Oferty.tsx:173-174) — selektor po tekście.
+# Treść i dostępność stron sprawdza `.github/workflows/sprawdz-adresy.yml:23` (każdy adres 200); tu tylko opuszczenie aplikacji i powrót. `ustawienia-ocen` to adres recenzji App Store — też opuszcza aplikację.
+# Ograniczenie (BX-027, hipoteza): hierarchia Maestro po stuknięciu linku to hierarchia aplikacji docelowej; „opuściła aplikację” = zniknięcie elementów Oczka (`assertNotVisible`), nie widok Safari. Powrót: `launchApp { stopApp: false }` (scen. 19).
+appId: com.apps4brew.knitting
+name: "PU-180 · Linki z Ustawień i ofert opuszczają aplikację, powrót zachowuje stan"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-180
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-pomoc" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "ustawienia-pomoc" }
+- extendedWaitUntil: { notVisible: { id: "ustawienia-pomoc" }, timeout: 20000 }
+- takeScreenshot: 98-po-pomocy
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "ustawienia-pomoc" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "ustawienia-polityka" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "ustawienia-polityka" }
+- extendedWaitUntil: { notVisible: { id: "ustawienia-polityka" }, timeout: 20000 }
+- takeScreenshot: 98-po-polityce
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "ustawienia-polityka" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "ustawienia-ocen" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "ustawienia-ocen" }
+- extendedWaitUntil: { notVisible: { id: "ustawienia-ocen" }, timeout: 20000 }
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "ustawienia-ocen" }, timeout: 30000 }
+# --- oferty: Privacy Policy i Terms of Use ---
+- scrollUntilVisible: { element: { id: "ustawienia-oczko-pro" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 20000 }
+- scrollUntilVisible: { element: { text: "Privacy Policy" }, direction: DOWN, timeout: 30000 }
+- tapOn: "Privacy Policy"
+- extendedWaitUntil: { notVisible: { id: "oferty-przywroc" }, timeout: 20000 }
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 30000 }
+- scrollUntilVisible: { element: { text: "Terms of Use" }, direction: DOWN, timeout: 30000 }
+- tapOn: "Terms of Use"
+- extendedWaitUntil: { notVisible: { id: "oferty-przywroc" }, timeout: 20000 }
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 30000 }
+- takeScreenshot: 98-oferty-po-powrocie

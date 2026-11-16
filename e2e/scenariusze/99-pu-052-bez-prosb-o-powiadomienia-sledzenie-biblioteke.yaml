@@ -1,0 +1,39 @@
+# PU-052 (T-35, T-136): cały przebieg (dodanie zdjęcia z biblioteki, liczenie, ustawienia) bez systemowej prośby o powiadomienia, śledzenie (ATT) i dostęp do biblioteki zdjęć.
+# Kod: ekran projektu → `zdjecia-dodaj` → arkusz systemowy „Choose from library” (README, wiersz `zdjecia-dodaj`); wybór zdjęć przez systemowy selektor nie wymaga zgody na całą bibliotekę.
+# Ograniczenie (BX-028, hipoteza): Maestro iOS widzi alerty systemowe po tekście (springboard) — niepotwierdzone; `assertNotVisible` z regex pada fałszywie na zielono, jeśli nie widzi alertów w ogóle. Zrzuty kroków dokumentują stan.
+appId: com.apps4brew.knitting
+name: "PU-052 · Brak systemowych próśb o powiadomienia, śledzenie i dostęp do biblioteki"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-052
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- assertNotVisible: ".*Would Like to Send You Notifications.*" # start
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "zdjecia-dodaj" }
+- extendedWaitUntil: { visible: "Choose from library", timeout: 20000 }
+- tapOn: "Choose from library"
+- waitForAnimationToEnd
+- assertNotVisible: ".*Would Like to Access Your Photos.*"
+- assertNotVisible: ".*Would Like to Send You Notifications.*"
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- takeScreenshot: 99-po-wyborze-z-biblioteki
+- tapOn: { text: "Cancel", optional: true } # zamknięcie systemowego selektora bez wyboru
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 30000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertNotVisible: ".*Would Like to Send You Notifications.*"
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- takeScreenshot: 99-ustawienia

@@ -96,3 +96,6 @@ flows:
   - 94-pu-322-dozywotnio-bez-planow-po-zakupie.yaml
   - 95-pu-168-centrum-powiadomien-i-sterowania-bez-rzedu.yaml
   - 96-pu-170-stoper-po-powrocie-z-tla.yaml
+  - 97-pu-165-klawiatura-liczbowa-pole-i-zapisz.yaml
+  - 98-pu-180-linki-z-ustawien-i-ofert-opuszczaja-aplikacje.yaml
+  - 99-pu-052-bez-prosb-o-powiadomienia-sledzenie-biblioteke.yaml

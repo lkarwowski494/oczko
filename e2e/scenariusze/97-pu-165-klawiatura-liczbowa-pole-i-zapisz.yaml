@@ -1,0 +1,37 @@
+# PU-165 (T-111): formularz z polem liczbowym → stuknięcie pola: klawiatura numeryczna, pole i „Zapisz” widoczne (bez przewijania), po zapisie klawiatura się chowa.
+# Kod: `licznik-menu` → `menu-wpisz-wartosc` → arkusz „Enter the row number” (`wpisz-wartosc-pole`, `formularz-zapisz`); wzór kroków: scen. 10:39, README pkt 6.
+# Ograniczenie (BX-026, hipoteza do pierwszego przebiegu iOS): Maestro nie ma asercji „klawiatura widoczna”; klawiaturę numeryczną rozpoznajemy po klawiszu „Delete” (XCUITest widzi klawisze jako elementy).
+# Jeśli „Delete” nie jest w hierarchii, zrzut 97-z-klawiatura pokaże stan; PU zostaje „oczekujący”. „Nie zasłania” = pole i `formularz-zapisz` w hierarchii (nie ma asercji pokrycia).
+appId: com.apps4brew.knitting
+name: "PU-165 · Pole liczbowe: klawiatura numeryczna, pole i Zapisz widoczne, po zapisie klawiatura znika"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-165
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "7"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "7" }
+- assertVisible: "Delete" # klawisz klawiatury numerycznej (BX-026)
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- assertVisible: { id: "formularz-zapisz" } # bez przewijania: klawiatura go nie zasłania
+- takeScreenshot: 97-z-klawiatura
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "7" }, timeout: 20000 }
+- assertNotVisible: "Delete" # klawiatura schowana po zapisie
+- takeScreenshot: 97-po-zapisie
