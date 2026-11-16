@@ -16,10 +16,28 @@ Sesja FX5, gałąź `claude/fx5-poprawki-2026-11-16` od 373a3123. Koordynator: s
 - **PU-044** (zamiast „Na karcie „Dziś” „Do …, dziś 0 z N rzędów”; …”): „Na liście „Projekty” w wierszu projektu z terminem cel dnia („Today: 0 of N rows” ⟦Dziś: 0 z N rzędów⟧) , a na ekranie projektu „Do …, dziś 0 z N rzędów” ⟦Done by …, today 0 of N rows⟧; karta „Dziś” celu dnia nie pokazuje (scope-contract:9); w sekcji „W toku” projekt z terminem nad projektami bez terminu.” Kolumna „Droga”: „Po ustawieniu terminu → „Projekty” (wiersz projektu) → projekt.” Kolumna „Ekran”: `(zakladki)/projekty`, `projekt/[id]`.
   Uwaga: dokładny tekst en/pl wiersza listy i linii na ekranie projektu do potwierdzenia przez sesję BX przy pisaniu scenariusza (`projekty.dzis_*` vs. `projekt.*`); tu podany z `en.json:208`.
 
-## Pozostałe zadania
+## Zadania 2–5 (stan: wszystkie commity lokalne na `claude/fx5-poprawki-2026-11-16`; **push wstrzymany** — patrz „Blokada”)
 
-(uzupełniane po wykonaniu)
+| Zadanie | Commit | Test czerwony → zielony | Uwagi |
+|---|---|---|---|
+| 2. BX-024 (PU-334): panel `e2e-zegarek-stan` + ` · lang {kod}` | 0b5bd811 | 4 testy na końcu `tests/ekrany/e2e-zegarek-stan.test.tsx`: czerwone („Expected … row 12 · lang de, Received … row 12”, z tymczasowym stubem sygnatur, żeby czerwień nie wynikała z braku eksportu) → zielone 4/4; `e2e-zegarek-stan` (2) i `pu-zegarek-stan-156` bez zmian zielone; typecheck kod 0 | `zegarekSztucznyZJezykiem(jezyk)` w `src/kompozycja/e2e/panele.tsx`, `kontener.ts:89` daje mu to samo `jezyk` co adapterowi; brak źródła = `lang none` (adapter wysyła null); `zegarekSztuczny` (bez języka) zostaje dla istniejących testów; wiersz w `e2e/README.md:361`. Panel nadal ładowany tylko przy `EXPO_PUBLIC_E2E=1` (`tryb-e2e.ts:17`). Scenariusz PU-334 (`assertVisible … ".*lang de.*"`) — dla sesji BX. |
+| 3. BX-005 (PU-290), typ (a) | d83df1b9 | asercja `Patterns in Sweter` w `tests/ekrany/pu-wzor-przelacz-290.test.tsx`: czerwona („Unable to find an element with text: Patterns in Sweter”) → zielona; `tests/ekrany` 304/304 | `StanPrzegladarki.projekt` (z `licznik.nazwaProjektu`), nagłówek w `MenuWzorow` (rola header, styl podpisu, bez nowych tokenów ani kluczy), 4 pliki, ok. 8 linii. Dla BX: scenariusz PU-290 może asercją `Patterns in …` objąć nagłówek. |
+| 4. BX-029 (PU-011) | 63606465 | test dodany do `tests/ekrany/pu-wzor-przelacz-290.test.tsx` (linia 125 = asercja „4 highlights”): zielony od razu (ścieżka działa, kod bez zmian); czułość: mutacja „ON CONFLICT … DO NOTHING” w `zapiszPlikRysunku` → czerwony, mutacja „bez kolejki klucza” testu nie łamie | Obejmuje cały „Oczekiwany wynik”: „4 highlights” po dwóch zdarzeniach (3 → 4), jeden wiersz rysunku strony z hashem drugiego pliku, brak sieroty pierwszego pliku, po restarcie widok dostaje rysunek drugiego zdarzenia. Granica: gest i liczbę pasów liczy moduł natywny (atrapa), więc dokładny wpis niżej dla klasy B (nie dla A). |
+| 5. PU-333 | 0c87a32a | **niesprawdzone lokalnie** (Linux, brak swift); job `swift-test` w „Jakość · iOS” (`.github/workflows/jakosc-ios.yml:44`, krok „swift test”) | `ZegarekSkrzynkaTests.testPU333BladZapisuStanBezZmianHaptykaBladZapisu`: dodaje do X-ZG-02 asercje `pokazywany` bez zmian, `wzorzecHaptykiZegarka(.plus/.minus, .zapisNieudany)` = `.bladZapisu`, ponowne stuknięcie po powrocie zapisu. Kod produkcyjny bez zmian. Wiersz X-ZG-12 w `tests/wspolne/xctest-specyfikacja.md` nie dopisany (poza listą plików). |
+
+### Dokładny wpis katalogu dla PU-011 (do zrobienia przez sesję BX; ja katalogu nie zmieniam)
+
+Bramka (`scripts/jakosc/bramka-przypadki-uzycia.mjs:231-243`, `bladTestuPU:171-180`) dla klasy B przyjmuje „z testem: plik:linia”, gdy plik to `*.test.ts[x]` (poza `tests/akceptacja/`), bez skip/todo, wymienia `PU-011` w promieniu 40 linii od cytowanej linii (`ODLEGLOSC_PU = 40`, `:170`). Wpis (kolumna Pokrycie PU-011, zastępuje „do zaprogramowania: Maestro iPhone — …”):
+
+`z testem: tests/ekrany/pu-wzor-przelacz-290.test.tsx:125; częściowo: e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml:42 (iPad, bez restartu)`
+
+Wzmianki o `PU-011` w pliku: linie 105 i 108; 125 mieści się w 40 liniach. Sprawdzić `npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts tests/jakosc/przypadki-uzycia.test.ts` po zmianie wiersza (kontrola 2 „B z testem”). Uwaga: numery linii przesuną się, jeśli ktoś edytuje plik testu przed scaleniem.
+Dla PU-333 bramka **nie przyjmuje** testu Swift jako „z testem:” (tylko `*.test.ts[x]`); wpis zostaje „do zaprogramowania: jednostkowy — Swift …” — bramki nie zmieniam, to sprawa decyzji (rola 07/koordynator).
+
+### Blokada: push
+
+Hak pre-push zatrzymuje push, bo generator `node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md` kończy się kodem 1 po zmianie testów w `tests/ekrany` (liczba testów i importy `src` w wierszach `e2e-zegarek-stan.test.tsx` i `pu-wzor-przelacz-290.test.tsx`). Plik poza listą z p. 5 polecenia — pytanie do koordynatora wysłane (opcje A: regeneruję poleceniem z komunikatu hooka; B: regeneruje koordynator po scaleniu). Różnica po regeneracji: dokładnie dwa wiersze (185 i 366).
 
 ## Decyzje do przeniesienia
 
-(brak)
+(brak; pula P-894…P-897 niewykorzystana)
