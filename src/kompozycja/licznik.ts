@@ -153,11 +153,11 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     const r = await dodajRzad(z, { licznikId: id });
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
-    const { w } = await stan();
+    const { s, w } = await stan(); // jeden odczyt po zapisie: wartość, zdarzenia i pełny stan ekranu (BX20: ekran nie czyta stanu drugi raz po „+1”)
     void poZapisie(w);
     if (!w) return { ok: false, powod: 'bledne_dane' };
     const sygnal = wejscie(w, r.wartosc.wartosc - 1);
-    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal } };
+    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal, stan: s } };
   }
 
   const k: KompozycjaLicznika = {

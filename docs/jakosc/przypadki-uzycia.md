@@ -536,14 +536,14 @@ Inwentarz funkcji z kodu (recenzja BX2 B, stan b05cfb15: trasy i rodzaje formula
 | B. Licznik, menu, akcje, stoper, historia licznika | Historia: „Cofnij n rzędów” (seria) | `src/ekrany/Historia.tsx:50` | PU-276 |
 | B. Licznik, menu, akcje, stoper, historia licznika | Historia: starszy wpis → „Wpisz właściwą liczbę” | `src/ekrany/Historia.tsx:55, :61` | PU-277 |
 | B. Licznik, menu, akcje, stoper, historia licznika | Arkusz limitu na liczniku | `src/ekrany/LicznikArkuszLimitu.tsx:13` | PU-116, PU-117 |
-| C. „Dziś” | Karta „+1” i „Kontynuuj” | `src/ekrany/Dzis.tsx:122; app/(zakladki)/index.tsx:63` | PU-005, PU-014, PU-015 |
-| C. „Dziś” | Karta bez ostatniego miejsca „Twoje projekty są tutaj” → „Wybierz projekt” | `src/ekrany/Dzis.tsx:141` | PU-271 |
-| C. „Dziś” | Linia następnego przypomnienia „Za n rzędów: …” | `src/ekrany/Dzis.tsx:206` | PU-273 |
+| C. „Dziś” | Karta „+1” i „Kontynuuj” | `src/ekrany/Dzis.tsx:123; app/(zakladki)/index.tsx:63` | PU-005, PU-014, PU-015 |
+| C. „Dziś” | Karta bez ostatniego miejsca „Twoje projekty są tutaj” → „Wybierz projekt” | `src/ekrany/Dzis.tsx:142` | PU-271 |
+| C. „Dziś” | Linia następnego przypomnienia „Za n rzędów: …” | `src/ekrany/Dzis.tsx:207` | PU-273 |
 | C. „Dziś” | Kafel „Nowy projekt” | `app/(zakladki)/index.tsx:77` | PU-272 |
 | C. „Dziś” | Kafel „Dodaj wzór” | `app/(zakladki)/index.tsx:70` | PU-016, PU-017 |
 | C. „Dziś” | Kafel „Włóczka i druty”, kafel „Próbka” | `app/(zakladki)/index.tsx:79, :80` | PU-272 |
-| C. „Dziś” | „Ten tydzień”: kreski dni dzierganych | `src/ekrany/Dzis.tsx:218` | PU-274 |
-| C. „Dziś” | „?” Przewodnik, zębatka, linia dni darmowych, link limitu | `src/ekrany/Dzis.tsx:178–179, :129` | PU-104, PU-232, PU-115, PU-213 |
+| C. „Dziś” | „Ten tydzień”: kreski dni dzierganych | `src/ekrany/Dzis.tsx:219` | PU-274 |
+| C. „Dziś” | „?” Przewodnik, zębatka, linia dni darmowych, link limitu | `src/ekrany/Dzis.tsx:179–180, :130` | PU-104, PU-232, PU-115, PU-213 |
 | D. Projekty i ekran projektu | Lista: wiersz → licznik, sekcje, „Szukaj” | `src/ekrany/ListaProjektow.tsx:47, :84` | PU-047, PU-048, PU-238 |
 | D. Projekty i ekran projektu | ••• wiersza listy → usunięcie projektu z listy | `src/ekrany/ListaProjektow.tsx:62; app/(zakladki)/projekty.tsx:58` | PU-283 |
 | D. Projekty i ekran projektu | „Nowy projekt” z listy | `src/ekrany/ListaProjektow.tsx:77` | PU-029, PU-209 |

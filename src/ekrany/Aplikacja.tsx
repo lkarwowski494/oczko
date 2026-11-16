@@ -84,8 +84,9 @@ function useStanLicznika(uslugi: Pick<UslugiAplikacji, 'dodajRzad'>, dzialania: 
     if (w.ok) {
       wydanie.current += 1;
       diagnostyka?.stan(w.wartosc.skonczone);
-      ustawStan((s) => (s ? { ...s, licznik: { ...s.licznik, skonczone: w.wartosc.skonczone, dziergany: w.wartosc.dziergany } } : s));
-      await odswiez(); // baner serii, przypomnienie, kreski i projekt roboczy po pierwszym +1
+      const pelny = w.wartosc.stan; // BX20: kompozycja podaje pełny stan z odczytu po zapisie — jedno zatwierdzenie zamiast dwóch i bez drugiego odczytu w oknie pomiaru NFR-WYD-001
+      ustawStan((s) => (s ? { ...s, licznik: pelny ?? { ...s.licznik, skonczone: w.wartosc.skonczone, dziergany: w.wartosc.dziergany } } : s));
+      if (!pelny) await odswiez(); // bez pełnego stanu: baner serii, przypomnienie, kreski i projekt roboczy po pierwszym +1 z osobnego odczytu
     }
     return w;
   }

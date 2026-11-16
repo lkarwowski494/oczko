@@ -46,6 +46,8 @@ export type WynikPlus = WynikEkranu<{
   dziergany: number;
   zdarzenia: ZdarzeniePlus[];
   wejscieWPrzypomnienie: { rzad: number; tekst: string; ktory: number; razy: number } | null;
+  /** Pełny stan ekranu z tego samego odczytu po zapisie (BX20, KO-136): ekran zatwierdza go raz i nie czyta stanu drugi raz po „+1”. Bez pola (atrapy, inne wywołania) ekran robi odczyt jak dotąd. */
+  stan?: StanEkranuLicznika;
 }>;
 
 export type PropsLicznika = {
