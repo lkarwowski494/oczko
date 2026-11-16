@@ -5,3 +5,7 @@ Tests:       1 failed, 1 total
 
 # Po poprawce (app/ustawienia.tsx: ustawDostep(kontener.dostep.stan()) w efekcie ostrości):
 # npx jest ustawienia-powrot-oferty-bx049 ustawienia-powrot-miary-bx008 pu-zakup-planow-321-323 ustawienia ustawienia-trasa → Test Suites: 5 passed, Tests: 23 passed
+
+# Zad. 3 — tests/jakosc/e2e-ax5-wiersz-czesci-bx15.test.ts, przed zmianą subflows/dodaj-czesc-cel.yaml:
+#   ✕ podprzepływ dodaj-czesc-cel: przed stuknięciem w „Back, .*” jest scrollUntilVisible … — Expected: "scrollUntilVisible", Received: "assertVisible"
+# Po zmianie: e2e-ax5-wiersz-czesci-bx15 + maestro-scenariusze + e2e-kruchosc* → Test Suites: 9 passed, Tests: 212 passed

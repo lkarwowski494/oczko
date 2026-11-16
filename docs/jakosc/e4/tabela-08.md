@@ -418,6 +418,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ukonczenie.test.tsx` | zielony (główny zestaw) | 5 | BR-DAN-012/S1, BR-PRJ-015, BR-PRJ-015/S1, BR-PRJ-015/S3, BR-ZAP-002, NFR-DOS-001, P-126, P-150, P-160 | `src/ekrany/Ukonczenie`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-import-wyjatek.test.tsx` | zielony (główny zestaw) | 3 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-powrot-miary-bx008.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/preferencje` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-powrot-oferty-bx049.test.tsx` | zielony (główny zestaw) | 1 | — | `src/kompozycja/dostep`<br>`src/platforma/sklep-sztuczny` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia-trasa.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-006/S3 | `src/dane/archiwum`<br>`src/dane/migracje/migruj` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ustawienia.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-010, BR-DAN-012/S3, BR-LIC-020/S3, BR-ZAK-004, BR-ZAK-004/S1, BR-ZAK-006/S5, BR-ZAK-006/S7, KP-13 | `src/ekrany/Ustawienia`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/usun-wszystko-co-zostaje.test.tsx` | zielony (główny zestaw) | 4 | P-426, P-427 | `src/ekrany/UsunWszystko`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/konfiguracja` | — |
@@ -506,4 +507,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 502; zależnych od poprawek: 309.
+Razem plików testów: 503; zależnych od poprawek: 309.

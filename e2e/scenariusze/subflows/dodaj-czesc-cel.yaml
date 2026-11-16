@@ -45,5 +45,7 @@ name: "podprzepływ: część Back z celem"
 - tapOn: { id: "formularz-zapisz" }
 - assertVisible: { id: "projekt-dodaj" }
 # Wiersz części „Back, 0 of 3 rows” (przecinek). Samo „Back.*” trafia też w przycisk wstecz (etykieta „Back”, 3a) i wraca na domyślną część (BR-DNI-004, #142).
+# BX15 (PU-135, przebieg 43851148385, scen. 120): przy AX5 wiersz części leży poza ekranem (hierarchia iOS nie zawiera elementów spoza ekranu), więc najpierw przewinięcie; przy zwykłym tekście element jest widoczny i krok kończy się od razu.
+- scrollUntilVisible: { element: { text: "Back, .*" }, direction: DOWN, timeout: 30000 }
 - tapOn: "Back, .*"
 - assertVisible: { id: "licznik-plus" }
