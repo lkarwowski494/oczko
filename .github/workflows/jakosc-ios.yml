@@ -429,6 +429,13 @@ jobs:
             else echo "- czerwony-informacyjnie $n (AX5)" >> "$GITHUB_STEP_SUMMARY"; fi
           done
           exit $porazki
+      - name: Czas startu (PU-162)
+        # PU-162 (KO-111, BX14): czas od launchApp do widoczności dzis-karta z commands.json Maestro → podsumowanie przebiegu. Informacyjnie, bez progu:
+        # continue-on-error i kod 0 skryptu (brak danych = linia w podsumowaniu); tylko odczyt e2e-out, bez sekretów i sieci. Zawiera narzut Maestro (trend, nie czysty start).
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/ci/czas-startu.mjs e2e-out >> "$GITHUB_STEP_SUMMARY"
       - name: Spakowanie wyników (Maestro zapisuje katalogi z „:” w nazwie scenariusza, których upload-artifact nie przyjmuje; run 40223597670)
         if: always() && steps.plan.outputs.any == 'true'
         run: '[ -d e2e-out ] && zip -qry e2e-out.zip e2e-out || true'
