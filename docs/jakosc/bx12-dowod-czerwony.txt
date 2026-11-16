@@ -11,3 +11,9 @@ $ node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog
   ✕ CG-1: scenariusze nie odwołują się do nieistniejącego docs/design/wzorce-zrzuty/
     - Array []   + Array [ "30-nfr-dos-002-duzy-tekst.yaml" ]
 Po poprawce komentarza: ✓ (1 test).
+
+== CK-01 (scen. 105, kontrola pozytywna obrotu), 2026-11-16 ==
+Czerwone 1: po dopisaniu kontroli w scen. 105 (przed poprawką numerów linii w katalogu): `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog` → "Kontrola 2: CZERWONA (5)" (PU-071: …105….yaml:30/:38/:49 „nie jest asercją”, :58/:67 „nie istnieje”).
+Czerwone 2: `npx jest tests/jakosc` → 4 testy czerwone: ch01-okno-w-scenariuszu-105 (6 obrotów → 7; asercja „portrait” po obrocie kontrolnym), maestro-scenariusze (po setOrientation PORTRAIT brak asercji; P-091 9a: scenariusz sprawdza wartość licznika bez tagu stan-licznika). Poprawki: asercja „portrait” po powrocie do pionu, tag stan-licznika, test CH-01 rozróżnia obrót kontrolny.
+Mutacja: usunięcie asercji „window: landscape” (linia 25) → ch01-okno-w-scenariuszu-105 czerwony (kontrola nie znaleziona); po przywróceniu zielony.
+Zielone: `npx jest tests/jakosc` → 77 suites / 989 testów; katalog „Kontrola 2: zielona”.

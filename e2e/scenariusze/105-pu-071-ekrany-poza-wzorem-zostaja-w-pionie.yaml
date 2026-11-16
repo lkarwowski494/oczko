@@ -2,19 +2,34 @@
 # Kod: orientacja ekranu per trasa (`app/_layout.tsx:122,128`, `orientacjaEkranu('inny', …)`, `src/domena/uklad.ts:35`) — poza `wzor` pion. Dowód wartości (CH-01, BX11): panel `e2e-okno` w korzeniu
 # nawigacji (build E2E) pokazuje proporcję okna z `useWindowDimensions` („window: portrait (…)” / „window: landscape (…)”); po każdym `setOrientation: LANDSCAPE_LEFT` scenariusz asertuje „portrait”,
 # więc pada, gdy któryś z ekranów da się obrócić. Asercje `below` zostają jako dodatkowa kontrola układu (prawdziwe w obu orientacjach, same orientacji nie dowodzą). Zrzuty 105-* do porównania z wzorcem
-# pionowym (docs/design). Ograniczenie: gdyby `setOrientation` nie obracał symulatora, okno też zostałoby pionowe (nie ma tu kontroli pozytywnej; obrót wzoru sprawdza scen. 103).
+# pionowym (docs/design). Kontrola pozytywna (CK-01): na początku scenariusz otwiera wzór (trasa `wzor` ma orientację `all`, `src/domena/uklad.ts:37`), obraca `setOrientation: LANDSCAPE_LEFT` i asertuje
+# „window: landscape” — gdyby `setOrientation` nie obracał symulatora, scenariusz pada tu, a nie przechodzi „na pusto” (6 asercji „portrait” bez tej kontroli byłoby prawdziwych zawsze).
+# Obrót strony wzoru („Rotate page”) to co innego i sprawdza go scen. 103; tu liczy się obrót okna.
 appId: com.apps4brew.knitting
 name: "PU-071 · Ekrany poza wzorem po obrocie poziomo zostają w pionie: licznik, Dziś, Ustawienia, Projekty, Historia, Narzędzia"
 tags:
   - przypadki-uzycia
   - oczekujacy
   - PU-071
+  - stan-licznika
 ---
 - runFlow:
     file: subflows/start-czysty.yaml
     env:
       TERAZ: "2026-11-16T12:00:00"
 - assertVisible: { id: "licznik-plus" }
+# --- kontrola pozytywna (CK-01): wzór obraca się razem z oknem, więc „landscape” musi się pojawić ---
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "e2e-okno", text: ".*window: landscape.*" }
+- takeScreenshot: 105-kontrola-wzor-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
 - setOrientation: LANDSCAPE_LEFT
 - assertVisible: { id: "e2e-okno", text: ".*window: portrait.*" }
 - assertVisible: { id: "licznik-plus", below: { id: "licznik-wartosc-wiersz" } }
