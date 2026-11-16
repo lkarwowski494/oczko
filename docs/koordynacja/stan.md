@@ -1257,3 +1257,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 15:00 | M9 | KO-128: CN BX15 Z UWAGAMI 0 P1 (6b3d9ae); CN-01 → BX17; CN-02 odłożone; CN dalej: bf133ae |
 | 16.11 15:04 | M9 | KO-129: CN bf133ae 0 P1/P2 (3060d7a); CN-03/04 → BX17; CN zarchiwizowana 4,33 USD |
 | 16.11 15:06 | M9 | KO-130: BX17 6057d7e przyjęte (P-938 b, A=118/B=166/F=60); czeka dodatek CN-03/04 |
+| 16.11 15:05 | M9 (kontrola 15:03) | Zadania kontroli wykonane (KO-126…130). BX17 w toku: dodatek CN-03/04. Koordynator: 78,62 USD, kontekst 165,2 tys. / próg 224 000. Następna kontrola 15:26 (trig_01Wrb6acsTkRerfigMGVetaS) |
