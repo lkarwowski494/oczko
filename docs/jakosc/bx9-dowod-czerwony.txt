@@ -1,0 +1,40 @@
+FAIL iOS tests/jakosc/bx9-punkt-w-scenariuszu.test.ts
+  BX-034 · `point` w tapOn i longPressOn
+    ✕ kontrola składni przepuszcza `point` (tapOn i longPressOn) (15 ms)
+    ✕ interpreter na atrapie zgłasza jawnie, że punktów ekranu nie modeluje (nie stuka po cichu w nic) (28 ms)
+
+  ● BX-034 · `point` w tapOn i longPressOn › kontrola składni przepuszcza `point` (tapOn i longPressOn)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 6
+
+    - Array []
+    + Array [
+    +   "/tmp/bx9-punkt-986.yaml: tapOn: nieznany klucz selektora „point”",
+    +   "/tmp/bx9-punkt-986.yaml: tapOn: nieznana opcja „point”",
+    +   "/tmp/bx9-punkt-986.yaml: longPressOn: nieznany klucz selektora „point”",
+    +   "/tmp/bx9-punkt-986.yaml: longPressOn: nieznana opcja „point”",
+    + ]
+
+      16 |   test('kontrola składni przepuszcza `point` (tapOn i longPressOn)', () => {
+      17 |     const s = wczytaj(scenariusz('appId: x\n---\n- tapOn: { point: "50%, 40%" }\n- assertVisible: "a"\n- longPressOn: { point: "50%, 25%" }\n- assertVisible: "b"\n'));
+    > 18 |     expect(problemySkladni(s)).toEqual([]);
+         |                                ^
+      19 |   });
+      20 |   test('interpreter na atrapie zgłasza jawnie, że punktów ekranu nie modeluje (nie stuka po cichu w nic)', async () => {
+      21 |     const ekran = { elementy: () => [] } as unknown as EkranTestowy;
+
+      at Object.toEqual (tests/jakosc/bx9-punkt-w-scenariuszu.test.ts:18:32)
+
+  ● BX-034 · `point` w tapOn i longPressOn › interpreter na atrapie zgłasza jawnie, że punktów ekranu nie modeluje (nie stuka po cichu w nic)
+
+    expect(received).rejects.toThrow(expected)
+
+    Expected pattern: /nie modeluje punktów/
+    Received message: "[[object Object]] nieobsługiwany klucz selektora „point”"
+
+          219 |   znajdz(sel: Selektor): Element[] {
+          220 |     const s = typeof sel === 'string' ? { text: sel } : sel;
+        > 221 |     for (const k of Object.keys(s)) if (!KLUCZE_SELEKTORA.has(k)) throw new BladKroku(`[${this.nazwa}] nieobsługiwany klucz selektora „${k}”`);

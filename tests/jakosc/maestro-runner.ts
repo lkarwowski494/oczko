@@ -30,7 +30,7 @@ export const ZNANE_POLECENIA = new Set([
 ]);
 /** Klucze selektora / opcji kroku — inny klucz to błąd. */
 export const KLUCZE_SELEKTORA = new Set(['text', 'id', 'index', 'below', 'above', 'checked', 'selected', 'enabled', 'optional', 'repeat', 'delay', 'element', 'visible', 'notVisible',
-  'timeout', 'direction', 'centerElement', 'speed', 'visibilityPercentage', 'start', 'end', 'duration', 'from', 'label', 'retryTapIfNoChange', 'waitToSettleTimeoutMs']);
+  'timeout', 'direction', 'centerElement', 'speed', 'visibilityPercentage', 'start', 'end', 'duration', 'from', 'label', 'retryTapIfNoChange', 'waitToSettleTimeoutMs', 'point']); // point: BX-034 (P-891), Maestro 2.12.1 zna ten klucz
 /** Akcje zmieniające stan aplikacji: po każdej (z wyjątkiem łańcuchów wpisu niżej) musi przyjść asercja (strategia §3 zasada 8). */
 export const ZMIENIAJACE = new Set(['launchApp', 'stopApp', 'tapOn', 'doubleTapOn', 'longPressOn', 'inputText', 'eraseText', 'pressKey', 'hideKeyboard', 'swipe', 'setOrientation']);
 export const ASERCJE = new Set(['assertVisible', 'assertNotVisible', 'extendedWaitUntil', 'assertTrue']);
@@ -253,6 +253,7 @@ export class Runner {
       case 'launchApp': await this.ekran.uruchom({ wyczyscStan: arg?.clearState === true, argumenty: Object.fromEntries(Object.entries(arg?.arguments ?? {}).map(([k, v]) => [k, String(v)])), powrot: arg?.stopApp === false }); this.fokus = null; break;
       case 'stopApp': await this.ekran.zatrzymaj(); this.fokus = null; break;
       case 'tapOn': case 'doubleTapOn': case 'longPressOn': {
+        if (typeof arg === 'object' && arg?.point != null) this.blad(krok, 'Interpreter nie modeluje punktów ekranu (klucz point) — scenariusz z point biegnie tylko w Maestro na symulatorze (BX-034).');
         const powt = typeof arg === 'object' ? Number(arg.repeat ?? 1) : 1;
         for (let r = 0; r < powt; r++) {
           if (!(await this.czekaj(sel(arg), true, 3000))) { if (opcjonalny) return; this.blad(krok, 'Element niewidoczny — nie ma w co stuknąć.'); }
