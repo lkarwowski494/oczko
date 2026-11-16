@@ -1188,3 +1188,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 16.11 08:17 | M9 | BX12 session_01T66VByqdrd37cTMBpk23Ws wystartowała 08:15:15 (drugie podejście; sha256 promptu zgodne), dodatek 1 wysłany; BX11, CJ, CK zarchiwizowane (8,17 / 4,42 / 6,23 USD) |
 | 16.11 08:21 | BX12 → M9; M9 | BX12 zad. 1 przyjęte @ ca6862c3: drzewa równe 438fb298 i cd95fc4b, bez trailerów; KO-102 wykonane co do odtworzenia |
 | 16.11 08:25 | BX12 → M9; M9 → BX12 | zad. 2 przyjęte @ 6d654c04 (P-919, reguła P-507 w CLAUDE.md); przypomnienie kolejności: dodatek 1 przed zad. 3 |
+| 16.11 08:30 | M9 (kontrola 08:29) | BX12 pracuje (krok D; licznik kontekstu i kosztu jeszcze pusty; potwierdzenia dodatku 1 brak — sprawdzić przy następnej kontroli); iOS 43828957399 in_progress: swift-test i zegarek-ikona zielone, build trwa od 08:12, eksperymenty-wzoru czerwone (informacyjne); M9: kontekst 141 tys. / próg 224 tys., koszt 45,33 USD |
