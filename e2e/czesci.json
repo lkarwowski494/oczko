@@ -101,6 +101,9 @@
     "96-pu-170-stoper-po-powrocie-z-tla.yaml": 78,
     "97-pu-165-klawiatura-liczbowa-pole-i-zapisz.yaml": 95,
     "98-pu-180-linki-z-ustawien-i-ofert-opuszczaja-aplikacje.yaml": 124,
-    "99-pu-052-bez-prosb-o-powiadomienia-sledzenie-biblioteke.yaml": 106
+    "99-pu-052-bez-prosb-o-powiadomienia-sledzenie-biblioteke.yaml": 106,
+    "100-pu-008-zakreslenie-widac-od-razu-cofnij-ostatnia-kreske.yaml": 130,
+    "101-pu-296-gumka-zmazuje-jedno-zakreslenie.yaml": 120,
+    "102-pu-292-przywroc-usuniety-wzor-z-zakresleniami.yaml": 140
   }
 }

@@ -41,6 +41,7 @@ tags:
 - assertVisible: { id: "projekty-wiersz", index: 0 }
 - tapOn: { id: "projekty-wiersz", index: 0 }
 - extendedWaitUntil: { visible: { id: "licznik-wzor" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5: akcja pod liczbą bywa poza ekranem
 - tapOn: { id: "licznik-wzor" }
 - extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
 - assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }

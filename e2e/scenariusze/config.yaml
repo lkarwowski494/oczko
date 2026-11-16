@@ -12,6 +12,9 @@ flows:
   - 08-br-dan-006-s1-eksport-import.yaml
   - 09-adr-0019-start-awaryjny.yaml
   - 10-nfr-dan-002-kazda-zmiana-trwala.yaml
+  - 100-pu-008-zakreslenie-widac-od-razu-cofnij-ostatnia-kreske.yaml
+  - 101-pu-296-gumka-zmazuje-jedno-zakreslenie.yaml
+  - 102-pu-292-przywroc-usuniety-wzor-z-zakresleniami.yaml
   - 11-br-dan-001-s1-baza-bez-sieci.yaml
   - 12-br-zak-006-s4-bez-oferty-w-pracy.yaml
   - 13-kp-10-zakup-tylko-po-dzialaniu.yaml

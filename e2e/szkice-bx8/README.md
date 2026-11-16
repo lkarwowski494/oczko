@@ -1,2 +1,0 @@
-# Szkice scenariuszy BX8 (poza bramką — BX-033)
-Scenariusze PU-008 (100), PU-296 (101), PU-292 (102) napisane, ale **nie biegną**: bramka rozpoznaje tylko numery dwucyfrowe (`/^\d\d-.*\.yaml$/` w `scripts/ci/e2e-czesci.mjs:42`, `scripts/jakosc/bramka-przypadki-uzycia.mjs:187` i testach `tests/jakosc/*`). Po rozstrzygnięciu BX-033 (np. `\d{2,}`) przenieść do `e2e/scenariusze/`, dopisać do `config.yaml`, `czesci.json`, listy NOC-6 i katalogu.
