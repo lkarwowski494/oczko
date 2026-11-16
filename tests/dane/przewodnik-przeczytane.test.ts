@@ -34,7 +34,7 @@ describe('przewodnik: zapis przeczytanych', () => {
     expect(await jeden<{ wartosc: string }>(s.baza, "SELECT wartosc FROM ustawienie WHERE klucz = 'przewodnik_przeczytane'")).toEqual({ wartosc: '["cel","kosz"]' });
   });
 
-  test.each(['zastap', 'scal'] as const)('import „%s” archiwum z obcą listą zostawia lokalną (stan urządzenia)', async (tryb) => {
+  test.each(['zastap', 'scal'] as const)('PU-147 · import „%s” archiwum z obcą listą zostawia lokalną (stan urządzenia: przeczytane osobno od 0)', async (tryb) => {
     const s = await przygotuj();
     await oznaczPrzeczytana(s.z, 'cel');
     const sciezka = archiwumWzorcowe(s.katalog, 'obce', [projekt('cz', 'Czapka'),

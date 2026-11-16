@@ -41,3 +41,8 @@ Kontrola 2: CZERWONA (4)
 ::error::Kontrola 2: PU-150: tests/ekrany/wzor-trasa-znacznik.test.tsx nie wymienia PU-150
 ::error::Kontrola 2: PU-150: tests/domena/wzor/znacznik-ustawianie.test.ts nie wymienia PU-150
 Zielone: po dopisaniu „PU-146 ·”/„PU-150 ·” do tytułów czterech testów — Kontrola 2: zielona; 25 testów tych plików zielone.
+
+== KO-105: PU-147 (nowy test komponentowy tests/ekrany/pu-147-ipad-przewodnik.test.tsx), 2026-11-16 ==
+Czerwone (struktura): po zmianie Pokrycia na „z testem: …” przed dopisaniem PU-147 do tytułu tests/dane/przewodnik-przeczytane.test.ts:37 → "Kontrola 2: CZERWONA (1)": PU-147: tests/dane/przewodnik-przeczytane.test.ts nie wymienia PU-147. Zielone po dopisaniu.
+Mutacje źródła (po każdej przywrócone): KOLUMNA_TRESCI_MAKS 640→700 (src/domena/uklad.ts) → 1 failed (test 1); `przeczytanePrzewodnika` zwraca stałą ['cel'] (src/przypadki-uzycia/przewodnik.ts) → test pada na „Read: 0 of 42”. Bez mutacji: 2 passed.
+Poza testem (częściowo, nazwane w Pokryciu): gest „‹” wstecz i faktyczne otwarcie licznika na iPadzie — scen. 115.
