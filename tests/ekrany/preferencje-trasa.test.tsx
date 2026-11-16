@@ -22,6 +22,8 @@ const EkranUstawien = (require('../../app/ustawienia') as { default: React.Compo
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranMiar = (require('../../app/miary') as { default: React.ComponentType }).default;
 
+// BX15: prawdziwy `dostepPro.stan()` zwraca ten sam obiekt do zmiany dostępu (src/kompozycja/dostep.ts:51); Ustawienia czytają go przy ostrości (BX-049), nowy obiekt przy każdym wywołaniu = zbędny render.
+const STAN_DOSTEPU = { aktywne: null, pro: false };
 async function aplikacja(zepsutyZapis = false) {
   const t = await tEn();
   const s = await przygotuj();
@@ -29,7 +31,7 @@ async function aplikacja(zepsutyZapis = false) {
   const z = zArchiwum(s.z);
   const zapis = zepsutyZapis ? { ...z, baza: { ...z.baza, transakcja: () => Promise.reject(new Error('SQLITE_FULL')), run: z.baza.run, all: z.baza.all } } : z;
   mockAplikacja = {
-    kontener: { z: zapis, j: { t, preferencja: () => 'auto', jezyk: () => 'en' }, icloud: null, katalogDanych: s.katalog, dostep: { stan: () => ({ aktywne: null, pro: false }), naZmiane: () => () => undefined } },
+    kontener: { z: zapis, j: { t, preferencja: () => 'auto', jezyk: () => 'en' }, icloud: null, katalogDanych: s.katalog, dostep: { stan: () => STAN_DOSTEPU, naZmiane: () => () => undefined } },
     licznik: { zresetuj: jest.fn(), poZmianie: jest.fn() }, preferencje: { stan: p.stan, wczytaj: () => p.wczytaj(z), zapisz: (_z: unknown, zmiana: Parameters<typeof p.zapisz>[1]) => p.zapisz(zapis, zmiana) },
   };
   return { s, z, p };
