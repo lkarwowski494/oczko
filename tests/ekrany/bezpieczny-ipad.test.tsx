@@ -18,7 +18,7 @@ const szerokosc = () => {
 };
 test.each([
   [390, 844, 390], [820, 1180, 640], [1180, 820, 640], [375, 1180, 375],
-])('okno %i × %i → kolumna treści %i pt', (w, h, oczekiwana) => {
+])('PU-146 · okno %i × %i → kolumna treści %i pt (iPad: kolumna maks. 640 pt; compact: układ telefonu)', (w, h, oczekiwana) => {
   Object.assign(wymiary, { width: w, height: h });
   render(<Bezpieczny><Text>x</Text></Bezpieczny>);
   expect(szerokosc()).toBe(oczekiwana);

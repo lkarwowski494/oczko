@@ -6,7 +6,7 @@ test('iPhone: pion poza wzorem, dowolna na wzorze', () => {
   expect(orientacjaEkranu('inny', false)).toBe('portrait_up');
   expect(orientacjaEkranu('wzor', false)).toBe('all');
 });
-test('iPad: dowolna na każdym ekranie', () => {
+test('PU-146 · iPad: dowolna orientacja na każdym ekranie', () => {
   expect(orientacjaEkranu('inny', true)).toBe('all');
   expect(orientacjaEkranu('wzor', true)).toBe('all');
 });

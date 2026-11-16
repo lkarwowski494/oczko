@@ -32,3 +32,12 @@ Mutacje na plikach repo (po każdej przywrócone `git checkout`), test PU-191 pa
  (c1) plugin `./plugins/moj-analytics` w app.json → 3 failed;
  (c2) `node_modules/@sentry/core` jako pakiet produkcyjny w package-lock.json → 2 failed.
 Ograniczenie (nazwane): kontrola (a) sprawdza, że ID ISTNIEJE w docs/decyzje.md; wpis z prawdziwym, ale nietrafionym ID (np. „P-913 dopisane”) przejdzie — pełna kontrola wymagałaby, by wiersz decyzji nazywał pakiet [DO USTALENIA: czy chcecie tego].
+
+== KO-105: PU-146 i PU-150 (odnośnik do istniejących testów), 2026-11-16 ==
+Czerwone: po zmianie Pokrycia na „z testem: tests/…” (przed dopisaniem PU-NNN w tytułach testów) `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog`:
+Kontrola 2: CZERWONA (4)
+::error::Kontrola 2: PU-146: tests/ekrany/bezpieczny-ipad.test.tsx nie wymienia PU-146
+::error::Kontrola 2: PU-146: tests/domena/wzor/orientacja-ekranu.test.ts nie wymienia PU-146
+::error::Kontrola 2: PU-150: tests/ekrany/wzor-trasa-znacznik.test.tsx nie wymienia PU-150
+::error::Kontrola 2: PU-150: tests/domena/wzor/znacznik-ustawianie.test.ts nie wymienia PU-150
+Zielone: po dopisaniu „PU-146 ·”/„PU-150 ·” do tytułów czterech testów — Kontrola 2: zielona; 25 testów tych plików zielone.

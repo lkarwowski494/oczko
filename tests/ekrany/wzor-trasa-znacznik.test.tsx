@@ -51,7 +51,7 @@ const zapisany = async (s: Awaited<ReturnType<typeof start>>) => znacznikWzoru(s
 const przytrzymaj = (strona: number, y: number) => act(() => mockWidok.onStukniecie?.({ nativeEvent: { wzorId: 'w1', strona, y } }));
 const naStronach = (strona: number, stron: number) => act(() => mockWidok.onStrona?.({ nativeEvent: { strona, stron } }));
 
-test('S2: przytrzymanie na wzorze bez znacznika pyta o kierunek i stawia pas w tym miejscu (pas wyśrodkowany na palcu), rząd = rząd w robocie', async () => {
+test('PU-150 · S2: przytrzymanie na wzorze bez znacznika pyta o kierunek i stawia pas w tym miejscu (pas wyśrodkowany na palcu), rząd = rząd w robocie', async () => {
   const s = await start(45);
   przytrzymaj(2, 0.6);
   fireEvent.press(await screen.findByText('↑ Up, like a chart'));

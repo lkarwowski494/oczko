@@ -1,7 +1,7 @@
 // Ustawianie znacznika na stronie wzoru (07-jakosc-023, F-26; BR-WZR-003 S2–S4; design-spec „Znacznik rzędu na wzorze”).
 import { gornaKrawedzNaNastepnejStronie, gornaKrawedzRzedu, krokZnacznika, rzadPoPrzeniesieniu } from '../../../src/domena/znacznik-wzoru';
 
-test('przytrzymanie: pas wyśrodkowany na palcu, przycięty do strony', () => {
+test('PU-150 · przytrzymanie: pas wyśrodkowany na palcu, przycięty do strony', () => {
   expect(gornaKrawedzRzedu(0.5, 0.02)).toBeCloseTo(0.49, 9);
   expect(gornaKrawedzRzedu(0.001, 0.02)).toBe(0);
   expect(gornaKrawedzRzedu(1, 0.02)).toBeCloseTo(0.98, 9);
