@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-191 · Bez kont i ekranu awarii na głównych ekranach (Dziś, Ustawienia, Projekty, Historia, Narzędzia)"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-191
 ---
 - runFlow:

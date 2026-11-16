@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-180 · Linki z Ustawień i ofert opuszczają aplikację, powrót zachowuje stan"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-180
   - stan-licznika
 ---

@@ -7,7 +7,6 @@ appId: com.apps4brew.knitting
 name: "PU-104 · Przewodnik z „Dziś”: bez paska zakładek, „Back”, „First steps” z 6 krokami i „Show”, „Read: 0 of 42”, 9 grup"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-104
 ---
 - runFlow:

@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-052 · Brak systemowych próśb o powiadomienia, śledzenie i dostęp do biblioteki"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-052
   - stan-licznika
 ---

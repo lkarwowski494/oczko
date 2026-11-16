@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-288 · Udostępnianie zdjęcia: „Share” → arkusz systemowy → zamknięcie → podgląd i „Close” → nadal jedna miniatura"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-288
   - stan-licznika
 ---

@@ -5,7 +5,6 @@ appId: com.apps4brew.knitting
 name: "PU-109 · Przewodnik, „Show ›”: kosz i włóczka z „Back”, „Data and sync” jako arkusz, „Continue” → „Today”"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-109
 ---
 - runFlow:

@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-296 · Gumka zmazuje pierwsze zakreślenie, drugie (y=55%) zostaje, także po restarcie"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-296
   - wzor
   - stan-licznika

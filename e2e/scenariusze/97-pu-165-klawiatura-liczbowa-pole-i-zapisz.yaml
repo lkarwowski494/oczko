@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-165 · Pole liczbowe: klawiatura numeryczna, pole i Zapisz widoczne, po zapisie klawiatura znika"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-165
   - stan-licznika
 ---

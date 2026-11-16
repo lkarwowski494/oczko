@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-108 · Przewodnik: krok 6 → „Projects”, krok 1 → „Today”, przewodnik zamknięty"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-108
 ---
 - runFlow:

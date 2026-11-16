@@ -6,7 +6,6 @@ appId: com.apps4brew.knitting
 name: "PU-170 · Stoper po powrocie z tła nadal „running” z innym (rosnącym) czasem, wartość licznika bez zmian"
 tags:
   - przypadki-uzycia
-  - oczekujacy
   - PU-170
   - stan-licznika
 ---
