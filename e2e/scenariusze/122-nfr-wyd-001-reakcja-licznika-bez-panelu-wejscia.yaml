@@ -1,7 +1,7 @@
 # NFR-WYD-001 (scenariusz 31b, KO-121 (a), P-936, BX16): ten sam pomiar co 31 (p95 z 20 stuknięć), ale BEZ panelu wejść `e2e-licznik-wejscia` i bez diagnostyki ścieżki „+1”
 # (argument startu `oczkoE2eBezDiagnostykiLicznika=1`, tylko build E2E; w bundlu wydania go nie ma — tests/ekrany/e2e-licznik-bez-diagnostyki-bx16-wydanie.test.tsx).
 # Po co: panel wejść w 31 dopisuje 4 zatwierdzenia w oknie pomiaru (P-936) i może zawyżać p95; 122 pokazuje czas ścieżki bez tego narzutu.
-# Informacyjny (jak `pomiar`, P-374/P-367): odczyt `e2e-pomiar-plus` jest optional i bez progu; próg 100 ms pilnuje wyłącznie 31 (PU-161). Funkcjonalne asercje wartości licznika zostają.
+# Informacyjny jest tylko odczyt p95 (jak `pomiar`, P-374/P-367): `e2e-pomiar-plus` jest optional i bez progu; próg 100 ms pilnuje wyłącznie 31 (PU-161). Asercje wartości licznika (20 → 21) są twarde i wchodzą do bramki PU-161.
 appId: com.apps4brew.knitting
 name: "NFR-WYD-001 · Reakcja licznika bez panelu wejść: p95 z 20 stuknięć, wynik informacyjny (P-936)"
 tags:
