@@ -113,3 +113,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | CG | 07 fix (opus) | 5 | 3,20 | 19 | 06:31 → 06:34 → ed93c16a 06:37 → (verify w haku) → przyjęte 06:39 | — | 9 PU: warianty + gotowe pytanie do właściciela w 5 min |
 | FX6 | 08 fix (sonnet) | 8 | 2,17 | 25 | 06:38 → 06:41 → raport 06:45 → 14804846 06:52 (tylko stan) → stan pracy 06:52 | ok. 6 min: push stanu dopiero na prośbę (raport bez pushu) | diagnoza (c) ×2 w 4 min z artefaktu; następca FX6b (panel diagnostyczny) |
 | CH | 08 audit (opus) | 5 | nieodczytany | ok. 25 (wg sesji) | 06:47 → 06:47 → e9f1fe6b 07:03 → (verify w haku) → przyjęte 07:04 | — | recenzja BX9: P1 1, P2 2, P3 3; rekord archiwizacji bez `usage` — koszt do odczytu przez get_session |
+| FX6b | 08 fix (sonnet) | 8 | 1,85 | 23 | 06:54 → 06:56 → 6a3cbf80 ok. 07:09 → (verify w haku) → przyjęte 07:11 | — | panele diagnostyczne e2e + FX6b-01 (defekt kolejności odczytów); 14 min od startu do przekazania |
