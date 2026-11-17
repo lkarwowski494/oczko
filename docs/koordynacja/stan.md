@@ -1332,3 +1332,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 15:02 | M9 | CQ przyjęte (KO-166), zarchiwizowana; uruchamiana BX29 (CQ-01, CQ-02 test, CQ-03) | raport BX29 |
 | 17.11 15:04 | M9 | BX29 uruchomiona: session_01T66VBwRWjaXjoiySbWTKiC (sonnet, bx25 @ ba16744; CQ-01, CQ-02 test, CQ-03; pula P-982…983); prompt zgodny bajt w bajt (spr.py) | raport BX29 |
 | 17.11 15:24 | M9 | BX29: CQ-01, CQ-03 przyjęte; CQ-02 czerwony → opcja B, build 10 (KO-167); BX29 zapisuje kod testu w docs | raport BX29 (SHA dokumentu) |
+| 17.11 15:29 | M9 | BX29 7f08a6f (dokument testu CQ-02) przyjęte, zarchiwizowana; kandydat buildu 9 = 7f08a6f5; kontrola 2 bramki PU lokalnie (tryb katalog) zielona, kod 0 (WG-24); iOS jakosc-ios.yml [e2e-pelny] run 44114826259 na 7f08a6f5 (queued 15:29; maszyny macOS zwykle 14–23 brak) | wynik e2e → ff integracji → testflight.yml (KO-114) |
