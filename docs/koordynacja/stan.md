@@ -1307,3 +1307,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 06:16 | M9 | Sesja CP utworzona: session_01T66VBz7RPCsiJiMwVKj3uh (sonnet), prompt zgodny (spr.py True/True, 65 708 B) | kontrola ~06:50 |
 | 17.11 06:31 | M9 | CP 40022e4 przyjęte (Z UWAGAMI, 0×P1, CP-01 P2 test); CP zarchiwizowana. KO-149: testflight.yml **run 44031734608** (2373e88, bez_wysylki=false) — bramka w toku, potem Approve `release` (właściciel). Do zrobienia po buildzie: dziennik wydania w gałęzi produktu, CP-01 + P3 + extendedWaitUntil (KO-147) | kontrola bramki |
 | 17.11 06:38 | M9 | testflight 44031734608 **failure**: bramka PU kontrola 2 (18 PU B bez biegnącego testu); build pominięty. KO-150: BX23 (testy 18 PU + CP-01). Właściciel zgłosił „failed” w czacie | raport BX23 |
+| 17.11 06:39 | M9 | Sesja BX23 utworzona: session_01T66VBwmnPHkcJx353Mq6JM (sonnet), prompt zgodny (spr.py True/True, 57 000 B) | kontrola ~07:25 |
