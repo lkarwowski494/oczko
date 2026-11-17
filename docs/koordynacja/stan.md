@@ -1301,3 +1301,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 05:07 | M9 | Kontrola: 44012392916 — e2e ipad cz. 1 success (04:45); iphone cz. 1–4 w kroku Scenariusze. CO czeka na słowa właściciela (A/B/C). Następna kontrola 05:40 |
 | 17.11 05:28 | M9 | Właściciel: „A” → jedno ponowienie create_session bez zmian treści — CO utworzona (session_01T66VBxVaqdy8iH9EAv1UMQ); weryfikacja: jedyna różnica to brak jednej pustej linii (poz. 50 373) przed modułem scenariuszy — zgodne co do treści |
 | 17.11 05:33 | M9 | CO-01 odebrane → KO-146 wybór A; CO realizuje CO-02 i kończy; B do właściciela |
+| 17.11 05:42 | M9 | Kontrola: 44012392916 — krok „Scenariusze” success w iphone cz. 1 (05:36), cz. 3 (05:39), cz. 4 (05:38); joby jeszcze w AX5/uploadzie; cz. 2 w toku. Następna kontrola 06:05 |
