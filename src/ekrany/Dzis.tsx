@@ -121,7 +121,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
             <Text style={st.kartaPodpis}>{oczka ? t('licznik.jednostka_oczka', { count: liczba }) : pierwszy ? t('licznik.jednostka', { count: liczba }) : t('dzis.gotowe', { count: liczba })}</Text>
           </View>);
   const elPlus = !zawczasu && (
-            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} {...hakiDotyku?.('dzis-plus')} onPress={() => { zglosNacisniecie?.('dzis-plus'); void plus(); }} style={ax3 ? st.plusAx3 : st.plus} testID="dzis-plus">
+            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} {...hakiDotyku?.('dzis-plus')} onPress={zglosNacisniecie ? () => { zglosNacisniecie('dzis-plus'); void plus(); } : () => void plus()} style={ax3 ? st.plusAx3 : st.plus} testID="dzis-plus">
               <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
             </Pressable>
           );

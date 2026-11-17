@@ -105,4 +105,7 @@ test('bez haka: „Dziś” — „+1” i „Kontynuuj” działają, panelu na
     oczekujBezHandlerowDotyku(id); // CP-03: na `Pressable`, nie na hoście
   }
   expect(rekwizytyPressable('dzis-kontynuuj').onPress).toBe(naKontynuuj); // CP-03: `przyciskKarty` bez opakowania `onPress`
+  // CP-04 (08-programista-004): „+1” na „Dziś” ma w `onPress` własną funkcję (`plus()` to zmienna ekranu, `toBe` niemożliwe), więc kształt sprawdzamy po tekście funkcji:
+  // w wydaniu nie wolno jej wołać haka naciśnięć (`zglosNacisniecie`) — jak reszta celów, opakowanie tylko w buildzie E2E. Test pilnuje wymagania BX21 „wydanie bez opakowań”, nie zachowania.
+  expect(String(rekwizytyPressable('dzis-plus').onPress)).not.toContain('zglosNacisniecie');
 });
