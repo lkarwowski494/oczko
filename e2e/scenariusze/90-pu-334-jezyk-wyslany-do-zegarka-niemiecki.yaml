@@ -26,6 +26,9 @@ tags:
 - assertVisible: { id: "ustawienia-jezyk", text: ".*Deutsch.*" } # wybór działa od razu i wraca do Ustawień (jak 39)
 - takeScreenshot: 90-deutsch
 # --- wstecz do „Dziś”, „Kontynuuj” do licznika, +1 ---
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 } # BX-046: „Back” leży w ScrollView Ustawień (Ustawienia.tsx:92-94); po Języku lista wraca przewinięta w dół, jak w 08, 66, 70, 77, 89
+- swipe: { start: "50%, 30%", end: "50%, 70%", duration: 300 } # dopchnięcie do góry: Maestro uznaje „Back” za widoczny już pod górną krawędzią pola treści (przebieg 43851148385, jak 77 i 89)
+- assertVisible: { id: "nav-wstecz" }
 - tapOn: { id: "nav-wstecz" } # Ustawienia są w stosie głównym (bez paska zakładek): „Back” wraca na „Dziś”
 - extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
 - scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 } # AX5: przycisk pod „+1” karty
