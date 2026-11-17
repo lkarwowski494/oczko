@@ -1,0 +1,27 @@
+CO (KO-145/146): test czerwony na planie z 2373e88 (e2e-czesci.mjs: bezPonowien = tag stan-licznika, dziedziczony); 2026-11-17
+polecenie: npx jest tests/jakosc/e2e-czesci.test.ts -t "CO|P-091"
+    ✕ P-091 (9a, CO): bez_ponowien = własna asercja wartości licznika w pliku albo tag pomiar, pozostałe w ponawialne; zbiory rozłączne i pełne (866 ms)
+    ✕ CO: 107, 26 i 42 (tag tylko z projekt-roboczy.yaml) są ponawialne; 31, 122 (pomiar) oraz 03 i 01 (własna asercja) nie (560 ms)
+    ✕ CO kontrola: scenariusz z własną asercją licznika bez tagu stan-licznika albo tag pomiar bez asercji są wyłączone z ponowień; sam tag dziedziczony — nie (561 ms)
+    ✓ config.yaml Maestro wymienia każdy scenariusz katalogu (inaczej lokalny przebieg go pomija) (1 ms)
+    ✓ NOWY scenariusz bez wagi trafia do dokładnie jednej części z wagą szacowaną z kroków (50 s + 1,86 s × krok) (1192 ms)
+    ✓ pakiet obejmuje główny przepływ strategii (pierwsze +1 offline, +1/−1/cofnij, limit zawczasu, zakup i przywrócenie, „Uczciwe zasady”, eksport/import, start awaryjny) (6 ms)
+    ✓ plan podstawowy = dokładnie scenariusze z tagiem, na czesci_podstawowy maszynach, zrównoważony ≤ 115% średniej (585 ms)
+    ✓ DS-11a: „[e2e-pelny]” w treści commitu włącza pełny katalog; jawny PAKIET ma pierwszeństwo; zły PAKIET to błąd (3956 ms)
+  ● podział na części (pełny katalog) › P-091 (9a, CO): bez_ponowien = własna asercja wartości licznika w pliku albo tag pomiar, pozostałe w ponawialne; zbiory rozłączne i pełne
+    - Expected  -  0
+    + Received  + 35
+    +   "107-pu-288-udostepnij-zdjecie-arkusz-systemowy-i-powrot.yaml",
+    +   "26-br-wzr-008-s1-zakreslenie.yaml",
+    +   "42-p-191-zdjecie-usun.yaml",
+  ● podział na części (pełny katalog) › CO: 107, 26 i 42 (tag tylko z projekt-roboczy.yaml) są ponawialne; 31, 122 (pomiar) oraz 03 i 01 (własna asercja) nie
+    - Expected  - 2
+    + Received  + 2
+  ● podział na części (pełny katalog) › CO kontrola: scenariusz z własną asercją licznika bez tagu stan-licznika albo tag pomiar bez asercji są wyłączone z ponowień; sam tag dziedziczony — nie
+    - Expected  - 3
+    + Received  + 1
+    -   "9980-wlasna-bez-tagu.yaml",
+    -   "9981-wlasna-w-retry.yaml",
+    -   "9982-pomiar-bez-asercji.yaml",
+    +   "9983-tag-z-podprzeplywu.yaml",
+Tests:       3 failed, 16 skipped, 5 passed, 24 total

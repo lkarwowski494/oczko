@@ -19,7 +19,9 @@
 // scenariuszach, docs/38:120 tamtego repo); kroki liczone rekurencyjnie (retry, runFlow z podprzepływami).
 // Algorytm: LPT — największa waga najpierw na najmniej obciążoną część; remisy według nazwy pliku i numeru części.
 // Tag `osobny-krok` (np. NFR-DOS-002: rozmiar tekstu AX5 ustawiany przez simctl) — scenariusz w swojej części, ale w osobnym kroku workflow.
-// P-091 (9a): scenariusze z tagiem `stan-licznika` (asercja wartości licznika) NIE są ponawiane — wyjście `bez_ponowien`; `ponawialne` = reszta.
+// P-091 (9a) + CO (KO-145/146, P-962): NIE są ponawiane scenariusze z WŁASNĄ asercją wartości licznika w pliku (assertVisible id `licznik-wartosc`/`dzis-wartosc`
+// z `text`; retry/repeat/runFlow z `commands` wliczone, podprzepływy z plików NIE) i z tagiem `pomiar` (p95: 31, 122) — wyjście `bez_ponowien`; `ponawialne` = reszta.
+// Tag `stan-licznika` dziedziczony przez podprzepływ (projekt-roboczy.yaml:8,11) nie wyłącza ponowienia. Mechanicznie, bez junit.
 // Wyjście ($GITHUB_OUTPUT): main, osobne, any (true/false), ponawialne, bez_ponowien, bramka (nazwy plików po spacji), timeout_min (30 + 4 × scenariusze części, strategia §5).
 // bramka (F07-15, P-198 Q1a; P-834): scenariusze, których porażka czerwieni krok — pakiet podstawowy i wybrane (ONLY): tag `podstawowy`;
 // przypadki/pelny: wszystkie poza tagiem `oczekujacy` (scenariusz z tagiem `podstawowy` nie może mieć tagu `oczekujacy` — test przypadki-uzycia).
@@ -53,6 +55,18 @@ export function wczytajScenariusz(plik) {
   return { naglowek, polecenia, tagi: Array.isArray(naglowek.tags) ? naglowek.tags.map(String) : [] };
 }
 
+export const ID_WARTOSCI_LICZNIKA = ['licznik-wartosc', 'dzis-wartosc']; // jak ID_WARTOSCI i ID_WARTOSCI_KARTY w tests/jakosc/maestro-runner.ts (test porównuje oba wyniki)
+
+/** CO: czy lista poleceń (sam plik, bez podprzepływów z plików) ma assertVisible { id: licznik-wartosc|dzis-wartosc, text } — także w retry/repeat/runFlow z commands. */
+export function maWlasnaAsercjeWartosci(polecenia) {
+  return polecenia.some((p) => {
+    if (typeof p === 'string' || p == null) return false;
+    const [nazwa, arg] = Object.entries(p)[0] ?? [];
+    if (nazwa === 'assertVisible') return typeof arg === 'object' && arg !== null && ID_WARTOSCI_LICZNIKA.includes(arg.id) && typeof arg.text === 'string';
+    return ['retry', 'repeat', 'runFlow'].includes(nazwa) && Array.isArray(arg?.commands) && maWlasnaAsercjeWartosci(arg.commands);
+  });
+}
+
 export const maTag = (katalog, f, tag) => wczytajScenariusz(path.join(katalog, f)).tagi.includes(tag);
 
 /** Liczba kroków (jak w logu Maestro): każde polecenie; retry i runFlow także wnętrze (runFlow: plik podprzepływu względem pliku wołającego). */
@@ -83,9 +97,9 @@ export function buildPlan(katalog, cfg, opt = {}) {
   const czesci = opt.czesci ?? cfg.czesci;
   if (!Number.isInteger(czesci) || czesci < 1) throw new Error(`Liczba części musi być dodatnią liczbą całkowitą (jest: ${czesci})`);
   const elementy = pliki.map(f => {
-    const tagi = wczytajScenariusz(path.join(katalog, f)).tagi;
+    const { tagi, polecenia } = wczytajScenariusz(path.join(katalog, f));
     const osobny = tagi.includes('osobny-krok');
-    return { f, osobny, bezPonowien: tagi.includes('stan-licznika'), bramka: tagi.includes('podstawowy'), oczekujacy: tagi.includes('oczekujacy'), waga: waga(katalog, cfg, f) + (osobny ? cfg.narzut_osobnego_kroku_s ?? 0 : 0) };
+    return { f, osobny, bezPonowien: maWlasnaAsercjeWartosci(polecenia) || tagi.includes('pomiar'), bramka: tagi.includes('podstawowy'), oczekujacy: tagi.includes('oczekujacy'), waga: waga(katalog, cfg, f) + (osobny ? cfg.narzut_osobnego_kroku_s ?? 0 : 0) };
   });
   elementy.sort((a, b) => b.waga - a.waga || a.f.localeCompare(b.f));
   const czesciL = Array.from({ length: czesci }, (_, i) => ({ czesc: i + 1, files: [], osobne: [], waga_s: 0, bez_ponowien: [], ponawialne: [], bramka: [], oczekujace: [], timeout_min: 0 }));
@@ -157,7 +171,7 @@ function main() {
     : pakiet === 'przypadki' || pakiet === 'pelny' ? wybrane.filter(f => !moja.oczekujace.includes(f)) /* P-834 */
     : wybrane.filter(f => moja.bramka.includes(f));
   console.log(`Pakiet: ${pakiet}. Część ${n}/${parts.length}: ${zwykle.length} scenariuszy${osobne.length ? ` + ${osobne.length} w osobnym kroku` : ''} (waga ok. ${Math.round(moja.waga_s / 60)} min; bez ponowień P-091 9a: ${bezPon.length})`);
-  for (const f of zwykle) console.log(`  ${f}${bezPon.includes(f) ? ' (stan-licznika: bez ponowienia)' : ''}${bramka.includes(f) ? '' : moja.oczekujace.includes(f) ? ' (oczekujący: informacyjnie)' : ' (informacyjnie)'}`);
+  for (const f of zwykle) console.log(`  ${f}${bezPon.includes(f) ? ' (własna asercja licznika / pomiar: bez ponowienia)' : ''}${bramka.includes(f) ? '' : moja.oczekujace.includes(f) ? ' (oczekujący: informacyjnie)' : ' (informacyjnie)'}`);
   for (const f of osobne) console.log(`  ${f} (osobny krok)`);
   const lines = [`main=${zwykle.length > 0}`, `osobne=${osobne.length > 0}`, `any=${wybrane.length > 0}`, `ponawialne=${pon.join(' ')}`, `bez_ponowien=${bezPon.join(' ')}`, `bramka=${bramka.join(' ')}`, `timeout_min=${30 + 4 * wybrane.length}`];
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, lines.join('\n') + '\n');

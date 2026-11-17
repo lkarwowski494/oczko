@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { execFileSync } from 'child_process';
+import { wczytaj, maWlasnaAsercjeWartosci } from './maestro-runner';
 
 const root = path.join(__dirname, '..', '..');
 const skrypt = path.join(root, 'scripts/ci/e2e-czesci.mjs');
@@ -54,13 +55,41 @@ describe('podział na części (pełny katalog)', () => {
     for (const c of plan()) expect(c.timeout_min).toBe(30 + 4 * (c.files.length + c.osobne.length));
   });
 
-  test('P-091 (9a): scenariusze z tagiem stan-licznika są w bez_ponowien, pozostałe w ponawialne; zbiory rozłączne i pełne', () => {
-    const p = plan();
+  // CO (KO-145/146, opcja D): bez ponowienia tylko scenariusz z WŁASNĄ asercją wartości licznika w pliku albo z tagiem `pomiar` (p95: 31, 122);
+  // tag `stan-licznika` dziedziczony przez podprzepływ (projekt-roboczy.yaml:8,11) nie wyłącza ponowienia. Wyrocznia: maWlasnaAsercjeWartosci (runner).
+  const bezPonowien = (f: string, dir = katalog) => maWlasnaAsercjeWartosci(wczytaj(path.join(dir, f))) || maTag(f, 'pomiar', dir);
+  test('P-091 (9a, CO): bez_ponowien = własna asercja wartości licznika w pliku albo tag pomiar, pozostałe w ponawialne; zbiory rozłączne i pełne', () => {
+    const p = plan(); const bramkowe = scenariusze(katalog).filter(f => !maTag(f, 'ipad'));
     const bez = p.flatMap(c => c.bez_ponowien).sort(); const pon = p.flatMap(c => c.ponawialne).sort();
-    expect(bez).toEqual(scenariusze(katalog).filter(f => !maTag(f, 'ipad') && maTag(f, 'stan-licznika')));
-    expect(pon).toEqual(scenariusze(katalog).filter(f => !maTag(f, 'ipad') && !maTag(f, 'stan-licznika')));
+    expect(bez).toEqual(bramkowe.filter(f => bezPonowien(f)));
+    expect(pon).toEqual(bramkowe.filter(f => !bezPonowien(f)));
     expect(bez.length).toBeGreaterThan(0); expect(pon.length).toBeGreaterThan(0);
     for (const c of p) expect([...c.bez_ponowien, ...c.ponawialne].sort()).toEqual([...c.files, ...c.osobne].sort());
+  });
+
+  test('CO: 107, 26 i 42 (tag tylko z projekt-roboczy.yaml) są ponawialne; 31, 122 (pomiar) oraz 03 i 01 (własna asercja) nie', () => {
+    const p = plan(); const bez = p.flatMap(c => c.bez_ponowien); const pon = p.flatMap(c => c.ponawialne);
+    const nr = (l: string[], n: string) => l.filter(f => f.startsWith(`${n}-`));
+    for (const n of ['107', '26', '42']) expect({ n, ponawialny: nr(pon, n).length, bez: nr(bez, n).length }).toEqual({ n, ponawialny: 1, bez: 0 });
+    for (const n of ['31', '122', '03', '01']) expect({ n, ponawialny: nr(pon, n).length, bez: nr(bez, n).length }).toEqual({ n, ponawialny: 0, bez: 1 });
+  });
+
+  test('CO kontrola: scenariusz z własną asercją licznika bez tagu stan-licznika albo tag pomiar bez asercji są wyłączone z ponowień; sam tag dziedziczony — nie', () => {
+    const d = kopiaKatalogu();
+    const naglowekT = (tagi: string[]) => `appId: x\nname: T\n${tagi.length ? `tags:\n${tagi.map(t => `  - ${t}`).join('\n')}\n` : ''}---\n`;
+    const asercja = '- assertVisible: { id: "licznik-wartosc", text: "1" }\n';
+    fs.writeFileSync(path.join(d, 'subflows', 'wartosc-co.yaml'), `appId: x\n---\n${asercja}`);
+    fs.writeFileSync(path.join(d, '9980-wlasna-bez-tagu.yaml'), `${naglowekT([])}- launchApp\n${asercja}`);
+    fs.writeFileSync(path.join(d, '9981-wlasna-w-retry.yaml'), `${naglowekT([])}- retry:\n    maxRetries: 2\n    commands:\n      - assertVisible: { id: "dzis-wartosc", text: "0" }\n`);
+    fs.writeFileSync(path.join(d, '9982-pomiar-bez-asercji.yaml'), `${naglowekT(['pomiar'])}- launchApp\n- tapOn: "a"\n`);
+    fs.writeFileSync(path.join(d, '9983-tag-z-podprzeplywu.yaml'), `${naglowekT(['stan-licznika'])}- launchApp\n- runFlow: subflows/wartosc-co.yaml\n`);
+    fs.writeFileSync(path.join(d, '9985-wlasna-w-repeat.yaml'), `${naglowekT([])}- repeat:\n    times: 2\n    commands:\n      - assertVisible: { id: "licznik-wartosc", text: "1" }\n`);
+    fs.writeFileSync(path.join(d, '9986-wlasna-w-runflow-commands.yaml'), `${naglowekT([])}- runFlow:\n    when: { visible: "x" }\n    commands:\n      - assertVisible: { id: "dzis-wartosc", text: "0" }\n`);
+    fs.writeFileSync(path.join(d, '9987-licznik-bez-text.yaml'), `${naglowekT([])}- launchApp\n- assertVisible: { id: "licznik-wartosc" }\n`); // bez text to nie asercja WARTOŚCI (jak asercjaWartosci w runnerze)
+    fs.writeFileSync(path.join(d, '9984-zwykly.yaml'), `${naglowekT([])}- launchApp\n- assertVisible: "b"\n`);
+    const p = plan(d); const bez = p.flatMap(c => c.bez_ponowien); const pon = p.flatMap(c => c.ponawialne);
+    expect(bez.filter(f => /^998\d-/.test(f)).sort()).toEqual(['9980-wlasna-bez-tagu.yaml', '9981-wlasna-w-retry.yaml', '9982-pomiar-bez-asercji.yaml', '9985-wlasna-w-repeat.yaml', '9986-wlasna-w-runflow-commands.yaml']);
+    expect(pon.filter(f => /^998\d-/.test(f)).sort()).toEqual(['9983-tag-z-podprzeplywu.yaml', '9984-zwykly.yaml', '9987-licznik-bez-text.yaml']);
   });
 
   test('tag osobny-krok trafia do listy osobne swojej części (nie do zwykłych)', () => {
