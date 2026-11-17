@@ -1320,3 +1320,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 12:54 | BX25 → M9 | KO-159: część 1 przyjęta @ 9ab77a3d (1201.md 61 F, 0 błędów sprawdzone lokalnie) | raport części 2 |
 | 17.11 13:03 | BX25 → M9; M9 | KO-160: diagnozy przyjęte (046 scenariusz, 047 bez usterki w kodzie, W1 informacyjne); BX25 zarchiwizowana 3,23 USD, kontekst 62% (próg przekroczony — błąd koordynatora) | BX26 |
 | 17.11 13:07 | właściciel → M9 | KO-161: PU-057 ryzyko przyjęte, bez kontroli ręcznej; BX26 session_01T66VBy64WHWGcsxhninhYh w toku | kontrola startu BX26 13:12, raport BX26 |
+| 17.11 13:18 | M9 | BX26 start sprawdzony: prompt zgodny bajtowo poza końcowym znakiem nowej linii (spr.py 56430/56431 B); zadanie 1 wypchnięte 8f34092 wg sesji; context_usage w trakcie = 0 (nieodczytywalne, jak BX25 — kontrola po raporcie) | raport BX26 |
