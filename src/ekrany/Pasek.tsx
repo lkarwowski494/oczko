@@ -2,7 +2,7 @@
 // i przyciski z symbolem SF zamiast glifów Unicode. Symbol jest dekoracyjny (etykieta VoiceOver na przycisku), waga symbolu jak tekst obok
 // (HIG Typography: „precise weight matching between symbols and adjacent text”), skala z tekstem najwyżej ×1,8 jak dotychczasowe ikony paska.
 import React, { createContext, useContext } from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, type PressableProps } from 'react-native';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY, typografia, useKolory } from './motyw';
 
@@ -22,17 +22,24 @@ export const KontekstWstecz = createContext<() => string | null>(() => null);
  * poza nim `null` i `onPress` idzie bez opakowania. Używają go „Wstecz” i „Dziś” (src/kompozycja/e2e/nacisniecia-stan.tsx).
  */
 export const KontekstNacisniec = createContext<((cel: string) => void) | null>(null);
+/**
+ * BX21 (KO-140): hak diagnostyczny „cykl dotyku celu” (id = testID): obserwatory dotyku rozkładane na `Pressable` (panel `e2e-dotyk`). Wartość podaje korzeń nawigacji tylko w buildzie E2E;
+ * poza nim `null` i `Pressable` nie dostaje żadnych dodatkowych handlerów (src/kompozycja/e2e/nacisniecia-stan.tsx).
+ */
+export type HakiDotyku = Pick<PressableProps, 'onTouchStart' | 'onTouchEnd' | 'onTouchCancel' | 'onPressIn' | 'onPressOut'>;
+export const KontekstDotyku = createContext<((cel: string) => HakiDotyku) | null>(null);
 
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
   const kolor = p.kolor ?? k.akcentTekst;
   const useTytulPoprzedniego = useContext(KontekstWstecz);
   const zglosNacisniecie = useContext(KontekstNacisniec);
+  const hakiDotyku = useContext(KontekstDotyku);
   const tekst = useTytulPoprzedniego() ?? p.tekst;
   const id = p.testID ?? 'nav-wstecz';
   // 017 (P-627 A): VoiceOver czyta „Back” (`p.tekst`, jak systemowy przycisk); widoczny tekst = tytuł poprzedniego ekranu. „Back to {ekran}” — 1.0.1 (017 B).
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} onPress={zglosNacisniecie ? () => { zglosNacisniecie(id); p.onPress(); } : p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={id}>
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} {...hakiDotyku?.(id)} onPress={zglosNacisniecie ? () => { zglosNacisniecie(id); p.onPress(); } : p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={id}>
       <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
       {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{tekst}</Text>}
     </Pressable>

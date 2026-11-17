@@ -61,12 +61,16 @@ test('poza buildem E2E: korzeń nie ma panelu `e2e-nacisniecia`, a „wstecz” 
   fireEvent.press(screen.getByTestId('nav-wstecz'));
   expect(mockWstecz).toHaveBeenCalledTimes(1);
   expect(screen.queryByTestId('e2e-nacisniecia')).toBeNull();
+  expect(screen.queryByTestId('e2e-dotyk')).toBeNull(); // BX21 (P-954): panelu cyklu dotyku też nie ma
 });
 test('bez haka: „Wstecz” wywołuje onPress', () => {
   const wstecz = jest.fn();
   render(<Wstecz tekst="Back" onPress={wstecz} />);
   fireEvent.press(screen.getByTestId('nav-wstecz'));
   expect(wstecz).toHaveBeenCalledTimes(1);
+  // BX21 (P-954): bez haka `Pressable` nie dostaje obserwatorów dotyku (żadne handlery nie są dokładane)
+  const props = screen.getByTestId('nav-wstecz').props as Record<string, unknown>;
+  for (const h of ['onTouchStart', 'onTouchEnd', 'onTouchCancel', 'onPressIn', 'onPressOut']) expect(props[h]).toBeUndefined();
 });
 test('bez haka: „Dziś” — „+1” i „Kontynuuj” działają, panelu naciśnięć nie ma', async () => {
   const DANE: DaneDzis = { data: 'Thursday, November 5', tydzien: [], pustyTydzien: true, dni: { zostalo: 3, limit: 5, miesiac: 'November' }, wToku: 3, miejsce: 'licznik', rzedyDzis: 4, coDalej: null };
@@ -79,4 +83,8 @@ test('bez haka: „Dziś” — „+1” i „Kontynuuj” działają, panelu na
   expect(naPlus).toHaveBeenCalledTimes(1);
   expect(naKontynuuj).toHaveBeenCalledTimes(1);
   expect(screen.queryByTestId('e2e-nacisniecia')).toBeNull();
+  for (const id of ['dzis-plus', 'dzis-kontynuuj']) { // BX21 (P-954): bez haka brak obserwatorów dotyku na celach „Dziś”
+    const props = screen.getByTestId(id).props as Record<string, unknown>;
+    for (const h of ['onTouchStart', 'onTouchEnd', 'onTouchCancel', 'onPressIn', 'onPressOut']) expect(props[h]).toBeUndefined();
+  }
 });

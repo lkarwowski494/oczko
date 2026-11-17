@@ -14,7 +14,7 @@ import type { PropsLicznika, StanEkranuLicznika } from './LicznikTypy';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU_TRESCI, PROG_AX3, PROG_KATEGORII_DOSTEPNOSCI, useKolory } from './motyw';
 import tokeny from '../../docs/design/tokeny.json';
 import { style } from './DzisStyl';
-import { KontekstNacisniec, PrzyciskSymbolu } from './Pasek';
+import { KontekstDotyku, KontekstNacisniec, PrzyciskSymbolu } from './Pasek';
 import { skutekPlus, type KomunikatPlus } from './po-plusie';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 
@@ -66,6 +66,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
   const zamontowany = useRef(true);
   useEffect(() => () => { zamontowany.current = false; }, []);
   const zglosNacisniecie = useContext(KontekstNacisniec); // BX20: diagnostyka naciśnięć, tylko build E2E (poza nim null)
+  const hakiDotyku = useContext(KontekstDotyku); // BX21: diagnostyka cyklu dotyku, tylko build E2E (poza nim null: żadnych dodatkowych handlerów)
   const baner = s.baner;
   useEffect(() => {
     if (baner?.rodzaj === 'seria') p.oglos(t('licznik.seria', { count: baner.n })); // jak licznik: ogłoszenie raz na pojawienie się banera
@@ -95,7 +96,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
   const naKolumne = (e: LayoutChangeEvent) => { const { width, height } = e.nativeEvent.layout; ustawKolumne({ w: width, h: height }); };
 
   const przyciskKarty = (tekst: string, testID: string, onPress: () => void) => (
-    <Pressable accessibilityRole="button" accessibilityLabel={tekst} onPress={zglosNacisniecie ? () => { zglosNacisniecie(testID); onPress(); } : onPress} style={st.przyciskKarty} testID={testID}>
+    <Pressable accessibilityRole="button" accessibilityLabel={tekst} {...hakiDotyku?.(testID)} onPress={zglosNacisniecie ? () => { zglosNacisniecie(testID); onPress(); } : onPress} style={st.przyciskKarty} testID={testID}>
       <Text style={st.przyciskKartyTekst} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{tekst}</Text>
       <SymbolSf nazwa="chevron.forward" rozmiar={ROZMIAR_SYMBOLU_TRESCI} kolor={k.przyciskNaKarcieTekst} maxSkala={MAX_SKALA_TYTULOWA} waga="bold" />
     </Pressable>
@@ -120,7 +121,7 @@ export function Dzis(p: PropsDzis): React.ReactElement {
             <Text style={st.kartaPodpis}>{oczka ? t('licznik.jednostka_oczka', { count: liczba }) : pierwszy ? t('licznik.jednostka', { count: liczba }) : t('dzis.gotowe', { count: liczba })}</Text>
           </View>);
   const elPlus = !zawczasu && (
-            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={() => { zglosNacisniecie?.('dzis-plus'); void plus(); }} style={ax3 ? st.plusAx3 : st.plus} testID="dzis-plus">
+            <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} {...hakiDotyku?.('dzis-plus')} onPress={() => { zglosNacisniecie?.('dzis-plus'); void plus(); }} style={ax3 ? st.plusAx3 : st.plus} testID="dzis-plus">
               <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{'+1'}</Text>{/* P-606: koło 72 pt mieści tylko „+1” (znak, nie tekst do tłumaczenia); „row / stitch” niesie etykieta VoiceOver */}
             </Pressable>
           );

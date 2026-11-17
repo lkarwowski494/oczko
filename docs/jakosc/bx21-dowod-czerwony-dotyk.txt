@@ -1,0 +1,5 @@
+BX21 (P-954): test napisany przed kodem — czerwony.
+Polecenie: npx jest tests/ekrany/e2e-dotyk-bx21.test.tsx   (przed zmianą src/ i app/; 2026-11-17)
+Wynik: Test Suites: 1 failed, 1 total · Tests: 11 failed, 11 total
+Przyczyna każdej porażki (beforeEach): TypeError: (0 , _panele.zerujDotyk) is not a function — brak panelu `e2e-dotyk`, haków i KontekstDotyku.
+Po zmianie: te same 11 testów zielone; e2e-nacisniecia-bx20 (12) i -wydanie (4, w tym nowe asercje: bez haka brak onTouchStart/End/Cancel i onPressIn/Out, brak panelu `e2e-dotyk`) zielone.
