@@ -1287,3 +1287,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 01:02 | M9 | KO-140: BX21 diagnoza (brak regresji; 03 maszyna; KP-10 dotyk anulowany?) → wybór B + A dla 03, wysłane do BX21 |
 | 17.11 01:14 | M9 | KO-141: BX21 9c0f5c3 przyjęte, zarchiwizowana (2,84 USD, 58%); jakosc-ios.yml [e2e-pelny] wyzwolony na 9c0f5c3 |
 | 17.11 02:01 | M9 (kontrola 02:00) | Przebieg 43994041193 (#208, 9c0f5c3): swift-test, zegarek-ikona, build success; eksperymenty-wzoru failure (informacyjny); ipad cz. 1 „Scenariusze” success; e2e iphone cz. 1–4 w toku (start 01:42–01:49; poprzednio ok. 1 h 40 min). |
+| 17.11 02:43 | M9 (kontrola 02:40) | 43994041193: e2e iphone startowały 01:42–01:49, poprzednio ok. 1 h 35–1 h 50 min → koniec ok. 03:20–03:40; odczyt odłożony do 03:22 (bez subagenta, oszczędność). |
