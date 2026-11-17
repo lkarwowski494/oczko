@@ -1330,3 +1330,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 14:36 | M9 | BX28 przyjęte (KO-165), zarchiwizowana; uruchamiana CQ (recenzja 4d2a455..ba16744) | raport CQ |
 | 17.11 14:39 | M9 | CQ uruchomiona: session_01T66VBwVJh5nnzcVfUAtGjd (sonnet, audit 4d2a455..ba16744, wynik na claude/cq-recenzja-2026-11-17; pułap 4 / STOP 6 USD); prompt zgodny bajt w bajt (spr.py) | raport CQ |
 | 17.11 15:02 | M9 | CQ przyjęte (KO-166), zarchiwizowana; uruchamiana BX29 (CQ-01, CQ-02 test, CQ-03) | raport BX29 |
+| 17.11 15:04 | M9 | BX29 uruchomiona: session_01T66VBwRWjaXjoiySbWTKiC (sonnet, bx25 @ ba16744; CQ-01, CQ-02 test, CQ-03; pula P-982…983); prompt zgodny bajt w bajt (spr.py) | raport BX29 |
