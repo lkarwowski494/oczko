@@ -177,13 +177,46 @@ describe('bramki nie da się wyłączyć (testflight.yml)', () => {
     expect(blok.match(/pomin_bramke_e2e/g)).toHaveLength(1);
     expect(blok).toMatch(/POMIN: \$\{\{ inputs\.pomin_bramke_e2e \}\}/);
   });
+  // BX25 (P-974): do BX24 test biegł na żywym repo i przechodził dzięki czerwonej kontroli 3 (brak protokołu 1201), nie dzięki B bez testu —
+  // od BX24 kontrola 2 jest zielona. Układ testowy jak w FX4 (P-883): kopia skryptu i katalogu (app/, src/, tests/, modules/ jako dowiązania),
+  // repo git z tagiem v1.0.0-b1171 (wyjątek P-838 z wyjatki.json → kontrola 3 zielona bez protokołu), więc wynik zależy tylko od kontroli 2.
+  // Para dowodowa: ten sam układ z testem dla PU-003 → kod 0; z PU-003 jako B bez testu → dokładnie kod 1 i błąd kontroli 2 z ID.
   test('POMIN=true pomija tylko kontrolę 1: kontrole 2 i 3 biegną i bramka jest czerwona przy B bez testu (P-837)', () => {
-    const r = spawnSync(process.execPath, [MODUL, 'bramka'], { cwd: root, encoding: 'utf8', env: { ...process.env, POMIN: 'true', GH_TOKEN: '', PRZEBIEG: '' } });
-    const out = r.stdout + r.stderr;
-    expect(out).toMatch(/Kontrola 1: pominięta/);
-    expect(out).toMatch(/Kontrola 2:/);
-    expect(out).toMatch(/Kontrola 3:/);
-    expect(r.status).toBe(1);
+    const tmp = mkdtempSync(join(tmpdir(), 'oczko-bx25-'));
+    try {
+      for (const d of ['app', 'src', 'tests', 'modules']) symlinkSync(join(root, d), join(tmp, d), 'dir');
+      cpSync(join(root, 'e2e/scenariusze'), join(tmp, 'e2e/scenariusze'), { recursive: true });
+      mkdirSync(join(tmp, 'scripts/jakosc'), { recursive: true });
+      cpSync(MODUL, join(tmp, 'scripts/jakosc/bramka-przypadki-uzycia.mjs'));
+      mkdirSync(join(tmp, 'docs/jakosc/test-fizyczny'), { recursive: true });
+      cpSync(join(root, 'docs/jakosc/test-fizyczny/wyjatki.json'), join(tmp, 'docs/jakosc/test-fizyczny/wyjatki.json'));
+      const katalogRepo = readFileSync(join(root, 'docs/jakosc/przypadki-uzycia.md'), 'utf8');
+      const wiersz = katalogRepo.split('\n').find((l) => l.startsWith('| PU-003 |'));
+      expect(wiersz).toMatch(/\| B \| z testem: /); // PU-003 jest dziś klasy B z testem; gdyby zmieniło się to w katalogu, układ trzeba dostosować świadomie
+      const bezTestu = wiersz!.replace(/\| B \| z testem: [^|]*\|/, '| B | do zaprogramowania: jednostkowy — migracja 1.0.0 w transakcji, test jeszcze nie istnieje |');
+      expect(bezTestu).not.toBe(wiersz);
+      const git = (...a: string[]) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', ...a], { cwd: tmp, stdio: 'ignore' });
+      writeFileSync(join(tmp, 'docs/jakosc/przypadki-uzycia.md'), katalogRepo);
+      git('init', '-q'); git('add', 'docs'); git('commit', '-q', '-m', 'fikstura'); git('tag', 'v1.0.0-b1171');
+      const uruchom = (katalog: string) => {
+        writeFileSync(join(tmp, 'docs/jakosc/przypadki-uzycia.md'), katalog);
+        const r = spawnSync(process.execPath, [join(tmp, 'scripts/jakosc/bramka-przypadki-uzycia.mjs'), 'bramka'], { cwd: tmp, encoding: 'utf8', env: { ...process.env, POMIN: 'true', GH_TOKEN: '', PRZEBIEG: '' } });
+        return { out: r.stdout + r.stderr, kod: r.status };
+      };
+      const zTestem = uruchom(katalogRepo);
+      expect(zTestem.out).toMatch(/Kontrola 1: pominięta/);
+      expect(zTestem.out).toMatch(/Kontrola 2: .*zielona/);
+      expect(zTestem.out).toMatch(/Kontrola 3: .*zielona/);
+      expect(zTestem.kod).toBe(0);
+      const bez = uruchom(katalogRepo.replace(wiersz!, bezTestu));
+      expect(bez.out).toMatch(/Kontrola 1: pominięta/);
+      expect(bez.out).toMatch(/Kontrola 2: .*CZERWONA \(1\)/);
+      expect(bez.out).toMatch(/Kontrola 2: .*PU-003: klasa B bez testu/);
+      expect(bez.out).toMatch(/Kontrola 3: .*zielona/);
+      expect(bez.kod).toBe(1);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
   });
 });
 
