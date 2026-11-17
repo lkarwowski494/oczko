@@ -65,6 +65,10 @@ function useStanLicznika(uslugi: Pick<UslugiAplikacji, 'dodajRzad'>, dzialania: 
   // Numer ostatniej zmiany stanu licznika (wpis z +1/−1 albo początek odczytu): odczyt, który nie jest już najnowszy, kończy się po nowszej zmianie i nie nadpisuje jej starszą wartością
   // (na wolnym telefonie odczyty kończą się w innej kolejności niż zaczęły; FX6b).
   const wydanie = useRef(0);
+  // „+1” w locie (CP-02): numer przy wejściu i numer ostatniego „+1” zatwierdzonego na ekranie. Pełny stan starszego „+1”, który kończy się po stanie nowszego, nie wraca na ekran;
+  // nowszy „+1” zakończony niepowodzeniem niczego nie zatwierdził, więc starszy dochodzi do ekranu (stąd porównanie z ostatnim zatwierdzonym, nie z ostatnio rozpoczętym).
+  const numerPlusa = useRef(0);
+  const zatwierdzonyPlus = useRef(0);
   async function odswiez() {
     if (!d.odswiez) return;
     const moje = ++wydanie.current;
@@ -79,9 +83,11 @@ function useStanLicznika(uslugi: Pick<UslugiAplikacji, 'dodajRzad'>, dzialania: 
   const poDzialaniu = (f?: () => unknown) => async () => { await f?.(); await odswiez(); };
   async function naPlus(): Promise<WynikPlus> {
     diagnostyka?.wejscie('plus');
+    const mojPlus = ++numerPlusa.current;
     const w = await uslugi.dodajRzad();
     diagnostyka?.zapis('plus', w.ok);
-    if (w.ok) {
+    if (w.ok && mojPlus > zatwierdzonyPlus.current) {
+      zatwierdzonyPlus.current = mojPlus;
       wydanie.current += 1;
       diagnostyka?.stan(w.wartosc.skonczone);
       const pelny = w.wartosc.stan; // BX20: kompozycja podaje pełny stan z odczytu po zapisie — jedno zatwierdzenie zamiast dwóch i bez drugiego odczytu w oknie pomiaru NFR-WYD-001
