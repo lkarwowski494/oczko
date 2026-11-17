@@ -1309,3 +1309,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 06:38 | M9 | testflight 44031734608 **failure**: bramka PU kontrola 2 (18 PU B bez biegnącego testu); build pominięty. KO-150: BX23 (testy 18 PU + CP-01). Właściciel zgłosił „failed” w czacie | raport BX23 |
 | 17.11 06:39 | M9 | Sesja BX23 utworzona: session_01T66VBwmnPHkcJx353Mq6JM (sonnet), prompt zgodny (spr.py True/True, 57 000 B) | kontrola ~07:25 |
 | 17.11 07:12 | M9 | KO-151: BX23 41b854f przyjęte (17/18 PU, CP-01 10/10), zarchiwizowana; iOS [e2e-pelny] na 41b854f wyzwolony; PU-057 → pytanie do właściciela | wynik e2e ok. 09:15 |
+| 17.11 07:37 | M9 | KO-152 (właściciel: PU-057 → F). Sesja BX24 utworzona: session_01T66VBziZkDLWjWVk6CfdbB (sonnet), prompt sprawdzony spr.py | raport BX24 |
