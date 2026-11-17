@@ -1304,3 +1304,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 05:42 | M9 | Kontrola: 44012392916 — krok „Scenariusze” success w iphone cz. 1 (05:36), cz. 3 (05:39), cz. 4 (05:38); joby jeszcze w AX5/uploadzie; cz. 2 w toku. Następna kontrola 06:05 |
 | 17.11 05:47 | M9 | KO-147: CO 4f3374f przyjęte (gałąź claude/co-ponowienia-2026-11-17, nie scalona); CO zarchiwizowana (3,07 USD, 63%); luka extendedWaitUntil → poprawka + recenzja niezależna przed scaleniem, po wyniku przebiegu kandydata |
 | 17.11 06:12 | M9 | iOS 44012392916 (2373e88) **success** (e2e całe, Scenariusze, AX5, PU-162; bez ponowień). KO-148: przyrost 7a738d8..2373e88 dotyka kodu produktu bez recenzji → sesja CP (08 audit) przed buildem 8 | wynik CP → testflight.yml |
+| 17.11 06:16 | M9 | Sesja CP utworzona: session_01T66VBz7RPCsiJiMwVKj3uh (sonnet), prompt zgodny (spr.py True/True, 65 708 B) | kontrola ~06:50 |
