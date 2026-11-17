@@ -40,3 +40,27 @@ test('CP-02: nowszy „+1” zakończony niepowodzeniem nie odbiera ekranowi sta
   await act(async () => { zapisy[1]!.rozwiaz({ ok: false, powod: 'zapis' }); });
   expect(tresc('licznik-wartosc')).toContain('1');
 });
+
+// CQ-01 (08-programista-001): odczyt stanu rozpoczęty PRZED „+1” i kończący się PO jego zatwierdzeniu nie nadpisuje stanu po „+1” starym wynikiem
+// (licznik `wydanie` unieważnia odczyt; w `naPlus` robi to `wydanie.current += 1`). Odczyt wyzwala powrót z innej karty (`poScaleniu`, R-020).
+test('CQ-01: odczyt stanu w toku, „+1” zatwierdzone, odczyt kończy się starym wynikiem — ekran zostaje przy stanie po „+1”', async () => {
+  const t = await tEn();
+  const stan = (n: number): StanEkranuLicznika => stanLicznika({ skonczone: n, dziergany: n + 1 });
+  const zapis = odroczona<WynikPlus>();
+  const odczyt = odroczona<StanEkranuLicznika>();
+  const dodajRzad = jest.fn(() => zapis.obietnica);
+  const odswiez = jest.fn(() => odczyt.obietnica);
+  let wyzwolOdczyt: () => void = () => undefined;
+  const poScaleniu = (f: () => void) => { wyzwolOdczyt = f; return () => undefined; };
+  const uslugi = { start: async () => ({ licznik: stan(0), ekranWlaczony: true }), dodajRzad };
+  render(<EkranLicznika t={t} oglos={jest.fn()} porty={{ haptyka: atrapaHaptyki() }} uslugi={uslugi} dzialania={{ odswiez }} poScaleniu={poScaleniu} jezyk="en" />);
+  await screen.findByTestId('licznik-plus');
+  await act(async () => { wyzwolOdczyt(); }); // odczyt rusza (stan sprzed „+1”) i czeka
+  expect(odswiez).toHaveBeenCalledTimes(1);
+  await act(async () => { fireEvent.press(screen.getByTestId('licznik-plus')); });
+  await act(async () => { zapis.rozwiaz(plusOk(1, { stan: stan(1) })); }); // „+1” zatwierdzone z pełnym stanem
+  expect(tresc('licznik-wartosc')).toContain('1');
+  await act(async () => { odczyt.rozwiaz(stan(0)); }); // odczyt kończy się starym wynikiem
+  expect(tresc('licznik-wartosc')).toContain('1');
+  expect(tresc('licznik-wartosc')).not.toContain('0');
+});
