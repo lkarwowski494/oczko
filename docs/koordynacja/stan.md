@@ -1293,3 +1293,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 03:28 | M9 | BX22 utworzona (session_01T66VBwbn8R8vVCYuGzQx9v), prompt ZGODNE (57 059 B, sha 6701f6f0) |
 | 17.11 03:33 | M9 | KO-143: BX22 opcje → 31 A, 107 B; C/D przekazane właścicielowi |
 | 17.11 03:45 | M9 | KO-144: BX22 2373e88 przyjęte, zarchiwizowana (2,67 USD, 52%); jakosc-ios.yml [e2e-pelny] wyzwolony na 2373e88; opcja D (ponowienie padniętych poza licznikiem/p95) czeka na słowa właściciela |
+| 17.11 04:26 | M9 | Kontrola: przebieg 44012392916 (2373e88) — build, swift-test, zegarek zielone; eksperymenty-wzoru czerwone (informacyjne); e2e ipad cz.1 i iphone cz.1–4 w kroku Scenariusze od ok. 04:17–04:19; wynik ok. 05:35–06:05. Kontekst 95 317 / 224 000; koszt sesji 99,44 USD. Następna kontrola 05:05. |
