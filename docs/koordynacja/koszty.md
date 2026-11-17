@@ -135,3 +135,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX22 | 08 build (sonnet) | 6 (8) | 2,67 USD | 52% (155 194) | 03:28–03:45 | — | odczyt przy archiwizacji (raport: 1,47 USD, 71% — zaniżone/po kompakcji) |
 | CO | 07 fix (sonnet) | 6 (8) | 3,07 USD | 63% (187 819) | 05:27–05:45 | — | odczyt przy archiwizacji (raport: 1,63 USD, 43% — zaniżone) |
 | CP | 08 audit (sonnet) | 6 (8) | 2,83 USD | 58% (175 316) | 06:13–06:30 | — | odczyt przy archiwizacji (raport: „nieodczytany”, szac. 30–40% — zaniżone) |
+| BX23 | 08 build (sonnet) | 6 (8) | 6,43 USD | 51% (152 414) | 06:39–07:11 | — | odczyt przy archiwizacji (raport: „nieodczytany”); ponad pułap 6 USD |
