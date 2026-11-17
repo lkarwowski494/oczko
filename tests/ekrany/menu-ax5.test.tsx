@@ -33,6 +33,7 @@ test('AX5: tytuł arkusza menu (nazwa projektu) ma limit skali ×1,8, nie ×3,57
   expect(efektywnyRozmiar(AX5, tytul.props.maxFontSizeMultiplier)).toBeLessThanOrEqual(ROZMIAR_TYTULU * 1.8);
 });
 
+// PU-134 (część „menu przy AX5”): akcje menu ••• (np. „Enter the row number”) w przewijanym obszarze arkusza, nie poza ekranem.
 test('AX5: akcja „menu-wpisz-wartosc” jest w przewijanym obszarze razem z tytułem, a „Cancel” poza nim', () => {
   mockSkala = AX5;
   render(<MenuProjektu stan={{ projekt: NAZWA, zablokowany: false, wartosc: 3 }} t={t} {...wywolania()} />);

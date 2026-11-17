@@ -78,6 +78,7 @@ describe.each(RODZAJE)('E2-138-A1: arkusz „%s” przy AX5', (rodzaj) => {
   });
 });
 
+// PU-134 (część „arkusz »Wpisz numer rzędu« przy AX5”): pole wartości w przewijanym obszarze pod nagłówkiem, nagłówek = tytuł + dwa przyciski.
 test('„Enter the row number”: pole wartości w przewijanym obszarze, nagłówek = tytuł + dwa przyciski (scen. 30, krok 28)', async () => {
   await otworz('wpisz', AX5);
   expect(naglowek().getByText('Enter the row number')).toBeTruthy();

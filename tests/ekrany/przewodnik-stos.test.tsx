@@ -94,7 +94,8 @@ describe('08-programista-001: stos po „Show” funkcji Ustawień', () => {
     }
   });
 
-  test('wejście z Ustawień (wiersz „Guide”): Ustawienia zastępują przewodnik, bez drugiej kopii na stosie', async () => {
+  // PU-112: „Show” z przewodnika otwartego z Ustawień wraca do TYCH SAMYCH Ustawień (stos kończy się na `ustawienia`, bez drugiej kopii); „Units” nad przewodnikiem (test niżej).
+  test('PU-112: wejście z Ustawień (wiersz „Guide”): Ustawienia zastępują przewodnik, bez drugiej kopii na stosie', async () => {
     for (const id of FUNKCJE_USTAWIEN) {
       zacznij(['(zakladki)', 'ustawienia']);
       render(<EkranUstawien />);
@@ -108,7 +109,8 @@ describe('08-programista-001: stos po „Show” funkcji Ustawień', () => {
     }
   });
 
-  test('inny ekran z Ustawień (Units → /miary) z obu wejść zostaje pchnięty nad przewodnikiem', async () => {
+  // PU-112 (druga część): „Units” → „Show” z przewodnika otwartego z Ustawień kładzie „/miary” nad przewodnikiem, więc „Back” wraca do przewodnika.
+  test('PU-112: inny ekran z Ustawień (Units → /miary) z obu wejść zostaje pchnięty nad przewodnikiem', async () => {
     zacznij(['(zakladki)', 'ustawienia']);
     render(<EkranUstawien />);
     fireEvent.press(await screen.findByTestId('ustawienia-przewodnik'));

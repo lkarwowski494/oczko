@@ -50,6 +50,7 @@ test('F-56 (BR-WZR-008 S2): notatka rzędu 46 to chip „Row 6: ujmowanie…” 
   const wDanych = await widokWzoru(mockZ, { wzorId: 'w1' }); // ten sam chip, który widok danych niesie do trasy
   expect(wDanych.ok && wDanych.wartosc.notatki.map((c) => [String(c.rzad), c.strona])).toEqual([['46', 1]]);
 });
+// PU-067 (część „stuknięcie w chip otwiera arkusz notatki”): zdarzenie natywne chipu → arkusz z pełną treścią; sam chip na nakładce PDFKit — poza Jest i Maestro.
 test('stuknięcie chipu otwiera arkusz „Note for row 6” z pełną treścią; Close go zamyka', async () => {
   await start();
   render(<EkranWzoru />);

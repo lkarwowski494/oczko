@@ -12,8 +12,8 @@ import type { LiveActivity, Zegarek } from '../../src/domena/porty';
 import { utworzI18n } from '../../src/i18n/i18n';
 import { ZASOBY } from '../../src/i18n/slowniki';
 import { kompozycjaLicznika } from '../../src/kompozycja/licznik';
-import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
-import { przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
+import { czesc, dzienLimitu, licznik, projekt, zdarzenie } from '../dane/pomocnicze/dane-wejsciowe';
+import { DOBA, T0, przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
 import { atrapaHaptyki, plusOk, stanLicznika, tEn } from './pomoc';
 
 const tresc = (id: string): string => { const e = screen.getByTestId(id); return String(e.props.accessibilityValue?.text ?? e.props.accessibilityLabel ?? e.props.children); };
@@ -94,5 +94,43 @@ describe('kompozycja na prawdziwej bazie: wynik „+1” niesie ten sam stan, kt
     if (!w.ok) return;
     expect(w.wartosc.stan?.skonczone).toBe(1);
     expect(w.wartosc.stan).toEqual(await k.dzialania.odswiez?.());
+  });
+});
+
+describe('CP-01 (BX23): pełny stan z wyniku „+1” == `odswiez()` na bogatym stanie', () => {
+  async function bogaty() {
+    const s = await przygotuj(); // teraz 2026-10-22 12:00 Europe/Warsaw, urządzenie `iphone-test`
+    const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
+    const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity: { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined },
+      zegarek: { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined } }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, aplikacjaAktywna: () => true });
+    await wykonaj(s.baza, [
+      projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód', 1, { cel: 100 }), ...licznik('l1', 'c1', 32, { t: T0 - 3 * DOBA }),
+      ["UPDATE projekt SET termin_dzien = '2026-10-31' WHERE id = 'p1'", []], // cel dnia
+      ["UPDATE licznik SET dlugosc_powtorzenia = 8, znaczenie = 'skonczone' WHERE id = 'l1'", []], // powtórzenie
+      ["INSERT INTO przypomnienie (id, licznik_id, od_rzedu, co_n, razy, tekst, zmieniono_ms) VALUES ('pr1', 'l1', 6, 6, 10, 'ujmowanie', ?)", [T0]], // przypomnienie
+      ...['2026-10-01', '2026-10-02', '2026-10-03'].map((d, n) => dzienLimitu(d, `l1-z${n + 1}`)), // trzy dni limitu przed dzisiejszym; dziś będzie czwarty → „ostatni darmowy”
+      zdarzenie('ipad-w', 'l1', 'wpisanie', 18, ['l1-z32'], T0 - 3 * DOBA + 40 * 60_000, { wartosc: 18, urzadzenie: 'ipad' }), // konflikt iCloud: druga gałąź z iPada
+    ]);
+    expect((await k.przygotuj()).ok).toBe(true);
+    await k.otworz('l1');
+    return { s, k };
+  }
+
+  test('seria 3 × „+1”, ostatni dzień limitu, blokada z innego źródła tuż po zapisie, konflikt: `wynik.stan` == `odswiez()`', async () => {
+    const { s, k } = await bogaty();
+    s.zegar.ustaw(T0 + 3_600_000);
+    for (let n = 0; n < 2; n++) { expect((await k.uslugi.dodajRzad()).ok).toBe(true); s.zegar.przesun(300); }
+    // Blokada licznika ustawiona zaraz po zapisie ostatniego „+1” (przed odczytem stanu): wyzwalacz w bazie testowej, produkt nie jest dotykany.
+    await wykonaj(s.baza, [["CREATE TRIGGER zablokuj_po_plusie AFTER INSERT ON zdarzenie WHEN NEW.rodzaj = 'plus' BEGIN UPDATE licznik SET zablokowany = 1 WHERE id = NEW.licznik_id; END", []]]);
+    const w = await k.uslugi.dodajRzad();
+    expect(w.ok).toBe(true);
+    if (!w.ok) return;
+    const stan = w.wartosc.stan;
+    // Strażnik fixtury: każde z dziesięciu pól, które mutacje BX23 zerują, ma w tym stanie wartość inną niż domyślna (inaczej `toEqual` poniżej niczego by nie łapał).
+    expect(stan).toMatchObject({
+      projekt: 'Sweter', cel: 100, celDnia: { rzedy: expect.any(Number) }, powtorzenie: { dlugosc: 8 }, limit: { rodzaj: 'ostatni-darmowy' }, zablokowany: true,
+      baner: { rodzaj: 'seria', n: 3 }, sesja: { rzedy: 3 }, konflikt: { zdalna: 18, urzadzenie: 'ipad' }, przypomnienie: { tekst: 'ujmowanie' },
+    });
+    expect(stan).toEqual(await k.dzialania.odswiez?.()); // cały stan, nie pola po kolei: „+1” niesie dokładnie ten stan, który dałby odczyt po powrocie
   });
 });

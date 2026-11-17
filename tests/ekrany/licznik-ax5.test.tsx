@@ -48,6 +48,7 @@ test('AX1 (1,786) to już kategoria dostępności; XXXL (1,353) jeszcze nie — 
 });
 
 // Zastąpiony jawnie (fix E5, 005, P-614; docs/programista/m3-fix-e5-zastapione-testy.md): „+1” ×1,4 z tokenu `przyciskPlus.maxSkala` zamiast kroju tytułowego ×1,8.
+// PU-134 (część „przyciski +1 i −1 przy AX5”): „+1” i „−1” mają limit skali ×1,4 — bez niego „−1” wychodziło poza ekran (pomiar przebiegu 123).
 test('P-277: krój tytułowy (nazwa części, „Now working”) najwyżej ×1,8, „+1” i „−1” najwyżej ×1,4; liczba bez zmian (×1,3)', () => {
   rysuj();
   expect([MAX_SKALA_TYTULOWA, MAX_SKALA_MINUSA]).toEqual([1.8, 1.4]);
@@ -75,6 +76,7 @@ test('pasek przy AX5: ••• najwyżej ×1,8, grupa ikon flexShrink 0, „Bac
 
 // M1-132 (04-studio-projektowe-522, SP-07): przy AX5 liczba 12345 zawijała się na dwa wiersze („1234” / „5”), a jednostka była ucięta. Po M3 (`Liczba`, komórki stałej szerokości):
 // liczba zawsze w jednym wierszu komórek, jednostka pod liczbą (makieta `.licz-num small`), liczba cyfr dobiera token kroju (3 → licznika, 4–5 → karty, 6+ → paska wzoru).
+// PU-134 (część „liczba 12 345 widoczna przy AX5”): struktura — liczba 5-cyfrowa w jednym wierszu komórek, jednostka pod nią; układ na ekranie: scenariusz 30 (Maestro).
 test('AX5, liczba pięciocyfrowa: liczba w jednym wierszu komórek, jednostka pod liczbą i widoczna', () => {
   skala(3.571);
   render(<Licznik stan={stanLicznika({ projekt: 'Harbor', czesc: 'Left sleeve', skonczone: 12345, dziergany: 12346 })} t={t} oglos={jest.fn()} haptyka={atrapaHaptyki()} {...wywolaniaLicznika()} />);

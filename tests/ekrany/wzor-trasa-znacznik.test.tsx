@@ -164,3 +164,26 @@ test('033-T1 (lista dla 08 #2, scenariusz 62): ikona „Mark row” ma testID `w
   fireEvent.press(ikona);
   expect(await screen.findByText('↑ Up, like a chart')).toBeTruthy();
 });
+
+// PU-066 („znacznik stuknięciem albo przytrzymaniem”): pierwsze otwarcie ze wskazówką „Tap a row to place your marker.”, stuknięcie w rząd → wybór kierunku → pas na wysokości palca (bez zaokrąglania do rzędu),
+// przytrzymanie na innym wierszu przenosi pas bez zmiany rzędu, restart (ponowne otwarcie ekranu na tej samej bazie) — znacznik na miejscu. Prawdziwy SQLite; widok PDF to atrapa modułu natywnego.
+// Poza Jest: obrót strony i faktyczny gest na urządzeniu (przeliczenie dotyku na obróconej stronie robi widok natywny Swift; scenariusz 103, oczekujący).
+test('PU-066: wskazówka przy pierwszym otwarciu, stuknięcie stawia pas na wysokości palca, przytrzymanie w innym wierszu go przenosi, po restarcie znacznik jest na miejscu', async () => {
+  const s = await start(45);
+  const wskazowka = await screen.findByTestId('wzor-wskazowka-znacznika', { includeHiddenElements: true });
+  expect(wskazowka.props.children).toBe('Tap a row to place your marker.');
+  przytrzymaj(1, 0.4);
+  fireEvent.press(await screen.findByText('↑ Up, like a chart'));
+  await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 1, kierunek: -1, rzadBazowy: 46, wartoscPrzyUstawieniu: 45 }));
+  expect((await zapisany(s))?.y).toBeCloseTo(0.39, 9); // na wysokości palca: y dotyku − pół wysokości rzędu 0,02
+  await waitFor(() => expect(screen.queryByTestId('wzor-wskazowka-znacznika', { includeHiddenElements: true })).toBeNull());
+  przytrzymaj(2, 0.7); // inny wiersz, inna strona: pas przechodzi, rząd znacznika zostaje
+  await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 2, rzadBazowy: 46, wartoscPrzyUstawieniu: 45 }));
+  expect((await zapisany(s))?.y).toBeCloseTo(0.69, 9);
+  screen.unmount(); // restart: ten sam magazyn danych, nowy ekran
+  mockWidok = {};
+  render(<EkranWzoru />);
+  await waitFor(() => expect(mockWidok.znacznik?.strona).toBe(2));
+  expect(mockWidok.znacznik?.y).toBeCloseTo(0.69, 9);
+  expect(screen.queryByTestId('wzor-wskazowka-znacznika', { includeHiddenElements: true })).toBeNull(); // wskazówka tylko raz
+});
