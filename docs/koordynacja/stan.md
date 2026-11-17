@@ -1328,3 +1328,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 14:06 | M9 | BX27 przyjęte (KO-164), zarchiwizowana; następne: BX28 (zastrzeżenia BX23) | BX28 |
 | 17.11 14:09 | M9 | BX28 uruchomiona: session_01T66VBvykSd2hxGTG4vmvHC (sonnet, claude/bx25-2026-11-17 @ 87eb165; PU-290/291/066 tylko testy; pula P-977…979; pułap 3 USD / STOP 5); prompt zgodny bajt w bajt (spr.py: 55 850 B, True) | raport BX28 |
 | 17.11 14:36 | M9 | BX28 przyjęte (KO-165), zarchiwizowana; uruchamiana CQ (recenzja 4d2a455..ba16744) | raport CQ |
+| 17.11 14:39 | M9 | CQ uruchomiona: session_01T66VBwVJh5nnzcVfUAtGjd (sonnet, audit 4d2a455..ba16744, wynik na claude/cq-recenzja-2026-11-17; pułap 4 / STOP 6 USD); prompt zgodny bajt w bajt (spr.py) | raport CQ |
