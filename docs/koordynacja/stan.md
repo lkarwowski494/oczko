@@ -1322,3 +1322,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 13:07 | właściciel → M9 | KO-161: PU-057 ryzyko przyjęte, bez kontroli ręcznej; BX26 session_01T66VBy64WHWGcsxhninhYh w toku | kontrola startu BX26 13:12, raport BX26 |
 | 17.11 13:18 | M9 | BX26 start sprawdzony: prompt zgodny bajtowo poza końcowym znakiem nowej linii (spr.py 56430/56431 B); zadanie 1 wypchnięte 8f34092 wg sesji; context_usage w trakcie = 0 (nieodczytywalne, jak BX25 — kontrola po raporcie) | raport BX26 |
 | 17.11 13:39 | BX26 → M9 | KO-162: BX26 przyjęte @ 9e098a0, zarchiwizowana 1,94 USD, kontekst 74% (WG-25: kontrola kontekstu przez koordynatora co 10 min) | BX27 (CP-02…04) |
+| 17.11 13:42 | M9 | BX27 session_01T66VByyqiggxu26icLmPvH utworzona (CP-02…04, pula P-976…977); WG-25 poprawione: tura na zadanie, „M9 dalej” po odczycie kontekstu | raport częściowy BX27 |
