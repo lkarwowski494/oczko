@@ -471,7 +471,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-plik-word.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/bledy`<br>`src/domena/rodzaj-pliku` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-rysik.test.tsx` | zielony (główny zestaw) | 5 | BR-WZR-004, P-226, P-327, P-360 | `src/domena/rysik` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-strona-bez-sieci.test.tsx` | zielony (główny zestaw) | 2 | BR-WZR-007 | `src/kompozycja/wzor`<br>`src/platforma/migawka`<br>`src/platforma/skrzynka` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-znacznik.test.tsx` | zielony (główny zestaw) | 14 | BR-WZR-003 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-trasa-znacznik.test.tsx` | zielony (główny zestaw) | 15 | BR-WZR-003 | `src/dane/repozytoria/wzory`<br>`src/przypadki-uzycia/wzor-widok` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-wskazowka-znacznika-131.test.tsx` | zielony (główny zestaw) | 8 | P-447 | `src/dane/repozytoria/ustawienia` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-znacznik-stukniecie-131.test.tsx` | zielony (główny zestaw) | 6 | — | `src/dane/repozytoria/wzory`<br>`src/ekrany/motyw` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-zrodla-od-razu.test.tsx` | zielony (główny zestaw) | 5 | P-563, P-580, P-588 | `src/ekrany/WzorGrupa` | — |

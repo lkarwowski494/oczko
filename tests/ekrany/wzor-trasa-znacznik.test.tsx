@@ -187,3 +187,15 @@ test('PU-066: wskazówka przy pierwszym otwarciu, stuknięcie stawia pas na wyso
   expect(mockWidok.znacznik?.y).toBeCloseTo(0.69, 9);
   expect(screen.queryByTestId('wzor-wskazowka-znacznika', { includeHiddenElements: true })).toBeNull(); // wskazówka tylko raz
 });
+
+// PU-066 (BX28, luka z zastrzeżeń BX23): przytrzymanie przenosi pas, ale ZOSTAWIA rząd znacznika — także gdy rząd w robocie jest inny niż rząd bazowy znacznika
+// (tu licznik 45 → rząd w robocie 46, znacznik ustawiony na rzędzie 6). W teście głównym PU-066 oba rzędy są równe (46), więc mutacja `rzadPoPrzeniesieniu` → rząd w robocie tam nie czerwieniała.
+test('PU-066 (przeniesienie): znacznik na rzędzie 6 przy rzędzie w robocie 46 — przytrzymanie w innym wierszu przenosi pas i zostawia rząd 6; wskazówki nie ma', async () => {
+  const s = await start(45, znacznik({}));
+  expect(screen.queryByTestId('wzor-wskazowka-znacznika', { includeHiddenElements: true })).toBeNull(); // znacznik już jest: bez wskazówki pierwszego otwarcia
+  przytrzymaj(3, 0.2);
+  await waitFor(async () => expect(await zapisany(s)).toMatchObject({ strona: 3, rzadBazowy: 6, wartoscPrzyUstawieniu: 45, kierunek: -1 }));
+  expect((await zapisany(s))?.y).toBeCloseTo(0.19, 9); // pas na wysokości palca (y − pół wysokości rzędu 0,02)
+  const w = await widokWzoru(mockZ, { wzorId: 'w1' });
+  expect(w.ok && w.wartosc.znacznik?.rzad).toBe(6); // nie 46
+});
