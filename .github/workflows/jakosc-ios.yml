@@ -4,7 +4,7 @@
 # zestaw automatyczny po każdym buildzie): KAŻDY przebieg uruchamia katalog przypadków użycia (docs/jakosc/przypadki-uzycia.md = wszystkie
 # scenariusze telefonu + pakiet iPada); bramką jest każdy scenariusz telefonu poza tagiem `oczekujacy` (przed kodem albo przed pierwszym
 # zielonym przebiegiem w CI). „[e2e-pelny]” to ten sam zestaw (nazwa z DS-11a, P-092). Ponowienie jednego nieudanego scenariusza tylko
-# poza tagiem `stan-licznika` i wykazane osobno jako „w ponowieniu” (P-091 9a). Maszyna nieprzydzielona = ponowienie ręczne (P-091 10a, CLAUDE.md).
+# poza scenariuszami z własną asercją wartości licznika i tagiem `pomiar` (CO, P-962; wyjście `ponawialne` kroku „Plan części”) i wykazane osobno jako „w ponowieniu” (P-091 9a). Maszyna nieprzydzielona = ponowienie ręczne (P-091 10a, CLAUDE.md).
 # PIERWSZY PRZEBIEG INFORMACYJNY (zasada roli 07 nr 8): build sprawdza potok; scenariusze nowej wersji padają, dopóki 08 nie zbuduje ekranów z testID z e2e/README.md.
 name: Jakość · iOS
 on:
@@ -363,7 +363,7 @@ jobs:
           BRAMKA: ${{ steps.plan.outputs.bramka }}
         run: |
           # 07-jakosc-001 (KO-054, P-781): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs) przerywa je
-          # i powtarza RAZ cały zestaw części od zera — także scenariusze z tagiem stan-licznika (asercja licznika się nie wykonała). Porażka asercji
+          # i powtarza RAZ cały zestaw części od zera — także scenariusze z własną asercją licznika (asercja licznika się nie wykonała). Porażka asercji
           # nadal bez ponowienia (P-091 9a/10a): scenariusz czerwony w 1. podejściu przed awarią zachowuje wynik i nie biegnie w 2. (P-782 (4));
           # awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
           przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)

@@ -151,6 +151,13 @@ export function sprawdzaWartoscLicznika(s: Scenariusz, wczytajPlik: (p: string) 
   return podprzeplywy(s).some(p => sprawdzaWartoscLicznika(wczytajPlik(p), wczytajPlik, [...stos, s.plik]));
 }
 
+/** CO (KO-145/146): czy sam plik scenariusza (retry, repeat i runFlow z `commands` wliczone, podprzepływy z plików NIE) ma asercję wartości licznika.
+ * Wyrocznia testu planu ponowień: `scripts/ci/e2e-czesci.mjs` liczy to samodzielnie i testy porównują oba wyniki. */
+export function maWlasnaAsercjeWartosci(s: Scenariusz): boolean {
+  for (const k of kroki(s.polecenia)) if (asercjaWartosci(k.nazwa, k.arg)) return true;
+  return false;
+}
+
 /** P-091 (9a) i NFR-DAN-002: po stuknięciu zmieniającym licznik pierwsza asercja to wartość licznika; w retry nie ma stuknięć zmieniających licznik
  * (ponowienie bloku dodałoby rząd drugi raz). */
 export function problemyLicznika(s: Scenariusz): string[] {
