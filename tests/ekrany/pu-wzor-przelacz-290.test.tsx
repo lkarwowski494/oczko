@@ -80,6 +80,30 @@ test('PU-290 (część): ▾ → lista wzorów z ✓ → wybór „Sleeve chart�
   expect(within(screen.getAllByTestId('projekt-wzor')[1]!).getByText('Sleeve chart')).toBeTruthy();
 });
 
+// PU-290 (stan zaznaczenia, BX28): ✓ w liście wzorów jest przy WYBRANYM wzorze i tylko przy nim (po wyborze ✓ przechodzi z „Page photo” na „Sleeve chart”);
+// przycisk narzędzia „Highlighter” w pasku wzoru niesie stan zaznaczenia (wybrane → `selected: true`, drugie stuknięcie → `false`). Mutacje: `selected: !(…)` w `WzorMenu.tsx` i `WzorPrzegladarka.tsx`.
+test('PU-290 (stan): po wyborze „Sleeve chart” ✓ stoi tylko przy nim; zakreślacz po stuknięciu jest zaznaczony, po drugim — nie', async () => {
+  await zasiej();
+  mockParams = {};
+  await otworzWzor(); // „Page photo”
+  const wybrany = (nazwa: string) => screen.getByRole('menuitem', { name: nazwa }).props.accessibilityState.selected;
+  fireEvent.press(await screen.findByTestId('wzor-przelacz'));
+  expect(wybrany('Page photo')).toBe(true);
+  expect(wybrany('Sleeve chart')).toBe(false);
+  fireEvent.press(screen.getByRole('menuitem', { name: 'Sleeve chart' }));
+  await waitFor(() => expect(mockWidok.dokument?.wzorId).toBe('w1'));
+  fireEvent.press(await screen.findByTestId('wzor-przelacz')); // lista otwarta ponownie: ✓ przeszło na wybrany wzór
+  expect(wybrany('Sleeve chart')).toBe(true);
+  expect(wybrany('Page photo')).toBe(false);
+  fireEvent.press(screen.getByRole('menuitem', { name: 'Sleeve chart' })); // zamknięcie listy
+  const zakreslacz = () => screen.getByTestId('wzor-zakreslacz').props.accessibilityState.selected;
+  expect(zakreslacz()).toBe(false);
+  fireEvent.press(screen.getByTestId('wzor-zakreslacz'));
+  await waitFor(() => expect(zakreslacz()).toBe(true));
+  fireEvent.press(screen.getByTestId('wzor-zakreslacz'));
+  await waitFor(() => expect(zakreslacz()).toBe(false));
+});
+
 // PU-291 — CZĘŚCIOWO (zob. raport): „Rename” → nowa nazwa: tytuł przełącznika i grupa „Patterns” projektu mają nową nazwę; pusta nazwa nie zmienia nazwy.
 // Część „krok Udostępnij (migawka)” nie jest sprawdzana: migawka niesie tylko liczbę wzorów projektu (src/przypadki-uzycia/migawka.ts:17).
 test('PU-291 (część): ••• → „Rename” → „Front chart” → tytuł i grupa „Patterns” projektu z nową nazwą; pusta nazwa nie zapisuje', async () => {
