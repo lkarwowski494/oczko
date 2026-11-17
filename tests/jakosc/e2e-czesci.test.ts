@@ -92,6 +92,32 @@ describe('podział na części (pełny katalog)', () => {
     expect(pon.filter(f => /^998\d-/.test(f)).sort()).toEqual(['9983-tag-z-podprzeplywu.yaml', '9984-zwykly.yaml', '9987-licznik-bez-text.yaml']);
   });
 
+  // KO-147 (P-975): wartość licznika sprawdzana przez extendedWaitUntil { visible: { id: licznik-wartosc|dzis-wartosc, text } } to też asercja wartości (P-091 9a) —
+  // scenariusz nie jest ponawiany (ponowienie po stuknięciu zmieniającym licznik dodałoby rząd drugi raz). Dotyczy samego `visible` z `text`; notVisible i bez `text` — nie.
+  test('KO-147: extendedWaitUntil z wartością licznika (visible + id + text), także w retry/repeat/runFlow commands, wyłącza ponowienia; bez text, inny id, notVisible — nie', () => {
+    const d = kopiaKatalogu();
+    const naglowekT = `appId: x\nname: T\n---\n`;
+    const ewu = (selektor: string, klucz = 'visible') => `- extendedWaitUntil: { ${klucz}: ${selektor}, timeout: 20000 }\n`;
+    fs.writeFileSync(path.join(d, '9970-ewu-wartosc.yaml'), `${naglowekT}- launchApp\n${ewu('{ id: "licznik-wartosc", text: "7" }')}`);
+    fs.writeFileSync(path.join(d, '9971-ewu-karta.yaml'), `${naglowekT}- launchApp\n${ewu('{ id: "dzis-wartosc", text: "0" }')}`);
+    fs.writeFileSync(path.join(d, '9972-ewu-w-retry.yaml'), `${naglowekT}- retry:\n    maxRetries: 2\n    commands:\n      - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 5000 }\n`);
+    fs.writeFileSync(path.join(d, '9973-ewu-w-repeat.yaml'), `${naglowekT}- repeat:\n    times: 2\n    commands:\n      - extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 5000 }\n`);
+    fs.writeFileSync(path.join(d, '9974-ewu-w-runflow-commands.yaml'), `${naglowekT}- runFlow:\n    when: { visible: "x" }\n    commands:\n      - extendedWaitUntil: { visible: { id: "dzis-wartosc", text: "0" }, timeout: 5000 }\n`);
+    fs.writeFileSync(path.join(d, '9975-ewu-bez-text.yaml'), `${naglowekT}- launchApp\n${ewu('{ id: "licznik-wartosc" }')}`);
+    fs.writeFileSync(path.join(d, '9976-ewu-inny-id.yaml'), `${naglowekT}- launchApp\n${ewu('{ id: "licznik-plus", text: "7" }')}`);
+    fs.writeFileSync(path.join(d, '9977-ewu-tekst.yaml'), `${naglowekT}- launchApp\n${ewu('"7"')}`);
+    fs.writeFileSync(path.join(d, '9978-ewu-notvisible.yaml'), `${naglowekT}- launchApp\n${ewu('{ id: "licznik-wartosc", text: "3" }', 'notVisible')}`);
+    const p = plan(d); const bez = p.flatMap(c => c.bez_ponowien); const pon = p.flatMap(c => c.ponawialne);
+    expect(bez.filter(f => /^997\d-/.test(f)).sort()).toEqual(['9970-ewu-wartosc.yaml', '9971-ewu-karta.yaml', '9972-ewu-w-retry.yaml', '9973-ewu-w-repeat.yaml', '9974-ewu-w-runflow-commands.yaml']);
+    expect(pon.filter(f => /^997\d-/.test(f)).sort()).toEqual(['9975-ewu-bez-text.yaml', '9976-ewu-inny-id.yaml', '9977-ewu-tekst.yaml', '9978-ewu-notvisible.yaml']);
+  });
+
+  test('KO-147: 86, 93 i 97 (wartość licznika przez extendedWaitUntil: „0”, „0”, „7”) są bez ponowień, nie ponawialne', () => {
+    const p = plan(); const bez = p.flatMap(c => c.bez_ponowien); const pon = p.flatMap(c => c.ponawialne);
+    const nr = (l: string[], n: string) => l.filter(f => f.startsWith(`${n}-`));
+    for (const n of ['86', '93', '97']) expect({ n, ponawialny: nr(pon, n).length, bez: nr(bez, n).length }).toEqual({ n, ponawialny: 0, bez: 1 });
+  });
+
   test('tag osobny-krok trafia do listy osobne swojej części (nie do zwykłych)', () => {
     const p = plan(); const osobne = scenariusze(katalog).filter(f => maTag(f, 'osobny-krok'));
     expect(osobne.length).toBeGreaterThan(0);

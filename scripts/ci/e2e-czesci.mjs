@@ -20,7 +20,7 @@
 // Algorytm: LPT — największa waga najpierw na najmniej obciążoną część; remisy według nazwy pliku i numeru części.
 // Tag `osobny-krok` (np. NFR-DOS-002: rozmiar tekstu AX5 ustawiany przez simctl) — scenariusz w swojej części, ale w osobnym kroku workflow.
 // P-091 (9a) + CO (KO-145/146, P-962): NIE są ponawiane scenariusze z WŁASNĄ asercją wartości licznika w pliku (assertVisible id `licznik-wartosc`/`dzis-wartosc`
-// z `text`; retry/repeat/runFlow z `commands` wliczone, podprzepływy z plików NIE) i z tagiem `pomiar` (p95: 31, 122) — wyjście `bez_ponowien`; `ponawialne` = reszta.
+// z `text` albo extendedWaitUntil `visible` z id i `text`, KO-147/P-975; retry/repeat/runFlow z `commands` wliczone, podprzepływy z plików NIE) i z tagiem `pomiar` (p95: 31, 122) — wyjście `bez_ponowien`; `ponawialne` = reszta.
 // Tag `stan-licznika` dziedziczony przez podprzepływ (projekt-roboczy.yaml:8,11) nie wyłącza ponowienia. Mechanicznie, bez junit.
 // Wyjście ($GITHUB_OUTPUT): main, osobne, any (true/false), ponawialne, bez_ponowien, bramka (nazwy plików po spacji), timeout_min (30 + 4 × scenariusze części, strategia §5).
 // bramka (F07-15, P-198 Q1a; P-834): scenariusze, których porażka czerwieni krok — pakiet podstawowy i wybrane (ONLY): tag `podstawowy`;
@@ -57,12 +57,13 @@ export function wczytajScenariusz(plik) {
 
 export const ID_WARTOSCI_LICZNIKA = ['licznik-wartosc', 'dzis-wartosc']; // jak ID_WARTOSCI i ID_WARTOSCI_KARTY w tests/jakosc/maestro-runner.ts (test porównuje oba wyniki)
 
-/** CO: czy lista poleceń (sam plik, bez podprzepływów z plików) ma assertVisible { id: licznik-wartosc|dzis-wartosc, text } — także w retry/repeat/runFlow z commands. */
+/** CO + KO-147 (P-975): czy lista poleceń (sam plik, bez podprzepływów z plików) ma assertVisible { id: licznik-wartosc|dzis-wartosc, text } albo extendedWaitUntil { visible: { id, text } } — także w retry/repeat/runFlow z commands. */
 export function maWlasnaAsercjeWartosci(polecenia) {
   return polecenia.some((p) => {
     if (typeof p === 'string' || p == null) return false;
     const [nazwa, arg] = Object.entries(p)[0] ?? [];
     if (nazwa === 'assertVisible') return typeof arg === 'object' && arg !== null && ID_WARTOSCI_LICZNIKA.includes(arg.id) && typeof arg.text === 'string';
+    if (nazwa === 'extendedWaitUntil') return typeof arg?.visible === 'object' && arg.visible !== null && ID_WARTOSCI_LICZNIKA.includes(arg.visible.id) && typeof arg.visible.text === 'string'; // tylko `visible` z `text` (notVisible i bez text — nie)
     return ['retry', 'repeat', 'runFlow'].includes(nazwa) && Array.isArray(arg?.commands) && maWlasnaAsercjeWartosci(arg.commands);
   });
 }

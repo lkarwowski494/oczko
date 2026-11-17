@@ -151,10 +151,15 @@ export function sprawdzaWartoscLicznika(s: Scenariusz, wczytajPlik: (p: string) 
   return podprzeplywy(s).some(p => sprawdzaWartoscLicznika(wczytajPlik(p), wczytajPlik, [...stos, s.plik]));
 }
 
-/** CO (KO-145/146): czy sam plik scenariusza (retry, repeat i runFlow z `commands` wliczone, podprzepływy z plików NIE) ma asercję wartości licznika.
- * Wyrocznia testu planu ponowień: `scripts/ci/e2e-czesci.mjs` liczy to samodzielnie i testy porównują oba wyniki. */
+/** KO-147 (P-975): wartość licznika sprawdzana też przez extendedWaitUntil { visible: { id: licznik-wartosc|dzis-wartosc, text } } (tylko `visible` z `text`). */
+const oczekiwanieNaWartosc = (nazwa: string, arg: any) => nazwa === 'extendedWaitUntil' && typeof arg?.visible === 'object' && arg.visible !== null
+  && (arg.visible.id === ID_WARTOSCI || arg.visible.id === ID_WARTOSCI_KARTY) && typeof arg.visible.text === 'string';
+
+/** CO (KO-145/146) + KO-147: czy sam plik scenariusza (retry, repeat i runFlow z `commands` wliczone, podprzepływy z plików NIE) ma asercję wartości licznika:
+ * assertVisible albo extendedWaitUntil z id i text. Wyrocznia testu planu ponowień: `scripts/ci/e2e-czesci.mjs` liczy to samodzielnie i testy porównują oba wyniki.
+ * Osobno od `asercjaWartosci` (P-091 9a: `problemyLicznika`, `sprawdzaWartoscLicznika` bez zmian). */
 export function maWlasnaAsercjeWartosci(s: Scenariusz): boolean {
-  for (const k of kroki(s.polecenia)) if (asercjaWartosci(k.nazwa, k.arg)) return true;
+  for (const k of kroki(s.polecenia)) if (asercjaWartosci(k.nazwa, k.arg) || oczekiwanieNaWartosc(k.nazwa, k.arg)) return true;
   return false;
 }
 
