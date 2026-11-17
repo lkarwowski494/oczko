@@ -42,6 +42,20 @@ jest.mock('../../src/kompozycja/preferencje', () => ({ preferencje: () => ({ wcz
 const Korzen = (require('../../app/_layout') as { default: React.ComponentType }).default;
 /* eslint-enable @typescript-eslint/no-require-imports */
 
+// CP-03 (08-programista-003, KO-149): `Pressable` pochłania `onPressIn`/`onPressOut` w responderze i nie przekazuje ich na host, więc sprawdzenie samego hosta tych dwóch nie widzi.
+// Rekwizyty bierzemy z komponentu `Pressable` (UNSAFE_getAllByProps po testID, element-funkcja o nazwie `Pressable`; UNSAFE_getAllByType go tu nie znajduje, bo RN opakowuje `Pressable` w memo), a `onPress` porównujemy `toBe` z przekazaną funkcją — opakowanie
+// w wydaniu (build bez E2E) zmienia tożsamość funkcji.
+const HANDLERY_DOTYKU = ['onTouchStart', 'onTouchEnd', 'onTouchCancel', 'onPressIn', 'onPressOut'] as const;
+function rekwizytyPressable(id: string): Record<string, unknown> {
+  const p = screen.UNSAFE_getAllByProps({ testID: id }).find((e) => typeof e.type !== 'string' && (e.type as { name?: string }).name === 'Pressable');
+  if (!p) throw new Error(`Brak Pressable o testID ${id}`);
+  return p.props as Record<string, unknown>;
+}
+function oczekujBezHandlerowDotyku(id: string): void {
+  const rekwizyty = rekwizytyPressable(id);
+  for (const h of HANDLERY_DOTYKU) expect([id, h, rekwizyty[h]]).toEqual([id, h, undefined]);
+}
+
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
 beforeEach(() => { mockWstecz.mockClear(); });
@@ -68,6 +82,8 @@ test('bez haka: „Wstecz” wywołuje onPress', () => {
   render(<Wstecz tekst="Back" onPress={wstecz} />);
   fireEvent.press(screen.getByTestId('nav-wstecz'));
   expect(wstecz).toHaveBeenCalledTimes(1);
+  oczekujBezHandlerowDotyku('nav-wstecz'); // CP-03: na `Pressable`, nie na hoście
+  expect(rekwizytyPressable('nav-wstecz').onPress).toBe(wstecz); // CP-03: bez opakowania `onPress`
   // BX21 (P-954): bez haka `Pressable` nie dostaje obserwatorów dotyku (żadne handlery nie są dokładane)
   const props = screen.getByTestId('nav-wstecz').props as Record<string, unknown>;
   for (const h of ['onTouchStart', 'onTouchEnd', 'onTouchCancel', 'onPressIn', 'onPressOut']) expect(props[h]).toBeUndefined();
@@ -86,5 +102,7 @@ test('bez haka: „Dziś” — „+1” i „Kontynuuj” działają, panelu na
   for (const id of ['dzis-plus', 'dzis-kontynuuj']) { // BX21 (P-954): bez haka brak obserwatorów dotyku na celach „Dziś”
     const props = screen.getByTestId(id).props as Record<string, unknown>;
     for (const h of ['onTouchStart', 'onTouchEnd', 'onTouchCancel', 'onPressIn', 'onPressOut']) expect(props[h]).toBeUndefined();
+    oczekujBezHandlerowDotyku(id); // CP-03: na `Pressable`, nie na hoście
   }
+  expect(rekwizytyPressable('dzis-kontynuuj').onPress).toBe(naKontynuuj); // CP-03: `przyciskKarty` bez opakowania `onPress`
 });
