@@ -1326,3 +1326,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 13:44 | właściciel → M9 | KO-163: bez kontroli kontekstu sesji (autokompakcja środowiska); BX27 pracuje bez przerw | raport BX27; sprawdzić autocompact_state BX27 |
 | 17.11 13:55 | M9 | Linia 14:00: koszt sesji ról 24 h ≥ 29,15 USD (bez BX18, BX27, koordynatora); największa strata ok. 230 min — dispatch testflight bez lokalnej kontroli 2 (06:31 → ponowny 10:24; WG-24); plan 24 h zaktualizowany | linia 14:00 18.11 |
 | 17.11 14:06 | M9 | BX27 przyjęte (KO-164), zarchiwizowana; następne: BX28 (zastrzeżenia BX23) | BX28 |
+| 17.11 14:09 | M9 | BX28 uruchomiona: session_01T66VBvykSd2hxGTG4vmvHC (sonnet, claude/bx25-2026-11-17 @ 87eb165; PU-290/291/066 tylko testy; pula P-977…979; pułap 3 USD / STOP 5); prompt zgodny bajt w bajt (spr.py: 55 850 B, True) | raport BX28 |
