@@ -1316,3 +1316,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 17.11 12:33 | M9 | KO-156: build 8 = 1.0.0 (1201) w TestFlight, tag v1.0.0-b1201 @ 4d2a455 | dziennik wydania, protokół F 1201, sprawy po buildzie; linia 14:00 |
 | 17.11 12:39 | właściciel → M9 | KO-157: protokół F 1201 — wszystkie 61 PU F „pominięte” z uzasadnieniem właściciela; kontrola 3 bramki spełniona po zapisie 1201.md przez sesję; propozycja tańszej kontroli 3 PU przed recenzją Apple | zakres buildu 9 (A/B/C), sesja 1201.md |
 | 17.11 12:41 | właściciel → M9 | KO-158: kontrola 3 PU przed recenzją Apple, build 9 = A; zlecenie BX25 | raport BX25 część 1 |
+| 17.11 12:47 | BX25 → M9; M9 | BX25 pyta: test bramka-przypadki-uzycia.test.ts:181 zależał od czerwonej kontroli 3 (brak 1201.md); zgoda na A — fikstura z PU B bez testu (P-974), dowód kod 1/0, skrypt bramki bez zmian; godziny cytatów 12:38/12:40 | raport części 1 |
