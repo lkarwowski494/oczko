@@ -26,12 +26,31 @@ const WYJSCIOWY: Stan = {
 };
 let stan: Stan = WYJSCIOWY;
 const sluchacze = new Set<() => void>();
-const zmien = (z: (s: Stan) => Stan): void => { stan = z(stan); sluchacze.forEach((f) => f()); };
+// BX22 (KO-143, scenariusz 31): w oknie pomiaru NFR-WYD-001 (od „+1” do drugiej klatki po zapisie) panel dokładał ≈ 34 ms (iOS 43994041193: p95 116 ms z panelem, 82 ms bez — scen. 122).
+// Stan w pamięci zmienia się od razu, ale powiadomienia słuchaczy (czyli render panelu) są wstrzymywane od `wejscie('plus')` do `wznowPowiadomienia()` (app/licznik.tsx, po próbce)
+// i idą jednym zatwierdzeniem. Bezpiecznik czasowy: bez zwolnienia panel odświeża się sam po 1,5 s. Tylko build E2E (moduł nie trafia do bundla wydania, P-238).
+const BEZPIECZNIK_MS = 1500;
+let wstrzymane = false;
+let zalegle = false;
+let bezpiecznik: ReturnType<typeof setTimeout> | null = null;
+const powiadom = (): void => { sluchacze.forEach((f) => f()); };
+const zmien = (z: (s: Stan) => Stan): void => { stan = z(stan); if (wstrzymane) { zalegle = true; return; } powiadom(); };
+const wstrzymaj = (): void => {
+  wstrzymane = true;
+  if (bezpiecznik) clearTimeout(bezpiecznik);
+  bezpiecznik = setTimeout(wznowPowiadomienia, BEZPIECZNIK_MS);
+};
+/** Zwalnia wstrzymane powiadomienia: jeden render panelu, jeśli w międzyczasie coś się zmieniło. Bez wstrzymania nic nie robi. */
+export function wznowPowiadomienia(): void {
+  if (bezpiecznik) { clearTimeout(bezpiecznik); bezpiecznik = null; }
+  wstrzymane = false;
+  if (zalegle) { zalegle = false; powiadom(); }
+}
 const subskrybuj = (f: () => void): (() => void) => { sluchacze.add(f); return () => { sluchacze.delete(f); }; };
 
 /** Haki dla `EkranLicznika` (src/ekrany/Aplikacja.tsx, prop `diagnostyka`). */
 export const diagnostykaLicznika: DiagnostykaLicznika = {
-  wejscie: (a) => zmien((s) => ({ ...s, wejscia: { ...s.wejscia, [a]: s.wejscia[a] + 1 } })),
+  wejscie: (a) => { if (a === 'plus') wstrzymaj(); zmien((s) => ({ ...s, wejscia: { ...s.wejscia, [a]: s.wejscia[a] + 1 } })); },
   zapis: (a, ok) => zmien((s) => (ok ? { ...s, zapisyOk: { ...s.zapisyOk, [a]: s.zapisyOk[a] + 1 } } : { ...s, zapisyBlad: s.zapisyBlad + 1 })),
   stan: (n) => zmien((s) => ({ ...s, wartosc: n })),
   odswiezenie: (z) => zmien((s) => ({ ...s, odswiezenia: { ...s.odswiezenia, [z]: s.odswiezenia[z] + 1 } })),
@@ -40,7 +59,7 @@ export const diagnostykaLicznika: DiagnostykaLicznika = {
 export const zliczWpisNazwy = (pole: 'projekt' | 'czesc', tekst: string): void =>
   zmien((s) => ({ ...s, nazwa: { ...s.nazwa, [pole]: { zdarzenia: s.nazwa[pole].zdarzenia + 1, dlugosc: tekst.length } } }));
 /** Tylko dla testów: stan wyjściowy (w aplikacji stan żyje przez cały proces, jak `nawigacje-stan`). */
-export const zerujWejscia = (): void => zmien(() => WYJSCIOWY);
+export const zerujWejscia = (): void => { wznowPowiadomienia(); zmien(() => WYJSCIOWY); };
 
 export function PanelLicznika(): React.ReactElement {
   const s = useSyncExternalStore(subskrybuj, () => stan);

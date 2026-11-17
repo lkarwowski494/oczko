@@ -33,7 +33,7 @@ tags:
 - takeScreenshot: 107-podglad
 # --- „Share”: arkusz systemowy ---
 - tapOn: { id: "zdjecie-udostepnij" }
-- extendedWaitUntil: { visible: "Copy|AirDrop|Messages|Save Image", timeout: 20000 }
+- extendedWaitUntil: { visible: "Copy|AirDrop|Messages|Save Image", timeout: 60000 } # P-959 (BX22, KO-143): w przebiegu iOS 43994041193 arkusz systemowy otworzył się po ok. 22 s od stuknięcia (UIActivityViewController wstał, tylko po 20 s); jak 42:22–30, dłuższe czekanie bez zmiany asercji i tekstów
 - takeScreenshot: 107-arkusz-systemowy
 # --- zamknięcie arkusza: podgląd wraca ---
 - swipe: { start: "50%, 30%", end: "50%, 95%", duration: 600 }

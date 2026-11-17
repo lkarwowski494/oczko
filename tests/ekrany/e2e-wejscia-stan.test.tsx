@@ -77,7 +77,7 @@ describe('FX6b: panel `e2e-licznik-wejscia` na ekranie licznika (build E2E)', ()
   });
   test('zerujWejscia (tylko dla testów) przywraca stan wyjściowy', () => {
     render(<W.PanelLicznika />);
-    act(() => { W.diagnostykaLicznika.wejscie('plus'); W.diagnostykaLicznika.zapis('minus', false); W.diagnostykaLicznika.stan(3); });
+    act(() => { W.diagnostykaLicznika.wejscie('plus'); W.diagnostykaLicznika.zapis('minus', false); W.diagnostykaLicznika.stan(3); W.wznowPowiadomienia(); }); // BX22 (KO-143): „+1” wstrzymuje powiadomienia panelu do zwolnienia po próbce (app/licznik.tsx) — jak w ekranie, test zwalnia je sam
     expect(panel()).toContain('plus 1, minus 0; saves ok: plus 0, minus 0; saves failed: 1; state value: 3');
     act(() => { W.zerujWejscia(); });
     expect(panel()).toBe(ZERO);

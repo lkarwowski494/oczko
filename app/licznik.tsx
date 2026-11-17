@@ -24,9 +24,12 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
     ...licznik.uslugi,
     dodajRzad: async () => {
       const t0 = paneleE2e ? performance.now() : 0;
-      const w = await licznik.uslugi.dodajRzad();
+      // BX22 (KO-143): panel wejść wstrzymuje render od `wejscie('plus')`; zwalniamy go po próbce (albo od razu przy błędzie/wyjątku), więc nie liczy się do p95 (scen. 31).
+      const zwolnij = diagnostykaWejsc ? diagnostykaWejsc.wznowPowiadomienia : null;
+      const w = await licznik.uslugi.dodajRzad().catch((e: unknown) => { zwolnij?.(); throw e; });
       if (w.ok) ustawPlusy((n) => n + 1);
-      if (w.ok && paneleE2e) requestAnimationFrame(() => requestAnimationFrame(() => { probki.current.push(performance.now() - t0); ustawPomiar([...probki.current]); }));
+      if (w.ok && paneleE2e) requestAnimationFrame(() => requestAnimationFrame(() => { probki.current.push(performance.now() - t0); ustawPomiar([...probki.current]); zwolnij?.(); }));
+      else zwolnij?.();
       return w;
     },
   }), [licznik]);
