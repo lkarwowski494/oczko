@@ -143,3 +143,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX28 | 08 build (sonnet) | PU-290/291/066 testy | 1,73 USD | 63% (188 301), bez kompakcji; próg 224 000 | 14:09–14:35 | — | odczyt przy archiwizacji |
 | CQ | 08 audit (sonnet) | recenzja 4d2a455..ba16744 | 2,77 USD | 50% (151 403) po 1 kompakcji; próg 224 000 | 14:39–15:01 | — | odczyt przy archiwizacji |
 | BX29 | 08 build (sonnet) | CQ-01, CQ-02 test (czerwony → dokument), CQ-03 | 1,13 USD | 57% (170 021), bez kompakcji; próg 224 000 | 15:04–15:28 | — | odczyt przy archiwizacji |
+| BX30 | 08 build (sonnet) | diagnoza e2e cz. 3 + podprzepływ dodaj-czesc-cel | 2,61 USD | 59% (176 174) po 1 kompakcji; próg 224 000 | 18.11 01:29–01:54 | — | odczyt przy archiwizacji |
