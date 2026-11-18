@@ -146,3 +146,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | BX30 | 08 build (sonnet) | diagnoza e2e cz. 3 + podprzepływ dodaj-czesc-cel | 2,61 USD | 59% (176 174) po 1 kompakcji; próg 224 000 | 18.11 01:29–01:54 | — | odczyt przy archiwizacji |
 | CR | 10 wydanie (sonnet) | lista 1.0 pod build 9 | 2,53 USD | 73% (218 504) po 1 kompakcji; próg 224 000 | 18.11 07:55–08:03 | — | odczyt przy archiwizacji |
 | FX7 | 08 fix (sonnet) | test bramki PU na macOS (realpath) | 0,45 USD | 39% (118 017) | 18.11 08:05–08:20 | — | odczyt przy archiwizacji |
+| DG1 | 08 audit (sonnet) | diagnoza e2e 44266309347 | 1,69 USD (pułap 1,5; STOP 2 — przekroczony pułap o 0,19) | 37% (110 335) | 18.11 11:38–11:44 | — | odczyt przy archiwizacji |
