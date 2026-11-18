@@ -1345,3 +1345,4 @@ Słowa właściciela: „Ok zapisz wszystkie zadania i ich stan i wstrzymaj prac
 | 18.11 04:44 | M9 | testflight 44236845571 (build 9): bramka przeszła, status **waiting** od 04:22 — czeka na Approve `release` (właściciel); przypomnienie wysłane | po Approve: build ~32 min, potem dziennik wydania |
 | 18.11 04:55 | M9 (linia 05:00) | Linia 05:00: sesji ról brak (wszystkie zarchiwizowane); iOS 44219221205 success na 01aaeddb; testflight 44236845571 waiting na Approve `release`; plan 24 h w sekcji Teraz; linia 05:00 19.11 zaplanowana | Approve właściciela / linia 14:00 |
 | 18.11 07:58 | M9 | Właściciel: Approve `release` buildu 9 (testflight 44236845571 in_progress od 07:53). KO-172: słowa „Tak” → sesja CR (10 wydanie) odświeża listę 1.0 pod build 9 | wynik testflight 08:30; raport CR |
+| 18.11 07:56 | M9 | CR wystartowana: session_01T66VBy9AY89PL46WwhM1Ye (sonnet, od integracji 01aaeddb, polecenie CR.md @ 2e896b5f) | raport CR ok. 08:30 |
