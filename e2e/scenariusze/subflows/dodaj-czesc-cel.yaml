@@ -18,6 +18,8 @@ name: "podprzepływ: część Back z celem"
 - takeScreenshot: pomiar-ekran-projektu
 - assertVisible: { id: "e2e-pomiar-ladowania", text: "first data [0-9]+ ms", optional: true }
 - tapOn: { id: "projekt-dodaj" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj-czesc" }, timeout: 5000, optional: true } # BX30 (KO-170, run 44114826259, BR-PRJ-007/S1): stuknięcie „+” zakończone, menu nie pojawiło się w 17,8 s; jedno ponowienie SAMEGO stuknięcia (przycisk przełącza menu, więc tylko gdy menu brak)
+- runFlow: { when: { notVisible: { id: "projekt-dodaj-czesc" } }, commands: [ { tapOn: { id: "projekt-dodaj" } }, { assertVisible: { id: "projekt-dodaj-czesc" } } ] }
 - assertVisible: { id: "projekt-dodaj-czesc" }
 - tapOn: { id: "projekt-dodaj-czesc" }
 - assertVisible: { id: "formularz-nazwa-czesci" }
