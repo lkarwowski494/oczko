@@ -470,3 +470,8 @@ Opcja D właściciela („Zgoda na D”): ponowienie w workflow tylko padniętyc
 - **Verify w haku pre-push:** zad. 1 — zielone (7953/7953); dodatkowo `npx jest tests/jakosc` 1041/1041 i `npm run jakosc:kontrole` 0 błędów przed commitem.
 - **Atrybucja:** autor i committer Łukasz Karwowski, bez trailerów (P-507).
 - **Koszt i kontekst BX30:** nieodczytane.
+
+## FX7 (08-fix, 2026-11-18; polecenie koordynatora session_01T66VBzb4nxMxEGdBmHBUbV, KO-173, P-988; gałąź `claude/fx7-tmp-macos-2026-11-18` od 01aaeddb)
+- **Przyczyna:** macOS `tmpdir()` = dowiązanie `/var` → `/private/var`; strażnik `bramka-przypadki-uzycia.mjs:450` porównuje `argv[1]` z `import.meta.url` (realpath) → skrypt w katalogu tymczasowym milczy. Hipoteza koordynatora potwierdzona na Linuksie.
+- **Dowód czerwony:** `ln -s /tmp/x /tmp/dowiazanie`; `TMPDIR=/tmp/dowiazanie npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts` → 1 czerwony, `Expected /Kontrola 1: pominięta/, Received ""` (linia 207). Cały zestaw z takim `TMPDIR`: 1 czerwony z 7953, inne `mkdtempSync` nie mają wady.
+- **Poprawka A (tylko test):** `realpathSync(mkdtempSync(…))` w tym teście; skrypt bramki bez zmian. Dowód zielony: ten sam test z dowiązanym `TMPDIR` i bez — 83/83.

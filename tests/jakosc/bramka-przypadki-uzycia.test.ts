@@ -6,7 +6,7 @@
  *   3. protokół testu fizycznego poprzedniego wysłanego buildu (klasa F; wyjątek tylko 1171).
  * Przed App Review: protokół F dokładnie tego buildu, bez wyjątków (polecenie `recenzja <build>`). */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parse } from './jakosc-ios-pomoc';
@@ -182,7 +182,8 @@ describe('bramki nie da się wyłączyć (testflight.yml)', () => {
   // repo git z tagiem v1.0.0-b1171 (wyjątek P-838 z wyjatki.json → kontrola 3 zielona bez protokołu), więc wynik zależy tylko od kontroli 2.
   // Para dowodowa: ten sam układ z testem dla PU-003 → kod 0; z PU-003 jako B bez testu → dokładnie kod 1 i błąd kontroli 2 z ID.
   test('POMIN=true pomija tylko kontrolę 1: kontrole 2 i 3 biegną i bramka jest czerwona przy B bez testu (P-837)', () => {
-    const tmp = mkdtempSync(join(tmpdir(), 'oczko-bx25-'));
+    // FX7 (P-988): realpath, bo na macOS tmpdir() to /var → /private/var, a strażnik skryptu porównuje argv[1] z import.meta.url po realpath
+    const tmp = realpathSync(mkdtempSync(join(tmpdir(), 'oczko-bx25-')));
     try {
       for (const d of ['app', 'src', 'tests', 'modules']) symlinkSync(join(root, d), join(tmp, d), 'dir');
       cpSync(join(root, 'e2e/scenariusze'), join(tmp, 'e2e/scenariusze'), { recursive: true });
