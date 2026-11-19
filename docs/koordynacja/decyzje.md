@@ -192,3 +192,6 @@ Przyczyna porażki 44505569101: test `ramki-sklepu.test.ts:76` zbyt sztywny wobe
 
 ## KO-177 (19.11 13:29, do weta) — ZR1 przyjęta; `if: always()` na kroku alfy
 ZR1 b106e210 (autor i committer noreply, 0 trailerów, rodzic e3e7fe9e): testy 29/29 + 38/38 + pełny jest 7961 zielone, verify zielony, kontrola 2 zielona; IM7 tylko symulowany (pierwszy prawdziwy dowód = przebieg w Actions). Integracja ff → b106e210; dispatch zrzuty-sklepu `zrzuty_z_przebiegu=44505569101`. P-990 (`if: always()` na „Kanał alfa precz”): opcje (A) zostawić — zero zmian teraz, po czerwonym teście surowy artefakt bywa pusty; (B) dodać — kompletny artefakt 14 dni zawsze. Wybór: **B, ale w następnej partii poprawek** (nie blokuje bieżącego kompletu; jednowierszowa zmiana).
+
+## KO-178 (19.11 13:58, do weta) — werdykt 07 dla 1221 teraz
+Opcje: (a) WR1 teraz (rola 07, sonnet, pułap 2,5 USD): werdykt 1221 + przegląd OG-07 scen 03/04 na gotowych zrzutach — nie zależy od odpowiedzi właściciela, skraca ścieżkę do Submit; (b) czekać na odpowiedzi właściciela i zlecić werdykt razem z protokołem. Wybór: **a** (czekanie od 10:27 to dziś główny przestój; protokół 1221 zostaje poza WR1 do słowa właściciela, D-2).
