@@ -1,0 +1,62 @@
+Różnica kodu 2ed5215a (werdykt 1161) -> a830eb21 (build 1221); 2026-11-19
+
+git rev-list --count 2ed5215a..a830eb21: 230
+
+== git diff --stat (całość, ostatnia linia) ==
+ 513 files changed, 35374 insertions(+), 560 deletions(-)
+
+== wejścia binarki: src app modules ios assets package.json ==
+ app/(zakladki)/index.tsx                           |   5 +-
+ app/_layout.tsx                                    |  12 ++-
+ app/formularz/[rodzaj].tsx                         |  10 ++-
+ app/konflikt.tsx                                   |   3 +-
+ app/licznik.tsx                                    |  15 +++-
+ app/ustawienia.tsx                                 |   4 +-
+ app/wzor.tsx                                       |  24 +++---
+ app/zdjecie.tsx                                    |  17 ++++-
+ modules/oczko-reguly/Package.swift                 |   2 +-
+ .../OczkoRegulyTests/ZegarekSkrzynkaTests.swift    |  29 +++++++
+ .../Testy/korpus/generuj-korpus.mjs                |  11 ++-
+ .../TestyOknaMaszyn/Testy/korpus/strony.docx       | Bin 0 -> 2053 bytes
+ package.json                                       |   2 +-
+ src/domena/nazwa-czesci.ts                         |  19 +++++
+ src/ekrany/Aplikacja.tsx                           |  44 +++++++++--
+ src/ekrany/Dzis.tsx                                |  10 ++-
+ src/ekrany/Formularze.tsx                          |   9 ++-
+ src/ekrany/LicznikTypy.ts                          |   2 +
+ src/ekrany/Pasek.tsx                               |  19 ++++-
+ src/ekrany/WzorAkcje.ts                            |   2 +-
+ src/ekrany/WzorMenu.tsx                            |   4 +-
+ src/ekrany/WzorPrzegladarka.tsx                    |   3 +-
+ src/ekrany/WzorZrodla.tsx                          |  23 ++++++
+ src/kompozycja/bezpieczny-powrot.ts                |  11 +++
+ src/kompozycja/e2e/nacisniecia-stan.tsx            |  73 ++++++++++++++++++
+ src/kompozycja/e2e/nawigacje-stan.tsx              |  25 ++++++
+ src/kompozycja/e2e/notatki-wzoru-stan.tsx          |  20 +++++
+ src/kompozycja/e2e/okno-stan.tsx                   |  18 +++++
+ src/kompozycja/e2e/panele.tsx                      |  48 ++++++++----
+ src/kompozycja/e2e/pliki-wzoru.ts                  |   5 +-
+ src/kompozycja/e2e/wejscia-stan.tsx                |  78 +++++++++++++++++++
+ src/kompozycja/kontener.ts                         |   2 +-
+ src/kompozycja/licznik-stan.ts                     |  54 +++++++++++++
+ src/kompozycja/licznik.ts                          |  84 ++++++++-------------
+ src/kompozycja/projekt.ts                          |   6 +-
+ src/kompozycja/projekty.ts                         |   8 +-
+ src/kompozycja/wzor-import-trasy.ts                |  12 ++-
+ src/konfiguracja.ts                                |   2 +-
+ src/platforma/tryb-e2e.ts                          |   5 ++
+ src/przypadki-uzycia/wzor-widok.ts                 |   4 +-
+ 40 files changed, 595 insertions(+), 129 deletions(-)
+
+== pliki tests/ zmienione: 216, dodane: 129 ==
+
+== po a830eb21: a830eb21 -> b106e210, wejścia binarki (puste = binarka niezmieniona) ==
+(koniec; puste = brak zmian)
+
+== a830eb21 -> b106e210: pliki spoza docs/ ==
+.github/workflows/zrzuty-sklepu.yml
+scripts/ci/zrzuty-uzupelnij.mjs
+tests/wydanie/pomoc-obrazow.ts
+tests/wydanie/ramki-sklepu.test.ts
+tests/wydanie/zrzuty-poprawki-ah.test.ts
+tests/wydanie/zrzuty-uzupelnij.test.ts

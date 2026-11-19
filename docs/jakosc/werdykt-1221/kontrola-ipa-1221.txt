@@ -1,0 +1,20 @@
+Wyciąg z logu TestFlight run 44353461752 (SHA a830eb21), krok kontroli .ipa. Wiersze UWAGA <język> (heurystyki tłumaczeń) pominięte; uprawnienia skrócone do get-task-allow.
+
+----------------------
+Export Succeeded
+### Kontrola .ipa: com.apps4brew.knitting 1.0.0 (1221)
+zegarek com.apps4brew.knitting.watchkitapp: CFBundleIcons › CFBundlePrimaryIcon › CFBundleIconName = AppIcon
+manifesty celów: OK
+- /aplikacja: uprawnienia: get-task-allow=false (reszta pominięta)
+- /PlugIns/OczkoUdostepnij.appex: uprawnienia: get-task-allow=false (reszta pominięta)
+  UWAGA (warning): brak PrivacyInfo.xcprivacy w pakiecie celu (kod celu bez API z listy: node scripts/wydanie/manifest-celow.mjs)
+- /PlugIns/OczkoWidget.appex: uprawnienia: get-task-allow=false (reszta pominięta)
+  UWAGA (warning): brak PrivacyInfo.xcprivacy w pakiecie celu (kod celu bez API z listy: node scripts/wydanie/manifest-celow.mjs)
+- /Watch/OczkoZegarek.app: uprawnienia: get-task-allow=false (reszta pominięta)
+kontrola adresów: identyfikator App Store id6823678721 (nie zaślepka)
+błędy: 0, uwagi: 1277; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+/Users/runner/work/_temp/ipa/Payload/Oczko.app/main.jsbundle: bez śladów trybu testowego (12 wzorców)
+- języki .lproj: 35
+Wynik: błędów 0, uwag 2
+
+Liczba wierszy UWAGA <język> w logu: 1277
