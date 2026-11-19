@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { spawnSync } from 'child_process';
+import { wymiarBezAlfy } from './pomoc-obrazow';
 
 const korzen = path.join(__dirname, '..', '..');
 const czytaj = (p: string) => fs.readFileSync(path.join(korzen, p), 'utf8');
@@ -34,7 +35,7 @@ opisObrazy('10-wydanie-017: spłaszczenie kanału alfa i kontrola pliku zakupu',
     const wy = path.join(tmp, 'rgb.png');
     const s = uruchom('node', ['scripts/ci/splaszcz-png.mjs', rgba, wy]);
     expect(s.status).toBe(0);
-    expect(uruchom('identify', ['-format', '%wx%h %[channels]', wy]).stdout).toMatch(/^1320x2868 srgb$/i);
+    expect(uruchom('identify', ['-format', '%wx%h %[channels]', wy]).stdout).toMatch(wymiarBezAlfy('1320x2868'));
     const a = uruchom('convert', [rgba, '-alpha', 'off', '-format', '%#', 'info:']).stdout;
     const b = uruchom('convert', [wy, '-format', '%#', 'info:']).stdout;
     expect(b).toBe(a);

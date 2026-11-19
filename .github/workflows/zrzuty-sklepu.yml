@@ -11,6 +11,8 @@
 # [zrzuty-zadan:N] = na ile zadań dzielić języki na urządzenie (domyślnie 6, najwyżej 8); [zrzuty-urzadzenia:iphone] = tylko iPhone (domyślnie iphone,ipad);
 # 10-wydanie-002 (uzupełnienie, jak trening:.github/workflows/store-screenshots.yml:37-44): [zrzuty-uzupelnij:<numer przebiegu>] = weź gotowe zrzuty z artefaktu `sklep-zrzuty-surowe` TEGO workflowu (14 dni)
 # i zrób tylko brakujące sceny; [zrzuty-powtorz:ja/04-zakreslenie,…] = te sceny od nowa mimo gotowego pliku (`en/99-zakup` = zrzut zakupu od nowa); wynik = komplet (zadanie „zbierz” nakłada nowe na poprzednie).
+# ZR1 (KO-176, 2026-11-19): `zrzuty_z_przebiegu` (tylko workflow_dispatch) = sam KOMPLET bez macOS: zadanie „zbierz” bierze surowe zrzuty z artefaktów `zrzuty-surowe-*` (7 dni) wskazanego przebiegu TEGO workflowu zamiast z bieżącego;
+# plan ustawia zero zadań macOS i pomija build (po porażce samego kroku kompletu: test ramek, ramki, wymiary). Wyklucza się z uzupelnij_z_przebiegu i powtorz. Pusty artefakt źródłowy = czerwony plan.
 # (2) workflow_dispatch (po scaleniu do `main`) z tymi samymi wejściami. Czas: ≈ 30 min na język i urządzenie (7 scen po ≈ 4 min), naraz najwyżej 3 zadania macOS.
 # Maszyn macOS zwykle brak ok. 14:00–23:00 UTC; awaria przed pierwszym scenariuszem albo „not acquired by Runner” = jedno ponowienie ręczne (P-091, CLAUDE.md).
 name: Zrzuty sklepu
@@ -49,6 +51,11 @@ on:
         required: false
         type: string
         default: ''
+      zrzuty_z_przebiegu:
+        description: 'Numer przebiegu TEGO workflowu, którego zadania zrzutów się udały (artefakty zrzuty-surowe-*, 7 dni), a komplet padł (ZR1): składa komplet, ramki i podpisy z tych zrzutów BEZ macOS i bez builda. Wyklucza się z uzupelnij_z_przebiegu i powtorz. Pusty = przebieg zwykły'
+        required: false
+        type: string
+        default: ''
       powtorz:
         description: 'Przy uzupelnij_z_przebiegu: sceny do zrobienia od nowa mimo gotowego pliku (po przecinku, język/NN-scena, np. "ja/04-zakreslenie"); "en/99-zakup" = zrzut zakupu od nowa; pusty = żadne'
         required: false
@@ -72,6 +79,7 @@ jobs:
       zadania: ${{ steps.plan.outputs.zadania }}
       urz: ${{ steps.wejscie.outputs.urz }}
       uzup: ${{ steps.wejscie.outputs.uzup }}
+      zrz: ${{ steps.wejscie.outputs.zrz }}
       powtorz: ${{ steps.wejscie.outputs.powtorz }}
       dzien: ${{ steps.plan.outputs.dzien }}
     steps:
@@ -91,14 +99,15 @@ jobs:
           WE_ZADAN: ${{ inputs.zadan }}
           WE_URZADZENIA: ${{ inputs.urzadzenia }}
           WE_UZUP: ${{ inputs.uzupelnij_z_przebiegu }}
+          WE_ZRZ: ${{ inputs.zrzuty_z_przebiegu }}
           WE_POWTORZ: ${{ inputs.powtorz }}
         run: |
-          uruchom=false; app=""; og07=false; jez="en,pl"; zadan=6; urz="iphone,ipad"; uzup=""; powt=""
+          uruchom=false; app=""; og07=false; jez="en,pl"; zadan=6; urz="iphone,ipad"; uzup=""; powt=""; zrz=""
           # znaczniki tylko z PIERWSZEJ linii komunikatu: treść commitu może je opisywać (przebieg 1: opis „[og07-ok]” w treści włączył OG-07)
           KOMUNIKAT=$(printf '%s\n' "$KOMUNIKAT" | head -1)
           if [ "$ZDARZENIE" = workflow_dispatch ]; then
             uruchom=true; app="$WE_APP"; [ "$WE_OG07" = true ] && og07=true
-            jez="${WE_JEZYKI:-en,pl}"; zadan="${WE_ZADAN:-6}"; urz="${WE_URZADZENIA:-iphone,ipad}"; uzup="$WE_UZUP"; powt="$WE_POWTORZ"
+            jez="${WE_JEZYKI:-en,pl}"; zadan="${WE_ZADAN:-6}"; urz="${WE_URZADZENIA:-iphone,ipad}"; uzup="$WE_UZUP"; powt="$WE_POWTORZ"; zrz="$WE_ZRZ"
           else
             case "$KOMUNIKAT" in *'[zrzuty-sklepu]'*) uruchom=true ;; esac
             app=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-app:\([0-9][0-9]*\)\].*/\1/p' | head -1)
@@ -110,11 +119,13 @@ jobs:
             powt=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zrzuty-powtorz:\([A-Za-z0-9,/-]*\)\].*/\1/p' | head -1)
           fi
           # Wejścia ręczne trafiają do $GITHUB_OUTPUT i do skryptów: tylko dozwolone znaki (nowa linia w wejściu nie dopisze cudzego wyjścia); sens (język, scena) sprawdza skrypt planu (kod 2)
-          for par in "numer przebiegu aplikacji:$app:*[!0-9]*" "uzupelnij_z_przebiegu:$uzup:*[!0-9]*" "jezyki:$jez:*[!A-Za-z0-9,-]*" "zadan:$zadan:*[!0-9]*" "urzadzenia:$urz:*[!a-z,]*" "powtorz:$powt:*[!A-Za-z0-9,/-]*"; do
+          for par in "numer przebiegu aplikacji:$app:*[!0-9]*" "uzupelnij_z_przebiegu:$uzup:*[!0-9]*" "zrzuty_z_przebiegu:$zrz:*[!0-9]*" "jezyki:$jez:*[!A-Za-z0-9,-]*" "zadan:$zadan:*[!0-9]*" "urzadzenia:$urz:*[!a-z,]*" "powtorz:$powt:*[!A-Za-z0-9,/-]*"; do
             nazwa="${par%%:*}"; reszta="${par#*:}"; wartosc="${reszta%:*}"; wzor="${reszta##*:}"
             case "$wartosc" in $wzor) echo "::error::wejście $nazwa ma niedozwolone znaki"; exit 2 ;; esac
           done
-          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "og07=$og07"; echo "jez=$jez"; echo "zadan=$zadan"; echo "urz=$urz"; echo "uzup=$uzup"; echo "powtorz=$powt"; } >> "$GITHUB_OUTPUT"
+          # ZR1: komplet z gotowych zrzutów to inna droga niż uzupełnienie (to dorabia sceny na macOS): obie naraz = czerwony plan, nie cicha przewaga jednej
+          if [ -n "$zrz" ] && { [ -n "$uzup" ] || [ -n "$powt" ]; }; then echo "::error::zrzuty_z_przebiegu wyklucza się z uzupelnij_z_przebiegu i powtorz (komplet z gotowych zrzutów nie robi nowych scen)"; exit 2; fi
+          { echo "uruchom=$uruchom"; echo "app_run=$app"; echo "zrz=$zrz"; echo "og07=$og07"; echo "jez=$jez"; echo "zadan=$zadan"; echo "urz=$urz"; echo "uzup=$uzup"; echo "powtorz=$powt"; } >> "$GITHUB_OUTPUT"
       - name: Poprzednie surowe zrzuty (tylko przy uzupełnieniu; artefakt sklep-zrzuty-surowe poprzedniego przebiegu — już po nałożeniu jego własnych uzupełnień, więc kolejne uzupełnienia się łańcuchują)
         if: steps.wejscie.outputs.uruchom == 'true' && steps.wejscie.outputs.uzup != ''
         uses: actions/download-artifact@v4
@@ -122,6 +133,15 @@ jobs:
           name: sklep-zrzuty-surowe
           path: poprzednie
           run-id: ${{ steps.wejscie.outputs.uzup }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Surowe zrzuty zadań z przebiegu źródłowego (ZR1; tylko przy zrzuty_z_przebiegu: artefakty zrzuty-surowe-*, tu sprawdzamy, że nie są puste; komplet pobiera je jeszcze raz w zadaniu zbierz)'
+        if: steps.wejscie.outputs.uruchom == 'true' && steps.wejscie.outputs.zrz != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: zrzuty-surowe-*
+          path: zrodlo-zrzutow
+          merge-multiple: true
+          run-id: ${{ steps.wejscie.outputs.zrz }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - id: plan
         env:
@@ -132,6 +152,7 @@ jobs:
           ZADAN: ${{ steps.wejscie.outputs.zadan }}
           URZ: ${{ steps.wejscie.outputs.urz }}
           UZUP: ${{ steps.wejscie.outputs.uzup }}
+          ZRZ: ${{ steps.wejscie.outputs.zrz }}
           POWTORZ: ${{ steps.wejscie.outputs.powtorz }}
         run: |
           # Zadanie zrzuty i tak jest pomijane (uruchom=false albo zadania=0), ale macierz z pustej listy bywa błędem składni — stąd jeden wpis zastępczy
@@ -143,6 +164,10 @@ jobs:
           # Wejścia z wejść ręcznych idą przez env i walidację w skrypcie planu (nieznany język, język bez lokalizacji sklepu, złe urządzenie = czerwony plan)
           if [ "$URUCHOM" = true ]; then
             poprzednie=""
+            if [ -n "$ZRZ" ]; then
+              # ZR1: brak zrzutów w pobranych artefaktach = czerwony plan (zły numer, artefakty wygasły po 7 dniach albo przebieg bez udanych zadań zrzutów); inaczej komplet padłby dopiero po instalacji narzędzi
+              [ -n "$(find zrodlo-zrzutow -name '*.png' 2>/dev/null | head -1)" ] || { echo "::error::przebieg $ZRZ: artefakty zrzuty-surowe-* bez zrzutów (zły numer, wygasły po 7 dniach albo zadania zrzutów tego przebiegu się nie udały)"; exit 1; }
+            fi
             if [ -n "$UZUP" ]; then
               # brak zrzutów w pobranym artefakcie = czerwony plan; inaczej uzupełnienie po cichu zrobiłoby WSZYSTKO od nowa (≈ 10 h)
               [ -n "$(find poprzednie -name '*.png' 2>/dev/null | head -1)" ] || { echo "::error::przebieg $UZUP: artefakt sklep-zrzuty-surowe bez zrzutów (zły numer albo wygasł po 14 dniach)"; exit 1; }
@@ -153,13 +178,19 @@ jobs:
               [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1
               poprzednie=poprzednie
             fi
-            matrix=$(ZRZUTY_DZIEN="$dzien" node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
+            if [ -n "$ZRZ" ]; then
+              # ZR1: języki i urządzenia sprawdza ten sam skrypt planu (zadan = 8, bo limit języków na zadanie nie dotyczy kompletu), ale macOS NIE biegnie: zero zadań, bez builda; braki wykaże krok „Komplet”.
+              # Bez ZRZUTY_DZIEN: ograniczenie dni pracy fikstury (poniedziałek, 1–7 dzień miesiąca) dotyczy robienia zrzutów, a tu żadnych nie robimy
+              matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$JEZ" 8 "$URZ" | node -e 'const p=JSON.parse(require("fs").readFileSync(0,"utf8")); p.matrix=[]; p.zadania=0; process.stdout.write(JSON.stringify(p))')
+            else
+              matrix=$(ZRZUTY_DZIEN="$dzien" node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")
+            fi
           fi
           zadania=$(printf '%s' "$matrix" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).zadania))')
           { echo "zadania=$zadania"; echo "dzien=$dzien"
             if [ "$zadania" = 0 ]; then echo "matrix=$zastepcza"; else echo "matrix=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.stringify(JSON.parse(require("fs").readFileSync(0,"utf8")).matrix))')"; fi
             echo "jezyki=$(printf '%s' "$matrix" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).jezyki.join(","))')"; } >> "$GITHUB_OUTPUT"
-          echo "uruchom=$URUCHOM, aplikacja z przebiegu: ${APP:-(budowa)}, OG-07: $OG07, języki: $JEZ, zadań: $ZADAN, urządzenia: $URZ, uzupełnienie z przebiegu: ${UZUP:-(brak)}, zadań macOS: $zadania" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "uruchom=$URUCHOM, aplikacja z przebiegu: ${APP:-(budowa)}, OG-07: $OG07, języki: $JEZ, zadań: $ZADAN, urządzenia: $URZ, uzupełnienie z przebiegu: ${UZUP:-(brak)}, komplet z zrzutów przebiegu: ${ZRZ:-(brak)}, zadań macOS: $zadania" | tee -a "$GITHUB_STEP_SUMMARY"
           [ "$URUCHOM" != true ] || [ -z "$UZUP" ] || printf '%s' "$matrix" | node -e 'for (const m of JSON.parse(require("fs").readFileSync(0,"utf8")).matrix) console.log(`  ${m.urzadzenie} #${m.nr}: ${m.jezyki || "(tylko zakup)"} → ${m.sceny || "-"}`)' | tee -a "$GITHUB_STEP_SUMMARY"
   build:
     needs: plan
@@ -385,6 +416,24 @@ jobs:
           pattern: zrzuty-surowe-*
           path: surowe
           merge-multiple: true
+      - name: 'Surowe zrzuty z przebiegu źródłowego (ZR1, zrzuty_z_przebiegu: zadania zrzutów tamtego przebiegu zamiast bieżącego)'
+        if: needs.plan.outputs.zrz != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: zrzuty-surowe-*
+          path: surowe
+          merge-multiple: true
+          run-id: ${{ needs.plan.outputs.zrz }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Znacznik dat przebiegu źródłowego (ZR1; artefakt sklep-zrzuty-surowe tamtego przebiegu, sam znacznik; brak = data paska iPada nieznana)'
+        if: needs.plan.outputs.zrz != ''
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: sklep-zrzuty-surowe
+          path: zrodlo-dat
+          run-id: ${{ needs.plan.outputs.zrz }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Poprzednie surowe zrzuty (tylko przy uzupełnieniu)
         if: needs.plan.outputs.uzup != ''
         uses: actions/download-artifact@v4
@@ -454,8 +503,15 @@ jobs:
           DZIEN: ${{ needs.plan.outputs.dzien }}
           URZADZENIA: ${{ needs.plan.outputs.urz }}
           UZUP: ${{ needs.plan.outputs.uzup }}
+          ZRZ: ${{ needs.plan.outputs.zrz }}
         run: |
           mkdir -p sklep-zrzuty-surowe
+          if [ -n "$ZRZ" ]; then
+            # ZR1: zrzuty są z przebiegu źródłowego, więc data paska iPada też; dzień BIEŻĄCEGO przebiegu byłby fałszywy (następne uzupełnienie wzięłoby stary zestaw iPada za świeży)
+            node scripts/ci/zrzuty-uzupelnij.mjs przepisz-znacznik zrodlo-dat sklep-zrzuty-surowe/zrzuty-daty.json | tee -a "$GITHUB_STEP_SUMMARY"
+            [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1
+            exit 0
+          fi
           zrodlo=-; [ -z "$UZUP" ] || zrodlo=poprzednie # bez uzupełnienia nie ma źródła
           node scripts/ci/zrzuty-uzupelnij.mjs znacznik "$zrodlo" "$DZIEN" "$URZADZENIA" sklep-zrzuty-surowe/zrzuty-daty.json | tee -a "$GITHUB_STEP_SUMMARY"
           [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1

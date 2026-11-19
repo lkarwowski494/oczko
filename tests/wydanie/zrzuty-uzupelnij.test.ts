@@ -211,3 +211,103 @@ describe('workflow zrzuty-sklepu.yml: ścieżka uzupełnienia', () => {
     }
   });
 });
+
+describe('ZR1 (KO-176): zrzuty_z_przebiegu — komplet z gotowych zrzutów przebiegu źródłowego, bez macOS', () => {
+  const tekst = fs.readFileSync(path.join(korzen, '.github/workflows/zrzuty-sklepu.yml'), 'utf8');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const wf: any = YAML.parse(tekst);
+  const kroki = (job: string) => (wf.jobs[job].steps ?? []) as any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const krok = (job: string, re: RegExp) => kroki(job).find((k) => re.test(k.name ?? '') || re.test(k.id ?? ''));
+  /** Uruchamia `run` kroku workflowu w katalogu tymczasowym (skrypty przez dowiązanie `scripts`); zwraca wynik, zawartość $GITHUB_OUTPUT i katalog. */
+  function uruchomKrok(job: string, re: RegExp, env: Record<string, string>, przygotuj: (kat: string) => void = () => undefined) {
+    const k = krok(job, re); expect(k?.run).toBeTruthy();
+    const kat = nowyKat(); fs.symlinkSync(path.join(korzen, 'scripts'), path.join(kat, 'scripts'));
+    przygotuj(kat);
+    const wyjscie = path.join(kat, 'gh-output'); const podsumowanie = path.join(kat, 'gh-summary');
+    fs.writeFileSync(wyjscie, ''); fs.writeFileSync(podsumowanie, '');
+    const r = spawnSync('bash', ['-e', '-c', k.run], { encoding: 'utf8', cwd: kat, env: { ...process.env, NODE_OPTIONS: '--preserve-symlinks --preserve-symlinks-main', ...env, GITHUB_OUTPUT: wyjscie, GITHUB_STEP_SUMMARY: podsumowanie } });
+    return { r, wyjscie: fs.readFileSync(wyjscie, 'utf8'), kat };
+  }
+  const wejscie = { ZDARZENIE: 'workflow_dispatch', KOMUNIKAT: '', WE_APP: '', WE_OG07: 'false', WE_JEZYKI: 'en,pl', WE_ZADAN: '6', WE_URZADZENIA: 'iphone,ipad', WE_UZUP: '', WE_ZRZ: '', WE_POWTORZ: '' };
+  const planEnv = { URUCHOM: 'true', APP: '', OG07: 'false', JEZ: 'en,pl', ZADAN: '6', URZ: 'iphone,ipad', UZUP: '', ZRZ: '', POWTORZ: '' };
+
+  test('wejście zrzuty_z_przebiegu jest w workflow_dispatch; numer to same cyfry; wyjście zrz niesie plan dalej', () => {
+    const wejscia = Object.keys((wyzwalacze(tekst) as any).workflow_dispatch.inputs); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(wejscia).toContain('zrzuty_z_przebiegu');
+    expect(wf.jobs.plan.outputs.zrz).toContain('steps.wejscie.outputs.zrz');
+    const dobre = uruchomKrok('plan', /^wejscie$/, { ...wejscie, WE_ZRZ: '44505569101' });
+    expect(dobre.r.status).toBe(0); expect(dobre.wyjscie).toMatch(/^zrz=44505569101$/m);
+    const zle = uruchomKrok('plan', /^wejscie$/, { ...wejscie, WE_ZRZ: '12;rm' });
+    expect(zle.r.status).toBe(2); expect(zle.r.stdout).toMatch(/zrzuty_z_przebiegu ma niedozwolone znaki/);
+  });
+  test('zrzuty_z_przebiegu wyklucza się z uzupelnij_z_przebiegu i powtorz (czerwony plan, kod 2); bez niego zrz jest pusty', () => {
+    for (const dodatek of [{ WE_UZUP: '123' }, { WE_POWTORZ: 'ja/04-zakreslenie' }]) {
+      const w = uruchomKrok('plan', /^wejscie$/, { ...wejscie, WE_ZRZ: '44505569101', ...dodatek });
+      expect(w.r.status).toBe(2); expect(w.r.stdout).toMatch(/::error::zrzuty_z_przebiegu wyklucza się/);
+    }
+    expect(uruchomKrok('plan', /^wejscie$/, wejscie).wyjscie).toMatch(/^zrz=$/m);
+    // znacznik w komunikacie commita nie uruchamia tej drogi (tylko workflow_dispatch)
+    expect(uruchomKrok('plan', /^wejscie$/, { ...wejscie, ZDARZENIE: 'push', KOMUNIKAT: '[zrzuty-sklepu] [zrzuty-z-przebiegu:44505569101]' }).wyjscie).toMatch(/^zrz=$/m);
+  });
+  test('plan: pobiera zrzuty-surowe-* z przebiegu źródłowego (merge-multiple, run-id, token); pusty artefakt źródłowy = czerwony plan z ::error::', () => {
+    const pob = krok('plan', /Surowe zrzuty zadań z przebiegu źródłowego/);
+    expect(pob.uses).toMatch(/^actions\/download-artifact@v4/);
+    expect(pob.with.pattern).toBe('zrzuty-surowe-*'); expect(pob.with['merge-multiple']).toBe(true);
+    expect(pob.with['run-id']).toContain('steps.wejscie.outputs.zrz'); expect(pob.with['github-token']).toContain('secrets.GITHUB_TOKEN');
+    expect(String(pob.if)).toContain("steps.wejscie.outputs.zrz != ''");
+    // pusty katalog (download-artifact z wzorcem bez trafień kończy się sukcesem i pustym katalogiem) i katalog bez PNG (np. sam znacznik 195 B)
+    for (const przygotuj of [(k: string) => fs.mkdirSync(path.join(k, 'zrodlo-zrzutow')), (k: string) => plik(path.join(k, 'zrodlo-zrzutow'), 'zrzuty-daty.json', '{}')]) {
+      const w = uruchomKrok('plan', /^plan$/, { ...planEnv, ZRZ: '44505569101' }, przygotuj);
+      expect(w.r.status).toBe(1); expect(w.r.stdout).toMatch(/::error::przebieg 44505569101: artefakty zrzuty-surowe-\* bez zrzutów/);
+    }
+  });
+  test('plan: z zrzutami w źródle zero zadań macOS (także gdy brakuje scen), języki z planu; zły język = czerwony plan; bez zrz plan bez zmian (zadania macOS)', () => {
+    const zrodlo = (k: string) => { plik(path.join(k, 'zrodlo-zrzutow'), '6.9/en/01-dzis.png'); plik(path.join(k, 'zrodlo-zrzutow'), '6.9/pl/01-dzis.png'); };
+    const w = uruchomKrok('plan', /^plan$/, { ...planEnv, ZRZ: '44505569101' }, zrodlo);
+    expect(w.r.status).toBe(0);
+    expect(w.wyjscie).toMatch(/^zadania=0$/m); expect(w.wyjscie).toMatch(/^jezyki=en,pl$/m);
+    expect(w.wyjscie).toMatch(/^matrix=\[\{"urzadzenie":"iphone","jezyki":"en","nr":1,"zakup":false\}\]$/m); // tylko wpis zastępczy macierzy (jej zadanie i tak pomija zadania=0)
+    expect(w.r.stdout + w.r.stderr).not.toMatch(/::error::/);
+    const zlyJezyk = uruchomKrok('plan', /^plan$/, { ...planEnv, ZRZ: '44505569101', JEZ: 'xx' }, zrodlo);
+    expect(zlyJezyk.r.status).not.toBe(0);
+    const zwykly = uruchomKrok('plan', /^plan$/, { ...planEnv, ZRZ: '' }); // przebieg zwykły: zadania macOS jak dotąd
+    expect(zwykly.r.status).toBe(0); expect(zwykly.wyjscie).not.toMatch(/^zadania=0$/m);
+  });
+  test('build i zrzuty (macOS) pomijane przy zadania=0, a zbierz biegnie wtedy mimo braku zadań zrzutów', () => {
+    expect(String(wf.jobs.build.if)).toContain("needs.plan.outputs.zadania != '0'");
+    expect(String(wf.jobs.zrzuty.if)).toContain("needs.plan.outputs.zadania != '0'");
+    expect(String(wf.jobs.zbierz.if)).toContain("needs.plan.outputs.zadania == '0'");
+  });
+  test('zbierz: surowe z przebiegu źródłowego (zrzuty-surowe-*, run-id) zamiast bieżącego, przed kontrolą; bieżące pobranie tylko przy zadaniach macOS', () => {
+    const nazwy = kroki('zbierz').map((k) => k.name ?? '');
+    const iZrz = nazwy.findIndex((n: string) => /Surowe zrzuty z przebiegu źródłowego/.test(n));
+    const iAlfa = nazwy.findIndex((n: string) => /^Kanał alfa/.test(n));
+    expect(iZrz).toBeGreaterThan(-1); expect(iAlfa).toBeGreaterThan(iZrz);
+    const z = kroki('zbierz')[iZrz];
+    expect(z.uses).toMatch(/^actions\/download-artifact@v4/); expect(z.with.pattern).toBe('zrzuty-surowe-*'); expect(z.with.path).toBe('surowe'); expect(z.with['merge-multiple']).toBe(true);
+    expect(z.with['run-id']).toContain('needs.plan.outputs.zrz'); expect(z.with['github-token']).toContain('secrets.GITHUB_TOKEN');
+    expect(String(z.if)).toContain("needs.plan.outputs.zrz != ''");
+    const biezace = kroki('zbierz').find((k) => k.with?.pattern === 'zrzuty-surowe-*' && !k.with['run-id']);
+    expect(String(biezace.if)).toContain("needs.plan.outputs.zadania != '0'"); // przy zrz plan daje zadania=0, więc bieżące (puste) artefakty nie są pobierane
+  });
+  test('zbierz: znacznik dat dziedziczony z przebiegu źródłowego (nie dzień bieżący); brak znacznika = data iPada nieznana, nie awaria', () => {
+    const pob = krok('zbierz', /Znacznik dat przebiegu źródłowego/);
+    expect(pob.with.name).toBe('sklep-zrzuty-surowe'); expect(pob['continue-on-error']).toBe(true); expect(pob.with['run-id']).toContain('needs.plan.outputs.zrz');
+    const zn = krok('zbierz', /^Znacznik dat kompletu/);
+    expect(zn.run).toContain('zrzuty-uzupelnij.mjs przepisz-znacznik zrodlo-dat sklep-zrzuty-surowe/zrzuty-daty.json');
+    const ze = nowyKat(); plik(ze, 'zrzuty-daty.json', JSON.stringify({ teraz: '2026-11-19T09:41', dzienIpada: '2026-11-19' }));
+    const wy = path.join(nowyKat(), 'zrzuty-daty.json');
+    expect(node([modul('zrzuty-uzupelnij.mjs'), 'przepisz-znacznik', ze, wy]).status).toBe(0);
+    expect(JSON.parse(fs.readFileSync(wy, 'utf8'))).toEqual({ teraz: '2026-11-19T09:41', dzienIpada: '2026-11-19' });
+    const wyBrak = path.join(nowyKat(), 'zrzuty-daty.json');
+    expect(node([modul('zrzuty-uzupelnij.mjs'), 'przepisz-znacznik', path.join(ze, 'nie-ma'), wyBrak]).status).toBe(0);
+    expect(JSON.parse(fs.readFileSync(wyBrak, 'utf8'))).toEqual({ teraz: '', dzienIpada: null });
+    // wynik kroku: sklep-zrzuty-surowe/zrzuty-daty.json z datami źródła, mimo że dzień bieżącego przebiegu jest inny
+    const k = uruchomKrok('zbierz', /^Znacznik dat kompletu/, { DZIEN: '2026-11-25', URZADZENIA: 'iphone,ipad', UZUP: '', ZRZ: '44505569101' }, (kat) => plik(path.join(kat, 'zrodlo-dat'), 'zrzuty-daty.json', JSON.stringify({ teraz: '2026-11-19T09:41', dzienIpada: '2026-11-19' })));
+    expect(k.r.status).toBe(0);
+    expect(JSON.parse(fs.readFileSync(path.join(k.kat, 'sklep-zrzuty-surowe/zrzuty-daty.json'), 'utf8')).dzienIpada).toBe('2026-11-19');
+    // przebieg zwykły: dzień bieżący, jak dotąd
+    const zwykly = uruchomKrok('zbierz', /^Znacznik dat kompletu/, { DZIEN: '2026-11-25', URZADZENIA: 'iphone,ipad', UZUP: '', ZRZ: '' });
+    expect(JSON.parse(fs.readFileSync(path.join(zwykly.kat, 'sklep-zrzuty-surowe/zrzuty-daty.json'), 'utf8')).dzienIpada).toBe('2026-11-25');
+  });
+});

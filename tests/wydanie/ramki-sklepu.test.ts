@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { spawnSync } from 'child_process';
+import { wymiarBezAlfy } from './pomoc-obrazow';
 
 const korzen = path.join(__dirname, '..', '..');
 const SKRYPT = path.join(korzen, 'scripts/ci/ramki-sklepu.sh');
@@ -73,9 +74,9 @@ if (!maConvert && !wymagaConvert) {
     expect(String(wynik.stdout)).toMatch(/Brak podpisów dla języka bg/);
   });
   test('wymiary wyjścia = wymiary wejścia, RGB bez alfy, układ katalogów zachowany (także warunek-og07)', () => {
-    expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(/^1320x2868 srgb$/);
-    expect(wymiar(path.join(wy, 'ipad-13/en/05-projekty.png'))).toMatch(/^2064x2752 srgb$/);
-    expect(wymiar(path.join(wy, 'warunek-og07/ipad-13/en/03-wzor.png'))).toMatch(/^2752x2064 srgb$/);
+    expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(wymiarBezAlfy('1320x2868'));
+    expect(wymiar(path.join(wy, 'ipad-13/en/05-projekty.png'))).toMatch(wymiarBezAlfy('2064x2752'));
+    expect(wymiar(path.join(wy, 'warunek-og07/ipad-13/en/03-wzor.png'))).toMatch(wymiarBezAlfy('2752x2064'));
     expect(fs.existsSync(path.join(wy, '6.9/bg/01-dzis.png'))).toBe(false);
   });
   test('wymiary-asc.mjs: wynik zgodny z App Store Connect (kod 0); zła klasa i alfa wykrywane (kod 1)', () => {
@@ -86,6 +87,15 @@ if (!maConvert && !wymagaConvert) {
     const alfa = path.join(tmp, 'alfa/6.9/en'); fs.mkdirSync(alfa, { recursive: true });
     expect(jest('convert', ['-size', '1320x2868', 'xc:none', path.join(alfa, '01-dzis.png')])).toBe(true);
     expect(jest('node', [WYMIARY, path.join(tmp, 'alfa')])).toBe(false);
+  });
+  test('dopasowanie „bez alfy” przyjmuje srgb z IM6 i IM7 (`srgb  3.0`), a odrzuca alfę (srgba, 4 kanały) także na prawdziwym obrazie z alfą', () => {
+    const re = wymiarBezAlfy('1320x2868');
+    for (const dobre of ['1320x2868 srgb', '1320x2868 srgb  3.0', '1320x2868 srgb 3.0']) expect(dobre).toMatch(re);
+    for (const zle of ['1320x2868 srgba', '1320x2868 srgba  4.0', '1320x2868 srgb  4.0', '1320x2868 gray', '1320x2868 srgb  3.0 x', '1000x2000 srgb']) expect(zle).not.toMatch(re);
+    const rgba = path.join(tmp, 'rgba.png');
+    expect(jest('convert', ['-size', '1320x2868', 'xc:none', '-alpha', 'on', '-define', 'png:color-type=6', rgba])).toBe(true);
+    expect(wymiar(rgba)).not.toMatch(re); // obraz z alfą nie przechodzi dopasowania w żadnej wersji ImageMagicka
+    expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(re); // a wynik skryptu (RGB) przechodzi
   });
   test('podpis jest narysowany: obraz różni się od surowego zrzutu w pasie podpisu', () => {
     const roznica = spawnSync('compare', ['-metric', 'AE', '-extract', '1000x400+160+80', path.join(we, '6.9/en/01-dzis.png'), path.join(wy, '6.9/en/01-dzis.png'), 'null:'], { encoding: 'utf8' });

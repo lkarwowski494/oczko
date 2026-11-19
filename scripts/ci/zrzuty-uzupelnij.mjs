@@ -11,6 +11,7 @@
 //   node scripts/ci/zrzuty-uzupelnij.mjs data      <katalog_poprzednich> <dzień RRRR-MM-DD> <języki|all> <urządzenia>   (AQ, KO-046: inna data paska iPada w źródle → zestaw iPada do powtórzenia)
 //   node scripts/ci/zrzuty-uzupelnij.mjs dni      <dzień RRRR-MM-DD>   (023: ZRZUTY_SESJA_1..3 i ZRZUTY_DZIEN_KAL = dni pracy fikstury względem dnia przebiegu; poniedziałek i dni 1–7 miesiąca = kod 2)
 //   node scripts/ci/zrzuty-uzupelnij.mjs znacznik  <katalog_poprzednich|-> <dzień RRRR-MM-DD> <urządzenia> <plik_wyjściowy>   (zrzuty-daty.json do artefaktu surowych zrzutów)
+//   node scripts/ci/zrzuty-uzupelnij.mjs przepisz-znacznik <katalog_zrodla> <plik_wyjściowy>   (ZR1: komplet z gotowych zrzutów przebiegu źródłowego niesie JEGO daty; brak znacznika = data iPada nieznana)
 // Błąd wejścia = kod 2.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -129,6 +130,11 @@ export function dataIpada(katalog, dzien, urzadzenia, jezyki) {
   const skad = daty ? `data paska iPada w źródle ${daty.dzienIpada ?? '(brak)'}` : 'źródło bez znacznika dat (sprzed zmiany AQ)';
   return { usuniete: [...jezykiZrodla].sort(), komunikat: `iPad: ${skad}, w przebiegu ${d} — zestaw iPada ze źródła usunięty z uzupełnienia (języki: ${[...jezykiZrodla].sort().join(', ')}) i zostanie zrobiony od nowa, żeby wszystkie sceny miały jedną datę na pasku` };
 }
+/** ZR1 (zrzuty_z_przebiegu): komplet składany z gotowych zrzutów innego przebiegu dziedziczy znacznik dat tamtego przebiegu (dzień BIEŻĄCEGO nie jest datą paska iPada na tych zrzutach).
+ *  Brak katalogu, pliku albo zły JSON = `{ teraz: '', dzienIpada: null }` (data nieznana → następne uzupełnienie powtórzy zestaw iPada, jak źródło sprzed zmiany AQ). */
+export function przepiszZnacznik(zrodlo) {
+  return czytajDaty(zrodlo) ?? { teraz: '', dzienIpada: null };
+}
 /** Zawartość `zrzuty-daty.json` nowego kompletu: iPad w przebiegu → jego dzień; bez iPada zostaje data ze źródła (zrzuty iPada ze źródła zostały) albo null. */
 export function znacznik(zrodlo, dzien, urzadzenia) {
   const d = sprawdzDzien(dzien);
@@ -178,6 +184,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       if (!wyjscie) throw new Error('użycie: znacznik <poprzednie|-> <dzień> <urządzenia> <plik>');
       writeFileSync(wyjscie, `${JSON.stringify(znacznik(a === '-' ? null : a, b, String(urz).split(',').filter(Boolean)))}\n`);
       console.log(`Znacznik dat: ${wyjscie}`);
+    } else if (cmd === 'przepisz-znacznik') {
+      if (!b) throw new Error('użycie: przepisz-znacznik <katalog_zrodla> <plik>');
+      const d = przepiszZnacznik(a);
+      writeFileSync(b, `${JSON.stringify(d)}\n`);
+      console.log(`Znacznik dat z przebiegu źródłowego: data paska iPada ${d.dzienIpada ?? 'nieznana'} (${b})`);
     } else throw new Error('użycie w nagłówku pliku');
   } catch (e) { console.error(`BŁĄD: ${e.message}`); process.exit(2); }
 }
