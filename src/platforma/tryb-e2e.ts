@@ -19,6 +19,13 @@ export const paneleE2e: PaneleE2e | null = process.env.EXPO_PUBLIC_E2E === '1' ?
 export type SkrzynkaE2e = typeof import('../kompozycja/e2e/skrzynka');
 // eslint-disable-next-line @typescript-eslint/no-require-imports -- ładowanie warunkowe (P-238)
 export const skrzynkaTestowa: SkrzynkaE2e | null = process.env.EXPO_PUBLIC_E2E === '1' ? (require('../kompozycja/e2e/skrzynka') as SkrzynkaE2e) : null;
+/**
+ * Tryb zrzutów sklepu (ZR2, KO-179): build `zrzuty-sklepu.yml` ma `EXPO_PUBLIC_E2E=1` (zegar, testowy wzór, sztuczny sklep), ale kadr sklepu nie może nieść napisów
+ * diagnostycznych (`window: …`, `taps accepted: …`, `touch: …`, `notes: …`, `pattern presses: …`, …). `diagnostykaE2e` = `paneleE2e` w zwykłym buildzie E2E (jakosc-ios: bez zmian)
+ * i `null` w buildzie zrzutów; ekrany biorą z niej WSZYSTKIE nakładki i haki diagnostyczne, a z `paneleE2e` tylko przyciski sterujące scenariuszy (`e2e-sklep-wygas`, `e2e-wzor-sklep-*`).
+ */
+export const ZRZUTY = E2E && process.env.EXPO_PUBLIC_ZRZUTY === '1';
+export const diagnostykaE2e: PaneleE2e | null = process.env.EXPO_PUBLIC_ZRZUTY === '1' ? null : paneleE2e;
 export const ZEGAREK_SZTUCZNY = E2E && process.env.EXPO_PUBLIC_WATCH_FAKE === '1';
 
 function argument(klucz: string): string | null {

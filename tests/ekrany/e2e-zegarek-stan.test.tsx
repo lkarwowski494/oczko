@@ -4,7 +4,7 @@
 // (`src/platforma/zegarek.ts:16`; `src/kompozycja/kontener.ts:89`). Scenariusz PU-334: `assertVisible: { id: "e2e-zegarek-stan", text: ".*lang de.*" }`.
 import React from 'react';
 import { act, render, screen } from '@testing-library/react-native';
-import { opisStanuZegarka, PanelZegarka, zegarekSztuczny, zegarekSztucznyZJezykiem } from '../../src/kompozycja/e2e/panele';
+import { opisStanuZegarka, PanelZegarka, zegarekSztuczny, zegarekSztucznyZJezykiem, zerujZegarekSztuczny } from '../../src/kompozycja/e2e/panele';
 import { zegarek } from '../../src/platforma/zegarek';
 import type { StanZegarka } from '../../src/domena/porty';
 
@@ -13,6 +13,9 @@ const stan = (z: Partial<StanZegarka> = {}): StanZegarka => ({
   dzienDozwolony: true, sesjaStartMs: null, pro: false, proWaznoscDo: null, dniWMiesiacu: [], przypomnienia: [{ od: 12, co: 6, razy: 8, tekst: 'decrease at both ends' }],
   zablokowany: false, ...z,
 });
+
+// ZR2 (P-994, U3): stan modułu `panele.tsx` (ostatni wysłany stan) przeżywał testy; przy `--randomize` „przed pierwszym stanem” padał (CI 44505505468, 44533633202).
+beforeEach(() => { zerujZegarekSztuczny(); });
 
 test('opis: wartość, rząd roboczy i przypomnienia z planem i instrukcją', () => {
   expect(opisStanuZegarka(stan())).toBe('Watch state: Sweater · 11 done · row 12 · reminders: from 12 every 6 ×8: decrease at both ends');

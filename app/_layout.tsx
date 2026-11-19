@@ -11,14 +11,14 @@ import { powodAwaryjny, rozpocznijStart, zapiszEtap, zapiszWyjscieDoTla } from '
 import { tAwaryjny } from '../src/kompozycja/jezyk-awaryjny';
 import { DostawcaAplikacji, type Aplikacja } from '../src/kompozycja/Kontekst';
 import { useTytulPoprzedniego } from '../src/kompozycja/wstecz-trasa';
-import { KontekstDotyku, KontekstNacisniec, KontekstWstecz } from '../src/ekrany/Pasek';
+import { KontekstDotyku, KontekstNacisniec, KontekstWstecz, KontekstZrzutow } from '../src/ekrany/Pasek';
 import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { utworzKontener } from '../src/kompozycja/kontener';
 import { kompozycjaLicznika } from '../src/kompozycja/licznik';
 import { preferencje } from '../src/kompozycja/preferencje';
 import { useKolory } from '../src/ekrany/motyw';
 import { zainstalujObslugeBledow } from '../src/kompozycja/bledy-js';
-import { paneleE2e } from '../src/platforma/tryb-e2e';
+import { diagnostykaE2e, paneleE2e, ZRZUTY } from '../src/platforma/tryb-e2e';
 import { orientacjaEkranu } from '../src/domena/uklad';
 import { SKLEP_LIMIT_MS } from '../src/konfiguracja';
 import { wKolejce } from '../src/przypadki-uzycia/kolejka';
@@ -120,9 +120,11 @@ export default function Korzen(): React.ReactElement {
       {/* 006 (P-614 (1)): „wstecz” = tytuł poprzedniego ekranu w stosie (hak wywoływany w `Wstecz` każdego ekranu) */}
       <KontekstWstecz.Provider value={useTytulPoprzedniego}>
       {/* BX20 (KO-136): build E2E liczy przyjęte naciśnięcia celów scenariuszy 01, 03, 42, 45, 118 (panel `e2e-nacisniecia`); w wydaniu `paneleE2e` = null → hak null, `onPress` bez opakowania. */}
-      <KontekstNacisniec.Provider value={paneleE2e ? paneleE2e.zliczNacisniecie : null}>
+      <KontekstNacisniec.Provider value={diagnostykaE2e ? diagnostykaE2e.zliczNacisniecie : null}>
       {/* BX21 (KO-140): cykl dotyku tych samych celów (panel `e2e-dotyk`); w wydaniu hak null → `Pressable` bez dodatkowych handlerów. */}
-      <KontekstDotyku.Provider value={paneleE2e ? paneleE2e.haki : null}>
+      <KontekstDotyku.Provider value={diagnostykaE2e ? diagnostykaE2e.haki : null}>
+      {/* ZR2 (KO-179): tryb zrzutów sklepu — przeglądarka wzoru bez plakietki „Strona n z m” (zasłania tekst na iPadzie). */}
+      <KontekstZrzutow.Provider value={ZRZUTY}>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: k.papier }, orientation: orientacjaEkranu('inny', IPAD) }}>
         {/* M3 p2 (WD-1): zakładki Dziś/Projekty/Narzędzia/Historia na dole stosu; licznik pełnoekranowo nad nimi, bez paska zakładek. */}
         <Stack.Screen name="(zakladki)" />
@@ -147,9 +149,10 @@ export default function Korzen(): React.ReactElement {
         <Stack.Screen name="zdjecie" options={{ presentation: 'fullScreenModal' }} />
       </Stack>
       {/* CH-01 (BX11): build E2E pokazuje proporcję okna (scenariusz 105, PU-071); w wydaniu `paneleE2e` = null. */}
-      {paneleE2e ? <paneleE2e.PanelOkna /> : null}
-      {paneleE2e ? <paneleE2e.PanelNacisniec /> : null}
-      {paneleE2e ? <paneleE2e.PanelDotyku /> : null}
+      {diagnostykaE2e ? <diagnostykaE2e.PanelOkna /> : null}
+      {diagnostykaE2e ? <diagnostykaE2e.PanelNacisniec /> : null}
+      {diagnostykaE2e ? <diagnostykaE2e.PanelDotyku /> : null}
+      </KontekstZrzutow.Provider>
       </KontekstDotyku.Provider>
       </KontekstNacisniec.Provider>
       </KontekstWstecz.Provider>

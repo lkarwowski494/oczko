@@ -8,13 +8,13 @@ import { Bezpieczny } from '../src/kompozycja/Bezpieczny';
 import { oglos } from '../src/kompozycja/system';
 import { nastepnaCzesc } from '../src/przypadki-uzycia/czesc';
 import { SprawdzStopera, StoperLicznika } from '../src/kompozycja/StoperLicznika';
-import { bezDiagnostykiLicznika, paneleE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
+import { bezDiagnostykiLicznika, diagnostykaE2e, ZEGAREK_SZTUCZNY } from '../src/platforma/tryb-e2e';
 
 export default function EkranLicznikaTrasa(): React.ReactElement {
   const aplikacja = useAplikacja();
   const { kontener, licznik } = aplikacja;
   const router = useRouter();
-  const diagnostykaWejsc = paneleE2e && !bezDiagnostykiLicznika() ? paneleE2e : null; // BX16 (scen. 122): argument E2E wyłącza panel wejść i jego haki (pomiar bez pracy panelu)
+  const diagnostykaWejsc = diagnostykaE2e && !bezDiagnostykiLicznika() ? diagnostykaE2e : null; // BX16 (scen. 122): argument E2E wyłącza panel wejść i jego haki (pomiar bez pracy panelu)
   const [wersja, ustawWersje] = useState(licznik.wersja());
   const [plusy, ustawPlusy] = useState(0); // P-191 P5a: linia „zapomniany stoper” liczona od nowa po każdym udanym +1
   // Build E2E (P-255 (c), NFR-WYD-001): czas od stuknięcia +1 do drugiej klatki po zapisie (nowa wartość na ekranie); w wydaniu bez pomiaru.
@@ -23,12 +23,12 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
   const uslugi = useMemo(() => ({
     ...licznik.uslugi,
     dodajRzad: async () => {
-      const t0 = paneleE2e ? performance.now() : 0;
+      const t0 = diagnostykaE2e ? performance.now() : 0;
       // BX22 (KO-143): panel wejść wstrzymuje render od `wejscie('plus')`; zwalniamy go po próbce (albo od razu przy błędzie/wyjątku), więc nie liczy się do p95 (scen. 31).
       const zwolnij = diagnostykaWejsc ? diagnostykaWejsc.wznowPowiadomienia : null;
       const w = await licznik.uslugi.dodajRzad().catch((e: unknown) => { zwolnij?.(); throw e; });
       if (w.ok) ustawPlusy((n) => n + 1);
-      if (w.ok && paneleE2e) requestAnimationFrame(() => requestAnimationFrame(() => { probki.current.push(performance.now() - t0); ustawPomiar([...probki.current]); zwolnij?.(); }));
+      if (w.ok && diagnostykaE2e) requestAnimationFrame(() => requestAnimationFrame(() => { probki.current.push(performance.now() - t0); ustawPomiar([...probki.current]); zwolnij?.(); }));
       else zwolnij?.();
       return w;
     },
@@ -66,7 +66,7 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
         jezyk={kontener.j.jezyk()}
         dzialania={{ ...licznik.dzialania, naWstecz: () => router.back(), naHistorie: () => router.push('/historia'), naMenu: () => router.push('/menu'), naOferty: () => router.push('/oferty'),
           // Akcje pod liczbą (P-580, P-581): „Wzór” zawsze (bez wzoru /wzor otwiera od razu menu źródeł, ZM-06 p3b), „Notatka” otwiera arkusz bez ekranu projektu, „Cel” — arkusz celu, przypomnienia i powtórzenia.
-          naWzor: () => { paneleE2e?.zliczNawigacje('/wzor'); router.push('/wzor'); }, naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
+          naWzor: () => { diagnostykaE2e?.zliczNawigacje('/wzor'); router.push('/wzor'); }, naCel: () => router.push({ pathname: '/menu', params: { arkusz: 'cel' } }),
           naNotatka: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/formularz/[rodzaj]', params: { rodzaj: 'notatka', projekt: w.projektId } }); }),
           naProjekt: () => void licznik.widok().then((w) => { if (w) router.push({ pathname: '/projekt/[id]', params: { id: w.projektId } }); }),
           naNastepnaCzesc: () => void naNastepnaCzesc(), naKonflikt: () => router.push('/konflikt') }}
@@ -79,9 +79,9 @@ export default function EkranLicznikaTrasa(): React.ReactElement {
             <SprawdzStopera key={plusy} z={kontener.z} j={kontener.j} projektId={projektId}
               naKorekta={(sesja) => router.push({ pathname: '/sesja-korekta', params: { sesja, projekt: projektId } })} />
           ) : null}
-          {paneleE2e ? <paneleE2e.PanelPomiaru probkiMs={pomiar} /> : null /* slot pod kreskami: Licznik.tsx przy limicie 20 KB (U8) */}
-          {paneleE2e && ZEGAREK_SZTUCZNY ? <paneleE2e.PanelZegarka /> : null /* scen. 15: stan udawanego zegarka */}
-          {paneleE2e ? <paneleE2e.PanelNawigacji /> : null /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
+          {diagnostykaE2e ? <diagnostykaE2e.PanelPomiaru probkiMs={pomiar} /> : null /* slot pod kreskami: Licznik.tsx przy limicie 20 KB (U8) */}
+          {diagnostykaE2e && ZEGAREK_SZTUCZNY ? <diagnostykaE2e.PanelZegarka /> : null /* scen. 15: stan udawanego zegarka */}
+          {diagnostykaE2e ? <diagnostykaE2e.PanelNawigacji /> : null /* BX-019: naciśnięcia „Wzór” i przemontowania tego ekranu (diagnostyka scen. 22) */}
           {diagnostykaWejsc ? <diagnostykaWejsc.PanelLicznika /> : null /* FX6b (P-909): wejścia „+1”/„−1”, zapisy i wartość ze stanu (diagnostyka scen. 69) */}
         </>}
       />

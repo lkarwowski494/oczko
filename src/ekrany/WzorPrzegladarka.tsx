@@ -1,7 +1,7 @@
 // Przeglądarka wzoru (design-spec „Wzór, rysik i iPad”, makiety fix7 `wzor.html`; P-220 W1a, W3, W4b, W5a, W6a, W9b; P-218 (1)–(3)).
 // Strona PDF z rysunkami i znacznikiem to widok modułu natywnego `oczko-wzor` (slot `widok`, składa kompozycja); ekran rysuje pasek nawigacji,
 // narzędzia, plakietkę strony i pasek licznika (te same testID co licznik). Jeden wzór widoczny naraz; obok wzoru tylko licznik (P-218 (3)).
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RYSIK_PODPOWIEDZ_MS } from '../konfiguracja';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { Narzedzie } from '../domena/rysik';
@@ -16,7 +16,7 @@ import { KOLUMNA_TRESCI_MAKS, type Uklad } from '../domena/uklad';
 import { MAX_SKALA_TYTULOWA, ROZMIAR_SYMBOLU, cel as rozmiary, odstep, promien, typografia, typografiaDzianiny, useKolory, type Kolory } from './motyw';
 import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
 import type { Tlumacz, WynikEkranu } from './wspolne';
-import { PrzyciskSymbolu, Wstecz } from './Pasek';
+import { KontekstZrzutow, PrzyciskSymbolu, Wstecz } from './Pasek';
 
 export type StanPrzegladarki = {
   nazwa: string;
@@ -87,6 +87,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
   const [tekst, ustawTekst] = useState('');
   const nowaZTekstem = notatka === 'arkusz' && tekst.trim().length > 0;
   useEffect(() => { p.naNowaNotatka?.(nowaZTekstem); }, [nowaZTekstem]); // eslint-disable-line react-hooks/exhaustive-deps -- tylko zmiana stanu arkusza
+  const zrzuty = useContext(KontekstZrzutow); // ZR2: kadry sklepu bez plakietki strony (Pasek.tsx)
   const [podpowiedz, ustawPodpowiedz] = useState<'nie' | 'widac' | 'byla'>('nie'); // `wzor.rysik_podpowiedz` raz na otwarcie (P-284 (1) A)
   useEffect(() => {
     if (!p.tylkoRysik || podpowiedz !== 'nie') return;
@@ -208,7 +209,7 @@ export function PrzegladarkaWzoru(p: PropsPrzegladarki): React.ReactElement {
       {tryb && !ipad && <Text style={st.podpis}>{t('wzor.zakreslacz_podpowiedz')}</Text>}
       <View style={[st.strona, ipad && !obok && st.stronaIpad]} testID="wzor-widok">
         {p.widok}
-        {s.strona && (
+        {s.strona && !zrzuty && (
           <Text style={st.plakietka} accessibilityLabel={t('wzor.strona_a11y', { n: s.strona.n, razem: s.strona.razem })} testID="wzor-strona">
             {t('wzor.strona_z', { n: s.strona.n, razem: s.strona.razem })}
           </Text>

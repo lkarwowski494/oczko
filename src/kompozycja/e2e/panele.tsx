@@ -196,6 +196,8 @@ export function zegarekSztucznyZJezykiem(jezyk?: () => string): Zegarek {
   };
 }
 export const zegarekSztuczny: Zegarek = zegarekSztucznyZJezykiem();
+/** Tylko testy (ZR2, P-994): wyzerowanie stanu modułu (ostatni wysłany stan, słuchacze), żeby wynik nie zależał od kolejności testów (`jest --randomize`). */
+export function zerujZegarekSztuczny(): void { ostatniStanZegarka = null; sluchaczeZegarka.clear(); }
 /** `jezyk` undefined = bez fragmentu języka; null = brak źródła („lang none”, adapter wysyła wtedy null). */
 export function opisStanuZegarka(s: StanZegarka, jezyk?: string | null): string {
   const przyp = s.przypomnienia.map((p) => `from ${p.od} every ${p.co} ×${p.razy}: ${p.tekst}`).join('; ');

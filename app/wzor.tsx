@@ -29,7 +29,7 @@ import { useWskazowkaZnacznika } from '../src/kompozycja/wskazowka-znacznika';
 import { krotkaData } from '../src/kompozycja/projekt';
 import { dodajZrodlo, type ZrodloDodaniaTrasy } from '../src/kompozycja/wzor-import-trasy';
 import { ostrzezenieMiejsca, wyjscieZWzoru } from '../src/kompozycja/wzor-rysunki';
-import { paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
+import { diagnostykaE2e, paneleE2e, szerokoscOknaE2e } from '../src/platforma/tryb-e2e';
 import { listaWzorow, wzorDoOtwarcia, zapamietajWzor, ustawZnacznik, zmienNazweWzoru } from '../src/przypadki-uzycia/wzor';
 import { odzyskajRysunki, widokWzoru, type WidokWzoru } from '../src/przypadki-uzycia/wzor-widok';
 import { zapamietajLicznik, type WidokLicznika } from '../src/przypadki-uzycia/widok-licznika';
@@ -224,7 +224,7 @@ export default function EkranWzoru(): React.ReactElement {
         naOferty={() => router.push('/oferty')}
         naMinus={async () => { const r = licznik.dzialania.naMinus ? await licznik.dzialania.naMinus() : { ok: false as const, powod: 'zapis' as const }; bladLicznika(r); await wczytaj(widok.wzorId); return r; }}
       />
-      {paneleE2e ? <paneleE2e.PanelNotatekWzoru chipy={chipy} /> : null}
+      {diagnostykaE2e && <diagnostykaE2e.PanelNotatekWzoru chipy={chipy} />}
     </Bezpieczny>
   );
 }

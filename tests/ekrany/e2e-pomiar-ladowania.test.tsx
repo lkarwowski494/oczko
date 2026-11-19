@@ -14,10 +14,10 @@ jest.mock('expo-router', () => {
   const R = require('react') as typeof import('react');
   return { useRouter: () => mockRouter, useLocalSearchParams: () => ({ id: 'p1' }), useIsFocused: () => true, useFocusEffect: (f: () => void) => R.useEffect(f, [f]) };
 });
-jest.mock('../../src/platforma/tryb-e2e', () => ({
-  ...jest.requireActual<object>('../../src/platforma/tryb-e2e'),
-  paneleE2e: jest.requireActual<object>('../../src/kompozycja/e2e/panele'), // build E2E: panele są
-}));
+jest.mock('../../src/platforma/tryb-e2e', () => {
+  const panele = jest.requireActual<object>('../../src/kompozycja/e2e/panele'); // build E2E: panele są
+  return { ...jest.requireActual<object>('../../src/platforma/tryb-e2e'), paneleE2e: panele, diagnostykaE2e: panele }; // diagnostykaE2e = paneleE2e poza trybem zrzutów (ZR2)
+});
 jest.mock('../../src/kompozycja/Kontekst', () => ({
   useAplikacja: () => ({ kontener: mock.kontener, licznik: { biezacy: () => null, otworz: async () => undefined, poZmianie: async () => undefined, poUsunieciu: async () => undefined } }),
 }));

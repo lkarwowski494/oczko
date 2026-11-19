@@ -15,7 +15,7 @@ export const WZORCE = [
   'Test store', 'Test files', 'Test photo', 'Test pattern', // napisy paneli E2E („Test pattern”: panel wzoru, 08 partia 6)
   'e2e-', // identyfikatory (testID) i pliki trybu E2E
   'oczkoE2e', // klucze argumentów startu (tryb-e2e.ts)
-  'EXPO_PUBLIC_E2E', 'EXPO_PUBLIC_STORE_FAKE', 'EXPO_PUBLIC_WATCH_FAKE', 'EXPO_PUBLIC_ICLOUD_FAKE', 'EXPO_PUBLIC_WYMUS_AWARIE', 'EXPO_PUBLIC_PSEUDO',
+  'EXPO_PUBLIC_E2E', 'EXPO_PUBLIC_ZRZUTY', 'EXPO_PUBLIC_STORE_FAKE', 'EXPO_PUBLIC_WATCH_FAKE', 'EXPO_PUBLIC_ICLOUD_FAKE', 'EXPO_PUBLIC_WYMUS_AWARIE', 'EXPO_PUBLIC_PSEUDO',
 ];
 
 const [arg, ...flagi] = process.argv.slice(2);

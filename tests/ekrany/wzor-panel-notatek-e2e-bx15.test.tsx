@@ -22,7 +22,7 @@ const mockRn = { View };
 jest.mock('../../modules/oczko-wzor', () => ({
   WidokWzoruNatywny: (p: PropsWidoku) => { mockWidok = p; return mockReact.createElement(mockRn.View, { testID: 'wzor-pdf' }); },
 }));
-const mockTryb: { paneleE2e: unknown; szerokoscOknaE2e: () => number | null } = { paneleE2e: null, szerokoscOknaE2e: () => null };
+const mockTryb: { paneleE2e: unknown; diagnostykaE2e: unknown; szerokoscOknaE2e: () => number | null } = { paneleE2e: null, diagnostykaE2e: null, szerokoscOknaE2e: () => null };
 jest.mock('../../src/platforma/tryb-e2e', () => mockTryb);
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranWzoru = (require('../../app/wzor') as { default: React.ComponentType }).default;
@@ -45,6 +45,7 @@ async function start(dodatkowe: ReturnType<typeof notatkaRzedu>[] = []) {
 test('build E2E: panel `e2e-wzor-notatki` niesie zapisaną notatkę rzędu („notes: row 6: …”), a chip dla widoku natywnego jest ten sam', async () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   mockTryb.paneleE2e = { PanelNotatekWzoru: (require('../../src/kompozycja/e2e/notatki-wzoru-stan') as typeof import('../../src/kompozycja/e2e/notatki-wzoru-stan')).PanelNotatekWzoru };
+  mockTryb.diagnostykaE2e = mockTryb.paneleE2e; // poza trybem zrzutów diagnostykaE2e = paneleE2e (ZR2)
   await start();
   render(<EkranWzoru />);
   await waitFor(() => expect(mockWidok.notatki).toHaveLength(1));
@@ -58,6 +59,7 @@ test('opis panelu: bez notatek „notes: none”, kilka notatek po „ | ”', (
 });
 test('build wydania (`paneleE2e` = null): panelu `e2e-wzor-notatki` nie ma, chip dla widoku natywnego jest', async () => {
   mockTryb.paneleE2e = null;
+  mockTryb.diagnostykaE2e = null;
   await start();
   render(<EkranWzoru />);
   await waitFor(() => expect(mockWidok.notatki).toHaveLength(1));

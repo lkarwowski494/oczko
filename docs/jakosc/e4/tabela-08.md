@@ -198,7 +198,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-wejscia-stan-wydanie.test.tsx` | zielony (główny zestaw) | 2 | P-238, P-909 | `src/ekrany/Formularze` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-wejscia-stan.test.tsx` | zielony (główny zestaw) | 8 | P-909 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/ekrany/Formularze`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zdjecie.test.ts` | zielony (główny zestaw) | 1 | — | `src/kompozycja/e2e-zdjecie` | — |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-015/S2, P-287 | `src/domena/porty`<br>`src/kompozycja/e2e/panele`<br>`src/platforma/zegarek` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/e2e-zegarek-stan.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-015/S2, P-287, P-994 | `src/domena/porty`<br>`src/kompozycja/e2e/panele`<br>`src/platforma/zegarek` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-awaryjny-kopia.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-nie-gasnie-dzis.test.tsx` | zielony (główny zestaw) | 7 | P-585 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/przypadki-uzycia/ekran-aktywny` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/ekran-nie-gasnie-trasa.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-013, P-284 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
@@ -484,6 +484,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zglos-stan-danych.test.tsx` | zielony (główny zestaw) | 4 | BR-DAN-010, BR-DAN-010/S1, BR-DAN-010/S2, BR-DAN-011, BR-DAN-011/S1, BR-DAN-011/S2, P-193, P-195, R-162, R-163 | `src/ekrany/StanDanych`<br>`src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zglos-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-DAN-010/S1, BR-DAN-011, P-383 | `src/dane/repozytoria/ustawienia` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zgloszenie-awaryjne.test.tsx` | zielony (główny zestaw) | 2 | P-194 | `src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne`<br>`src/kompozycja/zgloszenie-awaryjne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zrzuty-bez-diagnostyki.test.tsx` | zielony (główny zestaw) | 8 | P-993 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zrzuty-plakietka-strony.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/uklad`<br>`src/ekrany/Pasek`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne` | Z07-22 |
 | 9 ? | `tests/adaptery/archiwum-skrot.test.ts` | zielony (główny zestaw) | 2 | P-130, R-067 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/dane/pliki/magazyn` | Z07-22 |
 | 9 ? | `tests/adaptery/czas-w-tle.test.ts` | zielony (główny zestaw) | 2 | — | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/platforma/czas-w-tle`<br>`src/przypadki-uzycia/archiwum` | Z07-22 |
 | 9 ? | `tests/adaptery/e2e-pliki-wzoru.test.ts` | zielony (główny zestaw) | 5 | P-121, P-282, P-439, P-907 | `src/kompozycja/e2e/pliki-wzoru` | — |
@@ -528,4 +530,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 524; zależnych od poprawek: 324.
+Razem plików testów: 526; zależnych od poprawek: 326.

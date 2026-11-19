@@ -54,8 +54,16 @@ describe('workflow zrzuty-sklepu.yml', () => {
     const budowa = (wf.jobs?.build?.steps ?? []).find((k: any) => /Build \(Release/.test(k.name ?? '')); // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(budowa?.env?.EXPO_PUBLIC_E2E).toBe('1');
     expect(budowa?.env?.EXPO_PUBLIC_WATCH_FAKE).toBeUndefined();
+    expect(budowa?.env?.EXPO_PUBLIC_ZRZUTY).toBe('1'); // ZR2/KO-179: bez napisów diagnostycznych E2E w kadrze (diagnostykaE2e = null)
     expect(budowa?.run).toContain('CODE_SIGNING_ALLOWED=NO');
     expect(wf.jobs.build['runs-on']).toBe('macos-26');
+  });
+
+  test('krok „Kanał alfa precz” biegnie zawsze (P-990 wariant B, P-995: zrzuty z przebiegu nie wychodzą z alfą, gdy wcześniejszy krok padnie)', () => {
+    const kroki: any[] = wf.jobs?.zbierz?.steps ?? []; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const alfa = kroki.find((k) => /^Kanał alfa precz/.test(k.name ?? ''));
+    expect(alfa).toBeDefined();
+    expect(alfa.if).toBe('always()');
   });
 
   test('Xcode przez select-xcode.sh, Maestro przypięty (wersja + SHA-256 + ponowienia), jak w jakosc-ios.yml', () => {

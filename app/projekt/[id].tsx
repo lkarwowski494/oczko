@@ -17,7 +17,7 @@ import { filmProjektu } from '../../src/przypadki-uzycia/film';
 import { miniaturyWzorow } from '../../src/kompozycja/miniatury';
 import { useStanSieci } from '../../src/kompozycja/stan-sieci';
 import { listaWzorow, type WzorNaLiscie } from '../../src/przypadki-uzycia/wzor';
-import { paneleE2e } from '../../src/platforma/tryb-e2e';
+import { diagnostykaE2e, paneleE2e } from '../../src/platforma/tryb-e2e';
 import { wybieraczZdjec } from '../../src/platforma/zdjecia';
 import { dodajZdjecie, zdjecia } from '../../src/przypadki-uzycia/zdjecia';
 import { StanWczytywania } from '../../src/ekrany/StanWczytywania';
@@ -103,7 +103,7 @@ export default function EkranProjektu(): React.ReactElement {
   // P-219 (2A): każde zdjęcie przekodowane bez metadanych i GPS, zanim trafi do magazynu.
   // E2-137-A4: wyjątek zapisu (np. kolejka bazy) kończy się komunikatem, nie odrzuconą obietnicą; czasy etapów w panelu `e2e-pomiar-operacji` (tylko build E2E).
   const dodajPlik = async (sciezka: string) => {
-    const pomiar = paneleE2e;
+    const pomiar = diagnostykaE2e;
     pomiar?.poczatekOperacji('zdjecie');
     let czysty: Awaited<ReturnType<typeof zdjecieBezMetadanych>> = null;
     let zdjecieZapisane = false;
@@ -208,7 +208,7 @@ export default function EkranProjektu(): React.ReactElement {
       />
       {/* R2 (design-spec :775): arkusz skrzynki także na ekranie projektu (nie nad licznikiem, P-046) */}
       <SkrzynkaNaEkranie wz={kontener.wzor.k} t={t} aktywny={naWierzchu} projekty={() => projektyDoSkrzynki(z, j)} naPoWyborze={() => void wczytaj()} />
-      {paneleE2e && ladowanieMs !== null ? <paneleE2e.PanelPomiaruLadowania ms={ladowanieMs} /> : null /* build E2E (E2-137-A1): ms do pierwszych danych */}
+      {diagnostykaE2e && ladowanieMs !== null ? <diagnostykaE2e.PanelPomiaruLadowania ms={ladowanieMs} /> : null /* build E2E (E2-137-A1): ms do pierwszych danych */}
     </Bezpieczny>
   );
 }

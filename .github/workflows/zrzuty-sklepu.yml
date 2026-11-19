@@ -240,6 +240,9 @@ jobs:
           # Przełączniki testowe TYLKO w tym buildzie (strażnik: scripts/jakosc/sprawdz-workflowy.mjs, kontrole-repo.mjs; e2e/README.md): E2E daje wstrzyknięty zegar
           # (oczkoE2eTeraz) i testowy PDF (panel e2e-wzor-pdf) — bez nich nie da się ułożyć powtarzalnych danych fikcyjnych ani wzoru na CI.
           EXPO_PUBLIC_E2E: '1'
+          # ZR2 (KO-179, P-993): tryb zrzutów — wszystkie nakładki i haki diagnostyczne E2E (`window: …`, `taps accepted: …`, `touch: …`, `notes: …`) wyłączone; zostają tylko
+          # przyciski sterujące scenariuszy zrzutów (`e2e-sklep-wygas`, `e2e-wzor-sklep-*`). Czyta wyłącznie src/platforma/tryb-e2e.ts (`diagnostykaE2e`); jakosc-ios.yml tego nie ustawia.
+          EXPO_PUBLIC_ZRZUTY: '1'
           EXPO_PUBLIC_STORE_FAKE: '1'
           EXPO_PUBLIC_ICLOUD_FAKE: '1' # atrapa silnika iCloud (P-230, moduly.md „Atrapa silnika w E2E”); kontrola ATRAPA-ICLOUD
           # BEZ EXPO_PUBLIC_WATCH_FAKE (zrzuty-sklepu.test.ts): panel „Watch state: none” (e2e-zegarek-stan) leży na ekranie licznika i zostałby w kadrze sklepu.
@@ -466,6 +469,8 @@ jobs:
           OCZKO_WYMAGAJ_IMAGEMAGICK: '1'
         run: npx jest tests/wydanie/ramki-sklepu.test.ts tests/wydanie/kontrola-zakreslen.test.ts --ci --runInBand
       - name: Kanał alfa precz (surowe zrzuty simctl są RGB; spłaszczenie na wszelki wypadek)
+        # P-990 wariant B (ZR2, P-995): always() — czerwony test ramek (krok wyżej) nie może pominąć spłaszczenia i kroków za nim (komplet, ramki, artefakty); przebieg zostaje czerwony z kroku, który padł.
+        if: always()
         run: |
           set -uo pipefail
           mkdir -p sklep-zrzuty-surowe

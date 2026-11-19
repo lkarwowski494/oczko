@@ -13,7 +13,7 @@ import { LIMIT_DNI_W_MIESIACU } from '../../src/konfiguracja';
 import { useAplikacja } from '../../src/kompozycja/Kontekst';
 import { miesiac } from '../../src/kompozycja/licznik';
 import { oglos } from '../../src/kompozycja/system';
-import { paneleE2e } from '../../src/platforma/tryb-e2e';
+import { diagnostykaE2e } from '../../src/platforma/tryb-e2e';
 import { useOdrzucZmiany } from '../../src/kompozycja/odrzuc-zmiany';
 import { CoDalej, FormularzWloczekProjektu, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
 import { etykietaCzesci, podgladRozmiaru } from '../../src/kompozycja/projekt';
@@ -120,7 +120,7 @@ export default function EkranFormularza(): React.ReactElement {
   }
   switch (rodzaj) {
     case 'nazwa':
-      return <FormularzNazwy t={t} naZmiane={zmiana} naAnuluj={anuluj} diagnostyka={paneleE2e ? { wpis: paneleE2e.zliczWpisNazwy, panel: <paneleE2e.PanelNazwy /> } : undefined /* FX6b (P-909, scen. 64) */} stan={{ projekt: w.projekt.nienazwany ? '' : w.projekt.nazwa, czesc: czescNaLiczniku(w.czesc.nazwa) ?? '' }}
+      return <FormularzNazwy t={t} naZmiane={zmiana} naAnuluj={anuluj} diagnostyka={diagnostykaE2e ? { wpis: diagnostykaE2e.zliczWpisNazwy, panel: <diagnostykaE2e.PanelNazwy /> } : undefined /* FX6b (P-909, scen. 64) */} stan={{ projekt: w.projekt.nienazwany ? '' : w.projekt.nazwa, czesc: czescNaLiczniku(w.czesc.nazwa) ?? '' }}
         naZapisz={(n) => zapisz(async () => {
           // Pusta nazwa projektu roboczego: zostaje nienazwany, nic nie znika (design-spec „Arkusz nazwy”).
           if (n.projekt) { const r = await nazwijProjekt(z, { projektId: w.projektId, nazwa: n.projekt }); if (!r.ok) return r; }

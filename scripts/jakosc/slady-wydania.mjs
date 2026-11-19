@@ -11,7 +11,7 @@ import { join } from 'node:path';
 const e2e = process.argv.includes('--e2e');
 const katalog = mkdtempSync(join(tmpdir(), 'oczko-eksport-'));
 const env = { ...process.env };
-for (const k of Object.keys(env)) if (/^EXPO_PUBLIC_(E2E|STORE_FAKE|WATCH_FAKE|ICLOUD_FAKE|WYMUS_AWARIE|PSEUDO)$/.test(k)) delete env[k];
+for (const k of Object.keys(env)) if (/^EXPO_PUBLIC_(E2E|ZRZUTY|STORE_FAKE|WATCH_FAKE|ICLOUD_FAKE|WYMUS_AWARIE|PSEUDO)$/.test(k)) delete env[k];
 if (e2e) env.EXPO_PUBLIC_E2E = '1';
 try {
   execFileSync('npx', ['expo', 'export', '--platform', 'ios', '--clear', '--output-dir', katalog], { env, stdio: ['ignore', 'ignore', 'inherit'] });

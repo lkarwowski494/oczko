@@ -29,6 +29,12 @@ export const KontekstNacisniec = createContext<((cel: string) => void) | null>(n
 export type HakiDotyku = Pick<PressableProps, 'onTouchStart' | 'onTouchEnd' | 'onTouchCancel' | 'onPressIn' | 'onPressOut'>;
 export const KontekstDotyku = createContext<((cel: string) => HakiDotyku) | null>(null);
 
+/**
+ * ZR2 (KO-179, P-993): tryb zrzutów sklepu (`ZRZUTY` w src/platforma/tryb-e2e.ts). Przeglądarka wzoru nie rysuje wtedy plakietki „Strona n z m”: na iPadzie poziomo strona PDF jest wyższa niż okno,
+ * a plakietka (nakładka u dołu okna, jak w design/fix7 `.strony`) zasłania dolny wiersz tekstu w kadrze. Dostawca: korzeń nawigacji; poza trybem zrzutów (i w testach) `false`.
+ */
+export const KontekstZrzutow = createContext(false);
+
 export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
   const k = useKolory();
   const kolor = p.kolor ?? k.akcentTekst;
