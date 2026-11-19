@@ -180,3 +180,9 @@ Migracja: KO-001…KO-009 = wpisy P-634…P-642 w `docs/decyzje.md` na `origin/c
 
 ## KO-174 (18.11 10:50 UTC, do weta)
 e2e 44266309347 na a830eb21 czerwone (BR-LIC-001/S1, PU-135, NFR-PIE-001, BR-LIC-002). Kod aplikacji identyczny z 01aaeddb (run 215 zielony; diff tylko test + docs). Ponowny pełny przebieg = ponowienie scenariuszy z asercją licznika → słowa właściciela. Rekomendacja: A — pełny przebieg teraz (koniec ok. 13:15, przed oknem 14–23 UTC bez maszyn) + w tym czasie diagnoza artefaktów (sesja sonnet, pułap 1,5 USD). B: najpierw diagnoza, potem przebieg (prawdopodobnie jutro rano). Pominięcie bramki niedozwolone bez słów.
+
+## KO-175 (19.11 10:27 UTC, do weta)
+ZS1 przyjęta (e3e7fe9e: autor i committer noreply, 0 trailerów, tylko `docs/`, PU bez zmian, pre-push verify PASS). Integracja ff a830eb21 → e3e7fe9e (bez force). Kod binarki bez zmian względem 1221.
+D-3 (zrzuty), wariant a: nowe zrzuty sklepu na integracji (en, pl; iPhone, iPad). Dispatch `zrzuty-sklepu.yml` run 44505569101. Workflow nie wysyła niczego do ASC. Analogia: Trening robił zrzuty z bieżącego builda. Wariant b (zrzuty z 13.11) odrzucony: 39 zmienionych plików kodu i ryzyko wprowadzenia w błąd.
+D-5 (kto zatwierdził `release` przy #22): rozstrzygnie następna sesja wydania odczytem z przebiegu; do tego czasu [DO USTALENIA].
+D-2 (werdykt 07 i protokół F dla 1221): wariant a, ale potrzebne jedno zdanie właściciela, czy pominięcie protokołu z 17.11 obejmuje 1221 i PU-002/121/155. Pytanie wysłane.
