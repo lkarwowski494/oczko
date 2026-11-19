@@ -195,3 +195,6 @@ ZR1 b106e210 (autor i committer noreply, 0 trailerów, rodzic e3e7fe9e): testy 2
 
 ## KO-178 (19.11 13:58, do weta) — werdykt 07 dla 1221 teraz
 Opcje: (a) WR1 teraz (rola 07, sonnet, pułap 2,5 USD): werdykt 1221 + przegląd OG-07 scen 03/04 na gotowych zrzutach — nie zależy od odpowiedzi właściciela, skraca ścieżkę do Submit; (b) czekać na odpowiedzi właściciela i zlecić werdykt razem z protokołem. Wybór: **a** (czekanie od 10:27 to dziś główny przestój; protokół 1221 zostaje poza WR1 do słowa właściciela, D-2).
+
+## KO-179 (19.11 14:35, do weta) — WR1 przyjęta; zrzuty od nowa w czystym trybie
+Werdykt 1221 GOTOWY Z UWAGAMI (a0f22db7). P-991, P-992 roli 07 przyjęte. Zrzuty 44533640642 mają napisy diagnostyczne E2E (sprawdzone wzrokiem na kadrach 6.9/pl/01 i iPad 03/04). Opcje: (a) tryb zrzutów bez nakładek + zrzuty od nowa (≈ 2 h macOS) — rekomendacja; (b) przycięcie/zamalowanie kadrów — odrzucone (P-992: fałszuje UI, napisy w środku ekranu iPada). Wybór **a**: ZR2 (08 fix, sonnet, pułap 3 USD) łącznie z U3 i P-990 B; dispatch zrzutów po ZR2 w oknie maszyn macOS (rano 20.11). U1 (test na urządzeniu) = pytanie 1 do właściciela.
