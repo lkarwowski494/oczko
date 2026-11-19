@@ -186,3 +186,6 @@ ZS1 przyjęta (e3e7fe9e: autor i committer noreply, 0 trailerów, tylko `docs/`,
 D-3 (zrzuty), wariant a: nowe zrzuty sklepu na integracji (en, pl; iPhone, iPad). Dispatch `zrzuty-sklepu.yml` run 44505569101. Workflow nie wysyła niczego do ASC. Analogia: Trening robił zrzuty z bieżącego builda. Wariant b (zrzuty z 13.11) odrzucony: 39 zmienionych plików kodu i ryzyko wprowadzenia w błąd.
 D-5 (kto zatwierdził `release` przy #22): rozstrzygnie następna sesja wydania odczytem z przebiegu; do tego czasu [DO USTALENIA].
 D-2 (werdykt 07 i protokół F dla 1221): wariant a, ale potrzebne jedno zdanie właściciela, czy pominięcie protokołu z 17.11 obejmuje 1221 i PU-002/121/155. Pytanie wysłane.
+
+## KO-176 (19.11 12:59, do weta) — zrzuty: naprawa testu ramek i ponowny komplet z gotowych zrzutów
+Przyczyna porażki 44505569101: test `ramki-sklepu.test.ts:76` zbyt sztywny wobec ImageMagick 7.1.2 na runnerze (`srgb  3.0`). Opcje: (a) poprawka testu + ponowny przebieg z `aplikacja_z_przebiegu` (≈ 2 h macOS, maszyn zwykle brak 14–23 UTC); (b) poprawka testu + wejście `zrzuty_z_przebiegu` (sam komplet na ubuntu, ≈ 5 min, zrzuty z przebiegu 44505569101, 7 dni). Wybór: **b** (bez macOS i czekania; ścieżka zostaje na następne razy). Wykonanie: ZR1 (rola 10, sonnet, pułap 1,5 USD).
