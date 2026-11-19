@@ -189,3 +189,6 @@ D-2 (werdykt 07 i protokół F dla 1221): wariant a, ale potrzebne jedno zdanie 
 
 ## KO-176 (19.11 12:59, do weta) — zrzuty: naprawa testu ramek i ponowny komplet z gotowych zrzutów
 Przyczyna porażki 44505569101: test `ramki-sklepu.test.ts:76` zbyt sztywny wobec ImageMagick 7.1.2 na runnerze (`srgb  3.0`). Opcje: (a) poprawka testu + ponowny przebieg z `aplikacja_z_przebiegu` (≈ 2 h macOS, maszyn zwykle brak 14–23 UTC); (b) poprawka testu + wejście `zrzuty_z_przebiegu` (sam komplet na ubuntu, ≈ 5 min, zrzuty z przebiegu 44505569101, 7 dni). Wybór: **b** (bez macOS i czekania; ścieżka zostaje na następne razy). Wykonanie: ZR1 (rola 10, sonnet, pułap 1,5 USD).
+
+## KO-177 (19.11 13:29, do weta) — ZR1 przyjęta; `if: always()` na kroku alfy
+ZR1 b106e210 (autor i committer noreply, 0 trailerów, rodzic e3e7fe9e): testy 29/29 + 38/38 + pełny jest 7961 zielone, verify zielony, kontrola 2 zielona; IM7 tylko symulowany (pierwszy prawdziwy dowód = przebieg w Actions). Integracja ff → b106e210; dispatch zrzuty-sklepu `zrzuty_z_przebiegu=44505569101`. P-990 (`if: always()` na „Kanał alfa precz”): opcje (A) zostawić — zero zmian teraz, po czerwonym teście surowy artefakt bywa pusty; (B) dodać — kompletny artefakt 14 dni zawsze. Wybór: **B, ale w następnej partii poprawek** (nie blokuje bieżącego kompletu; jednowierszowa zmiana).
