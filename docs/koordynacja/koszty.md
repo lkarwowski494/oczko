@@ -153,3 +153,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | ZR2 | 08 fix (sonnet) | zrzuty bez nakładek E2E + U3 + P-990 B | 2,68 USD (pułap 3) | 46% (138 811) | 19.11 14:28–14:53 | — | odczyt przy archiwizacji |
 | WR2 | 07 audit (sonnet) | ponowny przegląd 56 kadrów 44677685872 | 1,43 USD (pułap 1,5) | 71% (212 056) | 20.11 06:36–06:41 | — | odczyt przy archiwizacji |
 | ZR3 | 10 fix (sonnet) | dane scen zrzutów pod WR2 | 1,95 USD (pułap 2,5) | 73% (218 074) | 20.11 07:08–07:27 | — | odczyt przy archiwizacji |
+| ZR4 | 10 fix (sonnet) | składnia swipe w scenach zrzutów | 1,53 USD (pułap 1,5; +0,03) | 59% (177 177) | 20.11 09:20–09:35 | — | odczyt przy archiwizacji |
