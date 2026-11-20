@@ -3,7 +3,7 @@
 **Dla właściciela (5 linii):**
 1. Werdykt: **GOTOWY Z UWAGAMI** — wszystkie bramki CI na a830eb21 zielone (Linux, iOS z pełnym katalogiem E2E, TestFlight), build 1221 VALID, kontrola `.ipa` bez błędów.
 2. Do wysyłki do App Store brakuje jednej rzeczy z Twojej strony: test na urządzeniu — **na iPhonie i na zegarku z watchOS 10.6.2** — tylko tego, co zmieniło się od buildu 1161 (lista w `docs/wydanie/do-app-store-1221.md`, pytanie 1). Pełny katalog E2E, który przy 1161 był otwarty, jest zamknięty.
-3. Zrzuty sklepu **nie nadają się do wysłania w obecnej postaci**: mają w kadrze napisy diagnostyczne trybu E2E (wszystkie 28 plików) i na iPadzie pigułka „Strona 1 z 1” zasłania tekst wzoru. To wada zrzutów, nie aplikacji; trzeba je zrobić od nowa.
+3. [Zaktualizowane 2026-11-20: patrz „Zrzuty sklepu — ponowny przegląd, P-992” na końcu; werdykt zrzutów DO SKLEPU Z UWAGAMI.] Zrzuty sklepu **nie nadają się do wysłania w obecnej postaci**: mają w kadrze napisy diagnostyczne trybu E2E (wszystkie 28 plików) i na iPadzie pigułka „Strona 1 z 1” zasłania tekst wzoru. To wada zrzutów, nie aplikacji; trzeba je zrobić od nowa.
 4. OG-07 (ograniczenia P-218 1–6): **treść scen 03 i 04 mieści się w ograniczeniach — tak**, ale te konkretne pliki nie mogą iść do sklepu (punkt 3); po ponownym wykonaniu 07 jeszcze raz obejrzy 03/04.
 5. Po 1221 na integracji znalazłem czerwony krok „Kolejność testów losowa” w Linuxie (test panelu zegarka, tylko testowy, produktu nie dotyka). Nie dotyczy binarki 1221, ale blokuje bramkę PR — do naprawy przez rolę 08.
 
@@ -85,3 +85,31 @@ Analogia: repo `lkarwowski494/trening` — próba odczytu `CLAUDE.md` przez MCP 
 
 ## Nie sprawdzono
 E2E na symulatorze, XCTest i zegarek (brak macOS w kontenerze; wynik z CI); test na telefonie i zegarku z watchOS 10.6.2 (U1); czy zbudowany cel zegarka ma `WATCHOS_DEPLOYMENT_TARGET = 10.0` (log TestFlight nie zawiera tego wzorca; sprawdzone tylko testem źródła); przyczyna porażki attempt 1 przebiegu iOS #216; przegląd OG-07 na urządzeniu (tylko na kadrach); zgodność z wytycznymi App Store i metadane (rola 10); schemat CloudKit Production (rola 10/właściciel); ocena prawna patentów (poza 07, P-218). Rola 10 nie powinna przyjmować tych pozycji za sprawdzone przez 07.
+
+## Zrzuty sklepu — ponowny przegląd, P-992 (WR2, 2026-11-20)
+Rola 07, tryb audit (polecenie WR2 @ dc18f6b2, gałąź `koordynacja`). Gałąź `claude/wr2-zrzuty-2026-11-20` od 4e46688c. Materiał: przebieg „Zrzuty sklepu” #39, run 44677685872 (success), SHA 4e46688c, build z `EXPO_PUBLIC_ZRZUTY=1` (P-993); artefakty `sklep-zrzuty-ramki` i `sklep-zrzuty-surowe`, 28 + 28 plików (iPhone 6.9″ i iPad 13″ × en, pl × 7 scen), wszystkie obejrzane. Dowody: `docs/jakosc/werdykt-1221/og07-zrzuty-wr2.md`, zestawienia `wr2-ramki-*.jpg`, sumy plików `wr2-manifest-sha256.txt`. Ta sekcja zastępuje punkty 3–4 nagłówka i U2/U4 powyżej dla zrzutów.
+
+**Werdykt zrzutów: DO SKLEPU Z UWAGAMI** (KO-183, do weta). Brak P0/P1: żadnych nakładek E2E ani pigułki w 56 plikach, OG-07 dla 03/04 w granicach. Zostaje jedna uwaga P2 (spójność danych znacznika) i uwagi P3.
+
+| Pytanie z polecenia | Wynik |
+|---|---|
+| 1. Nakładki E2E (`dow:`, `touch:`, panele) i pigułka „Strona n z m” | **brak w 28 surowych i 28 w ramkach**; pigułki nie ma na żadnym z 16 kadrów 03/04. **U2 zamknięte** dla zrzutów |
+| 2. OG-07 sceny 03/04 (P-218 1–6, P-224) | **TAK, w granicach** na nowych plikach (ogr. 1–5 zgodne; 6 = ten przegląd, na kadrach, nie na urządzeniu); zakreślenia 03→04: 1→2 w każdym z 4 wariantów |
+| 3. Kadr a aplikacja 1221, podpisy a kadry | różnice kodu 1221 → 4e46688c w wejściach binarki: 9 plików, tylko P-993; podpisy zgodne z kadrami z jednym wyjątkiem: **U4 utrzymane (P3)** — „notuj/write” bez notatki w kadrze 04 |
+| 4a. Zakreślenia od połowy wiersza na iPadzie 03/04 | potwierdzone; **P3** — nie myli co do funkcji (zakreślenie od ręki), wygląda niechlujnie; przyczyna: swipe od 20% szerokości; do poprawy w scenach przy następnej powtórce |
+| 4b. „Row 48 ↓” przy linii PDF „Row 21”, licznik 47 / „Now working row 48” | **P2** — zgodne z regułą RD-21 (rząd w robocie = licznik + 1), niezgodne z odbiorem: wzór ma 23 rzędy, znacznik „48” stoi na wierszu „Row 21”; wygląda jak błąd aplikacji w kadrze głównej przewagi. Nie przeczy literalnie opisowi funkcji, ale osłabia jej wiarygodność (plan zrzutów: dane fikcyjne mają być wiarygodne, 2.3.9) |
+
+**Uwagi (priorytet, właściciel, krok):**
+- **U2 · zamknięte dla zrzutów.** Osobno, dla aplikacji: pigułka „Strona n z m” poza trybem zrzutów zostaje; P-993 nazywa możliwe zasłonięcie dolnego wiersza na iPadzie poziomo „P2 brzegowy”. Utrzymane jako uwaga o aplikacji (rola 08, nie blokuje 1221 ani zrzutów); w działaniu jej nie widziałem.
+- **Z1 · P2 · znacznik „48” na wierszu „Row 21”.** Rola 08 (dane sceny): wzór sklepu z numeracją obejmującą rząd 48 albo znacznik postawiony na wierszu o numerze zgodnym z etykietą; wymaga powtórki zrzutów (build zrzutów, macOS, bez TestFlight i bez testu właściciela).
+- **Z2 · P3 · zakreślenia** (swipe od 10% zamiast 20%, wysokość pod wiersz; w pl iPhone pas kończy się w środku słowa, drugi pas w 04 stoi między wierszami). Rola 08, ta sama powtórka co Z1.
+- **U4 · P3 · podpis 04 bez notatki w kadrze.** Rola 10/11: podpis bez „notuj/write” (tylko metadane, bez powtórki) albo kadr z notatką (powtórka).
+- **Z3 · P3:** linia znacznika przechodzi przez górę liter wiersza (wygląda jak przekreślenie); godziny w Historii różnią się o kilka minut między iPhonem a iPadem; puste obszary iPada na 01, 02, 05, 06, 07 (znane z `zrzuty-plan.md`).
+
+## Decyzje (tryb analogia, do weta; nie wpisane do `docs/decyzje.md`, bo polecenie dopuszcza tylko `docs/jakosc/`)
+Analogia: Trening poza zakresem sesji; `docs/fakty-wlasciciela.md` sprawdzony — bez wpisu o zrzutach. Według rekomendacji.
+- **P-996** Zrzuty z przebiegu 44677685872 spełniają wymagania P-992: werdykt **DO SKLEPU Z UWAGAMI**; U2 zamknięte dla zrzutów; OG-07 dla 03/04 spełnione na tych plikach (wynik WR1 potwierdzony). Odrzucone: DO POWTÓRZENIA (nie ma P0/P1; Z1 jest kosztownym w poprawie, ale nie błędem produktu).
+- **P-997** Wysyłka do App Store Connect: dwie opcje do decyzji koordynatora. **(A) Wysłać te pliki** po zmianie podpisu 04 (U4) i przyjęciu Z1 jako znanego P2; koszt: zero powtórek; ryzyko: kadr 03/04 (iPad) z niewiarygodnym znacznikiem w głównym zrzucie wzoru. **(B) Jedna zbiorcza powtórka** z poprawką wzoru/znacznika (Z1), swipe'ów (Z2) i opcjonalnie kadru z notatką (U4); koszt: jeden przebieg zrzutów (build ≈ 40 min, macOS bywa niedostępny ok. 14:00–23:00 UTC wg faktów właściciela) i ponowny przegląd 03/04 przez 07 (P-218 (6)); bez TestFlight i bez testu właściciela. **Rekomendacja: (B)**, o ile powtórka mieści się w czasie do wysyłki; jeśli nie, (A) z jawnie przyjętym Z1. Do ponownego przeglądu po (B) 07 obejrzy znowu 03/04 (OG-07 (6)).
+
+## Nie sprawdzono (zrzuty)
+Aplikacji na symulatorze i urządzeniu (kadry z CI); maszynowa detekcja napisów (OCR niedostępny — przegląd wzrokowy 56 plików, plus testy 4e46688c, których nie uruchamiałem); zachowania pigułki w zwykłej aplikacji; podpisów w 33 pozostałych językach (tylko en i pl); zgodności z wytycznymi App Store i metadanych (rola 10).
