@@ -62,15 +62,34 @@ describe('10-wydanie-019: liczPasy — żółte pasy zakreślenia w obrazie RGB'
     const { liczPasy } = await wczytaj();
     for (const k of [[252, 245, 195], [252, 245, 194], [252, 245, 196]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(1);
   });
-  test('ZR5: dotychczasowe barwy pasa (248,232,123; 250,237,152; stały zakreślacz #F6E04A) nadal są zakreśleniem', async () => {
+  test('ZR5: dotychczasowe zmierzone barwy pasa (248,232,123; 250,237,152) nadal są zakreśleniem', async () => {
     const { liczPasy } = await wczytaj();
-    for (const k of [[248, 232, 123], [250, 237, 152], [0xf6, 0xe0, 0x4a]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(1);
+    for (const k of [[248, 232, 123], [250, 237, 152]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(1);
   });
-  test('ZR5: granice reguły — b = 206 albo r−b = 39 nie jest zakreśleniem', async () => {
+  test('ZR5: granice reguły — b = 206 albo r−b = 39 nie jest zakreśleniem; r−b = 40 i b = 205 jest', async () => {
     const { liczPasy } = await wczytaj();
     expect(liczPasy(obraz(pasKolor([252, 245, 206])), W, H)).toBe(0); // b > 205
-    expect(liczPasy(obraz(pasKolor([240, 220, 201])), W, H)).toBe(0); // r−b = 39, b ≤ 205
-    expect(liczPasy(obraz(pasKolor([240, 220, 200])), W, H)).toBe(1); // r−b = 40, b = 200: granica włączona
+    expect(liczPasy(obraz(pasKolor([240, 230, 201])), W, H)).toBe(0); // r−b = 39, b ≤ 205
+    expect(liczPasy(obraz(pasKolor([240, 230, 200])), W, H)).toBe(1); // r−b = 40: granica włączona
+    expect(liczPasy(obraz(pasKolor([252, 245, 205])), W, H)).toBe(1); // b = 205: granica włączona
+  });
+  // P-1005 (KO-188): g ≥ 225. Beż elementu strony Dziś (kadr 01, g 219–224 w przebiegu 44722734741) nie jest zakreśleniem.
+  test('P-1005: beż strony Dziś (240,221,182) i jego odcienie z kadru 01 (239,220,181; 239,219,178) nie są zakreśleniem, także jako pełny pas', async () => {
+    const { liczPasy } = await wczytaj();
+    for (const k of [[240, 221, 182], [239, 220, 181], [239, 219, 178], [239, 219, 177]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(0);
+  });
+  test('P-1005: granica g — 224 nie jest zakreśleniem, 225 jest (ryzyko jawne: nominalny #F6E04A ma g = 224; zmierzone pasy mają g ≥ 232)', async () => {
+    const { liczPasy } = await wczytaj();
+    expect(liczPasy(obraz(pasKolor([246, 224, 74])), W, H)).toBe(0);
+    expect(liczPasy(obraz(pasKolor([246, 225, 74])), W, H)).toBe(1);
+  });
+  // P-1005: próg wiersza 15% szerokości (było 20%). Przy W = 200 próg to ceil(200·0,15) = 30 px; w kadrze ze sklepu pas z tekstem ma w wierszach z tekstem 70–110 z 500 px.
+  test('P-1005: próg wiersza — pas szeroki na 30 px z 200 (15%) jest pasem, na 29 px nie; pas z tekstem zabierającym połowę pikseli nadal jest pasem', async () => {
+    const { liczPasy } = await wczytaj();
+    expect(liczPasy(obraz((u) => pas(u, 50, 62, 40, 70)), W, H)).toBe(1); // 30 px = 15%
+    expect(liczPasy(obraz((u) => pas(u, 50, 62, 40, 69)), W, H)).toBe(0); // 29 px < 15%
+    const zTekstem = obraz((u) => { pas(u, 50, 62, 40, 160); for (let y = 52; y < 60; y++) for (let x = 40; x < 160; x += 2) u(x, y, [0, 0, 0]); }); // wiersze 52–59: 60 z 200 px = 30%
+    expect(liczPasy(zTekstem, W, H)).toBe(1);
   });
   test('ZR5: barwy tła i papieru z design systemu (docs/design/dzianina/design-spec.md, mapa-tokenow.md) i akcentu nie są zakreśleniem (pełnoekranowe wypełnienie)', async () => {
     const { liczPasy } = await wczytaj();

@@ -13,15 +13,17 @@ export const SCENA_PRZED = '03-wzor.png';
 export const SCENA_PO = '04-zakreslenie.png';
 /** Szerokość, do której zmniejszamy zrzut przed analizą (kierunek: szybkość; pas ma wtedy ≥ ok. 8 wierszy). */
 const SZEROKOSC_ANALIZY = 500;
-/** Wiersz jest „żółty”, gdy ≥ 20% jego pikseli ma barwę zakreślacza (pociągnięcie 20–80% szerokości ekranu; tekst na pasie zabiera część pikseli). */
-const UDZIAL_WIERSZA = 0.2;
+/** Wiersz jest „żółty”, gdy ≥ 15% jego pikseli ma barwę zakreślacza (pociągnięcie 20–80% szerokości ekranu; tekst na pasie zabiera część pikseli — w wierszach z tekstem zostaje 70–110 z 500 px).
+ * P-1005 (KO-188): było 0,2 (100 px przy 500 px szerokości). Przy g ≥ 225 wszystkie 4 pary 03<04 i 0 pasów na kadrach 01/02/05–07 dla progu 18–86 px (0,036–0,172); górną granicę wyznacza ipad-13/en (pas wiersza 13: 109, 114, 86 px). 0,15 = 75 px: margines 11 px (0,022 szerokości) do pierwszej porażki, największy w oknie 0,15–0,18. */
+const UDZIAL_WIERSZA = 0.15;
 /** Pas = co najmniej tyle kolejnych żółtych wierszy (cienka linia, krawędź, artefakt nie jest pasem); przerwy do MAX_PRZERWA wierszy (tekst na pasie) nie dzielą pasa. */
 const MIN_WIERSZY_PASA = 3;
 const MAX_PRZERWA = 2;
 
 /** Barwa zakreślacza na białej stronie: zmierzone w artefakcie przebiegu 43070136577 (248,232,123; 250,237,152) oraz 44722734741 (pas wiersza 9 na iPadzie: 252,245,194–196 — jaśniejszy, bo bliżej bieli). Tło interfejsu (238,235,230) i przycisk (192,132,37) nie pasują.
- * Kalibracja P-1004 (KO-187): było b ≤ 190 i r−b ≥ 50 (odrzucało pas 252,245,195); jest b ≤ 205 i r−b ≥ 40. */
-export const jestZolty = (r, g, b) => r >= 230 && g >= 210 && b <= 205 && r - b >= 40;
+ * Kalibracja P-1004 (KO-187): było b ≤ 190 i r−b ≥ 50 (odrzucało pas 252,245,195); jest b ≤ 205 i r−b ≥ 40.
+ * Zawężenie P-1005 (KO-188): g ≥ 225 zamiast 210 — beż 240,221,182 elementu strony Dziś (g 219–224) przestaje być „żółty”; pasy zakreślenia mają g 232–248. Ryzyko jawne: nominalny #F6E04A (g = 224) już nie pasuje; w zmierzonych przebiegach pas ma zawsze g ≥ 232. */
+export const jestZolty = (r, g, b) => r >= 230 && g >= 225 && b <= 205 && r - b >= 40;
 
 /** Liczba żółtych pasów w obrazie RGB (3 bajty na piksel, wiersz po wierszu). */
 export function liczPasy(rgb, w, h) {
