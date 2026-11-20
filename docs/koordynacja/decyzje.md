@@ -207,3 +207,6 @@ WR1 (07) potwierdziła zgodność treści scen 03/04 z ograniczeniami OG-07 1–
 
 ## KO-182 (20.11 04:57, do weta) — ponowienie iOS 44552331104 po zrzutach
 Joby build/swift-test/eksperymenty anulowane bez maszyny (15 min w kolejce) = maszyna, P-091 10a, jedno ponowienie ręczne. Opcje: (a) ponowić po zakończeniu zrzutów — nie konkuruje o limit maszyn macOS z zrzutami (pilniejsze dla wysyłki 1221) — rekomendacja; (b) teraz równolegle — ryzyko, że obydwa przebiegi stoją w kolejce. Wybór **a**.
+
+## KO-183 (20.11 06:17, do weta) — WR2: ponowny przegląd zrzutów przez 07 (P-992)
+Opcje: (a) sesja 07 audit (sonnet, pułap 1,5 USD) na 56 kadrach przebiegu 44677685872 + obserwacje koordynatora — rekomendacja, P-992 tego wymaga przed asc-zrzuty; (b) tylko przegląd koordynatora — odrzucone (koordynator nie wykonuje, a OG-07 to werdykt roli 07). Wybór **a**.
