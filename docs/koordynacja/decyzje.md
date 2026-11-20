@@ -210,3 +210,6 @@ Joby build/swift-test/eksperymenty anulowane bez maszyny (15 min w kolejce) = ma
 
 ## KO-183 (20.11 06:17, do weta) — WR2: ponowny przegląd zrzutów przez 07 (P-992)
 Opcje: (a) sesja 07 audit (sonnet, pułap 1,5 USD) na 56 kadrach przebiegu 44677685872 + obserwacje koordynatora — rekomendacja, P-992 tego wymaga przed asc-zrzuty; (b) tylko przegląd koordynatora — odrzucone (koordynator nie wykonuje, a OG-07 to werdykt roli 07). Wybór **a**.
+
+## KO-184 (20.11 07:10, do weta) — WR2 przyjęta; jedna zbiorcza powtórka zrzutów (wariant B)
+Opcje roli 07: (A) wysłać zrzuty 44677685872 z przyjętą uwagą P2 (znacznik „Row 48 ↓” na wierszu PDF „Row 21”) — zero kosztu, ale główny kadr przewagi (wzór+licznik) wygląda na błąd aplikacji; standard marki wysoki; (B) jedna powtórka: dane scen (znacznik zgodny z wierszem, ruch palca od tekstu, podpis 04) — ok. 2,5 USD sesji + ok. 1,5 h macOS + ponowny przegląd 07, bez nowego buildu i TestFlight. Wybór **B** (rekomendacja 07): wysyłka i tak czeka na odpowiedzi właściciela, więc czas nie jest kosztem. ZR3 (10 fix), potem dispatch zrzutów w oknie macOS i WR3 (07).

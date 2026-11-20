@@ -151,3 +151,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | ZR1 | 10 wydanie fix (sonnet) | test ramek pod IM7 + wejście `zrzuty_z_przebiegu` | 1,77 USD (pułap 1,5; przekroczony o 0,27) | 64% (191 090) | 19.11 13:00–13:15 | — | odczyt przy archiwizacji |
 | WR1 | 07 audit (sonnet) | werdykt 1221 + OG-07 03/04 | 3,53 USD (pułap 2,5; przekroczony o 1,03) | 41% (122 649) po 1 kompakcji | 19.11 13:55–14:07 | — | odczyt przy archiwizacji |
 | ZR2 | 08 fix (sonnet) | zrzuty bez nakładek E2E + U3 + P-990 B | 2,68 USD (pułap 3) | 46% (138 811) | 19.11 14:28–14:53 | — | odczyt przy archiwizacji |
+| WR2 | 07 audit (sonnet) | ponowny przegląd 56 kadrów 44677685872 | 1,43 USD (pułap 1,5) | 71% (212 056) | 20.11 06:36–06:41 | — | odczyt przy archiwizacji |
