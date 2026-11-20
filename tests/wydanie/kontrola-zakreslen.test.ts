@@ -54,6 +54,39 @@ describe('10-wydanie-019: liczPasy — żółte pasy zakreślenia w obrazie RGB'
     expect(liczPasy(obraz((u) => pas(u, 50, 51)), W, H)).toBe(0);
     expect(liczPasy(obraz((u) => pas(u, 50, 62, 40, 60)), W, H)).toBe(0);
   });
+  // ZR5 (KO-187, P-1004): kalibracja barwy po przebiegu 44722734741 — pas wiersza 9 na iPadzie ma barwę (252,245,194–196), a stara reguła (b ≤ 190, r−b ≥ 50) go odrzucała.
+  const pasKolor = (k: [number, number, number], y0 = 50, y1 = 62) => (u: (x: number, y: number, k: [number, number, number]) => void) => {
+    for (let y = y0; y < y1; y++) for (let x = 40; x < 160; x++) u(x, y, k);
+  };
+  test('ZR5: barwa pasa z przebiegu 44722734741 (252,245,195) i jej zmierzone krańce (252,245,194/196) są zakreśleniem', async () => {
+    const { liczPasy } = await wczytaj();
+    for (const k of [[252, 245, 195], [252, 245, 194], [252, 245, 196]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(1);
+  });
+  test('ZR5: dotychczasowe barwy pasa (248,232,123; 250,237,152; stały zakreślacz #F6E04A) nadal są zakreśleniem', async () => {
+    const { liczPasy } = await wczytaj();
+    for (const k of [[248, 232, 123], [250, 237, 152], [0xf6, 0xe0, 0x4a]] as [number, number, number][]) expect(liczPasy(obraz(pasKolor(k)), W, H)).toBe(1);
+  });
+  test('ZR5: granice reguły — b = 206 albo r−b = 39 nie jest zakreśleniem', async () => {
+    const { liczPasy } = await wczytaj();
+    expect(liczPasy(obraz(pasKolor([252, 245, 206])), W, H)).toBe(0); // b > 205
+    expect(liczPasy(obraz(pasKolor([240, 220, 201])), W, H)).toBe(0); // r−b = 39, b ≤ 205
+    expect(liczPasy(obraz(pasKolor([240, 220, 200])), W, H)).toBe(1); // r−b = 40, b = 200: granica włączona
+  });
+  test('ZR5: barwy tła i papieru z design systemu (docs/design/dzianina/design-spec.md, mapa-tokenow.md) i akcentu nie są zakreśleniem (pełnoekranowe wypełnienie)', async () => {
+    const { liczPasy } = await wczytaj();
+    const hex = (s: string): [number, number, number] => [parseInt(s.slice(1, 3), 16), parseInt(s.slice(3, 5), 16), parseInt(s.slice(5, 7), 16)];
+    const tokeny = {
+      'tlo jasne (runo musket)': '#E6E1DA', 'powierzchnia jasna': '#F6F4F1', 'papier jasny (poprzedni system)': '#FCFCFA', 'papierGrupa': '#F2F3F0',
+      'tlo ciemne': '#26211E', 'karta/przycisk': '#3A332E', 'tlo ikony ciemne': '#1E1A17', 'tusz': '#221D1A',
+      'akcent mioget': '#C08425', 'akcent ciemny': '#CF9636', 'przyciskTekst': '#F3F1EC', 'linia jasna': '#CFC8BF',
+    };
+    for (const [nazwa, kod] of Object.entries(tokeny)) expect([nazwa, liczPasy(obraz(() => undefined, hex(kod)), W, H)]).toEqual([nazwa, 0]);
+  });
+  test('ZR5: pas 2-wierszowy w nowej barwie nadal jest poniżej minimum (MIN_WIERSZY_PASA = 3), 3-wierszowy jest pasem', async () => {
+    const { liczPasy } = await wczytaj();
+    expect(liczPasy(obraz(pasKolor([252, 245, 195], 50, 52)), W, H)).toBe(0);
+    expect(liczPasy(obraz(pasKolor([252, 245, 195], 50, 53)), W, H)).toBe(1);
+  });
   test('rozmiar bufora niezgodny z wymiarami = błąd, nie zgadnięty wynik', async () => {
     const { liczPasy } = await wczytaj();
     expect(() => liczPasy(Buffer.alloc(10), W, H)).toThrow(/rozmiar/i);

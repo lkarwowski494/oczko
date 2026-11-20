@@ -19,8 +19,9 @@ const UDZIAL_WIERSZA = 0.2;
 const MIN_WIERSZY_PASA = 3;
 const MAX_PRZERWA = 2;
 
-/** Barwa zakreślacza na białej stronie: zmierzone w artefakcie przebiegu 43070136577 (248,232,123; 250,237,152). Tło interfejsu (238,235,230) i przycisk (192,132,37) nie pasują. */
-export const jestZolty = (r, g, b) => r >= 230 && g >= 210 && b <= 190 && r - b >= 50;
+/** Barwa zakreślacza na białej stronie: zmierzone w artefakcie przebiegu 43070136577 (248,232,123; 250,237,152) oraz 44722734741 (pas wiersza 9 na iPadzie: 252,245,194–196 — jaśniejszy, bo bliżej bieli). Tło interfejsu (238,235,230) i przycisk (192,132,37) nie pasują.
+ * Kalibracja P-1004 (KO-187): było b ≤ 190 i r−b ≥ 50 (odrzucało pas 252,245,195); jest b ≤ 205 i r−b ≥ 40. */
+export const jestZolty = (r, g, b) => r >= 230 && g >= 210 && b <= 205 && r - b >= 40;
 
 /** Liczba żółtych pasów w obrazie RGB (3 bajty na piksel, wiersz po wierszu). */
 export function liczPasy(rgb, w, h) {
