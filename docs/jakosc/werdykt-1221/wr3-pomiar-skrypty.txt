@@ -1,0 +1,131 @@
+# WR3 · skrypty pomiarowe (Python 3 + numpy, Pillow, scipy; ImageMagick 'convert'); uruchamiane poza repo na pobranych artefaktach. Kolejność: mierz2.py (moduł), mierz3.py, mierz4.py, kal.py.
+
+##### mierz2.py
+import sys, numpy as np, json
+from PIL import Image
+from scipy import ndimage as ndi
+def pasy(a):
+    r,g,b=a[...,0],a[...,1],a[...,2]
+    zol=(r>=235)&(g>=225)&(b<=225)&(r-b>=25)&(g-b>=20)&(abs(r-g)<=25)
+    lab,n=ndi.label(ndi.binary_dilation(zol,iterations=3))
+    comp=[]
+    for i,sl in enumerate(ndi.find_objects(lab)):
+        m=(lab[sl]==i+1)&zol[sl]
+        if m.sum()<1500: continue
+        ys,xs=np.nonzero(m)
+        comp.append([sl[1].start+xs.min(),sl[1].start+xs.max(),sl[0].start+ys.min(),sl[0].start+ys.max(),int(m.sum())])
+    # scal składowe o wspólnym zakresie y
+    comp.sort(key=lambda c:(c[2],c[0])); out=[]
+    for c in comp:
+        for o in out:
+            if min(o[3],c[3])-max(o[2],c[2])>0.6*min(o[3]-o[2],c[3]-c[2]) and abs(o[2]-c[2])<10:
+                o[0]=min(o[0],c[0]);o[1]=max(o[1],c[1]);o[2]=min(o[2],c[2]);o[3]=max(o[3],c[3]);o[4]+=c[4];break
+        else: out.append(list(c))
+    return out
+def linie(a,x0,x1,y0,y1):
+    r,g,b=a[...,0],a[...,1],a[...,2]
+    ciem=(r<120)&(g<120)&(b<120)
+    sub=ciem[y0:y1,x0:x1]
+    rows=np.nonzero(sub.sum(1)>0)[0]
+    bands=[];s=None;p=None
+    for y in rows:
+        if s is None: s=p=y
+        elif y-p<=6: p=y
+        else: bands.append((s,p));s=p=y
+    if s is not None: bands.append((s,p))
+    res=[]
+    for s,e in bands:
+        cols=np.nonzero(sub[s:e+1].sum(0)>0)[0]
+        res.append((y0+s,y0+e,x0+cols.min(),x0+cols.max()))
+    return res
+if __name__=='__main__':
+    f=sys.argv[1]; x0,x1,y0,y1=map(int,sys.argv[2:6])
+    a=np.asarray(Image.open(f).convert('RGB')).astype(int)
+    print(f)
+    for p in pasy(a): print(' pas x',p[0],p[1],'y',p[2],p[3],'px',p[4])
+    for l in linie(a,x0,x1,y0,y1): print(' tekst y',l[0],l[1],'x',l[2],l[3])
+
+##### mierz3.py
+import sys, numpy as np
+from PIL import Image
+sys.path.insert(0,'.')
+from mierz2 import pasy, linie
+CFG={'ipad-13':(150,2150,600,2000),'6.9':(80,1250,700,1800)}
+def ocena(f,kl,regs=None):
+    a=np.asarray(Image.open(f).convert('RGB')).astype(int)
+    x0,x1,y0,y1=CFG[kl]
+    L=linie(a,x0,x1,y0,y1); P=pasy(a)
+    r,g,b=a[...,0],a[...,1],a[...,2]
+    ciem=(r<120)&(g<120)&(b<120)
+    # linia znacznika: wiersze, gdzie ciemne piksele zajmują >50% szerokości strony
+    W=x1-x0
+    znacz=[y for y in range(y0,y1) if ciem[y,x0:x1].sum()>0.5*W]
+    return a,L,P,znacz
+if __name__=='__main__':
+    for kl in ['ipad-13','6.9']:
+        for jez in ['en','pl']:
+            for sc in ['03-wzor','04-zakreslenie']:
+                f=f'surowe/{kl}/{jez}/{sc}.png'
+                a,L,P,z=ocena(f,kl)
+                # usuń pasy znacznika/łącznika; wybierz tekst bez linii znacznika
+                print(f'## {f}')
+                zk=(min(z),max(z)) if z else None
+                print('  linia znacznika (ciemne wiersze >50% szer.): y',zk, 'n',len(z))
+                for p in P:
+                    # najlepszy wiersz tekstu
+                    best=None
+                    for i,l in enumerate(L):
+                        ov=min(l[1],p[3])-max(l[0],p[2])
+                        if best is None or ov>best[0]: best=(ov,i,l)
+                    ov,i,l=best
+                    tc=(l[0]+l[1])/2; pc=(p[2]+p[3])/2
+                    sty=[]
+                    for j in (i-1,i+1):
+                        if 0<=j<len(L):
+                            n=L[j]; w=min(n[1],p[3])-max(n[0],p[2])
+                            sty.append((j-i,w))
+                    print(f'  pas x{p[0]}-{p[1]} y{p[2]}-{p[3]} (h={p[3]-p[2]+1}) | wiersz#{i} tekst y{l[0]}-{l[1]} x{l[2]}-{l[3]} (h={l[1]-l[0]+1}) | start {l[2]-p[0]:+d} koniec {p[1]-l[3]:+d} | gora {l[0]-p[2]:+d} dol {p[3]-l[1]:+d} | odchyl.środka {pc-tc:+.1f}px | wejście w sąsiada (px, +=wchodzi) {sty}')
+
+##### mierz4.py
+import numpy as np
+from PIL import Image
+CASES=[('ipad-13/en',(273,1462),(1394,1442),(1413,1434)),('ipad-13/pl',(273,1969),(1394,1442),(1413,1434)),('6.9/en',(164,879),(1292,1319),(1310,1322)),('6.9/pl',(164,1185),(1307,1335),(1310,1322))]
+for k,(xa,xb),(ya,yb),(sa,sb) in CASES:
+    a=np.asarray(Image.open(f'surowe/{k}/04-zakreslenie.png').convert('RGB')).astype(int)
+    # ciemne = tekst (r,g,b<150) w pasie tekstu, poza obszarem pasa wystarcza (tekst jest nad pasem, ciemny)
+    dark=(a[...,0]<150)&(a[...,1]<150)&(a[...,2]<120)
+    prof=dark[ya-5:yb+6,xa:xb+1].sum(1)
+    ys=np.arange(ya-5,yb+6)
+    mx=prof.max(); body=ys[prof>=0.45*mx]
+    top,base=body.min(),body.max()
+    c=(sa+sb)/2
+    print(f'{k}: tekst y {ya}-{yb}; korpus liter (x-height) y {top}-{base} (h={base-top+1}); pas y {sa}-{sb} (h={sb-sa+1}) środek {c}; położenie środka pasa w korpusie: {(c-top)/(base-top):.2f} (0=góra x-height, 0.5=środek [przekreślenie], 1=linia bazowa [podkreślenie]); pokrycie korpusu {max(0,min(base,sb)-max(top,sa)+1)/(base-top+1):.0%}')
+
+##### kal.py
+import numpy as np, subprocess, io
+from PIL import Image
+def load(f):
+    im=Image.open(f).convert('RGB'); w=500; h=round(im.height*500/im.width)
+    return np.asarray(im.resize((w,h),Image.LANCZOS)).astype(int)   # ImageMagick convert -resize (domyślnie Mitchell); przybliżenie
+def load_im(f):
+    out=subprocess.run(['convert',f,'-resize','500x>','-alpha','off','-depth','8','rgb:-'],capture_output=True).stdout
+    dim=subprocess.run(['convert',f,'-resize','500x>','-format','%w %h','info:'],capture_output=True,text=True).stdout.split()
+    w,h=int(dim[0]),int(dim[1]); return np.frombuffer(out,dtype=np.uint8).reshape(h,w,3).astype(int)
+def pasy(a,pred,udzial=0.2,minw=3,maxp=2):
+    h,w,_=a.shape; m=pred(a[...,0],a[...,1],a[...,2]); prog=int(np.ceil(w*udzial))
+    rows=[y for y in range(h) if m[y].sum()>=prog]
+    n=0;s=-1;o=-1
+    def z():
+        nonlocal n
+        if s>=0 and o-s+1>=minw: n+=1
+    for y in rows:
+        if s>=0 and y-o-1<=maxp: o=y;continue
+        z(); s=y;o=y
+    z(); return n, len(rows)
+R={'obecna (b<=190, r-b>=50)':lambda r,g,b:(r>=230)&(g>=210)&(b<=190)&(r-b>=50),
+   'A: b<=205, r-b>=40':lambda r,g,b:(r>=230)&(g>=210)&(b<=205)&(r-b>=40),
+   'B: b<=210, r-b>=35':lambda r,g,b:(r>=230)&(g>=210)&(b<=210)&(r-b>=35)}
+for k in ['ipad-13/en','ipad-13/pl','6.9/en','6.9/pl']:
+    for sc in ['03-wzor','04-zakreslenie']:
+        a=load_im(f'surowe/{k}/{sc}.png')
+        print(k,sc,a.shape[:2],{n:pasy(a,p) for n,p in R.items()})

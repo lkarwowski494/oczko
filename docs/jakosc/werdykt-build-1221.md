@@ -113,3 +113,36 @@ Analogia: Trening poza zakresem sesji; `docs/fakty-wlasciciela.md` sprawdzony �
 
 ## Nie sprawdzono (zrzuty)
 Aplikacji na symulatorze i urządzeniu (kadry z CI); maszynowa detekcja napisów (OCR niedostępny — przegląd wzrokowy 56 plików, plus testy 4e46688c, których nie uruchamiałem); zachowania pigułki w zwykłej aplikacji; podpisów w 33 pozostałych językach (tylko en i pl); zgodności z wytycznymi App Store i metadanych (rola 10).
+
+## Zrzuty sklepu — przegląd po ZR3/ZR4, WR3 (2026-11-20)
+Rola 07, tryb audit (polecenie WR3 @ 12694e83, gałąź `koordynacja`). Gałąź `claude/wr3-zrzuty-2026-11-20` od 7e3de129. Materiał: przebieg „Zrzuty sklepu” run **44722734741** (7e3de129, en+pl, iPhone 6.9″ + iPad 13″, og07=true; aplikacja z przebiegu 44697325331 = ZR3), artefakty `sklep-zrzuty-ramki` i `sklep-zrzuty-surowe`, 28 + 28 plików (komplet jak w WR2). Dowody: `docs/jakosc/werdykt-1221/og07-zrzuty-wr3.md` (notatki), `wr3-pomiary-zakreslen.txt` (pomiary w pikselach), `wr3-pomiar-skrypty.txt`, `wr3-manifest-sha256.txt`, zestawienia `wr3-*.jpg`. Ta sekcja zastępuje wynik WR2 dla zrzutów (P-996/P-997 niżej w pliku zostają jako historia).
+
+**Werdykt zrzutów: DO SKLEPU Z UWAGAMI** (KO-186/KO-187, do weta). Brak P0/P1/P2 na kadrach; zostają P3 i **czerwony krok „Komplet zrzutów i wymiary”** (kontrola zakreśleń — fałszywy alarm kalibracji, nie wada kadru).
+
+| Uwaga WR2 | Stan WR3 | Dowód |
+|---|---|---|
+| **P2 znacznik (Z1)** | **zamknięte** | licznik 20, „Now working row 21”/„Teraz rząd 21”, etykieta „Row 21 ↓”/„Rząd 21 ↓” na linii PDF „Row 21”/„Rząd 21” w iPhone i iPad, en i pl (03, 04, ramki); reguły znacznika iPad y 1665–1671 i 1714–1720 |
+| **P3 zakreślenia (Z2)** | **Row 9 zamknięte; Row 13: zakres zamknięty, wygląd P3 utrzymany** | 8 pasów zaczyna się 37–56 px przed tekstem i kończy 24–69 px za nim, żaden nie wchodzi na sąsiedni wiersz (odstęp ≥ 44 px); odchylenie środka od środka tekstu: Row 9 iPad −1,0…−0,5 px, iPhone +10 px; Row 13 +5,5 px (iPad), +10,5 (iPhone en), −5 (iPhone pl). Utrzymane: Row 13 cienki (22/13 px wobec 59/35 px Row 9) i różnie ułożony względem liter (iPad dolna część, iPhone en pod linią bazową, iPhone pl przy górze korpusu) |
+| **U4 podpis 04** | **zamknięte** | ramki: „Highlight rows right on the pattern” / „Zakreślaj rzędy prosto na wzorze”, zgodne z `podpisy-zrzutow.json` i kadrem (2 zakreślenia) |
+| **U2 nakładki E2E, pigułka** | **zamknięte dla zrzutów** | brak nakładek na 56 plikach; brak „Strona n z m” na 16 plikach 03/04 |
+
+**OG-07 dla scen 03/04 (P-218 1–6, P-224): TAK, w granicach** — ogr. 1–5 zgodne, 6 = ten przegląd na kadrach (nie na urządzeniu); zakreślenia 03 → 04: 1 → 2 w każdym z 4 wariantów (napis w kadrze i piksele). Kadr zgodny z aplikacją 1221 poza P-993 (9 plików, 44/25 linii; od 4e46688c do 7e3de129 bez zmian wejść binarki).
+
+**Czerwona kontrola zakreśleń (pyt. 5):** odtworzona lokalnie na pobranych surowych: `ipad-13/en` 03 = 0, 04 = 0 → BŁĄD; pozostałe 03 = 0, 04 = 1. Pomiar koordynatora potwierdzony: pas Row 9 ma barwę (252,245,196/195) — poza `jestZolty` (b ≤ 190), więc żaden kadr 03 nie ma pasa; liczy się tylko Row 13 (b ≈ 176). Wiersze analizy w 04: iPad en 2 (min. 3), iPad pl 3 (dokładnie minimum), iPhone en 4, iPhone pl 5 — kontrola przechodzi z zerowym zapasem i może zmieniać wynik między przebiegami.
+- (a) kadr `ipad-13/en/04` **pokazuje zakreślenie** (2 pasy, „2 highlights”): **fałszywy alarm** kontroli.
+- (b) pas Row 13 czyta się jako zakreślenie markerem, nie przekreślenie (półprzezroczysty, ten sam odcień co Row 9, wystaje za tekst, tekst czytelny; środek korpusu 0,5 nie wystąpił w żadnym wariancie): **P3**, nie P1/P2.
+- (c) rekomendacja: kalibracja kontroli (szczegóły i opcje w P-1003).
+
+**Uwagi (priorytet, właściciel, krok):**
+- **Z2′ · P3 · Row 13 cienki i niespójny z Row 9.** Rola 08 (sceny: współrzędne y per język/orientacja względem środka korpusu liter; grubość pasa nie jest ustawiana w scenie — marker 18 pt, `WidokWzoru.swift:420`, a grubości pasów różnią się ok. 2,7× przy tym samym narzędziu; hipoteza: zapisane vs bieżące pociągnięcie, do sprawdzenia na urządzeniu). Nie blokuje sklepu.
+- **Z3 · P3 (utrzymane):** reguły znacznika przy wierszu 21 (górna nad tekstem, dolna na linii bazowej) przecinają dolną część liter; godziny w Historii (06) różnią się o 1–2 min między iPhone'em a iPadem; puste obszary iPada na 01, 02, 05, 06, 07 (znane z `zrzuty-plan.md`).
+- **K1 · P2 dla kroku sklepu (proces, nie kadr) · kontrola zakreśleń czerwona na poprawnych kadrach.** Rola 08/10, zob. P-1003.
+- Pigułka „Strona n z m” w aplikacji (poza zrzutami) — bez zmian, P2 brzegowy z P-993, nie widziałem w działaniu.
+
+## Decyzje (tryb analogia, do weta; nie wpisane do `docs/decyzje.md`, bo polecenie dopuszcza tylko `docs/jakosc/`)
+Analogia: Trening poza zakresem sesji; `docs/fakty-wlasciciela.md` sprawdzony (hak startu) — bez wpisu o zrzutach i kontroli zakreśleń. Według rekomendacji.
+- **P-1002** Kadry z przebiegu 44722734741 spełniają wymagania P-992: werdykt **DO SKLEPU Z UWAGAMI**; P2 (Z1), U4, U2 zamknięte, OG-07 03/04 spełnione. Odrzucone: DO POWTÓRZENIA (brak P0/P1/P2 na kadrach; P3 Row 13 nie zmienia odbioru funkcji) i DO SKLEPU bez uwag (cienki pas Row 13 niespójny z Row 9 w głównym kadrze przewagi; kontrola przebiegu czerwona).
+- **P-1003** Czerwona kontrola zakreśleń przy poprawnych kadrach — dwie opcje (kod nie zmieniany w WR3). **(A) Kalibracja kontroli** (rola 08, `scripts/ci/kontrola-zakreslen.mjs` + test): np. `b ≤ 205` i `r−b ≥ 40` zamiast `b ≤ 190` i `r−b ≥ 50`; na tych kadrach daje 03 = 1, 04 = 2 w 4 z 4 parach (próba poza repo); koszt: mała zmiana + test, nowy przebieg zrzutów do zielonego (macOS, nowy SHA ⇒ nowe kadry); ryzyko: szerszy próg barwy (tło UI (238,235,230) ma r−b = 8, nie koliduje). **(B) Zmiana sceny na grubszy/nasycony pas:** nie rozwiązuje przyczyny, bo grubość pasa nie jest ustawiana w scenie (marker 18 pt), a próg 3 wierszy analizy zostaje; barwa Row 9 z fikstury (b ≈ 196) nadal poza regułą. **Rekomendacja: (A)**, kadry bez zmian scen; jeśli nowy przebieg zmieni coś poza godzinami w 06, 07 ponownie ogląda 03/04 (P-218 (6)); jeśli nie — wynik niniejszego przeglądu jest podstawą. Z2′ (grubość/pozycja Row 13) opcjonalnie w tej samej powtórce.
+
+## Nie sprawdzono (zrzuty, WR3)
+Aplikacji na symulatorze i urządzeniu (kadry z CI); maszynowej detekcji tekstu (OCR — przegląd wzrokowy plus pomiar pikseli zakreśleń i znacznika); logu samego kroku „Komplet zrzutów i wymiary” (wynik odtworzony kontrolą lokalną na tych samych plikach); testów z 7e3de129 (nie uruchamiałem); surowych 03 iPhone en/pl i iPad pl oglądanych tylko przez ramki i pomiar; przyczyny różnicy grubości pasów (hipoteza); podpisów w 33 pozostałych językach (tylko en i pl); zgodności z wytycznymi App Store i metadanych (rola 10).

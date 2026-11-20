@@ -1,0 +1,53 @@
+# WR3 · pomiary zakreśleń na surowych kadrach 03/04 (run 44722734741, 7e3de129). Piksele natywne; maska żółta: r>=235,g>=225,b<=225,r-b>=25 (zakreślacz), tekst: r,g,b<120.
+# 'start/koniec' = o ile px pas wystaje przed początek/za koniec tekstu (+ = wystaje, - = brakuje); 'gora/dol' = o ile px pas wystaje ponad/pod pasmo tekstu wiersza (cap-top..descender); wejście w sąsiada: nakładanie pasa na pasmo tekstu sąsiedniego wiersza w px (ujemne = odstęp).
+## surowe/ipad-13/en/03-wzor.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1665, 1720) n 14
+  pas x236-1478 y1105-1163 (h=59) | wiersz#3 tekst y1111-1158 x273-1433 (h=48) | start +37 koniec +45 | gora +6 dol +5 | odchyl.środka -0.5px | wejście w sąsiada (px, +=wchodzi) [(-1, -87), (1, -89)]
+## surowe/ipad-13/en/04-zakreslenie.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1665, 1720) n 14
+  pas x236-1478 y1105-1163 (h=59) | wiersz#3 tekst y1111-1158 x273-1433 (h=48) | start +37 koniec +45 | gora +6 dol +5 | odchyl.środka -0.5px | wejście w sąsiada (px, +=wchodzi) [(-1, -87), (1, -89)]
+  pas x217-1525 y1413-1434 (h=22) | wiersz#5 tekst y1394-1442 x273-1462 (h=49) | start +56 koniec +63 | gora -19 dol -8 | odchyl.środka +5.5px | wejście w sąsiada (px, +=wchodzi) [(-1, -123), (1, -101)]
+## surowe/ipad-13/pl/03-wzor.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1665, 1720) n 14
+  pas x236-1995 y1105-1163 (h=59) | wiersz#3 tekst y1111-1159 x273-1939 (h=49) | start +37 koniec +56 | gora +6 dol +4 | odchyl.środka -1.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -86), (1, -89)]
+## surowe/ipad-13/pl/04-zakreslenie.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1665, 1720) n 14
+  pas x236-1995 y1105-1163 (h=59) | wiersz#3 tekst y1111-1159 x273-1939 (h=49) | start +37 koniec +56 | gora +6 dol +4 | odchyl.środka -1.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -86), (1, -89)]
+  pas x217-2038 y1413-1434 (h=22) | wiersz#5 tekst y1394-1442 x273-1969 (h=49) | start +56 koniec +69 | gora -19 dol -8 | odchyl.środka +5.5px | wejście w sąsiada (px, +=wchodzi) [(-1, -112), (1, -101)]
+## surowe/6.9/en/03-wzor.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1425, 1457) n 8
+  pas x126-894 y1099-1133 (h=35) | wiersz#4 tekst y1092-1120 x164-862 (h=29) | start +38 koniec +32 | gora -7 dol +13 | odchyl.środka +10.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -65), (1, -44)]
+## surowe/6.9/en/04-zakreslenie.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1455, 1487) n 8
+  pas x126-894 y1129-1163 (h=35) | wiersz#4 tekst y1122-1150 x164-862 (h=29) | start +38 koniec +32 | gora -7 dol +13 | odchyl.środka +10.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -65), (1, -44)]
+  pas x114-913 y1310-1322 (h=13) | wiersz#6 tekst y1292-1319 x164-879 (h=28) | start +50 koniec +34 | gora -18 dol +3 | odchyl.środka +10.5px | wejście w sąsiada (px, +=wchodzi) [(-1, -81), (1, -55)]
+## surowe/6.9/pl/03-wzor.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1440, 1472) n 8
+  pas x126-1191 y1114-1148 (h=35) | wiersz#4 tekst y1107-1135 x164-1167 (h=29) | start +38 koniec +24 | gora -7 dol +13 | odchyl.środka +10.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -64), (1, -44)]
+## surowe/6.9/pl/04-zakreslenie.png
+  linia znacznika (ciemne wiersze >50% szer.): y (1470, 1502) n 8
+  pas x126-1191 y1144-1178 (h=35) | wiersz#4 tekst y1137-1165 x164-1167 (h=29) | start +38 koniec +24 | gora -7 dol +13 | odchyl.środka +10.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -64), (1, -44)]
+  pas x114-1213 y1310-1322 (h=13) | wiersz#6 tekst y1307-1335 x164-1185 (h=29) | start +50 koniec +28 | gora -3 dol -13 | odchyl.środka -5.0px | wejście w sąsiada (px, +=wchodzi) [(-1, -59), (1, -70)]
+
+# Pozycja pionowa pasa Row 13 względem korpusu liter (x-height; przybliżona: próg 45% profilu ciemnych pikseli)
+ipad-13/en: tekst y 1394-1442; korpus liter (x-height) y 1404-1430 (h=27); pas y 1413-1434 (h=22) środek 1423.5; położenie środka pasa w korpusie: 0.75 (0=góra x-height, 0.5=środek [przekreślenie], 1=linia bazowa [podkreślenie]); pokrycie korpusu 67%
+ipad-13/pl: tekst y 1394-1442; korpus liter (x-height) y 1404-1430 (h=27); pas y 1413-1434 (h=22) środek 1423.5; położenie środka pasa w korpusie: 0.75 (0=góra x-height, 0.5=środek [przekreślenie], 1=linia bazowa [podkreślenie]); pokrycie korpusu 67%
+6.9/en: tekst y 1292-1319; korpus liter (x-height) y 1298-1313 (h=16); pas y 1310-1322 (h=13) środek 1316.0; położenie środka pasa w korpusie: 1.20 (0=góra x-height, 0.5=środek [przekreślenie], 1=linia bazowa [podkreślenie]); pokrycie korpusu 25%
+6.9/pl: tekst y 1307-1335; korpus liter (x-height) y 1313-1329 (h=17); pas y 1310-1322 (h=13) środek 1316.0; położenie środka pasa w korpusie: 0.19 (0=góra x-height, 0.5=środek [przekreślenie], 1=linia bazowa [podkreślenie]); pokrycie korpusu 59%
+
+# Kontrola zakreśleń (scripts/ci/kontrola-zakreslen.mjs, bez zmian) uruchomiona lokalnie na pobranych surowych
+OK 6.9/en: 03=0, 04=1 pasów zakreślenia
+OK 6.9/pl: 03=0, 04=1 pasów zakreślenia
+BŁĄD /tmp/claude-0/-home-user-oczko/c2db58eb-b646-5769-bfaf-9e73cf944710/scratchpad/surowe/ipad-13/en/04-zakreslenie.png: 04=0 pasów zakreślenia, 03=0 — kadr 04 musi mieć więcej niż 03 (licznik w interfejsie nie dowodzi widoczności pociągnięcia)
+OK ipad-13/pl: 03=0, 04=1 pasów zakreślenia
+Kontrola zakreśleń: 1 błędów
+
+# Odtworzenie liczby pasów (500 px szerokości, ImageMagick) — reguła obecna vs kalibracje próbne (NIE zmieniano kodu; skrypt poza repo): wynik (pasy, liczba żółtych wierszy)
+ipad-13/en 03-wzor (375, 500) {'obecna (b<=190, r-b>=50)': (0, 0), 'A: b<=205, r-b>=40': (1, 5), 'B: b<=210, r-b>=35': (1, 5)}
+ipad-13/en 04-zakreslenie (375, 500) {'obecna (b<=190, r-b>=50)': (0, 2), 'A: b<=205, r-b>=40': (1, 7), 'B: b<=210, r-b>=35': (1, 7)}
+ipad-13/pl 03-wzor (375, 500) {'obecna (b<=190, r-b>=50)': (0, 0), 'A: b<=205, r-b>=40': (1, 7), 'B: b<=210, r-b>=35': (1, 9)}
+ipad-13/pl 04-zakreslenie (375, 500) {'obecna (b<=190, r-b>=50)': (1, 3), 'A: b<=205, r-b>=40': (2, 10), 'B: b<=210, r-b>=35': (2, 13)}
+6.9/en 03-wzor (1086, 500) {'obecna (b<=190, r-b>=50)': (0, 1), 'A: b<=205, r-b>=40': (1, 11), 'B: b<=210, r-b>=35': (1, 12)}
+6.9/en 04-zakreslenie (1086, 500) {'obecna (b<=190, r-b>=50)': (1, 4), 'A: b<=205, r-b>=40': (2, 17), 'B: b<=210, r-b>=35': (2, 17)}
+6.9/pl 03-wzor (1086, 500) {'obecna (b<=190, r-b>=50)': (0, 0), 'A: b<=205, r-b>=40': (1, 11), 'B: b<=210, r-b>=35': (1, 12)}
+6.9/pl 04-zakreslenie (1086, 500) {'obecna (b<=190, r-b>=50)': (1, 5), 'A: b<=205, r-b>=40': (2, 17), 'B: b<=210, r-b>=35': (2, 17)}
