@@ -28,8 +28,24 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 # 014: kadr 04 różni się od 03 — zakreślacz włączony i DRUGIE zakreślenie (pierwsze z fikstury) przez wiersze wzoru niżej na stronie (pozycje % ekranu; strona PDF z wzor-sklepu.ts ma tekst w górnych ~70% strony)
 # 019: fikstura zostawia jedno zakreślenie (zrobione w tej samej orientacji); licznik z cyfrą 1 przed swipe'em, z cyfrą 2 po nim (cyfra bez słowa: ten sam scenariusz w każdym języku)
 - assertVisible: { id: "wzor-zakreslenia", text: '^\D*1\D*$' } # P3 (KO-043): ściśle cyfra 1, bez innych cyfr (poprzedni wzorzec z kropką-gwiazdką po obu stronach pasował też do „12”, „21”)
-# ZR3 (P-998, WR2 Z2): zakreślenie 2 = wiersz „Row 13”/„Rząd 13” (drugi wiersz z warkoczem), od początku tekstu do końca wiersza; współrzędne ZAKR_2_* z dane/<klucz>.json (jak ZAKR_1_* w 00-przygotuj).
-- swipe: { start: "${ORIENT_WZOR == 'PORTRAIT' ? ZAKR_2_OD_IPHONE : ZAKR_2_OD_IPAD}", end: "${ORIENT_WZOR == 'PORTRAIT' ? ZAKR_2_DO_IPHONE : ZAKR_2_DO_IPAD}", duration: 800 }
+# ZR3 (P-998, WR2 Z2): zakreślenie 2 = wiersz „Row 13”/„Rząd 13” (drugi wiersz z warkoczem), od początku tekstu do końca wiersza; współrzędne dosłowne per orientacja × język (jak zakreślenie 1 w 00-przygotuj;
+# powód dosłowności i wyboru przez `when: true:`: ZR4, P-1000 — Maestro waliduje `start`/`end` swipe'a przy parsowaniu).
+- runFlow: # iPhone (PORTRAIT) · en
+    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'en'}" }
+    commands:
+      - swipe: { start: "10%, 46%", end: "69%, 46%", duration: 800 }
+- runFlow: # iPad (LANDSCAPE_LEFT) · en
+    when: { true: "${ORIENT_WZOR == 'LANDSCAPE_LEFT' && DANE_KLUCZ == 'en'}" }
+    commands:
+      - swipe: { start: "9%, 69%", end: "55%, 69%", duration: 800 }
+- runFlow: # iPhone (PORTRAIT) · pl
+    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'pl'}" }
+    commands:
+      - swipe: { start: "10%, 46%", end: "92%, 46%", duration: 800 }
+- runFlow: # iPad (LANDSCAPE_LEFT) · pl
+    when: { true: "${ORIENT_WZOR == 'LANDSCAPE_LEFT' && DANE_KLUCZ == 'pl'}" }
+    commands:
+      - swipe: { start: "9%, 69%", end: "74%, 69%", duration: 800 }
 - assertVisible: { id: "wzor-zakreslenia", text: '^\D*2\D*$' } # licznik z cyfrą 2 w każdym języku (słowniki wzor.zakreslenia_<forma dla 2> = „{{count}} …”); pierwsze zakreślenie z 00-przygotuj + to
 # 019 (AO, KO-044; P-748, P-749): opcja 1 z P-746 (wyłączenie zakreślacza przed zrzutem) obalona w przebiegu 43090241469 — przyczyna była w aplikacji
 # (pociągnięcie na płótnie z rysunkiem wczytanym z pliku nie było rysowane; poprawka w WidokWzoru.swift). Scena bez obejścia: zakreślacz zostaje włączony do zrzutu.

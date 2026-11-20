@@ -2,17 +2,25 @@
  *  Z1 (P2) etykieta znacznika „Row 21 ↓” ma stać na wierszu wzoru o tym samym numerze: licznik fikstury = 20, więc rząd w robocie = 21 (RD-21: licznik + 1),
  *      a wzór sklepu (src/kompozycja/e2e/wzor-sklepu.ts) ma wiersz „Row 21”/„Rząd 21”. Położenie znacznika nie zależy od numeru, więc wariant (a) z polecenia (licznik) wystarcza.
  *  Z2 (P3) zakreślenia mają iść od początku tekstu do końca JEDNEGO wiersza (nie od połowy wiersza, nie do środka słowa, nie między wierszami), na iPhonie i iPadzie, en i pl.
- * Co ten test sprawdza, a czego nie: liczy z danych (szerokość wierszy w Helvetice 15 pt z wzor-sklepu.ts, układ strony w kadrze) gdzie powinno leżeć zakreślenie i porównuje z współrzędnymi z dane/<klucz>.json.
+ * Co ten test sprawdza, a czego nie: liczy z danych (szerokość wierszy w Helvetice 15 pt z wzor-sklepu.ts, układ strony w kadrze) gdzie powinno leżeć zakreślenie i porównuje z współrzędnymi swipe'ów odczytanymi ze scen (ZR4, P-1000: dosłowne „N%, M%” w gałęziach runFlow; dane/<klucz>.json ich już nie zawiera).
  * Stałe układu (UKLAD) są ZMIERZONE na kadrach z przebiegu 44677685872 (docs/jakosc/werdykt-1221/wr2-ramki-03-04-*.jpg): na nich pas z 40% wysokości leżał na „Row 9” (iPhone) i o ok. 1 pkt % nad „Cast on” (iPad),
  * więc dokładność to ±1 pkt % wysokości (iPad ±4 px kadru, iPhone ±8 px). Ten test pilnuje spójności danych i wyliczeń; trafienie w wiersz na symulatorze potwierdza dopiero przebieg zrzutów i przegląd wzrokowy 07 (macOS). */
 import * as fs from 'fs';
 import * as path from 'path';
 import { WZORY_SKLEPU, type KluczWzoru } from '../../src/kompozycja/e2e/wzor-sklepu';
+import { ORIENTACJA_URZADZENIA, wariantyPliku } from './pomoc-swipe';
 
 const korzen = path.join(__dirname, '..', '..');
 const czytaj = (p: string) => fs.readFileSync(path.join(korzen, p), 'utf8');
 const kod = (p: string) => czytaj(p).split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');
 const dane = (k: string) => JSON.parse(czytaj(`e2e/zrzuty-sklepu/dane/${k}.json`)) as Record<string, string>;
+const PLIK_ZAKRESLENIA: Record<'1' | '2', string> = { '1': '00-przygotuj.yaml', '2': '04-zakreslenie.yaml' }; // zakreślenie 1 = fikstura, 2 = scena 04
+/** Współrzędne zakreślenia n dla urządzenia i języka z gałęzi runFlow sceny (dokładnie jedna gałąź na parę orientacja × język). */
+const zakreslenie = (n: '1' | '2', u: 'iphone' | 'ipad', k: string): { od: string; do: string } => {
+  const pasujace = wariantyPliku(PLIK_ZAKRESLENIA[n]).filter((w) => w.orientacja === ORIENTACJA_URZADZENIA[u] && w.jezyk === k);
+  expect([n, u, k, pasujace.length]).toEqual([n, u, k, 1]);
+  return { od: pasujace[0].start, do: pasujace[0].end };
+};
 
 // Helvetica (AFM, jednostki 1/1000 em); polskie litery z /Differences mają szerokość litery bazowej (Aogonek = A itd.).
 const SZER: Record<string, number> = {
@@ -64,20 +72,19 @@ describe('ZR3 Z1: etykieta znacznika rzędu stoi na wierszu wzoru o tym samym nu
 });
 
 describe('ZR3 Z2: zakreślenia od początku tekstu do końca jednego wiersza (iPhone, iPad × en, pl)', () => {
-  const przyg = kod('e2e/zrzuty-sklepu/00-przygotuj.yaml');
-  const s04 = kod('e2e/zrzuty-sklepu/04-zakreslenie.yaml');
-
-  test('oba swipe\'y czytają współrzędne ze zmiennych ZAKR_1_* (fikstura) i ZAKR_2_* (scena 04) wybieranych po ORIENT_WZOR; en i pl mają komplet 8 kluczy', () => {
-    const wyr = (t: string, n: string) => new RegExp(`swipe:\\s*\\{\\s*start:\\s*"\\$\\{ORIENT_WZOR == 'PORTRAIT' \\? ZAKR_${n}_OD_IPHONE : ZAKR_${n}_OD_IPAD\\}",\\s*end:\\s*"\\$\\{ORIENT_WZOR == 'PORTRAIT' \\? ZAKR_${n}_DO_IPHONE : ZAKR_${n}_DO_IPAD\\}"`).test(t);
-    expect(wyr(przyg, '1')).toBe(true); expect(wyr(s04, '2')).toBe(true);
-    for (const k of ['en', 'pl']) for (const n of ['1', '2']) for (const o of ['OD', 'DO']) for (const u of ['IPHONE', 'IPAD']) expect([k, `ZAKR_${n}_${o}_${u}`, typeof dane(k)[`ZAKR_${n}_${o}_${u}`]]).toEqual([k, `ZAKR_${n}_${o}_${u}`, 'string']);
+  test('oba swipe\'y (fikstura = zakreślenie 1, scena 04 = zakreślenie 2) mają po 4 gałęzie runFlow: iPhone (PORTRAIT) i iPad (LANDSCAPE_LEFT) × en i pl; dane/<klucz>.json nie niosą już ZAKR_* (jedno źródło współrzędnych)', () => {
+    for (const n of ['1', '2'] as const) {
+      const w = wariantyPliku(PLIK_ZAKRESLENIA[n]);
+      expect(w.map((x) => `${x.orientacja}/${x.jezyk}`).sort()).toEqual(['LANDSCAPE_LEFT/en', 'LANDSCAPE_LEFT/pl', 'PORTRAIT/en', 'PORTRAIT/pl']);
+    }
+    for (const k of ['en', 'pl']) expect(Object.keys(dane(k)).filter((x) => x.startsWith('ZAKR_'))).toEqual([]);
     expect(Object.keys(dane('pl')).sort()).toEqual(Object.keys(dane('en')).sort());
   });
 
   const przypadki = (['iphone', 'ipad'] as Urzadzenie[]).flatMap((u) => (['en', 'pl'] as KluczWzoru[]).flatMap((k) => (['1', '2'] as const).map((n) => [u, k, n] as const)));
   test.each(przypadki)('%s · %s · zakreślenie %s: poziomo, w jednym wierszu (±1 pkt % wysokości), od początku tekstu, do końca wiersza (≤ 3 pkt % za nim), bez wyjścia poza stronę', (u, k, n) => {
-    const d = dane(k); const U = UKLAD[u]; const S = u.toUpperCase();
-    const [x1, y1] = para(d[`ZAKR_${n}_OD_${S}`]); const [x2, y2] = para(d[`ZAKR_${n}_DO_${S}`]);
+    const U = UKLAD[u]; const z = zakreslenie(n, u, k);
+    const [x1, y1] = para(z.od); const [x2, y2] = para(z.do);
     expect(y1).toBe(y2); // pociągnięcie poziome: jeden wiersz
     const wiersze = WZORY_SKLEPU[k].wiersze;
     const idx = wiersze.findIndex((w) => IDX_ZAKRESLEN[n].test(w)); expect(idx).toBeGreaterThan(-1);
@@ -93,10 +100,10 @@ describe('ZR3 Z2: zakreślenia od początku tekstu do końca jednego wiersza (iP
   });
 
   test.each(['en', 'pl'] as const)('%s: oba zakreślenia na obu urządzeniach dzielą ≥ 6 pkt % wysokości (pasy nie zlewają się) i leżą nad wierszem znacznika', (k) => {
-    for (const S of ['IPHONE', 'IPAD']) {
-      const y = (n: string) => para(dane(k)[`ZAKR_${n}_OD_${S}`])[1];
+    for (const u of ['iphone', 'ipad'] as Urzadzenie[]) {
+      const y = (n: '1' | '2') => para(zakreslenie(n, u, k).od)[1];
       expect(Math.abs(y('1') - y('2'))).toBeGreaterThanOrEqual(6);
-      const u = S.toLowerCase() as Urzadzenie; const iZnacznika = WZORY_SKLEPU[k].wiersze.findIndex((w) => /^(Row|Rząd) 21:/.test(w));
+      const iZnacznika = WZORY_SKLEPU[k].wiersze.findIndex((w) => /^(Row|Rząd) 21:/.test(w));
       expect(Math.max(y('1'), y('2'))).toBeLessThan(UKLAD[u].srodekWiersza(iZnacznika) - 2);
     }
   });

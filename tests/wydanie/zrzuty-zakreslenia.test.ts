@@ -6,12 +6,14 @@
  * Ograniczenie: widoczność pociągnięcia w kadrze nie jest elementem interfejsu (brak testID per pociągnięcie); licznik i test statyczny nie zastępują obejrzenia zrzutu 04. */
 import * as fs from 'fs';
 import * as path from 'path';
+import { wariantyPliku } from './pomoc-swipe';
 
 const korzen = path.join(__dirname, '..', '..');
 const czytaj = (p: string) => fs.readFileSync(path.join(korzen, p), 'utf8');
 const kod = (p: string) => czytaj(p).split('\n').filter((l) => !l.trimStart().startsWith('#'));
-// ZR3 (P-998): współrzędne swipe'ów są ze zmiennych ZAKR_* (dane/<klucz>.json, wybór po ORIENT_WZOR); geometria: tests/wydanie/zrzuty-zakreslenia-geometria.test.ts
-const SWIPE = /swipe:\s*\{\s*start:\s*"\$\{ORIENT_WZOR == 'PORTRAIT' \? ZAKR_[12]_OD_IPHONE : ZAKR_[12]_OD_IPAD\}",\s*end:\s*"\$\{ORIENT_WZOR == 'PORTRAIT' \? ZAKR_[12]_DO_IPHONE : ZAKR_[12]_DO_IPAD\}"/;
+// ZR3 (P-998) → ZR4 (P-1000): swipe'e mają DOSŁOWNE współrzędne w gałęziach runFlow (orientacja × język; Maestro waliduje je przy parsowaniu); geometria: tests/wydanie/zrzuty-zakreslenia-geometria.test.ts,
+// literały: tests/wydanie/zrzuty-swipe-skladnia.test.ts. SWIPE trafia w pierwszą z czterech gałęzi (leżą jedna za drugą).
+const SWIPE = /swipe:\s*\{\s*start:\s*"\d+%,\s*\d+%",\s*end:\s*"\d+%,\s*\d+%"/;
 const idx = (linie: string[], re: RegExp, od = 0) => { const i = linie.findIndex((l, n) => n >= od && re.test(l)); expect([re.source, i >= 0]).toEqual([re.source, true]); return i; };
 
 describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
@@ -48,14 +50,16 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
     expect(s04.slice(swipe + 1).filter((l) => /tapOn:.*wzor-zakreslacz|selected:\s*false/.test(l))).toEqual([]); // po swipe nic nie wyłącza narzędzia
   });
 
-  test('swipe fikstury (ZAKR_1_*) i swipe sceny 04 (ZAKR_2_*) są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), poziomo, na obu urządzeniach i w obu językach', () => {
-    expect(przyg.find((l) => SWIPE.test(l))).toMatch(/ZAKR_1_/); expect(s04.find((l) => SWIPE.test(l))).toMatch(/ZAKR_2_/);
+  test('swipe fikstury (zakreślenie 1) i swipe sceny 04 (zakreślenie 2) są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), poziomo, na obu urządzeniach i w obu językach', () => {
+    expect(przyg.find((l) => SWIPE.test(l))).toBeDefined(); expect(s04.find((l) => SWIPE.test(l))).toBeDefined();
     const y = (s: string) => Number(/,\s*(\d+)%$/.exec(s.trim())![1]);
+    const f = wariantyPliku('00-przygotuj.yaml'); const s = wariantyPliku('04-zakreslenie.yaml');
+    expect(f).toHaveLength(4); expect(s).toHaveLength(4);
     for (const k of ['en', 'pl']) {
-      const d = JSON.parse(czytaj(`e2e/zrzuty-sklepu/dane/${k}.json`)) as Record<string, string>;
-      for (const u of ['IPHONE', 'IPAD']) {
-        expect([k, u, y(d[`ZAKR_1_OD_${u}`])]).toEqual([k, u, y(d[`ZAKR_1_DO_${u}`])]); expect([k, u, y(d[`ZAKR_2_OD_${u}`])]).toEqual([k, u, y(d[`ZAKR_2_DO_${u}`])]); // poziomo
-        expect(Math.abs(y(d[`ZAKR_1_OD_${u}`]) - y(d[`ZAKR_2_OD_${u}`]))).toBeGreaterThanOrEqual(6);
+      for (const o of ['PORTRAIT', 'LANDSCAPE_LEFT']) {
+        const w1 = f.find((x) => x.orientacja === o && x.jezyk === k)!; const w2 = s.find((x) => x.orientacja === o && x.jezyk === k)!;
+        expect([k, o, y(w1.start)]).toEqual([k, o, y(w1.end)]); expect([k, o, y(w2.start)]).toEqual([k, o, y(w2.end)]); // poziomo
+        expect(Math.abs(y(w1.start) - y(w2.start))).toBeGreaterThanOrEqual(6);
       }
     }
   });
