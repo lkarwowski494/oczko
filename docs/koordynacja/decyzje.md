@@ -216,3 +216,6 @@ Opcje roli 07: (A) wysłać zrzuty 44677685872 z przyjętą uwagą P2 (znacznik 
 
 ## KO-185 (20.11 09:25, do weta) — poprawka składni swipe w scenach zrzutów (ZR4)
 Zrzuty 44697325331 padły przed pierwszym kadrem: Maestro odrzuca wyrażenie `${A ? B : C}` w `swipe.start` przy parsowaniu. Opcje: (A) gałęzie `runFlow when` z dosłownymi współrzędnymi — pewna składnia (dosłowne „N%, M%” działały w ZR1/ZR2), więcej wierszy YAML; (B) zmienne per urządzenie ustawiane w skrypcie workflow i `${ZAKR_1_OD}` w scenie — krócej, ale zmienia workflow i nie wiadomo, czy parser przyjmie samą zmienną. Wybór **A** (rekomendacja koordynatora), sesja ZR4; potem dispatch z `aplikacja_z_przebiegu=44697325331` (bez ponownego buildu) i WR3. Nie jest to ponowienie scenariusza z asercją licznika — zmiana danych sceny.
+
+## KO-186 (20.11 12:18, do weta) — przegląd zrzutów po ZR3/ZR4 (WR3)
+Zrzuty 44722734741 (7e3de129, aplikacja z 44697325331, build pominięty) — 3 z 4 zadań success o 12:17, iPad pl w toku. Opcje: (A) osobna sesja roli 07 (sonnet, pułap 1,5 USD) na pełny komplet z dowodem pikselowym dla P2/P3 — niezależna ocena, koszt ~1,5 USD; (B) przegląd koordynatora na wybranych kadrach — taniej, ale łamie zasadę „zlecam, nie wykonuję” i daje ocenę zakotwiczoną na moich oczekiwaniach. Wybór **A** (jak WR1/WR2). Sesja startuje dopiero po sukcesie zadania `zbierz`.
