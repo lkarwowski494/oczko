@@ -201,3 +201,9 @@ Werdykt 1221 GOTOWY Z UWAGAMI (a0f22db7). P-991, P-992 roli 07 przyjęte. Zrzuty
 
 ## KO-180 (19.11 15:14, do weta) — ZR2 przyjęta; zrzuty z kodu 4e46688c, wysyłka dalej binarki 1221
 ZR2 zmieniła `app/` i `src/` wyłącznie za flagą `EXPO_PUBLIC_ZRZUTY` (ustawianą tylko w buildzie zrzutów). Opcje: (a) zrzuty z 4e46688c, do Apple idzie 1221 bez nowego buildu — wygląd w produkcji identyczny, różni się tylko brak nakładek testowych i pigułki strony w kadrze — rekomendacja (jak P-991); (b) nowy build 10 tylko po to, by binarka miała ten sam SHA co zrzuty — odrzucone: koszt okna macOS + TestFlight bez zmiany zachowania. Wybór **a**. Ryzyko: ukryta pigułka „Strona 1 z 1” to drobna różnica kadru względem aplikacji (wskaźnik, nie funkcja) — akceptowane; do ponownego przeglądu 03/04 przez 07 (P-992). Dispatch zrzuty-sklepu (en,pl; iphone,ipad; pełny build) z integracji ok. 05:00 UTC 20.11.
+
+## KO-181 (20.11 04:57, do weta) — zrzuty z og07=true
+WR1 (07) potwierdziła zgodność treści scen 03/04 z ograniczeniami OG-07 1–6; treść scen bez zmian (ZR2 usuwa tylko nakładki). Opcje: (a) og07=true — 03/04 od razu w komplecie, ponowny przegląd 07 przed jakimkolwiek asc-zrzuty (P-992) — rekomendacja; (b) og07=false — 03/04 w `warunek-og07/`, komplet bez scen wzoru, potrzebny drugi przebieg/przełożenie. Wybór **a**. Przebieg 44677685872.
+
+## KO-182 (20.11 04:57, do weta) — ponowienie iOS 44552331104 po zrzutach
+Joby build/swift-test/eksperymenty anulowane bez maszyny (15 min w kolejce) = maszyna, P-091 10a, jedno ponowienie ręczne. Opcje: (a) ponowić po zakończeniu zrzutów — nie konkuruje o limit maszyn macOS z zrzutami (pilniejsze dla wysyłki 1221) — rekomendacja; (b) teraz równolegle — ryzyko, że obydwa przebiegi stoją w kolejce. Wybór **a**.
