@@ -14,5 +14,5 @@ name: "Zrzuty sklepu · 02 licznik w trakcie z notatką"
 - assertVisible: { id: "dzis-projekt", text: "${PROJ_GLOWNY}" }
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
-- assertVisible: { id: "licznik-wartosc", text: "47" }
+- assertVisible: { id: "licznik-wartosc", text: "20" }
 - assertVisible: { id: "licznik-notatka", text: ".*${NOTATKA}.*" }

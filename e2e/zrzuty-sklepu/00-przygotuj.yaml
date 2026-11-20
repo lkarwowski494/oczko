@@ -121,18 +121,20 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - runFlow: ../scenariusze/subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
-# --- sesja 3 (−1 dnia, w tygodniu „dziś”): rząd 45 wpisany, dwa stuknięcia do 47 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
+# --- sesja 3 (−1 dnia, w tygodniu „dziś”): rząd 18 wpisany, dwa stuknięcia do 20 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
+# ZR3 (KO-184, P-998): licznik projektu głównego = 20, więc rząd w robocie = 21 (RD-21: licznik + 1) i etykieta znacznika „Row 21 ↓”/„Rząd 21 ↓” stoi na wierszu wzoru „Row 21”/„Rząd 21” (src/kompozycja/e2e/wzor-sklepu.ts);
+# wcześniej licznik 47 → etykieta „48” na wierszu „Row 21” wyglądała w kadrze jak błąd aplikacji (WR2, Z1). Położenie znacznika nie zależy od numeru (stoi tam, gdzie je postawiono), zmienia się tylko etykieta.
 # Godziny sesji rosną razem z datą (−7 dni 18:00, −5 dni 19:30, −1 dnia 20:00), więc Historia (od najnowszego, sama godzina bez daty) czyta się chronologicznie (016).
 - runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "${ZRZUTY_SESJA_3}" } }
 - runFlow:
     file: ../scenariusze/subflows/wpisz-wartosc.yaml
     env:
-      WARTOSC: "45"
+      WARTOSC: "18"
 - tapOn: { id: "licznik-plus" }
-- assertVisible: { id: "licznik-wartosc", text: "46" }
+- assertVisible: { id: "licznik-wartosc", text: "19" }
 - runFlow: ../scenariusze/subflows/odstep.yaml
 - tapOn: { id: "licznik-plus" }
-- assertVisible: { id: "licznik-wartosc", text: "47" }
+- assertVisible: { id: "licznik-wartosc", text: "20" }
 - scrollUntilVisible: { element: { id: "licznik-akcja-notatka" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "licznik-akcja-notatka" }
 - assertVisible: { id: "formularz-notatka" }
@@ -155,7 +157,7 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - tapOn: { id: "wzor-zaznacz" }
 - assertVisible: { id: "wzor-kierunek" }
 - tapOn: "Down, like written steps"
-- assertVisible: { id: "wzor-znacznik-rzad", text: "48" }
+- assertVisible: { id: "wzor-znacznik-rzad", text: "21" } # licznik 20 + 1 = wiersz „Row 21” wzoru (ZR3, P-998)
 - tapOn: { id: "wzor-znacznik-gotowe" }
 - assertNotVisible: { id: "wzor-znacznik-pasek" }
 # 019: zakreślenia to pociągnięcia w układzie STRONY, więc pierwsze zakreślenie powstaje w orientacji kadrów 03 i 04 (ORIENT_WZOR: iPad poziomo, iPhone pionowo); w pionie wypadało
@@ -164,7 +166,9 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 - extendedWaitUntil: { visible: { id: "wzor-zakreslacz" }, timeout: 30000 }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: true }
-- swipe: { start: "20%, 40%", end: "80%, 40%", duration: 800 }
+# ZR3 (P-998, WR2 Z2): zakreślenie 1 = wiersz „Row 9”/„Rząd 9” od początku tekstu do końca wiersza; współrzędne per urządzenie (iPad poziomo, iPhone pionowo) i język (dane/<klucz>.json, ZAKR_1_*),
+# wyliczone z geometrii wzoru (tests/wydanie/zrzuty-zakreslenia-geometria.test.ts). Poprzednio 20%→80% na wysokości 40%: od połowy wiersza, w pl na iPhonie do środka słowa.
+- swipe: { start: "${ORIENT_WZOR == 'PORTRAIT' ? ZAKR_1_OD_IPHONE : ZAKR_1_OD_IPAD}", end: "${ORIENT_WZOR == 'PORTRAIT' ? ZAKR_1_DO_IPHONE : ZAKR_1_DO_IPAD}", duration: 800 }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: false }
@@ -172,4 +176,4 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 # wyjście z wzoru do licznika: ostatnie miejsce pracy = licznik projektu głównego
 - tapOn: { id: "nav-wstecz" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
-- assertVisible: { id: "licznik-wartosc", text: "47" }
+- assertVisible: { id: "licznik-wartosc", text: "20" }

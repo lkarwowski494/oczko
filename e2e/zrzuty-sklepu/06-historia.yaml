@@ -14,7 +14,7 @@ name: "Zrzuty sklepu · 06 historia zmian licznika z cofnięciem"
 - assertVisible: { id: "dzis-projekt", text: "${PROJ_GLOWNY}" }
 - tapOn: { id: "dzis-kontynuuj" }
 - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
-- assertVisible: { id: "licznik-wartosc", text: "47" }
+- assertVisible: { id: "licznik-wartosc", text: "20" }
 - scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 }
 - tapOn: { id: "licznik-historia" }
 - assertVisible: { id: "historia-lista" }

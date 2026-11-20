@@ -6,5 +6,13 @@
   "PROJ_2": "Skarpety w paski",
   "PROJ_3": "Szal z alpaki",
   "PROJ_4": "Kocyk dla dziecka",
-  "NOTATKA": "dalej: 3 oczka prawe, potem warkocz"
+  "NOTATKA": "dalej: 3 oczka prawe, potem warkocz",
+  "ZAKR_1_OD_IPHONE": "10%, 40%",
+  "ZAKR_1_DO_IPHONE": "91%, 40%",
+  "ZAKR_1_OD_IPAD": "9%, 55%",
+  "ZAKR_1_DO_IPAD": "73%, 55%",
+  "ZAKR_2_OD_IPHONE": "10%, 46%",
+  "ZAKR_2_DO_IPHONE": "92%, 46%",
+  "ZAKR_2_OD_IPAD": "9%, 69%",
+  "ZAKR_2_DO_IPAD": "74%, 69%"
 }
