@@ -40,6 +40,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
 | PF1 | session_01BM51oeYngHXBXuehdMJA1G | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 @ ce7f0825 | 18 | 2,46 | **przyjęta, scalona 6834c6d5, zarchiwizowana 09:36**; start 08:55 (opus, auto, env_01TjF7…); polecenie `polecenia/PF1.md` @ 44396c9 |
+| ZR6 | session_01BM51odhFPYTcPdTHku9v9o | 10 fix (sonnet) — zrzuty w językach poza en/pl (KO-191) | claude/zr6-jezyki-2026-11-22 od 6834c6d5 | 0 | 0 | start 11:58; polecenie `polecenia/ZR6.md` @ 0c32855c |
 | SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 @ ef032d2a | 15 | 0,89 | **przyjęta 08:58, zarchiwizowana 09:36** |
 
 ## Czeka na właściciela
@@ -101,3 +102,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 09:45 | M9 | Właściciel: „PR scalony” — main d7d47788 (rodzice 52308cd7+6834c6d5), drzewo = 6834c6d5. | zrzuty; CI na main |
 | 22.11 10:36 | M9 (kontrola) | Jakość · Linux success: 45006681378 (integracja 6834c6d5), 45008238241 (PR #2), 45011488106 (main d7d47788). Zrzuty 45007913254 w toku: fala 1 (iphone 1–3, 12 języków) od 09:35, koniec ok. 12:00. | kontrola 12:10 |
 | 22.11 11:50 | M9 | **Zrzuty 45007913254: iphone 1–3 failure** (każdy z 12 języków: 01/05/07 OK, 02/03/04/06 dwukrotnie nieudane — notatka `licznik-notatka`, `licznik-historia`, `licznik-wzor`, `wzor-zakreslenia`); zadania 4–8 w kolejce od 10:58 (brak maszyn) → **przebieg anulowany**. Pierwszy przebieg języków bez własnych danych. **KO-191** → ZR6 (10 fix, sonnet, 2 USD): diagnoza z dzienników i poprawka scen. Termin wysyłki do decyzji właściciela. | start ZR6; pytanie do właściciela |
+| 22.11 11:58 | M9 | **ZR6 start** session_01BM51odhFPYTcPdTHku9v9o (10 fix, sonnet). Blokada poniedziałku/1–7 dnia: ograniczenie dni pracy fikstury danych pokazowych (`zrzuty-sklepu.yml:183`, `ZRZUTY_DZIEN`) — nie obejście. Właściciel pyta, czemu nie poprawić i puścić od nowa → wyjaśnione; czeka wybór a/b terminu wysyłki. | raport ZR6 |
