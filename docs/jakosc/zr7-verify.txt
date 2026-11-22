@@ -1,0 +1,5 @@
+ZR7 (KO-195) — npm run verify, 2026-11-22, drzewo 2a7f43f (git status czysty)
+Pierwszy przebieg (drzewo 89bdf4da): kod 1, 3 testy zrzuty-zakreslenia-geometria.test.ts zakładały 4 gałęzie sceny 04 (jest 6); poprawione w 2a7f43f.
+Test Suites: 733 passed, 733 total
+Tests:       8114 passed, 8114 total
+kod wyjścia: 0
