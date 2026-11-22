@@ -1,0 +1,17 @@
+BX18 · scenariusze 100, 93, 95, 122 · dowód czerwony → zielony (2026-11-16; baza 7a738d84, przebieg iOS 43893320145)
+Test: tests/jakosc/e2e-bx18-scenariusze.test.ts (nowy). Czerwony = ten sam test na scenariuszach z 7a738d84 (e2e/ i docs/ odłożone git stash, test zostaje).
+
+$ npx jest tests/jakosc/e2e-bx18-scenariusze.test.ts   (scenariusze z 7a738d84)
+    ✕ scenariusz 100: przed tapOn nav-wstecz zakreślacz jest wyłączony (stuknięcie narzędzia, asercja selected: false)
+    ✕ tuż przed stuknięciem w przewodnik-f-ekran-blokady jest swipe w górę i asercja widoczności; scrollUntilVisible bez centerElement
+    ✕ tuż przed stuknięciem w przewodnik-f-ekran-blokady-pokaz jest swipe w górę i asercja widoczności; scrollUntilVisible bez centerElement
+    ✕ po swipe od prawego rogu (95%, 1%) nie ma czekania na element aplikacji do chwili zamknięcia Centrum
+    ✓ 31: bez rozbieżności
+    ✕ 122: bez rozbieżności (pierwsze „+1” przed asercją „1”)     (krok 9: asercja „1”, a po stuknięciach licznik ma 0; …)
+Tests: 5 failed, 1 passed, 6 total
+
+$ npx jest tests/jakosc/e2e-bx18-scenariusze.test.ts   (po poprawkach)
+Tests: 6 passed, 6 total
+$ npx jest tests/jakosc → 1031 passed; npm run jakosc:kontrole → błędy: 0; npm run typecheck:testy, typecheck → bez błędów.
+Uwaga: 31 jest zielone w obu stanach celowo (kontrola, że chodzik po wartościach licznika nie daje fałszywych alarmów); próg 100 ms i asercje 31 bez zmian.
+Ograniczenie: test sprawdza strukturę scenariusza; że 4 poprawione scenariusze przechodzą na symulatorze, pokaże dopiero następny przebieg iOS.

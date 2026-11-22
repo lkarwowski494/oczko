@@ -1,0 +1,127 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.ch",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.ch.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "chain stitch",
+    "skrot": "ch",
+    "twierdzenie": "TRM-EN-028"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "chain",
+    "skrot": "ch",
+    "twierdzenie": "TRM-GB-007"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko łańcuszka",
+    "skrot": "oł",
+    "twierdzenie": "TRM-PL-028"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "luftmaska",
+    "skrot": "lm",
+    "twierdzenie": "TRM-SV-009"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "correntinha",
+    "skrot": "corr.",
+    "twierdzenie": "TRM-PT-005"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "воздушная петля",
+    "skrot": "ВП",
+    "twierdzenie": "TRM-RU-033"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "повітряна петля",
+    "skrot": "ПП",
+    "twierdzenie": "TRM-UA-022"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "鎖編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-029"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "鎖針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-030"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "zincir",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-028"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "въздушна бримка",
+    "skrot": "ВБ",
+    "twierdzenie": "TRM-BG-027"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "pynelės kilpa",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-014"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "gaisa cilpiņa",
+    "skrot": "gc",
+    "twierdzenie": "TRM-LV-011"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "verižna petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-010"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "kait tali air",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-010"
+   }
+  ],
+  "id": [
+   {
+    "nazwa": "tusuk rantai",
+    "skrot": "ch",
+    "twierdzenie": "TRM-ID-001"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

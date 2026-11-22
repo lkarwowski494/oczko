@@ -1,0 +1,25 @@
+{
+  "opis": "Kontrakt synchronizacji iCloud (ADR-0005, uzupełnienie fix-7 2026-10-26, P-221 Q5a): tabele synchronizowane w kolejności stosowania partii (rodzice przed dziećmi), typ rekordu CloudKit, klucz i sposób scalenia; tabele lokalne bez wyzwalaczy. Źródło dla schemat.sql (wyzwalacze skrzynki zmian), adaptera partii 7 i testu tests/dane/icloud-skrzynka.test.ts.",
+  "wersja": 1,
+  "klucz_zlozony": "json_array(kolumny klucza) jako tekst, np. [\"<wzor_id>\",0]",
+  "tabele": [
+    { "tabela": "plik", "typ": "Plik", "klucz": ["sha256"], "scalanie": "tylko_dopisywane", "zasob": true },
+    { "tabela": "projekt", "typ": "Projekt", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "czesc", "typ": "Czesc", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "licznik", "typ": "Licznik", "klucz": ["id"], "scalanie": "zmieniono_ms", "pomin": ["wartosc", "glowa", "konflikt"] },
+    { "tabela": "zdarzenie", "typ": "Zdarzenie", "klucz": ["id"], "scalanie": "tylko_dopisywane" },
+    { "tabela": "notatka_rzedu", "typ": "NotatkaRzedu", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "przypomnienie", "typ": "Przypomnienie", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "sesja", "typ": "Sesja", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "wzor", "typ": "Wzor", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "rysunek", "typ": "Rysunek", "klucz": ["wzor_id", "strona"], "scalanie": "zmieniono_ms" },
+    { "tabela": "wloczka", "typ": "Wloczka", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "narzedzie", "typ": "Narzedzie", "klucz": ["id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "projekt_wloczka", "typ": "ProjektWloczka", "klucz": ["projekt_id", "wloczka_id"], "scalanie": "zmieniono_ms" },
+    { "tabela": "zdjecie", "typ": "Zdjecie", "klucz": ["id"], "scalanie": "tylko_dopisywane" },
+    { "tabela": "obliczenie", "typ": "Obliczenie", "klucz": ["id"], "scalanie": "tylko_dopisywane" },
+    { "tabela": "dzien_limitu", "typ": "DzienLimitu", "klucz": ["dzien"], "scalanie": "dni_limitu" },
+    { "tabela": "ustawienie", "typ": "Ustawienie", "klucz": ["klucz"], "scalanie": "ustawienie_or", "tylko_klucze": ["okno_uczciwe_zasady_widziane"] }
+  ],
+  "lokalne": ["poczekalnia", "blad", "synchronizacja", "zmiana_icloud"]
+}

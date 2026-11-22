@@ -1,0 +1,14 @@
+{
+  "zrodlo": "Rola 04, 04-przejscie-F26 (P-400 B; 2026-11-02). Klucze en do nałożenia przez 08 po akceptacji koordynatora. Teksty tylko en; inne języki — fala po audycie (P-320). 04 nie czyta `src/`: 08 porównuje z istniejącymi kluczami i zgłasza różnicę.",
+  "en": {
+    "wzor.wskazowka_znacznik": "Hold on a row to mark where you are.",
+    "wzor.wskazowka_znacznik_a11y": "Tip: hold on a row of the pattern to mark where you are, or use Mark row.",
+    "wzor.zaznacz_rzad_podpowiedz": "Places a marker on the page. Hold on a row to place it exactly."
+  },
+  "kontekst": {
+    "wzor.wskazowka_znacznik": "Jedna linia pod nagłówkiem wzoru (testID `wzor-wskazowka-znacznik`), widoczna tylko gdy wzór nie ma jeszcze znacznika; po prawej przycisk tekstowy z istniejącym kluczem `wzor.zaznacz_rzad` (testID `wzor-wskazowka-zaznacz`).",
+    "wzor.wskazowka_znacznik_a11y": "Etykieta VoiceOver całej linii wskazówki; przycisk w linii ma własną etykietę `wzor.zaznacz_rzad`.",
+    "wzor.zaznacz_rzad_podpowiedz": "accessibilityHint ikony „Mark row” w pasku nawigacji (testID `wzor-zaznacz`, bez zmiany etykiety `wzor.zaznacz_rzad`)."
+  },
+  "bez_zmian": ["wzor.zaznacz_rzad", "wzor.kierunek_pytanie", "wzor.gotowe"]
+}

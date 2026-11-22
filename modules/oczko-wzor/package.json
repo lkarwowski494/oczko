@@ -1,0 +1,7 @@
+{
+  "name": "oczko-wzor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Przeglądarka wzoru (PDFKit + PencilKit na stronach), konwersja na PDF i skaner stron (ADR-0011, ADR-0012, P-221 Q1a, Q2a)",
+  "main": "index.ts"
+}

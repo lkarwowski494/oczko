@@ -1,0 +1,106 @@
+{
+ "format": 1,
+ "id": "skrot.ws",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.ws.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "wrong side",
+    "skrot": "WS",
+    "twierdzenie": "TRM-EN-018"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "lewa strona (robótki)",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-039"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "avigsidan",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-020"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "изнаночная сторона",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-023"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "виворітний бік",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-014"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "裏を見て編む段",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-022"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "反面",
+    "skrot": "WS",
+    "twierdzenie": "TRM-ZHT-021"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "işin tersi",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-027"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "avesso do trabalho",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-026"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "partea din dos a lucrului",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-012"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "опакова страна",
+    "skrot": "ОС",
+    "twierdzenie": "TRM-BG-017"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "narobna stran",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-009"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "revés de la prenda",
+    "skrot": "rp",
+    "twierdzenie": "TRM-ESLA-010"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

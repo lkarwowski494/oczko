@@ -1,0 +1,20 @@
+# Zielony run 43166203838 (3d9ca08), job 131019286176, artefakt 13923646558: wyniki.txt
+zielony 01-nfr-pie-001-pierwsze-liczenie
+zielony 02-br-lic-001-s1-pierwsze-uruchomienie
+zielony 04-br-lic-002-s1-plus-minus-cofnij
+zielony 05-br-zak-006-s1-limit-zawczasu
+zielony 09-adr-0019-start-awaryjny
+zielony 10-nfr-dan-002-kazda-zmiana-trwala
+zielony 36-br-dan-008-s1-usun-przywroc-z-kosza
+
+# xctest_runner tego samego scenariusza 01: czasy stuknięć
+2026-11-12 06:47:23.411823+0000 maestro-driver-iosUITests-Runner[8970:34254] Tapping took 0.487341046333313
+2026-11-12 06:48:37.131102+0000 maestro-driver-iosUITests-Runner[8970:34254] Tapping took 0.46653199195861816
+2026-11-12 06:48:43.406351+0000 maestro-driver-iosUITests-Runner[8970:34254] Tapping took 0.38555705547332764
+2026-11-12 06:49:46.089120+0000 maestro-driver-iosUITests-Runner[8970:34254] Tapping took 0.4602409601211548
+2026-11-12 06:50:55.530674+0000 maestro-driver-iosUITests-Runner[8970:34254] Tapping took 0.4044710397720337
+
+# device-simulator.log zielonego: pierwsze stuknięcie dzis-plus (touch down → UIEvent w aplikacji)
+2026-11-12 06:47:23.076719+0000  localhost backboardd[3692]: [com.apple.BackBoard:TouchEvents] touch down without previous range event: 2
+2026-11-12 06:47:23.103368+0000  localhost Oczko[10552]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1
+2026-11-12 06:47:23.198764+0000  localhost Oczko[10552]: (UIKitCore) [com.apple.UIKit:EventDispatch] Sending UIEvent type: 0; subtype: 0; to windows: 1

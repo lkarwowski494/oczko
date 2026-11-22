@@ -1,0 +1,12 @@
+{
+  "opis": "Migracje schematu wysłane w wydaniu App Store; kontrola MIGRACJA-WYDANA (scripts/jakosc/kontrole-repo.mjs) odrzuca zmianę wpisanego pliku. Poprawka schematu = nowa migracja (docs/architektura/dane.md, „Wydanej migracji nie zmieniamy”). Wpis w commicie wydania (docs/wydanie/sklep.md §5, krok „Manifest migracji”); M1-audytor-generalny-304.",
+  "migracje": [
+    {
+      "plik": "src/dane/migracje/0001.sql",
+      "wersja_schematu": 1,
+      "wydanie": "1.0.0",
+      "build_commit": "58284a88050fc864a94b6b4c7b2366da52be8322",
+      "sha256": "b8206b173178b26ac7ad49808302b58528ffc59258560ae34c30f9961db48b19"
+    }
+  ]
+}

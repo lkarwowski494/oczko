@@ -1,0 +1,25 @@
+ROZMIAR dane/duzy.ts: 21.0 KB > 20 KB
+DOMENA domena/limit.ts importuje 'expo-sqlite'
+SQLITE domena/limit.ts importuje 'expo-sqlite' poza dane/baza (ADR-0002)
+DOMENA domena/limit.ts importuje '../dane/repo'
+CYKL dane/repo.ts -> domena/limit.ts -> dane/repo.ts
+5 naruszeń w 4 plikach
+kod wyjścia: 1
+OK: 3 plików, bez naruszeń
+kod wyjścia: 0
+OK   alias: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '@/dane/repo'
+OK   dobre: kod 0, oczekiwano kod 0 — OK: 4 plików, bez naruszeń
+OK   domain: kod 1, oczekiwano PUSTO — PUSTO brak katalogu domeny src/domena
+OK   ekran-do-danych: kod 1, oczekiwano EKRANY — EKRANY ekrany/Licznik.tsx importuje '../dane/repozytoria/projekty' z dane/ (moduly.md: ekrany → przypadki użycia)
+OK   export-z: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '../dane/repo'
+OK   import-dynamiczny: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje '../dane/repo'
+OK   import-wyrazenie: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts: import z wyrażenia (nie da się sprawdzić granicy)
+OK   katalog-ios: kod 1, oczekiwano IOS — IOS katalog ios/ w repo (ADR-0007: tylko expo prebuild)
+OK   konfiguracja-importuje: kod 1, oczekiwano KONFIGURACJA — KONFIGURACJA konfiguracja.ts importuje './dane/repo' (konfiguracja.ts niczego nie importuje)
+OK   pusty: kod 1, oczekiwano PUSTO — PUSTO /home/user/Oczko/docs/architektura/narzedzia/granice-test/obejscia/pusty/src: 0 plików źródłowych
+OK   require: kod 1, oczekiwano DOMENA — DOMENA domena/limit.ts importuje 'expo-sqlite'
+OK   sqlite-poza-baza: kod 1, oczekiwano SQLITE — SQLITE dane/repozytoria/projekty.ts importuje 'expo-sqlite' poza dane/baza (ADR-0002)
+OK   swift-sqlite: kod 1, oczekiwano SWIFT — SWIFT targets/widget/Intencja.swift: import SQLite3 (ADR-0008)
+OK   tunel-konfiguracja: kod 1, oczekiwano DOMENA — SQLITE dane/konfiguracja.ts importuje 'expo-sqlite' poza dane/baza (ADR-0002)
+fikstury granic: 14 z 14 zgodnych
+kod wyjścia: 0

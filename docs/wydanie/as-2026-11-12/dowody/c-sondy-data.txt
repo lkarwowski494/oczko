@@ -1,0 +1,27 @@
+# sondy zrzuty-uzupelnij.mjs data/znacznik na KOPII artefaktu sklep-zrzuty-surowe (13919316788) przebiegu 43139114751
+$ data a 2026-11-12 en,pl iphone,ipad
+iPad: data paska bez zmian, zestaw ze źródła zostaje
+kod 0
+14
+$ data b 2026-11-13 en,pl iphone,ipad
+iPad: data paska iPada w źródle 2026-11-12, w przebiegu 2026-11-13 — zestaw iPada ze źródła usunięty z uzupełnienia (języki: en, pl) i zostanie zrobiony od nowa, żeby wszystkie sceny miały jedną datę na pasku
+kod 0
+0
+14
+$ data c 2026-11-13 en iphone,ipad
+BŁĄD: zrzuty iPada ze źródła (język: pl) mają inną albo nieznaną datę paska niż ten przebieg (2026-11-13) i muszą być zrobione od nowa, ale języka nie ma na liście przebiegu — dodaj go do jezyki (albo wpisz all)
+kod 2
+14
+$ plan po b
+{"jezyki":["en","pl"],"matrix":[{"urzadzenie":"ipad","jezyki":"en","nr":1,"zakup":false,"sceny":"en=01-dzis,02-licznik,03-wzor,04-zakreslenie,05-projekty,06-historia,07-kalendarz","teraz":"2026-11-10T09:41:00","dzien":"2026-11-13"},{"urzadzenie":"ipad","jezyki":"pl","nr":2,"zakup":false,"sceny":"pl=01-dzis,02-licznik,03-wzor,04-zakreslenie,05-projekty,06-historia,07-kalendarz","teraz":"2026-11-10T09:41:00","dzien":"2026-11-13"}],"zadania":2}
+kod 0
+$ znacznik d 2026-11-13 iphone
+Znacznik dat: /tmp/claude-0/-home-user-oczko/cdc28568-0b47-543a-a07f-895b379e7f6e/scratchpad/sondy2/zn.json
+kod 0
+{"teraz":"2026-11-10T09:41:00","dzienIpada":"2026-11-12"}
+$ data d 2026-11-13 en,pl iphone
+iPad: poza przebiegiem, zrzuty ze źródła zostają
+kod 0
+$ data a 2026-13-01
+BŁĄD: Invalid time value
+kod 2

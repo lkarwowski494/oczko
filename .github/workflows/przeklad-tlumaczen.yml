@@ -1,15 +1,208 @@
-# Punkt startowy na main (P-474, P-472, P-319): właściwa definicja jest na gałęzi roboczej.
-# Run workflow → „Use workflow from” → claude/jolly-thompson-paz6d8.
+# Fala przekładu przez API Anthropic (P-474, P-144; wzór: repo trening). Tylko ręcznie, odczyt repozytorium, bez środowiska (environment).
+# Zakres: 33 języki (bez pl i en) × bazy kluczy z docs/lokalizacja/oczekujace.json; kontekst z en.kontekst.json, słownik terminów, glosariusz jednostek.
+# Płatny z kredytów API właściciela (Message Batches, −50%). Klucz: sekret repozytorium ANTHROPIC_API_KEY, użyty w JEDNYM kroku jako zmienna
+# środowiskowa; skrypt nigdy go nie wypisuje. Słowniki NIE są zmieniane i nic nie jest zapisywane do repo — wynik to artefakt `raport-przekladu`
+# (propozycje, 7 dni); nałożenie lokalnie po przeglądzie: node scripts/i18n/przeklad-zastosuj-delta.mjs <kod…>.
+# Limit kosztu 30 USD na przebieg (P-481, wyjątek od P-144 = 6 USD, zgoda właściciela 2026-11-03); powyżej — stop bez zgoda_koszt=tak. Domyślnie tylko szacunek (tylko_szacuj=true), bez klucza.
+# Uruchom z gałęzi roboczej („Use workflow from”); na main leży punkt startowy tej samej nazwy (P-472).
+# Tryb `przeglad` (P-486, D-027): drugi przegląd AI fali w świeżym kontekście — Batch, ten sam model i wysiłek; recenzent na język dostaje en + kontekst + wycinek słownika + OBECNY tekst języka
+# dla baz kluczy z docs/lokalizacja/zakres-fali-2026-11-03.json i zwraca TYLKO poprawki z powodem; wynik = artefakt `raport-przegladu` (<kod>.json), przyjęcie lokalnie:
+# node scripts/i18n/przeklad-zastosuj-poprawki.mjs --raport <katalog artefaktu> <kod…>.
+# Tryb `zwrotny` (P-498, D-027, DEC-11 a): kontrola (a) treści krytycznej — ŚLEPY przekład zwrotny na polski (model widzi tylko tekst języka, bez en i kontekstu) dla kluczy z
+# docs/lokalizacja/krytyczne.json; wynik = artefakt `raport-zwrotny` (<kod>.json: tekst języka, skrót, przekład zwrotny); sens porównuje rola 06, słowniki bez zmian.
+# Tryb `produkty` (P-515): nazwy (≤ 30) i opisy (≤ 45) produktów zakupu dla 33 języków (bez en i pl) — scripts/i18n/przeklad-produkty.mjs, jeden batch; wynik = artefakt `raport-produkty`,
+# przyjęcie lokalnie: node scripts/i18n/przeklad-produkty.mjs przyjmij --raport <katalog artefaktu>.
+# Tryb `podpisy` (BO, rola 09): podpisy zrzutów sklepu (7 na język, ≤ 40 znaków) w 27 językach ze sklepową lokalizacją (bez en i pl) — scripts/i18n/przeklad-podpisy.mjs, dwa batche jak metadane
+# (przekład → krytyk w świeżym kontekście, `etap`); wynik = artefakt `raport-podpisy`, przyjęcie lokalnie: node scripts/i18n/przeklad-podpisy.mjs przyjmij --raport <katalog artefaktu>.
 name: Przekład tłumaczeń (API, ręcznie)
 on:
   workflow_dispatch:
+    inputs:
+      tryb:
+        description: 'Tryb: przeklad (propozycje przekładu), przeglad (drugi przegląd AI — tylko poprawki obecnego przekładu), zwrotny (kontrola (a) treści krytycznej: ślepy przekład zwrotny na pl) albo metadane (metadane sklepu 29 lokalizacji ASC, P-501), produkty (nazwy i opisy produktów zakupu, 33 języki, P-515), podpisy (podpisy zrzutów sklepu, 27 języków, BO)'
+        type: choice
+        default: przeklad
+        options: [przeklad, przeglad, zwrotny, metadane, produkty, podpisy]
+      model:
+        description: 'Model przekładu'
+        type: choice
+        default: opus
+        options: [sonnet, opus]
+      wysilek:
+        description: 'Wysiłek modelu (output_config.effort); Opus 5.5 bez wartości = medium'
+        type: choice
+        default: high
+        options: [low, medium, high, xhigh, max]
+      limit:
+        description: 'Tylko N pierwszych języków (puste = wszystkie: 33 albo, w trybie metadane, 29 lokalizacji; podpisy: 27); przebieg dowodowy: 2'
+        type: string
+        default: ''
+      tylko_szacuj:
+        description: 'Tylko szacunek kosztu, bez wysyłania niczego płatnego'
+        type: boolean
+        default: true
+      etap:
+        description: 'Tylko tryby metadane i podpisy: przeklad+krytyk (dwa batche), przeklad albo krytyk (krytyk obecnych plików docs/wydanie/metadane/<kod>.store.json, w podpisach: obecnych podpisów z podpisy-zrzutow.json)'
+        type: choice
+        default: przeklad+krytyk
+        options: [przeklad+krytyk, przeklad, krytyk]
+      tylko:
+        description: 'Tylko tryby metadane, produkty i podpisy: kody po przecinku — lokalizacje ASC (metadane, np. cs,sk) albo języki aplikacji (produkty i podpisy, np. de,nb); puste = wszystkie'
+        type: string
+        default: ''
+      zgoda_koszt:
+        description: 'Zgoda na koszt powyżej 30 USD (tak / nie)'
+        type: choice
+        default: 'nie'
+        options: ['nie', 'tak']
+      wznow:
+        description: 'Odbiór wyników wysłanego wcześniej batcha (identyfikator msgbatch_… z logu przebiegu; tryb podpisy po kodzie 4: dwa po przecinku „przekład,krytyk” — komunikat podaje gotowe polecenie); puste = nowy przekład'
+        type: string
+        default: ''
 permissions:
   contents: read
+concurrency:
+  group: przeklad-tlumaczen
+  cancel-in-progress: false
 jobs:
-  start:
+  przeklad:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 180
     steps:
-      - name: Komunikat
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Szacunek kosztu bez klucza — stop powyżej 30 USD bez zgody
+        env:
+          WEJ_TRYB: ${{ inputs.tryb }}
+          WEJ_MODEL: ${{ inputs.model }}
+          WEJ_WYSILEK: ${{ inputs.wysilek }}
+          WEJ_LIMIT: ${{ inputs.limit }}
+          WEJ_ETAP: ${{ inputs.etap }}
+          WEJ_TYLKO: ${{ inputs.tylko }}
+          WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
         run: |
-          echo "::notice::Uruchom z gałęzi roboczej claude/jolly-thompson-paz6d8 (Use workflow from). Ten plik na main nic nie robi."
+          set -eu
+          SKRYPT=scripts/i18n/przeklad-api.mjs
+          if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "produkty" ]; then SKRYPT=scripts/i18n/przeklad-produkty.mjs; ZAKRES=-; WYJ=raport-produkty
+          elif [ "$WEJ_TRYB" = "podpisy" ]; then SKRYPT=scripts/i18n/przeklad-podpisy.mjs; ZAKRES=-; WYJ=raport-podpisy
+          elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then ZAKRES=docs/lokalizacja/krytyczne.json; WYJ=raport-zwrotny; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          ARGS=(--szacuj --tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
+          if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
+          if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
+          if [ "$WEJ_TRYB" = "metadane" ] || [ "$WEJ_TRYB" = "podpisy" ]; then
+            ARGS+=(--etap "$WEJ_ETAP")
+            if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          elif [ "$WEJ_TRYB" = "produkty" ] && [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO")
+          fi
+          node "$SKRYPT" "${ARGS[@]}"
+      - name: Przekład (szacunek dokładny lub batch)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          WEJ_TRYB: ${{ inputs.tryb }}
+          WEJ_MODEL: ${{ inputs.model }}
+          WEJ_WYSILEK: ${{ inputs.wysilek }}
+          WEJ_LIMIT: ${{ inputs.limit }}
+          WEJ_ETAP: ${{ inputs.etap }}
+          WEJ_TYLKO: ${{ inputs.tylko }}
+          WEJ_ZGODA: ${{ inputs.zgoda_koszt }}
+          WEJ_SZACUJ: ${{ inputs.tylko_szacuj }}
+          WEJ_WZNOW: ${{ inputs.wznow }}
+        run: |
+          set -eu
+          SKRYPT=scripts/i18n/przeklad-api.mjs
+          if [ "$WEJ_TRYB" = "metadane" ]; then SKRYPT=scripts/i18n/przeklad-metadane.mjs; ZAKRES=-; WYJ=raport-metadane
+          elif [ "$WEJ_TRYB" = "produkty" ]; then SKRYPT=scripts/i18n/przeklad-produkty.mjs; ZAKRES=-; WYJ=raport-produkty
+          elif [ "$WEJ_TRYB" = "podpisy" ]; then SKRYPT=scripts/i18n/przeklad-podpisy.mjs; ZAKRES=-; WYJ=raport-podpisy
+          elif [ "$WEJ_TRYB" = "przeglad" ]; then ZAKRES=docs/lokalizacja/zakres-fali-2026-11-03.json; WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then ZAKRES=docs/lokalizacja/krytyczne.json; WYJ=raport-zwrotny; else ZAKRES=docs/lokalizacja/oczekujace.json; WYJ=raport-przekladu; fi
+          ARGS=(--tryb "$WEJ_TRYB" --model "$WEJ_MODEL" --wysilek "$WEJ_WYSILEK" --zakres "$ZAKRES" --pomin pl --wyjscie "$WYJ")
+          if [ -n "$WEJ_LIMIT" ]; then ARGS+=(--limit "$WEJ_LIMIT"); fi
+          if [ "$WEJ_ZGODA" = "tak" ]; then ARGS+=(--zgoda-koszt); fi
+          if [ "$WEJ_SZACUJ" = "true" ]; then ARGS+=(--szacuj); fi
+          if [ -n "$WEJ_WZNOW" ]; then
+            if [ "$WEJ_TRYB" = "podpisy" ]; then # podpisy mają dwa batche: „B1” albo „B1,B2” (przekład,krytyk); komunikat kodu 4 podaje gotowe polecenie
+              [[ "$WEJ_WZNOW" =~ ^msgbatch_[A-Za-z0-9]+(,msgbatch_[A-Za-z0-9]+)?$ ]] || { echo "::error::wznow: oczekiwany msgbatch_… albo dwa po przecinku"; exit 1; }
+            else
+              [[ "$WEJ_WZNOW" =~ ^msgbatch_[A-Za-z0-9]+$ ]] || { echo "::error::wznow: oczekiwany identyfikator msgbatch_…"; exit 1; }
+            fi
+            ARGS+=(--wznow "$WEJ_WZNOW")
+          fi
+          if [ "$WEJ_TRYB" = "metadane" ] || [ "$WEJ_TRYB" = "podpisy" ]; then
+            ARGS+=(--etap "$WEJ_ETAP")
+            if [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO"); fi
+          elif [ "$WEJ_TRYB" = "produkty" ] && [ -n "$WEJ_TYLKO" ]; then ARGS+=(--tylko "$WEJ_TYLKO")
+          fi
+          node "$SKRYPT" "${ARGS[@]}"
+      - name: Podsumowanie w logu przebiegu
+        if: always()
+        env:
+          WEJ_TRYB: ${{ inputs.tryb }}
+        run: |
+          if [ "$WEJ_TRYB" = "metadane" ]; then WYJ=raport-metadane; elif [ "$WEJ_TRYB" = "produkty" ]; then WYJ=raport-produkty; elif [ "$WEJ_TRYB" = "podpisy" ]; then WYJ=raport-podpisy; elif [ "$WEJ_TRYB" = "przeglad" ]; then WYJ=raport-przegladu; elif [ "$WEJ_TRYB" = "zwrotny" ]; then WYJ=raport-zwrotny; else WYJ=raport-przekladu; fi
+          if [ -f "$WYJ/podsumowanie.md" ]; then cat "$WYJ/podsumowanie.md" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f "$WYJ/szacunek.json" ]; then node -e "const s=require('./$WYJ/szacunek.json');console.log('Szacunek ('+s.tryb+'): '+JSON.stringify(s.koszt_wg_modelu))" >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Artefakt przekładu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'przeklad'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-przekladu
+          path: |
+            raport-przekladu/*.json
+            raport-przekladu/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt przeglądu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'przeglad'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-przegladu
+          path: |
+            raport-przegladu/*.json
+            raport-przegladu/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt przekładu zwrotnego (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'zwrotny'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-zwrotny
+          path: |
+            raport-zwrotny/*.json
+            raport-zwrotny/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt metadanych (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'metadane'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-metadane
+          path: |
+            raport-metadane/*.json
+            raport-metadane/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt produktów zakupu (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'produkty'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-produkty
+          path: |
+            raport-produkty/*.json
+            raport-produkty/podsumowanie.md
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Artefakt podpisów zrzutów (tylko raporty, 7 dni)
+        if: always() && inputs.tryb == 'podpisy'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-podpisy
+          path: |
+            raport-podpisy/*.json
+            raport-podpisy/podsumowanie.md
+            raport-podpisy/batch-id-*.txt
+          if-no-files-found: ignore
+          retention-days: 7

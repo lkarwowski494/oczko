@@ -1,0 +1,42 @@
+# BR-DAN-009 (usunięcie wszystkich danych) z iCloud (design-spec „Delete all data”, P-229): przy włączonej synchronizacji arkusz ma przełącznik
+# „Also delete from iCloud” (domyślnie wyłączony); włączony → atrapa dostaje usunięcie strefy (e2e-icloud-usuniete = „tak”). Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "BR-DAN-009 · Delete all data z „Also delete from iCloud”: strefa iCloud usunięta"
+tags:
+  - BR-DAN-009
+  - PU-101
+  - PU-216
+---
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eIcloud: "wlaczony"
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument iCloud) — przebieg 42544112861 cz. 1 iPhone, krok po launchApp
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+- runFlow: subflows/otworz-stan-danych.yaml
+- tapOn: { id: "icloud-przelacznik" }
+- assertVisible: "Turn on"
+- tapOn: "Turn on"
+- assertVisible: { id: "icloud-przelacznik", checked: true }
+- assertVisible: { id: "e2e-icloud-usuniete", text: "nie" }
+- tapOn: { id: "arkusz-zamknij", optional: true }
+- assertVisible: { id: "ustawienia" }
+- scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" } }
+- takeScreenshot: 51-ustawienia-przed-usun-wszystko
+- tapOn: { id: "ustawienia-usun-wszystko" }
+- scrollUntilVisible: { element: { id: "usun-z-icloud" } }
+- assertVisible: { id: "usun-z-icloud", checked: false }
+- tapOn: { id: "usun-z-icloud" }
+- assertVisible: { id: "usun-z-icloud", checked: true }
+- takeScreenshot: 51-usun-z-icloud
+- scrollUntilVisible: { element: { id: "potwierdz-usun-wszystko" } } # pod zgięciem (przebieg 40411351211: stuknięcie poza ekranem)
+- tapOn: { id: "potwierdz-usun-wszystko" }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista|dzis-karta" }, timeout: 60000 } # P-592/P-596: po usunięciu „Dziś” (pusty stan też ma dzis-karta), jak 08
+- runFlow: subflows/otworz-stan-danych.yaml
+- assertVisible: { id: "e2e-icloud-usuniete", text: "tak" }

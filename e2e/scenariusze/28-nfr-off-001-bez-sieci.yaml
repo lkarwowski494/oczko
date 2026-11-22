@@ -1,0 +1,59 @@
+# NFR-OFF-001 (docs/brd/wymagania.md:85, próg 100% PR-01–07, 10–12, 14; PR-12 poza zakresem): działanie bez sieci.
+# Całość przy oczkoE2eSiec=brak (adapter sieci „brak połączenia”): PR-01 (pierwsze +1), PR-02 (+1/−1/historia), PR-07 (ukończenie), PR-14 (stoper sesji);
+# PR-04 — 15, PR-06 — 21, PR-10 — 16. PR-03, PR-05 i PR-11: [DO USTALENIA] (części bez makiety, zegarek, obliczenia F-38 — rejestr 06).
+# Scenorys 04: z5-k1.png – z5-k3.png (ukończenie i karta z pytaniem o włóczkę).
+appId: com.apps4brew.knitting
+name: "NFR-OFF-001 · Bez sieci: liczenie, historia, stoper sesji, ukończenie projektu"
+tags:
+  - NFR-OFF-001
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "licznik-plus" }
+- runFlow: subflows/nazwij-projekt.yaml
+# --- PR-14: stoper sesji ---
+# Stoper w pasku licznika (04 fix-6 B, P-191 P1a; F07-17 zamiast menu-sesja / sesja-trwa / sesja-zakoncz): start → kapsuła → menu → Stop.
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- takeScreenshot: 28-sesja-trwa
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "stoper-zatrzymaj" }
+- tapOn: { id: "stoper-zatrzymaj" }
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+# --- PR-07: ukończenie projektu (U-9) ---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-ukoncz" }
+- tapOn: { id: "menu-ukoncz" }
+- extendedWaitUntil: { visible: { id: "ukonczenie-karta" }, timeout: 20000 } # „Mark as finished” → karta, bez osobnego potwierdzenia (P-255)
+- takeScreenshot: 28-karta-ukonczenia
+- tapOn: { id: "ukonczenie-gotowe" }
+- assertNotVisible: { id: "ukonczenie-karta" }
+# Systemowa prośba o ocenę po ukończeniu zasłania listę (przebieg 40446976426); w przebiegu 138 jej proces (StoreKitUIService) wystartował 21 s po żądaniu,
+# a do tego czasu okno prośby jest puste dla XCTest (hierarchia: tylko pasek stanu) — E2-138-S2: czekanie na „Not Now” do 60 s, tylko gdy lista nie jest od razu widoczna
+- extendedWaitUntil: { notVisible: { id: "projekty-lista" }, timeout: 5000, optional: true } # okno prośby zakrywa listę ok. 3 s po „Done” (przebieg 138: 07:07:40,0 → 07:07:43,0), lista bywa krótko widoczna
+- runFlow:
+    when: { notVisible: { id: "projekty-lista" } }
+    commands:
+      - takeScreenshot: opoznienie-ocena-28
+      - extendedWaitUntil: { visible: { text: "Not Now" }, timeout: 60000, optional: true }
+      - tapOn: { text: "Not Now", optional: true }
+      - extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8); twarda asercja niżej
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertVisible: { id: "projekty-lista" }
+- assertVisible: { id: "projekty-ukonczone" }
+- assertVisible: "Harbor.*"
+- assertNotVisible: { id: "blad-sieci" }

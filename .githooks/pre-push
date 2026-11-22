@@ -1,0 +1,11 @@
+#!/bin/sh
+# P-260: verify przed każdym pushem; pomija push wyłącznie na gałęzie kopii (P-244: zapis także kodu niesprawdzonego).
+# Włącza `npm ci` (skrypt prepare: core.hooksPath). Obejście `git push --no-verify` tylko z nazwanym wyjątkiem w decyzjach.
+tylko_kopie=1; cokolwiek=0
+while read -r _lokalny _sha zdalny _zsha; do
+  cokolwiek=1
+  case "$zdalny" in refs/heads/claude/kopia-*) ;; *) tylko_kopie=0 ;; esac
+done
+[ "$cokolwiek" = 1 ] && [ "$tylko_kopie" = 1 ] && exit 0
+echo "pre-push (P-260): npm run verify…" >&2
+env -u NODE_PATH npm run verify || { echo "pre-push (P-260): verify czerwone — push wstrzymany" >&2; exit 1; }

@@ -1,0 +1,39 @@
+# PU-148 (T-97): iPad — zakreślacz palcem, „Cofnij ostatnią kreskę” zmniejsza liczbę zakreśleń, kreski zostają po wyjściu do ekranu głównego i powrocie oraz po restarcie.
+# Ograniczenie: „w trakcie rysowania ekran główny” — Maestro nie wciska Home w środku gestu; Home po zakończonym pociągnięciu (jak scen. 19 dla licznika). Widoczność kresek: zrzuty 116-*.
+# Wzór: scen. 47 (zakreślenie palcem, pakiet iPada) i 19 (`pressKey: Home` + `launchApp` bez zatrzymania).
+appId: com.apps4brew.knitting
+name: "PU-148 · iPad: zakreślenia palcem, cofnięcie, powrót z ekranu głównego i restart bez utraty kresek"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-148
+  - ipad
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 40%", end: "70%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- swipe: { start: "30%, 55%", end: "70%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- takeScreenshot: 116-dwie-kreski
+- tapOn: { id: "wzor-cofnij-rysunek" }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- swipe: { start: "30%, 62%", end: "70%, 62%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- takeScreenshot: 116-po-powrocie-z-tla
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- takeScreenshot: 116-po-restarcie

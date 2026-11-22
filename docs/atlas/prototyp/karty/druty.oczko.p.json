@@ -1,0 +1,71 @@
+{
+  "format": 1,
+  "id": "druty.oczko.p",
+  "rzemioslo": "druty",
+  "rodzaj": "oczko",
+  "klucze": {
+    "nazwa": "atlas.druty.oczko.p.nazwa",
+    "podpis": "atlas.druty.oczko.p.podpis",
+    "opis_alt": "atlas.druty.oczko.p.opis_alt"
+  },
+  "terminy": {
+    "en-US": [
+      {
+        "nazwa": "purl",
+        "skrot": "p",
+        "twierdzenie": "TRM-EN-002"
+      }
+    ]
+  },
+  "twierdzenia": [
+    {
+      "id": "ATL-K-005",
+      "wartosc": {
+        "kierunek": "od_tylu"
+      }
+    },
+    {
+      "id": "ATL-K-006",
+      "wartosc": {
+        "bilans": 0
+      }
+    }
+  ],
+  "jezyki_gotowe": [
+    "en-US"
+  ],
+  "rysunek": {
+    "rodzina": "siatka-petli",
+    "probka": {
+      "kolumny": 4,
+      "rzedy": 2
+    },
+    "tlo": "lewe",
+    "operacja": {
+      "typ": "oczko",
+      "strona": "lewe",
+      "kolumna": 1
+    }
+  },
+  "kroki": [
+    {
+      "faza": "wynik",
+      "petle": [
+        {
+          "rzad": 2,
+          "kolumna": 1
+        }
+      ],
+      "wyroznij": [
+        {
+          "rzad": 2,
+          "kolumna": 1
+        }
+      ],
+      "kierunek": "od_tylu",
+      "strzalka": null,
+      "nitka": "przod",
+      "klucz": "atlas.druty.oczko.p.krok1"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+# BR-ZAK-006/S4 (docs/brd/wymagania-dane.md:330): bez oferty w trakcie pracy — przejście przepływów liczenia (PR-02), historii, menu, przypomnienia,
+# nazwy i wpisania wartości bez ekranu zakupu i bez linii o Pro. Wyrocznia: KP-10, KP-13.
+appId: com.apps4brew.knitting
+name: "BR-ZAK-006/S4 · Bez oferty w trakcie pracy: liczenie, historia, menu, nazwa, wpisanie"
+tags:
+  - BR-ZAK-006-S4
+  - stan-licznika
+  - PU-120
+  - PU-204
+---
+# E2-139-S2: własny start zamiast subflows/start-czysty-dzis.yaml (te same kroki + oczkoE2eOknoStraznika, jak w 04, P-358): przy wolnej maszynie trzy stuknięcia Maestro
+# rozciągają się na > 2 s (cz. 3 #139: 2,105 s) i baner serii nie powstaje; okno 6 s + odstęp > 6 s (niżej) przed serią, żeby pierwsze +1 nie weszło do serii.
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "6"
+# ZM-18, ER-70, P-563 (10a): start na „Dziś”; na „Dziś” i po „+1” karty bez ekranu zakupu i bez odnośnika „Oczko Pro”
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- assertVisible: { id: "dzis-plus" }
+- assertNotVisible: "Oczko Pro.*"
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
+- assertNotVisible: { id: "oferty-ekran" }
+- assertNotVisible: "Oczko Pro.*"
+- tapOn: { id: "dzis-kontynuuj" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: "Oczko Pro.*"
+# odstęp > okno strażnika (6 s), żeby pierwsze +1 nie weszło do serii (baner „Undo 3 rows”, nie 4)
+- extendedWaitUntil: { visible: { id: "e2e-nigdy" }, timeout: 6500, optional: true }
+- tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- assertNotVisible: "Oczko Pro.*"
+- tapOn: { id: "baner-serii-cofnij" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: "Oczko Pro.*"
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- assertNotVisible: "Oczko Pro.*"
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-nazwa" }
+- assertNotVisible: "Oczko Pro.*"
+- runFlow: subflows/zamknij-menu.yaml # P-586 (a): menu to arkusz, zamyka „Cancel” w podprzepływie
+- runFlow: subflows/nazwij-projekt.yaml
+- assertNotVisible: "Oczko Pro.*"
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 12-bez-oferty

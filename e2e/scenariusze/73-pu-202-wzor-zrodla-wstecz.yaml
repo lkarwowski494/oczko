@@ -1,0 +1,52 @@
+# PU-202 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — wzór bez wzoru (menu źródeł „Add pattern”); „‹” wraca na licznik bez zmian.
+# Dwie drogi wejścia: akcja „Pattern” licznika bez wzoru (`licznik-wzor` src/ekrany/LicznikAkcje.tsx:65 → `router.push('/wzor')` app/licznik.tsx:64) i kafel
+# „Add pattern” na „Dziś” (`dzis-kafel-dodaj-wzor` src/ekrany/Dzis.tsx:232, KAFLE :50 → licznik + `/wzor?zrodla=1` app/(zakladki)/index.tsx:73-74).
+# Menu źródeł: ekran `EkranZrodelWzoru` z „Back” (`nav-wstecz` src/ekrany/WzorZrodla.tsx:19, P-830, WL-1171-01; `router.back()` app/wzor.tsx:169),
+# grupa `wzor-dodaj` src/ekrany/WzorGrupa.tsx:61 z pozycją „Choose file (PDF or Word)” (en.json wzor.z_pliku, WzorGrupa.tsx:67).
+# Powrót: `licznik-plus`, `licznik-wartosc` z tą samą wartością (1); drugi „‹” z licznika — „Dziś” (`dzis-karta` Dzis.tsx:157).
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Analogia: 21-br-wzr-001-s1-pdf-z-plikow.yaml:26-29.
+appId: com.apps4brew.knitting
+name: "PU-202 · Menu źródeł „Add pattern” z licznika i z kafla „Dziś”: „‹” wraca na licznik bez zmian"
+tags:
+  - przypadki-uzycia
+  - PU-202
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- 1. licznik bez wzoru → „Pattern” → menu źródeł ---
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-dodaj" }, timeout: 20000 }
+- assertVisible: "Choose file \\(PDF or Word\\)"
+- assertVisible: { id: "nav-wstecz" }
+- takeScreenshot: 73-zrodla-z-licznika
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "wzor-dodaj" }
+- takeScreenshot: 73-licznik-po-powrocie
+# --- 2. „Dziś” → kafel „Add pattern” → menu źródeł bieżącego projektu ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "dzis-kafel-dodaj-wzor" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "dzis-kafel-dodaj-wzor", text: "Add pattern" }
+- tapOn: { id: "dzis-kafel-dodaj-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-dodaj" }, timeout: 20000 }
+- assertVisible: "Choose file \\(PDF or Word\\)"
+- takeScreenshot: 73-zrodla-z-dzis
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "wzor-dodaj" }
+- takeScreenshot: 73-licznik-po-powrocie-z-dzis
+# drugi „‹”: z licznika na „Dziś” z tą samą wartością na karcie
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertVisible: { id: "dzis-wartosc", text: "1" }

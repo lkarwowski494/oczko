@@ -1,0 +1,722 @@
+[
+ {
+  "id": "M-01",
+  "opis": "jedno urządzenie, liniowo",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "c",
+    "rodzaj": "minus",
+    "rodzice": [
+     "b"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 1
+  }
+ },
+ {
+  "id": "M-02",
+  "opis": "duplikat dostarczenia (transferUserInfo powtórzony, dziennik Live Activity scalony dwa razy)",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 2
+  }
+ },
+ {
+  "id": "M-03",
+  "opis": "odwrócona kolejność: dziecko przed rodzicem",
+  "zdarzenia": [
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "czeka"
+  }
+ },
+ {
+  "id": "M-04",
+  "opis": "zegarek bez telefonu i telefon równolegle od tej samej wartości: konflikt pokazany, nie zsumowany po cichu",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 10,
+    "rodzice": []
+   },
+   {
+    "id": "t1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "z1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "z2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "z1"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "konflikt",
+   "wartosci": [
+    11,
+    12
+   ],
+   "kandydaci": {
+    "t1": 11,
+    "z2": 12
+   }
+  }
+ },
+ {
+  "id": "M-05",
+  "opis": "rozstrzygnięcie użytkownika łączy gałęzie",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 10,
+    "rodzice": []
+   },
+   {
+    "id": "t1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "z1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "r",
+    "rodzaj": "rozstrzygniecie",
+    "wartosc": 12,
+    "rodzice": [
+     "t1",
+     "z1"
+    ]
+   },
+   {
+    "id": "p",
+    "rodzaj": "plus",
+    "rodzice": [
+     "r"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 13
+  }
+ },
+ {
+  "id": "M-06",
+  "opis": "−1 nie schodzi poniżej zera",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "minus",
+    "rodzice": []
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 0
+  }
+ },
+ {
+  "id": "M-07",
+  "opis": "zerowanie po serii, potem +1 z ekranu blokady znającego zerowanie",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "zerowanie",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "l",
+    "rodzaj": "plus",
+    "rodzice": [
+     "b"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 1
+  }
+ },
+ {
+  "id": "M-07b",
+  "opis": "zerowanie z wartości większej niż 1 daje 0 (nie −1), następne +1 → 1 (mutant „zerowanie jako −1”)",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 5,
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "zerowanie",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "c",
+    "rodzaj": "plus",
+    "rodzice": [
+     "b"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 1
+  }
+ },
+ {
+  "id": "M-08",
+  "opis": "cofnięcie serii stuknięć (F-47) przywraca wartość sprzed serii",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 20,
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "c",
+    "rodzaj": "plus",
+    "rodzice": [
+     "b"
+    ]
+   },
+   {
+    "id": "d",
+    "rodzaj": "plus",
+    "rodzice": [
+     "c"
+    ]
+   },
+   {
+    "id": "u",
+    "rodzaj": "cofniecie",
+    "wartosc": 20,
+    "cofa": [
+     "b",
+     "c",
+     "d"
+    ],
+    "rodzice": [
+     "d"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 20
+  }
+ },
+ {
+  "id": "M-08b",
+  "opis": "ER-41: pomyłka ze środka historii (b) bez „Cofnij”; korekta wpisaniem wartości na głowie (P-091 (3a))",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 20,
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "c",
+    "rodzaj": "plus",
+    "rodzice": [
+     "b"
+    ]
+   },
+   {
+    "id": "d",
+    "rodzaj": "plus",
+    "rodzice": [
+     "c"
+    ]
+   },
+   {
+    "id": "k",
+    "rodzaj": "wpisanie",
+    "wartosc": 22,
+    "rodzice": [
+     "d"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 22
+  }
+ },
+ {
+  "id": "M-09",
+  "opis": "Z07-13: plus z dwoma rodzicami (tylko rozstrzygnięcie łączy gałęzie) → błąd danych, nie cichy wynik",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 10,
+    "rodzice": []
+   },
+   {
+    "id": "t1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "z1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "z2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "z1"
+    ]
+   },
+   {
+    "id": "p",
+    "rodzaj": "plus",
+    "rodzice": [
+     "t1",
+     "z2"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "wiele_rodzicow"
+  }
+ },
+ {
+  "id": "M-10",
+  "opis": "Z07-11 (1): trzy stuknięcia z ekranu blokady od 22, każde z rodzicem = poprzednie własne stuknięcie → zgodny 25",
+  "zdarzenia": [
+   {
+    "id": "g",
+    "rodzaj": "wpisanie",
+    "wartosc": 22,
+    "rodzice": []
+   },
+   {
+    "id": "l1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "g"
+    ]
+   },
+   {
+    "id": "l2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "l1"
+    ]
+   },
+   {
+    "id": "l3",
+    "rodzaj": "plus",
+    "rodzice": [
+     "l2"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 25
+  }
+ },
+ {
+  "id": "M-10b",
+  "opis": "Z07-11 (1): stan sprzed poprawki — trzy stuknięcia z tym samym rodzicem g → fałszywy konflikt 23/23/23 (wektor pokazuje, dlaczego intencja łańcuchuje)",
+  "zdarzenia": [
+   {
+    "id": "g",
+    "rodzaj": "wpisanie",
+    "wartosc": 22,
+    "rodzice": []
+   },
+   {
+    "id": "l1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "g"
+    ]
+   },
+   {
+    "id": "l2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "g"
+    ]
+   },
+   {
+    "id": "l3",
+    "rodzaj": "plus",
+    "rodzice": [
+     "g"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "konflikt",
+   "wartosci": [
+    23,
+    23,
+    23
+   ],
+   "kandydaci": {
+    "l1": 23,
+    "l2": 23,
+    "l3": 23
+   }
+  }
+ },
+ {
+  "id": "M-12",
+  "opis": "Z07-13: cykl a ↔ b → błąd danych",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": [
+     "b"
+    ]
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "cykl"
+  }
+ },
+ {
+  "id": "M-13",
+  "opis": "Z07-13: zdarzenie jest własnym rodzicem → błąd danych",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "cykl"
+  }
+ },
+ {
+  "id": "M-14",
+  "opis": "Z07-13: kolizja id (to samo id, inna treść) → błąd danych; identyczny duplikat to M-02",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 5,
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "b",
+    "rodzaj": "minus",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "kolizja_id"
+  }
+ },
+ {
+  "id": "M-15",
+  "opis": "Z07-13: nieznany rodzaj (literówka albo nowsza wersja aplikacji) → błąd danych; adapter synchronizacji i importu odkłada takie zdarzenie do poczekalni, zanim wywoła scal (ADR-0005)",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plsu",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "nieznany_rodzaj"
+  }
+ },
+ {
+  "id": "M-16",
+  "opis": "ER-42: import „scal” archiwum z gałęzią rozbieżną z lokalną → konflikt; zdarzenia archiwum dostarczone drugi raz (import dwa razy) → ten sam konflikt",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 30,
+    "rodzice": []
+   },
+   {
+    "id": "t1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "x1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "x2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "x1"
+    ]
+   },
+   {
+    "id": "a",
+    "rodzaj": "wpisanie",
+    "wartosc": 30,
+    "rodzice": []
+   },
+   {
+    "id": "x1",
+    "rodzaj": "plus",
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "x2",
+    "rodzaj": "plus",
+    "rodzice": [
+     "x1"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "konflikt",
+   "wartosci": [
+    31,
+    32
+   ],
+   "kandydaci": {
+    "t1": 31,
+    "x2": 32
+   }
+  }
+ },
+ {
+  "id": "M-17",
+  "opis": "Z07-13: rozstrzygnięcie z jednym rodzicem jest dozwolone (wybór wersji po konflikcie z gałęzią usuniętą)",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "r",
+    "rodzaj": "rozstrzygniecie",
+    "wartosc": 7,
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "zgodny",
+   "wartosc": 7
+  }
+ },
+ {
+  "id": "M-18",
+  "opis": "NZ-08-P1-05 W1 (P-118): wpisanie bez wartości (rekord synchronizacji lub importu łamiący niezmiennik schemat.sql) → blad zla_wartosc, nie wyjątek ani cichy wynik",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "w",
+    "rodzaj": "wpisanie",
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "zla_wartosc",
+   "id": "w"
+  }
+ },
+ {
+  "id": "M-19",
+  "opis": "NZ-08-P1-05 W1: rozstrzygnięcie z wartością ujemną albo ułamkową → blad zla_wartosc (CHECK wartosc >= 0, INTEGER)",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "r",
+    "rodzaj": "rozstrzygniecie",
+    "wartosc": -1,
+    "rodzice": [
+     "a"
+    ]
+   },
+   {
+    "id": "s",
+    "rodzaj": "cofniecie",
+    "wartosc": 2.5,
+    "rodzice": [
+     "r"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "zla_wartosc",
+   "id": "r"
+  }
+ },
+ {
+  "id": "M-20",
+  "opis": "NZ-08-P1-05 W1: plus albo zerowanie z polem wartosc (niezmiennik: wartość tylko przy ustawieniu) → blad zla_wartosc",
+  "zdarzenia": [
+   {
+    "id": "a",
+    "rodzaj": "plus",
+    "rodzice": []
+   },
+   {
+    "id": "b",
+    "rodzaj": "plus",
+    "wartosc": 5,
+    "rodzice": [
+     "a"
+    ]
+   }
+  ],
+  "oczekiwane": {
+   "stan": "blad",
+   "powod": "zla_wartosc",
+   "id": "b"
+  }
+ }
+]

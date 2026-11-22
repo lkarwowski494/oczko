@@ -1,0 +1,27 @@
+{
+  "zrodlo": "Rola 04, fix-8 (P-243 S2a, P-209, P-268). Teksty ostateczne zamiast roboczych tekstów 08 (wzór i włóczka/drut w koszu) oraz opis kosza, który po P-209 i P-243 obejmuje też wzory, włóczkę i druty. Nakłada 08 ręcznie w src/i18n/slowniki/en.json i en.kontekst.json (zastąpienie istniejących wartości; 04 nie zna wartości roboczych — kwarantanna). Placeholdery: {{data}} = usunieto_ms + KOSZ_DNI, krótka data regionu (jak usun.projekt_opis); {{projekt}} = projekt, do którego wzór wróci. P-276: dołączone klucze decyzji C (Video link przy istniejącym filmie): wzor.film_zmien, udostepnij.film_zastapi, udostepnij.do_projektu_film — nowe klucze (dodanie, nie zastąpienie). Zależność 05: pole `film` (boolean) w migawce projektów App Group.",
+  "en": {
+    "wzor.usun_opis": "You can restore it with its highlights and drawings from Recently deleted on the Projects list until {{data}}. Row notes and counters stay.",
+    "kosz.wzor": "Pattern in {{projekt}} · until {{data}}",
+    "kosz.wloczka": "Yarn · until {{data}}",
+    "kosz.narzedzie": "Needles or hook · until {{data}}",
+    "kosz.opis_one": "Deleted projects, parts, counters, patterns, yarn and needles stay here for {{count}} day. Then they’re deleted for good.",
+    "kosz.opis_other": "Deleted projects, parts, counters, patterns, yarn and needles stay here for {{count}} days. Then they’re deleted for good.",
+    "kosz.pusto_one": "Nothing here. Deleted projects, parts, counters, patterns, yarn and needles stay here for {{count}} day.",
+    "kosz.pusto_other": "Nothing here. Deleted projects, parts, counters, patterns, yarn and needles stay here for {{count}} days.",
+    "wzor.film_zmien": "Change link",
+    "udostepnij.film_zastapi": "{{projekt}} already has a video link. Saving replaces it with this one.",
+    "udostepnij.do_projektu_film": "Add the video link to"
+  },
+  "kontekst": {
+    "wzor.usun_opis": "Wzór (F-24…F-28; P-229, P-243 S2a): treść alertu potwierdzenia usunięcia wzoru; wzór idzie do kosza na KOSZ_DNI z zakreśleniami i rysunkami; notatki rzędów należą do licznika i zostają. „Recently deleted” i „Projects” jak kosz.tytul i projekty.tytul. {{data}} = ostatni dzień przywrócenia, krótka data regionu.",
+    "kosz.wzor": "Podpis wiersza wzoru w koszu (P-243 S2a); {{projekt}} = projekt, do którego wzór wróci; {{data}} jak w kosz.projekt. Wzór pokazany tylko, gdy jego projekt nie jest w koszu (jak część).",
+    "kosz.wloczka": "Podpis wiersza włóczki w koszu (P-209); {{data}} jak w kosz.projekt. „Yarn” jak nazwa zapasu włóczki.",
+    "kosz.narzedzie": "Podpis wiersza drutu albo szydełka w koszu (P-209); {{data}} jak w kosz.projekt. „Needles or hook” jak tytuł formularza formularz.narzedzie_tytul.",
+    "kosz.opis": "Zdanie pod tytułem kosza; {{count}} = KOSZ_DNI (dziś 30). Wymienia wszystko, co trafia do kosza (BR-DAN-008, P-209, P-243); zdjęcia nie trafiają (bez kosza).",
+    "kosz.pusto": "Pusty ekran kosza; {{count}} = KOSZ_DNI (dziś 30); lista rodzajów jak w kosz.opis.",
+    "wzor.film_zmien": "Wzór/film (F-24, BR-WZR-007; P-274): pozycja menu kontekstowego wiersza „Video” na ekranie projektu, nad „Remove link”; otwiera arkusz wzor.film_tytul wypełniony obecnym linkiem i nazwą; Save zastępuje.",
+    "udostepnij.film_zastapi": "Rozszerzenie „Udostępnij do Oczka” i arkusz skrzynki (P-274): linia pod listą projektów, gdy wybrano „Video link”, a zaznaczony projekt ma już film (jeden film na projekt, P-218 (4)); {{projekt}} = nazwa projektu. Zastępuje udostepnij.gotowe w tym stanie.",
+    "udostepnij.do_projektu_film": "Rozszerzenie „Udostępnij do Oczka” i arkusz skrzynki (P-276): nagłówek listy projektów, gdy wybrano „Video link” (zamiast udostepnij.do_projektu „Add as a pattern to”)."
+  }
+}

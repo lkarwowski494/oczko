@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.us-uk-2",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.us-uk-2.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-011"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

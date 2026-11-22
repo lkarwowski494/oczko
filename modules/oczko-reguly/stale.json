@@ -1,0 +1,11 @@
+{
+  "limitDniWMiesiacu": 5,
+  "przerwaNowegoDniaMs": 3600000,
+  "oknoOfflineProMs": 604800000,
+  "produktyPro": [
+    "oczko.pro.lifetime",
+    "oczko.pro.monthly",
+    "oczko.pro.yearly"
+  ],
+  "zegarekPonowienieMs": 900000
+}

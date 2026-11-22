@@ -1,0 +1,64 @@
+{
+ "format": 1,
+ "id": "skrot.druty.tbl",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.tbl.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "through back loop",
+    "skrot": "tbl",
+    "twierdzenie": "TRM-EN-024"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "за заднюю стенку",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-031"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "за задню стінку",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-018"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "ねじり目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-025"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "扭下針",
+    "skrot": "ktbl",
+    "twierdzenie": "TRM-ZHT-027"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "превита лицева бримка",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-025"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "geroji persukta akis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-009"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

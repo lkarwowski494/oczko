@@ -1,0 +1,148 @@
+{
+ "format": 1,
+ "id": "druty.ujecie.ssk",
+ "rzemioslo": "druty",
+ "rodzaj": "ujecie",
+ "klucze": {
+  "nazwa": "atlas.druty.ujecie.ssk.nazwa",
+  "podpis": "atlas.druty.ujecie.ssk.podpis",
+  "opis_alt": "atlas.druty.ujecie.ssk.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip, slip, knit",
+    "skrot": "ssk",
+    "twierdzenie": "TRM-EN-007"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przekręcone razem na prawo",
+    "skrot": "2 o. przekr. p.",
+    "twierdzenie": "TRM-PL-011"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "убавление петель с наклоном влево",
+    "skrot": "уб. лв.",
+    "twierdzenie": "TRM-RU-008"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "右上2併針",
+    "skrot": "ssk",
+    "twierdzenie": "TRM-ZHT-007"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свита лицева бримка с наклон вляво",
+    "skrot": "1св.л.бр.л.",
+    "twierdzenie": "TRM-BG-008"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-042",
+   "wartosc": {
+    "pochylenie": "lewo",
+    "bilans": -1
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scal",
+   "zuzywa": 2,
+   "strona": "prawe",
+   "na_wierzchu": "prawe",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.ssk.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "scianka": "przednia",
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.ssk.krok2"
+  },
+  {
+   "faza": "wynik",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.ssk.krok3"
+  }
+ ]
+}

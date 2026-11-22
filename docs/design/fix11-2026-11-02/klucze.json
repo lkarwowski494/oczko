@@ -1,0 +1,39 @@
+{
+ "zrodlo": "Rola 04, aneks partii 8 (P-342, P-351, P-352, P-353; 2026-11-02). Klucze en do nałożenia przez 08 po akceptacji koordynatora. `en`: nowe klucze. `potwierdzone`: klucze robocze 08, których wartość 04 akceptuje albo zmienia (wartości roboczych z `src/` 04 nie czytał — kwarantanna; 08 porównuje i zgłasza różnicę). Wyjątek: komunikat 024 i zdanie „Undo is available.” nie mają znanej 04 nazwy klucza 08; wartość z tego pliku obowiązuje, nazwa zostaje po stronie 08. Teksty tylko en; inne języki — fala po audycie (P-320).",
+ "en": {
+  "projekt.miejsce_wzoru_strona": "Page {{strona}}",
+  "historia.wpis_rozwin_a11y": "More about {{wpis}}",
+  "historia.wpis_rozwin_podpowiedz": "Shows how to change this entry.",
+  "licznik.wpisz_blad_format": "Enter a whole number, 0 or more, for example {{przyklad}}.",
+  "wzor.blad_zapis": "Oczko can’t save this pattern",
+  "wzor.blad_zapis_opis": "Your device may be out of space. Nothing was added. Free some space and try again.",
+  "wzor.notatka_edytuj_a11y": "Edit note for row {{n}}"
+ },
+ "potwierdzone": {
+  "oferty.pro_wlaczone": "Oczko Pro is on.",
+  "ustawienia.grupa_liczenie": "Counting",
+  "projekt.miejsce_wzoru_wartosc": "Page {{strona}}, row {{rzad}}",
+  "wzor.notatka_edytuj": "Edit",
+  "wzor.przed_schematem": "Before the pattern",
+  "wzor.znacznik_napis": "Row {{n}}",
+  "ogloszenie_cofnij_dostepne": "Undo is available."
+ },
+ "kontekst": {
+  "projekt.miejsce_wzoru_strona": "Druga linia wiersza wzoru na ekranie projektu, gdy wzór ma zapisaną stronę, ale nie ma rzędu znacznika. Samo „Page {{strona}}”; rzędu nie zgadujemy (macierz stanów, dane częściowe). {{strona}} = numer strony (liczba, bez odmiany).",
+  "historia.wpis_rozwin_a11y": "Etykieta VoiceOver strzałki ▸/▾ przy starszym wpisie historii (BR-LIC-003 S4; wzorzec rozwijania jak Trening, wzorzec 20): stała, taka sama po rozwinięciu; stan niesie `expanded`. {{wpis}} = krótki opis wpisu, np. „30 → 31 at 20:14” (godzina w formacie regionu).",
+  "historia.wpis_rozwin_podpowiedz": "Podpowiedź VoiceOver (accessibilityHint) tej samej strzałki: co się stanie po stuknięciu. Jedno zdanie, strona czynna; „entry” = jeden wpis historii licznika.",
+  "licznik.wpisz_blad_format": "Linia błędu pod polem wpisania wartości licznika (BR-LIC-017 „Błędna wartość” i „Zapis niezgodny z regionem”, ER-43): wartość musi być liczbą całkowitą od 0. {{przyklad}} = liczba 1000 sformatowana zapisem regionu telefonu (en-US „1,000”, pl-PL „1 000”, de-DE „1.000”, ar-EG cyfry arabsko-indyjskie), dzięki czemu użytkownik widzi, jak region zapisuje tysiące. Ten sam tekst dla ujemnej, tekstu i zapisu niezgodnego z regionem — aplikacja niczego nie zgaduje (nie zamienia „1,000” na 1000 ani na 1).",
+  "wzor.blad_zapis": "Nagłówek alertu, gdy nie udało się zapisać zlecenia dodania wzoru (zapis lokalny nie powiódł się; wzorzec jak `wzor.blad_plik`). Przycisk: `wspolne.ok`. Nie dotyczy błędu pliku ani sieci.",
+  "wzor.blad_zapis_opis": "Treść alertu `wzor.blad_zapis`: co się stało („may be out of space” — przyczyna prawdopodobna, nie pewna), że nic nie dodano, co zrobić. Bez przeprosin i bez kodów technicznych.",
+  "wzor.notatka_edytuj_a11y": "Etykieta VoiceOver przycisku „Edit” (`wzor.notatka_edytuj`) w arkuszu podglądu notatki wzoru: akcja plus obiekt (słownik interakcji). {{n}} = numer rzędu notatki."
+ },
+ "kontekstPotwierdzonych": {
+  "oferty.pro_wlaczone": "Jednorazowa linia informacji (wzorzec `uwaga` z „i”, role=status), gdy zakup Pro zostanie zatwierdzony poza aplikacją (Ask to Buy, P-330): pojawia się w miejscu linii „Waiting for approval…” albo nagłówka limitu, którą użytkownik akurat widzi, i znika po wyjściu z ekranu albo stuknięciu. Poza aplikacją i bez widocznej linii nic się nie wyświetla; stan widać w Ustawieniach (`ustawienia.pro_wlaczone` „On”).",
+  "ustawienia.grupa_liczenie": "Nagłówek grupy w Ustawieniach (zwykła wielka litera): Vibration, Screen stays on, Units (ADR-0029; design-spec „Trzy wiersze w Ustawieniach”). Rzeczownik odczasownikowy jak „Backup”; nie „Counter”, bo to także nazwa części.",
+  "projekt.miejsce_wzoru_wartosc": "Druga linia wiersza wzoru na ekranie projektu: ostatnie miejsce w pliku wzoru (`ostatnie_miejsce`) i rząd znacznika. Numery to identyfikatory, nie liczby do odmiany — bez form mnogich.",
+  "wzor.notatka_edytuj": "Przycisk w nagłówku arkusza podglądu notatki wzoru (Close / tytuł / Edit): przechodzi do edycji tej notatki. Zapis i anulowanie edycji według słownika (Cancel / Save).",
+  "wzor.przed_schematem": "Napis znacznika, gdy rząd znacznika jest przed pierwszym rzędem schematu (po spruciu poniżej początku, RD-21-W6). Nie „Row 0”: schemat może być numerowany od innego rzędu.",
+  "wzor.znacznik_napis": "Napis na zakładce znacznika rzędu na stronie wzoru; {{n}} = rząd w robocie (RD-21). Ten sam wzór co „Row {{n}}: {{tekst}}” w chipie notatki i w pasie przypomnienia.",
+  "ogloszenie_cofnij_dostepne": "Zdanie ogłaszane przez VoiceOver po tekście banera serii z ekranu blokady (BR-LIC-019 S5): informuje, że cofnięcie jest dostępne; sama akcja jest osobnym elementem. Bez instrukcji gestu (użytkownik VoiceOver albo Switch Control może mieć inne gesty)."
+ }
+}

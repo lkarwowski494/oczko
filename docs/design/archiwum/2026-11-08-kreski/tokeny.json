@@ -1,0 +1,237 @@
+{
+ "_opis": "Tokeny Oczka, kierunek A „Kreski na wzorze” (P-063), krój tytułowy Libre Franklin (P-064). Propozycja modułu motywu dla roli 08; zmiana tylko przez rolę 04. Kontrast: docs/design/kontrast-tabela.txt (generuje docs/design/narzedzia/tokeny-kontrast.mjs).",
+ "kolor": {
+  "jasny": {
+   "papier": "#FCFCFA",
+   "papierGrupa": "#F2F3F0",
+   "grafit": "#26282C",
+   "olowek": "#5E626A",
+   "linia": "#D9DBDF",
+   "zakreslacz": "#F6E04A",
+   "tekstNaZakreslaczu": "#1B1C1F",
+   "zakreslaczKrawedz": "#8C7A00",
+   "przyciskTlo": "#26282C",
+   "przyciskTekst": "#FCFCFA",
+   "przyciskObrys": "#26282C",
+   "drugiPrzyciskObrys": "#26282C",
+   "blad": "#B3261E",
+   "kreska": "#26282C",
+   "arkusz": "#FCFCFA",
+   "przyciskNieaktywnyTlo": "#D9DBDF",
+   "przyciskNieaktywnyTekst": "#5E626A",
+   "przyciskNiszczacyTlo": "#B3261E",
+   "przyciskNiszczacyTekst": "#FCFCFA"
+  },
+  "ciemny": {
+   "papier": "#1B1C1F",
+   "papierGrupa": "#24262A",
+   "grafit": "#ECECE8",
+   "olowek": "#A9ACB2",
+   "linia": "#34363B",
+   "zakreslacz": "#38351F",
+   "tekstNaZakreslaczu": "#F4ECB4",
+   "zakreslaczKrawedz": "#E2CB3A",
+   "przyciskTlo": "#2E3136",
+   "przyciskTekst": "#ECECE8",
+   "przyciskObrys": "#8C9098",
+   "drugiPrzyciskObrys": "#8C9098",
+   "blad": "#F2B8B5",
+   "kreska": "#ECECE8",
+   "arkusz": "#2A2C31",
+   "przyciskNieaktywnyTlo": "#34363B",
+   "przyciskNieaktywnyTekst": "#A9ACB2",
+   "przyciskNiszczacyTlo": "#F2B8B5",
+   "przyciskNiszczacyTekst": "#1B1C1F"
+  },
+  "jasnyKontrast": {
+   "olowek": "#44474D",
+   "linia": "#8F939A",
+   "zakreslaczKrawedz": "#26282C",
+   "drugiPrzyciskObrys": "#26282C",
+   "przyciskNieaktywnyTlo": "#8F939A",
+   "przyciskNieaktywnyTekst": "#44474D"
+  },
+  "ciemnyKontrast": {
+   "olowek": "#CDD0D4",
+   "linia": "#7A7E85",
+   "przyciskObrys": "#CDD0D4",
+   "drugiPrzyciskObrys": "#CDD0D4",
+   "zakreslaczKrawedz": "#F4ECB4",
+   "przyciskNieaktywnyTlo": "#7A7E85",
+   "przyciskNieaktywnyTekst": "#CDD0D4"
+  },
+  "_wloczka": "Kolor włóczki projektu (P-063, wariant): tylko kropka przy nazwie projektu i, jeśli użytkownik włączy, kolor kresek; gdy kontrast koloru do papieru < 3:1, kreski zostają grafitowe, a kolor tylko w kropce z obwódką.",
+  "wzor": {
+   "_opis": "Znacznik rzędu na stronie wzoru (NZ-08-P2-04, P-126 3a). Strona to dokument użytkownika (zwykle jasny) w obu motywach, więc kolory znacznika są stałe.",
+   "strona": "#FFFFFF",
+   "znacznik": "#26282C",
+   "znacznikTlo": "#26282C14",
+   "etykietaTlo": "#26282C",
+   "etykietaTekst": "#FCFCFA"
+  },
+  "systemCzarny": {
+   "_opis": "Zegarek, Dynamic Island i Smart Stack (fix NZ-08-P3-04, P-133): tło systemowe czarne (Dynamic Island: tła nie da się zmienić, HIG Live Activities), kolory z motywu ciemnego; karta Smart Stack rysowana przez system — #1E2024 to przybliżenie do pomiaru [DO USTALENIA na urządzeniu]. Ekran blokady (Live Activity) używa motywu jasnego/ciemnego z papierem jako własnym tłem.",
+   "tlo": "#000000",
+   "kartaStack": "#1E2024",
+   "grafit": "#ECECE8",
+   "olowek": "#A9ACB2",
+   "przyciskTlo": "#2E3136",
+   "przyciskTekst": "#ECECE8",
+   "przyciskObrys": "#8C9098",
+   "zakreslacz": "#38351F",
+   "tekstNaZakreslaczu": "#F4ECB4",
+   "zakreslaczKrawedz": "#E2CB3A"
+  }
+ },
+ "typografia": {
+  "_zasada": "Libre Franklin: liczba, tytuły, przyciski, instrukcja; treść: krój systemowy (SF Pro, Dynamic Type). Rozmiary w pt przy domyślnym rozmiarze tekstu; skala do AX5: tytuły ×1,8, treść ×3,1 (uproszczenie tabeli HIG); liczba licznika najwyżej ×1,3 (kluczowa liczba bez ucięcia).",
+  "liczba": {
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 96,
+   "interlinia": 1.0,
+   "maxSkala": 1.3,
+   "minSkala": 0.5,
+   "cyfry": "tabelaryczne"
+  },
+  "liczbaPaska": {
+   "_opis": "Liczba w pasku licznika pod wzorem (design-spec W1a: Libre Franklin 40 pt); krój, grubość i cyfry jak „liczba” (M1-078).",
+   "rozmiar": 40,
+   "interlinia": 1.2
+  },
+  "liczbaKolumny": {
+   "_opis": "Liczba w kolumnie licznika obok wzoru (design-spec W3: 64 pt); krój, grubość i cyfry jak „liczba” (M1-078).",
+   "rozmiar": 64,
+   "interlinia": 1.0
+  },
+  "tytul": {
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 30,
+   "interlinia": 1.15,
+   "styl iOS": "largeTitle (skalowany)"
+  },
+  "instrukcja": {
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 20,
+   "interlinia": 1.2
+  },
+  "przycisk": {
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 28,
+   "interlinia": 1.2
+  },
+  "znakWyboru": {
+   "_opis": "Znak ✓ w polu wyboru (`.pole-wyboru`, fix10-2026-11-01/partia8.html:208: 700 18 pt); interlinia jak „instrukcja” i „przycisk”; skala z tekstem najwyżej ×1,6 jak kapsuła stopera (design-spec:529), żeby znak nie wychodził poza pole przy AX5 (M1-audytor-generalny-145, 04-studio-projektowe-529).",
+   "krój": "Libre Franklin",
+   "grubość": 700,
+   "rozmiar": 18,
+   "interlinia": 1.2,
+   "maxSkala": 1.6
+  },
+  "tresc": {
+   "krój": "system",
+   "rozmiar": 17,
+   "interlinia": 1.3,
+   "styl iOS": "body"
+  },
+  "podpis": {
+   "krój": "system",
+   "rozmiar": 15,
+   "interlinia": 1.3,
+   "styl iOS": "subheadline"
+  },
+  "drobny": {
+   "krój": "system",
+   "rozmiar": 13,
+   "interlinia": 1.3,
+   "styl iOS": "footnote"
+  }
+ },
+ "odstep": {
+  "_jednostka": 4,
+  "xs": 4,
+  "s": 8,
+  "m": 12,
+  "l": 16,
+  "xl": 20,
+  "xxl": 28,
+  "sekcja": 32
+ },
+ "promien": {
+  "_zasada": "Hierarchia: im większy i ważniejszy element, tym większy promień; zakreślacz prawie prosty (papier). `przyciskGlowny` = strefa +1 (168 pt); `przyciskPelny` = przycisk pełnej szerokości w arkuszu decyzji i alercie własnym (≥ 52 pt, 17 pt 700; P2-1, 2026-11-02); `przyciskDrugi` = przycisk z obrysem w rzędzie wyboru (`.wybor` w `fix10-2026-11-01/partia8.html:105`, min. 64 pt).",
+  "przyciskGlowny": 20,
+  "przyciskPelny": 14,
+  "przyciskDrugi": 14,
+  "grupa": 12,
+  "pole": 10,
+  "poleWyboru": 8,
+  "zakreslacz": 2
+ },
+ "cel": {
+  "minimum": 44,
+  "przyciskMinus": 72,
+  "przyciskPlusWysokosc": 168,
+  "odstepMinusPlus": 28,
+  "przyciskMinusPaska": 56,
+  "przyciskPlusPaskaWysokosc": 72,
+  "przyciskPlusPaskaSzerokosc": 132,
+  "poleWyboru": 28
+ },
+ "miniatura": {
+  "_zasada": "Miniatura pierwszej strony wzoru w wierszu (audyt 04 2.1, 2026-10-30): strona = papier, więc bez promienia; obrys kolorem `linia`; szerokość = cel.minimum, wysokość = szerokość × proporcja.",
+  "szerokosc": 44,
+  "proporcja": 1.3,
+  "promien": 0
+ },
+ "ruch": {
+  "_zasada": "Ruch tylko w odpowiedzi na działanie; przerywalny; „Ogranicz ruch” = bez rysowania (kreska pojawia się od razu).",
+  "kreska": {
+   "czas": 120,
+   "krzywa": "easeOut"
+  },
+  "piataKreska": {
+   "czas": 160,
+   "krzywa": "easeOut"
+  },
+  "zakreslenie": {
+   "czas": 200,
+   "krzywa": "easeOut"
+  },
+  "cofniecie": {
+   "czas": 120,
+   "krzywa": "easeIn"
+  }
+ },
+ "haptyka": {
+  "_zasada": "F-48: tylko dwa wzorce do rozpoznania (rząd i przypomnienie); reszta systemowa. Dźwięk domyślnie wyłączony; zawsze w parze z haptyką.",
+  "plus": "UIImpactFeedbackGenerator .light",
+  "piataKreska": "UIImpactFeedbackGenerator .medium",
+  "rzadZInstrukcja": "dwa uderzenia .medium co 90 ms (Core Haptics), inne niż rząd",
+  "minus": "UIImpactFeedbackGenerator .soft",
+  "blokadaStukniecie": "UIImpactFeedbackGenerator .rigid",
+  "bladZapisu": "UINotificationFeedbackGenerator .error",
+  "stoperStart": "UIImpactFeedbackGenerator .light"
+ },
+ "haptykaZegarek": {
+  "_zasada": "Zegarek (NZ-05-F4-04, P-142): watchOS nie ma generatorów UIKit; wzorce zegarka to WKHapticType (Apple HIG „Playing haptics”, odczyt 2026-10-26). Klucze jak w „haptyka”; wzorce spoza tej listy zegarek gra jak dotąd (decyzja 08 przy celu watch).",
+  "bladZapisu": "WKHapticType.retry — „Tells the person that an action failed but they can retry it” (HIG); zamiast „plus” po nieudanym zapisie skrzynki",
+  "blokadaStukniecie": "WKHapticType.failure — „Tells the person that an action failed” (HIG); stuknięcie w ekran zegarka przy zablokowanym liczniku (P-142 2a)",
+  "przypomnienie": "WKHapticType.notification — „Tells the person that something significant or out of the ordinary has happened and requires their attention” (HIG, Playing haptics, watchOS; surowy JSON odczytany 2026-11-01); wejście na rząd z przypomnieniem (BR-LIC-015 S2, ADR-0030, K-05g); jedno uderzenie systemowe, inne niż „plus” (zwykły rząd) i „bladZapisu”"
+  },
+ "znakKresek": {
+  "_opis": "Znak kresek (NZ-08-P4-04, P-158 2a): cztery kreski i przekreślenie z ikony, bez zakreślacza i tła (HIG Live Activities: „display it without a container … Don’t use the entire app icon”). Plik ikona/znak-kresek.svg jako obraz szablonowy w katalogu zasobów (wektor zachowany, Render As: Template); kolor nadaje kod. Ukryty dla VoiceOver (accessibilityHidden): dane niesie liczba obok.",
+  "plik": "ikona/znak-kresek.svg",
+  "viewBox": "204 224 618 570",
+  "proporcja": 1.084,
+  "gruboscKreskiWJednostkach": 64,
+  "wyspa": { "_gdzie": "Dynamic Island compact (z lewej) i rozwinięta (przy nazwie)", "wysokosc": 18, "szerokosc": 19.5, "kreska": 2.0, "maxSkala": 1.2 },
+  "smartStack": { "_gdzie": "Smart Stack zegarka i CarPlay (przy nazwie)", "wysokosc": 13, "szerokosc": 14, "kreska": 1.5, "maxSkala": 1.15 },
+  "kolorSystemCzarny": "#ECECE8",
+  "kolorJasny": "#26282C",
+  "kolorCiemny": "#ECECE8",
+  "_kolor": "kolorSystemCzarny = kolor.systemCzarny.grafit (Dynamic Island, Smart Stack, CarPlay); kolorJasny/kolorCiemny = kolor.*.kreska, gdyby znak stanął na karcie ekranu blokady (dziś tam go nie ma)."
+ }
+}

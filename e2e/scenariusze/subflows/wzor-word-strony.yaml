@@ -1,0 +1,9 @@
+# Podprzepływ (P-282, scen. 53): wzór z pliku Word otwarty na stronie 1 (zrzut robi scenariusz) — źródło „Word document · N pages”,
+# przewinięcie do ostatniej strony („N of N”: odwołanie wsteczne w regexie, działa też przy jednej stronie) i jej zrzut. ZRZUT: przedrostek nazwy zrzutu.
+appId: com.apps4brew.knitting
+name: "podprzepływ: wzór Word — źródło i ostatnia strona"
+---
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · \\d+ pages?" }
+- scrollUntilVisible: { element: { id: "wzor-strona", text: ".*[Pp]age (\\d+) of \\1" }, direction: DOWN }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age (\\d+) of \\1" }
+- takeScreenshot: ${ZRZUT}-ostatnia

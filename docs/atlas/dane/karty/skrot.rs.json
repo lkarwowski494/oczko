@@ -1,0 +1,106 @@
+{
+ "format": 1,
+ "id": "skrot.rs",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.rs.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "right side",
+    "skrot": "RS",
+    "twierdzenie": "TRM-EN-017"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "prawa strona (robótki)",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-038"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "rätsida",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-019"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "лицевая сторона",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-022"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "лицьовий бік",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-013"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "表を見て編む段",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-021"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "正面",
+    "skrot": "RS",
+    "twierdzenie": "TRM-ZHT-020"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "işin yüzü",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-026"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "direito do trabalho",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-025"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "fața lucrului",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-011"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "лицева страна",
+    "skrot": "ЛС",
+    "twierdzenie": "TRM-BG-016"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "lice",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-008"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "lado derecho",
+    "skrot": "LD",
+    "twierdzenie": "TRM-ESLA-025"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

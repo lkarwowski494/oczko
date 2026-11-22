@@ -1,0 +1,273 @@
+$ (wt-347; testy z 0e08fabc) npx jest tests/wydanie/asc-iap-v2.test.ts tests/wydanie/iap-nazwa-aplikacji.test.ts
+PASS iOS tests/wydanie/iap-nazwa-aplikacji.test.ts
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+
+    expect(received).toMatchObject(expected)
+
+    Matcher error: received value must be a non-null object
+
+    Received has value: undefined
+
+      215 |       const nowa = o.wersje.find((x) => x.state === 'PREPARE_FOR_SUBMISSION')!; const stara = o.wersje.find((x) => x.n === 1)!;
+      216 |       const mapa = Object.fromEntries(nowa.lok.map((l) => [l.locale, l]));
+    > 217 |       expect(mapa['pl']).toMatchObject({ ...PL(klucz) });
+          |                          ^
+      218 |       if (klucz === 'group') expect(mapa['ja']).toMatchObject({ ...JA(klucz) });
+      219 |       expect(stara.lok.map((l) => l.locale).sort()).toEqual(['de-DE', 'en-US', 'pl', ...(klucz === 'group' ? ['ja'] : [])].sort()); // wersja zatwierdzona nietknięta
+      220 |     }
+
+      at toMatchObject (tests/wydanie/asc-iap-v2.test.ts:217:26)
+
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 4
+    Received length: 0
+    Received array:  []
+
+      226 |     expect(k.zapisy).toEqual([]);
+      227 |     const przen = k.log.filter((l) => /przenie/i.test(l));
+    > 228 |     expect(przen).toHaveLength(4); // po jednej linii na obiekt
+          |                   ^
+      229 |     expect(przen.filter((l) => /\bpl\b/.test(l))).toHaveLength(4);
+      230 |     expect(przen.filter((l) => /\bja\b/.test(l))).toHaveLength(1);
+      231 |   });
+
+      at Object.toHaveLength (tests/wydanie/asc-iap-v2.test.ts:228:19)
+
+  ● 10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji › przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 54
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionGroupVersions",
+    +     "rel": Object {
+    +       "subscriptionGroup": Object {
+    +         "data": Object {
+    +           "id": "G1",
+    +           "type": "subscriptionGroups",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionVersions",
+    +     "rel": Object {
+    +       "subscription": Object {
+    +         "data": Object {
+    +           "id": "S1",
+    +           "type": "subscriptions",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/subscriptionVersions",
+    +     "rel": Object {
+    +       "subscription": Object {
+    +         "data": Object {
+    +           "id": "S2",
+    +           "type": "subscriptions",
+    +         },
+    +       },
+    +     },
+    +   },
+    +   Object {
+    +     "a": null,
+    +     "m": "POST",
+    +     "p": "/v1/inAppPurchaseVersions",
+    +     "rel": Object {
+    +       "inAppPurchase": Object {
+    +         "data": Object {
+    +           "id": "I1",
+    +           "type": "inAppPurchases",
+    +         },
+    +       },
+    +     },
+    +   },
+    + ]
+
+      236 |       const k = w.kroki[0];
+      237 |       expect(k.code).toBe(1);
+    > 238 |       expect(zapisyDo(k, /^POST \/v1\/[A-Za-z]+Versions$/)).toEqual([]);
+          |                                                             ^
+      239 |       expect(k.zapisy).toEqual([]);
+      240 |       expect(k.problems.join('\n')).toMatch(/nie można przenieść/i);
+      241 |       expect(Object.values(w.stan).every((o) => o.wersje.length === 1)).toBe(true);
+
+      at Object.toEqual (tests/wydanie/asc-iap-v2.test.ts:238:61)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "POST /v1/subscriptionLocalizations "
+    Received string:    "Wycofany endpoint POST /v1/{id} — odmowa (zastępstwo: /v2/<…>Localizations z relacją `version`)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "POST /v1/inAppPurchaseSubmissions "
+    Received string:    "Wycofany endpoint POST /v1/{id} — odmowa (zastępstwo: /v1/reviewSubmissions + /v1/reviewSubmissionItems z wersją)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations "
+    Received string:    "Wycofany endpoint GET /v1/{id}/G1/{id} — odmowa (zastępstwo: /v1/subscriptionGroupVersions/{id}/localizations)"
+
+      253 |     ['POST', '/v1/inAppPurchaseSubmissions', 'POST /v1/inAppPurchaseSubmissions '],
+      254 |     ['GET', '/v1/subscriptionGroups/G1/subscriptionGroupLocalizations', 'GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations '],
+    > 255 |   ])('%s %s → komunikat zawiera ścieżkę', (m, p, oczekiwane) => expect(komunikat(m, p)).toContain(oczekiwane));
+          |                                                                                         ^
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+      258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+
+      at toContain (tests/wydanie/asc-iap-v2.test.ts:255:89)
+
+  ● 10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów › identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "PATCH /v1/subscriptionLocalizations/{id} "
+    Received string:    "Wycofany endpoint PATCH /v1/{id}/{id} — odmowa (zastępstwo: /v2/<…>Localizations z relacją `version`)"
+
+      256 |   test('identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje', () => {
+      257 |     const a = komunikat('PATCH', '/v1/subscriptionLocalizations/ABC123456');
+    > 258 |     expect(a).toContain('PATCH /v1/subscriptionLocalizations/{id} ');
+          |               ^
+      259 |     expect(a).not.toContain('ABC123456');
+      260 |     const b = komunikat('PATCH', '/v1/subscriptionLocalizations/0a1b2c3d-1111-2222-3333-444455556666');
+      261 |     expect(b).toContain('/v1/subscriptionLocalizations/{id} ');
+
+      at Object.toContain (tests/wydanie/asc-iap-v2.test.ts:258:15)
+
+  ● 10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, po odrzuceniu powstaje nowa wersja robocza › P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED)
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /REJECTED/
+    Received string:  "| P-789 | **KO-056: skrypt lokalizacji IAP zapisuje przez model wersji v2; wybór wersji (bez analogii: Trening nie zmigrował `scripts/asc/iap-localizations.mjs`, main @2d975814, 2026-11-11, wiersze 103–117 nadal v1; własna rekomendacja roli 10; do weta; sesja BG; 2026-11-13; decyzja właściciela 13.11 „To zróbmy tą migrację teraz”).** Źródło Apple (odczyt 2026-11-13, surowy JSON stron dokumentacji): `migrating-in-app-purchase-metadata-to-v2`, `working-with-{in-app-purchase,subscription,subscription-group}-versions`; adresy i cytaty w `docs/wydanie/asc-v2/inwentarz.md`. Zasada: istniejąca wersja robocza (`PREPARE_FOR_SUBMISSION`) jest używana; gdy jej nie ma, a teksty różnią się od pliku — `POST …Versions`, odczyt lokalizacji nowej wersji i plan względem odczytu (Apple nie opisuje dziedziczenia — skrypt działa w obu wariantach; lokalizacje spoza pliku są kopiowane do nowej wersji, nigdy usuwane); wersja w recenzji z innymi tekstami → PROBLEM (kod 1), bez zapisu; zgodne teksty → zero żądań zapisu (idempotencja). Skrypt niczego nie wysyła do recenzji. Testy: `tests/wydanie/asc-iap-v2.test.ts` (atrapa wg dokumentacji): 26 z 36 czerwonych na 2ed5215a, 0 na gałęzi. | (b) zawsze tworzyć nową wersję przy każdym apply (łamie idempotencję, mnoży wersje); (c) edytować tylko istniejącą wersję roboczą i przy jej braku zgłaszać problem (właściciel musiałby ręcznie zakładać wersje w ASC, co psuje „wszystko automatycznie”, P-467). | Zależy od: P-467, P-517; warunkowa wobec pierwszego przebiegu na koncie właściciela (zachowanie Apple: dziedziczenie, widoczność lokalizacji v1). |"
+
+      289 |   test('P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED)', () => {
+      290 |     const wiersz = readFileSync(join(root, 'docs/decyzje.md'), 'utf8').split('\n').find((l) => l.startsWith('| P-789 |'))!;
+    > 291 |     expect(wiersz).toMatch(/REJECTED/); expect(wiersz).toMatch(/DEVELOPER_REJECTED/); expect(wiersz).toMatch(/nową wersję/i);
+          |                    ^
+      292 |   });
+      293 | });
+      294 |
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:291:20)
+
+  ● 10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji › zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /dopiero po (zatwierdzeniu|recenzji)[^.\n]*Apple|dopiero po recenzji Apple/i
+    Received string:  "# Przebieg na koncie właściciela: lokalizacje IAP przez model wersji v2 (KO-056)·
+    Stan: przygotowane 2026-11-13 (sesja BG). **Niczego nie uruchomiono w App Store Connect** (brak kluczy w tej sesji, zakaz wyzwalania workflowów). Atrapa serwera w testach odzwierciedla odczytaną dokumentację Apple, nie prawdziwy serwer; poniższy przebieg jest pierwszym sprawdzeniem na żywo.
+    Warunek: scalenie gałęzi do `main` (workflow_dispatch działa tylko z plikiem na gałęzi domyślnej, P-319) i Twoje Approve środowiska `release`. Wszystko poza tym robi workflow.·
+    ## Kroki (każdy osobno; Ty tylko zatwierdzasz i wklejasz wynik)
+    1. **Dry-run:** Actions → „ASC lokalizacje produktów zakupu” → Run workflow → `tryb: dry-run` → Approve `release`. Workflow tylko czyta (GET). W podsumowaniu joba szukaj dla każdego z 4 obiektów (grupa, `oczko.pro.monthly`, `oczko.pro.yearly`, `oczko.pro.lifetime`) wiersza `(wersja N, STAN; istniejących lokalizacji: K)`.
+    2. **Co oznacza wynik dry-run:**
+       - `K = 0` przy wersji ze stanem `APPROVED`/`PREPARE_FOR_SUBMISSION`, choć lokalizacje wpisano wcześniej przez v1: Apple nie pokazuje starych lokalizacji w wersji. Apply utworzy komplet w wersji roboczej (to bezpieczne, nic nie jest usuwane); wklej mi wynik, zapiszę to jako ustalenie.
+       - `[wersja w recenzji: …]` i PROBLEM (kod 1): produkt ma wersję w recenzji, a teksty różnią się od pliku. Skrypt niczego nie zapisuje. Poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect, potem ponów.
+       - Wiersz `[nowa wersja zostanie utworzona; …]`: apply założy wersję roboczą produktu (`POST …Versions`, stan `PREPARE_FOR_SUBMISSION`). Nie wysyła jej do recenzji.
+       - Wszystkie wiersze `pomiń (bez zmian)` i kod 0: nic do zrobienia.
+    3. **Apply (dopiero po obejrzeniu dry-run):** ten sam workflow, `tryb: apply`, Approve. Zapis tworzy brakujące i aktualizuje różniące się lokalizacje w wersji roboczej; nigdy nie usuwa; lokalizacje spoza pliku kopiuje do nowej wersji.
+    4. **Drugi apply (dowód idempotencji):** uruchom `apply` jeszcze raz: oczekiwane `utwórz 0, zaktualizuj 0, nowe wersje 0`, kod 0.
+    5. **Wysyłka do recenzji:** poza zakresem skryptu i tej migracji. Zakupy i subskrypcje wysyłasz jak dotąd (App Store Connect, razem z wersją aplikacji); Apple wycofał też stare endpointy wysyłki (`*Submissions`), więc ewentualna automatyzacja wysyłki musi iść przez `reviewSubmissions` + `reviewSubmissionItems` z wersją produktu (osobne zadanie, nie ma go w repo).·
+    ## Ryzyka i nierozstrzygnięte (`[DO USTALENIA]`)
+    - Czy nowa wersja dziedziczy lokalizacje poprzedniej — dokumentacja nie mówi; skrypt działa w obu wariantach (odczyt lokalizacji nowej wersji przed planem), a log dry-run/apply pokaże, który zachodzi.
+    - Czy lokalizacje założone przez v1 są widoczne jako lokalizacje wersji — j.w.
+    - Termin usunięcia v1: dokumentacja Apple mówi „deprecated … remains available” bez daty; „od początku 2027” pochodzi tylko z e-maila Apple Developer Relations.
+    - Limity atrybutów (np. `customAppName`) bez zmian: założenie z nagłówka skryptu (≤ 30 znaków) potwierdzi pierwszy zapis.
+    "
+
+      297 |   const przebieg = readFileSync(join(root, 'docs/wydanie/asc-v2/przebieg-wlasciciela.md'), 'utf8');
+      298 |   test('zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple', () => {
+    > 299 |     expect(przebieg).toMatch(/dopiero po (zatwierdzeniu|recenzji)[^.\n]*Apple|dopiero po recenzji Apple/i);
+          |                      ^
+      300 |     expect(przebieg).toMatch(/nie są widoczne w sklepie/i);
+      301 |   });
+      302 |   test('zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple', () => {
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:299:22)
+
+  ● 10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji › zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /wersj[ąaię] grupy[^.\n]*osobno|osobno[^.\n]*wersj[ąaię] grupy/i
+    Received string:  "# Przebieg na koncie właściciela: lokalizacje IAP przez model wersji v2 (KO-056)·
+    Stan: przygotowane 2026-11-13 (sesja BG). **Niczego nie uruchomiono w App Store Connect** (brak kluczy w tej sesji, zakaz wyzwalania workflowów). Atrapa serwera w testach odzwierciedla odczytaną dokumentację Apple, nie prawdziwy serwer; poniższy przebieg jest pierwszym sprawdzeniem na żywo.
+    Warunek: scalenie gałęzi do `main` (workflow_dispatch działa tylko z plikiem na gałęzi domyślnej, P-319) i Twoje Approve środowiska `release`. Wszystko poza tym robi workflow.·
+    ## Kroki (każdy osobno; Ty tylko zatwierdzasz i wklejasz wynik)
+    1. **Dry-run:** Actions → „ASC lokalizacje produktów zakupu” → Run workflow → `tryb: dry-run` → Approve `release`. Workflow tylko czyta (GET). W podsumowaniu joba szukaj dla każdego z 4 obiektów (grupa, `oczko.pro.monthly`, `oczko.pro.yearly`, `oczko.pro.lifetime`) wiersza `(wersja N, STAN; istniejących lokalizacji: K)`.
+    2. **Co oznacza wynik dry-run:**
+       - `K = 0` przy wersji ze stanem `APPROVED`/`PREPARE_FOR_SUBMISSION`, choć lokalizacje wpisano wcześniej przez v1: Apple nie pokazuje starych lokalizacji w wersji. Apply utworzy komplet w wersji roboczej (to bezpieczne, nic nie jest usuwane); wklej mi wynik, zapiszę to jako ustalenie.
+       - `[wersja w recenzji: …]` i PROBLEM (kod 1): produkt ma wersję w recenzji, a teksty różnią się od pliku. Skrypt niczego nie zapisuje. Poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect, potem ponów.
+       - Wiersz `[nowa wersja zostanie utworzona; …]`: apply założy wersję roboczą produktu (`POST …Versions`, stan `PREPARE_FOR_SUBMISSION`). Nie wysyła jej do recenzji.
+       - Wszystkie wiersze `pomiń (bez zmian)` i kod 0: nic do zrobienia.
+    3. **Apply (dopiero po obejrzeniu dry-run):** ten sam workflow, `tryb: apply`, Approve. Zapis tworzy brakujące i aktualizuje różniące się lokalizacje w wersji roboczej; nigdy nie usuwa; lokalizacje spoza pliku kopiuje do nowej wersji.
+    4. **Drugi apply (dowód idempotencji):** uruchom `apply` jeszcze raz: oczekiwane `utwórz 0, zaktualizuj 0, nowe wersje 0`, kod 0.
+    5. **Wysyłka do recenzji:** poza zakresem skryptu i tej migracji. Zakupy i subskrypcje wysyłasz jak dotąd (App Store Connect, razem z wersją aplikacji); Apple wycofał też stare endpointy wysyłki (`*Submissions`), więc ewentualna automatyzacja wysyłki musi iść przez `reviewSubmissions` + `reviewSubmissionItems` z wersją produktu (osobne zadanie, nie ma go w repo).·
+    ## Ryzyka i nierozstrzygnięte (`[DO USTALENIA]`)
+    - Czy nowa wersja dziedziczy lokalizacje poprzedniej — dokumentacja nie mówi; skrypt działa w obu wariantach (odczyt lokalizacji nowej wersji przed planem), a log dry-run/apply pokaże, który zachodzi.
+    - Czy lokalizacje założone przez v1 są widoczne jako lokalizacje wersji — j.w.
+    - Termin usunięcia v1: dokumentacja Apple mówi „deprecated … remains available” bez daty; „od początku 2027” pochodzi tylko z e-maila Apple Developer Relations.
+    - Limity atrybutów (np. `customAppName`) bez zmian: założenie z nagłówka skryptu (≤ 30 znaków) potwierdzi pierwszy zapis.
+    "
+
+      301 |   });
+      302 |   test('zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple', () => {
+    > 303 |     expect(przebieg).toMatch(/wersj[ąaię] grupy[^.\n]*osobno|osobno[^.\n]*wersj[ąaię] grupy/i);
+          |                      ^
+      304 |     expect(przebieg).toMatch(/migrating-in-app-purchase-metadata-to-v2/);
+      305 |   });
+      306 | });
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:303:22)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       10 failed, 41 passed, 51 total
+Snapshots:   0 total
+Time:        6.5 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts|tests\/wydanie\/iap-nazwa-aplikacji.test.ts/i.
+KOD 1

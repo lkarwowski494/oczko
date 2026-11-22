@@ -1,0 +1,49 @@
+$ (562dfc4 + testy z 7e86bfa1) npx jest --ci tests/jakosc/maestro-failures-przerwany.test.ts
+FAIL iOS tests/jakosc/maestro-failures-przerwany.test.ts
+  07-jakosc-002 · maestro-failures.py: krok przerwany awarią sterownika
+    ✕ krok RUNNING + junit z DeviceUnreachableException (#182) → nazwa przerwanego kroku i przyczyna, bez „brak nieudanych kroków” (94 ms)
+    ✕ krok RUNNING bez pliku junit → nazwa przerwanego kroku i informacja o braku junit (42 ms)
+    ✓ regresja: krok FAILED nadal wypisany z błędem; same COMPLETED bez junit → „brak nieudanych kroków” (71 ms)
+
+  ● 07-jakosc-002 · maestro-failures.py: krok przerwany awarią sterownika › krok RUNNING + junit z DeviceUnreachableException (#182) → nazwa przerwanego kroku i przyczyna, bez „brak nieudanych kroków”
+
+    expect(received).not.toMatch(expected)
+
+    Expected pattern: not /brak nieudanych kroków/
+    Received string:      "maestro-failures: brak nieudanych kroków w e2e-out/01-nfr-pie-001-pierwsze-liczenie
+    "
+
+      28 |     const r = uklad(przerwany(), 'junit-device-unreachable.xml');
+      29 |     expect(r.kod).toBe(0);
+    > 30 |     expect(r.wyjscie).not.toMatch(/brak nieudanych kroków/);
+         |                           ^
+      31 |     expect(r.wyjscie).toMatch(/krok 3\/3 przerwany/);
+      32 |     expect(r.wyjscie).toMatch(/PRZERWANY: [^\n]*tapOnElement[^\n]*dzis-plus/);
+      33 |     expect(r.wyjscie).toContain('przyczyna (junit): maestro.DeviceUnreachableException: Device became unreachable during deviceInfo');
+
+      at Object.toMatch (tests/jakosc/maestro-failures-przerwany.test.ts:30:27)
+
+  ● 07-jakosc-002 · maestro-failures.py: krok przerwany awarią sterownika › krok RUNNING bez pliku junit → nazwa przerwanego kroku i informacja o braku junit
+
+    expect(received).not.toMatch(expected)
+
+    Expected pattern: not /brak nieudanych kroków/
+    Received string:      "maestro-failures: brak nieudanych kroków w e2e-out/01-nfr-pie-001-pierwsze-liczenie
+    "
+
+      36 |   test('krok RUNNING bez pliku junit → nazwa przerwanego kroku i informacja o braku junit', () => {
+      37 |     const r = uklad(przerwany());
+    > 38 |     expect(r.wyjscie).not.toMatch(/brak nieudanych kroków/);
+         |                           ^
+      39 |     expect(r.wyjscie).toMatch(/PRZERWANY: [^\n]*dzis-plus/);
+      40 |     expect(r.wyjscie).toMatch(/przyczyna \(junit\): brak pliku/);
+      41 |   });
+
+      at Object.toMatch (tests/jakosc/maestro-failures-przerwany.test.ts:38:27)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 1 passed, 3 total
+Snapshots:   0 total
+Time:        1.324 s
+Ran all test suites matching /tests\/jakosc\/maestro-failures-przerwany.test.ts/i.
+kod wyjścia: 1

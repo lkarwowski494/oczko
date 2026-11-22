@@ -1,0 +1,33 @@
+# BX4: testy bramki — 1) czerwone na kodzie c4de9604 (przed poprawkami), 2) zielone po poprawkach. Komenda: npx jest tests/jakosc/bramka-przypadki-uzycia.test.ts -t "BX4"
+# --- CZERWONE (P1: 8 + 1 kontrola; po poprawce fikstury 9 czerwonych z 10) ---
+    ✓ kontrola: prawdziwy test z PU w tytule i asercją → brak błędów PU-003 (128 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — describe.skip (103 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — it.todo (108 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU tylko w komentarzu, test o czymś innym (plik wymienia PU-003 bez sensu) (101 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU-003 tylko jako podciąg PU-0030 (115 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik w tests/akceptacja/ (poza npm test) (133 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik .mjs (poza testMatch jest) (102 ms)
+    ✕ P1 K2-1: „z testem:” odrzuca plik bez .test. w nazwie (100 ms)
+    ✕ P1 K3-1: klasa A z odnośnikiem tylko do tests/ (bez scenariusza E2E) → błąd; A to „przechodzi przez interfejs na urządzeniu” (110 ms)
+    ✕ P2 K2-2 (część tania): B „oczekujący” wskazujący linię, która nie jest asercją (np. nagłówek YAML) → błąd (104 ms)
+Tests:       9 failed, 35 skipped, 1 passed, 45 total
+    ✕ P2-12: PU-1000 jest widoczny dla parsera katalogu (id nie tylko trzycyfrowe) (48 ms)
+    ✕ K1-2 (P2-14): przebieg ma więcej zadań, niż zwróciły strony API (total_count > zebrane) → błąd, nie cicha niepełna lista (53 ms)
+    ✕ K1-1: zadanie z innego SHA niż budowany → błąd; zgodny SHA albo brak SHA do porównania → bez błędu (42 ms)
+# --- CZERWONE (P2/P3) ---
+Tests:       3 failed, 45 skipped, 48 total
+# --- ZIELONE po poprawkach ---
+    ✓ kontrola: prawdziwy test z PU w tytule i asercją → brak błędów PU-003 (119 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — describe.skip (116 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — it.todo (117 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU tylko w komentarzu, test o czymś innym (plik wymienia PU-003 bez sensu) (106 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik, który nie sprawdza PU — PU-003 tylko jako podciąg PU-0030 (119 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik w tests/akceptacja/ (poza npm test) (110 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik .mjs (poza testMatch jest) (145 ms)
+    ✓ P1 K2-1: „z testem:” odrzuca plik bez .test. w nazwie (134 ms)
+    ✓ P1 K3-1: klasa A z odnośnikiem tylko do tests/ (bez scenariusza E2E) → błąd; A to „przechodzi przez interfejs na urządzeniu” (119 ms)
+    ✓ P2 K2-2 (część tania): B „oczekujący” wskazujący linię, która nie jest asercją (np. nagłówek YAML) → błąd (108 ms)
+    ✓ P2-12: PU-1000 jest widoczny dla parsera katalogu (id nie tylko trzycyfrowe) (37 ms)
+    ✓ K1-2 (P2-14): przebieg ma więcej zadań, niż zwróciły strony API (total_count > zebrane) → błąd, nie cicha niepełna lista (92 ms)
+    ✓ K1-1: zadanie z innego SHA niż budowany → błąd; zgodny SHA albo brak SHA do porównania → bez błędu (133 ms)
+Tests:       35 skipped, 13 passed, 48 total

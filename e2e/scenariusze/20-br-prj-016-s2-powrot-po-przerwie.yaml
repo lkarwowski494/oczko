@@ -1,0 +1,37 @@
+# BR-PRJ-016/S1–S2 (docs/brd/wymagania-projekt.md:200): projekt dawno nieruszany — „last worked …” w wierszu (bez progu i bez sekcji uśpionych,
+# P-182, P-183 (1a); nazwany wyjątek od kontraktu 07 jak P-176, zmiana roli 08 w partii 5) i powrót jednym stuknięciem z listy.
+# Wyrocznia: BR-PRJ-011. Czas: zegar wstrzyknięty (41 dni później, jak „last worked 41 days ago” w prototypie).
+appId: com.apps4brew.knitting
+name: "BR-PRJ-016/S2 · Po 41 dniach: ‘last worked 41 days ago’, jedno stuknięcie wraca do rzędu"
+tags:
+  - BR-PRJ-016-S2
+  - stan-licznika
+  - PU-048
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-10-01T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+# ZM-18 (P-563 (4a)): zimny start zawsze na „Dziś”; lista projektów z zakładki Projekty (testID `nav-projekty`); okno „Uczciwe zasady” nad listą, nigdy nad „Dziś” (ER-70)
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-11T19:30:00" } }
+- assertVisible: { id: "dzis-projekt", text: "Harbor" }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- assertVisible: { id: "projekty-ostatnia-praca", text: "last worked 41 days ago" }
+- assertVisible: "Harbor.*last worked 41 days ago.*"
+- takeScreenshot: 20-uspione
+- tapOn: "Harbor.*"
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- takeScreenshot: 20-projekt-po-powrocie

@@ -1,0 +1,7 @@
+| Wariant | Razem pes. / norm. / opt. | Werdykt |
+|---|---|---|
+| B: darmowy rdzeń + Pro tylko dożywotni 14,99 USD | 834,84 / 26714,80 / 616852,14 PLN | budować |
+| A: darmowy rdzeń + Pro: 0,99 mies. / 6,99 rok / 14,99 dożywotni USD (P-019) | 450,25 / 13935,11 / 348007,34 PLN | budować |
+| C: darmowy rdzeń + Pro tylko subskrypcja 0,99 mies. / 6,99 rok USD | 319,16 / 9168,64 / 239948,24 PLN | budować |
+Najwyższy wynik normalny: B: darmowy rdzeń + Pro tylko dożywotni 14,99 USD (optymalny tylko, jeśli przechodzi podłogę).
+kod: 0

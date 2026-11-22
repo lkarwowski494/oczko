@@ -1,0 +1,1016 @@
+{
+ "opis": "Wektory logiki dostępu do Pro (rola 02, kontrakt płatności, 2026-10-22; model B, P-029; od P-057 model V4: dożywotni i subskrypcje 0,99/6,99 USD, W-15–W-18). Scenariusze 1-8 z modułu storekit-expo biblioteki prompts @97ec212 przeniesione na produkt Oczka, 9-14 dodane dla Oczka; W-10 i W-14 po P-038. ID produktu tymczasowe do konfiguracji App Store Connect (P-038, OP-24). Zmienia je rola 02 (ER), czyta 07 i 08. Z07-08 (2026-10-25, P-103 (2a)–(4a)): W-19a/b, W-20–W-21b (styk), W-12 → T−8 dni i W-12b (okno offline 7 dni, laska_offline_ms), W-22/W-22b (zakup oczekujący), W-23–W-23e (karencja: pole karencjaDo), P-07; komunikatZakupu (K-*); proZegarka (PZ-*: jeden zestaw dla TS i Swift, ADR-0009 D); błąd danych = { blad: \"BLAD_DANYCH\" }.",
+ "teraz": 1800000000000,
+ "odblokowuja": [
+  "oczko.pro.lifetime",
+  "oczko.pro.monthly",
+  "oczko.pro.yearly"
+ ],
+ "decyzja": [
+  {
+   "id": "W-01",
+   "scenariusz": "zakup dożywotni",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-02",
+   "scenariusz": "ponowna instalacja (pamięć wyczyszczona), BR-ZAK-001",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-03",
+   "scenariusz": "brak sieci po zakupie, BR-ZAK-001",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": null
+   },
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "pamiec",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-04",
+   "scenariusz": "brak sieci, nigdy nie kupił",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-05",
+   "scenariusz": "zwrot: sklep oznacza odebranie, pamięć mówi inaczej (KP-02)",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": true
+     }
+    ]
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": null
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-06",
+   "scenariusz": "zwrot: sklep nie zwraca już transakcji (currentEntitlements pomija zwrócone)",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": []
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": null
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-07",
+   "scenariusz": "przywracanie bez zakupu: brak dostępu i komunikat, nigdy dostęp",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": []
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-08",
+   "scenariusz": "produkt spoza listy (np. przyszły napiwek) nie odblokowuje",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.napiwek",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-09",
+   "scenariusz": "iPad z tym samym kontem App Store: sklep zwraca zakup",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-10",
+   "scenariusz": "członek rodziny przy włączonym Family Sharing (P-038): sklep zwraca zakup",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-11",
+   "scenariusz": "sklep ma zakup, a pamięć była pusta po błędzie: pamięć się odtwarza",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-12",
+   "scenariusz": "pamięć z wygasłym okresem (powrót do modelu A albo C), brak sieci; P-103 (3a): wygasło 8 dni temu, poza 7-dniowym oknem offline",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": 1799308800000
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": 1799308800000
+    }
+   }
+  },
+  {
+   "id": "W-12b",
+   "scenariusz": "P-103 (3a), R-116: subskrypcja w pamięci wygasła 1 ms temu, brak sieci (odnowienie niepobrane albo zegar w przód): dostęp z pamięci w oknie 7 dni",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.monthly"
+    ],
+    "wygasa": 1799999999999
+   },
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "pamiec",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1799999999999
+    }
+   }
+  },
+  {
+   "id": "W-13",
+   "scenariusz": "pusta lista produktów w pamięci, brak sieci",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [],
+    "wygasa": null
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": {
+     "produkty": [],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-14",
+   "scenariusz": "odebranie z Family Sharing (revocationDate, MS-27): pamięć mówi inaczej",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": true
+     }
+    ]
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": null
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-15",
+   "scenariusz": "subskrypcja miesięczna aktywna",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800086400000,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1800086400000
+    }
+   }
+  },
+  {
+   "id": "W-16",
+   "scenariusz": "subskrypcja roczna wygasła (brak odnowienia): limit dni wraca, dane zostają",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.yearly",
+      "wygasa": 1799999999999,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.yearly"
+    ],
+    "wygasa": 1799999999999
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-17",
+   "scenariusz": "dożywotni kupiony przy aktywnej subskrypcji (KP-03): dostęp bez końca",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800086400000,
+      "odebrane": false
+     },
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly",
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-18",
+   "scenariusz": "brak sieci, subskrypcja w pamięci jeszcze trwa",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.yearly"
+    ],
+    "wygasa": 1800003600000
+   },
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "pamiec",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.yearly"
+     ],
+     "wygasa": 1800003600000
+    }
+   }
+  },
+  {
+   "id": "W-19a",
+   "scenariusz": "Z07-08 (R-113): miesięczna i roczna aktywne naraz: pamięć do późniejszej daty",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800086400000,
+      "odebrane": false
+     },
+     {
+      "produkt": "oczko.pro.yearly",
+      "wygasa": 1825920000000,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly",
+      "oczko.pro.yearly"
+     ],
+     "wygasa": 1825920000000
+    }
+   }
+  },
+  {
+   "id": "W-19b",
+   "scenariusz": "Z07-08 (R-113): jak W-19a w odwrotnej kolejności",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.yearly",
+      "wygasa": 1825920000000,
+      "odebrane": false
+     },
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800086400000,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.yearly",
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1825920000000
+    }
+   }
+  },
+  {
+   "id": "W-20",
+   "scenariusz": "Z07-08 (R-114): wygasa = teraz w odczycie sklepu: koniec wyłączny, brak dostępu (jak Trening entitlementActive)",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800000000000,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.monthly"
+    ],
+    "wygasa": 1800086400000
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-20b",
+   "scenariusz": "Z07-08 (R-114), P-103 (3a): brak sieci, pamięć wygasła dokładnie 7 dni temu: koniec okna wyłączny, brak dostępu",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.monthly"
+    ],
+    "wygasa": 1799395200000
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1799395200000
+    }
+   }
+  },
+  {
+   "id": "W-21",
+   "scenariusz": "Z07-08 (R-114): wygasa = teraz + 1 ms w odczycie sklepu: dostęp",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800000000001,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1800000000001
+    }
+   }
+  },
+  {
+   "id": "W-21b",
+   "scenariusz": "Z07-08 (R-114), P-103 (3a): brak sieci, pamięć wygasła 7 dni temu bez 1 ms: dostęp z pamięci",
+   "odczyt": {
+    "zrodlo": "blad"
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.monthly"
+    ],
+    "wygasa": 1799395200001
+   },
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "pamiec",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1799395200001
+    }
+   }
+  },
+  {
+   "id": "W-22",
+   "scenariusz": "Z07-08 (R-111): zakup oczekujący (Ask to Buy): sklep odpowiada bez uprawnienia — brak dostępu, powód „brak”, nie błąd; komunikat „czeka” z komunikatZakupu",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": []
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-22b",
+   "scenariusz": "Z07-08 (R-111): po zatwierdzeniu nasłuch (KP-07) przynosi transakcję: dostęp bez restartu",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-23",
+   "scenariusz": "Z07-08 (R-112), P-103 (2a): subskrypcja w karencji płatności (expirationDate minęła, karencjaDo w przyszłości): dostęp do końca karencji",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1799913600000,
+      "odebrane": false,
+      "karencjaDo": 1800172800000
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1800172800000
+    }
+   }
+  },
+  {
+   "id": "W-23b",
+   "scenariusz": "P-103 (2a): karencja się skończyła: brak dostępu",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1799568000000,
+      "odebrane": false,
+      "karencjaDo": 1799913600000
+     }
+    ]
+   },
+   "pamiec": {
+    "produkty": [
+     "oczko.pro.monthly"
+    ],
+    "wygasa": 1799913600000
+   },
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  },
+  {
+   "id": "W-23c",
+   "scenariusz": "P-103 (2a): karencjaDo wcześniejsza niż wygasa (zapis bez znaczenia): liczy się późniejsza data",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1800086400000,
+      "odebrane": false,
+      "karencjaDo": 1799913600000
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.monthly"
+     ],
+     "wygasa": 1800086400000
+    }
+   }
+  },
+  {
+   "id": "W-23d",
+   "scenariusz": "P-103 (2a): karencja nie dotyczy dożywotniego (wygasa null zostaje null)",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.lifetime",
+      "wygasa": null,
+      "odebrane": false,
+      "karencjaDo": 1800086400000
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": true,
+    "powod": "sklep",
+    "pamiec": {
+     "produkty": [
+      "oczko.pro.lifetime"
+     ],
+     "wygasa": null
+    }
+   }
+  },
+  {
+   "id": "W-23e",
+   "scenariusz": "P-103 (2a): zwrot w karencji (odebrane): brak dostępu",
+   "odczyt": {
+    "zrodlo": "sklep",
+    "uprawnienia": [
+     {
+      "produkt": "oczko.pro.monthly",
+      "wygasa": 1799913600000,
+      "odebrane": true,
+      "karencjaDo": 1800172800000
+     }
+    ]
+   },
+   "pamiec": null,
+   "oczekiwane": {
+    "dostep": false,
+    "powod": "brak",
+    "pamiec": null
+   }
+  }
+ ],
+ "odczytajPamiec": [
+  {
+   "id": "P-01",
+   "scenariusz": "poprawny zapis",
+   "wejscie": "{\"produkty\":[\"oczko.pro.lifetime\"],\"wygasa\":null}",
+   "oczekiwane": {
+    "produkty": [
+     "oczko.pro.lifetime"
+    ],
+    "wygasa": null
+   }
+  },
+  {
+   "id": "P-02",
+   "scenariusz": "uszkodzony JSON: pamięć pusta (offline brak dostępu do pierwszego odczytu sklepu)",
+   "wejscie": "{\"produkty\":[",
+   "oczekiwane": null
+  },
+  {
+   "id": "P-03",
+   "scenariusz": "brak zapisu",
+   "wejscie": null,
+   "oczekiwane": null
+  },
+  {
+   "id": "P-04",
+   "scenariusz": "produkty nie są tekstami",
+   "wejscie": "{\"produkty\":[1],\"wygasa\":null}",
+   "oczekiwane": null
+  },
+  {
+   "id": "P-05",
+   "scenariusz": "wygasa jako tekst",
+   "wejscie": "{\"produkty\":[\"oczko.pro.lifetime\"],\"wygasa\":\"jutro\"}",
+   "oczekiwane": null
+  },
+  {
+   "id": "P-06",
+   "scenariusz": "JSON, ale nie obiekt",
+   "wejscie": "null",
+   "oczekiwane": null
+  },
+  {
+   "id": "P-07",
+   "scenariusz": "Z07-08 (R-115): zapis bez klucza wygasa: uszkodzony, pamięć pusta (nie Pro bez końca)",
+   "wejscie": "{\"produkty\":[\"oczko.pro.monthly\"]}",
+   "oczekiwane": null
+  }
+ ],
+ "laska_offline_ms": 604800000,
+ "komunikatZakupu": [
+  {
+   "id": "K-01",
+   "scenariusz": "zakup zakończony: sukces (dostęp z nasłuchu, MON-04)",
+   "wejscie": "sukces",
+   "oczekiwane": "sukces"
+  },
+  {
+   "id": "K-02",
+   "scenariusz": "Z07-08 (R-111): zakup oczekujący (Ask to Buy, odroczona płatność): „czeka na zgodę”, nie błąd",
+   "wejscie": "oczekujacy",
+   "oczekiwane": "czeka"
+  },
+  {
+   "id": "K-03",
+   "scenariusz": "MON-04: anulowany przez użytkownika: bez komunikatu i bez fałszywego sukcesu",
+   "wejscie": "anulowany",
+   "oczekiwane": null
+  },
+  {
+   "id": "K-04",
+   "scenariusz": "błąd sklepu przy zakupie: komunikat błędu",
+   "wejscie": "blad",
+   "oczekiwane": "blad"
+  },
+  {
+   "id": "K-05",
+   "scenariusz": "złe dane: nieznany status",
+   "wejscie": "pending",
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "proZegarka": [
+  {
+   "id": "PZ-01",
+   "scenariusz": "Z07-08 (R-031), ADR-0009 D: kontekst z telefonu pro, proWaznoscDo = null: dożywotni, Pro",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": null
+    }
+   ],
+   "oczekiwane": true
+  },
+  {
+   "id": "PZ-02",
+   "scenariusz": "kontekst: subskrypcja ważna jutro: Pro",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": 1800086400000
+    }
+   ],
+   "oczekiwane": true
+  },
+  {
+   "id": "PZ-03",
+   "scenariusz": "P-103 (4a), (3a): kontekst wygasł 8 dni temu (poza oknem offline): bez Pro",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": 1799308800000
+    }
+   ],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-04",
+   "scenariusz": "P-103 (4a), (3a): zegarek bez telefonu, kontekst wygasł wczoraj (w oknie 7 dni): Pro jak pamięć na telefonie",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": 1799913600000
+    }
+   ],
+   "oczekiwane": true
+  },
+  {
+   "id": "PZ-04b",
+   "scenariusz": "kontekst wygasł dokładnie 7 dni temu: koniec okna wyłączny, bez Pro",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": 1799395200000
+    }
+   ],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-05",
+   "scenariusz": "P-103 (4a): pro: false z wygasa null nigdy nie daje Pro (R-031 odwrotnie)",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": false,
+     "wygasa": null
+    }
+   ],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-06",
+   "scenariusz": "P-103 (4a): sprzeczne źródła — telefon bez Pro, StoreKit zegarka ma dożywotni: Pro (OR)",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": false,
+     "wygasa": null
+    },
+    {
+     "zrodlo": "zegarek",
+     "uprawnienia": [
+      {
+       "produkt": "oczko.pro.lifetime",
+       "wygasa": null,
+       "odebrane": false
+      }
+     ]
+    }
+   ],
+   "oczekiwane": true
+  },
+  {
+   "id": "PZ-07",
+   "scenariusz": "P-103 (4a): sprzeczne źródła — telefon Pro do jutra, StoreKit zegarka bez uprawnień: Pro (OR)",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": 1800086400000
+    },
+    {
+     "zrodlo": "zegarek",
+     "uprawnienia": []
+    }
+   ],
+   "oczekiwane": true
+  },
+  {
+   "id": "PZ-08",
+   "scenariusz": "brak źródeł (zegarek przed pierwszym kontaktem): bez Pro",
+   "zrodla": [],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-09",
+   "scenariusz": "StoreKit zegarka: zwrot (odebrane), brak kontekstu: bez Pro",
+   "zrodla": [
+    {
+     "zrodlo": "zegarek",
+     "uprawnienia": [
+      {
+       "produkt": "oczko.pro.lifetime",
+       "wygasa": null,
+       "odebrane": true
+      }
+     ]
+    }
+   ],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-10",
+   "scenariusz": "StoreKit zegarka: wygasa = teraz (koniec wyłączny, bez okna offline — to odczyt sklepu): bez Pro",
+   "zrodla": [
+    {
+     "zrodlo": "zegarek",
+     "uprawnienia": [
+      {
+       "produkt": "oczko.pro.monthly",
+       "wygasa": 1800000000000,
+       "odebrane": false
+      }
+     ]
+    }
+   ],
+   "oczekiwane": false
+  },
+  {
+   "id": "PZ-11",
+   "scenariusz": "złe dane: wygasa w kontekście jako tekst",
+   "zrodla": [
+    {
+     "zrodlo": "telefon",
+     "pro": true,
+     "wygasa": "jutro"
+    }
+   ],
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+# Limit dni pokazany zawczasu (pakiet podstawowy): BR-ZAK-006/S1 (Z-02, KP-13), BR-ZAK-005/S4 (L-03), P-065 (1a), design-spec „Limit dni na ekranach”.
+# Pięć darmowych dni (LIMIT_DNI_W_MIESIACU = 5, P-057 D2) zużywa pięć restartów z zegarem w kolejnych dniach o 20:00; szósty dzień: zamiast +1 i −1
+# komunikat „No free crafting days left in November…”, odnośnik „Oczko Pro removes the limit” (poza strefą +1); historia i menu działają.
+# Scenorys 04: z4-k4.png (wariant „zawczasu”, decyzja STOP E3). Zakup z tego miejsca: 06-br-zak-001-s1-zakup-przywrocenie.yaml.
+appId: com.apps4brew.knitting
+name: "BR-ZAK-006/S1 · Limit dni zawczasu: szósty dzień listopada bez +1, dane i historia dostępne"
+tags:
+  - BR-ZAK-006-S1
+  - KP-13
+  - podstawowy
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-02T20:00:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-03T20:00:00", WARTOSC: "2" } }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-04T20:00:00", WARTOSC: "3" } }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-05T20:00:00", WARTOSC: "4" } }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-06T20:00:00", WARTOSC: "5" } }
+# --- szósty dzień: limit zawczasu na karcie „Dziś” (ER-70, dzis-limit-*, M3-S3-06): karta bez „+1”, komunikat i odnośnik Pro w komunikacie, „Kontynuuj ›” działa ---
+- runFlow:
+    file: subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-07T20:00:00"
+- assertVisible: { id: "limit-zawczasu" }
+- assertVisible: { id: "dzis-wartosc", text: "5" }
+- assertNotVisible: { id: "dzis-plus" }
+- assertVisible: { id: "limit-oferta-link", text: "Oczko Pro removes the limit" }
+# linia wolnych dni leży pod kaflami (src/ekrany/Dzis.tsx:207), poza pierwszym ekranem — przebieg 3 step-111: brak w hierarchii
+- scrollUntilVisible: { element: { id: "dzis-dni-darmowe" } }
+- assertVisible: { id: "dzis-dni-darmowe", text: ".*0 of 5.*" }
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: UP }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 05-limit-na-karcie
+- tapOn: { id: "dzis-kontynuuj" }
+# --- licznik na limicie, przed pierwszym stuknięciem ---
+- assertVisible: { id: "limit-zawczasu", text: "No free crafting days left in November\\. Counting is paused until .*Your 5 rows and everything else are kept\\." }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+- assertNotVisible: { id: "licznik-plus" }
+- assertNotVisible: { id: "licznik-minus" }
+- assertVisible: { id: "limit-oferta-link", text: "Oczko Pro removes the limit" }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 05-limit-zawczasu
+# --- odnośnik otwiera oferty (KP-13: jedyne miejsca to limit i Ustawienia); „Not now” wraca do licznika bez zmian ---
+- tapOn: { id: "limit-oferta-link" }
+- assertVisible: { id: "oferty-ekran" }
+- assertVisible: "Oczko Pro"
+- takeScreenshot: 05-oferty-z-limitu
+- tapOn: { id: "oferty-nie-teraz" }
+- assertVisible: { id: "limit-zawczasu" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+# --- historia i menu działają na limicie ---
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "limit-zawczasu" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady|projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "okno-uczciwe-zasady" }, timeout: 5000, optional: true } # okno otwiera się po wyrenderowaniu listy (efekt `pokazacOknoUczciweZasady`)
+- tapOn: { id: "uczciwe-zasady-zamknij", optional: true } # okno „Uczciwe zasady” to trasa modalna NAD listą: do zamknięcia lista nie jest w hierarchii (BR-ZAK-006/S9, 07-jakosc-022; E2-137-S1)
+- extendedWaitUntil: { visible: { id: "projekty-lista|projekty-kosz|projekty-dni-darmowe" }, timeout: 30000 }
+- assertVisible: { id: "projekty-dni-darmowe", text: "0 of 5 free crafting days left in November" }
+- takeScreenshot: 05-lista-projektow-na-limicie
+- tapOn: { id: "projekty-wiersz", index: 0 }
+- assertVisible: { id: "limit-zawczasu" }
+# --- nowy miesiąc: licznik wraca (BR-ZAK-005/S8, L-05) ---
+- runFlow:
+    file: subflows/restart.yaml
+    env:
+      TERAZ: "2026-12-01T20:00:00"
+- assertVisible: { id: "licznik-plus" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "6" }

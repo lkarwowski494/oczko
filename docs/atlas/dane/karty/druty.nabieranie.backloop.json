@@ -1,0 +1,77 @@
+{
+ "format": 1,
+ "id": "druty.nabieranie.backloop",
+ "rzemioslo": "druty",
+ "rodzaj": "nabieranie",
+ "publikacja": "po-generatorze",
+ "klucze": {
+  "nazwa": "atlas.druty.nabieranie.backloop.nazwa",
+  "podpis": "atlas.druty.nabieranie.backloop.podpis",
+  "opis_alt": "atlas.druty.nabieranie.backloop.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "single cast-on",
+    "skrot": null,
+    "twierdzenie": "TRM-EN-041"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "metoda z kciuka",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-027"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "набор петель начального ряда из одной нити",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-017"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "nabieranie",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": null
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "nitka od kłębka owinięta wokół lewego kciuka od przodu do tyłu",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.backloop.krok1"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "drut wkłuty od dołu pod nitkę na kciuku",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.backloop.krok2"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "pętla zsunięta z kciuka na drut i zaciśnięta",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.backloop.krok3"
+  }
+ ]
+}

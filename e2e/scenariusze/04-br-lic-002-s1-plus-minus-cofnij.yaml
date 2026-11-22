@@ -1,0 +1,90 @@
+# Główny przepływ PR-02 (pakiet podstawowy, strategia §3 „E2E”): +1, −1, granica zera, seria stuknięć z banerem „Undo”, cofnięcie ostatniej zmiany z historii.
+# Kryteria: BR-LIC-002/S1, S2, S3 (wymagania-licznik.md), BR-LIC-019/S1 (RD-17-W1), BR-LIC-003/S2; P-091 (3a): „Cofnij” tylko ostatnia zmiana albo seria na końcu.
+# Teksty: design-spec „Baner strażnika” („Added 3 rows in 1 s. Undo?”, „Removed 3 rows. Back to 30.”), słownik „+1 row / −1”, „Undo”.
+# Scenorys 04: z2-k1.png (po trzech szybkich stuknięciach), z2-k2.png (po Undo).
+appId: com.apps4brew.knitting
+name: "BR-LIC-002/S1–S3 + BR-LIC-019/S1 · +1, −1, granica zera, seria i Undo, cofnięcie z historii"
+tags:
+  - BR-LIC-002-S1
+  - BR-LIC-002-S2
+  - BR-LIC-002-S3
+  - BR-LIC-019-S1
+  - BR-LIC-003-S2
+  - podstawowy
+  - stan-licznika
+  - PU-018
+  - PU-019
+  - PU-021
+  - PU-203
+---
+# Własny start zamiast subflows/start-czysty.yaml (te same kroki + oczkoE2eOknoStraznika): okno strażnika 6 s zamiast 2 s, bo czas 3 stuknięć Maestro zależy od maszyny
+# (#131: 2,45 s, #135: 4,18 s; E2E-A4, P-358). Tylko build E2E; domena z oknem 2 s ma testy jednostkowe, tu sprawdzamy podłączenie i pytanie o serię.
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eOknoStraznika: "6"
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument okna strażnika) — przebieg 42544112861 cz. 1 iPhone, krok po launchApp
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+# --- granica zera: −1 przy 0 zostaje 0 (BR-LIC-002/S3) ---
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- runFlow: subflows/odstep.yaml
+# --- +1, +1, −1 (BR-LIC-002/S1, S2) ---
+- tapOn: { id: "licznik-plus" }
+# Krok kontrolny E2-136-A1 (przebieg #136: ten +1 po „−1” bez projektu bez efektu, stuknięcie 14,7 s, w #135 0,5 s; test aplikacji na prawdziwej bazie zielony,
+# tests/ekrany/licznik-minus-plus-bez-projektu.test.tsx). Zrzut zaraz po stuknięciu, przed asercją (P-091 9a: zrzut jest przezroczysty, pierwszą asercją zostaje wartość):
+# porażka asercji zostawia inaczej tylko zrzut awarii po 17 s. Rozróżnienie w przebiegu 3: panel pomiaru E2E (e2e-pomiar-plus, „n = 1”) pojawia się dopiero,
+# gdy aplikacja przetworzyła +1 (app/index.tsx: dodajRzad → ustawPomiar), więc jest w zrzucie i w hierarchii porażki:
+#  - panel jest, licznik nie pokazuje „1” → błąd aplikacji (odświeżenie ekranu);
+#  - brak panelu, a stuknięcie w maestro.log trwało dziesiątki sekund → maszyna (sterownik nie dostarczył stuknięcia);
+#  - brak panelu przy stuknięciu w ułamku sekundy → błąd aplikacji (+1 nie przetworzone).
+- takeScreenshot: 04-po-plus-po-minus
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# stan z aplikacji niezależny od wartości na ekranie: +1 przetworzone i wyrenderowane raz; opcjonalna (P-367): wynik w maestro.log i zrzucie, bez nowej porażki bramki
+- assertVisible: { id: "e2e-pomiar-plus", text: "p95 .* ms, n = 1", optional: true }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "baner-serii" }
+- takeScreenshot: 04-po-minus
+# odstęp > okno strażnika (6 s), żeby dwa wcześniejsze +1 nie weszły do serii (baner „Added 3 rows”, nie 5)
+- extendedWaitUntil: { visible: { id: "e2e-nigdy" }, timeout: 6500, optional: true }
+# --- seria: 3 stuknięcia w oknie strażnika (w E2E 6 s, produkt 2 s) → baner strażnika bez limitu czasu (BR-LIC-019/S1, RD-17) ---
+- tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- assertVisible: { id: "baner-serii", text: "Added 3 rows in .*Undo\\?" }
+- assertVisible: { id: "baner-serii-cofnij", text: "Undo 3 rows" }
+- takeScreenshot: 04-baner-serii
+- tapOn: { id: "baner-serii-cofnij" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertVisible: "Removed 3 rows\\. Back to 1\\."
+- takeScreenshot: 04-po-undo-serii
+- runFlow: subflows/odstep.yaml
+# --- zwykłe +1, potem historia: „Undo” ostatniej zmiany (BR-LIC-003/S2, P-091 3a) ---
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertNotVisible: { id: "baner-serii" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- takeScreenshot: 04-historia
+- tapOn: { id: "historia-cofnij-ostatnia" }
+- assertVisible: { id: "historia-lista" }
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- trwałość po zabiciu procesu ---
+- runFlow:
+    file: subflows/restart.yaml
+    env:
+      TERAZ: "2026-11-10T19:45:00"
+- assertVisible: { id: "licznik-wartosc", text: "1" }

@@ -1,0 +1,20 @@
+# Podprzepływ (NFR-WYD-001): pięć stuknięć +1 z odstępem > 2 s; licznik przed nim ma wartość OD − 1, po nim OD + 4.
+# Wartości po każdym stuknięciu liczone wyrażeniem Maestro z OD (asercja wartości po każdej akcji).
+appId: com.apps4brew.knitting
+name: "podprzepływ: pięć stuknięć do pomiaru"
+---
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${Number(OD)}" }
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${Number(OD) + 1}" }
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${Number(OD) + 2}" }
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${Number(OD) + 3}" }
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${Number(OD) + 4}" }

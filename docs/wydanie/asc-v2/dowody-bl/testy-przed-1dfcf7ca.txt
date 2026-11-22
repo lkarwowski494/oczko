@@ -1,0 +1,93 @@
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  skrypt nie woła wycofanych endpointów v1 (inwentarz.md)
+    ✓ dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2 (60 ms)
+    ✓ apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2 (54 ms)
+  dry-run: niczego nie zapisuje, plan wskazuje nową wersję
+    ✓ zero żądań innych niż GET, stan bez zmian (1 ms)
+    ✓ log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0 (1 ms)
+  apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej
+    ✓ nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza (1 ms)
+    ✓ grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description (1 ms)
+    ✓ po przebiegu wersja robocza ma komplet zgodny z danymi (10 ms)
+  apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej
+    ✓ nowa wersja pusta (Apple nie dziedziczy) (60 ms)
+    ✓ nowa wersja dziedziczy lokalizacje poprzedniej (55 ms)
+  kopia lokalizacji do nowej wersji: POST bez atrybutów null/undefined (BL)
+    ✕ lokalizacja obca z polami null jest kopiowana, a ciało POST nie ma kluczy bez wartości (grupa, subskrypcje, zakup) (53 ms)
+    ✓ pola wypełnione w starej wersji zostają w kopii (tylko null/undefined są pomijane) (52 ms)
+  idempotencja: drugi apply = 0 zmian (także bez nowej wersji)
+    ✓ Apple nie dziedziczy (66 ms)
+    ✓ Apple dziedziczy (54 ms)
+    ✓ zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu) (48 ms)
+  wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje
+    ✓ kod 1, zero zapisów, problem wymienia stan (1 ms)
+  brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji
+    ✓ produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet (58 ms)
+  klient: tylko GET/POST/PATCH i brak wycofanych ścieżek
+    ✓ DELETE odrzucony (43 ms)
+    ✓ POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint) (58 ms)
+    ✓ PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint) (47 ms)
+    ✓ POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint) (60 ms)
+    ✓ GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint) (43 ms)
+    ✓ GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint) (48 ms)
+    ✓ POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint) (56 ms)
+    ✓ POST /v2/inAppPurchaseLocalizations → dozwolone (42 ms)
+    ✓ GET /v1/subscriptionVersions/V1/localizations → dozwolone (53 ms)
+    ✓ POST /v1/subscriptionGroupVersions → dozwolone (46 ms)
+  kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*
+    ✓ repo: 0 naruszeń (47 ms)
+    ✓ plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku (50 ms)
+    ✓ plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta) (52 ms)
+  nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu
+    ✓ scripts/asc/iap-localizations.mjs (1 ms)
+    ✓ .github/workflows/asc-iap-localizations.yml
+  10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji
+    ✓ apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (72 ms)
+    ✓ apply, Apple dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie (53 ms)
+    ✓ dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego (47 ms)
+    ✓ przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run (129 ms)
+  10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów
+    ✓ POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę (53 ms)
+    ✓ POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę (43 ms)
+    ✓ GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę (44 ms)
+    ✓ identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje (84 ms)
+  10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, po odrzuceniu powstaje nowa wersja robocza
+    ✓ READY_FOR_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan (59 ms)
+    ✓ IN_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan (66 ms)
+    ✓ REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0 (69 ms)
+    ✓ DEVELOPER_REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0 (65 ms)
+    ✓ P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED) (6 ms)
+  10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji
+    ✓ zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple (1 ms)
+    ✓ zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple
+
+  ● kopia lokalizacji do nowej wersji: POST bez atrybutów null/undefined (BL) › lokalizacja obca z polami null jest kopiowana, a ciało POST nie ma kluczy bez wartości (grupa, subskrypcje, zakup)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 6
+
+    - Array []
+    + Array [
+    +   Array [
+    +     "customAppName",
+    +     null,
+    +   ],
+    + ]
+
+      145 |     expect(kopie).toHaveLength(4); // grupa + 2 subskrypcje + zakup
+      146 |     for (const z of posty) {
+    > 147 |       expect(Object.entries(z.a ?? {}).filter(([, v]) => v === null || v === undefined)).toEqual([]);
+          |                                                                                          ^
+      148 |       expect(typeof z.a?.name).toBe('string'); // `name` i `locale` zostają (jedyne wymagane pola)
+      149 |       expect(typeof z.a?.locale).toBe('string');
+      150 |     }
+
+      at Object.toEqual (tests/wydanie/asc-iap-v2.test.ts:147:90)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 45 passed, 46 total
+Snapshots:   0 total
+Time:        5.225 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts/i.

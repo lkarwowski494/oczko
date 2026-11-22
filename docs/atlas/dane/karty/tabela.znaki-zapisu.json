@@ -1,0 +1,24 @@
+{
+ "format": 1,
+ "id": "tabela.znaki-zapisu",
+ "rzemioslo": "oba",
+ "rodzaj": "tabela",
+ "pozycje": [
+  "skrot.znak.gwiazdka",
+  "skrot.znak.dwie-gwiazdki",
+  "skrot.znak.nawias-kwadratowy",
+  "skrot.znak.nawias-okragly"
+ ],
+ "klucze": {
+  "nazwa": "atlas.tabela.znaki-zapisu.nazwa"
+ },
+ "klucze_dodatkowe": [
+  "atlas.tabela.znaki-zapisu.cal",
+  "atlas.tabela.znaki-zapisu.linia_zrodla"
+ ],
+ "terminy": {},
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

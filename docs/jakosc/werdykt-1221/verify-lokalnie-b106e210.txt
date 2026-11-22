@@ -1,0 +1,11 @@
+npm run verify lokalnie (Linux, worktree b106e210 = a830eb21 + tylko dokumenty i workflowy wydania; po npm ci). Kod wyjścia i podsumowanie:
+PASS iOS tests/ekrany/e2e-zegarek-stan.test.tsx
+
+Test Suites: 726 passed, 726 total
+Tests:       7961 passed, 7961 total
+Snapshots:   0 total
+Time:        167.608 s
+Ran all test suites.
+EXIT=0
+
+Uwaga: lokalnie 7961 testów bez pominiętych, w TestFlight 7929 + 26 pominiętych warunkowo (ImageMagick/macOS) — ta sama liczba zestawów 726.

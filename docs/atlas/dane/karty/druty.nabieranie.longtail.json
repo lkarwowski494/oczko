@@ -1,0 +1,98 @@
+{
+ "format": 1,
+ "id": "druty.nabieranie.longtail",
+ "rzemioslo": "druty",
+ "rodzaj": "nabieranie",
+ "publikacja": "po-generatorze",
+ "klucze": {
+  "nazwa": "atlas.druty.nabieranie.longtail.nazwa",
+  "podpis": "atlas.druty.nabieranie.longtail.podpis",
+  "opis_alt": "atlas.druty.nabieranie.longtail.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "double cast-on",
+    "skrot": null,
+    "twierdzenie": "TRM-EN-040"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "metoda na dwie nitki",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-025"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "набор петель начального ряда из двух нитей",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-016"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "подвійний",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-012"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "指でかける作り目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-015"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "長尾起針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-015"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "nabieranie",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": null
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "koniec nitki owinięty na lewym kciuku (pętla na kciuku); węzeł początkowy na drucie",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.longtail.krok1"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "drut wkłuty od dołu w pętlę na kciuku",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.longtail.krok2"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "nitka od kłębka przeciągnięta drutem przez pętlę na kciuku; nowe oczko na drucie",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.longtail.krok3"
+  }
+ ]
+}

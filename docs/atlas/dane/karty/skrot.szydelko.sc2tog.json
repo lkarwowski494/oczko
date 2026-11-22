@@ -1,0 +1,43 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.sc2tog",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.sc2tog.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "single crochet 2 stitches together",
+    "skrot": "sc2tog",
+    "twierdzenie": "TRM-EN-034"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "work two dc together",
+    "skrot": "dc2tog",
+    "twierdzenie": "TRM-GB-009"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "убавка",
+    "skrot": "УБ",
+    "twierdzenie": "TRM-RU-039"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto baixo fechado junto",
+    "skrot": "pbfj.",
+    "twierdzenie": "TRM-PT-010"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

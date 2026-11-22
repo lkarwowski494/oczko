@@ -1,0 +1,46 @@
+# PU-228 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — podgląd zdjęcia projektu; „Close” wraca do projektu z miniaturą.
+# Zdjęcie testowe z buildu E2E (`e2e-zdjecie-testowe` src/kompozycja/e2e/panele.tsx:68, strategia §4), kroki dodania jak 42 (opóźnienie zapisu: E2-141-N1).
+# testID z kodu: `licznik-projekt-wejscie` src/ekrany/Licznik.tsx:158; grupa „Photos” `projekt-zdjecia` src/ekrany/Zdjecia.tsx:24, `zdjecia-dodaj` :33,
+# `zdjecia-miniatura` :29 (→ `/zdjecie`, fullScreenModal app/_layout.tsx:143, app/projekt/[id].tsx:137); podgląd: „Close” `zdjecie-zamknij` Zdjecia.tsx:67
+# (`router.back()` app/zdjecie.tsx:36), `zdjecie-usun` :86. Czarne tło podglądu — tylko zrzut. Samoczynny powrót po usunięciu ostatniego zdjęcia (app/zdjecie.tsx:29) sprawdza 42.
+# Częściowo: 42-p-191-zdjecie-usun.yaml. Zielony w przebiegu 43788927541 (część 4, 04:05:35, 1 min 25 s) po poprawce BX-009 (podgląd zdjęcia: wcięcia z `useSafeAreaInsets`, app/zdjecie.tsx); czerwony był w 43752186631 (krok 48/48: po „Close” nadal podgląd — przycisk pod paskiem stanu). Tag oczekujacy zdjęty (FX4, 16.11.2026), bramka obejmuje ten scenariusz.
+appId: com.apps4brew.knitting
+name: "PU-228 · Podgląd zdjęcia: miniatura → podgląd → „Close” wraca do projektu z miniaturą"
+tags:
+  - przypadki-uzycia
+  - PU-228
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-zdjecia" }
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" } }
+- tapOn: { id: "zdjecia-dodaj" }
+- assertVisible: { id: "e2e-zdjecie-testowe" }
+- waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża (jak 17, 42)
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true } # jak 42: dowód opóźnienia, potem dłuższe czekanie; asercja twarda niżej
+- runFlow:
+    when: { notVisible: { id: "zdjecia-miniatura" } }
+    commands:
+      - takeScreenshot: opoznienie-miniatura-zdjecia
+      - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+- assertVisible: { id: "zdjecia-miniatura" }
+- takeScreenshot: 81-projekt-z-miniatura
+# --- miniatura → podgląd ---
+- tapOn: { id: "zdjecia-miniatura", index: 0 }
+- extendedWaitUntil: { visible: { id: "zdjecie-zamknij" }, timeout: 20000 }
+- assertVisible: { id: "zdjecie-zamknij", text: "Close" }
+- assertVisible: { id: "zdjecie-usun" }
+- assertNotVisible: { id: "projekt-zdjecia" }
+- takeScreenshot: 81-podglad
+# --- „Close”: projekt z miniaturą ---
+- tapOn: { id: "zdjecie-zamknij" }
+- extendedWaitUntil: { visible: { id: "projekt-zdjecia" }, timeout: 20000 }
+- assertNotVisible: { id: "zdjecie-zamknij" }
+- assertVisible: { id: "zdjecia-miniatura" }
+- takeScreenshot: 81-po-zamknieciu

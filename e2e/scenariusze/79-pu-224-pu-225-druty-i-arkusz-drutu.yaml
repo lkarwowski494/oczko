@@ -1,0 +1,66 @@
+# PU-224 i PU-225 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”, T-52): wejście i powrót — „Needles and hooks” z „Narzędzia” oraz arkusz drutu.
+# PU-224: „Tools” → „Needles and hooks” → lista drutów („No needles or hooks yet.”) → „‹” wraca do „Tools”.
+# PU-225: „+” → „Cancel” bez zmian wraca bez pytania; „+” → 4 → zapis wraca do listy z „4 mm (US 6)” (RD-11-W1).
+# testID z kodu: `nav-narzedzia` app/(zakladki)/_layout.tsx:17; `narzedzia-wloczki` src/ekrany/Narzedzia.tsx:58, `narzedzia-druty` :59 (etykieta „Needles and hooks, N”,
+# WierszGrupy :35); lista `druty-lista` src/ekrany/Zapas.tsx:205, „Back” `nav-wstecz` :206 (`router.back()` app/druty.tsx:26), „+” `druty-dodaj` :207 (→ `/drut`, modal
+# app/_layout.tsx:142); arkusz `formularz-rozmiar-mm` Zapas.tsx:247, „Cancel” `arkusz-zamknij` / „Add” `formularz-zapisz` src/ekrany/Arkusz.tsx:53, :58 (bez zmian — wyjście
+# bez pytania, src/kompozycja/odrzuc-zmiany.ts:33); wiersz drutu bez testID — etykieta = rozmiar (Zapas.tsx:215, Narzedzia.tsx:35). Teksty: en.json druty.pusto, narzedzia.druty.
+# Pole „Size in mm” liczbowe: bez hideKeyboard, zapis przyciskiem arkusza (e2e/README.md reguła 6). Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6).
+appId: com.apps4brew.knitting
+name: "PU-224 · PU-225 · „Needles and hooks”: lista i „‹” do „Tools”; arkusz drutu: Cancel bez zmian, zapis 4 mm → „4 mm (US 6)” na liście"
+tags:
+  - przypadki-uzycia
+  - PU-224
+  - PU-225
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "nav-narzedzia" }
+- extendedWaitUntil: { visible: { id: "narzedzia-druty" }, timeout: 20000 }
+- assertVisible: { id: "narzedzia-druty", text: "Needles and hooks, 0" }
+- takeScreenshot: 79-narzedzia
+# --- PU-224: „Needles and hooks” → lista → „‹” ---
+- tapOn: { id: "narzedzia-druty" }
+- extendedWaitUntil: { visible: { id: "druty-lista" }, timeout: 20000 }
+- assertVisible: "Needles and hooks"
+- assertVisible: "No needles or hooks yet\\."
+- takeScreenshot: 79-druty-pusto
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "narzedzia-wloczki" }, timeout: 20000 }
+- assertNotVisible: { id: "druty-lista" }
+- assertVisible: { id: "narzedzia-druty", text: "Needles and hooks, 0" }
+- takeScreenshot: 79-powrot-do-narzedzi
+# --- PU-225: „+” → „Cancel” bez zmian: od razu lista bez zmian ---
+- tapOn: { id: "narzedzia-druty" }
+- extendedWaitUntil: { visible: { id: "druty-dodaj" }, timeout: 20000 }
+- tapOn: { id: "druty-dodaj" }
+- extendedWaitUntil: { visible: { id: "formularz-rozmiar-mm" }, timeout: 20000 }
+- takeScreenshot: 79-arkusz-drutu
+- tapOn: { id: "arkusz-zamknij" }
+- extendedWaitUntil: { notVisible: { id: "formularz-rozmiar-mm" }, timeout: 20000 }
+- assertNotVisible: "Discard changes\\?"
+- assertVisible: { id: "druty-lista" }
+- assertVisible: "No needles or hooks yet\\."
+# --- PU-225: „+” → 4 mm → zapis: lista z „4 mm (US 6)” ---
+- tapOn: { id: "druty-dodaj" }
+- extendedWaitUntil: { visible: { id: "formularz-rozmiar-mm" }, timeout: 20000 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-rozmiar-mm" }
+      - waitForAnimationToEnd
+      - eraseText: 8
+      - inputText: "4"
+      - assertVisible: { id: "formularz-rozmiar-mm", text: "4" }
+- assertVisible: "Shows as: 4 mm \\(US 6\\)"
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { notVisible: { id: "formularz-rozmiar-mm" }, timeout: 20000 }
+- assertVisible: { id: "druty-lista" }
+- assertVisible: "4 mm \\(US 6\\)"
+- assertNotVisible: "No needles or hooks yet\\."
+- takeScreenshot: 79-druty-po-zapisie
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "narzedzia-druty" }, timeout: 20000 }
+- assertVisible: { id: "narzedzia-druty", text: "Needles and hooks, 1" }

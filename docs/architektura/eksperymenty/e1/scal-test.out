@@ -1,0 +1,23 @@
+M-01 OK — jedno urządzenie, liniowo → {"stan":"zgodny","wartosc":1,"glowy":["c"]}
+M-02 OK — duplikat dostarczenia (transferUserInfo powtórzony, dziennik Live Activity scalony dwa razy) → {"stan":"zgodny","wartosc":2,"glowy":["b"]}
+M-03 OK — odwrócona kolejność: dziecko przed rodzicem → {"stan":"czeka","brakujacy":["a"]}
+M-04 OK — zegarek bez telefonu i telefon równolegle od tej samej wartości: konflikt pokazany, nie zsumowany po cichu → {"stan":"konflikt","glowy":["t1","z2"],"kandydaci":[{"glowa":"t1","wartosc":11},{"glowa":"z2","wartosc":12}]}
+M-05 OK — rozstrzygnięcie użytkownika łączy gałęzie → {"stan":"zgodny","wartosc":13,"glowy":["p"]}
+M-06 OK — −1 nie schodzi poniżej zera → {"stan":"zgodny","wartosc":0,"glowy":["a"]}
+M-07 OK — zerowanie po serii, potem +1 z ekranu blokady znającego zerowanie → {"stan":"zgodny","wartosc":1,"glowy":["l"]}
+M-07b OK — zerowanie z wartości większej niż 1 daje 0 (nie −1), następne +1 → 1 (mutant „zerowanie jako −1”) → {"stan":"zgodny","wartosc":1,"glowy":["c"]}
+M-08 OK — cofnięcie serii stuknięć (F-47) przywraca wartość sprzed serii → {"stan":"zgodny","wartosc":20,"glowy":["u"]}
+M-08b OK — ER-41: pomyłka ze środka historii (b) bez „Cofnij”; korekta wpisaniem wartości na głowie (P-091 (3a)) → {"stan":"zgodny","wartosc":22,"glowy":["k"]}
+M-09 OK — Z07-13: plus z dwoma rodzicami (tylko rozstrzygnięcie łączy gałęzie) → błąd danych, nie cichy wynik → {"stan":"blad","powod":"wiele_rodzicow","id":"p"}
+M-10 OK — Z07-11 (1): trzy stuknięcia z ekranu blokady od 22, każde z rodzicem = poprzednie własne stuknięcie → zgodny 25 → {"stan":"zgodny","wartosc":25,"glowy":["l3"]}
+M-10b OK — Z07-11 (1): stan sprzed poprawki — trzy stuknięcia z tym samym rodzicem g → fałszywy konflikt 23/23/23 (wektor pokazuje, dlaczego intencja łańcuchuje) → {"stan":"konflikt","glowy":["l1","l2","l3"],"kandydaci":[{"glowa":"l1","wartosc":23},{"glowa":"l2","wartosc":23},{"glowa":"l3","wartosc":23}]}
+M-12 OK — Z07-13: cykl a ↔ b → błąd danych → {"stan":"blad","powod":"cykl","id":"a"}
+M-13 OK — Z07-13: zdarzenie jest własnym rodzicem → błąd danych → {"stan":"blad","powod":"cykl","id":"a"}
+M-14 OK — Z07-13: kolizja id (to samo id, inna treść) → błąd danych; identyczny duplikat to M-02 → {"stan":"blad","powod":"kolizja_id","id":"b"}
+M-15 OK — Z07-13: nieznany rodzaj (literówka albo nowsza wersja aplikacji) → błąd danych; adapter synchronizacji i importu odkłada takie zdarzenie do poczekalni, zanim wywoła scal (ADR-0005) → {"stan":"blad","powod":"nieznany_rodzaj","id":"b"}
+M-16 OK — ER-42: import „scal” archiwum z gałęzią rozbieżną z lokalną → konflikt; zdarzenia archiwum dostarczone drugi raz (import dwa razy) → ten sam konflikt → {"stan":"konflikt","glowy":["t1","x2"],"kandydaci":[{"glowa":"t1","wartosc":31},{"glowa":"x2","wartosc":32}]}
+M-17 OK — Z07-13: rozstrzygnięcie z jednym rodzicem jest dozwolone (wybór wersji po konflikcie z gałęzią usuniętą) → {"stan":"zgodny","wartosc":7,"glowy":["r"]}
+R-036-10000 OK — łańcuch 10000 zdarzeń plus → zgodny 10000 (24 ms, Linux) → {"stan":"zgodny","wartosc":10000,"glowy":["e9999"]}
+R-036-150000 OK — łańcuch 150000 zdarzeń plus → zgodny 150000 (357 ms, Linux) → {"stan":"zgodny","wartosc":150000,"glowy":["e149999"]}
+21/21
+kod wyjścia: 0

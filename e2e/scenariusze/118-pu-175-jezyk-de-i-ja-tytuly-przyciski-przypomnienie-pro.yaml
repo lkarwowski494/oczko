@@ -1,0 +1,152 @@
+# PU-175 (T-121): „Język” → „Deutsch”, potem „日本語” → „Dziś”, przewodnik, licznik z przypomnieniem i „Oczko Pro” — tytuły i przyciski widoczne po niemiecku i japońsku („Heute”, „Leitfaden”; „今日”, „ガイド”).
+# Kod: wiersz `ustawienia-jezyk` → ekran `jezyk` z wierszami `jezyk-de` i `jezyk-ja` (src/ekrany/Jezyk.tsx:33; wzór wyboru: 39 i 90 — przewinięcie i stuknięcie z obejściem BX-010). Teksty ze słowników
+# `src/i18n/slowniki/de.json`, `ja.json`: `dzis.tytul` Heute / 今日, `przewodnik.tytul` Leitfaden / ガイド, `licznik.przypomnienie` „Reihe 12: …” / „12段目：…”, `oferty.przywroc` „Käufe wiederherstellen” / „購入を復元”.
+# Przypomnienie jak w 15 (od rzędu 12, co 6, 8 razy; tekst własny po angielsku zostaje bez tłumaczenia — treść użytkownika). Bez porównania zrzutów (słowa właściciela 16.11.2026, wariant B):
+# ucięcia i nachodzenie tekstów to PU-342, czytane na zrzutach przez właściciela.
+appId: com.apps4brew.knitting
+name: "PU-175 · Język Deutsch i 日本語: tytuły i przyciski „Dziś”, przewodnika, licznika z przypomnieniem i „Oczko Pro”"
+tags:
+  - przypadki-uzycia
+  - PU-175
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+# --- licznik: wartość 10 i przypomnienie od rzędu 12 (jak 15), +1 → rząd 12 z instrukcją ---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "1"
+      - inputText: "0"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "10" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "10" }
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "licznik-cel" }
+- assertVisible: { id: "menu-przypomnienie" }
+- tapOn: { id: "menu-przypomnienie" }
+- assertVisible: { id: "przypomnienie-od-rzedu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-od-rzedu" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "1"
+      - inputText: "2"
+      - assertVisible: { id: "przypomnienie-od-rzedu", text: "12" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-co-ile" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "6"
+      - assertVisible: { id: "przypomnienie-co-ile", text: "6" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-ile-razy" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "8"
+      - assertVisible: { id: "przypomnienie-ile-razy", text: "8" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-co-robic" }
+      - waitForAnimationToEnd
+      - eraseText: 60
+      - inputText: "decrease at both ends"
+      - assertVisible: { id: "przypomnienie-co-robic", text: "decrease at both ends" }
+- pressKey: Enter
+- assertVisible: { id: "przypomnienie-podglad", text: "You’ll be reminded on rows: 12, 18, 24.*" }
+- tapOn: { id: "przypomnienie-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "10" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "11" }
+- assertVisible: { id: "licznik-plus", text: "\\+1 row, when row 12 is done\\. Row 12: decrease at both ends.*" } # kontrola wyjściowa po angielsku (jak 15)
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+# --- „Deutsch” ---
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
+- scroll # BX-010: środek wiersza poza ScrollView po scrollUntilVisible (jak 39)
+- waitForAnimationToEnd
+- tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
+- extendedWaitUntil: { visible: { id: "jezyk" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "jezyk-de" } }
+- tapOn: { id: "jezyk-de" }
+- assertVisible: { id: "ustawienia-jezyk", text: ".*Deutsch.*" }
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertVisible: "Leitfaden"
+- takeScreenshot: 118-de-leitfaden
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "ustawienia-oczko-pro" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 20000 }
+- assertVisible: { id: "oferty-przywroc", text: "Käufe wiederherstellen" }
+- assertVisible: "Oczko Pro"
+- takeScreenshot: 118-de-oczko-pro
+- tapOn: { id: "oferty-nie-teraz" } # stały pasek przycisków (P-608 G3, jak 06); „Close” leży poza krawędzią po przewinięciu arkusza
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertVisible: "Heute"
+- takeScreenshot: 118-de-heute
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- assertVisible: "Reihe 12: decrease at both ends"
+- assertVisible: { id: "licznik-plus", text: "\\+1 Reihe, wenn Reihe 12 fertig ist\\. Reihe 12: decrease at both ends.*" }
+- takeScreenshot: 118-de-licznik-przypomnienie
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+# --- „日本語” ---
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-jezyk" } }
+- scroll # BX-010
+- waitForAnimationToEnd
+- tapOn: { id: "ustawienia-jezyk", retryTapIfNoChange: true }
+- extendedWaitUntil: { visible: { id: "jezyk" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "jezyk-ja" } }
+- tapOn: { id: "jezyk-ja" }
+- assertVisible: { id: "ustawienia-jezyk", text: ".*日本語.*" }
+- scrollUntilVisible: { element: { id: "ustawienia-przewodnik" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertVisible: "ガイド"
+- takeScreenshot: 118-ja-guide
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "ustawienia-oczko-pro" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- extendedWaitUntil: { visible: { id: "oferty-przywroc" }, timeout: 20000 }
+- assertVisible: { id: "oferty-przywroc", text: "購入を復元" }
+- assertVisible: "Oczko Pro"
+- takeScreenshot: 118-ja-oczko-pro
+- tapOn: { id: "oferty-nie-teraz" } # stały pasek przycisków (P-608 G3, jak 06); „Close” leży poza krawędzią po przewinięciu arkusza
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertVisible: "今日"
+- takeScreenshot: 118-ja-dzis
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- assertVisible: "12段目：decrease at both ends"
+- assertVisible: { id: "licznik-plus", text: "\\+1段、12段目が終わったらタップ。12段目：decrease at both ends.*" }
+- takeScreenshot: 118-ja-licznik-przypomnienie

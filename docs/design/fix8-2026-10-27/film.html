@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · fix-8 · video link</title>
+<!-- Rola 04, fix-8 (P-274, zgłoszenie 05): „Video link” do projektu, który ma już film. CSS: fix7 wzor.html + udostepnij-icloud.html. Dane: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --papier: #FCFCFA; --grupa: #F2F3F0; --grafit: #26282C; --olowek: #5E626A; --linia: #D9DBDF;
+  --zakreslacz: #F6E04A; --na-zakreslaczu: #1B1C1F; --zakr-krawedz: #8C7A00;
+  --p-tlo: #26282C; --p-tekst: #FCFCFA; --p-obrys: #26282C; --m-obrys: #26282C; --blad: #B3261E; --kreska: #26282C;
+  --wloczka: #4F6F94; --arkusz: #FCFCFA;
+  --dt-tytul: 1; --dt-tresc: 1;
+  --tytul: "Libre Franklin"; --tresc: "Source Sans 3";
+}
+[data-theme="dark"] {
+  --papier: #1B1C1F; --grupa: #24262A; --grafit: #ECECE8; --olowek: #A9ACB2; --linia: #34363B;
+  --zakreslacz: #38351F; --na-zakreslaczu: #F4ECB4; --zakr-krawedz: #E2CB3A;
+  --p-tlo: #2E3136; --p-tekst: #ECECE8; --p-obrys: #8C9098; --m-obrys: #8C9098; --blad: #F2B8B5; --kreska: #ECECE8;
+  --wloczka: #7D9DC2; --arkusz: #2A2C31;
+}
+* { box-sizing: border-box; }
+main *, .uwagi * { font-feature-settings: "tnum" 1; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: var(--tresc), sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+main[data-ekran] { width: var(--w, 390px); min-height: 844px; background: var(--papier); color: var(--grafit); display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+.status { height: 48px; display: flex; justify-content: space-between; align-items: center; padding: 0 28px; font: 600 calc(15px * var(--dt-tresc)) var(--tresc); }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px 0; min-height: 44px; gap: 8px; }
+.nav a { color: var(--grafit); text-decoration: none; font-size: calc(17px * var(--dt-tresc)); min-height: 44px; display: flex; align-items: center; }
+.nav .ikony { display: flex; gap: 4px; flex-shrink: 0; } .nav .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.nav svg { width: calc(24px * min(var(--dt-tresc), 1.8)); height: auto; }
+.tytul { padding: 4px 20px 0; }
+h1 { font: 700 calc(30px * var(--dt-tytul)) / 1.15 var(--tytul); margin: 0; }
+.pod { margin: 4px 0 0; align-items: baseline; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kropka { width: 12px; height: 12px; align-self: center; border-radius: 50%; background: var(--wloczka); box-shadow: 0 0 0 1.5px var(--papier), 0 0 0 2.5px var(--linia); flex-shrink: 0; }
+.teraz { margin: 4px 0 0; font: 600 calc(20px * var(--dt-tresc)) / 1.2 var(--tresc); }
+.kartka { margin: 16px 20px 0; border-top: 1px solid var(--linia); padding-top: 12px; }
+.liczba { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.liczba .n { font: 700 calc(96px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); letter-spacing: -0.02em; }
+.liczba .z { font-size: calc(20px * var(--dt-tresc)); color: var(--olowek); }
+.cel { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin-top: 4px; }
+.podpis { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin: 12px 0 0; }
+.kreski svg { display: block; width: 100%; height: auto; margin-top: 4px; }
+.instr { margin-top: 16px; position: relative; padding: 12px 16px 12px 20px; }
+.instr::before { content: ""; position: absolute; inset: 0; background: var(--zakreslacz); transform: skewX(-4deg); border-radius: 2px; border-left: 4px solid var(--zakr-krawedz); }
+.instr > * { position: relative; color: var(--na-zakreslaczu); }
+.instr b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); display: block; }
+.instr span { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.wiersz { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--linia); padding: 8px 0; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; flex-wrap: wrap; }
+.wiersz .w { color: var(--olowek); }
+.spacer { flex: 1; min-height: 16px; }
+.dol { padding: 12px 16px 32px; display: flex; gap: 28px; align-items: flex-end; }
+.minus { width: 72px; height: 72px; flex-shrink: 0; border: 2px solid var(--m-obrys); background: transparent; color: var(--grafit); font: 700 calc(28px * min(var(--dt-tytul), 1.4)) var(--tytul); border-radius: 14px; }
+.plus { flex: 1; min-height: 168px; background: var(--p-tlo); color: var(--p-tekst); border: 2px solid var(--p-obrys); border-radius: 20px; font: 700 calc(28px * var(--dt-tytul)) / 1.2 var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; }
+.plus small { font: 400 calc(15px * var(--dt-tresc)) / 1.3 var(--tresc); opacity: .85; }
+.pusto { margin: 16px 0 0; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu { margin: 0 16px 32px; padding: 16px; border-radius: 20px; border: 2px solid var(--p-obrys); display: flex; flex-direction: column; gap: 6px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+/* arkusze i listy (komponenty systemowe iOS) */
+.przyciemnienie { position: absolute; inset: 0; background: rgba(0,0,0,.32); }
+/* Arkusz: przy dużym tekście sięga najwyżej pod pasek stanu, treść się przewija, przyciski zostają na dole. */
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 56px); display: flex; flex-direction: column; background: var(--arkusz); border-radius: 12px 12px 0 0; padding: 8px 20px 32px; box-shadow: 0 -1px 0 var(--linia); }
+.uchwyt { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); margin: 0 auto 12px; }
+.arkusz .tresc-arkusza { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
+.arkusz .przyciski { flex-shrink: 0; padding-top: 4px; }
+.arkusz h2 { font: 700 calc(24px * var(--dt-tytul)) / 1.2 var(--tytul); margin: 4px 0 8px; }
+.arkusz p { font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; margin: 0 0 12px; }
+.przycisk-pelny { width: 100%; min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); margin-top: 8px; padding: 12px; }
+.przycisk-tekst { width: 100%; min-height: 44px; border: 0; background: transparent; color: var(--grafit); font: 600 calc(17px * var(--dt-tresc)) var(--tresc); margin-top: 4px; }
+.grupa { background: var(--grupa); border-radius: 12px; margin: 12px 16px 0; }
+.grupa .el { display: flex; gap: 12px; align-items: center; padding: 12px 16px; min-height: 44px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.grupa .el + .el { border-top: 1px solid var(--linia); }
+.grupa .el .tx { flex: 1; min-width: 0; } .grupa .el .tx small { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.naglowek-grupy { margin: 20px 32px 0; color: var(--olowek); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.szukaj { margin: 12px 16px 0; background: var(--grupa); border-radius: 10px; min-height: 40px; display: flex; align-items: center; padding: 0 12px; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); }
+.pasek-narzedzi { display: flex; justify-content: space-around; border-top: 1px solid var(--linia); padding: 8px 0 28px; margin-top: 16px; }
+.pasek-narzedzi span { min-width: 64px; min-height: 44px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: calc(11px * min(var(--dt-tresc), 1.6)); color: var(--olowek); }
+.oferta { border: 2px solid var(--linia); border-radius: 14px; padding: 14px 16px; margin-top: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.oferta.wybrana { border-color: var(--grafit); }
+.oferta .nazwa { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .cena { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .op { width: 100%; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.linki { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 12px; font-size: calc(13px * var(--dt-tresc)); color: var(--olowek); }
+.linki span { min-height: 44px; display: flex; align-items: center; text-decoration: underline; }
+.uwagi { width: 390px; background: #fff; color: #222; padding: 20px; font: 15px/1.4 "Source Sans 3"; }
+.uwagi h2 { font: 700 20px "Libre Franklin"; margin: 0 0 8px; }
+/* fix NZ-08-P2-04 (P-126): linia informacji, krokowiec, znacznik wzoru, przełącznik, nagłówek arkusza z Zamknij */
+.uwaga { margin: 8px 32px 0; display: flex; gap: 8px; align-items: flex-start; color: var(--grafit); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; }
+.uwaga a { color: var(--grafit); }
+.uwaga .znak { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font: 700 12px var(--tytul); margin-top: 1px; }
+.pole { min-width: 56px; min-height: 44px; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 calc(20px * var(--dt-tytul)) var(--tytul); }
+.krok { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 20px var(--tytul); }
+.wzor-strona { margin: 8px 16px 0; height: 470px; background: #FFFFFF; border: 1px solid var(--linia); position: relative; overflow: hidden; }
+.tekst-wzoru { position: absolute; inset: 16px; background: repeating-linear-gradient(to bottom, #C9CBD0 0 3px, transparent 3px 22px); }
+.znacznik { position: absolute; left: 0; right: 0; height: 22px; border-top: 2.5px solid #26282C; border-bottom: 2.5px solid #26282C; background: #26282C14; }
+.znacznik.krawedz { border-top-style: dashed; }
+.znacznik .tab { position: absolute; right: 8px; top: -2px; transform: translateY(-100%); background: #26282C; color: #FCFCFA; font: 700 13px/1 var(--tytul); padding: 5px 8px; border-radius: 6px 6px 0 0; }
+.znacznik.krawedz .tab { transform: none; top: 22px; border-radius: 0 0 6px 6px; }
+.znacznik .uchwyt-dol { position: absolute; left: 50%; bottom: -9px; width: 36px; height: 14px; margin-left: -18px; border-radius: 7px; background: #26282C; }
+.pasek-znacznika { margin-top: auto; background: var(--arkusz); border-top: 1px solid var(--linia); padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 8px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.pasek-znacznika b { font: 700 calc(17px * var(--dt-tytul)) / 1.25 var(--tytul); }
+.wybor { display: flex; gap: 12px; flex-wrap: wrap; }
+.wybor button { flex: 1 1 140px; min-height: 64px; border: 2px solid var(--p-obrys); border-radius: 14px; background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tytul)) var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; }
+.wybor small { font: 400 calc(13px * var(--dt-tresc)) var(--tresc); color: var(--olowek); }
+.rzad { display: flex; align-items: center; gap: 12px; min-height: 44px; flex-wrap: wrap; }
+.rzad > span:first-child { flex: 1; color: var(--olowek); }
+.rzad a { color: var(--grafit); min-height: 44px; display: flex; align-items: center; }
+.naglowek-arkusza { display: flex; justify-content: space-between; align-items: center; min-height: 44px; }
+.naglowek-arkusza .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.grupa .el .wybrany { font-weight: 700; }
+.krokowiec { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+/* fix NZ-08-P3-04: systemowy wybór daty (atrapa UIDatePicker w stylu kalendarza) */
+.kalendarz { flex-direction: column; align-items: stretch !important; }
+.kalendarz .mies { display: flex; justify-content: space-between; font-size: calc(17px * var(--dt-tresc)); }
+.kalendarz .siatka { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: calc(17px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka i { font-style: normal; color: var(--olowek); font-size: calc(13px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka span { min-height: 40px; display: grid; place-items: center; border-radius: 50%; }
+.kalendarz .wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; box-shadow: inset 0 0 0 2px var(--p-obrys); }
+.daty .el { flex-wrap: wrap; } .daty .el .tx { flex: 1 0 auto; }
+.kalendarz .dzis { font-weight: 700; text-decoration: underline; }
+.kalendarz .poza { color: var(--olowek); opacity: .45; }
+/* fix NZ-08-P5-Q1: druga linia wiersza, przycisk tekstowy w wierszu, menu systemowe, alert, przełącznik segmentowy, pole tekstowe, wcięcie sekcji */
+.grupa .el .tx small + small { margin-top: 2px; }
+.akcja { color: var(--grafit); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; font-size: calc(17px * var(--dt-tresc)); }
+.wartosc { color: var(--olowek); text-align: right; }
+/* duży tekst: wiersz przechodzi w stos (etykieta, potem wartość albo przycisk), nagłówek arkusza łamie tytuł do osobnego wiersza */
+.grupa .el { flex-wrap: wrap; }
+.grupa .el .tx { flex: 1 1 140px; overflow-wrap: anywhere; }
+.naglowek-arkusza { flex-wrap: wrap; gap: 0 8px; flex-shrink: 0; }
+.naglowek-arkusza b { flex: 1 1 auto; text-align: center; min-width: 0; overflow-wrap: anywhere; }
+.sekcja { padding-left: 32px !important; }
+.menu-ios { position: absolute; right: 12px; top: 96px; width: min(280px, calc(100% - 24px)); background: var(--arkusz); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,.28); overflow: hidden; }
+.menu-ios div { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; border-top: 1px solid var(--linia); }
+.menu-ios div:first-child { border-top: 0; }
+.menu-ios .usun, .usun-tekst { color: var(--blad); }
+.alert { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(300px, calc(100% - 32px)); max-height: calc(100% - 112px); overflow-y: auto; background: var(--arkusz); border-radius: 14px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.28); }
+.alert .tresc-alertu { padding: 20px 16px 16px; }
+.alert h2 { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); margin: 0 0 4px; }
+.alert p { font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; margin: 0; }
+.alert button { display: block; width: 100%; min-height: 44px; border: 0; border-top: 1px solid var(--linia); background: transparent; color: var(--grafit); font: 400 calc(17px * var(--dt-tresc)) var(--tresc); padding: 10px 16px; }
+.alert button.usun-tekst { font-weight: 600; color: var(--blad); }
+.segment { display: flex; background: var(--grupa); border-radius: 10px; padding: 2px; gap: 2px; }
+.segment span { flex: 1; min-height: 40px; display: grid; place-items: center; border-radius: 8px; font-size: calc(15px * var(--dt-tresc)); }
+.segment .wyb { background: var(--arkusz); font-weight: 700; box-shadow: 0 0 0 1.5px var(--m-obrys); }
+.pole-tekst { min-height: 44px; border: 1.5px solid var(--m-obrys); border-radius: 10px; padding: 10px 12px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; background: var(--papier); }
+.pole-tekst.duze { min-height: 220px; }
+.etyk { display: block; margin: 16px 0 4px; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.radio { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--linia); }
+.radio .kolo { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--m-obrys); margin-top: 2px; display: grid; place-items: center; }
+.radio .kolo.wyb::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--grafit); }
+.radio b { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); display: block; }
+.radio small { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; display: block; }
+.usun-kolo { flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; color: var(--blad); font: 700 22px var(--tytul); }
+.stan-celu { margin: 8px 0 0; font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.przycisk-obrys { min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); padding: 12px 16px; margin-top: 12px; width: 100%; }
+/* fix NZ-08-P5-BD (P-189): kapsuła stopera w pasku, kalendarz historii z kreską dnia, siatka narzędzi */
+.kapsula { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; padding: 0 12px; border-radius: 22px; background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(17px * min(var(--dt-tresc), 1.6)) var(--tytul); white-space: nowrap; }
+.kapsula svg { width: calc(18px * min(var(--dt-tresc), 1.6)); }
+.kapsula.pauza { background: transparent; color: var(--grafit); box-shadow: inset 0 0 0 2px var(--m-obrys); }
+.kapsula.ikona-sama { padding: 0; width: 44px; justify-content: center; background: transparent; color: var(--grafit); }
+.kal { margin: 12px 16px 0; }
+.kal .mies { display: flex; justify-content: space-between; align-items: center; font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); padding: 0 4px; }
+.kal .strz { display: inline-grid; place-items: center; width: 44px; height: 44px; font: 400 28px var(--tresc); }
+.siatka-kal { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 2px; text-align: center; margin-top: 4px; font-size: calc(17px * min(var(--dt-tresc), 1.5)); }
+.siatka-kal i { font-style: normal; color: var(--olowek); font-size: calc(13px * min(var(--dt-tresc), 1.5)); padding: 4px 0; }
+.siatka-kal span { min-height: 44px; display: grid; place-items: center; position: relative; border-radius: 22px; }
+/* dzień z robótką: kreska ołówkiem pod liczbą (element firmowy niesie dane, nie kolor) */
+.siatka-kal span.d::after { content: ""; position: absolute; bottom: 5px; left: 50%; width: 14px; height: 3px; margin-left: -7px; border-radius: 2px; background: var(--kreska); transform: rotate(-8deg); }
+.siatka-kal span.wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; }
+.siatka-kal span.wyb::after { background: var(--p-tekst); }
+.siatka-kal span.dzis { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.etykieta-opcji { position: absolute; left: 0; right: 0; bottom: 0; background: #FFE9A8; color: #222; font: 600 13px/1.3 "Source Sans 3"; padding: 6px 12px; }
+.liczby-sesji { display: flex; gap: 8px; flex-wrap: wrap; }
+.znak-uwagi { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid currentColor; font: 700 12px var(--tytul); flex-shrink: 0; }
+.miniatury { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
+.miniatury .m { width: 88px; height: 88px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(135deg, #8BA4C4, #4F6F94); }
+.miniatury .m.dodaj { background: transparent; border: 1.5px dashed var(--m-obrys); display: grid; place-items: center; color: var(--grafit); font: 600 calc(15px * var(--dt-tresc)) var(--tresc); text-align: center; }
+.wynik { margin: 16px 16px 0; padding: 16px; border-radius: 12px; background: var(--grupa); }
+.wynik .duzy { font: 700 calc(40px * min(var(--dt-tytul), 1.4)) / 1.1 var(--tytul); }
+.wynik p { margin: 4px 0 0; font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; color: var(--olowek); }
+.pole-liczby { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pole-liczby .pole-tekst { flex: 0 1 120px; }
+.chipy { display: flex; gap: 8px; padding: 8px 16px 0; flex-wrap: wrap; }
+.chipy span { min-height: 36px; padding: 0 14px; border-radius: 18px; display: inline-flex; align-items: center; border: 1.5px solid var(--m-obrys); font-size: calc(15px * var(--dt-tresc)); }
+.chipy span.wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; }
+.przycisk-nieaktywny { background: var(--linia) !important; color: var(--olowek) !important; border-color: var(--linia) !important; }
+/* fix NZ-P217-04 (P-217): przeglądarka wzoru, pasek licznika pod wzorem, kolumna licznika (poziomo, iPad), narzędzia rysowania, arkusz rozszerzenia, iCloud */
+.wz { flex: 1; min-height: 0; background: var(--grupa); position: relative; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; padding: 8px 8px 0; }
+.wz svg.strona { width: 100%; max-width: 640px; height: auto; display: block; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); }
+.nav .tytul-nav { font: 600 calc(17px * var(--dt-tresc)) / 1.2 var(--tresc); text-align: center; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.nav .ikona.wl { background: var(--p-tlo); color: var(--p-tekst); border-radius: 10px; }
+.strony { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); background: rgba(38,40,44,.86); color: #FCFCFA; border-radius: 14px; padding: 4px 12px; font: 600 calc(13px * min(var(--dt-tresc), 1.6)) var(--tresc); }
+.pasek-licznika { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 8px 16px 28px; background: var(--papier); border-top: 1px solid var(--linia); flex-wrap: wrap; }
+.pasek-licznika .pl-l { flex: 1 1 96px; min-width: 0; }
+.pasek-licznika .pl-n { display: block; font: 700 calc(40px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); }
+.pasek-licznika .pl-t { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.pasek-licznika .minus { width: 56px; height: 56px; border-radius: 12px; font-size: calc(22px * min(var(--dt-tytul), 1.4)); }
+.pasek-licznika .plus { flex: 1 1 140px; min-height: 72px; border-radius: 16px; font-size: calc(22px * var(--dt-tytul)); }
+.kolumna-licznika { flex-shrink: 0; width: 34%; min-width: 220px; max-width: 360px; display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 20px; background: var(--papier); border-left: 1px solid var(--linia); }
+.kolumna-licznika .pl-n { font: 700 calc(64px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); }
+.kolumna-licznika .pl-t { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.kolumna-licznika .plus { min-height: 120px; flex: 1; }
+.kolumna-licznika .minus { width: 100%; height: 56px; }
+.poziomo { flex-direction: row !important; }
+.poziomo .lewa { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.narzedzia-rys { flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 6px 12px; background: var(--papier); border-bottom: 1px solid var(--linia); flex-wrap: wrap; }
+.narzedzia-rys .nr { min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 600 calc(15px * var(--dt-tresc)) var(--tresc); color: var(--grafit); }
+.narzedzia-rys .nr.wyb { background: var(--p-tlo); color: var(--p-tekst); }
+.narzedzia-rys .gotowe { margin-left: auto; font-weight: 700; }
+.paleta-sys { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); width: min(340px, calc(100% - 24px)); background: #F5F5F7; color: #1C1C1E; border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,.3); padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; justify-content: space-between; font: 12px var(--tresc); }
+.paleta-sys i { width: 22px; height: 56px; border-radius: 8px 8px 2px 2px; display: block; background: linear-gradient(#999, #ddd); }
+.paleta-sys .kol { width: 26px; height: 26px; border-radius: 50%; display: inline-block; margin: 0 2px; }
+.rozszerzenie { position: absolute; inset: 56px 0 0; background: var(--arkusz); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; box-shadow: 0 -1px 0 var(--linia); }
+.rozszerzenie .podglad { margin: 8px 16px 0; display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: 12px; background: var(--grupa); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.rozszerzenie .podglad .ikona-pliku { width: 44px; height: 56px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); display: grid; place-items: center; font: 700 11px var(--tytul); color: #26282C; }
+.znacznik-wyb { width: 24px; text-align: center; font-weight: 700; flex-shrink: 0; }
+.ipad { width: 820px !important; min-height: 1180px !important; }
+.ipad-poziomo { width: 1180px !important; min-height: 820px !important; }
+.tel-poziomo { width: 844px !important; min-height: 390px !important; }
+.linia-info { margin: 12px 0 0; display: flex; gap: 8px; align-items: flex-start; padding: 12px; border-radius: 12px; border: 2px solid var(--m-obrys); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; flex-wrap: wrap; }
+.linia-info b { font: 700 calc(17px * var(--dt-tytul)) / 1.25 var(--tytul); display: block; }
+.kropka-stanu { width: 10px; height: 10px; border-radius: 50%; background: var(--grafit); display: inline-block; }
+/* fix NZ-P217-04 E1: tytuł z przełącznikiem wzorów, podpowiedź na wzorze, kolumna iPada, rama wąskiego okna */
+.tytul-przel { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font: 600 calc(17px * var(--dt-tresc)) / 1.2 var(--tresc); color: var(--grafit); text-align: center; overflow-wrap: anywhere; justify-content: center; flex: 1; min-width: 0; }
+.podpowiedz { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); background: rgba(38,40,44,.9); color: #FCFCFA; border-radius: 14px; padding: 8px 14px; font: 600 calc(15px * var(--dt-tresc)) / 1.3 var(--tresc); text-align: center; }
+.kolumna-ipad { max-width: 640px; margin: 0 auto; width: 100%; }
+.rama-waska { display: flex; width: 100%; flex: 1; }
+.rama-waska .inna { flex: 1; background: #C8CBD0; }
+.ikona-wzoru { width: 40px; height: 52px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); display: grid; place-items: center; font: 700 11px var(--tytul); color: #26282C; }
+.postep { height: 6px; border-radius: 3px; background: var(--linia); overflow: hidden; margin-top: 8px; } .postep i { display: block; height: 100%; width: 45%; background: var(--grafit); }
+/* krytyka E1: pasek licznika — tekst nie łamie się przed liczbą; tytuł w pasku nawigacji ograniczony jak systemowy (łamanie między słowami); pod stroną początek następnej */
+.pasek-licznika .pl-l { flex: 1 1 96px; }
+.pasek-licznika .plus { white-space: nowrap; flex: 1 0 132px; }
+.narzedzia-rys .nr { font-size: calc(15px * min(var(--dt-tresc), 1.6)); }
+.pasek-licznika .pl-t { white-space: normal; }
+.pasek-licznika .pl-t .nw { white-space: nowrap; }
+.tytul-przel { font-size: calc(17px * min(var(--dt-tresc), 1.6)); overflow-wrap: normal; word-break: normal; hyphens: none; }
+.wz { flex-direction: column; align-items: center; gap: 8px; }
+.wz::after { content: ""; width: 100%; max-width: 640px; height: 600px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); }
+.wz svg.strona { flex-shrink: 0; }
+.nav { flex-wrap: wrap; } .nav .ikony { margin-left: auto; }
+
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --papier: #FCFCFA; --grupa: #F2F3F0; --grafit: #26282C; --olowek: #5E626A; --linia: #D9DBDF;
+  --zakreslacz: #F6E04A; --na-zakreslaczu: #1B1C1F; --zakr-krawedz: #8C7A00;
+  --p-tlo: #26282C; --p-tekst: #FCFCFA; --p-obrys: #26282C; --m-obrys: #26282C; --blad: #B3261E; --kreska: #26282C;
+  --wloczka: #4F6F94; --arkusz: #FCFCFA;
+  --dt-tytul: 1; --dt-tresc: 1;
+  --tytul: "Libre Franklin"; --tresc: "Source Sans 3";
+}
+[data-theme="dark"] {
+  --papier: #1B1C1F; --grupa: #24262A; --grafit: #ECECE8; --olowek: #A9ACB2; --linia: #34363B;
+  --zakreslacz: #38351F; --na-zakreslaczu: #F4ECB4; --zakr-krawedz: #E2CB3A;
+  --p-tlo: #2E3136; --p-tekst: #ECECE8; --p-obrys: #8C9098; --m-obrys: #8C9098; --blad: #F2B8B5; --kreska: #ECECE8;
+  --wloczka: #7D9DC2; --arkusz: #2A2C31;
+}
+* { box-sizing: border-box; }
+main *, .uwagi * { font-feature-settings: "tnum" 1; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: var(--tresc), sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+main[data-ekran] { width: var(--w, 390px); min-height: 844px; background: var(--papier); color: var(--grafit); display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+.status { height: 48px; display: flex; justify-content: space-between; align-items: center; padding: 0 28px; font: 600 calc(15px * var(--dt-tresc)) var(--tresc); }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px 0; min-height: 44px; gap: 8px; }
+.nav a { color: var(--grafit); text-decoration: none; font-size: calc(17px * var(--dt-tresc)); min-height: 44px; display: flex; align-items: center; }
+.nav .ikony { display: flex; gap: 4px; flex-shrink: 0; } .nav .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.nav svg { width: calc(24px * min(var(--dt-tresc), 1.8)); height: auto; }
+.tytul { padding: 4px 20px 0; }
+h1 { font: 700 calc(30px * var(--dt-tytul)) / 1.15 var(--tytul); margin: 0; }
+.pod { margin: 4px 0 0; align-items: baseline; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kropka { width: 12px; height: 12px; align-self: center; border-radius: 50%; background: var(--wloczka); box-shadow: 0 0 0 1.5px var(--papier), 0 0 0 2.5px var(--linia); flex-shrink: 0; }
+.teraz { margin: 4px 0 0; font: 600 calc(20px * var(--dt-tresc)) / 1.2 var(--tresc); }
+.kartka { margin: 16px 20px 0; border-top: 1px solid var(--linia); padding-top: 12px; }
+.liczba { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.liczba .n { font: 700 calc(96px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); letter-spacing: -0.02em; }
+.liczba .z { font-size: calc(20px * var(--dt-tresc)); color: var(--olowek); }
+.cel { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin-top: 4px; }
+.podpis { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin: 12px 0 0; }
+.kreski svg { display: block; width: 100%; height: auto; margin-top: 4px; }
+.instr { margin-top: 16px; position: relative; padding: 12px 16px 12px 20px; }
+.instr::before { content: ""; position: absolute; inset: 0; background: var(--zakreslacz); transform: skewX(-4deg); border-radius: 2px; border-left: 4px solid var(--zakr-krawedz); }
+.instr > * { position: relative; color: var(--na-zakreslaczu); }
+.instr b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); display: block; }
+.instr span { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.wiersz { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--linia); padding: 8px 0; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; flex-wrap: wrap; }
+.wiersz .w { color: var(--olowek); }
+.spacer { flex: 1; min-height: 16px; }
+.dol { padding: 12px 16px 32px; display: flex; gap: 28px; align-items: flex-end; }
+.minus { width: 72px; height: 72px; flex-shrink: 0; border: 2px solid var(--m-obrys); background: transparent; color: var(--grafit); font: 700 calc(28px * min(var(--dt-tytul), 1.4)) var(--tytul); border-radius: 14px; }
+.plus { flex: 1; min-height: 168px; background: var(--p-tlo); color: var(--p-tekst); border: 2px solid var(--p-obrys); border-radius: 20px; font: 700 calc(28px * var(--dt-tytul)) / 1.2 var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; }
+.plus small { font: 400 calc(15px * var(--dt-tresc)) / 1.3 var(--tresc); opacity: .85; }
+.pusto { margin: 16px 0 0; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu { margin: 0 16px 32px; padding: 16px; border-radius: 20px; border: 2px solid var(--p-obrys); display: flex; flex-direction: column; gap: 6px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.limit-zawczasu b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+/* arkusze i listy (komponenty systemowe iOS) */
+.przyciemnienie { position: absolute; inset: 0; background: rgba(0,0,0,.32); }
+/* Arkusz: przy dużym tekście sięga najwyżej pod pasek stanu, treść się przewija, przyciski zostają na dole. */
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 56px); display: flex; flex-direction: column; background: var(--arkusz); border-radius: 12px 12px 0 0; padding: 8px 20px 32px; box-shadow: 0 -1px 0 var(--linia); }
+.uchwyt { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); margin: 0 auto 12px; }
+.arkusz .tresc-arkusza { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
+.arkusz .przyciski { flex-shrink: 0; padding-top: 4px; }
+.arkusz h2 { font: 700 calc(24px * var(--dt-tytul)) / 1.2 var(--tytul); margin: 4px 0 8px; }
+.arkusz p { font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; margin: 0 0 12px; }
+.przycisk-pelny { width: 100%; min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); margin-top: 8px; padding: 12px; }
+.przycisk-tekst { width: 100%; min-height: 44px; border: 0; background: transparent; color: var(--grafit); font: 600 calc(17px * var(--dt-tresc)) var(--tresc); margin-top: 4px; }
+.grupa { background: var(--grupa); border-radius: 12px; margin: 12px 16px 0; }
+.grupa .el { display: flex; gap: 12px; align-items: center; padding: 12px 16px; min-height: 44px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.grupa .el + .el { border-top: 1px solid var(--linia); }
+.grupa .el .tx { flex: 1; min-width: 0; } .grupa .el .tx small { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.naglowek-grupy { margin: 20px 32px 0; color: var(--olowek); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.szukaj { margin: 12px 16px 0; background: var(--grupa); border-radius: 10px; min-height: 40px; display: flex; align-items: center; padding: 0 12px; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); }
+.pasek-narzedzi { display: flex; justify-content: space-around; border-top: 1px solid var(--linia); padding: 8px 0 28px; margin-top: 16px; }
+.pasek-narzedzi span { min-width: 64px; min-height: 44px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: calc(11px * min(var(--dt-tresc), 1.6)); color: var(--olowek); }
+.oferta { border: 2px solid var(--linia); border-radius: 14px; padding: 14px 16px; margin-top: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.oferta.wybrana { border-color: var(--grafit); }
+.oferta .nazwa { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .cena { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.oferta .op { width: 100%; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.linki { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 12px; font-size: calc(13px * var(--dt-tresc)); color: var(--olowek); }
+.linki span { min-height: 44px; display: flex; align-items: center; text-decoration: underline; }
+.uwagi { width: 390px; background: #fff; color: #222; padding: 20px; font: 15px/1.4 "Source Sans 3"; }
+.uwagi h2 { font: 700 20px "Libre Franklin"; margin: 0 0 8px; }
+/* fix NZ-08-P2-04 (P-126): linia informacji, krokowiec, znacznik wzoru, przełącznik, nagłówek arkusza z Zamknij */
+.uwaga { margin: 8px 32px 0; display: flex; gap: 8px; align-items: flex-start; color: var(--grafit); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; }
+.uwaga a { color: var(--grafit); }
+.uwaga .znak { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font: 700 12px var(--tytul); margin-top: 1px; }
+.pole { min-width: 56px; min-height: 44px; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 calc(20px * var(--dt-tytul)) var(--tytul); }
+.krok { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border: 1.5px solid var(--m-obrys); border-radius: 10px; font: 700 20px var(--tytul); }
+.wzor-strona { margin: 8px 16px 0; height: 470px; background: #FFFFFF; border: 1px solid var(--linia); position: relative; overflow: hidden; }
+.tekst-wzoru { position: absolute; inset: 16px; background: repeating-linear-gradient(to bottom, #C9CBD0 0 3px, transparent 3px 22px); }
+.znacznik { position: absolute; left: 0; right: 0; height: 22px; border-top: 2.5px solid #26282C; border-bottom: 2.5px solid #26282C; background: #26282C14; }
+.znacznik.krawedz { border-top-style: dashed; }
+.znacznik .tab { position: absolute; right: 8px; top: -2px; transform: translateY(-100%); background: #26282C; color: #FCFCFA; font: 700 13px/1 var(--tytul); padding: 5px 8px; border-radius: 6px 6px 0 0; }
+.znacznik.krawedz .tab { transform: none; top: 22px; border-radius: 0 0 6px 6px; }
+.znacznik .uchwyt-dol { position: absolute; left: 50%; bottom: -9px; width: 36px; height: 14px; margin-left: -18px; border-radius: 7px; background: #26282C; }
+.pasek-znacznika { margin-top: auto; background: var(--arkusz); border-top: 1px solid var(--linia); padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 8px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.pasek-znacznika b { font: 700 calc(17px * var(--dt-tytul)) / 1.25 var(--tytul); }
+.wybor { display: flex; gap: 12px; flex-wrap: wrap; }
+.wybor button { flex: 1 1 140px; min-height: 64px; border: 2px solid var(--p-obrys); border-radius: 14px; background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tytul)) var(--tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; }
+.wybor small { font: 400 calc(13px * var(--dt-tresc)) var(--tresc); color: var(--olowek); }
+.rzad { display: flex; align-items: center; gap: 12px; min-height: 44px; flex-wrap: wrap; }
+.rzad > span:first-child { flex: 1; color: var(--olowek); }
+.rzad a { color: var(--grafit); min-height: 44px; display: flex; align-items: center; }
+.naglowek-arkusza { display: flex; justify-content: space-between; align-items: center; min-height: 44px; }
+.naglowek-arkusza .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.grupa .el .wybrany { font-weight: 700; }
+.krokowiec { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+/* fix NZ-08-P3-04: systemowy wybór daty (atrapa UIDatePicker w stylu kalendarza) */
+.kalendarz { flex-direction: column; align-items: stretch !important; }
+.kalendarz .mies { display: flex; justify-content: space-between; font-size: calc(17px * var(--dt-tresc)); }
+.kalendarz .siatka { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: calc(17px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka i { font-style: normal; color: var(--olowek); font-size: calc(13px * min(var(--dt-tresc), 1.6)); }
+.kalendarz .siatka span { min-height: 40px; display: grid; place-items: center; border-radius: 50%; }
+.kalendarz .wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; box-shadow: inset 0 0 0 2px var(--p-obrys); }
+.daty .el { flex-wrap: wrap; } .daty .el .tx { flex: 1 0 auto; }
+.kalendarz .dzis { font-weight: 700; text-decoration: underline; }
+.kalendarz .poza { color: var(--olowek); opacity: .45; }
+/* fix NZ-08-P5-Q1: druga linia wiersza, przycisk tekstowy w wierszu, menu systemowe, alert, przełącznik segmentowy, pole tekstowe, wcięcie sekcji */
+.grupa .el .tx small + small { margin-top: 2px; }
+.akcja { color: var(--grafit); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; font-size: calc(17px * var(--dt-tresc)); }
+.wartosc { color: var(--olowek); text-align: right; }
+/* duży tekst: wiersz przechodzi w stos (etykieta, potem wartość albo przycisk), nagłówek arkusza łamie tytuł do osobnego wiersza */
+.grupa .el { flex-wrap: wrap; }
+.grupa .el .tx { flex: 1 1 140px; overflow-wrap: anywhere; }
+.naglowek-arkusza { flex-wrap: wrap; gap: 0 8px; flex-shrink: 0; }
+.naglowek-arkusza b { flex: 1 1 auto; text-align: center; min-width: 0; overflow-wrap: anywhere; }
+.sekcja { padding-left: 32px !important; }
+.menu-ios { position: absolute; right: 12px; top: 96px; width: min(280px, calc(100% - 24px)); background: var(--arkusz); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,.28); overflow: hidden; }
+.menu-ios div { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; border-top: 1px solid var(--linia); }
+.menu-ios div:first-child { border-top: 0; }
+.menu-ios .usun, .usun-tekst { color: var(--blad); }
+.alert { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(300px, calc(100% - 32px)); max-height: calc(100% - 112px); overflow-y: auto; background: var(--arkusz); border-radius: 14px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.28); }
+.alert .tresc-alertu { padding: 20px 16px 16px; }
+.alert h2 { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); margin: 0 0 4px; }
+.alert p { font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; margin: 0; }
+.alert button { display: block; width: 100%; min-height: 44px; border: 0; border-top: 1px solid var(--linia); background: transparent; color: var(--grafit); font: 400 calc(17px * var(--dt-tresc)) var(--tresc); padding: 10px 16px; }
+.alert button.usun-tekst { font-weight: 600; color: var(--blad); }
+.segment { display: flex; background: var(--grupa); border-radius: 10px; padding: 2px; gap: 2px; }
+.segment span { flex: 1; min-height: 40px; display: grid; place-items: center; border-radius: 8px; font-size: calc(15px * var(--dt-tresc)); }
+.segment .wyb { background: var(--arkusz); font-weight: 700; box-shadow: 0 0 0 1.5px var(--m-obrys); }
+.pole-tekst { min-height: 44px; border: 1.5px solid var(--m-obrys); border-radius: 10px; padding: 10px 12px; font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; background: var(--papier); }
+.pole-tekst.duze { min-height: 220px; }
+.etyk { display: block; margin: 16px 0 4px; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); }
+.radio { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--linia); }
+.radio .kolo { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--m-obrys); margin-top: 2px; display: grid; place-items: center; }
+.radio .kolo.wyb::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--grafit); }
+.radio b { font: 700 calc(17px * var(--dt-tytul)) / 1.3 var(--tytul); display: block; }
+.radio small { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; display: block; }
+.usun-kolo { flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; color: var(--blad); font: 700 22px var(--tytul); }
+.stan-celu { margin: 8px 0 0; font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); }
+.przycisk-obrys { min-height: 52px; border-radius: 14px; border: 2px solid var(--p-obrys); background: transparent; color: var(--grafit); font: 700 calc(17px * var(--dt-tresc)) var(--tytul); padding: 12px 16px; margin-top: 12px; width: 100%; }
+/* fix NZ-08-P5-BD (P-189): kapsuła stopera w pasku, kalendarz historii z kreską dnia, siatka narzędzi */
+.kapsula { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; padding: 0 12px; border-radius: 22px; background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(17px * min(var(--dt-tresc), 1.6)) var(--tytul); white-space: nowrap; }
+.kapsula svg { width: calc(18px * min(var(--dt-tresc), 1.6)); }
+.kapsula.pauza { background: transparent; color: var(--grafit); box-shadow: inset 0 0 0 2px var(--m-obrys); }
+.kapsula.ikona-sama { padding: 0; width: 44px; justify-content: center; background: transparent; color: var(--grafit); }
+.kal { margin: 12px 16px 0; }
+.kal .mies { display: flex; justify-content: space-between; align-items: center; font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--tytul); padding: 0 4px; }
+.kal .strz { display: inline-grid; place-items: center; width: 44px; height: 44px; font: 400 28px var(--tresc); }
+.siatka-kal { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 2px; text-align: center; margin-top: 4px; font-size: calc(17px * min(var(--dt-tresc), 1.5)); }
+.siatka-kal i { font-style: normal; color: var(--olowek); font-size: calc(13px * min(var(--dt-tresc), 1.5)); padding: 4px 0; }
+.siatka-kal span { min-height: 44px; display: grid; place-items: center; position: relative; border-radius: 22px; }
+/* dzień z robótką: kreska ołówkiem pod liczbą (element firmowy niesie dane, nie kolor) */
+.siatka-kal span.d::after { content: ""; position: absolute; bottom: 5px; left: 50%; width: 14px; height: 3px; margin-left: -7px; border-radius: 2px; background: var(--kreska); transform: rotate(-8deg); }
+.siatka-kal span.wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; }
+.siatka-kal span.wyb::after { background: var(--p-tekst); }
+.siatka-kal span.dzis { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.etykieta-opcji { position: absolute; left: 0; right: 0; bottom: 0; background: #FFE9A8; color: #222; font: 600 13px/1.3 "Source Sans 3"; padding: 6px 12px; }
+.liczby-sesji { display: flex; gap: 8px; flex-wrap: wrap; }
+.znak-uwagi { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid currentColor; font: 700 12px var(--tytul); flex-shrink: 0; }
+.miniatury { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
+.miniatury .m { width: 88px; height: 88px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(135deg, #8BA4C4, #4F6F94); }
+.miniatury .m.dodaj { background: transparent; border: 1.5px dashed var(--m-obrys); display: grid; place-items: center; color: var(--grafit); font: 600 calc(15px * var(--dt-tresc)) var(--tresc); text-align: center; }
+.wynik { margin: 16px 16px 0; padding: 16px; border-radius: 12px; background: var(--grupa); }
+.wynik .duzy { font: 700 calc(40px * min(var(--dt-tytul), 1.4)) / 1.1 var(--tytul); }
+.wynik p { margin: 4px 0 0; font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; color: var(--olowek); }
+.pole-liczby { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pole-liczby .pole-tekst { flex: 0 1 120px; }
+.chipy { display: flex; gap: 8px; padding: 8px 16px 0; flex-wrap: wrap; }
+.chipy span { min-height: 36px; padding: 0 14px; border-radius: 18px; display: inline-flex; align-items: center; border: 1.5px solid var(--m-obrys); font-size: calc(15px * var(--dt-tresc)); }
+.chipy span.wyb { background: var(--p-tlo); color: var(--p-tekst); font-weight: 700; }
+.przycisk-nieaktywny { background: var(--linia) !important; color: var(--olowek) !important; border-color: var(--linia) !important; }
+/* fix NZ-P217-04 (P-217): przeglądarka wzoru, pasek licznika pod wzorem, kolumna licznika (poziomo, iPad), narzędzia rysowania, arkusz rozszerzenia, iCloud */
+.wz { flex: 1; min-height: 0; background: var(--grupa); position: relative; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; padding: 8px 8px 0; }
+.wz svg.strona { width: 100%; max-width: 640px; height: auto; display: block; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); }
+.nav .tytul-nav { font: 600 calc(17px * var(--dt-tresc)) / 1.2 var(--tresc); text-align: center; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.nav .ikona.wl { background: var(--p-tlo); color: var(--p-tekst); border-radius: 10px; }
+.strony { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); background: rgba(38,40,44,.86); color: #FCFCFA; border-radius: 14px; padding: 4px 12px; font: 600 calc(13px * min(var(--dt-tresc), 1.6)) var(--tresc); }
+.pasek-licznika { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 8px 16px 28px; background: var(--papier); border-top: 1px solid var(--linia); flex-wrap: wrap; }
+.pasek-licznika .pl-l { flex: 1 1 96px; min-width: 0; }
+.pasek-licznika .pl-n { display: block; font: 700 calc(40px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); }
+.pasek-licznika .pl-t { display: block; color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.pasek-licznika .minus { width: 56px; height: 56px; border-radius: 12px; font-size: calc(22px * min(var(--dt-tytul), 1.4)); }
+.pasek-licznika .plus { flex: 1 1 140px; min-height: 72px; border-radius: 16px; font-size: calc(22px * var(--dt-tytul)); }
+.kolumna-licznika { flex-shrink: 0; width: 34%; min-width: 220px; max-width: 360px; display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 20px; background: var(--papier); border-left: 1px solid var(--linia); }
+.kolumna-licznika .pl-n { font: 700 calc(64px * min(var(--dt-tytul), 1.3)) / 1 var(--tytul); }
+.kolumna-licznika .pl-t { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.kolumna-licznika .plus { min-height: 120px; flex: 1; }
+.kolumna-licznika .minus { width: 100%; height: 56px; }
+.poziomo { flex-direction: row !important; }
+.poziomo .lewa { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.narzedzia-rys { flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 6px 12px; background: var(--papier); border-bottom: 1px solid var(--linia); flex-wrap: wrap; }
+.narzedzia-rys .nr { min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 600 calc(15px * var(--dt-tresc)) var(--tresc); color: var(--grafit); }
+.narzedzia-rys .nr.wyb { background: var(--p-tlo); color: var(--p-tekst); }
+.narzedzia-rys .gotowe { margin-left: auto; font-weight: 700; }
+.paleta-sys { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); width: min(340px, calc(100% - 24px)); background: #F5F5F7; color: #1C1C1E; border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,.3); padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; justify-content: space-between; font: 12px var(--tresc); }
+.paleta-sys i { width: 22px; height: 56px; border-radius: 8px 8px 2px 2px; display: block; background: linear-gradient(#999, #ddd); }
+.paleta-sys .kol { width: 26px; height: 26px; border-radius: 50%; display: inline-block; margin: 0 2px; }
+.rozszerzenie { position: absolute; inset: 56px 0 0; background: var(--arkusz); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; box-shadow: 0 -1px 0 var(--linia); }
+.rozszerzenie .podglad { margin: 8px 16px 0; display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: 12px; background: var(--grupa); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.rozszerzenie .podglad .ikona-pliku { width: 44px; height: 56px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); display: grid; place-items: center; font: 700 11px var(--tytul); color: #26282C; }
+.znacznik-wyb { width: 24px; text-align: center; font-weight: 700; flex-shrink: 0; }
+.ipad { width: 820px !important; min-height: 1180px !important; }
+.ipad-poziomo { width: 1180px !important; min-height: 820px !important; }
+.tel-poziomo { width: 844px !important; min-height: 390px !important; }
+.linia-info { margin: 12px 0 0; display: flex; gap: 8px; align-items: flex-start; padding: 12px; border-radius: 12px; border: 2px solid var(--m-obrys); font-size: calc(15px * var(--dt-tresc)); line-height: 1.35; flex-wrap: wrap; }
+.linia-info b { font: 700 calc(17px * var(--dt-tytul)) / 1.25 var(--tytul); display: block; }
+.kropka-stanu { width: 10px; height: 10px; border-radius: 50%; background: var(--grafit); display: inline-block; }
+/* fix NZ-P217-04 E1: tytuł z przełącznikiem wzorów, podpowiedź na wzorze, kolumna iPada, rama wąskiego okna */
+.tytul-przel { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font: 600 calc(17px * var(--dt-tresc)) / 1.2 var(--tresc); color: var(--grafit); text-align: center; overflow-wrap: anywhere; justify-content: center; flex: 1; min-width: 0; }
+.podpowiedz { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); background: rgba(38,40,44,.9); color: #FCFCFA; border-radius: 14px; padding: 8px 14px; font: 600 calc(15px * var(--dt-tresc)) / 1.3 var(--tresc); text-align: center; }
+.kolumna-ipad { max-width: 640px; margin: 0 auto; width: 100%; }
+.rama-waska { display: flex; width: 100%; flex: 1; }
+.rama-waska .inna { flex: 1; background: #C8CBD0; }
+.ikona-wzoru { width: 40px; height: 52px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); display: grid; place-items: center; font: 700 11px var(--tytul); color: #26282C; }
+.postep { height: 6px; border-radius: 3px; background: var(--linia); overflow: hidden; margin-top: 8px; } .postep i { display: block; height: 100%; width: 45%; background: var(--grafit); }
+/* przełącznik systemowy (atrapa UISwitch): stan niesie też położenie gałki, nie sam kolor */
+.przel { width: 51px; height: 31px; border-radius: 16px; background: var(--linia); position: relative; flex-shrink: 0; }
+.przel::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.przel.wl { background: var(--grafit); } .przel.wl::after { left: 22px; }
+.linia-info .akcja { flex-shrink: 1; min-width: 0; white-space: normal; text-align: start; }
+/* krytyka E1: pasek licznika — tekst nie łamie się przed liczbą; tytuł w pasku nawigacji ograniczony jak systemowy (łamanie między słowami); pod stroną początek następnej */
+.pasek-licznika .pl-l { flex: 1 1 96px; }
+.pasek-licznika .plus { white-space: nowrap; flex: 1 0 132px; }
+.narzedzia-rys .nr { font-size: calc(15px * min(var(--dt-tresc), 1.6)); }
+.pasek-licznika .pl-t { white-space: normal; }
+.pasek-licznika .pl-t .nw { white-space: nowrap; }
+.tytul-przel { font-size: calc(17px * min(var(--dt-tresc), 1.6)); overflow-wrap: normal; word-break: normal; hyphens: none; }
+.wz { flex-direction: column; align-items: center; gap: 8px; }
+.wz::after { content: ""; width: 100%; max-width: 640px; height: 600px; flex-shrink: 0; background: #FFFFFF; box-shadow: 0 0 0 1px var(--linia); }
+.wz svg.strona { flex-shrink: 0; }
+.nav { flex-wrap: wrap; } .nav .ikony { margin-left: auto; }
+
+main[data-ekran] { min-height: 760px; }
+</style>
+</head>
+<body>
+<!-- F1. Ekran projektu: menu kontekstowe wiersza „Video” — Change link (nowy) i Remove link -->
+<main data-ekran="film-menu">
+  <div class="status"><span>21:14</span><span>▂▄▆ ▭</span></div>
+  <div class="nav"><a href="#">‹ Projects</a><div class="ikony"><span class="ikona">+</span><span class="ikona">•••</span></div></div>
+  <div class="tytul"><h1>Harbor Sweater</h1></div>
+  <p class="naglowek-grupy">Patterns</p>
+  <div class="grupa">
+    <div class="el"><span class="ikona-wzoru" aria-hidden="true">PDF</span><span class="tx">harbor-sweater<small>PDF · 6 pages</small></span><span class="akcja">›</span></div>
+    <div class="el" style="position:relative;z-index:3;background:var(--grupa);border-radius:12px"><span class="tx">Video<small>Sleeve cap seaming</small></span><span class="akcja" aria-label="Open video link in browser">↗</span></div>
+  </div>
+  <div class="przyciemnienie"></div>
+  <div class="menu-ios" style="top:330px"><div>Change link <span aria-hidden="true">✎</span></div><div class="usun">Remove link <span aria-hidden="true">✕</span></div></div>
+</main>
+<!-- F2. Change link: ten sam arkusz co „Add video link”, wypełniony; Save zastępuje (użytkowniczka widzi, co zmienia) -->
+<main data-ekran="film-zmien">
+  <div class="status"><span>21:14</span><span>▂▄▆ ▭</span></div>
+  <div class="przyciemnienie"></div>
+  <div class="arkusz"><div class="uchwyt"></div>
+    <div class="naglowek-arkusza"><a class="akcja" style="justify-content:flex-start;text-decoration:none;font-weight:400">Cancel</a><b>Video link</b><a class="akcja" style="text-decoration:none">Save</a></div>
+    <div class="tresc-arkusza"><span class="etyk">Link</span><div class="pole-tekst">https://video.example/sleeve-cap|</div>
+    <span class="etyk">Name (optional)</span><div class="pole-tekst">Sleeve cap seaming</div>
+    <p class="podpis">Oczko keeps only the link. The video opens in your browser and needs the internet.</p></div></div>
+</main>
+<!-- F3. „Udostępnij do Oczka” jako Video link do projektu z filmem: linia jak udostepnij.kolejny (wymaga flagi filmu w migawce, 05) -->
+<main data-ekran="udostepnij-film-zastapi">
+  <div class="status"><span>21:14</span><span>▂▄▆ ▭</span></div>
+  <div class="przyciemnienie"></div>
+  <div class="rozszerzenie">
+    <div class="naglowek-arkusza" style="padding:4px 16px"><a class="akcja" style="justify-content:flex-start;text-decoration:none;font-weight:400">Cancel</a><b>Add to Oczko</b><a class="akcja" style="text-decoration:none">Save</a></div>
+    <div class="podglad"><span class="ikona-pliku">www</span><span>Sleeve cap seaming, part 2<br><span style="color:var(--olowek)">video.example</span></span></div>
+    <div style="margin:12px 16px 0"><span class="etyk" style="margin-top:0">Add as</span><div class="segment" role="radiogroup"><span role="radio" aria-checked="false">Pattern</span><span class="wyb" role="radio" aria-checked="true">Video link</span></div></div>
+    <p class="naglowek-grupy">Add as a pattern to</p>
+    <div class="grupa"><div class="el"><span class="znacznik-wyb">✓</span><span class="tx">Harbor Sweater<small>last worked today</small></span></div><div class="el"><span class="znacznik-wyb"></span><span class="tx">Moss blanket<small>last worked 3 days ago · 1 pattern</small></span></div><div class="el"><span class="znacznik-wyb"></span><span class="tx">New project</span></div></div>
+    <p class="podpis" style="margin:12px 32px">Harbor Sweater already has a video link. Saving replaces it with this one.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+OK   12.83:1 (min 4.5) T2 jasny: tekst/tło #221D1A na #E6E1DA
+OK   6.03:1 (min 4.5) T2 jasny: tekst2/tło #5A5048 na #E6E1DA
+OK   15.20:1 (min 4.5) T2 jasny: tekst/kafel #221D1A na #F6F4F1
+OK   10.99:1 (min 4.5) T2 jasny: tekst karty/karta #F3F1EC na #3A332E
+OK   7.98:1 (min 4.5) T2 jasny: tekst2 karty/karta #D6CEC6 na #3A332E
+OK   3.88:1 (min 3) T2 jasny: dzianina/karta (grafika) #C08425 na #3A332E
+OK   5.83:1 (min 4.5) T2 jasny: zakładka/pasek #625850 na #EEEBE6
+OK   4.97:1 (min 4.5) T2 jasny: zakładka wybrana/pasek #8A5A12 na #EEEBE6
+OK   4.55:1 (min 4.5) T2 jasny: Oczko Pro/tło #8A5A12 na #E6E1DA
+OK   9.29:1 (min 3) T2 jasny: ikona kafla (UI) #3A332E na #F0DDB6
+OK   13.67:1 (min 4.5) T2 ciemny: tekst/tło #F1EDE9 na #26211E
+OK   8.54:1 (min 4.5) T2 ciemny: tekst2/tło #C7BCB2 na #26211E
+OK   11.98:1 (min 4.5) T2 ciemny: tekst/kafel #F1EDE9 na #312B27
+OK   11.11:1 (min 4.5) T2 ciemny: tekst karty/karta #F3F1EC na #3A322D
+OK   7.69:1 (min 4.5) T2 ciemny: tekst2 karty/karta #D3C9BF na #3A322D
+OK   4.82:1 (min 3) T2 ciemny: dzianina/karta (grafika) #CF9636 na #3A322D
+OK   7.52:1 (min 4.5) T2 ciemny: zakładka/pasek #B5A99E na #1E1A17
+OK   11.52:1 (min 4.5) T2 ciemny: zakładka wybrana/pasek #F0CF8A na #1E1A17
+OK   10.61:1 (min 4.5) T2 ciemny: Oczko Pro/tło #F0CF8A na #26211E
+OK   6.64:1 (min 3) T2 ciemny: ikona kafla (UI) #F0CF8A na #4A413A
+OK   11.61:1 (min 4.5) T3 jasny: tekst/tło #1E252B na #D8E0E6
+OK   5.84:1 (min 4.5) T3 jasny: tekst2/tło #46545F na #D8E0E6
+OK   10.33:1 (min 4.5) T3 jasny: tekst karty/karta #F3F1EC na #2B3A48
+OK   5.53:1 (min 4.5) T3 jasny: zakładka/pasek #4F5D68 na #E3E9ED
+OK   4.83:1 (min 4.5) T3 jasny: zakładka wybrana/pasek #8A5A12 na #E3E9ED
+OK   5.07:1 (min 4.5) T3 jasny: Oczko Pro/tło (ciemniejszy mioget) #7E520F na #D8E0E6
+OK   3.65:1 (min 3) T3 jasny: dzianina/karta (grafika) #C08425 na #2B3A48
+OK   13.54:1 (min 4.5) T3 ciemny: tekst/tło #EEF1F2 na #1B2630
+OK   8.24:1 (min 4.5) T3 ciemny: tekst2/tło #B0C0CC na #1B2630
+OK   11.50:1 (min 4.5) T3 ciemny: tekst/kafel #EEF1F2 na #253240
+OK   6.88:1 (min 4.5) T3 ciemny: tekst2 karty/karta #C2CBD2 na #2C3C4B
+OK   7.57:1 (min 4.5) T3 ciemny: zakładka/pasek #A0B0BC na #151E26
+OK   6.35:1 (min 3) T3 ciemny: ikona kafla (UI) #F0CF8A na #36475A
+OK   4.35:1 (min 3) T3 ciemny: dzianina/karta (grafika) #CF9636 na #2C3C4B
+OK   5.38:1 (min 4.5) T4: jak T1 (faktura 5% krycia; najciemniejszy punkt faktury jasnej ≈ #DADEE0) #4C5862 na #DADEE0
+OK   6.72:1 (min 4.5) T4 ciemny: tekst2 na najjaśniejszym punkcie faktury ≈ #2D353C #B5C0C8 na #2D353C

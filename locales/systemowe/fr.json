@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko utilise l’appareil photo uniquement lorsque vous prenez en photo un modèle, un projet ou une étiquette de pelote. Les photos restent sur votre appareil."
+  }
+}

@@ -1,0 +1,135 @@
+FAIL iOS tests/wydanie/asc-iap-v2.test.ts
+  skrypt nie woła wycofanych endpointów v1 (inwentarz.md)
+    ○ skipped dry-run na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+    ○ skipped apply na stanie ze starymi tekstami: brak wywołań wycofanych i brak ścieżek spoza modelu v2
+  dry-run: niczego nie zapisuje, plan wskazuje nową wersję
+    ○ skipped zero żądań innych niż GET, stan bez zmian
+    ○ skipped log mówi, że zapis wymaga nowej wersji (4 obiekty), kod 0
+  apply: istnieje wersja robocza (PREPARE_FOR_SUBMISSION) — zapis do niej, bez tworzenia kolejnej
+    ○ skipped nie tworzy wersji; PATCH istniejącej i POST brakującej lokalizacji idą na ścieżki v2 z relacją `version` = wersja robocza
+    ○ skipped grupa: POST/PATCH niosą customAppName (P-517), subskrypcje i IAP: name i description
+    ○ skipped po przebiegu wersja robocza ma komplet zgodny z danymi
+  apply: brak wersji roboczej, zatwierdzona wersja ma inne teksty — skrypt tworzy wersję (POST …Versions) i zapisuje do niej
+    ○ skipped nowa wersja pusta (Apple nie dziedziczy)
+    ○ skipped nowa wersja dziedziczy lokalizacje poprzedniej
+  idempotencja: drugi apply = 0 zmian (także bez nowej wersji)
+    ○ skipped Apple nie dziedziczy
+    ○ skipped Apple dziedziczy
+    ○ skipped zatwierdzona wersja już zgodna z danymi i brak roboczej: ani wersji, ani lokalizacji (0 żądań zapisu)
+  wersja w recenzji z innymi tekstami: nie tworzy kolejnej wersji, zgłasza problem (kod 1), niczego nie zapisuje
+    ○ skipped kod 1, zero zapisów, problem wymienia stan
+  brak produktu albo wersji: zachowanie jak dotąd (problem, kod 1) lub utworzenie pierwszej wersji
+    ○ skipped produkt bez żadnej wersji → apply tworzy wersję i zapisuje komplet
+  klient: tylko GET/POST/PATCH i brak wycofanych ścieżek
+    ○ skipped DELETE odrzucony
+    ○ skipped POST /v1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped PATCH /v1/subscriptionLocalizations/ABC123456 → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → odmowa (wycofany endpoint)
+    ○ skipped GET /v2/inAppPurchases/I1/inAppPurchaseLocalizations → odmowa (wycofany endpoint)
+    ○ skipped POST /v1/subscriptionSubmissions → odmowa (wycofany endpoint)
+    ○ skipped POST /v2/inAppPurchaseLocalizations → dozwolone
+    ○ skipped GET /v1/subscriptionVersions/V1/localizations → dozwolone
+    ○ skipped POST /v1/subscriptionGroupVersions → dozwolone
+  kontrola repo (npm run jakosc:kontrole): wycofane endpointy nie wracają do scripts/asc i workflowów asc-*
+    ○ skipped repo: 0 naruszeń
+    ○ skipped plik-pułapka ze ścieżką v1 w scripts/asc → kod 1 z nazwą pliku
+    ○ skipped plik z nazwą v2 i komentarzem o wycofanym zasobie nie jest naruszeniem; kontrola nie pomija żadnego pliku skryptów (lista niepusta)
+  nagłówek skryptu i workflowu: źródło Apple z adresem i datą odczytu
+    ○ skipped scripts/asc/iap-localizations.mjs
+    ○ skipped .github/workflows/asc-iap-localizations.yml
+  10-wydanie-001: lokalizacje starej wersji, których plan nie zapisuje (czeka, błąd planu), przechodzą do nowej wersji
+    ○ skipped apply, Apple nie dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+    ○ skipped apply, Apple dziedziczy: `pl` (czeka) zachowane z tekstem starej wersji; `ja` (błąd planu) zachowane w grupie
+    ○ skipped dry-run: plan wymienia lokalizacje do przeniesienia (pl; w grupie także ja) i nie zapisuje niczego
+    ○ skipped przeniesienie niemożliwe (lokalizacja starej wersji bez `name`): nie tworzy nowej wersji, kod 1 i opis w problemach — apply i dry-run
+  10-wydanie-002: odmowa wycofanego endpointu — komunikat ze ścieżką, bez identyfikatorów
+    ○ skipped POST /v1/subscriptionLocalizations → komunikat zawiera ścieżkę
+    ○ skipped POST /v1/inAppPurchaseSubmissions → komunikat zawiera ścieżkę
+    ○ skipped GET /v1/subscriptionGroups/G1/subscriptionGroupLocalizations → komunikat zawiera ścieżkę
+    ○ skipped identyfikator zasobu (z cyframi lub UUID) jest zamaskowany, nazwa zasobu zostaje
+  10-wydanie-003: stany wersji — w recenzji nic nie jest zapisywane, po odrzuceniu powstaje nowa wersja robocza
+    ○ skipped READY_FOR_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan
+    ○ skipped IN_REVIEW z innymi tekstami: kod 1, zero zapisów, problem wymienia stan
+    ○ skipped REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0
+    ○ skipped DEVELOPER_REJECTED z innymi tekstami: tworzy nową wersję roboczą i zapisuje do niej (stara nietknięta), kod 0
+    ○ skipped P-789 opisuje zachowanie po odrzuceniu (REJECTED, DEVELOPER_REJECTED)
+  10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji
+    ✕ zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple (6 ms)
+    ✕ zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple (1 ms)
+
+  ● 10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji › zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /dopiero po (zatwierdzeniu|recenzji)[^.\n]*Apple|dopiero po recenzji Apple/i
+    Received string:  "# Przebieg na koncie właściciela: lokalizacje IAP przez model wersji v2 (KO-056)·
+    Stan: przygotowane 2026-11-13 (sesja BG). **Niczego nie uruchomiono w App Store Connect** (brak kluczy w tej sesji, zakaz wyzwalania workflowów). Atrapa serwera w testach odzwierciedla odczytaną dokumentację Apple, nie prawdziwy serwer; poniższy przebieg jest pierwszym sprawdzeniem na żywo.
+    Warunek: scalenie gałęzi do `main` (workflow_dispatch działa tylko z plikiem na gałęzi domyślnej, P-319) i Twoje Approve środowiska `release`. Wszystko poza tym robi workflow.·
+    ## Kroki (każdy osobno; Ty tylko zatwierdzasz i wklejasz wynik)
+    1. **Dry-run:** Actions → „ASC lokalizacje produktów zakupu” → Run workflow → `tryb: dry-run` → Approve `release`. Workflow tylko czyta (GET). W podsumowaniu joba szukaj dla każdego z 4 obiektów (grupa, `oczko.pro.monthly`, `oczko.pro.yearly`, `oczko.pro.lifetime`) wiersza `(wersja N, STAN; istniejących lokalizacji: K)`.
+    2. **Co oznacza wynik dry-run:**
+       - `K = 0` przy wersji ze stanem `APPROVED`/`PREPARE_FOR_SUBMISSION`, choć lokalizacje wpisano wcześniej przez v1: Apple nie pokazuje starych lokalizacji w wersji. Apply utworzy komplet w wersji roboczej (to bezpieczne, nic nie jest usuwane); wklej mi wynik, zapiszę to jako ustalenie.
+       - `[wersja w recenzji: …]` i PROBLEM (kod 1): produkt ma wersję w recenzji, a teksty różnią się od pliku. Skrypt niczego nie zapisuje. Poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect, potem ponów.
+       - Wiersz `[nowa wersja zostanie utworzona; …]`: apply założy wersję roboczą produktu (`POST …Versions`, stan `PREPARE_FOR_SUBMISSION`). Nie wysyła jej do recenzji.
+       - Wszystkie wiersze `pomiń (bez zmian)` i kod 0: nic do zrobienia.
+    3. **Apply (dopiero po obejrzeniu dry-run):** ten sam workflow, `tryb: apply`, Approve. Zapis tworzy brakujące i aktualizuje różniące się lokalizacje w wersji roboczej; nigdy nie usuwa; lokalizacje spoza pliku kopiuje do nowej wersji.
+    4. **Drugi apply (dowód idempotencji):** uruchom `apply` jeszcze raz: oczekiwane `utwórz 0, zaktualizuj 0, nowe wersje 0`, kod 0.
+    5. **Wysyłka do recenzji:** poza zakresem skryptu i tej migracji. Zakupy i subskrypcje wysyłasz jak dotąd (App Store Connect, razem z wersją aplikacji); Apple wycofał też stare endpointy wysyłki (`*Submissions`), więc ewentualna automatyzacja wysyłki musi iść przez `reviewSubmissions` + `reviewSubmissionItems` z wersją produktu (osobne zadanie, nie ma go w repo).·
+    ## Ryzyka i nierozstrzygnięte (`[DO USTALENIA]`)
+    - Czy nowa wersja dziedziczy lokalizacje poprzedniej — dokumentacja nie mówi; skrypt działa w obu wariantach (odczyt lokalizacji nowej wersji przed planem), a log dry-run/apply pokaże, który zachodzi.
+    - Czy lokalizacje założone przez v1 są widoczne jako lokalizacje wersji — j.w.
+    - Termin usunięcia v1: dokumentacja Apple mówi „deprecated … remains available” bez daty; „od początku 2027” pochodzi tylko z e-maila Apple Developer Relations.
+    - Limity atrybutów (np. `customAppName`) bez zmian: założenie z nagłówka skryptu (≤ 30 znaków) potwierdzi pierwszy zapis.
+    "
+
+      297 |   const przebieg = readFileSync(join(root, 'docs/wydanie/asc-v2/przebieg-wlasciciela.md'), 'utf8');
+      298 |   test('zdanie: teksty nowej wersji produktu trafią do sklepu dopiero po recenzji Apple', () => {
+    > 299 |     expect(przebieg).toMatch(/dopiero po (zatwierdzeniu|recenzji)[^.\n]*Apple|dopiero po recenzji Apple/i);
+          |                      ^
+      300 |     expect(przebieg).toMatch(/nie są widoczne w sklepie/i);
+      301 |   });
+      302 |   test('zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple', () => {
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:299:22)
+
+  ● 10-wydanie-004: przebieg właściciela — widoczność tekstów w sklepie dopiero po zatwierdzeniu wersji › zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /wersj[ąaię] grupy[^.\n]*osobno|osobno[^.\n]*wersj[ąaię] grupy/i
+    Received string:  "# Przebieg na koncie właściciela: lokalizacje IAP przez model wersji v2 (KO-056)·
+    Stan: przygotowane 2026-11-13 (sesja BG). **Niczego nie uruchomiono w App Store Connect** (brak kluczy w tej sesji, zakaz wyzwalania workflowów). Atrapa serwera w testach odzwierciedla odczytaną dokumentację Apple, nie prawdziwy serwer; poniższy przebieg jest pierwszym sprawdzeniem na żywo.
+    Warunek: scalenie gałęzi do `main` (workflow_dispatch działa tylko z plikiem na gałęzi domyślnej, P-319) i Twoje Approve środowiska `release`. Wszystko poza tym robi workflow.·
+    ## Kroki (każdy osobno; Ty tylko zatwierdzasz i wklejasz wynik)
+    1. **Dry-run:** Actions → „ASC lokalizacje produktów zakupu” → Run workflow → `tryb: dry-run` → Approve `release`. Workflow tylko czyta (GET). W podsumowaniu joba szukaj dla każdego z 4 obiektów (grupa, `oczko.pro.monthly`, `oczko.pro.yearly`, `oczko.pro.lifetime`) wiersza `(wersja N, STAN; istniejących lokalizacji: K)`.
+    2. **Co oznacza wynik dry-run:**
+       - `K = 0` przy wersji ze stanem `APPROVED`/`PREPARE_FOR_SUBMISSION`, choć lokalizacje wpisano wcześniej przez v1: Apple nie pokazuje starych lokalizacji w wersji. Apply utworzy komplet w wersji roboczej (to bezpieczne, nic nie jest usuwane); wklej mi wynik, zapiszę to jako ustalenie.
+       - `[wersja w recenzji: …]` i PROBLEM (kod 1): produkt ma wersję w recenzji, a teksty różnią się od pliku. Skrypt niczego nie zapisuje. Poczekaj na wynik recenzji albo wycofaj wysyłkę w App Store Connect, potem ponów.
+       - Wiersz `[nowa wersja zostanie utworzona; …]`: apply założy wersję roboczą produktu (`POST …Versions`, stan `PREPARE_FOR_SUBMISSION`). Nie wysyła jej do recenzji.
+       - Wszystkie wiersze `pomiń (bez zmian)` i kod 0: nic do zrobienia.
+    3. **Apply (dopiero po obejrzeniu dry-run):** ten sam workflow, `tryb: apply`, Approve. Zapis tworzy brakujące i aktualizuje różniące się lokalizacje w wersji roboczej; nigdy nie usuwa; lokalizacje spoza pliku kopiuje do nowej wersji.
+    4. **Drugi apply (dowód idempotencji):** uruchom `apply` jeszcze raz: oczekiwane `utwórz 0, zaktualizuj 0, nowe wersje 0`, kod 0.
+    5. **Wysyłka do recenzji:** poza zakresem skryptu i tej migracji. Zakupy i subskrypcje wysyłasz jak dotąd (App Store Connect, razem z wersją aplikacji); Apple wycofał też stare endpointy wysyłki (`*Submissions`), więc ewentualna automatyzacja wysyłki musi iść przez `reviewSubmissions` + `reviewSubmissionItems` z wersją produktu (osobne zadanie, nie ma go w repo).·
+    ## Ryzyka i nierozstrzygnięte (`[DO USTALENIA]`)
+    - Czy nowa wersja dziedziczy lokalizacje poprzedniej — dokumentacja nie mówi; skrypt działa w obu wariantach (odczyt lokalizacji nowej wersji przed planem), a log dry-run/apply pokaże, który zachodzi.
+    - Czy lokalizacje założone przez v1 są widoczne jako lokalizacje wersji — j.w.
+    - Termin usunięcia v1: dokumentacja Apple mówi „deprecated … remains available” bez daty; „od początku 2027” pochodzi tylko z e-maila Apple Developer Relations.
+    - Limity atrybutów (np. `customAppName`) bez zmian: założenie z nagłówka skryptu (≤ 30 znaków) potwierdzi pierwszy zapis.
+    "
+
+      301 |   });
+      302 |   test('zdanie o osobnej wysyłce wersji grupy subskrypcji i odnośnik do źródła Apple', () => {
+    > 303 |     expect(przebieg).toMatch(/wersj[ąaię] grupy[^.\n]*osobno|osobno[^.\n]*wersj[ąaię] grupy/i);
+          |                      ^
+      304 |     expect(przebieg).toMatch(/migrating-in-app-purchase-metadata-to-v2/);
+      305 |   });
+      306 | });
+
+      at Object.toMatch (tests/wydanie/asc-iap-v2.test.ts:303:22)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 42 skipped, 44 total
+Snapshots:   0 total
+Time:        1.661 s, estimated 3 s
+Ran all test suites matching /tests\/wydanie\/asc-iap-v2.test.ts/i with tests matching "10-wydanie-004".

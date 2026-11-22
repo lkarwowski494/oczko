@@ -1,0 +1,50 @@
+# BR-WZR-005/S4 „Wąskie okno na iPadzie” (OG-16, P-218 Q3a) i NFR-UKL-001 (docs/brd/wymagania.md:117): w oknie o szerokości compact układ telefonu,
+# wzór i nowa wartość licznika bez obciętych elementów. Okna iPadOS Maestro nie układa — argument E2E oczkoE2eSzerokoscOkna=375 rysuje aplikację
+# w kontenerze tej szerokości (P-225 Q2a, nazwany wyjątek: bez klasy rozmiaru systemu; prawdziwe okno — lista urządzenia, P-226).
+# NFR-UKL-001 (P-225 Q3c): zrzuty PR-01–PR-06 do przeglądu 04 względem makiety ipad-waskie; automatyczna miara w 1.1.
+appId: com.apps4brew.knitting
+name: "BR-WZR-005/S4 · Wąskie okno iPada (375 pt): wzór i licznik, zrzuty NFR-UKL-001"
+tags:
+  - BR-WZR-005-S4
+  - NFR-UKL-001
+  - ipad
+  - stan-licznika
+  - przypadki-uzycia
+  - PU-144
+---
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T12:00:00"
+      oczkoE2eSiec: "brak"
+      oczkoE2eSzerokoscOkna: "375"
+# P-571: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument szerokości okna) — przebieg 42544112861 step-004
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- takeScreenshot: 46-waskie-dzis
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+- takeScreenshot: 46-waskie-licznik
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertVisible: { id: "wzor-widok" }
+- takeScreenshot: 46-waskie-wzor
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertVisible: { id: "wzor-widok" }
+- takeScreenshot: 46-waskie-wzor-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "wzor-widok" }
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "licznik-plus" }
+# NOC-2 (04): wąskie okno, licznik 1 (> 0) i „•••” w pasku
+- takeScreenshot: 46-waskie-licznik-wartosc-menu
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- takeScreenshot: 46-waskie-projekty

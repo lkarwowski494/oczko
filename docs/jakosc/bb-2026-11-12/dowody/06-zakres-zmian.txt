@@ -1,0 +1,35 @@
+$ git log --oneline 3d9ca08..562dfc4
+562dfc4e fix(lokalizacja): poprawki recenzji AZ podpisów zrzutów (09-lokalizacja-001..003)
+5d4c9e6e test(wydanie): ramki-sklepu: fixtura języka bez podpisów de → bg (de ma teraz podpisy, P-772)
+70431f6c feat(lokalizacja): podpisy zrzutów sklepu w 27 językach (C6, P-771/P-772)
+e16e9a0f fix(wzor): zakreślacz z krytością 0,45, tekst pod pasem 5,14:1 (04-studio-projektowe-001)
+4ff6f837 fix(wydanie): 10-wydanie-027 cudzyslow wokol ${ZRZUTY_SESJA_n} w env runFlow + test skladni wszystkich e2e/**/*.yaml (P-766)
+b1a413e9 docs(wydanie): AU decyzje P-763…P-765 i stan (10-wydanie-022…026)
+ad724ac6 fix(wydanie): 10-wydanie-023 fikstura wzgledna od dnia przebiegu: pasek iPada i tresc kadru ta sama data
+23fc308c fix(wydanie): 10-wydanie-022 zadanie iPada konczy sie na starcie przy dacie maszyny innej niz dzien przebiegu
+617c7a3a fix(wydanie): 10-wydanie-026 komunikat zlego dnia, DATA_ZRZUTU czyszczone, komentarz scen. 47
+529216b3 fix(wydanie): 10-wydanie-025 powtorz sceny 03 albo 04 usuwa obie (para z jednego buildu)
+58938863 fix(wydanie): 10-wydanie-024 PIPESTATUS po potoku nalozenie | tee w kroku zbierz (zasada 21)
+2e904e33 fix(e2e): 07-jakosc-003 oczekiwanie na wzor-widok po imporcie Worda 30 → 70 s w scen. 25 i 53 (P-762)
+19fec7db fix(testy): 07-jakosc-001 typ mocka trasy Dziś (typecheck:testy)
+43878ed0 docs(jakosc): 07-jakosc-003 diagnoza kontroli zastępczej W1 i decyzje P-759..P-761
+850e82f9 fix(e2e): 07-jakosc-002 scenariusz 70 przewija w górę do „Back” przed stuknięciem (Back w ScrollView przewodnika)
+8922cd1b docs(jakosc): 07-jakosc-001 odświeżona tabela-08 (nowy test trasy Dziś, plik generowany)
+89667d69 fix(dzis): 07-jakosc-001 wyjątek odczytu miejsca nie ogłusza „Kontynuuj ›” i „Dodaj wzór”
+kod wyjścia 0
+
+$ git diff --stat 3d9ca08..562dfc4 -- app src modules e2e/scenariusze .github/workflows
+ .github/workflows/zrzuty-sklepu.yml                             | 5 +++--
+ app/(zakladki)/index.tsx                                        | 6 ++++--
+ e2e/scenariusze/25-br-wzr-007-s2-plik-word.yaml                 | 2 +-
+ e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml           | 2 +-
+ e2e/scenariusze/53-p-282-word-tabela-obraz.yaml                 | 6 +++---
+ e2e/scenariusze/70-p-688-przewodnik-z-ustawien-przeczytane.yaml | 2 ++
+ modules/oczko-wzor/ios/WidokWzoru.swift                         | 7 ++++---
+ 7 files changed, 18 insertions(+), 12 deletions(-)
+
+$ git diff 3d9ca08..562dfc4 -- src/ekrany/Dzis.tsx | wc -l
+0
+
+$ git diff 3d9ca08..562dfc4 -- e2e/scenariusze/01-nfr-pie-001-pierwsze-liczenie.yaml e2e/scenariusze/subflows | wc -l
+0

@@ -1,0 +1,9 @@
+# BO: npm run verify po przyjęciu podpisów (P-824), HEAD 1532aaa (2026-11-15) — kod wyjścia 0
+# komenda: npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test)
+Test Suites: 608 passed, 608 total
+Tests:       7410 passed, 7410 total
+Snapshots:   0 total
+Time:        172.747 s
+KOD_WYJSCIA=0
+
+# wcześniej: 6a0523a 7399; 6875aa5 7408; 9fa82d6 7410 testów — wszystkie kod 0

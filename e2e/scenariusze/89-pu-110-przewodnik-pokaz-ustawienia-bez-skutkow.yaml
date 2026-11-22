@@ -1,0 +1,56 @@
+# PU-110 (G-04): „Show ›” przy „Vibration” i „Oczko Pro” otwiera Ustawienia (nie ekran zakupu), przy „Units” ekran „Units”; „Back” wraca do przewodnika; nic nie kupione, nie wyeksportowane, nie usunięte.
+# Kod: trasy `/ustawienia` (f-wibracje, f-pro) i `/miary` (f-jednostki) w src/domena/przewodnik.ts; z „Dziś” (bez `?z=ustawienia`) to push (app/przewodnik.tsx:38-40).
+# Nazwa funkcji „Vibration” = klucz `ustawienia.wibracje` (en.json), nie „Haptics”. Brak skutków ubocznych: `oferty-ekran` i `eksport-wynik` niewidoczne, `ustawienia-pro` bez „On”.
+appId: com.apps4brew.knitting
+name: "PU-110 · Przewodnik, „Show ›” przy ustawieniach: „Vibration” i „Oczko Pro” → Ustawienia, „Units” → „Units”, bez zakupu, eksportu i usunięcia"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-110
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-wibracje" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-wibracje" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-wibracje-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-wibracje-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-wibracje-pokaz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 89-wibracje-ustawienia
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-pro" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-pro" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-pro-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-pro-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-pro-pokaz" }
+- extendedWaitUntil: { visible: { id: "ustawienia" }, timeout: 20000 }
+- assertNotVisible: { id: "oferty-ekran" }
+- assertNotVisible: { id: "oferty-kup" }
+- takeScreenshot: 89-pro-ustawienia
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-jednostki" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-jednostki" }
+- extendedWaitUntil: { visible: { id: "przewodnik-f-jednostki-opis" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "przewodnik-f-jednostki-pokaz" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "przewodnik-f-jednostki-pokaz" }
+- extendedWaitUntil: { visible: { id: "miary" }, timeout: 20000 }
+- assertNotVisible: { id: "ustawienia" }
+- takeScreenshot: 89-jednostki
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "eksport-wynik" }
+- assertNotVisible: { id: "oferty-stan-pro" }
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 90000 } # „Back” leży w ScrollView przewodnika (Przewodnik.tsx:75), po „Show” lista stoi nisko
+- swipe: { start: "50%, 30%", end: "50%, 70%", duration: 300 } # dopchnięcie do góry: Maestro uznaje „Back” za widoczny już pod górną krawędzią pola treści (przebieg 43851148385)
+- assertVisible: { id: "nav-wstecz" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertNotVisible: { id: "ustawienia-pro" } # bez zakupu: brak wartości „On” przy „Oczko Pro”

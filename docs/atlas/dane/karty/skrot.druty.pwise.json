@@ -1,0 +1,50 @@
+{
+ "format": 1,
+ "id": "skrot.druty.pwise",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.pwise.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "purlwise",
+    "skrot": "pwise",
+    "twierdzenie": "TRM-EN-023"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "как изнаночную",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-028"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "以織上針方向",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-025"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ters örer gibi",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-021"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "както се взимат опаковите бримки",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-023"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

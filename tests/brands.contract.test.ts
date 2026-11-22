@@ -2,6 +2,7 @@
  * Kontrakt czystości marek i znaków towarowych (NFR-SEC-011).
  * Weryfikuje brak cudzych znaków towarowych i nazw komercyjnych (Yahtzee, Hasbro, Kniffel, itp.)
  * oraz poprawność zapisu znaków Apple w materiałach zewnętrznych i tłumaczeniach.
+ * Nazwy aplikacji i serwisów konkurencji (także w docs/, zapadka P-107): tests/jakosc/marki.test.ts, scripts/jakosc/marki.mjs (F07-05).
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join } from 'node:path';
@@ -31,10 +32,11 @@ const SCANNED_ROOTS = [
   'docs',
   'tests',
   '.github',
-  '.maestro',
+  'app',
   'app.json',
   'package.json',
   'README.md',
+  'archiwum',
 ];
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'coverage', '.expo', 'dist']);
@@ -54,7 +56,7 @@ const TEXT_EXTS = new Set([
 
 const ALLOWED_FILES = new Set([
   'tests/brands.contract.test.ts',
-  'docs/25-audyt-brd-qa-rel.md',
+  'archiwum/stara-wersja/docs/25-audyt-brd-qa-rel.md',
 ]);
 
 function getFiles(relPath: string): string[] {
@@ -96,7 +98,8 @@ describe('Kontrakt czystości marek i znaków towarowych (NFR-SEC-011)', () => {
   });
 
   it('znaki towarowe Apple w materiałach publicznych i tłumaczeniach są zapisywane poprawnie', () => {
-    const publicFiles = ['site', 'src/core/i18n.ts', 'src/core/i18n.en.ts'].flatMap(getFiles);
+    // Słowniki ADR-0017 zastępują i18n 0.1.0 (src/core/i18n*.ts, usunięte w partii porządkowej roli 08).
+    const publicFiles = ['site', 'src/i18n/slowniki'].flatMap(getFiles);
     const badAppleMentions: string[] = [];
 
     const BAD_APPLE_CASES = [

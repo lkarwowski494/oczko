@@ -1,0 +1,65 @@
+// Most do modułu Swift OczkoWzor (ADR-0007, ADR-0011, ADR-0012; moduly.md „Kontrakt partii 6”); jedyne miejsce require dla tego modułu.
+// Moduł opcjonalny: build bez modułu (np. nocny przebieg sprzed partii 6) dostaje null — adapter src/platforma/ zwraca wtedy błąd zamiast awarii.
+// Funkcje zwracają JSON `{ ok: true, … }` albo `{ ok: false, powod }` (powody z src/domena/bledy.ts: brak_sieci, przekroczono_czas, odmowa, pusty, anulowano, uszkodzony, …).
+import type { ComponentType, Ref } from 'react';
+import type { NativeSyntheticEvent, StyleProp, ViewStyle } from 'react-native';
+import { requireNativeViewManager, requireOptionalNativeModule } from 'expo-modules-core';
+
+export interface OczkoWzorNatywny {
+  naPdf(zrodloJson: string): Promise<string>;      // ZrodloWzoru → {ok, sciezka, strony} (plik tymczasowy)
+  sprawdzPdf(sciezka: string): Promise<string>;     // PDFKit: {ok, strony} | uszkodzony (w tym zaszyfrowany) | pusty
+  skanerDostepny(): boolean;                         // VNDocumentCameraViewController.isSupported
+  skanuj(): Promise<string>;                         // {ok, sciezki: JPEG stron} | anulowano | odmowa (aparat)
+  wklej(): Promise<string | null>;                   // P-285 (1) B: UIPasteboard (adres albo tekst); pusty schowek = null
+  miniatura(pdf: string, cel: string, szerokoscPt: number): Promise<string>; // plan 1.1 pkt 7: PNG pierwszej strony → {ok} | uszkodzony | zapis
+  /** Stan ścieżki sieciowej (NWPathMonitor, ADR-0031): 'jest' | 'brak' | 'nieznany' (monitor jeszcze nie odpowiedział). Podpowiedź, nie gwarancja osiągalności serwera. */
+  siecStan(): string;
+  addListener(nazwa: 'siecZmiana', fn: (e: { stan: string }) => void): { remove(): void }; // zmiana stanu ścieżki (monitor startuje przy pierwszej subskrypcji i przy `siecStan`)
+}
+
+export type ZnacznikNatywny = { strona: number; y: number; wysokosc: number; pozaStrona: boolean; przedSchematem: boolean; kierunek: 1 | -1; etykieta: string;
+  /** Widoczny napis zakładki („Row 48 ↑”, „Row 61 · page end”) i nazwa akcji VoiceOver „Move to next page” (pusta = brak): teksty z `t()`. */
+  napis: string; akcjaNastepnaStrona: string };
+/** Chip notatki na stronie wzoru (F-56, P-330 2A): widok rysuje symbol SF note.text + `etykieta` przy lewej krawędzi strony na wysokości rzędu (`y`, `wysokosc` — ułamki wysokości strony);
+ *  `id` wraca w `onNotatka`; `a11y` = etykieta VoiceOver przycisku. Treść, numery rzędów i arkusz notatki składa JS (teksty z `t()`). */
+export type NotatkaNatywna = { id: string; strona: number; y: number; wysokosc: number; etykieta: string; a11y: string };
+export type PropsWidokuNatywnego = {
+  /** Dokument jednym propsem (kolejność propsów nieokreślona): zmiana wzorId najpierw zapisuje kreski starego wzoru (przegląd 2026-10-26).
+   *  rysunki: pliki PKDrawing z magazynu (osobna warstwa, P-218 (2)) — wczytywane tylko przy zmianie wzoru; obroty: P-246 S3a. */
+  dokument: { wzorId: string; plikPdf: string; rysunki: { strona: number; plik: string }[]; obroty: { strona: number; kat: number }[];
+    /** Pozycja przy otwarciu nowego dokumentu (07-jakosc-006, BR-PRJ-011 S1): strona od 0 i powiększenie jako krotność dopasowania do szerokości (0 = dopasowany); w dokumencie, bo kolejność propsów jest nieokreślona. */
+    startStrona: number; startPowiekszenie: number };
+  katalogRysunkow: string;                           // katalog plików rysunków czekających na zapis (odzyskiwane przy następnym otwarciu)
+  strona: number;                                    // 0 = pierwsza; zmiana z JS przewija do strony
+  notatki?: NotatkaNatywna[];                        // chipy notatek tej strony wzoru (testID `wzor-notatka-chip`)
+  znacznik: ZnacznikNatywny | null;                  // wynik polozenieZnacznika — widok tylko rysuje (testID `wzor-znacznik`, P-237 (2))
+  narzedzie: 'brak' | 'zakreslacz' | 'pioro' | 'gumka';
+  narzedzieRysika: 'zakreslacz' | 'pioro';            // narzędzie, które wybiera pierwsze dotknięcie rysikiem bez narzędzia (narzedzieRysika, src/domena/rysik.ts; P-360: compact → zakreslacz)
+  polityka: 'wylaczone' | 'dowolne' | 'tylkoRysik'; // politykaPlotna (src/domena/rysik.ts)
+  cofnij: number;                                    // licznik: każda zmiana = cofnięcie ostatniej kreski na bieżącej stronie
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
+  /** Po RYSUNEK_ZAPIS_MS, zmianie strony, zamknięciu, tle; `oczekujace` (M1-084): strony wciąż w kolejce zapisu widoku po tej próbie (0 = wszystko zapisane; brak = build sprzed 084, bez kolejki). */
+  onRysunek?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; plikTymczasowy: string; oczekujace?: number }>) => void;
+  /** M1-084 (DEC-31 a): zapis pliku rysunku się nie udał (np. pełny dysk); `oczekujace` stron czeka w pamięci widoku na następną próbę. */
+  onBladZapisu?: (e: NativeSyntheticEvent<{ wzorId: string; oczekujace: number }>) => void;
+  onStukniecie?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; rodzaj: 'stukniecie' | 'przytrzymanie' }>) => void; // pojedyncze stuknięcie palcem albo przytrzymanie (M1-131, DEC-33 b); y = ułamek wysokości strony bez /Rotate
+  onNotatka?: (e: NativeSyntheticEvent<{ id: string }>) => void;                               // stuknięcie chipu notatki
+  onZnacznik?: (e: NativeSyntheticEvent<{ wzorId: string; strona: number; y: number; wysokosc: number }>) => void; // pas przeciągnięty albo wysokość zmieniona uchwytem
+  onZnacznikKrok?: (e: NativeSyntheticEvent<{ wzorId: string; delta: 1 | -1 }>) => void;                       // VoiceOver: zwiększ/zmniejsz o rząd
+  onNastepnaStrona?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                                  // VoiceOver: „Move to next page”
+  onStrona?: (e: NativeSyntheticEvent<{ strona: number; stron: number }>) => void;
+  onPowiekszenie?: (e: NativeSyntheticEvent<{ wzorId: string; powiekszenie: number }>) => void; // po zmianie powiększenia (z opóźnieniem); powiekszenie = scaleFactor / dopasowanie do szerokości, 1 = dopasowany
+  onPierwszyRysik?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                  // P-218 Q2a
+  onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number }>) => void;                       // kreski zakreślacza na wszystkich stronach
+};
+
+/** Funkcje widoku (ref; Expo `AsyncFunction` w `View(WidokWzoru.self)`, kolejka główna). M1-112: zapis rysunków bez czekania na zegar → liczba stron
+ *  wciąż tylko w pamięci widoku (0 = wszystko w plikach oczekujących); „Wstecz” pyta przy > 0. */
+export type UchwytWidokuWzoru = {
+  zapiszRysunki(): Promise<number>;
+};
+
+export const natywny = (): OczkoWzorNatywny | null => requireOptionalNativeModule<OczkoWzorNatywny>('OczkoWzor');
+type PropsZRef = PropsWidokuNatywnego & { ref?: Ref<UchwytWidokuWzoru | null> };
+export const WidokWzoruNatywny: ComponentType<PropsZRef> | null = natywny() ? requireNativeViewManager<PropsZRef>('OczkoWzor') : null;

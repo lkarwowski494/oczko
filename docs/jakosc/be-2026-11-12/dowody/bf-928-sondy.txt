@@ -1,0 +1,63 @@
+$ (worktree 928e1767, sonda poza repo) npx jest --ci tests/jakosc/sonda-be.test.ts
+  console.log
+    S1 wywołania ["01-nfr-pie-001-pierwsze-liczenie","02-br-lic-001-s1-pierwsze-uruchomienie","02-br-lic-001-s1-pierwsze-uruchomienie","03-br-lic-001-s2-pierwszy-rzad","01-nfr-pie-001-pierwsze-liczenie","03-br-lic-001-s2-pierwszy-rzad"] kod 0 
+    ### Część 2 (iphone)
+    - powtórzenie zestawu (awaria maszyny w 1. podejściu): 03-br-lic-001-s2-pierwszy-rzad: maestro.DeviceUnreachableException: Device became unreachable during deviceInfo
+    - wyniki 1. podejścia (przed powtórzeniem):
+      - awaria-maszyny 03-br-lic-001-s2-pierwszy-rzad
+      - w-ponowieniu 02-br-lic-001-s1-pierwsze-uruchomienie
+      - zielony 01-nfr-pie-001-pierwsze-liczenie
+    - wynik 2. podejścia dla 03-br-lic-001-s2-pierwszy-rzad: zielony 03-br-lic-001-s2-pierwszy-rzad
+    - wyniki 2. podejścia (rozstrzygają):
+    - w-ponowieniu 02-br-lic-001-s1-pierwsze-uruchomienie (1. podejście, porażka asercji i zielone ponowienie — bez trzeciego uruchomienia)
+    - zielony 01-nfr-pie-001-pierwsze-liczenie
+    - zielony 03-br-lic-001-s2-pierwszy-rzad
+
+      at Object.log (tests/jakosc/sonda-be.test.ts:54:13)
+
+  console.log
+    S1 podejscie-1/wyniki.txt:
+    zielony 01-nfr-pie-001-pierwsze-liczenie
+    w-ponowieniu 02-br-lic-001-s1-pierwsze-uruchomienie
+    awaria-maszyny 03-br-lic-001-s2-pierwszy-rzad
+
+      at Object.log (tests/jakosc/sonda-be.test.ts:55:13)
+
+  console.log
+    S2 wywołania ["01-nfr-pie-001-pierwsze-liczenie","01-nfr-pie-001-pierwsze-liczenie","02-br-lic-001-s1-pierwsze-uruchomienie","03-br-lic-001-s2-pierwszy-rzad"] kod 1 
+    ### Część 2 (iphone)
+    - powtórzenie zestawu (awaria maszyny w 1. podejściu): 01-nfr-pie-001-pierwsze-liczenie: maestro.DeviceUnreachableException: Device became unreachable during deviceInfo
+    - wyniki 1. podejścia (przed powtórzeniem):
+      - awaria-maszyny 01-nfr-pie-001-pierwsze-liczenie
+    - wynik 2. podejścia dla 01-nfr-pie-001-pierwsze-liczenie: zielony 01-nfr-pie-001-pierwsze-liczenie
+    - wyniki 2. podejścia (rozstrzygają):
+    - czerwony 03-br-lic-001-s2-pierwszy-rzad
+    - zielony 01-nfr-pie-001-pierwsze-liczenie
+    - zielony 02-br-lic-001-s1-pierwsze-uruchomienie
+
+      at Object.log (tests/jakosc/sonda-be.test.ts:59:13)
+
+  console.log
+    K1 wzorzec w <system-out> (tekst), asercja w <failure> → 1 
+    K2 wzorzec w <system-out> CDATA z surowym <failure> → 1 
+    K3 wzorzec tylko w atrybucie message=, treść asercji → 1 
+    K4 samozamykający <failure message="DeviceUnreachableException"/> → 1 
+    K5 <error> z wzorcem → 0 maestro.DeviceUnreachableException: x
+    K6 wzorzec w nazwie pliku scenariusza (file=) → 1 
+    K7 asercja na tekście „deviceInfo failed” w treści <failure> → 1 
+    K8 encja &lt;failure&gt; w system-out → 1
+
+      at Object.log (tests/jakosc/sonda-be.test.ts:76:11)
+
+PASS iOS tests/jakosc/sonda-be.test.ts
+  ✓ K: klasyfikator — szerokość wzorców (323 ms)
+  BE sondy
+    ✓ S1: ponawialny 02 asercja→zielony w ponowieniu (1. podejście), potem awaria w 03 → czy ślad „w-ponowieniu” 02 jest w podsumowaniu (417 ms)
+    ✓ S2: awaria w 01 i asercja 03 w 2. podejściu → czerwony (256 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        2.473 s
+Ran all test suites matching /tests\/jakosc\/sonda-be.test.ts/i.
+kod wyjścia: 0

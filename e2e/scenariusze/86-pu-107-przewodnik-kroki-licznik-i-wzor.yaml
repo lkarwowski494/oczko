@@ -1,0 +1,38 @@
+# PU-107 (G-02): krok 2 „Show ›” otwiera licznik bieżącej części (bez otwartego menu), krok 4 wzór; „Back” wraca do przewodnika.
+# Kod: krok → trasa `/licznik` i `/wzor` z zapasem `/` (src/domena/przewodnik.ts: KROKI), push app/przewodnik.tsx:38 (wstecz wraca do przewodnika, §3 spec 04).
+# Krok 4 wymaga wzoru w projekcie (bez niego `/wzor` pokazuje wybór źródeł, `wzor-dodaj`): testowy PDF z podprzepływu otworz-wzor-pdf (panel E2E).
+appId: com.apps4brew.knitting
+name: "PU-107 · Przewodnik: krok 2 → licznik (menu zamknięte), krok 4 → wzór, „Back” wraca do przewodnika"
+tags:
+  - przypadki-uzycia
+  - PU-107
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "nav-wstecz" } # wzór → licznik
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- tapOn: { id: "nav-wstecz" } # licznik → „Dziś”
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-przewodnik" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-2-pokaz" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "przewodnik-krok-2-pokaz" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "0" }, timeout: 20000 }
+- assertVisible: { id: "licznik-plus" }
+- assertNotVisible: { id: "menu-nazwa" } # menu ••• nie otwarte
+- takeScreenshot: 86-krok-2-licznik
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "licznik-plus" }
+- scrollUntilVisible: { element: { id: "przewodnik-krok-4-pokaz" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "przewodnik-krok-4-pokaz" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- takeScreenshot: 86-krok-4-wzor
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "przewodnik" }, timeout: 20000 }
+- assertNotVisible: { id: "wzor-widok" }

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · fix NZ-08-P3-04 · options (E0)</title>
+<!-- Opcje dla decyzji typu P (rola 04, fix NZ-08-P3-04, E0). Wymiary Live Activity: HIG „Live Activities”, Specifications (odczyt 2026-10-26): ekran blokady 371×84–160 pt (iPhone 393 pt), margines 14 pt. Dane: [PRZYKŁAD]. Pasek „Opcja …” to adnotacja, nie interfejs. -->
+<style>
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root { --papier: #FCFCFA; --grafit: #26282C; --olowek: #5E626A; --linia: #D9DBDF; --zakreslacz: #F6E04A; --na-zakreslaczu: #1B1C1F; --zakr-krawedz: #8C7A00; --p-tlo: #26282C; --p-tekst: #FCFCFA; --p-obrys: #26282C; --m-obrys: #26282C; --kreska: #26282C; --wloczka: #4F6F94; --tapeta: #56606B; --tytul: "Libre Franklin"; --tresc: "Source Sans 3"; }
+[data-theme="dark"] { --papier: #1B1C1F; --grafit: #ECECE8; --olowek: #A9ACB2; --linia: #34363B; --zakreslacz: #38351F; --na-zakreslaczu: #F4ECB4; --zakr-krawedz: #E2CB3A; --p-tlo: #2E3136; --p-tekst: #ECECE8; --p-obrys: #8C9098; --m-obrys: #8C9098; --kreska: #ECECE8; --wloczka: #7D9DC2; --tapeta: #20262D; }
+* { box-sizing: border-box; font-feature-settings: "tnum" 1; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: var(--tresc), sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.opcja { width: 393px; background: var(--tapeta); padding: 0 0 24px; color: #fff; }
+.opcja > header { background: #fff; color: #222; padding: 10px 14px; font: 600 14px/1.35 var(--tresc); }
+.opcja > header b { font: 700 16px var(--tytul); display: block; }
+.zegar-blokady { text-align: center; font: 600 72px/1 var(--tresc); padding: 36px 0 120px; opacity: .92; }
+.la { width: 371px; margin: 0 11px 12px; background: var(--papier); color: var(--grafit); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 6px; min-height: 84px; max-height: 160px; overflow: hidden; }
+.la .gora { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 15px; line-height: 1.25; color: var(--olowek); }
+.la .gora .nazwa { display: flex; align-items: center; gap: 6px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.la .kropka { width: 10px; height: 10px; border-radius: 50%; background: var(--wloczka); flex-shrink: 0; }
+.la .czas { font: 600 15px var(--tresc); color: var(--grafit); }
+.la .srodek { display: flex; align-items: center; gap: 12px; }
+.la .n { font: 700 48px/1 var(--tytul); letter-spacing: -0.02em; }
+.la .opis { flex: 1; min-width: 0; font-size: 15px; line-height: 1.25; color: var(--olowek); }
+.la .opis b { display: block; color: var(--grafit); font: 600 17px/1.2 var(--tresc); }
+.la .plus { min-width: 96px; min-height: 60px; border-radius: 16px; border: 2px solid var(--p-obrys); background: var(--p-tlo); color: var(--p-tekst); font: 700 20px var(--tytul); display: grid; place-items: center; }
+.la .minus { width: 52px; min-height: 52px; border-radius: 14px; border: 2px solid var(--m-obrys); background: transparent; color: var(--grafit); font: 700 20px var(--tytul); display: grid; place-items: center; }
+.la .kreski svg { display: block; height: 14px; }
+.la .info { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; line-height: 1.3; color: var(--grafit); }
+.la .znak { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font: 700 11px var(--tytul); margin-top: 1px; }
+.ocena { background: #fff; color: #222; margin: 0 11px; padding: 10px 12px; font: 14px/1.4 var(--tresc); border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<!-- P1 (a): jeden przycisk +1 (HIG: „prefer limiting it to a single element”) -->
+<section class="opcja" data-ekran="p1a">
+  <header><b>Option 1a · one button (+1)</b>−1 only in the app and on the watch</header>
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater · Sleeve</span><span class="czas">0:42:10</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Now row 48</b>14 rows this session</span>
+      <span class="plus" aria-label="Add row">+1 row</span>
+    </div>
+  </div>
+  <div class="ocena">Pro: one control, no wrong tap in a pocket or bag; matches HIG. Con: a mistaken +1 needs the app (or watch) to fix.</div>
+</section>
+
+<!-- P1 (b): +1 i −1 -->
+<section class="opcja" data-ekran="p1b">
+  <header><b>Option 1b · two buttons (−1, +1)</b>same pair as the app, smaller</header>
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater · Sleeve</span><span class="czas">0:42:10</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Now row 48</b>14 rows this session</span>
+      <span class="minus" aria-label="Remove row">−1</span>
+      <span class="plus" aria-label="Add row">+1 row</span>
+    </div>
+  </div>
+  <div class="ocena">Pro: fix a mistake without unlocking. Con: two controls 12 pt apart at the bottom of the Lock Screen; at 320 pt and large text the description is squeezed; HIG advises one.</div>
+</section>
+
+<!-- P2 (a): „Unlock iPhone to count” -->
+<section class="opcja" data-ekran="p2a">
+  <header><b>Option 2a · “Unlock iPhone to count”</b>named exception: “Unlock” only with “iPhone”</header>
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater · Sleeve</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Row 48 wasn’t added</b>Unlock iPhone to count.</span>
+      <span class="plus" aria-label="Add row">+1 row</span>
+    </div>
+  </div>
+  <div class="ocena">Pro: short, same wording iOS uses for locked features; says what happened and what to do. Con: the word “Unlock” is on the voice guide’s banned list (there: purchase sense), so the guide needs a named exception.</div>
+</section>
+
+<!-- P2 (b): bez słowa „Unlock” -->
+<section class="opcja" data-ekran="p2b">
+  <header><b>Option 2b · without “Unlock”</b>voice guide unchanged</header>
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater · Sleeve</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Row 48 wasn’t added</b>Open your iPhone with Face ID or passcode, then tap +1 again.</span>
+      <span class="plus" aria-label="Add row">+1 row</span>
+    </div>
+  </div>
+  <div class="ocena">Pro: no exception to the guide. Con: twice as long, wraps to 3–4 lines at 320 pt; names Face ID, which is wrong on Touch ID phones.</div>
+</section>
+
+</body>
+</html>

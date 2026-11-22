@@ -1,0 +1,15 @@
+Uruchomienie: 2026-10-21 20:26 UTC · scenariusz presji AI (pytanie właściciela)
+| Wariant | Razem pes. / norm. / opt. | Werdykt |
+|---|---|---|
+| jednorazowy 29,99 · presja AI A (ceny ×0.5, udział ×0.5) | 267,43 / 8914,36 / 205835,01 PLN | budować |
+| mies.+rok+doż. · presja AI A (ceny ×0.5, udział ×0.5) | 269,55 / 8027,25 / 213404,56 PLN | budować |
+| jednorazowy 19,99 · presja AI A (ceny ×0.5, udział ×0.5) | 222,68 / 7422,78 / 176291,02 PLN | budować |
+| roczna 19,99 · presja AI A (ceny ×0.5, udział ×0.5) | 222,68 / 6235,13 / 156703,13 PLN | budować |
+| właściciel 0,99/6,99/14,99 · presja AI A (ceny ×0.5, udział ×0.5) | 112,91 / 3492,62 / 87196,97 PLN | budować |
+| jednorazowy 29,99 · presja AI B (ceny ×0.3, udział ×0.3) | 96,28 / 3209,19 / 74101,00 PLN | budować |
+| mies.+rok+doż. · presja AI B (ceny ×0.3, udział ×0.3) | 97,07 / 2890,69 / 76847,94 PLN | budować |
+| jednorazowy 19,99 · presja AI B (ceny ×0.3, udział ×0.3) | 80,23 / 2674,23 / 63512,91 PLN | budować |
+| roczna 19,99 · presja AI B (ceny ×0.3, udział ×0.3) | 80,23 / 2246,35 / 56455,92 PLN | budować |
+| właściciel 0,99/6,99/14,99 · presja AI B (ceny ×0.3, udział ×0.3) | 40,66 / 1257,64 / 31397,00 PLN | odłożyć |
+Najwyższy wynik normalny: jednorazowy 29,99 · presja AI A (ceny ×0.5, udział ×0.5) (optymalny tylko, jeśli przechodzi podłogę).
+kod: 0

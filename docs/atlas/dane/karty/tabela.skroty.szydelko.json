@@ -1,0 +1,31 @@
+{
+ "format": 1,
+ "id": "tabela.skroty.szydelko",
+ "rzemioslo": "szydelko",
+ "rodzaj": "tabela",
+ "pozycje": [
+  "skrot.szydelko.ch",
+  "skrot.szydelko.slst",
+  "skrot.szydelko.sc",
+  "skrot.szydelko.hdc",
+  "skrot.szydelko.dc",
+  "skrot.szydelko.tr",
+  "skrot.szydelko.sc2tog",
+  "skrot.szydelko.dc2tog",
+  "skrot.szydelko.inc",
+  "skrot.szydelko.sk",
+  "skrot.szydelko.yo"
+ ],
+ "klucze": {
+  "nazwa": "atlas.tabela.skroty.szydelko.nazwa"
+ },
+ "klucze_dodatkowe": [
+  "atlas.tabela.skroty.szydelko.wstep",
+  "atlas.tabela.skroty.szydelko.linia_zrodla"
+ ],
+ "terminy": {},
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

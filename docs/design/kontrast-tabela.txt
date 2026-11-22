@@ -1,0 +1,81 @@
+OK   14.37:1 (min 4.5) jasny: tekst / papier #26282C na #FCFCFA
+OK   13.26:1 (min 4.5) jasny: tekst / grupa #26282C na #F2F3F0
+OK   5.96:1 (min 4.5) jasny: ołówek / papier #5E626A na #FCFCFA
+OK   5.49:1 (min 4.5) jasny: ołówek / grupa #5E626A na #F2F3F0
+OK   12.72:1 (min 4.5) jasny: tekst na zakreślaczu #1B1C1F na #F6E04A
+OK   4.17:1 (min 3) jasny: krawędź zakreślenia / papier (element, 3:1) #8C7A00 na #FCFCFA
+OK   14.37:1 (min 4.5) jasny: przycisk: tekst / tło #FCFCFA na #26282C
+OK   14.37:1 (min 3) jasny: przycisk: obrys / papier (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 3) jasny: przycisk −1: obrys / papier (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 3) jasny: kreska / papier (grafika z danymi, 3:1) #26282C na #FCFCFA
+OK   6.36:1 (min 4.5) jasny: błąd / papier #B3261E na #FCFCFA
+OK   6.36:1 (min 4.5) jasny: błąd / arkusz #B3261E na #FCFCFA
+OK   5.96:1 (min 4.5) jasny: ołówek / arkusz #5E626A na #FCFCFA
+OK   14.37:1 (min 3) jasny: wybrany przełącznik: obrys / arkusz (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 4.5) jasny: wybrany przełącznik: tekst / tło #FCFCFA na #26282C
+OK   6.36:1 (min 4.5) jasny: przycisk niszczący: tekst / tło #FCFCFA na #B3261E
+OK   6.36:1 (min 3) jasny: przycisk niszczący: tło / arkusz (element, 3:1) #B3261E na #FCFCFA
+OK   14.39:1 (min 4.5) ciemny: tekst / papier #ECECE8 na #1B1C1F
+OK   12.80:1 (min 4.5) ciemny: tekst / grupa #ECECE8 na #24262A
+OK   7.49:1 (min 4.5) ciemny: ołówek / papier #A9ACB2 na #1B1C1F
+OK   6.66:1 (min 4.5) ciemny: ołówek / grupa #A9ACB2 na #24262A
+OK   10.31:1 (min 4.5) ciemny: tekst na zakreślaczu #F4ECB4 na #38351F
+OK   10.42:1 (min 3) ciemny: krawędź zakreślenia / papier (element, 3:1) #E2CB3A na #1B1C1F
+OK   11.02:1 (min 4.5) ciemny: przycisk: tekst / tło #ECECE8 na #2E3136
+OK   5.32:1 (min 3) ciemny: przycisk: obrys / papier (element, 3:1) #8C9098 na #1B1C1F
+OK   5.32:1 (min 3) ciemny: przycisk −1: obrys / papier (element, 3:1) #8C9098 na #1B1C1F
+OK   14.39:1 (min 3) ciemny: kreska / papier (grafika z danymi, 3:1) #ECECE8 na #1B1C1F
+OK   9.98:1 (min 4.5) ciemny: błąd / papier #F2B8B5 na #1B1C1F
+OK   8.18:1 (min 4.5) ciemny: błąd / arkusz #F2B8B5 na #2A2C31
+OK   6.14:1 (min 4.5) ciemny: ołówek / arkusz #A9ACB2 na #2A2C31
+OK   4.36:1 (min 3) ciemny: wybrany przełącznik: obrys / arkusz (element, 3:1) #8C9098 na #2A2C31
+OK   11.02:1 (min 4.5) ciemny: wybrany przełącznik: tekst / tło #ECECE8 na #2E3136
+OK   9.98:1 (min 4.5) ciemny: przycisk niszczący: tekst / tło #1B1C1F na #F2B8B5
+OK   8.18:1 (min 3) ciemny: przycisk niszczący: tło / arkusz (element, 3:1) #F2B8B5 na #2A2C31
+OK   14.37:1 (min 4.5) jasny+kontrast: tekst / papier #26282C na #FCFCFA
+OK   13.26:1 (min 4.5) jasny+kontrast: tekst / grupa #26282C na #F2F3F0
+OK   9.07:1 (min 4.5) jasny+kontrast: ołówek / papier #44474D na #FCFCFA
+OK   8.36:1 (min 4.5) jasny+kontrast: ołówek / grupa #44474D na #F2F3F0
+OK   12.72:1 (min 4.5) jasny+kontrast: tekst na zakreślaczu #1B1C1F na #F6E04A
+OK   14.37:1 (min 3) jasny+kontrast: krawędź zakreślenia / papier (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 4.5) jasny+kontrast: przycisk: tekst / tło #FCFCFA na #26282C
+OK   14.37:1 (min 3) jasny+kontrast: przycisk: obrys / papier (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 3) jasny+kontrast: przycisk −1: obrys / papier (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 3) jasny+kontrast: kreska / papier (grafika z danymi, 3:1) #26282C na #FCFCFA
+OK   6.36:1 (min 4.5) jasny+kontrast: błąd / papier #B3261E na #FCFCFA
+OK   6.36:1 (min 4.5) jasny+kontrast: błąd / arkusz #B3261E na #FCFCFA
+OK   9.07:1 (min 4.5) jasny+kontrast: ołówek / arkusz #44474D na #FCFCFA
+OK   14.37:1 (min 3) jasny+kontrast: wybrany przełącznik: obrys / arkusz (element, 3:1) #26282C na #FCFCFA
+OK   14.37:1 (min 4.5) jasny+kontrast: wybrany przełącznik: tekst / tło #FCFCFA na #26282C
+OK   6.36:1 (min 4.5) jasny+kontrast: przycisk niszczący: tekst / tło #FCFCFA na #B3261E
+OK   6.36:1 (min 3) jasny+kontrast: przycisk niszczący: tło / arkusz (element, 3:1) #B3261E na #FCFCFA
+OK   14.39:1 (min 4.5) ciemny+kontrast: tekst / papier #ECECE8 na #1B1C1F
+OK   12.80:1 (min 4.5) ciemny+kontrast: tekst / grupa #ECECE8 na #24262A
+OK   11.01:1 (min 4.5) ciemny+kontrast: ołówek / papier #CDD0D4 na #1B1C1F
+OK   9.79:1 (min 4.5) ciemny+kontrast: ołówek / grupa #CDD0D4 na #24262A
+OK   10.31:1 (min 4.5) ciemny+kontrast: tekst na zakreślaczu #F4ECB4 na #38351F
+OK   14.20:1 (min 3) ciemny+kontrast: krawędź zakreślenia / papier (element, 3:1) #F4ECB4 na #1B1C1F
+OK   11.02:1 (min 4.5) ciemny+kontrast: przycisk: tekst / tło #ECECE8 na #2E3136
+OK   11.01:1 (min 3) ciemny+kontrast: przycisk: obrys / papier (element, 3:1) #CDD0D4 na #1B1C1F
+OK   11.01:1 (min 3) ciemny+kontrast: przycisk −1: obrys / papier (element, 3:1) #CDD0D4 na #1B1C1F
+OK   14.39:1 (min 3) ciemny+kontrast: kreska / papier (grafika z danymi, 3:1) #ECECE8 na #1B1C1F
+OK   9.98:1 (min 4.5) ciemny+kontrast: błąd / papier #F2B8B5 na #1B1C1F
+OK   8.18:1 (min 4.5) ciemny+kontrast: błąd / arkusz #F2B8B5 na #2A2C31
+OK   9.03:1 (min 4.5) ciemny+kontrast: ołówek / arkusz #CDD0D4 na #2A2C31
+OK   9.03:1 (min 3) ciemny+kontrast: wybrany przełącznik: obrys / arkusz (element, 3:1) #CDD0D4 na #2A2C31
+OK   11.02:1 (min 4.5) ciemny+kontrast: wybrany przełącznik: tekst / tło #ECECE8 na #2E3136
+OK   9.98:1 (min 4.5) ciemny+kontrast: przycisk niszczący: tekst / tło #1B1C1F na #F2B8B5
+OK   8.18:1 (min 3) ciemny+kontrast: przycisk niszczący: tło / arkusz (element, 3:1) #F2B8B5 na #2A2C31
+OK   14.76:1 (min 3) wzór: znacznik / strona (element, 3:1) #26282C na #FFFFFF
+OK   14.37:1 (min 4.5) wzór: etykieta znacznika tekst / tło #FCFCFA na #26282C
+OK   17.73:1 (min 4.5) system czarny: tekst / tło #ECECE8 na #000000
+OK   9.23:1 (min 4.5) system czarny: ołówek / tło #A9ACB2 na #000000
+OK   11.02:1 (min 4.5) system czarny: przycisk tekst / tło #ECECE8 na #2E3136
+OK   6.56:1 (min 3) system czarny: przycisk obrys / tło (element, 3:1) #8C9098 na #000000
+OK   10.31:1 (min 4.5) system czarny: tekst na zakreślaczu #F4ECB4 na #38351F
+OK   12.84:1 (min 3) system czarny: krawędź zakreślenia / tło (element, 3:1) #E2CB3A na #000000
+OK   13.77:1 (min 4.5) Smart Stack: tekst / karta #ECECE8 na #1E2024
+OK   7.17:1 (min 4.5) Smart Stack: ołówek / karta #A9ACB2 na #1E2024
+OK   9.97:1 (min 3) Smart Stack: krawędź zakreślenia / karta (element, 3:1) #E2CB3A na #1E2024
+OK   17.73:1 (min 3) znak kresek / tło systemowe (grafika, 3:1) #ECECE8 na #000000
+OK   13.77:1 (min 3) znak kresek / karta Smart Stack (grafika, 3:1) #ECECE8 na #1E2024

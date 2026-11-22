@@ -1,0 +1,42 @@
+# P-229/P-230 (design-spec „iCloud”, „Problemy”; BR-DAN-002): brak konta iCloud i brak miejsca — linia problemu z nagłówkiem, dane lokalne zostają
+# („Everything is saved on this device.”, M1-060). Atrapa: oczkoE2eIcloud=brak-konta, potem brak-miejsca. Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "P-230 · iCloud: brak konta i brak miejsca — linia problemu, dane na telefonie"
+tags:
+  - P-230
+  - PU-100
+---
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:30:00"
+      oczkoE2eIcloud: "brak-konta"
+# P-571/P-608 G1: czysta instalacja startuje na „Dziś” (jak subflows/start-czysty.yaml; własny launchApp, bo argument iCloud) — przebieg 42544112861 cz. 2 step-004
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT # jak start-czysty-dzis.yaml
+- assertVisible: { id: "dzis-kontynuuj" }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+- runFlow: { file: subflows/otworz-stan-danych-ze-zrzutem.yaml, env: { ZRZUT: "50-ustawienia-przed-data-and-sync" } }
+- tapOn: { id: "icloud-przelacznik" }
+- assertVisible: "Turn on"
+- tapOn: "Turn on"
+- extendedWaitUntil: { visible: { id: "icloud-problem", text: "iCloud isn’t available to Oczko.*" }, timeout: 20000 }
+- assertVisible: "Everything is saved on this device."
+- takeScreenshot: 50-brak-konta
+- stopApp
+- launchApp:
+    clearState: true
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T19:40:00"
+      oczkoE2eIcloud: "brak-miejsca"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 } # czysta instalacja na „Dziś” (P-608 G1)
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- runFlow: subflows/otworz-stan-danych.yaml
+- tapOn: { id: "icloud-przelacznik" }
+- assertVisible: "Turn on"
+- tapOn: "Turn on"
+- extendedWaitUntil: { visible: { id: "icloud-problem", text: "Your iCloud storage is full.*" }, timeout: 20000 }
+- takeScreenshot: 50-brak-miejsca

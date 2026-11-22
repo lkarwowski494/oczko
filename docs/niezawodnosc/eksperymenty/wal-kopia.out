@@ -1,0 +1,3 @@
+wal bajty 412032
+sam-plik.db wiersze 0 integrity ok wal obok true
+vacuum-into.db wiersze 100 integrity ok wal obok false

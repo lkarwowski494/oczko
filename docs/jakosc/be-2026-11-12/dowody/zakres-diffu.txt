@@ -1,0 +1,15 @@
+$ git diff --stat 562dfc4..7e86bfa1
+ .github/scripts/jakosc/maestro-failures.py         |  23 +++-
+ .github/workflows/jakosc-ios.yml                   |  58 +++++++---
+ CLAUDE.md                                          |   2 +-
+ docs/decyzje.md                                    |   3 +
+ scripts/ci/e2e-awaria-maszyny.mjs                  |  33 ++++++
+ tests/jakosc/dane/e2e-awaria-maszyny/README.md     |   9 ++
+ .../e2e-awaria-maszyny/commands-przerwany.json     |   5 +
+ .../dane/e2e-awaria-maszyny/junit-asercja.xml      |  11 ++
+ .../junit-device-unreachable.xml                   |  16 +++
+ tests/jakosc/e2e-awaria-maszyny.test.ts            | 126 +++++++++++++++++++++
+ tests/jakosc/maestro-failures-przerwany.test.ts    |  51 +++++++++
+ 11 files changed, 320 insertions(+), 17 deletions(-)
+$ git diff 562dfc4..7e86bfa1 -- .github/workflows/jakosc-ios.yml | grep -nE "^[-+].*(timeout-minutes|timeout_min|czesci\.json)"
+kod wyjścia grep: 1 (1 = brak zmian limitów)

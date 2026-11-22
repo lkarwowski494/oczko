@@ -1,0 +1,106 @@
+{
+  "_opis": "Pole Name w App Store Connect (P-174; części po dwukropku: docs/wzrost.md). Format EAS Metadata (apple.info), żeby sprawdzać je narzędziem roli 10; wgranie: ręcznie albo workflow API po przeglądzie zakresu (P-196 D6a).",
+  "apple": {
+    "info": {
+      "pl": {
+        "title": "Oczko: Licznik rzędów"
+      },
+      "en-US": {
+        "title": "Oczko: Row Counter"
+      },
+      "en-GB": {
+        "title": "Oczko: Row Counter"
+      },
+      "en-AU": {
+        "title": "Oczko: Row Counter"
+      },
+      "en-CA": {
+        "title": "Oczko: Row Counter"
+      },
+      "cs": {
+        "title": "Oczko: počítadlo řad"
+      },
+      "sk": {
+        "title": "Oczko: počítadlo radov"
+      },
+      "hr": {
+        "title": "Očica: brojač redova"
+      },
+      "sl": {
+        "title": "Oczko: števec vrst"
+      },
+      "uk": {
+        "title": "Петля: лічильник рядів"
+      },
+      "ru": {
+        "title": "Петля: счётчик рядов"
+      },
+      "hu": {
+        "title": "Szem: sorszámláló"
+      },
+      "ro": {
+        "title": "Ochi: numărător de rânduri"
+      },
+      "de-DE": {
+        "title": "Masche: Reihenzähler"
+      },
+      "fr-FR": {
+        "title": "Oczko: Compteur de rangs"
+      },
+      "it": {
+        "title": "Oczko: contagiri per maglia"
+      },
+      "es-ES": {
+        "title": "Oczko: contador de vueltas"
+      },
+      "es-MX": {
+        "title": "Oczko: contador de vueltas"
+      },
+      "pt-PT": {
+        "title": "Malha: contador de carreiras"
+      },
+      "pt-BR": {
+        "title": "Oczko: contador de carreiras"
+      },
+      "nl-NL": {
+        "title": "Oczko: toerenteller"
+      },
+      "sv": {
+        "title": "Maska: varvräknare"
+      },
+      "da": {
+        "title": "Oczko: pindetæller"
+      },
+      "no": {
+        "title": "Oczko: Strikk og hekle"
+      },
+      "fi": {
+        "title": "Silmukka: kerroslaskuri"
+      },
+      "tr": {
+        "title": "Oczko: sıra sayacı"
+      },
+      "el": {
+        "title": "Oczko: μετρητής σειρών"
+      },
+      "id": {
+        "title": "Oczko: penghitung baris rajut"
+      },
+      "ms": {
+        "title": "Gelungan: pembilang baris kait"
+      },
+      "vi": {
+        "title": "Oczko: đếm hàng đan móc"
+      },
+      "ja": {
+        "title": "編み目: 編み物カウンター"
+      },
+      "ko": {
+        "title": "Oczko: 뜨개질 단수 카운터"
+      },
+      "zh-Hant": {
+        "title": "針目: 編織段數計數器"
+      }
+    }
+  }
+}

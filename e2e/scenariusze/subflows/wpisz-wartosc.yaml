@@ -1,0 +1,20 @@
+# Podprzepływ (07-jakosc-033 A): z licznika → menu ••• → „Enter the row number” → wartość WARTOSC → Save → licznik pokazuje WARTOSC.
+# Parametr (env runFlow): WARTOSC — liczba całkowita ≥ 0 jako tekst (np. "17"); wpis jednym inputText, a retry z asercją wartości pola łapie zgubione znaki
+# klawiatury symulatora (wzór: dodaj-czesc-cel.yaml, e2e/README.md zasada 6). Zapis przyciskiem arkusza (pole liczbowe, bez hideKeyboard).
+appId: com.apps4brew.knitting
+name: "podprzepływ: wpisz wartość licznika"
+---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: ${WARTOSC}
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "${WARTOSC}" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "${WARTOSC}" }

@@ -1,0 +1,55 @@
+# BR-ZAP-001/S1 (docs/brd/wymagania-narzedzia.md:7): etykieta podaje 437 yd → zapas pokazuje 437 yd i 399,59 m (RD-03-W1). Wyrocznia: wektor BRD.
+# „Tools” → „Yarn” → „Add yarn” (04 fix-6 D, P-191 P7a–P8a); pole długości z przełącznikiem m/yd. Id `nav-narzedzia`, `zapas-dlugosc`,
+# `zapas-jednostka-yd`, `zapas-przeliczone` — kontrakt 07 (koordynator 2026-10-26), wdraża 08. Funkcja bez UI na 2026-10-26 — pakiet pełny.
+# Region symulatora en-US: separator dziesiętny „.” (wzorzec „399.59”).
+appId: com.apps4brew.knitting
+name: "BR-ZAP-001/S1 · Włóczka z etykiety 437 yd: zapas pokazuje 437 yd i 399.59 m"
+tags:
+  - BR-ZAP-001-S1
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "nav-narzedzia" }
+- assertVisible: { id: "narzedzia-wloczki" }
+- tapOn: { id: "narzedzia-wloczki" }
+- assertVisible: { id: "zapas-dodaj" }
+- tapOn: { id: "zapas-dodaj" }
+- assertVisible: { id: "zapas-nazwa" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-nazwa" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "F"
+      - inputText: "j"
+      - inputText: "o"
+      - inputText: "r"
+      - inputText: "d"
+      - assertVisible: { id: "zapas-nazwa", text: "Fjord" }
+- pressKey: Enter
+- assertVisible: { id: "zapas-jednostka-yd" }
+- tapOn: { id: "zapas-jednostka-yd" }
+- assertVisible: { id: "zapas-jednostka-yd", selected: true }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-dlugosc" }
+      - waitForAnimationToEnd
+      - eraseText: 10
+      - inputText: "4"
+      - inputText: "3"
+      - inputText: "7"
+      - assertVisible: { id: "zapas-dlugosc", text: "437" }
+- assertVisible: { id: "zapas-przeliczone", text: ".*399.59 m.*" }
+- takeScreenshot: 40-formularz-wloczki
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "zapas-lista" }
+- assertVisible: "Fjord.*437 yd.*399.59 m.*"
+- takeScreenshot: 40-zapas

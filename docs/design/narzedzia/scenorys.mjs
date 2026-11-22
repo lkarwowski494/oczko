@@ -1,0 +1,34 @@
+// scenorys.mjs — przechodzi zadania na prototypie i robi zrzut telefonu po każdym kroku (przejście poznawcze, P-061 (3a)).
+// node scenorys.mjs <prototyp.html> <katalog-wyjścia>
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+const [plik, out] = process.argv.slice(2); mkdirSync(out, { recursive: true });
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 760, height: 900 }, deviceScaleFactor: 2 });
+const klik = (sel) => p.locator(`#tel ${sel}`).first().click();
+const wpisz = async (id, v) => { await p.fill(`#${id}`, String(v)); };
+let z = 0, k = 0;
+const zrzut = async (opis) => { k++; const f = `${out}/z${z}-k${k}.png`; await p.locator('#tel').screenshot({ path: f }); console.log(`${f}\t${opis}`); };
+const zadanie = async (n, opis) => { z = n; k = 0; console.log(`# Zadanie ${n}: ${opis}`); };
+await p.goto('file://' + resolve(plik)); await p.evaluate(() => document.fonts.ready);
+await zadanie(1, 'Świeża instalacja: policz pierwszy rząd (PR-01)');
+await zrzut('start'); await klik('[data-a="plus"]'); await zrzut('po stuknięciu +1 row');
+await zadanie(2, 'Przypadkowo stuknięto trzy razy w sekundę: cofnij (PR-02, F-47)');
+await p.waitForTimeout(2500); await klik('[data-a="plus"]'); await klik('[data-a="plus"]'); await klik('[data-a="plus"]'); await zrzut('po trzech szybkich stuknięciach');
+await klik('[data-a="baner"]'); await zrzut('po stuknięciu Undo w banerze');
+await zadanie(3, 'Sweter: nazwij, ustaw cel 96, przenieś robótkę z rzędu 46, dodaj przypomnienie „zamykanie co 6 rzędów 8 razy od rzędu 12”, dodaj rząd (PR-03, PR-04, PR-13)');
+await klik('[data-a="menu"]'); await zrzut('menu •••');
+await klik('[data-a="f-nazwa"]'); await zrzut('formularz nazwy'); await klik('[data-a="zapisz-nazwa"]');
+await klik('[data-a="menu"]'); await klik('[data-a="f-cel"]'); await zrzut('formularz celu'); await klik('[data-a="zapisz-cel"]');
+await klik('[data-a="menu"]'); await klik('[data-a="f-wpisz"]'); await wpisz('i-wpisz', 46); await zrzut('wpisanie numeru rzędu 46'); await klik('[data-a="zapisz-wpisz"]');
+await klik('[data-a="menu"]'); await klik('[data-a="f-przyp"]'); await zrzut('formularz przypomnienia z podglądem rzędów'); await klik('[data-a="zapisz-przyp"]'); await zrzut('potwierdzenie przypomnienia');
+await zrzut('ekran po zapisaniu (rząd 46 skończony)');
+await klik('[data-a="plus"]'); await zrzut('po +1: skończony 47, teraz rząd 48 z instrukcją');
+await zadanie(4, 'Następny wieczór, darmowe dni wykorzystane: dodaj rząd (PR-09, BR-ZAK-006)');
+await p.click('#sym-dzien'); await zrzut('nowy wieczór'); await klik('[data-a="plus"]'); await zrzut('po stuknięciu +1 row na limicie');
+await klik('[data-a="oferty"]'); await zrzut('See Oczko Pro'); await klik('.arkusz [data-a="zamknij"]');
+await p.check('#sym-zawczasu'); await p.click('#sym-dzien'); await zrzut('wariant do decyzji: limit pokazany zawczasu, zamiast przycisku +1');
+await zadanie(5, 'Skończ projekt i zapisz, ile włóczki zostało (PR-07, U-9)');
+await p.evaluate(() => { S.nowyDzienNaLimicie = false; render(); });
+await klik('[data-a="menu"]'); await klik('[data-a="f-ukoncz"]'); await zrzut('potwierdzenie ukończenia'); await klik('[data-a="ukoncz"]'); await zrzut('karta ukończenia z pytaniem o włóczkę'); await p.fill('#i-wloczka', '1 skein'); await klik('[data-a="zamknij-karta"]'); await zrzut('po Done');
+await b.close();

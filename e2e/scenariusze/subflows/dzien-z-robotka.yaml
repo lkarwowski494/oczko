@@ -1,0 +1,13 @@
+# Podprzepływ: kolejny dzień z robótką (restart z zegarem TERAZ na tych samych danych) i jedno +1, po którym licznik ma WARTOSC.
+# Zużywa jeden darmowy dzień (P-057 D2/D3: nowy dzień = nowa data i przerwa ≥ 60 min). Scenariusz, który go woła, ma tag stan-licznika.
+appId: com.apps4brew.knitting
+name: "podprzepływ: dzień z robótką"
+---
+# Zimny start ląduje na „Dziś” (ZM-18, P-563 (4a)): restart przez restart.yaml („Kontynuuj ›” do licznika, okno „Uczciwe zasady” zamykane tam) — przebieg 42544112861: 05 step-021, KP-10 step-028 czekały na licznik po launchApp (P-608 G1)
+- runFlow:
+    file: restart.yaml
+    env:
+      TERAZ: ${TERAZ}
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "${WARTOSC}" }

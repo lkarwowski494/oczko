@@ -1,0 +1,49 @@
+# PU-288: „Share” w podglądzie zdjęcia otwiera systemowy arkusz udostępniania; po jego zamknięciu podgląd zostaje, a zdjęcie w projekcie bez zmian (po „Close” nadal „Photo 1 of 1”).
+# Kod: `zdjecie-udostepnij` (`Zdjecia.tsx`, README), `zdjecie-zamknij`, `zdjecia-miniatura`; kroki dodania zdjęcia i podgląd jak scen. 81 (zdjęcie testowe `e2e-zdjecie-testowe`).
+# BX-039 (hipoteza): arkusz systemowy (UIActivityViewController) nie ma testID — rozpoznanie po tekstach pozycji („Copy”, „AirDrop”, „Messages”, „Save Image”); brak ich w hierarchii Maestro iOS
+# = asercja czerwona (do przebiegu). Zamknięcie arkusza przeciągnięciem w dół, jak w scen. 81 sprawdza się powrót podglądu (`zdjecie-zamknij`).
+appId: com.apps4brew.knitting
+name: "PU-288 · Udostępnianie zdjęcia: „Share” → arkusz systemowy → zamknięcie → podgląd i „Close” → nadal jedna miniatura"
+tags:
+  - przypadki-uzycia
+  - PU-288
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-zdjecia" }
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" } }
+- tapOn: { id: "zdjecia-dodaj" }
+- assertVisible: { id: "e2e-zdjecie-testowe" }
+- waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża (jak 17, 42, 81)
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true } # jak 81: dowód opóźnienia, potem dłuższe czekanie; asercja twarda niżej
+- runFlow:
+    when: { notVisible: { id: "zdjecia-miniatura" } }
+    commands:
+      - takeScreenshot: opoznienie-miniatura-zdjecia
+      - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+- assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }
+- tapOn: { id: "zdjecia-miniatura", index: 0 }
+- extendedWaitUntil: { visible: { id: "zdjecie-udostepnij" }, timeout: 20000 }
+- takeScreenshot: 107-podglad
+# --- „Share”: arkusz systemowy ---
+- tapOn: { id: "zdjecie-udostepnij" }
+- extendedWaitUntil: { visible: "Copy|AirDrop|Messages|Save Image", timeout: 60000 } # P-959 (BX22, KO-143): w przebiegu iOS 43994041193 arkusz systemowy otworzył się po ok. 22 s od stuknięcia (UIActivityViewController wstał, tylko po 20 s); jak 42:22–30, dłuższe czekanie bez zmiany asercji i tekstów
+- takeScreenshot: 107-arkusz-systemowy
+# --- zamknięcie arkusza: podgląd wraca ---
+- swipe: { start: "50%, 30%", end: "50%, 95%", duration: 600 }
+- extendedWaitUntil: { notVisible: "Copy|AirDrop|Messages|Save Image", timeout: 20000 }
+- assertVisible: { id: "zdjecie-zamknij", text: "Close" }
+- assertVisible: { id: "zdjecie-udostepnij" }
+- takeScreenshot: 107-po-zamknieciu-arkusza
+# --- „Close”: projekt z tą samą jedną miniaturą ---
+- tapOn: { id: "zdjecie-zamknij" }
+- extendedWaitUntil: { visible: { id: "projekt-zdjecia" }, timeout: 20000 }
+- assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }
+- assertNotVisible: { id: "zdjecia-miniatura", index: 1 }
+- takeScreenshot: 107-po-zamknieciu-podgladu

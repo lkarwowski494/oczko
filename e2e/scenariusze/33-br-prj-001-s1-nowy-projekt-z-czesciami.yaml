@@ -1,0 +1,85 @@
+# BR-PRJ-001/S1 (docs/brd/wymagania-projekt.md:5): projekt z częściami — „New project” z nazwą i dwiema częściami (formularz 04 fix-5, P-183),
+# licznik pierwszej części otwiera się od razu (U-5), rzędy liczą się w tej części, druga ma 0. Wyrocznia: BRD S1 („rękaw lewy 30, pozostałe 0”),
+# tu w skali 1 rzędu. W `podstawowy` od pierwszego zielonego przebiegu 40446976426 (P-198 Q3a, P-255, zasada roli 07 nr 8).
+appId: com.apps4brew.knitting
+name: "BR-PRJ-001/S1 · Nowy projekt z dwiema częściami: rząd w pierwszej, druga ma 0"
+tags:
+  - BR-PRJ-001-S1
+  - podstawowy
+  - stan-licznika
+  - PU-029
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "projekty-nowy" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "V"
+      - inputText: "e"
+      - inputText: "s"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Vest" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-dodaj-czesc" }
+- tapOn: { id: "formularz-dodaj-czesc" }
+- assertVisible: { id: "formularz-nazwa-czesci", index: 0 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-czesci", index: 0 }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "B"
+      - inputText: "a"
+      - inputText: "c"
+      - inputText: "k"
+      - assertVisible: { id: "formularz-nazwa-czesci", text: "Back" } # bez index: index liczy się po filtrze id+tekst (przebieg 40411351211)
+- pressKey: Enter
+- assertVisible: { id: "formularz-dodaj-czesc" }
+- tapOn: { id: "formularz-dodaj-czesc" }
+- assertVisible: { id: "formularz-nazwa-czesci", index: 1 }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-czesci", index: 1 }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "F"
+      - inputText: "r"
+      - inputText: "o"
+      - inputText: "n"
+      - inputText: "t"
+      - assertVisible: { id: "formularz-nazwa-czesci", text: "Front" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- takeScreenshot: 33-nowy-projekt
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-projekt", text: "Vest" }
+# U-5: licznik PIERWSZEJ części — podpis pod tytułem to nazwa części „Back” (Licznik.tsx: `st.podpis`, element tekstowy bez testID).
+# 07-reaudit (P-625, P-627 017): przycisk „wstecz” nie jest już tekstem „Back” na pasku — widoczny tytuł poprzedniego ekranu (tu „Projects”:
+# formularz zamyka się `dismissTo('/licznik')`, pod spodem zakładka Projekty), a etykieta VoiceOver przycisku to „Back”. Element `nav-wstecz` ma tekst
+# = accessibilityLabel (`src/ekrany/Pasek.tsx:26`), więc pasek sprawdza id + etykieta (czerwone do poprawki 017, 08), a nazwę części — tekst „Back”
+# pod tytułem (`below`), żeby nie dopasować przycisku.
+- assertVisible: { id: "nav-wstecz", text: "Back" }
+- assertVisible: { text: "Back", below: { id: "licznik-projekt" } }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-dodaj" }
+- assertVisible: "Back.*row 1.*|Back.*1 row.*"
+- assertVisible: "Front.*"
+- takeScreenshot: 33-ekran-projektu
+- tapOn: "Front.*"
+- assertVisible: { id: "licznik-wartosc", text: "0" }

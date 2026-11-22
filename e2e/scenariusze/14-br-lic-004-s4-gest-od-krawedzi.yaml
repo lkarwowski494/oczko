@@ -1,0 +1,31 @@
+# BR-LIC-004/S4 (docs/brd/wymagania-licznik.md:67, ER-24): gest systemowy od dolnej krawędzi nad strefą +1 (≥ 168 pt) nie dodaje rzędu.
+# Gestu systemowego nie da się wiernie odtworzyć (ryzyko szczątkowe); test zastępczy z kryterium: przeciągnięcie z dolnej krawędzi strefy +1 (R-011).
+appId: com.apps4brew.knitting
+name: "BR-LIC-004/S4 · Przeciągnięcie od dolnej krawędzi nad strefą +1 nie dodaje rzędu"
+tags:
+  - BR-LIC-004-S4
+  - R-011
+  - stan-licznika
+  - PU-167
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- swipe: { start: "50%, 99%", end: "50%, 55%", duration: 400 }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# 07-p3: przebieg 3 (run 42556852569) step-026 — przeciągnięcie w prawo (20% → 80%) na iOS 26 to systemowe „wstecz” całym ekranem
+# (react-native-screens 4.26 `fullScreenSwipeEnabled`: „defaults to … `true` for iOS >= 26”, node_modules/react-native-screens/src/types.tsx:185):
+# ten sam proces (PID 51531 w device-simulator.log) wrócił na „Dziś”. Kierunek w lewo nie jest gestem „wstecz”, a nadal sprawdza dolną krawędź nad +1.
+- swipe: { start: "80%, 98%", end: "20%, 98%", duration: 300 }
+# P-608 G3: przebieg 42544112861 step-024 — po poziomym geście przy wskaźniku Home zrzut pokazał „Today” (prawdopodobnie migawka przełącznika aplikacji), a hierarchia licznik z 1;
+# asercja natychmiast po geście trafiła w animację systemu. Czekamy, aż licznik wróci na wierzch — dodatkowy rząd nadal daje czerwień (wartość 2 ≠ 1).
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "1" }, timeout: 15000 }
+- takeScreenshot: 14-po-gestach
+# --- zwykłe stuknięcie nadal działa ---
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }

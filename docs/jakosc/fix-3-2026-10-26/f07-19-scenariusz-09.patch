@@ -1,0 +1,62 @@
+diff --git a/e2e/README.md b/e2e/README.md
+index ba64fc8..40993f3 100644
+--- a/e2e/README.md
++++ b/e2e/README.md
+@@ -206,7 +206,8 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
+ | `wprowadzenie` | — | ekran wprowadzenia (NIE może istnieć przed pierwszym +1) | — | |
+ | `e2e-nigdy` | — | element, którego nie ma (podprzepływ `odstep.yaml`) | — | |
+ | `e2e-sklep-wygas` | oferty (build E2E) | „Test store: expire access” | bez `t()` | |
+-| `e2e-sha-bazy` | Ustawienia i ekran awaryjny (build E2E) | SHA-256 pliku bazy (64 znaki hex) | bez `t()` | |
++| `e2e-sha-bazy` | Ustawienia i ekran awaryjny (build E2E) | SHA-256 pary pliku bazy i `-wal` (64 znaki hex), liczone **bez checkpointu**; ukryty w trakcie liczenia (F07-19, P-203 Q6a) | bez `t()` | |
++| `e2e-wal-bajty` | Ustawienia i ekran awaryjny (build E2E) | rozmiar pliku `-wal` w bajtach („0”, gdy brak) — dowód, że SHA liczono przy niepustym WAL (F07-19) | bez `t()` | |
+ | `e2e-awaria-startu` | pusty ekran wymuszonej awarii startu (build E2E, `oczkoE2eAwariaStartu`) | tło papieru po zapisie „start w toku” (ADR-0019) | bez tekstu | |
+ | `e2e-pliki-zachowaj-eksport` | Ustawienia (build E2E) | zachowanie ostatniego eksportu w katalogu testowym | bez `t()` | |
+ | `e2e-pliki-stan` | Ustawienia (build E2E) | „Saved: N file” | bez `t()` | |
+diff --git a/e2e/scenariusze/09-adr-0019-start-awaryjny.yaml b/e2e/scenariusze/09-adr-0019-start-awaryjny.yaml
+index ea9a800..2cddc91 100644
+--- a/e2e/scenariusze/09-adr-0019-start-awaryjny.yaml
++++ b/e2e/scenariusze/09-adr-0019-start-awaryjny.yaml
+@@ -1,5 +1,8 @@
+ # Start awaryjny (pakiet podstawowy): ADR-0019 „Potwierdzenie” — dwa wymuszone nieudane starty przed kamieniem milowym → trzeci start pokazuje ekran
+ # trybu awaryjnego; „Zapisz kopię danych” daje archiwum z licznościami jak w bazie; oryginał bazy ma ten sam SHA-256 przed i po (R-086).
++# F07-19 (P-203 Q6a, N12-11): SHA pary `.db` + `-wal` liczone bez checkpointu, przy NIEPUSTYM WAL (drugi +1 po wejściu w tło nie jest
++# przenoszony do .db) — inaczej własność jest trywialna (eksperyment docs/jakosc/narzedzia/n12-11-wal-checkpoint.mjs). Wymaga kodu 08:
++# panel e2e-sha-bazy = SHA pary bez checkpointu, e2e-wal-bajty = rozmiar -wal, panel ukryty w trakcie liczenia; „Zapisz kopię” tylko do odczytu.
+ # Kontrola roli 12 (strategia §10): przełącznik wymuszonej awarii tylko w konfiguracji testowej (argument startu oczkoE2eAwariaStartu, build E2E),
+ # nieobecny w buildzie wydania (sprawdz-ipa.mjs). PROG_NIEUDANYCH_STARTOW = 2 (P-080, do weta). Ekran awaryjny: teksty 04/09 (Z07-05) — tu tylko testID.
+ # [DO USTALENIA] zachowanie Maestro po awarii procesu w trakcie launchApp (czy następne polecenie startuje aplikację ponownie) — rozstrzyga pierwszy przebieg macOS.
+@@ -17,11 +20,15 @@ tags:
+       TERAZ: "2026-11-10T19:30:00"
+ - tapOn: { id: "licznik-plus" }
+ - assertVisible: { id: "licznik-wartosc", text: "1" }
+-# --- SHA-256 pliku bazy przed awariami (panel diagnostyki E2E, tylko EXPO_PUBLIC_E2E=1) ---
++- runFlow: subflows/odstep.yaml
++- tapOn: { id: "licznik-plus" }
++- assertVisible: { id: "licznik-wartosc", text: "2" }
++# --- SHA-256 pary .db + -wal przed awariami, bez checkpointu (panel diagnostyki E2E, tylko EXPO_PUBLIC_E2E=1); WAL musi być niepusty ---
+ - tapOn: { id: "nav-projekty" }
+ - assertVisible: { id: "projekty-lista" }
+ - tapOn: { id: "nav-ustawienia" }
+-- assertVisible: { id: "e2e-sha-bazy" }
++- extendedWaitUntil: { visible: { id: "e2e-sha-bazy" }, timeout: 20000 }
++- assertVisible: { id: "e2e-wal-bajty", text: "[1-9][0-9]*" }
+ - copyTextFrom: { id: "e2e-sha-bazy" }
+ - evalScript: ${output.shaPrzed = maestro.copiedText}
+ - assertTrue: ${output.shaPrzed.length == 64}
+@@ -56,12 +63,14 @@ tags:
+ - takeScreenshot: 09-tryb-awaryjny
+ - tapOn: { id: "awaryjny-zapisz-kopie" }
+ - extendedWaitUntil: { visible: { id: "awaryjny-licznosci" }, timeout: 60000 }
+-- assertVisible: { id: "awaryjny-licznosci", text: "1 project.*1 counter.*1 change.*" }
++- assertVisible: { id: "awaryjny-licznosci", text: "1 project.*1 counter.*2 changes.*" }
+ - takeScreenshot: 09-kopia-awaryjna
++# panel SHA ukryty w trakcie liczenia po archiwum (kod 08), więc czekanie na jego pojawienie się daje wartość PO zamknięciu bazy
++- extendedWaitUntil: { visible: { id: "e2e-sha-bazy" }, timeout: 20000 }
+ - copyTextFrom: { id: "e2e-sha-bazy" }
+ - assertTrue: ${maestro.copiedText == output.shaPrzed}
+ # --- „Spróbuj normalnie”: zwykły start, dane na miejscu ---
+ - tapOn: { id: "awaryjny-sprobuj-normalnie" }
+ - extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+-- assertVisible: { id: "licznik-wartosc", text: "1" }
++- assertVisible: { id: "licznik-wartosc", text: "2" }
+ - assertNotVisible: { id: "tryb-awaryjny" }

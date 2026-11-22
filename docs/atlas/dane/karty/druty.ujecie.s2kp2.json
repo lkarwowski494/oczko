@@ -1,0 +1,176 @@
+{
+ "format": 1,
+ "id": "druty.ujecie.s2kp2",
+ "rzemioslo": "druty",
+ "rodzaj": "ujecie",
+ "klucze": {
+  "nazwa": "atlas.druty.ujecie.s2kp2.nazwa",
+  "podpis": "atlas.druty.ujecie.s2kp2.podpis",
+  "opis_alt": "atlas.druty.ujecie.s2kp2.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "centered double decrease",
+    "skrot": "S2KP2",
+    "twierdzenie": "TRM-EN-010"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka spuszczone pionowo",
+    "skrot": "2 o. sp. pion.",
+    "twierdzenie": "TRM-PL-013"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "中上3目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-011"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "中上三併針",
+    "skrot": "CDD",
+    "twierdzenie": "TRM-ZHT-009"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "две централно свити лицеви бримки",
+    "skrot": "2св.л.бр.ц.",
+    "twierdzenie": "TRM-BG-011"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "trijų akių centrinis sumezgimas",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-008"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-045",
+   "wartosc": {
+    "pochylenie": "srodek",
+    "bilans": -2,
+    "na_wierzchu": "srodkowe"
+   },
+   "twierdzenia": [
+    "ATL-K-046"
+   ]
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scal",
+   "zuzywa": 3,
+   "strona": "prawe",
+   "na_wierzchu": "srodkowe",
+   "kolumna": 0
+  }
+ },
+ "kroki": [
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 0
+    },
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 0
+    },
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.s2kp2.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.s2kp2.krok2"
+  },
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 0
+    },
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 0
+    },
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.s2kp2.krok3"
+  },
+  {
+   "faza": "wynik",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.s2kp2.krok4"
+  }
+ ]
+}

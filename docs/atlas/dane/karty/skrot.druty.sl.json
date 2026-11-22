@@ -1,0 +1,111 @@
+{
+ "format": 1,
+ "id": "skrot.druty.sl",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.sl.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip",
+    "skrot": "sl",
+    "twierdzenie": "TRM-EN-021"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko zdjęte",
+    "skrot": "o. zdj.",
+    "twierdzenie": "TRM-PL-022"
+   },
+   {
+    "nazwa": "zdjąć 1 oczko",
+    "skrot": "zdjąć 1 o.",
+    "twierdzenie": "TRM-PL-040"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "lyft 1 m",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-021"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "снять петлю непровязанной",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-026"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "зняти, не вив’язуючи",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-017"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "すべり目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-024"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "걸러뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-010"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "滑針",
+    "skrot": "sl",
+    "twierdzenie": "TRM-ZHT-024"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "örmeden kaydırmak",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-020"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свалена бримка",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-020"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "nukelti",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-005"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "pindah kait",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-006"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "pasar a la ag der un p sin hacer",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-011"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

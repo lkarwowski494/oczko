@@ -1,0 +1,152 @@
+{
+ "format": 1,
+ "id": "druty.ujecie.skp",
+ "rzemioslo": "druty",
+ "rodzaj": "ujecie",
+ "klucze": {
+  "nazwa": "atlas.druty.ujecie.skp.nazwa",
+  "podpis": "atlas.druty.ujecie.skp.podpis",
+  "opis_alt": "atlas.druty.ujecie.skp.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip 1, knit 1, pass slipped stitch over",
+    "skrot": "SKP",
+    "twierdzenie": "TRM-EN-008"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przeciągnięte (podwójne przeciągnięcie)",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-012"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "2 петли вместе с наклоном влево",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-009"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "右上2目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-008"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "mate simples",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-020"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свивка наляво",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-009"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "dviejų akių sumezgimas gerąja akimi į kairę",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-004"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "menguado simple",
+    "skrot": "ms",
+    "twierdzenie": "TRM-ESLA-007"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-043",
+   "wartosc": {
+    "pochylenie": "lewo",
+    "bilans": -1
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scal",
+   "zuzywa": 2,
+   "strona": "prawe",
+   "na_wierzchu": "prawe",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.skp.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.skp.krok2"
+  },
+  {
+   "faza": "wynik",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.skp.krok3"
+  }
+ ]
+}

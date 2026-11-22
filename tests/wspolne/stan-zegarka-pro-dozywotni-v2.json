@@ -1,0 +1,44 @@
+{
+  "wersja": 2,
+  "licznikId": "6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b",
+  "nazwa": "Harbor Sweater · Sleeve",
+  "wartosc": 47,
+  "znaczenie": "skonczone",
+  "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+  "ostatniPlusMs": 1794338220000,
+  "dzien": "2026-11-10",
+  "dzienDozwolony": true,
+  "sesjaStartMs": 1794336720000,
+  "pro": true,
+  "proWaznoscDo": null,
+  "dniWMiesiacu": [
+    {
+      "dzien": "2026-11-01",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-02",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-03",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-04",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-05",
+      "pro": true
+    }
+  ],
+  "przypomnienia": [
+    {
+      "od": 12,
+      "co": 6,
+      "razy": 8,
+      "tekst": "Decrease at both ends"
+    }
+  ]
+}

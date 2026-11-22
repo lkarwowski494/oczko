@@ -1,0 +1,2069 @@
+{
+ "opis": "Wektory reguły darmowego limitu dni z robótką (model V4, P-057; rola 02, kontrakt płatności, 2026-10-22). Limit 5 dni (D2), przerwa 60 min (D3), ręczne wpisanie jak +1 (D4), liczą się tylko dni bez Pro (D5). L-07 (dopisanie wstecz, edycja historii: wolaStraznika = false) i L-13 (brak sieci, Pro z pamięci podręcznej według wektory-dostepu.json, startDnia z pro = true) mają wektory od Z07-02 (2026-10-25). Zmienia rola 02 (ER), czyta 07 i 08. wolaStraznika (S-01–S-10, P-067): które zdarzenia wołają startDnia. mozeZaczacDzien (Z-01–Z-08, P-065): stan zawczasu i ostatni darmowy dzień, bez zapisu. Z07-07 (2026-10-25, P-103): wszystkie teraz/ostatniPlus spójne z dzis w strefie `strefa` (kontrola w teście; dawne teraz = 1800000000000 przesunięte z zachowaniem różnic), granice przerwy L-04c–L-04e, L-21–L-25, Z-09, wznowienieLimitu (Z-10*); błąd danych = { blad: \"BLAD_DANYCH\" } (klasa BladDanych, kod), nie dowolny wyjątek. L-19 (P-091 (7b), P-103 (7), 2026-10-25): cofniecieSerii — „Cofnij” z pytania o serię RD-17 zwraca dzień limitu tylko, gdy seria zaczęła dzień i dziś nie było innego zdarzenia zaczynającego dzień (także cofniętego); z historii nigdy (L-06). Z07-09 (2026-10-25, P-103 (5a), (6a)): scalDni (L-20*: suma po dacie, pro = OR; wzorzec dla `scal` roli 05) i oknoUczciweZasady (O-*: dzień bez Pro z robótką minął, raz, tylko pewny stan darmowy, nigdy na ekranie licznika).",
+ "limit": 5,
+ "przerwa_ms": 3600000,
+ "startDnia": [
+  {
+   "id": "L-01",
+   "scenariusz": "1. dzień miesiąca, 0 dni użytych, pierwsze +1",
+   "wejscie": {
+    "dni": [],
+    "dzis": "2026-11-01",
+    "teraz": 1793559600000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-01",
+     "pro": false
+    },
+    "zostalo": 4
+   }
+  },
+  {
+   "id": "L-02",
+   "scenariusz": "dzień już policzony (5. z 5), kolejne +1 tego dnia w innym projekcie",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-07",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-07",
+    "teraz": 1794078000000,
+    "ostatniPlus": 1794060000000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-03",
+   "scenariusz": "5 z 5 dni, nowy dzień, pierwsze +1, bez Pro: blokada (dane działają poza funkcją)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794044400000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-04",
+   "scenariusz": "praca od 23:40, +1 o 00:10 bez przerwy (10 min): bez nowego dnia mimo limitu (D3)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-07",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794092400000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-04b",
+   "scenariusz": "jak L-04, ale przerwa 61 min: nowy dzień ponad limit, blokada (D3)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-07",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794089340000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-05",
+   "scenariusz": "1. dzień nowego miesiąca po miesiącu 5 z 5: licznik od zera",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-10-01",
+      "pro": false
+     },
+     {
+      "data": "2026-10-08",
+      "pro": false
+     },
+     {
+      "data": "2026-10-15",
+      "pro": false
+     },
+     {
+      "data": "2026-10-22",
+      "pro": false
+     },
+     {
+      "data": "2026-10-29",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-01",
+    "teraz": 1793559600000,
+    "ostatniPlus": 1793379600000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-01",
+     "pro": false
+    },
+    "zostalo": 4
+   }
+  },
+  {
+   "id": "L-06",
+   "scenariusz": "+1, potem cofnięcie tego samego dnia: dzień zostaje policzony (lista dni się nie zmienia)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794159000000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-08",
+   "scenariusz": "ręczne wpisanie numeru rzędu w nowym dniu ponad limit: strażnik wołany jak przy +1 (D4)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-09",
+    "teraz": 1794250800000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-09",
+   "scenariusz": "Pro wygasło 20.11; 10 dni z Pro i 2 bez Pro w listopadzie: liczą się tylko 2 (D5)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": true
+     },
+     {
+      "data": "2026-11-02",
+      "pro": true
+     },
+     {
+      "data": "2026-11-03",
+      "pro": true
+     },
+     {
+      "data": "2026-11-04",
+      "pro": true
+     },
+     {
+      "data": "2026-11-05",
+      "pro": true
+     },
+     {
+      "data": "2026-11-06",
+      "pro": true
+     },
+     {
+      "data": "2026-11-07",
+      "pro": true
+     },
+     {
+      "data": "2026-11-08",
+      "pro": true
+     },
+     {
+      "data": "2026-11-09",
+      "pro": true
+     },
+     {
+      "data": "2026-11-10",
+      "pro": true
+     },
+     {
+      "data": "2026-11-12",
+      "pro": false
+     },
+     {
+      "data": "2026-11-15",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-21",
+    "teraz": 1795287600000,
+    "ostatniPlus": 1795107600000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-21",
+     "pro": false
+    },
+    "zostalo": 2
+   }
+  },
+  {
+   "id": "L-10",
+   "scenariusz": "Pro aktywne przy wyczerpanym limicie: dozwolone, dzień zapisany jako dzień z Pro",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-09",
+    "teraz": 1794250800000,
+    "ostatniPlus": null,
+    "pro": true
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-09",
+     "pro": true
+    },
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-11",
+   "scenariusz": "ten sam dzień na zegarku i iPhonie: dzień już jest po synchronizacji",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-09",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-09",
+    "teraz": 1794250800000,
+    "ostatniPlus": 1794243600000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 3
+   }
+  },
+  {
+   "id": "L-12",
+   "scenariusz": "zegar cofnięty na wcześniejszy, niepoliczony dzień tego miesiąca: liczy się zwykle",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-10",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-03",
+    "teraz": 1793732400000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-03",
+     "pro": false
+    },
+    "zostalo": 3
+   }
+  },
+  {
+   "id": "L-13",
+   "scenariusz": "Z07-02, BR-ZAK-001 „Brak sieci”: Pro z pamięci podręcznej (sklep niedostępny, W-03, W-12b) przy 5 z 5, nowy dzień: dozwolone, dzień zapisany jako dzień z Pro; limit liczony lokalnie (KP-06)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794044400000,
+    "pro": true
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-08",
+     "pro": true
+    },
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-14",
+   "scenariusz": "ponowna instalacja bez iCloud: pusta lista dni, licznik od zera (brzegowe, akceptowane)",
+   "wejscie": {
+    "dni": [],
+    "dzis": "2026-11-20",
+    "teraz": 1795201200000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-20",
+     "pro": false
+    },
+    "zostalo": 4
+   }
+  },
+  {
+   "id": "L-15",
+   "scenariusz": "ostatnie +1 ma czas z przyszłości (cofnięty zegar): to nie praca w toku",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-09",
+    "teraz": 1794250800000,
+    "ostatniPlus": 1794252600000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-16",
+   "scenariusz": "nowe urządzenie: dzień zaczęty przed synchronizacją; po scaleniu iCloud 6 dni w listopadzie, dziś jednym z nich; kolejne +1 dziś (P-067 (5a))",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     },
+     {
+      "data": "2026-11-06",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-06",
+    "teraz": 1793991600000,
+    "ostatniPlus": 1793981600000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-17",
+   "scenariusz": "po scaleniu 6 dni w listopadzie, nowy dzień: blokada (P-067 (5a))",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     },
+     {
+      "data": "2026-11-06",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-07",
+    "teraz": 1794078000000,
+    "ostatniPlus": 1793878000000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-18",
+   "scenariusz": "zegarek bez telefonu, lista dni z ostatniej synchronizacji 5 z 5, nowy dzień: blokada jak na telefonie (P-067 (4a))",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-09",
+    "teraz": 1794250800000,
+    "ostatniPlus": 1793950800000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-04c",
+   "scenariusz": "Z07-07: 5 z 5, przerwa dokładnie 60 min (3 600 000 ms): nowy dzień ponad limit, blokada (D3: przerwa ≥ 60 min)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794089400000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-04d",
+   "scenariusz": "Z07-07: 5 z 5, przerwa 59:59,999 (3 599 999 ms): praca w toku, bez nowego dnia",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794089400001,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-04e",
+   "scenariusz": "Z07-07: 5 z 5, ostatnie +1 w tej samej milisekundzie (różnica 0): praca w toku",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794093000000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-21",
+   "scenariusz": "Z07-07 (R-100): dzień zaczęty z Pro, Pro wygasło tego dnia, 5 darmowych dni w miesiącu: rozpoczęty dzień trwa (KP-15, L-02)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": true
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-22",
+   "scenariusz": "Z07-07 (R-103): parametry limit = 3, przerwa = 30 min; 3 z 3, przerwa 45 min: nowy dzień ponad limit, blokada",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794161700000,
+    "pro": false,
+    "limit": 3,
+    "przerwa": 1800000
+   },
+   "oczekiwane": {
+    "dozwolone": false,
+    "zapis": null,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-22b",
+   "scenariusz": "Z07-07 (R-103): limit = 3, przerwa = 30 min; 2 z 3, przerwa 45 min: nowy dzień, ostatni darmowy",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794161700000,
+    "pro": false,
+    "limit": 3,
+    "przerwa": 1800000
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-08",
+     "pro": false
+    },
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-23",
+   "scenariusz": "Z07-07 (R-102, P-103 (1a)): zdublowana data w liście dni (dwa urządzenia przed scaleniem): liczy się raz; 4 różne dni, nowy dzień dozwolony",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-08",
+     "pro": false
+    },
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-23b",
+   "scenariusz": "Z07-07 (R-102, P-103 (1a), (6a)): ta sama data z pro i bez pro: dzień z Pro (OR), nie liczy się do limitu",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-01",
+      "pro": true
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "dozwolone": true,
+    "zapis": {
+     "data": "2026-11-08",
+     "pro": false
+    },
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "L-24",
+   "scenariusz": "Z07-07 (R-103): teraz nie jest liczbą (null, w JSON zamiast NaN): błąd danych z kodem",
+   "wejscie": {
+    "dni": [],
+    "dzis": "2026-11-08",
+    "teraz": null,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  },
+  {
+   "id": "L-25",
+   "scenariusz": "Z07-07 (R-178): brak daty: błąd danych z kodem, nie dowolny wyjątek",
+   "wejscie": {
+    "dni": [],
+    "dzis": "",
+    "teraz": 1794164400000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "wolaStraznika": [
+  {
+   "id": "S-01",
+   "scenariusz": "+1 na liczniku rzędów",
+   "wejscie": {
+    "rodzaj": "plus",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-02",
+   "scenariusz": "+1 na liczniku oczek (P-067 (3a))",
+   "wejscie": {
+    "rodzaj": "plus",
+    "licznik": "oczka",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-03",
+   "scenariusz": "+1 na liczniku powtórzeń liczonym osobno (P-067 (3a))",
+   "wejscie": {
+    "rodzaj": "plus",
+    "licznik": "powtorzenia",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-04",
+   "scenariusz": "+1 z zegarka (P-067 (4a))",
+   "wejscie": {
+    "rodzaj": "plus",
+    "licznik": "rzedy",
+    "urzadzenie": "zegarek"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-05",
+   "scenariusz": "+1 z ekranu blokady, Live Activity (P-067 (4a))",
+   "wejscie": {
+    "rodzaj": "plus",
+    "licznik": "rzedy",
+    "urzadzenie": "ekran-blokady"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-06",
+   "scenariusz": "ręczne wpisanie wartości (D4)",
+   "wejscie": {
+    "rodzaj": "wpisanie",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "S-07",
+   "scenariusz": "zerowanie: korekta, nie zaczyna dnia (P-067 (1a))",
+   "wejscie": {
+    "rodzaj": "zerowanie",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "S-08",
+   "scenariusz": "−1: korekta, nie zaczyna dnia (P-067 (2a))",
+   "wejscie": {
+    "rodzaj": "minus",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "S-09",
+   "scenariusz": "dopisanie wstecz, edycja historii, cofnięcie z historii (L-07)",
+   "wejscie": {
+    "rodzaj": "edycja-historii",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "L-07",
+   "scenariusz": "Z07-02, BR-DAN-005 „Bez Pro, na limicie”, BR-ZAK-007 „Dane bez limitu”: dopisanie dnia wstecz nie woła strażnika — dane, historia, notatki i eksport poza limitem (KP-02)",
+   "wejscie": {
+    "rodzaj": "edycja-historii"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "S-10",
+   "scenariusz": "nieznany rodzaj zdarzenia: błąd danych",
+   "wejscie": {
+    "rodzaj": "skok",
+    "licznik": "rzedy",
+    "urzadzenie": "telefon"
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "mozeZaczacDzien": [
+  {
+   "id": "Z-01",
+   "scenariusz": "świeża instalacja: bez komunikatu (NFR-PIE-001)",
+   "wejscie": {
+    "dni": [],
+    "dzis": "2026-11-01",
+    "teraz": 1793559600000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 5
+   }
+  },
+  {
+   "id": "Z-02",
+   "scenariusz": "5 z 5, nowy dzień, ostatni rząd ponad 60 min temu: limit zawczasu zamiast +1 (P-065 (1a))",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": true,
+    "ostatniDarmowy": false,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "Z-03",
+   "scenariusz": "5 z 5, po północy 10 min od ostatniego rzędu: praca w toku, bez komunikatu (L-04)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794093000000,
+    "ostatniPlus": 1794092400000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "Z-04",
+   "scenariusz": "Pro przy 5 z 5: bez komunikatu i bez licznika dni",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": true
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "Z-05",
+   "scenariusz": "dziś jest 5. policzonym dniem: dzień do końca, bez komunikatu (L-02)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-05",
+    "teraz": 1793905200000,
+    "ostatniPlus": 1793898000000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 0
+   }
+  },
+  {
+   "id": "Z-06",
+   "scenariusz": "4 z 5 użyte, dziś bez rzędu: linia o ostatnim darmowym dniu (P-065 (2a))",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": true,
+    "zostalo": 1
+   }
+  },
+  {
+   "id": "Z-07",
+   "scenariusz": "3 z 5 użyte: bez linii na liczniku (P-046)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": false
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 2
+   }
+  },
+  {
+   "id": "Z-08",
+   "scenariusz": "złe dane: brak daty",
+   "wejscie": {
+    "dni": [],
+    "dzis": "",
+    "teraz": 1800000000000,
+    "ostatniPlus": null,
+    "pro": false
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  },
+  {
+   "id": "Z-09",
+   "scenariusz": "Z07-07 (R-099): Pro przy 4 z 5, dziś bez rzędu: bez linii o ostatnim darmowym dniu (P-065 (2a)); własność w teście: przy pro nigdy ostatniDarmowy ani limitZawczasu",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-08",
+    "teraz": 1794164400000,
+    "ostatniPlus": 1794157200000,
+    "pro": true
+   },
+   "oczekiwane": {
+    "limitZawczasu": false,
+    "ostatniDarmowy": false,
+    "zostalo": 1
+   }
+  }
+ ],
+ "strefa": "Europe/Warsaw",
+ "wznowienieLimitu": [
+  {
+   "id": "Z-10",
+   "scenariusz": "Z07-07 (R-105): 31 grudnia na limicie: „Counting is paused until January 1” następnego roku",
+   "wejscie": {
+    "dzis": "2026-12-31"
+   },
+   "oczekiwane": "2027-01-01"
+  },
+  {
+   "id": "Z-10b",
+   "scenariusz": "listopad: wznowienie 1 grudnia (P-065 (1a))",
+   "wejscie": {
+    "dzis": "2026-11-08"
+   },
+   "oczekiwane": "2026-12-01"
+  },
+  {
+   "id": "Z-10c",
+   "scenariusz": "luty roku nieprzestępnego, ostatni dzień: 1 marca",
+   "wejscie": {
+    "dzis": "2026-02-28"
+   },
+   "oczekiwane": "2026-03-01"
+  },
+  {
+   "id": "Z-10d",
+   "scenariusz": "złe dane: brak daty",
+   "wejscie": {
+    "dzis": ""
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "cofniecieSerii": [
+  {
+   "id": "L-19",
+   "scenariusz": "P-091 (7b), BR-LIC-019: jedyne dodania dnia to seria przypadkowych stuknięć (RD-17), która zaczęła dzień; „Cofnij” w pytaniu strażnika: dzień limitu wraca",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     }
+    ],
+    "zwrocono": true
+   }
+  },
+  {
+   "id": "L-19b",
+   "scenariusz": "P-103 (7): rano +1 zaczęło dzień i zostało cofnięte −1 (L-06); wieczorem seria cofnięta z pytania: dzień zostaje (inne dodanie dnia, także cofnięte)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": false,
+    "inneDodaniaDnia": 1,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "zwrocono": false
+   }
+  },
+  {
+   "id": "L-19c",
+   "scenariusz": "seria zaczęła dzień, ale po niej doszło zwykłe +1 tego dnia: dzień zostaje",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": 1,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "zwrocono": false
+   }
+  },
+  {
+   "id": "L-19d",
+   "scenariusz": "seria w pracy po północy (L-04) nie zaczęła nowego dnia: lista dni bez zmian",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-07",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": false,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-07",
+      "pro": false
+     }
+    ],
+    "zwrocono": false
+   }
+  },
+  {
+   "id": "L-19e",
+   "scenariusz": "BR-LIC-019, L-06: te same dodania cofnięte z historii: dzień limitu nie wraca",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "historia"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "zwrocono": false
+   }
+  },
+  {
+   "id": "L-19f",
+   "scenariusz": "P-103 (1a): zdublowany wpis dnia serii (dwa urządzenia): wraca cały dzień, inne dni bez zmian",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     }
+    ],
+    "zwrocono": true
+   }
+  },
+  {
+   "id": "L-19i",
+   "scenariusz": "dzień zaczęty na innym urządzeniu (po scaleniu jest na liście dni, KP-15), lokalnie bez innych dodań; seria nie zaczęła dnia: dzień zostaje",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": false,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-08",
+      "pro": false
+     }
+    ],
+    "zwrocono": false
+   }
+  },
+  {
+   "id": "L-19g",
+   "scenariusz": "złe dane: nieznane źródło cofnięcia",
+   "wejscie": {
+    "dni": [],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": 0,
+    "zrodlo": "baner"
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  },
+  {
+   "id": "L-19h",
+   "scenariusz": "złe dane: liczba innych dodań ujemna",
+   "wejscie": {
+    "dni": [],
+    "dzienSerii": "2026-11-08",
+    "seriaZaczelaDzien": true,
+    "inneDodaniaDnia": -1,
+    "zrodlo": "pytanie-serii"
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "scalDni": [
+  {
+   "id": "L-20",
+   "scenariusz": "Z07-09 (R-048, P-103 (6a)): ten sam dzień z pro na jednym urządzeniu i bez pro na drugim: po scaleniu dzień z Pro (OR), nie zjada darmowego dnia",
+   "wejscie": {
+    "a": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": true
+     }
+    ],
+    "b": [
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ]
+   },
+   "oczekiwane": [
+    {
+     "data": "2026-11-01",
+     "pro": false
+    },
+    {
+     "data": "2026-11-02",
+     "pro": true
+    },
+    {
+     "data": "2026-11-03",
+     "pro": false
+    }
+   ]
+  },
+  {
+   "id": "L-20b",
+   "scenariusz": "rozłączne listy: suma posortowana po dacie, jedna data = jeden dzień (KP-15, L-11)",
+   "wejscie": {
+    "a": [
+     {
+      "data": "2026-11-05",
+      "pro": false
+     },
+     {
+      "data": "2026-10-30",
+      "pro": false
+     }
+    ],
+    "b": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     }
+    ]
+   },
+   "oczekiwane": [
+    {
+     "data": "2026-10-30",
+     "pro": false
+    },
+    {
+     "data": "2026-11-01",
+     "pro": false
+    },
+    {
+     "data": "2026-11-05",
+     "pro": false
+    }
+   ]
+  },
+  {
+   "id": "L-20c",
+   "scenariusz": "P-103 (1a): duplikaty w jednej liście zwijają się do jednej daty; scalenie z pustą listą",
+   "wejscie": {
+    "a": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-01",
+      "pro": true
+     }
+    ],
+    "b": []
+   },
+   "oczekiwane": [
+    {
+     "data": "2026-11-01",
+     "pro": true
+    }
+   ]
+  },
+  {
+   "id": "L-20d",
+   "scenariusz": "KP-15 (L-16): scalenie nigdy nie usuwa dnia, nawet gdy w miesiącu jest wtedy więcej dni niż limit",
+   "wejscie": {
+    "a": [
+     {
+      "data": "2026-11-01",
+      "pro": false
+     },
+     {
+      "data": "2026-11-02",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "b": [
+     {
+      "data": "2026-11-04",
+      "pro": false
+     },
+     {
+      "data": "2026-11-05",
+      "pro": false
+     },
+     {
+      "data": "2026-11-06",
+      "pro": false
+     }
+    ]
+   },
+   "oczekiwane": [
+    {
+     "data": "2026-11-01",
+     "pro": false
+    },
+    {
+     "data": "2026-11-02",
+     "pro": false
+    },
+    {
+     "data": "2026-11-03",
+     "pro": false
+    },
+    {
+     "data": "2026-11-04",
+     "pro": false
+    },
+    {
+     "data": "2026-11-05",
+     "pro": false
+    },
+    {
+     "data": "2026-11-06",
+     "pro": false
+    }
+   ]
+  },
+  {
+   "id": "L-20e",
+   "scenariusz": "złe dane: data w złym formacie",
+   "wejscie": {
+    "a": [
+     {
+      "data": "1.11.2026",
+      "pro": false
+     }
+    ],
+    "b": []
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ],
+ "oknoUczciweZasady": [
+  {
+   "id": "O-01",
+   "scenariusz": "Z07-09 (P-089 (3a), P-103 (5a)): wczoraj dzień bez Pro z robótką, dziś pierwsze otwarcie, wersja darmowa, lista projektów: okno raz",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "O-02",
+   "scenariusz": "okno już widziane (flaga w danych i kopii): nigdy drugi raz",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": true,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-03",
+   "scenariusz": "Pro aktywne: bez okna",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "pro",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-04",
+   "scenariusz": "stan niepewny (błąd sklepu bez pamięci): bez okna (jak Trening: tylko pewny stan darmowy)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "niepewny",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-05",
+   "scenariusz": "R-120: aplikacja otwiera się na „Dziś” (ZM-18, P-563 (4a); dawniej ekran licznika): nie tam, okno czeka na inny ekran (nigdy nad „+1” karty, ER-70)",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "licznik"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-06",
+   "scenariusz": "dziś pierwszy dzień z robótką, data nie minęła: dzień nieukończony, bez okna",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-04",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-07",
+   "scenariusz": "wcześniejsze dni tylko z Pro (Pro wygasło): okno dopiero po pierwszym ukończonym dniu bez Pro",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-01",
+      "pro": true
+     },
+     {
+      "data": "2026-11-02",
+      "pro": true
+     },
+     {
+      "data": "2026-11-04",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-08",
+   "scenariusz": "ukończony dzień bez Pro w poprzednim miesiącu, pierwsze otwarcie w nowym: okno",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-10-30",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-02",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "ustawienia"
+   },
+   "oczekiwane": true
+  },
+  {
+   "id": "O-09",
+   "scenariusz": "P-103 (6a): ta sama data z pro i bez pro (dwa urządzenia) to dzień z Pro: bez okna",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     },
+     {
+      "data": "2026-11-03",
+      "pro": true
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-10",
+   "scenariusz": "świeża instalacja, brak dni (NFR-PIE-001): bez okna",
+   "wejscie": {
+    "dni": [],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "darmowa",
+    "ekran": "lista"
+   },
+   "oczekiwane": false
+  },
+  {
+   "id": "O-11",
+   "scenariusz": "złe dane: nieznany poziom dostępu",
+   "wejscie": {
+    "dni": [
+     {
+      "data": "2026-11-03",
+      "pro": false
+     }
+    ],
+    "dzis": "2026-11-04",
+    "widziane": false,
+    "poziom": "free",
+    "ekran": "lista"
+   },
+   "oczekiwane": {
+    "blad": "BLAD_DANYCH"
+   }
+  }
+ ]
+}

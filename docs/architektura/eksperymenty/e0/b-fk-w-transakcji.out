@@ -1,0 +1,5 @@
+po ON poza transakcja: 1
+po OFF wewnatrz BEGIN: 1
+po COMMIT: 1
+po OFF poza transakcja: 0
+exit=0

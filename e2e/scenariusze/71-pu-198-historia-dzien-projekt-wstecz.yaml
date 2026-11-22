@@ -1,0 +1,49 @@
+# PU-198 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót „Historia” — zakładka → dzień → projekt dnia → „‹” wraca do kalendarza z tym samym wybranym dniem.
+# Dane: wtorek 3 XI 2026 — 1 rząd w „Harbor” (+1/−1 projektu roboczego cofnięte, RD-15), restart w czwartek 5 XI (dziś = 5 XI, domyślnie wybrany).
+# testID z kodu: `nav-historia` app/(zakladki)/_layout.tsx:18; `historia-kalendarz` src/ekrany/HistoriaDni.tsx:57; `historia-dzien-<data>` HistoriaDni.tsx:63
+# (selected = wybrany dzień); wiersz projektu dnia bez testID — etykieta „<nazwa>, <linia>” HistoriaDni.tsx:78 (en: dni.rzedy „1 row”); `projekt-dodaj` src/ekrany/Projekt.tsx:120;
+# `nav-wstecz` Projekt.tsx:110 (src/ekrany/Pasek.tsx:27); powrót `router.back()` app/projekt/[id].tsx:171, wybór dnia w stanie trasy app/(zakladki)/dni.tsx:21.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml.
+appId: com.apps4brew.knitting
+name: "PU-198 · Historia: dzień 3 XI → projekt dnia → „‹” wraca do kalendarza z tym samym wybranym dniem"
+tags:
+  - przypadki-uzycia
+  - PU-198
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-03T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- czwartek 5 XI: zimny start na „Dziś”, zakładka Historia ---
+- runFlow: { file: subflows/restart-dzis.yaml, env: { TERAZ: "2026-11-05T19:30:00" } }
+- assertVisible: { id: "nav-historia" }
+- tapOn: { id: "nav-historia" }
+- extendedWaitUntil: { visible: { id: "historia-kalendarz" }, timeout: 20000 }
+- assertVisible: "November 2026"
+- assertVisible: { id: "historia-dzien-2026-11-05", selected: true } # domyślnie dziś
+- takeScreenshot: 71-kalendarz-dzis
+# --- dzień 3 XI: projekt dnia ---
+- tapOn: { id: "historia-dzien-2026-11-03" }
+- assertVisible: { id: "historia-dzien-2026-11-03", selected: true }
+- assertVisible: "Tuesday, November 3"
+- assertVisible: "Harbor, 1 row"
+- takeScreenshot: 71-dzien-3-xi
+- tapOn: "Harbor, 1 row"
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- assertVisible: "Harbor"
+- assertNotVisible: { id: "historia-kalendarz" }
+- takeScreenshot: 71-projekt-dnia
+# --- „‹”: kalendarz z tym samym wybranym dniem (nie dziś) ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "historia-kalendarz" }, timeout: 20000 }
+- assertVisible: { id: "historia-dzien-2026-11-03", selected: true }
+- assertVisible: { id: "historia-dzien-2026-11-05", selected: false }
+- assertVisible: "Tuesday, November 3"
+- assertVisible: "Harbor, 1 row"
+- takeScreenshot: 71-powrot-ten-sam-dzien

@@ -1,0 +1,34 @@
+# BR-WZR-002/S1 (docs/brd/wymagania-projekt.md:225): Wzór ze zdjęcia strony książki, widoczny po restarcie.
+# Aparat: atrapa (zdjęcie testowe z zasobów buildu E2E); powiększanie gestem pinch częściowo w RNTL.
+# Reguła OG-07 (design-spec „Ekrany wzoru a patenty”): jeden dokument wzoru naraz, w całości.
+appId: com.apps4brew.knitting
+name: "BR-WZR-002/S1 · Wzór ze zdjęcia strony książki, widoczny po restarcie"
+tags:
+  - BR-WZR-002-S1
+  - wzor
+  - stan-licznika
+  - PU-060
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+# NOC-2 (przejście poznawcze 04): licznik z akcją „Wzór” pod liczbą (ZM-04, P-580), zanim scenariusz ją stuknie
+- takeScreenshot: 22-licznik-przed-wzorem
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-zdjecie" }
+# NOC-2b (F-24, 04; p3b ZM-06): menu źródeł otwarte od razu po „Wzór” (bez kroku „Add pattern”), przed wyborem źródła
+- takeScreenshot: 22-ekran-dodaj-wzor
+- tapOn: { id: "e2e-wzor-zdjecie" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- takeScreenshot: 22-wzor-po-imporcie
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Photo.*" }
+- takeScreenshot: 22-wzor-po-restarcie-offline

@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko는 도안, 프로젝트 또는 실 라벨 사진을 찍을 때만 카메라를 사용합니다. 사진은 사용자의 기기에 그대로 보관됩니다."
+  }
+}

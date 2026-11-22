@@ -1,0 +1,21 @@
+{
+ "format": 1,
+ "id": "schemat.powtorzenia",
+ "rzemioslo": "oba",
+ "rodzaj": "schemat",
+ "klucze": {
+  "nazwa": "atlas.schemat.powtorzenia.nazwa",
+  "podpis": "atlas.schemat.powtorzenia.podpis"
+ },
+ "klucze_dodatkowe": [
+  "atlas.schemat.powtorzenia.razy",
+  "atlas.schemat.powtorzenia.razy_wiecej",
+  "atlas.schemat.powtorzenia.do_konca",
+  "atlas.schemat.powtorzenia.nawias_okragly"
+ ],
+ "terminy": {},
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

@@ -1,0 +1,99 @@
+{
+ "format": 1,
+ "id": "skrot.druty.p2tog",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.p2tog.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "purl 2 together",
+    "skrot": "p2tog",
+    "twierdzenie": "TRM-EN-009"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przerobione razem na lewo",
+    "skrot": "2 o. przer. l.",
+    "twierdzenie": "TRM-PL-010"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "sticka ihop 2 am",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-013"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "Изн2вместе",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-010"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "в’язання двох петель разом виворітною петлею",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-008"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "裏目の左上2目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-010"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "上針左上併針",
+    "skrot": "p2tog",
+    "twierdzenie": "TRM-ZHT-008"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "iki ilmeği birlikte ters örmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-015"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "2 pontos juntos em tricô",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-019"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "două ochiuri se împletesc împreună pe dos",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-007"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "две опакови заедно",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-010"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "tejer 2 pts juntos de revés",
+    "skrot": "2 pjr",
+    "twierdzenie": "TRM-ESLA-020"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

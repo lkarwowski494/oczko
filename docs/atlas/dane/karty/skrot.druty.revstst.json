@@ -1,0 +1,78 @@
+{
+ "format": 1,
+ "id": "skrot.druty.revstst",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.revstst.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "reverse stockinette stitch",
+    "skrot": "rev St st",
+    "twierdzenie": "TRM-EN-004"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "slätst med avigan ut",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-025"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "изнаночная гладь",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-004"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "виворітна гладь",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-004"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "裏メリヤス編み",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-004"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ters jarse örgü",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-011"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "опакова плетка",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-004"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "kreiliskais adījums",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-004"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "pt jersey revés",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-019"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

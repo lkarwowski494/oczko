@@ -1,0 +1,104 @@
+{
+ "format": 1,
+ "id": "skrot.druty.bo",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.bo.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "bind off",
+    "skrot": "BO",
+    "twierdzenie": "TRM-EN-014"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "zakańczanie oczek",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-016"
+   },
+   {
+    "nazwa": "oczka zamykające",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-017"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "maska av",
+    "skrot": "avm",
+    "twierdzenie": "TRM-SV-018"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "закрытие петель",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-014"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "закріплення петель останнього ряду",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-010"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "伏せ止め",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-013"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "收針",
+    "skrot": "BO",
+    "twierdzenie": "TRM-ZHT-013"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "arrematar",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-024"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "încheierea ochiurilor",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-010"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "valdziņu noraukšana",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-008"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "mati mata kait",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-005"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "remate",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-008"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

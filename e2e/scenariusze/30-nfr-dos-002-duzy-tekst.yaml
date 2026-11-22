@@ -1,0 +1,65 @@
+# NFR-DOS-002 (docs/brd/wymagania.md:101): duży tekst. Próg [DO USTALENIA] OP-16; propozycja z kryterium: 0 obciętych i nakładających się tekstów przy AX5
+# na ekranach PR-01–06; sprawdzana jest widoczność elementów, bez porównania zrzutów (usunięte w CI-01); ucięcia i nachodzenie tekstu ocenia właściciel: PU-340 (F).
+# Rozmiar tekstu ustawia workflow przed tym scenariuszem (`xcrun simctl ui <sym> content_size accessibility-extra-extra-extra-large`) i przywraca po nim —
+# dlatego tag `osobny-krok` (e2e-czesci.mjs wydziela go z części do osobnego kroku). Wartość 12 345 (R-149, Z07-10): liczba niepocięta.
+appId: com.apps4brew.knitting
+name: "NFR-DOS-002 · AX5: licznik, przyciski, arkusz i liczba 5-cyfrowa widoczne (zrzuty do porównania)"
+tags:
+  - NFR-DOS-002
+  - osobny-krok
+  - stan-licznika
+  - przypadki-uzycia
+  - PU-134
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml # menu dopiero z projektem (design-spec:138; P-254 — 30 pominięty w F07-26, przebieg 40446976426)
+- assertVisible: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-minus" }
+- takeScreenshot: 30-ax5-licznik-start
+- tapOn: { id: "licznik-menu" }
+# Menu ••• (ZM-05, P-581: menu systemowe, 6 pozycji) przy AX5 bywa dłuższe niż ekran — jak arkusz-ScrollView w przebiegu 136 (zrzut kroku 24; E2-136-S4): przewinięcie do „Enter the row number”
+- scrollUntilVisible: { element: { id: "menu-wpisz-wartosc" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- takeScreenshot: 30-ax5-menu
+- tapOn: { id: "menu-wpisz-wartosc" }
+# E2-138-S4: przy AX5 tytuł arkusza jest ściśnięty w kolumnę między „Cancel” a „Save”, a pole liczby leży pod pierwszym ekranem (zrzut kroku 28, przebieg 138; usterka aplikacji E2-138-A1) —
+# zrzut arkusza zostaje dowodem, przewinięcie pozwala sprawdzić dalszą część (liczba 5-cyfrowa niepocięta)
+- takeScreenshot: 30-ax5-arkusz-wpisz-wartosc
+- scrollUntilVisible: { element: { id: "wpisz-wartosc-pole" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 8
+      - inputText: "1"
+      - inputText: "2"
+      - inputText: "3"
+      - inputText: "4"
+      - inputText: "5"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "12345" }
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "12[ ,.  ]?345" }
+- assertVisible: { id: "licznik-plus" }
+- takeScreenshot: 30-ax5-liczba-5-cyfr
+# M1-audytor-generalny-205 (04-studio-projektowe-003, SP-07): pasek licznika pod wzorem przy AX5 — „−1” i „+1” mają limity skali jak licznik
+# (×1,4 i ×1,8); zrzut do oceny 04 (liczba, −1 i +1 widoczne, strona wzoru zajmuje co najmniej połowę wysokości). Rząd akcji i ekran dodawania przy AX5 bywają dłuższe niż ekran.
+# ZM-04 (P-580): „Wzór” to akcja pod liczbą (`licznik-wzor`, ten sam id w układzie zwykłym i AX5); przy AX5 rząd akcji leży pod notatką, poniżej pierwszego ekranu (testid.md:158)
+# przebieg 4 attempt 2 (step-057): bez wyśrodkowania „Pattern” leżał pod stałą strefą „+1” (zrzut 30-ax5-akcje-pod-liczba: nad „+1” tylko „Note”),
+# Maestro uznał go za widoczny, a stuknięcie dodało rząd; lista akcji przewija się nad strefę (LIC-04), więc wyśrodkowanie
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "licznik-wzor" }
+- takeScreenshot: 30-ax5-akcje-pod-liczba
+- tapOn: { id: "licznik-wzor" }
+- scrollUntilVisible: { element: { id: "e2e-wzor-pdf" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "e2e-wzor-pdf" }
+- tapOn: { id: "e2e-wzor-pdf" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-plus" }
+- takeScreenshot: 30-ax5-wzor-pasek

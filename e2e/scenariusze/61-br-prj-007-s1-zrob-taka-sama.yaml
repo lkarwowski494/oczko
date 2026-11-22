@@ -1,0 +1,67 @@
+# BR-PRJ-007/S1 (docs/brd/wymagania-projekt.md:71, F-20, 07-jakosc-033): „Make another like this” tworzy NOWY projekt z tą samą częścią i celem, liczniki od 0,
+# a oryginał się nie zmienia. Wynik widoczny dla użytkownika: ekran nowego projektu (część „Back”: „0 of 40 rows”), lista z DWOMA projektami „Harbor”
+# (nazwa kopii = nazwa oryginału, 04-fix5-N1), po otwarciu oryginału licznik nadal 2. Wyrocznia: BRD (wartości nie z kodu).
+# Poza scenariuszem (Jest `tests/dane/projekt-kosz.test.ts`, Node): przypomnienia, narzędzie i rozmiar (S1 „Oraz”), szydełko (S2, ER-53), brak zdjęć/notatki/terminu.
+# Opisy wierszy listy i części (liczba w etykiecie to wartość licznika) — format z kluczy `projekty.*`, `projekt.czesc_cel` (en.json); etykieta wiersza listy
+# Przebieg #139 (hierarchia kroku 85): etykieta wiersza części to „Back, 2 of 40 rows” (nazwa części + opis), a Maestro dopasowuje cały tekst — stąd prefiks „.*” (E2-139-S4).
+# Etykiety wierszy listy projektów potwierdzone w #141 (hierarchia kroku: „row 0, last worked today” i „row 2 of 40, last worked today”, E2-141-S2). Informacyjnie do pierwszego zielonego (P-091).
+appId: com.apps4brew.knitting
+name: "BR-PRJ-007/S1 · Make another like this: nowy projekt z częścią i celem, liczniki od 0, oryginał bez zmian"
+tags:
+  - BR-PRJ-007-S1
+  - stan-licznika
+  - PU-042
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "40" } }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-menu" }
+- assertVisible: ".*2 of 40 rows"
+- takeScreenshot: 61-oryginal
+# --- Make another like this (alert z potwierdzeniem; „projekt.kopia_*”) ---
+- tapOn: { id: "projekt-menu" }
+- assertVisible: { id: "projekt-zrob-taka-sama" }
+- takeScreenshot: 61-menu-zrob-taka-sama
+- tapOn: { id: "projekt-zrob-taka-sama" }
+- assertVisible: "Make another Harbor\\?"
+- takeScreenshot: 61-potwierdzenie
+- tapOn: "Make another"
+# nowy projekt zastępuje ekran (router.replace): wskazuje go „0 of 40 rows” zamiast „2 of 40 rows”
+- extendedWaitUntil: { visible: ".*0 of 40 rows", timeout: 20000 }
+- assertNotVisible: ".*2 of 40 rows"
+- takeScreenshot: 61-nowy-projekt
+# --- lista: dwa projekty, oryginał nietknięty ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista" }, timeout: 20000 }
+# P-583: „wstecz” wraca do ekranu źródłowego, a stos po projekt-roboczy i dodaj-czesc-cel jest głębszy: drugie „wstecz” z licznika
+# dało ekran projektu „Harbor”, nie pasek zakładek (przebieg 42544112861 step-107). Wstecz aż do ekranu z paskiem zakładek, potem zakładka Projekty (P-608 G3).
+- repeat:
+    while: { notVisible: { id: "nav-projekty" } }
+    times: 5
+    commands:
+      - tapOn: { id: "nav-wstecz" }
+      - assertVisible: { id: "nav-wstecz|nav-projekty" } # kolejny ekran stosu albo ekran z paskiem zakładek
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- assertVisible: { id: "projekty-wiersz", index: 1 }
+- assertNotVisible: { id: "projekty-wiersz", index: 2 }
+# etykieta wiersza to „<projekt>, <część> · row N of cel” z WARTOŚCIĄ licznika (E2-141-S2): nowy projekt „Now working row 1” (licznik 0, pierwsza część bez celu, BY-002), oryginał „row 2 of 40”
+- assertVisible: ".*Now working row 1, last worked today.*" # BY-002 (476abe53, KO-082; iOS 43774048947 krok 119: „Harbor 2, Now working row 1, last worked today”): część z nazwą zapasową bez celu → „Now working row N+1”
+- assertVisible: ".*row 2 of 40.*"
+- takeScreenshot: 61-lista-dwa-projekty
+- tapOn: ".*row 2 of 40.*"
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- takeScreenshot: 61-oryginal-po-operacji

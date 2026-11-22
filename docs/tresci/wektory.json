@@ -1,0 +1,2418 @@
+{
+  "odczyt": "2026-10-23",
+  "rozdzielczosc_wpisu": "0,1 o. [DO USTALENIA z 04/05]",
+  "klasyfikacja_4in": [
+    {
+      "id": "KL4-5_4",
+      "p4": 5.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 5
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-5_5",
+      "p4": 5.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-5_6",
+      "p4": 5.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 6
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-6",
+      "p4": 6,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 6
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-6_4",
+      "p4": 6.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 6
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-6_5",
+      "p4": 6.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          6,
+          7
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L67"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-6_6",
+      "p4": 6.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 7
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-7",
+      "p4": 7,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 7
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-7_4",
+      "p4": 7.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 7
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-7_5",
+      "p4": 7.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-7_6",
+      "p4": 7.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 8
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-10_4",
+      "p4": 10.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 10
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-10_5",
+      "p4": 10.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-10_6",
+      "p4": 10.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 11
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-11",
+      "p4": 11,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 11
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-11_4",
+      "p4": 11.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 11
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-11_5",
+      "p4": 11.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          5,
+          6
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L56"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-11_6",
+      "p4": 11.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 12
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-12",
+      "p4": 12,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 12
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-12_4",
+      "p4": 12.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 12
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-12_5",
+      "p4": 12.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-12_6",
+      "p4": 12.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 13
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-14_4",
+      "p4": 14.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 14
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-14_5",
+      "p4": 14.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-14_6",
+      "p4": 14.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 15
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-15",
+      "p4": 15,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 15
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-15_4",
+      "p4": 15.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 15
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-15_5",
+      "p4": 15.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          4,
+          5
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L45"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-15_6",
+      "p4": 15.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 16
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-16",
+      "p4": 16,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 16
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-16_4",
+      "p4": 16.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 16
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-16_5",
+      "p4": 16.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-16_6",
+      "p4": 16.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 17
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-19_4",
+      "p4": 19.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 19
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-19_5",
+      "p4": 19.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-19_6",
+      "p4": 19.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 20
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-20",
+      "p4": 20,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 20
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-20_4",
+      "p4": 20.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 20
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-20_5",
+      "p4": 20.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          3,
+          4
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L34"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-20_6",
+      "p4": 20.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 21
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-21",
+      "p4": 21,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 21
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-21_4",
+      "p4": 21.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 21
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-21_5",
+      "p4": 21.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-21_6",
+      "p4": 21.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 22
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-22_4",
+      "p4": 22.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 22
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-22_5",
+      "p4": 22.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-22_6",
+      "p4": 22.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 23
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-23",
+      "p4": 23,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 23
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-23_4",
+      "p4": 23.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 23
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-23_5",
+      "p4": 23.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-23_6",
+      "p4": 23.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 24
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-24",
+      "p4": 24,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 24
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-24_4",
+      "p4": 24.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 24
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-24_5",
+      "p4": 24.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-24_6",
+      "p4": 24.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 25
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-25_4",
+      "p4": 25.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 25
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-25_5",
+      "p4": 25.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-25_6",
+      "p4": 25.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 26
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-26",
+      "p4": 26,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 26
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-26_4",
+      "p4": 26.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 26
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-26_5",
+      "p4": 26.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          1,
+          2
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L12"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-26_6",
+      "p4": 26.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 27
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-27",
+      "p4": 27,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 27
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-27_4",
+      "p4": 27.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 27
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-27_5",
+      "p4": 27.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-27_6",
+      "p4": 27.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 28
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-31_4",
+      "p4": 31.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 31
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-31_5",
+      "p4": 31.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-31_6",
+      "p4": 31.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 32
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-32",
+      "p4": 32,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 32
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-32_4",
+      "p4": 32.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 32
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-32_5",
+      "p4": 32.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "między kategoriami",
+        "kategorie": [
+          0,
+          1
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-L01"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-32_6",
+      "p4": 32.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 33
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-33",
+      "p4": 33,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 33
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-33_4",
+      "p4": 33.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 33
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-33_5",
+      "p4": 33.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-33_6",
+      "p4": 33.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 34
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-39_4",
+      "p4": 39.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 39
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-39_5",
+      "p4": 39.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-39_6",
+      "p4": 39.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 40
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-40",
+      "p4": 40,
+      "rodzaj": "granica",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 40
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-40_4",
+      "p4": 40.4,
+      "rodzaj": "poniżej połówki",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 40
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-40_5",
+      "p4": 40.5,
+      "rodzaj": "połówka",
+      "oczekiwane": {
+        "wynik": "poza tabelą (powyżej kategorii 0)",
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-40_6",
+      "p4": 40.6,
+      "rodzaj": "powyżej połówki",
+      "oczekiwane": {
+        "wynik": "poza tabelą (powyżej kategorii 0)",
+        "p4_zaokraglone": 41
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-0_3",
+      "p4": 0.3,
+      "rodzaj": "zaokrąglenie do 0",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 0
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-0_5",
+      "p4": 0.5,
+      "rodzaj": "połówka przy 0",
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": null,
+        "polowka": true
+      },
+      "twierdzenia": [
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4-0",
+      "p4": 0,
+      "rodzaj": "błąd",
+      "oczekiwane": {
+        "wynik": "błąd danych"
+      },
+      "twierdzenia": [],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    },
+    {
+      "id": "KL4--1",
+      "p4": -1,
+      "rodzaj": "błąd",
+      "oczekiwane": {
+        "wynik": "błąd danych"
+      },
+      "twierdzenia": [],
+      "zrodlo": "https://www.craftyarncouncil.com/standards/yarn-weight-system"
+    }
+  ],
+  "klasyfikacja_10cm": [
+    {
+      "id": "KL10-6",
+      "p10": 6,
+      "p4_dokladnie": 6.096,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          7
+        ],
+        "p4_zaokraglone": 6
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z7"
+      ],
+      "rachunek": "6 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-7",
+      "p10": 7,
+      "p4_dokladnie": 7.112,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 7
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "rachunek": "7 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-11",
+      "p10": 11,
+      "p4_dokladnie": 11.176,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          6
+        ],
+        "p4_zaokraglone": 11
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z6"
+      ],
+      "rachunek": "11 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-12",
+      "p10": 12,
+      "p4_dokladnie": 12.192,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 12
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "rachunek": "12 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-15",
+      "p10": 15,
+      "p4_dokladnie": 15.24,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          5
+        ],
+        "p4_zaokraglone": 15
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z5"
+      ],
+      "rachunek": "15 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-16",
+      "p10": 16,
+      "p4_dokladnie": 16.256,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 16
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "rachunek": "16 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-18",
+      "p10": 18,
+      "p4_dokladnie": 18.288,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 18
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "rachunek": "18 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-20",
+      "p10": 20,
+      "p4_dokladnie": 20.32,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          4
+        ],
+        "p4_zaokraglone": 20
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z4"
+      ],
+      "rachunek": "20 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-21",
+      "p10": 21,
+      "p4_dokladnie": 21.336,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 21
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "rachunek": "21 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-22",
+      "p10": 22,
+      "p4_dokladnie": 22.352,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          3
+        ],
+        "p4_zaokraglone": 22
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z3"
+      ],
+      "rachunek": "22 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-24",
+      "p10": 24,
+      "p4_dokladnie": 24.384,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2,
+          3
+        ],
+        "p4_zaokraglone": 24
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z2",
+        "GRB-Z3"
+      ],
+      "rachunek": "24 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-26",
+      "p10": 26,
+      "p4_dokladnie": 26.416,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          2
+        ],
+        "p4_zaokraglone": 26
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z2"
+      ],
+      "rachunek": "26 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-27",
+      "p10": 27,
+      "p4_dokladnie": 27.432,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 27
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "rachunek": "27 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-28",
+      "p10": 28,
+      "p4_dokladnie": 28.448,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          1
+        ],
+        "p4_zaokraglone": 28
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z1"
+      ],
+      "rachunek": "28 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-32",
+      "p10": 32,
+      "p4_dokladnie": 32.512,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 33
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "rachunek": "32 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-33",
+      "p10": 33,
+      "p4_dokladnie": 33.528,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 34
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "rachunek": "33 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-39",
+      "p10": 39,
+      "p4_dokladnie": 39.624,
+      "oczekiwane": {
+        "wynik": "kategorie",
+        "kategorie": [
+          0
+        ],
+        "p4_zaokraglone": 40
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "rachunek": "39 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    },
+    {
+      "id": "KL10-40",
+      "p10": 40,
+      "p4_dokladnie": 40.64,
+      "oczekiwane": {
+        "wynik": "poza tabelą (powyżej kategorii 0)",
+        "p4_zaokraglone": 41
+      },
+      "twierdzenia": [
+        "JED-006",
+        "PRB-004",
+        "GRB-Z0"
+      ],
+      "rachunek": "40 × 10,16 / 10, potem zaokrąglenie (P-084)"
+    }
+  ],
+  "jednostki": [
+    {
+      "id": "JW-in-4",
+      "przelicznik": "in→cm",
+      "wartosc": 4,
+      "oczekiwane": 10.16,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-001"
+      ]
+    },
+    {
+      "id": "JW-in-0_01",
+      "przelicznik": "in→cm",
+      "wartosc": 0.01,
+      "oczekiwane": 0.0254,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-001"
+      ]
+    },
+    {
+      "id": "JW-yd-437",
+      "przelicznik": "yd→m",
+      "wartosc": 437,
+      "oczekiwane": 399.5928,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-002"
+      ]
+    },
+    {
+      "id": "JW-yd-0",
+      "przelicznik": "yd→m",
+      "wartosc": 0,
+      "oczekiwane": 0,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-002"
+      ]
+    },
+    {
+      "id": "JW-oz-3_5",
+      "przelicznik": "oz→g",
+      "wartosc": 3.5,
+      "oczekiwane": 99.2233309375,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-005"
+      ]
+    },
+    {
+      "id": "JW-oz-1",
+      "przelicznik": "oz→g",
+      "wartosc": 1,
+      "oczekiwane": 28.349523125,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-005"
+      ]
+    },
+    {
+      "id": "JW-oz-16",
+      "przelicznik": "oz→g",
+      "wartosc": 16,
+      "oczekiwane": 453.59237,
+      "tolerancja": 1e-9,
+      "twierdzenia": [
+        "JED-005"
+      ]
+    },
+    {
+      "id": "JW-in-minus1",
+      "przelicznik": "in→cm",
+      "wartosc": -1,
+      "oczekiwane": "błąd danych",
+      "twierdzenia": []
+    }
+  ],
+  "druty": [
+    {
+      "id": "DRT-M01500",
+      "mm": 1.5,
+      "oczekiwane_us": "000",
+      "twierdzenia": [
+        "DRT-M01500"
+      ]
+    },
+    {
+      "id": "DRT-M01750",
+      "mm": 1.75,
+      "oczekiwane_us": "00",
+      "twierdzenia": [
+        "DRT-M01750"
+      ]
+    },
+    {
+      "id": "DRT-M02000",
+      "mm": 2,
+      "oczekiwane_us": "0",
+      "twierdzenia": [
+        "DRT-M02000"
+      ]
+    },
+    {
+      "id": "DRT-M02250",
+      "mm": 2.25,
+      "oczekiwane_us": "1",
+      "twierdzenia": [
+        "DRT-M02250"
+      ]
+    },
+    {
+      "id": "DRT-M02750",
+      "mm": 2.75,
+      "oczekiwane_us": "2",
+      "twierdzenia": [
+        "DRT-M02750"
+      ]
+    },
+    {
+      "id": "DRT-M03000",
+      "mm": 3,
+      "oczekiwane_us": null,
+      "twierdzenia": [
+        "DRT-M03000"
+      ]
+    },
+    {
+      "id": "DRT-M03125",
+      "mm": 3.125,
+      "oczekiwane_us": "3",
+      "twierdzenia": [
+        "DRT-M03125"
+      ]
+    },
+    {
+      "id": "DRT-M03250",
+      "mm": 3.25,
+      "oczekiwane_us": "3",
+      "twierdzenia": [
+        "DRT-M03250"
+      ]
+    },
+    {
+      "id": "DRT-M03500",
+      "mm": 3.5,
+      "oczekiwane_us": "4",
+      "twierdzenia": [
+        "DRT-M03500"
+      ]
+    },
+    {
+      "id": "DRT-M03750",
+      "mm": 3.75,
+      "oczekiwane_us": "5",
+      "twierdzenia": [
+        "DRT-M03750"
+      ]
+    },
+    {
+      "id": "DRT-M04000",
+      "mm": 4,
+      "oczekiwane_us": "6",
+      "twierdzenia": [
+        "DRT-M04000"
+      ]
+    },
+    {
+      "id": "DRT-M04250",
+      "mm": 4.25,
+      "oczekiwane_us": "6",
+      "twierdzenia": [
+        "DRT-M04250"
+      ]
+    },
+    {
+      "id": "DRT-M04500",
+      "mm": 4.5,
+      "oczekiwane_us": "7",
+      "twierdzenia": [
+        "DRT-M04500"
+      ]
+    },
+    {
+      "id": "DRT-M05000",
+      "mm": 5,
+      "oczekiwane_us": "8",
+      "twierdzenia": [
+        "DRT-M05000"
+      ]
+    },
+    {
+      "id": "DRT-M05250",
+      "mm": 5.25,
+      "oczekiwane_us": "9",
+      "twierdzenia": [
+        "DRT-M05250"
+      ]
+    },
+    {
+      "id": "DRT-M05500",
+      "mm": 5.5,
+      "oczekiwane_us": "9",
+      "twierdzenia": [
+        "DRT-M05500"
+      ]
+    },
+    {
+      "id": "DRT-M05750",
+      "mm": 5.75,
+      "oczekiwane_us": "10",
+      "twierdzenia": [
+        "DRT-M05750"
+      ]
+    },
+    {
+      "id": "DRT-M06000",
+      "mm": 6,
+      "oczekiwane_us": "10",
+      "twierdzenia": [
+        "DRT-M06000"
+      ]
+    },
+    {
+      "id": "DRT-M06500",
+      "mm": 6.5,
+      "oczekiwane_us": "10 ½",
+      "twierdzenia": [
+        "DRT-M06500"
+      ]
+    },
+    {
+      "id": "DRT-M07000",
+      "mm": 7,
+      "oczekiwane_us": null,
+      "twierdzenia": [
+        "DRT-M07000"
+      ]
+    },
+    {
+      "id": "DRT-M08000",
+      "mm": 8,
+      "oczekiwane_us": "11",
+      "twierdzenia": [
+        "DRT-M08000"
+      ]
+    },
+    {
+      "id": "DRT-M09000",
+      "mm": 9,
+      "oczekiwane_us": "13",
+      "twierdzenia": [
+        "DRT-M09000"
+      ]
+    },
+    {
+      "id": "DRT-M10000",
+      "mm": 10,
+      "oczekiwane_us": "15",
+      "twierdzenia": [
+        "DRT-M10000"
+      ]
+    },
+    {
+      "id": "DRT-M12500",
+      "mm": 12.5,
+      "oczekiwane_us": "17",
+      "twierdzenia": [
+        "DRT-M12500"
+      ]
+    },
+    {
+      "id": "DRT-M12750",
+      "mm": 12.75,
+      "oczekiwane_us": "17",
+      "twierdzenia": [
+        "DRT-M12750"
+      ]
+    },
+    {
+      "id": "DRT-M15000",
+      "mm": 15,
+      "oczekiwane_us": "19",
+      "twierdzenia": [
+        "DRT-M15000"
+      ]
+    },
+    {
+      "id": "DRT-M19000",
+      "mm": 19,
+      "oczekiwane_us": "35",
+      "twierdzenia": [
+        "DRT-M19000"
+      ]
+    },
+    {
+      "id": "DRT-M25000",
+      "mm": 25,
+      "oczekiwane_us": "50",
+      "twierdzenia": [
+        "DRT-M25000"
+      ]
+    },
+    {
+      "id": "DRT-M35000",
+      "mm": 35,
+      "oczekiwane_us": "70",
+      "twierdzenia": [
+        "DRT-M35000"
+      ]
+    },
+    {
+      "id": "druty-poza-4_75",
+      "mm": 4.75,
+      "oczekiwane_us": null,
+      "uwaga": "mm spoza tabeli: brak oznaczenia US, bez najbliższej wartości (RD-11)",
+      "twierdzenia": []
+    },
+    {
+      "id": "druty-poza-0",
+      "mm": 0,
+      "oczekiwane_us": "błąd danych",
+      "uwaga": "rozmiar ≤ 0",
+      "twierdzenia": []
+    }
+  ],
+  "szydelka": [
+    {
+      "id": "SZD-M02250",
+      "mm": 2.25,
+      "oczekiwane_us": "B-1",
+      "twierdzenia": [
+        "SZD-M02250"
+      ]
+    },
+    {
+      "id": "SZD-M02500",
+      "mm": 2.5,
+      "oczekiwane_us": null,
+      "twierdzenia": [
+        "SZD-M02500"
+      ]
+    },
+    {
+      "id": "SZD-M02750",
+      "mm": 2.75,
+      "oczekiwane_us": "C-2",
+      "twierdzenia": [
+        "SZD-M02750"
+      ]
+    },
+    {
+      "id": "SZD-M03125",
+      "mm": 3.125,
+      "oczekiwane_us": "D",
+      "twierdzenia": [
+        "SZD-M03125"
+      ]
+    },
+    {
+      "id": "SZD-M03250",
+      "mm": 3.25,
+      "oczekiwane_us": "D-3",
+      "twierdzenia": [
+        "SZD-M03250"
+      ]
+    },
+    {
+      "id": "SZD-M03500",
+      "mm": 3.5,
+      "oczekiwane_us": "E-4",
+      "twierdzenia": [
+        "SZD-M03500"
+      ]
+    },
+    {
+      "id": "SZD-M03750",
+      "mm": 3.75,
+      "oczekiwane_us": "F-5",
+      "twierdzenia": [
+        "SZD-M03750"
+      ]
+    },
+    {
+      "id": "SZD-M04000",
+      "mm": 4,
+      "oczekiwane_us": "G-6",
+      "twierdzenia": [
+        "SZD-M04000"
+      ]
+    },
+    {
+      "id": "SZD-M04250",
+      "mm": 4.25,
+      "oczekiwane_us": "G",
+      "twierdzenia": [
+        "SZD-M04250"
+      ]
+    },
+    {
+      "id": "SZD-M04500",
+      "mm": 4.5,
+      "oczekiwane_us": "7",
+      "twierdzenia": [
+        "SZD-M04500"
+      ]
+    },
+    {
+      "id": "SZD-M05000",
+      "mm": 5,
+      "oczekiwane_us": "H-8",
+      "twierdzenia": [
+        "SZD-M05000"
+      ]
+    },
+    {
+      "id": "SZD-M05250",
+      "mm": 5.25,
+      "oczekiwane_us": "I",
+      "twierdzenia": [
+        "SZD-M05250"
+      ]
+    },
+    {
+      "id": "SZD-M05500",
+      "mm": 5.5,
+      "oczekiwane_us": "I-9",
+      "twierdzenia": [
+        "SZD-M05500"
+      ]
+    },
+    {
+      "id": "SZD-M05750",
+      "mm": 5.75,
+      "oczekiwane_us": "J",
+      "twierdzenia": [
+        "SZD-M05750"
+      ]
+    },
+    {
+      "id": "SZD-M06000",
+      "mm": 6,
+      "oczekiwane_us": "J-10",
+      "twierdzenia": [
+        "SZD-M06000"
+      ]
+    },
+    {
+      "id": "SZD-M06500",
+      "mm": 6.5,
+      "oczekiwane_us": "K-10 ½",
+      "twierdzenia": [
+        "SZD-M06500"
+      ]
+    },
+    {
+      "id": "SZD-M07000",
+      "mm": 7,
+      "oczekiwane_us": null,
+      "twierdzenia": [
+        "SZD-M07000"
+      ]
+    },
+    {
+      "id": "SZD-M08000",
+      "mm": 8,
+      "oczekiwane_us": "L-11",
+      "twierdzenia": [
+        "SZD-M08000"
+      ]
+    },
+    {
+      "id": "SZD-M09000",
+      "mm": 9,
+      "oczekiwane_us": "M/N-13",
+      "twierdzenia": [
+        "SZD-M09000"
+      ]
+    },
+    {
+      "id": "SZD-M10000",
+      "mm": 10,
+      "oczekiwane_us": "N/P-15",
+      "twierdzenia": [
+        "SZD-M10000"
+      ]
+    },
+    {
+      "id": "SZD-M11500",
+      "mm": 11.5,
+      "oczekiwane_us": "P-16",
+      "twierdzenia": [
+        "SZD-M11500"
+      ]
+    },
+    {
+      "id": "SZD-M12000",
+      "mm": 12,
+      "oczekiwane_us": null,
+      "twierdzenia": [
+        "SZD-M12000"
+      ]
+    },
+    {
+      "id": "SZD-M15000",
+      "mm": 15,
+      "oczekiwane_us": "P/Q",
+      "twierdzenia": [
+        "SZD-M15000"
+      ]
+    },
+    {
+      "id": "SZD-M15750",
+      "mm": 15.75,
+      "oczekiwane_us": "Q",
+      "twierdzenia": [
+        "SZD-M15750"
+      ]
+    },
+    {
+      "id": "SZD-M16000",
+      "mm": 16,
+      "oczekiwane_us": "Q",
+      "twierdzenia": [
+        "SZD-M16000"
+      ]
+    },
+    {
+      "id": "SZD-M19000",
+      "mm": 19,
+      "oczekiwane_us": "S",
+      "twierdzenia": [
+        "SZD-M19000"
+      ]
+    },
+    {
+      "id": "SZD-M25000",
+      "mm": 25,
+      "oczekiwane_us": "T/U/X",
+      "twierdzenia": [
+        "SZD-M25000"
+      ]
+    },
+    {
+      "id": "SZD-M30000",
+      "mm": 30,
+      "oczekiwane_us": "T/X",
+      "twierdzenia": [
+        "SZD-M30000"
+      ]
+    },
+    {
+      "id": "szydelka-poza-4_75",
+      "mm": 4.75,
+      "oczekiwane_us": null,
+      "uwaga": "mm spoza tabeli: brak oznaczenia US, bez najbliższej wartości (RD-11)",
+      "twierdzenia": []
+    },
+    {
+      "id": "szydelka-poza-0",
+      "mm": 0,
+      "oczekiwane_us": "błąd danych",
+      "uwaga": "rozmiar ≤ 0",
+      "twierdzenia": []
+    }
+  ]
+}

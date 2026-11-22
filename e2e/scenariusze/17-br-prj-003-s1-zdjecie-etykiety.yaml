@@ -1,0 +1,41 @@
+# BR-PRJ-003/S1 (docs/brd/wymagania-projekt.md:31): zdjęcie etykiety w projekcie — grupa „Photos” na ekranie projektu (04 fix-6 D, P-191 P9a; F07-17
+# zamiast menu-zdjecia / zdjecia-licznik). Aparat w symulatorze niedostępny — build E2E dodaje do arkusza źródła
+# pozycję „Test photo” (e2e-zdjecie-testowe, obraz z zasobów testowych, EXIF GPS celowo ustawiony — strategia §4). Plik w katalogu aplikacji (ADR-0001), odczyt offline.
+appId: com.apps4brew.knitting
+name: "BR-PRJ-003/S1 · Zdjęcie etykiety w projekcie, widoczne po restarcie bez sieci"
+tags:
+  - BR-PRJ-003-S1
+  - stan-licznika
+  - PU-051
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-zdjecia" }
+# przycisk E2E „Test photo” leży pod przyciskiem „Add photo”; arkusz „Add photo” wjeżdża od dołu i przy układzie z przebiegu 136 zakrywał jego środek (zrzut kroku 48) — wyśrodkowanie podnosi oba nad arkusz (E2-136-S5)
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "zdjecia-dodaj" }
+- assertVisible: { id: "e2e-zdjecie-testowe" }
+- waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża — w 17 (przebieg 40457386369) stuknięcie nie trafiło w pozycję testową
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "zdjecia-miniatura" } }
+    commands:
+      - takeScreenshot: opoznienie-miniatura-zdjecia
+      - assertVisible: { id: "e2e-pomiar-operacji", optional: true } # P-374: „photo running” / „recode N ms · photo running” = aplikacja jeszcze zapisuje; brak panelu = menu zamknięte
+      - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+- assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }
+# P-374: pomiar operacji (R) — menu „Add photo” zostaje otwarte po wyborze zdjęcia testowego, panel pod pozycją testową; zrzut + odczyt opcjonalny (P-367: bez nowego źródła czerwieni)
+- takeScreenshot: pomiar-zdjecie
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*photo [0-9]+ ms.*", optional: true }
+- takeScreenshot: 17-zdjecie-etykiety
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-zdjecia" }
+- scrollUntilVisible: { element: { id: "zdjecia-miniatura" } }
+- assertVisible: { id: "zdjecia-miniatura", text: "Photo 1 of 1" }

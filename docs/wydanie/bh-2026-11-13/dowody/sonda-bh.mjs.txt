@@ -1,0 +1,25 @@
+// Sonda BH: przypadki spoza testów BG (atrapa BG, bez sieci)
+import { utworzAtrape, wersja } from '../../../tests/wydanie/asc-iap-v2-atrapa.mjs';
+import * as I from '../../../scripts/asc/iap-localizations.mjs';
+const c0 = I.makeClient({ fetchFn: async () => ({ ok: true, status: 200, json: async () => ({}) }), token: 't' });
+try { await c0.call('POST', '/v1/subscriptionLocalizations', {}); } catch (e) { console.log('1) komunikat odmowy:', e.message); }
+// 2) język czekający (czeka) obecny w zatwierdzonej wersji; Apple nie dziedziczy -> czy trafia do nowej wersji?
+const T = { group: { name: 'G' }, monthly: { name: 'M', description: 'D' }, yearly: { name: 'Y', description: 'D' } };
+const data = { tlumaczenia: {
+  en: { ascLocale: 'en-US', ...T, lifetime: { name: 'Life', description: 'D' } },
+  pl: { ascLocale: 'pl', czeka: 'P-422', ...T, lifetime: { name: 'Doż', description: 'O' } } } };
+const appNames = { 'en-US': 'App', pl: 'App' };
+const zgodne = (k, id) => [wersja(id + '-V1', 1, 'APPROVED', [{ locale: 'en-US', ...T[k], ...(k === 'group' ? { customAppName: 'App' } : {}) }])];
+const reszta = () => ({ group: { rodzaj: 'group', id: 'G1', wersje: zgodne('group', 'G1') }, monthly: { rodzaj: 'sub', id: 'S1', productId: 'oczko.pro.monthly', wersje: zgodne('monthly', 'S1') }, yearly: { rodzaj: 'sub', id: 'S2', productId: 'oczko.pro.yearly', wersje: zgodne('yearly', 'S2') } });
+const ob = { ...reszta(), lifetime: { rodzaj: 'iap', id: 'I1', productId: 'oczko.pro.lifetime', wersje: [wersja('I1-V1', 1, 'APPROVED', [{ locale: 'en-US', name: 'Old', description: 'D' }, { locale: 'pl', name: 'Doż', description: 'O' }])] } };
+const a = utworzAtrape({ obiekty: ob, dziedziczy: false });
+const log = []; const w = await I.run({ client: I.makeClient({ fetchFn: a.fetchFn, token: 't', sleep: async () => {} }), data, apply: true, appNames, log: (t) => log.push(t) });
+const nowa = a.s.obiekty.lifetime.wersje.find(v => v.state === 'PREPARE_FOR_SUBMISSION');
+console.log('2) kod', w.code, w.problems, '; lokalizacje nowej wersji:', nowa?.lok.map(l => l.locale).join(','), '; stara:', a.s.obiekty.lifetime.wersje[0].lok.map(l => l.locale).join(','));
+// 3) najnowsza wersja REJECTED, brak roboczej, inne teksty -> tworzy wersję?
+for (const st of ['REJECTED', 'DEVELOPER_REJECTED', 'READY_FOR_REVIEW', 'IN_REVIEW']) {
+  const ob3 = { ...reszta(), lifetime: { rodzaj: 'iap', id: 'I1', productId: 'oczko.pro.lifetime', wersje: [wersja('I1-V1', 1, st, [{ locale: 'en-US', name: 'Old', description: 'D' }])] } };
+  const a3 = utworzAtrape({ obiekty: ob3 });
+  const w3 = await I.run({ client: I.makeClient({ fetchFn: a3.fetchFn, token: 't', sleep: async () => {} }), data: { tlumaczenia: { en: data.tlumaczenia.en } }, apply: true, appNames, log: () => {} });
+  console.log(`3) ${st}: kod ${w3.code}, problemy: ${w3.problems.join(' | ')}, zapisy: ${a3.calls.filter(c => c.m !== 'GET').map(c => c.m + ' ' + c.p).join('; ') || 'brak'}`);
+}

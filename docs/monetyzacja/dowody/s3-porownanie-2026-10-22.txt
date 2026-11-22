@@ -1,0 +1,8 @@
+| Wariant | Razem pes. / norm. / opt. | Werdykt |
+|---|---|---|
+| V3: limit 5 dni/mies., Pro 0,99 mies. / 6,99 rok z ofertą wprowadzającą 14 dni / 14,99 dożywotni USD | 404,33 / 31675,92 / 656664,27 PLN | budować |
+| V4: limit 4 dni z robótką/mies., Pro 0,99 mies. / 6,99 rok (odnawiane, bez próby) / 14,99 dożywotni USD | 479,87 / 27705,98 / 696014,67 PLN | budować |
+| B: darmowy rdzeń + Pro tylko dożywotni 14,99 USD | 834,84 / 26714,80 / 616852,14 PLN | budować |
+| V4: limit 5 dni z robótką/mies., Pro 0,99 mies. / 6,99 rok (odnawiane, bez próby) / 14,99 dożywotni USD | 459,26 / 26476,70 / 696014,67 PLN | budować |
+| V4: limit 6 dni z robótką/mies., Pro 0,99 mies. / 6,99 rok (odnawiane, bez próby) / 14,99 dożywotni USD | 435,71 / 25058,31 / 696014,67 PLN | budować |
+Najwyższy wynik normalny: V3: limit 5 dni/mies., Pro 0,99 mies. / 6,99 rok z ofertą wprowadzającą 14 dni / 14,99 dożywotni USD (optymalny tylko, jeśli przechodzi podłogę).

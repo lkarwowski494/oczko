@@ -1,0 +1,31 @@
+# BR-LIC-001/S1 (docs/brd/wymagania-licznik.md:8–11 po ER-68, ZM-18): pierwszy ekran to „Dziś” z kartą „Pierwszy licznik” z wartością 0 i „+1”,
+# bez powitania, quizu, uprawnienia, konta, nazwy projektu, wzoru, zakupu, języka ani okna „Uczciwe zasady”; nic nie zasłania „+1” karty.
+# Wyrocznia: NFR-PIE-001, Z-01 (docs/monetyzacja/wektory-limitu.json). Ekran: dzianina/design-spec.md:73, stan `dzis-pierwszy-*`; P-563 (10a): bez odnośnika Pro.
+appId: com.apps4brew.knitting
+name: "BR-LIC-001/S1 · Pierwsze uruchomienie: „Dziś” z kartą „Pierwszy licznik” 0, bez konta, projektu i oferty"
+tags:
+  - BR-LIC-001-S1
+  - podstawowy
+  - stan-licznika
+  - PU-005
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- assertVisible: { id: "dzis-wartosc", text: "0" }
+- assertVisible: { id: "dzis-kontynuuj" } # „Otwórz licznik ›” (dzianina/design-spec.md:68)
+- assertVisible: { id: "nav-dzis" }
+- assertNotVisible: ".*[Ss]ign in.*|.*[Ll]og in.*|.*[Cc]reate account.*"
+- assertNotVisible: { id: "oferty-ekran" }
+- assertNotVisible: { id: "okno-uczciwe-zasady" }
+- assertNotVisible: { id: "limit-oferta-link" }
+- assertNotVisible: "Oczko Pro.*"
+- takeScreenshot: 02-dzis-pierwszy
+# --- po restarcie nadal „Dziś” z kartą 0 (żadnego ekranu powitalnego przy drugim starcie) ---
+- runFlow:
+    file: subflows/restart-dzis.yaml
+    env:
+      TERAZ: "2026-11-10T19:35:00"
+- assertVisible: { id: "dzis-wartosc", text: "0" }
+- assertNotVisible: { id: "wprowadzenie" }

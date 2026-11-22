@@ -1,0 +1,27 @@
+{
+ "format": 1,
+ "id": "schemat.brak-oczka",
+ "rzemioslo": "druty",
+ "rodzaj": "schemat",
+ "klucze": {
+  "nazwa": "atlas.schemat.brak-oczka.nazwa",
+  "podpis": "atlas.schemat.brak-oczka.podpis",
+  "opis_alt": "atlas.schemat.brak-oczka.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.schemat.brak-oczka.krok1"
+ ],
+ "terminy": {
+  "pl": [
+   {
+    "nazwa": "brak oczka",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-021"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

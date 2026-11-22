@@ -1,0 +1,58 @@
+# BR-LIC-011/S1 (docs/brd/wymagania-licznik.md:188): cel części 40, licznik 39, +1 → osiągnięcie celu i propozycja następnej części („Next part”, P-182 Q4a).
+# Część jest ostatnia, więc „Next part” otwiera „What’s next?” (04 fix-5); BR-PRJ-014/S1 (docs/brd/wymagania-projekt.md:173): druga taka sama
+# dostaje cel pierwszej (40) — wyrocznia: relacja z BRD (cel pary = cel pierwszej), nie wartość z kodu. Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "BR-LIC-011/S1 · Cel 40 osiągnięty: Next part → druga taka sama z celem 40 (BR-PRJ-014/S1)"
+tags:
+  - BR-LIC-011-S1
+  - BR-PRJ-014-S1
+  - stan-licznika
+  - PU-037
+  - PU-210
+  - PU-227
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "40" } }
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "3"
+      - inputText: "9"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "39" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "39" }
+- assertNotVisible: { id: "licznik-nastepna-czesc" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "40" }
+- assertVisible: { id: "licznik-nastepna-czesc" }
+- takeScreenshot: 34-cel-osiagniety
+# B3-03 (P-664): „Next part” stoi w stałej strefie licznika (`licznik-strefa`), nad rzędem akcji, w pełni widoczny bez przewijania — stuknięcie wprost.
+# Poprzednio (LIC-04, przebiegi 4–5, run 42601620032) przycisk leżał w treści w połowie pod strefą i stuknięcie trafiało w stoper, więc scenariusz
+# przewijał treść scrollUntilVisible i dwoma przeciągnięciami; po przeniesieniu do strefy są zbędne (zmiana scenariusza wynika ze zmiany produktu).
+- assertVisible: { id: "licznik-nastepna-czesc" }
+- takeScreenshot: 34-przed-nastepna-czesc
+- tapOn: { id: "licznik-nastepna-czesc" }
+- assertVisible: { id: "co-dalej-druga", text: "A second Back.*Same goal, 40 rows.*" }
+- assertVisible: { id: "co-dalej-nowa" }
+- takeScreenshot: 34-co-dalej
+- tapOn: { id: "co-dalej-druga" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 34-po-wyborze-drugiej
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-dodaj" }
+# Podpis „Pair of {{nazwa}}” (design-spec:419) jest częścią etykiety wiersza części („Back, Pair of Back, 0 of 40 rows”, przebieg 123),
+# a Maestro dopasowuje cały tekst — regex obejmuje też cel pary 40 (relacja BR-PRJ-014/S1). F07-31.
+- assertVisible: ".*Pair of Back.* of 40 rows.*"
+- takeScreenshot: 34-projekt-dwie-czesci

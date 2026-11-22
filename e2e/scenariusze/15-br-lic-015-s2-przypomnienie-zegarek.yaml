@@ -1,0 +1,84 @@
+# BR-LIC-015/S2 (docs/brd/wymagania-licznik.md:202): przypomnienie na zegarku. Wyrocznia: RD-13-W1. Wibracja zegarka: tylko urządzenie (ryzyko szczątkowe).
+# transferUserInfo nie działa w symulatorze (ADR-0009) — build E2E ma udawany zegarek (EXPO_PUBLIC_WATCH_FAKE=1, wzór Treningu) z panelem stanu
+# wysłanego do zegarka (e2e-zegarek-stan). Pola klawiatury numerycznej: bez hideKeyboard (Trening docs/38:112); pole tekstowe na końcu, chowane Enter.
+# Scenorys 04: z3-k5.png, z3-k6.png (formularz i potwierdzenie przypomnienia). [DO USTALENIA] zegarek w wydaniu 1.0 (plan-app-store, OP-22).
+appId: com.apps4brew.knitting
+name: "BR-LIC-015/S2 · Przypomnienie „co 6 rzędów 8 razy od 12” w stanie wysłanym do zegarka"
+tags:
+  - BR-LIC-015-S2
+  - zegarek
+  - stan-licznika
+  - PU-159
+  - PU-207
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "1"
+      - inputText: "0"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "10" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "10" }
+# --- przypomnienie: od rzędu 12, co 6 rzędów, 8 razy, „decrease at both ends” ---
+- scrollUntilVisible: { element: { id: "licznik-cel" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-cel" }
+- tapOn: { id: "licznik-cel" }
+- assertVisible: { id: "menu-przypomnienie" }
+- tapOn: { id: "menu-przypomnienie" }
+- assertVisible: { id: "przypomnienie-od-rzedu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-od-rzedu" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "1"
+      - inputText: "2"
+      - assertVisible: { id: "przypomnienie-od-rzedu", text: "12" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-co-ile" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "6"
+      - assertVisible: { id: "przypomnienie-co-ile", text: "6" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-ile-razy" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "8"
+      - assertVisible: { id: "przypomnienie-ile-razy", text: "8" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "przypomnienie-co-robic" }
+      - waitForAnimationToEnd
+      - eraseText: 60
+      - inputText: "decrease at both ends"
+      - assertVisible: { id: "przypomnienie-co-robic", text: "decrease at both ends" }
+- pressKey: Enter
+- assertVisible: { id: "przypomnienie-podglad", text: "You’ll be reminded on rows: 12, 18, 24.*" }
+- takeScreenshot: 15-podglad-przypomnienia
+- tapOn: { id: "przypomnienie-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "10" }
+# --- +1 wprowadza w rząd 12 z instrukcją; stan zegarka niesie przypomnienie ---
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "11" }
+- assertVisible: { id: "licznik-plus", text: "\\+1 row, when row 12 is done\\. Row 12: decrease at both ends.*" }
+- assertVisible: { id: "e2e-zegarek-stan", text: ".*row 12.*decrease at both ends.*" }
+- takeScreenshot: 15-rzad-z-przypomnieniem

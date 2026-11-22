@@ -1,0 +1,64 @@
+{
+ "format": 1,
+ "id": "skrot.druty.psso",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.psso.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "pass slipped stitch over",
+    "skrot": "psso",
+    "twierdzenie": "TRM-EN-027"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "drag den lyfta m över",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-014"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "протянуть через снятую петлю",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-032"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "かぶせる",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-028"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "прехвърлената бримка се нанизва върху изплетената",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-026"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "nukeltoji akis pertraukiama per išmegztą gerąją akį",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-006"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "pasar el punto deslizado por encima",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-021"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

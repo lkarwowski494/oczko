@@ -1,0 +1,440 @@
+{
+ "kontrakt": "1.1",
+ "karty": {
+  "druty.oczko.k": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-001",
+     "ATL-K-003",
+     "ATL-K-011"
+    ],
+    [
+     "ATL-K-004",
+     "ATL-K-012"
+    ],
+    [
+     "ATL-K-002"
+    ],
+    [
+     "ATL-K-002"
+    ]
+   ]
+  },
+  "druty.oczko.p": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-005",
+     "ATL-K-011"
+    ],
+    [
+     "ATL-K-013",
+     "ATL-K-012"
+    ],
+    [
+     "ATL-K-006"
+    ],
+    [
+     "ATL-K-006"
+    ]
+   ]
+  },
+  "druty.scieg.stst": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-024",
+     "ATL-K-026",
+     "ATL-T-036"
+    ]
+   ],
+   "uwagi": [
+    "wzór ściegu nie ma klucza w `wartosc` — pytanie Q-1.1-1 do 05"
+   ]
+  },
+  "druty.scieg.garter": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-020",
+     "ATL-K-021",
+     "ATL-T-036"
+    ]
+   ],
+   "uwagi": [
+    "wzór ściegu nie ma klucza w `wartosc` — pytanie Q-1.1-1 do 05"
+   ]
+  },
+  "druty.scieg.rib": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-027",
+     "ATL-K-028",
+     "ATL-T-036"
+    ]
+   ],
+   "uwagi": [
+    "wzór ściegu nie ma klucza w `wartosc` — pytanie Q-1.1-1 do 05"
+   ]
+  },
+  "druty.ujecie.k2tog": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-041"
+    ],
+    [
+     "ATL-K-041",
+     "ATL-K-001",
+     "ATL-K-011"
+    ],
+    [
+     "ATL-K-040"
+    ]
+   ]
+  },
+  "druty.ujecie.ssk": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-042"
+    ],
+    [
+     "ATL-K-042"
+    ],
+    [
+     "ATL-K-042"
+    ]
+   ],
+   "uwagi": [
+    "krok 2: lewy drut w przednie ścianki — bez fazy „wklucie” (brak źródła kierunku czubka w poziomie, Q-1.1-2)"
+   ]
+  },
+  "druty.ujecie.skp": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-043"
+    ],
+    [
+     "ATL-K-043"
+    ],
+    [
+     "ATL-K-043"
+    ]
+   ]
+  },
+  "druty.ujecie.p2tog": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-044"
+    ],
+    [
+     "ATL-K-044"
+    ]
+   ]
+  },
+  "druty.ujecie.s2kp2": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-045"
+    ],
+    [
+     "ATL-K-045"
+    ],
+    [
+     "ATL-K-045"
+    ],
+    [
+     "ATL-K-046"
+    ]
+   ]
+  },
+  "druty.dodanie.yo": {
+   "uwagi": [
+    "bez operacji rysunku: bilans narzutu bez zdania w źródle (O-A-05; P-214) — sam podpis; kroki jako klucze dodatkowe"
+   ]
+  },
+  "druty.dodanie.m1r": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-053"
+    ],
+    [
+     "ATL-K-053"
+    ]
+   ],
+   "uwagi": [
+    "krok 1: lewy drut podejmuje nitkę od tyłu do przodu — bez fazy „wklucie” (brak źródła kierunku czubka w poziomie, Q-1.1-2)"
+   ]
+  },
+  "druty.dodanie.m1l": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-054"
+    ],
+    [
+     "ATL-K-054"
+    ]
+   ],
+   "uwagi": [
+    "krok 1: lewy drut podejmuje nitkę od przodu do tyłu — bez fazy „wklucie” (brak źródła kierunku czubka w poziomie, Q-1.1-2)"
+   ]
+  },
+  "druty.warkocz.2-2rc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-060"
+    ],
+    [
+     "ATL-K-060"
+    ],
+    [
+     "ATL-K-060",
+     "ATL-K-062"
+    ]
+   ]
+  },
+  "druty.warkocz.2-2lc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-061"
+    ],
+    [
+     "ATL-K-061"
+    ],
+    [
+     "ATL-K-061",
+     "ATL-K-062"
+    ]
+   ]
+  },
+  "druty.zamykanie.bo": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-K-070"
+    ],
+    [
+     "ATL-K-070"
+    ],
+    [
+     "ATL-K-070"
+    ],
+    [
+     "ATL-K-071"
+    ]
+   ]
+  },
+  "druty.nabieranie.longtail": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-N-003",
+     "ATL-N-001"
+    ],
+    [
+     "ATL-N-003"
+    ],
+    [
+     "ATL-N-003"
+    ]
+   ]
+  },
+  "druty.nabieranie.backloop": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-N-011"
+    ],
+    [
+     "ATL-N-005"
+    ],
+    [
+     "ATL-N-005"
+    ]
+   ]
+  },
+  "druty.nabieranie.cable": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-N-012",
+     "ATL-N-009"
+    ],
+    [
+     "ATL-N-007"
+    ],
+    [
+     "ATL-N-007"
+    ]
+   ]
+  },
+  "schemat.brak-oczka": {
+   "uwagi": [
+    "rysunek schematu (glif pola bez oczka, origin own) — rodzina spoza w. 1.1"
+   ]
+  },
+  "schemat.powtorzenia": {},
+  "schemat.rs-ws": {},
+  "szydelko.oczko_szydelkowe.ch": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-001"
+    ],
+    [
+     "ATL-C-001",
+     "ATL-C-002"
+    ]
+   ]
+  },
+  "szydelko.oczko_szydelkowe.slst": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-003"
+    ],
+    [
+     "ATL-C-003"
+    ]
+   ],
+   "uwagi": [
+    "bez operacji: liczby narzutów dla sl st nie ma w ATL-C-008"
+   ]
+  },
+  "szydelko.oczko_szydelkowe.sc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-004"
+    ],
+    [
+     "ATL-C-004"
+    ]
+   ],
+   "uwagi": [
+    "krok 1: wkłucie szydełka „front to back” — bez fazy „wklucie” (brak kierunku czubka w poziomie, Q-1.1-2)"
+   ]
+  },
+  "szydelko.oczko_szydelkowe.hdc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-005"
+    ],
+    [
+     "ATL-C-005"
+    ],
+    [
+     "ATL-C-005"
+    ]
+   ]
+  },
+  "szydelko.oczko_szydelkowe.dc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-006"
+    ],
+    [
+     "ATL-C-006"
+    ],
+    [
+     "ATL-C-006"
+    ]
+   ]
+  },
+  "szydelko.oczko_szydelkowe.tr": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-007"
+    ],
+    [
+     "ATL-C-007"
+    ]
+   ]
+  },
+  "szydelko.oczko_szydelkowe.ring": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-014"
+    ],
+    [
+     "ATL-C-014"
+    ],
+    [
+     "ATL-C-015"
+    ]
+   ],
+   "uwagi": [
+    "nazwa en-US bez źródła US (O-A-11) — karta tylko en-GB"
+   ]
+  },
+  "szydelko.ujecie.2tog": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-011"
+    ],
+    [
+     "ATL-C-011"
+    ],
+    [
+     "ATL-C-010",
+     "ATL-C-011"
+    ]
+   ]
+  },
+  "szydelko.dodanie.inc": {
+   "twierdzenia_krokow": [
+    [
+     "ATL-C-013"
+    ],
+    [
+     "ATL-C-013"
+    ]
+   ]
+  },
+  "skrot.druty.k": {},
+  "skrot.druty.p": {},
+  "skrot.druty.stst": {},
+  "skrot.druty.revstst": {},
+  "skrot.druty.k2tog": {},
+  "skrot.druty.ssk": {},
+  "skrot.druty.skp": {},
+  "skrot.druty.p2tog": {},
+  "skrot.druty.s2kp2": {},
+  "skrot.druty.yo": {},
+  "skrot.druty.m1r": {},
+  "skrot.druty.m1l": {},
+  "skrot.druty.bo": {},
+  "skrot.druty.co": {},
+  "skrot.druty.cn": {},
+  "skrot.rs": {},
+  "skrot.ws": {},
+  "skrot.rep": {},
+  "skrot.rnd": {},
+  "skrot.druty.sl": {},
+  "skrot.druty.kwise": {},
+  "skrot.druty.pwise": {},
+  "skrot.druty.tbl": {},
+  "skrot.druty.wyib": {},
+  "skrot.druty.wyif": {},
+  "skrot.druty.psso": {},
+  "tabela.skroty.druty": {},
+  "skrot.szydelko.ch": {},
+  "skrot.szydelko.slst": {},
+  "skrot.szydelko.sc": {},
+  "skrot.szydelko.hdc": {},
+  "skrot.szydelko.dc": {},
+  "skrot.szydelko.tr": {},
+  "skrot.szydelko.sc2tog": {},
+  "skrot.szydelko.dc2tog": {},
+  "skrot.szydelko.inc": {},
+  "skrot.szydelko.sk": {},
+  "skrot.szydelko.yo": {},
+  "tabela.skroty.szydelko": {},
+  "skrot.szydelko.us-uk-1": {},
+  "skrot.szydelko.us-uk-2": {},
+  "skrot.szydelko.us-uk-3": {},
+  "skrot.szydelko.us-uk-4": {},
+  "skrot.szydelko.us-uk-5": {},
+  "skrot.szydelko.us-uk-6": {},
+  "skrot.szydelko.us-uk-7": {},
+  "tabela.us-uk.szydelko": {},
+  "skrot.druty.us-ca-1": {},
+  "skrot.druty.us-ca-2": {},
+  "skrot.druty.us-ca-3": {},
+  "tabela.us-ca.druty": {},
+  "skrot.znak.gwiazdka": {},
+  "skrot.znak.dwie-gwiazdki": {},
+  "skrot.znak.nawias-kwadratowy": {},
+  "skrot.znak.nawias-okragly": {},
+  "tabela.znaki-zapisu": {}
+ }
+}

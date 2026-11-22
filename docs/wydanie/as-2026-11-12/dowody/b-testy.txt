@@ -1,0 +1,10 @@
+$ npx jest tests/wydanie/{zrzuty-data-ipada,kontrola-zakreslen,zrzuty-uzupelnij,zrzuty-pasek-stanu,zrzuty-obrot-ipada,zrzuty-poprawki-ah}.test.ts --ci
+PASS iOS tests/wydanie/zrzuty-data-ipada.test.ts
+PASS iOS tests/wydanie/zrzuty-uzupelnij.test.ts
+PASS iOS tests/wydanie/zrzuty-pasek-stanu.test.ts
+PASS iOS tests/wydanie/zrzuty-obrot-ipada.test.ts
+PASS iOS tests/wydanie/kontrola-zakreslen.test.ts
+PASS iOS tests/wydanie/zrzuty-poprawki-ah.test.ts (7.733 s)
+Test Suites: 6 passed, 6 total
+Tests:       85 passed, 85 total
+kod 0

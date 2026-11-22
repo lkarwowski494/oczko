@@ -1,0 +1,18 @@
+{
+ "T2 jasny: tekst/tło": ["#221D1A","#E6E1DA"], "T2 jasny: tekst2/tło": ["#5A5048","#E6E1DA"], "T2 jasny: tekst/kafel": ["#221D1A","#F6F4F1"],
+ "T2 jasny: tekst karty/karta": ["#F3F1EC","#3A332E"], "T2 jasny: tekst2 karty/karta": ["#D6CEC6","#3A332E"], "T2 jasny: dzianina/karta (grafika)": ["#C08425","#3A332E",3],
+ "T2 jasny: zakładka/pasek": ["#625850","#EEEBE6"], "T2 jasny: zakładka wybrana/pasek": ["#8A5A12","#EEEBE6"], "T2 jasny: Oczko Pro/tło": ["#8A5A12","#E6E1DA"],
+ "T2 jasny: ikona kafla (UI)": ["#3A332E","#F0DDB6",3],
+ "T2 ciemny: tekst/tło": ["#F1EDE9","#26211E"], "T2 ciemny: tekst2/tło": ["#C7BCB2","#26211E"], "T2 ciemny: tekst/kafel": ["#F1EDE9","#312B27"],
+ "T2 ciemny: tekst karty/karta": ["#F3F1EC","#3A322D"], "T2 ciemny: tekst2 karty/karta": ["#D3C9BF","#3A322D"], "T2 ciemny: dzianina/karta (grafika)": ["#CF9636","#3A322D",3],
+ "T2 ciemny: zakładka/pasek": ["#B5A99E","#1E1A17"], "T2 ciemny: zakładka wybrana/pasek": ["#F0CF8A","#1E1A17"], "T2 ciemny: Oczko Pro/tło": ["#F0CF8A","#26211E"],
+ "T2 ciemny: ikona kafla (UI)": ["#F0CF8A","#4A413A",3],
+ "T3 jasny: tekst/tło": ["#1E252B","#D8E0E6"], "T3 jasny: tekst2/tło": ["#46545F","#D8E0E6"], "T3 jasny: tekst karty/karta": ["#F3F1EC","#2B3A48"],
+ "T3 jasny: zakładka/pasek": ["#4F5D68","#E3E9ED"], "T3 jasny: zakładka wybrana/pasek": ["#8A5A12","#E3E9ED"], "T3 jasny: Oczko Pro/tło (ciemniejszy mioget)": ["#7E520F","#D8E0E6"],
+ "T3 jasny: dzianina/karta (grafika)": ["#C08425","#2B3A48",3],
+ "T3 ciemny: tekst/tło": ["#EEF1F2","#1B2630"], "T3 ciemny: tekst2/tło": ["#B0C0CC","#1B2630"], "T3 ciemny: tekst/kafel": ["#EEF1F2","#253240"],
+ "T3 ciemny: tekst2 karty/karta": ["#C2CBD2","#2C3C4B"], "T3 ciemny: zakładka/pasek": ["#A0B0BC","#151E26"], "T3 ciemny: ikona kafla (UI)": ["#F0CF8A","#36475A",3],
+ "T3 ciemny: dzianina/karta (grafika)": ["#CF9636","#2C3C4B",3],
+ "T4: jak T1 (faktura 5% krycia; najciemniejszy punkt faktury jasnej ≈ #DADEE0)": ["#4C5862","#DADEE0"],
+ "T4 ciemny: tekst2 na najjaśniejszym punkcie faktury ≈ #2D353C": ["#B5C0C8","#2D353C"]
+}

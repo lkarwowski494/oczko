@@ -1,0 +1,6 @@
+SQLite +1 (transakcja 3 zapisów) na 150000 zdarzeniach: p50 0.182 ms, p95 0.367 ms (Linux, Node v22.22.0, SQLite 3.50.4; nie iPhone)
+historia licznika: plan [SEARCH zdarzenie USING INDEX zdarzenie_licznik_czas (licznik_id=?)]; p95 0.213 ms
+kalendarz miesiąca: plan [SEARCH zdarzenie USING COVERING INDEX zdarzenie_dzien (dzien>? AND dzien<?)]; p95 0.336 ms
+rozmiar bazy po checkpoint: 15.6 MB; integrity_check: ok
+JSON +1 (przepisanie pliku 13.2 MB): p50 127.574 ms, p95 176.316 ms
+kod wyjścia: 0

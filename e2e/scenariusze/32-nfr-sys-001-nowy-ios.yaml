@@ -1,0 +1,39 @@
+# NFR-SYS-001 (docs/brd/wymagania.md:113): działanie po premierze nowego iOS — 0 przepływów zepsutych; czas poprawki [DO USTALENIA] OP-26.
+# Scenariusz dymny głównych ekranów; workflow uruchamia go na najstarszym wspieranym iOS (MIN_IOS 18.0, ADR-0006) i najnowszym w obrazie macos-26
+# (P-091 5a: najnowszy Xcode 26.x + cotygodniowy build kontrolny). Wersja iOS symulatora w logu przebiegu.
+appId: com.apps4brew.knitting
+name: "NFR-SYS-001 · Dymny przebieg głównych ekranów (najstarszy i najnowszy iOS)"
+tags:
+  - NFR-SYS-001
+  - stan-licznika
+  - PU-213
+  - PU-232
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "licznik-plus" }
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-nazwa" }
+- runFlow: subflows/zamknij-menu.yaml # P-586 (a): menu to arkusz, zamyka „Cancel” w podprzepływie
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertVisible: { id: "ustawienia-oczko-pro" }
+- tapOn: { id: "ustawienia-oczko-pro" }
+- assertVisible: { id: "oferty-ekran" }
+- takeScreenshot: 32-oferty
+- tapOn: { id: "oferty-nie-teraz" }
+- assertVisible: { id: "ustawienia-oczko-pro" }
+- tapOn: { id: "nav-wstecz" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś” (przebieg 4 attempt 2, step-049; jak 08 i 66); do listy przez zakładkę
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "projekty-wiersz", index: 0 }
+- assertVisible: { id: "licznik-wartosc", text: "1" }

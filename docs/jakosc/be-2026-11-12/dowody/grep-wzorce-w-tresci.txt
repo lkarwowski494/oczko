@@ -1,0 +1,2 @@
+$ grep -rniE "deviceinfo|driver not ready|DeviceUnreachable" e2e src --include=*.yaml --include=*.json --include=*.ts --include=*.tsx -l; kod:
+kod wyjścia grep: 1

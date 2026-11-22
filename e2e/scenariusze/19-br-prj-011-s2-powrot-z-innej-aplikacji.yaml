@@ -1,0 +1,33 @@
+# BR-PRJ-011/S2 (docs/brd/wymagania-projekt.md:115): powrót z innej aplikacji (tło → pierwszy plan) bez utraty miejsca i bez restartu ekranu.
+# Wzór Treningu: pressKey Home + launchApp { stopApp: false } (katalog PR-11).
+appId: com.apps4brew.knitting
+name: "BR-PRJ-011/S2 · Powrót z innej aplikacji: ten sam ekran i rząd"
+tags:
+  - BR-PRJ-011-S2
+  - stan-licznika
+  - PU-166
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "dzis-karta" } # ZM-18: „Dziś” tylko przy zimnym starcie; powrót z innej aplikacji zostaje na tym samym ekranie
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+# --- otwarta historia zostaje otwarta po powrocie ---
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-historia" }
+- assertVisible: { id: "historia-lista" }
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "historia-lista" }, timeout: 30000 }
+- takeScreenshot: 19-po-powrocie
+- tapOn: { id: "arkusz-zamknij" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }

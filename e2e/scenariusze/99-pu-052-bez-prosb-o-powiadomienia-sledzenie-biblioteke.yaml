@@ -1,0 +1,53 @@
+# PU-052 (T-35, T-136): cały przebieg (dodanie zdjęcia z biblioteki, liczenie, ustawienia) bez systemowej prośby o powiadomienia, śledzenie (ATT) i dostęp do biblioteki zdjęć.
+# Kod: ekran projektu → `zdjecia-dodaj` → arkusz „Add photo”; w buildzie E2E selektor biblioteki zastępuje `e2e-zdjecie-testowe` (src/kompozycja/e2e/panele.tsx:70), jak w scen. 81.
+# BX-032 (brzegowy, poziom testu): prośby o dostęp do biblioteki Maestro w buildzie E2E nie zobaczy (selektora systemowego tu nie ma); część „Would Like to Access Your Photos” wymaga testu fizycznego (F) albo sprawdzenia Info.plist/PHPicker — PU-052 zostaje „oczekujący” bez pełnego pokrycia.
+# Ograniczenie (BX-028, hipoteza): Maestro iOS widzi alerty systemowe po tekście (springboard) — niepotwierdzone; `assertNotVisible` z regex pada fałszywie na zielono, jeśli nie widzi alertów w ogóle. Zrzuty kroków dokumentują stan.
+appId: com.apps4brew.knitting
+name: "PU-052 · Brak systemowych próśb o powiadomienia, śledzenie i dostęp do biblioteki"
+tags:
+  - przypadki-uzycia
+  - PU-052
+  - stan-licznika
+---
+# CE-01 (P1): własny start zamiast subflows/start-czysty.yaml (te same kroki + `permissions: { all: unset }`, jak 12 i 04 mają własny start). Maestro 2.12.1 daje `launchApp` bez
+# `permissions` WSZYSTKIE uprawnienia (Orchestra.kt:1345-1347), więc prośba systemowa nigdy by się nie pojawiła, a poniższe `assertNotVisible` przechodziłyby zawsze.
+# `unset` = „jeszcze nie pytano”: prośba z kodu (powiadomienia, ATT) musi się pokazać i scenariusz pada. Pilnuje tests/jakosc/bx10-uprawnienia-przy-starcie.test.ts.
+- launchApp:
+    clearState: true
+    permissions: { all: unset }
+    arguments:
+      oczkoE2eTeraz: "2026-11-12T19:30:00"
+      oczkoE2eSiec: "brak"
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- setOrientation: PORTRAIT
+- scrollUntilVisible: { element: { id: "dzis-plus" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "dzis-plus" }
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }
+- assertNotVisible: ".*Would Like to Send You Notifications.*" # start
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "zdjecia-dodaj" }
+- assertVisible: { id: "e2e-zdjecie-testowe" } # build E2E podmienia systemowy selektor biblioteki (BX-032)
+- waitForAnimationToEnd
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+- assertNotVisible: ".*Would Like to Access Your Photos.*"
+- assertNotVisible: ".*Would Like to Send You Notifications.*"
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- takeScreenshot: 99-po-wyborze-z-biblioteki
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertNotVisible: ".*Would Like to Send You Notifications.*"
+- assertNotVisible: ".*Allow .* to track your activity.*"
+- takeScreenshot: 99-ustawienia

@@ -1,0 +1,36 @@
+{
+ "format": 1,
+ "id": "skrot.rnd",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.rnd.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "round",
+    "skrot": "rnd",
+    "twierdzenie": "TRM-EN-020"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "круговой ряд",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-025"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "圈",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-022"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

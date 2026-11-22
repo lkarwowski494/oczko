@@ -1,0 +1,5 @@
+# git diff --stat 281852f..2929462 -- app src modules e2e
+ e2e/scenariusze/47-br-wzr-008-s4-ipad-bez-rysika.yaml | 10 ++++++++++
+ e2e/zrzuty-sklepu/00-przygotuj.yaml                   |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+# kod: 0

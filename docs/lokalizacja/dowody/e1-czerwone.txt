@@ -1,0 +1,18 @@
+# E1: testy czerwone przed kodem, 2026-10-22, komenda: npx jest tests/i18n (kod wyjścia 1)
+      1     Cannot find module '../../src/i18n/format' from 'tests/i18n/format.test.ts'
+      1     Cannot find module '../../src/i18n/i18n' from 'tests/i18n/i18n-runtime.test.ts'
+      1     Cannot find module '../../src/i18n/jezyki' from 'tests/i18n/jezyk.test.ts'
+      1     Cannot find module '../../src/i18n/polyfille' from 'tests/i18n/liczba-mnoga.test.ts'
+      1     Cannot find module '../../src/i18n/sprawdzIntl' from 'tests/i18n/sprawdz-intl.test.ts'
+      7     Error: Cannot find module '/home/user/Oczko/scripts/sprawdz-i18n.mjs'
+      1 FAIL iOS tests/i18n/format.test.ts
+      1 FAIL iOS tests/i18n/i18n-runtime.test.ts
+      1 FAIL iOS tests/i18n/jezyk.test.ts
+      1 FAIL iOS tests/i18n/konfiguracja.test.ts
+      1 FAIL iOS tests/i18n/liczba-mnoga.test.ts
+      1 FAIL iOS tests/i18n/sprawdz-i18n.test.ts
+      1 FAIL iOS tests/i18n/sprawdz-intl.test.ts
+      1 PASS iOS tests/i18n-dead-keys.test.ts
+      1 PASS iOS tests/i18n-no-polish-in-en.test.tsx
+      1 Test Suites: 7 failed, 2 passed, 9 total
+      1 Tests:       9 failed, 4 passed, 13 total

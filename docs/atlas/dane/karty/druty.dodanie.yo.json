@@ -1,0 +1,126 @@
+{
+ "format": 1,
+ "id": "druty.dodanie.yo",
+ "rzemioslo": "druty",
+ "rodzaj": "dodanie",
+ "klucze": {
+  "nazwa": "atlas.druty.dodanie.yo.nazwa",
+  "podpis": "atlas.druty.dodanie.yo.podpis",
+  "opis_alt": "atlas.druty.dodanie.yo.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.druty.dodanie.yo.krok1",
+  "atlas.druty.dodanie.yo.krok2"
+ ],
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "yarn over",
+    "skrot": "yo",
+    "twierdzenie": "TRM-EN-011"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "narzut",
+    "skrot": "narz.",
+    "twierdzenie": "TRM-PL-014"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "omslag",
+    "skrot": "omsl",
+    "twierdzenie": "TRM-SV-005"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "накид",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-011"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "накид",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-009"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "かけ目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-012"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "걸기코",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-009"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "掛針",
+    "skrot": "yo",
+    "twierdzenie": "TRM-ZHT-010"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ilmek dolayarak arttırma",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-017"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "laçada",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-022"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "jeteu",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-008"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "наметка",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-012"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "užmetimas",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-003"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "ovita petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-005"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "lazada",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-022"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

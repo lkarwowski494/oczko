@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko používá fotoaparát jen tehdy, když fotografujete vzor, projekt nebo štítek příze. Fotky zůstávají ve vašem zařízení."
+  }
+}

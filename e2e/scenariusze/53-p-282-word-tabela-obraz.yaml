@@ -1,0 +1,56 @@
+# P-282 (W1-A zawężony): Word → widok w aplikacji dla trzech plików korpusu W1 z panelu E2E (modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/):
+# tekst (`e2e-wzor-word`, jak scen. 25), tabela (`e2e-wzor-word-tabela`), obraz (`e2e-wzor-word-obraz`). Dla każdego: `wzor-widok`, `wzor-zrodlo`
+# „Word document · N pages”, zrzut strony 1 i ostatniej — do porównania wzrokiem (wierność tabeli i obrazu: [DO USTALENIA] wzorzec, R-060).
+# Każdy plik na czystej instalacji (OG-07: jeden dokument wzoru naraz). Pakiet pełny, informacyjnie.
+appId: com.apps4brew.knitting
+name: "P-282 · Word z panelu E2E: tekst, tabela, obraz — widok, źródło, strona 1 i ostatnia"
+tags:
+  - P-282
+  - wzor
+  - stan-licznika
+---
+# --- tekst ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word" }
+- tapOn: { id: "e2e-wzor-word" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- takeScreenshot: 53-tekst-strona-1
+- runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-tekst" } }
+# --- tabela ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-tabela" }
+- tapOn: { id: "e2e-wzor-word-tabela" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- takeScreenshot: 53-tabela-strona-1
+- runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-tabela" } }
+# --- obraz ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-obraz" }
+- tapOn: { id: "e2e-wzor-word-obraz" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- takeScreenshot: 53-obraz-strona-1
+- runFlow: { file: subflows/wzor-word-strony.yaml, env: { ZRZUT: "53-obraz" } }

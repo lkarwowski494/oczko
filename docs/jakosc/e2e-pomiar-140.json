@@ -1,0 +1,347 @@
+{
+ "_opis": "Pomiar czasów scenariuszy E2E z przebiegu „Jakość · iOS” #140 (run 41430188910, SHA 7a7abe7, 2026-11-02), odczyt z dzienników zadań e2e (wiersze „[Passed|Failed] nazwa (czas)”) 2026-11-02 (07-jakosc NOC-6, P-400). Czas scenariusza z dziennika Maestro nie obejmuje narzutu między scenariuszami (ok. 55–70 s na scenariusz: krok „Scenariusze” trwał dłużej niż suma). Wagi e2e/czesci.json = czas z tego pomiaru dla scenariuszy [Passed]; scenariusz [Failed] pada w trakcie, więc jego czas jest zaniżony i zachowuje poprzednią wagę (szacunek); scenariusz bez pomiaru (67) — szacunek z liczby kroków. Test: tests/jakosc/e2e-noc-2026-11-02.test.ts (NOC-6).",
+ "run": 41430188910,
+ "sha": "7a7abe7a11a9df8d3cf1313b8c9fdff3f59fa8dc",
+ "odczyt": "2026-11-02",
+ "krok_scenariusze_s": {
+  "iphone-1": 4243,
+  "iphone-2": 4263,
+  "iphone-3": 3801,
+  "ipad-1": 851
+ },
+ "krok_ax5_s": {
+  "iphone-1": 194
+ },
+ "scenariusze": {
+  "01-nfr-pie-001-pierwsze-liczenie.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 279
+  },
+  "02-br-lic-001-s1-pierwsze-uruchomienie.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 59
+  },
+  "03-br-lic-001-s2-pierwszy-rzad-jednym-stuknieciem.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 152
+  },
+  "04-br-lic-002-s1-plus-minus-cofnij.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 124
+  },
+  "05-br-zak-006-s1-limit-zawczasu.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 207
+  },
+  "06-br-zak-001-s1-zakup-przywrocenie.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 208
+  },
+  "07-p-089-3a-uczciwe-zasady.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 202
+  },
+  "08-br-dan-006-s1-eksport-import.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 312
+  },
+  "09-adr-0019-start-awaryjny.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 147
+  },
+  "10-nfr-dan-002-kazda-zmiana-trwala.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 217
+  },
+  "11-br-dan-001-s1-baza-bez-sieci.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 131
+  },
+  "12-br-zak-006-s4-bez-oferty-w-pracy.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 96
+  },
+  "13-kp-10-zakup-tylko-po-dzialaniu.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 144
+  },
+  "14-br-lic-004-s4-gest-od-krawedzi.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 52
+  },
+  "15-br-lic-015-s2-przypomnienie-zegarek.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 202
+  },
+  "16-br-zap-004-s2-zapas-bez-zasiegu.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 171
+  },
+  "17-br-prj-003-s1-zdjecie-etykiety.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 150
+  },
+  "18-br-prj-011-s1-start-po-zamknieciu.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 168
+  },
+  "19-br-prj-011-s2-powrot-z-innej-aplikacji.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 56
+  },
+  "20-br-prj-016-s2-powrot-po-przerwie.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 147
+  },
+  "21-br-wzr-001-s1-pdf-z-plikow.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 110
+  },
+  "22-br-wzr-002-s1-zdjecie-strony.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 120
+  },
+  "23-br-wzr-005-s1-poziomo-na-stojaku.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 85
+  },
+  "24-br-wzr-007-s1-strona-www-bez-sieci.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 95
+  },
+  "25-br-wzr-007-s2-plik-word.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 111
+  },
+  "26-br-wzr-008-s1-zakreslenie.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 146
+  },
+  "27-br-wzr-008-s3-przewijanie-bez-zakreslacza.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 83
+  },
+  "28-nfr-off-001-bez-sieci.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 154
+  },
+  "29-nfr-dos-001-voiceover.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 74
+  },
+  "30-nfr-dos-002-duzy-tekst.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 122
+  },
+  "31-nfr-wyd-001-reakcja-licznika.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 165
+  },
+  "32-nfr-sys-001-nowy-ios.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 82
+  },
+  "33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 138
+  },
+  "34-br-lic-011-s1-nastepna-czesc-blizniak.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 155
+  },
+  "35-br-dni-005-s1-termin-cel-dnia.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 186
+  },
+  "36-br-dan-008-s1-usun-przywroc-z-kosza.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 168
+  },
+  "37-p-191-stoper-start-pauza-stop.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 86
+  },
+  "38-br-prj-013-s1-korekta-sesji.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 67
+  },
+  "39-p-190-jezyk-trwaly.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 114
+  },
+  "40-br-zap-001-s1-wloczka-w-jardach.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 86
+  },
+  "41-br-kal-003-s1-probka-w-calach.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 82
+  },
+  "42-p-191-zdjecie-usun.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 54
+  },
+  "43-br-prj-015-s2-udostepnienie-karty.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 112
+  },
+  "44-br-wzr-005-s2-ipad-poziomo-pionowo.yaml": {
+   "czesc": "ipad-1",
+   "wynik": "Passed",
+   "s": 215
+  },
+  "45-br-wzr-005-s3-obrot-strona-licznik.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 79
+  },
+  "46-br-wzr-005-s4-waskie-okno.yaml": {
+   "czesc": "ipad-1",
+   "wynik": "Passed",
+   "s": 114
+  },
+  "47-br-wzr-008-s4-ipad-bez-rysika.yaml": {
+   "czesc": "ipad-1",
+   "wynik": "Passed",
+   "s": 178
+  },
+  "48-br-dan-002-s3-icloud-wylaczony.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 64
+  },
+  "49-nfr-dan-003-konflikt-icloud.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 97
+  },
+  "50-p-230-icloud-problemy-konta.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 118
+  },
+  "51-br-dan-009-usun-takze-z-icloud.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 97
+  },
+  "52-p-230-skrzynka-rozszerzenia.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 146
+  },
+  "53-p-282-word-tabela-obraz.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 168
+  },
+  "54-br-lic-006-s1-drugi-licznik.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 136
+  },
+  "55-br-lic-007-s1-powtorzenie.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 133
+  },
+  "56-br-lic-012-s1-znaczenie-liczby.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 116
+  },
+  "57-br-prj-002-s1-notatka-przy-liczniku.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 129
+  },
+  "58-br-lic-018-s1-licznik-calosci.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 142
+  },
+  "59-br-dni-004-s1-postep-w-procentach.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Passed",
+   "s": 176
+  },
+  "60-br-prj-004-s1-drut-mm-i-us.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Failed",
+   "s": 107
+  },
+  "61-br-prj-007-s1-zrob-taka-sama.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Failed",
+   "s": 173
+  },
+  "62-br-wzr-003-s1-znacznik-idzie-z-licznikiem.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 154
+  },
+  "63-br-dan-010-s1-zglos-problem-podglad.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Passed",
+   "s": 107
+  },
+  "64-br-dni-001-s1-kalendarz-dzien-podsumowanie.yaml": {
+   "czesc": "iphone-3",
+   "wynik": "Failed",
+   "s": 137
+  },
+  "65-br-dan-012-s1-prosba-o-ocene.yaml": {
+   "czesc": "iphone-1",
+   "wynik": "Passed",
+   "s": 247
+  },
+  "66-br-dan-006-s3-zastap-kopia-przed.yaml": {
+   "czesc": "iphone-2",
+   "wynik": "Failed",
+   "s": 184
+  }
+ }
+}

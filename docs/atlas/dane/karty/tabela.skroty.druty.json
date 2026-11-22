@@ -1,0 +1,46 @@
+{
+ "format": 1,
+ "id": "tabela.skroty.druty",
+ "rzemioslo": "druty",
+ "rodzaj": "tabela",
+ "pozycje": [
+  "skrot.druty.k",
+  "skrot.druty.p",
+  "skrot.druty.stst",
+  "skrot.druty.revstst",
+  "skrot.druty.k2tog",
+  "skrot.druty.ssk",
+  "skrot.druty.skp",
+  "skrot.druty.p2tog",
+  "skrot.druty.s2kp2",
+  "skrot.druty.yo",
+  "skrot.druty.m1r",
+  "skrot.druty.m1l",
+  "skrot.druty.bo",
+  "skrot.druty.co",
+  "skrot.druty.cn",
+  "skrot.rs",
+  "skrot.ws",
+  "skrot.rep",
+  "skrot.rnd",
+  "skrot.druty.sl",
+  "skrot.druty.kwise",
+  "skrot.druty.pwise",
+  "skrot.druty.tbl",
+  "skrot.druty.wyib",
+  "skrot.druty.wyif",
+  "skrot.druty.psso"
+ ],
+ "klucze": {
+  "nazwa": "atlas.tabela.skroty.druty.nazwa"
+ },
+ "klucze_dodatkowe": [
+  "atlas.tabela.skroty.druty.wstep",
+  "atlas.tabela.skroty.druty.linia_zrodla"
+ ],
+ "terminy": {},
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

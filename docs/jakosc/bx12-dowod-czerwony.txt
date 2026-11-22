@@ -1,0 +1,86 @@
+BX12 — dowody czerwieni przed kodem (08-programista build, 2026-11-16)
+
+== PU-134 + CG-1 (scenariusz 30) ==
+1) Katalog: Pokrycie PU-134 zmienione na „oczekujący: …30-nfr-dos-002-duzy-tekst.yaml:20/26/48/64/65” przy scenariuszu BEZ tagów (stan sprzed poprawki):
+$ node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu oczekujacy
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu przypadki-uzycia
+::error::Kontrola 2: PU-134: e2e/scenariusze/30-nfr-dos-002-duzy-tekst.yaml bez tagu PU-134
+(+ „nie jest asercją” / „nie istnieje” dla przesunięcia o 3 linie tagów — przed dodaniem tagów numeracja starego pliku). Po dodaniu tagów: „Kontrola 2: zielona”.
+2) CG-1: tests/jakosc/bx12-cg1-scenariusze-bez-martwych-wzorcow.test.ts na starym nagłówku scenariusza 30:
+  ✕ CG-1: scenariusze nie odwołują się do nieistniejącego docs/design/wzorce-zrzuty/
+    - Array []   + Array [ "30-nfr-dos-002-duzy-tekst.yaml" ]
+Po poprawce komentarza: ✓ (1 test).
+
+== CK-01 (scen. 105, kontrola pozytywna obrotu), 2026-11-16 ==
+Czerwone 1: po dopisaniu kontroli w scen. 105 (przed poprawką numerów linii w katalogu): `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog` → "Kontrola 2: CZERWONA (5)" (PU-071: …105….yaml:30/:38/:49 „nie jest asercją”, :58/:67 „nie istnieje”).
+Czerwone 2: `npx jest tests/jakosc` → 4 testy czerwone: ch01-okno-w-scenariuszu-105 (6 obrotów → 7; asercja „portrait” po obrocie kontrolnym), maestro-scenariusze (po setOrientation PORTRAIT brak asercji; P-091 9a: scenariusz sprawdza wartość licznika bez tagu stan-licznika). Poprawki: asercja „portrait” po powrocie do pionu, tag stan-licznika, test CH-01 rozróżnia obrót kontrolny.
+Mutacja: usunięcie asercji „window: landscape” (linia 25) → ch01-okno-w-scenariuszu-105 czerwony (kontrola nie znaleziona); po przywróceniu zielony.
+Zielone: `npx jest tests/jakosc` → 77 suites / 989 testów; katalog „Kontrola 2: zielona”.
+
+== CK-02 (scen. 91, wybór wzoru przed restartem), 2026-11-16 ==
+Scenariusz Maestro działa tylko w CI iOS (tu go nie uruchomię), więc czerwień regresji pokazuje rozumowanie z kodu, nie przebieg: `wzorDoOtwarcia` bez zapisanego wyboru bierze lista[0] posortowaną po nazwie NOCASE (`src/przypadki-uzycia/wzor.ts:148-153,172`) = PDF „Sleeve chart”; scenariusz przed restartem wybiera „Test pattern” (zdjęcie, drugi po nazwie) i po restarcie asertuje „Photo.*” — regresja `zapamietajWzor` otworzyłaby PDF i asercja padnie.
+Czerwone (struktura): po zmianie scenariusza `bramka-przypadki-uzycia.mjs katalog` → "Kontrola 2: CZERWONA (1)": PU-290 …91….yaml:87 „nie jest asercją” (stare numery linii); po poprawce numerów w pokryciu → zielona. `npx jest tests/jakosc` zielone.
+Zachowane: dowód, że zakreślenie PDF przeżyło restart (po restarcie przełączenie na „Sleeve chart” → „1 highlight”, linie 99-100).
+
+== CK-03 (test PU-191: ID decyzji, devDependencies, lockfile), 2026-11-16 ==
+Czerwone (przed zmianą `naruszenia`): `npx jest tests/jakosc/pu-191` → 4 failed / 14 passed: (a) wpis z ID P-999, (b) @sentry/react-native w devDependencies, (c) produkcyjny pakiet przechodni @sentry/core w lockfile, plugin ./plugins/moj-analytics w app.json.
+Zielone po zmianie: 18 passed; `npm run typecheck` czysto.
+Mutacje na plikach repo (po każdej przywrócone `git checkout`), test PU-191 pada za każdym razem:
+ (a) zależność `expo-nowy` + wpis „P-999 dopisane” na liście dozwolonych → 1 failed (test repo);
+ (b) `@sentry/react-native` w devDependencies → 3 failed;
+ (c1) plugin `./plugins/moj-analytics` w app.json → 3 failed;
+ (c2) `node_modules/@sentry/core` jako pakiet produkcyjny w package-lock.json → 2 failed.
+Ograniczenie (nazwane): kontrola (a) sprawdza, że ID ISTNIEJE w docs/decyzje.md; wpis z prawdziwym, ale nietrafionym ID (np. „P-913 dopisane”) przejdzie — pełna kontrola wymagałaby, by wiersz decyzji nazywał pakiet [DO USTALENIA: czy chcecie tego].
+
+== KO-105: PU-146 i PU-150 (odnośnik do istniejących testów), 2026-11-16 ==
+Czerwone: po zmianie Pokrycia na „z testem: tests/…” (przed dopisaniem PU-NNN w tytułach testów) `node scripts/jakosc/bramka-przypadki-uzycia.mjs katalog`:
+Kontrola 2: CZERWONA (4)
+::error::Kontrola 2: PU-146: tests/ekrany/bezpieczny-ipad.test.tsx nie wymienia PU-146
+::error::Kontrola 2: PU-146: tests/domena/wzor/orientacja-ekranu.test.ts nie wymienia PU-146
+::error::Kontrola 2: PU-150: tests/ekrany/wzor-trasa-znacznik.test.tsx nie wymienia PU-150
+::error::Kontrola 2: PU-150: tests/domena/wzor/znacznik-ustawianie.test.ts nie wymienia PU-150
+Zielone: po dopisaniu „PU-146 ·”/„PU-150 ·” do tytułów czterech testów — Kontrola 2: zielona; 25 testów tych plików zielone.
+
+== KO-105: PU-147 (nowy test komponentowy tests/ekrany/pu-147-ipad-przewodnik.test.tsx), 2026-11-16 ==
+Czerwone (struktura): po zmianie Pokrycia na „z testem: …” przed dopisaniem PU-147 do tytułu tests/dane/przewodnik-przeczytane.test.ts:37 → "Kontrola 2: CZERWONA (1)": PU-147: tests/dane/przewodnik-przeczytane.test.ts nie wymienia PU-147. Zielone po dopisaniu.
+Mutacje źródła (po każdej przywrócone): KOLUMNA_TRESCI_MAKS 640→700 (src/domena/uklad.ts) → 1 failed (test 1); `przeczytanePrzewodnika` zwraca stałą ['cel'] (src/przypadki-uzycia/przewodnik.ts) → test pada na „Read: 0 of 42”. Bez mutacji: 2 passed.
+Poza testem (częściowo, nazwane w Pokryciu): gest „‹” wstecz i faktyczne otwarcie licznika na iPadzie — scen. 115.
+
+== KO-105: PU-143 i PU-144 (nowy test komponentowy tests/ekrany/pu-ipad-uklad-wzoru-143-144.test.tsx), 2026-11-16 ==
+Test opiera się na prawdziwym `ukladOkna` i ekranie `PrzegladarkaWzoru` (slot za widok natywny). Czerwień = mutacje `src/domena/uklad.ts` (po każdej przywrócone):
+ mut1 `obok = false && …` (kolumna obok nigdy) → 2 failed: PU-143 1180 × 820, PU-144 1180 × 375;
+ mut2 `klasa` zawsze 'regular' → 2 failed: oba przypadki PU-144 (compact);
+ bez mutacji: 4 passed; katalog: Kontrola 2 zielona.
+Poza Jest (częściowo, nazwane w Pokryciu): obrót okna i „+1” w symulatorze iPada — scen. 44 i 46.
+
+== KO-105: PU-148 (nowy test trasy w tests/ekrany/pu-wzor-przelacz-290.test.tsx + PU-148 w tytule tests/dane/wzor-rysunki-odzysk.test.ts), 2026-11-16 ==
+Czerwień (mutacja app/wzor.tsx:112 — usunięte wywołanie `odzyskajRysunki` przy otwarciu wzoru; potem przywrócone): `npx jest tests/ekrany/pu-wzor-przelacz-290` → 1 failed (PU-148), 3 passed. Bez mutacji: 4 passed; z testami odzysku 27 passed; katalog: Kontrola 2 zielona.
+Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem i cofanie w widoku natywnym PencilKit (BX-041) — scen. 116.
+
+== KO-105: PU-012 (nowy test tests/ekrany/pu-012-ipad-zakreslanie.test.tsx), 2026-11-16 ==
+Czerwień (mutacja src/ekrany/WzorPrzegladarka.tsx:117 — „Cofnij” woła naCofnij dwa razy; potem przywrócone, git diff src/ pusty): 1 failed (oczekiwane 1 wywołanie). Bez mutacji: 1 passed.
+Poza Jest (częściowo, nazwane w Pokryciu): kreska palcem w PencilKit, faktyczne zdjęcie ostatniego pasa, szybka para i restart — scen. 110.
+
+== PU-139 (nowe testy tests/ekrany/pu-139-motyw-ciemny{,-korzen,-przewodnik}.test.tsx), 2026-11-16 ==
+Baza: 5 + 3 + 1 testów zielonych. Czerwień (mutacje w kodzie, każda przywrócona; git status src/ app/ pusty):
+ app/_layout.tsx contentStyle → '#FFFFFF' : korzen 1 failed (stos ekranów);
+ src/kompozycja/Bezpieczny.tsx tło → '#FFFFFF' : korzen 1 failed;
+ src/ekrany/Przewodnik.tsx ekran → '#FFFFFF' : przewodnik 1 failed; szewron „Show ›” → '#FFFFFF' : przewodnik 1 failed;
+ src/ekrany/Ustawienia.tsx tło → '#FFFFFF' : ciemny 1 failed (z 5).
+Nie pokryte (częściowo, nazwane w Pokryciu): przełączenie wyglądu systemu, kontrast na zrzutach, PU-343. Oferty nie mają `Bezpieczny` — root arkusza to `powierzchnia` (zweryfikowane testem, nie zmiana kodu).
+
+== PU-175 (nowy scenariusz Maestro 118; iOS-only, nie do uruchomienia tutaj), 2026-11-16 ==
+Czerwień przed zmianą: PU-175 w katalogu „do zaprogramowania” — brak scenariusza z tagiem PU-175; po zmianie „Kontrola 2” (bramka-przypadki-uzycia.mjs katalog) zielona, a odnośniki :95/:102/:109/:115/:132/:139/:146/:152 wskazują asercje (bramka sprawdza, że linie są asercjami i że scenariusz ma tagi oczekujacy, przypadki-uzycia, PU-175).
+Pierwsze uruchomienie na iOS (CI) dopiero zwiąże scenariusz z aplikacją; do tego czasu `oczekujący`, nie `z testem`. Poprawność tekstów: słowniki de.json/ja.json (dzis.tytul, przewodnik.tytul, oferty.przywroc, licznik.plus_a11y_instrukcja, licznik.przypomnienie) sprawdzone z pliku.
+Test pomocniczy: tests/jakosc/maestro-scenariusze.test.ts był czerwony („jezyk-ja” bez wiersza w e2e/README.md) — dopisany wiersz, test zielony.
+
+== PU-057 (nowy scenariusz Maestro 119; iOS-only), 2026-11-16 ==
+Oczekiwana liczba stron: soffice --headless --convert-to pdf na modules/oczko-wzor/TestyOknaMaszyn/Testy/korpus/{tekst,tabela,obraz}.docx → pdfinfo: Pages: 1 / 1 / 1 (inny silnik niż WKWebView; oczekiwanie z rachunku, nie wynik iOS).
+Czerwień przed zmianą: PU-057 „do zaprogramowania”; scenariusz 53 sprawdza tylko „N of N” (dowolne N), więc dodatkowa pusta strona („Page 2 of 2”) by przeszła. 119 asertuje stałe „Word document · 1 page” i „Page 1 of 1” — z dodatkową pustą stroną padnie. Bramka katalogu „Kontrola 2” zielona (linie :29 :30 :44 :45 :59 :60 to asercje).
+Korekta KO-092 (N z konstrukcji pliku, nie z konwersji): dodany korpus strony.docx (generuj-korpus.mjs: 3 akapity, 2 wymuszone podziały `w:br w:type="page"`), DOCX_STRONY_B64 w pliku pliki-wzoru.ts, przycisk e2e-wzor-word-strony w panele.tsx. Czerwień: `npx jest tests/adaptery/e2e-pliki-wzoru.test.ts tests/ekrany/e2e-panel-wzoru-word.test.tsx` przed implementacją → Tests: 3 failed, 8 passed, 11 total; po implementacji → 11 passed. Kontrola niezależnym silnikiem: soffice → pdfinfo strony.docx: Pages: 3; pdftotext: trzy linie tekstu (po jednej na stronę). Scenariusz 119: czwarta sekcja, asercje :74 „Word document · 3 pages”, :75 „Page 1 of 3”, :78 „Page 3 of 3”; z dodatkową pustą stroną („Page 3 of 4”) padnie.
+
+== PU-135 (nowe scenariusze Maestro 120 i 121, tag osobny-krok = krok AX5 w workflow; iOS-only), 2026-11-16 ==
+Czerwień przed zmianą: PU-135 „do zaprogramowania” — brak scenariusza z tagiem PU-135. Po zmianie bramka katalogu „Kontrola 2” zielona (odnośniki 120:28,29,33,37,38,41,47,55,63,73 i 121:41,53,64,77 to asercje; tagi oczekujacy, przypadki-uzycia, PU-135).
+Selektory sprawdzone w kodzie: dzis-kafel-probka (Dzis.tsx:48,232), historia-miesiac (HistoriaDni.tsx:87), ustawienia-jezyk/-licencje/-oczko-pro (Ustawienia.tsx), licencje-lista/licencje-kroj-bree-serif (Licencje.tsx:87,110; KROJE ma „bree-serif”, licencje.generated.ts:601; id z wielkimi literami odpadają — reguła [a-z0-9-]), oferty-przywroc/-nie-teraz (Oferty.tsx:113,114), wzor-przelacz (WzorTytul.tsx:18), projekt-notatka (Projekt.tsx:209), karta Worda = wzor.word_podglad (WzorPrzegladarka.tsx:161).
+Ryzyka do przebiegu iOS (nie rozstrzygalne tutaj): kroki „Add note”/„Save” przy AX5 (jak 104), widoczność kafli i bloku miesiąca bez przewinięcia.

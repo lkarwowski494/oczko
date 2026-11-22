@@ -1,0 +1,37 @@
+{
+  "wersja": 2,
+  "licznikId": "6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b",
+  "nazwa": "Moss blanket",
+  "wartosc": 0,
+  "znaczenie": "skonczone",
+  "glowa": null,
+  "ostatniPlusMs": null,
+  "dzien": "2026-11-07",
+  "dzienDozwolony": false,
+  "sesjaStartMs": null,
+  "pro": false,
+  "proWaznoscDo": null,
+  "dniWMiesiacu": [
+    {
+      "dzien": "2026-11-01",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-02",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-03",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-04",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-05",
+      "pro": false
+    }
+  ],
+  "przypomnienia": []
+}

@@ -1,0 +1,52 @@
+# BR-DNI-005/S1 (docs/brd/wymagania-dni.md:99): cel 320 rzędów, do wczoraj 140, dziś 22 października, termin 4 listopada → cel na dziś 13 (RD-15-W1).
+# Wyrocznia: wektor BRD. „Do wczoraj” = wpisana wartość 140 dnia 21.10, potem restart z zegarem 22.10. Termin z systemowego wyboru daty inline (P-186):
+# stuknięcie dnia po etykiecie [DO USTALENIA: etykieta komórki dnia UIDatePicker na iOS 26 — potwierdzi pierwszy przebieg]. Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "BR-DNI-005/S1 · Termin 4 XI, 140 z 320 do wczoraj: ‘today 0 of 13 rows’"
+tags:
+  - BR-DNI-005-S1
+  - stan-licznika
+  - PU-043
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-10-21T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/dodaj-czesc-cel.yaml, env: { CEL: "320" } }
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "1"
+      - inputText: "4"
+      - inputText: "0"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "140" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "140" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-10-22T19:30:00" } }
+- assertVisible: { id: "licznik-wartosc", text: "140" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+# „Done by” jest w sekcji „Details” pod wzorami (src/ekrany/Projekt.tsx:207), poniżej ekranu iPhone’a — XCUITest nie zwraca
+# elementów całkiem poza ekranem (przebieg 123: drzewo kończy się na wzor-dodaj [16,807][386,865]). F07-32.
+- scrollUntilVisible: { element: { id: "projekt-termin" } }
+- assertVisible: { id: "projekt-termin" }
+- takeScreenshot: 35-termin-pole-przed-wpisem
+- tapOn: { id: "projekt-termin" }
+- assertVisible: { id: "formularz-termin-data" }
+- tapOn: "Next Month"
+- assertVisible: ".*November 2026.*"
+- tapOn: ".*November 4.*"
+- assertVisible: "Today’s goal: 13 rows. It stays the same all day."
+- takeScreenshot: 35-termin
+- tapOn: { id: "formularz-zapisz" }
+# Linia terminu jest pod nagłówkiem projektu (src/ekrany/Projekt.tsx:119), a ekran stoi przewinięty do „Details” (przebieg 126:
+# `projekt-termin` „Done by, Nov 4”, „Parts” nad górną krawędzią) — przewinięcie w górę. F07-34.
+- scrollUntilVisible: { element: { id: "projekt-linia-terminu" }, direction: UP }
+- assertVisible: { id: "projekt-linia-terminu", text: "Done by Nov 4, today 0 of 13 rows" }

@@ -1,0 +1,23 @@
+# Sprawdzanie adresów wydania (P-349 (3); analogia: Trening `check-urls.yml`, P-315): każdy adres z aplikacji (src/kompozycja/adresy.ts),
+# z metadanych sklepu (docs/wydanie/metadane) i z docs/wydanie/adres-strony.json zwraca 200, a strony Oczka na apps4brew.com mają tę samą
+# treść co site/. Tylko ręcznie, odczyt repozytorium, bez sekretów, bez zapisu, Linux (koszt 0, bez macOS). NIE jest częścią `npm run verify`
+# (verify działa bez sieci). Krok listy przed wysyłką (docs/wydanie/sklep.md §5): po publikacji stron w apps4brew-www i tuż przed zgłoszeniem.
+# Uwaga: przycisk „Run workflow” istnieje dopiero, gdy plik jest na gałęzi domyślnej (sklep.md §2); do tego czasu: `npm run wydanie:adresy`.
+name: Sprawdzenie adresów (ręcznie)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  adresy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Adresy zwracają 200, treść zgodna z site/
+        run: node scripts/wydanie/sprawdz-adresy.mjs

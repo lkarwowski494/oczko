@@ -1,0 +1,81 @@
+(node:1637) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL iOS tests/ekrany/licznik-plus-sciezka-bx20.test.tsx
+  ekran: „+1” zatwierdza raz, gdy wynik niesie pełny stan
+    ✕ wynik z `stan`: jedno zatwierdzenie ekranu na „+1”, `odswiez` niewołane, wartość na ekranie z pełnego stanu (797 ms)
+    ✓ wynik bez `stan` (zgodność wsteczna): `odswiez` po „+1” jak dotąd, wartość poprawna (97 ms)
+    ✕ zachowanie (zapis, wartość, cofnięcie): „+1” ×2, „−1” — wartości 1, 2, 1; zapis ×2; po „−1” odczyt stanu (92 ms)
+  kompozycja na prawdziwej bazie: wynik „+1” niesie ten sam stan, który dałby odczyt po powrocie
+    ✕ `dodajRzad().wartosc.stan` równa się `dzialania.odswiez()` zaraz po „+1” (96 ms)
+    ✕ pierwsze „+1” bez projektu (projekt roboczy): stan z wyniku ma już założony projekt i wartość 1 (38 ms)
+
+  ● ekran: „+1” zatwierdza raz, gdy wynik niesie pełny stan › wynik z `stan`: jedno zatwierdzenie ekranu na „+1”, `odswiez` niewołane, wartość na ekranie z pełnego stanu
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: called with 0 arguments
+
+      41 |     await act(async () => { fireEvent.press(screen.getByTestId('licznik-plus')); });
+      42 |     expect(u.dodajRzad).toHaveBeenCalledTimes(1);
+    > 43 |     expect(u.odswiez).not.toHaveBeenCalled();
+         |                           ^
+      44 |     expect(u.zatwierdzenia()).toBe(1);
+      45 |     expect(tresc('licznik-wartosc')).toContain('1');
+      46 |     expect(screen.getByText('Mist Sweater')).toBeTruthy(); // pole spoza skonczone/dziergany pochodzi z pełnego stanu wyniku, nie z odczytu po powrocie
+
+
+  ● ekran: „+1” zatwierdza raz, gdy wynik niesie pełny stan › zachowanie (zapis, wartość, cofnięcie): „+1” ×2, „−1” — wartości 1, 2, 1; zapis ×2; po „−1” odczyt stanu
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 3
+
+      62 |     expect(u.naMinus).toHaveBeenCalledTimes(1);
+      63 |     expect(tresc('licznik-wartosc')).toContain('1');
+    > 64 |     expect(u.odswiez).toHaveBeenCalledTimes(1); // „−1” zostaje przy odczycie po zapisie
+         |                       ^
+      65 |   });
+      66 | });
+      67 |
+
+
+  ● kompozycja na prawdziwej bazie: wynik „+1” niesie ten sam stan, który dałby odczyt po powrocie › `dodajRzad().wartosc.stan` równa się `dzialania.odswiez()` zaraz po „+1”
+
+    expect(received).toBeDefined()
+
+    Received: undefined
+
+      86 |     if (!w.ok) return;
+      87 |     expect(w.wartosc.skonczone).toBe(18);
+    > 88 |     expect(w.wartosc.stan).toBeDefined();
+         |                            ^
+      89 |     expect(w.wartosc.stan).toEqual(await k.dzialania.odswiez?.());
+      90 |     expect(w.wartosc.stan?.skonczone).toBe(18);
+      91 |   });
+
+
+  ● kompozycja na prawdziwej bazie: wynik „+1” niesie ten sam stan, który dałby odczyt po powrocie › pierwsze „+1” bez projektu (projekt roboczy): stan z wyniku ma już założony projekt i wartość 1
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: undefined
+
+       98 |     expect(w.ok).toBe(true);
+       99 |     if (!w.ok) return;
+    > 100 |     expect(w.wartosc.stan?.skonczone).toBe(1);
+          |                                       ^
+      101 |     expect(w.wartosc.stan).toEqual(await k.dzialania.odswiez?.());
+      102 |   });
+      103 | });
+
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 1 passed, 5 total
+Snapshots:   0 total
+Time:        3.663 s
+--- po zmianie: 5 passed (tests/ekrany/licznik-plus-sciezka-bx20.test.tsx)

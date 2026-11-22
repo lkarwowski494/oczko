@@ -1,0 +1,10 @@
+# Podprzepływ: zamknięcie menu licznika (••• `licznik-menu` i „Cel” `licznik-cel`). Jedno miejsce zmiany sposobu zamknięcia.
+# Od P-586 (a) oba menu to własny arkusz na trasie `app/menu.tsx` z przyciskiem „Cancel” `arkusz-zamknij` (src/ekrany/MenuProjektu.tsx:26, :66),
+# nie UIMenu. Arkusz zajmuje cały ekran, więc stuknięcie „obok” (dawniej w `licznik-projekt`) nie ma celu: przebieg 3 (run 42556852569)
+# 32 step-029 i 12 step-033 — hierarchia zawiera tylko pozycje `menu-*` i `arkusz-zamknij` [16,814][386,858], `licznik-projekt` nie istnieje.
+appId: com.apps4brew.knitting
+name: "podprzepływ: zamknij menu licznika przyciskiem Cancel arkusza"
+---
+- tapOn: { id: "arkusz-zamknij" }
+- assertNotVisible: { id: "menu-wpisz-wartosc|menu-nazwa|menu-cel" }
+- assertVisible: { id: "licznik-plus" }

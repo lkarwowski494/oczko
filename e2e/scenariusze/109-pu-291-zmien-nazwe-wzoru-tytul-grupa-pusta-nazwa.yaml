@@ -1,0 +1,65 @@
+# PU-291 (opis poprawiony 16.11.2026 słowami właściciela, commit 22f5941f): wzór → ••• „Pattern options” → „Rename” → „Pattern name” „Sleeve chart” → „Save”: tytuł paska „Sleeve chart”
+# i ta sama nazwa w grupie wzorów projektu; pusta nazwa nie zmienia nazwy. Część „migawka dla «Udostępnij» niesie tylko liczbę wzorów” leży poza Maestro (rozszerzenie systemowe):
+# tests/ekrany/pu-wzor-nazwa-migawka-291.test.ts (migawka ma `wzory: 2`, żadnej nazwy wzoru) i LogikaTests.swift:193 (`udostepnij.kolejny`).
+# Kod: `wzor-menu` (src/ekrany/WzorPrzegladarka.tsx) → `wzor-zmien-nazwe` → arkusz z `wzor-nazwa-pole` (wypełnione obecną nazwą „Test pattern”, panel E2E src/kompozycja/e2e/panele.tsx:102) i `formularz-zapisz`;
+# pusta nazwa: `zmienNazweWzoru` → `bledne_dane` (src/przypadki-uzycia/wzor.ts:186), arkusz zostaje (tests/ekrany/pu-wzor-przelacz-290.test.tsx, PU-291 część). Tytuł z jednym wzorem to `Text` nagłówka bez testID
+# (src/ekrany/WzorTytul.tsx:28) — selektor po tekście; wiersz w projekcie `projekt-wzor` (src/ekrany/WzorGrupa.tsx:39), z jednym wzorem nagłówek grupy brzmi „Pattern”, od dwóch „Patterns” (en.json projekt.wzor / projekt.wzory;
+# dwa wzory w grupie: test 290, nie Maestro). Klawiatura tekstowa: wpis w retry (e2e/README.md reguła 6), chowanie pressKey Enter. Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "PU-291 · Wzór → „Rename” → „Sleeve chart”: tytuł paska i wiersz wzoru w projekcie z nową nazwą; pusta nazwa nie zapisuje"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-291
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: "Test pattern"
+# --- 1. pusta nazwa: arkusz zostaje, nazwa bez zmiany ---
+- tapOn: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-zmien-nazwe" }
+- tapOn: { id: "wzor-zmien-nazwe" }
+- extendedWaitUntil: { visible: { id: "wzor-nazwa-pole" }, timeout: 20000 }
+- assertVisible: { id: "wzor-nazwa-pole", text: "Test pattern" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wzor-nazwa-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - assertNotVisible: { id: "wzor-nazwa-pole", text: ".*Test pattern.*" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "wzor-nazwa-pole" } # pusta nazwa nie zapisuje: arkusz stoi dalej
+- takeScreenshot: 109-pusta-nazwa
+# --- 2. „Sleeve chart” → „Save”: tytuł paska ---
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wzor-nazwa-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "Sleeve chart"
+      - assertVisible: { id: "wzor-nazwa-pole", text: "Sleeve chart" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { notVisible: { id: "wzor-nazwa-pole" }, timeout: 20000 }
+- assertVisible: "Sleeve chart"
+- assertNotVisible: "Test pattern"
+- takeScreenshot: 109-tytul-sleeve-chart
+# --- 3. ta sama nazwa w grupie wzorów projektu ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-projekt-wejscie" }, timeout: 20000 }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- scrollUntilVisible: { element: { id: "projekt-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "projekt-wzor", text: "Sleeve chart.*" }
+- assertNotVisible: { id: "projekt-wzor", text: ".*Test pattern.*" }
+- takeScreenshot: 109-projekt-grupa-wzorow

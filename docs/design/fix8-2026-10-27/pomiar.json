@@ -1,0 +1,320 @@
+{
+ "320": {
+  "licznik-przed": {
+   "srodek_pt": 264,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-a": {
+   "srodek_pt": 264,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-b": {
+   "srodek_pt": 264,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-c": {
+   "srodek_pt": 264,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-d": {
+   "srodek_pt": 264,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  }
+ },
+ "390": {
+  "licznik-przed": {
+   "srodek_pt": 540,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-a": {
+   "srodek_pt": 540,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-b": {
+   "srodek_pt": 540,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-c": {
+   "srodek_pt": 540,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-d": {
+   "srodek_pt": 540,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  }
+ },
+ "430": {
+  "licznik-przed": {
+   "srodek_pt": 628,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-a": {
+   "srodek_pt": 628,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-b": {
+   "srodek_pt": 628,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-c": {
+   "srodek_pt": 628,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-d": {
+   "srodek_pt": 628,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  }
+ },
+ "320-ax5": {
+  "licznik-przed": {
+   "srodek_pt": 0,
+   "plus_pt": 338,
+   "liczba": false,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-a": {
+   "srodek_pt": 0,
+   "plus_pt": 338,
+   "liczba": false,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-b": {
+   "srodek_pt": 0,
+   "plus_pt": 338,
+   "liczba": false,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-c": {
+   "srodek_pt": 0,
+   "plus_pt": 338,
+   "liczba": false,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-d": {
+   "srodek_pt": 158,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": false
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": false
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": false,
+   "pole_widoczne": false
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": false
+  }
+ },
+ "390-ax5": {
+  "licznik-przed": {
+   "srodek_pt": 324,
+   "plus_pt": 278,
+   "liczba": false,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-a": {
+   "srodek_pt": 324,
+   "plus_pt": 278,
+   "liczba": true,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-b": {
+   "srodek_pt": 324,
+   "plus_pt": 278,
+   "liczba": false,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-c": {
+   "srodek_pt": 324,
+   "plus_pt": 278,
+   "liczba": true,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "licznik-d": {
+   "srodek_pt": 434,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": false,
+   "teraz": false
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  }
+ },
+ "430-ax5": {
+  "licznik-przed": {
+   "srodek_pt": 473,
+   "plus_pt": 217,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-a": {
+   "srodek_pt": 473,
+   "plus_pt": 217,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-b": {
+   "srodek_pt": 473,
+   "plus_pt": 217,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": true
+  },
+  "licznik-c": {
+   "srodek_pt": 473,
+   "plus_pt": 217,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": false
+  },
+  "licznik-d": {
+   "srodek_pt": 522,
+   "plus_pt": 168,
+   "liczba": true,
+   "nazwa_czesci": true,
+   "teraz": false
+  },
+  "klawiatura-1-naglowek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-2-pasek": {
+   "save_widoczny": true,
+   "pole_widoczne": true
+  },
+  "klawiatura-3-w-tresci": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  },
+  "klawiatura-4-done": {
+   "save_widoczny": false,
+   "pole_widoczne": true
+  }
+ }
+}

@@ -1,0 +1,26 @@
+# Podprzepływ: menu ••• → „Name project and part” → nazwa „Harbor” (znak po znaku; klawiatura tekstowa chowana pressKey Enter, nie hideKeyboard).
+# Wzór obejścia klawiatury symulatora: Trening .maestro/04-plank-stoper.yaml:13-29 (retry + eraseText + inputText po znaku + assertVisible wartości pola).
+appId: com.apps4brew.knitting
+name: "podprzepływ: nazwa projektu Harbor"
+---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-nazwa" }
+- tapOn: { id: "menu-nazwa" }
+- assertVisible: { id: "formularz-nazwa-projektu" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-projektu" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "H"
+      - inputText: "a"
+      - inputText: "r"
+      - inputText: "b"
+      - inputText: "o"
+      - inputText: "r"
+      - assertVisible: { id: "formularz-nazwa-projektu", text: "Harbor" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }

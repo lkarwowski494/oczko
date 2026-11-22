@@ -1,0 +1,15 @@
+const { DatabaseSync } = require('node:sqlite');
+const db = new DatabaseSync(':memory:');
+db.exec('PRAGMA foreign_keys=ON');
+console.log('sqlite', db.prepare('select sqlite_version() v').get().v, 'foreign_keys', db.prepare('PRAGMA foreign_keys').get().foreign_keys);
+const reset = () => db.exec(`DROP TABLE IF EXISTS child; DROP TABLE IF EXISTS parent;
+ CREATE TABLE parent(id INTEGER PRIMARY KEY, name TEXT);
+ CREATE TABLE child(id INTEGER PRIMARY KEY, parent_id INTEGER NOT NULL REFERENCES parent(id) ON DELETE CASCADE);
+ INSERT INTO parent VALUES(1,'a'); INSERT INTO child VALUES(10,1),(11,1);`);
+const n = () => db.prepare('SELECT count(*) c FROM child').get().c;
+reset(); console.log('przed REPLACE: dzieci =', n());
+db.exec(`INSERT OR REPLACE INTO parent(id,name) VALUES(1,'b')`);
+console.log('po INSERT OR REPLACE: dzieci =', n(), 'parent =', JSON.stringify(db.prepare('SELECT * FROM parent').all()));
+reset(); console.log('przed UPSERT: dzieci =', n());
+db.exec(`INSERT INTO parent(id,name) VALUES(1,'b') ON CONFLICT(id) DO UPDATE SET name=excluded.name`);
+console.log('po UPSERT: dzieci =', n(), 'parent =', JSON.stringify(db.prepare('SELECT * FROM parent').all()));

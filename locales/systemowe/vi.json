@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko chỉ dùng camera khi bạn chụp ảnh mẫu đan, dự án hoặc nhãn len. Ảnh vẫn được lưu trên thiết bị của bạn."
+  }
+}

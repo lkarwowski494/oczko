@@ -1,0 +1,24 @@
+# Zadanie 1: Świeża instalacja: policz pierwszy rząd (PR-01)
+przejscie/z1-k1.png	start
+przejscie/z1-k2.png	po stuknięciu +1 row
+# Zadanie 2: Przypadkowo stuknięto trzy razy w sekundę: cofnij (PR-02, F-47)
+przejscie/z2-k1.png	po trzech szybkich stuknięciach
+przejscie/z2-k2.png	po stuknięciu Undo w banerze
+# Zadanie 3: Sweter: nazwij, ustaw cel 96, przenieś robótkę z rzędu 46, dodaj przypomnienie „zamykanie co 6 rzędów 8 razy od rzędu 12”, dodaj rząd (PR-03, PR-04, PR-13)
+przejscie/z3-k1.png	menu •••
+przejscie/z3-k2.png	formularz nazwy
+przejscie/z3-k3.png	formularz celu
+przejscie/z3-k4.png	wpisanie numeru rzędu 46
+przejscie/z3-k5.png	formularz przypomnienia z podglądem rzędów
+przejscie/z3-k6.png	potwierdzenie przypomnienia
+przejscie/z3-k7.png	ekran po zapisaniu (rząd 46 skończony)
+przejscie/z3-k8.png	po +1: skończony 47, teraz rząd 48 z instrukcją
+# Zadanie 4: Następny wieczór, darmowe dni wykorzystane: dodaj rząd (PR-09, BR-ZAK-006)
+przejscie/z4-k1.png	nowy wieczór
+przejscie/z4-k2.png	po stuknięciu +1 row na limicie
+przejscie/z4-k3.png	See Oczko Pro
+przejscie/z4-k4.png	wariant do decyzji: limit pokazany zawczasu, zamiast przycisku +1
+# Zadanie 5: Skończ projekt i zapisz, ile włóczki zostało (PR-07, U-9)
+przejscie/z5-k1.png	potwierdzenie ukończenia
+przejscie/z5-k2.png	karta ukończenia z pytaniem o włóczkę
+przejscie/z5-k3.png	po Done

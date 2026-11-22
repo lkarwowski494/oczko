@@ -1,0 +1,17 @@
+{
+  "_opis": "Jedyna definicja list stanów i rodzajów (ADR-0013). Kod (src/domena) importuje ją; test „stany ⊆ CHECK” porównuje z schemat.sql.",
+  "projekt.stan": ["w_toku", "ukonczony"],
+  "projekt.narzedzie": ["druty", "szydelko"],
+  "licznik.rodzaj": ["rzedy", "oczka"],
+  "licznik.znaczenie": ["skonczone", "w_trakcie"],
+  "zdarzenie.rodzaj": ["plus", "minus", "wpisanie", "zerowanie", "cofniecie", "rozstrzygniecie"],
+  "zdarzenie.zrodlo": ["aplikacja", "ekran_blokady", "zegarek", "synchronizacja", "import"],
+  "zdarzenie.urzadzenie_rodzaj": ["iphone", "ipad"],
+  "sesja.stan": ["trwa", "wstrzymana", "zakonczona"],
+  "wzor.zrodlo": ["pdf", "obraz", "www", "word"],
+  "narzedzie.rodzaj": ["druty", "szydelko", "inne"],
+  "obliczenie.rodzaj": ["oczka_z_probki", "jednostki", "grubosc"],
+  "poczekalnia.rodzaj_rekordu": ["zdarzenie", "encja"],
+  "poczekalnia.powod": ["brak_rodzica", "brak_encji", "nowsza_wersja"],
+  "poczekalnia.zrodlo": ["synchronizacja", "import", "ekran_blokady", "zegarek"]
+}

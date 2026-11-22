@@ -1,0 +1,26 @@
+Przebiegi CI na SHA kandydata a830eb21bfa5bf0ec148f9081a66f9f37732675d (build 1221, tag v1.0.0-b1221). Odczyt przez MCP GitHub, 2026-11-19.
+
+Jakość · Linux   #783  run 44266291602   success
+Jakość · iOS     #216  run 44296519874 attempt 1 (44266309347)  failure (maszyna/zadanie; patrz uwaga niżej), zastąpiony attemptem 2
+Jakość · iOS     #217  run 44296519874 attempt 2  success, z wyjątkiem informacyjnego `eksperymenty-wzoru` (W1–W3, continue-on-error)
+   zadania attempt 2 (conclusion): build success; swift-test success; zegarek-ikona success;
+   e2e część 1 iPhone success (Scenariusze 12:51→14:45, AX5 osobny krok 14:45→14:51);
+   e2e część 2 iPhone success (15:04→16:39, AX5 16:39→16:43);
+   e2e część 3 iPhone success (12:11→13:45);
+   e2e część 4 iPhone success (12:10→13:33, AX5 13:33→13:38);
+   e2e część 1 iPad success (12:46→13:15);
+   eksperymenty-wzoru failure (informacyjny: continue-on-error w jakosc-ios.yml, krok "W1–W3").
+   Katalog: od P-834 każdy przebieg uruchamia wszystkie scenariusze poza tagiem `oczekujacy` (jakosc-ios.yml:259-261), więc 4 części iPhone + iPad cz. 1 = pełny katalog na a830eb21.
+TestFlight       #22   run 44353461752  success (bramka, PU, verify, swift test, kontrola .ipa, wysyłka, "Build 1221: VALID", tag)
+   verify w buildzie: Test Suites 726 passed/726; Tests 26 skipped, 7929 passed, 7955 total (log 2026-11-18T17:10:42Z)
+   BUILD_NUMBER 1221, OSTATNI 1201 (ASC)  -> 1221 > 1201
+   kontrola-ipa.sh: "Wynik: błędów 0, uwag 2" (17:26:09Z); wyciąg: kontrola-ipa-1221.txt
+ci.yml           brak przebiegu na a830eb21 (wyzwalacz tylko main/PR/ręcznie); ten sam npm run verify biegł w Linux i TestFlight.
+
+Po a830eb21 (integracja claude/youthful-pasteur-kx83sn, HEAD b106e210):
+Jakość · Linux   run 44505505468 (e3e7fe9e)  krok "Kolejność testów losowa" CZERWONY  (patrz kolejnosc-losowa.txt)
+Jakość · Linux   run 44533633202 (b106e210)  krok "Kolejność testów losowa" CZERWONY  (ten sam test)
+Zrzuty sklepu    run 44505569101 (e3e7fe9e)  workflow_dispatch; zadania zrzutów iphone 1/2, ipad 1/2 success; job "komplet" failure na kroku "Test ramek i podpisów" (ImageMagick 7 vs `%[channels]`, naprawione w P-989)
+Zrzuty sklepu    run 44533640642 (b106e210)  zrzuty_z_przebiegu=44505569101 (ZR1): plan, komplet success; build i zrzuty pominięte (surowe zrzuty z 44505569101); artefakt sklep-zrzuty-ramki 14535281849
+
+Uwaga o attemptcie 1 (#216, run 44266309347): przyczyny nie badano; zasada CI z CLAUDE.md dopuszcza jedno ponowienie, a attempt 2 jest zielony na tym samym SHA.

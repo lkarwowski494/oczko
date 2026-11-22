@@ -1,0 +1,5 @@
+{
+  "_opis": "Adresy dla App Store Connect (Support URL, Privacy Policy URL, Marketing URL). Pochodne od docs/wydanie/adres-strony.json (baza + polityka/wsparcie) — pilnuje tests/wydanie/asc-metadane.test.ts. Marketing URL: opcjonalny, brak.",
+  "privacyPolicyUrl": "https://apps4brew.com/oczko/privacy.html",
+  "supportUrl": "https://apps4brew.com/oczko/support.html"
+}

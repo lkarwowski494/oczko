@@ -1,0 +1,25 @@
+# BR-DAN-001/S1 (docs/brd/wymagania-dane.md:9): baza na urządzeniu jest źródłem prawdy — brak sieci, projekt z nazwą i licznikiem, zabicie procesu.
+# Wyrocznia: NFR-DAN-002. Sieć: argument startu oczkoE2eSiec=brak (adapter sieci „brak połączenia”, build E2E).
+# Bloker wydania (docs/brd/README.md) — w `podstawowy` (bramka TestFlight) od DEC-08 (a) (P-418, P-430; M1-audytor-generalny-047).
+appId: com.apps4brew.knitting
+name: "BR-DAN-001/S1 · Bez sieci: projekt, nazwa i rzędy zapisane na urządzeniu po zabiciu procesu"
+tags:
+  - BR-DAN-001-S1
+  - podstawowy
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: { file: subflows/nazwij-projekt-ze-zrzutem.yaml, env: { ZRZUT: "11-formularz-nazwa-przed-zapisem" } }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T21:00:00" } }
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertNotVisible: { id: "blad-zapisu" }
+- takeScreenshot: 11-bez-sieci-po-restarcie

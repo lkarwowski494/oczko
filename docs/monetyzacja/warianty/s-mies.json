@@ -1,0 +1,1443 @@
+{
+ "data": "2026-10-21",
+ "waluta": "PLN",
+ "tryb": "build",
+ "wariant": "subskrypcja miesięczna 2,99 USD",
+ "kursy": {
+  "USD": {
+   "kurs": 3.8889,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "CAD": {
+   "kurs": 2.768,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "GBP": {
+   "kurs": 5.2112,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "JPY": {
+   "kurs": 0.024591,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "NOK": {
+   "kurs": 0.4148,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "AUD": {
+   "kurs": 2.7329,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  },
+  "EUR": {
+   "kurs": 4.3641,
+   "zrodlo": "NBP tabela 205/A/NBP/2026 z 2026-10-21"
+  }
+ },
+ "prog": {
+  "kwota": 500,
+  "waluta": "USD",
+  "zrodlo": "karta „Stan projektu” (D-024), 2026-10-21"
+ },
+ "platformy": {
+  "ios": {
+   "koszty_roczne": 0,
+   "koszty_zrodlo": "D-024: Apple Developer to koszt portfela; aplikacja bez usług płatnych (pomysł, ZAL-003), 2026-10-21"
+  }
+ },
+ "sklepy": [
+  {
+   "platforma": "ios",
+   "kraj": "us",
+   "waluta": "USD",
+   "vat": {
+    "stawka": 0.0,
+    "zrodlo": "[ZAŁOŻENIE] ceny App Store w US bez podatku (doliczany przy zakupie); brak przeczytanego źródła Apple, OP-05; 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 3863,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=us, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 6899,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=us, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 793,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=us, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 1298,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=us, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 1208,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=us, 2026-10-21 (Crochet row & stitch counter)"
+    },
+    {
+     "oceny": 286,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=us, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 420,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=us, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 326,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=us, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 325,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=us, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 6024,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=us, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 5225,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=us, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 580,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=us, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 181,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=us, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 138,
+     "wydanie": "2009-07-01",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Knit Row Counter)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-04-15",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Easy Knit Row Counter)"
+    },
+    {
+     "oceny": 63,
+     "wydanie": "2025-11-18",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: CozyKnit: Knitting Companion)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-10-22",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Row Counter for Knitting)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-29",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: RowKept: Knitting Row Counter)"
+    },
+    {
+     "oceny": 2,
+     "wydanie": "2023-01-24",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: KnitMe — Row counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-20",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Simple row counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-12-01",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Knitting Row Counter & Tracker)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-08-30",
+     "zrodlo": "itunes.apple.com/search country=us, 2026-10-21 (lokalne N: Row Counter for Knit & Crochet)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 2.99,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "ca",
+   "waluta": "CAD",
+   "vat": {
+    "stawka": 0.0,
+    "zrodlo": "[ZAŁOŻENIE] ceny App Store w CA bez podatku (GST 5% doliczany; PwC Canada „Last reviewed - 12 June 2026”); OP-05; 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 754,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=ca, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 955,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=ca, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 67,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=ca, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 188,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=ca, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 91,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=ca, 2026-10-21 (Crochet & knit stitch counter)"
+    },
+    {
+     "oceny": 20,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=ca, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 50,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=ca, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 58,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=ca, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 55,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=ca, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 432,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=ca, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 797,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=ca, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 78,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=ca, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 35,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=ca, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 31,
+     "wydanie": "2009-07-01",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Knit Row Counter)"
+    },
+    {
+     "oceny": 5,
+     "wydanie": "2025-11-18",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: CozyKnit: Knitting Companion)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-01-10",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: KnitCounter: Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-15",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Easy Knit Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-20",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Simple row counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-06-17",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Stitch: Row Counter & Tracker)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-10-22",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Row Counter for Knitting)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2024-12-01",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Knitting Row Counter & Tracker)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2017-06-28",
+     "zrodlo": "itunes.apple.com/search country=ca, 2026-10-21 (lokalne N: Knitting Stitch or Row Counter)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 4.09,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "gb",
+   "waluta": "GBP",
+   "vat": {
+    "stawka": 0.2,
+    "zrodlo": "gov.uk/vat-rates: „Standard rate 20%”, odczyt 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 502,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=gb, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 365,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=gb, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 92,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=gb, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 200,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=gb, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 162,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=gb, 2026-10-21 (Crochet & knit stitch counter)"
+    },
+    {
+     "oceny": 24,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=gb, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 49,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=gb, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 71,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=gb, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 20,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=gb, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 298,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=gb, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 598,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=gb, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 414,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=gb, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 40,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=gb, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 36,
+     "wydanie": "2009-07-01",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: Knit Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-10-11",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: Crochet Row Counter - Picot)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-15",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: Easy Knit Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-10-22",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: Row Counter for Knitting)"
+    },
+    {
+     "oceny": 4,
+     "wydanie": "2025-11-18",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: CozyKnit: Knitting Companion)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2023-01-24",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: KnitMe — Row counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-01-10",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: KnitCounter: Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-16",
+     "zrodlo": "itunes.apple.com/search country=gb, 2026-10-21 (lokalne N: Crochet Row Counter - RowTally)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 2.99,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "jp",
+   "waluta": "JPY",
+   "vat": {
+    "stawka": 0.1,
+    "zrodlo": "taxsummaries.pwc.com/japan („Last reviewed - 07 August 2026”): „The general rate is 10%”, odczyt 2026-10-21 (szczebel 4)"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 29,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=jp, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 22,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=jp, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 3,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=jp, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 50,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=jp, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 3,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=jp, 2026-10-21 (Crochet row & stitch counter)"
+    },
+    {
+     "oceny": 3,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=jp, 2026-10-21 (StitchTally かぎ針編み数カウンター)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=jp, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=jp, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=jp, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 7,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=jp, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 69,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=jp, 2026-10-21 (kntd:discover - Ravelry お供)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=jp, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=jp, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 844,
+     "wydanie": "2021-03-10",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: 編み物カウンター２)"
+    },
+    {
+     "oceny": 227,
+     "wydanie": "2023-09-06",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: 編みものカウンター)"
+    },
+    {
+     "oceny": 139,
+     "wydanie": "2026-02-03",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: 編み物カウンター あみも かぎ針編みと編み図の編み物アプリ)"
+    },
+    {
+     "oceny": 4,
+     "wydanie": "2026-07-19",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: かんたん編み物カウンター - 編み図・段数・作品記録・かぎ針)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2025-05-29",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: Knittly - 編み物カウンター)"
+    },
+    {
+     "oceny": 85,
+     "wydanie": "2018-03-07",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: 編み物カウンター)"
+    },
+    {
+     "oceny": 45,
+     "wydanie": "2020-05-12",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: Knit2 - 編み物カウンター)"
+    },
+    {
+     "oceny": 12,
+     "wydanie": "2025-07-24",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: あみつむぎ - 編み物の作品記録/毛糸管理/カウンター)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2025-11-02",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: 編み物カウンター [毛糸の庵])"
+    },
+    {
+     "oceny": 35,
+     "wydanie": "2011-10-25",
+     "zrodlo": "itunes.apple.com/search country=jp, 2026-10-21 (lokalne N: Knit - 編み物カウンター)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 458,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "no",
+   "waluta": "NOK",
+   "vat": {
+    "stawka": 0.25,
+    "zrodlo": "skatteetaten.no/en/rates/value-added-tax: „Normal rate 25 %”, odczyt 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 13,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=no, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 61,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=no, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 7,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=no, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 210,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=no, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 19,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=no, 2026-10-21 (Crochet & knit stitch counter)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=no, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 6,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=no, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=no, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 2,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=no, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 25,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=no, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 79,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=no, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=no, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 684,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=no, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 125,
+     "wydanie": "2023-03-06",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Strikketeller)"
+    },
+    {
+     "oceny": 4,
+     "wydanie": "2023-12-10",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Knitting Helper)"
+    },
+    {
+     "oceny": 3,
+     "wydanie": "2009-07-01",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Knit Row Counter)"
+    },
+    {
+     "oceny": 18,
+     "wydanie": "2021-04-14",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Min strikkejournal)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-07-27",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Row Counter: CraftCounter)"
+    },
+    {
+     "oceny": 6,
+     "wydanie": "2024-01-16",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Easy Row Counter, Count Rows)"
+    },
+    {
+     "oceny": 527,
+     "wydanie": "2021-09-27",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: KNIT – Knitting journal)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2021-04-07",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Knitting - Crochet Row Counter)"
+    },
+    {
+     "oceny": 2,
+     "wydanie": "2023-09-06",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Knitting Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-20",
+     "zrodlo": "itunes.apple.com/search country=no, 2026-10-21 (lokalne N: Simple row counter)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 37.66,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "au",
+   "waluta": "AUD",
+   "vat": {
+    "stawka": 0.1,
+    "zrodlo": "taxsummaries.pwc.com/australia („Last reviewed - 12 October 2026”): „GST at a rate of 10%”, odczyt 2026-10-21 (szczebel 4)"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 254,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=au, 2026-10-21 (My Row Counter, Knit & Crochet)"
+    },
+    {
+     "oceny": 292,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=au, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 44,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=au, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 106,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=au, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 41,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=au, 2026-10-21 (Crochet & knit stitch counter)"
+    },
+    {
+     "oceny": 12,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=au, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 20,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=au, 2026-10-21 (Easy Knitty Row Counter knit)"
+    },
+    {
+     "oceny": 28,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=au, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 17,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=au, 2026-10-21 (StashBot: Knitting & Crochet)"
+    },
+    {
+     "oceny": 374,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=au, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 328,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=au, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 80,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=au, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 14,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=au, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 16,
+     "wydanie": "2009-07-01",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Knit Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-10-11",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Crochet Row Counter - Picot)"
+    },
+    {
+     "oceny": 3,
+     "wydanie": "2025-11-18",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: CozyKnit: Knitting Companion)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-01-10",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: KnitCounter: Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2023-01-24",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: KnitMe — Row counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-10-22",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Row Counter for Knitting)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-15",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Easy Knit Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2021-04-07",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Knitting - Crochet Row Counter)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-12-01",
+     "zrodlo": "itunes.apple.com/search country=au, 2026-10-21 (lokalne N: Knitting Row Counter & Tracker)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 4.49,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "de",
+   "waluta": "EUR",
+   "vat": {
+    "stawka": 0.19,
+    "zrodlo": "europa.eu/youreurope VAT rates („Last checked: 13/07/2026”): Germany standard 19, odczyt 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 364,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=de, 2026-10-21 (Zähl Mich - Reihenzähler)"
+    },
+    {
+     "oceny": 141,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=de, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 26,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=de, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 115,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=de, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 41,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=de, 2026-10-21 (Häkeln & Strick Lehrer Crochet)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=de, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 65,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=de, 2026-10-21 (Reihenzähler Stricken)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=de, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 8,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=de, 2026-10-21 (StashBot: Stricken & Häkeln)"
+    },
+    {
+     "oceny": 82,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=de, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 334,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=de, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 9,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=de, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 35,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=de, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-16",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Reihenzähler - RowTally)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-07-27",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Häkeln Stricken Reihenzähler)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-08-15",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Häkeln & Stricken Reihenzähler)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-06-10",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Reihenzähler: Häkeln Stricken)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-23",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Reihenzähler: Stricken, Häkeln)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-12-01",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Reihenzähler fürs Stricken)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-10-01",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: Ullie: Stricken & Reihenzähler)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-10-03",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: StrickKumpel: Stricken & Wolle)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-08-06",
+     "zrodlo": "itunes.apple.com/search country=de, 2026-10-21 (lokalne N: cromu: Häkeln & Stricken)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 3.09,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  },
+  {
+   "platforma": "ios",
+   "kraj": "fr",
+   "waluta": "EUR",
+   "vat": {
+    "stawka": 0.2,
+    "zrodlo": "europa.eu/youreurope VAT rates („Last checked: 13/07/2026”): France standard 20, odczyt 2026-10-21"
+   },
+   "prowizja": {
+    "stawka": 0.15,
+    "zrodlo": "App Store Small Business Program 15% (developer.apple.com/app-store/small-business-program; w UE: developer.apple.com/support/dma-and-apps-in-the-eu), zapis potwierdzony przez właściciela, 2026-10-21"
+   },
+   "konkurenci": [
+    {
+     "oceny": 468,
+     "wydanie": "2018-02-01",
+     "zrodlo": "itunes.apple.com/lookup?id=1342608792&country=fr, 2026-10-21 (Compte Rangs - Tricot Crochet)"
+    },
+    {
+     "oceny": 56,
+     "wydanie": "2018-03-11",
+     "zrodlo": "itunes.apple.com/lookup?id=1058142783&country=fr, 2026-10-21 (knitCompanion knitting & more)"
+    },
+    {
+     "oceny": 9,
+     "wydanie": "2020-07-06",
+     "zrodlo": "itunes.apple.com/lookup?id=1267678125&country=fr, 2026-10-21 (YarnBuddy – Knit and Crochet)"
+    },
+    {
+     "oceny": 23,
+     "wydanie": "2017-07-25",
+     "zrodlo": "itunes.apple.com/lookup?id=1251317736&country=fr, 2026-10-21 (Knitting Chart)"
+    },
+    {
+     "oceny": 25,
+     "wydanie": "2020-12-23",
+     "zrodlo": "itunes.apple.com/lookup?id=1545599414&country=fr, 2026-10-21 (Crochet & knit patterns in app)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-11-12",
+     "zrodlo": "itunes.apple.com/lookup?id=6738016114&country=fr, 2026-10-21 (StitchTally: Row Counter)"
+    },
+    {
+     "oceny": 22,
+     "wydanie": "2021-03-28",
+     "zrodlo": "itunes.apple.com/lookup?id=1557552992&country=fr, 2026-10-21 (Easy Knitty Compte Rang Tricot)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2016-05-04",
+     "zrodlo": "itunes.apple.com/lookup?id=1103338573&country=fr, 2026-10-21 (Crochet and Knit Counter)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2014-10-21",
+     "zrodlo": "itunes.apple.com/lookup?id=928131718&country=fr, 2026-10-21 (StashBot: Tricot et crochet)"
+    },
+    {
+     "oceny": 10,
+     "wydanie": "2017-07-18",
+     "zrodlo": "itunes.apple.com/lookup?id=1234214894&country=fr, 2026-10-21 (Ravit - Ravelry on the hop)"
+    },
+    {
+     "oceny": 221,
+     "wydanie": "2021-08-10",
+     "zrodlo": "itunes.apple.com/lookup?id=1572271760&country=fr, 2026-10-21 (kntd:discover - Ravelry Aide)"
+    },
+    {
+     "oceny": 5,
+     "wydanie": "2022-09-20",
+     "zrodlo": "itunes.apple.com/lookup?id=1619485014&country=fr, 2026-10-21 (Crochet Studio)"
+    },
+    {
+     "oceny": 19,
+     "wydanie": "2023-01-19",
+     "zrodlo": "itunes.apple.com/lookup?id=1634163608&country=fr, 2026-10-21 (Knitandnote: Knitting App)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-09-23",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur de rangs : Tricot)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2024-12-01",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur de Rangs pour Tricot)"
+    },
+    {
+     "oceny": 10,
+     "wydanie": "2025-01-23",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Knitflow — Tricot et crochet)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2023-09-06",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur rangs tricot crochet)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-10-19",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur de rangs tricot DDak)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-07-24",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: KnitNote : Compteur de rangs)"
+    },
+    {
+     "oceny": 4,
+     "wydanie": "2026-09-09",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Tricodex - tricot et compteur)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-08-15",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur Rangs: Tricot Crochet)"
+    },
+    {
+     "oceny": 1,
+     "wydanie": "2026-06-10",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compte-rangs : Crochet Tricot)"
+    },
+    {
+     "oceny": 0,
+     "wydanie": "2026-04-15",
+     "zrodlo": "itunes.apple.com/search country=fr, 2026-10-21 (lokalne N: Compteur Tricot Facile)"
+    }
+   ],
+   "zalozenia": {
+    "instalacje_na_ocene": {
+     "s": [
+      20,
+      60,
+      200
+     ],
+     "zrodlo": "[ZAŁOŻENIE] brak przeczytanego benchmarku; rozrzut pes.–opt. 10× (moduł oplacalnosc)"
+    },
+    "udzial_nowej": {
+     "s": [
+      0.02,
+      0.06,
+      0.2
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część rocznych instalacji narzędzi N, którą zdobędzie Oczko bez płatnej reklamy; rozrzut 10×"
+    },
+    "darmowa_alternatywa": {
+     "s": [
+      0.6,
+      0.8,
+      0.95
+     ],
+     "zrodlo": "[ZAŁOŻENIE] część osób, których nie zatrzyma darmowa alternatywa (darmowe liczniki, notatki, papier)"
+    },
+    "jezyk": {
+     "s": [
+      0.9,
+      1,
+      1
+     ],
+     "zrodlo": "[ZAŁOŻENIE] aplikacja w języku storefrontu (D-026, 35 lokalizacji); pes. za jakość tłumaczenia"
+    },
+    "konwersja": {
+     "s": [
+      0.01,
+      0.021,
+      0.04
+     ],
+     "zrodlo": "[ZAŁOŻENIE] z odczytu: RevenueCat State of Subscription Apps 2026 (revenuecat.com/state-of-subscription-apps, odczyt 2026-10-21): freemium „2.1% download-to-paid by day 35”; „North America’s median D35 download-to-paid rate is 2.6%”; pes. ½ normalnej, opt. ok. 1,5 × NA"
+    }
+   },
+   "produkt": {
+    "id": "miesieczna",
+    "cena_brutto": 3.09,
+    "platnosci_w_roku": 5,
+    "platnosci_zrodlo": "[ZAŁOŻENIE] średnio 5 opłaconych miesięcy na płacącego w pierwszym roku; odnowienia z lat kolejnych pominięte (ostrożnie)"
+   }
+  }
+ ]
+}

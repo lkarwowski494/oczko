@@ -1,0 +1,79 @@
+# PU-057 (T-41; KO-092, P-907): pliki Word z korpusu W1 otwarte jako wzór kończą się na stronie z treścią, a nie na dodatkowej pustej. Oczekiwana liczba stron wynika z KONSTRUKCJI pliku, nie z wyniku konwersji
+# (JAK-02: wynik liczony przez testowany kod nie może być wzorcem): tekst.docx, tabela.docx, obraz.docx to minimalne dokumenty (3 krótkie akapity, tabela 3 × 2, obraz 2 × 2 cale) — 1 strona; strony.docx ma 3 akapity
+# rozdzielone 2 wymuszonymi podziałami strony (`w:br w:type="page"`, `generuj-korpus.mjs`, test `tests/adaptery/e2e-pliki-wzoru.test.ts`) — dokładnie 3 strony, każda z tekstem.
+# Dodatkowa kontrola niezależnym silnikiem (soffice → pdfinfo, 2026-11-16): 1 / 1 / 1 / 3 strony — to nie wzorzec, tylko sprawdzenie, że konstrukcja daje zamierzone N.
+# Czerwony byłby: dodatkowa pusta strona („Page 1 of 2”, „Page 3 of 4”) — stałe N to wykrywa, odwołanie wsteczne „N of N” z 53 nie.
+# Co ten scenariusz nie dowodzi (częściowo): że każda strona ma treść — Maestro nie czyta PDF; wyrocznią są zrzuty 119-*-ostatnia do oceny wzrokiem (jak 53) i test natywny EksperymentyTests.swift (obraz: strona nie jest pusta).
+# Każdy plik na czystej instalacji (OG-07: jeden dokument wzoru naraz), jak 53.
+appId: com.apps4brew.knitting
+name: "PU-057 · Word z korpusu W1 (tekst, tabela, obraz: 1 strona; strony: 3 z wymuszonych podziałów) — ostatnia strona bez dodatkowej pustej"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-057
+  - wzor
+  - stan-licznika
+---
+# --- tekst ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word" }
+- tapOn: { id: "e2e-wzor-word" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 } # 07-jakosc-003: > limit konwersji 60 s (KonwersjaNaPdf.swift:10)
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
+- takeScreenshot: 119-tekst-ostatnia
+# --- tabela ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-tabela" }
+- tapOn: { id: "e2e-wzor-word-tabela" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
+- takeScreenshot: 119-tabela-ostatnia
+# --- obraz ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-obraz" }
+- tapOn: { id: "e2e-wzor-word-obraz" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 1 page" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 1" }
+- takeScreenshot: 119-obraz-ostatnia
+# --- trzy strony z wymuszonych podziałów (N = 3 z konstrukcji pliku, KO-092) ---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-word-strony" }
+- tapOn: { id: "e2e-wzor-word-strony" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 70000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Word document · 3 pages" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 3" }
+- takeScreenshot: 119-strony-pierwsza
+- scrollUntilVisible: { element: { id: "wzor-strona", text: ".*[Pp]age 3 of 3" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 3 of 3" }
+- takeScreenshot: 119-strony-ostatnia

@@ -1,0 +1,34 @@
+# PU-170 (T-115): stoper sesji działa dalej po powrocie z tła; wartość licznika bez zmian.
+# Kod: stoper `licznik-stoper` (etykieta stanu: „Session timer, {czas}, running…”, scen. 37); tło: `pressKey: Home` + `launchApp: { stopApp: false }` (scen. 19, PU-…).
+# „Z rosnącym czasem” = czas w etykiecie po powrocie jest inny niż przed tłem. CE-02: dwa odczyty porównuje `copyTextFrom` → `evalScript` → `assertTrue` (jak scen. 09:31-33, :69-70);
+# etykieta ma sekundy („m:ss”, src/ekrany/Stoper.tsx:23), a powrót z tła trwa dłużej niż sekundę, więc zamrożony stoper z napisem „running” nie przejdzie. Zrzuty 96-przed / 96-po dokumentują stan.
+appId: com.apps4brew.knitting
+name: "PU-170 · Stoper po powrocie z tła nadal „running” z innym (rosnącym) czasem, wartość licznika bez zmian"
+tags:
+  - przypadki-uzycia
+  - PU-170
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- copyTextFrom: { id: "licznik-stoper" }
+- evalScript: ${output.stoperPrzed = maestro.copiedText}
+- assertTrue: ${output.stoperPrzed.indexOf('running') > 0} # odczyt „przed” to etykieta stopera, nie pusty tekst
+- takeScreenshot: 96-przed
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- copyTextFrom: { id: "licznik-stoper" }
+- assertTrue: ${maestro.copiedText != output.stoperPrzed} # czas po powrocie z tła jest inny (rośnie), nie zamrożony
+- takeScreenshot: 96-po

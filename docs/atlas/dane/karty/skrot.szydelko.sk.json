@@ -1,0 +1,78 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.sk",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.sk.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "skip",
+    "skrot": "sk",
+    "twierdzenie": "TRM-EN-037"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "miss",
+    "skrot": null,
+    "twierdzenie": "TRM-GB-006"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "ominąć oczko",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-042"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "hoppa över",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-023"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "пропустить",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-043"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "目をとばす",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-037"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "atlamak",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-035"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "пропускат се",
+    "skrot": "Пр.",
+    "twierdzenie": "TRM-BG-033"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "praleisti",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-021"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

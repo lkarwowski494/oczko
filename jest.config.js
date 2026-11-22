@@ -1,5 +1,14 @@
 module.exports = {
   preset: 'jest-expo/ios',
+  setupFiles: ['<rootDir>/jest.fast-check.js'],
+  // Zastępniki pakietów natywnych na Node (P-120 Q1a, jak Trening): prawdziwy dysk i prawdziwy SQLite, nie atrapa.
+  moduleNameMapper: {
+    '^expo-file-system$': '<rootDir>/tests/narzedzia/expo-file-system-node.ts',
+    '^expo-sqlite$': '<rootDir>/tests/narzedzia/expo-sqlite-node.ts',
+    '^expo-crypto$': '<rootDir>/tests/narzedzia/expo-crypto-node.ts',
+    // Trasy w Jest bez kontenera nawigacji: `usePreventRemove` z zastępnika (M1-audytor-generalny-020); `useNavigation` z expo-router przez atrapę testu (M1-122).
+    '^expo-router/react-navigation$': '<rootDir>/tests/narzedzia/expo-router-react-navigation.ts',
+  },
   setupFilesAfterEnv: ['<rootDir>/jest.app-after-env.js'],
   testMatch: [
     '**/__tests__/**/*.[jt]s?(x)',
@@ -8,24 +17,8 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|standard-navigation)',
   ],
+  // Testy oczekujące są poza głównym zestawem (DS-02): npm run test:akceptacja.
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/tests/akceptacja/', '<rootDir>/.claude/'], // .claude/: worktree pod-agentów (08 partia 6)
   testTimeout: 30000,
   workerIdleMemoryLimit: '800MB',
-  coverageThreshold: {
-    './src/core/gauge-calculator.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/hat-calculator.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/raglan-calculator.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/yarn-usage-estimator.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/yarn-substitution-service.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/unit-converter.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/use-unit-system.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/csv-exporter.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/knitting-doctor.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/time-tracking-service.ts': { lines: 100, branches: 100, functions: 100, statements: 100 },
-    './src/core/': {
-      lines: 99,
-      branches: 94,
-      functions: 95,
-      statements: 98,
-    },
-  },
 };

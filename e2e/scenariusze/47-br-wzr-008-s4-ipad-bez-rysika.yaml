@@ -1,0 +1,44 @@
+# BR-WZR-008/S4 „iPad bez rysika” (docs/brd/wymagania-projekt.md:347, P-218 Q2a), część palcem: zakreślacz włączony, przeciągnięcie palcem
+# zakreśla jak na iPhonie i zostaje po restarcie bez sieci. Część „potem rysik” (pencilOnly) — test jednostkowy logiki; bez prawdziwego rysika
+# to ryzyko szczątkowe (P-226, strategia §9). Pakiet iPada.
+appId: com.apps4brew.knitting
+name: "BR-WZR-008/S4 · iPad bez rysika: zakreślenie palcem zostaje po restarcie"
+tags:
+  - BR-WZR-008-S4
+  - ipad
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 40%", end: "70%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 47-ipad-zakreslenie
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1 w 26; E2-138-S3: ten sam błąd był w 47)
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+# 10-wydanie-019 (AO, KO-044, P-748): wzór z zakreśleniem wczytanym z pliku + nowe pociągnięcie. Przed poprawką kreska była liczona i zapisana, ale niewidoczna
+# do ponownego otwarcia. Maestro nie sprawdzi widoczności kreski (brak testID na pociągnięcie): licznik 2 + zrzut po odczekaniu do obejrzenia w artefakcie.
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 55%", end: "70%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: 47-ipad-drugie-zakreslenie
+# 10-wydanie-019 (AQ, KO-046, recenzja AP P2): dwa pociągnięcia jedno po drugim, BEZ czekania między nimi (drugie zaczyna się, zanim widok zdąży zatwierdzić pierwsze).
+# Wykrywa wyścig odświeżenia płótna po `canvasViewDidEndUsingTool` z szybkim drugim pociągnięciem (WidokWzoru.swift): licznik 4 = 1 z pliku + 1 (wyżej) + 2 szybkie;
+# gdyby drugie szybkie pociągnięcie zginęło, licznik zostałby 3. Widoczność kresek: zrzut do obejrzenia w artefakcie e2e-czesc-*-ipad (kontrola pikseli wymagałaby zmiany workflowu).
+# Między pociągnięciami tylko szybka asercja stanu narzędzia (reguła strategii §3.8: asercja po każdej akcji zmieniającej stan), bez waitForAnimationToEnd ani czekania.
+- swipe: { start: "30%, 62%", end: "70%, 62%", duration: 400 }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 68%", end: "70%, 68%", duration: 400 }
+- assertVisible: { id: "wzor-zakreslenia", text: "4 highlights" }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: 47-ipad-szybkie-zakreslenia

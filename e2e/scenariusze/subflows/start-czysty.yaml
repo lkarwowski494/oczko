@@ -1,0 +1,15 @@
+# Podprzepływ: czysta instalacja (clearState) z wstrzykniętym zegarem (Z07-18) i bez sieci, zakończona na ekranie licznika.
+# Po ZM-18 (P-563 (4a)) pierwszy ekran to „Dziś”; pełny licznik jednym stuknięciem „Otwórz licznik ›” na karcie „Pierwszy licznik” (testID `dzis-kontynuuj`, NFR-PIE-001 próg (3)).
+# Jedyne miejsce zmiany startu dla scenariuszy, które pracują na liczniku (07-e2e, 2026-11-08): reszta kroków scenariusza bez zmian.
+# Parametr (env runFlow): TERAZ — czas lokalny ISO bez strefy, np. "2026-11-02T20:00:00"; zegar biegnie dalej od tej chwili (kontrakt: e2e/README.md).
+appId: com.apps4brew.knitting
+name: "podprzepływ: czysta instalacja z zegarem, przez „Dziś” do licznika"
+---
+- runFlow:
+    file: start-czysty-dzis.yaml
+    env:
+      TERAZ: ${TERAZ}
+- scrollUntilVisible: { element: { id: "dzis-kontynuuj" }, direction: DOWN, timeout: 90000 } # AX5: przycisk pod „+1” karty (P-608 G3); 90 s: przestój sterownika XCTest 24 s przy przeciąganiu zjadł dawne 30 s (przebieg 43828957399, KO-109)
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc" }, timeout: 30000 }
+- assertVisible: { id: "licznik-plus" }

@@ -28,3 +28,9 @@ upload.json
 build.json
 build.err
 e2e-out/
+
+# Swift (modules/oczko-reguly: swift build / swift test)
+.build/
+
+# Kopie robocze pod-agentów (worktree) — nie wchodzą do repo ani do testów (08 partia 6, P-246)
+.claude/worktrees/

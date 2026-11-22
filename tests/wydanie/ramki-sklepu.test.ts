@@ -1,0 +1,104 @@
+/* Ramki i podpisy na zrzutach sklepu (scripts/ci/ramki-sklepu.sh, scripts/ci/wymiary-asc.mjs; rola 10-wydanie, KO-032, 2026-11-10).
+ * Wzór: trening:scripts/ci/store-frames.sh. Test uruchamia skrypt naprawdę na sztucznych PNG w wymiarach ASC (ImageMagick; bez niego część „działa” jest pominięta głośno, a przy zmiennej OCZKO_WYMAGAJ_IMAGEMAGICK, ustawianej w zrzuty-sklepu.yml, brak = porażka). Dlaczego: ramki wychodzą z macierzy macOS po godzinach, a błąd w skrypcie widać dopiero w artefakcie. */
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { spawnSync } from 'child_process';
+import { wymiarBezAlfy } from './pomoc-obrazow';
+
+const korzen = path.join(__dirname, '..', '..');
+const SKRYPT = path.join(korzen, 'scripts/ci/ramki-sklepu.sh');
+const WYMIARY = path.join(korzen, 'scripts/ci/wymiary-asc.mjs');
+const jest = (cmd: string, args: string[]) => spawnSync(cmd, args, { encoding: 'utf8', cwd: korzen }).status === 0;
+const maConvert = jest('convert', ['-version']);
+
+describe('ramki-sklepu.sh: kontrakt (statycznie)', () => {
+  const sh = fs.existsSync(SKRYPT) ? fs.readFileSync(SKRYPT, 'utf8') : '';
+  test('istnieje i używa planu układu (label + pointsize), nie samodopasowującego się caption:', () => {
+    expect(sh).not.toBe('');
+    expect(sh).toContain('scripts/ci/uklad-podpisow.mjs');
+    expect(sh).toMatch(/-pointsize "\$PT" label:"\$text"/);
+    expect(sh).not.toMatch(/caption:"\$text"/);
+  });
+  test('kolory z docs/design/tokeny.json przez plik podpisów (bez wpisanych na sztywno barw), obraz bez alfy', () => {
+    expect(sh).toContain('docs/design/tokeny.json');
+    expect(sh).not.toMatch(/#[0-9A-Fa-f]{6}/);
+    expect(sh).toMatch(/-alpha off/);
+  });
+  test('bez obudów urządzeń Apple (ramka własna) i obwódka z tokenu', () => {
+    expect(sh).toMatch(/roundrectangle/);
+    expect(sh).not.toMatch(/bezel|obudow[ay] Apple\.png/i);
+  });
+});
+
+// 10-wydanie-003 + 10-wydanie-009 (KO-035, P-724): `convert` jest WYMAGANY tylko ze zmienną OCZKO_WYMAGAJ_IMAGEMAGICK (ustawia ją wyłącznie krok testów ramek w zadaniu `zbierz`
+// workflowu zrzuty-sklepu.yml, po instalacji pakietu); bez zmiennej (npm run verify w jakosc-linux.yml / ci.yml na ubuntu-latest bez ImageMagicka, lokalnie) część z ImageMagickiem
+// jest pominięta GŁOŚNO: komunikat w wyniku Jesta, nie ciche `describe.skip` (test: ramki-imagemagick-ci.test.ts). Test układu podpisów (uklad-podpisow.test.ts) biegnie zawsze.
+const ZMIENNA = 'OCZKO_WYMAGAJ_IMAGEMAGICK';
+const wymagaConvert = !['', '0', 'false'].includes((process.env[ZMIENNA] ?? '').toLowerCase());
+if (!maConvert && wymagaConvert) {
+  describe('ramki-sklepu.sh: ImageMagick wymagany (krok testów ramek w zrzuty-sklepu.yml)', () => {
+    test('`convert` jest dostępny (bez niego kontrola ramek nie biegnie: zainstaluj imagemagick przed tym krokiem)', () => {
+      throw new Error(`brak ImageMagick (\`convert\`) przy ${ZMIENNA}=${process.env[ZMIENNA]}: część „działa na PNG w wymiarach App Store Connect” nie zostałaby uruchomiona; zainstaluj pakiet imagemagick w workflow przed tym krokiem`);
+    });
+  });
+}
+if (!maConvert && !wymagaConvert) {
+  const komunikat = `POMINIĘTE: część „ramki-sklepu.sh działa na PNG w wymiarach App Store Connect” (brak ImageMagick \`convert\` na tej maszynie; kontrola biegnie w zadaniu \`zbierz\` workflowu zrzuty-sklepu.yml, gdzie ${ZMIENNA}=1 wymusza ImageMagick; lokalnie: zainstaluj imagemagick i ustaw tę zmienną, by sprawdzić ramki)`;
+  console.warn(komunikat);
+  describe.skip(komunikat, () => { test('pominięte', () => undefined); });
+}
+(maConvert ? describe : describe.skip)('ramki-sklepu.sh: działa na PNG w wymiarach App Store Connect', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ramki-'));
+  const we = path.join(tmp, 'we'); const wy = path.join(tmp, 'wy');
+  const sztuczny = (rel: string, w: number, h: number) => {
+    const p = path.join(we, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
+    expect(jest('convert', ['-size', `${w}x${h}`, 'gradient:#E6E1DA-#C08425', '-alpha', 'off', p])).toBe(true);
+  };
+  const wymiar = (p: string) => spawnSync('identify', ['-format', '%wx%h %[channels]', p], { encoding: 'utf8' }).stdout.trim();
+  let wynik: ReturnType<typeof spawnSync>;
+  beforeAll(() => {
+    sztuczny('6.9/en/01-dzis.png', 1320, 2868);
+    sztuczny('6.9/en/02-licznik.png', 1320, 2868);
+    sztuczny('6.9/pl/06-historia.png', 1320, 2868);
+    sztuczny('6.9/bg/01-dzis.png', 1320, 2868); // język bez podpisów → pominięty
+    sztuczny('ipad-13/en/05-projekty.png', 2064, 2752);
+    sztuczny('warunek-og07/ipad-13/en/03-wzor.png', 2752, 2064); // poziomo, katalog warunkowy
+    wynik = spawnSync('bash', [SKRYPT, we, wy], { encoding: 'utf8', cwd: korzen, timeout: 240000 });
+  }, 300000);
+  afterAll(() => fs.rmSync(tmp, { recursive: true, force: true }));
+
+  test('kod wyjścia 0; ostrzeżenie o języku bez podpisów', () => {
+    expect(wynik.status).toBe(0);
+    expect(String(wynik.stdout)).toMatch(/Ramki: 5 plików/);
+    expect(String(wynik.stdout)).toMatch(/Brak podpisów dla języka bg/);
+  });
+  test('wymiary wyjścia = wymiary wejścia, RGB bez alfy, układ katalogów zachowany (także warunek-og07)', () => {
+    expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(wymiarBezAlfy('1320x2868'));
+    expect(wymiar(path.join(wy, 'ipad-13/en/05-projekty.png'))).toMatch(wymiarBezAlfy('2064x2752'));
+    expect(wymiar(path.join(wy, 'warunek-og07/ipad-13/en/03-wzor.png'))).toMatch(wymiarBezAlfy('2752x2064'));
+    expect(fs.existsSync(path.join(wy, '6.9/bg/01-dzis.png'))).toBe(false);
+  });
+  test('wymiary-asc.mjs: wynik zgodny z App Store Connect (kod 0); zła klasa i alfa wykrywane (kod 1)', () => {
+    expect(jest('node', [WYMIARY, wy])).toBe(true);
+    const zly = path.join(tmp, 'zly/6.9/en'); fs.mkdirSync(zly, { recursive: true });
+    expect(jest('convert', ['-size', '1000x2000', 'xc:red', path.join(zly, '01-dzis.png')])).toBe(true);
+    expect(jest('node', [WYMIARY, path.join(tmp, 'zly')])).toBe(false);
+    const alfa = path.join(tmp, 'alfa/6.9/en'); fs.mkdirSync(alfa, { recursive: true });
+    expect(jest('convert', ['-size', '1320x2868', 'xc:none', path.join(alfa, '01-dzis.png')])).toBe(true);
+    expect(jest('node', [WYMIARY, path.join(tmp, 'alfa')])).toBe(false);
+  });
+  test('dopasowanie „bez alfy” przyjmuje srgb z IM6 i IM7 (`srgb  3.0`), a odrzuca alfę (srgba, 4 kanały) także na prawdziwym obrazie z alfą', () => {
+    const re = wymiarBezAlfy('1320x2868');
+    for (const dobre of ['1320x2868 srgb', '1320x2868 srgb  3.0', '1320x2868 srgb 3.0']) expect(dobre).toMatch(re);
+    for (const zle of ['1320x2868 srgba', '1320x2868 srgba  4.0', '1320x2868 srgb  4.0', '1320x2868 gray', '1320x2868 srgb  3.0 x', '1000x2000 srgb']) expect(zle).not.toMatch(re);
+    const rgba = path.join(tmp, 'rgba.png');
+    expect(jest('convert', ['-size', '1320x2868', 'xc:none', '-alpha', 'on', '-define', 'png:color-type=6', rgba])).toBe(true);
+    expect(wymiar(rgba)).not.toMatch(re); // obraz z alfą nie przechodzi dopasowania w żadnej wersji ImageMagicka
+    expect(wymiar(path.join(wy, '6.9/en/01-dzis.png'))).toMatch(re); // a wynik skryptu (RGB) przechodzi
+  });
+  test('podpis jest narysowany: obraz różni się od surowego zrzutu w pasie podpisu', () => {
+    const roznica = spawnSync('compare', ['-metric', 'AE', '-extract', '1000x400+160+80', path.join(we, '6.9/en/01-dzis.png'), path.join(wy, '6.9/en/01-dzis.png'), 'null:'], { encoding: 'utf8' });
+    expect(Number(String(roznica.stderr).split(' ')[0])).toBeGreaterThan(1000);
+  });
+});

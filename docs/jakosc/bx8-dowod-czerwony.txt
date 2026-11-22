@@ -1,0 +1,52 @@
+# KO-088 / BX-033 — dowód czerwieni (2026-11-16): tests/jakosc/bx8-numeracja-trzycyfrowa.test.ts na kodzie sprzed poprawki (3 z 3 czerwone z właściwego powodu: scenariusz 100-bx8-trzycyfrowy.yaml pominięty przez e2e-czesci.mjs plan, przez kontrolaKatalogu i glob [0-9][0-9]-*.yaml w jakosc-ios.yml)
+
+FAIL iOS tests/jakosc/bx8-numeracja-trzycyfrowa.test.ts
+  KO-088 / BX-033: scenariusz o numerze trzycyfrowym
+    ✕ podział na części (e2e-czesci.mjs plan) zawiera scenariusz 100+ (580 ms)
+    ✕ kontrola katalogu widzi scenariusz 100+ (bez PU w katalogu → błąd „nieprzypisany do PU”) (358 ms)
+    ✕ pętle Maestro w jakosc-ios.yml nie używają globu dwucyfrowego [0-9][0-9]-*.yaml (8 ms)
+
+  ● KO-088 / BX-033: scenariusz o numerze trzycyfrowym › podział na części (e2e-czesci.mjs plan) zawiera scenariusz 100+
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Array [
+    -   "100-bx8-trzycyfrowy.yaml",
+    - ]
+    + Array []
+
+      19 |       fs.writeFileSync(path.join(d, NAZWA), TRESC);
+      20 |       const plan = JSON.parse(execFileSync('node', [skryptCzesci, 'plan', '--dir', d, '--config', path.join(root, 'e2e/czesci.json')], { encoding: 'utf8', env: { ...process.env, ONLY: '', PAKIET: '', COMMIT_MSG: '' } })) as { files: string[]; osobne: string[] }[];
+    > 21 |       expect(plan.flatMap((c) => [...c.files, ...c.osobne]).filter((f) => f === NAZWA)).toEqual([NAZWA]);
+         |                                                                                         ^
+      22 |     } finally { fs.rmSync(d, { recursive: true, force: true }); }
+      23 |   });
+      24 |
+
+
+  ● KO-088 / BX-033: scenariusz o numerze trzycyfrowym › kontrola katalogu widzi scenariusz 100+ (bez PU w katalogu → błąd „nieprzypisany do PU”)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Array [
+    -   "100-bx8-trzycyfrowy.yaml: nieprzypisany do PU",
+    - ]
+    + Array []
+
+      33 |       const kod = `import(${JSON.stringify(skryptBramki)}).then(m=>console.log(JSON.stringify(m.kontrolaKatalogu(${JSON.stringify(d)}))))`;
+      34 |       const bledy = JSON.parse(execFileSync('node', ['-e', kod], { encoding: 'utf8' })) as string[];
+    > 35 |       expect(bledy.filter((b) => b.startsWith(NAZWA))).toEqual([`${NAZWA}: nieprzypisany do PU`]);
+         |                                                        ^
+      36 |     } finally { fs.rmSync(d, { recursive: true, force: true }); }
+      37 |   });
+      38 |
+
+
+  ● KO-088 / BX-033: scenariusz o numerze trzycyfrowym › pętle Maestro w jakosc-ios.yml nie używają globu dwucyfrowego [0-9][0-9]-*.yaml
+

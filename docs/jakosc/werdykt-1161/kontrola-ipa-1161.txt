@@ -1,0 +1,36 @@
+# Run 43383728558, job 131747320662 (build), krok 24 „Kontrola .ipa przed wysyłką” — wyciąg z pełnego logu (zip logów przebiegu, pobrany 2026-11-13)
+# Linie bez „UWAGA <język>” (heurystyki tłumaczeń) wypisane w całości; UWAGI tłumaczeń policzone niżej.
+##[group]Run mkdir "$RUNNER_TEMP/ipa" && (cd "$RUNNER_TEMP/ipa" && unzip -q "$RUNNER_TEMP"/export/*.ipa)
+[36;1mmkdir "$RUNNER_TEMP/ipa" && (cd "$RUNNER_TEMP/ipa" && unzip -q "$RUNNER_TEMP"/export/*.ipa)[0m
+[36;1mbash scripts/wydanie/kontrola-ipa.sh "$(ls -d "$RUNNER_TEMP"/ipa/Payload/*.app)" "$BUILD_NUMBER" "$OSTATNI"[0m
+shell: /bin/bash -e {0}
+env:
+  BUILD_NUMBER: 1161
+  OSTATNI: 1151
+##[endgroup]
+### Kontrola .ipa: com.apps4brew.knitting 1.0.0 (1161)
+zegarek com.apps4brew.knitting.watchkitapp: CFBundleIcons › CFBundlePrimaryIcon › CFBundleIconName = AppIcon
+manifesty celów: OK
+- /aplikacja: uprawnienia `{"com.apple.developer.icloud-container-identifiers":["iCloud.com.apps4brew.knitting"],"com.apple.developer.team-identifier":"8NQ9GHY8GF","application-identifier":"8NQ9GHY8GF.com.apps4brew.knitting","beta-reports-active":true,"com.apple.developer.icloud-container-environment":"Production","com.apple.security.application-groups":["group.com.apps4brew.knitting"],"com.apple.developer.icloud-services":["CloudKit"],"get-task-allow":false}`
+- /PlugIns/OczkoUdostepnij.appex: uprawnienia `{"application-identifier":"8NQ9GHY8GF.com.apps4brew.knitting.share","beta-reports-active":true,"get-task-allow":false,"com.apple.developer.team-identifier":"8NQ9GHY8GF","com.apple.security.application-groups":["group.com.apps4brew.knitting"]}`
+##[warning]kontrola .ipa: /PlugIns/OczkoUdostepnij.appex: brak PrivacyInfo.xcprivacy w pakiecie celu (kod celu bez API z listy: node scripts/wydanie/manifest-celow.mjs)
+- /PlugIns/OczkoWidget.appex: uprawnienia `{"application-identifier":"8NQ9GHY8GF.com.apps4brew.knitting.widget","beta-reports-active":true,"get-task-allow":false,"com.apple.developer.team-identifier":"8NQ9GHY8GF"}`
+##[warning]kontrola .ipa: /PlugIns/OczkoWidget.appex: brak PrivacyInfo.xcprivacy w pakiecie celu (kod celu bez API z listy: node scripts/wydanie/manifest-celow.mjs)
+- /Watch/OczkoZegarek.app: uprawnienia `{"application-identifier":"8NQ9GHY8GF.com.apps4brew.knitting.watchkitapp","beta-reports-active":true,"get-task-allow":false,"com.apple.developer.team-identifier":"8NQ9GHY8GF"}`
+kontrola adresów: identyfikator App Store id6823678721 (nie zaślepka)
+błędy: 0, uwagi: 1277; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+/Users/runner/work/_temp/ipa/Payload/Oczko.app/main.jsbundle: bez śladów trybu testowego (12 wzorców)
+- języki .lproj: 35
+Wynik: błędów 0, uwag 2
+
+## UWAGI tłumaczeń (sprawdz-i18n na pakiecie): 1277 w 34 językach, wg rodzaju:
+   1071 tekst taki sam jak w źródle
+    146 brak liter pisma języka
+     60 liczby inne niż w źródle
+## Próbka „liczby inne niż w źródle” (5 pierwszych):
+UWAGA et menu.zeruj: liczby inne niż w źródle („Lähtesta nulli…”)
+UWAGA et menu.zeruj_pytanie: liczby inne niż w źródle („Kas lähtestada {{projekt}} nulli? Ajalugu säilitab iga muudatuse.”)
+UWAGA et menu.zeruj_potwierdz: liczby inne niż w źródle („Lähtesta nulli”)
+UWAGA et projekt.kopia_opis: liczby inne niż w źródle („Samad tükid, eesmärgid, meeldetuletused ning vardad või heegelnõel koos suurusega. Kõik loendurid algavad nullist ja see projekt jääb muutmata.”)
+UWAGA et czesc.nowa_opis: liczby inne niż w źródle („Pane nimi ja alusta nullist.”)
+## Źródło en / et / pl dla menu.zeruj (src/i18n/slowniki): en „Reset to 0…”, et „Lähtesta nulli…”, pl „Wyzeruj do 0…” — liczba zapisana słowem.

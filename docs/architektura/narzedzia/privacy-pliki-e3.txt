@@ -1,0 +1,9 @@
+expo-localization/ios/PrivacyInfo.xcprivacy
+expo-file-system/ios/PrivacyInfo.xcprivacy
+react-native/third-party-podspecs/boost/PrivacyInfo.xcprivacy
+react-native/third-party-podspecs/glog/PrivacyInfo.xcprivacy
+react-native/third-party-podspecs/RCT-Folly/PrivacyInfo.xcprivacy
+react-native/React/Resources/PrivacyInfo.xcprivacy
+react-native/ReactCommon/react/timing/PrivacyInfo.xcprivacy
+react-native/ReactCommon/cxxreact/PrivacyInfo.xcprivacy
+expo/node_modules/expo-constants/ios/PrivacyInfo.xcprivacy

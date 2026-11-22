@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.znak.gwiazdka",
+ "rzemioslo": "oba",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.znak.gwiazdka.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-020"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

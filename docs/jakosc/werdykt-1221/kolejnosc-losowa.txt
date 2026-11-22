@@ -1,0 +1,15 @@
+Krok Linux "Kolejność testów losowa" (npx jest --ci --randomize --seed=$((16#${GITHUB_SHA:0:7})) --silent; jakosc-linux.yml:32-34)
+Ziarno = pierwsze 7 znaków SHA w szesnastkowym, więc każdy commit ma własną, deterministyczną kolejność.
+
+SHA        ziarno     wynik
+a830eb21   176361138  zielone (lokalnie odtworzone; Linux #783 zielony)
+e3e7fe9e   238977001  CZERWONE: run 44505505468; lokalnie odtworzone
+b106e210   185626145  CZERWONE: run 44533633202, log 2026-11-19T13:38:16Z; lokalnie odtworzone
+
+Padający test: tests/ekrany/e2e-zegarek-stan.test.tsx:22-24 „panel: przed pierwszym stanem „no state” …”
+  Expected: "Watch state: none"
+  Received: "Watch state: Sweater · 12 done · row 13 · reminders: from 12 every 6 ×8: decrease at both ends · lang de"
+Przyczyna: jedyny wspólny singleton `zegarekSztuczny` (src/kompozycja/e2e/panele.tsx) zachowuje stan między testami tego samego pliku; test „przed pierwszym stanem” zakłada, że żaden wcześniejszy test pliku nie wysłał stanu. Domyślna kolejność pliku tego nie ujawnia; kolejność losowa tak.
+Plik testu ostatnio zmieniony 2026-11-16 (0b5bd811, BX-024) — przed a830eb21; kod produkcyjny nie jest dotknięty (singleton istnieje tylko w buildzie E2E: paneleE2e = null w wydaniu).
+Odtworzenie: npx jest tests/ekrany/e2e-zegarek-stan.test.tsx --randomize --seed=185626145
+Realność: czerwień jest realna dla bramki Linux (blokuje PR D1 na „pechowych” SHA), dla produktu teoretyczna (panel tylko w E2E).

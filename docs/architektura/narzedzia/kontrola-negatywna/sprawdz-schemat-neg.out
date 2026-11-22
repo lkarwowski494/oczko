@@ -1,0 +1,35 @@
+SQLite 3.50.4 · Node v22.22.0
+OK   migracja 1 na pustej bazie, user_version = 1
+OK   ponowne uruchomienie migracji niczego nie zmienia
+OK   PRAGMA integrity_check = ok (pusta)
+OK   PRAGMA foreign_keys = 1 poza transakcją
+OK   PRAGMA foreign_keys = 1 wewnątrz transakcji zapisu
+OK   PRAGMA foreign_key_check pusty (z danymi)
+OK   UPSERT projektu: nazwa zmieniona, części 2 i zdarzenia 2 zachowane
+BŁĄD kontrola: INSERT OR REPLACE kasuje zdarzenia kaskadą (2), ROLLBACK przywraca 2 — dlatego UPSERT
+OK   CHECK: nieznany rodzaj zdarzenia odrzucony
+OK   CHECK: wpisanie bez wartości odrzucone
+OK   CHECK: długość powtórzenia 0 odrzucona (RD-12-W5)
+OK   CHECK: ukończony bez ukonczono_ms odrzucony
+OK   UNIQUE: druga otwarta sesja odrzucona
+OK   RESTRICT: plik używany przez wzór nie da się usunąć
+BŁĄD kaskada usunięcia projektu; pliki (sprzątanie osobno), włóczka i dzień limitu zostają
+OK   po kaskadzie: foreign_key_check pusty, integrity_check ok
+OK   stany ⊆ CHECK: projekt.stan = {w_toku, ukonczony}
+OK   stany ⊆ CHECK: licznik.rodzaj = {rzedy, oczka}
+OK   stany ⊆ CHECK: licznik.znaczenie = {skonczone, w_trakcie}
+OK   stany ⊆ CHECK: zdarzenie.rodzaj = {plus, minus, wpisanie, zerowanie, cofniecie, rozstrzygniecie}
+OK   stany ⊆ CHECK: zdarzenie.zrodlo = {aplikacja, ekran_blokady, zegarek, synchronizacja, import}
+BŁĄD stany ⊆ CHECK: sesja.stan = {trwa, wstrzymana, zakonczona, anulowana}
+OK   stany ⊆ CHECK: wzor.zrodlo = {pdf, obraz, www, word}
+OK   stany ⊆ CHECK: narzedzie.rodzaj = {druty, szydelko, inne}
+OK   stany ⊆ CHECK: obliczenie.rodzaj = {oczka_z_probki, jednostki, grubosc}
+OK   baza w wersji 2 odrzucona przez aplikację w wersji 1, bez zmian
+OK   migracja łamiąca CHECK wycofana w całości (wersja, dane i schemat bez zmian)
+OK   plan „lista projektów w toku”: [SEARCH projekt USING INDEX projekt_lista (stan=?)] · p95 0.034 ms (Linux, nie iPhone)
+OK   plan „historia licznika (50 ostatnich)”: [SEARCH zdarzenie USING INDEX zdarzenie_licznik_czas (licznik_id=?)] · p95 0.138 ms (Linux, nie iPhone)
+OK   plan „kalendarz miesiąca (dni z robótką)”: [SEARCH zdarzenie USING COVERING INDEX zdarzenie_dzien (dzien>? AND dzien<?)] · p95 0.456 ms (Linux, nie iPhone)
+OK   plan „dzień: projekty i rzędy”: [SEARCH z USING COVERING INDEX zdarzenie_dzien (dzien=?) | SEARCH l USING INDEX sqlite_autoindex_licznik_1 (id=?) | SEARCH c USING INDEX sqlite_autoindex_czesc_1 (id=?) | USE TEMP B-TREE FOR GROUP BY] · p95 0.081 ms (Linux, nie iPhone)
+OK   plan „dni limitu w miesiącu”: [SEARCH dzien_limitu USING INDEX sqlite_autoindex_dzien_limitu_1 (dzien>? AND dzien<?)] · p95 0.010 ms (Linux, nie iPhone)
+3 błędów
+kod wyjścia: 1

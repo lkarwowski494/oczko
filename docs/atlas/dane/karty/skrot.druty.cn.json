@@ -1,0 +1,92 @@
+{
+ "format": 1,
+ "id": "skrot.druty.cn",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.cn.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "cable needle",
+    "skrot": "cn",
+    "twierdzenie": "TRM-EN-016"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "drut pomocniczy",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-020"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "flätsticka",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-016"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "вспомогательная спица",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-018"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "допоміжні спиці",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-021"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "なわ編み針",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-017"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "꽈배기바늘",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-013"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "помощна игла",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-015"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "pagalbinis virbalas",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-010"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "pletilka za izdelavo kit",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-006"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "aguja auxiliar",
+    "skrot": "ag aux",
+    "twierdzenie": "TRM-ESLA-024"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

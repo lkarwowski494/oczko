@@ -1,0 +1,21 @@
+{
+ "atlas.szydelko.oczko_szydelkowe.ch.nazwa": "Chain (ch)",
+ "atlas.szydelko.oczko_szydelkowe.ch.nazwa_gb": "US: chain (ch)",
+ "atlas.szydelko.oczko_szydelkowe.slst.nazwa": "Slip stitch (ss, also sl st)",
+ "atlas.szydelko.oczko_szydelkowe.slst.nazwa_gb": "US: slip stitch (sl st)",
+ "atlas.szydelko.oczko_szydelkowe.sc.nazwa": "Double crochet (dc)",
+ "atlas.szydelko.oczko_szydelkowe.sc.nazwa_gb": "US: single crochet (sc)",
+ "atlas.szydelko.oczko_szydelkowe.hdc.nazwa": "Half treble (htr)",
+ "atlas.szydelko.oczko_szydelkowe.hdc.nazwa_gb": "US: half double crochet (hdc)",
+ "atlas.szydelko.oczko_szydelkowe.dc.nazwa": "Treble (tr)",
+ "atlas.szydelko.oczko_szydelkowe.dc.nazwa_gb": "US: double crochet (dc)",
+ "atlas.szydelko.oczko_szydelkowe.tr.nazwa": "Double treble (dtr)",
+ "atlas.szydelko.oczko_szydelkowe.tr.nazwa_gb": "US: treble crochet (tr)",
+ "atlas.szydelko.ujecie.2tog.nazwa": "Decrease: work two dc together (dc2tog), work two trebles together (tr2tog)",
+ "atlas.szydelko.ujecie.2tog.krok1": "For tr2tog, work a treble up to its last step: 2 loops on the hook.",
+ "atlas.szydelko.dodanie.inc.nazwa": "Increase (inc)",
+ "atlas.szydelko.oczko_szydelkowe.sc.opis_alt": "Drawing of a double crochet: the hook goes into the stitch, a loop is pulled up, and the yarn is pulled through both loops on the hook.",
+ "atlas.szydelko.oczko_szydelkowe.hdc.opis_alt": "Drawing of a half treble: with one yarn over on the hook, a loop is pulled up and then the yarn goes through all loops at once.",
+ "atlas.szydelko.oczko_szydelkowe.dc.opis_alt": "Drawing of a treble: with one yarn over, a loop is pulled up, and the loops are worked off two at a time.",
+ "atlas.szydelko.oczko_szydelkowe.tr.opis_alt": "Drawing of a double treble: with two yarn overs, a loop is pulled up, and the loops are worked off two at a time."
+}

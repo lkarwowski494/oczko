@@ -1,0 +1,5 @@
+JSON  : [{"x":123,"t":"integer"},{"x":1,"t":"integer"},{"x":"\"123\"","t":"text"},{"x":"{\"k\":1}","t":"text"}]
+TEXT+CHECK: [{"x":"123","t":"text"},{"x":"1.0","t":"text"},{"x":"\"123\"","t":"text"},{"x":"{\"k\":1}","t":"text"}]
+niepoprawny JSON w b odrzucony: CHECK constraint failed: json_valid(x)
+niepoprawny JSON w a (JSON) przyjety: text
+exit=0

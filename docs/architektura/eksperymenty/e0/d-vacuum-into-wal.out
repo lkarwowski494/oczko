@@ -1,0 +1,5 @@
+journal_mode wal
+wiersze w zrodle: 100 | rozmiar -wal: 4152 B
+kopia-pliku.db -> wiersze: 0 | integrity_check: ok
+vacuum-into.db -> wiersze: 100 | integrity_check: ok
+exit=0

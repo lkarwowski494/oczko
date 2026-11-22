@@ -1,0 +1,33 @@
+# E1 dowody po przestawieniu na wzór Treningu (P-076), 2026-10-22
+
+$ npx jest tests/i18n
+Test Suites: 8 passed, 8 total
+Tests:       186 passed, 186 total
+kod wyjścia: 0
+
+$ npx tsc --noEmit
+kod wyjścia: 0
+
+$ npm run -s i18n
+błędy: 0, uwagi: 0; języki: en; kluczy w źródle: 9
+kod wyjścia: 0
+
+$ npm run -s i18n:pseudo
+błędy: 0, uwagi: 0; języki: en; kluczy w źródle: 9
+kod wyjścia: 0
+
+$ npm run -s i18n:kod
+BŁĄD konfiguracji: brak katalogu src/ekrany, src/komponenty; skan kodu niewykonany
+błędy: 0, uwagi: 0; języki: en; kluczy w źródle: 9
+kod wyjścia: 2
+
+$ node docs/architektura/eksperymenty/e1/kontrola-adr.mjs docs/adr
+0015-dane-wersji-0-1-0-czysty-start.md: OK (opcje: 4)
+0016-zaleznosci-wersji-1.md: OK (opcje: 3)
+0017-i18n-wlasne-t-reguly-cldr-klucze-znaczeniowe-zrodlo-en.md: OK (opcje: 3)
+błędy: 0
+kod wyjścia: 0
+
+$ npx jest --silent (cały zestaw, w tym stary kod)
+Test Suites: 99 passed, 99 total
+Tests:       952 passed, 952 total

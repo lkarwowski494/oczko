@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.druty.us-ca-1",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.us-ca-1.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-004"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "format": 1,
+ "id": "skrot.druty.kwise",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.kwise.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "knitwise",
+    "skrot": "kwise",
+    "twierdzenie": "TRM-EN-022"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "как лицевую",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-027"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "織下針的方向",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-026"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "все едно ще се плете лицева",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-024"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

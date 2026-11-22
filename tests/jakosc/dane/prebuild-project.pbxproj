@@ -1,0 +1,166 @@
+// !$*UTF8*$!
+// Wycinek project.pbxproj z `npx expo prebuild --platform ios --no-install --clean` (2026-10-26): tylko sekcje celów i grup synchronizowanych (bez ustawień buildu).
+{
+	objects = {
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		XX30415E11C4615921DD17XX /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			target = XX490B193DCCCAFA48FFC7XX /* OczkoWidget */;
+			membershipExceptions = (
+				Info.plist,
+				"expo-target.config.js",
+			);
+		};
+		XX3C49F596644F1073CB7FXX /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			target = 13B07F861A680F5B00A75B9A /* Oczko */;
+			membershipExceptions = (
+				_shared/Stuknij.swift,
+			);
+		};
+		XXE032BF7CF2846EB51D3FXX /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			target = XXBA73729DA19F736713EEXX /* OczkoZegarek */;
+			membershipExceptions = (
+				Info.plist,
+				"expo-target.config.js",
+			);
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		XX390A25EF84FC5CA5D588XX /* widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = widget;
+			exceptions = (
+				XX30415E11C4615921DD17XX /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+				XX3C49F596644F1073CB7FXX /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			sourceTree = "<group>";
+		};
+		XX6A147205301E066B9506XX /* watch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = watch;
+			exceptions = (
+				XXE032BF7CF2846EB51D3FXX /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXNativeTarget section */
+		13B07F861A680F5B00A75B9A /* Oczko */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Oczko" */;
+			buildPhases = (
+				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
+				XX81D5C67C94C2E1F9007EXX /* Embed Watch Content */,
+				XX72A8CFBF0FBA13A79902XX /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				XXBBE5A169C295115FFB26XX /* PBXTargetDependency */,
+				XX6FFF852805CAB0D61A14XX /* PBXTargetDependency */,
+			);
+			name = Oczko;
+			productName = Oczko;
+			productReference = 13B07F961A680F5B00A75B9A /* Oczko.app */;
+			productType = "com.apple.product-type.application";
+		};
+		XX490B193DCCCAFA48FFC7XX /* OczkoWidget */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+				XXBA6CDF0021ABEEEDFCFBXX /* Frameworks */,
+				XXDC105B0E28F884B8E02DXX /* Sources */,
+				XXC55EF014B50CBDECCD15XX /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			buildConfigurationList = XX6D7155999D3BB9DD1644XX /* Build configuration list for PBXNativeTarget "OczkoWidget" */;
+			name = OczkoWidget;
+			productName = OczkoWidget;
+			productReference = XX0D4AC2DCB55DBEAA938DXX /* OczkoWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+			fileSystemSynchronizedGroups = (
+				XX390A25EF84FC5CA5D588XX /* widget */,
+			);
+		};
+		XXBA73729DA19F736713EEXX /* OczkoZegarek */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+				XX074B8811C1CF8E8A3D74XX /* Frameworks */,
+				XXE45443DC38DCFE1DB622XX /* Sources */,
+				XXFA5A8CCDD805DF7AEF9CXX /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			buildConfigurationList = XXECE778C7ADEAF20ED2A4XX /* Build configuration list for PBXNativeTarget "OczkoZegarek" */;
+			name = OczkoZegarek;
+			productName = OczkoZegarek;
+			productReference = XX6973D95B203906D8E2FFXX /* OczkoZegarek.app */;
+			productType = "com.apple.product-type.application";
+			fileSystemSynchronizedGroups = (
+				XX6A147205301E066B9506XX /* watch */,
+			);
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+				TargetAttributes = {
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1250;
+					};
+					XXBA73729DA19F736713EEXX = {
+						CreatedOnToolsVersion = 14.3;
+						ProvisioningStyle = Automatic;
+					};
+					XX490B193DCCCAFA48FFC7XX = {
+						CreatedOnToolsVersion = 14.3;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Oczko" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				13B07F861A680F5B00A75B9A /* Oczko */,
+				XXBA73729DA19F736713EEXX /* OczkoZegarek */,
+				XX490B193DCCCAFA48FFC7XX /* OczkoWidget */,
+			);
+		};
+/* End PBXProject section */
+	};
+}

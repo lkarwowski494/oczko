@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · options fix NZ-05-F4-04</title>
+<!-- Opcje do STOP E0 roli 04 (fix NZ-05-F4-04, P-138): stan „nie zapisano” na zegarku i blokada licznika na ekranie blokady i zegarku. Style skopiowane z aktywnosc.html (te same tokeny). Dane: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --papier: #FCFCFA; --grafit: #26282C; --olowek: #5E626A; --linia: #D9DBDF;
+  --zakreslacz: #F6E04A; --na-zakreslaczu: #1B1C1F; --zakr-krawedz: #8C7A00;
+  --p-tlo: #26282C; --p-tekst: #FCFCFA; --p-obrys: #26282C; --wloczka: #4F6F94;
+  --tapeta: #56606B; --dt: 1; --w: 393px; --zw: 176px; --zh: 215px;
+  --tytul: "Libre Franklin"; --tresc: "Source Sans 3";
+  /* Dynamic Island i zegarek: tło systemowe czarne, kolory z motywu ciemnego */
+  --c-papier: #000000; --c-grafit: #ECECE8; --c-olowek: #A9ACB2; --c-p-tlo: #2E3136; --c-p-tekst: #ECECE8; --c-p-obrys: #8C9098;
+  --c-zakreslacz: #38351F; --c-na-zakreslaczu: #F4ECB4; --c-zakr-krawedz: #E2CB3A;
+}
+[data-theme="dark"] {
+  --papier: #1B1C1F; --grafit: #ECECE8; --olowek: #A9ACB2; --linia: #34363B;
+  --zakreslacz: #38351F; --na-zakreslaczu: #F4ECB4; --zakr-krawedz: #E2CB3A;
+  --p-tlo: #2E3136; --p-tekst: #ECECE8; --p-obrys: #8C9098; --wloczka: #7D9DC2; --tapeta: #20262D;
+}
+* { box-sizing: border-box; font-feature-settings: "tnum" 1; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: var(--tresc), sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+h2.grupa { width: 100%; margin: 8px 0 0; font: 700 20px var(--tytul); color: #fff; }
+
+/* Ekran blokady: atrapa telefonu z tapetą; Live Activity na dole */
+section[data-ekran^="blokada"] { width: var(--w); min-height: 420px; background: var(--tapeta); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 28px; }
+.zegar-blokady { text-align: center; color: #fff; font: 600 64px/1 var(--tresc); opacity: .92; margin-bottom: auto; padding-top: 40px; }
+.la { width: calc(var(--w) - 22px); margin: 0 11px; background: var(--papier); color: var(--grafit); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 84px; }
+.gora { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: calc(15px * var(--dt)); line-height: 1.25; color: var(--olowek); }
+.nazwa { display: flex; align-items: center; gap: 6px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kropka { width: 10px; height: 10px; border-radius: 50%; background: var(--wloczka); flex-shrink: 0; }
+.czas { font: 600 calc(15px * var(--dt)) var(--tresc); color: var(--grafit); display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.czas svg { width: 14px; height: 14px; }
+.srodek { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
+/* Duży tekst: opis potrzebuje ≥ 130 pt × skala; gdy nie ma miejsca, +1 przechodzi pod spód na całą szerokość (większy cel). */
+.n { font: 700 calc(48px * min(var(--dt), 1.2)) / 1 var(--tytul); letter-spacing: -0.02em; }
+.opis { flex: 100 1 calc(130px * var(--dt)); min-width: 0; font-size: calc(15px * var(--dt)); line-height: 1.25; color: var(--olowek); }
+.opis b { display: block; color: var(--grafit); font: 600 calc(17px * var(--dt)) / 1.2 var(--tresc); }
+.plus { min-width: 96px; min-height: 60px; border-radius: 16px; border: 2px solid var(--p-obrys); background: var(--p-tlo); color: var(--p-tekst); font: 700 calc(20px * min(var(--dt), 1.2)) var(--tytul); display: grid; place-items: center; flex: 1 0 auto; padding: 0 12px; }
+.zakr { position: relative; padding: 6px 12px 6px 14px; }
+.zakr::before { content: ""; position: absolute; inset: 0; background: var(--zakreslacz); transform: skewX(-4deg); border-radius: 2px; border-left: 4px solid var(--zakr-krawedz); }
+.zakr span { position: relative; color: var(--na-zakreslaczu); font: 700 calc(15px * var(--dt)) / 1.25 var(--tytul); }
+.info { display: flex; gap: 8px; align-items: flex-start; font-size: calc(15px * var(--dt)); line-height: 1.3; color: var(--grafit); }
+.info b { font-weight: 600; }
+.znak { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font: 700 11px var(--tytul); margin-top: 1px; }
+
+/* Dynamic Island (tło systemowe, czarne) */
+section[data-ekran^="wyspa"] { width: var(--w); background: var(--tapeta); padding: 12px 0 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.wyspa { background: #000; color: var(--c-grafit); border-radius: 22px; display: flex; align-items: center; }
+.wyspa.compact { height: 36.67px; padding: 0 12px; gap: 0; width: 250px; justify-content: space-between; border-radius: 19px; }
+.wyspa.compact .kamera { width: 120px; }
+.wyspa.compact b, .wyspa.minimal b { font: 700 calc(17px * min(var(--dt), 1.2)) var(--tytul); }
+.wyspa.minimal { height: 36.67px; min-width: 36.67px; max-width: 45px; justify-content: center; border-radius: 19px; padding: 0 6px; }
+.wyspa.rozwinieta { width: calc(var(--w) - 22px); border-radius: 44px; padding: 18px 20px 20px; flex-direction: column; align-items: stretch; gap: 8px; }
+.wyspa .gora { color: var(--c-olowek); } .wyspa .czas { color: var(--c-grafit); }
+.wyspa .opis { color: var(--c-olowek); } .wyspa .opis b { color: var(--c-grafit); }
+.wyspa .plus { background: var(--c-p-tlo); color: var(--c-p-tekst); border-color: var(--c-p-obrys); }
+.znak-kresek { width: 22px; height: 18px; display: block; }
+.pod-atrapa { color: #fff; font: 13px/1.3 var(--tresc); opacity: .85; }
+
+/* Zegarek: ekran czarny; własne kształty tylko dla +1 i −1 */
+section[data-ekran^="zegarek"] { width: var(--zw); height: var(--zh); background: #000; color: var(--c-grafit); border-radius: 36px; padding: 10px 10px 8px; display: flex; flex-direction: column; overflow: hidden; }
+section[data-ekran="zegarek-smart-stack"] { height: auto; min-height: var(--zh); justify-content: center; gap: 8px; }
+.z-gora { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: calc(13px * var(--dt)); color: var(--c-olowek); padding: 0 6px; }
+.z-gora .nazwa { font-size: inherit; display: block; min-width: 0; }
+.z-srodek { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; } /* na zegarku przewijany; przyciski zostają na dole */
+.z-liczba { flex-wrap: wrap; }
+.z-gora .godz { color: var(--c-grafit); font-weight: 600; flex-shrink: 0; }
+.z-liczba { display: flex; align-items: baseline; gap: 8px; padding: 0 6px; margin-top: 2px; }
+.z-liczba .n { font-size: calc(52px * min(var(--dt), 1.15)); }
+.z-liczba small { font-size: calc(15px * var(--dt)); color: var(--c-olowek); line-height: 1.2; }
+.z-tekst { padding: 0 6px; font-size: calc(15px * var(--dt)); line-height: 1.3; color: var(--c-grafit); }
+.z-tekst.olowek { color: var(--c-olowek); font-size: calc(13px * var(--dt)); }
+.z-dol { margin-top: auto; flex-shrink: 0; padding-top: 4px; display: flex; gap: 8px; align-items: stretch; }
+.z-dol .minus { width: 52px; min-height: 52px; border-radius: 26px; border: 2px solid var(--c-p-obrys); background: transparent; color: var(--c-grafit); font: 700 calc(20px * min(var(--dt), 1.2)) var(--tytul); display: grid; place-items: center; flex-shrink: 0; }
+.z-dol .plus { white-space: nowrap; font-size: calc(20px * min(var(--dt), 1.1)); flex: 1; min-height: 64px; border-radius: 32px; background: var(--c-p-tlo); color: var(--c-p-tekst); border-color: var(--c-p-obrys); min-width: 0; }
+section[data-ekran^="zegarek"] .zakr { margin: 2px 0 0; padding: 3px 8px 3px 10px; }
+section[data-ekran="zegarek-przypomnienie"] .z-liczba .n { font-size: calc(40px * min(var(--dt), 1.15)); }
+section[data-ekran="zegarek-przypomnienie"] .z-dol .plus, section[data-ekran="zegarek-przypomnienie"] .z-dol .minus { min-height: 48px; }
+section[data-ekran^="zegarek"] .zakr::before { background: var(--c-zakreslacz); border-left-color: var(--c-zakr-krawedz); }
+section[data-ekran^="zegarek"] .zakr span { color: var(--c-na-zakreslaczu); font-size: calc(13px * var(--dt)); }
+section[data-ekran^="zegarek"] .info { color: var(--c-grafit); font-size: calc(13px * var(--dt)); padding: 0 6px; }
+.stack { background: #1E2024; border-radius: 18px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stack .z-gora { padding: 0; }
+.stack .z-liczba { padding: 0; }
+.stack .z-liczba .n { font-size: calc(30px * min(var(--dt), 1.15)); }
+.uwagi { width: 393px; background: #fff; color: #222; padding: 16px 20px; font: 15px/1.4 var(--tresc); }
+.uwagi h3 { font: 700 18px var(--tytul); margin: 0 0 6px; }
+.z-tekst b{font-weight:600}
+.pod{width:100%;color:#fff;font:14px/1.4 var(--tresc);margin:-12px 0 0}
+section[data-ekran^="zegarek-nie-zapisano"] .z-liczba .n { font-size: calc(40px * min(var(--dt), 1.15)); }
+section[data-ekran^="zegarek-nie-zapisano"] .z-dol .plus, section[data-ekran^="zegarek-nie-zapisano"] .z-dol .minus { min-height: 48px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- znak kresek: cztery kreski i przekreślenie (jak ikona aplikacji) -->
+  <symbol id="kreski" viewBox="0 0 22 18"><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 2v14M8.5 2v14M13 2v14M17.5 2v14M1.5 13.5L20.5 4.5"/></g></symbol>
+  <symbol id="stoper" viewBox="0 0 14 14"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="8" r="5"/><path d="M7 8V5.5M5.5 1.5h3"/></g></symbol>
+</svg>
+<h2 class="grupa">1 · Watch: row not saved (ADR-0009 pt 2) — option a: “Try again.”</h2>
+<section data-ekran="zegarek-nie-zapisano-a">
+  <div class="z-gora"><span class="nazwa">Harbor Sweater</span><span class="godz">9:41</span></div>
+  <div class="z-srodek">
+  <div class="z-liczba"><span class="n">47</span></div>
+  <div class="z-tekst"><b>Row 48 wasn’t added.</b> Try again.</div>
+  </div>
+  <div class="z-dol"><span class="minus" role="button" aria-label="Remove row">−1</span><span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span></div>
+</section>
+<h2 class="grupa">1 · option b (recommended): “Try again or count on iPhone.” — a way out that always works</h2>
+<section data-ekran="zegarek-nie-zapisano-b">
+  <div class="z-gora"><span class="nazwa">Harbor Sweater</span><span class="godz">9:41</span></div>
+  <div class="z-srodek">
+  <div class="z-liczba"><span class="n">47</span></div>
+  <div class="z-tekst"><b>Row 48 wasn’t added.</b> Try again or count on iPhone.</div>
+  </div>
+  <div class="z-dol"><span class="minus" role="button" aria-label="Remove row">−1</span><span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span></div>
+</section>
+<section data-ekran="zegarek-nie-zapisano-b-minus">
+  <div class="z-gora"><span class="nazwa">Harbor Sweater</span><span class="godz">9:41</span></div>
+  <div class="z-srodek">
+  <div class="z-liczba"><span class="n">47</span></div>
+  <div class="z-tekst"><b>Row 47 wasn’t removed.</b> Try again or count on iPhone.</div>
+  </div>
+  <div class="z-dol"><span class="minus" role="button" aria-label="Remove row">−1</span><span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span></div>
+</section>
+
+<h2 class="grupa">2 · Counter locked — option a (recommended): shown up front, no buttons</h2>
+<section data-ekran="blokada-zablokowany-a">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span><span class="czas"><svg><use href="#stoper"/></svg>0:42:10</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Counter locked</b>Unlock it in Oczko.</span>
+    </div>
+  </div>
+</section>
+<section data-ekran="zegarek-zablokowany-a">
+  <div class="z-gora"><span class="nazwa">Harbor Sweater</span><span class="godz">9:41</span></div>
+  <div class="z-srodek">
+  <div class="z-liczba"><span class="n">47</span><small>rows<br>done</small></div>
+  <div class="z-tekst"><b>Counter locked.</b> Unlock it in Oczko on your iPhone.</div>
+  </div>
+</section>
+<h2 class="grupa">2 · option b: buttons stay, a tap is refused with a message</h2>
+<section data-ekran="blokada-zablokowany-b">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la">
+    <div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span><span class="czas"><svg><use href="#stoper"/></svg>0:42:10</span></div>
+    <div class="srodek">
+      <span class="n">47</span>
+      <span class="opis"><b>Row 48 wasn’t added</b>Counter is locked. Unlock it in Oczko.</span>
+      <span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span>
+    </div>
+  </div>
+</section>
+<section data-ekran="zegarek-zablokowany-b">
+  <div class="z-gora"><span class="nazwa">Harbor Sweater</span><span class="godz">9:41</span></div>
+  <div class="z-srodek">
+  <div class="z-liczba"><span class="n">47</span></div>
+  <div class="z-tekst"><b>Row 48 wasn’t added.</b> Counter is locked.</div>
+  </div>
+  <div class="z-dol"><span class="minus" role="button" aria-label="Remove row">−1</span><span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span></div>
+</section>
+
+<h2 class="grupa">3 · How to unlock: wording t1 (recommended) vs t2</h2>
+<section data-ekran="blokada-tekst-t1">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la"><div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span></div>
+    <div class="srodek"><span class="n">47</span><span class="opis"><b>Counter locked</b>Unlock it in Oczko.</span></div></div>
+</section>
+<section data-ekran="blokada-tekst-t2">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la"><div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span></div>
+    <div class="srodek"><span class="n">47</span><span class="opis"><b>Counter locked</b>Open Oczko to count again.</span></div></div>
+</section>
+
+<h2 class="grupa">4 · Lock Screen note (uwaga ≠ null): a — button stays (recommended) · b — no button (ADR-0008 wording)</h2>
+<section data-ekran="blokada-uwaga-a">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la"><div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span><span class="czas"><svg><use href="#stoper"/></svg>0:42:10</span></div>
+    <div class="srodek"><span class="n">47</span><span class="opis"><b>Row 48 wasn’t added</b>Try again.</span><span class="plus" role="button" aria-label="Add row. Now row 48">+1 row</span></div></div>
+</section>
+<section data-ekran="blokada-uwaga-b">
+  <div class="zegar-blokady">9:41</div>
+  <div class="la"><div class="gora"><span class="nazwa"><span class="kropka"></span>Harbor Sweater</span><span class="czas"><svg><use href="#stoper"/></svg>0:42:10</span></div>
+    <div class="srodek"><span class="n">47</span><span class="opis"><b>Row 48 wasn’t added</b>Open Oczko to try again.</span></div></div>
+</section>
+</body>
+</html>

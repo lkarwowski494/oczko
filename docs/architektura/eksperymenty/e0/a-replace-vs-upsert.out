@@ -1,0 +1,6 @@
+sqlite 3.50.4 foreign_keys 1
+przed REPLACE: dzieci = 2
+po INSERT OR REPLACE: dzieci = 0 parent = [{"id":1,"name":"b"}]
+przed UPSERT: dzieci = 2
+po UPSERT: dzieci = 2 parent = [{"id":1,"name":"b"}]
+exit=0

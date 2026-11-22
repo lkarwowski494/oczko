@@ -1,0 +1,85 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.inc",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.inc.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "increase",
+    "skrot": "inc",
+    "twierdzenie": "TRM-EN-036"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "increase",
+    "skrot": "inc",
+    "twierdzenie": "TRM-GB-011"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dodawanie oczek",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-041"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "öka",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-022"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "aumento",
+    "skrot": "aum.",
+    "twierdzenie": "TRM-PT-007"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "прибавка",
+    "skrot": "ПР",
+    "twierdzenie": "TRM-RU-040"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "додавання",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-029"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "細編み2目編み入れる",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-035"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "artırma",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-034"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "добавяне",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-032"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

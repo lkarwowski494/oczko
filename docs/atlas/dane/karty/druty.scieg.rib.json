@@ -1,0 +1,155 @@
+{
+ "format": 1,
+ "id": "druty.scieg.rib",
+ "rzemioslo": "druty",
+ "rodzaj": "scieg",
+ "klucze": {
+  "nazwa": "atlas.druty.scieg.rib.nazwa",
+  "podpis": "atlas.druty.scieg.rib.podpis",
+  "opis_alt": "atlas.druty.scieg.rib.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.druty.scieg.rib.rib1x1",
+  "atlas.druty.scieg.rib.rib2x2"
+ ],
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "ribbing",
+    "skrot": null,
+    "twierdzenie": "TRM-EN-039"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "ściągacz",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-036"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "resår",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-011"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "резинка",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-006"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "резинка",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-006"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "ゴム編み",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-006"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "고무뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-005"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "鬆緊針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-005"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "lastik örgü",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-013"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto barra",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-017"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "punct elastic",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-005"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "ластик",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-006"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "sviķelis",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-006"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "jahit permatang",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-004"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "punto elástico o resorte",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-004"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 4
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scieg",
+   "wzor": [
+    [
+     "prawe",
+     "lewe",
+     "prawe",
+     "lewe"
+    ]
+   ]
+  }
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.scieg.rib.krok1"
+  }
+ ]
+}

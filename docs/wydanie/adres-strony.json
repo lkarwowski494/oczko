@@ -1,0 +1,6 @@
+{
+  "_opis": "Adres strony Oczka — jedna stała (rola 10, P-196). Strona opublikowana w repo strony studia apps4brew-www (f1b1e04, P-239); zmiana bazy razem z ADRESY.polityka w src/kompozycja/adresy.ts (test tests/wydanie/repo-wydanie.test.ts). Kopia zapasowa nadal pod lkarwowski494.github.io/oczko/.",
+  "baza": "https://apps4brew.com/oczko/",
+  "polityka": "privacy.html",
+  "wsparcie": "support.html"
+}

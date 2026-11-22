@@ -1,0 +1,130 @@
+{
+  "format": 1,
+  "id": "druty.ujecie.k2tog",
+  "rzemioslo": "druty",
+  "rodzaj": "ujecie",
+  "klucze": {
+    "nazwa": "atlas.druty.ujecie.k2tog.nazwa",
+    "podpis": "atlas.druty.ujecie.k2tog.podpis",
+    "opis_alt": "atlas.druty.ujecie.k2tog.opis_alt"
+  },
+  "terminy": {
+    "en-US": [
+      {
+        "nazwa": "knit 2 together",
+        "skrot": "k2tog",
+        "twierdzenie": "TRM-EN-006"
+      }
+    ]
+  },
+  "twierdzenia": [
+    {
+      "id": "ATL-K-040",
+      "wartosc": {
+        "pochylenie": "prawo",
+        "bilans": -1
+      }
+    },
+    {
+      "id": "ATL-K-041",
+      "wartosc": {
+        "kierunek": "od_przodu"
+      }
+    }
+  ],
+  "jezyki_gotowe": [
+    "en-US"
+  ],
+  "rysunek": {
+    "rodzina": "siatka-petli",
+    "probka": {
+      "kolumny": 4,
+      "rzedy": 2
+    },
+    "tlo": "prawe",
+    "operacja": {
+      "typ": "scal",
+      "zuzywa": 2,
+      "strona": "prawe",
+      "na_wierzchu": "lewe",
+      "kolumna": 1
+    }
+  },
+  "kroki": [
+    {
+      "faza": "tkanina",
+      "petle": [
+        {
+          "rzad": 1,
+          "kolumna": 1
+        },
+        {
+          "rzad": 1,
+          "kolumna": 2
+        }
+      ],
+      "wyroznij": [
+        {
+          "rzad": 1,
+          "kolumna": 1
+        },
+        {
+          "rzad": 1,
+          "kolumna": 2
+        }
+      ],
+      "kierunek": null,
+      "strzalka": null,
+      "klucz": "atlas.druty.ujecie.k2tog.krok1"
+    },
+    {
+      "faza": "wklucie",
+      "petle": [
+        {
+          "rzad": 1,
+          "kolumna": 1
+        },
+        {
+          "rzad": 1,
+          "kolumna": 2
+        }
+      ],
+      "wyroznij": [
+        {
+          "rzad": 1,
+          "kolumna": 1
+        },
+        {
+          "rzad": 1,
+          "kolumna": 2
+        }
+      ],
+      "kierunek": "od_przodu",
+      "drut": {
+        "ktory": "prawy",
+        "grot": "w_prawo"
+      },
+      "nitka": "tyl",
+      "strzalka": null,
+      "klucz": "atlas.druty.ujecie.k2tog.krok2"
+    },
+    {
+      "faza": "wynik",
+      "petle": [
+        {
+          "rzad": 2,
+          "kolumna": 1
+        }
+      ],
+      "wyroznij": [
+        {
+          "rzad": 2,
+          "kolumna": 1
+        }
+      ],
+      "kierunek": "od_przodu",
+      "strzalka": null,
+      "klucz": "atlas.druty.ujecie.k2tog.krok3"
+    }
+  ]
+}

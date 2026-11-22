@@ -1,0 +1,38 @@
+# PU-191 (T-136): aplikacja bez reklam, śledzenia, kont i awarii. Część Maestro: na głównych ekranach (Dziś, Ustawienia, Projekty, Historia, Narzędzia) ani razu prośba o konto
+# („Sign in” / „Log in” / „Create account” / „Sign up”) ani ekran awarii (`awaryjny-zapisz-kopie`, scen. 09). Część zależnościowa (brak SDK reklam i ATT w package.json i app.json):
+# `tests/jakosc/pu-191-bez-sdk-reklam-i-sledzenia.test.ts`; prośby o powiadomienia, śledzenie i bibliotekę: scen. 99 (PU-052). Zakres: jeden przebieg po ekranach, nie „cały zestaw” —
+# reklama jako obraz nie ma selektora (brak SDK sprawdza test zależności).
+appId: com.apps4brew.knitting
+name: "PU-191 · Bez kont i ekranu awarii na głównych ekranach (Dziś, Ustawienia, Projekty, Historia, Narzędzia)"
+tags:
+  - przypadki-uzycia
+  - PU-191
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
+- assertNotVisible: { id: "awaryjny-zapisz-kopie" }
+- takeScreenshot: 106-dzis
+- runFlow: subflows/otworz-ustawienia.yaml # P-571: Ustawienia tylko przez zębatkę „Dziś” (podprzepływ)
+- assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
+- assertNotVisible: { id: "awaryjny-zapisz-kopie" }
+- takeScreenshot: 106-ustawienia
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
+- assertNotVisible: { id: "awaryjny-zapisz-kopie" }
+- takeScreenshot: 106-projekty
+- tapOn: { id: "nav-historia" }
+- extendedWaitUntil: { visible: { id: "historia" }, timeout: 20000 }
+- assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
+- assertNotVisible: { id: "awaryjny-zapisz-kopie" }
+- takeScreenshot: 106-historia
+- tapOn: { id: "nav-narzedzia" }
+- extendedWaitUntil: { visible: { id: "narzedzia-wloczki" }, timeout: 20000 }
+- assertNotVisible: "(Sign|Log) ?(in|up)|Create (an )?account"
+- assertNotVisible: { id: "awaryjny-zapisz-kopie" }
+- takeScreenshot: 106-narzedzia

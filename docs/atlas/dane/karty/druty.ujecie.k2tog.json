@@ -1,0 +1,207 @@
+{
+ "format": 1,
+ "id": "druty.ujecie.k2tog",
+ "rzemioslo": "druty",
+ "rodzaj": "ujecie",
+ "klucze": {
+  "nazwa": "atlas.druty.ujecie.k2tog.nazwa",
+  "podpis": "atlas.druty.ujecie.k2tog.podpis",
+  "opis_alt": "atlas.druty.ujecie.k2tog.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "knit 2 together",
+    "skrot": "k2tog",
+    "twierdzenie": "TRM-EN-006"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przerobione razem na prawo",
+    "skrot": "2 o. przer. p.",
+    "twierdzenie": "TRM-PL-009"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "sticka ihop 2 rm",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-012"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "убавление петель с наклоном вправо",
+    "skrot": "уб. пр.",
+    "twierdzenie": "TRM-RU-007"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "в’язання двох петель разом лицьовою петлею за передні стінки",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-007"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "左上2目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-007"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "왼코 겹쳐뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-006"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "左上2併針",
+    "skrot": "k2tog",
+    "twierdzenie": "TRM-ZHT-006"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "2 pontos juntos em meia",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-018"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "două ochiuri se împletesc împreună pe față",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-006"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свита лицева бримка с наклон вдясно",
+    "skrot": "1св.л.бр.д.",
+    "twierdzenie": "TRM-BG-007"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "dos puntos juntos de derecho",
+    "skrot": "2jd",
+    "twierdzenie": "TRM-ESLA-006"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-040",
+   "wartosc": {
+    "pochylenie": "prawo",
+    "bilans": -1
+   }
+  },
+  {
+   "id": "ATL-T-037",
+   "wartosc": {
+    "znaczenie_ws": "druty.ujecie.p2tog"
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scal",
+   "zuzywa": 2,
+   "strona": "prawe",
+   "na_wierzchu": "lewe",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.k2tog.krok1"
+  },
+  {
+   "faza": "wklucie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": "od_przodu",
+   "drut": {
+    "ktory": "prawy",
+    "grot": "w_prawo"
+   },
+   "nitka": "tyl",
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.k2tog.krok2"
+  },
+  {
+   "faza": "wynik",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.ujecie.k2tog.krok3"
+  }
+ ]
+}

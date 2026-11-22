@@ -1,0 +1,12 @@
+Rachunek z 2026-10-22 (USD); VAT 0% [[ZAŁOŻENIE] ceny App Store w US bez podatku, OP-05; 2026-10-22]; prowizja 15% [Small Business Program 15% (developer.apple.com/app-store/small-business-program, odczyt 2026-10-22; zapis potwierdzony, OP-01)]
+Koszt roczny: próg opłacalności D-024 (to nie koszt: aplikacja ma koszt 0, ZAL-003) 500 USD
+Koszty roczne razem: 500,00 USD
+miesieczna: cena 0,99 → bez VAT 0,99 → prowizja 15% → wpływ 0,84 (szacunek; porównaj z wpływem z App Store Connect); rocznie na płacącego 4,21; próg: 119 płacących/rok
+roczna: cena 6,99 → bez VAT 6,99 → prowizja 15% → wpływ 5,94 (szacunek; porównaj z wpływem z App Store Connect); rocznie na płacącego 5,94; próg: 85 płacących/rok
+dozywotni: cena 14,99 → bez VAT 14,99 → prowizja 15% → wpływ 12,74 (szacunek; porównaj z wpływem z App Store Connect); rocznie na płacącego 12,74; próg: 40 płacących/rok
+Lejek „A: miesięczna (konwersja 0,028 × udział 0,30)”: płacący 94,8 → wpływ 398,81 USD/rok → pokrycie kosztów 80%
+Lejek „A: roczna (0,028 × 0,45)”: płacący 142,2 → wpływ 844,75 USD/rok → pokrycie kosztów 169%
+Lejek „A: dożywotni (0,028 × 0,25)”: płacący 79,0 → wpływ 1006,42 USD/rok → pokrycie kosztów 201%
+Lejek „B: tylko dożywotni (0,030)”: płacący 338,5 → wpływ 4313,21 USD/rok → pokrycie kosztów 863%
+Bez podatku dochodowego i składek; przybliżenie z danych wejściowych, nie prognoza.
+kod: 0

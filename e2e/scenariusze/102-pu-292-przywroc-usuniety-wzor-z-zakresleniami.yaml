@@ -1,0 +1,67 @@
+# PU-292: usunięty wzór wraca z kosza razem z zakreśleniami (2 highlights).
+# Kod: `wzor-menu` → `wzor-usun` → potwierdzenie „Delete pattern” → `projekty-kosz` (lista projektów) → `kosz-przywroc` → `licznik-wzor` → `wzor-zakreslenia`.
+# CE-03: sprawdzamy notatkę rzędu przed usunięciem (chip „Row 1: k2tog here”) i po przywróceniu; chip to widok natywny — selektor po tekście, hipoteza jak w 104 (BX-035). [BX15: chip nie jest w hierarchii XCUI (nakładka PDFKit, BX-051) — asercja po panelu E2E `e2e-wzor-notatki`.]
+# Ograniczenie (BX-031, hipoteza): wpis kosza „Pattern in … · until …” bez testID (`kosz-przywroc` to przycisk wiersza); potwierdzenie usunięcia i dojście do kosza po tekście/id — kroki oparte na README, niepotwierdzone na iOS.
+appId: com.apps4brew.knitting
+name: "PU-292 · Usunięty wzór wraca z kosza razem z 2 zakreśleniami"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-292
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 35%", end: "80%, 35%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- swipe: { start: "20%, 55%", end: "80%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+# --- CE-03: notatka rzędu (`notatka_rzedu` należy do licznika, nie do wzoru) — jak 104 (znacznik → „Add note”), po wyjściu z trybu zakreślacza (wzór 26) ---
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+- tapOn: { id: "wzor-zaznacz" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- tapOn: "Add note"
+- assertVisible: { id: "wzor-notatka-pole" }
+- tapOn: { id: "wzor-notatka-pole" }
+- inputText: "k2tog here"
+- assertVisible: { id: "wzor-notatka-pole", text: "k2tog here" }
+- tapOn: "Save"
+- assertNotVisible: { id: "wzor-notatka-pole" }
+- assertVisible: { id: "e2e-wzor-notatki", text: "notes: row 1: k2tog here" }
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+- tapOn: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-usun" }
+- tapOn: { id: "wzor-usun" }
+- assertVisible: "Delete pattern"
+- tapOn: "Delete pattern"
+- extendedWaitUntil: { visible: { id: "licznik-wzor" }, timeout: 30000 }
+- takeScreenshot: 102-po-usunieciu
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "nav-dzis" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: { id: "projekty-kosz" }
+- assertVisible: { id: "kosz-przywroc" }
+- tapOn: { id: "kosz-przywroc" }
+- assertNotVisible: { id: "kosz-przywroc" }
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "projekty-wiersz", index: 0 }
+- tapOn: { id: "projekty-wiersz", index: 0 }
+- extendedWaitUntil: { visible: { id: "licznik-wzor" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5: akcja pod liczbą bywa poza ekranem
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- assertVisible: { id: "e2e-wzor-notatki", text: "notes: row 1: k2tog here" } # CE-03: notatka rzędu przetrwała kosz (dane: tests/dane/pu-292-notatki-rzedow-po-usunieciu-wzoru.test.ts; podczas pobytu wzoru w koszu licznik jej nie pokazuje: notatki rzędu rysuje tylko widok wzoru, WzorWidokNatywny.tsx:56 i WzorNotatki.tsx:68)
+- takeScreenshot: 102-po-przywroceniu

@@ -1,0 +1,35 @@
+# BR-WZR-005/S1 (docs/brd/wymagania-projekt.md:256): wzór i licznik razem, telefon poziomo na stojaku; +1 działa w układzie poziomym.
+# Makiety brak (design-spec.md:95, „Poza tym etapem”) — scenariusz sprawdza tylko obecność obu elementów i wartość; wygląd: audyt 04.
+appId: com.apps4brew.knitting
+name: "BR-WZR-005/S1 · Poziomo: wzór i licznik na jednym ekranie, +1 działa"
+tags:
+  - BR-WZR-005-S1
+  - wzor
+  - stan-licznika
+  - PU-070
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+# NOC-2 (przejście poznawcze 04): licznik z akcją „Wzór” pod liczbą (ZM-04, P-580), zanim scenariusz ją stuknie
+- takeScreenshot: 23-licznik-przed-wzorem
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-pdf" }
+- tapOn: { id: "e2e-wzor-pdf" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "wzor-widok" }
+- assertVisible: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- takeScreenshot: 23-poziomo
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# NOC-2 (04): +1 w poziomie na telefonie — wartość 1 przy wzorze
+- takeScreenshot: 23-poziomo-po-plus-1
+- assertVisible: { id: "wzor-widok" }
+- setOrientation: PORTRAIT
+- assertVisible: { id: "licznik-wartosc", text: "1" }

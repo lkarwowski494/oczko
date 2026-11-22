@@ -1,0 +1,210 @@
+{
+ "format": 1,
+ "id": "druty.zamykanie.bo",
+ "rzemioslo": "druty",
+ "rodzaj": "zamykanie",
+ "klucze": {
+  "nazwa": "atlas.druty.zamykanie.bo.nazwa",
+  "podpis": "atlas.druty.zamykanie.bo.podpis",
+  "opis_alt": "atlas.druty.zamykanie.bo.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "bind off",
+    "skrot": "BO",
+    "twierdzenie": "TRM-EN-014"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "zakańczanie oczek",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-016"
+   },
+   {
+    "nazwa": "oczka zamykające",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-017"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "maska av",
+    "skrot": "avm",
+    "twierdzenie": "TRM-SV-018"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "закрытие петель",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-014"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "закріплення петель останнього ряду",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-010"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "伏せ止め",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-013"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "收針",
+    "skrot": "BO",
+    "twierdzenie": "TRM-ZHT-013"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "arrematar",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-024"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "încheierea ochiurilor",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-010"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "valdziņu noraukšana",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-008"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "mati mata kait",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-005"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "remate",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-008"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-071",
+   "wartosc": {
+    "pozostaje_na_drucie": 1
+   },
+   "twierdzenia": [
+    "ATL-K-070"
+   ]
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "zamknij",
+   "ile": 2
+  }
+ },
+ "kroki": [
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 0
+    },
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 0
+    },
+    {
+     "rzad": 2,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.zamykanie.bo.krok1"
+  },
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 0
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 0
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.zamykanie.bo.krok2"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.zamykanie.bo.krok3"
+  },
+  {
+   "faza": "wynik",
+   "petle": [
+    {
+     "rzad": 2,
+     "kolumna": 3
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 2,
+     "kolumna": 3
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.zamykanie.bo.krok4"
+  }
+ ]
+}

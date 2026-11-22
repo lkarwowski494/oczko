@@ -1,4 +1,7 @@
-# Strona aplikacji (polityka prywatności, wsparcie): GitHub Pages z katalogu site/ przez Actions (BR-REL-019..020)
+# Strona aplikacji (strona produktu, polityka prywatności, wsparcie): GitHub Pages z katalogu site/ przez Actions — jak Trening pages.yml (P-093 (1)).
+# Publikowany jest wyłącznie site/; bez sekretów; token tylko do odczytu treści i wdrożenia Pages. Adres: docs/wydanie/adres-strony.json.
+# Uruchamianie: push na main albo ręcznie (P-219 D2: przed TestFlight także z gałęzi roboczej, za zgodą; wymaga reguły gałęzi w środowisku
+# github-pages — docs/wydanie/sklep.md §2a). Bez macOS.
 name: Pages
 on:
   push:
@@ -22,11 +25,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: site
       - id: deployment

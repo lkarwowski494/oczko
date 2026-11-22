@@ -1,0 +1,7 @@
+{
+  "name": "oczko-dziennik-plus",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dziennik +1 z ekranu blokady, Live Activity i SHA-256 plików (ADR-0007, ADR-0008, P-130)",
+  "main": "index.ts"
+}

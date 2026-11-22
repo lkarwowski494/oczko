@@ -1,40 +1,81 @@
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Oczko (Purlo) — Pomoc i Wsparcie Techniczne / Support</title>
-  <style>
-    :root { color-scheme: light dark; --bg: #FAF8F5; --fg: #1F2937; --accent: #C85A32; --muted: #6B7280; --border: #E5E7EB; }
-    @media (prefers-color-scheme: dark) { :root { --bg: #111827; --fg: #F9FAFB; --accent: #E07A5F; --muted: #9CA3AF; --border: #374151; } }
-    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    main { max-width: 720px; margin: 30px auto 60px; padding: 0 20px; }
-    h1 { font-size: 28px; color: var(--accent); margin-bottom: 8px; }
-    h2 { font-size: 20px; color: var(--accent); margin-top: 32px; }
-    .faq-item { margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-    .faq-q { font-weight: 600; margin-bottom: 6px; }
-    a { color: var(--accent); text-decoration: none; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Oczko — wsparcie / Support</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f7f4ef; --fg: #1e1c1a; --muted: #5d5853; --line: #ddd6cc; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #151311; --fg: #eeeae4; --muted: #ada79f; --line: #38332e; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 26px; margin: 0 0 4px; } h2 { font-size: 19px; margin: 28px 0 8px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+  a { color: inherit; }
+  nav { font-size: 14px; margin-bottom: 16px; } nav a { margin-right: 12px; }
+</style>
 </head>
 <body>
-  <main>
-    <h1>Pomoc i Wsparcie Techniczne</h1>
-    <p>Masz pytanie, sugestię lub potrzebujesz pomocy z aplikacją Oczko (Purlo)? Skontaktuj się bezpośrednio z naszym zespołem rzemieślniczym.</p>
-    <p><strong>Adres e-mail:</strong> <a href="mailto:support@apps4brew.com">support@apps4brew.com</a></p>
+<main>
+<!-- Strona wsparcia (App Store: Support URL „must lead to actual contact information”, wytyczna 1.5). Zasady limitu: P-057, docs/monetyzacja.md
+     (KP-02, KP-12); nazwy przycisków jak w aplikacji (polskie do potwierdzenia przy przekładzie, rola 09). Bez listy źródeł (P-108). -->
+<nav><a href="privacy.html">Prywatność / Privacy</a><a href="#en">English</a></nav>
 
-    <h2>Często Zadawane Pytania (FAQ)</h2>
-    <div class="faq-item">
-      <div class="faq-q">Jak utworzyć kopię zapasową moich projektów?</div>
-      <div class="faq-a">Wejdź w Ustawienia → Kopia zapasowa → Utwórz kopię zapasową. Plik JSON zostanie bezpiecznie zapisany w systemowym katalogu aplikacji i może zostać wyeksportowany przez arkusz udostępniania iOS (np. do aplikacji Pliki, iCloud Drive lub AirDrop).</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Czy aplikacja wymaga połączenia z internetem?</div>
-      <div class="faq-a">Nie! Oczko działa w 100% offline. Wszystkie liczniki, baza włóczek i narzędzi oraz kalkulatory działają bez dostępu do sieci.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Jak działa funkcja bezpiecznego cofania (Safe Undo)?</div>
-      <div class="faq-a">W przypadku przypadkowego stuknięcia w licznik, przycisk Cofnij pozwala natychmiast odwrócić ostatnie naliczenie rzędu w ramach logiki Event Sourcing.</div>
-    </div>
-  </main>
+<section lang="pl">
+<h1>Oczko — wsparcie</h1>
+<p>Napisz do nas: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>. Odpowiadamy po polsku i po angielsku.</p>
+<p>Jeśli coś działa źle, użyj w aplikacji Ustawienia → „Zgłoś problem”. Zobaczysz opis techniczny bez treści Twoich projektów i sam zdecydujesz, czy i jak go wysłać.
+Dołącz go do e-maila i napisz w kilku zdaniach, co się stało.</p>
+
+<h2>Częste pytania</h2>
+<h3>Jak dodać wzór?</h3>
+<p>Na liczniku stuknij ••• i wybierz „Dodaj wzór…”. Możesz też otworzyć projekt i wybrać „Dodaj wzór” na końcu sekcji Wzór. Potem wybierz „Wybierz plik (PDF lub Word)”, „Skanuj strony”, „Wybierz zdjęcia” albo „Link do strony WWW…”.
+Wzór z innej aplikacji (Pliki, Mail, przeglądarka) dodasz przez Udostępnij i wybranie Oczka.</p>
+<h3>Jak ustawić przypomnienie co kilka rzędów?</h3>
+<p>Na liczniku rzędów stuknij ••• i wybierz „Dodaj przypomnienie („co N rzędów”)”. Wpisz, co zrobić, od którego rzędu, co ile rzędów i ile razy. Pod polami zobaczysz rzędy, w których Oczko Ci przypomni.
+Zapisz przez „Zapisz przypomnienie”. Gdy dojdziesz do takiego rzędu, przypomnienie pojawi się na liczniku.</p>
+<h3>Ile kosztuje Oczko?</h3>
+<p>Aplikacja jest darmowa do 5 dni z robótką w miesiącu kalendarzowym. Dzień liczy się, gdy pierwszy raz tego dnia dodasz rząd na liczniku.
+Przeglądanie projektów, historia, notatki, kalkulatory, eksport i kopia danych nie zużywają dni. Robótki w toku limit nigdy nie przerywa. Pro zdejmuje limit.</p>
+<h3>Kupiłem Pro na innym urządzeniu albo przeinstalowałem aplikację</h3>
+<p>Użyj w Ustawieniach „Przywróć zakupy”. Zakupy są przypisane do Twojego konta Apple.</p>
+<h3>Jak anulować subskrypcję?</h3>
+<p>W Ustawieniach aplikacji wybierz „Zarządzaj subskrypcją” albo otwórz ustawienia iPhone’a → Twoje imię → Subskrypcje. Po anulowaniu wraca darmowy limit, a wszystkie dane zostają.</p>
+<h3>Zmieniam telefon. Jak przenieść dane?</h3>
+<p>Dane są tylko na urządzeniu. Przeniesie je kopia zapasowa iPhone’a albo eksport z aplikacji: zapisz plik, a na nowym telefonie wybierz „Importuj kopię”.</p>
+<h3>Czy aplikacja wysyła moje dane?</h3>
+<p>Nie. Szczegóły są w <a href="privacy.html">polityce prywatności</a>.</p>
+</section>
+
+<hr>
+
+<section lang="en" id="en">
+<h1>Oczko — Support</h1>
+<p>Write to us: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>. We reply in English and Polish.</p>
+<p>If something does not work, use Settings → “Report a problem” in the app. You will see a technical description without the content of your projects and decide yourself whether and how to send it.
+Attach it to an email and describe in a few sentences what happened.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>How do I add a pattern?</h3>
+<p>On the counter, tap ••• and choose “Add pattern…”. You can also open the project and choose “Add pattern” at the end of its Pattern section. Then choose “Choose file (PDF or Word)”, “Scan pages”, “Choose photos” or “Web page link…”.
+To add a pattern from another app (Files, Mail, a browser), use Share and choose Oczko.</p>
+<h3>How do I set a reminder every few rows?</h3>
+<p>On a row counter, tap ••• and choose “Add a reminder (“every N rows”)”. Enter what to do, the row to start on, every how many rows and how many times. Under the fields you see the rows you will be reminded on.
+Save it with “Save reminder”. When you reach such a row, the reminder appears on the counter.</p>
+<h3>How much does Oczko cost?</h3>
+<p>The app is free for up to 5 crafting days per calendar month. A day counts when you first add a row on a counter that day.
+Browsing projects, history, notes, calculators, export and backup do not use days. The limit never interrupts work in progress. Pro removes the limit.</p>
+<h3>I bought Pro on another device or reinstalled the app</h3>
+<p>Use “Restore purchases” in Settings. Purchases belong to your Apple account.</p>
+<h3>How do I cancel a subscription?</h3>
+<p>Choose “Manage subscription” in the app’s Settings, or open iPhone Settings → your name → Subscriptions. After cancelling, the free limit returns and all your data stays.</p>
+<h3>I am changing phones. How do I move my data?</h3>
+<p>Your data is only on your device. An iPhone backup moves it, or an export from the app: save the file, then choose “Import a backup” on the new phone.</p>
+<h3>Does the app send my data?</h3>
+<p>No. Details are in the <a href="privacy.html">privacy policy</a>.</p>
+</section>
+</main>
 </body>
 </html>

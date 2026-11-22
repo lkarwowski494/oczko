@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko, kamerayı yalnızca bir desenin, projenin veya iplik etiketinin fotoğrafını çektiğinizde kullanır. Fotoğraflar cihazınızda kalır."
+  }
+}

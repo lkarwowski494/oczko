@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "druty.dodanie.m1l",
+ "rzemioslo": "druty",
+ "rodzaj": "dodanie",
+ "klucze": {
+  "nazwa": "atlas.druty.dodanie.m1l.nazwa",
+  "podpis": "atlas.druty.dodanie.m1l.podpis",
+  "opis_alt": "atlas.druty.dodanie.m1l.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "make one left",
+    "skrot": "M1L",
+    "twierdzenie": "TRM-EN-013"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "прибавление лицевой петли из протяжки с наклоном влево",
+    "skrot": "пр. лв.",
+    "twierdzenie": "TRM-RU-013"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "左傾加針",
+    "skrot": "M1L",
+    "twierdzenie": "TRM-ZHT-012"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "нова бримка с наклон вляво",
+    "skrot": "1н.бр.л.",
+    "twierdzenie": "TRM-BG-014"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-052",
+   "wartosc": {
+    "pochylenie": "lewo",
+    "bilans": 1
+   },
+   "twierdzenia": [
+    "ATL-K-054"
+   ]
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "z_nitki_poziomej",
+   "scianka": "tylna",
+   "pochylenie": "lewo",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    },
+    {
+     "rzad": 1,
+     "kolumna": 2
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.dodanie.m1l.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "scianka": "tylna",
+   "strzalka": null,
+   "klucz": "atlas.druty.dodanie.m1l.krok2"
+  }
+ ]
+}

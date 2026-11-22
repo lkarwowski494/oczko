@@ -1,0 +1,60 @@
+$ git diff --stat 2ed5215a 1dfcf7ca
+ .github/workflows/asc-iap-localizations.yml        |    6 +-
+ docs/decyzje.md                                    |    4 +
+ docs/wydanie/asc-v2/dowody-bi/001-po.txt           |   53 +
+ docs/wydanie/asc-v2/dowody-bi/001-przed.txt        |  160 ++
+ docs/wydanie/asc-v2/dowody-bi/002-po.txt           |   53 +
+ docs/wydanie/asc-v2/dowody-bi/002-przed.txt        |  124 +
+ docs/wydanie/asc-v2/dowody-bi/003-po.txt           |   62 +
+ docs/wydanie/asc-v2/dowody-bi/003-przed.txt        |   79 +
+ docs/wydanie/asc-v2/dowody-bi/004-po.txt           |   53 +
+ docs/wydanie/asc-v2/dowody-bi/004-przed.txt        |  135 ++
+ docs/wydanie/asc-v2/dowody-bi/verify-bi.txt        | 2395 +++++++++++++++++++
+ docs/wydanie/asc-v2/inwentarz.md                   |   38 +
+ docs/wydanie/asc-v2/przebieg-wlasciciela.md        |   22 +
+ docs/wydanie/asc-v2/raport-bi.md                   |   26 +
+ docs/wydanie/asc-v2/stan.md                        |    6 +
+ docs/wydanie/bh-2026-11-13/dowody/apple-cytaty.txt |   33 +
+ .../bh-2026-11-13/dowody/apple-schematy.txt        |  184 ++
+ .../bh-2026-11-13/dowody/delta-bi-sonda.mjs.txt    |   12 +
+ .../bh-2026-11-13/dowody/delta-bi-sonda.txt        |    7 +
+ .../bh-2026-11-13/dowody/delta-bi-testy-wt-347.txt |  273 +++
+ .../bh-2026-11-13/dowody/delta-bi-testy-wt-bi.txt  |   10 +
+ .../bh-2026-11-13/dowody/delta-bi-verify.txt       | 2398 ++++++++++++++++++++
+ docs/wydanie/bh-2026-11-13/dowody/sonda-bh.mjs.txt |   25 +
+ docs/wydanie/bh-2026-11-13/dowody/sonda-bh.txt     |    8 +
+ .../bh-2026-11-13/dowody/sprawdz-raport.txt        |    2 +
+ .../bh-2026-11-13/dowody/testy-2ed5215a.txt        |  661 ++++++
+ .../bh-2026-11-13/dowody/testy-de5497bc.txt        |    9 +
+ docs/wydanie/bh-2026-11-13/dowody/trening-v1.txt   |   11 +
+ .../bh-2026-11-13/dowody/verify-de5497bc.txt       | 2362 +++++++++++++++++++
+ docs/wydanie/bh-2026-11-13/recenzja-bg.md          |  181 ++
+ docs/wydanie/sklep.md                              |    2 +-
+ package.json                                       |    2 +-
+ scripts/asc/iap-localizations.mjs                  |  125 +-
+ scripts/asc/kontrola-wycofane.mjs                  |   20 +
+ scripts/asc/wycofane-endpointy.mjs                 |   17 +
+ tests/wydanie/asc-iap-v2-atrapa.mjs                |   91 +
+ tests/wydanie/asc-iap-v2-driver.mjs                |   18 +
+ tests/wydanie/asc-iap-v2.test.ts                   |  306 +++
+ tests/wydanie/iap-nazwa-aplikacji.test.ts          |   13 +-
+ 39 files changed, 9950 insertions(+), 36 deletions(-)
+kod 0
+$ git diff --name-only 2ed5215a 1dfcf7ca | grep -E binarki
+package.json
+kod grep 0 (1 = brak trafień)
+$ git diff 2ed5215a 1dfcf7ca -- package.json
+diff --git a/package.json b/package.json
+index af37031b..c397c811 100644
+--- a/package.json
++++ b/package.json
+@@ -15,7 +15,7 @@
+     "i18n:pseudo": "node scripts/sprawdz-i18n.mjs src/i18n/slowniki --zrodlo en --oczekujace docs/lokalizacja/oczekujace.json --krytyczne docs/lokalizacja/krytyczne.json --przeglad docs/lokalizacja/przeglad-krytyczne.json --pseudo src/i18n/pseudo/en-XA.json",
+     "lint": "eslint src/dane",
+     "test:akceptacja": "node scripts/jakosc/akceptacja-raport.mjs --wynik docs/jakosc/e3/akceptacja-wynik.md",
+-    "jakosc:kontrole": "node scripts/jakosc/kontrole-repo.mjs && node scripts/jakosc/sprawdz-workflowy.mjs && node scripts/jakosc/licencje.mjs && node scripts/jakosc/licencje-generuj.mjs --check && node --no-warnings docs/architektura/narzedzia/sprawdz-schemat.mjs && node docs/architektura/narzedzia/kontrola-negatywna/mutanty-schematu.mjs && node docs/architektura/narzedzia/sprawdz-porty.mjs && node docs/monetyzacja/limit-test.mjs && node docs/monetyzacja/dostep-test.mjs && node docs/architektura/eksperymenty/e1/scal-test.mjs && node docs/architektura/eksperymenty/e1/mutanty-scal.mjs && node docs/jakosc/narzedzia/mutanty-e1.mjs && node docs/architektura/eksperymenty/e1/kontrola-adr.mjs docs/adr --min 21 && node docs/architektura/narzedzia/granice-test/obejscia.mjs && node docs/architektura/narzedzia/granice.mjs src && node docs/architektura/narzedzia/granice.mjs app --domena ../src/domena && node docs/brd/narzedzia/kontrola-brd.mjs docs/brd --zgodnosc=tests/wektory/brd.json && node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md && node docs/jakosc/narzedzia/linie-kryteriow.mjs --check && node scripts/natywne/kontrola-swift.mjs && node --experimental-strip-types --no-warnings scripts/natywne/generuj-stale.mjs --check && npm run -s i18n:kod",
++    "jakosc:kontrole": "node scripts/jakosc/kontrole-repo.mjs && node scripts/asc/kontrola-wycofane.mjs && node scripts/jakosc/sprawdz-workflowy.mjs && node scripts/jakosc/licencje.mjs && node scripts/jakosc/licencje-generuj.mjs --check && node --no-warnings docs/architektura/narzedzia/sprawdz-schemat.mjs && node docs/architektura/narzedzia/kontrola-negatywna/mutanty-schematu.mjs && node docs/architektura/narzedzia/sprawdz-porty.mjs && node docs/monetyzacja/limit-test.mjs && node docs/monetyzacja/dostep-test.mjs && node docs/architektura/eksperymenty/e1/scal-test.mjs && node docs/architektura/eksperymenty/e1/mutanty-scal.mjs && node docs/jakosc/narzedzia/mutanty-e1.mjs && node docs/architektura/eksperymenty/e1/kontrola-adr.mjs docs/adr --min 21 && node docs/architektura/narzedzia/granice-test/obejscia.mjs && node docs/architektura/narzedzia/granice.mjs src && node docs/architektura/narzedzia/granice.mjs app --domena ../src/domena && node docs/brd/narzedzia/kontrola-brd.mjs docs/brd --zgodnosc=tests/wektory/brd.json && node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md && node docs/jakosc/narzedzia/linie-kryteriow.mjs --check && node scripts/natywne/kontrola-swift.mjs && node --experimental-strip-types --no-warnings scripts/natywne/generuj-stale.mjs --check && npm run -s i18n:kod",
+     "jakosc:info": "npm run -s i18n:kod; exit 0",
+     "typecheck:testy": "tsc -p tsconfig.testy.json",
+     "wydanie:adresy": "node scripts/wydanie/sprawdz-adresy.mjs",
+$ grep -rn package.json/scripts usage in build path

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Cel share (moduly.md „Kontrakt partii 6”): reguła aktywacji bez TRUEPREDICATE — PDF 1, Word (.docx) 1, obrazy do 20 (ZDJECIA_WZORU_MAKS w src/konfiguracja.ts, zgodność sprawdza generuj-stale w trybie check), adres 1; każdy
+     załącznik w jednym z tych typów (inne typy nie pokazują Oczka w arkuszu). Plik z Plików ma też public.file-url (zgodny z public.url). -->
+<plist version="1.0">
+  <dict>
+    <key>NSExtension</key>
+    <dict>
+      <key>NSExtensionAttributes</key>
+      <dict>
+        <key>NSExtensionActivationRule</key>
+        <string>SUBQUERY (extensionItems, $e, SUBQUERY ($e.attachments, $a, ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf").@count &lt;= 1 AND SUBQUERY ($e.attachments, $a, ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document").@count &lt;= 1 AND SUBQUERY ($e.attachments, $a, ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image").@count &lt;= 20 AND SUBQUERY ($e.attachments, $a, ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url" AND NOT (ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "public.file-url")).@count &lt;= 1 AND SUBQUERY ($e.attachments, $a, ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf" OR ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document" OR ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image" OR ANY $a.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url").@count == $e.attachments.@count AND $e.attachments.@count &gt;= 1).@count == 1</string>
+      </dict>
+      <key>NSExtensionPrincipalClass</key>
+      <string>$(PRODUCT_MODULE_NAME).ShareViewController</string>
+      <key>NSExtensionPointIdentifier</key>
+      <string>com.apple.share-services</string>
+    </dict>
+  </dict>
+</plist>

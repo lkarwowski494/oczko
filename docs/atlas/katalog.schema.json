@@ -1,0 +1,682 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oczko.invalid/atlas/karta-1.schema.json",
+  "title": "Karta atlasu technik (format 1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "id",
+    "rzemioslo",
+    "rodzaj",
+    "klucze",
+    "terminy",
+    "twierdzenia",
+    "jezyki_gotowe"
+  ],
+  "properties": {
+    "format": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+(\\.[a-z0-9_-]+){1,3}$"
+    },
+    "rzemioslo": {
+      "enum": [
+        "druty",
+        "szydelko",
+        "oba"
+      ]
+    },
+    "rodzaj": {
+      "enum": [
+        "oczko",
+        "scieg",
+        "ujecie",
+        "dodanie",
+        "nabieranie",
+        "zamykanie",
+        "warkocz",
+        "oczko_szydelkowe",
+        "tabela",
+        "schemat",
+        "skrot"
+      ]
+    },
+    "pozycje": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+(\\.[a-z0-9_-]+){1,3}$"
+      }
+    },
+    "publikacja": {
+      "enum": [
+        "mvp",
+        "po-generatorze"
+      ]
+    },
+    "klucze_dodatkowe": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string"
+      }
+    },
+    "klucze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nazwa"
+      ],
+      "properties": {
+        "nazwa": {
+          "type": "string"
+        },
+        "podpis": {
+          "type": "string"
+        },
+        "opis_alt": {
+          "type": "string"
+        }
+      }
+    },
+    "terminy": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-([A-Z]{2}|[0-9]{3}))?$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 4,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "skrot",
+            "twierdzenie"
+          ],
+          "properties": {
+            "nazwa": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "skrot": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 16
+            },
+            "twierdzenie": {
+              "type": "string",
+              "pattern": "^[A-Z]{2,4}(-[A-Z0-9]+)+$"
+            }
+          }
+        }
+      }
+    },
+    "twierdzenia": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "wartosc"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,4}(-[A-Z0-9]+)+$"
+          },
+          "twierdzenia": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]{2,4}(-[A-Z0-9]+)+$"
+            }
+          },
+          "wartosc": {
+            "type": "object",
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+              "pochylenie": {
+                "enum": [
+                  "prawo",
+                  "lewo",
+                  "srodek",
+                  "brak"
+                ]
+              },
+              "bilans": {
+                "type": "integer",
+                "minimum": -4,
+                "maximum": 4
+              },
+              "na_wierzchu": {
+                "enum": [
+                  "lewe",
+                  "prawe",
+                  "srodkowe"
+                ]
+              },
+              "kierunek": {
+                "enum": [
+                  "od_przodu",
+                  "od_tylu"
+                ]
+              },
+              "znaczenie_ws": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+(\\.[a-z0-9_-]+){1,3}$"
+              },
+              "pomocniczy": {
+                "enum": [
+                  "przod",
+                  "tyl"
+                ]
+              },
+              "narzuty": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "petle_po_wyciagnieciu": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 6
+              },
+              "pozostaje_na_drucie": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4
+              }
+            }
+          }
+        }
+      }
+    },
+    "jezyki_gotowe": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "glif": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "origin",
+        "rs",
+        "ws"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^glif\\.[a-z0-9_.]+$"
+        },
+        "origin": {
+          "const": "own"
+        },
+        "rs": {
+          "type": "string"
+        },
+        "ws": {
+          "type": "string"
+        }
+      }
+    },
+    "rysunek": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rodzina",
+        "operacja"
+      ],
+      "properties": {
+        "rodzina": {
+          "enum": [
+            "siatka-petli",
+            "graf-szydelkowy",
+            "nabieranie"
+          ]
+        },
+        "probka": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kolumny",
+            "rzedy"
+          ],
+          "properties": {
+            "kolumny": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 8
+            },
+            "rzedy": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 4
+            }
+          }
+        },
+        "tlo": {
+          "enum": [
+            "prawe",
+            "lewe"
+          ]
+        },
+        "operacja": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "strona"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "oczko"
+                },
+                "strona": {
+                  "enum": [
+                    "prawe",
+                    "lewe"
+                  ]
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "zuzywa",
+                "strona",
+                "na_wierzchu"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "scal"
+                },
+                "zuzywa": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 3
+                },
+                "strona": {
+                  "enum": [
+                    "prawe",
+                    "lewe"
+                  ]
+                },
+                "na_wierzchu": {
+                  "enum": [
+                    "lewe",
+                    "prawe",
+                    "srodkowe"
+                  ]
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "narzut"
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "scianka",
+                "pochylenie"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "z_nitki_poziomej"
+                },
+                "scianka": {
+                  "enum": [
+                    "przednia",
+                    "tylna"
+                  ]
+                },
+                "pochylenie": {
+                  "enum": [
+                    "prawo",
+                    "lewo"
+                  ]
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "wzor"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "scieg"
+                },
+                "wzor": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 4,
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "items": {
+                      "enum": [
+                        "prawe",
+                        "lewe"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "zuzywa",
+                "przekladane",
+                "pomocniczy"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "warkocz"
+                },
+                "zuzywa": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 8
+                },
+                "przekladane": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "pomocniczy": {
+                  "enum": [
+                    "przod",
+                    "tyl"
+                  ]
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "ile"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "zamknij"
+                },
+                "ile": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 6
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "typ",
+                "narzuty"
+              ],
+              "properties": {
+                "typ": {
+                  "const": "oczko_szydelkowe"
+                },
+                "narzuty": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "kroki": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "faza",
+          "petle",
+          "wyroznij",
+          "kierunek",
+          "strzalka",
+          "klucz"
+        ],
+        "properties": {
+          "faza": {
+            "enum": [
+              "tkanina",
+              "wklucie",
+              "narzut",
+              "przeciagniecie",
+              "zdjecie",
+              "wynik",
+              null
+            ]
+          },
+          "petle": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "rzad",
+                "kolumna"
+              ],
+              "properties": {
+                "rzad": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 11
+                }
+              }
+            }
+          },
+          "wyroznij": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "rzad",
+                "kolumna"
+              ],
+              "properties": {
+                "rzad": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "kolumna": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 11
+                }
+              }
+            }
+          },
+          "kierunek": {
+            "enum": [
+              "od_przodu",
+              "od_tylu",
+              null
+            ]
+          },
+          "drut": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ktory"
+            ],
+            "properties": {
+              "ktory": {
+                "enum": [
+                  "prawy",
+                  "lewy",
+                  "pomocniczy",
+                  "szydelko"
+                ]
+              },
+              "grot": {
+                "enum": [
+                  "w_lewo",
+                  "w_prawo"
+                ]
+              }
+            }
+          },
+          "nitka": {
+            "enum": [
+              "przod",
+              "tyl"
+            ]
+          },
+          "scianka": {
+            "enum": [
+              "przednia",
+              "tylna"
+            ]
+          },
+          "petle_na_narzedziu": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "faza_opis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "twierdzenia": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]{2,4}(-[A-Z0-9]+)+$"
+            }
+          },
+          "strzalka": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "ruch",
+                  "od",
+                  "do"
+                ],
+                "properties": {
+                  "ruch": {
+                    "enum": [
+                      "drut",
+                      "nitka"
+                    ]
+                  },
+                  "od": {
+                    "type": "string",
+                    "pattern": "^(glowa|nozka_lewa|nozka_prawa):[0-7]:(1[01]|[0-9])$|^drut_(prawy|lewy)$"
+                  },
+                  "do": {
+                    "type": "string",
+                    "pattern": "^(glowa|nozka_lewa|nozka_prawa):[0-7]:(1[01]|[0-9])$|^drut_(prawy|lewy)$"
+                  }
+                }
+              }
+            ]
+          },
+          "klucz": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+# P-230 Q2a (grupa R, design-spec „Skrzynka importu (R2)”; BR-WZR-001): plik z „Udostępnij do Oczka” bez wybranego projektu czeka w skrzynce;
+# arkusz „1 pattern to add” na liście projektów (nie nad licznikiem, P-046) → wybór projektu → wzór w projekcie. Plik wkłada argument E2E
+# oczkoE2eSkrzynka=pdf (ten sam PDF co e2e-wzor-pdf). Arkusz rozszerzenia systemu — lista urządzenia (interpreter scenariuszy nie przełącza
+# aplikacji; plan partii 7). Pakiet pełny.
+appId: com.apps4brew.knitting
+name: "P-230 · Skrzynka rozszerzenia: 1 pattern to add → projekt → wzór otwarty"
+tags:
+  - P-230
+  - stan-licznika
+  - PU-074
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- stopApp
+- launchApp:
+    clearState: false
+    arguments:
+      oczkoE2eTeraz: "2026-11-10T12:10:00"
+      oczkoE2eSkrzynka: "pdf"
+# zimny start na „Dziś” (ZM-18); „Kontynuuj ›” do licznika, dalej bez zmian (P-608 G1, przebieg 42544112861 cz. 1 iPhone)
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 60000 }
+- assertNotVisible: { id: "skrzynka" }
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "skrzynka" }, timeout: 20000 }
+- assertVisible: "1 pattern to add"
+- takeScreenshot: 52-skrzynka
+- tapOn: { id: "skrzynka-projekt", index: 0 }
+- assertNotVisible: { id: "skrzynka" }
+- assertVisible: { id: "projekty-lista" }
+- tapOn: "Harbor.*"
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }

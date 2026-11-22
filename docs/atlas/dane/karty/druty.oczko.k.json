@@ -1,0 +1,252 @@
+{
+ "format": 1,
+ "id": "druty.oczko.k",
+ "rzemioslo": "druty",
+ "rodzaj": "oczko",
+ "klucze": {
+  "nazwa": "atlas.druty.oczko.k.nazwa",
+  "podpis": "atlas.druty.oczko.k.podpis",
+  "opis_alt": "atlas.druty.oczko.k.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "knit",
+    "skrot": "k",
+    "twierdzenie": "TRM-EN-001"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko prawe",
+    "skrot": "o. p.",
+    "twierdzenie": "TRM-PL-001"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "rät maska",
+    "skrot": "rm",
+    "twierdzenie": "TRM-SV-001"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "лицевая петля",
+    "skrot": "лиц. п.",
+    "twierdzenie": "TRM-RU-001"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "лицьова петля",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-001"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "表目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-001"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "겉뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-001"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "下針",
+    "skrot": "K",
+    "twierdzenie": "TRM-ZHT-001"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "yüz ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-008"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto meia",
+    "skrot": "m.",
+    "twierdzenie": "TRM-PT-013"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "ochi pe față",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-001"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "лицева бримка",
+    "skrot": "л.бр.",
+    "twierdzenie": "TRM-BG-001"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "geroji akis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-001"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "labiskais valdziņš",
+    "skrot": "l",
+    "twierdzenie": "TRM-LV-001"
+   }
+  ],
+  "sr": [
+   {
+    "nazwa": "право",
+    "skrot": null,
+    "twierdzenie": "TRM-SR-001"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "desna petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-001"
+   }
+  ],
+  "sk": [
+   {
+    "nazwa": "lícne očko",
+    "skrot": null,
+    "twierdzenie": "TRM-SK-001"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "punto derecho",
+    "skrot": "d",
+    "twierdzenie": "TRM-ESLA-001"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-001",
+   "wartosc": {
+    "kierunek": "od_przodu"
+   },
+   "twierdzenia": [
+    "ATL-K-011"
+   ]
+  },
+  {
+   "id": "ATL-T-036",
+   "wartosc": {
+    "znaczenie_ws": "druty.oczko.p"
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "oczko",
+   "strona": "prawe",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "wklucie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": "od_przodu",
+   "drut": {
+    "ktory": "prawy",
+    "grot": "w_prawo"
+   },
+   "nitka": "tyl",
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.k.krok1"
+  },
+  {
+   "faza": "narzut",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "nitka": "tyl",
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.k.krok2"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.k.krok3"
+  },
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.k.krok4"
+  }
+ ]
+}

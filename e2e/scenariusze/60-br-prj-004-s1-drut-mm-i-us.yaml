@@ -1,0 +1,81 @@
+# BR-PRJ-004/S1–S3 (docs/brd/wymagania-projekt.md:36, RD-11-W1/W3, RD-19-W3): drut 4 mm → „4 mm (US 6)”; drut 3 mm → „3 mm” bez numeru US; szydełko 6,5 mm → „6.5 mm (US K-10 ½)”
+# (zapis „6,5” w locale pl; symulator en-US pokazuje kropkę). F-17 (07-jakosc-033, część A). Wyrocznia: BRD i tabela RD-11/RD-19, nie kod.
+# Podgląd „Shows as: …” w arkuszu i wiersz „Details” na ekranie projektu (testID `projekt-narzedzie`). Informacyjnie do pierwszego zielonego przebiegu (P-091); bez tagu podstawowy.
+appId: com.apps4brew.knitting
+name: "BR-PRJ-004/S1 · Drut 4 mm → „4 mm (US 6)”, 3 mm → „3 mm” bez US, szydełko 6,5 mm → US K-10 ½"
+tags:
+  - BR-PRJ-004-S1
+  - stan-licznika
+  - PU-040
+  - PU-041
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+# S1: drut 4 mm (RD-11-W1)
+- scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "projekt-narzedzie" }
+- assertVisible: { id: "formularz-rozmiar-mm" }
+- tapOn: { id: "wybor-narzedzie-druty" } # wyjątek P-404: testID zamiast tekstu
+- assertVisible: { text: "Needles", selected: true }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-rozmiar-mm" }
+      - waitForAnimationToEnd
+      - eraseText: 8
+      - inputText: "4"
+      - assertVisible: { id: "formularz-rozmiar-mm", text: "4" }
+- assertVisible: "Shows as: 4 mm \\(US 6\\)"
+- takeScreenshot: 60-podglad-4-mm
+- tapOn: { id: "formularz-zapisz" }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-narzedzie", text: ".*4 mm \\(US 6\\).*" }
+- takeScreenshot: 60-projekt-4-mm-us-6
+# S2: drut 3 mm bez odpowiednika (RD-11-W3)
+- tapOn: { id: "projekt-narzedzie" }
+- assertVisible: { id: "formularz-rozmiar-mm" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-rozmiar-mm" }
+      - waitForAnimationToEnd
+      - eraseText: 8
+      - inputText: "3"
+      - assertVisible: { id: "formularz-rozmiar-mm", text: "3" }
+- assertVisible: "Shows as: 3 mm"
+- assertNotVisible: ".*\\(US.*"
+- tapOn: { id: "formularz-zapisz" }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-narzedzie", text: ".*3 mm.*" }
+- assertNotVisible: ".*\\(US.*"
+- takeScreenshot: 60-projekt-3-mm
+# S3: szydełko 6,5 mm (RD-19-W3)
+- tapOn: { id: "projekt-narzedzie" }
+- assertVisible: { id: "formularz-rozmiar-mm" }
+- tapOn: { id: "wybor-narzedzie-szydelko" } # wyjątek P-404: testID zamiast tekstu
+- assertVisible: { text: "Hook", selected: true }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-rozmiar-mm" }
+      - waitForAnimationToEnd
+      - eraseText: 8
+      - inputText: "6.5"
+      - assertVisible: { id: "formularz-rozmiar-mm", text: "6.5" }
+- assertVisible: "Shows as: 6\\.5 mm \\(US K-10.*"
+- takeScreenshot: 60-podglad-szydelko-6-5
+- tapOn: { id: "formularz-zapisz" }
+# E2-139-S3: ekran projektu zostaje przewinięty (scrollUntilVisible projekt-narzedzie) — „Add part or counter” leży nad ekranem; czekamy na zamknięcie formularza
+- extendedWaitUntil: { notVisible: { id: "formularz-zapisz" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-narzedzie" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-narzedzie", text: ".*6\\.5 mm \\(US K-10.*" }
+- takeScreenshot: 60-projekt-szydelko

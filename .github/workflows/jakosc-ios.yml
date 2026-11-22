@@ -1,0 +1,447 @@
+# iOS roli 07 (docs/jakosc/strategia.md §5; wzór: Trening e2e-ios.yml @928d0ff, docs/jakosc/e0/trening-wzorzec.md). Bez sekretów i bez podpisu.
+# Aplikacja budowana RAZ (zadanie build, Release na symulator, CODE_SIGNING_ALLOWED=NO) → artefakt; scenariusze Maestro z e2e/scenariusze
+# w częściach (scripts/ci/e2e-czesci.mjs, LPT z wagami). Pakiet (P-834, sesja BX 2026-11-15, słowa właściciela 15.11: przypadki użycia jako
+# zestaw automatyczny po każdym buildzie): KAŻDY przebieg uruchamia katalog przypadków użycia (docs/jakosc/przypadki-uzycia.md = wszystkie
+# scenariusze telefonu + pakiet iPada); bramką jest każdy scenariusz telefonu poza tagiem `oczekujacy` (przed kodem albo przed pierwszym
+# zielonym przebiegiem w CI). „[e2e-pelny]” to ten sam zestaw (nazwa z DS-11a, P-092). Ponowienie jednego nieudanego scenariusza tylko
+# poza scenariuszami z własną asercją wartości licznika i tagiem `pomiar` (CO, P-962; wyjście `ponawialne` kroku „Plan części”) i wykazane osobno jako „w ponowieniu” (P-091 9a). Maszyna nieprzydzielona = ponowienie ręczne (P-091 10a, CLAUDE.md).
+# PIERWSZY PRZEBIEG INFORMACYJNY (zasada roli 07 nr 8): build sprawdza potok; scenariusze nowej wersji padają, dopóki 08 nie zbuduje ekranów z testID z e2e/README.md.
+name: Jakość · iOS
+on:
+  push:
+    branches: [main, claude/jolly-thompson-paz6d8, claude/youthful-pasteur-kx83sn]
+    paths:
+      - 'app/**'
+      - 'src/**'
+      - 'modules/**'
+      - 'targets/**'
+      - 'e2e/**'
+      - 'assets/**'
+      - 'app.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/ci/**'
+      - 'scripts/natywne/czlonkostwo-celu.mjs'
+      - 'scripts/natywne/ikona-zegarka*.mjs'
+      - 'scripts/wydanie/diagnostyka-ikony-zegarka.sh'
+      - '.github/scripts/jakosc/**'
+      - '.github/workflows/jakosc-ios.yml'
+      - 'docs/monetyzacja/wektory-*.json' # wektory czytane przez swift test (ADR-0007)
+      - 'tests/wspolne/**'
+      - 'tests/wektory/brd.json'
+  workflow_dispatch: # ręczny pełny przebieg bez commita (P-299); działa z gałęzi, na której workflow już jest
+    inputs:
+      znacznik:
+        description: 'Znacznik pakietu w miejsce treści commitu (np. [e2e-pelny] albo [e2e-ipad])'
+        type: string
+        default: '[e2e-pelny]'
+permissions:
+  contents: read
+concurrency:
+  group: jakosc-ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  swift-test:
+    # Pakiet reguł i rdzeń dziennika +1 (modules/oczko-reguly; ADR-0007 uzupełnienie, ADR-0008 (8), P-129 Q2a, jak Trening `cd targets && swift test`):
+    # bez symulatora, na tych samych plikach JSON co Jest. Bramka od pierwszego zielonego przebiegu 40257126189 (zasada roli 07 nr 8; 08 partia 3, 3B).
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && swift --version | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: swift test (wykonano N z N w logu)
+        run: |
+          set -o pipefail
+          cd modules/oczko-reguly
+          swift test 2>&1 | tee ../../swift-test.log
+          { echo "### swift test"; grep -E 'wykonano [0-9]+ z [0-9]+|Executed [0-9]+ tests' ../../swift-test.log | sed 's/^/- /'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: swift test — logika wzoru (modules/oczko-wzor/Pakiet; 08 partia 6)
+        run: |
+          set -o pipefail
+          cd modules/oczko-wzor/Pakiet
+          swift test 2>&1 | tee ../../../swift-test-wzor.log
+          { echo "### swift test (wzór)"; grep -E 'Executed [0-9]+ tests' ../../../swift-test-wzor.log | tail -1 | sed 's/^/- /'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: swift test — odwzorowanie iCloud (modules/oczko-icloud/Pakiet; 08 partia 7)
+        run: |
+          set -o pipefail
+          cd modules/oczko-icloud/Pakiet
+          swift test 2>&1 | tee ../../../swift-test-icloud.log
+          { echo "### swift test (iCloud)"; grep -E 'wykonano [0-9]+ z [0-9]+|Executed [0-9]+ tests' ../../../swift-test-icloud.log | sed 's/^/- /'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: swift-test-log
+          path: |
+            swift-test.log
+            swift-test-wzor.log
+          retention-days: 3
+  eksperymenty-wzoru:
+    # W1–W3 modułu wzoru (P-261: właściciel bez Maca; docs/programista/partia-6-natywne.md): pakiet SwiftPM modules/oczko-wzor/TestyOknaMaszyn
+    # (te same pliki konwersji i logiki co pod OczkoWzor, dowiązania) na symulatorze iOS. INFORMACYJNIE: continue-on-error, nie blokuje e2e ani
+    # bramki; wynik w podsumowaniu (wiersze „W1/W2/W3”) i w artefakcie. Co wymaga urządzenia (rysik, płynność) — lista „tylko urządzenie” (P-226).
+    runs-on: macos-26
+    timeout-minutes: 30
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Platforma iOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: W1–W3 (xcodebuild test, symulator iPhone)
+        run: |
+          set -o pipefail
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
+          LIST=$(xcrun simctl list devices available | awk -v h="-- iOS $SDK --" '$0 == h { f = 1; next } /^-- / { f = 0 } f')
+          [ -n "$LIST" ] || LIST=$(xcrun simctl list devices available)
+          DEV=""
+          for pat in "iPhone 17 \(" "iPhone 16 \(" "iPhone"; do
+            DEV=$(printf '%s\n' "$LIST" | node .github/scripts/jakosc/sim-wybor.mjs "$pat" || true)
+            [ -n "$DEV" ] && break
+          done
+          [ -n "$DEV" ] || { echo "::error::brak symulatora iPhone"; exit 1; }
+          echo "### Eksperymenty W1–W3 (informacyjnie, P-261) — symulator $DEV (iOS $SDK)" >> "$GITHUB_STEP_SUMMARY"
+          cd modules/oczko-wzor/TestyOknaMaszyn
+          LOG="$GITHUB_WORKSPACE/eksperymenty-wzoru.log"; kod=0
+          # Manifest i lista schematów do logu (przebieg 121: `xcodebuild -list -json` bez wyjścia, stderr był ukryty)
+          { echo "== swift package dump-package"; swift package dump-package > /dev/null && echo OK; echo "== xcodebuild -list"; } 2>&1 | tee "$LOG"
+          xcodebuild -list -json > "$RUNNER_TEMP/lista.json" 2>> "$LOG" || true
+          cat "$RUNNER_TEMP/lista.json" >> "$LOG"
+          # Schemat pakietu SwiftPM nadaje Xcode (produkt albo „<pakiet>-Package”) — z listy; bez listy produkt `WzorNatywny`
+          SCHEMAT=$(node -e 'let s=[]; try { const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); s=(j.workspace||j.project).schemes } catch {} console.log(s.find((x)=>x.endsWith("-Package"))||s.find((x)=>x==="WzorNatywny")||s[0]||"WzorNatywny")' "$RUNNER_TEMP/lista.json")
+          echo "- schemat: $SCHEMAT" >> "$GITHUB_STEP_SUMMARY"
+          xcodebuild test -scheme "$SCHEMAT" -destination "id=$DEV" -resultBundlePath "$RUNNER_TEMP/w123.xcresult" \
+            2>&1 | tee -a "$LOG" || kod=$?
+          { grep -E '^W[123][ :]|Test Case .*(passed|failed)|Executed [0-9]+ tests|error:' "$LOG" | head -40 | sed 's/^/- /'; echo "- kod xcodebuild: $kod"; } >> "$GITHUB_STEP_SUMMARY"
+          exit $kod
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eksperymenty-wzoru
+          path: eksperymenty-wzoru.log
+          retention-days: 7
+  zegarek-ikona:
+    # 10-wydanie-002 (testflight.yml #6, run 41983086785, build 1061): kontrola-ipa.sh zgłosiła brak CFBundleIconName na najwyższym poziomie Info.plist zegarka, choć projekt po prebuild ma
+    # ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon. Ten sam błąd łapiemy tu, bez sekretów i bez Approve właściciela (środowisko `release` jest tylko w testflight.yml):
+    # budujemy sam cel zegarka jak archiwum (SDK watchos, Release, bez podpisu), wypisujemy dowody (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
+    # i wymagamy CFBundleIconName = AppIcon w zbudowanym pakiecie. Bez podów i bez całej aplikacji: kilka minut zamiast ~40. Test: tests/wydanie/ikona-zegarka-pakiet.test.ts.
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Ikona zegarka w projekcie (P-350; jak w zadaniu build)
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Platforma iOS i watchOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Budowa celu zegarka (SDK watchos, Release, bez podpisu; surowy log do pliku)
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcodeproj | head -1)
+          xcodebuild -project "$WS" -target OczkoZegarek -configuration Release -sdk watchos \
+            SYMROOT="$PWD/build-zegarek/products" OBJROOT="$PWD/build-zegarek/obj" CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee xcodebuild-zegarek.log | xcbeautify
+      - name: Diagnostyka ikony zegarka (surowy log actool, plist katalogu zasobów, Info.plist pakietu)
+        if: always()
+        run: bash scripts/wydanie/diagnostyka-ikony-zegarka.sh ios/xcodebuild-zegarek.log ios/build-zegarek "ios/$(ls ios | grep '\.xcodeproj$' | head -1)"
+      - name: Zbudowany zegarek wskazuje ikonę AppIcon w Info.plist (10-wydanie-002; ta sama kontrola co kontrola-ipa.sh, bez Approve)
+        run: |
+          set -o pipefail
+          APP=$(find ios/build-zegarek/products -type d -name 'OczkoZegarek.app' | head -n 1)
+          [ -n "$APP" ] || { echo "::error::brak zbudowanego OczkoZegarek.app"; exit 1; }
+          plutil -convert json -o "$RUNNER_TEMP/zegarek-info.json" "$APP/Info.plist"
+          node scripts/natywne/ikona-zegarka-pakiet.mjs --info "$RUNNER_TEMP/zegarek-info.json" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zegarek-ikona-log
+          path: ios/xcodebuild-zegarek.log
+          retention-days: 7
+
+  build:
+    runs-on: macos-26 # SDK 56+: Xcode 26.4+ (macos-15 ma najwyżej 26.3; Trening)
+    timeout-minutes: 90 # Trening: build ~40 min (pods 2 + xcodebuild 36); zmierzyć w pierwszym przebiegu
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Intencja w celu aplikacji (_shared/Stuknij.swift; P-180)
+        # @bacons/apple-targets dodaje targets/widget/_shared/* do celu aplikacji zbiorem wyjątków grupy synchronizowanej; bez tego
+        # +1 z Live Activity nie ma intencji w procesie aplikacji. Test kontroli: tests/jakosc/czlonkostwo-celu.test.ts.
+        run: |
+          set -o pipefail # domyślny bash -e bez pipefail: kod skryptu zginąłby w potoku do tee
+          node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350; Trening L-021, jak verify:native)
+        # Cel zegarka bez ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon: brak CFBundleIconName, App Store Connect odrzuca wysyłkę (build 1026 w Treningu). Test: tests/jakosc/ikona-zegarka-prebuild.test.ts.
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: pods
+        run: cd ios && pod install 2>&1 | tee pod-install.log
+      - name: Cele natywne podłączone (ADR-0006, ADR-0007; 08 partia 3)
+        # Moduł z wyższym minimum niż aplikacja jest po cichu pomijany („was not linked”) — build zostaje zielony bez modułu.
+        run: |
+          set -e
+          if grep -q 'was not linked' ios/pod-install.log; then grep 'was not linked' ios/pod-install.log; echo "::error::moduł Expo niepodłączony"; exit 1; fi
+          grep -q 'IPHONEOS_DEPLOYMENT_TARGET = 18.0' ios/*.xcodeproj/project.pbxproj || { echo "::error::IPHONEOS_DEPLOYMENT_TARGET ≠ 18.0 (ADR-0006)"; exit 1; }
+          for p in OczkoDziennikPlus OczkoCzasWTle; do grep -q "$p" ios/Podfile.lock || { echo "::error::brak poda $p"; exit 1; }; done
+      - name: Platforma iOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Build (Release, symulator, bez podpisu)
+        env:
+          # Przełączniki testowe TYLKO w tym buildzie (strażnik: scripts/jakosc/sprawdz-workflowy.mjs, kontrole-repo.mjs; e2e/README.md)
+          EXPO_PUBLIC_E2E: '1'
+          EXPO_PUBLIC_STORE_FAKE: '1'
+          EXPO_PUBLIC_ICLOUD_FAKE: '1' # atrapa silnika iCloud (P-230, moduly.md „Atrapa silnika w E2E”); kontrola ATRAPA-ICLOUD
+          EXPO_PUBLIC_WATCH_FAKE: '1'
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcworkspace | head -1); SCHEME="${WS%.xcworkspace}"
+          echo "Workspace $WS, schemat $SCHEME" | tee -a "$GITHUB_STEP_SUMMARY"
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee xcodebuild.log | xcbeautify
+          ls -d build/Build/Products/Release-iphonesimulator/*.app
+          APP=$(ls -d build/Build/Products/Release-iphonesimulator/*.app | head -1)
+          # Widżet osadzony i z kodem Live Activity; intencja i moduł w aplikacji (nazwy typów Swift w metadanych binarek)
+          test -d "$APP/PlugIns/OczkoWidget.appex"
+          # Do pliku, nie potokiem: grep -q kończy wcześnie, strings dostaje SIGPIPE i przy pipefail krok pada (przebieg 40262653714)
+          strings -a "$APP/PlugIns/OczkoWidget.appex/OczkoWidget" > "$RUNNER_TEMP/widget.txt"
+          strings -a "$APP/$(basename "$APP" .app)" > "$RUNNER_TEMP/aplikacja.txt"
+          grep -q OczkoAktywnosc "$RUNNER_TEMP/widget.txt" || { echo "::error::widżet bez OczkoAktywnosc"; exit 1; }
+          grep -q OczkoStuknij "$RUNNER_TEMP/aplikacja.txt" || { echo "::error::aplikacja bez intencji OczkoStuknij"; exit 1; }
+          grep -q IntencjaEkranuBlokady "$RUNNER_TEMP/aplikacja.txt" || { echo "::error::aplikacja bez modułu OczkoDziennikPlus"; exit 1; }
+          echo "Cele natywne: widżet, intencja i moduł w binarkach" >> "$GITHUB_STEP_SUMMARY"
+      - name: Zapis aplikacji (do ponownego użycia przez części)
+        run: |
+          cd ios/build/Build/Products/Release-iphonesimulator
+          APP=$(ls -d *.app | head -1); zip -qry "$GITHUB_WORKSPACE/oczko-sim.zip" "$APP"
+          echo "Aplikacja: $APP ($(du -sh "$APP" | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oczko-sim-app
+          path: oczko-sim.zip
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: xcodebuild-log
+          path: ios/xcodebuild.log
+          retention-days: 3
+  e2e:
+    name: e2e (część ${{ matrix.czesc }}, ${{ matrix.urzadzenie }})
+    needs: build
+    runs-on: macos-26
+    # Pakiet podstawowy jest bramką od pierwszego zielonego przebiegu 40313538454 (P-180) — w KAŻDYM pakiecie: kroki liczą porażki tylko
+    # scenariuszy z wyjścia `bramka` planu części, resztę wypisują jako „czerwony-informacyjnie” (F07-15, P-198 Q1a). Od P-834 `bramka` w pakiecie
+    # przypadków użycia i pełnym = wszystkie scenariusze części poza tagiem `oczekujacy` (wcześniej: tylko tag `podstawowy`).
+    # Bez continue-on-error na zadaniu iPhone'a: przy „[e2e-pelny]” wyłączał też bramkę scenariuszy podstawowych (test tests/jakosc/e2e-bramka.test.ts).
+    # iPad (tag `ipad`, P-225 Q1a): informacyjnie do pierwszego zielonego przebiegu (zasada roli 07 nr 8); od P-834 scenariusze przy każdym przebiegu.
+    continue-on-error: ${{ matrix.urzadzenie == 'ipad' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        urzadzenie: [iphone, ipad]
+        czesc: [1, 2, 3, 4] # = "czesci" w e2e/czesci.json (P-834: 4 maszyny dla katalogu przypadków użycia; nadmiarowa część kończy bez symulatora)
+        exclude: # iPad: jedna maszyna (czesci_ipad w e2e/czesci.json)
+          - { urzadzenie: ipad, czesc: 2 }
+          - { urzadzenie: ipad, czesc: 3 }
+          - { urzadzenie: ipad, czesc: 4 }
+    timeout-minutes: 150 # rozruch symulatora ~8 min + krok Maestro z limitem timeout_min z planu (30 + 4 × scenariusze części)
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=optional --ignore-scripts
+      - name: Plan części
+        id: plan
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message || inputs.znacznik }}
+          PAKIET: ${{ matrix.urzadzenie == 'ipad' && 'ipad' || '' }} # iPad: pakiet `ipad`; telefon: pusty = katalog przypadków użycia (P-834)
+        run: node scripts/ci/e2e-czesci.mjs czesc "${{ matrix.czesc }}" --out e2e-czesc
+      - name: Xcode 26.x
+        if: steps.plan.outputs.any == 'true'
+        run: bash .github/scripts/jakosc/select-xcode.sh 26
+      - uses: actions/setup-java@v4
+        if: steps.plan.outputs.any == 'true'
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/download-artifact@v4
+        if: steps.plan.outputs.any == 'true'
+        with:
+          name: oczko-sim-app
+      - name: Symulator
+        if: steps.plan.outputs.any == 'true'
+        env:
+          URZADZENIE: ${{ matrix.urzadzenie }}
+          COMMIT_MSG: ${{ github.event.head_commit.message || inputs.znacznik }} # „[e2e-ciemny]”: cały przebieg w ciemnym motywie (07-jakosc, ustalenie 04-002)
+        run: |
+          mkdir -p app-sim && unzip -q oczko-sim.zip -d app-sim
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
+          LIST=$(xcrun simctl list devices available | awk -v h="-- iOS $SDK --" '$0 == h { f = 1; next } /^-- / { f = 0 } f')
+          [ -n "$LIST" ] || LIST=$(xcrun simctl list devices available)
+          DEV=""
+          if [ "$URZADZENIE" = ipad ]; then WZORY=("iPad Air" "iPad Pro" "iPad"); else WZORY=("iPhone 17 \(" "iPhone 16 \(" "iPhone"); fi
+          for pat in "${WZORY[@]}"; do
+            DEV=$(printf '%s\n' "$LIST" | node .github/scripts/jakosc/sim-wybor.mjs "$pat" || true)
+            [ -n "$DEV" ] && break
+          done
+          [ -n "$DEV" ] || { echo "::error::Brak symulatora ($URZADZENIE)"; exit 1; }
+          echo "Symulator: $DEV (iOS $SDK)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "SIM=$DEV" >> "$GITHUB_ENV"
+          xcrun simctl boot "$DEV" || true
+          xcrun simctl bootstatus "$DEV" -b
+          # MOTYW-POCZĄTEK
+          case "$COMMIT_MSG" in
+            *'[e2e-ciemny]'*) xcrun simctl ui "$DEV" appearance dark; echo "Wygląd symulatora: dark" | tee -a "$GITHUB_STEP_SUMMARY" ;;
+            *) xcrun simctl ui "$DEV" appearance light || true ;;
+          esac
+          # MOTYW-KONIEC
+          xcrun simctl install "$DEV" app-sim/*.app
+      - name: Maestro
+        if: steps.plan.outputs.any == 'true'
+        env:
+          # Jedna zmienna przypięcia (DS-07, zasada wspólna 21; 07-jakosc-005): zmiana wersji = commit. 2.12.1 = wersja z przebiegów #139/#140.
+          # Pusta = błąd (nie „najnowsza”); zainstalowana ≠ przypięta = błąd. Kontrola: sprawdz-workflowy.mjs (MAESTRO-WERSJA), tests/jakosc/ci-maestro-wersja.test.ts.
+          MAESTRO_VERSION: '2.12.1'
+          # P-626 d (07-reaudit 9.11): paczka przypiętej wersji wprost z GitHub Releases z ponawianiem, bez skryptu get.maestro.mobile.dev (ten pobiera
+          # jednym `curl --fail` bez ponowień — przebieg 4, run 42578327316: 504 z release-assets.githubusercontent.com zatrzymał 3 z 4 części przed 1. scenariuszem).
+          # SHA-256 maestro.zip cli-2.12.1 (pobrany 9.11.2026 z adresu niżej); zmiana wersji = commit obu wartości. Kontrola: MAESTRO-POBRANIE, ci-maestro-wersja.test.ts.
+          MAESTRO_ZIP_SHA256: '54dbb0716425626604973cbb374c585ca30272375d9ce15177a1152765ddd9d7'
+        run: |
+          [ -n "$MAESTRO_VERSION" ] || { echo "::error::MAESTRO_VERSION pusta — wersja Maestro musi być przypięta (DS-07, zasada wspólna 21)"; exit 1; }
+          zip="$RUNNER_TEMP/maestro.zip"
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 20 --connect-timeout 30 -o "$zip" "https://github.com/mobile-dev-inc/maestro/releases/download/cli-$MAESTRO_VERSION/maestro.zip"
+          printf '%s  %s\n' "$MAESTRO_ZIP_SHA256" "$zip" | shasum -a 256 -c - || { echo "::error::maestro.zip $MAESTRO_VERSION ma inny SHA-256 niż przypięty (MAESTRO_ZIP_SHA256)"; exit 1; }
+          rm -rf "$RUNNER_TEMP/maestro-zip" "$HOME/.maestro" && mkdir -p "$HOME/.maestro"
+          unzip -q "$zip" -d "$RUNNER_TEMP/maestro-zip"
+          cp -R "$RUNNER_TEMP/maestro-zip/maestro/." "$HOME/.maestro/"
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          v=$("$HOME/.maestro/bin/maestro" --version)
+          echo "Maestro: $v (przypięta $MAESTRO_VERSION)" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$v" | grep -qF "$MAESTRO_VERSION" || { echo "::error::zainstalowano Maestro $v, przypięta jest $MAESTRO_VERSION"; exit 1; }
+      - name: Scenariusze
+        if: steps.plan.outputs.main == 'true'
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.timeout_min) }}
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '480000' # Trening: świeży symulator potrzebuje więcej czasu na sterownik XCTest
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+          PONAWIALNE: ${{ steps.plan.outputs.ponawialne }}
+          BRAMKA: ${{ steps.plan.outputs.bramka }}
+        run: |
+          # 07-jakosc-001 (KO-054, P-781): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs) przerywa je
+          # i powtarza RAZ cały zestaw części od zera — także scenariusze z własną asercją licznika (asercja licznika się nie wykonała). Porażka asercji
+          # nadal bez ponowienia (P-091 9a/10a): scenariusz czerwony w 1. podejściu przed awarią zachowuje wynik i nie biegnie w 2. (P-782 (4));
+          # awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
+          przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
+            mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
+            for f in e2e-czesc/[0-9][0-9]*-*.yaml; do
+              n=$(basename "$f" .yaml)
+              [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (porażka, nie maszyna) — bez ponowienia
+              if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
+              if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml"); then
+                awaria="$n: $przyczyna"; echo "awaria-maszyny $n" >> e2e-out/wyniki.txt
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+                return 0
+              fi
+              if [[ " $PONAWIALNE " == *" $n.yaml "* ]] && maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.ponowienie.xml" --test-output-dir "e2e-out/$n.ponowienie"; then
+                echo "w-ponowieniu $n" >> e2e-out/wyniki.txt # P-091 9a: liczony osobno, nie jako zaliczenie bez śladu
+              elif [[ " $BRAMKA " == *" $n.yaml "* ]]; then
+                echo "czerwony $n" >> e2e-out/wyniki.txt; porazki=$((porazki + 1))
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+              else
+                echo "czerwony-informacyjnie $n" >> e2e-out/wyniki.txt # poza pakietem podstawowym (F07-15)
+                python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
+              fi
+            done
+          }
+          POMIN=""; przebieg 1; awaria1="$awaria"; porazki1=$porazki
+          echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$awaria1" ]; then
+            echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
+            mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
+            # 08-programista-002 (P-787): „w-ponowieniu” to porażka asercji + ponowienie P-091 9a — w 2. podejściu nie biegnie trzeci raz, wynik zostaje
+            POMIN=$(awk '$1 ~ /^(czerwony|w-ponowieniu)/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
+            { # 08-programista-001 (P-786): ślad 1. podejścia w podsumowaniu PRZED 2. podejściem — przekroczenie limitu kroku w 2. podejściu go nie gubi
+              echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
+              echo "- wyniki 1. podejścia (przed powtórzeniem):"
+              sort e2e-out/podejscie-1/wyniki.txt | sed 's/^/  - /'
+            } >> "$GITHUB_STEP_SUMMARY"
+            przebieg 2
+            porazki=$((porazki + porazki1))
+            awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }
+                 $1 == "w-ponowieniu" { print $1, $2, "(1. podejście, porażka asercji i zielone ponowienie — bez trzeciego uruchomienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
+          fi
+          {
+            if [ -n "$awaria1" ]; then
+              n1=${awaria1%%:*}
+              echo "- wynik 2. podejścia dla $n1: $(grep -E " $n1\$" e2e-out/wyniki.txt || echo "brak wyniku $n1")"
+              echo "- wyniki 2. podejścia (rozstrzygają):"
+            fi
+            sort e2e-out/wyniki.txt | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $porazki
+      - name: Scenariusze w osobnym kroku (duży tekst AX5)
+        # `!cancelled()`: krok biegnie także po czerwonym kroku „Scenariusze” (przebieg #137 część 2: 07 czerwony → 30 pominięty); wynik zadania i tak zależy od obu kroków (E2-137-S2)
+        if: ${{ !cancelled() && steps.plan.outputs.osobne == 'true' }}
+        env:
+          BRAMKA: ${{ steps.plan.outputs.bramka }}
+        run: |
+          xcrun simctl ui "$SIM" content_size accessibility-extra-extra-extra-large
+          mkdir -p e2e-out; porazki=0
+          for f in e2e-czesc/osobne/[0-9][0-9]*-*.yaml; do
+            n=$(basename "$f" .yaml)
+            if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "- zielony $n (AX5)" >> "$GITHUB_STEP_SUMMARY"
+            elif [[ " $BRAMKA " == *" $n.yaml "* ]]; then echo "- czerwony $n (AX5)" >> "$GITHUB_STEP_SUMMARY"; porazki=$((porazki + 1))
+            else echo "- czerwony-informacyjnie $n (AX5)" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+          exit $porazki
+      - name: Czas startu (PU-162)
+        # PU-162 (KO-111, BX14): czas od launchApp do widoczności dzis-karta z commands.json Maestro → podsumowanie przebiegu. Informacyjnie, bez progu:
+        # continue-on-error i kod 0 skryptu (brak danych = linia w podsumowaniu); tylko odczyt e2e-out, bez sekretów i sieci. Zawiera narzut Maestro (trend, nie czysty start).
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/ci/czas-startu.mjs e2e-out >> "$GITHUB_STEP_SUMMARY"
+      - name: Spakowanie wyników (Maestro zapisuje katalogi z „:” w nazwie scenariusza, których upload-artifact nie przyjmuje; run 40223597670)
+        if: always() && steps.plan.outputs.any == 'true'
+        run: '[ -d e2e-out ] && zip -qry e2e-out.zip e2e-out || true'
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.plan.outputs.any == 'true'
+        with:
+          name: e2e-czesc-${{ matrix.czesc }}-${{ matrix.urzadzenie }}
+          path: e2e-out.zip
+          retention-days: 3

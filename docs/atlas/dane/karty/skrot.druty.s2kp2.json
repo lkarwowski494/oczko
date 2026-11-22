@@ -1,0 +1,57 @@
+{
+ "format": 1,
+ "id": "skrot.druty.s2kp2",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.s2kp2.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "centered double decrease",
+    "skrot": "S2KP2",
+    "twierdzenie": "TRM-EN-010"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka spuszczone pionowo",
+    "skrot": "2 o. sp. pion.",
+    "twierdzenie": "TRM-PL-013"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "中上3目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-011"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "中上三併針",
+    "skrot": "CDD",
+    "twierdzenie": "TRM-ZHT-009"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "две централно свити лицеви бримки",
+    "skrot": "2св.л.бр.ц.",
+    "twierdzenie": "TRM-BG-011"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "trijų akių centrinis sumezgimas",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-008"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

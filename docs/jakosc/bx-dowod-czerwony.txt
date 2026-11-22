@@ -1,0 +1,17 @@
+      2     + Received  +  0
+      1     + Received  + 0
+      1     - Expected  - 1
+      1     - Expected  - 19
+      1     - Expected  - 54
+      1     Expected value: "12-br-zak-006-s4-bez-oferty-w-pracy.yaml"
+      1     Expected: "true"
+      1     Received array: ["03-br-lic-001-s2-pierwszy-rzad-jednym-stuknieciem.yaml", "06-br-zak-001-s1-zakup-przywrocenie.yaml", "07-p-089-3a-uczciwe-zasady.yaml", "08-br-dan-006-s1-eksport-import.yaml", "11-br-dan-001-s1-baza-bez-sieci.yaml", "33-br-prj-001-s1-nowy-projekt-z-czesciami.yaml", "01-nfr-pie-001-pierwsze-liczenie.yaml", "02-br-lic-001-s1-pierwsze-uruchomienie.yaml", "04-br-lic-002-s1-plus-minus-cofnij.yaml", "05-br-zak-006-s1-limit-zawczasu.yaml", …]
+      1     Received: "false"
+      1   ● bramka na nazwach zadań z jakosc-ios.yml (M1-003, kontrakt) › workflow ma zadania e2e iPhone 1–4 (P-834: katalog przypadków użycia), iPad 1 (informacyjnie) i eksperymenty-wzoru (informacyjnie)
+      1   ● polecenie „czesc” (krok „Plan części” w jakosc-ios.yml) › F07-15 (P-198 Q1a) + P-834: wyjście bramka — przypadki/pełny: każdy scenariusz części poza tagiem oczekujacy (pakiet podstawowy w całości); podstawowy: wszystkie; ONLY: tag podstawowy
+      1   ● polecenie „czesc” (krok „Plan części” w jakosc-ios.yml) › P-225 Q1a: tag ipad — poza pakietem podstawowym i pełnym; PAKIET=ipad daje tylko je na czesci_ipad maszynach; od P-834 przy każdym przebiegu (wcześniej tylko [e2e-pelny]/[e2e-ipad])
+      1   ● polecenie „czesc” (krok „Plan części” w jakosc-ios.yml) › P-834: domyślnie (bez PAKIET i bez znacznika) pakiet przypadków użycia = wszystkie scenariusze telefonu, jak pełny
+      1   ● polecenie „czesc” (krok „Plan części” w jakosc-ios.yml) › P-834: scenariusz z tagiem oczekujacy biegnie w pakiecie przypadków, ale poza bramką (katalog tymczasowy)
+      1 FAIL iOS tests/jakosc/e2e-czesci.test.ts (19.757 s)
+      1 FAIL iOS tests/wydanie/potok-testflight.test.ts
+      1 Tests:       5 failed, 34 passed, 39 total

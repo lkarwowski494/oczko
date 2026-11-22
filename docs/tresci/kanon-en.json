@@ -1,0 +1,165 @@
+{
+  "uwaga": "Migawka kanonu en roli 06 (oczko-warsztat/06-tresci/2026-10-22-build/tresci/en, mapa-kluczy.json). Nie edytować ręcznie: generuje narzedzia/kanon-vs-slownik.mjs --zapisz. Test: tests/tresci/kanon-en.test.ts.",
+  "bloki": [
+    {
+      "blok": "calc.note.category",
+      "plik": "stale.md",
+      "klucze": [
+        "probka.uwaga_kategoria",
+        "probka.uwaga_oczka"
+      ],
+      "zdania": [
+        "Yarn weight categories are only a guide, not a list of yarns you can swap.",
+        "Even with matching gauge, two yarns can feel and drape differently.",
+        "Block your swatch, then compare it with your pattern: patterns give gauge after blocking."
+      ]
+    },
+    {
+      "blok": "calc.note.stitches",
+      "plik": "stale.md",
+      "klucze": [
+        "probka.uwaga_oczka"
+      ],
+      "zdania": [
+        "Block your swatch, then compare it with your pattern: patterns give gauge after blocking."
+      ]
+    },
+    {
+      "blok": "calc.note.lace",
+      "plik": "stale.md",
+      "klucze": [
+        "probka.uwaga_koronka"
+      ],
+      "zdania": [
+        "Lace yarn is hard to pin to a gauge range; always go by the gauge in your pattern."
+      ]
+    },
+    {
+      "blok": "calc.note.rounding",
+      "plik": "stale.md",
+      "klucze": [
+        "probka.uwaga_zaokraglenie"
+      ],
+      "zdania": [
+        "Your gauge per 4 in is rounded to the nearest whole stitch."
+      ]
+    },
+    {
+      "blok": "calc.note.four_inches",
+      "plik": "stale.md",
+      "klucze": [
+        "probka.uwaga_4in"
+      ],
+      "zdania": [
+        "The standard way to give gauge is stitches and rows per 4 in/10 cm.",
+        "4 in is exactly 10.16 cm."
+      ]
+    },
+    {
+      "blok": "size.note.mm",
+      "plik": "stale.md",
+      "klucze": [
+        "druty.uwaga_mm"
+      ],
+      "zdania": [
+        "Go by the size in millimeters: letter and number sizes vary from maker to maker."
+      ]
+    },
+    {
+      "blok": "size.needle.no_us",
+      "plik": "stale.md",
+      "klucze": [
+        "druty.bez_us"
+      ],
+      "zdania": [
+        "No US size is listed for this one.",
+        "Go by millimeters."
+      ]
+    },
+    {
+      "blok": "size.hook.no_us",
+      "plik": "stale.md",
+      "klucze": [
+        "druty.bez_us"
+      ],
+      "zdania": [
+        "No US size is listed for this one.",
+        "Go by millimeters."
+      ]
+    },
+    {
+      "blok": "calc.category.range",
+      "plik": "szablony.md",
+      "klucze": [
+        "probka.kategoria_other"
+      ],
+      "zdania": [
+        "Category {n}, {name}: {min}–{max} stitches per 4 in, knitted in stockinette stitch."
+      ]
+    },
+    {
+      "blok": "calc.category.open",
+      "plik": "szablony.md",
+      "klucze": [
+        "probka.kategoria_otwarta_other"
+      ],
+      "zdania": [
+        "Category {n}, {name}: at most {max} stitches per 4 in, knitted in stockinette stitch."
+      ]
+    },
+    {
+      "blok": "calc.category.overlap",
+      "plik": "szablony.md",
+      "klucze": [
+        "probka.kategoria_obie"
+      ],
+      "zdania": [
+        "This gauge fits both category {a} and category {b}."
+      ]
+    },
+    {
+      "blok": "calc.category.gap",
+      "plik": "szablony.md",
+      "klucze": [
+        "probka.kategoria_miedzy"
+      ],
+      "zdania": [
+        "This gauge falls between categories {a} and {b}."
+      ]
+    },
+    {
+      "blok": "calc.category.above",
+      "plik": "szablony.md",
+      "klucze": [
+        "probka.kategoria_powyzej_other"
+      ],
+      "zdania": [
+        "This gauge is above category 0, which goes up to {max} stitches per 4 in."
+      ]
+    },
+    {
+      "blok": "zrodla.zdanie",
+      "plik": "zrodla-wiedzy.md",
+      "klucze": [
+        "zrodla.zdanie"
+      ],
+      "zdania": [
+        "The tables and tips in Oczko are written in our own words, based on industry standards and guidance from craft organizations."
+      ]
+    },
+    {
+      "blok": "zrodla.linia_standardow",
+      "plik": "zrodla-wiedzy.md",
+      "klucze": [
+        "zrodla.linia_standardow"
+      ],
+      "zdania": [
+        "Source: Craft Yarn Council's www.YarnStandards.com"
+      ]
+    }
+  ],
+  "pominiete": {
+    "size.needle.us": "zapis wiersza rozmiaru („{mm} mm (US {us})”, projekt.rozmiar_us) ustala 04; liczby rozmiarów pilnuje scripts/domena/generuj-parametry.mjs z parametry.json",
+    "size.hook.us": "jak size.needle.us"
+  }
+}

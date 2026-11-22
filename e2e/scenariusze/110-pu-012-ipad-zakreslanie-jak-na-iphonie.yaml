@@ -1,0 +1,40 @@
+# PU-012 (Z-05): iPad zakreśla palcem jak iPhone — nowy pas od razu (licznik rośnie), „Cofnij ostatnią kreskę” zdejmuje tylko ostatni, szybka para = +2, po restarcie wszystkie.
+# Wzór: scen. 47 (iPad bez rysika; pakiet `ipad`, informacyjny — P-225). Licznik `wzor-zakreslenia` liczy zakreślenia; widoczność samej kreski (PencilKit) nie ma testID — zrzuty 110-* do oceny
+# w artefakcie (BX-041). Ograniczenie jak w 47: dwa szybkie przeciągnięcia z jedną asercją stanu narzędzia między nimi (reguła strategii §3.8).
+appId: com.apps4brew.knitting
+name: "PU-012 · iPad: zakreślanie jak na iPhonie — pas od razu, cofnięcie zdejmuje ostatni, szybka para +2, restart bez strat"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-012
+  - ipad
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 40%", end: "70%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 110-pas-od-razu
+- swipe: { start: "30%, 55%", end: "70%, 55%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- tapOn: { id: "wzor-cofnij-rysunek" }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 110-po-cofnieciu
+- swipe: { start: "30%, 62%", end: "70%, 62%", duration: 400 }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "30%, 68%", end: "70%, 68%", duration: 400 }
+- assertVisible: { id: "wzor-zakreslenia", text: "3 highlights" }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: 110-szybka-para
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "3 highlights" }
+- takeScreenshot: 110-po-restarcie

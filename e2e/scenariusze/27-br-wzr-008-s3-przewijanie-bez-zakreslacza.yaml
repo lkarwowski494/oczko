@@ -1,0 +1,26 @@
+# BR-WZR-008/S3 (docs/brd/wymagania-projekt.md:303): przewijanie wzoru bez zakreślacza nie zostawia śladu. Wyrocznia: BR-WZR-004.
+appId: com.apps4brew.knitting
+name: "BR-WZR-008/S3 · Przewijanie wzoru bez zakreślacza: strona się zmienia, zakreśleń 0"
+tags:
+  - BR-WZR-008-S3
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-pdf" }
+- tapOn: { id: "e2e-wzor-pdf" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+- swipe: { start: "50%, 70%", end: "50%, 20%", duration: 600 } # pole wzoru 14–77 % wysokości; 80 % to pasek licznika (przebieg 40446976426)
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- swipe: { start: "50%, 70%", end: "50%, 15%", duration: 400 }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age [2-9] of .*" }
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- takeScreenshot: 27-po-przewinieciu

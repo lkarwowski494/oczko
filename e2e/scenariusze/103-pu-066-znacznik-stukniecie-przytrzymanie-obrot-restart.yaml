@@ -1,0 +1,61 @@
+# PU-066 (T-45): znacznik rzędu na wzorze — wskazówka, stuknięcie, przytrzymanie, obrót strony, restart.
+# Kod: wskazówka `wzor-wskazowka-znacznika` (`WzorPrzegladarka.tsx:162`), stuknięcie/przytrzymanie → karta kierunku `wzor-kierunek` (pierwszy znacznik, P-126 3a) → pasek `wzor-znacznik-pasek`,
+# rząd `wzor-znacznik-rzad` (licznik 0 → rząd 1, `domyslnyRzadBazowy`), przeniesienie zachowuje rząd (`rzadPoPrzeniesieniu`, `znacznik-wzoru.ts:59`), `wzor-menu` → `wzor-obroc`.
+# Ograniczenia: (1) BX-034: `tapOn`/`longPressOn` z `point` (Maestro 2.12.1: TapOnPointV2Command); interpreter w repo ich nie modeluje. (2) BX-035 (hipoteza): wskazówka ma
+# `accessibilityElementsHidden` (czytnik ma ją pod „Mark row”) — jeśli Maestro iOS nie widzi elementów ukrytych przed dostępnością, pierwsza asercja będzie czerwona. (3) Położenie pasa „na wysokości palca”
+# i obrót strony rysuje widok natywny (`oczko-wzor`) — Maestro czyta tylko rząd; położenie i obrót: zrzuty 103-*. (4) CH-02: rząd „1” NIE zależy od miejsca stuknięcia (przeniesienie zachowuje rząd,
+# `znacznik-wzoru.ts:71-72`), a `wzor-zaznacz` przestawia pas na środek strony (`app/wzor.tsx:207`) — asercje rzędu po `wzor-zaznacz` nie dowodzą położenia „na miejscu”. Sprawdzają co innego:
+# znacznik z kierunkiem istnieje (bez karty `wzor-kierunek`) po obrocie, przytrzymaniu i restarcie. Położenie: tylko zrzuty (lista telefonu); przytrzymanie przy zamkniętym pasku nie otwiera paska.
+appId: com.apps4brew.knitting
+name: "PU-066 · Znacznik: wskazówka, stuknięcie, przytrzymanie, obrót strony i restart — rząd 1 zostaje"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-066
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-wskazowka-znacznika", text: "Tap a row to place your marker." }
+- takeScreenshot: 103-wskazowka
+# --- stuknięcie w rząd: pierwszy znacznik pyta o kierunek, potem pasek z rzędem 1 ---
+- tapOn: { point: "50%, 45%" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- takeScreenshot: 103-po-stukniecie
+# --- stuknięcie w inny rząd przy otwartym pasku przenosi pas, rząd zostaje ---
+- tapOn: { point: "50%, 60%" }
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+# --- przytrzymanie na innym wierszu: pas staje pod palcem, rząd zostaje ---
+- longPressOn: { point: "50%, 30%" }
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- takeScreenshot: 103-po-przytrzymaniu
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+# --- „Rotate page”, potem przytrzymanie na obróconej stronie ---
+- tapOn: { id: "wzor-menu" }
+- assertVisible: { id: "wzor-obroc" }
+- tapOn: { id: "wzor-obroc" }
+- assertNotVisible: { id: "wzor-obroc" }
+- takeScreenshot: 103-po-obrocie
+- longPressOn: { point: "50%, 50%" }
+- assertNotVisible: { id: "wzor-kierunek" } # znacznik już jest: przytrzymanie przenosi pas, nie pyta o kierunek
+- tapOn: { id: "wzor-zaznacz" }
+- assertNotVisible: { id: "wzor-kierunek" } # CH-02: bez karty kierunku = znacznik przeżył obrót i przytrzymanie (utracony pytałby o kierunek)
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- takeScreenshot: 103-obrocona-po-przytrzymaniu
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+# --- restart: znacznik na miejscu (ten sam rząd) ---
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- tapOn: { id: "wzor-zaznacz" }
+- assertNotVisible: { id: "wzor-kierunek" } # CH-02: bez karty kierunku = znacznik (z kierunkiem) przeżył restart
+- assertVisible: { id: "wzor-znacznik-rzad", text: "1" }
+- takeScreenshot: 103-po-restarcie

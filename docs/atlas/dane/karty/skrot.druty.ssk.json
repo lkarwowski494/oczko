@@ -1,0 +1,50 @@
+{
+ "format": 1,
+ "id": "skrot.druty.ssk",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.ssk.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip, slip, knit",
+    "skrot": "ssk",
+    "twierdzenie": "TRM-EN-007"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przekręcone razem na prawo",
+    "skrot": "2 o. przekr. p.",
+    "twierdzenie": "TRM-PL-011"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "убавление петель с наклоном влево",
+    "skrot": "уб. лв.",
+    "twierdzenie": "TRM-RU-008"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "右上2併針",
+    "skrot": "ssk",
+    "twierdzenie": "TRM-ZHT-007"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свита лицева бримка с наклон вляво",
+    "skrot": "1св.л.бр.л.",
+    "twierdzenie": "TRM-BG-008"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

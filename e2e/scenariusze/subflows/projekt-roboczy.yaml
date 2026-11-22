@@ -1,0 +1,12 @@
+# Podprzepływ (E2 fix-3, przebieg 40411351211): pierwszy rząd tworzy projekt roboczy. Przed pierwszym +1 projektu nie ma, a licznik nie pokazuje
+# menu •••, nazwy projektu ani stopera (design-spec:138 „Przed pierwszym +1 (brak projektu) ekran jak licznik-start”, Licznik.tsx `s.projekt !== null`).
+# +1 → 1, odstęp (RD-17), −1 → 0: projekt istnieje, wartość wraca do 0, więc dalsze asercje scenariusza się nie zmieniają.
+appId: com.apps4brew.knitting
+name: "podprzepływ: projekt roboczy (pierwszy rząd i cofnięcie)"
+---
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: odstep.yaml
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- assertVisible: { id: "licznik-menu" }

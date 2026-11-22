@@ -1,0 +1,356 @@
+{
+ "jasny: tekst / papier": [
+  "#26282C",
+  "#FCFCFA"
+ ],
+ "jasny: tekst / grupa": [
+  "#26282C",
+  "#F2F3F0"
+ ],
+ "jasny: ołówek / papier": [
+  "#5E626A",
+  "#FCFCFA"
+ ],
+ "jasny: ołówek / grupa": [
+  "#5E626A",
+  "#F2F3F0"
+ ],
+ "jasny: tekst na zakreślaczu": [
+  "#1B1C1F",
+  "#F6E04A"
+ ],
+ "jasny: krawędź zakreślenia / papier (element, 3:1)": [
+  "#8C7A00",
+  "#FCFCFA",
+  3
+ ],
+ "jasny: przycisk: tekst / tło": [
+  "#FCFCFA",
+  "#26282C"
+ ],
+ "jasny: przycisk: obrys / papier (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny: przycisk −1: obrys / papier (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny: kreska / papier (grafika z danymi, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny: błąd / papier": [
+  "#B3261E",
+  "#FCFCFA"
+ ],
+ "jasny: błąd / arkusz": [
+  "#B3261E",
+  "#FCFCFA"
+ ],
+ "jasny: ołówek / arkusz": [
+  "#5E626A",
+  "#FCFCFA"
+ ],
+ "jasny: wybrany przełącznik: obrys / arkusz (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny: wybrany przełącznik: tekst / tło": [
+  "#FCFCFA",
+  "#26282C"
+ ],
+ "jasny: przycisk niszczący: tekst / tło": [
+  "#FCFCFA",
+  "#B3261E"
+ ],
+ "jasny: przycisk niszczący: tło / arkusz (element, 3:1)": [
+  "#B3261E",
+  "#FCFCFA",
+  3
+ ],
+ "ciemny: tekst / papier": [
+  "#ECECE8",
+  "#1B1C1F"
+ ],
+ "ciemny: tekst / grupa": [
+  "#ECECE8",
+  "#24262A"
+ ],
+ "ciemny: ołówek / papier": [
+  "#A9ACB2",
+  "#1B1C1F"
+ ],
+ "ciemny: ołówek / grupa": [
+  "#A9ACB2",
+  "#24262A"
+ ],
+ "ciemny: tekst na zakreślaczu": [
+  "#F4ECB4",
+  "#38351F"
+ ],
+ "ciemny: krawędź zakreślenia / papier (element, 3:1)": [
+  "#E2CB3A",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny: przycisk: tekst / tło": [
+  "#ECECE8",
+  "#2E3136"
+ ],
+ "ciemny: przycisk: obrys / papier (element, 3:1)": [
+  "#8C9098",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny: przycisk −1: obrys / papier (element, 3:1)": [
+  "#8C9098",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny: kreska / papier (grafika z danymi, 3:1)": [
+  "#ECECE8",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny: błąd / papier": [
+  "#F2B8B5",
+  "#1B1C1F"
+ ],
+ "ciemny: błąd / arkusz": [
+  "#F2B8B5",
+  "#2A2C31"
+ ],
+ "ciemny: ołówek / arkusz": [
+  "#A9ACB2",
+  "#2A2C31"
+ ],
+ "ciemny: wybrany przełącznik: obrys / arkusz (element, 3:1)": [
+  "#8C9098",
+  "#2A2C31",
+  3
+ ],
+ "ciemny: wybrany przełącznik: tekst / tło": [
+  "#ECECE8",
+  "#2E3136"
+ ],
+ "ciemny: przycisk niszczący: tekst / tło": [
+  "#1B1C1F",
+  "#F2B8B5"
+ ],
+ "ciemny: przycisk niszczący: tło / arkusz (element, 3:1)": [
+  "#F2B8B5",
+  "#2A2C31",
+  3
+ ],
+ "jasny+kontrast: tekst / papier": [
+  "#26282C",
+  "#FCFCFA"
+ ],
+ "jasny+kontrast: tekst / grupa": [
+  "#26282C",
+  "#F2F3F0"
+ ],
+ "jasny+kontrast: ołówek / papier": [
+  "#44474D",
+  "#FCFCFA"
+ ],
+ "jasny+kontrast: ołówek / grupa": [
+  "#44474D",
+  "#F2F3F0"
+ ],
+ "jasny+kontrast: tekst na zakreślaczu": [
+  "#1B1C1F",
+  "#F6E04A"
+ ],
+ "jasny+kontrast: krawędź zakreślenia / papier (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny+kontrast: przycisk: tekst / tło": [
+  "#FCFCFA",
+  "#26282C"
+ ],
+ "jasny+kontrast: przycisk: obrys / papier (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny+kontrast: przycisk −1: obrys / papier (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny+kontrast: kreska / papier (grafika z danymi, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny+kontrast: błąd / papier": [
+  "#B3261E",
+  "#FCFCFA"
+ ],
+ "jasny+kontrast: błąd / arkusz": [
+  "#B3261E",
+  "#FCFCFA"
+ ],
+ "jasny+kontrast: ołówek / arkusz": [
+  "#44474D",
+  "#FCFCFA"
+ ],
+ "jasny+kontrast: wybrany przełącznik: obrys / arkusz (element, 3:1)": [
+  "#26282C",
+  "#FCFCFA",
+  3
+ ],
+ "jasny+kontrast: wybrany przełącznik: tekst / tło": [
+  "#FCFCFA",
+  "#26282C"
+ ],
+ "jasny+kontrast: przycisk niszczący: tekst / tło": [
+  "#FCFCFA",
+  "#B3261E"
+ ],
+ "jasny+kontrast: przycisk niszczący: tło / arkusz (element, 3:1)": [
+  "#B3261E",
+  "#FCFCFA",
+  3
+ ],
+ "ciemny+kontrast: tekst / papier": [
+  "#ECECE8",
+  "#1B1C1F"
+ ],
+ "ciemny+kontrast: tekst / grupa": [
+  "#ECECE8",
+  "#24262A"
+ ],
+ "ciemny+kontrast: ołówek / papier": [
+  "#CDD0D4",
+  "#1B1C1F"
+ ],
+ "ciemny+kontrast: ołówek / grupa": [
+  "#CDD0D4",
+  "#24262A"
+ ],
+ "ciemny+kontrast: tekst na zakreślaczu": [
+  "#F4ECB4",
+  "#38351F"
+ ],
+ "ciemny+kontrast: krawędź zakreślenia / papier (element, 3:1)": [
+  "#F4ECB4",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny+kontrast: przycisk: tekst / tło": [
+  "#ECECE8",
+  "#2E3136"
+ ],
+ "ciemny+kontrast: przycisk: obrys / papier (element, 3:1)": [
+  "#CDD0D4",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny+kontrast: przycisk −1: obrys / papier (element, 3:1)": [
+  "#8C9098",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny+kontrast: kreska / papier (grafika z danymi, 3:1)": [
+  "#ECECE8",
+  "#1B1C1F",
+  3
+ ],
+ "ciemny+kontrast: błąd / papier": [
+  "#F2B8B5",
+  "#1B1C1F"
+ ],
+ "ciemny+kontrast: błąd / arkusz": [
+  "#F2B8B5",
+  "#2A2C31"
+ ],
+ "ciemny+kontrast: ołówek / arkusz": [
+  "#CDD0D4",
+  "#2A2C31"
+ ],
+ "ciemny+kontrast: wybrany przełącznik: obrys / arkusz (element, 3:1)": [
+  "#CDD0D4",
+  "#2A2C31",
+  3
+ ],
+ "ciemny+kontrast: wybrany przełącznik: tekst / tło": [
+  "#ECECE8",
+  "#2E3136"
+ ],
+ "ciemny+kontrast: przycisk niszczący: tekst / tło": [
+  "#1B1C1F",
+  "#F2B8B5"
+ ],
+ "ciemny+kontrast: przycisk niszczący: tło / arkusz (element, 3:1)": [
+  "#F2B8B5",
+  "#2A2C31",
+  3
+ ],
+ "wzór: znacznik / strona (element, 3:1)": [
+  "#26282C",
+  "#FFFFFF",
+  3
+ ],
+ "wzór: etykieta znacznika tekst / tło": [
+  "#FCFCFA",
+  "#26282C"
+ ],
+ "system czarny: tekst / tło": [
+  "#ECECE8",
+  "#000000"
+ ],
+ "system czarny: ołówek / tło": [
+  "#A9ACB2",
+  "#000000"
+ ],
+ "system czarny: przycisk tekst / tło": [
+  "#ECECE8",
+  "#2E3136"
+ ],
+ "system czarny: przycisk obrys / tło (element, 3:1)": [
+  "#8C9098",
+  "#000000",
+  3
+ ],
+ "system czarny: tekst na zakreślaczu": [
+  "#F4ECB4",
+  "#38351F"
+ ],
+ "system czarny: krawędź zakreślenia / tło (element, 3:1)": [
+  "#E2CB3A",
+  "#000000",
+  3
+ ],
+ "Smart Stack: tekst / karta": [
+  "#ECECE8",
+  "#1E2024"
+ ],
+ "Smart Stack: ołówek / karta": [
+  "#A9ACB2",
+  "#1E2024"
+ ],
+ "Smart Stack: krawędź zakreślenia / karta (element, 3:1)": [
+  "#E2CB3A",
+  "#1E2024",
+  3
+ ],
+ "znak kresek / tło systemowe (grafika, 3:1)": [
+  "#ECECE8",
+  "#000000",
+  3
+ ],
+ "znak kresek / karta Smart Stack (grafika, 3:1)": [
+  "#ECECE8",
+  "#1E2024",
+  3
+ ]
+}

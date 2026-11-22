@@ -1,0 +1,49 @@
+# PU-008 (Z-01): nowe zakreślenie widać od razu i można cofnąć tylko ostatnie; zapis przeżywa restart.
+# Kod: `wzor-zakreslacz`, `wzor-zakreslenia` („N highlight(s)”), `wzor-cofnij-rysunek` („Undo last stroke”), `nav-wstecz`, `licznik-wzor` — wzór kroków: scen. 26 (swipe w trybie zakreślacza, adnotacja na jednym dokumencie, OG-07).
+# BX18 (przebieg 43893320145): na iPhonie w trybie zakreślacza pasek nawigacji jest paskiem narzędzi z „Done” (WzorPrzegladarka.tsx:122-127) i nie ma `nav-wstecz` — przed powrotem tryb wyłączamy stuknięciem narzędzia.
+# Po powrocie z licznika tryb może być wyłączony — krok `when` stuka narzędzie tylko wtedy, gdy nie jest wybrane (BX-029).
+appId: com.apps4brew.knitting
+name: "PU-008 · Zakreślenie od razu, cofnięcie tylko ostatniej kreski, po restarcie 2 zakreślenia"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-008
+  - wzor
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-16T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 35%", end: "80%, 35%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+# --- zamknięcie i ponowne otwarcie wzoru, drugi pas od razu ---
+- tapOn: { id: "wzor-zakreslacz" } # BX18: wyłączenie trybu przywraca nawigację z `nav-wstecz`
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-wzor" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5: akcja pod liczbą bywa poza ekranem
+- tapOn: { id: "licznik-wzor" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- runFlow:
+    when: { notVisible: { id: "wzor-zakreslacz", selected: true } }
+    commands:
+      - tapOn: { id: "wzor-zakreslacz" }
+      - assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 50%", end: "80%, 50%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- takeScreenshot: 100-dwa-zakreslenia
+# --- cofnięcie tylko ostatniej kreski ---
+- tapOn: { id: "wzor-cofnij-rysunek" }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- swipe: { start: "20%, 50%", end: "80%, 50%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-16T13:00:00" } }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "2 highlights" }

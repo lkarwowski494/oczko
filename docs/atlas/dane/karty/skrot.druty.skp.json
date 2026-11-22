@@ -1,0 +1,71 @@
+{
+ "format": 1,
+ "id": "skrot.druty.skp",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.skp.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip 1, knit 1, pass slipped stitch over",
+    "skrot": "SKP",
+    "twierdzenie": "TRM-EN-008"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "dwa oczka przeciągnięte (podwójne przeciągnięcie)",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-012"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "2 петли вместе с наклоном влево",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-009"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "右上2目一度",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-008"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "mate simples",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-020"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "свивка наляво",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-009"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "dviejų akių sumezgimas gerąja akimi į kairę",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-004"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "menguado simple",
+    "skrot": "ms",
+    "twierdzenie": "TRM-ESLA-007"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Kierunek A „Dzianina” — Dziś</title>
+<link rel="stylesheet" href="wspolne.css">
+<!-- Dane na ekranie: [PRZYKŁAD] (projekt, część, liczby rzędów, dni). Barwy runa: nazwy z Shetland Sheep Society,
+     shetland-sheep.org.uk/shetland-sheep-breed/colours-markings (odczyt 2026-11-05); hex wywiedzione z opisu barw
+     („Mioget (yellowish brown)”, „Emsket (bluish grey)”, „Shaela (dark grey)”), nie pomiar — zdjęcia próbek mają zafarb. -->
+<style>
+:root {
+  --tlo: #E4E8EA; --tekst: #1E252B; --tekst2: #4C5862; --karta: #2E3B46; --karta-tekst: #F3F1EC; --karta-tekst2: #C9D0D5;
+  --mioget: #C08425; --mioget-jasny: #EBC983; --plus-tekst: #1E252B; --kontynuuj: #F3F1EC; --kontynuuj-tekst: #1E252B;
+  --kafel: #F5F6F6; --kafel-ik: #2E3B46; --kafel-ik-tlo: #F0DDB6; --linia: #C6CDD2; --dzien-pusty: #CED4D8;
+  --pasek: #EDF0F1; --pasek-linia: #C6CDD2; --zakl: #56626B; --zakl-wybrana: #8A5A12; --igla: #9AA5AD; --cel: #E6BE73;
+  --wolne: #8A5A12;
+}
+[data-theme="dark"] {
+  --tlo: #212A31; --tekst: #EEF1F2; --tekst2: #B5C0C8; --karta: #33424F; --karta-tekst: #F3F1EC; --karta-tekst2: #C2CBD2;
+  --mioget: #CF9636; --mioget-jasny: #F3D597; --plus-tekst: #1E252B; --kontynuuj: #F3F1EC; --kontynuuj-tekst: #1E252B;
+  --kafel: #2B3640; --kafel-ik: #F0CF8A; --kafel-ik-tlo: #3E4C58; --linia: #3D4A55; --dzien-pusty: #3A4651;
+  --pasek: #1B2228; --pasek-linia: #33404A; --zakl: #A7B3BB; --zakl-wybrana: #F0CF8A; --igla: #8D99A2; --cel: #F0CF8A;
+  --wolne: #F0CF8A;
+}
+
+/* Warianty tła (STOP E2, P-552): t1 shaela (pierwotny), t2 musket (cieplejszy), t3 emsket (chłodniejszy), t4 shaela z fakturą dzianiny */
+[data-tlo="t2"] { --tlo: #E6E1DA; --kafel: #F6F4F1; --pasek: #EEEBE6; --pasek-linia: #CFC8BF; --dzien-pusty: #D6D0C8; --linia: #CFC8BF; --tekst: #221D1A; --tekst2: #5A5048; --karta: #3A332E; --karta-tekst2: #D6CEC6; --zakl: #625850; --kafel-ik: #3A332E; }
+[data-tlo="t2"][data-theme="dark"] { --tlo: #26211E; --tekst: #F1EDE9; --karta: #3A322D; --kafel: #312B27; --kafel-ik-tlo: #4A413A; --pasek: #1E1A17; --pasek-linia: #3D3530; --dzien-pusty: #40382F; --tekst2: #C7BCB2; --zakl: #B5A99E; --karta-tekst2: #D3C9BF; --kafel-ik: #F0CF8A; }
+[data-tlo="t3"] { --wolne: #7E520F; --zakl-wybrana: #7E520F; --tlo: #D8E0E6; --kafel: #F2F5F7; --pasek: #E3E9ED; --pasek-linia: #BCC7CF; --dzien-pusty: #C3CDD5; --tekst2: #46545F; --karta: #2B3A48; --zakl: #4F5D68; }
+[data-tlo="t3"][data-theme="dark"] { --tlo: #1B2630; --karta: #2C3C4B; --kafel: #253240; --kafel-ik-tlo: #36475A; --pasek: #151E26; --pasek-linia: #2C3A47; --dzien-pusty: #33424F; --tekst2: #B0C0CC; --zakl: #A0B0BC; }
+[data-tlo="t4"] .ekran { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16'%3E%3Cellipse cx='5.2' cy='8' rx='3.2' ry='6.4' transform='rotate(-28 5.2 8)' fill='none' stroke='%23000' stroke-opacity='.05' stroke-width='1.4'/%3E%3Cellipse cx='12.8' cy='8' rx='3.2' ry='6.4' transform='rotate(28 12.8 8)' fill='none' stroke='%23000' stroke-opacity='.05' stroke-width='1.4'/%3E%3C/svg%3E"); }
+[data-tlo="t4"][data-theme="dark"] .ekran { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16'%3E%3Cellipse cx='5.2' cy='8' rx='3.2' ry='6.4' transform='rotate(-28 5.2 8)' fill='none' stroke='%23fff' stroke-opacity='.05' stroke-width='1.4'/%3E%3Cellipse cx='12.8' cy='8' rx='3.2' ry='6.4' transform='rotate(28 12.8 8)' fill='none' stroke='%23fff' stroke-opacity='.05' stroke-width='1.4'/%3E%3C/svg%3E"); }
+.duzy { font-family: "Young Serif", serif; font-weight: 400; letter-spacing: -0.01em; }
+.karta { background: var(--karta); color: var(--karta-tekst); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 112px 1fr; gap: 16px; }
+.karta .dzianina { grid-row: span 2; border-radius: 12px; background: #0000001f; position: relative; min-height: 216px; }
+.karta .dzianina svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.karta .opis { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.karta .czesc { color: var(--karta-tekst2); }
+.karta .liczba-rzad { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.karta .liczba { font-size: calc(56px * var(--dt-tytul)); line-height: 1; }
+.karta .liczba small { display: block; font-family: "Source Sans 3"; font-size: calc(15px * var(--dt-tresc)); color: var(--karta-tekst2); margin-top: 4px; }
+.plus { width: 72px; height: 72px; border-radius: 36px; background: var(--mioget); color: var(--plus-tekst); font-family: "Source Sans 3"; font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; border: 0; box-shadow: inset 0 -3px 0 #0003; flex: none; }
+.kontynuuj { grid-column: 2; align-self: end; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 14px; background: var(--kontynuuj); color: var(--kontynuuj-tekst); font-weight: 700; padding: 8px 12px; }
+.kontynuuj .ik { font-size: 16px; }
+.co-dalej { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--kafel); min-height: 52px; }
+.co-dalej .znacznik { width: 14px; height: 22px; border-radius: 7px 7px 2px 2px; background: var(--mioget); flex: none; }
+.co-dalej .t-tresc { flex: 1; } .co-dalej b { font-weight: 700; }
+.tydzien { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.tydzien div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); }
+.tydzien i { width: 100%; max-width: 44px; aspect-ratio: 1; min-height: 44px; border-radius: 10px; background: var(--dzien-pusty); display: block; position: relative; }
+.tydzien i.zrobiony { background: var(--mioget) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='8'%3E%3Cellipse cx='2.6' cy='4' rx='1.6' ry='3.3' transform='rotate(-28 2.6 4)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='.9'/%3E%3Cellipse cx='6.4' cy='4' rx='1.6' ry='3.3' transform='rotate(28 6.4 4)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='.9'/%3E%3C/svg%3E"); }
+.tydzien i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; }
+.tydzien b { color: var(--tekst); font-weight: 600; }
+.sekcja-tytul { font-weight: 700; margin-bottom: -8px; }
+.kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kafel { background: var(--kafel); border-radius: 18px; padding: 16px; min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+.kafel .ik-tlo { width: 44px; height: 44px; border-radius: 12px; background: var(--kafel-ik-tlo); color: var(--kafel-ik); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.kafel span.t-tresc { font-weight: 600; }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--wolne); font-weight: 700; text-decoration: none; }
+</style></head>
+<body>
+<main class="ekran" data-ekran="dzis" aria-label="Dziś">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek">
+    <div><h1 class="t-duzy duzy">Dziś</h1><p class="t-pod data">czwartek, 5 listopada</p></div>
+    <span class="przycisk-ik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span>
+  </div>
+  <div class="tresc">
+    <section class="karta" aria-label="Kontynuuj: Sweter Mgła, Rękaw lewy">
+      <div class="dzianina" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14 rzędów, następne ujmowanie w rzędzie 47"><svg id="dz" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis">
+        <h2 class="t-tytul duzy">Sweter Mgła</h2>
+        <p class="t-pod czesc">Rękaw lewy · rząd 43 z 96</p>
+        <div class="liczba-rzad">
+          <p class="liczba duzy cyfry">42<small>rzędy gotowe</small></p>
+          <button class="plus cyfry" aria-label="Dodaj rząd, Sweter Mgła">+1</button>
+        </div>
+      </div>
+      <a class="kontynuuj t-tresc">Kontynuuj <i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <div class="co-dalej"><span class="znacznik" aria-hidden="true"></span><p class="t-tresc">Za 4 rzędy: <b>ujmowanie</b> (5 z 8)</p><i data-ik="szewron" style="font-size:16px;color:var(--tekst2)"></i></div>
+    <p class="t-tresc sekcja-tytul">Ten tydzień</p>
+    <div class="tydzien t-mala cyfry" aria-label="Ten tydzień: dziergane w poniedziałek, wtorek i dziś">
+      <div><i class="zrobiony"></i><span>pn</span></div><div><i class="zrobiony"></i><span>wt</span></div><div><i></i><span>śr</span></div>
+      <div><i class="zrobiony dzis"></i><b>czw</b></div><div><i></i><span>pt</span></div><div><i></i><span>sb</span></div><div><i></i><span>nd</span></div>
+    </div>
+    <div class="kafle">
+      <a class="kafel"><span class="ik-tlo"><i data-ik="nowy"></i></span><span class="t-tresc">Nowy projekt</span></a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="wzor"></i></span><span class="t-tresc">Dodaj wzór</span></a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="druty"></i></span><span class="t-tresc">Włóczka i druty</span></a>
+      <a class="kafel"><span class="ik-tlo"><i data-ik="probka"></i></span><span class="t-tresc">Próbka</span></a>
+    </div>
+    <p class="t-pod wolne">Zostały 3 z 5 darmowych dni robótkowych w listopadzie. <a>Oczko Pro</a></p>
+  </div>
+  <nav class="zakladki t-zakl">
+    <a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a>
+  </nav>
+</main>
+<script src="wspolne.js"></script>
+<script>
+// Element firmowy: dzianina części. Wysokość = rzędy gotowe / cel (dane), jaśniejszy pas = rzędy dziś, igła = bieżący rząd,
+// linia przerywana = cel części, ząbek w brzegu = rząd następnego przypomnienia. Oczka „V” to faktura, nie liczba rzędów.
+const D = { gotowe: 42, cel: 96, dzis: 14, przypomnienie: 47 };
+const H = 216, W = 112, gora = 14, dol = 8, y = (r) => H - dol - (H - gora - dol) * r / D.cel;
+const yGot = y(D.gotowe), yDzis = y(D.gotowe - D.dzis), yPrz = y(D.przypomnienie);
+let s = `<defs>
+ <pattern id="v" width="9" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)"><ellipse cx="2.6" cy="4" rx="1.6" ry="3.3" transform="rotate(-28 2.6 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/><ellipse cx="6.4" cy="4" rx="1.6" ry="3.3" transform="rotate(28 6.4 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/></pattern>
+</defs>
+<rect x="8" y="${yGot}" width="${W - 16}" height="${yDzis - yGot}" fill="var(--mioget-jasny)"/>
+<rect x="8" y="${yDzis}" width="${W - 16}" height="${H - dol - yDzis}" fill="var(--mioget)"/>
+<rect x="8" y="${yGot}" width="${W - 16}" height="${H - dol - yGot}" fill="url(#v)"/>
+<line x1="4" y1="${y(D.cel)}" x2="${W - 4}" y2="${y(D.cel)}" stroke="var(--cel)" stroke-width="1.6" stroke-dasharray="4 4"/>
+<line x1="2" y1="${yGot - 3}" x2="${W - 2}" y2="${yGot - 3}" stroke="var(--igla)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="${W - 3}" cy="${yGot - 3}" r="3.6" fill="var(--igla)"/>
+<path d="M${W} ${yPrz} l-10 -6 v12 z" fill="var(--cel)"/><line x1="8" y1="${yPrz}" x2="${W-10}" y2="${yPrz}" stroke="var(--cel)" stroke-width="1" stroke-opacity=".6"/>`;
+document.getElementById('dz').innerHTML = s;
+</script>
+
+<section class="panel">
+  <h2>A „Dzianina”</h2>
+  <p><b>Idea:</b> karta projektu to kawałek dzianiny, który przyrasta rząd po rzędzie do celu części.</p>
+  <p><b>Element firmowy:</b> wysokość dzianiny = rzędy gotowe / cel części; jaśniejszy pas = rzędy dziś; igła = bieżący rząd; przerywana linia = cel; ząbek w brzegu = następne przypomnienie. VoiceOver: „Rękaw lewy: 42 z 96 rzędów, dziś 14 rzędów, następne ujmowanie w rzędzie 47”.</p>
+  <h3>Paleta (barwy runa szetlandzkiego, nazwy: Shetland Sheep Society; hex wywiedzione z opisu)</h3>
+  <div class="probki">
+    <div class="probka"><i style="background:#C98F2E"></i>mioget (miodowy) — dzianina, +1</div>
+    <div class="probka"><i style="background:#2E3B46"></i>shaela (stalowy) — karta</div>
+    <div class="probka"><i style="background:#E4E8EA"></i>jasne runo — tło jasne</div>
+    <div class="probka"><i style="background:#212A31"></i>ciemna shaela — tło ciemne</div>
+    <div class="probka"><i style="background:#8A5A12"></i>ciemny mioget — tekst akcentu</div>
+  </div>
+  <h3>Kroje</h3>
+  <p><span style="font-family:'Young Serif';font-size:22px">Young Serif</span> — tytuły i liczba (szeryf ulotek ze wzorami); treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3.</p>
+  <h3>Ruch, haptyka, dźwięk</h3>
+  <p>+1: nowy rząd oczek wsuwa się pod igłę (180 ms; przy „Ogranicz ruch” bez ruchu), haptyka „lekkie stuknięcie”; bez dźwięku domyślnie.</p>
+  <h3>Głos</h3>
+  <p>Pusty: „Tu wyrośnie Twoja pierwsza robótka. Zacznij od +1.”<br>Błąd: „Nie zapisałam rzędu. Stuknij +1 jeszcze raz.”<br>Sukces: „Rękaw lewy gotowy: 96 rzędów.”</p>
+  <h3>Ikona</h3>
+  <div class="ikony" id="ikony"></div>
+</section>
+<script>
+const ikona = (tlo, v, pas) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/>
+ ${[0,1,2].map((r)=>[0,1].map((k)=>`<path d="M${28+k*28} ${32+r*17} L${36+k*28} ${45+r*17} L${44+k*28} ${32+r*17}" fill="none" stroke="${r===0?pas:v}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`).join('')).join('')}
+ <path d="M20 22 H80" stroke="#9AA5AD" stroke-width="5" stroke-linecap="round"/></svg>`;
+const kreski = (tlo, k, z) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/><path d="M20 57 L80 52 L79 64 L19 68z" fill="${z}"/>${[30,42,54,66].map(x=>`<path d="M${x} 28 L${x-2} 74" stroke="${k}" stroke-width="7" stroke-linecap="round"/>`).join('')}<path d="M22 64 L78 40" stroke="${k}" stroke-width="7" stroke-linecap="round"/></svg>`;
+const fig = (svg, r, opis) => `<figure><span class="maska" style="width:${r}px;height:${r}px;border-radius:${r*0.2237}px">${svg.replace('<svg', `<svg width="${r}" height="${r}"`)}</span>${opis}</figure>`;
+const jasna = ikona('#2E3B46', '#C98F2E', '#E6BE73'), ciemna = ikona('#1A2228', '#D9A445', '#F0CF8A');
+document.getElementById('ikony').innerHTML = fig(jasna, 120, '120') + fig(jasna, 60, '60') + fig(jasna, 29, '29') + fig(ciemna, 60, 'ciemna') +
+  fig(kreski('#2E3B46', '#F3F1EC', '#C98F2E'), 60, 'kreski') + fig(kreski('#1A2228', '#F3F1EC', '#D9A445'), 60, 'kreski ciemna');
+</script>
+</body></html>

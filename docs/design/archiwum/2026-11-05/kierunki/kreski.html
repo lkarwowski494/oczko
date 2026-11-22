@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oczko · Direction A · Tally marks</title>
+<!-- Kierunek A „Kreski na wzorze” (M1, docs/design/01-swiat.md). Teksty i dane projektu: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Schibsted Grotesk"; src: url("../fonty/SchibstedGrotesk.ttf"); font-weight: 400 900; }
+@font-face { font-family: "Libre Franklin"; src: url("../fonty/LibreFranklin.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Archivo"; src: url("../fonty/Archivo.ttf"); font-weight: 100 900; font-stretch: 62% 125%; }
+@font-face { font-family: "Courier Prime"; src: url("../fonty/CourierPrime-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Kalam"; src: url("../fonty/Kalam-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonty/SourceSans3.ttf"); font-weight: 200 900; }
+:root {
+  --papier: #FCFCFA;      /* biały papier do drukarki, chłodny: nie krem */
+  --grafit: #26282C;      /* ołówek 2B, tekst */
+  --olowek: #5E626A;      /* ołówek HB, tekst drugi (≥ 4,5:1 na papierze) */
+  --linia: #D9DBDF;       /* linie wydruku */
+  --zakreslacz: #F6E04A;  /* zakreślacz na wzorze (BR-WZR-008) */
+  --tlo-przycisku: #26282C;
+  --tekst-przycisku: #FCFCFA;
+  --dt-tytul: 1; --dt-tresc: 1;
+  --kroj-tytul: "Schibsted Grotesk";
+  --szer-tytul: 100%;
+}
+[data-theme="dark"] {
+  --papier: #1B1C1F;      /* wydruk wieczorem pod lampą: grafitowa kartka */
+  --grafit: #ECECE8;
+  --olowek: #A9ACB2;
+  --linia: #34363B;
+  --zakreslacz: #E2CB3A;
+  --tlo-przycisku: #3A3D43;  /* wieczorem bez jasnej płaszczyzny */
+  --tekst-przycisku: #ECECE8;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; background: #8A8D93; font-family: "Source Sans 3", sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+main[data-ekran] * { font-stretch: var(--szer-tytul) !important; } /* skrót font: kasuje szerokość */
+main[data-ekran] { width: var(--w, 390px); min-height: 844px; background: var(--papier); color: var(--grafit); border-radius: 0; display: flex; flex-direction: column; position: relative; }
+.status { height: 47px; display: flex; justify-content: space-between; align-items: center; padding: 0 28px; font: 600 calc(15px * var(--dt-tresc)) "Source Sans 3"; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 0; min-height: 44px; }
+.nav a { color: var(--grafit); text-decoration: none; font-size: calc(17px * var(--dt-tresc)); min-height: 44px; display: flex; align-items: center; }
+.nav .ikony { display: flex; gap: 4px; }
+.nav .ikona { width: 44px; height: 44px; display: grid; place-items: center; }
+.tytul { padding: 4px 20px 0; }
+.tytul h1 { font: 700 calc(30px * var(--dt-tytul)) / 1.15 var(--kroj-tytul); margin: 0; letter-spacing: -0.01em; }
+.tytul p { margin: 2px 0 0; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.kartka { margin: 16px 20px 0; border-top: 1px solid var(--linia); padding-top: 12px; }
+.liczba { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.liczba .n { font: 700 calc(96px * var(--dt-tytul)) / 1 var(--kroj-tytul); font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.liczba .z { font-size: calc(20px * var(--dt-tresc)); color: var(--olowek); }
+.kreski { margin-top: 12px; }
+.kreski svg { display: block; width: 100%; height: auto; }
+.podpis { color: var(--olowek); font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; margin-top: 6px; }
+.przypomnienie { margin: 16px 0 0; position: relative; padding: 12px 14px; }
+.przypomnienie::before { content: ""; position: absolute; inset: 0; background: var(--zakreslacz); opacity: .85; transform: skewX(-4deg); border-radius: 2px; }
+[data-theme="dark"] .przypomnienie::before { opacity: 1; }
+.przypomnienie > * { position: relative; color: #1B1C1F; }
+.przypomnienie b { font: 700 calc(20px * var(--dt-tytul)) / 1.2 var(--kroj-tytul); display: block; }
+.przypomnienie span { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.inne { margin-top: 14px; display: grid; gap: 8px; }
+.wiersz { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--linia); padding: 8px 0; font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; flex-wrap: wrap; }
+.wiersz .w { color: var(--olowek); }
+.wiersz b { font-variant-numeric: tabular-nums; }
+.spacer { flex: 1; }
+.dol { padding: 12px 16px 34px; display: flex; gap: 28px; align-items: flex-end; }
+.minus { width: 72px; height: 72px; border: 1.5px solid var(--grafit); background: transparent; color: var(--grafit); font: 600 calc(28px * var(--dt-tytul)) var(--kroj-tytul); border-radius: 14px; }
+.plus { flex: 1; min-height: 168px; background: var(--tlo-przycisku); color: var(--tekst-przycisku); border: 0; border-radius: 22px; font: 700 calc(28px * var(--dt-tytul)) / 1.2 var(--kroj-tytul); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.plus small { font: 400 calc(15px * var(--dt-tresc)) "Source Sans 3"; opacity: .8; }
+.pusto { margin-top: 18px; color: var(--olowek); font-size: calc(17px * var(--dt-tresc)); line-height: 1.35; }
+.panel { width: 390px; background: #fff; color: #222; padding: 20px; font-size: 15px; line-height: 1.4; }
+.panel h2 { font: 700 22px "Schibsted Grotesk"; margin: 0 0 8px; }
+.panel h3 { font: 700 16px "Schibsted Grotesk"; margin: 16px 0 6px; }
+.probki { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.probki div { height: 54px; border-radius: 6px; border: 1px solid #ccc; font-size: 11px; display: flex; align-items: flex-end; padding: 3px; }
+.ikony-rzad { display: flex; gap: 16px; align-items: flex-end; }
+.ikony-rzad svg { border-radius: 22%; }
+</style>
+</head>
+<body>
+
+<!-- Stan 1: pierwsze liczenie (świeża instalacja; NFR-PIE-001, P-046) -->
+<main data-ekran="pierwsze-liczenie">
+  <div class="status"><span>9:41</span><span>▂▄▆ ▭</span></div>
+  <div class="nav"><a href="#">Projects</a><div class="ikony"><span class="ikona" aria-label="History"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div></div>
+  <div class="tytul"><h1>Counter</h1></div>
+  <div class="kartka">
+    <div class="liczba"><span class="n">0</span><span class="z">rows</span></div>
+    <p class="pusto">Tap the big button each time you finish a row. Every row gets a pencil mark here.</p>
+  </div>
+  <div class="spacer"></div>
+  <div class="dol">
+    <button class="minus" aria-label="−1 row">−1</button>
+    <button class="plus" aria-label="+1 row">+1 row</button>
+  </div>
+</main>
+
+<!-- Stan 2: sweter w toku; rząd 48 to przypomnienie 7 z 8 (od rzędu 12 co 6 rzędów, 8 razy) [PRZYKŁAD] -->
+<main data-ekran="sweter-w-toku">
+  <div class="status"><span>21:14</span><span>▂▄▆ ▭</span></div>
+  <div class="nav"><a href="#">‹ Harbor Sweater</a><div class="ikony"><span class="ikona" aria-label="History"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ikona" aria-label="More">•••</span></div></div>
+  <div class="tytul"><h1>Left sleeve</h1><p>Rows finished</p></div>
+  <div class="kartka">
+    <div class="liczba"><span class="n">47</span><span class="z">of 96</span></div>
+    <p class="podpis">Tonight’s marks: 14 rows since 19:52</p>
+    <div class="kreski" aria-label="Tonight: 14 rows"><svg id="tally" viewBox="0 0 350 70"></svg></div>
+    <div class="przypomnienie" role="status"><b>Row 48: decrease at both ends</b><span>Decrease 7 of 8 · next on row 54</span></div>
+    <div class="inne">
+      <div class="wiersz"><span class="w">Cable pattern</span><b>repeat 6 · row 7 of 8</b></div>
+      <div class="wiersz"><span class="w">Note</span><span>Switch to 4 mm for the cuff</span></div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <div class="dol">
+    <button class="minus" aria-label="−1 row">−1</button>
+    <button class="plus" aria-label="+1 row. Row 48 next: decrease at both ends">+1 row<small>row 48: decrease at both ends</small></button>
+  </div>
+</main>
+
+<section class="panel">
+  <h2>A · Tally marks</h2>
+  <p><b>Idea:</b> the counter is the printed pattern you used to mark with a pencil; every row leaves a mark, every fifth crosses the four.</p>
+  <p><b>Signature element:</b> tally strip = rows of this session in fives; the highlighter band = the row with an instruction.</p>
+  <h3>Palette</h3>
+  <div class="probki">
+    <div style="background:#FCFCFA">paper</div><div style="background:#26282C;color:#fff">graphite 2B</div><div style="background:#5E626A;color:#fff">pencil HB</div><div style="background:#D9DBDF">print line</div><div style="background:#F6E04A">highlighter</div>
+  </div>
+  <h3>Type</h3>
+  <p style="font:700 24px 'Schibsted Grotesk'">Schibsted Grotesk 47 · Left sleeve</p>
+  <p>Body: SF Pro on iOS; in this mockup Source Sans 3 as a stand-in.</p>
+  <h3>Motion · haptics · sound</h3>
+  <p>+1 draws one stroke (120 ms); the fifth stroke crosses the group with a firmer tap. Sound off by default: a soft pencil scratch.</p>
+  <h3>Voice</h3>
+  <p>Empty: “Tap the big button each time you finish a row.”<br>Error: “Couldn’t save that row. It’s still on screen; try again.”<br>Success: “Left sleeve done. 96 rows.”</p>
+  <h3>Icon</h3>
+  <div class="ikony-rzad" id="ikony"></div>
+</section>
+
+<script>
+// ?kroj=…&szer=… : porównanie krojów tytułowych (E2 pkt 6)
+{ const q = new URLSearchParams(location.search); if (q.get('kroj')) document.documentElement.style.setProperty('--kroj-tytul', `"${q.get('kroj')}"`); if (q.get('szer')) document.documentElement.style.setProperty('--szer-tytul', q.get('szer')); }
+// Kreski: 14 rzędów sesji = 2 pełne piątki + 4 (rachunek z [PRZYKŁAD]).
+function kreski(svg, n) {
+  const ns = 'http://www.w3.org/2000/svg'; let x = 6; const h = 46, y = 10;
+  for (let i = 0; i < n; i++) {
+    const wGr = i % 5;
+    if (wGr < 4) {
+      const l = document.createElementNS(ns, 'path');
+      const jit = ((i * 37) % 7 - 3) * 0.6;
+      l.setAttribute('d', `M${x + jit} ${y + 2} q 2 ${h / 2} ${-1 + jit / 2} ${h}`);
+      l.setAttribute('stroke', 'var(--grafit)'); l.setAttribute('stroke-width', '3.2'); l.setAttribute('fill', 'none'); l.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(l); x += 13;
+    } else {
+      const l = document.createElementNS(ns, 'path');
+      l.setAttribute('d', `M${x - 58} ${y + h - 6} L ${x - 2} ${y + 8}`);
+      l.setAttribute('stroke', 'var(--grafit)'); l.setAttribute('stroke-width', '3.2'); l.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(l); x += 22;
+    }
+  }
+  const linia = document.createElementNS(ns, 'line');
+  linia.setAttribute('x1', 0); linia.setAttribute('x2', 350); linia.setAttribute('y1', 62); linia.setAttribute('y2', 62); linia.setAttribute('stroke', 'var(--linia)');
+  svg.appendChild(linia);
+}
+kreski(document.getElementById('tally'), 14);
+const ikona = (tlo, rys) => `<svg width="SIZE" height="SIZE" viewBox="0 0 100 100"><rect width="100" height="100" fill="${tlo}"/><rect x="14" y="56" width="76" height="16" fill="#F6E04A" transform="skewX(-6)"/>` +
+  [0,1,2,3].map(i => `<path d="M${30 + i * 12} 26 q2 24 -1 48" stroke="${rys}" stroke-width="6" fill="none" stroke-linecap="round"/>`).join('') +
+  `<path d="M22 70 L 80 32" stroke="${rys}" stroke-width="6" stroke-linecap="round"/>` +
+  [0,1,2,3].map(i => `<path d="M${30 + i * 12} 26 q2 24 -1 48" stroke="${rys}" stroke-width="6" fill="none" stroke-linecap="round" opacity=".0"/>`).join('') + `</svg>`;
+document.getElementById('ikony').innerHTML = [120, 60, 29].map(s => ikona('#FCFCFA', '#26282C').replaceAll('SIZE', s)).join('') + ikona('#1B1C1F', '#ECECE8').replaceAll('SIZE', 60);
+</script>
+</body>
+</html>

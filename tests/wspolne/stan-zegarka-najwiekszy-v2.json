@@ -1,0 +1,156 @@
+{
+  "wersja": 2,
+  "licznikId": "6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b",
+  "nazwa": "編み物のセーター編み物のセーター編み物のセーター編み物のセーター編み物のセーター編み物のセーター編み物のセーター編み物の",
+  "wartosc": 150000,
+  "znaczenie": "w_trakcie",
+  "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+  "ostatniPlusMs": 1794338220000,
+  "dzien": "2026-11-10",
+  "dzienDozwolony": true,
+  "sesjaStartMs": 1794336720000,
+  "pro": false,
+  "proWaznoscDo": null,
+  "dniWMiesiacu": [
+    {
+      "dzien": "2026-11-01",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-02",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-03",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-04",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-05",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-06",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-07",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-08",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-09",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-10",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-11",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-12",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-13",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-14",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-15",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-16",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-17",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-18",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-19",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-20",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-21",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-22",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-23",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-24",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-25",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-26",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-27",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-28",
+      "pro": false
+    },
+    {
+      "dzien": "2026-11-29",
+      "pro": true
+    },
+    {
+      "dzien": "2026-11-30",
+      "pro": false
+    }
+  ],
+  "przypomnienia": [
+    {
+      "od": 100,
+      "co": 10,
+      "razy": 99,
+      "tekst": "袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減ら"
+    },
+    {
+      "od": 200,
+      "co": 10,
+      "razy": 99,
+      "tekst": "袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減ら"
+    },
+    {
+      "od": 300,
+      "co": 10,
+      "razy": 99,
+      "tekst": "袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減らし目を両端で行う袖の減ら"
+    }
+  ]
+}

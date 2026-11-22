@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.znak.dwie-gwiazdki",
+ "rzemioslo": "oba",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.znak.dwie-gwiazdki.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-021"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

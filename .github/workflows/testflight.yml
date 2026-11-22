@@ -1,304 +1,328 @@
-name: Build & Upload to TestFlight (iOS)
-
+# TestFlight — testy wewnętrzne (rola 10, build E2 2026-10-26; ADR-0014, P-196: D3a numer, D4a środowisko, D5a bramka; wzór: Trening testflight.yml).
+# Build i podpis wyłącznie narzędziami Apple (bez EAS): `xcodebuild archive` bez podpisu, uprawnienia osadzane podpisem ad hoc, eksport z podpisem
+# automatycznym (klucz App Store Connect API), wysyłka do App Store Connect. Tester wewnętrzny dostaje build w TestFlight bez recenzji Apple.
+# Uruchamianie: TYLKO ręcznie (Actions → „TestFlight (testy wewnętrzne)” → Run workflow), za zgodą właściciela na ten build (zasada roli 10 nr 2).
+# Runner macOS jest od północy do ok. 15:00 czasu polskiego (P-187). Każde zadanie z sekretami jest w środowisku `release` z wymaganym
+# zatwierdzeniem właściciela (ADR-0014); zatwierdzenie dotyczy zadania build, więc bramka E2E jest sprawdzana PRZED prośbą o zatwierdzenie.
+# Uruchamianie z gałęzi roboczej (P-319): `main` (0.1.0) ma plik o tej samej ścieżce z `workflow_dispatch`, więc przycisk „Run workflow” istnieje;
+# treść pliku bierze się z wybranej gałęzi (dowód: docs/wydanie/sklep.md §2, przebieg Pages 40366704274). Gałąź robocza musi być dopuszczona w regułach
+# gałęzi środowiska `release` (sklep.md §1). Pewniejsza droga niż formularz: REST „Create a workflow dispatch event” z `ref` i `inputs`.
+# Bramka: zielony „Jakość · iOS” (pakiet podstawowy, każde zadanie success/skipped) na TYM SAMYM commicie; sam commit dokumentacji go nie
+# uruchamia. Ścieżka awaryjna (awaria maszyny, nie kodu): pomin_bramke_e2e + powod. Przebieg dowodowy bez wysyłki i bez tagu: bez_wysylki.
+# Druga bramka bez wyłącznika: bramka-przypadki (KO-065) — zestaw przypadków użycia, katalog i protokół testu fizycznego poprzedniego buildu.
+#
+# Sekrety środowiska `release` (Settings → Environments → release → Environment secrets) — nigdy w repo; instrukcja: docs/wydanie/sklep.md §1:
+#   ASC_KEY_ID     — identyfikator klucza API
+#   ASC_ISSUER_ID  — Issuer ID (App Store Connect → Users and Access → Integrations)
+#   ASC_KEY_P8     — pełna treść pliku AuthKey_….p8 (razem z liniami BEGIN/END)
+# Numer buildu (ADR-0014, D3a): run_number × 10 + run_attempt + PRZESUNIECIE; PRZESUNIECIE to zmienna repozytorium (Settings → Secrets and
+# variables → Actions → Variables), domyślnie 1000 → pierwszy build 1011 > 1004 (0.1.0). Przed eksportem numer jest porównany z ostatnim
+# w App Store Connect; po zmianie nazwy pliku workflow (nowy licznik przebiegów) podnieś PRZESUNIECIE.
+name: TestFlight (testy wewnętrzne)
 on:
   workflow_dispatch:
     inputs:
-      notes:
-        description: 'Notatka do wydania (opcjonalnie)'
+      bez_wysylki:
+        description: 'Przebieg dowodowy: pełna budowa, podpis, kontrola .ipa i walidacja Apple, ale BEZ wysyłki i bez tagu'
+        type: boolean
+        default: true
+      pomin_bramke_e2e:
+        description: 'AWARYJNIE: pomiń bramkę „Jakość · iOS” (tylko awaria maszyny, nie kodu); wymaga pola powod'
+        type: boolean
+        default: false
+      powod:
+        description: 'Powód pominięcia bramki (obowiązkowy przy pomin_bramke_e2e; trafia do podsumowania przebiegu)'
         required: false
         default: ''
-  push:
-    tags:
-      - 'v*'
-
+permissions:
+  contents: read
 concurrency:
   group: testflight
   cancel-in-progress: false
-
-permissions:
-  contents: read
-
-env:
-  NODE_OPTIONS: --max-old-space-size=3072
-  FORCE_COLOR: '1'
-  APP_SCHEME: 'Oczko'
-  APP_DIR: 'Oczko'
-  BUNDLE_ID: 'com.apps4brew.knitting'
-  BUILD_BASE: '10'
-
 jobs:
-  build:
-    name: Archive & Upload (.ipa -> TestFlight)
-    runs-on: macos-26
-    timeout-minutes: 60
+  bramka:
+    name: bramka (zielony „Jakość · iOS” na tym commicie)
+    runs-on: ubuntu-latest
+    timeout-minutes: 160
+    permissions:
+      contents: read
+      actions: read
     outputs:
-      version: ${{ steps.ver.outputs.version }}
-      build_number: ${{ steps.ver.outputs.build_number }}
-
+      przebieg: ${{ steps.bramka.outputs.run }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          fetch-depth: 0
           persist-credentials: false
-
-      - name: Verify commit is on origin/main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Zielony „Jakość · iOS” na tym commicie (albo awaryjne pominięcie z powodem)
+        id: bramka
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POMIN: ${{ inputs.pomin_bramke_e2e }}
+          POWOD: ${{ inputs.powod }}
         run: |
-          git fetch origin main --depth=50 || true
-          if git rev-parse --verify origin/main >/dev/null 2>&1; then
-            if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-              echo "::error::Commit $GITHUB_SHA nie jest przodkiem gałęzi origin/main!"
-              exit 1
-            fi
+          if [ "$POMIN" = "true" ]; then
+            [ -n "$POWOD" ] || { echo "::error::pomin_bramke_e2e wymaga uzasadnienia w polu powod"; exit 1; }
+            echo "::warning::Bramka POMINIĘTA awaryjnie"
+            { echo "## Bramka pominięta awaryjnie"; echo "Commit: $GITHUB_SHA"; echo "Powód: $POWOD"; } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
+          node scripts/wydanie/testflight.mjs bramka "$GITHUB_REPOSITORY" "$GITHUB_SHA"
 
-      - name: Setup Node 22
-        uses: actions/setup-node@v4
+  # Bramka przypadków użycia (KO-065; P-837, P-838): nie ma przełącznika, warunku ani continue-on-error — pilnuje
+  # tests/jakosc/bramka-przypadki-uzycia.test.ts. Kontrola 1 (każda część e2e iPhone'a success w przebiegu z zadania bramka) jest
+  # pomijana tylko razem z bramką E2E (pomin_bramke_e2e + powod, awaria maszyny); kontrole 2 (katalog, każdy PU klasy B z testem)
+  # i 3 (protokół testu fizycznego poprzedniego wysłanego buildu, docs/jakosc/test-fizyczny/<N>.md) biegną zawsze, także przy bez_wysylki.
+  bramka-przypadki:
+    name: bramka przypadków użycia (zestaw PU, katalog, protokół testu fizycznego)
+    needs: bramka
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # tagi v*-b<N> i katalog z tagu (git show) — kontrola 3
+          fetch-tags: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Trzy kontrole przypadków użycia
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRZEBIEG: ${{ needs.bramka.outputs.przebieg }}
+          POMIN: ${{ inputs.pomin_bramke_e2e }}
+        run: node scripts/jakosc/bramka-przypadki-uzycia.mjs bramka
+
+  build:
+    needs: [bramka, bramka-przypadki]
+    environment: release
+    runs-on: macos-26
+    timeout-minutes: 120
+    outputs:
+      numer: ${{ steps.nr.outputs.numer }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
-
-      - name: Select Xcode 26 (iOS 26 SDK)
-        run: bash scripts/ci/select-xcode.sh 26
-
-      - name: Install JS dependencies
-        run: npm ci
-
-      - name: Guard against test/mock flags in release build
-        run: |
-          for var in EXPO_PUBLIC_STORE_FAKE EXPO_PUBLIC_E2E EXPO_PUBLIC_MOCK_AUTH EXPO_PUBLIC_DEMO_MODE; do
-            val="${!var:-}"
-            if [ -n "$val" ] && [ "$val" != "0" ]; then
-              echo "::error::Flaga testowa $var=$val nie może być ustawiona w wydaniu produkcyjnym!"
-              exit 1
-            fi
-          done
-
-      - name: Run quality gates (Typecheck + Matrix + i18n + Licenses + Tests)
-        run: |
-          npm run verify
-
-      - name: Prebuild native iOS project
-        run: npx expo prebuild --platform ios --no-install --clean
-
-      - name: Verify native iOS project invariants
-        run: node scripts/verify-native.mjs
-
-      - name: Compute & set monotonic build number
-        id: ver
-        run: |
-          VERSION=$(node -p "require('./app.json').expo.version")
-          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
-            echo "::error::Nieprawidłowy format wersji w app.json: '$VERSION' (wymagane X.Y lub X.Y.Z)"
-            exit 1
-          fi
-          BUILD_NUMBER=$((BUILD_BASE + GITHUB_RUN_NUMBER))
-          if ! [[ "$BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "::error::Nieprawidłowy numer buildu: '$BUILD_NUMBER'"
-            exit 1
-          fi
-          echo "Ustawianie wersji $VERSION ($BUILD_NUMBER)"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "ios/$APP_DIR/Info.plist" || true
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" "ios/$APP_DIR/Info.plist" || true
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
-          echo "EXPO_PUBLIC_BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "build_number=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
-
-      - name: Cache CocoaPods
-        id: pods-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ios/Pods
-            ~/Library/Caches/CocoaPods
-          key: pods-${{ runner.os }}-xcode26-${{ hashFiles('ios/Podfile.lock', 'package-lock.json') }}
-          restore-keys: |
-            pods-${{ runner.os }}-xcode26-
-
-      - name: Install CocoaPods
-        working-directory: ios
-        run: |
-          if [ "${{ steps.pods-cache.outputs.cache-hit }}" != "true" ]; then
-            pod install --repo-update || pod install
-          else
-            pod install
-          fi
-
-      - name: Verify PrivacyInfo.xcprivacy after pod install
-        run: |
-          PRIV="ios/$APP_DIR/PrivacyInfo.xcprivacy"
-          test -f "$PRIV" || { echo "::error::Brak $PRIV"; exit 1; }
-          plutil -lint "$PRIV"
-          for cat in NSPrivacyAccessedAPICategoryUserDefaults NSPrivacyAccessedAPICategoryFileTimestamp NSPrivacyAccessedAPICategorySystemBootTime NSPrivacyAccessedAPICategoryDiskSpace; do
-            grep -q "$cat" "$PRIV" || { echo "::error::Brak kategorii $cat w $PRIV"; exit 1; }
-          done
-
-      - name: Archive (Release, unsigned build step)
+      - name: Sekrety obecne (bez wypisywania wartości)
         env:
-          CI: '1'
-          NODE_ENV: production
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do [ -n "${!v}" ] || { echo "::error::Brak sekretu $v w środowisku release (docs/wydanie/sklep.md §1)"; exit 1; }; done
+      - run: npm ci
+      - name: Testy (pełne npm run verify, jak przed każdym pushem)
+        env:
+          NODE_OPTIONS: --max-old-space-size=3072
+        run: npm run verify
+      - name: Reguły Swift (modules/oczko-reguly, jak jakosc-ios.yml)
+        run: cd modules/oczko-reguly && swift test
+      - name: Build dla telefonu bez przełączników testowych (sztuczny sklep, zegarek, E2E — tylko w jakosc-ios.yml)
+        run: |
+          if env | grep -E '^EXPO_PUBLIC_(STORE_|WATCH_)FAKE=|^EXPO_PUBLIC_(E2E|PSEUDO|WYMUS_AWARIE)='; then echo "::error::przełącznik testowy w buildzie TestFlight"; exit 1; fi
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Intencja w celu aplikacji (_shared/Stuknij.swift; P-180, jak jakosc-ios.yml)
         run: |
           set -o pipefail
-          xcodebuild archive \
-            -workspace "ios/$APP_SCHEME.xcworkspace" \
-            -scheme "$APP_SCHEME" \
-            -configuration Release \
-            -destination 'generic/platform=iOS' \
-            -archivePath "$RUNNER_TEMP/$APP_SCHEME.xcarchive" \
-            DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
-            CODE_SIGN_STYLE=Automatic \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            COMPILER_INDEX_STORE_ENABLE=NO \
-            2>&1 | tee /tmp/xcodebuild-archive.log | grep -E "^(===|CompileC|Ld |Touch |RegisterExecutionPolicyException|*\* ARCHIVE|error:|warning:.*\berror\b)" || true
-
-          if [ ! -d "$RUNNER_TEMP/$APP_SCHEME.xcarchive/Products/Applications/$APP_SCHEME.app" ]; then
-            echo "::error::Archiwum .xcarchive nie powstało — ostatnie 80 linii logu:"
-            tail -80 /tmp/xcodebuild-archive.log
-            exit 1
-          fi
-
-      - name: Prepare App Store Connect API Key (.p8) after pod install & archive
+          node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350; Trening L-021, jak jakosc-ios.yml)
+        # Cel zegarka bez ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon: brak CFBundleIconName, App Store Connect odrzuca wysyłkę (build 1026 w Treningu). Test: tests/jakosc/ikona-zegarka-prebuild.test.ts.
+        run: |
+          set -o pipefail # kod skryptu nie może zginąć w potoku do tee
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Numer buildu (aplikacja, widżet i zegarek ten sam CFBundleVersion; ADR-0014, D3a)
+        id: nr
+        env:
+          PRZESUNIECIE: ${{ vars.PRZESUNIECIE || '1000' }}
+        run: |
+          N=$(node scripts/wydanie/testflight.mjs numer)
+          echo "BUILD_NUMBER=$N" >> "$GITHUB_ENV"
+          echo "numer=$N" >> "$GITHUB_OUTPUT"
+          echo "Numer: GITHUB_RUN_NUMBER * 10 + GITHUB_RUN_ATTEMPT + PRZESUNIECIE = $N" >> "$GITHUB_STEP_SUMMARY"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $N" ios/Oczko/Info.plist
+      - name: pods
+        run: cd ios && pod install 2>&1 | tee pod-install.log
+      - name: Cele natywne podłączone (ADR-0006, ADR-0007; jak jakosc-ios.yml)
+        run: |
+          set -e
+          if grep -q 'was not linked' ios/pod-install.log; then grep 'was not linked' ios/pod-install.log; echo "::error::moduł Expo niepodłączony"; exit 1; fi
+          grep -q 'IPHONEOS_DEPLOYMENT_TARGET = 18.0' ios/*.xcodeproj/project.pbxproj || { echo "::error::IPHONEOS_DEPLOYMENT_TARGET ≠ 18.0 (ADR-0006)"; exit 1; }
+          for p in OczkoDziennikPlus OczkoCzasWTle; do grep -q "$p" ios/Podfile.lock || { echo "::error::brak poda $p"; exit 1; }; done
+      - name: Platforma iOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Archiwum (bez podpisu — podpis dystrybucyjny dopiero przy eksporcie, jak Trening 13.10.2026)
+        # Świeży runner nie ma klucza poprzedniego certyfikatu Apple Development, więc archiwum z podpisem automatycznym tworzyłoby nowy
+        # certyfikat przy każdym przebiegu (Trening: limit certyfikatów). Certyfikat dystrybucyjny jest zarządzany w chmurze.
+        run: |
+          set -o pipefail
+          TEAM=$(node -p "require('./app.json').expo.ios.appleTeamId")
+          cd ios
+          xcodebuild -workspace Oczko.xcworkspace -scheme Oczko -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Oczko.xcarchive" archive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO DEVELOPMENT_TEAM="$TEAM" CURRENT_PROJECT_VERSION=$BUILD_NUMBER \
+            SOURCEMAP_FILE="$RUNNER_TEMP/main.jsbundle.map" \
+            2>&1 | tee xcodebuild.log | xcbeautify
+      - name: Mapa źródeł JS (bez niej stos błędu z telefonu nie ma nazw funkcji; jak Trening M1-023)
+        run: |
+          [ -s "$RUNNER_TEMP/main.jsbundle.map" ] || { echo "::error::Brak mapy źródeł JS — SOURCEMAP_FILE nie zadziałał"; exit 1; }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mapy-zrodel-b${{ env.BUILD_NUMBER }}
+          retention-days: 90
+          path: ${{ runner.temp }}/main.jsbundle.map
+      - name: Uprawnienia w archiwum (podpis ad hoc, każdy cel własnym plikiem uprawnień, od środka na zewnątrz; jak Trening 14.10.2026, P-233)
+        # Archiwum bez podpisu nie zawiera uprawnień; eksport podpisuje dystrybucyjnie i zachowuje osadzone. Plik celu = CODE_SIGN_ENTITLEMENTS
+        # jego konfiguracji Release w projekcie po prebuild (scripts/wydanie/uprawnienia-celow.mjs, ścieżki względem ios/): rozszerzenie
+        # „Udostępnij do Oczka” dostaje swój plik z App Group, nie plik widżetu. Cel bez wpisu: podpis ad hoc bez uprawnień; wpis bez pliku: błąd.
+        run: |
+          set -eo pipefail
+          APP="$RUNNER_TEMP/Oczko.xcarchive/Products/Applications/Oczko.app"
+          node scripts/wydanie/uprawnienia-celow.mjs ios/Oczko.xcodeproj/project.pbxproj > "$RUNNER_TEMP/uprawnienia-celow.tsv"
+          podpisz() {
+            local nazwa plik; nazwa=$(basename "$1"); nazwa=${nazwa%.*}
+            plik=$(awk -F '\t' -v n="$nazwa" '$1 == n { print $2 }' "$RUNNER_TEMP/uprawnienia-celow.tsv")
+            if [ -z "$plik" ]; then codesign --force -s - "$1"; echo "- $nazwa: bez uprawnień" >> "$GITHUB_STEP_SUMMARY"; return; fi
+            [ -f "ios/$plik" ] || { echo "::error::$nazwa: brak pliku uprawnień ios/$plik (CODE_SIGN_ENTITLEMENTS celu)"; exit 1; }
+            codesign --force -s - --entitlements "ios/$plik" "$1"
+            echo "- $nazwa: uprawnienia z ios/$plik" >> "$GITHUB_STEP_SUMMARY"
+          }
+          for w in "$APP"/Watch/*.app; do [ -d "$w" ] && podpisz "$w"; done
+          for x in "$APP"/PlugIns/*.appex; do [ -d "$x" ] && podpisz "$x"; done
+          podpisz "$APP"
+      - name: Klucz API na dysk (dopiero po archiwum i podpisie ad hoc, tuż przed eksportem; jak Trening M1-020)
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+      - name: Numer większy od ostatniego w App Store Connect (ADR-0014)
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          PRZESUNIECIE: ${{ vars.PRZESUNIECIE || '1000' }}
         run: |
-          set +x
-          for req in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8_BASE64; do
-            if [ -z "${!req:-}" ]; then
-              echo "::error::Brak wymaganego sekretu GitHub: $req (zobacz docs/15-app-store.md)"
-              exit 1
-            fi
-          done
-          if ! [[ "$ASC_KEY_ID" =~ ^[A-Z0-9]{6,16}$ ]]; then
-            echo "::error::Nieprawidłowy format ASC_KEY_ID"
-            exit 1
-          fi
-          umask 077
-          KEY_DIR="$RUNNER_TEMP/asc_private_keys"
-          mkdir -p "$KEY_DIR"
-          KEY_PATH="$KEY_DIR/AuthKey_${ASC_KEY_ID}.p8"
-          printf '%s' "$ASC_KEY_P8_BASE64" | base64 --decode > "$KEY_PATH"
-          chmod 600 "$KEY_PATH"
-          if ! grep -q "BEGIN PRIVATE KEY" "$KEY_PATH"; then
-            echo "::error::Zdekodowany klucz .p8 nie zawiera nagłówka BEGIN PRIVATE KEY"
-            rm -f "$KEY_PATH"
-            exit 1
-          fi
-          echo "KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
-
-      - name: Generate ExportOptions.plist & Upload to TestFlight
+          set -o pipefail
+          BUNDLE=$(node -p "require('./app.json').expo.ios.bundleIdentifier")
+          OSTATNI=$(ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8" node scripts/wydanie/testflight.mjs ostatni-build "$BUNDLE")
+          echo "OSTATNI=$OSTATNI" >> "$GITHUB_ENV"
+          OSTATNI=$OSTATNI node scripts/wydanie/testflight.mjs numer > /dev/null
+          echo "Ostatni build w App Store Connect: $OSTATNI; ten: $BUILD_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+      - name: Eksport do pliku .ipa (jeszcze bez wysyłki)
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          set -o pipefail
+          KID="$ASC_KEY_ID"; ISS="$ASC_ISSUER_ID"; unset ASC_KEY_ID ASC_ISSUER_ID
+          TEAM=$(node -p "require('./app.json').expo.ios.appleTeamId")
+          for D in export upload; do
+          cat > "$RUNNER_TEMP/ExportOptions-$D.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store-connect</string>
-            <key>signingStyle</key>
-            <string>automatic</string>
-            <key>teamID</key>
-            <string>${APPLE_TEAM_ID}</string>
-            <key>destination</key>
-            <string>upload</string>
-            <key>manageAppVersionAndBuildNumber</key>
-            <string>NO</string>
-            <key>uploadSymbols</key>
-            <true/>
-            <key>testFlightInternalTestingOnly</key>
-            <false/>
-          </dict>
-          </plist>
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>$D</string>
+            <key>teamID</key><string>$TEAM</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
           EOF
-
-          set +e
-          xcodebuild -exportArchive \
-            -archivePath "$RUNNER_TEMP/$APP_SCHEME.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$KEY_PATH" \
-            -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            2>&1 | sed \
-              -e "s/${ASC_KEY_ID}/<KEY_ID>/g" \
-              -e "s/${ASC_ISSUER_ID}/<ISSUER_ID>/g" \
-              -e "s/${APPLE_TEAM_ID}/<TEAM_ID>/g" \
-              > /tmp/xcodebuild-export.log
-          RC=${PIPESTATUS[0]}
-          set -e
-
-          if [ "$RC" -ne 0 ]; then
-            echo "::error::Eksport i wysyłka do TestFlight nie powiodły się (kod $RC). Ostatnie 80 linii:"
-            tail -80 /tmp/xcodebuild-export.log
-            exit "$RC"
-          fi
-          tail -30 /tmp/xcodebuild-export.log
-
-      - name: Clean up credentials
-        if: always()
+          done
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Oczko.xcarchive" -exportOptionsPlist "$RUNNER_TEMP/ExportOptions-export.plist" \
+            -exportPath "$RUNNER_TEMP/export" -allowProvisioningUpdates -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
+            -authenticationKeyID "$KID" -authenticationKeyIssuerID "$ISS" 2>&1 | tee export.log | xcbeautify
+      - name: Kontrola .ipa przed wysyłką (ADR-0014, scripts/wydanie/kontrola-ipa.sh)
         run: |
-          rm -rf "$RUNNER_TEMP/asc_private_keys" "$RUNNER_TEMP/ExportOptions.plist"
-
-      - name: Write release summary
-        if: always()
+          mkdir "$RUNNER_TEMP/ipa" && (cd "$RUNNER_TEMP/ipa" && unzip -q "$RUNNER_TEMP"/export/*.ipa)
+          bash scripts/wydanie/kontrola-ipa.sh "$(ls -d "$RUNNER_TEMP"/ipa/Payload/*.app)" "$BUILD_NUMBER" "$OSTATNI"
+      - name: Walidacja Apple na gotowym .ipa (tylko bez_wysylki — przy wysyłce tę samą kontrolę robi eksport z wysyłką)
+        if: ${{ inputs.bez_wysylki == true }}
         env:
-          RELEASE_NOTES: ${{ inputs.notes }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
-          {
-            echo "## Wydanie TestFlight — $APP_SCHEME"
-            echo ""
-            echo "| Parametr | Wartość |"
-            echo "| :--- | :--- |"
-            echo "| **Bundle ID** | \`$BUNDLE_ID\` |"
-            echo "| **Wersja** | \`${VERSION:-?}\` |"
-            echo "| **Numer buildu** | \`${BUILD_NUMBER:-?}\` |"
-            echo "| **Commit** | \`${GITHUB_SHA}\` |"
-            echo "| **Notatka** | ${RELEASE_NOTES:-*(brak)*} |"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload scrubbed logs on failure only (retention 1 day)
+          set -o pipefail
+          bash scripts/wydanie/waliduj-ipa.sh "$(ls "$RUNNER_TEMP"/export/*.ipa | head -n 1)" "$RUNNER_TEMP/AuthKey.p8" validate.log
+          echo "## Przebieg dowodowy: kontrola .ipa i walidacja Apple OK (bez wysyłki)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Wysyłka do App Store Connect
+        if: ${{ inputs.bez_wysylki != true }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          KID="$ASC_KEY_ID"; ISS="$ASC_ISSUER_ID"; unset ASC_KEY_ID ASC_ISSUER_ID
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Oczko.xcarchive" -exportOptionsPlist "$RUNNER_TEMP/ExportOptions-upload.plist" \
+            -exportPath "$RUNNER_TEMP/upload" -allowProvisioningUpdates -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
+            -authenticationKeyID "$KID" -authenticationKeyIssuerID "$ISS" 2>&1 | tee -a export.log | xcbeautify
+          echo "## TestFlight: build $BUILD_NUMBER wysłany" >> "$GITHUB_STEP_SUMMARY"
+      - name: Przetworzenie przez Apple (processingState VALID; FAILED/INVALID = czerwony przebieg; ADR-0014)
+        if: ${{ inputs.bez_wysylki != true }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          BUNDLE=$(node -p "require('./app.json').expo.ios.bundleIdentifier")
+          ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8" node scripts/wydanie/testflight.mjs czekaj-na-build "$BUNDLE" "$BUILD_NUMBER" 60
+          echo "Build $BUILD_NUMBER przetworzony (VALID) — widoczny w aplikacji TestFlight." >> "$GITHUB_STEP_SUMMARY"
+      - name: Usunięcie klucza z maszyny
+        if: always()
+        run: rm -f "$RUNNER_TEMP/AuthKey.p8"
+      - name: Identyfikatory klucza wycięte z logów przed artefaktem (xcodebuild wypisuje pełną linię poleceń; jak Trening SEC-02)
         if: failure()
-        uses: actions/upload-artifact@v4
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          [ -n "$ASC_KEY_ID" ] && [ -n "$ASC_ISSUER_ID" ] || exit 0
+          for f in ios/xcodebuild.log export.log validate.log; do
+            [ -f "$f" ] || continue
+            sed -i '' -e "s/${ASC_KEY_ID}/<KEY_ID>/g" -e "s/${ASC_ISSUER_ID}/<ISSUER_ID>/g" "$f"
+            if grep -qF -e "$ASC_KEY_ID" -e "$ASC_ISSUER_ID" "$f"; then rm -f "$f"; echo "::warning::$f usunięty — maskowanie nie zadziałało"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: failure()
         with:
-          name: testflight-xcodebuild-logs-${{ github.run_number }}
-          path: /tmp/xcodebuild-*.log
+          name: testflight-logi
           retention-days: 1
+          path: |
+            ios/xcodebuild.log
+            ios/pod-install.log
+            export.log
+            validate.log
 
   tag:
-    name: Create Git Tag
     needs: build
-    if: success()
+    if: ${{ inputs.bez_wysylki != true }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
         with:
-          fetch-depth: 1
-
-      - name: Create and push tag vX.Y.Z-bNNNN
+          name: mapy-zrodel-b${{ needs.build.outputs.numer }}
+          path: mapy
+      - name: Tag wydania i mapa źródeł JS przy tagu (artefakt wygasa po 90 dniach, plik wydania nie; jak Trening M1-023)
         env:
-          VERSION: ${{ needs.build.outputs.version }}
-          BUILD: ${{ needs.build.outputs.build_number }}
+          GH_TOKEN: ${{ github.token }}
+          NUMER: ${{ needs.build.outputs.numer }}
         run: |
-          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || ! [[ "$BUILD" =~ ^[0-9]+$ ]]; then
-            echo "::error::Nieprawidłowe dane wyjściowe wersji lub buildu: VERSION='$VERSION' BUILD='$BUILD'"
-            exit 1
-          fi
-          TAG="v${VERSION}-b${BUILD}"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -f "$TAG" "$GITHUB_SHA"
-          git push origin "$TAG" --force
+          V=$(node -p "require('./app.json').expo.version")
+          T="v$V-b$NUMER"
+          git tag "$T" && git push origin "$T"
+          gh release create "$T" --verify-tag --latest=false --title "$T" --notes "Mapa źródeł JS buildu (symbolikacja: npx metro-symbolicate main.jsbundle.map < stos.txt)." mapy/main.jsbundle.map
+          echo "## Tag $T" >> "$GITHUB_STEP_SUMMARY"

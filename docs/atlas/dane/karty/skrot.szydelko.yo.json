@@ -1,0 +1,99 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.yo",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.yo.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "yarn over",
+    "skrot": "yo",
+    "twierdzenie": "TRM-EN-038"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "yarn over hook",
+    "skrot": "yoh",
+    "twierdzenie": "TRM-GB-012"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "накид",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-042"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "накид",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-028"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "糸をかけ",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-038"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "掛線",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-034"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "tığa ilmek dolamak",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-036"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "laçada",
+    "skrot": "laç.",
+    "twierdzenie": "TRM-PT-012"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "наметка",
+    "skrot": "н.",
+    "twierdzenie": "TRM-BG-034"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "užmetimas",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-020"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "apmetums",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-014"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "ovita petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-011"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

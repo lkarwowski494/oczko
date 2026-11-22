@@ -1,0 +1,106 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.slst",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.slst.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "slip stitch",
+    "skrot": "sl st",
+    "twierdzenie": "TRM-EN-029"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "slip stitch",
+    "skrot": "ss",
+    "twierdzenie": "TRM-GB-001"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko zamykające",
+    "skrot": "oz",
+    "twierdzenie": "TRM-PL-029"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "smygmaska",
+    "skrot": "sm",
+    "twierdzenie": "TRM-SV-010"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto baixíssimo",
+    "skrot": "pbx.",
+    "twierdzenie": "TRM-PT-006"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "соединительный столбик",
+    "skrot": "СС",
+    "twierdzenie": "TRM-RU-034"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "з’єднувальний стовпчик",
+    "skrot": "ЗСт",
+    "twierdzenie": "TRM-UA-023"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "引抜き編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-030"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "引拔針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-031"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "basit kroşe",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-029"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "залепена бримка",
+    "skrot": "ЗБ",
+    "twierdzenie": "TRM-BG-028"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "jungiamoji akis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-015"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "sekali kait",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-011"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

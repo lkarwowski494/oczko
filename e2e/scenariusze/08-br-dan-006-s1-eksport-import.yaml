@@ -1,0 +1,108 @@
+# Eksport i import archiwum .oczko (pakiet podstawowy): BR-DAN-005/S1, BR-DAN-006/S1 (obieg eksport → import), P-091 (6a): import „scal” po UUID, idempotentny;
+# P-113 Q2a, P-117 Q1a: import własnej kopii (F-32) nie pokazuje karty z planami Pro — karta tylko po imporcie z innej aplikacji (BR-DAN-007, F-29 poza 1.0).
+# ADR-0004 (archiwum), maszyna „Import archiwum” (moduly.md): sprawdzanie → gotowy → scal/zastąp → wczytywanie → gotowe.
+# Systemowy wybór pliku i arkusz udostępniania są poza zasięgiem symulatora (Trening docs/38:75): build E2E ma panel „Test files” (tylko EXPO_PUBLIC_E2E=1),
+# który zapisuje eksport w katalogu testowym i podaje ostatni eksport do importu bez okna systemowego. Okno systemowe: „Nie sprawdzono” (lista telefonu).
+appId: com.apps4brew.knitting
+name: "BR-DAN-006/S1 · Eksport archiwum, usunięcie danych, import i scalenie (liczności, idempotencja, bez karty Pro)"
+tags:
+  - BR-DAN-005-S1
+  - BR-DAN-006-S1
+  - P-113-Q2a
+  - podstawowy
+  - stan-licznika
+  - PU-094
+  - PU-185
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/nazwij-projekt.yaml
+# --- eksport z Ustawień ---
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertVisible: { id: "ustawienia-eksport" }
+- takeScreenshot: 08-ustawienia-przed-eksportem
+- tapOn: { id: "ustawienia-eksport" }
+# E2-139-S1: widok wyniku leży pod grupą Eksport/Import/Usuń, a od #139 panel `e2e-ocena-stan` spycha go za dolną krawędź — poza ekranem elementu nie ma w hierarchii iOS, więc przewijamy, nie czekamy
+- scrollUntilVisible: { element: { id: "eksport-wynik" }, direction: DOWN, timeout: 30000 }
+# ADR-0029 (07-jakosc-004): Ustawienia mają wiersze „Keep screen on” i „Units”, więc wynik leży poniżej ekranu (E2-136-S3)
+- scrollUntilVisible: { element: { id: "eksport-licznosci" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "eksport-licznosci", text: "1 project.*1 counter.*2 changes.*" }
+- takeScreenshot: 08-eksport-gotowy
+- scrollUntilVisible: { element: { id: "e2e-pliki-zachowaj-eksport" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "e2e-pliki-zachowaj-eksport" }
+- assertVisible: { id: "e2e-pliki-stan", text: "Saved: 1 file" }
+# --- usunięcie wszystkich danych (BR-DAN-009/S1), potem import ---
+# Przebieg 42533508618 (step-052): po przewinięciu w górę do panelu E2E wiersz leży przycięty dolną krawędzią listy, stuknięcie trafiało poza niego — najpierw przewinięcie do środka ekranu (jak scen. 51)
+- scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-usun-wszystko" }
+- assertVisible: { id: "potwierdz-usun-wszystko" }
+- tapOn: { id: "potwierdz-usun-wszystko" }
+- extendedWaitUntil: { visible: { id: "licznik-plus|projekty-lista|dzis-karta" }, timeout: 30000 } # P-571: ekran po usunięciu w p2 [DO USTALENIA] (BR-DAN-009 go nie ustala) — „Dziś” dopuszczone
+- runFlow: subflows/otworz-ustawienia.yaml
+- assertVisible: { id: "ustawienia-import" }
+- takeScreenshot: 08-ustawienia-przed-importem
+- tapOn: { id: "e2e-pliki-importuj-ostatni" }
+# P-374: wynik importu leży pod „Delete all data” (ADR-0029, jak eksport w E2-136-S3) — najpierw przewinięcie, nie samo czekanie na element poza ekranem
+- scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe przewijanie; asercja końcowa twarda
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 1000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8); decyzja o opóźnieniu niżej
+- runFlow:
+    when: { notVisible: { id: "import-gotowy" } }
+    commands:
+      - takeScreenshot: opoznienie-import-gotowy
+      - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
+- assertVisible: { id: "import-gotowy" }
+# P-374: pomiar operacji (R, `e2e-pomiar-operacji` pod przyciskiem importu) — zrzut i odczyt opcjonalny, bez nowego źródła czerwieni (P-367)
+- scrollUntilVisible: { element: { id: "e2e-pomiar-operacji" }, direction: UP, timeout: 5000, optional: true }
+- takeScreenshot: pomiar-import
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*import [0-9]+ ms.*", optional: true }
+- scrollUntilVisible: { element: { id: "import-licznosci" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "import-licznosci", text: "1 project.*1 counter.*2 changes.*" }
+- takeScreenshot: 08-import-gotowy
+- scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "import-scal" }
+- extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "import-wynik", text: ".*1 project.*" }
+# --- P-113 Q2a (P-117 Q1a): po imporcie własnej kopii w wersji darmowej karty z planami Pro nie ma ---
+- assertNotVisible: { id: "karta-pro-po-imporcie" }
+- takeScreenshot: 08-import-bez-karty-pro
+# --- drugi import tego samego pliku: scalenie idempotentne (P-091 6a, M-02) — bez duplikatów ---
+- scrollUntilVisible: { element: { id: "e2e-pliki-importuj-ostatni" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "e2e-pliki-importuj-ostatni" }
+# P-374: wynik importu leży pod „Delete all data” (ADR-0029, jak eksport w E2-136-S3) — najpierw przewinięcie, nie samo czekanie na element poza ekranem
+- scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe przewijanie; asercja końcowa twarda
+- extendedWaitUntil: { visible: { id: "import-gotowy" }, timeout: 1000, optional: true } # asercja po stuknięciu (strategia §3 zasada 8); decyzja o opóźnieniu niżej
+- runFlow:
+    when: { notVisible: { id: "import-gotowy" } }
+    commands:
+      - takeScreenshot: opoznienie-import-gotowy-powtorny
+      - scrollUntilVisible: { element: { id: "import-gotowy" }, direction: DOWN, timeout: 60000 }
+- assertVisible: { id: "import-gotowy" }
+# P-374: pomiar operacji (R, `e2e-pomiar-operacji` pod przyciskiem importu) — zrzut i odczyt opcjonalny, bez nowego źródła czerwieni (P-367)
+- scrollUntilVisible: { element: { id: "e2e-pomiar-operacji" }, direction: UP, timeout: 5000, optional: true }
+- takeScreenshot: pomiar-import-powtorny
+- assertVisible: { id: "e2e-pomiar-operacji", text: ".*import [0-9]+ ms.*", optional: true }
+- scrollUntilVisible: { element: { id: "import-scal" }, direction: DOWN, timeout: 30000 }
+- tapOn: { id: "import-scal" }
+- extendedWaitUntil: { visible: { id: "import-wynik" }, timeout: 30000 }
+- scrollUntilVisible: { element: { id: "import-wynik" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "import-wynik", text: ".*0 new.*" }
+- assertNotVisible: { id: "karta-pro-po-imporcie" }
+# E2-138-S1: po imporcie ekran Ustawień jest przewinięty w dół (zrzut kroku 89 przebiegu 138) — „Back” leży nad ekranem i nie ma go w hierarchii
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
+- tapOn: { id: "nav-wstecz" }
+# P-583: Ustawienia otwiera zębatka „Dziś” (subflows/otworz-ustawienia.yaml), więc „wstecz” wraca na „Dziś”; do listy przez zakładkę Projekty — przebieg 42544112861 (66 step-063: „Today” po „wstecz”), P-608 G3
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertVisible: "Harbor"
+- tapOn: "Harbor"
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "licznik-projekt", text: "Harbor" }

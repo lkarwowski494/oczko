@@ -1,0 +1,70 @@
+FAIL iOS tests/ekrany/e2e-pomiar-plus-zbijanie-bx22.test.tsx (9.295 s)
+  ✕ jedno „+1”: w oknie pomiaru (od t0 do drugiej klatki) panel nie ma żadnego zatwierdzenia, po zwolnieniu — jedno z końcowymi liczbami (33 ms)
+  ✕ zbijanie zdejmuje bezpiecznik czasowy: bez zwolnienia panel i tak odświeża się po 1,5 s (żadna próbka nie zostawia panelu zamrożonego) (6 ms)
+  ✕ „−1” i zdarzenia spoza „+1” nie są wstrzymywane (panel odświeża się od razu); zwolnienie bez wstrzymania nic nie psuje (3 ms)
+  ✓ zerujWejscia w trakcie wstrzymania zwalnia je (test nie dziedziczy zamrożenia po poprzednim) (2 ms)
+
+  ● jedno „+1”: w oknie pomiaru (od t0 do drugiej klatki) panel nie ma żadnego zatwierdzenia, po zwolnieniu — jedno z końcowymi liczbami
+
+    TypeError: (0 , _panele.wznowPowiadomienia) is not a function
+
+      28 |     await mikro();
+      29 |     wOknie = false; // druga klatka po zapisie: próbka dopisana
+    > 30 |     wznowPowiadomienia();
+         |                       ^
+      31 |   });
+      32 |   expect(wOknieLiczba).toBe(0);
+      33 |   expect(poOknieLiczba).toBe(1);
+
+      at tests/ekrany/e2e-pomiar-plus-zbijanie-bx22.test.tsx:30:23
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● zbijanie zdejmuje bezpiecznik czasowy: bez zwolnienia panel i tak odświeża się po 1,5 s (żadna próbka nie zostawia panelu zamrożonego)
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "state value: none"
+    Received string:    "counter input: plus 1, minus 0; saves ok: plus 1, minus 0; saves failed: 0; state value: 7; refresh: started 0, applied 0, skipped 0"
+
+      43 |   const d = diagnostykaLicznika;
+      44 |   act(() => { d.wejscie('plus'); d.zapis('plus', true); d.stan(7); });
+    > 45 |   expect(screen.getByTestId('e2e-licznik-wejscia').props.children).toContain('state value: none');
+         |                                                                    ^
+      46 |   act(() => { jest.advanceTimersByTime(1499); });
+      47 |   expect(screen.getByTestId('e2e-licznik-wejscia').props.children).toContain('state value: none');
+      48 |   act(() => { jest.advanceTimersByTime(2); });
+
+      at Object.toContain (tests/ekrany/e2e-pomiar-plus-zbijanie-bx22.test.tsx:45:68)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● „−1” i zdarzenia spoza „+1” nie są wstrzymywane (panel odświeża się od razu); zwolnienie bez wstrzymania nic nie psuje
+
+    TypeError: (0 , _panele.wznowPowiadomienia) is not a function
+
+      57 |   act(() => { d.wejscie('minus'); });
+      58 |   expect(screen.getByTestId('e2e-licznik-wejscia').props.children).toContain('minus 1');
+    > 59 |   act(() => { wznowPowiadomienia(); wznowPowiadomienia(); });
+         |                                 ^
+      60 |   act(() => { d.stan(3); });
+      61 |   expect(screen.getByTestId('e2e-licznik-wejscia').props.children).toContain('state value: 3');
+      62 | });
+
+      at tests/ekrany/e2e-pomiar-plus-zbijanie-bx22.test.tsx:59:33
+      at callback (node_modules/@testing-library/react-native/src/act.ts:31:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at Object.<anonymous> (tests/ekrany/e2e-pomiar-plus-zbijanie-bx22.test.tsx:59:6)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 1 passed, 4 total
+Snapshots:   0 total
+Time:        9.898 s
+Ran all test suites matching /tests\/ekrany\/e2e-pomiar-plus-zbijanie-bx22.test.tsx/i.

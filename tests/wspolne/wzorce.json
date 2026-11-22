@@ -1,0 +1,572 @@
+{
+  "_opis": "Manifest złotych plików kontraktu TS ↔ Swift (Z07-11, Z07-12; strategia §4). Te same pliki czyta Jest (tests/jakosc/zlote-pliki.test.ts) i XCTest (specyfikacja: xctest-specyfikacja.md). Każdy plik z katalogu jest tu wpisany dokładnie raz i odwrotnie — obie strony raportują „wykonano N z N”. Zmiana pliku albo oczekiwań = zmiana kontraktu roli 05 (tests/wspolne/README.md).",
+  "wersja_kontraktu": 3,
+  "zrodlo_typow": "docs/architektura/moduly.md (export type StanEkranuBlokady, StanZegarka — wersja 3 z generatora tests/wspolne/generator-stanow.ts; StanEkranuBlokadyV2, StanZegarkaV2 — pliki *-v2.json; StanEkranuBlokadyV1, StanZegarkaV1 — pliki *-v1.json; ZdarzenieWejsciowe)",
+  "limit_bajtow_stanu": 4096,
+  "dziennik": [
+    {
+      "plik": "dziennik-plus-poprawny.jsonl",
+      "co": "4 zdarzenia z ekranu blokady (3 × plus, 1 × minus), łańcuch rodziców: każde kolejne wskazuje poprzednie własne id (propozycja Z07-11 (1), wektor M-10), przejście przez północ Europe/Warsaw (dzien = data zdarzenia, Z07-11 (6))",
+      "linie": 4,
+      "przyjete_id": ["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5", "4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6", "5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7", "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"],
+      "odrzucone_linie": [],
+      "ostatnia_ucieta": false,
+      "skroc_do_id": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"
+    },
+    {
+      "plik": "dziennik-plus-ucieta-linia.jsonl",
+      "co": "przerwany zapis: 2 pełne linie i ucięta trzecia bez znaku nowej linii (ADR-0008 „Potwierdzenie”, R-023) — ucięta pominięta i zgłoszona, poprzednie zachowane",
+      "linie": 3,
+      "przyjete_id": ["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5", "4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6"],
+      "odrzucone_linie": [3],
+      "ostatnia_ucieta": true,
+      "skroc_do_id": "4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6"
+    },
+    {
+      "plik": "dziennik-plus-nieznane-pole.jsonl",
+      "co": "linia z wersji N+1 z polami nieznanymi w wersji N (wersja, znaczenie): przyjęta, nieznane pola pominięte (zgodność vN ↔ vN+1, Z07-11 (4), R-024) — propozycja 07 do zatwierdzenia przez 05",
+      "linie": 2,
+      "przyjete_id": ["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5", "4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6"],
+      "odrzucone_linie": [],
+      "ostatnia_ucieta": false,
+      "skroc_do_id": "4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6",
+      "nieznane_pola": ["wersja", "znaczenie"]
+    }
+  ],
+  "_opis_dziennik_zapis": "ADR-0008 (8), P-124: zapis linii (A: \\n na początku tylko, gdy plik niepusty i ostatni bajt ≠ \\n), odczyt sklejonej linii (R), skrócenie z ogonem (S). Ciągi to dokładne bajty pliku (UTF-8). Czyta Jest (tests/akceptacja/dane/dziennik-sklejenie.test.ts) i XCTest (X-DZ-05, X-DZ-12, X-DZ-13).",
+  "dopisanie": [
+    {"id":"D-01","co":"pusty plik: linia bez \\n na początku","przed":"","linia":"{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}","po":"{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n"},
+    {"id":"D-02","co":"plik kończy się \\n: linia bez \\n na początku","przed":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","linia":"{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}","po":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n"},
+    {"id":"D-03","co":"ucięty ogon bez \\n (przerwany zapis): zapis zaczyna się od \\n, stuknięcie czytelne, ogon zgłoszony","przed":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435","linia":"{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}","po":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435\n{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","przyjete_id":["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5","6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"],"odrzucone_linie":[2]}
+  ],
+  "sklejenie": [
+    {"id":"S-01","co":"ogon sklejony z kolejną linią (pisarz bez reguły D-03): zdarzenie odzyskane z najmniejszego k > 0","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\"],\"czasMs\":1794351520000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","przyjete_id":["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5","4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6","6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"],"odrzucone_linie":[3],"odzyskane":[{"linia":3,"id":"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"}]},
+    {"id":"S-02","co":"pułapka: reszta linii jest poprawnym JSON, ale nie zdarzeniem — nic nie odzyskane","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"zly\",{\"a\":1}\n","przyjete_id":["3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5"],"odrzucone_linie":[2],"odzyskane":[]},
+    {"id":"S-03","co":"ogon z zagnieżdżonym obiektem (pole wersji N+1): pierwsze k > 0 nie daje zdarzenia, następne tak","tekst":"{\"id\":\"7d6fc182-9ea0-4fb1-82d3-e4f5a6b7c8d9\",\"znaczenie\":{\"x\":{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","przyjete_id":["6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"],"odrzucone_linie":[1],"odzyskane":[{"linia":1,"id":"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8"}]}
+  ],
+  "skrocenie": [
+    {"id":"K-01","co":"skrócenie do ostatniej przyjętej usuwa też ucięty ogon bez \\n (zgłoszony przez odczyt)","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\"],\"czasMs\":1794351520000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435","do_id":"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6","po":""},
+    {"id":"K-02","co":"pełne linie po do_id zostają, ogon za nimi znika","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\"],\"czasMs\":1794351520000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":1794351665000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435","do_id":"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6","po":"{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":1794351665000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n"},
+    {"id":"K-03","co":"do_id w linii sklejonej (zdarzenie odzyskane, S-01): skrócenie ją znajduje","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\"],\"czasMs\":179435{\"id\":\"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"minus\",\"rodzice\":[\"5b4daf60-7c8e-4d9f-a0b1-c2d3e4f5a6b7\"],\"czasMs\":1794351750000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-11\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","do_id":"6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8","po":""},
+    {"id":"K-04","co":"bez ogona: jak dotąd (R-022)","tekst":"{\"id\":\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"0a5e8c1d-2b3f-4a6e-9c7d-8e9f0a1b2c3d\"],\"czasMs\":1794351490000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n{\"id\":\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\"],\"czasMs\":1794351520000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n","do_id":"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5","po":"{\"id\":\"4a3c9e5f-6b7d-4c8e-9fa0-b1c2d3e4f5a6\",\"licznikId\":\"6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b\",\"rodzaj\":\"plus\",\"rodzice\":[\"3f2b8d4e-5a6c-4b7d-8e9f-a0b1c2d3e4f5\"],\"czasMs\":1794351520000,\"strefa\":\"Europe/Warsaw\",\"dzien\":\"2026-11-10\",\"zrodlo\":\"ekran_blokady\",\"urzadzenie\":\"urzadzenie-e2e-telefon-01\",\"pro\":false}\n"}
+  ],
+  "stany": [
+    { "plik": "stan-ekranu-blokady-typowy.json", "typ": "StanEkranuBlokady", "co": "liczenie w toku, dzień dozwolony, stoper sesji od 19:52" },
+    { "plik": "stan-ekranu-blokady-limit.json", "typ": "StanEkranuBlokady", "co": "nowy dzień ponad limit (dzienDozwolony = false → intencja nie dopisuje +1, Live Activity pokazuje limit, P-065 (1a)); licznik bez zdarzeń (glowa null), bez sesji" },
+    { "plik": "stan-ekranu-blokady-najwiekszy.json", "typ": "StanEkranuBlokady", "co": "duży stan: nazwa 320 znaków CJK ucięta do 60 (STAN_NAZWA_MAKS_ZNAKOW) (3 B UTF-8), wartość 150 000; rozmiar < 4096 B (rejestr Apple 1b, R-028); maksymalna długość nazwy [DO USTALENIA] 05" },
+    { "plik": "stan-zegarka-typowy.json", "typ": "StanZegarka", "co": "wersja darmowa, 3 dni z robótką w miesiącu" },
+    { "plik": "stan-zegarka-pro-dozywotni.json", "typ": "StanZegarka", "co": "Pro dożywotni: proWaznoscDo = null znaczy „bez końca”, NIE „wygasło” (R-031)" },
+    { "plik": "stan-zegarka-pro-subskrypcja.json", "typ": "StanZegarka", "co": "Pro z subskrypcji ważnej do 2026-12-31T23:59:59Z; dzień zaczęty bez Pro i dzień z Pro" },
+    { "plik": "stan-zegarka-najwiekszy.json", "typ": "StanZegarka", "co": "duży stan: nazwa 320 znaków CJK ucięta do 60 (STAN_NAZWA_MAKS_ZNAKOW), 30 dni w miesiącu; rozmiar < 4096 B" },
+    { "plik": "stan-ekranu-blokady-typowy-v2.json", "typ": "StanEkranuBlokadyV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): liczenie w toku, dzień dozwolony, stoper sesji od 19:52" },
+    { "plik": "stan-ekranu-blokady-limit-v2.json", "typ": "StanEkranuBlokadyV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): nowy dzień ponad limit (dzienDozwolony = false → intencja nie dopisuje +1, Live Activity pokazuje limit, P-065 (1a)); licznik bez zdarzeń (glowa null), bez sesji" },
+    { "plik": "stan-ekranu-blokady-najwiekszy-v2.json", "typ": "StanEkranuBlokadyV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): duży stan: nazwa 320 znaków CJK ucięta do 60 (STAN_NAZWA_MAKS_ZNAKOW) (3 B UTF-8), wartość 150 000; rozmiar < 4096 B (rejestr Apple 1b, R-028); maksymalna długość nazwy [DO USTALENIA] 05" },
+    { "plik": "stan-zegarka-typowy-v2.json", "typ": "StanZegarkaV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): wersja darmowa, 3 dni z robótką w miesiącu" },
+    { "plik": "stan-zegarka-pro-dozywotni-v2.json", "typ": "StanZegarkaV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): Pro dożywotni: proWaznoscDo = null znaczy „bez końca”, NIE „wygasło” (R-031)" },
+    { "plik": "stan-zegarka-pro-subskrypcja-v2.json", "typ": "StanZegarkaV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): Pro z subskrypcji ważnej do 2026-12-31T23:59:59Z; dzień zaczęty bez Pro i dzień z Pro" },
+    { "plik": "stan-zegarka-najwiekszy-v2.json", "typ": "StanZegarkaV2", "co": "wersja 2 (zgodność: Live Activity i kontekst zegarka sprzed aktualizacji, dekoder Swift → zablokowany = false; N1, P-135 Q7a): duży stan: nazwa 320 znaków CJK ucięta do 60 (STAN_NAZWA_MAKS_ZNAKOW), 30 dni w miesiącu; rozmiar < 4096 B" },
+    { "plik": "stan-ekranu-blokady-typowy-v1.json", "typ": "StanEkranuBlokadyV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): liczenie w toku, dzień dozwolony, stoper sesji od 19:52" },
+    { "plik": "stan-ekranu-blokady-limit-v1.json", "typ": "StanEkranuBlokadyV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): nowy dzień ponad limit (dzienDozwolony = false → intencja nie dopisuje +1, Live Activity pokazuje limit, P-065 (1a)); licznik bez zdarzeń (glowa null), bez sesji" },
+    { "plik": "stan-ekranu-blokady-najwiekszy-v1.json", "typ": "StanEkranuBlokadyV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): duży stan: nazwa 320 znaków CJK (3 B UTF-8), wartość 150 000; rozmiar < 4096 B (rejestr Apple 1b, R-028); maksymalna długość nazwy [DO USTALENIA] 05" },
+    { "plik": "stan-zegarka-typowy-v1.json", "typ": "StanZegarkaV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): wersja darmowa, 3 dni z robótką w miesiącu" },
+    { "plik": "stan-zegarka-pro-dozywotni-v1.json", "typ": "StanZegarkaV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): Pro dożywotni: proWaznoscDo = null znaczy „bez końca”, NIE „wygasło” (R-031)" },
+    { "plik": "stan-zegarka-pro-subskrypcja-v1.json", "typ": "StanZegarkaV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): Pro z subskrypcji ważnej do 2026-12-31T23:59:59Z; dzień zaczęty bez Pro i dzień z Pro" },
+    { "plik": "stan-zegarka-najwiekszy-v1.json", "typ": "StanZegarkaV1", "co": "wersja 1 (zgodność przy żywej Live Activity i zegarku w innej wersji, R-024, R-034): duży stan: nazwa 320 znaków CJK, 30 dni w miesiącu; rozmiar < 4096 B" }
+  ],
+  "zegarek_skrzynka": {
+    "_opis": "Skrzynka zegarka (ADR-0009, uzupełnienie 2026-10-26; NZ-08-P3-05 (e), P-135): scenariusze dla SkrzynkaZegarka w pakiecie OczkoDziennik (X-ZG-01–X-ZG-09, swift test). Kontekst budowany z stan-zegarka-typowy.json z podmienionymi licznikId (A = licznik pliku, B = 11111111-2222-4333-8444-555555555555), wartosc, glowa (i zablokowany w stanie v3, domyślnie false); potwierdzone = klucz kontekstu aplikacji obok stanu. Czas stuknięcia = 1794340800000 + t (2026-11-10 21:00 Europe/Warsaw), strefa Europe/Warsaw. `wartosc` w sprawdz = pole wartosc stanu pokazywanego (nie liczba na ekranie). `wyslij` = lista linii do transferUserInfo przy danym czasie i liście w toku (outstandingUserInfoTransfers); ponowienie po ZEGAREK_PONOWIENIE_MS = ponowienie_ms.",
+    "licznik_b": "11111111-2222-4333-8444-555555555555",
+    "czas_bazowy_ms": 1794340800000,
+    "strefa": "Europe/Warsaw",
+    "ponowienie_ms": 900000,
+    "scenariusze": [
+      {
+        "id": "ZG-01",
+        "zgloszenie": "e4",
+        "co": "stuknięcie zapisane w pliku kolejki przetrwa ponowne uruchomienie zegarka (odtworzenie z pliku, nie z pamięci)",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "restart": true
+          },
+          {
+            "sprawdz": {
+              "kolejka": [
+                "z1"
+              ],
+              "wartosc": 48
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-02",
+        "zgloszenie": "e4",
+        "co": "błąd zapisu (pełny dysk, atrapa magazynu): wynik blad_zapisu, stan pokazywany i kolejka bez zmian, także po restarcie",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0,
+              "blad_zapisu": true,
+              "wynik": "blad_zapisu"
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [],
+              "wartosc": 47
+            }
+          },
+          {
+            "restart": true
+          },
+          {
+            "sprawdz": {
+              "kolejka": [],
+              "wartosc": 47
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-03",
+        "zgloszenie": "e3",
+        "co": "głowa kontekstu licznika B nie usuwa niepotwierdzonego zdarzenia licznika A",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "a1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "B",
+              "wartosc": 5,
+              "glowa": "b0",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "b1",
+              "rodzaj": "plus",
+              "t": 60000
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "B",
+              "wartosc": 6,
+              "glowa": "b1",
+              "potwierdzone": []
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [
+                "a1"
+              ],
+              "wartosc": 6
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-04",
+        "zgloszenie": "e3",
+        "co": "głowa w obrębie licznika usuwa siebie i wcześniejsze zdarzenia tego licznika; późniejsze (także minus) zostają i są nakładane na kontekst",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z2",
+              "rodzaj": "plus",
+              "t": 1000
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z3",
+              "rodzaj": "minus",
+              "t": 2000
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 49,
+              "glowa": "z2",
+              "potwierdzone": []
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [
+                "z3"
+              ],
+              "wartosc": 48
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-05",
+        "zgloszenie": "e5",
+        "co": "+1 na telefonie po stuknięciu zegarka (głowa spoza kolejki): potwierdzenie z listy usuwa zdarzenie, wartość nie liczona drugi raz",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 49,
+              "glowa": "p1",
+              "potwierdzone": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [],
+              "wartosc": 49
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-06",
+        "zgloszenie": "e2",
+        "co": "ponowienie: linia niewysłana idzie od razu; ponownie dopiero po ZEGAREK_PONOWIENIE_MS i tylko, gdy nie ma jej w outstandingUserInfoTransfers",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "wyslij": {
+              "t": 0,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "wyslij": {
+              "t": 899999,
+              "w_toku": [],
+              "wyslane": []
+            }
+          },
+          {
+            "wyslij": {
+              "t": 900000,
+              "w_toku": [
+                "z1"
+              ],
+              "wyslane": []
+            }
+          },
+          {
+            "wyslij": {
+              "t": 900000,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-07",
+        "zgloszenie": "e1",
+        "co": "telefon nie zapisał linii (brak potwierdzenia): kolejka zostaje, ponowienie, potwierdzenie po scaleniu usuwa",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "wyslij": {
+              "t": 0,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [
+                "z1"
+              ],
+              "wartosc": 48
+            }
+          },
+          {
+            "wyslij": {
+              "t": 900000,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 48,
+              "glowa": "z1",
+              "potwierdzone": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [],
+              "wartosc": 48
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-08",
+        "zgloszenie": "e2",
+        "co": "czas ostatniej wysyłki tylko w pamięci: po restarcie wszystkie niepotwierdzone są do wysłania (duplikat nieszkodliwy, M-02)",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "wyslij": {
+              "t": 0,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          },
+          {
+            "restart": true
+          },
+          {
+            "wyslij": {
+              "t": 1,
+              "w_toku": [],
+              "wyslane": [
+                "z1"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-09",
+        "zgloszenie": "e3",
+        "co": "potwierdzenie późniejszego zdarzenia licznika A usuwa wcześniejsze zdarzenia A, nie rusza licznika B; nieznane id bez skutku",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z2",
+              "rodzaj": "plus",
+              "t": 1000
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "B",
+              "wartosc": 5,
+              "glowa": "b0",
+              "potwierdzone": []
+            }
+          },
+          {
+            "stuknij": {
+              "id": "b1",
+              "rodzaj": "plus",
+              "t": 2000
+            }
+          },
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 49,
+              "glowa": "p1",
+              "potwierdzone": [
+                "z2",
+                "x-nieznane"
+              ]
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [
+                "b1"
+              ],
+              "wartosc": 49
+            }
+          }
+        ]
+      },
+      {
+        "id": "ZG-10",
+        "zgloszenie": "N1 (P-133)",
+        "co": "licznik zablokowany w kontekście (stan v3, F-03): stuknięcie odrzucone z wynikiem zablokowany, bez linii w kolejce i bez zmiany wartości; −1 tak samo",
+        "kroki": [
+          {
+            "kontekst": {
+              "licznik": "A",
+              "wartosc": 47,
+              "glowa": "6c5eb071-8d9f-4ea0-b1c2-d3e4f5a6b7c8",
+              "potwierdzone": [],
+              "zablokowany": true
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z1",
+              "rodzaj": "plus",
+              "t": 0,
+              "wynik": "zablokowany"
+            }
+          },
+          {
+            "stuknij": {
+              "id": "z2",
+              "rodzaj": "minus",
+              "t": 1000,
+              "wynik": "zablokowany"
+            }
+          },
+          {
+            "sprawdz": {
+              "kolejka": [],
+              "wartosc": 47
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

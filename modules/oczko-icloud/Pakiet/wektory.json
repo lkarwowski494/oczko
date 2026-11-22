@@ -1,0 +1,392 @@
+{
+  "_opis": "Wektory odwzorowania RekordIcloud ↔ CKRecord (08 partia 7; moduly.md „Kontrakt partii 7”). Czyta je XCTest pakietu (Tests/OczkoIcloudLogikaTests) i Jest (tests/domena/icloud/wektory-swift.test.ts — wyrocznie: rekordZWiersza, nazwaRekordu, cloudkit/schemat.ckdb). `rekord` = JSON z JS do Swift; `ck` = oczekiwany CKRecord (typ, recordName, pola z typem; pole null nie istnieje); `powrot` = JSON ze Swift do JS po pobraniu (bez pól null). `obce` = rekordy spoza kontraktu → null. Dane syntetyczne.",
+  "rekordy": [
+    {
+      "co": "projekt: REAL jako DOUBLE (także całkowita wartość), pola null nie istnieją w CKRecord",
+      "tabela": "projekt",
+      "wiersz": {
+        "id": "projekt-01",
+        "nazwa": "Sweter",
+        "nienazwany": 0,
+        "stan": "w_toku",
+        "notatka": "",
+        "drut_mm": 4,
+        "narzedzie": "druty",
+        "film_adres": null,
+        "film_nazwa": null,
+        "probka": "{}",
+        "termin_dzien": null,
+        "kopia_z": null,
+        "utworzono_ms": 1792663200000,
+        "zmieniono_ms": 1792663200001,
+        "ostatnia_praca_ms": 1792663200001,
+        "ukonczono_ms": null,
+        "ukonczono_dzien": null,
+        "usunieto_ms": null
+      },
+      "sciezka": null,
+      "rekord": {
+        "encja": "projekt",
+        "klucz": "projekt-01",
+        "pola": {
+          "id": "projekt-01",
+          "nazwa": "Sweter",
+          "nienazwany": 0,
+          "stan": "w_toku",
+          "notatka": "",
+          "drut_mm": 4,
+          "narzedzie": "druty",
+          "film_adres": null,
+          "film_nazwa": null,
+          "probka": "{}",
+          "termin_dzien": null,
+          "kopia_z": null,
+          "utworzono_ms": 1792663200000,
+          "zmieniono_ms": 1792663200001,
+          "ostatnia_praca_ms": 1792663200001,
+          "ukonczono_ms": null,
+          "ukonczono_dzien": null,
+          "usunieto_ms": null
+        },
+        "plik": null
+      },
+      "ck": {
+        "typ": "Projekt",
+        "nazwa": "projekt:projekt-01",
+        "pola": {
+          "id": "STRING",
+          "nazwa": "STRING",
+          "nienazwany": "INT64",
+          "stan": "STRING",
+          "notatka": "STRING",
+          "drut_mm": "DOUBLE",
+          "narzedzie": "STRING",
+          "probka": "STRING",
+          "utworzono_ms": "INT64",
+          "zmieniono_ms": "INT64",
+          "ostatnia_praca_ms": "INT64"
+        }
+      },
+      "powrot": {
+        "encja": "projekt",
+        "klucz": "projekt-01",
+        "pola": {
+          "id": "projekt-01",
+          "nazwa": "Sweter",
+          "nienazwany": 0,
+          "stan": "w_toku",
+          "notatka": "",
+          "drut_mm": 4,
+          "narzedzie": "druty",
+          "probka": "{}",
+          "utworzono_ms": 1792663200000,
+          "zmieniono_ms": 1792663200001,
+          "ostatnia_praca_ms": 1792663200001
+        },
+        "plik": null
+      }
+    },
+    {
+      "co": "wloczka: ułamki DOUBLE, tekst z polskimi znakami i emoji",
+      "tabela": "wloczka",
+      "wiersz": {
+        "id": "wloczka-01",
+        "nazwa": "Merino żółta 🧶",
+        "producent": "",
+        "sklad": "100% wełna",
+        "kolor": "#F6E04A",
+        "waga_motka_g": 50,
+        "dlugosc_motka_m": 137.5,
+        "motki": 2.5,
+        "kategoria": 4,
+        "pielegnacja": "",
+        "notatka": "",
+        "zmieniono_ms": 1792663200000,
+        "usunieto_ms": 1792663200005
+      },
+      "sciezka": null,
+      "rekord": {
+        "encja": "wloczka",
+        "klucz": "wloczka-01",
+        "pola": {
+          "id": "wloczka-01",
+          "nazwa": "Merino żółta 🧶",
+          "producent": "",
+          "sklad": "100% wełna",
+          "kolor": "#F6E04A",
+          "waga_motka_g": 50,
+          "dlugosc_motka_m": 137.5,
+          "motki": 2.5,
+          "kategoria": 4,
+          "pielegnacja": "",
+          "notatka": "",
+          "zmieniono_ms": 1792663200000,
+          "usunieto_ms": 1792663200005
+        },
+        "plik": null
+      },
+      "ck": {
+        "typ": "Wloczka",
+        "nazwa": "wloczka:wloczka-01",
+        "pola": {
+          "id": "STRING",
+          "nazwa": "STRING",
+          "producent": "STRING",
+          "sklad": "STRING",
+          "kolor": "STRING",
+          "waga_motka_g": "DOUBLE",
+          "dlugosc_motka_m": "DOUBLE",
+          "motki": "DOUBLE",
+          "kategoria": "INT64",
+          "pielegnacja": "STRING",
+          "notatka": "STRING",
+          "zmieniono_ms": "INT64",
+          "usunieto_ms": "INT64"
+        }
+      },
+      "powrot": {
+        "encja": "wloczka",
+        "klucz": "wloczka-01",
+        "pola": {
+          "id": "wloczka-01",
+          "nazwa": "Merino żółta 🧶",
+          "producent": "",
+          "sklad": "100% wełna",
+          "kolor": "#F6E04A",
+          "waga_motka_g": 50,
+          "dlugosc_motka_m": 137.5,
+          "motki": 2.5,
+          "kategoria": 4,
+          "pielegnacja": "",
+          "notatka": "",
+          "zmieniono_ms": 1792663200000,
+          "usunieto_ms": 1792663200005
+        },
+        "plik": null
+      }
+    },
+    {
+      "co": "licznik: kolumny pomin (wartosc, glowa, konflikt) nie jadą",
+      "tabela": "licznik",
+      "wiersz": {
+        "id": "licznik-01",
+        "czesc_id": "czesc-01",
+        "nazwa": "",
+        "rodzaj": "rzedy",
+        "znaczenie": "skonczone",
+        "dlugosc_powtorzenia": null,
+        "zablokowany": 0,
+        "wartosc": 47,
+        "glowa": "zdarzenie-47",
+        "konflikt": 0,
+        "kolejnosc": 0,
+        "zmieniono_ms": 1792663200000,
+        "usunieto_ms": null
+      },
+      "sciezka": null,
+      "rekord": {
+        "encja": "licznik",
+        "klucz": "licznik-01",
+        "pola": {
+          "id": "licznik-01",
+          "czesc_id": "czesc-01",
+          "nazwa": "",
+          "rodzaj": "rzedy",
+          "znaczenie": "skonczone",
+          "dlugosc_powtorzenia": null,
+          "zablokowany": 0,
+          "kolejnosc": 0,
+          "zmieniono_ms": 1792663200000,
+          "usunieto_ms": null
+        },
+        "plik": null
+      },
+      "ck": {
+        "typ": "Licznik",
+        "nazwa": "licznik:licznik-01",
+        "pola": {
+          "id": "STRING",
+          "czesc_id": "STRING",
+          "nazwa": "STRING",
+          "rodzaj": "STRING",
+          "znaczenie": "STRING",
+          "zablokowany": "INT64",
+          "kolejnosc": "INT64",
+          "zmieniono_ms": "INT64"
+        }
+      },
+      "powrot": {
+        "encja": "licznik",
+        "klucz": "licznik-01",
+        "pola": {
+          "id": "licznik-01",
+          "czesc_id": "czesc-01",
+          "nazwa": "",
+          "rodzaj": "rzedy",
+          "znaczenie": "skonczone",
+          "zablokowany": 0,
+          "kolejnosc": 0,
+          "zmieniono_ms": 1792663200000
+        },
+        "plik": null
+      }
+    },
+    {
+      "co": "czesc: wyczyszczony cel i przywrócenie z kosza (null) — pola znikają z CKRecord",
+      "tabela": "czesc",
+      "wiersz": {
+        "id": "czesc-01",
+        "projekt_id": "projekt-01",
+        "nazwa": "Back",
+        "kolejnosc": 0,
+        "cel_rzedow": null,
+        "para_z": null,
+        "zmieniono_ms": 1792663200009,
+        "usunieto_ms": null
+      },
+      "sciezka": null,
+      "rekord": {
+        "encja": "czesc",
+        "klucz": "czesc-01",
+        "pola": {
+          "id": "czesc-01",
+          "projekt_id": "projekt-01",
+          "nazwa": "Back",
+          "kolejnosc": 0,
+          "cel_rzedow": null,
+          "para_z": null,
+          "zmieniono_ms": 1792663200009,
+          "usunieto_ms": null
+        },
+        "plik": null
+      },
+      "ck": {
+        "typ": "Czesc",
+        "nazwa": "czesc:czesc-01",
+        "pola": {
+          "id": "STRING",
+          "projekt_id": "STRING",
+          "nazwa": "STRING",
+          "kolejnosc": "INT64",
+          "zmieniono_ms": "INT64"
+        }
+      },
+      "powrot": {
+        "encja": "czesc",
+        "klucz": "czesc-01",
+        "pola": {
+          "id": "czesc-01",
+          "projekt_id": "projekt-01",
+          "nazwa": "Back",
+          "kolejnosc": 0,
+          "zmieniono_ms": 1792663200009
+        },
+        "plik": null
+      }
+    },
+    {
+      "co": "rysunek: klucz złożony z dwukropkiem w identyfikatorze (recordName rozbierany po pierwszym dwukropku)",
+      "tabela": "rysunek",
+      "wiersz": {
+        "wzor_id": "wzor:01",
+        "strona": 3,
+        "plik_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "zmieniono_ms": 1792663200000
+      },
+      "sciezka": null,
+      "rekord": {
+        "encja": "rysunek",
+        "klucz": "[\"wzor:01\",3]",
+        "pola": {
+          "wzor_id": "wzor:01",
+          "strona": 3,
+          "plik_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "zmieniono_ms": 1792663200000
+        },
+        "plik": null
+      },
+      "ck": {
+        "typ": "Rysunek",
+        "nazwa": "rysunek:[\"wzor:01\",3]",
+        "pola": {
+          "wzor_id": "STRING",
+          "strona": "INT64",
+          "plik_sha256": "STRING",
+          "zmieniono_ms": "INT64"
+        }
+      },
+      "powrot": {
+        "encja": "rysunek",
+        "klucz": "[\"wzor:01\",3]",
+        "pola": {
+          "wzor_id": "wzor:01",
+          "strona": 3,
+          "plik_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "zmieniono_ms": 1792663200000
+        },
+        "plik": null
+      }
+    },
+    {
+      "co": "plik: zasób jako CKAsset w polu dane, ścieżka wraca w polu plik",
+      "tabela": "plik",
+      "wiersz": {
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rozszerzenie": "pdf",
+        "bajty": 1234,
+        "utworzono_ms": 1792663200000
+      },
+      "sciezka": "/tmp/oczko-icloud-wektor.pdf",
+      "rekord": {
+        "encja": "plik",
+        "klucz": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "pola": {
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "rozszerzenie": "pdf",
+          "bajty": 1234,
+          "utworzono_ms": 1792663200000
+        },
+        "plik": "/tmp/oczko-icloud-wektor.pdf"
+      },
+      "ck": {
+        "typ": "Plik",
+        "nazwa": "plik:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "pola": {
+          "sha256": "STRING",
+          "rozszerzenie": "STRING",
+          "bajty": "INT64",
+          "utworzono_ms": "INT64",
+          "dane": "ASSET"
+        }
+      },
+      "powrot": {
+        "encja": "plik",
+        "klucz": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "pola": {
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "rozszerzenie": "pdf",
+          "bajty": 1234,
+          "utworzono_ms": 1792663200000
+        },
+        "plik": "/tmp/oczko-icloud-wektor.pdf"
+      }
+    }
+  ],
+  "obce": [
+    {
+      "co": "typ rekordu inny niż kontrakt encji",
+      "typ": "Projekt",
+      "nazwa": "wzor:wzor-01"
+    },
+    {
+      "co": "encja spoza kontraktu",
+      "typ": "Obcy",
+      "nazwa": "obcy:1"
+    },
+    {
+      "co": "recordName bez dwukropka",
+      "typ": "Projekt",
+      "nazwa": "projekt-01"
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+<title>Test fizyczny Oczka</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap">
+<style>
+/* Układ: jedna kolumna do 640 px, karty kroków jedna pod drugą, pasek wyniku przyklejony do dołu.
+   Barwy z systemu „Dzianina” aplikacji Oczko (docs/design/tokeny.json): runo, mocha, akcent musztardowy. */
+:root {
+  --tlo: #E6E1DA; --pow: #F6F4F1; --linia: #CFC8BF; --tekst: #221D1A; --tekst2: #5A5048;
+  --akcent: #C08425; --akcentTekst: #8A5A12; --akcentJasny: #F0DDB6;
+  --przycisk: #3A332E; --przyciskTekst: #F3F1EC;
+  --tak: #2F6B3A; --takTlo: #DCEBDC; --nie: #A3261C; --nieTlo: #F6DAD6; --pom: #5A5048; --pomTlo: #E3DDD5;
+  --naglowek: "Bree Serif", Georgia, "Times New Roman", serif;
+  --tresc: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --tlo: #26211E; --pow: #312B27; --linia: #4A413A; --tekst: #F1EDE9; --tekst2: #C7BCB2;
+  --akcent: #CF9636; --akcentTekst: #F0CF8A; --akcentJasny: #4A413A;
+  --przycisk: #F0CF8A; --przyciskTekst: #221D1A;
+  --tak: #9FD3A8; --takTlo: #1F3A25; --nie: #F2B8B5; --nieTlo: #4A1F1C; --pom: #C7BCB2; --pomTlo: #3D3530;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --tlo: #26211E; --pow: #312B27; --linia: #4A413A; --tekst: #F1EDE9; --tekst2: #C7BCB2;
+  --akcent: #CF9636; --akcentTekst: #F0CF8A; --akcentJasny: #4A413A;
+  --przycisk: #F0CF8A; --przyciskTekst: #221D1A;
+  --tak: #9FD3A8; --takTlo: #1F3A25; --nie: #F2B8B5; --nieTlo: #4A1F1C; --pom: #C7BCB2; --pomTlo: #3D3530;
+  color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--tlo); color: var(--tekst); font: 17px/1.5 var(--tresc); -webkit-text-size-adjust: 100%; }
+.str { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 140px; display: grid; gap: 20px; }
+h1, h2, h3 { font-family: var(--naglowek); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; }
+a { color: var(--akcentTekst); }
+strong { font-weight: 700; }
+.pod { color: var(--tekst2); }
+.male { font-size: 0.9rem; }
+.etykieta { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tekst2); font-weight: 600; }
+header.glowa { display: grid; gap: 6px; }
+.pole { display: grid; gap: 6px; }
+.pole label { font-weight: 600; }
+input[type="text"], textarea { font: inherit; color: var(--tekst); background: var(--pow); border: 1px solid var(--linia); border-radius: 10px; padding: 12px; width: 100%; min-height: 48px; }
+textarea { min-height: 56px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--akcent); outline-offset: 2px; }
+
+/* Wybór trybu */
+.tryby { display: grid; gap: 10px; }
+.tryb { display: grid; gap: 2px; text-align: left; font: inherit; color: var(--tekst); background: var(--pow); border: 2px solid var(--linia); border-radius: 14px; padding: 14px 16px; cursor: pointer; min-height: 64px; }
+.tryb b { font-family: var(--naglowek); font-weight: 400; font-size: 1.2rem; }
+.tryb[aria-pressed="true"] { border-color: var(--akcent); background: var(--akcentJasny); }
+.podejscia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.podejscia button { font: inherit; font-weight: 600; color: var(--tekst); background: var(--pow); border: 2px solid var(--linia); border-radius: 12px; padding: 10px 6px; min-height: 56px; cursor: pointer; line-height: 1.2; }
+.podejscia button span { display: block; font-weight: 400; font-size: 0.82rem; color: var(--tekst2); }
+.podejscia button[aria-pressed="true"] { border-color: var(--akcent); background: var(--akcentJasny); }
+.opis-zakresu { background: var(--pow); border-radius: 12px; padding: 12px 14px; }
+
+/* Zanim zaczniesz */
+.zanim { display: grid; gap: 8px; }
+details.blok { background: var(--pow); border-radius: 12px; border: 1px solid var(--linia); }
+details.blok > summary { cursor: pointer; padding: 14px 16px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; min-height: 52px; align-items: center; }
+details.blok > summary::-webkit-details-marker { display: none; }
+details.blok > summary::after { content: "+"; font-size: 1.3rem; color: var(--akcentTekst); }
+details.blok[open] > summary::after { content: "–"; }
+.blok-tresc { overflow-wrap: anywhere; padding: 0 16px 16px; display: grid; gap: 8px; }
+.blok-tresc ul, .blok-tresc ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+.nowosc { background: var(--akcentJasny); border: 2px solid var(--akcent); border-radius: 14px; padding: 14px 16px; display: grid; gap: 8px; overflow-wrap: anywhere; }
+.nowosc h2 { font-size: 1.25rem; }
+.nowosc ul { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+.chip.nowe { background: var(--akcent); border-color: transparent; color: #221D1A; }
+.znacznik { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--akcentJasny); color: var(--akcentTekst); vertical-align: 1px; }
+
+/* Sekcje i kroki */
+.sekcja { display: grid; gap: 12px; }
+.sekcja-glowa { display: grid; gap: 4px; padding-top: 8px; border-top: 2px solid var(--linia); }
+.czesc { font-family: var(--naglowek); font-size: 1rem; color: var(--akcentTekst); }
+.wstep { display: grid; gap: 6px; color: var(--tekst2); }
+article.krok { overflow-wrap: anywhere; background: var(--pow); border-radius: 14px; padding: 16px; display: grid; gap: 10px; border: 1px solid var(--linia); scroll-margin-top: 16px; }
+.krok-glowa { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.id { font-family: var(--naglowek); font-size: 1.25rem; padding: 2px 10px; border-radius: 8px; background: var(--tlo); font-variant-numeric: tabular-nums; }
+.chip { font-size: 0.85rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--linia); }
+.chip.ipad { border-color: var(--akcent); }
+.chip.watch { background: var(--akcentJasny); border-color: transparent; color: var(--akcentTekst); }
+.czas { margin-left: auto; color: var(--tekst2); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.temat { font-weight: 600; }
+.krok h4 { margin: 0; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tekst2); }
+.krok ol { margin: 0; padding-left: 1.4em; display: grid; gap: 4px; }
+.powinno { border-left: 3px solid var(--akcent); padding-left: 10px; }
+.krok details summary { cursor: pointer; color: var(--akcentTekst); font-weight: 600; min-height: 40px; display: flex; align-items: center; }
+.krok details ul { margin: 4px 0 0; padding-left: 1.3em; display: grid; gap: 4px; color: var(--tekst2); }
+.en { font-size: 0.8em; color: var(--tekst2); font-weight: 400; }
+.sprawdz { font-size: 0.8em; font-weight: 700; color: var(--nie); }
+.info { font-size: 0.92rem; color: var(--tekst2); background: var(--tlo); border-radius: 8px; padding: 8px 10px; }
+.odp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.odp button { font: inherit; font-weight: 700; min-height: 52px; border-radius: 12px; border: 2px solid var(--linia); background: var(--pow); color: var(--tekst); cursor: pointer; }
+.odp button[data-w="tak"][aria-pressed="true"] { background: var(--takTlo); border-color: var(--tak); color: var(--tak); }
+.odp button[data-w="nie"][aria-pressed="true"] { background: var(--nieTlo); border-color: var(--nie); color: var(--nie); }
+.odp button[data-w="pomin"][aria-pressed="true"] { background: var(--pomTlo); border-color: var(--pom); color: var(--pom); }
+article.krok[data-stan="tak"] .id { background: var(--takTlo); color: var(--tak); }
+article.krok[data-stan="nie"] .id { background: var(--nieTlo); color: var(--nie); }
+article.krok[data-stan="pomin"] .id { background: var(--pomTlo); color: var(--pom); }
+.uwaga-pole label { font-size: 0.9rem; color: var(--tekst2); }
+
+/* Wynik */
+.wynik { display: grid; gap: 10px; background: var(--pow); border-radius: 14px; padding: 16px; border: 1px solid var(--linia); }
+.wynik textarea { min-height: 140px; font-size: 0.92rem; }
+.rzad { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { font: inherit; font-weight: 700; min-height: 52px; padding: 0 18px; border-radius: 12px; border: 2px solid var(--przycisk); background: var(--przycisk); color: var(--przyciskTekst); cursor: pointer; }
+.btn.drugi { background: transparent; color: var(--tekst); border-color: var(--linia); }
+.btn.niszcz { background: transparent; color: var(--nie); border-color: var(--nie); }
+.pasek { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: var(--pow); border-top: 1px solid var(--linia); padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding-top: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.pasek-w { max-width: 640px; margin: 0 auto; display: flex; gap: 10px; align-items: center; }
+.postep { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.postep-tekst { font-size: 0.85rem; line-height: 1.3; font-variant-numeric: tabular-nums; color: var(--tekst2); }
+.postep-tekst b { color: var(--tekst); }
+.belka { height: 6px; border-radius: 3px; background: var(--tlo); overflow: hidden; display: flex; }
+.belka i { display: block; height: 100%; }
+.belka .t { background: var(--tak); } .belka .n { background: var(--nie); } .belka .p { background: var(--pom); }
+.pasek .btn { min-height: 48px; padding: 0 14px; white-space: nowrap; }
+.komunikat { min-height: 1.5em; font-weight: 600; color: var(--tak); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (min-width: 560px) { .tryby { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<main class="str">
+  <header class="glowa">
+    <span class="etykieta">Oczko · test fizyczny · iPhone, Apple Watch, iPad</span>
+    <h1>Test fizyczny Oczka</h1>
+    <p class="pod">Tylko to, czego automat nie sprawdzi: instalacja z TestFlight, prawdziwy zegarek, wibracje, aparat, ekran blokady, zakup w piaskownicy i ocena okiem. Wszystko inne sprawdza zestaw przypadków użycia po każdym buildzie. Razem 61 pozycji, ok. 179 min pracy (szacunek).</p>
+  </header>
+
+  <div class="pole">
+    <label for="build">Numer buildu, który testujesz (z TestFlight)</label>
+    <input type="text" id="build" inputmode="numeric" autocomplete="off" value="">
+  </div>
+
+  <section class="zanim" aria-labelledby="h-zanim">
+    <h2 id="h-zanim">Zanim zaczniesz</h2>
+    <details class="blok" open>
+      <summary>Jak czytać tę listę</summary>
+      <div class="blok-tresc">
+        <ul>
+          <li>Napisy Oczka są po polsku; angielski odpowiednik stoi w nawiasie.</li>
+          <li>Przy każdej pozycji zaznacz „Tak”, „Nie” albo „Pomiń”. W uwadze wpisz, co było inaczej. Przy „Pomiń” uzasadnienie jest obowiązkowe — bez niego wynik jest niepełny.</li>
+          <li>Numer PU prowadzi do katalogu przypadków użycia (<code>docs/jakosc/przypadki-uzycia.md</code>); numer T, Z albo G to krok dotychczasowej instrukcji testu.</li>
+          <li>Na końcu stuknij „Kopiuj wynik” i wklej wiadomość koordynatorowi.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <div id="lista"></div>
+
+  <section class="wynik" aria-labelledby="h-wynik" id="wynik">
+    <h2 id="h-wynik">Wynik dla koordynatora</h2>
+    <p class="pod male" id="wynik-opis"></p>
+    <div class="rzad">
+      <button type="button" class="btn" id="kopiuj">Kopiuj wynik</button>
+      <button type="button" class="btn drugi" id="pokaz">Pokaż tekst</button>
+    </div>
+    <p class="komunikat" id="komunikat" role="status" aria-live="polite"></p>
+    <label for="tekst-wyniku" class="pod male" hidden id="et-tekst">Tekst wiadomości (zaznacz i skopiuj, jeśli przycisk nie zadziałał)</label>
+    <textarea id="tekst-wyniku" readonly hidden></textarea>
+    <div class="rzad">
+      <button type="button" class="btn niszcz" id="wyczysc">Wyczyść zaznaczenia</button>
+      <button type="button" class="btn niszcz" id="wyczysc-tak" hidden>Tak, wyczyść</button>
+    </div>
+  </section>
+</main>
+
+<div class="pasek" role="region" aria-label="Postęp">
+  <div class="pasek-w">
+    <div class="postep">
+      <div class="postep-tekst" id="postep-tekst"></div>
+      <div class="belka" aria-hidden="true"><i class="t" id="b-t"></i><i class="n" id="b-n"></i><i class="p" id="b-p"></i></div>
+    </div>
+    <button type="button" class="btn drugi" id="dalej">Dalej ↓</button>
+    <button type="button" class="btn" id="kopiuj2">Kopiuj</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var DANE = {"grupy":[{"kat":"TestFlight","tytul":"Instalacja z TestFlight"},{"kat":"wibracje","tytul":"Wibracje"},{"kat":"aparat","tytul":"Aparat"},{"kat":"wrażenie","tytul":"Wrażenie: czytelność, płynność, dźwięk"},{"kat":"ekran blokady","tytul":"Ekran blokady"},{"kat":"zegarek","tytul":"Apple Watch"},{"kat":"Pencil","tytul":"Apple Pencil"},{"kat":"inne aplikacje","tytul":"Inne aplikacje na urządzeniu"},{"kat":"system iOS","tytul":"Ustawienia i zachowanie systemu"},{"kat":"sieć prawdziwa","tytul":"Prawdziwa sieć"},{"kat":"sklep Apple","tytul":"Zakup w piaskownicy Apple"}],"kroki":[{"pu":"PU-001","kat":"TestFlight","urz":"iPhone","min":5,"czek":0,"cel":"Chcę wiedzieć, od jakiej wersji zaczynam aktualizację.","zrob":"TestFlight → „Oczko” → zapisz, co jest zainstalowane.","powinno":"Zapisany stan: brak aplikacji, 0.1.0 albo 1.0.0.","powod":"stan instalacji i numer buildu widać tylko w aplikacji TestFlight na urządzeniu właściciela.","kroki":["T-01"]},{"pu":"PU-002","kat":"TestFlight","urz":"iPhone","min":5,"czek":0,"cel":"Chcę zaktualizować Oczko z TestFlight bez utraty danych.","zrob":"TestFlight → zainstaluj albo uaktualnij do 1171 bez usuwania → otwórz.","powinno":"Z 1.0.0: te same projekty, licznik i historia co na zrzucie; z 0.1.0: start bez awarii, aplikacja pusta (P-070); nigdy ekran trybu awaryjnego.","powod":"instalacja nowego buildu na starszym z TestFlight; symulator nie instaluje buildów z TestFlight.","kroki":["T-02"]},{"pu":"PU-006","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę używać Oczka na zegarku od razu po instalacji.","zrob":"Zegarek: korona → siatka aplikacji; w razie braku: aplikacja Watch → „Mój zegarek” → „Aplikacje” → „Instaluj” → otwórz Oczko na zegarku.","powinno":"Na siatce prawdziwa ikona Oczka; aplikacja zegarka otwiera się i pokazuje licznik.","powod":"instalacja i ikona aplikacji na sparowanym Apple Watch; symulator iPhone'a z buildem E2E ma tylko udawany zegarek.","kroki":["T-04"]},{"pu":"PU-009","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę, żeby każdy pas zakrywał całą wysokość liter.","zrob":"Na stronie z Z-01 porównaj grubość obu pasów, potem powiększ dwoma palcami i porównaj.","powinno":"Oba pasy tej samej grubości, każdy zakrywa całą wysokość liter wiersza, także po powiększeniu.","powod":"grubość pasa względem wysokości liter ocenia oko; liczba zakreśleń w panelu nie mówi nic o grubości.","kroki":["Z-02"]},{"pu":"PU-010","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę czytać tekst pod zakreśleniem, także w trybie ciemnym.","zrob":"Przeczytaj wiersz pod pasem i obok → Centrum sterowania → tryb ciemny → wróć na wzór → wróć do jasnego.","powinno":"Litery pod pasem tak samo czarne jak obok, pas jasnożółty i widoczny; w trybie ciemnym strona wzoru zostaje biała.","powod":"czytelność liter pod pasem i wygląd strony w trybie ciemnym ocenia się okiem z normalnej odległości.","kroki":["Z-03"]},{"pu":"PU-013","kat":"wrażenie","urz":"iPad","min":2,"czek":0,"cel":"Chcę na iPadzie równe i czytelne pasy.","zrob":"iPad: powtórz Z-02 i Z-03 (bez trybu ciemnego).","powinno":"Pasy tej samej grubości, tekst pod pasem czytelny.","powod":"grubość pasów i czytelność tekstu pod pasem na ekranie iPada ocenia oko.","kroki":["Z-05"]},{"pu":"PU-020","kat":"wibracje","urz":"iPhone","min":1,"czek":0,"cel":"Chcę czuć każde +1 i −1 bez patrzenia, a po wyłączeniu wibracji — ciszę.","zrob":"Karta „+1” na „Dziś”, „+1 rząd” ⟦+1 row⟧ i „−1” na liczniku; „Ustawienia” → „Wibracje” ⟦Vibration⟧ wył. → +1 → wł. → +1.","powinno":"Każde +1 i −1 to krótka wibracja; przy wyłączonej opcji brak wibracji.","powod":"haptykę czuć tylko na fizycznym iPhonie; symulator nie wibruje.","kroki":["T-03","T-10","T-17"]},{"pu":"PU-034","kat":"wibracje","urz":"iPhone","min":1,"czek":0,"cel":"Chcę rozpoznać przypomnienie bez patrzenia na ekran.","zrob":"Przy rzędzie przed przypomnieniem „+1 rząd” z zamkniętymi oczami.","powinno":"Wibracja wyraźnie inna niż zwykła wibracja rzędu.","powod":"wzór haptyki przypomnienia odróżnia się tylko czuciem na fizycznym iPhonie.","kroki":["T-25"]},{"pu":"PU-049","kat":"aparat","urz":"iPhone","min":2,"czek":0,"cel":"Chcę zrobić zdjęcie robótki i zdecydować o dostępie do aparatu.","zrob":"Projekt → „Dodaj zdjęcie” ⟦Add photo⟧ → „Zrób zdjęcie” ⟦Take photo⟧ → „Nie pozwalaj” → „Otwórz Ustawienia” ⟦Open Settings⟧ → włącz Aparat → „Zrób zdjęcie”.","powinno":"Okno iOS o aparat dopiero teraz, z tekstem o zdjęciach na urządzeniu; po zgodzie zdjęcie w projekcie.","powod":"symulator nie ma aparatu ani okna zgody na aparat; prawdziwe zdjęcie robi tylko fizyczny iPhone.","kroki":["T-35"]},{"pu":"PU-055","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę wybrać plik wzoru w systemowym oknie Pliki.","zrob":"„Wybierz plik (PDF lub Word)” ⟦Choose file (PDF or Word)⟧ → okno Pliki → PDF albo duży PDF.","powinno":"Okno Plików otwiera się, wybrany plik trafia do Oczka.","powod":"okno wyboru dokumentu (Pliki) to osobny proces systemu poza zasięgiem Maestro; build E2E podaje plik panelem (ADR-0011).","kroki":["T-40","T-101"]},{"pu":"PU-057","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę, żeby wzór z Worda nie kończył się pustą stroną.","zrob":"Otwórz każdy z trzech plików Word → ostatnia strona.","powinno":"Liczba stron równa oczekiwanej dla pliku korpusu; ostatnia strona ma treść.","powod":"liczbę stron i treść ostatniej strony wzoru z Worda wylicza na iOS WKWebView z PDFKit; Jest ani Swift (pakiet P-906) nie dadzą uczciwego testu, więc właściciel sprawdza ręcznie w TestFlight trzy pliki Word korpusu (liczba stron, ostatnia strona z treścią; P-972, KO-152). Scenariusz 119 (oczekujący) zostaje odnośnikiem: e2e/scenariusze/119-pu-057-word-bez-pustej-strony-na-koncu-trzy-pliki.yaml:29 (liczba stron z konstrukcji plików, nie z pomiaru na iOS)","kroki":["T-41"]},{"pu":"PU-059","kat":"aparat","urz":"iPhone","min":2,"czek":0,"cel":"Chcę zeskanować kartki wzoru aparatem.","zrob":"„Dodaj wzór” → „Skanuj strony” ⟦Scan pages⟧ → 2 kartki.","powinno":"Wzór PDF ze stronami w kolejności skanowania.","powod":"skaner dokumentów wymaga aparatu; w symulatorze „Skanuj strony” jest niedostępne.","kroki":["T-42"]},{"pu":"PU-062","kat":"sieć prawdziwa","urz":"iPhone","min":2,"czek":0,"cel":"Chcę zapisać prawdziwą stronę z adresu wpisanego w polu.","zrob":"„Link do strony WWW…” → https://apps4brew.com/oczko/support.html → „Zapisz stronę” ⟦Save page⟧.","powinno":"Strona pobrana i zapisana jako wzór.","powod":"pobranie strony z internetu; build E2E biegnie z `oczkoE2eSiec: brak` i podaje zapisany plik strony.","kroki":["T-43"]},{"pu":"PU-064","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę obejrzeć film z zapisanego linku.","zrob":"„Film” ⟦Video⟧ przy włączonej sieci.","powinno":"Link otwiera się w przeglądarce.","powod":"otwarcie filmu w Safari przy prawdziwej sieci; Maestro nie sprawdza treści innej aplikacji.","kroki":["T-44"]},{"pu":"PU-069","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę sprawdzić, że ekran rzeczywiście nie gaśnie przy liczeniu.","zrob":"Wzór 2 min bez dotykania; lista 2 min; z wyłączoną opcją licznik 2 min; powrót z Wiadomości.","powinno":"Na wzorze i liczniku ekran nie gaśnie, na liście gaśnie po 1 min, z wyłączoną opcją gaśnie też na liczniku.","powod":"symulator nie ma Autoblokady i nie wygasza ekranu; gaśnięcie widać tylko na telefonie.","kroki":["T-16"]},{"pu":"PU-073","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę dodać wzór z Safari, Plików i Zdjęć przez „Udostępnij”.","zrob":"Safari, Pliki, Zdjęcia → Udostępnij → Oczko → projekt albo „Nowy projekt” ⟦New project⟧ → otwórz Oczko.","powinno":"Oczko na liście udostępniania; każdy wzór w wybranym albo nowym projekcie.","powod":"arkusz udostępniania Safari, Plików i Zdjęć oraz rozszerzenie Oczka działają w innych procesach poza Maestro (ADR-0011).","kroki":["T-48"]},{"pu":"PU-075","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę udostępnić do Oczka dokument Word, wiele zdjęć i załącznik e-mail.","zrob":"Pliki: .docx → Udostępnij → Oczko; Zdjęcia: 20 zdjęć → Oczko; Poczta: PDF → Oczko.","powinno":"Wszystko dociera do Oczka.","powod":"udostępnianie z Plików, Zdjęć i Poczty uruchamia rozszerzenie w procesach tych aplikacji.","kroki":["T-49"]},{"pu":"PU-300","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę z Safari albo YouTube dodać do projektu link do filmu.","zrob":"Safari: film → Udostępnij → Oczko → „Dodaj jako” ⟦Add as⟧ „Link do filmu” ⟦Video link⟧ → projekt z filmem → „Zapisz” → otwórz Oczko.","powinno":"Pod listą „… ma już link do filmu. Zapis zastąpi go tym.” ⟦… already has a video link. Saving replaces it with this one.⟧; w projekcie wiersz „Film” z nowym linkiem, stary zastąpiony.","powod":"rozszerzenie „Udostępnij” działa tylko z arkusza systemowego Safari/YouTube na urządzeniu; symulator z E2E ma tylko skrzynkę z PDF","kroki":[]},{"pu":"PU-301","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę wiedzieć od razu w arkuszu udostępniania, że pliku nie da się dodać.","zrob":"Pliki: plik .zip → Udostępnij → Oczko; PDF większy niż limit → Udostępnij → Oczko.","powinno":"„Oczko nie może dodać pliku tego typu” ⟦Oczko can’t add this type of file⟧ z „Wzorem może być PDF, dokument Word, zdjęcia lub strony WWW.”; „Ten plik jest za duży” ⟦This file is too large⟧ z „Wzór może mieć do … MB, więc Oczko nie może dodać tego pliku.”; tylko „Zamknij” ⟦Close⟧, nic nie trafia do skrzynki.","powod":"arkusz rozszerzenia „Udostępnij” otwiera się tylko z aplikacji Pliki na urządzeniu","kroki":[]},{"pu":"PU-095","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę zapisać kopię w aplikacji Pliki i ją tam znaleźć.","zrob":"Eksport → arkusz → „Zachowaj w Plikach” („Na moim iPhonie”); po „Usuń wszystkie dane” Pliki → Oczko → Backup.","powinno":"Plik kopii w Plikach; kopia sprzed usunięcia w Oczko › Backup.","powod":"arkusz zapisu do Plików i przeglądanie folderu w aplikacji Pliki to inne procesy; build E2E zapisuje plik panelem.","kroki":["T-62","T-130"]},{"pu":"PU-319","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę otworzyć plik kopii Oczka prosto z Plików albo z poczty.","zrob":"Pliki albo Poczta: plik `.oczko` → Udostępnij/Otwórz w → Oczko (aplikacja zamknięta i otwarta).","powinno":"Oczko startuje na liczniku, potem otwiera „Ustawienia” z importem („Plik: …” ⟦File: …⟧, „Scal z tym, co jest”, „Zastąp to, co jest”); nic się nie zmienia bez wyboru.","powod":"otwarcie pliku z Plików/Poczty to systemowe przekazanie adresu; symulator z E2E nie ma tego pliku w Plikach (jednostkowo: `redirectSystemPath`, app/+native-intent.tsx:7)","kroki":[]},{"pu":"PU-118","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę sprawdzić limit przy prawdziwej zmianie daty w telefonie.","zrob":"Ustawienia iOS → Data i czas → dni 1–6 następnego miesiąca → Oczko → przywróć „Ustaw automatycznie”.","powinno":"Jak w scenariuszu z udawanym czasem; po przywróceniu daty znów można liczyć.","powod":"zmiana daty w Ustawieniach iOS przez właściciela; build E2E podaje czas argumentem `oczkoE2eTeraz` zamiast zegara systemu.","kroki":["T-71"]},{"pu":"PU-121","kat":"sklep Apple","urz":"iPhone","min":4,"czek":0,"cel":"Chcę kupić Oczko Pro w oknie Apple bez opłaty w teście.","zrob":"„Ustawienia” → „Oczko Pro” → „Miesięcznie” ⟦Monthly⟧ → „Kontynuuj: Miesięcznie” ⟦Continue with Monthly⟧ → okno Apple.","powinno":"Okno Apple oznaczone jako testowe, bez opłaty.","powod":"prawdziwe okno zakupu StoreKit w piaskownicy; build E2E używa sztucznego sklepu bez okna Apple.","kroki":["T-72"]},{"pu":"PU-327","kat":"sklep Apple","urz":"iPhone","min":4,"czek":0,"cel":"Chcę korzystać z Pro kupionego przez kogoś z rodziny.","zrob":"Konto w Chmurze rodzinnej z zakupionym Pro → „Ustawienia”; „Oczko Pro”.","powinno":"W ofertach kafel „Dla rodziny” ⟦For your family⟧; Pro „Włączone” bez własnego zakupu.","powod":"Chmura rodzinna i współdzielone zakupy działają tylko na prawdziwych kontach Apple ID","kroki":[]},{"pu":"PU-126","kat":"ekran blokady","urz":"iPhone","min":3,"czek":0,"cel":"Chcę liczyć rzędy z ekranu blokady.","zrob":"Licznik → +1 → zablokuj telefon → na ekranie blokady +1 ×3 → odblokuj.","powinno":"Na ekranie blokady sesja Oczka z rzędem; wartość w aplikacji większa o 3, bez konfliktu.","powod":"Live Activity i przyciski na ekranie blokady działają tylko na fizycznym iPhonie.","kroki":["T-80"]},{"pu":"PU-128","kat":"ekran blokady","urz":"iPhone","min":3,"czek":0,"cel":"Chcę widzieć czas sesji na ekranie blokady.","zrob":"„Stoper” ⟦Timer⟧ → zablokuj → 1 min → odblokuj → „Zatrzymaj stoper” ⟦Stop timer⟧.","powinno":"Na ekranie blokady czas płynie razem z rzędem; tylko +1, bez przycisku zatrzymania; zatrzymanie w aplikacji.","powod":"wygląd i działanie Live Activity ze stoperem widać tylko na zablokowanym fizycznym iPhonie.","kroki":["T-81"]},{"pu":"PU-328","kat":"ekran blokady","urz":"iPhone","min":3,"czek":0,"cel":"Chcę na ekranie blokady widzieć, czemu +1 nie działa, i znać najbliższe przypomnienie.","zrob":"Licznik z przypomnieniem przy następnym rzędzie → zablokuj telefon; potem: licznik zablokowany; limit dni wyczerpany; Dynamic Island (iPhone z wyspą).","powinno":"Typowo: pas „Rząd n: …” ⟦Row n: …⟧ i „+1 rząd”; zablokowany: „Licznik zablokowany” ⟦Counter locked⟧ i „Odblokuj go w Oczku.” ⟦Unlock it in Oczko.⟧, bez +1; limit: „Liczenie wstrzymane” ⟦Counting paused⟧, „Brak darmowych dni robótkowych na …” i „Twoje rzędy są zachowane.” ⟦Your rows are kept.⟧, bez +1; wyspa pokazuje nazwę i liczbę.","powod":"Live Activity i Dynamic Island widać tylko na urządzeniu; częściowo: jednostkowy Swift modules/oczko-reguly/Tests/OczkoRegulyTests/AktywnoscTests.swift (pierwszeństwo stanów)","kroki":[]},{"pu":"PU-130","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę słyszeć nową wartość i cel po +1 z VoiceOver.","zrob":"VoiceOver wł. → „+1” na karcie i na liczniku z celem 3 przy wartości 2.","powinno":"VoiceOver mówi nową wartość; całe ogłoszenie rzędu, potem „Cel osiągnięty” ⟦Goal reached⟧ — jedno nie ucina drugiego.","powod":"treść i kolejność mowy VoiceOver słychać tylko na urządzeniu z włączonym VoiceOver; Maestro czyta etykiety, nie mowę.","kroki":["T-85","T-86"]},{"pu":"PU-340","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę przy największym tekście (AX5) liczyć bez uciętych napisów.","zrob":"iPhone: Ustawienia → Dostępność → Ekran i wielkość tekstu → Większy tekst → „Większe rozmiary” na maksimum → Oczko: licznik, menu •••, „Wpisz numer rzędu” z liczbą 12 345, pasek pod wzorem.","powinno":"Nic nie ucięte: przyciski +1 i −1, pozycje menu, arkusz i liczba 12 345 w całości, bez „…” i bez nachodzenia.","powod":"ucięcie i nachodzenie tekstu ocenia oko na buildzie z TestFlight; asercja Maestro sprawdza obecność elementu, nie ucięcie (słowa właściciela 16.11.2026, wariant B; część „nic nie ucięte” z PU-134).","kroki":[]},{"pu":"PU-341","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę przy AX5 czytać wszystkie główne ekrany bez uciętych i nachodzących tekstów.","zrob":"iPhone z AX5 jak w PU-340 → „Dziś”, licznik z „Następna część”, wzór z notatką i tytułem z ▾, karta Worda, projekt, „Historia”, „Ustawienia”, „Oczko Pro”, „Licencje open source”.","powinno":"Nic nie ucięte ani nie nachodzi; tytuł wzoru z ▾ i karta Worda czytelne.","powod":"ucięcie i nachodzenie tekstu ocenia oko na buildzie z TestFlight; asercja Maestro sprawdza obecność elementu, nie ucięcie (słowa właściciela 16.11.2026, wariant B; część „nic nie ucięte” z PU-135).","kroki":[]},{"pu":"PU-136","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę trafiać kciukiem w przyciski przy dużym tekście.","zrob":"AX5 → stuknij kciukiem każdy główny przycisk („Przewodnik”, „Pokaż ›”, zębatka, +1).","powinno":"Każdy przycisk trafiony za pierwszym razem.","powod":"trafienie kciukiem zależy od ręki i odczucia; Maestro stuka w środek elementu współrzędnymi.","kroki":["T-90","G-21"]},{"pu":"PU-137","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę, żeby układ dopasował się do zmiany rozmiaru tekstu bez zamykania aplikacji.","zrob":"Aplikacja otwarta → rozmiar tekstu na połowę „Większe rozmiary” → wróć (licznik, „Ustawienia”) → przywróć.","powinno":"Układ dostosowuje się bez ponownego startu; nic nie ucięte.","powod":"zmiana suwaka „Większe rozmiary” w Ustawieniach iOS przy otwartej aplikacji; na symulatorze rozmiar tekstu ustawia workflow przed scenariuszem, nie w trakcie (słowa właściciela 16.11.2026, wariant B).","kroki":["T-91"]},{"pu":"PU-343","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę w trybie ciemnym nie widzieć białych pól.","zrob":"iPhone: Centrum sterowania → tryb ciemny → zamknij i otwórz Oczko → „Dziś”, licznik, wzór, „Ustawienia”, „Oczko Pro”, przewodnik z rozwiniętym wierszem.","powinno":"Brak białych pól na tych ekranach (sama strona wzoru zostaje biała, instrukcja 1171, Z-03).","powod":"białe pola ocenia oko na buildzie z TestFlight; test komponentowy sprawdza tokeny, nie piksele (słowa właściciela 16.11.2026, wariant B; część „brak białych pól” z PU-139).","kroki":[]},{"pu":"PU-140","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę, żeby w trybie ciemnym nic nie raziło.","zrob":"Tryb ciemny → zabij i otwórz Oczko → przejrzyj ekrany.","powinno":"Ekran startowy i tło ładowania ciemne, bez białego błysku; wszystkie teksty czytelne.","powod":"biały błysk przy starcie i czytelność kolorów ocenia oko w czasie rzeczywistym; zrzut nie łapie klatki przejścia.","kroki":["T-92","G-22"]},{"pu":"PU-141","kat":"TestFlight","urz":"iPad","min":5,"czek":0,"cel":"Chcę zainstalować Oczko na iPadzie z TestFlight.","zrob":"TestFlight na iPadzie → build 1171 → otwórz.","powinno":"Start bez awarii.","powod":"instalacja z TestFlight na iPadzie właściciela z tym samym Apple ID.","kroki":["T-95"]},{"pu":"PU-145","kat":"system iOS","urz":"iPad","min":3,"czek":0,"cel":"Chcę używać Oczka w Split View i Slide Over.","zrob":"iPad: Split View z Safari na ⅓ i ½, Slide Over → licznik, wzór, „Ustawienia”, przewodnik.","powinno":"W ⅓ układ jak na telefonie, w szerszych treść w kolumnie; nic nie ucięte.","powod":"prawdziwe okna Split View i Slide Over układa iPadOS; Maestro ich nie tworzy (wąskie okno udaje argument E2E).","kroki":["T-96","G-23"]},{"pu":"PU-339","kat":"system iOS","urz":"iPad","min":3,"czek":0,"cel":"Chcę, żeby na iPadzie dwa palce przewijały wzór, a nie rysowały.","zrob":"iPad: zakreślacz włączony → dwa palce na wzorze.","powinno":"Dwa palce przewijają (nie zostawiają kreski), jeden palec nadal rysuje.","powod":"natywny gest PencilKit (dwa palce), wielodotyk poza symulatorem i Maestro; logikę „jeden palec rysuje” sprawdza PU-149.","kroki":["T-97","Z-05"]},{"pu":"PU-151","kat":"sklep Apple","urz":"iPad","min":4,"czek":0,"cel":"Chcę mieć Pro na iPadzie bez ponownego zakupu.","zrob":"iPad: „Ustawienia” → „Oczko Pro” → „Przywróć zakupy” ⟦Restore purchases⟧.","powinno":"Pro włączone na iPadzie.","powod":"przywrócenie zakupu zrobionego na innym urządzeniu wymaga prawdziwego Apple ID i StoreKit.","kroki":["T-99"]},{"pu":"PU-152","kat":"system iOS","urz":"iPad","min":3,"czek":0,"cel":"Chcę wiedzieć, że w 1.0 iPhone i iPad mają osobne dane.","zrob":"Wartość licznika na iPhonie → na iPadzie +1 ×5 → iPhone.","powinno":"Na iPhonie ta sama wartość, projektu z iPada nie ma; na iPadzie licznik 6.","powod":"dwa fizyczne urządzenia z tym samym kontem; symulator nie łączy dwóch urządzeń jednym Apple ID.","kroki":["T-100"]},{"pu":"PU-153","kat":"system iOS","urz":"iPad","min":3,"czek":0,"cel":"Chcę otworzyć bardzo duży PDF (100–200 MB).","zrob":"iPad: „Wybierz plik (PDF lub Word)” → duży PDF → przewiń do końca.","powinno":"Otwiera się bez zamknięcia aplikacji; czas otwarcia zapisany.","powod":"zamknięcie aplikacji przy dużym PDF zależy od limitu pamięci prawdziwego iPada, a symulator korzysta z pamięci Maca; PDF 150 MB i czas otwarcia sprawdza właściciel na buildzie z TestFlight (słowa właściciela 16.11.2026, wariant B).","kroki":["T-101"]},{"pu":"PU-154","kat":"wrażenie","urz":"iPad","min":2,"czek":0,"cel":"Chcę płynnie przewijać duży wzór.","zrob":"Duży PDF → przewijanie do końca.","powinno":"Bez widocznych zacięć.","powod":"płynność przewijania ocenia oko na prawdziwym iPadzie; symulator ma inną wydajność grafiki.","kroki":["T-101"]},{"pu":"PU-336","kat":"Pencil","urz":"iPad","min":2,"czek":0,"cel":"Chcę pisać piórem po wzorze na iPadzie.","zrob":"iPad pełny ekran: wzór PDF → „Pióro” ⟦Pen⟧ → przeciągnij → „Cofnij ostatnią kreskę” → przeciągnij → zawęź okno do 375 pt.","powinno":"Kreska pióra widoczna od razu, cofnięcie zdejmuje tylko ją; w wąskim oknie „Pióro” znika z paska, a wybrane narzędzie przechodzi na „Zakreślacz” ⟦Highlighter⟧; po restarcie kreska zostaje.","powod":"kreska pióra, cofnięcie ostatniej kreski i trwałość po restarcie tylko na iPadzie (PencilKit; Maestro nie rysuje kreski, BX-041); częściowo: tests/ekrany/pu-336-pioro-wasko.test.tsx:50; tests/ekrany/pu-336-pioro-wasko.test.tsx:52 (klasa F według słów właściciela 16.11.2026, KO-111)","kroki":[]},{"pu":"PU-337","kat":"Pencil","urz":"iPad","min":2,"czek":0,"cel":"Chcę pisać Apple Pencil, a palcem tylko przewijać.","zrob":"iPad: wzór → dotknij rysikiem bez wybranego narzędzia → pisz → przeciągnij palcem → zamknij i otwórz wzór → palec.","powinno":"Pierwsze dotknięcie rysikiem wybiera „Pióro” i od razu pisze; podpowiedź „Rysik pisze. Palec przewija.” ⟦The pencil writes. Your finger scrolls.⟧; palec przewija bez śladu; po ponownym otwarciu palec znów rysuje w trybie narzędzia.","powod":"rozróżnienie rysika i palca (PencilKit `.pencilOnly`) wymaga prawdziwego Apple Pencil; częściowo: jednostkowy src/domena/rysik.ts (`poPierwszymRysiku`)","kroki":[]},{"pu":"PU-155","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę liczyć na zegarku ten sam licznik co na telefonie.","zrob":"iPhone: nowy projekt „Watch test” → +1; zegarek w zasięgu: +1 ×2.","powinno":"Zegarek pokazuje ten sam licznik; iPhone po chwili większy o 2; zegarek wibruje przy +1.","powod":"sparowany Apple Watch, łączność WatchConnectivity i wibracja zegarka działają tylko na urządzeniach.","kroki":["T-105"]},{"pu":"PU-157","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę liczyć na zegarku, gdy telefon jest poza zasięgiem.","zrob":"Licznik 10 → telefon poza zasięgiem → zegarek +1 ×3 → telefon wraca.","powinno":"Zegarek 13 i linia „iPhone poza zasięgiem. 3 zmiany są zapisane na zegarku.” ⟦iPhone not nearby. 3 changes are saved on this watch.⟧; po powrocie iPhone 13, linia znika.","powod":"utrata i powrót zasięgu między fizycznym zegarkiem a iPhonem.","kroki":["T-106"]},{"pu":"PU-160","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę poczuć przypomnienie na zegarku.","zrob":"Zegarek: +1 przed rzędem z przypomnieniem.","powinno":"Inna wibracja niż zwykła; pas „Rząd 12: decrease at both ends · 1 z 8” ⟦Row 12: decrease at both ends · 1 of 8⟧.","powod":"wibracja i wygląd tarczy Apple Watch tylko na prawdziwym zegarku.","kroki":["T-107"]},{"pu":"PU-329","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę cofnąć rząd na zegarku.","zrob":"Zegarek: licznik 12 → „−1” („Usuń rząd” ⟦Remove row⟧) → iPhone.","powinno":"Zegarek 11, „Teraz rząd 12” ⟦Now row 12⟧; iPhone po chwili 11; przy „Co pokazuje liczba: Rząd, nad którym pracuję” zegarek pokazuje 12.","powod":"stuknięcie w aplikacji zegarka na sparowanym Apple Watch; częściowo: jednostkowy Swift ZegarekSkrzynkaTests (−1 w skrzynce)","kroki":[]},{"pu":"PU-330","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę, żeby zablokowany licznik nie zmieniał się od stuknięć na zegarku.","zrob":"iPhone: ••• → „Zablokuj licznik…” → zegarek: stuknij ekran i „+1”.","powinno":"Zegarek: „Licznik zablokowany” ⟦Counter locked⟧, „Odblokuj go w Oczku na iPhonie.” ⟦Unlock it in Oczko on your iPhone.⟧, bez przycisków; stuknięcie daje wibrację „niepowodzenie”; wartość bez zmian.","powod":"haptyka i stan zegarka tylko na sparowanym Apple Watch; częściowo: jednostkowy Swift IntencjaTests (`zablokowany` przed limitem)","kroki":[]},{"pu":"PU-331","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę wiedzieć na zegarku, że skończyły się darmowe dni, i mieć Pro także tam.","zrob":"Konto bez Pro, 6. dzień robótkowy → zegarek „+1”; potem zakup Pro na iPhonie → zegarek „+1”.","powinno":"Bez Pro: „Brak darmowych dni robótkowych na …” ⟦No free crafting days left in …⟧ i „Liczenie wznowi się …” ⟦Counting resumes …⟧, rząd nie dodany; z Pro zegarek liczy bez limitu, także bez telefonu w pobliżu.","powod":"StoreKit zegarka i kontekst telefonu; częściowo: jednostkowy Swift LimitTests, DostepTests","kroki":[]},{"pu":"PU-332","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę wiedzieć, co zrobić, gdy otwieram Oczko na zegarku pierwszy raz.","zrob":"Świeża instalacja na zegarku, bez otwierania Oczka na iPhonie → otwórz Oczko na zegarku → otwórz Oczko na iPhonie → +1.","powinno":"Zegarek: „Otwórz Oczko na iPhonie, aby zacząć liczyć.” ⟦Open Oczko on your iPhone to start counting.⟧; po pierwszym kontakcie z telefonem zegarek pokazuje licznik.","powod":"pierwsze uruchomienie aplikacji zegarka na sparowanym urządzeniu","kroki":[]},{"pu":"PU-344","kat":"zegarek","urz":"Watch + iPhone","min":3,"czek":0,"cel":"Chcę na zegarku zobaczyć i poczuć, że stuknięcie się nie zapisało.","zrob":"Zegarek z nieczytelną skrzynką (błąd zapisu) → „+1” → po powrocie zapisu „+1”.","powinno":"„Nie dodano rzędu n” ⟦Row n wasn’t added⟧ i „Spróbuj ponownie lub licz na iPhonie.” ⟦Try again or count on iPhone.⟧; wibracja „ponów”; po udanym stuknięciu komunikat znika.","powod":"widok komunikatu i wibracja tylko na sparowanym Apple Watch; test Swift pakietu (PU-333) sprawdza stan i wzorzec haptyki, nie widok SwiftUI (słowa właściciela 16.11.2026, wariant A; część z PU-333).","kroki":[]},{"pu":"PU-169","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę, żeby rozmowa telefoniczna nie przerwała liczenia.","zrob":"Licznik → „Stoper” ⟦Timer⟧ → połączenie przychodzące 30 s → powrót.","powinno":"Licznik i stoper działają, wartość bez zmian, bez ponownego startu.","powod":"prawdziwe połączenie telefoniczne i przejęcie audio; symulator nie odbiera połączeń.","kroki":["T-115"]},{"pu":"PU-174","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę naturalnych zdań w swoim języku.","zrob":"Przeczytaj przewodnik i ekrany po polsku, niemiecku i japońsku.","powinno":"Zapisane zdania brzmiące nienaturalnie (to nie bloker).","powod":"naturalność zdania ocenia czytelnik języka; automat sprawdza tylko obecność i ucięcie tekstu.","kroki":["G-25","G-26"]},{"pu":"PU-342","kat":"wrażenie","urz":"iPhone","min":2,"czek":0,"cel":"Chcę używać Oczka po niemiecku i japońsku bez uciętych tekstów.","zrob":"„Język” → „Deutsch”, potem „日本語” → „Dziś”, licznik z przypomnieniem, „Oczko Pro”.","powinno":"Teksty nieucięte (długie słowa niemieckie, znaki japońskie).","powod":"ucięcie tekstu ocenia oko na buildzie z TestFlight; asercja Maestro sprawdza obecność tytułu, nie ucięcie (słowa właściciela 16.11.2026, wariant B; część „nieucięte” z PU-175).","kroki":[]},{"pu":"PU-176","kat":"sklep Apple","urz":"iPhone","min":4,"czek":0,"cel":"Chcę widzieć ceny w walucie mojego konta.","zrob":"„Oczko Pro” w de i ja.","powinno":"Ceny w walucie konta App Store.","powod":"waluta i ceny pochodzą z prawdziwego konta App Store; sztuczny sklep ma stałe ceny testowe.","kroki":["T-121"]},{"pu":"PU-338","kat":"system iOS","urz":"iPhone","min":3,"czek":0,"cel":"Chcę zmienić nazwę aplikacji pod ikoną i tekst zgody na aparat na mój język.","zrob":"„Ustawienia” → „Język” → „Zmień w Ustawieniach iOS” ⟦Change in iOS Settings⟧ → Ustawienia iOS → Oczko → Język → Polski → wróć.","powinno":"Otwiera się strona Oczka w Ustawieniach iOS; pod przyciskiem „Nazwa aplikacji pod ikoną i tekst uprawnienia do aparatu zależą od języka ustawionego dla Oczka w Ustawieniach iOS.”; po zmianie nazwa pod ikoną i zgoda na aparat po polsku.","powod":"strona aplikacji w Ustawieniach iOS i nazwa pod ikoną są poza aplikacją; częściowo B: hak `otworzUstawieniaSystemu` (src/kompozycja/system.ts:35) wołany po `jezyk-ustawienia-ios`","kroki":[]},{"pu":"PU-182","kat":"inne aplikacje","urz":"iPhone","min":3,"czek":0,"cel":"Chcę, żeby „Oceń Oczko” otwierał App Store.","zrob":"„Oceń Oczko” ⟦Rate Oczko⟧.","powinno":"Otwiera App Store (przed publikacją może być „nie znaleziono”).","powod":"App Store nie istnieje w symulatorze; otwarcie strony aplikacji sprawdza się na telefonie.","kroki":["T-126"]},{"pu":"PU-187","kat":"TestFlight","urz":"iPhone","min":5,"czek":0,"cel":"Chcę po instalacji od zera policzyć rząd od razu.","zrob":"Usuń Oczko → zainstaluj z TestFlight → „+1” zaraz po pokazaniu → ekran główny → otwórz; 3 razy.","powinno":"Za każdym razem 1; brak okien przed „Dziś”; nigdy tryb awaryjny.","powod":"usunięcie aplikacji i instalacja z TestFlight na urządzeniu; czas pierwszego startu z TestFlight różni się od buildu symulatora.","kroki":["T-133"]},{"pu":"PU-190","kat":"sklep Apple","urz":"iPhone","min":4,"czek":0,"cel":"Chcę mieć Pro po ponownej instalacji bez przywracania.","zrob":"Po ostatniej instalacji → „Ustawienia” (bez „Przywróć zakupy”).","powinno":"„Oczko Pro” = „Włączone” ⟦On⟧.","powod":"transakcje StoreKit wracają z Apple ID po reinstalacji; sztuczny sklep czyści się razem z danymi aplikacji.","kroki":["T-135"]},{"pu":"PU-192","kat":"TestFlight","urz":"iPhone","min":5,"czek":0,"cel":"Chcę zgłosić wszystkie awarie z ręcznego testu.","zrob":"Podsumowanie testu na urządzeniu.","powinno":"Lista awarii z godziną i numerem kroku albo „brak”.","powod":"raporty awarii z urządzenia właściciela zbiera TestFlight; zestaw automatyczny ich nie widzi.","kroki":["T-136"]},{"pu":"PU-194","kat":"sklep Apple","urz":"iPhone","min":4,"czek":0,"cel":"Chcę, żeby prawdziwa subskrypcja testowa wygasła poprawnie.","zrob":"Co najmniej 8 dni po zakupie → Oczko → „+1”.","powinno":"Pro wyłączone, dane zostają, limit wraca.","powod":"wygaśnięcie subskrypcji piaskownicy odbywa się po stronie serwerów Apple w czasie rzeczywistym.","kroki":["T-137"]}]};
+  var KLUCZ = 'oczko-test-fizyczny';
+  var stan = { build: '', odp: {} };
+  try { var z = JSON.parse(localStorage.getItem(KLUCZ) || 'null'); if (z && z.odp) stan = z; } catch (e) { }
+  function zapisz() { try { localStorage.setItem(KLUCZ, JSON.stringify(stan)); } catch (e) { } }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function fmt(t) { return esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/⟦([^⟧]*)⟧/g, '<span class="en">(„$1”)</span>'); }
+  function urzKlasa(u) { return /iPad/.test(u) ? 'ipad' : /Watch/.test(u) ? 'watch' : ''; }
+  function czas(min) { if (min < 60) return 'ok. ' + min + ' min'; var h = Math.floor(min / 60), m = min % 60; return 'ok. ' + h + ' h' + (m ? ' ' + m + ' min' : ''); }
+  function etykieta(pu, w) { return w === 'pomin' ? 'Uzasadnienie pominięcia (obowiązkowe)' : 'Uwaga do ' + pu; }
+  var protokolWyniku = function protokolWyniku(kroki, odp, build, data) {
+  var wiersze = [], bezUzas = [], brak = [];
+  kroki.forEach(function (k) {
+    var o = odp[k.pu] || {}, u = String(o.u || '').replace(/\s+/g, ' ').replace(/\|/g, '/').trim();
+    if (!o.w) { brak.push(k.pu); wiersze.push('| ' + k.pu + ' | brak odpowiedzi |'); return; }
+    if (o.w === 'pomin') { if (!u) bezUzas.push(k.pu); wiersze.push('| ' + k.pu + ' | pominięte:' + (u ? ' ' + u : '') + ' |'); return; }
+    wiersze.push('| ' + k.pu + ' | zrobione: ' + (o.w === 'nie' ? 'NIE' : 'tak') + (u ? ' — ' + u : '') + ' |');
+  });
+  var w = [];
+  if (bezUzas.length || brak.length) w.push('NIEPEŁNY WYNIK — ' + [bezUzas.length ? '„Pomiń” bez uzasadnienia: ' + bezUzas.join(', ') : '', brak.length ? 'bez odpowiedzi: ' + brak.join(', ') : ''].filter(Boolean).join('; '));
+  w.push('Test fizyczny Oczka · build ' + (String(build || '').trim() || '?') + ' · ' + data, '| PU | Wynik |', '|---|---|');
+  return w.concat(wiersze).join('\n');
+};
+  function rysujKrok(k) {
+    var o = stan.odp[k.pu] || {};
+    var h = '<article class="krok" id="k-' + k.pu + '" data-id="' + k.pu + '"' + (o.w ? ' data-stan="' + o.w + '"' : '') + '>';
+    h += '<div class="krok-glowa"><span class="id">' + k.pu + '</span><span class="chip ' + urzKlasa(k.urz) + '">' + esc(k.urz) + '</span>';
+    if (k.kroki.length) h += '<span class="chip">' + esc(k.kroki.join(', ')) + '</span>';
+    h += '<span class="czas">' + k.min + ' min' + (k.czek ? ' + ' + k.czek + ' min czekania' : '') + '</span></div>';
+    h += '<p class="temat">' + fmt(k.cel) + '</p>';
+    h += '<h4>Zrób</h4><p>' + fmt(k.zrob) + '</p>';
+    h += '<h4>Powinno być</h4><p class="powinno">' + fmt(k.powinno) + '</p>';
+    h += '<details><summary>Dlaczego ręcznie</summary><p>' + fmt(k.powod) + '</p></details>';
+    h += '<div class="odp" role="group" aria-label="Wynik ' + k.pu + '">';
+    [['tak', 'Tak'], ['nie', 'Nie'], ['pomin', 'Pomiń']].forEach(function (p) { h += '<button type="button" data-w="' + p[0] + '" aria-pressed="' + (o.w === p[0]) + '">' + p[1] + '</button>'; });
+    h += '</div><div class="pole uwaga-pole"><label for="u-' + k.pu + '">' + etykieta(k.pu, o.w) + '</label>';
+    h += '<textarea id="u-' + k.pu + '" rows="1" placeholder="co jest inaczej albo powód pominięcia">' + esc(o.u || '') + '</textarea></div>';
+    return h + '</article>';
+  }
+  function rysuj() {
+    var h = '';
+    DANE.grupy.forEach(function (g) {
+      var kr = DANE.kroki.filter(function (k) { return k.kat === g.kat; });
+      var m = kr.reduce(function (a, k) { return a + k.min + k.czek; }, 0);
+      h += '<section class="sekcja"><div class="sekcja-glowa"><h3>' + esc(g.tytul) + '</h3><span class="pod male">' + kr.length + (kr.length === 1 ? ' pozycja' : ' poz.') + ' · ' + czas(m) + '</span></div>';
+      h += kr.map(rysujKrok).join('') + '</section>';
+    });
+    document.getElementById('lista').innerHTML = h;
+    postep();
+  }
+  function postep() {
+    var n = DANE.kroki.length, l = { tak: 0, nie: 0, pomin: 0 };
+    DANE.kroki.forEach(function (k) { var o = stan.odp[k.pu]; if (o && o.w) l[o.w]++; });
+    var z = l.tak + l.nie + l.pomin;
+    document.getElementById('postep-tekst').textContent = z + ' z ' + n + (l.nie ? ' · nie: ' + l.nie : '');
+    document.getElementById('b-t').style.width = (100 * l.tak / n) + '%';
+    document.getElementById('b-n').style.width = (100 * l.nie / n) + '%';
+    document.getElementById('b-p').style.width = (100 * l.pomin / n) + '%';
+    document.getElementById('wynik-opis').textContent = 'Zaznaczone ' + z + ' z ' + n + '. Wiadomość zawiera tylko numery pozycji, wynik i Twoje uwagi.';
+  }
+  function tekstWyniku() {
+    var d = new Date(), dz = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    return protokolWyniku(DANE.kroki, stan.odp, stan.build, dz);
+  }
+  function pokazTekst(t) { var ta = document.getElementById('tekst-wyniku'); ta.value = t; ta.hidden = false; document.getElementById('et-tekst').hidden = false; return ta; }
+  function kopiuj() {
+    var t = tekstWyniku(), kom = document.getElementById('komunikat');
+    function zapas() { var ta = pokazTekst(t); ta.focus(); ta.select(); kom.textContent = 'Tekst jest zaznaczony poniżej — skopiuj go ręcznie.'; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { pokazTekst(t); kom.textContent = /^NIEPEŁNY/.test(t) ? 'Skopiowano, ale wynik jest NIEPEŁNY — uzupełnij pozycje z pierwszej linii.' : 'Skopiowano. Wklej wiadomość koordynatorowi.'; }, zapas);
+      else zapas();
+    } catch (e) { zapas(); }
+    document.getElementById('wynik').scrollIntoView({ block: 'start' });
+  }
+  var lista = document.getElementById('lista');
+  lista.addEventListener('click', function (e) {
+    var b = e.target.closest('.odp button'); if (!b) return;
+    var art = b.closest('article.krok'), id = art.dataset.id, w = b.dataset.w, o = stan.odp[id] || (stan.odp[id] = {});
+    o.w = o.w === w ? '' : w;
+    if (o.w) art.dataset.stan = o.w; else art.removeAttribute('data-stan');
+    art.querySelectorAll('.odp button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.w === o.w)); });
+    art.querySelector('.uwaga-pole label').textContent = etykieta(id, o.w);
+    if (o.w === 'pomin' && !(o.u || '').trim()) art.querySelector('textarea').focus();
+    zapisz(); postep();
+  });
+  lista.addEventListener('input', function (e) {
+    if (e.target.tagName !== 'TEXTAREA') return;
+    var id = e.target.closest('article.krok').dataset.id; (stan.odp[id] || (stan.odp[id] = {})).u = e.target.value; zapisz();
+  });
+  var build = document.getElementById('build'); build.value = stan.build || '';
+  build.addEventListener('input', function () { stan.build = build.value; zapisz(); });
+  document.getElementById('kopiuj').addEventListener('click', kopiuj);
+  document.getElementById('kopiuj2').addEventListener('click', kopiuj);
+  document.getElementById('pokaz').addEventListener('click', function () { pokazTekst(tekstWyniku()); });
+  document.getElementById('dalej').addEventListener('click', function () {
+    var k = DANE.kroki.filter(function (x) { return !(stan.odp[x.pu] || {}).w; })[0];
+    (k ? document.getElementById('k-' + k.pu) : document.getElementById('wynik')).scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
+  var wyczysc = document.getElementById('wyczysc'), tak = document.getElementById('wyczysc-tak');
+  wyczysc.addEventListener('click', function () { tak.hidden = !tak.hidden; });
+  tak.addEventListener('click', function () { stan.odp = {}; zapisz(); tak.hidden = true; rysuj(); document.getElementById('komunikat').textContent = 'Zaznaczenia wyczyszczone.'; });
+  rysuj();
+})();
+</script>

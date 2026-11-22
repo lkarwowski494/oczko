@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/brd/wektory.schema.json",
+  "title": "Wektory reguł BRD (tests/wektory/brd.json)",
+  "description": "Generuje tylko rola 01: node docs/brd/narzedzia/kontrola-brd.mjs docs/brd --wektory > tests/wektory/brd.json; zgodność: --zgodnosc=tests/wektory/brd.json (ER-39, P-097). Tolerancja: bezwzględna, dotyczy wyników liczbowych niecałkowitych; wynik całkowity i każdy wynik nieliczbowy porównuje się dokładnie; null = porównanie dokładne (docs/brd/reguly.md, zasady wspólne). Zbiór: tablica bez znaczenia kolejności; lista: tablica w kolejności (rozróżnia je zapis w reguly.md: {a, b} albo a; b).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["regula", "id", "wejscie", "oczekiwane", "tolerancja", "rodzaj", "pochodzenie", "miejsce"],
+    "properties": {
+      "regula": { "type": "string", "pattern": "^RD-\\d{2}$" },
+      "id": { "type": "string", "pattern": "^RD-\\d{2}-W\\d+$" },
+      "wejscie": { "type": "object", "additionalProperties": { "$ref": "#/$defs/wartosc" } },
+      "oczekiwane": { "type": "object", "minProperties": 1, "additionalProperties": { "$ref": "#/$defs/wartosc" } },
+      "tolerancja": { "type": ["number", "null"], "minimum": 0 },
+      "rodzaj": { "enum": ["typowy", "granica", "poniżej", "powyżej", "błąd"] },
+      "pochodzenie": { "type": "string", "minLength": 1 },
+      "miejsce": { "type": "string", "pattern": "^docs/brd/[^:]+\\.md:\\d+$" }
+    }
+  },
+  "$defs": {
+    "skalar": { "type": ["number", "string", "boolean", "null"] },
+    "wartosc": {
+      "anyOf": [
+        { "$ref": "#/$defs/skalar" },
+        { "type": "array", "items": { "type": ["number", "string"] } }
+      ]
+    }
+  }
+}

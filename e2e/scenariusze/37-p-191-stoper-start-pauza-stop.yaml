@@ -1,0 +1,44 @@
+# P-191 (P1a, F-21, BR-PRJ-008): stoper sesji w pasku licznika — start jednym stuknięciem (U-4), kapsuła z czasem, menu: Pause → Resume → Stop;
+# sesja zapisana w „Sessions” na ekranie projektu (P4a). Funkcja bez UI na 2026-10-26 (08 grupa B) — pakiet pełny, informacyjnie.
+# Zegar biegnie od TERAZ (Z07-18), więc czas w kapsule sprawdzany wzorcem, nie wartością.
+appId: com.apps4brew.knitting
+name: "P-191 · Stoper sesji: start, pauza, wznowienie, stop — sesja w „Sessions”"
+tags:
+  - P-191
+  - stan-licznika
+  - PU-045
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- takeScreenshot: 37-kapsula
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "stoper-wstrzymaj", text: "Pause timer" }
+- tapOn: { id: "stoper-wstrzymaj" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, paused.*" }
+- takeScreenshot: 37-pauza
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+# Wznowienie ma własny testID `stoper-wznow` (src/ekrany/Stoper.tsx:67; przebieg 123: „Resume timer” jako stoper-wznow). F07-33.
+- assertVisible: { id: "stoper-wznow", text: "Resume timer" }
+- tapOn: { id: "stoper-wznow" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "stoper-zatrzymaj" }
+- tapOn: { id: "stoper-zatrzymaj" }
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-dodaj" }
+- scrollUntilVisible: { element: { id: "projekt-sesje" } }
+- tapOn: { id: "projekt-sesje" }
+- assertVisible: { id: "sesje-lista" }
+- assertVisible: ".* in 1 session"
+- takeScreenshot: 37-sesje

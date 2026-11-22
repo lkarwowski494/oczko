@@ -1,0 +1,106 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.hdc",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.hdc.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "half double crochet",
+    "skrot": "hdc",
+    "twierdzenie": "TRM-EN-031"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "half treble",
+    "skrot": "htr",
+    "twierdzenie": "TRM-GB-003"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "półsłupek",
+    "skrot": "psł",
+    "twierdzenie": "TRM-PL-033"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "halvstolpe",
+    "skrot": "hst",
+    "twierdzenie": "TRM-SV-007"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "meio ponto alto",
+    "skrot": "mpa.",
+    "twierdzenie": "TRM-PT-002"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "полустолбик с накидом",
+    "skrot": "ПССН",
+    "twierdzenie": "TRM-RU-036"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "півстовпчик з накидом",
+    "skrot": "ПС",
+    "twierdzenie": "TRM-UA-025"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "中長編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-032"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "긴뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-018"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "yarı üçlü ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-031"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "pusinis stulpelis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-016"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "separuh sekali belit",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-012"
+   }
+  ],
+  "id": [
+   {
+    "nazwa": "tusuk setengah ganda",
+    "skrot": "hdc",
+    "twierdzenie": "TRM-ID-003"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

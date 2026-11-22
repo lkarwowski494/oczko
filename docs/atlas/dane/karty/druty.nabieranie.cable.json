@@ -1,0 +1,77 @@
+{
+ "format": 1,
+ "id": "druty.nabieranie.cable",
+ "rzemioslo": "druty",
+ "rodzaj": "nabieranie",
+ "publikacja": "po-generatorze",
+ "klucze": {
+  "nazwa": "atlas.druty.nabieranie.cable.nazwa",
+  "podpis": "atlas.druty.nabieranie.cable.podpis",
+  "opis_alt": "atlas.druty.nabieranie.cable.opis_alt"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "cable cast-on",
+    "skrot": null,
+    "twierdzenie": "TRM-EN-042"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "metoda na dwa druty (warkoczowa)",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-026"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "麻花式起針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-016"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "nabieranie",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": null
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "prawy drut wkłuty w pierwsze oczko jak na prawo, nitka owinięta, pętla przeciągnięta bez zrzucania oczka i przełożona na lewy drut",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.cable.krok1"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "prawy drut wkłuty między dwa ostatnie oczka na lewym drucie",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.cable.krok2"
+  },
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "faza_opis": "pętla przeciągnięta i przełożona na lewy drut",
+   "strzalka": null,
+   "klucz": "atlas.druty.nabieranie.cable.krok3"
+  }
+ ]
+}

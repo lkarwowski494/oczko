@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Silmus",
+    "NSCameraUsageDescription": "Oczko kasutab kaamerat ainult siis, kui teete foto mustrist, projektist või lõnga sildist. Fotod jäävad teie seadmesse."
+  }
+}

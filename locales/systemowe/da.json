@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko bruger kun kameraet, når du tager et billede af en opskrift, et projekt eller en garnbanderole. Billederne bliver på din enhed."
+  }
+}

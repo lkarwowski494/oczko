@@ -1,0 +1,213 @@
+{
+ "format": 1,
+ "id": "szydelko.oczko_szydelkowe.dc",
+ "rzemioslo": "szydelko",
+ "rodzaj": "oczko_szydelkowe",
+ "klucze": {
+  "nazwa": "atlas.szydelko.oczko_szydelkowe.dc.nazwa",
+  "podpis": "atlas.szydelko.oczko_szydelkowe.dc.podpis",
+  "opis_alt": "atlas.szydelko.oczko_szydelkowe.dc.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.szydelko.oczko_szydelkowe.dc.nazwa_gb"
+ ],
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "double crochet",
+    "skrot": "dc",
+    "twierdzenie": "TRM-EN-032"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "treble",
+    "skrot": "tr",
+    "twierdzenie": "TRM-GB-004"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "słupek",
+    "skrot": "sł",
+    "twierdzenie": "TRM-PL-034"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "stolpe",
+    "skrot": "st",
+    "twierdzenie": "TRM-SV-008"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto alto",
+    "skrot": "pa.",
+    "twierdzenie": "TRM-PT-003"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "столбик с накидом",
+    "skrot": "ССН",
+    "twierdzenie": "TRM-RU-037"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "стовпчик з накидом",
+    "skrot": "СН",
+    "twierdzenie": "TRM-UA-026"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "長編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-033"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "한길긴뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-019"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "düz üçlü ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-032"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "висок пълнеж",
+    "skrot": "ВП",
+    "twierdzenie": "TRM-BG-030"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "stulpelis su užmetimu",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-018"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "vienkāršais stabiņš",
+    "skrot": "vst",
+    "twierdzenie": "TRM-LV-013"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "sekali belit",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-013"
+   }
+  ],
+  "id": [
+   {
+    "nazwa": "tusuk ganda",
+    "skrot": "dc",
+    "twierdzenie": "TRM-ID-004"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-C-008",
+   "wartosc": {
+    "narzuty": 1
+   },
+   "twierdzenia": [
+    "ATL-C-006"
+   ]
+  },
+  {
+   "id": "ATL-C-006",
+   "wartosc": {
+    "petle_po_wyciagnieciu": 3
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US",
+  "en-GB"
+ ],
+ "rysunek": {
+  "rodzina": "graf-szydelkowy",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "oczko_szydelkowe",
+   "narzuty": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "petle_na_narzedziu": 3,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.dc.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "petle_na_narzedziu": 2,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.dc.krok2"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 0,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "petle_na_narzedziu": 1,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.dc.krok3"
+  }
+ ]
+}

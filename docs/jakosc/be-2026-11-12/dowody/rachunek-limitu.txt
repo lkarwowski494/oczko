@@ -1,0 +1,11 @@
+# Rachunek (BE, 12.11.2026): czas 1 podejścia ≈ (waga_s części z e2e/czesci.json + 62 s narzutu × liczba scenariuszy) / 60; narzut 55–70 s wg opisu e2e/czesci.json, środek 62 s; najgorszy przypadek = awaria w ostatnim scenariuszu → 2 × pełne podejście. Limit kroku = timeout_min z planu (30 + 4 × scenariusze). Wagi częściowo szacunkowe (opis czesci.json). Wejście: dowody plan i plan-podstawowy z `node scripts/ci/e2e-czesci.mjs plan|plan-podstawowy` (kod wyjścia 0 oba).
+plan część 1 scen 22 osobne 0 waga_s 3107 timeout 118 1 podejście ~min 74.5 najgorzej 2 podejścia ~min 149.0
+plan część 2 scen 23 osobne 0 waga_s 3158 timeout 122 1 podejście ~min 76.4 najgorzej 2 podejścia ~min 152.8
+plan część 3 scen 22 osobne 1 waga_s 3110 timeout 118 1 podejście ~min 74.6 najgorzej 2 podejścia ~min 149.1
+plan-podstawowy część 1 scen 6 osobne 0 waga_s 1143 timeout 54 1 podejście ~min 25.3 najgorzej 2 podejścia ~min 50.5
+plan-podstawowy część 2 scen 7 osobne 0 waga_s 1201 timeout 58 1 podejście ~min 27.3 najgorzej 2 podejścia ~min 54.5
+część 1 ponawialne 0 
+część 2 ponawialne 0 
+pełny część 1 ponawialne 2 w bramce i ponawialne 0
+pełny część 2 ponawialne 3 w bramce i ponawialne 0
+pełny część 3 ponawialne 2 w bramce i ponawialne 0

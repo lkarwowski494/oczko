@@ -1,0 +1,113 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.tr",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.tr.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "treble crochet",
+    "skrot": "tr",
+    "twierdzenie": "TRM-EN-033"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "double treble",
+    "skrot": "dtr",
+    "twierdzenie": "TRM-GB-005"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "słupek podwójny",
+    "skrot": "sł2",
+    "twierdzenie": "TRM-PL-035"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "dubbelstolpe",
+    "skrot": "dst",
+    "twierdzenie": "TRM-SV-024"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto alto duplo",
+    "skrot": "pad.",
+    "twierdzenie": "TRM-PT-004"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "столбик с двумя накидами",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-038"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "стовпчик із двома накидами",
+    "skrot": "С/2Н",
+    "twierdzenie": "TRM-UA-027"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "長々編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-034"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "두길긴뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-020"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "çift üçlü ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-033"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "двоен висок пълнеж",
+    "skrot": "ДВП",
+    "twierdzenie": "TRM-BG-031"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "stulpelis su dviem užmetimais",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-019"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "dua kali belit",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-014"
+   }
+  ],
+  "id": [
+   {
+    "nazwa": "tusuk tripel",
+    "skrot": "tr",
+    "twierdzenie": "TRM-ID-005"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

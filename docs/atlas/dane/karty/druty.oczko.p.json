@@ -1,0 +1,262 @@
+{
+ "format": 1,
+ "id": "druty.oczko.p",
+ "rzemioslo": "druty",
+ "rodzaj": "oczko",
+ "klucze": {
+  "nazwa": "atlas.druty.oczko.p.nazwa",
+  "podpis": "atlas.druty.oczko.p.podpis",
+  "opis_alt": "atlas.druty.oczko.p.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.druty.oczko.p.uwaga_nitka"
+ ],
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "purl",
+    "skrot": "p",
+    "twierdzenie": "TRM-EN-002"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko lewe",
+    "skrot": "o. l.",
+    "twierdzenie": "TRM-PL-002"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "avig maska",
+    "skrot": "am",
+    "twierdzenie": "TRM-SV-002"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "изнаночная петля",
+    "skrot": "изн. п.",
+    "twierdzenie": "TRM-RU-002"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "виворітна петля",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-002"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "裏目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-002"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "안뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-002"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "上針",
+    "skrot": "P",
+    "twierdzenie": "TRM-ZHT-002"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ters ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-009"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto tricô",
+    "skrot": "P",
+    "twierdzenie": "TRM-PT-014"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "ochi pe dos",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-002"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "опакова бримка",
+    "skrot": "о.бр.",
+    "twierdzenie": "TRM-BG-002"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "išvirkščioji akis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-002"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "kreiliskais valdziņš",
+    "skrot": "k",
+    "twierdzenie": "TRM-LV-002"
+   }
+  ],
+  "sr": [
+   {
+    "nazwa": "обрнуто",
+    "skrot": null,
+    "twierdzenie": "TRM-SR-002"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "leva petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-002"
+   }
+  ],
+  "sk": [
+   {
+    "nazwa": "rubové očko",
+    "skrot": null,
+    "twierdzenie": "TRM-SK-002"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "jahit purl",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-002"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "punto revés",
+    "skrot": "r",
+    "twierdzenie": "TRM-ESLA-002"
+   }
+  ]
+ },
+ "twierdzenia": [
+  {
+   "id": "ATL-K-005",
+   "wartosc": {
+    "kierunek": "od_tylu"
+   },
+   "twierdzenia": [
+    "ATL-K-011"
+   ]
+  },
+  {
+   "id": "ATL-T-036",
+   "wartosc": {
+    "znaczenie_ws": "druty.oczko.k"
+   }
+  }
+ ],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "oczko",
+   "strona": "lewe",
+   "kolumna": 1
+  }
+ },
+ "kroki": [
+  {
+   "faza": "wklucie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": "od_tylu",
+   "drut": {
+    "ktory": "prawy",
+    "grot": "w_lewo"
+   },
+   "nitka": "przod",
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.p.krok1"
+  },
+  {
+   "faza": "narzut",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "nitka": "przod",
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.p.krok2"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.p.krok3"
+  },
+  {
+   "faza": "zdjecie",
+   "petle": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "wyroznij": [
+    {
+     "rzad": 1,
+     "kolumna": 1
+    }
+   ],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.oczko.p.krok4"
+  }
+ ]
+}

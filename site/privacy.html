@@ -1,59 +1,168 @@
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Oczko (Purlo) — Polityka Prywatności / Privacy Policy</title>
-  <style>
-    :root { color-scheme: light dark; --bg: #FAF8F5; --fg: #1F2937; --accent: #C85A32; --muted: #6B7280; --line: #E5E7EB; }
-    @media (prefers-color-scheme: dark) { :root { --bg: #111827; --fg: #F9FAFB; --accent: #E07A5F; --muted: #9CA3AF; --line: #374151; } }
-    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    main { max-width: 720px; margin: 0 auto; padding: 30px 20px 60px; }
-    h1 { font-size: 28px; color: var(--accent); margin-bottom: 6px; }
-    h2 { font-size: 20px; margin: 30px 0 10px; color: var(--accent); }
-    p, li { color: var(--fg); }
-    .muted { color: var(--muted); font-size: 14px; }
-    hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
-    a { color: var(--accent); text-decoration: none; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Oczko — polityka prywatności / Privacy Policy</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f7f4ef; --fg: #1e1c1a; --muted: #5d5853; --line: #ddd6cc; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #151311; --fg: #eeeae4; --muted: #ada79f; --line: #38332e; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 26px; margin: 0 0 4px; } h2 { font-size: 19px; margin: 28px 0 8px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+  a { color: inherit; }
+  nav { font-size: 14px; margin-bottom: 16px; } nav a { margin-right: 12px; }
+</style>
 </head>
 <body>
-  <main>
-    <section lang="pl">
-      <h1>Oczko (Purlo) — Polityka Prywatności</h1>
-      <p class="muted">Obowiązuje od 17 października 2026 r. (Wersja 0.1.0).</p>
+<main>
+<!-- Treść z inwentarza roli 05 (docs/architektura/prywatnosc.md) i kodu „Zgłoś problem” (src/przypadki-uzycia/zgloszenie.ts) i decyzji P-196 (D7a–D9a); wzór: strona Treningu. Zmiana działania aplikacji,
+     która dotyczy danych (np. włączenie synchronizacji iCloud, ukrytej w 1.0 — P-091 (1); import strony WWW jest w 1.0 — M1-audytor-generalny-072), wymaga zmiany tej strony
+     przed wydaniem takiej wersji. Odbiorcy opisowo, bez nazw firm (P-121 (5)); bez listy źródeł (P-108). Test: tests/wydanie/repo-wydanie.test.ts. -->
+<nav><a href="support.html">Wsparcie / Support</a><a href="#en">English</a></nav>
 
-      <h2>1. Prywatność i Bezpieczeństwo w Skrócie</h2>
-      <p>Aplikacja <strong>Oczko (Purlo)</strong> została zaprojektowana w oparciu o filozofię <em>100% Offline-First</em>. Nie zbieramy, nie przesyłamy i nie analizujemy żadnych Twoich danych osobowych. Wszystkie Twoje robótki, liczniki, notatki, wzory i magazyn włóczek są przechowywane wyłącznie w lokalnej pamięci Twojego urządzenia.</p>
+<section lang="pl">
+<h1>Oczko — polityka prywatności</h1>
+<p class="muted">Wersja z 3 listopada 2026 r., przygotowana przed wydaniem wersji 1.0.</p>
 
-      <h2>2. Gromadzenie Danych i Analityka</h2>
-      <p>Aplikacja <strong>nie zawiera</strong> żadnych zewnętrznych skryptów śledzących (trackerów), systemów analitycznych (np. Google Analytics, Firebase Analytics), narzędzi profilowania zachowań ani modułów reklamowych. Aplikacja nie wymaga rejestracji ani logowania kontem e-mail.</p>
+<h2>W skrócie</h2>
+<p>Aplikacja Oczko sama nie zbiera żadnych danych. Wszystko, co wpisujesz i dodajesz, zostaje na Twoich urządzeniach. Aplikacja nie ma konta ani własnego serwera.
+Nie ma też reklam, analityki ani śledzenia. Zakupy obsługuje App Store. Jedyny wyjątek to wiadomość, którą sam do nas wyślesz (sekcja „Gdy do nas piszesz”).</p>
 
-      <h2>3. Baza Danych i Przechowywanie Lokalne</h2>
-      <p>Wszystkie dane projektowe są zapisywane w relacyjnej bazie danych SQLite na Twoim iPhonie. Dostęp do nich masz wyłącznie Ty. Aplikacja nie posiada własnego serwera chmurowego.</p>
+<h2>Jakie dane są przechowywane i gdzie</h2>
+<ul>
+  <li>Projekty, części, liczniki, historia zmian, notatki, przypomnienia, czas pracy, zapas włóczki i ustawienia są zapisywane wyłącznie w pamięci Twojego urządzenia (baza aplikacji).</li>
+  <li>Wzory, które zaimportujesz (np. PDF), oraz zdjęcia projektu i etykiet, które dodasz, są przechowywane w plikach aplikacji na urządzeniu.</li>
+  <li>Nikt poza Tobą, także twórca aplikacji, nie ma do nich dostępu. Aplikacja ich nigdzie nie wysyła.</li>
+  <li>Gdy dodasz wzór z linku do strony WWW (także przez „Udostępnij” w Safari), aplikacja raz otwiera tę stronę tak jak przeglądarka, bez Twoich ciasteczek i logowań, i zapisuje ją jako PDF na urządzeniu razem z adresem. Strona (i usługi, z których sama korzysta) dostaje wtedy zwykłe zapytanie, np. Twój adres IP. Do twórcy aplikacji nic nie trafia.</li>
+  <li>Kopia zapasowa iPhone’a (w iCloud albo na komputerze), jeśli ją włączysz w iOS, obejmuje też dane aplikacji. Podlega zasadom Apple.</li>
+  <li>W tej wersji aplikacja nie synchronizuje danych między urządzeniami przez iCloud.</li>
+</ul>
 
-      <h2>4. Kopie Zapasowe i Eksport</h2>
-      <p>Tworzone kopie zapasowe (pliki JSON) oraz raporty CSV są zapisywane w bezpiecznym katalogu dokumentów aplikacji (zgodnie z iOS Document Picker). Przesłanie lub udostępnienie pliku kopii zapasowej następuje wyłącznie na Twoje jawne polecenie za pośrednictwem systemowego arkusza udostępniania iOS.</p>
+<h2>Aparat i zdjęcia</h2>
+<p>O dostęp do aparatu aplikacja prosi dopiero wtedy, gdy pierwszy raz zrobisz zdjęcie w aplikacji. Zdjęcia z biblioteki wybierasz w systemowym oknie wyboru, a aplikacja widzi tylko zdjęcia, które w nim wskażesz.
+Gdy udostępniasz kartę ukończonego projektu, obraz jest tworzony od nowa, bez danych o miejscu wykonania zdjęcia.</p>
 
-      <h2>5. Płatności i Subskrypcje</h2>
-      <p>Wszelkie transakcje finansowe (Apps4Brew Studio Pass) są realizowane bezpośrednio przez firmę Apple za pośrednictwem platformy App Store (In-App Purchases). Oczko nie posiada dostępu do numerów kart płatniczych ani danych bilingowych.</p>
+<h2>Ekran blokady i Apple Watch</h2>
+<p>Licznik może być widoczny na ekranie blokady jako Live Activity. Jeśli masz Apple Watch z aplikacją Oczko, telefon przesyła do zegarka stan licznika, a zegarek odsyła zmiany.
+Przesyłanie odbywa się mechanizmem Apple łączącym telefon ze sparowanym zegarkiem. Dane nie są wysyłane poza Twoje urządzenia.</p>
 
-      <h2>6. Kontakt</h2>
-      <p>W razie pytań dotyczących polityki prywatności prosimy o kontakt pod adresem: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>.</p>
-    </section>
+<h2>Zakupy</h2>
+<p>Aplikacja jest darmowa z miesięcznym limitem dni z robótką. Zakupy i subskrypcje Pro obsługuje wyłącznie Apple (App Store). Aplikacja nie ma konta ani usług płatniczych i nie widzi danych płatności.
+Na urządzeniu zapamiętuje tylko ostatni znany stan dostępu, żeby działać bez internetu, oraz daty dni z robótką potrzebne do liczenia limitu.</p>
 
-    <hr>
+<h2>Kopia i eksport</h2>
+<p>Eksport i kopia danych to pliki, które aplikacja zapisuje tam, gdzie wskażesz (np. w aplikacji Pliki). Udostępniasz je tylko Ty. Po udostępnieniu plik podlega zasadom usługi, której użyjesz.</p>
 
-    <section lang="en">
-      <h1>Oczko (Purlo) — Privacy Policy</h1>
-      <p class="muted">Effective date: October 17, 2026 (Version 0.1.0).</p>
+<h2>Zgłoś problem</h2>
+<p>„Zgłoś problem” w Ustawieniach przygotowuje opis techniczny: kody i godziny najwyżej 20 ostatnich błędów, wersję bazy danych aplikacji i liczby rekordów.
+Nie zawiera nazw projektów, notatek, wzorów ani zdjęć. Przed wysłaniem widzisz cały tekst. Wysyłasz go Ty, wybranym przez siebie sposobem (np. e-mailem), a bez tego nic nie opuszcza urządzenia.
+Na urządzeniu aplikacja przechowuje najwyżej 200 ostatnich wpisów o błędach (bez treści projektów).</p>
 
-      <h2>Summary</h2>
-      <p><strong>Oczko (Purlo)</strong> is built on an uncompromising <em>100% Offline-First</em> philosophy. We do not collect, transmit, or monetize any of your personal data. All projects, counters, pattern progress, and yarn stash inventory reside strictly on your device.</p>
+<h2>Prośba o ocenę i raporty awarii</h2>
+<p>Prośbę o ocenę w App Store wyświetla system iOS. Jeśli w ustawieniach iOS zgodzisz się udostępniać analizy deweloperom aplikacji, Apple może przekazać nam raporty awarii na swoich zasadach.
+Służą one tylko do naprawiania błędów. Aplikacja nie ma własnego mechanizmu wysyłania raportów.</p>
 
-      <h2>Zero Tracking & Local SQLite</h2>
-      <p>The app contains no telemetry, no tracking libraries, no cloud servers, and no ads. Data is stored purely in an encrypted/local SQLite database on your iOS device.</p>
-    </section>
-  </main>
+<h2>Usunięcie danych</h2>
+<p>Usunięty projekt, licznik albo część trafiają do „Ostatnio usuniętych” na 30 dni, potem znikają. Wszystkie dane usuniesz w Ustawieniach („Usuń wszystkie dane”) albo usuwając aplikację.
+Pliki kopii zapisane poza aplikacją usuwasz tam, gdzie je zapisałeś. Usunięcie danych nie anuluje subskrypcji. Subskrypcją zarządzasz w ustawieniach konta Apple.</p>
+
+<h2>Dzieci</h2>
+<p>Aplikacja nie jest skierowana do dzieci i nie zbiera danych od nikogo, także od dzieci.</p>
+
+<h2>Gdy do nas piszesz</h2>
+<p>Aplikacja nadal niczego nie wysyła. E-mail wysyłasz Ty, swoją pocztą. Jeśli napiszesz na support@apps4brew.com, przetwarzamy tę wiadomość tak:</p>
+<ul>
+  <li><strong>Administrator:</strong> Łukasz Karwowski, osoba fizyczna; kontakt: support@apps4brew.com.</li>
+  <li><strong>Dane:</strong> Twój adres e-mail, treść wiadomości i załączniki, w tym opis z „Zgłoś problem”, jeśli go dołączysz.</li>
+  <li><strong>Cel:</strong> obsługa Twojego zapytania (odpowiedź, wyjaśnienie, naprawa błędu) i porządkowanie opinii o aplikacji.</li>
+  <li><strong>Podstawa:</strong> art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes: obsługa zapytań i rozwój aplikacji).</li>
+  <li><strong>Przechowywanie:</strong> 12 miesięcy od zamknięcia sprawy, potem usuwamy wiadomość. Opinie bez danych osobowych mogą zostać w postaci zanonimizowanej.</li>
+  <li><strong>Odbiorcy:</strong> dostawca poczty e-mail i przechowywania plików oraz rejestrator domeny, który przekazuje pocztę do skrzynki. Nie sprzedajemy danych, nie używamy ich do reklam i nie przekazujemy ich narzędziom sztucznej inteligencji.</li>
+  <li><strong>Przekazanie poza EOG:</strong> ci odbiorcy mogą przetwarzać dane w USA. Podstawą są standardowe klauzule umowne zatwierdzone przez Komisję Europejską albo decyzja Komisji o odpowiednim stopniu ochrony (Ramy ochrony danych UE–USA) dla certyfikowanych firm. Nazwy odbiorców i informację o zabezpieczeniach wyślemy na prośbę.</li>
+  <li><strong>Twoje prawa:</strong> dostęp do danych, sprostowanie, usunięcie, ograniczenie przetwarzania, sprzeciw wobec przetwarzania oraz skarga do Prezesa Urzędu Ochrony Danych Osobowych (PUODO). Napisz na support@apps4brew.com. Odpowiemy bez zbędnej zwłoki, najpóźniej w ciągu miesiąca.</li>
+  <li><strong>Czy musisz podać dane:</strong> pisanie do nas jest dobrowolne. Bez adresu e-mail nie możemy odpowiedzieć.</li>
+  <li><strong>Decyzje automatyczne:</strong> nie podejmujemy decyzji opartych wyłącznie na zautomatyzowanym przetwarzaniu, w tym profilowania.</li>
+</ul>
+
+<h2>Zmiany i kontakt</h2>
+<p>Jeśli działanie aplikacji zmieni się tak, że dotyczy to prywatności, ta strona zostanie zaktualizowana przed wydaniem takiej wersji.
+Pytania: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>.</p>
+</section>
+
+<hr>
+
+<section lang="en" id="en">
+<h1>Oczko — Privacy Policy</h1>
+<p class="muted">Version of 3 November 2026, prepared before the release of version 1.0.</p>
+
+<h2>In short</h2>
+<p>The Oczko app itself does not collect any data. Everything you enter and add stays on your devices. The app has no account and no server of its own.
+It has no ads, no analytics and no tracking. Purchases are handled by the App Store. The only exception is a message you send us yourself (section “When you write to us”).</p>
+
+<h2>What is stored and where</h2>
+<ul>
+  <li>Projects, parts, counters, change history, notes, reminders, working time, yarn stash and settings are stored only on your device (the app’s database).</li>
+  <li>Patterns you import (for example PDF files) and project and label photos you add are stored in the app’s files on your device.</li>
+  <li>No one but you, including the developer, has access to them. The app does not send them anywhere.</li>
+  <li>When you add a pattern from a web page link (also through Share in Safari), the app opens that page once, as a browser would, without your cookies or logins, and saves it as a PDF on your device together with its address. The website (and any services the page itself uses) receives an ordinary request, such as your IP address. Nothing is sent to the developer.</li>
+  <li>An iPhone backup (in iCloud or on a computer), if you turn it on in iOS, also includes the app’s data. It is subject to Apple’s terms.</li>
+  <li>In this version the app does not sync data between devices through iCloud.</li>
+</ul>
+
+<h2>Camera and photos</h2>
+<p>The app asks for camera access only when you first take a photo in the app. You pick photos from your library in the system picker, and the app sees only the photos you choose there.
+When you share the card of a finished project, the image is created anew, without data about where a photo was taken.</p>
+
+<h2>Lock Screen and Apple Watch</h2>
+<p>A counter can appear on the Lock Screen as a Live Activity. If you have an Apple Watch with the Oczko app, the phone sends the counter state to the watch and the watch sends changes back.
+This uses Apple’s link between the phone and its paired watch. The data is not sent outside your devices.</p>
+
+<h2>Purchases</h2>
+<p>The app is free with a monthly limit of crafting days. Purchases and Pro subscriptions are handled entirely by Apple (the App Store). The app has no account or payment service and never sees your payment details.
+On your device it only remembers the last known access status, so it works offline, and the dates of crafting days needed to count the limit.</p>
+
+<h2>Backup and export</h2>
+<p>Exports and backups are files the app saves where you choose (for example in the Files app). Only you share them. Once shared, a file is subject to the terms of the service you use.</p>
+
+<h2>Report a problem</h2>
+<p>“Report a problem” in Settings prepares a technical description: the codes and times of at most the last 20 errors, the version of the app’s database and record counts.
+It contains no project names, notes, patterns or photos. You see the whole text before sending. You send it yourself, in the way you choose (for example by email); without that, nothing leaves the device.
+On the device the app keeps at most the last 200 error entries (without project content).</p>
+
+<h2>Rating prompt and crash reports</h2>
+<p>The App Store rating prompt is shown by iOS. If you choose in iOS settings to share analytics with app developers, Apple may pass crash reports to us under its own terms.
+They are used only to fix bugs. The app has no reporting mechanism of its own.</p>
+
+<h2>Deleting data</h2>
+<p>A deleted project, counter or part goes to “Recently deleted” for 30 days and is then removed. You can delete all data in Settings (“Delete all data”) or by deleting the app.
+Backup files saved outside the app are deleted where you saved them. Deleting data does not cancel a subscription. You manage subscriptions in your Apple account settings.</p>
+
+<h2>Children</h2>
+<p>The app is not directed at children and does not collect data from anyone, including children.</p>
+
+<h2>When you write to us</h2>
+<p>The app still sends nothing. You send the email yourself, from your own mail app. If you write to support@apps4brew.com, we handle your message as follows:</p>
+<ul>
+  <li><strong>Controller:</strong> Łukasz Karwowski, a natural person; contact: support@apps4brew.com.</li>
+  <li><strong>Data:</strong> your email address, the message text and attachments, including the “Report a problem” description if you attach it.</li>
+  <li><strong>Purpose:</strong> handling your enquiry (reply, clarification, bug fix) and sorting feedback about the app.</li>
+  <li><strong>Legal basis:</strong> Article 6(1)(f) GDPR (legitimate interest: handling enquiries and improving the app).</li>
+  <li><strong>Retention:</strong> 12 months after the case is closed, then we delete the message. Feedback without personal data may remain in anonymised form.</li>
+  <li><strong>Recipients:</strong> an email and file-storage provider and the domain registrar that forwards mail to the mailbox. We do not sell data, do not use it for advertising and do not pass it to artificial-intelligence tools.</li>
+  <li><strong>Transfers outside the EEA:</strong> these recipients may process data in the USA. The basis is the standard contractual clauses approved by the European Commission or the Commission’s adequacy decision (EU–US Data Privacy Framework) for certified companies. We will send the recipients’ names and information about the safeguards on request.</li>
+  <li><strong>Your rights:</strong> access, rectification, erasure, restriction of processing, objection, and a complaint to the supervisory authority (in Poland: the President of the Personal Data Protection Office, PUODO). Write to support@apps4brew.com. We will reply without undue delay, within one month at the latest.</li>
+  <li><strong>Do you have to provide data:</strong> writing to us is voluntary. Without an email address we cannot reply.</li>
+  <li><strong>Automated decisions:</strong> we do not make decisions based solely on automated processing, including profiling.</li>
+</ul>
+
+<h2>Changes and contact</h2>
+<p>If the app changes in a way that affects privacy, this page will be updated before such a version is released.
+Questions: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>.</p>
+</section>
+</main>
 </body>
 </html>

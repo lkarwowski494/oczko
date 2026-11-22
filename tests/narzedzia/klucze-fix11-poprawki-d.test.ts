@@ -1,0 +1,62 @@
+// Poprawki 04, sesja D (P-360), D1: klucze aneksu partii 8 (04, 2026-11-02): 7 nowych w en.json i en.kontekst.json, przełożone w fali 2026-11-03 (P-474; lista oczekujących pusta),
+// oraz 7 wartości roboczych potwierdzonych przez 04 (różnica treści = poprawka). Wyrocznia: docs/design/fix11-2026-11-02/klucze.json.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { JEZYKI_FALI, ZAKRES_FALI, brakiPrzekladu, teksty } from '../i18n/fala-2026-11-03';
+
+const KORZEN = join(__dirname, '../..');
+const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
+const ANEKS = czytaj('docs/design/fix11-2026-11-02/klucze.json') as { en: Record<string, string>; potwierdzone: Record<string, string>; kontekst: Record<string, string> };
+const EN = czytaj('src/i18n/slowniki/en.json') as Record<string, Record<string, string>>;
+const KONTEKST = czytaj('src/i18n/slowniki/en.kontekst.json') as Record<string, Record<string, string>>;
+const OCZEKUJACE = (czytaj('docs/lokalizacja/oczekujace.json') as { klucze: string[] }).klucze;
+const wartosc = (s: Record<string, Record<string, string>>, klucz: string) => { const [sekcja, nazwa] = klucz.split('.'); return s[sekcja]?.[nazwa]; };
+
+const NOWE = ['projekt.miejsce_wzoru_strona', 'historia.wpis_rozwin_a11y', 'historia.wpis_rozwin_podpowiedz', 'licznik.wpisz_blad_format', 'wzor.blad_zapis', 'wzor.blad_zapis_opis', 'wzor.notatka_edytuj_a11y'];
+// Zdanie „Undo is available.” (014) nie ma w aneksie klucza po stronie 04; w 08 jest drugim zdaniem `licznik.seria_one/_other` (nazwa zostaje po stronie 08, klucze.json „zrodlo”).
+const BEZ_KLUCZA_04 = 'ogloszenie_cofnij_dostepne';
+
+test('aneks 04: dokładnie 7 nowych kluczy en', () => {
+  expect(Object.keys(ANEKS.en).sort()).toEqual([...NOWE].sort());
+});
+test('każdy nowy klucz aneksu jest w en.json z wartością z klucze.json', () => {
+  for (const k of NOWE) expect([k, wartosc(EN, k)]).toEqual([k, ANEKS.en[k]]);
+});
+test('każdy nowy klucz aneksu ma kontekst w en.kontekst.json z klucze.json', () => {
+  for (const k of NOWE) expect([k, wartosc(KONTEKST, k)]).toEqual([k, ANEKS.kontekst[k]]);
+});
+test('nowe klucze są w zakresie fali 2026-11-03 i mają kompletny przekład w 33 językach (formy CLDR); nie ma ich na liście oczekujących', () => {
+  expect(JEZYKI_FALI).toHaveLength(33);
+  for (const k of NOWE) { expect([k, ZAKRES_FALI.includes(k)]).toEqual([k, true]); expect([k, OCZEKUJACE.includes(k)]).toEqual([k, false]); expect([k, brakiPrzekladu(k)]).toEqual([k, []]); }
+});
+test('wartości robocze potwierdzone przez 04 są w en.json bez zmian (różnica treści = poprawka)', () => {
+  const klucze = Object.entries(ANEKS.potwierdzone).filter(([k]) => k !== BEZ_KLUCZA_04);
+  expect(klucze.length).toBe(6);
+  for (const [k, v] of klucze) expect([k, wartosc(EN, k)]).toEqual([k, v]);
+});
+test('„Undo is available.” (potwierdzone 04) kończy ogłoszenie serii w en.json', () => {
+  expect(ANEKS.potwierdzone[BEZ_KLUCZA_04]).toBe('Undo is available.');
+  expect(wartosc(EN, 'licznik.seria_one')).toMatch(/ Undo is available\.$/);
+  expect(wartosc(EN, 'licznik.seria_other')).toMatch(/ Undo is available\.$/);
+});
+test('korekta P-330: `ustawienia.pro_wlaczone` = „On”, a zdanie „Oczko Pro is on.” to `oferty.pro_wlaczone`', () => {
+  expect(wartosc(EN, 'ustawienia.pro_wlaczone')).toBe('On');
+  expect(wartosc(EN, 'oferty.pro_wlaczone')).toBe('Oczko Pro is on.');
+});
+
+// D3 (04-studio-projektowe-013, P-328): treść `ustawienia.usun_pytanie` zmieniła sens po P-328 (kopia przed usunięciem, „this device”, bez „can’t be undone”),
+// więc stare tłumaczenia (34 języki) były nieprawdziwe i zostały usunięte do fali (P-320); fala 2026-11-03 (P-474) dała nowy przekład 33 języków.
+test('`ustawienia.usun_pytanie`: nowy przekład w 33 słownikach (pl od P-469), żaden nie niesie starej treści („iPhone”, „nie można cofnąć”); klucz w zakresie fali, nie na liście oczekujących', () => {
+  expect(ZAKRES_FALI).toContain('ustawienia.usun_pytanie'); expect(OCZEKUJACE).not.toContain('ustawienia.usun_pytanie');
+  // pl: przekład napisany po zmianie sensu (P-328, P-469) — nie stary.
+  const pl = czytaj('src/i18n/slowniki/pl.json') as Record<string, Record<string, string>>;
+  expect(wartosc(pl, 'ustawienia.usun_pytanie')).toMatch(/^To usuwa z Oczka wszystkie projekty/);
+  expect(wartosc(pl, 'ustawienia.usun_pytanie')).not.toMatch(/iPhon|nie można cofnąć/i);
+  expect(JEZYKI_FALI).toHaveLength(33);
+  expect(brakiPrzekladu('ustawienia.usun_pytanie')).toEqual([]);
+  for (const j of JEZYKI_FALI) {
+    const t = teksty(j, 'ustawienia.usun_pytanie').join(' ');
+    expect([j, /iPhone/.test(t)]).toEqual([j, false]); // en: „this device”; stary przekład mówił „na tym iPhonie”
+    expect([j, t === wartosc(EN, 'ustawienia.usun_pytanie')]).toEqual([j, false]); // przekład, nie tekst z en
+  }
+});

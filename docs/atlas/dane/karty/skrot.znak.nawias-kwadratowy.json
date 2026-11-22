@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.znak.nawias-kwadratowy",
+ "rzemioslo": "oba",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.znak.nawias-kwadratowy.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-022"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

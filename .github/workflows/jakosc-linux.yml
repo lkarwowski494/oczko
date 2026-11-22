@@ -1,0 +1,73 @@
+# Bramka Linux roli 07 (docs/jakosc/strategia.md §5, DS-11): każdy push na gałąź przebudowy i main oraz PR. Bez sekretów.
+# Pierwszy przebieg każdej nowej kontroli jest informacyjny (zasada roli 07 nr 8); bramką staje się po jednym zielonym przebiegu.
+name: Jakość · Linux
+on:
+  push:
+    branches: [main, claude/jolly-thompson-paz6d8, claude/youthful-pasteur-kx83sn]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: jakosc-linux-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20 # pomiar E3: npm ci ~2 min + verify ~2 min; rośnie z liczbą testów i stref
+    env:
+      PROP_SEED: ${{ github.run_id }} # DS-03: ziarno stałe w przebiegu, wypisane w podsumowaniu
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: verify (typecheck, lint, kontrole repo i wektory, testy)
+        run: npm run verify
+      - name: Kolejność testów losowa (JAK-05, M1-audytor-generalny-161; ziarno z SHA)
+        run: |
+          seed=$((16#${GITHUB_SHA:0:7}))
+          echo "JEST_SEED=$seed (powtórzenie lokalne - npx jest --randomize --seed=$seed)" >> "$GITHUB_STEP_SUMMARY"
+          npx jest --ci --randomize --seed="$seed" --silent
+      - name: Strefy czasowe (DS-09, jedna pętla w jednym zadaniu)
+        if: ${{ !cancelled() }} # M1-audytor-generalny-207: czerwień kroku losowej kolejności nie ukrywa wyniku stref (wynik zadania i tak zależy od obu)
+        run: |
+          for tz in Europe/Warsaw UTC America/Los_Angeles Pacific/Kiritimati Pacific/Pago_Pago Asia/Kolkata Australia/Lord_Howe Asia/Tokyo; do
+            echo "::group::TZ=$tz"; TZ="$tz" npx jest tests/narzedzia --silent || exit 1; echo "::endgroup::"
+          done
+      - name: Ziarno fast-check
+        if: always()
+        run: echo "PROP_SEED=$PROP_SEED (powtórzenie lokalne - PROP_SEED=$PROP_SEED npx jest)" >> "$GITHUB_STEP_SUMMARY"
+  akceptacja:
+    # Testy przed kodem (DS-02): oczekiwane czerwone z właściwego powodu; zadanie pada tylko, gdy test pada ZŁE (import, typ) albo jest zielony przed kodem.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Bramka od P-290 (JAK-09): zielone w przebiegach 40482218300 … 40521164526 (2026-10-27); wcześniej continue-on-error do pierwszego zielonego (zasada 8).
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Raport testów akceptacyjnych
+        run: |
+          set +e
+          node scripts/jakosc/akceptacja-raport.mjs --wynik akceptacja-wynik.md
+          kod=$?
+          head -4 akceptacja-wynik.md >> "$GITHUB_STEP_SUMMARY"
+          exit $kod
+      - name: Informacje (i18n:kod)
+        if: always()
+        run: npm run -s jakosc:info | tail -5 >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: akceptacja-wynik
+          path: akceptacja-wynik.md
+          retention-days: 7

@@ -2,28 +2,29 @@
   "expo": {
     "name": "Oczko",
     "slug": "oczko",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "scheme": "oczko",
-    "orientation": "portrait",
+    "orientation": "default",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "description": "Oczko (Purlo) — asystent dziewiarstwa i szydełkowania. Liczniki rzędów, wzory PDF, baza włóczek i drutów. 100% Offline-First.",
-    "primaryColor": "#C85A32",
+    "description": "Oczko: Row Counter — knit & crochet, no account.",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FAF8F5",
-      "dark": {
-        "image": "./assets/splash.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#1A1A1A"
-      }
-    },
     "ios": {
-      "supportsTablet": false,
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/ios-dark.png",
+        "tinted": "./assets/ios-tinted.png"
+      },
+      "supportsTablet": true,
       "bundleIdentifier": "com.apps4brew.knitting",
+      "deploymentTarget": "18.0",
       "appleTeamId": "8NQ9GHY8GF",
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.com.apps4brew.knitting"],
+        "com.apple.developer.icloud-services": ["CloudKit"],
+        "com.apple.developer.icloud-container-identifiers": ["iCloud.com.apps4brew.knitting"],
+        "aps-environment": "production"
+      },
       "buildNumber": "1",
       "privacyManifests": {
         "NSPrivacyTracking": false,
@@ -36,7 +37,7 @@
           },
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
-            "NSPrivacyAccessedAPITypeReasons": ["DDA9.1"]
+            "NSPrivacyAccessedAPITypeReasons": ["C617.1", "3B52.1"]
           },
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
@@ -49,20 +50,38 @@
         ]
       },
       "infoPlist": {
-        "UIRequiresFullScreen": true,
         "UIFileSharingEnabled": true,
         "LSSupportsOpeningDocumentsInPlace": true,
         "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"],
         "CFBundleAllowMixedLocalizations": true,
-        "CFBundleDisplayName": "Oczko"
+        "CFBundleDisplayName": "Oczko",
+        "NSSupportsLiveActivities": true,
+        "UTExportedTypeDeclarations": [
+          {
+            "UTTypeIdentifier": "com.apps4brew.knitting.archiwum",
+            "UTTypeDescription": "Oczko backup",
+            "UTTypeConformsTo": ["public.zip-archive", "public.data"],
+            "UTTypeTagSpecification": { "public.filename-extension": ["oczko"] }
+          }
+        ],
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "Oczko backup",
+            "LSItemContentTypes": ["com.apps4brew.knitting.archiwum"],
+            "LSHandlerRank": "Owner"
+          }
+        ],
+        "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
       "package": "com.apps4brew.knitting",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FAF8F5"
+        "foregroundImage": "./assets/android-foreground.png",
+        "monochromeImage": "./assets/android-monochrome.png",
+        "backgroundColor": "#3A332E"
       }
     },
     "web": {
@@ -70,12 +89,79 @@
     },
     "plugins": [
       "expo-router",
+      "@bacons/apple-targets",
+      "./plugins/icloud-tlo",
+      ["expo-font", { "ios": { "fonts": ["./assets/fonts/BreeSerif.ttf"] } }],
+      "expo-iap",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "backgroundColor": "#E6E1DA",
+          "dark": {
+            "image": "./assets/splash-icon-dark.png",
+            "backgroundColor": "#26211E"
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": false,
+          "cameraPermission": "Oczko uses the camera only when you take a photo of a pattern, a project or a yarn label. Photos stay on your device.",
+          "microphonePermission": false
+        }
+      ],
       [
         "expo-sqlite",
         {
           "enableFTS": true
         }
+      ],
+      [
+        "expo-localization",
+        {
+          "supportedLocales": { "ios": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"], "android": ["en","bg","cs","da","de","el","es","es-419","et","fi","fr","hr","hu","id","it","ja","ko","lt","lv","ms","nb","nl","pl","pt","pt-BR","ro","ru","sk","sl","sr","sv","tr","uk","vi","zh-Hant"] },
+          "supportsRTL": false
+        }
       ]
-    ]
+    ],
+    "locales": {
+      "en": "./locales/systemowe/en.json",
+      "bg": "./locales/systemowe/bg.json",
+      "cs": "./locales/systemowe/cs.json",
+      "da": "./locales/systemowe/da.json",
+      "de": "./locales/systemowe/de.json",
+      "el": "./locales/systemowe/el.json",
+      "es": "./locales/systemowe/es.json",
+      "es-419": "./locales/systemowe/es-419.json",
+      "et": "./locales/systemowe/et.json",
+      "fi": "./locales/systemowe/fi.json",
+      "fr": "./locales/systemowe/fr.json",
+      "hr": "./locales/systemowe/hr.json",
+      "hu": "./locales/systemowe/hu.json",
+      "id": "./locales/systemowe/id.json",
+      "it": "./locales/systemowe/it.json",
+      "ja": "./locales/systemowe/ja.json",
+      "ko": "./locales/systemowe/ko.json",
+      "lt": "./locales/systemowe/lt.json",
+      "lv": "./locales/systemowe/lv.json",
+      "ms": "./locales/systemowe/ms.json",
+      "nb": "./locales/systemowe/nb.json",
+      "nl": "./locales/systemowe/nl.json",
+      "pl": "./locales/systemowe/pl.json",
+      "pt": "./locales/systemowe/pt.json",
+      "pt-BR": "./locales/systemowe/pt-BR.json",
+      "ro": "./locales/systemowe/ro.json",
+      "ru": "./locales/systemowe/ru.json",
+      "sk": "./locales/systemowe/sk.json",
+      "sl": "./locales/systemowe/sl.json",
+      "sr": "./locales/systemowe/sr.json",
+      "sv": "./locales/systemowe/sv.json",
+      "tr": "./locales/systemowe/tr.json",
+      "uk": "./locales/systemowe/uk.json",
+      "vi": "./locales/systemowe/vi.json",
+      "zh-Hant": "./locales/systemowe/zh-Hant.json"
+    }
   }
 }

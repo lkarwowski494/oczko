@@ -1,0 +1,404 @@
+{
+  "odczyt": "2026-10-23",
+  "uwaga": "Wartości z rejestru twierdzeń roli 06 (oczko-warsztat). Nie edytować ręcznie; generuje narzedzia/rejestr-z-tabel.mjs.",
+  "jednostki": [
+    {
+      "parametr": "cal_w_cm",
+      "wartosc": 2.54,
+      "jednostka": "cm",
+      "twierdzenie": "JED-001"
+    },
+    {
+      "parametr": "jard_w_m",
+      "wartosc": 0.9144,
+      "jednostka": "m",
+      "twierdzenie": "JED-002"
+    },
+    {
+      "parametr": "funt_w_kg",
+      "wartosc": 0.45359237,
+      "jednostka": "kg",
+      "twierdzenie": "JED-003"
+    },
+    {
+      "parametr": "uncji_w_funcie",
+      "wartosc": 16,
+      "jednostka": null,
+      "twierdzenie": "JED-004"
+    },
+    {
+      "parametr": "uncja_w_g",
+      "wartosc": 28.349523125,
+      "jednostka": "g",
+      "twierdzenie": "JED-005"
+    },
+    {
+      "parametr": "cztery_cale_w_cm",
+      "wartosc": 10.16,
+      "jednostka": "cm",
+      "twierdzenie": "JED-006"
+    }
+  ],
+  "grubosc": [
+    {
+      "kategoria": 0,
+      "nazwa_en": "lace",
+      "proba_4in_min": 33,
+      "proba_4in_max": 40,
+      "twierdzenie_nazwa": "GRB-N0",
+      "twierdzenie_zakres": "GRB-Z0"
+    },
+    {
+      "kategoria": 1,
+      "nazwa_en": "super fine",
+      "proba_4in_min": 27,
+      "proba_4in_max": 32,
+      "twierdzenie_nazwa": "GRB-N1",
+      "twierdzenie_zakres": "GRB-Z1"
+    },
+    {
+      "kategoria": 2,
+      "nazwa_en": "fine",
+      "proba_4in_min": 23,
+      "proba_4in_max": 26,
+      "twierdzenie_nazwa": "GRB-N2",
+      "twierdzenie_zakres": "GRB-Z2"
+    },
+    {
+      "kategoria": 3,
+      "nazwa_en": "light",
+      "proba_4in_min": 21,
+      "proba_4in_max": 24,
+      "twierdzenie_nazwa": "GRB-N3",
+      "twierdzenie_zakres": "GRB-Z3"
+    },
+    {
+      "kategoria": 4,
+      "nazwa_en": "medium",
+      "proba_4in_min": 16,
+      "proba_4in_max": 20,
+      "twierdzenie_nazwa": "GRB-N4",
+      "twierdzenie_zakres": "GRB-Z4"
+    },
+    {
+      "kategoria": 5,
+      "nazwa_en": "bulky",
+      "proba_4in_min": 12,
+      "proba_4in_max": 15,
+      "twierdzenie_nazwa": "GRB-N5",
+      "twierdzenie_zakres": "GRB-Z5"
+    },
+    {
+      "kategoria": 6,
+      "nazwa_en": "super bulky",
+      "proba_4in_min": 7,
+      "proba_4in_max": 11,
+      "twierdzenie_nazwa": "GRB-N6",
+      "twierdzenie_zakres": "GRB-Z6"
+    },
+    {
+      "kategoria": 7,
+      "nazwa_en": "jumbo",
+      "proba_4in_min": null,
+      "proba_4in_max": 6,
+      "twierdzenie_nazwa": "GRB-N7",
+      "twierdzenie_zakres": "GRB-Z7"
+    }
+  ],
+  "druty": [
+    {
+      "mm": 1.5,
+      "us": "000",
+      "twierdzenie": "DRT-M01500"
+    },
+    {
+      "mm": 1.75,
+      "us": "00",
+      "twierdzenie": "DRT-M01750"
+    },
+    {
+      "mm": 2,
+      "us": "0",
+      "twierdzenie": "DRT-M02000"
+    },
+    {
+      "mm": 2.25,
+      "us": "1",
+      "twierdzenie": "DRT-M02250"
+    },
+    {
+      "mm": 2.75,
+      "us": "2",
+      "twierdzenie": "DRT-M02750"
+    },
+    {
+      "mm": 3,
+      "us": null,
+      "twierdzenie": "DRT-M03000"
+    },
+    {
+      "mm": 3.125,
+      "us": "3",
+      "twierdzenie": "DRT-M03125"
+    },
+    {
+      "mm": 3.25,
+      "us": "3",
+      "twierdzenie": "DRT-M03250"
+    },
+    {
+      "mm": 3.5,
+      "us": "4",
+      "twierdzenie": "DRT-M03500"
+    },
+    {
+      "mm": 3.75,
+      "us": "5",
+      "twierdzenie": "DRT-M03750"
+    },
+    {
+      "mm": 4,
+      "us": "6",
+      "twierdzenie": "DRT-M04000"
+    },
+    {
+      "mm": 4.25,
+      "us": "6",
+      "twierdzenie": "DRT-M04250"
+    },
+    {
+      "mm": 4.5,
+      "us": "7",
+      "twierdzenie": "DRT-M04500"
+    },
+    {
+      "mm": 5,
+      "us": "8",
+      "twierdzenie": "DRT-M05000"
+    },
+    {
+      "mm": 5.25,
+      "us": "9",
+      "twierdzenie": "DRT-M05250"
+    },
+    {
+      "mm": 5.5,
+      "us": "9",
+      "twierdzenie": "DRT-M05500"
+    },
+    {
+      "mm": 5.75,
+      "us": "10",
+      "twierdzenie": "DRT-M05750"
+    },
+    {
+      "mm": 6,
+      "us": "10",
+      "twierdzenie": "DRT-M06000"
+    },
+    {
+      "mm": 6.5,
+      "us": "10 ½",
+      "twierdzenie": "DRT-M06500"
+    },
+    {
+      "mm": 7,
+      "us": null,
+      "twierdzenie": "DRT-M07000"
+    },
+    {
+      "mm": 8,
+      "us": "11",
+      "twierdzenie": "DRT-M08000"
+    },
+    {
+      "mm": 9,
+      "us": "13",
+      "twierdzenie": "DRT-M09000"
+    },
+    {
+      "mm": 10,
+      "us": "15",
+      "twierdzenie": "DRT-M10000"
+    },
+    {
+      "mm": 12.5,
+      "us": "17",
+      "twierdzenie": "DRT-M12500"
+    },
+    {
+      "mm": 12.75,
+      "us": "17",
+      "twierdzenie": "DRT-M12750"
+    },
+    {
+      "mm": 15,
+      "us": "19",
+      "twierdzenie": "DRT-M15000"
+    },
+    {
+      "mm": 19,
+      "us": "35",
+      "twierdzenie": "DRT-M19000"
+    },
+    {
+      "mm": 25,
+      "us": "50",
+      "twierdzenie": "DRT-M25000"
+    },
+    {
+      "mm": 35,
+      "us": "70",
+      "twierdzenie": "DRT-M35000"
+    }
+  ],
+  "szydelka": [
+    {
+      "mm": 2.25,
+      "us": "B-1",
+      "twierdzenie": "SZD-M02250"
+    },
+    {
+      "mm": 2.5,
+      "us": null,
+      "twierdzenie": "SZD-M02500"
+    },
+    {
+      "mm": 2.75,
+      "us": "C-2",
+      "twierdzenie": "SZD-M02750"
+    },
+    {
+      "mm": 3.125,
+      "us": "D",
+      "twierdzenie": "SZD-M03125"
+    },
+    {
+      "mm": 3.25,
+      "us": "D-3",
+      "twierdzenie": "SZD-M03250"
+    },
+    {
+      "mm": 3.5,
+      "us": "E-4",
+      "twierdzenie": "SZD-M03500"
+    },
+    {
+      "mm": 3.75,
+      "us": "F-5",
+      "twierdzenie": "SZD-M03750"
+    },
+    {
+      "mm": 4,
+      "us": "G-6",
+      "twierdzenie": "SZD-M04000"
+    },
+    {
+      "mm": 4.25,
+      "us": "G",
+      "twierdzenie": "SZD-M04250"
+    },
+    {
+      "mm": 4.5,
+      "us": "7",
+      "twierdzenie": "SZD-M04500"
+    },
+    {
+      "mm": 5,
+      "us": "H-8",
+      "twierdzenie": "SZD-M05000"
+    },
+    {
+      "mm": 5.25,
+      "us": "I",
+      "twierdzenie": "SZD-M05250"
+    },
+    {
+      "mm": 5.5,
+      "us": "I-9",
+      "twierdzenie": "SZD-M05500"
+    },
+    {
+      "mm": 5.75,
+      "us": "J",
+      "twierdzenie": "SZD-M05750"
+    },
+    {
+      "mm": 6,
+      "us": "J-10",
+      "twierdzenie": "SZD-M06000"
+    },
+    {
+      "mm": 6.5,
+      "us": "K-10 ½",
+      "twierdzenie": "SZD-M06500"
+    },
+    {
+      "mm": 7,
+      "us": null,
+      "twierdzenie": "SZD-M07000"
+    },
+    {
+      "mm": 8,
+      "us": "L-11",
+      "twierdzenie": "SZD-M08000"
+    },
+    {
+      "mm": 9,
+      "us": "M/N-13",
+      "twierdzenie": "SZD-M09000"
+    },
+    {
+      "mm": 10,
+      "us": "N/P-15",
+      "twierdzenie": "SZD-M10000"
+    },
+    {
+      "mm": 11.5,
+      "us": "P-16",
+      "twierdzenie": "SZD-M11500"
+    },
+    {
+      "mm": 12,
+      "us": null,
+      "twierdzenie": "SZD-M12000"
+    },
+    {
+      "mm": 15,
+      "us": "P/Q",
+      "twierdzenie": "SZD-M15000"
+    },
+    {
+      "mm": 15.75,
+      "us": "Q",
+      "twierdzenie": "SZD-M15750"
+    },
+    {
+      "mm": 16,
+      "us": "Q",
+      "twierdzenie": "SZD-M16000"
+    },
+    {
+      "mm": 19,
+      "us": "S",
+      "twierdzenie": "SZD-M19000"
+    },
+    {
+      "mm": 25,
+      "us": "T/U/X",
+      "twierdzenie": "SZD-M25000"
+    },
+    {
+      "mm": 30,
+      "us": "T/X",
+      "twierdzenie": "SZD-M30000"
+    }
+  ],
+  "zaokraglanie_proby_4in": {
+    "metoda": "najbliższa całość przed klasyfikacją; dokładna połówka: część wspólna wyników obu całości, inaczej „między kategoriami” albo „powyżej tabeli”",
+    "twierdzenie": "PRB-004",
+    "decyzja": "P-084"
+  },
+  "zrodlo_linia": "Source: Craft Yarn Council's www.YarnStandards.com",
+  "zrodlo_linia_twierdzenie": "ZRD-001"
+}

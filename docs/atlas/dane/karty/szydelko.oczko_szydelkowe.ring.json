@@ -1,0 +1,80 @@
+{
+ "format": 1,
+ "id": "szydelko.oczko_szydelkowe.ring",
+ "rzemioslo": "szydelko",
+ "rodzaj": "oczko_szydelkowe",
+ "klucze": {
+  "nazwa": "atlas.szydelko.oczko_szydelkowe.ring.nazwa",
+  "podpis": "atlas.szydelko.oczko_szydelkowe.ring.podpis",
+  "opis_alt": "atlas.szydelko.oczko_szydelkowe.ring.opis_alt"
+ },
+ "terminy": {
+  "en-GB": [
+   {
+    "nazwa": "adjustable ring",
+    "skrot": null,
+    "twierdzenie": "TRM-GB-008"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "кольцо амигуруми",
+    "skrot": "КА",
+    "twierdzenie": "TRM-RU-041"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "輪の作り目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-039"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "輪狀起針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-033"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-GB"
+ ],
+ "rysunek": {
+  "rodzina": "graf-szydelkowy",
+  "probka": {
+   "kolumny": 6,
+   "rzedy": 2
+  },
+  "tlo": "prawe",
+  "operacja": null
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.ring.krok1"
+  },
+  {
+   "faza": "przeciagniecie",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.ring.krok2"
+  },
+  {
+   "faza": "wynik",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.szydelko.oczko_szydelkowe.ring.krok3"
+  }
+ ]
+}

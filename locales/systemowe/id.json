@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Oczko",
+    "NSCameraUsageDescription": "Oczko hanya menggunakan kamera saat Anda memotret pola, proyek, atau label benang. Foto tetap tersimpan di perangkat Anda."
+  }
+}

@@ -1,0 +1,342 @@
+DEFINE SCHEMA
+
+    RECORD TYPE Plik (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        sha256          STRING,
+        rozszerzenie    STRING,
+        bajty           INT64,
+        utworzono_ms    INT64,
+        dane            ASSET,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Projekt (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        id                STRING,
+        nazwa             STRING,
+        nienazwany        INT64,
+        stan              STRING,
+        notatka           STRING,
+        drut_mm           DOUBLE,
+        narzedzie         STRING,
+        film_adres        STRING,
+        film_nazwa        STRING,
+        probka            STRING,
+        termin_dzien      STRING,
+        kopia_z           STRING,
+        utworzono_ms      INT64,
+        zmieniono_ms      INT64,
+        ostatnia_praca_ms INT64,
+        ukonczono_ms      INT64,
+        ukonczono_dzien   STRING,
+        usunieto_ms       INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Czesc (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        projekt_id      STRING,
+        nazwa           STRING,
+        kolejnosc       INT64,
+        cel_rzedow      INT64,
+        para_z          STRING,
+        zmieniono_ms    INT64,
+        usunieto_ms     INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Licznik (
+        "___createTime"     TIMESTAMP,
+        "___createdBy"      REFERENCE,
+        "___etag"           STRING,
+        "___modTime"        TIMESTAMP,
+        "___modifiedBy"     REFERENCE,
+        "___recordID"       REFERENCE QUERYABLE,
+        id                  STRING,
+        czesc_id            STRING,
+        nazwa               STRING,
+        rodzaj              STRING,
+        znaczenie           STRING,
+        dlugosc_powtorzenia INT64,
+        zablokowany         INT64,
+        kolejnosc           INT64,
+        zmieniono_ms        INT64,
+        usunieto_ms         INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Zdarzenie (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        id                STRING,
+        licznik_id        STRING,
+        rodzaj            STRING,
+        wartosc           INT64,
+        wartosc_po        INT64,
+        rodzice           STRING,
+        cofa              STRING,
+        zrodlo            STRING,
+        urzadzenie        STRING,
+        urzadzenie_rodzaj STRING,
+        czas_ms           INT64,
+        strefa            STRING,
+        dzien             STRING,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE NotatkaRzedu (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        licznik_id      STRING,
+        rzad            INT64,
+        tekst           STRING,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Przypomnienie (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        licznik_id      STRING,
+        od_rzedu        INT64,
+        co_n            INT64,
+        razy            INT64,
+        tekst           STRING,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Sesja (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        projekt_id      STRING,
+        stan            STRING,
+        start_ms        INT64,
+        wstrzymano_ms   INT64,
+        przerwy_ms      INT64,
+        koniec_ms       INT64,
+        skorygowano     INT64,
+        do_korekty      INT64,
+        strefa          STRING,
+        dzien           STRING,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Wzor (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        projekt_id      STRING,
+        nazwa           STRING,
+        zrodlo          STRING,
+        pdf_sha256      STRING,
+        oryginal_sha256 STRING,
+        adres           STRING,
+        znacznik        STRING,
+        zmieniono_ms    INT64,
+        usunieto_ms     INT64,
+        obroty          STRING,
+        strony          INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Rysunek (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        wzor_id         STRING,
+        strona          INT64,
+        plik_sha256     STRING,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Wloczka (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        nazwa           STRING,
+        producent       STRING,
+        sklad           STRING,
+        kolor           STRING,
+        waga_motka_g    DOUBLE,
+        dlugosc_motka_m DOUBLE,
+        motki           DOUBLE,
+        kategoria       INT64,
+        pielegnacja     STRING,
+        notatka         STRING,
+        zmieniono_ms    INT64,
+        usunieto_ms     INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Narzedzie (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        rodzaj          STRING,
+        rozmiar_mm      DOUBLE,
+        opis            STRING,
+        zmieniono_ms    INT64,
+        usunieto_ms     INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE ProjektWloczka (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        projekt_id      STRING,
+        wloczka_id      STRING,
+        zuzyto_motki    DOUBLE,
+        odjeto_motki    DOUBLE,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Zdjecie (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        projekt_id      STRING,
+        wloczka_id      STRING,
+        plik_sha256     STRING,
+        utworzono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Obliczenie (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        id              STRING,
+        projekt_id      STRING,
+        rodzaj          STRING,
+        wejscie         STRING,
+        wynik           STRING,
+        wersja_regul    STRING,
+        utworzono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE DzienLimitu (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        dzien           STRING,
+        pro             INT64,
+        zaczeto_ms      INT64,
+        zdarzenie_id    STRING,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Ustawienie (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE QUERYABLE,
+        klucz           STRING,
+        wartosc         STRING,
+        zmieniono_ms    INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );

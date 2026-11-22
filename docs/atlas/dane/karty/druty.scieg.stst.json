@@ -1,0 +1,159 @@
+{
+ "format": 1,
+ "id": "druty.scieg.stst",
+ "rzemioslo": "druty",
+ "rodzaj": "scieg",
+ "klucze": {
+  "nazwa": "atlas.druty.scieg.stst.nazwa",
+  "podpis": "atlas.druty.scieg.stst.podpis",
+  "opis_alt": "atlas.druty.scieg.stst.opis_alt"
+ },
+ "klucze_dodatkowe": [
+  "atlas.druty.scieg.stst.uwaga_strony"
+ ],
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "stockinette stitch",
+    "skrot": "St st",
+    "twierdzenie": "TRM-EN-003"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "ścieg pończoszniczy",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-004"
+   },
+   {
+    "nazwa": "dżersej",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-005"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "slätstickning",
+    "skrot": "slätst",
+    "twierdzenie": "TRM-SV-004"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "лицевая гладь",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-003"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "панчішна в’язка",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-003"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "メリヤス編み",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-003"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "메리야스뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-003"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "平針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-003"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "jarse örgü",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-010"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto jersey",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-015"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "punct jerseu",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-003"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "лицева плетка",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-003"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "gludais adījums",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-003"
+   }
+  ],
+  "sk": [
+   {
+    "nazwa": "hladký úplet",
+    "skrot": null,
+    "twierdzenie": "TRM-SK-003"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "jersey de derecho",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-003"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ],
+ "rysunek": {
+  "rodzina": "siatka-petli",
+  "probka": {
+   "kolumny": 4,
+   "rzedy": 4
+  },
+  "tlo": "prawe",
+  "operacja": {
+   "typ": "scieg",
+   "wzor": [
+    [
+     "prawe",
+     "prawe",
+     "prawe",
+     "prawe"
+    ]
+   ]
+  }
+ },
+ "kroki": [
+  {
+   "faza": "tkanina",
+   "petle": [],
+   "wyroznij": [],
+   "kierunek": null,
+   "strzalka": null,
+   "klucz": "atlas.druty.scieg.stst.krok1"
+  }
+ ]
+}

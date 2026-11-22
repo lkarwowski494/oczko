@@ -1,0 +1,29 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.dc2tog",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.dc2tog.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "double crochet 2 stitches together",
+    "skrot": "dc2tog",
+    "twierdzenie": "TRM-EN-035"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "work two trebles together",
+    "skrot": "tr2tog",
+    "twierdzenie": "TRM-GB-010"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

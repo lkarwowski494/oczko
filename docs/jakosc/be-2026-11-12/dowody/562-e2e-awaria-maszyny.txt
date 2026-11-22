@@ -1,0 +1,135 @@
+$ (562dfc4 + testy z 7e86bfa1) npx jest --ci tests/jakosc/e2e-awaria-maszyny.test.ts
+FAIL iOS tests/jakosc/e2e-awaria-maszyny.test.ts
+  07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054)
+    ✕ awaria sterownika w 01 (stan-licznika, bramka) → zestaw powtórzony raz od zera, rozstrzyga 2. podejście; powtórzenie wykazane osobno (111 ms)
+    ✓ porażka asercji w 01 (stan-licznika) → bez ponowienia, krok czerwony (P-091 9a bez zmian) (103 ms)
+    ✕ druga awaria sterownika w 2. podejściu → czerwony, bez trzeciego podejścia (96 ms)
+    ✕ porażka asercji w 01, potem awaria sterownika w 02 (przegląd ścieżki wrażliwej, P1) → 01 bez ponowienia i czerwony w wyniku końcowym (154 ms)
+    ✕ awaria sterownika w ponawialnym 02 → powtórzenie zestawu (nie pojedyncze ponowienie 02 w 1. podejściu) (138 ms)
+  07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs)
+    ✕ junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu (36 ms)
+    ✓ junit z porażką asercji → nie maszyna (kod 1) (33 ms)
+    ✓ brak pliku junit → nie maszyna (kod 1; bez junit nie ma dowodu awarii sterownika) (33 ms)
+    ✓ wzorzec awarii tylko w nazwie testu, porażka asercji w <failure> → nie maszyna (34 ms)
+    ✕ „iOS driver not ready in time” i „deviceInfo failed” (wzorce Treningu, e2e-ios.yml:223; treść komunikatu złożona) → awaria maszyny (31 ms)
+
+  ● 07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054) › awaria sterownika w 01 (stan-licznika, bramka) → zestaw powtórzony raz od zera, rozstrzyga 2. podejście; powtórzenie wykazane osobno
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 1
+    Received array:  ["01-nfr-pie-001-pierwsze-liczenie"]
+
+      51 |   test('awaria sterownika w 01 (stan-licznika, bramka) → zestaw powtórzony raz od zera, rozstrzyga 2. podejście; powtórzenie wykazane osobno', () => {
+      52 |     const r = uruchom({ [S01]: ['awaria', 'zielony'] }, ENV);
+    > 53 |     expect(r.wywolania.filter((n) => n === S01)).toHaveLength(2);
+         |                                                  ^
+      54 |     expect(r.wywolania.lastIndexOf(S02)).toBeGreaterThan(r.wywolania.lastIndexOf(S01)); // 02 biegnie w 2. podejściu, po ponownym 01
+      55 |     expect(r.kod).toBe(0);
+      56 |     expect(r.podsumowanie).toMatch(/powtórzenie zestawu/i);
+
+      at Object.toHaveLength (tests/jakosc/e2e-awaria-maszyny.test.ts:53:50)
+
+  ● 07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054) › druga awaria sterownika w 2. podejściu → czerwony, bez trzeciego podejścia
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 1
+    Received array:  ["01-nfr-pie-001-pierwsze-liczenie"]
+
+      71 |   test('druga awaria sterownika w 2. podejściu → czerwony, bez trzeciego podejścia', () => {
+      72 |     const r = uruchom({ [S01]: ['awaria', 'awaria', 'zielony'] }, ENV);
+    > 73 |     expect(r.wywolania.filter((n) => n === S01)).toHaveLength(2);
+         |                                                  ^
+      74 |     expect(r.kod).not.toBe(0);
+      75 |     expect(r.podsumowanie).toMatch(/powtórzenie zestawu/i);
+      76 |     expect(r.podsumowanie).toContain(`czerwony ${S01}`);
+
+      at Object.toHaveLength (tests/jakosc/e2e-awaria-maszyny.test.ts:73:50)
+
+  ● 07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054) › porażka asercji w 01, potem awaria sterownika w 02 (przegląd ścieżki wrażliwej, P1) → 01 bez ponowienia i czerwony w wyniku końcowym
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /powtórzenie zestawu/i
+    Received string:  "### Część 2 (iphone)
+    - czerwony 01-nfr-pie-001-pierwsze-liczenie
+    - w-ponowieniu 02-br-lic-001-s1-pierwsze-uruchomienie
+    "
+
+      82 |     expect(r.wywolania.filter((n) => n === S02)).toHaveLength(2);
+      83 |     expect(r.kod).not.toBe(0);
+    > 84 |     expect(r.podsumowanie).toMatch(/powtórzenie zestawu/i);
+         |                            ^
+      85 |     expect(r.podsumowanie).toMatch(new RegExp(`czerwony ${S01}[^\\n]*1\\. podejści`));
+      86 |     expect(r.podsumowanie).toContain(`zielony ${S02}`);
+      87 |   });
+
+      at Object.toMatch (tests/jakosc/e2e-awaria-maszyny.test.ts:84:28)
+
+  ● 07-jakosc-001 · awaria sterownika w junit → jedno powtórzenie całego zestawu części (KO-054) › awaria sterownika w ponawialnym 02 → powtórzenie zestawu (nie pojedyncze ponowienie 02 w 1. podejściu)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "01-nfr-pie-001-pierwsze-liczenie",
+        "02-br-lic-001-s1-pierwsze-uruchomienie",
+    -   "01-nfr-pie-001-pierwsze-liczenie",
+        "02-br-lic-001-s1-pierwsze-uruchomienie",
+      ]
+
+      89 |   test('awaria sterownika w ponawialnym 02 → powtórzenie zestawu (nie pojedyncze ponowienie 02 w 1. podejściu)', () => {
+      90 |     const r = uruchom({ [S02]: ['awaria', 'zielony'] }, ENV);
+    > 91 |     expect(r.wywolania).toEqual([S01, S02, S01, S02]);
+         |                         ^
+      92 |     expect(r.kod).toBe(0);
+      93 |     expect(r.podsumowanie).toMatch(new RegExp(`powtórzenie zestawu[^\\n]*${S02}`, 'i'));
+      94 |   });
+
+      at Object.toEqual (tests/jakosc/e2e-awaria-maszyny.test.ts:91:25)
+
+  ● 07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs) › junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       99 |   test('junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu', () => {
+      100 |     const r = klasyfikuj(path.join(FIKSTURY, 'junit-device-unreachable.xml'));
+    > 101 |     expect(r.status).toBe(0);
+          |                      ^
+      102 |     expect(r.stdout.trim()).toBe('maestro.DeviceUnreachableException: Device became unreachable during deviceInfo');
+      103 |   });
+      104 |   test('junit z porażką asercji → nie maszyna (kod 1)', () => {
+
+      at Object.toBe (tests/jakosc/e2e-awaria-maszyny.test.ts:101:22)
+
+  ● 07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs) › „iOS driver not ready in time” i „deviceInfo failed” (wzorce Treningu, e2e-ios.yml:223; treść komunikatu złożona) → awaria maszyny
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      120 |       fs.writeFileSync(plik, fs.readFileSync(path.join(FIKSTURY, 'junit-asercja.xml'), 'utf8').replace(/Assertion is false[^<]*/, komunikat));
+      121 |       const r = klasyfikuj(plik);
+    > 122 |       expect(r.status).toBe(0);
+          |                        ^
+      123 |       expect(r.stdout.trim()).toBe(komunikat);
+      124 |     }
+      125 |   });
+
+      at Object.toBe (tests/jakosc/e2e-awaria-maszyny.test.ts:122:24)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 4 passed, 10 total
+Snapshots:   0 total
+Time:        3.57 s
+Ran all test suites matching /tests\/jakosc\/e2e-awaria-maszyny.test.ts/i.
+kod wyjścia: 1

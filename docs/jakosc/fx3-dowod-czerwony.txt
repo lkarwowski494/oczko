@@ -1,0 +1,24 @@
+FX3 (08 fix, 2026-11-16) — dowody czerwieni przed poprawką. Start f562da5b.
+
+== BX-010 (scenariusz 39, e2e/scenariusze/39-p-190-jezyk-trwaly.yaml) ==
+npx jest tests/jakosc/e2e-39-jezyk-dolny-brzeg-bx010.test.ts --ci  → FAIL (kod 1), na scenariuszu bez `scroll`:
+  ✕ BX-010: stuknięcie wiersza „Język” po przewinięciu jest poprzedzone dodatkowym `scroll` (dolny brzeg ScrollView)
+    Expected: "scroll"   Received: "scrollUntilVisible"
+Po poprawce: PASS (154 testy w e2e-kruchosc* + nowy).
+
+== BX-009 (podgląd zdjęcia, app/zdjecie.tsx) ==
+Dowód z iOS 43774048947 część 4, krok 48 (po poprawce 152fb307 z SafeAreaView): hierarchia `zdjecie-bezpieczny` [0,0][402,874], `zdjecie-zamknij` [341,0][386,44],
+ zdjęcie [0,44][402,830], dolny pasek [830,874] — wcięcia zerowe. Kod biblioteki: ios/Fabric/RNCSafeAreaViewComponentView.mm `findNearestProvider` (bez natywnego dostawcy zwraca siebie).
+npx jest tests/ekrany/zdjecie-bezpieczny-obszar-bx009.test.tsx --ci  (atrapa: SafeAreaView = zero wcięć, hook = 59/34) → FAIL (kod 1), 2 testy:
+  Expected: >= 59   Received: 0   (wcieciaNad(zamknij, 'paddingTop'), oba testy)
+Po poprawce (View + useSafeAreaInsets): PASS; tests/ekrany/zdjecie-poziomo-bx014.test.tsx PASS (atrapa dostała hook).
+
+== BX-010 dokończenie (po poprawce scenariusza 39) ==
+npx jest tests/jakosc → 3 pliki FAIL (kod 1) przed dokończeniem: maestro-scenariusze („nieznane polecenie „scroll””, 2×), przypadki-uzycia i bramka-przypadki-uzycia (PU-233: 39:31 nie jest asercją — wstawione `scroll` przesunęły linie).
+Dokończenie: `scroll` w interpreterze testów (tests/jakosc/maestro-runner.ts), odnośniki katalogu 39:28→29, 31→32, 35→37. Po: 73 zestawy / 914 testów PASS.
+
+== BX-018 (scenariusz 61, zgoda koordynatora KO-082) ==
+Przyczyna: iOS 43774048947 część 4, krok 119 — hierarchia „Harbor 2, Now working row 1, last worked today”; scenariusz oczekiwał „.*row 0, last worked today.*”. Regresja zamierzona: BY-002 (476abe53, jest w f562da5b, nie w 8f0c1424);
+test aplikacji tests/ekrany/czesc-nazwa-zapasowa-by002.test.tsx:74-77 utrwala „Now working row N+1” dla części z nazwą zapasową bez celu. Aplikacja bez zmian; zmieniona tylko linia asercji 61:61 (wartość: licznik 0 → „row 1”).
+grep e2e/** po starym formacie „row N, last worked” (poza 61): 0 trafień (36 i 20 używają „Harbor.*last worked.*”, projekt z częścią z celem).
+BX-009 dokończenie: hak pre-push (verify) przed poprawką testów: Test Suites: 5 failed, 672 passed; Tests: 6 failed, 7676 passed (blad-odczytu-trasy, ladowanie-kolejka, blad-udostepnienia-trasy, stan-wczytywania-tlo, blad-zapisu-trasy: „No safe area value available”). Po: 95/95 w tych 5 plikach.

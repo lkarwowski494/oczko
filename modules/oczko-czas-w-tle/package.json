@@ -1,0 +1,7 @@
+{
+  "name": "oczko-czas-w-tle",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ochrona długiej operacji czasem w tle z sygnałem wygaśnięcia (ADR-0002 (7), ADR-0004)",
+  "main": "index.ts"
+}

@@ -1,0 +1,74 @@
+// Wspólne elementy paska (M1-audytor-generalny-033 i 036; design-spec „Aneks M2 partia 3a”): jeden wygląd „wstecz” na każdym ekranie
+// i przyciski z symbolem SF zamiast glifów Unicode. Symbol jest dekoracyjny (etykieta VoiceOver na przycisku), waga symbolu jak tekst obok
+// (HIG Typography: „precise weight matching between symbols and adjacent text”), skala z tekstem najwyżej ×1,8 jak dotychczasowe ikony paska.
+import React, { createContext, useContext } from 'react';
+import { Pressable, StyleSheet, Text, type PressableProps } from 'react-native';
+import { SymbolSf, type NazwaSymbolu } from './SymbolSf';
+import { cel, MAX_SKALA_TYTULOWA, odstep, ROZMIAR_SYMBOLU, ROZMIAR_SYMBOLU_KAPSULY, typografia, useKolory } from './motyw';
+
+/**
+ * „Wstecz” (słownik studia; HIG: przycisk obok gestu od krawędzi): `chevron.backward` + nazwa celu albo „Back”, treść 17 pt zwykłą
+ * odmianą w kolorze `akcentTekst` (006, P-614 (1) A; makieta `ekrany.html:30`), bez podkreślenia i bez pogrubienia — jak systemowy przycisk wstecz. `tylkoSymbol`: pasek wzoru (sama strzałka,
+ * etykieta „Back to {część}”). testID domyślnie `nav-wstecz`.
+ */
+/**
+ * 006 (P-614 (1)): hak etykiety „wstecz” — tytuł poprzedniego ekranu w stosie albo null („Back” z propsa `tekst`). Dostawca: korzeń nawigacji
+ * (`src/kompozycja/wstecz-trasa.ts`, expo-router); bez dostawcy (testy, ekrany poza stosem) — `tekst`. Wartość kontekstu jest stała, więc wywołanie haka ma stałą kolejność.
+ */
+export const KontekstWstecz = createContext<() => string | null>(() => null);
+
+/**
+ * BX20 (KO-136): hak diagnostyczny „przyjęto naciśnięcie celu” (id = testID). Wartość podaje korzeń nawigacji (app/_layout.tsx) wyłącznie w buildzie E2E (panel `e2e-nacisniecia`);
+ * poza nim `null` i `onPress` idzie bez opakowania. Używają go „Wstecz” i „Dziś” (src/kompozycja/e2e/nacisniecia-stan.tsx).
+ */
+export const KontekstNacisniec = createContext<((cel: string) => void) | null>(null);
+/**
+ * BX21 (KO-140): hak diagnostyczny „cykl dotyku celu” (id = testID): obserwatory dotyku rozkładane na `Pressable` (panel `e2e-dotyk`). Wartość podaje korzeń nawigacji tylko w buildzie E2E;
+ * poza nim `null` i `Pressable` nie dostaje żadnych dodatkowych handlerów (src/kompozycja/e2e/nacisniecia-stan.tsx).
+ */
+export type HakiDotyku = Pick<PressableProps, 'onTouchStart' | 'onTouchEnd' | 'onTouchCancel' | 'onPressIn' | 'onPressOut'>;
+export const KontekstDotyku = createContext<((cel: string) => HakiDotyku) | null>(null);
+
+/**
+ * ZR2 (KO-179, P-993): tryb zrzutów sklepu (`ZRZUTY` w src/platforma/tryb-e2e.ts). Przeglądarka wzoru nie rysuje wtedy plakietki „Strona n z m”: na iPadzie poziomo strona PDF jest wyższa niż okno,
+ * a plakietka (nakładka u dołu okna, jak w design/fix7 `.strony`) zasłania dolny wiersz tekstu w kadrze. Dostawca: korzeń nawigacji; poza trybem zrzutów (i w testach) `false`.
+ */
+export const KontekstZrzutow = createContext(false);
+
+export function Wstecz(p: { tekst: string; etykieta?: string; onPress(): void; testID?: string; tylkoSymbol?: boolean; kolor?: string }): React.ReactElement {
+  const k = useKolory();
+  const kolor = p.kolor ?? k.akcentTekst;
+  const useTytulPoprzedniego = useContext(KontekstWstecz);
+  const zglosNacisniecie = useContext(KontekstNacisniec);
+  const hakiDotyku = useContext(KontekstDotyku);
+  const tekst = useTytulPoprzedniego() ?? p.tekst;
+  const id = p.testID ?? 'nav-wstecz';
+  // 017 (P-627 A): VoiceOver czyta „Back” (`p.tekst`, jak systemowy przycisk); widoczny tekst = tytuł poprzedniego ekranu. „Back to {ekran}” — 1.0.1 (017 B).
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} {...hakiDotyku?.(id)} onPress={zglosNacisniecie ? () => { zglosNacisniecie(id); p.onPress(); } : p.onPress} style={[st.wstecz, p.tylkoSymbol ? st.wsteczSymbol : null]} testID={id}>
+      <SymbolSf nazwa="chevron.backward" rozmiar={ROZMIAR_SYMBOLU_KAPSULY} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
+      {!p.tylkoSymbol && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA} numberOfLines={1}>{tekst}</Text>}
+    </Pressable>
+  );
+}
+
+/** Przycisk paska z symbolem SF; `podpis` = widoczny tekst obok symbolu (DEC-05 a: „Tools”), etykieta VoiceOver bez zmian. */
+export function PrzyciskSymbolu(p: { symbol: NazwaSymbolu; etykieta: string; onPress(): void; testID?: string; podpis?: string; kolor?: string; rozmiar?: number }): React.ReactElement {
+  const k = useKolory();
+  const kolor = p.kolor ?? k.tekst;
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta} onPress={p.onPress} style={[st.symbol, p.podpis ? st.zPodpisem : null]} testID={p.testID}>
+      <SymbolSf nazwa={p.symbol} rozmiar={p.rozmiar ?? ROZMIAR_SYMBOLU} kolor={kolor} maxSkala={MAX_SKALA_TYTULOWA} />
+      {p.podpis && <Text style={[st.tekst, { color: kolor }]} maxFontSizeMultiplier={MAX_SKALA_TYTULOWA}>{p.podpis}</Text>}
+    </Pressable>
+  );
+}
+
+const st = StyleSheet.create({
+  wstecz: { flexDirection: 'row', alignItems: 'center', gap: odstep.xs, minHeight: cel.minimum, flexShrink: 1, alignSelf: 'flex-start' },
+  // 04-studio-projektowe-532: sama strzałka (pasek wzoru) — cel dotyku 44×44 pt jak `symbol`, nie szerokość glifu.
+  wsteczSymbol: { minWidth: cel.minimum, justifyContent: 'center' },
+  symbol: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', minWidth: cel.minimum, minHeight: cel.minimum },
+  zPodpisem: { gap: odstep.xs, paddingHorizontal: odstep.xs },
+  tekst: { ...typografia.tresc, flexShrink: 1 },
+});

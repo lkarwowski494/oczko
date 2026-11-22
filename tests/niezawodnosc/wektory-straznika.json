@@ -1,0 +1,26 @@
+{
+  "zrodlo": "Wzorzec roli 12 „Strażnik pętli awarii przy starcie” (biblioteka prompts 97ec212), ADR-0019, P-080 (próg 2). Kroki: start = poczatekStartu (start interfejsu na pierwszym planie), kamien = kamienMilowy, sprobuj = sprobujNormalnie (start normalny w tym samym procesie, P-177 / partia-4 „Odstępstwa”). Brak kroku po starcie = awaria albo zabicie przed kamieniem.",
+  "prog": 2,
+  "sekwencje": [
+    { "id": "NS-01", "opis": "pierwszy start → normalny", "kroki": ["start"], "decyzje": ["normalny"], "koniec": { "nieudane": 0, "wToku": true } },
+    { "id": "NS-02", "opis": "start po udanym → normalny", "kroki": ["start", "kamien", "start"], "decyzje": ["normalny", "normalny"], "koniec": { "nieudane": 0, "wToku": true } },
+    { "id": "NS-03", "opis": "jeden start bez kamienia → normalny", "kroki": ["start", "start"], "decyzje": ["normalny", "normalny"], "koniec": { "nieudane": 1, "wToku": true } },
+    { "id": "NS-04", "opis": "drugi z rzędu bez kamienia → awaryjny", "kroki": ["start", "start", "start"], "decyzje": ["normalny", "normalny", "awaryjny"], "koniec": { "nieudane": 2, "wToku": false } },
+    { "id": "NS-05", "opis": "„spróbuj normalnie” i znów bez kamienia → awaryjny", "kroki": ["start", "start", "start", "sprobuj", "start"], "decyzje": ["normalny", "normalny", "awaryjny", "awaryjny"], "koniec": { "nieudane": 2, "wToku": false } },
+    { "id": "NS-06", "opis": "„spróbuj normalnie” i kamień → licznik 0", "kroki": ["start", "start", "start", "sprobuj", "kamien", "start"], "decyzje": ["normalny", "normalny", "awaryjny", "normalny"], "koniec": { "nieudane": 0, "wToku": true } },
+    { "id": "NS-07", "opis": "start awaryjny i jego ekran → licznik bez zmian, kolejny start znów awaryjny", "kroki": ["start", "start", "start", "start", "start"], "decyzje": ["normalny", "normalny", "awaryjny", "awaryjny", "awaryjny"], "koniec": { "nieudane": 2, "wToku": false } },
+    { "id": "NS-08", "opis": "kamień po jednym nieudanym → licznik 0, następny jeden nieudany nie włącza trybu awaryjnego", "kroki": ["start", "start", "kamien", "start", "start"], "decyzje": ["normalny", "normalny", "normalny", "normalny"], "koniec": { "nieudane": 1, "wToku": true } },
+    { "id": "NS-09", "opis": "„spróbuj normalnie” dwa razy z rzędu bez kamienia → za każdym razem jedna próba", "kroki": ["start", "start", "start", "sprobuj", "start", "sprobuj", "start"], "decyzje": ["normalny", "normalny", "awaryjny", "awaryjny", "awaryjny"], "koniec": { "nieudane": 2, "wToku": false } }
+  ],
+  "zapisy": [
+    { "id": "NZ-01", "surowy": "{\"x\":1}" },
+    { "id": "NZ-02", "surowy": "nie-json" },
+    { "id": "NZ-03", "surowy": null },
+    { "id": "NZ-04", "surowy": "" },
+    { "id": "NZ-05", "surowy": "{\"nieudane\":" },
+    { "id": "NZ-06", "surowy": "[1,true]" },
+    { "id": "NZ-07", "surowy": "{\"nieudane\":-1,\"wToku\":true}" },
+    { "id": "NZ-08", "surowy": "{\"nieudane\":1e400,\"wToku\":true}" },
+    { "id": "NZ-09", "surowy": "{\"nieudane\":\"2\",\"wToku\":true}" }
+  ]
+}

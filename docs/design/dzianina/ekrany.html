@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko „Dzianina” — ekrany TO BE</title>
+<link rel="stylesheet" href="tokeny.css">
+<!-- System „Dzianina” (P-552, P-553). Kolory wyłącznie z tokeny.json (przez tokeny.css). Dane: [PRZYKŁAD]. Teksty DE (data-de): [PRZYKŁAD] do arkusza
+     najdłuższego języka; tłumaczenia robi rola 09. Treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3. Ikony interfejsu zastępcze (na iOS SF Symbols). -->
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Bree Serif"; src: url(../fonty/BreeSerif.ttf); }
+:root { --w: 390px; --dt-tytul: 1; --dt-tresc: 1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.br { font-family: "Bree Serif", serif; font-weight: 400; }
+.t-duzy { font-size: calc(34px * var(--dt-tytul)); line-height: 1.12; }
+.t-tytul { font-size: calc(22px * var(--dt-tytul)); line-height: 1.2; }
+.t-tresc { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.t-pod { font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
+.cyfry { font-variant-numeric: tabular-nums; }
+.cyf { display: inline-block; width: 0.536em; text-align: center; } /* M3-S3-03: komórka cyfry Bree = typografia.cyfry.komorkaEm */
+.ik { display: inline-flex; width: 1em; height: 1em; flex: none; } .ik svg { width: 100%; height: 100%; }
+.ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; }
+.status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
+.status .bat { width: 26px; height: 12px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; }
+.status .bat::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }
+.naglowek { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 16px 0; gap: 12px; }
+.naglowek .data { color: var(--tekst2); margin-top: 4px; }
+.pik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; color: var(--tekst); flex: none; border-radius: 22px; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; min-height: 44px; }
+.nav a { display: inline-flex; align-items: center; gap: 2px; color: var(--akcentTekst); min-height: 44px; padding: 0 8px; }
+.tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
+.zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.zakladki a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--zakladka); font-weight: 600; text-align: center; min-height: 44px; }
+.zakladki a .ik { font-size: 26px; } .zakladki a.wybrana { color: var(--zakladkaWybrana); }
+.sekcja { font-weight: 700; margin-bottom: -8px; }
+/* karta „Kontynuuj” (K-B) */
+.karta { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 112px 1fr; gap: 16px; }
+.dz { grid-row: span 2; border-radius: 12px; background: #00000026; position: relative; min-height: 216px; }
+.dz svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.opis { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.opis .czesc { color: var(--kartaTekst2); }
+.lr { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.liczba { font-size: calc(56px * min(var(--dt-tytul), 1.6)); line-height: 1; }
+.liczba small { display: block; font-family: "Source Sans 3"; font-size: calc(15px * var(--dt-tresc)); color: var(--kartaTekst2); margin-top: 4px; }
+.plus { width: 72px; height: 72px; border-radius: 36px; background: var(--akcent); color: var(--naAkcencie); font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 -3px 0 #0003; flex: none; }
+.kont { grid-column: 2; align-self: end; display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; border-radius: 14px; background: var(--przyciskNaKarcie); color: var(--przyciskNaKarcieTekst); font-weight: 700; padding: 8px 12px; text-align: center; }
+.kont .ik { font-size: 16px; }
+.wiersz { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); min-height: 52px; }
+.wiersz .zn { width: 14px; height: 22px; border-radius: 7px 7px 2px 2px; background: var(--akcent); flex: none; }
+.wiersz p { flex: 1; } .wiersz .ik { color: var(--tekst2); font-size: 16px; }
+.tydz { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.tydz div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); }
+.tydz i { width: 100%; max-width: 44px; min-height: 44px; aspect-ratio: 1; border-radius: 10px; background: var(--dzienPusty); display: block; }
+.tydz i.z, .kal i.z { background: var(--akcent); box-shadow: inset 0 0 0 2px var(--akcentTekst); } /* P-614 (6): bez faktury — kolor + obwódka + data */
+.tydz i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; } .tydz b { color: var(--tekst); }
+.kafle { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kafel { background: var(--powierzchnia); border-radius: 18px; padding: 16px; min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; font-weight: 600; }
+.kafel .it { width: 44px; height: 44px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--akcentTekst); font-weight: 700; }
+:root { --faktura: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13.5' height='12'%3E%3Cellipse cx='3.9' cy='6' rx='2.4' ry='4.9' transform='rotate(-28 3.9 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3Cellipse cx='9.6' cy='6' rx='2.4' ry='4.9' transform='rotate(28 9.6 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3C/svg%3E"); }
+/* licznik */
+.licz-g { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 8px 16px 0; }
+.licz-g .dz { min-height: 260px; grid-row: auto; background: var(--karta); }
+.licz-num { font-size: calc(104px * min(var(--dt-tytul), 1.3)); line-height: 1; }
+.licz-num small { display: block; font-family: "Source Sans 3"; font-size: calc(17px * var(--dt-tresc)); color: var(--tekst2); }
+.notatka { margin: 12px 16px 0; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); display: flex; gap: 12px; }
+.notatka .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 2px; }
+.akcje { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; padding: 16px 16px 0; }
+.akcje a { display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 64px; padding: 8px 4px; border-radius: 14px; background: var(--powierzchnia); font-weight: 600; text-align: center; }
+.akcje a .ik { font-size: 24px; color: var(--ikona); }
+[data-theme="dark"] .akcje a .ik { color: var(--akcentTekst); }
+.dol { margin-top: auto; display: flex; gap: 12px; align-items: stretch; padding: 16px 16px 36px; }
+.minus { width: 72px; border-radius: 18px; border: 2px solid var(--tekst2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: calc(22px * min(var(--dt-tresc), 1.6)); color: var(--tekst); flex: none; min-height: 72px; align-self: flex-end; }
+.wielki { flex: 1; min-height: 168px; border-radius: 26px; background: var(--akcent); color: var(--naAkcencie); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: inset 0 -4px 0 #0003; padding: 12px; text-align: center; }
+.wielki b { font-size: calc(34px * min(var(--dt-tytul), 1.4)); font-weight: 800; } .wielki span { font-weight: 600; }
+/* projekty */
+.szukaj { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--powierzchnia); color: var(--tekst2); min-height: 44px; }
+.lista { background: var(--powierzchnia); border-radius: 16px; overflow: hidden; }
+.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px; min-height: 44px; } /* P-614 (5): lista.minWysokoscWiersza 44, wysokość z treści */
+.lista > div + div { border-top: 1px solid var(--linia); }
+.lista .pr { width: 40px; height: 48px; border-radius: 8px; background: var(--karta); position: relative; overflow: hidden; flex: none; }
+.lista .pr i { position: absolute; left: 4px; right: 4px; bottom: 4px; background: var(--akcent) var(--faktura); border-radius: 3px; }
+.lista .tx { flex: 1; min-width: 0; } .lista .tx small { display: block; color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.lista .pik { color: var(--tekst2); }
+/* historia */
+.kal { display: grid; grid-template-columns: repeat(7, 1fr); margin: 0 -16px; }
+.kal span { text-align: center; color: var(--tekst2); padding-bottom: 4px; }
+.kal i { display: flex; align-items: center; justify-content: center; min-height: 48px; border: 1px solid var(--tlo); background: var(--powierzchnia); font-style: normal; font-weight: 600; border-radius: 8px; }
+.kal i.z { color: var(--naAkcencie); } .kal i.p { background: transparent; color: var(--tekst2); font-weight: 400; }
+.kal i.dzis { outline: 2.5px solid var(--tekst); outline-offset: -3px; }
+.podsum { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.podsum div { background: var(--powierzchnia); border-radius: 14px; padding: 12px 16px; }
+.podsum b { display: block; font-size: calc(28px * min(var(--dt-tytul), 1.6)); } .podsum small { color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+/* wzór (ZM-10) */
+.wz { background: var(--wzorRama); }
+.wz .strona { margin: 8px 12px; background: #FFFFFF; color: #1A1A1A; border-radius: 4px; padding: 20px 18px; font-family: "Source Sans 3"; font-size: 13px; line-height: 1.45; box-shadow: 0 1px 6px #0004; flex: 1; }
+.wz .strona h3 { font-size: 17px; margin-bottom: 8px; } .wz .strona p { margin-bottom: 6px; }
+.wz .strona .zak { background: #F6E04A; margin: 0 -6px; padding: 2px 6px; }
+.pasek-wz { display: flex; align-items: stretch; gap: 8px; padding: 8px 12px 32px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); flex-wrap: wrap; }
+.pasek-wz a { min-height: 52px; min-width: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(20px * min(var(--dt-tresc), 1.6)); }
+.pasek-wz .m { border: 2px solid var(--tekst2); color: var(--tekst); }
+.pasek-wz .p { flex: 1; background: var(--akcent); color: var(--naAkcencie); }
+.pasek-wz .r { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--tekst); font-weight: 600; text-align: center; }
+.pasek-wz .r b { font-family: "Bree Serif"; font-weight: 400; font-size: calc(28px * min(var(--dt-tytul), 1.4)); }
+/* przy największym tekście: układy w pionowy stos */
+.duzy .karta { grid-template-columns: minmax(0, 1fr); } .kont, .kafel, .akcje a, .wielki { overflow-wrap: anywhere; hyphens: auto; } .opis, .tresc > * { min-width: 0; } .duzy .dz { grid-row: auto; min-height: 120px; } .duzy .kont { grid-column: 1; }
+.duzy .licz-g { grid-template-columns: 1fr; } .duzy .licz-g .dz { min-height: 96px; }
+.duzy .akcje { grid-template-columns: 1fr; } .duzy .akcje a { flex-direction: row; justify-content: flex-start; padding: 8px 16px; gap: 12px; }
+.duzy .tydz { grid-template-columns: repeat(4, 1fr); } .duzy .kafle { grid-template-columns: 1fr; }
+.duzy .dol { flex-direction: column-reverse; } .duzy .minus { width: 100%; align-self: auto; }
+.duzy .kal i { min-height: 48px; font-size: 17px; } .duzy .kal span { font-size: 13px; }
+.duzy .pasek-wz .r { order: -1; flex-basis: 100%; }
+.duzy .lista .pr { display: none; }
+.duzy .plus { width: 100px; height: 100px; border-radius: 50px; }
+.duzy .kafel .it { width: 72px; height: 72px; font-size: 44px; border-radius: 18px; }
+.duzy .akcje a .ik { font-size: 40px; }
+.duzy .wiersz .ik, .duzy .lista .pik { font-size: 32px; }
+.duzy .mies { flex-direction: column; align-items: flex-start !important; gap: 4px; }
+.duzy .wz-nav { flex-wrap: wrap; } .duzy .wz-nav .plik { order: 3; flex-basis: 100%; padding: 0 8px 8px; }
+.lista .pr { width: 40px; height: 56px; } .lista .pr::before { content: ""; position: absolute; left: 2px; right: 2px; top: 6px; height: 3px; border-radius: 2px; background: var(--igla); }
+.lista .pr i { top: auto; }
+
+/* oferty „Oczko Pro” (F-35, P-557): wygląd i układ; kroki, model i teksty istniejących kluczy bez zmian */
+.of .nav { justify-content: flex-end; }
+.of-tresc { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 0 16px 16px; }
+.of-hero { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+.of-hero p { color: var(--kartaTekst2); }
+.of-mies { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; margin-top: 8px; }
+.of-mies i { aspect-ratio: 1; border-radius: 4px; background: var(--akcent) var(--faktura); background-size: 9px 8px; display: block; }
+.of-kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.of-kafel { background: var(--powierzchnia); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 104px; }
+.of-kafel .it { width: 40px; height: 40px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.of-kafel b { font-weight: 700; } .of-kafel small { display: block; color: var(--tekst2); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; font-weight: 400; margin-top: 2px; }
+.of-plany { display: flex; flex-direction: column; gap: 8px; }
+.of-plan { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 0 12px; padding: 12px 16px 12px 12px; min-height: 72px; border-radius: 18px; background: var(--powierzchnia); border: 2px solid transparent; }
+.of-plan[aria-checked="true"] { border-color: var(--akcentTekst); }
+.of-plan .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.of-plan[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.of-plan .nz { font-weight: 700; }
+.of-plan .zn { grid-row: span 3; } .of-plan .cena { font-size: calc(22px * min(var(--dt-tresc), 2.4)); line-height: 1.2; } /* cena najwyraźniejsza (MS-02, KP-09), także przy AX5 */
+.of-plan .pod { color: var(--tekst2); }
+.of-bez { color: var(--tekst2); }
+.of-linki { display: flex; flex-wrap: wrap; gap: 0 20px; } .of-linki a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.of-dol { display: flex; flex-direction: column; gap: 4px; padding: 12px 16px 34px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.of-kom { display: flex; gap: 8px; align-items: flex-start; padding-bottom: 8px; } .of-kom .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 1px; }
+.of-kup { min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; text-align: center; }
+.of-kup[aria-disabled="true"] { background: var(--powierzchnia); color: var(--tekst2); border: 2px dashed var(--tekst2); }
+.of-wt { display: flex; justify-content: space-between; gap: 8px; } .of-wt a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; color: var(--akcentTekst); font-weight: 600; }
+.duzy .of-kafle { grid-template-columns: 1fr; } .duzy .of-kafel { flex-direction: row; align-items: flex-start; gap: 12px; } .duzy .of-kafel .it { width: 56px; height: 56px; font-size: 36px; flex: none; }
+.duzy .of-plan { grid-template-columns: 1fr; gap: 4px; } .duzy .of-plan .zn { grid-row: auto; width: 40px; height: 40px; border-radius: 20px; font-size: 28px; }
+.duzy .of-wt { flex-direction: column; align-items: stretch; } .duzy .of-wt a { justify-content: center; }
+.duzy .of-mies { grid-template-columns: repeat(10, 1fr); }
+.of-kafel, .of-plan, .of-kup, .of-wt a { overflow-wrap: anywhere; hyphens: auto; } .of-plan > * { min-width: 0; }
+
+/* M3-S3-06: stany p2 na „Dziś” i miejsce okna „Uczciwe zasady” */
+.lim { grid-column: 2; display: flex; gap: 8px; align-items: flex-start; color: var(--kartaTekst); }
+.lim .ik { color: var(--kartaTekst2); font-size: 20px; margin-top: 1px; } .lim a { color: var(--kartaTekst); font-weight: 700; text-decoration: underline; display: inline-block; min-height: 44px; padding-top: 12px; }
+.baner { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); }
+.baner .ik { color: var(--akcentTekst); font-size: 22px; } .baner p { flex: 1; min-width: 0; color: var(--tekst); }
+.baner a { flex-basis: 100%; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; }
+.zaslona { position: absolute; inset: 0; background: #0007; }
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; padding: 8px 20px 36px; display: flex; flex-direction: column; gap: 12px; }
+.arkusz .uch { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); align-self: center; }
+.arkusz .zam { align-self: flex-end; margin: -4px -8px -8px 0; }
+.arkusz .gl { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; margin-top: 4px; }
+.arkusz .dr { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--akcentTekst); font-weight: 700; }
+.karta-bm { grid-template-columns: minmax(0, 1fr); } .karta-bm .kont { grid-column: 1; }
+.duzy .lim { grid-column: 1; } .duzy .baner .ik { font-size: 34px; }
+
+/* M3-MAK-01 (2026-11-08): ekran projektu. Lista grupowana systemu na tokenach; element firmowy = dzianina każdej części (jak miniatura listy Projekty);
+   kolor włóczki tylko tu, jako kropka przy nazwie (P-567) — barwa z danych użytkownika, obwódka z tokenu (nie kolor motywu). */
+.nav .prawo { display: flex; } .nav .prawo .pik { color: var(--akcentTekst); }
+.pr-gl { padding: 0 16px; display: flex; flex-direction: column; gap: 4px; }
+.pr-gl h1 { display: flex; align-items: baseline; gap: 8px; }
+.kropka { width: 14px; height: 14px; border-radius: 7px; flex: none; box-shadow: inset 0 0 0 1.5px var(--tekst2); align-self: center; }
+.pr-gl .pod2 { color: var(--tekst2); }
+.pr-tresc { display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 40px; }
+.lista > div.pr-cz { min-height: 44px; } .lista .wc { padding-left: 68px; min-height: 44px; }
+.lista .wc .tx { font-size: calc(17px * var(--dt-tresc)); }
+.lista .sz { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.6)); flex: none; }
+.lista .war { color: var(--tekst2); text-align: right; } .lista > div.wg { min-height: 44px; padding-right: 12px; }
+.lista .usun { color: var(--niszczacy); font-size: 24px; flex: none; width: 28px; }
+.zdj { display: flex; gap: 8px; overflow: hidden; }
+.zdj .f { width: 88px; height: 88px; border-radius: 10px; flex: none; background: var(--wl) var(--faktura); background-size: 20px 18px; }
+.zdj .d { width: 88px; min-height: 88px; border-radius: 10px; flex: none; background: var(--powierzchnia); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; text-align: center; font-weight: 600; }
+.zdj .d .ik { color: var(--ikona); font-size: 26px; } [data-theme="dark"] .zdj .d .ik { color: var(--akcentTekst); }
+.strona-min { width: 44px; height: 57px; background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--linia); flex: none; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; }
+.strona-min i { height: 2px; background: #C9C4BD; display: block; } .strona-min i.zk { background: var(--zakreslacz); height: 4px; }
+.pr-stopka { color: var(--tekst2); }
+.pr-menu { position: absolute; right: 12px; top: 96px; width: 250px; background: var(--powierzchnia); border-radius: 16px; box-shadow: 0 8px 28px #0005; overflow: hidden; z-index: 2; }
+.pr-menu a { display: flex; align-items: center; min-height: 44px; padding: 0 16px; } /* P-614 (4): menu.wysokoscPozycji 44 */ .pr-menu a + a { border-top: 1px solid var(--linia); } .pr-menu a.nisz { color: var(--niszczacy); }
+.gotowe { color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
+.duzy .lista .wc { padding-left: 16px; } .duzy .lista > div.wg { flex-wrap: wrap; } .duzy .lista .war { flex-basis: 100%; text-align: left; order: 3; }
+.duzy .zdj { flex-wrap: wrap; } .duzy .pr-gl h1 { align-items: flex-start; } .duzy .kropka { margin-top: 0.4em; align-self: flex-start; }
+.duzy .pr-menu { left: 12px; width: auto; }
+
+/* M3-MAK-02: arkusz formularza (systemowy formSheet: Anuluj / tytuł / Dodaj albo Zapisz u góry) i podgląd zdjęć na czarnym tle (systemCzarny). */
+.fs { background: var(--tlo); }
+.fs .zaslona { background: #0006; }
+.ark-f { position: absolute; left: 0; right: 0; top: 58px; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; display: flex; flex-direction: column; }
+.ark-f .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 8px 16px 0; min-height: 52px; }
+.ark-f .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; }
+.ark-f .ng a.zap { font-weight: 700; } .ark-f .ng a[aria-disabled="true"] { color: var(--przyciskNieaktywnyTekst); font-weight: 600; }
+.ark-f .ng h2 { text-align: center; font-weight: 700; }
+.ark-f .ft { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+.pole label { display: block; color: var(--tekst2); margin-bottom: 4px; }
+.pole .we { min-height: 48px; border-radius: 10px; border: 2px solid var(--tekst2); padding: 8px 12px; color: var(--tekst); display: flex; align-items: center; }
+.pole .we.fok { border-color: var(--akcentTekst); } .pole .we .kur { width: 2px; height: 1.2em; background: var(--akcentTekst); margin-left: 1px; }
+.pole .we.pusty { color: var(--tekst2); }
+.f-pod { color: var(--tekst2); }
+.alert { display: flex; gap: 8px; align-items: flex-start; } .alert .zn { width: 22px; height: 22px; border-radius: 11px; border: 2px solid var(--tekst); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex: none; margin-top: 1px; }
+.radio { display: flex; flex-direction: column; border-radius: 16px; background: var(--tlo); overflow: hidden; }
+.radio a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 16px; } .radio a + a { border-top: 1px solid var(--linia); }
+.radio .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); flex: none; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.radio a[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.tekstowy { align-self: flex-start; color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; }
+.zd { background: var(--sc-tlo); color: var(--sc-tekst); }
+.zd .zd-g { display: flex; justify-content: flex-end; padding: 0 8px; min-height: 44px; }
+.zd a { color: var(--sc-akcentTekst); min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; font-weight: 600; }
+.zd .foto { flex: 1; margin: 24px 0; background: var(--wl) var(--faktura); background-size: 54px 48px; }
+.zd .zd-d { display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 34px; gap: 8px; } .zd .zd-d span { color: var(--sc-tekst2); }
+.zd .ik { font-size: 22px; }
+.duzy .zd .zd-d { flex-wrap: wrap; } .duzy .zd .zd-d span { order: -1; flex-basis: 100%; text-align: center; }
+
+/* M3-MAK-03: biegnący stoper w rzędzie akcji (P-586 2) i zakładka Narzędzia z ikonami wierszy (kafelek 32 pt, jak lista Ustawień ZM-07). */
+.duzy .ark-f { position: relative; top: auto; margin-top: 8px; flex: 1; } 
+.duzy .ark-f .ng { grid-template-columns: 1fr auto; } .duzy .ark-f .ng h2 { grid-column: 1 / -1; grid-row: 2; }
+.ark-f .ng h2 { font-size: calc(17px * var(--dt-tytul)); } .duzy .radio .zn { width: 40px; height: 40px; border-radius: 20px; font-size: 28px; } .duzy .alert .zn { width: 32px; height: 32px; border-radius: 16px; font-size: 20px; }
+.akcje a.biegnie { box-shadow: inset 0 0 0 2px var(--akcentTekst); }
+.akcje a.biegnie .ik { color: var(--akcentTekst); } .akcje a.biegnie span { font-weight: 700; font-variant-numeric: tabular-nums; }
+.kik { width: 32px; height: 32px; border-radius: 8px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: none; }
+.duzy .kik { width: 44px; height: 44px; font-size: 30px; border-radius: 10px; }
+
+/* fix E5 (2026-11-09, P-614, P-613): 004 karta „Dziś” przy AX3–AX5 — liczba i „+1” na górze karty, dzianina niskim pasem; 016 + LIC-04 licznik ze stałą strefą
+   (rząd akcji + −1/+1) nałożoną na przewijaną treść, dolny odstęp treści = zmierzona wysokość strefy (skrypt niżej, jak onLayout); 009 arkusz menu jako lista grupowana. */
+.duzy .karta { display: flex; flex-direction: column; gap: 12px; } .duzy .karta .opis { display: contents; }
+.duzy .karta .lr { order: -1; margin-top: 0; flex-wrap: nowrap; align-items: flex-start; } .duzy .karta .lim { order: -1; }
+.duzy .karta .liczba { min-width: 0; } .duzy .karta .dz { order: 2; min-height: 48px; } .duzy .karta .kont { order: 3; }
+.lz { height: 844px; overflow: hidden; }
+.lz .przew { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding-bottom: var(--strefa, 300px); }
+.lz .przew > * { flex: none; } .lz .przew.koniec { justify-content: flex-end; }
+.lz .strefa { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); }
+.lz .strefa .dol { margin-top: 0; } .lz .przew .akcje { display: none; }
+.lz .cel-ok { margin: 12px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.lz .drugi { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; padding: 8px 16px; }
+.lz .sesja { margin: 12px 16px 0; color: var(--tekst2); }
+.duzy .lz .przew .akcje { display: grid; } .duzy .lz .strefa .akcje { display: none; }
+.duzy .lz .licz-g { display: contents; } .duzy .lz .licz-g .dz { display: none; } /* od AX3 kolumna ukryta; dane niesie liczba i opis (jak miniatura Projektów, P-597) */
+.duzy .lz .num { order: -2; padding: 0 16px; } .duzy .lz .gl { order: -1; margin-top: 12px; }
+.duzy .lz .gl h1 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } /* tytuł ≤ 2 wiersze, pełny w etykiecie nagłówka */
+.ark-m { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); border-radius: 14px 14px 0 0; padding: 0 16px 36px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 -8px 28px #0005; }
+.ark-m .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 52px; gap: 8px; }
+.ark-m .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; } .ark-m .ng h2 { text-align: center; font-weight: 700; font-size: calc(17px * var(--dt-tytul)); }
+.ark-m > * { flex: none; } .ark-m .lista { margin-bottom: 12px; } .ark-m .lista > div { padding: 8px 16px; }
+.duzy .ark-m { top: 58px; overflow: hidden; } .duzy .ark-m .ng { grid-template-columns: 1fr; } .duzy .ark-m .ng h2 { text-align: left; }
+</style></head>
+<body>
+
+<!-- 1. Dziś (typowy) -->
+<main class="ekran" data-ekran="dzis" aria-label="Dziś">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br" data-de="Heute">Dziś</h1><p class="t-pod data" data-de="Donnerstag, 5. November">czwartek, 5 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14, następne ujmowanie w rzędzie 47"><svg data-dz="42,96,14,47" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Sweter Mgła</h2><p class="t-pod czesc" data-de="Linker Ärmel · Reihe 43 von 96">Rękaw lewy · rząd 43 z 96</p>
+        <div class="lr"><p class="liczba br cyfry">42<small data-de="Reihen fertig">rzędy gotowe</small></p><a class="plus cyfry" aria-label="Dodaj rząd">+1</a></div></div>
+      <a class="kont t-tresc"><span data-de="Weiterstricken">Kontynuuj</span><i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <div class="wiersz"><span class="zn"></span><p class="t-tresc" data-de="In 4 Reihen: Abnahme (5 von 8)">Za 4 rzędy: <b>ujmowanie</b> (5 z 8)</p><i data-ik="szewron"></i></div>
+    <p class="t-tresc sekcja" data-de="Diese Woche">Ten tydzień</p>
+    <div class="tydz t-mala"><div><i class="z"></i><span data-de="Mo">pn</span></div><div><i class="z"></i><span data-de="Di">wt</span></div><div><i></i><span data-de="Mi">śr</span></div><div><i class="z dzis"></i><b data-de="Do">czw</b></div><div><i></i><span data-de="Fr">pt</span></div><div><i></i><span data-de="Sa">sb</span></div><div><i></i><span data-de="So">nd</span></div></div>
+    <div class="kafle t-tresc">
+      <a class="kafel"><span class="it"><i data-ik="nowy"></i></span><span data-de="Neues Projekt">Nowy projekt</span></a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span><span data-de="Anleitung hinzufügen">Dodaj wzór</span></a>
+      <a class="kafel"><span class="it"><i data-ik="druty"></i></span><span data-de="Garn und Nadeln">Włóczka i druty</span></a><a class="kafel"><span class="it"><i data-ik="probka"></i></span><span data-de="Maschenprobe">Próbka</span></a>
+    </div>
+    <p class="t-pod wolne"><span data-de="Noch 3 von 5 kostenlosen Stricktagen im November.">Zostały 3 z 5 darmowych dni robótkowych w listopadzie.</span></p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i><span data-de="Heute">Dziś</span></a><a><i data-ik="projekty"></i><span data-de="Projekte">Projekty</span></a><a><i data-ik="narzedzia"></i><span data-de="Werkzeuge">Narzędzia</span></a><a><i data-ik="historia"></i><span data-de="Verlauf">Historia</span></a></nav>
+</main>
+
+<!-- 2. Dziś — pierwsze uruchomienie (bez projektu, ZM-02) -->
+<main class="ekran" data-ekran="dzis-pierwszy" aria-label="Dziś, pierwsze uruchomienie">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">czwartek, 5 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Pierwszy licznik: 0 rzędów"><svg data-dz="0,0,0,0" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Pierwszy licznik</h2><p class="t-pod czesc">Stuknij +1 po każdym skończonym rzędzie. Projekt nazwiesz później.</p>
+        <div class="lr"><p class="liczba br cyfry">0<small>rzędów</small></p><a class="plus cyfry" aria-label="Dodaj rząd">+1</a></div></div>
+      <a class="kont t-tresc">Otwórz licznik <i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <p class="t-tresc sekcja">Ten tydzień</p>
+    <div class="tydz t-mala"><div><i></i><span>pn</span></div><div><i></i><span>wt</span></div><div><i></i><span>śr</span></div><div><i class="dzis"></i><b>czw</b></div><div><i></i><span>pt</span></div><div><i></i><span>sb</span></div><div><i></i><span>nd</span></div></div>
+    <p class="t-pod wolne">Tu zobaczysz dni, w które dziergasz.</p>
+    <div class="kafle t-tresc">
+      <a class="kafel"><span class="it"><i data-ik="nowy"></i></span>Nowy projekt</a><a class="kafel"><span class="it"><i data-ik="wzor"></i></span>Dodaj wzór</a>
+      <a class="kafel"><span class="it"><i data-ik="druty"></i></span>Włóczka i druty</a><a class="kafel"><span class="it"><i data-ik="probka"></i></span>Próbka</a>
+    </div>
+    <p class="t-pod wolne">5 darmowych dni robótkowych w każdym miesiącu.</p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 3. Licznik (ZM-04): pasek zakładek ukryty -->
+<main class="ekran lz" data-ekran="licznik" aria-label="Licznik">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span data-de="Heute">Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
+  <div class="przew">
+  <div class="gl" style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center" data-de="Projekt ›">Projekt ›</a>
+    <h1 class="t-duzy br">Sweter Mgła</h1><p class="t-pod" style="color:var(--tekst2)" data-de="Linker Ärmel · Ziel 96 Reihen">Rękaw lewy · cel 96 rzędów</p></div>
+  <div class="licz-g">
+    <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
+    <div class="num"><p class="licz-num br cyfry">42<small data-de="Reihen fertig · jetzt Reihe 43">rzędy gotowe · teraz rząd 43</small></p>
+      <p class="t-pod" style="margin-top:12px"><span style="color:var(--akcentTekst);font-weight:700" data-de="In 4 Reihen:">Za 4 rzędy:</span> <span data-de="Abnahme (5 von 8)">ujmowanie (5 z 8)</span></p></div>
+  </div>
+  <div class="notatka t-pod"><i data-ik="notatka"></i><p data-de="Ärmel 2 cm kürzer als in der Anleitung.">Rękaw o 2 cm krótszy niż we wzorze.</p></div>
+  <!-- AX3–AX5: rząd akcji jako lista w przewijanej treści (jak kod, duzyTekst) -->
+  <div class="akcje t-mala">
+    <a><i data-ik="notatka"></i><span data-de="Notiz">Notatka</span></a><a><i data-ik="wzor"></i><span data-de="Anleitung">Wzór</span></a><a><i data-ik="cel"></i><span data-de="Ziel">Cel</span></a><a><i data-ik="stoper"></i><span data-de="Stoppuhr">Stoper</span></a><a><i data-ik="historiaZmian"></i><span data-de="Verlauf">Historia</span></a>
+  </div>
+  </div>
+  <!-- stała strefa (P-609 LIC-03 A): rząd akcji + −1/+1; treść wyżej ma dolny odstęp = wysokość strefy (016, LIC-04) -->
+  <div class="strefa">
+  <div class="akcje t-mala">
+    <a><i data-ik="notatka"></i><span data-de="Notiz">Notatka</span></a><a><i data-ik="wzor"></i><span data-de="Anleitung">Wzór</span></a><a><i data-ik="cel"></i><span data-de="Ziel">Cel</span></a><a><i data-ik="stoper"></i><span data-de="Stoppuhr">Stoper</span></a><a><i data-ik="historiaZmian"></i><span data-de="Verlauf">Historia</span></a>
+  </div>
+  <div class="dol">
+    <a class="minus" aria-label="Odejmij rząd">−1</a>
+    <a class="wielki" aria-label="Dodaj rząd, skończony rząd 43"><b class="cyfry">+1</b><span class="t-pod" data-de="Reihe 43 fertig">rząd 43 skończony</span></a>
+  </div>
+  </div>
+</main>
+
+<!-- 4. Projekty (WD-1, WD-3) -->
+<main class="ekran" data-ekran="projekty" aria-label="Projekty">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Projekty</h1><span class="pik" aria-label="Nowy projekt"><i data-ik="plus" data-gr="2.2"></i></span></div>
+  <div class="tresc">
+    <div class="szukaj t-tresc"><i data-ik="szukaj"></i>Szukaj</div>
+    <p class="t-tresc sekcja">W toku</p>
+    <div class="lista t-tresc">
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.44)"></i></span><p class="tx">Sweter Mgła<small>Rękaw lewy · 44% · dziś</small></p><span class="pik" aria-label="Więcej: Sweter Mgła"><i data-ik="kropki"></i></span></div>
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.7)"></i></span><p class="tx">Skarpety w paski<small>Druga skarpeta · 70% · wczoraj</small></p><span class="pik" aria-label="Więcej: Skarpety w paski"><i data-ik="kropki"></i></span></div>
+      <div><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.15)"></i></span><p class="tx">Czapka z warkoczem<small>Ściągacz · 15% · 23 dni temu</small></p><span class="pik" aria-label="Więcej: Czapka z warkoczem"><i data-ik="kropki"></i></span></div>
+    </div>
+    <p class="t-tresc sekcja">Ukończone</p>
+    <div class="lista t-tresc">
+      <div><span class="pr" aria-hidden="true"><i style="height:calc(100% - 14px)"></i></span><p class="tx">Szal z alpaki<small>Ukończony 12 października</small></p><span class="pik" aria-label="Więcej: Szal z alpaki"><i data-ik="kropki"></i></span></div>
+    </div>
+    <p class="t-pod wolne">Ostatnio usunięte: 1 projekt, do 3 grudnia. <a>Pokaż</a></p>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a class="wybrana"><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 5. Historia (kalendarz dni, F-59; dni ≥ 44 pt także przy 320 pt: siatka na pełną szerokość) -->
+<main class="ekran" data-ekran="historia" aria-label="Historia">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Historia</h1></div>
+  <div class="tresc">
+    <div class="nav t-tresc mies" style="padding:0;margin:-8px 0 -8px"><a style="padding-left:0"><i data-ik="wstecz" data-gr="2.4"></i>październik</a><b class="t-tytul br">Listopad 2026</b><a style="opacity:.35;padding-right:0" aria-disabled="true">grudzień<i data-ik="szewron" data-gr="2.4"></i></a></div>
+    <div class="kal t-tresc cyfry" id="kal" aria-label="Listopad: dziergane 2, 3 i 5 listopada"></div>
+    <div class="wiersz"><p class="t-tresc"><b>Czwartek, 5 listopada</b><br><span class="t-pod" style="color:var(--tekst2)">Sweter Mgła · 14 rzędów · 1 h 05 min</span></p><i data-ik="szewron"></i></div>
+    <p class="t-tresc sekcja">Listopad</p>
+    <div class="podsum t-pod"><div><b class="br cyfry">3</b><small>dni z robótką</small></div><div><b class="br cyfry">38</b><small>rzędów</small></div><div><b class="br cyfry">2 h 40</b><small>czasu sesji</small></div></div>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a class="wybrana"><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<!-- 6. Wzór (ZM-10): strona w oryginalnych kolorach pliku, rama i pasek w barwie motywu; bez stałej linii liczby zakreśleń -->
+<main class="ekran wz" data-ekran="wzor" aria-label="Wzór">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc wz-nav"><a><i data-ik="wstecz" data-gr="2.4"></i>Licznik</a><span class="t-pod plik" style="color:var(--tekst2)">Sweter Mgła.pdf · 3/8</span><span class="pik" aria-label="Zakreślacz"><i data-ik="zakreslacz"></i></span></div>
+  <div class="strona">
+    <!-- [PRZYKŁAD] treść wzoru: przykład kształtu strony, nie instrukcja do nauki -->
+    <h3>Rękawy (2 sztuki)</h3>
+    <p>Nabierz 56 oczek na druty 4 mm i przerób 6 cm ściągaczem 2/2.</p>
+    <p>Zmień druty na 4,5 mm i przerabiaj dżersejem.</p>
+    <p>Rzędy 41–46: dżersej bez zmian.</p>
+    <p class="zak">Rząd 47 (prawa strona): 1 o. brzegowe, 2 o. razem w prawo, dalej do 3 ostatnich oczek, 2 o. razem w lewo, 1 o. brzegowe.</p>
+    <p>Powtarzaj ujmowanie co 6. rząd jeszcze 3 razy (48 oczek).</p>
+    <p>Rzędy 72–96: dżersej bez zmian. Zamknij luźno wszystkie oczka.</p>
+    <p style="margin-top:16px;color:#555">Strona 3</p>
+  </div>
+  <div class="pasek-wz">
+    <a class="m" aria-label="Odejmij rząd">−1</a>
+    <div class="r t-mala"><b class="cyfry">43</b>rząd</div>
+    <a class="p" aria-label="Dodaj rząd">+1</a>
+  </div>
+</main>
+
+<!-- 7. Oferty „Oczko Pro” (F-35, KP-13; P-557): arkusz z odnośnika limitu, z Ustawień i z „Uczciwych zasad”. Kroki i model bez zmian (KP-03, KP-09, KP-14).
+     Ceny: [PRZYKŁAD] ceny bazowe US (monetyzacja: 0,99 / 6,99 / 14,99 USD); w aplikacji wyłącznie StoreKit displayPrice (KP-09) w walucie sklepu.
+     Teksty istniejących kluczy oferty.* (pl.json). Nowe teksty kafli: propozycja kluczy oferty.kafel_* [DO USTALENIA 09]. Kafel „Dla rodziny” tylko przy FAMILY_SHARING (ujawnienie 7).
+     Bez znaczka „najlepsza oferta”, bez procentów i porównań planów (P-054), bez licznika czasu. Rocznie zaznaczone domyślnie jak dziś (`domyslny`). -->
+<main class="ekran of" data-ekran="oferty" aria-label="Oczko Pro">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a data-de="Schließen">Zamknij</a></div>
+  <div class="of-tresc">
+    <section class="of-hero">
+      <h1 class="t-duzy br">Oczko Pro</h1>
+      <p class="t-tresc" data-de="Zähle Reihen an so vielen Tagen, wie du magst. Alles andere bleibt gleich.">Licz rzędy w tylu dniach, w ilu chcesz. Reszta zostaje bez zmian.</p>
+      <div class="of-mies" aria-hidden="true"></div>
+    </section>
+    <div class="of-kafle t-pod">
+      <div class="of-kafel"><span class="it"><i data-ik="dzien"></i></span><b>Każdy dzień robótkowy<small>Liczysz, kiedy dziergasz, bez limitu w miesiącu.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="zegarek"></i></span><b>Bez limitu na każdym urządzeniu<small>iPhone, iPad i Apple Watch.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="rodzina"></i></span><b>Dla rodziny<small>Możesz podzielić się z rodziną przez Chmurę rodzinną.</small></b></div>
+      <div class="of-kafel"><span class="it"><i data-ik="dane"></i></span><b>Dane zawsze twoje<small>Projekty, wzory i historia zostają, z Pro i bez.</small></b></div>
+    </div>
+    <p class="t-tresc sekcja" style="margin-bottom:-8px">Plany</p>
+    <div class="of-plany t-tresc" role="radiogroup" aria-label="Plany">
+      <div class="of-plan" role="radio" aria-checked="false"><span class="zn"></span><p class="nz">Miesięcznie</p><p class="cena br cyfry">$0.99 / miesiąc</p><p class="t-mala pod">Odnawia się co miesiąc, dopóki nie anulujesz w ustawieniach Apple ID.</p></div>
+      <div class="of-plan" role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><p class="nz">Rocznie</p><p class="cena br cyfry">$6.99 / rok</p><p class="t-mala pod">Odnawia się co rok, dopóki nie anulujesz w ustawieniach Apple ID.</p></div>
+      <div class="of-plan" role="radio" aria-checked="false"><span class="zn"></span><p class="nz">Dożywotnio</p><p class="cena br cyfry">$14.99 jednorazowo</p><p class="t-mala pod">Płacisz raz. Nic się nie odnawia.</p></div>
+    </div>
+    <p class="t-pod of-bez">Bez Pro: 5 dni robótkowych co miesiąc oraz wszystkie twoje projekty i dane, zawsze.</p>
+    <div class="of-linki t-pod"><a>Polityka prywatności</a><a>Warunki użytkowania</a></div>
+  </div>
+  <div class="of-dol t-tresc">
+    <a class="of-kup">Kontynuuj: Rocznie</a>
+    <div class="of-wt"><a>Przywróć zakupy</a><a>Nie teraz</a></div>
+  </div>
+</main>
+<script>
+// Oferty: miesiąc z samych dni dzierganych (ilustracja „każdy dzień”, nie dane) + stan „Zapytaj o zakup” (oczekujący, KP-07) jako osobny ekran makiety.
+document.querySelector('[data-ekran="oferty"] .of-mies').innerHTML = '<i></i>'.repeat(30);
+{ const c = document.querySelector('[data-ekran="oferty"]').cloneNode(true); c.dataset.ekran = 'oferty-czeka'; c.setAttribute('aria-label', 'Oczko Pro, zakup czeka na zatwierdzenie');
+  c.querySelector('.of-dol').insertAdjacentHTML('afterbegin', '<p class="of-kom t-pod" role="status"><i data-ik="info"></i><span>Czekamy na zatwierdzenie. Oczko Pro włączy się, gdy tylko zakup zostanie zatwierdzony.</span></p>');
+  const k = c.querySelector('.of-kup'); k.setAttribute('aria-disabled', 'true'); k.innerHTML = '<i data-ik="klepsydra"></i>Czeka na zatwierdzenie';
+  document.querySelector('[data-ekran="oferty"]').after(c); }
+</script>
+
+<script>
+// M3-S3-06 (ZM-18, wynik 03 @ be963401): stany p2. Teksty [PRZYKŁAD] — klucze i przekład robi 09; wygląd wyłącznie z tokenów.
+{ const dzis = document.querySelector('[data-ekran="dzis"]');
+  // (a) Nowy dzień ponad limit, zawczasu (F-63, BR-ZAK-006): komunikat na miejscu „+1” karty, odnośnik Oczko Pro pod nim (poza strefą +1), „Kontynuuj” działa.
+  const a = dzis.cloneNode(true); a.dataset.ekran = 'dzis-limit'; a.setAttribute('aria-label', 'Dziś, brak darmowych dni');
+  a.querySelector('.plus').remove();
+  a.querySelector('.lr').insertAdjacentHTML('afterend', '<p class="lim t-pod" role="status"><i data-ik="klepsydra"></i><span>Nie masz już darmowych dni robótkowych w listopadzie. Liczenie wraca 1 grudnia. Twoje 42 rzędy i wszystko inne zostają.<br><a>Oczko Pro znosi limit</a></span></p>');
+  a.querySelector('.wolne').innerHTML = 'Zostało 0 z 5 darmowych dni robótkowych w listopadzie.';
+  a.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  // (b) Strażnik serii (F-47, RD-17): baner „Cofnąć?” pod kartą — karta i „+1” nie przesuwają się; baner nie znika po czasie, znika przy kolejnym zwykłym +1.
+  const b = dzis.cloneNode(true); b.dataset.ekran = 'dzis-cofnac'; b.setAttribute('aria-label', 'Dziś, seria stuknięć');
+  b.querySelector('.liczba').firstChild.textContent = '45'; b.querySelector('svg[data-dz]').dataset.dz = '45,96,17,47';
+  b.querySelector('.czesc').textContent = 'Rękaw lewy · rząd 46 z 96';
+  b.querySelector('.dz').setAttribute('aria-label', 'Rękaw lewy: 45 z 96 rzędów, dziś 17, następne ujmowanie w rzędzie 47');
+  b.querySelector('.karta').insertAdjacentHTML('afterend', '<div class="baner" role="status"><i data-ik="historiaZmian"></i><p class="t-tresc">Dodano 3 rzędy w 1 sekundę. Cofnąć?</p><a class="t-tresc">Cofnij 3 rzędy</a></div>');
+  b.querySelector('.wiersz p').innerHTML = 'Za 1 rząd: <b>ujmowanie</b> (5 z 8)';
+  b.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  // (d) Brak ostatniego miejsca, a projekty są (po imporcie albo synchronizacji na nowym urządzeniu; `ustawienie.ostatnie_miejsce` puste; opcja (a) roli 05):
+  // karta bez licznika, bez dzianiny i bez „+1” (nie ma czego liczyć ani pokazać — dzianina bez danych byłaby ozdobą); jedyna akcja prowadzi do zakładki Projekty.
+  const d = dzis.cloneNode(true); d.dataset.ekran = 'dzis-bez-miejsca'; d.setAttribute('aria-label', 'Dziś, bez ostatniego miejsca');
+  d.querySelector('.dz').remove(); d.querySelector('.karta').classList.add('karta-bm');
+  d.querySelector('.opis').innerHTML = '<h2 class="t-tytul br">Twoje projekty są tutaj</h2><p class="t-pod czesc">3 projekty w toku. Wybierz jeden, a „Dziś” będzie otwierać go od miejsca, w którym skończysz.</p>';
+  d.querySelector('.kont').innerHTML = 'Wybierz projekt <i data-ik="szewron" data-gr="2.4"></i>';
+  d.querySelector('.wiersz').remove();
+  d.querySelectorAll('[data-de]').forEach((e) => e.removeAttribute('data-de'));
+  dzis.after(a, b, d);
+  // (c) Okno „Uczciwe zasady” (KP-16, ZM-05) po zmianie startu: nigdy nad „Dziś” (karta z „+1”), licznikiem ani wzorem; arkusz nad pierwszą dozwoloną zakładką (tu: Projekty).
+  const pr = document.querySelector('[data-ekran="projekty"]'); const c = pr.cloneNode(true); c.dataset.ekran = 'projekty-uczciwe'; c.setAttribute('aria-label', 'Projekty z oknem Uczciwe zasady');
+  c.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="arkusz" role="dialog" aria-modal="true" aria-labelledby="uz-t"><span class="uch"></span><span class="pik zam" aria-label="Zamknij"><i data-ik="zamknij"></i></span><h2 class="t-tytul br" id="uz-t">Twój pierwszy dzień robótkowy za tobą</h2><p class="t-tresc">Wszystko w Oczku działa od pierwszego dnia, bez konta i bez reklam.</p><p class="t-tresc">Licz rzędy za darmo przez 5 dni w każdym miesiącu, jak długo chcesz. Twoje projekty i dane zawsze zostają twoje.</p><p class="t-tresc">Chcesz więcej dni? Oczko Pro znosi limit, w subskrypcji albo jednym zakupem.</p><a class="gl t-tresc">Licz dalej</a><a class="dr t-tresc">Zobacz Oczko Pro</a></section>');
+  pr.after(c);
+}
+</script>
+<!-- 8. Projekt (M3-MAK-01, P-597 (1a)): trasa projekt/[id], z „Projekt ›” licznika i z wiersza listy Projekty. Elementy i kolejność grup jak w kodzie
+     (src/ekrany/Projekt.tsx): Części → Czas → Notatka → Zdjęcia → Wzory → Szczegóły → miejsce we wzorze, ostatnia zmiana. testID bez zmian (testid.md).
+     Nowe: kropka koloru włóczki przy nazwie (P-567; barwa z danych, [PRZYKŁAD]), dzianina każdej części (miniatura jak na liście Projekty; aria-hidden). -->
+<main class="ekran" data-ekran="projekt" aria-label="Projekt" style="--wl:#8E9BA6">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i>Projekty</a><span class="prawo"><span class="pik" aria-label="Dodaj część albo licznik"><i data-ik="plus" data-gr="2.2"></i></span><span class="pik" aria-label="Opcje projektu"><i data-ik="kropki"></i></span></span></div>
+  <div class="pr-gl"><h1 class="t-duzy br"><span class="kropka" style="background:var(--wl)" aria-hidden="true"></span>Sweter Mgła</h1>
+    <p class="t-pod pod2">44% gotowe · według celów części</p><p class="t-pod pod2">Termin 20 grudnia · 3 rzędy dziennie</p></div>
+  <div class="pr-tresc">
+    <p class="t-tresc sekcja">Części</p>
+    <div class="lista t-tresc">
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.44)"></i></span><p class="tx"><b>Rękaw lewy</b><small>42 z 96 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:0"></i></span><p class="tx"><b>Rękaw prawy</b><small>Para: Rękaw lewy</small><small>0 z 96 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc((100% - 14px) * 0.62)"></i></span><p class="tx"><b>Przód</b><small>Razem 74 rzędy</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="wc"><p class="tx">Korpus<small>62 rzędy</small></p><i class="sz" data-ik="szewron"></i></div>
+      <div class="wc"><p class="tx">Warkocz<small>12 rzędów</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Czas</p>
+    <div class="lista t-tresc">
+      <div class="wg"><p class="tx">Czas robótki</p><span class="war cyfry">5 h 20 min</span></div>
+      <div class="wg"><p class="tx">Sesje<small>2 do sprawdzenia</small></p><span class="war cyfry">7</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Notatka</p>
+    <div class="wiersz t-tresc"><p>Rękaw o 2 cm krótszy niż we wzorze. Ściągacz na drutach 4 mm.</p></div>
+    <p class="t-tresc sekcja">Zdjęcia</p>
+    <div class="zdj t-mala"><span class="f" role="img" aria-label="Zdjęcie 1 z 2"></span><span class="f" role="img" aria-label="Zdjęcie 2 z 2" style="filter:brightness(.85)"></span><a class="d"><i data-ik="plus" data-gr="2.2"></i>Dodaj zdjęcie</a></div>
+    <p class="t-tresc sekcja">Wzór</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="strona-min" aria-hidden="true"><i></i><i></i><i class="zk"></i><i></i><i></i></span><p class="tx">Sweter Mgła.pdf<small>PDF · 8 stron</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Szczegóły</p>
+    <div class="lista t-tresc">
+      <div class="wg"><p class="tx">Druty</p><span class="war">4,5 mm (US 7)</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Włóczka</p><span class="war">Mgła, 6 motków</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Próbka</p><span class="war">22 o. / 10 cm</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><p class="tx">Termin</p><span class="war">20 grudnia</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc">Miejsce we wzorze: strona 3, rząd 47</p>
+    <p class="t-mala pr-stopka">Ostatnia zmiana: dziś, 9:12</p>
+  </div>
+</main>
+
+<!-- 9. Formularz wzorcowy (M3-MAK-02): „Nowa część” — arkusz systemowy formSheet; Anuluj (lewy) / tytuł / Dodaj (prawy), pola z etykietą nad polem,
+     podpis pod polami, błąd: znak „!” + tekst w kolorze tekstu (role=alert), bez czerwieni. „Dodaj” nieaktywny przy pustej nazwie (tekst2, waga 600). -->
+<main class="ekran fs" data-ekran="formularz-czesc" aria-label="Nowa część">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f" role="dialog" aria-modal="true" aria-labelledby="fc-t">
+    <div class="ng t-tresc"><a>Anuluj</a><h2 id="fc-t">Nowa część</h2><a class="zap">Dodaj</a></div>
+    <div class="ft t-tresc">
+      <div class="pole"><label class="t-pod">Nazwa części</label><div class="we">Rękaw prawy</div></div>
+      <div class="pole"><label class="t-pod">Cel w rzędach (opcjonalnie)</label><div class="we fok">9,5<span class="kur"></span></div></div>
+      <p class="alert t-tresc" role="alert"><span class="zn" aria-hidden="true">!</span><span>Cel to liczba całych rzędów, np. 96.</span></p>
+      <p class="t-pod f-pod">Nazwa pomaga odróżnić części, np. „Rękaw lewy”. Cel możesz dodać później.</p>
+    </div>
+  </section>
+</main>
+
+<!-- 10. Formularz z wyborem (M3-MAK-02): „Druty” — wybór jednej opcji jako lista z okrągłym znacznikiem 28 pt (jak plany Oczko Pro), pole dziesiętne, przycisk tekstowy. -->
+<main class="ekran fs" data-ekran="formularz-narzedzie" aria-label="Narzędzie">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f" role="dialog" aria-modal="true" aria-labelledby="fn-t">
+    <div class="ng t-tresc"><a>Anuluj</a><h2 id="fn-t">Narzędzie</h2><a class="zap">Zapisz</a></div>
+    <div class="ft t-tresc">
+      <div class="radio" role="radiogroup" aria-label="Narzędzie"><a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span>Druty</a><a role="radio" aria-checked="false"><span class="zn"></span>Szydełko</a></div>
+      <div class="pole"><label class="t-pod">Rozmiar w mm</label><div class="we">4,5</div></div>
+      <p class="t-pod f-pod">4,5 mm (US 7)</p>
+      <a class="tekstowy t-tresc">Wyczyść</a>
+    </div>
+  </section>
+</main>
+
+<!-- 11. Podgląd zdjęcia (M3-MAK-02): czarne tło systemu (systemCzarny), Zamknij w prawym górnym rogu (słownik interakcji), na dole Udostępnij · „1 z 2” · Usuń
+     (usunięcie po potwierdzeniu w alercie systemowym, bez kosza). Zdjęcie: [PRZYKŁAD] — faktura dzianiny w barwie włóczki. -->
+<main class="ekran zd" data-ekran="zdjecie" aria-label="Zdjęcie projektu" style="--wl:#8E9BA6">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zd-g t-tresc"><a>Zamknij</a></div>
+  <div class="foto" role="img" aria-label="Zdjęcie 1 z 2"></div>
+  <div class="zd-d t-tresc"><a><i data-ik="udostepnij"></i>Udostępnij</a><span class="cyfry">1 z 2</span><a><i data-ik="kosz"></i>Usuń</a></div>
+</main>
+
+<!-- 12. Zakładka Narzędzia (M3-MAK-03, P-595): lista grupowana z ikoną w kafelku 32 pt (jak Ustawienia, ZM-07); wartości po prawej, strzałka. -->
+<main class="ekran" data-ekran="narzedzia" aria-label="Narzędzia">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><h1 class="t-duzy br">Narzędzia</h1></div>
+  <div class="tresc">
+    <p class="t-tresc sekcja">Zapas</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="kik"><i data-ik="wloczka"></i></span><p class="tx">Włóczki</p><span class="war cyfry">6</span><i class="sz" data-ik="szewron"></i></div>
+      <div class="wg"><span class="kik"><i data-ik="druty"></i></span><p class="tx">Druty</p><span class="war cyfry">11</span><i class="sz" data-ik="szewron"></i></div>
+    </div>
+    <p class="t-tresc sekcja">Obliczenia</p>
+    <div class="lista t-tresc">
+      <div class="wg"><span class="kik"><i data-ik="probka"></i></span><p class="tx">Próbka<small>Ile oczek i rzędów na twoją miarę</small></p><i class="sz" data-ik="szewron"></i></div>
+    </div>
+  </div>
+  <nav class="zakladki t-zakl"><a><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a class="wybrana"><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+<script>
+// M3-MAK-01: stany ekranu projektu — menu ••• otwarte, edycja (Edytuj → znaki usunięcia, „Gotowe”), ukończony (bez „+”, daty, „Wznów” w menu).
+{ const pr = document.querySelector('[data-ekran="projekt"]');
+  const m = pr.cloneNode(true); m.dataset.ekran = 'projekt-menu'; m.setAttribute('aria-label', 'Projekt, menu opcji');
+  m.insertAdjacentHTML('beforeend', '<nav class="pr-menu t-tresc" aria-label="Opcje projektu"><a>Edytuj</a><a>Zrób taki sam</a><a class="nisz">Usuń projekt…</a></nav>');
+  const e = pr.cloneNode(true); e.dataset.ekran = 'projekt-edycja'; e.setAttribute('aria-label', 'Projekt, edycja');
+  e.querySelector('.nav .prawo').innerHTML = '<a class="gotowe">Gotowe</a>';
+  e.querySelector('.pr-gl').insertAdjacentHTML('beforeend', '<p class="t-pod pod2">Usuń część albo licznik znakiem minus. Usunięte trafiają do kosza na 30 dni.</p>');
+  e.querySelectorAll('.lista')[0].querySelectorAll(':scope > div').forEach((w) => w.insertAdjacentHTML('afterbegin', '<span class="usun" role="button" aria-label="Usuń"><i data-ik="minusKolo"></i></span>'));
+  e.querySelectorAll('.lista')[0].querySelectorAll('.wc').forEach((w) => { w.style.paddingLeft = '16px'; });
+  const u = pr.cloneNode(true); u.dataset.ekran = 'projekt-ukonczony'; u.setAttribute('aria-label', 'Projekt ukończony');
+  u.querySelector('.nav .prawo').innerHTML = '<span class="pik" aria-label="Opcje projektu"><i data-ik="kropki"></i></span>';
+  u.querySelector('.pr-gl h1').lastChild.textContent = 'Szal z alpaki'; u.style.setProperty('--wl', '#C9B7A0');
+  u.querySelector('.pr-gl').innerHTML = u.querySelector('.pr-gl h1').outerHTML + '<p class="t-pod pod2">Ukończony 12 października</p>';
+  u.querySelectorAll('.lista')[0].innerHTML = '<div class="pr-cz"><span class="pr" aria-hidden="true"><i style="height:calc(100% - 14px)"></i></span><p class="tx"><b>Szal</b><small>310 z 310 rzędów</small><small>Cel osiągnięty</small></p><i class="sz" data-ik="szewron"></i></div>';
+  u.querySelector('.pr-tresc').insertAdjacentHTML('beforeend', '');
+  const szc = u.querySelectorAll('.lista')[3]; szc.insertAdjacentHTML('afterend', '<div class="lista t-tresc"><div class="wg"><p class="tx">Początek</p><span class="war">2 września 2026</span></div><div class="wg"><p class="tx">Ukończenie</p><span class="war">12 października 2026</span><i class="sz" data-ik="szewron"></i></div></div><p class="t-pod f-pod">Datę ukończenia możesz zmienić.</p>');
+  szc.lastElementChild.remove();
+  u.querySelector('.zdj').innerHTML = '<span class="f" role="img" aria-label="Zdjęcie 1 z 1"></span><a class="d"><i data-ik="plus" data-gr="2.2"></i>Dodaj zdjęcie</a>';
+  u.querySelectorAll('.pr-tresc > .sekcja').forEach((s) => { if (s.textContent === 'Notatka') { s.nextElementSibling.remove(); s.remove(); } });
+  pr.after(m, e, u);
+  // M3-MAK-03: biegnący stoper (P-586 (2a), stan p3a) — ta sama komórka akcji, czas zamiast podpisu; „aktywny” = rama akcentTekst (jak wybrany plan ofert), nie wypełnienie akcentem.
+  const lz = document.querySelector('[data-ekran="licznik"]'); const s = lz.cloneNode(true); s.dataset.ekran = 'licznik-stoper'; s.setAttribute('aria-label', 'Licznik, stoper biegnie');
+  s.querySelectorAll('.akcje').forEach((r) => { const st = r.querySelectorAll('a')[3]; st.classList.add('biegnie'); st.setAttribute('aria-label', 'Stoper, 12 minut 48 sekund, biegnie'); st.querySelector('span').textContent = '12:48'; });
+  s.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  lz.after(s);
+}
+</script>
+<script>
+// fix E5 (2026-11-09): stany licznika do 016 + LIC-04 i 009. Teksty z pl.json (klucze w zadania-08.md); [PRZYKŁAD] dane.
+{ const lz = document.querySelector('[data-ekran="licznik"]');
+  // (a) LIC-04: cel części osiągnięty, treść przewinięta do końca — „Następna część” i podpis sesji leżą nad rzędem akcji, nie pod nim (dolny odstęp = strefa).
+  const c = lz.cloneNode(true); c.dataset.ekran = 'licznik-cel'; c.setAttribute('aria-label', 'Licznik, cel części osiągnięty, przewinięte do końca');
+  c.querySelector('.przew').classList.add('koniec');
+  c.querySelector('.licz-num').firstChild.textContent = '96'; c.querySelector('.licz-num small').textContent = 'z 96 rzędów';
+  c.querySelector('svg[data-dz]').dataset.dz = '96,96,14,0'; c.querySelector('.licz-g .dz').setAttribute('aria-label', 'Rękaw lewy: 96 z 96 rzędów, dziś 14');
+  c.querySelector('.num .t-pod').remove();
+  c.querySelector('.notatka').insertAdjacentHTML('beforebegin', '<div class="cel-ok"><p class="t-tresc"><b>Cel osiągnięty</b></p><a class="drugi t-tresc" data-testid="licznik-nastepna-czesc">Następna część</a></div><p class="t-mala sesja" data-testid="kreski-podpis">Kreski w tej sesji: 14 rzędów od 18:20</p>');
+  c.querySelector('.wielki').setAttribute('aria-label', 'Dodaj rząd, skończony rząd 97'); c.querySelector('.wielki span').textContent = 'rząd 97 skończony';
+  c.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  // (b) 009: menu ••• licznika jako arkusz z listą grupowaną (P-586 (1a)): pozycje 44 pt, podziałka linia, bez obrysów przycisków; Anuluj lewy górny róg.
+  const m = lz.cloneNode(true); m.dataset.ekran = 'licznik-menu'; m.setAttribute('aria-label', 'Licznik, menu opcji');
+  m.insertAdjacentHTML('beforeend', '<div class="zaslona" aria-hidden="true"></div><section class="ark-m t-tresc" role="dialog" aria-modal="true" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>'
+    + '<div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div></div>'
+    + '<div class="lista"><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>'
+    + '<div class="lista"><div>Wyzeruj do 0…</div></div></section>');
+  m.querySelectorAll('[data-de]').forEach((x) => x.removeAttribute('data-de'));
+  lz.after(c, m);
+}
+// Dolny odstęp przewijanej treści = zmierzona wysokość stałej strefy (w aplikacji: onLayout strefy → contentContainerStyle.paddingBottom).
+const zmierzStrefe = () => document.querySelectorAll('.lz').forEach((e) => e.style.setProperty('--strefa', e.querySelector('.strefa').offsetHeight + 'px'));
+new ResizeObserver(zmierzStrefe).observe(document.body); document.querySelectorAll('.lz .strefa').forEach((z) => new ResizeObserver(zmierzStrefe).observe(z));
+</script>
+<script src="ikony.js"></script>
+<script>
+// Element firmowy „dzianina” (jak w kierunki/dzianina.html): wysokość = rzędy gotowe / cel; jaśniejszy pas = dziś; igła = bieżący rząd;
+// przerywana linia = cel; ząbek = rząd następnego przypomnienia. Bez celu (0) — sama igła z nabranymi oczkami.
+document.querySelectorAll('svg[data-dz]').forEach((el) => {
+  const [got, cel, dzis, prz] = el.dataset.dz.split(',').map(Number);
+  const [, , W, H] = el.getAttribute('viewBox').split(' ').map(Number);
+  const gora = 14, dol = 8, c = cel || 96, y = (r) => H - dol - (H - gora - dol) * r / c;
+  const yG = y(got), yD = y(got - dzis);
+  let s = `<defs><pattern id="v${W}" width="9" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)"><ellipse cx="2.6" cy="4" rx="1.6" ry="3.3" transform="rotate(-28 2.6 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/><ellipse cx="6.4" cy="4" rx="1.6" ry="3.3" transform="rotate(28 6.4 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/></pattern></defs>`;
+  if (got > 0) s += `<rect x="6" y="${yG}" width="${W - 12}" height="${yD - yG}" fill="var(--akcentJasny)"/><rect x="6" y="${yD}" width="${W - 12}" height="${H - dol - yD}" fill="var(--akcent)"/><rect x="6" y="${yG}" width="${W - 12}" height="${H - dol - yG}" fill="url(#v${W})"/>`;
+  else s += `<rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="var(--akcent)"/><rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="url(#v${W})"/>`;
+  if (cel) s += `<line x1="4" y1="${y(cel)}" x2="${W - 4}" y2="${y(cel)}" stroke="var(--akcentJasny)" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+  const yi = got > 0 ? yG - 3 : H - dol - 11;
+  s += `<line x1="2" y1="${yi}" x2="${W - 2}" y2="${yi}" stroke="var(--igla)" stroke-width="3.2" stroke-linecap="round"/><circle cx="${W - 3}" cy="${yi}" r="3.6" fill="var(--igla)"/>`;
+  if (prz) s += `<path d="M${W} ${y(prz)} l-10 -6 v12 z" fill="var(--akcentJasny)"/>`;
+  el.innerHTML = s;
+});
+// Kalendarz listopada 2026 (1.11 = niedziela; tydzień od poniedziałku). Dni dziergane: 2, 3, 5 [PRZYKŁAD].
+const kal = document.getElementById('kal'); let h = ['pn', 'wt', 'śr', 'cz', 'pt', 'sb', 'nd'].map((d) => `<span class="t-mala">${d}</span>`).join('');
+for (let i = 0; i < 6; i++) h += '<i class="p" aria-hidden="true"></i>';
+for (let d = 1; d <= 30; d++) h += `<i class="${[2, 3, 5].includes(d) ? 'z' : ''} ${d === 5 ? 'dzis' : ''} ${d > 5 ? 'p' : ''}">${d}</i>`;
+kal.innerHTML = h;
+// M3-S3-03: każda cyfra liczby w komórce szerokości najszerszej cyfry (Bree bez tnum); tylko liczby w krojach tytułowych, nie ceny.
+document.querySelectorAll('.liczba, .licz-num, .pasek-wz .r b, .podsum b').forEach((el) => {
+  for (const n of [...el.childNodes].filter((x) => x.nodeType === 3)) {
+    const f = document.createElement('span'); f.innerHTML = n.textContent.replace(/[0-9]/g, (c) => `<span class="cyf">${c}</span>`); n.replaceWith(...f.childNodes);
+  }
+});
+// Arkusz najdłuższego języka: <html lang="de"> podmienia teksty z data-de.
+if (document.documentElement.lang === 'de') document.querySelectorAll('[data-de]').forEach((e) => { e.textContent = e.dataset.de; });
+</script>
+</body></html>

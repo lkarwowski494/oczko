@@ -1,0 +1,53 @@
+# Podprzepływ (F07-18): z licznika → ekran projektu → „+” → „Add part” → nazwa „Back” i cel CEL → Save → licznik części „Back”.
+# Pole tekstowe pierwsze w arkuszu (Enter chowa klawiaturę), pole liczbowe celu potem; zapis przyciskiem arkusza (e2e/README.md zasada 6).
+# Parametr (env runFlow): CEL — cel rzędów (np. "40"); wpis jednym inputText, a retry z asercją wartości pola łapie zgubione znaki klawiatury symulatora.
+appId: com.apps4brew.knitting
+name: "podprzepływ: część Back z celem"
+---
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000, optional: true } # E2-137-S3: dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "projekt-dodaj" } }
+    commands:
+      - takeScreenshot: opoznienie-ekran-projektu
+      - assertVisible: { id: "projekt-ladowanie", optional: true } # P-374: stan ładowania ekranu projektu (P) = aplikacja czeka na dane; brak obu = prezentacja/natywne
+      - assertVisible: { id: "projekt-blad", optional: true }
+      - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- assertVisible: { id: "projekt-dodaj" }
+# P-374: czas do pierwszych danych ekranu projektu (P, `e2e-pomiar-ladowania` „first data N ms”) — zrzut + odczyt opcjonalny
+- takeScreenshot: pomiar-ekran-projektu
+- assertVisible: { id: "e2e-pomiar-ladowania", text: "first data [0-9]+ ms", optional: true }
+- tapOn: { id: "projekt-dodaj" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj-czesc" }, timeout: 5000, optional: true } # BX30 (KO-170, run 44114826259, BR-PRJ-007/S1): stuknięcie „+” zakończone, menu nie pojawiło się w 17,8 s; jedno ponowienie SAMEGO stuknięcia (przycisk przełącza menu, więc tylko gdy menu brak)
+- runFlow: { when: { notVisible: { id: "projekt-dodaj-czesc" } }, commands: [ { tapOn: { id: "projekt-dodaj" } }, { assertVisible: { id: "projekt-dodaj-czesc" } } ] }
+- assertVisible: { id: "projekt-dodaj-czesc" }
+- tapOn: { id: "projekt-dodaj-czesc" }
+- assertVisible: { id: "formularz-nazwa-czesci" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-nazwa-czesci" }
+      - waitForAnimationToEnd
+      - eraseText: 20
+      - inputText: "B"
+      - inputText: "a"
+      - inputText: "c"
+      - inputText: "k"
+      - assertVisible: { id: "formularz-nazwa-czesci", text: "Back" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-cel-czesci" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "formularz-cel-czesci" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: ${CEL}
+      - assertVisible: { id: "formularz-cel-czesci", text: "${CEL}" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "projekt-dodaj" }
+# Wiersz części „Back, 0 of 3 rows” (przecinek). Samo „Back.*” trafia też w przycisk wstecz (etykieta „Back”, 3a) i wraca na domyślną część (BR-DNI-004, #142).
+# BX15 (PU-135, przebieg 43851148385, scen. 120): przy AX5 wiersz części leży poza ekranem (hierarchia iOS nie zawiera elementów spoza ekranu), więc najpierw przewinięcie; przy zwykłym tekście element jest widoczny i krok kończy się od razu.
+- scrollUntilVisible: { element: { text: "Back, .*" }, direction: DOWN, timeout: 30000 }
+- tapOn: "Back, .*"
+- assertVisible: { id: "licznik-plus" }

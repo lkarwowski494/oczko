@@ -1,0 +1,30 @@
+# BR-WZR-007/S1 (docs/brd/wymagania-projekt.md:274): Strona WWW zapisana jako wzór, otwierana bez sieci.
+# Udostępnienie z Safari tylko urządzenie — build E2E podaje zapisany plik strony testowej; odczyt przy oczkoE2eSiec=brak.
+# Reguła OG-07 (design-spec „Ekrany wzoru a patenty”): jeden dokument wzoru naraz, w całości.
+appId: com.apps4brew.knitting
+name: "BR-WZR-007/S1 · Strona WWW zapisana jako wzór, otwierana bez sieci"
+tags:
+  - BR-WZR-007-S1
+  - wzor
+  - stan-licznika
+  - PU-061
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-www" }
+- tapOn: { id: "e2e-wzor-www" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Web page.*" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of .*" }
+- takeScreenshot: 24-wzor-po-imporcie
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "Web page.*" }
+- takeScreenshot: 24-wzor-po-restarcie-offline

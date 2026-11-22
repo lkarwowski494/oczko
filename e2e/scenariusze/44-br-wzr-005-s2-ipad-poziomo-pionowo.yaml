@@ -1,0 +1,31 @@
+# BR-WZR-005/S2 „iPad poziomo i pionowo” (docs/brd/wymagania-projekt.md:296; P-217, P-220 W4b, ADR-0026): w obu położeniach wzór i licznik
+# widoczne jednocześnie po każdym +1 (w poziomie obok siebie, w pionie pasek licznika pod wzorem — ten sam komponent i te same id co licznik).
+# Pakiet iPada (tag ipad, P-225 Q1a): symulator iPada, nocą przy [e2e-pelny]/[e2e-ipad]; bez bramki do pierwszego zielonego.
+appId: com.apps4brew.knitting
+name: "BR-WZR-005/S2 · iPad poziomo i pionowo: wzór i nowa wartość licznika widoczne razem"
+tags:
+  - BR-WZR-005-S2
+  - ipad
+  - stan-licznika
+  - przypadki-uzycia
+  - PU-143
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "wzor-widok" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertVisible: { id: "wzor-widok" }
+- takeScreenshot: 44-ipad-poziomo
+- setOrientation: PORTRAIT
+- assertVisible: { id: "wzor-widok" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "wzor-widok" }
+- takeScreenshot: 44-ipad-pionowo

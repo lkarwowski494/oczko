@@ -1,0 +1,53 @@
+# NFR-DAN-002 (docs/brd/wymagania.md:77, próg 0): każda zmiana licznika zapisana trwale — zabicie procesu po każdej zmianie (+1, −1, wpisanie wartości, Undo serii).
+# Ryzyko R-001 (COMMIT przed haptyką i Live Activity). Logika zapisu także w dane-node (ADR-0002).
+# Bloker wydania (docs/brd/README.md) — w `podstawowy` (bramka TestFlight) od DEC-08 (a) (P-418, P-430; M1-audytor-generalny-047).
+appId: com.apps4brew.knitting
+name: "NFR-DAN-002 · Każda zmiana licznika przeżywa zabicie procesu (+1, −1, wpisanie, Undo serii)"
+tags:
+  - NFR-DAN-002
+  - podstawowy
+  - stan-licznika
+  - PU-023
+  - PU-090
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# OKNO "15": okno strażnika serii (RD-17) w buildzie E2E 15 s zamiast 2 s — seria 3 stuknięć Maestro trwała 7 s na wolnej maszynie (#145, P-489; wzór 04 i 12, E2E-A4)
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:31:00", OKNO: "15" } }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:32:00", OKNO: "15" } }
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+# --- wpisanie wartości (F-45: „Rows already finished”), klawiatura numeryczna: bez hideKeyboard, zapis przyciskiem arkusza ---
+- tapOn: { id: "licznik-menu" }
+- assertVisible: { id: "menu-wpisz-wartosc" }
+- tapOn: { id: "menu-wpisz-wartosc" }
+- assertVisible: { id: "wpisz-wartosc-pole" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "wpisz-wartosc-pole" }
+      - waitForAnimationToEnd
+      - eraseText: 6
+      - inputText: "4"
+      - inputText: "6"
+      - assertVisible: { id: "wpisz-wartosc-pole", text: "46" }
+# NOC-2b (F-31, 04): formularz „Enter the row number” z wpisaną wartością przed zapisem
+- takeScreenshot: 10-formularz-wpisz-wartosc-przed-zapisem
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "licznik-wartosc", text: "46" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:33:00", OKNO: "15" } }
+- assertVisible: { id: "licznik-wartosc", text: "46" }
+# --- seria i Undo: po zabiciu zostaje stan po cofnięciu ---
+- tapOn: { id: "licznik-plus", repeat: 3, delay: 150 }
+- assertVisible: { id: "licznik-wartosc", text: "49" }
+- tapOn: { id: "baner-serii-cofnij" }
+- assertVisible: { id: "licznik-wartosc", text: "46" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T19:34:00", OKNO: "15" } }
+- assertVisible: { id: "licznik-wartosc", text: "46" }
+- takeScreenshot: 10-po-ostatnim-restarcie

@@ -1,0 +1,79 @@
+# BR-ZAP-004/S2 (docs/brd/wymagania-narzedzia.md:46): wyszukiwanie w zapasie w sklepie bez zasięgu. Wyrocznia: NFR-OFF-001.
+# Wpis znak po znaku z asercją wartości pola i Enter po wyszukiwarce (Trening L-013, docs/40-lekcje.md:197-199).
+appId: com.apps4brew.knitting
+name: "BR-ZAP-004/S2 · Zapas: dodanie włóczki i wyszukanie bez sieci"
+tags:
+  - BR-ZAP-004-S2
+  - PU-078
+  - PU-196
+  - PU-197
+  - PU-222
+  - PU-223
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- tapOn: { id: "nav-wstecz" } # P-583: licznik bez wejścia do listy — wstecz do ekranu źródłowego („Dziś” albo Projekty), potem zakładka Projekty
+- extendedWaitUntil: { visible: { id: "nav-projekty" }, timeout: 20000 }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 } # przejście trwało dłużej niż asercja (w ponowieniu, przebieg 40411351211)
+# Wejście: „Tools” → „Yarn” (04 fix-6 D, P-191 P7a; F07-17 zamiast nav-zapas).
+- tapOn: { id: "nav-narzedzia" }
+- assertVisible: { id: "narzedzia-wloczki" }
+- tapOn: { id: "narzedzia-wloczki" }
+- assertVisible: { id: "zapas-lista" }
+- tapOn: { id: "zapas-dodaj" }
+- assertVisible: { id: "zapas-nazwa" }
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-nazwa" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "F"
+      - inputText: "j"
+      - inputText: "o"
+      - inputText: "r"
+      - inputText: "d"
+      - assertVisible: { id: "zapas-nazwa", text: "Fjord" }
+- pressKey: Enter
+- assertVisible: { id: "formularz-zapisz" }
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "zapas-lista" }
+- assertVisible: "Fjord.*"
+# --- wyszukiwanie bez sieci ---
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-szukaj" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "F"
+      - inputText: "j"
+      - inputText: "o"
+      - assertVisible: { id: "zapas-szukaj", text: "Fjo" }
+- pressKey: Enter
+- assertVisible: { id: "zapas-wynik", text: "Fjord.*" }
+- takeScreenshot: 16-wynik-bez-sieci
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn: { id: "zapas-szukaj" }
+      - waitForAnimationToEnd
+      - eraseText: 40
+      - inputText: "x"
+      - inputText: "y"
+      - inputText: "z"
+      - assertVisible: { id: "zapas-szukaj", text: "xyz" }
+- pressKey: Enter
+- assertNotVisible: { id: "zapas-wynik" }
+- assertVisible: { id: "zapas-brak-wynikow" }
+# --- powrót przyciskiem (M1-016): „‹ Tools” (nav-wstecz) Yarn → Tools, nie tylko gest od krawędzi (HIG Gestures; Switch Control) ---
+- tapOn: { id: "nav-wstecz" }
+- assertVisible: { id: "narzedzia-wloczki" }
+# 07-reaudit (P-625, 08c): Narzędzia to korzeń zakładki — bez „wstecz” (przebieg 4 attempt 2, step-068: brak nav-wstecz, pasek zakładek widoczny); do listy przez zakładkę
+- assertNotVisible: { id: "nav-wstecz" }
+- takeScreenshot: 16-wstecz-narzedzia
+- tapOn: { id: "nav-projekty" }
+- assertVisible: { id: "projekty-lista" }

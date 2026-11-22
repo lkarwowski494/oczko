@@ -1,0 +1,71 @@
+{
+ "format": 1,
+ "id": "skrot.druty.wyif",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.wyif.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "with yarn in front",
+    "skrot": "wyif",
+    "twierdzenie": "TRM-EN-026"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "nitka z przodu roboty",
+    "skrot": "n. p.",
+    "twierdzenie": "TRM-PL-023"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "нить перед работой",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-030"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "нитка перед роботою",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-020"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "糸を手前に置いて",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-027"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ipliği işin önünde tutmak",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-025"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "с конеца отпред",
+    "skrot": null,
+    "twierdzenie": "TRM-BG-022"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "siūlas eina priešais mezginį",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-013"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

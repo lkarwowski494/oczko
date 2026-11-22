@@ -1,0 +1,68 @@
+{
+  "_opis": "Kopie źródeł pakietu modules/oczko-reguly w celach natywnych (P-129 Q2a, jak Trening): Xcode nie kompiluje pakietu z modules/, więc moduł aplikacji i widżet dostają te same pliki. Zapis: node scripts/natywne/kopiuj-zrodla.mjs; kontrola identyczności: scripts/natywne/kontrola-swift.mjs (KOPIA). Partia 6: pakiet logiki wzoru modules/oczko-wzor/Pakiet → cel share (moduł oczko-wzor kompiluje pakiet wprost z podspecu).",
+  "zrodla": {
+    "modules/oczko-reguly/Sources/OczkoReguly/Json.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Json.swift",
+      "targets/widget/Wspolne/Json.swift",
+      "targets/watch/Wspolne/Json.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Stale.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Stale.swift",
+      "targets/widget/Wspolne/Stale.swift",
+      "targets/watch/Wspolne/Stale.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Dostep.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Dostep.swift",
+      "targets/widget/Wspolne/Dostep.swift",
+      "targets/watch/Wspolne/Dostep.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Stan.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Stan.swift",
+      "targets/widget/Wspolne/Stan.swift",
+      "targets/watch/Wspolne/Stan.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Limit.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Limit.swift",
+      "targets/watch/Wspolne/Limit.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Dzien.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Dzien.swift",
+      "targets/watch/Wspolne/Dzien.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Zdarzenie.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Zdarzenie.swift",
+      "targets/watch/Wspolne/Zdarzenie.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Dziennik.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Dziennik.swift",
+      "targets/watch/Wspolne/Dziennik.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Intencja.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Intencja.swift",
+      "targets/watch/Wspolne/Intencja.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/StanAktywnosci.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/StanAktywnosci.swift",
+      "targets/widget/Wspolne/StanAktywnosci.swift"
+    ],
+    "modules/oczko-dziennik-plus/ios/Atrybuty.swift": [
+      "targets/widget/Atrybuty.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Zegarek.swift": [
+      "targets/watch/Wspolne/Zegarek.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Przypomnienia.swift": [
+      "targets/widget/Wspolne/Przypomnienia.swift",
+      "targets/watch/Wspolne/Przypomnienia.swift"
+    ],
+    "modules/oczko-wzor/Pakiet/Sources/OczkoWzorLogika/Skrzynka.swift": [
+      "targets/share/Wspolne/Skrzynka.swift"
+    ],
+    "modules/oczko-wzor/Pakiet/Sources/OczkoWzorLogika/StaleWzoru.swift": [
+      "targets/share/Wspolne/StaleWzoru.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoDziennik/Haptyka.swift": [
+      "targets/watch/Wspolne/Haptyka.swift"
+    ]
+  }
+}

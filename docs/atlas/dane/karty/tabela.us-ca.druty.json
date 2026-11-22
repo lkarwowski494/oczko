@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "tabela.us-ca.druty",
+ "rzemioslo": "druty",
+ "rodzaj": "tabela",
+ "pozycje": [
+  "skrot.druty.us-ca-1",
+  "skrot.druty.us-ca-2",
+  "skrot.druty.us-ca-3"
+ ],
+ "klucze": {
+  "nazwa": "atlas.tabela.us-ca.druty.nazwa"
+ },
+ "klucze_dodatkowe": [
+  "atlas.tabela.us-ca.druty.linia_zrodla"
+ ],
+ "terminy": {},
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

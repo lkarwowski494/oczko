@@ -1,0 +1,64 @@
+{
+ "data": "2026-11-03",
+ "model": "V4 (P-057): limit 5 dni z robótką w miesiącu, Pro 0,99 USD/mies. i 6,99 USD/rok (odnawiane, bez oferty wprowadzającej) + dożywotni 14,99 USD; storefront US, scenariusz normalny z warianty-s3/V4-limit5.json (bramka liczy 8 storefrontów: oplacalnosc.mjs warianty-s3/*.json)",
+ "waluta": "USD",
+ "vat": {
+  "stawka": 0.0,
+  "zrodlo": "[ZAŁOŻENIE] ceny App Store w US bez podatku, OP-05; 2026-10-22"
+ },
+ "prowizja": {
+  "stawka": 0.15,
+  "zrodlo": "Small Business Program 15% (developer.apple.com/app-store/small-business-program: „a reduced commission rate of 15% on paid apps and Apple In-App Purchases”, odczyt 2026-11-03; zapis potwierdzony, OP-01)"
+ },
+ "kursy": {},
+ "koszty_roczne": [
+  {
+   "nazwa": "próg opłacalności D-024 (to nie koszt: aplikacja ma koszt 0, ZAL-003)",
+   "kwota": 500,
+   "waluta": "USD",
+   "zrodlo": "karta „Stan projektu”, D-024; odczyt 2026-10-22"
+  }
+ ],
+ "produkty": [
+  {
+   "id": "miesieczna",
+   "cena_brutto": 0.99,
+   "platnosci_w_roku": 5,
+   "platnosci_zrodlo": "[ZAŁOŻENIE] 5 opłaconych miesięcy w 1. roku, jak w bramce"
+  },
+  {
+   "id": "roczna",
+   "cena_brutto": 6.99
+  },
+  {
+   "id": "dozywotni",
+   "cena_brutto": 14.99
+  }
+ ],
+ "lejek": [
+  {
+   "nazwa": "V4 limit 5 dni: miesięczna (konwersja 0,056 × udział 0,30)",
+   "produkt": "miesieczna",
+   "odslony_strony": 35717,
+   "konwersja": 0.3,
+   "zakup": 0.0168,
+   "zrodlo": "[OCENA] V4, US norm., ta sama metoda co bramka (warianty-s3/V4-limit5.json): 3916 ocen/rok N × 60 instalacji na ocenę × udział nowej 0,057 (0,06 × wpływ zapory 0,95, AK-05) × darmowa alternatywa 0,8 × język 1,0 = 10715 instalacji; odsłony = instalacje ÷ 0,3; 0,3 to [OCENA] bez źródła rynkowego (tylko odtwarza liczbę instalacji); zakup = konwersja V4 0,056 (plan mieszany 0,028 × mnożnik limitu 2,0) × udział planu 0,30 ([ZAŁOŻENIE] D-028); 2026-11-03"
+  },
+  {
+   "nazwa": "V4 limit 5 dni: roczna (0,056 × 0,45)",
+   "produkt": "roczna",
+   "odslony_strony": 35717,
+   "konwersja": 0.3,
+   "zakup": 0.0252,
+   "zrodlo": "[OCENA] V4, US norm., ta sama metoda co bramka (warianty-s3/V4-limit5.json): 3916 ocen/rok N × 60 instalacji na ocenę × udział nowej 0,057 (0,06 × wpływ zapory 0,95, AK-05) × darmowa alternatywa 0,8 × język 1,0 = 10715 instalacji; odsłony = instalacje ÷ 0,3; 0,3 to [OCENA] bez źródła rynkowego (tylko odtwarza liczbę instalacji); zakup = konwersja V4 0,056 (plan mieszany 0,028 × mnożnik limitu 2,0) × udział planu 0,45 ([ZAŁOŻENIE] D-028); 2026-11-03"
+  },
+  {
+   "nazwa": "V4 limit 5 dni: dożywotni (0,056 × 0,25)",
+   "produkt": "dozywotni",
+   "odslony_strony": 35717,
+   "konwersja": 0.3,
+   "zakup": 0.014,
+   "zrodlo": "[OCENA] V4, US norm., ta sama metoda co bramka (warianty-s3/V4-limit5.json): 3916 ocen/rok N × 60 instalacji na ocenę × udział nowej 0,057 (0,06 × wpływ zapory 0,95, AK-05) × darmowa alternatywa 0,8 × język 1,0 = 10715 instalacji; odsłony = instalacje ÷ 0,3; 0,3 to [OCENA] bez źródła rynkowego (tylko odtwarza liczbę instalacji); zakup = konwersja V4 0,056 (plan mieszany 0,028 × mnożnik limitu 2,0) × udział planu 0,25 ([ZAŁOŻENIE] D-028); 2026-11-03"
+  }
+ ]
+}

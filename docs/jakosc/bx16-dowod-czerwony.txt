@@ -1,0 +1,19 @@
+BX16 · KO-121 (a) · dowód czerwony → zielony (2026-11-16)
+
+CZERWONY — testy nowe na kodzie bez zmiany (app/licznik.tsx i src/platforma/tryb-e2e.ts z HEAD 96409526, git stash):
+  komenda: npx jest tests/adaptery/tryb-e2e-bez-diagnostyki-bx16.test.ts tests/ekrany/e2e-licznik-bez-diagnostyki-bx16.test.tsx tests/ekrany/e2e-licznik-bez-diagnostyki-bx16-wydanie.test.tsx
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: zaladuj(...).bezDiagnostykiLicznika is not a function
+      TypeError: Tryb.bezDiagnostykiLicznika is not a function
+  Test Suites: 3 failed, 3 total
+  Tests:       10 failed, 3 passed, 13 total
+
+ZIELONY — po zmianie (te same 3 pliki + e2e-wejscia-stan, e2e-nawigacje-stan-bx019, slady-testowe):
+  Test Suites: 6 passed, 6 total
+  Tests:       36 passed, 36 total

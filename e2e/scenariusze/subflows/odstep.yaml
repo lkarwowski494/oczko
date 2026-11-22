@@ -1,0 +1,6 @@
+# Podprzepływ: odstęp > 2 s (okno strażnika serii RD-17: 3 dodania w 2 s, STRAZNIK_OKNO_S) między zwykłymi stuknięciami +1.
+# Maestro nie ma polecenia „czekaj”: oczekiwanie na element, którego nigdy nie ma (e2e-nigdy), z limitem czasu i optional.
+appId: com.apps4brew.knitting
+name: "podprzepływ: odstęp między stuknięciami"
+---
+- extendedWaitUntil: { visible: { id: "e2e-nigdy" }, timeout: 2200, optional: true }

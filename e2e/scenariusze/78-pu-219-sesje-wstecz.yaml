@@ -1,0 +1,45 @@
+# PU-219 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — „Sessions” z ekranu projektu; „‹” wraca do ekranu projektu.
+# Sesja powstaje ze stopera licznika (start → stop, jak 37): `licznik-stoper` src/ekrany/Stoper.tsx:53, :57, `stoper-zatrzymaj` Stoper.tsx:65.
+# testID z kodu: `licznik-projekt-wejscie` src/ekrany/Licznik.tsx:158; wiersz „Sessions” `projekt-sesje` src/ekrany/Projekt.tsx:198 (tylko gdy jest czas sesji, :191;
+# → `/sesje` app/projekt/[id].tsx:169); ekran `sesje` src/ekrany/Sesje.tsx:29, `sesje-lista` :33, „Back” `nav-wstecz` :30 (`router.back()` app/sesje.tsx:28);
+# po powrocie ekran projektu zostaje przewinięty do „Sessions” — `projekt-dodaj` (Projekt.tsx:120) w pasku nad treścią, stąd przewinięcie w górę.
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 37-p-191-stoper-start-pauza-stop.yaml.
+appId: com.apps4brew.knitting
+name: "PU-219 · „Sessions”: projekt → lista sesji → „‹” wraca do ekranu projektu"
+tags:
+  - przypadki-uzycia
+  - PU-219
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+# --- jedna sesja stopera: start → stop ---
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- runFlow: subflows/odstep.yaml
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "stoper-zatrzymaj" }
+- tapOn: { id: "stoper-zatrzymaj" }
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+# --- projekt → „Sessions” ---
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "projekt-sesje" }, direction: DOWN, timeout: 30000, centerElement: true }
+- assertVisible: { id: "projekt-sesje" }
+- takeScreenshot: 78-projekt-wiersz-sesje
+- tapOn: { id: "projekt-sesje" }
+- extendedWaitUntil: { visible: { id: "sesje-lista" }, timeout: 20000 }
+- assertVisible: ".* in 1 session"
+- takeScreenshot: 78-sesje
+# --- „‹”: ekran projektu ---
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { notVisible: { id: "sesje-lista" }, timeout: 20000 }
+- assertVisible: { id: "projekt-sesje" }
+- scrollUntilVisible: { element: { id: "projekt-dodaj" }, direction: UP, timeout: 30000 }
+- assertVisible: { id: "projekt-dodaj" }
+- takeScreenshot: 78-powrot-do-projektu

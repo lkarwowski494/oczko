@@ -1,0 +1,37 @@
+# BR-PRJ-013/S1 (docs/brd/wymagania-projekt.md:150), częściowo: korekta sesji z listy „Sessions” — arkusz korekty z początkiem i końcem, Save
+# zawsze potwierdza i oznacza sesję „Edited” (P-191 P5a). Zmiana godziny kołem wyboru iOS: [DO USTALENIA] selektor kół w Maestro — reguła liczenia
+# czasu po korekcie ma testy w Node (domena i dane, 08 B2). Funkcja bez UI na 2026-10-26 — pakiet pełny, informacyjnie.
+appId: com.apps4brew.knitting
+name: "BR-PRJ-013/S1 · Korekta sesji: arkusz z początkiem i końcem, Save → ‘Edited’"
+tags:
+  - BR-PRJ-013-S1
+  - stan-licznika
+  - PU-220
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "licznik-stoper", text: "Session timer, .*, running.*" }
+- scrollUntilVisible: { element: { id: "licznik-stoper" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- tapOn: { id: "licznik-stoper" }
+- assertVisible: { id: "stoper-zatrzymaj" }
+- tapOn: { id: "stoper-zatrzymaj" }
+- assertVisible: { id: "licznik-stoper", text: "Start session timer" }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-dodaj" }
+- scrollUntilVisible: { element: { id: "projekt-sesje" } }
+- tapOn: { id: "projekt-sesje" }
+- assertVisible: { id: "sesje-lista" }
+- tapOn: ".* to .*Edit"
+- assertVisible: { id: "formularz-sesja-start" }
+- assertVisible: { id: "formularz-sesja-koniec" }
+- takeScreenshot: 38-korekta
+- tapOn: { id: "formularz-zapisz" }
+- assertVisible: { id: "sesje-lista" }
+# „Edited” (en.json skorygowana) jest częścią etykiety wiersza sesji („Nov 10, 7:30 PM to 7:30 PM, 0 min. Edit Edited”, przebieg 123),
+# a Maestro dopasowuje cały tekst. F07-31.
+- assertVisible: ".*Edited"

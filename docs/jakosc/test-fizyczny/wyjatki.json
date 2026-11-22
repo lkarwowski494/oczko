@@ -1,0 +1,7 @@
+{
+  "1171": {
+    "decyzja": "P-838",
+    "data": "2026-11-15",
+    "powod": "Build 1171 wysłano do TestFlight przed powstaniem bramki KO-065; jego test fizyczny szedł według instrukcji 1171 (121 kroków), nie według klasy F katalogu, więc protokołu w formacie | PU | Wynik | nie ma. Następny build po 1171 wymaga już protokołu."
+  }
+}

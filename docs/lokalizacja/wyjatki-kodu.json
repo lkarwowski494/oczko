@@ -1,0 +1,7 @@
+{
+  "powod": "Wyjątki skanu kodu `npm run i18n:kod` (M1-051, 09-lokalizacja-004). Skan obejmuje całe src i app; tu tylko kod, który nigdy nie pokazuje tekstu użytkownikowi wydania. Nieistniejąca ścieżka = kod 2.",
+  "pliki": {
+    "src/kompozycja/e2e": "Panele i haki buildu E2E (e2e/README.md, P-238): napisy „Test …” bez t() celowo, czytają je scenariusze Maestro; ładowane tylko przez src/platforma/tryb-e2e.ts przy EXPO_PUBLIC_E2E=1, w buildzie wydania brak (slady-testowe.mjs).",
+    "src/domena/icloud/kontrakt.ts": "Fałszywe trafienie: lokalna fabryka `t(tabela, typ, …)` kontraktu iCloud, nie tłumaczenie; argumenty to nazwy tabel SQLite."
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "_opis": "Podpisy na zrzutach do App Store (rola 10-wydanie, KO-032, 2026-11-10; wzór: trening:store/screenshot-captions.json). Jeden podpis na ekran (klucze = nazwy scen z e2e/zrzuty-sklepu/ czyli plik zrzutu bez .png, np. 01-dzis), najwyżej `maxZnakow` znaków. Teksty tylko z faktów z docs/wydanie/metadane/en.md (kod: licznik.plus, licznik.historia, wzor.*, F-49), bez nazw innych aplikacji i marek (2.3.7), bez cen (2.3.7), bez „free”. Kolory i krój tylko z systemu 04: docs/design/tokeny.json (kolory.jasny — zrzuty są w trybie jasnym), docs/design/fonty/BreeSerif.ttf. en i pl: [DO AKCEPTACJI] właściciela; do przekładu 27 języków ze sklepową lokalizacją (29 bez en i pl; pozostałych 6 z 35 języków aplikacji nie ma lokalizacji sklepu): struktura gotowa, przekład osobno (rola 09); język ma komplet podpisów albo żaden. Język bez podpisów jest pomijany przez ramki-sklepu.sh (ostrzeżenie), jego surowe zrzuty zostają w artefakcie surowym.",
+  "maxZnakow": 40,
+  "ramka": {
+    "tryb": "jasny",
+    "tlo": "karta",
+    "tekst": "kartaTekst",
+    "obwodka": "akcent"
+  },
+  "kroj": {
+    "plik": "docs/design/fonty/BreeSerif.ttf",
+    "systemowy": [
+      "bg",
+      "el",
+      "nl",
+      "ru",
+      "sr",
+      "uk",
+      "vi"
+    ],
+    "cjk": [
+      "ja",
+      "ko",
+      "zh-Hant"
+    ]
+  },
+  "ekrany": [
+    "01-dzis",
+    "02-licznik",
+    "03-wzor",
+    "04-zakreslenie",
+    "05-projekty",
+    "06-historia",
+    "07-kalendarz"
+  ],
+  "status": {
+    "pl": "[DO AKCEPTACJI] szkic roli 10 z 2026-11-10 (KO-032), spójny z pl.store.json; wymaga akceptacji właściciela",
+    "en": "[DO AKCEPTACJI] szkic roli 10 z 2026-11-10 (KO-032), fakty z docs/wydanie/metadane/en.md; wymaga akceptacji właściciela",
+    "cs": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "sk": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "hu": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "ro": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "bg": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "hr": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "sl": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "sr": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "lt": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "lv": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "et": "bez lokalizacji sklepu (SHOT_LOCALES: pusta lista); struktura gotowa, przekład po decyzji o storefroncie",
+    "uk": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "es": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "es-419": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "pt": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "pt-BR": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "de": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "fr": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "it": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "nl": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "sv": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "da": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "nb": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "fi": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "tr": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "el": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "id": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "ms": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "vi": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "ru": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "ja": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "ko": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu",
+    "zh-Hant": "przekład API (claude-opus-5-5, 2026-11-15) + krytyk; [DO PRZEGLĄDU] przegląd człowieka według progu"
+  },
+  "podpisy": {
+    "pl": {
+      "01-dzis": "Otwiera się tam, gdzie była przerwa",
+      "02-licznik": "Jedno stuknięcie dodaje rząd",
+      "03-wzor": "Wzór zawsze obok licznika",
+      "04-zakreslenie": "Zakreślaj rzędy prosto na wzorze",
+      "05-projekty": "Wszystkie projekty w jednym miejscu",
+      "06-historia": "Każda zmiana z godziną i cofnięcie",
+      "07-kalendarz": "Twoje dni robótkowe w kalendarzu"
+    },
+    "en": {
+      "01-dzis": "Pick up right where you left off",
+      "02-licznik": "One tap adds a row",
+      "03-wzor": "Your pattern right next to the counter",
+      "04-zakreslenie": "Highlight rows right on the pattern",
+      "05-projekty": "All your projects in one place",
+      "06-historia": "Every change with its time, one-tap undo",
+      "07-kalendarz": "Your crafting days at a glance"
+    },
+    "cs": {
+      "01-dzis": "Pokračujte přesně tam, kde jste skončili",
+      "02-licznik": "Jedno klepnutí přidá řadu",
+      "03-wzor": "Váš návod hned vedle počítadla",
+      "04-zakreslenie": "Zvýrazňujte a pište do návodu",
+      "05-projekty": "Všechny vaše projekty na jednom místě",
+      "06-historia": "Čas každé změny, zpět jedním klepnutím",
+      "07-kalendarz": "Vaše dny tvoření na první pohled"
+    },
+    "sk": {
+      "01-dzis": "Pokračujte presne tam, kde ste prestali",
+      "02-licznik": "Jedno ťuknutie pridá riadok",
+      "03-wzor": "Váš návod hneď vedľa počítadla",
+      "04-zakreslenie": "Zvýrazňujte a píšte do návodu",
+      "05-projekty": "Všetky vaše projekty na jednom mieste",
+      "06-historia": "Čas každej zmeny, späť jedným ťuknutím",
+      "07-kalendarz": "Vaše tvorivé dni na jeden pohľad"
+    },
+    "hu": {
+      "01-dzis": "Folytasd ott, ahol abbahagytad",
+      "02-licznik": "Egy koppintással +1 sor",
+      "03-wzor": "A leírásod rögtön a sorszámláló mellett",
+      "04-zakreslenie": "Emelj ki, és jegyzetelj a leíráson",
+      "05-projekty": "Minden projekted egy helyen",
+      "06-historia": "Lépések időponttal, koppintással vissza",
+      "07-kalendarz": "Alkotónapjaid egy pillantásra"
+    },
+    "ro": {
+      "01-dzis": "Continuați exact de unde ați rămas",
+      "02-licznik": "O atingere adaugă un rând",
+      "03-wzor": "Modelul dvs. chiar lângă numărător",
+      "04-zakreslenie": "Evidențiați și scrieți pe model",
+      "05-projekty": "Toate proiectele dvs. într-un singur loc",
+      "06-historia": "Ora fiecărui pas, anulare cu o atingere",
+      "07-kalendarz": "Zilele de lucru de mână dintr-o privire"
+    },
+    "bg": {},
+    "hr": {
+      "01-dzis": "Nastavite točno ondje gdje ste stali",
+      "02-licznik": "Jedan dodir dodaje red",
+      "03-wzor": "Vaše upute odmah uz brojač",
+      "04-zakreslenie": "Označite i pišite izravno na uputama",
+      "05-projekty": "Svi vaši projekti na jednom mjestu",
+      "06-historia": "Vrijeme svake promjene, poništi dodirom",
+      "07-kalendarz": "Vaši dani ručnog rada na prvi pogled"
+    },
+    "sl": {},
+    "sr": {},
+    "lt": {},
+    "lv": {},
+    "et": {},
+    "uk": {
+      "01-dzis": "Продовжуйте саме там, де зупинилися",
+      "02-licznik": "Одне торкання додає ряд",
+      "03-wzor": "Ваш опис — поруч із лічильником",
+      "04-zakreslenie": "Виділяйте й пишіть прямо в описі",
+      "05-projekty": "Усі ваші проєкти в одному місці",
+      "06-historia": "Час усіх змін, відміна одним торканням",
+      "07-kalendarz": "Ваші дні рукоділля перед очима"
+    },
+    "es": {
+      "01-dzis": "Retoma justo donde lo dejaste",
+      "02-licznik": "Un toque suma una vuelta",
+      "03-wzor": "Tu patrón junto al cuentavueltas",
+      "04-zakreslenie": "Resalta y escribe sobre el patrón",
+      "05-projekty": "Todos tus proyectos en un solo lugar",
+      "06-historia": "Cada cambio con hora, deshaz en un toque",
+      "07-kalendarz": "Tus días de manualidades de un vistazo"
+    },
+    "es-419": {
+      "01-dzis": "Retoma justo donde lo dejaste",
+      "02-licznik": "Un toque agrega una vuelta",
+      "03-wzor": "Tu patrón junto al cuentavueltas",
+      "04-zakreslenie": "Resalta y escribe sobre el patrón",
+      "05-projekty": "Todos tus proyectos en un solo lugar",
+      "06-historia": "Hora de cada cambio; deshaz con un toque",
+      "07-kalendarz": "Tus días de manualidades a simple vista"
+    },
+    "pt": {
+      "01-dzis": "Retome exatamente onde parou",
+      "02-licznik": "Um toque acrescenta uma carreira",
+      "03-wzor": "O seu modelo mesmo ao lado do contador",
+      "04-zakreslenie": "Realce e escreva no modelo",
+      "05-projekty": "Todos os seus projetos num só lugar",
+      "06-historia": "Cada alteração com hora, anule num toque",
+      "07-kalendarz": "Os seus dias de lavores num relance"
+    },
+    "pt-BR": {
+      "01-dzis": "Continue exatamente de onde parou",
+      "02-licznik": "Um toque adiciona uma carreira",
+      "03-wzor": "Sua receita bem ao lado do contador",
+      "04-zakreslenie": "Destaque e escreva na receita",
+      "05-projekty": "Todos os seus projetos num só lugar",
+      "06-historia": "Cada mudança com hora, desfaça num toque",
+      "07-kalendarz": "Seus dias de artesanato num relance"
+    },
+    "de": {
+      "01-dzis": "Genau da weiter, wo du aufgehört hast",
+      "02-licznik": "Einmal tippen, eine Reihe mehr",
+      "03-wzor": "Deine Anleitung direkt neben dem Zähler",
+      "04-zakreslenie": "Markiere und schreibe in die Anleitung",
+      "05-projekty": "Alle deine Projekte an einem Ort",
+      "06-historia": "Jede Änderung mit Zeit, per Tipp zurück",
+      "07-kalendarz": "Deine Handarbeitstage auf einen Blick"
+    },
+    "fr": {
+      "01-dzis": "Reprenez exactement là où vous en étiez",
+      "02-licznik": "Touchez une fois pour ajouter un rang",
+      "03-wzor": "Votre modèle juste à côté du compteur",
+      "04-zakreslenie": "Surlignez et écrivez sur votre modèle",
+      "05-projekty": "Tous vos projets au même endroit",
+      "06-historia": "Tout est horodaté, annulez d’un toucher",
+      "07-kalendarz": "Vos jours d’ouvrage en un coup d’œil"
+    },
+    "it": {
+      "01-dzis": "Riprendi proprio da dove avevi lasciato",
+      "02-licznik": "Un tocco aggiunge una riga",
+      "03-wzor": "La tua spiegazione accanto al contagiri",
+      "04-zakreslenie": "Evidenzia e scrivi sulla spiegazione",
+      "05-projekty": "Tutti i tuoi progetti in un unico posto",
+      "06-historia": "Ogni modifica con l'ora, tocca e annulli",
+      "07-kalendarz": "I tuoi giorni creativi a colpo d'occhio"
+    },
+    "nl": {
+      "01-dzis": "Ga verder waar je gebleven bent",
+      "02-licznik": "Eén tik telt er een rij bij",
+      "03-wzor": "Je patroon direct naast de teller",
+      "04-zakreslenie": "Markeer en schrijf op je patroon",
+      "05-projekty": "Al je projecten op één plek",
+      "06-historia": "Elke wijziging met tijd, één tik terug",
+      "07-kalendarz": "Je handwerkdagen in één oogopslag"
+    },
+    "sv": {
+      "01-dzis": "Fortsätt precis där du slutade",
+      "02-licznik": "Ett tryck lägger till ett varv",
+      "03-wzor": "Ditt mönster direkt bredvid varvräknaren",
+      "04-zakreslenie": "Markera och skriv i mönstret",
+      "05-projekty": "Alla dina projekt på ett ställe",
+      "06-historia": "Varje ändring med tid, ett tryck ångrar",
+      "07-kalendarz": "Se dina handarbetsdagar med en blick"
+    },
+    "da": {
+      "01-dzis": "Fortsæt lige der, hvor du slap",
+      "02-licznik": "Ét tryk tilføjer en række",
+      "03-wzor": "Din opskrift lige ved rækketælleren",
+      "04-zakreslenie": "Fremhæv og skriv på opskriften",
+      "05-projekty": "Alle dine projekter samlet ét sted",
+      "06-historia": "Hver ændring med tid, fortryd i ét tryk",
+      "07-kalendarz": "Overblik over dine håndarbejdsdage"
+    },
+    "nb": {
+      "01-dzis": "Fortsett akkurat der du slapp",
+      "02-licznik": "Ett trykk legger til en rad",
+      "03-wzor": "Oppskriften din rett ved telleren",
+      "04-zakreslenie": "Merk og skriv på oppskriften",
+      "05-projekty": "Alle prosjektene dine på ett sted",
+      "06-historia": "Tid på hver endring, angre med ett trykk",
+      "07-kalendarz": "Håndarbeidsdagene dine med ett blikk"
+    },
+    "fi": {
+      "01-dzis": "Jatka juuri siitä, mihin jäit",
+      "02-licznik": "Yksi napautus lisää kerroksen",
+      "03-wzor": "Ohjeesi aivan kerroslaskimen vieressä",
+      "04-zakreslenie": "Korosta ja kirjoita ohjeeseen",
+      "05-projekty": "Kaikki projektisi yhdessä paikassa",
+      "06-historia": "Joka muutoksen aika, kumoa napautuksella",
+      "07-kalendarz": "Käsityöpäiväsi yhdellä silmäyksellä"
+    },
+    "tr": {
+      "01-dzis": "Kaldığınız yerden devam edin",
+      "02-licznik": "Tek dokunuşla bir sıra ekleyin",
+      "03-wzor": "Tarifiniz sıra sayacının hemen yanında",
+      "04-zakreslenie": "Tarifin üzerinde vurgulayın ve yazın",
+      "05-projekty": "Tüm projeleriniz tek yerde",
+      "06-historia": "Her adım saatli, tek dokunuşla geri alın",
+      "07-kalendarz": "El işi günleriniz bir bakışta"
+    },
+    "el": {
+      "01-dzis": "Συνεχίστε ακριβώς εκεί που σταματήσατε",
+      "02-licznik": "Ένα πάτημα προσθέτει μια σειρά",
+      "03-wzor": "Το πατρόν σας ακριβώς δίπλα στον μετρητή",
+      "04-zakreslenie": "Επισημάνετε και γράψτε πάνω στο πατρόν",
+      "05-projekty": "Όλα τα έργα σας σε ένα σημείο",
+      "06-historia": "Ώρα κάθε αλλαγής, αναίρεση με ένα πάτημα",
+      "07-kalendarz": "Οι ημέρες χειροτεχνίας σας με μια ματιά"
+    },
+    "id": {
+      "01-dzis": "Lanjutkan tepat di tempat Anda berhenti",
+      "02-licznik": "Satu ketukan menambah satu baris",
+      "03-wzor": "Pola Anda persis di samping penghitung",
+      "04-zakreslenie": "Tandai dan tulis langsung di pola Anda",
+      "05-projekty": "Semua proyek Anda di satu tempat",
+      "06-historia": "Jam tiap perubahan, ketuk untuk urungkan",
+      "07-kalendarz": "Lihat hari berkarya Anda sekilas"
+    },
+    "ms": {
+      "01-dzis": "Sambung tepat di tempat anda berhenti",
+      "02-licznik": "Satu ketikan menambah satu baris",
+      "03-wzor": "Corak anda tepat di sebelah pembilang",
+      "04-zakreslenie": "Serlahkan dan tulis pada corak",
+      "05-projekty": "Semua projek anda di satu tempat",
+      "06-historia": "Masa tiap perubahan, undur sekali ketik",
+      "07-kalendarz": "Hari berkraf anda sekali imbas"
+    },
+    "vi": {
+      "01-dzis": "Tiếp tục đúng chỗ bạn đã dừng",
+      "02-licznik": "Chạm một lần là thêm một hàng",
+      "03-wzor": "Mẫu của bạn ngay cạnh bộ đếm",
+      "04-zakreslenie": "Tô sáng và viết lên mẫu",
+      "05-projekty": "Tất cả dự án của bạn ở một nơi",
+      "06-historia": "Mỗi thay đổi kèm giờ, hoàn tác một chạm",
+      "07-kalendarz": "Xem nhanh các ngày đan móc của bạn"
+    },
+    "ru": {
+      "01-dzis": "Продолжайте ровно там, где остановились",
+      "02-licznik": "Одно нажатие добавляет ряд",
+      "03-wzor": "Ваше описание рядом со счётчиком",
+      "04-zakreslenie": "Выделяйте и пишите прямо в описании",
+      "05-projekty": "Все ваши проекты в одном месте",
+      "06-historia": "Время всех правок, отмена одним нажатием",
+      "07-kalendarz": "Ваши дни рукоделия как на ладони"
+    },
+    "ja": {
+      "01-dzis": "中断したところから、そのまま再開できます",
+      "02-licznik": "1回タップすると1段増えます",
+      "03-wzor": "編み図はカウンターのすぐ横に表示されます",
+      "04-zakreslenie": "編み図にハイライトや書き込みができます",
+      "05-projekty": "すべてのプロジェクトが1か所にそろいます",
+      "06-historia": "変更はすべて時刻つきで残り、タップ1回で取り消せます",
+      "07-kalendarz": "編み物の日がひと目でわかります"
+    },
+    "ko": {
+      "01-dzis": "멈춘 곳에서 바로 이어 뜨세요",
+      "02-licznik": "한 번 탭하면 한 단이 추가됩니다",
+      "03-wzor": "도안이 카운터 바로 옆에 펼쳐집니다",
+      "04-zakreslenie": "도안 위에 형광펜으로 표시하고 메모하세요",
+      "05-projekty": "모든 프로젝트가 한곳에 모여 있습니다",
+      "06-historia": "모든 변경이 시각과 함께 기록되고 탭 한 번으로 실행 취소됩니다",
+      "07-kalendarz": "뜨개한 날이 한눈에 보입니다"
+    },
+    "zh-Hant": {
+      "01-dzis": "從你上次停下的地方繼續",
+      "02-licznik": "點一下就加一段",
+      "03-wzor": "你的織圖就在計數器旁邊",
+      "04-zakreslenie": "在織圖上畫重點、寫筆記",
+      "05-projekty": "你所有的專案，集中在一處",
+      "06-historia": "每次變更都附上時間，點一下就能復原",
+      "07-kalendarz": "你的手作日，一目了然"
+    }
+  }
+}

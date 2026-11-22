@@ -1,0 +1,42 @@
+# P-191 (P9a, BR-PRJ-003, F-16): zdjęcie w grupie „Photos” ekranu projektu; podgląd → „Delete photo” → alert z potwierdzeniem → zdjęcia nie ma
+# (bez kosza: BR-DAN-008 obejmuje projekty, części i liczniki). Zdjęcie testowe z buildu E2E (e2e-zdjecie-testowe, strategia §4).
+# Dodanie i trwałość po restarcie sprawdza 17 (BR-PRJ-003/S1). Funkcja bez UI na 2026-10-26 — pakiet pełny.
+appId: com.apps4brew.knitting
+name: "P-191 · Zdjęcie projektu: podgląd, Delete photo z potwierdzeniem, miniatury nie ma"
+tags:
+  - P-191
+  - stan-licznika
+  - PU-053
+  - PU-247
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- tapOn: { id: "licznik-projekt-wejscie" }
+- assertVisible: { id: "projekt-zdjecia" }
+- scrollUntilVisible: { element: { id: "zdjecia-dodaj" } }
+- tapOn: { id: "zdjecia-dodaj" }
+- assertVisible: { id: "e2e-zdjecie-testowe" }
+- waitForAnimationToEnd # arkusz „Add photo” jeszcze wjeżdża — w 17 (przebieg 40457386369) stuknięcie nie trafiło w pozycję testową
+- tapOn: { id: "e2e-zdjecie-testowe" }
+- extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 20000, optional: true } # jak w 17 (E2-137-S3, P-489 3b): dowód opóźnienia (zrzut po 20 s), potem dłuższe czekanie; asercja końcowa twarda
+- runFlow:
+    when: { notVisible: { id: "zdjecia-miniatura" } }
+    commands:
+      - takeScreenshot: opoznienie-miniatura-zdjecia
+      - assertVisible: { id: "e2e-pomiar-operacji", optional: true } # „photo running” / „recode N ms · photo running” = aplikacja jeszcze zapisuje; brak panelu = menu zamknięte
+      - extendedWaitUntil: { visible: { id: "zdjecia-miniatura" }, timeout: 60000 }
+# zrzut z panelu `e2e-pomiar-operacji` (E2-141-N1: w #141 „recode running · photo running” przez 21 s, w 17 „recode 905 ms”)
+- takeScreenshot: pomiar-zdjecie
+- assertVisible: { id: "zdjecia-miniatura" }
+- tapOn: { id: "zdjecia-miniatura", index: 0 }
+- assertVisible: { id: "zdjecie-usun" }
+- takeScreenshot: 42-podglad
+- tapOn: { id: "zdjecie-usun" }
+- assertVisible: "Delete this photo\\?"
+- tapOn: { text: "Delete photo", above: { id: "zdjecie-usun" } } # przycisk alertu, nie pasek podglądu z tą samą etykietą (przebieg 40457386369)
+- extendedWaitUntil: { visible: { id: "projekt-zdjecia" }, timeout: 20000 }
+- assertNotVisible: { id: "zdjecia-miniatura" }
+- assertVisible: { id: "zdjecia-dodaj" }

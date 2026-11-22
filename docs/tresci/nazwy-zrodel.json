@@ -1,0 +1,6 @@
+{
+  "opis": "Nazwy źródeł wiedzy (rejestr roli 06, oczko-warsztat). W tekstach aplikacji wolno je pokazać tylko w linii wymaganej warunkami użycia na ekranie Ustawienia → „Źródła wiedzy” (P-085, P-108, P-112 (2)); dozwolone_klucze to pełne klucze, nie przestrzenie (F07-14). Lista rośnie razem z rejestrem.",
+  "nazwy": ["Craft Yarn Council", "YarnStandards", "CYC", "Knitting Guild", "TKGA", "NIST", "Handbook 44", "Special Publication 811", "SP 811"],
+  "dozwolone_klucze": ["zrodla.linia_standardow"],
+  "dozwolone_pliki": ["zrodla-wiedzy.md"]
+}

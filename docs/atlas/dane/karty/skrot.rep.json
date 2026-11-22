@@ -1,0 +1,57 @@
+{
+ "format": 1,
+ "id": "skrot.rep",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.rep.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "repeat",
+    "skrot": "rep",
+    "twierdzenie": "TRM-EN-019"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "раппорт",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-024"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "рапорт",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-015"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "repetir",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-027"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "raport",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-013"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "repetición",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-026"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

@@ -1,0 +1,4 @@
+BX verify, 2026-11-15T18:18Z, drzewo robocze na c18957dc + katalog PU, bramka, generator listy fizycznej
+Test Suites: 610 passed, 610 total
+Tests:       7464 passed, 7464 total
+kod wyjścia npm run verify: 0

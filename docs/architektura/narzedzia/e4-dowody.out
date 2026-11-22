@@ -1,0 +1,22 @@
+# Dowody E4 roli 05, 2026-10-22T19:29Z, Node v22.22.0
+$ node architektura/eksperymenty/e1/kontrola-adr.mjs adr
+0016-zaleznosci-wersji-1.md: OK (opcje: 3)
+błędy: 0
+kod wyjścia: 0
+$ node --no-warnings architektura/narzedzia/sprawdz-schemat.mjs
+wszystkie kontrole OK
+kod wyjścia: 0
+$ node architektura/eksperymenty/e1/scal-test.mjs
+8/8
+kod wyjścia: 0
+$ node monetyzacja/limit-test.mjs
+zgodne 35 z 35 wektorów
+kod wyjścia: 0
+$ node granice.mjs granice-test/dobre
+OK: 3 plików, bez naruszeń
+kod wyjścia: 0
+$ node granice.mjs granice-test/zle
+4 naruszeń w 4 plikach
+kod wyjścia: 1 (oczekiwany 1)
+$ każda tabela schematu ma w komentarzu F-/BR-/ADR-/P-
+18/18 tabel z odniesieniem

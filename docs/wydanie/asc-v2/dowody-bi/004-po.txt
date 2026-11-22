@@ -1,0 +1,53 @@
+PASS iOS tests/wydanie/asc-iap-v2.test.ts
+PASS iOS tests/wydanie/zrzuty-poprawki-ah.test.ts (9.025 s)
+PASS iOS tests/wydanie/metadane-przeklad.test.ts (7.647 s)
+PASS iOS tests/wydanie/ramki-sklepu.test.ts (22.347 s)
+PASS iOS tests/wydanie/kontrola-zakreslen.test.ts
+PASS iOS tests/wydanie/uklad-podpisow.test.ts
+PASS iOS tests/wydanie/zrzuty-uzupelnij.test.ts
+PASS iOS tests/wydanie/produkty-przeklad.test.ts
+PASS iOS tests/wydanie/asc-produkty.test.ts
+PASS iOS tests/wydanie/zrzuty-data-ipada.test.ts
+PASS iOS tests/wydanie/ramki-imagemagick-ci.test.ts (29.62 s)
+PASS iOS tests/wydanie/sprawdz-adresy.test.ts
+PASS iOS tests/wydanie/potok-testflight.test.ts
+PASS iOS tests/wydanie/asc-metadane.test.ts
+PASS iOS tests/wydanie/instalacja-narzedzi-zrzutow.test.ts
+PASS iOS tests/wydanie/zrzuty-jezyki.test.ts
+PASS iOS tests/wydanie/manifest-celow.test.ts
+PASS iOS tests/wydanie/ikona-zegarka-pakiet.test.ts
+PASS iOS tests/wydanie/slady-testowe.test.ts
+PASS iOS tests/wydanie/adresy-zaslepka.test.ts
+PASS iOS tests/wydanie/zrzuty-pasek-stanu.test.ts
+PASS iOS tests/wydanie/zrzuty-sklepu.test.ts
+PASS iOS tests/wydanie/iap-nazwa-aplikacji.test.ts
+PASS iOS tests/wydanie/e2e-yaml-skladnia.test.ts
+PASS iOS tests/wydanie/uprawnienia-celow.test.ts
+PASS iOS tests/wydanie/notatka-nazwy.test.ts
+PASS iOS tests/wydanie/zakup-kadr-model.test.ts
+PASS iOS tests/wydanie/barwy-celow-tokeny.test.ts
+PASS iOS tests/wydanie/licencja-ofl-w-pakiecie.test.ts
+PASS iOS tests/wydanie/zrzuty-obrot-ipada.test.ts
+PASS iOS tests/wydanie/manifest-app-json.test.ts
+PASS iOS tests/wydanie/luki-p349.test.ts
+PASS iOS tests/wydanie/m3-p4b-pas-blokady.test.ts
+PASS iOS tests/wydanie/eula-w-opisie.test.ts
+PASS iOS tests/wydanie/widok-wzoru-odswiezenie-plotna.test.ts
+PASS iOS tests/wydanie/wiek-ocena.test.ts
+PASS iOS tests/wydanie/termin-limitu.test.ts
+PASS iOS tests/wydanie/repo-wydanie.test.ts
+PASS iOS tests/wydanie/zrzuty-zakreslenia.test.ts
+PASS iOS tests/wydanie/hermesc-sciezka.test.ts
+PASS iOS tests/wydanie/zrzuty-dane-spojnosc.test.ts
+PASS iOS tests/wydanie/ikona-zegarka.test.ts
+PASS iOS tests/wydanie/kroki-wlasciciela.test.ts
+PASS iOS tests/wydanie/notatka-zgodnosc-208.test.ts
+PASS iOS tests/wydanie/polityka-import-strony.test.ts
+PASS iOS tests/wydanie/notatka-start-dzis.test.ts
+PASS iOS tests/wydanie/m1-195-inwentarz-plikow.test.ts
+
+Test Suites: 47 passed, 47 total
+Tests:       656 passed, 656 total
+Snapshots:   0 total
+Time:        33.729 s
+Ran all test suites matching /tests\/wydanie/i.

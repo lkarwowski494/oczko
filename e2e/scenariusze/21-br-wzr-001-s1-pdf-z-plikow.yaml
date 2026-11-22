@@ -1,0 +1,53 @@
+# BR-WZR-001/S1 (docs/brd/wymagania-projekt.md:212): Import wzoru PDF (z aplikacji Pliki) i odczyt bez sieci po restarcie.
+# Rozszerzenie udostępniania i okno Pliki (ADR-0011) poza zasięgiem Maestro — build E2E podaje bez okna systemowego prawdziwy wycinek skanu z OCR
+# `tests/dane/wzory/corbould-1879-s16-17.pdf` (domena publiczna, 2 strony, strategia §4; panel `e2e-wzor-pdf-skan`, P-439, 07-jakosc-002); zapis i odczyt offline: dane-node.
+# Wyrocznia z *.opis.md: plik 2-stronicowy przyjęty, znacznik rzędu (BR-WZR-003) działa na stronie skanu bez warstwy wektorowej.
+# Reguła OG-07 (design-spec „Ekrany wzoru a patenty”): jeden dokument wzoru naraz, w całości.
+appId: com.apps4brew.knitting
+name: "BR-WZR-001/S1 · Import wzoru PDF (z aplikacji Pliki) i odczyt bez sieci po restarcie"
+tags:
+  - BR-WZR-001-S1
+  - wzor
+  - stan-licznika
+  - PU-015
+  - PU-054
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+# NOC-2 (przejście poznawcze 04): licznik z akcją „Wzór” pod liczbą (ZM-04, P-580), zanim scenariusz ją stuknie
+- takeScreenshot: 21-licznik-przed-wzorem
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-pdf-skan" }
+# WL-1171-01 (test buildu 1171): menu źródeł ma widoczne „Back” — wraca na licznik (nie tylko gest od krawędzi); potem „Wzór” otwiera menu ponownie
+- assertVisible: { id: "nav-wstecz" }
+- tapOn: { id: "nav-wstecz" }
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 }
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-pdf-skan" }
+# NOC-2b (F-24, 04; p3b ZM-06): menu źródeł otwarte od razu po „Wzór” (bez kroku „Add pattern”), przed wyborem źródła
+- takeScreenshot: 21-ekran-dodaj-wzor
+- tapOn: { id: "e2e-wzor-pdf-skan" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 1 of 2" }
+- takeScreenshot: 21-wzor-po-imporcie
+# Znacznik rzędu na stronie skanu (BR-WZR-003; kroki jak scenariusz 62): pierwszy „Mark row” pyta o kierunek, potem pasek znacznika
+- tapOn: { id: "wzor-zaznacz" }
+- assertVisible: { id: "wzor-kierunek" }
+- tapOn: "Down, like written steps"
+- assertVisible: { id: "wzor-znacznik-pasek" }
+- assertVisible: { id: "wzor-znacznik-rzad" }
+- takeScreenshot: 21-znacznik-na-skanie
+- tapOn: { id: "wzor-znacznik-gotowe" }
+- assertNotVisible: { id: "wzor-znacznik-pasek" }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zrodlo", text: "PDF.*" }
+- takeScreenshot: 21-wzor-po-restarcie-offline

@@ -1,0 +1,143 @@
+{
+  "opis": "Klucze słowników z treścią krytyczną (twierdzenie z listy krytyczne_id) — oznaczenie roli 06 (DEC-11 a, M1-audytor-generalny-008). Znaczniki [T:ID] znikają przy budowie słowników (docs/tresci/README.md), więc ta mapa jest jedynym śladem klucz → twierdzenie w tym repo. Klucz bazowy (bez przyrostka liczby mnogiej). sha_en = skrót tekstu źródłowego w chwili oznaczenia; zmiana en bez odnowienia mapy jest błędem w sprawdz-i18n --wydanie.",
+  "zrodlo": "oczko-warsztat 06-tresci/2026-10-22-build/{tresci/en/stale.md, tresci/en/szablony.md, rejestr.json (krytyczne:true, 28 pozycji)}; odczyt 2026-11-02",
+  "zasada_utrzymania": "Nowy albo zmieniony klucz z [T:ID] krytycznym: 06 dopisuje go tu w tym samym commicie co zmianę en.json; 09 prowadzi kontrole w przeglad-krytyczne.json (skróty: sprawdz-i18n ... --skrot <język>).",
+  "krytyczne_id": [
+    "JED-001",
+    "JED-002",
+    "JED-003",
+    "JED-004",
+    "JED-005",
+    "JED-006",
+    "PRB-001",
+    "PRB-002",
+    "GRB-001",
+    "GRB-002",
+    "GRB-003",
+    "PRB-004",
+    "PRB-005",
+    "GRB-Z0",
+    "GRB-Z1",
+    "GRB-Z2",
+    "GRB-Z3",
+    "GRB-Z4",
+    "GRB-Z5",
+    "GRB-Z6",
+    "GRB-Z7",
+    "GRB-L67",
+    "GRB-L56",
+    "GRB-L45",
+    "GRB-L34",
+    "GRB-O23",
+    "GRB-L12",
+    "GRB-L01"
+  ],
+  "klucze": {
+    "probka.kategoria": {
+      "twierdzenia": [
+        "GRB-N0",
+        "GRB-N1",
+        "GRB-N2",
+        "GRB-N3",
+        "GRB-N4",
+        "GRB-N5",
+        "GRB-N6",
+        "GRB-N7",
+        "GRB-Z0",
+        "GRB-Z1",
+        "GRB-Z2",
+        "GRB-Z3",
+        "GRB-Z4",
+        "GRB-Z5",
+        "GRB-Z6",
+        "GRB-Z7"
+      ],
+      "sha_en": "8ba036c52723"
+    },
+    "probka.kategoria_miedzy": {
+      "twierdzenia": [
+        "GRB-L01",
+        "GRB-L12",
+        "GRB-L34",
+        "GRB-L45",
+        "GRB-L56",
+        "GRB-L67"
+      ],
+      "sha_en": "63e94e6fe455"
+    },
+    "probka.kategoria_obie": {
+      "twierdzenia": [
+        "GRB-O23"
+      ],
+      "sha_en": "f244999f20cc"
+    },
+    "probka.kategoria_otwarta": {
+      "twierdzenia": [
+        "GRB-N0",
+        "GRB-N1",
+        "GRB-N2",
+        "GRB-N3",
+        "GRB-N4",
+        "GRB-N5",
+        "GRB-N6",
+        "GRB-N7",
+        "GRB-Z0",
+        "GRB-Z1",
+        "GRB-Z2",
+        "GRB-Z3",
+        "GRB-Z4",
+        "GRB-Z5",
+        "GRB-Z6",
+        "GRB-Z7"
+      ],
+      "sha_en": "c5587bd90b8a"
+    },
+    "probka.kategoria_powyzej": {
+      "twierdzenia": [
+        "GRB-Z0",
+        "GRB-Z1",
+        "GRB-Z2",
+        "GRB-Z3",
+        "GRB-Z4",
+        "GRB-Z5",
+        "GRB-Z6",
+        "GRB-Z7"
+      ],
+      "sha_en": "20bb4b045dbc"
+    },
+    "probka.uwaga_4in": {
+      "twierdzenia": [
+        "JED-006",
+        "PRB-001"
+      ],
+      "sha_en": "67ab043e61ac"
+    },
+    "probka.uwaga_kategoria": {
+      "twierdzenia": [
+        "GRB-001",
+        "GRB-003",
+        "GRB-005"
+      ],
+      "sha_en": "86464d3a377d"
+    },
+    "probka.uwaga_koronka": {
+      "twierdzenia": [
+        "GRB-002"
+      ],
+      "sha_en": "924a5d7c088f"
+    },
+    "probka.uwaga_oczka": {
+      "twierdzenia": [
+        "PRB-002",
+        "PRB-005"
+      ],
+      "sha_en": "878c0917c168"
+    },
+    "probka.uwaga_zaokraglenie": {
+      "twierdzenia": [
+        "PRB-004"
+      ],
+      "sha_en": "c627de281009"
+    }
+  }
+}

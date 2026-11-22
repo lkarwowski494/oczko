@@ -1,0 +1,177 @@
+Uruchomienie: 2026-10-21 20:16 UTC · node v22.22.0 · prompts @97ec212
+
+## Porównanie wariantów (D-028): node oplacalnosc.mjs warianty/*.json
+| Wariant | Razem pes. / norm. / opt. | Werdykt |
+|---|---|---|
+| jednorazowy 29,99 USD | 1069,43 / 35647,74 / 823116,29 PLN | budować |
+| miesięczna 2,99 + roczna 19,99 + dożywotni 39,99 USD | 1077,44 / 32093,63 / 853290,03 PLN | budować |
+| jednorazowy 19,99 USD | 891,05 / 29701,66 / 705414,51 PLN | budować |
+| subskrypcja roczna 19,99 USD | 891,05 / 24949,40 / 627035,12 PLN | budować |
+| miesięczna 2,99 + roczna 19,99 USD | 778,74 / 22433,59 / 579614,10 PLN | budować |
+| jednorazowy 9,99 USD | 667,92 / 20779,62 / 470015,28 PLN | budować |
+| subskrypcja miesięczna 2,99 USD | 666,42 / 18659,87 / 468965,07 PLN | budować |
+| właściciel 0,99 / 6,99 / 14,99 USD (D-029) | 450,46 / 13941,40 / 348164,38 PLN | budować |
+| płatna z góry 4,99 USD | 111,22 / 4448,62 / 117394,09 PLN | budować |
+| napiwek 2,99 USD (wszystko darmowe) | 26,66 / 1066,28 / 35172,38 PLN | odłożyć |
+Najwyższy wynik normalny: jednorazowy 29,99 USD (optymalny tylko, jeśli przechodzi podłogę).
+kod: 0
+
+## warianty/j-0999.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 12,69 / 394,93 / 8933,04; netto 419,20 / 13041,77 / 294992,30
+ios/ca: płacący 1,65 / 51,34 / 1161,18; netto 52,99 / 1648,70 / 37292,05
+ios/gb: płacący 1,49 / 46,27 / 1046,57; netto 54,84 / 1706,22 / 38592,96
+ios/jp: płacący 1,37 / 42,78 / 967,53; netto 39,97 / 1243,61 / 28129,28
+ios/no: płacący 1,24 / 38,71 / 875,64; netto 44,16 / 1373,87 / 31075,68
+ios/au: płacący 0,76 / 23,60 / 533,90; netto 24,05 / 748,20 / 16923,57
+ios/de: płacący 0,59 / 18,32 / 414,38; netto 18,94 / 589,34 / 13330,36
+ios/fr: płacący 0,43 / 13,41 / 303,40; netto 13,75 / 427,92 / 9679,08
+ios: po kosztach 667,92 / 20779,62 / 470015,28
+A (dowody storefrontów): razem 667,92 / 20779,62 / 470015,28; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): udzial_nowej (wszystkie sklepy) 6926,54 → 69265,41; instalacje_na_ocene (wszystkie sklepy) 6926,54 → 69265,41; ios/us instalacje_na_ocene 12085,11 → 51210,41
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/j-1999.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 8,46 / 282,10 / 6699,78; netto 559,21 / 18640,42 / 442709,92
+ios/ca: płacący 1,10 / 36,67 / 870,88; netto 70,71 / 2357,01 / 55979,06
+ios/gb: płacący 0,99 / 33,05 / 784,93; netto 73,16 / 2438,67 / 57918,41
+ios/jp: płacący 0,92 / 30,55 / 725,65; netto 53,33 / 1777,75 / 42221,50
+ios/no: płacący 0,83 / 27,65 / 656,73; netto 58,91 / 1963,61 / 46635,75
+ios/au: płacący 0,51 / 16,86 / 400,43; netto 32,09 / 1069,57 / 25402,27
+ios/de: płacący 0,39 / 13,09 / 310,78; netto 25,28 / 842,73 / 20014,91
+ios/fr: płacący 0,29 / 9,58 / 227,55; netto 18,36 / 611,90 / 14532,69
+ios: po kosztach 891,05 / 29701,66 / 705414,51
+A (dowody storefrontów): razem 891,05 / 29701,66 / 705414,51; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 9900,55 → 99005,54; udzial_nowej (wszystkie sklepy) 9900,55 → 99005,54; ios/us instalacje_na_ocene 17274,72 → 73195,97
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/j-2999.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 6,77 / 225,68 / 5210,94; netto 671,17 / 22372,23 / 516581,03
+ios/ca: płacący 0,88 / 29,34 / 677,35; netto 84,87 / 2829,11 / 65324,84
+ios/gb: płacący 0,79 / 26,44 / 610,50; netto 87,81 / 2926,89 / 67582,75
+ios/jp: płacący 0,73 / 24,44 / 564,39; netto 64,01 / 2133,76 / 49269,14
+ios/no: płacący 0,66 / 22,12 / 510,79; netto 70,70 / 2356,71 / 54417,02
+ios/au: płacący 0,40 / 13,49 / 311,44; netto 38,50 / 1283,48 / 29635,98
+ios/de: płacący 0,31 / 10,47 / 241,72; netto 30,34 / 1011,28 / 23350,73
+ios/fr: płacący 0,23 / 7,66 / 176,99; netto 22,03 / 734,28 / 16954,80
+ios: po kosztach 1069,43 / 35647,74 / 823116,29
+A (dowody storefrontów): razem 1069,43 / 35647,74 / 823116,29; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 11882,58 → 118825,81; udzial_nowej (wszystkie sklepy) 11882,58 → 118825,81; ios/us instalacje_na_ocene 20732,92 → 87849,62
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/napiwek.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 1,69 / 67,70 / 2233,26; netto 16,73 / 669,15 / 22072,75
+ios/ca: płacący 0,22 / 8,80 / 290,29; netto 2,12 / 84,69 / 2793,49
+ios/gb: płacący 0,20 / 7,93 / 261,64; netto 2,19 / 87,54 / 2887,71
+ios/jp: płacący 0,18 / 7,33 / 241,88; netto 1,60 / 63,82 / 2105,10
+ios/no: płacący 0,17 / 6,64 / 218,91; netto 1,76 / 70,50 / 2325,37
+ios/au: płacący 0,10 / 4,05 / 133,48; netto 0,96 / 38,37 / 1265,60
+ios/de: płacący 0,08 / 3,14 / 103,59; netto 0,76 / 30,25 / 997,84
+ios/fr: płacący 0,06 / 2,30 / 75,85; netto 0,55 / 21,96 / 724,52
+ios: po kosztach 26,66 / 1066,28 / 35172,38
+A (dowody storefrontów): razem 26,66 / 1066,28 / 35172,38; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: odłożyć; wynik normalny wobec progu zmienia: instalacje_na_ocene (wszystkie sklepy); udzial_nowej (wszystkie sklepy); konwersja (wszystkie sklepy); ios/us instalacje_na_ocene; ios/us udzial_nowej; ios/us konwersja
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 355,43 → 3554,26; udzial_nowej (wszystkie sklepy) 355,43 → 3554,26; konwersja (wszystkie sklepy) 355,43 → 2665,70
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/platna.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 4,23 / 169,26 / 4466,52; netto 69,80 / 2791,87 / 73674,25
+ios/ca: płacący 0,55 / 22,00 / 580,59; netto 8,83 / 353,03 / 9316,18
+ios/gb: płacący 0,50 / 19,83 / 523,28; netto 9,13 / 365,25 / 9638,58
+ios/jp: płacący 0,46 / 18,33 / 483,77; netto 6,65 / 266,14 / 7023,13
+ios/no: płacący 0,41 / 16,59 / 437,82; netto 7,35 / 294,12 / 7761,51
+ios/au: płacący 0,25 / 10,12 / 266,95; netto 4,01 / 160,22 / 4228,07
+ios/de: płacący 0,20 / 7,85 / 207,19; netto 3,16 / 126,29 / 3332,59
+ios/fr: płacący 0,14 / 5,75 / 151,70; netto 2,29 / 91,70 / 2419,77
+ios: po kosztach 111,22 / 4448,62 / 117394,09
+A (dowody storefrontów): razem 111,22 / 4448,62 / 117394,09; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: instalacje_na_ocene (wszystkie sklepy); udzial_nowej (wszystkie sklepy); konwersja (wszystkie sklepy)
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 1482,87 → 14828,73; udzial_nowej (wszystkie sklepy) 1482,87 → 14828,73; ios/us instalacje_na_ocene 2587,37 → 10962,97
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/s-mies-rok-doz.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 9,31 / 259,53 / 6550,90; netto 676,19 / 20141,50 / 535513,89
+ios/ca: płacący 1,21 / 33,74 / 851,53; netto 85,53 / 2547,38 / 67726,65
+ios/gb: płacący 1,09 / 30,41 / 767,48; netto 88,46 / 2635,05 / 70059,68
+ios/jp: płacący 1,01 / 28,11 / 709,52; netto 64,49 / 1920,84 / 51070,15
+ios/no: płacący 0,91 / 25,44 / 642,13; netto 71,23 / 2121,78 / 56412,78
+ios/au: płacący 0,56 / 15,51 / 391,53; netto 38,79 / 1155,50 / 30722,69
+ios/de: płacący 0,43 / 12,04 / 303,88; netto 30,57 / 910,49 / 24207,39
+ios/fr: płacący 0,32 / 8,81 / 222,50; netto 22,19 / 661,10 / 17576,82
+ios: po kosztach 1077,44 / 32093,63 / 853290,03
+A (dowody storefrontów): razem 1077,44 / 32093,63 / 853290,03; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 10697,88 → 106978,75; udzial_nowej (wszystkie sklepy) 10697,88 → 106978,75; ios/us instalacje_na_ocene 18665,96 → 79090,46
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/s-mies-rok.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 8,46 / 236,96 / 5955,36; netto 488,72 / 14078,84 / 363754,94
+ios/ca: płacący 1,10 / 30,80 / 774,12; netto 61,82 / 1780,74 / 46005,37
+ios/gb: płacący 0,99 / 27,76 / 697,71; netto 63,94 / 1841,89 / 47588,97
+ios/jp: płacący 0,92 / 25,67 / 645,02; netto 46,61 / 1342,71 / 34691,55
+ios/no: płacący 0,83 / 23,23 / 583,76; netto 51,48 / 1483,13 / 38319,26
+ios/au: płacący 0,51 / 14,16 / 355,93; netto 28,03 / 807,64 / 20868,27
+ios/de: płacący 0,39 / 10,99 / 276,25; netto 22,09 / 636,49 / 16445,08
+ios/fr: płacący 0,29 / 8,05 / 202,27; netto 16,04 / 462,15 / 11940,66
+ios: po kosztach 778,74 / 22433,59 / 579614,10
+A (dowody storefrontów): razem 778,74 / 22433,59 / 579614,10; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): udzial_nowej (wszystkie sklepy) 7477,86 → 74778,63; instalacje_na_ocene (wszystkie sklepy) 7477,86 → 74778,63; ios/us instalacje_na_ocene 13047,69 → 55284,21
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/s-mies.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 8,46 / 236,96 / 5955,36; netto 418,22 / 11710,17 / 294303,30
+ios/ca: płacący 1,10 / 30,80 / 774,12; netto 52,93 / 1482,02 / 37246,52
+ios/gb: płacący 0,99 / 27,76 / 697,71; netto 54,71 / 1532,01 / 38502,82
+ios/jp: płacący 0,92 / 25,67 / 645,02; netto 39,89 / 1116,81 / 28068,00
+ios/no: płacący 0,83 / 23,23 / 583,76; netto 44,06 / 1233,67 / 31004,88
+ios/au: płacący 0,51 / 14,16 / 355,93; netto 23,98 / 671,44 / 16874,71
+ios/de: płacący 0,39 / 10,99 / 276,25; netto 18,91 / 529,38 / 13304,52
+ios/fr: płacący 0,29 / 8,05 / 202,27; netto 13,73 / 384,38 / 9660,32
+ios: po kosztach 666,42 / 18659,87 / 468965,07
+A (dowody storefrontów): razem 666,42 / 18659,87 / 468965,07; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 6219,96 → 62199,58; udzial_nowej (wszystkie sklepy) 6219,96 → 62199,58; ios/us instalacje_na_ocene 10853,09 → 45983,61
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/s-rok.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 8,46 / 236,96 / 5955,36; netto 559,21 / 15657,95 / 393519,93
+ios/ca: płacący 1,10 / 30,80 / 774,12; netto 70,71 / 1979,89 / 49759,16
+ios/gb: płacący 0,99 / 27,76 / 697,71; netto 73,16 / 2048,48 / 51483,03
+ios/jp: płacący 0,92 / 25,67 / 645,02; netto 53,33 / 1493,31 / 37530,22
+ios/no: płacący 0,83 / 23,23 / 583,76; netto 58,91 / 1649,43 / 41454,00
+ios/au: płacący 0,51 / 14,16 / 355,93; netto 32,09 / 898,44 / 22579,79
+ios/de: płacący 0,39 / 10,99 / 276,25; netto 25,28 / 707,90 / 17791,03
+ios/fr: płacący 0,29 / 8,05 / 202,27; netto 18,36 / 514,00 / 12917,95
+ios: po kosztach 891,05 / 24949,40 / 627035,12
+A (dowody storefrontów): razem 891,05 / 24949,40 / 627035,12; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 8316,47 → 83164,66; udzial_nowej (wszystkie sklepy) 8316,47 → 83164,66; ios/us instalacje_na_ocene 14510,76 → 61484,62
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0
+
+## warianty/wlasciciel.json
+Bramka opłacalności 2026-10-21 (PLN netto/rok, pes. / norm. / opt.; bez kosztów portfela i czasu, D-024)
+ios/us: płacący 11,00 / 315,95 / 7444,20; netto 282,72 / 8749,86 / 218512,82
+ios/ca: płacący 1,43 / 41,07 / 967,65; netto 35,73 / 1105,90 / 27620,71
+ios/gb: płacący 1,29 / 37,02 / 872,14; netto 36,99 / 1144,72 / 28587,38
+ios/jp: płacący 1,19 / 34,22 / 806,28; netto 26,98 / 834,89 / 20847,99
+ios/no: płacący 1,08 / 30,97 / 729,70; netto 29,78 / 921,73 / 23018,61
+ios/au: płacący 0,66 / 18,88 / 444,92; netto 16,22 / 502,06 / 12537,18
+ios/de: płacący 0,51 / 14,66 / 345,31; netto 12,77 / 395,25 / 9871,83
+ios/fr: płacący 0,37 / 10,73 / 252,84; netto 9,27 / 286,99 / 7167,87
+ios: po kosztach 450,46 / 13941,40 / 348164,38
+A (dowody storefrontów): razem 450,46 / 13941,40 / 348164,38; werdykt wobec progu 1944,45 [karta „Stan projektu” (D-024), 2026-10-21]: budować; wynik normalny wobec progu zmienia: żadne założenie
+Największy wpływ (A, pes. → opt.): instalacje_na_ocene (wszystkie sklepy) 4647,13 → 46471,32; udzial_nowej (wszystkie sklepy) 4647,13 → 46471,32; ios/us instalacje_na_ocene 8108,15 → 34357,74
+Przybliżenie z jawnych założeń, nie prognoza; bez podatku dochodowego i składek.
+kod: 0

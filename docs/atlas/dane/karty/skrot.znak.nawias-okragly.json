@@ -1,0 +1,22 @@
+{
+ "format": 1,
+ "id": "skrot.znak.nawias-okragly",
+ "rzemioslo": "oba",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.znak.nawias-okragly.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": null,
+    "skrot": null,
+    "twierdzenie": "ATL-T-023"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

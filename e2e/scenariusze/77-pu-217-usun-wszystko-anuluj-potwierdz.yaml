@@ -1,0 +1,58 @@
+# PU-217 (docs/jakosc/przypadki-uzycia.md, „Nawigacja”): wejście i powrót — „Delete all data”: „Cancel” wraca do Ustawień bez zmian; po potwierdzeniu „Dziś” od zera.
+# testID z kodu: `ustawienia-usun-wszystko` src/ekrany/Ustawienia.tsx:119 (→ `/usun-wszystko`, modal app/_layout.tsx:138); arkusz `usun-wszystko-arkusz`
+# src/ekrany/UsunWszystko.tsx:17, „Cancel” `usun-wszystko-anuluj` :19 (`router.back()` app/usun-wszystko.tsx:36), potwierdzenie `potwierdz-usun-wszystko` :18
+# (po usunięciu `router.dismissTo('/')` app/usun-wszystko.tsx:32 — „Dziś” w stanie pustym, P-573); `ustawienia` Ustawienia.tsx:93, `nav-wstecz` :94;
+# dane: `projekty-wiersz` src/ekrany/ListaProjektow.tsx:47, karta „Dziś” `dzis-karta` / `dzis-projekt` / `dzis-wartosc` src/ekrany/Dzis.tsx:111, :118
+# (karta „Pierwszy licznik” bez `dzis-projekt`). Ustawienia przez subflows/otworz-ustawienia.yaml (jedno miejsce zmiany).
+# Zielony w przebiegu „Jakość · iOS” 43752186631 (15.11.2026, SHA 8f0c1424): tag oczekujacy zdjęty, scenariusz podstawowy (P-834, BX6). Częściowo: 08-br-dan-006-s1-eksport-import.yaml.
+appId: com.apps4brew.knitting
+name: "PU-217 · „Delete all data”: Cancel wraca do Ustawień, dane bez zmian; potwierdzenie — „Dziś” od zera"
+tags:
+  - przypadki-uzycia
+  - PU-217
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-12T19:30:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/nazwij-projekt.yaml
+- runFlow: subflows/otworz-ustawienia.yaml
+# --- 1. „Delete all data” → „Cancel”: Ustawienia, nic nie usunięte ---
+- scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-usun-wszystko" }
+- extendedWaitUntil: { visible: { id: "usun-wszystko-anuluj" }, timeout: 20000 }
+- assertVisible: { id: "potwierdz-usun-wszystko" }
+- takeScreenshot: 77-arkusz-usun-wszystko
+- tapOn: { id: "usun-wszystko-anuluj" }
+- extendedWaitUntil: { notVisible: { id: "potwierdz-usun-wszystko" }, timeout: 20000 }
+- assertVisible: { id: "ustawienia" }
+- assertVisible: { id: "ustawienia-usun-wszystko" }
+- takeScreenshot: 77-ustawienia-po-anuluj
+# dane bez zmian: „Dziś” z kartą „Harbor”, projekt na liście
+- scrollUntilVisible: { element: { id: "nav-wstecz" }, direction: UP, timeout: 30000 }
+- swipe: { start: "50%, 30%", end: "50%, 70%", duration: 300 } # dopchnięcie do góry: Maestro uznaje „Back” za widoczny już pod górną krawędzią pola treści (przebieg 43851148385)
+- assertVisible: { id: "nav-wstecz" }
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 20000 }
+- assertVisible: { id: "dzis-projekt", text: "Harbor" }
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertVisible: { id: "projekty-wiersz", text: "Harbor.*" }
+- takeScreenshot: 77-dane-bez-zmian
+# --- 2. „Delete all data” → potwierdzenie: „Dziś” od zera ---
+- runFlow: subflows/otworz-ustawienia.yaml
+- scrollUntilVisible: { element: { id: "ustawienia-usun-wszystko" }, direction: DOWN, timeout: 30000, centerElement: true }
+- tapOn: { id: "ustawienia-usun-wszystko" }
+- extendedWaitUntil: { visible: { id: "potwierdz-usun-wszystko" }, timeout: 20000 }
+- scrollUntilVisible: { element: { id: "potwierdz-usun-wszystko" }, direction: DOWN, timeout: 30000 } # jak 51: przycisk w pasku arkusza bywa pod zgięciem
+- tapOn: { id: "potwierdz-usun-wszystko" }
+- extendedWaitUntil: { visible: { id: "dzis-karta" }, timeout: 60000 }
+- assertNotVisible: { id: "dzis-projekt" } # karta „Pierwszy licznik”, bez nazwy projektu
+- assertVisible: { id: "dzis-wartosc", text: "0" }
+- takeScreenshot: 77-dzis-od-zera
+- tapOn: { id: "nav-projekty" }
+- extendedWaitUntil: { visible: { id: "projekty-lista" }, timeout: 20000 }
+- assertNotVisible: { id: "projekty-wiersz" }
+- takeScreenshot: 77-projekty-puste

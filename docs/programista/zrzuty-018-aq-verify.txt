@@ -1,0 +1,9 @@
+npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test) na SHA 59c0586, 2026-11-12, kod wyjścia 0
+---
+ADR: 34, błędy: 0
+błędy: 0, uwagi: 1350; języki: bg, cs, da, de, el, en, es, es-419, et, fi, fr, hr, hu, id, it, ja, ko, lt, lv, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sl, sr, sv, tr, uk, vi, zh-Hant; kluczy w źródle: 920
+Test Suites: 600 passed, 600 total
+Tests:       7294 passed, 7294 total
+Snapshots:   0 total
+Time:        152.708 s, estimated 168 s
+KOD_WYJSCIA=0

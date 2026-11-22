@@ -1,0 +1,148 @@
+{
+ "format": 1,
+ "id": "skrot.druty.p",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.p.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "purl",
+    "skrot": "p",
+    "twierdzenie": "TRM-EN-002"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko lewe",
+    "skrot": "o. l.",
+    "twierdzenie": "TRM-PL-002"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "avig maska",
+    "skrot": "am",
+    "twierdzenie": "TRM-SV-002"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "изнаночная петля",
+    "skrot": "изн. п.",
+    "twierdzenie": "TRM-RU-002"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "виворітна петля",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-002"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "裏目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-002"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "안뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-002"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "上針",
+    "skrot": "P",
+    "twierdzenie": "TRM-ZHT-002"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ters ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-009"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto tricô",
+    "skrot": "P",
+    "twierdzenie": "TRM-PT-014"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "ochi pe dos",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-002"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "опакова бримка",
+    "skrot": "о.бр.",
+    "twierdzenie": "TRM-BG-002"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "išvirkščioji akis",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-002"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "kreiliskais valdziņš",
+    "skrot": "k",
+    "twierdzenie": "TRM-LV-002"
+   }
+  ],
+  "sr": [
+   {
+    "nazwa": "обрнуто",
+    "skrot": null,
+    "twierdzenie": "TRM-SR-002"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "leva petlja",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-002"
+   }
+  ],
+  "sk": [
+   {
+    "nazwa": "rubové očko",
+    "skrot": null,
+    "twierdzenie": "TRM-SK-002"
+   }
+  ],
+  "ms": [
+   {
+    "nazwa": "jahit purl",
+    "skrot": null,
+    "twierdzenie": "TRM-MS-002"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "punto revés",
+    "skrot": "r",
+    "twierdzenie": "TRM-ESLA-002"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

@@ -1,0 +1,35 @@
+# KP-10 (docs/monetyzacja.md:547): ekran zakupu tylko po działaniu użytkownika; nigdy w PR-02 (liczenie), PR-05 (bez sięgania po telefon: powrót z tła,
+# ekran nie gaśnie) ani przy pierwszym uruchomieniu. Wejścia do ofert (KP-13): odnośnik na limicie i Ustawienia — sprawdza 05 i 06.
+appId: com.apps4brew.knitting
+name: "KP-10 · Ekran zakupu tylko po działaniu: nie przy pierwszym starcie, liczeniu, powrocie z tła"
+tags:
+  - KP-10
+  - stan-licznika
+  - PU-119
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T19:30:00"
+- assertNotVisible: { id: "oferty-ekran" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- assertNotVisible: { id: "oferty-ekran" }
+# --- PR-05: przejście w tło i powrót (bez restartu) ---
+- pressKey: Home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 30000 }
+- assertNotVisible: { id: "oferty-ekran" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+# --- kolejne dni, także ostatni darmowy: przy starcie dnia brak ekranu zakupu ---
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-11T20:00:00", WARTOSC: "2" } }
+- assertNotVisible: { id: "oferty-ekran" }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-12T20:00:00", WARTOSC: "3" } }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-13T20:00:00", WARTOSC: "4" } }
+- runFlow: { file: subflows/dzien-z-robotka.yaml, env: { TERAZ: "2026-11-14T20:00:00", WARTOSC: "5" } }
+- assertNotVisible: { id: "oferty-ekran" }
+- takeScreenshot: 13-ostatni-darmowy-dzien
+# --- na limicie: oferta dopiero po stuknięciu odnośnika ---
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-15T20:00:00" } }
+- assertVisible: { id: "limit-zawczasu" }
+- assertNotVisible: { id: "oferty-ekran" }

@@ -1,0 +1,33 @@
+# BR-WZR-008/S1 (docs/brd/wymagania-projekt.md:295): zakreślenie mojego rozmiaru palcem na iPhonie; trwałość adnotacji (dane-node, R-059: XCTest PencilKit).
+# Gest palcem po PDF: swipe Maestro w trybie zakreślacza (wzor-zakreslacz). Adnotacja na jednym dokumencie (OG-07).
+appId: com.apps4brew.knitting
+name: "BR-WZR-008/S1 · Zakreślenie palcem na wzorze, zachowane po restarcie"
+tags:
+  - BR-WZR-008-S1
+  - wzor
+  - stan-licznika
+  - PU-072
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- scrollUntilVisible: { element: { id: "licznik-wzor" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
+- assertVisible: { id: "licznik-wzor" }
+- tapOn: { id: "licznik-wzor" }
+- assertVisible: { id: "e2e-wzor-pdf" }
+- tapOn: { id: "e2e-wzor-pdf" }
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "0 highlights" }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: true }
+- swipe: { start: "20%, 40%", end: "80%, 40%", duration: 800 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
+- takeScreenshot: 26-zakreslenie
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+- runFlow: { file: subflows/restart.yaml, env: { TERAZ: "2026-11-10T13:00:00" } }
+# BR-PRJ-011/S1 (07-jakosc-006, F-49): start otwiera ekran wzoru, na którym skończyła się praca — bez ponownego wybierania (E2-136-S1)
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }

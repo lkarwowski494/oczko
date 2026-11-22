@@ -1,0 +1,16 @@
+Uruchomienie: 2026-10-21 20:27 UTC · scenariusze ceny właściciela (pytanie właściciela)
+| Wariant | Razem pes. / norm. / opt. | Werdykt |
+|---|---|---|
+| właściciel · konwersja ×2, udział ×1,5 | 1351,37 / 41824,19 / 1044493,13 PLN | budować |
+| jednorazowy 29,99 USD | 1069,43 / 35647,74 / 823116,29 PLN | budować |
+| miesięczna 2,99 + roczna 19,99 + dożywotni 39,99 USD | 1077,44 / 32093,63 / 853290,03 PLN | budować |
+| właściciel · konwersja ×1,5, udział ×1,5 | 1013,53 / 31368,14 / 783369,85 PLN | budować |
+| subskrypcja roczna 19,99 USD | 891,05 / 24949,40 / 627035,12 PLN | budować |
+| właściciel · konwersja ×1,5 | 675,69 / 20912,09 / 522246,57 PLN | budować |
+| właściciel 0,99 / 6,99 / 14,99 USD (D-029) | 450,46 / 13941,40 / 348164,38 PLN | budować |
+| właściciel · presja AI B, udział ×0,3×1,5, konwersja ×1,5 | 304,06 / 9410,44 / 235010,96 PLN | budować |
+| właściciel · presja AI B bez obniżki (rynek spadł do jego ceny), udział ×0,3 | 135,14 / 4182,42 / 104449,31 PLN | budować |
+| jednorazowy 29,99 · presja AI B (ceny ×0.3, udział ×0.3) | 96,28 / 3209,19 / 74101,00 PLN | budować |
+| roczna 19,99 · presja AI B (ceny ×0.3, udział ×0.3) | 80,23 / 2246,35 / 56455,92 PLN | budować |
+Najwyższy wynik normalny: właściciel · konwersja ×2, udział ×1,5 (optymalny tylko, jeśli przechodzi podłogę).
+kod: 0

@@ -1,0 +1,113 @@
+{
+ "format": 1,
+ "id": "skrot.druty.co",
+ "rzemioslo": "druty",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.druty.co.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "cast on",
+    "skrot": "CO",
+    "twierdzenie": "TRM-EN-015"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "nabieranie oczek",
+    "skrot": null,
+    "twierdzenie": "TRM-PL-037"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "lägg upp",
+    "skrot": null,
+    "twierdzenie": "TRM-SV-017"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "набор петель",
+    "skrot": null,
+    "twierdzenie": "TRM-RU-015"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "набір петель",
+    "skrot": null,
+    "twierdzenie": "TRM-UA-011"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "作り目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-014"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "起針",
+    "skrot": "CO",
+    "twierdzenie": "TRM-ZHT-014"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "ilmek atma",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-018"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "montar pontos",
+    "skrot": null,
+    "twierdzenie": "TRM-PT-023"
+   }
+  ],
+  "ro": [
+   {
+    "nazwa": "montarea ochiurilor",
+    "skrot": null,
+    "twierdzenie": "TRM-RO-009"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "valdziņu uzmešana",
+    "skrot": null,
+    "twierdzenie": "TRM-LV-007"
+   }
+  ],
+  "sl": [
+   {
+    "nazwa": "nasnuti",
+    "skrot": null,
+    "twierdzenie": "TRM-SL-003"
+   }
+  ],
+  "sk": [
+   {
+    "nazwa": "nahodenie",
+    "skrot": null,
+    "twierdzenie": "TRM-SK-004"
+   }
+  ],
+  "es-419": [
+   {
+    "nazwa": "montar",
+    "skrot": null,
+    "twierdzenie": "TRM-ESLA-009"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

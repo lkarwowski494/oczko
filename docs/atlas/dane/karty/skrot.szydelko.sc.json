@@ -1,0 +1,120 @@
+{
+ "format": 1,
+ "id": "skrot.szydelko.sc",
+ "rzemioslo": "szydelko",
+ "rodzaj": "skrot",
+ "klucze": {
+  "nazwa": "atlas.skrot.szydelko.sc.nazwa"
+ },
+ "terminy": {
+  "en-US": [
+   {
+    "nazwa": "single crochet",
+    "skrot": "sc",
+    "twierdzenie": "TRM-EN-030"
+   }
+  ],
+  "en-GB": [
+   {
+    "nazwa": "double crochet",
+    "skrot": "dc",
+    "twierdzenie": "TRM-GB-002"
+   }
+  ],
+  "pl": [
+   {
+    "nazwa": "oczko ścisłe",
+    "skrot": "oś",
+    "twierdzenie": "TRM-PL-030"
+   }
+  ],
+  "sv": [
+   {
+    "nazwa": "fast maska",
+    "skrot": "fm",
+    "twierdzenie": "TRM-SV-006"
+   }
+  ],
+  "pt-BR": [
+   {
+    "nazwa": "ponto baixo",
+    "skrot": "pb.",
+    "twierdzenie": "TRM-PT-001"
+   }
+  ],
+  "ru": [
+   {
+    "nazwa": "столбик без накида",
+    "skrot": "СБН",
+    "twierdzenie": "TRM-RU-035"
+   }
+  ],
+  "uk": [
+   {
+    "nazwa": "стовпчик без накиду",
+    "skrot": "СБН",
+    "twierdzenie": "TRM-UA-024"
+   }
+  ],
+  "ja": [
+   {
+    "nazwa": "細編目",
+    "skrot": null,
+    "twierdzenie": "TRM-JA-031"
+   }
+  ],
+  "ko": [
+   {
+    "nazwa": "짧은뜨기",
+    "skrot": null,
+    "twierdzenie": "TRM-KO-017"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "nazwa": "短針",
+    "skrot": null,
+    "twierdzenie": "TRM-ZHT-032"
+   }
+  ],
+  "tr": [
+   {
+    "nazwa": "sık ilmek",
+    "skrot": null,
+    "twierdzenie": "TRM-TR-030"
+   }
+  ],
+  "bg": [
+   {
+    "nazwa": "нисък пълнеж",
+    "skrot": "НП",
+    "twierdzenie": "TRM-BG-029"
+   }
+  ],
+  "lt": [
+   {
+    "nazwa": "žemas stulpelis be užmetimo",
+    "skrot": null,
+    "twierdzenie": "TRM-LT-017"
+   }
+  ],
+  "lv": [
+   {
+    "nazwa": "īsais stabiņš",
+    "skrot": "īst",
+    "twierdzenie": "TRM-LV-012"
+   }
+  ],
+  "id": [
+   {
+    "nazwa": "tusuk tunggal",
+    "skrot": "sc",
+    "twierdzenie": "TRM-ID-002"
+   }
+  ]
+ },
+ "twierdzenia": [],
+ "jezyki_gotowe": [
+  "en-US"
+ ]
+}

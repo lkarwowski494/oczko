@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko — trzy kierunki (E2, redesign M3)</title>
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(fonty/SourceSans3.ttf); font-weight: 200 900; }
+* { box-sizing: border-box; margin: 0; }
+body { font-family: "Source Sans 3", sans-serif; background: #d9dbdc; color: #1d2024; padding: 32px; width: 1960px; }
+h1 { font-size: 30px; } .pod { color: #4a5058; margin: 4px 0 24px; font-size: 16px; }
+.kolumny { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.k { background: #f4f5f5; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.k h2 { font-size: 24px; } .k .idea { font-size: 16px; } .k .arg { font-size: 15px; background: #e7eaec; border-radius: 10px; padding: 10px 12px; }
+.ekrany { display: flex; gap: 10px; } .ekrany img { width: 300px; border-radius: 14px; display: block; }
+.ekrany figure { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #4a5058; }
+.panel img { width: 100%; border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: #f4f5f5; border-radius: 12px; overflow: hidden; margin-top: 12px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #d5d9dc; vertical-align: top; }
+th { background: #e7eaec; }
+.rek { margin-top: 28px; background: #f4f5f5; border-radius: 18px; padding: 18px 22px; font-size: 16px; display: flex; flex-direction: column; gap: 8px; }
+.rek h2 { font-size: 22px; }
+.uw { font-size: 13px; color: #4a5058; }
+</style></head><body>
+<h1>Oczko — trzy kierunki wyglądu na ekranie „Dziś”</h1>
+<p class="pod">E2 roli 04 (redesign M3), 5.11.2026 · przepływy z <code>to-be.md</code> (P-549), kierunki z <code>01-swiat.md</code> (P-551) · dane na ekranach: [PRZYKŁAD] · treść: na iOS SF Pro, w makiecie zastępczo Source Sans 3; ikony interfejsu zastępcze (na iOS SF Symbols)</p>
+<div class="kolumny">
+  <section class="k">
+    <h2>A „Dzianina”</h2>
+    <p class="idea">Karta projektu to kawałek dzianiny, który przyrasta rząd po rzędzie do celu części; barwy runa (miodowy mioget, stalowa shaela).</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/dzianina-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/dzianina-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> jeden element pokazuje cztery dane naraz — ile zrobione do celu, ile dziś, bieżący rząd i najbliższe przypomnienie — i rośnie przy każdym „+1”, także na liczniku. Rośnie razem z robótką.</p>
+    <div class="panel"><img src="kierunki/zrzuty/dzianina-panel.png"></div>
+  </section>
+  <section class="k">
+    <h2>B „Markery”</h2>
+    <p class="idea">Linijka rzędów z kółkami-markerami nawleczonymi na drut: gdzie jesteś, co Cię czeka, gdzie koniec; bordo z złotymi markerami.</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/markery-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/markery-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> najlepiej odpowiada na „co dalej” po powrocie — wszystkie przypomnienia części widać na raz, a lista pod spodem mówi, za ile rzędów. Najmocniejszy kolor i najprostszy we wdrożeniu.</p>
+    <div class="panel"><img src="kierunki/zrzuty/markery-panel.png"></div>
+  </section>
+  <section class="k">
+    <h2>C „Wzornik”</h2>
+    <p class="idea">Ekran jak karta wzornika producenta: każdy projekt to próbka włóczki nawinięta na kartę, długość nawinięcia = postęp; mech i karton.</p>
+    <div class="ekrany"><figure><img src="kierunki/zrzuty/wzornik-dzis-390-light.png">jasny</figure><figure><img src="kierunki/zrzuty/wzornik-dzis-390-dark.png">ciemny</figure></div>
+    <p class="arg"><b>Najmocniejszy argument:</b> jedyny pokazuje na „Dziś” kilka projektów naraz i dni tygodnia w barwach projektów — najbogatszy obraz do sklepu. Słabość: barwa projektu nadawana automatycznie, nie z włóczki.</p>
+    <div class="panel"><img src="kierunki/zrzuty/wzornik-panel.png"></div>
+  </section>
+</div>
+
+<div class="rek">
+  <h2>Rekomendacja: A „Dzianina”</h2>
+  <p>Powód z funkcji, nie z gustu: element firmowy A niesie najwięcej danych z najczęstszej czynności (rząd) i ma moment firmowy dokładnie tam, gdzie użytkownik stuka najczęściej — każdy „+1” dodaje rząd oczek. B niesie dobrze „co dalej”, ale jego pas nagłówka w jednym kolorze jest najbliżej układu Piekarza; C ma najbogatszy obraz, ale jego barwa projektu nie pochodzi z danych (aplikacja nie zapisuje koloru włóczki), więc łamie zasadę „element niesie dane” w połowie. Łączenie jest możliwe, np. A z listą „co dalej” z B.</p>
+  <p>Ikona: przy każdym kierunku własna (A: oczka „V” pod drutem; B: kółko-marker na drucie; C: próbka nawinięta na kartę) oraz obecne kreski w barwach kierunku (P-550, 2A).</p>
+  <p class="uw">Opcjonalny szybki test (ok. 1 h czasu właściciela): 5 osób dziergających, test pięciosekundowy na zrzutach ciemnych — „do czego jest ta aplikacja?”, „co zrobisz najpierw?”.</p>
+
+  <h2>Test generyczności (karty kontrolne z <code>01-swiat.md</code> §5 i „Kalibracja domyślnych wyborów”)</h2>
+  <table>
+    <tr><th>Pole</th><th>(a) licznik bez wiedzy o dziedzinie</th><th>(b) tracker nawyków</th><th>A Dzianina</th><th>B Markery</th><th>C Wzornik</th><th>Pokrycia i co zmieniono</th></tr>
+    <tr><td>Paleta</td><td>koral/róż + biel, mięta</td><td>prawie czerń + neon / fiolet</td><td>stalowa shaela + miodowy mioget (runo)</td><td>bordo + złoty marker, len</td><td>mech + karton, próbki runa</td><td>brak pokryć; tła ciemne barwione (nie #111 ani #1B1C1F); B jasne tło lniane sprawdzone pod „krem + terakota” — szare, bez terakoty</td></tr>
+    <tr><td>Krój tytułów</td><td>zaokrąglony (Nunito/Poppins)</td><td>SF Rounded / Inter</td><td>Young Serif (druk ulotek)</td><td>Schibsted Grotesk</td><td>Archivo zwężony (banderole)</td><td>brak pokryć; wybór kroju po E2 (ok. 5 krojów na wybranym kierunku)</td></tr>
+    <tr><td>Element firmowy</td><td>kłębek, liczba w kole postępu</td><td>pierścień postępu, płomień serii</td><td>dzianina rosnąca do celu</td><td>linijka z markerami</td><td>próbka nawinięta na kartę</td><td>B: pierwsza wersja markerów wyglądała jak pinezki mapy → zmienione na kółka na drucie; okrągłe „+1” jest z decyzji P-549 (K-B) i pokrywa się z kliszą (a) — forma z dziedziny: A wełniany guzik w mioget, B kolor markera, C barwa próbki z obwódką</td></tr>
+    <tr><td>Układ</td><td>siatka jednakowych kart</td><td>duża liczba + statystyki</td><td>karta z dzianiną, tydzień z próbek, kafle 2×2</td><td>pas z linijką, lista „co dalej”, kafle 4 w rzędzie</td><td>karta wzornika, pas projektów, tydzień z dziurek</td><td>„duża liczba + mała etykieta” jest w każdym (liczba z K-B) — liczba nie jest bohaterem sama, stoi przy elemencie z danymi; C: usunięta etykieta wersalikami z rozstrzeleniem („PROJEKT W TOKU”)</td></tr>
+    <tr><td>Ruch</td><td>konfetti, sprężyste „+”</td><td>wypełnianie pierścienia, fade + slide</td><td>rząd oczek wsuwa się pod igłę</td><td>marker odpina się i opada</td><td>nitka owija się o pasmo</td><td>brak pokryć; ruch tylko przy „+1”, wyłączony przy „Ogranicz ruch”</td></tr>
+    <tr><td>Ikona</td><td>kłębek z drutami na różu</td><td>pierścień / kropla na gradiencie</td><td>oczka „V” pod drutem</td><td>kółko na drucie</td><td>próbka na karcie</td><td>brak pokryć (kłębek: 7 z 12 konkurentów — żaden kierunek go nie używa)</td></tr>
+  </table>
+  <p class="uw">Pomiary: <code>kierunki/kontrast-e2.txt</code> (68 par w obu motywach, kod 0, po poprawce 2 par grafiki); <code>warsztat.mjs</code> 390 pt: 0 błędów w każdym kierunku (ostrzeżenia: odstępy 2/3/6/14 px z paska stanu i panelu, liczba ekranu jako akapit — to jedna linia wyświetlacza). Skala szarości: dane czytelne kształtem w trzech kierunkach.</p>
+</div>
+</body></html>

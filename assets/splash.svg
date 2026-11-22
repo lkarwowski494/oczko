@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <!-- Splash screen Oczko -->
-  <rect width="1024" height="1024" fill="#FAF8F5"/>
-  <g transform="translate(262, 262) scale(0.5)">
-    <circle cx="500" cy="500" r="280" fill="#C85A32"/>
-    <path d="M320 420 C380 300, 620 300, 680 420 C720 500, 680 620, 600 680 C500 760, 360 680, 320 560 Z" fill="none" stroke="#D96E47" stroke-width="28" stroke-linecap="round"/>
-    <path d="M400 400 C460 480, 540 520, 620 460" fill="none" stroke="#FAF8F5" stroke-width="20" stroke-linecap="round"/>
-  </g>
-</svg>

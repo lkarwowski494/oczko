@@ -1,0 +1,11 @@
+{
+  "zrodlo": "Scalone do klucze.json (P-276, przyjęte (A)). Plik zostaje jako ślad propozycji.",
+  "en": {
+    "wzor.film_zmien": "Change link",
+    "udostepnij.film_zastapi": "{{projekt}} already has a video link. Saving replaces it with this one."
+  },
+  "kontekst": {
+    "wzor.film_zmien": "Wzór/film (F-24, BR-WZR-007; P-274): pozycja menu kontekstowego wiersza „Video” na ekranie projektu, nad „Remove link”; otwiera arkusz wzor.film_tytul wypełniony obecnym linkiem i nazwą; Save zastępuje.",
+    "udostepnij.film_zastapi": "Rozszerzenie „Udostępnij do Oczka” i arkusz skrzynki (P-274): linia pod listą projektów, gdy wybrano „Video link”, a zaznaczony projekt ma już film (jeden film na projekt, P-218 (4)); {{projekt}} = nazwa projektu. Zastępuje udostepnij.gotowe w tym stanie."
+  }
+}

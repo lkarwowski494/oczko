@@ -1,0 +1,27 @@
+# BR-WZR-005/S3 „Obrót z ustawionym znacznikiem” (docs/brd/wymagania-projekt.md:296, ADR-0011), częściowo: po obrocie urządzenia ta sama strona
+# wzoru i ta sama wartość licznika. Pozycja znacznika po obrocie (ułamek strony) — testy domeny/ekranu ADR-0011; znacznik nie ma testID
+# w kontrakcie 04 (tylko nazwy stanów makiet) [DO USTALENIA: id znacznika przy partii 6]. iPhone, pakiet pełny.
+appId: com.apps4brew.knitting
+name: "BR-WZR-005/S3 · Obrót telefonu: ta sama strona wzoru i ta sama wartość licznika"
+tags:
+  - BR-WZR-005-S3
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-10T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: subflows/otworz-wzor-pdf.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- scrollUntilVisible: { element: { id: "wzor-strona", text: ".*[Pp]age 2 of .*" }, direction: DOWN }
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 2 of .*" }
+- takeScreenshot: 45-przed-obrotem
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 2 of .*" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
+- takeScreenshot: 45-po-obrocie
+- setOrientation: PORTRAIT
+- assertVisible: { id: "wzor-strona", text: ".*[Pp]age 2 of .*" }
+- assertVisible: { id: "licznik-wartosc", text: "1" }
