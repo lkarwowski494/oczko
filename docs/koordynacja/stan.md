@@ -36,11 +36,11 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| SM1 | (start) | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/SM1.md` |
+| SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | 0 | 0 | start 08:23 (sonnet, auto, env_01TjF7…); polecenie `polecenia/SM1.md` @ 320219e0 |
 
 ## Czeka na właściciela
 - **Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle. Prośba: zarchiwizować tę sesję na drugim koncie.
-- **Approve `release`** dla asc-zrzuty dry-run (dispatch 22.11 08:25 z integracji; link w dzienniku), potem drugi Approve dla apply.
+- **Approve `release`** dla asc-zrzuty dry-run: https://github.com/lkarwowski494/oczko/actions/runs/45002209423 (Review deployments → `release` → Approve); potem drugi Approve dla apply.
 - **Test 1221 na telefonie:** PU-002, PU-121, PU-155 (D-2, słowa 22.11) — wynik słowami właściciela do protokołu `docs/jakosc/test-fizyczny/1221.md`.
 - **D-4:** wygaszenie w TestFlight buildów poza 1221 (właściciel w ASC, ok. 2 min).
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
@@ -49,7 +49,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - **Wysiłek koordynatora:** `/effort medium` w tej sesji (mandat: medium; teraz high).
 
 ## Przypomnienia
-- **Koordynator session_01BM51ocU7agyuuTBJK7tivW (od 08:15 22.11):** trig_01Rj2SeoLcYMc6n73bRkFaYC „Koordynator Oczko: linia 14:00” 22.11 13:55 · trig_01TUKTxFALCLpG3ZYnC5caNo „Koordynator Oczko: linia 05:00” 23.11 04:55. Kontroli brak — nic nie trwa. Na tym koncie inne przypomnienia należą do innego projektu (nie ruszać).
+- **Koordynator session_01BM51ocU7agyuuTBJK7tivW (od 08:15 22.11):** trig_01Rj2SeoLcYMc6n73bRkFaYC „Koordynator Oczko: linia 14:00” 22.11 13:55 · trig_01TUKTxFALCLpG3ZYnC5caNo „Koordynator Oczko: linia 05:00” 23.11 04:55 · trig_01JRHmaXBFcfQwSUch3Dt15X „Koordynator Oczko: kontrola” 22.11 09:09. Na tym koncie inne przypomnienia należą do innego projektu (nie ruszać).
 - Poprzednik (drugie konto): trig_01Mvu7r8… „linia 14:00” 22.11, trig_01E9eJ7Y… „linia 05:00” 23.11 — sprząta on albo właściciel.
 
 ## Pule numerów decyzji
@@ -77,3 +77,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 
 | 22.11 08:15 | M9 session_01BM51ocU7agyuuTBJK7tivW | **Przejęcie** (E0 → E6.5): prompt M9 z prompts @ af4c0a8; poprzednik session_01T66VBzb4nxMxEGdBmHBUbV na innym koncie (get_session „not found”) — PRZEJĄŁEM nie do wysłania, prośba do właściciela o jego zatrzymanie. Sesji ról brak; przebiegów od 20.11 18:45 brak; main CI 41602904258 success. stan.md 460 KB → historia do `dziennik-2026-11.md` (WG-29). | pytania do właściciela; linia 14:00 |
 | 22.11 08:25 | M9 | Odpowiedzi właściciela 08:20 (mandat). asc-zrzuty dry-run wyzwolony z integracji (`zrzuty_z_przebiegu=44758366101`, ramki, 6.9) — czeka na Approve `release`. D-1: `main` nie jest przodkiem integracji, `git merge-tree` → ok. 49 plików w konflikcie → SM1 (KO-189). | Approve; start SM1 |
+| 22.11 08:23 | M9 | asc-zrzuty dry-run = run 45002209423 (status waiting — Approve `release`). **SM1 start** session_01BM51ofhw7XcB3ui4XHFT5k (08 build, sonnet; gałąź claude/sm1-scalenie-main-2026-11-22 od 15c0bf77). Kontrola 09:09. | Approve; SM1 E0 |

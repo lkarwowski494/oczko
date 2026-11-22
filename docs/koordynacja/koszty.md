@@ -156,3 +156,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | ZR4 | 10 fix (sonnet) | składnia swipe w scenach zrzutów | 1,53 USD (pułap 1,5; +0,03) | 59% (177 177) | 20.11 09:20–09:35 | — | odczyt przy archiwizacji |
 | WR3 | 07 audit (sonnet) | przegląd zrzutów 44722734741 + werdykt kontroli zakreśleń | 1,84 USD (pułap 1,5; +0,34 — przekroczony, sesja szacowała „poniżej”) | 74% (223 394) | 20.11 12:46–12:53 | — | odczyt przy archiwizacji |
 | ZR5 | 08 fix (sonnet) | kalibracja kontroli zakreśleń (KO-187 A + KO-188 B) | 1,70 USD (pułap 1,5 → 2 po KO-188) | 61% (183 348) | 20.11 13:18–13:58 | — | odczyt przy archiwizacji |
+| SM1 | 08 build (sonnet) | 4 | — | — | 08:23 → 08:23 → … | — | scalenie main pod PR (KO-189) |
