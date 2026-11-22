@@ -36,12 +36,13 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| PF1 | (start) | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/PF1.md` |
 | SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | 0 | 0 | start 08:23 (sonnet, auto, env_01TjF7…); polecenie `polecenia/SM1.md` @ 320219e0 |
 
 ## Czeka na właściciela
 - ~~**Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle. Prośba: zarchiwizować tę sesję na drugim koncie.~~ Właściciel 22.11 ok. 08:40: „Gotowe”.
 - **Approve `release`** dla asc-zrzuty dry-run: https://github.com/lkarwowski494/oczko/actions/runs/45002209423 (Review deployments → `release` → Approve); potem drugi Approve dla apply.
-- **Test 1221 na telefonie:** PU-002, PU-121, PU-155 (D-2, słowa 22.11) — wynik słowami właściciela do protokołu `docs/jakosc/test-fizyczny/1221.md`.
+- ~~**Test 1221 na telefonie**~~ — właściciel 22.11 ok. 08:55: „PU-002 OK, PU-121 OK, PU-155 OK” → protokół robi PF1.
 - ~~**D-4:** wygaszenie w TestFlight buildów poza 1221~~ — właściciel 22.11: „Wygaszone”.
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
 - **Pozycje ASC** (odczyt tylko przez właściciela): Billing Grace, Copyright, kategoria podatkowa.
@@ -53,7 +54,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Poprzednik (drugie konto): trig_01Mvu7r8… „linia 14:00” 22.11, trig_01E9eJ7Y… „linia 05:00” 23.11 — sprząta on albo właściciel.
 
 ## Pule numerów decyzji
-- SM1: P-1006…P-1008. Następny wolny: P-1009; KO następny: KO-190; WG następny: WG-30.
+- SM1: P-1006…P-1008; PF1: P-1009…P-1010. Następny wolny: P-1011; KO następny: KO-191; WG następny: WG-30.
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -81,3 +82,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:25 | SM1 | Raport 1 (deklaracja, niesprawdzone): scalenie c0eff9ef, 20 konfliktów (nie 49), drzewo = 15c0bf77, odstępstw 0; teraz verify, potem push. | odbiór po push: rodzice, diff 15c0bf77, autor, Jakość · Linux |
 | 22.11 08:40 | M9 | Właściciel dosłownie: „1. Gotowe 2. Gotowe 3. Daj mi instrukcje 4. Ktore buildy? 5. daj mi instrukcje 6. Gotowe” (1 Approve dry-run, 2 poprzednik zarchiwizowany, 6 effort medium). **Dry-run 45002209423 success:** plan 10 grup × 7 zrzutów (iPhone 6.9 i iPad 13; en-US, en-GB, en-AU, en-CA, pl), wgraj 10, pomiń 0, nic nie zapisano. **apply wyzwolony** (te same wejścia; zgoda 08:20) — czeka na Approve. Instrukcje testu PU-002/121/155, wygaszenia buildów i odczytu ASC wysłane w czacie. | Approve apply; wyniki testu |
 | 22.11 08:45 | M9 | Właściciel dosłownie: „1. Approved. 4. Wygaszone 3. Teraz wezme sie za test”. asc-zrzuty apply = run 45002887129 in_progress. Test PU-002/121/155 w toku u właściciela. | wynik apply; wynik testu |
+| 22.11 08:55 | M9 | **asc-zrzuty apply 45002887129 success:** wgrano 28 obrazów, błędy 0, zapisano 10 zestawów (iPhone 6.9, iPad 13; en-US/GB/AU/CA, pl). **Zrzuty sklepu w ASC — zrobione.** Właściciel dosłownie: „PU-002 OK, PU-121 OK, PU-155 OK” → PF1 (07 fix JAK-19, KO-190). | start PF1 |
