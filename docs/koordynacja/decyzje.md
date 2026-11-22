@@ -231,3 +231,6 @@ ZR5 @ 520dfd37: barwa b≤205, r−b≥40 daje 03/04 = 1/2 w 3 parach, ipad-13/e
 ## KO-191 (22.11 11:50, rekomendacja, do weta) — zrzuty 27 języków padły na 4 scenach
 Opcje: (a) ZR6 — sesja 10 fix (sonnet, 2 USD) diagnozuje z dzienników 45007913254 i poprawia sceny, potem przebieg macOS (najbliższe okno: wieczór 22.11 po 23:00 albo wt. 24.11; poniedziałek zablokowany w workflow) — rekomendacja; (b) zrzuty częściowe (01/05/07) — odrzucone: 3 kadry w języku zamiast 7 po angielsku, bez przeglądu OG-07. Przebieg anulowany, żeby zadania 4–8 nie zajęły maszyn na tę samą porażkę.
 
+## KO-192 (22.11 12:05, właściciel) — zdjęcie blokady poniedziałku w zrzutach
+Słowa właściciela: „TO zdedjmij ta blokade 😃 nie rozumiem po co ona jest”. Blokada (`dniPracy`, zrzuty-uzupelnij.mjs:34): w poniedziałek dzień pracy −1 wypada w poprzednim tygodniu → pusty „This week”. Zmiana (ZR6 zad. 5): w poniedziałek ostatnia sesja fikstury = dziś 08:00 zamiast błędu; reguła dnia < 8 bez zmian. Odrzucone: zostawić blokadę (przebieg dopiero wt. 24.11).
+
