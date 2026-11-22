@@ -67,7 +67,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Poprzednik session_01BM51ocU7agyuuTBJK7tivW: trig_0172XrFoLMCcZ28z2rRhSK5V „kontrola przekazania” 09:05 — sprząta on.
 
 ## Pule numerów decyzji
-- SM1: P-1006…P-1008; PF1: P-1009…P-1010. ZR6: P-1011…P-1013 (użyte). WR4: P-1014…P-1015 (użyte); ZR7: P-1016…P-1018 (użyte); WR5: P-1019…P-1020 (użyte); ZW1: P-1021…P-1024. Następny wolny: P-1025; KO następny: KO-198; WG następny: WG-34 (WG-33 zapisany w dzienniku 22.11 18:55) (WG-31 wpisany; kandydat WG-32: pre-push w worktree ustawia core.bare=true).
+- SM1: P-1006…P-1008; PF1: P-1009…P-1010. ZR6: P-1011…P-1013 (użyte). WR4: P-1014…P-1015 (użyte); ZR7: P-1016…P-1018 (użyte); WR5: P-1019…P-1020 (użyte); ZW1: P-1021…P-1024 (użyte); ZW2: P-1025. Następny wolny: P-1026; KO następny: KO-199; WG następny: WG-34 (WG-33 zapisany w dzienniku 22.11 18:55) (WG-31 wpisany; kandydat WG-32: pre-push w worktree ustawia core.bare=true).
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -132,3 +132,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 19:50 | właściciel, M9 | „Unable to Add for Review”: (1) Content Rights, (2) zrzut Apple Watch, (3) App Privacy nieopublikowane (Publish), (4) cena. (1)(3)(4) — kroki właściciela (Yes jak Trening, `kroki-wlasciciela-testflight.md` C1; Publish; Free wg `monetyzacja.md:75`). (2) właściciel: „Automat jak w Treningu” → **KO-197, ZW1**. App Privacy odczyt właściciela: Data Not Collected, polityka https://apps4brew.com/oczko/privacy.html (200). | start ZW1 |
 | 22.11 19:55 | M9 | Właściciel: Content Rights, cena, App Privacy zrobione. **ZW1 start** session_01BM51ogJ6CFjexYbiVEHzgk. | raport ZW1 |
 | 22.11 20:59 | M9 | **ZW1 PRZEKAZANIE** a1f2193c (93c5ffe2 kod + a1f2193c docs; noreply, 0 trailerów; app/src/modules/targets bez zmian; workflow `zrzuty-zegarka.yml`, skrypty `scripts/ci/zegarek-*`, 67 testów, 54/66 czerwone przed; verify 8183, P-1021…1024). Stan zegarka przez UserDefaults przy starcie, `simctl io screenshot`, 416×496, 3 kadry. Wyzwalanie: push zmieniający `scripts/ci/zegarek-uruchomienie.txt` ze znacznikiem (nowy workflow bez dispatch do czasu main). **Próba en,pl: push 5908dcf8 → run 45069530489** (WG-32: najpierw 1–2 języki). | kontrola przebiegu |
+| 22.11 21:25 | M9 (kontrola) | **Próba zegarka 45069530489 success** (21:00→21:15): 6 kadrów 416×496 (en, pl × 01–03), bez alfy. Obejrzane en: 01 licznik „Cable Hat 20, Now row 21”, 02 pas „Row 21: cable · 4 of 6” — dobre; 03 „Counter locked” z uciętym „…on your iP…” → **KO-198** (2 kadry), ZW1 35% kontekstu, 4,43 USD → **ZW2**. | start ZW2 |
