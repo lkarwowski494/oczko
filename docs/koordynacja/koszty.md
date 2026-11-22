@@ -162,3 +162,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | ZR6 | 10 fix (sonnet) | 2,0 (podniesiony 4,5, KO-193) | 4,96 | 30 | 11:54 → 11:58 → 12:17 5310ea0b → zrzuty 45021511463 success 16:16 → przyjęte 16:28 | ok. 4 h: kolejka i czas macOS 27 języków | +1,04 USD po raporcie z samych wiadomości koordynatora (idle) |
 | ZR7 | 10 fix (sonnet) | 3,0 | 3,96 | 32 | 16:52 → 16:58 → 17:25 6632982a → zrzuty 45049417804 success 18:28 → recenzja WR5 PRZYJĄĆ Z UWAGAMI 18:53 | 63 min przebieg macOS | ≈ próg STOP 3,9 |
 | WR5 | 07 audit (sonnet) | 2,0 | 2,67 | 28 | 18:33 → 18:37 → 18:52 b7557335 → przyjęte 18:55 | 0 | ponad STOP 2,6 o 3%%; przegląd kadrów sonnet: WR4 2,40, WR5 2,67 → szacunek 2,0 za niski (WG-33) |
+| ZW1 | 10 fix (sonnet) | 5,0 | 4,43 | 35 | 19:52 → 19:55 (start 20:28 wg get_session) → 20:54 a1f2193c → próba 45069530489 success 21:15 → przyjęta 21:25 | 0 | przekroczyła 30% kontekstu przy PRZEKAZANIU; kadr 03 do usunięcia (ZW2) |
