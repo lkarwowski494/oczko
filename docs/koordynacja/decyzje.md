@@ -234,3 +234,6 @@ Opcje: (a) ZR6 — sesja 10 fix (sonnet, 2 USD) diagnozuje z dzienników 4500791
 ## KO-192 (22.11 12:05, właściciel) — zdjęcie blokady poniedziałku w zrzutach
 Słowa właściciela: „TO zdedjmij ta blokade 😃 nie rozumiem po co ona jest”. Blokada (`dniPracy`, zrzuty-uzupelnij.mjs:34): w poniedziałek dzień pracy −1 wypada w poprzednim tygodniu → pusty „This week”. Zmiana (ZR6 zad. 5): w poniedziałek ostatnia sesja fikstury = dziś 08:00 zamiast błędu; reguła dnia < 8 bez zmian. Odrzucone: zostawić blokadę (przebieg dopiero wt. 24.11).
 
+## KO-193 (22.11 12:10, rekomendacja, do weta) — pułap ZR6 3 → 4,5 USD; zrzuty z gałęzi sesji
+ZR6 przekroczyła próg STOP (3,28 > 2,6) przy zadaniu dodanym przez koordynatora (zad. 5); nowa sesja kosztowałaby przeniesienie promptu i ok. 30 min. Dispatch zrzutów z `claude/zr6-jezyki-2026-11-22`, scalenie do integracji po przebiegu (WG-27). Odstępstwo ZR6: P-1013 poza pulą P-1011…1012 — przyjęte (pula PF1 P-1009…1010, P-1010 nieużyty; kolizji brak).
+
