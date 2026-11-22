@@ -1,0 +1,6 @@
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › języki bez przesunięcia (17 + en, pl) zostają na 46% — poprawka nie rusza kadrów, które są poprawne
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ms (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ms: pas z swipe'a (zakreślenie 2) nie zlewa się z pasem 1 z fikstury (środki ≥ 100 px, pas ma ≈ 30 px)
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › swipe jest poziomy (start i end na tej samej wysokości), a koniec poziomy jak dla en/pl: 69% (dane en) i 92% (pl) — zmienia się tylko wysokość
+Test Suites: 1 failed, 3 passed, 4 total
+Tests:       4 failed, 90 passed, 94 total

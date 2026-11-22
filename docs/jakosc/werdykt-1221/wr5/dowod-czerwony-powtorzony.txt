@@ -1,0 +1,18 @@
+red-kontrola: Tests:       32 failed, 1 passed, 33 total
+red-scena: Tests:       11 failed, 51 passed, 62 total
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › de (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › el (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › fr (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › id (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ja (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › języki bez przesunięcia (17 + en, pl) zostają na 46% — poprawka nie rusza kadrów, które są poprawne
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ms (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › nl (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ro (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ru (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › uk (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+
+04 z jednym pasem bez 03 na kodzie 6632982a:
+POMINIĘTO 6.9/xx: brak 03-wzor.png (brak sceny zgłasza komplet-zrzutow.mjs)
+Kontrola zakreśleń: OK (0 par)
+exit=0
