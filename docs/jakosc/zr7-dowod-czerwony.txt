@@ -1,0 +1,11 @@
+ZR7 (KO-195, P-1016) — dowód czerwony: test tests/wydanie/zakreslenie-polozenie.test.ts na kodzie scripts/ci/kontrola-zakreslen.mjs sprzed zmiany (HEAD 1402e7f4), 2026-11-22
+--- node scripts/ci/kontrola-zakreslen.mjs <katalog z 31 kadrami 04 (prawdziwe kadry 45021511463 i 44758366101)>
+POMINIĘTO 6.9/cs: brak 03-wzor.png (brak sceny zgłasza komplet-zrzutow.mjs)
+POMINIĘTO 6.9/da: brak 03-wzor.png (brak sceny zgłasza komplet-zrzutow.mjs)
+POMINIĘTO 6.9/de: brak 03-wzor.png (brak sceny zgłasza komplet-zrzutow.mjs)
+POMINIĘTO 6.9/el: brak 03-wzor.png (brak sceny zgłasza komplet-zrzutow.mjs)
+Kontrola zakreśleń: OK (0 par)
+kod wyjścia: 0
+--- npx jest tests/wydanie/zakreslenie-polozenie.test.ts
+Test Suites: 1 failed, 1 total
+Tests:       32 failed, 1 passed, 33 total
