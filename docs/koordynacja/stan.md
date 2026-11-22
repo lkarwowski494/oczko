@@ -10,6 +10,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Prompts (15.11 ok. 19:55 UTC, czat koordynatora session_01T66VBxpmFSovs14qTQgShL; pytanie o scalenie gałęzi role/scenariusze-uzytkownika-2026-11-15 i R2-13), słowa właściciela: „1A2a” · zakres: (1a) koordynator otwiera PR do main prompts, właściciel scala sam (Squash); (2a) zasada 22 bez wyjątków przez CLAUDE.md projektu, wyjątek tylko słowami właściciela w decyzjach · nie obejmuje: scalenia przez koordynatora.
 - Tryb nocny (11.11 ok. 20:10 UTC, czat koordynatora session_01T66VBwsVfpEaSobJZ4b8VQ), słowa właściciela: „Przechodzimy na tryb nocny decyzji” — tryb „analogia” (noc, wpisy do weta); zgody trwałe i granice bez zmian.
 - Tryb nocny (15.11 ok. 20:35 UTC, czat koordynatora session_01T66VBwWi2Ff1kezfszSt3H; pytanie: A — tryb nocny jak dotąd, decyzje wg rekomendacji do weta, rano linia (rekomendacja) / B — z pułapem doby 30 USD), słowa właściciela: „A” — tryb „analogia” (noc, wpisy do weta); pułap doby bez zmian [DO USTALENIA]; zgody trwałe i granice bez zmian.
+- Odpowiedzi właściciela 22.11 ok. 08:20 UTC (AskUserQuestion koordynatora session_01BM51ocU7agyuuTBJK7tivW), dosłownie: (1) zrzuty do ASC: „Dry-run, potem apply (Recommended)” · zakres: `asc-zrzuty.yml` z `zrzuty_z_przebiegu=44758366101`, artefakt `sklep-zrzuty-ramki`, rozmiar 6.9; najpierw `tryb=dry-run`, przy czystym wyniku `tryb=apply` bez kolejnego pytania · warunek: dry-run bez błędu · nie obejmuje: Approve w `release` (właściciel), innych przebiegów zrzutów, zegarka · jednorazowo. (2) D-1: „Scal PR do main teraz” · zakres: koordynator przygotowuje gałąź scalenia (konflikty → sesja) i otwiera PR do `main`; scala właściciel · nie obejmuje: scalenia przez koordynatora. (3) D-2: „Przetestuję 3 PU, resztę pomiń (Recommended)” — PU-002, PU-121, PU-155 testuje właściciel na 1221 z TestFlight; pozostałe pozycje F protokołu 1221 „POMINIĘTE” tymi słowami (KO-157/158). (4) D-4: „Tak, wygasić (Recommended)” — właściciel wygasza w TestFlight buildy poza 1221.
 - Repo portfela do analogii (odczyt): lkarwowski494/trening.
 - Zgody trwałe: „testflight.yml wyzwalasz sam przez REST po zielonym „Jakość · iOS” (zgoda na build 1 i 2 jest)” (9.11 ok. 19:25 UTC; P-630, P-633) · zakres: `testflight.yml` z `bez_wysylki=false`, `pomin_bramke_e2e=false`, `powod=""`, ref = gałąź integracji, buildy 1 i 2 · warunek: zielony „Jakość · iOS” na dokładnie tym SHA · nie obejmuje: Approve w `release`, buildu 3+ · termin: do wykorzystania obu buildów (oba już wyzwolone).
 - Zgoda trwała — build 3 (10.11 08:33 UTC, AskUserQuestion; pytanie: „Czy po zielonym „Jakość · iOS” na dokładnie tym SHA mogę sam wyzwolić testflight.yml dla buildu 3?”, odpowiedź właściciela: „Tak, wyzwól sam (Recommended)”) · zakres: `testflight.yml` z `bez_wysylki=false`, `pomin_bramke_e2e=false`, `powod=""`, ref = gałąź integracji, **tylko build 3** · warunek: zielony „Jakość · iOS” na dokładnie tym SHA · nie obejmuje: Approve w `release`, buildu 4+, scalenia do `main`, App Review · termin: do wykorzystania buildu 3.
@@ -28,23 +29,23 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 
 ## Teraz (22.11 08:15 UTC) — koordynator session_01BM51ocU7agyuuTBJK7tivW (przejęcie 08:15, lineage 0/8)
 - **Stan:** wysyłka 1.0 = binarka 1221 (KO-180); zrzuty sklepu gotowe (44758366101; artefakty surowe 14640541865, ramki 14640946446 do 4.12). Integracja `claude/youthful-pasteur-kx83sn` @ 15c0bf77, wolna do ff; Linux 44758359484 success, iOS 44758359585 failure tylko e2e iPhone cz. 4 (PU-052, ocena: środowisko). `main` @ 52308cd, CI 41602904258 success. Sesji ról brak (na tym koncie żadnej sesji Oczka; `list_sessions` 08:13).
-- **Czeka na właściciela** (sekcja niżej): asc-zrzuty, D-1, D-2, D-4, pozycje ASC, A/B ponowienia cz. 4, zatrzymanie poprzednika na drugim koncie, `/effort medium`. Pytania zadane ponownie w czacie 22.11 ok. 08:20.
+- **Odpowiedzi 22.11 08:20** (mandat): zrzuty dry-run → apply; D-1 PR do `main` (konflikty → SM1); D-2 test 3 PU; D-4 wygasić. W toku: asc-zrzuty dry-run (czeka na Approve), SM1 (08 build, scalenie `main`).
 - **Następny krok:** po odpowiedziach — lista kroków ASC (`docs/wydanie/do-app-store-1221.md`) i sesje ról według słów; bez odpowiedzi — linia 14:00 22.11.
 - **Plan 24 h — aktualizacja 22.11 04:55 (linia 05:00):** bez zmian — wysyłka 1221 i zrzuty gotowe (artefakty do 4.12), integracja 15c0bf77 wolna, sesji ról brak; czeka na właściciela (asc-zrzuty, 4 pytania, A/B ponowienia cz. 4 — artefakt e2e-czesc-4-iphone 14652698873 wygasa ok. 23.11 17:27, potem diagnoza PU-052 tylko z logu). Linia 14:00 22.11 (trig_01Mvu7r8…), linia 05:00 23.11 (trig_01E9eJ7Y…).
 
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| — | — | sesji ról brak (22.11 08:13) | — | — | — | tabela do 20.11 w `dziennik-2026-11.md` |
+| SM1 | (start) | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/SM1.md` |
 
 ## Czeka na właściciela
-- **Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle ze mną. Prośba: zarchiwizować tę sesję (albo wpisać w niej „stop, przejęte przez session_01BM51ocU7agyuuTBJK7tivW”).
-- **asc-zrzuty** (od 20.11 15:15): słowo na dry-run, potem apply zrzutów 44758366101 (en, pl; iPhone + iPad) do App Store Connect.
-- **D-1** scalenie do `main` (`docs/wydanie/do-app-store-1221.md:114` na integracji): (a, rek.) najpierw dry-run `asc-iap-localizations` z integracji, scalić tylko gdy potrzeba · (b) scalić PR do `main` teraz.
-- **D-2** (`:118`): jedno zdanie, czy pominięcie protokołu z 17.11 (KO-157/158) obejmuje 1221 i PU-002/121/155 — wtedy `test-fizyczny/1221.md` z „pominięte: <słowa>”; inaczej test PU-002/121/155 na telefonie.
-- **D-4** (`:127`): (a, rek.) wygasić w TestFlight wszystkie buildy poza 1221 · (b) pominąć.
+- **Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle. Prośba: zarchiwizować tę sesję na drugim koncie.
+- **Approve `release`** dla asc-zrzuty dry-run (dispatch 22.11 08:25 z integracji; link w dzienniku), potem drugi Approve dla apply.
+- **Test 1221 na telefonie:** PU-002, PU-121, PU-155 (D-2, słowa 22.11) — wynik słowami właściciela do protokołu `docs/jakosc/test-fizyczny/1221.md`.
+- **D-4:** wygaszenie w TestFlight buildów poza 1221 (właściciel w ASC, ok. 2 min).
+- **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
 - **Pozycje ASC** (odczyt tylko przez właściciela): Billing Grace, Copyright, kategoria podatkowa.
-- **Ponowienie e2e cz. 4** (iOS 44758359585, od 20.11 18:45): (A, rek.) bez ponowienia, obserwacja PU-052 w build 10 · (B) ponowienie cz. 4 teraz (artefakt 14652698873 wygasa ok. 23.11 17:27).
+- **Ponowienie e2e cz. 4** (iOS 44758359585): domyślnie A (bez ponowienia, obserwacja PU-052 w build 10); B tylko słowem właściciela.
 - **Wysiłek koordynatora:** `/effort medium` w tej sesji (mandat: medium; teraz high).
 
 ## Przypomnienia
@@ -52,7 +53,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Poprzednik (drugie konto): trig_01Mvu7r8… „linia 14:00” 22.11, trig_01E9eJ7Y… „linia 05:00” 23.11 — sprząta on albo właściciel.
 
 ## Pule numerów decyzji
-- Następny wolny w `docs/decyzje.md` aplikacji: P-1006 (integracja @ 15c0bf77 kończy się na P-1005); KO następny: KO-189; WG następny: WG-30.
+- SM1: P-1006…P-1008. Następny wolny: P-1009; KO następny: KO-190; WG następny: WG-30.
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -75,3 +76,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 04:55 | M9 (linia 05:00) | Noc bez zmian: przebiegów i sesji ról brak; właściciel bez odpowiedzi (WG-18: od 20.11 15:15 ≈ 37,7 h). Koordynator 174,37 USD łącznie (+1,13 od 21.11 13:55), kontekst 179 tys./224 tys. (autokompakcja przy 224 tys.); limit 7-dniowy „allowed_warning”. Plan 24 h w sekcji Teraz; linia 05:00 23.11 zaplanowana | — |
 
 | 22.11 08:15 | M9 session_01BM51ocU7agyuuTBJK7tivW | **Przejęcie** (E0 → E6.5): prompt M9 z prompts @ af4c0a8; poprzednik session_01T66VBzb4nxMxEGdBmHBUbV na innym koncie (get_session „not found”) — PRZEJĄŁEM nie do wysłania, prośba do właściciela o jego zatrzymanie. Sesji ról brak; przebiegów od 20.11 18:45 brak; main CI 41602904258 success. stan.md 460 KB → historia do `dziennik-2026-11.md` (WG-29). | pytania do właściciela; linia 14:00 |
+| 22.11 08:25 | M9 | Odpowiedzi właściciela 08:20 (mandat). asc-zrzuty dry-run wyzwolony z integracji (`zrzuty_z_przebiegu=44758366101`, ramki, 6.9) — czeka na Approve `release`. D-1: `main` nie jest przodkiem integracji, `git merge-tree` → ok. 49 plików w konflikcie → SM1 (KO-189). | Approve; start SM1 |
