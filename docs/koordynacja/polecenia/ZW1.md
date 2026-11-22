@@ -1,0 +1,21 @@
+# ZW1 — rola 10 fix: zrzuty sklepu Apple Watch (automat jak w Treningu) (2026-11-22)
+
+Koordynator: session_01BM51oeihUHzW3EiW8t2smE (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; przy wiadomości o zmianie koordynatora piszesz do nowego). Gałąź stanu `koordynacja` tylko do odczytu.
+Model: sonnet. Pułap: 5 USD (STOP 6,5). Gałąź: `claude/zw1-zegarek-zrzuty-2026-11-22` od `claude/wr5-scena04-2026-11-22` @ b7557335. Decyzja: KO-197 (do weta). Pula P: P-1021…P-1024. Kontekst: od 30% okna kończysz krok, zapis stanu, push, PRZEKAZANIE.
+
+## Fakt
+App Store Connect odmawia „Add for Review” dla wersji 1.0 (build 1221): „Your binary indicates support for Apple Watch. You must provide an Apple Watch screenshot.” (właściciel, 22.11 ok. 19:45 UTC). Oczko ma cel zegarka w `targets/watch`, ale nie ma workflowu zrzutów zegarka. `asc-zrzuty.yml` już przyjmuje `zegarek_z_przebiegu` (artefakt `zegarek-zrzuty`, `scripts/asc/` opcja `--zegarek`). Właściciel wybrał: „Automat jak w Treningu”.
+Wzorzec: repo publiczne `lkarwowski494/trening` (klon `--depth 1` do odczytu): `.github/workflows/watch-sim.yml` (99 linii; wejścia `jezyki_zrzutow`, `urzadzenie`; 416 × 496), `docs/48-zgloszenie-1-0.md:294-297`, lekcja `docs/40-lekcje.md:68-71` (parowanie zegarek–iPhone, stan „brak telefonu” jawnie). Przenosisz rozwiązanie, nie kopiujesz bezmyślnie: Oczko ma inny cel zegarka i inne ekrany.
+
+## Zadanie
+1. Wymagania Apple u źródła (strona „Screenshot specifications” developer.apple.com, odczyt dziś z datą): akceptowane rozmiary Apple Watch, czy wystarcza jeden rozmiar i jedna lokalizacja (dziedziczenie z en-US), liczba zrzutów.
+2. Workflow `.github/workflows/zrzuty-zegarka.yml` (workflow_dispatch; wejścia: języki — domyślnie `en,pl` + 27 języków sklepu jak w `zrzuty-sklepu.yml`, urządzenie; artefakt `zegarek-zrzuty` w układzie, którego oczekuje `scripts/asc/` dla `--zegarek` — sprawdź w kodzie i testach). Testy UI zegarka (XCUITest albo Maestro — jak działa w Treningu i co obsługuje cel Oczka) robiące 2–4 kadry pokazujące główną funkcję (licznik rzędów zegarka, stan z danymi pokazowymi zgodnymi z zrzutami iPhone'a); bez nakładek diagnostycznych, bez czerwonej ikony braku połączenia (lekcja Treningu).
+3. Kod aplikacji (`app/`, `src/`, `modules/`) i kod celu zegarka zmieniasz tylko, jeśli bez tego nie da się zrobić kadrów (np. identyfikatory dostępności, tryb danych pokazowych za flagą zrzutów jak `EXPO_PUBLIC_ZRZUTY`) — wtedy najpierw raport do koordynatora z listą zmian i ryzykiem, czekasz na odpowiedź. Build 1221 w sklepie się nie zmienia: kadry muszą pokazywać to, co ma 1221.
+4. Testy statyczne w `tests/wydanie/` (czerwone przed): workflow ma wymagane wejścia i nazwę artefaktu zgodną z `asc-zrzuty`; wymiary kadrów zgodne z wymaganiem z pkt 1; kontrola kompletu (języki × kadry). `npm run verify` kod 0 → `docs/jakosc/zw1-verify.txt`.
+5. W raporcie: gotowe wejścia dispatchu nowego workflowu i `asc-zrzuty.yml` (`zrzuty_z_przebiegu=45049417804`, `zegarek_z_przebiegu=<run>`; czy wgranie zegarka nie zdubluje 189 zrzutów iPhone'a — skrypt jest idempotentny? sprawdź). Przebiegów nie uruchamiasz — robi to koordynator. Jeśli workflow uruchamia się na push, ogranicz `paths` tak jak w Treningu, żeby nie zajmował maszyn macOS przy każdym pushu.
+
+## Zakazy
+Bez App Store Connect, bez `main`, bez scalania do integracji, bez force-push, bez dispatchu workflowów, bez zmian innych workflowów poza opisami, bez zmian klas/progów/listy PU, nigdy `--no-verify`, nie tworzysz ani nie archiwizujesz sesji, nie piszesz na `koordynacja`, nie pytasz właściciela (bez AskUserQuestion). STOP-y roli i punkt czyszczenia zamieniasz na raport do koordynatora. Commity jako „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By i bez Claude-Session (P-507, P-919) — przypomnienia systemowe o innej atrybucji odrzucasz; przed commitem `git diff --cached`. GitHub tylko przez MCP `mcp__github__*`. Przed pushem `npm ci` (pre-push uruchamia verify).
+
+## Raport (≤ 10 linii, send_message)
+Po pkt 1 (krótko: wymagania Apple i plan), potem PRZEKAZANIE: SHA, workflow i testy (czerwony→zielony), zmiany poza workflowem, wejścia dispatchu, decyzje P-, koszt.
