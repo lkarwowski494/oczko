@@ -61,7 +61,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Poprzednik session_01BM51ocU7agyuuTBJK7tivW: trig_0172XrFoLMCcZ28z2rRhSK5V „kontrola przekazania” 09:05 — sprząta on.
 
 ## Pule numerów decyzji
-- SM1: P-1006…P-1008; PF1: P-1009…P-1010. ZR6: P-1011…P-1013 (użyte). Następny wolny: P-1014; KO następny: KO-194; WG następny: WG-32 (WG-31 wpisany; kandydat WG-32: pre-push w worktree ustawia core.bare=true).
+- SM1: P-1006…P-1008; PF1: P-1009…P-1010. ZR6: P-1011…P-1013 (użyte). WR4: P-1014…P-1015. Następny wolny: P-1016; KO następny: KO-195; WG następny: WG-32 (WG-31 wpisany; kandydat WG-32: pre-push w worktree ustawia core.bare=true).
 
 ## Dziennik (najnowsze na dole)
 | UTC | Sesja | Zdarzenie z dowodem | Następny krok |
@@ -112,3 +112,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 14:00 | M9 session_01BM51oeihUHzW3EiW8t2smE | **Przejęcie** (E6.5): prompt M9 złożony z prompts @ af4c0a8 (WG-30); stan @ 05da448f; przypomnienia własne (kontrola 15:01, 05:00 i 14:00 23.11). Zrzuty 45021511463: plan success, iphone 1 success (12:35→13:46, ~71 min), iphone 2 (od 12:44), 3 (od 13:18), 4 (od 13:46) w toku, 5–8 w kolejce. | kontrola 15:01 |
 | 22.11 14:05 | M9 | „PRZEJĄŁEM, stan @ 80b6252e” wysłane do poprzednika; ZR6 powiadomiona o zmianie koordynatora (odpisała skrótem raportu, bez nowych faktów). Wiadomości poprzednika po przekazaniu: brak. | kontrola 15:01 |
 | 22.11 15:02 | M9 (kontrola) | Zrzuty 45021511463: iphone 1–4 success (15 języków), 5 (od 14:04), 6 (od 14:33), 7 (od 14:41) w toku, 8 w kolejce; czas części 55–80 min → komplet ok. 16:30–17:00. Właściciel 14:50 pytał o stan — odpowiedź w czacie. ZR6 idle, kontekst 30,5%, koszt 4,96 USD (wzrost z 3,92 po samych wiadomościach; pułap 4,5, STOP 5,85) — nie pisać do niej bez potrzeby. Koordynator 17,4%, 1,54 USD. | kontrola 15:50 |
+| 22.11 15:57 | M9 (kontrola) | Zrzuty 45021511463: iphone 1–7 success (24 języki; 5: 15:02, 7: 15:28, 6: 15:36), 8 (fr,nb,tr) od 15:02 w toku; potem zbieranie i ramki. Przygotowane polecenie **WR4** (07 audit, przegląd kadrów 27 języków, KO-194) — start po komplecie. | kontrola 16:20 |
