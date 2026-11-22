@@ -18,7 +18,7 @@ function plan(opcje: { jezyki: string[]; ileIphone?: number; ileZegarek?: number
   const kod = `import * as Z from ${ZRZUTY};
     const f = (n, w, h) => ({ name: n, path: '/x/' + n, size: 1, width: w, height: h, alpha: false });
     const jezyki = ${JSON.stringify(opcje.jezyki)};
-    const zeg = Array.from({ length: ${opcje.zrzutowZegarka ?? 3} }, (_, i) => f('0' + (i + 1) + '-k.png', 416, 496));
+    const zeg = Array.from({ length: ${opcje.zrzutowZegarka ?? 2} }, (_, i) => f('0' + (i + 1) + '-k.png', 416, 496));
     const ip = Array.from({ length: 7 }, (_, i) => f('0' + (i + 1) + '-e.png', 1320, 2868));
     const ref = { imageSpecs: [{ specId: 'S69', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }
       ${opcje.bezZegarkaWRef ? '' : ", { specId: 'SW', alphaAllowed: false, dimensions: { minWidth: 416, maxWidth: 416, minHeight: 496, maxHeight: 496 } }"}],
@@ -36,12 +36,12 @@ function plan(opcje: { jezyki: string[]; ileIphone?: number; ileZegarek?: number
 }
 
 describe('asc-zrzuty: zegarek jako osobna grupa urządzeń', () => {
-  test('416×496 trafia do grupy zegarka, 1320×2868 do grupy iPhone’a; en = 4 lokalizacje ASC, pl = 1; po 3 kadry zegarka i 7 zrzutów iPhone’a na lokalizację', () => {
+  test('416×496 trafia do grupy zegarka, 1320×2868 do grupy iPhone’a; en = 4 lokalizacje ASC, pl = 1; po 2 kadry zegarka i 7 zrzutów iPhone’a na lokalizację', () => {
     const p = plan({ jezyki: ['en', 'pl'] });
     expect(p.errors).toEqual([]);
     const zegarek = p.rows.filter((r) => r.zrodlo === 'zegarek');
     expect(zegarek.map((r) => `${r.locale}|${r.grupa}|${r.akcja}|${r.plikow}`).sort()).toEqual(
-      ['en-AU', 'en-CA', 'en-GB', 'en-US'].map((l) => `${l}|G-WATCH|wgraj|3`).concat(['pl|G-WATCH|wgraj|3']).sort());
+      ['en-AU', 'en-CA', 'en-GB', 'en-US'].map((l) => `${l}|G-WATCH|wgraj|2`).concat(['pl|G-WATCH|wgraj|2']).sort());
     expect(p.rows.filter((r) => r.zrodlo === 'iphone').every((r) => r.grupa === 'G-IPHONE' && r.plikow === 7)).toBe(true);
   });
 
@@ -52,17 +52,17 @@ describe('asc-zrzuty: zegarek jako osobna grupa urządzeń', () => {
     expect(p.rows.filter((r) => r.akcja === 'wgraj').every((r) => r.zrodlo === 'zegarek')).toBe(true);
   });
 
-  test('IDEMPOTENCJA: ponowny przebieg po wgraniu zegarka = wszystko „pomiń” (zegarek ma już 3 zrzuty, iPhone 7)', () => {
-    const p = plan({ jezyki: ['en', 'pl'], ileIphone: 7, ileZegarek: 3 });
+  test('IDEMPOTENCJA: ponowny przebieg po wgraniu zegarka = wszystko „pomiń” (zegarek ma już 2 zrzuty, iPhone 7)', () => {
+    const p = plan({ jezyki: ['en', 'pl'], ileIphone: 7, ileZegarek: 2 });
     expect(p.rows.filter((r) => r.akcja === 'wgraj')).toEqual([]);
-    expect(p.rows.filter((r) => r.zrodlo === 'zegarek').every((r) => /grupa ma już 3 zrzutów \(nic nie usuwam\)/.test(r.powod))).toBe(true);
+    expect(p.rows.filter((r) => r.zrodlo === 'zegarek').every((r) => /grupa ma już 2 zrzutów \(nic nie usuwam\)/.test(r.powod))).toBe(true);
   });
 
-  test('częściowy zapis zegarka (1 z 3) jest „pomiń” z ostrzeżeniem „niekompletna” (dokończ ręcznie), nie dopisuje kolejnych po cichu', () => {
+  test('częściowy zapis zegarka (1 z 2) jest „pomiń” z ostrzeżeniem „niekompletna” (dokończ ręcznie), nie dopisuje kolejnych po cichu', () => {
     const p = plan({ jezyki: ['pl'], ileZegarek: 1 });
     const r = p.rows.find((x) => x.zrodlo === 'zegarek');
     expect(r?.akcja).toBe('pomiń');
-    expect(r?.powod).toMatch(/niekompletna: 1 z 3 zrzutów/);
+    expect(r?.powod).toMatch(/niekompletna: 1 z 2 zrzutów/);
   });
 
   test('brak specyfikacji Apple Watch w danych referencyjnych API = błąd planu (zapis zablokowany), nie ciche pominięcie', () => {
@@ -82,7 +82,7 @@ describe('asc-zrzuty: układ artefaktu `zegarek-zrzuty` (readShots / loadShots)'
     const zeg = path.join(k, 'zegarek-zrzuty'); const ip = path.join(k, '6.9');
     for (const j of ['en', 'pl', 'de']) {
       fs.mkdirSync(path.join(zeg, j), { recursive: true }); fs.mkdirSync(path.join(ip, j), { recursive: true });
-      ['01-licznik', '02-przypomnienie', '03-zablokowany'].forEach((n, i) => fs.writeFileSync(path.join(zeg, j, `${n}.png`), kadr(416, 496, i + 1)));
+      ['01-licznik', '02-przypomnienie'].forEach((n, i) => fs.writeFileSync(path.join(zeg, j, `${n}.png`), kadr(416, 496, i + 1)));
       fs.writeFileSync(path.join(ip, j, '01-dzis.png'), kadr(32, 64, 1));
     }
     const kod = `import * as Z from ${ZRZUTY};
@@ -92,8 +92,8 @@ describe('asc-zrzuty: układ artefaktu `zegarek-zrzuty` (readShots / loadShots)'
     expect(w.problems).toEqual([]);
     expect(w.zrodla).toEqual(['iphone', 'zegarek']);
     expect(w.zeg).toEqual([
-      ['en', ['01-licznik.png:416:496:false', '02-przypomnienie.png:416:496:false', '03-zablokowany.png:416:496:false']],
-      ['pl', ['01-licznik.png:416:496:false', '02-przypomnienie.png:416:496:false', '03-zablokowany.png:416:496:false']],
+      ['en', ['01-licznik.png:416:496:false', '02-przypomnienie.png:416:496:false']],
+      ['pl', ['01-licznik.png:416:496:false', '02-przypomnienie.png:416:496:false']],
     ]);
   });
 });

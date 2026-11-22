@@ -1,4 +1,4 @@
-# Zrzuty sklepu z Apple Watch (App Store Connect) z symulatora watchOS: 416 × 496 (Series 11 / 10, 46 mm), 3 kadry na język: licznik rzędów, pas przypomnienia, blokada licznika.
+# Zrzuty sklepu z Apple Watch (App Store Connect) z symulatora watchOS: 416 × 496 (Series 11 / 10, 46 mm), 2 kadry na język: licznik rzędów, pas przypomnienia (kadr 03 odpadł w ZW2, P-1025: ucięty tekst).
 # Rola 10-wydanie, tryb fix, ZW1 (KO-197, 2026-11-22). Powód: App Store Connect odmawia „Add for Review” dla wersji 1.0 (build 1221): „Your binary indicates support for Apple Watch.
 # You must provide an Apple Watch screenshot.” (właściciel, 22.11.2026). Wzorzec: Trening (trening:.github/workflows/watch-sim.yml; lekcja L-064 — para zegarek–iPhone, ponowna instalacja aplikacji).
 # Wyjście: artefakt `zegarek-zrzuty` w układzie, którego oczekuje `asc-zrzuty.yml` (`--zegarek zegarek-zrzuty`, scripts/asc/zrzuty.mjs, readShots): `<język>/NN-<kadr>.png` (PNG bez alfy, jeden rozmiar

@@ -27,7 +27,8 @@ const KORZEN = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const KAT_DANYCH = join(KORZEN, 'e2e/zrzuty-sklepu/dane');
 
 /** Kadry sklepu: kolejność = kolejność w App Store (1 = pierwszy). Nazwy plików `NN-<kadr>.png`. */
-export const KADRY = ['01-licznik', '02-przypomnienie', '03-zablokowany'];
+/** ZW2 (P-1025): bez kadru `03-zablokowany` — w kadrze blokady tekst jest ucięty („Unlock it in Oczko on your iP…”); powrót, gdy aplikacja skróci tekst albo zmieni układ. */
+export const KADRY = ['01-licznik', '02-przypomnienie'];
 /** Rozmiary zrzutów Apple Watch dozwolone przez Apple (odczyt 2026-11-22); do wyboru jeden, ten sam we wszystkich lokalizacjach. */
 export const WYMIARY_ZEGARKA = [[422, 514], [410, 502], [416, 496], [396, 484], [368, 448], [312, 390]];
 /** Domyślny rozmiar: Series 11 / 10 46 mm (symulator „Apple Watch Series 11 (46mm)”). */
@@ -60,7 +61,7 @@ export function stan({ jezyk, kadr, dzien }) {
     wersja: 3, licznikId: 'zrzuty-sklepu-zegarek', nazwa: d.projekt, wartosc: LICZNIK, znaczenie: 'skonczone', glowa: null, ostatniPlusMs: null,
     dzien, dzienDozwolony: true, sesjaStartMs: null, pro: false, proWaznoscDo: null, dniWMiesiacu: [],
     przypomnienia: kadr === '02-przypomnienie' ? [{ ...PRZYPOMNIENIE, tekst: d.przypomnienie }] : [],
-    zablokowany: kadr === '03-zablokowany',
+    zablokowany: false, // klucz wymagany przez dekoder Swift; żaden kadr sklepu nie pokazuje blokady (P-1025)
   };
 }
 

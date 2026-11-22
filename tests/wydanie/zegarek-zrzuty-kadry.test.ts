@@ -31,13 +31,14 @@ function zestaw(katalog: string, jezyki: string[], kadry: string[], szer = 416, 
 }
 
 describe('zegarek-kadry.mjs: stałe z wymagań Apple', () => {
-  test('rozmiary z listy Apple, domyślny 416×496 (Series 10/11/12), 2–4 kadry z nazwami NN-<kadr>', () => {
+  test('rozmiary z listy Apple, domyślny 416×496 (Series 10/11/12), 2 kadry z nazwami NN-<kadr>', () => {
     const m = js('({ ...m })').wynik;
     expect(m.WYMIARY_ZEGARKA).toEqual([[422, 514], [410, 502], [416, 496], [396, 484], [368, 448], [312, 390]]);
     expect(m.ROZMIAR_DOMYSLNY).toEqual([416, 496]);
     expect(m.MAX_NA_JEZYK).toBe(10);
-    expect(m.KADRY.length).toBeGreaterThanOrEqual(2);
-    expect(m.KADRY.length).toBeLessThanOrEqual(4);
+    // ZW2 (P-1025): kadr 03-zablokowany odpada (ucięty tekst w kadrze blokady); zestaw sklepu to dokładnie 2 kadry
+    expect(m.KADRY).toEqual(['01-licznik', '02-przypomnienie']);
+    expect(m.KADRY).not.toContain('03-zablokowany');
     m.KADRY.forEach((k: string, i: number) => expect(k).toMatch(new RegExp(`^0${i + 1}-[a-z]+$`)));
   });
 });
@@ -75,12 +76,12 @@ describe('zegarek-kadry.mjs: stan zegarka = to, co dekoduje aplikacja', () => {
     }
   });
 
-  test('kadr 02 wyzwala pas przypomnienia w rzędzie w robocie (RD-13: r ≥ od, (r−od) mod co = 0, (r−od)/co < razy), pozostałe kadry bez pasa; blokada tylko w kadrze 03', () => {
+  test('kadr 02 wyzwala pas przypomnienia w rzędzie w robocie (RD-13: r ≥ od, (r−od) mod co = 0, (r−od)/co < razy), pozostałe kadry bez pasa; blokada licznika w żadnym kadrze (klucz `zablokowany` zostaje w stanie, bo dekoder Swift go wymaga)', () => {
     const wyzwala = (r: number, p: { od: number; co: number; razy: number }) => r >= p.od && (r - p.od) % p.co === 0 && (r - p.od) / p.co < p.razy;
     for (const [k, s] of stanyWszystkich('en')) {
       const rzad = s.wartosc + 1; // rzadWRobocie: skończone + 1
       expect(s.przypomnienia.some((p: { od: number; co: number; razy: number }) => wyzwala(rzad, p))).toBe(k === '02-przypomnienie');
-      expect(s.zablokowany).toBe(k === '03-zablokowany');
+      expect(s.zablokowany).toBe(false);
       expect(s.dzienDozwolony).toBe(true); // bez ekranu limitu (komunikat o limicie dni nie jest głównym przepływem sklepu)
     }
   });
@@ -120,7 +121,7 @@ describe('zegarek-kadry.mjs: stan zegarka = to, co dekoduje aplikacja', () => {
     expect(r.status).toBe(0);
     expect(r.stderr).toMatch(/OSTRZEŻENIE de: dane pokazowe w języku angielskim/);
     expect(r.stderr).not.toMatch(/OSTRZEŻENIE (en|pl):/);
-    expect(fs.readdirSync(k).sort()).toHaveLength(3 * 3 * 2);
+    expect(fs.readdirSync(k).sort()).toHaveLength(3 * 2 * 2);
     expect(JSON.parse(fs.readFileSync(path.join(k, 'pl-01-licznik.json'), 'utf8')).nazwa).toBe('Czapka z warkoczem');
   });
 });
@@ -144,17 +145,17 @@ describe('zegarek-kadry.mjs: języki (jak zrzuty-sklepu.yml)', () => {
 
 describe('zegarek-kadry.mjs komplet: języki × kadry, jeden rozmiar Apple, bez alfy', () => {
   const JEZYKI = ['en', 'pl'];
-  const KADRY = ['01-licznik', '02-przypomnienie', '03-zablokowany'];
+  const KADRY = ['01-licznik', '02-przypomnienie'];
 
-  test('komplet 2 języków × 3 kadry 416×496 bez alfy = OK, kod 0', () => {
+  test('komplet 2 języków × 2 kadry 416×496 bez alfy = OK, kod 0', () => {
     const k = tmp(); zestaw(k, JEZYKI, KADRY);
     const r = node(['komplet', k, 'en,pl', '416x496']);
-    expect(r.stdout).toMatch(/^OK: komplet 2 języków × 3 kadry/m);
+    expect(r.stdout).toMatch(/^OK: komplet 2 języków × 2 kadry/m);
     expect(r.status).toBe(0);
   });
 
   test.each([
-    ['brak kadru', (k: string) => fs.rmSync(path.join(k, 'pl/03-zablokowany.png')), /pl: pliki \[01-licznik\.png, 02-przypomnienie\.png\] zamiast/],
+    ['brak kadru', (k: string) => fs.rmSync(path.join(k, 'pl/02-przypomnienie.png')), /pl: pliki \[01-licznik\.png\] zamiast/],
     ['brak języka', (k: string) => fs.rmSync(path.join(k, 'pl'), { recursive: true }), /pl: brak katalogu języka/],
     ['język spoza listy', (k: string) => fs.mkdirSync(path.join(k, 'de')), /de: język spoza listy/],
     ['obcy plik w katalogu języka', (k: string) => fs.writeFileSync(path.join(k, 'en/99-zakup.png'), png(416, 496)), /en: pliki \[/],

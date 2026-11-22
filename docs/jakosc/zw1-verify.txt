@@ -4,3 +4,10 @@ Pierwszy przebieg verify (drzewo bez pliku wyzwalacza i bez zmiany uprawnień): 
 Test Suites: 737 passed, 737 total
 Tests:       8183 passed, 8183 total
 kod wyjścia: 0
+
+ZW2 (KO-198, P-1025) — npm run verify, 2026-11-22, kadr 03-zablokowany usunięty (2 kadry na język)
+Czerwone przed zmianą kodu: tests/wydanie/zegarek-zrzuty-{kadry,skrypty,workflow}.test.ts — 9 z 68 testów padło (KADRY = 3 kadry, opis workflowu); zestaw asc zielony (skrypt ogólny). Test „CLI stany” (liczba plików) miał stałą 3*3*2 i wyszedł dopiero po zmianie kodu; poprawiony na 3*2*2.
+Po zmianie: tests/wydanie/zegarek-zrzuty-*: 68 z 68 zielone.
+Test Suites: 737 passed, 737 total
+Tests:       8184 passed, 8184 total
+kod wyjścia: 0

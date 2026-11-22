@@ -19,6 +19,12 @@ const asc = czytaj('.github/workflows/asc-zrzuty.yml');
 const ascWf: any = YAML.parse(asc);
 
 describe('zrzuty-zegarka.yml: wyzwalacze i wejścia', () => {
+  test('opis workflowu: 2 kadry na język (licznik, przypomnienie), bez kadru blokady (ZW2, P-1025: ucięty tekst)', () => {
+    const naglowek = tekst.split('\n').slice(0, 12).join('\n');
+    expect(naglowek).toMatch(/2 kadry na język: licznik rzędów, pas przypomnienia/);
+    expect(naglowek).not.toMatch(/blokad|3 kadry/i);
+  });
+
   test('istnieje; zadania plan (ubuntu) i zegarek (macos-26 jak jakosc-ios.yml, z limitem czasu)', () => {
     expect(tekst).not.toBe('');
     expect(Object.keys(wf.jobs ?? {})).toEqual(['plan', 'zegarek']);

@@ -13,7 +13,7 @@ import { kadr } from './zegarek-pomoc';
 const korzen = path.join(__dirname, '..', '..');
 const skrypt = (n: string) => path.join(korzen, 'scripts/ci', n);
 const BUNDLE = 'com.apps4brew.knitting.watchkitapp';
-const KADRY = ['01-licznik', '02-przypomnienie', '03-zablokowany'];
+const KADRY = ['01-licznik', '02-przypomnienie'];
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'oczko-zegarek-sh-'));
 
 const LISTA = {
@@ -141,11 +141,11 @@ esac`);
 const komplet = (out: string, jezyki: string) => spawnSync(process.execPath, [skrypt('zegarek-kadry.mjs'), 'komplet', out, jezyki, '416x496'], { encoding: 'utf8', cwd: korzen });
 
 describe('zegarek-zrzuty.sh na atrapach xcrun/plutil/defaults', () => {
-  test('stan przekazany argumentami uruchomienia: komplet 2 języków × 3 kadry, RGB bez alfy 416×496, bez zapisu preferencji, kod 0', () => {
+  test('stan przekazany argumentami uruchomienia: komplet 2 języków × 2 kadry, RGB bez alfy 416×496, bez zapisu preferencji, kod 0', () => {
     const s = srodowisko({ jezyki: ['en', 'pl'], argumenty: true, preferencje: false });
     const r = s.uruchom('en,pl');
     expect(r.stderr).toBe('');
-    expect(r.stdout).toMatch(/Zrzuty zegarka: 6 plików, języków: 2, metoda przekazania stanu: argumenty/);
+    expect(r.stdout).toMatch(/Zrzuty zegarka: 4 plików, języków: 2, metoda przekazania stanu: argumenty/);
     expect(r.status).toBe(0);
     expect(komplet(s.out, 'en,pl').status).toBe(0); // układ NN-<kadr>.png, jeden rozmiar, BEZ alfy mimo RGBA z atrapy simctl
     expect(s.log('defaults.log')).toBe('');
