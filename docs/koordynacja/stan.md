@@ -46,7 +46,8 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - ~~**Test 1221 na telefonie**~~ — właściciel 22.11 ok. 08:31: „PU-002 OK, PU-121 OK, PU-155 OK” → protokół robi PF1.
 - ~~**D-4:** wygaszenie w TestFlight buildów poza 1221~~ — właściciel 22.11: „Wygaszone”.
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
-- **Pozycje ASC** (odczyt tylko przez właściciela): Billing Grace, Copyright, kategoria podatkowa.
+- **Pozycje ASC** (odczyt tylko przez właściciela): ~~Billing Grace~~ (właściciel 22.11 ok. 08:45: „grace period done”), Copyright, kategoria podatkowa.
+- **Zrzut App Review produktów** (E1b/C7): `99-zakup-ceny.png` z artefaktu `zrzut-zakupu` 14625946481 (run 44722734741 @ 7e3de129, ważny do 4.12) — wgrywa właściciel przy 3 produktach (Trening Z-24); instrukcja wysłana 22.11 ok. 08:50; kadru koordynator nie obejrzał (brak pobrania artefaktu bez logowania) — sprawdza właściciel przed wgraniem (panel „Test store”).
 - **Ponowienie e2e cz. 4** (iOS 44758359585): domyślnie A (bez ponowienia, obserwacja PU-052 w build 10); B tylko słowem właściciela.
 - ~~**Wysiłek koordynatora:** `/effort medium`~~ — właściciel: „Gotowe”.
 
@@ -86,3 +87,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:32 | M9 | **asc-zrzuty apply 45002887129 success:** wgrano 28 obrazów, błędy 0, zapisano 10 zestawów (iPhone 6.9, iPad 13; en-US/GB/AU/CA, pl). **Zrzuty sklepu w ASC — zrobione.** Właściciel dosłownie: „PU-002 OK, PU-121 OK, PU-155 OK” → PF1 (07 fix JAK-19, KO-190). | start PF1 |
 | 22.11 08:35 | M9 | Kontekst 31,3% → E6. Stan zapisany; następca startuje z gałęzi `koordynacja`; prompt M9 składa sam z biblioteki (WG-30). | przekazanie |
 | 22.11 08:40 | M9 session_01BM51oeh3mTopCKP51FjPPn | **Przejęcie** (E6.5): prompt M9 z prompts @ af4c0a8 (złożony sam, WG-30); przypomnienia własne 14:00/05:00/kontrola; SM1 working, gałąź @ ef032d2a (kontekst 13,5%); PF1.md: ID koordynatora → nowe. | start PF1; odbiór SM1 |
+| 22.11 08:50 | M9 | Właściciel: „grace period done”; pyta o zrzut App Review do subskrypcji → instrukcja: `99-zakup-ceny.png` z artefaktu `zrzut-zakupu` 14625946481 przy oczko.pro.monthly, .yearly, .lifetime. PF1 startuje przez subagenta (prompt roli 63 KB; WG-31 kandydat: koszt przepisywania promptu roli w create_session). | PF1 get_session; kontrola 09:16 |
