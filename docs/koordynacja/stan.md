@@ -37,7 +37,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| PF1 | (do startu przez następcę) | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/PF1.md` |
+| PF1 | session_01BM51oeYngHXBXuehdMJA1G | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 od 15c0bf77 | 0 | 0 | start 08:55 (opus, auto, env_01TjF7…); polecenie `polecenia/PF1.md` @ 44396c9 |
 | SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | 0 | 0 | start 08:23 (sonnet, auto, env_01TjF7…); polecenie `polecenia/SM1.md` @ 320219e0 |
 
 ## Czeka na właściciela
@@ -89,3 +89,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:40 | M9 session_01BM51oeh3mTopCKP51FjPPn | **Przejęcie** (E6.5): prompt M9 z prompts @ af4c0a8 (złożony sam, WG-30); przypomnienia własne 14:00/05:00/kontrola; SM1 working, gałąź @ ef032d2a (kontekst 13,5%); PF1.md: ID koordynatora → nowe. | start PF1; odbiór SM1 |
 | 22.11 08:50 | M9 | Właściciel: „grace period done”; pyta o zrzut App Review do subskrypcji → instrukcja: `99-zakup-ceny.png` z artefaktu `zrzut-zakupu` 14625946481 przy oczko.pro.monthly, .yearly, .lifetime. PF1 startuje przez subagenta (prompt roli 63 KB; WG-31 kandydat: koszt przepisywania promptu roli w create_session). | PF1 get_session; kontrola 09:16 |
 | 22.11 08:52 | M9 | Właściciel dosłownie: „Copyright gotowe, tax jest ok” → Grace, Copyright, kategoria podatkowa w ASC zamknięte. | zrzut App Review; PF1 |
+| 22.11 08:55 | M9 | **PF1 start** session_01BM51oeYngHXBXuehdMJA1G (07 fix JAK-19, opus; gałąź claude/pf1-protokol-1221-2026-11-22 od integracji 15c0bf77); prompt roli przepisany przez subagenta (542 linie, ostatnia zgodna z plikiem; bajtowo nieporównany). | kontrola 09:16 |
