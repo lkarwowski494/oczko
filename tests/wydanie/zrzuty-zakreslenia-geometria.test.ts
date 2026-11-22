@@ -17,7 +17,8 @@ const dane = (k: string) => JSON.parse(czytaj(`e2e/zrzuty-sklepu/dane/${k}.json`
 const PLIK_ZAKRESLENIA: Record<'1' | '2', string> = { '1': '00-przygotuj.yaml', '2': '04-zakreslenie.yaml' }; // zakreślenie 1 = fikstura, 2 = scena 04
 /** Współrzędne zakreślenia n dla urządzenia i języka z gałęzi runFlow sceny (dokładnie jedna gałąź na parę orientacja × język). */
 const zakreslenie = (n: '1' | '2', u: 'iphone' | 'ipad', k: string): { od: string; do: string } => {
-  const pasujace = wariantyPliku(PLIK_ZAKRESLENIA[n]).filter((w) => w.orientacja === ORIENTACJA_URZADZENIA[u] && w.jezyk === k);
+  // ZR7 (P-1016): scena 04 ma dodatkowo dwie gałęzie iPhone'a en dla grup języków z przesuniętą stroną (grupa bez `!`); tu geometria gałęzi „pozostałe języki” (en, pl), grupy: zrzuty-zakreslenie-jezyki.test.ts
+  const pasujace = wariantyPliku(PLIK_ZAKRESLENIA[n]).filter((w) => (w.grupa === null || w.grupa.startsWith('!')) && w.orientacja === ORIENTACJA_URZADZENIA[u] && w.jezyk === k);
   expect([n, u, k, pasujace.length]).toEqual([n, u, k, 1]);
   return { od: pasujace[0].start, do: pasujace[0].end };
 };
@@ -75,7 +76,9 @@ describe('ZR3 Z2: zakreślenia od początku tekstu do końca jednego wiersza (iP
   test('oba swipe\'y (fikstura = zakreślenie 1, scena 04 = zakreślenie 2) mają po 4 gałęzie runFlow: iPhone (PORTRAIT) i iPad (LANDSCAPE_LEFT) × en i pl; dane/<klucz>.json nie niosą już ZAKR_* (jedno źródło współrzędnych)', () => {
     for (const n of ['1', '2'] as const) {
       const w = wariantyPliku(PLIK_ZAKRESLENIA[n]);
-      expect(w.map((x) => `${x.orientacja}/${x.jezyk}`).sort()).toEqual(['LANDSCAPE_LEFT/en', 'LANDSCAPE_LEFT/pl', 'PORTRAIT/en', 'PORTRAIT/pl']);
+      const podstawowe = w.filter((x) => x.grupa === null || x.grupa.startsWith('!')); // ZR7: gałęzie grup języków (iPhone en) liczy zrzuty-zakreslenie-jezyki.test.ts
+      expect(podstawowe.map((x) => `${x.orientacja}/${x.jezyk}`).sort()).toEqual(['LANDSCAPE_LEFT/en', 'LANDSCAPE_LEFT/pl', 'PORTRAIT/en', 'PORTRAIT/pl']);
+      expect(w).toHaveLength(n === '2' ? 6 : 4);
     }
     for (const k of ['en', 'pl']) expect(Object.keys(dane(k)).filter((x) => x.startsWith('ZAKR_'))).toEqual([]);
     expect(Object.keys(dane('pl')).sort()).toEqual(Object.keys(dane('en')).sort());
