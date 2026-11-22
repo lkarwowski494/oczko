@@ -42,7 +42,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - ~~**Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle. Prośba: zarchiwizować tę sesję na drugim koncie.~~ Właściciel 22.11 ok. 08:40: „Gotowe”.
 - **Approve `release`** dla asc-zrzuty dry-run: https://github.com/lkarwowski494/oczko/actions/runs/45002209423 (Review deployments → `release` → Approve); potem drugi Approve dla apply.
 - **Test 1221 na telefonie:** PU-002, PU-121, PU-155 (D-2, słowa 22.11) — wynik słowami właściciela do protokołu `docs/jakosc/test-fizyczny/1221.md`.
-- **D-4:** wygaszenie w TestFlight buildów poza 1221 (właściciel w ASC, ok. 2 min).
+- ~~**D-4:** wygaszenie w TestFlight buildów poza 1221~~ — właściciel 22.11: „Wygaszone”.
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
 - **Pozycje ASC** (odczyt tylko przez właściciela): Billing Grace, Copyright, kategoria podatkowa.
 - **Ponowienie e2e cz. 4** (iOS 44758359585): domyślnie A (bez ponowienia, obserwacja PU-052 w build 10); B tylko słowem właściciela.
@@ -80,3 +80,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:23 | M9 | asc-zrzuty dry-run = run 45002209423 (status waiting — Approve `release`). **SM1 start** session_01BM51ofhw7XcB3ui4XHFT5k (08 build, sonnet; gałąź claude/sm1-scalenie-main-2026-11-22 od 15c0bf77). Kontrola 09:09. | Approve; SM1 E0 |
 | 22.11 08:25 | SM1 | Raport 1 (deklaracja, niesprawdzone): scalenie c0eff9ef, 20 konfliktów (nie 49), drzewo = 15c0bf77, odstępstw 0; teraz verify, potem push. | odbiór po push: rodzice, diff 15c0bf77, autor, Jakość · Linux |
 | 22.11 08:40 | M9 | Właściciel dosłownie: „1. Gotowe 2. Gotowe 3. Daj mi instrukcje 4. Ktore buildy? 5. daj mi instrukcje 6. Gotowe” (1 Approve dry-run, 2 poprzednik zarchiwizowany, 6 effort medium). **Dry-run 45002209423 success:** plan 10 grup × 7 zrzutów (iPhone 6.9 i iPad 13; en-US, en-GB, en-AU, en-CA, pl), wgraj 10, pomiń 0, nic nie zapisano. **apply wyzwolony** (te same wejścia; zgoda 08:20) — czeka na Approve. Instrukcje testu PU-002/121/155, wygaszenia buildów i odczytu ASC wysłane w czacie. | Approve apply; wyniki testu |
+| 22.11 08:45 | M9 | Właściciel dosłownie: „1. Approved. 4. Wygaszone 3. Teraz wezme sie za test”. asc-zrzuty apply = run 45002887129 in_progress. Test PU-002/121/155 w toku u właściciela. | wynik apply; wynik testu |
