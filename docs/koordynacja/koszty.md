@@ -156,5 +156,5 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | ZR4 | 10 fix (sonnet) | składnia swipe w scenach zrzutów | 1,53 USD (pułap 1,5; +0,03) | 59% (177 177) | 20.11 09:20–09:35 | — | odczyt przy archiwizacji |
 | WR3 | 07 audit (sonnet) | przegląd zrzutów 44722734741 + werdykt kontroli zakreśleń | 1,84 USD (pułap 1,5; +0,34 — przekroczony, sesja szacowała „poniżej”) | 74% (223 394) | 20.11 12:46–12:53 | — | odczyt przy archiwizacji |
 | ZR5 | 08 fix (sonnet) | kalibracja kontroli zakreśleń (KO-187 A + KO-188 B) | 1,70 USD (pułap 1,5 → 2 po KO-188) | 61% (183 348) | 20.11 13:18–13:58 | — | odczyt przy archiwizacji |
-| SM1 | 08 build (sonnet) | 4 | — | — | 08:23 → 08:23 → … | — | scalenie main pod PR (KO-189) |
-| PF1 | 07 fix (opus) | 3 | — | — | 08:32 → … | — | protokół 1221 (KO-190) |
+| SM1 | 08 build (sonnet) | 4 | 0,89 | 15% (152 513 / 1 mln) | 08:20 → 08:23 → c0eff9ef/ef032d2a 08:35 → Linux 45004846278 (w toku 08:52) → przyjęte 08:58 | 17 min: CI nie startuje na gałęziach sesji (WG-31) + przejęcie koordynatora | scalenie main pod PR (KO-189); 20 konfliktów |
+| PF1 | 07 fix (opus) | 3 | — | — | 08:32 → 08:55 → f9c5a941 08:48 → … | 23 min start: przekazanie koordynatora + przepisanie promptu 63 KB przez subagenta | protokół 1221 (KO-190) |
