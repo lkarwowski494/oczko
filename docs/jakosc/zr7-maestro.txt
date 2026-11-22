@@ -1,0 +1,50 @@
+ZR7 (KO-195, P-1016) — Maestro CLI 2.12.1 na Linuksie, 2026-11-22
+maestro.zip cli-2.12.1: sha256 54dbb0716425626604973cbb374c585ca30272375d9ce15177a1152765ddd9d7 (równe przypiętemu MAESTRO_ZIP_SHA256 w .github/workflows/zrzuty-sklepu.yml)
+--- 1. parsowanie: YamlCommandReader.readCommands (ta sama ścieżka co przy 'maestro test'), wszystkie e2e/zrzuty-sklepu/*.yaml
+OK 00-jezyk.yaml komend=8
+OK 00-przygotuj.yaml komend=113
+OK 01-dzis.yaml komend=9
+OK 02-licznik.yaml komend=11
+OK 03-wzor.yaml komend=16
+OK 04-zakreslenie.yaml komend=25
+OK 04a-porzadek.yaml komend=12
+OK 05-projekty.yaml komend=12
+OK 06-historia.yaml komend=13
+OK 07-kalendarz.yaml komend=15
+OK 99-zakup.yaml komend=15
+OK=11 BŁĘDY=0
+--- 2. warunki 'when: true' sceny 04 na prawdziwym silniku JS Maestro (GraalJsEngine, putEnv ORIENT_WZOR/DANE_KLUCZ/JEZYK): dla każdego z 31 przypadków (29 języków iPhone + en, pl iPad) prawdziwa dokładnie jedna gałąź
+PORTRAIT cs -> gałąź 2
+PORTRAIT da -> gałąź 2
+PORTRAIT de -> gałąź 0
+PORTRAIT el -> gałąź 0
+PORTRAIT en -> gałąź 2
+PORTRAIT es -> gałąź 2
+PORTRAIT es-419 -> gałąź 2
+PORTRAIT fi -> gałąź 2
+PORTRAIT fr -> gałąź 0
+PORTRAIT hr -> gałąź 2
+PORTRAIT hu -> gałąź 2
+PORTRAIT id -> gałąź 1
+PORTRAIT it -> gałąź 2
+PORTRAIT ja -> gałąź 0
+PORTRAIT ko -> gałąź 2
+PORTRAIT ms -> gałąź 1
+PORTRAIT nb -> gałąź 2
+PORTRAIT nl -> gałąź 0
+PORTRAIT pl -> gałąź 4
+PORTRAIT pt -> gałąź 2
+PORTRAIT pt-BR -> gałąź 2
+PORTRAIT ro -> gałąź 0
+PORTRAIT ru -> gałąź 0
+PORTRAIT sk -> gałąź 2
+PORTRAIT sv -> gałąź 2
+PORTRAIT tr -> gałąź 2
+PORTRAIT uk -> gałąź 0
+PORTRAIT vi -> gałąź 2
+PORTRAIT zh-Hant -> gałąź 2
+LANDSCAPE_LEFT en -> gałąź 3
+LANDSCAPE_LEFT pl -> gałąź 5
+warunków w pliku: 6, przypadków 31, błędów: 0
+(gałęzie w pliku: 0 = języki ze stroną niżej 47%, 1 = id/ms 45%, 2 = pozostałe iPhone en 46%, 3 = iPad en, 4 = iPhone pl, 5 = iPad pl)
+Poza dowodem: wykonanie gałęzi na symulatorze macOS (przebieg koordynatora) i trafienie pasa w wiersz w kadrze.

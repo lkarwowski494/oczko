@@ -53,8 +53,12 @@ describe('10-wydanie-019: dwa zakreślenia w kadrze 04', () => {
   test('swipe fikstury (zakreślenie 1) i swipe sceny 04 (zakreślenie 2) są na różnych wysokościach (≥ 6 punktów procentowych: pociągnięcia o szerokości 18 pt nie zlewają się), poziomo, na obu urządzeniach i w obu językach', () => {
     expect(przyg.find((l) => SWIPE.test(l))).toBeDefined(); expect(s04.find((l) => SWIPE.test(l))).toBeDefined();
     const y = (s: string) => Number(/,\s*(\d+)%$/.exec(s.trim())![1]);
-    const f = wariantyPliku('00-przygotuj.yaml'); const s = wariantyPliku('04-zakreslenie.yaml');
-    expect(f).toHaveLength(4); expect(s).toHaveLength(4);
+    // ZR7 (P-1016): scena 04 ma 6 swipe'ów — 4 (orientacja × en/pl) i dwie dodatkowe gałęzie iPhone'a en dla grup języków; wysokość per grupa sprawdza zrzuty-zakreslenie-jezyki.test.ts (z pomiarów kadrów)
+    const f = wariantyPliku('00-przygotuj.yaml'); const wszystkie = wariantyPliku('04-zakreslenie.yaml');
+    expect(f).toHaveLength(4); expect(wszystkie).toHaveLength(6);
+    expect(wszystkie.filter((x) => x.grupa !== null).map((x) => [x.orientacja, x.jezyk])).toEqual([['PORTRAIT', 'en'], ['PORTRAIT', 'en'], ['PORTRAIT', 'en']]); // trzy grupy języków, tylko iPhone en
+    const s = wszystkie.filter((x) => x.grupa === null || x.grupa.startsWith('!')); // gałąź „pozostałe języki” (grupa z `!`) albo bez grupy: en/pl dla obu urządzeń
+    expect(s).toHaveLength(4);
     for (const k of ['en', 'pl']) {
       for (const o of ['PORTRAIT', 'LANDSCAPE_LEFT']) {
         const w1 = f.find((x) => x.orientacja === o && x.jezyk === k)!; const w2 = s.find((x) => x.orientacja === o && x.jezyk === k)!;
