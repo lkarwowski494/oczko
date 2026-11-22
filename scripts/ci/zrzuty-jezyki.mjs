@@ -57,7 +57,7 @@ export function plan(tekstJezykow, zadan, urzadzenia = 'iphone,ipad', opcje = {}
   const wynik = planBazowy(tekstJezykow, zadan, urzadzenia, opcje);
   if (opcje.dzien === undefined) return wynik;
   const dzien = sprawdzDzien(opcje.dzien);
-  dniPracy(dzien); // 023: dzień, od którego fikstura nie da sensownych kadrów (poniedziałek, 1–7 dzień miesiąca), odrzucamy w planie, przed kolejką macOS
+  dniPracy(dzien); // 023: dzień, od którego fikstura nie da sensownych kadrów (1–7 dzień miesiąca; poniedziałek od ZR6 jest dozwolony), odrzucamy w planie, przed kolejką macOS
   return { ...wynik, matrix: wynik.matrix.map((m) => ({ ...m, teraz: terazDnia(dzien), dzien })) };
 }
 

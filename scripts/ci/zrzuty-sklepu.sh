@@ -29,7 +29,7 @@ UDID="$1"; URZ="$2"; OUT="$3"; LOGI="$4"; OG07="${5:-false}"; JEZYKI="${6-en}"; 
 [[ "$ZRZUTY_DZIEN" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "::error::ZRZUTY_DZIEN ma zły format: $ZRZUTY_DZIEN"; exit 2; }
 FLOWS="$(cd "$(dirname "$0")/../.." && pwd)/e2e/zrzuty-sklepu"; SKRYPTY="$(cd "$(dirname "$0")" && pwd)"
 # 10-wydanie-023 (AU, KO-050 opcja a): dni pracy fikstury (00-przygotuj.yaml, 07-kalendarz.yaml) liczone od dnia przebiegu (−7, −5, −1 dnia), żeby treść kadru miała tę samą datę co pasek iPada (data maszyny);
-# scripts/ci/zrzuty-uzupelnij.mjs dni (plan już odrzucił poniedziałek i dni 1–7 miesiąca). Brak wyniku = głośny błąd (zasada 21), bez cichych dat.
+# scripts/ci/zrzuty-uzupelnij.mjs dni (plan już odrzucił dni 1–7 miesiąca; w poniedziałek ostatnia sesja = dziś 08:00, ZR6). Brak wyniku = głośny błąd (zasada 21), bez cichych dat.
 DNI_ARGS_PRACY=()
 DNI_WYJSCIE="$(node "$SKRYPTY/zrzuty-uzupelnij.mjs" dni "$ZRZUTY_DZIEN" 2>&1)" || { echo "::error::dni pracy fikstury z dnia przebiegu $ZRZUTY_DZIEN: $DNI_WYJSCIE"; exit 2; }
 while IFS= read -r wiersz; do [ -n "$wiersz" ] && DNI_ARGS_PRACY+=(-e "$wiersz"); done <<< "$DNI_WYJSCIE"
