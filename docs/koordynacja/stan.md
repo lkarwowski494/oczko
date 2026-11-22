@@ -27,21 +27,22 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (22.11 08:15 UTC) — koordynator session_01BM51ocU7agyuuTBJK7tivW (przejęcie 08:15, lineage 0/8)
-- **Stan:** wysyłka 1.0 = binarka 1221 (KO-180); zrzuty sklepu gotowe (44758366101; artefakty surowe 14640541865, ramki 14640946446 do 4.12). Integracja `claude/youthful-pasteur-kx83sn` @ 15c0bf77, wolna do ff; Linux 44758359484 success, iOS 44758359585 failure tylko e2e iPhone cz. 4 (PU-052, ocena: środowisko). `main` @ 52308cd, CI 41602904258 success. Sesji ról brak (na tym koncie żadnej sesji Oczka; `list_sessions` 08:13).
-- **Odpowiedzi 22.11 08:20** (mandat): zrzuty dry-run → apply; D-1 PR do `main` (konflikty → SM1); D-2 test 3 PU; D-4 wygasić. W toku: asc-zrzuty dry-run (czeka na Approve), SM1 (08 build, scalenie `main`).
-- **Następny krok:** po odpowiedziach — lista kroków ASC (`docs/wydanie/do-app-store-1221.md`) i sesje ról według słów; bez odpowiedzi — linia 14:00 22.11.
-- **Plan 24 h — aktualizacja 22.11 04:55 (linia 05:00):** bez zmian — wysyłka 1221 i zrzuty gotowe (artefakty do 4.12), integracja 15c0bf77 wolna, sesji ról brak; czeka na właściciela (asc-zrzuty, 4 pytania, A/B ponowienia cz. 4 — artefakt e2e-czesc-4-iphone 14652698873 wygasa ok. 23.11 17:27, potem diagnoza PU-052 tylko z logu). Linia 14:00 22.11 (trig_01Mvu7r8…), linia 05:00 23.11 (trig_01E9eJ7Y…).
+## Teraz (22.11 08:35 UTC) — PRZEKAZANIE koordynatora session_01BM51ocU7agyuuTBJK7tivW (kontekst 31,3% = 313 tys./1 mln, 6,26 USD; lineage 0/8 → następca 1/8)
+- **Zrobione dziś:** zrzuty sklepu w ASC (apply 45002887129: 28 obrazów, 10 zestawów, 0 błędów); buildy poza 1221 wygaszone (właściciel); test PU-002/121/155 na 1221 OK (właściciel); poprzednik na drugim koncie zarchiwizowany (właściciel); `/effort medium` (właściciel).
+- **W toku:** SM1 session_01BM51ofhw7XcB3ui4XHFT5k (08 build) — scalenie `main` c0eff9ef wg raportu 1 (niesprawdzone), teraz verify i push na `claude/sm1-scalenie-main-2026-11-22`. Odbiór: rodzice 15c0bf77+52308cd7, `git diff 15c0bf77 <sha>` pusty, autor, Jakość · Linux na SHA, potem **PR do `main`** (scala właściciel, D-1).
+- **Do startu przez następcę:** PF1 — polecenie `polecenia/PF1.md` @ 87d33fee (07 fix JAK-19, opus; prompt: `node <prompts>/tools/assemble.mjs 07-jakosc --tryb fix --zadania JAK-19`), gałąź `claude/pf1-protokol-1221-2026-11-22` od 15c0bf77, title „Oczko PF1: protokół 1221 (rola 07, docs)”.
+- **Potem (plan 24 h):** po PF1 i SM1 — ff/scalenie do integracji (WG-27: nie w trakcie iOS), PR do `main`; dalej lista `docs/wydanie/do-app-store-1221.md`: notatka dla recenzenta (RÓŻNICA w asc-kontrola), lokalizacje IAP v2 (dry-run), wybór buildu 1221 w wersji 1.0, Submit for Review — słowami właściciela.
+- **Czeka na właściciela:** Grace / Copyright / kategoria podatkowa w ASC (instrukcja wysłana 08:27); scalenie PR do `main` po SM1.
 
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
-| PF1 | (start) | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/PF1.md` |
+| PF1 | (do startu przez następcę) | 07 fix JAK-19 (opus) — protokół 1221 i bramka `recenzja 1221` (KO-190) | claude/pf1-protokol-1221-2026-11-22 od 15c0bf77 | — | — | polecenie `polecenia/PF1.md` |
 | SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 od 15c0bf77 | 0 | 0 | start 08:23 (sonnet, auto, env_01TjF7…); polecenie `polecenia/SM1.md` @ 320219e0 |
 
 ## Czeka na właściciela
 - ~~**Zatrzymanie poprzednika na drugim koncie:** session_01T66VBzb4nxMxEGdBmHBUbV ma przypomnienia „linia 14:00” 22.11 (trig_01Mvu7r8…) i „linia 05:00” 23.11 (trig_01E9eJ7Y…); po nich pisałby na `koordynacja` równolegle. Prośba: zarchiwizować tę sesję na drugim koncie.~~ Właściciel 22.11 ok. 08:40: „Gotowe”.
-- **Approve `release`** dla asc-zrzuty dry-run: https://github.com/lkarwowski494/oczko/actions/runs/45002209423 (Review deployments → `release` → Approve); potem drugi Approve dla apply.
+- ~~Approve `release` asc-zrzuty~~ — dany (dry-run 45002209423, apply 45002887129).
 - ~~**Test 1221 na telefonie**~~ — właściciel 22.11 ok. 08:31: „PU-002 OK, PU-121 OK, PU-155 OK” → protokół robi PF1.
 - ~~**D-4:** wygaszenie w TestFlight buildów poza 1221~~ — właściciel 22.11: „Wygaszone”.
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
@@ -83,3 +84,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:40 | M9 | Właściciel dosłownie: „1. Gotowe 2. Gotowe 3. Daj mi instrukcje 4. Ktore buildy? 5. daj mi instrukcje 6. Gotowe” (1 Approve dry-run, 2 poprzednik zarchiwizowany, 6 effort medium). **Dry-run 45002209423 success:** plan 10 grup × 7 zrzutów (iPhone 6.9 i iPad 13; en-US, en-GB, en-AU, en-CA, pl), wgraj 10, pomiń 0, nic nie zapisano. **apply wyzwolony** (te same wejścia; zgoda 08:20) — czeka na Approve. Instrukcje testu PU-002/121/155, wygaszenia buildów i odczytu ASC wysłane w czacie. | Approve apply; wyniki testu |
 | 22.11 08:45 | M9 | Właściciel dosłownie: „1. Approved. 4. Wygaszone 3. Teraz wezme sie za test”. asc-zrzuty apply = run 45002887129 in_progress. Test PU-002/121/155 w toku u właściciela. | wynik apply; wynik testu |
 | 22.11 08:32 | M9 | **asc-zrzuty apply 45002887129 success:** wgrano 28 obrazów, błędy 0, zapisano 10 zestawów (iPhone 6.9, iPad 13; en-US/GB/AU/CA, pl). **Zrzuty sklepu w ASC — zrobione.** Właściciel dosłownie: „PU-002 OK, PU-121 OK, PU-155 OK” → PF1 (07 fix JAK-19, KO-190). | start PF1 |
+| 22.11 08:35 | M9 | Kontekst 31,3% → E6. Stan zapisany; następca startuje z gałęzi `koordynacja`; prompt M9 składa sam z biblioteki (WG-30). | przekazanie |
