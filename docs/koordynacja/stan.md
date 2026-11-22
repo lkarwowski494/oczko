@@ -99,3 +99,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 09:36 | M9 | **PR #2 integracja → main** otwarty (https://github.com/lkarwowski494/oczko/pull/2; scala właściciel). SM1 (0,89) i PF1 (2,46 USD) zarchiwizowane. Kontrola 10:35. | zrzuty 45007913254; scalenie PR przez właściciela |
 | 22.11 09:40 | M9 | Właściciel dosłownie: „Notatka wklejona” (E6, notatka dla recenzenta z `notatka-recenzja.txt`). `asc-kontrola` (E17) przed Submit — po wgraniu zrzutów 27 języków. | zrzuty 45007913254; kontrola 10:35 |
 | 22.11 09:45 | M9 | Właściciel: „PR scalony” — main d7d47788 (rodzice 52308cd7+6834c6d5), drzewo = 6834c6d5. | zrzuty; CI na main |
+| 22.11 10:36 | M9 (kontrola) | Jakość · Linux success: 45006681378 (integracja 6834c6d5), 45008238241 (PR #2), 45011488106 (main d7d47788). Zrzuty 45007913254 w toku: fala 1 (iphone 1–3, 12 języków) od 09:35, koniec ok. 12:00. | kontrola 12:10 |
