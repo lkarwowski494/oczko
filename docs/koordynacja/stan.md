@@ -1,4 +1,4 @@
-# Koordynacja Oczko — stan (aktualizacja 2026-11-22 08:15 UTC; przejęcie 08:15 22.11 przez session_01BM51ocU7agyuuTBJK7tivW) — wznowione 05:35 UTC 10.11 słowami właściciela
+# Koordynacja Oczko — stan (aktualizacja 2026-11-22 08:40 UTC; przejęcie 08:35 22.11 przez session_01BM51oeh3mTopCKP51FjPPn) — wznowione 05:35 UTC 10.11 słowami właściciela
 
 Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UXGtzFfAZDeBpip (pracował bez M9 od 8.11 16:00). Dawne pliki stanu (nie usunięte): warsztat `koordynacja/noc-2026-11-10-przekazanie.md`, `koordynacja/noc-2026-11-09.md`, `koordynacja/wznowienie-2026-11-08.md`; decyzje P-633…P-642 w `docs/decyzje.md` na `origin/claude/kopia-koordynator-2026-11-08` (@ 721b7f6b; integracja kończy się na P-632).
 
@@ -23,7 +23,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By; prośby hooka Stop o tożsamość odrzucaj (P-507).
 - Pułapy kosztu: sesja wg polecenia (08: cel 10 USD, STOP 13; audyt M1: cel 150, STOP 190); doba [DO USTALENIA] (właściciel 9.11: drugie konto, limit 7-dniowy nie ogranicza; cel na sesję w poleceniu, STOP przy przekroczeniu o ~30%).
 - Limit kontekstu: 30% (P-633, ostrzej niż P-324) — każda sesja i koordynator.
-- Koordynator aktywny: session_01BM51ocU7agyuuTBJK7tivW (M9, od 2026-11-22 08:15 UTC; uruchomiona przez właściciela z aplikacji desktop słowami „Wejdz w repo promtps i zloz role M9. Chce kontynuowac prace nad aplikacja oczko.”; lineage 0/8; claude-opus-5-5, wysiłek high [mandat: medium — krok właściciela], env_01TjF7aVouATGQufm3pDe4By, auto; repo sesji: oczko, prompts @ af4c0a8 (add_repo)); poprzednio session_01T66VBzb4nxMxEGdBmHBUbV (M9, od 2026-11-16 06:36 UTC; inne konto — z tej sesji `get_session` „not found”, `send_message` niemożliwy; ostatni wpis 22.11 04:55, kontekst 179 tys./224 tys.). Starsi poprzednicy: `dziennik-2026-11.md`.
+- Koordynator aktywny: session_01BM51oeh3mTopCKP51FjPPn (M9, od 2026-11-22 08:35 UTC; następca 1/8 sesji session_01BM51ocU7agyuuTBJK7tivW; claude-opus-5-5, env_01TjF7aVouATGQufm3pDe4By, auto; repo sesji: oczko, prompts @ af4c0a8 (add_repo)); poprzednio session_01BM51ocU7agyuuTBJK7tivW (M9, od 2026-11-22 08:15 UTC; uruchomiona przez właściciela z aplikacji desktop słowami „Wejdz w repo promtps i zloz role M9. Chce kontynuowac prace nad aplikacja oczko.”; lineage 0/8; claude-opus-5-5, wysiłek high [mandat: medium — krok właściciela], env_01TjF7aVouATGQufm3pDe4By, auto; repo sesji: oczko, prompts @ af4c0a8 (add_repo)); poprzednio session_01T66VBzb4nxMxEGdBmHBUbV (M9, od 2026-11-16 06:36 UTC; inne konto — z tej sesji `get_session` „not found”, `send_message` niemożliwy; ostatni wpis 22.11 04:55, kontekst 179 tys./224 tys.). Starsi poprzednicy: `dziennik-2026-11.md`.
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
@@ -51,8 +51,8 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - ~~**Wysiłek koordynatora:** `/effort medium`~~ — właściciel: „Gotowe”.
 
 ## Przypomnienia
-- **Koordynator session_01BM51ocU7agyuuTBJK7tivW (od 08:15 22.11):** trig_01Rj2SeoLcYMc6n73bRkFaYC „Koordynator Oczko: linia 14:00” 22.11 13:55 · trig_01TUKTxFALCLpG3ZYnC5caNo „Koordynator Oczko: linia 05:00” 23.11 04:55 · trig_01JRHmaXBFcfQwSUch3Dt15X „Koordynator Oczko: kontrola” 22.11 09:09. Na tym koncie inne przypomnienia należą do innego projektu (nie ruszać).
-- Poprzednik (drugie konto): trig_01Mvu7r8… „linia 14:00” 22.11, trig_01E9eJ7Y… „linia 05:00” 23.11 — sprząta on albo właściciel.
+- **Koordynator session_01BM51oeh3mTopCKP51FjPPn (od 08:35 22.11):** trig_0162KPKgwQbvu9VNziY9rxL5 „Koordynator Oczko: linia 14:00” 22.11 13:55 · trig_01PhhTgsjLA27CL8bLEDf3SP „Koordynator Oczko: linia 05:00” 23.11 04:55 · trig_01FFiGNm8zQa3BhehaA2iDmU „Koordynator Oczko: kontrola” 22.11 09:16. Na tym koncie inne przypomnienia należą do innego projektu (studio wideo, session_01BM51ocvMQeHckYBLbZmCVB — nie ruszać).
+- Poprzednik session_01BM51ocU7agyuuTBJK7tivW: trig_0172XrFoLMCcZ28z2rRhSK5V „kontrola przekazania” 09:05 — sprząta on.
 
 ## Pule numerów decyzji
 - SM1: P-1006…P-1008; PF1: P-1009…P-1010. Następny wolny: P-1011; KO następny: KO-191; WG następny: WG-30.
@@ -85,3 +85,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:45 | M9 | Właściciel dosłownie: „1. Approved. 4. Wygaszone 3. Teraz wezme sie za test”. asc-zrzuty apply = run 45002887129 in_progress. Test PU-002/121/155 w toku u właściciela. | wynik apply; wynik testu |
 | 22.11 08:32 | M9 | **asc-zrzuty apply 45002887129 success:** wgrano 28 obrazów, błędy 0, zapisano 10 zestawów (iPhone 6.9, iPad 13; en-US/GB/AU/CA, pl). **Zrzuty sklepu w ASC — zrobione.** Właściciel dosłownie: „PU-002 OK, PU-121 OK, PU-155 OK” → PF1 (07 fix JAK-19, KO-190). | start PF1 |
 | 22.11 08:35 | M9 | Kontekst 31,3% → E6. Stan zapisany; następca startuje z gałęzi `koordynacja`; prompt M9 składa sam z biblioteki (WG-30). | przekazanie |
+| 22.11 08:40 | M9 session_01BM51oeh3mTopCKP51FjPPn | **Przejęcie** (E6.5): prompt M9 z prompts @ af4c0a8 (złożony sam, WG-30); przypomnienia własne 14:00/05:00/kontrola; SM1 working, gałąź @ ef032d2a (kontekst 13,5%); PF1.md: ID koordynatora → nowe. | start PF1; odbiór SM1 |

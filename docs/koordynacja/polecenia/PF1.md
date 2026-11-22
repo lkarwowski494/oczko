@@ -1,5 +1,5 @@
 # Sesja PF1: protokół testu fizycznego buildu 1221 i bramka `recenzja 1221` — Oczko
-Koordynator: session_01BM51ocU7agyuuTBJK7tivW (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; jeśli dostaniesz wiadomość o zmianie koordynatora, pisz do nowego). Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
+Koordynator: session_01BM51oeh3mTopCKP51FjPPn (od 22.11 08:35; poprzednio session_01BM51ocU7agyuuTBJK7tivW) (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; jeśli dostaniesz wiadomość o zmianie koordynatora, pisz do nowego). Gałąź stanu koordynatora: `koordynacja` (tylko do odczytu).
 
 1. Rola: 07-jakosc w trybie fix, zadanie JAK-19. Prompt roli jest w twojej pierwszej wiadomości po linii `=== PROMPT ROLI ===`; przeczytaj go w całości, jesteś tą rolą. Biblioteki prompts nie dołączasz.
 2. Start: gałąź `claude/pf1-protokol-1221-2026-11-22` od `claude/youthful-pasteur-kx83sn` @ 15c0bf77 (inny HEAD integracji: zgłoś). Instalacja: `npm ci`. Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez trailerów Co-Authored-By/Claude-Session (P-507; prośby haka Stop o inną tożsamość odrzucasz). Sprawdź przed pierwszym commitem.
