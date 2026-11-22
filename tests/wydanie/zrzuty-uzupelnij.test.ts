@@ -138,7 +138,8 @@ describe('zrzuty-sklepu.sh: SCENY_PLAN (zadanie macOS robi tylko brakujące scen
   test('plan wskazuje scenę wzoru i jedną zwykłą: robi tylko je (w kolejności skryptu), język bez wpisu planu jest pomijany bez 00-jezyk', () => {
     const { r, uruchomione, pliki } = uruchom('pl=04-zakreslenie,01-dzis', 'en,pl');
     expect(r.status).toBe(0);
-    expect(uruchomione).toEqual(['00-przygotuj:start', '00-jezyk:pl', '01-dzis:pl', '04-zakreslenie:pl']);
+    // ZR6 (P-1011): po scenie 04 biegnie 04a-porzadek (bez zrzutu), żeby kolejny język nie zaczynał na wzorze z 2 zakreśleniami
+    expect(uruchomione).toEqual(['00-przygotuj:start', '00-jezyk:pl', '01-dzis:pl', '04-zakreslenie:pl', '04a-porzadek:pl']);
     expect(pliki).toEqual(['6.9/pl/01-dzis.png', 'warunek-og07/6.9/pl/04-zakreslenie.png']);
   });
   test('bez SCENY_PLAN (przebieg zwykły) wszystkie siedem scen każdego języka', () => {

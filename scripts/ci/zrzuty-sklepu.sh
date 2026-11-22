@@ -195,6 +195,17 @@ for JEZ in ${JEZYKI//,/ }; do
       fi
     done
     [ "$ok" = 1 ] || echo "$JEZ/$scena" >> "$NIEUDANE"
+    # ZR6 (KO-191, P-1011; przebieg 45007913254): scena 04 kończy na wzorze z DRUGIM zakreśleniem, a zrzut robi skrypt dopiero po scenie, więc sprzątnąć można dopiero tu, w tej samej sesji aplikacji
+    # (cofnięcie kreski działa tylko w sesji, w której powstała). Bez tego kolejny język z tymi samymi danymi (klucz en nie powtarza 00-przygotuj) zaczynał na wzorze z 2 zakreśleniami:
+    # „Kontynuuj ›” otwierało wzór zamiast licznika, a 02, 03, 04 i 06 padały. Porażka porządku trafia do listy nieudanych (kolejny język by padł, ale z jawną przyczyną).
+    if [ "$scena" = 04-zakreslenie ]; then
+      porz_ok=0
+      for proba in 1 2; do
+        if maestro_run 04a-porzadek "$proba"; then porz_ok=1; break; fi
+        echo "::warning::$JEZ/04a-porzadek: próba $proba nieudana"; tail -12 "$LOGI/$URZ-$JEZ-04a-porzadek-$proba/maestro.log" | sed 's/^/    /'
+      done
+      [ "$porz_ok" = 1 ] || echo "$JEZ/04a-porzadek" >> "$NIEUDANE"
+    fi
   done
 done
 

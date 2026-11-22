@@ -101,7 +101,8 @@ describe('10-wydanie-016: spójna data i godzina w kadrze (jedna stała: zegar f
       const t = czytaj(`${KAT}/${f}`);
       const kod = t.split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');
       expect([f, /2026-11-10T09:41/.test(kod)]).toEqual([f, false]);
-      if (f !== '00-przygotuj.yaml' && f !== '99-zakup.yaml' && f !== '00-jezyk.yaml') expect([f, kod]).toEqual([f, expect.stringContaining('${ZRZUTY_TERAZ}')]);
+      // 04a-porzadek (ZR6) kontynuuje sesję sceny 04 bez startu aplikacji, więc nie niesie zegara (launchApp z oczkoE2eTeraz); sprawdza to tests/wydanie/zrzuty-porzadek-jezykow.test.ts (bez stopApp/launchApp)
+      if (f !== '00-przygotuj.yaml' && f !== '99-zakup.yaml' && f !== '00-jezyk.yaml' && f !== '04a-porzadek.yaml') expect([f, kod]).toEqual([f, expect.stringContaining('${ZRZUTY_TERAZ}')]);
     }
   });
   test('fikstura: godziny sesji rosną razem z datą (Historia czyta się chronologicznie), a ostatni dzień pracy (−1 dnia) jest +1, więc „This week” nie jest pusty', () => {
