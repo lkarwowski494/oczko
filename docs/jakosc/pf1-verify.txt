@@ -1,0 +1,42 @@
+# PF1 verify — 2026-11-22 08:51:24 UTC · HEAD d9592b1f (gałąź claude/pf1-protokol-1221-2026-11-22, baza 15c0bf77) · komenda: npm run verify
+# ostatnie 40 linii wyjścia + kod wyjścia (wpisane z pliku wyniku, kryterium koordynatora KO-190 / PF1 zad. 3)
+PASS iOS tests/jakosc/e2e-workflow-137.test.ts
+PASS iOS tests/ekrany/e2e-wejscia-stan-wydanie.test.tsx
+PASS iOS tests/i18n/miesiac-kontekst-054.test.ts
+PASS iOS tests/wydanie/polityka-import-strony.test.ts
+PASS iOS tests/ekrany/kontekst-jezyk.test.tsx
+PASS iOS tests/dane/adapter-expo-sciezka.test.ts
+PASS iOS tests/domena/wzor/orientacja-ekranu.test.ts
+PASS iOS tests/domena/obliczenia/szydelka-brd.test.ts
+PASS iOS tests/jakosc/m2-039-regula-konwersji.test.ts
+PASS iOS tests/narzedzia/klucze-fix8-film.test.ts
+PASS iOS tests/dane/przy-tle.test.ts
+PASS iOS tests/dane/widok-licznika-p5.test.ts
+PASS iOS tests/ekrany/stoper-sprawdz.test.tsx
+PASS iOS tests/jakosc/nazwy-plikow-wielkosc-liter.test.ts
+PASS iOS tests/jakosc/wersja-wydania.test.ts
+PASS iOS tests/dane/migracje-kopia.test.ts
+PASS iOS tests/domena/nazwa-czesci.test.ts
+PASS iOS tests/jakosc/bx12-cg1-scenariusze-bez-martwych-wzorcow.test.ts
+PASS iOS tests/dane/kompozycja-po-scaleniu.test.ts
+PASS iOS tests/i18n/parsuj-calkowita.test.ts
+PASS iOS tests/ekrany/e2e-panel-wzoru-skan.test.tsx
+PASS iOS tests/narzedzia/intencja-migawka.test.ts
+PASS iOS tests/ekrany/e2e-panel-wzoru-word.test.tsx
+PASS iOS tests/ekrany/e2e-zdjecie.test.ts
+PASS iOS tests/dane/sha-pary-bazy.test.ts
+PASS iOS tests/ekrany/import-pliku.test.ts
+PASS iOS tests/jakosc/bez-wersalikow.test.ts
+PASS iOS tests/i18n/preferencja.test.ts
+PASS iOS tests/narzedzia/licznik-wektorow.test.ts
+PASS iOS tests/adaptery/identyfikatory.test.ts
+PASS iOS tests/i18n/m3-fix-reaudit-022-timer.test.ts
+PASS iOS tests/i18n/nazwy-jezykow.test.ts
+PASS iOS tests/ekrany/miary.test.ts
+
+Test Suites: 730 passed, 730 total
+Tests:       8007 passed, 8007 total
+Snapshots:   0 total
+Time:        219.546 s
+Ran all test suites.
+kod=0
