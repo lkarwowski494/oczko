@@ -32,7 +32,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - **W toku:** SM1 session_01BM51ofhw7XcB3ui4XHFT5k (08 build) — scalenie `main` c0eff9ef wg raportu 1 (niesprawdzone), teraz verify i push na `claude/sm1-scalenie-main-2026-11-22`. Odbiór: rodzice 15c0bf77+52308cd7, `git diff 15c0bf77 <sha>` pusty, autor, Jakość · Linux na SHA, potem **PR do `main`** (scala właściciel, D-1).
 - **Do startu przez następcę:** PF1 — polecenie `polecenia/PF1.md` @ 87d33fee (07 fix JAK-19, opus; prompt: `node <prompts>/tools/assemble.mjs 07-jakosc --tryb fix --zadania JAK-19`), gałąź `claude/pf1-protokol-1221-2026-11-22` od 15c0bf77, title „Oczko PF1: protokół 1221 (rola 07, docs)”.
 - **Potem (plan 24 h):** po PF1 i SM1 — ff/scalenie do integracji (WG-27: nie w trakcie iOS), PR do `main`; dalej lista `docs/wydanie/do-app-store-1221.md`: notatka dla recenzenta (RÓŻNICA w asc-kontrola), lokalizacje IAP v2 (dry-run), wybór buildu 1221 w wersji 1.0, Submit for Review — słowami właściciela.
-- **Czeka na właściciela:** Grace / Copyright / kategoria podatkowa w ASC (instrukcja wysłana 08:27); scalenie PR do `main` po SM1.
+- **Czeka na właściciela:** zrzut App Review 3 produktów (instrukcja 08:50); scalenie PR do `main` po SM1. Grace, Copyright, kategoria podatkowa — zrobione (właściciel 08:45–08:52).
 
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
@@ -46,7 +46,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - ~~**Test 1221 na telefonie**~~ — właściciel 22.11 ok. 08:31: „PU-002 OK, PU-121 OK, PU-155 OK” → protokół robi PF1.
 - ~~**D-4:** wygaszenie w TestFlight buildów poza 1221~~ — właściciel 22.11: „Wygaszone”.
 - **Scalenie PR do `main`:** po SM1 (gałąź scalenia z konfliktami) koordynator otwiera PR; scala właściciel.
-- **Pozycje ASC** (odczyt tylko przez właściciela): ~~Billing Grace~~ (właściciel 22.11 ok. 08:45: „grace period done”), Copyright, kategoria podatkowa.
+- **Pozycje ASC** (odczyt tylko przez właściciela): ~~Billing Grace~~ (właściciel 22.11 ok. 08:45: „grace period done”), ~~Copyright~~, ~~kategoria podatkowa~~ (właściciel 22.11 ok. 08:52: „Copyright gotowe, tax jest ok”) — pozycje ASC zamknięte.
 - **Zrzut App Review produktów** (E1b/C7): `99-zakup-ceny.png` z artefaktu `zrzut-zakupu` 14625946481 (run 44722734741 @ 7e3de129, ważny do 4.12) — wgrywa właściciel przy 3 produktach (Trening Z-24); instrukcja wysłana 22.11 ok. 08:50; kadru koordynator nie obejrzał (brak pobrania artefaktu bez logowania) — sprawdza właściciel przed wgraniem (panel „Test store”).
 - **Ponowienie e2e cz. 4** (iOS 44758359585): domyślnie A (bez ponowienia, obserwacja PU-052 w build 10); B tylko słowem właściciela.
 - ~~**Wysiłek koordynatora:** `/effort medium`~~ — właściciel: „Gotowe”.
@@ -88,3 +88,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 08:35 | M9 | Kontekst 31,3% → E6. Stan zapisany; następca startuje z gałęzi `koordynacja`; prompt M9 składa sam z biblioteki (WG-30). | przekazanie |
 | 22.11 08:40 | M9 session_01BM51oeh3mTopCKP51FjPPn | **Przejęcie** (E6.5): prompt M9 z prompts @ af4c0a8 (złożony sam, WG-30); przypomnienia własne 14:00/05:00/kontrola; SM1 working, gałąź @ ef032d2a (kontekst 13,5%); PF1.md: ID koordynatora → nowe. | start PF1; odbiór SM1 |
 | 22.11 08:50 | M9 | Właściciel: „grace period done”; pyta o zrzut App Review do subskrypcji → instrukcja: `99-zakup-ceny.png` z artefaktu `zrzut-zakupu` 14625946481 przy oczko.pro.monthly, .yearly, .lifetime. PF1 startuje przez subagenta (prompt roli 63 KB; WG-31 kandydat: koszt przepisywania promptu roli w create_session). | PF1 get_session; kontrola 09:16 |
+| 22.11 08:52 | M9 | Właściciel dosłownie: „Copyright gotowe, tax jest ok” → Grace, Copyright, kategoria podatkowa w ASC zamknięte. | zrzut App Review; PF1 |
