@@ -60,6 +60,16 @@ export function splaszcz(buf) {
   return Buffer.concat([SYGNATURA, kawalek('IHDR', nowyIhdr), kawalek('IDAT', deflateSync(rgb, { level: 9 })), kawalek('IEND', Buffer.alloc(0))]);
 }
 
+/** Surowe piksele 8-bitowego PNG RGB/RGBA bez przeplotu: { szer, wys, bpp, surowe } (wiersze bez bajtów filtru). Do porównań kadrów (scripts/ci/zegarek-kadry.mjs, ZW1). */
+export function piksele(buf) {
+  if (buf.length < 8 || !buf.subarray(0, 8).equals(SYGNATURA)) throw new Error('to nie jest plik PNG');
+  const k = kawalki(buf); const ihdr = k.find((c) => c.typ === 'IHDR').dane;
+  const szer = ihdr.readUInt32BE(0); const wys = ihdr.readUInt32BE(4); const glebia = ihdr[8]; const typ = ihdr[9]; const przeplot = ihdr[12];
+  if (glebia !== 8 || przeplot !== 0 || (typ !== 6 && typ !== 2)) throw new Error(`nieobsługiwany PNG (głębia ${glebia}, typ koloru ${typ}, przeplot ${przeplot}); oczekiwane 8-bitowe RGB/RGBA bez przeplotu`);
+  const bpp = typ === 6 ? 4 : 3;
+  return { szer, wys, bpp, surowe: bezFiltrow(inflateSync(Buffer.concat(k.filter((c) => c.typ === 'IDAT').map((c) => c.dane))), szer, wys, bpp) };
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const [we, wy] = process.argv.slice(2);
   if (!we || !wy) { console.error('użycie: node scripts/ci/splaszcz-png.mjs <wejście.png> <wyjście.png>'); process.exit(2); }

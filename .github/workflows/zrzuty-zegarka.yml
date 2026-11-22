@@ -1,0 +1,151 @@
+# Zrzuty sklepu z Apple Watch (App Store Connect) z symulatora watchOS: 416 × 496 (Series 11 / 10, 46 mm), 3 kadry na język: licznik rzędów, pas przypomnienia, blokada licznika.
+# Rola 10-wydanie, tryb fix, ZW1 (KO-197, 2026-11-22). Powód: App Store Connect odmawia „Add for Review” dla wersji 1.0 (build 1221): „Your binary indicates support for Apple Watch.
+# You must provide an Apple Watch screenshot.” (właściciel, 22.11.2026). Wzorzec: Trening (trening:.github/workflows/watch-sim.yml; lekcja L-064 — para zegarek–iPhone, ponowna instalacja aplikacji).
+# Wyjście: artefakt `zegarek-zrzuty` w układzie, którego oczekuje `asc-zrzuty.yml` (`--zegarek zegarek-zrzuty`, scripts/asc/zrzuty.mjs, readShots): `<język>/NN-<kadr>.png` (PNG bez alfy, jeden rozmiar
+# we wszystkich lokalizacjach — Apple: „You must use the same screenshot size for Apple Watch consistently across all localizations for the app”). Wgranie: `asc-zrzuty.yml` z wejściem
+# `zegarek_z_przebiegu=<numer przebiegu TEGO workflowu>`; grupę urządzeń (Apple Watch) skrypt wybiera z wymiarów pliku, więc zrzutów iPhone'a i iPada nie dubluje (grupa z zrzutami jest pomijana).
+# KOD APLIKACJI I CELU ZEGARKA SIĘ NIE ZMIENIA: kadry pokazują to, co ma build 1221. Stan zegarka (kontekst telefonu i język) podaje aplikacji scripts/ci/zegarek-zrzuty.sh przez UserDefaults
+# (targets/watch/Aplikacja.swift czyta go przy starcie); budowa celu OczkoZegarek konfiguracją Release jak w archiwum, dla symulatora (SDK watchsimulator).
+# Bez sekretów i bez środowiska `release`; niczego nie wysyła do App Store Connect. Zadanie macOS tylko przy workflow_dispatch (po scaleniu do `main`; plik nowego workflowu działa z `main`)
+# albo przy pushu na gałąź roboczą ze znacznikiem [zrzuty-zegarka] w PIERWSZEJ linii komunikatu (opcja `[zegarek-jezyki:en,pl]` albo `[zegarek-jezyki:all]`); push bez znacznika kończy się na zadaniu „plan”.
+# Push uruchamia workflow tylko, gdy zmienia plik z `paths`: do wyzwolenia służy plik `scripts/ci/zegarek-uruchomienie.txt` (dopisz linię, zacommituj ze znacznikiem) — pusty commit nie wystarczy.
+# Czas: ≈ 10 s na kadr po budowie (budowa celu kilka minut); maszyn macOS zwykle brak ok. 14:00–23:00 UTC — jedno ponowienie ręczne (P-091, CLAUDE.md).
+name: Zrzuty zegarka
+on:
+  push:
+    branches: [claude/zw1-zegarek-zrzuty-2026-11-22, claude/youthful-pasteur-kx83sn]
+    paths:
+      - '.github/workflows/zrzuty-zegarka.yml'
+      - 'scripts/ci/zegarek-*'
+      - 'scripts/ci/splaszcz-png.mjs'
+      - 'targets/watch/**'
+      - 'e2e/zrzuty-sklepu/dane/**'
+  workflow_dispatch:
+    inputs:
+      jezyki:
+        description: 'Języki aplikacji po przecinku (np. "en,pl,de") albo "all" (29 języków z lokalizacją sklepu, jak zrzuty-sklepu.yml); domyślnie en,pl'
+        required: false
+        type: string
+        default: 'en,pl'
+      urzadzenie:
+        description: 'Wzorzec nazwy symulatora zegarka (regex), np. "Apple Watch Ultra 3" (422 × 514); pusty = Series 10/11/12 46 mm (416 × 496). Apple wymaga jednego rozmiaru we wszystkich lokalizacjach'
+        required: false
+        type: string
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: zrzuty-zegarka-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      uruchom: ${{ steps.wejscie.outputs.uruchom }}
+      jezyki: ${{ steps.wejscie.outputs.jezyki }}
+      urzadzenie: ${{ steps.wejscie.outputs.urzadzenie }}
+      dzien: ${{ steps.wejscie.outputs.dzien }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - id: wejscie
+        env:
+          ZDARZENIE: ${{ github.event_name }}
+          KOMUNIKAT: ${{ github.event.head_commit.message }}
+          WE_JEZYKI: ${{ inputs.jezyki }}
+          WE_URZADZENIE: ${{ inputs.urzadzenie }}
+        run: |
+          uruchom=false; jez="en,pl"; urz=""
+          # znaczniki tylko z PIERWSZEJ linii komunikatu: treść commitu może je opisywać
+          KOMUNIKAT=$(printf '%s\n' "$KOMUNIKAT" | head -1)
+          if [ "$ZDARZENIE" = workflow_dispatch ]; then
+            uruchom=true; jez="${WE_JEZYKI:-en,pl}"; urz="$WE_URZADZENIE"
+          else
+            case "$KOMUNIKAT" in *'[zrzuty-zegarka]'*) uruchom=true ;; esac
+            w=$(printf '%s' "$KOMUNIKAT" | sed -n 's/.*\[zegarek-jezyki:\([A-Za-z0-9,-]*\)\].*/\1/p' | head -1); [ -z "$w" ] || jez="$w"
+          fi
+          # Wejścia ręczne trafiają do $GITHUB_OUTPUT i do skryptów: tylko dozwolone znaki (nowa linia w wejściu nie dopisze cudzego wyjścia); sens języków sprawdza skrypt (kod 2)
+          case "$jez" in *[!A-Za-z0-9,-]*) echo "::error::wejście jezyki ma niedozwolone znaki"; exit 2 ;; esac
+          case "$urz" in *[!A-Za-z0-9\ \(\)\.\\-]*) echo "::error::wejście urzadzenie ma niedozwolone znaki"; exit 2 ;; esac
+          jez=$(node scripts/ci/zegarek-kadry.mjs plan "$jez") || { echo "::error::Zła lista języków (nieznany język albo język bez lokalizacji sklepu)"; exit 2; }
+          { echo "uruchom=$uruchom"; echo "jezyki=$jez"; echo "urzadzenie=$urz"; echo "dzien=$(date -u +%F)"; } >> "$GITHUB_OUTPUT"
+          echo "uruchom=$uruchom, języki: $jez, urządzenie: ${urz:-(Series 10/11/12 46 mm, 416 × 496)}" | tee -a "$GITHUB_STEP_SUMMARY"
+  zegarek:
+    needs: plan
+    if: needs.plan.outputs.uruchom == 'true'
+    runs-on: macos-26   # symulatory watchOS 26.x są w obrazie; Xcode 26.4+ wymagany przez SDK 56 (jak jakosc-ios.yml)
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Platforma iOS i watchOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Budowa celu zegarka (Release jak w archiwum, SDK watchsimulator, bez podpisu; surowy log do pliku)
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcodeproj | head -1)
+          xcodebuild -project "$WS" -target OczkoZegarek -configuration Release -sdk watchsimulator ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
+            SYMROOT="$PWD/build-zegarek/products" OBJROOT="$PWD/build-zegarek/obj" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee xcodebuild-zegarek.log | xcbeautify
+      - name: Symulator zegarka
+        id: sim
+        env:
+          WZORZEC: ${{ needs.plan.outputs.urzadzenie }}
+        run: |
+          UDID=$(bash scripts/ci/zegarek-symulator.sh ${WZORZEC:+"$WZORZEC"})
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Para z symulatorem iPhone'a (bez niej każdy kadr ma czerwoną ikonę braku połączenia z telefonem; para PRZED instalacją aplikacji)
+        env:
+          UDID: ${{ steps.sim.outputs.udid }}
+        run: bash scripts/ci/zegarek-para.sh "$UDID"
+      - name: Zrzuty ekranu (te same trafią do App Store Connect; stan zegarka z danych pokazowych jak w kadrach iPhone'a)
+        env:
+          UDID: ${{ steps.sim.outputs.udid }}
+          JEZYKI: ${{ needs.plan.outputs.jezyki }}
+          DZIEN: ${{ needs.plan.outputs.dzien }}
+        run: |
+          APP=$(find ios/build-zegarek/products -type d -name 'OczkoZegarek.app' | head -n 1)
+          [ -n "$APP" ] || { echo "::error::brak zbudowanego OczkoZegarek.app"; exit 1; }
+          bash scripts/ci/zegarek-zrzuty.sh "$UDID" "$APP" zegarek-zrzuty "$JEZYKI" "$DZIEN"
+      - name: Komplet (języki × kadry, jeden rozmiar z listy Apple, bez kanału alfa)
+        if: success()
+        env:
+          JEZYKI: ${{ needs.plan.outputs.jezyki }}
+          WZORZEC: ${{ needs.plan.outputs.urzadzenie }}
+        run: |
+          set -o pipefail
+          # domyślny zegarek = 416x496; inny (wejście „urzadzenie”): sprawdzamy jeden rozmiar z listy Apple, bez wymaganego wymiaru
+          ROZMIAR=416x496; [ -z "$WZORZEC" ] || ROZMIAR=""
+          node scripts/ci/zegarek-kadry.mjs komplet zegarek-zrzuty "$JEZYKI" $ROZMIAR | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zegarek-zrzuty
+          retention-days: 14
+          if-no-files-found: ignore
+          path: zegarek-zrzuty
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: zegarek-logi
+          retention-days: 3
+          if-no-files-found: ignore
+          path: |
+            ios/xcodebuild-zegarek.log
+            zegarek-zrzuty.stany
