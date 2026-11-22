@@ -113,3 +113,35 @@ Analogia: Trening poza zakresem sesji; `docs/fakty-wlasciciela.md` sprawdzony �
 
 ## Nie sprawdzono (zrzuty)
 Aplikacji na symulatorze i urządzeniu (kadry z CI); maszynowa detekcja napisów (OCR niedostępny — przegląd wzrokowy 56 plików, plus testy 4e46688c, których nie uruchamiałem); zachowania pigułki w zwykłej aplikacji; podpisów w 33 pozostałych językach (tylko en i pl); zgodności z wytycznymi App Store i metadanych (rola 10).
+
+## Zrzuty sklepu — 27 języków iPhone 6.9″, WR4 (2026-11-22)
+Rola 07, tryb audit (polecenie WR4 @ d6eb6c5d, KO-194). Gałąź `claude/wr4-zrzuty-jezyki-2026-11-22` od 5310ea0b. Materiał: przebieg „Zrzuty sklepu” **45021511463** (SHA 5310ea0b, gałąź ZR6; aplikacja z przebiegu 44697325331 = build 1221), artefakty `sklep-zrzuty-ramki` (id 14762870556) i `sklep-zrzuty-surowe` (id 14762785642), po 189 plików (27 języków × 7 scen); sumy zipów równe digestom artefaktów. Wzorzec: en/pl z WR3 (przebieg 44758366101, artefakt 14640946446). Dowody: `docs/jakosc/werdykt-1221/wr4/` (`tabela-pomiarow.md` — język × scena, `pasy-ramki-pomiar.txt`, `pasy-pomiar.py`, `podpisy-bbox.txt`, `kontrola-przebiegu-45021511463.txt`, `wr4-04-pasy-wycinek.jpg`). Wszystkie 189 ramek obejrzane; surowe — te same piksele plus próbka 4 plików.
+
+**Werdykt łączny: DO POWTÓRZENIA** — wyłącznie scena **04-zakreslenie** w 10 językach: **de, el, fr, id, ja, ms, nl, ro, ru, uk**. Pozostałe sceny tych języków i wszystkie 7 scen 17 pozostałych języków: **DO SKLEPU Z UWAGAMI** (cs, da, es, es-419, fi, hr, hu, it, ko, nb, pt, pt-BR, sk, sv, tr, vi, zh-Hant). Brak P0/P1.
+
+| Pytanie z polecenia | Wynik |
+|---|---|
+| 1. Komplet | **tak**: 27 × 7 plików w surowych i w ramkach, nazwy jak w en (`01-dzis`…`07-kalendarz`), wszystkie 1320×2868 (`identify`, bez błędów) |
+| 2. Język | interfejs i podpis ramki w języku katalogu w 27/27; znaki diakrytyczne (cs, hr, hu, ro, tr, vi, el, ru, uk) i CJK (ja, ko, zh-Hant) bez „tofu”. Zawartość użytkownika (PDF „Cable Hat”, notatka „next: 3 knit, then cable”, nazwy projektów) jest po angielsku we wszystkich językach (P3, jak we wzorcu en) |
+| 3. Tekst | podpisy mieszczą się w ramce (obwiednia 94–1223 px z 1320, `podpisy-bbox.txt`; dolna krawędź ≤ 467 px, urządzenie od ok. 555 px); brak wielokropków i zachodzenia na urządzenie, w tym de, fi, el, hu, ru, uk, pt-BR, fr. Uwagi P3: pt 02 (podpis przycisku zawija się i dotyka krawędzi), id/ms 03–04 (pasek licznika w 3 liniach), ja 04 (osierocone „す。”), el/ru/ms/fr 06 (nagłówek „listopad” pod paskiem kart ucięty do resztki) |
+| 4. Stan sceny | 02/03/04/06 pokazują właściwy ekran w 27/27, w tym hu, pt, vi i każdy język po pierwszym w swojej części (P-1011/P-1012 — nie wróciło): notatka i licznik 20, PDF z 1 zakreśleniem (03), 2 zakreśleniami (04) i znacznikiem „Row 21”, Historia z 8 wpisami. **04: drugi pas zakreślenia poza wierszem Row 13 w 10 językach** (niżej) |
+| 5. Nakładki | brak nakładek diagnostycznych E2E, pigułki „Strona n z m”, panelu „Test store”, klawiatury i alertów w 189 kadrach |
+| 6. OG-07, 03/04, zgodność z 1221 | ograniczenia P-218 (1)–(5) zgodne jak w WR3 (jeden PDF „Cable Hat”, 1 strona, 1 znacznik rzędu i licznik, brak filmu, zakreślenia osobną warstwą, znacznik z licznika); kontrola przebiegu 03=1 i 04=2 pasy w 27/27; (6) wykonane na kadrach. Kod aplikacji: `git diff 4e46688c 5310ea0b -- src app modules ios assets package.json` pusty, a od 1221 (a830eb21) 9 plików, 44+/25−, jak w WR2 (P-993) |
+| 7. Kontrola przebiegu | zadania iphone 1–8, plan i komplet: success (build pominięty); „Test ramek i podpisów”: 27 testów PASS; `wymiary-asc` OK (189 plików, surowe i ramki); `komplet-zrzutow` KOMPLET; `kontrola-zakreslen` „OK (27 par)”; „Ramki: 189 plików”. Pełna końcówka: `kontrola-przebiegu-45021511463.txt` |
+
+**Wada (rodzaj D, P2, realna, pewność wysoka): drugi pas zakreślenia w scenie 04 trafia w złe miejsce w 10 językach.** Wzorzec en: drugi pas podkreśla Row 13. W de, el, fr, ja, nl, ro, ru, uk podpowiedź nad PDF zawija się do 2 linii, strona PDF schodzi o 35 px, a pas stoi na stałej wysokości ekranu — podkreśla Rows 10-12; w id i ms strona jest 23 px wyżej i pas wisi między Row 13 a Rows 14-20 (`wr4-04-pasy-wycinek.jpg`: en, de, id, nl; pomiar `pasy-ramki-pomiar.txt`: kolumna `lines`, puste = poza wierszem). Mechanizm: współrzędna swipe'a w scenie 04 jest stała, położenie PDF zależy od liczby linii podpowiedzi i tytułu; w 17 językach z jedną linią (pagetop 1034–1046) trafia w Row 13. Kontrola `kontrola-zakreslen.mjs` liczy pasy, nie wiersze, więc przeszła mimo wady. Wpływ: główny kadr przewagi (zakreślanie na wzorze) pokazuje zakreślenie niezgodne z opisem „zakreśla wiersz” i niezgodne z en/pl zaakceptowanymi w WR3; nie myli co do funkcji, osłabia wiarygodność (jak Z2 z WR2, tu bez wyjątku na układ). Powtórka tych scen bez zmiany sceny da ten sam wynik (układ deterministyczny od liczby linii).
+
+**Do powtórzenia:** 04-zakreslenie × {de, el, fr, id, ja, ms, nl, ro, ru, uk} (10 plików, surowych i w ramkach), po poprawie sceny (rola 10/08, poza zakresem WR4): swipe liczony od położenia wiersza albo stała liczba linii podpowiedzi. Mechanizm uzupełnienia pojedynczych scen jest w workflowie (`uzupelnij_z_przebiegu=45021511463`, krok „Nałożenie poprzednich zrzutów na nowe”) — nie uruchamiałem go. Do rozszerzenia kontroli: sprawdzenie, że pas 2 nakłada się na wiersz tekstu (`pasy-pomiar.py` jest gotowym rachunkiem).
+
+**Uwagi P3 (nie blokują):**
+- **W-1 · wszystkie 27:** podpis 04 obiecuje pisanie/notatki, kadr notatki nie pokazuje (U4 z WR2).
+- **W-2 · wszystkie 27:** scena 06 pokazuje godziny w 12 godzinach także w językach z zegarem 24 h (de, fr, ru…) — region symulatora.
+- **W-3 · nl:** podpisy ramek w Noto Sans Bold (`scripts/ci/ramki-sklepu.sh:12`, „kroj.systemowy: bg, el, nl, ru, sr, uk, vi”), inne języki łacińskie w Bree — niespójna czcionka; sprawdzić, czy celowe.
+- **W-4 · it:** „ferro 21 / ferri finiti” (01) a „riga 21” (02) — nazewnictwo aplikacji (rola 06/08).
+- **W-5 · pt, id/ms, ja, el/ru/ms/fr:** jak w wierszu 3 tabeli.
+
+## Nie sprawdzono (WR4)
+- iPad 13″ i 33 pozostałe języki (poza zakresem WR4); en/pl z WR3 użyte tylko jako wzorzec (pliki ponownie nieoceniane).
+- Poprawności tłumaczeń (znaczenie, terminologia) — rola 06; wytycznych App Store i metadanych — rola 10; aplikacji na symulatorze/urządzeniu (kadry z CI).
+- OCR niedostępny: przegląd tekstu wzrokowy na zestawieniach 360–400 px na kadr (drobne etykiety w tabbarze czytelne, mniejsze znaki — dla pewności zwiększałem tylko wycinek 04); 189 surowych plików nie oglądałem pojedynczo (te same piksele co w ramce plus próbka 4).
+- Kroków przebiegu nie uruchamiałem — wynik przepisany z dziennika (`get_job_logs`).
