@@ -34,11 +34,10 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (22.11 19:30 UTC)
-- **Zrzuty sklepu w ASC — komplet:** en/pl (iPhone 6.9 + iPad 13, 45002887129) + 27 języków iPhone 6.9 (**apply 45059904980: wgraj 27, zapisano 27**, z przebiegu 45049417804 po ZR7/WR5). iPad w innych językach dziedziczy en.
-- **Do Submit zostaje tylko właściciel:** App Privacy (sprawdzić, czy opublikowane — API nie odczytuje), wybór buildu 1221 w wersji 1.0, 3 produkty (oczko.pro.monthly/.yearly/.lifetime) przy wersji, Submit for Review. Słowa właściciela: „Popraw i zgłoś jutro” (23.11). asc-kontrola 45044504737: OK 16, RÓŻNICA 1 (notatka recenzenta ≠ plik — edycja właściciela), BŁĄD 0.
-- **Po zgłoszeniu (bez pośpiechu):** scalenie ZR6 → ZR7 → WR5 (claude/wr5-scena04-2026-11-22 @ b7557335, liniowo od 6834c6d5) do integracji (ff; uruchomi Jakość · iOS — WG-27) i PR do main (scala właściciel); backlog: uwagi WR4 W-1…W-5, recenzja ZR7 R-1…R-3, migracja IAP v2 przed 2027.
-- Sesji aktywnych brak.
+## Teraz (22.11 19:55 UTC)
+- **Zrzuty iPhone/iPad w ASC — komplet** (en/pl 45002887129; 27 języków apply 45059904980).
+- **Add for Review blokuje tylko zrzut Apple Watch.** Właściciel 19:52: „Reszta juz ogarnieta. content rights, price i app privacy”. **ZW1** session_01BM51ogJ6CFjexYbiVEHzgk (10 fix, sonnet) przenosi watch-sim z Treningu (KO-197) → dispatch przebiegu zegarka (koordynator) → przegląd kadrów (07) → asc-zrzuty z `zegarek_z_przebiegu` po zgodzie właściciela → Submit właściciela (build 1221 + 3 produkty). Maszyny macOS wieczorem zwykle brak (14–23 UTC).
+- **Po zgłoszeniu:** scalenie ZR6→ZR7→WR5→ZW1 do integracji (ff; WG-27) i PR do main; backlog: WR4 W-1…W-5, ZR7 R-1…R-3, IAP v2 przed 2027.
 
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
@@ -47,6 +46,7 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | WR4 | session_01BM51ogR1fDipDtTArB7DrY | 07 audit (sonnet) — przegląd kadrów 27 języków iPhone, przebieg 45021511463 (KO-194) | claude/wr4-zrzuty-jezyki-2026-11-22 od 5310ea0b | 0 | 0 | start 16:28; polecenie `polecenia/WR4.md` @ d6eb6c5d; prompt roli 07 audit przepisany przez subagenta (koniec pliku zgodny, bajtowo nieporównany) |
 | ZR7 | session_01BM51odGrShEek5izLZLyYY | 10 fix (sonnet) — scena 04 w 10 językach + kontrola położenia pasa (KO-195) | claude/zr7-scena04-2026-11-22 @ 6632982a | 32 | 3,96 | raport 17:25, przyjęta warunkowo (dowód = przebieg 45049417804 + przegląd 04); koszt ≈ próg STOP 3,9 — bez dalszych zadań; start 16:58 |
 | WR5 | session_01BM51oe8vygdZm7Cn8FZuad | 07 audit (sonnet) — 04 w 10 językach na 45049417804 + recenzja niezależna ZR7 (KO-196) | claude/wr5-scena04-2026-11-22 od 6632982a | 0 | 0 | start 18:36; polecenie `polecenia/WR5.md` @ be0ae355; prompt przepisany przez subagenta (1 różnica: `\|\|` w wierszu JAK-18 — nieistotna) |
+| ZW1 | session_01BM51ogJ6CFjexYbiVEHzgk | 10 fix (sonnet) — zrzuty Apple Watch wg Treningu watch-sim (KO-197) | claude/zw1-zegarek-zrzuty-2026-11-22 od b7557335 | 0 | 0 | start 19:55; polecenie `polecenia/ZW1.md` @ 0b8e7df0; prompt przepisany przez subagenta (bajtowo nieporównany) |
 | ZR6 | session_01BM51odhFPYTcPdTHku9v9o | 10 fix (sonnet) — zrzuty w językach poza en/pl (KO-191) | claude/zr6-jezyki-2026-11-22 @ 5310ea0b | 30 | 3,92 | raport 12:17, przyjęta warunkowo (dowód = przebieg 45021511463); start 11:58; polecenie `polecenia/ZR6.md` @ 0c32855c |
 | SM1 | session_01BM51ofhw7XcB3ui4XHFT5k | 08 build (sonnet) — scalenie `main` 52308cd7 do gałęzi od integracji 15c0bf77 pod PR (KO-189) | claude/sm1-scalenie-main-2026-11-22 @ ef032d2a | 15 | 0,89 | **przyjęta 08:58, zarchiwizowana 09:36** |
 
@@ -130,3 +130,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 22.11 18:58 | M9 | Zgoda właściciela 18:57 → **asc-zrzuty dry-run 45057975474** (integracja, `zrzuty_z_przebiegu=45049417804`, 6.9) — waiting na Approve; link wysłany. | Approve → wynik → apply |
 | 22.11 19:30 | M9 | Approve właściciela → dry-run 45057975474 success (wgraj 27, pomiń 0, nic nie zapisano) → **apply 45059904980 success: wgraj 27, zapisano 27** (27 języków × 7 zrzutów iPhone 6.9). Zrzuty sklepu kompletne. Zostają kroki właściciela do Submit. | linia 05:00 / Submit właściciela |
 | 22.11 19:50 | właściciel, M9 | „Unable to Add for Review”: (1) Content Rights, (2) zrzut Apple Watch, (3) App Privacy nieopublikowane (Publish), (4) cena. (1)(3)(4) — kroki właściciela (Yes jak Trening, `kroki-wlasciciela-testflight.md` C1; Publish; Free wg `monetyzacja.md:75`). (2) właściciel: „Automat jak w Treningu” → **KO-197, ZW1**. App Privacy odczyt właściciela: Data Not Collected, polityka https://apps4brew.com/oczko/privacy.html (200). | start ZW1 |
+| 22.11 19:55 | M9 | Właściciel: Content Rights, cena, App Privacy zrobione. **ZW1 start** session_01BM51ogJ6CFjexYbiVEHzgk. | raport ZW1 |
