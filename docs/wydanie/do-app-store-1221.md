@@ -69,7 +69,7 @@ Czas właściciela [OCENA, jak w liście] osobno od czasu sesji. „Approve” =
 | Punkt | Co i jak (wzór z Treningu) | Warunek / uwaga |
 |---|---|---|
 | K2 / A2 **werdykt 07 dla a830eb21 (1221)** | zlecenie dla roli 07 (Trening: audyt zmian Z-03) | brak pliku w `docs/jakosc/` (jest tylko `werdykt-build-1161.md`); **decyzja koordynatora** D-2 |
-| K3 / F1a **protokół testu fizycznego 1221** | `docs/jakosc/test-fizyczny/1221.md`, potem `node scripts/jakosc/bramka-przypadki-uzycia.mjs recenzja 1221` kod 0 | dziś **CZERWONA** (1 kontrola, uruchomiona 19.11); wejście: wynik kroku 1 właściciela + „pominięte: …” dla reszty F (61 PU) wg D-2 |
+| K3 / F1a **protokół testu fizycznego 1221** | `docs/jakosc/test-fizyczny/1221.md`, potem `node scripts/jakosc/bramka-przypadki-uzycia.mjs recenzja 1221` kod 0 | **zrobione 22.11** (commit f9c5a941, P-1009, KO-190): PU-002/121/155 „zrobione: OK” słowami właściciela, pozostałe 58 PU F „pominięte: …” (P-973 i D-2); `recenzja 1221` → zielona, kod 0 |
 | K4 / C1 / C2 zrzuty na kandydacie | `zrzuty-sklepu.yml` dispatch (en,pl; iPhone, iPad) na a830eb21; ocena wzrokiem C2 po przebiegu | **artefakty z 13.11 wygasają: surowe 2026-11-20, ramki 2026-11-27**; zakaz poniedziałków i 1–7 dnia miesiąca, maszyn macOS brak zwykle 14:00–23:00 UTC; 19.11 to czwartek (dozwolony); start poza oknem 14:00–23:00 UTC |
 | K5 / D1 PR integracji → `main` | otwarcie PR po zielonym CI (CI na a830eb21: do sprawdzenia przed otwarciem) | **scala właściciel** (c); `list_pull_requests` 19.11: brak otwartych |
 | K6 / E1a dry-run `asc-iap-localizations` (v2) | uruchomienie dry-run; obejrzenie wierszy `(wersja N, STAN; istniejących lokalizacji: K)` | Approve właściciela; zob. uwaga o D1 niżej |
@@ -84,7 +84,7 @@ Czas właściciela [OCENA, jak w liście] osobno od czasu sesji. „Approve” =
 
 | # | Krok | Czas W [OCENA] | Zgoda osobna | Stan |
 |---|---|---|---|---|
-| 1 | Ręczna kontrola na iPhonie, build 1221 z TestFlight: PU-002, PU-121, PU-155 (`docs/wydanie/test-fizyczny.html`: T-02, T-72, T-105) | 20–40 min | nie (słowa KO-158) | build VALID — można zacząć |
+| 1 | Ręczna kontrola na iPhonie, build 1221 z TestFlight: PU-002, PU-121, PU-155 (`docs/wydanie/test-fizyczny.html`: T-02, T-72, T-105) | 20–40 min | nie (słowa KO-158) | **zrobione 22.11** ok. 08:31 UTC: „PU-002 OK, PU-121 OK, PU-155 OK” (commit f9c5a941, P-1009) |
 | 2 | Akceptacja podpisów zrzutów en i pl (C5) | 5 min | nie | `podpisy-zrzutow.json` `status.en/pl` = „[DO AKCEPTACJI]” |
 | 3 | Ocena wyglądu zrzutów (C4) | 5–10 min | nie | po C1 |
 | 4 | **Scalenie PR → `main`** (D1) | 5 min | **tak** | `main` = 52308cd7; patrz uwaga niżej, czy to w ogóle warunek workflowów |
