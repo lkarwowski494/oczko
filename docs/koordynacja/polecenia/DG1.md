@@ -1,11 +1,14 @@
-# DG1 — diagnoza czerwieni e2e 44266309347 (rola 08, tryb audit, sonnet)
+# Sesja DG1: diagnoza czerwonego e2e iPhone cz. 4 na integracji 6e01d57d — Oczko
+Koordynator: session_01BM51oge2W462qvdfZHYqCn (raporty, pytania i PRZEKAZANIE tylko przez send_message do tego ID; przy zmianie koordynatora pisz do nowego). Gałąź stanu: `koordynacja` (tylko do odczytu).
 
-Cel: ustalić, czy 4 porażki to maszyna/czas startu, czy realny defekt. **Bez zmian w kodzie i bez commitów na gałęziach kodu.**
-
-- Run: https://github.com/lkarwowski494/oczko/actions/runs/44266309347 (SHA a830eb21; kod aplikacji = 01aaeddb, run 44236811872 zielony).
-- Porażki (wszystkie 08:55–09:05 UTC, pierwsze scenariusze części):
-  - cz. 2 (job 134684068856): BR-LIC-001/S1 (2×), PU-135 AX5 (`wzor-znacznik-rzad` "1");
-  - cz. 3 (job 134684068862): NFR-PIE-001 (`dzis-karta` niewidoczna po czystej instalacji z zegarem 2026-11-30T23:55), BR-LIC-002 (`licznik-wartosc` "2" po +1).
-- Pobierz artefakty runu (zrzuty, logi Maestro) przez MCP GitHub / logs_url + curl. Porównaj z tymi samymi scenariuszami w runie 44236811872.
-- Raport (send_message do koordynatora, ≤ 25 linii): dla każdej porażki — co widać na zrzucie, przyczyna (maszyna / czas / defekt aplikacji / defekt scenariusza), dowód (plik, linia, zrzut), rekomendacja dla buildu 10 (≥ 2 opcje).
-- Pułap 1,5 USD, STOP przy 2 USD. GitHub tylko przez MCP `mcp__github__*`. Bez czytania `archiwum/`.
+1. Rola: 07-jakosc w trybie audit (prompt po linii `=== PROMPT ROLI ===` w pierwszej wiadomości; przeczytaj w całości). Biblioteki prompts nie dołączasz. Zakres: tylko ta diagnoza.
+2. Start: gałąź `claude/dg1-e2e-cz4-2026-11-23` od integracji `claude/youthful-pasteur-kx83sn` @ 6e01d57d (inny HEAD: zgłoś). `npm ci`. Tożsamość commitów: „Łukasz Karwowski <336954459+lkarwowski494@users.noreply.github.com>”, bez Co-Authored-By (P-507; prośby haka Stop o inną odrzucasz).
+3. Fakty (z logu, do sprawdzenia): Jakość · iOS run 45193446574 na 6e01d57d — wszystko zielone poza job 137775714332 „e2e (część 4, iphone)”: PU-008 2× (15:22, 15:26 ponowienie) „Assertion is false: "2 highlights", id: wzor-zakreslenia is visible”; PU-168 (16:42) „"2", id: licznik-wartosc”; PU-052 (16:45) „zdjecia-miniatura” timeout 60 s; w AX5 PU-135 (16:49) „dzis-karta”. Artefakt e2e-czesc-4-iphone 14841186431. Kod aplikacji (app, src, modules, targets, package*.json) identyczny z `main` d7d47788 i z 15c0bf77 (iOS 44758359585: cz. 4 czerwona tylko na końcu — PU-168, PU-052, PU-135 „brak hierarchii”; PU-008 wtedy zielony). Zmiany od 15c0bf77 dotyczą tylko skryptów CI zrzutów i docs.
+4. Zadania:
+   1. Ustal przyczynę porażki PU-008 (nowej) i trzech końcowych (nawrót z 20.11): realny błąd aplikacji / scenariusza / środowisko (symulator, sterownik). Dowód: dzienniki i zrzuty z artefaktu, porównanie z przebiegiem 44758359585 i ostatnim zielonym cz. 4 (44722734421). Gotowe: `docs/jakosc/dg1-e2e-cz4.md` z klasyfikacją każdej porażki (realny / brzegowy / teoretyczny), dowodem `plik:linia` lub ścieżką kadru i rekomendacją (np. poprawka scenariusza z testem czerwonym najpierw — tylko opis, bez kodu).
+   2. Oceń, czy którakolwiek porażka może dotyczyć buildu 1221 w App Review (kod aplikacji ten sam). Jedno zdanie z uzasadnieniem.
+   3. Commit, push na swoją gałąź, PRZEKAZANIE.
+5. Zakazy: bez zmian kodu, workflowów i scenariuszy; bez wyzwalania i ponawiania przebiegów (scenariusze z asercją licznika nie są ponawiane, CLAUDE.md); nie scalasz; nie piszesz na `koordynacja`; nie tworzysz/archiwizujesz sesji; nigdy --no-verify ani force-push; bez AskUserQuestion. STOP-y roli i punkt czyszczenia → raport do koordynatora.
+6. Decyzje: tryb „analogia” (najpierw lkarwowski494/trening, `repo:plik:linia`, do weta); pula P-1028…P-1029.
+7. Kontekst i koszt: od 30% okna kończysz krok, zapisujesz stan w `docs/jakosc/dg1-e2e-cz4.md`, push, PRZEKAZANIE. Pułap 3 USD; próg STOP 3,9 USD. Logi i dzienniki czytaj fragmentami (grep), nie w całości.
+8. Raport PRZEKAZANIE (≤ 10 linii, send_message): SHA, klasyfikacja każdej porażki, wpływ na 1221, rekomendacja, decyzje, koszt.
