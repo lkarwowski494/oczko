@@ -1,0 +1,23 @@
+RZ1 — npm run verify, 2026-11-23, jedno uruchomienie, komenda: npm run verify (typecheck, typecheck:testy, lint, jakosc:kontrole, jest)
+Commit: 5a4c6968e69e48677260fdd619a860c9fd917c8b (gałąź claude/rz1-recenzja-zegarka-2026-11-23); git status --porcelain przed i po: pusty
+Start 2026-11-23T14:02:55Z · koniec 2026-11-23T14:07:46Z · Node v22.23.5 · Linux (bez Xcode i symulatora: skrypty zegarka biegły na atrapach xcrun)
+KOD WYJŚCIA: 0
+Test Suites: 737 passed, 737 total · Tests: 8184 passed, 8184 total · Snapshots: 0 · Time: 233 s
+Zestawy zegarka: zegarek-zrzuty-skrypty (8,9 s), -kadry, -workflow, -asc: PASS
+
+--- etapy (linie '> ' z logu) ---
+6:> oczko@1.0.0 typecheck
+10:> oczko@1.0.0 typecheck:testy
+14:> oczko@1.0.0 lint
+18:> oczko@1.0.0 jakosc:kontrole
+1559:> oczko@1.0.0 test
+
+--- końcówka logu (ostatnie 8 linii) ---
+PASS iOS tests/i18n/nazwy-jezykow.test.ts
+PASS iOS tests/ekrany/miary.test.ts
+
+Test Suites: 737 passed, 737 total
+Tests:       8184 passed, 8184 total
+Snapshots:   0 total
+Time:        233.078 s
+Ran all test suites.
