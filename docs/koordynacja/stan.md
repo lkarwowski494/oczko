@@ -4,6 +4,17 @@ Migracja na M9 (moduł „migracja”, D-056) z koordynatora session_01T66VBx6UX
 
 Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomnienia, pule, dziennik): `docs/koordynacja/dziennik-2026-11.md` (przeniesione 22.11, WG-29).
 
+## Wznowienie (także na innym koncie) — prompt do wklejenia w nowej sesji z repo lkarwowski494/oczko
+```
+Jesteś koordynatorem sesji (rola M9) aplikacji Oczko; wznowienie pracy (poprzedni koordynator: session_01BM51oge2W462qvdfZHYqCn, być może na innym koncie — wtedy get_session/send_message do niego nie działają, a jego przypomnienia zostają tam).
+1. Rola: dołącz bibliotekę lkarwowski494/prompts przez add_repo (klon /home/user/prompts), złóż: node /home/user/prompts/tools/assemble.mjs M9-koordynator-sesji --tryb build --plik <scratchpad>/m9.md i przeczytaj w całości; jesteś tą rolą. Gdy add_repo odrzucony: poproś właściciela o zgodę raz, do tego czasu bez nowych sesji.
+2. Stan: git fetch origin koordynacja; przeczytaj docs/koordynacja/stan.md (mandat, „Teraz”, „Po Submit”, dziennik od 22.11). Historia sprzed 20.11: dziennik-2026-11.md — nie czytaj w całości.
+3. Przejęcie wg E6 punkt 5: własne przypomnienia (linie 05:00 i 14:00 UTC; kontrola tylko gdy coś trwa), wpis siebie jako koordynatora aktywnego w mandacie, commit [skip ci] i push na koordynacja. Poprzednik na innym koncie: „PRZEJĄŁEM” pomijasz, wpis w dzienniku.
+4. Mandat bez zmian; działania zewnętrzne tylko wg mandatu. Tożsamość commitów wg mandatu. Przed pierwszym pushem kodu npm ci (pre-push uruchamia verify). Po pushu z worktree sprawdź git config core.bare (ma być false).
+5. Cisza: tylko linie 05:00 i 14:00 UTC, prośby do właściciela i odpowiedzi.
+```
+Na innym koncie: sesje, przypomnienia i koszty z tego konta nie są widoczne; stan jest w całości w tym pliku i na gałęziach repo. Środowisko (env_…) jest per konto — użyj domyślnego nowego konta; sekrety ASC są w GitHub (środowisko `release`), nie w środowisku sesji.
+
 ## Mandat (przepisuj bez zmian; zmienia go tylko właściciel)
 - Tryb decyzji: **analogia** — od 9.11 ok. 19:20 UTC (P-633), słowa: „Ty podejmujesz wszystkie decyzje zgodnie z tym co i tak byś zarekomendował. Prace zlecasz do innych sesji … Pilnujesz ich żeby nie przekroczyły 30% limitu kontekstu, jak to się stanie to zapisują stan i przekazują zadanie dalej”. Doprecyzowanie właściciela (9.11 ok. 19:25 UTC, wiadomość startowa nocy): „Tryb nocny: wszystkie decyzje podejmujesz sam wg własnej rekomendacji (także wygląd), wpis „(noc, do weta)” w docs/decyzje.md. Sam tylko koordynujesz — pracę zlecasz sesjom ról”. Stała zasada repo (CLAUDE.md, P-087, P-315): najpierw jak w repo `trening`, bez analogii — własna rekomendacja.
 - Tryb nocny potwierdzony (10.11 ok. 21:57 UTC, czat koordynatora session_01T66VBzbScQrZbywfTvaNTg), słowa właściciela: „DObar ide spac. Od teraz pracujesz samdodzielnie do rana i decyzje podejmujesz sam zgodnie z trybem nocnym” — tryb „analogia” (noc, wpisy do weta); zgody trwałe i granice bez zmian.
@@ -35,7 +46,11 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 - Środowisko: environment_id env_0166YQoQYngJLGR5ViagvRAi (do 10.11 05:30: env_01GMJmLpW2GTvGdZ1nMituy9), model koordynatora claude-opus-5-5 od 10.11 ok. 12:45 (`/model` właściciela; zgodne z zaleceniem roli), wcześniej claude-fable-5-2 (wyjątek nazwany: właściciel 10.11 napisał „dalej” bez `/model opus`; zalecenie roli: opus; sesje podrzędne wg `--lista`), wysiłek medium, permission_mode auto, extra_allowed_tools —, repo sesji: lkarwowski494/oczko, lkarwowski494/oczko-warsztat (prywatne; zapis prosto na `main`), lkarwowski494/prompts (prywatne; `add_repo` bywa odrzucany przez klasyfikator — WG-03).
 - Gałąź robocza: `claude/youthful-pasteur-kx83sn` (integracja, P-559); gałąź stanu: `koordynacja`. Kopia zapasowa decyzji: `claude/kopia-koordynator-2026-11-08` (= integracja + docs; nowy następca może wpisy P-nnn prowadzić dalej tam albo przez sesje).
 
-## Teraz (23.11 05:35 UTC) — **Oczko 1.0 (1221) zgłoszone do App Review: „Waiting for Review”** (właściciel, ok. 05:30). Następne: czekanie na Apple; po Submit wg punktu „Po Submit” niżej (recenzja ZW1/ZW2, scalenie do integracji, PR do main, backlog).
+## Teraz (23.11 05:40 UTC)
+- **Oczko 1.0 (1221) w App Review: „Waiting for Review”** (Submit właściciela ok. 05:30 UTC). Zgłoszenie: iOS App 1.0 (1221), Oczko Pro Lifetime, grupa Oczko Pro (monthly, yearly). Zrzuty w ASC komplet: iPhone 6.9 + iPad 13 (en/pl), iPhone 27 języków, Apple Watch 29 języków (apply 45115632332, zapisano 32).
+- **Czeka:** odpowiedź Apple (e-mail / ASC). Odrzucenie lub pytania → właściciel wkleja treść → sesja 10 (wydanie) fix wg uwag.
+- **Następne (koordynator, bez właściciela):** (1) recenzja niezależna kodu ZW1/ZW2 — 07 audit, sonnet, ~2,8 USD (WG-33); zakres: `.github/workflows/zrzuty-zegarka.yml`, `scripts/ci/zegarek-*`, testy; gałąź `claude/zw1-zegarek-zrzuty-2026-11-22` @ 5a4c6968. (2) Po werdykcie: scalenie ff ZR6→ZR7→WR5→ZW1/ZW2 (liniowo od 6834c6d5; HEAD 5a4c6968) do integracji `claude/youthful-pasteur-kx83sn` (WG-27: nie w trakcie Jakość · iOS), CI na wyniku, PR integracja → main (scala właściciel). (3) Backlog: WR4 W-1…W-5, ZR7 R-1…R-3, migracja IAP na API v2 przed 2027, ponowienie e2e cz. 4 (domyślnie A).
+- Sesji podrzędnych aktywnych brak. Następne numery: P-1026, KO-199, WG-34, litera sesji wg tabeli (nowa: np. RZ1).
 
 ## Poprzednio: Teraz (23.11 05:00 UTC) — PRZEKAZANIE koordynatora session_01BM51oeihUHzW3EiW8t2smE (kontekst 38% = 379 tys./1 mln, 15,34 USD; lineage 2/8 → następca 3/8)
 - **Zrzuty w ASC:** iPhone/iPad en/pl (45002887129) + iPhone 27 języków (apply 45059904980, zapisano 27). Właściciel 22.11 ok. 19:52: Content Rights, cena (Free), App Privacy (Publish) — zrobione.
@@ -146,3 +161,4 @@ Historia sprzed 20.11 08:30 (sekcje „Historia”, stare plany, sesje, przypomn
 | 23.11 05:06 | M9 | Approve właściciela → **dry-run 45115412593 success:** wgraj 32 (zegarek WATCH_SERIES_10_PROFILE, 29 języków; en → 4 sklepy), pomiń 27, nic nie zapisano. **apply 45115632332** wyzwolony (zgoda 05:03) — waiting na Approve; link wysłany. | Approve → wynik apply → właściciel: 1221, 3 produkty, Submit |
 | 23.11 05:09 | M9 | Approve właściciela → **apply 45115632332 success: wgraj 32, pomiń 27, zapisano 32** (Apple Watch, 29 języków × 2 kadry). Blokada „Add for Review” (zrzut zegarka) usunięta. Kroki właściciela: build 1221 w wersji 1.0, 3 produkty, Add for Review, Submit. | potwierdzenie Submit od właściciela |
 | 23.11 05:35 | właściciel, M9 | Zrzut Draft Submission: iOS App 1.0 (1221), Oczko Pro Lifetime, grupa Oczko Pro (2 subskrypcje) → Submit. Właściciel dosłownie: „jest waiting for review”. **1.0 w App Review.** | odpowiedź Apple; recenzja ZW1/ZW2 → scalenie |
+| 23.11 05:40 | M9 | Na prośbę właściciela („zapisz stan … w nowym koncie w razie gdyby skończył się limit”): sekcja „Wznowienie” z promptem do wklejenia, „Teraz” i następne kroki uaktualnione. | recenzja ZW1/ZW2 |
