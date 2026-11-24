@@ -28,6 +28,34 @@ Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydani
 
 Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1013 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
 
+## D. Wpis „mała aplikacja, szukam błędów” (P-1013, wersja druga) — PL
+
+> Cześć! Szukam kilku osób, które pomogą mi wyłapać błędy w mojej małej aplikacji. Oczko to licznik rzędów na iPhone'a i iPada, który robię sam — dopiero trafił do App Store i na pewno nie jest jeszcze idealny.
+>
+> Co już umie:
+> • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
+> • wzór (PDF albo zdjęcie) obok licznika, z zaznaczonym bieżącym rzędem,
+> • po przerwie otwiera się dokładnie tam, gdzie skończyliście.
+>
+> Dla chętnych do testów: **3 miesiące pełnej wersji za darmo — nic się potem samo nie pobierze**. Kod: OCZKOPL → <link realizacji kodu>
+>
+> Każdy zgłoszony błąd, coś niejasnego albo brakującego — w komentarzu albo prywatnie — bardzo mi pomoże. Mała aplikacja żyje z opinii, więc jeśli Oczko się przyda, szczera ocena w App Store też ma ogromne znaczenie.
+
+## D. "Small app, looking for bugs" (P-1013, second version) — EN
+
+> Hi! I'm looking for a few people to help me catch bugs in my small app. Oczko is a row counter for iPhone and iPad that I build on my own — it has just landed on the App Store and it's surely not perfect yet.
+>
+> What it can already do:
+> • one tap adds a row, and a mistake is undone just as quickly,
+> • your pattern (PDF or photo) next to the counter, with your current row marked,
+> • after a break it opens exactly where you left off.
+>
+> For anyone willing to test it: **3 months of the full version for free — nothing renews or charges you afterwards**. Code: OCZKOEN → <code redemption link>
+>
+> Every bug, anything confusing or missing — in the comments or by message — helps a lot. A small app lives on feedback, so if Oczko helps you, an honest rating on the App Store matters a lot too.
+
+Zasady szkicu D: jak C; kod dostaje każdy bez warunku (nie „za zgłoszenie”), zgłoszenia błędów idą do komentarzy albo wiadomości, a ocena w App Store pozostaje osobną, szczerą prośbą. „Robię sam” — właściciel potwierdza przed publikacją, że to prawda.
+
 ## A. Wpis w grupie — PL
 
 > Dzień dobry, jestem autorem aplikacji Oczko — licznika rzędów na iPhone'a i iPada do robótek na drutach i szydełku. Właśnie trafiła do App Store i zależy mi na uwagach osób, które naprawdę dziergają.
