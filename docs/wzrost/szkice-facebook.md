@@ -4,6 +4,30 @@ Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydani
 
 Źródło twierdzeń: `docs/wydanie/metadane/pl.store.json` i `en.store.json` (opis sklepu 1.0). Bez cen w kwotach (różnią się między krajami). Bez zegarka, dopóki werdykt 07 go nie potwierdzi.
 
+## C. Wpis z historią i kodem (P-1013) — wersja główna, PL
+
+> Cześć! Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstało **Oczko** — licznik rzędów na iPhone'a i iPada:
+> • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
+> • wzór (PDF albo zdjęcie) obok licznika, z zaznaczonym bieżącym rzędem,
+> • po przerwie otwiera się dokładnie tam, gdzie skończyliście.
+>
+> Aplikacja jest świeża w App Store, dlatego rozdaję **3 miesiące pełnej wersji za darmo — nic się potem samo nie pobierze**. Kod: OCZKOPL → <link realizacji kodu>
+>
+> Bardzo liczę na Wasze uwagi, także krytyczne. A jeśli Oczko się przyda, szczera ocena w App Store ogromnie pomaga małej aplikacji.
+
+## C. Post with story and code (P-1013) — main version, EN
+
+> Hi! I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how **Oczko** came about — a row counter for iPhone and iPad:
+> • one tap adds a row, and a mistake is undone just as quickly,
+> • your pattern (PDF or photo) next to the counter, with your current row marked,
+> • after a break it opens exactly where you left off.
+>
+> It's brand new on the App Store, so I'm giving away **3 months of the full version for free — nothing renews or charges you afterwards**. Code: OCZKOEN → <code redemption link>
+>
+> I'd love your feedback, critical too. And if Oczko helps you, an honest rating on the App Store means a lot to a small app.
+
+Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1013 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
+
 ## A. Wpis w grupie — PL
 
 > Dzień dobry, jestem autorem aplikacji Oczko — licznika rzędów na iPhone'a i iPada do robótek na drutach i szydełku. Właśnie trafiła do App Store i zależy mi na uwagach osób, które naprawdę dziergają.

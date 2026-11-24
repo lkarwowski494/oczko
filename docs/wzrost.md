@@ -39,7 +39,9 @@ Rola 11-wzrost, tryb build (prompt `prompts` @af4c0a8, start przez /apps4brew). 
 
 **Przekazanie sesji 2:**
 - **Właściciel (po akceptacji Apple i wydaniu):** wypełnić `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md` (ok. 5 min/grupa), potem 2–4 wpisy dziennie według zasad; codziennie odpowiedzi; stop przy 2 usunięciach albo ostrzeżeniu Facebooka; `pt` z App Store Connect, gdy pojawi się zakładka Campaigns.
-- **09 Lokalizacja:** przekład szkiców `docs/wzrost/szkice-facebook.md` na języki grup wybranych przez właściciela (przekład + krytyk, jak P-808); bez nowych twierdzeń.
+- **09 Lokalizacja:** przekład szkiców `docs/wzrost/szkice-facebook.md` (najpierw szkic C, P-1013) na języki grup wybranych przez właściciela (przekład + krytyk, jak P-808); bez nowych twierdzeń.
+- **02 Monetyzacja:** wyjątek od P-057 dla kodów z wpisów (P-1013 (1)): kontrakt i rachunek — 3 mies. Pro bez odnowienia, osobny kod na język.
+- **10 Wydanie:** kody ofert w App Store Connect po akceptacji 1.0 (P-1013): instrukcja sprawdzona u źródła (darmowa oferta bez odnowienia, link realizacji, limit), krok właściciela.
 - **10 Wydanie:** znalezisko — „ASC kontrola ustawień” failure 22.11 (run 45044504737); data wydania 1.0 do `docs/wzrost.md` (horyzont i daty oceny H, P-1010 (4)).
 - **07 Jakość:** werdykt dla zegarka (PU-155) przed użyciem go w przekazie.
 - **11 (reaudit):** po pierwszym tygodniu wpisów — decyzja o H kanału Facebook (P-1012 (3)); po 8 tygodniach od wydania — ocena H-11–H-13: `node tools/assemble.mjs 11-wzrost --tryb reaudit --baza <sha>`.
@@ -305,7 +307,7 @@ Szkice poza publicznym repo: `oczko-warsztat/11-wzrost/2026-10-26-build/szkice/`
 | 2 | przy kroku 11 planu | App Store Connect: nazwa, podtytuł, słowa kluczowe, kategoria (35 lokalizacji) | pola 7 lokalizacji + tabela nazw (rola 10 robi resztę po zamrożeniu) | rola 10 przygotowuje, właściciel wpisuje | — (wydanie: P-087 wyjątek) | — |
 | 3 | ok. 12–14.11.2026 | wydanie ręczne po akceptacji Apple (P-147) | — | właściciel | — | — |
 | 4 | co tydzień, 8 tygodni | odpowiedzi na recenzje (en, pl zawsze; inne ≤ 3★) | `szkice/odpowiedzi-na-recenzje.md` (7 szablonów EN/PL) | właściciel | [czeka: zgoda na sposób pracy] | — |
-| 4b | od dnia wydania, 2–4 grupy dziennie (P-1012) | grupy na Facebooku PL/EN bez zakazu promocji (zasady „ostrożnie” w sesji 2) | `docs/wzrost/szkice-facebook.md`; wybór grup: `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md` | właściciel (odczyt grup i wpis) | P-1011 „Bez pytania, ale ostrożnie”; P-1012 „2–4/dzień od razu” (2026-11-24) | — |
+| 4b | od dnia wydania, 2–4 grupy dziennie (P-1012) | grupy na Facebooku PL/EN bez zakazu promocji (zasady „ostrożnie” w sesji 2) | `docs/wzrost/szkice-facebook.md` (szkic C z kodem 3 mies. bez odnowienia, P-1013); wybór grup: `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md` | właściciel (odczyt grup i wpis) | P-1011 „Bez pytania, ale ostrożnie”; P-1012 „2–4/dzień od razu” (2026-11-24) | — |
 | 5 | 2027-01-09 | odczyt App Analytics dla H-11–H-13 (ok. 20 min), dane do warsztatu | `docs/wzrost/hipotezy.json` | właściciel → rola 11 reaudit | — | — |
 | 5b | przed 2027-01-09 (DEC-16 b) | odczyt zasad autopromocji r/knitting i r/crochet w przeglądarce właściciela, tylko odczyt, bez wpisu (ok. 10 min): https://www.reddit.com/r/knitting/about/rules i https://www.reddit.com/r/crochet/about/rules, strona „Rules” i wiki, jeśli jest | właściciel wkleja zasady (adres, cytat, data) do wiersza „Reddit” tabeli „Kanały”; wykonuje rola 11 | właściciel | — (odczyt, nie publikacja) | — |
 | 6 | punkt kontrolny (2027-01-09) | decyzja: społeczności (szkice próśb o zgodę administracji) albo dalej sam sklep | E1 kanały, wynik H-11 | koordynator / właściciel | — | — |
