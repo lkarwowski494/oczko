@@ -2,6 +2,13 @@
 
 Rola 11-wzrost, tryb build (prompt `prompts` @97ec212). Stan: **STOP E3** (lista startowa, szkice, przekazanie); E0: P-145, E1: P-148, nazwa: P-149, E2: P-150; zmiany P-146, P-147. Szczegóły, nazwy miejsc i aplikacji, kopie źródeł: `oczko-warsztat/11-wzrost/2026-10-26-build/` (prywatne; P-107, P-121 (5)). Niczego nie publikujemy: szkice przygotowuje rola 11, publikuje właściciel ze swojego konta twórcy (jak Trening).
 
+## Sesja 2 (2026-11-24): odświeżenie pod premierę — STOP E0
+Rola 11-wzrost, tryb build (prompt `prompts` @af4c0a8, start przez /apps4brew). Zlecenie właściciela: „Chcę po prostu porozmawiać o marketingu aplikacji po zaaprobowaniu jej w App Store.” Sekcje niżej (sesja 1, 26.10) obowiązują do zmiany decyzją.
+- **Środowisko (24.11):** Linux w chmurze, push na gałąź `claude/charming-feynman-9rd5mg` (= `main` @ d7d4778). CI na `main`: CI, Jakość · Linux, Jakość · iOS — success (d7d4778, 22.11). „ASC kontrola ustawień” — failure (run 45044504737, 22.11): znalezisko do roli 10, przyczyny nie badano. `oczko-warsztat` (szkice) niedołączone do tej sesji. Fora i Reddit z kontenera: odczyt ograniczony (403 w sesji 1).
+- **Wejście jako hipoteza — co się zmieniło od 26.10:** (1) premiera zakładana 12–14.11 (P-147) nie nastąpiła; kandydat 1.0 = build 1221, zgłoszenie jeszcze niewysłane (`docs/wydanie/lista-1-0.md`, kroki 6–15) → horyzont „8 tygodni od premiery” i data oceny H-11–H-13 (2027-01-09) nieaktualne; (2) warunek zegarka (P-146): PU-155 (zegarek) OK w teście fizycznym 1221 (P-1009) — do potwierdzenia werdyktem 07 przed użyciem w przekazie; (3) „35 languages” w pozycjonowaniu czeka na 09 E2–E4 (P-144) — stan lokalizacji metadanych do sprawdzenia u roli 10; (4) kanały: E1-1a „przez 8 tygodni tylko sklep” zostaje do decyzji.
+- **Reguły z dnia pracy:** App Review Guidelines „Last Updated: October 16, 2026” (odczyt 2026-11-24) — bez zmian względem odczytu sesji 1; pozostałe źródła (HIG, StoreKit, App Analytics) czytane ponownie przy użyciu.
+- **Decyzje E0 sesji 2:** [czekają] tematy rozmowy, budżet czasu, horyzont liczony od faktycznej daty wydania (propozycja).
+
 ## Rama (E0)
 - **Aplikacja niewydana:** poprzednia wersja tylko w TestFlight; zgłoszenie 1.0 realnie w 1. poł. grudnia 2026 (`docs/plan-app-store.md`). Danych App Analytics nie ma.
 - **Rynek i język:** najpierw angielski (US, CA, GB, AU), potem ja, nb, de, fr według przesiewu 02 (ZAL-006). Wyjątek nazwany od „najpierw polski” z promptu roli: rynek główny globalny (`CLAUDE.md`), polski rynek narzędzi jest mały (przesiew 02).
