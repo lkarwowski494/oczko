@@ -41,6 +41,7 @@ Rola 11-wzrost, tryb build (prompt `prompts` @af4c0a8, start przez /apps4brew). 
 - **Właściciel (po akceptacji Apple i wydaniu):** wypełnić `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md` (ok. 5 min/grupa), potem 2–4 wpisy dziennie według zasad; codziennie odpowiedzi; stop przy 2 usunięciach albo ostrzeżeniu Facebooka; `pt` z App Store Connect, gdy pojawi się zakładka Campaigns.
 - **09 Lokalizacja:** przekład szkiców `docs/wzrost/szkice-facebook.md` (najpierw szkic C, P-1013) na języki grup wybranych przez właściciela (przekład + krytyk, jak P-808); bez nowych twierdzeń.
 - **02 Monetyzacja:** wyjątek od P-057 dla kodów z wpisów (P-1013 (1)): kontrakt i rachunek — 3 mies. Pro bez odnowienia, osobny kod na język.
+- **10 Wydanie (grafika, P-1014):** po przebiegu „Zrzuty sklepu” na buildzie wysłanym do Apple skopiować surowe `03-wzor` (iPhone, wszystkie języki) do `oczko-warsztat/11-wzrost/2026-11-24-fb/grafika/`, zanim artefakt wygaśnie.
 - **10 Wydanie:** kody ofert w App Store Connect po akceptacji 1.0 (P-1013): instrukcja sprawdzona u źródła (darmowa oferta bez odnowienia, link realizacji, limit), krok właściciela.
 - **10 Wydanie:** znalezisko — „ASC kontrola ustawień” failure 22.11 (run 45044504737); data wydania 1.0 do `docs/wzrost.md` (horyzont i daty oceny H, P-1010 (4)).
 - **07 Jakość:** werdykt dla zegarka (PU-155) przed użyciem go w przekazie.
