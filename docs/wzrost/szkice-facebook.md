@@ -28,6 +28,30 @@ Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydani
 
 Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1013 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
 
+## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1013, kandydat do testu z C) — PL
+
+> Cześć! Ile razy trzeba było spruć kilka rzędów, bo pomyliło się liczenie albo zgubiło miejsce we wzorze? Właśnie na to zrobiłem **Oczko** — małą aplikację na iPhone'a i iPada, którą robię sam:
+> • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
+> • wzór (PDF albo zdjęcie) obok licznika, z zaznaczonym bieżącym rzędem,
+> • po przerwie otwiera się dokładnie tam, gdzie skończyliście.
+>
+> Aplikacja dopiero trafiła do App Store i na pewno nie jest jeszcze idealna, więc szukam osób, które pomogą wyłapać jej błędy. Dla wszystkich chętnych: **3 miesiące pełnej wersji za darmo — nic się potem samo nie pobierze**. Kod: OCZKOPL → <link realizacji kodu>
+>
+> Każdy błąd, coś niejasnego albo brakującego — w komentarzu albo prywatnie — bardzo mi pomoże. A jeśli Oczko się przyda, szczera ocena w App Store to dla małej aplikacji ogromne wsparcie.
+
+## E. Combined post: a mistake in your project + a small app (P-1013, test candidate vs C) — EN
+
+> Hi! How many times have you had to rip back a few rows because you lost count or lost your place in the pattern? That's exactly what I made **Oczko** for — a small iPhone and iPad app that I build on my own:
+> • one tap adds a row, and a mistake is undone just as quickly,
+> • your pattern (PDF or photo) next to the counter, with your current row marked,
+> • after a break it opens exactly where you left off.
+>
+> It has just landed on the App Store and it's surely not perfect yet, so I'm looking for people to help me catch its bugs. For anyone interested: **3 months of the full version for free — nothing renews or charges you afterwards**. Code: OCZKOEN → <code redemption link>
+>
+> Every bug, anything confusing or missing — in the comments or by message — helps a lot. And if Oczko helps you, an honest rating on the App Store is huge support for a small app.
+
+Zasady szkicu E: jak C i D. Pytanie na początku nie obiecuje, że pomyłek nie będzie (bez „już nigdy się nie pomylisz”). Szkic D zostaje jako zapas; do testu idą C i E.
+
 ## D. Wpis „mała aplikacja, szukam błędów” (P-1013, wersja druga) — PL
 
 > Cześć! Szukam kilku osób, które pomogą mi wyłapać błędy w mojej małej aplikacji. Oczko to licznik rzędów na iPhone'a i iPada, który robię sam — dopiero trafił do App Store i na pewno nie jest jeszcze idealny.
