@@ -1,6 +1,6 @@
 # Szkice wpisów w grupach na Facebooku (rola 11, 2026-11-24; P-1011)
 
-Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydaniu 1.0. Przed publikacją: (1) porównaj każde zdanie „Co robi” z opisem w App Store po akceptacji Apple — zdanie, którego tam nie ma, wykreśl; (2) zmień pierwsze zdanie i kolejność punktów pod grupę (zasada 4: każdy wpis inny); (3) wpisz link (zwykły albo kampanii `ct=fb-NN`); (4) zapis w `docs/wzrost/dziennik.md`.
+Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydaniu 1.0, 2–4 grupy dziennie (P-1012); inne języki niż pl i en — przekład roli 09. Przed publikacją: (1) porównaj każde zdanie „Co robi” z opisem w App Store po akceptacji Apple — zdanie, którego tam nie ma, wykreśl; (2) zmień pierwsze zdanie i kolejność punktów pod grupę (zasada 4: każdy wpis inny); (3) wpisz link (zwykły albo kampanii `ct=fb-<język>`); (4) zapis w `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md`, podsumowanie tygodnia w `docs/wzrost/dziennik.md`.
 
 Źródło twierdzeń: `docs/wydanie/metadane/pl.store.json` i `en.store.json` (opis sklepu 1.0). Bez cen w kwotach (różnią się między krajami). Bez zegarka, dopóki werdykt 07 go nie potwierdzi.
 
