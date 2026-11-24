@@ -30,29 +30,29 @@ Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-101
 
 ## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1013, kandydat do testu z C) — PL
 
-> Cześć! Ile razy trzeba było spruć kilka rzędów, bo pomyliło się liczenie albo zgubiło miejsce we wzorze? Właśnie na to zrobiłem **Oczko** — małą aplikację na iPhone'a i iPada, którą robię sam:
+> Cześć! Ile razy trzeba było spruć kilka rzędów, bo pomyliło się liczenie albo zgubiło miejsce we wzorze? Właśnie na to zrobiłem **Oczko** — małą aplikację na iPhone'a i iPada:
 > • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
 > • wzór (PDF albo zdjęcie) obok licznika, z zaznaczonym bieżącym rzędem,
 > • po przerwie otwiera się dokładnie tam, gdzie skończyliście.
 >
-> Aplikacja dopiero trafiła do App Store i na pewno nie jest jeszcze idealna, więc szukam osób, które pomogą wyłapać jej błędy. Dla wszystkich chętnych: **3 miesiące pełnej wersji za darmo — nic się potem samo nie pobierze**. Kod: OCZKOPL → <link realizacji kodu>
+> Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bardzo cenię sobie konstruktywne uwagi, w komentarzu albo prywatnie. Na start rozdaję **3 miesiące pełnej wersji za darmo — nic się potem samo nie pobierze**. Kod: OCZKOPL → <link realizacji kodu>
 >
-> Każdy błąd, coś niejasnego albo brakującego — w komentarzu albo prywatnie — bardzo mi pomoże. A jeśli Oczko się przyda, szczera ocena w App Store to dla małej aplikacji ogromne wsparcie.
+> A jeśli Oczko się przyda, szczera ocena w App Store to dla małej aplikacji ogromne wsparcie.
 
 ## E. Combined post: a mistake in your project + a small app (P-1013, test candidate vs C) — EN
 
-> Hi! How many times have you had to rip back a few rows because you lost count or lost your place in the pattern? That's exactly what I made **Oczko** for — a small iPhone and iPad app that I build on my own:
+> Hi! How many times have you had to rip back a few rows because you lost count or lost your place in the pattern? That's exactly what I made **Oczko** for — a small iPhone and iPad app:
 > • one tap adds a row, and a mistake is undone just as quickly,
 > • your pattern (PDF or photo) next to the counter, with your current row marked,
 > • after a break it opens exactly where you left off.
 >
-> It has just landed on the App Store and it's surely not perfect yet, so I'm looking for people to help me catch its bugs. For anyone interested: **3 months of the full version for free — nothing renews or charges you afterwards**. Code: OCZKOEN → <code redemption link>
+> I'm developing the app on my own, so it's surely not perfect yet — that's why I really value constructive feedback, in the comments or by message. To start, I'm giving away **3 months of the full version for free — nothing renews or charges you afterwards**. Code: OCZKOEN → <code redemption link>
 >
-> Every bug, anything confusing or missing — in the comments or by message — helps a lot. And if Oczko helps you, an honest rating on the App Store is huge support for a small app.
+> And if Oczko helps you, an honest rating on the App Store is huge support for a small app.
 
-Zasady szkicu E: jak C i D. Pytanie na początku nie obiecuje, że pomyłek nie będzie (bez „już nigdy się nie pomylisz”). Szkic D zostaje jako zapas; do testu idą C i E.
+Zasady szkicu E: jak C i D. Pytanie na początku nie obiecuje, że pomyłek nie będzie (bez „już nigdy się nie pomylisz”). Bez prośby o testowanie (właściciel 2026-11-24: „nie prosimy o testowanie. Podkreślamy, że aplikację rozwijam sam, więc na pewno nie jest idealna i bardzo cenię sobie konstruktywny feedback”). Do testu idą C i E.
 
-## D. Wpis „mała aplikacja, szukam błędów” (P-1013, wersja druga) — PL
+## D. Wpis „mała aplikacja, szukam błędów” (P-1013, wersja druga; **odrzucony 2026-11-24 — prosi o testowanie**, zostaje tylko jako historia) — PL
 
 > Cześć! Szukam kilku osób, które pomogą mi wyłapać błędy w mojej małej aplikacji. Oczko to licznik rzędów na iPhone'a i iPada, który robię sam — dopiero trafił do App Store i na pewno nie jest jeszcze idealny.
 >
