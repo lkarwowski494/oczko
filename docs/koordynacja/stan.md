@@ -92,6 +92,7 @@ Na innym koncie: sesje, przypomnienia i koszty z tego konta nie są widoczne; st
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| RZ4 | session_01T66VByZ9fyJFEwNn7fthyo | 07 audit (sonnet) — recenzja niezależna ZR10 f0b28df6..9869751a (usuwanie placementów) + verify | claude/rz4-recenzja-zr10-2026-11-25 od 9869751a | 0 | 0 | polecenie `polecenia/RZ4.md` @ ff4090f5; pula P-1053…1054; pułap 2,5 USD (STOP 3,3); start 17:15 25.11 |
 | RZ3 | session_01T66VBy9mVxJo5ReaCa4vJF | 07 audit (sonnet) — recenzja niezależna ZR9 f0b28df6..8a8fb678 + verify | claude/rz3-recenzja-zr9-2026-11-25 od 8a8fb678 | 0 | 0 | polecenie `polecenia/RZ3.md` @ e27980e7; pula P-1051…1052; pułap 2 USD (STOP 2,6); start 16:58 25.11 |
 | ZR10 | session_01T66VByQosWqMVrLYSSxqfF | 10 build (sonnet) — tryb `zastap` w asc-zrzuty (KO-210) | claude/zr10-zrzuty-zastap-2026-11-25 od f0b28df6 | 0 | 0 | polecenie `polecenia/ZR10.md` @ 58f06b3d; pula P-1048…1050; pułap 4 USD (STOP 5,2); start 16:52 25.11 |
 | ZR9 | session_01T66VBzJpz6ibwTmGDQ75AE | 10 fix (sonnet) — uwagi P2-1, P2-2, P3-1 RZ2 w `kontrola-zakreslen.mjs` + wpis P-1044/1045 | claude/zr9-kontrola-zakreslen-2026-11-25 od f0b28df6 | 0 | 0 | polecenie `polecenia/ZR9.md`; pula P-1046…1047; pułap 3 USD (STOP 3,9); start 16:15 25.11 |
