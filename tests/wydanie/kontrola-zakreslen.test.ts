@@ -224,6 +224,10 @@ describe('10-wydanie-019: kontrola w jobie „komplet” zrzuty-sklepu.yml', () 
   });
   test('kontrola biegnie po instalacji ImageMagicka i test jej logiki biegnie z OCZKO_WYMAGAJ_IMAGEMAGICK=1 w kroku testów ramek', () => {
     expect(yml.indexOf('zainstaluj-narzedzia-zrzutow.sh')).toBeLessThan(yml.indexOf('kontrola-zakreslen.mjs sklep-zrzuty-surowe'));
-    expect(yml).toMatch(/npx jest tests\/wydanie\/ramki-sklepu\.test\.ts tests\/wydanie\/kontrola-zakreslen\.test\.ts --ci --runInBand/);
+    expect(yml).toMatch(/npx jest tests\/wydanie\/ramki-sklepu\.test\.ts tests\/wydanie\/kontrola-zakreslen\.test\.ts[^\n]* --ci --runInBand/);
+  });
+  test('ZR9 P3-1 (KO-209): ten sam krok z OCZKO_WYMAGAJ_IMAGEMAGICK=1 uruchamia też testy czułości kontroli kadrów 03/04 (bez nich w CI byłyby pomijane głośno)', () => {
+    const komenda = yml.split('\n').find((l) => /run: npx jest tests\/wydanie\/ramki-sklepu\.test\.ts/.test(l)) ?? '';
+    for (const plik of ['zakreslenie-polozenie', 'zakreslenie-grubosc-znacznik', 'zr8c-pasek-licznika', 'zr9-granice-zakreslen']) expect(komenda).toContain(`tests/wydanie/${plik}.test.ts`);
   });
 });
