@@ -2,6 +2,9 @@
 // Jedna strona A4/Letter: tytuł i 12 wierszy instrukcji po angielsku albo po polsku (dane fikcyjne; terminy „oczko prawe/lewe”, „warkocz”, „rząd” jak w BRD i atlasie technik).
 // Czcionka Helvetica z tablicą /Differences dla polskich liter (kody 128–145), bo kodowanie WinAnsi ich nie ma; plik jest czystym ASCII (znaki specjalne jako ósemkowe sekwencje).
 // Moduł bez importów i bez t(): ładowany wyłącznie z panele.tsx (tryb-e2e, P-238), nie trafia do bundla wydania.
+// ZR8b (KO-202, P-1038): wiersze od 7. (indeks 0-based; „Row 21”/„Rząd 21” to indeks 7) są obniżone o PRZERWA_ZNACZNIKA_PKT. Domyślny znacznik rzędu to pas 0,02 strony wokół środka strony (396 pkt od góry);
+// bez przerwy leżał na tekście wiersza 21 (linia bazowa 390), a odstęp 40 pkt między wierszami jest za wąski na pas 15,84 pkt z marginesem. Wiersze 0–6 (w tym „Row 9”, „Row 13” zakreślane w scenach) stoją jak przed zmianą.
+// Pas (388,08–403,92 pkt od góry) leży teraz w pustym pasie między wierszem 20 (dół tekstu ok. 365 pkt) a wierszem 21 (góra tekstu ok. 426 pkt): margines ≈ 22 pkt PDF z każdej strony. Test: tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts.
 export type KluczWzoru = 'en' | 'pl';
 
 export const WZORY_SKLEPU: Record<KluczWzoru, { nazwa: string; wiersze: readonly string[] }> = {
@@ -57,10 +60,16 @@ export function napisPdf(t: string): string {
   return w;
 }
 
+/** Obniżenie wierszy od indeksu PIERWSZY_WIERSZ_PO_PRZERWIE (pkt PDF): pusty pas na domyślny znacznik rzędu (patrz nagłówek). */
+export const PRZERWA_ZNACZNIKA_PKT = 38;
+export const PIERWSZY_WIERSZ_PO_PRZERWIE = 7;
+/** Linia bazowa (pkt PDF od dołu strony) wiersza o indeksie i (0 = „Gauge”/„Próbka”). */
+export const yBazowaWiersza = (i: number): number => 670 - i * 40 - (i >= PIERWSZY_WIERSZ_PO_PRZERWIE ? PRZERWA_ZNACZNIKA_PKT : 0);
+
 export function pdfWzoruSklepu(klucz: KluczWzoru): string {
   const wzor = WZORY_SKLEPU[klucz];
   const linie = [`BT /F2 26 Tf 72 720 Td (${napisPdf(wzor.nazwa)}) Tj ET`];
-  wzor.wiersze.forEach((w, i) => linie.push(`BT /F1 15 Tf 72 ${670 - i * 40} Td (${napisPdf(w)}) Tj ET`));
+  wzor.wiersze.forEach((w, i) => linie.push(`BT /F1 15 Tf 72 ${yBazowaWiersza(i)} Td (${napisPdf(w)}) Tj ET`));
   const s = linie.join('\n');
   const obiekty = [
     '<< /Type /Catalog /Pages 2 0 R >>',

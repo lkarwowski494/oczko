@@ -124,6 +124,7 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
 # --- sesja 3 (−1 dnia, w tygodniu „dziś”): rząd 18 wpisany, dwa stuknięcia do 20 (dzień pracy: „This week” w kadrach nie jest pusty, 016), notatka, wzór ze znacznikiem i zakreśleniem ---
 # ZR3 (KO-184, P-998): licznik projektu głównego = 20, więc rząd w robocie = 21 (RD-21: licznik + 1) i etykieta znacznika „Row 21 ↓”/„Rząd 21 ↓” stoi na wierszu wzoru „Row 21”/„Rząd 21” (src/kompozycja/e2e/wzor-sklepu.ts);
 # wcześniej licznik 47 → etykieta „48” na wierszu „Row 21” wyglądała w kadrze jak błąd aplikacji (WR2, Z1). Położenie znacznika nie zależy od numeru (stoi tam, gdzie je postawiono), zmienia się tylko etykieta.
+# ZR8b (KO-202, P-1038): znacznik stoi w domyślnym miejscu (środek strony); wiersze wzoru od „Row 21” są obniżone w fikturze, więc pas leży w PUSTYM pasie nad wierszem 21 (strzałka ↓ wskazuje ten wiersz), a nie na jego tekście. Sceny i współrzędne zakreśleń bez zmian: wiersze 9 i 13 stoją jak dotąd.
 # Godziny sesji rosną razem z datą (−7 dni 18:00, −5 dni 19:30, −1 dnia 20:00), więc Historia (od najnowszego, sama godzina bez daty) czyta się chronologicznie (016).
 - runFlow: { file: ../scenariusze/subflows/restart.yaml, env: { TERAZ: "${ZRZUTY_SESJA_3}" } }
 - runFlow:
