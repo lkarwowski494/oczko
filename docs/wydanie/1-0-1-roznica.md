@@ -1,6 +1,6 @@
 # Różnica 1.0.1 względem a830eb21 (v1.0.0-b1221)
 
-Baza: `a830eb21bfa5bf0ec148f9081a66f9f37732675d` · głowa: `bd297f7f60a5be9064ee33f752c05c3505bd719d` · wersja docelowa: `1.0.1` · skrypt: `node scripts/wydanie/roznica-wersji.mjs` (test: `tests/wydanie/roznica-wersji.test.ts`)
+Baza: `a830eb21bfa5bf0ec148f9081a66f9f37732675d` · głowa: `28eb45302aff92182baf129ec11246ea4bb9d791` · wersja docelowa: `1.0.1` · skrypt: `node scripts/wydanie/roznica-wersji.mjs` (test: `tests/wydanie/roznica-wersji.test.ts`)
 
 ## Wynik: OK — różnica poza dokumentacją dotyczy tylko pól wersji
 
@@ -20,6 +20,7 @@ M	package.json
 A	scripts/wydanie/roznica-wersji.mjs
 M	tests/jakosc/wersja-wydania.test.ts
 A	tests/wydanie/co-nowego-1-0-1.test.ts
+M	tests/wydanie/eula-w-opisie.test.ts
 M	tests/wydanie/metadane-przeklad.test.ts
 A	tests/wydanie/roznica-wersji.test.ts
 ```
@@ -61,7 +62,8 @@ A	tests/wydanie/roznica-wersji.test.ts
  scripts/wydanie/roznica-wersji.mjs               | 81 ++++++++++++++++++++
  tests/jakosc/wersja-wydania.test.ts              |  9 ++-
  tests/wydanie/co-nowego-1-0-1.test.ts            | 46 ++++++++++++
+ tests/wydanie/eula-w-opisie.test.ts              |  2 +-
  tests/wydanie/metadane-przeklad.test.ts          |  2 +-
  tests/wydanie/roznica-wersji.test.ts             | 63 ++++++++++++++++
- 14 files changed, 510 insertions(+), 13 deletions(-)
+ 15 files changed, 511 insertions(+), 14 deletions(-)
 ```
