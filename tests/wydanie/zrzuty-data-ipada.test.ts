@@ -196,16 +196,38 @@ describe('10-wydanie-023: pasek iPada i treść kadru pokazują ten sam dzień (
     expect(r.status).toBe(0);
     expect(r.stdout.trim().split('\n')).toEqual(['ZRZUTY_SESJA_1=2026-11-05T18:00:00', 'ZRZUTY_SESJA_2=2026-11-07T19:30:00', 'ZRZUTY_SESJA_3=2026-11-11T20:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-07']);
   });
-  test('poniedziałek (−1 = poprzedni tydzień, „This week” pusty) i dzień miesiąca < 8 (−7 i −5 w poprzednim miesiącu, kalendarz bez dni pracy) → kod 2 z powodem, bez cichych kadrów', () => {
-    for (const [dzien, powod] of [['2026-11-16', /poniedzia/], ['2026-12-03', /miesi/], ['2026-11-07', /miesi/]] as const) {
-      const r = dni(dzien); expect({ dzien, kod: r.status }).toEqual({ dzien, kod: 2 }); expect(r.stderr).toMatch(powod);
+  test('dzień miesiąca < 8 (−7 i −5 w poprzednim miesiącu, kalendarz bez dni pracy) → kod 2 z powodem, bez cichych kadrów', () => {
+    for (const dzien of ['2026-12-03', '2026-11-07']) {
+      const r = dni(dzien); expect({ dzien, kod: r.status }).toEqual({ dzien, kod: 2 }); expect(r.stderr).toMatch(/miesi/);
     }
     expect(dni('2026-11-08').status).toBe(0); // niedziela, 8. dnia: najmniejszy dozwolony dzień miesiąca; −7 = 1 XI
   });
-  test('plan odrzuca niedozwolony dzień przed kolejką macOS (zrzuty-jezyki.mjs, kod 2), dozwolony niesie teraz o dniu = dzien', () => {
+  // ZR6 (KO-192, P-1013; słowa właściciela 22.11.2026 „zdejmij tą blokadę”): poniedziałek (UTC) nie jest już błędem. Dawniej ostatni dzień pracy (−1) wypadał w niedzielę poprzedniego tygodnia
+  // (tydzień zaczyna się w poniedziałek, RD-20 `poczatekTygodnia`), więc „This week” w kadrach byłby pusty. Teraz w poniedziałek ostatnia sesja jest DZIŚ o 08:00 (przed zegarem aplikacji 09:41);
+  // godziny wcześniejszych sesji spadają do 06:00 i 07:00, żeby godziny dalej rosły razem z datą (Historia pokazuje samą godzinę, od najnowszego — test 016).
+  test('poniedziałek 2026-11-16 (UTC): kod 0, ostatnia sesja = dzień przebiegu o 08:00, wcześniejsze 06:00 i 07:00 (godziny rosną z datą), kalendarz = dzień drugiej sesji', () => {
+    const r = dni('2026-11-16');
+    expect(r.status).toBe(0);
+    expect(r.stdout.trim().split('\n')).toEqual(['ZRZUTY_SESJA_1=2026-11-09T06:00:00', 'ZRZUTY_SESJA_2=2026-11-11T07:00:00', 'ZRZUTY_SESJA_3=2026-11-16T08:00:00', 'ZRZUTY_DZIEN_KAL=2026-11-11']);
+  });
+  test('każdy dzień od 8. do 31. grudnia 2026 i listopada (wszystkie dni tygodnia): ostatnia sesja jest w tygodniu „dziś” (od poniedziałku) i nie później niż zegar aplikacji, godziny rosną z datą', () => {
+    for (const miesiac of ['2026-11', '2026-12']) {
+      for (let d = 8; d <= (miesiac === '2026-11' ? 30 : 31); d++) {
+        const dzien = `${miesiac}-${String(d).padStart(2, '0')}`;
+        const r = dni(dzien); expect({ dzien, kod: r.status }).toEqual({ dzien, kod: 0 });
+        const w = Object.fromEntries(r.stdout.trim().split('\n').map((l) => l.split('=')));
+        const sesje = [w.ZRZUTY_SESJA_1, w.ZRZUTY_SESJA_2, w.ZRZUTY_SESJA_3];
+        const dow = (new Date(`${dzien}T00:00:00Z`).getUTCDay() + 6) % 7; // 0 = poniedziałek
+        const poczatekTygodnia = new Date(Date.parse(`${dzien}T00:00:00Z`) - dow * 86400000).toISOString().slice(0, 10);
+        expect({ dzien, w_tygodniu: sesje[2].slice(0, 10) >= poczatekTygodnia, nie_pozniej_niz_teraz: sesje[2] <= `${dzien}T09:41:00` }).toEqual({ dzien, w_tygodniu: true, nie_pozniej_niz_teraz: true });
+        for (let i = 1; i < 3; i++) { expect(sesje[i] > sesje[i - 1]).toBe(true); expect(sesje[i].slice(11) > sesje[i - 1].slice(11)).toBe(true); }
+      }
+    }
+  });
+  test('plan odrzuca dzień miesiąca < 8 przed kolejką macOS (zrzuty-jezyki.mjs, kod 2), poniedziałek i inne dozwolone dni niosą teraz o dniu = dzien', () => {
     const plan = (dzien: string) => node([modul('zrzuty-jezyki.mjs'), 'en', '2', 'iphone,ipad'], { ZRZUTY_DZIEN: dzien });
-    expect(plan('2026-11-16').status).toBe(2);
-    for (const m of JSON.parse(plan('2026-11-13').stdout).matrix) expect(m.teraz.slice(0, 10)).toBe(m.dzien);
+    expect(plan('2026-12-03').status).toBe(2);
+    for (const dzien of ['2026-11-16', '2026-11-13']) { const p = plan(dzien); expect({ dzien, kod: p.status }).toEqual({ dzien, kod: 0 }); for (const m of JSON.parse(p.stdout).matrix) expect(m.teraz.slice(0, 10)).toBe(m.dzien); }
   });
   test('fikstura nie ma bezwzględnych dat dni pracy: 00-przygotuj używa ${ZRZUTY_SESJA_1..3}, 07-kalendarz ${ZRZUTY_DZIEN_KAL}', () => {
     const kod = (f: string) => fs.readFileSync(path.join(korzen, 'e2e/zrzuty-sklepu', f), 'utf8').split('\n').filter((l) => !l.trimStart().startsWith('#')).join('\n');

@@ -42,7 +42,7 @@ on:
         type: string
         default: '6'
       urzadzenia:
-        description: 'Urządzenia po przecinku: iphone, ipad. Zadanie iPada startuje tylko w dniu przebiegu (data paska = data maszyny): uruchamiaj tak, by iPad skończył przed 00:00 UTC (kolejka macOS po ok. 22:00 UTC kończy się wyjściem na starcie); zrzuty nie startują w poniedziałek ani w dniach 1–7 miesiąca (UTC)'
+        description: 'Urządzenia po przecinku: iphone, ipad. Zadanie iPada startuje tylko w dniu przebiegu (data paska = data maszyny): uruchamiaj tak, by iPad skończył przed 00:00 UTC (kolejka macOS po ok. 22:00 UTC kończy się wyjściem na starcie); zrzuty nie startują w dniach 1–7 miesiąca (UTC); poniedziałek jest dozwolony (ostatnia sesja fikstury = dziś 08:00)'
         required: false
         type: string
         default: 'iphone,ipad'
@@ -180,7 +180,7 @@ jobs:
             fi
             if [ -n "$ZRZ" ]; then
               # ZR1: języki i urządzenia sprawdza ten sam skrypt planu (zadan = 8, bo limit języków na zadanie nie dotyczy kompletu), ale macOS NIE biegnie: zero zadań, bez builda; braki wykaże krok „Komplet”.
-              # Bez ZRZUTY_DZIEN: ograniczenie dni pracy fikstury (poniedziałek, 1–7 dzień miesiąca) dotyczy robienia zrzutów, a tu żadnych nie robimy
+              # Bez ZRZUTY_DZIEN: ograniczenie dni pracy fikstury (1–7 dzień miesiąca) dotyczy robienia zrzutów, a tu żadnych nie robimy
               matrix=$(node scripts/ci/zrzuty-jezyki.mjs "$JEZ" 8 "$URZ" | node -e 'const p=JSON.parse(require("fs").readFileSync(0,"utf8")); p.matrix=[]; p.zadania=0; process.stdout.write(JSON.stringify(p))')
             else
               matrix=$(ZRZUTY_DZIEN="$dzien" node scripts/ci/zrzuty-jezyki.mjs "$JEZ" "$ZADAN" "$URZ" "$poprzednie" "$POWTORZ")

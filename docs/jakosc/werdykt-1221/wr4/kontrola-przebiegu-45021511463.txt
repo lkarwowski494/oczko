@@ -1,0 +1,13 @@
+Przebieg „Zrzuty sklepu” 45021511463, SHA 5310ea0b2028203c9913a46695167c416fe14a08 (gałąź claude/zr6-jezyki-2026-11-22), odczyt 2026-11-22 przez mcp__github__actions_list (list_workflow_jobs) i mcp__github__get_job_logs (zadanie „komplet”, id 137269409925, końcówka dziennika).
+Zadania: plan success · iphone 1 (cs,hr,nl,uk) success · iphone 2 (da,hu,pt,vi) success · iphone 3 (de,id,pt-BR,zh-Hant) success · iphone 4 (el,it,ro) success · iphone 5 (es,ja,ru) success · iphone 6 (es-419,ko,sk) success · iphone 7 (fi,ms,sv) success · iphone 8 (fr,nb,tr) success · build skipped (aplikacja z przebiegu źródłowego 44697325331) · komplet success.
+Kroki zadania „komplet” (z dziennika; tylko wynik):
+  Test ramek i podpisów na sztucznych PNG: tests/wydanie/kontrola-zakreslen.test.ts PASS, tests/wydanie/ramki-sklepu.test.ts PASS; Test Suites: 2 passed, 2 total; Tests: 27 passed, 27 total
+  Surowe zrzuty: 189 plików
+  node scripts/ci/wymiary-asc.mjs sklep-zrzuty-surowe → OK (189 plików)
+  node scripts/ci/komplet-zrzutow.mjs sklep-zrzuty-surowe "cs,da,de,el,es,es-419,fi,fr,hr,hu,id,it,ja,ko,ms,nb,nl,pt,pt-BR,ro,ru,sk,sv,tr,uk,vi,zh-Hant" iphone → KOMPLET
+  node scripts/ci/kontrola-zakreslen.mjs sklep-zrzuty-surowe → 27 × „OK 6.9/<język>: 03=1, 04=2 pasów zakreślenia”; „Kontrola zakreśleń: OK (27 par)”
+  scripts/ci/ramki-sklepu.sh → Ramki: 189 plików; wymiary-asc.mjs sklep-zrzuty-ramki → OK (189 plików); Języki z ramkami: cs,da,de,el,es,es-419,fi,fr,hr,hu,id,it,ja,ko,ms,nb,nl,pt,pt-BR,ro,ru,sk,sv,tr,uk,vi,zh-Hant
+  znacznik dat: zrzuty-daty.json {"teraz":"2026-11-22T09:41:00","dzienIpada":null}
+Artefakty: sklep-zrzuty-ramki id 14762870556 (189 plików, 62 617 117 B, sha256 zip 7791fc9454b0a72e5be76bf5198d9cf22285746f86759cfd9230e8186d42faaa); sklep-zrzuty-surowe id 14762785642 (190 plików = 189 PNG + zrzuty-daty.json, 36 644 824 B, sha256 zip a1ad9ef1e7d106eb12aea25c00375c8c4042d54868240670aabf87c672df9f41). Oba sha256 pobranych zipów równe digestom artefaktów (sha256sum lokalnie).
+Zgodność wymiarów (ImageMagick identify, lokalnie): 27 języków × 7 plików, każdy 1320x2868, w surowych i w ramkach (bez błędów).
+Kody wyjścia: kroki powyżej „success”; to nie ja je uruchamiałem — przepisane z dziennika.

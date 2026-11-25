@@ -8,7 +8,7 @@ Czeka na koniec audytu 04 (plan-prac 2.1) i zamrożenie en (2.2). Kadry i podpis
 |---|---|---|---|
 | iPhone z Dynamic Island, duży | 1320×2868 | nadzbiór; Apple skaluje na mniejsze | tak |
 | iPad 13″ | 2064×2752 | `ios.supportsTablet = true` w `app.json` (P-217: Apple Pencil) | tak |
-| Apple Watch | [DO USTALENIA] | cel zegarka jest w 1.0, ale „nie sprawdzono” na urządzeniu (P-290); bez zrzutów zegarka do czasu testu; potwierdzić wymóg przy pierwszej wysyłce | warunkowo |
+| Apple Watch | 416×496 (Series 10/11/12 46 mm; inne rozmiary z listy Apple tylko jeden na cały zestaw) | **wymagana** (ZW1, KO-197, P-1021): App Store Connect odmówił „Add for Review” dla 1.0 (build 1221): „Your binary indicates support for Apple Watch. You must provide an Apple Watch screenshot.”; automat `zrzuty-zegarka.yml` (2 kadry: licznik, przypomnienie; kadr blokady odpadł w ZW2, P-1025: ucięty tekst; P-1022–P-1025), wgranie `asc-zrzuty.yml` z `zegarek_z_przebiegu` | tak |
 Język zrzutów: en (napisy w obrazie osobno dla języka albo świadomie z en — decyzja po 2.3). Tryb jasny; ciemny jako drugi komplet tylko, jeśli 04 uzna za wartość.
 
 ## Lista ekranów (7 na klasę; kolejność = ważność; zrzut 1 to ekran widoczny po starcie, zrzut 2 główna praca)

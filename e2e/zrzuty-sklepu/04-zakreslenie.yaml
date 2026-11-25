@@ -30,8 +30,20 @@ name: "Zrzuty sklepu · 04 zakreślenie na wzorze (iPad poziomo)"
 - assertVisible: { id: "wzor-zakreslenia", text: '^\D*1\D*$' } # P3 (KO-043): ściśle cyfra 1, bez innych cyfr (poprzedni wzorzec z kropką-gwiazdką po obu stronach pasował też do „12”, „21”)
 # ZR3 (P-998, WR2 Z2): zakreślenie 2 = wiersz „Row 13”/„Rząd 13” (drugi wiersz z warkoczem), od początku tekstu do końca wiersza; współrzędne dosłowne per orientacja × język (jak zakreślenie 1 w 00-przygotuj;
 # powód dosłowności i wyboru przez `when: true:`: ZR4, P-1000 — Maestro waliduje `start`/`end` swipe'a przy parsowaniu).
-- runFlow: # iPhone (PORTRAIT) · en
-    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'en'}" }
+# ZR7 (P-1016, KO-195; WR4 P-1014/P-1015): pas zakreślenia 2 leży na STAŁEJ wysokości ekranu, a strona PDF przesuwa się w kadrze o liczbę linii podpowiedzi nad nią: w de/el/fr/ja/nl/ro/ru/uk (podpowiedź
+# w 2 liniach) strona stoi 45 px niżej (kadr 1320×2868), w id/ms 30 px wyżej — pas 46% trafiał w „Rows 10-12” albo między wiersze. Wysokość per grupa języków (iPhone, dane en), wyliczona z pomiarów 29 kadrów:
+# 47% (+1% = 28,7 px) dla pierwszej grupy, 45% dla id/ms; pozostałe języki i en/pl bez zmian (46%). Maestro waliduje `start`/`end` przy parsowaniu, więc grupa to osobny runFlow z `when: true:` i dosłownymi
+# współrzędnymi (ZR4, P-1000); JEZYK = język aplikacji (`-e JEZYK` w scripts/ci/zrzuty-sklepu.sh). Test: tests/wydanie/zrzuty-zakreslenie-jezyki.test.ts; kontrola kadrów: scripts/ci/kontrola-zakreslen.mjs (polozeniePasa).
+- runFlow: # iPhone (PORTRAIT) · en · języki ze stroną niżej (podpowiedź w 2 liniach)
+    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'en' && ['de', 'el', 'fr', 'ja', 'nl', 'ro', 'ru', 'uk'].includes(JEZYK)}" }
+    commands:
+      - swipe: { start: "10%, 47%", end: "69%, 47%", duration: 800 }
+- runFlow: # iPhone (PORTRAIT) · en · języki ze stroną wyżej (licznik w 3 liniach)
+    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'en' && ['id', 'ms'].includes(JEZYK)}" }
+    commands:
+      - swipe: { start: "10%, 45%", end: "69%, 45%", duration: 800 }
+- runFlow: # iPhone (PORTRAIT) · en · pozostałe języki (w tym en)
+    when: { true: "${ORIENT_WZOR == 'PORTRAIT' && DANE_KLUCZ == 'en' && !['de', 'el', 'fr', 'ja', 'nl', 'ro', 'ru', 'uk', 'id', 'ms'].includes(JEZYK)}" }
     commands:
       - swipe: { start: "10%, 46%", end: "69%, 46%", duration: 800 }
 - runFlow: # iPad (LANDSCAPE_LEFT) · en

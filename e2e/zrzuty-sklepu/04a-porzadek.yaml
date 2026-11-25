@@ -1,0 +1,26 @@
+appId: com.apps4brew.knitting
+name: "Zrzuty sklepu · 04a porządek po scenie 04 (cofnięcie drugiego zakreślenia, powrót do licznika)"
+# ZR6 (rola 10 fix, KO-191, P-1011). Bez zrzutu i BEZ restartu aplikacji: scripts/ci/zrzuty-sklepu.sh uruchamia tę scenę zaraz po zrzucie sceny 04, w tej samej sesji aplikacji.
+# Dlaczego: sceny jednego języka kończą na wzorze z DWOMA zakreśleniami (04 dodaje drugie, a zrzut robi skrypt po scenie), a kolejny język z tymi samymi danymi (en) nie powtarza 00-przygotuj.
+# Przebieg 45007913254: w hu, pt i vi „Kontynuuj ›” otwierało wzór (nie licznik), a licznik zakreśleń czytał 2 zamiast 1 — padały 02, 03, 04 i 06.
+# Cofnięcie ostatniej kreski (`wzor-cofnij-rysunek`) działa tylko w sesji, w której kreska powstała (historia w pamięci widoku, modules/oczko-wzor/ios/WidokWzoru.swift:228), dlatego bez restartu.
+# Po scenie: 1 zakreślenie (fikstura z 00-przygotuj), zakreślacz wyłączony, ostatnie miejsce pracy = licznik projektu głównego (jak koniec 00-przygotuj). Tylko id (scena działa w każdym z języków).
+---
+- extendedWaitUntil: { visible: { id: "wzor-widok" }, timeout: 30000 }
+- setOrientation: ${ORIENT_WZOR}
+- runFlow:
+    when: { notVisible: { id: "wzor-zakreslacz", selected: true } }
+    commands:
+      - tapOn: { id: "wzor-zakreslacz" }
+      - assertVisible: { id: "wzor-zakreslacz", selected: true }
+- runFlow:
+    when: { visible: { id: "wzor-zakreslenia", text: '^\D*2\D*$' } }
+    commands:
+      - tapOn: { id: "wzor-cofnij-rysunek" }
+- assertVisible: { id: "wzor-zakreslenia", text: '^\D*1\D*$' }
+- tapOn: { id: "wzor-zakreslacz" }
+- assertVisible: { id: "wzor-zakreslacz", selected: false }
+- setOrientation: PORTRAIT
+- tapOn: { id: "nav-wstecz" }
+- extendedWaitUntil: { visible: { id: "licznik-plus" }, timeout: 20000 }
+- assertVisible: { id: "licznik-wartosc", text: "20" }

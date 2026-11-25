@@ -1,0 +1,11 @@
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › de (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › el (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › fr (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ja (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › języki bez przesunięcia (17 + en, pl) zostają na 46% — poprawka nie rusza kadrów, które są poprawne
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › nl (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ro (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › ru (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+  ● ZR7 (P-1016): drugi swipe sceny 04 trafia w wiersz 13 w każdym języku (model z pomiarów 29 kadrów) › uk (iPhone): środek pasa z swipe'a leży ≤ 0,9 wysokości wiersza od środka wiersza 13
+Test Suites: 1 failed, 3 passed, 4 total
+Tests:       9 failed, 85 passed, 94 total

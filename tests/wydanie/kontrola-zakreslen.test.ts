@@ -126,11 +126,15 @@ if (!maConvert && !wymagaConvert) {
   let kat = '';
   beforeEach(() => { kat = fs.mkdtempSync(path.join(os.tmpdir(), 'oczko-zakr-')); });
   afterEach(() => { fs.rmSync(kat, { recursive: true, force: true }); });
-  /** Sztuczny „zrzut” 600×900 z `n` żółtymi pasami (RGB, bez alfy). */
+  /** Sztuczny „zrzut” 600×900 z `n` żółtymi pasami (RGB, bez alfy). ZR7 (P-1016): kontrola mierzy też położenie pasa 2 względem wiersza 13 tekstu strony, więc kadr ma wiersze tekstu:
+   * wiersz na każdym pasie (pas i = wiersz „9”, „13”, …) i wiersz między pasami (odpowiednik „Rows 10-12”) — pas 2 leży na wierszu o dwa niżej niż pas 1, jak w kadrze ze sklepu. */
   function zrzut(rel: string, n: number): string {
     const p = path.join(kat, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
     const draw = Array.from({ length: n }, (_, i) => `rectangle 120,${200 + i * 160} 480,${230 + i * 160}`).join(' ');
-    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+    // wiersz tekstu = pionowe kreski co 6 px (jak litery: tekst na pasie zostawia ≥ 15% pikseli żółtych w wierszu, więc pas nie dzieli się na kawałki)
+    const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
+    const tekst = Array.from({ length: n }, (_, i) => wiersz(207 + i * 160) + (i < n - 1 ? ` ${wiersz(287 + i * 160)}` : '')).join(' ');
+    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-fill', 'black', ...(n ? ['-draw', tekst] : []), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
     expect(spawnSync('convert', args).status).toBe(0);
     return p;
   }
@@ -166,6 +170,34 @@ if (!maConvert && !wymagaConvert) {
     const r = uruchom();
     expect(r.stdout).toMatch(/POMINIĘTO ipad-13\/en/);
     expect(r.status).toBe(0);
+  });
+  // ZR7 (P-1016): granice kryterium położenia. Kadr 600×900 (analiza po zmniejszeniu do 500 px): wiersze tekstu wysokości 13 px (≈ 11 px po zmniejszeniu) co 80 px — „9” (y 207), „10-12” (287), „13” (367).
+  function zrzutPolozenie(rel: string, pas2Od: number, bezTekstu = false): string {
+    const p = path.join(kat, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
+    const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
+    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', '-draw', `rectangle 120,200 480,230 rectangle 120,${pas2Od} 480,${pas2Od + 30}`,
+      ...(bezTekstu ? [] : ['-fill', 'black', '-draw', [207, 287, 367, 447].map(wiersz).join(' ')]), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+    expect(spawnSync('convert', args).status).toBe(0);
+    return p;
+  }
+  const polozenie = (pas2Od: number, bezTekstu = false) => {
+    zrzut('6.9/xx/03-wzor.png', 1); zrzutPolozenie('6.9/xx/04-zakreslenie.png', pas2Od, bezTekstu);
+    return uruchom();
+  };
+  test('ZR7: pas 2 na wierszu 13 (środek pasa w wierszu) → POŁOŻENIE OK; pas przesunięty o 1,3 wysokości wiersza w dół albo w górę → BŁĄD „poza wierszem 13”, kod 1', () => {
+    const ok = polozenie(352); // środek pasa y=367 = środek wiersza 13 (367…379 → 373): odchylenie ≈ 0,5
+    expect(ok.stdout).toMatch(/POŁOŻENIE OK 6\.9\/xx: pas 2 na wierszu 13/); expect(ok.status).toBe(0);
+    for (const od of [375, 341]) { // środek pasa 390 i 356: ±17 px od środka wiersza 13 (373) = ±1,3 wysokości wiersza (13 px)
+      const r = polozenie(od);
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/xx\/04-zakreslenie\.png: pas 2 poza wierszem 13/); expect(r.status).toBe(1);
+    }
+  });
+  test('ZR7: pas 2 na wierszu 14 (jeden wiersz za nisko, 80 px) i na wierszu „10-12” (jeden za wysoko) → BŁĄD', () => {
+    for (const od of [352 + 80, 352 - 80]) { const r = polozenie(od); expect(r.stdout).toMatch(/BŁĄD [^\n]*pas 2 poza wierszem 13/); expect(r.status).toBe(1); }
+  });
+  test('ZR7: kadr 04 bez wierszy tekstu (analiza położenia niemożliwa) → BŁĄD, nie ciche OK', () => {
+    const r = polozenie(352, true);
+    expect(r.stdout).toMatch(/BŁĄD [^\n]*pas 2 poza wierszem 13 — w kadrze nie ma wierszy tekstu/); expect(r.status).toBe(1);
   });
   // AQ, P3 (recenzja AP, KO-046): kontrola, która nie znalazła żadnej pary, nic nie sprawdziła — kod 0 z notatką wyglądał jak sukces (zasada 21: kontrola, którą można pominąć po cichu, nie jest kontrolą).
   // Sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który kontrola też przeszukuje), więc zero par = błąd niezależnie od OG-07.

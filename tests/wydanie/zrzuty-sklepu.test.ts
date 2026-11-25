@@ -210,9 +210,9 @@ describe('workflow zrzuty-sklepu.yml', () => {
 
 describe('scenariusze zrzutów (e2e/zrzuty-sklepu)', () => {
   const pliki = fs.existsSync(path.join(KORZEN, KAT)) ? fs.readdirSync(path.join(KORZEN, KAT)).filter((f) => f.endsWith('.yaml')).sort() : [];
-  const NAZWY = ['00-jezyk', '00-przygotuj', '01-dzis', '02-licznik', '03-wzor', '04-zakreslenie', '05-projekty', '06-historia', '07-kalendarz', '99-zakup'];
+  const NAZWY = ['00-jezyk', '00-przygotuj', '01-dzis', '02-licznik', '03-wzor', '04-zakreslenie', '04a-porzadek', '05-projekty', '06-historia', '07-kalendarz', '99-zakup'];
 
-  test('jest wybór języka, przygotowanie danych, siedem scen w kolejności z planu i scena zakupu', () => {
+  test('jest wybór języka, przygotowanie danych, siedem scen w kolejności z planu, porządek po scenie 04 (ZR6) i scena zakupu', () => {
     expect(pliki.map((f) => f.replace(/\.yaml$/, ''))).toEqual(NAZWY);
   });
 
