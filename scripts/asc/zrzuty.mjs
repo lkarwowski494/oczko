@@ -7,7 +7,10 @@
 //   dodatkowo `--zastap` — grupa, która ma już zrzuty (np. odziedziczone z 1.0 w wersji 1.0.1), dostaje nowe: najpierw nowe obrazy do biblioteki, potem zdjęcie starych placementów,
 //   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md). Fail-closed (ZR10b, KO-212, P-1055…P-1057): lista do zdjęcia musi mieć
 //   `placementGroup` = grupa wiersza i `placementType` = APP_SCREENSHOT (inne wpisy odrzucone, brak atrybutu = odmowa); przed jakimkolwiek zapisem placementy tej samej
-//   lokalizacji w wersji w sprzedaży (READY_FOR_SALE) muszą być rozłączne ze zdejmowanymi (wspólny id albo brak odczytu = odmowa).
+//   lokalizacji KAŻDEJ innej wersji aplikacji niż edytowana, która nie jest w przygotowaniu (w sprzedaży, w recenzji, oczekującej na wydanie itd.), muszą być rozłączne ze zdejmowanymi
+//   (wspólny id albo brak odczytu = odmowa; brak wersji do sprawdzenia przy edytowanej wersji, która nie jest jedyną = odmowa; ZR11, KO-213, P-1059).
+//   Tożsamość zrzutu po TREŚCI (ZR11, KO-213, P-1058): referenceName obrazu = `oczko/<źródło>/<język>/<plik>#<12 znaków sha256 pliku>` — zrzuty 1.0 (`oczko-1.0/…`) i 1.0.1 o tych samych nazwach
+//   plików są różne; porównanie „grupa już zawiera”, ponowne użycie obrazu z biblioteki i mapa planu używają tej nazwy.
 // Układ katalogów: <katalog>/<język aplikacji>/NN-<ekran>.png (iPhone: jeden rozmiar, np. artefakt `sklep-zrzuty-ramki/6.9`) i <katalog>/<język>/<stan>.png (zegarek).
 // Interfejs: App Asset Library (Apple oznaczył appScreenshotSets i appScreenshots jako przestarzałe; odczyt dokumentacji 25.10.2026 —
 // developer.apple.com/documentation/appstoreconnectapi/app-asset-library): obraz wgrywany raz (rezerwacja → PUT → `uploaded: true`), potem placement
@@ -30,6 +33,7 @@
 // zastępowaniu — identyfikatory i referenceName zdejmowanych placementów (do ręcznego odtworzenia) — nigdy adresy wgrywania, identyfikatory klucza, tokeny ani treść odpowiedzi
 // API (repozytorium publiczne). Dane logowania: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeClient, makeJwt, BUNDLE_ID } from './iap-localizations.mjs';
@@ -44,10 +48,20 @@ export const POLL_MAX_MS = 60000;
 export const PLACEMENT_TYPE = 'APP_SCREENSHOT';
 /** Stany wersji, w których wolno zdejmować placementy (zastępować): tylko „w przygotowaniu”; szersze EDITABLE_STATES (odrzucone itd.) nie wystarczają — KO-210. */
 export const REPLACE_STATES = new Set(['PREPARE_FOR_SUBMISSION']);
-/** Stan wersji wystawionej w sklepie: jej placementów nie wolno zdjąć przypadkiem (RZ4-07, KO-212). */
-export const PUBLISHED_STATE = 'READY_FOR_SALE';
-/** Nazwa referencyjna obrazu w bibliotece dla pliku zrzutu (ten sam plik angielski służy czterem lokalizacjom). */
-export const refOf = (r, f) => `oczko-1.0/${r.source}/${r.lang}/${f.name}`;
+/** Stan wersji, którą wolno edytować (zastępować zrzuty): wszystkie INNE wersje aplikacji (w sprzedaży, w recenzji, oczekujące na wydanie, zastąpione itd.) są chronione —
+ *  ich placementów nie wolno zdjąć przypadkiem (RZ4-07, KO-212; rozszerzone z samego READY_FOR_SALE po P2 recenzji ZR10b: ZR11, KO-213, P-1059). */
+export const EDITED_STATE = 'PREPARE_FOR_SUBMISSION';
+/** Skrót treści pliku w nazwie referencyjnej: 12 pierwszych znaków szesnastkowych sha256 bajtów pliku (ZR11, KO-213). */
+export const SHA_LEN = 12;
+export const shaOf = buf => createHash('sha256').update(buf).digest('hex').slice(0, SHA_LEN);
+/** Nazwa referencyjna obrazu w bibliotece dla pliku zrzutu: tożsamość po TREŚCI, nie po nazwie (ZR11, KO-213, P-1058). Dry-run 45672598004: stała nazwa `oczko-1.0/<źródło>/<język>/<plik>`
+ *  była taka sama dla zrzutów 1.0 i 1.0.1, więc grupa ze starymi zrzutami wyglądała jak już zastąpiona (fałszywy zielony) i stary obraz był brany za nowy (findReusable). Teraz
+ *  `oczko/<źródło>/<język>/<plik>#<skrót>`; stare nazwy `oczko-1.0/…` są INNE niż nowe (grupa z nimi → „zastąp”). Ten sam plik angielski służy czterem lokalizacjom (nazwa zależy od języka aplikacji, nie lokalizacji).
+ *  Brak skrótu = wyjątek (nigdy cicha nazwa bez skrótu): plan() odrzuca takie pliki przed użyciem nazwy. */
+export const refOf = (r, f) => {
+  if (!f.sha) throw new Error(`brak skrótu treści pliku ${r.source}/${r.lang}/${f.name} — nazwa referencyjna bez skrótu nie rozróżnia zrzutów 1.0 i 1.0.1`);
+  return `oczko/${r.source}/${r.lang}/${f.name}#${f.sha}`;
+};
 export const ASSET_CATEGORY = 'APP_SCREENSHOTS_AND_PREVIEWS';
 export const FEATURE_ID = 'APP_STORE_VERSIONS';
 /** Limit Apple na grupę, gdy dane referencyjne go nie podają (strona „Discovering asset specifications”: 10 zrzutów na grupę). */
@@ -102,7 +116,7 @@ export function maxPerGroup(refData, group) {
   return DEFAULT_MAX_PER_GROUP;
 }
 
-/** Wczytuje katalog <język>/*.png → Map(język → [{ name, path, size, width, height, alpha }]) posortowane po nazwie; błędy plików osobno. */
+/** Wczytuje katalog <język>/*.png → Map(język → [{ name, path, size, sha, width, height, alpha }]) posortowane po nazwie (`sha` = skrót treści, ZR11); błędy plików osobno. */
 export function readShots(dir, fs = { readdirSync, readFileSync, statSync, existsSync }) {
   const out = new Map(); const problems = [];
   if (!dir || !fs.existsSync(dir)) return { shots: out, problems: dir ? [`brak katalogu ${dir}`] : [] };
@@ -110,7 +124,7 @@ export function readShots(dir, fs = { readdirSync, readFileSync, statSync, exist
     const p = join(dir, lang); if (!fs.statSync(p).isDirectory()) continue;
     const list = [];
     for (const f of fs.readdirSync(p).filter(n => /\.png$/i.test(n)).sort()) {
-      try { const buf = fs.readFileSync(join(p, f)); list.push({ name: f, path: join(p, f), size: buf.length, ...pngInfo(buf) }); }
+      try { const buf = fs.readFileSync(join(p, f)); list.push({ name: f, path: join(p, f), size: buf.length, sha: shaOf(buf), ...pngInfo(buf) }); }
       catch (e) { problems.push(`${lang}/${f}: ${e.message}`); }
     }
     if (list.length) out.set(lang, list);
@@ -143,8 +157,9 @@ export async function discover(client) {
   const lib = await client.call('GET', `/v1/apps/${appId}/assetLibrary`);
   const refRes = await client.call('GET', '/v1/appAssetLibraryRefData');
   const refData = refRes?.data?.[0]?.attributes ?? refRes?.data?.attributes ?? {};
-  const published = versions.filter(v => stateOf(v) === PUBLISHED_STATE).map(v => ({ id: v.id, name: v.attributes?.versionString ?? '' }));
-  return { appId, version, locs, libraryId: lib?.data?.id ?? null, refData, versionStates: versions.map(stateOf), published };
+  // Chronione: KAŻDA wersja iOS inna niż edytowana i w stanie innym niż w przygotowaniu (P-1059). `jedyna`: edytowana wersja jest jedyną wersją aplikacji (pierwsze wydanie) — wtedy nie ma z czym porównać.
+  const published = versions.filter(v => v.id !== version?.id && stateOf(v) !== EDITED_STATE).map(v => ({ id: v.id, name: v.attributes?.versionString ?? '', state: stateOf(v) }));
+  return { appId, version, locs, libraryId: lib?.data?.id ?? null, refData, versionStates: versions.map(stateOf), published, jedyna: !!version && versions.length === 1 };
 }
 
 /**
@@ -168,6 +183,7 @@ export async function plan({ shots, locs, refData, existing, zastap = false, ver
       const byGroup = new Map();
       for (const f of files) {
         if (f.alpha) { errors.push(`${source}/${lang}/${f.name}: kanał alfa (Apple: obrazy bez alfa)`); continue; }
+        if (!f.sha) { errors.push(`${source}/${lang}/${f.name}: brak skrótu treści pliku (nazwa referencyjna musi zależeć od treści — ZR11)`); continue; }
         const g = groupsFor({ refData, width: f.width, height: f.height });
         if (g.length !== 1) { errors.push(`${source}/${lang}/${f.name}: ${f.width}×${f.height} — ${g.length ? 'niejednoznaczna grupa urządzeń (' + g.join(', ') + ')' : 'brak pasującej specyfikacji w danych Apple'}`); continue; }
         if (!byGroup.has(g[0])) byGroup.set(g[0], []); byGroup.get(g[0]).push(f);
@@ -206,9 +222,12 @@ export async function plan({ shots, locs, refData, existing, zastap = false, ver
 export const renderTable = rows => ['| Źródło | Język | Lokalizacja | Grupa urządzeń | Zrzuty | Działanie |', '|---|---|---|---|---|---|',
   ...rows.map(r => `| ${r.source} | ${r.lang} | ${r.locale ?? '—'} | ${r.group ?? '—'} | ${r.files?.length ?? 0} | ${r.action}${r.reason ? ' — ' + r.reason : ''}${r.error ? ' (błąd)' : ''} |`)].join('\n');
 
+/** Typ zasobu placementu w odpowiedzi API (`data[].type`): schemat AppAssetLibraryPlacement, pole `type`, dozwolona wartość `appAssetLibraryPlacements`
+ *  (developer.apple.com/documentation/appstoreconnectapi/appassetlibraryplacement, odczyt 25.11.2026; polecenie ZR11 zakładało `appStoreVersionLocalizationPlacements` — nie występuje w dokumentacji). */
+export const PLACEMENT_RESOURCE_TYPE = 'appAssetLibraryPlacements';
 /** Placementy zrzutów grupy w kolejności wyświetlania z nazwą obrazu: [{ id, ref }] (zapytanie jak w artykule Apple „Placing assets on your App Store surfaces”). Tylko GET.
  *  Fail-closed (RZ4-01, KO-212): filtry serwera nie są jedyną obroną — wpis z `placementGroup` ≠ `group` albo `placementType` ≠ APP_SCREENSHOT jest odrzucany (licznik w `.odrzucone`),
- *  a wpis BEZ któregoś z tych atrybutów to wyjątek `odmowaZastapienia` (nie da się potwierdzić grupy; plan zamienia go w odmowę zastąpienia tej grupy). */
+ *  a wpis BEZ któregoś z tych atrybutów to wyjątek `odmowaZastapienia`; to samo dla `type` zasobu (ZR11, P-1059: ≠ PLACEMENT_RESOURCE_TYPE → odrzucony, brak → odmowa; stronicowanie przez `links.next` pokrywa test) (nie da się potwierdzić grupy; plan zamienia go w odmowę zastąpienia tej grupy). */
 export async function listPlacements(client, locId, group) {
   let next = `/v1/appStoreVersionLocalizations/${locId}/placements?filter[placementType]=${PLACEMENT_TYPE}&filter[placementGroup]=${group}&sort=placementGroupPosition&include=image&fields[appAssetLibraryImages]=referenceName,state,imageAsset&limit=200`;
   const data = []; const names = new Map();
@@ -220,21 +239,29 @@ export async function listPlacements(client, locId, group) {
   const own = []; let odrzucone = 0;
   for (const p of data) {
     const g = p.attributes?.placementGroup; const t = p.attributes?.placementType;
-    const brak = !g ? 'placementGroup' : !t ? 'placementType' : null;
-    if (brak) { const e = new Error(`odpowiedź API nie niesie ${brak} placementu ${p.id}, więc nie da się potwierdzić, że należy do tej grupy i typu zrzutów (kontrola po stronie klienta)`); e.odmowaZastapienia = true; throw e; }
-    if (g !== group || t !== PLACEMENT_TYPE) { odrzucone++; continue; }
+    const brak = !g ? 'placementGroup' : !t ? 'placementType' : !p.type ? 'type' : null;
+    if (brak) { const e = new Error(`odpowiedź API nie niesie ${brak} placementu ${p.id}, więc nie da się potwierdzić, że to placement tej grupy i typu zrzutów (kontrola po stronie klienta)`); e.odmowaZastapienia = true; throw e; }
+    if (g !== group || t !== PLACEMENT_TYPE || p.type !== PLACEMENT_RESOURCE_TYPE) { odrzucone++; continue; }
     own.push({ id: p.id, ref: names.get(p.relationships?.image?.data?.id) ?? '' });
   }
   own.odrzucone = odrzucone;
   return own;
 }
 
-/** RZ4-07 (KO-212): placementy do zdjęcia nie mogą występować w tej samej lokalizacji wersji w sprzedaży (READY_FOR_SALE) — gdyby wersje współdzieliły placementy, zdjęcie zmieniłoby stronę w sklepie.
- *  Tylko GET. Wspólny id albo błąd odczytu → odmowa (wiersze „zastąp” dostają działanie „odmowa”, `errors` niepuste, `line` mówi „rozłączne: nie”). Bez wersji w sprzedaży nie ma z czym porównać. */
-export async function checkPublished({ client, published, rows }) {
+/** RZ4-07 (KO-212), rozszerzone w ZR11 (KO-213, P-1059): placementy do zdjęcia nie mogą występować w tej samej lokalizacji ŻADNEJ innej wersji aplikacji niż edytowana, o ile ta nie jest w przygotowaniu
+ *  (w sprzedaży, w recenzji, oczekująca na wydanie itd.) — gdyby wersje współdzieliły placementy, zdjęcie zmieniłoby stronę w sklepie albo wersję w recenzji.
+ *  Tylko GET. Wspólny id albo błąd odczytu → odmowa (wiersze „zastąp” dostają działanie „odmowa”, `errors` niepuste, `line` mówi „rozłączne: nie”).
+ *  Brak wersji do sprawdzenia: bez `jedyna` (edytowana wersja nie jest jedyną wersją aplikacji) → odmowa z powodem (fail-closed: nie wiadomo, czy placementy nie są gdzieś współdzielone);
+ *  z `jedyna` (pierwsze wydanie) nie ma z czym porównać. */
+export async function checkPublished({ client, published, rows, jedyna = false }) {
   const zastap = rows.filter(r => r.action === 'zastąp'); const errors = [];
   if (!zastap.length) return { errors, line: null };
-  if (!published.length) return { errors, line: 'Placementy wersji w sklepie rozłączne: tak (brak wersji w sprzedaży — nie ma z czym porównać).' };
+  if (!published.length) {
+    if (jedyna) return { errors, line: 'Placementy wersji w sklepie rozłączne: tak (brak wersji w sprzedaży — jedyna wersja aplikacji jest edytowana, nie ma z czym porównać).' };
+    const powod = 'odmowa zastąpienia: brak wersji do sprawdzenia (żadna inna wersja aplikacji nie jest w stanie innym niż w przygotowaniu), a edytowana wersja nie jest jedyną wersją aplikacji — nie da się potwierdzić, że zdejmowane placementy nie są współdzielone z inną wersją';
+    for (const r of zastap) { r.action = 'odmowa'; r.reason = powod; errors.push(`${r.source}/${r.lang}/${r.locale}: ${powod}`); }
+    return { errors, line: 'Placementy innych wersji rozłączne: nie wiadomo — brak wersji do sprawdzenia, a edytowana wersja nie jest jedyną.' };
+  }
   const nazwa = published.map(v => v.name || 'wersji w sklepie').join(', '); const shared = [];
   const odmow = (r, powod) => { r.action = 'odmowa'; r.reason = powod; };
   try {
@@ -341,7 +368,7 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
   };
   const { rows, errors } = await plan({ shots, locs: d.locs, refData: d.refData, existing, zastap, versionState: stateOf(d.version) });
   if (zastap) { // RZ4-07: przed jakimkolwiek zapisem (także w dry-runie; tylko GET)
-    const sklep = await checkPublished({ client: c, published: d.published, rows });
+    const sklep = await checkPublished({ client: c, published: d.published, rows, jedyna: d.jedyna });
     if (sklep.line) log(`${sklep.line}\n`);
     errors.push(...sklep.errors);
   }
@@ -358,7 +385,11 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
   if (apply) {
     const images = new Map(); /* nazwa referencyjna → obraz: ten sam plik angielski służy czterem lokalizacjom */
     for (const [ref, f] of planned) {
-      try { images.set(ref, await obtainImage({ client, fetchFn, libraryId: d.libraryId, lib, refName: ref, file: f, body: read(f.path), now })); }
+      try {
+        const body = read(f.path); // skrót w nazwie musi opisywać bajty, które naprawdę wgrywamy (plik mógł się zmienić po planie)
+        if (shaOf(body) !== f.sha) throw new Error(`plik ${f.name} zmienił się po obliczeniu skrótu treści (${f.sha} ≠ ${shaOf(body)}) — nic nie wgrano; ponów przebieg`);
+        images.set(ref, await obtainImage({ client, fetchFn, libraryId: d.libraryId, lib, refName: ref, file: f, body, now }));
+      }
       catch (e) { images.set(ref, { file: f, error: e.message }); }
     }
     const all = [...images.values()];

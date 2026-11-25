@@ -5,6 +5,7 @@
  */
 import { join } from 'path';
 import { execFileSync } from 'child_process';
+import { createHash } from 'crypto';
 
 const korzen = join(__dirname, '..', '..');
 const DRIVER = join(__dirname, 'zrzuty-zastap-driver.mjs');
@@ -16,7 +17,11 @@ type Krok = { code: number; rows: Wiersz[]; log: string[]; calls: { m: string; p
 type Wynik = { kroki: Krok[]; placementy: string[]; obrazy: number; usunieteObrazy: number; wycieki: string[] };
 const uruchom = (sc: Record<string, unknown>): Wynik => JSON.parse(execFileSync(process.execPath, [DRIVER, JSON.stringify(sc)], { encoding: 'utf8', maxBuffer: 1 << 26 }));
 const kod = (src: string) => JSON.parse(execFileSync(process.execPath, ['--input-type=module', '-e', src], { encoding: 'utf8', maxBuffer: 1 << 26 }));
-const NOWE = ['01', '02', '03'].map((n) => `oczko-1.0/iphone/pl/${n}-ekran.png`);
+/** ZR11 (KO-213): referenceName = oczko/<źródło>/<język>/<plik>#<12 znaków sha256 treści>; atrapa (driver) daje plikom 100 × 'A', skrót liczony tu niezależnie od kodu skryptu. */
+const sha12 = (tresc: string) => createHash('sha256').update(Buffer.alloc(100, tresc)).digest('hex').slice(0, 12);
+const NOWE = ['01', '02', '03'].map((n) => `oczko/iphone/pl/${n}-ekran.png#${sha12('A')}`);
+const SHA_PLAN = 'aabbccddeeff'; // skrót w plikach fikcyjnych helpera plan()
+const NOWE_PLAN = ['01', '02', '03'].map((n) => `oczko/iphone/pl/${n}-ekran.png#${SHA_PLAN}`);
 const niepuste = (k: Krok) => k.calls.filter((c) => c.m !== 'GET');
 const tagi = (k: Krok) => k.calls.map((c) => c.tag);
 
@@ -24,7 +29,7 @@ const tagi = (k: Krok) => k.calls.map((c) => c.tag);
 function plan(o: { zastap?: boolean; stare?: number; stan?: string | null; refyStare?: string[]; jakoLiczba?: boolean }) {
   return kod(`import * as Z from ${ZRZUTY};
     const M = await import(${JSON.stringify(join(korzen, 'scripts/asc/metadane.mjs'))});
-    const f = (n) => ({ name: n, path: '/x/' + n, size: 100, width: 1320, height: 2868, alpha: false });
+    const f = (n) => ({ name: n, path: '/x/' + n, size: 100, width: 1320, height: 2868, alpha: false, sha: ${JSON.stringify(SHA_PLAN)} });
     const ref = { imageSpecs: [{ specId: 'S', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }],
       placementTypes: [{ placementTypeId: 'APP_SCREENSHOT', specMappings: [{ specs: ['S'], placementGroupId: 'G' }] }] };
     const refy = ${JSON.stringify(o.refyStare ?? null)};
@@ -78,14 +83,14 @@ describe('plan(): działanie „zastąp”', () => {
   });
 
   test('idempotencja: grupa już ma dokładnie te zrzuty w tej kolejności → „pomiń” (nie zdejmuje i nie wgrywa drugi raz)', () => {
-    const p = plan({ zastap: true, stare: 3, refyStare: NOWE });
+    const p = plan({ zastap: true, stare: 3, refyStare: NOWE_PLAN });
     expect(p.rows[0].action).toBe('pomiń');
     expect(p.rows[0].reason).toMatch(/już zawiera te zrzuty/);
     expect(p.rows[0].remove).toBeUndefined();
   });
 
   test('te same obrazy w innej kolejności albo jeden inny → „zastąp” (cel to kolejność z artefaktu)', () => {
-    const p = plan({ zastap: true, stare: 3, refyStare: [NOWE[1], NOWE[0], NOWE[2]] });
+    const p = plan({ zastap: true, stare: 3, refyStare: [NOWE_PLAN[1], NOWE_PLAN[0], NOWE_PLAN[2]] });
     expect(p.rows[0].action).toBe('zastąp');
   });
 

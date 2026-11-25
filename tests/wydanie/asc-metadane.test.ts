@@ -272,7 +272,7 @@ describe('zrzuty sklepu (scripts/asc/zrzuty.mjs)', () => {
     const png = (w, h, ct) => { const b = Buffer.alloc(40); Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]).copy(b); b.writeUInt32BE(w,16); b.writeUInt32BE(h,20); b[25]=ct; return b; };
     const ref = { imageSpecs: [{ specId: 'S69', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }, { specId: 'SPAD', alphaAllowed: false, dimensions: { minWidth: 2064, maxWidth: 2064, minHeight: 2752, maxHeight: 2752 } }],
       placementTypes: [{ placementTypeId: 'APP_SCREENSHOT', specMappings: [{ specs: ['S69'], placementGroupId: 'G-IPHONE' }, { specs: ['SPAD'], placementGroupId: 'G-IPAD' }] }] };
-    const f = (n, w, h, alpha) => ({ name: n, path: '/x/' + n, size: 1, width: w, height: h, alpha });
+    const f = (n, w, h, alpha) => ({ name: n, path: '/x/' + n, size: 1, width: w, height: h, alpha, sha: 'aabbccddeeff' });
     const shots = { iphone: new Map([['en', [f('01.png', 1320, 2868, false)]], ['sl', [f('01.png', 1320, 2868, false)]]]), ipad: new Map([['en', [f('01.png', 2064, 2752, false)]]]) };
     const p = await Z.plan({ shots, locs: new Map([['en-US', 'L1'], ['en-GB', 'L2'], ['en-AU', 'L3'], ['en-CA', 'L4']]), refData: ref, existing: async () => 0 });
     const bad = await Z.plan({ shots: { iphone: new Map([['en', [f('02.png', 1320, 2868, true), f('03.png', 1000, 1000, false)]]]) }, locs: new Map([['en-US','L1']]), refData: ref, existing: async () => 0 });
@@ -288,7 +288,7 @@ describe('zrzuty sklepu (scripts/asc/zrzuty.mjs)', () => {
   test('35 języków aplikacji, jak w rejestrze 09; --jezyki walidowane; brak katalogu zgłoszony', () => {
     expect(w.keys).toEqual([...APP_LANGS_35].sort()); expect(w.langs).toEqual(['en', 'pl']); expect(w.badLang.error).toContain('zz'); expect(w.ref[0]).toContain('brak katalogu');
     const s = read('scripts/asc/zrzuty.mjs'); // KO-210/P-1048: jedyne dopuszczone wywołanie DELETE to zdjęcie placementu (zastąp), raz, na ścieżce placementu; reszta bez zmian
-    expect(s.match(/'DELETE'|"DELETE"/g)).toHaveLength(1); expect(s).toContain("client.call('DELETE', `/v1/appAssetLibraryPlacements/${p.id}`)"); expect(s).not.toMatch(/DELETE['"`], `\/v1\/appAssetLibraryImages/); expect(s).toContain('const refOf = (r, f) => `oczko-1.0/');
+    expect(s.match(/'DELETE'|"DELETE"/g)).toHaveLength(1); expect(s).toContain("client.call('DELETE', `/v1/appAssetLibraryPlacements/${p.id}`)"); expect(s).not.toMatch(/DELETE['"`], `\/v1\/appAssetLibraryImages/); expect(s).toContain('`oczko/${r.source}/${r.lang}/${f.name}#${f.sha}`'); expect(s).not.toContain('oczko-1.0/${'); // ZR11: nazwa referencyjna zależy od treści (skrót), nie tylko od nazwy pliku
   });
 });
 

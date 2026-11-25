@@ -16,7 +16,7 @@ const ZRZUTY = JSON.stringify(path.join(korzen, 'scripts/asc/zrzuty.mjs'));
 /** Plan na atrapie: refData z grupami G-IPHONE (1320×2868) i G-WATCH (416×496); `existing` podaje liczbę zrzutów w grupie lokalizacji. */
 function plan(opcje: { jezyki: string[]; ileIphone?: number; ileZegarek?: number; bezZegarkaWRef?: boolean; zrzutowZegarka?: number }) {
   const kod = `import * as Z from ${ZRZUTY};
-    const f = (n, w, h) => ({ name: n, path: '/x/' + n, size: 1, width: w, height: h, alpha: false });
+    const f = (n, w, h) => ({ name: n, path: '/x/' + n, size: 1, width: w, height: h, alpha: false, sha: 'aabbccddeeff' });
     const jezyki = ${JSON.stringify(opcje.jezyki)};
     const zeg = Array.from({ length: ${opcje.zrzutowZegarka ?? 2} }, (_, i) => f('0' + (i + 1) + '-k.png', 416, 496));
     const ip = Array.from({ length: 7 }, (_, i) => f('0' + (i + 1) + '-e.png', 1320, 2868));

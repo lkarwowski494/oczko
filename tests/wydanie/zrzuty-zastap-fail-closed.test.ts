@@ -7,6 +7,7 @@
  */
 import { join } from 'path';
 import { execFileSync } from 'child_process';
+import { createHash } from 'crypto';
 
 const korzen = join(__dirname, '..', '..');
 const DRIVER = join(__dirname, 'zrzuty-zastap-driver.mjs');
@@ -18,7 +19,8 @@ type Krok = { code: number; rows: Wiersz[]; log: string[]; calls: Wywolanie[] };
 type Wynik = { kroki: Krok[]; placementy: string[]; pozostale: string[]; obrazy: number; usunieteObrazy: number; wycieki: string[] };
 const uruchom = (sc: Record<string, unknown>): Wynik => JSON.parse(execFileSync(process.execPath, [DRIVER, JSON.stringify(sc)], { encoding: 'utf8', maxBuffer: 1 << 26 }));
 const kod = (src: string) => JSON.parse(execFileSync(process.execPath, ['--input-type=module', '-e', src], { encoding: 'utf8', maxBuffer: 1 << 26 }));
-const NOWE = ['01', '02', '03'].map((n) => `oczko-1.0/iphone/pl/${n}-ekran.png`);
+const SHA = createHash('sha256').update(Buffer.alloc(100, 'A')).digest('hex').slice(0, 12); // ZR11 (KO-213): skrót treści w referenceName, liczony niezależnie od kodu
+const NOWE = ['01', '02', '03'].map((n) => `oczko/iphone/pl/${n}-ekran.png#${SHA}`);
 const niepuste = (k: Krok) => k.calls.filter((c) => c.m !== 'GET');
 const usuniete = (k: Krok) => k.calls.filter((c) => c.m === 'DELETE').map((c) => c.p.split('/').pop() as string);
 const tekst = (k: Krok) => k.log.join('\n');
@@ -81,7 +83,7 @@ describe('RZ4-01: lista do zdjęcia weryfikuje grupę i typ po stronie klienta',
 
   test('listPlacements: odrzuca wpisy innej grupy i typu (licznik `odrzucone`), brak atrybutu → wyjątek z `odmowaZastapienia`', () => {
     const w = kod(`import * as Z from ${ZRZUTY};
-      const wpis = (id, g, t) => ({ id, attributes: { ...(g ? { placementGroup: g } : {}), ...(t ? { placementType: t } : {}) }, relationships: { image: { data: { id: 'I' + id } } } });
+      const wpis = (id, g, t) => ({ id, type: 'appAssetLibraryPlacements', attributes: { ...(g ? { placementGroup: g } : {}), ...(t ? { placementType: t } : {}) }, relationships: { image: { data: { id: 'I' + id } } } });
       const klient = (data) => ({ call: async () => ({ data, included: data.map(x => ({ type: 'appAssetLibraryImages', id: 'I' + x.id, attributes: { referenceName: 'ref-' + x.id } })) }) });
       const dobre = await Z.listPlacements(klient([wpis('A', 'G', 'APP_SCREENSHOT'), wpis('B', 'H', 'APP_SCREENSHOT'), wpis('C', 'G', 'APP_PREVIEW'), wpis('D', 'G', 'APP_SCREENSHOT')]), 'LOC', 'G');
       let blad = null; try { await Z.listPlacements(klient([wpis('A', 'G', 'APP_SCREENSHOT'), wpis('B', null, 'APP_SCREENSHOT')]), 'LOC', 'G'); } catch (e) { blad = { odmowa: e.odmowaZastapienia === true, msg: e.message }; }
