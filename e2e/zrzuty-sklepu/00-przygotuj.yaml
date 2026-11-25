@@ -186,6 +186,11 @@ name: "Zrzuty sklepu · 00 przygotowanie danych fikcyjnych (4 projekty, wzór, n
     when: { true: "${ORIENT_WZOR == 'LANDSCAPE_LEFT' && DANE_KLUCZ == 'pl'}" }
     commands:
       - swipe: { start: "9%, 55%", end: "73%, 55%", duration: 800 }
+# ZR8 (P-1036, KO-201): pas 2 w 04 wychodził cienką kreską dokładnie w pierwszym języku każdego zadania (12 z 31 kadrów prawdziwych przebiegów; przyczyna nieudowodniona). Łagodzenie: tu, w sesji przygotowania, jedna
+# kreska „rozgrzewkowa” (przeciągnięcie kierunkowe przez środek strony) i jej natychmiastowe cofnięcie (`wzor-cofnij-rysunek` działa w sesji, w której kreska powstała; jak 04a), tak aby pierwsza kreska sceny 04 nie była pierwszą kreską zakreślacza
+# w sesji. Zostaje 1 zakreślenie (asercja niżej). Dowód skuteczności dopiero z przebiegu zrzuty-sklepu.yml (kontrola grubości: scripts/ci/kontrola-zakreslen.mjs).
+- swipe: { direction: RIGHT } # kierunkowy (bez start/end); kreska i tak jest cofana w następnym kroku
+- tapOn: { id: "wzor-cofnij-rysunek" }
 - assertVisible: { id: "wzor-zakreslenia", text: "1 highlight" }
 - tapOn: { id: "wzor-zakreslacz" }
 - assertVisible: { id: "wzor-zakreslacz", selected: false }

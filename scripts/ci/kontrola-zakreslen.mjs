@@ -4,6 +4,8 @@
 // Układ jak komplet-zrzutow.mjs: <katalog>/[warunek-og07/]<klasa>/<język>/{03-wzor,04-zakreslenie}.png. Para bez jednej sceny = pominięcie z komunikatem (brak sceny zgłasza komplet-zrzutow.mjs).
 // ZR7 (KO-195, P-1016): dodatkowo kadr 04 musi mieć pas 2 NA WIERSZU 13 tekstu strony (polozeniePasa): przebieg 45021511463 przeszedł z „OK (27 par)” mimo pasa 2 poza wierszem w 10 językach (strona PDF przesuwa się
 // zależnie od liczby linii podpowiedzi, a pas stoi na stałej wysokości ekranu); sama liczba pasów tego nie widzi. Sprawdzenie dotyczy każdego kadru 04, także bez pary 03.
+// ZR8 (KO-201, P-1036): dwie dalsze własności kadru, które widać dopiero na pikselach: (a) GRUBOŚĆ pasa 2 względem pasa 1 (grubosciPasow) — kadry pierwszego języka każdego zadania miały pas 2 jako cienką kreskę
+// (4 z 12 px przy 500 px szerokości) zamiast pasa jak wiersz 9; (b) linia znacznika rzędu nie przecina tekstu wiersza (liniaZnacznika) — pas znacznika stał na wierszu 21 i jego dolna linia leżała na dolnej części liter.
 // Wymaga ImageMagicka (`convert`; zadanie „komplet” zrzuty-sklepu.yml instaluje go wcześniej). Plik nieczytelny = BŁĄD z nazwą pliku (nie ciche pominięcie).
 // Użycie: node scripts/ci/kontrola-zakreslen.mjs <katalog_surowych>  → kod 1 przy jakimkolwiek BŁĘDZIE; inaczej 0.
 import { existsSync, readdirSync, statSync } from 'node:fs';
@@ -94,6 +96,44 @@ export function polozeniePasa(rgb, w, h) {
   return { ok: odchylenie <= ODCHYLENIE_MAX, pas: pasy[1], wiersz: w13, odchylenie, powod: odchylenie <= ODCHYLENIE_MAX ? '' : `środek pasa 2 (y=${srodek(pasy[1])}) leży ${odchylenie.toFixed(2)} wysokości wiersza od środka wiersza 13 (y=${srodek(w13)}; próg ${ODCHYLENIE_MAX})` };
 }
 
+/* ZR8 (P-1036): grubość pasa 2 względem pasa 1. Oba pociągnięcia to ten sam gest (Maestro swipe 800 ms, zakreślacz 18), więc oba pasy mają mieć wysokość tego samego rzędu.
+ * Zmierzone na 31 kadrach 04 (tests/wydanie/dane/zakreslenie-zr7, 500 px szerokości): pas 2 / pas 1 = 0,30–0,36 w 12 kadrach z cienką kreską (cs, da, de, el, en, es, es-419, fi, fr, pl i iPad en, pl),
+ * 1,00–1,09 w 19 kadrach z pasem pełnym. GRUBOSC_PASA_MIN = 0,65 = środek luki (0,36 … 1,00; margines 0,29 i 0,35); pas pełny na kadrze nie jest cieńszy od 0,9 pasa 1 (zaokrąglenia ±1 wiersz). */
+export const GRUBOSC_PASA_MIN = 0.65;
+
+/** Grubość pasa 2 względem pasa 1: `{ ok, h1, h2, stosunek, powod }` (wysokości w wierszach kadru). Rzuca, gdy w kadrze nie ma dwóch pasów. */
+export function grubosciPasow(rgb, w, h) {
+  const pasy = zakresyPasow(rgb, w, h);
+  if (pasy.length < 2) throw new Error(`kadr ma ${pasy.length} pas(ów), a grubość pasa 2 wymaga dwóch`);
+  const h1 = pasy[0][1] - pasy[0][0] + 1; const h2 = pasy[1][1] - pasy[1][0] + 1;
+  const stosunek = h2 / h1;
+  return { ok: stosunek >= GRUBOSC_PASA_MIN, h1, h2, stosunek, powod: stosunek >= GRUBOSC_PASA_MIN ? '' : `pas 2 ma ${h2} wierszy kadru, pas 1 ${h1} (${stosunek.toFixed(2)}; próg ${GRUBOSC_PASA_MIN}) — pas 2 to cienka kreska, nie pas jak wiersz 9` };
+}
+
+/* ZR8 (P-1036): linia znacznika rzędu a tekst. Pas znacznika to dwie poziome ciemne linie przez całą szerokość strony (górna i dolna krawędź, po 1–2 wiersze kadru przy 500 px); przy poprawnym położeniu leżą w przerwie
+ * między wierszami, nie na tekście. Linia = wiersz, w którym ≥ PROG_LINII szerokości kadru jest ciemne (tekst strony nigdy tyle nie ma: najdłuższy wiersz zajmuje ok. 55% szerokości). Tekst = skupiska wierszy z ≥ MIN_CIEMNYCH
+ * ciemnych pikseli w kolumnie tekstu [ZNACZNIK_OD, ZNACZNIK_DO] szerokości, BEZ wierszy linii (węższa niż w polozeniePasa: na iPadzie od 0,79 stoi kolumna z licznikiem, ciemna w każdym wierszu). Linia „przecina” tekst,
+ * gdy jej wiersz leży w zakresie wiersza tekstu [od, do] (odległość 0). Zmierzone: iPhone — dolna linia w zakresie wiersza „Row 21” (odległość 0) we wszystkich 29 kadrach, górna 2–3 wiersze nad nim. */
+const PROG_LINII = 0.6;
+const ZNACZNIK_OD = 0.12; const ZNACZNIK_DO = 0.70;
+
+/** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma linii znacznika (nic do sprawdzenia, ok = true). */
+export function liniaZnacznika(rgb, w, h) {
+  const ciemne = (y, x0, x1) => { let n = 0; for (let x = x0, i = (y * w + x0) * 3; x < x1; x++, i += 3) if ((rgb[i] + rgb[i + 1] + rgb[i + 2]) / 3 < PROG_CIEMNY) n++; return n; };
+  const linie = [];
+  for (let y = 0; y < h; y++) if (ciemne(y, 0, w) >= w * PROG_LINII) linie.push(y);
+  if (linie.length === 0) return { linie, wiersze: [], przecina: [], ok: true, brak: true, powod: '' };
+  const jestLinia = new Set(linie);
+  const x0 = Math.floor(w * ZNACZNIK_OD); const x1 = Math.ceil(w * ZNACZNIK_DO);
+  const wiersze = []; let biezacy = null;
+  for (let y = 0; y < h; y++) {
+    if (jestLinia.has(y) || ciemne(y, x0, x1) < MIN_CIEMNYCH) continue;
+    if (biezacy && y - biezacy[1] - 1 <= MAX_PRZERWA_TEKSTU) biezacy[1] = y; else { biezacy = [y, y]; wiersze.push(biezacy); }
+  }
+  const przecina = linie.filter((y) => wiersze.some(([a, b]) => y >= a && y <= b));
+  return { linie, wiersze, przecina, ok: przecina.length === 0, brak: false, powod: przecina.length === 0 ? '' : `linia znacznika (wiersze kadru ${przecina.join(', ')}) leży na tekście wiersza (${wiersze.filter(([a, b]) => przecina.some((y) => y >= a && y <= b)).map(([a, b]) => `${a}–${b}`).join(', ')}) — znacznik ma stać w przerwie między wierszami` };
+}
+
 /** Wczytuje PNG przez ImageMagick (zmniejszony, bez alfy); rzuca z komunikatem, gdy się nie da. */
 export function wczytajRgb(plik) {
   const wspolne = [plik, '-resize', `${SZEROKOSC_ANALIZY}x>`, '-alpha', 'off', '-depth', '8'];
@@ -147,7 +187,24 @@ export function sprawdz(katalog, wczytaj = wczytajRgb) {
       const p = polozeniePasa(rgb, w, h);
       if (p.ok) linie.push(`POŁOŻENIE OK ${etykieta}: pas 2 na wierszu 13 (odchylenie ${p.odchylenie.toFixed(2)} wysokości wiersza, próg ${ODCHYLENIE_MAX})`);
       else { linie.push(`BŁĄD ${po}: pas 2 poza wierszem 13 — ${p.powod}`); bledy++; }
-    } catch (e) { linie.push(`BŁĄD ${po}: położenie pasa 2: ${e instanceof Error ? e.message : String(e)}`); bledy++; }
+      // ZR8 (P-1036): pas 2 tej samej grubości co pas 1.
+      const g = grubosciPasow(rgb, w, h);
+      if (g.ok) linie.push(`GRUBOŚĆ OK ${etykieta}: pas 2 / pas 1 = ${g.h2}/${g.h1} wierszy kadru (${g.stosunek.toFixed(2)}, próg ${GRUBOSC_PASA_MIN})`);
+      else { linie.push(`BŁĄD ${po}: ${g.powod}`); bledy++; }
+    } catch (e) { linie.push(`BŁĄD ${po}: położenie albo grubość pasa 2: ${e instanceof Error ? e.message : String(e)}`); bledy++; }
+  }
+  // ZR8 (P-1036): linia znacznika rzędu nie przecina tekstu — w każdym kadrze 03 i 04 (znacznik jest na obu).
+  for (const [etykieta, { przed, po }] of [...pary].sort(([a], [b]) => a.localeCompare(b))) {
+    for (const plik of [przed, po]) {
+      if (!plik) continue;
+      try {
+        const { rgb, w, h } = wczytaj(plik);
+        const z = liniaZnacznika(rgb, w, h);
+        if (z.brak) continue; // brak linii znacznika w kadrze: nie ta kontrola (kadr bez znacznika nie ma czego przecinać)
+        if (z.ok) linie.push(`ZNACZNIK OK ${etykieta}/${plik.split(sep).pop()}: linie ${z.linie.join(',')} poza tekstem wierszy`);
+        else { linie.push(`BŁĄD ${plik}: ${z.powod}`); bledy++; }
+      } catch (e) { linie.push(`BŁĄD ${plik}: linia znacznika: ${e instanceof Error ? e.message : String(e)}`); bledy++; }
+    }
   }
   // AQ (P3, KO-046): zero par = kontrola nic nie sprawdziła, więc to błąd, nie notatka. Sceny 03/04 powstają w każdym przebiegu (bez OG-07 w `warunek-og07/`, który też przeszukujemy).
   if (pary.size === 0) { linie.push(`BŁĄD ${katalog}: brak par 03/04 do sprawdzenia — kontrola nic nie sprawdziła (brak katalogu, pusty zestaw albo sceny 03/04 nie powstały; komplet-zrzutow.mjs wskaże braki)`); bledy++; }

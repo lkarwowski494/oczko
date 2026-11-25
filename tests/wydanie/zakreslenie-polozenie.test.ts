@@ -48,14 +48,14 @@ if (!maConvert && !wymagaConvert) {
   });
   test.each(DOBRE)('%s: pas 2 na wierszu 13 → POŁOŻENIE OK, bez błędu', (j) => {
     expect(stdout).toMatch(new RegExp(`POŁOŻENIE OK 6\\.9/${j}: pas 2 na wierszu 13`));
-    expect(stdout).not.toMatch(new RegExp(`BŁĄD [^\\n]*6\\.9/${j}/04-zakreslenie`));
+    expect(stdout).not.toMatch(new RegExp(`BŁĄD [^\\n]*6\\.9/${j}/04-zakreslenie[^\\n]*pas 2 poza wierszem 13`)); // ZR8: inne błędy tego kadru (grubość, znacznik) sprawdza zakreslenie-grubosc-znacznik.test.ts
   });
   test.each(['en', 'pl'])('iPad 13″ %s (poziomo, przebieg 44758366101): pas 2 na wierszu 13', (j) => {
     expect(stdout).toMatch(new RegExp(`POŁOŻENIE OK ipad-13/${j}: pas 2 na wierszu 13`));
   });
   test('kod wyjścia 1 (są błędy), a błędów jest dokładnie tyle, ile języków z drugim pasem poza wierszem', () => {
     expect(status).toBe(1);
-    expect((stdout.match(/^BŁĄD /gm) ?? []).length).toBe(ZLE.length);
+    expect((stdout.match(/^BŁĄD [^\n]*pas 2 poza wierszem 13/gm) ?? []).length).toBe(ZLE.length); // ZR8: tylko błędy położenia; kontrole grubości i znacznika mają własny test
   });
   test('zestaw wejściowy ma dokładnie 29 kadrów iPhone (10 + 19) i 2 iPad — test nie jest pusty', () => {
     const jezyki = fs.readdirSync(path.join(DANE, '6.9')).sort();
