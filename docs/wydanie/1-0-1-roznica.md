@@ -1,11 +1,9 @@
 # Różnica 1.0.1 względem a830eb21 (v1.0.0-b1221)
 
-Baza: `a830eb21bfa5bf0ec148f9081a66f9f37732675d` · głowa: `881b4b5506df16cc72770f606fdb80d0a5c114f6` · wersja docelowa: `1.0.1` · skrypt: `node scripts/wydanie/roznica-wersji.mjs` (test: `tests/wydanie/roznica-wersji.test.ts`)
+Baza: `a830eb21bfa5bf0ec148f9081a66f9f37732675d` · głowa: `bd297f7f60a5be9064ee33f752c05c3505bd719d` · wersja docelowa: `1.0.1` · skrypt: `node scripts/wydanie/roznica-wersji.mjs` (test: `tests/wydanie/roznica-wersji.test.ts`)
 
-## Wynik: NARUSZENIA (2)
+## Wynik: OK — różnica poza dokumentacją dotyczy tylko pól wersji
 
-- tests/wydanie/co-nowego-1-0-1.test.ts: zmiana poza polami wersji i dokumentami wydania
-- tests/wydanie/metadane-przeklad.test.ts: zmiana poza polami wersji i dokumentami wydania
 
 ## Pliki (git diff --name-status)
 
@@ -13,6 +11,7 @@ Baza: `a830eb21bfa5bf0ec148f9081a66f9f37732675d` · głowa: `881b4b5506df16cc727
 M	app.json
 M	docs/decyzje.md
 A	docs/jakosc/test-fizyczny/1221.md
+A	docs/wydanie/1-0-1-roznica.md
 A	docs/wydanie/lista-1-0-1.md
 A	docs/wydanie/metadane/co-nowego-1-0-1.store.json
 M	docs/wydanie/metadane/en.store.json
@@ -53,6 +52,7 @@ A	tests/wydanie/roznica-wersji.test.ts
  app.json                                         |  2 +-
  docs/decyzje.md                                  |  2 +
  docs/jakosc/test-fizyczny/1221.md                | 75 +++++++++++++++++++
+ docs/wydanie/1-0-1-roznica.md                    | 67 +++++++++++++++++
  docs/wydanie/lista-1-0-1.md                      | 68 +++++++++++++++++
  docs/wydanie/metadane/co-nowego-1-0-1.store.json | 94 ++++++++++++++++++++++++
  docs/wydanie/metadane/en.store.json              |  8 +-
@@ -63,5 +63,5 @@ A	tests/wydanie/roznica-wersji.test.ts
  tests/wydanie/co-nowego-1-0-1.test.ts            | 46 ++++++++++++
  tests/wydanie/metadane-przeklad.test.ts          |  2 +-
  tests/wydanie/roznica-wersji.test.ts             | 63 ++++++++++++++++
- 13 files changed, 443 insertions(+), 13 deletions(-)
+ 14 files changed, 510 insertions(+), 13 deletions(-)
 ```
