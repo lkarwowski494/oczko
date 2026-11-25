@@ -1,0 +1,201 @@
+# RZ3 — próby czułości i pomiary na 8a8fb678 (rola 07-jakosc, audyt; 2026-11-25)
+# Skrypt 'stary' = scripts/ci/kontrola-zakreslen.mjs z f0b28df6; 'nowy' = z 8a8fb678. Ścieżki tymczasowe skrócone do <T>/.
+
+## A. Próby M0–M6 na prawdziwym kadrze en 6.9 (kopia kadru + dorysowana zmiana; kod wyjścia po każdej próbie)
+# baza (kadry bez zmian)
+--- M0 [stary-kontrola] oczekiwane: OK
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M0 [nowy-kontrola] oczekiwane: OK
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65; pas ≤ 1.6 × wiersz tekstu 11)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M1 [stary-kontrola] oczekiwane: BŁĄD (linia na tekście wiersza 21)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+BŁĄD <T>/M1/6.9/en/03-wzor.png: linia znacznika (wiersze kadru 578, 579) leży na tekście wiersza (573–583) — znacznik ma stać w przerwie między
+BŁĄD <T>/M1/6.9/en/04-zakreslenie.png: linia znacznika (wiersze kadru 589, 590) leży na tekście wiersza (584–594) — znacznik ma stać w przerwie 
+Kontrola zakreśleń: 2 błędów
+kod wyjścia: 1
+--- M1 [nowy-kontrola] oczekiwane: BŁĄD (linia na tekście wiersza 21)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65; pas ≤ 1.6 × wiersz tekstu 11)
+BŁĄD <T>/M1/6.9/en/03-wzor.png: linia znacznika (wiersze kadru 578, 579) leży na tekście wiersza (573–583) — znacznik ma stać w przerwie między
+BŁĄD <T>/M1/6.9/en/04-zakreslenie.png: linia znacznika (wiersze kadru 589, 590) leży na tekście wiersza (584–594) — znacznik ma stać w przerwie 
+Kontrola zakreśleń: 2 błędów
+kod wyjścia: 1
+--- M2 [stary-kontrola] oczekiwane: BŁĄD (znacznik w barwie o nasyceniu 80)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M2 [nowy-kontrola] oczekiwane: BŁĄD (znacznik w barwie o nasyceniu 80)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65; pas ≤ 1.6 × wiersz tekstu 11)
+BŁĄD <T>/M2/6.9/en/03-wzor.png: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ 60% szerokości (nasycenie ≤ 30); znacznik r
+BŁĄD <T>/M2/6.9/en/04-zakreslenie.png: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ 60% szerokości (nasycenie ≤ 30); zna
+Kontrola zakreśleń: 2 błędów
+kod wyjścia: 1
+--- M3 [stary-kontrola] oczekiwane: OK zamierzone (55% < 60%), ale wcześniej oczekiwano BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M3 [nowy-kontrola] oczekiwane: OK zamierzone (55% < 60%), ale wcześniej oczekiwano BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65; pas ≤ 1.6 × wiersz tekstu 11)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M4 [stary-kontrola] oczekiwane: BŁĄD (znacznik usunięty)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M4 [nowy-kontrola] oczekiwane: BŁĄD (znacznik usunięty)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65; pas ≤ 1.6 × wiersz tekstu 11)
+BŁĄD <T>/M4/6.9/en/03-wzor.png: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ 60% szerokości (nasycenie ≤ 30); znacznik r
+BŁĄD <T>/M4/6.9/en/04-zakreslenie.png: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ 60% szerokości (nasycenie ≤ 30); zna
+Kontrola zakreśleń: 2 błędów
+kod wyjścia: 1
+--- M5 [stary-kontrola] oczekiwane: BŁĄD (pasy 51 i 71 wierszy)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 71/51 wierszy kadru (1.39, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M5 [nowy-kontrola] oczekiwane: BŁĄD (pasy 51 i 71 wierszy)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+BŁĄD <T>/M5/6.9/en/04-zakreslenie.png: pas 1 (51 wierszy kadru) i pas 2 (71 wierszy kadru) za gruby: wiersz tekstu ma 11 wierszy kadru, limit pasa 1.6 
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: 1 błędów
+kod wyjścia: 1
+--- M6 [stary-kontrola] oczekiwane: BŁĄD (pas 2 = 33 wiersze)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 33/22 wierszy kadru (1.50, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+--- M6 [nowy-kontrola] oczekiwane: BŁĄD (pas 2 = 33 wiersze)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+BŁĄD <T>/M6/6.9/en/04-zakreslenie.png: pas 1 (22 wierszy kadru) i pas 2 (33 wierszy kadru) za gruby: wiersz tekstu ma 11 wierszy kadru, limit pasa 1.6 
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: 1 błędów
+kod wyjścia: 1
+
+## B. Prawdziwe kadry 03/04 z biegów 45633013976 i 45633019859 (artefakty pobrane przez MCP; kontrola uruchomiona oboma skryptami)
+-- nowy-a859: pary OK 29, BŁĄD 0, GRUBOŚĆ OK 29, ZNACZNIK OK 58; ostatnia linia: Kontrola zakreśleń: OK (29 par)
+-- stary-a859: pary OK 29, BŁĄD 0, GRUBOŚĆ OK 29, ZNACZNIK OK 58; ostatnia linia: Kontrola zakreśleń: OK (29 par)
+-- nowy-a976: pary OK 4, BŁĄD 0, GRUBOŚĆ OK 4, ZNACZNIK OK 8; ostatnia linia: Kontrola zakreśleń: OK (4 par)
+-- stary-a976: pary OK 4, BŁĄD 0, GRUBOŚĆ OK 4, ZNACZNIK OK 8; ostatnia linia: Kontrola zakreśleń: OK (4 par)
+
+## C. Test zr9-granice-zakreslen na skrypcie z f0b28df6 (czerwony z właściwego powodu: asercje, nie błąd środowiska)
+    ✓ wyjście: nietknięte kadry en 03/04 → GRUBOŚĆ OK, ZNACZNIK OK, kod 0 (461 ms)
+      ✕ M5: pasy 51 i 71 wierszy kadru zakrywają sąsiednie wiersze tekstu (środek pasa 2 nadal na wierszu 13) → BŁĄD „za gruby”, kod 1 (466 ms)
+      ✕ M6: pas 1 = 22, pas 2 = 33 wierszy kadru (1,5× pas 1; ponad dwa wiersze tekstu) → BŁĄD „za gruby”, kod 1 (456 ms)
+      ✕ granica: pas 2 = 17 wierszy (1,55 wysokości wiersza 11) → GRUBOŚĆ OK; 19 wierszy (1,73) → BŁĄD (862 ms)
+      ✓ bez fałszywego alarmu: 31 prawdziwych kadrów 04 (zr7: pasy 1,00–1,33 wysokości wiersza, także cienkie) nie mają błędu „za gruby” (1972 ms)
+      ✕ M2: linie znacznika w 03 (540, 551) i 04 (551, 562) ciemnoczerwone (110,30,30; nasycenie 80 > 30) → BŁĄD „brak linii znacznika” w obu kadrach, kod 1 (453 ms)
+      ✕ M4: znacznik usunięty (linie zamalowane na biało) z 03 i 04 → BŁĄD „brak linii znacznika”, kod 1 (463 ms)
+      ✕ znacznik brakuje tylko w jednym kadrze (04) → BŁĄD tylko tego kadru (392 ms)
+      ✓ bez fałszywego alarmu: wszystkie prawdziwe kadry zr8c (en, pl, hr, it iPhone 03+04; iPad en 03) → bez „brak linii znacznika” i bez żadnego BŁĘDU, kod 0 (1098 ms)
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 3 passed, 9 total
+
+## D. Mutacje skryptu 8a8fb678 (każda osobno, pełny zestaw 6 plików; Tests: failed/total)
+== A PAS_MAX 1.6→50 (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts (6.981 s)
+   Tests:       3 failed, 142 passed, 145 total
+== B brak→cichy OK (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts (7.302 s)
+   Tests:       3 failed, 142 passed, 145 total
+== C GRUBOSC_MIN 0.65→0.1 (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/zakreslenie-grubosc-znacznik.test.ts
+   Tests:       13 failed, 132 passed, 145 total
+== D ODCHYLENIE 0.9→9 (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/kontrola-zakreslen.test.ts (7.595 s)
+   FAIL iOS tests/wydanie/zakreslenie-polozenie.test.ts
+   Tests:       13 failed, 132 passed, 145 total
+== E NASYCENIE 30→255 (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts (6.465 s)
+   FAIL iOS tests/wydanie/zr8c-pasek-licznika.test.ts
+   Tests:       11 failed, 134 passed, 145 total
+== F PAS_MAX 1.6→1.2 (za ciasno) (1 file changed, 1 insertion(+), 1 deletion(-))
+   FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts (6.502 s)
+   FAIL iOS tests/wydanie/zakreslenie-grubosc-znacznik.test.ts
+   Tests:       7 failed, 138 passed, 145 total
+
+## E. Sześć plików kroku zrzuty-sklepu.yml z OCZKO_WYMAGAJ_IMAGEMAGICK=1 (ImageMagick jest; bez pominięć)
+PASS iOS tests/wydanie/kontrola-zakreslen.test.ts (10.183 s)
+PASS iOS tests/wydanie/zr8c-pasek-licznika.test.ts
+PASS iOS tests/wydanie/zr9-granice-zakreslen.test.ts (6.942 s)
+PASS iOS tests/wydanie/ramki-sklepu.test.ts (16.868 s)
+PASS iOS tests/wydanie/zakreslenie-grubosc-znacznik.test.ts
+PASS iOS tests/wydanie/zakreslenie-polozenie.test.ts
+
+Test Suites: 6 passed, 6 total
+Tests:       153 passed, 153 total
+Snapshots:   0 total
+Time:        42.374 s
+Ran all test suites matching /tests\/wydanie\/ramki-sklepu.test.ts|tests\/wydanie\/kontrola-zakreslen.test.ts|tests\/wydanie\/zakreslenie-polozenie.test.ts|tests\/wydanie\/zakreslenie-grubosc-znacznik
+
+## F. Bez 'convert' w PATH przy OCZKO_WYMAGAJ_IMAGEMAGICK=1: wszystkie 6 plików pada głośno (nic nie przechodzi po cichu)
+FAIL iOS tests/wydanie/ramki-sklepu.test.ts
+FAIL iOS tests/wydanie/kontrola-zakreslen.test.ts
+FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts
+FAIL iOS tests/wydanie/zakreslenie-grubosc-znacznik.test.ts
+FAIL iOS tests/wydanie/zakreslenie-polozenie.test.ts
+FAIL iOS tests/wydanie/zr8c-pasek-licznika.test.ts
+Test Suites: 6 failed, 6 total
+Tests:       6 failed, 135 skipped, 18 passed, 159 total
+
+## G. Bez 'convert' i bez wymuszenia: pominięcie z ostrzeżeniem (podsumowanie)
+::warning::kontrola-zakreslen: część na plikach PNG pominięta, brak convert
+PASS iOS tests/wydanie/kontrola-zakreslen.test.ts
+PASS iOS tests/wydanie/ramki-sklepu.test.ts
+::warning::zr9-granice-zakreslen: pominięte, brak convert
+PASS iOS tests/wydanie/zr9-granice-zakreslen.test.ts
+::warning::zakreslenie-polozenie: pominięte, brak convert
+PASS iOS tests/wydanie/zakreslenie-polozenie.test.ts
+::warning::zakreslenie-grubosc-znacznik: pominięte, brak convert
+PASS iOS tests/wydanie/zakreslenie-grubosc-znacznik.test.ts
+::warning::zr8c-pasek-licznika: pominięte, brak convert
+PASS iOS tests/wydanie/zr8c-pasek-licznika.test.ts
+Test Suites: 6 passed, 6 total
+Tests:       136 skipped, 23 passed, 159 total
+
+## H. Stary test kontrola-zakreslen.test.ts (f0b28df6) na nowym skrypcie (8a8fb678): czerwone z powodów zamierzonych (pasy 31 px, brak znacznika, stary regex yml)
+    ✕ 04 ma więcej pasów niż 03 (iPad i iPhone, en i pl, układ warunek-og07 i bezpośredni) → OK, kod 0 (1796 ms)
+    ✕ brak jednej ze scen pary (komplet-zrzutow.mjs zgłasza to osobno) → pominięcie z komunikatem, bez błędu tej kontroli (142 ms)
+    ✕ ZR7: pas 2 na wierszu 13 (środek pasa w wierszu) → POŁOŻENIE OK; pas przesunięty o 1,3 wysokości wiersza w dół albo w górę → BŁĄD „poza wierszem 13”, kod 1 (456 ms)
+    ✕ kontrola biegnie po instalacji ImageMagicka i test jej logiki biegnie z OCZKO_WYMAGAJ_IMAGEMAGICK=1 w kroku testów ramek (2 ms)
+Tests:       4 failed, 18 passed, 22 total
