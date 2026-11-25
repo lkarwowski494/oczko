@@ -1,12 +1,12 @@
-# Szkice wpisów w grupach na Facebooku (rola 11, 2026-11-24; P-1011)
+# Szkice wpisów w grupach na Facebooku (rola 11, 2026-11-24; P-1029)
 
-Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydaniu 1.0, 2–4 grupy dziennie (P-1012); inne języki niż pl i en — przekład roli 09. Przed publikacją: (1) porównaj każde zdanie „Co robi” z opisem w App Store po akceptacji Apple — zdanie, którego tam nie ma, wykreśl; (2) zmień pierwsze zdanie i kolejność punktów pod grupę (zasada 4: każdy wpis inny); (3) wpisz link (zwykły albo kampanii `ct=fb-<język>`); (4) zapis w `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md`, podsumowanie tygodnia w `docs/wzrost/dziennik.md`.
+Bez nazw grup i danych osób. Publikuje właściciel ze swojego konta, po wydaniu 1.0, 2–4 grupy dziennie (P-1030); inne języki niż pl i en — przekład roli 09. Przed publikacją: (1) porównaj każde zdanie „Co robi” z opisem w App Store po akceptacji Apple — zdanie, którego tam nie ma, wykreśl; (2) zmień pierwsze zdanie i kolejność punktów pod grupę (zasada 4: każdy wpis inny); (3) wpisz link (zwykły albo kampanii `ct=fb-<język>`); (4) zapis w `oczko-warsztat/11-wzrost/2026-11-24-fb/grupy.md`, podsumowanie tygodnia w `docs/wzrost/dziennik.md`.
 
-Grafika (P-1014): jeden surowy zrzut `03-wzor` w języku grupy (bez ramki), kopia w `oczko-warsztat/11-wzrost/2026-11-24-fb/grafika/`.
+Grafika (P-1032): jeden surowy zrzut `03-wzor` w języku grupy (bez ramki), kopia w `oczko-warsztat/11-wzrost/2026-11-24-fb/grafika/`.
 
 Źródło twierdzeń: `docs/wydanie/metadane/pl.store.json` i `en.store.json` (opis sklepu 1.0). Bez cen w kwotach (różnią się między krajami). Bez zegarka, dopóki werdykt 07 go nie potwierdzi.
 
-## C. Wpis z historią i kodem (P-1013) — wersja główna, PL
+## C. Wpis z historią i kodem (P-1031) — wersja główna, PL
 
 > Cześć! Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstało **Oczko** — licznik rzędów na iPhone'a i iPada:
 > • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
@@ -17,7 +17,7 @@ Grafika (P-1014): jeden surowy zrzut `03-wzor` w języku grupy (bez ramki), kopi
 >
 > Bardzo liczę na Wasze uwagi, także krytyczne. A jeśli Oczko się przyda, szczera ocena w App Store ogromnie pomaga małej aplikacji.
 
-## C. Post with story and code (P-1013) — main version, EN
+## C. Post with story and code (P-1031) — main version, EN
 
 > Hi! I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how **Oczko** came about — a row counter for iPhone and iPad:
 > • one tap adds a row, and a mistake is undone just as quickly,
@@ -28,9 +28,9 @@ Grafika (P-1014): jeden surowy zrzut `03-wzor` w języku grupy (bez ramki), kopi
 >
 > I'd love your feedback, critical too. And if Oczko helps you, an honest rating on the App Store means a lot to a small app.
 
-Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1013 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
+Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1031 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
 
-## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1013, kandydat do testu z C) — PL
+## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1031, kandydat do testu z C) — PL
 
 > Cześć! Ile razy trzeba było spruć kilka rzędów, bo pomyliło się liczenie albo zgubiło miejsce we wzorze? Właśnie na to zrobiłem **Oczko** — małą aplikację na iPhone'a i iPada:
 > • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
@@ -41,7 +41,7 @@ Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-101
 >
 > A jeśli Oczko się przyda, szczera ocena w App Store to dla małej aplikacji ogromne wsparcie.
 
-## E. Combined post: a mistake in your project + a small app (P-1013, test candidate vs C) — EN
+## E. Combined post: a mistake in your project + a small app (P-1031, test candidate vs C) — EN
 
 > Hi! How many times have you had to rip back a few rows because you lost count or lost your place in the pattern? That's exactly what I made **Oczko** for — a small iPhone and iPad app:
 > • one tap adds a row, and a mistake is undone just as quickly,
@@ -54,7 +54,7 @@ Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-101
 
 Zasady szkicu E: jak C i D. Pytanie na początku nie obiecuje, że pomyłek nie będzie (bez „już nigdy się nie pomylisz”). Bez prośby o testowanie (właściciel 2026-11-24: „nie prosimy o testowanie. Podkreślamy, że aplikację rozwijam sam, więc na pewno nie jest idealna i bardzo cenię sobie konstruktywny feedback”). Do testu idą C i E.
 
-## D. Wpis „mała aplikacja, szukam błędów” (P-1013, wersja druga; **odrzucony 2026-11-24 — prosi o testowanie**, zostaje tylko jako historia) — PL
+## D. Wpis „mała aplikacja, szukam błędów” (P-1031, wersja druga; **odrzucony 2026-11-24 — prosi o testowanie**, zostaje tylko jako historia) — PL
 
 > Cześć! Szukam kilku osób, które pomogą mi wyłapać błędy w mojej małej aplikacji. Oczko to licznik rzędów na iPhone'a i iPada, który robię sam — dopiero trafił do App Store i na pewno nie jest jeszcze idealny.
 >
@@ -67,7 +67,7 @@ Zasady szkicu E: jak C i D. Pytanie na początku nie obiecuje, że pomyłek nie 
 >
 > Każdy zgłoszony błąd, coś niejasnego albo brakującego — w komentarzu albo prywatnie — bardzo mi pomoże. Mała aplikacja żyje z opinii, więc jeśli Oczko się przyda, szczera ocena w App Store też ma ogromne znaczenie.
 
-## D. "Small app, looking for bugs" (P-1013, second version) — EN
+## D. "Small app, looking for bugs" (P-1031, second version) — EN
 
 > Hi! I'm looking for a few people to help me catch bugs in my small app. Oczko is a row counter for iPhone and iPad that I build on my own — it has just landed on the App Store and it's surely not perfect yet.
 >
