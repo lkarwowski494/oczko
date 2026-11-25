@@ -230,4 +230,18 @@ describe('10-wydanie-019: kontrola w jobie „komplet” zrzuty-sklepu.yml', () 
     const komenda = yml.split('\n').find((l) => /run: npx jest tests\/wydanie\/ramki-sklepu\.test\.ts/.test(l)) ?? '';
     for (const plik of ['zakreslenie-polozenie', 'zakreslenie-grubosc-znacznik', 'zr8c-pasek-licznika', 'zr9-granice-zakreslen']) expect(komenda).toContain(`tests/wydanie/${plik}.test.ts`);
   });
+  // ZR10b (KO-212, P-1052 z RZ3): literówka w nazwie pliku testu w komendzie jest dla jesta „brak pasujących testów” albo cichym pominięciem — sprawdzamy dysk, nie tylko napis.
+  const komendaRamek = yml.split('\n').find((l) => /run: npx jest tests\/wydanie\/ramki-sklepu\.test\.ts/.test(l)) ?? '';
+  const plikiRamek = komendaRamek.match(/tests\/wydanie\/[A-Za-z0-9._-]+\.test\.ts/g) ?? [];
+  test('ZR10b P-1052: krok testów ramek wymienia dokładnie 6 plików i każdy istnieje na dysku', () => {
+    expect(plikiRamek).toHaveLength(6);
+    expect(new Set(plikiRamek).size).toBe(6);
+    for (const plik of plikiRamek) expect({ plik, istnieje: fs.existsSync(path.join(korzen, plik)) }).toEqual({ plik, istnieje: true });
+  });
+  test('ZR10b P-1052 (RZ3): ten sam blok „- name:” ma env OCZKO_WYMAGAJ_IMAGEMAGICK: \'1\' (a nie krok obok)', () => {
+    const bloki = yml.split(/\n(?=\s*- name:)/);
+    const blok = bloki.find((b) => b.includes(komendaRamek.trim())) ?? '';
+    expect(blok).not.toBe('');
+    expect(blok).toMatch(/\n\s*env:\s*\n\s*OCZKO_WYMAGAJ_IMAGEMAGICK: '1'\s*\n/);
+  });
 });
