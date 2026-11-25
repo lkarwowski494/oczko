@@ -6,6 +6,7 @@
 // zależnie od liczby linii podpowiedzi, a pas stoi na stałej wysokości ekranu); sama liczba pasów tego nie widzi. Sprawdzenie dotyczy każdego kadru 04, także bez pary 03.
 // ZR8 (KO-201, P-1036): dwie dalsze własności kadru, które widać dopiero na pikselach: (a) GRUBOŚĆ pasa 2 względem pasa 1 (grubosciPasow) — kadry pierwszego języka każdego zadania miały pas 2 jako cienką kreskę
 // (4 z 12 px przy 500 px szerokości) zamiast pasa jak wiersz 9; (b) linia znacznika rzędu nie przecina tekstu wiersza (liniaZnacznika) — pas znacznika stał na wierszu 21 i jego dolna linia leżała na dolnej części liter.
+// ZR9 (KO-206, recenzja RZ2): (a) pas nie może być za gruby (PAS_MAX_WIERSZY × wiersz tekstu; wcześniej tylko dolna granica), (b) brak neutralnej linii znacznika w kadrze 03/04 to BŁĄD (wcześniej ciche OK, także gdy znacznik zmienił barwę).
 // Wymaga ImageMagicka (`convert`; zadanie „komplet” zrzuty-sklepu.yml instaluje go wcześniej). Plik nieczytelny = BŁĄD z nazwą pliku (nie ciche pominięcie).
 // Użycie: node scripts/ci/kontrola-zakreslen.mjs <katalog_surowych>  → kod 1 przy jakimkolwiek BŁĘDZIE; inaczej 0.
 import { existsSync, readdirSync, statSync } from 'node:fs';
@@ -101,13 +102,32 @@ export function polozeniePasa(rgb, w, h) {
  * 1,00–1,09 w 19 kadrach z pasem pełnym. GRUBOSC_PASA_MIN = 0,65 = środek luki (0,36 … 1,00; margines 0,29 i 0,35); pas pełny na kadrze nie jest cieńszy od 0,9 pasa 1 (zaokrąglenia ±1 wiersz). */
 export const GRUBOSC_PASA_MIN = 0.65;
 
-/** Grubość pasa 2 względem pasa 1: `{ ok, h1, h2, stosunek, powod }` (wysokości w wierszach kadru). Rzuca, gdy w kadrze nie ma dwóch pasów. */
+/* ZR9 (KO-206, P2-1 recenzji RZ2): GÓRNA granica grubości pasa. Sam stosunek pasa 2 do pasa 1 nie widzi pasów, które są grube oba (próba M5: 51 i 71 wierszy kadru, stosunek 1,39, pasy zakrywają „Rows 10-12” i „Rows 14-20”),
+ * więc pas porównujemy z wysokością wiersza tekstu strony (mediana wysokości wierszy z `wierszeTekstu`, odporna na pojedyncze wielkie bloki: tytuł, pasek licznika). Zmierzone na 31 kadrach 04 (zr7) i 6 kadrach zr8c:
+ * pas pełny ma 1,00–1,33 wysokości wiersza (12 wierszy kadru przy wierszu 9–11; iPad 10 przy 8–9), pas cienki 0,33–0,40. PAS_MAX_WIERSZY = 1,6: margines 0,27 nad największym pasem prawdziwym; pas 1,6 wiersza wystaje o 0,3 wiersza
+ * w przerwy po obu stronach, a przy 2 wierszach i więcej zakrywa już sąsiada. Granica dotyczy obu pasów (pas 1 też bywa za gruby), nie samego stosunku pasa 2 do pasa 1. */
+export const PAS_MAX_WIERSZY = 1.6;
+
+/** Mediana wysokości wiersza tekstu strony w wierszach kadru; 0, gdy kadr nie ma wierszy tekstu (wtedy górnej granicy nie da się ocenić — brak wierszy zgłasza `polozeniePasa`). */
+function wysokoscWierszaTekstu(rgb, w, h) {
+  const wys = wierszeTekstu(rgb, w, h).map(([a, b]) => b - a + 1).sort((x, y) => x - y);
+  return wys.length ? wys[Math.floor(wys.length / 2)] : 0;
+}
+
+/** Grubość pasa 2 względem pasa 1 i obu pasów względem wiersza tekstu: `{ ok, h1, h2, stosunek, wiersz, powod }` (wysokości w wierszach kadru; `wiersz` = mediana wysokości wiersza tekstu albo 0). Rzuca, gdy w kadrze nie ma dwóch pasów. */
 export function grubosciPasow(rgb, w, h) {
   const pasy = zakresyPasow(rgb, w, h);
   if (pasy.length < 2) throw new Error(`kadr ma ${pasy.length} pas(ów), a grubość pasa 2 wymaga dwóch`);
   const h1 = pasy[0][1] - pasy[0][0] + 1; const h2 = pasy[1][1] - pasy[1][0] + 1;
   const stosunek = h2 / h1;
-  return { ok: stosunek >= GRUBOSC_PASA_MIN, h1, h2, stosunek, powod: stosunek >= GRUBOSC_PASA_MIN ? '' : `pas 2 ma ${h2} wierszy kadru, pas 1 ${h1} (${stosunek.toFixed(2)}; próg ${GRUBOSC_PASA_MIN}) — pas 2 to cienka kreska, nie pas jak wiersz 9` };
+  const wiersz = wysokoscWierszaTekstu(rgb, w, h);
+  const powody = [];
+  if (stosunek < GRUBOSC_PASA_MIN) powody.push(`pas 2 ma ${h2} wierszy kadru, pas 1 ${h1} (${stosunek.toFixed(2)}; próg ${GRUBOSC_PASA_MIN}) — pas 2 to cienka kreska, nie pas jak wiersz 9`);
+  if (wiersz > 0) {
+    const zaGrube = [[1, h1], [2, h2]].filter(([, wys]) => wys > PAS_MAX_WIERSZY * wiersz);
+    if (zaGrube.length) powody.push(`${zaGrube.map(([i, wys]) => `pas ${i} (${wys} wierszy kadru)`).join(' i ')} za gruby: wiersz tekstu ma ${wiersz} wierszy kadru, limit pasa ${PAS_MAX_WIERSZY} × wiersz = ${(PAS_MAX_WIERSZY * wiersz).toFixed(1)} — pas zakrywa sąsiednie wiersze`);
+  }
+  return { ok: powody.length === 0, h1, h2, stosunek, wiersz, powod: powody.join('; ') };
 }
 
 /* ZR8 (P-1036): linia znacznika rzędu a tekst. Pas znacznika to dwie poziome ciemne linie przez całą szerokość strony (górna i dolna krawędź, po 1–2 wiersze kadru przy 500 px); przy poprawnym położeniu leżą w przerwie
@@ -122,7 +142,7 @@ const ZNACZNIK_OD = 0.12; const ZNACZNIK_DO = 0.70;
  * Wiersze tekstu (kolumna [ZNACZNIK_OD, ZNACZNIK_DO]) i PROG_CIEMNY zostają bez zmian — to nie osłabienie progu, tylko dokładniejsza definicja „ciemnej linii”. */
 const NASYCENIE_MAX = 30;
 
-/** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma linii znacznika (nic do sprawdzenia, ok = true). */
+/** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma neutralnej linii znacznika (ok = true na poziomie funkcji; `sprawdz` traktuje to jako BŁĄD, ZR9). */
 export function liniaZnacznika(rgb, w, h) {
   const ciemne = (y, x0, x1) => { let n = 0; for (let x = x0, i = (y * w + x0) * 3; x < x1; x++, i += 3) if ((rgb[i] + rgb[i + 1] + rgb[i + 2]) / 3 < PROG_CIEMNY) n++; return n; };
   const neutralneCiemne = (y) => { let n = 0; for (let x = 0, i = y * w * 3; x < w; x++, i += 3) { const r = rgb[i], g = rgb[i + 1], b = rgb[i + 2]; if ((r + g + b) / 3 < PROG_CIEMNY && Math.max(r, g, b) - Math.min(r, g, b) <= NASYCENIE_MAX) n++; } return n; };
@@ -195,7 +215,7 @@ export function sprawdz(katalog, wczytaj = wczytajRgb) {
       else { linie.push(`BŁĄD ${po}: pas 2 poza wierszem 13 — ${p.powod}`); bledy++; }
       // ZR8 (P-1036): pas 2 tej samej grubości co pas 1.
       const g = grubosciPasow(rgb, w, h);
-      if (g.ok) linie.push(`GRUBOŚĆ OK ${etykieta}: pas 2 / pas 1 = ${g.h2}/${g.h1} wierszy kadru (${g.stosunek.toFixed(2)}, próg ${GRUBOSC_PASA_MIN})`);
+      if (g.ok) linie.push(`GRUBOŚĆ OK ${etykieta}: pas 2 / pas 1 = ${g.h2}/${g.h1} wierszy kadru (${g.stosunek.toFixed(2)}, próg ${GRUBOSC_PASA_MIN}${g.wiersz > 0 ? `; pas ≤ ${PAS_MAX_WIERSZY} × wiersz tekstu ${g.wiersz}` : ''})`);
       else { linie.push(`BŁĄD ${po}: ${g.powod}`); bledy++; }
     } catch (e) { linie.push(`BŁĄD ${po}: położenie albo grubość pasa 2: ${e instanceof Error ? e.message : String(e)}`); bledy++; }
   }
@@ -206,7 +226,9 @@ export function sprawdz(katalog, wczytaj = wczytajRgb) {
       try {
         const { rgb, w, h } = wczytaj(plik);
         const z = liniaZnacznika(rgb, w, h);
-        if (z.brak) continue; // brak linii znacznika w kadrze: nie ta kontrola (kadr bez znacznika nie ma czego przecinać)
+        // ZR9 (KO-206, P2-1/P2-2 recenzji RZ2): kadry 03 i 04 ZAWSZE mają znacznik (00-przygotuj.yaml, scena 03), więc brak neutralnej linii to BŁĄD, nie ciche OK: znacznik usunięty albo w innej barwie
+        // (nasycenie > NASYCENIE_MAX po zmianie motywu/akcentu) jest dla tej kontroli niewidoczny i właśnie wtedy nie wolno jej milczeć (próby M2, M4).
+        if (z.brak) { linie.push(`BŁĄD ${plik}: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ ${Math.round(PROG_LINII * 100)}% szerokości (nasycenie ≤ ${NASYCENIE_MAX}); znacznik rzędu usunięty albo zmienił barwę (wtedy zmień NASYCENIE_MAX świadomie, ze zmierzonym kadrem)`); bledy++; continue; }
         if (z.ok) linie.push(`ZNACZNIK OK ${etykieta}/${plik.split(sep).pop()}: linie ${z.linie.join(',')} poza tekstem wierszy`);
         else { linie.push(`BŁĄD ${plik}: ${z.powod}`); bledy++; }
       } catch (e) { linie.push(`BŁĄD ${plik}: linia znacznika: ${e instanceof Error ? e.message : String(e)}`); bledy++; }

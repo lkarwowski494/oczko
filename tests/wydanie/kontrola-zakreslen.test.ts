@@ -126,18 +126,20 @@ if (!maConvert && !wymagaConvert) {
   let kat = '';
   beforeEach(() => { kat = fs.mkdtempSync(path.join(os.tmpdir(), 'oczko-zakr-')); });
   afterEach(() => { fs.rmSync(kat, { recursive: true, force: true }); });
-  /** Sztuczny „zrzut” 600×900 z `n` żółtymi pasami (RGB, bez alfy). ZR7 (P-1016): kontrola mierzy też położenie pasa 2 względem wiersza 13 tekstu strony, więc kadr ma wiersze tekstu:
+  /** Sztuczny „zrzut” 600×900 z `n` żółtymi pasami (RGB, bez alfy). ZR9 (P2-1): pas ma 15 px (≈ 1,1 wysokości wiersza tekstu 13 px, jak pasy prawdziwe 1,0–1,3), nie 31 px (2,4 wiersza) — kontrola ma teraz górną granicę 1,6. ZR7 (P-1016): kontrola mierzy też położenie pasa 2 względem wiersza 13 tekstu strony, więc kadr ma wiersze tekstu:
    * wiersz na każdym pasie (pas i = wiersz „9”, „13”, …) i wiersz między pasami (odpowiednik „Rows 10-12”) — pas 2 leży na wierszu o dwa niżej niż pas 1, jak w kadrze ze sklepu. */
   function zrzut(rel: string, n: number): string {
     const p = path.join(kat, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
-    const draw = Array.from({ length: n }, (_, i) => `rectangle 120,${200 + i * 160} 480,${230 + i * 160}`).join(' ');
+    const draw = Array.from({ length: n }, (_, i) => `rectangle 120,${208 + i * 160} 480,${222 + i * 160}`).join(' ');
     // wiersz tekstu = pionowe kreski co 6 px (jak litery: tekst na pasie zostawia ≥ 15% pikseli żółtych w wierszu, więc pas nie dzieli się na kawałki)
     const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
     const tekst = Array.from({ length: n }, (_, i) => wiersz(207 + i * 160) + (i < n - 1 ? ` ${wiersz(287 + i * 160)}` : '')).join(' ');
-    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-fill', 'black', ...(n ? ['-draw', tekst] : []), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-fill', 'black', ...(n ? ['-draw', tekst] : []), ...ZNACZNIK, '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
     expect(spawnSync('convert', args).status).toBe(0);
     return p;
   }
+  /** ZR9 (P2-2): kadry 03/04 zawsze mają znacznik rzędu, więc brak neutralnej linii to BŁĄD kontroli. Dwie czarne linie na całej szerokości (2 px) pod ostatnim wierszem tekstu (nie przesuwają wierszy 9–13). */
+  const ZNACZNIK = ['-fill', 'black', '-draw', 'rectangle 0,880 599,881 rectangle 0,890 599,891'];
   const uruchom = () => spawnSync('node', [SKRYPT, kat], { encoding: 'utf8', cwd: korzen });
 
   test('04 ma więcej pasów niż 03 (iPad i iPhone, en i pl, układ warunek-og07 i bezpośredni) → OK, kod 0', () => {
@@ -175,8 +177,8 @@ if (!maConvert && !wymagaConvert) {
   function zrzutPolozenie(rel: string, pas2Od: number, bezTekstu = false): string {
     const p = path.join(kat, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
     const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
-    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', '-draw', `rectangle 120,200 480,230 rectangle 120,${pas2Od} 480,${pas2Od + 30}`,
-      ...(bezTekstu ? [] : ['-fill', 'black', '-draw', [207, 287, 367, 447].map(wiersz).join(' ')]), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', '-draw', `rectangle 120,208 480,222 rectangle 120,${pas2Od + 8} 480,${pas2Od + 22}`,
+      ...(bezTekstu ? [] : ['-fill', 'black', '-draw', [207, 287, 367, 447].map(wiersz).join(' '), ...ZNACZNIK.slice(2)]), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
     expect(spawnSync('convert', args).status).toBe(0);
     return p;
   }
@@ -222,6 +224,10 @@ describe('10-wydanie-019: kontrola w jobie „komplet” zrzuty-sklepu.yml', () 
   });
   test('kontrola biegnie po instalacji ImageMagicka i test jej logiki biegnie z OCZKO_WYMAGAJ_IMAGEMAGICK=1 w kroku testów ramek', () => {
     expect(yml.indexOf('zainstaluj-narzedzia-zrzutow.sh')).toBeLessThan(yml.indexOf('kontrola-zakreslen.mjs sklep-zrzuty-surowe'));
-    expect(yml).toMatch(/npx jest tests\/wydanie\/ramki-sklepu\.test\.ts tests\/wydanie\/kontrola-zakreslen\.test\.ts --ci --runInBand/);
+    expect(yml).toMatch(/npx jest tests\/wydanie\/ramki-sklepu\.test\.ts tests\/wydanie\/kontrola-zakreslen\.test\.ts[^\n]* --ci --runInBand/);
+  });
+  test('ZR9 P3-1 (KO-209): ten sam krok z OCZKO_WYMAGAJ_IMAGEMAGICK=1 uruchamia też testy czułości kontroli kadrów 03/04 (bez nich w CI byłyby pomijane głośno)', () => {
+    const komenda = yml.split('\n').find((l) => /run: npx jest tests\/wydanie\/ramki-sklepu\.test\.ts/.test(l)) ?? '';
+    for (const plik of ['zakreslenie-polozenie', 'zakreslenie-grubosc-znacznik', 'zr8c-pasek-licznika', 'zr9-granice-zakreslen']) expect(komenda).toContain(`tests/wydanie/${plik}.test.ts`);
   });
 });
