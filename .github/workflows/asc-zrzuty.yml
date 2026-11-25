@@ -2,6 +2,8 @@
 # w App Store Connect przez API (skrypt scripts/asc/zrzuty.mjs, interfejs App Asset Library). Przeniesione z Treningu (P-315, P-316 (4); wzór: asc-zrzuty.yml, 2e4b0f8).
 # Układ artefaktu (kontrakt z rolą 07): `<rozmiar iPhone>/<język>/NN-<ekran>.png` (np. `6.9/en/01-licznik.png`) i `ipad-13/<język>/NN-<ekran>.png`. Zrzuty bez alfy (`file`, sklep.md §5).
 # Tylko ręcznie. dry-run (domyślny): lista, co zostałoby wgrane; apply: wgraj i ułóż. Domyślnie pomija grupy, które mają już zrzuty (nic nie usuwa).
+# `tryb = spis` (ZR12, KO-214, P-1060): tylko odczyt (GET) — spis WSZYSTKICH placementów wszystkich wersji iOS i lokalizacji w App Store Connect (co naprawdę jest na stronie produktu), bez artefaktu
+# zrzutów (pobieranie pominięte, `zrzuty_z_przebiegu` ignorowane), bez wgrywania i bez zdejmowania; wynik w podsumowaniu przebiegu (tabela zbiorcza, potem szczegóły dla en-US i pl).
 # `zastap=true` (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md): grupa, która ma już zrzuty (np. odziedziczone z 1.0 w wersji 1.0.1), dostaje nowe — najpierw nowe obrazy do biblioteki,
 # potem zdjęcie starych placementów (DELETE /v1/appAssetLibraryPlacements/{id}), potem nowe placementy i kolejność. Usuwa tylko placementy wersji w przygotowaniu;
 # obrazów biblioteki nigdy. Odstępstwo od Treningu („zamiana zrzutów = ręcznie”) nazwane w KO-210; raport przebiegu wypisuje referenceName i id zdejmowanych placementów.
@@ -15,14 +17,15 @@ on:
   workflow_dispatch:
     inputs:
       tryb:
-        description: 'dry-run = tylko lista, co zostałoby wgrane (i zdjęte przy zastap); apply = wgraj i ułóż; bez zastap nic nie usuwa'
+        description: 'dry-run = tylko lista, co zostałoby wgrane (i zdjęte przy zastap); apply = wgraj i ułóż; bez zastap nic nie usuwa; spis = tylko odczyt: co jest teraz w App Store Connect (bez artefaktu)'
         type: choice
-        options: [dry-run, apply]
+        options: [dry-run, apply, spis]
         default: dry-run
       zrzuty_z_przebiegu:
-        description: 'Numer przebiegu workflowu zrzutów sklepu z artefaktem zrzutów (artefakty wygasają; sprawdź retencję w przebiegu)'
-        required: true
+        description: 'Numer przebiegu workflowu zrzutów sklepu z artefaktem zrzutów (artefakty wygasają; sprawdź retencję w przebiegu); wymagany dla dry-run i apply, ignorowany przy spis'
+        required: false
         type: string
+        default: ''
       artefakt:
         description: 'Nazwa artefaktu zrzutów'
         required: false
@@ -66,14 +69,21 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - name: Numer przebiegu zrzutów (wymagany poza trybem spis)
+        if: ${{ inputs.tryb != 'spis' }}
+        env:
+          ZRZUTY_Z_PRZEBIEGU: ${{ inputs.zrzuty_z_przebiegu }}
+        run: |
+          [ -n "$ZRZUTY_Z_PRZEBIEGU" ] || { echo "::error::Podaj zrzuty_z_przebiegu (numer przebiegu z artefaktem zrzutów) — wymagany w trybie dry-run i apply; tryb spis go nie potrzebuje"; exit 1; }
       - uses: actions/download-artifact@v4
+        if: ${{ inputs.tryb != 'spis' }}
         with:
           name: ${{ inputs.artefakt }}
           path: sklep-ramki
           run-id: ${{ inputs.zrzuty_z_przebiegu }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v4
-        if: ${{ inputs.zegarek_z_przebiegu != '' }}
+        if: ${{ inputs.tryb != 'spis' && inputs.zegarek_z_przebiegu != '' }}
         with:
           name: zegarek-zrzuty
           path: zegarek-zrzuty
@@ -90,6 +100,7 @@ jobs:
           printf '%s\n' "$ASC_KEY_P8" | while IFS= read -r line; do case "$line" in -----*) ;; *) [ ${#line} -ge 20 ] && echo "::add-mask::$line" ;; esac; done; true
           umask 077; printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
       - name: Plan (tylko odczyt)
+        if: ${{ inputs.tryb != 'spis' }}
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
@@ -122,6 +133,15 @@ jobs:
           [ -d zegarek-zrzuty ] && ARGS+=(--zegarek zegarek-zrzuty)
           [ -n "$JEZYKI" ] && ARGS+=(--jezyki "$JEZYKI")
           node scripts/asc/zrzuty.mjs "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Spis zrzutów w App Store Connect (tylko odczyt; wszystkie placementy, bez filtra grupy)
+        if: ${{ inputs.tryb == 'spis' }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          export ASC_KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          node scripts/asc/zrzuty.mjs --spis | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Usunięcie klucza z maszyny
         if: always()
         run: rm -f "$RUNNER_TEMP/AuthKey.p8"

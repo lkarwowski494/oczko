@@ -11,6 +11,9 @@
 //   (wspólny id albo brak odczytu = odmowa; brak wersji do sprawdzenia przy edytowanej wersji, która nie jest jedyną = odmowa; ZR11, KO-213, P-1059).
 //   Tożsamość zrzutu po TREŚCI (ZR11, KO-213, P-1058): referenceName obrazu = `oczko/<źródło>/<język>/<plik>#<12 znaków sha256 pliku>` — zrzuty 1.0 (`oczko-1.0/…`) i 1.0.1 o tych samych nazwach
 //   plików są różne; porównanie „grupa już zawiera”, ponowne użycie obrazu z biblioteki i mapa planu używają tej nazwy.
+//   dodatkowo osobny tryb `--spis` (ZR12, KO-214, P-1060): NIE wgrywa i nie planuje — wypisuje, co naprawdę jest na stronie produktu w App Store Connect (wszystkie wersje iOS, wszystkie lokalizacje,
+//   WSZYSTKIE placementy bez filtra grupy i typu, z nazwą obrazu i jego stanem). Tylko GET (klient tylko do odczytu), nie potrzebuje artefaktu zrzutów ani `--iphone`; nie łączy się z `--apply`,
+//   `--zastap` ani `--dry-run`. Po co: skrypt „widzi” tylko grupy z artefaktu, a w ASC mogą być zrzuty innych grup (np. odziedziczone z 1.0) albo obrazy nieprzetworzone — spis pokazuje to wprost.
 // Układ katalogów: <katalog>/<język aplikacji>/NN-<ekran>.png (iPhone: jeden rozmiar, np. artefakt `sklep-zrzuty-ramki/6.9`) i <katalog>/<język>/<stan>.png (zegarek).
 // Interfejs: App Asset Library (Apple oznaczył appScreenshotSets i appScreenshots jako przestarzałe; odczyt dokumentacji 25.10.2026 —
 // developer.apple.com/documentation/appstoreconnectapi/app-asset-library): obraz wgrywany raz (rezerwacja → PUT → `uploaded: true`), potem placement
@@ -435,12 +438,113 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
   return { code, rows };
 }
 
+/** Lokalizacje (kody ASC), dla których spis wypisuje szczegóły każdego placementu; pozostałe tylko w tabeli zbiorczej (ZR12). */
+export const SPIS_SZCZEGOLY = ['en-US', 'pl'];
+/** Kolumny prefiksu nazwy obrazu w tabeli zbiorczej (ZR12): zrzuty 1.0 (`oczko-1.0/…`), zrzuty z tożsamością po treści (`oczko/…#<12 znaków>`, ZR11), inna nazwa, brak nazwy. */
+export const PREFIKSY = ['oczko-1.0/', 'oczko/…#', 'inny', 'pusty'];
+export const prefiksOf = ref => (!ref ? 'pusty' : ref.startsWith('oczko-1.0/') ? 'oczko-1.0/' : /^oczko\/.+#[0-9a-f]{12}$/.test(ref) ? 'oczko/…#' : 'inny');
+/** Komunikat błędu do logu bez treści odpowiedzi API (repozytorium publiczne): przy błędzie HTTP tylko kod, inaczej własny komunikat skryptu. */
+const bladSpisu = e => (e?.status ? `HTTP ${e.status}` : String(e?.message ?? e).slice(0, 200));
+const komorka = t => String(t ?? '').replace(/\|/g, '\\|').replace(/[\r\n]+/g, ' ').slice(0, 200);
+
+/** Wszystkie placementy lokalizacji wersji (BEZ filtra grupy i typu) z dołączonym obrazem: [{ id, resType, group, type, pos, ref, state, size }]; tylko GET, stronicowanie `links.next`.
+ *  Bez `sort` w zapytaniu (nieznane połączenie parametrów nie ma prawa zepsuć odczytu): kolejność w odpowiedzi zachowana; pozycja z atrybutu `placementGroupPosition`, a gdy go brak — numer
+ *  w nawiasie z kolejności odpowiedzi w obrębie grupy i typu. Z odpowiedzi czytane są tylko wymienione pola (nic więcej nie trafia do logu). */
+export async function listAllPlacements(client, locId) {
+  let next = `/v1/appStoreVersionLocalizations/${locId}/placements?include=image&fields[appAssetLibraryImages]=referenceName,state,imageAsset&limit=200`;
+  const data = []; const imgs = new Map();
+  while (next) {
+    const j = await client.call('GET', next);
+    for (const x of j?.included ?? []) if (x.type === 'appAssetLibraryImages') imgs.set(x.id, x.attributes ?? {});
+    data.push(...(j?.data ?? [])); next = j?.links?.next ?? null;
+  }
+  const licznik = new Map();
+  return data.map(p => {
+    const a = p.attributes ?? {}; const group = a.placementGroup ?? ''; const type = a.placementType ?? '';
+    const i = (licznik.get(`${type}/${group}`) ?? 0) + 1; licznik.set(`${type}/${group}`, i);
+    const im = imgs.get(p.relationships?.image?.data?.id) ?? null; const ia = im?.imageAsset;
+    return { id: p.id, resType: p.type ?? '', group, type, pos: a.placementGroupPosition ?? `(${i})`, ref: im?.referenceName ?? '', state: im ? (im.state ?? '') : '',
+      size: ia?.width && ia?.height ? `${ia.width}×${ia.height}` : '—' };
+  });
+}
+
+/**
+ * Spis (ZR12, KO-214, P-1060): co jest w App Store Connect na stronie produktu, dla KAŻDEJ wersji iOS aplikacji i KAŻDEJ jej lokalizacji — wszystkie placementy, nie tylko grupy z artefaktu.
+ * Tylko odczyt (`readOnlyClient` + wyłącznie GET). Błąd odczytu lokalizacji nie przerywa spisu: wiersz błędu z kodem HTTP, reszta powstaje, kod 1 („odczyt niepełny”).
+ * Zwraca { code, podsumowanie: [{ wersja, stan, typ, grupa, lokalizacji, placementow, prefiksy, stany }] } (wiersze zbiorcze: wersja w kolejności z API, potem typ i grupa alfabetycznie).
+ */
+export async function runSpis({ client, log = console.log }) {
+  log('## Spis zrzutów w App Store Connect: tryb SPIS (tylko odczyt, wszystkie placementy bez filtra grupy)\n');
+  const c = readOnlyClient(client);
+  let code = 0; const nieodczytane = [];
+  let appId; let versions;
+  try {
+    const apps = await c.list('/v1/apps?filter[bundleId]=' + BUNDLE_ID);
+    if (apps.length !== 1) throw new Error(`aplikacja ${BUNDLE_ID}: znaleziono ${apps.length}`);
+    appId = apps[0].id;
+    versions = await c.list(`/v1/apps/${appId}/appStoreVersions?filter[platform]=IOS`);
+  } catch (e) { log(`BŁĄD: ${bladSpisu(e)}`); return { code: 1, podsumowanie: [] }; }
+  const dane = []; // { wersja, stan, lokalizacje: Map(kod → [placement] | null) }
+  for (const v of versions) {
+    const wersja = v.attributes?.versionString ?? v.id; const stan = stateOf(v); const lokalizacje = new Map();
+    let locs = [];
+    try { locs = await c.list(`/v1/appStoreVersions/${v.id}/appStoreVersionLocalizations`); }
+    catch (e) { log(`BŁĄD odczytu lokalizacji wersji ${wersja}: ${bladSpisu(e)}`); code = 1; nieodczytane.push(`${wersja} (lista lokalizacji)`); }
+    for (const l of locs) {
+      const kod = l.attributes?.locale ?? l.id;
+      try { lokalizacje.set(kod, await listAllPlacements(c, l.id)); }
+      catch (e) { log(`BŁĄD odczytu placementów ${wersja} ${kod}: ${bladSpisu(e)}`); code = 1; nieodczytane.push(`${wersja} ${kod}`); lokalizacje.set(kod, null); }
+    }
+    dane.push({ wersja, stan, lokalizacje });
+  }
+  const podsumowanie = [];
+  for (const d of dane) {
+    const grupy = new Map();
+    for (const [kod, lista] of d.lokalizacje) for (const p of lista ?? []) {
+      const k = `${p.type}\u0000${p.group}`;
+      if (!grupy.has(k)) grupy.set(k, { wersja: d.wersja, stan: d.stan, typ: p.type, grupa: p.group, kody: new Set(), placementow: 0, prefiksy: Object.fromEntries(PREFIKSY.map(x => [x, 0])), stany: {} });
+      const g = grupy.get(k); g.kody.add(kod); g.placementow++; g.prefiksy[prefiksOf(p.ref)]++;
+      const st = p.state || '—'; g.stany[st] = (g.stany[st] ?? 0) + 1;
+    }
+    for (const g of [...grupy.values()].sort((x, y) => x.typ.localeCompare(y.typ) || x.grupa.localeCompare(y.grupa))) { const { kody, ...reszta } = g; podsumowanie.push({ ...reszta, lokalizacji: kody.size }); }
+  }
+  log('### Wersje iOS\n');
+  for (const d of dane) {
+    const ok = [...d.lokalizacje.values()].filter(x => x); const razem = ok.reduce((n, l) => n + l.length, 0);
+    log(`- ${d.wersja} (${d.stan || 'brak stanu'}): lokalizacji ${d.lokalizacje.size}, odczytanych ${ok.length}, placementów ${razem}${razem === 0 && ok.length ? ' — żadnych zrzutów ani podglądów na stronie' : ''}`);
+  }
+  log('\n### Tabela zbiorcza (wersja × typ × grupa urządzeń)\n');
+  const stany = s => Object.entries(s).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k, n]) => `${k}×${n}`).join(', ');
+  log(['| Wersja | Stan wersji | Typ | Grupa | Lokalizacji | Placementów | ' + PREFIKSY.join(' | ') + ' | Stany obrazów |', '|' + '---|'.repeat(7 + PREFIKSY.length),
+    ...podsumowanie.map(g => `| ${komorka(g.wersja)} | ${komorka(g.stan)} | ${komorka(g.typ)} | ${komorka(g.grupa)} | ${g.lokalizacji} | ${g.placementow} | ${PREFIKSY.map(x => g.prefiksy[x]).join(' | ')} | ${komorka(stany(g.stany))} |`)].join('\n'));
+  if (!podsumowanie.length) log('\nŻadna odczytana lokalizacja nie ma placementów.');
+  for (const kod of SPIS_SZCZEGOLY) {
+    log(`\n### Szczegóły: ${kod}\n`);
+    const wiersze = []; const uwagi = [];
+    for (const d of dane) {
+      if (!d.lokalizacje.has(kod)) { uwagi.push(`- ${d.wersja}: wersja nie ma lokalizacji ${kod}`); continue; }
+      const lista = d.lokalizacje.get(kod);
+      if (lista === null) { uwagi.push(`- ${d.wersja}: odczyt nie powiódł się (patrz błędy wyżej)`); continue; }
+      if (!lista.length) { uwagi.push(`- ${d.wersja}: brak placementów`); continue; }
+      for (const p of lista) wiersze.push(`| ${komorka(d.wersja)} | ${komorka(p.group)} | ${komorka(p.type)} | ${komorka(p.resType)} | ${komorka(p.pos)} | ${komorka(p.ref) || '—'} | ${komorka(p.state) || '—'} | ${komorka(p.size)} |`);
+    }
+    if (wiersze.length) log(['| Wersja | Grupa | Typ | Typ zasobu | Poz. | referenceName | Stan obrazu | Wymiary |', '|---|---|---|---|---|---|---|---|', ...wiersze].join('\n'));
+    if (uwagi.length) log((wiersze.length ? '\n' : '') + uwagi.join('\n'));
+  }
+  if (nieodczytane.length) log(`\nSpis niepełny (odczyt niepełny): nie odczytano ${nieodczytane.length} — ${nieodczytane.join('; ')}. Wynik nie dowodzi, że tam nic nie ma.`);
+  log('\nSpis zakończony — nic nie zapisano (tylko GET).');
+  return { code, podsumowanie };
+}
+
 async function main() {
   const args = process.argv.slice(2); const apply = args.includes('--apply');
+  if (args.includes('--spis') && ['--apply', '--zastap', '--dry-run'].some(f => args.includes(f))) { console.error('Tryb --spis jest tylko do odczytu: nie łącz z --apply, --zastap ani --dry-run.'); process.exit(2); }
   if (apply && args.includes('--dry-run')) { console.error('Podaj tylko jeden tryb.'); process.exit(2); }
   const opt = k => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : ''; };
   const { ASC_KEY_ID: keyId, ASC_ISSUER_ID: issuerId, ASC_KEY_PATH: keyPath } = process.env;
   if (!keyId || !issuerId || !keyPath) { console.error('Brak ASC_KEY_ID, ASC_ISSUER_ID lub ASC_KEY_PATH.'); process.exit(2); }
+  const tokenForSpis = () => tokenProvider({ mint: () => makeJwt({ keyId, issuerId, keyPem: readFileSync(keyPath, 'utf8') }) });
+  if (args.includes('--spis')) { const { code } = await runSpis({ client: makeClient({ token: tokenForSpis() }) }); process.exit(code); } // klient bez `allowDelete`; runSpis dodatkowo owija go w readOnlyClient
   if (!opt('--iphone')) { console.error('Podaj --iphone <katalog>.'); process.exit(2); }
   const zastap = args.includes('--zastap');
   const { shots, problems } = loadShots({ iphone: opt('--iphone'), ipad: opt('--ipad'), zegarek: opt('--zegarek'), jezyki: opt('--jezyki') });

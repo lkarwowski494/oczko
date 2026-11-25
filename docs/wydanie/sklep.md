@@ -239,6 +239,10 @@ Wersja 1.0.1 w App Store Connect odziedziczyła z 1.0 po 7 zrzutów w każdej gr
 - **Zakres wywołań.** Zdejmowanie jest dostępne tylko przy `--zastap`: klient (`makeClient({ allowDelete })`) przepuszcza DELETE wyłącznie na `/v1/appAssetLibraryPlacements/{id}`; pozostałe skrypty `asc-*` nadal nigdy nie usuwają.
 - **Do ustalenia przy pierwszym dry-runie/apply.** Strona operacji DELETE nie opisuje zachowania dla wersji nieedytowalnej (skrypt odmawia sam); czy `GET …/placements` z `include=image` zwraca `referenceName` w `included` (bez tego lista pokazuje „bez nazwy”, a idempotencja po nazwach nie rozpozna zgodnych grup i zastąpi je ponownie) `[DO USTALENIA]`.
 
+### Spis: co naprawdę jest na stronie produktu (`tryb = spis`; ZR12, KO-214, P-1060…P-1061)
+
+Gdy w App Store Connect widać zrzuty, których skrypt nie planował (apply 1.0.1 zakończony, a właściciel nadal widzi „złe” zrzuty), uruchom `asc-zrzuty.yml` z `tryb = spis`: **tylko odczyt (GET)**, bez artefaktu zrzutów (`zrzuty_z_przebiegu` i zegarek ignorowane, pobieranie pominięte), bez wgrywania i zdejmowania; w CLI `node scripts/asc/zrzuty.mjs --spis` (nie łączy się z `--apply`, `--zastap`, `--dry-run`). Dla każdej wersji iOS i każdej lokalizacji skrypt czyta **wszystkie** placementy (bez filtra grupy i typu, z dołączonym obrazem) i wypisuje w podsumowaniu przebiegu: (1) tabelę zbiorczą wersja × stan × typ × grupa × liczba lokalizacji × liczba placementów × prefiks `referenceName` (`oczko-1.0/` · `oczko/…#skrót` · inny · pusty) × stany obrazów, (2) szczegóły każdego placementu dla `en-US` i `pl` (grupa, typ, typ zasobu, pozycja, `referenceName`, stan obrazu, wymiary, jeśli API je zwraca). Pozwala odróżnić: zrzuty innej grupy niż w artefakcie (np. odziedziczone z 1.0), nowe placementy z obrazami nieprzetworzonymi albo zepsutymi, kolejność. Błąd odczytu jednej lokalizacji nie przerywa spisu (wiersz z kodem HTTP, kod 1, „odczyt niepełny”). Log nie zawiera tokenów, adresów wgrywania ani treści odpowiedzi poza wymienionymi polami.
+
 ## 4. Formularze — odpowiedzi z podstawą
 | Formularz | Odpowiedź | Podstawa |
 |---|---|---|

@@ -203,9 +203,9 @@ describe('workflowy asc-*.yml (statycznie)', () => {
     expect(t).toMatch(/if: \$\{\{ inputs\.tryb == 'zapis' \}\}/); expect(t).toContain('--zapis'); expect(t).toContain('--podglad'); expect(t).toContain('--tylko');
   });
   test('iap i zrzuty: domyślnie dry-run; apply tylko dla trybu apply; zrzuty z artefaktu przebiegu, iPad z katalogu ipad-13', () => {
-    for (const f of ['asc-iap-localizations.yml', 'asc-zrzuty.yml']) {
+    for (const [f, opcje] of [['asc-iap-localizations.yml', 'dry-run, apply'], ['asc-zrzuty.yml', 'dry-run, apply, spis']]) { // asc-zrzuty: + `spis` (tylko odczyt, ZR12) — apply nadal tylko dla trybu apply
       const t = read(`.github/workflows/${f}`);
-      expect(t).toMatch(/options: \[dry-run, apply\]\n\s+default: dry-run/); expect(t).toMatch(/if: \$\{\{ inputs\.tryb == 'apply' \}\}/);
+      expect(t).toContain(`options: [${opcje}]\n`); expect(t).toMatch(/options: \[[^\]]*\]\n\s+default: dry-run/); expect(t).toMatch(/if: \$\{\{ inputs\.tryb == 'apply' \}\}/);
     }
     const z = read('.github/workflows/asc-zrzuty.yml');
     expect(z).toContain('run-id: ${{ inputs.zrzuty_z_przebiegu }}'); expect(z).toContain('sklep-ramki/ipad-13'); expect(z).toMatch(/actions: read/);
