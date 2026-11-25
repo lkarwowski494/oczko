@@ -1,0 +1,23 @@
+# ZR12 — dowód czerwony (testy PRZED kodem), 2026-11-25, baza 44e30ce3 + tylko testy i atrapa
+# komenda: npx jest tests/wydanie/zrzuty-spis.test.ts --verbose
+# przyczyna: Z.runSpis nie istnieje; tryb spis w workflow i --spis w CLI nie istnieją (jedyny zielony test: --spis bez kluczy → kod 2, strażnik regresji)
+     12 TypeError: Z.runSpis is not a function
+     12     TypeError: Z.runSpis is not a function
+      1 Tests:       16 failed, 1 passed, 17 total
+      1     ✕ workflow: wybór `spis` obok dry-run i apply; domyślnie dry-run; artefakt zrzutów już nie jest wymagany wejściem (3 ms)
+      1     ✕ workflow: pobieranie artefaktów (zrzuty i zegarek) pomijane w trybie spis; w pozostałych trybach brak numeru przebiegu zatrzymuje przed pobraniem (3 ms)
+      1     ✕ workflow: krok spisu tylko dla `spis`, uruchamia `--spis` bez --apply/--zastap, środowisko release; plan i apply go nie uruchamiają (1 ms)
+      1     ✕ tabela w logu: wiersze zbiorcze z liczbami i nagłówkiem kolumn (49 ms)
+      1     ✕ po 2 wpisy na stronę: 3 wersje, 3 lokalizacje, 5 placementów — wszystko policzone (46 ms)
+      1     ✕ placementy bez filtra grupy i typu, z dołączonym obrazem (referenceName, stan, wymiary); lista wersji bez zawężenia do jednej (38 ms)
+      1     ✕ lokalizacja bez placementów jest widoczna (0), a nie pominięta po cichu (37 ms)
+      1     ✕ log nie zawiera tokenu, nagłówka, adresu wgrywania, nazwy pliku ani nieznanych pól odpowiedzi (45 ms)
+      1     ✕ klasyfikacja prefiksu: oczko-1.0/, oczko/…#skrót, inny (np. bez skrótu), pusty (brak nazwy i brak obrazu); stany obrazów zliczone (45 ms)
+      1     ✕ inny typ placementu w tej samej grupie (APP_PREVIEW) to osobny wiersz, nie jest wmieszany w zrzuty (48 ms)
+      1     ✕ dla en-US i pl wszystkie placementy obu wersji: referenceName, stan obrazu, wymiary, typ zasobu, grupa, typ, pozycja; inne lokalizacje bez szczegółów (36 ms)
+      1     ✕ błąd odczytu jednej lokalizacji: kod 1, wiersz błędu z kodem HTTP bez treści odpowiedzi, reszta spisu mimo to powstaje (46 ms)
+      1     ✕ brak aplikacji → kod 1 i komunikat bez wyjątku (44 ms)
+      1     ✕ `--spis` z `--apply`, `--zastap` albo `--dry-run` jest odrzucone (kod 2): spis nigdy nie zapisuje (46 ms)
+      1     ✕ 1.0: iPhone i iPad po 3 lokalizacje × 7 = 21 placementów `oczko-1.0/`; 1.0.1: iPhone 2 lokalizacje × 3 = 6 `oczko/…#` (39 ms)
+      1     ✕ 0 żądań innych niż GET; kod 0; dotyka tylko aplikacji, wersji, lokalizacji i placementów (42 ms)
+      1     ✓ `--spis` nie wymaga katalogów zrzutów (--iphone): bez kluczy kończy się komunikatem o kluczach (kod 2), nie o katalogu (40 ms)
