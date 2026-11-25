@@ -116,12 +116,18 @@ export function grubosciPasow(rgb, w, h) {
  * gdy jej wiersz leży w zakresie wiersza tekstu [od, do] (odległość 0). Zmierzone: iPhone — dolna linia w zakresie wiersza „Row 21” (odległość 0) we wszystkich 29 kadrach, górna 2–3 wiersze nad nim. */
 const PROG_LINII = 0.6;
 const ZNACZNIK_OD = 0.12; const ZNACZNIK_DO = 0.70;
+/* ZR8c (KO-205, P-1042): do decyzji „to jest linia” liczą się tylko ciemne piksele NEUTRALNE (max(R,G,B) − min(R,G,B) ≤ NASYCENIE_MAX). Dlaczego: dolny pasek licznika aplikacji ma złoty przycisk „+1” (ok. 192,132,37; średnia RGB 120 < PROG_CIEMNY),
+ * który razem z ciemnym tekstem paska dawał w en 62,6% szerokości kadru (iPhone 6.9″, wiersz 1002 z 1086) ≥ PROG_LINII — kontrola brała pasek za linię znacznika „na tekście” (13 z 29 języków; pl 46,4%, stąd zależność od języka). Zmierzone w kadrach
+ * przebiegu 45564086208 (commit 4eea5b1d): linia znacznika ma nasycenie ≤ 10 (iPhone en/pl: 100% neutralna; iPad: 78% — resztę stanowi złota kolumna licznika, nasycenie > 100); przycisk i jego obrys > 100. 30 leży między nimi z zapasem po obu stronach.
+ * Wiersze tekstu (kolumna [ZNACZNIK_OD, ZNACZNIK_DO]) i PROG_CIEMNY zostają bez zmian — to nie osłabienie progu, tylko dokładniejsza definicja „ciemnej linii”. */
+const NASYCENIE_MAX = 30;
 
 /** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma linii znacznika (nic do sprawdzenia, ok = true). */
 export function liniaZnacznika(rgb, w, h) {
   const ciemne = (y, x0, x1) => { let n = 0; for (let x = x0, i = (y * w + x0) * 3; x < x1; x++, i += 3) if ((rgb[i] + rgb[i + 1] + rgb[i + 2]) / 3 < PROG_CIEMNY) n++; return n; };
+  const neutralneCiemne = (y) => { let n = 0; for (let x = 0, i = y * w * 3; x < w; x++, i += 3) { const r = rgb[i], g = rgb[i + 1], b = rgb[i + 2]; if ((r + g + b) / 3 < PROG_CIEMNY && Math.max(r, g, b) - Math.min(r, g, b) <= NASYCENIE_MAX) n++; } return n; };
   const linie = [];
-  for (let y = 0; y < h; y++) if (ciemne(y, 0, w) >= w * PROG_LINII) linie.push(y);
+  for (let y = 0; y < h; y++) if (neutralneCiemne(y) >= w * PROG_LINII) linie.push(y);
   if (linie.length === 0) return { linie, wiersze: [], przecina: [], ok: true, brak: true, powod: '' };
   const jestLinia = new Set(linie);
   const x0 = Math.floor(w * ZNACZNIK_OD); const x1 = Math.ceil(w * ZNACZNIK_DO);

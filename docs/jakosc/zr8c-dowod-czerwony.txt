@@ -1,0 +1,139 @@
+# ZR8c: dowód czerwony — tests/wydanie/zr8c-pasek-licznika.test.ts na scripts/ci/kontrola-zakreslen.mjs z 4eea5b1d (bez zmiany definicji „ciemny”)
+# 2026-11-25T14:09:51Z · npx jest tests/wydanie/zr8c-pasek-licznika.test.ts
+FAIL iOS tests/wydanie/zr8c-pasek-licznika.test.ts
+  ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d
+    ✓ run-45564086208/6.9/en/03-wzor.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (83 ms)
+    ✓ run-45564086208/6.9/en/04-zakreslenie.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (80 ms)
+    ✓ run-45564086208/6.9/pl/03-wzor.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (87 ms)
+    ✓ run-45564086208/6.9/hr/03-wzor.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (86 ms)
+    ✓ run-45564086208/6.9/it/03-wzor.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (89 ms)
+    ✓ run-45564082350/ipad-13/en/03-wzor.png: zapisane pomiary zgadzają się z kadrem w repo (±0,002) (68 ms)
+    ✓ przyczyna: pasek licznika en ma 62,6% ciemnych (≥ progu linii 60%), ale tylko 27,2% neutralnych (1 ms)
+    ✕ run-45564086208/6.9/en/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu (75 ms)
+    ✕ run-45564086208/6.9/en/04-zakreslenie.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu (76 ms)
+    ✓ run-45564086208/6.9/pl/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu (79 ms)
+    ✕ run-45564086208/6.9/hr/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu (84 ms)
+    ✕ run-45564086208/6.9/it/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu (73 ms)
+    ✓ iPad 13″ en: znacznik wykryty jak dotąd (nie zepsuty), brak alarmu (72 ms)
+    ✓ czułość: prawdziwy znacznik ma ≥ 96% neutralnych ciemnych na iPhonie i ≥ 75% na iPadzie (resztę iPada zajmuje złota kolumna licznika), z zapasem nad progiem 60%
+    ✓ znacznik na tekście nadal daje alarm: kadr en 03 z dorysowaną neutralną linią na wierszu „Row 21” → przecina (150 ms)
+    ✕ pełna kontrola na katalogu z kadrem en 03/04 → ZNACZNIK OK, bez BŁĘDU znacznika (kod wyjścia nie z powodu znacznika) (270 ms)
+
+  ● ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d › run-45564086208/6.9/en/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 1
+
+      Array [
+        540,
+        551,
+    +   1002,
+      ]
+
+      76 |   test.each(IPHONE)('%s: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu', (rel) => {
+      77 |     const k = pomiary.kadry[rel]; const z = analiza(path.join(DANE, rel));
+    > 78 |     expect(z.linie).toEqual(Object.keys(k.liniaZnacznika).map(Number));
+         |                     ^
+      79 |     expect(z.linie).not.toContain(k.wierszPaskaLicznika);
+      80 |     expect(z.przecina).toEqual([]);
+      81 |     expect(z.ok).toBe(true);
+
+
+  ● ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d › run-45564086208/6.9/en/04-zakreslenie.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 1
+
+      Array [
+        551,
+        562,
+    +   1002,
+      ]
+
+      76 |   test.each(IPHONE)('%s: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu', (rel) => {
+      77 |     const k = pomiary.kadry[rel]; const z = analiza(path.join(DANE, rel));
+    > 78 |     expect(z.linie).toEqual(Object.keys(k.liniaZnacznika).map(Number));
+         |                     ^
+      79 |     expect(z.linie).not.toContain(k.wierszPaskaLicznika);
+      80 |     expect(z.przecina).toEqual([]);
+      81 |     expect(z.ok).toBe(true);
+
+
+  ● ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d › run-45564086208/6.9/hr/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 2
+
+      Array [
+        540,
+        551,
+    +   1001,
+    +   1002,
+      ]
+
+      76 |   test.each(IPHONE)('%s: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu', (rel) => {
+      77 |     const k = pomiary.kadry[rel]; const z = analiza(path.join(DANE, rel));
+    > 78 |     expect(z.linie).toEqual(Object.keys(k.liniaZnacznika).map(Number));
+         |                     ^
+      79 |     expect(z.linie).not.toContain(k.wierszPaskaLicznika);
+      80 |     expect(z.przecina).toEqual([]);
+      81 |     expect(z.ok).toBe(true);
+
+
+  ● ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d › run-45564086208/6.9/it/03-wzor.png: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 3
+
+      Array [
+        540,
+        551,
+    +   1001,
+    +   1002,
+    +   1009,
+      ]
+
+      76 |   test.each(IPHONE)('%s: linie znacznika to dokładnie zmierzone wiersze znacznika, bez wiersza paska licznika; brak alarmu', (rel) => {
+      77 |     const k = pomiary.kadry[rel]; const z = analiza(path.join(DANE, rel));
+    > 78 |     expect(z.linie).toEqual(Object.keys(k.liniaZnacznika).map(Number));
+         |                     ^
+      79 |     expect(z.linie).not.toContain(k.wierszPaskaLicznika);
+      80 |     expect(z.przecina).toEqual([]);
+      81 |     expect(z.ok).toBe(true);
+
+
+  ● ZR8c (P-1042): pasek licznika nie jest linią znacznika — prawdziwe kadry 4eea5b1d › pełna kontrola na katalogu z kadrem en 03/04 → ZNACZNIK OK, bez BŁĘDU znacznika (kod wyjścia nie z powodu znacznika)
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /ZNACZNIK OK 6\.9\/en\/03-wzor\.png: linie 540,551 poza tekstem wierszy/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+    BŁĄD /tmp/oczko-zr8c-pelna-vNrb8U/6.9/en/03-wzor.png: linia znacznika (wiersze kadru 1002) leży na tekście wiersza (963–1032) — znacznik ma stać w przerwie między wierszami
+    BŁĄD /tmp/oczko-zr8c-pelna-vNrb8U/6.9/en/04-zakreslenie.png: linia znacznika (wiersze kadru 1002) leży na tekście wiersza (963–1032) — znacznik ma stać w przerwie między wierszami
+    Kontrola zakreśleń: 2 błędów
+    "
+
+      114 |       fs.copyFileSync(path.join(DANE, EN_03), path.join(kat, '03-wzor.png')); fs.copyFileSync(path.join(DANE, EN_04), path.join(kat, '04-zakreslenie.png'));
+      115 |       const r = spawnSync('node', [SKRYPT, tmp], { encoding: 'utf8', cwd: korzen });
+    > 116 |       expect(r.stdout).toMatch(/ZNACZNIK OK 6\.9\/en\/03-wzor\.png: linie 540,551 poza tekstem wierszy/);
+          |                        ^
+      117 |       expect(r.stdout).toMatch(/ZNACZNIK OK 6\.9\/en\/04-zakreslenie\.png: linie 551,562 poza tekstem wierszy/);
+      118 |       expect(r.stdout).not.toMatch(/linia znacznika/);
+      119 |     } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 11 passed, 16 total
+Snapshots:   0 total
+Time:        2.101 s
+Ran all test suites matching /tests\/wydanie\/zr8c-pasek-licznika.test.ts/i.
