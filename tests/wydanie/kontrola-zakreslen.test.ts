@@ -134,10 +134,12 @@ if (!maConvert && !wymagaConvert) {
     // wiersz tekstu = pionowe kreski co 6 px (jak litery: tekst na pasie zostawia ≥ 15% pikseli żółtych w wierszu, więc pas nie dzieli się na kawałki)
     const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
     const tekst = Array.from({ length: n }, (_, i) => wiersz(207 + i * 160) + (i < n - 1 ? ` ${wiersz(287 + i * 160)}` : '')).join(' ');
-    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-fill', 'black', ...(n ? ['-draw', tekst] : []), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+    const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', ...(n ? ['-draw', draw] : []), '-fill', 'black', ...(n ? ['-draw', tekst] : []), ...ZNACZNIK, '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
     expect(spawnSync('convert', args).status).toBe(0);
     return p;
   }
+  /** ZR9 (P2-2): kadry 03/04 zawsze mają znacznik rzędu, więc brak neutralnej linii to BŁĄD kontroli. Dwie czarne linie na całej szerokości (2 px) pod ostatnim wierszem tekstu (nie przesuwają wierszy 9–13). */
+  const ZNACZNIK = ['-fill', 'black', '-draw', 'rectangle 0,880 599,881 rectangle 0,890 599,891'];
   const uruchom = () => spawnSync('node', [SKRYPT, kat], { encoding: 'utf8', cwd: korzen });
 
   test('04 ma więcej pasów niż 03 (iPad i iPhone, en i pl, układ warunek-og07 i bezpośredni) → OK, kod 0', () => {
@@ -176,7 +178,7 @@ if (!maConvert && !wymagaConvert) {
     const p = path.join(kat, rel); fs.mkdirSync(path.dirname(p), { recursive: true });
     const wiersz = (y0: number) => Array.from({ length: 50 }, (_, k) => `rectangle ${150 + k * 6},${y0} ${151 + k * 6},${y0 + 12}`).join(' ');
     const args = ['-size', '600x900', 'xc:white', '-fill', 'rgb(248,232,123)', '-draw', `rectangle 120,208 480,222 rectangle 120,${pas2Od + 8} 480,${pas2Od + 22}`,
-      ...(bezTekstu ? [] : ['-fill', 'black', '-draw', [207, 287, 367, 447].map(wiersz).join(' ')]), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
+      ...(bezTekstu ? [] : ['-fill', 'black', '-draw', [207, 287, 367, 447].map(wiersz).join(' '), ...ZNACZNIK.slice(2)]), '-alpha', 'off', '-depth', '8', '-define', 'png:color-type=2', p];
     expect(spawnSync('convert', args).status).toBe(0);
     return p;
   }

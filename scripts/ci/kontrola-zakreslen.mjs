@@ -6,6 +6,7 @@
 // zależnie od liczby linii podpowiedzi, a pas stoi na stałej wysokości ekranu); sama liczba pasów tego nie widzi. Sprawdzenie dotyczy każdego kadru 04, także bez pary 03.
 // ZR8 (KO-201, P-1036): dwie dalsze własności kadru, które widać dopiero na pikselach: (a) GRUBOŚĆ pasa 2 względem pasa 1 (grubosciPasow) — kadry pierwszego języka każdego zadania miały pas 2 jako cienką kreskę
 // (4 z 12 px przy 500 px szerokości) zamiast pasa jak wiersz 9; (b) linia znacznika rzędu nie przecina tekstu wiersza (liniaZnacznika) — pas znacznika stał na wierszu 21 i jego dolna linia leżała na dolnej części liter.
+// ZR9 (KO-206, recenzja RZ2): (a) pas nie może być za gruby (PAS_MAX_WIERSZY × wiersz tekstu; wcześniej tylko dolna granica), (b) brak neutralnej linii znacznika w kadrze 03/04 to BŁĄD (wcześniej ciche OK, także gdy znacznik zmienił barwę).
 // Wymaga ImageMagicka (`convert`; zadanie „komplet” zrzuty-sklepu.yml instaluje go wcześniej). Plik nieczytelny = BŁĄD z nazwą pliku (nie ciche pominięcie).
 // Użycie: node scripts/ci/kontrola-zakreslen.mjs <katalog_surowych>  → kod 1 przy jakimkolwiek BŁĘDZIE; inaczej 0.
 import { existsSync, readdirSync, statSync } from 'node:fs';
@@ -141,7 +142,7 @@ const ZNACZNIK_OD = 0.12; const ZNACZNIK_DO = 0.70;
  * Wiersze tekstu (kolumna [ZNACZNIK_OD, ZNACZNIK_DO]) i PROG_CIEMNY zostają bez zmian — to nie osłabienie progu, tylko dokładniejsza definicja „ciemnej linii”. */
 const NASYCENIE_MAX = 30;
 
-/** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma linii znacznika (nic do sprawdzenia, ok = true). */
+/** Linie znacznika i wiersze tekstu: `{ linie, wiersze, przecina, ok, brak, powod }`. `brak` = w kadrze nie ma neutralnej linii znacznika (ok = true na poziomie funkcji; `sprawdz` traktuje to jako BŁĄD, ZR9). */
 export function liniaZnacznika(rgb, w, h) {
   const ciemne = (y, x0, x1) => { let n = 0; for (let x = x0, i = (y * w + x0) * 3; x < x1; x++, i += 3) if ((rgb[i] + rgb[i + 1] + rgb[i + 2]) / 3 < PROG_CIEMNY) n++; return n; };
   const neutralneCiemne = (y) => { let n = 0; for (let x = 0, i = y * w * 3; x < w; x++, i += 3) { const r = rgb[i], g = rgb[i + 1], b = rgb[i + 2]; if ((r + g + b) / 3 < PROG_CIEMNY && Math.max(r, g, b) - Math.min(r, g, b) <= NASYCENIE_MAX) n++; } return n; };
@@ -225,7 +226,9 @@ export function sprawdz(katalog, wczytaj = wczytajRgb) {
       try {
         const { rgb, w, h } = wczytaj(plik);
         const z = liniaZnacznika(rgb, w, h);
-        if (z.brak) continue; // brak linii znacznika w kadrze: nie ta kontrola (kadr bez znacznika nie ma czego przecinać)
+        // ZR9 (KO-206, P2-1/P2-2 recenzji RZ2): kadry 03 i 04 ZAWSZE mają znacznik (00-przygotuj.yaml, scena 03), więc brak neutralnej linii to BŁĄD, nie ciche OK: znacznik usunięty albo w innej barwie
+        // (nasycenie > NASYCENIE_MAX po zmianie motywu/akcentu) jest dla tej kontroli niewidoczny i właśnie wtedy nie wolno jej milczeć (próby M2, M4).
+        if (z.brak) { linie.push(`BŁĄD ${plik}: brak linii znacznika — w kadrze nie ma ciemnej neutralnej linii na ≥ ${Math.round(PROG_LINII * 100)}% szerokości (nasycenie ≤ ${NASYCENIE_MAX}); znacznik rzędu usunięty albo zmienił barwę (wtedy zmień NASYCENIE_MAX świadomie, ze zmierzonym kadrem)`); bledy++; continue; }
         if (z.ok) linie.push(`ZNACZNIK OK ${etykieta}/${plik.split(sep).pop()}: linie ${z.linie.join(',')} poza tekstem wierszy`);
         else { linie.push(`BŁĄD ${plik}: ${z.powod}`); bledy++; }
       } catch (e) { linie.push(`BŁĄD ${plik}: linia znacznika: ${e instanceof Error ? e.message : String(e)}`); bledy++; }

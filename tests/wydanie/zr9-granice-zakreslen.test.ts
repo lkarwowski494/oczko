@@ -82,4 +82,33 @@ const uruchom = (kat: string) => { const r = spawnSync('node', [SKRYPT, kat], { 
       expect(uruchom(kat).stdout).not.toMatch(/za gruby/);
     });
   });
+
+  describe('P2-2: brak linii znacznika albo znacznik w innej barwie (próby M2, M4 recenzji RZ2)', () => {
+    test('M2: linie znacznika w 03 (540, 551) i 04 (551, 562) ciemnoczerwone (110,30,30; nasycenie 80 > 30) → BŁĄD „brak linii znacznika” w obu kadrach, kod 1', () => {
+      const r = uruchom(zestaw(liniaKolor('rgb(110,30,30)', 540, 551), liniaKolor('rgb(110,30,30)', 551, 562)));
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/);
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: brak linii znacznika/);
+      expect(r.stdout).not.toMatch(/Kontrola zakreśleń: OK/); expect(r.status).toBe(1);
+    });
+    test('M4: znacznik usunięty (linie zamalowane na biało) z 03 i 04 → BŁĄD „brak linii znacznika”, kod 1', () => {
+      const r = uruchom(zestaw(liniaKolor('white', 540, 551), liniaKolor('white', 551, 562)));
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/);
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: brak linii znacznika/);
+      expect(r.status).toBe(1);
+    });
+    test('znacznik brakuje tylko w jednym kadrze (04) → BŁĄD tylko tego kadru', () => {
+      const r = uruchom(zestaw(null, liniaKolor('white', 551, 562)));
+      expect(r.stdout).toMatch(/BŁĄD [^\n]*04-zakreslenie\.png: brak linii znacznika/);
+      expect(r.stdout).not.toMatch(/BŁĄD [^\n]*03-wzor\.png: brak linii znacznika/);
+      expect(r.status).toBe(1);
+    });
+    test('bez fałszywego alarmu: wszystkie prawdziwe kadry zr8c (en, pl, hr, it iPhone 03+04; iPad en 03) → bez „brak linii znacznika” i bez żadnego BŁĘDU, kod 0', () => {
+      const kat = path.join(tmp, 'zr8c'); fs.cpSync(DANE_ZR8C, kat, { recursive: true, filter: (z) => !z.endsWith('.json') });
+      const r = uruchom(kat);
+      expect(r.stdout).not.toMatch(/brak linii znacznika/);
+      expect(r.stdout).not.toMatch(/^BŁĄD /m);
+      expect(r.stdout).toMatch(/ZNACZNIK OK run-45564082350\/ipad-13\/en\/03-wzor\.png/);
+      expect(r.status).toBe(0);
+    });
+  });
 });
