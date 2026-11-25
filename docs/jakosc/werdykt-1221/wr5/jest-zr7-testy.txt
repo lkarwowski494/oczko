@@ -1,0 +1,13 @@
+PASS iOS tests/wydanie/zrzuty-zakreslenia-geometria.test.ts
+PASS iOS tests/wydanie/zrzuty-zakreslenia.test.ts
+PASS iOS tests/wydanie/zrzuty-zakreslenie-jezyki.test.ts
+PASS iOS tests/wydanie/zrzuty-swipe-skladnia.test.ts
+PASS iOS tests/wydanie/zakreslenie-polozenie.test.ts
+PASS iOS tests/wydanie/kontrola-zakreslen.test.ts (9.091 s)
+
+Test Suites: 6 passed, 6 total
+Tests:       149 passed, 149 total
+Snapshots:   0 total
+Time:        9.858 s
+Ran all test suites matching /tests\/wydanie\/zakreslenie-polozenie.test.ts|tests\/wydanie\/zrzuty-zakreslenie-jezyki.test.ts|tests\/wydanie\/kontrola-zakreslen.test.ts|tests\/wydanie\/zrzuty-zakreslenia.test.ts|tests\/wydanie\/zrzuty-zakreslenia-geometria.test.ts|tests\/wydanie\/zrzuty-swipe-skladnia.test.ts/i.
+exit=0

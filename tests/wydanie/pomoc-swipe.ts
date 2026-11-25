@@ -10,7 +10,7 @@ export const KATALOG_SCEN = path.join(__dirname, '..', '..', 'e2e', 'zrzuty-skle
 export const plikiScen = (): string[] => fs.readdirSync(KATALOG_SCEN).filter((f) => f.endsWith('.yaml')).sort();
 
 export type SwipeSceny = { plik: string; warunek: string | null; start: unknown; end: unknown };
-export type WariantSwipe = { plik: string; orientacja: string; jezyk: string; start: string; end: string };
+export type WariantSwipe = { plik: string; orientacja: string; jezyk: string; grupa: string | null; warunek: string; start: string; end: string };
 
 const komendy = (plik: string): unknown[] => {
   const dok = YAML.parseAllDocuments(fs.readFileSync(path.join(KATALOG_SCEN, plik), 'utf8'));
@@ -38,13 +38,15 @@ export const swipyPliku = (plik: string): SwipeSceny[] => {
   return wynik;
 };
 
-const WARUNEK = /^\$\{ORIENT_WZOR == '(PORTRAIT|LANDSCAPE_LEFT)' && DANE_KLUCZ == '([a-z]+)'\}$/;
+// ZR7 (P-1016): do orientacji i klucza danych może dojść JEDEN warunek grupy języków aplikacji — `[...].includes(JEZYK)` albo `![...].includes(JEZYK)` (JEZYK = język aplikacji, `-e JEZYK` w zrzuty-sklepu.sh):
+// strona PDF przesuwa się w kadrze zależnie od liczby linii podpowiedzi w danym języku, więc współrzędne drugiego zakreślenia są per grupa języków.
+export const WARUNEK = /^\$\{ORIENT_WZOR == '(PORTRAIT|LANDSCAPE_LEFT)' && DANE_KLUCZ == '([a-z]+)'(?: && (!?\[(?:'[A-Za-z-]+'(?:, ?)?)+\]\.includes\(JEZYK\)))?\}$/;
 
 /** Swipe'y wybierane warunkiem (orientacja × język) z jednego pliku sceny; test sprawdza, że każdy ma warunek w tym kształcie. */
 export const wariantyPliku = (plik: string): WariantSwipe[] => swipyPliku(plik).map((s) => {
   const m = typeof s.warunek === 'string' ? WARUNEK.exec(s.warunek) : null;
   expect([plik, s.warunek, m !== null]).toEqual([plik, s.warunek, true]);
-  return { plik, orientacja: m![1], jezyk: m![2], start: String(s.start), end: String(s.end) };
+  return { plik, orientacja: m![1], jezyk: m![2], grupa: m![3] ?? null, warunek: s.warunek as string, start: String(s.start), end: String(s.end) };
 });
 
 export const ORIENTACJA_URZADZENIA = { iphone: 'PORTRAIT', ipad: 'LANDSCAPE_LEFT' } as const;

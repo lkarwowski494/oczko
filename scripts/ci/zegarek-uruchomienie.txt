@@ -1,0 +1,7 @@
+Plik wyzwalacza zrzutów zegarka (.github/workflows/zrzuty-zegarka.yml).
+Workflow nowego pliku działa przez workflow_dispatch dopiero z `main`; do tego czasu uruchamia go push na gałąź roboczą, który
+(1) zmienia plik objęty `paths` workflowu (np. dopisanie linii poniżej) i (2) ma w PIERWSZEJ linii komunikatu commita znacznik [zrzuty-zegarka]
+(opcjonalnie [zegarek-jezyki:en,pl] albo [zegarek-jezyki:all]). Bez znacznika push kończy się na zadaniu „plan” (bez macOS).
+Przebiegi (dopisuj po jednej linii: data, języki, numer przebiegu):
+2026-11-22 20:58 UTC · en,pl · próba (koordynator, KO-197)
+2026-11-22 · all · ZW2, 2 kadry
