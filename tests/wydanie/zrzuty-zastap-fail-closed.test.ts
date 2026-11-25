@@ -1,7 +1,8 @@
 /*
- * ZR10b (KO-212, 2026-11-25; P-1055, P-1056): uwagi RZ4 do trybu „zastąp” w scripts/asc/zrzuty.mjs — fail-closed.
+ * ZR10b (KO-212, 2026-11-25; P-1055…P-1057): uwagi RZ4 do trybu „zastąp” w scripts/asc/zrzuty.mjs — fail-closed.
  *  - RZ4-01: lista do zdjęcia weryfikuje grupę i typ po stronie klienta (serwer może zignorować filtry); brak atrybutu = odmowa zastąpienia tej grupy.
  *  - RZ4-07: przed jakimkolwiek DELETE porównanie z placementami wersji w sprzedaży (READY_FOR_SALE); współdzielenie albo brak odczytu = odmowa.
+ *  - RZ4-02: nowy obraz FAILED / nieprzetworzony → 0 DELETE (luka testowa; kod był poprawny).
  * Testy PRZED kodem (zasada wspólna 11), na atrapie serwera w pamięci (tests/wydanie/zrzuty-zastap-driver.mjs). Nic nie łączy się z Apple.
  */
 import { join } from 'path';
@@ -157,5 +158,47 @@ describe('RZ4-07: ochrona wersji w sklepie (placementy 1.0 rozłączne ze zdejmo
     const k = uruchom({ stare: 7, kroki: [{ apply: false }] }).kroki[0];
     expect(k.calls.filter((c) => /LOCPUB|\/V0\//.test(c.p))).toEqual([]);
     expect(tekst(k)).not.toMatch(/rozłączne/);
+  });
+});
+
+describe('RZ4-02: zdejmowanie czeka na przetworzenie nowych obrazów', () => {
+  test.each(['FAILED'])('nowy obraz kończy jako %s → kod 1, 0 × DELETE, 0 nowych placementów, 7 starych zostaje, komunikat „nic nie zdjęto”', (stan) => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: true, zastap: true, przetwarzanie: { stan } }] });
+    const k = w.kroki[0];
+    expect(k.code).toBe(1);
+    expect(usuniete(k)).toEqual([]);
+    expect(tagi(k).filter((t) => t === 'POST placement')).toEqual([]);
+    expect(w.placementy).toHaveLength(7);
+    expect(k.rows[0].error).toMatch(/nie powiodło się/);
+    expect(k.rows[0].error).toMatch(/nic nie zdjęto, strona bez zmian/);
+  });
+
+  test('po FAILED ponowny przebieg (obraz przetworzony) kończy zadanie: stan końcowy = nowe zrzuty, stare obrazy nadal w bibliotece', () => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: true, zastap: true, przetwarzanie: { stan: 'FAILED' } }, { apply: true, zastap: true }] });
+    expect(w.kroki[0].code).toBe(1);
+    expect(w.kroki[1].code).toBe(0);
+    expect(w.placementy).toEqual(NOWE);
+    expect(w.usunieteObrazy).toBe(0);
+  });
+
+  test('obraz przechodzi UPLOAD_COMPLETE przez 2 odczyty stanu: DELETE dopiero po ostatnim odczycie stanu obrazu, potem normalny stan końcowy', () => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: true, zastap: true, przetwarzanie: { stan: 'UPLOAD_COMPLETE', czytania: 2 } }] });
+    const k = w.kroki[0]; const t = tagi(k);
+    expect(k.code).toBe(0);
+    const odczytyObrazow = t.map((x, i) => (x === 'GET /v1/appAssetLibraryImages/{id}' ? i : -1)).filter((i) => i >= 0);
+    expect(odczytyObrazow.length).toBeGreaterThanOrEqual(3 * 3); // 3 obrazy × (2 stany pośrednie + gotowy)
+    expect(Math.max(...odczytyObrazow)).toBeLessThan(t.indexOf('DELETE placement'));
+    expect(w.placementy).toEqual(NOWE);
+  });
+
+  test.each(['UPLOAD_COMPLETE', 'AWAITING_UPLOAD'])('obraz nigdy nie wychodzi ze stanu %s (do limitu czekania) → kod 1, 0 × DELETE, 7 starych zostaje, „trwa zbyt długo”', (stan) => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: true, zastap: true, przetwarzanie: { stan } }] });
+    const k = w.kroki[0];
+    expect(k.code).toBe(1);
+    expect(usuniete(k)).toEqual([]);
+    expect(tagi(k).filter((t) => t === 'POST placement')).toEqual([]);
+    expect(w.placementy).toHaveLength(7);
+    expect(k.rows[0].error).toMatch(/trwa zbyt długo/);
+    expect(k.rows[0].error).toMatch(/nic nie zdjęto/);
   });
 });

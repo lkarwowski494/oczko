@@ -1,10 +1,12 @@
 // Sterownik testów trybu „zastąp” scripts/asc/zrzuty.mjs (ZR10, KO-210) na atrapie serwera App Store Connect w pamięci (wywołuje prawdziwy `makeClient` i `run`).
 // Atrapa odzwierciedla odczytaną dokumentację Apple (docs/jakosc/zr10-api.md), nie prawdziwy serwer: DELETE placementu → 204, tworzenie placementu w wersji
 // nieedytowalnej → 409 STATE_ERROR.INVALID_STATE, DELETE czegokolwiek innego niż placement → 405 i wpis „wyciek” (test wymaga zera takich wpisów).
-// Wejście (argv[2], JSON): { stanWersji?, stare?: n, nowe?: n, jezyk?, kroki: [{ apply?, zastap?, awaria?: { m, tag, nth, status } }],
+// Wejście (argv[2], JSON): { stanWersji?, stare?: n, nowe?: n, jezyk?, kroki: [{ apply?, zastap?, awaria?: { m, tag, nth, status }, przetwarzanie?: { stan, czytania? } }],
 //   ZR10b (KO-212): ignorujFiltry? (serwer ignoruje filter[placementGroup]/[placementType], sonda C z RZ4), inne?: [{ group, type?, n }] (placementy innej grupy/typu w tej samej lokalizacji),
 //   bezAtrybutow?: 'grupa' | 'typ' (odpowiedź placementów bez tego atrybutu), sklep?: { wspolne: n } | null (wersja 1.0 w sprzedaży: n id współdzielonych ze zdejmowanymi; null = brak wersji w sprzedaży;
 //   domyślnie { wspolne: 0 }) }
+//   `przetwarzanie` (na krok): stan, w jakim nowy obraz zostaje po `uploaded: true` (np. FAILED, UPLOAD_COMPLETE, AWAITING_UPLOAD); `czytania: n` — po n odczytach stanu staje się gotowy (bez: nigdy).
+//   Zegar wirtualny: `sleep` przesuwa `now` (limit czekania WAIT_MS jest osiągalny bez czekania naprawdę).
 // Wyjście (stdout): JSON { kroki: [{ code, rows, log, calls }], placementy: [ref…], pozostale: [id innych grup/typów], obrazy: n, usuniecObrazow: n, wycieki: [...] }
 import { makeClient } from '../../scripts/asc/iap-localizations.mjs';
 import { LOCALE_MAP } from '../../scripts/asc/metadane.mjs';
@@ -32,7 +34,7 @@ const sklepIds = sklep ? [...placementy.filter(x => x.group === GRUPA).slice(0, 
 const refData = { imageSpecs: [{ specId: 'S69', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }],
   placementTypes: [{ placementTypeId: 'APP_SCREENSHOT', specMappings: [{ specs: ['S69'], placementGroupId: GRUPA }] }] };
 
-let calls = []; let awaria = null; const licznikAwarii = new Map();
+let calls = []; let awaria = null; const licznikAwarii = new Map(); let przetwarzanie = null; let zegar = 0;
 const odp = (status, json) => ({ status, ok: status >= 200 && status < 300, json: async () => { if (json === undefined) throw new Error('brak treści'); return json; } });
 const blad = (status, code, title) => odp(status, { errors: [{ status: String(status), code, title }] });
 
@@ -61,7 +63,11 @@ async function fetchFn(url, init = {}) {
     if (p === '/v1/apps/APP1/assetLibrary') return odp(200, { data: { id: 'LIB1' } });
     if (p === '/v1/appAssetLibraryRefData') return odp(200, { data: [{ attributes: refData }] });
     if (p === '/v1/appAssetLibraries/LIB1/images') return odp(200, { data: [...obrazy.values()].map(o => ({ id: o.id, attributes: { referenceName: o.referenceName, fileSize: o.fileSize, state: o.state, createdDate: o.createdDate } })) });
-    if (/^\/v1\/appAssetLibraryImages\/[A-Za-z0-9-]+$/.test(p)) { const o = obrazy.get(p.split('/').pop()); return o ? odp(200, { data: { id: o.id, attributes: { state: o.state, referenceName: o.referenceName } } }) : blad(404, 'NOT_FOUND', 'brak obrazu'); }
+    if (/^\/v1\/appAssetLibraryImages\/[A-Za-z0-9-]+$/.test(p)) {
+      const o = obrazy.get(p.split('/').pop()); if (!o) return blad(404, 'NOT_FOUND', 'brak obrazu');
+      if (o.czytania != null) { if (o.czytania <= 0) { o.state = 'PREPARE_FOR_SUBMISSION'; o.czytania = null; } else o.czytania--; } // stan pośredni: gotowy dopiero po n odczytach
+      return odp(200, { data: { id: o.id, attributes: { state: o.state, referenceName: o.referenceName } } });
+    }
     const mp = p.match(/^\/v1\/appStoreVersionLocalizations\/([A-Za-z0-9-]+)\/placements$/);
     if (mp) {
       const grupa = sc.ignorujFiltry ? null : u.searchParams.get('filter[placementGroup]'); const typ = sc.ignorujFiltry ? null : u.searchParams.get('filter[placementType]');
@@ -77,7 +83,8 @@ async function fetchFn(url, init = {}) {
   }
   if (m === 'PATCH' && /^\/v1\/appAssetLibraryImages\//.test(p)) {
     const o = obrazy.get(p.split('/').pop()); const a = body.data.attributes;
-    if (a.uploaded) o.state = 'PREPARE_FOR_SUBMISSION'; if (a.referenceName) o.referenceName = a.referenceName; return odp(200, { data: { id: o.id } });
+    if (a.uploaded) { o.state = przetwarzanie ? przetwarzanie.stan : 'PREPARE_FOR_SUBMISSION'; o.czytania = przetwarzanie && przetwarzanie.czytania != null ? przetwarzanie.czytania : null; }
+    if (a.referenceName) o.referenceName = a.referenceName; return odp(200, { data: { id: o.id } });
   }
   if (m === 'POST' && p === '/v1/appAssetLibraryPlacements') {
     if (stanWersji !== 'PREPARE_FOR_SUBMISSION') return blad(409, 'STATE_ERROR.INVALID_STATE', 'Creating a placement is not permitted in current state');
@@ -95,10 +102,10 @@ const nazwy = Array.from({ length: sc.nowe ?? 3 }, (_, i) => `0${i + 1}-ekran.pn
 const pliki = nazwy.map(n => ({ name: n, path: '/x/' + n, size: 100, width: 1320, height: 2868, alpha: false }));
 const kroki = [];
 for (const k of sc.kroki) {
-  calls = []; awaria = k.awaria ?? null; licznikAwarii.clear();
+  calls = []; awaria = k.awaria ?? null; licznikAwarii.clear(); przetwarzanie = k.przetwarzanie ?? null;
   const log = [];
   const client = makeClient({ fetchFn, token: 'TOKEN-TESTOWY', sleep: async () => {}, allowDelete: !!k.zastap });
-  const w = await Z.run({ client, fetchFn, shots: { iphone: new Map([[jezyk, pliki]]) }, apply: !!k.apply, zastap: !!k.zastap, log: t => log.push(String(t)), read: () => Buffer.alloc(100), sleep: async () => {}, now: () => 0 });
+  const w = await Z.run({ client, fetchFn, shots: { iphone: new Map([[jezyk, pliki]]) }, apply: !!k.apply, zastap: !!k.zastap, log: t => log.push(String(t)), read: () => Buffer.alloc(100), sleep: async ms => { zegar += ms; }, now: () => zegar });
   kroki.push({ code: w.code, rows: w.rows.map(r => ({ action: r.action, reason: r.reason, error: r.error ?? null, written: !!r.written, remove: (r.remove ?? []).map(x => ({ id: x.id, ref: x.ref })) })), log, calls });
 }
 const koncowe = placementy.filter(x => x.loc === LOC && x.group === GRUPA).sort((a, b) => a.order - b.order).map(x => obrazy.get(x.image).referenceName);
