@@ -5,8 +5,9 @@
 //   node scripts/asc/zrzuty.mjs --iphone <katalog> [--ipad <katalog>] [--zegarek <katalog>] --apply       → wgrywa i układa zrzuty
 //   dodatkowo `--jezyki cs,en` — tylko wskazane języki aplikacji (puste albo brak = wszystkie; przebieg dowodowy na jednym–dwóch językach)
 //   dodatkowo `--zastap` — grupa, która ma już zrzuty (np. odziedziczone z 1.0 w wersji 1.0.1), dostaje nowe: najpierw nowe obrazy do biblioteki, potem zdjęcie starych placementów,
-//   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md). Fail-closed (ZR10b, KO-212, P-1055): lista do zdjęcia musi mieć
-//   `placementGroup` = grupa wiersza i `placementType` = APP_SCREENSHOT (inne wpisy odrzucone, brak atrybutu = odmowa).
+//   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md). Fail-closed (ZR10b, KO-212, P-1055…P-1057): lista do zdjęcia musi mieć
+//   `placementGroup` = grupa wiersza i `placementType` = APP_SCREENSHOT (inne wpisy odrzucone, brak atrybutu = odmowa); przed jakimkolwiek zapisem placementy tej samej
+//   lokalizacji w wersji w sprzedaży (READY_FOR_SALE) muszą być rozłączne ze zdejmowanymi (wspólny id albo brak odczytu = odmowa).
 // Układ katalogów: <katalog>/<język aplikacji>/NN-<ekran>.png (iPhone: jeden rozmiar, np. artefakt `sklep-zrzuty-ramki/6.9`) i <katalog>/<język>/<stan>.png (zegarek).
 // Interfejs: App Asset Library (Apple oznaczył appScreenshotSets i appScreenshots jako przestarzałe; odczyt dokumentacji 25.10.2026 —
 // developer.apple.com/documentation/appstoreconnectapi/app-asset-library): obraz wgrywany raz (rezerwacja → PUT → `uploaded: true`), potem placement
@@ -43,6 +44,8 @@ export const POLL_MAX_MS = 60000;
 export const PLACEMENT_TYPE = 'APP_SCREENSHOT';
 /** Stany wersji, w których wolno zdejmować placementy (zastępować): tylko „w przygotowaniu”; szersze EDITABLE_STATES (odrzucone itd.) nie wystarczają — KO-210. */
 export const REPLACE_STATES = new Set(['PREPARE_FOR_SUBMISSION']);
+/** Stan wersji wystawionej w sklepie: jej placementów nie wolno zdjąć przypadkiem (RZ4-07, KO-212). */
+export const PUBLISHED_STATE = 'READY_FOR_SALE';
 /** Nazwa referencyjna obrazu w bibliotece dla pliku zrzutu (ten sam plik angielski służy czterem lokalizacjom). */
 export const refOf = (r, f) => `oczko-1.0/${r.source}/${r.lang}/${f.name}`;
 export const ASSET_CATEGORY = 'APP_SCREENSHOTS_AND_PREVIEWS';
@@ -140,7 +143,8 @@ export async function discover(client) {
   const lib = await client.call('GET', `/v1/apps/${appId}/assetLibrary`);
   const refRes = await client.call('GET', '/v1/appAssetLibraryRefData');
   const refData = refRes?.data?.[0]?.attributes ?? refRes?.data?.attributes ?? {};
-  return { appId, version, locs, libraryId: lib?.data?.id ?? null, refData, versionStates: versions.map(stateOf) };
+  const published = versions.filter(v => stateOf(v) === PUBLISHED_STATE).map(v => ({ id: v.id, name: v.attributes?.versionString ?? '' }));
+  return { appId, version, locs, libraryId: lib?.data?.id ?? null, refData, versionStates: versions.map(stateOf), published };
 }
 
 /**
@@ -225,6 +229,37 @@ export async function listPlacements(client, locId, group) {
   return own;
 }
 
+/** RZ4-07 (KO-212): placementy do zdjęcia nie mogą występować w tej samej lokalizacji wersji w sprzedaży (READY_FOR_SALE) — gdyby wersje współdzieliły placementy, zdjęcie zmieniłoby stronę w sklepie.
+ *  Tylko GET. Wspólny id albo błąd odczytu → odmowa (wiersze „zastąp” dostają działanie „odmowa”, `errors` niepuste, `line` mówi „rozłączne: nie”). Bez wersji w sprzedaży nie ma z czym porównać. */
+export async function checkPublished({ client, published, rows }) {
+  const zastap = rows.filter(r => r.action === 'zastąp'); const errors = [];
+  if (!zastap.length) return { errors, line: null };
+  if (!published.length) return { errors, line: 'Placementy wersji w sklepie rozłączne: tak (brak wersji w sprzedaży — nie ma z czym porównać).' };
+  const nazwa = published.map(v => v.name || 'wersji w sklepie').join(', '); const shared = [];
+  const odmow = (r, powod) => { r.action = 'odmowa'; r.reason = powod; };
+  try {
+    for (const v of published) {
+      const locs = new Map((await client.list(`/v1/appStoreVersions/${v.id}/appStoreVersionLocalizations`)).map(x => [x.attributes.locale, x.id])); const ids = new Map();
+      for (const r of zastap) {
+        const pubLoc = locs.get(LOCALE_MAP[r.locale]); if (!pubLoc) continue; // wersja w sprzedaży nie ma tej lokalizacji — nie ma czego współdzielić
+        if (!ids.has(pubLoc)) ids.set(pubLoc, new Set((await client.list(`/v1/appStoreVersionLocalizations/${pubLoc}/placements`)).map(x => x.id)));
+        for (const p of r.remove) if (ids.get(pubLoc).has(p.id)) shared.push({ r, id: p.id, ref: p.ref, wersja: v.name || 'wersji w sklepie' });
+      }
+    }
+  } catch (e) {
+    const powod = `odmowa zastąpienia: nie da się odczytać wersji w sklepie (${e.message}) — bez tego nie wiadomo, czy zdejmowane placementy są też na stronie w sklepie`;
+    for (const r of zastap) odmow(r, powod);
+    return { errors: [powod], line: `Placementy ${nazwa} rozłączne: nie wiadomo — nie udało się odczytać wersji w sklepie.` };
+  }
+  if (!shared.length) return { errors, line: `Placementy ${nazwa} rozłączne: tak (sprawdzono ${zastap.length} lokalizacji/grup).` };
+  for (const r of new Set(shared.map(x => x.r))) {
+    const moje = shared.filter(x => x.r === r);
+    const powod = `odmowa zastąpienia: ${moje.length} z ${r.remove.length} placementów do zdjęcia występuje też w wersji w sklepie (${moje[0].wersja}) — współdzielone placementy; zdjęcie zmieniłoby stronę w sklepie`;
+    odmow(r, powod); errors.push(`${r.source}/${r.lang}/${r.locale}: ${powod}`);
+  }
+  return { errors, line: `Placementy ${nazwa} rozłączne: nie — wspólne: ${shared.map(x => `${x.r.locale} ${x.r.group} ${x.id} (${x.ref || 'bez nazwy'})`).join('; ')}.` };
+}
+
 const isReady = st => !!st && !['AWAITING_UPLOAD', 'UPLOAD_COMPLETE', 'FAILED'].includes(st);
 /** Obraz biblioteki nadaje się do ponownego użycia, gdy nie jest zepsuty ani zarchiwizowany i ma ten sam rozmiar pliku (binarium jest niezmienne). */
 const usable = (img, size) => img.size === size && !['FAILED', 'AWAITING_UPLOAD', 'ARCHIVED', 'REJECTED'].includes(img.state);
@@ -305,6 +340,11 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
     return (await c.list(q)).length;
   };
   const { rows, errors } = await plan({ shots, locs: d.locs, refData: d.refData, existing, zastap, versionState: stateOf(d.version) });
+  if (zastap) { // RZ4-07: przed jakimkolwiek zapisem (także w dry-runie; tylko GET)
+    const sklep = await checkPublished({ client: c, published: d.published, rows });
+    if (sklep.line) log(`${sklep.line}\n`);
+    errors.push(...sklep.errors);
+  }
   if (errors.length) { code = 1; log('### Błędy planu (zapis zablokowany)\n'); for (const e of errors) log(`- ${e}`); log(''); }
   const toWrite = rows.filter(x => x.action === 'wgraj' || x.action === 'zastąp');
   const planned = new Map(); for (const r of toWrite) for (const f of r.files) planned.set(refOf(r, f), f);

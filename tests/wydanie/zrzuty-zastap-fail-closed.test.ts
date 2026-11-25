@@ -1,6 +1,7 @@
 /*
- * ZR10b (KO-212, 2026-11-25; P-1055): uwagi RZ4 do trybu „zastąp” w scripts/asc/zrzuty.mjs — fail-closed.
+ * ZR10b (KO-212, 2026-11-25; P-1055, P-1056): uwagi RZ4 do trybu „zastąp” w scripts/asc/zrzuty.mjs — fail-closed.
  *  - RZ4-01: lista do zdjęcia weryfikuje grupę i typ po stronie klienta (serwer może zignorować filtry); brak atrybutu = odmowa zastąpienia tej grupy.
+ *  - RZ4-07: przed jakimkolwiek DELETE porównanie z placementami wersji w sprzedaży (READY_FOR_SALE); współdzielenie albo brak odczytu = odmowa.
  * Testy PRZED kodem (zasada wspólna 11), na atrapie serwera w pamięci (tests/wydanie/zrzuty-zastap-driver.mjs). Nic nie łączy się z Apple.
  */
 import { join } from 'path';
@@ -90,5 +91,71 @@ describe('RZ4-01: lista do zdjęcia weryfikuje grupę i typ po stronie klienta',
     expect(w.odrzucone).toBe(2);
     expect(w.blad?.odmowa).toBe(true);
     expect(w.blad?.msg).toMatch(/placementGroup/);
+  });
+});
+
+describe('RZ4-07: ochrona wersji w sklepie (placementy 1.0 rozłączne ze zdejmowanymi)', () => {
+  test('wersja 1.0 ma własne placementy (rozłączne): dry-run wypisuje „Placementy 1.0 rozłączne: tak”, kod 0, zero zapisów', () => {
+    const k = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: false, zastap: true }] }).kroki[0];
+    expect(k.code).toBe(0);
+    expect(tekst(k)).toMatch(/Placementy 1\.0 rozłączne: tak/);
+    expect(niepuste(k)).toEqual([]);
+  });
+
+  test('apply: odczyt placementów wersji w sklepie poprzedza pierwszy zapis (obrazy, DELETE), a wynik końcowy jak dotąd', () => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: true, zastap: true }] });
+    const k = w.kroki[0]; const t = tagi(k);
+    expect(k.code).toBe(0);
+    const sklep = k.calls.findIndex((c) => /^\/v1\/appStoreVersionLocalizations\/LOCPUB-[^/]+\/placements$/.test(c.p));
+    expect(sklep).toBeGreaterThanOrEqual(0);
+    expect(sklep).toBeLessThan(k.calls.findIndex((c) => c.m !== 'GET'));
+    expect(sklep).toBeLessThan(t.indexOf('DELETE placement'));
+    expect(w.placementy).toEqual(NOWE);
+  });
+
+  test.each([1, 7])('wspólny id (%i z 7 zdejmowanych jest też w wersji 1.0): dry-run kod 1 i „rozłączne: nie” z id; apply kod 1, 0 × DELETE, 0 zapisów, nic nie wgrano', (wspolne) => {
+    const w = uruchom({ stare: 7, nowe: 3, sklep: { wspolne }, kroki: [{ apply: false, zastap: true }, { apply: true, zastap: true }] });
+    for (const k of w.kroki) {
+      expect(k.code).toBe(1);
+      expect(tekst(k)).toMatch(/Placementy 1\.0 rozłączne: nie/);
+      expect(tekst(k)).toMatch(/odmowa zastąpienia/);
+      expect(tekst(k)).toMatch(/PLC-\d+/); // wspólne id w raporcie
+      expect(k.rows.map((r) => r.action)).toEqual(['odmowa']);
+      expect(usuniete(k)).toEqual([]);
+      expect(niepuste(k)).toEqual([]);
+    }
+    expect(w.placementy).toHaveLength(7);
+    expect(w.obrazy).toBe(7); // nowe obrazy nie zostały nawet wgrane
+    expect(w.wycieki).toEqual([]);
+  });
+
+  test.each([
+    ['lista lokalizacji wersji w sklepie', { m: 'GET', tag: 'GET /v1/appStoreVersions/V0/appStoreVersionLocalizations', nth: 1, status: 500 }],
+    ['lista placementów wersji w sklepie', { m: 'GET', tag: 'GET /v1/appStoreVersionLocalizations/LOCPUB-pl/placements', nth: 1, status: 403 }],
+  ])('nie da się odczytać wersji w sklepie (%s) → odmowa: kod 1, 0 × DELETE, 0 zapisów, raport mówi, czego nie sprawdzono', (_nazwa, awaria) => {
+    const w = uruchom({ stare: 7, nowe: 3, kroki: [{ apply: false, zastap: true, awaria }, { apply: true, zastap: true, awaria }] });
+    for (const k of w.kroki) {
+      expect(k.code).toBe(1);
+      expect(tekst(k)).toMatch(/odmowa zastąpienia/);
+      expect(tekst(k)).toMatch(/nie (da się|udało się) odczytać wersji w sklepie/);
+      expect(tekst(k)).not.toMatch(/rozłączne: tak/);
+      expect(usuniete(k)).toEqual([]);
+      expect(niepuste(k)).toEqual([]);
+    }
+    expect(w.placementy).toHaveLength(7);
+  });
+
+  test('brak wersji w sprzedaży (aplikacja jeszcze nie wydana) → nie ma z czym porównać: kontrola zaliczona z adnotacją, zastąpienie działa', () => {
+    const w = uruchom({ stare: 7, nowe: 3, sklep: null, kroki: [{ apply: false, zastap: true }, { apply: true, zastap: true }] });
+    expect(w.kroki[0].code).toBe(0);
+    expect(tekst(w.kroki[0])).toMatch(/Placementy wersji w sklepie rozłączne: tak \(brak wersji w sprzedaży/);
+    expect(w.kroki[1].code).toBe(0);
+    expect(w.placementy).toEqual(NOWE);
+  });
+
+  test('bez flagi zastąp kontrola nie biegnie (zachowanie bez zmian: zero odczytów wersji w sklepie)', () => {
+    const k = uruchom({ stare: 7, kroki: [{ apply: false }] }).kroki[0];
+    expect(k.calls.filter((c) => /LOCPUB|\/V0\//.test(c.p))).toEqual([]);
+    expect(tekst(k)).not.toMatch(/rozłączne/);
   });
 });

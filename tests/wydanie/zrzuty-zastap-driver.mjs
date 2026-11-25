@@ -3,7 +3,8 @@
 // nieedytowalnej → 409 STATE_ERROR.INVALID_STATE, DELETE czegokolwiek innego niż placement → 405 i wpis „wyciek” (test wymaga zera takich wpisów).
 // Wejście (argv[2], JSON): { stanWersji?, stare?: n, nowe?: n, jezyk?, kroki: [{ apply?, zastap?, awaria?: { m, tag, nth, status } }],
 //   ZR10b (KO-212): ignorujFiltry? (serwer ignoruje filter[placementGroup]/[placementType], sonda C z RZ4), inne?: [{ group, type?, n }] (placementy innej grupy/typu w tej samej lokalizacji),
-//   bezAtrybutow?: 'grupa' | 'typ' (odpowiedź placementów bez tego atrybutu) }
+//   bezAtrybutow?: 'grupa' | 'typ' (odpowiedź placementów bez tego atrybutu), sklep?: { wspolne: n } | null (wersja 1.0 w sprzedaży: n id współdzielonych ze zdejmowanymi; null = brak wersji w sprzedaży;
+//   domyślnie { wspolne: 0 }) }
 // Wyjście (stdout): JSON { kroki: [{ code, rows, log, calls }], placementy: [ref…], pozostale: [id innych grup/typów], obrazy: n, usuniecObrazow: n, wycieki: [...] }
 import { makeClient } from '../../scripts/asc/iap-localizations.mjs';
 import { LOCALE_MAP } from '../../scripts/asc/metadane.mjs';
@@ -23,6 +24,10 @@ const dodajObraz = (ref, state = 'PREPARE_FOR_SUBMISSION', size = 100) => { cons
 const dodajPlacement = (image, order, group = GRUPA, type = 'APP_SCREENSHOT') => { const id = 'PLC-' + (++licznik); placementy.push({ id, group, loc: LOC, image, order, type }); return id; };
 for (let i = 1; i <= (sc.stare ?? 0); i++) dodajPlacement(dodajObraz(`stare/0${i}.png`), i);
 for (const g of sc.inne ?? []) for (let i = 1; i <= (g.n ?? 1); i++) dodajPlacement(dodajObraz(`inne/${g.group}/${g.type ?? 'APP_SCREENSHOT'}/0${i}.png`), 500 + i, g.group, g.type ?? 'APP_SCREENSHOT');
+// Wersja 1.0 w sprzedaży (READY_FOR_SALE): własne placementy + `wspolne` pierwszych id zdejmowanych (współdzielenie między wersjami: RZ4-07).
+const sklep = 'sklep' in sc ? sc.sklep : { wspolne: 0 };
+const LOC0 = 'LOCPUB-' + kodAsc;
+const sklepIds = sklep ? [...placementy.filter(x => x.group === GRUPA).slice(0, sklep.wspolne ?? 0).map(x => x.id), 'PUB-1', 'PUB-2', 'PUB-3'] : [];
 
 const refData = { imageSpecs: [{ specId: 'S69', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }],
   placementTypes: [{ placementTypeId: 'APP_SCREENSHOT', specMappings: [{ specs: ['S69'], placementGroupId: GRUPA }] }] };
@@ -49,8 +54,10 @@ async function fetchFn(url, init = {}) {
   }
   if (m === 'GET') {
     if (p === '/v1/apps') return odp(200, { data: [{ id: 'APP1' }] });
-    if (p === '/v1/apps/APP1/appStoreVersions') return odp(200, { data: [{ id: 'V1', attributes: { appStoreState: stanWersji } }] });
+    if (p === '/v1/apps/APP1/appStoreVersions') return odp(200, { data: [...(sklep ? [{ id: 'V0', attributes: { appStoreState: 'READY_FOR_SALE', versionString: '1.0' } }] : []), { id: 'V1', attributes: { appStoreState: stanWersji, versionString: '1.0.1' } }] });
     if (p === '/v1/appStoreVersions/V1/appStoreVersionLocalizations') return odp(200, { data: [{ id: LOC, attributes: { locale: kodAsc } }] });
+    if (sklep && p === '/v1/appStoreVersions/V0/appStoreVersionLocalizations') return odp(200, { data: [{ id: LOC0, attributes: { locale: kodAsc } }] });
+    if (sklep && p === `/v1/appStoreVersionLocalizations/${LOC0}/placements`) return odp(200, { data: sklepIds.map(id => ({ id, type: 'appAssetLibraryPlacements', attributes: { placementGroup: GRUPA, placementType: 'APP_SCREENSHOT' } })) });
     if (p === '/v1/apps/APP1/assetLibrary') return odp(200, { data: { id: 'LIB1' } });
     if (p === '/v1/appAssetLibraryRefData') return odp(200, { data: [{ attributes: refData }] });
     if (p === '/v1/appAssetLibraries/LIB1/images') return odp(200, { data: [...obrazy.values()].map(o => ({ id: o.id, attributes: { referenceName: o.referenceName, fileSize: o.fileSize, state: o.state, createdDate: o.createdDate } })) });
