@@ -1,0 +1,155 @@
+# ZR9: dowód czerwony — tests/wydanie/zr9-granice-zakreslen.test.ts na scripts/ci/kontrola-zakreslen.mjs z f0b28df6 (przed poprawkami), OCZKO_WYMAGAJ_IMAGEMAGICK=1, 2026-11-25
+# Wynik: 6 failed, 3 passed, 9 total (M5, M6, granica 19 wierszy = P2-1; M2, M4, brak w jednym kadrze = P2-2; 3 zielone to testy 'bez fałszywego alarmu' i kadry nietknięte)
+
+FAIL iOS tests/wydanie/zr9-granice-zakreslen.test.ts (7.387 s)
+  ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en
+    ✓ wyjście: nietknięte kadry en 03/04 → GRUBOŚĆ OK, ZNACZNIK OK, kod 0 (436 ms)
+    P2-1: pas za gruby (próby M5, M6 recenzji RZ2)
+      ✕ M5: pasy 51 i 71 wierszy kadru zakrywają sąsiednie wiersze tekstu (środek pasa 2 nadal na wierszu 13) → BŁĄD „za gruby”, kod 1 (397 ms)
+      ✕ M6: pas 1 = 22, pas 2 = 33 wierszy kadru (1,5× pas 1; ponad dwa wiersze tekstu) → BŁĄD „za gruby”, kod 1 (395 ms)
+      ✕ granica: pas 2 = 17 wierszy (1,55 wysokości wiersza 11) → GRUBOŚĆ OK; 19 wierszy (1,73) → BŁĄD (817 ms)
+      ✓ bez fałszywego alarmu: 31 prawdziwych kadrów 04 (zr7: pasy 1,00–1,33 wysokości wiersza, także cienkie) nie mają błędu „za gruby” (1845 ms)
+    P2-2: brak linii znacznika albo znacznik w innej barwie (próby M2, M4 recenzji RZ2)
+      ✕ M2: linie znacznika w 03 (540, 551) i 04 (551, 562) ciemnoczerwone (110,30,30; nasycenie 80 > 30) → BŁĄD „brak linii znacznika” w obu kadrach, kod 1 (443 ms)
+      ✕ M4: znacznik usunięty (linie zamalowane na biało) z 03 i 04 → BŁĄD „brak linii znacznika”, kod 1 (446 ms)
+      ✕ znacznik brakuje tylko w jednym kadrze (04) → BŁĄD tylko tego kadru (402 ms)
+      ✓ bez fałszywego alarmu: wszystkie prawdziwe kadry zr8c (en, pl, hr, it iPhone 03+04; iPad en 03) → bez „brak linii znacznika” i bez żadnego BŁĘDU, kod 0 (1075 ms)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-1: pas za gruby (próby M5, M6 recenzji RZ2) › M5: pasy 51 i 71 wierszy kadru zakrywają sąsiednie wiersze tekstu (środek pasa 2 nadal na wierszu 13) → BŁĄD „za gruby”, kod 1
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: pas \d \(\d+ wierszy kadru[^\n]*za gruby/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 71/51 wierszy kadru (1.39, próg 0.65)
+    ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+    ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+      63 |     test('M5: pasy 51 i 71 wierszy kadru zakrywają sąsiednie wiersze tekstu (środek pasa 2 nadal na wierszu 13) → BŁĄD „za gruby”, kod 1', () => {
+      64 |       const r = uruchom(zestaw(null, pasy([395, 445], [458, 528])));
+    > 65 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: pas \d \(\d+ wierszy kadru[^\n]*za gruby/);
+         |                        ^
+      66 |       expect(r.stdout).not.toMatch(/GRUBOŚĆ OK 6\.9\/en/);
+      67 |       expect(r.status).toBe(1);
+      68 |     });
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:65:24)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-1: pas za gruby (próby M5, M6 recenzji RZ2) › M6: pas 1 = 22, pas 2 = 33 wierszy kadru (1,5× pas 1; ponad dwa wiersze tekstu) → BŁĄD „za gruby”, kod 1
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: pas \d \(\d+ wierszy kadru[^\n]*za gruby/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.05 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 33/22 wierszy kadru (1.50, próg 0.65)
+    ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+    ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+      69 |     test('M6: pas 1 = 22, pas 2 = 33 wierszy kadru (1,5× pas 1; ponad dwa wiersze tekstu) → BŁĄD „za gruby”, kod 1', () => {
+      70 |       const r = uruchom(zestaw(null, pasy([418, 439], [477, 509])));
+    > 71 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: pas \d \(\d+ wierszy kadru[^\n]*za gruby/);
+         |                        ^
+      72 |       expect(r.status).toBe(1);
+      73 |     });
+      74 |     test('granica: pas 2 = 17 wierszy (1,55 wysokości wiersza 11) → GRUBOŚĆ OK; 19 wierszy (1,73) → BŁĄD', () => {
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:71:24)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-1: pas za gruby (próby M5, M6 recenzji RZ2) › granica: pas 2 = 17 wierszy (1,55 wysokości wiersza 11) → GRUBOŚĆ OK; 19 wierszy (1,73) → BŁĄD
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*pas 2 \(19 wierszy kadru[^\n]*za gruby/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.45 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 19/12 wierszy kadru (1.58, próg 0.65)
+    ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+    ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+      76 |       expect(ok.stdout).toMatch(/GRUBOŚĆ OK 6\.9\/en: pas 2 \/ pas 1 = 17\/12/); expect(ok.status).toBe(0);
+      77 |       const zle = uruchom(zestaw(null, pasy([489, 507])));
+    > 78 |       expect(zle.stdout).toMatch(/BŁĄD [^\n]*pas 2 \(19 wierszy kadru[^\n]*za gruby/); expect(zle.status).toBe(1);
+         |                          ^
+      79 |     });
+      80 |     test('bez fałszywego alarmu: 31 prawdziwych kadrów 04 (zr7: pasy 1,00–1,33 wysokości wiersza, także cienkie) nie mają błędu „za gruby”', () => {
+      81 |       const kat = path.join(tmp, 'zr7'); fs.cpSync(DANE_ZR7, kat, { recursive: true, filter: (z) => !z.endsWith('.json') });
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:78:26)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-2: brak linii znacznika albo znacznik w innej barwie (próby M2, M4 recenzji RZ2) › M2: linie znacznika w 03 (540, 551) i 04 (551, 562) ciemnoczerwone (110,30,30; nasycenie 80 > 30) → BŁĄD „brak linii znacznika” w obu kadrach, kod 1
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+      87 |     test('M2: linie znacznika w 03 (540, 551) i 04 (551, 562) ciemnoczerwone (110,30,30; nasycenie 80 > 30) → BŁĄD „brak linii znacznika” w obu kadrach, kod 1', () => {
+      88 |       const r = uruchom(zestaw(liniaKolor('rgb(110,30,30)', 540, 551), liniaKolor('rgb(110,30,30)', 551, 562)));
+    > 89 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/);
+         |                        ^
+      90 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: brak linii znacznika/);
+      91 |       expect(r.stdout).not.toMatch(/Kontrola zakreśleń: OK/); expect(r.status).toBe(1);
+      92 |     });
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:89:24)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-2: brak linii znacznika albo znacznik w innej barwie (próby M2, M4 recenzji RZ2) › M4: znacznik usunięty (linie zamalowane na biało) z 03 i 04 → BŁĄD „brak linii znacznika”, kod 1
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+      93 |     test('M4: znacznik usunięty (linie zamalowane na biało) z 03 i 04 → BŁĄD „brak linii znacznika”, kod 1', () => {
+      94 |       const r = uruchom(zestaw(liniaKolor('white', 540, 551), liniaKolor('white', 551, 562)));
+    > 95 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/03-wzor\.png: brak linii znacznika/);
+         |                        ^
+      96 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*6\.9\/en\/04-zakreslenie\.png: brak linii znacznika/);
+      97 |       expect(r.status).toBe(1);
+      98 |     });
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:95:24)
+
+  ● ZR9 (P2-1, P2-2): granice kontroli kadrów 03/04 na prawdziwych kadrach en › P2-2: brak linii znacznika albo znacznik w innej barwie (próby M2, M4 recenzji RZ2) › znacznik brakuje tylko w jednym kadrze (04) → BŁĄD tylko tego kadru
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /BŁĄD [^\n]*04-zakreslenie\.png: brak linii znacznika/
+    Received string:  "OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+    POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+    GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+    ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+    Kontrola zakreśleń: OK (1 par)
+    "
+
+       99 |     test('znacznik brakuje tylko w jednym kadrze (04) → BŁĄD tylko tego kadru', () => {
+      100 |       const r = uruchom(zestaw(null, liniaKolor('white', 551, 562)));
+    > 101 |       expect(r.stdout).toMatch(/BŁĄD [^\n]*04-zakreslenie\.png: brak linii znacznika/);
+          |                        ^
+      102 |       expect(r.stdout).not.toMatch(/BŁĄD [^\n]*03-wzor\.png: brak linii znacznika/);
+      103 |       expect(r.status).toBe(1);
+      104 |     });
+
+      at Object.toMatch (tests/wydanie/zr9-granice-zakreslen.test.ts:101:24)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 3 passed, 9 total
+Snapshots:   0 total
+Time:        8.436 s
+Ran all test suites matching /tests\/wydanie\/zr9-granice-zakreslen.test.ts/i.
