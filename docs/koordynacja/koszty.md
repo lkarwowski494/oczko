@@ -164,3 +164,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | WR5 | 07 audit (sonnet) | 2,0 | 2,67 | 28 | 18:33 → 18:37 → 18:52 b7557335 → przyjęte 18:55 | 0 | ponad STOP 2,6 o 3%%; przegląd kadrów sonnet: WR4 2,40, WR5 2,67 → szacunek 2,0 za niski (WG-33) |
 | ZW1 | 10 fix (sonnet) | 5,0 | 4,43 | 35 | 19:52 → 19:55 (start 20:28 wg get_session) → 20:54 a1f2193c → próba 45069530489 success 21:15 → przyjęta 21:25 | 0 | przekroczyła 30% kontekstu przy PRZEKAZANIU; kadr 03 do usunięcia (ZW2) |
 | ZW2 | 10 fix (sonnet) | 1,5 | 1,33 | 17 | 21:25 → 21:27 → 21:38 ce4ec164/5a4c6968 → zrzuty 45073304236 success 22:00 → przyjęte 22:05 | 0 | wyzwalacz w pushu sesji |
+| RZ2 | 07 audit (sonnet) | 3 | 3,37 | 37 | 15:56 → 15:57 → 16:13 (f0b28df6) → verify w sesji exit 0 → 16:15 | 0 | pułap przekroczony o 12% (< STOP 3,9); sesja podała 1,5–2 USD — nieścisłe (jak ZR8c) |
