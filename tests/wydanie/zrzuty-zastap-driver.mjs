@@ -1,8 +1,10 @@
 // Sterownik testów trybu „zastąp” scripts/asc/zrzuty.mjs (ZR10, KO-210) na atrapie serwera App Store Connect w pamięci (wywołuje prawdziwy `makeClient` i `run`).
 // Atrapa odzwierciedla odczytaną dokumentację Apple (docs/jakosc/zr10-api.md), nie prawdziwy serwer: DELETE placementu → 204, tworzenie placementu w wersji
 // nieedytowalnej → 409 STATE_ERROR.INVALID_STATE, DELETE czegokolwiek innego niż placement → 405 i wpis „wyciek” (test wymaga zera takich wpisów).
-// Wejście (argv[2], JSON): { stanWersji?, stare?: n, nowe?: n, jezyk?, kroki: [{ apply?, zastap?, awaria?: { m, tag, nth, status } }] }
-// Wyjście (stdout): JSON { kroki: [{ code, rows, log, calls }], placementy: [ref…], obrazy: n, usuniecObrazow: n, wycieki: [...] }
+// Wejście (argv[2], JSON): { stanWersji?, stare?: n, nowe?: n, jezyk?, kroki: [{ apply?, zastap?, awaria?: { m, tag, nth, status } }],
+//   ZR10b (KO-212): ignorujFiltry? (serwer ignoruje filter[placementGroup]/[placementType], sonda C z RZ4), inne?: [{ group, type?, n }] (placementy innej grupy/typu w tej samej lokalizacji),
+//   bezAtrybutow?: 'grupa' | 'typ' (odpowiedź placementów bez tego atrybutu) }
+// Wyjście (stdout): JSON { kroki: [{ code, rows, log, calls }], placementy: [ref…], pozostale: [id innych grup/typów], obrazy: n, usuniecObrazow: n, wycieki: [...] }
 import { makeClient } from '../../scripts/asc/iap-localizations.mjs';
 import { LOCALE_MAP } from '../../scripts/asc/metadane.mjs';
 import * as Z from '../../scripts/asc/zrzuty.mjs';
@@ -16,10 +18,11 @@ const API = 'https://api.appstoreconnect.apple.com';
 const stanWersji = sc.stanWersji ?? 'PREPARE_FOR_SUBMISSION';
 
 const obrazy = new Map(); let licznik = 0; let usunieteObrazy = 0; const wycieki = [];
-const placementy = []; // { id, group, loc, image, order }
+const placementy = []; // { id, group, loc, image, order, type }
 const dodajObraz = (ref, state = 'PREPARE_FOR_SUBMISSION', size = 100) => { const id = 'IMG-' + (++licznik); obrazy.set(id, { id, referenceName: ref, fileSize: size, state, createdDate: '2026-11-25T10:00:00Z' }); return id; };
-const dodajPlacement = (image, order) => { const id = 'PLC-' + (++licznik); placementy.push({ id, group: GRUPA, loc: LOC, image, order }); return id; };
+const dodajPlacement = (image, order, group = GRUPA, type = 'APP_SCREENSHOT') => { const id = 'PLC-' + (++licznik); placementy.push({ id, group, loc: LOC, image, order, type }); return id; };
 for (let i = 1; i <= (sc.stare ?? 0); i++) dodajPlacement(dodajObraz(`stare/0${i}.png`), i);
+for (const g of sc.inne ?? []) for (let i = 1; i <= (g.n ?? 1); i++) dodajPlacement(dodajObraz(`inne/${g.group}/${g.type ?? 'APP_SCREENSHOT'}/0${i}.png`), 500 + i, g.group, g.type ?? 'APP_SCREENSHOT');
 
 const refData = { imageSpecs: [{ specId: 'S69', alphaAllowed: false, dimensions: { minWidth: 1320, maxWidth: 1320, minHeight: 2868, maxHeight: 2868 } }],
   placementTypes: [{ placementTypeId: 'APP_SCREENSHOT', specMappings: [{ specs: ['S69'], placementGroupId: GRUPA }] }] };
@@ -36,7 +39,7 @@ async function fetchFn(url, init = {}) {
   else if (m === 'POST' && p === '/v1/appAssetLibraryPlacements') tag = 'POST placement';
   else if (m === 'DELETE' && /^\/v1\/appAssetLibraryPlacements\/[A-Za-z0-9-]+$/.test(p)) tag = 'DELETE placement';
   else if (m === 'POST' && p === '/v1/appAssetLibraryPlacementOrderingRequests') tag = 'POST kolejność';
-  calls.push({ m, p, tag });
+  calls.push({ m, p, tag, q: u.search });
   if (awaria && awaria.m === m && awaria.tag === tag) { const n = (licznikAwarii.get(tag) ?? 0) + 1; licznikAwarii.set(tag, n); if (n === awaria.nth) return blad(awaria.status ?? 500, 'UNEXPECTED_ERROR', 'awaria wstrzyknięta'); }
   if (m === 'DELETE') {
     if (tag !== 'DELETE placement') { wycieki.push(`${m} ${p}`); if (/appAssetLibraryImages/.test(p)) usunieteObrazy++; return blad(405, 'METHOD_NOT_ALLOWED', 'atrapa: tylko placement'); }
@@ -54,8 +57,10 @@ async function fetchFn(url, init = {}) {
     if (/^\/v1\/appAssetLibraryImages\/[A-Za-z0-9-]+$/.test(p)) { const o = obrazy.get(p.split('/').pop()); return o ? odp(200, { data: { id: o.id, attributes: { state: o.state, referenceName: o.referenceName } } }) : blad(404, 'NOT_FOUND', 'brak obrazu'); }
     const mp = p.match(/^\/v1\/appStoreVersionLocalizations\/([A-Za-z0-9-]+)\/placements$/);
     if (mp) {
-      const grupa = u.searchParams.get('filter[placementGroup]'); const lista = placementy.filter(x => x.loc === mp[1] && (!grupa || x.group === grupa)).sort((a, b) => a.order - b.order);
-      return odp(200, { data: lista.map(x => ({ id: x.id, type: 'appAssetLibraryPlacements', attributes: { placementGroup: x.group, placementType: 'APP_SCREENSHOT' }, relationships: { image: { data: { type: 'appAssetLibraryImages', id: x.image } } } })),
+      const grupa = sc.ignorujFiltry ? null : u.searchParams.get('filter[placementGroup]'); const typ = sc.ignorujFiltry ? null : u.searchParams.get('filter[placementType]');
+      const lista = placementy.filter(x => x.loc === mp[1] && (!grupa || x.group === grupa) && (!typ || x.type === typ)).sort((a, b) => a.order - b.order);
+      const atr = x => ({ ...(sc.bezAtrybutow === 'grupa' ? {} : { placementGroup: x.group }), ...(sc.bezAtrybutow === 'typ' ? {} : { placementType: x.type }) });
+      return odp(200, { data: lista.map(x => ({ id: x.id, type: 'appAssetLibraryPlacements', attributes: atr(x), relationships: { image: { data: { type: 'appAssetLibraryImages', id: x.image } } } })),
         included: lista.map(x => ({ type: 'appAssetLibraryImages', id: x.image, attributes: { referenceName: obrazy.get(x.image)?.referenceName } })) });
     }
   }
@@ -90,4 +95,5 @@ for (const k of sc.kroki) {
   kroki.push({ code: w.code, rows: w.rows.map(r => ({ action: r.action, reason: r.reason, error: r.error ?? null, written: !!r.written, remove: (r.remove ?? []).map(x => ({ id: x.id, ref: x.ref })) })), log, calls });
 }
 const koncowe = placementy.filter(x => x.loc === LOC && x.group === GRUPA).sort((a, b) => a.order - b.order).map(x => obrazy.get(x.image).referenceName);
-process.stdout.write(JSON.stringify({ kroki, placementy: koncowe, obrazy: obrazy.size, usunieteObrazy, wycieki }));
+const pozostale = placementy.filter(x => x.loc === LOC && !(x.group === GRUPA && x.type === 'APP_SCREENSHOT')).map(x => x.id);
+process.stdout.write(JSON.stringify({ kroki, placementy: koncowe, pozostale, obrazy: obrazy.size, usunieteObrazy, wycieki }));

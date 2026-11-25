@@ -5,7 +5,8 @@
 //   node scripts/asc/zrzuty.mjs --iphone <katalog> [--ipad <katalog>] [--zegarek <katalog>] --apply       → wgrywa i układa zrzuty
 //   dodatkowo `--jezyki cs,en` — tylko wskazane języki aplikacji (puste albo brak = wszystkie; przebieg dowodowy na jednym–dwóch językach)
 //   dodatkowo `--zastap` — grupa, która ma już zrzuty (np. odziedziczone z 1.0 w wersji 1.0.1), dostaje nowe: najpierw nowe obrazy do biblioteki, potem zdjęcie starych placementów,
-//   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md)
+//   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md). Fail-closed (ZR10b, KO-212, P-1055): lista do zdjęcia musi mieć
+//   `placementGroup` = grupa wiersza i `placementType` = APP_SCREENSHOT (inne wpisy odrzucone, brak atrybutu = odmowa).
 // Układ katalogów: <katalog>/<język aplikacji>/NN-<ekran>.png (iPhone: jeden rozmiar, np. artefakt `sklep-zrzuty-ramki/6.9`) i <katalog>/<język>/<stan>.png (zegarek).
 // Interfejs: App Asset Library (Apple oznaczył appScreenshotSets i appScreenshots jako przestarzałe; odczyt dokumentacji 25.10.2026 —
 // developer.apple.com/documentation/appstoreconnectapi/app-asset-library): obraz wgrywany raz (rezerwacja → PUT → `uploaded: true`), potem placement
@@ -174,15 +175,23 @@ export async function plan({ shots, locs, refData, existing, zastap = false, ver
           if (!LOCALE_MAP[locale]) { rows.push({ source, lang, locale, group, action: 'pomiń', reason: 'lokalizacja nieobsługiwana w ASC' }); continue; }
           const locId = locs.get(LOCALE_MAP[locale]);
           if (!locId) { rows.push({ source, lang, locale, group, files: gf, action: 'pomiń', reason: 'brak lokalizacji wersji w ASC (najpierw workflow „ASC metadane sklepu”)' }); continue; }
-          const found = await existing(locId, group); const list = Array.isArray(found) ? found : null; const have = list ? list.length : found;
+          let found;
+          try { found = await existing(locId, group); }
+          catch (e) { // RZ4-01: odpowiedź bez `placementGroup`/`placementType` — nie da się potwierdzić, które wpisy są w grupie; ta grupa nie jest zastępowana (cały zapis wstrzymany kodem 1)
+            if (!e.odmowaZastapienia) throw e;
+            const powod = `odmowa zastąpienia grupy ${group}: ${e.message}`;
+            errors.push(`${source}/${lang}/${locale}: ${powod}`); rows.push({ source, lang, locale, locId, group, files: gf, action: 'odmowa', reason: powod }); continue;
+          }
+          const list = Array.isArray(found) ? found : null; const have = list ? list.length : found;
+          const uwaga = list?.odrzucone ? ` (pominięto wpisów innej grupy lub typu: ${list.odrzucone} — filtr serwera ich nie odsiał)` : '';
           if (have > 0 && wolno) {
             if (!list) { errors.push(`${source}/${lang}/${locale}: brak identyfikatorów placementów do zdjęcia (existing zwrócił liczbę, nie listę)`); continue; }
             const want = gf.map(f => refOf({ source, lang }, f));
             if (list.length === want.length && list.every((p, i) => p.ref === want[i])) { rows.push({ source, lang, locale, locId, group, files: gf, action: 'pomiń', reason: `grupa już zawiera te zrzuty (${have}) w tej kolejności — zastąpione wcześniej` }); continue; }
-            rows.push({ source, lang, locale, locId, group, files: gf, action: 'zastąp', reason: `zdejmę ${have} placementów, wgram ${gf.length}`, remove: list.map(p => ({ id: p.id, ref: p.ref })) }); continue;
+            rows.push({ source, lang, locale, locId, group, files: gf, action: 'zastąp', reason: `zdejmę ${have} placementów, wgram ${gf.length}${uwaga}`, remove: list.map(p => ({ id: p.id, ref: p.ref })) }); continue;
           }
           if (have > 0) { rows.push({ source, lang, locale, locId, group, files: gf, action: 'pomiń', reason: `grupa ma już ${have} zrzutów (nic nie usuwam)${have < gf.length ? ` — niekompletna: ${have} z ${gf.length} zrzutów (częściowy zapis); dokończ ręcznie w App Store Connect` : ''}` }); continue; }
-          rows.push({ source, lang, locale, locId, group, files: gf, action: 'wgraj', reason: '' });
+          rows.push({ source, lang, locale, locId, group, files: gf, action: 'wgraj', reason: uwaga.trim() });
         }
       }
     }
@@ -193,7 +202,9 @@ export async function plan({ shots, locs, refData, existing, zastap = false, ver
 export const renderTable = rows => ['| Źródło | Język | Lokalizacja | Grupa urządzeń | Zrzuty | Działanie |', '|---|---|---|---|---|---|',
   ...rows.map(r => `| ${r.source} | ${r.lang} | ${r.locale ?? '—'} | ${r.group ?? '—'} | ${r.files?.length ?? 0} | ${r.action}${r.reason ? ' — ' + r.reason : ''}${r.error ? ' (błąd)' : ''} |`)].join('\n');
 
-/** Placementy zrzutów grupy w kolejności wyświetlania z nazwą obrazu: [{ id, ref }] (zapytanie jak w artykule Apple „Placing assets on your App Store surfaces”). Tylko GET. */
+/** Placementy zrzutów grupy w kolejności wyświetlania z nazwą obrazu: [{ id, ref }] (zapytanie jak w artykule Apple „Placing assets on your App Store surfaces”). Tylko GET.
+ *  Fail-closed (RZ4-01, KO-212): filtry serwera nie są jedyną obroną — wpis z `placementGroup` ≠ `group` albo `placementType` ≠ APP_SCREENSHOT jest odrzucany (licznik w `.odrzucone`),
+ *  a wpis BEZ któregoś z tych atrybutów to wyjątek `odmowaZastapienia` (nie da się potwierdzić grupy; plan zamienia go w odmowę zastąpienia tej grupy). */
 export async function listPlacements(client, locId, group) {
   let next = `/v1/appStoreVersionLocalizations/${locId}/placements?filter[placementType]=${PLACEMENT_TYPE}&filter[placementGroup]=${group}&sort=placementGroupPosition&include=image&fields[appAssetLibraryImages]=referenceName,state,imageAsset&limit=200`;
   const data = []; const names = new Map();
@@ -202,7 +213,16 @@ export async function listPlacements(client, locId, group) {
     for (const x of j?.included ?? []) if (x.type === 'appAssetLibraryImages') names.set(x.id, x.attributes?.referenceName ?? '');
     data.push(...(j?.data ?? [])); next = j?.links?.next ?? null;
   }
-  return data.map(p => ({ id: p.id, ref: names.get(p.relationships?.image?.data?.id) ?? '' }));
+  const own = []; let odrzucone = 0;
+  for (const p of data) {
+    const g = p.attributes?.placementGroup; const t = p.attributes?.placementType;
+    const brak = !g ? 'placementGroup' : !t ? 'placementType' : null;
+    if (brak) { const e = new Error(`odpowiedź API nie niesie ${brak} placementu ${p.id}, więc nie da się potwierdzić, że należy do tej grupy i typu zrzutów (kontrola po stronie klienta)`); e.odmowaZastapienia = true; throw e; }
+    if (g !== group || t !== PLACEMENT_TYPE) { odrzucone++; continue; }
+    own.push({ id: p.id, ref: names.get(p.relationships?.image?.data?.id) ?? '' });
+  }
+  own.odrzucone = odrzucone;
+  return own;
 }
 
 const isReady = st => !!st && !['AWAITING_UPLOAD', 'UPLOAD_COMPLETE', 'FAILED'].includes(st);
@@ -339,7 +359,7 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
     for (const r of doZdjecia) for (const p of r.remove) log(`- ${r.source} ${r.locale} ${r.group}: ${p.id} (${p.ref || 'bez nazwy'})`);
     log(`\nUwaga: ${NIE_USUWA_OBRAZOW}.`);
   }
-  log(`\nwgraj ${n('wgraj')}, ${zastap ? `zastąp ${n('zastąp')}, ` : ''}pomiń ${n('pomiń')}${apply ? ', zapisano ' + rows.filter(r => r.written).length : ''}`);
+  log(`\nwgraj ${n('wgraj')}, ${zastap ? `zastąp ${n('zastąp')}, ` : ''}pomiń ${n('pomiń')}${n('odmowa') ? `, odmowa ${n('odmowa')}` : ''}${apply ? ', zapisano ' + rows.filter(r => r.written).length : ''}`);
   if (!apply && code === 0) log(`Dry-run zakończony — nic nie zapisano${zastap ? ' i nie zdjęto' : ''}. Zapis: uruchom ponownie z trybem „apply” i zatwierdź środowisko release.`);
   return { code, rows };
 }
