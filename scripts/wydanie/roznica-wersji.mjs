@@ -17,8 +17,8 @@ const POLA_WERSJI = [
   { plik: 'package-lock.json', sciezka: ['version'] },
   { plik: 'package-lock.json', sciezka: ['packages', '', 'version'] },
 ];
-// Poza polami wersji dozwolone: test wersji (zmiana oczekiwanej wartości), ten skrypt i jego test, dokumenty wydania oraz protokół F buildu 1221 (kopia z PF1, P-1009: kontrola 3 bramki przypadków).
-const DOZWOLONE = [/^tests\/jakosc\/wersja-wydania\.test\.ts$/, /^docs\/wydanie\//, /^docs\/jakosc\/test-fizyczny\/1221\.md$/, /^docs\/sztafeta\.md$/, /^docs\/decyzje\.md$/, new RegExp(`^${TEN_PLIK.replace(/[.]/g, '\\.')}$`), new RegExp(`^${TEST_PLIK.replace(/[.]/g, '\\.')}$`)];
+// Poza polami wersji dozwolone: test wersji (zmiana oczekiwanej wartości), ten skrypt i jego test, dokumenty wydania, protokół F buildu 1221 (kopia z PF1, P-1009: kontrola 3 bramki przypadków) oraz testy „What’s New” (co-nowego-1-0-1; wyłączenie z listy plików w metadane-przeklad).
+const DOZWOLONE = [/^tests\/jakosc\/wersja-wydania\.test\.ts$/, /^docs\/wydanie\//, /^docs\/jakosc\/test-fizyczny\/1221\.md$/, /^tests\/wydanie\/co-nowego-1-0-1\.test\.ts$/, /^tests\/wydanie\/metadane-przeklad\.test\.ts$/, /^docs\/sztafeta\.md$/, /^docs\/decyzje\.md$/, new RegExp(`^${TEN_PLIK.replace(/[.]/g, '\\.')}$`), new RegExp(`^${TEST_PLIK.replace(/[.]/g, '\\.')}$`)];
 
 const ustaw = (o, sciezka, w) => {
   const k = structuredClone(o);
