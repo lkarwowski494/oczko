@@ -4,6 +4,8 @@
 //   node scripts/asc/zrzuty.mjs --iphone <katalog> [--ipad <katalog>] [--zegarek <katalog>] [--dry-run]   → plan bez zapisu (domyślnie)
 //   node scripts/asc/zrzuty.mjs --iphone <katalog> [--ipad <katalog>] [--zegarek <katalog>] --apply       → wgrywa i układa zrzuty
 //   dodatkowo `--jezyki cs,en` — tylko wskazane języki aplikacji (puste albo brak = wszystkie; przebieg dowodowy na jednym–dwóch językach)
+//   dodatkowo `--zastap` — grupa, która ma już zrzuty (np. odziedziczone z 1.0 w wersji 1.0.1), dostaje nowe: najpierw nowe obrazy do biblioteki, potem zdjęcie starych placementów,
+//   potem nowe placementy i kolejność (KO-210, P-1048…; źródło API: docs/jakosc/zr10-api.md)
 // Układ katalogów: <katalog>/<język aplikacji>/NN-<ekran>.png (iPhone: jeden rozmiar, np. artefakt `sklep-zrzuty-ramki/6.9`) i <katalog>/<język>/<stan>.png (zegarek).
 // Interfejs: App Asset Library (Apple oznaczył appScreenshotSets i appScreenshots jako przestarzałe; odczyt dokumentacji 25.10.2026 —
 // developer.apple.com/documentation/appstoreconnectapi/app-asset-library): obraz wgrywany raz (rezerwacja → PUT → `uploaded: true`), potem placement
@@ -19,9 +21,12 @@
 //  - 409 ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE: dokumentacja nie wskazuje atrybutu. Wniosek z logu 41008000769: języki cs, da, de-DE… wgrywały pliki o tych samych nazwach
 //    (np. 01-….png) bez 409, a en-GB/en-AU/en-CA (ta sama referenceName `…/en/…` co en-US) dostały 409 — duplikatem jest więc referenceName, unikalna w bibliotece (nie fileName
 //    i prawdopodobnie nie suma pliku). Dlatego obraz najpierw wyszukujemy po referenceName (cała lista biblioteki), a 409 DUPLICATE obsługujemy ponownym wyszukaniem.
-// Zasady: NIGDY nie usuwa (klient: tylko GET, POST, PATCH; PUT tylko na adresy z rezerwacji); grupa, która ma już zrzuty, jest pomijana (zamiana zrzutów
-// = ręcznie w App Store Connect); zapis tylko do edytowalnej wersji; w logu tylko kody lokalizacji, nazwy plików i liczby — nigdy adresy wgrywania,
-// identyfikatory klucza, tokeny ani treść odpowiedzi API (repozytorium publiczne). Dane logowania: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH.
+// Zasady: usuwa TYLKO placementy wersji w przygotowaniu (PREPARE_FOR_SUBMISSION) i tylko przy `--zastap` (KO-210, odstępstwo od Treningu: tam „zamiana zrzutów = ręcznie”);
+// obrazów biblioteki nigdy — zdjęcie placementu zostawia obraz w bibliotece (Apple, „Delete a placement”), a klient dopuszcza DELETE wyłącznie na
+// `/v1/appAssetLibraryPlacements/{id}` (strażnik w `makeClient({ allowDelete })`, tylko z `--zastap`); poza tym klient: GET, POST, PATCH, PUT tylko na adresy z rezerwacji.
+// Bez `--zastap` grupa, która ma już zrzuty, jest pomijana (nic nie usuwam); zapis tylko do edytowalnej wersji; w logu kody lokalizacji, nazwy plików, liczby oraz — przy
+// zastępowaniu — identyfikatory i referenceName zdejmowanych placementów (do ręcznego odtworzenia) — nigdy adresy wgrywania, identyfikatory klucza, tokeny ani treść odpowiedzi
+// API (repozytorium publiczne). Dane logowania: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,6 +40,10 @@ export const WAIT_MS = 30 * 60 * 1000;
 export const POLL_START_MS = 5000;
 export const POLL_MAX_MS = 60000;
 export const PLACEMENT_TYPE = 'APP_SCREENSHOT';
+/** Stany wersji, w których wolno zdejmować placementy (zastępować): tylko „w przygotowaniu”; szersze EDITABLE_STATES (odrzucone itd.) nie wystarczają — KO-210. */
+export const REPLACE_STATES = new Set(['PREPARE_FOR_SUBMISSION']);
+/** Nazwa referencyjna obrazu w bibliotece dla pliku zrzutu (ten sam plik angielski służy czterem lokalizacjom). */
+export const refOf = (r, f) => `oczko-1.0/${r.source}/${r.lang}/${f.name}`;
 export const ASSET_CATEGORY = 'APP_SCREENSHOTS_AND_PREVIEWS';
 export const FEATURE_ID = 'APP_STORE_VERSIONS';
 /** Limit Apple na grupę, gdy dane referencyjne go nie podają (strona „Discovering asset specifications”: 10 zrzutów na grupę). */
@@ -134,11 +143,18 @@ export async function discover(client) {
 }
 
 /**
- * Plan: lista { source, lang, locale, locId, group, files[], action, reason }. Nic nie zapisuje. `existing(locId, group)` → liczba istniejących placementów grupy.
- * Źródła: 'iphone', 'ipad' i 'zegarek' (wszystkie przez ten sam typ APP_SCREENSHOT; grupa z wymiarów pliku).
+ * Plan: lista { source, lang, locale, locId, group, files[], action, reason, remove? }. Nic nie zapisuje. `existing(locId, group)` → liczba istniejących placementów grupy
+ * albo (wymagane przy `zastap`) lista [{ id, ref }] w kolejności wyświetlania. Źródła: 'iphone', 'ipad' i 'zegarek' (wszystkie przez ten sam typ APP_SCREENSHOT; grupa z wymiarów pliku).
+ * `zastap`: grupa z placementami dostaje działanie „zastąp” (lista do zdjęcia + pliki do wgrania), o ile `versionState` ∈ REPLACE_STATES; inaczej błąd planu „odmowa zastąpienia”.
+ * Grupa, która już ma dokładnie te obrazy w tej kolejności, jest „pomiń” (idempotencja po udanym zastąpieniu).
  */
-export async function plan({ shots, locs, refData, existing }) {
+export async function plan({ shots, locs, refData, existing, zastap = false, versionState }) {
   const rows = []; const errors = [];
+  let wolno = zastap;
+  if (zastap && !REPLACE_STATES.has(versionState)) {
+    wolno = false;
+    errors.push(`odmowa zastąpienia: wersja w stanie ${versionState || 'brak edytowalnej wersji'} nie jest w przygotowaniu (wymagany ${[...REPLACE_STATES].join(', ')}) — zastępować wolno tylko na wersji w przygotowaniu`);
+  }
   for (const [source, byLang] of Object.entries(shots)) {
     for (const [lang, files] of byLang) {
       if (!(lang in SHOT_LOCALES)) { errors.push(`${source}/${lang}: nieznany język aplikacji (brak w SHOT_LOCALES)`); continue; }
@@ -158,7 +174,13 @@ export async function plan({ shots, locs, refData, existing }) {
           if (!LOCALE_MAP[locale]) { rows.push({ source, lang, locale, group, action: 'pomiń', reason: 'lokalizacja nieobsługiwana w ASC' }); continue; }
           const locId = locs.get(LOCALE_MAP[locale]);
           if (!locId) { rows.push({ source, lang, locale, group, files: gf, action: 'pomiń', reason: 'brak lokalizacji wersji w ASC (najpierw workflow „ASC metadane sklepu”)' }); continue; }
-          const have = await existing(locId, group);
+          const found = await existing(locId, group); const list = Array.isArray(found) ? found : null; const have = list ? list.length : found;
+          if (have > 0 && wolno) {
+            if (!list) { errors.push(`${source}/${lang}/${locale}: brak identyfikatorów placementów do zdjęcia (existing zwrócił liczbę, nie listę)`); continue; }
+            const want = gf.map(f => refOf({ source, lang }, f));
+            if (list.length === want.length && list.every((p, i) => p.ref === want[i])) { rows.push({ source, lang, locale, locId, group, files: gf, action: 'pomiń', reason: `grupa już zawiera te zrzuty (${have}) w tej kolejności — zastąpione wcześniej` }); continue; }
+            rows.push({ source, lang, locale, locId, group, files: gf, action: 'zastąp', reason: `zdejmę ${have} placementów, wgram ${gf.length}`, remove: list.map(p => ({ id: p.id, ref: p.ref })) }); continue;
+          }
           if (have > 0) { rows.push({ source, lang, locale, locId, group, files: gf, action: 'pomiń', reason: `grupa ma już ${have} zrzutów (nic nie usuwam)${have < gf.length ? ` — niekompletna: ${have} z ${gf.length} zrzutów (częściowy zapis); dokończ ręcznie w App Store Connect` : ''}` }); continue; }
           rows.push({ source, lang, locale, locId, group, files: gf, action: 'wgraj', reason: '' });
         }
@@ -170,6 +192,18 @@ export async function plan({ shots, locs, refData, existing }) {
 
 export const renderTable = rows => ['| Źródło | Język | Lokalizacja | Grupa urządzeń | Zrzuty | Działanie |', '|---|---|---|---|---|---|',
   ...rows.map(r => `| ${r.source} | ${r.lang} | ${r.locale ?? '—'} | ${r.group ?? '—'} | ${r.files?.length ?? 0} | ${r.action}${r.reason ? ' — ' + r.reason : ''}${r.error ? ' (błąd)' : ''} |`)].join('\n');
+
+/** Placementy zrzutów grupy w kolejności wyświetlania z nazwą obrazu: [{ id, ref }] (zapytanie jak w artykule Apple „Placing assets on your App Store surfaces”). Tylko GET. */
+export async function listPlacements(client, locId, group) {
+  let next = `/v1/appStoreVersionLocalizations/${locId}/placements?filter[placementType]=${PLACEMENT_TYPE}&filter[placementGroup]=${group}&sort=placementGroupPosition&include=image&fields[appAssetLibraryImages]=referenceName,state,imageAsset&limit=200`;
+  const data = []; const names = new Map();
+  while (next) {
+    const j = await client.call('GET', next);
+    for (const x of j?.included ?? []) if (x.type === 'appAssetLibraryImages') names.set(x.id, x.attributes?.referenceName ?? '');
+    data.push(...(j?.data ?? [])); next = j?.links?.next ?? null;
+  }
+  return data.map(p => ({ id: p.id, ref: names.get(p.relationships?.image?.data?.id) ?? '' }));
+}
 
 const isReady = st => !!st && !['AWAITING_UPLOAD', 'UPLOAD_COMPLETE', 'FAILED'].includes(st);
 /** Obraz biblioteki nadaje się do ponownego użycia, gdy nie jest zepsuty ani zarchiwizowany i ma ten sam rozmiar pliku (binarium jest niezmienne). */
@@ -228,26 +262,32 @@ export async function waitForImages({ client, images, sleep, now }) {
   }
 }
 
-/** Główny przebieg. Zwraca { code, rows }. Kod 1: błędy planu (pliki, grupy), brak aplikacji, brak edytowalnej wersji w trybie apply, błąd zapisu. */
-export async function run({ client, fetchFn, shots, problems = [], apply = false, log = console.log, read = p => readFileSync(p), sleep = ms => new Promise(r => setTimeout(r, ms)), now = () => Date.now() }) {
+const NIE_USUWA_OBRAZOW = 'po zdjęciu placementów obrazy zostają w bibliotece (zdjęcie placementu ich nie usuwa; odtworzenie: nowy placement tego samego obrazu + kolejność)';
+/** Główny przebieg. Zwraca { code, rows }. Kod 1: błędy planu (pliki, grupy), brak aplikacji, brak edytowalnej wersji w trybie apply, odmowa zastąpienia (wersja nie jest w przygotowaniu), błąd zapisu.
+ *  `zastap` (KO-210): grupy z placementami są zastępowane, a nie pomijane; w trybie apply klient musi mieć `allowDelete`. */
+export async function run({ client, fetchFn, shots, problems = [], apply = false, zastap = false, log = console.log, read = p => readFileSync(p), sleep = ms => new Promise(r => setTimeout(r, ms)), now = () => Date.now() }) {
   log(`## Zrzuty ekranu → App Store Connect: tryb ${apply ? 'APPLY' : 'DRY-RUN (tylko odczyt)'}\n`);
   let code = problems.length ? 1 : 0;
   for (const p of problems) log(`BŁĄD pliku: ${p}`);
   const c = apply ? client : readOnlyClient(client);
   let d;
   try { d = await discover(c); } catch (e) { log(`BŁĄD: ${e.message}`); return { code: 1, rows: [] }; }
+  if (zastap && (!d.version || !REPLACE_STATES.has(stateOf(d.version)))) {
+    log(`### Odmowa zastąpienia zrzutów\n\nZastępować wolno tylko na wersji w przygotowaniu (${[...REPLACE_STATES].join(', ')}). Stany wersji: ${d.versionStates.join(', ') || 'brak wersji'}. Nic nie zmieniono.`);
+    return { code: 1, rows: [] };
+  }
   if (!d.version || !d.libraryId) {
     log(!d.version ? `### Brak edytowalnej wersji aplikacji w App Store Connect\n\nStany wersji: ${d.versionStates.join(', ') || 'brak wersji'}. Utwórz wersję 1.0 (Prepare for Submission) i uruchom ponownie.` : '### Brak biblioteki zasobów aplikacji (assetLibrary)');
     return { code: apply ? 1 : code, rows: [] };
   }
-  const existing = async (locId, group) => {
+  const existing = zastap ? (locId, group) => listPlacements(c, locId, group) : async (locId, group) => {
     const q = `/v1/appStoreVersionLocalizations/${locId}/placements?filter[placementType]=${PLACEMENT_TYPE}&filter[placementGroup]=${group}`;
     return (await c.list(q)).length;
   };
-  const { rows, errors } = await plan({ shots, locs: d.locs, refData: d.refData, existing });
+  const { rows, errors } = await plan({ shots, locs: d.locs, refData: d.refData, existing, zastap, versionState: stateOf(d.version) });
   if (errors.length) { code = 1; log('### Błędy planu (zapis zablokowany)\n'); for (const e of errors) log(`- ${e}`); log(''); }
-  const refOf = (r, f) => `oczko-1.0/${r.source}/${r.lang}/${f.name}`;
-  const planned = new Map(); for (const r of rows.filter(x => x.action === 'wgraj')) for (const f of r.files) planned.set(refOf(r, f), f);
+  const toWrite = rows.filter(x => x.action === 'wgraj' || x.action === 'zastąp');
+  const planned = new Map(); for (const r of toWrite) for (const f of r.files) planned.set(refOf(r, f), f);
   let lib = [];
   if (planned.size && !(apply && code)) {
     lib = await readLibrary(c, d.libraryId);
@@ -264,25 +304,43 @@ export async function run({ client, fetchFn, shots, problems = [], apply = false
     const all = [...images.values()];
     log(`Obrazy: wgrano ${all.filter(i => !i.error && !i.reused).length}, użyto ponownie ${all.filter(i => i.reused).length}, błędy ${all.filter(i => i.error).length}; czekam na przetworzenie.`);
     await waitForImages({ client, images: all.filter(i => !i.error), sleep, now });
-    for (const r of rows.filter(x => x.action === 'wgraj')) {
+    for (const r of toWrite) {
+      const rem = r.remove?.length ?? 0; let zdjete = 0; let ulozone = 0; let faza = 'obrazy';
       try {
         const imgs = r.files.map(f => images.get(refOf(r, f)));
         const bad = imgs.find(i => i.error); if (bad) throw new Error(bad.error);
+        faza = 'zdejmowanie'; // dopiero tu zmienia się strona produktu: wszystkie nowe obrazy już są w bibliotece i przetworzone
+        for (const p of r.remove ?? []) {
+          await client.call('DELETE', `/v1/appAssetLibraryPlacements/${p.id}`); zdjete++;
+          log(`zdjęto placement ${p.id} (${p.ref || 'bez nazwy'}) — ${r.locale}, ${r.group}`);
+        }
+        faza = 'nowe placementy';
         const placed = [];
         for (const { id } of imgs) {
           const p = await client.call('POST', '/v1/appAssetLibraryPlacements', { data: { type: 'appAssetLibraryPlacements', attributes: { placementType: PLACEMENT_TYPE, placementGroup: r.group },
             relationships: { image: { data: { type: 'appAssetLibraryImages', id } }, appStoreVersionLocalization: { data: { type: 'appStoreVersionLocalizations', id: r.locId } } } } });
-          placed.push({ type: 'appAssetLibraryPlacements', id: p.data.id });
+          placed.push({ type: 'appAssetLibraryPlacements', id: p.data.id }); ulozone++;
         }
+        faza = 'kolejność';
         await client.call('POST', '/v1/appAssetLibraryPlacementOrderingRequests', { data: { type: 'appAssetLibraryPlacementOrderingRequests', attributes: { placementGroup: r.group },
           relationships: { orderedPlacements: { data: placed }, appStoreVersionLocalization: { data: { type: 'appStoreVersionLocalizations', id: r.locId } } } } });
         r.written = true;
-      } catch (e) { r.error = e.message; code = 1; log(`BŁĄD ${r.source}/${r.locale}: ${e.message}`); }
+      } catch (e) {
+        r.error = !rem ? e.message : zdjete === 0 ? `${e.message} — nic nie zdjęto, strona bez zmian; ponów przebieg z zastap=true`
+          : `${e.message} — zdjęto ${zdjete} z ${rem} placementów${zdjete === rem ? `, ułożono ${ulozone} z ${r.files.length}${faza === 'kolejność' ? ' (kolejność nie ustawiona)' : ''}` : ''}; ponów przebieg z zastap=true (nowe obrazy są już w bibliotece; stare też zostają)`;
+        code = 1; log(`BŁĄD ${r.source}/${r.locale}: ${r.error}`);
+      }
     }
   }
   log(renderTable(rows));
-  log(`\nwgraj ${n('wgraj')}, pomiń ${n('pomiń')}${apply ? ', zapisano ' + rows.filter(r => r.written).length : ''}`);
-  if (!apply && code === 0) log('Dry-run zakończony — nic nie zapisano. Zapis: uruchom ponownie z trybem „apply” i zatwierdź środowisko release.');
+  const doZdjecia = rows.filter(r => r.action === 'zastąp');
+  if (doZdjecia.length) {
+    log(`\n### Placementy ${apply ? 'zdejmowane' : 'do zdjęcia'} (zastąp; do odtworzenia ręcznego: referenceName i id)\n`);
+    for (const r of doZdjecia) for (const p of r.remove) log(`- ${r.source} ${r.locale} ${r.group}: ${p.id} (${p.ref || 'bez nazwy'})`);
+    log(`\nUwaga: ${NIE_USUWA_OBRAZOW}.`);
+  }
+  log(`\nwgraj ${n('wgraj')}, ${zastap ? `zastąp ${n('zastąp')}, ` : ''}pomiń ${n('pomiń')}${apply ? ', zapisano ' + rows.filter(r => r.written).length : ''}`);
+  if (!apply && code === 0) log(`Dry-run zakończony — nic nie zapisano${zastap ? ' i nie zdjęto' : ''}. Zapis: uruchom ponownie z trybem „apply” i zatwierdź środowisko release.`);
   return { code, rows };
 }
 
@@ -293,9 +351,10 @@ async function main() {
   const { ASC_KEY_ID: keyId, ASC_ISSUER_ID: issuerId, ASC_KEY_PATH: keyPath } = process.env;
   if (!keyId || !issuerId || !keyPath) { console.error('Brak ASC_KEY_ID, ASC_ISSUER_ID lub ASC_KEY_PATH.'); process.exit(2); }
   if (!opt('--iphone')) { console.error('Podaj --iphone <katalog>.'); process.exit(2); }
+  const zastap = args.includes('--zastap');
   const { shots, problems } = loadShots({ iphone: opt('--iphone'), ipad: opt('--ipad'), zegarek: opt('--zegarek'), jezyki: opt('--jezyki') });
   const tokenFor = tokenProvider({ mint: () => makeJwt({ keyId, issuerId, keyPem: readFileSync(keyPath, 'utf8') }) });
-  const { code } = await run({ client: makeClient({ token: tokenFor }), fetchFn: fetch, shots, problems, apply });
+  const { code } = await run({ client: makeClient({ token: tokenFor, allowDelete: zastap }), fetchFn: fetch, shots, problems, apply, zastap });
   process.exit(code);
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main().catch(e => { console.error(`Błąd: ${String(e.message).slice(0, 200)}`); process.exit(1); });

@@ -287,7 +287,8 @@ describe('zrzuty sklepu (scripts/asc/zrzuty.mjs)', () => {
   });
   test('35 języków aplikacji, jak w rejestrze 09; --jezyki walidowane; brak katalogu zgłoszony', () => {
     expect(w.keys).toEqual([...APP_LANGS_35].sort()); expect(w.langs).toEqual(['en', 'pl']); expect(w.badLang.error).toContain('zz'); expect(w.ref[0]).toContain('brak katalogu');
-    const s = read('scripts/asc/zrzuty.mjs'); expect(s).not.toMatch(/'DELETE'|"DELETE"/); expect(s).toContain('const refOf = (r, f) => `oczko-1.0/');
+    const s = read('scripts/asc/zrzuty.mjs'); // KO-210/P-1048: jedyne dopuszczone wywołanie DELETE to zdjęcie placementu (zastąp), raz, na ścieżce placementu; reszta bez zmian
+    expect(s.match(/'DELETE'|"DELETE"/g)).toHaveLength(1); expect(s).toContain("client.call('DELETE', `/v1/appAssetLibraryPlacements/${p.id}`)"); expect(s).not.toMatch(/DELETE['"`], `\/v1\/appAssetLibraryImages/); expect(s).toContain('const refOf = (r, f) => `oczko-1.0/');
   });
 });
 

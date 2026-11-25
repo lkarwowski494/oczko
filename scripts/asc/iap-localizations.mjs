@@ -37,6 +37,15 @@ export const PRODUCTS = {
 };
 export const API = 'https://api.appstoreconnect.apple.com';
 const ALLOWED_METHODS = new Set(['GET', 'POST', 'PATCH']);
+/** Jedyna ścieżka, na której klient z `allowDelete` dopuszcza DELETE: placement zasobu biblioteki (zdjęcie zrzutu ze strony; obraz biblioteki zostaje). ZR10, KO-210. */
+const PLACEMENT_PATH = /^\/v1\/appAssetLibraryPlacements\/[A-Za-z0-9_-]+$/;
+/** DELETE tylko na `/v1/appAssetLibraryPlacements/{id}` w API Apple: bez zapytania, fragmentu, kodowania procentowego i `..` w surowym adresie. */
+export function isPlacementDeletePath(path) {
+  if (typeof path !== 'string' || /[?#%\\]|\.\./.test(path)) return false;
+  const url = path.startsWith('http') ? path : API + path;
+  if (!url.startsWith(API + '/')) return false;
+  return PLACEMENT_PATH.test(url.slice(API.length));
+}
 
 const b64u = b => Buffer.from(b).toString('base64url');
 /** Token JWT ES256 (ważny 10 minut) — bez zależności, tylko `crypto`. */
@@ -47,11 +56,13 @@ export function makeJwt({ keyId, issuerId, keyPem, now = Math.floor(Date.now() /
   return `${head}.${body}.${b64u(sig)}`;
 }
 
-/** Klient API: tylko GET/POST/PATCH; stronicowanie przez links.next; błąd bez treści odpowiedzi (tylko status, kody i tytuły).
+/** Klient API: tylko GET/POST/PATCH (DELETE wyłącznie z `allowDelete: true` i tylko na placemencie, `isPlacementDeletePath`); stronicowanie przez links.next; błąd bez treści odpowiedzi (tylko status, kody i tytuły).
  *  `token`: tekst albo fabryka `() => tekst` wywoływana przy każdym żądaniu (długie przebiegi odnawiają token; zgodne wstecz ze stałym tokenem). */
-export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r => setTimeout(r, ms)) }) {
+export function makeClient({ fetchFn = fetch, token, sleep = ms => new Promise(r => setTimeout(r, ms)), allowDelete = false }) {
   async function call(method, path, body) {
-    if (!ALLOWED_METHODS.has(method)) throw new Error(`Niedozwolona metoda ${method} — skrypt nigdy nie usuwa`);
+    if (method === 'DELETE' && allowDelete) {
+      if (!isPlacementDeletePath(path)) throw new Error('DELETE dozwolone wyłącznie na placemencie (/v1/appAssetLibraryPlacements/{id}) — odmowa; obrazów biblioteki i innych zasobów skrypt nie usuwa');
+    } else if (!ALLOWED_METHODS.has(method)) throw new Error(`Niedozwolona metoda ${method} — skrypt nigdy nie usuwa`);
     const url = path.startsWith('http') ? path : API + path;
     // Token nigdy nie opuszcza api.appstoreconnect.apple.com (np. `links.next` z podstawionej odpowiedzi); przegląd bezpieczeństwa 2026-11-03.
     if (!url.startsWith(API + '/')) throw new Error('Adres spoza API App Store Connect — odmowa');
