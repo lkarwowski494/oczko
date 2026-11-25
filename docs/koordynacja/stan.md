@@ -92,6 +92,7 @@ Na innym koncie: sesje, przypomnienia i koszty z tego konta nie są widoczne; st
 ## Sesje
 | Litera | ID | Rola, tryb | Gałąź @ SHA | Kontekst % | Koszt USD | Stan |
 |---|---|---|---|---|---|---|
+| RZ3 | session_01T66VBy9mVxJo5ReaCa4vJF | 07 audit (sonnet) — recenzja niezależna ZR9 f0b28df6..8a8fb678 + verify | claude/rz3-recenzja-zr9-2026-11-25 od 8a8fb678 | 0 | 0 | polecenie `polecenia/RZ3.md` @ e27980e7; pula P-1051…1052; pułap 2 USD (STOP 2,6); start 16:58 25.11 |
 | ZR10 | session_01T66VByQosWqMVrLYSSxqfF | 10 build (sonnet) — tryb `zastap` w asc-zrzuty (KO-210) | claude/zr10-zrzuty-zastap-2026-11-25 od f0b28df6 | 0 | 0 | polecenie `polecenia/ZR10.md` @ 58f06b3d; pula P-1048…1050; pułap 4 USD (STOP 5,2); start 16:52 25.11 |
 | ZR9 | session_01T66VBzJpz6ibwTmGDQ75AE | 10 fix (sonnet) — uwagi P2-1, P2-2, P3-1 RZ2 w `kontrola-zakreslen.mjs` + wpis P-1044/1045 | claude/zr9-kontrola-zakreslen-2026-11-25 od f0b28df6 | 0 | 0 | polecenie `polecenia/ZR9.md`; pula P-1046…1047; pułap 3 USD (STOP 3,9); start 16:15 25.11 |
 | RZ2 | session_01T66VBy1HGF3cbZvSw77Jnd | 07 audit (sonnet) — przegląd kadrów 03/04 (45633013976, 45633019859) + recenzja niezależna 8b8a2c3c..8685b098 | claude/rz2-recenzja-zr8-2026-11-25 @ f0b28df6 | 37 | 3,37 | **przyjęta 16:15, zarchiwizowana** (KO-206); start 15:56 25.11; polecenie `polecenia/RZ2.md` @ fc32c342; pula P-1044…1045; pułap 3 USD (STOP 3,9); prompt roli składa sama (wyjątek jak ZR8) |
