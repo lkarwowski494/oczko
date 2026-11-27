@@ -1,0 +1,9 @@
+PE1 · npm run verify (2026-11-27), gałąź claude/pe1-ponowienie-e2e-2026-11-27
+Dowód testów: czerwone przed poprawką (6): awaria w ponawialnym 02 · limit kroku w 2. podejściu · awaria w ostatnim scenariuszu · awaria w środku + niewykonane · asercja + awaria w innym · awaria + limit (5 scenariuszy);
+zielone po: tests/jakosc/e2e-awaria-maszyny.test.ts 20/20.
+Test Suites: 747 passed, 747 total
+Tests:       8404 passed, 8404 total
+KOD=0
+Uwaga: docs/decyzje.md uzupełniono (zdanie o przeglądzie) po starcie verify; pre-push uruchamia verify ponownie.
+PE1 · domknięcie recenzji (P3): 4 testy dodane w tests/jakosc/e2e-awaria-maszyny.test.ts (24/24), workflow bez zmian
+npm run verify: Test Suites: 747 passed; Tests: 8408 passed; KOD=0

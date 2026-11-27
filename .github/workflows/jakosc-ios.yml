@@ -362,15 +362,15 @@ jobs:
           PONAWIALNE: ${{ steps.plan.outputs.ponawialne }}
           BRAMKA: ${{ steps.plan.outputs.bramka }}
         run: |
-          # 07-jakosc-001 (KO-054, P-781): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs) przerywa je
-          # i powtarza RAZ cały zestaw części od zera — także scenariusze z własną asercją licznika (asercja licznika się nie wykonała). Porażka asercji
-          # nadal bez ponowienia (P-091 9a/10a): scenariusz czerwony w 1. podejściu przed awarią zachowuje wynik i nie biegnie w 2. (P-782 (4));
-          # awaria w 2. podejściu liczy się jak porażka. Jak Trening e2e-ios.yml:223-228.
+          # 07-jakosc-001 (KO-054, P-781; PE1, KO-222, P-1076): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs)
+          # przerywa je i powtarza RAZ tylko scenariusze (a) z awarią maszyny i (b) niewykonane w 1. podejściu — także te z własną asercją licznika (asercja
+          # licznika się nie wykonała). Zielone i porażki asercji (P-091 9a/10a, także informacyjne) nie biegną drugi raz: ich wynik z 1. podejścia zostaje.
+          # Awaria w 2. podejściu liczy się jak porażka. Run 45971994915 (DG2): 26 zielonych + awaria na ostatnim — powtórzenie całego zestawu przekraczało limit kroku.
           przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
             mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
             for f in e2e-czesc/[0-9][0-9]*-*.yaml; do
               n=$(basename "$f" .yaml)
-              [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (porażka, nie maszyna) — bez ponowienia
+              [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (zielony albo porażka, nie maszyna) — bez ponowienia
               if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
               if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml"); then
                 awaria="$n: $przyczyna"; echo "awaria-maszyny $n" >> e2e-out/wyniki.txt
@@ -391,25 +391,34 @@ jobs:
           POMIN=""; przebieg 1; awaria1="$awaria"; porazki1=$porazki
           echo "### Część ${{ matrix.czesc }} (${{ matrix.urzadzenie }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$awaria1" ]; then
-            echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie całego zestawu części od zera (07-jakosc-001, KO-054)"
+            echo "::warning::Awaria maszyny w 1. podejściu ($awaria1) — jedno powtórzenie scenariuszy z awarią i niewykonanych (07-jakosc-001, KO-054, PE1)"
             mv e2e-out e2e-out-podejscie-1 && mkdir -p e2e-out && mv e2e-out-podejscie-1 e2e-out/podejscie-1 # 1. podejście zostaje w artefakcie
-            # 08-programista-002 (P-787): „w-ponowieniu” to porażka asercji + ponowienie P-091 9a — w 2. podejściu nie biegnie trzeci raz, wynik zostaje
-            POMIN=$(awk '$1 ~ /^(czerwony|w-ponowieniu)/ { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
+            # PE1 (P-1076): POMIN = każdy scenariusz z wynikiem w 1. podejściu poza „awaria-maszyny” (zielony, czerwony, w-ponowieniu [P-787, P-091 9a],
+            # czerwony-informacyjnie); do ponowienia zostaje awaria maszyny i to, czego 1. podejście nie uruchomiło (przerwane awarią).
+            POMIN=$(awk '$1 != "awaria-maszyny" { printf "%s ", $2 }' e2e-out/podejscie-1/wyniki.txt)
+            n1=${awaria1%%:*}; niewykonane=""
+            for f in e2e-czesc/[0-9][0-9]*-*.yaml; do
+              n=$(basename "$f" .yaml)
+              [[ " $POMIN " == *" $n "* || "$n" == "$n1" ]] || niewykonane="$niewykonane $n"
+            done
             { # 08-programista-001 (P-786): ślad 1. podejścia w podsumowaniu PRZED 2. podejściem — przekroczenie limitu kroku w 2. podejściu go nie gubi
-              echo "- powtórzenie zestawu (awaria maszyny w 1. podejściu): $awaria1"
-              echo "- wyniki 1. podejścia (przed powtórzeniem):"
+              echo "- powtórzenie scenariuszy (awaria maszyny w 1. podejściu): $awaria1"
+              echo "- ponowione scenariusze (PE1): awaria maszyny: $n1; niewykonane w 1. podejściu:${niewykonane:- brak}"
+              echo "- wyniki 1. podejścia (przed ponowieniem):"
               sort e2e-out/podejscie-1/wyniki.txt | sed 's/^/  - /'
             } >> "$GITHUB_STEP_SUMMARY"
             przebieg 2
             porazki=$((porazki + porazki1))
-            awk '$1 ~ /^czerwony/ { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }
-                 $1 == "w-ponowieniu" { print $1, $2, "(1. podejście, porażka asercji i zielone ponowienie — bez trzeciego uruchomienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
+            awk '$1 == "czerwony" { print $1, $2, "(1. podejście, porażka scenariusza — bez ponowienia)" }
+                 $1 == "czerwony-informacyjnie" { print $1, $2, "(1. podejście, poza bramką — bez ponowienia)" }
+                 $1 == "w-ponowieniu" { print $1, $2, "(1. podejście, porażka asercji i zielone ponowienie — bez trzeciego uruchomienia)" }
+                 $1 == "zielony" { print $1, $2, "(1. podejście — bez ponowienia)" }' e2e-out/podejscie-1/wyniki.txt >> e2e-out/wyniki.txt
           fi
           {
             if [ -n "$awaria1" ]; then
               n1=${awaria1%%:*}
               echo "- wynik 2. podejścia dla $n1: $(grep -E " $n1\$" e2e-out/wyniki.txt || echo "brak wyniku $n1")"
-              echo "- wyniki 2. podejścia (rozstrzygają):"
+              echo "- wyniki 2. podejścia (ponowione) i 1. podejścia (reszta, bez ponowienia) — rozstrzygają:"
             fi
             sort e2e-out/wyniki.txt | sed 's/^/- /'
           } >> "$GITHUB_STEP_SUMMARY"
