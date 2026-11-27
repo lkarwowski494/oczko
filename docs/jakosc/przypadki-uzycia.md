@@ -9,8 +9,8 @@ Legenda klas:
 
 Napisy aplikacji: po polsku, z angielskim w ⟦⟧ (scenariusze biegną po angielsku, symulator en-US). Ekrany: klucze tras względem `app/` bez `.tsx`.
 
-Podsumowanie: A=118, B=165, F=61, razem 344.
-B według pokrycia (BX15, 2026-11-16, liczone z kolumny Pokrycie): z testem 148, oczekujący (scenariusz Maestro z tagiem `oczekujacy`) 16, do zaprogramowania 1.
+Podsumowanie: A=118, B=166, F=61, razem 345.
+B według pokrycia (BX15, 2026-11-16, liczone z kolumny Pokrycie): z testem 149, oczekujący (scenariusz Maestro z tagiem `oczekujacy`) 16, do zaprogramowania 1.
 
 ## Instalacja i pierwszy start
 
@@ -465,6 +465,7 @@ B według pokrycia (BX15, 2026-11-16, liczone z kolumny Pokrycie): z testem 148,
 | PU-268 | Chcę nie zgubić notatki na wzorze przez przypadkowe wyjście. | Wzór → nowa notatka z tekstem → „‹”. | „Odrzucić zmiany?” ⟦Discard changes?⟧ z „Nic nie zostanie dodane.” ⟦Nothing will be added.⟧ | — | wzor | B | z testem: tests/ekrany/wzor-notatki-odrzuc.test.tsx:73 |
 | PU-269 | Chcę ostrzeżenia, gdy zakreśleń nie udało się zapisać. | Błąd zapisu rysunku → „‹”. | „Wyjść z tego wzoru?” ⟦Leave this pattern?⟧ z „Zostań” ⟦Stay⟧ i „Wyjdź bez zapisu” ⟦Leave unsaved⟧. | — | wzor | B | z testem: tests/ekrany/wzor-gest-wstecz.test.tsx:91 |
 | PU-270 | Chcę przy AX5 dosięgnąć ostatniego źródła wzoru. | AX5 → licznik → „Wzór” bez wzoru → przewiń menu źródeł. | Ostatnie źródło („Link do strony WWW…” ⟦Web page link…⟧) osiągalne przewinięciem. | — | wzor | B | z testem: tests/ekrany/m3-fix-e5-wzor-ax5.test.tsx:38 |
+| PU-271 | Chcę, żeby rzędy policzone na ekranie blokady nie zginęły, gdy ich poprzednik jeszcze nie dotarł do aplikacji. | +1 z ekranu blokady, którego rodzic (głowa ze stanu aktywności) nie jest jeszcze w bazie → powrót do aplikacji (kilka razy) → rodzic dociera albo nie dociera. | Linia czeka w poczekalni i jest ponawiana przy każdym scaleniu; po dojściu rodzica wartość +n, poczekalnia pusta; bez rodzica po 3 scaleniach dołącza do bieżącej głowy licznika (rząd nie ginie); ponowna dostawa nie dubluje. | T-80 | licznik | B | z testem: tests/dane/dziennik-poczekalnia-ekranu.test.ts:23; tests/dane/dziennik-poczekalnia-ekranu.test.ts:59 |
 
 ## Funkcje
 
@@ -779,7 +780,7 @@ Komponenty `src/ekrany/*.tsx` nieosiągalne importami z żadnej trasy `app/` (po
 | T-72 | PU-121, PU-122 |
 | T-73 | PU-123 |
 | T-74 | PU-124 |
-| T-80 | PU-126, PU-127 |
+| T-80 | PU-126, PU-127, PU-271 |
 | T-81 | PU-128 |
 | T-85 | PU-129, PU-130 |
 | T-86 | PU-130, PU-131 |

@@ -5,11 +5,12 @@
 import type { Wynik } from '../domena/bledy';
 import { startDnia, wolaStraznika } from '../domena/limit';
 import type { PortBazy, WynikPartii, ZdarzenieWejsciowe } from '../domena/porty';
-import { PARTIA_SYNCHRONIZACJI } from '../konfiguracja';
+import { PARTIA_SYNCHRONIZACJI, POCZEKALNIA_EKRANU_PROBY } from '../konfiguracja';
+import { parsujDziennik } from '../dane/dziennik';
 import { zapiszBladW } from '../dane/repozytoria/bledy';
 import { zapiszUstawienie } from '../dane/repozytoria/ustawienia';
 import {
-  dniLimituMiesiaca, dopiszZdarzenie, ostatniPlusPrzed, poczekalnia, stanLicznika, trescZdarzenia, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie,
+  dniLimituMiesiaca, dopiszZdarzenie, ostatniPlusPrzed, poczekalnia, poczekalniaEkranu, probyPoczekalni, stanLicznika, trescZdarzenia, usunZPoczekalni, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie,
 } from '../dane/repozytoria/liczniki';
 import { dodajDni } from './daty';
 import { wKolejce } from './kolejka';
@@ -30,6 +31,7 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
       await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_brak_licznika', szczegoly: { zdarzenie: l.id, licznik: l.licznikId } });
       w.pominieto += 1;
       potwierdz(l);
+      await usunZPoczekalni(tx, l.id);
       continue;
     }
     const byl = await trescZdarzenia(tx, l.id);
@@ -38,17 +40,31 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
         await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_kolizja_id', szczegoly: { zdarzenie: l.id } });
       }
       potwierdz(l); // kolizja to też odrzucenie na stałe: ponowienie z zegarka dałoby ten sam wynik
+      await usunZPoczekalni(tx, l.id); // ta sama linia czekała w poczekalni (EB1): już w `zdarzenie`
       continue;
     }
-    const rodzice = await Promise.all(l.rodzice.map((r) => zdarzenie(tx, r)));
+    let lRodzice = l.rodzice;
+    let rodzice = await Promise.all(lRodzice.map((r) => zdarzenie(tx, r)));
     if (rodzice.some((r) => r === null)) { // rodzic jeszcze nie dotarł: poczekalnia (ADR-0005, P-110 Q1a)
-      await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
-      continue;
+      // EB1 (P-1079): linia z ekranu blokady czeka najwyżej POCZEKALNIA_EKRANU_PROBY scaleń; potem dołącza do bieżącej głowy licznika, żeby rząd policzony
+      // na ekranie blokady nie zniknął na stałe (wartość = głowa + 1; konflikt z rozwidleniem pokazuje scal jak dla każdej innej linii).
+      const proby = l.zrodlo === 'ekran_blokady' ? await probyPoczekalni(tx, l.id) : null;
+      if (proby === null || proby + 1 < POCZEKALNIA_EKRANU_PROBY) {
+        await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
+        continue;
+      }
+      lRodzice = s.glowa ? [s.glowa] : [];
+      rodzice = await Promise.all(lRodzice.map((r) => zdarzenie(tx, r)));
+      if (rodzice.some((r) => r === null)) { // głowa licznika nieznana zdarzeniom: nie zgadujemy, zostaje w poczekalni
+        await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
+        continue;
+      }
+      await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_rodzic_zastapiony', szczegoly: { zdarzenie: l.id, licznik: l.licznikId } });
     }
     const przed = rodzice[0]?.wartoscPo ?? 0;
     await dopiszZdarzenie(tx, {
       id: l.id, licznikId: l.licznikId, rodzaj: l.rodzaj, wartosc: null, wartoscPo: Math.max(0, przed + (l.rodzaj === 'plus' ? 1 : -1)),
-      rodzice: l.rodzice, cofa: [], zrodlo: l.zrodlo, urzadzenie: l.urzadzenie, czasMs: l.czasMs, strefa: l.strefa, dzien: l.dzien,
+      rodzice: lRodzice, cofa: [], zrodlo: l.zrodlo, urzadzenie: l.urzadzenie, czasMs: l.czasMs, strefa: l.strefa, dzien: l.dzien,
     });
     if (wolaStraznika({ rodzaj: l.rodzaj })) {
       const start = startDnia({
@@ -58,6 +74,7 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
       if (start.zapis) await zapiszDzienLimitu(tx, { dzien: start.zapis.data, pro: start.zapis.pro, zaczetoMs: l.czasMs, zdarzenieId: l.id });
     }
     await zapiszOstatniaPrace(tx, s.projektId, l.czasMs);
+    await usunZPoczekalni(tx, l.id);
     dotkniete.add(l.licznikId);
     w.scalono += 1;
     potwierdz(l);
@@ -73,10 +90,20 @@ export async function scalDziennikWKolejce(z: ZaleznosciDziennika): Promise<Wyni
   const terazMs = z.zegar.teraz().ms;
   const linie = await z.dziennik.odczytaj(); // przed transakcją: w transakcji nie czeka się na nic poza bazą (ADR-0002)
   const suma: WynikPartii = { scalono: 0, pominieto: 0, potwierdzone: [] };
-  if (!linie.length) return { ok: true, wartosc: suma };
+  // EB1 (P-1079): wpisy poczekalni z ekranu blokady ponawiane przy każdym scaleniu, po liniach z pliku (rodzic mógł dojść w tym samym pliku),
+  // w kolejności czasu linii; linia już obecna w pliku nie jest przetwarzana drugi raz.
+  const wPlikuId = new Set(linie.map((l) => l.id));
+  let czekajace: ZdarzenieWejsciowe[] = [];
   try {
-    for (let i = 0; i < linie.length; i += PARTIA_SYNCHRONIZACJI) {
-      const czesc = await z.baza.transakcja((tx) => scalLinie(tx, linie.slice(i, i + PARTIA_SYNCHRONIZACJI), terazMs));
+    czekajace = (await poczekalniaEkranu(z.baza)).filter((c) => !wPlikuId.has(c.id)).flatMap((c) => parsujDziennik(c.dane).zdarzenia).sort((a, b) => a.czasMs - b.czasMs || (a.id < b.id ? -1 : 1));
+  } catch {
+    return blad('zapis'); // nic nie skracamy
+  }
+  if (!linie.length && !czekajace.length) return { ok: true, wartosc: suma };
+  const doScalenia = [...linie, ...czekajace];
+  try {
+    for (let i = 0; i < doScalenia.length; i += PARTIA_SYNCHRONIZACJI) {
+      const czesc = await z.baza.transakcja((tx) => scalLinie(tx, doScalenia.slice(i, i + PARTIA_SYNCHRONIZACJI), terazMs));
       suma.scalono += czesc.scalono;
       suma.pominieto += czesc.pominieto;
       for (const id of czesc.potwierdzone) if (!suma.potwierdzone.includes(id)) suma.potwierdzone.push(id);
@@ -86,7 +113,7 @@ export async function scalDziennikWKolejce(z: ZaleznosciDziennika): Promise<Wyni
   }
   // Po COMMIT ostatniej partii, do ostatniej przetworzonej linii (ADR-0008 (3)). Nieudane skrócenie (M1-024: np. brak miejsca na plik
   // tymczasowy; natywnie plik zostaje bez zmian) nie cofa scalenia: linie zostają do następnego razu, ponowne scalenie ich nie dubluje (R-022).
-  await z.dziennik.skroc(linie[linie.length - 1].id).catch(() => undefined);
+  if (linie.length) await z.dziennik.skroc(linie[linie.length - 1].id).catch(() => undefined);
   return { ok: true, wartosc: suma };
 }
 

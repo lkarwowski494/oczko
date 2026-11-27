@@ -120,6 +120,19 @@ export async function poczekalnia(tx: PortBazy, r: { id: string; dane: string; p
      ON CONFLICT (id) DO UPDATE SET proby = proby + 1`, [r.id, r.dane, r.powod, r.zrodlo, r.terazMs]);
 }
 
+/** Wpisy poczekalni z ekranu blokady (EB1, P-1079): linia i liczba dotychczasowych prób; `dane` nieczytelne → pomijane (nie do odtworzenia). */
+export async function poczekalniaEkranu(tx: PortBazy): Promise<{ id: string; dane: string; proby: number }[]> {
+  const w = await wiersze(tx.all("SELECT id, dane, proby FROM poczekalnia WHERE zrodlo = 'ekran_blokady' AND rodzaj_rekordu = 'zdarzenie' ORDER BY przyszlo_ms, id"), 'poczekalniaEkranu');
+  return w.map((r) => ({ id: tekst(r, 'id'), dane: tekst(r, 'dane'), proby: liczba(r, 'proby') }));
+}
+export async function usunZPoczekalni(tx: PortBazy, id: string): Promise<void> {
+  await tx.run("DELETE FROM poczekalnia WHERE id = ? AND rodzaj_rekordu = 'zdarzenie'", [id]);
+}
+export async function probyPoczekalni(tx: PortBazy, id: string): Promise<number | null> {
+  const [w] = await wiersze(tx.all('SELECT proby FROM poczekalnia WHERE id = ?', [id]), 'probyPoczekalni');
+  return w ? liczba(w, 'proby') : null;
+}
+
 /** Rzędy części: suma nieusuniętych liczników rzędów (jak r_i w RD-14/RD-15); cel drugiej części pary bez celu (BR-PRJ-014 S1, S3). */
 export async function rzedyCzesci(baza: PortBazy, czescId: string): Promise<number> {
   const [r] = await wiersze(baza.all("SELECT coalesce(sum(wartosc), 0) AS n FROM licznik WHERE czesc_id = ? AND rodzaj = 'rzedy' AND usunieto_ms IS NULL", [czescId]), 'rzedyCzesci');
