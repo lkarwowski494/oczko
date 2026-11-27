@@ -75,6 +75,34 @@ Skeleton: **{opening with a question}** + “I'm developing the app on my own, s
 2. **Od drugiego wpisu naprzemiennie C0 i E0 po grupach** (nie po dniach — dzień tygodnia nie miesza wyniku), w tym samym języku i typie grupy po równo. Szkice C i E z kodem zastępują C0/E0 dopiero, gdy kody istnieją; wtedy test C vs E zaczyna się od nowa (kod zmienia wpis).
 3. **Co porównujemy** (bez `pt`/`ct` nie ma pobrań na wpis): przeżycie wpisu (usunięty/zatwierdzony), liczba komentarzy i pytań, wyraźne reakcje negatywne; pobrania z App Analytics tylko jako tło dnia. Przy 2–4 wpisach dziennie to ok. 7–14 wpisów na wariant w tydzień — **kierunek, nie rozstrzygnięcie** [OCENA]; próg i H po pierwszym tygodniu danych (P-1030 (3)), decyzja koordynatora.
 
+## K — wpis z kodem na rok i uzasadnieniem (słowa właściciela 2026-11-27) — **czeka na kody ofert i na zapis decyzji koordynatora** (nie publikować do czasu ich utworzenia; do tego czasu C0/E0)
+
+Słowa właściciela 27.11: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. Dopoki nie rozbujamy aplikacji i tak na niej nie zarabiamy a nikt jej nie pobiera. Wiec albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” **Zmienia P-1031 (1) „3 miesiące” na „rok”** — decyzję zapisuje koordynator (nowy P-nnn; 02: kontrakt wyjątku od P-057; 10: czy ASC dopuszcza rok dla oferty bezpłatnej przy kodzie własnym i jaki limit realizacji — sprawdzić u źródła w dniu pracy, z pamięci nie potwierdzam).
+
+Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **bez żadnego warunku** (uzasadnienie opisuje motyw autora, nie wymianę „kod za uwagi”; wytyczne Apple, sekcja 3; P-1031 (2)); bez zdania, że aplikacja „kiedyś będzie monetyzowana” — Pro już jest w sklepie (T-12), więc piszemy, jak jest dziś; bez prośby o ocenę w tym samym wpisie; ton rzeczowy (nisza nieufna wobec darmowych aplikacji — `docs/wzrost.md` E1 sesji 2); „bez odnowienia” tylko, jeśli kod ma wyłączone odnowienie (sprawdzić w ASC); kod osobny na język.
+
+**PL**
+
+> {otwarcie} Oczko to licznik rzędów na iPhone'a i iPada:
+> • jedno stuknięcie dodaje rząd, a stuknięcie −1 go cofa
+> • wzór (PDF albo zdjęcie) leży obok licznika, a bieżący rząd zaznaczasz na nim sam
+> • po przerwie otwiera się tam, gdzie była przerwa, z notatką obok licznika
+>
+> Oczko jest za darmo przez 5 dni robótkowych w miesiącu, a Oczko Pro znosi limit. Na tym etapie bardziej niż na przychodach zależy mi na tym, żeby aplikacja trafiła do ludzi, i na Waszych uwagach, dlatego rozdaję **rok Oczka Pro za darmo — bez odnowienia i bez żadnych warunków**. Kod: OCZKOPL → <link realizacji kodu>
+>
+> Napiszcie w komentarzu albo prywatnie, co działa, a co nie.
+
+**EN**
+
+> {opening} Oczko is a row counter for iPhone and iPad:
+> • one tap adds a row, and tapping −1 takes it back
+> • your pattern (a PDF or a photo) sits next to the counter, and you mark your current row on it
+> • after a break it opens where you stopped, with your note next to the counter
+>
+> Oczko is free for 5 crafting days a month, and Oczko Pro removes the limit. At this stage, getting the app to people and hearing your feedback matters more to me than revenue, so I'm giving away **a year of Oczko Pro for free — nothing renews and there are no conditions**. Code: OCZKOEN → <code redemption link>
+>
+> Tell me what works and what doesn't — in the comments or by message.
+
 ## C. Wpis z historią i kodem (P-1031) — wersja główna, PL — **czeka na kody ofert** (nie publikować do czasu ich utworzenia; do tego czasu C0)
 
 > Cześć! Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstało **Oczko** — licznik rzędów na iPhone'a i iPada:
