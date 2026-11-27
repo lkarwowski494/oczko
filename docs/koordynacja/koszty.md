@@ -169,3 +169,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | WZ1 | 11 build | 5 | 3,52 | 30 | 08:43 → 08:44 → 09:05 → verify sesji 09:07 → 09:50 (+ zadania właściciela 09:20–09:46) | 0 | materiały do grup, G, G-K |
 | KD1 | 10 build | 3 | 5,14 | 32 | 09:27 → 09:28 → 09:47 → verify sesji 10:00 → 10:05 | 0 | kody ofert; 4 zmiany zakresu od właściciela; ponad STOP |
 | PE1 | 08 fix | 5 | 1,74 | 19 | 14:12 → 14:13 → 14:23 → verify sesji 14:24 → 14:40 (+ testy domykające) | 0 | ponowienie e2e tylko z awarią |
+| DG2 | 07 audit | 3 | 2,31 | 29 | 13:57 → 13:58 → 14:09 → verify sesji 14:10 → 14:15 | 0 | diagnoza e2e cz. 2 i 4 |
