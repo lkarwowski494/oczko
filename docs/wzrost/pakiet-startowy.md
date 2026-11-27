@@ -134,7 +134,7 @@ Free for 5 crafting days a month; Oczko Pro removes the limit; export always wor
 I'd love to read what's missing for you in tools like this. And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.
 ```
 
-#### G-K-PL — **kody i linki gotowe (utworzone 27.11, P-1071; link sprawdzony przez właściciela na produkcji ok. 10:10 UTC)**; przed publikacją zostaje potwierdzenie, że Pro jest widoczne w aplikacji po realizacji [DO USTALENIA, właściciel]
+#### G-K-PL — **kody i linki gotowe (utworzone 27.11, P-1071; link sprawdzony przez właściciela na produkcji ok. 10:10 UTC)**; Pro widoczne w aplikacji po realizacji potwierdził właściciel na produkcji (27.11 ok. 10:15 UTC)
 Otwarcie jak G-PL-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; link: `https://apps.apple.com/redeem?ctx=offercodes&id=6823678721&code=<KOD>` (od właściciela 27.11; „Link dziala, przetestiowalem na PROD.”); kody utworzone przez właściciela 27.11 (OCZKOPL limit 1 000, OCZKOEN limit 2 000, bez daty końca; liczba w zdaniu = limit tego kodu, więc nie zamieniać kodów między językami bez zmiany liczby).
 ```text
 Pytanie do Was: jak liczycie rzędy? Kartka i ołówek, licznik na drut, aplikacja, a może pamięć?
@@ -151,7 +151,7 @@ Aplikacja jest w fazie rozwoju, dlatego na start daję Oczko Pro na zawsze za da
 Chętnie przeczytam, czego Wam brakuje w takich narzędziach.
 ```
 
-#### G-K-EN — **kody i linki gotowe (utworzone 27.11, P-1071; link sprawdzony przez właściciela na produkcji ok. 10:10 UTC)**; przed publikacją zostaje potwierdzenie, że Pro jest widoczne w aplikacji po realizacji [DO USTALENIA, właściciel]
+#### G-K-EN — **kody i linki gotowe (utworzone 27.11, P-1071; link sprawdzony przez właściciela na produkcji ok. 10:10 UTC)**; Pro widoczne w aplikacji po realizacji potwierdził właściciel na produkcji (27.11 ok. 10:15 UTC)
 Otwarcie jak G-EN-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; link: `https://apps.apple.com/redeem?ctx=offercodes&id=6823678721&code=<KOD>` (od właściciela 27.11; „Link dziala, przetestiowalem na PROD.”); kody utworzone przez właściciela 27.11 (OCZKOPL limit 1 000, OCZKOEN limit 2 000, bez daty końca; liczba w zdaniu = limit tego kodu, więc nie zamieniać kodów między językami bez zmiany liczby).
 ```text
 Question for you: how do you count your rows? Pen and paper, a counter on the needle, an app, or just memory?
