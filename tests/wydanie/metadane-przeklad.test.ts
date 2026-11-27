@@ -381,7 +381,7 @@ describe('workflow przeklad-tlumaczen.yml: tryb metadane (P-501) w istniejącym 
 
 describe('dane metadanych: stan przekładu, kompletność i zakazy (P-491)', () => {
   const stan = json(`${MET}/przeklad-stan.json`);
-  const pliki = readdirSync(join(ROOT, MET)).filter((f) => f.endsWith('.store.json') && !['en.store.json', 'nazwy.store.json', 'produkty.store.json'].includes(f));
+  const pliki = readdirSync(join(ROOT, MET)).filter((f) => f.endsWith('.store.json') && !['en.store.json', 'nazwy.store.json', 'produkty.store.json', 'co-nowego-1-0-1.store.json'].includes(f)); // co-nowego-*: tylko releaseNotes (WY1, KO-203), nie przekład metadanych
   test('wymagane = 29; przyjęte ∪ oczekujące = wymagane, rozłączne; każda przyjęta ma plik, każdy plik jest przyjęty', () => {
     expect(stan.wymagane).toEqual(WYMAGANE);
     const przyjete = Object.keys(stan.przyjete);

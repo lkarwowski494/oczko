@@ -1,0 +1,14 @@
+# WY2: npm ci && npm run verify (2026-11-27, gałąź claude/wy2-zamkniecie-1-0-1-2026-11-27, po scaleniu claude/wydanie-1-0-1; KO-215, P-1064)
+npm ci: kod 0
+npm run verify: kod 0
+Test Suites: 747 passed, 747 total
+Tests: 8398 passed, 8398 total
+Czas testów: 259,988 s
+Pełne wyjście: 2614 linii (nie dołączone; ostatnie 6 linii niżej)
+
+Test Suites: 747 passed, 747 total
+Tests:       8398 passed, 8398 total
+Snapshots:   0 total
+Time:        259.988 s
+Ran all test suites.
+KOD_WYJSCIA=0

@@ -1,0 +1,94 @@
+{
+  "_opis": "„What’s New in This Version” dla wydania 1.0.1 (WY1, KO-203, P-1040): wydanie tylko dla nowych zrzutów w App Store Connect, kod aplikacji jak 1.0.0 (build 1221). Dotyczy 29 lokalizacji bez en-*; teksty en-US/GB/AU/CA są w en.store.json (releaseNotes, to samo zdanie). Osobny plik, bo pliki przekładu metadanych nie mają pola releaseNotes (tests/wydanie/metadane-przeklad.test.ts), a pole istnieje tylko w wersjach po pierwszej (App Store Connect Help); scripts/asc/metadane.mjs scala go po kodzie lokalizacji ASC z pozostałymi *.store.json (releaseNotes→whatsNew, pomijane przy pierwszej wersji). Tekst nie obiecuje funkcji (2.3.12: drobne wydanie może mieć opis ogólny). Przekład: Claude (WY1), bez drugiego przeglądu — krótkie zdanie neutralne, nie treść krytyczna; do przeglądu przed zapisem w ASC [DO USTALENIA]. Po wydaniu 1.0.1 plik usuń albo zastąp tekstem następnej wersji. Niczego nie wysyła.",
+  "apple": {
+    "info": {
+      "pl": {
+        "releaseNotes": "Zaktualizowane zrzuty ekranu w App Store. Aplikacja działa bez zmian."
+      },
+      "cs": {
+        "releaseNotes": "Aktualizované snímky obrazovky v App Store. Aplikace samotná se nezměnila."
+      },
+      "sk": {
+        "releaseNotes": "Aktualizované snímky obrazovky v App Store. Samotná aplikácia sa nezmenila."
+      },
+      "hr": {
+        "releaseNotes": "Ažurirane snimke zaslona u App Storeu. Sama aplikacija nije promijenjena."
+      },
+      "sl": {
+        "releaseNotes": "Posodobljeni posnetki zaslona v App Storu. Sama aplikacija je nespremenjena."
+      },
+      "uk": {
+        "releaseNotes": "Оновлені знімки екрана в App Store. Сам застосунок не змінився."
+      },
+      "ru": {
+        "releaseNotes": "Обновлены скриншоты в App Store. Само приложение не изменилось."
+      },
+      "hu": {
+        "releaseNotes": "Frissített képernyőképek az App Store-ban. Maga az alkalmazás nem változott."
+      },
+      "ro": {
+        "releaseNotes": "Capturi de ecran actualizate în App Store. Aplicația în sine nu s-a schimbat."
+      },
+      "de-DE": {
+        "releaseNotes": "Aktualisierte Screenshots im App Store. Die App selbst ist unverändert."
+      },
+      "fr-FR": {
+        "releaseNotes": "Captures d’écran mises à jour dans l’App Store. L’app elle-même reste inchangée."
+      },
+      "it": {
+        "releaseNotes": "Screenshot aggiornati nell’App Store. L’app in sé non è cambiata."
+      },
+      "es-ES": {
+        "releaseNotes": "Capturas de pantalla actualizadas en la App Store. La app en sí no ha cambiado."
+      },
+      "es-MX": {
+        "releaseNotes": "Capturas de pantalla actualizadas en la App Store. La app en sí no cambió."
+      },
+      "pt-PT": {
+        "releaseNotes": "Capturas de ecrã atualizadas na App Store. A app em si não foi alterada."
+      },
+      "pt-BR": {
+        "releaseNotes": "Capturas de tela atualizadas na App Store. O app em si não foi alterado."
+      },
+      "nl-NL": {
+        "releaseNotes": "Bijgewerkte schermafbeeldingen in de App Store. De app zelf is ongewijzigd."
+      },
+      "sv": {
+        "releaseNotes": "Uppdaterade skärmbilder i App Store. Själva appen är oförändrad."
+      },
+      "da": {
+        "releaseNotes": "Opdaterede skærmbilleder i App Store. Selve appen er uændret."
+      },
+      "no": {
+        "releaseNotes": "Oppdaterte skjermbilder i App Store. Selve appen er uendret."
+      },
+      "fi": {
+        "releaseNotes": "Päivitetyt kuvakaappaukset App Storessa. Itse sovellus on ennallaan."
+      },
+      "tr": {
+        "releaseNotes": "App Store’daki ekran görüntüleri güncellendi. Uygulamanın kendisi değişmedi."
+      },
+      "el": {
+        "releaseNotes": "Ενημερωμένα στιγμιότυπα οθόνης στο App Store. Η ίδια η εφαρμογή παραμένει αμετάβλητη."
+      },
+      "id": {
+        "releaseNotes": "Tangkapan layar App Store diperbarui. Aplikasinya sendiri tidak berubah."
+      },
+      "ms": {
+        "releaseNotes": "Tangkapan skrin App Store dikemas kini. Aplikasi itu sendiri tidak berubah."
+      },
+      "vi": {
+        "releaseNotes": "Đã cập nhật ảnh chụp màn hình trên App Store. Bản thân ứng dụng không thay đổi."
+      },
+      "ja": {
+        "releaseNotes": "App Storeのスクリーンショットを更新しました。アプリ自体に変更はありません。"
+      },
+      "ko": {
+        "releaseNotes": "App Store 스크린샷을 업데이트했습니다. 앱 자체는 변경되지 않았습니다."
+      },
+      "zh-Hant": {
+        "releaseNotes": "已更新 App Store 螢幕截圖。App 本身沒有變更。"
+      }
+    }
+  }
+}
