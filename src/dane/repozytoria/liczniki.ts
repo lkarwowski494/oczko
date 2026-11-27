@@ -128,9 +128,14 @@ export async function poczekalniaEkranu(tx: PortBazy): Promise<{ id: string; dan
 export async function usunZPoczekalni(tx: PortBazy, id: string): Promise<void> {
   await tx.run("DELETE FROM poczekalnia WHERE id = ? AND rodzaj_rekordu = 'zdarzenie'", [id]);
 }
-export async function probyPoczekalni(tx: PortBazy, id: string): Promise<number | null> {
-  const [w] = await wiersze(tx.all('SELECT proby FROM poczekalnia WHERE id = ?', [id]), 'probyPoczekalni');
-  return w ? liczba(w, 'proby') : null;
+export async function przyszloPoczekalni(tx: PortBazy, id: string): Promise<number | null> {
+  const [w] = await wiersze(tx.all('SELECT przyszlo_ms FROM poczekalnia WHERE id = ?', [id]), 'przyszloPoczekalni');
+  return w ? liczba(w, 'przyszlo_ms') : null;
+}
+/** Czy linia dostała zastępczego rodzica po terminie poczekalni (EB1, P-1080): ślad w `blad` (`dziennik_rodzic_zastapiony`). */
+export async function rodzicZastapiony(tx: PortBazy, id: string): Promise<boolean> {
+  const [w] = await wiersze(tx.all("SELECT 1 AS n FROM blad WHERE kod = 'dziennik_rodzic_zastapiony' AND json_extract(szczegoly, '$.zdarzenie') = ? LIMIT 1", [id]), 'rodzicZastapiony');
+  return w !== undefined;
 }
 
 /** Rzędy części: suma nieusuniętych liczników rzędów (jak r_i w RD-14/RD-15); cel drugiej części pary bez celu (BR-PRJ-014 S1, S3). */

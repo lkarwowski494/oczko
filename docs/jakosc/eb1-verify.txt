@@ -1,4 +1,4 @@
-npm run verify — EB1, 2026-11-27
+npm run verify - EB1, 2026-11-27 (po recenzji koordynatora)
 Test Suites: 749 passed, 749 total
-Tests: 8419 passed, 8419 total
+Tests: 8422 passed, 8422 total
 KOD WYJSCIA: 0

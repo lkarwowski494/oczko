@@ -5,12 +5,12 @@
 import type { Wynik } from '../domena/bledy';
 import { startDnia, wolaStraznika } from '../domena/limit';
 import type { PortBazy, WynikPartii, ZdarzenieWejsciowe } from '../domena/porty';
-import { PARTIA_SYNCHRONIZACJI, POCZEKALNIA_EKRANU_PROBY } from '../konfiguracja';
+import { PARTIA_SYNCHRONIZACJI, POCZEKALNIA_EKRANU_MS } from '../konfiguracja';
 import { parsujDziennik } from '../dane/dziennik';
 import { zapiszBladW } from '../dane/repozytoria/bledy';
 import { zapiszUstawienie } from '../dane/repozytoria/ustawienia';
 import {
-  dniLimituMiesiaca, dopiszZdarzenie, ostatniPlusPrzed, poczekalnia, poczekalniaEkranu, probyPoczekalni, stanLicznika, trescZdarzenia, usunZPoczekalni, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie,
+  dniLimituMiesiaca, dopiszZdarzenie, ostatniPlusPrzed, poczekalnia, poczekalniaEkranu, przyszloPoczekalni, rodzicZastapiony, stanLicznika, trescZdarzenia, usunZPoczekalni, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie,
 } from '../dane/repozytoria/liczniki';
 import { dodajDni } from './daty';
 import { wKolejce } from './kolejka';
@@ -38,7 +38,7 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     const byl = await trescZdarzenia(tx, l.id);
     if (byl) { // powtórzone dostarczenie (M-02) albo kolizja id (M-14)
       // Linia z ekranu blokady mogła dostać innego rodzica po progu poczekalni (P-1080): jej rodzice nie są kolizją id.
-      const innyRodzic = l.zrodlo !== 'ekran_blokady' && JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice);
+      const innyRodzic = JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice) && !(l.zrodlo === 'ekran_blokady' && await rodzicZastapiony(tx, l.id));
       if (byl.licznikId !== l.licznikId || byl.rodzaj !== l.rodzaj || innyRodzic) {
         await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_kolizja_id', szczegoly: { zdarzenie: l.id } });
       }
@@ -49,10 +49,10 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     let lRodzice = l.rodzice;
     let rodzice = await Promise.all(lRodzice.map((r) => zdarzenie(tx, r)));
     if (rodzice.some((r) => r === null)) { // rodzic jeszcze nie dotarł: poczekalnia (ADR-0005, P-110 Q1a)
-      // EB1 (P-1079): linia z ekranu blokady czeka najwyżej POCZEKALNIA_EKRANU_PROBY scaleń; potem dołącza do bieżącej głowy licznika, żeby rząd policzony
+      // EB1 (P-1079): linia z ekranu blokady czeka najwyżej POCZEKALNIA_EKRANU_MS (24 h od pierwszego przyjścia; jeden powrót z tła to 2 scalenia, więc nie liczymy wywołań); potem dołącza do bieżącej głowy licznika, żeby rząd policzony
       // na ekranie blokady nie zniknął na stałe (wartość = głowa + 1; konflikt z rozwidleniem pokazuje scal jak dla każdej innej linii).
-      const proby = l.zrodlo === 'ekran_blokady' ? await probyPoczekalni(tx, l.id) : null;
-      if (proby === null || proby + 1 < POCZEKALNIA_EKRANU_PROBY) {
+      const przyszlo = l.zrodlo === 'ekran_blokady' ? await przyszloPoczekalni(tx, l.id) : null;
+      if (przyszlo === null || terazMs - przyszlo < POCZEKALNIA_EKRANU_MS) {
         await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
         continue;
       }
