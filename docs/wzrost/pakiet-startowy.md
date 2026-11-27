@@ -10,7 +10,7 @@ Dla właściciela. Gotowe teksty, lista przed każdym wpisem, zasady odpowiedzi 
 
 ## 1. Lista 5-minutowa przed każdym wpisem
 1. Wiersz grupy w `grupy.md` (kopia szablonu w warsztacie) wypełniony, odczyt z ostatnich dni; zasada o promocji/linkach **nie zakazuje** wpisu (zakaz → grupa skreślona; osobny wątek promocyjny → tylko tam).
-2. Wariant: pierwszy wpis w ogóle C0 (pl) w grupie ogólnej; potem naprzemiennie C0 i E0 po grupach.
+2. Wariant: **pierwszy wpis w ogóle G (pl)** w grupie ogólnej — pytanie jest najmniej reklamowe (rekomendacja koordynatora, wybór właściciela 27.11); potem G, C0 i E0 po grupach, żaden wariant dwa razy z rzędu w tej samej grupie.
 3. Otwarcie pod typ grupy (ogólna / szydełkowa / początkujący), **inne niż w ostatnim wpisie** w tym języku; kolejność punktów z rotacji (poniżej: wpis 1 → 1-2-3, wpis 2 → 2-3-1, wpis 3 → 3-1-2).
 4. Link storefrontu **kraju grupy** (tabela w pkt 3); bez parametrów.
 5. Grafika: `03-wzor` w języku grupy (pkt 2; surowy kadr, bez podpisu).
@@ -33,6 +33,143 @@ Jeden obraz na wpis: surowy `03-wzor` w języku grupy (P-1032), z `oczko-warszta
 Teksty angielskie poniżej mają link `us`; dla grupy z Wielkiej Brytanii, Kanady albo Australii zamień `/us/` na `/gb/`, `/ca/` albo `/au/`.
 
 ## 4. Gotowe teksty (kopiuj; każdy z innym otwarciem, rotacją punktów i zamknięciem)
+Najpierw G (pytanie, pkt 4.1), potem C0 i E0 (pkt 4.2).
+
+## 4.1 Wariant G — pytanie o liczenie rzędów (wybór właściciela 2026-11-27 ok. 09:40 UTC; tekst G napisał koordynator; P-1070)
+Pierwszy wpis w ogóle (pkt 1): pytanie to najmniej reklamowa forma. Otwarcie pod typ grupy (1 = ogólna, 2 = szydełkowa, 3 = początkujący), reszta jak w G; punkty rotuj jak w pkt 1. Sprawdzenie zdań z opisem sklepu: `docs/wzrost.md`, T-14. Do G dodałam linię ograniczeń (jawność części płatnej; T-12), której nie było w tekście koordynatora — skreśl ją, jeśli wolisz tekst bez niej. Zdanie o ocenie w G jest w brzmieniu z wybranego tekstu (krótszym niż standardowe z pkt 6; te same warunki: warunkowe, szczere, bez nagrody).
+
+#### G-PL-1 (ogólna dziewiarska)
+```text
+Pytanie do Was: jak liczycie rzędy? Kartka i ołówek, licznik na drut, aplikacja, a może pamięć?
+
+Pytam, bo jestem autorem aplikacji Oczko i chcę ją robić tak, żeby naprawdę pomagała. Dziś umie to:
+• licznik rzędów: +1 stuknięciem, −1 cofa pomyłkę
+• wzór z PDF albo zdjęcia obok licznika, z zaznaczonym przez Ciebie rzędem
+• powrót po przerwie dokładnie w to miejsce, z notatką
+
+Jest na iPhone'a i iPada, bez konta i bez reklam:
+https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze.
+
+Chętnie przeczytam, czego Wam brakuje w takich narzędziach. A jeśli Oczko się przyda, będę wdzięczny za szczerą ocenę w App Store.
+```
+
+#### G-PL-2 (szydełkowa)
+```text
+Pytanie do szydełkujących: jak liczycie rzędy — kreski na kartce, licznik na palec, aplikacja, a może pamięć?
+
+Pytam, bo jestem autorem aplikacji Oczko i chcę ją robić tak, żeby naprawdę pomagała. Dziś umie to:
+• licznik rzędów: +1 stuknięciem, −1 cofa pomyłkę
+• wzór z PDF albo zdjęcia obok licznika, z zaznaczonym przez Ciebie rzędem
+• powrót po przerwie dokładnie w to miejsce, z notatką
+
+Jest na iPhone'a i iPada, bez konta i bez reklam:
+https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze.
+
+Chętnie przeczytam, czego Wam brakuje w takich narzędziach. A jeśli Oczko się przyda, będę wdzięczny za szczerą ocenę w App Store.
+```
+
+#### G-PL-3 (początkujący)
+```text
+Pytanie do osób, które dopiero uczą się dziergać: jak pilnujecie, w którym jesteście rzędzie — kartka, licznik, aplikacja, a może liczycie w głowie?
+
+Pytam, bo jestem autorem aplikacji Oczko i chcę ją robić tak, żeby naprawdę pomagała. Dziś umie to:
+• licznik rzędów: +1 stuknięciem, −1 cofa pomyłkę
+• wzór z PDF albo zdjęcia obok licznika, z zaznaczonym przez Ciebie rzędem
+• powrót po przerwie dokładnie w to miejsce, z notatką
+
+Jest na iPhone'a i iPada, bez konta i bez reklam:
+https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze.
+
+Chętnie przeczytam, czego Wam brakuje w takich narzędziach. A jeśli Oczko się przyda, będę wdzięczny za szczerą ocenę w App Store.
+```
+
+#### G-EN-1 (general knitting)
+```text
+Question for you: how do you count your rows? Pen and paper, a counter on the needle, an app, or just memory?
+
+I'm asking because I'm the developer of an app called Oczko, and I want to make it genuinely helpful. Today it can do this:
+• row counter: +1 with a tap, −1 undoes a mistake
+• your pattern from a PDF or a photo next to the counter, with the row you mark
+• after a break it opens right where you stopped, with your note
+
+It's on iPhone and iPad, with no account and no ads:
+https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+Free for 5 crafting days a month; Oczko Pro removes the limit; export always works.
+
+I'd love to read what's missing for you in tools like this. And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.
+```
+
+#### G-EN-2 (crochet)
+```text
+Question for crocheters: how do you keep track of your rows — tally marks on paper, a finger counter, an app, or just memory?
+
+I'm asking because I'm the developer of an app called Oczko, and I want to make it genuinely helpful. Today it can do this:
+• row counter: +1 with a tap, −1 undoes a mistake
+• your pattern from a PDF or a photo next to the counter, with the row you mark
+• after a break it opens right where you stopped, with your note
+
+It's on iPhone and iPad, with no account and no ads:
+https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+Free for 5 crafting days a month; Oczko Pro removes the limit; export always works.
+
+I'd love to read what's missing for you in tools like this. And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.
+```
+
+#### G-EN-3 (beginners)
+```text
+Question for anyone still learning: how do you keep track of which row you're on — paper, a counter, an app, or your head?
+
+I'm asking because I'm the developer of an app called Oczko, and I want to make it genuinely helpful. Today it can do this:
+• row counter: +1 with a tap, −1 undoes a mistake
+• your pattern from a PDF or a photo next to the counter, with the row you mark
+• after a break it opens right where you stopped, with your note
+
+It's on iPhone and iPad, with no account and no ads:
+https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+Free for 5 crafting days a month; Oczko Pro removes the limit; export always works.
+
+I'd love to read what's missing for you in tools like this. And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.
+```
+
+#### G-K-PL — **czeka na kody (KD1)**; nie publikować, dopóki kody nie istnieją
+Otwarcie jak G-PL-1/2/3; bez zdania o tym, co dzieje się po roku (odnowienie) — dojdzie po wyniku KD1 (źródła Apple); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu.
+```text
+Pytanie do Was: jak liczycie rzędy? Kartka i ołówek, licznik na drut, aplikacja, a może pamięć?
+
+Pytam, bo jestem autorem aplikacji Oczko i chcę ją robić tak, żeby naprawdę pomagała. Dziś umie to:
+• licznik rzędów: +1 stuknięciem, −1 cofa pomyłkę
+• wzór z PDF albo zdjęcia obok licznika, z zaznaczonym przez Ciebie rzędem
+• powrót po przerwie dokładnie w to miejsce, z notatką
+
+Jest na iPhone'a i iPada, bez konta i bez reklam:
+https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+Aplikacja jest w fazie rozwoju, dlatego na start daję rok Oczko Pro za darmo: kod <KOD> → <link realizacji>
+
+Chętnie przeczytam, czego Wam brakuje w takich narzędziach.
+```
+
+#### G-K-EN — **czeka na kody (KD1)**; nie publikować, dopóki kody nie istnieją
+Otwarcie jak G-EN-1/2/3; bez zdania o tym, co dzieje się po roku (odnowienie) — dojdzie po wyniku KD1 (źródła Apple); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu.
+```text
+Question for you: how do you count your rows? Pen and paper, a counter on the needle, an app, or just memory?
+
+I'm asking because I'm the developer of an app called Oczko, and I want to make it genuinely helpful. Today it can do this:
+• row counter: +1 with a tap, −1 undoes a mistake
+• your pattern from a PDF or a photo next to the counter, with the row you mark
+• after a break it opens right where you stopped, with your note
+
+It's on iPhone and iPad, with no account and no ads:
+https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+The app is still in development, so to start I'm giving a year of Oczko Pro for free: code <CODE> → <redemption link>
+
+I'd love to read what's missing for you in tools like this.
+```
+
+
+## 4.2 Warianty C0 i E0
 Każdy tekst zawiera linię ograniczeń (5 dni robótkowych, Pro, eksport, bez konta/reklam/śledzenia), link i — na końcu — zdanie o ocenie (pkt 6). Liczba w nazwie to numer otwarcia: 1 = ogólna dziewiarska, 2 = szydełkowa, 3 = początkujący.
 
 ### C0-PL-1 (ogólna dziewiarska; punkty 1-2-3)
@@ -239,8 +376,10 @@ Każdy tekst kończy się zdaniem o ocenie (pkt 6). Szkic wariantu z kodem (K, `
 - **Prośba o funkcję:** podziękuj, zapisz w dzienniku (kolumna „Uwagi”) — nic nie obiecuj.
 - **Nie rób:** próśb o polubienia, udostępnienia i oceny w komentarzach (poza zdaniem końcowym wpisu); edytowania wpisu, żeby go „podbić”; prywatnych wiadomości z reklamą do osób, które nie pytały; kont pomocniczych ani zamawiania opinii (jawność: dyrektywa 2005/29/WE zał. I pkt 22, 23c).
 
-## 6. Prośba o ocenę — decyzja właściciela (27.11.2026 ok. 09:25 UTC, KO-218; P-1069)
+## 6. Prośba o ocenę — decyzja właściciela (27.11.2026 ok. 09:25 UTC, KO-218; P-1070)
 Na końcu **każdego** wpisu stoi zdanie, jako ostatnie: PL „A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.” · EN „And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.”. Warunkowe („jeśli się przyda”), szczere, **bez nagrody, bez warunku dostępu i bez „5 gwiazdek”** (wytyczne Apple, sekcja 3: „paid, incentivized, filtered, or fake feedback”). Poza tym zdaniem nie proś o oceny, polubienia ani udostępnienia — ani w komentarzach, ani w prywatnych wiadomościach. **Kod** (gdy będzie) nie może być powiązany z oceną: wpis z kodem (wariant K) nie dostaje tej prośby, dopóki koordynator nie rozstrzygnie, jak je rozdzielić. Sklep pokazuje 0 ocen (lookup 2026-11-27).
+
+Wariant G ma własne zdanie o ocenie (wybrane przez właściciela razem z tekstem G): „A jeśli Oczko się przyda, będę wdzięczny za szczerą ocenę w App Store.” / “And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.” — te same warunki (warunkowe, szczere, bez nagrody i bez „5 gwiazdek”).
 
 ## 7. Zasada stop
 - **Wpis usunięty przez administratora = grupa skreślona**, bez ponawiania.

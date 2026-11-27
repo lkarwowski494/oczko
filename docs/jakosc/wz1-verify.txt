@@ -1,4 +1,4 @@
-WZ1: verify po zdaniu o ocenie (P-1069), 2026-11-27
+WZ1: verify po wariancie G i P-1069/P-1070, 2026-11-27
 Test Suites: 747 passed, 747 total
 Tests:       8398 passed, 8398 total
 KOD=0
