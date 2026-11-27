@@ -65,6 +65,26 @@ describe('Aplikacja', () => {
     await waitFor(() => expect(uslugi.scalDziennik.mock.calls.length).toBe(przed + 1));
   });
 
+  test('EB1 (P-1082, KO-226): scalenie dziennika zaczyna się już przy wychodzeniu z tła („inactive”), przed „active” — bez półsekundowej starej liczby', async () => {
+    const { uslugi, przejdz } = pokaz();
+    await znajdzPrzycisk('+1 row', 'button');
+    const przed = uslugi.scalDziennik.mock.calls.length;
+    przejdz('background');
+    przejdz('inactive'); // iOS: tło → inactive → active; blokada → odblokowanie przechodzi przez „inactive”
+    await waitFor(() => expect(uslugi.scalDziennik.mock.calls.length).toBe(przed + 1));
+    przejdz('active');
+    await waitFor(() => expect(uslugi.scalDziennik.mock.calls.length).toBe(przed + 2)); // ponowne scalenie jest idempotentne i tanie (UUID)
+  });
+
+  test('EB1: „inactive” bez wcześniejszego tła (Centrum Sterowania, powiadomienie) nie scala dziennika', async () => {
+    const { uslugi, przejdz } = pokaz();
+    await znajdzPrzycisk('+1 row', 'button');
+    const przed = uslugi.scalDziennik.mock.calls.length;
+    przejdz('inactive');
+    await new Promise((r) => setTimeout(r, 20));
+    expect(uslugi.scalDziennik.mock.calls.length).toBe(przed);
+  });
+
   test('R-091 / NFR-DAN-002: przejście w tło wyłącza każdy tag ekranu aktywnego i robi checkpoint', async () => {
     const { ekranAktywny, uslugi, przejdz } = pokaz(true);
     await znajdzPrzycisk('+1 row', 'button');

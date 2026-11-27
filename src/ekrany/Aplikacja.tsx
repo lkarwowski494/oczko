@@ -176,6 +176,10 @@ export function Aplikacja(p: PropsAplikacji): React.ReactElement {
       wTle.current = true;
       wyjdz(); // każdy włączony tag wyłączony (rejestr Expo 7)
       void uslugi.przyTle();
+    } else if (c === 'inactive') {
+      // EB1 (P-1082, KO-226): iOS wychodzi z tła przez „inactive” (animacja powrotu); scalenie +1 z ekranu blokady zaczyna się już wtedy, więc po „active”
+      // ekran nie pokazuje przez chwilę wartości sprzed scalenia. Ponowne scalenie na „active” jest idempotentne (UUID, ADR-0008).
+      if (wTle.current) void uslugi.scalDziennik().then(async () => { if (p.dzialania?.odswiez) { const l = await p.dzialania.odswiez(); ustawStan((s) => (s ? { ...s, licznik: l } : s)); } });
     } else if (c === 'active') {
       void uslugi.scalDziennik().then(async () => { if (p.dzialania?.odswiez) { const l = await p.dzialania.odswiez(); ustawStan((s) => (s ? { ...s, licznik: l } : s)); } });
       wTle.current = false;

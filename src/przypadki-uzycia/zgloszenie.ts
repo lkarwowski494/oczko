@@ -16,9 +16,13 @@ export async function przygotujZgloszenie(z: Zaleznosci): Promise<Wynik<{ tresc:
     licznosci.push(`${t}=${n ? liczba(n, 'n') : 0}`);
   }
   const bledy = await wiersze(z.baza.all('SELECT czas_ms, kod, szczegoly FROM blad ORDER BY id DESC LIMIT ?', [OSTATNIE_BLEDY]), 'zgloszenie'); // z `szczegoly` tylko ramki js_* (ramki-bledu.ts)
+  // EB1 (P-1082, KO-225): ekran blokady — linie czekające na rodzica i liczniki w rozwidleniu (same liczby, NFR-PRY-001); kody `dziennik_*` w `errors`.
+  const [czekajace] = await wiersze(z.baza.all("SELECT count(*) AS n FROM poczekalnia WHERE zrodlo = 'ekran_blokady'"), 'zgloszenie');
+  const [konflikty] = await wiersze(z.baza.all('SELECT count(*) AS n FROM licznik WHERE konflikt = 1'), 'zgloszenie');
   const tresc = [
     `schema=${WERSJA_SCHEMATU}`,
     `counts: ${licznosci.join(' ')}`,
+    `lockscreen: pending=${czekajace ? liczba(czekajace, 'n') : 0} conflicts=${konflikty ? liczba(konflikty, 'n') : 0}`,
     'errors:',
     ...bledy.flatMap((b) => linieBledu({ czasMs: liczba(b, 'czas_ms'), kod: tekst(b, 'kod'), szczegoly: b.szczegoly })),
   ].join('\n');

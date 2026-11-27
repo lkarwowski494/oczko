@@ -48,7 +48,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-limit-sklepu.test.ts` | zielony (główny zestaw) | 5 | KP-06, P-396 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-pro.test.ts` | zielony (główny zestaw) | 4 | KP-06, P-103 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-blad.test.ts` | zielony (główny zestaw) | 2 | R-024 | `src/dane/dziennik`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-poczekalnia-ekranu.test.ts` | zielony (główny zestaw) | 5 | — | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-poczekalnia-ekranu.test.ts` | zielony (główny zestaw) | 7 | — | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-pro.test.ts` | zielony (główny zestaw) | 5 | P-103, P-111 | `src/dane/dziennik`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-sklejenie.test.ts` | zielony (główny zestaw) | 4 | P-123, P-124, R-022, R-023 | `src/dane/dziennik`<br>`src/domena/porty` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-skroc-blad.test.ts` | zielony (główny zestaw) | 1 | R-022 | `src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
@@ -151,7 +151,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zdjecie-bez-metadanych.test.ts` | zielony (główny zestaw) | 1 | P-219 | `src/dane/pliki/jpeg`<br>`src/kompozycja/e2e-zdjecie`<br>`src/kompozycja/zdjecie-bez-metadanych`<br>`src/przypadki-uzycia/zdjecia` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-kontakt.test.ts` | zielony (główny zestaw) | 4 | BR-DAN-011, P-193, P-195, P-199 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-potwierdzenia.test.ts` | zielony (główny zestaw) | 6 | P-135, P-139, R-021 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/platforma/zegarek`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/aplikacja.test.tsx` | zielony (główny zestaw) | 6 | BR-DAN-012/S2, BR-LIC-001, BR-LIC-001/S1, KP-07, KP-08, KP-13, NFR-DAN-002, NFR-PIE-001, R-020, R-091 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne` | ER-68, Z07-11, Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zgloszenie-ekran-blokady.test.ts` | zielony (główny zestaw) | 2 | NFR-DAN-003, NFR-PRY-001 | `src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/zgloszenie` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/aplikacja.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-012/S2, BR-LIC-001, BR-LIC-001/S1, KP-07, KP-08, KP-13, NFR-DAN-002, NFR-PIE-001, R-020, R-091 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne` | ER-68, Z07-11, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza-ax5-trasa.test.tsx` | zielony (główny zestaw) | 7 | NFR-DOS-002, P-377 | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza.test.tsx` | zielony (główny zestaw) | 4 | P-262, P-271, P-275 | `src/ekrany/Arkusz`<br>`src/ekrany/Formularze`<br>`src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-klawiatura.test.tsx` | zielony (główny zestaw) | 3 | P-255, P-262 | `src/ekrany/Arkusz`<br>`src/ekrany/motyw` | — |
@@ -531,4 +532,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 
-Razem plików testów: 527; zależnych od poprawek: 327.
+Razem plików testów: 528; zależnych od poprawek: 328.

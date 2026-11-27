@@ -23,6 +23,7 @@ const BEZ_LIMITU = Number.MAX_SAFE_INTEGER; // scalenie niczego nie odrzuca z po
 async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], terazMs: number): Promise<WynikPartii> {
   const w: WynikPartii = { scalono: 0, pominieto: 0, potwierdzone: [] };
   const dotkniete = new Set<string>();
+  const ostatnie = new Map<string, string>(); // licznik → ostatnie zdarzenie dopisane w tej partii (głowa w bazie przelicza się dopiero po pętli)
   // ADR-0009 (2026-10-26) pkt 3: id linii z zegarka, które po COMMIT są w `zdarzenie` albo odrzucone na stałe; poczekalnia — nie.
   const potwierdz = (l: ZdarzenieWejsciowe) => { if (l.zrodlo === 'zegarek' && !w.potwierdzone.includes(l.id)) w.potwierdzone.push(l.id); };
   for (const l of linie) {
@@ -36,7 +37,9 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     }
     const byl = await trescZdarzenia(tx, l.id);
     if (byl) { // powtórzone dostarczenie (M-02) albo kolizja id (M-14)
-      if (byl.licznikId !== l.licznikId || byl.rodzaj !== l.rodzaj || JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice)) {
+      // Linia z ekranu blokady mogła dostać innego rodzica po progu poczekalni (P-1080): jej rodzice nie są kolizją id.
+      const innyRodzic = l.zrodlo !== 'ekran_blokady' && JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice);
+      if (byl.licznikId !== l.licznikId || byl.rodzaj !== l.rodzaj || innyRodzic) {
         await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_kolizja_id', szczegoly: { zdarzenie: l.id } });
       }
       potwierdz(l); // kolizja to też odrzucenie na stałe: ponowienie z zegarka dałoby ten sam wynik
@@ -53,7 +56,8 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
         await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
         continue;
       }
-      lRodzice = s.glowa ? [s.glowa] : [];
+      const glowaTeraz = ostatnie.get(l.licznikId) ?? s.glowa; // P1-1 recenzji: kolejna osierocona linia w partii idzie za poprzednią, nie za tą samą głową
+      lRodzice = glowaTeraz ? [glowaTeraz] : [];
       rodzice = await Promise.all(lRodzice.map((r) => zdarzenie(tx, r)));
       if (rodzice.some((r) => r === null)) { // głowa licznika nieznana zdarzeniom: nie zgadujemy, zostaje w poczekalni
         await poczekalnia(tx, { id: l.id, dane: JSON.stringify(l), powod: 'brak_rodzica', zrodlo: l.zrodlo, terazMs });
@@ -75,6 +79,7 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     }
     await zapiszOstatniaPrace(tx, s.projektId, l.czasMs);
     await usunZPoczekalni(tx, l.id);
+    ostatnie.set(l.licznikId, l.id);
     dotkniete.add(l.licznikId);
     w.scalono += 1;
     potwierdz(l);

@@ -1,4 +1,4 @@
-// EB1 (KO-223/KO-224, P-1079): linia +1 z ekranu blokady, której rodzic nie jest jeszcze w bazie, trafia do `poczekalnia` (ADR-0005),
+// PU-345 (katalog: docs/jakosc/przypadki-uzycia.md). // EB1 (KO-223/KO-224, P-1079): linia +1 z ekranu blokady, której rodzic nie jest jeszcze w bazie, trafia do `poczekalnia` (ADR-0005),
 // a dziennik i tak jest skracany. Poczekalnia `ekran_blokady` musi być ponawiana przy każdym scaleniu (idempotentnie po UUID), a rodzic,
 // który nie dochodzi, nie może zostawić rzędów niewidocznych na stałe (zasada wspólna 10).
 import type { ZdarzenieWejsciowe } from '../../src/domena/porty';
@@ -20,7 +20,7 @@ const stan = (s: Awaited<ReturnType<typeof zLicznikiem>>) => jeden<{ wartosc: nu
 const wPoczekalni = (s: Awaited<ReturnType<typeof zLicznikiem>>) => ile(s.baza, 'poczekalnia', "zrodlo = 'ekran_blokady'");
 
 describe('poczekalnia ekranu blokady (EB1, P-1079)', () => {
-  test('rodzic dochodzi w późniejszym scaleniu → linia czekająca scalona: 10 + 2, poczekalnia pusta', async () => {
+  test('PU-345: rodzic dochodzi w późniejszym scaleniu → linia czekająca scalona: 10 + 2, poczekalnia pusta', async () => {
     const s = await zLicznikiem(10);
     s.dziennik.linie.push(linia('d2', ['d1'], 1)); // rodzic d1 jeszcze nie dotarł
     await scalDziennik(s.z);
@@ -56,7 +56,7 @@ describe('poczekalnia ekranu blokady (EB1, P-1079)', () => {
     expect(await wPoczekalni(s)).toBe(0);
   });
 
-  test(`rodzic nigdy nie dochodzi: po ${POCZEKALNIA_EKRANU_PROBY} próbach linia dołączona do bieżącej głowy — rząd nie ginie, bez dublowania`, async () => {
+  test(`PU-345: rodzic nigdy nie dochodzi: po ${POCZEKALNIA_EKRANU_PROBY} próbach linia dołączona do bieżącej głowy — rząd nie ginie, bez dublowania`, async () => {
     const s = await zLicznikiem(10);
     s.dziennik.linie.push(linia('d2', ['nieznany'], 1));
     for (let i = 0; i < POCZEKALNIA_EKRANU_PROBY; i += 1) {
@@ -81,5 +81,26 @@ describe('poczekalnia ekranu blokady (EB1, P-1079)', () => {
     s.dziennik.linie.length = 0; // plik pusty
     await scalDziennik(s.z);
     expect(await wPoczekalni(s)).toBe(1); // nadal czeka, nie zniknęła
+  });
+
+  test('recenzja P1-1: dwie osierocone linie tego samego licznika w jednej partii po progu → łańcuch 11, 12 (nie dwa rozwidlone 11)', async () => {
+    const s = await zLicznikiem(10);
+    s.dziennik.linie.push(linia('o1', ['brak-1'], 0), linia('o2', ['brak-2'], 1));
+    for (let i = 0; i < POCZEKALNIA_EKRANU_PROBY; i += 1) await scalDziennik(s.z);
+    expect(await stan(s)).toMatchObject({ wartosc: 10 });
+    await scalDziennik(s.z);
+    expect(await stan(s)).toEqual({ wartosc: 12, glowa: 'o2', konflikt: 0 });
+    expect(await wPoczekalni(s)).toBe(0);
+  });
+
+  test('recenzja P1-2: ponowna dostawa linii z zastąpionym rodzicem nie zapisuje fałszywego dziennik_kolizja_id', async () => {
+    const s = await zLicznikiem(10);
+    s.dziennik.linie.push(linia('d2', ['nieznany'], 1));
+    for (let i = 0; i <= POCZEKALNIA_EKRANU_PROBY; i += 1) await scalDziennik(s.z);
+    expect(await stan(s)).toMatchObject({ wartosc: 11 });
+    s.dziennik.linie.push(linia('d2', ['nieznany'], 1));
+    await scalDziennik(s.z);
+    expect(await ile(s.baza, 'blad', "kod = 'dziennik_kolizja_id'")).toBe(0);
+    expect(await ile(s.baza, 'zdarzenie', "zrodlo = 'ekran_blokady'")).toBe(1);
   });
 });
