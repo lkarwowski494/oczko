@@ -8,7 +8,7 @@ Aplikacja dla osób, które dziergają na drutach i szydełkują; w przebudowie 
 - Porównanie z istniejącym kodem to osobny krok po roli 07; dopiero on i role 05, 08, 12 sięgają do `archiwum/stara-wersja/`.
 
 ## Stan projektu (aktualizacja: 2026-10-21)
-- Etap: w budowie (przebudowa); poprzednia wersja 0.1.0 tylko w TestFlight (build 1004), dane użytkowników: tylko właściciel (P-070, czysty start bez migracji 0.1.0)
+- Etap: w sprzedaży w App Store: 1.0.1 (build 1241) od 26.11.2026 i 1.0 (build 1221) od 25.11.2026; dane użytkowników: czysty start bez migracji 0.1.0 (P-070), liczba użytkowników [DO USTALENIA]; praca dalej na gałęzi integracji (aktualizacja 27.11.2026, KO-215)
 - Sklep (App Store Connect): częściowo (rekord aplikacji i TestFlight; umowa Paid Apps i produkty: [DO USTALENIA])
 - Rynek główny: globalny, 35 lokalizacji jak Trening; kolejność storefrontów wyznacza bramka 02 · repo treści prywatnych: `lkarwowski494/oczko-warsztat` (prywatne, zapis prosto na `main`, P-010)
 - Standard marki: wysoki (zasady biblioteki); opłacalność obu pokazuje rola 02

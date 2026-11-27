@@ -1,0 +1,71 @@
+# RZ2 — próby czułości kontroli kadrów (scripts/ci/kontrola-zakreslen.mjs @ 8685b098) i dowody czerwony/zielony
+# 2026-11-25; kopia robocza w scratchpad, repo bez zmian. Materiał: prawdziwy kadr run-45564086208/6.9/en (500 px) z tests/wydanie/dane/zr8c-pasek-licznika.
+# Metoda: ImageMagick convert na kopii kadru 03/04, potem node scripts/ci/kontrola-zakreslen.mjs <katalog>. Ścieżki skrócone.
+
+=== kontrola: kadry niezmienione (wynik bazowy)
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+=== M1: neutralna czarna linia 2 px na tekście wiersza 'Row 21' (03: y=578-579, 04: y=589-590) — OCZEKIWANE: BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+BŁĄD m1-neutral-na-tekscie/6.9/en/03-wzor.png: linia znacznika (wiersze kadru 578, 579) leży na tekście wiersza (573–583) — znacznik ma s
+BŁĄD m1-neutral-na-tekscie/6.9/en/04-zakreslenie.png: linia znacznika (wiersze kadru 589, 590) leży na tekście wiersza (584–594) — znaczn
+Kontrola zakreśleń: 2 błędów
+kod wyjścia: 1
+
+=== M2: ta sama linia, ale ciemnoczerwona rgb(110,30,30) (nasycenie 80 > NASYCENIE_MAX 30) — OCZEKIWANE: BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+=== M3: ta sama linia czarna, ale tylko 55% szerokości (< PROG_LINII 60%) — OCZEKIWANE: BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+=== M4: znacznik usunięty z kadrów 03 i 04 (linie zamalowane na biało) — OCZEKIWANE: BŁĄD/ostrzeżenie
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.61 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 12/12 wierszy kadru (1.00, próg 0.65)
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+=== M5: pas 1 = 51 wierszy (395-445), pas 2 = 71 wierszy (458-528, środek na wierszu 13), pasy zakrywają sąsiednie wiersze tekstu (Cast on, Rows 10-12, Rows 14-20) — OCZEKIWANE: BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.00 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 71/51 wierszy kadru (1.39, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+=== M6: pas 1 = 18 wierszy, pas 2 = 33 wierszy (1,83×; za gruby) — OCZEKIWANE: BŁĄD
+OK 6.9/en: 03=1, 04=2 pasów zakreślenia
+POŁOŻENIE OK 6.9/en: pas 2 na wierszu 13 (odchylenie 0.11 wysokości wiersza, próg 0.9)
+GRUBOŚĆ OK 6.9/en: pas 2 / pas 1 = 33/18 wierszy kadru (1.83, próg 0.65)
+ZNACZNIK OK 6.9/en/03-wzor.png: linie 540,551 poza tekstem wierszy
+ZNACZNIK OK 6.9/en/04-zakreslenie.png: linie 551,562 poza tekstem wierszy
+Kontrola zakreśleń: OK (1 par)
+kod wyjścia: 0
+
+
+# Dowód czerwony/zielony (powtórzony przez RZ2 w kopii 8685b098, node_modules z npm ci; OCZKO_WYMAGAJ_IMAGEMAGICK=1)
+# (1) zr8c-pasek-licznika.test.ts na skrypcie kontrola-zakreslen.mjs z 4eea5b1d: Tests: 5 failed, 11 passed, 16 total (padają: en 03, en 04, hr 03, it 03 — linie [540,551,1002]/[551,562,1002], czyli wiersz 1002 = pasek licznika — oraz pełna kontrola en)
+# (2) zakreslenie-grubosc-znacznik.test.ts na skrypcie z 8b8a2c3c (sprzed ZR8): Tests: 64 failed, 64 total
+# (3) wzor-sklepu-znacznik-przerwa.test.ts na wzor-sklepu.ts z 0f349489 (sprzed ZR8b): Tests: 6 failed, 8 passed, 14 total (padają testy marginesu/pustego pasa/zakładki, en i pl; przechodzą tylko testy niezależne od geometrii)
+# (4) po zmianach (8685b098): zakreslenie-grubosc-znacznik, zr8c-pasek-licznika, zakreslenie-polozenie, wzor-sklepu-znacznik-przerwa, kontrola-zakreslen: 5 suites passed, 149 tests passed

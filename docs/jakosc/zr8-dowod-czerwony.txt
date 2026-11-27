@@ -1,0 +1,68 @@
+# ZR8 dowód czerwony (2026-11-25): nowy test na kontroli SPRZED ZR8 (git HEAD:scripts/ci/kontrola-zakreslen.mjs), prawdziwe wycinki kadrów z przebiegów 45021511463 i 44758366101
+    ✕ cs: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ da: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ de: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ el: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ es: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ es-419: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ fi: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ fr: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ en: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ pl: pas 2 to cienka kreska → BŁĄD z nazwą pliku
+    ✕ hr: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ hu: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ id: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ it: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ ja: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ ko: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ ms: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ nb: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ nl: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ pt: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ pt-BR: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ ro: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ ru: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ sk: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ sv: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ tr: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ uk: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ vi: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ zh-Hant: pas 2 pełny jak pas 1 → GRUBOŚĆ OK, bez błędu grubości
+    ✕ iPad 13″ en: pas 2 to cienka kreska → BŁĄD
+    ✕ iPad 13″ pl: pas 2 to cienka kreska → BŁĄD
+    ✕ cs: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ da: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ de: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ el: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ es: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ es-419: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ fi: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ fr: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ en: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ pl: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ hr: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ hu: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ id: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ it: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ ja: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ ko: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ ms: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ nb: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ nl: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ pt: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ pt-BR: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ ro: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ ru: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ sk: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ sv: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ tr: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ uk: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ vi: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ zh-Hant: dolna linia znacznika leży na tekście wiersza 21 → BŁĄD z nazwą pliku
+    ✕ kod wyjścia 1; błędów grubości jest dokładnie tyle, ile kadrów z cienką kreską (10 iPhone + 2 iPad), a błędów znacznika tyle, ile kadrów iPhone (29)
+    ✕ linie w przerwie między wierszami → ZNACZNIK OK, bez BŁĘDU znacznika
+    ✕ linia na tekście wiersza → BŁĄD (kontrola nie przepuszcza poprawionego położenia z tekstem pod linią)
+    ✕ kadr poprawiony ma jednocześnie pas 2 pełny i położenie na wierszu 13 (jedyną różnicą względem „it” jest znacznik)
+Test Suites: 1 failed, 1 total
+Tests:       64 failed, 64 total
+# Zielono (ta sama paczka testów po poprawce kontroli): 64 passed, 64 total — patrz docs/jakosc/zr8-verify.txt

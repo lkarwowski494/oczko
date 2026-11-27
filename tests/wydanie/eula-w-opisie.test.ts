@@ -8,7 +8,7 @@ import { join } from 'node:path';
 
 const KAT = join(__dirname, '../../docs/wydanie/metadane');
 const EULA = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
-const pliki = readdirSync(KAT).filter((f) => f.endsWith('.store.json')).sort();
+const pliki = readdirSync(KAT).filter((f) => f.endsWith('.store.json') && f !== 'co-nowego-1-0-1.store.json').sort(); // WY1 (KO-203): plik „What’s New” 1.0.1 ma tylko releaseNotes, bez opisu — poza tym zbiorem
 const opisy: [string, string][] = [];
 for (const f of pliki) {
   const info = (JSON.parse(readFileSync(join(KAT, f), 'utf8')).apple?.info ?? {}) as Record<string, { description?: string }>;

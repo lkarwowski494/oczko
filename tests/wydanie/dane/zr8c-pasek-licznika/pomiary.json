@@ -1,0 +1,135 @@
+{
+ "zrodlo": "artefakty sklep-zrzuty-surowe: przebieg 45564086208 (all × iPhone, 4eea5b1d; artefakt 15026644922) i 45564082350 (en,pl × iPhone,iPad; artefakt 15025210602); kadry zmniejszone do 500 px szerokości (SZEROKOSC_ANALIZY), bez zmian pikseli poza tym",
+ "kadry": {
+  "run-45564086208/6.9/en/03-wzor.png": {
+   "opis": "iPhone 6.9″ en 03",
+   "wymiar": "500x1086",
+   "wierszPaskaLicznika": 1002,
+   "pasek": {
+    "ciemne": 0.626,
+    "neutralne": 0.272
+   },
+   "liniaZnacznika": {
+    "540": {
+     "ciemne": 0.988,
+     "neutralne": 0.988
+    },
+    "551": {
+     "ciemne": 0.962,
+     "neutralne": 0.962
+    }
+   }
+  },
+  "run-45564086208/6.9/en/04-zakreslenie.png": {
+   "opis": "iPhone 6.9″ en 04",
+   "wymiar": "500x1086",
+   "wierszPaskaLicznika": 1002,
+   "pasek": {
+    "ciemne": 0.626,
+    "neutralne": 0.272
+   },
+   "liniaZnacznika": {
+    "551": {
+     "ciemne": 0.988,
+     "neutralne": 0.988
+    },
+    "562": {
+     "ciemne": 0.962,
+     "neutralne": 0.962
+    }
+   }
+  },
+  "run-45564086208/6.9/pl/03-wzor.png": {
+   "opis": "iPhone 6.9″ pl 03",
+   "wymiar": "500x1086",
+   "wierszPaskaLicznika": 1019,
+   "pasek": {
+    "ciemne": 0.548,
+    "neutralne": 0.118
+   },
+   "liniaZnacznika": {
+    "545": {
+     "ciemne": 0.984,
+     "neutralne": 0.984
+    },
+    "546": {
+     "ciemne": 0.988,
+     "neutralne": 0.988
+    },
+    "556": {
+     "ciemne": 0.958,
+     "neutralne": 0.958
+    },
+    "557": {
+     "ciemne": 0.96,
+     "neutralne": 0.96
+    }
+   }
+  },
+  "run-45564086208/6.9/hr/03-wzor.png": {
+   "opis": "iPhone 6.9″ hr 03",
+   "wymiar": "500x1086",
+   "wierszPaskaLicznika": 1002,
+   "pasek": {
+    "ciemne": 0.656,
+    "neutralne": 0.31
+   },
+   "liniaZnacznika": {
+    "540": {
+     "ciemne": 0.988,
+     "neutralne": 0.988
+    },
+    "551": {
+     "ciemne": 0.962,
+     "neutralne": 0.962
+    }
+   }
+  },
+  "run-45564086208/6.9/it/03-wzor.png": {
+   "opis": "iPhone 6.9″ it 03",
+   "wymiar": "500x1086",
+   "wierszPaskaLicznika": 1002,
+   "pasek": {
+    "ciemne": 0.644,
+    "neutralne": 0.302
+   },
+   "liniaZnacznika": {
+    "540": {
+     "ciemne": 0.988,
+     "neutralne": 0.988
+    },
+    "551": {
+     "ciemne": 0.962,
+     "neutralne": 0.962
+    }
+   }
+  },
+  "run-45564082350/ipad-13/en/03-wzor.png": {
+   "opis": "iPad 13″ en 03",
+   "wymiar": "500x375",
+   "wierszPaskaLicznika": 331,
+   "pasek": {
+    "ciemne": 0.32,
+    "neutralne": 0.202
+   },
+   "liniaZnacznika": {
+    "302": {
+     "ciemne": 0.902,
+     "neutralne": 0.784
+    },
+    "303": {
+     "ciemne": 0.904,
+     "neutralne": 0.786
+    },
+    "311": {
+     "ciemne": 0.882,
+     "neutralne": 0.764
+    },
+    "312": {
+     "ciemne": 0.886,
+     "neutralne": 0.768
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,143 @@
+ZR8b (KO-202, P-1038): test wzor-sklepu-znacznik-przerwa.test.ts na fiksturze SPRZED zmiany (0f349489; src/kompozycja/e2e/wzor-sklepu.ts odłożony przez git stash) — oczekiwane CZERWONE
+polecenie: npx jest tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts
+data: 2026-11-25
+
+FAIL iOS tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts
+  ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — en
+    ✓ wiersz 21 istnieje dokładnie raz (2 ms)
+    ✕ żaden napis strony (tytuł ani wiersz) nie dotyka pasa znacznika: margines w pkt PDF > 0 i ≥ 4 pkt UIKit na każdym urządzeniu (3 ms)
+    ✕ pas leży w pustym pasie: nad nim i pod nim jest tekst (wiersze 20 i 21), a margines z każdej strony ≥ 4 pkt UIKit (2 ms)
+    ✕ zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21 (1 ms)
+    ✓ wiersze 9 i 13 (zakreślenia w scenach 00 i 04) stoją tam, gdzie przed ZR8b: linia bazowa od dołu strony 670 − 40·i (i = 3 i 5), a kolejność wierszy jest malejąca (4 ms)
+  ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — pl
+    ✓ wiersz 21 istnieje dokładnie raz (1 ms)
+    ✕ żaden napis strony (tytuł ani wiersz) nie dotyka pasa znacznika: margines w pkt PDF > 0 i ≥ 4 pkt UIKit na każdym urządzeniu
+    ✕ pas leży w pustym pasie: nad nim i pod nim jest tekst (wiersze 20 i 21), a margines z każdej strony ≥ 4 pkt UIKit
+    ✕ zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21
+    ✓ wiersze 9 i 13 (zakreślenia w scenach 00 i 04) stoją tam, gdzie przed ZR8b: linia bazowa od dołu strony 670 − 40·i (i = 3 i 5), a kolejność wierszy jest malejąca (1 ms)
+  ZR8b (P-1038): wzór położenia pasa zgodny z kodem produkcyjnym
+    ✓ src/domena/znacznik-wzoru.ts: gornaKrawedzRzedu = min(max(yDotyku − wysokoscRzedu / 2, 0), 1 − wysokoscRzedu), a app/wzor.tsx stawia znacznik na 0.5
+  ZR8b (P-1038): moduł wzoru sklepu ładuje się tylko w trybie e2e i nie trafia do bundla wydania (P-238)
+    ✓ wzor-sklepu.ts importuje tylko panele.tsx (src/kompozycja/e2e/panele.tsx); żaden plik app/, src/, modules/ ani targets/ poza katalogiem e2e go nie ładuje (11 ms)
+    ✓ panele.tsx ładuje tylko src/platforma/tryb-e2e.ts i tylko przez require w gałęzi process.env.EXPO_PUBLIC_E2E === '1' (Metro składa stałą, więc bez E2E moduł nie wchodzi do bundla) (12 ms)
+    ✓ wzor-sklepu.ts nie ma importów (moduł czysty, bez t())
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — en › żaden napis strony (tytuł ani wiersz) nie dotyka pasa znacznika: margines w pkt PDF > 0 i ≥ 4 pkt UIKit na każdym urządzeniu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Row 21: knit 2",
+    -   true,
+    +   false,
+      ]
+
+      70 |     const min = Math.min(...odstepy.map((o) => o.odstep));
+      71 |     const najblizszy = odstepy.find((o) => o.odstep === min)!;
+    > 72 |     expect([najblizszy.tekst, min > 0]).toEqual([najblizszy.tekst, true]);
+         |                                         ^
+      73 |     for (const [uklad, skala] of Object.entries(UKLADY)) {
+      74 |       expect([uklad, najblizszy.tekst, min * skala >= MARGINES_MIN_UIKIT]).toEqual([uklad, najblizszy.tekst, true]);
+      75 |     }
+
+      at Object.toEqual (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:72:41)
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — en › pas leży w pustym pasie: nad nim i pod nim jest tekst (wiersze 20 i 21), a margines z każdej strony ≥ 4 pkt UIKit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 13
+    Received: 12
+
+      79 |     const nad = napisy.filter((n) => n.zakres.dol <= pas.gora);
+      80 |     const pod = napisy.filter((n) => n.zakres.gora >= pas.dol);
+    > 81 |     expect(nad.length + pod.length).toBe(napisy.length); // nic nie przecina pasa
+         |                                     ^
+      82 |     const odNad = pas.gora - Math.max(...nad.map((n) => n.zakres.dol));
+      83 |     const odPod = Math.min(...pod.map((n) => n.zakres.gora)) - pas.dol;
+      84 |     for (const [uklad, skala] of Object.entries(UKLADY)) {
+
+      at Object.toBe (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:81:37)
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — en › zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   -32.86999999999995
+
+      90 |   test('zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21', () => {
+      91 |     const wiersz21 = numerowane[0];
+    > 92 |     expect(wiersz21.zakres.gora - (pas.dol + ZAKLADKA_PDF)).toBeGreaterThan(0);
+         |                                                             ^
+      93 |   });
+      94 |
+      95 |   test('wiersze 9 i 13 (zakreślenia w scenach 00 i 04) stoją tam, gdzie przed ZR8b: linia bazowa od dołu strony 670 − 40·i (i = 3 i 5), a kolejność wierszy jest malejąca', () => {
+
+      at Object.toBeGreaterThan (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:92:61)
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — pl › żaden napis strony (tytuł ani wiersz) nie dotyka pasa znacznika: margines w pkt PDF > 0 i ≥ 4 pkt UIKit na każdym urządzeniu
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Rz\\201d 21: pr",
+    -   true,
+    +   false,
+      ]
+
+      70 |     const min = Math.min(...odstepy.map((o) => o.odstep));
+      71 |     const najblizszy = odstepy.find((o) => o.odstep === min)!;
+    > 72 |     expect([najblizszy.tekst, min > 0]).toEqual([najblizszy.tekst, true]);
+         |                                         ^
+      73 |     for (const [uklad, skala] of Object.entries(UKLADY)) {
+      74 |       expect([uklad, najblizszy.tekst, min * skala >= MARGINES_MIN_UIKIT]).toEqual([uklad, najblizszy.tekst, true]);
+      75 |     }
+
+      at Object.toEqual (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:72:41)
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — pl › pas leży w pustym pasie: nad nim i pod nim jest tekst (wiersze 20 i 21), a margines z każdej strony ≥ 4 pkt UIKit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 13
+    Received: 12
+
+      79 |     const nad = napisy.filter((n) => n.zakres.dol <= pas.gora);
+      80 |     const pod = napisy.filter((n) => n.zakres.gora >= pas.dol);
+    > 81 |     expect(nad.length + pod.length).toBe(napisy.length); // nic nie przecina pasa
+         |                                     ^
+      82 |     const odNad = pas.gora - Math.max(...nad.map((n) => n.zakres.dol));
+      83 |     const odPod = Math.min(...pod.map((n) => n.zakres.gora)) - pas.dol;
+      84 |     for (const [uklad, skala] of Object.entries(UKLADY)) {
+
+      at Object.toBe (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:81:37)
+
+  ● ZR8b (P-1038): pas domyślnego znacznika rzędu w przerwie między wierszami wzoru sklepu — pl › zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   -32.86999999999995
+
+      90 |   test('zakładka z etykietą „Rząd 21 ↓” (wisi pod pasem, oszacowanie 17 pkt PDF) nie sięga tekstu wiersza 21', () => {
+      91 |     const wiersz21 = numerowane[0];
+    > 92 |     expect(wiersz21.zakres.gora - (pas.dol + ZAKLADKA_PDF)).toBeGreaterThan(0);
+         |                                                             ^
+      93 |   });
+      94 |
+      95 |   test('wiersze 9 i 13 (zakreślenia w scenach 00 i 04) stoją tam, gdzie przed ZR8b: linia bazowa od dołu strony 670 − 40·i (i = 3 i 5), a kolejność wierszy jest malejąca', () => {
+
+      at Object.toBeGreaterThan (tests/wydanie/wzor-sklepu-znacznik-przerwa.test.ts:92:61)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 8 passed, 14 total
+Snapshots:   0 total
+Time:        0.681 s, estimated 1 s
+Ran all test suites matching /tests\/wydanie\/wzor-sklepu-znacznik-przerwa.test.ts/i.

@@ -1,0 +1,17 @@
+ZR8 (KO-201, P-1036) — Maestro CLI 2.12.1 na Linuksie, 2026-11-25
+maestro.zip cli-2.12.1 jak w ZR7 (sha256 54dbb0716425626604973cbb374c585ca30272375d9ce15177a1152765ddd9d7, równe MAESTRO_ZIP_SHA256 w .github/workflows/zrzuty-sklepu.yml)
+--- parsowanie: YamlCommandReader.readCommands(plik, FileAccessScope.under(e2e)) — ta sama ścieżka co 'maestro test'; wszystkie e2e/zrzuty-sklepu/*.yaml
+OK 00-jezyk.yaml komend=8
+OK 00-przygotuj.yaml komend=115
+OK 01-dzis.yaml komend=9
+OK 02-licznik.yaml komend=11
+OK 03-wzor.yaml komend=16
+OK 04-zakreslenie.yaml komend=25
+OK 04a-porzadek.yaml komend=12
+OK 05-projekty.yaml komend=12
+OK 06-historia.yaml komend=13
+OK 07-kalendarz.yaml komend=15
+OK 99-zakup.yaml komend=15
+exit=0
+--- uwaga: 'swipe: RIGHT' (skrót tekstowy) NIE parsuje się (Parsing Failed at 00-przygotuj.yaml:192:15); forma obiektowa '{ direction: RIGHT }' parsuje się (00-przygotuj.yaml komend=115, było 113 przed ZR8)
+--- źródło programu: Czytaj.java (kilkanaście linii, readCommands po wszystkich plikach; nie w repo — jak w ZR4/ZR7)

@@ -1,0 +1,403 @@
+ZR10 dowód czerwony: npx jest tests/wydanie/zrzuty-zastap.test.ts na f0b28df6 (kod skryptu bez zmian), 2026-11-25
+FAIL iOS tests/wydanie/zrzuty-zastap.test.ts
+  plan(): działanie „zastąp”
+    ✕ flaga zastąp i grupa ma 7 placementów → „zastąp”: lista 7 do zdjęcia (id + referenceName) i 3 pliki do wgrania (39 ms)
+    ✕ bez flagi zachowanie bez zmian: „pomiń” z tym samym tekstem powodu, nic do zdjęcia (34 ms)
+    ✓ bez flagi liczba zamiast listy nadal działa (zgodność wsteczna `existing`) (32 ms)
+    ✓ flaga zastąp, ale grupa pusta → zwykłe „wgraj” (nic do zdjęcia) (35 ms)
+    ✕ flaga zastąp i `existing` zwraca tylko liczbę (brak id placementów do zdjęcia) → błąd planu, nie „zastąp” z pustą listą (48 ms)
+    ✕ idempotencja: grupa już ma dokładnie te zrzuty w tej kolejności → „pomiń” (nie zdejmuje i nie wgrywa drugi raz) (46 ms)
+    ✕ te same obrazy w innej kolejności albo jeden inny → „zastąp” (cel to kolejność z artefaktu) (39 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan READY_FOR_SALE): błąd planu, żadnego wiersza „zastąp” (34 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan WAITING_FOR_REVIEW): błąd planu, żadnego wiersza „zastąp” (34 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan IN_REVIEW): błąd planu, żadnego wiersza „zastąp” (38 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan PENDING_DEVELOPER_RELEASE): błąd planu, żadnego wiersza „zastąp” (33 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan REJECTED): błąd planu, żadnego wiersza „zastąp” (32 ms)
+    ✕ odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan null): błąd planu, żadnego wiersza „zastąp” (35 ms)
+    ✕ stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu) (31 ms)
+  klient HTTP: DELETE tylko na placemencie
+    ✓ domyślnie (bez allowDelete) DELETE odrzucony przed fetch — także na placemencie (31 ms)
+    ✕ z allowDelete: DELETE na ścieżce placementu przechodzi (1 żądanie, 204 bez treści nie jest błędem) (29 ms)
+    ✓ z allowDelete: DELETE na obrazie biblioteki i na każdym innym zasobie odrzucony przed fetch (32 ms)
+    ✓ allowDelete nie rozszerza innych metod: PUT i inne nadal odrzucone (30 ms)
+    ✓ inne skrypty (metadane, produkty, IAP) tworzą klienta bez allowDelete — brak przekazania opcji w ich kodzie (1 ms)
+  run(): dry-run z zastąp
+    ✕ wiersz „zastąp — zdejmę 7 placementów, wgram 3”, kod 0, nic nie zapisano (same GET)
+    ✕ raport wypisuje referenceName i id każdego placementu do zdjęcia (do odtworzenia ręcznego); obrazy zostają
+  run(): bez flagi nic się nie zmienia
+    ✓ dry-run i apply z istniejącymi 7 placementami → „pomiń”, zero zapisów i zero DELETE, placementy nietknięte (37 ms)
+  run(): apply z zastąp
+    ✕ stan końcowy: grupa ma dokładnie 3 nowe zrzuty w kolejności artefaktu; kod 0; wiersz zapisany (1 ms)
+    ✕ KOLEJNOŚĆ: najpierw nowe obrazy wgrane (uploaded: true), dopiero potem DELETE starych placementów, potem nowe placementy i kolejność (1 ms)
+    ✕ obrazy biblioteki nigdy nie są usuwane: 7 starych + 3 nowe nadal w bibliotece; żaden DELETE poza placementami
+    ✕ raport przebiegu: referenceName i id zdejmowanych placementów; w logu nie ma tokenu
+    ✕ ponowny przebieg po sukcesie (zastąp=true) → „pomiń”, zero zapisów (idempotencja) (41 ms)
+  run(): odmowa przy wersji nieedytowalnej
+    ✕ wersja READY_FOR_SALE: dry-run i apply z zastąp → kod 1, „odmowa zastąpienia”, zero zapisów, placementy nietknięte (38 ms)
+    ✕ wersja IN_REVIEW: dry-run i apply z zastąp → kod 1, „odmowa zastąpienia”, zero zapisów, placementy nietknięte (39 ms)
+    ✕ wersja WAITING_FOR_REVIEW: dry-run i apply z zastąp → kod 1, „odmowa zastąpienia”, zero zapisów, placementy nietknięte (49 ms)
+  run(): błąd w środku — jasny stan i ponowienie dochodzi do celu
+    ✕ awaria wgrywania obrazu → żaden placement nie zdjęty (stare zrzuty zostają na stronie), kod 1, ponowienie kończy zadanie (42 ms)
+    ✕ awaria przy 2. nowym placemencie (po zdjęciu starych) → wiersz z jasnym stanem i instrukcją ponowienia; drugi przebieg dochodzi do stanu docelowego; trzeci = „pomiń” (36 ms)
+    ✕ awaria przy 3. zdjęciu placementu → wiersz mówi „zdjęto 2 z 7”, nowe placementy nie powstają, ponowienie kończy zadanie (36 ms)
+  workflow i dokumentacja
+    ✕ wejście `zastap`: boolean, domyślnie false, opis po polsku (1 ms)
+    ✕ flaga --zastap przekazana do skryptu w kroku planu i zapisu, przez zmienną środowiska (nie przez wstawienie wejścia do powłoki)
+    ✕ nagłówek skryptu i workflowu: „nigdy nie usuwa” zastąpione zasadą z KO-210 (1 ms)
+
+  ● plan(): działanie „zastąp” › flaga zastąp i grupa ma 7 placementów → „zastąp”: lista 7 do zdjęcia (id + referenceName) i 3 pliki do wgrania
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "zastąp"
+    Received: "wgraj"
+
+      44 |     expect(p.errors).toEqual([]);
+      45 |     expect(p.rows).toHaveLength(1);
+    > 46 |     expect(p.rows[0].action).toBe('zastąp');
+         |                              ^
+      47 |     expect(p.rows[0].reason).toBe('zdejmę 7 placementów, wgram 3');
+      48 |     expect(p.rows[0].plikow).toBe(3);
+      49 |     expect(p.rows[0].remove?.map((x) => x.id)).toEqual(['PLC-1', 'PLC-2', 'PLC-3', 'PLC-4', 'PLC-5', 'PLC-6', 'PLC-7']);
+
+
+  ● plan(): działanie „zastąp” › bez flagi zachowanie bez zmian: „pomiń” z tym samym tekstem powodu, nic do zdjęcia
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pomiń"
+    Received: "wgraj"
+
+      53 |   test('bez flagi zachowanie bez zmian: „pomiń” z tym samym tekstem powodu, nic do zdjęcia', () => {
+      54 |     const p = plan({ stare: 7 });
+    > 55 |     expect(p.rows[0].action).toBe('pomiń');
+         |                              ^
+      56 |     expect(p.rows[0].reason).toBe('grupa ma już 7 zrzutów (nic nie usuwam)');
+      57 |     expect(p.rows[0].remove).toBeUndefined();
+      58 |     const k = plan({ stare: 2 }); // mniej placementów niż plików: ostrzeżenie „niekompletna” jak dotąd
+
+
+  ● plan(): działanie „zastąp” › flaga zastąp i `existing` zwraca tylko liczbę (brak id placementów do zdjęcia) → błąd planu, nie „zastąp” z pustą listą
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /brak identyfikatorów placementów/
+    Received string:  ""
+
+      75 |     const p = plan({ zastap: true, stare: 7, jakoLiczba: true });
+      76 |     expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 77 |     expect(p.errors.join('\n')).toMatch(/brak identyfikatorów placementów/);
+         |                                 ^
+      78 |   });
+      79 |
+      80 |   test('idempotencja: grupa już ma dokładnie te zrzuty w tej kolejności → „pomiń” (nie zdejmuje i nie wgrywa drugi raz)', () => {
+
+
+  ● plan(): działanie „zastąp” › idempotencja: grupa już ma dokładnie te zrzuty w tej kolejności → „pomiń” (nie zdejmuje i nie wgrywa drugi raz)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pomiń"
+    Received: "wgraj"
+
+      80 |   test('idempotencja: grupa już ma dokładnie te zrzuty w tej kolejności → „pomiń” (nie zdejmuje i nie wgrywa drugi raz)', () => {
+      81 |     const p = plan({ zastap: true, stare: 3, refyStare: NOWE });
+    > 82 |     expect(p.rows[0].action).toBe('pomiń');
+         |                              ^
+      83 |     expect(p.rows[0].reason).toMatch(/już zawiera te zrzuty/);
+      84 |     expect(p.rows[0].remove).toBeUndefined();
+      85 |   });
+
+
+  ● plan(): działanie „zastąp” › te same obrazy w innej kolejności albo jeden inny → „zastąp” (cel to kolejność z artefaktu)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "zastąp"
+    Received: "wgraj"
+
+      87 |   test('te same obrazy w innej kolejności albo jeden inny → „zastąp” (cel to kolejność z artefaktu)', () => {
+      88 |     const p = plan({ zastap: true, stare: 3, refyStare: [NOWE[1], NOWE[0], NOWE[2]] });
+    > 89 |     expect(p.rows[0].action).toBe('zastąp');
+         |                              ^
+      90 |   });
+      91 |
+      92 |   test.each(['READY_FOR_SALE', 'WAITING_FOR_REVIEW', 'IN_REVIEW', 'PENDING_DEVELOPER_RELEASE', 'REJECTED', null])(
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan READY_FOR_SALE): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan WAITING_FOR_REVIEW): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan IN_REVIEW): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan PENDING_DEVELOPER_RELEASE): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan REJECTED): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › odmowa zastąpienia, gdy wersja nie jest „w przygotowaniu” (stan null): błąd planu, żadnego wiersza „zastąp”
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /odmowa zastąpienia/
+    Received string:  ""
+
+      94 |       const p = plan({ zastap: true, stare: 7, stan });
+      95 |       expect(p.rows.filter((r) => r.action === 'zastąp')).toEqual([]);
+    > 96 |       expect(p.errors.join('\n')).toMatch(/odmowa zastąpienia/);
+         |                                   ^
+      97 |     });
+      98 |
+      99 |   test('stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)', () => {
+
+
+  ● plan(): działanie „zastąp” › stan wersji nie wpływa na zwykły plan bez flagi (READY_FOR_SALE → nadal „pomiń”, bez błędu)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "pomiń"
+    Received: "wgraj"
+
+      100 |     const p = plan({ stare: 7, stan: 'READY_FOR_SALE' });
+      101 |     expect(p.errors).toEqual([]);
+    > 102 |     expect(p.rows[0].action).toBe('pomiń');
+          |                              ^
+      103 |   });
+      104 | });
+      105 |
+
+
+  ● klient HTTP: DELETE tylko na placemencie › z allowDelete: DELETE na ścieżce placementu przechodzi (1 żądanie, 204 bez treści nie jest błędem)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 4
+    + Received  + 4
+
+      Array [
+        Array [
+    -     true,
+    -     1,
+    +     false,
+    +     0,
+        ],
+        Array [
+    -     true,
+    -     1,
+    +     false,
+    +     0,
+        ],
+      ]
+
+      124 |   test('z allowDelete: DELETE na ścieżce placementu przechodzi (1 żądanie, 204 bez treści nie jest błędem)', () => {
+      125 |     const w = proby(true, [PLC, 'https://api.appstoreconnect.apple.com' + PLC]);
+    > 126 |     expect(w.map((x) => [x.ok, x.fetch])).toEqual([[true, 1], [true, 1]]);
+          |                                           ^
+      127 |   });
+      128 |
+      129 |   test('z allowDelete: DELETE na obrazie biblioteki i na każdym innym zasobie odrzucony przed fetch', () => {
+
+
+  ● run(): dry-run z zastąp › wiersz „zastąp — zdejmę 7 placementów, wgram 3”, kod 0, nic nie zapisano (same GET)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "zastąp",
+    +   "pomiń",
+      ]
+
+      170 |   test('wiersz „zastąp — zdejmę 7 placementów, wgram 3”, kod 0, nic nie zapisano (same GET)', () => {
+      171 |     expect(k.code).toBe(0);
+    > 172 |     expect(k.rows.map((r) => r.action)).toEqual(['zastąp']);
+          |                                         ^
+      173 |     expect(k.log.join('\n')).toMatch(/zastąp — zdejmę 7 placementów, wgram 3/);
+      174 |     expect(niepuste(k)).toEqual([]);
+      175 |     expect(w.placementy).toHaveLength(7);
+
+
+  ● run(): dry-run z zastąp › raport wypisuje referenceName i id każdego placementu do zdjęcia (do odtworzenia ręcznego); obrazy zostają
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /PLC-\d+[^\n]*stare\/01\.png|stare\/01\.png[^\n]*PLC-\d+/
+    Received string:  "## Zrzuty ekranu → App Store Connect: tryb DRY-RUN (tylko odczyt)·
+    | Źródło | Język | Lokalizacja | Grupa urządzeń | Zrzuty | Działanie |
+    |---|---|---|---|---|---|
+    | iphone | pl | pl | G-IPHONE | 3 | pomiń — grupa ma już 7 zrzutów (nic nie usuwam) |·
+    wgraj 0, pomiń 1
+    Dry-run zakończony — nic nie zapisano. Zapis: uruchom ponownie z trybem „apply” i zatwierdź środowisko release."
+
+      178 |   test('raport wypisuje referenceName i id każdego placementu do zdjęcia (do odtworzenia ręcznego); obrazy zostają', () => {
+      179 |     const t = k.log.join('\n');
+    > 180 |     for (let i = 1; i <= 7; i++) expect(t).toMatch(new RegExp(`PLC-\\d+[^\\n]*stare/0${i}\\.png|stare/0${i}\\.png[^\\n]*PLC-\\d+`));
+          |                                            ^
+      181 |     expect(t).toMatch(/obrazy (zostają|pozostają) w bibliotece/);
+      182 |   });
+      183 | });
+
+
+  ● run(): apply z zastąp › stan końcowy: grupa ma dokładnie 3 nowe zrzuty w kolejności artefaktu; kod 0; wiersz zapisany
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 7
+
+      Array [
+    -   "oczko-1.0/iphone/pl/01-ekran.png",
+    -   "oczko-1.0/iphone/pl/02-ekran.png",
+    -   "oczko-1.0/iphone/pl/03-ekran.png",
+    +   "stare/01.png",
+    +   "stare/02.png",
+    +   "stare/03.png",
+    +   "stare/04.png",
+    +   "stare/05.png",
+    +   "stare/06.png",
+    +   "stare/07.png",
+      ]
+
+      203 |   test('stan końcowy: grupa ma dokładnie 3 nowe zrzuty w kolejności artefaktu; kod 0; wiersz zapisany', () => {
+      204 |     expect(k.code).toBe(0);
+    > 205 |     expect(w.placementy).toEqual(NOWE);
+          |                          ^
+      206 |     expect(k.rows[0]).toMatchObject({ action: 'zastąp', written: true, error: null });
+      207 |   });
+      208 |
+
+
+  ● run(): apply z zastąp › KOLEJNOŚĆ: najpierw nowe obrazy wgrane (uploaded: true), dopiero potem DELETE starych placementów, potem nowe placementy i kolejność
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 3
+    Received length: 0
+    Received array:  []
+
+      213 |     const ostatniDelete = t.lastIndexOf('DELETE placement');
+      214 |     const pierwszyNowy = t.indexOf('POST placement');
+    > 215 |     expect(t.filter((x) => x === 'PATCH uploaded')).toHaveLength(3);
+          |                                                     ^
+      216 |     expect(t.filter((x) => x === 'DELETE placement')).toHaveLength(7);
+      217 |     expect(t.filter((x) => x === 'POST placement')).toHaveLength(3);
+      218 |     expect(ostatniUpload).toBeGreaterThanOrEqual(0);
+
+
+  ● run(): apply z zastąp › obrazy biblioteki nigdy nie są usuwane: 7 starych + 3 nowe nadal w bibliotece; żaden DELETE poza placementami
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 10
+    Received: 7
+
+      223 |
+      224 |   test('obrazy biblioteki nigdy nie są usuwane: 7 starych + 3 nowe nadal w bibliotece; żaden DELETE poza placementami', () => {
+    > 225 |     expect(w.obrazy).toBe(10);
+          |                      ^
+      226 |     expect(w.usunieteObrazy).toBe(0);
+      227 |     expect(w.wycieki).toEqual([]);
+      228 |     expect(k.calls.filter((c) => c.m === 'DELETE').every((c) => c.tag === 'DELETE placement')).toBe(true);
+
+
+  ● run(): apply z zastąp › raport przebiegu: referenceName i id zdejmowanych placementów; w logu nie ma tokenu
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /zdjęto placement PLC-\d+ \(stare\/01\.png\)/
+    Received string:  "## Zrzuty ekranu → App Store Connect: tryb APPLY·
+    Obrazy: wgrano 0, użyto ponownie 0, błędy 0; czekam na przetworzenie.
+    | Źródło | Język | Lokalizacja | Grupa urządzeń | Zrzuty | Działanie |
+    |---|---|---|---|---|---|
+    | iphone | pl | pl | G-IPHONE | 3 | pomiń — grupa ma już 7 zrzutów (nic nie usuwam) |·
+    wgraj 0, pomiń 1, zapisano 0"
+
+      231 |   test('raport przebiegu: referenceName i id zdejmowanych placementów; w logu nie ma tokenu', () => {
+      232 |     const t = k.log.join('\n');
+    > 233 |     expect(t).toMatch(/zdjęto placement PLC-\d+ \(stare\/01\.png\)/);
+          |               ^
+      234 |     expect(t).not.toMatch(/TOKEN-TESTOWY|Bearer/);
+      235 |   });
+      236 |
+
+
+  ● run(): apply z zastąp › ponowny przebieg po sukcesie (zastąp=true) → „pomiń”, zero zapisów (idempotencja)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 7
+
+--- Podsumowanie (ZR10): czerwone f0b28df6 = 29 niezaliczonych / 7 zaliczonych z 36; po zmianie 36/36; verify kod 0 (docs/jakosc/zr10-verify.txt)

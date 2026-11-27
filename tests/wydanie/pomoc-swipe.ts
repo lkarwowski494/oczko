@@ -26,7 +26,8 @@ export const swipyPliku = (plik: string): SwipeSceny[] => {
     if (Array.isArray(wezel)) { for (const w of wezel) idz(w, warunek); return; }
     if (wezel === null || typeof wezel !== 'object') return;
     const o = wezel as Record<string, unknown>;
-    if ('swipe' in o && o.swipe !== null && typeof o.swipe === 'object') { const s = o.swipe as Record<string, unknown>; wynik.push({ plik, warunek, start: s.start, end: s.end }); }
+    // ZR8 (P-1036): swipe kierunkowy (`{ direction: RIGHT }`, bez start/end) nie ma współrzędnych do sprawdzenia — pomijany; każdy swipe ze start/end nadal podlega regułom ZR4/ZR7
+    if ('swipe' in o && o.swipe !== null && typeof o.swipe === 'object' && ('start' in (o.swipe as object) || 'end' in (o.swipe as object))) { const s = o.swipe as Record<string, unknown>; wynik.push({ plik, warunek, start: s.start, end: s.end }); }
     for (const [k, v] of Object.entries(o)) {
       if (k === 'swipe') continue;
       let w = warunek;
