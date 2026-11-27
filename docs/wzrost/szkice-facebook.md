@@ -75,7 +75,7 @@ Skeleton: **{opening with a question}** + “I'm developing the app on my own, s
 2. **Od drugiego wpisu naprzemiennie C0 i E0 po grupach** (nie po dniach — dzień tygodnia nie miesza wyniku), w tym samym języku i typie grupy po równo. Szkice C i E z kodem zastępują C0/E0 dopiero, gdy kody istnieją; wtedy test C vs E zaczyna się od nowa (kod zmienia wpis).
 3. **Co porównujemy** (bez `pt`/`ct` nie ma pobrań na wpis): przeżycie wpisu (usunięty/zatwierdzony), liczba komentarzy i pytań, wyraźne reakcje negatywne; pobrania z App Analytics tylko jako tło dnia. Przy 2–4 wpisach dziennie to ok. 7–14 wpisów na wariant w tydzień — **kierunek, nie rozstrzygnięcie** [OCENA]; próg i H po pierwszym tygodniu danych (P-1030 (3)), decyzja koordynatora.
 
-## K — wpis z kodem: Oczko Pro na zawsze za darmo i uzasadnieniem (słowa właściciela 2026-11-27; P-1071) — **szkic „na czas kodów”: czeka na utworzenie kodów w ASC przez właściciela i test sandbox** (nie wpisywać kodu ani „za darmo na zawsze” do gotowych tekstów bez kodu; do tego czasu C0/E0)
+## K — wpis z kodem: Oczko Pro na zawsze za darmo i uzasadnieniem (słowa właściciela 2026-11-27; P-1071) — **szkic „na czas kodów”: kody utworzone przez właściciela 27.11 (OCZKOPL 1 000, OCZKOEN 2 000, bez daty końca; „Lifetime jest Approved”); czeka na `<LINK>` od właściciela i test realizacji** (nie wpisywać kodu ani „za darmo na zawsze” do gotowych tekstów bez kodu; do tego czasu C0/E0)
 
 Słowa właściciela 27.11: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. Dopoki nie rozbujamy aplikacji i tak na niej nie zarabiamy a nikt jej nie pobiera. Wiec albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” **Zmienia P-1031 (1) „3 miesiące” na „rok” (P-1069), a następnie na Lifetime:** właściciel 27.11 ok. 09:55 UTC (przekaz koordynatora, dosłownie): „Ok, Lifetime na zawsze, działaj”, po „Zrobmy kod bez subskrypcji.” (ok. 09:45) — zapis: **P-1071** (10, KD1: kod własny na Oczko Pro Lifetime; źródła Apple i kroki w `docs/wydanie/kody-ofert.md`; 02: kontrakt wyjątku od P-057 — Lifetime zamiast okresu). Tekst „rok” poniżej jest **zastąpiony**; nie używać.
 
@@ -88,7 +88,7 @@ Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **b
 > • wzór (PDF albo zdjęcie) leży obok licznika, a bieżący rząd zaznaczasz na nim sam
 > • po przerwie otwiera się tam, gdzie była przerwa, z notatką obok licznika
 >
-> Oczko jest za darmo przez 5 dni robótkowych w miesiącu, a Oczko Pro znosi limit. Na tym etapie bardziej niż na przychodach zależy mi na tym, żeby aplikacja trafiła do ludzi, i na Waszych uwagach, dlatego na start daję **Oczko Pro na zawsze za darmo — bez subskrypcji i bez opłat**. Kod: OCZKOPL → <link realizacji kodu> (jedna realizacja na osobę, do <data> albo do wyczerpania puli kodów)
+> Oczko jest za darmo przez 5 dni robótkowych w miesiącu, a Oczko Pro znosi limit. Na tym etapie bardziej niż na przychodach zależy mi na tym, żeby aplikacja trafiła do ludzi, i na Waszych uwagach, dlatego na start daję **Oczko Pro na zawsze za darmo — bez subskrypcji i bez opłat**. Kod: OCZKOPL → <LINK> (jedna realizacja na osobę, do wyczerpania puli 1000 kodów)
 >
 > Napiszcie w komentarzu albo prywatnie, co działa, a co nie.
 
@@ -99,7 +99,7 @@ Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **b
 > • your pattern (a PDF or a photo) sits next to the counter, and you mark your current row on it
 > • after a break it opens where you stopped, with your note next to the counter
 >
-> Oczko is free for 5 crafting days a month, and Oczko Pro removes the limit. At this stage, getting the app to people and hearing your feedback matters more to me than revenue, so to start I'm giving away **Oczko Pro for free, forever — no subscription and no charges**. Code: OCZKOEN → <code redemption link> (one redemption per person, until <date> or while the codes last)
+> Oczko is free for 5 crafting days a month, and Oczko Pro removes the limit. At this stage, getting the app to people and hearing your feedback matters more to me than revenue, so to start I'm giving away **Oczko Pro for free, forever — no subscription and no charges**. Code: OCZKOEN → <LINK> (one redemption per person, while the 2,000 codes last)
 >
 > Tell me what works and what doesn't — in the comments or by message.
 

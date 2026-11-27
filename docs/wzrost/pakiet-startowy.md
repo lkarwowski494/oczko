@@ -134,8 +134,8 @@ Free for 5 crafting days a month; Oczko Pro removes the limit; export always wor
 I'd love to read what's missing for you in tools like this. And if Oczko comes in handy, I'd be grateful for an honest rating on the App Store.
 ```
 
-#### G-K-PL — **czeka na kody (KD1, P-1071)**; nie publikować, dopóki kody nie istnieją i nie przejdą testu sandbox
-Otwarcie jak G-PL-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; `<link realizacji>` = „example link” ze szczegółów oferty w ASC (kopiuje właściciel, `docs/wydanie/kody-ofert.md` §4 krok 10); `<data>` = data końca kodu z kroku 9.
+#### G-K-PL — **czeka na `<LINK>` (kody utworzone 27.11, P-1071)**; nie publikować przed wstawieniem linku i testem realizacji
+Otwarcie jak G-PL-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; `<LINK>` = „example link” ze szczegółów oferty w ASC (poda właściciel, `docs/wydanie/kody-ofert.md` §4 krok 10); kody utworzone przez właściciela 27.11 (OCZKOPL limit 1 000, OCZKOEN limit 2 000, bez daty końca; liczba w zdaniu = limit tego kodu, więc nie zamieniać kodów między językami bez zmiany liczby).
 ```text
 Pytanie do Was: jak liczycie rzędy? Kartka i ołówek, licznik na drut, aplikacja, a może pamięć?
 
@@ -146,13 +146,13 @@ Pytam, bo jestem autorem aplikacji Oczko i chcę ją robić tak, żeby naprawdę
 
 Jest na iPhone'a i iPada, bez konta i bez reklam:
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
-Aplikacja jest w fazie rozwoju, dlatego na start daję Oczko Pro na zawsze za darmo: kod <KOD> → <link realizacji> (jedna realizacja na osobę, do <data> albo do wyczerpania puli kodów)
+Aplikacja jest w fazie rozwoju, dlatego na start daję Oczko Pro na zawsze za darmo: kod OCZKOPL → <LINK> (jedna realizacja na osobę, do wyczerpania puli 1000 kodów)
 
 Chętnie przeczytam, czego Wam brakuje w takich narzędziach.
 ```
 
-#### G-K-EN — **czeka na kody (KD1, P-1071)**; nie publikować, dopóki kody nie istnieją i nie przejdą testu sandbox
-Otwarcie jak G-EN-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; `<link realizacji>` = „example link” ze szczegółów oferty w ASC (kopiuje właściciel, `docs/wydanie/kody-ofert.md` §4 krok 10); `<data>` = data końca kodu z kroku 9.
+#### G-K-EN — **czeka na `<LINK>` (kody utworzone 27.11, P-1071)**; nie publikować przed wstawieniem linku i testem realizacji
+Otwarcie jak G-EN-1/2/3; zdanie o kodzie zgodne z P-1071 (Lifetime na zawsze, za darmo; bez słowa „rok” i bez „odnowienia” — Lifetime jest zakupem jednorazowym, nie subskrypcją); bez zdania o ocenie (ocena nie może być powiązana z kodem). Kod osobny na język; w grupach en/pl: `<KOD>` = `OCZKOEN`/`OCZKOPL` po utworzeniu w ASC; `<LINK>` = „example link” ze szczegółów oferty w ASC (poda właściciel, `docs/wydanie/kody-ofert.md` §4 krok 10); kody utworzone przez właściciela 27.11 (OCZKOPL limit 1 000, OCZKOEN limit 2 000, bez daty końca; liczba w zdaniu = limit tego kodu, więc nie zamieniać kodów między językami bez zmiany liczby).
 ```text
 Question for you: how do you count your rows? Pen and paper, a counter on the needle, an app, or just memory?
 
@@ -163,7 +163,7 @@ I'm asking because I'm the developer of an app called Oczko, and I want to make 
 
 It's on iPhone and iPad, with no account and no ads:
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
-The app is still in development, so to start I'm giving away Oczko Pro for free, forever: code <CODE> → <redemption link> (one redemption per person, until <date> or while the codes last)
+The app is still in development, so to start I'm giving away Oczko Pro for free, forever: code OCZKOEN → <LINK> (one redemption per person, while the 2,000 codes last)
 
 I'd love to read what's missing for you in tools like this.
 ```
