@@ -5,3 +5,5 @@ Test Suites: 747 passed, 747 total
 Tests:       8404 passed, 8404 total
 KOD=0
 Uwaga: docs/decyzje.md uzupełniono (zdanie o przeglądzie) po starcie verify; pre-push uruchamia verify ponownie.
+PE1 · domknięcie recenzji (P3): 4 testy dodane w tests/jakosc/e2e-awaria-maszyny.test.ts (24/24), workflow bez zmian
+npm run verify: Test Suites: 747 passed; Tests: 8408 passed; KOD=0

@@ -166,6 +166,37 @@ describe('PE1 (KO-222, P-1076…P-1078) · ponowienie tylko scenariuszy z awari�
     expect(r.podsumowanie).toMatch(new RegExp(`ponowione scenariusze[^\\n]*awaria maszyny: ${S05}`, 'i'));
   });
 
+  test('awaria maszyny także w 2. podejściu: ponowiony 03 i niewykonany 04 (oba z BRAMKI) → czerwony, bez trzeciego podejścia', () => {
+    const r = uruchom({ [S03]: ['awaria', 'awaria'], [S04]: ['awaria'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania).toEqual([S01, S02, S03, S03, S04, S05]); // 03: 1. i 2. podejście; 04 niewykonany w 1., awaria w 2. (bez klasyfikatora maszyny w 2.)
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S03}`);
+    expect(r.podsumowanie).toContain(`czerwony ${S04}`);
+    expect(r.podsumowanie).not.toMatch(new RegExp(`zielony ${S03}`));
+  });
+
+  test('awaria maszyny w ponawialnym 02 w 1. i 2. podejściu (02 w BRAMCE) → czerwony; P-091 9a: jedno ponowienie asercji, bez trzeciego podejścia', () => {
+    const r = uruchom({ [S02]: ['awaria', 'awaria', 'awaria'] }, ENV, [S01, S02]);
+    expect(r.wywolania).toEqual([S01, S02, S02, S02]); // 1. podejście, 2. podejście, ponowienie P-091 (02 jest PONAWIALNY) — dalej nic
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S02}`);
+  });
+
+  test('stan sprzed PE1 utrwalony: awaria w 2. podejściu w scenariuszu SPOZA BRAMKI → czerwony-informacyjnie, job nie jest czerwony (bez zmiany logiki)', () => {
+    const r = uruchom({ [S04]: ['awaria', 'awaria'] }, { PONAWIALNE: ENV5.PONAWIALNE, BRAMKA: [S01, S02, S03, S05].map((n) => `${n}.yaml`).join(' ') }, WSZYSTKIE);
+    expect(r.wywolania.filter((n) => n === S04)).toHaveLength(2);
+    expect(r.podsumowanie).toContain(`czerwony-informacyjnie ${S04}`);
+    expect(r.kod).toBe(0); // informacyjny poza pakietem podstawowym (F07-15) nie czerwieni kroku — tak było w 822347c2
+  });
+
+  test('awaria, potem porażka asercji w tym samym scenariuszu w 2. podejściu → czerwony, bez trzeciego podejścia', () => {
+    const r = uruchom({ [S03]: ['awaria', 'asercja'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania.filter((n) => n === S03)).toHaveLength(2);
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S03}`);
+    expect(r.podsumowanie).toMatch(/powtórzenie scenariuszy/i);
+  });
+
   test('zestaw kontroli bez zmian: krok „Scenariusze” ma ten sam limit czasu z planu i nie ma continue-on-error (PE1: bez luzowania bramki)', () => {
     const tekst = fs.readFileSync(path.join(KORZEN, '.github/workflows/jakosc-ios.yml'), 'utf8');
     const od = tekst.indexOf('      - name: Scenariusze\n');
