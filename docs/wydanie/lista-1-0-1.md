@@ -32,7 +32,7 @@ Czas to szacunek [OCENA], nie pomiar. „Gdzie” — [App Store Connect → Ocz
 | # | Krok | Kiedy | Czas W | Zgoda | Analogia w Treningu |
 |---|---|---|---|---|---|
 | 1 | **Sprawdź stan wersji 1.0 w ASC** (App Store → iOS App → wersja 1.0: stan, zrzuty; odpowiedz koordynatorowi: stan i czy „+ Version or Platform” jest aktywny). Jeśli 1.0 czeka na recenzję albo jest w recenzji, nowa wersja może być niemożliwa — decyzja K | od razu | 3 min | nie | — |
-| 2 | **Dopuść gałąź `claude/wydanie-1-0-1`** w środowisku `release` ([Środowiska](https://github.com/lkarwowski494/oczko/settings/environments)); po wydaniu usuń regułę (jak D2 w `lista-1-0.md`) | przed (a) | 2 min | nie | `lista-1-0.md` D2 |
+| 2 | **Dopuść gałąź `claude/wydanie-1-0-1`** w środowisku `release` ([Środowiska](https://github.com/lkarwowski494/oczko/settings/environments)); po wydaniu usuń regułę (jak D2 w `lista-1-0.md`). **Stan 2026-11-27: otwarte, krok właściciela** (1.0.1 wydane; reguły agent nie odczyta ani nie usunie, API 403) | przed (a) | 2 min | nie | `lista-1-0.md` D2 |
 | 3 | **Zatwierdź `release` dla przebiegu (a)** (bez wysyłki) i obejrzyj podsumowanie | po W3 (K wyzwala) | 3 min | **tak** (na przebieg a) | `lista-1-0.md` A1c |
 | 4 | **Zatwierdź `release` dla przebiegu (b)** (wysyłka do TestFlight) | po (a) zielonym | 3 min | **tak** (osobno) | `lista-1-0.md` A1c |
 | 5 | **Utwórz wersję 1.0.1:** App Store → iOS App → „+ Version or Platform” → iOS → `1.0.1` (stan Prepare for Submission) | gdy stan 1.0 na to pozwala (krok 1) | 2 min | nie (nic nie wysyła) | Trening `48-zgloszenie-1-0.md` (wersja i build) |
@@ -45,8 +45,8 @@ Czas to szacunek [OCENA], nie pomiar. „Gdzie” — [App Store Connect → Ocz
 | 12 | **Przegląd Draft Submissions** (wersja 1.0.1 + build; produkty bez zmian — nie dołączać na nowo, chyba że ASC tego wymaga) | po 6, 8, 10 | 3 min | nie | `lista-1-0.md` F3 |
 | 13 | **Zgoda na wysłanie do recenzji** (słowa i data do `dziennika.md`) | po 12 i F1a (poniżej) | 1 min | **tak** | `lista-1-0.md` F2 |
 | 14 | **„Submit for Review”** (Draft Submissions → Submit) | po 13 | 5 min | **tak (13)** | `lista-1-0.md` F3 |
-| 15 | **Po akceptacji** (zwykle do 48 h, czas Apple, nie agenta): jeśli „Manually release” — **„Release this version”** | po akceptacji | 2 min | **tak** | `lista-1-0.md` F6 |
-| 16 | **Po wydaniu:** zrzuty widoczne na stronie sklepu; wiersz „Wydanie” w `dziennik.md`; linia „Etap” w `CLAUDE.md` z datą (K/S) | po 15 | 5 min | nie | `lista-1-0.md` F7 |
+| 15 | **Po akceptacji** (zwykle do 48 h, czas Apple, nie agenta): jeśli „Manually release” — **„Release this version”**. **Stan: zrobione 2026-11-26** (1.0.1 w sprzedaży; `currentVersionReleaseDate` 2026-11-26T19:07:54Z; `dziennik.md`, WY2) | po akceptacji | 2 min | **tak** | `lista-1-0.md` F6 |
+| 16 | **Po wydaniu:** zrzuty widoczne na stronie sklepu; wiersz „Wydanie” w `dziennik.md`; linia „Etap” w `CLAUDE.md` z datą (K/S). **Stan: zrobione 2026-11-27** (WY2: wiersz „Wydanie 1.0.1 (1241)” w `dziennik.md`, linia „Etap” w `CLAUDE.md`; zrzuty na stronie sklepu: [DO USTALENIA], tej sesji nie sprawdzano) | po 15 | 5 min | nie | `lista-1-0.md` F7 |
 
 **Warunek F1a (protokół F):** `node scripts/jakosc/bramka-przypadki-uzycia.mjs recenzja 1221` jest zielony (W2), ale **dla 1.0.1 (kod identyczny z 1221) protokół osobny nie powstaje**: kontrola 3 czyta protokół *poprzedniego wysłanego buildu* (po wysłaniu 1.0.1 będzie to build 1.0.1 — przy następnym przebiegu `testflight.yml` trzeba będzie protokołu dla niego; **[DO USTALENIA]** czy K chce go od razu, słowami właściciela, zasada 22).
 
