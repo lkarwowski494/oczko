@@ -1,6 +1,6 @@
-KD1 npm run verify, 2026-11-27 (typecheck, typecheck:testy, lint, jakosc:kontrole, npm test)
+KD1 npm run verify po scaleniu 244fad04 i zmianie na Lifetime (P-1071), 2026-11-27
 Test Suites: 747 passed, 747 total
 Tests:       8398 passed, 8398 total
 Snapshots:   0 total
-Time:        235.156 s
+Time:        226.19 s
 KOD=0

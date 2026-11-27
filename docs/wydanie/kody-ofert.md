@@ -2,7 +2,7 @@
 
 Aktualizacja: 2026-11-27 · polecenie KD1 @b66fb444 + korekta koordynatora (decyzja właściciela 27.11 ok. 09:45 UTC) · gałąź `claude/kd1-kody-ofert-2026-11-27` od ad045028 · **nic nie wywołano w App Store Connect, żadnego kodu nie utworzono, kod aplikacji tylko odczytany** · koszt: 0 zł.
 
-**Słowa właściciela (wejście, nie do zmiany):** 27.11 ok. 09:21 UTC: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. […] albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” Potem ok. 09:45 UTC: „Zrobmy kod bez subskrypcji.” (uzasadnienie przekazane przez koordynatora: „aplikacja jest w fazie rozwoju”). Wcześniej P-1031 (24.11): kod publicznie we wpisach, osobny na język, pomiar realizacji.
+**Słowa właściciela (wejście, nie do zmiany):** 27.11 ok. 09:21 UTC: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. […] albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” Potem ok. 09:45 UTC: „Zrobmy kod bez subskrypcji.” (uzasadnienie przekazane przez koordynatora: „aplikacja jest w fazie rozwoju”). **Decyzja: ok. 09:55 UTC (przekaz koordynatora, dosłownie): „Ok, Lifetime na zawsze, działaj” — opcja B przyjęta, zapis P-1071; uprawnienie oferty: wszyscy klienci (przekaz koordynatora).** Wcześniej P-1031 (24.11): kod publicznie we wpisach, osobny na język, pomiar realizacji.
 
 ## 1. Wynik w skrócie
 
@@ -13,7 +13,7 @@ Aktualizacja: 2026-11-27 · polecenie KD1 @b66fb444 + korekta koordynatora (decy
 | Czy stare kody promocyjne (promo codes) wchodzą w grę? | Nie: dają „a free copy of apps” (Ź5), a dla zakupów w aplikacji nie da się ich tworzyć od 26.03.2026 (Ź6). Oczko jest darmowe do pobrania. |
 | Czy da się „rok bez subskrypcji” inaczej? | Tak, ale **tylko nowym produktem typu non-renewing subscription** (12 mies., Ź11) z kodem oferty (Ź3 obejmuje ten typ). To zmiana kodu aplikacji, nowa wersja w App Review (Ź10: pierwszy taki produkt „must be submitted with a new app version”) i własne liczenie końca okresu w aplikacji: wycena w §3 opcja C. |
 | Czy aplikacja przyjmie kod na Lifetime bez zmian? | **Tak** (Lifetime to produkt, który adapter zna: `src/konfiguracja.ts:53`; uprawnienie z `currentEntitlements`, `src/platforma/sklep.ts:48`). Test na urządzeniu (sandbox) przed wpisem: §4 krok 10. Realizacja **w aplikacji** — brak (F1, §5). |
-| Rekomendacja | **B: bezpłatny kod własny na Oczko Pro Lifetime, po jednym na język, z limitem puli i datą końca kodu.** Zgodny ze słowami „kod bez subskrypcji”, możliwy dziś, bez zmian w aplikacji i bez recenzji. **Trzeba to nazwać wprost: osoby dostają Pro na zawsze, a nie na rok**; jeśli właściciel chce dosłownie „rok”, jedyna droga to opcja C (wersja aplikacji + recenzja). Decyzja właściciela/koordynatora (P-1071). |
+| Rekomendacja → **decyzja** | **B (przyjęta 27.11 ok. 09:55 UTC): bezpłatny kod własny na Oczko Pro Lifetime, po jednym na język, z limitem puli i datą końca kodu.** Zgodny ze słowami „kod bez subskrypcji”, możliwy dziś, bez zmian w aplikacji i bez recenzji. **Trzeba to nazwać wprost: osoby dostają Pro na zawsze, a nie na rok**; jeśli właściciel chce dosłownie „rok”, jedyna droga to opcja C (wersja aplikacji + recenzja). Zapis: P-1071. |
 
 ## 2. Źródła Apple (odczyt 2026-11-27; surowy tekst strony po zdjęciu znaczników, `curl` + skrypt; cytaty sprawdzone dosłownie na tym tekście)
 
@@ -58,7 +58,7 @@ Warunki wstępne: aplikacja jest w sprzedaży (jest); **produkt Oczko Pro Lifeti
 1. **Apps** → Oczko → pasek boczny **In-App Purchases** → **Oczko Pro Lifetime** (`oczko.pro.lifetime`).
 2. Przewiń do sekcji **Offer Codes** → **Create Offer**.
 3. **Reference name:** np. `lifetime-za-darmo-2026-11` (po utworzeniu niezmienna; nie może powtarzać nazwy innej oferty w aplikacji).
-4. **Customer eligibility:** zaznacz tylko **Never purchased within your app** (nowe osoby). Alternatywa „dla wszystkich”: zaznacz wszystkie trzy pozycje — Ź4: „Selecting all of the options will make your offer available to everyone”; wtedy kod zrealizują też osoby, które już coś kupiły (np. miesięczną subskrypcję), i dostaną Lifetime za darmo; rekomendacja zostaje przy „Never purchased”, decyzja właściciela.
+4. **Customer eligibility (decyzja: wszyscy klienci):** zaznacz **wszystkie trzy pozycje** — „Never purchased within your app”, „Purchased within your app in the last 30 days”, „Purchased within your app more than 30 days ago”; Ź4: „Selecting all of the options will make your offer available to everyone.” Skutek: kod zrealizują też osoby, które już coś kupiły (np. subskrypcję Pro), i dostaną Lifetime za darmo. Węższa alternatywa (tylko „Never purchased”) odrzucona przez decyzję.
 5. **Next** → kraje i regiony: wszystkie, w których Oczko jest w sprzedaży (kolejność storefrontów: `docs/monetyzacja.md:837`, ZAL-006) → **Next**.
 6. **Free Offer** → **Next** → sprawdź podsumowanie → **Confirm** (nie da się edytować; błąd = nowa oferta).
 7. Wejdź w nazwę oferty → sekcja **Custom Codes** → **Create Custom Codes**.
@@ -84,11 +84,11 @@ Czego nie robi właściciel: nie podaje nikomu klucza API; nie używa menu **Pro
 
 ## 6. Zdanie do wpisu (opcja B; prawdziwe dla tej opcji)
 
-**pl:** „Na start rozdajemy Oczko Pro za darmo i na stałe: otwórz ten link i zrealizuj kod OCZKOPL w App Store (jeden kod na osobę, dla osób, które nic jeszcze w Oczku nie kupiły; pula 1 000 osób, kod ważny do [data]). Bez subskrypcji i bez żadnych opłat — Pro zostaje u Ciebie.”
+**pl:** „Aplikacja jest w fazie rozwoju, dlatego na start daję Oczko Pro na zawsze za darmo: kod OCZKOPL → [link realizacji] (jedna realizacja na osobę, do [data] albo do wyczerpania puli kodów). Bez subskrypcji i bez opłat — Pro zostaje u Ciebie.”
 
-**en:** “To get started we’re giving Oczko Pro away for free, permanently: open this link and redeem the code OCZKOEN in the App Store (one code per person, for people who haven’t bought anything in Oczko yet; limited to 1,000 people, valid until [date]). No subscription and no charges — Pro is yours to keep.”
+**en:** “The app is still in development, so to start I’m giving away Oczko Pro for free, forever: code OCZKOEN → [redemption link] (one redemption per person, until [date] or while the codes last). No subscription and no charges — Pro is yours to keep.”
 
-Uwagi do prawdziwości (zasada roli 4): „na stałe” i „zostaje u Ciebie” wynikają z typu produktu (Ź11) i z Ź3; „bez subskrypcji” — Lifetime to zakup jednorazowy; „jeden kod na osobę” — Ź4; „nic nie kupiły” — uprawnienie z kroku 4 (**Never purchased within your app**); liczba osób i data = kroki 9 (zmieniasz je razem z konfiguracją). Zdanie **nie mówi „rok”** — przy opcji B byłoby nieprawdziwe. Przed publikacją: test z kroku 11. Jeśli w zdaniu ma wejść „Pro na rok”, to opcja C (§3), nie B. Zdanie jest propozycją dla 11 (`docs/wzrost/szkice-facebook.md`, wariant K); tekst wpisu zatwierdza 11.
+Uwagi do prawdziwości (zasada roli 4): „na stałe” i „zostaje u Ciebie” wynikają z typu produktu (Ź11) i z Ź3; „bez subskrypcji” — Lifetime to zakup jednorazowy; „jedna realizacja na osobę” — Ź4 („Each customer can redeem one code per offer”); „do [data] albo do wyczerpania puli” — krok 9 (limit realizacji i data końca kodu; zmieniasz je razem z konfiguracją, a jeśli ustawisz „No End Date”, wytnij „do [data]”); „dla wszystkich” wynika z kroku 4 (żadnego zdania o „nowych osobach”). Zdanie **nie mówi „rok”** — przy opcji B byłoby nieprawdziwe. Przed publikacją: test z kroku 11. Jeśli w zdaniu ma wejść „Pro na rok”, to opcja C (§3), nie B. Zdanie jest wpisane do 11 (`docs/wzrost/szkice-facebook.md` wariant K, `docs/wzrost/pakiet-startowy.md` G-K-PL/EN, KD1 po decyzji); tekst wpisu zatwierdza 11.
 
 ## 7. Czego nie zrobiono
 

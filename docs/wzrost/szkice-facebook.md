@@ -28,11 +28,11 @@ Stan 27.11: 1.0.1 w sprzedaży od 2026-11-26T19:07:54Z; kody ofert **nie istniej
 **Linia ograniczeń (zawsze, jawność):** PL: „Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze. Bez konta, bez reklam, bez śledzenia.” · EN: “Free for 5 crafting days a month; Oczko Pro removes the limit; export always works. No account, no ads, no tracking.” (T-12; bez kwot cen.)
 
 **Zamknięcia:** PL K1: „Bardzo liczę na Wasze uwagi, także krytyczne — odpowiem w komentarzach.” · K2: „Chętnie przeczytam, co działa, a co nie — w komentarzu albo prywatnie.” · EN K1: “I'd love your feedback, critical too — I'll reply in the comments.” · K2: “Tell me what works and what doesn't — in the comments or by message.”
-**Opcjonalna linia o ocenie** (P-1031 (2), do weta — patrz T-11; domyślnie bez niej): PL „A jeśli Oczko się przyda, szczera ocena w App Store pomaga małej aplikacji.” · EN “And if Oczko helps you, an honest rating on the App Store helps a small app.”
+**Zdanie końcowe o ocenie (słowa właściciela 2026-11-27 ok. 09:25 UTC, KO-218; P-1070) — ostatnie zdanie każdego wpisu C0 i E0:** PL „A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.” · EN „And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.”. Warunkowe, szczere, bez nagrody i bez „5 gwiazdek”; **wariant K (z kodem) go nie ma** — ocena nie może być powiązana z kodem (wytyczne Apple, sekcja 3).
 
 ### C0 — historia autora, bez kodu — PL
 
-Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstała ta aplikacja — licznik rzędów na iPhone'a i iPada:” + 3 punkty + linia ograniczeń + link + zamknięcie.
+Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstała ta aplikacja — licznik rzędów na iPhone'a i iPada:” + 3 punkty + linia ograniczeń + link + zamknięcie + zdanie końcowe o ocenie.
 
 | Typ grupy | Otwarcie (pierwsze zdanie, jawne „jestem autorem”) |
 |---|---|
@@ -42,7 +42,7 @@ Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia trening
 
 ### C0 — author story, no code — EN
 
-Skeleton: **{opening}** + “I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how this app came about — a row counter for iPhone and iPad:” + 3 points + limits line + link + closing.
+Skeleton: **{opening}** + “I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how this app came about — a row counter for iPhone and iPad:” + 3 points + limits line + link + closing + final rating sentence.
 
 | Group type | Opening (first sentence, “I'm the developer”) |
 |---|---|
@@ -52,7 +52,7 @@ Skeleton: **{opening}** + “I once built an app for tracking workouts and notic
 
 ### E0 — pytanie o pomyłkę + mała aplikacja, bez kodu — PL
 
-Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bardzo cenię sobie konstruktywne uwagi, w komentarzu albo prywatnie.” + 3 punkty + linia ograniczeń + link (zamknięcie K1/K2 wolno pominąć, bo uwagi są w szkielecie).
+Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bardzo cenię sobie konstruktywne uwagi, w komentarzu albo prywatnie.” + 3 punkty + linia ograniczeń + link (zamknięcie K1/K2 wolno pominąć, bo uwagi są w szkielecie) + zdanie końcowe o ocenie.
 
 | Typ grupy | Otwarcie |
 |---|---|
@@ -62,7 +62,7 @@ Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno
 
 ### E0 — a mistake in your project + a small app, no code — EN
 
-Skeleton: **{opening with a question}** + “I'm developing the app on my own, so it's surely not perfect yet — that's why I really value constructive feedback, in the comments or by message.” + 3 points + limits line + link.
+Skeleton: **{opening with a question}** + “I'm developing the app on my own, so it's surely not perfect yet — that's why I really value constructive feedback, in the comments or by message.” + 3 points + limits line + link + final rating sentence.
 
 | Group type | Opening |
 |---|---|
@@ -75,7 +75,35 @@ Skeleton: **{opening with a question}** + “I'm developing the app on my own, s
 2. **Od drugiego wpisu naprzemiennie C0 i E0 po grupach** (nie po dniach — dzień tygodnia nie miesza wyniku), w tym samym języku i typie grupy po równo. Szkice C i E z kodem zastępują C0/E0 dopiero, gdy kody istnieją; wtedy test C vs E zaczyna się od nowa (kod zmienia wpis).
 3. **Co porównujemy** (bez `pt`/`ct` nie ma pobrań na wpis): przeżycie wpisu (usunięty/zatwierdzony), liczba komentarzy i pytań, wyraźne reakcje negatywne; pobrania z App Analytics tylko jako tło dnia. Przy 2–4 wpisach dziennie to ok. 7–14 wpisów na wariant w tydzień — **kierunek, nie rozstrzygnięcie** [OCENA]; próg i H po pierwszym tygodniu danych (P-1030 (3)), decyzja koordynatora.
 
-## C. Wpis z historią i kodem (P-1031) — wersja główna, PL — **czeka na kody ofert** (nie publikować do czasu ich utworzenia; do tego czasu C0)
+## K — wpis z kodem: Oczko Pro na zawsze za darmo i uzasadnieniem (słowa właściciela 2026-11-27; P-1071) — **szkic „na czas kodów”: czeka na utworzenie kodów w ASC przez właściciela i test sandbox** (nie wpisywać kodu ani „za darmo na zawsze” do gotowych tekstów bez kodu; do tego czasu C0/E0)
+
+Słowa właściciela 27.11: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. Dopoki nie rozbujamy aplikacji i tak na niej nie zarabiamy a nikt jej nie pobiera. Wiec albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” **Zmienia P-1031 (1) „3 miesiące” na „rok” (P-1069), a następnie na Lifetime:** właściciel 27.11 ok. 09:55 UTC (przekaz koordynatora, dosłownie): „Ok, Lifetime na zawsze, działaj”, po „Zrobmy kod bez subskrypcji.” (ok. 09:45) — zapis: **P-1071** (10, KD1: kod własny na Oczko Pro Lifetime; źródła Apple i kroki w `docs/wydanie/kody-ofert.md`; 02: kontrakt wyjątku od P-057 — Lifetime zamiast okresu). Tekst „rok” poniżej jest **zastąpiony**; nie używać.
+
+Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **bez żadnego warunku** (uzasadnienie opisuje motyw autora, nie wymianę „kod za uwagi”; wytyczne Apple, sekcja 3; P-1031 (2)); bez zdania, że aplikacja „kiedyś będzie monetyzowana” — Pro już jest w sklepie (T-12), więc piszemy, jak jest dziś; bez zdania o ocenie w tym samym wpisie (ocena nie może być powiązana z kodem; koordynator rozstrzyga, gdy kody będą); ton rzeczowy (nisza nieufna wobec darmowych aplikacji — `docs/wzrost.md` E1 sesji 2); żadnego „roku”, „3 miesięcy” ani „bez odnowienia” (Lifetime jest zakupem jednorazowym, bez subskrypcji — P-1071); piszemy wprost „na zawsze”; kod osobny na język.
+
+**PL**
+
+> {otwarcie} Oczko to licznik rzędów na iPhone'a i iPada:
+> • jedno stuknięcie dodaje rząd, a stuknięcie −1 go cofa
+> • wzór (PDF albo zdjęcie) leży obok licznika, a bieżący rząd zaznaczasz na nim sam
+> • po przerwie otwiera się tam, gdzie była przerwa, z notatką obok licznika
+>
+> Oczko jest za darmo przez 5 dni robótkowych w miesiącu, a Oczko Pro znosi limit. Na tym etapie bardziej niż na przychodach zależy mi na tym, żeby aplikacja trafiła do ludzi, i na Waszych uwagach, dlatego na start daję **Oczko Pro na zawsze za darmo — bez subskrypcji i bez opłat**. Kod: OCZKOPL → <link realizacji kodu> (jedna realizacja na osobę, do <data> albo do wyczerpania puli kodów)
+>
+> Napiszcie w komentarzu albo prywatnie, co działa, a co nie.
+
+**EN**
+
+> {opening} Oczko is a row counter for iPhone and iPad:
+> • one tap adds a row, and tapping −1 takes it back
+> • your pattern (a PDF or a photo) sits next to the counter, and you mark your current row on it
+> • after a break it opens where you stopped, with your note next to the counter
+>
+> Oczko is free for 5 crafting days a month, and Oczko Pro removes the limit. At this stage, getting the app to people and hearing your feedback matters more to me than revenue, so to start I'm giving away **Oczko Pro for free, forever — no subscription and no charges**. Code: OCZKOEN → <code redemption link> (one redemption per person, until <date> or while the codes last)
+>
+> Tell me what works and what doesn't — in the comments or by message.
+
+## C. Wpis z historią i kodem (P-1031) — wersja główna, PL — **czeka na kody ofert** (nie publikować do czasu ich utworzenia; do tego czasu C0). **Zdanie o „3 miesiącach” zastąpione przez P-1071 (Lifetime na zawsze): przed użyciem przepisać według K**
 
 > Cześć! Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstało **Oczko** — licznik rzędów na iPhone'a i iPada:
 > • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
@@ -99,7 +127,7 @@ Skeleton: **{opening with a question}** + “I'm developing the app on my own, s
 
 Zasady szkicu C: bez kodu „na zawsze” i bez żadnej nagrody za ocenę (P-1031 (2)); kod osobny na język; zdanie „nic się potem samo nie pobierze” tylko, jeśli kod ma wyłączone odnowienie — sprawdź w App Store Connect przed pierwszym wpisem.
 
-## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1031, kandydat do testu z C) — PL — **czeka na kody ofert** (do tego czasu E0)
+## E. Wpis łączony: pomyłka przy robótce + mała aplikacja (P-1031, kandydat do testu z C) — PL — **czeka na kody ofert** (do tego czasu E0). **Zdanie o „3 miesiącach” zastąpione przez P-1071 (Lifetime na zawsze): przed użyciem przepisać według K**
 
 > Cześć! Ile razy trzeba było spruć kilka rzędów, bo pomyliło się liczenie albo zgubiło miejsce we wzorze? Właśnie na to zrobiłem **Oczko** — małą aplikację na iPhone'a i iPada:
 > • jedno stuknięcie dodaje rząd, pomyłkę cofniesz jednym ruchem,
