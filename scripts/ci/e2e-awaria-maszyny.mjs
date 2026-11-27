@@ -4,7 +4,7 @@
 //                                                        kod 1, gdy porażka scenariusza (np. „Assertion is false”) albo brak pliku junit.
 // Czyta tylko treść elementów <failure> i <error>: nazwa testu ani tagi nie decydują. Wzorce: DeviceUnreachableException z #142, #173, #182
 // (raport BB 2026-11-12, 07-jakosc-001) i dwa z Treningu (`.github/workflows/e2e-ios.yml:223`, @2d97581: „iOS driver not ready in time|deviceInfo failed”).
-// Używa jakosc-ios.yml (krok „Scenariusze”): awaria maszyny w 1. podejściu → jedno powtórzenie całego zestawu części od zera.
+// Używa jakosc-ios.yml (krok „Scenariusze”): awaria maszyny w 1. podejściu → jedno powtórzenie tylko scenariuszy z awarią i niewykonanych (PE1, P-1076).
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
