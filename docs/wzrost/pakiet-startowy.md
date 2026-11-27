@@ -4,7 +4,7 @@ Dla właściciela. Gotowe teksty, lista przed każdym wpisem, zasady odpowiedzi 
 
 ## 0. Zanim zaczniesz (jednorazowo)
 - Aplikacja w sprzedaży: wersja 1.0.1 od 2026-11-26 (App Store Connect / lookup 2026-11-27). Linki poniżej działały 2026-11-27 (HTTP 200).
-- **Potwierdź dwie rzeczy:** (1) „Aplikację rozwijam sam” jest prawdą (wariant E0); (2) czy dopisujesz linię o ocenie (patrz pkt 6) — domyślnie **nie**.
+- **Potwierdź dwie rzeczy:** (1) „Aplikację rozwijam sam” jest prawdą (wariant E0); (2) zdanie o ocenie na końcu każdego wpisu to Twoja decyzja z 27.11 (pkt 6).
 - Kodów ofert jeszcze nie ma: **nie wspominaj o kodzie ani o darmowym okresie** (każdy tekst poniżej jest bez kodu). Gdy ktoś zapyta o zniżkę: „Za darmo przez 5 dni robótkowych w miesiącu; Pro znosi limit”.
 - Wypełnij w swojej kopii szablonu grupy (`grupy.md` w warsztacie) wiersz każdej grupy, zanim w niej napiszesz (ok. 5 min na grupę).
 
@@ -33,7 +33,7 @@ Jeden obraz na wpis: surowy `03-wzor` w języku grupy (P-1032), z `oczko-warszta
 Teksty angielskie poniżej mają link `us`; dla grupy z Wielkiej Brytanii, Kanady albo Australii zamień `/us/` na `/gb/`, `/ca/` albo `/au/`.
 
 ## 4. Gotowe teksty (kopiuj; każdy z innym otwarciem, rotacją punktów i zamknięciem)
-Każdy tekst zawiera linię ograniczeń (5 dni robótkowych, Pro, eksport, bez konta/reklam/śledzenia) i link. Liczba w nazwie to numer otwarcia: 1 = ogólna dziewiarska, 2 = szydełkowa, 3 = początkujący.
+Każdy tekst zawiera linię ograniczeń (5 dni robótkowych, Pro, eksport, bez konta/reklam/śledzenia), link i — na końcu — zdanie o ocenie (pkt 6). Liczba w nazwie to numer otwarcia: 1 = ogólna dziewiarska, 2 = szydełkowa, 3 = początkujący.
 
 ### C0-PL-1 (ogólna dziewiarska; punkty 1-2-3)
 ```text
@@ -48,6 +48,8 @@ Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport dz
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
 
 Bardzo liczę na Wasze uwagi, także krytyczne — odpowiem w komentarzach.
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### C0-PL-2 (szydełkowa; punkty 2-3-1)
@@ -63,6 +65,8 @@ Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport dz
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
 
 Chętnie przeczytam, co działa, a co nie — w komentarzu albo prywatnie.
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### C0-PL-3 (początkujący; punkty 3-1-2)
@@ -78,6 +82,8 @@ Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport dz
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
 
 Bardzo liczę na Wasze uwagi, także krytyczne — odpowiem w komentarzach.
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### E0-PL-1 (ogólna dziewiarska; punkty 1-2-3)
@@ -91,6 +97,8 @@ Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bar
 
 Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze. Bez konta, bez reklam, bez śledzenia.
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### E0-PL-2 (szydełkowa; punkty 2-3-1)
@@ -104,6 +112,8 @@ Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bar
 
 Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze. Bez konta, bez reklam, bez śledzenia.
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### E0-PL-3 (początkujący; punkty 3-1-2)
@@ -117,6 +127,8 @@ Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bar
 
 Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze. Bez konta, bez reklam, bez śledzenia.
 https://apps.apple.com/pl/app/oczko-row-counter/id6823678721
+
+A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.
 ```
 
 ### C0-EN-1 (general knitting; punkty 1-2-3)
@@ -132,6 +144,8 @@ Free for 5 crafting days a month; Oczko Pro removes the limit; export always wor
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
 
 I'd love your feedback, critical too — I'll reply in the comments.
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
 ### C0-EN-2 (crochet; punkty 2-3-1)
@@ -147,6 +161,8 @@ Free for 5 crafting days a month; Oczko Pro removes the limit; export always wor
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
 
 Tell me what works and what doesn't — in the comments or by message.
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
 ### C0-EN-3 (beginners; punkty 3-1-2)
@@ -162,6 +178,8 @@ Free for 5 crafting days a month; Oczko Pro removes the limit; export always wor
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
 
 I'd love your feedback, critical too — I'll reply in the comments.
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
 ### E0-EN-1 (general knitting; punkty 1-2-3)
@@ -175,6 +193,8 @@ I'm developing the app on my own, so it's surely not perfect yet — that's why 
 
 Free for 5 crafting days a month; Oczko Pro removes the limit; export always works. No account, no ads, no tracking.
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
 ### E0-EN-2 (crochet; punkty 2-3-1)
@@ -188,6 +208,8 @@ I'm developing the app on my own, so it's surely not perfect yet — that's why 
 
 Free for 5 crafting days a month; Oczko Pro removes the limit; export always works. No account, no ads, no tracking.
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
 ### E0-EN-3 (beginners; punkty 3-1-2)
@@ -201,9 +223,11 @@ I'm developing the app on my own, so it's surely not perfect yet — that's why 
 
 Free for 5 crafting days a month; Oczko Pro removes the limit; export always works. No account, no ads, no tracking.
 https://apps.apple.com/us/app/oczko-row-counter/id6823678721
+
+And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.
 ```
 
-Linia o ocenie (tylko po Twojej zgodzie, pkt 0; wstaw jako ostatnie zdanie): PL „A jeśli Oczko się przyda, szczera ocena w App Store pomaga małej aplikacji.” · EN “And if Oczko helps you, an honest rating on the App Store helps a small app.” Bez nagrody i bez warunku; **nie dodawaj jej do wpisu z kodem** (kodów jeszcze nie ma, ale gdy będą, ocena nie może być powiązana z darmowym dostępem).
+Każdy tekst kończy się zdaniem o ocenie (pkt 6). Szkic wariantu z kodem (K, `szkice-facebook.md`) jest „na czas kodów” i nie wchodzi do gotowych tekstów.
 
 ## 5. Odpowiedzi na komentarze (P-1029 pkt 3; P-1030)
 - **Termin:** odpowiedz najpóźniej następnego dnia, także w innych językach (tłumacz); gdy to prawda, dopisz „I use a translator” / „Korzystam z tłumacza”.
@@ -213,10 +237,10 @@ Linia o ocenie (tylko po Twojej zgodzie, pkt 0; wstaw jako ostatnie zdanie): PL 
 - **Pytanie o cenę:** bez kwot (różnią się między krajami) — „Za darmo przez 5 dni robótkowych w miesiącu; Oczko Pro znosi limit, subskrypcja albo zakup jednorazowy; cenę zobaczysz w App Store”.
 - **Pytanie o kod/zniżkę:** „Na razie nie mam kodów; jak się pojawią, napiszę w grupie” — **tylko jeśli** kody będą zatwierdzone przez koordynatora; inaczej pomiń.
 - **Prośba o funkcję:** podziękuj, zapisz w dzienniku (kolumna „Uwagi”) — nic nie obiecuj.
-- **Nie rób:** próśb o polubienia, udostępnienia i oceny w komentarzach; edytowania wpisu, żeby go „podbić”; prywatnych wiadomości z reklamą do osób, które nie pytały; kont pomocniczych ani zamawiania opinii (jawność: dyrektywa 2005/29/WE zał. I pkt 22, 23c).
+- **Nie rób:** próśb o polubienia, udostępnienia i oceny w komentarzach (poza zdaniem końcowym wpisu); edytowania wpisu, żeby go „podbić”; prywatnych wiadomości z reklamą do osób, które nie pytały; kont pomocniczych ani zamawiania opinii (jawność: dyrektywa 2005/29/WE zał. I pkt 22, 23c).
 
-## 6. Prośba o ocenę — stan decyzji
-Sprzeczne zapisy: zasady grup w `docs/wzrost.md` („bez próśb o oceny”) i P-1031 (2) („prośba o szczerą ocenę bez warunku zostaje”). Sklep pokazuje 0 ocen (lookup 2026-11-27). Teksty powyżej są **bez** tej linii; dodasz ją po decyzji koordynatora. Zakaz stały: żadnej nagrody ani warunku (wytyczne Apple, sekcja 3).
+## 6. Prośba o ocenę — decyzja właściciela (27.11.2026 ok. 09:25 UTC, KO-218; P-1069)
+Na końcu **każdego** wpisu stoi zdanie, jako ostatnie: PL „A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.” · EN „And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.”. Warunkowe („jeśli się przyda”), szczere, **bez nagrody, bez warunku dostępu i bez „5 gwiazdek”** (wytyczne Apple, sekcja 3: „paid, incentivized, filtered, or fake feedback”). Poza tym zdaniem nie proś o oceny, polubienia ani udostępnienia — ani w komentarzach, ani w prywatnych wiadomościach. **Kod** (gdy będzie) nie może być powiązany z oceną: wpis z kodem (wariant K) nie dostaje tej prośby, dopóki koordynator nie rozstrzygnie, jak je rozdzielić. Sklep pokazuje 0 ocen (lookup 2026-11-27).
 
 ## 7. Zasada stop
 - **Wpis usunięty przez administratora = grupa skreślona**, bez ponawiania.

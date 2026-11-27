@@ -28,11 +28,11 @@ Stan 27.11: 1.0.1 w sprzedaży od 2026-11-26T19:07:54Z; kody ofert **nie istniej
 **Linia ograniczeń (zawsze, jawność):** PL: „Za darmo przez 5 dni robótkowych w miesiącu, Oczko Pro znosi limit; eksport działa zawsze. Bez konta, bez reklam, bez śledzenia.” · EN: “Free for 5 crafting days a month; Oczko Pro removes the limit; export always works. No account, no ads, no tracking.” (T-12; bez kwot cen.)
 
 **Zamknięcia:** PL K1: „Bardzo liczę na Wasze uwagi, także krytyczne — odpowiem w komentarzach.” · K2: „Chętnie przeczytam, co działa, a co nie — w komentarzu albo prywatnie.” · EN K1: “I'd love your feedback, critical too — I'll reply in the comments.” · K2: “Tell me what works and what doesn't — in the comments or by message.”
-**Opcjonalna linia o ocenie** (P-1031 (2), do weta — patrz T-11; domyślnie bez niej): PL „A jeśli Oczko się przyda, szczera ocena w App Store pomaga małej aplikacji.” · EN “And if Oczko helps you, an honest rating on the App Store helps a small app.”
+**Zdanie końcowe o ocenie (słowa właściciela 2026-11-27 ok. 09:25 UTC, KO-218; P-1069) — ostatnie zdanie każdego wpisu C0 i E0:** PL „A jeśli Oczko okaże się przydatne, będę wdzięczny za szczerą ocenę w App Store — dla małej aplikacji to duże wsparcie.” · EN „And if Oczko turns out to be useful, I'd be grateful for an honest rating on the App Store — it means a lot to a small app.”. Warunkowe, szczere, bez nagrody i bez „5 gwiazdek”; **wariant K (z kodem) go nie ma** — ocena nie może być powiązana z kodem (wytyczne Apple, sekcja 3).
 
 ### C0 — historia autora, bez kodu — PL
 
-Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstała ta aplikacja — licznik rzędów na iPhone'a i iPada:” + 3 punkty + linia ograniczeń + link + zamknięcie.
+Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia treningów i zauważyłem, że w robótkach na drutach i szydełku liczy się to samo: postęp, odhaczanie i zapamiętanie, gdzie się skończyło. Tak powstała ta aplikacja — licznik rzędów na iPhone'a i iPada:” + 3 punkty + linia ograniczeń + link + zamknięcie + zdanie końcowe o ocenie.
 
 | Typ grupy | Otwarcie (pierwsze zdanie, jawne „jestem autorem”) |
 |---|---|
@@ -42,7 +42,7 @@ Szkielet: **{otwarcie}** + „Zrobiłem kiedyś aplikację do śledzenia trening
 
 ### C0 — author story, no code — EN
 
-Skeleton: **{opening}** + “I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how this app came about — a row counter for iPhone and iPad:” + 3 points + limits line + link + closing.
+Skeleton: **{opening}** + “I once built an app for tracking workouts and noticed that knitting and crochet need the same things: tracking progress, ticking things off and remembering where you stopped. That's how this app came about — a row counter for iPhone and iPad:” + 3 points + limits line + link + closing + final rating sentence.
 
 | Group type | Opening (first sentence, “I'm the developer”) |
 |---|---|
@@ -52,7 +52,7 @@ Skeleton: **{opening}** + “I once built an app for tracking workouts and notic
 
 ### E0 — pytanie o pomyłkę + mała aplikacja, bez kodu — PL
 
-Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bardzo cenię sobie konstruktywne uwagi, w komentarzu albo prywatnie.” + 3 punkty + linia ograniczeń + link (zamknięcie K1/K2 wolno pominąć, bo uwagi są w szkielecie).
+Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno nie jest jeszcze idealna — dlatego bardzo cenię sobie konstruktywne uwagi, w komentarzu albo prywatnie.” + 3 punkty + linia ograniczeń + link (zamknięcie K1/K2 wolno pominąć, bo uwagi są w szkielecie) + zdanie końcowe o ocenie.
 
 | Typ grupy | Otwarcie |
 |---|---|
@@ -62,7 +62,7 @@ Szkielet: **{otwarcie z pytaniem}** + „Aplikację rozwijam sam, więc na pewno
 
 ### E0 — a mistake in your project + a small app, no code — EN
 
-Skeleton: **{opening with a question}** + “I'm developing the app on my own, so it's surely not perfect yet — that's why I really value constructive feedback, in the comments or by message.” + 3 points + limits line + link.
+Skeleton: **{opening with a question}** + “I'm developing the app on my own, so it's surely not perfect yet — that's why I really value constructive feedback, in the comments or by message.” + 3 points + limits line + link + final rating sentence.
 
 | Group type | Opening |
 |---|---|
@@ -75,11 +75,11 @@ Skeleton: **{opening with a question}** + “I'm developing the app on my own, s
 2. **Od drugiego wpisu naprzemiennie C0 i E0 po grupach** (nie po dniach — dzień tygodnia nie miesza wyniku), w tym samym języku i typie grupy po równo. Szkice C i E z kodem zastępują C0/E0 dopiero, gdy kody istnieją; wtedy test C vs E zaczyna się od nowa (kod zmienia wpis).
 3. **Co porównujemy** (bez `pt`/`ct` nie ma pobrań na wpis): przeżycie wpisu (usunięty/zatwierdzony), liczba komentarzy i pytań, wyraźne reakcje negatywne; pobrania z App Analytics tylko jako tło dnia. Przy 2–4 wpisach dziennie to ok. 7–14 wpisów na wariant w tydzień — **kierunek, nie rozstrzygnięcie** [OCENA]; próg i H po pierwszym tygodniu danych (P-1030 (3)), decyzja koordynatora.
 
-## K — wpis z kodem na rok i uzasadnieniem (słowa właściciela 2026-11-27) — **czeka na kody ofert i na zapis decyzji koordynatora** (nie publikować do czasu ich utworzenia; do tego czasu C0/E0)
+## K — wpis z kodem na rok i uzasadnieniem (słowa właściciela 2026-11-27) — **szkic „na czas kodów”: czeka na kody ofert i na zapis decyzji koordynatora** (nie wpisywać kodu ani „roku za darmo” do gotowych tekstów bez kodu; do tego czasu C0/E0)
 
 Słowa właściciela 27.11: „Na razie rozdaje rok za darmo nie 3 miesiace. Rok to tyle ile sprawi ze warto zainstalowac. Dopoki nie rozbujamy aplikacji i tak na niej nie zarabiamy a nikt jej nie pobiera. Wiec albo rozdamy za darmo zdobedziemy popularnosc albo ona nie ruszy nigdy.” **Zmienia P-1031 (1) „3 miesiące” na „rok”** — decyzję zapisuje koordynator (nowy P-nnn; 02: kontrakt wyjątku od P-057; 10: czy ASC dopuszcza rok dla oferty bezpłatnej przy kodzie własnym i jaki limit realizacji — sprawdzić u źródła w dniu pracy, z pamięci nie potwierdzam).
 
-Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **bez żadnego warunku** (uzasadnienie opisuje motyw autora, nie wymianę „kod za uwagi”; wytyczne Apple, sekcja 3; P-1031 (2)); bez zdania, że aplikacja „kiedyś będzie monetyzowana” — Pro już jest w sklepie (T-12), więc piszemy, jak jest dziś; bez prośby o ocenę w tym samym wpisie; ton rzeczowy (nisza nieufna wobec darmowych aplikacji — `docs/wzrost.md` E1 sesji 2); „bez odnowienia” tylko, jeśli kod ma wyłączone odnowienie (sprawdzić w ASC); kod osobny na język.
+Zasady K: pierwsze zdanie = otwarcie z tabel C0 albo E0 (pod typ grupy); kod **bez żadnego warunku** (uzasadnienie opisuje motyw autora, nie wymianę „kod za uwagi”; wytyczne Apple, sekcja 3; P-1031 (2)); bez zdania, że aplikacja „kiedyś będzie monetyzowana” — Pro już jest w sklepie (T-12), więc piszemy, jak jest dziś; bez zdania o ocenie w tym samym wpisie (ocena nie może być powiązana z kodem; koordynator rozstrzyga, gdy kody będą); ton rzeczowy (nisza nieufna wobec darmowych aplikacji — `docs/wzrost.md` E1 sesji 2); „bez odnowienia” tylko, jeśli kod ma wyłączone odnowienie (sprawdzić w ASC); kod osobny na język.
 
 **PL**
 
