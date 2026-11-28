@@ -181,3 +181,4 @@ Przegląd 28.11 11:35: sesje opus (ZK1 6,61, RS1 8,33, PR1 9,37, AR1 13,20) — 
 | RS2 | 01 fix | 7 | 4,69 | 23 | 11:14 → 11:14 → 11:30 → verify sesji 11:33 → 11:45 | 0 | research wzoru tekstowego + scalenie |
 | PR2 | 04 fix | 6 | 9,14 | 32 | 11:17 → 11:17 → 11:33 → verify sesji 11:35 → 12:00 (+ runda 2) | 0 | scalenie + ZM-27 + 5 zgłoszeń AR1 + ZM-28 |
 | TQ1 | 07 fix | 12 | 11,98 | 43 | 12:00 → 12:00 → 12:25 → verify sesji 12:33 → 12:40 | 0 | PU + 96 testów przed kodem |
+| PB1 | 08 fix | 6 | 2,02 | 25 | 12:00 → 12:00 → 12:06 → run macOS 12:29–13:05 (kolejka 23 min) → 13:12 | 23 min kolejka macOS | prototyp B, werdykt NIE |
