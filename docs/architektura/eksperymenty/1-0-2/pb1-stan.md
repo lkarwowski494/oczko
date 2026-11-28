@@ -7,5 +7,8 @@ Aktualizacja: 2026-11-28. Polecenie: `koordynacja:docs/koordynacja/polecenia/PB1
 - Narzędzia w `docs/architektura/eksperymenty/1-0-2/prototyp-b/`: `przebieg.sh` (2 przebiegi: start, terminate, brak procesu, zrzuty co 5 s), `ocr.swift` (Vision), `werdykt.mjs` + `werdykt-test.mjs` (5/5 na danych syntetycznych), `kontrola-flagi.mjs`.
 - `npm run jakosc:kontrole` kod 0; sprawdz-workflowy 0 naruszeń.
 
+## Wynik
+Run 46142988157: werdykt NIE ((a) tak, (b) nie na symulatorze). Dokument: `prototyp-b-wynik.md`.
+
 ## Następny krok
-Push, przebieg macOS (najwyżej 2 próby), obejrzeć zrzuty z artefaktu `prototyp-b`, napisać `prototyp-b-wynik.md` (P-1117), PRZEKAZANIE do koordynatora.
+PRZEKAZANIE do koordynatora (P-1117 po jego stronie).
