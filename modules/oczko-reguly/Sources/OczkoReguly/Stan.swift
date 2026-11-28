@@ -4,8 +4,8 @@
 import Foundation
 
 public let wersjaStanu = 3
-/// Największy krok licznika (`licznik.krok` CHECK 1…2, ADR-0036). Źródło: src/konfiguracja.ts `KROK_MAKS` (dopisuje 08-A) — do czasu dopisania stała ręczna (P-1124).
-public let krokMaks = 2
+/// Największy krok licznika (`licznik.krok` CHECK 1…2, ADR-0036). Źródło: `KROK_MAKS` z src/domena/stukniecia.ts przez generator Stale.swift (P-1124, MS1).
+public let krokMaks = Stale.krokMaks
 
 public struct DzienStanu: Codable, Hashable {
   public let dzien: String

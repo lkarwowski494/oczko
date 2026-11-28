@@ -57,7 +57,7 @@ test('stałe Swift (Stale.swift, stale.json) zgodne z src/konfiguracja.ts (gener
 /** Okrojona kopia repo dla generuj-stale (KORZEN skryptu = dwa katalogi nad nim): skrypt, konfiguracja, wygenerowane stałe i Info.plist celu share. */
 function kopiaDlaStalych(): string {
   const k = mkdtempSync(join(tmpdir(), 'generuj-stale-'));
-  for (const p of ['scripts/natywne/generuj-stale.mjs', 'src/konfiguracja.ts', 'modules/oczko-reguly/stale.json', 'modules/oczko-reguly/Sources/OczkoReguly/Stale.swift',
+  for (const p of ['scripts/natywne/generuj-stale.mjs', 'src/konfiguracja.ts', 'src/domena/stukniecia.ts', 'modules/oczko-reguly/stale.json', 'modules/oczko-reguly/Sources/OczkoReguly/Stale.swift',
     'modules/oczko-wzor/Pakiet/stale.json', 'modules/oczko-wzor/Pakiet/Sources/OczkoWzorLogika/StaleWzoru.swift', 'targets/share/Info.plist']) {
     mkdirSync(join(k, p, '..'), { recursive: true });
     cpSync(join(KORZEN, p), join(k, p));

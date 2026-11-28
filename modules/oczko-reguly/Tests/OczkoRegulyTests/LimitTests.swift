@@ -87,6 +87,11 @@ final class LimitTests: XCTestCase {
     // Kolejka zegarka (ADR-0009, 2026-10-26; fix-4 05): ta sama liczba w stałych i w wektorach skrzynki (ZG-06).
     XCTAssertEqual(Stale.zegarekPonowienieMs, stale["zegarekPonowienieMs"]?.calkowita)
     XCTAssertEqual(Stale.zegarekPonowienieMs, try Repo.json("tests/wspolne/wzorce.json")["zegarek_skrzynka"]?["ponowienie_ms"]?.calkowita)
+    // 1.0.2 (MS1, KO-245): krok i koniec Live Activity z generatora, bez ręcznych kopii (P-1124, P-1127).
+    XCTAssertEqual(Int64(Stale.krokMaks), stale["krokMaks"]?.calkowita)
+    XCTAssertEqual(Stale.liveKoniecPoMs, stale["liveKoniecPoMs"]?.calkowita)
+    XCTAssertEqual(krokMaks, Stale.krokMaks)
+    XCTAssertEqual(liveKoniecPoMs, Stale.liveKoniecPoMs)
   }
 
   /// X-RG-03: mutant `<` → `<=` w porównaniu przerwy czerwieni wektor graniczny L-04c (60 min); poprawna reguła — żadnego.

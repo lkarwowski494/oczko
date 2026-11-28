@@ -6,7 +6,10 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const KORZEN = join(import.meta.dirname, '../..');
-const k = await import(join(KORZEN, 'src/konfiguracja.ts'));
+const konfiguracja = await import(join(KORZEN, 'src/konfiguracja.ts'));
+// KROK_MAKS ma jedną definicję w domenie (jak CHECK migracji 0002, ADR-0036, ARCH-02), nie w konfiguracja.ts (MS1, KO-245).
+const { KROK_MAKS } = await import(join(KORZEN, 'src/domena/stukniecia.ts'));
+const k = { ...konfiguracja, KROK_MAKS };
 /** Nazwa w Swift → [nazwa w konfiguracja.ts, typ Swift]. Tylko stałe, których używa kod Swift (intencja, zegarek). */
 const STALE = {
   limitDniWMiesiacu: ['LIMIT_DNI_W_MIESIACU', 'Int'],
@@ -14,6 +17,8 @@ const STALE = {
   oknoOfflineProMs: ['OKNO_OFFLINE_PRO_MS', 'Int64'],
   produktyPro: ['PRODUKTY_PRO', '[String]'],
   zegarekPonowienieMs: ['ZEGAREK_PONOWIENIE_MS', 'Int64'], // kolejka zegarka (ADR-0009, 2026-10-26; fix-4 05)
+  krokMaks: ['KROK_MAKS', 'Int'], // największy krok licznika (ADR-0036; P-1124); źródło: src/domena/stukniecia.ts
+  liveKoniecPoMs: ['LIVE_KONIEC_PO_MS', 'Int64'], // koniec Live Activity po czasie (ADR-0037; P-1127)
 };
 const wartosci = Object.fromEntries(Object.entries(STALE).map(([n, [z]]) => {
   if (!(z in k)) throw new Error(`generuj-stale: brak ${z} w src/konfiguracja.ts`);

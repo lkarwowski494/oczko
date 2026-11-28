@@ -7,5 +7,7 @@
     "oczko.pro.monthly",
     "oczko.pro.yearly"
   ],
-  "zegarekPonowienieMs": 900000
+  "zegarekPonowienieMs": 900000,
+  "krokMaks": 2,
+  "liveKoniecPoMs": 7200000
 }

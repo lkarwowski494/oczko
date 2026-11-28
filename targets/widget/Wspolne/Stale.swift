@@ -11,4 +11,8 @@ public enum Stale {
   public static let produktyPro: [String] = ["oczko.pro.lifetime","oczko.pro.monthly","oczko.pro.yearly"]
   /// ZEGAREK_PONOWIENIE_MS
   public static let zegarekPonowienieMs: Int64 = 900000
+  /// KROK_MAKS
+  public static let krokMaks: Int = 2
+  /// LIVE_KONIEC_PO_MS
+  public static let liveKoniecPoMs: Int64 = 7200000
 }

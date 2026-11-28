@@ -521,6 +521,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/siec.test.ts` | zielony (główny zestaw) | 7 | NFR-OFF-001 | `src/domena/porty`<br>`src/platforma/siec` | Z07-22 |
 | 9 ? | `tests/adaptery/sklep-status.test.ts` | zielony (główny zestaw) | 2 | KP-13, P-135 | `src/domena/dostep`<br>`src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 10 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
+| 9 ? | `tests/adaptery/stale-swift-1-0-2.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/stukniecia`<br>`src/konfiguracja` | — |
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 6 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-bez-diagnostyki-bx16.test.ts` | zielony (główny zestaw) | 4 | — | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
@@ -554,4 +555,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/zm25-podpowiedz-termin.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/podpowiedz` | — |
 | 9 ? | `tests/domena/zm27-aktywnosc.test.ts` | zielony (główny zestaw) | 3 | — | `src/konfiguracja` | — |
 
-Razem plików testów: 550; zależnych od poprawek: 342.
+Razem plików testów: 551; zależnych od poprawek: 342.
