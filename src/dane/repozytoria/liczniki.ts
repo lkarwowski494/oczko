@@ -13,6 +13,7 @@ import { liczba, liczbaLubNull, listaTekstow, tekst, tekstLubNull, wiersze } fro
 export type StanLicznika = {
   id: string; projektId: string; wartosc: number; glowa: string | null; zablokowany: boolean; konflikt: boolean;
   rodzaj: 'rzedy' | 'oczka'; usuniety: boolean; // usunięty licznik, część albo projekt (kosz, P-026)
+  krok: 1 | 2; // ZM-24: ile zdarzeń `plus` zapisuje jedno stuknięcie (licznik.krok, KROK_MAKS)
 };
 export type NoweZdarzenie = {
   id: string; licznikId: string; rodzaj: RodzajZdarzenia; wartosc: number | null; wartoscPo: number; rodzice: string[]; cofa: string[];
@@ -22,7 +23,7 @@ export type NoweZdarzenie = {
 
 export async function stanLicznika(tx: PortBazy, licznikId: string): Promise<StanLicznika | null> {
   const [w] = await wiersze(tx.all(
-    `SELECT l.id, c.projekt_id, l.wartosc, l.glowa, l.zablokowany, l.konflikt, l.rodzaj,
+    `SELECT l.id, c.projekt_id, l.wartosc, l.glowa, l.zablokowany, l.konflikt, l.rodzaj, l.krok,
             (l.usunieto_ms IS NOT NULL OR c.usunieto_ms IS NOT NULL OR p.usunieto_ms IS NOT NULL) AS usuniety
        FROM licznik l JOIN czesc c ON c.id = l.czesc_id JOIN projekt p ON p.id = c.projekt_id WHERE l.id = ?`, [licznikId]), 'stanLicznika');
   if (!w) return null;
@@ -30,7 +31,7 @@ export async function stanLicznika(tx: PortBazy, licznikId: string): Promise<Sta
   return {
     id: tekst(w, 'id'), projektId: tekst(w, 'projekt_id'), wartosc: liczba(w, 'wartosc'), glowa: tekstLubNull(w, 'glowa'),
     zablokowany: liczba(w, 'zablokowany') === 1, konflikt: liczba(w, 'konflikt') === 1, rodzaj: rodzaj === 'oczka' ? 'oczka' : 'rzedy',
-    usuniety: liczba(w, 'usuniety') === 1,
+    usuniety: liczba(w, 'usuniety') === 1, krok: liczba(w, 'krok') === 2 ? 2 : 1, // CHECK (krok IN (1, 2))
   };
 }
 
@@ -50,14 +51,15 @@ export async function zapiszOstatniaPrace(tx: PortBazy, projektId: string, czasM
   await tx.run('UPDATE projekt SET ostatnia_praca_ms = max(ostatnia_praca_ms, ?) WHERE id = ?', [czasMs, projektId]);
 }
 
-export type ZdarzenieZapisane = { id: string; rodzaj: RodzajZdarzenia; wartoscPo: number; rodzice: string[]; cofa: string[]; dzien: string };
+export type ZdarzenieZapisane = { id: string; rodzaj: RodzajZdarzenia; wartoscPo: number; rodzice: string[]; cofa: string[]; dzien: string; czasMs: number; zrodlo: string; urzadzenie: string };
 export async function zdarzenie(tx: PortBazy, id: string): Promise<ZdarzenieZapisane | null> {
-  const [w] = await wiersze(tx.all('SELECT id, rodzaj, wartosc_po, rodzice, cofa, dzien FROM zdarzenie WHERE id = ?', [id]), 'zdarzenie');
+  const [w] = await wiersze(tx.all('SELECT id, rodzaj, wartosc_po, rodzice, cofa, dzien, czas_ms, zrodlo, urzadzenie FROM zdarzenie WHERE id = ?', [id]), 'zdarzenie');
   if (!w) return null;
   const rodzaj = tekst(w, 'rodzaj');
   const r = STANY['zdarzenie.rodzaj'].find((x) => x === rodzaj);
   if (r === undefined) throw new BladDanych(`zdarzenie ${id}: nieznany rodzaj`); // CHECK w schemacie, więc stan niemożliwy
-  return { id: tekst(w, 'id'), rodzaj: r, wartoscPo: liczba(w, 'wartosc_po'), rodzice: listaTekstow(w, 'rodzice'), cofa: listaTekstow(w, 'cofa'), dzien: tekst(w, 'dzien') };
+  return { id: tekst(w, 'id'), rodzaj: r, wartoscPo: liczba(w, 'wartosc_po'), rodzice: listaTekstow(w, 'rodzice'), cofa: listaTekstow(w, 'cofa'), dzien: tekst(w, 'dzien'),
+    czasMs: liczba(w, 'czas_ms'), zrodlo: tekst(w, 'zrodlo'), urzadzenie: tekst(w, 'urzadzenie') };
 }
 
 /** Dni limitu miesiąca `RRRR-MM` (wejście `dni` funkcji limitu). */

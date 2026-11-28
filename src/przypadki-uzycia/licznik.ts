@@ -3,7 +3,8 @@
 // Jedna transakcja w kolejce, bez czekania na nic poza bazą: odczyt → strażnik limitu → zdarzenie + wartość + dzień limitu + ostatnia praca → COMMIT;
 // haptyka, ekran, Live Activity i zegarek dopiero po wyniku (wołający). Błąd zapisu → ROLLBACK, `powod: 'zapis'`, wpis w `blad`.
 import type { Powod, Wynik } from '../domena/bledy';
-import { celCofnieciaIndeks, type ZdarzenieCofniecia } from '../domena/cofniecie';
+import { celCofnieciaIndeks } from '../domena/cofniecie';
+import { KROK_MAKS, celCofnieciaStukniecia, stukniecia, type ZdarzenieStukniecia } from '../domena/stukniecia';
 import { cofniecieSerii, rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu, type ZrodloCofniecia } from '../domena/limit';
 import type { PortBazy } from '../domena/porty';
 import { ZNACZENIE_NOWEGO_LICZNIKA } from '../konfiguracja';
@@ -24,7 +25,8 @@ export type WynikZmiany = { wartosc: number; zdarzenieId: string };
 /** −1 przy 0 (BR-LIC-002 „Granica zera”): wartość bez zmiany i bez zdarzenia, więc `zdarzenieId` = null. */
 export type WynikOdjecia = { wartosc: number; zdarzenieId: string | null };
 
-type Zmiana = { rodzaj: RodzajZdarzenia; wartosc: number | null; wartoscPo: number; rodzice: string[]; cofa: string[] };
+/** `powtorz` (ZM-24): ile zdarzeń `plus` zapisuje zmiana w jednej transakcji (krok licznika); `wartoscPo` to wartość po ostatnim. */
+type Zmiana = { rodzaj: RodzajZdarzenia; wartosc: number | null; wartoscPo: number; rodzice: string[]; cofa: string[]; powtorz?: number };
 const blad = (powod: Powod): { ok: false; powod: Powod } => ({ ok: false, powod });
 const czyBladDanych = (e: unknown): boolean => typeof e === 'object' && e !== null && 'kod' in e && e.kod === 'BLAD_DANYCH';
 
@@ -52,12 +54,24 @@ function zmien(z: Zaleznosci, licznikId: string, operacja: string, okresl: (s: S
           if (!start.dozwolone) return blad('limit'); // ekran pokazuje limit zawczasu; tu wyścig o północy (L-04)
           dzien = start.zapis;
         }
-        const id = z.id.nowy();
-        await dopiszZdarzenie(tx, { id, licznikId, ...zm.wartosc, zrodlo: 'aplikacja', urzadzenie: z.urzadzenie, urzadzenieRodzaj: z.rodzajUrzadzenia, czasMs: teraz.ms, strefa: teraz.strefa, dzien: teraz.dzien });
-        await ustawStan(tx, licznikId, { wartosc: zm.wartosc.wartoscPo, glowa: id });
-        if (dzien) await zapiszDzienLimitu(tx, { dzien: dzien.data, pro: dzien.pro, zaczetoMs: teraz.ms, zdarzenieId: id });
+        const { powtorz = 1, ...zapis } = zm.wartosc;
+        // Krok „+2” (ADR-0036): łańcuch `powtorz` zdarzeń `plus` o tym samym czasie, jedna decyzja limitu (dla pierwszego), jedna transakcja.
+        const ids: string[] = [];
+        for (let i = 0; i < powtorz; i += 1) {
+          const id = z.id.nowy();
+          const poprzedni = ids[ids.length - 1];
+          await dopiszZdarzenie(tx, {
+            id, licznikId, ...zapis, wartoscPo: zapis.wartoscPo - (powtorz - 1 - i), rodzice: poprzedni ? [poprzedni] : zapis.rodzice,
+            zrodlo: 'aplikacja', urzadzenie: z.urzadzenie, urzadzenieRodzaj: z.rodzajUrzadzenia, czasMs: teraz.ms, strefa: teraz.strefa, dzien: teraz.dzien,
+          });
+          ids.push(id);
+        }
+        const [pierwszy, ostatni] = [ids[0], ids[ids.length - 1]];
+        if (pierwszy === undefined || ostatni === undefined) return blad('bledne_dane'); // powtorz < 1: stan niemożliwy
+        await ustawStan(tx, licznikId, { wartosc: zapis.wartoscPo, glowa: ostatni });
+        if (dzien) await zapiszDzienLimitu(tx, { dzien: dzien.data, pro: dzien.pro, zaczetoMs: teraz.ms, zdarzenieId: pierwszy });
         await zapiszOstatniaPrace(tx, s.projektId, teraz.ms);
-        return { ok: true, wartosc: { wartosc: zm.wartosc.wartoscPo, zdarzenieId: id } };
+        return { ok: true, wartosc: { wartosc: zapis.wartoscPo, zdarzenieId: ostatni } };
       });
     } catch (e) {
       await zapiszBlad(z.baza, { czasMs: teraz.ms, kod: 'zapis_licznika', szczegoly: { operacja, sqlite: kodBledu(e) } });
@@ -71,7 +85,7 @@ const wynik = (w: Zmiana): Wynik<Zmiana> => ({ ok: true, wartosc: w });
 
 /** +1: jedna transakcja w kolejce; błąd kroku 3 → ROLLBACK i `powod: 'zapis'` (moduly.md:69–76). */
 export function dodajRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
-  return zmien(z, w.licznikId, 'dodajRzad', async (s) => wynik({ rodzaj: 'plus', wartosc: null, wartoscPo: s.wartosc + 1, rodzice: rodzic(s), cofa: [] }));
+  return zmien(z, w.licznikId, 'dodajRzad', async (s) => wynik({ rodzaj: 'plus', wartosc: null, wartoscPo: s.wartosc + s.krok, rodzice: rodzic(s), cofa: [], powtorz: s.krok }));
 }
 export function odejmijRzad(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikOdjecia>> {
   return zmien(z, w.licznikId, 'odejmijRzad', async (s): Promise<Wynik<Zmiana | null>> => s.wartosc === 0 ? { ok: true, wartosc: null } : wynik({ rodzaj: 'minus', wartosc: null, wartoscPo: s.wartosc - 1, rodzice: rodzic(s), cofa: [] }));
@@ -89,18 +103,23 @@ async function wartoscPrzed(tx: PortBazy, rodzicId: string | undefined): Promise
 export function cofnijOstatnie(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WynikZmiany>> {
   return zmien(z, w.licznikId, 'cofnijOstatnie', async (s, tx) => {
     if (!s.glowa) return blad('niedozwolone_przejscie'); // nic do cofnięcia
-    const lancuch: (ZdarzenieCofniecia & { rodzic: string | undefined })[] = [];
-    let cel: (typeof lancuch)[number] | undefined;
-    for (let id: string | undefined = s.glowa; id; id = lancuch[lancuch.length - 1]?.rodzic) {
+    const lancuch: ZdarzenieStukniecia[] = [];
+    let doczytaj = -1; // −1: szukamy celu; ≥ 0: ile rodziców po celu jeszcze doczytać (stuknięcie „+2” ma dwa zdarzenia, ADR-0036)
+    for (let id: string | undefined = s.glowa; id; id = lancuch[lancuch.length - 1]?.rodzice[0]) {
       const e = await zdarzenie(tx, id);
       if (!e) return blad('bledne_dane');
-      lancuch.push({ id: e.id, rodzaj: e.rodzaj, cofa: e.cofa, rodzic: e.rodzice[0] });
-      const i = celCofnieciaIndeks(lancuch);
-      if (i !== null) { cel = lancuch[i]; break; }
+      lancuch.push({ id: e.id, rodzaj: e.rodzaj, czasMs: e.czasMs, rodzice: e.rodzice, zrodlo: e.zrodlo, urzadzenie: e.urzadzenie, cofa: e.cofa });
+      if (doczytaj < 0) {
+        if (celCofnieciaIndeks(lancuch.map((x) => ({ id: x.id, rodzaj: x.rodzaj, cofa: x.cofa ?? [] }))) === null) continue; // cel jeszcze nie znaleziony
+        doczytaj = KROK_MAKS - 1;
+      } else doczytaj -= 1;
+      if (doczytaj <= 0) break;
     }
+    const cel = celCofnieciaStukniecia(lancuch, stukniecia(lancuch));
     if (!cel) return blad('niedozwolone_przejscie'); // wszystkie zmiany już cofnięte
-    const v = await wartoscPrzed(tx, cel.rodzic);
-    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: [cel.id] });
+    const pierwszy = lancuch.find((e) => e.id === cel.przedId);
+    const v = await wartoscPrzed(tx, pierwszy?.rodzice[0]);
+    return wynik({ rodzaj: 'cofniecie', wartosc: v, wartoscPo: v, rodzice: [s.glowa], cofa: cel.cofa });
   });
 }
 /**
