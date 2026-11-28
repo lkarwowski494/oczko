@@ -17,14 +17,14 @@ tags:
     file: subflows/start-czysty-dzis.yaml
     env:
       TERAZ: "2026-11-01T00:05:00"
-- assertVisible: { id: "dzis-wartosc", text: "0" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
 - assertNotVisible: { id: "oferty-ekran" }
 - assertNotVisible: { id: "okno-uczciwe-zasady" }
 - assertNotVisible: { id: "wprowadzenie" }
 - assertNotVisible: { id: "limit-oferta-link" } # P-563 (10a): na „Dziś” bez odnośnika „Oczko Pro”
 - takeScreenshot: 01-dzis-start-1-dnia
 - tapOn: { id: "dzis-plus" }
-- assertVisible: { id: "dzis-wartosc", text: "1" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
 - assertVisible: { id: "dzis-karta" } # bez zmiany ekranu (próg (3))
 - assertNotVisible: { id: "licznik-plus" }
 - assertNotVisible: { id: "oferty-ekran" }
@@ -34,13 +34,13 @@ tags:
     file: subflows/restart-dzis.yaml
     env:
       TERAZ: "2026-11-01T00:20:00"
-- assertVisible: { id: "dzis-wartosc", text: "1" }
-- tapOn: { id: "dzis-plus" }
 - assertVisible: { id: "dzis-wartosc", text: "2" }
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "3" }
 - assertVisible: { id: "dzis-karta" }
 - assertNotVisible: { id: "licznik-plus" }
 - tapOn: { id: "dzis-kontynuuj" }
-- assertVisible: { id: "licznik-wartosc", text: "2" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
 - assertVisible: { id: "licznik-teraz-rzad", text: ".*row 3" } # testid.md:159: na makiecie TO BE linia łączy się z podpisem liczby („rzędy gotowe · teraz rząd N”), tekst en od 04 — asercja numeru rzędu, nie brzmienia
 - takeScreenshot: 01-licznik-po-kontynuuj
 # --- ostatni dzień miesiąca, tuż przed północą, czysta instalacja ---
@@ -48,10 +48,10 @@ tags:
     file: subflows/start-czysty-dzis.yaml
     env:
       TERAZ: "2026-11-30T23:55:00"
-- assertVisible: { id: "dzis-wartosc", text: "0" }
+- assertVisible: { id: "dzis-wartosc", text: "1" }
 - assertNotVisible: { id: "oferty-ekran" }
 - tapOn: { id: "dzis-plus" }
-- assertVisible: { id: "dzis-wartosc", text: "1" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
 - takeScreenshot: 01-dzis-po-pierwszym-plus-ostatni-dzien
 # --- luty w roku przestępnym, ostatni dzień (granica miesiąca inna niż 30/31) ---
 - runFlow:
@@ -59,5 +59,5 @@ tags:
     env:
       TERAZ: "2028-02-29T21:00:00"
 - tapOn: { id: "dzis-plus" }
-- assertVisible: { id: "dzis-wartosc", text: "1" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
 - assertNotVisible: { id: "oferty-ekran" }

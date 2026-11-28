@@ -2,6 +2,7 @@
 // `licznik.ts` re-eksportuje `Jezyk`, `miesiac`, `etykietaRobocza` i `stanEkranu`, więc importy w aplikacji i testach się nie zmieniają.
 import { czescNaLiczniku } from '../domena/nazwa-czesci';
 import { formatujGodzine } from '../i18n/format';
+import { ZNACZENIE_NOWEGO_LICZNIKA } from '../konfiguracja';
 import type { BanerLicznika, StanEkranuLicznika } from '../ekrany/Licznik';
 import type { Tlumacz } from '../ekrany/wspolne';
 import type { WidokLicznika } from '../przypadki-uzycia/widok-licznika';
@@ -31,7 +32,7 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
   const mies = { nazwa: miesiac(o.dzis, j.jezyk()), wznowienie: miesiac(w ? w.wznowienie : o.dzis, j.jezyk(), true), rzedyDanych: w ? w.wartosc : 0 };
   if (!w) {
     return {
-      rodzaj: 'rzedy', projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: 'skonczone', cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
+      rodzaj: 'rzedy', projekt: null, czesc: null, skonczone: 0, dziergany: 1, znaczenie: ZNACZENIE_NOWEGO_LICZNIKA, cel: null, celDnia: null, przypomnienie: null, powtorzenie: null,
       notatka: null, sesja: null, zablokowany: false, limit: { rodzaj: 'brak' }, miesiac: mies, baner: null, blizniak: null, wibracje: o.wibracje,
     };
   }

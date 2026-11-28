@@ -1,12 +1,11 @@
-# PU-Z02 (ZM-21, P-1090 (1), P-1101): świeża instalacja — karta „Pierwszy licznik” pokazuje 1 „current row”, po „+1” 2; licznik w znaczeniu „w trakcie”.
-# SZKIELET TQ1 (2026-11-28) — czeka na kod 08-A (jawne `znaczenie = 'w_trakcie'` w INSERT, P-1098). Scenariusz 02 (PU-005, asercja „0”) zmienia 08 razem z kodem.
-# Szkielet poza e2e/scenariusze (P-1114): 08 przenosi plik do e2e/scenariusze jak pu-z03; numer PU zamiast PU-Z02, tag `oczekujacy` do pierwszego zielonego przebiegu.
+# PU-353 (ZM-21, P-1090 (1), P-1101): świeża instalacja — karta „Pierwszy licznik” pokazuje 1 „current row”, po „+1” 2; licznik w znaczeniu „w trakcie”.
+# Przeniesiony ze szkieletu TQ1 przez 08 (P-1114, FA1): kod zmienia znaczenie nowego licznika (ZM-21), tag `oczekujacy` do pierwszego zielonego przebiegu CI (zasada roli 07 nr 8).
 appId: com.apps4brew.knitting
-name: "PU-Z02 · Pierwszy licznik: karta 1 „current row”, po +1 2"
+name: "PU-353 · Pierwszy licznik: karta 1 „current row”, po +1 2"
 tags:
   - przypadki-uzycia
   - oczekujacy
-  - PU-Z02
+  - PU-353
   - stan-licznika
 ---
 - runFlow:

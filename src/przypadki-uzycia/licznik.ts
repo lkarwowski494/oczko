@@ -6,11 +6,13 @@ import type { Powod, Wynik } from '../domena/bledy';
 import { celCofnieciaIndeks, type ZdarzenieCofniecia } from '../domena/cofniecie';
 import { cofniecieSerii, rodzajStraznika, startDnia, wolaStraznika, type DzienLimitu, type ZrodloCofniecia } from '../domena/limit';
 import type { PortBazy } from '../domena/porty';
+import { ZNACZENIE_NOWEGO_LICZNIKA } from '../konfiguracja';
 import type { RodzajZdarzenia, STANY } from '../domena/stany';
 import { kodBledu } from '../dane/baza/bledy-sqlite';
 import { zapiszBlad } from '../dane/repozytoria/bledy';
 import {
   dniLimituMiesiaca, dopiszZdarzenie, ostatniPlus, seriaOdKonca, stanLicznika, ustawStan, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie, type StanLicznika,
+  znaczenieNowegoLicznika,
 } from '../dane/repozytoria/liczniki';
 import { liczba, liczbaLubNull, tekst, wiersze } from '../dane/repozytoria/wiersze';
 import { dodajDni } from './daty';
@@ -149,14 +151,15 @@ export function dodajLicznik(z: Zaleznosci, w: { czescId: string; rodzaj: Rodzaj
     const teraz = z.zegar.teraz();
     try {
       return await z.baza.transakcja(async (tx): Promise<Wynik<{ licznikId: string }>> => {
-        const [c] = await wiersze(tx.all('SELECT usunieto_ms FROM czesc WHERE id = ?', [w.czescId]), 'dodajLicznik');
+        const [c] = await wiersze(tx.all('SELECT usunieto_ms, projekt_id FROM czesc WHERE id = ?', [w.czescId]), 'dodajLicznik');
         if (!c) return blad('bledne_dane');
         if (liczbaLubNull(c, 'usunieto_ms') !== null) return blad('niedozwolone_przejscie');
         const licznikId = z.id.nowy();
+        const znaczenie = await znaczenieNowegoLicznika(tx, tekst(c, 'projekt_id')); // ZM-21: znaczenie jawnie, nie z DEFAULT
         await tx.run(
-          `INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, kolejnosc, zmieniono_ms)
-           VALUES (?, ?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM licznik WHERE czesc_id = ?), ?)`,
-          [licznikId, w.czescId, w.nazwa ?? '', w.rodzaj, w.czescId, teraz.ms],
+          `INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, kolejnosc, zmieniono_ms)
+           VALUES (?, ?, ?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM licznik WHERE czesc_id = ?), ?)`,
+          [licznikId, w.czescId, w.nazwa ?? '', w.rodzaj, znaczenie, w.czescId, teraz.ms],
         );
         return { ok: true, wartosc: { licznikId } };
       });
@@ -178,7 +181,7 @@ export function utworzSzybkiLicznik(z: Zaleznosci): Promise<Wynik<{ projektId: s
       await z.baza.transakcja(async (tx) => {
         await tx.run('INSERT INTO projekt (id, nazwa, nienazwany, utworzono_ms, zmieniono_ms, ostatnia_praca_ms) VALUES (?, ?, 1, ?, ?, ?)', [projektId, teraz.dzien, teraz.ms, teraz.ms, teraz.ms]);
         await tx.run('INSERT INTO czesc (id, projekt_id, nazwa, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, 1, ?)', [czescId, projektId, teraz.dzien, teraz.ms]);
-        await tx.run('INSERT INTO licznik (id, czesc_id, kolejnosc, zmieniono_ms) VALUES (?, ?, 1, ?)', [licznikId, czescId, teraz.ms]);
+        await tx.run('INSERT INTO licznik (id, czesc_id, znaczenie, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, 1, ?)', [licznikId, czescId, ZNACZENIE_NOWEGO_LICZNIKA, teraz.ms]); // ZM-21: pierwszy licznik = „Rząd, nad którym pracuję”
       });
       return { ok: true, wartosc: { projektId, czescId, licznikId } };
     } catch (e) {

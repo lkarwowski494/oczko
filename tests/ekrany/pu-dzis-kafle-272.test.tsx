@@ -62,7 +62,7 @@ test('PU-272: kafle „Dziś”: „New project” → „Shawl” otwiera liczn
   await act(async () => { fireEvent.press(screen.getByTestId('formularz-zapisz')); await new Promise((r) => setTimeout(r, 200)); });
   screen.unmount();
   render(<EkranLicznika />);
-  await waitFor(() => expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('0'));
+  await waitFor(() => expect(screen.getByTestId('licznik-wartosc').props.accessibilityLabel).toBe('1')); // ZM-21 (P-1121): nowy licznik „w trakcie” pokazuje bieżący rząd (wartość 0 + 1)
   expect(screen.getByTestId('licznik-projekt')).toHaveTextContent('Shawl');
   screen.unmount();
 

@@ -6,6 +6,7 @@ import { STANY, type NarzedzieProjektu } from '../domena/stany';
 import { chwilaOPorze } from '../domena/postep';
 import { nazwaKopii } from '../domena/nazwa-kopii';
 import type { PortBazy } from '../domena/porty';
+import { znaczenieNowegoLicznika } from '../dane/repozytoria/liczniki';
 import { stanProjektu, ustawUsuniecie, usunietoMs, zapiszStanProjektu, type TabelaKosza } from '../dane/repozytoria/projekty-zapis';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { istniejeKatalog, lista, polacz, usunKatalog, usunPlik } from '../dane/pliki/system';
@@ -25,7 +26,7 @@ async function dodajCzesc(tx: PortBazy, z: Zaleznosci, w: { projektId: string; n
      VALUES (?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM czesc WHERE projekt_id = ?), ?, ?, ?)`,
     [czescId, w.projektId, w.nazwa.trim(), w.projektId, w.cel, w.paraZ, w.terazMs],
   );
-  await tx.run('INSERT INTO licznik (id, czesc_id, kolejnosc, zmieniono_ms) VALUES (?, ?, 1, ?)', [licznikId, czescId, w.terazMs]);
+  await tx.run('INSERT INTO licznik (id, czesc_id, znaczenie, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, 1, ?)', [licznikId, czescId, await znaczenieNowegoLicznika(tx, w.projektId), w.terazMs]); // ZM-21: jawnie; nowy projekt = „w trakcie”, istniejący = ostatnio używane
   return { czescId, licznikId };
 }
 

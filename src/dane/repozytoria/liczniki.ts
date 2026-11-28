@@ -6,6 +6,7 @@ import type { PortBazy } from '../../domena/porty';
 import { BladDanych } from '../../domena/bledy';
 import { celZPary } from '../../domena/cel-pary';
 import { licznikCalosci } from '../../domena/licznik-calosci';
+import { ZNACZENIE_NOWEGO_LICZNIKA } from '../../konfiguracja';
 import { STANY, type RodzajUrzadzenia, type RodzajZdarzenia, type ZrodloZdarzenia } from '../../domena/stany';
 import { liczba, liczbaLubNull, listaTekstow, tekst, tekstLubNull, wiersze } from './wiersze';
 
@@ -182,4 +183,16 @@ export async function celCzesci(baza: PortBazy, w: { cel: number | null; paraZ: 
 export async function caloscCzesci(baza: PortBazy, czescId: string): Promise<number | null> {
   const w = await wiersze(baza.all('SELECT id, rodzaj, wartosc FROM licznik WHERE czesc_id = ? AND usunieto_ms IS NULL', [czescId]), 'caloscCzesci');
   return licznikCalosci(w.map((r) => ({ id: tekst(r, 'id'), czescId, rodzaj: tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', wartosc: liczba(r, 'wartosc') })), czescId);
+}
+
+/**
+ * Znaczenie dla nowego licznika w projekcie (ZM-21, P-1090 (1)): znaczenie licznika projektu z najnowszym zdarzeniem (`czas_ms`, P-1115);
+ * projekt bez zdarzeń → ZNACZENIE_NOWEGO_LICZNIKA. Kosz nie liczy się jako „ostatnio używany”.
+ */
+export async function znaczenieNowegoLicznika(tx: PortBazy, projektId: string): Promise<'skonczone' | 'w_trakcie'> {
+  const [w] = await wiersze(tx.all(
+    `SELECT l.znaczenie FROM licznik l JOIN czesc c ON c.id = l.czesc_id JOIN zdarzenie z ON z.licznik_id = l.id
+      WHERE c.projekt_id = ? AND l.usunieto_ms IS NULL AND c.usunieto_ms IS NULL ORDER BY z.czas_ms DESC, z.id DESC LIMIT 1`, [projektId]), 'znaczenieNowegoLicznika');
+  const z = w ? tekst(w, 'znaczenie') : null;
+  return z === 'skonczone' || z === 'w_trakcie' ? z : ZNACZENIE_NOWEGO_LICZNIKA;
 }

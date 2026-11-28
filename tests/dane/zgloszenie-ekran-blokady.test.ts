@@ -2,7 +2,7 @@
 // i liczbę liczników w konflikcie (rozwidlenie blokada↔aplikacja, NFR-DAN-003). Tylko liczby: bez nazw, notatek i treści linii (NFR-PRY-001).
 import { przygotujZgloszenie } from '../../src/przypadki-uzycia/zgloszenie';
 import { scalDziennik } from '../../src/przypadki-uzycia/dziennik';
-import { dodajRzad } from '../../src/przypadki-uzycia/licznik';
+import { wpiszWartosc } from '../../src/przypadki-uzycia/licznik';
 import { czesc, licznik, projekt } from './pomocnicze/dane-wejsciowe';
 import { MIN, T0, przygotuj, wykonaj } from './pomocnicze/srodowisko';
 
@@ -28,7 +28,8 @@ test('linia bez rodzica → pending=1; rozwidlenie głowy → conflicts=1; treś
   s.dziennik.linie.push(linia('d9', ['nieznany-rodzic']));
   await scalDziennik(s.z);
   expect(await tresc(s.z)).toContain('lockscreen: pending=1 conflicts=0');
-  await dodajRzad(s.z, { licznikId: 'l1' }); // aplikacja: 11 od głowy l1-z10
+  s.zegar.ustaw(T0 + 5 * MIN); // po stuknięciu z ekranu blokady (T0 + 1 min)
+  await wpiszWartosc(s.z, { licznikId: 'l1', wartosc: 20 }); // aplikacja: wpisanie (nieprzemienne, ADR-0035), od głowy l1-z10
   s.dziennik.linie.push(linia('d1', ['l1-z10'])); // ekran blokady: też od l1-z10
   await scalDziennik(s.z);
   const t = await tresc(s.z);

@@ -31,7 +31,8 @@ function ekran(k: KompozycjaLicznika, t: Tlumacz, wersja = 0) {
   return <EkranLicznika key={wersja} porty={{ haptyka: atrapaHaptyki() }} uslugi={k.uslugi} dzialania={k.dzialania} oglos={jest.fn()} t={t} />;
 }
 const liczba = () => screen.getByTestId('licznik-wartosc').props.accessibilityLabel as string;
-const czekajNa = (n: string) => waitFor(() => expect(liczba()).toBe(n));
+// ZM-21 (P-1090 (1), P-1121): nowy licznik jest „w trakcie” — ekran pokazuje bieżący rząd, czyli wartość + 1; `n` to wartość licznika.
+const czekajNa = (n: string) => waitFor(() => expect(liczba()).toBe(String(Number(n) + 1)));
 const stukPlus = async (n: string) => { fireEvent.press(await screen.findByTestId('licznik-plus')); await czekajNa(n); };
 async function projektyWBazie(s: Awaited<ReturnType<typeof start>>['s']): Promise<number> {
   const [p] = await s.baza.all<{ n: number }>('SELECT count(*) AS n FROM projekt WHERE usunieto_ms IS NULL');
