@@ -332,6 +332,32 @@ describe('KA1 (KO-228, P-1084) · klasyfikator bez junit: katalog wyników jako 
     expect(klasyfikuj(path.join(FIKSTURY, 'junit-asercja.xml'), d).status).toBe(1);
     expect(klasyfikuj(path.join(FIKSTURY, 'junit-device-unreachable.xml'), d).status).toBe(0);
   });
+  test('recenzja a7b74a64 P3 (fail-closed): błąd odczytu KAŻDEGO podkatalogu (nie tylko głównego) → nie maszyna (kod 1), bo commands.json mógł leżeć w nieczytelnym miejscu', () => {
+    const d = katalog({ [LOG]: 'Testing started\n', '2026-11-27_204959/flow/commands.json': '[]' });
+    const preload = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-pre-')), 'readdir.cjs'); // root w kontenerze ignoruje chmod, więc atrapa readdirSync
+    fs.writeFileSync(preload, "const fs = require('fs'); const o = fs.readdirSync; fs.readdirSync = (p, ...a) => { if (String(p).endsWith('/flow')) throw new Error('EACCES: atrapa'); return o(p, ...a); };\n");
+    const r = spawnSync('node', ['--require', preload, KLASYFIKATOR, NIE_MA, d], { encoding: 'utf8' });
+    expect(r.status).toBe(1);
+    // ta sama atrapa, ale bez commands.json w nieczytelnym podkatalogu: i tak kod 1 (nie da się wykluczyć commands.json)
+    const d2 = katalog({ [LOG]: 'Testing started\n', '2026-11-27_204959/flow/x.txt': 'a' });
+    expect(spawnSync('node', ['--require', preload, KLASYFIKATOR, NIE_MA, d2], { encoding: 'utf8' }).status).toBe(1);
+  });
+  test('recenzja a7b74a64: pusty (0 B) log runnera → kod 0 (kryterium to obecność pliku, nie treść)', () => {
+    expect(klasyfikuj(NIE_MA, katalog({ [LOG]: '' })).status).toBe(0);
+  });
+  test('recenzja a7b74a64: pusty junit (0 B) + log runnera → kod 1 (junit jest, decyduje junit)', () => {
+    const d = katalog({ [LOG]: 'Testing started\n', 'j.xml': '' });
+    expect(klasyfikuj(path.join(d, 'j.xml'), d).status).toBe(1);
+  });
+  test('recenzja a7b74a64: commands-<nazwa.z.kropką>.json też liczy się jako commands → kod 1', () => {
+    expect(klasyfikuj(NIE_MA, katalog({ [LOG]: 'x', 'flow/commands-a.b.json': '[]' })).status).toBe(1);
+  });
+  test('recenzja a7b74a64: symlink do katalogu nie jest przeszukiwany (świadomie; Maestro nie tworzy dowiązań) → log w katalogu głównym, commands.json tylko za dowiązaniem → kod 0', () => {
+    const d = katalog({ [LOG]: 'x' });
+    const inny = katalog({ 'commands.json': '[]' });
+    fs.symlinkSync(inny, path.join(d, 'dowiazanie'));
+    expect(klasyfikuj(NIE_MA, d).status).toBe(0);
+  });
   test('log runnera tylko w nazwie katalogu albo inny plik z „xctest_runner” w środku nazwy nie liczy się (wąskie kryterium)', () => {
     expect(klasyfikuj(NIE_MA, katalog({ 'xctest_runner_x.log/inny.txt': 'a' })).status).toBe(1);
     expect(klasyfikuj(NIE_MA, katalog({ 'a/kopia-xctest_runner_1.log.bak': 'a' })).status).toBe(1);

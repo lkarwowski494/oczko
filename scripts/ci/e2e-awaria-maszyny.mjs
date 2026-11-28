@@ -38,12 +38,14 @@ export function awariaMaszyny(junit) {
 const LOG_RUNNERA = /^xctest_runner_.*\.log$/;
 const COMMANDS = /^commands(-.*)?\.json$/; // jak w czas-startu.mjs: Maestro 2.12.1 zapisuje `commands.json`
 
-/** Przyczyna (jedna linia), gdy w katalogu wyników jest log runnera XCTest i brak commands.json; inaczej null. */
+/** Przyczyna (jedna linia), gdy w katalogu wyników jest log runnera XCTest i brak commands.json; inaczej null.
+ * Fail-closed (recenzja a7b74a64, P3): błąd odczytu KAŻDEGO katalogu (głównego i podkatalogów) → null, bo nie da się wykluczyć, że `commands.json` leży w nieczytelnym miejscu.
+ * Dowiązania symboliczne do katalogów nie są przeszukiwane (świadomie: Maestro ich nie tworzy; unika pętli). */
 export function runnerNieWstal(katalog) {
-  let log = null, commands = false;
+  let log = null, commands = false, nieczytelny = false;
   const przejdz = (dir) => {
     let wpisy;
-    try { wpisy = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    try { wpisy = fs.readdirSync(dir, { withFileTypes: true }); } catch { nieczytelny = true; return; }
     for (const w of wpisy) {
       if (w.isDirectory()) przejdz(`${dir}/${w.name}`);
       else if (COMMANDS.test(w.name)) commands = true;
@@ -51,7 +53,7 @@ export function runnerNieWstal(katalog) {
     }
   };
   przejdz(katalog);
-  return log !== null && !commands ? `brak junit; ${log} bez commands.json (sterownik XCTest nie wstał, scenariusz nie ruszył)` : null;
+  return !nieczytelny && log !== null && !commands ? `brak junit; ${log} bez commands.json (sterownik XCTest nie wstał, scenariusz nie ruszył)` : null;
 }
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) { // realpath: wywołanie przez dowiązanie (test)
