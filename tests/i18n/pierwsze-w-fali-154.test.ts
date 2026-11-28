@@ -7,7 +7,7 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { JEZYKI_FALI, ZAKRES_FALI, brakiPrzekladu, teksty } from './fala-2026-11-03';
+import { JEZYKI_FALI, OCZEKUJACE_DO_FALI_1_0_2, ZAKRES_FALI, brakiPrzekladu, teksty } from './fala-2026-11-03';
 
 const KORZEN = join(__dirname, '..', '..');
 const czytaj = (p: string): unknown => JSON.parse(readFileSync(join(KORZEN, p), 'utf8'));
@@ -45,8 +45,11 @@ test('pierwsze_w_fali ⊆ klucze, posortowane, bez powtórzeń (lista się nie s
 test('po fali: bramka --wydanie nie pada z powodu listy oczekujących; jedyne możliwe błędy to kontrola (a) treści krytycznej (DEC-11 a, osobny krok 09)', () => {
   const r = spawnSync(process.execPath, ['scripts/sprawdz-i18n.mjs', 'src/i18n/slowniki', '--zrodlo', 'en', '--oczekujace', 'docs/lokalizacja/oczekujace.json',
     '--krytyczne', 'docs/lokalizacja/krytyczne.json', '--przeglad', 'docs/lokalizacja/przeglad-krytyczne.json', '--wydanie'], { cwd: KORZEN, encoding: 'utf8' });
-  expect(r.stdout).not.toMatch(/oczekujace\.json niepusta/);
+  // P-1126: lista może zawierać tylko klucze 1.0.2 czekające na falę 09; wtedy jedynym dozwolonym błędem poza kontrolą (a) jest „oczekujace.json niepusta”.
+  expect(OCZ.klucze.filter((k) => !OCZEKUJACE_DO_FALI_1_0_2.includes(k))).toEqual([]);
+  if (OCZ.klucze.length === 0) expect(r.stdout).not.toMatch(/oczekujace\.json niepusta/);
   const bledy = r.stdout.split('\n').filter((w) => w.startsWith('BŁĄD'));
-  expect(bledy.filter((w) => !/kontrola \(a\) treści krytycznej/.test(w))).toEqual([]);
+  const dozwolone = /kontrola \(a\) treści krytycznej|oczekujace\.json niepusta \(\d+ kluczy\)/;
+  expect(bledy.filter((w) => !dozwolone.test(w))).toEqual([]);
   expect(r.status).toBe(bledy.length ? 1 : 0);
 });
