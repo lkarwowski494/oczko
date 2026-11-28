@@ -130,12 +130,12 @@ export function zrobPonownie(z: Zaleznosci, w: { projektId: string; szablonNazwy
       noweId.set(tekst(c, 'id'), czescId);
       await tx.run('INSERT INTO czesc (id, projekt_id, nazwa, kolejnosc, cel_rzedow, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?)', [czescId, projektId, tekst(c, 'nazwa'), liczba(c, 'kolejnosc'), liczbaLubNull(c, 'cel_rzedow'), teraz]);
       const liczniki = await wiersze(tx.all(
-        'SELECT id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, kolejnosc FROM licznik WHERE czesc_id = ? AND usunieto_ms IS NULL ORDER BY kolejnosc', [tekst(c, 'id')]), 'zrobPonownie');
+        'SELECT id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, krok, kolejnosc FROM licznik WHERE czesc_id = ? AND usunieto_ms IS NULL ORDER BY kolejnosc', [tekst(c, 'id')]), 'zrobPonownie');
       for (const l of liczniki) {
         const licznikId = z.id.nowy();
         await tx.run(
-          'INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-          [licznikId, czescId, tekst(l, 'nazwa'), tekst(l, 'rodzaj'), tekst(l, 'znaczenie'), liczbaLubNull(l, 'dlugosc_powtorzenia'), liczba(l, 'kolejnosc'), teraz],
+          'INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, krok, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [licznikId, czescId, tekst(l, 'nazwa'), tekst(l, 'rodzaj'), tekst(l, 'znaczenie'), liczbaLubNull(l, 'dlugosc_powtorzenia'), liczba(l, 'krok'), liczba(l, 'kolejnosc'), teraz],
         );
         for (const r of await wiersze(tx.all('SELECT od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ?', [tekst(l, 'id')]), 'zrobPonownie')) {
           await tx.run('INSERT INTO przypomnienie (id, licznik_id, od_rzedu, co_n, razy, tekst, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?)',

@@ -6,7 +6,7 @@
     { "tabela": "plik", "typ": "Plik", "klucz": ["sha256"], "scalanie": "tylko_dopisywane", "zasob": true },
     { "tabela": "projekt", "typ": "Projekt", "klucz": ["id"], "scalanie": "zmieniono_ms" },
     { "tabela": "czesc", "typ": "Czesc", "klucz": ["id"], "scalanie": "zmieniono_ms" },
-    { "tabela": "licznik", "typ": "Licznik", "klucz": ["id"], "scalanie": "zmieniono_ms", "pomin": ["wartosc", "glowa", "konflikt"] },
+    { "tabela": "licznik", "typ": "Licznik", "klucz": ["id"], "scalanie": "zmieniono_ms", "pomin": ["wartosc", "glowa", "konflikt", "krok"] },
     { "tabela": "zdarzenie", "typ": "Zdarzenie", "klucz": ["id"], "scalanie": "tylko_dopisywane" },
     { "tabela": "notatka_rzedu", "typ": "NotatkaRzedu", "klucz": ["id"], "scalanie": "zmieniono_ms" },
     { "tabela": "przypomnienie", "typ": "Przypomnienie", "klucz": ["id"], "scalanie": "zmieniono_ms" },

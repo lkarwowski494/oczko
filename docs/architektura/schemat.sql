@@ -1,4 +1,4 @@
--- Oczko · schemat bazy wersji 1 (rola 05, E2, 2026-10-22) · ADR-0001, ADR-0002, ADR-0005, ADR-0013
+-- Oczko · schemat bazy: stan wersji 2 (v1: rola 05, E2, 2026-10-22; v2 = v1 + licznik.krok z migracji 0002) · ADR-0001, ADR-0002, ADR-0005, ADR-0013
 -- Konwencje (moduł dane-lokalne-sqlite): tabele STRICT (SQLite ≥ 3.37), id TEXT (UUID nadaje aplikacja),
 -- czas INTEGER ms UTC (nadaje jeden moduł zegara), JSON jako TEXT CHECK (json_valid(...)),
 -- CHECK tylko dla niezmienników strukturalnych; progi dziedzinowe w src/konfiguracja.ts.
@@ -63,7 +63,8 @@ CREATE TABLE licznik (                                -- F-01, F-03, F-04, F-05,
   konflikt INTEGER NOT NULL DEFAULT 0 CHECK (konflikt IN (0, 1)),  -- scal() zwrócił 'konflikt' (NFR-DAN-003, F-58)
   kolejnosc INTEGER NOT NULL,
   zmieniono_ms INTEGER NOT NULL,
-  usunieto_ms INTEGER
+  usunieto_ms INTEGER,
+  krok INTEGER NOT NULL DEFAULT 1 CHECK (krok IN (1, 2))           -- v2 (migracja 0002, ZM-24, ADR-0036 K1): krok „+1”/„+2”, lokalny (nie synchronizowany)
 ) STRICT;
 CREATE INDEX licznik_czesc ON licznik(czesc_id, kolejnosc);
 

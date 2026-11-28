@@ -1,12 +1,12 @@
 // Kontrole roli 05 nr 2 i 4 (strategia §10), ścieżki utraty danych ŚU-04, ŚU-05, ŚU-07 (dane.md, tabela „Ścieżki utraty danych”),
 // BR-DAN-003/S1–S2, NFR-DAN-001. Wyrocznie: docs/architektura/schemat.sql (v1, stan oczekiwany), stany.json, dane.md „Polityka migracji”.
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { utworzPortNode } from '../../src/dane/baza/adapter-node';
 import { migruj } from '../../src/dane/migracje/migruj';
 import { WERSJA_SCHEMATU } from '../../src/konfiguracja';
-import { SCHEMAT_V1, STANY_JSON, bazaWzorcowa, czytajBaze, wloczka, zycie } from './pomocnicze/dane-wejsciowe';
+import { KORZEN, STANY_JSON, bazaWzorcowa, czytajBaze, wloczka, zycie } from './pomocnicze/dane-wejsciowe';
 import { jeden, katalogTymczasowy, licznosci, migawka, przygotuj, wykonaj } from './pomocnicze/srodowisko';
 
 const PLIKI = { pdf: 'a'.repeat(64), rys: 'b'.repeat(64), jpg: 'c'.repeat(64) };
@@ -25,7 +25,7 @@ function listyCheck(tabele: { name: string; sql: string }[]): Record<string, str
 /** Kolumny każdej tabeli z bazy zbudowanej wprost z dokumentu schemat.sql (inne narzędzie niż runner aplikacji). */
 function kolumnyDokumentu(): Record<string, string[]> {
   const db = new DatabaseSync(':memory:');
-  db.exec(SCHEMAT_V1);
+  db.exec(readFileSync(join(KORZEN, 'docs/architektura/schemat.sql'), 'utf8')); // stan wersji 2 (v1 + licznik.krok z migracji 0002)
   const w: Record<string, string[]> = {};
   for (const { name } of db.prepare("SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'").all() as { name: string }[])
     w[name] = (db.prepare(`SELECT name, type, "notnull" AS nn, pk FROM pragma_table_info('${name}')`).all() as object[]).map((c) => JSON.stringify(c)).sort();
@@ -43,7 +43,7 @@ describe('kontrola 05-2 (strategia §10, Z07-15): schemat po migracjach aplikacj
     expect(await baza.all('PRAGMA foreign_key_check')).toEqual([]);
   });
 
-  test('Z07-15 kontrola 05-2: tabele i kolumny po migracjach aplikacji = docs/architektura/schemat.sql v1', async () => {
+  test('Z07-15 kontrola 05-2: tabele i kolumny po migracjach aplikacji = docs/architektura/schemat.sql (stan wersji 2)', async () => {
     const baza = utworzPortNode(join(katalogTymczasowy(), 'oczko.db'));
     await migruj(baza);
     const tab = await baza.all<{ name: string }>("SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");

@@ -103,7 +103,7 @@ describe('kopie (VACUUM INTO) i kopia ratunkowa (ADR-0020)', () => {
   });
 
   const kopie: [string, 'ok' | 'wersja_nowsza' | 'bledne_dane', (k: string) => string][] = [
-    ['kopia bieżącej wersji', 'ok', (k) => { const p = join(k, 'a.db'); bazaWzorcowa(p, [wloczka('y1', 'Merino')]); return p; }],
+    ['kopia bieżącej wersji', 'ok', (k) => { const p = join(k, 'a.db'); bazaWzorcowa(p, [wloczka('y1', 'Merino')], { userVersion: WERSJA_SCHEMATU }); return p; }],
     ['kopia nowszej wersji', 'wersja_nowsza', (k) => { const p = join(k, 'b.db'); bazaWzorcowa(p, [], { userVersion: WERSJA_SCHEMATU + 1 }); return p; }],
     ['plik obcy (nie SQLite)', 'bledne_dane', (k) => { const p = join(k, 'c.db'); writeFileSync(p, 'to nie jest baza'); return p; }],
     ['pusta baza SQLite bez tabel Oczka', 'bledne_dane', (k) => { const p = join(k, 'd.db'); const db = new DatabaseSync(p); db.exec('CREATE TABLE x (a)'); db.close(); return p; }],

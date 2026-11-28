@@ -7,7 +7,8 @@ import { copyFileSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { utworzPortNode } from '../../src/dane/baza/adapter-node';
-import { migruj } from '../../src/dane/migracje/migruj';
+import { instrukcjeSql } from '../../src/dane/baza/parametry';
+import { MIGRACJE } from '../../src/dane/migracje/sql';
 import { KORZEN } from './pomocnicze/dane-wejsciowe';
 import { katalogTymczasowy } from './pomocnicze/srodowisko';
 
@@ -48,10 +49,14 @@ describe('wzorzec tests/bazy/v1.db (P-306 B, R-074, R-075)', () => {
     expect(zrzut(kopia(k))).toBe(zrzut(wzorzec));
   });
 
-  test('schemat = migracje 1..1 runnera aplikacji (wydanej migracji nie zmieniamy; zmiana 0001.sql przed wydaniem w App Store = ponowne generowanie)', async () => {
+  test('schemat = migracja 1 (wydanej migracji nie zmieniamy; zmiana 0001.sql przed wydaniem w App Store = ponowne generowanie)', async () => {
     const k = join(katalogTymczasowy('oczko-v1-runner-'), 'oczko.db');
     const baza = utworzPortNode(k);
-    expect(await migruj(baza)).toEqual({ ok: true, wartosc: { z: 0, do: 1 } });
+    // Tylko migracja 1 (wydana w 1.0.0/1.0.1); runner uruchamia też migracje ≥ 2, więc wersję 1 budujemy wprost z `MIGRACJE`.
+    const m1 = MIGRACJE.find((m) => m.wersja === 1);
+    if (!m1) throw new Error('brak migracji 1');
+    for (const s of instrukcjeSql(m1.sql)) await baza.run(s);
+    await baza.run('PRAGMA user_version = 1');
     baza.zamknij();
     expect(schemat(wzorzec)).toBe(schemat(k));
     expect(zapytaj(wzorzec, 'PRAGMA user_version')).toEqual([{ user_version: 1 }]);

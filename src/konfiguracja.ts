@@ -14,7 +14,7 @@ export const KOPIA_PRZED_IMPORTEM_MAKS = 2; // kopie `oczko-przed-importem-*` / 
 export const KOPIA_PRZED_IMPORTEM_BUDZET_B = 2_000_000_000; // B na rodzaj (importem / usunieciem osobno); ADR-0033 (P-437, M1-090): ponad budżet usuwane najpierw najstarsze pierwsze kopie dni, chronione najnowsza i pierwsza kopia najstarszego dnia; [OCENA 05] z pomiaru R 21–474 MB i darmowego iCloud 5 GB
 export const SESJA_MAKS_H = 8; // h; P-072 (7a)
 export const SESJA_DNIA_MIN_MS = 60_000; // ms; P-195 Q3b: sesja stopera ≥ 1 min po korekcie czyni dzień dniem z robótką (czas w pełnych minutach)
-export const WERSJA_SCHEMATU = 1; // schemat.sql
+export const WERSJA_SCHEMATU = 2; // schemat.sql (v2 = v1 + licznik.krok, migracja 0002, ZM-24)
 export const WERSJA_FORMATU_ARCHIWUM = 1; // ADR-0004
 export const ROZSZERZENIE_ARCHIWUM = '.oczko'; // ADR-0004
 export const ZAPAS_MIEJSCA_EKSPORTU = 2; // × rozmiar; [OCENA] roli 05

@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { sprawdzKopie } from '../../src/dane/kopia-ratunkowa';
 import { APPLICATION_ID } from '../../src/dane/migracje/migruj';
+import { WERSJA_SCHEMATU } from '../../src/konfiguracja';
 import { podsumowanieTygodnia } from '../../src/dane/repozytoria/kalendarz';
 import { utworzSzybkiLicznik } from '../../src/przypadki-uzycia/licznik';
 import { nazwijProjekt, utworzProjekt, wznowProjekt, zakonczProjekt, zmienDateUkonczenia, zrobPonownie } from '../../src/przypadki-uzycia/projekt';
@@ -115,6 +116,6 @@ describe('application_id (P-123 pkt 11, P-124 Q5a)', () => {
     expect(await sprawdzKopie(sciezka)).toEqual({ ok: false, powod: 'bledne_dane' });
     const wlasna = join(s.katalog, 'wlasna.db');
     await s.baza.run('VACUUM INTO ?', [wlasna]);
-    expect(await sprawdzKopie(wlasna)).toEqual({ ok: true, wartosc: { wersjaSchematu: 1 } });
+    expect(await sprawdzKopie(wlasna)).toEqual({ ok: true, wartosc: { wersjaSchematu: WERSJA_SCHEMATU } });
   });
 });
