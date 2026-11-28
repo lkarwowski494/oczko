@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Oczko 1.0.2 — makiety U3, U4, U5, U6, U7, U10</title>
+<link rel="stylesheet" href="../dzianina/tokeny.css">
+<!-- PR1 (rola 04 fix, 2026-11-28): makiety 1.0.2 w systemie „Dzianina”. Styl bazowy skopiowany z ../dzianina/ekrany.html (linie 7–255 @19f07773) — bez zmian; nowe reguły w drugim bloku <style>. Kolory tylko z tokenów (tokeny.css). Dane: [PRZYKŁAD]. -->
+<style>
+@font-face { font-family: "Source Sans 3"; src: url(../fonty/SourceSans3.ttf); font-weight: 200 900; }
+@font-face { font-family: "Bree Serif"; src: url(../fonty/BreeSerif.ttf); }
+:root { --w: 390px; --dt-tytul: 1; --dt-tresc: 1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.br { font-family: "Bree Serif", serif; font-weight: 400; }
+.t-duzy { font-size: calc(34px * var(--dt-tytul)); line-height: 1.12; }
+.t-tytul { font-size: calc(22px * var(--dt-tytul)); line-height: 1.2; }
+.t-tresc { font-size: calc(17px * var(--dt-tresc)); line-height: 1.3; }
+.t-pod { font-size: calc(15px * var(--dt-tresc)); line-height: 1.3; }
+.t-mala { font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; }
+.t-zakl { font-size: calc(11px * min(var(--dt-tresc), 1.6)); line-height: 1.2; }
+.cyfry { font-variant-numeric: tabular-nums; }
+.cyf { display: inline-block; width: 0.536em; text-align: center; } /* M3-S3-03: komórka cyfry Bree = typografia.cyfry.komorkaEm */
+.ik { display: inline-flex; width: 1em; height: 1em; flex: none; } .ik svg { width: 100%; height: 100%; }
+.ekran { width: var(--w); min-height: 844px; background: var(--tlo); color: var(--tekst); position: relative; display: flex; flex-direction: column; }
+.status { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0 32px; font-weight: 600; font-size: 16px; }
+.status .bat { width: 26px; height: 12px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; }
+.status .bat::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }
+.naglowek { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 16px 0; gap: 12px; }
+.naglowek .data { color: var(--tekst2); margin-top: 4px; }
+.pik { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; color: var(--tekst); flex: none; border-radius: 22px; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; min-height: 44px; }
+.nav a { display: inline-flex; align-items: center; gap: 2px; color: var(--akcentTekst); min-height: 44px; padding: 0 8px; }
+.tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 112px; }
+.zakladki { position: absolute; left: 0; right: 0; bottom: 0; min-height: 84px; display: flex; justify-content: space-around; padding: 8px 4px 28px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.zakladki a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--zakladka); font-weight: 600; text-align: center; min-height: 44px; }
+.zakladki a .ik { font-size: 26px; } .zakladki a.wybrana { color: var(--zakladkaWybrana); }
+.sekcja { font-weight: 700; margin-bottom: -8px; }
+/* karta „Kontynuuj” (K-B) */
+.karta { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 112px 1fr; gap: 16px; }
+.dz { grid-row: span 2; border-radius: 12px; background: #00000026; position: relative; min-height: 216px; }
+.dz svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.opis { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.opis .czesc { color: var(--kartaTekst2); }
+.lr { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.liczba { font-size: calc(56px * min(var(--dt-tytul), 1.6)); line-height: 1; }
+.liczba small { display: block; font-family: "Source Sans 3"; font-size: calc(15px * var(--dt-tresc)); color: var(--kartaTekst2); margin-top: 4px; }
+.plus { width: 72px; height: 72px; border-radius: 36px; background: var(--akcent); color: var(--naAkcencie); font-weight: 800; font-size: calc(26px * min(var(--dt-tytul), 1.4)); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 -3px 0 #0003; flex: none; }
+.kont { grid-column: 2; align-self: end; display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; border-radius: 14px; background: var(--przyciskNaKarcie); color: var(--przyciskNaKarcieTekst); font-weight: 700; padding: 8px 12px; text-align: center; }
+.kont .ik { font-size: 16px; }
+.wiersz { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); min-height: 52px; }
+.wiersz .zn { width: 14px; height: 22px; border-radius: 7px 7px 2px 2px; background: var(--akcent); flex: none; }
+.wiersz p { flex: 1; } .wiersz .ik { color: var(--tekst2); font-size: 16px; }
+.tydz { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.tydz div { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--tekst2); }
+.tydz i { width: 100%; max-width: 44px; min-height: 44px; aspect-ratio: 1; border-radius: 10px; background: var(--dzienPusty); display: block; }
+.tydz i.z, .kal i.z { background: var(--akcent); box-shadow: inset 0 0 0 2px var(--akcentTekst); } /* P-614 (6): bez faktury — kolor + obwódka + data */
+.tydz i.dzis { outline: 2.5px solid var(--tekst); outline-offset: 2px; } .tydz b { color: var(--tekst); }
+.kafle { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kafel { background: var(--powierzchnia); border-radius: 18px; padding: 16px; min-height: 104px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; font-weight: 600; }
+.kafel .it { width: 44px; height: 44px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.wolne { color: var(--tekst2); } .wolne a { color: var(--akcentTekst); font-weight: 700; }
+:root { --faktura: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13.5' height='12'%3E%3Cellipse cx='3.9' cy='6' rx='2.4' ry='4.9' transform='rotate(-28 3.9 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3Cellipse cx='9.6' cy='6' rx='2.4' ry='4.9' transform='rotate(28 9.6 6)' fill='%23fff' fill-opacity='.18' stroke='%23000' stroke-opacity='.25' stroke-width='1'/%3E%3C/svg%3E"); }
+/* licznik */
+.licz-g { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 8px 16px 0; }
+.licz-g .dz { min-height: 260px; grid-row: auto; background: var(--karta); }
+.licz-num { font-size: calc(104px * min(var(--dt-tytul), 1.3)); line-height: 1; }
+.licz-num small { display: block; font-family: "Source Sans 3"; font-size: calc(17px * var(--dt-tresc)); color: var(--tekst2); }
+.notatka { margin: 12px 16px 0; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); display: flex; gap: 12px; }
+.notatka .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 2px; }
+.akcje { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; padding: 16px 16px 0; }
+.akcje a { display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 64px; padding: 8px 4px; border-radius: 14px; background: var(--powierzchnia); font-weight: 600; text-align: center; }
+.akcje a .ik { font-size: 24px; color: var(--ikona); }
+[data-theme="dark"] .akcje a .ik { color: var(--akcentTekst); }
+.dol { margin-top: auto; display: flex; gap: 12px; align-items: stretch; padding: 16px 16px 36px; }
+.minus { width: 72px; border-radius: 18px; border: 2px solid var(--tekst2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: calc(22px * min(var(--dt-tresc), 1.6)); color: var(--tekst); flex: none; min-height: 72px; align-self: flex-end; }
+.wielki { flex: 1; min-height: 168px; border-radius: 26px; background: var(--akcent); color: var(--naAkcencie); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: inset 0 -4px 0 #0003; padding: 12px; text-align: center; }
+.wielki b { font-size: calc(34px * min(var(--dt-tytul), 1.4)); font-weight: 800; } .wielki span { font-weight: 600; }
+/* projekty */
+.szukaj { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--powierzchnia); color: var(--tekst2); min-height: 44px; }
+.lista { background: var(--powierzchnia); border-radius: 16px; overflow: hidden; }
+.lista > div { display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px; min-height: 44px; } /* P-614 (5): lista.minWysokoscWiersza 44, wysokość z treści */
+.lista > div + div { border-top: 1px solid var(--linia); }
+.lista .pr { width: 40px; height: 48px; border-radius: 8px; background: var(--karta); position: relative; overflow: hidden; flex: none; }
+.lista .pr i { position: absolute; left: 4px; right: 4px; bottom: 4px; background: var(--akcent) var(--faktura); border-radius: 3px; }
+.lista .tx { flex: 1; min-width: 0; } .lista .tx small { display: block; color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.lista .pik { color: var(--tekst2); }
+/* historia */
+.kal { display: grid; grid-template-columns: repeat(7, 1fr); margin: 0 -16px; }
+.kal span { text-align: center; color: var(--tekst2); padding-bottom: 4px; }
+.kal i { display: flex; align-items: center; justify-content: center; min-height: 48px; border: 1px solid var(--tlo); background: var(--powierzchnia); font-style: normal; font-weight: 600; border-radius: 8px; }
+.kal i.z { color: var(--naAkcencie); } .kal i.p { background: transparent; color: var(--tekst2); font-weight: 400; }
+.kal i.dzis { outline: 2.5px solid var(--tekst); outline-offset: -3px; }
+.podsum { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.podsum div { background: var(--powierzchnia); border-radius: 14px; padding: 12px 16px; }
+.podsum b { display: block; font-size: calc(28px * min(var(--dt-tytul), 1.6)); } .podsum small { color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+/* wzór (ZM-10) */
+.wz { background: var(--wzorRama); }
+.wz .strona { margin: 8px 12px; background: #FFFFFF; color: #1A1A1A; border-radius: 4px; padding: 20px 18px; font-family: "Source Sans 3"; font-size: 13px; line-height: 1.45; box-shadow: 0 1px 6px #0004; flex: 1; }
+.wz .strona h3 { font-size: 17px; margin-bottom: 8px; } .wz .strona p { margin-bottom: 6px; }
+.wz .strona .zak { background: #F6E04A; margin: 0 -6px; padding: 2px 6px; }
+.pasek-wz { display: flex; align-items: stretch; gap: 8px; padding: 8px 12px 32px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); flex-wrap: wrap; }
+.pasek-wz a { min-height: 52px; min-width: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(20px * min(var(--dt-tresc), 1.6)); }
+.pasek-wz .m { border: 2px solid var(--tekst2); color: var(--tekst); }
+.pasek-wz .p { flex: 1; background: var(--akcent); color: var(--naAkcencie); }
+.pasek-wz .r { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--tekst); font-weight: 600; text-align: center; }
+.pasek-wz .r b { font-family: "Bree Serif"; font-weight: 400; font-size: calc(28px * min(var(--dt-tytul), 1.4)); }
+/* przy największym tekście: układy w pionowy stos */
+.duzy .karta { grid-template-columns: minmax(0, 1fr); } .kont, .kafel, .akcje a, .wielki { overflow-wrap: anywhere; hyphens: auto; } .opis, .tresc > * { min-width: 0; } .duzy .dz { grid-row: auto; min-height: 120px; } .duzy .kont { grid-column: 1; }
+.duzy .licz-g { grid-template-columns: 1fr; } .duzy .licz-g .dz { min-height: 96px; }
+.duzy .akcje { grid-template-columns: 1fr; } .duzy .akcje a { flex-direction: row; justify-content: flex-start; padding: 8px 16px; gap: 12px; }
+.duzy .tydz { grid-template-columns: repeat(4, 1fr); } .duzy .kafle { grid-template-columns: 1fr; }
+.duzy .dol { flex-direction: column-reverse; } .duzy .minus { width: 100%; align-self: auto; }
+.duzy .kal i { min-height: 48px; font-size: 17px; } .duzy .kal span { font-size: 13px; }
+.duzy .pasek-wz .r { order: -1; flex-basis: 100%; }
+.duzy .lista .pr { display: none; }
+.duzy .plus { width: 100px; height: 100px; border-radius: 50px; }
+.duzy .kafel .it { width: 72px; height: 72px; font-size: 44px; border-radius: 18px; }
+.duzy .akcje a .ik { font-size: 40px; }
+.duzy .wiersz .ik, .duzy .lista .pik { font-size: 32px; }
+.duzy .mies { flex-direction: column; align-items: flex-start !important; gap: 4px; }
+.duzy .wz-nav { flex-wrap: wrap; } .duzy .wz-nav .plik { order: 3; flex-basis: 100%; padding: 0 8px 8px; }
+.lista .pr { width: 40px; height: 56px; } .lista .pr::before { content: ""; position: absolute; left: 2px; right: 2px; top: 6px; height: 3px; border-radius: 2px; background: var(--igla); }
+.lista .pr i { top: auto; }
+
+/* oferty „Oczko Pro” (F-35, P-557): wygląd i układ; kroki, model i teksty istniejących kluczy bez zmian */
+.of .nav { justify-content: flex-end; }
+.of-tresc { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 0 16px 16px; }
+.of-hero { background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+.of-hero p { color: var(--kartaTekst2); }
+.of-mies { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; margin-top: 8px; }
+.of-mies i { aspect-ratio: 1; border-radius: 4px; background: var(--akcent) var(--faktura); background-size: 9px 8px; display: block; }
+.of-kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.of-kafel { background: var(--powierzchnia); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 104px; }
+.of-kafel .it { width: 40px; height: 40px; border-radius: 12px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.of-kafel b { font-weight: 700; } .of-kafel small { display: block; color: var(--tekst2); font-size: calc(13px * var(--dt-tresc)); line-height: 1.3; font-weight: 400; margin-top: 2px; }
+.of-plany { display: flex; flex-direction: column; gap: 8px; }
+.of-plan { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 0 12px; padding: 12px 16px 12px 12px; min-height: 72px; border-radius: 18px; background: var(--powierzchnia); border: 2px solid transparent; }
+.of-plan[aria-checked="true"] { border-color: var(--akcentTekst); }
+.of-plan .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.of-plan[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.of-plan .nz { font-weight: 700; }
+.of-plan .zn { grid-row: span 3; } .of-plan .cena { font-size: calc(22px * min(var(--dt-tresc), 2.4)); line-height: 1.2; } /* cena najwyraźniejsza (MS-02, KP-09), także przy AX5 */
+.of-plan .pod { color: var(--tekst2); }
+.of-bez { color: var(--tekst2); }
+.of-linki { display: flex; flex-wrap: wrap; gap: 0 20px; } .of-linki a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.of-dol { display: flex; flex-direction: column; gap: 4px; padding: 12px 16px 34px; background: var(--pasek); border-top: 1px solid var(--pasekLinia); }
+.of-kom { display: flex; gap: 8px; align-items: flex-start; padding-bottom: 8px; } .of-kom .ik { color: var(--akcentTekst); font-size: 20px; margin-top: 1px; }
+.of-kup { min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; text-align: center; }
+.of-kup[aria-disabled="true"] { background: var(--powierzchnia); color: var(--tekst2); border: 2px dashed var(--tekst2); }
+.of-wt { display: flex; justify-content: space-between; gap: 8px; } .of-wt a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; color: var(--akcentTekst); font-weight: 600; }
+.duzy .of-kafle { grid-template-columns: 1fr; } .duzy .of-kafel { flex-direction: row; align-items: flex-start; gap: 12px; } .duzy .of-kafel .it { width: 56px; height: 56px; font-size: 36px; flex: none; }
+.duzy .of-plan { grid-template-columns: 1fr; gap: 4px; } .duzy .of-plan .zn { grid-row: auto; width: 40px; height: 40px; border-radius: 20px; font-size: 28px; }
+.duzy .of-wt { flex-direction: column; align-items: stretch; } .duzy .of-wt a { justify-content: center; }
+.duzy .of-mies { grid-template-columns: repeat(10, 1fr); }
+.of-kafel, .of-plan, .of-kup, .of-wt a { overflow-wrap: anywhere; hyphens: auto; } .of-plan > * { min-width: 0; }
+
+/* M3-S3-06: stany p2 na „Dziś” i miejsce okna „Uczciwe zasady” */
+.lim { grid-column: 2; display: flex; gap: 8px; align-items: flex-start; color: var(--kartaTekst); }
+.lim .ik { color: var(--kartaTekst2); font-size: 20px; margin-top: 1px; } .lim a { color: var(--kartaTekst); font-weight: 700; text-decoration: underline; display: inline-block; min-height: 44px; padding-top: 12px; }
+.baner { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 12px 16px; border-radius: 14px; background: var(--powierzchnia); }
+.baner .ik { color: var(--akcentTekst); font-size: 22px; } .baner p { flex: 1; min-width: 0; color: var(--tekst); }
+.baner a { flex-basis: 100%; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; }
+.zaslona { position: absolute; inset: 0; background: #0007; }
+.arkusz { position: absolute; left: 0; right: 0; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; padding: 8px 20px 36px; display: flex; flex-direction: column; gap: 12px; }
+.arkusz .uch { width: 36px; height: 5px; border-radius: 3px; background: var(--linia); align-self: center; }
+.arkusz .zam { align-self: flex-end; margin: -4px -8px -8px 0; }
+.arkusz .gl { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px; background: var(--przycisk); color: var(--przyciskTekst); font-weight: 700; margin-top: 4px; }
+.arkusz .dr { display: flex; align-items: center; justify-content: center; min-height: 44px; color: var(--akcentTekst); font-weight: 700; }
+.karta-bm { grid-template-columns: minmax(0, 1fr); } .karta-bm .kont { grid-column: 1; }
+.duzy .lim { grid-column: 1; } .duzy .baner .ik { font-size: 34px; }
+
+/* M3-MAK-01 (2026-11-08): ekran projektu. Lista grupowana systemu na tokenach; element firmowy = dzianina każdej części (jak miniatura listy Projekty);
+   kolor włóczki tylko tu, jako kropka przy nazwie (P-567) — barwa z danych użytkownika, obwódka z tokenu (nie kolor motywu). */
+.nav .prawo { display: flex; } .nav .prawo .pik { color: var(--akcentTekst); }
+.pr-gl { padding: 0 16px; display: flex; flex-direction: column; gap: 4px; }
+.pr-gl h1 { display: flex; align-items: baseline; gap: 8px; }
+.kropka { width: 14px; height: 14px; border-radius: 7px; flex: none; box-shadow: inset 0 0 0 1.5px var(--tekst2); align-self: center; }
+.pr-gl .pod2 { color: var(--tekst2); }
+.pr-tresc { display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 40px; }
+.lista > div.pr-cz { min-height: 44px; } .lista .wc { padding-left: 68px; min-height: 44px; }
+.lista .wc .tx { font-size: calc(17px * var(--dt-tresc)); }
+.lista .sz { color: var(--tekst2); font-size: calc(17px * min(var(--dt-tresc), 1.6)); flex: none; }
+.lista .war { color: var(--tekst2); text-align: right; } .lista > div.wg { min-height: 44px; padding-right: 12px; }
+.lista .usun { color: var(--niszczacy); font-size: 24px; flex: none; width: 28px; }
+.zdj { display: flex; gap: 8px; overflow: hidden; }
+.zdj .f { width: 88px; height: 88px; border-radius: 10px; flex: none; background: var(--wl) var(--faktura); background-size: 20px 18px; }
+.zdj .d { width: 88px; min-height: 88px; border-radius: 10px; flex: none; background: var(--powierzchnia); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; text-align: center; font-weight: 600; }
+.zdj .d .ik { color: var(--ikona); font-size: 26px; } [data-theme="dark"] .zdj .d .ik { color: var(--akcentTekst); }
+.strona-min { width: 44px; height: 57px; background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--linia); flex: none; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; }
+.strona-min i { height: 2px; background: #C9C4BD; display: block; } .strona-min i.zk { background: var(--zakreslacz); height: 4px; }
+.pr-stopka { color: var(--tekst2); }
+.pr-menu { position: absolute; right: 12px; top: 96px; width: 250px; background: var(--powierzchnia); border-radius: 16px; box-shadow: 0 8px 28px #0005; overflow: hidden; z-index: 2; }
+.pr-menu a { display: flex; align-items: center; min-height: 44px; padding: 0 16px; } /* P-614 (4): menu.wysokoscPozycji 44 */ .pr-menu a + a { border-top: 1px solid var(--linia); } .pr-menu a.nisz { color: var(--niszczacy); }
+.gotowe { color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
+.duzy .lista .wc { padding-left: 16px; } .duzy .lista > div.wg { flex-wrap: wrap; } .duzy .lista .war { flex-basis: 100%; text-align: left; order: 3; }
+.duzy .zdj { flex-wrap: wrap; } .duzy .pr-gl h1 { align-items: flex-start; } .duzy .kropka { margin-top: 0.4em; align-self: flex-start; }
+.duzy .pr-menu { left: 12px; width: auto; }
+
+/* M3-MAK-02: arkusz formularza (systemowy formSheet: Anuluj / tytuł / Dodaj albo Zapisz u góry) i podgląd zdjęć na czarnym tle (systemCzarny). */
+.fs { background: var(--tlo); }
+.fs .zaslona { background: #0006; }
+.ark-f { position: absolute; left: 0; right: 0; top: 58px; bottom: 0; background: var(--powierzchnia); border-radius: 14px 14px 0 0; display: flex; flex-direction: column; }
+.ark-f .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 8px 16px 0; min-height: 52px; }
+.ark-f .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; }
+.ark-f .ng a.zap { font-weight: 700; } .ark-f .ng a[aria-disabled="true"] { color: var(--przyciskNieaktywnyTekst); font-weight: 600; }
+.ark-f .ng h2 { text-align: center; font-weight: 700; }
+.ark-f .ft { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+.pole label { display: block; color: var(--tekst2); margin-bottom: 4px; }
+.pole .we { min-height: 48px; border-radius: 10px; border: 2px solid var(--tekst2); padding: 8px 12px; color: var(--tekst); display: flex; align-items: center; }
+.pole .we.fok { border-color: var(--akcentTekst); } .pole .we .kur { width: 2px; height: 1.2em; background: var(--akcentTekst); margin-left: 1px; }
+.pole .we.pusty { color: var(--tekst2); }
+.f-pod { color: var(--tekst2); }
+.alert { display: flex; gap: 8px; align-items: flex-start; } .alert .zn { width: 22px; height: 22px; border-radius: 11px; border: 2px solid var(--tekst); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex: none; margin-top: 1px; }
+.radio { display: flex; flex-direction: column; border-radius: 16px; background: var(--tlo); overflow: hidden; }
+.radio a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 16px; } .radio a + a { border-top: 1px solid var(--linia); }
+.radio .zn { width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--tekst2); flex: none; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.radio a[aria-checked="true"] .zn { border: 0; background: var(--przycisk); color: var(--przyciskTekst); }
+.tekstowy { align-self: flex-start; color: var(--akcentTekst); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; }
+.zd { background: var(--sc-tlo); color: var(--sc-tekst); }
+.zd .zd-g { display: flex; justify-content: flex-end; padding: 0 8px; min-height: 44px; }
+.zd a { color: var(--sc-akcentTekst); min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; font-weight: 600; }
+.zd .foto { flex: 1; margin: 24px 0; background: var(--wl) var(--faktura); background-size: 54px 48px; }
+.zd .zd-d { display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 34px; gap: 8px; } .zd .zd-d span { color: var(--sc-tekst2); }
+.zd .ik { font-size: 22px; }
+.duzy .zd .zd-d { flex-wrap: wrap; } .duzy .zd .zd-d span { order: -1; flex-basis: 100%; text-align: center; }
+
+/* M3-MAK-03: biegnący stoper w rzędzie akcji (P-586 2) i zakładka Narzędzia z ikonami wierszy (kafelek 32 pt, jak lista Ustawień ZM-07). */
+.duzy .ark-f { position: relative; top: auto; margin-top: 8px; flex: 1; } 
+.duzy .ark-f .ng { grid-template-columns: 1fr auto; } .duzy .ark-f .ng h2 { grid-column: 1 / -1; grid-row: 2; }
+.ark-f .ng h2 { font-size: calc(17px * var(--dt-tytul)); } .duzy .radio .zn { width: 40px; height: 40px; border-radius: 20px; font-size: 28px; } .duzy .alert .zn { width: 32px; height: 32px; border-radius: 16px; font-size: 20px; }
+.akcje a.biegnie { box-shadow: inset 0 0 0 2px var(--akcentTekst); }
+.akcje a.biegnie .ik { color: var(--akcentTekst); } .akcje a.biegnie span { font-weight: 700; font-variant-numeric: tabular-nums; }
+.kik { width: 32px; height: 32px; border-radius: 8px; background: var(--ikonaTlo); color: var(--ikona); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: none; }
+.duzy .kik { width: 44px; height: 44px; font-size: 30px; border-radius: 10px; }
+
+/* fix E5 (2026-11-09, P-614, P-613): 004 karta „Dziś” przy AX3–AX5 — liczba i „+1” na górze karty, dzianina niskim pasem; 016 + LIC-04 licznik ze stałą strefą
+   (rząd akcji + −1/+1) nałożoną na przewijaną treść, dolny odstęp treści = zmierzona wysokość strefy (skrypt niżej, jak onLayout); 009 arkusz menu jako lista grupowana. */
+.duzy .karta { display: flex; flex-direction: column; gap: 12px; } .duzy .karta .opis { display: contents; }
+.duzy .karta .lr { order: -1; margin-top: 0; flex-wrap: nowrap; align-items: flex-start; } .duzy .karta .lim { order: -1; }
+.duzy .karta .liczba { min-width: 0; } .duzy .karta .dz { order: 2; min-height: 48px; } .duzy .karta .kont { order: 3; }
+.lz { height: 844px; overflow: hidden; }
+.lz .przew { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding-bottom: var(--strefa, 300px); }
+.lz .przew > * { flex: none; } .lz .przew.koniec { justify-content: flex-end; }
+.lz .strefa { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); }
+.lz .strefa .dol { margin-top: 0; } .lz .przew .akcje { display: none; }
+.lz .cel-ok { margin: 12px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.lz .drugi { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 14px; border: 2px solid var(--akcentTekst); color: var(--akcentTekst); font-weight: 700; padding: 8px 16px; }
+.lz .sesja { margin: 12px 16px 0; color: var(--tekst2); }
+.duzy .lz .przew .akcje { display: grid; } .duzy .lz .strefa .akcje { display: none; }
+.duzy .lz .licz-g { display: contents; } .duzy .lz .licz-g .dz { display: none; } /* od AX3 kolumna ukryta; dane niesie liczba i opis (jak miniatura Projektów, P-597) */
+.duzy .lz .num { order: -2; padding: 0 16px; } .duzy .lz .gl { order: -1; margin-top: 12px; }
+.duzy .lz .gl h1 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } /* tytuł ≤ 2 wiersze, pełny w etykiecie nagłówka */
+.ark-m { position: absolute; left: 0; right: 0; bottom: 0; background: var(--tlo); border-radius: 14px 14px 0 0; padding: 0 16px 36px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 -8px 28px #0005; }
+.ark-m .ng { display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 52px; gap: 8px; }
+.ark-m .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; } .ark-m .ng h2 { text-align: center; font-weight: 700; font-size: calc(17px * var(--dt-tytul)); }
+.ark-m > * { flex: none; } .ark-m .lista { margin-bottom: 12px; } .ark-m .lista > div { padding: 8px 16px; }
+.duzy .ark-m { top: 58px; overflow: hidden; } .duzy .ark-m .ng { grid-template-columns: 1fr; } .duzy .ark-m .ng h2 { text-align: left; }
+</style>
+<style>
+/* ===== 1.0.2 (PR1): nowe reguły; wartości z tokenów, cele ≥ 44 pt ===== */
+.grupa { width: 100%; color: #fff; font: 700 20px "Source Sans 3"; }
+/* U7 forma A: podświetlenie „+1” (rama 4 pt w kolorze tekstu z odstępem 4 pt + zmieniony podpis; nie sam kolor) */
+.wielki.podp { outline: 4px solid var(--tekst); outline-offset: 4px; }
+.wielki .czas { display: block; font-weight: 700; font-size: calc(13px * var(--dt-tresc)); }
+/* U6: przycisk „+2” na karcie „Dziś” — ta sama średnica 72 pt */
+/* przełącznik systemowy (UISwitch, tint = przycisk jak wybrane radio) */
+.sw-w { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 16px; background: var(--tlo); border-radius: 16px; }
+.sw-w p { flex: 1; min-width: 0; }
+.sw { width: 51px; height: 31px; border-radius: 16px; background: var(--linia); position: relative; flex: none; }
+.sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 2px 4px #0004; }
+.sw.on { background: var(--przycisk); } .sw.on::after { left: 22px; }
+.etk { color: var(--tekst2); margin: 4px 0 -4px; }
+.radio a small { display: block; color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.radio.poziomo { flex-direction: row; flex-wrap: wrap; }
+.radio.poziomo a { flex: 1 1 70px; justify-content: center; } .radio.poziomo a + a { border-top: 0; border-left: 1px solid var(--linia); }
+.duzy .radio.poziomo { flex-direction: column; } .duzy .radio.poziomo a { justify-content: flex-start; } .duzy .radio.poziomo a + a { border-left: 0; border-top: 1px solid var(--linia); }
+.ark-f .ft { overflow: hidden; }
+/* U5: pasek przycisków ofert z trzecią pozycją */
+.of-wt.trzy { flex-wrap: wrap; justify-content: flex-start; } .of-wt.trzy a:last-child { margin-left: auto; }
+/* ===== Ekran blokady i Dynamic Island (układ z ../aktywnosc.html, barwy Dzianiny jak p8) ===== */
+.ls { width: var(--w); min-height: 300px; background: linear-gradient(#5d6168, #3d4045); color: #fff; padding: 0 0 24px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+.ls .zb { text-align: center; font: 600 64px/1 "Source Sans 3"; padding-top: 48px; font-variant-numeric: tabular-nums; }
+.ls .dt { text-align: center; font-weight: 600; margin-top: -8px; }
+.ls .pod-atrapa { color: #fff; padding: 0 16px; font-size: 13px; }
+.la { margin: 0 11px; background: var(--karta); color: var(--kartaTekst); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.la .gora { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--kartaTekst2); font-size: calc(15px * var(--dt-tresc)); }
+.la .gora b { color: var(--kartaTekst); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.la .gora span { font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.la .sr { display: flex; align-items: center; gap: 12px; }
+.la .n { font: 400 calc(40px * min(var(--dt-tytul), 1.3))/1 "Bree Serif"; flex: none; }
+.la .op { flex: 1; min-width: 0; font-size: calc(15px * var(--dt-tresc)); line-height: 1.25; color: var(--kartaTekst2); }
+.la .op2 { margin-top: -4px; font-size: calc(15px * var(--dt-tresc)); line-height: 1.25; color: var(--kartaTekst2); }
+.wysp .la .op2 { color: var(--sc-tekst2); }
+.la .op b { display: block; color: var(--kartaTekst); font-weight: 700; }
+.la .p1 { min-width: 92px; min-height: 52px; border-radius: 14px; background: var(--akcent); color: var(--naAkcencie); font-weight: 800; font-size: calc(17px * min(var(--dt-tresc), 1.4)); display: flex; align-items: center; justify-content: center; padding: 0 12px; flex: none; box-shadow: inset 0 -3px 0 #0003; }
+.la .m1 { width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--kartaTekst2); color: var(--kartaTekst); font-weight: 800; font-size: calc(17px * min(var(--dt-tresc), 1.4)); display: flex; align-items: center; justify-content: center; flex: none; }
+.la .dl { display: flex; justify-content: space-between; align-items: center; }
+.la .zak { background: var(--akcentJasny); color: var(--naAkcencie); border-radius: 8px; padding: 6px 10px; font-size: calc(15px * var(--dt-tresc)); }
+.la .info { display: flex; gap: 8px; color: var(--kartaTekst); font-size: calc(15px * var(--dt-tresc)); }
+.la .info .znak { width: 20px; height: 20px; border-radius: 10px; border: 2px solid var(--kartaTekst); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex: none; }
+.la .p1.stary { outline: 3px solid var(--kartaTekst); outline-offset: 3px; margin: 0 3px 0 6px; }
+.la .op b { overflow-wrap: anywhere; }
+.la .op .tm { color: var(--kartaTekst); font-variant-numeric: tabular-nums; }
+.wysp { margin: 8px 8px 0; background: var(--sc-tlo); color: var(--sc-tekst); border-radius: 44px; padding: 18px 20px; }
+.wysp .la { margin: 0; background: transparent; color: var(--sc-tekst); padding: 0; }
+.wysp .la .gora, .wysp .la .op { color: var(--sc-tekst2); } .wysp .la .gora b, .wysp .la .op b, .wysp .la .n { color: var(--sc-tekst); }
+.wysp .la .p1 { background: var(--sc-przycisk); color: var(--sc-przyciskTekst); } .wysp .la .m1 { border-color: var(--sc-tekst2); color: var(--sc-tekst); }
+.duzy .la .sr { flex-wrap: wrap; } .duzy .la .op { flex-basis: 60%; }
+.uwaga { width: 390px; background: #fff; color: #222; padding: 16px 20px; font: 15px/1.4 "Source Sans 3"; border-radius: 8px; }
+.uwaga h3 { font: 400 20px "Bree Serif"; margin-bottom: 6px; }
+</style></head>
+<body>
+
+<h2 class="grupa">U3 — nowy licznik pokazuje „Rząd w trakcie” (ZM-21, P-1090; AR1: znaczenie zapisane jawnie, bez migracji)</h2>
+
+<main class="ekran" data-ekran="u3-dzis-pierwszy" aria-label="Dziś, pierwsze uruchomienie 1.0.2">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">sobota, 28 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Pierwszy licznik: 0 rzędów gotowych, teraz rząd 1"><svg data-dz="0,0,0,0" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Pierwszy licznik</h2><p class="t-pod czesc">Stuknij +1 po każdym skończonym rzędzie. Projekt nazwiesz później.</p>
+        <div class="lr"><p class="liczba br cyfry">1<small>rząd w trakcie</small></p><a class="plus cyfry" aria-label="Dodaj rząd, skończony rząd 1">+1</a></div></div>
+      <a class="kont t-tresc">Otwórz licznik <i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+    <p class="t-tresc sekcja">Ten tydzień</p>
+    <div class="tydz t-mala"><div><i></i><span>pn</span></div><div><i></i><span>wt</span></div><div><i></i><span>śr</span></div><div><i></i><span>czw</span></div><div><i></i><span>pt</span></div><div><i class="dzis"></i><b>sb</b></div><div><i></i><span>nd</span></div></div>
+    <p class="t-pod wolne">Tu zobaczysz dni, w które dziergasz.</p>
+  </div>
+  <nav class="zakladki t-zakl"><a class="wybrana"><i data-ik="dzis"></i>Dziś</a><a><i data-ik="projekty"></i>Projekty</a><a><i data-ik="narzedzia"></i>Narzędzia</a><a><i data-ik="historia"></i>Historia</a></nav>
+</main>
+
+<main class="ekran lz" data-ekran="u3-licznik-pierwszy" aria-label="Licznik, nowy licznik w trybie rząd w trakcie">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
+  <div class="przew">
+  <div class="gl" style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center">Projekt ›</a>
+    <h1 class="t-duzy br">Licznik z 28 lis</h1></div>
+  <div class="licz-g">
+    <div class="dz" role="img" aria-label="0 rzędów gotowych, teraz rząd 1"><svg data-dz="0,0,0,0" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
+    <div class="num"><p class="licz-num br cyfry">1<small>rząd w trakcie</small></p></div>
+  </div>
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  </div>
+  <div class="strefa">
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  <div class="dol"><a class="minus" aria-label="Odejmij rząd">−1</a><a class="wielki" aria-label="Dodaj rząd, skończony rząd 1"><b class="cyfry">+1</b><span class="t-pod">rząd 1 skończony</span></a></div>
+  </div>
+</main>
+
+<main class="ekran fs" data-ekran="u3-znaczenie" aria-label="Co pokazuje liczba, nowy licznik">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f t-tresc" role="dialog" aria-label="Co pokazuje liczba">
+    <div class="ng"><a>Anuluj</a><h2>Co pokazuje liczba</h2><a class="zap" aria-disabled="true">Zapisz</a></div>
+    <div class="ft">
+      <div class="radio" role="radiogroup">
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>Skończone rzędy</span></a>
+        <a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><span>Rząd, nad którym pracuję</span></a>
+      </div>
+      <p class="t-pod f-pod">Liczba 1 znaczy: pracujesz nad rzędem 1.</p>
+    </div>
+  </section>
+</main>
+
+<div class="uwaga" data-ekran="u3-uwagi"><h3>U3 — co się zmienia</h3>
+<p>Tylko wartość <b>nowego</b> licznika (P-1090; AR1 przez koordynatora: <code>licznik.znaczenie</code> zapisane jawnie, istniejące liczniki bez zmiany liczby). Karta „Pierwszy licznik” pokazuje <b>1 · rząd w trakcie</b> zamiast <b>0 · rzędów</b>; zdanie karty bez zmian (nadal prawdziwe w obu znaczeniach). Arkusz „Co pokazuje liczba” bez zmian — zaznaczona druga pozycja. Kolejność pozycji arkusza bez zmian (testy PU-026). Tytuł i opis licznika: istniejące teksty.</p></div>
+
+<h2 class="grupa">U4 — „−1” na ekranie blokady i w Dynamic Island (ZM-22): opcje A i B</h2>
+
+<section class="ls" data-ekran="u4-blokada-A" aria-label="Ekran blokady, opcja A">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div><p class="op2">stuknij, gdy skończysz rząd 48</p></div>
+  <p class="pod-atrapa">A (rekomendacja): −1 44 × 44 pt z obrysem przy lewym brzegu, +1 wypełnione przy prawym; między nimi liczba i opis (≈ 150 pt przy 393 pt). Wysokość karty jak dziś.</p>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-B" aria-label="Ekran blokady, opcja B">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b>stuknij, gdy skończysz rząd 48</span></div>
+    <div class="dl"><a class="m1" aria-label="−1 rząd">−1</a><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div></div>
+  <p class="pod-atrapa">B: dolny rząd −1 lewo / +1 prawo. Odstęp większy, ale karta wyższa o ≈ 56 pt; +1 przesuwa się względem dzisiejszego miejsca (pamięć mięśniowa po 1.0/1.0.1).</p>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-A-przypomnienie" aria-label="Ekran blokady, A, rząd z przypomnieniem">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:58:03</span></div>
+    <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1">+1 rząd</a></div><p class="op2">stuknij, gdy skończysz rząd 48</p>
+    <div class="zak">Rząd 48: ujmowanie z obu stron · 7 z 8</div></div>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-A-limit" aria-label="Ekran blokady, A, limit">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b></div>
+    <div class="sr"><span class="n cyfry">47</span><span class="op"><b>Liczenie wstrzymane</b>Twoje rzędy zostają.</span></div>
+    <div class="info"><span class="znak">i</span><span><b>Brak darmowych dni robótki w listopadzie.</b> Liczenie wraca 1 grudnia.</span></div></div>
+  <p class="pod-atrapa">Limit: bez −1 i bez +1 (jak dziś). −1 nie jest blokowane regułą (05), ale samotny przycisk odejmowania na ekranie blokady to tylko ryzyko pomyłki; korekta w aplikacji.</p>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-A-odblokuj" aria-label="Ekran blokady, A, odblokuj">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Rząd 48 nie został dodany</b></span><a class="p1">+1 rząd</a></div><p class="op2">Odblokuj iPhone’a, aby liczyć.</p></div>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-A-blad-minus" aria-label="Ekran blokady, A, błąd zapisu po −1">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Rząd 47 nie został usunięty</b></span><a class="p1">+1 rząd</a></div><p class="op2">Spróbuj ponownie.</p></div>
+  <p class="pod-atrapa">Błąd zapisu po −1: istniejący tekst zegarka (<code>aktywnosc.nie_usunieto</code>); po +1 bez zmian (<code>aktywnosc.blad_zapisu</code>).</p>
+</section>
+
+<section class="ls" data-ekran="u4-blokada-A-zablokowany" aria-label="Ekran blokady, A, licznik zablokowany">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><span class="n cyfry">47</span><span class="op"><b>Licznik zablokowany</b>Odblokuj go w Oczku.</span></div></div>
+  <p class="pod-atrapa">Zablokowany (F-03): bez −1 i +1, jak dziś.</p>
+</section>
+
+<section class="ls" data-ekran="u4-wyspa-A" aria-label="Dynamic Island rozwinięta, A">
+  <div class="wysp"><div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1">+1 rząd</a></div></div></div>
+  <p class="pod-atrapa">Dynamic Island rozwinięta (dotknij i przytrzymaj): ten sam układ. Compact i minimal bez przycisków — bez zmian.</p>
+</section>
+
+<h2 class="grupa">U5 — „Zrealizuj kod” na ekranie Oczko Pro (ZM-23; jak Trening, P-315)</h2>
+
+<main class="ekran of" data-ekran="u5-oferty" aria-label="Oczko Pro z Zrealizuj kod">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a>Zamknij</a></div>
+  <div class="of-tresc">
+    <section class="of-hero"><h1 class="t-duzy br">Oczko Pro</h1><p class="t-tresc">Licz rzędy w tylu dniach, w ilu chcesz. Reszta zostaje bez zmian.</p><div class="of-mies" aria-hidden="true"></div></section>
+    <p class="t-tresc sekcja" style="margin-bottom:-8px">Plany</p>
+    <div class="of-plany t-tresc" role="radiogroup" aria-label="Plany">
+      <div class="of-plan" role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><p class="nz">Rocznie</p><p class="cena br cyfry">$6.99 / rok</p><p class="t-mala pod">Odnawia się co rok, dopóki nie anulujesz w ustawieniach Apple ID.</p></div>
+      <div class="of-plan" role="radio" aria-checked="false"><span class="zn"></span><p class="nz">Dożywotnio</p><p class="cena br cyfry">$14.99 jednorazowo</p><p class="t-mala pod">Płacisz raz. Nic się nie odnawia.</p></div>
+    </div>
+    <div class="of-linki t-pod"><a>Polityka prywatności</a><a>Warunki użytkowania</a></div>
+  </div>
+  <div class="of-dol t-tresc">
+    <a class="of-kup">Kontynuuj: Rocznie</a>
+    <div class="of-wt trzy"><a>Przywróć zakupy</a><a>Zrealizuj kod</a><a>Nie teraz</a></div>
+  </div>
+</main>
+
+<main class="ekran of" data-ekran="u5-oferty-bez-sieci" aria-label="Oczko Pro, Zrealizuj kod bez sieci">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a>Zamknij</a></div>
+  <div class="of-tresc">
+    <section class="of-hero"><h1 class="t-duzy br">Oczko Pro</h1><p class="t-tresc">Licz rzędy w tylu dniach, w ilu chcesz. Reszta zostaje bez zmian.</p><div class="of-mies" aria-hidden="true"></div></section>
+    <p class="t-tresc sekcja" style="margin-bottom:-8px">Plany</p>
+    <p class="t-pod of-bez">Ceny są teraz niedostępne.</p>
+    <div class="of-linki t-pod"><a>Polityka prywatności</a><a>Warunki użytkowania</a></div>
+  </div>
+  <div class="of-dol t-tresc">
+    <p class="of-kom t-pod alert" role="alert"><span class="zn">!</span><span>Potrzebne połączenie z internetem.</span></p>
+    <div class="of-wt trzy"><a>Przywróć zakupy</a><a>Zrealizuj kod</a><a>Nie teraz</a></div>
+  </div>
+</main>
+
+<h2 class="grupa">U6 — krok „+2” (ZM-24): miejsce ustawienia A (rekomendacja) i B</h2>
+
+<main class="ekran fs" data-ekran="u6-dodaj-licznik" aria-label="Dodaj licznik z krokiem i podpowiedzią łańcuszka">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f t-tresc" role="dialog" aria-label="Dodaj licznik">
+    <div class="ng"><a>Anuluj</a><h2>Dodaj licznik</h2><a class="zap">Zapisz</a></div>
+    <div class="ft">
+      <p class="t-pod etk">Liczy</p>
+      <div class="radio" role="radiogroup" aria-label="Liczy">
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>Rzędy</span></a>
+        <a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><span>Oczka<small>Np. łańcuszek albo nabieranie oczek.</small></span></a>
+      </div>
+      <p class="t-pod etk">Krok</p>
+      <div class="radio poziomo" role="radiogroup" aria-label="Krok">
+        <a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><span>+1</span></a>
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>+2</span></a>
+      </div>
+      <p class="t-pod f-pod">Ile dodaje jedno stuknięcie. −1 zawsze odejmuje 1.</p>
+    </div>
+  </section>
+</main>
+
+<main class="ekran lz" data-ekran="u6-licznik-menu-A" aria-label="Licznik, menu z Ustawienia licznika (A)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div><b>Ustawienia licznika</b></div></div>
+    <div class="lista"><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+
+<main class="ekran fs" data-ekran="u6-u7-ustawienia-licznika" aria-label="Ustawienia licznika: krok i podpowiedź +1">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-f t-tresc" role="dialog" aria-label="Ustawienia licznika">
+    <div class="ng"><a>Anuluj</a><h2>Ustawienia licznika</h2><a class="zap">Zapisz</a></div>
+    <div class="ft">
+      <p class="t-pod etk">Krok</p>
+      <div class="radio poziomo" role="radiogroup" aria-label="Krok">
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>+1</span></a>
+        <a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><span>+2</span></a>
+      </div>
+      <p class="t-pod f-pod">Ile dodaje jedno stuknięcie. −1 zawsze odejmuje 1.</p>
+      <div class="sw-w" role="switch" aria-checked="true"><p>Podpowiedz, gdy zapomnę +1</p><span class="sw on"></span></div>
+      <p class="t-pod etk">Po takim czasie bez +1</p>
+      <div class="radio" role="radiogroup" aria-label="Po takim czasie bez +1">
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>5 min</span></a>
+        <a role="radio" aria-checked="true"><span class="zn"><i data-ik="ptaszek" data-gr="3"></i></span><span>10 min</span></a>
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>15 min</span></a>
+        <a role="radio" aria-checked="false"><span class="zn"></span><span>30 min</span></a>
+      </div>
+      <p class="t-pod f-pod">Gdy licznik jest otwarty, przycisk +1 się wyróżni, a telefon raz zawibruje. Najwyżej raz na rząd.</p>
+    </div>
+  </section>
+</main>
+
+<main class="ekran lz" data-ekran="u6-cel-B" aria-label="Licznik, arkusz Cel z krokiem (B)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Cel"><div class="ng"><a>Anuluj</a><h2>Cel</h2><span></span></div>
+    <div class="lista"><div>Ustaw cel dla tej części</div><div>Dodaj przypomnienie…</div><div>Przypomnienia</div><div>Ustaw długość powtórzenia</div><div><b>Krok: +1</b></div></div></section>
+</main>
+
+<main class="ekran lz" data-ekran="u6-licznik" aria-label="Licznik z krokiem +2">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
+  <div class="przew">
+  <div class="gl" style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center">Projekt ›</a>
+    <h1 class="t-duzy br">Sweter Mgła</h1><p class="t-pod" style="color:var(--tekst2)">Rękaw lewy · cel 96 rzędów</p></div>
+  <div class="licz-g">
+    <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
+    <div class="num"><p class="licz-num br cyfry">42<small>rzędy gotowe · teraz rzędy 43–44</small></p>
+      <p class="t-pod" style="margin-top:12px"><span style="color:var(--akcentTekst);font-weight:700">Za 4 rzędy:</span> ujmowanie (5 z 8)</p></div>
+  </div>
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  </div>
+  <div class="strefa">
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  <div class="dol"><a class="minus" aria-label="Odejmij rząd">−1</a><a class="wielki" aria-label="Dodaj 2 rzędy, skończone rzędy 43 i 44"><b class="cyfry">+2</b><span class="t-pod">rzędy 43–44 skończone</span></a></div>
+  </div>
+</main>
+
+<main class="ekran" data-ekran="u6-dzis" aria-label="Dziś, karta Kontynuuj z +2">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="naglowek"><div><h1 class="t-duzy br">Dziś</h1><p class="t-pod data">sobota, 28 listopada</p></div><span class="pik" aria-label="Ustawienia"><i data-ik="zebatka"></i></span></div>
+  <div class="tresc">
+    <section class="karta">
+      <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 112 216" preserveAspectRatio="none"></svg></div>
+      <div class="opis"><h2 class="t-tytul br">Sweter Mgła</h2><p class="t-pod czesc">Rękaw lewy · rząd 43 z 96</p>
+        <div class="lr"><p class="liczba br cyfry">42<small>rzędy gotowe</small></p><a class="plus cyfry" aria-label="Dodaj 2 rzędy">+2</a></div></div>
+      <a class="kont t-tresc">Kontynuuj <i data-ik="szewron" data-gr="2.4"></i></a>
+    </section>
+  </div>
+</main>
+
+<section class="ls" data-ekran="u6-blokada" aria-label="Ekran blokady z +2 (układ A z U4)">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">42</span><span class="op"><b>Teraz rzędy 43–44</b></span><a class="p1" aria-label="+2 rzędy">+2 rzędy</a></div><p class="op2">stuknij, gdy je skończysz</p></div>
+  <p class="pod-atrapa">Zegarek: ten sam układ co dziś (zegarek-typowy w ../aktywnosc.html), „+1” → „+2”, −1 bez zmian.</p>
+</section>
+
+<h2 class="grupa">U7 — podpowiedź +1 (ZM-25, P-1091): forma A i dwie odmiany formy B</h2>
+
+<main class="ekran lz" data-ekran="u7-licznik-A" aria-label="Licznik, podpowiedź +1 po 10 minutach">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik" aria-label="Więcej"><i data-ik="kropki"></i></span></div>
+  <div class="przew">
+  <div class="gl" style="padding: 0 16px"><a class="t-pod" style="color:var(--akcentTekst);font-weight:600;display:inline-flex;min-height:32px;align-items:center">Projekt ›</a>
+    <h1 class="t-duzy br">Sweter Mgła</h1><p class="t-pod" style="color:var(--tekst2)">Rękaw lewy · cel 96 rzędów</p></div>
+  <div class="licz-g">
+    <div class="dz" role="img" aria-label="Rękaw lewy: 42 z 96 rzędów, dziś 14"><svg data-dz="42,96,14,47" viewBox="0 0 64 260" preserveAspectRatio="none"></svg></div>
+    <div class="num"><p class="licz-num br cyfry">42<small>rzędy gotowe · teraz rząd 43</small></p>
+      <p class="t-pod" style="margin-top:12px"><span style="color:var(--akcentTekst);font-weight:700">Za 4 rzędy:</span> ujmowanie (5 z 8)</p></div>
+  </div>
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  </div>
+  <div class="strefa">
+  <div class="akcje t-mala"><a><i data-ik="notatka"></i><span>Notatka</span></a><a><i data-ik="wzor"></i><span>Wzór</span></a><a><i data-ik="cel"></i><span>Cel</span></a><a><i data-ik="stoper"></i><span>Stoper</span></a><a><i data-ik="historiaZmian"></i><span>Historia</span></a></div>
+  <div class="dol"><a class="minus" aria-label="Odejmij rząd">−1</a><a class="wielki podp" aria-label="Dodaj rząd. Od 10 minut bez +1. Rząd 43 skończony?"><span class="czas">10 min bez +1</span><b class="cyfry">+1</b><span class="t-pod">rząd 43 skończony?</span></a></div>
+  </div>
+</main>
+
+<section class="ls" data-ekran="u7-blokada-B2-przed" aria-label="Ekran blokady, B2 przed progiem">
+  <div class="zb">9:41</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1">+1 rząd</a></div><p class="op2">stuknij, gdy skończysz rząd 48</p></div>
+  <p class="pod-atrapa">B2 (rekomendacja), przed progiem: identycznie jak bez podpowiedzi.</p>
+</section>
+
+<section class="ls" data-ekran="u7-blokada-B2-po" aria-label="Ekran blokady, B2 po progu (staleDate)">
+  <div class="zb">9:52</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:53:10</span></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Rząd 48 skończony?</b></span><a class="p1 stary">+1 rząd</a></div><p class="op2">Ostatni +1: <span class="tm">11:02</span> temu</p></div>
+  <p class="pod-atrapa">B2 po progu (<code>staleDate</code> = ostatni +1 + próg): pytanie zamiast „Teraz rząd 48”, linia z <code>Text(timerInterval:)</code> liczącym od ostatniego +1, rama przy +1. Wraca do stanu „przed” po +1 albo −1.</p>
+</section>
+
+<section class="ls" data-ekran="u7-blokada-B1" aria-label="Ekran blokady, B1 linia zawsze">
+  <div class="zb">9:44</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:45:10</span></div>
+    <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1">+1 rząd</a></div><p class="op2">Ostatni +1: <span class="tm">3:12</span> temu</p></div>
+  <p class="pod-atrapa">B1: linia „Ostatni +1” zawsze (zastępuje „stuknij, gdy skończysz…”). Dwa biegnące zegary na jednej karcie (stoper sesji i „ostatni +1”) — do odróżnienia tylko słowami.</p>
+</section>
+
+<script>
+document.querySelectorAll('.of-mies').forEach((e) => { e.innerHTML = '<i></i>'.repeat(30); });
+const zmierzStrefe = () => document.querySelectorAll('.lz').forEach((e) => e.style.setProperty('--strefa', e.querySelector('.strefa').offsetHeight + 'px'));
+new ResizeObserver(zmierzStrefe).observe(document.body);
+</script>
+<script src="../dzianina/ikony.js"></script>
+<script>
+document.querySelectorAll('svg[data-dz]').forEach((el) => {
+  const [got, cel, dzis, prz] = el.dataset.dz.split(',').map(Number);
+  const [, , W, H] = el.getAttribute('viewBox').split(' ').map(Number);
+  const gora = 14, dol = 8, c = cel || 96, y = (r) => H - dol - (H - gora - dol) * r / c;
+  const yG = y(got), yD = y(got - dzis);
+  let s = `<defs><pattern id="v${W}" width="9" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)"><ellipse cx="2.6" cy="4" rx="1.6" ry="3.3" transform="rotate(-28 2.6 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/><ellipse cx="6.4" cy="4" rx="1.6" ry="3.3" transform="rotate(28 6.4 4)" fill="#ffffff2e" stroke="#0000004a" stroke-width=".9"/></pattern></defs>`;
+  if (got > 0) s += `<rect x="6" y="${yG}" width="${W - 12}" height="${yD - yG}" fill="var(--akcentJasny)"/><rect x="6" y="${yD}" width="${W - 12}" height="${H - dol - yD}" fill="var(--akcent)"/><rect x="6" y="${yG}" width="${W - 12}" height="${H - dol - yG}" fill="url(#v${W})"/>`;
+  else s += `<rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="var(--akcent)"/><rect x="6" y="${H - dol - 8}" width="${W - 12}" height="8" fill="url(#v${W})"/>`;
+  if (cel) s += `<line x1="4" y1="${y(cel)}" x2="${W - 4}" y2="${y(cel)}" stroke="var(--akcentJasny)" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+  const yi = got > 0 ? yG - 3 : H - dol - 11;
+  s += `<line x1="2" y1="${yi}" x2="${W - 2}" y2="${yi}" stroke="var(--igla)" stroke-width="3.2" stroke-linecap="round"/><circle cx="${W - 3}" cy="${yi}" r="3.6" fill="var(--igla)"/>`;
+  if (prz) s += `<path d="M${W} ${y(prz)} l-10 -6 v12 z" fill="var(--akcentJasny)"/>`;
+  el.innerHTML = s;
+});
+document.querySelectorAll('.liczba, .licz-num').forEach((el) => {
+  for (const n of [...el.childNodes].filter((x) => x.nodeType === 3)) {
+    const f = document.createElement('span'); f.innerHTML = n.textContent.replace(/[0-9]/g, (c) => `<span class="cyf">${c}</span>`); n.replaceWith(...f.childNodes);
+  }
+});
+</script>
+</body></html>

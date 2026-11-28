@@ -1,0 +1,18 @@
+OK   7.98:1 (min 4.5) jasny: opis LA kartaTekst2 na karta #D6CEC6 na #3A332E
+OK   7.98:1 (min 3) jasny: obrys −1 LA kartaTekst2 na karta (UI) #D6CEC6 na #3A332E
+OK   10.99:1 (min 3) jasny: rama B2 kartaTekst na karta (UI) #F3F1EC na #3A332E
+OK   3.88:1 (min 3) jasny: +1 LA akcent na karta (UI) #C08425 na #3A332E
+OK   5.22:1 (min 4.5) jasny: tekst +1 naAkcencie na akcent #221D1A na #C08425
+OK   10.50:1 (min 4.5) jasny: pas przypomnienia naAkcencie na akcentJasny #221D1A na #EBC983
+OK   7.69:1 (min 4.5) ciemny: opis LA kartaTekst2 na karta #D3C9BF na #3A322D
+OK   7.69:1 (min 3) ciemny: obrys −1 LA (UI) #D3C9BF na #3A322D
+OK   11.11:1 (min 3) ciemny: rama B2 (UI) #F3F1EC na #3A322D
+OK   11.26:1 (min 3) systemCzarny: obrys −1 sc-tekst2 na tlo (UI) #C7BCB2 na #000000
+OK   14.00:1 (min 3) systemCzarny: +1 sc-przycisk na tlo (UI) #F0CF8A na #000000
+OK   12.83:1 (min 3) jasny: rama podpowiedzi A tekst na tlo (UI) #221D1A na #E6E1DA
+OK   13.67:1 (min 3) ciemny: rama podpowiedzi A tekst na tlo (UI) #F1EDE9 na #26211E
+OK   5.22:1 (min 4.5) jasny: podpis podpowiedzi naAkcencie na akcent (13 pt) #221D1A na #C08425
+OK   9.54:1 (min 3) jasny: przełącznik wł. przycisk na tlo (UI) #3A332E na #E6E1DA
+OK   10.61:1 (min 3) ciemny: przełącznik wł. przycisk na tlo (UI) #F0CF8A na #26211E
+OK   7.15:1 (min 4.5) jasny: etykieta tekst2 na powierzchnia #5A5048 na #F6F4F1
+OK   7.48:1 (min 4.5) ciemny: etykieta tekst2 na powierzchnia #C7BCB2 na #312B27

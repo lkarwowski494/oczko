@@ -1,0 +1,5 @@
+INFO wielkości tekstu (px): 11, 12, 13, 15, 16, 17, 20, 22, 26, 34, 40, 56, 64, 104; kolory tekstu: 10
+UWAGA odstępy poza jednostką 4 px: 1, 2, 3, 6, 10, 11, 14, 18, 34, 229.67
+UWAGA 14 wielkości tekstu: sprawdź hierarchię (punkt wyjścia NN/g: 3)
+UWAGA 10 kolorów tekstu: sprawdź warianty kontrastu (NN/g: najwyżej 3)
+OK

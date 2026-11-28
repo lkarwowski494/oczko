@@ -1,0 +1,85 @@
+{
+ "jasny: opis LA kartaTekst2 na karta": [
+  "#D6CEC6",
+  "#3A332E"
+ ],
+ "jasny: obrys −1 LA kartaTekst2 na karta (UI)": [
+  "#D6CEC6",
+  "#3A332E",
+  3
+ ],
+ "jasny: rama B2 kartaTekst na karta (UI)": [
+  "#F3F1EC",
+  "#3A332E",
+  3
+ ],
+ "jasny: +1 LA akcent na karta (UI)": [
+  "#C08425",
+  "#3A332E",
+  3
+ ],
+ "jasny: tekst +1 naAkcencie na akcent": [
+  "#221D1A",
+  "#C08425"
+ ],
+ "jasny: pas przypomnienia naAkcencie na akcentJasny": [
+  "#221D1A",
+  "#EBC983"
+ ],
+ "ciemny: opis LA kartaTekst2 na karta": [
+  "#D3C9BF",
+  "#3A322D"
+ ],
+ "ciemny: obrys −1 LA (UI)": [
+  "#D3C9BF",
+  "#3A322D",
+  3
+ ],
+ "ciemny: rama B2 (UI)": [
+  "#F3F1EC",
+  "#3A322D",
+  3
+ ],
+ "systemCzarny: obrys −1 sc-tekst2 na tlo (UI)": [
+  "#C7BCB2",
+  "#000000",
+  3
+ ],
+ "systemCzarny: +1 sc-przycisk na tlo (UI)": [
+  "#F0CF8A",
+  "#000000",
+  3
+ ],
+ "jasny: rama podpowiedzi A tekst na tlo (UI)": [
+  "#221D1A",
+  "#E6E1DA",
+  3
+ ],
+ "ciemny: rama podpowiedzi A tekst na tlo (UI)": [
+  "#F1EDE9",
+  "#26211E",
+  3
+ ],
+ "jasny: podpis podpowiedzi naAkcencie na akcent (13 pt)": [
+  "#221D1A",
+  "#C08425"
+ ],
+ "jasny: przełącznik wł. przycisk na tlo (UI)": [
+  "#3A332E",
+  "#E6E1DA",
+  3
+ ],
+ "ciemny: przełącznik wł. przycisk na tlo (UI)": [
+  "#F0CF8A",
+  "#26211E",
+  3
+ ],
+ "jasny: etykieta tekst2 na powierzchnia": [
+  "#5A5048",
+  "#F6F4F1"
+ ],
+ "ciemny: etykieta tekst2 na powierzchnia": [
+  "#C7BCB2",
+  "#312B27"
+ ]
+}

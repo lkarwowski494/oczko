@@ -143,3 +143,6 @@ Raport: warsztat `04-studio/2026-11-09-reaudit/04-studio-projektowe-reaudit-2026
 - **020**: próg AX3 = `UIContentSizeCategoryAccessibilityExtraLarge` (RN `fontScale` 2,643; AccessibilityMedium 1,786 to AX1) — poprawiony opis `cele._plusAx5`.
 - **011 pole wyboru** (P-619 (2) B przyjęte, P-627): własne tokeny `znaczniki.poleWyboru` 28, `poleWyboruAx5` 40, `poleWyboruPromien` 10 (wartości bez zmian względem wdrożenia zastępczego `znaczniki.radio` + `promienie.pole`); 08 przełącza `PoleWyboru` na te nazwy.
 - **018 (1.0.1)**: reguła „nazwa ≤ 1/3 paska” ma liczyć znaki CJK (Han, Hiragana, Katakana, Hangul) jako 1,0 em, nie 0,55 em.
+
+## 1.0.2 (PR1, 2026-11-28, P-1100…P-1103, do weta)
+Projekt U3, U4, U5, U6, U7 (A+B2), U10 w tym systemie, bez nowych tokenów i komponentów własnych: `../1-0-2.md` (decyzje, przejście poznawcze, klucze i18n, paczka 07/08), makiety `../1-0-2/makiety.html`, zrzuty `../1-0-2/zrzuty/`. Zmiany względem tego pliku: ekran blokady i rozwinięta Dynamic Island z −1 przy lewym brzegu (P-1100, zmienia P-133 1.1a); menu ••• licznika z pozycją „Ustawienia licznika” (7 pozycji, P-1102); „+1” licznika w stanie podpowiedzi (rama 4 pt `tekst`, P-1103).
