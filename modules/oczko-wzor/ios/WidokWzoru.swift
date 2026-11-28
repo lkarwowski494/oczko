@@ -239,6 +239,10 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   private var znacznik: Znacznik?
   private var notatki: [ChipNotatkiNatywny] = []
   private var cofnij: Int?
+  /// ZA1 (PU-008, KO-244): rozjazd płótna z danymi (PencilKit zachowało kreskę, której `rysunki[s]` już nie ma). Licznik i opis ostatniego zdarzenia idą do JS w `onZakreslenia`
+  /// (panel `e2e-wzor-rozjazdy` tylko w buildzie E2E); bez rozjazdu pola są 0 i puste, a zachowanie widoku się nie zmienia.
+  private var rozjazdy = 0
+  private var ostatniRozjazd = ""
   private var rysikZgloszony = false
   private var zKodu = false
   private var stronaDocelowa = 0
@@ -383,6 +387,27 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     rysunki[s] = rys
     if let k = nakladki[s] { zKodu = true; k.plotno.drawing = rys; zKodu = false }
     zaplanujZapis(s)
+    sprawdzPlotnoPoCofnieciu(s, proba: 0)
+  }
+  /// ZA1 (PU-008): w następnym obiegu pętli płótno cofniętej strony ma mieć tyle kresek co dane. Rozjazd (płótno zachowało cofniętą kreskę) → zdarzenie diagnostyczne
+  /// i ponowne przypisanie `rysunki[s]` płótnu, żeby następne pociągnięcie nie wróciło do danych razem z cofniętą kreską. Zgodność: nic się nie zmienia. Strona w użyciu
+  /// (trwa pociągnięcie) czeka krótko; po kilku próbach rezygnuje (kolejne pociągnięcie łapie `canvasViewDrawingDidChange`).
+  private func sprawdzPlotnoPoCofnieciu(_ s: Int, proba: Int) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + (proba == 0 ? 0 : 0.2)) { [weak self] in
+      guard let self = self, let k = self.nakladki[s], let r = self.rysunki[s] else { return }
+      if self.wUzyciu.contains(s) { if proba < 5 { self.sprawdzPlotnoPoCofnieciu(s, proba: proba + 1) }; return }
+      if k.plotno.drawing.strokes.count != r.strokes.count {
+        self.zglosRozjazd("cofniecie strona=\(s) platno=\(k.plotno.drawing.strokes.count) dane=\(r.strokes.count)")
+        self.zKodu = true
+        k.plotno.drawing = r
+        self.zKodu = false
+      }
+    }
+  }
+  private func zglosRozjazd(_ opis: String) {
+    rozjazdy += 1
+    ostatniRozjazd = opis
+    zglosZakreslenia()
   }
 
   // MARK: nakładki stron
@@ -434,10 +459,29 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
     guard !zKodu else { return }
     let s = c.tag
     if let poprzedni = rysunki[s], takieSame(poprzedni, c.drawing) { return } // 019: echo przypisania z odswiezPlotna — bez wpisu w historii i bez pętli
-    historia[s, default: []].append(rysunki[s] ?? PKDrawing())
-    rysunki[s] = c.drawing
+    // ZA1 (PU-008): jedno zdarzenie zmiany niesie najwyżej jedną nową kreskę. Więcej = płótno trzyma kreskę, której dane już nie mają (cofnięta); dane dostają stare kreski
+    // + ostatnią (nową), a płótno to samo przypisanie, więc licznik i ekran zostają zgodne z danymi.
+    let poprzednie = rysunki[s] ?? PKDrawing()
+    historia[s, default: []].append(poprzednie)
+    if c.drawing.strokes.count > poprzednie.strokes.count + 1, let ostatnia = c.drawing.strokes.last {
+      zglosRozjazd("zmiana strona=\(s) platno=\(c.drawing.strokes.count) dane=\(poprzednie.strokes.count)")
+      rysunki[s] = PKDrawing(strokes: poprzednie.strokes + [ostatnia])
+      naprawPlotna(s, proba: 0)
+    } else {
+      rysunki[s] = c.drawing
+    }
     zaplanujZapis(s)
     zaplanujOdswiezenie(s)
+  }
+  /// ZA1: płótno strony dostaje `rysunki[s]` po rozjeździe wykrytym w `canvasViewDrawingDidChange` — poza pociągnięciem, w następnym obiegu pętli.
+  private func naprawPlotna(_ s: Int, proba: Int) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + (proba == 0 ? 0 : 0.2)) { [weak self] in
+      guard let self = self, let k = self.nakladki[s], let r = self.rysunki[s] else { return }
+      if self.wUzyciu.contains(s) { if proba < 5 { self.naprawPlotna(s, proba: proba + 1) }; return }
+      self.zKodu = true
+      k.plotno.drawing = r
+      self.zKodu = false
+    }
   }
   /// 10-wydanie-019 (AO, P-748): pociągnięcie narysowane na płótnie z rysunkiem wczytanym z pliku trafiało do danych (licznik rósł), ale nie było
   /// widoczne do ponownego otwarcia wzoru (zrzuty-sklepu 43035080611, 43090241469; na pustym płótnie widoczne — Jakość · iOS 42899408194, scen. 47).
@@ -511,7 +555,7 @@ final class WidokWzoru: ExpoView, PDFPageOverlayViewProvider, PKCanvasViewDelega
   }
   private func zglosZakreslenia() {
     let n = rysunki.values.reduce(0) { $0 + $1.strokes.filter { $0.ink.inkType == .marker }.count }
-    onZakreslenia(["liczba": n])
+    onZakreslenia(["liczba": n, "rozjazdy": rozjazdy, "ostatni": ostatniRozjazd])
   }
 
   // MARK: gesty i strony

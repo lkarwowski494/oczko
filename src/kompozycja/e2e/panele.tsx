@@ -31,6 +31,8 @@ export { haki, opisDotyku, opisNacisniec, PanelDotyku, PanelNacisniec, zerujDoty
 export { opisOkna, PanelOkna } from './okno-stan';
 // BX15 (KO-121 b, BX-051): zapisane notatki rzędów na ekranie wzoru (panel `e2e-wzor-notatki` w app/wzor.tsx; scenariusze 102, 104).
 export { opisNotatekWzoru, PanelNotatekWzoru } from './notatki-wzoru-stan';
+// ZA1 (PU-008, KO-244): rozjazd płótna z danymi po cofnięciu (panel `e2e-wzor-rozjazdy` w app/wzor.tsx; scenariusz 100).
+export { opisRozjazduZakreslen, PanelRozjazduZakreslen } from './rozjazd-zakreslen-stan';
 
 /** Oferty: „wygaś dostęp” sztucznego sklepu (app/oferty.tsx). */
 export function PanelSklepu({ naWygas }: { naWygas(): void }): React.ReactElement {

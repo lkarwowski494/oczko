@@ -44,7 +44,8 @@ async function start(dodatkowe: ReturnType<typeof notatkaRzedu>[] = []) {
 }
 test('build E2E: panel `e2e-wzor-notatki` niesie zapisaną notatkę rzędu („notes: row 6: …”), a chip dla widoku natywnego jest ten sam', async () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  mockTryb.paneleE2e = { PanelNotatekWzoru: (require('../../src/kompozycja/e2e/notatki-wzoru-stan') as typeof import('../../src/kompozycja/e2e/notatki-wzoru-stan')).PanelNotatekWzoru };
+  mockTryb.paneleE2e = { PanelNotatekWzoru: (require('../../src/kompozycja/e2e/notatki-wzoru-stan') as typeof import('../../src/kompozycja/e2e/notatki-wzoru-stan')).PanelNotatekWzoru,
+    PanelRozjazduZakreslen: () => null }; // ZA1: trasa rysuje też panel rozjazdu (atrapa bez niego)
   mockTryb.diagnostykaE2e = mockTryb.paneleE2e; // poza trybem zrzutów diagnostykaE2e = paneleE2e (ZR2)
   await start();
   render(<EkranWzoru />);
