@@ -100,7 +100,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       if (r.ok) w = r.wartosc;
     }
     zrobioneDzis = w && w.zrobioneDzis !== null ? { projektId: w.projektId, dzien: w.dzis, rzedy: w.zrobioneDzis } : null;
-    if (podpowiedzProg === undefined) podpowiedzProg = await podpowiedzPlusMin(z); // preferencja urządzenia, czytana raz (do `poZmianie`), także gdy wyłączona (null): `??=` czytałoby ją przy każdym +1 (FX1 P2-3, NFR-WYD-001)
+    if (podpowiedzProg === undefined) podpowiedzProg = await podpowiedzPlusMin(z); // czytana raz (do `poZmianie`), także gdy null (FX1 P2-3)
     const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje(), podpowiedzProg });
     return { s: { ...s, konflikt: licznikId ? await liniaKonfliktu(licznikId) : null }, w };
   }
