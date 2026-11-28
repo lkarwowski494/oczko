@@ -26,7 +26,15 @@
     "P-692",
     "P-700"
   ],
-  "klucze": [],
+  "klucze": [
+    "aktywnosc.plus2",
+    "aktywnosc.stuknij_dwa",
+    "aktywnosc.teraz_dwa"
+  ],
   "pierwsze_w_fali": [],
-  "przetlumaczone_czesciowo": {}
+  "przetlumaczone_czesciowo": {
+    "aktywnosc.plus2": ["pl"],
+    "aktywnosc.stuknij_dwa": ["pl"],
+    "aktywnosc.teraz_dwa": ["pl"]
+  }
 }

@@ -18,7 +18,7 @@ struct OczkoAktywnosc: Widget {
         DynamicIslandExpandedRegion(.trailing) { Liczba(stan: kontekst.state.stan).font(.title2.monospacedDigit()) }
         DynamicIslandExpandedRegion(.bottom) {
           VStack(alignment: .leading, spacing: 4) {
-            HStack { Opis(a: kontekst.state, zPodpisem: false); Spacer(); Przycisk(a: kontekst.state) }
+            HStack { PrzyciskMinus(a: kontekst.state); Opis(a: kontekst.state, zPodpisem: false); Spacer(); Przycisk(a: kontekst.state) }
             if let pas = pasTypowy(kontekst.state) { Pas(pas: pas, jezyk: kontekst.state.jezyk, wyspa: true) }
           }
         }
@@ -61,8 +61,16 @@ func etykietaKarty(_ a: StanAktywnosci) -> String {
   return karta
 }
 
+/// „Teraz rząd N” albo, przy kroku 2, „Teraz rzędy N–M” (ADR-0036, U6; klucz `teraz_dwa`).
+func tekstTeraz(_ s: StanEkranuBlokady, _ j: String?) -> String {
+  s.krok > 1
+    ? Teksty.t("teraz_dwa", j, ["od": String(rzadWRobocie(s)), "do": String(rzadWRobocie(s) + s.krok - 1)])
+    : Teksty.t("teraz", j, ["n": String(rzadWRobocie(s))])
+}
+
 /// Etykieta przycisku +1: przy rzędzie z przypomnieniem pełna `plus_a11y_przypomnienie` (nie sklejanie „Add row. ” z pasem), inaczej `plus_a11y`.
 func etykietaPlus(_ a: StanAktywnosci) -> String {
+  if a.stan.krok > 1 { return Teksty.t("plus2", a.jezyk) + ". " + tekstTeraz(a.stan, a.jezyk) } // „+2 rows. Now rows 43–44”
   if let pas = pasPrzypomnienia(a.stan) {
     return Teksty.t("plus_a11y_przypomnienie", a.jezyk, ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)])
   }
@@ -100,7 +108,7 @@ struct SmartStack: View {
             .background(RoundedRectangle(cornerRadius: 3).fill(Color("powierzchnia")))
             .accessibilityLabel(Teksty.t("przypomnienie_a11y", j, ["n": String(pas.rzad), "tekst": pas.tekst, "k": String(pas.k), "razy": String(pas.razy)]))
         } else {
-          Text(Teksty.t("teraz", j, ["n": n]))
+          Text(tekstTeraz(s, j))
         }
       }
       .font(.system(size: 15, weight: .semibold)).foregroundStyle(Color("tekst")).lineLimit(1).truncationMode(.tail).layoutPriority(4)
@@ -156,8 +164,11 @@ func tekstyLimitu(_ s: StanEkranuBlokady, _ jezyk: String?) -> (miesiac: String,
 
 /// Opis obok liczby według pierwszeństwa stanów; przy blokadzie i limicie bez przycisku (Przycisk).
 struct Opis: View {
+  enum Czesc { case calosc, pierwszy, reszta }
   let a: StanAktywnosci
   let zPodpisem: Bool
+  /// U4 (opcja A, P-1100): przy widocznych przyciskach pierwszy wiersz stoi między „−1” i „+1”, drugi wiersz zajmuje pełną szerokość pod nimi.
+  var czesc: Czesc = .calosc
   var body: some View {
     let s = a.stan, j = a.jezyk, n = String(rzadWRobocie(s))
     VStack(alignment: .leading, spacing: 2) {
@@ -171,15 +182,17 @@ struct Opis: View {
         Label(Teksty.t("limit", j, ["miesiac": l.miesiac]) + " " + Teksty.t("limit_wznowienie", j, ["data": l.data]), systemImage: "info.circle")
           .font(.footnote).foregroundStyle(Color("tekst2"))
       } else if let u = a.uwaga {
-        Text(Teksty.t("nie_dodano", j, ["n": n])).font(.subheadline.weight(.semibold)).foregroundStyle(Color("tekst"))
-        Text(Teksty.t(u == .odblokuj ? "odblokuj" : "blad_zapisu", j)).font(.footnote).foregroundStyle(Color("tekst2"))
+        if czesc != .reszta { Text(Teksty.t("nie_dodano", j, ["n": n])).font(.subheadline.weight(.semibold)).foregroundStyle(Color("tekst")) }
+        if czesc != .pierwszy { Text(Teksty.t(u == .odblokuj ? "odblokuj" : "blad_zapisu", j)).font(.footnote).foregroundStyle(Color("tekst2")) }
       } else {
-        Text(Teksty.t("teraz", j, ["n": n])).font(.subheadline).foregroundStyle(Color("tekst"))
+        if czesc != .reszta { Text(tekstTeraz(s, j)).font(.subheadline).foregroundStyle(Color("tekst")) }
         // Kilka przypomnień w rzędzie: cicha linia „+N more” w miejscu podpisu (P-158 (1.1a)); w wyspie pod „Now row”.
-        if let pas = pasPrzypomnienia(s), pas.wiecej > 0 {
-          Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, j)).font(.footnote).foregroundStyle(Color("tekst2"))
-        } else if zPodpisem {
-          Text(Teksty.t("podpis_plus", j, ["n": n])).font(.footnote).foregroundStyle(Color("tekst2"))
+        if czesc != .pierwszy {
+          if let pas = pasPrzypomnienia(s), pas.wiecej > 0 {
+            Text(Teksty.tl("przypomnienie_wiecej", pas.wiecej, j)).font(.footnote).foregroundStyle(Color("tekst2"))
+          } else if zPodpisem {
+            Text(s.krok > 1 ? Teksty.t("stuknij_dwa", j) : Teksty.t("podpis_plus", j, ["n": n])).font(.footnote).foregroundStyle(Color("tekst2"))
+          }
         }
       }
     }
@@ -187,12 +200,31 @@ struct Opis: View {
   }
 }
 
-/// Jedyny element sterujący Live Activity: +1 (P-133 (1.1a)); brak przy blokadzie i limicie (stan znany z góry, P-142 (2a)).
+/// Przyciski liczenia są widoczne poza blokadą i limitem (stan znany z góry, P-142 (2a)); −1 przy limicie i blokadzie też znika (P-1100, P-1111 (2)).
+func przyciskiWidoczne(_ a: StanAktywnosci) -> Bool { !a.stan.zablokowany && a.stan.dzienDozwolony }
+
+/// „−1” (U4, ZM-22, opcja A): 44 × 44 pt z obrysem, przy lewym brzegu karty i rozwiniętej wyspy; ta sama intencja co „+1” (reguły w `stuknij`: nie zaczyna dnia,
+/// przy 0 bez zmiany). Znak „−1” to znak, nie klucz (jak „+1”); etykieta VoiceOver `minus_a11y` istnieje.
+struct PrzyciskMinus: View {
+  let a: StanAktywnosci
+  var body: some View {
+    if przyciskiWidoczne(a) {
+      Button(intent: OczkoStuknij(rodzaj: "minus")) {
+        Text("\u{2212}1").font(.headline).foregroundStyle(Color("tekst")).frame(minWidth: 44, minHeight: 44)
+          .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color("tekst2"), lineWidth: 2))
+      }
+      .buttonStyle(.plain)
+      .accessibilityLabel(Teksty.t("minus_a11y", a.jezyk))
+    }
+  }
+}
+
+/// „+1” albo „+2” (krok licznika, ADR-0036): ta sama intencja `plus`; liczbę linii wyznacza `krok` ze stanu.
 struct Przycisk: View {
   let a: StanAktywnosci
   var body: some View {
-    if !a.stan.zablokowany && a.stan.dzienDozwolony {
-      Button(intent: OczkoStuknij(rodzaj: "plus")) { Text(Teksty.t("plus", a.jezyk)).font(.headline).frame(minWidth: 96, minHeight: 60) }
+    if przyciskiWidoczne(a) {
+      Button(intent: OczkoStuknij(rodzaj: "plus")) { Text(a.stan.krok > 1 ? Teksty.t("plus2", a.jezyk) : Teksty.t("plus", a.jezyk)).font(.headline).frame(minWidth: 96, minHeight: 60) }
         .accessibilityLabel(etykietaPlus(a))
         .buttonStyle(.borderedProminent)
         .tint(Color("przycisk"))
@@ -215,11 +247,13 @@ struct EkranBlokady: View {
         }
       }
       HStack(alignment: .center, spacing: 12) {
+        PrzyciskMinus(a: a)
         Liczba(stan: s).font(.system(size: 48, weight: .semibold).monospacedDigit()).foregroundStyle(Color("tekst"))
-        Opis(a: a, zPodpisem: true)
+        Opis(a: a, zPodpisem: true, czesc: przyciskiWidoczne(a) ? .pierwszy : .calosc)
         Spacer(minLength: 0)
         Przycisk(a: a)
       }
+      if przyciskiWidoczne(a) { Opis(a: a, zPodpisem: true, czesc: .reszta) } // drugi wiersz opisu pod przyciskami, na pełną szerokość (P-1100)
       if let pas = pasTypowy(a) { Pas(pas: pas, jezyk: a.jezyk, wyspa: false) }
     }
     .padding(14)

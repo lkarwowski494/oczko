@@ -5,6 +5,8 @@ import ExpoModulesCore
 import Foundation
 
 public class OczkoDziennikPlusModule: Module {
+  static func data(_ ms: Int64?) -> Date? { ms.map { Date(timeIntervalSince1970: Double($0) / 1000) } }
+
   public func definition() -> ModuleDefinition {
     Name("OczkoDziennikPlus")
 
@@ -12,19 +14,23 @@ public class OczkoDziennikPlusModule: Module {
     AsyncFunction("skroc") { (doId: String) throws in try DziennikPlus.wspolny.skroc(doId: doId) }
 
     // Każda aktualizacja z JS czyści `uwaga` (ADR-0008, 2026-10-26); `jezyk` = język aplikacji (P-139), nil = angielski.
-    AsyncFunction("liveStart") { (stanJson: String, urzadzenie: String, jezyk: String?) async throws -> String in
+    // `staleDateMs` (ADR-0037 reguła 4): ostatnia zmiana + min(próg przypominacza, koniec), liczy go TS (`dataNieaktualnosci`, SD-01…SD-04); nil = bez `staleDate`.
+    // Argument końcowy opcjonalny: wywołanie z 3 argumentami (adapter sprzed 1.0.2) dalej działa (expo-modules-core: trailing optional).
+    AsyncFunction("liveStart") { (stanJson: String, urzadzenie: String, jezyk: String?, staleDateMs: Int64?) async throws -> String in
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
       for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) } // jedna sesja na ekranie blokady
-      let a = try Activity<OczkoAtrybuty>.request(attributes: OczkoAtrybuty(urzadzenie: urzadzenie), content: ActivityContent(state: stan, staleDate: nil), pushType: nil)
+      let a = try Activity<OczkoAtrybuty>.request(attributes: OczkoAtrybuty(urzadzenie: urzadzenie), content: ActivityContent(state: stan, staleDate: Self.data(staleDateMs)), pushType: nil)
       return a.id
     }
-    AsyncFunction("liveAktualizuj") { (stanJson: String, jezyk: String?) async throws in
+    AsyncFunction("liveAktualizuj") { (stanJson: String, jezyk: String?, staleDateMs: Int64?) async throws in
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
-      for a in Activity<OczkoAtrybuty>.activities { await a.update(ActivityContent(state: stan, staleDate: nil)) }
+      for a in Activity<OczkoAtrybuty>.activities { await a.update(ActivityContent(state: stan, staleDate: Self.data(staleDateMs))) }
     }
     AsyncFunction("liveZakoncz") { () async in
       for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) }
     }
+    // ADR-0037 reguła 2: „aktywna” czytana z systemu (stan `active` albo `stale`) zamiast flagi w pamięci procesu — naprawia brak powrotu po końcu systemowym (8 h).
+    Function("liveAktywna") { () -> Bool in !Activity<OczkoAtrybuty>.activities.isEmpty }
     Function("liveDostepne") { () -> Bool in ActivityAuthorizationInfo().areActivitiesEnabled }
 
     AsyncFunction("sha256Pliku") { (sciezka: String) throws -> String in try Skrot.sha256Pliku(sciezka) }

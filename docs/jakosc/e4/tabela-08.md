@@ -521,11 +521,11 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-360 | `src/domena/rysik` | — |
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
+| 9 ? | `tests/adaptery/xctest-krok-minus-1-0-2.test.ts` | zielony (główny zestaw) | 3 | — | `src/przypadki-uzycia/ekran-blokady` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/konfiguracja`<br>`src/platforma/zdjecia` | — |
 | 9 ? | `tests/akceptacja/domena/zm20-przesuniecie-rodzica.test.ts` | oczekuje | 3 | PR-01, PR-18 | `src/konfiguracja` | — |
 | 9 ? | `tests/akceptacja/domena/zm24-stukniecia.test.ts` | oczekuje | 5 | BR-LIC-011, RD-12, RD-17 | `src/domena/straznik-tempa` | — |
 | 9 ? | `tests/akceptacja/domena/zm27-aktywnosc.test.ts` | oczekuje | 3 | — | `src/konfiguracja` | — |
-| 9 ? | `tests/akceptacja/kontrole/zm22-zm24-xctest.test.ts` | oczekuje | 3 | — | `src/przypadki-uzycia/ekran-blokady` | — |
 | 9 ? | `tests/domena/co-dalej.test.ts` | zielony (główny zestaw) | 5 | RD-13 | `src/domena/co-dalej` | — |
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
 | 9 ? | `tests/domena/icloud/wektory-swift.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie`<br>`src/domena/porty` | Z07-22 |

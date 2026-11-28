@@ -28,9 +28,13 @@ public func wzorzecHaptykiZegarka(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, _ przebie
     case .zablokowany: return .blokadaStukniecie
     case .limit, .bezZmiany: return nil
     case let .zapisz(linie, nowy):
-      // PS (ADR-0036 pkt 5): sygnał, gdy stuknięcie „przeskoczyło” rząd z przypomnieniem (przed → po skończonych), także przy „+2”; dawniej pas po stuknięciu gubił rząd przeskoczony.
+      // „+1”: ta sama reguła co pas przypomnienia po stuknięciu (RD-13 W11–W19). PS (ADR-0036 pkt 5): „+2” dodatkowo daje sygnał, gdy przeskoczyło rząd
+      // z przypomnieniem (przed → po skończonych); sam pas po stuknięciu gubiłby rząd przeskoczony. Dla jednej linii obie reguły są równoważne.
       let przed = nowy.wartosc - linie.count
-      if rodzaj == .plus, nowy.przypomnienia.contains(where: { przypomnienieSkoku(przed: przed, po: nowy.wartosc, plan: $0) != nil }) { return .przypomnienie }
+      let przypomnienie = linie.count == 1
+        ? pasPrzypomnienia(nowy) != nil
+        : nowy.przypomnienia.contains { przypomnienieSkoku(przed: przed, po: nowy.wartosc, plan: $0) != nil }
+      if rodzaj == .plus, przypomnienie { return .przypomnienie }
       return .plus
     }
   }
