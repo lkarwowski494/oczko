@@ -56,3 +56,6 @@ export const PRODUKTY_PRO: readonly string[] = Object.freeze([PRODUKT_DOZYWOTNI,
 
 /** Preferencje urządzenia (ADR-0029): wartości domyślne, gdy klucza w `ustawienie` brak albo zapis jest uszkodzony. Tylko preferencje interfejsu. */
 export const PREFERENCJE_DOMYSLNE: { readonly wibracje: boolean; readonly ekranNieGasnie: boolean; readonly ukladMiar: 'auto' | 'metric' | 'imperial' } = { wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' };
+
+export const DZIENNIK_PRZESUNIECIE_MAKS = 500; // zdarzeń; [OCENA] roli 05 (ADR-0035 „Parametr”, P-1096): ile zdarzeń od rodzica linii do głowy sprawdza przesunięcie rodzica; więcej = konflikt jak dziś
+export const LIVE_KONIEC_PO_MS = 7_200_000; // ms (2 h); [OCENA] (ADR-0037 „Parametr produktowy”, P-1099): bez liczenia tak długo = koniec Live Activity przy najbliższej okazji aplikacji

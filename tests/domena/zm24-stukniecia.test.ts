@@ -4,9 +4,9 @@
 // wejścia jak w kontroli 05 (docs/architektura/eksperymenty/1-0-2/sprawdz.mjs:53-60). Miejsce (propozycja 07, P-1113): `src/domena/stukniecia.ts`
 // z eksportami `stukniecia`, `serieStukniec`, `celCofnieciaStukniecia`, `sygnalySkoku`, `KROK_MAKS`.
 import { join } from 'node:path';
-import wektory from '../../../docs/architektura/wektory-1-0-2.json';
-import { eksportLubZnacznik, modulLubZnacznik, rozpakuj } from '../../narzedzia/akceptacja';
-import type { Seria } from '../../../src/domena/straznik-tempa';
+import wektory from '../../docs/architektura/wektory-1-0-2.json';
+import { eksportLubZnacznik, modulLubZnacznik, rozpakuj } from '../narzedzia/akceptacja';
+import type { Seria } from '../../src/domena/straznik-tempa';
 
 /** Dzisiejszy strażnik RD-17 liczy serie zdarzeń (`serieDoSprawdzenia`); 08-A przełącza wołającego na serie stuknięć (tabela 07 → 08: plik do zmiany). */
 export type SeriaZdarzenDzis = Seria;
@@ -20,7 +20,7 @@ type W = {
   skok: { id: string; opis: string; przed: number; po: number; cel: number | null; dlugosc: number | null; oczekiwane: { celCzesci: boolean; koniecPowtorzenia: boolean } }[];
 };
 const V = wektory as unknown as W;
-const mod = () => modulLubZnacznik(join(__dirname, '../../../src/domena/stukniecia'), 'ZM-24 stukniecia');
+const mod = () => modulLubZnacznik(join(__dirname, '../../src/domena/stukniecia'), 'ZM-24 stukniecia');
 const f = <T>(nazwa: string) => eksportLubZnacznik<T>(mod(), nazwa, `ZM-24 ${nazwa}`);
 type Mozliwie<T> = T | { ok: true; wartosc: T };
 
