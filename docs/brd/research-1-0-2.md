@@ -18,7 +18,7 @@ Stan: 2026-11-28 · decyzja zlecająca KO-229 (słowa właściciela: „U8 i U9 
 ## U7: przypominacz kliknięcia po skończonym rzędzie
 ### Problem i dowód potrzeby
 - Sygnał: 1 osoba + „domowe rozpraszacze” (1) + właściciel (wspólne wejście 1.0.2). W BRD: kontekst J-01 to uwaga podzielona („podcast, TV, dzieci”, `docs/brd/odkrywanie.md`, „Kontekst użycia”), a historia stuknięć z godziną pomaga, „gdy zapomnę, czy stuknąłem” (J-01, id13252701149).
-- Konkurencja (opisy 20 aplikacji, `lookup` US, odczyt 2026-11-28): przypomnienia są wyłącznie „w rzędzie N” (np. KnitCounter: „Row reminders, like "Start decreases" at 24”; My Row Counter: „reminders to appear on a specific row”) albo o terminie projektu (YarnBuddy: „Set due date reminders for your projects”). Przypomnienia „nie stuknięto od X minut” nie ma żadna. Licznik na ekranie blokady deklarują YarnBuddy, LooseLoop, KnitCounter, Knit Row Counter.
+- Konkurencja (opisy 20 aplikacji, `lookup` US, odczyt 2026-11-28; nazwy i pełne cytaty poza publicznym repo, P-107 (3)): przypomnienia są wyłącznie „w rzędzie N” (np. „Row reminders, like "Start decreases" at 24”, „reminders to appear on a specific row”) albo o terminie projektu („Set due date reminders for your projects”). Przypomnienia „nie stuknięto od X minut” nie ma żadna. Licznik na ekranie blokady deklarują 4 z 20.
 - Recenzje: 0 z 428 z prośbą o przypomnienie stuknięcia (wzorce „forgot to tap/click/count”, „did I tap”). Luka rynku, ale bez dowodu popytu: forma ma być tania i opcjonalna (zasada wspólna 18, P-046).
 - Liczniki mechaniczne nie mają zasilania ani zegara, więc nie przypominają [OCENA]; liczników elektronicznych nie sprawdzałem [DO USTALENIA] (OP-37).
 
@@ -51,8 +51,8 @@ Czy widok Live Activity przerysuje się w chwili `staleDate`, gdy aplikacja jest
 ### Praca i dowody
 - Praca: J-02 (oczka w rzędzie), J-04 (wzór), J-09. Sygnał 1.0.2: 1 osoba.
 - Źródło danych istnieje we wzorze: „Hint: Count the stitches at the end of every row. Most patterns tell you how many stitches you should have” [FAKT S-46]; zapis „: 14 sc. (14 sc). —14 sc.” to liczba oczek, nie polecenie [FAKT S-46].
-- Recenzje: prośba o „stitch count requirement for the individual sections” (My Row Counter, strona App Store US, odczyt 2026-11-28); zagubienie, gdy wzór podaje liczbę po rzędzie: „(inc, 2dc)x15 which makes 60 stitches plus a ch 3 and a sl st and then say there should be 64 stitches without any futher explanation” (Crochet Row Counter & Tracker, id12120194506, 2★); licznik pomocniczy przy przyrostach: „helpful for increases and decreases, so you’re not having to do the math” (LooseLoop, strona App Store US).
-- Konkurencja: Knitflow „Track stitch counts, repeat cycles”; CozyKnit „smart rules for automatic increases/decreases” (opisy `lookup`, 2026-11-28). Liczby oczekiwanej z instrukcji rzędu nie liczy żadna z przeczytanych.
+- Recenzje (strony App Store US, odczyt 2026-11-28; aplikacje opisowo, P-107 (3)): prośba o „stitch count requirement for the individual sections” (lider liczników z zegarkiem); zagubienie, gdy wzór podaje liczbę po rzędzie: „(inc, 2dc)x15 which makes 60 stitches plus a ch 3 and a sl st and then say there should be 64 stitches without any futher explanation” (licznik szydełkowy, id12120194506, 2★); licznik pomocniczy przy przyrostach: „helpful for increases and decreases, so you’re not having to do the math” (nowa aplikacja „towarzysz robótki” z 2026).
+- Konkurencja: 2 z 20 opisów obiecują śledzenie liczby oczek przy przyrostach („Track stitch counts, repeat cycles”; „smart rules for automatic increases/decreases”, `lookup`, 2026-11-28). Liczby oczekiwanej z instrukcji rzędu nie liczy żadna z przeczytanych.
 - Stan Oczka (kontrakt zakresu): licznik typu „Oczka” jest (F-04), cel rzędów części jest (F-08), plan „od rzędu, co N, M razy” jest (F-06, RD-13); przeliczenia równomiernego dodawania F-40 = PÓŹNIEJ (OP-04).
 
 ### Reguły dziedzinowe (gdyby liczyć z instrukcji)
@@ -65,7 +65,7 @@ Czy widok Live Activity przerysuje się w chwili `staleDate`, gdy aplikacja jest
 | U8-A | licznik oczek ma opcjonalne pole „ile oczek powinno być” (wpis z wzoru); pokazuje „48 / 64”, przy równości znak zgodności, powyżej różnicę | wpis użytkownika (S-46) | brak reguły; aplikacja tylko porównuje dwie liczby użytkownika | niski: jedno pole, jak F-08 |
 | U8-B | U8-A + w planie F-06 „±k oczek w rzędzie zmiany” i liczba startowa: oczekiwana liczba po każdym rzędzie planu; kontrola z liczbą końcową wzoru | rachunek na danych użytkownika (N0 + k × liczba rzędów zmian do r) | niskie–średnie: błędne k (np. „each end” = 2) daje złą podpowiedź; rachunek, nie fakt | średni: formularz F-06 rośnie |
 | U8-C | liczba z instrukcji rzędu (skróty, krotności) | parser + słownik skrótów (S-48) | wysokie: D-027, RYZ-03, 35 języków | wysoki |
-| U8-D | liczby oczek wyciągnięte z PDF/zdjęcia (AI) | model na urządzeniu | wysokie: OG-07, OG-11, H-09 (brak dowodu potrzeby AI), niechęć do AI w recenzjach (`odkrywanie.md`, Loopsy) | wysoki |
+| U8-D | liczby oczek wyciągnięte z PDF/zdjęcia (AI) | model na urządzeniu | wysokie: OG-07, OG-11, H-09 (brak dowodu potrzeby AI), niechęć do AI w recenzjach (`odkrywanie.md`, „Rynek”) | wysoki |
 
 **Rekomendacja (P-1093):** U8-A. U8-B na liście odcięć (powrót: ≥3 prośby o oczekiwaną liczbę oczek przy przyrostach albo dane o użyciu U8-A); U8-C i U8-D: NIE (powrót tylko po nowej ocenie OG-07 i źródle terminologii OP-12).
 
@@ -80,7 +80,7 @@ Czy widok Live Activity przerysuje się w chwili `staleDate`, gdy aplikacja jest
 ### Stan aplikacji (kontrakt zakresu)
 - Jest: obliczenia podstawowe — oczka z próbki, jednostki, grubość z próbki ze zdaniem o braku zamienności (F-38: BR-KAL-001, -003, -008), zapas z metrażem i jednostkami (F-37, BR-ZAP-001).
 - PÓŹNIEJ: przeliczenie wzoru na własną próbkę F-39 (RD-02; powrót: 1.1 albo ≥3 prośby), zużycie z wagi próbki F-42 (RD-07, OP-05).
-- Konkurencja z narzędziem zamiany: YarnBuddy („yarn substitution tools”), Yarnzy („tools for yarn substitution”), LooseLoop (recenzja: „yarn substitution tools”) (opisy `lookup` i strona App Store, 2026-11-28).
+- Konkurencja: narzędzie zamiany włóczki deklarują 2 z 20 opisów („yarn substitution tools”, „tools for yarn substitution”) i jedna recenzja innej aplikacji (`lookup` i strona App Store, 2026-11-28).
 
 ### Warianty (od najmniejszego)
 | Wariant | Co robi | Podstawa | Ryzyko merytoryczne (06) |
