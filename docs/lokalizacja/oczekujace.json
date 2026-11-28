@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
+  "powod": "Lista niepusta od 2026-11-28 (FB1, KO-239, P-1126): 3 klucze 1.0.2 aktywnosc.plus2, aktywnosc.teraz_dwa, aktywnosc.stuknij_dwa (U6, ekran blokady i zegarek: „+2”) mają tylko en i pl; 33 pozostałe języki czekają na falę 09 (tłumaczenia jak najpóźniej, D-026), więc testy „po fali” dopuszczają wyłącznie te klucze. Poprzednia fala: fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -24,7 +24,8 @@
     "P-661",
     "P-668",
     "P-692",
-    "P-700"
+    "P-700",
+    "P-1126"
   ],
   "klucze": [
     "aktywnosc.plus2",
