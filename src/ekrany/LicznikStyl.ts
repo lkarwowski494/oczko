@@ -50,6 +50,7 @@ export function style(k: Kolory) {
     minusTekst: { ...typografia.przycisk, color: k.grafit },
     plus: { flex: 1, minHeight: rozmiary.przyciskPlusWysokosc, borderRadius: promien.przyciskGlowny, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
     plusAx: { alignSelf: 'stretch', minHeight: rozmiary.plus, borderRadius: promien.przyciskGlowny, backgroundColor: k.akcent, alignItems: 'center', justifyContent: 'center', padding: odstep.m },
+    plusRama: { flex: 1, borderWidth: 4, borderColor: k.tekst, borderRadius: promien.przyciskGlowny + 8, padding: odstep.xs }, // ZM-25 forma A: rama 4 pt `tekst` z odstępem 4 pt (design-spec 1.0.2)
     plusTekst: { ...typografia.przycisk, color: k.naAkcencie },
     plusPodpis: { ...typografia.podpis, color: k.naAkcencie },
     minusAx: { alignSelf: 'stretch', minHeight: rozmiary.przyciskMinus, borderRadius: tokeny.promienie.minus, borderWidth: 2, borderColor: k.drugiPrzyciskObrys, alignItems: 'center', justifyContent: 'center' },

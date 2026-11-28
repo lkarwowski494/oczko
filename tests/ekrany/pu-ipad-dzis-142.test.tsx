@@ -18,8 +18,8 @@ test('PU-142: iPad, świeży start — „Today” z kartą „First counter” 
   render(<Aplikacja porty={{ sklep, ekranAktywny, haptyka: atrapaHaptyki() }} uslugi={k.uslugi} cykl={atrapaCyklu().cykl} system={atrapaSystemu()} oglos={jest.fn()} t={t} />);
   expect(await screen.findByTestId('dzis-karta')).toBeTruthy();
   expect(screen.getByText('First counter')).toBeTruthy();
-  expect(screen.getByTestId('dzis-wartosc')).toHaveTextContent('0');
+  expect(screen.getByTestId('dzis-wartosc')).toHaveTextContent('1'); // ZM-21 (P-1121): pierwszy licznik „w trakcie” pokazuje bieżący rząd (wartość 0 + 1)
   fireEvent.press(screen.getByTestId('dzis-plus'));
-  await waitFor(() => expect(screen.getByTestId('dzis-wartosc')).toHaveTextContent('1'));
+  await waitFor(() => expect(screen.getByTestId('dzis-wartosc')).toHaveTextContent('2')); // wartość 1 → bieżący rząd 2
   expect((await k.widok())?.wartosc).toBe(1); // zapis w bazie, nie tylko ekran
 });

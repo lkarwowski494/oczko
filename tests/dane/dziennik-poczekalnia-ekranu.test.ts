@@ -135,12 +135,24 @@ describe('poczekalnia ekranu blokady (EB1, P-1079)', () => {
     expect(await wPoczekalni(s)).toBe(0);
   });
 
-  test('P3: ten sam id z innym rodzicem bez śladu zastąpienia (dziennik_rodzic_zastapiony) nadal jest kolizją id', async () => {
+  // ADR-0035 reguła 7 (P-1096): ślad `dziennik_rodzic_zastapiony` w `blad` nie decyduje już o kolizji (znika po `przytnijBledy`); ten sam id z innym
+  // rodzicem i innym czasem to nadal kolizja id, a z tym samym czasem, urządzeniem i źródłem — ponowna dostawa linii przesuniętej. P-1120.
+  test('P3: ten sam id z innym rodzicem i innym czasem nadal jest kolizją id', async () => {
+    const s = await zLicznikiem(10);
+    s.dziennik.linie.push(linia('d1', ['l1-z10'], 0));
+    await scalDziennik(s.z);
+    s.dziennik.linie.push(linia('d1', ['inny'], 1));
+    await scalDziennik(s.z);
+    expect(await ile(s.baza, 'blad', "kod = 'dziennik_kolizja_id'")).toBe(1);
+  });
+
+  test('P3b ADR-0035 reguła 7: ten sam id z innym rodzicem, ale tym samym czasem, urządzeniem i źródłem to ponowna dostawa, nie kolizja', async () => {
     const s = await zLicznikiem(10);
     s.dziennik.linie.push(linia('d1', ['l1-z10'], 0));
     await scalDziennik(s.z);
     s.dziennik.linie.push(linia('d1', ['inny'], 0));
     await scalDziennik(s.z);
-    expect(await ile(s.baza, 'blad', "kod = 'dziennik_kolizja_id'")).toBe(1);
+    expect(await ile(s.baza, 'blad', "kod = 'dziennik_kolizja_id'")).toBe(0);
+    expect(await ile(s.baza, 'zdarzenie', "id = 'd1'")).toBe(1);
   });
 });

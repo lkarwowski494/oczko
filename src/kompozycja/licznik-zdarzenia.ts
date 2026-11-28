@@ -1,5 +1,6 @@
 // Sygnały po +1 z ekranu licznika (RD-13 W20–W25, F-48, RD-15): czyste funkcje wydzielone z licznik.ts (limit 20 KB na plik, docs/architektura/narzedzia/granice.mjs).
 import { sygnalZmiany } from '../domena/przypomnienia';
+import { sygnalySkoku } from '../domena/stukniecia';
 import type { ZdarzeniePlus } from '../ekrany/Licznik';
 import type { WidokLicznika } from '../przypadki-uzycia/widok-licznika';
 
@@ -11,13 +12,17 @@ export function wejscie(w: WidokLicznika, przed: number): { rzad: number; tekst:
   }
   return null;
 }
-/** Zdarzenia F-48 po +1 (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel dnia, cel części. */
-export function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean, celDnia: boolean): ZdarzeniePlus[] {
+/**
+ * Zdarzenia F-48 po stuknięciu (haptyka „rząd ze znaczeniem”): wejście w rząd z instrukcją (sygnał RD-13), koniec powtórzenia, cel dnia, cel części.
+ * `przed` = wartość sprzed stuknięcia: przy kroku „+2” cel części i wielokrotność długości powtórzenia mogą zostać przeskoczone (`sygnalySkoku`, ZM-24, wektory SK).
+ */
+export function zdarzeniaPlus(w: WidokLicznika, sygnal: boolean, celDnia: boolean, przed: number = w.wartosc - 1): ZdarzeniePlus[] {
+  const skok = sygnalySkoku(przed, w.wartosc, { cel: w.czesc.cel, dlugosc: w.powtorzenie ? w.powtorzenie.dlugosc : null });
   const z: ZdarzeniePlus[] = ['rzad'];
   if (sygnal) z.push('przypomnienie');
-  if (w.powtorzenie && w.wartosc > 0 && w.wartosc % w.powtorzenie.dlugosc === 0) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
+  if (skok.koniecPowtorzenia) z.push('koniec-powtorzenia'); // ze skończonych, nie z rzędu pokazanego (tryb licznika zmienia r)
   if (celDnia) z.push('cel-dnia'); // 07-jakosc-009: osiągnięcie celu dnia (RD-15), ten sam wzór co przypomnienie (BR-LIC-021)
-  if (w.czesc.cel !== null && w.wartosc === w.czesc.cel) z.push('cel-czesci');
+  if (skok.celCzesci) z.push('cel-czesci');
   return z;
 }
 

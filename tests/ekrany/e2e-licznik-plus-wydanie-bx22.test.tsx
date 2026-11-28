@@ -31,7 +31,7 @@ const EkranLicznika = (require('../../app/licznik') as { default: React.Componen
 const Tryb = require('../../src/platforma/tryb-e2e') as typeof import('../../src/platforma/tryb-e2e');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 
 test('wydanie bez paneli: „+1” zwiększa liczbę, nie ma paneli `e2e-` ani pomiaru, nic nie jest wstrzymane', async () => {

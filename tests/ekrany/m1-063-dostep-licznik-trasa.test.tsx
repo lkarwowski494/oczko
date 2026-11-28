@@ -37,7 +37,7 @@ const EkranLicznika = (require('../../app/licznik') as { default: React.Componen
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranDzis = (require('../../app/(zakladki)/index') as { default: React.ComponentType }).default;
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 
 /** Licznik po 5 darmowych dniach października (dziś nie zaczęty, P-065) → „limit zawczasu”; dostęp z prawdziwego `dostepPro` (teraz sterowane). */

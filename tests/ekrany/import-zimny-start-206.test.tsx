@@ -51,7 +51,7 @@ async function swiezaInstalacja() {
   const archiwum = utworzArchiwum({ baza, magazyn, zegar, katalogi, migruj: (b) => migruj(b), aplikacja: '1.0.0 (test)' });
   const z = { baza, zegar, id: identyfikatory('6'), urzadzenie: 'nowy-telefon', pro: () => false, magazyn, katalogi, dziennik: dziennikTestowy(), archiwum, czasWTle };
   const t = await tEn();
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
   const licznik = kompozycjaLicznika({ ...z, migruj: (b) => migruj(b, { katalogKopii: katalogi.kopie }), liveActivity, zegarek }, { t, jezyk: () => 'en', zegar24h: () => true }, { wibracje: () => true });
   const naAwarie = jest.fn();

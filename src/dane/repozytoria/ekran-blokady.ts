@@ -27,3 +27,9 @@ export async function przypomnieniaLicznika(tx: PortBazy, licznikId: string): Pr
   const w = await wiersze(tx.all('SELECT od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ? ORDER BY od_rzedu, id', [licznikId]), 'przypomnieniaLicznika');
   return w.map((r) => ({ od: liczba(r, 'od_rzedu'), co: liczba(r, 'co_n'), razy: liczba(r, 'razy'), tekst: tekst(r, 'tekst') }));
 }
+
+/** Czas ostatniego zdarzenia licznika z dowolnego źródła (aplikacja, ekran blokady, zegarek; także −1 i cofnięcie); brak zdarzeń → null (ADR-0037 reguła 3). */
+export async function ostatniaZmianaLicznika(tx: PortBazy, licznikId: string): Promise<number | null> {
+  const [w] = await wiersze(tx.all('SELECT MAX(czas_ms) AS c FROM zdarzenie WHERE licznik_id = ?', [licznikId]), 'ostatniaZmianaLicznika');
+  return w && typeof w.c === 'number' ? w.c : null;
+}

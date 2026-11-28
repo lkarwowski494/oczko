@@ -40,3 +40,36 @@ export const brakiPrzekladu = (baza: string, jezyki: string[] = JEZYKI_FALI): st
 /** Wszystkie teksty bazy w języku (jeden albo formy). */
 export const teksty = (kod: string, baza: string): string[] => { const p = przeklad(kod, baza); return p === undefined ? [] : typeof p === 'string' ? [p] : Object.values(p); };
 export const jestFormaKlucza = (k: string): boolean => FORMA.test(k);
+
+/**
+ * FB1 08-B i FA2 (P-1126, P-1133 — KO-239, wyjątek nazwany, 2026-11-28): klucze 1.0.2 dodane tylko w en i pl, czekające na falę przekładu 09. Dopóki lista oczekujących
+ * ma tylko te klucze, testy „po fali” (pierwsze-w-fali-154, krytyczne) oczekują, że `--wydanie` odrzuca właśnie niepustą listę (bramka TestFlight
+ * zostaje); klucz spoza tej listy w `oczekujace.json` jest błędem. Po fali 09 lista jest pusta i testy wracają do stanu „po fali” bez zmian.
+ */
+export const OCZEKUJACE_DO_FALI_1_0_2: string[] = [
+  'dane.konflikt_a11y_zrodlo',
+  'dane.konflikt_z_aplikacji',
+  'dane.konflikt_z_ekranu_blokady',
+  'dane.konflikt_z_zegarka',
+  'formularz.krok',
+  'formularz.krok_opis',
+  'formularz.podpowiedz_minuty',
+  'formularz.podpowiedz_opis',
+  'formularz.podpowiedz_plus',
+  'formularz.podpowiedz_prog',
+  'formularz.rodzaj_oczka_opis',
+  'licznik.menu_ustawienia',
+  'licznik.menu_zdejmij_blokada',
+  'licznik.menu_zdejmij_blokada_opis',
+  'licznik.menu_zdejmij_blokada_stoper',
+  'licznik.plus2_etykieta',
+  'licznik.plus2_oczka',
+  'licznik.plus2_podpis',
+  'licznik.podpowiedz_czas',
+  'licznik.podpowiedz_etykieta',
+  'licznik.podpowiedz_pytanie',
+  'licznik.zdjeto_z_blokady_a11y',
+  'oferty.kod_bez_sieci',
+  'oferty.zrealizuj_kod',
+  'wzor.podpowiedz_tekst',
+];

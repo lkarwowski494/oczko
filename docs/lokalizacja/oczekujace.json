@@ -1,5 +1,5 @@
 {
-  "powod": "Fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
+  "powod": "FA2 (08 build, 2026-11-28, KO-239, P-1133): klucze 1.0.2 części TypeScript (menu ustawień licznika, krok +2, podpowiedź +1, zdjęcie z ekranu blokady, kod oferty, podpowiedzi formularzy, etykiety źródła konfliktu) tylko w en i pl; pozostałe 33 języki: fala 09. Wcześniej: Fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -24,9 +24,112 @@
     "P-661",
     "P-668",
     "P-692",
-    "P-700"
+    "P-700",
+    "P-1133"
   ],
-  "klucze": [],
+  "klucze": [
+    "dane.konflikt_a11y_zrodlo",
+    "dane.konflikt_z_aplikacji",
+    "dane.konflikt_z_ekranu_blokady",
+    "dane.konflikt_z_zegarka",
+    "formularz.krok",
+    "formularz.krok_opis",
+    "formularz.podpowiedz_minuty",
+    "formularz.podpowiedz_opis",
+    "formularz.podpowiedz_plus",
+    "formularz.podpowiedz_prog",
+    "formularz.rodzaj_oczka_opis",
+    "licznik.menu_ustawienia",
+    "licznik.menu_zdejmij_blokada",
+    "licznik.menu_zdejmij_blokada_opis",
+    "licznik.menu_zdejmij_blokada_stoper",
+    "licznik.plus2_etykieta",
+    "licznik.plus2_oczka",
+    "licznik.plus2_podpis",
+    "licznik.podpowiedz_czas",
+    "licznik.podpowiedz_etykieta",
+    "licznik.podpowiedz_pytanie",
+    "licznik.zdjeto_z_blokady_a11y",
+    "oferty.kod_bez_sieci",
+    "oferty.zrealizuj_kod",
+    "wzor.podpowiedz_tekst"
+  ],
   "pierwsze_w_fali": [],
-  "przetlumaczone_czesciowo": {}
+  "przetlumaczone_czesciowo": {
+    "dane.konflikt_a11y_zrodlo": [
+      "pl"
+    ],
+    "dane.konflikt_z_aplikacji": [
+      "pl"
+    ],
+    "dane.konflikt_z_ekranu_blokady": [
+      "pl"
+    ],
+    "dane.konflikt_z_zegarka": [
+      "pl"
+    ],
+    "formularz.krok": [
+      "pl"
+    ],
+    "formularz.krok_opis": [
+      "pl"
+    ],
+    "formularz.podpowiedz_minuty": [
+      "pl"
+    ],
+    "formularz.podpowiedz_opis": [
+      "pl"
+    ],
+    "formularz.podpowiedz_plus": [
+      "pl"
+    ],
+    "formularz.podpowiedz_prog": [
+      "pl"
+    ],
+    "formularz.rodzaj_oczka_opis": [
+      "pl"
+    ],
+    "licznik.menu_ustawienia": [
+      "pl"
+    ],
+    "licznik.menu_zdejmij_blokada": [
+      "pl"
+    ],
+    "licznik.menu_zdejmij_blokada_opis": [
+      "pl"
+    ],
+    "licznik.menu_zdejmij_blokada_stoper": [
+      "pl"
+    ],
+    "licznik.plus2_etykieta": [
+      "pl"
+    ],
+    "licznik.plus2_oczka": [
+      "pl"
+    ],
+    "licznik.plus2_podpis": [
+      "pl"
+    ],
+    "licznik.podpowiedz_czas": [
+      "pl"
+    ],
+    "licznik.podpowiedz_etykieta": [
+      "pl"
+    ],
+    "licznik.podpowiedz_pytanie": [
+      "pl"
+    ],
+    "licznik.zdjeto_z_blokady_a11y": [
+      "pl"
+    ],
+    "oferty.kod_bez_sieci": [
+      "pl"
+    ],
+    "oferty.zrealizuj_kod": [
+      "pl"
+    ],
+    "wzor.podpowiedz_tekst": [
+      "pl"
+    ]
+  }
 }

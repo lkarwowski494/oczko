@@ -6,6 +6,7 @@ import { STANY, type NarzedzieProjektu } from '../domena/stany';
 import { chwilaOPorze } from '../domena/postep';
 import { nazwaKopii } from '../domena/nazwa-kopii';
 import type { PortBazy } from '../domena/porty';
+import { znaczenieNowegoLicznika } from '../dane/repozytoria/liczniki';
 import { stanProjektu, ustawUsuniecie, usunietoMs, zapiszStanProjektu, type TabelaKosza } from '../dane/repozytoria/projekty-zapis';
 import { liczba, liczbaLubNull, tekst, tekstLubNull, wiersze } from '../dane/repozytoria/wiersze';
 import { istniejeKatalog, lista, polacz, usunKatalog, usunPlik } from '../dane/pliki/system';
@@ -25,7 +26,7 @@ async function dodajCzesc(tx: PortBazy, z: Zaleznosci, w: { projektId: string; n
      VALUES (?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM czesc WHERE projekt_id = ?), ?, ?, ?)`,
     [czescId, w.projektId, w.nazwa.trim(), w.projektId, w.cel, w.paraZ, w.terazMs],
   );
-  await tx.run('INSERT INTO licznik (id, czesc_id, kolejnosc, zmieniono_ms) VALUES (?, ?, 1, ?)', [licznikId, czescId, w.terazMs]);
+  await tx.run('INSERT INTO licznik (id, czesc_id, znaczenie, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, 1, ?)', [licznikId, czescId, await znaczenieNowegoLicznika(tx, w.projektId), w.terazMs]); // ZM-21: jawnie; nowy projekt = „w trakcie”, istniejący = ostatnio używane
   return { czescId, licznikId };
 }
 
@@ -129,12 +130,12 @@ export function zrobPonownie(z: Zaleznosci, w: { projektId: string; szablonNazwy
       noweId.set(tekst(c, 'id'), czescId);
       await tx.run('INSERT INTO czesc (id, projekt_id, nazwa, kolejnosc, cel_rzedow, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?)', [czescId, projektId, tekst(c, 'nazwa'), liczba(c, 'kolejnosc'), liczbaLubNull(c, 'cel_rzedow'), teraz]);
       const liczniki = await wiersze(tx.all(
-        'SELECT id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, kolejnosc FROM licznik WHERE czesc_id = ? AND usunieto_ms IS NULL ORDER BY kolejnosc', [tekst(c, 'id')]), 'zrobPonownie');
+        'SELECT id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, krok, kolejnosc FROM licznik WHERE czesc_id = ? AND usunieto_ms IS NULL ORDER BY kolejnosc', [tekst(c, 'id')]), 'zrobPonownie');
       for (const l of liczniki) {
         const licznikId = z.id.nowy();
         await tx.run(
-          'INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-          [licznikId, czescId, tekst(l, 'nazwa'), tekst(l, 'rodzaj'), tekst(l, 'znaczenie'), liczbaLubNull(l, 'dlugosc_powtorzenia'), liczba(l, 'kolejnosc'), teraz],
+          'INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, dlugosc_powtorzenia, krok, kolejnosc, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [licznikId, czescId, tekst(l, 'nazwa'), tekst(l, 'rodzaj'), tekst(l, 'znaczenie'), liczbaLubNull(l, 'dlugosc_powtorzenia'), liczba(l, 'krok'), liczba(l, 'kolejnosc'), teraz],
         );
         for (const r of await wiersze(tx.all('SELECT od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ?', [tekst(l, 'id')]), 'zrobPonownie')) {
           await tx.run('INSERT INTO przypomnienie (id, licznik_id, od_rzedu, co_n, razy, tekst, zmieniono_ms) VALUES (?, ?, ?, ?, ?, ?, ?)',

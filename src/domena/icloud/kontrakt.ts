@@ -3,7 +3,7 @@
 export type ScalanieIcloud = 'zmieniono_ms' | 'tylko_dopisywane' | 'dni_limitu' | 'ustawienie_or';
 export type TabelaIcloud = {
   tabela: string; typ: string; klucz: readonly string[]; scalanie: ScalanieIcloud;
-  pomin: readonly string[];               // kolumny liczone u odbiorcy (licznik: wartosc, glowa, konflikt przez scal)
+  pomin: readonly string[];               // kolumny liczone u odbiorcy (licznik: wartosc, glowa, konflikt przez scal) albo lokalne (licznik.krok)
   zasob: boolean;                         // plik jako CKAsset w polu `dane`
   tylkoKlucze: readonly string[] | null;  // ustawienie: synchronizowane tylko te klucze (wyzwalacze i odbiór)
 };
@@ -15,7 +15,7 @@ export const TABELE_ICLOUD: readonly TabelaIcloud[] = [
   t('plik', 'Plik', ['sha256'], 'tylko_dopisywane', { zasob: true }),
   t('projekt', 'Projekt', ['id'], 'zmieniono_ms'),
   t('czesc', 'Czesc', ['id'], 'zmieniono_ms'),
-  t('licznik', 'Licznik', ['id'], 'zmieniono_ms', { pomin: ['wartosc', 'glowa', 'konflikt'] }),
+  t('licznik', 'Licznik', ['id'], 'zmieniono_ms', { pomin: ['wartosc', 'glowa', 'konflikt', 'krok'] }), // krok: lokalny w 1.0.2 (ADR-0036 K1)
   t('zdarzenie', 'Zdarzenie', ['id'], 'tylko_dopisywane'),
   t('notatka_rzedu', 'NotatkaRzedu', ['id'], 'zmieniono_ms'),
   t('przypomnienie', 'Przypomnienie', ['id'], 'zmieniono_ms'),

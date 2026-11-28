@@ -10,7 +10,7 @@ import { kompozycjaLicznika } from '../../src/kompozycja/licznik';
 import { odbiorZegarka } from '../../src/kompozycja/zegarek-odbior';
 import { ile, jeden, przygotuj, type Srodowisko } from './pomocnicze/srodowisko';
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const MS = 5;
 /** Czeka, aż warunek się spełni (zdarzenie z zegarka obsługuje kompozycja w tle, bez obietnicy dla wołającego). */
 async function poczekaj(warunek: () => Promise<boolean> | boolean, limitMs = 3000): Promise<void> {

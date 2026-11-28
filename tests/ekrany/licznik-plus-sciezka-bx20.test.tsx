@@ -61,7 +61,7 @@ describe('ekran: „+1” bez drugiego odczytu stanu, gdy wynik niesie pełny st
 });
 
 describe('kompozycja na prawdziwej bazie: wynik „+1” niesie ten sam stan, który dałby odczyt po powrocie', () => {
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 
   async function srodowisko() {
@@ -101,7 +101,7 @@ describe('CP-01 (BX23): pełny stan z wyniku „+1” == `odswiez()` na bogatym 
   async function bogaty() {
     const s = await przygotuj(); // teraz 2026-10-22 12:00 Europe/Warsaw, urządzenie `iphone-test`
     const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
-    const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity: { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined },
+    const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity: { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false },
       zegarek: { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined } }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, aplikacjaAktywna: () => true });
     await wykonaj(s.baza, [
       projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód', 1, { cel: 100 }), ...licznik('l1', 'c1', 32, { t: T0 - 3 * DOBA }),

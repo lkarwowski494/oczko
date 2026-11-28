@@ -10,6 +10,8 @@ async function zLicznikiem(n = 0): Promise<Srodowisko> {
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', n)]);
   return s;
 }
+// ADR-0036: dwa `plus` z tym samym czasem, źródłem i urządzeniem tworzą jedno stuknięcie (krok „+2”); prawdziwe stuknięcia mają różne czasy, więc test przesuwa zegar o 1 s. P-1123.
+const stuknij = (s: Srodowisko) => { s.zegar.przesun(1_000); return dodajRzad(s.z, { licznikId: 'l1' }); };
 const wartosc = async (s: Srodowisko) => (await jeden<{ wartosc: number }>(s.baza, "SELECT wartosc FROM licznik WHERE id = 'l1'")).wartosc;
 const cofa = async (s: Srodowisko) => (await s.baza.all<{ cofa: string }>("SELECT cofa FROM zdarzenie WHERE rodzaj = 'cofniecie' ORDER BY czas_ms, rowid")).map((r) => JSON.parse(r.cofa) as string[]);
 
@@ -17,7 +19,7 @@ describe('cofnijOstatnie: kolejne „Undo” (BR-LIC-003)', () => {
   test('trzy +1, dwa „Undo” pod rząd → 1 (nie 3), cofnięcia wskazują zmiany 3 i 2', async () => {
     const s = await zLicznikiem();
     const ids: string[] = [];
-    for (let i = 0; i < 3; i++) { const w = await dodajRzad(s.z, { licznikId: 'l1' }); if (w.ok) ids.push(w.wartosc.zdarzenieId); }
+    for (let i = 0; i < 3; i++) { const w = await stuknij(s); if (w.ok) ids.push(w.wartosc.zdarzenieId); }
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 2 } });
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 1 } });
     expect(await wartosc(s)).toBe(1);
@@ -25,8 +27,8 @@ describe('cofnijOstatnie: kolejne „Undo” (BR-LIC-003)', () => {
   });
   test('„Undo” do końca: po zdjęciu wszystkich zmian licznik 0, a następne „Undo” nic nie robi (niedozwolone_przejscie)', async () => {
     const s = await zLicznikiem();
-    await dodajRzad(s.z, { licznikId: 'l1' });
-    await dodajRzad(s.z, { licznikId: 'l1' });
+    await stuknij(s);
+    await stuknij(s);
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 1 } });
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 0 } });
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toEqual({ ok: false, powod: 'niedozwolone_przejscie' });
@@ -34,16 +36,16 @@ describe('cofnijOstatnie: kolejne „Undo” (BR-LIC-003)', () => {
   });
   test('+1 po cofnięciu i znów „Undo” → cofa nowe +1; następne „Undo” cofa zmianę sprzed pierwszego cofnięcia', async () => {
     const s = await zLicznikiem();
-    for (let i = 0; i < 3; i++) await dodajRzad(s.z, { licznikId: 'l1' });
+    for (let i = 0; i < 3; i++) await stuknij(s);
     await cofnijOstatnie(s.z, { licznikId: 'l1' }); // 2
-    await dodajRzad(s.z, { licznikId: 'l1' }); // 3 (nowe +1)
+    await stuknij(s); // 3 (nowe +1)
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 2 } });
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 1 } });
   });
   test('wpisanie wartości też da się cofnąć dwa razy pod rząd: 30 → wpisano 41 → +1 → Undo (41) → Undo (30)', async () => {
     const s = await zLicznikiem(30);
     await wpiszWartosc(s.z, { licznikId: 'l1', wartosc: 41 });
-    await dodajRzad(s.z, { licznikId: 'l1' });
+    await stuknij(s);
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 41 } });
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 30 } });
   });
@@ -53,7 +55,7 @@ describe('historiaLicznika: który wpis ma „Undo”, które są cofnięte (BR-
   test('po jednym „Undo”: cofnięty wpis jest oznaczony, „Undo” przechodzi na poprzedni niecofnięty', async () => {
     const s = await zLicznikiem();
     const ids: string[] = [];
-    for (let i = 0; i < 3; i++) { const w = await dodajRzad(s.z, { licznikId: 'l1' }); if (w.ok) ids.push(w.wartosc.zdarzenieId); }
+    for (let i = 0; i < 3; i++) { const w = await stuknij(s); if (w.ok) ids.push(w.wartosc.zdarzenieId); }
     await cofnijOstatnie(s.z, { licznikId: 'l1' });
     const h = await historiaLicznika(s.z, { licznikId: 'l1' });
     if (!h.ok) throw new Error(h.powod);

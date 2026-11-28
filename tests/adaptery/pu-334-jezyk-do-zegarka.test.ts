@@ -17,7 +17,7 @@ test('PU-334: „Deutsch” → +1 → do zegarka idzie stan z językiem `de` (p
   const wyslane: unknown[][] = [];
   const natywny = { zegarekWyslij: async (...a: unknown[]) => { wyslane.push(a); }, addListener: () => ({ remove() {} }) };
   const czekajNaWysylke = async (n: number) => { for (let p = 0; p < 100 && wyslane.length < n; p++) await new Promise((r) => setTimeout(r, 20)); }; // stan do zegarka idzie po +1 w tle (`void poZapisie`)
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek: zegarek(natywny, () => i.jezyk()) }, j, { wibracje: () => false });
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Przód'), ...licznik('l1', 'c1', 3)]);
   await k.otworz('l1');

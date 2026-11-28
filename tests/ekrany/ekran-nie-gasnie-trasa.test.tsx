@@ -36,7 +36,7 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.
 const EkranLicznika = (require('../../app/(zakladki)/index') /* korzeń „Dziś” z blokadą wygaszania (M3 p2) */ as { default: React.ComponentType }).default;
 
 const TAG = 'oczko-licznik';
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 

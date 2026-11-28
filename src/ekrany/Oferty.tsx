@@ -14,7 +14,7 @@ import type { Klucz } from '../i18n/typy';
 
 export type ProduktyOfert = { rodzaj: 'gotowe'; produkty: Produkt[] } | { rodzaj: 'ladowanie' } | { rodzaj: 'brak-sieci' };
 /** Linia nad przyciskiem zakupu (KP-07, design-spec 002): neutralna „i” (`role=status`) albo błąd „!” (`role=alert`), zawsze z tekstem. */
-export type KomunikatOfert = 'czeka' | 'blad' | 'przywroc_nic' | 'przywroc_blad' | 'pro_wlaczone' | null;
+export type KomunikatOfert = 'czeka' | 'blad' | 'przywroc_nic' | 'przywroc_blad' | 'pro_wlaczone' | 'kod_bez_sieci' | null;
 /** `subskrypcja` przy dożywotnim (M1-091, KP-14): ważna subskrypcja trwa obok zakupu dożywotniego (odnawia się, dopóki osoba jej nie anuluje). */
 export type AktywnePro = { rodzaj: 'subskrypcja'; produkt: string } | { rodzaj: 'dozywotni'; subskrypcja?: string } | null;
 /** „Manage subscription” (KP-14, design-spec „aktywna subskrypcja”): póki trwa subskrypcja — także obok dożywotniego (M1-091, KP-03). */
@@ -25,6 +25,7 @@ export type PropsOfert = {
   adresy: { polityka: string; warunki: string };   // z konfiguracji (KP-04); Terms of Use = standardowa EULA Apple
   naKup(produkt: string): void;
   naPrzywroc(): void;                              // tylko po stuknięciu (KP-08)
+  naZrealizujKod?(): void;                         // ZM-23 (U5): arkusz Apple „Redeem code” przez port sklepu; bez propsu przycisku nie ma
   naZarzadzaj(): void;                             // showManageSubscriptions (KP-14)
   naOtworzAdres(url: string): void;
   naZamknij(): void;
@@ -43,6 +44,7 @@ const LINIE = {
   czeka: { klucz: 'oferty.czeka', id: 'oferty-czeka', blad: false }, blad: { klucz: 'oferty.blad_zakupu', id: 'oferty-blad', blad: true },
   przywroc_nic: { klucz: 'oferty.przywracanie_nic', id: 'oferty-przywroc-nic', blad: false }, przywroc_blad: { klucz: 'oferty.przywracanie_blad', id: 'oferty-przywroc-blad', blad: true },
   pro_wlaczone: { klucz: 'oferty.pro_wlaczone', id: 'oferty-pro-wlaczone', blad: false },
+  kod_bez_sieci: { klucz: 'oferty.kod_bez_sieci', id: 'oferty-kod-bez-sieci', blad: true }, // ZM-23: „!” w roli alertu (Komunikat), bez sieci
 } as const;
 function LiniaKomunikatu({ rodzaj, t }: { rodzaj: Exclude<KomunikatOfert, null>; t: Tlumacz }): React.ReactElement {
   const k = useKolory();
@@ -73,7 +75,7 @@ const KAFLE: readonly Kafel[] = [
   { id: 'dane', tytul: 'oferty.kafel_dane_tytul', opis: 'oferty.kafel_dane_opis', symbol: 'checkmark.shield' },
 ];
 
-export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naOtworzAdres, naZamknij, panelE2e }: PropsOfert): React.ReactElement {
+export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZrealizujKod, naZarzadzaj, naOtworzAdres, naZamknij, panelE2e }: PropsOfert): React.ReactElement {
   const k = useKolory();
   const duzyTekst = useWindowDimensions().fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   // KP-03: aktywna subskrypcja nie jest oferowana ponownie; dożywotni — brak planów.
@@ -111,6 +113,7 @@ export function Oferty({ stan: s, t, adresy, naKup, naPrzywroc, naZarzadzaj, naO
         {trwaSubskrypcja(s.aktywne) && <Przycisk tekst={t('oferty.zarzadzaj')} onPress={naZarzadzaj} />}
         <View style={st.wierszTekstowych}>
           <Przycisk tekst={t('oferty.przywroc')} onPress={naPrzywroc} rodzaj="tekstowy" testID="oferty-przywroc" />
+          {naZrealizujKod && <Przycisk tekst={t('oferty.zrealizuj_kod')} onPress={naZrealizujKod} rodzaj="tekstowy" testID="oferty-zrealizuj-kod" />}
           <Przycisk tekst={t('wspolne.nie_teraz')} onPress={naZamknij} rodzaj="tekstowy" testID="oferty-nie-teraz" />
         </View>
       </>

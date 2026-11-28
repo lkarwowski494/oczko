@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import type { ZdarzenieWejsciowe } from '../../src/domena/porty';
 import { parsujDziennik, utworzDziennikNode } from '../../src/dane/dziennik';
 import { scalDziennik } from '../../src/przypadki-uzycia/dziennik';
-import { dodajRzad } from '../../src/przypadki-uzycia/licznik';
+import { dodajRzad, wpiszWartosc } from '../../src/przypadki-uzycia/licznik';
 import { naPierwszyPlan } from '../../src/przypadki-uzycia/start';
 import { czesc, licznik, projekt } from './pomocnicze/dane-wejsciowe';
 import { MIN, T0, ile, jeden, przygotuj, wykonaj } from './pomocnicze/srodowisko';
@@ -71,9 +71,21 @@ describe('dziennik +1 (ADR-0008)', () => {
     if (plus.ok) expect(await jeden(s.baza, 'SELECT rodzice FROM zdarzenie WHERE id = ?', [plus.wartosc.zdarzenieId])).toEqual({ rodzice: '["d3"]' });
   });
 
-  test('M-04 NFR-DAN-003 ADR-0008: +1 z dziennika i +1 w aplikacji od tej samej głowy → konflikt pokazany (konflikt = 1), żadne zdarzenie nie zgubione', async () => {
+  // ADR-0035 (U2, ZM-20, P-1096): ±1 z ekranu blokady na nieaktualnej głowie sumuje się z +1 z aplikacji (przemienne), więc dawny M-04
+  // z dwoma +1 nie daje już konfliktu; konflikt zostaje dla zmiany nieprzemiennej (wpisanie numeru, SC-02). P-1120.
+  test('M-04 NFR-DAN-003 ADR-0035: +1 z dziennika i +1 w aplikacji od tej samej głowy → suma, bez konfliktu, żadne zdarzenie nie zgubione', async () => {
     const s = await zLicznikiem(10);
     await dodajRzad(s.z, { licznikId: 'l1' }); // aplikacja: 11, rodzic l1-z10
+    s.dziennik.linie.push(linia('d1', ['l1-z10'])); // ekran blokady: też od l1-z10
+    await scalDziennik(s.z);
+    expect(await stan(s)).toMatchObject({ wartosc: 12, konflikt: 0 });
+    expect(await ile(s.baza, 'zdarzenie', "licznik_id = 'l1'")).toBe(12);
+  });
+
+  test('M-04 NFR-DAN-003 ADR-0008: +1 z dziennika i wpisanie numeru w aplikacji od tej samej głowy → konflikt pokazany (konflikt = 1), żadne zdarzenie nie zgubione', async () => {
+    const s = await zLicznikiem(10);
+    s.zegar.ustaw(T0 + 5 * MIN); // wpisanie po stuknięciu z ekranu blokady (czas zdarzenia T0 + 1 min); przed nim ADR-0035 pozwala je ominąć
+    await wpiszWartosc(s.z, { licznikId: 'l1', wartosc: 20 }); // aplikacja: wpisanie (nieprzemienne), rodzic l1-z10
     s.dziennik.linie.push(linia('d1', ['l1-z10'])); // ekran blokady: też od l1-z10
     await scalDziennik(s.z);
     expect(await stan(s)).toMatchObject({ konflikt: 1 });

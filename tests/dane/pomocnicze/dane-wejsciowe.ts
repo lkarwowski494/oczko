@@ -7,7 +7,9 @@ import { join } from 'node:path';
 import { T0, sha256 } from './srodowisko';
 
 export const KORZEN = join(__dirname, '../../..');
-export const SCHEMAT_V1 = readFileSync(join(KORZEN, 'docs/architektura/schemat.sql'), 'utf8');
+// Schemat v1 = wydana migracja 0001 (docs/architektura/schemat.sql opisuje od 1.0.2 stan wersji 2: v1 + licznik.krok z migracji 0002).
+export const SCHEMAT_V1 = readFileSync(join(KORZEN, 'src/dane/migracje/0001.sql'), 'utf8');
+export const MIGRACJA_2 = readFileSync(join(KORZEN, 'src/dane/migracje/0002.sql'), 'utf8');
 export const STANY_JSON: Record<string, string[]> = JSON.parse(readFileSync(join(KORZEN, 'docs/architektura/stany.json'), 'utf8'));
 
 export type Instr = [string, unknown[]];
@@ -74,6 +76,7 @@ export function bazaWzorcowa(sciezka: string, instrukcje: Instr[], o: { userVers
   db.exec('PRAGMA foreign_keys = ON');
   db.exec('BEGIN');
   db.exec(SCHEMAT_V1);
+  if ((o.userVersion ?? 1) >= 2) db.exec(MIGRACJA_2); // baza w wersji ≥ 2 ma kolumny z migracji 0002 (licznik.krok)
   if (o.dodatkowySql) db.exec(o.dodatkowySql);
   for (const [sql, p] of instrukcje) db.prepare(sql).run(...(p as never[]));
   db.exec('COMMIT');

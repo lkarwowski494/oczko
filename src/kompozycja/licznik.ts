@@ -15,6 +15,9 @@ import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } 
 import { miejscePracy, type MiejscePracy } from './miejsce-pracy';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
+import type { ZdarzenieAktywnosci } from '../domena/aktywnosc';
+import { ekranBlokady, etykietaZrodlaGalezi } from './licznik-aktywnosc';
+import { podpowiedzPlusMin } from '../przypadki-uzycia/podpowiedz';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
@@ -48,8 +51,10 @@ export type KompozycjaLicznika = {
   zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
   widok(): Promise<WidokLicznika | null>;
-  /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. */
-  poZmianie(): Promise<void>;
+  /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. `zdarzenie`: `liczenie` (zmiana wartości: start Live Activity, ADR-0037 (1)); domyślnie `odswiezenie` (nigdy nie startuje). */
+  poZmianie(zdarzenie?: ZdarzenieAktywnosci): Promise<void>;
+  /** ZM-27 (b) (ADR-0037 (5)): Live Activity Oczka — stan natywny (nie flaga) i zdjęcie z menu; następne liczenie uruchamia ją od nowa. */
+  ekranBlokady: { aktywna(): boolean; zdejmij(): Promise<void>; /** Stoper projektu `trwa` (dopisek pozycji menu: zdjęcie go nie zatrzymuje). */ stoperTrwa(projektId: string): Promise<boolean> };
   /**
    * Wpisanie wartości z arkusza (F-45; 07-jakosc-011 S4, RD-13-W23): zapis, odświeżenie i — gdy nowy rząd w robocie ma przypomnienie — jedno wejście w rząd
    * (najnowsze, nie każde pominięte). Mniejsza wartość nie daje sygnału (RD-13-W8). `wibracje` = preferencja haptyki.
@@ -74,10 +79,10 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   let zakladanie: Promise<Wynik<boolean>> | null = null; // trwające zakładanie projektu roboczego z kafla „Dodaj wzór”
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
-  let aktywnosc = false;
   /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
   let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
+  let podpowiedzProg: number | null | undefined; // ZM-25: undefined = jeszcze nieodczytany
   const poScaleniu = new Set<() => void>();
   // P-287: +1 w toku (pierwsze tworzy projekt roboczy i ustawia licznikId). Odczyt ekranu rozpoczęty w tym czasie (przemontowanie po naPartie,
   // poZmianie, odswiez) czeka na zapis — inaczej nowy ekran pokazałby stan sprzed stuknięcia, a wynik +1 trafiłby do odmontowanego komponentu.
@@ -95,7 +100,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       if (r.ok) w = r.wartosc;
     }
     zrobioneDzis = w && w.zrobioneDzis !== null ? { projektId: w.projektId, dzien: w.dzis, rzedy: w.zrobioneDzis } : null;
-    const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje() });
+    podpowiedzProg ??= await podpowiedzPlusMin(z); // preferencja urządzenia, czytana raz (do `poZmianie`): hot path +1 bez dodatkowego zapytania
+    const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje(), podpowiedzProg });
     return { s: { ...s, konflikt: licznikId ? await liniaKonfliktu(licznikId) : null }, w };
   }
   /** Linia konfliktu (P-220 I1a): liczba = wersja tego urządzenia, druga = najnowsza z innego urządzenia; null bez konfliktu. */
@@ -106,14 +112,11 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     const inna = k.find((x) => !x.tutaj) ?? k.find((x) => x !== tutaj);
     return inna ? { lokalna: tutaj?.wartosc ?? 0, zdalna: inna.wartosc, urzadzenie: inna.rodzaj ? NAZWA_URZADZENIA[inna.rodzaj] : inna.urzadzenie } : null;
   }
-  async function poZapisie(w: WidokLicznika | null): Promise<void> {
+  /** Stan ekranu blokady i zegarka po zapisie; start / aktualizacja / koniec Live Activity wg `decyzjaAktywnosci` na stanie natywnym (ADR-0037), start tylko przy `liczenie`. */
+  async function poZapisie(w: WidokLicznika | null, zdarzenie: ZdarzenieAktywnosci = 'odswiezenie'): Promise<void> {
     if (!w) return;
     const nazwa = w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa;
-    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy() });
-    if (e.ok && !aktywnosc) {
-      aktywnosc = true;
-      await z.liveActivity.start(e.wartosc);
-    }
+    await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy(), zdarzenie });
   }
   const potwierdz = (ids: readonly string[]) => { if (ids.length > 0) z.zegarek.potwierdz(ids); };
   /** Przebieg odbioru +1 z zegarka (ADR-0030 pkt 2): scalenie → potwierdzenia → stan → ekran od nowa → ekran blokady i zegarek (z potwierdzonymi id). */
@@ -154,10 +157,11 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
     const { s, w } = await stan(); // jeden odczyt po zapisie: wartość, zdarzenia i pełny stan ekranu (BX20: ekran nie czyta stanu drugi raz po „+1”)
-    void poZapisie(w);
+    void poZapisie(w, 'liczenie');
     if (!w) return { ok: false, powod: 'bledne_dane' };
-    const sygnal = wejscie(w, r.wartosc.wartosc - 1);
-    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal, stan: s } };
+    const sprzed = r.wartosc.wartosc - w.krok; // ZM-24: stuknięcie dodaje `krok` rzędów; sygnały liczone od wartości sprzed niego (przeskok celu, powtórzenia, rzędu z instrukcją)
+    const sygnal = wejscie(w, sprzed);
+    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w), sprzed), wejscieWPrzypomnienie: sygnal, stan: s } };
   }
 
   const k: KompozycjaLicznika = {
@@ -200,22 +204,34 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       }
       await k.poZmianie();
     },
-    zresetuj() { void o.skrzynka?.migawka(); licznikId = null; baner = null; aktywnosc = false; wersja += 1; void z.liveActivity.zakoncz(); },
+    zresetuj() { void o.skrzynka?.migawka(); licznikId = null; baner = null; wersja += 1; void z.liveActivity.zakoncz(); },
     widok: async () => (await stan()).w,
-    async poZmianie() {
+    async poZmianie(zdarzenie = 'odswiezenie') {
       void o.skrzynka?.migawka().catch(() => undefined); // partia 6: migawka dla rozszerzenia po każdej zmianie projektu (kontrakt: po COMMIT operacji listy)
       baner = null;
+      podpowiedzProg = undefined; // ustawienia licznika mogły się zmienić (arkusz „Ustawienia licznika”)
       const { w } = await stanPoZapisie();
-      await poZapisie(w);
+      await poZapisie(w, zdarzenie);
       wersja += 1;
     },
+    ekranBlokady: ekranBlokady(z),
     konflikt: {
       async kandydaci() {
         if (!licznikId) return [];
         const ch = z.zegar.teraz();
         const godz = (ms: number) => formatujGodzine(new Date(ms), j.jezyk(), { uses24h: j.zegar24h(), strefa: ch.strefa });
-        return ((await kandydaciKonfliktu(z, licznikId)) ?? []).map((x) => {
+        const wszyscy = (await kandydaciKonfliktu(z, licznikId)) ?? [];
+        return wszyscy.map((x) => {
           const u = x.rodzaj ? NAZWA_URZADZENIA[x.rodzaj] : x.urzadzenie; // P-247 U6a: rodzaj zamiast UUID; bez rodzaju (zegarek, atrapa) pole
+          const zrodlo = etykietaZrodlaGalezi(x, wszyscy);
+          if (zrodlo) { // ADR-0035 „Ryzyko szczątkowe”, P-1111: gałęzie z tego samego urządzenia rozróżnia źródło (ekran blokady, zegarek, aplikacja)
+            const tekstZrodla = j.t(zrodlo);
+            return {
+              glowa: x.glowa, wartosc: x.wartosc,
+              tekst: j.t('dane.konflikt_wybor', { count: x.wartosc, urzadzenie: tekstZrodla, godzina: godz(x.czasMs) }),
+              etykieta: j.t('dane.konflikt_a11y_zrodlo', { count: x.wartosc, zrodlo: tekstZrodla, godzina: godz(x.czasMs) }),
+            };
+          }
           return {
             glowa: x.glowa, wartosc: x.wartosc,
             tekst: j.t('dane.konflikt_wybor', { count: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),
@@ -236,7 +252,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const przed = (await stan()).w?.wartosc;
       const r = await wpiszWartosc(z, { licznikId, wartosc });
       if (!r.ok) return ekranu(r);
-      await k.poZmianie();
+      await k.poZmianie('liczenie');
       const { w } = await stan();
       return { ok: true, wartosc: { wejscieWPrzypomnienie: w && przed !== undefined ? wejscie(w, przed) : null, wibracje: o.wibracje() } };
     },
@@ -276,7 +292,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         const r = await odejmijRzad(z, { licznikId });
         if (!r.ok) return ekranu(r);
         baner = null;
-        void stan().then(({ w }) => poZapisie(w));
+        void stan().then(({ w }) => poZapisie(w, 'liczenie'));
         return { ok: true, wartosc: { skonczone: r.wartosc.wartosc } };
       },
       async naCofnijSerie() {

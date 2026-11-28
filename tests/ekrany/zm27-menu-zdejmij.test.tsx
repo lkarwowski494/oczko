@@ -1,12 +1,12 @@
-// PU-Z09, PU-Z10 (katalog: „Oczekujące 1.0.2”). ZM-27 (b) (KO-234, P-1107, ADR-0037 (5)): pozycja „Remove from Lock Screen” w •••, tylko gdy
+// PU-355, PU-356 (katalog przypadków użycia). ZM-27 (b) (KO-234, P-1107, ADR-0037 (5)): pozycja „Remove from Lock Screen” w •••, tylko gdy
 // Live Activity pokazuje ten licznik; pierwsza w drugiej grupie; podpis zawsze, dopisek o stoperze przy sesji `trwa`; stuknięcie bez potwierdzenia.
 // Wyrocznia: docs/design/1-0-2.md § ZM-27 i „Paczka dla 07 i 08” (testID `licznik-menu-zdejmij-blokada`, teksty en), makiety z27-menu*.
 // Pola `naEkranieBlokady`, `stoperTrwa`, `naZdejmijZBlokady` — propozycja 07 (P-1113); wywołanie portu `zakoncz` i ogłoszenie VoiceOver sprawdza 08 na trasie `app/menu`.
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { MenuProjektu, type PropsMenuProjektu } from '../../../src/ekrany/MenuProjektu';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import { tEn } from '../../ekrany/pomoc';
+import { MenuProjektu, type PropsMenuProjektu } from '../../src/ekrany/MenuProjektu';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
@@ -21,7 +21,7 @@ const kolejnosc = (ids: string[]) => {
 };
 
 describe('ZM-27 (b) „Remove from Lock Screen” w ••• licznika', () => {
-  test('ZM-27 PU-Z09: aktywność pokazuje ten licznik → pozycja z podpisem, pierwsza w drugiej grupie (przed „Lock counter”); stuknięcie woła zdjęcie i zamyka arkusz', () => {
+  test('ZM-27 PU-355: aktywność pokazuje ten licznik → pozycja z podpisem, pierwsza w drugiej grupie (przed „Lock counter”); stuknięcie woła zdjęcie i zamyka arkusz', () => {
     const p = menu({ naEkranieBlokady: true, stoperTrwa: false });
     const pozycja = screen.getByTestId('licznik-menu-zdejmij-blokada');
     expect(screen.getByText('Remove from Lock Screen')).toBeTruthy();
@@ -35,7 +35,7 @@ describe('ZM-27 (b) „Remove from Lock Screen” w ••• licznika', () => {
     expect(p.naZeruj).not.toHaveBeenCalled();
   });
 
-  test('ZM-27 PU-Z10: stoper `trwa` → dopisek „The timer keeps running.”; bez aktywności tego licznika pozycja ukryta (nie wyszarzona)', () => {
+  test('ZM-27 PU-356: stoper `trwa` → dopisek „The timer keeps running.”; bez aktywności tego licznika pozycja ukryta (nie wyszarzona)', () => {
     menu({ naEkranieBlokady: true, stoperTrwa: true });
     expect(screen.getByText('The timer keeps running.')).toBeTruthy();
     screen.unmount();

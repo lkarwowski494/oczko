@@ -3,10 +3,10 @@
 // `wzor.podpowiedz_tekst`), makiety u6-dodaj-licznik i z28-wzor-zrodla.
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import { FormularzLicznika } from '../../../src/ekrany/FormularzeProjektu';
-import { GrupaWzorow } from '../../../src/ekrany/WzorGrupa';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import { tEn } from '../../ekrany/pomoc';
+import { FormularzLicznika } from '../../src/ekrany/FormularzeProjektu';
+import { GrupaWzorow } from '../../src/ekrany/WzorGrupa';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { tEn } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });

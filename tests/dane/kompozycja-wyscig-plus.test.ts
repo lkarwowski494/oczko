@@ -8,7 +8,7 @@ import { ZASOBY } from '../../src/i18n/slowniki';
 import { kompozycjaLicznika } from '../../src/kompozycja/licznik';
 import { przygotuj } from './pomocnicze/srodowisko';
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 
 async function kompozycja() {

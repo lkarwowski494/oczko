@@ -1,12 +1,12 @@
-// PU-Z03 (katalog: „Oczekujące 1.0.2”). ZM-24 (U6, ADR-0036, P-1097): krok „+2” = dwa zdarzenia `plus` grupowane w „stuknięcie”;
+// PU-358 (katalog: „Oczekujące 1.0.2”). ZM-24 (U6, ADR-0036, P-1097): krok „+2” = dwa zdarzenia `plus` grupowane w „stuknięcie”;
 // strażnik tempa RD-17 na stuknięciach (SE), „Cofnij” cofa całe stuknięcie (CO), cel części i koniec powtórzenia przy skoku (SK).
 // Wyrocznia: wektory ST-01…ST-08, SE-01…SE-04, CO-01…CO-04, SK-01…SK-09 roli 05 (docs/architektura/wektory-1-0-2.json); mapowanie
 // wejścia jak w kontroli 05 (docs/architektura/eksperymenty/1-0-2/sprawdz.mjs:53-60). Miejsce (propozycja 07, P-1113): `src/domena/stukniecia.ts`
 // z eksportami `stukniecia`, `serieStukniec`, `celCofnieciaStukniecia`, `sygnalySkoku`, `KROK_MAKS`.
 import { join } from 'node:path';
-import wektory from '../../../docs/architektura/wektory-1-0-2.json';
-import { eksportLubZnacznik, modulLubZnacznik, rozpakuj } from '../../narzedzia/akceptacja';
-import type { Seria } from '../../../src/domena/straznik-tempa';
+import wektory from '../../docs/architektura/wektory-1-0-2.json';
+import { eksportLubZnacznik, modulLubZnacznik, rozpakuj } from '../narzedzia/akceptacja';
+import type { Seria } from '../../src/domena/straznik-tempa';
 
 /** Dzisiejszy strażnik RD-17 liczy serie zdarzeń (`serieDoSprawdzenia`); 08-A przełącza wołającego na serie stuknięć (tabela 07 → 08: plik do zmiany). */
 export type SeriaZdarzenDzis = Seria;
@@ -20,7 +20,7 @@ type W = {
   skok: { id: string; opis: string; przed: number; po: number; cel: number | null; dlugosc: number | null; oczekiwane: { celCzesci: boolean; koniecPowtorzenia: boolean } }[];
 };
 const V = wektory as unknown as W;
-const mod = () => modulLubZnacznik(join(__dirname, '../../../src/domena/stukniecia'), 'ZM-24 stukniecia');
+const mod = () => modulLubZnacznik(join(__dirname, '../../src/domena/stukniecia'), 'ZM-24 stukniecia');
 const f = <T>(nazwa: string) => eksportLubZnacznik<T>(mod(), nazwa, `ZM-24 ${nazwa}`);
 type Mozliwie<T> = T | { ok: true; wartosc: T };
 

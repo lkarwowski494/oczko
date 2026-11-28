@@ -69,6 +69,8 @@ export function GrupaWzorow(p: PropsGrupyWzorow): React.ReactElement {
             {pozycja(t('wzor.ze_zdjec'), 'zdjecia')}
             {pozycja(t('wzor.link_strony'), 'link')}
             {p.panelE2e}
+            {/* ZM-28 (W0, P-1112): zdanie bez akcji pod listą źródeł; „Notatka” = istniejący przycisk przy liczniku */}
+            <Text style={st.podpis} testID="wzor-podpowiedz-tekst">{t('wzor.podpowiedz_tekst')}</Text>
           </View>
         )}
       </View>

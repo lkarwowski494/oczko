@@ -14,7 +14,7 @@ export const KOPIA_PRZED_IMPORTEM_MAKS = 2; // kopie `oczko-przed-importem-*` / 
 export const KOPIA_PRZED_IMPORTEM_BUDZET_B = 2_000_000_000; // B na rodzaj (importem / usunieciem osobno); ADR-0033 (P-437, M1-090): ponad budżet usuwane najpierw najstarsze pierwsze kopie dni, chronione najnowsza i pierwsza kopia najstarszego dnia; [OCENA 05] z pomiaru R 21–474 MB i darmowego iCloud 5 GB
 export const SESJA_MAKS_H = 8; // h; P-072 (7a)
 export const SESJA_DNIA_MIN_MS = 60_000; // ms; P-195 Q3b: sesja stopera ≥ 1 min po korekcie czyni dzień dniem z robótką (czas w pełnych minutach)
-export const WERSJA_SCHEMATU = 1; // schemat.sql
+export const WERSJA_SCHEMATU = 2; // schemat.sql (v2 = v1 + licznik.krok, migracja 0002, ZM-24)
 export const WERSJA_FORMATU_ARCHIWUM = 1; // ADR-0004
 export const ROZSZERZENIE_ARCHIWUM = '.oczko'; // ADR-0004
 export const ZAPAS_MIEJSCA_EKSPORTU = 2; // × rozmiar; [OCENA] roli 05
@@ -56,3 +56,11 @@ export const PRODUKTY_PRO: readonly string[] = Object.freeze([PRODUKT_DOZYWOTNI,
 
 /** Preferencje urządzenia (ADR-0029): wartości domyślne, gdy klucza w `ustawienie` brak albo zapis jest uszkodzony. Tylko preferencje interfejsu. */
 export const PREFERENCJE_DOMYSLNE: { readonly wibracje: boolean; readonly ekranNieGasnie: boolean; readonly ukladMiar: 'auto' | 'metric' | 'imperial' } = { wibracje: true, ekranNieGasnie: true, ukladMiar: 'auto' };
+
+export const DZIENNIK_PRZESUNIECIE_MAKS = 500; // zdarzeń; [OCENA] roli 05 (ADR-0035 „Parametr”, P-1096): ile zdarzeń od rodzica linii do głowy sprawdza przesunięcie rodzica; więcej = konflikt jak dziś
+export const LIVE_KONIEC_PO_MS = 7_200_000; // ms (2 h); [OCENA] (ADR-0037 „Parametr produktowy”, P-1099): bez liczenia tak długo = koniec Live Activity przy najbliższej okazji aplikacji
+export const ZNACZENIE_NOWEGO_LICZNIKA = 'w_trakcie' as const; // „Rząd, nad którym pracuję”; P-1090 (1), P-1098: nowy licznik bez wcześniejszej pracy w projekcie (zapisane jawnie w INSERT)
+
+/** ZM-25 (U7 forma A, P-1103): progi „Podpowiedz, gdy zapomnę +1” w minutach i próg po włączeniu; [OCENA] 04, kalibracja w teście F właściciela (próg dłuższy niż typowy rząd). */
+export const PODPOWIEDZ_PROGI_MIN: readonly number[] = [5, 10, 15, 30];
+export const PODPOWIEDZ_PROG_DOMYSLNY_MIN = 10;

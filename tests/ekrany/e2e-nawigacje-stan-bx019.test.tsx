@@ -32,7 +32,7 @@ const EkranLicznika = (require('../../app/licznik') as { default: React.Componen
 const { PanelNawigacji, zerujNawigacje } = require('../../src/kompozycja/e2e/nawigacje-stan') as typeof import('../../src/kompozycja/e2e/nawigacje-stan');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 
 async function trasa() {

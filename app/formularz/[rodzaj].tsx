@@ -18,7 +18,9 @@ import { useOdrzucZmiany } from '../../src/kompozycja/odrzuc-zmiany';
 import { CoDalej, FormularzWloczekProjektu, FormularzTerminu, FormularzCzesci, FormularzLicznika, FormularzNarzedzia, FormularzNotatki, FormularzNowegoProjektu, FormularzZnaczenia } from '../../src/ekrany/FormularzeProjektu';
 import { etykietaCzesci, podgladRozmiaru } from '../../src/kompozycja/projekt';
 import { dodajPrzypomnienie, nastepnaCzesc, nazwijCzesc, ustawCel, ustawPowtorzenie, ustawZnaczenie, usunPrzypomnienie, zmienPrzypomnienie, type NastepnaCzesc } from '../../src/przypadki-uzycia/czesc';
-import { dodajLicznik } from '../../src/przypadki-uzycia/licznik';
+import { dodajLicznik, ustawKrok } from '../../src/przypadki-uzycia/licznik';
+import { podpowiedzPlusMin, ustawPodpowiedzPlus } from '../../src/przypadki-uzycia/podpowiedz';
+import { UstawieniaLicznika } from '../../src/ekrany/UstawieniaLicznika';
 import { dodajCzescPara, dodajCzescProjektu, nazwijProjekt, ustawDrut, ustawTermin, utworzProjekt, zapiszNotatke } from '../../src/przypadki-uzycia/projekt';
 import { przypiszWloczki, wyborWloczek, type WyborWloczek } from '../../src/przypadki-uzycia/zapas';
 import { podgladTerminu, widokProjektu, type WidokProjektu } from '../../src/przypadki-uzycia/widok-projektu';
@@ -36,8 +38,10 @@ export default function EkranFormularza(): React.ReactElement {
   const [koniec, ustawKoniec] = useState<Extract<NastepnaCzesc, { rodzaj: 'koniec' }> | null>(null);
   const [wybor, ustawWybor] = useState<WyborWloczek | null>(null);
   const [blad, ustawBlad] = useState(false); // M1-007: odczyt zapasu, projektu albo części `{ ok: false }` albo wyjątek → błąd z „Try again”, nie pusty arkusz
+  const [podpowiedzMin, ustawPodpowiedzMin] = useState<number | null | undefined>(undefined); // ZM-25: próg „Podpowiedz, gdy zapomnę +1” (arkusz `ustawienia`)
   const [proba, ustawProbe] = useState(0); // M1-007: „Try again” czyta wszystko od nowa
   useEffect(() => { void licznik.widok().then(ustaw, () => ustaw(null)); }, [licznik, proba]);
+  useEffect(() => { if (rodzaj === 'ustawienia') void podpowiedzPlusMin(kontener.z).then(ustawPodpowiedzMin); }, [kontener, rodzaj, proba]);
   useFocusEffect(useCallback(() => { // zapas odświeżany po powrocie z „Add yarn” (07-jakosc-001)
     if (rodzaj === 'wloczki' && projektId) void wyborWloczek(kontener.z, { projektId }).then((r) => { if (r.ok) ustawWybor(r.wartosc); else ustawBlad(true); }, () => ustawBlad(true));
   }, [kontener, rodzaj, projektId, proba]));
@@ -96,7 +100,7 @@ export default function EkranFormularza(): React.ReactElement {
       case 'licznik':
         return <FormularzLicznika t={t} naZmiane={zmiana} naAnuluj={anuluj} czesci={wp.czesci.map((c) => ({ id: c.id, nazwa: etykietaCzesci(c.nazwa, t) }))}
           domyslnaCzesc={czescParam ?? (w && w.projektId === wp.id ? w.czescId : wp.czesci[0]?.id ?? '')}
-          naZapisz={(l) => wProjekcie(() => dodajLicznik(z, { czescId: l.czescId, rodzaj: l.rodzaj, nazwa: l.nazwa }))} />;
+          naZapisz={(l) => wProjekcie(() => dodajLicznik(z, { czescId: l.czescId, rodzaj: l.rodzaj, nazwa: l.nazwa, krok: l.krok }))} />;
       case 'notatka':
         return <FormularzNotatki t={t} naZmiane={zmiana} naAnuluj={anuluj} projekt={nazwa} tekst={wp.notatka} naZapisz={(tekst) => wProjekcie(() => zapiszNotatke(z, { projektId: wp.id, tekst }))} />;
       case 'narzedzie':
@@ -146,6 +150,10 @@ export default function EkranFormularza(): React.ReactElement {
     case 'powtorzenie':
       return <FormularzPowtorzenia t={t} naZmiane={zmiana} naAnuluj={anuluj} stan={{ nazwa: w.nazwa || czescNaLiczniku(w.czesc.nazwa) || licznik.nazwaProjektu(w), dlugosc: w.powtorzenie?.dlugosc ?? null }}
         naZapisz={(p) => zapisz(() => ustawPowtorzenie(z, { licznikId: w.licznikId, dlugosc: p.dlugosc }))} />;
+    case 'ustawienia': // ZM-24/ZM-25: krok licznika i „Podpowiedz, gdy zapomnę +1” (preferencja urządzenia)
+      if (podpowiedzMin === undefined) return pusty(blad);
+      return <UstawieniaLicznika t={t} naZmiane={zmiana} naAnuluj={anuluj} krok={w.krok} podpowiedzMin={podpowiedzMin}
+        naZapisz={(u) => zapisz(async () => { const k = await ustawKrok(z, { licznikId: w.licznikId, krok: u.krok }); return k.ok ? ustawPodpowiedzPlus(z, { minuty: u.podpowiedzMin }) : k; })} />;
     case 'znaczenie':
       return <FormularzZnaczenia t={t} naZmiane={zmiana} naAnuluj={anuluj} wartosc={w.wartosc} znaczenie={w.znaczenie} naZapisz={(zn) => zapisz(() => ustawZnaczenie(z, { licznikId: w.licznikId, znaczenie: zn }))} />;
     case 'przypomnienie':

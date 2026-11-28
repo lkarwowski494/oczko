@@ -75,7 +75,8 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
   // Zakupy sztucznego sklepu buildu E2E w pliku (e2e/README.md); w buildzie wydania sztuczny sklep jest nieaktywny (moduł w bundlu, przełącznik wyłączony); ślady trybu testowego sprawdza `scripts/wydanie/slady-testowe.mjs` z `scripts/wydanie/kontrola-ipa.sh` (JAK-15).
   const plikSklepu = polacz(katalogDanych, 'sklep-e2e.json');
   const zakupyE2e = istniejePlik(plikSklepu) ? await czytajTekst(plikSklepu) : null;
-  const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms);
+  const siec = siecAplikacji(); // ADR-0031; ten sam port służy sklepowi (ZM-23: kod oferty bez sieci)
+  const sklep = sklepAplikacji({ czytaj: () => zakupyE2e, zapisz: (t) => zapiszTekst(plikSklepu, t) }, () => zegar.teraz().ms, () => siec.stan() === 'brak');
   const dostep = dostepPro(sklep, pamiecProWPliku(katalogDanych), () => zegar.teraz().ms); // pamięć uprawnień Pro (KP-06): plik obok bazy
   const z0: ZaleznosciKompozycji = {
     baza, zegar, id: identyfikatory, urzadzenie: id, rodzajUrzadzenia: Platform.OS === 'ios' && Platform.isPad ? 'ipad' : 'iphone', // P-247 U6a
@@ -115,7 +116,7 @@ export async function utworzKontener(): Promise<Wynik<Kontener>> {
     wartosc: {
       z,
       j: { t, jezyk, zegar24h, naZmiane: (f) => i18n.naZmiane(f), preferencja: () => i18n.preferencja(), ustawJezyk: (p) => i18n.ustawJezyk(p) },
-      porty: { sklep, ekranAktywny: ekranAktywny(), haptyka: haptyka(), siec: siecAplikacji() },
+      porty: { sklep, ekranAktywny: ekranAktywny(), haptyka: haptyka(), siec },
       dostep, katalogDanych, icloud, wzor, zamknij,
     },
   };

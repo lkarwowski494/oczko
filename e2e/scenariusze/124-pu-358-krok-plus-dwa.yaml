@@ -1,12 +1,11 @@
-# PU-Z03 (ZM-24, ADR-0036, P-1102): licznik z krokiem +2 — „Dodaj licznik” → „Krok” „+2” → „+2” dodaje 2, −1 odejmuje 1, jedno „Cofnij” cofa +2.
-# SZKIELET TQ1 (2026-11-28) — czeka na kod 08-A: testID `dodaj-licznik-krok-2` (propozycja 04, docs/design/1-0-2.md „Paczka dla 07 i 08”) i przycisk „+2”.
-# Szkielet poza e2e/scenariusze (P-1114): 08 przenosi plik do e2e/scenariusze z kolejnym numerem, wpisem w config.yaml i e2e/czesci.json, numerem PU zamiast PU-Z03 i tagiem `oczekujacy` do pierwszego zielonego przebiegu (strategia §12).
+# PU-358 (ZM-24, ADR-0036, P-1102): licznik z krokiem +2 — „Dodaj licznik” → „Krok” „+2” → „+2” dodaje 2, −1 odejmuje 1, jedno „Cofnij” cofa +2.
+# Przeniesiony ze szkieletu TQ1 przez 08 (P-1114, FA2): kod dodaje pole „Krok” (`dodaj-licznik-krok-2`) i przycisk „+2”; tag `oczekujacy` do pierwszego zielonego przebiegu CI (zasada roli 07 nr 8).
 appId: com.apps4brew.knitting
-name: "PU-Z03 · Krok +2: „+2” dodaje dwa rzędy, −1 odejmuje jeden, „Cofnij” cofa całe „+2”"
+name: "PU-358 · Krok +2: „+2” dodaje dwa rzędy, −1 odejmuje jeden, „Cofnij” cofa całe „+2”"
 tags:
   - przypadki-uzycia
   - oczekujacy
-  - PU-Z03
+  - PU-358
   - stan-licznika
 ---
 - runFlow:
@@ -18,10 +17,12 @@ tags:
 - tapOn: { id: "licznik-projekt-wejscie" }
 - extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
 - tapOn: { id: "projekt-dodaj" }
+- assertVisible: { id: "projekt-dodaj-licznik" }
 - tapOn: { id: "projekt-dodaj-licznik" }
 - assertVisible: { id: "formularz-nazwa-licznika" }
 - tapOn: { id: "formularz-nazwa-licznika" }
 - inputText: "Step two"
+- assertVisible: "Step two"
 - tapOn: { id: "dodaj-licznik-krok-2" } # ekran: formularz/[rodzaj]
 - assertVisible: { id: "dodaj-licznik-krok-2", selected: true }
 - tapOn: { id: "formularz-zapisz" }
@@ -36,11 +37,13 @@ tags:
 - assertVisible: { id: "licznik-wartosc", text: "4" }
 - tapOn: { id: "licznik-minus" }
 - assertVisible: { id: "licznik-wartosc", text: "3" }
-- takeScreenshot: 123-krok-plus-dwa
+- takeScreenshot: 124-krok-plus-dwa
 - tapOn: { id: "licznik-plus" }
 - assertVisible: { id: "licznik-wartosc", text: "5" }
+- scrollUntilVisible: { element: { id: "licznik-historia" }, direction: DOWN, timeout: 30000 } # AX5 i mały ekran: rząd akcji pod notatką bywa poza ekranem (testid.md:158)
 - tapOn: { id: "licznik-historia" } # ekran: historia
 - extendedWaitUntil: { visible: "3 → 5", timeout: 20000 } # jeden wpis „+2” na stuknięcie (P-1111 (3))
 - tapOn: { id: "historia-cofnij-ostatnia" }
+- assertNotVisible: "3 → 5"
 - tapOn: { id: "arkusz-zamknij" } # powrót: licznik
 - assertVisible: { id: "licznik-wartosc", text: "3" }

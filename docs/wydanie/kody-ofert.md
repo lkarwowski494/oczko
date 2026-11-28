@@ -93,3 +93,6 @@ Uwagi do prawdziwości (zasada roli 4): „na stałe” i „zostaje u Ciebie”
 ## 7. Czego nie zrobiono
 
 Nie wywołano App Store Connect (API ani panelu), nie utworzono oferty ani kodu, nie zmieniono `app/`, `src/`, `modules/`, `targets/`, workflowów. Automatyzacja przez API ASC jest możliwa jako dodatek do `scripts/asc/`, ale przy kilku kodach niepotrzebna. Rachunek skutku dla przychodu i wyjątek od P-057 (kontrakt 02, P-1068 (b)) — rola 02.
+
+## 8. Realizacja w aplikacji (1.0.2, ZM-23, PU-361)
+Ekran „Oczko Pro” ma przycisk „Zrealizuj kod” ⟦Redeem code⟧ (`oferty-zrealizuj-kod`, między „Przywróć zakupy” a „Nie teraz”). Stuknięcie woła port sklepu `zrealizujKod`, który w adapterze expo-iap 5.8.1 otwiera arkusz Apple (`presentCodeRedemptionSheetIOS`). Realizacja kodu kończy się transakcją, którą aplikacja odbiera istniejącym nasłuchem (`Sklep.obserwuj`, P-1072) i przelicza dostęp; wynik widać jako „Masz Oczko Pro”. Bez sieci (port `Siec`, ADR-0031) okno się nie otwiera, a ekran pokazuje linię „Potrzebne połączenie z internetem.” w roli alertu. Prawdziwy kod: test fizyczny PU-349 (właściciel); w buildzie E2E sztuczny sklep nie otwiera okna.

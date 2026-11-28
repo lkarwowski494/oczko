@@ -6,6 +6,7 @@ import { MenuCel, MenuProjektu } from '../src/ekrany/MenuProjektu';
 import { StanWczytywania } from '../src/ekrany/StanWczytywania';
 import { useAplikacja } from '../src/kompozycja/Kontekst';
 import { zapisano, zglosBladZapisu } from '../src/kompozycja/po-zapisie';
+import { oglos } from '../src/kompozycja/system';
 import type { Wynik } from '../src/domena/bledy';
 import { ustawBlokade, wyzeruj } from '../src/przypadki-uzycia/licznik';
 import { zakonczProjekt } from '../src/przypadki-uzycia/projekt';
@@ -17,10 +18,12 @@ export default function EkranMenu(): React.ReactElement {
   const router = useRouter();
   const { arkusz } = useLocalSearchParams<{ arkusz?: string }>();
   const [w, ustaw] = useState<WidokLicznika | null>(null);
+  const [ekranBlokady, ustawEkranBlokady] = useState<{ na: boolean; stoper: boolean }>({ na: false, stoper: false }); // ZM-27 (b): Live Activity pokazuje ten licznik; stoper `trwa`
   const [blad, ustawBlad] = useState(false); // M1-007: brak widoku licznika (odczyt nieudany) albo wyjątek → błąd z „Try again”, nie pusty arkusz
   const wczytaj = useCallback(async () => {
     const x = await licznik.widok().catch(() => null);
     if (!x) { ustawBlad(true); return; }
+    ustawEkranBlokady({ na: licznik.ekranBlokady.aktywna(), stoper: licznik.ekranBlokady.aktywna() && await licznik.ekranBlokady.stoperTrwa(x.projektId) });
     ustaw(x);
   }, [licznik, kontener]);
   useEffect(() => { void wczytaj(); }, [wczytaj]);
@@ -45,9 +48,9 @@ export default function EkranMenu(): React.ReactElement {
   }
   return (
     <MenuProjektu
-      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, oczka: w.rodzaj === 'oczka' }}
+      stan={{ projekt: licznik.nazwaProjektu(w), zablokowany: w.zablokowany, wartosc: w.wartosc, oczka: w.rodzaj === 'oczka', naEkranieBlokady: ekranBlokady.na, stoperTrwa: ekranBlokady.stoper }}
       t={kontener.j.t}
-      naNazwa={() => formularz('nazwa')} naWpisz={() => formularz('wpisz')} naZnaczenie={() => formularz('znaczenie')}
+      naUstawienia={() => formularz('ustawienia')} naNazwa={() => formularz('nazwa')} naWpisz={() => formularz('wpisz')} naZnaczenie={() => formularz('znaczenie')}
       naZablokuj={() => void ustawBlokade(z, { licznikId: w.licznikId, zablokowany: true }).then(poZapisie)}
       naOdblokuj={() => void ustawBlokade(z, { licznikId: w.licznikId, zablokowany: false }).then(poZapisie)}
       naZeruj={() => void wyzeruj(z, { licznikId: w.licznikId }).then(poZapisie)}
@@ -56,6 +59,7 @@ export default function EkranMenu(): React.ReactElement {
         await licznik.poZmianie();
         router.replace({ pathname: '/ukonczenie', params: { projekt: w.projektId } });
       })}
+      naZdejmijZBlokady={() => void licznik.ekranBlokady.zdejmij().then(() => { oglos(kontener.j.t('licznik.zdjeto_z_blokady_a11y')); router.back(); })} // ZM-27 (b): bez potwierdzenia i banera
       naZamknij={() => router.back()}
     />
   );

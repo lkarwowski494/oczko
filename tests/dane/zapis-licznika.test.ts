@@ -205,7 +205,7 @@ describe('zapisy licznika (BR-LIC-*)', () => {
     const s = await zLicznikiem(0);
     s.pro.wartosc = true;
     const ids: string[] = [];
-    for (let i = 0; i < 3; i++) { const w = await dodajRzad(s.z, { licznikId: 'l1' }); if (w.ok) ids.push(w.wartosc.zdarzenieId); }
+    for (let i = 0; i < 3; i++) { s.zegar.przesun(1_000); const w = await dodajRzad(s.z, { licznikId: 'l1' }); if (w.ok) ids.push(w.wartosc.zdarzenieId); } // zegar o 1 s: te same ms = jedno stuknięcie (ADR-0036, P-1123)
     expect(await cofnijOstatnie(s.z, { licznikId: 'l1' })).toMatchObject({ ok: true, wartosc: { wartosc: 2 } });
     const c = await jeden<{ cofa: string; wartosc: number }>(s.baza, "SELECT cofa, wartosc FROM zdarzenie WHERE rodzaj = 'cofniecie'");
     expect({ cofa: JSON.parse(c.cofa), wartosc: c.wartosc }).toEqual({ cofa: [ids[2]], wartosc: 2 });
