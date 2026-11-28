@@ -1,0 +1,6 @@
+FB1 verify (2026-11-28, HEAD c52360d1 + ten plik)
+npm run verify: kod 0 — typecheck, typecheck:testy, lint, jakosc:kontrole, npm test (Test Suites: 752 passed, Tests: 8454 passed)
+swift test (modules/oczko-reguly, Swift 6.0.3 Linux): 62 tests, 0 failures
+node scripts/natywne/kontrola-swift.mjs: 0 błędów
+swiftc -parse (składnia): targets/widget/Aktywnosc.swift, targets/watch/Aplikacja.swift, modules/oczko-dziennik-plus/ios/{Wykonanie,OczkoDziennikPlusModule}.swift: OK; typy iOS tylko w CI
+kod 0
