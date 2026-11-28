@@ -1,0 +1,9 @@
+DG4 · npm run verify na stanie plików 9404a59a + dokumenty DG4, 2026-11-28 (Node v22.23.5)
+SHA bazowy: 9404a59a (kod aplikacji = a19146b8)
+Komenda: npm ci (kod 0), potem npm run verify = typecheck && typecheck:testy && lint && jakosc:kontrole && npm test
+Kod wyjścia: 0
+Test Suites: 751 passed, 751 total
+Tests:       8452 passed, 8452 total
+Snapshots:   0 total
+Time:        223.731 s
+Wynik: typecheck, typecheck:testy, lint (src/dane), kontrole repo i pełny zestaw testów zielone; brak zmian w plikach śledzonych poza docs/jakosc/dg4-*.md i docs/decyzje.md.
