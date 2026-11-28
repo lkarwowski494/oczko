@@ -1,0 +1,6 @@
+DG3 · npm run verify na końcowym stanie plików (po dopisaniu docs/jakosc/dg3-e2e.md i P-1083/P-1084), 2026-11-28 05:11 UTC
+SHA bazowy: b5fd442a (b5fd442a + dokumenty DG3)
+Test Suites: 749 passed, 749 total
+Tests:       8422 passed, 8422 total
+Snapshots:   0 total
+kod wyjścia: 0
