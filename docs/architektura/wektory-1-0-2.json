@@ -1,0 +1,1921 @@
+{
+ "opis": "Wektory 1.0.2 (rola 05 fix AR1, 2026-11-28): U2 przesunięcie rodzica linii dziennika (PR, SC; ADR-0035), U4 −1 z ekranu blokady (IN-04…IN-09; ADR-0035), U6 krok „+2” (ST, SE, CO, SK, PS, IN-01…IN-03, IN-10; ADR-0036). Wartości oczekiwane z reguł ADR, nie z kodu. Prototyp i kontrola: docs/architektura/eksperymenty/1-0-2/. TS (src/domena) i Swift (OczkoReguly/OczkoDziennik) czytają ten sam plik.",
+ "wersja": 1,
+ "przesuniecie": [
+  {
+   "id": "PR-01",
+   "opis": "rodzic linii = głowa: bez zmian",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "g"
+    },
+    "glowy": [
+     "g"
+    ],
+    "poRodzicu": [],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "bez_zmian",
+    "rodzic": "g"
+   }
+  },
+  {
+   "id": "PR-02",
+   "opis": "stan Live Activity nieaktualny: w aplikacji +1 przed stuknięciem → linia za głową (suma)",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-03",
+   "opis": "+1 w aplikacji po stuknięciu (czas) też przemienne",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 300
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-04",
+   "opis": "−1 w aplikacji po stuknięciu: przemienne",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "minus",
+      "czasMs": 300
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-05",
+   "opis": "wpisanie przed stuknięciem: linia szła po nim",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "wpisanie",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-06",
+   "opis": "wpisanie po stuknięciu: nieprzemienne → rozwidlenie (PU-099)",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "wpisanie",
+      "czasMs": 300
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-07",
+   "opis": "zerowanie po stuknięciu → rozwidlenie",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 150
+     },
+     {
+      "rodzaj": "zerowanie",
+      "czasMs": 300
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-08",
+   "opis": "cofnięcie po stuknięciu → rozwidlenie",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "cofniecie",
+      "czasMs": 250
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-09",
+   "opis": "licznik już w konflikcie (dwie głowy): nie zgadujemy",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x",
+     "y"
+    ],
+    "poRodzicu": [],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-10",
+   "opis": "rodzic nie jest przodkiem głowy",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": null,
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-11",
+   "opis": "przejście przerwane po limicie zdarzeń",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": true
+   },
+   "oczekiwane": {
+    "decyzja": "rozwidlenie",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-12",
+   "opis": "linia z aplikacji: reguła nie dotyczy",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "aplikacja",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "bez_zmian",
+    "rodzic": "w"
+   }
+  },
+  {
+   "id": "PR-13",
+   "opis": "zegarek offline, telefon dodał rzędy: suma",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 50,
+     "zrodlo": "zegarek",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     },
+     {
+      "rodzaj": "plus",
+      "czasMs": 110
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-14",
+   "opis": "Live Activity na pustym liczniku (rodzic null), aplikacja dodała zdarzenia",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": null
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-15",
+   "opis": "pusty licznik i rodzic null: bez zmian",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": null
+    },
+    "glowy": [],
+    "poRodzicu": [],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "bez_zmian",
+    "rodzic": null
+   }
+  },
+  {
+   "id": "PR-16",
+   "opis": "−1 z ekranu blokady na nieaktualnym stanie (U4): przemienne",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "minus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "plus",
+      "czasMs": 100
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-17",
+   "opis": "wpisanie w tej samej ms co stuknięcie: ≤ (linia po nim)",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "wpisanie",
+      "czasMs": 200
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  },
+  {
+   "id": "PR-18",
+   "opis": "rozstrzygnięcie przed stuknięciem: linia po nim",
+   "wejscie": {
+    "linia": {
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "zrodlo": "ekran_blokady",
+     "rodzic": "w"
+    },
+    "glowy": [
+     "x"
+    ],
+    "poRodzicu": [
+     {
+      "rodzaj": "rozstrzygniecie",
+      "czasMs": 100
+     },
+     {
+      "rodzaj": "plus",
+      "czasMs": 300
+     }
+    ],
+    "obcieto": false
+   },
+   "oczekiwane": {
+    "decyzja": "przesun",
+    "rodzic": "x"
+   }
+  }
+ ],
+ "scenariusze": [
+  {
+   "id": "SC-01",
+   "opis": "aplikacja +1 (11), ekran blokady 3 × +1 od starej głowy → 14 bez konfliktu, historia liniowa (baner PU-127 ma serię na końcu)",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "wpisanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "wartosc": 10,
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "l1",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "ekran_blokady"
+    },
+    {
+     "id": "l2",
+     "rodzaj": "plus",
+     "czasMs": 210,
+     "rodzice": [
+      "l1"
+     ],
+     "zrodlo": "ekran_blokady"
+    },
+    {
+     "id": "l3",
+     "rodzaj": "plus",
+     "czasMs": 220,
+     "rodzice": [
+      "l2"
+     ],
+     "zrodlo": "ekran_blokady"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "l1": "przesun",
+     "l2": "bez_zmian",
+     "l3": "bez_zmian"
+    },
+    "rodzice": {
+     "l1": [
+      "x"
+     ]
+    },
+    "stan": "zgodny",
+    "wartosc": 14
+   }
+  },
+  {
+   "id": "SC-02",
+   "opis": "wpisanie 20 w aplikacji po stuknięciu → konflikt pokazany (PU-099), nic nie znika",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "wpisanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "wartosc": 10,
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x",
+     "rodzaj": "wpisanie",
+     "czasMs": 300,
+     "rodzice": [
+      "w"
+     ],
+     "wartosc": 20,
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "l1",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "ekran_blokady"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "l1": "rozwidlenie"
+    },
+    "rodzice": {},
+    "stan": "konflikt",
+    "kandydaci": {
+     "x": 20,
+     "l1": 11
+    }
+   }
+  },
+  {
+   "id": "SC-03",
+   "opis": "−1 z ekranu blokady na nieaktualnym stanie (U4) → 10",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "wpisanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "wartosc": 10,
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "l1",
+     "rodzaj": "minus",
+     "czasMs": 200,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "ekran_blokady"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "l1": "przesun"
+    },
+    "rodzice": {
+     "l1": [
+      "x"
+     ]
+    },
+    "stan": "zgodny",
+    "wartosc": 10
+   }
+  },
+  {
+   "id": "SC-04",
+   "opis": "zegarek bez telefonu (+1 o t=50), telefon +2 rzędy → 13 (dziś M-04 dawałby konflikt dla tej pary)",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "wpisanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "wartosc": 10,
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x1",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x2",
+     "rodzaj": "plus",
+     "czasMs": 110,
+     "rodzice": [
+      "x1"
+     ],
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "z1",
+     "rodzaj": "plus",
+     "czasMs": 50,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "zegarek"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "z1": "przesun"
+    },
+    "rodzice": {
+     "z1": [
+      "x2"
+     ]
+    },
+    "stan": "zgodny",
+    "wartosc": 13
+   }
+  },
+  {
+   "id": "SC-05",
+   "opis": "„+2” z ekranu blokady na nieaktualnym stanie: obie linie za głową, jedno stuknięcie (U2 + U6)",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "wpisanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "wartosc": 10,
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "l1",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "ekran_blokady"
+    },
+    {
+     "id": "l2",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "l1"
+     ],
+     "zrodlo": "ekran_blokady"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "l1": "przesun",
+     "l2": "bez_zmian"
+    },
+    "rodzice": {
+     "l1": [
+      "x"
+     ]
+    },
+    "stan": "zgodny",
+    "wartosc": 13
+   }
+  },
+  {
+   "id": "SC-06",
+   "opis": "−1 przy 0 po przesunięciu: wartość nie schodzi poniżej 0 (M-06)",
+   "baza": [
+    {
+     "id": "w",
+     "rodzaj": "zerowanie",
+     "czasMs": 0,
+     "rodzice": [],
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "x",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "aplikacja"
+    },
+    {
+     "id": "y",
+     "rodzaj": "minus",
+     "czasMs": 110,
+     "rodzice": [
+      "x"
+     ],
+     "zrodlo": "aplikacja"
+    }
+   ],
+   "linie": [
+    {
+     "id": "l1",
+     "rodzaj": "minus",
+     "czasMs": 200,
+     "rodzice": [
+      "w"
+     ],
+     "zrodlo": "ekran_blokady"
+    }
+   ],
+   "oczekiwane": {
+    "decyzje": {
+     "l1": "przesun"
+    },
+    "rodzice": {
+     "l1": [
+      "y"
+     ]
+    },
+    "stan": "zgodny",
+    "wartosc": 0
+   }
+  }
+ ],
+ "stukniecia": [
+  {
+   "id": "ST-01",
+   "opis": "„+2” w aplikacji: dwa plus, ten sam czas, rodzic → jedno stuknięcie",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a",
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-02",
+   "opis": "dwa osobne +1 (różny czas)",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 101,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-03",
+   "opis": "trzy plus w tej samej ms: najwyżej KROK_MAKS w stuknięciu",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "c",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "b"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-04",
+   "opis": "ta sama ms, inne źródło",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-05",
+   "opis": "ta sama ms, inne urządzenie",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i2"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-06",
+   "opis": "−1 w tej samej ms nie dołącza",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "minus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "aplikacja",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-07",
+   "opis": "dwa „+2” z ekranu blokady",
+   "zdarzenia": [
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "c",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "b"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "d",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "c"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "d"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ST-08",
+   "opis": "kolejność wejścia bez znaczenia (ST-07 odwrócone)",
+   "zdarzenia": [
+    {
+     "id": "d",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "c"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "c",
+     "rodzaj": "plus",
+     "czasMs": 200,
+     "rodzice": [
+      "b"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [
+      "a"
+     ],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    },
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "czasMs": 100,
+     "rodzice": [],
+     "zrodlo": "ekran_blokady",
+     "urzadzenie": "i1"
+    }
+   ],
+   "oczekiwane": {
+    "ids": [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "d"
+     ]
+    ]
+   }
+  }
+ ],
+ "serie": [
+  {
+   "id": "SE-01",
+   "opis": "jedno „+2” to nie seria",
+   "konf": {
+    "seria": 3,
+    "oknoS": 2
+   },
+   "stukniecia": [
+    {
+     "czasMs": 1000,
+     "krok": 2
+    }
+   ],
+   "oczekiwane": []
+  },
+  {
+   "id": "SE-02",
+   "opis": "dwa „+2” w 1 s: 2 stuknięcia < 3 → bez pytania (na zdarzeniach byłaby seria 4)",
+   "konf": {
+    "seria": 3,
+    "oknoS": 2
+   },
+   "stukniecia": [
+    {
+     "czasMs": 1000,
+     "krok": 2
+    },
+    {
+     "czasMs": 1900,
+     "krok": 2
+    }
+   ],
+   "oczekiwane": []
+  },
+  {
+   "id": "SE-03",
+   "opis": "trzy „+2” w 2 s → pytanie; baner podaje 6 rzędów, cofnięcie 6 zdarzeń",
+   "konf": {
+    "seria": 3,
+    "oknoS": 2
+   },
+   "stukniecia": [
+    {
+     "czasMs": 1000,
+     "krok": 2
+    },
+    {
+     "czasMs": 1900,
+     "krok": 2
+    },
+    {
+     "czasMs": 2900,
+     "krok": 2
+    }
+   ],
+   "oczekiwane": [
+    {
+     "stukniecia": 3,
+     "rzedy": 6,
+     "ids": 6
+    }
+   ]
+  },
+  {
+   "id": "SE-04",
+   "opis": "trzy +1 w 2 s → pytanie jak dziś (RD-17)",
+   "konf": {
+    "seria": 3,
+    "oknoS": 2
+   },
+   "stukniecia": [
+    {
+     "czasMs": 1000,
+     "krok": 1
+    },
+    {
+     "czasMs": 1500,
+     "krok": 1
+    },
+    {
+     "czasMs": 3000,
+     "krok": 1
+    }
+   ],
+   "oczekiwane": [
+    {
+     "stukniecia": 3,
+     "rzedy": 3,
+     "ids": 3
+    }
+   ]
+  }
+ ],
+ "cofniecie": [
+  {
+   "id": "CO-01",
+   "opis": "„Cofnij” po „+2” cofa oba zdarzenia",
+   "odNajnowszego": [
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "cofa": []
+    }
+   ],
+   "stukniecia": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "oczekiwane": {
+    "cofa": [
+     "a",
+     "b"
+    ],
+    "przedId": "a"
+   }
+  },
+  {
+   "id": "CO-02",
+   "opis": "„Cofnij” po +1, które nastąpiło po „+2”, cofa tylko +1",
+   "odNajnowszego": [
+    {
+     "id": "c",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "cofa": []
+    }
+   ],
+   "stukniecia": [
+    [
+     "a",
+     "b"
+    ],
+    [
+     "c"
+    ]
+   ],
+   "oczekiwane": {
+    "cofa": [
+     "c"
+    ],
+    "przedId": "c"
+   }
+  },
+  {
+   "id": "CO-03",
+   "opis": "starsza wersja cofnęła jedno z pary: cofa się reszta stuknięcia",
+   "odNajnowszego": [
+    {
+     "id": "k",
+     "rodzaj": "cofniecie",
+     "cofa": [
+      "b"
+     ]
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "cofa": []
+    }
+   ],
+   "stukniecia": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "oczekiwane": {
+    "cofa": [
+     "a"
+    ],
+    "przedId": "a"
+   }
+  },
+  {
+   "id": "CO-04",
+   "opis": "stuknięcie cofnięte w całości: cel = wcześniejsze",
+   "odNajnowszego": [
+    {
+     "id": "k",
+     "rodzaj": "cofniecie",
+     "cofa": [
+      "a",
+      "b"
+     ]
+    },
+    {
+     "id": "b",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "a",
+     "rodzaj": "plus",
+     "cofa": []
+    },
+    {
+     "id": "x",
+     "rodzaj": "plus",
+     "cofa": []
+    }
+   ],
+   "stukniecia": [
+    [
+     "x"
+    ],
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "oczekiwane": {
+    "cofa": [
+     "x"
+    ],
+    "przedId": "x"
+   }
+  }
+ ],
+ "skok": [
+  {
+   "id": "SK-01",
+   "opis": "39 → 41 przy celu 40: cel części osiągnięty skokiem",
+   "przed": 39,
+   "po": 41,
+   "cel": 40,
+   "dlugosc": null,
+   "oczekiwane": {
+    "celCzesci": true,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-02",
+   "opis": "40 → 42: cel już był osiągnięty",
+   "przed": 40,
+   "po": 42,
+   "cel": 40,
+   "dlugosc": null,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-03",
+   "opis": "38 → 40",
+   "przed": 38,
+   "po": 40,
+   "cel": 40,
+   "dlugosc": null,
+   "oczekiwane": {
+    "celCzesci": true,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-04",
+   "opis": "7 → 9 przy powtórzeniu 8: koniec powtórzenia",
+   "przed": 7,
+   "po": 9,
+   "cel": null,
+   "dlugosc": 8,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": true
+   }
+  },
+  {
+   "id": "SK-05",
+   "opis": "8 → 10: koniec był przy 8",
+   "przed": 8,
+   "po": 10,
+   "cel": null,
+   "dlugosc": 8,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-06",
+   "opis": "15 → 16 (+1): jak dziś",
+   "przed": 15,
+   "po": 16,
+   "cel": null,
+   "dlugosc": 8,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": true
+   }
+  },
+  {
+   "id": "SK-07",
+   "opis": "9 → 10 (+1) przy celu 10: jak dziś",
+   "przed": 9,
+   "po": 10,
+   "cel": 10,
+   "dlugosc": null,
+   "oczekiwane": {
+    "celCzesci": true,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-08",
+   "opis": "bez celu i powtórzenia",
+   "przed": 3,
+   "po": 5,
+   "cel": null,
+   "dlugosc": null,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": false
+   }
+  },
+  {
+   "id": "SK-09",
+   "opis": "41 → 40 (−1): spadek bez sygnałów",
+   "przed": 41,
+   "po": 40,
+   "cel": 40,
+   "dlugosc": 8,
+   "oczekiwane": {
+    "celCzesci": false,
+    "koniecPowtorzenia": false
+   }
+  }
+ ],
+ "przypomnienie_skoku": [
+  {
+   "id": "PS-01",
+   "opis": "skończone 8 → 10: rząd w robocie przeskakuje 10 → sygnał 10",
+   "przed": 8,
+   "po": 10,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": 10
+   }
+  },
+  {
+   "id": "PS-02",
+   "opis": "9 → 11: rząd 10 był już w robocie → bez sygnału",
+   "przed": 9,
+   "po": 11,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": null
+   }
+  },
+  {
+   "id": "PS-03",
+   "opis": "13 → 15 → 15",
+   "przed": 13,
+   "po": 15,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": 15
+   }
+  },
+  {
+   "id": "PS-04",
+   "opis": "10 → 11 (+1) → bez sygnału",
+   "przed": 10,
+   "po": 11,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": null
+   }
+  },
+  {
+   "id": "PS-05",
+   "opis": "18 → 20 → 20 (ostatni z planu)",
+   "przed": 18,
+   "po": 20,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": 20
+   }
+  },
+  {
+   "id": "PS-06",
+   "opis": "20 → 22: poza planem",
+   "przed": 20,
+   "po": 22,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": null
+   }
+  },
+  {
+   "id": "PS-07",
+   "opis": "11 → 10 (−1): spadek",
+   "przed": 11,
+   "po": 10,
+   "plan": {
+    "od": 10,
+    "co": 5,
+    "razy": 3
+   },
+   "oczekiwane": {
+    "rzad": null
+   }
+  }
+ ],
+ "intencja": [
+  {
+   "id": "IN-01",
+   "opis": "„+2”: dwie linie, rodzic łańcuchem, ten sam czas; stan +2, głowa = druga",
+   "rodzaj": "plus",
+   "krok": 2,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zapisz",
+    "rodziceLinii": [
+     [
+      "g"
+     ],
+     [
+      "i1"
+     ]
+    ],
+    "stan": {
+     "wartosc": 12,
+     "glowa": "i2",
+     "ostatniPlusMs": 5000,
+     "dzienDozwolony": true
+    }
+   }
+  },
+  {
+   "id": "IN-02",
+   "opis": "„+2” w nowym dniu ponad limit: bez linii (decyzja raz)",
+   "rodzaj": "plus",
+   "krok": 2,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ],
+    "limitOdmawia": true
+   },
+   "oczekiwane": {
+    "wynik": "limit",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 10,
+     "glowa": "g"
+    }
+   }
+  },
+  {
+   "id": "IN-03",
+   "opis": "„+2” gdy aplikacja policzyła dzień niedozwolony",
+   "rodzaj": "plus",
+   "krok": 2,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": false,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "limit",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 10
+    }
+   }
+  },
+  {
+   "id": "IN-04",
+   "opis": "−1 przy kroku 2 zostaje −1",
+   "rodzaj": "minus",
+   "krok": 2,
+   "stan": {
+    "wartosc": 5,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zapisz",
+    "rodziceLinii": [
+     [
+      "g"
+     ]
+    ],
+    "stan": {
+     "wartosc": 4,
+     "glowa": "i1"
+    }
+   }
+  },
+  {
+   "id": "IN-05",
+   "opis": "−1 przy 0: bez linii",
+   "rodzaj": "minus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 0,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "bezZmiany",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 0
+    }
+   }
+  },
+  {
+   "id": "IN-06",
+   "opis": "zablokowany: +1 bez linii",
+   "rodzaj": "plus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": true,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zablokowany",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 10
+    }
+   }
+  },
+  {
+   "id": "IN-07",
+   "opis": "zablokowany: −1 bez linii (F-03)",
+   "rodzaj": "minus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": true,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zablokowany",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 10
+    }
+   }
+  },
+  {
+   "id": "IN-08",
+   "opis": "−1 w stanie limitu: zapis, ale dzień dalej niedozwolony (Live Activity nie pokazuje znów +1)",
+   "rodzaj": "minus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": false,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zapisz",
+    "rodziceLinii": [
+     [
+      "g"
+     ]
+    ],
+    "stan": {
+     "wartosc": 9,
+     "dzienDozwolony": false,
+     "dzien": "2026-11-28"
+    }
+   }
+  },
+  {
+   "id": "IN-09",
+   "opis": "−1 po północy nie przestawia dnia stanu",
+   "rodzaj": "minus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-27",
+    "dzienDozwolony": false,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zapisz",
+    "rodziceLinii": [
+     [
+      "g"
+     ]
+    ],
+    "stan": {
+     "dzien": "2026-11-27",
+     "dzienDozwolony": false
+    }
+   }
+  },
+  {
+   "id": "IN-10",
+   "opis": "krok spoza CHECK",
+   "rodzaj": "plus",
+   "krok": 3,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "bledne_dane",
+    "rodziceLinii": [],
+    "stan": {
+     "wartosc": 10
+    }
+   }
+  },
+  {
+   "id": "IN-11",
+   "opis": "+1 bez zmian zachowania",
+   "rodzaj": "plus",
+   "krok": 1,
+   "stan": {
+    "wartosc": 10,
+    "glowa": "g",
+    "dzien": "2026-11-28",
+    "dzienDozwolony": true,
+    "zablokowany": false,
+    "ostatniPlusMs": 1
+   },
+   "opcje": {
+    "teraz": 5000,
+    "dzis": "2026-11-28",
+    "ids": [
+     "i1",
+     "i2"
+    ]
+   },
+   "oczekiwane": {
+    "wynik": "zapisz",
+    "rodziceLinii": [
+     [
+      "g"
+     ]
+    ],
+    "stan": {
+     "wartosc": 11,
+     "glowa": "i1"
+    }
+   }
+  }
+ ]
+}
