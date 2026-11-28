@@ -1,8 +1,9 @@
-PR2 (04 fix) — npm run verify, 2026-11-28, drzewo robocze = scalenie ea4fdfee + zmiany ZM-27 (tylko docs/), Linux, Node v22.23.5
-typecheck, typecheck:testy, lint, jakosc:kontrole, npm test
+PR2 (04 fix) — npm run verify, 2026-11-28, Linux, Node v22.23.5; typecheck, typecheck:testy, lint, jakosc:kontrole, npm test
+Runda 2 (scalenie integracji cf98e2cb → 8713d64a + P-1110…P-1112, tylko docs/):
 Test Suites: 749 passed, 749 total
 Tests:       8438 passed, 8438 total
-Time:        211.678 s
+Time:        211.674 s
 kod 0
-Po samym scaleniu integracji 0c3f9214 (przed ZM-27): też kod 0, 749/749 zestawów, 8438 testów.
+Po samym scaleniu cf98e2cb: kod 0, 749/749 zestawów, 8438 testów.
+Runda 1 (c2509489, scalenie 0c3f9214 + ZM-27): kod 0, 749/749, 8438.
 Ponowny przebieg: hak pre-push przy wypchnięciu.

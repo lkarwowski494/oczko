@@ -113,5 +113,21 @@
  "zwiększony ciemny: ZM-27 podpis tekst2 na powierzchnia": [
   "#E3DAD2",
   "#312B27"
+ ],
+ "jasny: W0/PU-099 podpowiedź tekst2 na tlo": [
+  "#5A5048",
+  "#E6E1DA"
+ ],
+ "ciemny: W0/PU-099 podpowiedź tekst2 na tlo": [
+  "#C7BCB2",
+  "#26211E"
+ ],
+ "zwiększony jasny: W0 tekst2 na tlo": [
+  "#3F3731",
+  "#E6E1DA"
+ ],
+ "zwiększony ciemny: W0 tekst2 na tlo": [
+  "#E3DAD2",
+  "#26211E"
  ]
 }

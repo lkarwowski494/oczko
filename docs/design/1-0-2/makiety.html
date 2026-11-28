@@ -259,6 +259,13 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .z27-okno .pr { display: flex; flex-wrap: wrap; border-top: 1px solid var(--linia); } .z27-okno .pr a { flex: 1 1 50%; min-height: 44px; display: flex; align-items: center; justify-content: center; color: var(--akcentTekst); }
 .z27-okno .pr a + a { border-left: 1px solid var(--linia); } .duzy .z27-okno { width: calc(var(--w) - 32px); } .duzy .z27-okno .pr a { flex-basis: 100%; } .duzy .z27-okno .pr a + a { border-left: 0; border-top: 1px solid var(--linia); }
 .z27-pusto { min-height: 132px; } .la.z27-wyg { opacity: .62; }
+/* PR2 runda 2 */
+.la.z27-zw .sr { min-height: 52px; } .la.z27-zw .op { display: flex; flex-direction: column; }
+.a1-pod { color: var(--tekst2); padding: 0 4px; }
+.lista > div.a1-h { justify-content: space-between; } .a1-h b { margin-right: 4px; } .a1-c { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; flex: none; }
+.duzy .lista > div.a1-h { flex-wrap: wrap; } .duzy .a1-c { flex-basis: 100%; }
+.z28 { padding: 8px 16px 24px; display: flex; flex-direction: column; gap: 12px; } .z28-pod { color: var(--tekst2); padding: 0 4px; }
+.z28 .pod-atrapa { color: var(--tekst2); font-size: 13px; border-top: 1px dashed var(--linia); padding-top: 8px; }
 </style>
 <style>
 /* ===== 1.0.2 (PR1): nowe reguły; wartości z tokenów, cele ≥ 44 pt ===== */
@@ -711,6 +718,69 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
     <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">47</span><span class="op"><b>Zniknie za chwilę</b></span><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div><p class="op2">stuknij +1, aby zostawić</p></div>
   <p class="pod-atrapa">Odrzucone: wygaszona karta przed końcem (a). Drugi czas obok stopera (wbrew U7-B2, P-1103), zderza się z <code>staleDate</code> podpowiedzi B2 i przedłuża obecność karty, którą użytkownik chce mieć z głowy.</p>
 </section>
+
+<!-- PR2 runda 2 (2026-11-28, P-1110…P-1112): isStale (ADR-0037), etykieta wersji z ekranu blokady (PU-099), „+2” w historii, W0 (ZM-28) -->
+<section class="ls" data-ekran="z27-blokada-stale" aria-label="Ekran blokady po 2 h bez liczenia: karta zwinięta (rekomendacja)">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la z27-zw"><div class="sr"><span class="n cyfry">47</span><span class="op"><b>Sweter Mgła</b>teraz rząd 48</span><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div></div>
+  <p class="pod-atrapa">Po <code>staleDate</code> (2 h bez liczenia, przypominacz wyłączony): karta w jednym wierszu — liczba, projekt, „+1 rząd”; bez −1, stopera i drugiego wiersza. „+1” działa i przywraca pełną kartę. Koniec: przy najbliższym otwarciu Oczka albo po 8 h (system). Warunek: prototyp B.</p>
+</section>
+
+<section class="ls" data-ekran="z27-blokada-stale-B" aria-label="Ekran blokady po 2 h bez liczenia: karta bez przycisków (odrzucone)">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span></span></div>
+    <div class="sr"><span class="n cyfry">47</span><span class="op"><b>Otwórz Oczko, aby liczyć dalej</b></span></div></div>
+  <p class="pod-atrapa">Odrzucone: karta bez przycisków. Odbiera liczenie z ekranu blokady po przerwie (KO-234: liczenie z blokady zostaje), a karta i tak wisi do otwarcia aplikacji albo 8 h.</p>
+</section>
+
+<main class="ekran lz" data-ekran="a1-konflikt-wersje" aria-label="Wybór wersji licznika: gałąź z ekranu blokady (PU-099)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Dwie wersje tego licznika"><div class="ng"><a>Anuluj</a><h2>Dwie wersje tego licznika</h2><span></span></div>
+    <div class="lista"><div role="button">Zachowaj 48 rzędów z ekranu blokady</div><div role="button">Zachowaj 47 rzędów z aplikacji</div></div>
+    <p class="t-pod a1-pod">Zostanie tylko wybrana wersja.</p></section>
+</main>
+
+<main class="ekran lz" data-ekran="a1-historia-plus2" aria-label="Historia licznika z wpisem +2">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Historia"><div class="ng"><span></span><h2>Historia</h2><a>Zamknij</a></div>
+    <div class="lista">
+      <div class="a1-h"><span class="tx"><b class="cyfry">+2</b> 42 → 44<small class="cyfry">14:02</small></span><a class="a1-c">Cofnij</a></div>
+      <div class="a1-h"><span class="tx"><b class="cyfry">+2</b> 40 → 42<small class="cyfry">13:51 · z ekranu blokady</small></span></div>
+      <div class="a1-h"><span class="tx"><b class="cyfry">−1</b> 41 → 40<small class="cyfry">13:40</small></span></div>
+    </div></section>
+</main>
+
+<main class="ekran lz" data-ekran="z28-wzor-zrodla" aria-label="Dodaj wzór: źródła i podpowiedź o tekście (W0, rekomendacja)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Sweter Mgła</span></a><span></span></div>
+  <div class="z28 t-tresc"><h1 class="t-duzy br">Dodaj wzór</h1>
+    <div class="lista"><div>Wybierz plik (PDF lub Word)</div><div>Skanuj strony</div><div>Wybierz zdjęcia</div><div>Link do strony WWW…</div></div>
+    <p class="t-pod z28-pod">Rozpiska tekstem? Wklej ją do notatki — przycisk „Notatka” przy liczniku.</p>
+    <p class="pod-atrapa z28-atr">Atrapa układu menu źródeł (makiety bazowej brak; pozycje z PU-054…PU-061). Projektowane: tylko zdanie pod listą, jak podpowiedź U10.</p></div>
+</main>
+
+<main class="ekran lz" data-ekran="z28-wzor-zrodla-przewiniety" aria-label="Dodaj wzór przewinięty do podpowiedzi (AX5)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="z28 t-tresc">
+    <div class="lista"><div>Wybierz zdjęcia</div><div>Link do strony WWW…</div></div>
+    <p class="t-pod z28-pod">Rozpiska tekstem? Wklej ją do notatki — przycisk „Notatka” przy liczniku.</p></div>
+</main>
+
+<main class="ekran lz" data-ekran="z28-wzor-zrodla-B" aria-label="Dodaj wzór: piąta pozycja Wklej tekst do notatki (odrzucone)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Sweter Mgła</span></a><span></span></div>
+  <div class="z28 t-tresc"><h1 class="t-duzy br">Dodaj wzór</h1>
+    <div class="lista"><div>Wybierz plik (PDF lub Word)</div><div>Skanuj strony</div><div>Wybierz zdjęcia</div><div>Link do strony WWW…</div><div>Wklej tekst do notatki</div></div>
+    <p class="pod-atrapa z28-atr">Odrzucone: pozycja wygląda jak piąte źródło wzoru, a tworzy notatkę, nie wzór (bez znacznika rzędu); więcej pracy 08 (przejście do edytora notatki).</p></div>
+</main>
 
 <script>
 document.querySelectorAll('.of-mies').forEach((e) => { e.innerHTML = '<i></i>'.repeat(30); });
