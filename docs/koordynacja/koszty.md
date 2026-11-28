@@ -175,3 +175,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | KA1 | 08 fix | 3 | 1,48 | 18 | 09:31 → 09:33 → 09:45 → verify sesji 09:45 (+ poprawki recenzji 09:56) → 10:00 | 0 | klasyfikator awarii maszyny bez junit (P-1084/1085) |
 | ZK1 | 03 fix | 5 | 6,61 | 29 | 10:31 → 10:31 → 10:45 → verify sesji 10:52 → 10:55 | 0 | zakres 1.0.2; opus docs ≈ 6–7 USD — szacunki opus podnieść |
 | RS1 | 01 fix | 6 | 8,33 | 29 | 10:31 → 10:31 → 10:50 → verify sesji 11:08 → 11:12 | 0 | research U7/U8/U9 + szacunek; opus docs 6,6–8,3 USD → pułapy opus docs 9 USD |
+| PR1 | 04 fix | 8 | 8,33 | 35 | 10:54 → 10:54 → 11:10 → verify sesji 11:15 → 11:20 | 0 | projekt 1.0.2, 24 ekrany, 132 zrzuty |
