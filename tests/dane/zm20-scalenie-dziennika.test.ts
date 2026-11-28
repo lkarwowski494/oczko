@@ -1,4 +1,4 @@
-// PU-352 (ex PU-Z06), PU-Z07 (katalog: „Oczekujące 1.0.2”). ZM-20 (U2, ADR-0035, P-1096): scalenie dziennika ekranu blokady/zegarka na nieaktualnej
+// PU-352 (ex PU-Z06), PU-362 (katalog: „Oczekujące 1.0.2”). ZM-20 (U2, ADR-0035, P-1096): scalenie dziennika ekranu blokady/zegarka na nieaktualnej
 // głowie — linia ±1 dostaje rodzica = bieżąca głowa, gdy zmiany po jej rodzicu są przemienne (suma, bez konfliktu); wpisanie po stuknięciu
 // → konflikt pokazany (PU-099), nic nie znika. Wyrocznia: scenariusze SC-01…SC-06 roli 05 (docs/architektura/wektory-1-0-2.json; wartości
 // z niezależnego prototypu `scal` z E1). Ścieżka: `scalDziennik` (src/przypadki-uzycia/dziennik.ts) na `node:sqlite`, jak tests/dane/dziennik-poczekalnia-ekranu.test.ts.
@@ -45,7 +45,7 @@ describe('ZM-20 scalenie dziennika na nieaktualnej głowie (ADR-0035)', () => {
   }
 
   const sc02 = SCENARIUSZE.find((x) => x.id === 'SC-02')!;
-  test('[ZIELONY-OK: rozwidlenie nieprzemienne już dziś daje konflikt; strażnik, że przesunięcie go nie połknie] ZM-20 SC-02 PU-Z07: wpisanie po stuknięciu → konflikt pokazany, obie wersje zostają', async () => {
+  test('[ZIELONY-OK: rozwidlenie nieprzemienne już dziś daje konflikt; strażnik, że przesunięcie go nie połknie] ZM-20 SC-02 PU-362: wpisanie po stuknięciu → konflikt pokazany, obie wersje zostają', async () => {
     const s = await zeScenariusza(sc02);
     s.dziennik.linie.push(...sc02.linie.map(linia));
     await scalDziennik(s.z);

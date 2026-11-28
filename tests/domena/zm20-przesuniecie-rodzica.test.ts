@@ -1,4 +1,4 @@
-// PU-352 (ex PU-Z06; katalog: docs/jakosc/przypadki-uzycia.md). ZM-20 (U2, ADR-0035, P-1096): rodzic linii ±1 z ekranu blokady albo
+// PU-352 (ex PU-352; katalog: docs/jakosc/przypadki-uzycia.md). ZM-20 (U2, ADR-0035, P-1096): rodzic linii ±1 z ekranu blokady albo
 // zegarka przy scaleniu dziennika — `przesun` na bieżącą głowę, gdy zmiany po rodzicu są przemienne; inaczej `rozwidlenie` (konflikt PU-099).
 // Wyrocznia: wektory PR-01…PR-18 roli 05 (docs/architektura/wektory-1-0-2.json), wartości z reguł ADR, nie z kodu; prototyp
 // docs/architektura/eksperymenty/1-0-2/prototyp.mjs. Miejsce w kodzie (propozycja 07, P-1113): `src/domena/przesuniecie.ts`, eksport `przesuniecieRodzica`.

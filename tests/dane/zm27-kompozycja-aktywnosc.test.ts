@@ -1,4 +1,4 @@
-// PU-357 (ex PU-Z11). ZM-27 (KO-234, ADR-0037, P-1099) w kompozycji licznika (ryzyko R5, TQ1): decyzja o Live Activity na stanie natywnym portu
+// PU-357 (ex PU-357). ZM-27 (KO-234, ADR-0037, P-1099) w kompozycji licznika (ryzyko R5, TQ1): decyzja o Live Activity na stanie natywnym portu
 // `liveActivity.aktywna()` (nie flaga w pamięci procesu), kolejność scalenie dziennika → decyzja, start tylko przy liczeniu, koniec po
 // `LIVE_KONIEC_PO_MS` bez zmian i z menu. Czysta funkcja `decyzjaAktywnosci` ma wektory AK-01…AK-11 (tests/domena/zm27-aktywnosc.test.ts);
 // tu sprawdzamy połączenie: kompozycja → odswiezEkranBlokady → port (atrapa ze stanem). Zegar wstrzyknięty (T0 = zegar środowiska testowego).

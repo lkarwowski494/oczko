@@ -153,14 +153,14 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-kontakt.test.ts` | zielony (główny zestaw) | 4 | BR-DAN-011, P-193, P-195, P-199 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-potwierdzenia.test.ts` | zielony (główny zestaw) | 6 | P-135, P-139, R-021 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/platforma/zegarek`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zgloszenie-ekran-blokady.test.ts` | zielony (główny zestaw) | 2 | NFR-DAN-003, NFR-PRY-001 | `src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/zgloszenie` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm20-etykieta-zrodla.test.ts` | zielony (główny zestaw) | 3 | — | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm20-scalenie-dziennika.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm21-znaczenie-nowego-licznika.test.ts` | zielony (główny zestaw) | 4 | — | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm24-dodaj-rzad-krok.test.ts` | zielony (główny zestaw) | 4 | — | `src/przypadki-uzycia/licznik` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm24-kompozycja-stukniecia.test.ts` | zielony (główny zestaw) | 5 | RD-12, RD-13, RD-17 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm24-krok-ustawienia.test.ts` | zielony (główny zestaw) | 4 | — | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/podpowiedz`<br>`src/przypadki-uzycia/widok-licznika` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm24-migracja-0002.test.ts` | zielony (główny zestaw) | 4 | R-075 | `src/dane/baza/adapter-node`<br>`src/dane/migracje/migruj` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm23-zrealizuj-kod.test.tsx` | oczekuje | 2 | P-315 | `src/ekrany/Oferty` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm24-krok-i-podpowiedz.test.tsx` | oczekuje | 7 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm26-zm28-podpowiedzi.test.tsx` | oczekuje | 2 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
-| 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm27-menu-zdejmij.test.tsx` | oczekuje | 2 | — | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm27-kompozycja-aktywnosc.test.ts` | zielony (główny zestaw) | 9 | — | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/konfiguracja` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/aplikacja.test.tsx` | zielony (główny zestaw) | 8 | BR-DAN-012/S2, BR-LIC-001, BR-LIC-001/S1, KP-07, KP-08, KP-13, NFR-DAN-002, NFR-PIE-001, R-020, R-091 | `src/domena/porty`<br>`src/ekrany/Aplikacja`<br>`src/ekrany/wspolne` | ER-68, Z07-11, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza-ax5-trasa.test.tsx` | zielony (główny zestaw) | 7 | NFR-DOS-002, P-377 | `src/ekrany/motyw` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/arkusz-formularza.test.tsx` | zielony (główny zestaw) | 4 | P-262, P-271, P-275 | `src/ekrany/Arkusz`<br>`src/ekrany/Formularze`<br>`src/ekrany/FormularzeProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -495,6 +495,12 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zglos-stan-danych.test.tsx` | zielony (główny zestaw) | 4 | BR-DAN-010, BR-DAN-010/S1, BR-DAN-010/S2, BR-DAN-011, BR-DAN-011/S1, BR-DAN-011/S2, P-193, P-195, R-162, R-163 | `src/ekrany/StanDanych`<br>`src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne` | Z07-05, Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zglos-trasa.test.tsx` | zielony (główny zestaw) | 4 | BR-DAN-010/S1, BR-DAN-011, P-383 | `src/dane/repozytoria/ustawienia` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zgloszenie-awaryjne.test.tsx` | zielony (główny zestaw) | 2 | P-194 | `src/ekrany/ZglosProblem`<br>`src/ekrany/wspolne`<br>`src/kompozycja/zgloszenie-awaryjne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm23-zrealizuj-kod.test.tsx` | zielony (główny zestaw) | 2 | P-315 | `src/ekrany/Oferty` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm24-krok-i-podpowiedz.test.tsx` | zielony (główny zestaw) | 7 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm25-podpowiedz-odliczanie.test.tsx` | zielony (główny zestaw) | 6 | — | `src/ekrany/podpowiedz-odliczanie` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm26-zm28-podpowiedzi.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm27-menu-trasa.test.tsx` | zielony (główny zestaw) | 2 | — | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik`<br>`src/kompozycja/system` | Z07-22 |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zm27-menu-zdejmij.test.tsx` | zielony (główny zestaw) | 2 | — | `src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zrzuty-bez-diagnostyki.test.tsx` | zielony (główny zestaw) | 8 | P-993 | `src/dane/migracje/migruj`<br>`src/domena/porty`<br>`src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/licznik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/zrzuty-plakietka-strony.test.tsx` | zielony (główny zestaw) | 3 | — | `src/domena/uklad`<br>`src/ekrany/Pasek`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/wspolne` | Z07-22 |
 | 9 ? | `tests/adaptery/archiwum-skrot.test.ts` | zielony (główny zestaw) | 2 | P-130, R-067 | `src/dane/archiwum`<br>`src/dane/migracje/migruj`<br>`src/dane/pliki/magazyn` | Z07-22 |
@@ -505,7 +511,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/identyfikatory.test.ts` | zielony (główny zestaw) | 1 | — | `src/platforma/identyfikatory` | — |
 | 9 ? | `tests/adaptery/jpeg-metadane.test.ts` | zielony (główny zestaw) | 2 | P-219 | `src/dane/pliki/jpeg`<br>`src/kompozycja/e2e-zdjecie` | — |
 | 9 ? | `tests/adaptery/konwersja-pdf-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-282 | `src/domena/bledy` | — |
-| 9 ? | `tests/adaptery/live-activity.test.ts` | zielony (główny zestaw) | 7 | P-115, P-139 | `src/domena/porty`<br>`src/platforma/dziennik-plus`<br>`src/platforma/live-activity`<br>`src/platforma/zegarek` | Z07-22 |
+| 9 ? | `tests/adaptery/live-activity.test.ts` | zielony (główny zestaw) | 9 | P-115, P-139 | `src/domena/porty`<br>`src/platforma/dziennik-plus`<br>`src/platforma/live-activity`<br>`src/platforma/zegarek` | Z07-22 |
 | 9 ? | `tests/adaptery/m1-077-id-dozywotniego.test.ts` | zielony (główny zestaw) | 3 | — | `src/kompozycja/dostep`<br>`src/platforma/sklep` | — |
 | 9 ? | `tests/adaptery/magazyn.test.ts` | zielony (główny zestaw) | 2 | P-130 | `src/dane/pliki/magazyn` | — |
 | 9 ? | `tests/adaptery/platforma-proste.test.ts` | zielony (główny zestaw) | 3 | P-135, RD-16 | `src/platforma/ekran-aktywny`<br>`src/platforma/haptyka`<br>`src/platforma/zegar` | — |
@@ -513,7 +519,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/siec-kontrakt.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/porty` | Z07-22 |
 | 9 ? | `tests/adaptery/siec.test.ts` | zielony (główny zestaw) | 7 | NFR-OFF-001 | `src/domena/porty`<br>`src/platforma/siec` | Z07-22 |
 | 9 ? | `tests/adaptery/sklep-status.test.ts` | zielony (główny zestaw) | 2 | KP-13, P-135 | `src/domena/dostep`<br>`src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
-| 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 7 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
+| 9 ? | `tests/adaptery/sklep.test.ts` | zielony (główny zestaw) | 10 | KP-06, P-103, P-135 | `src/platforma/sklep`<br>`src/platforma/sklep-sztuczny` | — |
 | 9 ? | `tests/adaptery/teksty-natywne.test.ts` | zielony (główny zestaw) | 6 | P-115, P-139, P-143 | `src/i18n/jezyki`<br>`src/i18n/plural`<br>`src/i18n/slowniki/en.json` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-bez-diagnostyki-bx16.test.ts` | zielony (główny zestaw) | 4 | — | `src/platforma/tryb-e2e` | — |
 | 9 ? | `tests/adaptery/tryb-e2e-partia6.test.ts` | zielony (główny zestaw) | 4 | P-225, P-230, P-237, P-238, P-266 | `src/platforma/tryb-e2e` | — |
@@ -544,6 +550,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
 | 9 ? | `tests/domena/zm20-przesuniecie-rodzica.test.ts` | zielony (główny zestaw) | 3 | PR-01, PR-18 | `src/konfiguracja` | — |
 | 9 ? | `tests/domena/zm24-stukniecia.test.ts` | zielony (główny zestaw) | 5 | BR-LIC-011, RD-12, RD-17 | `src/domena/straznik-tempa` | — |
+| 9 ? | `tests/domena/zm25-podpowiedz-termin.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/podpowiedz` | — |
 | 9 ? | `tests/domena/zm27-aktywnosc.test.ts` | zielony (główny zestaw) | 3 | — | `src/konfiguracja` | — |
 
-Razem plików testów: 542; zależnych od poprawek: 337.
+Razem plików testów: 549; zależnych od poprawek: 342.

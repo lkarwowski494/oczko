@@ -713,7 +713,11 @@
     "zastapiono_wroc": "Aby wrócić, otwórz ten plik w Oczku i wybierz „Zastąp to, co jest”.",
     "konflikt_z_ekranu_blokady": "z ekranu blokady",
     "konflikt_z_zegarka": "z zegarka",
-    "konflikt_z_aplikacji": "z aplikacji"
+    "konflikt_z_aplikacji": "z aplikacji",
+    "konflikt_a11y_zrodlo_one": "Zachowaj {{count}} rząd {{zrodlo}}, {{godzina}}",
+    "konflikt_a11y_zrodlo_few": "Zachowaj {{count}} rzędy {{zrodlo}}, {{godzina}}",
+    "konflikt_a11y_zrodlo_many": "Zachowaj {{count}} rzędów {{zrodlo}}, {{godzina}}",
+    "konflikt_a11y_zrodlo_other": "Zachowaj {{count}} rzędu {{zrodlo}}, {{godzina}}"
   },
   "stan_danych": {
     "tytul": "Dane i synchronizacja",

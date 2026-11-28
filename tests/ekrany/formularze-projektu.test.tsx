@@ -55,11 +55,11 @@ test('licznik: część do wyboru (domyślnie podana), rodzaj Rows / Stitches ja
   expect(screen.getByText('Row counters in one part add up to a whole-piece total.')).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Stitches' }));
   fireEvent.press(screen.getByTestId('formularz-zapisz'));
-  await waitFor(() => expect(naZapisz).toHaveBeenCalledWith({ czescId: 'c2', rodzaj: 'oczka', nazwa: '' }));
+  await waitFor(() => expect(naZapisz).toHaveBeenCalledWith({ czescId: 'c2', rodzaj: 'oczka', nazwa: '', krok: 1 }));
   fireEvent.press(screen.getByRole('radio', { name: 'Back' }));
   fireEvent.changeText(screen.getByTestId('formularz-nazwa-licznika'), 'Cable');
   fireEvent.press(screen.getByTestId('formularz-zapisz'));
-  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ czescId: 'c1', rodzaj: 'oczka', nazwa: 'Cable' }));
+  await waitFor(() => expect(naZapisz).toHaveBeenLastCalledWith({ czescId: 'c1', rodzaj: 'oczka', nazwa: 'Cable', krok: 1 }));
 });
 
 test('notatka: pole wielowierszowe z etykietą „Note for {projekt}”, zapis treści bez limitu', async () => {

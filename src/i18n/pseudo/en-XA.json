@@ -545,6 +545,8 @@
   "dane.konflikt_z_ekranu_blokady": "⟦fŕöm thé Löçk Šçŕééñ~~~~~~~~~~~~~~⟧",
   "dane.konflikt_z_zegarka": "⟦fŕöm Àpplé Wàtçh~~~~~~~~~~~~⟧",
   "dane.konflikt_z_aplikacji": "⟦fŕöm thé àpp~~~~~~~~~~⟧",
+  "dane.konflikt_a11y_zrodlo_one": "⟦Kéép {{count}} ŕöw {{zrodlo}}, {{godzina}}~~~~~~~⟧",
+  "dane.konflikt_a11y_zrodlo_other": "⟦Kéép {{count}} ŕöwš {{zrodlo}}, {{godzina}}~~~~~~~~⟧",
   "stan_danych.tytul": "⟦Dàtà àñd šýñç~~~~~~~~~⟧",
   "stan_danych.ostatnia": "⟦Làšt šýñçéd {{data}}~~~~~~~~~~⟧",
   "stan_danych.czeka": "⟦Šýñç îš wàîtîñg föŕ à ñétwöŕk çöññéçtîöñ.~~~~~~~~~~~~~~⟧",

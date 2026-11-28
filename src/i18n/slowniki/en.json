@@ -575,7 +575,9 @@
     "zastapiono_wroc": "To go back, open that file in Oczko and choose Replace.",
     "konflikt_z_ekranu_blokady": "from the Lock Screen",
     "konflikt_z_zegarka": "from Apple Watch",
-    "konflikt_z_aplikacji": "from the app"
+    "konflikt_z_aplikacji": "from the app",
+    "konflikt_a11y_zrodlo_one": "Keep {{count}} row {{zrodlo}}, {{godzina}}",
+    "konflikt_a11y_zrodlo_other": "Keep {{count}} rows {{zrodlo}}, {{godzina}}"
   },
   "stan_danych": {
     "tytul": "Data and sync",

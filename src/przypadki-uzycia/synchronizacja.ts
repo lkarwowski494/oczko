@@ -146,7 +146,7 @@ export function sterownikSynchronizacji(z: ZaleznosciSynchronizacji, poPartii: (
 }
 
 /** Wersja licznika w konflikcie do wyboru (P-220 I1a, design-spec „iCloud”): wartość gałęzi, urządzenie i czas jej ostatniej zmiany. */
-export type KandydatKonfliktu = { glowa: string; wartosc: number; urzadzenie: string; rodzaj: RodzajUrzadzenia | null; czasMs: number; tutaj: boolean };
+export type KandydatKonfliktu = { glowa: string; wartosc: number; urzadzenie: string; rodzaj: RodzajUrzadzenia | null; czasMs: number; tutaj: boolean; zrodlo: string };
 
 /** Kandydaci liczeni przy pokazaniu (moduly.md „Ścieżka zapisu +1”: +1 w konflikcie zmienia lokalną gałąź); null = brak konfliktu. Najnowsza pierwsza. */
 export async function kandydaciKonfliktu(z: Pick<Zaleznosci, 'baza' | 'urzadzenie'>, licznikId: string): Promise<KandydatKonfliktu[] | null> {
@@ -154,9 +154,9 @@ export async function kandydaciKonfliktu(z: Pick<Zaleznosci, 'baza' | 'urzadzeni
   if (w.stan !== 'konflikt') return null;
   const out: KandydatKonfliktu[] = [];
   for (const k of w.kandydaci) {
-    const [r] = await wiersze(z.baza.all('SELECT urzadzenie, urzadzenie_rodzaj, czas_ms FROM zdarzenie WHERE id = ?', [k.glowa]), 'kandydaciKonfliktu');
+    const [r] = await wiersze(z.baza.all('SELECT urzadzenie, urzadzenie_rodzaj, czas_ms, zrodlo FROM zdarzenie WHERE id = ?', [k.glowa]), 'kandydaciKonfliktu');
     const rodzaj = r ? STANY['zdarzenie.urzadzenie_rodzaj'].find((x) => x === r.urzadzenie_rodzaj) ?? null : null;
-    if (r) out.push({ glowa: k.glowa, wartosc: k.wartosc, urzadzenie: tekst(r, 'urzadzenie'), rodzaj, czasMs: liczba(r, 'czas_ms'), tutaj: tekst(r, 'urzadzenie') === z.urzadzenie });
+    if (r) out.push({ glowa: k.glowa, wartosc: k.wartosc, urzadzenie: tekst(r, 'urzadzenie'), rodzaj, czasMs: liczba(r, 'czas_ms'), tutaj: tekst(r, 'urzadzenie') === z.urzadzenie, zrodlo: tekst(r, 'zrodlo') });
   }
   return out.sort((a, b) => b.czasMs - a.czasMs || a.glowa.localeCompare(b.glowa));
 }

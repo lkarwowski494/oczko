@@ -7,7 +7,7 @@ import { czytajMiejsce, type MiejsceZapisane } from '../domena/miejsce';
 import { mozeZaczacDzien, wznowienieLimitu } from '../domena/limit';
 import { planPrzypomnien, przypomnienieChwili, type PlanPrzypomnienia } from '../domena/przypomnienia';
 import { dodaniaPosiedzenia, posiedzenie } from '../domena/posiedzenie';
-import { serieLicznika } from '../domena/straznik-rodzaj';
+import { serieStukniec, stukniecia, type ZdarzenieStukniecia } from '../domena/stukniecia';
 import type { PortBazy } from '../domena/porty';
 import type { ZrodloZdarzenia } from '../domena/stany';
 import { STRAZNIK_OKNO_S, STRAZNIK_SERIA_ZDARZEN } from '../konfiguracja';
@@ -60,16 +60,16 @@ export type WidokLicznika = {
 
 const OKNO_SESJI = 200; // ostatnie zdarzenia czytane dla kresek i strażnika (posiedzenie dłuższe niż 200 rzędów pokazuje 200)
 
-type Plus = { id: string; czasMs: number; zrodlo: ZrodloZdarzenia };
+type Plus = { id: string; czasMs: number; zrodlo: ZrodloZdarzenia; rodzice: string[]; urzadzenie: string };
 type OstatnieZdarzenia = { dodania: Plus[]; plusMinus: Array<{ rodzaj: 'plus' | 'minus'; czasMs: number }> };
 /** Ostatnie zdarzenia licznika bez cofniętych, od najnowszego: `dodania` = tylko +1 (seria), `plusMinus` = +1 i −1 (kreski posiedzenia, [04-studio-projektowe-571]). */
 async function ostatnieZdarzenia(tx: PortBazy, licznikId: string): Promise<OstatnieZdarzenia> {
-  const r = await wiersze(tx.all('SELECT id, rodzaj, cofa, czas_ms, zrodlo FROM zdarzenie WHERE licznik_id = ? ORDER BY czas_ms DESC, rowid DESC LIMIT ?', [licznikId, OKNO_SESJI]), 'widokLicznika');
+  const r = await wiersze(tx.all('SELECT id, rodzaj, cofa, rodzice, czas_ms, zrodlo, urzadzenie FROM zdarzenie WHERE licznik_id = ? ORDER BY czas_ms DESC, rowid DESC LIMIT ?', [licznikId, OKNO_SESJI]), 'widokLicznika');
   const cofniete = new Set(r.flatMap((w) => listaTekstow(w, 'cofa')));
   const zywe = r.filter((w) => !cofniete.has(tekst(w, 'id')));
   return {
     dodania: zywe.filter((w) => tekst(w, 'rodzaj') === 'plus')
-      .map((w) => ({ id: tekst(w, 'id'), czasMs: liczba(w, 'czas_ms'), zrodlo: tekst(w, 'zrodlo') as ZrodloZdarzenia })),
+      .map((w) => ({ id: tekst(w, 'id'), czasMs: liczba(w, 'czas_ms'), zrodlo: tekst(w, 'zrodlo') as ZrodloZdarzenia, rodzice: listaTekstow(w, 'rodzice'), urzadzenie: tekst(w, 'urzadzenie') })),
     plusMinus: zywe.flatMap((w) => { const rodzaj = tekst(w, 'rodzaj'); return rodzaj === 'plus' || rodzaj === 'minus' ? [{ rodzaj, czasMs: liczba(w, 'czas_ms') } as const] : []; }),
   };
 }
@@ -80,13 +80,22 @@ async function ostatniStoper(tx: PortBazy, projektId: string): Promise<{ startMs
   const [r] = await wiersze(tx.all('SELECT start_ms, koniec_ms FROM sesja WHERE projekt_id = ? ORDER BY start_ms DESC LIMIT 1', [projektId]), 'widokLicznika');
   return r ? { startMs: liczba(r, 'start_ms'), koniecMs: liczbaLubNull(r, 'koniec_ms') } : null;
 }
-/** Pytanie o serię tylko, gdy seria kończy się ostatnim dodaniem i nic po nim nie zmieniło licznika (cofnięcie serii na końcu historii, F-47). */
-function seria(dodania: readonly Plus[], glowa: string | null, rodzajLicznika: RodzajLicznika, oknoS: number): WidokLicznika['seria'] {
-  if (dodania.length === 0 || dodania[0].id !== glowa) return null;
-  const s = serieLicznika({ rodzajLicznika, dodania: [...dodania].reverse(), konf: { seria: STRAZNIK_SERIA_ZDARZEN, oknoS } }); // oczka bez serii (RD-17, ER-24, BR-LIC-019/S3)
-  if (!s.ok) return null;
-  const ostatnia = s.wartosc.find((x) => x.ids[x.ids.length - 1] === glowa);
-  return ostatnia ? { ile: ostatnia.ids.length, sekundy: Math.max(1, Math.round((ostatnia.doMs - ostatnia.odMs) / 1000)), odZdarzeniaId: ostatnia.ids[0], zrodlo: ostatnia.zrodlo, odMs: ostatnia.odMs } : null;
+/**
+ * Pytanie o serię tylko, gdy seria kończy się ostatnim dodaniem i nic po nim nie zmieniło licznika (cofnięcie serii na końcu historii, F-47).
+ * ZM-24 (ADR-0036, SE): strażnik liczy STUKNIĘCIA (`stukniecia` grupuje zdarzenia „+2” jednego dotknięcia), nie zdarzenia: seria = `STRAZNIK_SERIA_ZDARZEN` stuknięć w oknie,
+ * `ile` = suma kroków (rzędy w banerze), cofnięcie obejmuje wszystkie zdarzenia serii. Oczka bez serii (RD-17, ER-24, BR-LIC-019/S3).
+ * Przy kroku 1 każde zdarzenie jest osobnym stuknięciem: grupowanie po tym samym czasie (heurystyka kroku „+2”) nie może skleić dwóch szybkich „+1”.
+ */
+function seria(dodania: readonly Plus[], glowa: string | null, rodzajLicznika: RodzajLicznika, oknoS: number, krok: 1 | 2): WidokLicznika['seria'] {
+  if (dodania.length === 0 || dodania[0]?.id !== glowa || rodzajLicznika === 'oczka') return null;
+  const rosnaco = [...dodania].reverse();
+  const wejscie: ZdarzenieStukniecia[] = rosnaco.map((d) => ({ id: d.id, rodzaj: 'plus', czasMs: d.czasMs, rodzice: d.rodzice, zrodlo: d.zrodlo, urzadzenie: d.urzadzenie }));
+  const grupy = krok === 2 ? stukniecia(wejscie) : wejscie.map((z) => ({ ids: [z.id], krok: 1, czasMs: z.czasMs, zrodlo: z.zrodlo, rodzaj: z.rodzaj }));
+  const ostatnia = serieStukniec(grupy, { seria: STRAZNIK_SERIA_ZDARZEN, oknoS }).find((x) => x.ids[x.ids.length - 1] === glowa);
+  const pierwsza = ostatnia && rosnaco.find((d) => d.id === ostatnia.ids[0]);
+  const koniec = ostatnia && rosnaco.find((d) => d.id === glowa);
+  if (!ostatnia || !pierwsza || !koniec) return null;
+  return { ile: ostatnia.rzedy, sekundy: Math.max(1, Math.round((koniec.czasMs - pierwsza.czasMs) / 1000)), odZdarzeniaId: ostatnia.ids[0] ?? pierwsza.id, zrodlo: ostatnia.zrodlo as ZrodloZdarzenia, odMs: pierwsza.czasMs };
 }
 async function plany(tx: PortBazy, licznikId: string): Promise<WidokLicznika['plany']> {
   return (await wiersze(tx.all('SELECT id, od_rzedu, co_n, razy, tekst FROM przypomnienie WHERE licznik_id = ? ORDER BY od_rzedu, id', [licznikId]), 'widokLicznika'))
@@ -159,7 +168,7 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         sesja: posiedzenie({ dodaniaMs: dodaniaPosiedzenia(plusMinus), stoper: await ostatniStoper(tx, tekst(r, 'projekt_id')) }),
         limit: zaw.limitZawczasu ? 'zawczasu' : zaw.ostatniDarmowy ? 'ostatni-darmowy' : 'brak',
         dzis, wznowienie: wznowienieLimitu({ dzis }),
-        seria: seria(dodania, glowa, tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', z.straznikOknoS ?? STRAZNIK_OKNO_S),
+        seria: seria(dodania, glowa, tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', z.straznikOknoS ?? STRAZNIK_OKNO_S, liczba(r, 'krok') === 2 ? 2 : 1),
         blizniak: await blizniak(tx, tekstLubNull(r, 'para_z'), wartosc + 1),
         celDnia: cel && cel.rodzaj === 'cel' ? cel.rzedy : null,
         zrobioneDzis: dzien ? dzien.zrobioneDzis : null,
@@ -217,8 +226,8 @@ export function historiaLicznika(z: Zaleznosci, w: { licznikId: string; limit?: 
       cofniety: cofniete.has(tekst(x, 'id')), mozeCofnac: i === cel, seria: null,
     }));
     // Seria na końcu historii (nic po niej nie zmieniło licznika) to jeden wpis z „Undo n rows” (BR-LIC-003/S2, design-spec 021).
-    const [l] = cel === 0 ? await wiersze(tx.all('SELECT glowa, rodzaj FROM licznik WHERE id = ?', [w.licznikId]), 'historiaLicznika') : [];
-    const ser = l ? seria(await ostatnieDodania(tx, w.licznikId), tekstLubNull(l, 'glowa'), tekst(l, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', z.straznikOknoS ?? STRAZNIK_OKNO_S) : null;
+    const [l] = cel === 0 ? await wiersze(tx.all('SELECT glowa, rodzaj, krok FROM licznik WHERE id = ?', [w.licznikId]), 'historiaLicznika') : [];
+    const ser = l ? seria(await ostatnieDodania(tx, w.licznikId), tekstLubNull(l, 'glowa'), tekst(l, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', z.straznikOknoS ?? STRAZNIK_OKNO_S, liczba(l, 'krok') === 2 ? 2 : 1) : null;
     const k = ser ? wpisy.findIndex((x) => x.id === ser.odZdarzeniaId) : -1;
     const wynik = ser && k > 0 ? [{ ...wpisy[0], z: wpisy[k].z, seria: ser }, ...wpisy.slice(k + 1)] : wpisy;
     return { ok: true, wartosc: wynik.slice(0, limit) };

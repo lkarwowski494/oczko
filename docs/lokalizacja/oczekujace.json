@@ -28,6 +28,7 @@
     "P-1133"
   ],
   "klucze": [
+    "dane.konflikt_a11y_zrodlo",
     "dane.konflikt_z_aplikacji",
     "dane.konflikt_z_ekranu_blokady",
     "dane.konflikt_z_zegarka",
@@ -55,6 +56,9 @@
   ],
   "pierwsze_w_fali": [],
   "przetlumaczone_czesciowo": {
+    "dane.konflikt_a11y_zrodlo": [
+      "pl"
+    ],
     "dane.konflikt_z_aplikacji": [
       "pl"
     ],

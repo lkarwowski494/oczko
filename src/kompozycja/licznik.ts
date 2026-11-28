@@ -15,8 +15,8 @@ import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } 
 import { miejscePracy, type MiejscePracy } from './miejsce-pracy';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
-import { decyzjaAktywnosci, type ZdarzenieAktywnosci } from '../domena/aktywnosc';
-import { LIVE_KONIEC_PO_MS } from '../konfiguracja';
+import type { ZdarzenieAktywnosci } from '../domena/aktywnosc';
+import { ekranBlokady, etykietaZrodlaGalezi } from './licznik-aktywnosc';
 import { podpowiedzPlusMin } from '../przypadki-uzycia/podpowiedz';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
@@ -159,8 +159,9 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     const { s, w } = await stan(); // jeden odczyt po zapisie: wartość, zdarzenia i pełny stan ekranu (BX20: ekran nie czyta stanu drugi raz po „+1”)
     void poZapisie(w, 'liczenie');
     if (!w) return { ok: false, powod: 'bledne_dane' };
-    const sygnal = wejscie(w, r.wartosc.wartosc - 1);
-    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal, stan: s } };
+    const sprzed = r.wartosc.wartosc - w.krok; // ZM-24: stuknięcie dodaje `krok` rzędów; sygnały liczone od wartości sprzed niego (przeskok celu, powtórzenia, rzędu z instrukcją)
+    const sygnal = wejscie(w, sprzed);
+    return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w), sprzed), wejscieWPrzypomnienie: sygnal, stan: s } };
   }
 
   const k: KompozycjaLicznika = {
@@ -213,23 +214,24 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       await poZapisie(w, zdarzenie);
       wersja += 1;
     },
-    ekranBlokady: {
-      aktywna: () => z.liveActivity.aktywna(),
-      async zdejmij() { // AK-07/AK-08: koniec tylko, gdy aktywność istnieje (stan natywny)
-        const d = decyzjaAktywnosci({ zdarzenie: 'menu_zakoncz', aktywna: z.liveActivity.aktywna(), systemWlaczone: true, ostatniaZmianaMs: null, teraz: z.zegar.teraz().ms, koniecPoMs: LIVE_KONIEC_PO_MS });
-        if (d === 'zakoncz') await z.liveActivity.zakoncz();
-      },
-      async stoperTrwa(projektId) {
-        try { return (await z.baza.all("SELECT 1 AS t FROM sesja WHERE projekt_id = ? AND stan = 'trwa' LIMIT 1", [projektId])).length > 0; } catch { return false; }
-      },
-    },
+    ekranBlokady: ekranBlokady(z),
     konflikt: {
       async kandydaci() {
         if (!licznikId) return [];
         const ch = z.zegar.teraz();
         const godz = (ms: number) => formatujGodzine(new Date(ms), j.jezyk(), { uses24h: j.zegar24h(), strefa: ch.strefa });
-        return ((await kandydaciKonfliktu(z, licznikId)) ?? []).map((x) => {
+        const wszyscy = (await kandydaciKonfliktu(z, licznikId)) ?? [];
+        return wszyscy.map((x) => {
           const u = x.rodzaj ? NAZWA_URZADZENIA[x.rodzaj] : x.urzadzenie; // P-247 U6a: rodzaj zamiast UUID; bez rodzaju (zegarek, atrapa) pole
+          const zrodlo = etykietaZrodlaGalezi(x, wszyscy);
+          if (zrodlo) { // ADR-0035 „Ryzyko szczątkowe”, P-1111: gałęzie z tego samego urządzenia rozróżnia źródło (ekran blokady, zegarek, aplikacja)
+            const tekstZrodla = j.t(zrodlo);
+            return {
+              glowa: x.glowa, wartosc: x.wartosc,
+              tekst: j.t('dane.konflikt_wybor', { count: x.wartosc, urzadzenie: tekstZrodla, godzina: godz(x.czasMs) }),
+              etykieta: j.t('dane.konflikt_a11y_zrodlo', { count: x.wartosc, zrodlo: tekstZrodla, godzina: godz(x.czasMs) }),
+            };
+          }
           return {
             glowa: x.glowa, wartosc: x.wartosc,
             tekst: j.t('dane.konflikt_wybor', { count: x.wartosc, urzadzenie: u, godzina: godz(x.czasMs) }),

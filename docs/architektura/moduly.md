@@ -59,7 +59,8 @@ export interface DziennikPlus {                                                 
   odczytaj(): Promise<ZdarzenieWejsciowe[]>;  // linie po ostatnim skróceniu; uszkodzona linia → pominięta + błąd w diagnostyce; zdarzenie ze sklejonej linii odzyskane (ADR-0008 (8R))
   skroc(doId: string): Promise<void>;         // do doId włącznie (także w linii sklejonej) + ucięty ogon bez \n za doId (ADR-0008 (8S)); zapis linii: (8A), tylko Swift
 }
-export interface LiveActivity { start(s: StanEkranuBlokady): Promise<Wynik<void>>; aktualizuj(s: StanEkranuBlokady): Promise<void>; zakoncz(): Promise<void> }
+// `aktywna()` = stan natywny (Activity.activities niepuste, `active` albo `stale`), nie flaga w pamięci procesu (ADR-0037 reguła 2); `staleDateMs` = ADR-0037 reguła 4 (brak/null = bez `staleDate`)
+export interface LiveActivity { start(s: StanEkranuBlokady, staleDateMs?: number | null): Promise<Wynik<void>>; aktualizuj(s: StanEkranuBlokady, staleDateMs?: number | null): Promise<void>; zakoncz(): Promise<void>; aktywna(): boolean }
 // (e) kolejka zegarka (08 partia 4: przeniesione z „Kontrakt partii 4”) — ADR-0009, uzupełnienie 2026-10-26 pkt 3: potwierdzenia jadą w kontekście aplikacji obok stanu
 export interface Zegarek { wyslijStan(s: StanZegarka): Promise<void>; potwierdz(ids: readonly string[]): void; odbieraj(fn: (z: ZdarzenieWejsciowe[]) => void): () => void } // ADR-0009 (2026-10-26) pkt 3
 // potwierdz: dopisuje id do listy ostatnich ZEGAREK_POTWIERDZENIA_MAKS (bez powtórzeń; ponowne id przechodzi na koniec, najstarsze wypadają; pamięć procesu);
@@ -71,7 +72,8 @@ export type WynikPartii = { scalono: number; pominieto: number; potwierdzone: st
 export interface Synchronizacja { wlacz(): Promise<Wynik<void>>; wylacz(): Promise<void>; stan(): StanSynchronizacji; statusKonta(): Promise<StatusKonta>; uruchom(stanSilnika: Uint8Array | null): Promise<void>; wyslij(zmiany: readonly ZmianaDoWyslania[]): Promise<void>; odbieraj(fn: (p: PartiaIcloud) => Promise<void>): () => void; wyslane(fn: (p: PotwierdzenieIcloud) => Promise<void>): () => void; zdarzeniaKonta(fn: (z: ZdarzenieKonta) => void): () => void; usunStrefe(): Promise<Wynik<void>>; pobieranie(fn: (faza: 'poczatek' | 'koniec') => Promise<void>): () => void } // ADR-0005 (fix-7 2026-10-26, P-221 Q5a): skrzynka zmian w bazie zamiast zglosZmiane; pobieranie: pełne pobranie strefy (uzupełnienie 2026-11-03, M1-117)
 // odbieraj/wyslane: obsługa w JS w jednej transakcji kolejki (partia + stanSilnika albo DELETE ze skrzynki z nr ≤ wysłanego + stanSilnika); Swift czeka na Promise przed potwierdzeniem silnikowi.
 export type StatusZakupu = 'sukces' | 'oczekujacy' | 'anulowany' | 'blad'; // P-135 Q3a, ADR-0010: anulowanie i oczekiwanie nie są błędem (MON-04); adapter: statusZBledu
-export interface Sklep { produkty(): Promise<Produkt[]>; kup(id: string): Promise<StatusZakupu>; przywroc(): Promise<Wynik<void>>; transakcje(): Promise<Transakcja[]>; obserwuj(fn: () => void): () => void } // ADR-0010
+// `zrealizujKod` (ZM-23, U5, P-1072): arkusz Apple „Redeem code”; bez sieci `brak_sieci` (okno się nie otwiera), inny błąd `zapis`; wynik realizacji przychodzi nasłuchem transakcji (`obserwuj`), nie wartością zwrotną
+export interface Sklep { produkty(): Promise<Produkt[]>; kup(id: string): Promise<StatusZakupu>; przywroc(): Promise<Wynik<void>>; zrealizujKod(): Promise<Wynik<void>>; transakcje(): Promise<Transakcja[]>; obserwuj(fn: () => void): () => void } // ADR-0010
 export type WzorzecHaptyki = 'plus' | 'piataKreska' | 'rzadZInstrukcja' | 'minus' | 'blokadaStukniecie' | 'bladZapisu' | 'stoperStart'; // klucze tokenów 04 „haptyka” (P-135 Q4a)
 export interface Haptyka { zagraj(w: WzorzecHaptyki): void } // F-48: rozpoznawalne tylko plus i rzadZInstrukcja, reszta systemowa; brak dźwięku (BR-LIC-005)
 export interface EkranAktywny { wlacz(tag: string): void; wylacz(tag: string): void } // F-10, każdy tag wyłączany (rejestr Expo 7)
