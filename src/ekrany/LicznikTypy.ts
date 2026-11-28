@@ -17,6 +17,7 @@ export type BanerLicznika =
   | null;
 
 export type StanEkranuLicznika = {
+  licznikId?: string;                  // FX1 P2-2: id licznika (klucz odliczania podpowiedzi „+1” — dwa liczniki jednej części nie dzielą klucza)
   rodzaj: 'rzedy' | 'oczka';           // licznik oczek: „stitch” zamiast „row”, bez celu, przypomnień, powtórzeń i banera strażnika (BR-LIC-006, 07-jakosc-025)
   projekt: string | null;              // null: pierwszy licznik bez nazwy (BR-LIC-001, NFR-PIE-001)
   czesc: string | null;

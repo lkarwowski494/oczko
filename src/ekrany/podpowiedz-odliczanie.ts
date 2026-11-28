@@ -8,10 +8,22 @@ export type WejscieOdliczania = {
   progMin: number | null; ostatniaZmianaMs: number | null; klucz: string; blokada: boolean;
   teraz(): number; poPokazaniu?(): void;
 };
+/** Klucz „rzędu” dla odliczania: id licznika + wartość (dwa liczniki tej samej części z tą samą wartością nie dzielą klucza; FX1 P2-2). */
+export function kluczRzedu(w: { licznikId: string | undefined; skonczone: number | undefined }): string {
+  return `${w.licznikId ?? ''}|${w.skonczone ?? 0}`;
+}
 export function useOdliczaniePodpowiedzi(w: WejscieOdliczania): { minuty: number } | null {
   const [pokazana, ustawPokazana] = useState<string | null>(null);
   const otwarto = useRef<number | null>(null);
   if (otwarto.current === null) otwarto.current = w.teraz();
+  // Zmiana klucza rzędu (+1, −1, zapis z innego urządzenia): „pokazana” zerowane, żeby powrót do dawnego klucza nie przywracał podpowiedzi, a odliczanie
+  // liczone od chwili zmiany (nie od starej `ostatniaZmianaMs`, której „−1” może nie przesunąć). Wzorzec „stan z poprzedniego renderu” (react.dev: You Might Not Need an Effect).
+  const [ostatniKlucz, ustawOstatniKlucz] = useState(w.klucz);
+  if (ostatniKlucz !== w.klucz) {
+    ustawOstatniKlucz(w.klucz);
+    ustawPokazana(null);
+    otwarto.current = w.teraz();
+  }
   const poPokazaniu = useRef(w.poPokazaniu);
   poPokazaniu.current = w.poPokazaniu;
   useEffect(() => {

@@ -38,7 +38,7 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
   }
   const oczka = w.rodzaj === 'oczka'; // licznik oczek nie ma celu (cel części jest w rzędach), celu dnia, przypomnień, powtórzeń, banera strażnika ani rzędu w robocie
   return {
-    rodzaj: w.rodzaj,
+    licznikId: w.licznikId, rodzaj: w.rodzaj,
     projekt: w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa,
     czesc: czescNaLiczniku(w.czesc.nazwa), // nazwa zapasowa części (data startu) nie jest pokazywana, także po nazwaniu projektu (BY-002; design-spec „Projekt roboczy”); nazwa wpisana — zawsze
     skonczone: w.wartosc, dziergany: w.wartosc + 1, znaczenie: oczka ? 'skonczone' : w.znaczenie, cel: oczka ? null : w.czesc.cel,

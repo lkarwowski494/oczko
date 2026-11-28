@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import type { EkranAktywny, Haptyka, Sklep } from '../domena/porty';
 import { kartaZPlusem, TAG_DZIS, TAG_LICZNIK, wejdzNaEkran } from '../przypadki-uzycia/ekran-aktywny';
 import { Dzis, type DaneDzis, type KafelDzis } from './Dzis';
-import { useOdliczaniePodpowiedzi } from './podpowiedz-odliczanie';
+import { kluczRzedu, useOdliczaniePodpowiedzi } from './podpowiedz-odliczanie';
 import { Licznik, type PropsLicznika, type StanEkranuLicznika, type WynikPlus } from './Licznik';
 import { useKolory } from './motyw';
 import type { CyklAplikacji, Oglos, System, Tlumacz } from './wspolne';
@@ -236,7 +236,7 @@ export function EkranLicznika(p: PropsEkranuLicznika): React.ReactElement {
   // ZM-25 (U7 forma A): odliczanie „bez +1” na otwartym liczniku; klucz rzędu zmienia +1/−1 (podpowiedź znika i liczy od nowa). Zegar wstrzyknięty (`zegar`).
   const sl = stan?.licznik;
   const podpowiedz = useOdliczaniePodpowiedzi({
-    progMin: sl?.podpowiedzProg ?? null, ostatniaZmianaMs: sl?.ostatniaZmianaMs ?? null, klucz: `${sl?.projekt ?? ''}|${sl?.czesc ?? ''}|${sl?.skonczone ?? 0}`,
+    progMin: sl?.podpowiedzProg ?? null, ostatniaZmianaMs: sl?.ostatniaZmianaMs ?? null, klucz: kluczRzedu({ licznikId: sl?.licznikId, skonczone: sl?.skonczone }),
     blokada: !sl || sl.zablokowany || sl.limit.rodzaj === 'zawczasu' || sl.stoperWstrzymany === true, teraz: p.zegar ?? Date.now,
     poPokazaniu: () => { if (sl?.wibracje) p.porty.haptyka.zagraj('rzadZInstrukcja'); }, // jedna wibracja ostrzeżenia na rząd
   });
