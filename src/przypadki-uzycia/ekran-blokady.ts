@@ -16,6 +16,17 @@ import type { Zaleznosci } from './zaleznosci';
 export type ZaleznosciEkranuBlokady = Zaleznosci & { liveActivity: LiveActivity; zegarek: Zegarek };
 
 /**
+ * FX1 P3 (KO-246): decyzja i wywołanie portu Live Activity idą jedną kolejką na port. Dwa szybkie +1 wołają to odświeżenie bez czekania; bez kolejki oba czytają
+ * `aktywna() = false` (stan natywny rośnie dopiero po zakończeniu `start`) i dwa razy startują Live Activity. Kolejność wywołań zostaje kolejnością odczytów z bazy.
+ */
+const kolejkiLiveActivity = new WeakMap<LiveActivity, Promise<unknown>>();
+function wKolejceLiveActivity<T>(port: LiveActivity, zadanie: () => Promise<T>): Promise<T> {
+  const wynik = (kolejkiLiveActivity.get(port) ?? Promise.resolve()).then(zadanie, zadanie);
+  kolejkiLiveActivity.set(port, wynik.catch(() => undefined));
+  return wynik;
+}
+
+/**
  * ADR-0037 (KO-234, P-1099): `zdarzenie` mówi, co wywołało odświeżenie; `decyzjaAktywnosci` (czysta, wektory AK) wybiera start / aktualizację / koniec / nic
  * na podstawie stanu natywnego `liveActivity.aktywna()`. Start tylko przy `liczenie` (odświeżenie nigdy nie wskrzesza aktywności); koniec po `LIVE_KONIEC_PO_MS`
  * bez zmian i na `menu_zakoncz`/`reset`. Zegarek dostaje stan zawsze (ADR-0009, koniec Live Activity go nie dotyczy).
@@ -52,11 +63,13 @@ export async function odswiezEkranBlokady(
     if (stan.powod === 'bledne_dane') await z.liveActivity.zakoncz();
     return stan;
   }
-  const decyzja = decyzjaAktywnosci({ zdarzenie: w.zdarzenie ?? 'odswiezenie', aktywna: z.liveActivity.aktywna(), systemWlaczone: true, ostatniaZmianaMs, teraz: terazMs, koniecPoMs: LIVE_KONIEC_PO_MS });
   const stale = dataNieaktualnosci({ ostatniaZmianaMs, przypominaczMs: null, koniecPoMs: LIVE_KONIEC_PO_MS }); // przypominacz U7 forma A działa w aplikacji; staleDate = koniec po czasie (ADR-0037 (4))
-  if (decyzja === 'start') await z.liveActivity.start(stan.wartosc, stale);
-  else if (decyzja === 'aktualizuj') await z.liveActivity.aktualizuj(stan.wartosc, stale);
-  else if (decyzja === 'zakoncz') await z.liveActivity.zakoncz();
+  await wKolejceLiveActivity(z.liveActivity, async () => {
+    const decyzja = decyzjaAktywnosci({ zdarzenie: w.zdarzenie ?? 'odswiezenie', aktywna: z.liveActivity.aktywna(), systemWlaczone: true, ostatniaZmianaMs, teraz: terazMs, koniecPoMs: LIVE_KONIEC_PO_MS });
+    if (decyzja === 'start') await z.liveActivity.start(stan.wartosc, stale);
+    else if (decyzja === 'aktualizuj') await z.liveActivity.aktualizuj(stan.wartosc, stale);
+    else if (decyzja === 'zakoncz') await z.liveActivity.zakoncz();
+  });
   await z.zegarek.wyslijStan(stan.wartosc);
   return stan;
 }
