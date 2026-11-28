@@ -179,3 +179,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | AR1 | 05 fix | 8 | 13,20 | 41 | 10:54 → 10:54 → 11:15 → verify sesji 11:28 → 11:33 | 0 | architektura 1.0.2 + 2 rozszerzenia w trakcie (OP-38, KO-234) |
 Przegląd 28.11 11:35: sesje opus (ZK1 6,61, RS1 8,33, PR1 9,37, AR1 13,20) — mnożnik rzeczywisty ÷ szacunek ≈ 1,4; doba 28.11 do 11:35 ≈ 39 USD → WG-38 |
 | RS2 | 01 fix | 7 | 4,69 | 23 | 11:14 → 11:14 → 11:30 → verify sesji 11:33 → 11:45 | 0 | research wzoru tekstowego + scalenie |
+| PR2 | 04 fix | 6 | 9,14 | 32 | 11:17 → 11:17 → 11:33 → verify sesji 11:35 → 12:00 (+ runda 2) | 0 | scalenie + ZM-27 + 5 zgłoszeń AR1 + ZM-28 |
