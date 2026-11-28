@@ -25,7 +25,11 @@ struct OczkoAktywnosc: Widget {
       } compactLeading: {
         Image(systemName: "number") // znak kresek z ikony: zasób dla celu widżetu — zgłoszenie (partia 4, raport)
       } compactTrailing: {
+        #if OCZKO_PROTOTYP_B
+        ZnacznikPrototypuB(a: kontekst.state, nieaktualna: kontekst.isStale) // prototyp B (flaga kompilacji tylko w prototyp-b.yml)
+        #else
         Liczba(stan: kontekst.state.stan).monospacedDigit()
+        #endif
       } minimal: {
         Liczba(stan: kontekst.state.stan).monospacedDigit()
       }
@@ -225,3 +229,20 @@ struct EkranBlokady: View {
     .padding(14)
   }
 }
+
+#if OCZKO_PROTOTYP_B
+/// Prototyp B (ADR-0037, rejestr Apple 22a–22j): licznik czasu od `ostatniPlusMs` (rysuje system, bez procesu aplikacji) albo znacznik „STALE” po `staleDate`
+/// (`context.isStale`). Kod istnieje tylko w buildzie z flagą kompilacji OCZKO_PROTOTYP_B; build wydania go nie zawiera.
+struct ZnacznikPrototypuB: View {
+  let a: StanAktywnosci
+  let nieaktualna: Bool
+  var body: some View {
+    if nieaktualna {
+      Text("STALE").font(.system(size: 12, weight: .heavy)).foregroundStyle(Color.red).lineLimit(1).fixedSize()
+    } else if let ms = a.stan.ostatniPlusMs {
+      Text(timerInterval: Date(timeIntervalSince1970: TimeInterval(ms) / 1000)...Date.distantFuture, countsDown: false)
+        .font(.system(size: 12).monospacedDigit()).foregroundStyle(Color.white).lineLimit(1).frame(width: 40)
+    }
+  }
+}
+#endif

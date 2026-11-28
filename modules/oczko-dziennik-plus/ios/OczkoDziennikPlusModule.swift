@@ -7,22 +7,35 @@ import Foundation
 public class OczkoDziennikPlusModule: Module {
   public func definition() -> ModuleDefinition {
     Name("OczkoDziennikPlus")
+    #if OCZKO_PROTOTYP_B // tylko build prototypu B (docs/architektura/eksperymenty/1-0-2/prototyp-b/); bez flagi kompilacji ta linia nie istnieje
+    OnCreate { PrototypB.start() }
+    OnAppEntersForeground { PrototypB.start() }
+    #endif
 
     AsyncFunction("odczytajTekst") { () throws -> String in try DziennikPlus.wspolny.tekst() }
     AsyncFunction("skroc") { (doId: String) throws in try DziennikPlus.wspolny.skroc(doId: doId) }
 
     // Każda aktualizacja z JS czyści `uwaga` (ADR-0008, 2026-10-26); `jezyk` = język aplikacji (P-139), nil = angielski.
     AsyncFunction("liveStart") { (stanJson: String, urzadzenie: String, jezyk: String?) async throws -> String in
+      #if OCZKO_PROTOTYP_B
+      if PrototypB.aktywny { return "" } // prototyp B: Live Activity prowadzi tylko PrototypB
+      #endif
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
       for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) } // jedna sesja na ekranie blokady
       let a = try Activity<OczkoAtrybuty>.request(attributes: OczkoAtrybuty(urzadzenie: urzadzenie), content: ActivityContent(state: stan, staleDate: nil), pushType: nil)
       return a.id
     }
     AsyncFunction("liveAktualizuj") { (stanJson: String, jezyk: String?) async throws in
+      #if OCZKO_PROTOTYP_B
+      if PrototypB.aktywny { return }
+      #endif
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
       for a in Activity<OczkoAtrybuty>.activities { await a.update(ActivityContent(state: stan, staleDate: nil)) }
     }
     AsyncFunction("liveZakoncz") { () async in
+      #if OCZKO_PROTOTYP_B
+      if PrototypB.aktywny { return }
+      #endif
       for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) }
     }
     Function("liveDostepne") { () -> Bool in ActivityAuthorizationInfo().areActivitiesEnabled }

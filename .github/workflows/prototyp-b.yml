@@ -1,0 +1,102 @@
+# Prototyp B (PB1, KO-237; docs/architektura/1-0-2.md „Prototyp B — zadanie dla 08”): czy Live Activity przy zakończonym procesie aplikacji
+# (a) przerysowuje licznik czasu od `ostatniPlusMs` i (b) zmienia wygląd po `staleDate` (`context.isStale`). Symulator iPhone z Dynamic Island, macOS.
+# Wyzwalacz: push TYLKO na gałąź claude/pb1-prototyp-b-2026-11-28 (workflow_dispatch działa tylko z `main`); osobny plik, bez wpływu na jakosc-ios.yml.
+# Flaga kompilacji OCZKO_PROTOTYP_B jest ustawiana wyłącznie w kroku „Build” tego pliku; build wydania (testflight.yml) i e2e (jakosc-ios.yml) jej nie mają
+# (kontrola: docs/architektura/eksperymenty/1-0-2/prototyp-b/kontrola-flagi.mjs). Bez sekretów i bez podpisu. Wynik: artefakt `prototyp-b` (zrzuty, OCR, log, wynik.json).
+name: Prototyp B · Live Activity bez procesu aplikacji
+on:
+  push:
+    branches: [claude/pb1-prototyp-b-2026-11-28]
+    paths:
+      - '.github/workflows/prototyp-b.yml'
+      - 'modules/oczko-dziennik-plus/**'
+      - 'targets/widget/**'
+      - 'docs/architektura/eksperymenty/1-0-2/prototyp-b/**'
+permissions:
+  contents: read
+concurrency:
+  group: prototyp-b-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prototyp-b:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Kontrola flagi prototypu (tylko ten workflow i bloki #if)
+        run: node docs/architektura/eksperymenty/1-0-2/prototyp-b/kontrola-flagi.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Xcode 26.x (najnowszy z obrazu, P-091 5a)
+        run: bash .github/scripts/jakosc/select-xcode.sh 26 && xcodebuild -version | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: expo prebuild
+        run: npx expo prebuild --platform ios --no-install --clean
+      - name: Intencja w celu aplikacji (_shared/Stuknij.swift; P-180)
+        run: |
+          set -o pipefail
+          node scripts/natywne/czlonkostwo-celu.mjs --pbxproj ios/*.xcodeproj/project.pbxproj --plik _shared/Stuknij.swift | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ikona zegarka w projekcie (P-350)
+        run: |
+          set -o pipefail
+          node scripts/natywne/ikona-zegarka.mjs --pbxproj ios/*.xcodeproj/project.pbxproj | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: pods
+        run: cd ios && pod install 2>&1 | tee pod-install.log
+      - name: Platforma iOS zgodna z SDK (pobranie tylko, gdy jej brak)
+        run: bash .github/scripts/jakosc/ensure-ios-platform.sh
+      - name: Build (Release, symulator, bez podpisu, z flagą OCZKO_PROTOTYP_B)
+        run: |
+          set -o pipefail
+          cd ios
+          WS=$(ls -d *.xcworkspace | head -1); SCHEME="${WS%.xcworkspace}"
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO \
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) OCZKO_PROTOTYP_B' \
+            2>&1 | tee xcodebuild.log | xcbeautify
+          APP=$(ls -d build/Build/Products/Release-iphonesimulator/*.app | head -1)
+          test -d "$APP/PlugIns/OczkoWidget.appex"
+          # Dowód, że flaga weszła do widżetu i do modułu aplikacji (nazwy typów Swift w metadanych binarek)
+          strings -a "$APP/PlugIns/OczkoWidget.appex/OczkoWidget" > "$RUNNER_TEMP/widget.txt"
+          strings -a "$APP/$(basename "$APP" .app)" > "$RUNNER_TEMP/aplikacja.txt"
+          grep -q ZnacznikPrototypuB "$RUNNER_TEMP/widget.txt" || { echo "::error::widżet bez ZnacznikPrototypuB (flaga nie weszła)"; exit 1; }
+          grep -q PrototypB "$RUNNER_TEMP/aplikacja.txt" || { echo "::error::aplikacja bez PrototypB (flaga nie weszła)"; exit 1; }
+          echo "Flaga w binarkach: widżet (ZnacznikPrototypuB), aplikacja (PrototypB)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "APP=$PWD/$APP" >> "$GITHUB_ENV"
+      - name: Symulator iPhone z Dynamic Island
+        run: |
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-version)
+          LIST=$(xcrun simctl list devices available | awk -v h="-- iOS $SDK --" '$0 == h { f = 1; next } /^-- / { f = 0 } f')
+          [ -n "$LIST" ] || LIST=$(xcrun simctl list devices available)
+          DEV=""
+          for pat in "iPhone 17 Pro \(" "iPhone 17 \(" "iPhone 16 Pro \(" "iPhone 16 \(" "iPhone"; do
+            DEV=$(printf '%s\n' "$LIST" | node .github/scripts/jakosc/sim-wybor.mjs "$pat" || true)
+            [ -n "$DEV" ] && break
+          done
+          [ -n "$DEV" ] || { echo "::error::brak symulatora iPhone"; exit 1; }
+          echo "Symulator: $DEV (iOS $SDK)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "SIM=$DEV" >> "$GITHUB_ENV"
+          xcrun simctl boot "$DEV" || true
+          xcrun simctl bootstatus "$DEV" -b
+          xcrun simctl ui "$DEV" appearance dark || true
+          xcrun simctl install "$DEV" "$APP"
+      - name: Przebiegi (2 × terminate + zrzuty co 5 s + OCR)
+        run: bash docs/architektura/eksperymenty/1-0-2/prototyp-b/przebieg.sh "$SIM" "$APP" "$GITHUB_WORKSPACE/prototyp-b-wyniki" 2 2>&1 | tee prototyp-b-log.txt
+      - name: Werdykt
+        if: always()
+        run: |
+          node docs/architektura/eksperymenty/1-0-2/prototyp-b/werdykt.mjs prototyp-b-wyniki --json prototyp-b-wyniki/wynik.json | tee prototyp-b-werdykt.txt
+          { echo "### Prototyp B — werdykt"; echo '```'; grep -E '^przebieg-|^WERDYKT' prototyp-b-werdykt.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prototyp-b
+          path: |
+            prototyp-b-wyniki
+            prototyp-b-log.txt
+            prototyp-b-werdykt.txt
+            ios/xcodebuild.log
+          retention-days: 14
