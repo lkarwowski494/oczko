@@ -124,6 +124,10 @@ test('P-143: klucze `aktywnosc` = tabela „Ekran blokady i zegarek” w design-
   const zArchiwum = new Set([...zSpec, 'sesja_a11y']);
   expect([...zArchiwum].filter((k) => !KLUCZE.includes(k)).sort()).toEqual([]);
   expect(KLUCZE.filter((k) => !zArchiwum.has(k) && !zSpec102.includes(k))).toEqual([]);
+  // FB2 (recenzja FB1, P2): kierunek „klucz specyfikacji 1.0.2 musi być w słowniku”. Wyjątek tylko `podpowiedz_*` (U7 B odłożone do 1.0.3, prototyp B = NIE).
+  expect(['plus2', 'teraz_dwa', 'stuknij_dwa'].filter((k) => !zSpec102.includes(k))).toEqual([]);
+  expect(zSpec102.filter((k) => !k.startsWith('podpowiedz_') && !KLUCZE.includes(k)).sort()).toEqual([]);
+  expect(['plus2', 'teraz_dwa', 'stuknij_dwa'].filter((k) => !KLUCZE.includes(k))).toEqual([]);
   expect(Object.values(en.aktywnosc).filter((t) => /[\u0000-\u001f]/.test(t))).toEqual([]);
 });
 test('ADR-0017: kategorie z tabeli Swift = kategoriaLiczby dla 35 języków, n = 0…10 000 i pełne miliony do 10⁹', () => {
