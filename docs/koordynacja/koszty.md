@@ -184,3 +184,5 @@ Przegląd 28.11 11:35: sesje opus (ZK1 6,61, RS1 8,33, PR1 9,37, AR1 13,20) — 
 | PB1 | 08 fix | 6 | 2,02 | 25 | 12:00 → 12:00 → 12:06 → run macOS 12:29–13:05 (kolejka 23 min) → 13:12 | 23 min kolejka macOS | prototyp B, werdykt NIE |
 | DG4 | 07 audit | 3 | 3,66 | 32 | 13:02 → 13:02 → 13:20 → 13:40 | 0 | diagnoza cz. 4 |
 | FA1 | 08 build | 8 | ~6–7 (deklaracja; metadane bez usage) | ? | 12:37 → 12:37 → 12:42 → verify sesji 13:20 → przekazanie 13:23 | 0 | TS część 1 |
+| FB1 | 08 build | 8 | ~5–6 (deklaracja) | ? | 12:37 → 12:37 → 12:45 → verify sesji 13:18 → 13:20 | 0 | Swift 1.0.2 |
+| FB2 | 08 fix | 5 | 2,27 | 22 | 13:23 → 13:23 → 13:28 → verify sesji 13:36 → 13:40 | 0 | poprawki recenzji + KO-241 |
