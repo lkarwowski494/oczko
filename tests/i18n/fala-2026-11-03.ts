@@ -40,3 +40,10 @@ export const brakiPrzekladu = (baza: string, jezyki: string[] = JEZYKI_FALI): st
 /** Wszystkie teksty bazy w języku (jeden albo formy). */
 export const teksty = (kod: string, baza: string): string[] => { const p = przeklad(kod, baza); return p === undefined ? [] : typeof p === 'string' ? [p] : Object.values(p); };
 export const jestFormaKlucza = (k: string): boolean => FORMA.test(k);
+
+/**
+ * FB1 08-B (P-1126, wyjątek nazwany, 2026-11-28): klucze 1.0.2 dodane tylko w en i pl, czekające na falę przekładu 09. Dopóki lista oczekujących
+ * ma tylko te klucze, testy „po fali” (pierwsze-w-fali-154, krytyczne) oczekują, że `--wydanie` odrzuca właśnie niepustą listę (bramka TestFlight
+ * zostaje); klucz spoza tej listy w `oczekujace.json` jest błędem. Po fali 09 lista jest pusta i testy wracają do stanu „po fali” bez zmian.
+ */
+export const OCZEKUJACE_DO_FALI_1_0_2: string[] = ['aktywnosc.plus2', 'aktywnosc.stuknij_dwa', 'aktywnosc.teraz_dwa'];
