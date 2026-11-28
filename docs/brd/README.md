@@ -129,3 +129,7 @@ Razem: 10–15 h pracy agenta (kilka sesji z punktami czyszczenia); od właścic
 | OP-37 | [DO USTALENIA] Czy elektroniczne liczniki fizyczne przypominają o stuknięciu | źródła (opisy producentów), niski priorytet | U7 |
 | OP-38 | [DO USTALENIA] Czy licznik oczek ma już pole celu (bez migracji schematu); decyduje o wersji wariantu U8-A | 05 | U8 (P-1093), F-04 |
 | OP-39 | [DO USTALENIA] Związek metrów na gram z kategorią grubości włóczki: CYC go nie podaje (S-19); bez źródła szczebla 1–3 aplikacja nie podpowiada rozmiaru z etykiety | źródła szczebla 1–3, 06 | U9 (P-1094), RD-10 |
+| OP-40 | [DO WYJAŚNIENIA] Sygnał 18: „notatnik” to papier czy aplikacja Notatki; czy osoba chce znacznika rzędu na własnej rozpisce (W1), czy wystarczy notatka (W0) | koordynator/właściciel (pytanie zwrotne w wątku, kanał 11) | sygnał 18 (P-1104, `research-wzor-tekstowy.md`) |
+| OP-41 | [DO USTALENIA] Czy notatka w obecnym buildzie przyjmuje ok. 5000 znaków bez obcięcia (BR-PRJ-002 „Długa notatka”); w katalogu PU brak takiego przypadku | 07 | sygnał 18 W0, F-15 |
+| OP-42 | [DO USTALENIA] Co aplikacja Notatki przekazuje w arkuszu udostępniania (tekst, plik, PDF) | 05/08, prototyp na urządzeniu | sygnał 18 W2, F-24 |
+| OP-43 | [DO USTALENIA] Edycja tekstu wzoru po zapisie przy istniejącym znaczniku i zakreśleniach (ponowny render przesuwa wiersze na stronach PDF) | 04/05 | sygnał 18 W1, BR-WZR-003 |

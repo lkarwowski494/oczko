@@ -1,0 +1,21 @@
+wektory: 82; niezgodne z prototypem: 0
+PS wobec src/domena/przypomnienia.ts (przypomnienieWpisania(przed+1, po+1)): zgodne 7/7
+mutant „nieprzemienne zawsze przesuwane”: zabity przez PR-06, PR-07, PR-08, SC-02
+mutant „czas: < zamiast <=”: zabity przez PR-17
+mutant „konflikt: pierwsza głowa”: zabity przez PR-09, PR-10
+mutant „zegarek nieprzesuwany”: zabity przez PR-13, SC-04
+mutant „stuknięcie bez limitu kroku”: zabity przez ST-03
+mutant „stuknięcie bez źródła”: zabity przez ST-04
+mutant „seria na zdarzeniach”: zabity przez SE-02, SE-03
+mutant „cofnięcie pojedynczego zdarzenia”: zabity przez CO-01
+mutant „cel części: równość”: zabity przez SK-01, SK-09
+mutant „powtórzenie: modulo po”: zabity przez SK-04, SK-09
+mutant „przypomnienie: tylko pas po”: zabity przez PS-01, PS-03, PS-05
+mutant „−1 przestawia dzień (stan sprzed U4)”: zabity przez IN-08, IN-09
+mutant „krok: limit sprawdzany per zdarzenie (drugie odrzucone)”: zabity przez IN-01
+mutant „odświeżenie wskrzesza (dzisiejszy start przy każdym zapisie)”: zabity przez AK-06
+mutant „koniec: > zamiast >=”: zabity przez AK-04
+mutant „staleDate: zawsze koniec”: zabity przez SD-02
+mutant „staleDate: przypominacz bez min”: zabity przez SD-03
+mutant „krok: wspólny rodzic linii”: zabity przez IN-01
+wynik: OK (mutanty: 18, żywe: 0)
