@@ -69,6 +69,11 @@ Reguły, których brakowało w kontrakcie intencji i scalania (zgłoszenie Z07-1
 - **1.1, z warunkiem:** pole `sesjaWstrzymanaMs` (stan v4: czas stoi, symbol pauzy jak kapsuła 04) dopiero, gdy testerzy zgłoszą brak czasu w pauzie na ekranie blokady. Koszt nazwany: `WERSJA_STANU = 4`, dekoder Swift w trzech kopiach, pliki `tests/wspolne`, przebieg CI macOS. Odrzucone w 1.0: koszt bez dowodu wartości (zasada wspólna 18). Trening nie ma analogii (Live Activity tylko z odliczaniem przerwy).
 - **Potwierdzenie:** test 08 — po `wstrzymajSesje` stan wysłany do Live Activity ma `sesjaStartMs = null`, po `wznowSesje` = `start_ms + przerwy_ms`.
 
+## Uzupełnienie 2026-11-28 (fix AR1 05: ZM-20, ZM-22, ZM-24; P-1096, P-1097; decyzja A bez zmian)
+- **(3) poczekalnia:** odstępstwo P-1080 (24 h, potem bieżąca głowa) przyjęte. **Rozwidlenie od nieaktualnej `glowa`:** przy scaleniu linia ±1 dostaje rodzica = bieżącą głowę, gdy zmiany po jej rodzicu są przemienne; inaczej konflikt jak dotąd — ADR-0035 (reguła 7 zastępuje sprawdzenie śladu `dziennik_rodzic_zastapiony` przy ponownej dostawie).
+- **(1) −1:** intencja `OczkoStuknij(rodzaj: "minus")` (nazwy zamrożone bez zmian); −1 nie zmienia `dzien` ani `dzienDozwolony` stanu — ADR-0035 § U4.
+- **(8A) wiele linii:** stuknięcie „+2” = dwie linie jednym `write` + `fsync`, `ftruncate` całości przy błędzie — ADR-0036.
+
 ## Opcje: zalety i wady
 ### A — zalety: brak drugiej kopii SQLite, krótki zapis, idempotencja · wady: opóźnione scalenie, logika limitu na ekranie blokady powielona w Swift.
 ### B — zalety: natychmiast w bazie · wady: natywne API `expo-sqlite` nie jest publicznym kontraktem; transakcja w procesie uruchomionym w tle zwiększa ryzyko `0xdead10cc`; klucze obce trzeba włączyć na kolejnym połączeniu.

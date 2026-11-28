@@ -1,6 +1,5 @@
-RS2 (01 fix, sygnał 18) — npm run verify, 2026-11-28, baza 0c3f9214 + zmiany dokumentów RS2
-Kod wyjścia: 0
-Test Suites: 749 passed, 749 total
-Tests:       8438 passed, 8438 total
+RS2 (01 fix, sygnał 18) — npm run verify, 2026-11-28
+Przebieg 1 (baza 0c3f9214 + dokumenty RS2): kod wyjścia 0; Test Suites 749 passed; Tests 8438 passed
+Przebieg 2 (po scaleniu integracji e6acc96d, przed commitem scalenia): kod wyjścia 0; Test Suites 749 passed; Tests 8438 passed
 Kontrola BRD (kontrola-brd.mjs --zgodnosc=tests/wektory/brd.json): OK (199 wektorów)
 Kontrola raportu (sprawdz-raport.mjs) na research-wzor-tekstowy.md: OK

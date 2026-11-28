@@ -52,6 +52,10 @@ A + D. Zegarek trzyma mały plik stanu i kolejkę wysłanych zdarzeń; telefon s
 ## Uzupełnienie 2026-11-01 (partia 8, 05: 07-jakosc-005; decyzje bez zmian)
 - `Zegarek.odbieraj` ma subskrybenta: zdarzenie to sygnał, scalenie dziennika jedną pozycją kolejki (jedno naraz + domknięcie), tylko przy `AppState` aktywnym; wzorzec haptyki przypomnienia na zegarku to czysta funkcja w pakiecie reguł + token roli 04. Szczegóły: ADR-0030.
 
+## Uzupełnienie 2026-11-28 (fix AR1 05: ZM-20, ZM-24; P-1096, P-1097; decyzja A + D bez zmian)
+- Linia zegarka od nieaktualnej `glowa` kontekstu dostaje przy scaleniu rodzica = bieżącą głowę według ADR-0035 (zegarek offline + rzędy na telefonie = suma, nie konflikt; wektor SC-04). Potwierdzenie po `id` (pkt 3–4) bez zmian.
+- „+2” z zegarka: dwie linie w skrzynce jednym zapisem, dwa `transferUserInfo`; stan `krok` (v3, brak = 1); haptyka przypomnienia według skoku — ADR-0036.
+
 ## Opcje: zalety i wady
 ### A — zalety: kolejka bez utraty, idempotencja · wady: brak w symulatorze.
 ### B — zalety: brak WatchConnectivity · wady: zegarek bez sieci i bez telefonu nie synchronizuje; CloudKit na zegarku opóźniony.

@@ -1,0 +1,27 @@
+# AR1 — npm run verify na dc1c8a64 (AR1 b1c2c7e0 + 5531b543 + scalenie integracji 0c3f9214), 2026-11-28T11:24Z
+> oczko@1.0.1 verify
+> npm run typecheck && npm run typecheck:testy && npm run lint && npm run jakosc:kontrole && npm test
+> oczko@1.0.1 typecheck
+> tsc --noEmit
+> oczko@1.0.1 typecheck:testy
+> tsc -p tsconfig.testy.json
+> oczko@1.0.1 lint
+> eslint src/dane
+> oczko@1.0.1 jakosc:kontrole
+> node scripts/jakosc/kontrole-repo.mjs && node scripts/asc/kontrola-wycofane.mjs && node scripts/jakosc/sprawdz-workflowy.mjs && node scripts/jakosc/licencje.mjs && node scripts/jakosc/licencje-generuj.mjs --check && node --no-warnings docs/architektura/narzedzia/sprawdz-schemat.mjs && node docs/architektura/narzedzia/kontrola-negatywna/mutanty-schematu.mjs && node docs/architektura/narzedzia/sprawdz-porty.mjs && node docs/monetyzacja/limit-test.mjs && node docs/monetyzacja/dostep-test.mjs && node docs/architektura/eksperymenty/e1/scal-test.mjs && node docs/architektura/eksperymenty/e1/mutanty-scal.mjs && node docs/jakosc/narzedzia/mutanty-e1.mjs && node docs/architektura/eksperymenty/e1/kontrola-adr.mjs docs/adr --min 21 && node docs/architektura/narzedzia/granice-test/obejscia.mjs && node docs/architektura/narzedzia/granice.mjs src && node docs/architektura/narzedzia/granice.mjs app --domena ../src/domena && node docs/brd/narzedzia/kontrola-brd.mjs docs/brd --zgodnosc=tests/wektory/brd.json && node docs/jakosc/narzedzia/tabela-08.mjs --check docs/jakosc/e4/tabela-08.md && node docs/jakosc/narzedzia/linie-kryteriow.mjs --check && node scripts/natywne/kontrola-swift.mjs && node --experimental-strip-types --no-warnings scripts/natywne/generuj-stale.mjs --check && npm run -s i18n:kod
+nowy kod: naruszeń 0
+workflowy: naruszeń 0
+licencje: 633 pakietów produkcyjnych, naruszeń 0, wyjątków nazwanych 12
+wszystkie kontrole OK
+OK: 51 typów, 70 linii deklaracji zgodnych
+OK   dobre: kod 0, oczekiwano kod 0 — OK: 4 plików, bez naruszeń
+OK: 284 plików, bez naruszeń
+OK: 35 plików, bez naruszeń
+> oczko@1.0.1 test
+> jest
+PASS iOS tests/jakosc/kontrole-repo.test.ts (9.31 s)
+Test Suites: 749 passed, 749 total
+Tests:       8438 passed, 8438 total
+Snapshots:   0 total
+Time:        226.986 s, estimated 251 s
+verify kod 0
