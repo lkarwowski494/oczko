@@ -90,7 +90,14 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
   const duzyTekst = okno.fontScale >= PROG_KATEGORII_DOSTEPNOSCI;
   const ax3 = okno.fontScale >= PROG_AX3; // 016 (`licznik.ax3ax5`): liczba pod paskiem, tytuł najwyżej 2 wiersze, bez kolumny dzianiny
   const zawczasu = s.limit.rodzaj === 'zawczasu';
-  const etykietaPlus = oczka
+  const krok = s.krok ?? 1; // ZM-24: „+2” dodaje dwa rzędy jednym stuknięciem (−1 zawsze odejmuje 1)
+  const zakres = { od: nrRobocza, do: nrRobocza + krok - 1 };
+  const podpowiedz = s.podpowiedz && !s.zablokowany && (s.limit.rodzaj === 'brak' || s.limit.rodzaj === 'ostatni-darmowy') ? s.podpowiedz : null; // ZM-25 (P-1103): nie przy blokadzie i limicie
+  const etykietaPlus = podpowiedz
+    ? t('licznik.podpowiedz_etykieta', { count: podpowiedz.minuty, n: nrRobocza })
+    : krok === 2 && !start
+    ? t('licznik.plus2_etykieta', zakres)
+    : oczka
     ? t('licznik.plus_a11y_oczka')
     : start
     ? t('licznik.plus')
@@ -236,10 +243,18 @@ export function Licznik(p: PropsLicznika): React.ReactElement {
         <View style={duzyTekst ? st.przyciskiAx : st.przyciski} testID="licznik-przyciski">
           {/* AX5 (makieta `.duzy .dol`): kolumna, „+1” nad „−1” na pełną szerokość; zwykle „−1” z lewej, „+1” zajmuje resztę rzędu */}
           {!duzyTekst && minusPrzycisk()}
-          <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={plus} style={duzyTekst ? st.plusAx : st.plus} testID="licznik-plus">
-            <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>{/* 005: limit z tokenu */}
-            {!start && !duzyTekst && <Text style={st.plusPodpis}>{oczka ? t('licznik.podpis_plus_oczka') : t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
-          </Pressable>
+          {(() => {
+            const przycisk = (
+              <Pressable accessibilityRole="button" accessibilityLabel={etykietaPlus} onPress={plus} style={duzyTekst ? st.plusAx : st.plus} testID="licznik-plus">
+                {podpowiedz && <Text style={st.plusPodpis}>{t('licznik.podpowiedz_czas', { count: podpowiedz.minuty })}</Text>}
+                <Text style={st.plusTekst} maxFontSizeMultiplier={tokeny.typografia.przyciskPlus.maxSkala}>{krok === 2 ? '+2' : t(oczka ? 'licznik.plus_oczka' : 'licznik.plus')}</Text>{/* 005: limit z tokenu */}
+                {podpowiedz
+                  ? <Text style={st.plusPodpis}>{t('licznik.podpowiedz_pytanie', { n: nrRobocza })}</Text>
+                  : !start && !duzyTekst && <Text style={st.plusPodpis}>{krok === 2 ? t(oczka ? 'licznik.plus2_oczka' : 'licznik.plus2_podpis', zakres) : oczka ? t('licznik.podpis_plus_oczka') : t('licznik.podpis_plus', { n: nrRobocza })}</Text>}
+              </Pressable>
+            );
+            return podpowiedz ? <View style={st.plusRama} testID="licznik-podpowiedz">{przycisk}</View> : przycisk;
+          })()}
           {duzyTekst && minusPrzycisk()}
         </View>
       )}

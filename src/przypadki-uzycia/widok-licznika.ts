@@ -33,6 +33,11 @@ export type WidokLicznika = {
   glowa: string | null;
   znaczenie: 'skonczone' | 'w_trakcie';
   zablokowany: boolean;
+  /** ZM-24: ile dodaje jedno stuknięcie (`licznik.krok`, CHECK 1 albo 2). */
+  krok: 1 | 2;
+  /** ZM-25 (U7 A): czas ostatniego zdarzenia licznika (null bez zdarzeń) i stoper projektu wstrzymany (podpowiedź +1 nie pojawia się przy pauzie). */
+  ostatniaZmianaMs: number | null;
+  stoperWstrzymany: boolean;
   /** Pas rzędu w robocie (RD-13, P-161: skończone + 1 w obu trybach) z `przypomnienieChwili`; `nastepny` = kolejny rząd tego planu. */
   przypomnienie: { tekst: string; ktory: number; razy: number; nastepny: number | null } | null;
   /** Plany przypomnień licznika — do sygnału przy zmianie (`sygnalZmiany`, RD-13-W20–W25) w kompozycji. */
@@ -118,7 +123,7 @@ function powtorzenieWidoku(skonczone: number, znaczenie: 'skonczone' | 'w_trakci
 export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<WidokLicznika>> {
   return operacjaZapisu(z, 'widokLicznika', async (tx, teraz, chwila) => {
     const [r] = await wiersze(tx.all(
-      `SELECT l.id, l.nazwa, l.rodzaj, l.wartosc, l.glowa, l.znaczenie, l.zablokowany, l.dlugosc_powtorzenia, c.id AS czesc_id, c.nazwa AS czesc, c.cel_rzedow, c.para_z,
+      `SELECT l.id, l.nazwa, l.rodzaj, l.wartosc, l.glowa, l.znaczenie, l.zablokowany, l.krok, l.dlugosc_powtorzenia, c.id AS czesc_id, c.nazwa AS czesc, c.cel_rzedow, c.para_z,
               p.id AS projekt_id, p.nazwa AS projekt, p.nienazwany, p.utworzono_ms, p.notatka, p.termin_dzien
          FROM licznik l JOIN czesc c ON c.id = l.czesc_id JOIN projekt p ON p.id = c.projekt_id
         WHERE l.id = ? AND l.usunieto_ms IS NULL AND c.usunieto_ms IS NULL AND p.usunieto_ms IS NULL`, [w.licznikId]), 'widokLicznika');
@@ -128,6 +133,10 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
     const zaw = mozeZaczacDzien({ dni: await dniLimituMiesiaca(tx, dzis.slice(0, 7)), dzis, teraz, ostatniPlus: await ostatniPlus(tx, dodajDni(dzis, -2)), pro: z.pro() });
     const dl = liczbaLubNull(r, 'dlugosc_powtorzenia');
     const znaczenie = tekst(r, 'znaczenie') === 'w_trakcie' ? 'w_trakcie' : 'skonczone';
+    const [oz] = await wiersze(tx.all('SELECT MAX(czas_ms) AS c FROM zdarzenie WHERE licznik_id = ?', [w.licznikId]), 'widokLicznika');
+    const ostatniaZmiana = oz && typeof oz.c === 'number' ? oz.c : null;
+    const [st] = await wiersze(tx.all('SELECT stan FROM sesja WHERE projekt_id = ? ORDER BY start_ms DESC LIMIT 1', [tekst(r, 'projekt_id')]), 'widokLicznika');
+    const stoperWstrzymany = st ? tekst(st, 'stan') === 'wstrzymana' : false;
     const lista = await plany(tx, w.licznikId);
     const termin = tekstLubNull(r, 'termin_dzien');
     const dzien = termin ? await dzienProjektu(tx, tekst(r, 'projekt_id'), termin, dzis) : null;
@@ -140,6 +149,9 @@ export function widokLicznika(z: Zaleznosci, w: { licznikId: string }): Promise<
         czesc: { nazwa: tekst(r, 'czesc'), cel: await celCzesci(tx, { cel: liczbaLubNull(r, 'cel_rzedow'), paraZ: tekstLubNull(r, 'para_z') }) }, // BR-PRJ-014 S1, S3
         nazwa: tekst(r, 'nazwa'), rodzaj: tekst(r, 'rodzaj') === 'oczka' ? 'oczka' : 'rzedy', wartosc, glowa,
         znaczenie,
+        krok: liczba(r, 'krok') === 2 ? 2 : 1, // CHECK (krok IN (1, 2))
+        ostatniaZmianaMs: ostatniaZmiana,
+        stoperWstrzymany,
         zablokowany: liczba(r, 'zablokowany') === 1,
         przypomnienie: pas(lista, wartosc, znaczenie),
         plany: lista,

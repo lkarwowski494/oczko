@@ -157,12 +157,12 @@ export function Pole(p: { etykieta: string; wartosc: string; naZmiane(t: string)
 }
 
 /** Wybór jednej z opcji jako lista ze znacznikiem (radio, `selected`; design-spec „VoiceOver”: wybory znaczenia i narzędzia jako radio; makieta `formularz-narzedzie`). */
-export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string; testID?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
+export function Wybor<T extends string>(p: { opcje: { wartosc: T; tekst: string; opis?: string; etykieta?: string; testID?: string }[]; wybrana: T; naWybor(w: T): void }): React.ReactElement {
   const st = style(useKolory());
   return (
     <View accessibilityRole="radiogroup" style={st.wybor}>
       {p.opcje.map((o, i) => (
-        <Pressable key={o.wartosc} accessibilityRole="radio" accessibilityLabel={o.tekst} accessibilityState={{ selected: o.wartosc === p.wybrana }}
+        <Pressable key={o.wartosc} accessibilityRole="radio" accessibilityLabel={o.etykieta ?? o.tekst} accessibilityState={{ selected: o.wartosc === p.wybrana }}
           onPress={() => p.naWybor(o.wartosc)} style={[st.opcja, i > 0 && st.opcjaPodzialka]} testID={o.testID}>
           <ZnacznikRadio wybrany={o.wartosc === p.wybrana} />
           <View style={st.opcjaTekst}>

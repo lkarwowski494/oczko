@@ -163,10 +163,26 @@ export function wyzeruj(z: Zaleznosci, w: { licznikId: string }): Promise<Wynik<
   return zmien(z, w.licznikId, 'wyzeruj', async (s) => wynik({ rodzaj: 'zerowanie', wartosc: null, wartoscPo: 0, rodzice: rodzic(s), cofa: [] }));
 }
 
-const RODZAJE_LICZNIKA: readonly string[] = ['rzedy', 'oczka'];
-export function dodajLicznik(z: Zaleznosci, w: { czescId: string; rodzaj: RodzajLicznika; nazwa?: string }): Promise<Wynik<{ licznikId: string }>> {
+/** Krok licznika (ZM-24, ADR-0036): zmiana dotyczy tylko następnych stuknięć; zapisane zdarzenia zostają (każde stuknięcie to k zdarzeń `plus`). Lokalnie (kolumna poza iCloud). */
+export function ustawKrok(z: Zaleznosci, w: { licznikId: string; krok: 1 | 2 }): Promise<Wynik<void>> {
+  if (w.krok !== 1 && w.krok !== 2) return Promise.resolve(blad('bledne_dane'));
   return wKolejce(z.baza, async () => {
-    if (!RODZAJE_LICZNIKA.includes(w.rodzaj)) return blad('bledne_dane');
+    const teraz = z.zegar.teraz();
+    try {
+      const r = await z.baza.transakcja(async (tx) => tx.run('UPDATE licznik SET krok = ?, zmieniono_ms = ? WHERE id = ? AND usunieto_ms IS NULL', [w.krok, teraz.ms, w.licznikId]));
+      return r.zmiany === 1 ? { ok: true as const, wartosc: undefined } : blad('bledne_dane');
+    } catch (e) {
+      await zapiszBlad(z.baza, { czasMs: teraz.ms, kod: 'zapis_licznika', szczegoly: { operacja: 'ustawKrok', sqlite: kodBledu(e) } });
+      return blad('zapis');
+    }
+  });
+}
+
+const RODZAJE_LICZNIKA: readonly string[] = ['rzedy', 'oczka'];
+/** `krok` (ZM-24, U6): ile dodaje jedno stuknięcie (1 albo 2, CHECK w schemacie); brak = 1. */
+export function dodajLicznik(z: Zaleznosci, w: { czescId: string; rodzaj: RodzajLicznika; nazwa?: string; krok?: 1 | 2 }): Promise<Wynik<{ licznikId: string }>> {
+  return wKolejce(z.baza, async () => {
+    if (!RODZAJE_LICZNIKA.includes(w.rodzaj) || (w.krok !== undefined && w.krok !== 1 && w.krok !== 2)) return blad('bledne_dane');
     const teraz = z.zegar.teraz();
     try {
       return await z.baza.transakcja(async (tx): Promise<Wynik<{ licznikId: string }>> => {
@@ -176,9 +192,9 @@ export function dodajLicznik(z: Zaleznosci, w: { czescId: string; rodzaj: Rodzaj
         const licznikId = z.id.nowy();
         const znaczenie = await znaczenieNowegoLicznika(tx, tekst(c, 'projekt_id')); // ZM-21: znaczenie jawnie, nie z DEFAULT
         await tx.run(
-          `INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, kolejnosc, zmieniono_ms)
-           VALUES (?, ?, ?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM licznik WHERE czesc_id = ?), ?)`,
-          [licznikId, w.czescId, w.nazwa ?? '', w.rodzaj, znaczenie, w.czescId, teraz.ms],
+          `INSERT INTO licznik (id, czesc_id, nazwa, rodzaj, znaczenie, krok, kolejnosc, zmieniono_ms)
+           VALUES (?, ?, ?, ?, ?, ?, (SELECT coalesce(max(kolejnosc), 0) + 1 FROM licznik WHERE czesc_id = ?), ?)`,
+          [licznikId, w.czescId, w.nazwa ?? '', w.rodzaj, znaczenie, w.krok ?? 1, w.czescId, teraz.ms],
         );
         return { ok: true, wartosc: { licznikId } };
       });

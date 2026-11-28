@@ -60,3 +60,7 @@ export const PREFERENCJE_DOMYSLNE: { readonly wibracje: boolean; readonly ekranN
 export const DZIENNIK_PRZESUNIECIE_MAKS = 500; // zdarzeń; [OCENA] roli 05 (ADR-0035 „Parametr”, P-1096): ile zdarzeń od rodzica linii do głowy sprawdza przesunięcie rodzica; więcej = konflikt jak dziś
 export const LIVE_KONIEC_PO_MS = 7_200_000; // ms (2 h); [OCENA] (ADR-0037 „Parametr produktowy”, P-1099): bez liczenia tak długo = koniec Live Activity przy najbliższej okazji aplikacji
 export const ZNACZENIE_NOWEGO_LICZNIKA = 'w_trakcie' as const; // „Rząd, nad którym pracuję”; P-1090 (1), P-1098: nowy licznik bez wcześniejszej pracy w projekcie (zapisane jawnie w INSERT)
+
+/** ZM-25 (U7 forma A, P-1103): progi „Podpowiedz, gdy zapomnę +1” w minutach i próg po włączeniu; [OCENA] 04, kalibracja w teście F właściciela (próg dłuższy niż typowy rząd). */
+export const PODPOWIEDZ_PROGI_MIN: readonly number[] = [5, 10, 15, 30];
+export const PODPOWIEDZ_PROG_DOMYSLNY_MIN = 10;

@@ -31,6 +31,11 @@ export type StanEkranuLicznika = {
   sesja: { rzedy: number; od: string } | null; // „Marks this session: 14 rows since 19:52” (od: godzina sformatowana)
   zablokowany: boolean;                // F-03 (design-spec.md:34)
   limit: LimitNaLiczniku;
+  krok?: 1 | 2;                        // ZM-24 (U6): ile dodaje jedno stuknięcie (licznik.krok); brak = 1
+  podpowiedzProg?: number | null;     // ZM-25: próg „Podpowiedz, gdy zapomnę +1” w minutach (null = wyłączona); z niego, z `ostatniaZmianaMs` i zegara ekranu liczy hook odliczania
+  ostatniaZmianaMs?: number | null;   // czas ostatniego zdarzenia licznika (od niego odliczamy próg)
+  stoperWstrzymany?: boolean;         // pauza stopera = brak podpowiedzi
+  podpowiedz?: { minuty: number } | null; // ZM-25 (U7 forma A, P-1103): „{N} min bez +1”, pytanie o rząd i rama „+1”; stan liczy kompozycja z zegara, ekran tylko pokazuje
   miesiac: { nazwa: string; wznowienie: string; rzedyDanych: number }; // sformatowane („November”, „December 1”); rzedyDanych do „Your {n} rows …”
   baner: BanerLicznika;
   blizniak: { rzad: number; notatka: string | null; przypomnienie: string | null } | null; // BR-PRJ-014/S2

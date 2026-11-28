@@ -194,6 +194,7 @@ Kolumna „tekst / etykieta”: tekst albo etykieta VoiceOver z `design-spec.md`
 | `formularz-cel-czesci` | arkusz części | cel części (08 partia 5) | „Rows in this part (optional)” | liczbowa |
 | `formularz-dodaj-czesc` | arkusz nowego projektu | dodanie pola części | „Add part” | |
 | `formularz-nazwa-licznika` | arkusz licznika | nazwa licznika (08 partia 5) | „Name” | tekstowa |
+| `dodaj-licznik-krok-2` | arkusz licznika | „+2” w polu „Krok” (ZM-24, PU-358) | „+2” | radio |
 | `formularz-notatka` | arkusz notatki | pole notatki, wielowierszowe (08 partia 5) | „Note for {projekt}” | tekstowa |
 | `formularz-rozmiar-mm` | arkusz narzędzia | rozmiar w mm, dziesiętna (08 partia 5) | „Size in mm” | liczbowa |
 | `formularz-wyczysc` | arkusz narzędzia | Clear | „Clear” | |

@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import type { EkranAktywny, Haptyka, Sklep } from '../domena/porty';
 import { kartaZPlusem, TAG_DZIS, TAG_LICZNIK, wejdzNaEkran } from '../przypadki-uzycia/ekran-aktywny';
 import { Dzis, type DaneDzis, type KafelDzis } from './Dzis';
+import { useOdliczaniePodpowiedzi } from './podpowiedz-odliczanie';
 import { Licznik, type PropsLicznika, type StanEkranuLicznika, type WynikPlus } from './Licznik';
 import { useKolory } from './motyw';
 import type { CyklAplikacji, Oglos, System, Tlumacz } from './wspolne';
@@ -213,6 +214,7 @@ export type PropsEkranuLicznika = Pick<PropsAplikacji, 't' | 'oglos' | 'dzialani
   diagnostyka?: DiagnostykaLicznika; // FX6b: tylko build E2E
   uslugi: Pick<UslugiAplikacji, 'start' | 'dodajRzad'>;
   porty: { haptyka: Haptyka };
+  zegar?(): number; // ZM-25: wstrzyknięty zegar odliczania podpowiedzi „+1” (testy); domyślnie `Date.now`
   /** R-020 po p2: korzeń („Dziś”) scala dziennik raz; licznik na wierzchu czyta stan po scaleniu (`kompozycja.poScaleniu`). Zwraca odpięcie. */
   poScaleniu?(f: () => void): () => void;
 };
@@ -231,11 +233,18 @@ export function EkranLicznika(p: PropsEkranuLicznika): React.ReactElement {
   const odswiez = useRef(l.odswiez);
   odswiez.current = l.odswiez;
   useEffect(() => poScaleniu?.(() => void odswiez.current()), [poScaleniu]);
+  // ZM-25 (U7 forma A): odliczanie „bez +1” na otwartym liczniku; klucz rzędu zmienia +1/−1 (podpowiedź znika i liczy od nowa). Zegar wstrzyknięty (`zegar`).
+  const sl = stan?.licznik;
+  const podpowiedz = useOdliczaniePodpowiedzi({
+    progMin: sl?.podpowiedzProg ?? null, ostatniaZmianaMs: sl?.ostatniaZmianaMs ?? null, klucz: `${sl?.projekt ?? ''}|${sl?.czesc ?? ''}|${sl?.skonczone ?? 0}`,
+    blokada: !sl || sl.zablokowany || sl.limit.rodzaj === 'zawczasu' || sl.stoperWstrzymany === true, teraz: p.zegar ?? Date.now,
+    poPokazaniu: () => { if (sl?.wibracje) p.porty.haptyka.zagraj('rzadZInstrukcja'); }, // jedna wibracja ostrzeżenia na rząd
+  });
   if (!stan) return <View style={{ flex: 1, backgroundColor: k.papier }} />;
   const d = l.d;
   return (
     <Licznik
-      stan={stan.licznik}
+      stan={podpowiedz ? { ...stan.licznik, podpowiedz } : stan.licznik}
       t={p.t}
       oglos={p.oglos}
       haptyka={p.porty.haptyka}

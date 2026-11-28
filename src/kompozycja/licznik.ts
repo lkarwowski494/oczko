@@ -17,6 +17,7 @@ import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
 import { decyzjaAktywnosci, type ZdarzenieAktywnosci } from '../domena/aktywnosc';
 import { LIVE_KONIEC_PO_MS } from '../konfiguracja';
+import { podpowiedzPlusMin } from '../przypadki-uzycia/podpowiedz';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
@@ -81,6 +82,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
   let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
+  let podpowiedzProg: number | null | undefined; // ZM-25: undefined = jeszcze nieodczytany
   const poScaleniu = new Set<() => void>();
   // P-287: +1 w toku (pierwsze tworzy projekt roboczy i ustawia licznikId). Odczyt ekranu rozpoczęty w tym czasie (przemontowanie po naPartie,
   // poZmianie, odswiez) czeka na zapis — inaczej nowy ekran pokazałby stan sprzed stuknięcia, a wynik +1 trafiłby do odmontowanego komponentu.
@@ -98,7 +100,8 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       if (r.ok) w = r.wartosc;
     }
     zrobioneDzis = w && w.zrobioneDzis !== null ? { projektId: w.projektId, dzien: w.dzis, rzedy: w.zrobioneDzis } : null;
-    const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje() });
+    podpowiedzProg ??= await podpowiedzPlusMin(z); // preferencja urządzenia, czytana raz (do `poZmianie`): hot path +1 bez dodatkowego zapytania
+    const s = stanEkranu(w, { j, dzis: ch.dzien, terazMs: ch.ms, strefa: ch.strefa, baner, wibracje: o.wibracje(), podpowiedzProg });
     return { s: { ...s, konflikt: licznikId ? await liniaKonfliktu(licznikId) : null }, w };
   }
   /** Linia konfliktu (P-220 I1a): liczba = wersja tego urządzenia, druga = najnowsza z innego urządzenia; null bez konfliktu. */
@@ -205,6 +208,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     async poZmianie(zdarzenie = 'odswiezenie') {
       void o.skrzynka?.migawka().catch(() => undefined); // partia 6: migawka dla rozszerzenia po każdej zmianie projektu (kontrakt: po COMMIT operacji listy)
       baner = null;
+      podpowiedzProg = undefined; // ustawienia licznika mogły się zmienić (arkusz „Ustawienia licznika”)
       const { w } = await stanPoZapisie();
       await poZapisie(w, zdarzenie);
       wersja += 1;

@@ -27,7 +27,7 @@ export function etykietaRobocza(utworzonoMs: number, terazMs: number, j: Jezyk, 
 const zrodloBanera = (z: string): 'aplikacja' | 'ekran_blokady' | 'zegarek' | 'inne' => (z === 'ekran_blokady' || z === 'zegarek' ? z : z === 'aplikacja' ? 'aplikacja' : 'inne');
 
 /** Stan ekranu z modelu odczytu; `null` = przed pierwszym +1 (licznik bez projektu z 0, NFR-PIE-001). */
-export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string; terazMs: number; strefa: string; baner: BanerLicznika; wibracje: boolean }): StanEkranuLicznika {
+export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string; terazMs: number; strefa: string; baner: BanerLicznika; wibracje: boolean; podpowiedzProg?: number | null }): StanEkranuLicznika {
   const { j } = o;
   const mies = { nazwa: miesiac(o.dzis, j.jezyk()), wznowienie: miesiac(w ? w.wznowienie : o.dzis, j.jezyk(), true), rzedyDanych: w ? w.wartosc : 0 };
   if (!w) {
@@ -48,7 +48,8 @@ export function stanEkranu(w: WidokLicznika | null, o: { j: Jezyk; dzis: string;
     powtorzenie: oczka ? null : w.powtorzenie && { nazwa: w.nazwa || czescNaLiczniku(w.czesc.nazwa) || (w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, o.terazMs, j, o.strefa) : w.projekt.nazwa), ...w.powtorzenie },
     notatka: w.projekt.notatka || null,
     sesja: w.sesja && { rzedy: w.sesja.rzedy, od: formatujGodzine(new Date(w.sesja.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) },
-    zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies,
+    zablokowany: w.zablokowany, limit: { rodzaj: w.limit }, miesiac: mies, krok: w.krok,
+    podpowiedzProg: o.podpowiedzProg ?? null, ostatniaZmianaMs: w.ostatniaZmianaMs, stoperWstrzymany: w.stoperWstrzymany,
     baner: o.baner ?? (!oczka && w.seria ? { rodzaj: 'seria', n: w.seria.ile, sekundy: w.seria.sekundy, zrodlo: zrodloBanera(w.seria.zrodlo), godzina: formatujGodzine(new Date(w.seria.odMs), j.jezyk(), { uses24h: j.zegar24h(), strefa: o.strefa }) } : null),
     blizniak: oczka ? null : w.blizniak, wibracje: o.wibracje,
   };

@@ -71,24 +71,43 @@ export function FormularzCzesci(p: { t: Tlumacz; naZapisz: Zapis<{ nazwa: string
 /** Nowy licznik (F-04, BR-LIC-006): część (domyślnie ostatniej pracy), rodzaj słowem pracy; pusta nazwa = nazwa rodzaju. */
 export function FormularzLicznika(p: {
   t: Tlumacz; czesci: { id: string; nazwa: string }[]; domyslnaCzesc: string;
-  naZapisz: Zapis<{ czescId: string; rodzaj: 'rzedy' | 'oczka'; nazwa: string }>; naAnuluj(): void;
+  naZapisz: Zapis<{ czescId: string; rodzaj: 'rzedy' | 'oczka'; nazwa: string; krok: 1 | 2 }>; naAnuluj(): void;
 } & NaZmiane): React.ReactElement {
   const { t } = p;
   const [nazwa, ustawNazwe] = useState('');
   const [czesc, ustawCzesc] = useState(p.domyslnaCzesc);
   const [rodzaj, ustawRodzaj] = useState<'rzedy' | 'oczka'>('rzedy');
-  useZglosZmiane(p.naZmiane, nazwa !== '' || czesc !== p.domyslnaCzesc || rodzaj !== 'rzedy');
+  const [krok, ustawKrok] = useState<1 | 2>(1); // ZM-24 (U6): ile dodaje jedno stuknięcie; domyślnie +1
+  useZglosZmiane(p.naZmiane, nazwa !== '' || czesc !== p.domyslnaCzesc || rodzaj !== 'rzedy' || krok !== 1);
   const [blad, zapisz] = useZapis();
   return (
-    <Arkusz tytul={t('formularz.licznik_tytul')} formularz={{ t, zapisz: t('wspolne.dodaj'), naAnuluj: p.naAnuluj, naZapisz: () => zapisz(p.naZapisz, { czescId: czesc, rodzaj, nazwa: nazwa.trim() }) }}>
+    <Arkusz tytul={t('formularz.licznik_tytul')} formularz={{ t, zapisz: t('wspolne.dodaj'), naAnuluj: p.naAnuluj, naZapisz: () => zapisz(p.naZapisz, { czescId: czesc, rodzaj, nazwa: nazwa.trim(), krok }) }}>
       <Pole etykieta={t('formularz.licznik_nazwa')} wartosc={nazwa} naZmiane={ustawNazwe} testID="formularz-nazwa-licznika" />
       <Tresc podpis>{t('formularz.licznik_czesc')}</Tresc>
       <Wybor opcje={p.czesci.map((c) => ({ wartosc: c.id, tekst: c.nazwa }))} wybrana={czesc} naWybor={ustawCzesc} />
       <Tresc podpis>{t('formularz.licznik_rodzaj')}</Tresc>
-      <Wybor<'rzedy' | 'oczka'> opcje={[{ wartosc: 'rzedy', tekst: t('formularz.rodzaj_rzedy'), testID: 'wybor-rodzaj-rzedy' }, { wartosc: 'oczka', tekst: t('formularz.rodzaj_oczka'), testID: 'wybor-rodzaj-oczka' }]} wybrana={rodzaj} naWybor={ustawRodzaj} />
+      <Wybor<'rzedy' | 'oczka'> wybrana={rodzaj} naWybor={ustawRodzaj} opcje={[
+        { wartosc: 'rzedy', tekst: t('formularz.rodzaj_rzedy'), testID: 'wybor-rodzaj-rzedy' },
+        // ZM-26 (U10, P-1101): podpowiedź pod „Oczka” jest częścią etykiety radia dla VoiceOver
+        { wartosc: 'oczka', tekst: t('formularz.rodzaj_oczka'), opis: t('formularz.rodzaj_oczka_opis'), etykieta: `${t('formularz.rodzaj_oczka')}. ${t('formularz.rodzaj_oczka_opis')}`, testID: 'wybor-rodzaj-oczka' },
+      ]} />
+      <Tresc podpis>{t('formularz.krok')}</Tresc>
+      <WyborKroku t={t} krok={krok} naWybor={ustawKrok} prefiks="dodaj-licznik" />
       <Tresc podpis>{t('formularz.licznik_sekcje')}</Tresc>
       {blad && <KomunikatZapisu t={t} />}
     </Arkusz>
+  );
+}
+
+/** Krok licznika (ZM-24, U6): „+1” / „+2” jako radio z opisem „−1 zawsze odejmuje 1”; wspólny dla „Dodaj licznik” i „Ustawień licznika” (`prefiks` buduje testID). */
+export function WyborKroku(p: { t: Tlumacz; krok: 1 | 2; naWybor(k: 1 | 2): void; prefiks: string }): React.ReactElement {
+  return (
+    <>
+      <Wybor<'1' | '2'> wybrana={String(p.krok) as '1' | '2'} naWybor={(w) => p.naWybor(w === '2' ? 2 : 1)} opcje={[
+        { wartosc: '1', tekst: '+1', testID: `${p.prefiks}-krok-1` }, { wartosc: '2', tekst: '+2', testID: `${p.prefiks}-krok-2` },
+      ]} />
+      <Tresc podpis>{p.t('formularz.krok_opis')}</Tresc>
+    </>
   );
 }
 

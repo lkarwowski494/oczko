@@ -1,4 +1,4 @@
-// PU-Z03, PU-Z04, PU-Z05 (katalog: „Oczekujące 1.0.2”). ZM-24 (U6, P-1102) i ZM-25 (U7 forma A, P-1103): pole „Krok” w „Dodaj licznik”,
+// PU-358, PU-359, PU-360 (katalog przypadków użycia). ZM-24 (U6, P-1102) i ZM-25 (U7 forma A, P-1103): pole „Krok” w „Dodaj licznik”,
 // pozycja „Ustawienia licznika” w •••, arkusz ustawień licznika (krok, „Podpowiedz, gdy zapomnę +1”), przycisk „+2” i stan podpowiedzi na liczniku.
 // Wyrocznia: docs/design/1-0-2.md „Paczka dla 07 i 08” (testID-propozycje 04, teksty en z tabeli kluczy), makiety u6-*, u7-licznik-A.
 // Kształt nowych pól stanu i propsów (krok, podpowiedz, naUstawienia, UstawieniaLicznika) to propozycja 07 (P-1113) — 08 może je nazwać inaczej
@@ -6,12 +6,12 @@
 import React from 'react';
 import { join } from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { Licznik, type StanEkranuLicznika } from '../../../src/ekrany/Licznik';
-import { FormularzLicznika } from '../../../src/ekrany/FormularzeProjektu';
-import { MenuProjektu, type PropsMenuProjektu } from '../../../src/ekrany/MenuProjektu';
-import type { Tlumacz } from '../../../src/ekrany/wspolne';
-import { eksportLubZnacznik, modulLubZnacznik } from '../../narzedzia/akceptacja';
-import { atrapaHaptyki, stanLicznika, tEn, wywolaniaLicznika } from '../../ekrany/pomoc';
+import { Licznik, type StanEkranuLicznika } from '../../src/ekrany/Licznik';
+import { FormularzLicznika } from '../../src/ekrany/FormularzeProjektu';
+import { MenuProjektu, type PropsMenuProjektu } from '../../src/ekrany/MenuProjektu';
+import type { Tlumacz } from '../../src/ekrany/wspolne';
+import { eksportLubZnacznik, modulLubZnacznik } from '../narzedzia/akceptacja';
+import { atrapaHaptyki, stanLicznika, tEn, wywolaniaLicznika } from './pomoc';
 
 let t: Tlumacz;
 beforeAll(async () => { t = await tEn(); });
@@ -26,7 +26,7 @@ const menu = (extra: Record<string, unknown> = {}) => {
 };
 
 describe('ZM-24 krok +2 (U6)', () => {
-  test('ZM-24 PU-Z03: „Dodaj licznik” ma „Step” z +1 (domyślnie) i +2 (`dodaj-licznik-krok-2`); zapis z +2 przekazuje krok 2', async () => {
+  test('ZM-24 PU-358: „Dodaj licznik” ma „Step” z +1 (domyślnie) i +2 (`dodaj-licznik-krok-2`); zapis z +2 przekazuje krok 2', async () => {
     const naZapisz = jest.fn(async () => ({ ok: true as const, wartosc: undefined }));
     render(<FormularzLicznika t={t} czesci={[{ id: 'c1', nazwa: 'Front' }]} domyslnaCzesc="c1" naZapisz={naZapisz} naAnuluj={jest.fn()} />);
     expect(screen.getByText('Step')).toBeTruthy();
@@ -36,7 +36,7 @@ describe('ZM-24 krok +2 (U6)', () => {
     expect(naZapisz).toHaveBeenCalledWith(expect.objectContaining({ krok: 2 }));
   });
 
-  test('ZM-24 PU-Z03: licznik z krokiem 2 — przycisk „+2”, podpis „rows 43–44 done”, etykieta VoiceOver z dwoma rzędami', () => {
+  test('ZM-24 PU-358: licznik z krokiem 2 — przycisk „+2”, podpis „rows 43–44 done”, etykieta VoiceOver z dwoma rzędami', () => {
     licznik({ krok: 2 });
     const plus = screen.getByTestId('licznik-plus');
     expect(screen.getByText('+2')).toBeTruthy();
@@ -44,7 +44,7 @@ describe('ZM-24 krok +2 (U6)', () => {
     expect(plus.props.accessibilityLabel).toBe('Add 2 rows, rows 43 and 44 done');
   });
 
-  test('ZM-24 PU-Z04: ••• ma „Counter settings” (`licznik-menu-ustawienia`) na końcu pierwszej grupy; stuknięcie otwiera ustawienia', () => {
+  test('ZM-24 PU-359: ••• ma „Counter settings” (`licznik-menu-ustawienia`) na końcu pierwszej grupy; stuknięcie otwiera ustawienia', () => {
     const p = menu();
     const pozycja = screen.getByTestId('licznik-menu-ustawienia');
     expect(screen.getByText('Counter settings')).toBeTruthy();
@@ -55,9 +55,9 @@ describe('ZM-24 krok +2 (U6)', () => {
 
 describe('ZM-24 / ZM-25 arkusz „Counter settings” (P-1102, P-1103)', () => {
   const arkusz = () => eksportLubZnacznik<React.ComponentType<Record<string, unknown>>>(
-    modulLubZnacznik(join(__dirname, '../../../src/ekrany/UstawieniaLicznika'), 'ZM-24 UstawieniaLicznika'), 'UstawieniaLicznika', 'ZM-24 UstawieniaLicznika');
+    modulLubZnacznik(join(__dirname, '../../src/ekrany/UstawieniaLicznika'), 'ZM-24 UstawieniaLicznika'), 'UstawieniaLicznika', 'ZM-24 UstawieniaLicznika');
 
-  test('ZM-24 PU-Z04: krok +2 (`ustawienia-licznika-krok-2`) → zapis z krokiem 2 i podpowiedzią wyłączoną', () => {
+  test('ZM-24 PU-359: krok +2 (`ustawienia-licznika-krok-2`) → zapis z krokiem 2 i podpowiedzią wyłączoną', () => {
     const Ark = arkusz();
     const naZapisz = jest.fn();
     render(<Ark t={t} krok={1} podpowiedzMin={null} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
@@ -66,7 +66,7 @@ describe('ZM-24 / ZM-25 arkusz „Counter settings” (P-1102, P-1103)', () => {
     expect(naZapisz).toHaveBeenCalledWith(expect.objectContaining({ krok: 2, podpowiedzMin: null }));
   });
 
-  test('ZM-25 PU-Z05: „Nudge me if I forget +1” domyślnie wyłączone, lista progu ukryta; po włączeniu 5/10/15/30 min z domyślnym 10', () => {
+  test('ZM-25 PU-360: „Nudge me if I forget +1” domyślnie wyłączone, lista progu ukryta; po włączeniu 5/10/15/30 min z domyślnym 10', () => {
     const Ark = arkusz();
     const naZapisz = jest.fn();
     render(<Ark t={t} krok={1} podpowiedzMin={null} naZapisz={naZapisz} naAnuluj={jest.fn()} />);
@@ -82,14 +82,14 @@ describe('ZM-24 / ZM-25 arkusz „Counter settings” (P-1102, P-1103)', () => {
 });
 
 describe('ZM-25 podpowiedź +1 na liczniku (forma A, P-1103)', () => {
-  test('ZM-25 PU-Z05: stan podpowiedzi — `licznik-podpowiedz` z „10 min without +1” i „row 43 done?”; etykieta VoiceOver z pytaniem', () => {
+  test('ZM-25 PU-360: stan podpowiedzi — `licznik-podpowiedz` z „10 min without +1” i „row 43 done?”; etykieta VoiceOver z pytaniem', () => {
     licznik({ podpowiedz: { minuty: 10 } });
     expect(screen.getByTestId('licznik-podpowiedz')).toBeTruthy();
     expect(screen.getByText('10 min without +1')).toBeTruthy();
     expect(screen.getByText('row 43 done?')).toBeTruthy();
     expect(screen.getByTestId('licznik-plus').props.accessibilityLabel).toBe('Add row. No +1 for 10 min. Row 43 done?');
   });
-  test('ZM-25 PU-Z05: przy limicie i zablokowanym liczniku podpowiedzi nie ma, nawet gdy stan ją niesie (P-1103)', () => {
+  test('ZM-25 PU-360: przy limicie i zablokowanym liczniku podpowiedzi nie ma, nawet gdy stan ją niesie (P-1103)', () => {
     licznik({ podpowiedz: { minuty: 10 }, zablokowany: true });
     expect(screen.queryByTestId('licznik-podpowiedz')).toBeNull();
     screen.unmount();
