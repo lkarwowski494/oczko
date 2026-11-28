@@ -186,3 +186,4 @@ Przegląd 28.11 11:35: sesje opus (ZK1 6,61, RS1 8,33, PR1 9,37, AR1 13,20) — 
 | FA1 | 08 build | 8 | ~6–7 (deklaracja; metadane bez usage) | ? | 12:37 → 12:37 → 12:42 → verify sesji 13:20 → przekazanie 13:23 | 0 | TS część 1 |
 | FB1 | 08 build | 8 | ~5–6 (deklaracja) | ? | 12:37 → 12:37 → 12:45 → verify sesji 13:18 → 13:20 | 0 | Swift 1.0.2 |
 | FB2 | 08 fix | 5 | 2,27 | 22 | 13:23 → 13:23 → 13:28 → verify sesji 13:36 → 13:40 | 0 | poprawki recenzji + KO-241 |
+| ZA1 | 08 fix | 4 | 3,16 | 26 | 13:25 → 13:25 → pytanie 13:28 → 13:45 → 13:50 | 0 | PU-008 diagnostyka + obrona |
