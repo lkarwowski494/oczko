@@ -13,6 +13,7 @@ BRD powstaje od zera: z wywiadu i przeczytanych źródeł. Kwarantanna P-003 i P
 | `wymagania.md` | przepływy PR-01–PR-16, wymagania NFR |
 | `wymagania-licznik.md`, `wymagania-projekt.md`, `wymagania-dane.md`, `wymagania-narzedzia.md`, `wymagania-dni.md` | wymagania BR według modułów: LIC, PRJ, WZR, DAN, ZAK, ZAP, KAL, SLO, DNI |
 | `errata.md` | prośby o zmianę od innych ról (ER) ze statusem |
+| `research-1-0-2.md` | research U7–U9 do wersji 1.0.2 i 1.1: formy przypominacza, warianty „check” liczby oczek i zamiany włóczki z planem i szacunkiem (RS1, 2026-11-28; P-1092–P-1095) |
 | `tests/wektory/brd.json` (repo) | wektory RD do testów, generowane skryptem; tylko do odczytu dla ról 07 i 08 |
 
 Materiały prywatne (wywiad, 4682 recenzje, cztery soczewki E2, kopie źródeł): `oczko-warsztat/01-odkrywanie/`.
@@ -123,3 +124,8 @@ Razem: 10–15 h pracy agenta (kilka sesji z punktami czyszczenia); od właścic
 | OP-33 | [DO WYJAŚNIENIA] Dokładna chwila prośby o ocenę po ukończeniu projektu i czy aplikacja dokłada własny limit poza systemowym (np. raz na wersję); system: najwyżej 3 razy w 365 dniach (S-39) (ER-25) | rola 11 | BR-DAN-012, OG-15 |
 | OP-32 | Strażnik limitu przy zerowaniu, −1, licznikach oczek i powtórzeń, zegarku i ekranie blokady oraz dni na nowym urządzeniu: zamknięte decyzją P-067 (rola 02, `wolaStraznika`, wektory S-01–S-10, L-16–L-18; ER-30) | 02 | BR-ZAK-005, BR-LIC-017, BR-LIC-015 |
 | OP-34 | [DO WYJAŚNIENIA] Wymaganie BR dla karty „Jak zmierzyć próbkę” (ZM-17, decyzja PÓŹNIEJ: wersja 1.1 razem z atlasem, P-200): 01 pisze je przed 1.1, z przepływem PR-11 i pracą J-09, gdy 06 przygotuje treść z przeczytanymi źródłami, a 04 wskaże miejsce obok kalkulatora; w 1.0 bez BR i bez wiersza F (ER-64) | 01 z 04 i 06, przed 1.1 | PR-11, BR-KAL-003 |
+| OP-35 | [DO USTALENIA] Czy widok Live Activity przerysowuje się w chwili `staleDate`, gdy aplikacja jest uśpiona (forma B przypominacza U7; S-56) | 05/08, prototyp na urządzeniu | U7, F-11 (`research-1-0-2.md`) |
+| OP-36 | [DO WYJAŚNIENIA] Wartości progu przypominacza U7 (lista do wyboru) i stan domyślny włącznika (rekomendacja 01: wyłączony, P-046) | 03/04, koordynator (P-087) | U7 (P-1092) |
+| OP-37 | [DO USTALENIA] Czy elektroniczne liczniki fizyczne przypominają o stuknięciu | źródła (opisy producentów), niski priorytet | U7 |
+| OP-38 | [DO USTALENIA] Czy licznik oczek ma już pole celu (bez migracji schematu); decyduje o wersji wariantu U8-A | 05 | U8 (P-1093), F-04 |
+| OP-39 | [DO USTALENIA] Związek metrów na gram z kategorią grubości włóczki: CYC go nie podaje (S-19); bez źródła szczebla 1–3 aplikacja nie podpowiada rozmiaru z etykiety | źródła szczebla 1–3, 06 | U9 (P-1094), RD-10 |
