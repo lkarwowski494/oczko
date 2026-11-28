@@ -3,13 +3,30 @@
 import ActivityKit
 import ExpoModulesCore
 import Foundation
+import UIKit
 
 public class OczkoDziennikPlusModule: Module {
+  // KO-241 (P-1130): token obserwatora `UIApplication.willTerminateNotification`; sprzątany w `OnDestroy`.
+  private var obserwatorKonca: NSObjectProtocol?
+
   // Liczba z JS jest Double (expo-modules-core 57.0.23, `DynamicNumberType.cast`: `jsValue.getDouble()`); `Double?` omija zaokrąglenie i pułapkę `Int64(NaN/∞)`. Wartość nieskończona albo NaN = bez `staleDate` (FB2, P3 recenzji FB1).
   static func data(_ ms: Double?) -> Date? { ms.flatMap { $0.isFinite ? Date(timeIntervalSince1970: $0 / 1000) : nil } }
 
   public func definition() -> ModuleDefinition {
     Name("OczkoDziennikPlus")
+
+    // KO-241 (P-1130): zamknięcie aplikacji z przełącznika (przeciągnięcie w górę) kończy Live Activity z `.immediate` — karta znika też z ekranu blokady i Dynamic Island.
+    // Najwyżej 1,5 s i tylko, gdy aktywność istnieje (brak aktywności = bez blokowania). Minimalizacja i blokada ekranu nie wysyłają tego powiadomienia — aktywność zostaje.
+    // Uwaga (Apple, applicationWillTerminate): dla aplikacji z pracą w tle metoda „is generally not called when the user quits the app”; zawieszoną aplikację system kończy bez powiadomienia — zakres sprawdza PU-348 (F).
+    OnCreate { [weak self] in
+      self?.obserwatorKonca = KoniecProcesu.obserwuj(nazwa: UIApplication.willTerminateNotification) {
+        for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) }
+      }
+    }
+    OnDestroy { [weak self] in
+      if let o = self?.obserwatorKonca { NotificationCenter.default.removeObserver(o) }
+      self?.obserwatorKonca = nil
+    }
 
     AsyncFunction("odczytajTekst") { () throws -> String in try DziennikPlus.wspolny.tekst() }
     AsyncFunction("skroc") { (doId: String) throws in try DziennikPlus.wspolny.skroc(doId: doId) }

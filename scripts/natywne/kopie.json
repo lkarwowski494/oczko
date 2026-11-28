@@ -6,6 +6,9 @@
       "targets/widget/Wspolne/Json.swift",
       "targets/watch/Wspolne/Json.swift"
     ],
+    "modules/oczko-reguly/Sources/OczkoReguly/KoniecProcesu.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/KoniecProcesu.swift"
+    ],
     "modules/oczko-reguly/Sources/OczkoReguly/Stale.swift": [
       "modules/oczko-dziennik-plus/ios/Wspolne/Stale.swift",
       "targets/widget/Wspolne/Stale.swift",
