@@ -1,0 +1,5 @@
+FA2 verify (2026-11-28, HEAD = commit stanu po 07b48e1e + zmiany R3/R2/kontraktu portów)
+komenda: npm run verify  (typecheck, typecheck:testy, lint, jakosc:kontrole, test)
+kod wyjścia: 0
+testy: 769 zestawów / 8588 testów zielone (stan wyjściowy FA2: 759 / 8540)
+test:akceptacja: 2 testy czerwone (asercja 2, znacznik 0) — kontrole XCTest zm22-zm24-xctest (FB1/FB2), poza zakresem FA2
