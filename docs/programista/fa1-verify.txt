@@ -1,0 +1,5 @@
+FA1 verify (2026-11-28, HEAD e33e6305 + zmiany dokumentów w commicie stanu)
+komenda: npm run verify  (typecheck, typecheck:testy, lint, jakosc:kontrole, test)
+kod wyjścia: 0
+testy: 758 zestawów / 8536 testów zielone (stan wyjściowy 751 / 8452)
+test:akceptacja: 15 testów czerwonych (asercja 13, znacznik 2), 0 błędów raportu — ekrany ZM-23/24/26/27/28 i XCTest (FB1)
