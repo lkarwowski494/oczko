@@ -18,6 +18,7 @@ export interface ModulIap {
   purchaseUpdatedListener(l: (p: unknown) => void): { remove(): void };
   purchaseErrorListener(l: (e: unknown) => void): { remove(): void };
   subscriptionStatusIOS(sku: string): Promise<unknown[]>;
+  presentCodeRedemptionSheetIOS(): Promise<unknown>; // expo-iap 5.8.1 (ExpoIapModule.d.ts, MutationFields); wynik realizacji kodu dochodzi przez purchaseUpdatedListener
 }
 
 const liczba = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
@@ -60,7 +61,7 @@ async function biezace(m: ModulIap, terazMs: () => number): Promise<Transakcja[]
   return lista;
 }
 
-export function sklepIap(m: ModulIap, terazMs: () => number = Date.now): Sklep {
+export function sklepIap(m: ModulIap, terazMs: () => number = Date.now, brakSieci: () => boolean = () => false): Sklep {
   let polaczenie: Promise<boolean> | null = null;
   const polacz = () => (polaczenie ??= m.initConnection().catch((e: unknown) => { polaczenie = null; throw e; }));
   // Anulowanie i oczekiwanie nie są błędem (MON-04): status wybiera komunikat (komunikatZakupu, P-135 Q3a).
@@ -83,6 +84,11 @@ export function sklepIap(m: ModulIap, terazMs: () => number = Date.now): Sklep {
     async przywroc(): Promise<Wynik<void>> {
       try { await polacz(); await m.restorePurchases(); return { ok: true, wartosc: undefined }; } catch { return { ok: false, powod: 'zapis' }; }
     },
+    /** ZM-23: bez sieci okno Apple nie ma sensu — `brak_sieci` (linia w ofertach), bez wywołania modułu; reszta błędów = `zapis`. */
+    async zrealizujKod(): Promise<Wynik<void>> {
+      if (brakSieci()) return { ok: false, powod: 'brak_sieci' };
+      try { await polacz(); await m.presentCodeRedemptionSheetIOS(); return { ok: true, wartosc: undefined }; } catch { return { ok: false, powod: 'zapis' }; }
+    },
     async transakcje() { await polacz(); return biezace(m, terazMs); },
     obserwuj(fn) {
       let subskrypcje: { remove(): void }[] = [];
@@ -100,9 +106,9 @@ export function sklepIap(m: ModulIap, terazMs: () => number = Date.now): Sklep {
 }
 
 /** Sklep aplikacji: sztuczny w buildzie E2E (`EXPO_PUBLIC_STORE_FAKE=1`, e2e/README.md), inaczej expo-iap ładowane leniwie. */
-export function sklepAplikacji(zapisE2e?: ZapisSklepu, terazMs?: () => number): Sklep {
+export function sklepAplikacji(zapisE2e?: ZapisSklepu, terazMs?: () => number, brakSieci?: () => boolean): Sklep {
   if (process.env.EXPO_PUBLIC_STORE_FAKE === '1') return sklepSztuczny(terazMs, zapisE2e);
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- leniwie: w testach i bez modułu natywnego pakiet nie jest ładowany
   const m: ModulIap = require('expo-iap');
-  return sklepIap(m);
+  return sklepIap(m, terazMs, brakSieci);
 }

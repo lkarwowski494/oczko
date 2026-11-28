@@ -48,6 +48,11 @@ export default function EkranOfert(): React.ReactElement {
     await poZmianie();
     if (!kontener.dostep.stan().aktywne && !czekaNaZatwierdzenie.current) ustawKomunikat('przywroc_nic'); // przywrócenie udane, ale Apple ID nie ma zakupu Pro
   }
+  async function zrealizujKod(): Promise<void> { // ZM-23 (U5): arkusz Apple „Redeem code”; wynik realizacji przychodzi nasłuchem transakcji (dostęp liczy się od nowa)
+    ustawKomunikat(null);
+    const w = await sklep.zrealizujKod().catch(() => ({ ok: false as const, powod: 'zapis' as const }));
+    if (!w.ok && w.powod === 'brak_sieci') ustawKomunikat('kod_bez_sieci');
+  }
   const wygas = 'wygas' in sklep && typeof sklep.wygas === 'function' ? (sklep.wygas as () => void) : null;
   return (
     <Oferty
@@ -56,6 +61,7 @@ export default function EkranOfert(): React.ReactElement {
       adresy={{ polityka: ADRESY.polityka, warunki: ADRESY.warunki }}
       naKup={(id) => void kup(id)}
       naPrzywroc={() => void przywroc()}
+      naZrealizujKod={() => void zrealizujKod()}
       naZarzadzaj={() => systemAplikacji.zarzadzajSubskrypcja()}
       naOtworzAdres={(u) => systemAplikacji.otworzAdres(u)}
       // E2-137-A2 (scen. 07): oferty otwarte z okna „Uczciwe zasady” (`replace`, modal na modal) kończą jawnie na liście projektów, nie przez `back()` po zamianie modalu.

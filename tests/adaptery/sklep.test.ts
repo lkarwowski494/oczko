@@ -4,7 +4,8 @@ import { produktZeSklepu, sklepIap, statusZBledu, transakcjaZZakupu, type ModulI
 import { sklepSztuczny } from '../../src/platforma/sklep-sztuczny';
 
 const TERAZ = 1_800_000_000_000;
-function atrapa(o: { zakupy?: unknown[]; statusy?: Record<string, unknown[] | Error>; zakup?: unknown } = {}): ModulIap {
+const wywolaniaKodu = { n: 0 };
+function atrapa(o: { zakupy?: unknown[]; statusy?: Record<string, unknown[] | Error>; zakup?: unknown; kod?: Error } = {}): ModulIap {
   return {
     initConnection: async () => true,
     fetchProducts: async () => [
@@ -20,6 +21,7 @@ function atrapa(o: { zakupy?: unknown[]; statusy?: Record<string, unknown[] | Er
     purchaseUpdatedListener: () => ({ remove: () => undefined }),
     purchaseErrorListener: () => ({ remove: () => undefined }),
     subscriptionStatusIOS: async (sku) => { const s = o.statusy?.[sku]; if (s instanceof Error) throw s; return s ?? []; },
+    presentCodeRedemptionSheetIOS: async () => { wywolaniaKodu.n += 1; if (o.kod instanceof Error) throw o.kod; return null; },
   };
 }
 const blad = (code: string) => Object.assign(new Error(code), { code });
@@ -74,4 +76,22 @@ test('sztuczny sklep (build E2E): zakup bez okna Apple, „wygaś dostęp” ko�
   s.wygas();
   expect((await s.transakcje())[0]?.wygasa).toBe(TERAZ + 1000);
   expect(powiadomienia).toBe(2);
+});
+
+describe('ZM-23 zrealizujKod (U5, P-1072): arkusz Apple „Redeem code” przez port sklepu', () => {
+  beforeEach(() => { wywolaniaKodu.n = 0; });
+  test('ZM-23 PU-361: sieć jest → wywołanie okna Apple i ok; wynik realizacji przychodzi nasłuchem transakcji (obserwuj), nie wartością zwrotną', async () => {
+    expect(await sklepIap(atrapa(), () => TERAZ, () => false).zrealizujKod()).toEqual({ ok: true, wartosc: undefined });
+    expect(wywolaniaKodu.n).toBe(1);
+  });
+  test('ZM-23 PU-361: brak sieci → `brak_sieci` bez wywołania modułu; błąd modułu → `zapis`, nie `brak_sieci`', async () => {
+    expect(await sklepIap(atrapa(), () => TERAZ, () => true).zrealizujKod()).toEqual({ ok: false, powod: 'brak_sieci' });
+    expect(wywolaniaKodu.n).toBe(0);
+    expect(await sklepIap(atrapa({ kod: blad('E_UNKNOWN') }), () => TERAZ, () => false).zrealizujKod()).toEqual({ ok: false, powod: 'zapis' });
+  });
+  test('ZM-23 PU-361: sztuczny sklep buildu E2E — okno nie istnieje, wynik ok bez zmiany zakupów', async () => {
+    const s = sklepSztuczny(() => TERAZ);
+    expect(await s.zrealizujKod()).toEqual({ ok: true, wartosc: undefined });
+    expect(await s.transakcje()).toEqual([]);
+  });
 });

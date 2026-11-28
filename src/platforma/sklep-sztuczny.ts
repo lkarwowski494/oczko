@@ -29,6 +29,8 @@ export function sklepSztuczny(terazMs: () => number = Date.now, zapis?: ZapisSkl
     },
     /** Przywrócenie: zakupy z konta wracają (także po „expire access”). */
     async przywroc() { zmien({ ...s, wygaslo: null }); return { ok: true, wartosc: undefined }; },
+    /** Okno realizacji kodu w buildzie E2E nie istnieje: wynik jak udane otwarcie (bez zmiany zakupów). */
+    async zrealizujKod() { return { ok: true as const, wartosc: undefined }; },
     async transakcje() { return s.wygaslo === null ? s.kupione : s.kupione.map((t) => ({ ...t, wygasa: s.wygaslo, karencjaDo: null })); },
     obserwuj(fn) { obserwatorzy.add(fn); return () => obserwatorzy.delete(fn); },
     /** „Test store: expire access”: wszystkie uprawnienia kończą się teraz (dostęp liczy dostep.ts z końcem wyłącznym). */
