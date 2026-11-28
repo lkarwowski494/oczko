@@ -1,0 +1,6 @@
+MS1 (08 fix, KO-245) — podsumowanie i kody, 2026-11-28
+gałąź: claude/ms1-scalenie-1-0-2-2026-11-28 (baza c2252515); scalone: 8bc83e17 (FA1+FA2), 64639bf7 (FB1+FB2), 814d8293 (ZA1)
+npm run verify: kod 0 (typecheck, typecheck:testy, lint, jakosc:kontrole, jest: 773 zestawów, 8601 testów, 0 porażek)
+swift test (modules/oczko-reguly, swift 6.0.3): kod 0, 69 testów, 0 porażek
+npm run test:akceptacja: kod 0, 0 testów oczekujących (kontrole XCTest zm22–zm24 przeniesione przez FB1 do tests/adaptery/xctest-krok-minus-1-0-2.test.ts: PASS w jest)
+generuj-stale.mjs --check: w jakosc:kontrole, kod 0 (krokMaks, liveKoniecPoMs z generatora)
