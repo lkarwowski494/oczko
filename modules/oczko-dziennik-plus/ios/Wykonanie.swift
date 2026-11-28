@@ -18,9 +18,9 @@ public enum IntencjaEkranuBlokady {
     let wynik = try stuknij(r, stan: stan, teraz: teraz, strefa: TimeZone.current.identifier, id: UUID().uuidString.lowercased(),
                             urzadzenie: aktywnosc.attributes.urzadzenie)
     switch wynik {
-    case let .zapisz(linia, nowy):
+    case let .zapisz(linie, nowy):
       do {
-        try DziennikPlus.wspolny.dopisz(linia) // rzuca przy krótkim zapisie albo błędzie fsync — wartość bez zmian (8A)
+        for linia in linie { try DziennikPlus.wspolny.dopisz(linia) } // rzuca przy krótkim zapisie albo błędzie fsync — wartość bez zmian (8A)
       } catch {
         // Przy domyślnej klasie ochrony plik jest dostępny po pierwszym odblokowaniu (rejestr Apple 3a); sam sygnał tego nie rozróżnia (3d).
         let chronione = await MainActor.run { !UIApplication.shared.isProtectedDataAvailable }

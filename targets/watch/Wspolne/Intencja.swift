@@ -8,7 +8,7 @@ import OczkoReguly
 
 public enum WynikIntencji: Equatable {
   /// Linia do dopisania i stan do pokazania po udanym `fsync` (ADR-0008 (8A)).
-  case zapisz(ZdarzenieWejsciowe, StanEkranuBlokady)
+  case zapisz([ZdarzenieWejsciowe], StanEkranuBlokady)
   /// Nowy dzień ponad limit (P-065 (1a)): bez linii, Live Activity pokazuje komunikat limitu.
   case limit
   /// −1 przy wartości 0: bez linii (licznik nie schodzi poniżej zera, CHECK `wartosc >= 0`).
@@ -20,6 +20,12 @@ public enum WynikIntencji: Equatable {
 /// Stuknięcie w chwili `teraz` w strefie urządzenia; `id` = nowy UUID, `urzadzenie` = identyfikator urządzenia z aplikacji.
 /// `zrodlo`: ekran blokady (intencja) albo zegarek (ta sama reguła na stanie z kontekstu telefonu, ADR-0009).
 public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady, teraz: Int64, strefa: String, id: String, urzadzenie: String,
+                    zrodlo: ZdarzenieWejsciowe.Zrodlo = .ekran_blokady, proZegarkaSklep: [Uprawnienie] = []) throws -> WynikIntencji {
+  try stuknij(rodzaj, stan: stan, teraz: teraz, strefa: strefa, ids: [id], urzadzenie: urzadzenie, zrodlo: zrodlo, proZegarkaSklep: proZegarkaSklep)
+}
+
+/// Wersja z `ids`: jedno stuknięcie „+k” zapisuje k linii (k = `stan.krok`), więc wołający podaje k nowych identyfikatorów (ADR-0036 pkt 2).
+public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady, teraz: Int64, strefa: String, ids: [String], urzadzenie: String,
                     zrodlo: ZdarzenieWejsciowe.Zrodlo = .ekran_blokady, proZegarkaSklep: [Uprawnienie] = []) throws -> WynikIntencji {
   if stan.zablokowany { return .zablokowany } // F-03, N1: przed limitem i przed −1 (ADR-0008, 2026-10-26); bez linii
   let dzis = try dzienLokalny(ms: teraz, strefa: strefa)
@@ -36,10 +42,11 @@ public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady
     if !start.dozwolone { return .limit }
     if let z = start.zapis { dni.append(z) }
   }
+  let id = ids[0]
   let zdarzenie = ZdarzenieWejsciowe(id: id, licznikId: stan.licznikId, rodzaj: rodzaj, rodzice: stan.glowa.map { [$0] } ?? [], czasMs: teraz,
                                      strefa: strefa, dzien: dzis, zrodlo: zrodlo, urzadzenie: urzadzenie, pro: pro)
   let nowy = stan.po(zdarzenie, dni: dni.map { DzienStanu(dzien: $0.data, pro: $0.pro) })
-  return .zapisz(zdarzenie, nowy)
+  return .zapisz([zdarzenie], nowy)
 }
 
 extension StanEkranuBlokady {

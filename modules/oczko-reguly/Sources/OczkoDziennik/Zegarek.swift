@@ -81,9 +81,9 @@ public struct SkrzynkaZegarka: Equatable {
   public mutating func stuknijNaZegarku(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, teraz: Int64, strefa: String, id: String, urzadzenie: String, sklep: [Uprawnienie] = []) throws -> WynikIntencji {
     guard let s = pokazywany else { return .bezZmiany } // przed pierwszym kontaktem z telefonem zegarek nie zna licznika
     let w = try stuknij(rodzaj, stan: s, teraz: teraz, strefa: strefa, id: id, urzadzenie: urzadzenie, zrodlo: .zegarek, proZegarkaSklep: sklep)
-    if case let .zapisz(z, nowy) = w {
-      try magazyn.dopisz(z.linia)
-      oczekujace.append(z)
+    if case let .zapisz(linie, nowy) = w {
+      for z in linie { try magazyn.dopisz(z.linia) }
+      oczekujace.append(contentsOf: linie)
       pokazywany = nowy
     }
     return w

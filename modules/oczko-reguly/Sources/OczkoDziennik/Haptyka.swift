@@ -27,7 +27,7 @@ public func wzorzecHaptykiZegarka(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, _ przebie
     switch w {
     case .zablokowany: return .blokadaStukniecie
     case .limit, .bezZmiany: return nil
-    case let .zapisz(_, nowy):
+    case let .zapisz(_, nowy):  // zmienia się w kroku „zachowanie” (PS)
       if rodzaj == .plus, pasPrzypomnienia(nowy) != nil { return .przypomnienie }
       return .plus
     }
