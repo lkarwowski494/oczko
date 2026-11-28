@@ -16,3 +16,11 @@ OK   9.54:1 (min 3) jasny: przełącznik wł. przycisk na tlo (UI) #3A332E na #E
 OK   10.61:1 (min 3) ciemny: przełącznik wł. przycisk na tlo (UI) #F0CF8A na #26211E
 OK   7.15:1 (min 4.5) jasny: etykieta tekst2 na powierzchnia #5A5048 na #F6F4F1
 OK   7.48:1 (min 4.5) ciemny: etykieta tekst2 na powierzchnia #C7BCB2 na #312B27
+OK   7.15:1 (min 4.5) jasny: ZM-27 podpis pozycji menu tekst2 na powierzchnia #5A5048 na #F6F4F1
+OK   15.20:1 (min 4.5) jasny: ZM-27 pozycja menu tekst na powierzchnia #221D1A na #F6F4F1
+OK   5.39:1 (min 4.5) jasny: ZM-27 (odrzucone) przyciski okna akcentTekst na powierzchnia #8A5A12 na #F6F4F1
+OK   7.48:1 (min 4.5) ciemny: ZM-27 podpis pozycji menu tekst2 na powierzchnia #C7BCB2 na #312B27
+OK   11.98:1 (min 4.5) ciemny: ZM-27 pozycja menu tekst na powierzchnia #F1EDE9 na #312B27
+OK   9.30:1 (min 4.5) ciemny: ZM-27 (odrzucone) przyciski okna akcentTekst na powierzchnia #F0CF8A na #312B27
+OK   10.61:1 (min 4.5) zwiększony jasny: ZM-27 podpis tekst2 na powierzchnia #3F3731 na #F6F4F1
+OK   10.11:1 (min 4.5) zwiększony ciemny: ZM-27 podpis tekst2 na powierzchnia #E3DAD2 na #312B27

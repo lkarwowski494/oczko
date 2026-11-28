@@ -252,6 +252,13 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
 .ark-m .ng a { color: var(--akcentTekst); min-height: 44px; display: inline-flex; align-items: center; } .ark-m .ng h2 { text-align: center; font-weight: 700; font-size: calc(17px * var(--dt-tytul)); }
 .ark-m > * { flex: none; } .ark-m .lista { margin-bottom: 12px; } .ark-m .lista > div { padding: 8px 16px; }
 .duzy .ark-m { top: 58px; overflow: hidden; } .duzy .ark-m .ng { grid-template-columns: 1fr; } .duzy .ark-m .ng h2 { text-align: left; }
+/* ZM-27 (PR2): pozycja menu z podpisem, stan wyszarzony (odrzucony), okno potwierdzenia (odrzucone; kontrolka systemowa w atrapie), ekran blokady bez karty */
+.lista > div.z27 { padding-top: 8px; padding-bottom: 8px; } .lista > div.z27.wyl, .lista > div.z27.wyl small { color: var(--przyciskNieaktywnyTekst); }
+.z27-okno { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(270px, calc(var(--w) - 48px)); background: var(--powierzchnia); border-radius: 14px; overflow: hidden; text-align: center; }
+.z27-okno .tr { padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 4px; } .z27-okno h2 { font-weight: 700; font-size: calc(17px * var(--dt-tytul)); } .z27-okno p { color: var(--tekst2); font-size: calc(15px * var(--dt-tresc)); }
+.z27-okno .pr { display: flex; flex-wrap: wrap; border-top: 1px solid var(--linia); } .z27-okno .pr a { flex: 1 1 50%; min-height: 44px; display: flex; align-items: center; justify-content: center; color: var(--akcentTekst); }
+.z27-okno .pr a + a { border-left: 1px solid var(--linia); } .duzy .z27-okno { width: calc(var(--w) - 32px); } .duzy .z27-okno .pr a { flex-basis: 100%; } .duzy .z27-okno .pr a + a { border-left: 0; border-top: 1px solid var(--linia); }
+.z27-pusto { min-height: 132px; } .la.z27-wyg { opacity: .62; }
 </style>
 <style>
 /* ===== 1.0.2 (PR1): nowe reguły; wartości z tokenów, cele ≥ 44 pt ===== */
@@ -605,6 +612,104 @@ body { background: #8a8d91; font-family: "Source Sans 3", sans-serif; padding: 2
   <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:45:10</span></div>
     <div class="sr"><a class="m1">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1">+1 rząd</a></div><p class="op2">Ostatni +1: <span class="tm">3:12</span> temu</p></div>
   <p class="pod-atrapa">B1: linia „Ostatni +1” zawsze (zastępuje „stuknij, gdy skończysz…”). Dwa biegnące zegary na jednej karcie (stoper sesji i „ostatni +1”) — do odróżnienia tylko słowami.</p>
+</section>
+
+<!-- ZM-27 (PR2, 2026-11-28): koniec Live Activity z menu ••• (b) i po czasie bez liczenia (a); P-1107…P-1109 -->
+<main class="ekran lz" data-ekran="z27-menu" aria-label="Licznik, menu z Zdejmij z ekranu blokady (A, rekomendacja)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div>Ustawienia licznika</div></div>
+    <div class="lista"><div class="z27" role="button"><span class="tx">Zdejmij z ekranu blokady<small>Wróci, gdy znów zaczniesz liczyć.</small></span></div><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+<main class="ekran lz" data-ekran="z27-menu-stoper" aria-label="Licznik, menu z Zdejmij z ekranu blokady, stoper działa">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div>Ustawienia licznika</div></div>
+    <div class="lista"><div class="z27" role="button"><span class="tx">Zdejmij z ekranu blokady<small>Wróci, gdy znów zaczniesz liczyć. Stoper liczy dalej.</small></span></div><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+<main class="ekran lz" data-ekran="z27-menu-brak" aria-label="Licznik, menu bez Live Activity: pozycja ukryta">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div>Ustawienia licznika</div></div>
+    <div class="lista"><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+<main class="ekran lz" data-ekran="z27-menu-B-wyszarzone" aria-label="Licznik, menu bez Live Activity: pozycja wyszarzona (B, odrzucone)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div>Ustawienia licznika</div></div>
+    <div class="lista"><div class="z27 wyl" role="button"><span class="tx">Zdejmij z ekranu blokady<small>Licznika nie ma teraz na ekranie blokady.</small></span></div><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+<main class="ekran lz" data-ekran="z27-menu-nazwa-B" aria-label="Licznik, menu z nazwą Zakończ na ekranie blokady (odrzucone)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła"><div class="ng"><a>Anuluj</a><h2>Sweter Mgła</h2><span></span></div>
+    <div class="lista"><div>Nazwij projekt i część</div><div>Wpisz numer rzędu</div><div>Co pokazuje liczba</div><div>Ustawienia licznika</div></div>
+    <div class="lista"><div class="z27" role="button"><span class="tx">Zakończ na ekranie blokady<small>Wróci, gdy znów zaczniesz liczyć.</small></span></div><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+<main class="ekran lz" data-ekran="z27-menu-przewiniety" aria-label="Licznik, menu przewinięte do drugiej grupy (AX5)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="ark-m t-tresc" role="dialog" aria-label="Sweter Mgła (przewinięte)">
+    <div class="lista"><div>Ustawienia licznika</div></div>
+    <div class="lista"><div class="z27" role="button"><span class="tx">Zdejmij z ekranu blokady<small>Wróci, gdy znów zaczniesz liczyć. Stoper liczy dalej.</small></span></div><div>Zablokuj licznik (ignoruj stuknięcia)</div><div>Oznacz projekt jako ukończony</div></div>
+    <div class="lista"><div>Wyzeruj do 0…</div></div></section>
+</main>
+
+<main class="ekran lz" data-ekran="z27-potwierdzenie-B" aria-label="Licznik, okno potwierdzenia (B, odrzucone)">
+  <div class="status"><span class="cyfry">9:41</span><span class="bat"></span></div>
+  <div class="nav t-tresc"><a><i data-ik="wstecz" data-gr="2.4"></i><span>Dziś</span></a><span class="pik"><i data-ik="kropki"></i></span></div>
+  <div class="przew"><div class="gl" style="padding: 0 16px"><h1 class="t-duzy br">Sweter Mgła</h1></div></div>
+  <div class="strefa"></div>
+  <div class="zaslona" aria-hidden="true"></div>
+  <section class="z27-okno t-tresc" role="alertdialog" aria-label="Zdjąć licznik z ekranu blokady?"><div class="tr"><h2>Zdjąć licznik z ekranu blokady?</h2><p>Liczba zostaje w Oczku. Licznik wróci, gdy znów zaczniesz liczyć.</p></div>
+    <div class="pr"><a>Anuluj</a><a><b>Zdejmij</b></a></div></section>
+</main>
+
+<section class="ls" data-ekran="z27-blokada-przed" aria-label="Ekran blokady z licznikiem (przed)">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la"><div class="gora"><b>Sweter Mgła</b><span><i data-ik="stoper"></i>0:42:10</span></div>
+    <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">47</span><span class="op"><b>Teraz rząd 48</b></span><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div><p class="op2">stuknij, gdy skończysz rząd 48</p></div>
+  <p class="pod-atrapa">Przed: karta jak w U4 A (P-1100). Po „Zdejmij z ekranu blokady” albo po czasie bez liczenia (a) — stan niżej.</p>
+</section>
+
+<section class="ls" data-ekran="z27-blokada-po" aria-label="Ekran blokady po zakończeniu (a) albo (b)">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="z27-pusto" aria-hidden="true"></div>
+  <p class="pod-atrapa">Po (a) i (b) ten sam stan: karty nie ma od razu (zakończenie z <code>.immediate</code>), w Dynamic Island też nic. Bez stanu pośredniego, bez komunikatu.</p>
+</section>
+
+<section class="ls" data-ekran="z27-blokada-wygaszona-B" aria-label="Ekran blokady, wygaszony wygląd przed końcem (a), odrzucone">
+  <div class="zb">9:41</div><div class="dt">sobota, 28 listopada</div>
+  <div class="la z27-wyg"><div class="gora"><b>Sweter Mgła</b><span>bez liczenia od 1 h</span></div>
+    <div class="sr"><a class="m1" aria-label="−1 rząd">−1</a><span class="n cyfry">47</span><span class="op"><b>Zniknie za chwilę</b></span><a class="p1" aria-label="+1 rząd. Teraz rząd 48">+1 rząd</a></div><p class="op2">stuknij +1, aby zostawić</p></div>
+  <p class="pod-atrapa">Odrzucone: wygaszona karta przed końcem (a). Drugi czas obok stopera (wbrew U7-B2, P-1103), zderza się z <code>staleDate</code> podpowiedzi B2 i przedłuża obecność karty, którą użytkownik chce mieć z głowy.</p>
 </section>
 
 <script>

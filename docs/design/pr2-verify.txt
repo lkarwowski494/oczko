@@ -1,0 +1,8 @@
+PR2 (04 fix) — npm run verify, 2026-11-28, drzewo robocze = scalenie ea4fdfee + zmiany ZM-27 (tylko docs/), Linux, Node v22.23.5
+typecheck, typecheck:testy, lint, jakosc:kontrole, npm test
+Test Suites: 749 passed, 749 total
+Tests:       8438 passed, 8438 total
+Time:        211.678 s
+kod 0
+Po samym scaleniu integracji 0c3f9214 (przed ZM-27): też kod 0, 749/749 zestawów, 8438 testów.
+Ponowny przebieg: hak pre-push przy wypchnięciu.

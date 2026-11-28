@@ -81,5 +81,37 @@
  "ciemny: etykieta tekst2 na powierzchnia": [
   "#C7BCB2",
   "#312B27"
+ ],
+ "jasny: ZM-27 podpis pozycji menu tekst2 na powierzchnia": [
+  "#5A5048",
+  "#F6F4F1"
+ ],
+ "jasny: ZM-27 pozycja menu tekst na powierzchnia": [
+  "#221D1A",
+  "#F6F4F1"
+ ],
+ "jasny: ZM-27 (odrzucone) przyciski okna akcentTekst na powierzchnia": [
+  "#8A5A12",
+  "#F6F4F1"
+ ],
+ "ciemny: ZM-27 podpis pozycji menu tekst2 na powierzchnia": [
+  "#C7BCB2",
+  "#312B27"
+ ],
+ "ciemny: ZM-27 pozycja menu tekst na powierzchnia": [
+  "#F1EDE9",
+  "#312B27"
+ ],
+ "ciemny: ZM-27 (odrzucone) przyciski okna akcentTekst na powierzchnia": [
+  "#F0CF8A",
+  "#312B27"
+ ],
+ "zwiększony jasny: ZM-27 podpis tekst2 na powierzchnia": [
+  "#3F3731",
+  "#F6F4F1"
+ ],
+ "zwiększony ciemny: ZM-27 podpis tekst2 na powierzchnia": [
+  "#E3DAD2",
+  "#312B27"
  ]
 }
