@@ -37,6 +37,12 @@ describe('akceptacja-raport.mjs (zasada roli 07 nr 3)', () => {
     expect(raport([{ title: 'KP-12 x', status: 'passed' }]).status).toBe(1);
     expect(raport([{ title: 'KP-12 x [ZIELONY-OK: parametr]', status: 'passed' }]).status).toBe(0);
   });
+  test.each(['ZM-24 x', 'PU-346 x', 'PU-Z03 x'])('P-1113 (TQ1): ID zmiany zakresu i PU w nazwie testu przechodzą: %s', (nazwa) => {
+    expect(raport([{ title: nazwa, status: 'failed', failureMessages: ['NIEZAIMPLEMENTOWANE: ZM-24'] }]).status).toBe(0);
+  });
+  test('P-1113 (TQ1): „ZM-1” i „PU-34” to nie ID → kod 1', () => {
+    expect(raport([{ title: 'ZM-1 PU-34 x', status: 'failed', failureMessages: ['NIEZAIMPLEMENTOWANE: x'] }]).status).toBe(1);
+  });
   test('R-171 test bez ID kryterium w nazwie → kod 1', () => {
     const w = raport([{ title: 'działa', status: 'failed', failureMessages: ['NIEZAIMPLEMENTOWANE: x'] }]);
     expect(w.stdout).toContain('bez ID');

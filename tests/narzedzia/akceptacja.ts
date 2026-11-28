@@ -96,3 +96,30 @@ export function opcjeWlasnosci(): { seed?: number; includeErrorInReport: boolean
 export const MIN = 60_000;
 export const GODZ = 3_600_000;
 export const DOBA = 86_400_000;
+
+// TQ1 (1.0.2, P-1113): testy przed kodem wobec funkcji, których jeszcze nie ma w `src/`. Brak modułu albo eksportu daje znacznik
+// `NIEZAIMPLEMENTOWANE: <ID>` (czerwień z właściwego powodu), nie „Cannot find module” ani „is not a function” (zła czerwień, akceptacja-raport.mjs).
+/** Moduł ze ścieżki bezwzględnej; brak pliku modułu → znacznik. Błąd wewnątrz istniejącego modułu idzie dalej bez zmian. */
+export function modulLubZnacznik(sciezka: string, id: string): Record<string, unknown> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require(sciezka) as Record<string, unknown>;
+  } catch (e) {
+    const komunikat = typeof (e as { message?: unknown })?.message === 'string' ? (e as { message: string }).message : ''; // błąd resolvera Jest jest z innego realmu: bez instanceof
+    if (/Cannot find module/.test(komunikat) && komunikat.includes(sciezka.split('/').pop() ?? sciezka)) throw new Error(`NIEZAIMPLEMENTOWANE: ${id} — brak modułu ${sciezka.replace(/^.*?\/(src|app)\//, '$1/')}`);
+    throw e;
+  }
+}
+/** Eksport modułu (funkcja, stała, komponent); brak → znacznik z ID. */
+export function eksportLubZnacznik<T>(modul: Record<string, unknown>, nazwa: string, id: string): T {
+  if (modul[nazwa] === undefined) throw new Error(`NIEZAIMPLEMENTOWANE: ${id} — brak eksportu ${nazwa}`);
+  return modul[nazwa] as T;
+}
+/** Wynik domeny bywa `Wynik<T>` (src/domena/bledy.ts) albo gołą wartością — test sprawdza wartość. */
+export function rozpakuj<T>(x: T | { ok: true; wartosc: T } | { ok: false; powod: unknown }): T {
+  if (x !== null && typeof x === 'object' && 'ok' in x) {
+    if (x.ok === true && 'wartosc' in x) return x.wartosc as T;
+    if (x.ok === false) throw new Error(`Wynik domeny: błąd ${JSON.stringify((x as { powod: unknown }).powod)}`);
+  }
+  return x as T;
+}

@@ -1,0 +1,24 @@
+# PU-Z02 (ZM-21, P-1090 (1), P-1101): świeża instalacja — karta „Pierwszy licznik” pokazuje 1 „current row”, po „+1” 2; licznik w znaczeniu „w trakcie”.
+# SZKIELET TQ1 (2026-11-28) — czeka na kod 08-A (jawne `znaczenie = 'w_trakcie'` w INSERT, P-1098). Scenariusz 02 (PU-005, asercja „0”) zmienia 08 razem z kodem.
+# Szkielet poza e2e/scenariusze (P-1114): 08 przenosi plik do e2e/scenariusze jak pu-z03; numer PU zamiast PU-Z02, tag `oczekujacy` do pierwszego zielonego przebiegu.
+appId: com.apps4brew.knitting
+name: "PU-Z02 · Pierwszy licznik: karta 1 „current row”, po +1 2"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-Z02
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty-dzis.yaml
+    env:
+      TERAZ: "2026-11-28T12:00:00"
+- assertVisible: { id: "dzis-wartosc", text: "1" } # ekran: (zakladki)/index
+- assertVisible: "current row"
+- tapOn: { id: "dzis-plus" }
+- assertVisible: { id: "dzis-wartosc", text: "2" }
+- takeScreenshot: 124-pierwszy-licznik-w-trakcie
+- tapOn: { id: "dzis-kontynuuj" }
+- extendedWaitUntil: { visible: { id: "licznik-wartosc", text: "2" }, timeout: 20000 } # ekran: licznik
+- tapOn: { id: "nav-wstecz" } # powrót: (zakladki)/index
+- assertVisible: { id: "dzis-wartosc", text: "2" }

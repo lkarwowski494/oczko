@@ -1,0 +1,46 @@
+# PU-Z03 (ZM-24, ADR-0036, P-1102): licznik z krokiem +2 — „Dodaj licznik” → „Krok” „+2” → „+2” dodaje 2, −1 odejmuje 1, jedno „Cofnij” cofa +2.
+# SZKIELET TQ1 (2026-11-28) — czeka na kod 08-A: testID `dodaj-licznik-krok-2` (propozycja 04, docs/design/1-0-2.md „Paczka dla 07 i 08”) i przycisk „+2”.
+# Szkielet poza e2e/scenariusze (P-1114): 08 przenosi plik do e2e/scenariusze z kolejnym numerem, wpisem w config.yaml i e2e/czesci.json, numerem PU zamiast PU-Z03 i tagiem `oczekujacy` do pierwszego zielonego przebiegu (strategia §12).
+appId: com.apps4brew.knitting
+name: "PU-Z03 · Krok +2: „+2” dodaje dwa rzędy, −1 odejmuje jeden, „Cofnij” cofa całe „+2”"
+tags:
+  - przypadki-uzycia
+  - oczekujacy
+  - PU-Z03
+  - stan-licznika
+---
+- runFlow:
+    file: subflows/start-czysty.yaml
+    env:
+      TERAZ: "2026-11-28T12:00:00"
+- runFlow: subflows/projekt-roboczy.yaml
+- runFlow: { file: subflows/wpisz-wartosc.yaml, env: { WARTOSC: "42" } }
+- tapOn: { id: "licznik-projekt-wejscie" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 60000 }
+- tapOn: { id: "projekt-dodaj" }
+- tapOn: { id: "projekt-dodaj-licznik" }
+- assertVisible: { id: "formularz-nazwa-licznika" }
+- tapOn: { id: "formularz-nazwa-licznika" }
+- inputText: "Step two"
+- tapOn: { id: "dodaj-licznik-krok-2" } # ekran: formularz/[rodzaj]
+- assertVisible: { id: "dodaj-licznik-krok-2", selected: true }
+- tapOn: { id: "formularz-zapisz" }
+- extendedWaitUntil: { visible: { id: "projekt-dodaj" }, timeout: 20000 }
+- tapOn: "Step two.*"
+- extendedWaitUntil: { visible: { id: "licznik-plus", text: ".*\\+2.*" }, timeout: 20000 } # ekran: licznik
+- assertVisible: { id: "licznik-wartosc", text: "0" }
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "2" }
+- runFlow: subflows/odstep.yaml
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "4" }
+- tapOn: { id: "licznik-minus" }
+- assertVisible: { id: "licznik-wartosc", text: "3" }
+- takeScreenshot: 123-krok-plus-dwa
+- tapOn: { id: "licznik-plus" }
+- assertVisible: { id: "licznik-wartosc", text: "5" }
+- tapOn: { id: "licznik-historia" } # ekran: historia
+- extendedWaitUntil: { visible: "3 → 5", timeout: 20000 } # jeden wpis „+2” na stuknięcie (P-1111 (3))
+- tapOn: { id: "historia-cofnij-ostatnia" }
+- tapOn: { id: "arkusz-zamknij" } # powrót: licznik
+- assertVisible: { id: "licznik-wartosc", text: "3" }

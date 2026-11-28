@@ -1,0 +1,53 @@
+// SZKIC TQ1 (2026-11-28, rola 07; P-1114) — NIE jest kompilowany (rozszerzenie .szkic, poza Package.swift; w kontenerze Linux brak Swift).
+// 08-B: przenieś do modules/oczko-reguly/Tests/OczkoRegulyTests/IntencjaKrokMinusTests.swift, dopasuj nazwy API do kodu i zazieleń
+// w `swift test` (bramka „Jakość · iOS”); kontrola tests/akceptacja/kontrole/zm22-zm24-xctest.test.ts zzielenieje po przeniesieniu.
+// Zakres: ZM-22 (U4, ADR-0035 § U4: IN-04…IN-09 — −1 tą samą drogą co z zegarka, limit nie dotyczy −1, −1 przy 0 bez linii, blokada blokuje,
+// −1 NIE zmienia `dzien` ani `dzienDozwolony`) i ZM-24 (U6, ADR-0036 kontrakt Swift pkt 2: IN-01…IN-03, IN-10, IN-11 — „+2” = k linii
+// z łańcuchem rodziców i tym samym czasem, limit raz, wszystko albo nic) oraz PS-01…PS-07 (haptyka zegarka przy skoku, pkt 5).
+// Wyrocznia: docs/architektura/wektory-1-0-2.json („intencja”, „przypomnienie_skoku”) — wartości z reguł ADR, nie z kodu.
+import Foundation
+import OczkoDziennik
+import OczkoReguly
+import XCTest
+
+final class IntencjaKrokMinusTests: XCTestCase {
+  let plik = "docs/architektura/wektory-1-0-2.json"
+
+  /// Stan z wektora: złoty plik v3 (tests/wspolne/stan-ekranu-blokady-typowy.json) z polami nadpisanymi wartościami wektora
+  /// (wartosc, glowa, dzien, dzienDozwolony, zablokowany, ostatniPlusMs) i `krok` z wektora (brak klucza = 1, wyjątek od X-ST-01).
+  func stan(_ w: Json) throws -> StanEkranuBlokady {
+    // 08-B: złożenie stanu — np. dekodowanie złotego pliku i podmiana pól (jak testLimitBezLinii w IntencjaTests.swift).
+    fatalError("08-B: stan z wektora \(w["id"]?.tekst ?? "?")")
+  }
+
+  /// IN-01…IN-11: wynik, rodzice linii (łańcuch), stan po (wartosc, glowa, ostatniPlusMs, dzien, dzienDozwolony).
+  func testWektoryIntencji() throws {
+    let wektory = try Repo.json(plik)["intencja"]?.lista ?? []
+    let wykonane = Wykonane("intencja 1.0.2")
+    for w in wektory {
+      let id = w["id"]?.tekst ?? "?"
+      let s = try stan(w)
+      // 08-B: nowa sygnatura z ADR-0036 pkt 2, np.:
+      // let r = try stuknij(rodzaj, krok: krok, stan: s, teraz: opcje.teraz, strefa: "Europe/Warsaw", ids: opcje.ids, urzadzenie: "u")
+      // switch r { case let .zapisz(linie, po): XCTAssertEqual(linie.map(\.rodzice), oczekiwane.rodziceLinii, id); XCTAssertEqual(linie.map(\.czasMs).uniqued.count, 1, id) … }
+      // Dla IN-08, IN-09: XCTAssertEqual(po.dzien, oczekiwane.stan.dzien); XCTAssertEqual(po.dzienDozwolony, false) — defekt Stan.swift:83-86 (−1 przestawia dzień).
+      _ = s
+      XCTFail("08-B: \(id) — szkic, do zaimplementowania")
+      wykonane.dodaj(id)
+    }
+    wykonane.sprawdz(oczekiwane: idWektorow(wektory), minimum: 11)
+  }
+
+  /// PS-01…PS-07: wzorzec haptyki przypomnienia, gdy przypomnienieSkoku(przed, po) != nil (Haptyka.swift:31 dziś patrzy tylko na pas po stuknięciu).
+  func testPrzypomnienieSkoku() throws {
+    let wektory = try Repo.json(plik)["przypomnienie_skoku"]?.lista ?? []
+    let wykonane = Wykonane("przypomnienie_skoku")
+    for w in wektory {
+      let id = w["id"]?.tekst ?? "?"
+      // 08-B: XCTAssertEqual(przypomnienieSkoku(przed: …, po: …, plan: …), oczekiwane.rzad, id)
+      XCTFail("08-B: \(id) — szkic, do zaimplementowania")
+      wykonane.dodaj(id)
+    }
+    wykonane.sprawdz(oczekiwane: idWektorow(wektory), minimum: 7)
+  }
+}

@@ -16,7 +16,7 @@ if (!wejscie) {
   spawnSync('npx', ['jest', '-c', 'jest.akceptacja.config.js', '--json', '--outputFile', wejscie, '--silent'], { stdio: 'ignore' });
 }
 const raport = JSON.parse(readFileSync(wejscie, 'utf8'));
-export const ID = /\b(BR-[A-Z]{3}-\d{3}|NFR-[A-Z]{3}-\d{3}|KP-\d{2}|RD-\d{2}|P-\d{3}|R-\d{3}|TT-\d{2}|ER-\d{2}|Z07-\d{2}|PR-\d{2}|L-\d{2}|W-\d{2}|M-\d{2})\b/;
+export const ID = /\b(BR-[A-Z]{3}-\d{3}|NFR-[A-Z]{3}-\d{3}|KP-\d{2}|RD-\d{2}|P-\d{3}|R-\d{3}|TT-\d{2}|ER-\d{2}|Z07-\d{2}|PR-\d{2}|L-\d{2}|W-\d{2}|M-\d{2}|ZM-\d{2}|PU-\d{3}|PU-Z\d{2})\b/; // ZM, PU, PU-Z: TQ1 1.0.2 (P-1113)
 export function powodCzerwieni(komunikat) {
   if (/NIEZAIMPLEMENTOWANE:/.test(komunikat)) return 'znacznik';
   if (/Cannot find module|SyntaxError|is not a function|is not defined|is not a constructor|TS\d{4}|Unexpected token/.test(komunikat)) return 'zly';
